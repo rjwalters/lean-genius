@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (structural, axiom-free, 176→189 thm): general shared-landing CRITERION dblIter_eq_iff_landing_value (landing coincidence ⟺ landing-value coincidence, subsumes all concrete shared landings) + THREE-way shared landing shared_landing_triple_verdict_917 (seeds 1137/1179/1097 → 917·2^(k+1), realising reversal+equality+forward simultaneously; L=917 least such). Sole OPEN direction remains the analytic density-1 forward statement (Mathlib gap, unchanged). PR #38110. | Session (researcher-5, 2026-07-11): added the global partition of ℕ by the three regimes (EulerTotientOQ04OQ03.lean, 197→202 thm). reversalSet/equalitySet/forwardSet pairwise Disjoint (3 lemmas) + reversalSet_union_equalitySet_union_forwardSet = univ + regime_trichotomy (every n in EXACTLY one regime). All 5 axiom-free, host-lean EXIT 0. Global well-definedness of the classification (of which classifySeed_classifies is the seed-family decision procedure) — holds for ALL n via the trichotomy of φ(n) vs φ(D(n)), needing no seed/transport machinery. File 3692→3746 lines.",
+    "progressSummary": "PROGRESS: Structural side COMPLETE/VERIFIED (0/0, 214 thm). Added prime-power-landing reversal engine (generalises prime engine to seedE a=p^m) with proper-prime-power witness a=561 (landing 19²), covering reversal seeds outside all prior closed-form engines. Only remaining open direction: density-1 forward statement (Luca-Pomerance), not session-sized.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -115,7 +115,10 @@
       "dblIter_eq_iff_landing_value (EulerTotientOQ04OQ03.lean): general shared-landing criterion D(a₁·2^(k+1))=D(a₂·2^(k+1)) ↔ 2a₁−φ(b₁)=2a₂−φ(b₂), via dblIter_transport + cancel 2^k",
       "dblIter_eq_of_landing_value_eq: constructive ← direction",
       "shared_landing_triple_verdict_917: three-way witness with ReversalSet/EqualitySet/ForwardSet memberships",
-      "dblIter_seed1097/1137/1179 landings; totient_1097/1137/1179/549/759/789/917 helpers (factorisation, no kernel decide)"
+      "dblIter_seed1097/1137/1179 landings; totient_1097/1137/1179/549/759/789/917 helpers (factorisation, no kernel decide)",
+      "classifySeed_eq_compare_of_seedS_one_seedE_primePow in EulerTotientOQ04OQ03.lean (prime-power-landing trichotomy criterion)",
+      "classifySeed_{lt,eq,gt}_iff_of_seedS_one_seedE_primePow + primePow_landing_family_reversal",
+      "Witnesses: totient_401/361/561, classifySeed_561, seedE_561 (=19²), seedE_561_not_prime, mem_ReversalSet_561, reversal_seed_primePow_landing"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -154,7 +157,11 @@
       "SHARED LANDING, OPPOSITE VERDICT: the prime-triple reversal seed 18m+3=3(6m+1) and the fiveTimes forward seed 20m+5=5(4m+1) — two distinct odd seeds — transport onto the IDENTICAL double iterate D(n)=(14m+3)·2^(k+1). So φ(D(n)) is common to both families, yet one reverses (φ(n)<φ(D(n))) and the other goes forward (φ(D(n))<φ(n)). The double-iterate trichotomy is therefore NOT a function of the landing point D(n); it is decided by the seed own totient (12m·2^k vs 16m·2^k) relative to the shared φ(D(n))=(14m+2)·2^k. Concrete m=7: seeds 129=3·43 (reversal) and 145=5·29 (forward) both land on 101·2^(k+1).",
       "At a shared prime landing the two verdict margins straddle the common φ(D(n)) and differ by EXACTLY 2^(k+2): reversal margin (2m+2)·2^k minus forward margin (2m-2)·2^k = 4·2^k, independent of m; their sum 4m·2^k is the seed-totient gap 16m·2^k−12m·2^k.",
       "THREE-way shared landing exists: odd seeds 1137=3·379 (rev, φ=756), 1179=3²·131 (eq, φ=780), 1097 prime (fwd, φ=1096) all transport onto 917·2^(k+1) (917=7·131, φ=780) — one shared D(n) compatible with reversal, equality AND forward at once. L=917 is the LEAST such common landing (exhaustive search over odd seeds). Sharpest landing-independence statement.",
-      "PARTITION (researcher-5, 2026-07-11): the three regime sets are the <,=,> slices of φ(n) vs φ(D(n)), so they automatically partition ℕ — pairwise Disjoint (Set.disjoint_left + omega on the two totient comparisons), union = univ (Set.mem_union + omega trichotomy), and regime_trichotomy (exactly one per n). This is the global counterpart of the seed-restricted classifySeed_classifies, and uses only totient trichotomy — zero transport machinery. Complements the many concrete mem_*Set_* witnesses with the structural fact that no n escapes or double-counts."
+      "PARTITION (researcher-5, 2026-07-11): the three regime sets are the <,=,> slices of φ(n) vs φ(D(n)), so they automatically partition ℕ — pairwise Disjoint (Set.disjoint_left + omega on the two totient comparisons), union = univ (Set.mem_union + omega trichotomy), and regime_trichotomy (exactly one per n). This is the global counterpart of the seed-restricted classifySeed_classifies, and uses only totient trichotomy — zero transport machinery. Complements the many concrete mem_*Set_* witnesses with the structural fact that no n escapes or double-counts.",
+      "Prime-power-landing engine: for seedS a=1 and seedE a=p^m (p prime, m>=1), classifySeed a = compare (φ(seedB a)+p^(m-1)·2^seedT a) (2·(a-φ(a))). Generalises the prime-landing engine (m=1 case, p^(m-1)=1).",
+      "Reversal seeds with PROPER prime-power landings exist and were uncovered by prior engines: a=561 (landing 19²=361), a=1225 (31²), a=1595 (11³). Enumeration a<4000: 154 reversal seeds = 72 prime / 79 general-composite / 3 proper-prime-power landings.",
+      "a=561 (smallest Carmichael number) reverses its whole family 561·2^(k+1): b=401 prime, landing e=361=19²; certified by prime-power engine via φ(401)+19·2=438 < 482=2·(561-320).",
+      "Lean/omega gotcha: keep the totient identity LINEAR as φ(e)=e-p^(m-1) (not p^(m-1)·(p-1)); clear the nonlinear seedE a=p^(m-1)·p / =p^m facts before the classifier trichotomy so omega keeps seedE a·2^{…} as opaque atoms."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
