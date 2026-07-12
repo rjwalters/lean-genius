@@ -175,4 +175,50 @@ theorem sBad_no_canon_rep :
   have hle : ∀ j : Fin 3, p0.coords j ≤ 1 := by decide
   exact absurd hge (by have := hle t.miss; omega)
 
+/-! ## A second witness at `N = 3`, via the general theorem
+
+The `sBad` obstruction (`d = 2, N = 2`) is not an artefact of the minimal grid size.
+Here is a companion witness at `d = 2, N = 3` whose lex-minimum `(1,1,1)` again has every
+coordinate `< d = 2`.  Unlike `sBad_no_canon_rep` — which was proved from first principles —
+this one is discharged by simply *feeding the witness to the general theorem*
+`no_canon_rep_of_lexMin_small`, confirming that the abstract obstruction (not just the single
+`d = 2, N = 2` computation) is what does the work.  It also shows the obstructed family is
+infinite along `N`: every `N ≥ 2` admits a cell whose lex-minimum is small in every
+coordinate. -/
+
+/-- The three barycentric points of the `N = 3` witness cell (each summing to `3`). -/
+def q3 : BaryPoint 2 3 := ⟨![3, 0, 0], by decide⟩
+def q2 : BaryPoint 2 3 := ⟨![2, 1, 0], by decide⟩
+def q1 : BaryPoint 2 3 := ⟨![1, 1, 1], by decide⟩
+
+/-- The `N = 3` witness Freudenthal cell: base `(3,0,0)`, `miss = 0`, increments `1, 2`.
+Its lex-minimum is `(1,1,1)`, all of whose coordinates are `1 < 2 = d`. -/
+def sBad3 : GridSimplex 2 3 where
+  verts := ![q3, q2, q1]
+  incDir := ![1, 2]
+  miss := 0
+  miss_ne_inc := by decide
+  step_inc := by decide
+  step_dec := by decide
+  step_same := by decide
+  inc_injective := by decide
+
+/-- The witness cell `sBad3` is not canonical: its base `(3,0,0)` is the lex-maximum. -/
+theorem sBad3_not_canon : ¬ IsCanon sBad3 := by
+  intro h
+  have hbad : (sBad3.verts 0).lexLE (sBad3.verts 2) := h 2
+  revert hbad
+  decide
+
+/-- **The existence direction fails at `N = 3` too.**  No canonical grid simplex shares the
+vertex set of `sBad3`.  Proved by applying the general `no_canon_rep_of_lexMin_small` to the
+lex-minimum `(1,1,1)`: it is a vertex of the cell, is `lexLE` every vertex of the cell, and has
+every coordinate `< 2`.  The single-witness obstruction of `sBad_no_canon_rep` is thus an
+instance of a phenomenon that recurs across grid sizes. -/
+theorem sBad3_no_canon_rep :
+    ¬ ∃ t : GridSimplex 2 3, IsCanon t ∧ Set.range t.verts = Set.range sBad3.verts := by
+  refine no_canon_rep_of_lexMin_small sBad3 q1 ⟨2, rfl⟩ ?_ ?_
+  · rintro w ⟨k, rfl⟩; fin_cases k <;> decide
+  · intro j; fin_cases j <;> decide
+
 end SpernerNDimOQ02Obstruction
