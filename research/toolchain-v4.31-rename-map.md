@@ -232,6 +232,11 @@ These names do not exist in Mathlib `2df2f0150c27` either; the files referencing
 - **`Nat.Prime.multiplicity_choose`** → `Prime.emultiplicity_choose` / `Prime.emultiplicity_choose'` (confirmed used at NumberTheory/Padics/PadicVal/Basic.lean:621/631); ℕ∞-valued now — sites comparing to `PartENat` need the emultiplicity rework (Doctor-class).
 - Verified-green big-op-only files flip immediately (BinomialTheorem, Erdos307Aristotle, Erdos524Problem, RandomizedMaxcutOQ02); most other bigop roots carry deeper signature/tactic drift.
 
+### Batch-3 discoveries
+
+- **Trailing orphaned doc-comment before `end`** (new mechanical class): a `/-- … -/` documenting commented-out code or serving as trailing prose, with no declaration following (next token is `end` or EOF), now hard-errors `unexpected token 'end'; expected 'lemma'`. Lean reports the error at the END of the orphaned doc block, which can be mid-line (col ≠ 0). Fix: demote to `/- … -/`. 22 files fixed in batch 3 (Erdos6/13/15/26/53/61/64/75/77/145/158/170/186/208/215/306/520/541/768/779/1174/1177 Problem).
+- **Double set-binder `∀ x y ∈ S, …` no longer parses** (`unexpected token '∈'; expected ','`) — split into `∀ x ∈ S, ∀ y ∈ S, …` (Erdos174Problem). Sweepable pattern: `[∀∃] \w+ \w+ ∈`.
+
 ## Summary counts
 
 - **Confident mappings (§1):** 48 pairs (incl. 6 notMem-wave + 4 sdiff-wave entries), of which 8 also need API-level attention (§5).
