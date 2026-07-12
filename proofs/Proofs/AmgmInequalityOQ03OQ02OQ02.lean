@@ -493,4 +493,101 @@ theorem logConcave_root_ratio_sandwich_strict (p : ℕ → ℝ) (hp0 : p 0 = 1)
   ⟨logConcave_root_gt_last_ratio p hp0 hpos hlc hstrict k hk,
     logConcave_root_lt_first p hp0 hpos hlc hstrict k hk⟩
 
+/-! ## The additive (logarithmic) form: `log ∘ p` is midpoint-concave
+
+Every statement above is phrased *multiplicatively* — the hypothesis
+`p m · p (m+2) ≤ (p (m+1))²` never mentions a logarithm, and the proofs deliberately
+avoid them to stay elementary. Yet the name "log-concave" refers to the honest additive
+fact that the sequence `a k := Real.log (p k)` is **midpoint-concave**:
+
+  `a m + a (m+2) ≤ 2 · a (m+1)   for all m.`
+
+For a positive sequence the two are literally equivalent — taking `Real.log` turns the
+product `p m · p (m+2)` into the sum `a m + a (m+2)` and `(p (m+1))²` into `2 · a (m+1)`,
+and this transformation is reversible by exponentiation. Recording the equivalence makes
+the terminology honest and lets any midpoint-concavity fact about real sequences feed the
+engine (and vice versa). -/
+
+/-- **Multiplicative log-concavity ⟺ additive midpoint-concavity of `log ∘ p`.** For a
+positive sequence `p`, the multiplicative hypothesis `p m · p (m+2) ≤ (p (m+1))²` used
+throughout this file holds **iff** the log sequence `k ↦ Real.log (p k)` is
+midpoint-concave, `Real.log (p m) + Real.log (p (m+2)) ≤ 2 · Real.log (p (m+1))`. The
+forward direction applies `Real.log` monotonicity and splits the product/​power with
+`Real.log_mul`/`Real.log_pow`; the reverse re-assembles the same identities and
+exponentiates. This is the statement that makes the name "log-concave" literal. -/
+theorem logConcave_iff_log_seq_concave (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j) :
+    (∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) ↔
+      (∀ m, Real.log (p m) + Real.log (p (m + 2)) ≤ 2 * Real.log (p (m + 1))) := by
+  constructor
+  · intro hlc m
+    have hmono : Real.log (p m * p (m + 2)) ≤ Real.log ((p (m + 1)) ^ 2) :=
+      Real.log_le_log (by positivity) (hlc m)
+    rw [Real.log_mul (hpos m).ne' (hpos (m + 2)).ne', Real.log_pow] at hmono
+    push_cast at hmono
+    linarith
+  · intro hcc m
+    have hlog : Real.log (p m * p (m + 2)) ≤ Real.log ((p (m + 1)) ^ 2) := by
+      rw [Real.log_mul (hpos m).ne' (hpos (m + 2)).ne', Real.log_pow]
+      push_cast
+      linarith [hcc m]
+    have hexp := Real.exp_le_exp.mpr hlog
+    rwa [Real.exp_log (by positivity), Real.exp_log (by positivity)] at hexp
+
+/-- **Strict multiplicative log-concavity ⟺ strict additive midpoint-concavity.** The
+strict analogue of `logConcave_iff_log_seq_concave`: for a positive sequence `p`,
+`p m · p (m+2) < (p (m+1))²` holds **iff** the log sequence is *strictly* midpoint-concave,
+`Real.log (p m) + Real.log (p (m+2)) < 2 · Real.log (p (m+1))`. Same proof shape with the
+strict monotonicity lemmas `Real.log_lt_log` / `Real.exp_lt_exp`. -/
+theorem logConcave_strict_iff_log_seq_concave_strict (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j) :
+    (∀ m, p m * p (m + 2) < (p (m + 1)) ^ 2) ↔
+      (∀ m, Real.log (p m) + Real.log (p (m + 2)) < 2 * Real.log (p (m + 1))) := by
+  constructor
+  · intro hlc m
+    have hmono : Real.log (p m * p (m + 2)) < Real.log ((p (m + 1)) ^ 2) :=
+      Real.log_lt_log (by positivity) (hlc m)
+    rw [Real.log_mul (hpos m).ne' (hpos (m + 2)).ne', Real.log_pow] at hmono
+    push_cast at hmono
+    linarith
+  · intro hcc m
+    have hlog : Real.log (p m * p (m + 2)) < Real.log ((p (m + 1)) ^ 2) := by
+      rw [Real.log_mul (hpos m).ne' (hpos (m + 2)).ne', Real.log_pow]
+      push_cast
+      linarith [hcc m]
+    have hexp := Real.exp_lt_exp.mpr hlog
+    rwa [Real.exp_log (by positivity), Real.exp_log (by positivity)] at hexp
+
+/-! ## Closure: log-concave positive sequences are closed under pointwise product
+
+Log-concavity is preserved by pointwise multiplication: if `p` and `q` are positive and
+log-concave, so is `k ↦ p k · q k`. Additively this is just "a sum of two midpoint-concave
+sequences is midpoint-concave", but the multiplicative proof is elementary — it multiplies
+the two log-concavity inequalities factorwise via `mul_le_mul`. Combined with the trivial
+base case (the constant sequence `1` is log-concave), this exhibits the positive
+log-concave sequences as a multiplicative submonoid, and in particular shows the Maclaurin
+engine applies to any product `eₖ/C(n,k)` of real-rooted data. -/
+
+/-- **Log-concavity is closed under pointwise product.** If `p` and `q` are positive
+log-concave sequences then their pointwise product `k ↦ p k · q k` is log-concave:
+`(p m · q m)·(p (m+2) · q (m+2)) ≤ (p (m+1) · q (m+1))²`. Proof: regroup so the two
+log-concavity inequalities `p m · p (m+2) ≤ (p (m+1))²` and `q m · q (m+2) ≤ (q (m+1))²`
+multiply factorwise (`mul_le_mul`, both sides nonnegative). -/
+theorem logConcave_mul (p q : ℕ → ℝ) (hp : ∀ j, 0 < p j) (hq : ∀ j, 0 < q j)
+    (hlcp : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2)
+    (hlcq : ∀ m, q m * q (m + 2) ≤ (q (m + 1)) ^ 2) :
+    ∀ m, (p m * q m) * (p (m + 2) * q (m + 2)) ≤ (p (m + 1) * q (m + 1)) ^ 2 := by
+  intro m
+  calc (p m * q m) * (p (m + 2) * q (m + 2))
+        = (p m * p (m + 2)) * (q m * q (m + 2)) := by ring
+    _ ≤ (p (m + 1)) ^ 2 * (q (m + 1)) ^ 2 :=
+        mul_le_mul (hlcp m) (hlcq m) (by positivity) (by positivity)
+    _ = (p (m + 1) * q (m + 1)) ^ 2 := by ring
+
+/-- **The pointwise product of normalised log-concave sequences is normalised.** If
+`p 0 = q 0 = 1` then the product sequence also starts at `1`, so `logConcave_mul` together
+with this fact keeps the product inside the exact hypothesis class (`p 0 = 1`, positive,
+log-concave) that the root-mean engine `logConcave_root_antitone_seq` consumes. -/
+theorem logConcave_mul_normalised (p q : ℕ → ℝ) (hp0 : p 0 = 1) (hq0 : q 0 = 1) :
+    (fun k => p k * q k) 0 = 1 := by
+  simp [hp0, hq0]
+
 end MaclaurinLogConcave
