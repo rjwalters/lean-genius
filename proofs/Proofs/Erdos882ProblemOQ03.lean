@@ -84,6 +84,17 @@ theorem DivisibilityFree.mono {S T : Finset ℕ} (h : S ⊆ T)
     (hT : DivisibilityFree T) : DivisibilityFree S :=
   fun a ha b hb hab => hT a (h ha) b (h hb) hab
 
+/-- The empty set is divisibility-free (vacuously). -/
+theorem divisibilityFree_empty : DivisibilityFree (∅ : Finset ℕ) :=
+  fun a ha => absurd ha (Finset.not_mem_empty a)
+
+/-- Every singleton is divisibility-free (vacuously — there are no two *distinct*
+    elements to divide one another). -/
+theorem divisibilityFree_singleton (a : ℕ) : DivisibilityFree ({a} : Finset ℕ) := by
+  intro x hx y hy hxy
+  rw [Finset.mem_singleton] at hx hy
+  exact absurd (hx.trans hy.symm) hxy
+
 /-- **`ValidSubset` is downward closed.**  Any subset `B` of a valid set `A`
     is itself valid: the membership bounds restrict, and the divisibility-free
     condition on `subsetSums B ⊆ subsetSums A` is inherited. -/
@@ -184,6 +195,17 @@ theorem subsetSums_singleton (a : ℕ) : subsetSums {a} = {a} := by
     refine ⟨{s}, ?_, by simp⟩
     rw [Finset.mem_filter, Finset.mem_powerset]
     exact ⟨Finset.Subset.refl _, Finset.singleton_ne_empty s⟩
+
+/-- **Every singleton `{a} ⊆ {1,…,n}` is a valid subset.**  Its only non-empty subset
+    sum is `a` itself (`subsetSums {a} = {a}`), and a singleton set of sums is trivially
+    divisibility-free (`divisibilityFree_singleton`).  So the extremal sets `A` of Erdős
+    #882 always exist for every size `1` — the base case of the `(1+o(1))log₂ n` growth,
+    and a concrete witness that `ValidSubset n` is non-vacuous for all `n ≥ 1`. -/
+theorem validSubset_singleton {n a : ℕ} (h1 : 1 ≤ a) (h2 : a ≤ n) :
+    ValidSubset n {a} := by
+  refine ⟨fun x hx => ?_, ?_⟩
+  · rw [Finset.mem_singleton] at hx; subst hx; exact ⟨h1, h2⟩
+  · rw [subsetSums_singleton]; exact divisibilityFree_singleton a
 
 /-- Every element of `A` is one of its own subset sums (the singleton subset
     `{a}` sums to `a`), so `A ⊆ subsetSums A`. -/
