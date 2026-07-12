@@ -33,6 +33,12 @@ the definition but which the parent omits:
   * `IsDiagonalizable.pow`       — every power `Mᵏ` is diagonalizable (same `P`),
     because `P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ` (`conj_pow`) and powers of a diagonal matrix
     are diagonal (`isDiag_pow`, built on `isDiag_mul`).
+  * `IsDiagonalizable.zpow`      — every *integer* power `Mᶻ` is diagonalizable,
+    extending `pow` from `ℕ` to `ℤ` via `inv` (negative exponents).
+  * `IsDiagonalizable.conj_iff`  — similarity invariance as a *biconditional*:
+    `U⁻¹ M U` is diagonalizable iff `M` is (diagonalizability is basis-independent).
+  * `IsDiagonalizable.add_smul_one` — a scalar shift `M + c • 1` stays diagonalizable
+    (the degree-`1` case of the `aeval` closure; shifts the spectrum by `c`).
 
 All are fully machine-checked (0 axioms, 0 sorries) and reuse only the
 parent's *definition* (not its open reverse-direction obligation).
@@ -70,6 +76,25 @@ theorem IsDiagonalizable.conj {M : Matrix n n K} (hM : M.IsDiagonalizable)
       _ = P⁻¹ * M * P := by rw [hUU]; simp only [mul_one]
   rw [hsimp]
   exact hD
+
+/-- **Similarity invariance is a biconditional.**  Strengthens `IsDiagonalizable.conj`:
+    for invertible `U`, the conjugate `U⁻¹ * M * U` is diagonalizable *iff* `M` is.  The
+    reverse direction is `IsDiagonalizable.conj`; the forward direction conjugates back by
+    the (also invertible) `U⁻¹` and cancels `U * U⁻¹ = 1`.  This is the precise sense in
+    which diagonalizability is a property of the underlying operator, invariant under any
+    change of basis. -/
+theorem IsDiagonalizable.conj_iff {M U : Matrix n n K} (hU : IsUnit U) :
+    (U⁻¹ * M * U).IsDiagonalizable ↔ M.IsDiagonalizable := by
+  refine ⟨fun hN => ?_, fun hM => hM.conj hU⟩
+  have hUdet : IsUnit U.det := (Matrix.isUnit_iff_isUnit_det U).mp hU
+  have hUinv : IsUnit U⁻¹ := Matrix.isUnit_nonsing_inv_iff.mpr hU
+  have hback := hN.conj hUinv
+  have heq : U * (U⁻¹ * M * U) * U⁻¹ = M := by
+    have hUU : U * U⁻¹ = 1 := Matrix.mul_nonsing_inv U hUdet
+    calc U * (U⁻¹ * M * U) * U⁻¹
+        = (U * U⁻¹) * M * (U * U⁻¹) := by simp only [mul_assoc]
+      _ = M := by rw [hUU]; simp
+  rwa [Matrix.nonsing_inv_nonsing_inv U hUdet, heq] at hback
 
 /-- **Scalar multiples stay diagonalizable.**  The same `P` diagonalizes `c • M`,
     since `P⁻¹ (c • M) P = c • (P⁻¹ M P)` is again diagonal. -/
@@ -202,6 +227,20 @@ theorem IsDiagonalizable.pow {M : Matrix n n K} (hM : M.IsDiagonalizable) (k : �
   rw [conj_pow hPdet]
   exact isDiag_pow hD k
 
+/-- **Integer powers stay diagonalizable.**  Extends `IsDiagonalizable.pow` from `ℕ` to
+    `ℤ` via the square-matrix `zpow` (Mathlib's `DivInvMonoid (Matrix n n K)` built on the
+    nonsingular inverse).  A nonnegative power `M ^ (n : ℤ) = M ^ n` is handled by `pow`;
+    a negative power `M ^ (Int.negSucc n) = (M ^ (n + 1))⁻¹` by `pow` followed by
+    `IsDiagonalizable.inv`.  So the diagonalizable matrices are closed under the full
+    `ℤ`-power operation (in particular `M ^ (-1) = M⁻¹`, recovering `inv`). -/
+theorem IsDiagonalizable.zpow {M : Matrix n n K} (hM : M.IsDiagonalizable) (z : ℤ) :
+    (M ^ z).IsDiagonalizable := by
+  rcases z with n | n
+  · rw [Int.ofNat_eq_natCast, zpow_natCast]
+    exact IsDiagonalizable.pow hM n
+  · rw [zpow_negSucc]
+    exact IsDiagonalizable.inv (IsDiagonalizable.pow hM (n + 1))
+
 /-- **A finite sum of diagonal matrices is diagonal.**  Pointwise off the
     diagonal every summand vanishes, so does their sum. -/
 theorem isDiag_sum {ι : Type*} (s : Finset ι) (A : ι → Matrix n n K)
@@ -232,6 +271,17 @@ theorem IsDiagonalizable.aeval {M : Matrix n n K} (hM : M.IsDiagonalizable)
     rw [Matrix.mul_smul, Matrix.smul_mul, conj_pow hPdet]
   rw [hconj]
   exact isDiag_sum _ _ fun i _ => IsDiag.smul (q.coeff i) (isDiag_pow hD i)
+
+/-- **Spectral shift stays diagonalizable.**  Adding a scalar matrix `c • 1` to a
+    diagonalizable `M` preserves diagonalizability: `M + c • 1 = aeval M (X + C c)`, the
+    degree-`1` case of `IsDiagonalizable.aeval`, so the same `P` diagonalizes it.
+    Geometrically `c • 1` shifts every eigenvalue by `c` while fixing the eigenvectors,
+    the affine reparametrisation `M ↦ M + c` of the spectrum. -/
+theorem IsDiagonalizable.add_smul_one {M : Matrix n n K} (hM : M.IsDiagonalizable)
+    (c : K) : (M + c • 1).IsDiagonalizable := by
+  have h := IsDiagonalizable.aeval hM (Polynomial.X + Polynomial.C c)
+  simpa only [map_add, Polynomial.aeval_X, Polynomial.aeval_C,
+    Algebra.algebraMap_eq_smul_one] using h
 
 /-!
 ## Simultaneous diagonalization — the common-diagonalizer closure laws
