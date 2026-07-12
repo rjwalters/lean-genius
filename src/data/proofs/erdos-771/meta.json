@@ -81,9 +81,9 @@
       "avoidSum_zero / maxAvoidingSize_zero: the degenerate small-target endpoint. Since 0 is never a positive subset sum, every set avoids 0 (avoidSum_zero), so the whole box {1,…,n} witnesses maxAvoidingSize n 0 = n. This coincides with the large-target value maxAvoidingSize_eq_of_lt (n·n < m ⟹ = n): the extremal size is n at BOTH ends of the target range and dips only in the interior. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "axiomCount": 2,
-    "lineCount": 691,
+    "lineCount": 1017,
     "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 0 sorries.",
-    "theoremCount": 34,
+    "theoremCount": 43,
     "definitionCount": 16,
     "additionalFiles": [
       "Proofs/Erdos771Aristotle.lean",
@@ -216,9 +216,9 @@
       "Nat"
     ],
     "namespace": "Erdos771",
-    "lineCount": 889,
+    "lineCount": 1017,
     "axiomCount": 2,
-    "theoremCount": 40,
+    "theoremCount": 43,
     "definitionCount": 16,
     "sorries": 0,
     "path": "Proofs/Erdos771Problem.lean",
