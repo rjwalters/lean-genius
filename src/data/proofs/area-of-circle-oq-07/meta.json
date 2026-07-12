@@ -28,7 +28,7 @@
       "The Gaussian integral has no elementary antiderivative, so the integral I itself cannot be evaluated by the fundamental theorem of calculus; only its square I² — a genuine planar integral — admits a clean polar evaluation, which is why the squared identity is stated separately.",
       "Squaring and switching to polar coordinates produces the factor π through the Jacobian r dr dθ — exactly the circle-area object of the parent entry — so the appearance of π here is not coincidental but the same geometric fact in analytic disguise.",
       "Formalization-wise this is an honest, routine specialization: Mathlib's integral_gaussian already encapsulates the hard analytic work, so the entry's value is curatorial (the iconic b = 1 case) rather than a new proof. The badge 'mathlib' reflects this honestly.",
-      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — flagged as the first open question.",
+      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — a step since carried out in the sibling entry area-of-circle-oq-05-incomplete-01, which derives ∫_ℝ (1/√(2π)) e^{-x²/2} dx = 1 from this √π seed.",
       "Under Mathlib's Bochner-integral convention, ∫ x, f x silently returns 0 for a non-integrable f, so asserting the value is √π ≠ 0 makes the theorem an implicit integrability certificate for e^{-x²} on ℝ, not merely an evaluation — a formalization subtlety with no counterpart in the informal statement."
     ]
   },
@@ -187,8 +187,8 @@
     "summary": "The total integral of the Gaussian bell curve, ∫_ℝ e^{-x²} dx, equals √π. The proof is a one-step specialization of Mathlib's parametrized Gaussian integral integral_gaussian at b = 1: the integrand exp (-1 · x²) collapses to exp (-x²) via neg_one_mul and the value √(π/1) collapses to √π via div_one. A short corollary, gaussian_integral_sq, squares the result to (∫ e^{-x²})² = π using Real.sq_sqrt. 41 lines, 2 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This is an honest, routine specialization rather than original mathematics — Mathlib already contains the hard analytic work (the polar-coordinate evaluation lives inside integral_gaussian). Its value to the gallery is as the iconic b = 1 case: the normalization constant of the standard normal distribution and the simplest non-trivial definite integral whose value involves π without an explicit circle. The squared form π = (∫ e^{-x²})² ties the entry back to the parent area-of-circle proof, where the same factor of π enters through the circle-area Jacobian of the polar-coordinate substitution.",
     "openQuestions": [
-      "Normalize the standard-normal density: ∫_ℝ (1/√(2π)) e^{-x²/2} dx = 1 from integral_gaussian at b = 1/2.",
-      "Recover gaussian_integral_sq via an explicit Fubini/polar change of variables on ∫∫_{ℝ²} e^{-(x²+y²)}, surfacing the r dr dθ Jacobian of the parent."
+      "Recover gaussian_integral_sq via an explicit Fubini/polar change of variables on ∫∫_{ℝ²} e^{-(x²+y²)}, surfacing the r dr dθ Jacobian of the parent rather than inheriting it inside integral_gaussian.",
+      "Generalize the squared identity to n dimensions: ∫_{ℝⁿ} e^{-‖x‖²} dx = π^{n/2} (the n = 2 case is exactly gaussian_integral_sq = π), and further ∫_{ℝⁿ} e^{-⟨x, A x⟩} dx = π^{n/2}/√(det A) for symmetric positive-definite A — the multivariate Gaussian normalization behind the general normal distribution. (The standard-normal density normalization, previously listed here, is now formalized in the sibling area-of-circle-oq-05-incomplete-01.)"
     ]
   }
 }
