@@ -898,4 +898,85 @@ theorem totalSteps_strictMono {a : ℕ} (ha : 0 < a) : StrictMono (totalSteps a)
   have : 1 ≤ binaryGcdSteps a (N + 1) := one_le_binaryGcdSteps ha (by omega)
   omega
 
+/-! ### Symmetry of the step count and a general-`a` `log`-in-`a` lower bound
+
+    The file's general-`a` lower bounds on the running total are `card_le_totalSteps`
+    (`N ≤ totalSteps a N`, from per-call positivity) — a bound in the *range length*
+    `N`.  A bound in the *left argument* `a` was missing.  It comes for free from a
+    structural fact the file also lacked: the binary-GCD step count is **symmetric**.
+
+    The definition `binaryGcdSteps` treats its two arguments symmetrically (the two even
+    branches mirror each other, as do the two odd "subtract the smaller" branches), so
+    `binaryGcdSteps a b = binaryGcdSteps b a`.  Symmetry converts the exact `a = 1` row
+    `binaryGcdSteps 1 a = log₂ a + 1` into the exact `b = 1` column
+    `binaryGcdSteps a 1 = log₂ a + 1`; feeding that single argument into
+    `single_le_totalSteps` yields `log₂ a + 1 ≤ totalSteps a N`, an `Ω(log a)` floor
+    complementing both `card_le_totalSteps` (in `N`) and `totalSteps_le` (the `O(log N)`
+    ceiling). -/
+
+/-- Fuel-parametrised symmetry, by strong induction on `a + b`: each recursive call of
+    `binaryGcdSteps` on one side is matched by the mirror call on the other. -/
+private theorem binaryGcdSteps_comm_aux :
+    ∀ n a b : ℕ, a + b ≤ n → binaryGcdSteps a b = binaryGcdSteps b a := by
+  intro n
+  induction n with
+  | zero =>
+    intro a b hab
+    obtain ⟨rfl, rfl⟩ : a = 0 ∧ b = 0 := by omega
+    rfl
+  | succ n ih =>
+    intro a b hab
+    rcases a with _ | a'
+    · rw [binaryGcdSteps.eq_1, binaryGcdSteps_zero_right]
+    rcases b with _ | b'
+    · rw [binaryGcdSteps_zero_right, binaryGcdSteps.eq_1]
+    rw [binaryGcdSteps.eq_3, binaryGcdSteps.eq_3]
+    by_cases ha : (a' + 1) % 2 = 0 <;> by_cases hb : (b' + 1) % 2 = 0
+    · -- both even
+      simp only [if_pos ha, if_pos hb]
+      rw [ih ((a' + 1) / 2) ((b' + 1) / 2) (by omega)]
+    · -- a even, b odd
+      simp only [if_pos ha, if_neg hb]
+      rw [ih ((a' + 1) / 2) (b' + 1) (by omega)]
+    · -- a odd, b even
+      simp only [if_neg ha, if_pos hb]
+      rw [ih (a' + 1) ((b' + 1) / 2) (by omega)]
+    · -- both odd: split on the comparison of the two odd arguments
+      simp only [if_neg ha, if_neg hb]
+      rcases lt_trichotomy (a' + 1) (b' + 1) with hlt | heq | hgt
+      · rw [if_neg (by omega : ¬ a' + 1 > b' + 1), if_pos (by omega : b' + 1 > a' + 1),
+          ih (a' + 1) ((b' + 1 - (a' + 1)) / 2) (by omega)]
+      · obtain rfl : a' = b' := by omega
+        rfl
+      · rw [if_pos (by omega : a' + 1 > b' + 1), if_neg (by omega : ¬ b' + 1 > a' + 1),
+          ih ((a' + 1 - (b' + 1)) / 2) (b' + 1) (by omega)]
+
+/-- **Symmetry of the binary-GCD step count.** `binaryGcdSteps a b = binaryGcdSteps b a`
+    for all `a, b`: the algorithm takes the same number of steps regardless of the order
+    of its arguments.  The definition is symmetric under swapping `a ↔ b` (the two even
+    branches mirror each other, as do the two odd "subtract the smaller" branches), so
+    the step count is too. -/
+theorem binaryGcdSteps_comm (a b : ℕ) :
+    binaryGcdSteps a b = binaryGcdSteps b a :=
+  binaryGcdSteps_comm_aux (a + b) a b le_rfl
+
+/-- **Exact `b = 1` step count.** By symmetry with the `a = 1` row, from any `a ≥ 1` the
+    single call `binaryGcdSteps a 1` costs exactly `log₂ a + 1` steps.  (Mirror of
+    `binaryGcdSteps_one_eq_log`.) -/
+theorem binaryGcdSteps_a_one (a : ℕ) (ha : 1 ≤ a) :
+    binaryGcdSteps a 1 = Nat.log 2 a + 1 := by
+  rw [binaryGcdSteps_comm, binaryGcdSteps_one_eq_log a ha]
+
+/-- **`log`-in-`a` lower bound `log₂ a + 1 ≤ totalSteps a N`.** The single argument
+    `b = 1` already costs `log₂ a + 1` steps (`binaryGcdSteps_a_one`), and a single
+    summand is dominated by the running total (`single_le_totalSteps`).  So for every
+    `a ≥ 1` and `N ≥ 1` the total work over `[1, N]` is at least `log₂ a + 1` — an
+    `Ω(log a)` floor in the *left* argument, complementing `card_le_totalSteps`
+    (`N ≤ totalSteps a N`, in the range length) and the `O(log N)` ceiling
+    `totalSteps_le`. -/
+theorem log_add_one_le_totalSteps (a N : ℕ) (ha : 1 ≤ a) (hN : 1 ≤ N) :
+    Nat.log 2 a + 1 ≤ totalSteps a N := by
+  have h := single_le_totalSteps (a := a) (k := 1) (N := N) le_rfl hN
+  rwa [binaryGcdSteps_a_one a ha] at h
+
 end BinaryGcdOQ01OQ04OQ03
