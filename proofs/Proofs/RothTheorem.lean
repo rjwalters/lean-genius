@@ -6850,4 +6850,167 @@ theorem subgroup_additive_energy_strict {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 <
       ⟨r, hrmem, pow_pos (norm_pos_iff.mpr hrne) 2⟩
   linarith
 
+/-! ### Part LVI — the coset-partition identity: additive energy = Σ (coset counts)²
+
+Parts LIV/LV expressed everything through the abstract count `#{(x,x') ∈ A×A : g ∣ (x−x').val}`
+of pairs congruent modulo `g`.  This part makes that count *concrete* as a sum of squares of
+**coset occupation numbers**.
+
+Reduction modulo `g` is the ring hom `φ = ZMod.castHom (g ∣ N) : ZMod N →+* ZMod g`, whose fibers
+are exactly the cosets of `g·ZMod N`.  Writing `n_j = #{x ∈ A : φ x = j}` for the number of
+elements of `A` in coset `j`, two elements are congruent mod `g` iff they share a coset, so
+
+    #{(x,x') ∈ A×A : g ∣ (x−x').val} = Σ_{j : ZMod g} n_j².
+
+This is the standard "sum over fibers of card²" and identifies the coset additive energy of Part LIV
+with `Σ n_j²`.  Combined with the equidistribution results of Part LV it yields:
+
+* **Cauchy–Schwarz on cosets** `|A|² ≤ g · Σ_j n_j²` (the floor, now fully explicit) — the classical
+  `(Σ n_j)² ≤ g · Σ n_j²` obtained here from Fourier positivity.
+
+* **Dense coset extraction** — a single nonzero subgroup frequency `Â(r) ≠ 0` forces some coset
+  strictly above the average occupation `|A|/g`:  `∃ j, |A|/g < n_j`.  Since coset `j` has exactly
+  `N/g` elements, its relative density `n_j/(N/g)` then strictly exceeds the ambient density
+  `|A|/N` — the concrete coset density increment that the nonzero non-unit Fourier mass
+  (`badFreqMass`, Part LIII) delivers, letting the Sárközy problem descend to modulus `g`.
+
+Everything here is 0-axiom, built on `subgroup_additive_energy_floor/strict` (Part LV). -/
+
+/-- **Coset-partition identity.**  The number of pairs of `A` congruent modulo `g` equals the sum of
+squares of the coset occupation numbers `n_j = #{x ∈ A : φ x = j}`, where `φ = castHom (g ∣ N)` is
+reduction `ZMod N → ZMod g`:
+
+    #{(x,x') ∈ A×A : g ∣ (x−x').val} = Σ_{j : ZMod g} n_j².
+
+Proof: `g ∣ (x−x').val ↔ φ x = φ x'` (kernel of `φ`), so the congruent-pair set is the disjoint union
+over `j` of `(fiber j) ×ˢ (fiber j)`; `card_biUnion` + `card_product` give `Σ_j n_j²`. -/
+theorem congruent_pairs_eq_coset_sq {N : ℕ} [NeZero N] {g : ℕ} [NeZero g] (hgN : g ∣ N)
+    (A : Finset (ZMod N)) :
+    ((A ×ˢ A).filter (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card
+      = ∑ j : ZMod g, (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card ^ 2 := by
+  have hg : 0 < g := Nat.pos_of_ne_zero (NeZero.ne g)
+  -- Kernel of `φ`: `φ y = 0 ↔ g ∣ y.val`.
+  have hker : ∀ y : ZMod N, (ZMod.castHom hgN (ZMod g)) y = 0 ↔ g ∣ ZMod.val y := by
+    intro y
+    rw [ZMod.castHom_apply, ← ZMod.natCast_val, ZMod.natCast_eq_zero_iff]
+  -- Bridge: congruence mod `g` ⟺ same coset.
+  have hbridge : ∀ x x' : ZMod N, g ∣ ZMod.val (x - x') ↔
+      (ZMod.castHom hgN (ZMod g)) x = (ZMod.castHom hgN (ZMod g)) x' := by
+    intro x x'
+    constructor
+    · intro h
+      have := (hker (x - x')).mpr h
+      rwa [map_sub, sub_eq_zero] at this
+    · intro h
+      apply (hker (x - x')).mp
+      rw [map_sub, sub_eq_zero]; exact h
+  -- The congruent-pair set is the disjoint union of `fiber j ×ˢ fiber j` over cosets `j`.
+  have hset : (A ×ˢ A).filter (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))
+      = Finset.univ.biUnion (fun j : ZMod g =>
+          (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)) ×ˢ
+          (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j))) := by
+    ext ⟨x, x'⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_biUnion, Finset.mem_univ,
+      true_and]
+    rw [hbridge x x']
+    constructor
+    · rintro ⟨⟨hx, hx'⟩, heq⟩
+      exact ⟨(ZMod.castHom hgN (ZMod g)) x, ⟨hx, rfl⟩, hx', heq.symm⟩
+    · rintro ⟨j, ⟨hx, hxj⟩, hx', hx'j⟩
+      exact ⟨⟨hx, hx'⟩, hxj.trans hx'j.symm⟩
+  -- Fibers are pairwise disjoint (an element has a unique coset).
+  have hdisj : (↑(Finset.univ : Finset (ZMod g)) : Set (ZMod g)).PairwiseDisjoint
+      (fun j : ZMod g => (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)) ×ˢ
+        (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j))) := by
+    intro i _ j _ hij
+    simp only [Function.onFun]
+    rw [Finset.disjoint_left]
+    rintro ⟨x, x'⟩ hmem1 hmem2
+    simp only [Finset.mem_product, Finset.mem_filter] at hmem1 hmem2
+    exact hij (hmem1.1.2.symm.trans hmem2.1.2)
+  rw [hset, Finset.card_biUnion hdisj]
+  exact Finset.sum_congr rfl (fun j _ => by rw [Finset.card_product, pow_two])
+
+/-- **Coset partition of `A`.**  The coset occupation numbers sum to `|A|`:
+`Σ_{j : ZMod g} #{x ∈ A : φ x = j} = |A|`.  A direct fiberwise count of `A` under `φ`. -/
+theorem coset_card_sum_eq_card {N : ℕ} [NeZero N] {g : ℕ} [NeZero g] (hgN : g ∣ N)
+    (A : Finset (ZMod N)) :
+    ∑ j : ZMod g, (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card = A.card := by
+  exact (Finset.card_eq_sum_card_fiberwise
+    (fun x _ => Finset.mem_univ ((ZMod.castHom hgN (ZMod g)) x))).symm
+
+/-- **Cauchy–Schwarz on cosets (from Fourier positivity).**  The equidistribution floor of Part LV,
+made explicit via the coset-partition identity:
+
+    |A|² ≤ g · Σ_{j : ZMod g} n_j²,
+
+i.e. the classical `(Σ n_j)² ≤ g · Σ n_j²` — here a consequence of Fourier positivity rather than
+a separate Cauchy–Schwarz. -/
+theorem coset_card_sq_sum_ge {N : ℕ} [NeZero N] {g : ℕ} [NeZero g] (hgN : g ∣ N)
+    (A : Finset (ZMod N)) :
+    (A.card : ℝ) ^ 2 ≤ (g : ℝ) *
+      ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2 := by
+  have hg : 0 < g := Nat.pos_of_ne_zero (NeZero.ne g)
+  have hfloor := subgroup_additive_energy_floor hg hgN A
+  have hcast : (((A ×ˢ A).filter (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card : ℝ)
+      = ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2 := by
+    rw [congruent_pairs_eq_coset_sq hgN A]; push_cast; rfl
+  rwa [hcast] at hfloor
+
+/-- **Dense coset extraction.**  A single nonzero frequency `r ≠ 0` in the order-`g` subgroup with
+`Â(r) ≠ 0` forces some coset strictly above the average occupation `|A|/g`:
+
+    ∃ j : ZMod g, |A|/g < #{x ∈ A : φ x = j}.
+
+Since coset `j` contains exactly `N/g` elements of `ZMod N`, its relative density
+`n_j/(N/g)` then strictly exceeds the ambient density `|A|/N`.  This is the concrete coset density
+increment triggered by a nonzero non-unit Fourier mass (`badFreqMass`, Part LIII): it lets the
+Sárközy square-difference-free problem descend to modulus `g`.
+
+Proof: the strict energy excess `|A|² < g · Σ_j n_j²` (Part LV) is incompatible with every coset
+being at or below average, since `n_j ≤ |A|/g` for all `j` would give
+`Σ n_j² ≤ (|A|/g)·Σ n_j = |A|²/g`, i.e. `g·Σ n_j² ≤ |A|²`. -/
+theorem exists_dense_coset_of_subgroup_freq {N : ℕ} [NeZero N] {g : ℕ} [NeZero g] (hgN : g ∣ N)
+    (A : Finset (ZMod N)) {r : ZMod N} (hr : (N / g) ∣ ZMod.val r) (hr0 : r ≠ 0)
+    (hrne : fourierCoeff A r ≠ 0) :
+    ∃ j : ZMod g, (A.card : ℝ) / g <
+      (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card := by
+  have hg : 0 < g := Nat.pos_of_ne_zero (NeZero.ne g)
+  have hg_ne : (g : ℝ) ≠ 0 := by positivity
+  by_contra hcon
+  push_neg at hcon
+  -- Strict energy excess, made explicit via the coset-partition identity.
+  have hstrict := subgroup_additive_energy_strict hg hgN A hr hr0 hrne
+  have hcast : (((A ×ˢ A).filter (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card : ℝ)
+      = ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2 := by
+    rw [congruent_pairs_eq_coset_sq hgN A]; push_cast; rfl
+  rw [hcast] at hstrict
+  -- Σ n_j = |A|.
+  have hsum : ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ)
+      = A.card := by exact_mod_cast coset_card_sum_eq_card hgN A
+  -- Every coset at/below average ⟹ Σ n_j² ≤ (|A|/g)·|A|.
+  have hub : ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2
+      ≤ (A.card / g) * A.card := by
+    calc ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2
+        = ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) *
+            ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) := by
+          simp_rw [pow_two]
+      _ ≤ ∑ j : ZMod g, ((A.card : ℝ) / g) *
+            ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) :=
+          Finset.sum_le_sum (fun j _ => mul_le_mul_of_nonneg_right (hcon j) (by positivity))
+      _ = ((A.card : ℝ) / g) *
+            ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) := by
+          rw [Finset.mul_sum]
+      _ = ((A.card : ℝ) / g) * A.card := by rw [hsum]
+  -- g · Σ n_j² ≤ |A|², contradicting the strict excess.
+  have hkey : (g : ℝ) *
+      ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2
+      ≤ (A.card : ℝ) ^ 2 := by
+    calc (g : ℝ) *
+        ∑ j : ZMod g, ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) ^ 2
+        ≤ (g : ℝ) * (((A.card : ℝ) / g) * A.card) :=
+          mul_le_mul_of_nonneg_left hub (by positivity)
+      _ = (A.card : ℝ) ^ 2 := by field_simp
+  linarith
+
 end Szemeredi.Roth
