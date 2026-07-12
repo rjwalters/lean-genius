@@ -5813,5 +5813,60 @@ theorem maxSqDiffFreeCard_eq_one_iff_locus {N : ℕ} [NeZero N] :
       haveI : NeZero p := ⟨hp.pos.ne'⟩
       exact maxSqDiffFreeCard_two_mul_prime_eq_one hp h3
 
+/-! ### Part XLV — Structural corollaries of the classification: divisor-closedness and a single
+divisibility test
+
+The value-`1` locus `{1, 2} ∪ {p, 2p : p prime, p ≡ 3 (mod 4)}` of Part XLIV has two clean
+structural features that the divisibility-monotonicity lemma (Part XLIII) exposes directly.
+
+* **Divisor-closedness.**  `maxSqDiffFreeCard m` is squeezed between the trivial lower bound `1`
+  (`one_le_maxSqDiffFreeCard`) and `maxSqDiffFreeCard N = 1`, so *every* divisor of a value-`1`
+  modulus is again value-`1`.  This is a purely order-theoretic consequence of monotonicity and uses
+  none of the number theory of Parts XLI–XLIII.
+
+* **A single divisibility test.**  The whole locus is exactly the set of divisors of `2p` as `p`
+  ranges over `1` and the primes `≡ 3 (mod 4)`: the divisors of `2·1 = 2` are `{1, 2}`, and the
+  divisors of `2p` (for `p` an odd prime) are `{1, 2, p, 2p}`.  This repackages the four-way
+  disjunction of Part XLIV as a *single* divisibility test, whose `←` direction is a one-liner from
+  divisor-closedness applied to the known value-`1` moduli `2` and `2p`. -/
+
+/-- **The value-`1` locus is closed under divisors.**  If `m ∣ N` and `maxSqDiffFreeCard N = 1`
+then `maxSqDiffFreeCard m = 1`.  Immediate from `1 ≤ maxSqDiffFreeCard m ≤ maxSqDiffFreeCard N`
+(`one_le_maxSqDiffFreeCard` and the divisibility monotonicity `maxSqDiffFreeCard_le_of_dvd`). -/
+theorem maxSqDiffFreeCard_eq_one_of_dvd {m N : ℕ} [NeZero m] [NeZero N]
+    (hmN : m ∣ N) (hN : maxSqDiffFreeCard N = 1) : maxSqDiffFreeCard m = 1 := by
+  have h1 := one_le_maxSqDiffFreeCard m
+  have h2 := maxSqDiffFreeCard_le_of_dvd (m := m) (N := N) hmN
+  omega
+
+/-- **The classification as a single divisibility test.**
+`maxSqDiffFreeCard N = 1  ↔  ∃ p, (p = 1 ∨ (p prime ∧ p ≡ 3 mod 4)) ∧ N ∣ 2p`.  The value-`1`
+locus of Part XLIV is precisely the set of divisors of `2p` for `p ∈ {1} ∪ {primes ≡ 3 (mod 4)}`.
+The forward direction reads a witness off the classification; the reverse pushes value `1` down from
+`2` (case `p = 1`) or `2p` (`maxSqDiffFreeCard_two_mul_prime_eq_one`) to the divisor `N` via
+`maxSqDiffFreeCard_eq_one_of_dvd`. -/
+theorem maxSqDiffFreeCard_eq_one_iff_dvd_two_mul {N : ℕ} [NeZero N] :
+    maxSqDiffFreeCard N = 1 ↔
+      ∃ p : ℕ, (p = 1 ∨ (p.Prime ∧ p % 4 = 3)) ∧ N ∣ 2 * p := by
+  constructor
+  · -- read a divisibility witness off the explicit locus
+    intro hN
+    rw [maxSqDiffFreeCard_eq_one_iff_locus] at hN
+    rcases hN with rfl | rfl | ⟨p, hp, h3, rfl | rfl⟩
+    · exact ⟨1, Or.inl rfl, one_dvd _⟩                          -- `N = 1 ∣ 2`
+    · exact ⟨1, Or.inl rfl, dvd_refl 2⟩                         -- `N = 2 ∣ 2`
+    · exact ⟨N, Or.inr ⟨hp, h3⟩, ⟨2, by ring⟩⟩                  -- `N = p ∣ 2p` (`rfl` renamed `p` to `N`)
+    · exact ⟨p, Or.inr ⟨hp, h3⟩, dvd_refl (2 * p)⟩              -- `N = 2p ∣ 2p`
+  · -- divisor-closedness pushes value `1` down from `2` or `2p` to `N`
+    rintro ⟨p, hp1 | ⟨hp, h3⟩, hdvd⟩
+    · -- `p = 1`: `N ∣ 2` and `maxSqDiffFreeCard 2 = 1`
+      subst hp1
+      have h2 : maxSqDiffFreeCard 2 = 1 := by rw [maxSqDiffFreeCard_eq_one_iff]; decide
+      exact maxSqDiffFreeCard_eq_one_of_dvd (by simpa using hdvd) h2
+    · -- `p` prime `≡ 3 (mod 4)`: `N ∣ 2p` and `maxSqDiffFreeCard (2p) = 1`
+      haveI : NeZero p := ⟨hp.pos.ne'⟩
+      haveI : NeZero (2 * p) := ⟨Nat.mul_ne_zero (by norm_num) hp.pos.ne'⟩
+      exact maxSqDiffFreeCard_eq_one_of_dvd hdvd (maxSqDiffFreeCard_two_mul_prime_eq_one hp h3)
+
 end Szemeredi.Roth
 
