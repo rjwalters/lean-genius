@@ -800,6 +800,65 @@ theorem hasK2t_two_of_edge_bound_lt (G : SimpleGraph V) [DecidableRel G.Adj] [No
   by_contra hfree
   exact absurd (reiman_edge_bound_of_free G hfree) (not_le.2 hm)
 
+/-! ### Codegree basics: the common-neighbour count is bounded by the degree
+
+The Kővári–Sós–Turán codegree hypothesis caps `(commonNbrs G a b).card` from above by
+the forbidden-subgraph parameter (`< t` in a `K_{2,t}`-free graph, via
+`commonNbrs_card_lt_of_free`).  Independently of any freeness hypothesis, the codegree
+is bounded by the *degree* of either endpoint — every common neighbour of `a, b` is in
+particular a neighbour of `a` (and of `b`).  These are the elementary set-inclusions
+behind that bound, plus the observation (asserted in the `HasK2t` docstring) that a
+vertex is never its own common neighbour: `a ∉ commonNbrs G a b`, since a simple graph
+has no loops. -/
+
+/-- **Common neighbours are neighbours of the first vertex:**
+    `commonNbrs G a b ⊆ N(a)`.  Immediate from `commonNbrs = N(a) ∩ N(b)`. -/
+theorem commonNbrs_subset_neighborFinset_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : commonNbrs G a b ⊆ G.neighborFinset a := by
+  simp only [commonNbrs]; exact Finset.inter_subset_left
+
+/-- **Common neighbours are neighbours of the second vertex:**
+    `commonNbrs G a b ⊆ N(b)`.  The right-hand companion of
+    `commonNbrs_subset_neighborFinset_left`. -/
+theorem commonNbrs_subset_neighborFinset_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : commonNbrs G a b ⊆ G.neighborFinset b := by
+  simp only [commonNbrs]; exact Finset.inter_subset_right
+
+/-- **Codegree is bounded by the first degree:** `(commonNbrs G a b).card ≤ d(a)`.
+    Every common neighbour of `a, b` is a neighbour of `a`, so the codegree cannot
+    exceed `a`'s degree.  A freeness-free upper bound complementing
+    `commonNbrs_card_lt_of_free` (`< t` in a `K_{2,t}`-free graph). -/
+theorem commonNbrs_card_le_degree_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : (commonNbrs G a b).card ≤ G.degree a := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  exact Finset.card_le_card (commonNbrs_subset_neighborFinset_left G a b)
+
+/-- **Codegree is bounded by the second degree:** `(commonNbrs G a b).card ≤ d(b)`.
+    The right-hand companion of `commonNbrs_card_le_degree_left`; together they give
+    `(commonNbrs G a b).card ≤ min (d a) (d b)`. -/
+theorem commonNbrs_card_le_degree_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : (commonNbrs G a b).card ≤ G.degree b := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  exact Finset.card_le_card (commonNbrs_subset_neighborFinset_right G a b)
+
+/-- **A vertex is not its own common neighbour:** `a ∉ commonNbrs G a b`.  Membership
+    would require `G.Adj a a`, impossible in a loopless simple graph (`G.irrefl`).  This
+    proves the parenthetical in the `HasK2t` definition — the common neighbours are
+    automatically distinct from the pair `a, b`. -/
+theorem notMem_commonNbrs_left (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    a ∉ commonNbrs G a b := by
+  rw [mem_commonNbrs]
+  rintro ⟨haa, -⟩
+  exact G.irrefl haa
+
+/-- **A vertex is not its own common neighbour (second slot):** `b ∉ commonNbrs G a b`.
+    The companion of `notMem_commonNbrs_left`; membership would need `G.Adj b b`. -/
+theorem notMem_commonNbrs_right (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    b ∉ commonNbrs G a b := by
+  rw [mem_commonNbrs]
+  rintro ⟨-, hbb⟩
+  exact G.irrefl hbb
+
 end GraphLevel
 
 end Erdos1008
