@@ -183,6 +183,26 @@ theorem v2_factorial_ge (n : ℕ) (hn : n ≠ 0) :
   rw [hL]
   omega
 
+/-- **The valuation ceiling `v₂(n!) < n`.**  For `n ≥ 1` the 2-adic valuation of `n!` is
+strictly below `n` — the ceiling quoted in the docstring of `v2_factorial_eq_pred_iff` (the
+maximum `n − 1` is reached only at powers of two, i.e. `s₂(n) ≥ 1`).  This names Mathlib's
+`padicValNat_factorial_lt_of_ne_zero` at `p = 2`, and is the exact upper companion of the
+quantitative lower bound `v2_factorial_ge`. -/
+theorem v2_factorial_lt (n : ℕ) (hn : 1 ≤ n) :
+    padicValNat 2 n.factorial < n := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  exact padicValNat_factorial_lt_of_ne_zero (p := 2) (n := n) (by omega)
+
+/-- **Strict growth across a doubling step.**  For `n ≥ 1`, `v₂(n!) < v₂((2n)!)`: the
+doubling recurrence `v₂((2n)!) = n + v₂(n!)` (`v2_factorial_two_mul`) adds the *positive*
+amount `n`, so the only weakly monotone valuation `v2_factorial_monotone` strictly increases
+whenever the size doubles.  Complements the even→odd plateau
+`v2_factorial_two_mul_eq_two_mul_add_one`: the valuation is flat on `{2n, 2n+1}` but jumps on
+each doubling. -/
+theorem v2_factorial_lt_two_mul (n : ℕ) (hn : 1 ≤ n) :
+    padicValNat 2 n.factorial < padicValNat 2 (2 * n).factorial := by
+  rw [v2_factorial_two_mul]; omega
+
 #check @v2_factorial_two_mul
 #check @v2_factorial_two_mul_add_one
 #check @v2_factorial_eq_pred_iff
