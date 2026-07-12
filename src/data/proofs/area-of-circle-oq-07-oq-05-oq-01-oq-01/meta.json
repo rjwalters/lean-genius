@@ -142,6 +142,11 @@
       "targetId": "area-of-circle-oq-07-oq-05-oq-01-oq-02",
       "relationship": "related",
       "description": "Sibling (same parent). Lifts the even moments to an arbitrary Gaussian scale, ∫ x^{2n} e^{-a x²} = (2n-1)‼·√(π/a)/(2a)ⁿ, by the dilation x ↦ √a·x. It generalizes the even branch of this entry's full moment sequence in the scale parameter a; the odd moments proved here vanish at every scale by the same symmetry, so the two together give the complete scaled moment table."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03-oq-03",
+      "relationship": "related",
+      "description": "The even complement. That entry proves the even moments ∫_ℝ x^{2n} e^{-x²} = Γ(n+1/2) = (2n-1)‼·√π/2ⁿ (the half-integer Gamma ladder); this entry proves the odd moments ∫_ℝ x^{2n+1} e^{-x²} = 0. Together they give the complete moment sequence of the Gaussian weight e^{-x²} — and answer that entry's open question of packaging odd-moment vanishing with the even ladder into one statement about all moments."
     }
   ],
   "references": [
