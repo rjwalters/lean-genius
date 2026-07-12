@@ -1,26 +1,5 @@
 [
   {
-    "id": "ann-galois-normal-setup",
-    "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
-    "range": { "startLine": 55, "endLine": 63 },
-    "type": "context",
-    "title": "Ambient Setup: an Arbitrary Finite Galois Extension E/F",
-    "content": "The `variable` line fixes the theatre for Parts I and II: an arbitrary pair of fields with `[FiniteDimensional F E]` and `[IsGalois F E]`, i.e. E/F is a finite Galois extension. Every result about the biconditional, the restricted bijection, and the counting corollary is proved once at this level of generality; nothing is specific to the quintic until Part III. The two imports are the minimal dependency set — Mathlib's `Galois.Basic` (which carries the two type-class instances assembled here) and the parent OQ-02 (which supplies `intermediateFieldEquivSubgroup'` and the `open`ed namespace). `open IntermediateField` brings `fixingSubgroup` and `fixedField` into scope by short name.",
-    "mathContext": "Ambient hypotheses: $E/F$ finite ($[\\mathrm{FiniteDimensional}\\,F\\,E]$) and Galois ($[\\mathrm{IsGalois}\\,F\\,E]$); all of Parts I–II hold at this generality.",
-    "significance": "context",
-    "relatedConcepts": [
-      "finite Galois extension",
-      "type-class variable context",
-      "IntermediateField.fixingSubgroup / fixedField",
-      "importing the parent OQ-02"
-    ],
-    "prerequisites": [
-      "finite-dimensional field extensions",
-      "the IsGalois type class",
-      "Lean variable / instance binders"
-    ]
-  },
-  {
     "id": "ann-galois-normal-overview",
     "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 53 },
