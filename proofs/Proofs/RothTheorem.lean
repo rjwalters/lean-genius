@@ -6441,6 +6441,178 @@ theorem sqGaussSum_norm_sum_total_eq_prod_of_odd {N : ℕ} [NeZero N] (hodd : Od
   rw [sqGaussSum_norm_sum_total_eq_coeff_of_odd hodd,
     weylMassCoeff_eq_prod_prime_pow_closed (NeZero.ne N)]
 
+
+/-! ### Part LIII — The unit/non-unit frequency split: the good part is Sárközy-harmless
+
+Every prior single-scale route (Parts XV–XXII, XLVII) bounds the circle-method error
+`N⁻¹·Σ_{r≠0} ‖Â(r)‖²·‖G(r)‖` by pulling a *uniform* magnitude `M = max_r ‖G(r)‖` out of the sum
+(`sqDiff_error_le`).  For composite `N` that maximum is `Θ(N)` — attained at the *non-unit*
+frequencies, where `‖G(r)‖ = √(N·gcd(r,N))` — so the reduction caps the density at `1/√minFac`,
+never `o(N)`.
+
+The decisive structural observation, made precise here: the nonzero frequencies split into
+**units** and **non-units**, and on the unit block *every* coefficient has the identical exact
+magnitude `‖G(r)‖ = √N` (`sqGaussSum_norm_eq_sqrt_of_odd`).  So on that block one may pull out the
+constant `√N` and apply **Parseval** — not the lossy `max·L¹` pairing that loses a factor `√N`
+(Part XLVII) — giving
+
+    N⁻¹ · Σ_{r unit} ‖Â(r)‖²·‖G(r)‖ = N⁻¹·√N·Σ_{r unit}‖Â(r)‖² ≤ √N·|A|,
+
+a term that forces `|A| ≲ √N` on its own.  Consequently the *entire* obstruction to the Sárközy
+`o(N)` density is the **non-unit Fourier mass**
+
+    badFreqMass(A) := Σ_{r≠0, ¬IsUnit r} ‖Â(r)‖²·‖G(r)‖,
+
+and the density inequality sharpens (for square-difference-free `A`) to
+
+    |A|² ≤ |A|·#{n : n² = 0} + √N·|A| + N⁻¹·badFreqMass(A),
+
+i.e. at a squarefree modulus `|A|² ≤ |A| + √N·|A| + N⁻¹·badFreqMass(A)`.
+
+This is the exact formal entry point to the multi-scale density increment: a non-unit frequency
+`r` with `gcd(r.val, N) = d > 1` factors through the proper sub-modulus `ℤ/(N/d)`, so
+`badFreqMass` is a genuinely *lower-scale* quantity.  The one remaining gap — provably out of
+single-scale reach (Part XLVII) — is precisely: **`badFreqMass(A) = o(N²)` uniformly over
+square-difference-free `A`**, which combined with the display above yields `|A| = o(N)`.
+Everything below is 0-axiom; nothing here claims to close that gap — it isolates it. -/
+
+/-- **The non-unit (bad) Fourier mass.**  The portion of the circle-method error sum
+`Σ_{r≠0} ‖Â(r)‖²·‖G(r)‖` supported on the *non-unit* frequencies.  The unit frequencies carry the
+Sárközy-harmless `√N`-magnitude block (`sqGaussSum_norm_eq_sqrt_of_odd`); this quantity is the
+entire residual obstruction to the `o(N)` density (see `sqDiffFree_badFreqMass_bound`). -/
+noncomputable def badFreqMass {N : ℕ} [NeZero N] (A : Finset (ZMod N)) : ℝ :=
+  ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => ¬ IsUnit r)).sum
+    (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖)
+
+/-- `badFreqMass` is nonnegative (a sum of nonnegative terms). -/
+theorem badFreqMass_nonneg {N : ℕ} [NeZero N] (A : Finset (ZMod N)) : 0 ≤ badFreqMass A := by
+  rw [badFreqMass]; exact Finset.sum_nonneg (fun i _ => by positivity)
+
+/-- **Unit/non-unit split of the circle-method error (odd modulus).**  On the unit block every
+Gauss magnitude equals `√N` exactly, so Parseval bounds that block by `√N·(|A|·N − |A|²)`; the
+remainder is exactly `badFreqMass A`.  Hence
+
+    ‖SD(A) − |A|²‖ ≤ N⁻¹ · (√N·(|A|·N − |A|²) + badFreqMass(A)).
+
+Unlike the uniform `sqDiff_error_le` (which pulls a single `M = Θ(N)` out of *all* nonzero
+frequencies), this keeps the exact `√N` on the units and confines every `Θ(N)`-magnitude term to
+`badFreqMass`. -/
+theorem sqDiff_error_le_unit_split {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finset (ZMod N)) :
+    ‖(sqDiffCount A : ℂ) - (↑A.card) ^ 2‖
+      ≤ (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2) + badFreqMass A) := by
+  have hsub : (sqDiffCount A : ℂ) - (↑A.card) ^ 2
+      = (↑N)⁻¹ * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
+    rw [sqDiffCount_fourier_main A]; ring
+  rw [hsub, norm_mul, norm_inv, Complex.norm_natCast]
+  refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+  -- Reduce the complex norm to the real `‖Â‖²·‖G‖` sum.
+  have hnorm : ‖(Finset.univ \ {(0 : ZMod N)}).sum
+        (fun r => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)‖
+      ≤ (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖) := by
+    refine le_trans (norm_sum_le _ _) (le_of_eq ?_)
+    refine Finset.sum_congr rfl (fun r _ => ?_)
+    rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
+  -- Split the nonzero frequencies into units and non-units.
+  have hsplit : (Finset.univ \ {(0 : ZMod N)}).sum
+        (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖)
+      = ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => IsUnit r)).sum
+          (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖)
+        + badFreqMass A := by
+    rw [badFreqMass]
+    exact (Finset.sum_filter_add_sum_filter_not (Finset.univ \ {(0 : ZMod N)})
+      (fun r => IsUnit r)
+      (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖)).symm
+  -- Bound the unit block via the exact magnitude `√N` and Parseval.
+  have hgood : ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => IsUnit r)).sum
+        (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖)
+      ≤ Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2) := by
+    have hval : ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => IsUnit r)).sum
+          (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖)
+        = ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => IsUnit r)).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2) * Real.sqrt N := by
+      rw [Finset.sum_mul]
+      refine Finset.sum_congr rfl (fun r hr => ?_)
+      rw [Finset.mem_filter] at hr
+      rw [sqGaussSum_norm_eq_sqrt_of_odd hodd hr.2]
+    have hp : ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => IsUnit r)).sum
+          (fun r => ‖fourierCoeff A r‖ ^ 2)
+        ≤ ↑A.card * ↑N - (↑A.card) ^ 2 := by
+      calc ((Finset.univ \ {(0 : ZMod N)}).filter (fun r => IsUnit r)).sum
+              (fun r => ‖fourierCoeff A r‖ ^ 2)
+          ≤ (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖fourierCoeff A r‖ ^ 2) :=
+            Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+              (fun i _ _ => by positivity)
+        _ = ↑A.card * ↑N - (↑A.card) ^ 2 := parseval_nonzero A
+    rw [hval, mul_comm]
+    exact mul_le_mul_of_nonneg_left hp (Real.sqrt_nonneg _)
+  refine le_trans hnorm ?_
+  rw [hsplit]
+  gcongr
+
+/-- **Sárközy density inequality with the good block collapsed (odd modulus).**  For any
+square-difference-free `A ⊆ ℤ/Nℤ` with `N` odd, the unit-frequency block contributes at most
+`√N·|A|` and the entire remaining obstruction is `badFreqMass(A)`:
+
+    |A|² ≤ |A|·#{n : n² = 0} + √N·|A| + N⁻¹·badFreqMass(A).
+
+The `√N·|A|` term is Sárközy-harmless (it alone forces `|A| ≲ √N`); the theorem localises every
+`Θ(N)`-scale contribution into the single quantity `N⁻¹·badFreqMass(A)`, whose uniform smallness
+`badFreqMass = o(N²)` is exactly what remains for the `o(N)` density (Part XLVII / multi-scale). -/
+theorem sqDiffFree_badFreqMass_bound {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + Real.sqrt N * A.card + (↑N)⁻¹ * badFreqMass A := by
+  have herr := sqDiff_error_le_unit_split hodd A
+  -- Circle-method lower bound on the count.
+  have hlow : (A.card : ℝ) ^ 2
+      - (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2) + badFreqMass A)
+      ≤ (sqDiffCount A : ℝ) := by
+    have key : |(sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2|
+        ≤ (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2) + badFreqMass A) := by
+      have e : ‖(sqDiffCount A : ℂ) - (↑A.card) ^ 2‖
+          = |(sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2| := by
+        rw [show (sqDiffCount A : ℂ) - (↑A.card) ^ 2
+              = (((sqDiffCount A : ℝ) - (A.card : ℝ) ^ 2 : ℝ) : ℂ) by push_cast; ring,
+          Complex.norm_real, Real.norm_eq_abs]
+      rwa [e] at herr
+    linarith [(abs_le.mp key).1]
+  have hupp : (sqDiffCount A : ℝ)
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card := by
+    exact_mod_cast sqDiffCount_le_of_free A hfree
+  -- The good block `N⁻¹·√N·(|A|·N − |A|²) ≤ √N·|A|`.
+  have hgoodsimp : (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2))
+      ≤ Real.sqrt N * (A.card : ℝ) := by
+    have hN : (0 : ℝ) < N := by exact_mod_cast NeZero.pos N
+    have hfrac : (↑N)⁻¹ * ((A.card : ℝ) * ↑N - (A.card : ℝ) ^ 2) ≤ (A.card : ℝ) := by
+      have hrw : (↑N)⁻¹ * ((A.card : ℝ) * ↑N - (A.card : ℝ) ^ 2)
+          = (A.card : ℝ) - (↑N)⁻¹ * (A.card : ℝ) ^ 2 := by
+        field_simp
+      rw [hrw]
+      linarith [mul_nonneg (inv_nonneg.mpr hN.le) (sq_nonneg (A.card : ℝ))]
+    calc (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2))
+        = Real.sqrt N * ((↑N)⁻¹ * ((A.card : ℝ) * ↑N - (A.card : ℝ) ^ 2)) := by ring
+      _ ≤ Real.sqrt N * (A.card : ℝ) := mul_le_mul_of_nonneg_left hfrac (Real.sqrt_nonneg _)
+  have hexpand : (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2) + badFreqMass A)
+      = (↑N)⁻¹ * (Real.sqrt N * (↑A.card * ↑N - (↑A.card) ^ 2)) + (↑N)⁻¹ * badFreqMass A := by
+    ring
+  linarith [hlow, hupp, hgoodsimp, hexpand]
+
+/-- **Squarefree specialisation.**  At an odd *squarefree* modulus `#{n : n² = 0} = 1`
+(`sq_eq_zero_filter_card_eq_one_of_squarefree`), so the density inequality reads
+
+    |A|² ≤ |A| + √N·|A| + N⁻¹·badFreqMass(A).
+
+The first two terms are `O(√N·|A|)`; the whole Sárközy question at squarefree moduli is the
+uniform bound `badFreqMass(A) = o(N²)`. -/
+theorem sqDiffFree_badFreqMass_bound_squarefree {N : ℕ} [NeZero N] (hodd : Odd N)
+    (hsf : Squarefree N) (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2 ≤ (A.card : ℝ) + Real.sqrt N * A.card + (↑N)⁻¹ * badFreqMass A := by
+  have h := sqDiffFree_badFreqMass_bound hodd A hfree
+  rw [sq_eq_zero_filter_card_eq_one_of_squarefree hsf] at h
+  simpa using h
+
 end Szemeredi.Roth
-
-
