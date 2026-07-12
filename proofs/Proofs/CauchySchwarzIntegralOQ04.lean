@@ -36,6 +36,11 @@
   * `robertson_sum_form` / `heisenberg_sum_form` / `heisenberg_canonical_sum` — the
     additive form `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖`, the AM–GM consequence of the
     product bound.
+  * `L2_inner_eq_integral` and the `*_integral_inner_*_L2` family — the **L²
+    specialization**: with `⟪f,g⟫ = ∫ conj(f)·g` on `α →₂[μ] ℂ`, the abstract core
+    becomes the literal integral Cauchy–Schwarz `|⟪f,g⟫|² ≤ ‖f‖²·‖g‖²` named in
+    OQ-04's problem statement, split into its Heisenberg (`Im ∫ conj(f)·g`) and
+    Schrödinger (`Re ∫ conj(f)·g`) components.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -1002,6 +1007,87 @@ theorem robertson_uncertainty_strict (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →
   intro heq
   exact hns ((robertson_saturated_iff hI hA hB ψ a b hu hv).mp heq)
 
+/-! ### L² specialization — the integral Cauchy–Schwarz core
+
+  OQ-04's problem statement names the *integral* Cauchy–Schwarz inequality in `L²`,
+  `|⟪f,g⟫|² ≤ ‖f‖²·‖g‖²` with `⟪f,g⟫ = ∫ conj(f)·g`, as the source of Heisenberg's
+  bound.  Instantiating the abstract inner-product-space core on the concrete space
+  `α →₂[μ] ℂ` recovers exactly this integral form.  The L² inner product *is* the
+  integral of the pointwise inner product (`MeasureTheory.L2.inner_def`, which is
+  definitional), and pointwise `⟪z,w⟫_ℂ = conj z · w` (`RCLike.inner_apply'`), so the
+  abstract bounds become bounds on the real / imaginary parts (and the modulus) of
+  `∫ conj(f)·g` by `‖f‖·‖g‖`.  The imaginary part is the Heisenberg (commutator) term,
+  the real part the Schrödinger (anticommutator) term.  All are axiom-free, obtained by
+  one rewrite through the bridge `L2_inner_eq_integral`. -/
+
+section L2Specialization
+
+open MeasureTheory
+open scoped ComplexConjugate
+
+variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
+
+/-- **The L² inner product as an integral.**  `⟪f, g⟫ = ∫ conj(f)·g`.  This is the
+    bridge identifying the abstract Cauchy–Schwarz core with the integral form named
+    in OQ-04's problem statement. -/
+theorem L2_inner_eq_integral (f g : α →₂[μ] ℂ) :
+    inner ℂ f g = ∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ := by
+  rw [MeasureTheory.L2.inner_def]
+  simp_rw [RCLike.inner_apply']
+
+/-- **L² integral Cauchy–Schwarz — imaginary (Heisenberg) part.**
+    `|Im ∫ conj(f)·g| ≤ ‖f‖·‖g‖`.  With `f = (X−⟨X⟩)ψ`, `g = (P−⟨P⟩)ψ` the imaginary
+    part is the commutator term `Im⟪f,g⟫` underlying `Δx·Δp ≥ ℏ/2`. -/
+theorem abs_im_integral_inner_le_L2 (f g : α →₂[μ] ℂ) :
+    |RCLike.im (∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ)| ≤ ‖f‖ * ‖g‖ := by
+  rw [← L2_inner_eq_integral]
+  exact abs_im_inner_le_norm_mul_norm (𝕜 := ℂ) f g
+
+/-- **Squared L² integral Cauchy–Schwarz — imaginary part.**
+    `(Im ∫ conj(f)·g)² ≤ ‖f‖²·‖g‖²`. -/
+theorem im_integral_inner_sq_le_L2 (f g : α →₂[μ] ℂ) :
+    (RCLike.im (∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ)) ^ 2
+      ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
+  rw [← L2_inner_eq_integral]
+  exact im_inner_sq_le (𝕜 := ℂ) f g
+
+/-- **L² integral Cauchy–Schwarz — real (Schrödinger) part.**
+    `|Re ∫ conj(f)·g| ≤ ‖f‖·‖g‖`, the anticommutator/covariance companion. -/
+theorem abs_re_integral_inner_le_L2 (f g : α →₂[μ] ℂ) :
+    |RCLike.re (∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ)| ≤ ‖f‖ * ‖g‖ := by
+  rw [← L2_inner_eq_integral]
+  exact abs_re_inner_le_norm_mul_norm (𝕜 := ℂ) f g
+
+/-- **Squared L² integral Cauchy–Schwarz — real part.**
+    `(Re ∫ conj(f)·g)² ≤ ‖f‖²·‖g‖²`. -/
+theorem re_integral_inner_sq_le_L2 (f g : α →₂[μ] ℂ) :
+    (RCLike.re (∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ)) ^ 2
+      ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
+  rw [← L2_inner_eq_integral]
+  exact re_inner_sq_le (𝕜 := ℂ) f g
+
+/-- **Sharp L² integral Cauchy–Schwarz (Gram form).**
+    `(Re ∫ conj(f)·g)² + (Im ∫ conj(f)·g)² ≤ ‖f‖²·‖g‖²` — the literal
+    `|⟪f,g⟫|² ≤ ‖f‖²·‖g‖²` of OQ-04, split into its Heisenberg (Im) and
+    Schrödinger (Re) components. -/
+theorem integral_inner_sq_le_gram_L2 (f g : α →₂[μ] ℂ) :
+    (RCLike.re (∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ)) ^ 2
+      + (RCLike.im (∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ)) ^ 2
+      ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
+  rw [← L2_inner_eq_integral]
+  exact inner_sq_le_gram (𝕜 := ℂ) f g
+
+/-- **L² integral Cauchy–Schwarz — modulus form.**  `‖∫ conj(f)·g‖² ≤ ‖f‖²·‖g‖²`,
+    the classical squared Cauchy–Schwarz `|⟪f,g⟫|² ≤ ‖f‖²·‖g‖²` on `L²(μ)`. -/
+theorem norm_integral_inner_sq_le_L2 (f g : α →₂[μ] ℂ) :
+    ‖∫ a, conj ((f : α → ℂ) a) * (g : α → ℂ) a ∂μ‖ ^ 2 ≤ ‖f‖ ^ 2 * ‖g‖ ^ 2 := by
+  rw [← L2_inner_eq_integral]
+  have h : ‖inner ℂ f g‖ ≤ ‖f‖ * ‖g‖ := norm_inner_le_norm f g
+  nlinarith [h, norm_nonneg (inner ℂ f g),
+    mul_nonneg (norm_nonneg f) (norm_nonneg g)]
+
+end L2Specialization
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
@@ -1010,4 +1096,7 @@ end CauchySchwarzIntegralOQ04
 #print axioms CauchySchwarzIntegralOQ04.commutator_smul_I_isSymmetric
 #print axioms CauchySchwarzIntegralOQ04.inner_commutator_smul_I_isReal
 #print axioms CauchySchwarzIntegralOQ04.robertson_saturated_iff
+#print axioms CauchySchwarzIntegralOQ04.L2_inner_eq_integral
+#print axioms CauchySchwarzIntegralOQ04.integral_inner_sq_le_gram_L2
+#print axioms CauchySchwarzIntegralOQ04.norm_integral_inner_sq_le_L2
 #print axioms CauchySchwarzIntegralOQ04.robertson_uncertainty_strict
