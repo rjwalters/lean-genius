@@ -147,6 +147,16 @@
       "targetId": "angle-trisection-oq-02",
       "relationship": "related",
       "description": "OQ02 characterizes constructibility via [ℚ(cos 2π/n):ℚ] being a power of 2; the doubling invariance is the arithmetic shadow of the angle-bisection construction"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "related",
+      "description": "The general power-of-two obstruction on the other side of Gauss–Wantzel. That entry proves 'a number with an odd prime factor is not a power of two' and applies it to polynomial degree and Galois group order; here the same power-of-two predicate is applied to φ(n), and the doubling invariance TotientIsPow2(2n) ↔ TotientIsPow2(n) is precisely the statement that multiplying by the prime 2 never disturbs the power-of-two property — the constructive complement to that entry's odd-prime obstruction."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "The arithmetic function this entry's predicate is built on: TotientIsPow2 n asserts Euler's totient φ(n) is a power of two, the Gauss–Wantzel condition for constructibility of the regular n-gon. That entry develops φ through Euler's theorem a^φ(n) ≡ 1 (mod n); the doubling and 2-power reductions here are statements about φ's behaviour under multiplication by 2."
     }
   ],
   "mainTheorems": [
