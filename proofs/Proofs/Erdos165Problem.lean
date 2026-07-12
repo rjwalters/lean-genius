@@ -607,4 +607,49 @@ theorem asymptotic_constant_unique
       (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
   linarith
 
+/- ## Part X: The conjecture reduces to the upper bound
+
+The two-sided obstruction of Parts VI–IX pins any exact constant to `[1/2, 1]`.  This final
+section records the sharper structural payoff hiding in that interval: the *lower* endpoint
+`1/2` is not merely a fence but an already-proved theorem (`hhkp_bound`), so the Erdős main
+conjecture `R(3,k) ~ (1/2)·k²/log k` is logically equivalent to a *one-sided* statement —
+improving Shearer's upper constant from `1` down to `1/2`.  We also complete the
+lower-constant/upper-constant symmetry left open in Part IX: `R3_lower_constant_of_le_half`
+is the exact dual of `R3_upper_constant_of_one_le`.  Both are axiom-frugal (only the two
+sharp Ramsey bounds). -/
+
+/-- **Every constant `a ≤ 1/2` is a valid first-order lower constant for `R(3,k)`** (dual of
+    `R3_upper_constant_of_one_le`).  Whereas Shearer (`1`) makes every *larger* constant a valid
+    upper bound, HHKP (`1/2`) makes every *smaller* constant a valid lower bound, via
+    `lower_bound_mono`.  This is the general statement behind the specific `hhkp_subsumes_*`
+    family (`1/162, 1/4, 1/3` are its instances), completing the Part IX symmetry: valid lower
+    constants contain `(−∞, 1/2]`, valid upper constants contain `[1, ∞)`. -/
+theorem R3_lower_constant_of_le_half (a : ℝ) (ha : a ≤ 1/2) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (a - ε) * k^2 / log k :=
+  lower_bound_mono ha hhkp_bound
+
+/-- **The Erdős conjecture reduces to the upper bound.**  Because the lower half of
+    `mainConjecture` — `R(3,k) ≥ (1/2 − ε)·k²/log k` — is already the theorem `hhkp_bound`, the
+    full conjecture `R(3,k) ~ (1/2)·k²/log k` is *equivalent* to its upper half alone:
+
+      `mainConjecture ↔ ∀ ε > 0, eventually R(3,k) ≤ (1/2 + ε)·k²/log k`.
+
+    In other words, settling Erdős #165 is exactly the problem of sharpening Shearer's upper
+    constant from `1` to `1/2`; the matching lower bound is done.  Forward is projection to the
+    upper half; backward pairs the hypothesized upper half with `hhkp_bound`. -/
+theorem mainConjecture_iff_upper_half :
+    mainConjecture ↔
+      (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+          (R3 k : ℝ) ≤ (1/2 + ε) * k^2 / log k) := by
+  constructor
+  · intro h ε hε
+    obtain ⟨k₀, hk₀⟩ := h ε hε
+    exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩
+  · intro hup ε hε
+    obtain ⟨k₁, hk₁⟩ := hhkp_bound ε hε
+    obtain ⟨k₂, hk₂⟩ := hup ε hε
+    exact ⟨max k₁ k₂, fun k hk =>
+      ⟨hk₁ k (le_of_max_le_left hk), hk₂ k (le_of_max_le_right hk)⟩⟩
+
 end Erdos165
