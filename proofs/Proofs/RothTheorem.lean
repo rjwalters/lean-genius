@@ -6374,6 +6374,73 @@ theorem sqGaussSum_norm_sum_total_prime_pow {p : ℕ} (hp : p.Prime) (hp2 : p �
   have hodd : Odd (p ^ (m + 1)) := (hp.odd_of_ne_two hp2).pow
   rw [sqGaussSum_norm_sum_total_eq_coeff_of_odd hodd, weylMassCoeff_prime_pow hp, Nat.cast_pow]
 
+/-! ### Part LII — the fully explicit product formula: `C(N) = ∏_{pᵏ‖N} C(pᵏ)` for every `N`
+
+Part L proved that the total-mass coefficient `C` is multiplicative and Part LI evaluated its
+prime-power values in closed form.  This part assembles the two into the **explicit product
+formula over the entire prime factorization**, completing the reduction promised in Part LI: for
+every `N ≠ 0`,
+
+    C(N) = ∏_{p ∈ primeFactors N} C(p^{vₚ(N)})
+         = ∏_{p ∈ primeFactors N} (p^{vₚ} + p^{vₚ−1}·√p − √(p^{vₚ−1}))   (vₚ := N.factorization p ≥ 1).
+
+The engine is `ArithmeticFunction.IsMultiplicative.multiplicative_factorization` applied to the
+convolution `φ ⋆ √` (whose value is `C` by `weylMassCoeff_eq_convolution`), followed by the
+per-prime substitution of the Part LI closed form.  Feeding this through Part XLIX gives the total
+odd-`N` `L¹` Gauss-sum mass in fully closed form, over *all* odd `N` (not just prime powers).
+
+As always (Part XLVII), this is an `L¹` *mass* statement: it does not by itself furnish the
+Sárközy `o(N)` density, which needs cross-frequency cancellation rather than a sharper mass value.
+All 0-axiom. -/
+
+/-- **`C` as a product over its prime factorization.**  For every `N ≠ 0`,
+
+    `C(N) = ∏_{pᵏ‖N} C(pᵏ)`,
+
+directly from the multiplicativity of the convolution `φ ⋆ √`
+(`multiplicative_factorization`), rewriting each factor `(φ ⋆ √)(pᵏ)` back to `C(pᵏ)` via
+`weylMassCoeff_eq_convolution`. -/
+theorem weylMassCoeff_eq_prod_factorization {N : ℕ} (hN : N ≠ 0) :
+    weylMassCoeff N = N.factorization.prod (fun p k => weylMassCoeff (p ^ k)) := by
+  rw [← weylMassCoeff_eq_convolution,
+    (isMultiplicative_totientRealAF.mul isMultiplicative_sqrtAF).multiplicative_factorization _ hN]
+  exact Finsupp.prod_congr (fun p _ => weylMassCoeff_eq_convolution _)
+
+/-- **Fully explicit product formula for `C` (all `N`).**  Substituting the Part LI prime-power
+closed form `C(pᵏ) = pᵏ + pᵏ⁻¹·√p − √(pᵏ⁻¹)` (valid for every exponent `k ≥ 1`, i.e. on the
+support of the factorization) into `weylMassCoeff_eq_prod_factorization`: for `N ≠ 0`,
+
+    `C(N) = ∏_{p ∈ primeFactors N} (p^{vₚ} + p^{vₚ−1}·√p − √(p^{vₚ−1}))`,
+
+with `vₚ := N.factorization p ≥ 1`. -/
+theorem weylMassCoeff_eq_prod_prime_pow_closed {N : ℕ} (hN : N ≠ 0) :
+    weylMassCoeff N
+      = N.factorization.prod (fun p k =>
+          (p : ℝ) ^ k + (p : ℝ) ^ (k - 1) * Real.sqrt p - Real.sqrt ((p : ℝ) ^ (k - 1))) := by
+  rw [weylMassCoeff_eq_prod_factorization hN]
+  apply Finsupp.prod_congr
+  intro p hp
+  have hp' : p ∈ N.primeFactors := by rwa [Nat.support_factorization] at hp
+  have hpp : p.Prime := Nat.prime_of_mem_primeFactors hp'
+  have hk0 : N.factorization p ≠ 0 := Finsupp.mem_support_iff.mp hp
+  obtain ⟨m, hm⟩ : ∃ m, N.factorization p = m + 1 := ⟨N.factorization p - 1, by omega⟩
+  rw [hm, weylMassCoeff_prime_pow hpp m, Nat.add_sub_cancel]
+
+/-- **Total odd-`N` `L¹` Gauss-sum mass in fully explicit product form (all odd `N`).**  Combining
+the Part XLIX coefficient form `√N·C(N)` with the explicit factorization product for `C`:
+
+    `Σ_{r ∈ ZMod N} ‖G(r)‖ = √N · ∏_{p ∈ primeFactors N} (p^{vₚ} + p^{vₚ−1}·√p − √(p^{vₚ−1}))`.
+
+The complete closed form of the first spectral moment at *every* odd modulus, reducing it to the
+prime factorisation.  It is `Θ(N^{3/2}) = o(N²)`; per Part XLVII it does not discharge the Sárközy
+density `o(N)`. -/
+theorem sqGaussSum_norm_sum_total_eq_prod_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ.sum (fun r : ZMod N => ‖sqGaussSum r‖))
+      = Real.sqrt N * N.factorization.prod (fun p k =>
+          (p : ℝ) ^ k + (p : ℝ) ^ (k - 1) * Real.sqrt p - Real.sqrt ((p : ℝ) ^ (k - 1))) := by
+  rw [sqGaussSum_norm_sum_total_eq_coeff_of_odd hodd,
+    weylMassCoeff_eq_prod_prime_pow_closed (NeZero.ne N)]
+
 end Szemeredi.Roth
 
 
