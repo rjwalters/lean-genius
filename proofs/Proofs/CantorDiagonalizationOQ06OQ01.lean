@@ -412,4 +412,71 @@ theorem exists_diagonalReal_eq_two_ninths : ∃ f : ℕ → ℝ, diagonalReal f 
   rw [one_div, inv_mul_cancel₀ h10, Int.floor_one]
   decide
 
+/-! ## Structural behavior of the diagonal map `f ↦ diagonalReal f`
+
+The three preceding sections pin `diagonalReal f` to the sharp interval `[1/9, 2/9]` and
+show both endpoints are attained.  Here we record how the map `f ↦ diagonalReal f` behaves
+as a function of `f`.  Three facts capture its structure:
+
+* **Locality.**  `diagonalReal f` reads only the *diagonal* digits `digit (f n) n`; two
+  listings agreeing on their diagonal digits have the same diagonal real, regardless of
+  their off-diagonal values.  This is the mechanical content of "diagonal" argument.
+* **Monotonicity.**  The map is monotone in the disagreeing-digit sequence `db f`.
+* **Binary decomposition.**  `diagonalReal f = 1/9 + (a `{0,1}`-digit real)`, exhibiting the
+  diagonal as the minorant `1/9` plus an indicator tail that flags exactly the positions
+  where `f`'s diagonal digit equals `1`.
+
+All three remain routed entirely through the bespoke `diagonalReal`, axiom-free. -/
+
+/-- **Locality of the diagonal map.**  `diagonalReal f` depends only on the *diagonal*
+digits `digit (f n) n`: if two enumerations agree on their diagonal digits then their
+diagonal reals coincide, no matter how they differ off the diagonal.  This is the essence
+of the diagonal argument — only the `n`-th digit of the `n`-th real is ever consulted. -/
+theorem diagonalReal_congr {f g : ℕ → ℝ} (h : ∀ n, digit (f n) n = digit (g n) n) :
+    diagonalReal f = diagonalReal g := by
+  unfold diagonalReal
+  apply tsum_congr
+  intro n
+  have hdb : db f n = db g n := by unfold db; rw [h n]
+  rw [hdb]
+
+/-- **Monotonicity in the disagreeing digits.**  If `db f n ≤ db g n` at every position,
+then `diagonalReal f ≤ diagonalReal g`: the diagonal real is monotone in its digit
+sequence.  (Since each `db · n ∈ {1,2}`, the hypothesis says `g` selects the larger digit
+`2` at least as often as `f` does.) -/
+theorem diagonalReal_mono {f g : ℕ → ℝ} (h : ∀ n, db f n ≤ db g n) :
+    diagonalReal f ≤ diagonalReal g := by
+  unfold diagonalReal
+  apply Summable.tsum_le_tsum _ (summable_term f) (summable_term g)
+  intro n
+  gcongr
+  exact_mod_cast h n
+
+/-- The indicator tail `∑' n, [digit (f n) n = 1]/10^(n+1)` is summable — it is dominated
+termwise by the geometric minorant `(1/10)^(n+1)`. -/
+theorem summable_indicator_shift (f : ℕ → ℝ) :
+    Summable (fun n => (if digit (f n) n = 1 then (1 : ℝ) else 0) / 10 ^ (n + 1)) := by
+  apply Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) summable_geo_shift_one
+  · apply div_nonneg _ (by positivity); split_ifs <;> norm_num
+  · rw [div_pow, one_pow]; gcongr; split_ifs <;> norm_num
+
+/-- **Binary `{0,1}`-digit decomposition.**  Writing `db f n = 1 + [digit (f n) n = 1]`
+splits the diagonal into the geometric minorant `∑ 1/10^(n+1) = 1/9` plus an *indicator*
+tail whose `n`-th digit is `1` exactly when `f`'s `n`-th diagonal digit is `1`.  Thus
+`diagonalReal f - 1/9 ∈ [0, 1/9]` is itself a real with all digits in `{0,1}`, making the
+localization `diagonalReal f ∈ [1/9, 2/9]` transparent: the tail contributes at most
+`∑ 1/10^(n+1) = 1/9`. -/
+theorem diagonalReal_eq_one_ninth_add (f : ℕ → ℝ) :
+    diagonalReal f
+      = 1 / 9 + ∑' n, (if digit (f n) n = 1 then (1 : ℝ) else 0) / 10 ^ (n + 1) := by
+  have hterm : ∀ n, (db f n : ℝ) / 10 ^ (n + 1)
+      = (1 / 10 : ℝ) ^ (n + 1)
+        + (if digit (f n) n = 1 then (1 : ℝ) else 0) / 10 ^ (n + 1) := by
+    intro n
+    have hdb : (db f n : ℝ) = 1 + (if digit (f n) n = 1 then (1 : ℝ) else 0) := by
+      unfold db; split_ifs <;> norm_num
+    rw [hdb, add_div, div_pow, one_pow]
+  rw [diagonalReal, tsum_congr hterm,
+      Summable.tsum_add summable_geo_shift_one (summable_indicator_shift f), tsum_geo_shift_one]
+
 end CantorDiagonalizationOQ06OQ01
