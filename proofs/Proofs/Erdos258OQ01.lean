@@ -10,11 +10,19 @@ Erdős Problem #258 — Open Question OQ-01
   `aₙ → ∞`?  The monotone case was settled by Erdős–Straus (1971); the general
   case is OPEN.
 
-This file is an ORIENT (build-free analysis under a Docker outage — the proofs
-below are NOT machine-checked yet; sorries are labelled with their status).
-It contributes the precise *reduction* of OQ-01 to a single analytic quantity,
-an elementary *irrationality engine*, and a new *non-monotone sufficient
-condition* (polynomial growth) that the engine yields for free.
+This file contributes the precise *reduction* of OQ-01 to a single analytic
+quantity, an elementary *irrationality engine*, and a new *non-monotone
+sufficient condition* (polynomial growth) that the engine yields for free.
+
+Verification status (updated 2026-07-11, researcher-9): the file now elaborates
+cleanly (previously it failed to compile — two `∀ᶠ n` binders were inferred at
+type `ℝ` and `(n:ℝ)^δ` lacked the `rpow` instance). The Cantor-series base case
+`S_eq_head_add_renormTail_zero` is fully proved (axiom-free:
+`[propext, Classical.choice, Quot.sound]`), and `irrational_of_poly_growth` is
+now fully wired — its only remaining dependence is the two labelled analytic
+sorries below (the Lemma A engine and the Lemma B tail-collapse). Five
+`sorry`s remain (the two backbone identities, tail positivity, the engine, and
+the tail-collapse), each labelled with its status.
 
 ## The Cantor-series reframing
 
@@ -77,6 +85,7 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open scoped BigOperators
 open Nat Finset
@@ -116,11 +125,26 @@ regrouping by a one-step factor-out (recursion) plus a head-peel (base case). -/
 /-- **Base case.** `S(a) = τ(1) + T_0(a)` (and `τ(1) = 1`).
     The `n = 0` term `τ(1)/1` peels off; the remaining `n ≥ 1` terms are exactly
     the level-`0` renormalised tail.
-    STATUS: sorry — a single `tsum` head-split + index shift. NOT build-verified. -/
-theorem S_eq_head_add_renormTail_zero (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
+    Proof: `tsum_eq_zero_add'` peels the head, then the shifted tail matches
+    `renormTail a 0` termwise after the index identities `n+1+1 = 0+2+n` and
+    `Icc 1 (n+1) = Icc (0+1) (0+1+n)`. Positivity (`ha`) is not needed here. -/
+theorem S_eq_head_add_renormTail_zero (a : ℕ → ℕ) (_ha : ∀ n, 0 < a n)
     (hconv : Summable (generalTerm a)) :
     S a = (tau 1 : ℝ) + renormTail a 0 := by
-  sorry
+  have hhead : generalTerm a 0 = (tau 1 : ℝ) := by
+    simp [generalTerm, productPrefix]
+  have htail : ∑' n, generalTerm a (n + 1) = renormTail a 0 := by
+    rw [renormTail]
+    refine tsum_congr (fun n => ?_)
+    simp only [generalTerm, productPrefix]
+    rw [show n + 1 + 1 = 0 + 2 + n from by omega,
+        show Finset.Icc 1 (n + 1) = Finset.Icc (0 + 1) (0 + 1 + n) from by
+          congr 1
+          omega]
+  have hshift : Summable (fun n => generalTerm a (n + 1)) :=
+    (summable_nat_add_iff 1).2 hconv
+  conv_lhs => rw [S, tsum_eq_zero_add' (f := generalTerm a) hshift]
+  rw [hhead, htail]
 
 /-- **Tail recursion (Cantor-series backbone).**
     `a_{N+1} · T_N(a) = τ(N+2) + T_{N+1}(a)` for every `N`.
@@ -201,7 +225,7 @@ bound from Mathlib (or an explicit `τ(n) ≤ 2√n` crude bound suffices once
 `δ > 1/2`, with the general `δ` requiring the `n^ε` bound).
 NOT build-verified. -/
 theorem renormTail_tendsto_zero_of_poly_growth (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
-    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
+    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n : ℕ in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
     Filter.Tendsto (fun N => renormTail a N) Filter.atTop (nhds 0) := by
   sorry
 
@@ -217,12 +241,12 @@ here `a` may oscillate arbitrarily as long as it stays above a power of `n`.
 Combines Lemma B (`T_N → 0 ⟹ liminf = 0`) with Lemma A. -/
 theorem irrational_of_poly_growth (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
     (hconv : Summable (generalTerm a))
-    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
+    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n : ℕ in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
     Irrational (S a) := by
   apply irrational_of_liminf_renormTail_zero a ha hconv
   have htend := renormTail_tendsto_zero_of_poly_growth a ha δ hδ hgrow
   -- `liminf` of a sequence tending to `0` is `0`.
-  sorry
+  exact htend.liminf_eq
 
 /- ## OQ-01 statement and its reduction. -/
 
