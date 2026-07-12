@@ -5868,5 +5868,82 @@ theorem maxSqDiffFreeCard_eq_one_iff_dvd_two_mul {N : ℕ} [NeZero N] :
       haveI : NeZero (2 * p) := ⟨Nat.mul_ne_zero (by norm_num) hp.pos.ne'⟩
       exact maxSqDiffFreeCard_eq_one_of_dvd hdvd (maxSqDiffFreeCard_two_mul_prime_eq_one hp h3)
 
+/-! ### Part XLVI — Quantitative UPPER bound on the extremal count: the analytic Sárközy
+decay applied to `maxSqDiffFreeCard` itself
+
+Every upper bound recorded so far on the extremal function `maxSqDiffFreeCard N` is the
+value-`1` **collapse** of Parts XXXVI–XLV (`maxSqDiffFreeCard N = 1` on the classified locus),
+while every *analytic* cardinality bound of Parts VII–XXVII (`sqDiffFree_card_le_add_of_odd`,
+`|A| ≤ #{n² = 0} + N/√(minFac N)`) is a statement about an **arbitrary** square-difference-free
+`A`.  The two halves were never joined.  Feeding the *attained* extremal set
+(`exists_isSqDiffFree_card_eq_max`) into the analytic bound bridges them: it turns the pointwise
+Weyl sup-norm estimate into a bound on the canonical extremal quantity.
+
+For a squarefree modulus the nilpotent term vanishes — `n² = 0 ⟹ n = 0`
+(`ZMod.sq_eq_zero_iff_eq_zero_of_squarefree`), so `#{n : n² = 0} = 1` — leaving the clean
+
+    `maxSqDiffFreeCard N ≤ 1 + N/√(minFac N)`   (odd squarefree `N > 1`),
+
+equivalently the density decay
+
+    `maxSqDiffFreeCard N / N ≤ 1/N + 1/√(minFac N)`.
+
+This is the sharpest *unconditional* upper bound the entire circle-method line produces on the
+extremal count, and it is the honest quantitative counterpart of the `2^{ω(N)}` **lower** bound
+`two_pow_omega_le_maxSqDiffFreeCard_of_squarefree`.  It exhibits Sárközy's `o(N)` density decay
+outright on the modulus class `minFac N → ∞` (e.g. `N` prime, where it reads `≤ 1 + √N`), and —
+by the documented no-go of Part XXVII — is `Θ(N)` when `minFac N` is bounded (odd squarefree `N`
+with a fixed smallest prime factor), the genuine pointwise/minor-arc barrier. -/
+
+/-- **The nilpotent-square locus is a single point at a squarefree modulus.**  For squarefree
+`N`, `n² = 0 ⟹ n = 0` (`ZMod.sq_eq_zero_iff_eq_zero_of_squarefree`), so the filter counting
+square roots of `0` is exactly `{0}` and has cardinality `1`. -/
+theorem sq_eq_zero_filter_card_eq_one_of_squarefree {N : ℕ} [NeZero N] (hsf : Squarefree N) :
+    (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card = 1 := by
+  have hset : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)) = {0} := by
+    ext n
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+    exact ⟨ZMod.sq_eq_zero_iff_eq_zero_of_squarefree hsf n, fun h => by rw [h]; ring⟩
+  rw [hset, Finset.card_singleton]
+
+/-- **Quantitative upper bound on the extremal count (odd squarefree modulus).**  Applying the
+sharp odd-modulus analytic card bound `sqDiffFree_card_le_add_of_odd` to the *attained* extremal
+square-difference-free set (`exists_isSqDiffFree_card_eq_max`), with the squarefree nilpotent
+count `#{n : n² = 0} = 1`:
+
+    `maxSqDiffFreeCard N ≤ 1 + N/√(minFac N)`.
+
+The first upper bound on `maxSqDiffFreeCard` supplied by the Weyl/circle-method machinery (all
+prior ones are the value-`1` collapse of the classification).  For `N` prime this is the
+Paley/independence-number bound `α ≤ 1 + √N`. -/
+theorem maxSqDiffFreeCard_le_of_squarefree_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    (hsf : Squarefree N) (hN : 1 < N) :
+    (maxSqDiffFreeCard N : ℝ) ≤ 1 + (N : ℝ) / Real.sqrt (N.minFac) := by
+  obtain ⟨A, hAfree, hAcard⟩ := exists_isSqDiffFree_card_eq_max N
+  have hbound := sqDiffFree_card_le_add_of_odd hodd hN A hAfree
+  rw [sq_eq_zero_filter_card_eq_one_of_squarefree hsf] at hbound
+  rw [← hAcard]
+  simpa using hbound
+
+/-- **Sárközy density decay on the extremal count (odd squarefree modulus).**  Dividing the
+quantitative bound `maxSqDiffFreeCard_le_of_squarefree_odd` by `N`:
+
+    `maxSqDiffFreeCard N / N ≤ 1/N + 1/√(minFac N)`.
+
+For odd squarefree `N` with `minFac N → ∞` (e.g. `N` prime) the right side `→ 0`: this is
+Sárközy's `o(N)` density decay, unconditional on that modulus class.  It is `Θ(1)` — no decay —
+exactly when `minFac N` stays bounded, the genuine pointwise barrier of Part XXVII. -/
+theorem maxSqDiffFreeCard_density_le_of_squarefree_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    (hsf : Squarefree N) (hN : 1 < N) :
+    (maxSqDiffFreeCard N : ℝ) / N ≤ 1 / N + 1 / Real.sqrt (N.minFac) := by
+  have hb := maxSqDiffFreeCard_le_of_squarefree_odd hodd hsf hN
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  have hN0 : (N : ℝ) ≠ 0 := ne_of_gt hNpos
+  have hmf : (0 : ℝ) < (N.minFac : ℝ) := by exact_mod_cast N.minFac_pos
+  have hs0 : Real.sqrt (N.minFac) ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hmf)
+  calc (maxSqDiffFreeCard N : ℝ) / N
+      ≤ (1 + (N : ℝ) / Real.sqrt (N.minFac)) / N := by gcongr
+    _ = 1 / N + 1 / Real.sqrt (N.minFac) := by field_simp
+
 end Szemeredi.Roth
 
