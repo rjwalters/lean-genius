@@ -828,6 +828,78 @@ theorem two_pow_card_le_card_mul_sup_succ {A : Finset ℕ}
   have h2 : A.sum id ≤ A.card * A.sup id :=
     sum_le_card_mul_max A (A.sup id) (fun a ha => Finset.le_sup (f := id) ha)
   omega
+/-! ## Part VI: The general powers-of-two upper bound `f(n) ≤ 2ⁿ⁻¹`
+
+The per-case witnesses `f_zero`…`f_four` above certify individual values of the
+extremal function `f`.  They are subsumed, in the *upper-bound* direction, by a
+single uniform construction: the greedy binary set `{2⁰, 2¹, …, 2ⁿ⁻¹}` has
+distinct subset sums for **every** `n`, because a subset sum of distinct powers
+of two is just the number whose binary expansion is that subset (uniqueness of
+binary representation).  This gives `f(n) ≤ 2ⁿ⁻¹` for all `n`, the classical
+upper bound that the Conway–Guy construction (and the exact values in
+OEIS A005318, `f(4) = 7 < 8 = 2³`) improve upon, and the complement of the DFX
+lower bound `f(n) = Ω(2ⁿ/√n)` formalized in `dfx_lower_bound`.
+-/
+
+/-- The greedy powers-of-two witness `{2⁰, 2¹, …, 2ⁿ⁻¹}` for the Erdős
+    distinct-subset-sums problem: an `n`-element set of positive integers whose
+    `2ⁿ` subset sums are exactly the numbers `0, 1, …, 2ⁿ − 1` (binary
+    representations). -/
+def powersOfTwo (n : ℕ) : Finset ℕ := (Finset.range n).image (fun i => 2 ^ i)
+
+/-- `powersOfTwo n` has exactly `n` elements: `i ↦ 2ⁱ` is injective, so the image
+    of `range n` has the same cardinality. -/
+theorem powersOfTwo_card (n : ℕ) : (powersOfTwo n).card = n := by
+  rw [powersOfTwo,
+    Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+    Finset.card_range]
+
+/-- Every element of `powersOfTwo n` is a positive power of two. -/
+theorem powersOfTwo_pos (n : ℕ) : ∀ a ∈ powersOfTwo n, 0 < a := by
+  intro a ha
+  rw [powersOfTwo, Finset.mem_image] at ha
+  obtain ⟨i, _, rfl⟩ := ha
+  positivity
+
+/-- The largest element of `powersOfTwo n` is at most `2ⁿ⁻¹`: each element is
+    `2ⁱ` with `i < n`, hence `i ≤ n − 1`. -/
+theorem powersOfTwo_sup_le (n : ℕ) : (powersOfTwo n).sup id ≤ 2 ^ (n - 1) := by
+  apply Finset.sup_le
+  intro a ha
+  rw [powersOfTwo, Finset.mem_image] at ha
+  obtain ⟨i, hi, rfl⟩ := ha
+  rw [Finset.mem_range] at hi
+  simp only [id_eq]
+  exact Nat.pow_le_pow_right (by norm_num) (by omega)
+
+/-- **Key fact.** `powersOfTwo n` has distinct subset sums for every `n`.  A
+    subset `S ⊆ {2⁰, …, 2ⁿ⁻¹}` is the image of a set `s ⊆ range n` of exponents,
+    and `∑_{a ∈ S} a = ∑_{i ∈ s} 2ⁱ`; the map `s ↦ ∑_{i ∈ s} 2ⁱ` is injective on
+    `Finset ℕ` (uniqueness of binary expansion, `Finset.geomSum_injective`), so
+    equal subset sums force equal exponent sets and hence equal subsets. -/
+theorem powersOfTwo_distinctSubsetSums (n : ℕ) :
+    hasDistinctSubsetSums (powersOfTwo n) := by
+  intro S T hS hT heq
+  rw [powersOfTwo, Finset.subset_image_iff] at hS hT
+  obtain ⟨s, _, rfl⟩ := hS
+  obtain ⟨t, _, rfl⟩ := hT
+  rw [Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h),
+      Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h)] at heq
+  simp only [id_eq] at heq
+  rw [Finset.geomSum_injective (le_refl 2) heq]
+
+/-- **Powers-of-two upper bound**: for every `n` there is an `n`-element set of
+    positive integers with distinct subset sums whose maximum element is at most
+    `2ⁿ⁻¹`.  Equivalently `f(n) ≤ 2ⁿ⁻¹` for all `n` — the classical greedy binary
+    bound, complementing the DFX lower bound `f(n) = Ω(2ⁿ/√n)` and the exact
+    small values `f_zero`…`f_four`.  This is the uniform statement behind the
+    per-case witnesses `{}`, `{1}`, `{1,2}`, `{1,2,4}`, … (each a `powersOfTwo`
+    set, except where a smaller extremal set exists, as at `n = 4`). -/
+theorem f_le_two_pow (n : ℕ) :
+    ∃ (A : Finset ℕ), A.card = n ∧ (∀ a ∈ A, 0 < a) ∧
+      hasDistinctSubsetSums A ∧ A.sup id ≤ 2 ^ (n - 1) :=
+  ⟨powersOfTwo n, powersOfTwo_card n, powersOfTwo_pos n,
+    powersOfTwo_distinctSubsetSums n, powersOfTwo_sup_le n⟩
 
 /-! ## Conclusion
 
