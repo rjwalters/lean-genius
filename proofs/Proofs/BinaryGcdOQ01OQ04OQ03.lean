@@ -1271,4 +1271,23 @@ theorem avgSteps_ge (a N : ℕ) (ha : 1 ≤ a) (hN : 0 < N) :
     nlinarith [h2Q]
   linarith [h1, hdiv]
 
+/-- **General-`a` average-case `Θ(log N)` sandwich (uniform in `a`).** For `a ≥ 1` and
+    `N ≥ 1`,
+
+      (log₂ N − 1)/2 − (log₂ a + 1)  ≤  (∑_{b=1}^{N} binaryGcdSteps a b)/N  ≤  2·(log₂ a + log₂ N) + 2.
+
+    The single two-sided statement the file builds toward: the mean binary-GCD step count over
+    `b ∈ [1, N]` is `Θ(log N)` for EVERY left argument `a`, not just the exact `a = 1` row. The
+    lower bound is the density-count floor `avgSteps_ge`; the upper bound is the worst-case
+    ceiling `avgSteps_le`. For fixed `a` both the additive `log₂ a` terms are constants, so the
+    two bounds pin the order at `Θ(log N)`. The multiplicative gap between the `≈ ½` floor and
+    `≈ 2` ceiling coefficients is exactly what Brent's sharp `0.7050·log₂ N` constant closes —
+    and that constant, requiring a transfer-operator / dynamical-systems analysis absent from
+    Mathlib 4.26, remains out of reach here. -/
+theorem avgSteps_sandwich (a N : ℕ) (ha : 1 ≤ a) (hN : 0 < N) :
+    ((Nat.log 2 N : ℚ) - 1) / 2 - ((Nat.log 2 a : ℚ) + 1)
+        ≤ (totalSteps a N : ℚ) / (N : ℚ)
+      ∧ (totalSteps a N : ℚ) / (N : ℚ) ≤ 2 * (Nat.log 2 a + Nat.log 2 N) + 2 :=
+  ⟨avgSteps_ge a N ha hN, avgSteps_le a N ha hN⟩
+
 end BinaryGcdOQ01OQ04OQ03
