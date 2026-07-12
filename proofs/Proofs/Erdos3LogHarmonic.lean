@@ -905,4 +905,117 @@ theorem summable_one_div_nat_mul_log_mul_loglog_rpow_const {c δ : ℝ}
       _ = (2 * (2 : ℝ) ^ (1 + δ)) *
             (m * Real.log (m * c) * (Real.log (Real.log (m * c))) ^ (1 + δ)) := by ring
 
+/-- **Divergent second-tier Bertrand series with a multiplicative constant inside the
+    logs.**  For every `c > 0`, `∑ 1/(n · log (n·c) · log log (n·c))` diverges.  This is
+    the `p = 1` divergence twin of the convergent
+    `summable_one_div_nat_mul_log_mul_loglog_rpow_const` (which raises the inner
+    `log log` to a power `1+δ`): together they pin the constant-in-log Bertrand boundary
+    on the *second* logarithmic axis, exactly as
+    `not_summable_one_div_nat_mul_log_mul_const` and
+    `summable_one_div_nat_mul_log_mul_const` do on the first axis.  It is the constant-
+    carrying companion of `not_summable_one_div_nat_mul_log_mul_loglog` (`c = 1`); the
+    multiplicative constant inside the logs does not move the threshold.
+
+    Proof: a tail comparison against a scalar multiple of the constant-free divergent
+    series.  On the tail `n ≥ max 8 (⌈c⌉₊ + ⌈8/c⌉₊)` one has `8 ≤ m`, `c ≤ m` (so
+    `log (m·c) ≤ 2·log m`) and `m·c ≥ 8` (so `log (m·c) > 0`); and since `log m ≥ 2`
+    (as `m ≥ 8 > e²`) one has `log 2 ≤ log log m`, hence
+    `log log (m·c) ≤ log (2·log m) = log 2 + log log m ≤ 2·log log m`.  So each
+    term of `1/(m·log m·log log m)` is dominated by `4·1/(m·log (m·c)·log log (m·c))`,
+    and `∑ 1/(n·log n·log log n)` already diverges
+    (`not_summable_one_div_nat_mul_log_mul_loglog`). -/
+theorem not_summable_one_div_nat_mul_log_mul_loglog_mul_const {c : ℝ} (hc : 0 < c) :
+    ¬ Summable (fun n : ℕ =>
+      1 / ((n : ℝ) * Real.log ((n : ℝ) * c) * Real.log (Real.log ((n : ℝ) * c)))) := by
+  intro hsum
+  -- threshold `N₀ ≥ 8`, `≥ c`, `≥ 8/c` (so on the tail `m ≥ 8`, `c ≤ m`, `m·c ≥ 8`)
+  set N₀ : ℕ := max 8 (⌈c⌉₊ + ⌈8 / c⌉₊) with hN₀def
+  have hN₀8 : (8 : ℝ) ≤ (N₀ : ℝ) := by
+    have h : (8 : ℕ) ≤ N₀ := le_max_left _ _
+    exact_mod_cast h
+  have hN₀c : c ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈c⌉₊ ≤ N₀ := (Nat.le_add_right _ _).trans (le_max_right _ _)
+    exact_mod_cast h
+  have hN₀8c : 8 / c ≤ (N₀ : ℝ) := by
+    refine (Nat.le_ceil _).trans ?_
+    have h : ⌈8 / c⌉₊ ≤ N₀ := (Nat.le_add_left _ _).trans (le_max_right _ _)
+    exact_mod_cast h
+  -- `exp 2 ≤ 8`, used to certify `log m ≥ 2` and `log (m·c) ≥ 2` on the tail
+  have hexp2 : Real.exp 2 ≤ 8 := by
+    have he : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
+    have he1 : Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+    have he1pos : 0 < Real.exp 1 := Real.exp_pos 1
+    nlinarith [he, he1, he1pos]
+  -- the given series, shifted past the threshold and scaled by `4`, dominates the
+  -- constant-free second-tier term
+  have hdom : Summable (fun n : ℕ => (4 : ℝ) *
+      (1 / (((n + N₀ : ℕ) : ℝ) * Real.log (((n + N₀ : ℕ) : ℝ) * c) *
+        Real.log (Real.log (((n + N₀ : ℕ) : ℝ) * c))))) :=
+    ((summable_nat_add_iff N₀).mpr hsum).mul_left _
+  apply not_summable_one_div_nat_mul_log_mul_loglog
+  apply (summable_nat_add_iff N₀).mp
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hdom
+  · -- nonnegativity of the shifted constant-free term `1/(m·log m·log log m)`
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm8 : (8 : ℝ) ≤ m := le_trans hN₀8 hmN
+    have hm_pos : 0 < m := by linarith
+    have hlogm_pos : 0 < Real.log m := Real.log_pos (by linarith)
+    have hllm_nonneg : 0 ≤ Real.log (Real.log m) :=
+      Real.log_nonneg (by
+        rw [Real.le_log_iff_exp_le hm_pos]
+        have : Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+        linarith [Real.exp_pos 1, hm8])
+    positivity
+  · -- termwise domination `1/(m·log m·log log m) ≤ 4·(1/(m·log (m·c)·log log (m·c)))`
+    set m : ℝ := ((n + N₀ : ℕ) : ℝ) with hm
+    have hmN : (N₀ : ℝ) ≤ m := by rw [hm]; exact_mod_cast Nat.le_add_left N₀ n
+    have hm8 : (8 : ℝ) ≤ m := le_trans hN₀8 hmN
+    have hm_pos : 0 < m := by linarith
+    have hmc_ge : c ≤ m := le_trans hN₀c hmN
+    have hmc8 : (8 : ℝ) ≤ m * c := (div_le_iff₀ hc).mp (le_trans hN₀8c hmN)
+    have hmc_pos : 0 < m * c := by linarith
+    -- `log m ≥ 2`
+    have hlogm_ge2 : (2 : ℝ) ≤ Real.log m := by
+      rw [Real.le_log_iff_exp_le hm_pos]; linarith [hexp2]
+    have hlogm_pos : 0 < Real.log m := by linarith
+    -- `log (m·c) ≥ 2 > 0`
+    have hlogmc_ge2 : (2 : ℝ) ≤ Real.log (m * c) := by
+      rw [Real.le_log_iff_exp_le hmc_pos]; linarith [hexp2]
+    have hlogmc_pos : 0 < Real.log (m * c) := by linarith
+    -- first axis: `log (m·c) ≤ 2·log m`
+    have hmc_eq : Real.log (m * c) = Real.log m + Real.log c :=
+      Real.log_mul (ne_of_gt hm_pos) (ne_of_gt hc)
+    have hlogc_le : Real.log c ≤ Real.log m := Real.log_le_log hc hmc_ge
+    have hcrux1 : Real.log (m * c) ≤ 2 * Real.log m := by rw [hmc_eq]; linarith
+    -- second axis: `log log (m·c) ≤ 2·log log m`
+    have hllm_nonneg : 0 ≤ Real.log (Real.log m) :=
+      Real.log_nonneg (by linarith)
+    have hllmc_nonneg : 0 ≤ Real.log (Real.log (m * c)) :=
+      Real.log_nonneg (by linarith)
+    have hlog2_le_llm : Real.log 2 ≤ Real.log (Real.log m) :=
+      Real.log_le_log (by norm_num) hlogm_ge2
+    have hstep2 : Real.log (2 * Real.log m) = Real.log 2 + Real.log (Real.log m) :=
+      Real.log_mul (by norm_num) (ne_of_gt hlogm_pos)
+    have hcrux2 : Real.log (Real.log (m * c)) ≤ 2 * Real.log (Real.log m) := by
+      have hle : Real.log (Real.log (m * c)) ≤ Real.log (2 * Real.log m) :=
+        Real.log_le_log hlogmc_pos hcrux1
+      rw [hstep2] at hle; linarith
+    -- positivity of the two denominators
+    have hDc_pos : 0 < m * Real.log m * Real.log (Real.log m) := by
+      have hllm_pos : 0 < Real.log (Real.log m) := Real.log_pos (by linarith)
+      positivity
+    have hDt_pos : 0 < m * Real.log (m * c) * Real.log (Real.log (m * c)) := by
+      have hllmc_pos : 0 < Real.log (Real.log (m * c)) := Real.log_pos (by linarith)
+      positivity
+    rw [mul_one_div, div_le_div_iff₀ hDc_pos hDt_pos, one_mul]
+    -- goal: `(m·log(m·c)·loglog(m·c)) ≤ 4·(m·log m·loglog m)`
+    calc m * Real.log (m * c) * Real.log (Real.log (m * c))
+        ≤ m * (2 * Real.log m) * (2 * Real.log (Real.log m)) := by
+          apply mul_le_mul _ hcrux2 hllmc_nonneg
+            (mul_nonneg hm_pos.le (by linarith))
+          exact mul_le_mul_of_nonneg_left hcrux1 hm_pos.le
+      _ = 4 * (m * Real.log m * Real.log (Real.log m)) := by ring
+
 end Erdos3Bertrand
