@@ -200,7 +200,54 @@ theorem exists_avoiding_all_events {ω ι : Type*} (Ω : Finset ω) (hΩ : Ω.No
   rw [Finset.card_eq_zero] at hz
   have hmem : i ∈ I.filter (fun i => A i w) := Finset.mem_filter.mpr ⟨hi, hAi⟩
   rw [hz] at hmem
-  exact absurd hmem (Finset.not_mem_empty i)
+  exact absurd hmem (Finset.notMem_empty i)
+
+/-- **Probabilistic-method existence, uniform per-event bound.**  The interface a concrete
+model actually plugs into: if *every* event `A i` occurs at no more than `c` samples and the
+crude union total `|I| · c` is still `< |Ω|`, then some sample avoids **every** event.  This
+is the shape of the Ramsey argument — each of the `C(n,k)` candidate `k`-cliques is
+monochromatic in the same `2^{1 - C(k,2)}` fraction of colourings, and `C(n,k) · that < 1`
+delivers a good colouring — with no per-event bookkeeping beyond the uniform bound `c`.
+Derived from `exists_avoiding_all_events` by `∑_{i} #{w : A i w} ≤ ∑_{i} c = |I| · c`. -/
+theorem exists_avoiding_all_events_of_uniform_bound {ω ι : Type*}
+    (Ω : Finset ω) (hΩ : Ω.Nonempty) (I : Finset ι) (A : ι → ω → Prop)
+    [∀ i w, Decidable (A i w)] {c : ℚ}
+    (hc : ∀ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ) ≤ c)
+    (h : (I.card : ℚ) * c < Ω.card) :
+    ∃ w ∈ Ω, ∀ i ∈ I, ¬ A i w := by
+  apply exists_avoiding_all_events Ω hΩ I A
+  calc ∑ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ)
+      ≤ ∑ _i ∈ I, c := Finset.sum_le_sum hc
+    _ = (I.card : ℚ) * c := by rw [Finset.sum_const, nsmul_eq_mul]
+    _ < Ω.card := h
+
+/-- **Union-bound count of good samples (Bonferroni).**  A quantitative refinement of
+`exists_avoiding_all_events`: the number of samples avoiding every event is at least
+`|Ω| − ∑_i #{w : A i w}` — here stated additively over `ℕ` as
+`|Ω| ≤ #{avoiding} + ∑_i #{w : A i w}`.  Where `exists_avoiding_all_events` produces *one*
+good sample when the total incidence is `< |Ω|`, this bounds *how many* there are, so a
+strict inequality yields a whole positive-density set of good outcomes.  Proof: the bad
+samples `{w : ∃ i ∈ I, A i w}` inject into `⋃_i {w : A i w}`, whose size is at most
+`∑_i #{w : A i w}` by `Finset.card_biUnion_le`; add the complement split. -/
+theorem card_avoiding_add_events_ge {ω ι : Type*} (Ω : Finset ω) (I : Finset ι)
+    (A : ι → ω → Prop) [∀ i w, Decidable (A i w)] [DecidableEq ω] :
+    Ω.card ≤ (Ω.filter (fun w => ∀ i ∈ I, ¬ A i w)).card
+      + ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+  classical
+  have hsplit : (Ω.filter (fun w => ∀ i ∈ I, ¬ A i w)).card
+      + (Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)).card = Ω.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  have hbad : (Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)).card
+      ≤ ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+    have hsub : Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)
+        ⊆ I.biUnion (fun i => Ω.filter (fun w => A i w)) := by
+      intro w hw
+      rw [Finset.mem_filter] at hw
+      push_neg at hw
+      obtain ⟨i, hi, hAi⟩ := hw.2
+      exact Finset.mem_biUnion.mpr ⟨i, hi, Finset.mem_filter.mpr ⟨hw.1, hAi⟩⟩
+    exact (Finset.card_le_card hsub).trans Finset.card_biUnion_le
+  omega
 
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
@@ -401,5 +448,121 @@ theorem expectedMonoCliques_lt_one_of_lt_sqrt {n k : ℕ} (hk : 3 ≤ k)
   -- Descend to `ℕ`.
   have hcast : ((n ^ 2 : ℕ) : ℝ) < ((2 ^ k : ℕ) : ℝ) := by push_cast; linarith
   exact_mod_cast hcast
+
+/-! ## Base values of the expected count
+
+The Ramsey block above pins `E(n,k)` against `1` (the density threshold). The three
+values below pin the *formula* itself at its natural boundary points, dual to the
+sub-threshold range: it vanishes below the diagonal, is positive exactly from the
+diagonal onward, and takes an explicit value at the diagonal. -/
+
+/-- **Below the diagonal the expected count vanishes.**  For `n < k` there are no
+`k`-subsets of an `n`-set, so `C(n,k) = 0` and `E(n,k) = 0`.  The `δ = 0` base value of
+the formula, complementing the positivity characterization `expectedMonoCliques_pos_iff`. -/
+theorem expectedMonoCliques_eq_zero_of_lt {n k : ℕ} (h : n < k) :
+    expectedMonoCliques n k = 0 := by
+  unfold expectedMonoCliques
+  rw [Nat.choose_eq_zero_of_lt h, Nat.cast_zero, zero_mul]
+
+/-- **Positivity characterizes `k ≤ n`.**  The expected number of monochromatic
+`k`-cliques is strictly positive iff the vertex set is large enough to contain a
+`k`-clique at all: `0 < E(n,k) ↔ k ≤ n`.  The `2^{1−C(k,2)}` factor is always positive,
+so positivity is governed entirely by `C(n,k)`; the "iff" companion of
+`expectedMonoCliques_eq_zero_of_lt`. -/
+theorem expectedMonoCliques_pos_iff {n k : ℕ} :
+    0 < expectedMonoCliques n k ↔ k ≤ n := by
+  unfold expectedMonoCliques
+  have hpow : (0 : ℚ) < (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by positivity
+  constructor
+  · intro hpos
+    by_contra hlt
+    push_neg at hlt
+    rw [Nat.choose_eq_zero_of_lt hlt, Nat.cast_zero, zero_mul] at hpos
+    exact lt_irrefl 0 hpos
+  · intro hle
+    have hc : (0 : ℚ) < (n.choose k : ℚ) := by exact_mod_cast Nat.choose_pos hle
+    exact mul_pos hc hpow
+
+/-- **Exact value on the diagonal.**  `E(k,k) = 2^{1−C(k,2)}`: an `n = k` vertex set has a
+single potential `k`-clique (`C(k,k) = 1`), monochromatic with probability `2·2^{−C(k,2)}`.
+The base value at the diagonal; for `k ≥ 3` it is already `< 1` (since `C(k,2) ≥ 3`),
+the trivial endpoint `R(k,k) > k` underneath `expectedMonoCliques_lt_one_pow`. -/
+theorem expectedMonoCliques_self (k : ℕ) :
+    expectedMonoCliques k k = (2 : ℚ) ^ (1 - (k.choose 2 : ℤ)) := by
+  unfold expectedMonoCliques
+  rw [Nat.choose_self, Nat.cast_one, one_mul]
+
+/-- **Canonical `zpow`-free rational form of the expected count.**
+`E(n,k) = (C(n,k)·2) / 2^{C(k,2)}` — the value-level companion of
+`expectedMonoCliques_lt_one_iff` (which compares the numerator to the denominator).
+Rewriting away the integer `zpow (1 − C(k,2))` into a plain `ℕ`-power quotient is the form
+every downstream numeric estimate or evaluation of `E` actually wants; the `< 1` iff is
+then just `div_lt_one` on this quotient. -/
+theorem expectedMonoCliques_eq_div (n k : ℕ) :
+    expectedMonoCliques n k = ((n.choose k : ℚ) * 2) / (2 : ℚ) ^ (k.choose 2) := by
+  unfold expectedMonoCliques
+  rw [sub_eq_add_neg, zpow_add₀ (by norm_num : (2 : ℚ) ≠ 0), zpow_one, zpow_neg,
+    zpow_natCast, div_eq_mul_inv]
+  ring
+
+/-- **The expected count is nonnegative** — the base fact recorded by the parent gallery
+lemma `expected_mono_cliques`, on which the whole first-moment argument rests: `E(n,k) ≥ 0`
+for all `n, k`. The `< 1` upper bounds sit *above* this floor; together they trap `E` in
+`[0, 1)` on the sub-threshold range, the exact window the probabilistic method exploits.
+The strict companion `0 < E ↔ k ≤ n` is `expectedMonoCliques_pos_iff`. -/
+theorem expectedMonoCliques_nonneg (n k : ℕ) : 0 ≤ expectedMonoCliques n k := by
+  unfold expectedMonoCliques
+  exact mul_nonneg (Nat.cast_nonneg _) (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
+
+<<<<<<< Updated upstream
+/-- **The diagonal is already sub-threshold: `E(k,k) < 1` for `k ≥ 3`.**  Turning the
+`expectedMonoCliques_self` docstring remark into a theorem: at `n = k` the single potential
+clique is monochromatic with probability `2^{1−C(k,2)}`, and for `k ≥ 3` (so `C(k,2) ≥ 3`)
+this is at most `2^{−2} = ¼ < 1`.  Via `E(k,k) = 2 / 2^{C(k,2)}` (`expectedMonoCliques_eq_div`
+at `C(k,k) = 1`) the bound reduces to `2 < 2^{C(k,2)}`.  This is the trivial Ramsey endpoint
+`R(k,k) > k` — the `n = k` base value underneath the asymptotic `2^{k/2}` bounds
+(`expectedMonoCliques_lt_one_pow`): the expected count is `< 1` already on the diagonal, so
+first-moment yields a good colouring of `K_k`. -/
+theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques k k < 1 := by
+  rw [expectedMonoCliques_eq_div, Nat.choose_self, Nat.cast_one, one_mul]
+  have h3 : 3 ≤ k.choose 2 := by
+    calc 3 = (3 : ℕ).choose 2 := by decide
+      _ ≤ k.choose 2 := Nat.choose_le_choose 2 hk
+  have hden : (2 : ℚ) < (2 : ℚ) ^ (k.choose 2) := by
+    calc (2 : ℚ) = 2 ^ 1 := (pow_one 2).symm
+      _ < 2 ^ (k.choose 2) := by
+          apply pow_lt_pow_right₀ (by norm_num : (1 : ℚ) < 2); omega
+  rw [div_lt_one (by positivity)]
+  exact hden
+=======
+/-- **The `≥ 1` threshold — dual of `expectedMonoCliques_lt_one_iff`.**  The expected count
+is at least `1` *exactly* when `2^{C(k,2)} ≤ C(n,k)·2`.  Together with the strict `< 1`
+criterion this pins the sharp cutoff of the first-moment method: below it (`E < 1`) a
+clique-free 2-colouring is forced to exist, while at or above it the first moment no longer
+delivers one.  Proof: `one_le_div` on the `zpow`-free quotient `expectedMonoCliques_eq_div`. -/
+theorem expectedMonoCliques_one_le_iff (n k : ℕ) :
+    1 ≤ expectedMonoCliques n k ↔ (2 : ℚ) ^ (k.choose 2) ≤ (n.choose k : ℚ) * 2 := by
+  rw [expectedMonoCliques_eq_div,
+    le_div_iff₀ (by positivity : (0 : ℚ) < (2 : ℚ) ^ (k.choose 2)), one_mul]
+
+/-- **Diagonal endpoint `E(k,k) < 1` for `k ≥ 3`.**  The value `expectedMonoCliques_self`
+computes `E(k,k) = 2^{1−C(k,2)}`, and for `k ≥ 3` the exponent `1 − C(k,2) ≤ −2` (since
+`C(k,2) ≥ C(3,2) = 3`), so `E(k,k) ≤ 2^{−2} = 1/4 < 1`.  This is the trivial diagonal Ramsey
+bound `R(k,k) > k` underneath `expectedMonoCliques_lt_one_pow`, promoted from the prose
+remark in `expectedMonoCliques_self`'s docstring to a lemma.  Notably it is *not* an instance
+of `expectedMonoCliques_lt_one_of_sq_lt` (which needs `k² < 2^k`, false at `k = 3`: `9 > 8`) —
+on the diagonal the bound is governed directly by the negative exponent, not the square. -/
+theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques k k < 1 := by
+  rw [expectedMonoCliques_self]
+  have hc2 : 3 ≤ k.choose 2 := by
+    have h := Nat.choose_mono 2 hk
+    simpa using h
+  have hexp : (1 : ℤ) - (k.choose 2 : ℤ) ≤ -2 := by omega
+  calc (2 : ℚ) ^ (1 - (k.choose 2 : ℤ))
+      ≤ (2 : ℚ) ^ (-2 : ℤ) := zpow_le_zpow_right₀ (by norm_num) hexp
+    _ < 1 := by norm_num
+>>>>>>> Stashed changes
 
 end ProbMethod.ExpectationOQ04

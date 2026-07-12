@@ -100,7 +100,7 @@
       "quintic_card_intermediateField_eq_card_subgroup: the concrete instantiation linking the abstract correspondence to OQ-01's Abel–Ruffini witness X⁵ − 4X + 2 (splitting field Galois over ℚ with group S₅)."
     ],
     "assumptions": "None mathematically: the file has 0 `sorry` and 0 `axiom` declarations and uses no `native_decide`; the content is a faithful packaging of Mathlib's already-machine-checked Fundamental Theorem of Galois Theory plus elementary corollaries, so the only foundational axioms involved are the standard `propext`, `Classical.choice`, `Quot.sound`. Caveat: local docker build verification is pending due to a Mathlib-cache permission infra outage at commit time (see `buildStatus`); the PR is opened as a draft so it is not auto-merged before the build is confirmed.",
-    "theoremCount": 10,
+    "theoremCount": 12,
     "definitionCount": 3
   },
   "overview": {
@@ -153,6 +153,80 @@
       "endLine": 201,
       "summary": "`isGalois_fixedField_of_normal` and `normalQuotientEquiv` (normal H ↦ Galois subextension with quotient Galois group); then the Quintic section: `IsGalois ℚ (X⁵−4X+2).SplittingField` and `quintic_card_intermediateField_eq_card_subgroup`.",
       "mathContext": "Normal subgroups correspond to Galois subextensions with quotient group as Galois group; instantiated on the concrete Abel–Ruffini witness whose group is S₅."
+    }
+  ],
+  "theorems": [
+    {
+      "name": "fixedField_fixingSubgroup",
+      "type": "core",
+      "description": "First round trip of the Galois correspondence: starting from an intermediate field K, taking its fixing subgroup and then the fixed field of that subgroup recovers K exactly (fixedField K.fixingSubgroup = K).",
+      "leanType": "(K : IntermediateField F E) → fixedField K.fixingSubgroup = K"
+    },
+    {
+      "name": "fixingSubgroup_fixedField",
+      "type": "core",
+      "description": "Second round trip: starting from a subgroup H, taking its fixed field and then the fixing subgroup of that field recovers H exactly. Together with fixedField_fixingSubgroup this establishes the bijection.",
+      "leanType": "(H : Subgroup (E ≃ₐ[F] E)) → (fixedField H).fixingSubgroup = H"
+    },
+    {
+      "name": "le_iff_fixingSubgroup_le",
+      "type": "core",
+      "description": "The correspondence is inclusion-reversing: a larger intermediate field fixes fewer automorphisms, so K ≤ L ↔ L.fixingSubgroup ≤ K.fixingSubgroup. This is what makes galoisCorrespondence an order iso onto the order dual of the subgroup lattice.",
+      "leanType": "{K L : IntermediateField F E} → (K ≤ L ↔ L.fixingSubgroup ≤ K.fixingSubgroup)"
+    },
+    {
+      "name": "fixingSubgroup_bot",
+      "type": "supporting",
+      "description": "Endpoint: the base field F (bottom intermediate field) is fixed by every automorphism, so ⊥.fixingSubgroup = ⊤ (the whole Galois group).",
+      "leanType": "(⊥ : IntermediateField F E).fixingSubgroup = ⊤"
+    },
+    {
+      "name": "fixingSubgroup_top",
+      "type": "supporting",
+      "description": "Endpoint: the whole field E (top intermediate field) is fixed only by the identity, so ⊤.fixingSubgroup = ⊥ (the trivial subgroup).",
+      "leanType": "(⊤ : IntermediateField F E).fixingSubgroup = ⊥"
+    },
+    {
+      "name": "fixedField_bot",
+      "type": "supporting",
+      "description": "Dual endpoint: the trivial subgroup fixes everything, so fixedField ⊥ = ⊤ (the whole field E).",
+      "leanType": "fixedField (⊥ : Subgroup (E ≃ₐ[F] E)) = ⊤"
+    },
+    {
+      "name": "fixedField_top",
+      "type": "supporting",
+      "description": "Dual endpoint: the whole Galois group fixes only the base field, so fixedField ⊤ = ⊥ (the base field F).",
+      "leanType": "fixedField (⊤ : Subgroup (E ≃ₐ[F] E)) = ⊥"
+    },
+    {
+      "name": "card_intermediateField_eq_card_subgroup",
+      "type": "core",
+      "description": "Counting corollary: a finite Galois extension has exactly as many intermediate fields as its Galois group has subgroups, obtained from the plain bijection intermediateFieldEquivSubgroup'.",
+      "leanType": "Nat.card (IntermediateField F E) = Nat.card (Subgroup (E ≃ₐ[F] E))"
+    },
+    {
+      "name": "card_fixingSubgroup_eq_finrank",
+      "type": "core",
+      "description": "Degree dictionary, upper half: the degree [E : K] of the top of the tower over an intermediate field K equals the order of the corresponding subgroup K.fixingSubgroup = Gal(E/K).",
+      "leanType": "(K : IntermediateField F E) → Nat.card K.fixingSubgroup = Module.finrank K E"
+    },
+    {
+      "name": "finrank_eq_index_fixingSubgroup",
+      "type": "core",
+      "description": "Degree dictionary, lower half: the degree [K : F] of the bottom of the tower equals the index of the corresponding subgroup. Assembled from the tower law, the Galois count |Gal(E/F)| = [E:F], the upper-half dictionary, and index·order = group order.",
+      "leanType": "(K : IntermediateField F E) → Module.finrank F K = K.fixingSubgroup.index"
+    },
+    {
+      "name": "isGalois_fixedField_of_normal",
+      "type": "core",
+      "description": "Normal refinement: a normal subgroup H corresponds to a Galois subextension — fixedField H is Galois over the base field F. (Its Galois group is the quotient Gal(E/F)⧸H, packaged separately as normalQuotientEquiv.)",
+      "leanType": "(H : Subgroup (E ≃ₐ[F] E)) → [H.Normal] → IsGalois F (fixedField H)"
+    },
+    {
+      "name": "quintic_card_intermediateField_eq_card_subgroup",
+      "type": "core",
+      "description": "Concrete instantiation on the Abel–Ruffini witness X⁵ − 4X + 2: the intermediate fields of its splitting field over ℚ are in bijection with the subgroups of its Galois group, which by OQ-01 is S₅. So the subfield lattice mirrors the subgroup lattice of S₅.",
+      "leanType": "Nat.card (IntermediateField ℚ q.SplittingField) = Nat.card (Subgroup (q.SplittingField ≃ₐ[ℚ] q.SplittingField))"
     }
   ],
   "conclusion": {

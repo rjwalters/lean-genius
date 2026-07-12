@@ -41,7 +41,8 @@
       "The result is sharper than solvability: `derivedSeries G 2 = ⊥` is an explicit subgroup equality pinning the solvable class at ≤ 2. Mathlib's `solvable_of_ker_le_range` proves only `∃ n, derivedSeries G n = ⊥` with n bounded by the sum of the two lengths — it never surfaces the exact class-2 statement that IS the definition of metabelian.",
       "No homomorphisms are constructed. The parent's dihedral proof built an explicit parity character and rotation inclusion; here the entire argument is a derived-series descent — push the commutator into N along mk', then annihilate it with the abelian bracket — so it applies to ANY normal abelian subgroup with abelian quotient, with no per-group data.",
       "Cyclic ⟹ metabelian ⟹ solvable is the honest hierarchy: `comm_of_isCyclic` (from `IsCyclic.commGroup`) is the only extra ingredient the metacyclic case needs over the metabelian theorem, so cyclic-by-cyclic solvability is a one-line corollary once the class-2 bound is in hand.",
-      "The dihedral groups Dₙ of the parent entry, and the solvable symmetric groups S₂, S₃, S₄ (each with an abelian normal subgroup and abelian quotient), are all instances — the theorem isolates the single structural reason all of them are solvable of class ≤ 2, decoupled from their concrete presentations."
+      "The dihedral groups Dₙ of the parent entry, and the solvable symmetric groups S₂, S₃, S₄ (each with an abelian normal subgroup and abelian quotient), are all instances — the theorem isolates the single structural reason all of them are solvable of class ≤ 2, decoupled from their concrete presentations.",
+      "The metacyclic case (OQ-03) is exactly the local building block of solvability by radicals. Adjoining a single radical to a field gives a Galois group that is cyclic (or abelian-by-cyclic), i.e. metacyclic, and its Galois-group step is therefore solvable of derived length ≤ 2 by this theorem. Iterating up a radical tower stacks these class-≤2 steps, and because derived length is subadditive across extensions the whole Galois group stays solvable — the precise group-theoretic reason a tower of radicals produces a solvable Galois group, and dually why Abel–Ruffini's non-solvable Sₙ (n ≥ 5) cannot arise from any such tower."
     ],
     "prerequisites": [
       "The derived series derivedSeries and its map lemmas (Mathlib GroupTheory/Solvable): map_derivedSeries_eq for surjections, derivedSeries_succ, derivedSeries_zero",
@@ -69,12 +70,20 @@
       "mathContext": "$IsCyclic\\ H \\Rightarrow \\forall a\\,b,\\ ab = ba$. The generator $g$ has every element a power $g^k$, and powers of a fixed element commute."
     },
     {
-      "id": "metabelian-class-two",
+      "id": "metabelian-derived-length",
       "title": "Metabelian ⟹ Derived Length ≤ 2",
       "startLine": 65,
-      "endLine": 101,
-      "summary": "derivedSeries_two_eq_bot_of_metabelian: for N ◁ G with N abelian and G ⧸ N abelian, derivedSeries G 2 = ⊥. Step 1 pushes the commutator into N along mk' (map_derivedSeries_eq + map_eq_bot_iff + ker_mk'); Step 2 annihilates ⁅N,N⁆ via N ≤ centralizer N, then commutator_mono. isSolvable_of_metabelian packages the solvability corollary.",
+      "endLine": 93,
+      "summary": "derivedSeries_two_eq_bot_of_metabelian: for N ◁ G with N abelian and G ⧸ N abelian, derivedSeries G 2 = ⊥. Step 1 pushes the commutator into N along the quotient map mk' (map_derivedSeries_eq + map_eq_bot_iff + ker_mk', so [G,G] ≤ N); Step 2 annihilates ⁅N,N⁆ using N ≤ centralizer N (N abelian) together with commutator_mono. This is the exact derived-length statement, not merely solvability.",
       "mathContext": "$G/N$ abelian $\\Rightarrow [G,G]\\le N$; $N$ abelian $\\Rightarrow [N,N]=1$; hence $[[G,G],[G,G]]\\le[N,N]=1$, i.e. $G^{(2)}=1$."
+    },
+    {
+      "id": "metabelian-solvable",
+      "title": "Metabelian ⟹ Solvable (corollary)",
+      "startLine": 94,
+      "endLine": 101,
+      "summary": "isSolvable_of_metabelian packages the corollary: since derivedSeries G 2 = ⊥, the group is solvable (of derived length at most 2). This is the clean, reusable solvability statement callers depend on, obtained directly from the derived-length lemma above.",
+      "mathContext": "$G^{(2)} = 1 \\Rightarrow G$ solvable of derived length $\\le 2$ (abelian-by-abelian $\\Rightarrow$ solvable)."
     },
     {
       "id": "metacyclic",

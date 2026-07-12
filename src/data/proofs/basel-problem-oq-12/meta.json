@@ -85,18 +85,26 @@
     {
       "id": "bernoulli-six",
       "title": "The Bernoulli Number B₆ = 1/42",
-      "startLine": 41,
-      "endLine": 56,
-      "summary": "bernoulli'_six and bernoulli_six: compute B₆ = 1/42 from the recurrence bernoulli'_def, the one value Mathlib's explicit table omits.",
-      "mathContext": "Expands the order-6 Bernoulli recurrence; the odd term B₅ vanishes by bernoulli'_eq_zero_of_odd, leaving an inner sum of 41/42."
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "bernoulli'_six computes B₆ = 1/42 from the defining recurrence bernoulli'_def (the odd term B₅ vanishes by bernoulli'_eq_zero_of_odd, leaving an inner sum of 41/42); bernoulli_six transfers it to the signed bernoulli 6 via bernoulli_eq_bernoulli'_of_ne_one. This is the one value Mathlib's explicit table (which stops at bernoulli'_four) omits — the genuine new content of the entry.",
+      "mathContext": "$B_6 = 1 - \\sum_{k<6}\\binom{6}{k}\\frac{B_k}{6-k+1} = 1 - \\frac{41}{42} = \\frac{1}{42}$."
     },
     {
       "id": "zeta-six",
       "title": "ζ(6) = π⁶/945",
-      "startLine": 58,
+      "startLine": 59,
+      "endLine": 67,
+      "summary": "hasSum_zeta_six: the sixth-power zeta value as a HasSum, obtained by specialising Euler's general formula hasSum_zeta_nat at k = 3 and plugging in bernoulli 6 = 1/42, then evaluating the rational coefficient 32/(42·720) = 1/945 by norm_num + ring.",
+      "mathContext": "$\\zeta(6) = (-1)^4\\,2^5\\,\\pi^6\\,B_6/6! = 32\\pi^6(1/42)/720 = \\pi^6/945$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Summability and tsum Corollaries",
+      "startLine": 69,
       "endLine": 76,
-      "summary": "hasSum_zeta_six, summable_zeta_six, tsum_zeta_six: the sixth-power zeta value via hasSum_zeta_nat at k = 3 with B₆ = 1/42.",
-      "mathContext": "Specialises Euler's general zeta formula and evaluates the resulting rational coefficient 32/(42·720) = 1/945."
+      "summary": "summable_zeta_six and tsum_zeta_six: the standard consequences of the HasSum statement — summability of ∑ 1/n⁶ over ℝ, and the tsum form ∑' n, 1/n⁶ = π⁶/945 — obtained directly from hasSum_zeta_six via .summable and .tsum_eq.",
+      "mathContext": "$\\sum'_{n} n^{-6} = \\pi^6/945$."
     }
   ],
   "conclusion": {
@@ -122,6 +130,16 @@
       "targetId": "basel-problem-oq-15",
       "relationship": "extendedBy",
       "description": "ζ(8) = π⁸/9450, the k = 4 case — the next even zeta value in Euler's family after this ζ(6), built from the same hasSum_zeta_nat template with B₈ = −1/30. It realises this entry's first open question (\"Can ζ(8) = π⁸/9450 be obtained the same way?\"), the B₈ recurrence consuming this entry's B₆ = 1/42 as a summand."
+    },
+    {
+      "targetId": "basel-problem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The arithmetic-nature companion to this explicit evaluation: it proves every even zeta value ζ(2n) is irrational (indeed transcendental, being a rational multiple of π^{2n} as ζ(6) = π⁶/945 witnesses here) and records that the odd case ζ(2n+1) remains open — the transcendence remark this entry's historical context raises, stated as a general theorem."
+    },
+    {
+      "targetId": "basel-problem-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The odd-zeta counterpoint referenced in this entry's historical context: Apéry's 1978 proof that ζ(3) is irrational — the sole odd zeta value whose arithmetic nature is settled, in stark contrast to the fully-understood even values like this ζ(6) = π⁶/945."
     }
   ],
   "sorries": 0,

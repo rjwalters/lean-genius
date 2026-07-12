@@ -30,6 +30,12 @@
     `¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪u,v⟫)² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²` (via the Gram form).
   * `robertson_of_schrodinger` — Robertson recovered by dropping the covariance term.
   * `heisenberg_variance_form` — the same at `a = ⟨A⟩`, `b = ⟨B⟩` (variance form).
+  * `robertson_std_form` / `heisenberg_std_form` / `heisenberg_canonical_std` — the
+    literal *standard-deviation* form `Δx·Δp ≥ ½‖⟪[A,B]⟫‖`, i.e. `Δx·Δp ≥ ℏ/2`,
+    obtained by taking square roots of the (squared) variance bounds above.
+  * `robertson_sum_form` / `heisenberg_sum_form` / `heisenberg_canonical_sum` — the
+    additive form `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖`, the AM–GM consequence of the
+    product bound.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -134,6 +140,26 @@ theorem gram_eq_iff_parallel {u v : E} (hu : u ≠ 0) (hv : v ≠ 0) :
       have hz2 : ‖u‖ * ‖v‖ = 0 := by linarith
       linarith
   · intro h; rw [h]
+
+/-- **Strict Gram inequality off the minimum-uncertainty locus.**  For nonzero centred
+    vectors `u, v` that are *not* parallel (no `r ≠ 0` with `v = r • u`), the sharp
+    Cauchy–Schwarz / Gram bound is **strict**:
+
+      `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² < ‖u‖²·‖v‖²`.
+
+    This is the `<`-completion of the `≤` bound `inner_sq_le_gram` and its `=`-case
+    `gram_eq_iff_parallel`: equality holds *exactly* on the parallel (minimum-uncertainty)
+    states, so anywhere off that locus the inequality is strict.  With
+    `u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ` it says the Schrödinger uncertainty bound is strictly
+    positive unless `ψ` is a generalized coherent/squeezed state
+    `(B−⟨B⟩)ψ = r·(A−⟨A⟩)ψ`. -/
+theorem inner_sq_lt_gram_of_not_parallel {u v : E} (hu : u ≠ 0) (hv : v ≠ 0)
+    (hpar : ¬ ∃ r : 𝕜, r ≠ 0 ∧ v = r • u) :
+    (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2
+      < ‖u‖ ^ 2 * ‖v‖ ^ 2 := by
+  rcases lt_or_eq_of_le (inner_sq_le_gram (𝕜 := 𝕜) u v) with h | h
+  · exact h
+  · exact absurd ((gram_eq_iff_parallel hu hv).mp h) hpar
 
 /-! ## The full Robertson uncertainty relation
 
@@ -530,6 +556,308 @@ theorem heisenberg_canonical {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
     (RCLike.re (inner 𝕜 ψ (B ψ))) c hc
   rwa [hψ, one_pow, mul_one] at h
 
+/-! ## The literal `Δx·Δp ≥ ℏ/2` (product-of-standard-deviations form)
+
+All the results above are stated in the **squared / variance** form
+`Var(A)·Var(B) ≥ ¼‖⟪ψ,[A,B]ψ⟫‖²`.  The Heisenberg principle is more often written in
+its **standard-deviation** form `Δx·Δp ≥ ℏ/2`, i.e. with the square roots taken:
+
+  `‖(A−a)ψ‖·‖(B−b)ψ‖ ≥ ½·‖⟪ψ,[A,B]ψ⟫‖`.
+
+Since both sides are nonnegative, this is *equivalent* to `robertson_uncertainty`,
+obtained by taking `Real.sqrt` of both sides (`Real.sqrt_sq` on the nonnegative
+squared quantities).  We record it explicitly because it is the form that appears
+in physics texts and that the OQ-04 prompt literally asks for. -/
+
+/-- **Robertson uncertainty relation, standard-deviation form.**  The un-squared
+`Δx·Δp ≥ ½|⟪[A,B]⟫|`: for symmetric `A, B`, any state `ψ` and any real shifts `a, b`,
+
+  `½·‖⟪ψ, (AB−BA)ψ⟫‖ ≤ ‖(A−a)ψ‖·‖(B−b)ψ‖`.
+
+This is `robertson_uncertainty` with the square roots taken (both sides are
+nonnegative), the physically standard `Δx·Δp ≥ ℏ/2` shape. -/
+theorem robertson_std_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ := by
+  have hrob := robertson_uncertainty hA hB ψ a b
+  have hl : (0 : ℝ) ≤ (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ := by positivity
+  have hr : (0 : ℝ) ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ :=
+    mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  have key : ((1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖) ^ 2
+      ≤ (‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖) ^ 2 := by
+    nlinarith [hrob]
+  calc (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      = Real.sqrt (((1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖) ^ 2) :=
+        (Real.sqrt_sq hl).symm
+    _ ≤ Real.sqrt ((‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖) ^ 2) :=
+        Real.sqrt_le_sqrt key
+    _ = ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ := Real.sqrt_sq hr
+
+/-- **Heisenberg uncertainty principle, standard-deviation form.**  Instantiating
+`robertson_std_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+makes each factor the standard deviation `Δ_ψ A = ‖(A−⟨A⟩)ψ‖`, `Δ_ψ B = ‖(B−⟨B⟩)ψ‖`,
+giving the physically standard
+
+  `Δ_ψ(A)·Δ_ψ(B) ≥ ½·‖⟪ψ, (AB−BA)ψ⟫‖`. -/
+theorem heisenberg_std_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    (1 / 2 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ :=
+  robertson_std_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
+/-- **The literal `Δx·Δp ≥ ℏ/2`.**  For a normalized state `‖ψ‖ = 1` obeying a canonical
+commutation relation `(AB − BA)ψ = c • ψ` (abstractly `[x, p] = iℏ`, so `‖c‖ = ℏ`), the
+product of standard deviations is bounded below by `½‖c‖`:
+
+  `Δ_ψ(A)·Δ_ψ(B) ≥ ½‖c‖`.
+
+For `‖c‖ = ℏ` this is exactly Heisenberg's `Δx·Δp ≥ ℏ/2` — the un-squared form of
+`heisenberg_canonical`, obtained from `robertson_std_form` since the commutator
+expectation is `⟪ψ, (AB−BA)ψ⟫ = c‖ψ‖² = c`. -/
+theorem heisenberg_canonical_std {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (hψ : ‖ψ‖ = 1) (c : 𝕜)
+    (hc : A (B ψ) - B (A ψ) = c • ψ) :
+    ‖c‖ / 2
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ := by
+  have h := heisenberg_std_form hA hB ψ
+  have hnorm : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = ‖c‖ := by
+    rw [hc, inner_smul_right, norm_mul, inner_self_eq_norm_sq_to_K, norm_pow,
+      RCLike.norm_ofReal, abs_of_nonneg (norm_nonneg ψ), hψ, one_pow, mul_one]
+  rw [hnorm] at h
+  linarith [h]
+
+/-- **Schrödinger uncertainty principle, standard-deviation form.**  The Schrödinger
+analogue of `robertson_std_form`: taking square roots of the (nonnegative) two sides of
+`schrodinger_uncertainty` — whose right side `‖(A−a)ψ‖²·‖(B−b)ψ‖²` is the square of the
+product of standard deviations — gives the tighter-than-Heisenberg bound
+
+  `√(¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪(A−a)ψ,(B−b)ψ⟫)²) ≤ ‖(A−a)ψ‖·‖(B−b)ψ‖`.
+
+Dropping the covariance term under the root recovers `robertson_std_form`. -/
+theorem schrodinger_std_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    Real.sqrt ((1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) ^ 2)
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ := by
+  have hsch := schrodinger_uncertainty hA hB ψ a b
+  have hr : (0 : ℝ) ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ :=
+    mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  rw [show ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖
+        = Real.sqrt ((‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖) ^ 2) from
+      (Real.sqrt_sq hr).symm]
+  apply Real.sqrt_le_sqrt
+  rw [mul_pow]
+  exact hsch
+
+/-- **Schrödinger uncertainty principle, standard-deviation form at the expectation
+values.**  Instantiating `schrodinger_std_form` at `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+turns each right-hand factor into a standard deviation, giving Schrödinger's sharpening of
+`heisenberg_std_form`:
+
+  `√(¼‖⟪ψ,[A,B]ψ⟫‖² + Cov_ψ(A,B)²) ≤ Δ_ψ(A)·Δ_ψ(B)`,
+
+with `Cov_ψ(A,B) = Re⟪(A−⟨A⟩)ψ,(B−⟨B⟩)ψ⟫`.  The square-root companion of
+`schrodinger_variance_form`, and the Schrödinger counterpart of `heisenberg_std_form`. -/
+theorem schrodinger_std_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    Real.sqrt ((1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ)
+            (B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ)) ^ 2)
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ :=
+  schrodinger_std_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
+/-! ## The additive (sum) uncertainty relation `Var(A) + Var(B) ≥ ‖⟪ψ,[A,B]ψ⟫‖`
+
+All the forms above are *multiplicative*: they bound the **product** of the
+variances (or of the standard deviations).  A genuinely distinct, weaker-but-often
+handier consequence is the **sum** (additive) uncertainty relation
+
+  `‖(A−a)ψ‖² + ‖(B−b)ψ‖² ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`,
+
+i.e. `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖` at the expectation values.  It follows from the
+product form by AM–GM: `‖u‖² + ‖v‖² ≥ 2‖u‖·‖v‖ ≥ ‖⟪ψ,[A,B]ψ⟫‖`, the last step being
+the standard-deviation bound `robertson_std_form`.  Unlike the product relation the
+right-hand side is *linear* in the commutator norm (no square root), and the bound is
+non-vacuous even when one variance is small provided the other compensates additively;
+it underlies sum-form / state-independent uncertainty discussions. -/
+
+/-- **Robertson uncertainty relation, additive (sum) form.**  For symmetric `A, B`,
+any state `ψ` and any real shifts `a, b`, the *sum* of the squared centred norms
+dominates the commutator norm:
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖ ≤ ‖(A−a)ψ‖² + ‖(B−b)ψ‖²`.
+
+This is the additive counterpart of the multiplicative `robertson_uncertainty`,
+obtained from the standard-deviation form `robertson_std_form` by AM–GM
+`2‖u‖‖v‖ ≤ ‖u‖² + ‖v‖²`. -/
+theorem robertson_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 + ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  have hstd := robertson_std_form hA hB ψ a b
+  nlinarith [hstd, sq_nonneg (‖A ψ - (a : 𝕜) • ψ‖ - ‖B ψ - (b : 𝕜) • ψ‖),
+    norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ)))]
+
+/-- **Heisenberg uncertainty principle, additive (sum) form.**  Instantiating
+`robertson_sum_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+makes each summand a variance, giving
+
+  `Var_ψ(A) + Var_ψ(B) ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`. -/
+theorem heisenberg_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        + ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
+  robertson_sum_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
+/-- **Additive Heisenberg bound under a canonical commutation relation.**  For a
+normalized state `‖ψ‖ = 1` obeying `(AB − BA)ψ = c • ψ` (abstractly `[x, p] = iℏ`,
+so `‖c‖ = ℏ`), the sum of variances is bounded below by the commutator scalar:
+
+  `Var_ψ(A) + Var_ψ(B) ≥ ‖c‖`.
+
+The additive companion of `heisenberg_canonical`; for `‖c‖ = ℏ` it reads
+`Var(A) + Var(B) ≥ ℏ`, the sum-form of `Δx·Δp ≥ ℏ/2` (indeed AM–GM turns one into
+the other). -/
+theorem heisenberg_canonical_sum {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (hψ : ‖ψ‖ = 1) (c : 𝕜)
+    (hc : A (B ψ) - B (A ψ) = c • ψ) :
+    ‖c‖
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        + ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 := by
+  have h := heisenberg_sum_form hA hB ψ
+  have hnorm : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = ‖c‖ := by
+    rw [hc, inner_smul_right, norm_mul, inner_self_eq_norm_sq_to_K, norm_pow,
+      RCLike.norm_ofReal, abs_of_nonneg (norm_nonneg ψ), hψ, one_pow, mul_one]
+  rw [hnorm] at h
+  exact h
+
+/-! ## The weighted (tunable) sum uncertainty relation
+
+The additive relation `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖` (`robertson_sum_form`) uses the
+*equal-weight* AM–GM `‖u‖² + ‖v‖² ≥ 2‖u‖‖v‖`.  The weighted AM–GM
+`t‖u‖² + t⁻¹‖v‖² ≥ 2‖u‖‖v‖` (any `t > 0`) gives a one-parameter family of sum-form
+bounds
+
+  `t·‖(A−a)ψ‖² + t⁻¹·‖(B−b)ψ‖² ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`,
+
+with `robertson_sum_form` the `t = 1` case.  The free scale `t` lets one rebalance the
+two variances — choosing `t = ‖v‖/‖u‖` recovers the sharp product bound `2‖u‖‖v‖`,
+while any other `t` still yields a valid (looser) additive certificate.  This tunable
+form is what underlies scale-optimized / state-independent sum uncertainty estimates. -/
+
+/-- **Robertson uncertainty relation, weighted (tunable) sum form.**  For symmetric
+`A, B`, any state `ψ`, real shifts `a, b`, and any weight `t > 0`,
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖ ≤ t·‖(A−a)ψ‖² + t⁻¹·‖(B−b)ψ‖²`.
+
+The one-parameter generalization of `robertson_sum_form` (recovered at `t = 1`),
+obtained from the standard-deviation form `robertson_std_form` by the *weighted*
+AM–GM `t‖u‖² + t⁻¹‖v‖² ≥ 2‖u‖‖v‖`, itself the identity
+`t‖u‖² + t⁻¹‖v‖² − 2‖u‖‖v‖ = t⁻¹(t‖u‖ − ‖v‖)² ≥ 0`. -/
+theorem robertson_weighted_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) {t : ℝ} (ht : 0 < t) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ t * ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 + t⁻¹ * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  have hstd := robertson_std_form hA hB ψ a b
+  have htne : t ≠ 0 := ne_of_gt ht
+  set u := ‖A ψ - (a : 𝕜) • ψ‖ with hu_def
+  set v := ‖B ψ - (b : 𝕜) • ψ‖ with hv_def
+  -- weighted AM–GM: `t·u² + t⁻¹·v² − 2uv = t⁻¹·(t·u − v)² ≥ 0`.
+  have heq : t * u ^ 2 + t⁻¹ * v ^ 2 - 2 * (u * v) = t⁻¹ * (t * u - v) ^ 2 := by
+    field_simp
+    ring
+  have hamgm : 2 * (u * v) ≤ t * u ^ 2 + t⁻¹ * v ^ 2 := by
+    nlinarith [mul_nonneg (le_of_lt (inv_pos.mpr ht)) (sq_nonneg (t * u - v)), heq]
+  -- chain with the standard-deviation bound `½‖comm‖ ≤ u·v`.
+  linarith [hstd, hamgm]
+
+/-- **Heisenberg uncertainty principle, weighted (tunable) sum form.**  Instantiating
+`robertson_weighted_sum_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`,
+`⟨B⟩ = Re⟪ψ,Bψ⟫` makes each summand a (scaled) variance:
+
+  `Var_ψ(A)·t + Var_ψ(B)·t⁻¹ ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`   (any `t > 0`).
+
+The tunable companion of `heisenberg_sum_form` (the `t = 1` case). -/
+theorem heisenberg_weighted_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) {t : ℝ} (ht : 0 < t) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ t * ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        + t⁻¹ * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
+  robertson_weighted_sum_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ))) ht
+
+/-! ## Structure of the commutator expectation: `⟪ψ,[A,B]ψ⟫` is purely imaginary
+
+Every uncertainty bound above depends on the commutator only through *the imaginary
+part* `Im⟪Aψ,Bψ⟫` — the real part never appears.  The reason is a structural identity:
+for symmetric `A, B` the commutator expectation `⟪ψ, (AB−BA)ψ⟫` is `i` times a **real**
+scalar,
+
+  `⟪ψ, (AB−BA)ψ⟫ = (2·Im⟪Aψ,Bψ⟫)·i`,
+
+so it lies entirely on the imaginary axis (`Re = 0`) and its norm is *exactly*
+`2·|Im⟪Aψ,Bψ⟫|`.  Equivalently `−i[A,B]` (equivalently `i[A,B]`) is a symmetric
+operator — the hermitian "observable" whose expectation is the real number
+`2·Im⟪Aψ,Bψ⟫` that the uncertainty product bounds.  These sharpen the internal
+estimate `‖⟪ψ,[A,B]ψ⟫‖ ≤ 2|Im⟪u,v⟫|` used inside `robertson_uncertainty` to the exact
+value, and explain why only the imaginary part enters Heisenberg's inequality. -/
+
+/-- **The commutator expectation is `i` times a real number.**  For symmetric `A, B`,
+`⟪ψ, (AB−BA)ψ⟫ = ↑(2·Im⟪Aψ,Bψ⟫)·i`.  Since `⟪Aψ,Bψ⟫` and `⟪Bψ,Aψ⟫` are complex
+conjugates (both `A, B` symmetric), their difference is `z − z̄ = 2i·Im z`, purely
+imaginary.  This is the exact structural identity behind the estimate used inside
+`robertson_uncertainty`. -/
+theorem inner_commutator_eq_ofReal_mul_I {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    inner 𝕜 ψ (A (B ψ) - B (A ψ))
+      = ((2 * RCLike.im (inner 𝕜 (A ψ) (B ψ)) : ℝ) : 𝕜) * RCLike.I := by
+  have e1 : inner 𝕜 ψ (A (B ψ)) = inner 𝕜 (A ψ) (B ψ) := (hA ψ (B ψ)).symm
+  have e2 : inner 𝕜 ψ (B (A ψ)) = inner 𝕜 (B ψ) (A ψ) := (hB ψ (A ψ)).symm
+  have hconj : inner 𝕜 (B ψ) (A ψ) = (starRingEnd 𝕜) (inner 𝕜 (A ψ) (B ψ)) :=
+    (inner_conj_symm (B ψ) (A ψ)).symm
+  rw [inner_sub_right, e1, e2, hconj, RCLike.sub_conj]
+  push_cast
+  ring
+
+/-- **The commutator expectation is purely imaginary.**  `Re⟪ψ, (AB−BA)ψ⟫ = 0` for
+symmetric `A, B` — the anticommutator/real-part contribution drops out, so the
+commutator only feeds the *imaginary* part of the Cauchy–Schwarz core.  Valid over
+`ℝ` and `ℂ` alike (over `ℝ` the whole expectation is `0`). -/
+theorem re_inner_commutator_eq_zero {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    RCLike.re (inner 𝕜 ψ (A (B ψ) - B (A ψ))) = 0 := by
+  have e1 : inner 𝕜 ψ (A (B ψ)) = inner 𝕜 (A ψ) (B ψ) := (hA ψ (B ψ)).symm
+  have e2 : inner 𝕜 ψ (B (A ψ)) = inner 𝕜 (B ψ) (A ψ) := (hB ψ (A ψ)).symm
+  have hconj : inner 𝕜 (B ψ) (A ψ) = (starRingEnd 𝕜) (inner 𝕜 (A ψ) (B ψ)) :=
+    (inner_conj_symm (B ψ) (A ψ)).symm
+  rw [inner_sub_right, e1, e2, hconj, map_sub, RCLike.conj_re, sub_self]
+
+/-- **Sharp value of the commutator norm.**  Over a field with a genuine imaginary unit
+(`RCLike.I ≠ 0`, i.e. `ℂ`), the internal estimate
+`‖⟪ψ,[A,B]ψ⟫‖ ≤ 2|Im⟪u,v⟫|` used in `robertson_uncertainty` is in fact an **equality**:
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖ = 2·|Im⟪Aψ,Bψ⟫|`.
+
+Consequently the Robertson lower bound `¼‖⟪ψ,[A,B]ψ⟫‖²` equals `(Im⟪Aψ,Bψ⟫)²`
+exactly, pinning the commutator content of the uncertainty product to the squared
+imaginary part of the centred inner product. -/
+theorem norm_inner_commutator_eq (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →ₗ[𝕜] E}
+    (hA : A.IsSymmetric) (hB : B.IsSymmetric) (ψ : E) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = 2 * |RCLike.im (inner 𝕜 (A ψ) (B ψ))| := by
+  rw [inner_commutator_eq_ofReal_mul_I hA hB ψ, norm_mul, RCLike.norm_ofReal,
+    RCLike.norm_I_of_ne_zero hI, mul_one, abs_mul]
+  norm_num
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
+#print axioms CauchySchwarzIntegralOQ04.inner_commutator_eq_ofReal_mul_I
+#print axioms CauchySchwarzIntegralOQ04.norm_inner_commutator_eq

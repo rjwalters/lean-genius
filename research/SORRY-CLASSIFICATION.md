@@ -778,6 +778,27 @@ When the Aristotle wrapper completes a Tier-3 run, `write-run-artifact.sh`
 drops a stub claim file in `research/problems/<slug>/claims/` so that the
 Aristotle agent and the Researcher agent share the same memory.
 
+### Artifact-only session reports
+
+A `summary.md` or claim file is an **artifact, not a status update**. It must
+let the next iteration pick the work up cold, which rules out vague optimism
+about unproved steps.
+
+- **Reject "routine", "should follow", "straightforward", "standard", "clearly
+  true"** as a way of marking an unproved step done. These phrases claim
+  progress without evidence.
+- A step is done only with a **complete audited artifact** — the lemma
+  elaborates with 0 sorries. Otherwise report the **strongest rigorously proved
+  derivation plus the exact remaining gap**: the precise statement of the lemma
+  still to prove, or a documented counterexample / obstruction.
+- "The rest is routine" is allowed *only* alongside the exact statement of what
+  remains, so no reader has to reconstruct the missing step from optimism.
+
+This is the same rule stated for researcher session output in
+[`.claude/commands/lean-research.md`](../.claude/commands/lean-research.md)
+(`## Honesty Standards`), adopted from the OpenAI CDC prompt (see issue #37505
+and <https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
+
 ## Open conjectures: when to use Tier 3 vs `axiom`
 
 > **Policy reversal (2026-06-09, issue #22628).**

@@ -49,28 +49,6 @@
     ]
   },
   {
-    "id": "ann-unit-interval",
-    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
-    "range": {
-      "startLine": 98,
-      "endLine": 105
-    },
-    "type": "theorem",
-    "title": "tietze_extension_unitInterval — the [0,1] Specialisation",
-    "content": "`tietze_extension_unitInterval` is the `a = 0, b = 1` instance of `tietze_extension_Icc`, proved in a single line: `tietze_extension_Icc hs f (by norm_num) hf`, where `norm_num` discharges `0 ≤ 1`. This `[0,1]`-valued form is the workhorse behind *partitions of unity*: given a locally finite cover, one extends each bump function from a closed piece to a continuous `[0,1]`-valued function on the whole space, then normalises the sum to `1`. Isolating it as a named lemma makes the downstream partition-of-unity construction read directly, and records that the gallery's hand-built Urysohn series — not Mathlib's `TietzeExtension` — is sufficient for this canonical application.",
-    "mathContext": "$0 \\le f \\le 1 \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s = f \\ \\wedge\\ 0 \\le G \\le 1.$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "unit interval [0,1]",
-      "partitions of unity",
-      "bump functions",
-      "specialisation of a general lemma"
-    ],
-    "prerequisites": [
-      "tietze_extension_Icc"
-    ]
-  },
-  {
     "id": "ann-pi-sup",
     "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
     "range": {

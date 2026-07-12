@@ -45,6 +45,9 @@ construction; this file establishes the metric layer underneath that constructio
 * `scos_eq_one_iff`, `sdist_eq_zero_iff`, `sdist_pos` — **point separation**: for unit
   vectors `sdist P Q = 0 ↔ P = Q`, so together with symmetry and nonnegativity `sdist`
   separates points.
+* `scos_eq_neg_one_iff`, `sdist_eq_pi_iff` — **antipode characterisation** (the dual far
+  end): for unit vectors `sdist P Q = π ↔ Q = -P`, so `sdist` attains its maximum `π`
+  exactly at the antipode (upgrading `sdist_antipode` to an iff).
 * `sdist_eq_angle`, `sdist_triangle`, `sdist_isMetric` — the **spherical triangle
   inequality** and metric capstone: identifying `sdist` with Mathlib's unoriented angle
   transports `angle_le_angle_add_angle` to `sdist P R ≤ sdist P Q + sdist Q R`, completing
@@ -1306,5 +1309,82 @@ theorem excircleB_excircleC_distinct {Na Nb Nc O : E} {ρ : ℝ}
   have hpos : 0 < Real.sin ρ := Real.sin_pos_of_pos_of_lt_pi hρpos hρlt
   rw [h0] at hpos
   exact lt_irrefl 0 hpos
+
+/-! ### Antipodal-centre symmetry of spherical circles
+
+A spherical circle is cut by *two* poles: the centre `O` at radius `ρ` and its antipode `-O`
+at the complementary radius `π − ρ`.  This intrinsic two-centre ambiguity is precisely the
+`±⟪O, ·⟫` sign symmetry that the incircle/excircle contact analysis above turns on
+(`incircle_excircleAB_signs_exclusive`, the `excircle*_distinct` family): swapping a centre
+for its antipode negates every `scos` and complements every radius.  The lemmas below make
+that symmetry a checked identity. -/
+
+omit [InnerProductSpace ℝ E] in
+/-- **The antipode lies on the sphere.**  If `P` is a unit vector then so is `-P`; the
+spherical model is closed under antipodal reflection (`‖-P‖ = ‖P‖`). -/
+theorem onSphere_neg {P : E} (hP : OnSphere P) : OnSphere (-P) := by
+  rw [OnSphere, norm_neg]; exact hP
+
+/-- **Spherical cosine flips sign under antipodal reflection of the second argument.**
+`scos P (-Q) = -scos P Q`, directly from `⟪P, -Q⟫ = -⟪P, Q⟫`. -/
+theorem scos_neg_right (P Q : E) : scos P (-Q) = -scos P Q := by
+  rw [scos, scos, inner_neg_right]
+
+/-- **Antipodal points are at spherical distance `π`.**  For a unit vector `O`,
+`sdist O (-O) = π`: the antipode is the unique farthest model point, since
+`⟪O, -O⟫ = -‖O‖² = -1` and `arccos (-1) = π`. -/
+theorem sdist_antipode {O : E} (hO : OnSphere O) : sdist O (-O) = Real.pi := by
+  have h : (⟪O, -O⟫ : ℝ) = -1 := by
+    rw [inner_neg_right, real_inner_self_eq_norm_sq, hO]; norm_num
+  rw [sdist, h, Real.arccos_neg_one]
+
+/-- **Every spherical circle has an antipodal centre with complementary radius.**
+`sCircle O ρ = sCircle (-O) (π − ρ)`: a point `P` satisfies `⟪P, O⟫ = cos ρ` iff it satisfies
+`⟪P, -O⟫ = cos (π − ρ)`, because `⟪P, -O⟫ = -⟪P, O⟫` and `cos (π − ρ) = -cos ρ`.  The same
+locus is therefore cut by the pole `O` at radius `ρ` and by its antipode `-O` at the
+complementary radius `π − ρ` — the intrinsic *two-centre ambiguity* of a spherical circle, and
+exactly the `±⟪O, ·⟫` sign symmetry underlying the incircle/excircle contact analysis above.
+No hypothesis on `O` is needed: it is an identity of level sets of the inner product. -/
+theorem sCircle_antipodal_center (O : E) (ρ : ℝ) :
+    sCircle O ρ = sCircle (-O) (Real.pi - ρ) := by
+  ext P
+  simp only [sCircle, Set.mem_setOf_eq, scos, inner_neg_right, Real.cos_pi_sub, neg_inj]
+
+/-- **Antipode characterisation of `scos = -1`.**  The exact dual of `scos_eq_one_iff`:
+for unit vectors, `scos P Q = -1` iff `Q` is the antipode `-P`.  Proof mirrors the
+coincidence case but on the *sum*: `‖P + Q‖² = 2 + 2·scos P Q`, so `scos P Q = -1` forces
+`P + Q = 0`.  Together with `scos_eq_one_iff` this pins the two extreme values of the
+spherical cosine `±1` to coincidence and antipodality. -/
+theorem scos_eq_neg_one_iff {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) :
+    scos P Q = -1 ↔ Q = -P := by
+  refine ⟨fun h => ?_, fun h => ?_⟩
+  · have hsq : ‖P + Q‖ ^ 2 = 0 := by
+      have expand : ⟪P + Q, P + Q⟫ = ‖P‖ ^ 2 + 2 * ⟪P, Q⟫ + ‖Q‖ ^ 2 := by
+        rw [inner_add_left, inner_add_right, inner_add_right,
+          real_inner_self_eq_norm_sq, real_inner_self_eq_norm_sq, real_inner_comm Q P]; ring
+      rw [← real_inner_self_eq_norm_sq, expand, hP, hQ]
+      rw [scos] at h; nlinarith [h]
+    have hz : ‖P + Q‖ = 0 := by nlinarith [norm_nonneg (P + Q), hsq]
+    rw [norm_eq_zero] at hz
+    exact (eq_neg_iff_add_eq_zero).mpr (by rw [add_comm]; exact hz)
+  · subst h; rw [scos_neg_right, scos_self P hP]
+
+/-- **The antipode is the unique point at spherical distance `π`.**  The dual of
+`sdist_eq_zero_iff` (point separation at the near end): for unit vectors `sdist P Q = π`
+iff `Q = -P`.  So `sdist` attains its maximum `π` exactly at the antipode, generalising the
+specific `sdist_antipode` (`sdist O (-O) = π`) to an *iff*.  Proof: `arccos` of the inner
+product equals `π` iff that inner product is `≤ -1`, which for unit vectors (where
+`scos ≥ -1`) forces `scos P Q = -1`, hence `Q = -P` by `scos_eq_neg_one_iff`. -/
+theorem sdist_eq_pi_iff {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) :
+    sdist P Q = Real.pi ↔ Q = -P := by
+  rw [sdist, Real.arccos_eq_pi]
+  constructor
+  · intro h
+    have hge : (-1 : ℝ) ≤ scos P Q := neg_one_le_scos P Q hP hQ
+    have hle : scos P Q ≤ -1 := by rw [scos]; exact h
+    exact (scos_eq_neg_one_iff hP hQ).mp (le_antisymm hle hge)
+  · intro h
+    have h1 : scos P Q = -1 := (scos_eq_neg_one_iff hP hQ).mpr h
+    rw [scos] at h1; exact h1.le
 
 end FeuerbachsTheoremOQ04

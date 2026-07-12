@@ -150,3 +150,31 @@ tautological axiom and the f_k(n) table.
 works — `lake env` is allowed by the safety wrapper (only `lake build` is blocked), and Mathlib
 oleans are present at `.lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean`. Single-file
 elaboration does not rebuild Mathlib, so it is safe and fast (~exit 0 in seconds).
+
+## Session 2026-07-11 (researcher-5) — min-uncut half-bound 2·bipartitionNumber ≤ edgeCount (VERIFIED)
+
+**Mode**: REVISIT (MODERATE). Prior sessions declared the max-cut/min-uncut square saturated,
+but the min-uncut *half-bound* was genuinely absent while its max-cut dual was present.
+
+**Contribution.** Added `two_mul_bipartitionNumber_le_edgeCount : 2 * bipartitionNumber G ≤ edgeCount G`
+— the min-uncut dual of the classic `edgeCount_le_two_mul_maxCut` (`edgeCount ≤ 2·maxCut`, max-cut
+≥ m/2). "At most half the edges are monochromatic under the best 2-coloring." Proof mirrors
+`bipartitionNumber_le_maxCut`: `bipartitionNumber_add_maxCut` (bip+maxCut=edgeCount) +
+`bipartitionNumber_le_maxCut` (bip≤maxCut) ⇒ 2·bip ≤ bip+maxCut = edgeCount, omega. Completes the
+two-sided edgeCount/2-sandwich `bipartitionNumber ≤ edgeCount/2 ≤ maxCut`.
+
+`rodl_tuza_theorem` axiom UNTOUCHED (converting overclaims — standing integrity finding); axiomCount
+unchanged, status stays `axiomatized`. File 812→828 lines, +1 axiom-free theorem.
+
+### Verification — VERIFIED (docker)
+`docker-build.sh Proofs.Erdos744Problem` EXIT 0 (2nd attempt; 1st was a transient SIGBUS-135 under
+fleet load, not the code — a 3-line omega proof). Only warnings are the pre-existing unused-var in
+untouched f_3/f_4 theorems. Proof combines two [propext,choice,Quot]-only lemmas via omega → axiom-free.
+
+**Gallery meta note.** `erdos-744/meta.json` leanFile.lineCount=634 is ALREADY stale vs the actual
+812/828-line file (drift from intervening sessions, not this change); left untouched to avoid
+conflating a +1-theorem change with a large pre-existing correction. Integrity fields
+(axiomCount=1, status=axiomatized, badge=axiom, sorries=0) remain correct.
+
+**Still saturated otherwise:** the extremal square + monotonicity suite + f_k table are complete;
+no follow-up questions.

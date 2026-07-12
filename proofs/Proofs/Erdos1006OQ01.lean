@@ -580,6 +580,65 @@ theorem not_robust_of_subgraph {G H : SimpleGraph V} (hHG : H ≤ G)
     ¬ admitsRobustAcyclicOrientation G :=
   fun hG => hH (admitsRobust_mono hHG hG)
 
+/-- A directed `TransGen` path whose relation is the pullback `fun a b => S (g a) (g b)`
+    of a relation `S` along a map `g` pushes forward to a `TransGen` path for `S` between
+    the images. (Used to transport dependent-arc paths across a graph isomorphism.) -/
+private theorem transGen_pushforward {V W : Type*} (g : W → V) (S : V → V → Prop)
+    {x y : W} (h : Relation.TransGen (fun a b => S (g a) (g b)) x y) :
+    Relation.TransGen S (g x) (g y) := by
+  induction h with
+  | single hr => exact Relation.TransGen.single hr
+  | tail _ hr ih => exact Relation.TransGen.tail ih hr
+
+/-- **Robust orientability transports along a graph isomorphism.** If `f : G ≃g H`
+    and `G` admits a robustly acyclic orientation, so does `H`: transport the
+    orientation across `f`, orienting the `H`-edge `a → b` as the `G`-arc
+    `f⁻¹a → f⁻¹b`. Acyclicity is witnessed by `rank ∘ f⁻¹`, and a dependent arc of
+    the transported orientation pulls back — since `f⁻¹` is injective — to a
+    dependent arc of the original, contradicting robustness. This is the
+    well-definedness fact that makes `admitsRobustAcyclicOrientation` (equivalently,
+    by `cover_graph_characterization`, "being a cover graph") a genuine isomorphism
+    invariant of the abstract graph, not an artefact of the vertex labelling. -/
+theorem admitsRobust_of_iso {W : Type*} {H : SimpleGraph W} (f : G ≃g H)
+    (hG : admitsRobustAcyclicOrientation G) :
+    admitsRobustAcyclicOrientation H := by
+  obtain ⟨O, ⟨rank, hrank⟩, hNoDep⟩ := hG
+  have hinj : Function.Injective (f.symm : W → V) := f.symm.injective
+  refine ⟨⟨fun a b => O.arc (f.symm a) (f.symm b), ?_, ?_, ?_⟩,
+    ⟨fun a => rank (f.symm a), ?_⟩, ?_⟩
+  · -- covers: an `H`-edge `a ~ b` is the `G`-edge `f⁻¹a ~ f⁻¹b`, oriented by `O`.
+    intro a b hadj
+    exact O.covers _ _ ((f.symm.map_adj_iff).mpr hadj)
+  · -- exclusive: inherited from `O` at the pulled-back vertices.
+    intro a b; exact O.exclusive (f.symm a) (f.symm b)
+  · -- respects: a transported arc is a `G`-arc at `f⁻¹`, hence an `H`-edge.
+    intro a b harc; exact (f.symm.map_adj_iff).mp (O.respects _ _ harc)
+  · -- acyclic: `rank ∘ f⁻¹` witnesses it, since each transported arc is an `O`-arc.
+    intro a b harc; exact hrank _ _ harc
+  · -- no dependent arc: pull a dependent transported arc back through `f⁻¹`.
+    rintro ⟨u, v, huv, hpath⟩
+    refine hNoDep ⟨f.symm u, f.symm v, huv, ?_⟩
+    -- injectivity lifts a `W`-side disequality `(a,b) ≠ (u,v)` to `V`.
+    have lift : ∀ {a b : W}, (a, b) ≠ (u, v) →
+        (f.symm a, f.symm b) ≠ (f.symm u, f.symm v) := by
+      intro a b hne hc
+      rw [Prod.mk.injEq] at hc
+      exact hne (Prod.ext (hinj hc.1) (hinj hc.2))
+    -- weaken the transported path to the pullback of the `V`-side excluded-arc relation,
+    -- then push it forward along `f⁻¹`.
+    exact transGen_pushforward (f.symm : W → V)
+      (fun c d => O.arc c d ∧ (c, d) ≠ (f.symm u, f.symm v))
+      (hpath.mono (fun a b hr => ⟨hr.1, lift hr.2⟩))
+
+/-- **Robust orientability is a graph-isomorphism invariant.** The two-sided form of
+    `admitsRobust_of_iso`: isomorphic graphs are simultaneously robustly orientable or
+    not (`admitsRobust G ↔ admitsRobust H` for `f : G ≃g H`), by transporting along `f`
+    and its inverse. Equivalently, the class of cover graphs is closed under
+    isomorphism. -/
+theorem admitsRobust_iso_iff {W : Type*} {H : SimpleGraph W} (f : G ≃g H) :
+    admitsRobustAcyclicOrientation G ↔ admitsRobustAcyclicOrientation H :=
+  ⟨admitsRobust_of_iso f, admitsRobust_of_iso f.symm⟩
+
 /-- **Edgeless graphs admit a robustly acyclic orientation.** With no arcs to
     place, the empty orientation (`arc := fun _ _ => False`) is vacuously acyclic
     and has no dependent arc. This generalises `empty_graph_robust` from `⊥` to
@@ -619,6 +678,82 @@ theorem closedWalk_girth_formulation_unsound (g : ℕ) (hg : g ≥ 3) :
     rcases hwalk u (Walk.cons huv (Walk.cons (G.symm huv) Walk.nil)) with h0 | hge
     · rw [hlen] at h0; exact absurd h0 (by norm_num)
     · rw [hlen] at hge; omega
+
+/-- **Robustly orientable graphs are triangle-free, in Mathlib's `CliqueFree 3`
+    vocabulary (no axiom).** If `G` admits a robustly acyclic orientation then it
+    contains no 3-clique: `G.CliqueFree 3`. This restates the bespoke obstruction
+    `triangle_not_robust'` in terms of Mathlib's standard clique API
+    (`SimpleGraph.CliqueFree`), so the triangle-freeness of cover graphs can be
+    chained with the library's clique/chromatic/girth machinery. A 3-clique is
+    exactly three mutually adjacent vertices, which `triangle_not_robust'`
+    forbids. -/
+theorem robust_cliqueFree_three (h : admitsRobustAcyclicOrientation G) :
+    G.CliqueFree 3 := by
+  classical
+  intro t ht
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp ht.card_eq
+  have hcl := ht.isClique
+  have ha : a ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+  have hb : b ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+  have hc : c ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+  exact triangle_not_robust' (hcl ha hb hab) (hcl hb hc hbc) (hcl ha hc hac) h
+
+/-- **Cover graphs (Hasse diagrams) are triangle-free, in Mathlib's `CliqueFree
+    3` vocabulary (no axiom).** The poset-facing form of `robust_cliqueFree_three`
+    via `cover_graph_characterization`: the Hasse diagram of any partial order on
+    a finite set contains no 3-clique. This is the classical necessary condition
+    for cover graphs, phrased in the standard library predicate. -/
+theorem isCoverGraph_cliqueFree_three [Fintype V] (h : isCoverGraph G) :
+    G.CliqueFree 3 :=
+  robust_cliqueFree_three (cover_graph_characterization.mpr h)
+
+/-- **Every bipartite graph is a cover graph (no axiom).** The poset-facing form of
+    `bipartite_admits_robust`: a bipartite graph is the Hasse diagram of a (height-2)
+    partial order. Where the `isCoverGraph` API so far records only *obstructions*
+    (`isCoverGraph_of_triangle`, `isCoverGraph_cliqueFree_three`), this is a positive
+    construction — a large, easily-recognised family that *is* realised as cover graphs.
+    Immediate from `bipartite_admits_robust` through the forward direction of
+    `cover_graph_characterization`. -/
+theorem isCoverGraph_of_bipartite [Fintype V] (hbip : isBipartite' G) :
+    isCoverGraph G :=
+  cover_graph_characterization.mp (bipartite_admits_robust hbip)
+
+/-- **Every edgeless graph is a cover graph (no axiom).** The poset-facing form of
+    `edgeless_admits_robust`: a graph with no edges is the Hasse diagram of an antichain
+    (the discrete order). The smallest positive cover-graph family, and the base of the
+    subgraph-closure `isCoverGraph_mono`. Immediate from `edgeless_admits_robust` through
+    `cover_graph_characterization`. -/
+theorem isCoverGraph_of_edgeless [Fintype V] (h : ∀ u v, ¬ G.Adj u v) :
+    isCoverGraph G :=
+  cover_graph_characterization.mp (edgeless_admits_robust h)
+
+/-- **Cover graphs are closed under subgraphs (no axiom).** If `H ≤ G` (same vertex set,
+    fewer edges) and `G` is a cover graph, then so is `H`. This lifts the
+    robust-orientation monotonicity `admitsRobust_mono` to the poset level via
+    `cover_graph_characterization` (both directions), formalizing the structural fact that
+    the docstring of `admitsRobust_mono` states informally — *"every subgraph of a cover
+    graph is again a cover graph"*. Combined with the triangle obstruction it is exactly
+    why triangle-freeness is only the *first*, non-characterizing, necessary condition
+    (Nešetřil–Rödl): the class is subgraph-closed yet has no finite forbidden-subgraph
+    description. -/
+theorem isCoverGraph_mono [Fintype V] {G H : SimpleGraph V} (hHG : H ≤ G)
+    (hG : isCoverGraph G) : isCoverGraph H :=
+  cover_graph_characterization.mp (admitsRobust_mono hHG (cover_graph_characterization.mpr hG))
+
+/-- **Complete graphs `Kₙ` with `n ≥ 3` admit no robustly acyclic orientation
+    (no axiom).** Generalises `triangle_not_robust` (the case `V = Fin 3`) to the
+    complete graph on any finite type with at least three vertices: pick three
+    distinct vertices — mutually adjacent in `⊤` — and apply the triangle
+    obstruction. Via `cover_graph_characterization`, no `Kₙ` (`n ≥ 3`) is the
+    Hasse diagram of a poset. -/
+theorem top_not_robust [Fintype V] (h : 3 ≤ Fintype.card V) :
+    ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph V) := by
+  classical
+  obtain ⟨t, -, hcard⟩ := Finset.exists_subset_card_eq
+    (show 3 ≤ (Finset.univ : Finset V).card by rw [Finset.card_univ]; exact h)
+  obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+  exact triangle_not_robust'
+    ((top_adj a b).mpr hab) ((top_adj b c).mpr hbc) ((top_adj a c).mpr hac)
 
 /-- Fisher-Fraughnaugh-Langley-West (1997): if the chromatic number of `G` is
     less than its girth, then `G` admits a robustly acyclic orientation. Girth
@@ -682,6 +817,14 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
     0 or ≥ g" phrasing of girth is unsound: a length-2 backtrack forces the
     graph edgeless, hence robust. Motivates the `egirth` (shortest-cycle)
     formalization of the two axioms below.
+12a. `isCoverGraph_of_bipartite` - **Every bipartite graph is a cover graph**
+    (poset-level form of `bipartite_admits_robust`; the first *positive*
+    construction in the `isCoverGraph` API).
+12b. `isCoverGraph_of_edgeless` - Every edgeless graph is a cover graph (Hasse
+    diagram of an antichain).
+12c. `isCoverGraph_mono` - **Cover graphs are closed under subgraphs**: `H ≤ G`
+    and `G` a cover graph ⟹ `H` a cover graph (poset-level lift of
+    `admitsRobust_mono`, formalizing the closure its docstring states informally).
 
 ### Axiomatized (deep results, girth via `SimpleGraph.egirth`):
 13. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices

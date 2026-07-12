@@ -23,11 +23,11 @@
     },
     "type": "definition",
     "title": "The Constructibility Predicate TotientIsPow2",
-    "content": "TotientIsPow2 n := ∃ k, φ(n) = 2^k is the arithmetic surrogate for constructibility of the regular n-gon (matching the parent file's definition). The whole file studies how this predicate behaves under multiplication by 2, so 'TotientIsPow2 n' should be read throughout as 'the regular n-gon is constructible'.",
-    "mathContext": "$\\mathrm{TotientIsPow2}(n) := \\exists k,\\ \\varphi(n)=2^k$.",
+    "content": "TotientIsPow2 n := ∃ k, φ(n) = 2^k is the arithmetic surrogate for constructibility of the regular n-gon (matching the parent file's definition). The whole file studies how this predicate behaves under multiplication by 2, so 'TotientIsPow2 n' should be read throughout as 'the regular n-gon is constructible'. Why is φ(n) a power of 2 the right condition? A point is ruler-and-compass constructible iff it lies in a tower of quadratic (degree-2) extensions of ℚ, so its coordinate has degree 2^m over ℚ. The regular n-gon is constructible iff cos(2π/n) is, and [ℚ(cos 2π/n):ℚ] = φ(n)/2 (half the degree φ(n) of the cyclotomic field ℚ(ζ_n), since complex conjugation is the order-2 automorphism fixing the real subfield). Hence constructibility ⟺ φ(n)/2 is a power of 2 ⟺ φ(n) is a power of 2 — the predicate defined here.",
+    "mathContext": "$\\mathrm{TotientIsPow2}(n) := \\exists k,\\ \\varphi(n)=2^k$; constructible $\\iff [\\mathbb{Q}(\\cos\\tfrac{2\\pi}{n}):\\mathbb{Q}] = \\tfrac{\\varphi(n)}{2}$ is a power of $2$.",
     "significance": "supporting",
-    "relatedConcepts": ["Euler totient", "power of two", "existential predicate"],
-    "prerequisites": ["Nat.totient"]
+    "relatedConcepts": ["Euler totient", "power of two", "existential predicate", "cyclotomic field degree", "tower of quadratic extensions"],
+    "prerequisites": ["Nat.totient", "degree of a field extension"]
   },
   {
     "id": "ann-single-step",

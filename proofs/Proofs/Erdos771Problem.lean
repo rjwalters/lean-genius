@@ -110,6 +110,34 @@ theorem self_mem_subsetSums (S : Finset ℕ) (a : ℕ) (ha : a ∈ S) (hpos : 0 
   · rw [Finset.mem_powerset]; simpa using ha
   · simp
 
+/-- **Subset sums are monotone under inclusion.** If `T ⊆ S` then every subset sum of `T`
+    is a subset sum of `S`: `subsetSums T ⊆ subsetSums S`.  A subset `A ⊆ T` is also a
+    subset `A ⊆ S`, so its sum survives into `subsetSums S`. -/
+theorem subsetSums_mono {S T : Finset ℕ} (h : T ⊆ S) : subsetSums T ⊆ subsetSums S := by
+  intro x hx
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hx ⊢
+  obtain ⟨⟨A, hA, hAsum⟩, hpos⟩ := hx
+  rw [Finset.mem_powerset] at hA
+  exact ⟨⟨A, Finset.mem_powerset.mpr (hA.trans h), hAsum⟩, hpos⟩
+
+/-- **Avoidance is hereditary to subsets.** If `S` avoids the sum `m` then so does every
+    subset `T ⊆ S`: fewer elements can only remove subset sums, never create the target `m`.
+    Contrapositive of `subsetSums_mono`.  This is the structural reason `maxAvoidingSize` is
+    a genuine maximum — any avoiding set stays avoiding when trimmed — and complements the
+    ambient-box monotonicity `maxAvoidingSize_monotone`. -/
+theorem avoidSum_subset {S T : Finset ℕ} (h : T ⊆ S) (m : ℕ) (hS : AvoidSum S m) :
+    AvoidSum T m :=
+  fun hmem => hS (subsetSums_mono h hmem)
+
+/-- **Every set avoids the sum `0`.**  The target `0` is never a *positive* subset sum
+    (`subsetSums` filters out `0`), so `AvoidSum S 0` holds vacuously for every `S`.  This is
+    the degenerate base of the avoidance theory, dual to the large-target regime
+    `avoid_full` (`n·n < m`): both endpoints of the target range are trivially avoidable. -/
+theorem avoidSum_zero (S : Finset ℕ) : AvoidSum S 0 := by
+  intro hmem
+  rw [subsetSums, Finset.mem_filter] at hmem
+  exact absurd hmem.2 (lt_irrefl 0)
+
 /-- Every avoiding subset of `{1,…,n}` has size at most `n`. -/
 theorem maxAvoidingSize_le (n m : ℕ) : maxAvoidingSize n m ≤ n := by
   classical
@@ -212,6 +240,76 @@ theorem maxAvoidingSize_eq_of_lt (n m : ℕ) (h : n * n < m) :
     maxAvoidingSize n m = n :=
   le_antisymm (maxAvoidingSize_le n m) (le_maxAvoidingSize_of_lt n m h)
 
+/-- **Avoiding the target `1` means omitting `1`.**  For `S ⊆ {1,…,n}`, `AvoidSum S 1`
+    holds iff `1 ∉ S`: every element is a positive integer, so the only nonempty subset
+    that can sum to `1` is the singleton `{1}`.  (`→` uses `self_mem_subsetSums`; `←` uses
+    `avoid_of_forall_lt`, since all remaining elements are `≥ 2 > 1`.) -/
+theorem avoidSum_one_iff (n : ℕ) {S : Finset ℕ} (hS : S ⊆ Icc_n n) :
+    AvoidSum S 1 ↔ 1 ∉ S := by
+  constructor
+  · intro havoid h1
+    exact havoid (self_mem_subsetSums S 1 h1 (by norm_num))
+  · intro h1
+    apply avoid_of_forall_lt
+    intro a ha
+    have haI : a ∈ Icc_n n := hS ha
+    rw [Icc_n, Finset.mem_Icc] at haI
+    have hane : a ≠ 1 := fun he => h1 (he ▸ ha)
+    omega
+
+/-- **Exact value at the small target `1`:** `maxAvoidingSize n 1 = n - 1`.  The largest
+    subset of `{1,…,n}` avoiding the target `1` is `{2,…,n}` (drop the element `1`), of size
+    `n-1`; conversely any `1`-avoiding subset omits `1` (`avoidSum_one_iff`), hence embeds in
+    `{2,…,n}`.  This pins down `maxAvoidingSize` at the small-target endpoint `m = 1`, the
+    companion of `maxAvoidingSize_eq_of_lt` (`m > n²`) at the large-target endpoint. -/
+theorem maxAvoidingSize_one (n : ℕ) : maxAvoidingSize n 1 = n - 1 := by
+  classical
+  apply le_antisymm
+  · -- upper bound: every `1`-avoiding subset of `{1,…,n}` omits `1`, so sits in `{2,…,n}`.
+    unfold maxAvoidingSize
+    apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, havoid⟩ := hS
+    have h1 : 1 ∉ S := (avoidSum_one_iff n hSsub).mp havoid
+    have hsub : S ⊆ Finset.Icc 2 n := by
+      intro x hx
+      rw [Finset.mem_Icc]
+      have hxI : x ∈ Icc_n n := hSsub hx
+      rw [Icc_n, Finset.mem_Icc] at hxI
+      have hxne : x ≠ 1 := fun he => h1 (he ▸ hx)
+      omega
+    have hcard := Finset.card_le_card hsub
+    rw [Nat.card_Icc] at hcard
+    omega
+  · -- lower bound: `{2,…,n}` is a `1`-avoiding witness of size `n-1`.
+    rw [← maxAvoidingSize_ge_iff]
+    refine ⟨Finset.Icc 2 n, ?_, ?_, ?_⟩
+    · rw [Icc_n]; exact Finset.Icc_subset_Icc (by norm_num) (le_refl n)
+    · rw [Nat.card_Icc]; omega
+    · apply avoid_of_forall_lt
+      intro a ha
+      rw [Finset.mem_Icc] at ha
+      omega
+
+/-- **Exact value at the target `m = 0`: `maxAvoidingSize n 0 = n`.**  Since `0` is never a
+    positive subset sum (`avoidSum_zero`), *every* subset of `{1,…,n}` avoids it, so the whole
+    box `{1,…,n}` is an avoiding witness of the maximal size `n`.  This is the degenerate
+    small-target endpoint of `maxAvoidingSize`, sitting one step below `maxAvoidingSize_one`
+    (`= n-1`), and it coincides with the large-target value `maxAvoidingSize_eq_of_lt`
+    (`n·n < m ⟹ = n`): the extremal size is `n` at *both* ends of the target range and dips
+    only in the interior where the sum obstruction bites. -/
+theorem maxAvoidingSize_zero (n : ℕ) : maxAvoidingSize n 0 = n := by
+  classical
+  refine le_antisymm (maxAvoidingSize_le n 0) ?_
+  unfold maxAvoidingSize
+  have hmem : Icc_n n ∈
+      (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 0) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.Subset.refl _, avoidSum_zero _⟩
+  calc n = (Icc_n n).card := by rw [Icc_n, Nat.card_Icc]; omega
+    _ ≤ _ := Finset.le_sup hmem
+
 /-- f(n) is the largest k satisfying f_property. -/
 theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
     f_property n (f n) ∧ ∀ k > f n, ¬f_property n k := by
@@ -231,7 +329,7 @@ theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
   · -- f_property n (f n)
     intro m hm
     rw [maxAvoidingSize_ge_iff]
-    rcases le_or_lt m (n * n) with hmle | hmgt
+    rcases le_or_gt m (n * n) with hmle | hmgt
     · rw [hf]; exact Finset.inf'_le _ (Finset.mem_Icc.mpr ⟨hm, hmle⟩)
     · have hfull : n ≤ maxAvoidingSize n m := by
         have hmemfull : Icc_n n ∈
@@ -251,6 +349,24 @@ theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
       (maxAvoidingSize_ge_iff n m₀ k).mp ⟨S, hSsub, hScard, hSavoid⟩
     have hfm0 : f n = maxAvoidingSize n m₀ := by rw [hf, hm₀eq]
     omega
+
+/-- **Sharpened universal upper bound:** `f n ≤ n - 1` for `n ≥ 1`.  The target `m = 1`
+    always lies in the range `{1,…,n²}` that `f` minimises over, and
+    `maxAvoidingSize n 1 = n - 1` (`maxAvoidingSize_one`), so
+    `f n ≤ maxAvoidingSize n 1 = n - 1`.  This strictly improves the trivial `f n ≤ n`
+    (the ambient box `{1,…,n}` can never itself be `1`-avoiding, as it contains `1`), and is
+    consistent with the conjectured asymptotic `f n = (1/2+o(1))·n/log n`. -/
+theorem f_le_pred (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by
+  have hn0 : n ≠ 0 := by omega
+  have H : (Finset.Icc 1 (n * n)).Nonempty :=
+    Finset.nonempty_Icc.mpr (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hn0 hn0))
+  have hf : f n = (Finset.Icc 1 (n * n)).inf' H (fun m => maxAvoidingSize n m) := by
+    unfold f; rw [dif_neg hn0]
+  rw [hf]
+  calc (Finset.Icc 1 (n * n)).inf' H (fun m => maxAvoidingSize n m)
+      ≤ maxAvoidingSize n 1 :=
+        Finset.inf'_le _ (Finset.mem_Icc.mpr ⟨le_refl 1, by nlinarith [hn]⟩)
+    _ = n - 1 := maxAvoidingSize_one n
 
 /-
 ## Part III: The Erdős-Graham Conjecture
@@ -444,6 +560,204 @@ theorem m_eq_two_case (n : ℕ) (hn : n ≥ 2) :
   calc n - 2 = (Finset.Icc 3 n).card := by rw [Nat.card_Icc]; omega
     _ ≤ _ := Finset.le_sup hmem
 
+/-! ### Exact small-`m` values of `maxAvoidingSize`
+
+The `m = 2` and `m = 3` cases can be pinned *exactly*, not merely bounded below. The
+interval bound `m_eq_two_case` only gives `maxAvoidingSize n 2 ≥ n - 2`; but the sharp
+value is `n - 1`, because avoiding the subset sum `2` costs a *single* deletion (only the
+singleton `{2}` sums to `2`). The `m = 3` case is the first where the value genuinely drops,
+to `n - 2`, since `3` has the two representations `3 = {3} = {1, 2}` and so forces a second
+deletion. Together with `maxAvoidingSize_one` (`= n - 1`) this pins the first three values
+`n-1, n-1, n-2` of `maxAvoidingSize n ·` exactly. -/
+
+/-- `2` is a positive subset sum of `S` iff `2 ∈ S`: the only nonempty set of distinct
+    naturals summing to `2` is the singleton `{2}` (an element `≥ 3` overshoots, and the
+    remaining candidates `{0, 1}` together sum to only `1`). -/
+theorem two_mem_subsetSums_iff (S : Finset ℕ) :
+    (2 : ℕ) ∈ subsetSums S ↔ 2 ∈ S := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have h2A : (2 : ℕ) ∈ A := by
+      by_contra h2
+      have hle : ∀ a ∈ A, a ≤ 1 := by
+        intro a ha
+        by_contra ha1
+        have ha2 : a ≠ 2 := fun he => h2 (he ▸ ha)
+        have ha3 : 3 ≤ a := by omega
+        have hge : 3 ≤ ∑ x ∈ A, x :=
+          le_trans ha3 (Finset.single_le_sum (fun i _ => Nat.zero_le i) ha)
+        omega
+      have hsub : A ⊆ {0, 1} := by
+        intro a ha
+        have := hle a ha
+        simp only [Finset.mem_insert, Finset.mem_singleton]
+        omega
+      have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 1} : Finset ℕ), x :=
+        Finset.sum_le_sum_of_subset hsub
+      rw [Finset.sum_pair (by norm_num : (0 : ℕ) ≠ 1)] at hbound
+      omega
+    exact hA h2A
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    refine ⟨⟨{2}, ?_, ?_⟩, by norm_num⟩
+    · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h
+    · simp
+
+/-- **`m = 2` characterization.** `S` avoids the subset sum `2` iff `2 ∉ S`. -/
+theorem avoid_two_iff (S : Finset ℕ) : AvoidSum S 2 ↔ 2 ∉ S := by
+  unfold AvoidSum
+  rw [two_mem_subsetSums_iff]
+
+/-- **Exact value at `m = 2`.** For `n ≥ 2` the largest `2`-avoiding subset of `{1,…,n}`
+    has size exactly `n - 1`, sharpening the interval bound `m_eq_two_case` (`≥ n - 2`).
+    Optimality: avoiding `2` forces `2 ∉ S`, so `S ⊆ {1,…,n} ∖ {2}` of size `n - 1`.
+    Realization: `{1,…,n} ∖ {2}` itself avoids `2` (via `avoid_two_iff`). -/
+theorem m_eq_two_case_exact (n : ℕ) (hn : n ≥ 2) :
+    maxAvoidingSize n 2 = n - 1 := by
+  classical
+  unfold maxAvoidingSize
+  have hmem2 : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  apply le_antisymm
+  · apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, hSavoid⟩ := hS
+    have h2notin : 2 ∉ S := (avoid_two_iff S).mp hSavoid
+    have hsub : S ⊆ (Icc_n n).erase 2 := by
+      intro x hx
+      rw [Finset.mem_erase]
+      exact ⟨fun h => h2notin (h ▸ hx), hSsub hx⟩
+    calc S.card ≤ ((Icc_n n).erase 2).card := Finset.card_le_card hsub
+      _ = n - 1 := by rw [Finset.card_erase_of_mem hmem2, Icc_n, Nat.card_Icc]; omega
+  · have hmem : (Icc_n n).erase 2 ∈
+        (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 2) := by
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨Finset.erase_subset _ _, ?_⟩
+      rw [avoid_two_iff]
+      exact Finset.notMem_erase 2 _
+    calc n - 1 = ((Icc_n n).erase 2).card := by
+          rw [Finset.card_erase_of_mem hmem2, Icc_n, Nat.card_Icc]; omega
+      _ ≤ _ := Finset.le_sup hmem
+
+/-- `3` is a positive subset sum of `S` iff `3 ∈ S` **or** both `1 ∈ S` and `2 ∈ S`: the
+    only nonempty sets of distinct naturals summing to `3` are `{3}` and `{1, 2}` (any
+    element `≥ 4` overshoots, and once `3` is excluded the candidates `{0, 1, 2}` reach `3`
+    only by using both `1` and `2`). -/
+theorem three_mem_subsetSums_iff (S : Finset ℕ) :
+    (3 : ℕ) ∈ subsetSums S ↔ (3 ∈ S ∨ (1 ∈ S ∧ 2 ∈ S)) := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have hle : ∀ a ∈ A, a ≤ 3 := by
+      intro a ha
+      have hsum := Finset.single_le_sum (f := fun x => x) (fun i _ => Nat.zero_le i) ha
+      rw [hAsum] at hsum; exact hsum
+    by_cases h3 : (3 : ℕ) ∈ A
+    · exact Or.inl (hA h3)
+    · refine Or.inr ⟨hA ?_, hA ?_⟩
+      · by_contra h1
+        have hsub : A ⊆ {0, 2} := by
+          intro a ha
+          have hle3 := hle a ha
+          have ha3 : a ≠ 3 := fun he => h3 (he ▸ ha)
+          have ha1 : a ≠ 1 := fun he => h1 (he ▸ ha)
+          simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+        have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 2} : Finset ℕ), x :=
+          Finset.sum_le_sum_of_subset hsub
+        rw [Finset.sum_pair (by norm_num : (0 : ℕ) ≠ 2)] at hbound
+        omega
+      · by_contra h2
+        have hsub : A ⊆ {0, 1} := by
+          intro a ha
+          have hle3 := hle a ha
+          have ha3 : a ≠ 3 := fun he => h3 (he ▸ ha)
+          have ha2 : a ≠ 2 := fun he => h2 (he ▸ ha)
+          simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+        have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 1} : Finset ℕ), x :=
+          Finset.sum_le_sum_of_subset hsub
+        rw [Finset.sum_pair (by norm_num : (0 : ℕ) ≠ 1)] at hbound
+        omega
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    rcases h with h3 | ⟨h1, h2⟩
+    · refine ⟨⟨{3}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h3
+      · simp
+    · refine ⟨⟨{1, 2}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset, Finset.insert_subset_iff, Finset.singleton_subset_iff]
+        exact ⟨h1, h2⟩
+      · rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 2)]
+
+/-- **`m = 3` characterization.** `S` avoids the subset sum `3` iff `3 ∉ S` and not both
+    `1, 2 ∈ S`. -/
+theorem avoid_three_iff (S : Finset ℕ) :
+    AvoidSum S 3 ↔ (3 ∉ S ∧ ¬ (1 ∈ S ∧ 2 ∈ S)) := by
+  unfold AvoidSum
+  rw [three_mem_subsetSums_iff, not_or]
+
+/-- **Exact value at `m = 3`.** For `n ≥ 3` the largest `3`-avoiding subset of `{1,…,n}`
+    has size exactly `n - 2` — the first case where the value drops below `n - 1`, because
+    `3 = {3} = {1, 2}` forces a second deletion. Optimality: avoiding `3` forces `3 ∉ S`
+    and (`1 ∉ S` or `2 ∉ S`), two distinct missing elements. Realization:
+    `{1,…,n} ∖ {2, 3}` avoids `3` (via `avoid_three_iff`). -/
+theorem m_eq_three_case (n : ℕ) (hn : n ≥ 3) :
+    maxAvoidingSize n 3 = n - 2 := by
+  classical
+  unfold maxAvoidingSize
+  have h3mem : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  apply le_antisymm
+  · apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, hSavoid⟩ := hS
+    rw [avoid_three_iff] at hSavoid
+    obtain ⟨h3, h12⟩ := hSavoid
+    rw [not_and_or] at h12
+    rcases h12 with h1 | h2
+    · have h1mem : (1 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+      have hsub : S ⊆ ((Icc_n n).erase 1).erase 3 := by
+        intro x hx
+        rw [Finset.mem_erase, Finset.mem_erase]
+        exact ⟨fun he => h3 (he ▸ hx), fun he => h1 (he ▸ hx), hSsub hx⟩
+      calc S.card ≤ (((Icc_n n).erase 1).erase 3).card := Finset.card_le_card hsub
+        _ = n - 2 := by
+          have h3e : (3 : ℕ) ∈ (Icc_n n).erase 1 := by
+            rw [Finset.mem_erase]; exact ⟨by norm_num, h3mem⟩
+          rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h1mem, Icc_n, Nat.card_Icc]
+          omega
+    · have h2mem : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+      have hsub : S ⊆ ((Icc_n n).erase 2).erase 3 := by
+        intro x hx
+        rw [Finset.mem_erase, Finset.mem_erase]
+        exact ⟨fun he => h3 (he ▸ hx), fun he => h2 (he ▸ hx), hSsub hx⟩
+      calc S.card ≤ (((Icc_n n).erase 2).erase 3).card := Finset.card_le_card hsub
+        _ = n - 2 := by
+          have h3e : (3 : ℕ) ∈ (Icc_n n).erase 2 := by
+            rw [Finset.mem_erase]; exact ⟨by norm_num, h3mem⟩
+          rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h2mem, Icc_n, Nat.card_Icc]
+          omega
+  · have h2mem : (2 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have h3e : (3 : ℕ) ∈ (Icc_n n).erase 2 := by
+      rw [Finset.mem_erase, Icc_n, Finset.mem_Icc]; omega
+    have hmem : ((Icc_n n).erase 2).erase 3 ∈
+        (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 3) := by
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨(Finset.erase_subset _ _).trans (Finset.erase_subset _ _), ?_⟩
+      rw [avoid_three_iff]
+      refine ⟨Finset.notMem_erase 3 _, ?_⟩
+      rintro ⟨_, hmem2⟩
+      have hno2 : (2 : ℕ) ∉ (Icc_n n).erase 2 := Finset.notMem_erase 2 _
+      exact hno2 (Finset.mem_of_mem_erase hmem2)
+    calc n - 2 = (((Icc_n n).erase 2).erase 3).card := by
+          rw [Finset.card_erase_of_mem h3e, Finset.card_erase_of_mem h2mem, Icc_n, Nat.card_Icc]
+          omega
+      _ ≤ _ := Finset.le_sup hmem
+
 /-- **General interval lower bound.** The interval `{m+1,…,n}` avoids `m` (all of
     its elements exceed `m`, so no nonempty subset sum can equal `m`) and has
     `n - m` elements, hence `maxAvoidingSize n m ≥ n - m`. This unifies the `m = 1`
@@ -503,7 +817,7 @@ def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
 theorem minFac_succ_not_dvd (m : ℕ) (hm : 1 ≤ m) : ¬ Nat.minFac (m + 1) ∣ m := by
   intro hdvd
   have hp : (Nat.minFac (m + 1)).Prime := Nat.minFac_prime (by omega)
-  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := Nat.dvd_sub' (Nat.minFac_dvd _) hdvd
+  have hdsub : Nat.minFac (m + 1) ∣ (m + 1 - m) := dvd_sub (Nat.minFac_dvd _) hdvd
   rw [show m + 1 - m = 1 by omega] at hdsub
   exact hp.one_lt.ne' (Nat.dvd_one.mp hdsub)
 

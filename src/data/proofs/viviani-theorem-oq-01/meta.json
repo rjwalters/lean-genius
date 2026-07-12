@@ -37,12 +37,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "(√x)² = x for nonnegative x, used to discharge (√3)² = 3",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_sq",
         "description": "√(x²) = x for nonnegative x, used to simplify √4 = 2",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "abs_of_nonneg",

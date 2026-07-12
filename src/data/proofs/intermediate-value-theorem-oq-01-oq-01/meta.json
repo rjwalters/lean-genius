@@ -33,7 +33,7 @@
       {
         "theorem": "mul_nonpos_iff",
         "description": "a*b <= 0 iff (0 <= a and b <= 0) or (a <= 0 and 0 <= b); selects the IVT branch",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Unbundled.Basic"
       },
       {
         "theorem": "BisectionMethod.bisect_width",

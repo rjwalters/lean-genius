@@ -3,7 +3,9 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
 import Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms
 import Mathlib.Topology.MetricSpace.HausdorffDimension
+import Mathlib.Topology.MetricSpace.Perfect
 import Mathlib.Analysis.Real.Cardinality
+import Mathlib.Analysis.Complex.Cardinality
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -157,6 +159,47 @@ theorem transcendental_reals_mk_eq_continuum :
       (by rw [Cardinal.mk_real]; exact Cardinal.aleph0_lt_continuum)
   rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_real]
 
+/-- **The transcendental complex numbers are uncountable.**  The complex analogue of
+`transcendental_reals_uncountable`, supplying the cardinality pillar on `ℂ` — which already
+carries its measure- (`algebraic_complex_null`), dimension- (`algebraic_complex_dimH_zero`),
+category- (`algebraic_complex_meagre`) and descriptive- (`algebraic_complex_no_perfect_subset`)
+smallness analogues, but was missing the cardinality one.
+
+Proof by contradiction: if the transcendental complex numbers were countable then, together
+with the countable algebraic complex numbers
+(`AlgebraicNumbersCountable.algebraic_complex_countable`), their union — all of `ℂ` — would be
+countable, contradicting `not_countable_complex`. -/
+theorem transcendental_complex_uncountable :
+    ¬ {z : ℂ | Transcendental ℚ z}.Countable := by
+  intro hcount
+  have hcompl : {z : ℂ | Transcendental ℚ z}ᶜ.Countable := by
+    rw [show {z : ℂ | Transcendental ℚ z}ᶜ = {z : ℂ | IsAlgebraic ℚ z} from by
+      ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental, not_not]]
+    exact AlgebraicNumbersCountable.algebraic_complex_countable
+  have huniv : (Set.univ : Set ℂ).Countable := by
+    have hu := hcount.union hcompl
+    rwa [Set.union_compl_self] at hu
+  exact not_countable_complex huniv
+
+/-- **The transcendental complex numbers have cardinality the continuum**:
+`#{z | Transcendental ℚ z} = 𝔠`.
+
+The quantitative sharpening of `transcendental_complex_uncountable` and the complex analogue of
+`transcendental_reals_mk_eq_continuum`: there are *precisely* continuum-many transcendental
+complex numbers, exactly as many as there are complex numbers. The algebraic complex numbers are
+countable, hence of cardinality `≤ ℵ₀ < 𝔠 = #ℂ` (`Cardinal.mk_complex`), so deleting them from
+`ℂ` cannot lower the cardinality of what remains (`Cardinal.mk_compl_of_infinite`); the
+transcendentals still carry the full `#ℂ = 𝔠`.  This makes the cardinality pillar quantitative on
+`ℂ` too, matching the real line. -/
+theorem transcendental_complex_mk_eq_continuum :
+    #{z : ℂ | Transcendental ℚ z} = 𝔠 := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have hlt : #{z : ℂ | IsAlgebraic ℚ z} < #(ℂ) :=
+    lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_complex_countable.le_aleph0
+      (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)
+  rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_complex]
+
 -- ============================================================================
 -- § 3. Transcendentals fill almost all of every interval
 -- ============================================================================
@@ -248,6 +291,41 @@ theorem ae_transcendental_complex :
   rw [Filter.eventually_iff, hset]
   exact compl_mem_ae_iff.mpr algebraic_complex_null
 
+/-- **The transcendental complex numbers are uncountable.**  The complex analogue of
+`transcendental_reals_uncountable`, supplying the cardinality pillar on `ℂ` (previously
+only the measure, dimension, density, descriptive and category pillars were present for
+the complex transcendentals).  If they were countable, then together with the countable
+algebraic complex numbers their union `ℂ` would be countable, contradicting
+`not_countable_complex`. -/
+theorem transcendental_complex_uncountable :
+    ¬ {z : ℂ | Transcendental ℚ z}.Countable := by
+  intro hcount
+  have hcompl : {z : ℂ | Transcendental ℚ z}ᶜ.Countable := by
+    have hset : {z : ℂ | Transcendental ℚ z}ᶜ = {z : ℂ | IsAlgebraic ℚ z} := by
+      ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental, not_not]
+    rw [hset]
+    exact AlgebraicNumbersCountable.algebraic_complex_countable
+  have huniv : (Set.univ : Set ℂ).Countable := by
+    have hu := hcount.union hcompl
+    rwa [Set.union_compl_self] at hu
+  exact not_countable_complex huniv
+
+/-- **The transcendental complex numbers have cardinality the continuum**:
+`#{z | Transcendental ℚ z} = 𝔠`.  The complex analogue of
+`transcendental_reals_mk_eq_continuum`, sharpening `transcendental_complex_uncountable`
+from "not countable" to the exact cardinal value.  The algebraic complex numbers are
+countable, hence of cardinality `≤ ℵ₀ < 𝔠 = #ℂ` (`Cardinal.mk_complex`); deleting a set of
+cardinality strictly below `#ℂ` from `ℂ` leaves the same cardinality
+(`Cardinal.mk_compl_of_infinite`), so the transcendentals still have cardinality `𝔠`. -/
+theorem transcendental_complex_mk_eq_continuum :
+    #{z : ℂ | Transcendental ℚ z} = 𝔠 := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have hlt : #{z : ℂ | IsAlgebraic ℚ z} < #(ℂ) :=
+    lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_complex_countable.le_aleph0
+      (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)
+  rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_complex]
+
 -- ============================================================================
 -- § 6. Hausdorff dimension zero — a sharpening of Lebesgue-null
 -- ============================================================================
@@ -300,6 +378,19 @@ theorem algebraic_complex_hausdorffMeasure_zero {d : NNReal} (hd : 0 < d) :
     μH[(d : ℝ)] {z : ℂ | IsAlgebraic ℚ z} = 0 :=
   hausdorffMeasure_of_dimH_lt (by
     rw [algebraic_complex_dimH_zero]; exact_mod_cast hd)
+
+/-- **The algebraic reals are dense** — despite being null (`algebraic_reals_null`),
+meagre (`algebraic_reals_meagre`), and of Hausdorff dimension `0`
+(`algebraic_reals_dimH_zero`).  They contain every rational (`isAlgebraic_rat`), and the
+rationals are dense in `ℝ` (`Rat.denseRange_cast`), so the algebraic reals are dense a
+fortiori.  Together with `transcendental_reals_dense` this exhibits `ℝ` as the union of two
+disjoint dense sets — the archetypal "small yet dense" set alongside its "large yet also
+dense" complement: topological density is orthogonal to measure/category/dimension smallness. -/
+theorem algebraic_reals_dense :
+    Dense {x : ℝ | IsAlgebraic ℚ x} := by
+  apply Dense.mono _ (Rat.denseRange_cast (𝕜 := ℝ))
+  rintro _ ⟨q, rfl⟩
+  exact isAlgebraic_rat ℚ q
 
 /-- **The transcendental reals are dense**, obtained from the dimensional bound:
 `dimH {algebraic} = 0 < 1 = finrank ℝ ℝ`, so the complement of the algebraic reals
@@ -434,5 +525,116 @@ theorem exists_transcendental_of_pos_measure_noAtoms_complex {μ : Measure ℂ} 
   have hz : μ s = 0 := measure_mono_null hsub (algebraic_complex_null_of_noAtoms μ)
   rw [hz] at hs
   exact lt_irrefl 0 hs
+
+/-!
+## Cantor–Bendixson: the algebraic reals have an empty perfect kernel
+
+Alongside the measure-, category-, and cardinality-smallness above sits a fourth,
+order-topological, notion from descriptive set theory. The **Cantor–Bendixson kernel**
+of a set is what remains after transfinitely iterating the removal of isolated points;
+for a *countable* closed set it is empty. The engine is the fact that a nonempty perfect
+set in a complete metric space is uncountable — it admits a continuous injection from
+Cantor space `ℕ → Bool`, whose cardinality is the continuum `𝔠 = 2 ^ ℵ₀ > ℵ₀`
+(`Perfect.exists_nat_bool_injection`). Hence the countable algebraic reals — and complex
+algebraic numbers — contain no nonempty perfect subset, so their Cantor–Bendixson
+derivative process terminates at `∅`.
+-/
+
+/-- A nonempty `Perfect` set in a complete metric space is uncountable: it admits a
+continuous injection from Cantor space `ℕ → Bool` (`Perfect.exists_nat_bool_injection`),
+whose cardinality is the continuum `2 ^ ℵ₀ > ℵ₀`. -/
+theorem perfect_not_countable {α : Type*} [MetricSpace α] [CompleteSpace α]
+    {C : Set α} (hC : Perfect C) (hne : C.Nonempty) : ¬ C.Countable := by
+  obtain ⟨f, hrange, -, hinj⟩ := hC.exists_nat_bool_injection hne
+  intro hcount
+  have hrc : (Set.range f).Countable := hcount.mono hrange
+  have hcb : Countable (ℕ → Bool) :=
+    (Equiv.ofInjective f hinj).countable_iff.mpr hrc.to_subtype
+  have hle : #(ℕ → Bool) ≤ ℵ₀ := Cardinal.mk_le_aleph0
+  have hlt : ℵ₀ < #(ℕ → Bool) := by
+    calc ℵ₀ < 2 ^ ℵ₀ := by exact_mod_cast Cardinal.cantor ℵ₀
+      _ = #(ℕ → Bool) := by rw [Cardinal.mk_arrow]; simp
+  exact absurd hle (not_le.mpr hlt)
+
+/-- **The Cantor–Bendixson kernel of the algebraic reals is empty.** Since the algebraic
+reals are countable (`AlgebraicNumbersCountable.algebraic_reals_countable`) they contain
+no nonempty perfect subset: any `Perfect P` with `P ⊆ {x | IsAlgebraic ℚ x}` is `∅`. -/
+theorem algebraic_reals_no_perfect_subset {P : Set ℝ}
+    (hP : Perfect P) (hsub : P ⊆ {x : ℝ | IsAlgebraic ℚ x}) : P = ∅ := by
+  by_contra hne
+  exact perfect_not_countable hP (Set.nonempty_iff_ne_empty.mpr hne)
+    (AlgebraicNumbersCountable.algebraic_reals_countable.mono hsub)
+
+/-- **The Cantor–Bendixson kernel of the complex algebraic numbers is empty.** The
+complex analogue of `algebraic_reals_no_perfect_subset`: the countable set
+`{z : ℂ | IsAlgebraic ℚ z}` contains no nonempty perfect subset. -/
+theorem algebraic_complex_no_perfect_subset {P : Set ℂ}
+    (hP : Perfect P) (hsub : P ⊆ {z : ℂ | IsAlgebraic ℚ z}) : P = ∅ := by
+  by_contra hne
+  exact perfect_not_countable hP (Set.nonempty_iff_ne_empty.mpr hne)
+    (AlgebraicNumbersCountable.algebraic_complex_countable.mono hsub)
+
+/-!
+## Baire category: the algebraic reals are meagre, the transcendentals comeagre
+
+The measure pillar above shows the transcendentals are *conull* (measure-large) and the
+algebraic reals *null* (measure-small). This section supplies the parallel **Baire-category**
+pillar with its topological structure explicit. Because the algebraic reals are countable,
+they are a countable union of singletons, so their complement — the transcendentals — is a
+**Gδ** set (`Set.Countable.isGδ_compl`, using that `ℝ`/`ℂ` are `T1`). A *dense* Gδ set is
+**residual** (comeagre) (`residual_of_dense_Gδ`), and the transcendentals are dense
+(`transcendental_reals_dense`), so they are comeagre and the algebraic reals are
+**meagre** (`IsMeagre`). This is the category-largeness dual of `transcendental_reals_conull`,
+completing the smallness picture: the algebraic reals are simultaneously null (measure),
+meagre (category), dimension-zero (Hausdorff), countable (cardinality) and perfect-kernel-free
+(descriptive), while the transcendentals are conull, comeagre, full-dimensional and continuum.
+-/
+
+/-- **The transcendental reals form a Gδ set.** The algebraic reals are countable, hence
+(as `ℝ` is `T1`) their complement is a countable intersection of open sets. -/
+theorem transcendental_reals_isGδ : IsGδ {x : ℝ | Transcendental ℚ x} := by
+  have hcompl : {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ := by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [hcompl]
+  exact AlgebraicNumbersCountable.algebraic_reals_countable.isGδ_compl
+
+/-- **The transcendental reals are comeagre (residual).** A dense Gδ set is residual
+(`residual_of_dense_Gδ`); the transcendentals are a Gδ (`transcendental_reals_isGδ`) and
+dense (`transcendental_reals_dense`). This is the Baire-category largeness of the
+transcendentals, dual to their conull measure largeness. -/
+theorem transcendental_reals_residual :
+    {x : ℝ | Transcendental ℚ x} ∈ residual ℝ :=
+  residual_of_dense_Gδ transcendental_reals_isGδ transcendental_reals_dense
+
+/-- **The algebraic reals are meagre.** Their complement (the transcendentals) is residual,
+which is exactly the definition of `IsMeagre`. The category-theoretic smallness pillar,
+sitting alongside `algebraic_reals_null` (measure) and `algebraic_reals_dimH_zero` (dimension). -/
+theorem algebraic_reals_meagre : IsMeagre {x : ℝ | IsAlgebraic ℚ x} := by
+  have hcompl : {x : ℝ | IsAlgebraic ℚ x}ᶜ = {x : ℝ | Transcendental ℚ x} := by
+    ext x; simp only [mem_compl_iff, mem_setOf_eq, Transcendental]
+  rw [IsMeagre, hcompl]
+  exact transcendental_reals_residual
+
+/-- **The transcendental complex numbers form a Gδ set**, by the same argument with the
+countable complex algebraic numbers and `ℂ` being `T1`. -/
+theorem transcendental_complex_isGδ : IsGδ {z : ℂ | Transcendental ℚ z} := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  rw [hcompl]
+  exact AlgebraicNumbersCountable.algebraic_complex_countable.isGδ_compl
+
+/-- **The transcendental complex numbers are comeagre (residual)**: a dense Gδ set, the
+complex analogue of `transcendental_reals_residual`. -/
+theorem transcendental_complex_residual :
+    {z : ℂ | Transcendental ℚ z} ∈ residual ℂ :=
+  residual_of_dense_Gδ transcendental_complex_isGδ transcendental_complex_dense
+
+/-- **The complex algebraic numbers are meagre**, the complex analogue of
+`algebraic_reals_meagre`. -/
+theorem algebraic_complex_meagre : IsMeagre {z : ℂ | IsAlgebraic ℚ z} := by
+  have hcompl : {z : ℂ | IsAlgebraic ℚ z}ᶜ = {z : ℂ | Transcendental ℚ z} := by
+    ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental]
+  rw [IsMeagre, hcompl]
+  exact transcendental_complex_residual
 
 end AlgebraicRealsNull

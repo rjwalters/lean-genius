@@ -265,8 +265,9 @@ theorem altitude_geometric_mean (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   -- so the altitude `C - H` meets it at a right angle at the foot `H`.
   have hCHperp : ⟪C - altitudeFoot A B C, A - B⟫ = (0 : ℝ) := foot_perp A B C hAB hperp
   have hperp2 : ⟪A - altitudeFoot A B C, C - altitudeFoot A B C⟫ = (0 : ℝ) := by
-    rw [hAHpar, real_inner_smul_left,
-        real_inner_comm (A - B) (C - altitudeFoot A B C), hCHperp, mul_zero]
+    have hflip : (⟪A - B, C - altitudeFoot A B C⟫ : ℝ) = 0 := by
+      rw [real_inner_comm]; exact hCHperp
+    rw [hAHpar, real_inner_smul_left, hflip, mul_zero]
   -- Pythagoras on the right sub-triangle `A H C`: `|AC|² = |AH|² + |CH|²`.
   have hsub := pythagorean_core A C (altitudeFoot A B C) hperp2
   have hgA := geometric_mean_A A B C hAB          -- `|AC|² = |AB|·|AH|`
@@ -293,7 +294,7 @@ theorem altitude_length (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   have hlhs : 0 ≤ ‖C - altitudeFoot A B C‖ := norm_nonneg _
   have hrhs : 0 ≤ ‖A - C‖ * ‖B - C‖ / ‖A - B‖ := by positivity
   have hsq : ‖C - altitudeFoot A B C‖ ^ 2 = (‖A - C‖ * ‖B - C‖ / ‖A - B‖) ^ 2 := by
-    rw [hgm, hAH, hHB]; field_simp; ring
+    rw [hgm, hAH, hHB]; field_simp
   rw [← Real.sqrt_sq hlhs, hsq, Real.sqrt_sq hrhs]
 
 include hAB in
@@ -310,7 +311,6 @@ theorem triArea_hypotenuse_eq_legs (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [altitude_length A B C hAB hperp]
   field_simp
-  ring
 
 include hAB in
 /-- **Einstein's key step, leg-`CA` piece: the similar sub-triangle's area scales as the
@@ -332,7 +332,6 @@ theorem triArea_sub_A_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [dist_A_foot A B C hAB]
   field_simp
-  ring
 
 include hAB in
 /-- **Einstein's key step, leg-`CB` piece.**  The altitude from `C` cuts off the sub-triangle
@@ -351,7 +350,6 @@ theorem triArea_sub_B_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [dist_foot_B A B C hAB hperp]
   field_simp
-  ring
 
 include hAB in
 /-- **The area-level dissection: the two similar pieces reconstitute the whole.**  The altitude
@@ -436,6 +434,171 @@ theorem einstein_matches_core (A B C : F) (hAB : A ≠ B)
     ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 = ‖A - B‖ ^ 2 ∧
     ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 :=
   ⟨pythagorean_via_altitude A B C hAB hperp, pythagorean_core A B C hperp⟩
+
+-- ============================================================
+-- Euclid VI.31: the generalized Pythagorean theorem
+-- ============================================================
+
+/-- **Euclid VI.31 — the generalized Pythagorean theorem.**  For a right angle at `C`, erect
+*similar* figures of one common shape on the three sides.  By similarity the area of a figure
+of fixed shape spanned on a segment of length `s` is `figArea s = shapeConst · s²` — area scales
+as the *square* of the linear dimension — so the entire shape is encoded in the single constant
+`shapeConst`.  Then the figure on the hypotenuse has area equal to the sum of the areas of the
+figures on the two legs:
+
+`figArea ‖A − B‖ = figArea ‖A − C‖ + figArea ‖B − C‖.`
+
+Pythagoras is the special case of squares (`shapeConst = 1`); Euclid's Proposition VI.31 allows
+semicircles (below), similar triangles, regular polygons, or any fixed shape.  The proof is
+immediate from `pythagorean_core` together with the degree-2 homogeneity `hfig`: pulling the
+common constant out reduces the three-figure identity to the metric Pythagorean identity. -/
+theorem euclid_VI_31 (figArea : ℝ → ℝ) (shapeConst : ℝ)
+    (hfig : ∀ s : ℝ, figArea s = shapeConst * s ^ 2)
+    (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    figArea ‖A - B‖ = figArea ‖A - C‖ + figArea ‖B - C‖ := by
+  simp only [hfig]
+  rw [pythagorean_core A B C hperp]; ring
+
+/-- **Semicircles on the three sides — a concrete instance of Euclid VI.31.**  The semicircle
+erected on a segment of length `s` (taken as diameter) has area `π s² / 8` (half of `π (s/2)²`).
+Feeding this shape functional to `euclid_VI_31` gives that the semicircle on the hypotenuse has
+area equal to the sum of the semicircles on the two legs — the additivity identity underlying
+Hippocrates' quadrature of the lunes. -/
+theorem semicircles_on_sides (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    Real.pi * ‖A - B‖ ^ 2 / 8
+      = Real.pi * ‖A - C‖ ^ 2 / 8 + Real.pi * ‖B - C‖ ^ 2 / 8 := by
+  have h := euclid_VI_31 (fun s => Real.pi * s ^ 2 / 8) (Real.pi / 8)
+    (fun s => by ring) A B C hperp
+  simpa using h
+
+/-- **Hippocrates' quadrature of the lunes.**  Erect a semicircle outward on each *leg*
+(diameters `CA`, `CB`) and the semicircle on the hypotenuse `AB` on the side of the triangle —
+by Thales the latter passes through the right-angle vertex `C`, so it decomposes into the
+triangle `ABC` plus the two circular *segments* cut off by the chords `CA` and `CB`:
+
+`(area of semicircle on AB)  =  (area of triangle ABC)  +  segA  +  segB`   (`hbig`).
+
+Each **lune** is the sliver between a leg-semicircle and the hypotenuse-semicircle, i.e.
+`luneA = (semicircle on CA) − segA` and `luneB = (semicircle on CB) − segB`.  Hippocrates'
+celebrated theorem (c. 440 BC — the first rigorous quadrature of a curvilinear region) is that
+the two lunes together have the **rectilinear** area of the triangle:
+
+`luneA + luneB  =  area of triangle ABC.`
+
+The proof is the algebraic heart of the classical argument: by `semicircles_on_sides` the two
+leg-semicircles sum to the hypotenuse-semicircle, so
+`luneA + luneB = (semiCA + semiCB) − segA − segB = semiAB − segA − segB = triArea` by `hbig`.
+Only this decomposition `hbig` carries geometric content (the Thales inscription of `C`); the
+quadrature identity itself is forced by the Pythagorean additivity of the semicircles. -/
+theorem hippocrates_lunes (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ))
+    (triArea segA segB : ℝ)
+    (hbig : Real.pi * ‖A - B‖ ^ 2 / 8 = triArea + segA + segB) :
+    (Real.pi * ‖A - C‖ ^ 2 / 8 - segA) + (Real.pi * ‖B - C‖ ^ 2 / 8 - segB) = triArea := by
+  have hsemi := semicircles_on_sides A B C hperp
+  linarith
+
+/-- **Thales' theorem / the circumradius of a right triangle.** The right-angle vertex `C`
+lies on the circle whose diameter is the hypotenuse `AB`: the hypotenuse midpoint
+`M = A + ½·(B − A)` is at distance exactly `‖A − B‖ / 2` from `C`. Equivalently, the
+circumradius of a right triangle is half its hypotenuse. This is precisely the inscription of
+`C` in the hypotenuse semicircle that `hippocrates_lunes` invokes ("by Thales the latter passes
+through the right-angle vertex `C`") but does not itself prove. The proof writes
+`M − C = ½·((A−C)+(B−C))` and evaluates
+`‖(A−C)+(B−C)‖² = ‖A−C‖² + 2⟪A−C,B−C⟫ + ‖B−C‖² = ‖A−C‖² + ‖B−C‖² = ‖A−B‖²`, using the right
+angle (`hperp`) and `pythagorean_core`. -/
+theorem thales_circumradius (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2 := by
+  have hsum_sq : ‖(A - C) + (B - C)‖ ^ 2 = ‖A - B‖ ^ 2 := by
+    rw [norm_add_sq_real, hperp]
+    have hp := pythagorean_core A B C hperp
+    linarith
+  have hsum : ‖(A - C) + (B - C)‖ = ‖A - B‖ := by
+    have h1 := norm_nonneg ((A - C) + (B - C))
+    have h2 := norm_nonneg (A - B)
+    nlinarith [hsum_sq, h1, h2]
+  have hdecomp : (A + (2⁻¹ : ℝ) • (B - A)) - C = (2⁻¹ : ℝ) • ((A - C) + (B - C)) := by
+    module
+  rw [hdecomp, norm_smul, hsum, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)]
+  ring
+
+/-- **The hypotenuse midpoint is the circumcenter of the right triangle.** All three vertices
+lie at the same distance `‖A − B‖ / 2` from the hypotenuse midpoint `M = A + ½·(B − A)`: the two
+hypotenuse endpoints trivially (`M` is their midpoint), and the right-angle vertex `C` by
+`thales_circumradius`. So the circumcircle of a right triangle is centred at the hypotenuse
+midpoint with radius half the hypotenuse — the converse-of-Thales companion of
+`thales_circumradius`. -/
+theorem hypotenuse_midpoint_circumcenter (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖(A + (2⁻¹ : ℝ) • (B - A)) - A‖ = ‖A - B‖ / 2 ∧
+      ‖(A + (2⁻¹ : ℝ) • (B - A)) - B‖ = ‖A - B‖ / 2 ∧
+      ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2 := by
+  refine ⟨?_, ?_, thales_circumradius A B C hperp⟩
+  · have hd : (A + (2⁻¹ : ℝ) • (B - A)) - A = (2⁻¹ : ℝ) • (B - A) := by module
+    rw [hd, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹),
+      norm_sub_rev B A]
+    ring
+  · have hd : (A + (2⁻¹ : ℝ) • (B - A)) - B = (2⁻¹ : ℝ) • (A - B) := by module
+    rw [hd, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)]
+    ring
+
+-- ============================================================
+-- Converses: recovering the right angle from the metric data
+-- ============================================================
+
+/-- **Converse of the (metric) Pythagorean theorem.**  The forward direction
+`pythagorean_core` shows a right angle at `C` forces `‖A−B‖² = ‖A−C‖² + ‖B−C‖²`.  This is the
+converse: *whenever* the hypotenuse square equals the sum of the leg squares, the angle at `C`
+must be right (`⟪A−C, B−C⟫ = 0`).  Expanding `‖A−B‖² = ‖(A−C)−(B−C)‖²
+= ‖A−C‖² − 2⟪A−C,B−C⟫ + ‖B−C‖²` and comparing with the hypothesis leaves `2⟪A−C,B−C⟫ = 0`.
+Together with `pythagorean_core` this makes the right angle *equivalent* to the numerical
+Pythagorean relation (`pythagorean_core_iff`). -/
+theorem pythagorean_core_converse (A B C : F)
+    (h : ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) := by
+  have hR : ‖A - B‖ ^ 2
+      = ‖A - C‖ ^ 2 - 2 * ⟪A - C, B - C⟫ + ‖B - C‖ ^ 2 := by
+    have hAB : A - B = (A - C) - (B - C) := by abel
+    rw [hAB]; exact norm_sub_sq_real _ _
+  rw [hR] at h
+  linarith
+
+/-- **Pythagoras characterises the right angle.**  Combining `pythagorean_core` with its
+converse: the angle at `C` is right iff the metric Pythagorean identity holds. -/
+theorem pythagorean_core_iff (A B C : F) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) ↔ ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 :=
+  ⟨pythagorean_core A B C, pythagorean_core_converse A B C⟩
+
+/-- **Converse of Thales' theorem.**  `thales_circumradius` shows the right-angle vertex lies on
+the circle with diameter `AB` (distance exactly `‖A−B‖/2` from the hypotenuse midpoint
+`M = A + ½·(B−A)`).  This is the converse — the classical statement that *any* point `C` on that
+circle sees the diameter at a right angle: if `‖M − C‖ = ‖A−B‖/2` then `⟪A−C, B−C⟫ = 0`.
+Writing `M − C = ½·((A−C)+(B−C))`, the hypothesis says `‖(A−C)+(B−C)‖ = ‖A−B‖`; squaring and
+expanding both sides (via `norm_add_sq_real` on the left, `norm_sub_sq_real` on the right,
+since `A−B = (A−C)−(B−C)`) cancels the common leg-square terms and forces `4⟪A−C,B−C⟫ = 0`.
+This is exactly the inscription of `C` in the hypotenuse semicircle that `hippocrates_lunes`
+invokes but did not prove in that direction. -/
+theorem thales_converse (A B C : F)
+    (h : ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) := by
+  have hdecomp : (A + (2⁻¹ : ℝ) • (B - A)) - C = (2⁻¹ : ℝ) • ((A - C) + (B - C)) := by module
+  rw [hdecomp, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)] at h
+  have hnorm : ‖(A - C) + (B - C)‖ = ‖A - B‖ := by linarith
+  have hsq : ‖(A - C) + (B - C)‖ ^ 2 = ‖A - B‖ ^ 2 := by rw [hnorm]
+  -- Expand each side explicitly (avoids `norm_sub_sq_real` mis-firing on `‖A−C‖²`).
+  have hL : ‖(A - C) + (B - C)‖ ^ 2
+      = ‖A - C‖ ^ 2 + 2 * ⟪A - C, B - C⟫ + ‖B - C‖ ^ 2 := norm_add_sq_real _ _
+  have hR : ‖A - B‖ ^ 2
+      = ‖A - C‖ ^ 2 - 2 * ⟪A - C, B - C⟫ + ‖B - C‖ ^ 2 := by
+    have hAB : A - B = (A - C) - (B - C) := by abel
+    rw [hAB]; exact norm_sub_sq_real _ _
+  rw [hL, hR] at hsq
+  linarith
+
+/-- **Thales characterises the right angle.**  Combining `thales_circumradius` with its
+converse: the angle at `C` is right iff `C` lies on the circle with diameter `AB` (the
+hypotenuse midpoint is equidistant, at `‖A−B‖/2`, from `C`). -/
+theorem thales_iff (A B C : F) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) ↔ ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2 :=
+  ⟨thales_circumradius A B C, thales_converse A B C⟩
 
 #check @einstein_pythagorean
 #check @pythagorean_via_altitude

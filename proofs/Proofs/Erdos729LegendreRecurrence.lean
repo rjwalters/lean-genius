@@ -125,6 +125,64 @@ theorem v2_factorial_eq_pred_iff (n : ℕ) (hn : 1 ≤ n) :
   rw [hL]
   omega
 
+/-- **Single-step recurrence.** `v₂((n+1)!) = v₂(n+1) + v₂(n!)`.
+
+The fundamental one-step form underlying the doubling (`v2_factorial_two_mul`)
+and odd-step (`v2_factorial_two_mul_add_one`) recurrences: passing from `n!` to
+`(n+1)!` multiplies by `n+1`, adding exactly `v₂(n+1)` factors of two.  Immediate
+from `Nat.factorial_succ` and additivity of `padicValNat` over products. -/
+theorem v2_factorial_succ (n : ℕ) :
+    padicValNat 2 (n + 1).factorial
+      = padicValNat 2 (n + 1) + padicValNat 2 n.factorial := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  rw [Nat.factorial_succ,
+    padicValNat.mul (Nat.succ_ne_zero n) (Nat.factorial_ne_zero n)]
+
+/-- **Monotonicity of the 2-adic valuation of factorials.** `n ↦ v₂(n!)` is
+`Monotone`: the valuation never decreases as `n` grows, since each step from `n!`
+to `(n+1)!` adds the nonnegative amount `v₂(n+1)` (`v2_factorial_succ`).  The
+qualitative envelope of the exact doubling/odd-step recurrences above. -/
+theorem v2_factorial_monotone :
+    Monotone (fun n => padicValNat 2 (Nat.factorial n)) :=
+  monotone_nat_of_le_succ fun n => by
+    rw [v2_factorial_succ]; omega
+
+/-- **Even→odd plateau.** `v₂((2n)!) = v₂((2n+1)!)`: the 2-adic valuation of the
+factorial is *constant* across each even-to-odd step, because the odd number `2n+1`
+contributes no new factor of two.  This is exactly where the monotone map
+`v2_factorial_monotone` fails to be *strict* — both doubling recurrences land on the
+same value `n + v₂(n!)`, so `v₂(·!)` is flat on `{2n, 2n+1}` and only increases on the
+even steps `2n+1 → 2n+2`. -/
+theorem v2_factorial_two_mul_eq_two_mul_add_one (n : ℕ) :
+    padicValNat 2 (2 * n).factorial = padicValNat 2 (2 * n + 1).factorial := by
+  rw [v2_factorial_two_mul, v2_factorial_two_mul_add_one]
+
+/-- **Binary digit sum is at most the bit length.** `s₂(n) ≤ ⌊log₂ n⌋ + 1` for `n ≥ 1`:
+each binary digit is `≤ 1`, and `n` has exactly `⌊log₂ n⌋ + 1` binary digits.  Sharper
+than the trivial `s₂(n) ≤ n` (`Nat.digit_sum_le`), and the input to the factorial
+valuation lower bound. -/
+theorem s₂_le_log_succ (n : ℕ) (hn : n ≠ 0) : s₂ n ≤ Nat.log 2 n + 1 := by
+  have hlen : (Nat.digits 2 n).length = Nat.log 2 n + 1 :=
+    Nat.digits_len 2 n (by norm_num) hn
+  have hbound : (Nat.digits 2 n).sum ≤ (Nat.digits 2 n).length := by
+    have h := List.sum_le_card_nsmul (Nat.digits 2 n) 1
+      (fun x hx => Nat.lt_succ_iff.mp (Nat.digits_lt_base (by norm_num) hx))
+    simpa using h
+  simp only [s₂]
+  omega
+
+/-- **Quantitative lower bound.** `v₂(n!) ≥ n − (⌊log₂ n⌋ + 1)` for `n ≥ 1`.  Since
+`v₂(n!) = n − s₂(n)` (`legendre_two`) and `s₂(n) ≤ ⌊log₂ n⌋ + 1` (`s₂_le_log_succ`), the
+2-adic valuation of `n!` is within `⌊log₂ n⌋ + 1` of its ceiling `n`: it grows like
+`n − O(log n)`, so `v₂(n!)/n → 1`.  The lower companion to the maximality
+characterization `v2_factorial_eq_pred_iff` (`v₂(n!) = n − 1 ⟺ s₂(n) = 1`). -/
+theorem v2_factorial_ge (n : ℕ) (hn : n ≠ 0) :
+    padicValNat 2 n.factorial ≥ n - (Nat.log 2 n + 1) := by
+  have hL := legendre_two n
+  have hs := s₂_le_log_succ n hn
+  rw [hL]
+  omega
+
 #check @v2_factorial_two_mul
 #check @v2_factorial_two_mul_add_one
 #check @v2_factorial_eq_pred_iff

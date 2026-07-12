@@ -602,6 +602,27 @@ theorem kronecker_periodic_numerator (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n %
   rw [kronecker_mod_numerator (a + (n : ℤ)) n hn hno, kronecker_mod_numerator a n hn hno,
     Int.add_emod_right]
 
+/-- **The numerator character `(·/n)` is constant on residue classes (congruence form).**
+    For odd positive `n`, congruent numerators give equal symbols: `a₁ ≡ a₂ (mod n)`
+    implies `(a₁/n) = (a₂/n)`. This is the numerator-side analog of Mathlib's
+    `jacobiSym.mod_left'`, and the precise sense in which `(·/n)` is a genuine function on
+    `ℤ / nℤ` — the form used to *define* the induced Dirichlet character on `ZMod n`
+    (stronger than the representative form `kronecker_mod_numerator`, which only reduces to
+    the canonical residue `a % n`). `sorry`-free, axiom-free. -/
+theorem kronecker_mod_numerator' (a₁ a₂ : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (h : a₁ % (n : ℤ) = a₂ % (n : ℤ)) :
+    kronecker a₁ (n : ℤ) = kronecker a₂ (n : ℤ) := by
+  rw [kronecker_mod_numerator a₁ n hn hno, kronecker_mod_numerator a₂ n hn hno, h]
+
+/-- **The numerator character `(·/n)` is invariant under adding any integer multiple of `n`.**
+    For odd positive `n` and any `k : ℤ`, `(a + k·n / n) = (a/n)`. The full period-`n`
+    statement generalising the single-step `kronecker_periodic_numerator` (the `k = 1` case),
+    obtained from the congruence form since `(a + k·n) % n = a % n`. `sorry`-free,
+    axiom-free. -/
+theorem kronecker_add_mul_numerator (a k : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (a + k * (n : ℤ)) (n : ℤ) = kronecker a (n : ℤ) :=
+  kronecker_mod_numerator' (a + k * (n : ℤ)) a n hn hno (Int.add_mul_emod_self_right a k n)
+
 /-! ### Section 9: the supplementary laws as Mathlib's canonical characters
 
 Section 8 states the supplementary laws in explicit `if`-form (readable residue
@@ -1017,6 +1038,111 @@ theorem kronecker_sq_right_eq_one_iff (a n : ℤ) (hn : n ≠ 0) :
     · exact absurd ((kronecker_sq_right_eq_zero_iff a n hn).mp h0) h
     · exact h1
 
+-- ============================================================
+-- Section 14: Power numerators and moduli — the character on higher powers
+-- ============================================================
+
+/-! Section 6 established the denominator-side power law `kronecker_pow_right`
+`(a/nᵏ) = (a/n)ᵏ` and its even-power positivity `kronecker_even_pow_right_nonneg`.
+Section 13's square laws `kronecker_sq_left`/`kronecker_sq_right` are the `k = 2`
+slice of the general power law in *each* argument.  This section supplies the
+missing numerator-side power law `kronecker_pow_left` `(aᵏ/n) = (a/n)ᵏ` (the exact
+dual of `kronecker_pow_right`), and completes the even-power residue picture in
+both arguments: even powers are non-negative and equal `1` on units, generalizing
+`kronecker_sq_*` from `k = 2` to every exponent. -/
+
+/-- **The symbol at a power numerator is the power of the symbol.**  For nonzero
+`a` and every exponent `k`, `(aᵏ/n) = (a/n)ᵏ`.  The numerator-side dual of the
+Section-6 law `kronecker_pow_right`, by induction on `k` off first-argument
+multiplicativity `kronecker_mul_left` (base case `(a⁰/n) = (1/n) = 1`, from
+`kronecker_one_left`); the `k = 2` case is Section 13's `kronecker_sq_left`. -/
+theorem kronecker_pow_left (a n : ℤ) (k : ℕ) (ha : a ≠ 0) :
+    kronecker (a ^ k) n = kronecker a n ^ k := by
+  induction k with
+  | zero => simp [kronecker_one_left]
+  | succ k ih =>
+      rw [pow_succ, kronecker_mul_left (a ^ k) a n (mul_ne_zero (pow_ne_zero k ha) ha),
+        ih, pow_succ]
+
+/-- **The symbol is non-negative at even-power numerators.**  For nonzero `a` and
+every `k`, `0 ≤ (a^{2k}/n)`: by `kronecker_pow_left` the value is `((a/n)²)ᵏ`, a
+power of a square.  Generalizes `kronecker_sq_left_nonneg` (`k = 1`): even powers of
+the numerator are never quadratic non-residues at any modulus. -/
+theorem kronecker_even_pow_left_nonneg (a n : ℤ) (k : ℕ) (ha : a ≠ 0) :
+    0 ≤ kronecker (a ^ (2 * k)) n := by
+  rw [kronecker_pow_left a n (2 * k) ha, pow_mul]
+  exact pow_nonneg (sq_nonneg _) k
+
+/-- **Even-power numerators coprime to an odd modulus are residues.**  For odd
+positive `n` coprime to nonzero `a`, `(a^{2k}/n) = 1`: by `kronecker_pow_left` the
+value is `((a/n)²)ᵏ`, and `(a/n)² = 1` on units (`kronecker_sq_eq_one_of_coprime`).
+The `k = 1` case is `kronecker_sq_left_eq_one_of_coprime`; every even power of a unit
+numerator is a quadratic residue. -/
+theorem kronecker_even_pow_left_eq_one_of_coprime (a : ℤ) (n k : ℕ)
+    (hn : 0 < n) (hno : n % 2 = 1) (h : Int.gcd a n = 1) (ha : (a : ℤ) ≠ 0) :
+    kronecker ((a : ℤ) ^ (2 * k)) (n : ℤ) = 1 := by
+  rw [kronecker_pow_left (a : ℤ) (n : ℤ) (2 * k) ha, pow_mul,
+    kronecker_sq_eq_one_of_coprime a n hn hno h, one_pow]
+
+/-- **Even-power moduli coprime to the numerator give the trivial value.**  For odd
+positive `n` coprime to `a`, `(a/n^{2k}) = 1`: by `kronecker_pow_right` the value is
+`((a/n)²)ᵏ = 1` on units.  The denominator-side dual of
+`kronecker_even_pow_left_eq_one_of_coprime` and the power generalization of
+`kronecker_sq_right_eq_one_of_coprime` (`k = 1`). -/
+theorem kronecker_even_pow_right_eq_one_of_coprime (a : ℤ) (n k : ℕ)
+    (hn : 0 < n) (hno : n % 2 = 1) (h : Int.gcd a n = 1) :
+    kronecker (a : ℤ) ((n : ℤ) ^ (2 * k)) = 1 := by
+  rw [kronecker_pow_right (a : ℤ) (n : ℤ) (2 * k) (by exact_mod_cast hn.ne'), pow_mul,
+    kronecker_sq_eq_one_of_coprime a n hn hno h, one_pow]
+
+-- ============================================================
+-- Section 14: Denominator sign law (behaviour under n ↦ -n)
+-- ============================================================
+
+/-! The numerator-negation family of Section 10 records how the symbol twists when the
+*numerator* changes sign: `(-a/n) = (-1/n)·(a/n)`. Its exact dual — how the symbol behaves
+when the *denominator* changes sign — is the following. Because `kronecker` is multiplicative
+in the second argument (`kronecker_mul_right`) and `-n = (-1)·n`, negating the modulus twists
+the symbol by the value `(a/(-1)) = kroneckerNeg1 a`, the sign character of the *numerator*.
+Concretely the symbol is even in the modulus sign for `a ≥ 0` and odd for `a < 0` — the
+reflection of how the numerator law depends on `n mod 4`, here depending instead on the sign of
+`a` (which is exactly what `(a/(-1))` measures). All proofs are one line off second-argument
+multiplicativity and hold for the symbol exactly as defined. -/
+
+/-- **Denominator negation, general modulus.** For any numerator `a` and any nonzero modulus
+`n`, `(a/(-n)) = (a/(-1))·(a/n)`. The second-argument dual of `kronecker_neg_numerator`; an
+instance of `kronecker_mul_right` applied to `-n = (-1)·n`. -/
+theorem kronecker_neg_denominator (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (-n) = kronecker a (-1) * kronecker a n := by
+  rw [show (-n : ℤ) = (-1) * n by ring]
+  exact kronecker_mul_right a (-1) n (mul_ne_zero (by norm_num) hn)
+
+/-- **The symbol at modulus `-1` is the numerator sign character.** `(a/(-1)) = kroneckerNeg1 a`
+(namely `1` for `a ≥ 0` and `-1` for `a < 0`). Via `kronecker_eq_sign_jacobi` at `n = -1`,
+where `|n| = 1` and `jacobiSym a 1 = 1`. -/
+theorem kronecker_neg_one_denominator (a : ℤ) :
+    kronecker a (-1) = kroneckerNeg1 a := by
+  rw [kronecker_eq_sign_jacobi a (-1) (by norm_num)]
+  norm_num [jacobiSym.one_right]
+
+/-- **Denominator negation via the sign character.** `(a/(-n)) = kroneckerNeg1 a · (a/n)`:
+the explicit form of `kronecker_neg_denominator` with `(a/(-1))` evaluated. -/
+theorem kronecker_neg_denominator_eq_kroneckerNeg1 (a n : ℤ) (hn : n ≠ 0) :
+    kronecker a (-n) = kroneckerNeg1 a * kronecker a n := by
+  rw [kronecker_neg_denominator a n hn, kronecker_neg_one_denominator]
+
+/-- **The symbol is even in the modulus sign for a nonnegative numerator.** For `0 ≤ a` and
+`n ≠ 0`, `(a/(-n)) = (a/n)`, since the sign character `kroneckerNeg1 a = 1`. -/
+theorem kronecker_neg_denominator_nonneg (a n : ℤ) (ha : 0 ≤ a) (hn : n ≠ 0) :
+    kronecker a (-n) = kronecker a n := by
+  rw [kronecker_neg_denominator_eq_kroneckerNeg1 a n hn, kroneckerNeg1_nonneg a ha, one_mul]
+
+/-- **The symbol is odd in the modulus sign for a negative numerator.** For `a < 0` and
+`n ≠ 0`, `(a/(-n)) = -(a/n)`, since the sign character `kroneckerNeg1 a = -1`. -/
+theorem kronecker_neg_denominator_neg (a n : ℤ) (ha : a < 0) (hn : n ≠ 0) :
+    kronecker a (-n) = - kronecker a n := by
+  rw [kronecker_neg_denominator_eq_kroneckerNeg1 a n hn, kroneckerNeg1_neg a ha, neg_one_mul]
+
 /-!
 ## Module note: what remains open
 
@@ -1063,5 +1189,25 @@ above.
 -- #print axioms kronecker_mul_right_odd
 -- #print axioms kronecker_quadratic_reciprocity
 -- #print axioms kronecker_reciprocity_one_mod_four
+
+/-- **Value at the modulus `n = -1` (definitional bridge).**  The `n = -1` branch of
+`kronecker` is exactly the sign character `kroneckerNeg1`: the symbol `(a ∣ -1)` equals
+`kroneckerNeg1 a`.  This exposes as a named theorem the boundary case only implicit in
+the definition, alongside the existing `kronecker_one_right` (`(a ∣ 1) = 1`). -/
+theorem kronecker_neg_one_right_eq_kroneckerNeg1 (a : ℤ) :
+    kronecker a (-1) = kroneckerNeg1 a := by
+  simp [kronecker]
+
+/-- **The symbol at `n = -1` is the sign character.**  `(a ∣ -1) = 1` for `a ≥ 0` and
+`-1` for `a < 0` — the archimedean/real place of the Kronecker symbol.  Completes the
+boundary-value table `n = 0, 1, -1`:  `kronecker_one_right` gives `(a ∣ 1) = 1`, and
+this gives the sign at `n = -1`, matching the `sign(n)` factor of the normal form
+`kronecker_eq_sign_jacobi`. -/
+theorem kronecker_neg_one_right (a : ℤ) :
+    kronecker a (-1) = if 0 ≤ a then 1 else -1 := by
+  rw [kronecker_neg_one_right_eq_kroneckerNeg1]
+  rcases le_or_lt 0 a with h | h
+  · rw [if_pos h, kroneckerNeg1_nonneg a h]
+  · rw [if_neg (not_le.mpr h), kroneckerNeg1_neg a h]
 
 end KroneckerSymbol

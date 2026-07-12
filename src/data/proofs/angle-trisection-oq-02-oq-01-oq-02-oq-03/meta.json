@@ -75,7 +75,8 @@
       "The sufficiency direction of Wantzel–Galois factors cleanly into a group-theoretic core (proved here, fully machine-checked) and a field-theoretic translation (the Galois correspondence), so the hard-looking `wantzel_galois_iff` reduces to standard Mathlib 2-group machinery plus a fixed-field bookkeeping step.",
       "A nontrivial finite 2-group always has a normal subgroup of index 2 — Sylow's first theorem supplies a subgroup of order 2^(k-1), and index-2 subgroups are automatically normal. Iterating on the quotient gives the full normal chain with ℤ/2 factors.",
       "Under the Galois correspondence this descending chain of normal index-2 subgroups is an ascending tower of degree-2 field extensions — i.e. a compass-and-straightedge tower — which is precisely the constructibility witness `IsConstructible` in the parent entry.",
-      "Nilpotency (not merely solvability) is what guarantees the chain can be taken with each subgroup normal in the whole group at the top step; solvability is recorded separately because it is the customary hypothesis in the classical Galois phrasing."
+      "Nilpotency (not merely solvability) is what guarantees the chain can be taken with each subgroup normal in the whole group at the top step; solvability is recorded separately because it is the customary hypothesis in the classical Galois phrasing.",
+      "Defining `IsTwoGroup` with `Nat.card` rather than `Fintype.card` is the choice that lets the Mathlib API apply off the shelf: `IsPGroup`, Sylow's theorems, and `Subgroup.index` are all stated in `Nat.card` terms. The explicit bridge lemma `isTwoGroup_of_fintype_card` exists solely to reconcile this with the parent/sibling entries' `Fintype.card` phrasing — a reminder that in a formalization the right definitional packaging, not a clever proof, is often what unlocks an existing library."
     ],
     "prerequisites": [
       "Finite p-groups and IsPGroup",
@@ -90,13 +91,13 @@
       "id": "part1-definition-bridge",
       "title": "Part 1: The 2-group predicate and the bridge to the parent",
       "startLine": 65,
-      "endLine": 90,
+      "endLine": 82,
       "summary": "Defines IsTwoGroup via Nat.card (so it plugs into Mathlib's IsPGroup/Sylow/Index API) and proves isTwoGroup_of_fintype_card connecting it to the parent entry's Fintype.card formulation."
     },
     {
       "id": "part2-nilpotent-solvable",
       "title": "Part 2: Every finite 2-group is nilpotent and solvable",
-      "startLine": 84,
+      "startLine": 83,
       "endLine": 104,
       "summary": "isPGroup_two turns 'order 2^k' into IsPGroup 2; isNilpotent and isSolvable deduce nilpotency (via IsPGroup.isNilpotent) and solvability (via the nilpotent ⟹ solvable instance)."
     },

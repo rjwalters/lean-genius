@@ -1,0 +1,180 @@
+[
+  {
+    "id": "ann-cd0601-digit",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "The n-th decimal digit",
+    "content": "digit r n extracts the n-th decimal digit of a real r as an integer in [0,10): scale r by 10^(n+1), take the floor to land on an integer, then reduce mod 10. Working with an honest integer floor (rather than a real-valued fractional part) is what makes the later 'A % 10 = db f n' step a clean statement about integers.",
+    "mathContext": "$\\mathrm{digit}(r,n) = \\lfloor r \\cdot 10^{\\,n+1} \\rfloor \\bmod 10 \\in \\{0,\\dots,9\\}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decimal expansion",
+      "floor function",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "floor and integer part",
+      "real number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cd0601-db",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Disagreeing digits and the diagonal real",
+    "content": "db f n is the diagonal digit at position n: a value in {1,2} deliberately chosen to differ from the n-th digit of f n. diagonalReal f then assembles these digits into a real number in [0,1] as a convergent decimal series. Restricting the produced digits to {1,2} is the crucial trick: it sidesteps the 0.999… = 1.000… non-uniqueness of decimal expansions, which would make a naive digit-by-digit argument false (two different digit strings can name the same real only when 0s and 9s are involved).",
+    "mathContext": "$\\mathrm{db}(f,n) = \\begin{cases} 2 & \\text{if } \\mathrm{digit}(f_n,n)=1 \\\\ 1 & \\text{otherwise}\\end{cases}, \\qquad \\mathrm{diagonalReal}(f) = \\sum_{n} \\frac{\\mathrm{db}(f,n)}{10^{\\,n+1}}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor diagonal argument",
+      "decimal non-uniqueness (0.999… = 1)",
+      "definable real number"
+    ],
+    "prerequisites": [
+      "convergent series",
+      "decimal representation of reals"
+    ]
+  },
+  {
+    "id": "ann-cd0601-db-ne-digit",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "type": "insight",
+    "title": "The digit disagreement, isolated",
+    "content": "db_ne_digit is the combinatorial heart of the diagonal argument, packaged as a standalone lemma: the chosen diagonal digit is provably different from the n-th digit of f n. The whole uncountability proof reduces to this local fact plus the crux lemma that diagonalReal actually realizes db f n as its n-th digit.",
+    "mathContext": "$\\mathrm{db}(f,n) \\ne \\mathrm{digit}(f_n,n) \\text{ for every } n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor diagonal argument",
+      "case analysis",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "conditional definitions",
+      "decidable equality on integers"
+    ]
+  },
+  {
+    "id": "ann-cd0601-summability",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 90
+    },
+    "type": "technique",
+    "title": "Summability by geometric comparison",
+    "content": "Before the series can be manipulated it must be shown to converge. Each term is nonnegative (term_nonneg) and bounded by a shifted geometric term 2·(1/10)^(i+1) (term_le'). Since the geometric majorant is summable (summable_geo_shift), the comparison test (Summable.of_nonneg_of_le) gives summability of the defining series. This is what licenses splitting the sum into a finite head plus an infinite tail in the crux lemma.",
+    "mathContext": "$0 \\le \\frac{\\mathrm{db}(f,k)}{10^{\\,k+1}} \\le 2\\left(\\tfrac{1}{10}\\right)^{k+1}, \\quad \\sum_k 2\\left(\\tfrac{1}{10}\\right)^{k+1} < \\infty \\;\\Rightarrow\\; \\text{series summable}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "comparison test",
+      "geometric series",
+      "absolute convergence"
+    ],
+    "prerequisites": [
+      "summability in Mathlib (tsum/Summable)",
+      "geometric series bounds"
+    ]
+  },
+  {
+    "id": "ann-cd0601-headint",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 128
+    },
+    "type": "technique",
+    "title": "The head/tail decomposition and its last digit",
+    "content": "The engine of the proof. Multiplying diagonalReal f by 10^(n+1) turns the first n+1 digits into an integer head (headInt f n) plus a small real tail. head_real_eq proves the finite prefix scales exactly to the integer headInt f n. headInt_emod then shows the head's last decimal digit is db f n: every earlier term contributes a multiple of 10 (so vanishes mod 10), leaving only the position-n term. This localizes the whole construction to a single controllable digit.",
+    "mathContext": "$A := \\mathrm{headInt}(f,n) = \\sum_{i \\le n} \\mathrm{db}(f,i)\\,10^{\\,n-i} \\in \\mathbb{Z}, \\qquad A \\bmod 10 = \\mathrm{db}(f,n).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "positional notation",
+      "divisibility mod 10",
+      "finite geometric sums"
+    ],
+    "prerequisites": [
+      "Finset sums",
+      "integer divisibility",
+      "omega arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cd0601-crux",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 185
+    },
+    "type": "insight",
+    "title": "Crux: the n-th digit of the diagonal real is exactly db f n",
+    "content": "The technical climax. Writing x = diagonalReal f, one splits x·10^(n+1) = A + T where A = headInt f n is an integer and T is the scaled tail. The digit-restriction to {1,2} forces 0 ≤ T ≤ 2/9 < 1, so ⌊x·10^(n+1)⌋ = A exactly (Int.floor_intCast_add with ⌊T⌋ = 0), and hence digit x n = A % 10 = db f n. The tail bound is computed by summing the geometric majorant to 2·(1/9)·(1/10) < 1. This is precisely where controlling the digits away from 0 and 9 pays off: it guarantees the floor lands on the intended integer.",
+    "mathContext": "$x\\cdot 10^{\\,n+1} = A + T, \\quad A \\in \\mathbb{Z},\\ 0 \\le T < 1 \\;\\Rightarrow\\; \\lfloor x\\cdot 10^{\\,n+1}\\rfloor = A \\;\\Rightarrow\\; \\mathrm{digit}(x,n) = \\mathrm{db}(f,n).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "floor of a sum",
+      "tail estimate",
+      "tsum splitting (Summable.sum_add_tsum_nat_add)"
+    ],
+    "prerequisites": [
+      "infinite series manipulation",
+      "floor function identities",
+      "geometric tail bounds"
+    ]
+  },
+  {
+    "id": "ann-cd0601-diagonal-ne",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 189,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "The diagonal real differs from every listed real",
+    "content": "Combining the crux lemma with the digit disagreement: if diagonalReal f equaled f n, their n-th digits would coincide, but digit (diagonalReal f) n = db f n ≠ digit (f n) n. Hence diagonalReal f ≠ f n for every n — the explicit real escapes the entire enumeration.",
+    "mathContext": "$\\mathrm{diagonalReal}(f) = f_n \\Rightarrow \\mathrm{digit}(\\mathrm{diagonalReal}(f),n) = \\mathrm{digit}(f_n,n), \\text{ contradicting } \\mathrm{db}(f,n) \\ne \\mathrm{digit}(f_n,n).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor diagonal argument",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "the crux lemma",
+      "the digit disagreement lemma"
+    ]
+  },
+  {
+    "id": "ann-cd0601-uncountable",
+    "proofId": "cantor-diagonalization-oq-06-oq-01",
+    "range": {
+      "startLine": 197,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Uncountability via an explicit witness",
+    "content": "The payoff. not_surjective_nat_real: no f : ℕ → ℝ is surjective, because diagonalReal f is never hit. not_exists_surjective_nat_real repackages this as ¬ ∃ surjection ℕ → ℝ, i.e. ℝ is uncountable — obtained constructively from the definable witness diagonalReal f, with no appeal to Cardinal.not_countable_real or the cardinal identity #ℝ = 𝔠. This is Cantor's original 1891 argument at the level of digits, fully machine-checked and axiom-free (only propext, Classical.choice, Quot.sound).",
+    "mathContext": "$\\forall f : \\mathbb{N} \\to \\mathbb{R},\\ \\neg\\,\\mathrm{Surjective}(f); \\quad \\text{hence } \\mathbb{R} \\text{ uncountable, witnessed by } \\mathrm{diagonalReal}(f).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "uncountability of the reals",
+      "surjectivity",
+      "constructive vs cardinal proofs"
+    ],
+    "prerequisites": [
+      "Function.Surjective",
+      "countability",
+      "Cantor's theorem"
+    ]
+  }
+]

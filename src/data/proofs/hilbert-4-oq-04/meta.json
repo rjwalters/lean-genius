@@ -26,7 +26,7 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "√Δ ^ 2 = Δ for Δ ≥ 0; turns the discriminant into a usable square so the fixed-point quadratic can be verified algebraically",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "tendsto_pow_atTop_nhds_zero_of_abs_lt_one",

@@ -97,6 +97,24 @@ theorem gap_isBigO_rpow :
     abs_of_nonneg (Nat.cast_nonneg (maxPrimeGap x)), abs_of_nonneg hnn]
   exact baker_harman_pintz x hx
 
+/-- **Explicit decay rate of the normalised gap.** The normalised maximal prime gap not only
+    tends to `0` (`bhp_implies_gap_littleo`) but does so at a concrete polynomial rate:
+    `maxPrimeGap x / x = O(x^(-0.475))`. This sharpens the qualitative `Tendsto … (𝓝 0)` to a
+    quantitative envelope with an explicit exponent `-(1 - 0.525) = -0.475`, packaged in Mathlib's
+    asymptotics idiom (constant `1`, valid for `x ≥ 25`). It is the normalised counterpart of
+    `gap_isBigO_rpow` (`maxPrimeGap = O(x^0.525)`), obtained by dividing that envelope by `x`. -/
+theorem gap_div_isBigO_rpow_neg :
+    (fun x : ℕ => (maxPrimeGap x : ℝ) / x) =O[atTop]
+      (fun x : ℕ => (x : ℝ) ^ (-(0.475 : ℝ))) := by
+  rw [isBigO_iff]
+  refine ⟨1, ?_⟩
+  filter_upwards [eventually_ge_atTop 25] with x hx
+  have hnn : (0 : ℝ) ≤ (x : ℝ) ^ (-(0.475 : ℝ)) := Real.rpow_nonneg (Nat.cast_nonneg x) _
+  have hlo : (0 : ℝ) ≤ (maxPrimeGap x : ℝ) / x :=
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hlo, abs_of_nonneg hnn]
+  exact gap_div_le_rpow_neg x hx
+
 /-- **Generalised sublinearity.** For every exponent `a > 0.525`, the normalised gap
     `maxPrimeGap x / x^a` tends to `0`. This uses the full strength of the BHP exponent:
     `bhp_implies_gap_littleo` is the `a = 1` case, but sublinearity in fact holds for any
@@ -209,7 +227,7 @@ theorem gap_littleo_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
     have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (-(1 - θ)) := by
       rw [show (-(1 - θ)) = θ - 1 by ring, Real.rpow_sub hx_pos, Real.rpow_one]
     calc (maxPrimeGap x : ℝ) / x
-        ≤ (x : ℝ) ^ θ / x := by gcongr <;> exact hx
+        ≤ (x : ℝ) ^ θ / x := by gcongr
       _ = (x : ℝ) ^ (-(1 - θ)) := hdiv
   exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
@@ -241,7 +259,7 @@ theorem gap_div_rpow_littleo_of_rpow_bound {θ a : ℝ} (hθa : θ < a)
     have hdiv : (x : ℝ) ^ θ / (x : ℝ) ^ a = (x : ℝ) ^ (-(a - θ)) := by
       rw [← Real.rpow_sub hx_pos]; congr 1; ring
     calc (maxPrimeGap x : ℝ) / (x : ℝ) ^ a
-        ≤ (x : ℝ) ^ θ / (x : ℝ) ^ a := by gcongr <;> exact hx
+        ≤ (x : ℝ) ^ θ / (x : ℝ) ^ a := by gcongr
       _ = (x : ℝ) ^ (-(a - θ)) := hdiv
   exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
 
@@ -275,6 +293,30 @@ theorem gap_isBigO_rpow_of_rpow_bound {θ : ℝ}
   rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
     abs_of_nonneg (Nat.cast_nonneg (maxPrimeGap x)), abs_of_nonneg hnn]
   exact hx
+
+/-- **Master engine, normalised decay rate.** From *any* eventual power envelope
+`maxPrimeGap x ≤ x^θ`, the normalised gap decays at the explicit rate
+`maxPrimeGap x / x = O(x^(θ - 1))` — the envelope divided by `x`. This is the abstract counterpart
+of the concrete `gap_div_isBigO_rpow_neg` (the BHP instance `θ = 0.525`, giving `O(x^(-0.475))`),
+and the big-O sharpening of the `Tendsto (·/x) → 0` engine `gap_littleo_of_rpow_bound`: no
+sub-linearity of `θ` is needed for the big-O (the rate is negative exactly when `θ < 1`, which is
+when it also gives sublinearity). -/
+theorem gap_div_isBigO_rpow_sub_one_of_rpow_bound {θ : ℝ}
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ) / x) =O[atTop] (fun x : ℕ => (x : ℝ) ^ (θ - 1)) := by
+  rw [isBigO_iff]
+  refine ⟨1, ?_⟩
+  filter_upwards [H, eventually_ge_atTop 1] with x hx hx1
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+  have hnn : (0 : ℝ) ≤ (x : ℝ) ^ (θ - 1) := Real.rpow_nonneg (Nat.cast_nonneg x) _
+  have hlo : (0 : ℝ) ≤ (maxPrimeGap x : ℝ) / x :=
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hlo, abs_of_nonneg hnn]
+  have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (θ - 1) := by
+    rw [Real.rpow_sub hx_pos, Real.rpow_one]
+  calc (maxPrimeGap x : ℝ) / x
+      ≤ (x : ℝ) ^ θ / x := by gcongr
+    _ = (x : ℝ) ^ (θ - 1) := hdiv
 
 /-- **Master engine, little-o against `id`.** From *any* eventual power envelope
 `maxPrimeGap x ≤ x^θ` with sub-linear exponent `θ < 1`, `maxPrimeGap =o[atTop] id`. This is the
@@ -372,5 +414,67 @@ theorem consecutive_gap_le_eps_effective {x p q : ℕ} (ε : ℝ)
   have hbridge : ((q - p : ℕ) : ℝ) ≤ (maxPrimeGap x : ℝ) := by
     exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons
   exact le_trans hbridge (bhp_gap_le_eps_effective ε x hx25 hthr)
+
+/-- **θ-generic bridge from a sup-level power bound to individual gaps.** Given *any*
+power bound `maxPrimeGap x ≤ x^θ` at a point `x`, every consecutive-prime gap `q - p`
+with `q ≤ x` already satisfies `q - p ≤ x^θ`.  This decouples the arithmetic input (the
+exponent `θ` and the bound) from the sup→gap bridge exactly as the sup-level engines
+`gap_littleo_of_rpow_bound` / `gap_div_rpow_littleo_of_rpow_bound` do for the asymptotics;
+`consecutive_gap_le_rpow` is the instance `θ = 0.525` with the bound supplied by
+`baker_harman_pintz`.  Any future strengthening of BHP plugs straight in. -/
+theorem consecutive_gap_le_rpow_of_bound {θ : ℝ} {x p q : ℕ}
+    (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+  le_trans (by exact_mod_cast consecutive_gap_le_maxPrimeGap hp hq hpq hqx hcons) hbound
+
+/-- **θ-generic normalised individual-gap bound.** The normalised counterpart of
+`consecutive_gap_le_rpow_of_bound`: from a power bound `maxPrimeGap x ≤ x^θ` at `x > 0`,
+every normalised consecutive gap `(q - p) / x` is at most `x^(θ-1)`.  This is the θ-generic
+form of `consecutive_gap_div_le_rpow_neg` (whose exponent `-0.475 = 0.525 - 1`), and makes
+the sublinearity envelope explicit for any envelope exponent: for `θ < 1` the bound
+`x^(θ-1) → 0`.  Axiom input is only whatever supplies `hbound`. -/
+theorem consecutive_gap_div_le_rpow_sub_one_of_bound {θ : ℝ} {x p q : ℕ}
+    (hx : 0 < x) (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) / x ≤ (x : ℝ) ^ (θ - 1) := by
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast hx
+  have h1 : ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+    consecutive_gap_le_rpow_of_bound hbound hp hq hpq hqx hcons
+  have hdiv : (x : ℝ) ^ θ / x = (x : ℝ) ^ (θ - 1) := by
+    rw [Real.rpow_sub hx_pos, Real.rpow_one]
+  calc ((q - p : ℕ) : ℝ) / x
+      ≤ (x : ℝ) ^ θ / x := by gcongr
+    _ = (x : ℝ) ^ (θ - 1) := hdiv
+
+/-- **θ-generic effective individual-gap bound.** The effective (pointwise) counterpart of
+`consecutive_gap_le_rpow_of_bound`, and the θ-generic form of `consecutive_gap_le_eps_effective`
+(whose exponent is `θ = 0.525`): from a power bound `maxPrimeGap x ≤ x^θ` at a point `x > 0`
+that has passed the explicit threshold `1 ≤ ε · x^(1-θ)` (equivalently `x^(θ-1) ≤ ε`, the point
+where the `θ`-envelope has dropped below `ε`), *every* consecutive-prime gap `q - p` with
+`q ≤ x` already satisfies `q - p ≤ ε · x`.  Composes `consecutive_gap_le_rpow_of_bound` with the
+threshold `x^θ = x^θ · 1 ≤ x^θ · (ε · x^(1-θ)) = ε · x`.  This completes the θ-generic
+consecutive-gap trilogy — `_le_rpow_of_bound` (`≤ x^θ`), `_div_le_rpow_sub_one_of_bound`
+(`/x ≤ x^(θ-1)`), and this effective `≤ ε·x` form — to exactly parallel the BHP-specific
+trilogy, so any future BHP strengthening supplies all three at once.  As in the BHP-specific
+version, positivity of `ε` is forced by the threshold, not assumed. -/
+theorem consecutive_gap_le_eps_of_bound {θ : ℝ} {x p q : ℕ} (ε : ℝ)
+    (hx : 0 < x) (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hthr : 1 ≤ ε * (x : ℝ) ^ (1 - θ))
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ ε * x := by
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast hx
+  have hxθ : (0 : ℝ) < (x : ℝ) ^ θ := Real.rpow_pos_of_pos hx_pos θ
+  have h1 : ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+    consecutive_gap_le_rpow_of_bound hbound hp hq hpq hqx hcons
+  -- The threshold `1 ≤ ε·x^(1-θ)` lifts (scale by `x^θ > 0`) to `x^θ ≤ ε·x`.
+  have h2 : (x : ℝ) ^ θ ≤ ε * x := by
+    have hstep := mul_le_mul_of_nonneg_right hthr (le_of_lt hxθ)
+    rwa [one_mul, mul_assoc, ← Real.rpow_add hx_pos,
+      show (1 : ℝ) - θ + θ = 1 by ring, Real.rpow_one] at hstep
+  exact le_trans h1 h2
 
 end Erdos1138OQ03

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: completed the linear-operator structure of the figurate calculus (5 verified theorems: additivity + homogeneity of iterSum and simplexConv, plus constant-kernel convolution). File remains 0 sorries, 0 axioms; verified locally against Mathlib v4.26.0.",
+    "progressSummary": "SOLVED/RICH: general figurate theory (38 thm, 0 sorry, 0 axiom) now includes the iterated forward-difference operator and general discrete FTC (Δ^a inverts ∑^a), completing the summation↔difference duality at the iterated level.",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -47,7 +47,11 @@
       "iterSum_add_fn: additivity of d-fold summation (induction + Finset.sum_add_distrib) — TetrahedralNumberFormulaOQ01.lean",
       "iterSum_smul_fn: ℕ-homogeneity of d-fold summation (induction + Finset.mul_sum) — TetrahedralNumberFormulaOQ01.lean",
       "simplexConv_add_fn / simplexConv_smul_fn: convolution linear in f (Nat.mul_add / Finset.mul_sum) — TetrahedralNumberFormulaOQ01.lean",
-      "simplexConv_const: constant-kernel convolution = c·P_{d+1}(n), generalizing the c=1 example — TetrahedralNumberFormulaOQ01.lean"
+      "simplexConv_const: constant-kernel convolution = c·P_{d+1}(n), generalizing the c=1 example — TetrahedralNumberFormulaOQ01.lean",
+      "iterForwardDiff (TetrahedralNumberFormulaOQ01.lean:624) — iterated forward-difference operator Δ^a",
+      "iterForwardDiff_iterSum (:639) — general discrete FTC: Δ^a(∑^a f)(n) = f(n+a), two-sided inverse of iterSum",
+      "iterForwardDiff_simplexNumber (:665) — Δ^a P_{a+b}(n) = P_b(n+a), inverse of iterSum_simplexNumber",
+      "iterForwardDiff_self_simplexNumber (:681) — Δ^a P_a = 1, dual of iterSum_one"
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -56,7 +60,8 @@
       "The figurate numbers P_d are exactly the KERNEL of repeated discrete summation: iterating partialSum d+1 times against any f convolves f with P_d(n-k). Discrete analogue of Cauchy repeated integration (kernel (n-t)^d/d!).",
       "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse.",
       "VERIFIED (researcher-2, 2026-07-09, GREEN build): the order facts of the figurate ladder P_d(n)=C(n+d,d), absent from the file. simplexNumber_pos (0<P_d(n), Nat.choose_pos on d≤n+d), simplexNumber_mono_size (m≤n⟹P_d(m)≤P_d(n), Nat.choose_le_choose on m+d≤n+d), simplexNumber_mono_dim (a≤b⟹P_a(n)≤P_b(n), reduced to mono_size through the reflection symmetry simplexNumber_symm P_d(n)=P_n(d)). Monotone in BOTH arguments + positive. Complements the exact-value/summation theory with the growth/order structure.",
-      "The figurate calculus is ℕ-linear: both iterated summation (iterSum) and simplex convolution (simplexConv) are additive and ℕ-homogeneous in the summand — the summand-side companion to the dimension-side semigroup laws iterSum_add / simplexConv_comp."
+      "The figurate calculus is ℕ-linear: both iterated summation (iterSum) and simplex convolution (simplexConv) are additive and ℕ-homogeneous in the summand — the summand-side companion to the dimension-side semigroup laws iterSum_add / simplexConv_comp.",
+      "The summation↔difference duality closes at the ITERATED level: iterSum a (raise a dims) and iterForwardDiff a = Δ^a (lower a dims) are two-sided inverses up to the intrinsic shift Δ^a∘∑^a = shift^a; the shift is forced because each Δ reads a running total one index ahead."
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
@@ -101,10 +106,10 @@
     {
       "path": "Proofs/TetrahedralNumberFormulaOQ01.lean",
       "filename": "TetrahedralNumberFormulaOQ01.lean",
-      "lineCount": 602,
-      "theoremCount": 35,
+      "lineCount": 690,
+      "theoremCount": 38,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01.lean"

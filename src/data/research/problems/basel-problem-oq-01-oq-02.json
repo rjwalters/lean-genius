@@ -30,8 +30,8 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-07-01T07:00:00-07:00",
-    "iteration": 3,
-    "focus": "Strengthened even-zeta irrationality to transcendence over ℚ (zeta_even_transcendental), reusing hermite_lindemann. Slug saturated on the provable side; odd case remains open.",
+    "iteration": 4,
+    "focus": "Extended the transcendence toolkit with the SUBTRACTION family, mirroring the existing add family: zeta_even_sub_transcendental (ζ(2n)−ζ(2m) transcendental for m<n, two-term π-polynomial via C(−qm) coeff), zeta_four_sub_zeta_two_transcendental (concrete), transcendental_sub_ratCast (axiom-free x−q engine, companion of transcendental_add_ratCast), and zeta_even_sub_ratCast_transcendental (ζ(2n)−q). Together with the add family this closes the two-distinct-value ± frontier. No new axioms (transcendence results carry only hermite_lindemann; the ratCast engine is 0-axiom). File 570→637L, 32→36 thm.",
     "blockers": [
       "Mathematical: odd zeta irrationality is open (no known proof for ζ(2n+1), n≥2; Apéry's ζ(3) not in Mathlib).",
       "Formal: no 0-axiom route to Irrational(π^n); even-case irrationality capped at 'axiomatized' via hermite_lindemann."
@@ -53,7 +53,8 @@
       "zeta_four_hasSum : HasSum (fun n => 1/n^4) (pi^4/90) via hasSum_zeta_four.",
       "zeta_general : for k != 0, HasSum (fun n => 1/n^(2k)) to the Bernoulli-number closed form via hasSum_zeta_nat.",
       "zeta_even_transcendental : for n≥1, Transcendental ℚ (∑' k, 1/k^(2n)) — every even zeta value is transcendental over ℚ (strictly stronger than irrational); nonzero-rational scaling preserves transcendence. Plus concrete zeta_two_transcendental. (researcher-3, 2026-07-08, axiomatized on hermite_lindemann)",
-      "Axiom-free ratio skeleton (2026-07-09 researcher-2, VERIFIED): zeta_even_ratio_eq_rat_mul_pi_pow — ζ(2n)/ζ(2m)=q·π^(2(n-m)) (0-axiom, even zetas multiplicatively π-power-incommensurable over ℚ), the unconditional structure beneath zeta_even_ratio_transcendental; refactored the latter to use it. 221→235L, 11→12 thm. Docker Build succeeded 3153 jobs (attempt 4)."
+      "Axiom-free ratio skeleton (2026-07-09 researcher-2, VERIFIED): zeta_even_ratio_eq_rat_mul_pi_pow — ζ(2n)/ζ(2m)=q·π^(2(n-m)) (0-axiom, even zetas multiplicatively π-power-incommensurable over ℚ), the unconditional structure beneath zeta_even_ratio_transcendental; refactored the latter to use it. 221→235L, 11→12 thm. Docker Build succeeded 3153 jobs (attempt 4).",
+      "BaselProblemOQ01OQ02.lean (researcher-6, 2026-07-11): subtraction family completing the ± frontier — zeta_even_sub_transcendental (ζ(2n)−ζ(2m), m<n; polynomial C qn·X^2n + C(−qm)·X^2m, natDegree 2n≠0 via natDegree_add_eq_left_of_natDegree_lt, aeval via map_neg+eq_ratCast+ring), zeta_four_sub_zeta_two_transcendental, transcendental_sub_ratCast (axiom-free, via transcendental_add_ratCast(−q)), zeta_even_sub_ratCast_transcendental. 3 carry only hermite_lindemann, engine is 0-axiom; VERIFIED green lake env lean v4.26.0."
     ],
     "insights": [
       "The odd-zeta question asked by this slug is OPEN; it cannot be closed, only framed/contrasted with the even case.",
@@ -134,7 +135,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.244Z",
-  "lastUpdate": "2026-07-01T14:00:00.000Z",
+  "lastUpdate": "2026-07-11T01:45:00Z",
   "leanFiles": [
     {
       "path": "Proofs/BaselProblem.lean",

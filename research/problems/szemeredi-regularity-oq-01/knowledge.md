@@ -26,7 +26,24 @@ So irregular count provably vanishes at BOTH ends (few-parts AND eps≥1). File 
 PR #36999. UNVERIFIED (docker containerd meta.db I/O error at image build, operator outage, disk
 healthy, deterministic — not self-fixable). No gallery meta to sync (research-layer file).
 
+## Session 2026-07-11 (researcher-5): lift to the gallery `IsRegularPartition` Prop
+**Mode**: ACT (look-outward, saturated 0-axiom file). **Outcome**: progress, 0-axiom/0-sorry.
+Closed the "lift threshold-invariance to `IsRegularPartition`" gap. `IsRegularPartition`
+(in `SzemerediCore.lean`) = equitable-sizes ∧ `(filter …).card ≤ eps·k(k−1)`, and that filter
+is DEFEQ to `irregularOrderedPairs`. Added:
+- `irregularOrderedPairs_eq_regularityFilter` (`:= rfl`) — the count set thresholded by
+  `IsRegularPartition` *is* `irregularOrderedPairs`.
+- `isRegularPartition_iff` (`Iff.rfl`) — restates the gallery Prop in this file's vocabulary
+  (equitable ∧ `(irregularOrderedPairs …).card ≤ eps·k(k−1)`).
+- `isRegularPartition_compl` — **marquee**: `IsRegularPartition Gᶜ eps parts ↔ IsRegularPartition G eps parts`
+  for `0<eps` + pairwise-disjoint nonempty parts. Proof: `rw [isRegularPartition_iff ×2,
+  card_irregularOrderedPairs_compl …]` (equitable clause is G-free, count clause via compl-invariance).
+- `isRegularPartition_of_one_le` — at `eps≥1` the only content is equitability (irregular count=0,
+  bound `eps·k(k−1)≥0` via `mul_nonneg` + `nlinarith` on `1≤k`).
+File 470→550 L, 25→29 thm. PR #TBD. VERIFIED (docker build succeeded, 0-axiom/0-sorry).
+★GOTCHA: mathlib cache had a corrupt `Mathlib/Topology/Constructible.ir` (olean header, dated
+07-09, pre-existing) → SIGBUS (exit 135) then "invalid header"; `rm` the stray `.ir` → cache re-fetch fixed it.
+
 ## Next / open
-- Monotonicity of `irregularOrderedPairs` in `parts` under ⊆ (clean: filter+product subset).
 - Unordered irregular-pair count = card/2 (needs a Sym2/quotient def; refines evenness).
-- Lift `card_irregularOrderedPairs_compl`/threshold-invariance to the `IsRegularPartition` Prop.
+- `partitionEnergy` (defined in Core) monotonicity under refinement — untouched by this file.

@@ -517,6 +517,59 @@ theorem weighted_variance_eq {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ
       ← Finset.mul_sum, ← Finset.mul_sum, hmean]
   ring
 
+/-- **Weighted variance is nonnegative.**  For nonnegative weights with weighted mean `μ`,
+    the weighted second moment about the mean is `≥ 0`:
+    `0 ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.  The `d = 0` skeleton of `weighted_variance_atom_bound`,
+    recording that the energy of a partition never drops below that of its coarsening. -/
+theorem weighted_variance_nonneg {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) :
+    0 ≤ (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  exact Finset.sum_nonneg (fun i hi => mul_nonneg (hw i hi) (sq_nonneg _))
+
+/-- **The weighted mean minimizes the weighted mean-squared deviation.**  For nonnegative
+    weights and *any* centre `c`, the weighted sum of squared deviations about the true
+    weighted mean `μ` is no larger than about `c`:
+    `∑ wᵢ(xᵢ − μ)² ≤ ∑ wᵢ(xᵢ − c)²`.
+
+    This is the abstract heart of *energy monotonicity under refinement* in AFKS: replacing
+    a part's single mean density by the sub-cell means (the conditional means on a refinement)
+    can only *decrease* the residual variance, i.e. *increase* the partition energy.  The
+    proof is the parallel-axis expansion `∑ wᵢ(xᵢ − c)² = ∑ wᵢ(xᵢ − μ)² + (∑ wᵢ)(μ − c)²`,
+    whose extra term is a nonnegative multiple of `(μ − c)²`. -/
+theorem weighted_variance_le_of_mean {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) (c : ℚ) :
+    ∑ i ∈ s, w i * (x i - μ) ^ 2 ≤ ∑ i ∈ s, w i * (x i - c) ^ 2 := by
+  have hsw : (0 : ℚ) ≤ ∑ i ∈ s, w i := Finset.sum_nonneg hw
+  have hmeandev : ∑ i ∈ s, w i * (x i - μ) = 0 := by
+    have hrw : ∑ i ∈ s, w i * (x i - μ)
+        = (∑ i ∈ s, w i * x i) - (∑ i ∈ s, w i) * μ := by
+      rw [Finset.sum_mul, ← Finset.sum_sub_distrib]
+      exact Finset.sum_congr rfl (fun i _ => by ring)
+    rw [hrw, hmean]; ring
+  have hkey : ∑ i ∈ s, w i * (x i - c) ^ 2
+      = ∑ i ∈ s, w i * (x i - μ) ^ 2
+        + 2 * (μ - c) * (∑ i ∈ s, w i * (x i - μ))
+        + (μ - c) ^ 2 * (∑ i ∈ s, w i) := by
+    rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl (fun i _ => by ring)
+  rw [hkey, hmeandev]
+  have hnn : 0 ≤ (μ - c) ^ 2 * (∑ i ∈ s, w i) := mul_nonneg (sq_nonneg _) hsw
+  linarith
+
+/-- **Variance is bounded by any centred second moment.**  The directly-consumable form of
+    `weighted_variance_le_of_mean` in the file's multiplicative variance notation: for any
+    centre `c`, `(∑ wᵢxᵢ²) − (∑ wᵢ)·μ² ≤ ∑ wᵢ(xᵢ − c)²`.  Combines the Huygens identity
+    `weighted_variance_eq` with the minimizing property. -/
+theorem weighted_variance_le_second_moment {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ) (c : ℚ) :
+    (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 ≤ ∑ i ∈ s, w i * (x i - c) ^ 2 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  exact weighted_variance_le_of_mean s w x μ hw hmean c
+
 /-- **The variance atom: a single deviating cell forces a positive second moment.**
     Weighted values with nonnegative weights and weighted mean `μ` have their
     weighted second moment about `μ` bounded below by the single-cell contribution:
@@ -571,6 +624,34 @@ theorem weighted_variance_subset_bound {ι : Type*} (s : Finset ι) (w x : ι �
   rw [Finset.sum_mul]
   linarith [hsubset, hfloor]
 
+/-- **The variance atom in count form.**  Specialising `weighted_variance_subset_bound`
+    to a *uniform weight floor*: if every deviating cell `j ∈ J` carries weight at least
+    `w₀` (`w₀ ≤ wⱼ`) and deviates from the mean by at least `d`, then the energy floor
+    scales with the *number* of deviating cells,
+
+      `(|J| : ℚ)·w₀·d² ≤ (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.
+
+    This is the shape the AFKS energy-increment step needs when it counts irregular
+    sub-cells: "`≥ N` cells of weight `≥ w₀` each deviating by `≥ d`" raises the
+    partition energy by a fixed `δ = N·w₀·d²`, exactly the per-step jump that
+    `energy_steps_bounded` / `energy_iteration_count_le` cap in number (giving an
+    iteration bound `≤ 1/(N·w₀·d²)`).  The pooled-weight bound
+    `weighted_variance_subset_bound` is recovered when the weights are not assumed
+    uniform; this trades that generality for a floor that depends only on `|J|`. -/
+theorem weighted_variance_card_bound {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (μ d w₀ : ℚ) (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    {J : Finset ι} (hJ : J ⊆ s) (hdev : ∀ j ∈ J, d ^ 2 ≤ (x j - μ) ^ 2)
+    (hw0 : ∀ j ∈ J, w₀ ≤ w j) :
+    (J.card : ℚ) * w₀ * d ^ 2 ≤ (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  have hsub := weighted_variance_subset_bound s w x μ d hw hmean hJ hdev
+  have hcard : (J.card : ℚ) * w₀ ≤ ∑ j ∈ J, w j := by
+    have h : ∑ _j ∈ J, w₀ ≤ ∑ j ∈ J, w j := Finset.sum_le_sum (fun j hj => hw0 j hj)
+    simpa [Finset.sum_const, nsmul_eq_mul] using h
+  have hstep : (J.card : ℚ) * w₀ * d ^ 2 ≤ (∑ j ∈ J, w j) * d ^ 2 :=
+    mul_le_mul_of_nonneg_right hcard (sq_nonneg d)
+  linarith [hstep, hsub]
+
 /-- **Energy monotonicity: square of the mean ≤ weighted mean of squares (Jensen).**
     With nonnegative weights `w` and weighted mean `μ` (`∑ wᵢxᵢ = (∑ wᵢ)·μ`), the total
     weighted second moment about `0` dominates the mean scaled by the total weight:
@@ -590,6 +671,59 @@ theorem weighted_sq_mean_le {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ 
   have hvar : 0 ≤ ∑ i ∈ s, w i * (x i - μ) ^ 2 :=
     Finset.sum_nonneg (fun i hi => mul_nonneg (hw i hi) (sq_nonneg _))
   rw [weighted_variance_eq s w x μ hmean] at hvar
+  linarith
+
+/-- **Strict variance atom: a genuinely deviating cell forces positive energy.**  If some
+    index `j` carries strictly positive weight (`0 < wⱼ`) and its value differs from the
+    weighted mean (`xⱼ ≠ μ`), then the weighted variance is *strictly* positive:
+    `0 < (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.  The strict sharpening of `weighted_variance_nonneg`:
+    refining a part in which even one sub-cell of positive measure has density `≠` the
+    parent mean strictly raises the partition energy — the qualitative statement behind the
+    quantitative `weighted_variance_atom_bound` (its single-index instance at `d = xⱼ − μ`). -/
+theorem weighted_variance_pos {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (j : ι) (hj : j ∈ s) (hwj : 0 < w j) (hxj : x j ≠ μ) :
+    0 < (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  have hatom := weighted_variance_atom_bound s w x μ (x j - μ) hw hmean j hj (le_refl _)
+  have hd : x j - μ ≠ 0 := sub_ne_zero.mpr hxj
+  have hpos : 0 < w j * (x j - μ) ^ 2 := by
+    have hsq : 0 < (x j - μ) ^ 2 := by positivity
+    exact mul_pos hwj hsq
+  linarith [hatom, hpos]
+
+/-- **Trivial refinements preserve energy (variance vanishes).**  If every cell either
+    carries no weight (`wᵢ = 0`) or already sits at the parent mean (`xᵢ = μ`), the
+    weighted variance is exactly `0`: `(∑ wᵢxᵢ²) − (∑ wᵢ)·μ² = 0`.  Each summand
+    `wᵢ(xᵢ − μ)²` of `weighted_variance_eq` vanishes.  This is the "no energy gain" side of
+    the monotonicity `weighted_sq_mean_le`: a refinement that splits no part into
+    genuinely different densities leaves the partition energy unchanged. -/
+theorem weighted_variance_eq_zero_of_forall {ι : Type*} (s : Finset ι) (w x : ι → ℚ)
+    (μ : ℚ) (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (h : ∀ i ∈ s, w i = 0 ∨ x i = μ) :
+    (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 = 0 := by
+  rw [← weighted_variance_eq s w x μ hmean]
+  refine Finset.sum_eq_zero (fun i hi => ?_)
+  rcases h i hi with h0 | hμ
+  · rw [h0]; ring
+  · rw [hμ]; ring
+
+/-- **Equality case of energy monotonicity.**  The converse of
+    `weighted_variance_eq_zero_of_forall`, via the strict atom `weighted_variance_pos`: if
+    the weighted variance is `0`, then *every* positive-weight cell already sits at the
+    parent mean, `xⱼ = μ`.  Contrapositive of `weighted_variance_pos` (a single deviating
+    positive-weight cell forces strictly positive variance).  Together the two theorems
+    characterize exactly when refining a part fails to raise the partition energy: precisely
+    when the split is trivial on every cell of positive measure — the equality condition
+    behind `weighted_sq_mean_le`. -/
+theorem weighted_variance_eq_zero_imp {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (hvar : (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 = 0)
+    (j : ι) (hj : j ∈ s) (hwj : 0 < w j) :
+    x j = μ := by
+  by_contra hxj
+  have hpos := weighted_variance_pos s w x μ hw hmean j hj hwj hxj
   linarith
 
 end Szemeredi.RegularityOQ04

@@ -53,6 +53,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
   and finite-commutator-set (BFC) classes, via the Mathlib Schur endgame
   `Subgroup.finiteIndex_center`. These pin the axiom's residual content to the single
   implication `BoundedCliques G → Finite (commutatorSet G)`.
+* `boundedCliques_prod_iff` — **(fully proved, new)** the multiplicativity capstone:
+  `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K`, completing the product
+  story of `boundedCliques_of_prod_left` / `boundedCliques_of_prod_right` /
+  `boundedCliques_prod_of_finiteIndex`. (Reverse routes through Neumann's dichotomy, so this
+  equivalence carries the theory's single BFC axiom rather than being axiom-free.)
 
 ## Honesty
 
@@ -394,6 +399,37 @@ theorem abelian_bounded_cliques {H : Type*} [CommGroup H] : BoundedCliques H := 
   rw [CommGroup.center_eq_top, Subgroup.index_top]
   exact one_ne_zero
 
+/-- **Clique number `≤ 1` characterizes commutativity (`Γ(G)` is edgeless iff `G` is
+    abelian).**  Every clique of the non-commuting graph has size at most `1` if and only
+    if `G` is abelian: a clique of size `2` is precisely a non-commuting pair, i.e. an edge
+    of `Γ(G)`.  This is the base value grounding `abelian_bounded_cliques` — for an abelian
+    group the sharpest uniform clique bound is `B = 1`, and conversely `ω(Γ(G)) ≤ 1` forces
+    every pair to commute. -/
+theorem clique_card_le_one_iff_comm :
+    (∀ S : Finset G, IsClique S → S.card ≤ 1) ↔ (∀ a b : G, a * b = b * a) := by
+  classical
+  constructor
+  · intro h a b
+    by_contra hab
+    have hnc : nonCommuting a b := hab
+    have hne : a ≠ b := by rintro rfl; exact hnc rfl
+    have hcl : IsClique ({a, b} : Finset G) := by
+      intro g hg h hh hgh
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hg hh
+      rcases hg with rfl | rfl <;> rcases hh with rfl | rfl
+      · exact absurd rfl hgh
+      · exact hnc
+      · exact fun heq => hnc heq.symm
+      · exact absurd rfl hgh
+    have h2 := h {a, b} hcl
+    rw [Finset.card_pair hne] at h2
+    omega
+  · intro hcomm S hS
+    by_contra hcard
+    push_neg at hcard
+    obtain ⟨a, ha, b, hb, hne⟩ := Finset.one_lt_card.mp hcard
+    exact hS a ha b hb hne (hcomm a b)
+
 /-- **Bounded cliques pass to subgroups (heredity of ω(Γ)).**  The non-commuting
     graph `Γ(H)` of a subgroup `H ≤ G` is an *induced subgraph* of `Γ(G)`: the
     inclusion `H ↪ G` is an injective homomorphism, so it carries every clique of
@@ -622,5 +658,29 @@ theorem boundedCliques_of_prod_left {K : Type*} [Group K]
 theorem boundedCliques_of_prod_right {K : Type*} [Group K]
     (h : BoundedCliques (G × K)) : BoundedCliques K :=
   boundedCliques_of_surjective (MonoidHom.snd G K) (fun k => ⟨(1, k), rfl⟩) h
+
+/-- **The class of `BoundedCliques` groups is exactly closed under finite direct products.**
+    `Γ(G × K)` has finite clique number if and only if *both* `Γ(G)` and `Γ(K)` do:
+
+    > `BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K`.
+
+    This is the capstone the projection lemmas `boundedCliques_of_prod_left` /
+    `boundedCliques_of_prod_right` explicitly advertise: forward is their pair (each factor
+    inherits bounded cliques from the product, via the elementary surjective clique transfer),
+    while the reverse is `boundedCliques_prod_of_finiteIndex` fed by Neumann's dichotomy
+    `neumann_full_theorem` on each factor — turning bounded cliques into finite central index
+    on `G` and `K`, whose product then has finite central index and hence bounded cliques.
+
+    The reverse implication routes through `neumann_hard_direction` (via `neumann_full_theorem`),
+    so — unlike the individual heredity lemmas — this equivalence is *not* axiom-free; it inherits
+    exactly the one BFC assumption of the theory. Combined with `boundedCliques_congr` it says the
+    `BoundedCliques` groups form an isomorphism-closed class that is closed under finite products
+    and factors, i.e. Neumann's finiteness property is genuinely multiplicative. -/
+theorem boundedCliques_prod_iff {K : Type*} [Group K] :
+    BoundedCliques (G × K) ↔ BoundedCliques G ∧ BoundedCliques K := by
+  refine ⟨fun h => ⟨boundedCliques_of_prod_left h, boundedCliques_of_prod_right h⟩, ?_⟩
+  rintro ⟨hG, hK⟩
+  exact boundedCliques_prod_of_finiteIndex
+    (neumann_full_theorem.mp hG) ((neumann_full_theorem (G := K)).mp hK)
 
 end Erdos1098OQ01OQ03

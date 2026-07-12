@@ -33,7 +33,7 @@
       {
         "theorem": "mul_le_mul_of_nonneg_right",
         "description": "Monotonicity of multiplication: from c ≤ 3 and 0 ≤ x²y² deduce c·x²y² ≤ 3·x²y², the deficit bound that lets the AM–GM certificate dominate the parametrized term.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       }
     ],
     "originalContributions": [
@@ -48,7 +48,7 @@
       "The arithmetic–geometric mean (AM–GM) inequality and sum-of-squares certificates for non-negativity.",
       "Evaluation of multivariate polynomials and the PSD predicate ∀ v, 0 ≤ eval v p."
     ],
-    "lineCount": 450,
+    "lineCount": 533,
     "relatedProblems": [
       {
         "id": "hilbert-17-oq-03-oq-02",
@@ -68,19 +68,19 @@
       }
     ],
     "assumptions": "0 axioms. #print axioms reports only propext, Classical.choice, Quot.sound for motzkinFun_psd_iff, motzkinPoly_psd_iff, three_is_sharp, and motzkin_amgm. No sorryAx, no native_decide / Lean.ofReduceBool. The MvPolynomial PSD predicate IsPSDMv matches the parent entry's IsPositiveSemidefiniteMv definitionally.",
-    "theoremCount": 30,
+    "theoremCount": 36,
     "definitionCount": 3,
     "additionalFiles": []
   },
   "leanFile": {
-    "lineCount": 450,
+    "lineCount": 533,
     "namespace": "Hilbert17OQ03OQ05",
     "opens": [
       "MvPolynomial"
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 30,
+    "theoremCount": 36,
     "substantiveTheoremCount": 9,
     "computationalVerifications": 0,
     "lemmaCount": 0,

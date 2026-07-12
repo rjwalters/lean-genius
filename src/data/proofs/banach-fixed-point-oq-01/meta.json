@@ -64,20 +64,36 @@
       "mathContext": "Mathlib encodes the contraction hypothesis as `ContractingWith K f := K < 1 ∧ LipschitzWith K f` over an (e)metric space. Over a nonempty complete metric space this yields the fixed point `ContractingWith.fixedPoint f hf` and its convergence/error estimates."
     },
     {
-      "id": "abstract-principle",
-      "title": "The Abstract Contraction Mapping Principle",
+      "id": "existence-uniqueness",
+      "title": "Abstract Principle I: Existence and Uniqueness",
       "startLine": 37,
-      "endLine": 75,
-      "summary": "Five theorems assembling the quantitative Banach theorem: `exists_fixedPoint` (existence), `fixedPoint_unique_of_isFixedPt` (any two fixed points coincide — note this needs neither completeness nor nonemptiness, so those instances are omitted), `tendsto_iterate` (Picard iterates converge to p from any seed), `apriori_estimate` (geometric error bound d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K)), and `aposteriori_estimate` (d(x,p) ≤ d(x,fx)/(1−K)).",
-      "mathContext": "For a K-contraction on a complete metric space, the Picard sequence fⁿx is Cauchy with ratio K, hence converges to the unique fixed point p. The a-priori bound sums the geometric tail Σ_{k≥n} Kᵏ = Kⁿ/(1−K); the a-posteriori bound is the n=0 instance, dist x p ≤ dist x (f x)/(1−K)."
+      "endLine": 55,
+      "summary": "The qualitative half of the abstract theorem over a nonempty complete metric space. exists_fixedPoint (a K-contraction has a fixed point, via ContractingWith.fixedPoint) and fixedPoint_unique_of_isFixedPt (any two fixed points coincide — this needs neither completeness nor nonemptiness, so those instances are explicitly omitted).",
+      "mathContext": "$f\\ K$-contraction on a nonempty complete metric space $\\Rightarrow\\ \\exists!\\,p,\\ f p = p$."
     },
     {
-      "id": "concrete-affine",
-      "title": "A Concrete Contraction on ℝ: x ↦ x/2 + c",
+      "id": "convergence-estimates",
+      "title": "Abstract Principle II: Picard Convergence and Error Estimates",
+      "startLine": 57,
+      "endLine": 75,
+      "summary": "The quantitative half. tendsto_iterate (from any seed x the Picard iterates fⁿx converge to p), apriori_estimate (the geometric error bound d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K), computable before iterating), and aposteriori_estimate (the single-step bound d(x,p) ≤ d(x,fx)/(1−K)).",
+      "mathContext": "$d(f^n x,p)\\le d(x,fx)\\dfrac{K^n}{1-K}$ (a-priori); $d(x,p)\\le \\dfrac{d(x,fx)}{1-K}$ (a-posteriori)."
+    },
+    {
+      "id": "concrete-verify",
+      "title": "Concrete Map: Verifying the Contraction and its Fixed Point",
       "startLine": 77,
+      "endLine": 102,
+      "summary": "Sets up the affine map contractAffine c = fun x => x/2 + c and verifies the hypotheses. contractAffine_contracting shows it is (1/2)-Lipschitz (distances scale exactly by 1/2, via LipschitzWith.of_dist_le_mul), and contractAffine_fixedPoint identifies the unique fixed point as 2c (exhibit 2c as a fixed point, then invoke uniqueness).",
+      "mathContext": "$f(x)=x/2+c$: $|f(x)-f(y)|=\\tfrac12|x-y|$ so $K=\\tfrac12$; fixed point solves $x=x/2+c\\Rightarrow x=2c$."
+    },
+    {
+      "id": "concrete-dynamics",
+      "title": "Concrete Map: Picard Convergence and Explicit Error Bound",
+      "startLine": 104,
       "endLine": 121,
-      "summary": "Verifies the hypotheses for the affine map `contractAffine c = fun x => x/2 + c`. `contractAffine_contracting` shows it is (1/2)-Lipschitz (distances scale exactly by 1/2, via LipschitzWith.of_dist_le_mul). `contractAffine_fixedPoint` identifies the unique fixed point as 2c (exhibit 2c as a fixed point, then invoke uniqueness). `contractAffine_tendsto` and `contractAffine_apriori` instantiate the Picard convergence and geometric error bound at this map.",
-      "mathContext": "For f(x)=x/2+c, |f(x)−f(y)| = |x−y|/2 = (1/2)|x−y|, so K=1/2<1. The fixed point solves x = x/2 + c, i.e. x/2 = c, x = 2c. The a-priori bound becomes |fⁿx − 2c| ≤ |x − (x/2+c)|·(1/2)ⁿ/(1−1/2)."
+      "summary": "Instantiates the abstract dynamics at contractAffine. contractAffine_tendsto (Picard iterates converge to 2c from any start) and contractAffine_apriori (the explicit geometric bound |fⁿx − 2c| ≤ |x − (x/2+c)|·(1/2)ⁿ/(1−1/2)), each obtained by rewriting the fixed point to 2c and applying the abstract estimate.",
+      "mathContext": "$|f^n x - 2c|\\le |x-(x/2+c)|\\,\\dfrac{(1/2)^n}{1-1/2}$."
     }
   ],
   "conclusion": {
@@ -98,6 +114,16 @@
       "targetId": "schauder-fixed-point",
       "relationship": "related",
       "description": "Schauder extends existence to compact convex sets in Banach spaces (no uniqueness); Banach's contraction principle trades that generality for uniqueness and an explicit convergence rate."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's first open question: Picard–Lindelöf (Cauchy–Lipschitz) local existence and uniqueness for the initial value problem, obtained by recasting y' = f(y), y(t₀)=x₀ as a fixed point of the Picard integral operator and applying exactly the contraction machinery packaged here."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child answering this entry's second open question: on a complete normed group, a k-Lipschitz perturbation of the identity f x = x + g x (k < 1) is a homeomorphism with two-sided Lipschitz control — the perturbation-of-identity result that is a step toward the inverse function theorem, built on the contraction principle stated here."
     }
   ],
   "leanFile": {

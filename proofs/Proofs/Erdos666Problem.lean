@@ -92,6 +92,54 @@ theorem two_mul_hypercubeEdges (n : ℕ) :
     rw [Nat.succ_sub_one, pow_succ]
     ring
 
+/-- **Vertices double with each dimension:** `|V(Q_{n+1})| = 2·|V(Qₙ)|`.  Passing
+from `Qₙ` to `Q_{n+1}` glues two disjoint copies of `Qₙ` (the `xₙ = 0` and `xₙ = 1`
+half-cubes), so the vertex count doubles.  Concretely `2^{n+1} = 2·2ⁿ`. -/
+theorem hypercubeVertices_succ (n : ℕ) :
+    hypercubeVertices (n + 1) = 2 * hypercubeVertices n := by
+  unfold hypercubeVertices
+  rw [pow_succ, Nat.mul_comm]
+
+/-- **Recursive edge count of the hypercube:** `|E(Q_{n+1})| = 2·|E(Qₙ)| + |V(Qₙ)|`.
+This encodes the fundamental product structure `Q_{n+1} = Qₙ □ K₂`: the edges of
+`Q_{n+1}` are the edges *inside* the two copies of `Qₙ` (that is `2·|E(Qₙ)|`) together
+with the perfect matching joining corresponding vertices across the two copies (one
+edge per vertex of `Qₙ`, i.e. `|V(Qₙ)|` further edges).  Concretely
+`(n+1)·2ⁿ = 2·(n·2ⁿ⁻¹) + 2ⁿ`.  Combined with `two_mul_hypercubeEdges` this pins the
+edge count `n·2ⁿ⁻¹` by its Cartesian-product recurrence rather than the closed form. -/
+theorem hypercubeEdges_succ (n : ℕ) :
+    hypercubeEdges (n + 1) = 2 * hypercubeEdges n + hypercubeVertices n := by
+  cases n with
+  | zero => simp [hypercubeEdges, hypercubeVertices]
+  | succ m =>
+    unfold hypercubeEdges hypercubeVertices
+    rw [Nat.succ_sub_one, Nat.succ_sub_one, pow_succ]
+    ring
+
+/-- **`Qₙ` has edges exactly when `n ≥ 1`:** `0 < |E(Qₙ)| = n·2ⁿ⁻¹` for every `n > 0`.
+The empty cube `Q₀` (a single vertex, no edges) is the sole edgeless hypercube; every
+positive-dimensional cube has edges. -/
+theorem hypercubeEdges_pos {n : ℕ} (hn : 0 < n) : 0 < hypercubeEdges n := by
+  unfold hypercubeEdges
+  exact Nat.mul_pos hn (pow_pos (by norm_num) _)
+
+/-- **The edge count strictly grows with each dimension:** `|E(Qₙ)| < |E(Q_{n+1})|`.
+Immediate from the Cartesian-product recurrence `hypercubeEdges_succ`
+(`|E(Q_{n+1})| = 2·|E(Qₙ)| + |V(Qₙ)|`): passing to `Q_{n+1}` duplicates every existing
+edge and adds the `|V(Qₙ)| = 2ⁿ > 0` matching edges, so the count increases at every step
+(including `Q₀ → Q₁`, where `0 < 1`). -/
+theorem hypercubeEdges_lt_succ (n : ℕ) : hypercubeEdges n < hypercubeEdges (n + 1) := by
+  rw [hypercubeEdges_succ]
+  have hv : 0 < hypercubeVertices n := hypercubeVertices_pos n
+  omega
+
+/-- **`hypercubeEdges` is strictly monotone:** `m < n → |E(Q_m)| < |E(Qₙ)|`.  The global
+form of `hypercubeEdges_lt_succ`, obtained by chaining the single-step strict increase.
+So distinct-dimensional hypercubes never share an edge count — the dimension `n` is
+recoverable from `|E(Qₙ)|`. -/
+theorem hypercubeEdges_strictMono : StrictMono hypercubeEdges :=
+  strictMono_nat_of_lt_succ hypercubeEdges_lt_succ
+
 /-
 **Degree in Qₙ:** every vertex has degree n.
 -/
@@ -284,6 +332,26 @@ Instantiating Erdős's conjecture at `ε = 1/4` would supply a threshold `N` mak
 theorem erdos_conjecture_false : ¬ErdosConjecture := fun hConj =>
   chung_no_threshold (hConj (1/4) (by norm_num))
 
+/-- **Erdős's conjecture is determined entirely by arbitrarily small densities.**
+For *any* fixed positive cutoff `c`, the full conjecture `ErdosConjecture` (which
+quantifies over every `ε > 0`) is equivalent to its restriction to the sliver of
+small densities `0 < ε ≤ c`.  The forward direction just forgets the extra bound
+`ε ≤ c`; the reverse uses monotonicity (`conjectureAt_mono`): any density `ε > c` is
+handled by the cutoff instance `ConjectureAt c` pushed up to `ε`.  So the conjecture's
+truth value never depends on its large-density behaviour — it is decided at the bottom
+of the density scale.  In particular, coupled with `conder_no_threshold_le` (failure
+throughout `(0, 1/3]`), this re-exhibits `erdos_conjecture_false` from the small-density
+end.  No new axioms — pure monotonicity. -/
+theorem erdosConjecture_iff_small {c : ℝ} (hc : 0 < c) :
+    ErdosConjecture ↔ ∀ ε : ℝ, 0 < ε → ε ≤ c → ConjectureAt ε := by
+  constructor
+  · intro h ε hε _
+    exact h ε hε
+  · intro h ε hε
+    rcases le_total ε c with hle | hge
+    · exact h ε hε hle
+    · exact conjectureAt_mono hge (h c hc le_rfl)
+
 /-!
 ### Part IV.5: Each refutation holds on a whole interval of densities
 
@@ -322,6 +390,64 @@ a genuine lower barrier on the "good" side.  (Whether any positive `ε > 1/3` ac
 works is the remaining quantitative question; here we only pin the barrier from below.) -/
 theorem conjectureAt_imp_gt_third {ε : ℝ} (h : ConjectureAt ε) : 1/3 < ε :=
   not_le.mp (fun hle => conder_no_threshold_le hle h)
+
+/-!
+### Part IV.6: The elementary boundary — where the deep axiom is *not* needed
+
+The refutations above (`conder_no_threshold_le`, `conjectureAt_imp_gt_third`) rest on
+the single deep axiom `conder_no_threshold`.  It is worth isolating exactly how much
+they buy over what is provable *outright*: for every **nonpositive** density the
+conjecture fails for an elementary reason — the required edge count `ε·Eₙ ≤ 0` is met
+by the *empty* graph `⊥`, which has no edges and hence no `C₆`.  So `⊥` is a
+`C₆`-free `ε`-dense "subgraph" at every `n`, refuting the conjecture with no
+combinatorics at all.
+
+The axiom-free necessary condition this yields is `ConjectureAt ε → 0 < ε`
+(`conjectureAt_imp_pos`).  Conder's axiom is precisely what upgrades that barrier from
+`0` to `1/3` (`conjectureAt_imp_gt_third`): all of the genuinely combinatorial content
+of Erdős #666 lives in the window `0 < ε ≤ 1/3`.
+-/
+
+unseal HasC6 HasCycle in
+/-- **The empty graph has no `C₆`.**  The reusable form of the witness already used in
+`chung_c6free`: `⊥` has no edges, so it contains no cycle of any length. -/
+theorem not_hasC6_bot {n : ℕ} : ¬ HasC6 (⊥ : SimpleGraph (Fin (2^n))) := by
+  rintro ⟨cycle, -, hadj, -⟩
+  simpa using hadj 0
+
+unseal EpsilonDenseSubgraph in
+/-- **At nonpositive density the empty graph is `ε`-dense.**  For `ε ≤ 0` the required
+edge count `ε·Eₙ` is `≤ 0`, and `⊥` has `0` edges, so `Nat.card ⊥.edgeSet = 0 ≥ ε·Eₙ`. -/
+theorem epsilonDense_bot_of_nonpos {n : ℕ} {ε : ℝ} (hε : ε ≤ 0) :
+    EpsilonDenseSubgraph n ε (⊥ : SimpleGraph (Fin (2^n))) := by
+  show (Nat.card (⊥ : SimpleGraph (Fin (2^n))).edgeSet : ℝ) ≥ ε * hypercubeEdges n
+  have hle : ε * (hypercubeEdges n : ℝ) ≤ 0 :=
+    mul_nonpos_of_nonpos_of_nonneg hε (Nat.cast_nonneg _)
+  simp only [SimpleGraph.edgeSet_bot, Nat.card_coe_set_eq, Set.ncard_empty,
+    Nat.cast_zero, ge_iff_le]
+  linarith
+
+/-- **The conjecture fails at every `n` for nonpositive density.**  `⊥` is a `C₆`-free
+`ε`-dense graph, so `DenseForcesC6 n ε` is false for every `n` (not merely large `n`)
+whenever `ε ≤ 0`.  Axiom-free. -/
+theorem not_denseForcesC6_of_nonpos {n : ℕ} {ε : ℝ} (hε : ε ≤ 0) :
+    ¬ DenseForcesC6 n ε :=
+  fun h => not_hasC6_bot (h ⊥ (epsilonDense_bot_of_nonpos hε))
+
+/-- **`ConjectureAt` fails at every nonpositive density.**  Immediate from
+`not_denseForcesC6_of_nonpos`: any threshold `N` already fails at `n = N`.  Axiom-free —
+this half of the refutation needs no combinatorics. -/
+theorem not_conjectureAt_of_nonpos {ε : ℝ} (hε : ε ≤ 0) : ¬ ConjectureAt ε := by
+  rintro ⟨N, hN⟩
+  exact not_denseForcesC6_of_nonpos hε (hN N le_rfl)
+
+/-- **Axiom-free necessary condition: any working density is positive.**  The
+elementary lower barrier `ConjectureAt ε → 0 < ε`, proved without `conder_no_threshold`.
+Conder's axiom sharpens this to `1/3 < ε` (`conjectureAt_imp_gt_third`); the gap
+between the two — the interval `(0, 1/3]` — is exactly where the deep combinatorial
+input is required. -/
+theorem conjectureAt_imp_pos {ε : ℝ} (h : ConjectureAt ε) : 0 < ε :=
+  not_le.mp (fun hle => not_conjectureAt_of_nonpos hle h)
 
 /-- **Conder's counterexamples recur for arbitrarily large hypercubes.**
 The axiom `conder_no_threshold` is stated in the compact negation form `¬ ConjectureAt (1/3)`
@@ -433,16 +559,29 @@ def GeneralizedConjecture : Prop :=
           (Nat.card H.edgeSet : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
           HasC2k H k
 
+unseal HasC6 in
 /-- **The `k = 3` case of the generalized conjecture is exactly the C₆ problem.**
 `HasC2k H 3` (a `2·3 = 6`-cycle) coincides with `HasC6 H`, so the generalized
 `C_{2k}` conjecture specialises at `k = 3` to Erdős's original — and refuted — C₆
 question.  (Proved by reducing the length index `2·3` to `6`; it does **not** unfold
 `HasCycle` itself, whose body is kept `irreducible` to avoid the documented
 elaborator stack overflow.) -/
-unseal HasC6 in
 theorem hasC2k_three_iff_hasC6 {V : Type*} (H : SimpleGraph V) :
     HasC2k H 3 ↔ HasC6 H := by
   show HasCycle H (2 * 3) ↔ HasCycle H 6
+  rfl
+
+/-- **`HasC2k H 2` is exactly `HasC4 H`.**  The generalized even-cycle predicate at
+`k = 2` (a `2·2 = 4`-cycle) coincides with the square predicate `HasC4`, the `k = 2`
+sibling of `hasC2k_three_iff_hasC6`.  Both sides reduce to the same `HasCycle H 4`, so the
+identification is definitional (`2·2` computes to `4`); unlike the `k = 3` case no
+`unseal HasCycle`/`unseal HasC6` is needed, since `HasC4` — in contrast to `HasC6` — is
+not marked `@[irreducible]`.  Together with `hasC2k_three_iff_hasC6` this pins down that
+the `HasC2k` family specialises correctly at exactly the two cycle lengths (`C₄`, `C₆`)
+that Conder's `3`-edge-colouring simultaneously avoids. -/
+theorem hasC2k_two_iff_hasC4 {V : Type*} (H : SimpleGraph V) :
+    HasC2k H 2 ↔ HasC4 H := by
+  show HasCycle H (2 * 2) ↔ HasCycle H 4
   rfl
 
 /-- **The generalized conjecture at `k = 3` is a `C₆`-forcing statement.**

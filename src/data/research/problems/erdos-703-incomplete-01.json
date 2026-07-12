@@ -15,7 +15,7 @@
     "open": [],
     "goal": ""
   },
-  "currentState": "T(n,0)=2^{n-1} is fully machine-checked, and BOTH parities of the Frankl-Füredi extremal construction are now proved r-avoiding with matching T(n,r) lower bounds: franklFurediOdd_avoids_r / _card_le_T (all n,r) and the new even-parity companions franklFurediEven_avoids_r / _card_le_T (n+r even, n≥1). The deep Frankl-Rödl exponential bound (frankl_rodl_1987) remains the sole axiom. Entry status: axiomatized, 1 axiom, 0 sorries.",
+  "currentState": "T(n,0)=2^{n-1} is fully machine-checked, and BOTH parities of the Frankl-Füredi extremal construction are now proved r-avoiding with matching T(n,r) lower bounds: franklFurediOdd_avoids_r / _card_le_T (all n,r) and the new even-parity companions franklFurediEven_avoids_r / _card_le_T (n+r even, n≥1). The deep Frankl-Rödl exponential bound (frankl_rodl_1987) remains the sole axiom. Entry status: axiomatized, 1 axiom, 0 sorries. | Follow-up (researcher-3, 2026-07-11): re-verified the whole file axiom-free via `lake env lean` (v4.26.0), EXIT 0 — confirming the previously UNVERIFIED (docker-down) L-avoiding lemmas. Added the `T_L(n,L)` extremal quantity generalizing `T` to the Frankl-Wilson L-avoiding hierarchy: T_L_singleton (T_L n {r} = T n r), T_L_antitone_forbidden (L ⊆ L' ⟹ T_L n L' ≤ T_L n L), T_L_insert_le, and T_L_le_T_of_mem (r∈L ⟹ T_L n L ≤ T n r, tying the hierarchy back to concrete T). All 4 axiom-free [propext,choice,Quot.sound]. File 879→938L, 37→41 thm, 9→10 def; frankl_rodl_1987 remains the sole axiom. | Follow-up (researcher-6, 2026-07-11, VERIFIED green via `lake env lean` v4.26.0): added the T_L large-forbidden DICHOTOMY completing the L-avoiding endpoint theory — full_powerset_avoidsL_of_lt (every r∈L exceeds n ⟹ full powerset 2^[n] avoids L, the L-analog of full_powerset_avoids_r_of_lt, vacuous at L=∅), T_L_eq_pow_of_lt (hence T_L n L = 2^n, strictly generalizing T_L_empty), and T_L_le_pow_sub_one (some r∈L with r≤n ⟹ T_L n L ≤ 2^n−1, via T_L_le_T_of_mem∘T_le_pow_sub_one). Together the last two give the exact dichotomy: T_L n L = 2^n ⟺ every forbidden size exceeds n, else ≤ 2^n−1. All 3 axiom-free [propext,choice,Quot.sound]. File 1169→1222L, 52→55 thm; frankl_rodl_1987 remains the sole axiom.",
   "knowledge": {
     "progressSummary": "PROGRESS (researcher-2, 2026-07-09, VERIFIED green build): proved the exact diagonal value T(n,n)=2^n-1, the third exactly-known boundary value of T(n,r) alongside T(n,0)=2^{n-1} and T(n,r)=2^n (n<r). A family avoids n-intersection iff it omits the full ground set [n] (the unique n-meeting pair among subsets of [n] is [n] with itself, forbidden as a self-pair by avoidsRIntersection). Deep frankl_rodl_1987 axiom and exact T(n,1) (Frankl 1977 upper bound) remain open.",
     "builtItems": [
@@ -24,7 +24,8 @@
       "T_n_0 (Erdos703Problem.lean:204): full machine-checked proof T(n,0) = 2^{n-1} via le_antisymm (replaced a sorry)",
       "franklFurediEven_avoids_r (Erdos703Problem.lean): the even-parity (n+r even, n≥1) companion of franklFurediOdd_avoids_r — the family {A⊆[n] : |A\\{0}|≥(n+r)/2 ∨ |A|<r} avoids r-intersection. Large-large case uses inclusion-exclusion on the centred sets A\\{0},B\\{0} in the (n-1)-element ground set {1,…,n-1}: |A∩B|≥2⌊(n+r)/2⌋-(n-1)=r+1. VERIFIED 0 extra axioms.",
       "franklFurediEven_card_le_T (Erdos703Problem.lean): even-parity T(n,r) lower bound, mirroring franklFurediOdd_card_le_T via Finset.le_sup. VERIFIED 0 extra axioms.",
-      "Erdos703Problem.lean: inter_card_eq_n_iff (|A cap B|=n iff A=B=range n for A,B subseteq range n; Finset.eq_of_subset_of_card_le) + T_n_n (T(n,n)=2^n-1 via le_antisymm: upper = every avoiding family omits range n so embeds in powerset.erase, Finset.card_erase_of_mem+card_powerset; lower = powerset.erase(range n) is n-avoiding via inter_card_eq_n_iff, Finset.le_sup). VERIFIED GREEN [7743/7743], 0 new axioms/sorries."
+      "Erdos703Problem.lean: inter_card_eq_n_iff (|A cap B|=n iff A=B=range n for A,B subseteq range n; Finset.eq_of_subset_of_card_le) + T_n_n (T(n,n)=2^n-1 via le_antisymm: upper = every avoiding family omits range n so embeds in powerset.erase, Finset.card_erase_of_mem+card_powerset; lower = powerset.erase(range n) is n-avoiding via inter_card_eq_n_iff, Finset.le_sup). VERIFIED GREEN [7743/7743], 0 new axioms/sorries.",
+      "Erdos703Problem.lean (researcher-6, 2026-07-11): the T_L large-forbidden dichotomy — full_powerset_avoidsL_of_lt (∀r∈L, n<r ⟹ 2^[n] avoids L; |A∩B|≤n<r), T_L_eq_pow_of_lt (T_L n L = 2^n under same hyp, le_antisymm with T_L_le_pow ceiling + full-powerset witness; strictly generalizes T_L_empty), T_L_le_pow_sub_one (∃r∈L, r≤n ⟹ T_L n L ≤ 2^n−1 by le_trans T_L_le_T_of_mem T_le_pow_sub_one). 3 axiom-free thms; the pair pins T_L n L = 2^n ⟺ every forbidden size exceeds n."
     ],
     "insights": [
       "T(n,0) = 2^{n-1}: the 0-avoiding families are exactly the intersecting families; the complement map sending A to its complement in [n] injects any intersecting F into a disjoint copy, giving 2|F| <= 2^n, hence |F| <= 2^{n-1}.",
@@ -57,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.517Z",
-  "lastUpdate": "2026-07-08",
+  "lastUpdate": "2026-07-11T01:35:00Z",
   "significance": 7,
   "tractability": 5
 }

@@ -61,7 +61,8 @@
       "The k=4 closed form is the first rung where the reduced expression is genuinely quartic in the elementary symmetric polynomials, featuring the cross term 2·e₂² absent at k≤3; it remains one recurrence step plus a ring substitution away from Mathlib's general Newton identity.",
       "The aeval bridge built for the k=3 entry (aeval_psum_subtype / aeval_esymm_subtype) is already stated for arbitrary degree n. The k=4 concrete form therefore needs only e4_bridge := aeval_esymm_subtype s f 4 and p4_bridge := aeval_psum_subtype s f 4 — confirming the bridge is a reusable, degree-uniform transport rather than a degree-3 special case.",
       "Transporting the universal identity (which lives at the level of polynomial coefficients, before evaluation) yields the concrete Finset identity unconditionally — there is no characteristic-2 obstruction to bypass at k=4 because the closed form is never assembled from a doubled combinatorial partition; it is read off the universal statement directly.",
-      "Extracting the k=4 recurrence from psum_eq_mul_esymm_sub_sum is purely mechanical once the antidiagonal filter {(1,3),(2,2),(3,1)} and the sign of the lead term (−1)^(n+1)·n·eₙ are pinned down, mirroring the k=2 and k=3 derivations exactly."
+      "Extracting the k=4 recurrence from psum_eq_mul_esymm_sub_sum is purely mechanical once the antidiagonal filter {(1,3),(2,2),(3,1)} and the sign of the lead term (−1)^(n+1)·n·eₙ are pinned down, mirroring the k=2 and k=3 derivations exactly.",
+      "The reduced closed forms bootstrap triangularly: psum_four_closed is proved by substituting the already-reduced psum_three_closed (k=3), psum_two_eq (k=2) and psum_one_eq_esymm_one (k=1) into the k=4 recurrence, so each degree reuses every lower closed form exactly once. This dependency chain — visible in the file's explicit imports of the k=2 and k=3 entries — is why the gallery models Newton–Girard as a parent→child ladder (k=3 → k=4 → k=5) rather than a set of independent derivations."
     ],
     "prerequisites": [
       "k=3 closed form AmgmInequalityOQ02OQ01OQ03: psum_three_closed (p₃ = e₁³ − 3e₁e₂ + 3e₃).",
@@ -81,11 +82,19 @@
       "mathContext": "$p_4 = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$."
     },
     {
-      "id": "universal",
-      "title": "Universal Closed Form (MvPolynomial)",
+      "id": "universal-recurrence",
+      "title": "Universal Recurrence Form (MvPolynomial)",
       "startLine": 55,
+      "endLine": 86,
+      "summary": "psum_four_recurrence extracts p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄ from Mathlib's psum_eq_mul_esymm_sub_sum at n=4. The one nontrivial step is pinning the antidiagonal filter {a : a₁+a₂=4, 0<a₁<4} = {(1,3),(2,2),(3,1)} (by omega) and the lead term (−1)⁵·4·e₄ = −4e₄, after which sum_insert/sum_singleton + ring close it.",
+      "mathContext": "Recurrence: $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4 e_4$."
+    },
+    {
+      "id": "universal-closed",
+      "title": "Universal Closed Form (MvPolynomial)",
+      "startLine": 88,
       "endLine": 103,
-      "summary": "psum_four_recurrence extracts p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄ from psum_eq_mul_esymm_sub_sum at n=4 (antidiagonal {(1,3),(2,2),(3,1)}). psum_four_closed substitutes the proven p₃, p₂, p₁ closed forms and ring-normalises.",
+      "summary": "psum_four_closed substitutes the already-reduced psum_three_closed (p₃), psum_two_eq (p₂) and psum_one_eq_esymm_one (p₁) into the recurrence and ring-normalises, giving the fully reduced quartic p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ — the first rung with the genuinely quadratic-in-e₂ cross term 2·e₂².",
       "mathContext": "In MvPolynomial σ R: $p_4 = e_1^4 - 4(e_1^2 e_2) + 2 e_2^2 + 4(e_1 e_3) - 4 e_4$."
     },
     {

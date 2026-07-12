@@ -70,7 +70,8 @@
       "The entire content of 'degree d is not a power of two' is the single fact 'd has an odd prime factor' — `q ∣ 2^k ⟹ q ∣ 2 ⟹ q = 2` is the whole proof, with no case analysis on k.",
       "Both the Wantzel degree predicate and the Galois 2-group predicate are *definitionally* `IsPowTwo` applied to a natural number (`p.natDegree` resp. `Fintype.card G`), so one arithmetic lemma serves both sides of the constructibility characterization.",
       "The parent's three separate `interval_cases k <;> simp_all` proofs become a single instance of `not_degreePowerOfTwo_of_natDegree_three`; the criterion extends for free to degree 5 (regular 11-gon) and any odd-prime degree.",
-      "On the group side, Cauchy's theorem (`exists_prime_orderOf_dvd_card`) turns the abstract obstruction into a concrete witness: an element whose order is the offending odd prime cannot exist in a 2-group."
+      "On the group side, Cauchy's theorem (`exists_prime_orderOf_dvd_card`) turns the abstract obstruction into a concrete witness: an element whose order is the offending odd prime cannot exist in a 2-group.",
+      "The obstruction is an odd prime *factor*, not an odd degree — so it also catches even composite degrees. `not_isPowTwo_six` uses 3 ∣ 6: a degree need not be odd to fail Wantzel, only to carry an odd prime factor. This is strictly stronger than both the parent's degree-3 arguments and the naive 'odd degree ⟹ non-constructible' heuristic — e.g. cos(2π/13) has an even degree-6 minimal polynomial (φ(13)/2 = 6 = 2·3) yet is non-constructible."
     ],
     "prerequisites": [
       "Divisibility and prime factorization over ℕ",
@@ -127,6 +128,21 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "Abel–Ruffini uses Galois-group structure (solvability) to prove insolvability of the quintic; here the Galois-group structure at issue is being a 2-group, obstructed by the same odd-prime-factor lemma."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "related",
+      "description": "The concrete group-side witness of this uniform obstruction: the Galois group of 8X³ − 6X − 1 (the minimal polynomial of cos 20°) over ℚ has order 3. Because 3 carries an odd prime factor it is not a power of two — exactly the arithmetic fact isolated here — so cos 20° is non-constructible and the 60° angle cannot be trisected. It instantiates the 'Galois 2-group side' with a specific polynomial."
+    },
+    {
+      "targetId": "angle-trisection-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The arithmetic Gauss–Wantzel criterion: a regular n-gon is constructible iff φ(n) is a power of two. This entry's power-of-two obstruction is the necessity engine — whenever φ(n) has an odd prime factor the n-gon is non-constructible. Feeding φ(11) = 10 (odd factor 5) into that criterion is precisely what would close this entry's second open question on the regular 11-gon."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "A sibling under the same parent covering the opposite (sufficiency) direction: the 2-group backbone — every finite 2-group is nilpotent, hence solvable, with a normal subgroup of index 2. This entry supplies the necessity obstruction (an odd prime factor forces a non-power-of-two order, blocking constructibility); the sibling supplies the group-side backbone of the converse. Together they are the two halves this entry's first open question proposes to merge into wantzel_galois_iff."
     }
   ],
   "mainTheorems": [

@@ -33,9 +33,9 @@
       "rectangle_spectrum / rectangle_not_isTwoDistance: a non-square 1×2 rectangle has spectrum {1,4,5} (three distances), so the predicate genuinely discriminates",
       "two_distance_examples: packaged summary — square and rhombus are two-distance sets, rectangle is not"
     ],
-    "lineCount": 199,
-    "theoremCount": 10,
-    "definitionCount": 15
+    "lineCount": 247,
+    "theoremCount": 12,
+    "definitionCount": 19
   },
   "overview": {
     "historicalContext": "A two-distance set is a set of points realizing only two distinct pairwise distances; the study of such sets goes back to work of Kelly, and Einhorn–Schoenberg (1966) classified all planar two-distance sets, finding that the maximum size in the plane is 5 (the regular pentagon) and enumerating the four-point cases. Erdős problem #659 (Moree–Osburn, 2006) is a refinement of Erdős's distinct-distances problem in which every four-point subset is forced to determine at least three distances — i.e. no four points may form a two-distance set — while the whole configuration still realizes only O(n/√log n) distinct distances. Understanding which four-point configurations ARE two-distance sets is therefore exactly the local obstruction the construction must avoid. Up to similarity there are six four-point two-distance sets: the square, the 60° rhombus (two glued equilateral triangles), two isosceles trapezoids, a kite, and four vertices of a regular pentagon.",

@@ -510,6 +510,31 @@ theorem le_sublevelSup'_Xsq {d : ℝ} (hd0 : 0 ≤ d) (hd1 : d < 1) :
     (le_iSup_of_le (Xsq_sub_C_admissible' ⟨hd0, le_of_lt hd1⟩)
       (sublevelMeasure_Xsq_sub_C hd0 hd1).ge)
 
+/-- **The quadratic family sweeps its measure interval strictly monotonically.** For
+    `0 ≤ d₁ < d₂ < 1`, the sublevel measure of `X² − d₁` is strictly smaller than that of
+    `X² − d₂`: deepening the constant term (spreading the two roots `±√d` apart) strictly
+    enlarges the sublevel set `(−√(d+1), √(d+1))`. The measure `2√(d+1)` is strictly
+    increasing in `d`, so the sweep of `[2, 2√2)` by `exists_faithful_sublevelMeasure_eq`
+    is order-preserving — each target value is hit by a *unique* `d`. -/
+theorem sublevelMeasure_Xsq_sub_C_lt {d₁ d₂ : ℝ} (hd₁ : 0 ≤ d₁) (hd₂ : d₂ < 1)
+    (h : d₁ < d₂) :
+    sublevelMeasure (X ^ 2 - C d₁) < sublevelMeasure (X ^ 2 - C d₂) := by
+  rw [sublevelMeasure_Xsq_sub_C hd₁ (lt_trans h hd₂),
+    sublevelMeasure_Xsq_sub_C (le_trans hd₁ h.le) hd₂,
+    ENNReal.ofReal_lt_ofReal_iff
+      (mul_pos two_pos (Real.sqrt_pos.mpr (by linarith)))]
+  have hsqrt : Real.sqrt (d₁ + 1) < Real.sqrt (d₂ + 1) :=
+    Real.sqrt_lt_sqrt (by linarith) (by linarith)
+  linarith
+
+/-- **The quadratic sublevel measure is strictly monotone on `[0, 1)`.** The `StrictMonoOn`
+    packaging of `sublevelMeasure_Xsq_sub_C_lt`: `d ↦ sublevelMeasure (X² − d)` is strictly
+    increasing on `Set.Ico 0 1`. Hence the parametrisation of the elementary measure spectrum
+    `[2, 2√2)` by the constant term is an order isomorphism onto its image. -/
+theorem sublevelMeasure_Xsq_sub_C_strictMonoOn :
+    StrictMonoOn (fun d : ℝ => sublevelMeasure (X ^ 2 - C d)) (Set.Ico 0 1) :=
+  fun _ ha _ hb hab => sublevelMeasure_Xsq_sub_C_lt ha.1 hb.2 hab
+
 /-- **Every measure `m ∈ [2, 2√2)` is realised exactly by a faithful distinct-root
     quadratic.**  This formalizes the surjectivity claim above: solving `2√(d+1) = m`
     gives `d = m²/4 − 1`, which lies in `[0, 1)` precisely when `2 ≤ m < 2√2`, so the
@@ -547,6 +572,34 @@ theorem le_sublevelSup'_of_mem {m : ℝ} (hm : 2 ≤ m) (hm2 : m < 2 * Real.sqrt
   obtain ⟨f, hf, hmeas⟩ := exists_faithful_sublevelMeasure_eq hm hm2
   rw [← hmeas]
   exact le_iSup_of_le f (le_iSup_of_le hf le_rfl)
+
+/-- **The extremal endpoint `2√2` is itself attained** — closing the attained interval.
+    `exists_faithful_sublevelMeasure_eq` realises every `m ∈ [2, 2√2)` by a distinct-root
+    quadratic `X² − d`, but stops *short* of the endpoint (`d < 1`).  The endpoint is
+    supplied by the boundary case `d = 1`, i.e. the extremal quadratic `q = X² − 1`
+    itself, whose sublevel measure is exactly `2√2` (`sublevelMeasure_quadratic`) and which
+    is faithfully admissible (`quadratic_admissible'`).  Hence every measure value in the
+    *closed* interval `[2, 2√2]` is attained by a faithful admissible polynomial — the full
+    elementary sup-side spectrum, endpoint included. -/
+theorem exists_faithful_sublevelMeasure_eq_Icc {m : ℝ} (hm : 2 ≤ m)
+    (hm2 : m ≤ 2 * Real.sqrt 2) :
+    ∃ f : Polynomial ℝ, MonicRealRootedIn01' f ∧
+      sublevelMeasure f = ENNReal.ofReal m := by
+  rcases eq_or_lt_of_le hm2 with hmeq | hmlt
+  · exact ⟨q, quadratic_admissible', by rw [sublevelMeasure_quadratic, hmeq]⟩
+  · exact exists_faithful_sublevelMeasure_eq hm hmlt
+
+/-- **The closed interval `[2, 2√2]` lies inside the attained faithful-measure spectrum.**
+    Set-level form of `exists_faithful_sublevelMeasure_eq_Icc`: every real `m` between the
+    clustered-root minimum `2` and the extremal maximum `2√2` is the (real) sublevel
+    measure of some faithfully admissible monic polynomial.  This is the complete
+    elementary description of the lower half `[2, 2√2]` of the extremal spectrum
+    `[2^(4/3) − 1, 2√2]` — no potential theory, endpoint included. -/
+theorem Icc_subset_faithful_attained :
+    Set.Icc (2 : ℝ) (2 * Real.sqrt 2) ⊆
+      {m : ℝ | ∃ f : Polynomial ℝ, MonicRealRootedIn01' f ∧
+        sublevelMeasure f = ENNReal.ofReal m} :=
+  fun _ hm => exists_faithful_sublevelMeasure_eq_Icc hm.1 hm.2
 
 /-! ### The faithful and literal extremal objects are ordered
 
@@ -603,5 +656,117 @@ theorem sublevelInf_lt_sublevelSup : sublevelInf < sublevelSup := by
   have hpos : (0 : ℝ≥0∞) < ENNReal.ofReal (2 * Real.sqrt 2) := by
     rw [ENNReal.ofReal_pos]; positivity
   exact lt_of_lt_of_le hpos le_sublevelSup
+
+/-! ### An elementary finite upper bound: `sublevelSup' ≤ 4`
+
+The *sharp* upper bound `sublevelSup' = 2√2` is Tao's 2025 theorem and needs
+logarithmic potential theory absent from Mathlib.  A **non-tight but honest and fully
+elementary** upper bound is nonetheless available and pins the faithful supremum inside a
+concrete finite interval `[2√2, 4]`, so the extremal quantity is provably finite.
+
+The mechanism is purely geometric.  For faithfully admissible `f` (monic, split, all
+roots real in `[-1,1]`) we have `f = ∏_{r ∈ roots} (X − r)`, so for `|x| ≥ 2` every factor
+satisfies `|x − r| ≥ |x| − |r| ≥ 2 − 1 = 1`; the product of such factors has absolute value
+`≥ 1`, hence `x ∉ {|f| < 1}`.  Therefore `sublevelSet f ⊆ (−2, 2)` and
+`sublevelMeasure f ≤ vol(−2, 2) = 4`, uniformly in `f`. -/
+
+/-- Absolute value distributes over a multiset product of reals. -/
+theorem abs_multiset_prod (s : Multiset ℝ) :
+    |s.prod| = (s.map (fun t => |t|)).prod := by
+  refine Multiset.induction (by simp) (fun a s ih => ?_) s
+  simp [Multiset.prod_cons, abs_mul, ih]
+
+/-- **Outside `[−2, 2]` a faithfully admissible polynomial has `|f| ≥ 1`.**  Writing
+`f = ∏_{r} (X − r)` over its (real, `[-1,1]`) roots, each factor obeys
+`|x − r| ≥ |x| − |r| ≥ 2 − 1 = 1` when `|x| ≥ 2`, so the product has absolute value `≥ 1`. -/
+theorem one_le_abs_eval_of_ge_two {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f)
+    {x : ℝ} (hx : 2 ≤ |x|) : 1 ≤ |f.eval x| := by
+  have hrep : (f.roots.map fun a => X - C a).prod = f :=
+    prod_multiset_X_sub_C_of_monic_of_roots_card_eq hf.1.1 hf.2
+  have heval : f.eval x = (f.roots.map (fun r => x - r)).prod := by
+    conv_lhs => rw [← hrep]
+    rw [eval_multiset_prod, Multiset.map_map]
+    exact congrArg _ (Multiset.map_congr rfl (fun r _ => by simp))
+  rw [heval, abs_multiset_prod, Multiset.map_map]
+  refine Multiset.one_le_prod (fun a ha => ?_)
+  simp only [Multiset.mem_map, Function.comp_apply] at ha
+  obtain ⟨r, hr, rfl⟩ := ha
+  have hr1 : r ∈ Set.Icc (-1 : ℝ) 1 := hf.1.2 r hr
+  have hrle : |r| ≤ 1 := abs_le.mpr ⟨hr1.1, hr1.2⟩
+  have hsub : |x| - |r| ≤ |x - r| := by
+    have := abs_sub_abs_le_abs_sub x r; linarith [abs_nonneg (x - r)]
+  linarith
+
+/-- **The faithful sublevel set is confined to `(−2, 2)`.** -/
+theorem sublevelSet_subset_Ioo {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelSet f ⊆ Set.Ioo (-2 : ℝ) 2 := by
+  intro x hx
+  simp only [sublevelSet, Set.mem_setOf_eq] at hx
+  by_contra hcon
+  have hxge : 2 ≤ |x| := by
+    rw [Set.mem_Ioo, not_and_or] at hcon
+    rcases hcon with h | h
+    · rw [not_lt] at h; rw [abs_of_nonpos (by linarith)]; linarith
+    · rw [not_lt] at h; rw [abs_of_nonneg (by linarith)]; linarith
+  exact absurd hx (not_lt.mpr (one_le_abs_eval_of_ge_two hf hxge))
+
+/-- **Uniform bound `sublevelMeasure f ≤ 4`** for every faithfully admissible `f`,
+    from `sublevelSet f ⊆ (−2, 2)` and `vol(−2, 2) = 4`. -/
+theorem sublevelMeasure_le_four {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelMeasure f ≤ ENNReal.ofReal 4 := by
+  have h : sublevelMeasure f ≤ volume (Set.Ioo (-2 : ℝ) 2) :=
+    measure_mono (sublevelSet_subset_Ioo hf)
+  rwa [Real.volume_Ioo, show (2 : ℝ) - (-2) = 4 by norm_num] at h
+
+/-- **`sublevelSup' ≤ 4`.**  The elementary, machine-checked upper bound on the faithful
+    supremum, complementing the lower bound `le_sublevelSup'` (`2√2 ≤ sublevelSup'`).
+    Together they confine `sublevelSup' ∈ [2√2, 4]` with no potential theory; Tao's sharp
+    `= 2√2` sits inside this interval and remains beyond Mathlib. -/
+theorem sublevelSup'_le_four : sublevelSup' ≤ ENNReal.ofReal 4 :=
+  iSup_le fun f => iSup_le fun hf => sublevelMeasure_le_four hf
+
+/-- **The faithful supremum is sandwiched: `2√2 ≤ sublevelSup' ≤ 4`.**  A fully elementary,
+    axiom-free localisation of the open Erdős #1038 extremal constant to a concrete finite
+    interval. -/
+theorem sublevelSup'_mem_Icc :
+    ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup' ∧ sublevelSup' ≤ ENNReal.ofReal 4 :=
+  ⟨le_sublevelSup', sublevelSup'_le_four⟩
+
+/-! ### Boundedness and finiteness
+
+The `⊆ (−2, 2)` confinement gives more than the numeric `≤ 4` bound: the faithful sublevel
+set is a *bounded* set (complementing `isOpen_sublevelSet`, so it is a bounded open set), each
+faithful sublevel *measure* is finite, and — packaging the `≤ 4` supremum bound as a
+`⊤`-finiteness statement — the extremal supremum `sublevelSup'` is itself finite. The Erdős
+#1038 extremal constant is therefore a genuine real number, not `∞`, with no potential theory. -/
+
+/-- **The faithful sublevel set is bounded.**  It is confined to `(−2, 2)`
+(`sublevelSet_subset_Ioo`), a bounded interval; together with `isOpen_sublevelSet` this
+exhibits it as a bounded open subset of `ℝ`. -/
+theorem isBounded_sublevelSet {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    Bornology.IsBounded (sublevelSet f) :=
+  Metric.isBounded_Ioo (-2 : ℝ) 2 |>.subset (sublevelSet_subset_Ioo hf)
+
+/-- **Each faithful sublevel measure is finite** (`< ⊤`), from the uniform `≤ 4` bound. -/
+theorem sublevelMeasure_lt_top {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelMeasure f < ⊤ :=
+  lt_of_le_of_lt (sublevelMeasure_le_four hf) ENNReal.ofReal_lt_top
+
+/-- **Each faithful sublevel measure is finite** (`≠ ⊤`), the `Ne` form of
+`sublevelMeasure_lt_top`. -/
+theorem sublevelMeasure_ne_top {f : Polynomial ℝ} (hf : MonicRealRootedIn01' f) :
+    sublevelMeasure f ≠ ⊤ :=
+  (sublevelMeasure_lt_top hf).ne
+
+/-- **The faithful extremal supremum is finite** (`sublevelSup' < ⊤`).  Packaging
+`sublevelSup' ≤ 4` as a `⊤`-finiteness statement: the open Erdős #1038 extremal constant is a
+genuine finite real number, not `∞`. -/
+theorem sublevelSup'_lt_top : sublevelSup' < ⊤ :=
+  lt_of_le_of_lt sublevelSup'_le_four ENNReal.ofReal_lt_top
+
+/-- **The faithful extremal supremum is finite** (`sublevelSup' ≠ ⊤`), the `Ne` form of
+`sublevelSup'_lt_top`. -/
+theorem sublevelSup'_ne_top : sublevelSup' ≠ ⊤ :=
+  sublevelSup'_lt_top.ne
 
 end Erdos1038WIP01

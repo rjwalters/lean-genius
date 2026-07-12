@@ -31,10 +31,10 @@
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-07-09T00:00:00Z",
-    "iteration": 1,
-    "focus": "Understand the increment Δ_l(k) = R(k,l+1) - R(k,l) and how a power-law asymptotic for R(k,l) transfers to an asymptotic for the increment.",
+    "iteration": 2,
+    "focus": "Parent Erdos1014Problem.lean drift repaired & verified; Concrete instantiation unblocked. Remaining frontier: formalize g~c*l^a/(log l)^b => g(l+1)-g(l)~a*c*l^(a-1)/(log l)^b and the conditional increment asymptotic; document the k=3 constant-matching obstruction.",
     "blockers": [],
-    "nextAction": "Review the GrowthRatioHelpers real-analysis lemmas in Erdos1014Problem.lean and draft the finite-difference expansion for a power-law-with-log function.",
+    "nextAction": "Formalize the finite-difference asymptotic transfer lemma for power-law-with-log functions (next step 2), building on the now-compiling GrowthRatioHelpers.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 2026-07-11): repaired Mathlib API drift in Erdos1014OQ03Obstruction.lean (div_le_div_iff -> div_le_div_iff0) so it elaborates cleanly against current Mathlib; confirmed axiom-free via #print axioms on all three capstones (increment_ratio_not_tendsto_one, increment_asymptotic_not_determined_by_asymptotic_class, increment_asymptotic_not_determined_under_normalized_regularity -> [propext, Classical.choice, Quot.sound] only, no sorryAx/ofReduceBool). This formalizes the previously-prose negative meta-result that the increment asymptotic is not determined by the ~-class of R(k,.) via the explicit witness u l=l, v l=l+(-1)^l; the honest increment-ratio bridge (Erdos1014OQ03.lean + LogIncrement.lean, both verify clean) remains the correct route. Full increment asymptotic for k=3 remains OPEN (constant-matching obstruction). KNOWN DRIFT (needs separate repair, out of OQ03 scope): Erdos1014Problem.lean (general problem file, 9 axioms) does NOT compile against current Mathlib -- ~17 errors: Mathlib renames (div_le_div_iff, Real.isLittleO_log_rpow_atTop), a genuine unsolved-goals hole in ramsey_mono_left_ge2 (line ~66, subst with no closing tactic), and fragile nlinarith steps in the general-k asymptotic argument. Erdos1014OQ03Concrete.lean imports Erdos1014Problem and is transitively blocked until that file is repaired.",
+    "progressSummary": "PROGRESS (VERIFIED 2026-07-11, researcher-11): REPAIRED Mathlib API drift in the parent Erdos1014Problem.lean (was ~25 elaboration errors) so it now compiles cleanly (0 errors, 12 domain axioms, 20 theorems, 0 sorry). Fixes: renamed div_le_div_iff->div_le_div_iff0, div_le_one_of_le->div_le_one_of_le0, div_le_iff->div_le_iff0, abs_add->abs_add_le, Real.isLittleO_log_rpow_atTop->isLittleO_log_rpow_atTop; switched the squeeze to tendsto_of_tendsto_of_tendsto_of_le_of_le' (eventual variant) and rebuilt the n^-1/log2->0 lower bound via Tendsto.inv_tendsto_atTop; closed the genuine unsolved-goals hole in ramsey_mono_left_ge2 (norm_num after subst n=1); replaced the broken calc/induction in diagonal_ramsey_lower with a 3-line proof from ramsey_mono_left_ge2 + ramsey_k2; fixed Tendsto.congr->congr' in tendsto_succ_div_pow; proved hbeta g'/g = ((l+1)/l)^(k-1)*(log l/log(l+1))^(k-2) via div_pow (ring cannot split symbolic-exponent powers) then field_simp; and rebuilt the final product bound with explicit mul_le_mul steps (nlinarith only multiplies pairs, could not reach the degree-3 |a||b||c| bound). #print axioms confirms ratio_from_asymptotics / R3_ratio_convergence / diagonal_ramsey_lower depend only on the stated Ramsey axioms + [propext,Classical.choice,Quot.sound] -- NO sorryAx, NO ofReduceBool. This UNBLOCKS Erdos1014OQ03Concrete.lean, which imports the parent and now also verifies clean (ramsey3_increment_div_tendsto_zero depends only on R3_lower/ramsey* domain axioms + foundational). The abstract increment-ratio bridge (Erdos1014OQ03.lean + LogIncrement.lean) and the negative meta-result (Erdos1014OQ03Obstruction.lean) remain clean. Full increment asymptotic for k=3 (Delta_l(3) ~ c*l/log l) still OPEN (constant-matching obstruction).",
     "builtItems": [
       "increment_div_eq_ratio_sub_one — (R(l+1)-R(l))/R(l) = R(l+1)/R(l)-1 (algebraic engine).",
       "increment_div_tendsto_zero_iff_ratio_tendsto_one — normalized increment ->0 IFF consecutive ratio ->1; converts #1014's ratio convergence into Delta_l(k)=o(R(k,l)).",
@@ -56,7 +56,6 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Repair Erdos1014Problem.lean Mathlib drift (17 errors incl. ramsey_mono_left_ge2 unsolved-goals hole) to unblock Erdos1014OQ03Concrete.lean verification.",
       "Formalize the real-analysis lemma: g ~ c·l^a/(log l)^b implies g(l+1) - g(l) ~ a·c·l^{a-1}/(log l)^b.",
       "Prove the conditional increment asymptotic Δ_l(k) ~ (k-1)·c_k·l^{k-2}/(log l)^{k-2} from the power-law hypothesis on R(k,l).",
       "Relate the increment asymptotic to ratio_equiv_difference and ratio_from_asymptotics in the parent file.",

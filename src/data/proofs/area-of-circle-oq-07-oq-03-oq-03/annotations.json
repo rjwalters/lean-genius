@@ -20,7 +20,8 @@
     "content": "x^{2n} e^{-x²} is integrable over ℝ. This is transferred from Mathlib's rpow-form lemma integrable_rpow_mul_exp_neg_mul_sq: the monoid power x^{2n} equals the rpow x^{(2n:ℝ)} for every real x (Real.rpow_natCast), so the two integrands agree almost everywhere.",
     "mathContext": "$x^{2n}e^{-x^2} \\in L^1(\\mathbb{R})$: the Gaussian factor $e^{-x^2}$ decays faster than any polynomial $x^{2n}$ grows, so $\\int_{\\mathbb{R}} x^{2n}e^{-x^2} < \\infty$. The natural power agrees a.e. with the real power $x^{(2n:\\mathbb{R})}$.",
     "significance": "supporting",
-    "relatedConcepts": ["Integrable.congr", "Real.rpow_natCast", "integrable_rpow_mul_exp_neg_mul_sq"]
+    "relatedConcepts": ["Integrable.congr", "Real.rpow_natCast", "integrable_rpow_mul_exp_neg_mul_sq"],
+    "prerequisites": ["Lebesgue integrability (L¹)", "natural powers vs real powers (rpow)", "polynomial-times-Gaussian decay"]
   },
   {
     "id": "ann-halfline",
@@ -31,7 +32,8 @@
     "content": "∫_{x>0} x^{2n} e^{-x²} dx = ½ Γ(n + 1/2). This is Mathlib's integral_rpow_mul_exp_neg_rpow (∫_{x>0} x^q e^{-x^p} = (1/p)Γ((q+1)/p)) at p = 2, q = 2n, since (2n+1)/2 = n + 1/2. The monoid powers are matched to rpow on x > 0 via Real.rpow_natCast and Real.rpow_two.",
     "mathContext": "$\\int_{x>0} x^{2n} e^{-x^2} = \\tfrac12\\Gamma(n+\\tfrac12)$",
     "significance": "critical",
-    "relatedConcepts": ["change of variables", "integral_rpow_mul_exp_neg_rpow", "Gamma integral"]
+    "relatedConcepts": ["change of variables", "integral_rpow_mul_exp_neg_rpow", "Gamma integral"],
+    "prerequisites": ["change of variables u = x²", "the Euler Gamma integral Γ(s) = ∫₀^∞ t^{s-1}e^{-t} dt", "real powers (rpow)"]
   },
   {
     "id": "ann-even",
@@ -42,7 +44,8 @@
     "content": "Since x^{2n} e^{-x²} is even, the Iic 0 half-integral equals the Ioi 0 half-integral (via the reflection integral_comp_neg_Ioi). Splitting ℝ = Iic 0 ∪ Ioi 0 (integral_add_compl) then gives the whole-line integral as twice the half-line value, cancelling the ½ and yielding Γ(n + 1/2).",
     "mathContext": "$\\int_{\\mathbb{R}} = \\int_{-\\infty}^{0} + \\int_{0}^{\\infty} = 2\\int_{0}^{\\infty}$ for the even integrand, so $\\int_{\\mathbb{R}} x^{2n}e^{-x^2} = 2\\cdot\\tfrac12\\Gamma(n+\\tfrac12) = \\Gamma(n+\\tfrac12)$.",
     "significance": "critical",
-    "relatedConcepts": ["even function", "integral_comp_neg_Ioi", "integral_add_compl", "compl_Iic"]
+    "relatedConcepts": ["even function", "integral_comp_neg_Ioi", "integral_add_compl", "compl_Iic"],
+    "prerequisites": ["even and odd functions", "splitting ∫_ℝ into ∫_{Iic 0} + ∫_{Ioi 0}", "the reflection x ↦ -x"]
   },
   {
     "id": "ann-closed",
@@ -53,7 +56,8 @@
     "content": "∫_ℝ x^{2n} e^{-x²} dx = (2n-1)‼ · √π / 2ⁿ, obtained by substituting Mathlib's Real.Gamma_nat_add_half (Γ(n + 1/2) = (2n-1)‼·√π/2ⁿ) into the ladder identity.",
     "mathContext": "$\\Gamma(n+\\tfrac12) = (2n-1)!!\\,\\sqrt\\pi/2^n$",
     "significance": "key",
-    "relatedConcepts": ["Real.Gamma_nat_add_half", "double factorial"]
+    "relatedConcepts": ["Real.Gamma_nat_add_half", "double factorial"],
+    "prerequisites": ["the double factorial (2n-1)‼", "half-integer values of the Gamma function"]
   },
   {
     "id": "ann-values",
@@ -64,6 +68,7 @@
     "content": "gaussian_moment_zero recovers the parent: ∫_ℝ e^{-x²} dx = √π = Γ(1/2). gaussian_moment_two gives the second even moment ∫_ℝ x² e^{-x²} dx = √π/2, from Γ(3/2) = (1/2)Γ(1/2) = √π/2 (Real.Gamma_add_one).",
     "mathContext": "$\\int_{\\mathbb{R}} e^{-x^2} = \\Gamma(\\tfrac12) = \\sqrt\\pi$ (rung $n=0$); $\\int_{\\mathbb{R}} x^2 e^{-x^2} = \\Gamma(\\tfrac32) = \\tfrac12\\Gamma(\\tfrac12) = \\tfrac{\\sqrt\\pi}{2}$ (rung $n=1$).",
     "significance": "supporting",
-    "relatedConcepts": ["Real.Gamma_one_half_eq", "Real.Gamma_add_one"]
+    "relatedConcepts": ["Real.Gamma_one_half_eq", "Real.Gamma_add_one"],
+    "prerequisites": ["the functional equation Γ(s+1) = sΓ(s)", "Γ(1/2) = √π"]
   }
 ]

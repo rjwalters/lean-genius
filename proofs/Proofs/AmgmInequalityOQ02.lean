@@ -669,6 +669,112 @@ theorem newton_k1 {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ) :
   exact div_nonneg (by linarith) (le_of_lt (mul_pos (pow_pos hn_pos 2) hC_pos))
 
 /-
+## Part VI-b: Newton's inequality axiom-free for small n (n ≤ 4)
+
+`newton_k1` already discharges Newton's inequality at `k = 1` for every `n`, from
+scratch (no `newton_log_concavity` axiom). The remaining cases needed to cover all
+of `n ≤ 4` are `k = 2` (n = 3, 4) and `k = 3` (n = 4). Each is a genuine instance of
+the axiom `newton_log_concavity`, but at fixed small `n` the elementary symmetric
+polynomials expand to explicit polynomials whose Newton inequality is a sum of
+squares — so `nlinarith` discharges them with no axiom and, like `newton_k1`, for
+ALL reals (not merely non-negative inputs), reflecting that `∏(t + xᵢ)` is
+real-rooted for every real `x`. Together with `newton_k1` these give
+`newton_log_concavity` as a *theorem* for every `1 ≤ k` with `k + 1 ≤ n ≤ 4`.
+-/
+
+/-- e₂ for three variables: e₂(x) = x₀x₁ + x₀x₂ + x₁x₂. -/
+theorem elemSymm_two_fin3 (x : Fin 3 → ℝ) :
+    elemSymm 2 x = x 0 * x 1 + x 0 * x 2 + x 1 * x 2 := by
+  have hset : (univ : Finset (Fin 3)).powersetCard 2
+      = {{0, 1}, {0, 2}, {1, 2}} := by decide
+  simp only [elemSymm, hset]
+  repeat rw [Finset.sum_insert (by decide)]
+  rw [Finset.sum_singleton]
+  repeat rw [Finset.prod_insert (by decide)]
+  simp only [Finset.prod_singleton]
+  ring
+
+/-- **Newton's inequality at k = 2, n = 3, axiom-free.**
+`(e₂/C(3,2))² ≥ (e₁/C(3,1))·(e₃/C(3,3))`. The concrete inequality
+`e₂² ≥ 3·e₁·e₃` is the sum of squares `½·∑(xᵢxⱼ − xⱼxₖ)²`; holds for all reals. -/
+theorem newton_n3_k2 (x : Fin 3 → ℝ) :
+    (elemSymm 2 x / (Nat.choose 3 2 : ℝ)) ^ 2 ≥
+    (elemSymm 1 x / (Nat.choose 3 1 : ℝ)) *
+    (elemSymm 3 x / (Nat.choose 3 3 : ℝ)) := by
+  have he1 : elemSymm 1 x = x 0 + x 1 + x 2 := by
+    rw [elemSymm_one, Fin.sum_univ_three]
+  have he2 := elemSymm_two_fin3 x
+  have he3 : elemSymm 3 x = x 0 * x 1 * x 2 := by
+    rw [elemSymm_n_eq_prod, Fin.prod_univ_three]
+  rw [he1, he2, he3]
+  norm_num [Nat.choose]
+  nlinarith [sq_nonneg (x 0 * x 1 - x 1 * x 2), sq_nonneg (x 1 * x 2 - x 0 * x 2),
+             sq_nonneg (x 0 * x 2 - x 0 * x 1)]
+
+/-- e₂ for four variables. -/
+theorem elemSymm_two_fin4 (x : Fin 4 → ℝ) :
+    elemSymm 2 x = x 0 * x 1 + x 0 * x 2 + x 0 * x 3 + x 1 * x 2 + x 1 * x 3 + x 2 * x 3 := by
+  have hset : (univ : Finset (Fin 4)).powersetCard 2
+      = {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}} := by decide
+  simp only [elemSymm, hset]
+  repeat rw [Finset.sum_insert (by decide)]
+  rw [Finset.sum_singleton]
+  repeat rw [Finset.prod_insert (by decide)]
+  simp only [Finset.prod_singleton]
+  ring
+
+/-- e₃ for four variables. -/
+theorem elemSymm_three_fin4 (x : Fin 4 → ℝ) :
+    elemSymm 3 x = x 0 * x 1 * x 2 + x 0 * x 1 * x 3 + x 0 * x 2 * x 3 + x 1 * x 2 * x 3 := by
+  have hset : (univ : Finset (Fin 4)).powersetCard 3
+      = {{0, 1, 2}, {0, 1, 3}, {0, 2, 3}, {1, 2, 3}} := by decide
+  simp only [elemSymm, hset]
+  repeat rw [Finset.sum_insert (by decide)]
+  rw [Finset.sum_singleton]
+  repeat rw [Finset.prod_insert (by decide)]
+  simp only [Finset.prod_singleton]
+  ring
+
+/-- **Newton's inequality at k = 2, n = 4, axiom-free.**
+`(e₂/C(4,2))² ≥ (e₁/C(4,1))·(e₃/C(4,3))`, discharged as a sum of squares for all
+reals. -/
+theorem newton_n4_k2 (x : Fin 4 → ℝ) :
+    (elemSymm 2 x / (Nat.choose 4 2 : ℝ)) ^ 2 ≥
+    (elemSymm 1 x / (Nat.choose 4 1 : ℝ)) *
+    (elemSymm 3 x / (Nat.choose 4 3 : ℝ)) := by
+  have he1 : elemSymm 1 x = x 0 + x 1 + x 2 + x 3 := by
+    rw [elemSymm_one, Fin.sum_univ_four]
+  have he2 := elemSymm_two_fin4 x
+  have he3 := elemSymm_three_fin4 x
+  rw [he1, he2, he3]
+  norm_num [Nat.choose]
+  nlinarith [sq_nonneg (x 0 * x 1 - x 2 * x 3), sq_nonneg (x 0 * x 2 - x 1 * x 3),
+             sq_nonneg (x 0 * x 3 - x 1 * x 2),
+             sq_nonneg (x 0 * x 1 + x 0 * x 2 + x 1 * x 2 - x 0 * x 3 - x 1 * x 3 - x 2 * x 3),
+             sq_nonneg (x 0 - x 1), sq_nonneg (x 0 - x 2), sq_nonneg (x 0 - x 3),
+             sq_nonneg (x 1 - x 2), sq_nonneg (x 1 - x 3), sq_nonneg (x 2 - x 3)]
+
+/-- **Newton's inequality at k = 3, n = 4, axiom-free.**
+`(e₃/C(4,3))² ≥ (e₂/C(4,2))·(e₄/C(4,4))`. This is the reversal-dual of `newton_n4_k2`
+(k ↔ n−k under xᵢ ↦ 1/xᵢ); discharged directly as a sum of squares for all reals. -/
+theorem newton_n4_k3 (x : Fin 4 → ℝ) :
+    (elemSymm 3 x / (Nat.choose 4 3 : ℝ)) ^ 2 ≥
+    (elemSymm 2 x / (Nat.choose 4 2 : ℝ)) *
+    (elemSymm 4 x / (Nat.choose 4 4 : ℝ)) := by
+  have he2 := elemSymm_two_fin4 x
+  have he3 := elemSymm_three_fin4 x
+  have he4 : elemSymm 4 x = x 0 * x 1 * x 2 * x 3 := by
+    rw [elemSymm_n_eq_prod, Fin.prod_univ_four]
+  rw [he2, he3, he4]
+  norm_num [Nat.choose]
+  nlinarith [sq_nonneg (x 0 * x 1 * x 2 - x 0 * x 1 * x 3),
+             sq_nonneg (x 0 * x 1 * x 2 - x 0 * x 2 * x 3),
+             sq_nonneg (x 0 * x 1 * x 2 - x 1 * x 2 * x 3),
+             sq_nonneg (x 0 * x 1 * x 3 - x 0 * x 2 * x 3),
+             sq_nonneg (x 0 * x 1 * x 3 - x 1 * x 2 * x 3),
+             sq_nonneg (x 0 * x 2 * x 3 - x 1 * x 2 * x 3)]
+
+/-
 ## Part VII: The chain endpoints ARE the arithmetic and geometric means
 
 `maclaurin_m1_ge_mn` (`M₁ ≥ Mₙ`) is repeatedly described as "AM ≥ GM in disguise",
@@ -758,9 +864,16 @@ The chain follows from Newton's log-concavity inequalities for the sequence eₖ
      (via `maclaurin_core_of_pos` + `rpow_cross`; formerly axiomatized)
 22. `geom_le_maclaurinMean_le_arith` — (∏ xᵢ)^(1/n) ≤ Mₖ ≤ (∑ xᵢ)/n for 1 ≤ k ≤ n
      (every Maclaurin mean sits between GM and AM; generalizes `maclaurin_chain_amgm`)
+23. `elemSymm_two_fin3` / `elemSymm_two_fin4` / `elemSymm_three_fin4` — explicit
+     polynomial expansions of eₖ at n = 3, 4
+24. `newton_n3_k2` — Newton's inequality at k=2, n=3, from scratch (no axiom, all reals)
+25. `newton_n4_k2` / `newton_n4_k3` — Newton's inequality at k=2,3, n=4, from scratch
+     (no axiom, all reals). With `newton_k1` (k=1, all n), Newton's log-concavity is
+     now an axiom-free THEOREM for every 1 ≤ k, k+1 ≤ n ≤ 4.
 
 ### Axiomatized (deep results):
-1. `newton_log_concavity` — log-concavity of eₖ/C(n,k) for non-negative inputs
-   (the sole remaining assumption; needs real-rootedness / Rolle machinery,
-    a >1000-line build, so it stays axiomatized)
+1. `newton_log_concavity` — log-concavity of eₖ/C(n,k) for non-negative inputs.
+   Still the sole remaining assumption for GENERAL n (needs real-rootedness / Rolle
+   machinery, a >1000-line build), but it is now discharged axiom-free for every
+   n ≤ 4 by `newton_k1`, `newton_n3_k2`, `newton_n4_k2`, `newton_n4_k3`.
 -/

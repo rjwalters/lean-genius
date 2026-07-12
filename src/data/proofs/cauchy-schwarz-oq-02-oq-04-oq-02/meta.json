@@ -34,12 +34,12 @@
       {
         "theorem": "Real.sqrt_mul",
         "description": "√(x·y) = √x · √y for x ≥ 0. Splits the energy seminorm of a product, used in absolute homogeneity and the √-form Cauchy-Schwarz.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_le_sqrt",
         "description": "Monotonicity of √: reduces the triangle inequality and the √-form Cauchy-Schwarz to inequalities between the squared quantities.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "real_inner_smul_left",

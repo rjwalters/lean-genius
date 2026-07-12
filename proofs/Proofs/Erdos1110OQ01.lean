@@ -180,7 +180,7 @@ theorem factorization_powerForm_left {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
   rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
       hq.factorization_pow, Finsupp.single_eq_same,
-      Finsupp.single_eq_of_ne (Ne.symm hpq), add_zero]
+      Finsupp.single_eq_of_ne hpq, add_zero]
 
 /-- **The `q`-adic exponent of a power form.** For distinct primes `p ≠ q`, the
 `q`-factorization of `p^k q^l` is exactly `l`. -/
@@ -189,7 +189,7 @@ theorem factorization_powerForm_right {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
   have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
   rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
-      hq.factorization_pow, Finsupp.single_eq_of_ne hpq, Finsupp.single_eq_same,
+      hq.factorization_pow, Finsupp.single_eq_of_ne (Ne.symm hpq), Finsupp.single_eq_same,
       zero_add]
 
 /-- **Divisibility of power forms is the product order on exponents.** For distinct
@@ -353,5 +353,111 @@ theorem powerForm_lcm {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
     rw [← hab]; exact Nat.lcm_dvd hXM hYM
   obtain ⟨haM, hbM⟩ := (powerForm_dvd_iff hp hq hpq _ _ _ _).mp hlM
   rw [le_antisymm haM (max_le hka hka'), le_antisymm hbM (max_le hlb hlb')]
+
+/-- **Coprimality criterion for power forms.**  For distinct primes `p ≠ q`, two power
+forms are coprime exactly when they share no prime factor — neither `p` nor `q` divides
+both:
+
+    Nat.Coprime (p^k q^l) (p^{k'} q^{l'}) ↔ (min k k' = 0 ∧ min l l' = 0).
+
+Immediate from `powerForm_gcd` (the gcd is `p^{min k k'} q^{min l l'}`), with the
+`gcd = 1` collapse pinned by `powerForm_exponents_unique`.  The `min`-form meet of the
+divisibility lattice bottoming out at `1`. -/
+theorem powerForm_coprime_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    Nat.Coprime (p ^ k * q ^ l) (p ^ k' * q ^ l') ↔ (min k k' = 0 ∧ min l l' = 0) := by
+  rw [Nat.Coprime, powerForm_gcd hp hq hpq]
+  constructor
+  · intro h
+    have h1 : p ^ min k k' * q ^ min l l' = p ^ 0 * q ^ 0 := by simpa using h
+    exact powerForm_exponents_unique hp hq hpq h1
+  · rintro ⟨ha, hb⟩
+    rw [ha, hb, pow_zero, pow_zero, mul_one]
+
+/-- **Coprimality criterion, disjunction form.**  `powerForm_coprime_iff` rephrased with
+`Nat.min_eq_zero_iff`: coprimality means that for each prime, at least one of the two forms
+omits it. -/
+theorem powerForm_coprime_iff' {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l k' l' : ℕ) :
+    Nat.Coprime (p ^ k * q ^ l) (p ^ k' * q ^ l')
+      ↔ ((k = 0 ∨ k' = 0) ∧ (l = 0 ∨ l' = 0)) := by
+  rw [powerForm_coprime_iff hp hq hpq, Nat.min_eq_zero_iff, Nat.min_eq_zero_iff]
+
+/-! ### The divisor set of a power form: a finite exponent grid
+
+The divisibility order on power forms is the product order on exponent pairs
+(`powerForm_dvd_iff`), and every divisor of a power form is again a power form
+(`isPowerForm_of_dvd`). Together these pin the *divisor set* of `p^k q^l` exactly: for
+distinct primes `p ≠ q` the divisors are precisely the `(k+1)(l+1)` power forms
+`p^a q^b` with `a ≤ k`, `b ≤ l` — the integer grid `[0,k] × [0,l]` under the exponent
+map. The lemmas below record the two halves of this picture: the divisor set as the
+image of that grid, and its cardinality `(k+1)(l+1)` (the classical divisor-count
+formula `τ(p^k q^l) = (k+1)(l+1)`, here as a consequence of the sublattice structure). -/
+
+/-- **Every divisor of a power form is a power form.** The `Finset` form of
+`isPowerForm_of_dvd`: if `n = p^k q^l` and `d ∈ n.divisors` then `d` is a power form. -/
+theorem isPowerForm_of_mem_divisors {p q n d : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hn : IsPowerForm p q n) (hd : d ∈ n.divisors) : IsPowerForm p q d :=
+  isPowerForm_of_dvd hp hq hn (Nat.dvd_of_mem_divisors hd)
+
+/-- **The divisor set of a power form is the exponent grid.** For distinct primes `p ≠ q`,
+the divisors of `p^k q^l` are exactly the power forms `p^a q^b` with `a ≤ k`, `b ≤ l`:
+
+    (p^k q^l).divisors = (range (k+1) ×ˢ range (l+1)).image (fun (a,b) ↦ p^a q^b).
+
+Forward: any divisor is a power form (`isPowerForm_of_dvd`) whose exponents are `≤ (k,l)`
+(`powerForm_dvd_iff`); backward: any such `p^a q^b` divides `p^k q^l`. This realizes the
+divisor lattice of a power form as the concrete integer grid `[0,k] × [0,l]`. -/
+theorem powerForm_divisors_eq_grid {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) :
+    (p ^ k * q ^ l).divisors =
+      (Finset.range (k + 1) ×ˢ Finset.range (l + 1)).image (fun ab => p ^ ab.1 * q ^ ab.2) := by
+  ext d
+  rw [Nat.mem_divisors, Finset.mem_image]
+  constructor
+  · rintro ⟨hd, _⟩
+    obtain ⟨a, b, rfl⟩ := isPowerForm_of_dvd hp hq ⟨k, l, rfl⟩ hd
+    obtain ⟨ha, hb⟩ := (powerForm_dvd_iff hp hq hpq a b k l).mp hd
+    refine ⟨(a, b), ?_, rfl⟩
+    rw [Finset.mem_product, Finset.mem_range, Finset.mem_range]
+    exact ⟨Nat.lt_succ_of_le ha, Nat.lt_succ_of_le hb⟩
+  · rintro ⟨⟨a, b⟩, hab, rfl⟩
+    rw [Finset.mem_product, Finset.mem_range, Finset.mem_range,
+        Nat.lt_succ_iff, Nat.lt_succ_iff] at hab
+    refine ⟨(powerForm_dvd_iff hp hq hpq a b k l).mpr ⟨hab.1, hab.2⟩, ?_⟩
+    exact mul_ne_zero (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne')
+
+/-- **Divisor-count formula `τ(p^k q^l) = (k+1)(l+1)`.** For distinct primes `p ≠ q`, the
+number of divisors of the power form `p^k q^l` is `(k+1)(l+1)`. Since `p^k` and `q^l` are
+coprime the divisor count is multiplicative (`Nat.Coprime.card_divisors_mul`), and each prime
+power `p^k` has exactly `k+1` divisors (`Nat.divisors_prime_pow`). This counts the exponent
+grid `[0,k] × [0,l]` of `powerForm_divisors_eq_grid`. -/
+theorem powerForm_card_divisors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) : (p ^ k * q ^ l).divisors.card = (k + 1) * (l + 1) := by
+  have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
+  rw [Nat.Coprime.card_divisors_mul hcop, Nat.divisors_prime_pow hp, Nat.divisors_prime_pow hq,
+      Finset.card_map, Finset.card_map, Finset.card_range, Finset.card_range]
+
+/-- **Prime-factor set of a power form.** For distinct primes `p ≠ q` and positive
+exponents, the prime factors of `p^k q^l` are exactly `{p, q}` (both primes actually
+occur, and no others). This is the support of the factorization underlying the exponent
+grid of `powerForm_divisors_eq_grid`. -/
+theorem powerForm_primeFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).primeFactors = {p, q} := by
+  rw [Nat.primeFactors_mul (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne'),
+      Nat.primeFactors_prime_pow hk.ne' hp, Nat.primeFactors_prime_pow hl.ne' hq,
+      Finset.singleton_union]
+
+/-- **Euler totient of a power form `φ(p^k q^l) = p^{k-1}(p-1)·q^{l-1}(q-1)`.** For distinct
+primes `p ≠ q` and positive exponents. The multiplicative companion of the divisor-count
+formula `powerForm_card_divisors` (`τ(p^k q^l) = (k+1)(l+1)`): since `p^k` and `q^l` are
+coprime, `φ` factors as `φ(p^k)·φ(q^l)` (`Nat.totient_mul`), and each prime-power totient is
+`φ(p^k) = p^{k-1}(p-1)` (`Nat.totient_prime_pow`). -/
+theorem powerForm_totient {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).totient = p ^ (k - 1) * (p - 1) * (q ^ (l - 1) * (q - 1)) := by
+  have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
+  rw [Nat.totient_mul hcop, Nat.totient_prime_pow hp hk, Nat.totient_prime_pow hq hl]
 
 end Erdos1110

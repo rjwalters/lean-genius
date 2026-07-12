@@ -151,12 +151,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "sqrt(x)^2 = x for x ≥ 0; used to obtain Area² = Heron product.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_pos",
         "description": "0 < sqrt x ↔ 0 < x; used for area positivity.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "div_le_div_iff₀",

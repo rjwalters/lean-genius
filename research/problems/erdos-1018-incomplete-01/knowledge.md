@@ -189,3 +189,45 @@ theorems (`self_containsSubdivision`); axioms 6→3 per file. The axiom-free cro
 planar-graph theory (embeddings + Euler's formula). Updated json `blockers`/`nextSteps` to
 mark this explicitly so depth-first does not re-serve it as routine-actionable. Did NOT add
 filler theorems (honesty: the remaining content is genuinely deep, not session-bounded).
+
+## Session 2026-07-11 (researcher-6): remove INCONSISTENT `kostochka_pyber_explicit` axiom [VERIFIED]
+
+**Mode**: ACT (axiom-integrity fix — found a second genuine inconsistency, parallel
+to the earlier `constant_grows` finding).
+**Outcome**: PROGRESS. The `kostochka_pyber_explicit` axiom was **inconsistent** and
+is removed from BOTH `Proofs/Erdos1018Problem.lean` and its `Proofs/Stubs/` duplicate,
+replaced (main file) by a machine-checked disproof. Main-file axioms **3→2**, aggregate
+`meta.axiomCount` **6→4**. Both files build VERIFIED (`bin/lake env lean`, exit 0).
+
+### The inconsistency
+`axiom kostochka_pyber_explicit (ε)(hε) : ∃ N, ∀ V …, isDense G ε → hasSmallK5Subdivision G (explicitBound ε)`
+with `explicitBound ε = ⌈1/ε²⌉`. At **ε = 1/2**, `explicitBound (1/2) = ⌈1/(1/2)²⌉ = ⌈4⌉ = 4`.
+But a `K₅`-subdivision needs 5 branch vertices, so via the file's own
+`smallK5_forces_smallNonPlanar → bounding_constant_ge_five` (which rests on
+`nonPlanar_needs_five`) the axiom forces `5 ≤ 4`. Arbitrarily large `1/2`-dense graphs
+exist (complete `Kₙ` has `n(n−1)/2 ≥ n^{3/2}` edges for `n ≥ 6`), so the hypothesis is
+non-vacuous ⇒ the axiom could derive `False`.
+
+### The fix (both files)
+- Removed `axiom kostochka_pyber_explicit`.
+- **Main file** adds (axiom-free, `[propext, Classical.choice, Quot.sound]`):
+  - `complete_graph_half_dense (n) (hn : 16 ≤ n) : isDense (⊤ : SimpleGraph (Fin n)) (1/2)`
+    — via `card_edgeFinset_top_eq_card_choose_two` + the core real inequality
+    `n^{3/2} ≤ n.choose 2`, proved by squaring both sides (`le_of_pow_le_pow_left₀`,
+    `(n^{3/2})² = n³` by `Real.rpow_natCast`/`Real.rpow_mul`, then `nlinarith`).
+  - `explicit_bound_half_is_false` — negates the `ε = 1/2`, universe-`0` instance of the
+    axiom's claim, instantiating a complete graph on `Fin (N+16)`.
+- Removed the dependent (and, for `ε ≥ 1/2`, itself false) theorem `explicit_small_nonplanar`.
+- Kept `def explicitBound` (used by the disproof and by the `Erdos1018Aristotle` analytic facts).
+- Added `import Mathlib.Data.Nat.Choose.Cast` (for `Nat.cast_choose_two`).
+
+### Notes / gotchas
+- `Nat.cast_choose_two : (n.choose 2 : K) = n*(n-1)/2` lives in `Mathlib.Data.Nat.Choose.Cast`
+  (not in the graph imports) — needs the explicit import.
+- `pow_le_pow_iff_left` here takes only `(hn : n ≠ 0)` (wrong context for ℝ with negatives);
+  use `le_of_pow_le_pow_left₀ (hn) (hb : 0 ≤ b) (h : a^n ≤ b^n) : a ≤ b`.
+- Stub file lacks the helper lemmas (`nonPlanar_needs_five` etc.) and the `Finite` import,
+  so it only *removes* the axiom + `explicitBound` def with a pointer to the main-file disproof
+  (its 3 pre-existing sorries are untouched). Stub axioms 3→2.
+- The 2 remaining axioms are genuine deep results: `kostochka_pyber` (1988) and
+  `planar_linear_bound` (Euler `3n−6`). Same blocker as before: no Mathlib planar-graph theory.

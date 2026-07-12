@@ -44,22 +44,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (verified fragment). All 5 original True-stubs are gone: square_root_puiseux/cusp_parameterization are computed Hahn-series proofs, newton_puiseux_terminates is now prose, and the two main placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were already replaced on main by puiseux_binomial_root + puiseux_binomial_ramification. This session added puiseux_binomial_isRoot lifting the binomial power-equation yⁿ=single m c to a genuine Polynomial.IsRoot of Xⁿ-C(single m c) — the polynomial-level single Newton-edge. File is 0-sorry/0-axiom (only propext/Classical.choice/Quot.sound). Full Newton–Puiseux (arbitrary polynomials + char-0 convergence) is NOT in Mathlib and remains unformalized; it is the genuine open remainder.",
+    "progressSummary": "COMPLETE (verified fragment). Part XIV closes the value-group side of the field colimit: ramification_valueGroup_mono (chain ℤ⊆½ℤ⊆... under divisibility) + iUnion_ramification_valueGroup (union = ℚ), both VERIFIED 0-sorry/0-axiom (propext/Classical.choice/Quot.sound only). File remains 0/0. Full Newton–Puiseux (arbitrary polynomials + char-0 convergence) is NOT in Mathlib and remains the genuine open remainder.",
     "builtItems": [
       "puiseux_binomial_isRoot in proofs/Proofs/PuiseuxTheorem.lean (binomial Puiseux root as Polynomial.IsRoot of Xⁿ-C(single m c); verified, 0 substantive axioms)",
       "puiseuxSubalgebra (K:CommRing): the Puiseux series form a K-subalgebra of HahnSeries Q K, upgrading the Subring; algebraMap_mem via isPuiseux_algebraMap (algebraMap = C = single 0) [VERIFIED]",
-      "isPuiseux_inv_single (K:Field): (single m a)-inverse = single (-m) a-inverse is Puiseux — base case of inverse closure toward the subfield statement [VERIFIED]"
+      "isPuiseux_inv_single (K:Field): (single m a)-inverse = single (-m) a-inverse is Puiseux — base case of inverse closure toward the subfield statement [VERIFIED]",
+      "ramification_valueGroup_mono in proofs/Proofs/PuiseuxTheorem.lean (Part XIV): n|n_ prime -> level-n value-group set ⊆ level-n_ set; same-series witness via IsPuiseuxOfRamification.mono; valuation shadow of puiseuxRamificationSubfield_mono [VERIFIED 0/0]",
+      "iUnion_ramification_valueGroup in proofs/Proofs/PuiseuxTheorem.lean (Part XIV): ⋃_n level-n value groups = {v ≠ ⊤} = ℚ; each rational realized at its own denominator level via exists_ramification_orderTop_eq (q.num/q.den); valuation shadow of iSup_puiseuxRamificationSubfield [VERIFIED 0/0]"
     ],
     "insights": [
       "The binomial/single-Newton-edge case is the entire algebraic content available without convergence machinery: y=single(m/n)a with aⁿ=c gives yⁿ=single m c via HahnSeries.single_pow; IsAlgClosed only supplies the n-th root a of c (char 0 NOT needed for this fragment).",
       "puiseux_binomial_isRoot bridges the Hahn-series power equation to Polynomial.IsRoot: eval y (Xⁿ - C d) = yⁿ - d = 0 by eval_sub/eval_pow/eval_X/eval_C — the faithful 'algebraically closed' framing (roots of polynomials).",
       "Mathlib has NO Puiseux content and LaurentSeries.lean does not prove algebraic closure, so the full theorem cannot be discharged from Mathlib; honest status is a verified FRAGMENT, not the complete theorem.",
-      "IsPuiseuxSeries(single m a) holds with ramification m.den via Rat.num_div_den (isPuiseux_single); PNat coercion ((⟨d,h⟩:ℕ+):ℚ) is defeq (d:ℚ) so use `exact (Rat.num_div_den _).symm` rather than `rw` (rw fails on the anonymous-constructor proof term)."
+      "IsPuiseuxSeries(single m a) holds with ramification m.den via Rat.num_div_den (isPuiseux_single); PNat coercion ((⟨d,h⟩:ℕ+):ℚ) is defeq (d:ℚ) so use `exact (Rat.num_div_den _).symm` rather than `rw` (rw fails on the anonymous-constructor proof term).",
+      "Part XIII computed each level value group (1/n)ℤ separately and the full group ℚ, but the DOCSTRING-claimed chain ℤ⊆½ℤ⊆... with union ℚ was never proven at the valuation level. Part XIV supplies exactly the two missing statements (monotonicity under divisibility + union=ℚ), completing the value-group mirror of the field colimit.",
+      "Value-group monotonicity is cleanest via the SAME series, not arithmetic on k/n: rintro v ⟨f,hf,hf0,rfl⟩ then ⟨f, hf.mono hdvd, hf0, rfl⟩ — IsPuiseuxOfRamification.mono reindexes f without moving its orderTop.",
+      "Union backward direction: for q:ℚ realize at level ⟨q.den,q.pos⟩:ℕ+ with k=q.num; the inner ℚ-equality (q.num:ℚ)/((⟨q.den,q.pos⟩:ℕ+):ℚ)=q is exactly Rat.num_div_den q (PNat cast defeq to Nat cast), lifted to WithTop via exact_mod_cast."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Full inverse-closure -> puiseuxSubfield via HahnSeries.embDomainRingHom (Z ↪o Q, k↦k/n): series supported on the subgroup (1/n)Z form a subfield closed under inverse; blocked on a preimage-reconstruction lemma (support ⊆ range(emb) ⇒ ∈ range embDomain) absent from Mathlib v4.26.",
-      "Full Newton–Puiseux for arbitrary polynomials requires: (1) Puiseux subfield as a Subfield of HahnSeries ℚ K, (2) Newton polygon / lower-hull construction, (3) term-by-term iteration with char-0 convergence. None are in Mathlib — large (>1000L) foundational build; leave as documented open remainder."
+      "Value-group side of the colimit is now COMPLETE (mono + union, Part XIV). Remaining genuine open: full Newton–Puiseux for arbitrary polynomials (Newton polygon + char-0 convergence, >1000L, not in Mathlib) — the documented open remainder.",
+      "Possible next increment: directedness of the value-group tower as an explicit lattice/order statement (P n ⊔ P m ⊆ P (n*m)), mirroring exists_common_ramification at the valuation level."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

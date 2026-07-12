@@ -32,6 +32,10 @@
       `#{(x,d) : ∀ i, x+i·d ∈ A} = #A + #{(x,d) : d ≠ 0 ∧ …}`, giving
       `Λ_k(1_A) = (N⁻¹)²·(#A + #nondegenerate)` — the trivial diagonal term
       separated from the genuine `d ≠ 0` count Roth's theorem controls.
+    * `kAPCount_count_length_antitone` / `kAPCount_nondeg_length_antitone` — **length
+      monotonicity**: the (nondegenerate) `k`-AP count is antitone in the progression
+      length `k`, since demanding more terms `x + i·d ∈ A` only shrinks the counted set
+      (restrict a witness along `Fin.castLE`).
 
   These are precisely the checks that pin the operators down as genuine
   averages `E_{x,d} ∏ᵢ fᵢ(x+i·d)` (the `(N⁻¹)²·N² = 1` normalization),
@@ -789,5 +793,254 @@ theorem kAPCount_nondeg_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k)
   rw [h0] at h1
   rw [add_zero]
   exact h1
+
+/-- **Exact total `k`-AP count of a singleton.**  For `k ≥ 2` the singleton `{a}` supports
+    exactly one length-`k` progression lying inside it: the constant diagonal `x = a, d = 0`.
+    Its diagonal contribution is `#{a} = 1` (`kAPCount_count_split`) and its nondegenerate
+    contribution is `0` (`kAPCount_nondeg_singleton`), so the total count is `1`.  Together
+    with the empty (`0`) and univ (`N²`) counts this pins the third natural boundary value of
+    the total `k`-AP count. -/
+theorem kAPCount_count_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k) (a : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ ({a} : Finset (ZMod N)))).card = 1 := by
+  rw [kAPCount_count_split (show 0 < k by omega) ({a} : Finset (ZMod N)),
+      kAPCount_nondeg_singleton hk a]
+  simp
+
+/-- **`Λ_k(1_{a}) = (N⁻¹)²`.**  For `k ≥ 2` the analytic `k`-AP operator on a singleton
+    indicator equals `(N⁻¹)²`: the only counted progression is the constant diagonal
+    (`kAPCount_count_singleton` gives count `1`), so the combinatorial bridge
+    `kAPCount_indicator_eq_count` yields `(N⁻¹)²·1`.  This is the singleton value on the
+    density scale between `Λ_k(1_∅) = 0` and `Λ_k(1_univ) = 1`. -/
+theorem kAPCount_indicator_singleton {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k) (a : ZMod N) :
+    kAPCount k (fun _ : Fin k => indicatorZMod ({a} : Finset (ZMod N)))
+      = ((N : ℂ)⁻¹) ^ 2 := by
+  rw [kAPCount_indicator_eq_count, kAPCount_count_singleton hk]
+  simp
+
+/-- **Global upper bound on the `k`-AP count.**  Since every set embeds in `univ` and the
+    `k`-AP count is monotone (`kAPCount_count_mono`), the count for any `A` is at most the
+    count for `univ`, which is exactly `N²` (`kAPCount_count_univ`).  The uniform (`A`-free)
+    ceiling refining the set-dependent bound `kAPCount_count_le` (`≤ #A·N`). -/
+theorem kAPCount_count_le_sq {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card ≤ N ^ 2 := by
+  calc
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card
+        ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            ∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N)))).card :=
+          kAPCount_count_mono (Finset.subset_univ A)
+    _ = N ^ 2 := kAPCount_count_univ k
+
+/-- **Global upper bound on the nondegenerate `k`-AP count.**  The `d ≠ 0` count is monotone
+    (`kAPCount_nondeg_mono`) and saturates at `univ`, where it equals `N² − N`
+    (`kAPCount_nondeg_univ`).  Hence the nondegenerate count of any `A` is at most `N² − N`,
+    the uniform ceiling refining the set-dependent `kAPCount_nondeg_le` (`≤ #A·(N−1)`). -/
+theorem kAPCount_nondeg_le_sq {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k) (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card ≤ N ^ 2 - N := by
+  calc
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+        ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            (∀ i : Fin k, p.1 + i.val • p.2 ∈ (Finset.univ : Finset (ZMod N))) ∧ p.2 ≠ 0)).card :=
+          kAPCount_nondeg_mono (Finset.subset_univ A)
+    _ = N ^ 2 - N := kAPCount_nondeg_univ hk
+
+/-- **Longer progressions are rarer: the `k`-AP count is antitone in the length `k`.**  For
+    `k ≤ k'`, requiring all `k'` terms `x + i·d` (`i < k'`) to lie in `A` is a stronger
+    constraint than requiring only the first `k` of them, so the `k'`-progression pairs `(x, d)`
+    form a subset of the `k`-progression pairs (restrict a witness along `Fin.castLE`).  Hence
+    the count can only decrease as the progression length grows.  Note the `k = 1` case recovers
+    the loose bound `kAPCount_count_le` (`≤ #A·N`) since the length-`1` count is exactly `#A·N`,
+    and combined with `kAPCount_count_univ` it re-proves `kAPCount_count_le_sq`. -/
+theorem kAPCount_count_length_antitone {N : ℕ} [NeZero N] {k k' : ℕ} (hkk : k ≤ k')
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k', p.1 + i.val • p.2 ∈ A)).card
+      ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  refine ⟨hp.1, fun i => hp.2 (Fin.castLE hkk i)⟩
+
+/-- **The nondegenerate (`d ≠ 0`) `k`-AP count is antitone in the length `k`.**  The length
+    monotonicity of `kAPCount_count_length_antitone` survives the extra `d ≠ 0` restriction:
+    for `k ≤ k'`, every nondegenerate `k'`-progression pair restricts to a nondegenerate
+    `k`-progression pair (same `d ≠ 0`, fewer membership constraints), so the nondegenerate
+    count decreases with progression length. -/
+theorem kAPCount_nondeg_length_antitone {N : ℕ} [NeZero N] {k k' : ℕ} (hkk : k ≤ k')
+    (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k', p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card
+      ≤ (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  apply Finset.card_le_card
+  intro p hp
+  rw [Finset.mem_filter] at hp ⊢
+  exact ⟨hp.1, ⟨fun i => hp.2.1 (Fin.castLE hkk i), hp.2.2⟩⟩
+
+/-- **Translation invariance of the `k`-AP count.**  Translating `A` by any `t` leaves the
+    number of length-`k` progressions unchanged: the map `(x, d) ↦ (x + t, d)` bijects the
+    progressions of `A` with those of `A + t` (it fixes the common difference `d` and shifts
+    the start).  The `k`-AP count is thus a *translation-invariant* functional of the set — the
+    companion symmetry to `kAPCount_count_mono`, and the reason Roth's problem may fix a
+    normalisation (e.g. `0 ∈ A`) without loss. -/
+theorem kAPCount_count_translate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (t : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t))).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N), x ∈ A.image (fun a => a + t) ↔ x - t ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    exact ⟨by rintro ⟨a, ha, rfl⟩; simpa using ha, fun h => ⟨x - t, h, by ring⟩⟩
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t)))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).image (fun p => (p.1 + t, p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · intro h
+      refine ⟨(p.1 - t, p.2), fun i => ?_, by simp⟩
+      have := h i
+      rwa [show p.1 - t + i.val • p.2 = p.1 + i.val • p.2 - t from by abel]
+    · rintro ⟨q, hq, rfl⟩ i
+      have := hq i
+      rwa [show q.1 + t + i.val • q.2 - t = q.1 + i.val • q.2 from by abel]
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq, add_left_inj] at hab
+  exact Prod.ext hab.1 hab.2
+
+/-- **Translation invariance of the nondegenerate `k`-AP count.**  The `d ≠ 0` restriction of
+    `kAPCount_count_translate`: since the bijection `(x, d) ↦ (x + t, d)` fixes the common
+    difference `d`, it preserves the nondegeneracy condition `d ≠ 0`.  Hence the genuine
+    (nondiagonal) `k`-AP count that Roth's theorem controls is likewise translation-invariant. -/
+theorem kAPCount_nondeg_translate {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (t : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t)) ∧ p.2 ≠ 0)).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N), x ∈ A.image (fun a => a + t) ↔ x - t ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    exact ⟨by rintro ⟨a, ha, rfl⟩; simpa using ha, fun h => ⟨x - t, h, by ring⟩⟩
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => a + t)) ∧ p.2 ≠ 0))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).image (fun p => (p.1 + t, p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · rintro ⟨h, hd⟩
+      refine ⟨(p.1 - t, p.2), ⟨fun i => ?_, hd⟩, by simp⟩
+      have := h i
+      rwa [show p.1 - t + i.val • p.2 = p.1 + i.val • p.2 - t from by abel]
+    · rintro ⟨q, ⟨hq, hd⟩, rfl⟩
+      refine ⟨fun i => ?_, hd⟩
+      have := hq i
+      rwa [show q.1 + t + i.val • q.2 - t = q.1 + i.val • q.2 from by abel]
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq, add_left_inj] at hab
+  exact Prod.ext hab.1 hab.2
+
+/-- **Analytic translation invariance.**  The normalized `k`-AP operator on an indicator is
+    unchanged by translating the set: `Λ_k(1_{A+t}) = Λ_k(1_A)`.  Immediate from the
+    combinatorial bridge `kAPCount_indicator_eq_count` and `kAPCount_count_translate`. -/
+theorem kAPCount_indicator_translate {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N))
+    (t : ZMod N) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (A.image (fun a => a + t)))
+      = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
+  rw [kAPCount_indicator_eq_count, kAPCount_indicator_eq_count, kAPCount_count_translate]
+
+/-- **Reflection invariance of the `k`-AP count.**  Negating the set, `A ↦ -A`, preserves
+    the number of `k`-APs: the map `(x, d) ↦ (-x, -d)` is a bijection on pairs that sends the
+    AP `x, x+d, …` inside `-A` to the AP `-x, -x-d, …` inside `A` (common difference negated).
+    Together with `kAPCount_count_translate` this exhibits the affine symmetry `x ↦ -x + t` of
+    the count; the reflection `x ↦ -x` is the order-two generator beyond translation. -/
+theorem kAPCount_count_neg {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => -a))).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N), x ∈ A.image (fun a => -a) ↔ -x ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    exact ⟨by rintro ⟨a, ha, rfl⟩; simpa using ha, fun h => ⟨-x, h, by ring⟩⟩
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => -a)))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).image (fun p => (-p.1, -p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · intro h
+      refine ⟨(-p.1, -p.2), fun i => ?_, by simp⟩
+      have := h i
+      rwa [show (-p.1) + i.val • (-p.2) = -(p.1 + i.val • p.2) from by rw [smul_neg]; abel]
+    · rintro ⟨q, hq, rfl⟩ i
+      have := hq i
+      rwa [show -((-q.1) + i.val • (-q.2)) = q.1 + i.val • q.2 from by rw [smul_neg]; abel]
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq, neg_inj] at hab
+  exact Prod.ext hab.1 hab.2
+
+/-- **Reflection invariance of the nondegenerate `k`-AP count.**  The `d ≠ 0` restriction of
+    `kAPCount_count_neg`: the bijection `(x, d) ↦ (-x, -d)` sends `d ≠ 0` to `-d ≠ 0`, so the
+    genuine (nondiagonal) `k`-AP count that Roth's theorem controls is likewise invariant under
+    negating the set. -/
+theorem kAPCount_nondeg_neg {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N)) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => -a)) ∧ p.2 ≠ 0)).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  classical
+  have hmem : ∀ (x : ZMod N), x ∈ A.image (fun a => -a) ↔ -x ∈ A := by
+    intro x
+    rw [Finset.mem_image]
+    exact ⟨by rintro ⟨a, ha, rfl⟩; simpa using ha, fun h => ⟨-x, h, by ring⟩⟩
+  have hset :
+      (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => -a)) ∧ p.2 ≠ 0))
+        = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+            (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).image (fun p => (-p.1, -p.2)) := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, hmem]
+    constructor
+    · rintro ⟨h, hd⟩
+      refine ⟨(-p.1, -p.2), ⟨fun i => ?_, ?_⟩, by simp⟩
+      · have := h i
+        rwa [show (-p.1) + i.val • (-p.2) = -(p.1 + i.val • p.2) from by rw [smul_neg]; abel]
+      · simpa using hd
+    · rintro ⟨q, ⟨hq, hd⟩, rfl⟩
+      refine ⟨fun i => ?_, by simpa using hd⟩
+      have := hq i
+      rwa [show -((-q.1) + i.val • (-q.2)) = q.1 + i.val • q.2 from by rw [smul_neg]; abel]
+  rw [hset, Finset.card_image_of_injective]
+  intro a b hab
+  simp only [Prod.mk.injEq, neg_inj] at hab
+  exact Prod.ext hab.1 hab.2
+
+/-- **Analytic reflection invariance.**  The normalized `k`-AP operator on an indicator is
+    unchanged by negating the set: `Λ_k(1_{-A}) = Λ_k(1_A)`.  Immediate from the combinatorial
+    bridge `kAPCount_indicator_eq_count` and `kAPCount_count_neg`. -/
+theorem kAPCount_indicator_neg {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N)) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (A.image (fun a => -a)))
+      = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
+  rw [kAPCount_indicator_eq_count, kAPCount_indicator_eq_count, kAPCount_count_neg]
 
 end RothTheoremOQ03OQ01

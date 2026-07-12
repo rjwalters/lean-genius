@@ -162,6 +162,21 @@
       "targetId": "platonic-solids",
       "relationship": "extends",
       "description": "Extends the Platonic solids classification (Wiedijk #50) to semi-regular polyhedra. The Archimedean condition generalizes the Platonic condition by allowing non-uniform face types"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "related",
+      "description": "V − E + F = 2 is the invariant this entry records for each of the 13 Archimedean solids. Together with the requirement that the angular defect at every (vertex-transitive) vertex be positive, Euler's formula is the constraint that makes the classification finite — the same Descartes/Euler bookkeeping that pins the Platonic solids to exactly five bounds the semi-regular family to thirteen."
+    },
+    {
+      "targetId": "platonic-solids-oq-01",
+      "relationship": "related",
+      "description": "A parallel classification in a different direction: the Platonic (fully regular) solids extended to regular polytopes in 4D and higher via the Coxeter–Schläfli determinant. Where this entry relaxes regularity in fixed dimension 3 to obtain the semi-regular Archimedean solids, that sibling keeps full regularity and raises the dimension."
+    },
+    {
+      "targetId": "platonic-solids-oq-03",
+      "relationship": "related",
+      "description": "The symmetry side of the same polyhedra: each Platonic solid is governed by a finite rank-3 reflection (Coxeter) group. The Archimedean solids classified here are obtained from the Platonic solids by symmetry-preserving operations (truncation, rectification, snub), so they share those same tetrahedral/octahedral/icosahedral reflection groups — the group theory underlying vertex-transitivity."
     }
   ],
   "references": [

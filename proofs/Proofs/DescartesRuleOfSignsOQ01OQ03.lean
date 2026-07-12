@@ -611,6 +611,24 @@ theorem signChangesInCoeffs_eq_zero_of_coeff_nonneg {p : ℝ[X]}
   · rfl
   · exact countSignChanges_eq_zero_of_nonneg fun i => h _
 
+/-- **A polynomial with nonpositive coefficients has no coefficient sign change.**
+Dual of `signChangesInCoeffs_eq_zero_of_coeff_nonneg`: `signChangesInCoeffs p = 0`
+whenever every coefficient of `p` is `≤ 0`.  Immediate from
+`countSignChanges_eq_zero_of_nonpos` applied to the coefficient sequence
+`coeffSequence p p.natDegree`; the `p = 0` branch is `0` by definition.  This
+supplies the polynomial-level companion of the sequence-level `nonpos` lemma,
+matching the existing `nonneg` pair.  Classical reading: a real polynomial whose
+coefficients are all `≤ 0` (equivalently `−p` has nonnegative coefficients)
+exhibits no Descartes sign variation, hence — via Descartes' rule — no positive
+root. -/
+theorem signChangesInCoeffs_eq_zero_of_coeff_nonpos {p : ℝ[X]}
+    (h : ∀ k, p.coeff k ≤ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p = 0 := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  split
+  · rfl
+  · exact countSignChanges_eq_zero_of_nonpos fun i => h _
+
 /- ## § 6. The sharp general `Fin n` bound: `V ≤ n − 1`, attained by alternation
    (verified, axiom-free)
 
@@ -900,5 +918,409 @@ theorem signChangesInCoeffs_leadingCoeff_inv_smul {p : ℝ[X]} (hp : p ≠ 0) :
     DescartesRuleOfSigns.signChangesInCoeffs (p.leadingCoeff⁻¹ • p)
       = DescartesRuleOfSigns.signChangesInCoeffs p :=
   signChangesInCoeffs_smul (inv_ne_zero (leadingCoeff_ne_zero.mpr hp)) p
+
+/- ## § 8. Polynomial-level sharpness of Descartes' bound (verified, axiom-free)
+
+`signChangesInCoeffs_le_natDegree` shows `V(p) ≤ deg p` for every nonzero `p`.  The
+companion fact is that this bound is *attained*: a polynomial whose coefficient
+sequence is nowhere zero and strictly sign-alternating has `V(p) = deg p` exactly.
+This lifts the sequence-level sharpness `countSignChanges_alternating` to the
+polynomial level, so the pair "`V(p) ≤ deg p`, and equality for a fully alternating
+coefficient pattern" is now stated directly for polynomials.  Classical reading:
+Descartes' upper bound cannot be improved in general — for every degree `d` there is
+a degree-`d` polynomial with `d` positive real roots realising `V(p) = d`. -/
+
+/-- **The degree bound is sharp: a strictly alternating coefficient pattern attains
+`V(p) = deg p`.**  If every coefficient `p.coeff k` for `k ≤ natDegree p` is nonzero
+(`hnz`) and consecutive coefficients have opposite signs
+(`halt : p.coeff k · p.coeff (k+1) < 0` for `k < natDegree p`), then the coefficient
+sign-change count equals the degree.  Direct application of the sequence-level
+`countSignChanges_alternating` to `coeffSequence p (natDegree p)` (whose entries read
+`p.coeff (natDegree p − i)`, so the sequence is nowhere zero and adjacent-alternating).
+The polynomial-level companion of `signChangesInCoeffs_le_natDegree`; axiom-free. -/
+theorem signChangesInCoeffs_eq_natDegree_of_alternating {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0)
+    (halt : ∀ k, k < p.natDegree → p.coeff k * p.coeff (k + 1) < 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p = p.natDegree := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hp]
+  have h := countSignChanges_alternating
+    (f := DescartesRuleOfSigns.coeffSequence p p.natDegree)
+    (by -- nowhere zero: every entry is a coefficient of index `≤ natDegree`
+      intro i
+      simp only [DescartesRuleOfSigns.coeffSequence]
+      exact hnz _ (Nat.sub_le _ _))
+    (by -- adjacent alternation: entries `i` and `i+1` read consecutive coefficients
+      intro i j hj
+      simp only [DescartesRuleOfSigns.coeffSequence]
+      have hjle : j.val ≤ p.natDegree := Nat.lt_succ_iff.mp j.isLt
+      set k := p.natDegree - j.val with hk
+      have e1 : p.natDegree - i.val = k + 1 := by omega
+      have hklt : k < p.natDegree := by omega
+      rw [e1, mul_comm]
+      exact halt k hklt)
+  simpa using h
+
+/-- **`X³ − X² + X − 1` has three coefficient sign changes, computed axiom-free.**
+The coefficient sequence is `[1, −1, 1, −1]` (leading to constant): a strictly
+alternating length-4 pattern, so `V = 3 = deg`, the maximal (Descartes-tight) count
+for a cubic — the polynomial `(X−1)(X²+1)` indeed has its lone positive root at the
+count parity permits.  First concrete degree-3 validation in this file, obtained by
+feeding the four coefficient facts through the general
+`signChangesInCoeffs_eq_natDegree_of_alternating`. -/
+theorem x3_minus_x2_plus_x_minus_1_signChanges :
+    signChangesInCoeffs (X ^ 3 - X ^ 2 + X - 1 : ℝ[X]) = 3 := by
+  set p : ℝ[X] := X ^ 3 - X ^ 2 + X - 1 with hp_def
+  have c0 : p.coeff 0 = -1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have c1 : p.coeff 1 = 1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have c2 : p.coeff 2 = -1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have c3 : p.coeff 3 = 1 := by
+    simp [hp_def, coeff_add, coeff_sub, coeff_X_pow, coeff_X, coeff_one]
+  have hne : p ≠ 0 := by intro h; rw [h] at c3; simp at c3
+  have hdeg : p.natDegree = 3 := by rw [hp_def]; compute_degree!
+  rw [signChangesInCoeffs_eq_natDegree_of_alternating hne ?_ ?_, hdeg]
+  · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
+  · rw [hdeg]; intro k hk; interval_cases k <;> norm_num [c0, c1, c2, c3]
+
+/-- **Reversal invariance for polynomials.**  For a polynomial with nonzero
+constant term (`p.coeff 0 ≠ 0`, so `0` is not a root and the reversal keeps the
+same degree), Descartes' coefficient sign-change count is unchanged by reversing
+the coefficient list: `V(reverse p) = V(p)`.  This lifts the sequence-level
+`countSignChanges_comp_rev` to polynomials, completing the invariance trio
+alongside scaling (`signChangesInCoeffs_C_mul`) and negation
+(`signChangesInCoeffs_neg`).  The coefficient sequence of `reverse p` is exactly
+that of `p` read backwards (`Fin.rev`): `(reverse p).coeff (d − i) = p.coeff i`
+via `coeff_reverse` and `revAt_le`, which is `coeffSequence p d (i.rev)`.
+Classically this is the reciprocal-polynomial symmetry `p ↦ Xⁿ p(1/X)`, whose
+positive roots are the reciprocals of those of `p` — the same count.  Axiom-free. -/
+theorem signChangesInCoeffs_reverse {p : ℝ[X]} (h0 : p.coeff 0 ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (reverse p)
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have hp : p ≠ 0 := fun h => h0 (by rw [h]; simp)
+  have hrev0 : reverse p ≠ 0 := fun h => hp (reverse_eq_zero.mp h)
+  have htd : p.natTrailingDegree = 0 := Nat.le_zero.mp (natTrailingDegree_le_of_ne_zero h0)
+  have hdeg : (reverse p).natDegree = p.natDegree := by
+    rw [reverse_natDegree, htd, Nat.sub_zero]
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hrev0, dif_neg hp, hdeg]
+  have hcoe : DescartesRuleOfSigns.coeffSequence (reverse p) p.natDegree
+      = fun i => DescartesRuleOfSigns.coeffSequence p p.natDegree i.rev := by
+    funext i
+    have hi : i.val ≤ p.natDegree := Nat.lt_succ_iff.mp i.isLt
+    simp only [DescartesRuleOfSigns.coeffSequence]
+    rw [coeff_reverse, revAt_le (Nat.sub_le _ _), Fin.val_rev]
+    congr 1
+    omega
+  rw [hcoe]
+  exact countSignChanges_comp_rev _
+
+/-- **Reversal and negation together.**  Combining `signChangesInCoeffs_reverse`
+with `signChangesInCoeffs_neg`: reversing *and* negating a polynomial with nonzero
+constant term leaves Descartes' sign-change count fixed, `V(reverse (−p)) = V(p)`.
+Axiom-free. -/
+theorem signChangesInCoeffs_reverse_neg {p : ℝ[X]} (h0 : p.coeff 0 ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (reverse (-p))
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have h0' : (-p).coeff 0 ≠ 0 := by rw [coeff_neg]; exact neg_ne_zero.mpr h0
+  rw [signChangesInCoeffs_reverse h0', signChangesInCoeffs_neg]
+
+/-- **Reversal and scaling together.**  Combining `signChangesInCoeffs_reverse` with
+`signChangesInCoeffs_smul`: reversing a nonzero-scaled polynomial with nonzero constant
+term leaves Descartes' sign-change count fixed, `V(reverse (c • p)) = V(p)` for `c ≠ 0`
+and `p.coeff 0 ≠ 0`.  Completes the invariance combinations alongside
+`signChangesInCoeffs_reverse_neg`: the count is stable under the full group generated by
+reversal and nonzero scaling.  Axiom-free. -/
+theorem signChangesInCoeffs_reverse_smul {c : ℝ} (hc : c ≠ 0) {p : ℝ[X]}
+    (h0 : p.coeff 0 ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (reverse (c • p))
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have h0' : (c • p).coeff 0 ≠ 0 := by
+    rw [coeff_smul, smul_eq_mul]; exact mul_ne_zero hc h0
+  rw [signChangesInCoeffs_reverse h0', signChangesInCoeffs_smul hc]
+
+/-- **Invariance under a pointwise-positive weight.**  Multiplying a sequence entrywise by
+*any* strictly positive weight `g i > 0` leaves the number of sign changes unchanged: the
+non-vanishing pattern is preserved (a positive factor cannot create or destroy a zero) and each
+`oppositeSign` test `g i·f i · (g j·f j) = (g i·g j)·(f i·f j) < 0` has the same truth value as
+`f i·f j < 0` because `g i·g j > 0`.  This strictly generalises the positive case of
+`countSignChanges_const_smul` (constant weight `g ≡ c`) to a *per-index* positive weight, and is
+the combinatorial engine behind dilation invariance `signChangesInCoeffs_comp_C_mul_X`.
+Axiom-free, general in `n`. -/
+theorem countSignChanges_mul_pos {n : ℕ} {g : Fin n → ℝ} (hg : ∀ i, 0 < g i) (f : Fin n → ℝ) :
+    DescartesRuleOfSigns.countSignChanges (fun i => g i * f i)
+      = DescartesRuleOfSigns.countSignChanges f := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  congr 1
+  ext ⟨i, j⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+    DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign]
+  constructor
+  · rintro ⟨hij, hi, hj, hbtw, hopp⟩
+    refine ⟨hij, ?_, ?_, ?_, ?_⟩
+    · exact fun h => hi (by rw [h, mul_zero])
+    · exact fun h => hj (by rw [h, mul_zero])
+    · intro k hk1 hk2
+      exact (mul_eq_zero.mp (hbtw k hk1 hk2)).resolve_left (hg k).ne'
+    · have e : g i * f i * (g j * f j) = g i * g j * (f i * f j) := by ring
+      rw [e] at hopp
+      by_contra hcon
+      push_neg at hcon
+      exact absurd hopp (not_lt.mpr (mul_nonneg (mul_pos (hg i) (hg j)).le hcon))
+  · rintro ⟨hij, hi, hj, hbtw, hopp⟩
+    refine ⟨hij, mul_ne_zero (hg i).ne' hi, mul_ne_zero (hg j).ne' hj, ?_, ?_⟩
+    · intro k hk1 hk2
+      rw [hbtw k hk1 hk2, mul_zero]
+    · have e : g i * f i * (g j * f j) = g i * g j * (f i * f j) := by ring
+      rw [e]
+      exact mul_neg_of_pos_of_neg (mul_pos (hg i) (hg j)) hopp
+
+/-- **Positive-dilation invariance: `V(p(cX)) = V(p)` for `c > 0`.**  Descartes' sign-change
+count is unchanged by a positive rescaling of the variable `p(X) ↦ p(cX)`.  Indeed
+`(p(cX)).coeff k = c^k · p.coeff k` (`comp_C_mul_X_coeff`), so the coefficient sequence is the
+original scaled entrywise by the strictly positive weights `c^{d-i}`; `countSignChanges_mul_pos`
+then leaves the count fixed.  Classically this reflects that `p(cX)` has positive roots `r/c` —
+the positive roots of `p` scaled by `1/c > 0` — so both the positive-root count and its Descartes
+bound `V` are preserved.  This completes the invariance family alongside scaling
+(`signChangesInCoeffs_smul`), negation (`signChangesInCoeffs_neg`), and reversal
+(`signChangesInCoeffs_reverse`).  Axiom-free. -/
+theorem signChangesInCoeffs_comp_C_mul_X {c : ℝ} (hc : 0 < c) (p : ℝ[X]) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.comp (C c * X))
+      = DescartesRuleOfSigns.signChangesInCoeffs p := by
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  by_cases hp : p = 0
+  · subst hp; simp
+  · have hc0 : c ≠ 0 := hc.ne'
+    have hcomp0 : p.comp (C c * X) ≠ 0 := by
+      rw [Ne, comp_C_mul_X_eq_zero_iff (mem_nonZeroDivisors_of_ne_zero hc0)]
+      exact hp
+    have hdeg : (p.comp (C c * X)).natDegree = p.natDegree := by
+      rw [natDegree_comp, natDegree_C_mul_X c hc0, mul_one]
+    rw [dif_neg hcomp0, dif_neg hp, hdeg]
+    have hcoe : DescartesRuleOfSigns.coeffSequence (p.comp (C c * X)) p.natDegree
+        = fun i => c ^ (p.natDegree - i.val) *
+            DescartesRuleOfSigns.coeffSequence p p.natDegree i := by
+      funext i
+      simp only [DescartesRuleOfSigns.coeffSequence]
+      rw [comp_C_mul_X_coeff]
+      ring
+    rw [hcoe]
+    exact countSignChanges_mul_pos (fun i => pow_pos hc _) _
+
+/- ## § 9. The reflection `p(X) ↦ p(−X)` and Descartes for negative roots
+   (verified, axiom-free)
+
+The invariances of § 7 all *fix* the positive-root count and hence `V`.  The
+reflection `X ↦ −X` is different: it sends the positive roots of `p` to the
+*negative* roots and vice versa, and it is the transformation underlying the
+second half of Descartes' rule (`#{negative roots of p} ≤ V(p(−X))`).  Unlike a
+positive dilation, `p(−X)` alternates the signs of the coefficients
+(`(p(−X)).coeff k = (−1)^k · p.coeff k`), so it does *not* preserve `V`.
+
+Instead there is a sharp **complementarity**.  For a *nowhere-zero* coefficient
+pattern (no interior gaps), every one of the `n − 1` adjacent gaps is a sign
+change of exactly one of `p`, `p(−X)`: a persistence of sign in `p` becomes a
+change in `p(−X)` and vice versa.  Hence
+
+    V(p) + V(p(−X)) = deg p              (all coefficients `0 … deg p` nonzero).
+
+This is the exact combinatorial identity behind "Descartes bounds the positive
+*and* the negative roots": for a full (gap-free) polynomial the two Descartes
+counts partition the degree.  We prove it first at the level of sequences
+(`countSignChanges_alternate_add`) and then transport it to polynomials. -/
+
+/-- For a **nowhere-zero** sequence, a sign change can only occur between *adjacent*
+indices (no zeros can sit between to be skipped over), so the sign-change set is the
+set of adjacent pairs `(i, i+1)` with `f i · f (i+1) < 0`. -/
+theorem countSignChanges_nowhere_zero {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f
+      = (Finset.univ.filter (fun p : Fin n × Fin n =>
+          p.2.val = p.1.val + 1 ∧ f p.1 * f p.2 < 0)).card := by
+  classical
+  unfold DescartesRuleOfSigns.countSignChanges
+  congr 1
+  ext p
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq]
+  constructor
+  · intro hsc
+    obtain ⟨hij, _hi, hj, hbtw, hopp⟩ := hsc
+    refine ⟨?_, hopp⟩
+    have hlt : p.1.val < p.2.val := Fin.lt_def.mp hij
+    by_contra hne
+    have hgap : p.1.val + 1 < p.2.val := by omega
+    have hk : p.1.val + 1 < n := lt_trans hgap p.2.isLt
+    exact hnz _ (hbtw ⟨p.1.val + 1, hk⟩ (Fin.lt_def.mpr (Nat.lt_succ_self _))
+      (Fin.lt_def.mpr hgap))
+  · rintro ⟨hadj, hopp⟩
+    refine ⟨Fin.lt_def.mpr (by omega), hnz _, hnz _, ?_, hopp⟩
+    intro k hk1 hk2
+    have a := Fin.lt_def.mp hk1
+    have b := Fin.lt_def.mp hk2
+    omega
+
+/-- The set of adjacent index pairs `{(i, j) : j = i + 1}` in `Fin n × Fin n` has
+cardinality `n − 1`: the left index `i` ranges over `{0, …, n − 2}` and determines
+the pair. -/
+theorem card_adjacent (n : ℕ) :
+    (Finset.univ.filter (fun p : Fin n × Fin n => p.2.val = p.1.val + 1)).card = n - 1 := by
+  classical
+  rw [show n - 1 = (Finset.range (n - 1)).card from (Finset.card_range _).symm]
+  refine Finset.card_bij' (fun p _ => p.1.val)
+    (fun m hm => (⟨m, by have := Finset.mem_range.mp hm; omega⟩,
+                  ⟨m + 1, by have := Finset.mem_range.mp hm; omega⟩))
+    ?_ ?_ ?_ ?_
+  · rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    have hj : j.val < n := j.isLt
+    have hlt : i.val < n - 1 := by omega
+    exact Finset.mem_range.mpr hlt
+  · intro m hm
+    have hmr : m < n - 1 := Finset.mem_range.mp hm
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  · rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    exact Prod.ext_iff.mpr ⟨Fin.ext rfl, Fin.ext hp.symm⟩
+  · intro m _
+    rfl
+
+/-- **Reflection complementarity (sequence form).**  For a nowhere-zero sequence
+`f : Fin n → ℝ`, the sign changes of `f` and of its sign-alternated version
+`i ↦ (−1)^i · f i` together cover each of the `n − 1` adjacent gaps *exactly once*:
+
+    `V(f) + V(alt f) = n − 1`.
+
+Because no entry vanishes, both counts are carried entirely by adjacent pairs; and
+for an adjacent pair `(i, i+1)`, `(alt f) i · (alt f)(i+1) = −(f i · f (i+1))`, so the
+"opposite sign" test holds for exactly one of `f`, `alt f`.  The two sign-change sets
+therefore partition the adjacent pairs, whose count is `n − 1` (`card_adjacent`).
+Axiom-free. -/
+theorem countSignChanges_alternate_add {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f
+      + DescartesRuleOfSigns.countSignChanges (fun i => (-1 : ℝ) ^ (i : ℕ) * f i)
+      = n - 1 := by
+  classical
+  set g : Fin n → ℝ := fun i => (-1 : ℝ) ^ (i : ℕ) * f i with hg
+  have hgnz : ∀ i, g i ≠ 0 := fun i =>
+    mul_ne_zero (pow_ne_zero _ (by norm_num)) (hnz i)
+  have gprod : ∀ i j : Fin n, j.val = i.val + 1 → g i * g j = -(f i * f j) := by
+    intro i j hij
+    simp only [hg]
+    have hpow : (-1 : ℝ) ^ (i : ℕ) * (-1 : ℝ) ^ (j : ℕ) = -1 := by
+      rw [← pow_add]; exact Odd.neg_one_pow ⟨(i : ℕ), by omega⟩
+    linear_combination (f i * f j) * hpow
+  rw [countSignChanges_nowhere_zero hnz, countSignChanges_nowhere_zero hgnz]
+  set Adj : Finset (Fin n × Fin n) :=
+    Finset.univ.filter (fun p : Fin n × Fin n => p.2.val = p.1.val + 1) with hAdj
+  have hF : (Finset.univ.filter (fun p : Fin n × Fin n =>
+        p.2.val = p.1.val + 1 ∧ f p.1 * f p.2 < 0))
+      = Adj.filter (fun p => f p.1 * f p.2 < 0) := by
+    rw [hAdj, Finset.filter_filter]
+  have hG : (Finset.univ.filter (fun p : Fin n × Fin n =>
+        p.2.val = p.1.val + 1 ∧ g p.1 * g p.2 < 0))
+      = Adj.filter (fun p => ¬ f p.1 * f p.2 < 0) := by
+    rw [hAdj, Finset.filter_filter]
+    apply Finset.filter_congr
+    rintro ⟨i, j⟩ _
+    constructor
+    · rintro ⟨hadj, hopp⟩
+      refine ⟨hadj, ?_⟩
+      rw [gprod i j hadj] at hopp
+      intro hc; linarith
+    · rintro ⟨hadj, hopp⟩
+      refine ⟨hadj, ?_⟩
+      rw [gprod i j hadj]
+      have hfij : f i * f j ≠ 0 := mul_ne_zero (hnz i) (hnz j)
+      rcases lt_or_gt_of_ne hfij with h | h
+      · exact absurd h hopp
+      · linarith
+  rw [hF, hG, Finset.filter_card_add_filter_neg_card_eq_card, hAdj, card_adjacent]
+
+/-- **Reflection complementarity (polynomial form) — Descartes for positive *and*
+negative roots.**  If every coefficient `p.coeff 0, …, p.coeff (deg p)` is nonzero
+(a *gap-free* polynomial), then
+
+    `V(p) + V(p(−X)) = deg p`.
+
+The two Descartes bounds — `V(p)` on the positive roots and `V(p(−X))` on the
+negative roots — therefore *partition* the degree: no gap can be a sign persistence
+for both `p` and its reflection.  Proof: `(p(−X)).coeff k = (−1)^k · p.coeff k`
+(`comp_C_mul_X_coeff` at `c = −1`), so up to the global nonzero factor `(−1)^{deg p}`
+the reflected coefficient sequence is the sign-alternation of `p`'s; the global factor
+leaves `V` unchanged (`countSignChanges_const_smul`) and
+`countSignChanges_alternate_add` closes it (`n = deg p + 1`, `n − 1 = deg p`).
+Axiom-free. -/
+theorem signChangesInCoeffs_comp_neg_X_add {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p
+      + DescartesRuleOfSigns.signChangesInCoeffs (p.comp (-X))
+      = p.natDegree := by
+  classical
+  set d := p.natDegree with hd
+  have hXeq : (-X : ℝ[X]) = C (-1) * X := by
+    rw [C_neg, C_1, neg_mul, one_mul]
+  have hcomp_ne : p.comp (-X) ≠ 0 := by
+    rw [hXeq, Ne, comp_C_mul_X_eq_zero_iff
+      (mem_nonZeroDivisors_of_ne_zero (by norm_num : (-1 : ℝ) ≠ 0))]
+    exact hp
+  have hdeg : (p.comp (-X)).natDegree = d := by
+    rw [hXeq, natDegree_comp, natDegree_C_mul_X (-1) (by norm_num), mul_one, hd]
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hp, dif_neg hcomp_ne, hdeg]
+  set cp : Fin (d + 1) → ℝ := DescartesRuleOfSigns.coeffSequence p d with hcp
+  have hcpnz : ∀ i, cp i ≠ 0 := by
+    intro i
+    rw [hcp]
+    simp only [DescartesRuleOfSigns.coeffSequence]
+    exact hnz _ (by have := i.isLt; omega)
+  have hbridge : DescartesRuleOfSigns.coeffSequence (p.comp (-X)) d
+      = fun (i : Fin (d + 1)) => ((-1 : ℝ) ^ d) * ((-1 : ℝ) ^ (i : ℕ) * cp i) := by
+    funext i
+    have hile : (i : ℕ) ≤ d := by have := i.isLt; omega
+    have hexp : ((-1 : ℝ)) ^ (d - (i : ℕ)) = (-1) ^ d * (-1) ^ (i : ℕ) := by
+      have h1 : (-1 : ℝ) ^ d = (-1) ^ (d - (i : ℕ)) * (-1) ^ (i : ℕ) := by
+        rw [← pow_add, Nat.sub_add_cancel hile]
+      have h2 : ((-1 : ℝ) ^ (i : ℕ)) * (-1) ^ (i : ℕ) = 1 := by
+        rw [← pow_add]; exact Even.neg_one_pow ⟨(i : ℕ), by ring⟩
+      calc (-1 : ℝ) ^ (d - (i : ℕ))
+          = (-1) ^ (d - (i : ℕ)) * ((-1) ^ (i : ℕ) * (-1) ^ (i : ℕ)) := by rw [h2]; ring
+        _ = ((-1) ^ (d - (i : ℕ)) * (-1) ^ (i : ℕ)) * (-1) ^ (i : ℕ) := by ring
+        _ = (-1) ^ d * (-1) ^ (i : ℕ) := by rw [← h1]
+    simp only [DescartesRuleOfSigns.coeffSequence, hcp]
+    rw [hXeq, comp_C_mul_X_coeff, hexp]
+    ring
+  rw [hbridge, countSignChanges_const_smul (pow_ne_zero d (by norm_num : (-1 : ℝ) ≠ 0))]
+  have hmain := countSignChanges_alternate_add hcpnz
+  simpa using hmain
+
+/-- **Explicit reflected count — the negative-root Descartes bound in closed form.**  For a
+gap-free polynomial the complementarity `signChangesInCoeffs_comp_neg_X_add`
+(`V(p) + V(p(−X)) = deg p`) rearranges to the explicit value
+
+    `V(p(−X)) = deg p − V(p)`.
+
+This is the form actually cited for the *negative* half of Descartes' rule: the number of
+negative roots of `p` is bounded by `deg p − V(p)`, the degree minus the positive-root bound.
+Immediate (`omega`) from the additive identity. Axiom-free. -/
+theorem signChangesInCoeffs_comp_neg_X_eq_sub {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.comp (-X))
+      = p.natDegree - DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have h := signChangesInCoeffs_comp_neg_X_add hp hnz
+  omega
+
+/-- **Fully-alternating ⟺ reflection sign-constant.**  For a gap-free polynomial the two
+extremes of the complementarity `V(p) + V(p(−X)) = deg p` coincide: the reflection `p(−X)`
+has *no* sign changes (all its coefficients share a sign) **iff** `p` is *fully alternating*
+(`V(p) = deg p`, every adjacent coefficient pair flips sign).  The Descartes reading: `p`
+attains the maximal positive-root bound `deg p` exactly when `p(−X)` attains the minimal
+one `0`.  Immediate (`omega`) from the additive identity. Axiom-free. -/
+theorem signChangesInCoeffs_comp_neg_X_eq_zero_iff {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.comp (-X)) = 0
+      ↔ DescartesRuleOfSigns.signChangesInCoeffs p = p.natDegree := by
+  have h := signChangesInCoeffs_comp_neg_X_add hp hnz
+  omega
 
 end DescartesRuleOfSignsOQ01OQ03

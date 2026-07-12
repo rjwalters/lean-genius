@@ -169,33 +169,35 @@
       "description": "Studies the doubly-exponential growth rate of the terms and the speed of reciprocal-sum convergence. It governs the size of aₙ; this entry governs their divisibility and residues — the two complementary halves of the sequence's structure, both descending from a_{n+1} = a_n² - a_n + 1."
     }
   ],
-  "references": {
-    "papers": [
-      {
-        "authors": "Sylvester, J. J.",
-        "title": "On a point in the theory of vulgar fractions",
-        "year": "1880",
-        "venue": "American Journal of Mathematics, vol. 3, no. 4, pp. 332–335",
-        "note": "The origin of the sequence: Sylvester's analysis of the greedy expansion of 1 as a sum of distinct unit fractions, from which the recurrence aₙ₊₁ = a₀a₁⋯aₙ + 1 and the terms 2, 3, 7, 43, … arise."
-      },
-      {
-        "authors": "Graham, R. L., Knuth, D. E., and Patashnik, O.",
-        "title": "Concrete Mathematics: A Foundation for Computer Science",
-        "year": "1994",
-        "venue": "Addison-Wesley, 2nd ed., §4.3 (Euclid numbers)",
-        "note": "Develops the Euclid-style product recurrence aₙ₊₁ = a₀⋯aₙ + 1 and the coprimality argument used here, in the same 'each term is one more than the product of all previous' form."
-      },
-      {
-        "authors": "Erdős, P. and Graham, R. L.",
-        "title": "Old and New Problems and Results in Combinatorial Number Theory",
-        "year": "1980",
-        "venue": "L'Enseignement Mathématique, Monographie no. 28",
-        "note": "Places Sylvester's sequence in the theory of Egyptian fractions and Sylvester–Fibonacci greedy expansions, the broader context for the reciprocal-sum face treated in the companion entries."
-      }
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Sylvester%27s_sequence",
-      "https://oeis.org/A000058"
-    ]
-  }
+  "references": [
+    {
+      "authors": "Sylvester, J. J.",
+      "title": "On a point in the theory of vulgar fractions",
+      "year": "1880",
+      "venue": "American Journal of Mathematics, vol. 3, no. 4, pp. 332–335",
+      "note": "The origin of the sequence: Sylvester's analysis of the greedy expansion of 1 as a sum of distinct unit fractions, from which the recurrence aₙ₊₁ = a₀a₁⋯aₙ + 1 and the terms 2, 3, 7, 43, … arise."
+    },
+    {
+      "authors": "Graham, R. L., Knuth, D. E., and Patashnik, O.",
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd ed., §4.3 (Euclid numbers)",
+      "note": "Develops the Euclid-style product recurrence aₙ₊₁ = a₀⋯aₙ + 1 and the coprimality argument used here, in the same 'each term is one more than the product of all previous' form."
+    },
+    {
+      "authors": "Erdős, P. and Graham, R. L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monographie no. 28",
+      "note": "Places Sylvester's sequence in the theory of Egyptian fractions and Sylvester–Fibonacci greedy expansions, the broader context for the reciprocal-sum face treated in the companion entries."
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence",
+      "url": "https://en.wikipedia.org/wiki/Sylvester%27s_sequence"
+    },
+    {
+      "text": "https://oeis.org/A000058",
+      "url": "https://oeis.org/A000058"
+    }
+  ]
 }

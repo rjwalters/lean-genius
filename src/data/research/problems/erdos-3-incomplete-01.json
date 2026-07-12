@@ -47,7 +47,10 @@
       "SharpRequiredBound + summable_of_sharpBound + sharp_required_bound_implies_conjecture (Erdos3Problem.lean, researcher-1 2026-07-09): strictly-sharper iterated-log conditional reduction at the O(N/(log N·(log log N)^{1+δ})) threshold, one whole iterated log below strong_required_bound_implies_conjecture. Consumes verified Erdos3Bertrand.summable_one_div_nat_mul_log_mul_const (c=log2). Envelope g={j|Nthr≤j}.indicator full handles full's negative small-j terms; Summable g via summable_nat_add_iff tail-shift (Summable.indicator is NNReal-only). Elaboration-mirrors summable_of_strongBound; UNVERIFIED (dep olean-write SIGBUS storm).",
       "REPAIR Erdos3LogHarmonic.lean (researcher-1 2026-07-09): Mathlib drift div_le_div_iff→div_le_div_iff₀, div_le_iff→div_le_iff₀ (lines 299/308/309/329/456). CONFIRMED — Unknown-identifier error eliminated. File had bitrotted; blocks the sharp reduction otherwise.",
       "strongRequiredBound_implies_sharpRequiredBound (Erdos3Problem.lean): StrongRequiredBound k ⇒ SharpRequiredBound k, formalizing the docstring-asserted ordering. Witness δ*=1; denominator comparison L·(log L)^2 ≤ L^{1+δ} reduces to (log log N)^2 ≤ (log N)^δ, proved via Real.isLittleO_log_rpow_atTop at exponent δ/2 then squaring.",
-      "sharpRequiredBound_mono (Erdos3Problem.lean): SharpRequiredBound downward-closed in AP length k, mirroring strongRequiredBound_mono/requiredBound_mono via rothNumber_mono."
+      "sharpRequiredBound_mono (Erdos3Problem.lean): SharpRequiredBound downward-closed in AP length k, mirroring strongRequiredBound_mono/requiredBound_mono via rothNumber_mono.",
+      "summable_one_div_nat_mul_log_mul_loglog_rpow_const (Erdos3LogHarmonic.lean, researcher-7 2026-07-11): const-in-log second-axis convergent Bertrand series ∑1/(n·log(nc)·(loglog(nc))^{1+δ}), c,δ>0. Second-axis analogue of summable_one_div_nat_mul_log_mul_const. Tail comparison vs constant-free summable_one_div_nat_mul_log_mul_loglog_rpow: on n≥64,nc≥3,nc²≥1 use log n≤2log(nc) AND loglog n≤2 loglog(nc) (from log(nc)≥½log n ⇒ loglog(nc)≥loglog n−log2, plus loglog n≥2log2) ⇒ term ≤2^{2+δ}×. 0-sorry, 0-ax.",
+      "SuperSharpRequiredBound + summable_of_superSharpBound + superSharp_required_bound_implies_conjecture (Erdos3Problem.lean, researcher-7 2026-07-11): threshold r_k(N)=O(N/(logN·loglogN·(logloglogN)^{1+δ})) STILL implies Erdős #3, one iterated log below sharp. Dyadic blocking mirrors summable_of_sharpBound; block masses = const-in-log second-axis series (c=log2). VERIFIED axiom-free.",
+      "REPAIR erdos-3 chain (researcher-7 2026-07-11): whole formalization had bitrotted on Mathlib bump — Erdos3LogHarmonic (4 threshold bounds: parse/mod_cast drift) + Erdos3Problem (indicator Zero-mvar, redundant ring, doubled docstring→unterminated comment, isLittleO_log_rpow_atTop root-namespace rename). Both files now compile (only intended open sorry)."
     ],
     "insights": [
       "File did not compile on main (enrichment merged without build): ArithProg map/omega injectivity false for d=0, missing Decidable for Set-membership filters, orphaned /-- docstrings.",
@@ -64,7 +67,8 @@
       "SHARP threshold (researcher-1, 2026-07-09): SharpRequiredBound (r_k=O(N/(log N·(log log N)^{1+δ}))) is STRICTLY WEAKER than StrongRequiredBound yet STILL implies Erdős #3 (summable_of_sharpBound + sharp_required_bound_implies_conjecture). The ordering of sufficient thresholds is Required(o(N/logN), open) ⊋ Sharp(O(N/(logN·(loglogN)^{1+δ})), NEW) ⊋ Strong(O(N/(logN)^{1+δ})); Sharp sits one iterated log below Strong, right at the divergence borderline N/(logN·loglogN). The const-in-log Bertrand series summable_one_div_nat_mul_log_mul_const (c=log2) is precisely the analytic input that makes the sharper dyadic-block masses termwise summable.",
       "GOTCHA (researcher-1): Erdos3LogHarmonic.lean bitrotted on Mathlib drift — div_le_div_iff & div_le_iff were REMOVED (Unknown identifier), replaced by div_le_div_iff₀/div_le_iff₀ (already used elsewhere in the same file). Also: Summable.indicator is NNReal-only; for a general-ℝ indicator with finite complement use (summable_nat_add_iff Nthr).mp to shift past the window onto the summable tail. rpow of a negative base can be negative, so full=K/((j+1)·(log((j+1)log2))^{1+δ}) has negative small-j terms → wrap in {j|Nthr≤j}.indicator.",
       "The three threshold hypotheses are now fully ordered: StrongRequiredBound ⇒ SharpRequiredBound (new) and StrongRequiredBound ⇒ RequiredBound (existing). This certifies sharp_required_bound_implies_conjecture is a genuine sharpening of strong_required_bound_implies_conjecture — its hypothesis is weaker (implied by the strong one), so the sharp reduction applies to strictly more sets.",
-      "Key analytic input for Strong⇒Sharp: (log log N) grows slower than any positive power of log N; formalized by composing Real.isLittleO_log_rpow_atTop (exponent δ/2) with log→∞, extracting the c=1 eventual bound, and raising to the 2nd rpow power (collapse (δ/2)*2=δ by ring)."
+      "Key analytic input for Strong⇒Sharp: (log log N) grows slower than any positive power of log N; formalized by composing Real.isLittleO_log_rpow_atTop (exponent δ/2) with log→∞, extracting the c=1 eventual bound, and raising to the 2nd rpow power (collapse (δ/2)*2=δ by ring).",
+      "The sufficient-threshold ladder now has FOUR rungs: Strong (O(N/(logN)^{1+δ})) ⊋ Sharp (O(N/(logN·(loglogN)^{1+δ}))) ⊋ SuperSharp (O(N/(logN·loglogN·(logloglogN)^{1+δ}))) ⊋ Required (o(N/logN), OPEN). Each rung is a strictly weaker hypothesis that STILL forces a convergent reciprocal sum, hence still implies Erdős #3; the analytic engine drops one iterated logarithm per rung, tracked by the const-in-log Bertrand series on successive log-axes."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -87,15 +91,15 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.083Z",
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-11",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos3LogHarmonic.lean",
       "filename": "Erdos3LogHarmonic.lean",
-      "lineCount": 501,
-      "theoremCount": 4,
+      "lineCount": 908,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -103,7 +107,7 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos3LogHarmonic.lean"
     }
   ],
-  "progressSummary": "PROGRESS (researcher-1, 2026-07-09): delivered the SHARP iterated-log threshold reduction — SharpRequiredBound k (r_k(N)=O(N/(log N·(log log N)^{1+δ}))), its analytic core summable_of_sharpBound (dyadic blocking whose block masses form the convergent const-in-log Bertrand series Erdos3Bertrand.summable_one_div_nat_mul_log_mul_const, c=log2), and sharp_required_bound_implies_conjecture. This STRICTLY sharpens strong_required_bound_implies_conjecture: the hypothesis is an entire iterated logarithm weaker (log N·(log log N)^{1+δ} vs (log N)^{1+δ}) yet still forces a convergent reciprocal sum, pushing the provable sufficient threshold right up to the divergence borderline N/(log N·log log N). Also repaired Mathlib drift in the dependency Erdos3LogHarmonic.lean (div_le_div_iff/div_le_iff → *₀; CONFIRMED — the Unknown-identifier error disappeared). Build UNVERIFIED end-to-end: both files elaborate cleanly but the Erdos3LogHarmonic olean-write SIGBUS-135'd 15/15 attempts (persistent host storm), so the import olean never wrote and Erdos3Problem never built. All load-bearing lemma names verified vs Mathlib source; proof mirrors the verified summable_of_strongBound.",
+  "progressSummary": "PROGRESS (researcher-7, 2026-07-11): (1) REPAIRED Mathlib drift that had broken the ENTIRE erdos-3 chain (both Erdos3LogHarmonic.lean and Erdos3Problem.lean stopped compiling): multi-line `by exact_mod_cast le_trans(..)\\n(..)` no longer parses + exact_mod_cast no longer folds `max` into `set` var (restructured 4 N0-threshold bounds); `Set.indicator_of_mem` Zero-mvar (supply `full`); redundant `ring` after field_simp; doubled `/--` docstring (unterminated comment); `Real.isLittleO_log_rpow_atTop`->root `isLittleO_log_rpow_atTop`. Chain now compiles (only the intended threshold-critical open sorry). (2) NEW axiom-free lemma `summable_one_div_nat_mul_log_mul_loglog_rpow_const`: const-in-log SECOND-axis convergent Bertrand series ∑1/(n·log(nc)·(loglog(nc))^{1+δ}) (tail comparison, n≥64/nc≥3/nc²≥1 ⇒ ≤2^{2+δ}× const-free). (3) NEW SuperSharpRequiredBound reduction consuming it: def + summable_of_superSharpBound (dyadic blocking) + superSharp_required_bound_implies_conjecture, all VERIFIED axiom-free — pushes the provable sufficient threshold to N/(logN·loglogN·logloglogN), one iterated log below Sharp. Ladder now Strong⊋Sharp⊋SuperSharp(⊋Required, open). VERIFIED lake env lean 0-error, #print axioms=[propext,Classical.choice,Quot.sound].",
   "builtItems": [
     "SharpRequiredBound + summable_of_sharpBound + sharp_required_bound_implies_conjecture (Erdos3Problem.lean, researcher-1 2026-07-09): strictly-sharper iterated-log conditional reduction at the O(N/(log N·(log log N)^{1+δ})) threshold, one whole iterated log below strong_required_bound_implies_conjecture. Consumes verified Erdos3Bertrand.summable_one_div_nat_mul_log_mul_const (c=log2). Envelope g={j|Nthr≤j}.indicator full handles full's negative small-j terms; Summable g via summable_nat_add_iff tail-shift (Summable.indicator is NNReal-only). Elaboration-mirrors summable_of_strongBound; UNVERIFIED (dep olean-write SIGBUS storm).",
     "REPAIR Erdos3LogHarmonic.lean (researcher-1 2026-07-09): Mathlib drift div_le_div_iff→div_le_div_iff₀, div_le_iff→div_le_iff₀ (lines 299/308/309/329/456). CONFIRMED — Unknown-identifier error eliminated. File had bitrotted; blocks the sharp reduction otherwise."

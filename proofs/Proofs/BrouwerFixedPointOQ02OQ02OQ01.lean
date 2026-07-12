@@ -438,7 +438,7 @@ theorem fixed_point_stability (f g : ℝ → ℝ) (L δ : ℝ) (hL1 : L < 1)
   have hstep : |xf - xg| ≤ L * |xf - xg| + δ := by
     have e1 : xf - xg = (f xf - f xg) + (f xg - g xg) := by rw [hxf, hxg]; ring
     calc |xf - xg| = |(f xf - f xg) + (f xg - g xg)| := by rw [e1]
-      _ ≤ |f xf - f xg| + |f xg - g xg| := abs_add _ _
+      _ ≤ |f xf - f xg| + |f xg - g xg| := abs_add_le _ _
       _ ≤ L * |xf - xg| + δ := by
           have ha := hf xf xg
           have hb := hclose xg
@@ -463,5 +463,210 @@ theorem fixed_point_stability_unconditional (f g : ℝ → ℝ) (L M δ : ℝ)
   obtain ⟨xf, hxf⟩ := exists_fixed_point f L hL0 hL1 hf
   obtain ⟨xg, hxg⟩ := exists_fixed_point g M hM0 hM1 hg
   exact ⟨xf, xg, hxf, hxg, fixed_point_stability f g L δ hL1 hf xf xg hxf hxg hclose⟩
+
+/-! ### The self-contained Cauchy estimate between iterates (no fixed point needed)
+
+Every a priori bound above compares an iterate `xₙ` to the fixed point `x*`.  The
+even more elementary — and genuinely `x*`-free — statement is the **Cauchy estimate**
+directly *between two iterates*,
+
+    |x_{n+m} − xₙ| ≤ Lⁿ/(1−L) · |x₁ − x₀|,
+
+bounding the total drift over any number `m` of further steps purely by the *first*
+increment and the current index `n`.  It mentions no fixed point at all (on a complete
+space it is precisely what *proves* one exists, the sequence being Cauchy), and letting
+`m → ∞` recovers `apriori_estimate`.  It rests on the geometric decay of the individual
+increments, `|x_{k+1} − x_k| ≤ Lᵏ·|x₁ − x₀|` (`step_dist`), telescoped and summed as a
+finite geometric series `∑_{j<m} Lⁿ⁺ʲ = Lⁿ(1−Lᵐ)/(1−L) ≤ Lⁿ/(1−L)`. -/
+
+/-- **Geometric decay of the increments.**  `|x_{k+1} − x_k| ≤ Lᵏ · |x₁ − x₀|`: each
+    successive step of the iteration is shorter than the previous one by a factor `L`.
+    Proved by induction, applying the contraction bound to consecutive iterates. -/
+theorem step_dist (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (k : ℕ) :
+    |x (k + 1) - x k| ≤ L ^ k * |x 1 - x 0| := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    have h := hf (x (k + 1)) (x k)
+    rw [← hx (k + 1), ← hx k] at h
+    calc |x (k + 1 + 1) - x (k + 1)| ≤ L * |x (k + 1) - x k| := h
+      _ ≤ L * (L ^ k * |x 1 - x 0|) := mul_le_mul_of_nonneg_left ih hL0
+      _ = L ^ (k + 1) * |x 1 - x 0| := by ring
+
+/-- **Cauchy estimate between iterates (fixed-point-free a priori bound).**  For a
+    contraction `f` on `ℝ` with `0 ≤ L < 1` and iteration `xₙ₊₁ = f xₙ`, any two iterates
+    satisfy `|x_{n+m} − xₙ| ≤ Lⁿ/(1−L) · |x₁ − x₀|`.  No fixed point is assumed — this is
+    the estimate exhibiting the iteration as a Cauchy sequence, and taking `m → ∞`
+    reproduces `apriori_estimate`.  Proved from `step_dist` via the exact partial geometric
+    sum `Lⁿ(1−Lᵐ)/(1−L)` carried as an induction invariant. -/
+theorem cauchy_estimate (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (n m : ℕ) :
+    |x (n + m) - x n| ≤ L ^ n / (1 - L) * |x 1 - x 0| := by
+  have hc : (0 : ℝ) < 1 - L := by linarith
+  set S := |x 1 - x 0| with hS
+  have hSnn : 0 ≤ S := abs_nonneg _
+  -- exact partial-sum invariant, cleared of the division by `1 - L`
+  have key : ∀ m, (1 - L) * |x (n + m) - x n| ≤ L ^ n * (1 - L ^ m) * S := by
+    intro m
+    induction m with
+    | zero => simp
+    | succ m ih =>
+      show (1 - L) * |x (n + m + 1) - x n| ≤ L ^ n * (1 - L ^ (m + 1)) * S
+      rw [pow_succ]
+      have hstep := step_dist f L hL0 hf x hx (n + m)
+      rw [pow_add] at hstep
+      have htri : |x (n + m + 1) - x n| ≤ |x (n + m + 1) - x (n + m)| + |x (n + m) - x n| :=
+        abs_sub_le _ _ _
+      have hLnn : (0 : ℝ) ≤ L ^ n := pow_nonneg hL0 n
+      have hLm : (0 : ℝ) ≤ L ^ m := pow_nonneg hL0 m
+      nlinarith [mul_le_mul_of_nonneg_left htri hc.le,
+                 mul_le_mul_of_nonneg_left hstep hc.le, ih, hLnn, hLm, hSnn,
+                 mul_nonneg (mul_nonneg hLnn hLm) hSnn]
+  have hbound : L ^ n * (1 - L ^ m) * S ≤ L ^ n * S := by
+    have hLm : (0 : ℝ) ≤ L ^ m := pow_nonneg hL0 m
+    nlinarith [pow_nonneg hL0 n, hSnn, hLm,
+               mul_nonneg (mul_nonneg (pow_nonneg hL0 n) hLm) hSnn]
+  have hfin : (1 - L) * |x (n + m) - x n| ≤ L ^ n * S := le_trans (key m) hbound
+  rw [div_mul_eq_mul_div, le_div_iff₀ hc]
+  nlinarith [hfin]
+
+/-! ### The `n`-fold iterate is an `Lⁿ`-contraction (structural composition law)
+
+The composition laws `lipschitz_comp`/`lipschitz_comp_list` compose *distinct* maps; the
+special case of composing one map `f` with itself `n` times says the iterate `f^[n]` is
+`Lⁿ`-Lipschitz.  This is the structural fact underlying the geometric decay `iterate_dist`
+(`xₙ = f^[n] x₀`) and, since `Lⁿ < 1`, gives an alternate route to a unique fixed point of
+every iterate.  Stated with Mathlib's `Function.iterate` `f^[n]`. -/
+
+/-- **The `n`-fold iterate of an `L`-contraction is `Lⁿ`-Lipschitz.**
+    `|f^[n] x − f^[n] y| ≤ Lⁿ · |x − y|`.  Proved by induction on `n`, peeling one outer
+    application via `Function.iterate_succ_apply'` and applying the contraction bound. -/
+theorem iterate_lipschitz (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) (n : ℕ) (x y : ℝ) :
+    |f^[n] x - f^[n] y| ≤ L ^ n * |x - y| := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply', Function.iterate_succ_apply']
+    calc |f (f^[n] x) - f (f^[n] y)| ≤ L * |f^[n] x - f^[n] y| := hf _ _
+      _ ≤ L * (L ^ n * |x - y|) := mul_le_mul_of_nonneg_left ih hL0
+      _ = L ^ (n + 1) * |x - y| := by ring
+
+/-! ### The fundamental (Ostrowski) a posteriori estimate at an arbitrary point
+
+Every a posteriori bound above is stated along the iteration `xₙ₊₁ = f xₙ`, controlling
+`|xₙ − x*|` by the observable increment `|xₙ₊₁ − xₙ|`. The underlying inequality holds at
+*any* single point, with no sequence structure: for arbitrary `x`,
+
+    |x − x*| ≤ |x − f x| / (1 − L).
+
+This is the fundamental error estimate (Ostrowski): one residual evaluation `|x − f x|`
+bounds the whole distance to the fixed point. `aposteriori_estimate` is its specialization
+to `x = xₙ` (then `f x = xₙ₊₁`), and `apriori_estimate` at `n = 0` is the same bound along
+a launched sequence; stating it pointwise frees it from the `x : ℕ → ℝ` scaffold. Proof:
+`|x − x*| ≤ |x − f x| + |f x − f x*|` (triangle, `x* = f x*`) `≤ |x − f x| + L|x − x*|`. -/
+
+/-- **Fundamental (Ostrowski) error estimate at an arbitrary point.**  For a contraction
+    with `L < 1` and any fixed point `x*`, every point `x` satisfies
+    `|x − x*| ≤ |x − f x| / (1 − L)`: a single residual `|x − f x|` bounds the distance to
+    `x*`, with no iteration sequence required.  The pointwise form the iterate a posteriori
+    bounds `aposteriori_estimate` specialize. -/
+theorem fundamental_error_estimate (f : ℝ → ℝ) (L : ℝ) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (xstar : ℝ) (hfp : f xstar = xstar) (x : ℝ) :
+    |x - xstar| ≤ |x - f x| / (1 - L) := by
+  have hpos : (0 : ℝ) < 1 - L := by linarith
+  have hstep : |f x - xstar| ≤ L * |x - xstar| := by
+    have h := hf x xstar
+    rw [hfp] at h
+    exact h
+  have ht : |x - xstar| ≤ |x - f x| + |f x - xstar| := abs_sub_le _ _ _
+  rw [le_div_iff₀ hpos]
+  nlinarith [ht, hstep]
+
+/-- **Unconditional fundamental error estimate.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` (the unique one) for which
+    `|x − x*| ≤ |x − f x| / (1 − L)` holds at *every* point `x`.  The hypothesis-free form
+    of `fundamental_error_estimate`, produced by threading `exists_fixed_point`; a single
+    residual evaluation certifies proximity to `x*` knowing only `f` and `L`. -/
+theorem fundamental_error_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hL1 : L < 1) (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) :
+    ∃ xstar : ℝ, f xstar = xstar ∧ ∀ x, |x - xstar| ≤ |x - f x| / (1 - L) := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun x => fundamental_error_estimate f L hL1 hf xstar hfp x⟩
+
+/-! ### The a posteriori estimate refines the a priori estimate, and a pointwise fundamental *lower* bound
+
+Two facts about the *sharpness* of the estimates above, neither recorded so far:
+
+  * **The a posteriori bound is never worse than the a priori bound**
+    (`aposteriori_le_apriori`).  At step `n+1` the a posteriori estimate
+    `L/(1−L)·|xₙ₊₁ − xₙ|` (computed from the latest, observed increment) is `≤` the
+    a priori estimate `Lⁿ⁺¹/(1−L)·|x₁ − x₀|` (computed before iterating), because the
+    observed increment itself obeys `|xₙ₊₁ − xₙ| ≤ Lⁿ·|x₁ − x₀|` (`step_dist`).  So
+    the computable stopping criterion is always at least as tight as the a priori
+    iteration count — the a posteriori estimate genuinely refines the a priori one.
+
+  * **A pointwise fundamental *lower* bound** (`fundamental_error_lower`).  The
+    fundamental estimate `fundamental_error_estimate` bounds the distance to `x*`
+    *above* by the residual, `|x − x*| ≤ |x − f x|/(1−L)`.  Its complementary lower
+    bound `|x − f x|/(1 + L) ≤ |x − x*|` holds at *any* point `x` (only `0 ≤ L`
+    needed): a small residual is not merely sufficient but *necessary* for proximity
+    to `x*`, so `|x − f x|` is a two-sided proxy for `|x − x*|`.  This is the
+    pointwise (Ostrowski, sequence-free) form of `aposteriori_lower_estimate`, just
+    as `fundamental_error_estimate` is the pointwise form of `aposteriori_estimate`.
+    Proof: `|x − f x| ≤ |x − x*| + |x* − f x| ≤ |x − x*| + L·|x − x*|`. -/
+
+/-- **The a posteriori bound refines the a priori bound.**  At step `n+1` the a
+    posteriori estimate (latest increment) is never larger than the a priori estimate
+    (first increment): `L/(1−L)·|xₙ₊₁ − xₙ| ≤ Lⁿ⁺¹/(1−L)·|x₁ − x₀|`.  The computable
+    stopping criterion is thus always at least as sharp as the pre-iteration count.
+    Proof: `step_dist` gives `|xₙ₊₁ − xₙ| ≤ Lⁿ·|x₁ − x₀|`, and scaling by the
+    nonnegative factor `L/(1−L)` turns `Lⁿ` into `Lⁿ⁺¹`. -/
+theorem aposteriori_le_apriori (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (n : ℕ) :
+    L / (1 - L) * |x (n + 1) - x n| ≤ L ^ (n + 1) / (1 - L) * |x 1 - x 0| := by
+  have hcontr : (0 : ℝ) < 1 - L := by linarith
+  have hinc := step_dist f L hL0 hf x hx n
+  have hfrac : (0 : ℝ) ≤ L / (1 - L) := div_nonneg hL0 (le_of_lt hcontr)
+  calc L / (1 - L) * |x (n + 1) - x n|
+      ≤ L / (1 - L) * (L ^ n * |x 1 - x 0|) := mul_le_mul_of_nonneg_left hinc hfrac
+    _ = L ^ (n + 1) / (1 - L) * |x 1 - x 0| := by rw [pow_succ]; ring
+
+/-- **Fundamental (Ostrowski) *lower* error bound at an arbitrary point.**  For any
+    fixed point `x*` of an `L`-contraction (`0 ≤ L`), every point `x` satisfies
+    `|x − f x| / (1 + L) ≤ |x − x*|`: the residual `|x − f x|` is, up to the factor
+    `1 + L`, a lower bound on the distance to `x*`, complementing the upper bound
+    `fundamental_error_estimate`.  Only `0 ≤ L` is needed (no `L < 1`).  This is the
+    pointwise, sequence-free form of `aposteriori_lower_estimate`. -/
+theorem fundamental_error_lower (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (xstar : ℝ) (hfp : f xstar = xstar) (x : ℝ) :
+    |x - f x| / (1 + L) ≤ |x - xstar| := by
+  have hpos : (0 : ℝ) < 1 + L := by linarith
+  have hstep : |f x - xstar| ≤ L * |x - xstar| := by
+    have h := hf x xstar
+    rw [hfp] at h
+    exact h
+  have ht : |x - f x| ≤ |x - xstar| + |xstar - f x| := abs_sub_le _ _ _
+  rw [abs_sub_comm xstar (f x)] at ht
+  rw [div_le_iff₀ hpos]
+  nlinarith [ht, hstep]
+
+/-- **Unconditional fundamental *lower* error bound.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` (the unique one) for which
+    `|x − f x| / (1 + L) ≤ |x − x*|` holds at *every* point `x`.  The hypothesis-free
+    form of `fundamental_error_lower`, threading `exists_fixed_point`; together with
+    `fundamental_error_estimate_unconditional` it pins `|x − x*|` to the band
+    `[ |x − f x|/(1+L), |x − f x|/(1−L) ]` from the single residual `|x − f x|`. -/
+theorem fundamental_error_lower_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hL1 : L < 1) (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) :
+    ∃ xstar : ℝ, f xstar = xstar ∧ ∀ x, |x - f x| / (1 + L) ≤ |x - xstar| := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun x => fundamental_error_lower f L hL0 hf xstar hfp x⟩
 
 end BrouwerOQ02OQ02OQ01

@@ -289,3 +289,59 @@ lineCount 1107→1216, theoremCount 34→39 & 36→41, definitionCount 7→8).
 
 **Assessment.** Structure line is now complete symmetrically at ring AND field level; the
 only remaining frontier is full Newton–Puiseux algebraic closure (>1000-line, out of scope).
+
+## Session (researcher-6, 2026-07-11): Part XIII — the value group of the valuation
+
+**Mode**: REVISIT (MODERATE, saturated) · **Outcome**: progress (5 thms VERIFIED
+0-sorry/0-axiom via local lean 4.26.0 elab — docker running but no image, irrelevant).
+
+**First VERIFY.** Re-elaborated the whole file (Parts VIII–XII, standing at 1216 lines):
+EXIT 0, zero errors (only the two long-standing warnings at 353 unused `hq`, 380 no-op
+push_cast). The UNVERIFIED-shipped filtration parts remain correct.
+
+**Gap closed — Part XIII (section `ValueGroup`).** Every prior part built the *algebraic*
+structure (Subring→Subfield, Parts VIII–X) and the *ramification filtration*
+(Parts XI–XII), but never recorded the one order-theoretic fact that is the entire
+*raison d'être* of the Puiseux field: its `orderTop` valuation is `ℚ`-valued and hits
+**every** rational, whereas the Laurent field `K((x))` (ℤ-supported) has value group only
+`ℤ`. This is the sharpest "`K⦃⦃x⦄⦄` strictly extends `K((x))`" statement and was missing.
+
+1. `exists_puiseux_orderTop_eq (q : ℚ)` — every rational is `orderTop` of a nonzero
+   Puiseux series (`single q 1`, via `orderTop_single one_ne_zero` + `single_ne_zero`).
+2. `puiseux_orderTop_range` — the value group of the full Puiseux field is *all* of `ℚ`,
+   as a set-equality `{orderTop of nonzero Puiseux f} = {v : WithTop ℚ | v ≠ ⊤}`.
+   Forward = `orderTop_ne_top`; backward = (1) after `WithTop.ne_top_iff_exists`.
+3. `orderTop_mem_ramification` — forward inclusion for level `n`: a nonzero
+   `(1/n)`-ramified series has `orderTop = k/n` for some `k:ℤ`. The least exponent is
+   finite (`orderTop_ne_top`), lies in the support (`coeff_orderTop_ne` + `mem_support`),
+   hence in `(1/n)ℤ` by the ramification predicate.
+4. `exists_ramification_orderTop_eq (n) (k)` — backward inclusion: `single (k/n) 1` is a
+   nonzero level-`n` series with `orderTop = k/n`.
+5. `ramification_orderTop_range (n)` — capstone: the value group of the level-`n` Laurent
+   subfield `K((x^{1/n}))` is *exactly* `{k/n : k∈ℤ} = (1/n)ℤ`. The chain
+   `ℤ ⊆ ½ℤ ⊆ ⅓ℤ ⊆ …` unions to `ℚ`, the valuation-image of the field colimit
+   `iSup_puiseuxRamificationSubfield`.
+
+**Technique / reusable.**
+- `HahnSeries.coeff_orderTop_ne (hg : x.orderTop = ↑g) : x.coeff g ≠ 0` — the bridge from
+  a *finite* `orderTop` value to a support element (the min is attained). Pair with
+  `WithTop.ne_top_iff_exists.mp (orderTop_ne_top.2 hf0)` to extract that finite value.
+- `orderTop_single (h : r ≠ 0) : (single a r).orderTop = a` and `single_ne_zero` give the
+  witness half of a value-group surjectivity for free — over a `Field K`, `one_ne_zero`
+  discharges `(1:K) ≠ 0`.
+- Value-group-as-set-equality proofs: `ext v; constructor; rintro ⟨f,…,rfl⟩` /
+  `rintro ⟨k,rfl⟩` — the `rfl` on `f.orderTop = v` (resp. `v = ↑(k/n)`) substitutes `v`
+  cleanly so each direction reduces to one existing inclusion lemma.
+
+**Verification.** `#print axioms` on `puiseux_orderTop_range`, `ramification_orderTop_range`,
+`exists_puiseux_orderTop_eq`, `orderTop_mem_ramification` = `[propext, Classical.choice,
+Quot.sound]` only — no `sorryAx`, no `ofReduceBool`. Genuinely 0-axiom/0-sorry.
+
+**Files Modified:** proofs/Proofs/PuiseuxTheorem.lean (+Part XIII: 5 thms; 1216→1315
+lines), src/data/proofs/puiseux-theorem/meta.json (lineCount 1216→1315, theoremCount
+39→44 & 41→46).
+
+**Assessment.** With the value group pinned down at both the full-field (`= ℚ`) and every
+finite level (`= (1/n)ℤ`), the "structural rounding-out" line is now complete on the
+*algebraic*, *filtration*, and *valuation* axes. The only remaining frontier is the deep
+Newton–Puiseux algebraic closure (>1000-line, out of scope).

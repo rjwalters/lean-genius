@@ -61,7 +61,8 @@
       "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
       "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
       "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
-      "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x"
+      "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x",
+      "qualifyingCount_factorial_ge / qualifyingCount_factorial_unbounded: PROVED the absolute (non-ratio) lower bound C(n!) ≥ n−3 by summing the per-level positivity qualifyingInLevel_pos over levels 3 ≤ l < n via qualifyingCount_decomposition, yielding infinitude of qualifying primes at factorial points (C(n!) → ∞) — the absolute counterpart of the density/deficit results"
     ],
     "axiomCount": 1,
     "prerequisites": [
@@ -69,7 +70,7 @@
       "Sieve theory: Selberg sieve, Brun-Titchmarsh inequality (motivational)",
       "Finset operations: filter, card, sum, sum splitting"
     ],
-    "lineCount": 807,
+    "lineCount": 868,
     "relatedProblems": [
       {
         "id": "erdos-1059-oq-01",
@@ -85,7 +86,7 @@
       }
     ],
     "assumptions": "One explicit sieve axiom: strong_selberg_density (the Selberg sieve's quantitative prediction q(l)·(l+1) ≥ p(l)·l for l ≥ 3). The former second axiom primes_growth_in_levels (p(l) ≥ l) is now the PROVED theorem primesInLevel_pos (p(l) ≥ 1, via Bertrand's postulate); the downstream results only ever used positivity of the level prime count, so the axiom count drops from 2 to 1. The file is SORRY-FREE: the two interval-decomposition lemmas (π(n!) and C(n!) as sums over primorial levels) are proved via the generic count_decomp by induction. Hence density_one_at_factorials is fully derived modulo the single disclosed axiom.",
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 3
   },
   "overview": {
@@ -190,15 +191,15 @@
     }
   ],
   "leanFile": {
-    "lineCount": 807,
+    "lineCount": 868,
     "namespace": "Erdos1059OQ01OQ01",
     "opens": [
       "Nat"
     ],
     "structureCount": 0,
     "axiomCount": 1,
-    "theoremCount": 18,
-    "substantiveTheoremCount": 10,
+    "theoremCount": 20,
+    "substantiveTheoremCount": 12,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [

@@ -32,13 +32,13 @@
     "focus": "Repaired compilation + proved superlinear_forces_nonplanar (7→6 sorries). Remaining sorries blocked on absent Mathlib planarity theory.",
     "blockers": [
       "planar_linear_bound (edgeCount <= 3*card V - 6 for Kuratowski-planar graphs) is UNPROVABLE from Mathlib v4.26: Mathlib has NO planar-graph / Euler-formula API (verified 2026-07-09 by researcher-3 — no SimpleGraph.IsPlanar, no Euler formula, no face/embedding theory). Deriving 3n-6 from the containsSubdivision (Kuratowski) definition genuinely needs Euler formula. Not session-buildable.",
-      "kostochka_pyber and kostochka_pyber_explicit are deep literature (Kostochka-Pyber theorem on dense-subgraph forcing); not derivable from Mathlib.",
+      "kostochka_pyber is deep literature (Kostochka-Pyber theorem on dense-subgraph forcing); not derivable from Mathlib. [researcher-6 2026-07-11: the companion axiom kostochka_pyber_explicit was found INCONSISTENT (its ⌈1/ε²⌉ bound is <5 at ε=1/2, contradicting the ≥5 vertex floor for non-planarity) and REMOVED, replaced by a machine-checked disproof explicit_bound_half_is_false.]",
       "sparse_hides_nonplanarity (line 277 sorry) requires an explicit dense-graph lower-bound construction exhibiting dense graphs whose non-planar induced subgraphs are all large — the C_eps -> infinity claim. No subdivision/lower-bound theory in Mathlib to build it; BLOCKED."
     ]
   },
   "knowledge": {
     "phase": "ACT",
-    "progressSummary": "PROGRESS (researcher-2, 2026-07-09): eliminated both definition-sorries (isPlanar, containsSubdivision) by defining planarity via the Kuratowski characterization; kuratowski_theorem, K5_nonplanar, K33_nonplanar converted axioms->theorems in both main and stub files. Axioms 6->3 per file (aggregate 12->6), main-file sorries 3->1. Remaining: 3 deep literature axioms (kostochka_pyber(_explicit), planar_linear_bound) + 1 blocked sorry (sparse_hides_nonplanarity, C_ε growth lower bound).",
+    "progressSummary": "PROGRESS (researcher-6, 2026-07-11): removed the INCONSISTENT kostochka_pyber_explicit axiom from both main and stub files (its concrete bound explicitBound ε=⌈1/ε²⌉ gives 4<5 at ε=1/2, contradicting nonPlanar_needs_five since arbitrarily large 1/2-dense complete graphs exist), replaced by an axiom-free disproof explicit_bound_half_is_false + supporting lemma complete_graph_half_dense; also removed the dependent false theorem explicit_small_nonplanar. Main-file axioms 3→2, aggregate 6→4; both build VERIFIED. ---- PROGRESS (researcher-2, 2026-07-09): eliminated both definition-sorries (isPlanar, containsSubdivision) by defining planarity via the Kuratowski characterization; kuratowski_theorem, K5_nonplanar, K33_nonplanar converted axioms->theorems in both main and stub files. Axioms 6->3 per file (aggregate 12->6), main-file sorries 3->1. Remaining: 3 deep literature axioms (kostochka_pyber(_explicit), planar_linear_bound) + 1 blocked sorry (sparse_hides_nonplanarity, C_ε growth lower bound).",
     "insights": [
       "The file was a broken gallery entry: it failed to compile under Mathlib 4.26 (HPow ℝ ℝ unsynthesized, unknown Nat.ceil, universe metavariable) despite meta claiming 260-line/7-sorry axiomatized status — a false-verified hazard for auditors.",
       "The universe metavariable came from a def whose body applies a Type*-polymorphic def while its own signature (: Prop) binds no universe; pinning the inner ∀ to Type removes the metavar without weakening the mathematics.",
@@ -55,7 +55,7 @@
       "Mirrored the same transformation into Stubs/Erdos1018Problem.lean duplicate (axioms 6->3). Docker VERIFIED."
     ],
     "nextSteps": [
-      "BLOCKED (2026-07-09 researcher-3 audit): all 3 remaining axioms + the 1 sorry require graph theory absent from Mathlib v4.26 (planar embeddings / Euler formula) or deep literature (Kostochka-Pyber). No session-sized progress available until Mathlib gains planar-graph theory. Do not re-serve as routine-actionable.",
+      "BLOCKED for the 2 REMAINING axioms (kostochka_pyber, planar_linear_bound) + they require graph theory absent from Mathlib v4.26 (planar embeddings / Euler formula) or deep literature (Kostochka-Pyber). No session-sized progress available until Mathlib gains planar-graph theory.",
       "If Mathlib gains planar-graph / Euler-formula API: discharge planar_linear_bound (3n-6) first, then re-audit the crossover chain toward an axiom-free superlinear_forces_nonplanar."
     ]
   },
@@ -67,7 +67,7 @@
     "compile-repair"
   ],
   "started": "2026-07-01T11:04:53Z",
-  "lastUpdate": "2026-07-01T11:04:53Z",
+  "lastUpdate": "2026-07-11T00:00:00Z",
   "significance": 6,
   "tractability": 6,
   "relatedProofs": [

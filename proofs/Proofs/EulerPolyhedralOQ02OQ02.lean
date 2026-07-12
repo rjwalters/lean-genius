@@ -415,6 +415,48 @@ theorem connectedSum_sphere_totalPfaffian (n : ℕ) (N : CGBManifold)
   show 2 * cgbConst n + N.totalPfaffian - 2 * cgbConst n = N.totalPfaffian
   ring
 
+/-- **Right identity: `χ(N # S^{2n}) = χ(N)`.**  The mirror of `connectedSum_sphere_chi`
+    (the left identity `χ(S^{2n} # N) = χ(N)`).  With both sides, `S^{2n}` is a genuine
+    *two-sided* identity for connected sum on Euler characteristics — the identity axiom of
+    the connected-sum monoid the docstrings advertise. -/
+theorem connectedSum_sphere_chi_right (n : ℕ) (N : CGBManifold)
+    (h : N.halfDim = (sphereCGB n).halfDim) :
+    (connectedSumCGB N (sphereCGB n) h).chi = N.chi := by
+  rw [connectedSumCGB_chi]
+  show N.chi + (2 : ℤ) - 2 = N.chi
+  ring
+
+/-- **Commutativity on Euler characteristics: `χ(M # N) = χ(N # M)`.**  Connected sum is
+    commutative on `χ` (`χ(M#N) = M.chi + N.chi − 2` is symmetric in `M, N`), the commutativity
+    axiom of the connected-sum monoid.  Together with `connectedSumCGB_chi_assoc` and the
+    two-sided sphere identity (`connectedSum_sphere_chi` / `connectedSum_sphere_chi_right`) this
+    makes `(2n`-manifolds, `#)` a genuine *commutative* monoid on `χ`, with `χ − 2` the induced
+    additive homomorphism to `ℤ`. -/
+theorem connectedSumCGB_chi_comm (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).chi = (connectedSumCGB N M h.symm).chi := by
+  rw [connectedSumCGB_chi, connectedSumCGB_chi]; ring
+
+/-- **Associativity on Euler characteristics: `χ((M # N) # P) = χ(M # (N # P))`.**  Both sides
+    equal `M.chi + N.chi + P.chi − 4`, so connected sum is associative on `χ` — the associativity
+    axiom of the connected-sum monoid.  (The dimension hypotheses force all three `halfDim`s
+    equal, so both nested connected sums are well-formed.) -/
+theorem connectedSumCGB_chi_assoc (M N P : CGBManifold)
+    (hMN : M.halfDim = N.halfDim) (hNP : N.halfDim = P.halfDim) :
+    (connectedSumCGB (connectedSumCGB M N hMN) P (hMN.trans hNP)).chi
+      = (connectedSumCGB M (connectedSumCGB N P hNP) hMN).chi := by
+  rw [connectedSumCGB_chi, connectedSumCGB_chi, connectedSumCGB_chi, connectedSumCGB_chi]
+  ring
+
+/-- **Commutativity on the total Pfaffian: `∫Pf(M # N) = ∫Pf(N # M)`.**  The Gauss-Bonnet
+    companion of `connectedSumCGB_chi_comm`: the connected-sum total curvature
+    `M.totalPfaffian + N.totalPfaffian − 2·cgbConst` is symmetric in `M, N` because the removed
+    sphere correction `2·cgbConst M.halfDim = 2·cgbConst N.halfDim` agrees (`h : M.halfDim =
+    N.halfDim`).  So connected sum is commutative as a Chern-Gauss-Bonnet operation, not merely
+    on `χ`. -/
+theorem connectedSumCGB_totalPfaffian_comm (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).totalPfaffian = (connectedSumCGB N M h.symm).totalPfaffian := by
+  rw [connectedSumCGB_totalPfaffian, connectedSumCGB_totalPfaffian, h]; ring
+
 /-- **Genus-2 surface from two tori.** The connected sum T² # T² is the genus-2
     closed orientable surface, with χ = 0 + 0 − 2 = −2 — matching the classical
     χ(Σ_g) = 2 − 2g at g = 2. -/
@@ -551,6 +593,37 @@ theorem genusSurfaceCGB_genus_of_chi (g : ℕ) :
     2 * (g : ℤ) = 2 - (genusSurfaceCGB g).chi := by
   rw [genusSurfaceCGB_chi]; ring
 
+/-- **Euler characteristic is strictly decreasing in genus.**  `g ↦ χ(Σ_g) = 2 − 2g` is
+    `StrictAnti`: every added handle strictly lowers the Euler characteristic.  This is the
+    order-theoretic sharpening of the injectivity `genusSurfaceCGB_chi_inj` — the embedding
+    `(surfaces, #) ↪ (ℕ, +)` reverses order under `χ` — and the discrete shadow of the
+    Gauss-Bonnet sign trichotomy (`χ` drops from `+2` through `0` into the negatives as `g`
+    grows). -/
+theorem genusSurfaceCGB_chi_strictAnti :
+    StrictAnti (fun g : ℕ => (genusSurfaceCGB g).chi) := by
+  intro a b hab
+  simp only [genusSurfaceCGB_chi]
+  omega
+
+/-- **The sphere maximizes the Euler characteristic: `χ(Σ_g) ≤ 2`.**  Since `χ(Σ_g) = 2 − 2g`
+    and `g ≥ 0`, no closed orientable surface has Euler characteristic above `2`; the bound
+    is attained only at the sphere. -/
+theorem genusSurfaceCGB_chi_le_two (g : ℕ) : (genusSurfaceCGB g).chi ≤ 2 := by
+  rw [genusSurfaceCGB_chi]; omega
+
+/-- **`χ = 2` characterizes the sphere.**  Equality in `genusSurfaceCGB_chi_le_two` holds
+    exactly at genus `0`: `χ(Σ_g) = 2 ↔ g = 0`.  The top of the `χ`-range is the unique
+    positively-curved surface, matching `genusSurfaceCGB_totalPfaffian_pos_iff`. -/
+theorem genusSurfaceCGB_chi_eq_two_iff (g : ℕ) : (genusSurfaceCGB g).chi = 2 ↔ g = 0 := by
+  rw [genusSurfaceCGB_chi]; omega
+
+/-- **The Euler characteristic of a closed orientable surface is even.**  `χ(Σ_g) = 2 − 2g
+    = 2(1 − g)` is always even — the parity constraint that, together with `χ ≤ 2`
+    (`genusSurfaceCGB_chi_le_two`), pins the image of `g ↦ χ(Σ_g)` to exactly the even
+    integers `≤ 2`. -/
+theorem genusSurfaceCGB_chi_even (g : ℕ) : Even (genusSurfaceCGB g).chi :=
+  ⟨1 - (g : ℤ), by rw [genusSurfaceCGB_chi]; ring⟩
+
 -- ============================================================================
 -- Part XIV: The Gauss-Bonnet sign trichotomy — total curvature detects the
 --           uniformization regime (spherical / flat / hyperbolic) from the genus
@@ -606,6 +679,53 @@ theorem genusSurfaceCGB_totalPfaffian_neg_iff (g : ℕ) :
     refine Or.inr ⟨?_, hpi⟩
     have : (2 : ℝ) ≤ (g : ℝ) := by exact_mod_cast hg
     linarith
+
+-- ============================================================================
+-- Part XV: Order and parity of the genus Euler characteristic, and the
+--          Euler characteristic of product surfaces `Σ_g × Σ_h`
+-- ============================================================================
+
+/-- **`χ(Σ_g)` is strictly decreasing in the genus.**  Each added handle drops the
+    Euler characteristic by exactly `2`, so `g ↦ χ(Σ_g) = 2 − 2g` is strictly
+    antitone: `g < h ⇒ χ(Σ_h) < χ(Σ_g)`.  This upgrades the injectivity
+    `genusSurfaceCGB_chi_inj` to a genuine order-reversing structure on the
+    connected-sum monoid `(surfaces, #) ≅ (ℕ, +)`. -/
+theorem genusSurfaceCGB_chi_strictAnti :
+    StrictAnti (fun g : ℕ => (genusSurfaceCGB g).chi) := by
+  intro a b hab
+  simp only [genusSurfaceCGB_chi]
+  omega
+
+/-- **`χ(Σ_g)` is (weakly) antitone in the genus**, the `≤`-form of
+    `genusSurfaceCGB_chi_strictAnti`. -/
+theorem genusSurfaceCGB_chi_antitone :
+    Antitone (fun g : ℕ => (genusSurfaceCGB g).chi) :=
+  genusSurfaceCGB_chi_strictAnti.antitone
+
+/-- **The Euler characteristic of a closed orientable surface is even.**  `χ(Σ_g) =
+    2 − 2g = 2(1 − g)` is even for every genus `g` — the parity obstruction that no
+    closed orientable surface has odd Euler characteristic. -/
+theorem genusSurfaceCGB_chi_even (g : ℕ) : Even (genusSurfaceCGB g).chi :=
+  ⟨1 - (g : ℤ), by rw [genusSurfaceCGB_chi]; ring⟩
+
+/-- **Euler characteristic of the product surface `Σ_g × Σ_h`.**  Since `χ` is
+    multiplicative under products (`prodCGB_chi`), the product `4`-manifold
+    `Σ_g × Σ_h` has `χ = (2 − 2g)(2 − 2h)`.  Generalises `sphere_prod_sphere_chi`
+    (the `g = h = 0` case, `χ = 4`) to arbitrary genera. -/
+theorem prodCGB_genusSurface_chi (g h : ℕ) :
+    (prodCGB (genusSurfaceCGB g) (genusSurfaceCGB h)).chi
+      = (2 - 2 * (g : ℤ)) * (2 - 2 * (h : ℤ)) := by
+  rw [prodCGB_chi, genusSurfaceCGB_chi, genusSurfaceCGB_chi]
+
+/-- **Total Gauss-Bonnet curvature of the product surface `Σ_g × Σ_h`.**  The total
+    Pfaffian multiplies under products (`prodCGB_totalPfaffian`), giving the closed
+    form `∫Pf(Σ_g × Σ_h) = [4π(1−g)]·[4π(1−h)] = 16π²(1−g)(1−h)` for the product
+    `4`-manifold — the Chern-Gauss-Bonnet content `(2π)²·χ(Σ_g × Σ_h)` written out. -/
+theorem prodCGB_genusSurface_totalPfaffian (g h : ℕ) :
+    (prodCGB (genusSurfaceCGB g) (genusSurfaceCGB h)).totalPfaffian
+      = 16 * π ^ 2 * (1 - (g : ℝ)) * (1 - (h : ℝ)) := by
+  rw [prodCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian]
+  ring
 
 end ChernGaussBonnet
 

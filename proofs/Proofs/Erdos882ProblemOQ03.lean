@@ -313,7 +313,9 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
         · exact absurd h hxa
         · exact h
       have hsum : S.sum id = a + (S.erase a).sum id := by
-        simp [hSeq, Finset.sum_insert haS']
+        conv_lhs => rw [hSeq]
+        rw [Finset.sum_insert haS']
+        simp only [id_eq]
       by_cases hS'e : (S.erase a).Nonempty
       · -- non-empty remainder ⟹ a value of the shifted image `a + subsetSums A`
         right; right
@@ -340,8 +342,9 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
       rw [Finset.mem_filter, Finset.mem_powerset]
       exact ⟨hSA, hSne⟩
   · intro hs
-    rcases hs with rfl | h | ⟨t, ht, rfl⟩
+    rcases hs with heq | h | ⟨t, ht, rfl⟩
     · -- `s = a`: the singleton `{a}` is a non-empty subset of `insert a A`
+      subst s
       exact subset_subsetSums (insert a A) (Finset.mem_insert_self a A)
     · -- `s ∈ subsetSums A`: monotonicity along `A ⊆ insert a A`
       exact subsetSums_mono (Finset.subset_insert a A) h
@@ -551,5 +554,157 @@ theorem exists_superincreasing_extremal (k : ℕ) :
       have hk1 : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_two_pow
       have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
       rw [hdouble, hsum]; omega
+
+/-! ## The canonical powers-of-two witness
+
+`exists_superincreasing_extremal` builds *some* `k`-element superincreasing set
+abstractly (inserting a fresh element one above the running sum).  Here we exhibit
+the canonical named family `{2^0, 2^1, …, 2^{k-1}} = {1, 2, 4, …}` explicitly and
+verify it is superincreasing, has exactly `k` elements, and hence — via
+`subsetSums_card_superincreasing` — realises all `2^k − 1` distinct non-empty
+subset sums.  This is the concrete instantiation the existence theorem abstracts:
+every value in `[1, 2^k − 1]` is uniquely a subset sum (binary representation). -/
+
+/-- The powers-of-two set `{2^0, …, 2^{k-1}} = {1, 2, 4, …, 2^{k-1}}`. -/
+def powersOfTwo (k : ℕ) : Finset ℕ := (Finset.range k).image (2 ^ ·)
+
+@[simp] theorem mem_powersOfTwo {k x : ℕ} :
+    x ∈ powersOfTwo k ↔ ∃ i < k, 2 ^ i = x := by
+  simp [powersOfTwo]
+
+/-- `{2^0,…,2^{k-1}}` has exactly `k` elements — the exponent map `2^·` is
+    injective (`Nat.pow_right_injective`). -/
+theorem powersOfTwo_card (k : ℕ) : (powersOfTwo k).card = k := by
+  rw [powersOfTwo,
+      Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+      Finset.card_range]
+
+/-- **The powers-of-two family is superincreasing.**  For each element `2^i` the
+    strictly smaller elements are exactly `{2^0, …, 2^{i-1}}`, whose total is the
+    geometric sum `2^i − 1 < 2^i`. -/
+theorem superincreasing_powersOfTwo (k : ℕ) : Superincreasing (powersOfTwo k) := by
+  intro a ha
+  rw [mem_powersOfTwo] at ha
+  obtain ⟨i, hik, rfl⟩ := ha
+  -- the elements strictly below `2^i` are precisely `{2^j : j < i}`
+  have hfil : (powersOfTwo k).filter (· < 2 ^ i) = (Finset.range i).image (2 ^ ·) := by
+    ext x
+    simp only [Finset.mem_filter, mem_powersOfTwo, Finset.mem_image, Finset.mem_range]
+    constructor
+    · rintro ⟨⟨j, _, rfl⟩, hlt⟩
+      exact ⟨j, (Nat.pow_lt_pow_iff_right (by norm_num)).mp hlt, rfl⟩
+    · rintro ⟨j, hji, rfl⟩
+      exact ⟨⟨j, lt_trans hji hik, rfl⟩, (Nat.pow_lt_pow_iff_right (by norm_num)).mpr hji⟩
+  rw [hfil]
+  -- ∑_{j<i} 2^j = 2^i − 1
+  have hsum : ((Finset.range i).image (2 ^ ·)).sum id = 2 ^ i - 1 := by
+    rw [Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h)]
+    simp only [id_eq]
+    rw [Nat.geomSum_eq (le_refl 2) i]
+    norm_num
+  rw [hsum]
+  have : 1 ≤ 2 ^ i := Nat.one_le_two_pow
+  omega
+
+/-- **The powers-of-two family attains the extremal subset-sum count.**  For every
+    `k`, the canonical set `{2^0,…,2^{k-1}}` has exactly `2^k − 1` distinct non-empty
+    subset sums — the concrete named witness realising the tight bound of
+    `subsetSums_card_le` (cf. the abstract `exists_superincreasing_extremal`). -/
+theorem subsetSums_card_powersOfTwo (k : ℕ) :
+    (subsetSums (powersOfTwo k)).card = 2 ^ k - 1 := by
+  have h := subsetSums_card_superincreasing (superincreasing_powersOfTwo k)
+  rwa [powersOfTwo_card] at h
+
+/-- The total of the powers-of-two family is the geometric sum
+    `∑_{i<k} 2^i = 2^k − 1`. -/
+theorem sum_powersOfTwo (k : ℕ) : (powersOfTwo k).sum id = 2 ^ k - 1 := by
+  rw [powersOfTwo,
+      Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h)]
+  simp only [id_eq]
+  rw [Nat.geomSum_eq (le_refl 2) k]
+  norm_num
+
+/-- **Binary representation: the powers-of-two family realises the full interval.**
+    `subsetSums {2^0,…,2^{k-1}} = {1,…,2^k − 1}`.  The counting theorem
+    `subsetSums_card_powersOfTwo` gives only the *number* `2^k − 1` of distinct
+    subset sums; here we identify them *exactly* as the initial interval, delivering
+    on the docstring promise that "every value in `[1, 2^k − 1]` is uniquely a subset
+    sum (binary representation)".  Proof: the subset sums are trapped in
+    `[1, ∑ = 2^k − 1]` (`subsetSums_pos`, `subsetSums_le_sum`, `sum_powersOfTwo`) and
+    number exactly `2^k − 1 = |Icc 1 (2^k − 1)|`, so the containment is an equality by
+    cardinality. -/
+theorem subsetSums_powersOfTwo (k : ℕ) :
+    subsetSums (powersOfTwo k) = Finset.Icc 1 (2 ^ k - 1) := by
+  apply Finset.eq_of_subset_of_card_le
+  · intro s hs
+    rw [Finset.mem_Icc]
+    refine ⟨subsetSums_pos (superincreasing_powersOfTwo k).pos s hs, ?_⟩
+    have hle := subsetSums_le_sum s hs
+    rwa [sum_powersOfTwo] at hle
+  · rw [Nat.card_Icc, subsetSums_card_powersOfTwo]
+    omega
+
+/-- **Existence half of the binary-representation identity.**  Every value
+    `m ∈ [1, 2^k − 1]` occurs as a subset sum of `{2^0,…,2^{k-1}}` — its binary
+    expansion selects the subset.  Immediate from the set equality
+    `subsetSums_powersOfTwo`. -/
+theorem mem_subsetSums_powersOfTwo {k m : ℕ} (h1 : 1 ≤ m) (h2 : m ≤ 2 ^ k - 1) :
+    m ∈ subsetSums (powersOfTwo k) := by
+  rw [subsetSums_powersOfTwo, Finset.mem_Icc]
+  exact ⟨h1, h2⟩
+
+/-!
+### The counting-extremal regime is NOT the Erdős #882 validity regime
+
+Everything above characterises the sets that *maximise* the number of distinct
+non-empty subset sums: superincreasing sets, and the canonical witness
+`{2^0,…,2^{k-1}}`.  Erdős #882, however, asks for sets whose subset sums are
+**divisibility-free** (`ValidSubset`), and these two optimality notions are
+genuinely different — indeed *incompatible* on the extremal family.  The reason is
+elementary: the powers-of-two family contains `1` as a subset sum, and `1` divides
+everything, so no set of subset sums containing `1` alongside any other value can be
+divisibility-free.  Thus the subset-sum *counting* champion is the *worst possible*
+candidate for the divisibility-free problem.  These lemmas make that separation
+precise, closing the gap flagged in the file's research notes.
+-/
+
+/-- **A subset sum equal to `1` destroys divisibility-freeness.**  If `1 ∈ S` and `S`
+has any other element `b ≠ 1`, then `S` is not divisibility-free: `1 ∣ b` violates the
+`¬(1 ∣ b)` clause.  (`1` divides every natural, so it can never coexist with a second
+value in a divisibility-free set.) -/
+theorem not_divisibilityFree_of_one_mem {S : Finset ℕ} (h1 : 1 ∈ S)
+    (hb : ∃ b ∈ S, b ≠ 1) : ¬ DivisibilityFree S := by
+  obtain ⟨b, hbS, hb1⟩ := hb
+  intro hdf
+  exact (hdf 1 h1 b hbS (fun h => hb1 h.symm)).1 (one_dvd b)
+
+/-- **The extremal powers-of-two family has non-divisibility-free subset sums.**
+For `k ≥ 2` the counting-optimal set `{2^0,…,2^{k-1}}` (which realises all `2^k − 1`
+distinct subset sums) fails the Erdős #882 constraint: both `1 = 2^0` and `2 = 2^1`
+are subset sums, and `1 ∣ 2`.  So maximising the subset-sum *count* is directly at
+odds with divisibility-freeness. -/
+theorem not_divisibilityFree_subsetSums_powersOfTwo {k : ℕ} (hk : 2 ≤ k) :
+    ¬ DivisibilityFree (subsetSums (powersOfTwo k)) := by
+  have h1mem : (1 : ℕ) ∈ powersOfTwo k := by
+    rw [mem_powersOfTwo]; exact ⟨0, by omega, by norm_num⟩
+  have h2mem : (2 : ℕ) ∈ powersOfTwo k := by
+    rw [mem_powersOfTwo]; exact ⟨1, by omega, by norm_num⟩
+  have h1 : (1 : ℕ) ∈ subsetSums (powersOfTwo k) := subset_subsetSums _ h1mem
+  have h2 : (2 : ℕ) ∈ subsetSums (powersOfTwo k) := subset_subsetSums _ h2mem
+  exact not_divisibilityFree_of_one_mem h1 ⟨2, h2, by norm_num⟩
+
+/-- **Subset-sum counting-extremality does not imply Erdős #882 validity.**
+For every `k ≥ 2` there is a `k`-element superincreasing set — realising the full
+`2^k − 1` distinct non-empty subset sums (`subsetSums_card_superincreasing`) — whose
+subset sums are *not* divisibility-free.  Witnessed by `{2^0,…,2^{k-1}}`.  This
+cleanly separates the two extremal regimes: the family that maximises the number of
+subset sums is exactly the one that maximally violates the divisibility-free
+condition, so Erdős #882's optimum lies strictly away from the superincreasing
+champion. -/
+theorem exists_superincreasing_not_divisibilityFree {k : ℕ} (hk : 2 ≤ k) :
+    ∃ A : Finset ℕ, Superincreasing A ∧ A.card = k ∧
+      ¬ DivisibilityFree (subsetSums A) :=
+  ⟨powersOfTwo k, superincreasing_powersOfTwo k, powersOfTwo_card k,
+    not_divisibilityFree_subsetSums_powersOfTwo hk⟩
 
 end Erdos882OQ03

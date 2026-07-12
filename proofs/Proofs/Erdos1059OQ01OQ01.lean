@@ -761,6 +761,224 @@ theorem nonqualifying_deficit_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, �
   exact ⟨N, fun n hn => (deficit_add_le_iff_density_surplus _ k M).mpr (hN n hn)⟩
 
 /-
+## Part XI: Absolute Growth of the Qualifying Count at Factorial Points
+
+All of the results above are *relative* (ratio / deficit) statements: they compare
+`C(n!)` to `π(n!)`. They leave open the crude but basic question of how large
+`C(n!)` is in absolute terms. Here we record the direct absolute lower bound.
+
+Every level `l ≥ 3` contributes at least one qualifying prime
+(`qualifyingInLevel_pos`), and `C(n!) = Σ_{l<n} q(l)` (`qualifyingCount_decomposition`),
+so summing the `≥ 1` contributions over the `n − 3` levels `3 ≤ l < n` gives the
+explicit linear lower bound `C(n!) ≥ n − 3`. In particular the qualifying primes are
+*infinite*: `C(n!) → ∞`. This is exactly the (weak-axiom-level) infinitude conclusion
+for Erdős 1059 read at factorial evaluation points, now stated as an absolute count
+rather than a density ratio.
+-/
+
+/-- **Absolute lower bound on the qualifying count at factorial points.**
+    For `n ≥ 3`,
+
+      `C(n!) ≥ n − 3`.
+
+    Since `C(n!) = Σ_{l<n} q(l)` (`qualifyingCount_decomposition`) and every level
+    `l ≥ 3` contributes at least one qualifying prime (`qualifyingInLevel_pos`), the
+    `n − 3` levels `3 ≤ l < n` each contribute `≥ 1`, giving the explicit linear
+    lower bound. This is the absolute (non-ratio) counterpart of the density results:
+    it shows the qualifying primes genuinely accumulate, not merely keep pace with a
+    shrinking fraction. -/
+theorem qualifyingCount_factorial_ge (n : ℕ) (hn : n ≥ 3) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≥ n - 3 := by
+  rw [qualifyingCount_decomposition n (by omega)]
+  -- Split range n = range 3 ∪ Ico 3 n and bound the high part by its cardinality.
+  have h3n : 3 ≤ n := hn
+  have hsplit : (Finset.range n).sum qualifyingInLevel
+      = (Finset.range 3).sum qualifyingInLevel
+        + (Finset.Ico 3 n).sum qualifyingInLevel := by
+    rw [← Finset.sum_range_add_sum_Ico _ h3n]
+  have hle : (Finset.Ico 3 n).sum (fun _ => (1 : ℕ)) ≤
+      (Finset.Ico 3 n).sum qualifyingInLevel := by
+    apply Finset.sum_le_sum
+    intro l hl
+    simp only [Finset.mem_Ico] at hl
+    exact qualifyingInLevel_pos l (by omega)
+  have hone : (Finset.Ico 3 n).sum (fun _ => (1 : ℕ)) = n - 3 := by
+    simp [Finset.sum_const, Nat.card_Ico]
+  omega
+
+/-- **The qualifying count is unbounded at factorial points** (infinitude of
+    qualifying primes, factorial-point form). For every `M` there is an `N` such
+    that `C(n!) ≥ M` for all `n ≥ N`; hence `C(n!) → ∞`. Immediate from the linear
+    lower bound `qualifyingCount_factorial_ge`. -/
+theorem qualifyingCount_factorial_unbounded (M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≥ M := by
+  refine ⟨M + 3, fun n hn => ?_⟩
+  have hge := qualifyingCount_factorial_ge n (by omega)
+  omega
+
+/-- **Monotonicity of the qualifying count at factorial points.**  For `1 ≤ n ≤ m`,
+    `C(n!) ≤ C(m!)`.  From the level decomposition `C(n!) = Σ_{l<n} q(l)`
+    (`qualifyingCount_decomposition`), enlarging the evaluation point `n` only adjoins
+    additional non-negative level contributions `q(l)` for `n ≤ l < m`.  This is the
+    absolute-count monotonicity underlying the linear lower bound
+    `qualifyingCount_factorial_ge`. -/
+theorem qualifyingCount_factorial_mono {n m : ℕ} (hn : n ≥ 1) (hnm : n ≤ m) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≤
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial m) := by
+  have hsub : Finset.range n ⊆ Finset.range m := by
+    intro x hx; simp only [Finset.mem_range] at hx ⊢; omega
+  rw [qualifyingCount_decomposition n hn, qualifyingCount_decomposition m (by omega)]
+  exact Finset.sum_le_sum_of_subset hsub
+
+/-- **Strict step-growth of the qualifying count at factorial points.**  For `n ≥ 3`,
+
+      `C(n!) < C((n+1)!)`.
+
+    Passing from `n!` to `(n+1)!` adjoins exactly level `n`, whose contribution
+    `q(n) ≥ 1` is strictly positive (`qualifyingInLevel_pos`, valid for `n ≥ 3`).  So the
+    qualifying count strictly increases at *every* factorial step beyond `3!` — the
+    per-step sharpening of the unboundedness result `qualifyingCount_factorial_unbounded`:
+    the count does not merely tend to infinity, it advances at each successive factorial. -/
+theorem qualifyingCount_factorial_lt_succ (n : ℕ) (hn : n ≥ 3) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) <
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1)) := by
+  have key : Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))
+      = Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) + qualifyingInLevel n := by
+    rw [qualifyingCount_decomposition (n + 1) (by omega),
+        qualifyingCount_decomposition n (by omega), Finset.sum_range_succ]
+  have hpos := qualifyingInLevel_pos n hn
+  omega
+
+/-- **Exact one-step recurrence for the qualifying count at factorial points.**
+    For `n ≥ 1`,
+
+      `C((n+1)!) = C(n!) + q(n)`,
+
+    where `q(n) = qualifyingInLevel n` is the single new level adjoined in passing from
+    `n!` to `(n+1)!`.  Directly from the level decomposition
+    `C(n!) = Σ_{l<n} q(l)` (`qualifyingCount_decomposition`) together with
+    `Finset.sum_range_succ`.  This is the fundamental recurrence behind the whole
+    Part XI absolute-growth theory: the linear lower bound
+    (`qualifyingCount_factorial_ge`), monotonicity (`qualifyingCount_factorial_mono`),
+    and strict step-growth (`qualifyingCount_factorial_lt_succ`) all read off this exact
+    increment. -/
+theorem qualifyingCount_factorial_succ {n : ℕ} (hn : n ≥ 1) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))
+      = Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) + qualifyingInLevel n := by
+  rw [qualifyingCount_decomposition (n + 1) (by omega),
+      qualifyingCount_decomposition n hn, Finset.sum_range_succ]
+
+/-- **Strict monotonicity of the qualifying count at factorial points.**  For `3 ≤ n < m`,
+
+      `C(n!) < C(m!)`.
+
+    The strict counterpart of `qualifyingCount_factorial_mono`: chaining the single strict
+    step `qualifyingCount_factorial_lt_succ` (`C(n!) < C((n+1)!)`, valid for `n ≥ 3`) with the
+    non-strict monotonicity `qualifyingCount_factorial_mono` (`C((n+1)!) ≤ C(m!)`) upgrades
+    "non-decreasing" to "strictly increasing" across every gap `n < m` above `3!`. -/
+theorem qualifyingCount_factorial_strictMono {n m : ℕ} (hn : n ≥ 3) (hnm : n < m) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) <
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial m) :=
+  lt_of_lt_of_le (qualifyingCount_factorial_lt_succ n hn)
+    (qualifyingCount_factorial_mono (by omega) (by omega))
+
+/-
+## Part XII: Absolute Growth of the *Prime* Count at Factorial Points
+
+Part XI established the absolute-growth theory for the qualifying count `C(n!)`
+(exact recurrence, monotonicity, strict step-growth, linear lower bound). The
+parallel — and more classical — theory for the underlying *prime* count `π(n!)`
+was left implicit, even though the interval decomposition `π(n!) = Σ_{l<n} p(l)`
+(`primeCount_decomposition`) is already available. We record it here.
+
+Crucially, this dual uses **no sieve axiom**: it rests only on the Bertrand-based
+positivity `primesInLevel_pos` (`p(l) ≥ 1` for `l ≥ 1`). Every primorial interval
+`I(l) = (l!, (l+1)!]` with `l ≥ 1` contains a prime (Bertrand), so passing from
+`n!` to `(n+1)!` strictly increases the prime count, and summing the per-level
+`≥ 1` contributions over `1 ≤ l < n` gives `π(n!) ≥ n − 1`. In particular this
+reproves the (classical) infinitude of primes read at factorial evaluation points,
+entirely independently of `strong_selberg_density`.
+-/
+
+/-- **Exact one-step recurrence for the prime count at factorial points.**  For
+    `n ≥ 1`, `π((n+1)!) = π(n!) + primesInLevel n`.  The prime-count dual of
+    `qualifyingCount_factorial_succ`, directly from `primeCount_decomposition` and
+    `Finset.sum_range_succ` (level `n` is the single interval adjoined). -/
+theorem primeCount_factorial_succ {n : ℕ} (hn : n ≥ 1) :
+    Erdos1059OQ01.primeCount (Nat.factorial (n + 1))
+      = Erdos1059OQ01.primeCount (Nat.factorial n) + primesInLevel n := by
+  rw [primeCount_decomposition (n + 1) (by omega),
+      primeCount_decomposition n hn, Finset.sum_range_succ]
+
+/-- **Monotonicity of the prime count at factorial points.**  For `1 ≤ n ≤ m`,
+    `π(n!) ≤ π(m!)`.  From `π(n!) = Σ_{l<n} p(l)` (`primeCount_decomposition`),
+    enlarging the evaluation point only adjoins non-negative level contributions.
+    The prime-count dual of `qualifyingCount_factorial_mono`. -/
+theorem primeCount_factorial_mono {n m : ℕ} (hn : n ≥ 1) (hnm : n ≤ m) :
+    Erdos1059OQ01.primeCount (Nat.factorial n) ≤
+      Erdos1059OQ01.primeCount (Nat.factorial m) := by
+  have hsub : Finset.range n ⊆ Finset.range m := by
+    intro x hx; simp only [Finset.mem_range] at hx ⊢; omega
+  rw [primeCount_decomposition n hn, primeCount_decomposition m (by omega)]
+  exact Finset.sum_le_sum_of_subset hsub
+
+/-- **Absolute linear lower bound on the prime count at factorial points.**  For
+    `n ≥ 1`, `π(n!) ≥ n − 1`.  Since `π(n!) = Σ_{l<n} p(l)` and every level
+    `l ≥ 1` contributes at least one prime (`primesInLevel_pos`, from Bertrand's
+    postulate), the `n − 1` levels `1 ≤ l < n` each contribute `≥ 1`.  The
+    prime-count dual of `qualifyingCount_factorial_ge` (`C(n!) ≥ n − 3`), using no
+    sieve axiom. -/
+theorem primeCount_factorial_ge (n : ℕ) (hn : n ≥ 1) :
+    Erdos1059OQ01.primeCount (Nat.factorial n) ≥ n - 1 := by
+  rw [primeCount_decomposition n hn]
+  have h1n : 1 ≤ n := hn
+  have hsplit : (Finset.range n).sum primesInLevel
+      = (Finset.range 1).sum primesInLevel + (Finset.Ico 1 n).sum primesInLevel := by
+    rw [← Finset.sum_range_add_sum_Ico _ h1n]
+  have hle : (Finset.Ico 1 n).sum (fun _ => (1 : ℕ)) ≤
+      (Finset.Ico 1 n).sum primesInLevel := by
+    apply Finset.sum_le_sum
+    intro l hl
+    simp only [Finset.mem_Ico] at hl
+    exact primesInLevel_pos l (by omega)
+  have hone : (Finset.Ico 1 n).sum (fun _ => (1 : ℕ)) = n - 1 := by
+    simp [Finset.sum_const, Nat.card_Ico]
+  omega
+
+/-- **Strict step-growth of the prime count at factorial points.**  For `n ≥ 1`,
+    `π(n!) < π((n+1)!)`.  Passing to `(n+1)!` adjoins level `n`, whose contribution
+    `p(n) ≥ 1` is strictly positive (`primesInLevel_pos`).  So the prime count
+    strictly increases at *every* factorial step — the prime-count dual of
+    `qualifyingCount_factorial_lt_succ`. -/
+theorem primeCount_factorial_lt_succ (n : ℕ) (hn : n ≥ 1) :
+    Erdos1059OQ01.primeCount (Nat.factorial n) <
+      Erdos1059OQ01.primeCount (Nat.factorial (n + 1)) := by
+  have key := primeCount_factorial_succ hn
+  have hpos := primesInLevel_pos n hn
+  omega
+
+/-- **Strict monotonicity of the prime count at factorial points.**  For
+    `1 ≤ n < m`, `π(n!) < π(m!)`.  The strict counterpart of
+    `primeCount_factorial_mono`, chaining the single strict step
+    `primeCount_factorial_lt_succ` with the non-strict monotonicity — the
+    prime-count dual of `qualifyingCount_factorial_strictMono`. -/
+theorem primeCount_factorial_strictMono {n m : ℕ} (hn : n ≥ 1) (hnm : n < m) :
+    Erdos1059OQ01.primeCount (Nat.factorial n) <
+      Erdos1059OQ01.primeCount (Nat.factorial m) :=
+  lt_of_lt_of_le (primeCount_factorial_lt_succ n hn)
+    (primeCount_factorial_mono (by omega) (by omega))
+
+/-- **The prime count is unbounded at factorial points** (infinitude of primes,
+    factorial-point form, axiom-free). For every `M` there is an `N` such that
+    `π(n!) ≥ M` for all `n ≥ N`; hence `π(n!) → ∞`. Immediate from the linear
+    lower bound `primeCount_factorial_ge`, independently of any sieve axiom. -/
+theorem primeCount_factorial_unbounded (M : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
+    Erdos1059OQ01.primeCount (Nat.factorial n) ≥ M := by
+  refine ⟨M + 1, fun n hn => ?_⟩
+  have hge := primeCount_factorial_ge n (by omega)
+  omega
+
+/-
 ## Summary
 
 **Proved from first principles** (no sorry):
@@ -789,6 +1007,11 @@ theorem nonqualifying_deficit_surplus_at_factorials (k M : ℕ) : ∃ N : ℕ, �
     (needs the subset bound C(x) ≤ π(x); the M=0 case is deficit_le_iff_density)
 17. nonqualifying_deficit_surplus_at_factorials — sharp deficit form of the unbounded
     surplus: (π(n!)−C(n!))·(k+1) + M ≤ π(n!) eventually, for every margin M
+18. qualifyingCount_factorial_ge — absolute linear lower bound C(n!) ≥ n − 3 (each
+    level l ≥ 3 contributes ≥1 qualifying prime), the non-ratio counterpart of the
+    density results
+19. qualifyingCount_factorial_unbounded — infinitude at factorial points: C(n!) → ∞
+    (for every M eventually C(n!) ≥ M), immediate from qualifyingCount_factorial_ge
 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.

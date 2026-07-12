@@ -269,7 +269,7 @@ theorem avgSteps_one_ge (N : ℕ) (hN : 0 < N) :
     have h2 : N ≤ 2 * (N - N / 2) := by omega
     have hge := totalSteps_one_ge N
     calc N * (Nat.log 2 N - 1)
-        ≤ (2 * (N - N / 2)) * (Nat.log 2 N - 1) := mul_le_mul_right' h2 _
+        ≤ (2 * (N - N / 2)) * (Nat.log 2 N - 1) := by gcongr
       _ = 2 * ((N - N / 2) * (Nat.log 2 N - 1)) := by ring
       _ ≤ 2 * totalSteps 1 N := by omega
   have keyQ : (N : ℚ) * ((Nat.log 2 N - 1 : ℕ) : ℚ) ≤ 2 * (totalSteps 1 N : ℚ) := by
@@ -755,5 +755,228 @@ theorem totalSteps_one_mono : Monotone (totalSteps 1) :=
 --   totalSteps 1 8 = totalSteps 1 7 + (log₂ 8 + 1) = totalSteps 1 7 + 4.
 example : totalSteps 1 8 = totalSteps 1 7 + (Nat.log 2 8 + 1) :=
   totalSteps_one_succ 7
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XIV: THE AVERAGE IS UNBOUNDED  (a = 1 row)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- The strict sandwich `avgSteps_one_sandwich_strict` places the a = 1 average in the
+-- width-2 window `log₂N − 1 < avg < log₂N + 1`. Its lower edge `log₂N − 1` is itself
+-- unbounded, so the average grows without bound: binary GCD is NOT `O(1)` on average.
+-- We record this as an explicit ∃-statement (the honest form, since the average is not
+-- monotone in `N`, so a `Tendsto _ atTop atTop` would need the sandwich rather than
+-- monotonicity anyway): every target `M` is exceeded, witnessed on the dyadic
+-- subsequence `N = 2ⁿ` where the floor `log₂(2ⁿ) − 1 = n − 1` is driven past `M` by the
+-- Archimedean property.
+
+/-- **The `a = 1` average step count is unbounded.**  For every target `M : ℚ` there is an
+    argument `N ≥ 1` whose average `a = 1` step count `(totalSteps 1 N) / N` exceeds `M`.
+    Equivalently the binary Euclidean algorithm is *not* `O(1)` on average — its cost grows
+    without bound.  Witnessed on the dyadic subsequence `N = 2 ^ n`: there
+    `avgSteps_one_gt` gives `avg > log₂(2ⁿ) − 1 = n − 1` (using `Nat.log_pow`), and choosing
+    `n > M + 1` by the Archimedean property of `ℚ` (`exists_nat_gt`) forces `avg > M`.  This
+    is the elementary, fully-verified lower shadow of the `Θ(log N)` growth captured by
+    `avgSteps_one_sandwich_strict`. -/
+theorem avgSteps_one_unbounded (M : ℚ) :
+    ∃ N : ℕ, 1 ≤ N ∧ M < (totalSteps 1 N : ℚ) / (N : ℚ) := by
+  obtain ⟨n, hn⟩ := exists_nat_gt (M + 1)
+  have hNpos : 1 ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+  refine ⟨2 ^ n, hNpos, ?_⟩
+  have hlog : Nat.log 2 (2 ^ n) = n := Nat.log_pow (by norm_num) n
+  have hgt := avgSteps_one_gt (2 ^ n) hNpos
+  rw [hlog] at hgt
+  have hMn : M < (n : ℚ) - 1 := by linarith
+  linarith
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: GENERAL-`a` STRUCTURE OF THE RUNNING TOTAL
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Per-argument recurrence of the running total (general `a`).** Extending the
+    range by one argument adds exactly that argument's step count:
+    `totalSteps a (N+1) = totalSteps a N + binaryGcdSteps a (N+1)`. This is the
+    general-`a` companion of `totalSteps_one_succ` (which specialises the last
+    term to `log₂(N+1) + 1` via `binaryGcdSteps_one_eq_log`). Immediate from
+    `Finset.sum_Icc_succ_top`. -/
+theorem totalSteps_succ (a N : ℕ) :
+    totalSteps a (N + 1) = totalSteps a N + binaryGcdSteps a (N + 1) := by
+  unfold totalSteps
+  rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ N + 1)]
+
+/-- **The running total is monotone in `N` (general `a`).** For every fixed left
+    argument `a`, `N ↦ totalSteps a N` is `Monotone`: each new argument contributes
+    a nonnegative step count, so the running work count never decreases. This is the
+    general-`a` companion of `totalSteps_one_mono` (the `a = 1` total is in fact
+    *strictly* monotone since its increment `log₂(N+1)+1 ≥ 1` is positive; for
+    general `a` a single argument may cost `0` steps, e.g. `binaryGcdSteps a a`, so
+    only monotonicity holds unconditionally). -/
+theorem totalSteps_mono (a : ℕ) : Monotone (totalSteps a) := by
+  apply monotone_nat_of_le_succ
+  intro N
+  rw [totalSteps_succ]
+  omega
+
+/-- **Range-monotonicity in `≤` form (general `a`).** The citable inequality form of
+    `totalSteps_mono`: `M ≤ N ⟹ totalSteps a M ≤ totalSteps a N`. -/
+theorem totalSteps_le_of_le {a M N : ℕ} (h : M ≤ N) : totalSteps a M ≤ totalSteps a N :=
+  totalSteps_mono a h
+
+/-- **Interval additivity of the running total (general `a`).** For `M ≤ N` the work
+    over `[1, N]` splits exactly at `M` into the work over `[1, M]` and the work over the
+    tail `[M+1, N]`:
+
+      `totalSteps a N = totalSteps a M + ∑_{b=M+1}^{N} binaryGcdSteps a b`.
+
+    This is the multi-step generalization of the per-argument recurrence
+    `totalSteps_succ` (the `N = M+1`, singleton-tail case) and the exact decomposition
+    underlying `totalSteps_mono` — the tail sum is the nonnegative increment that makes
+    the total monotone. Proved by `Nat.le_induction` on `N` from `M`, using
+    `totalSteps_succ` to peel the new argument and `Finset.sum_Icc_succ_top` to grow the
+    tail range in lockstep. -/
+theorem totalSteps_add_Icc {a M N : ℕ} (h : M ≤ N) :
+    totalSteps a N
+      = totalSteps a M + ∑ b ∈ Finset.Icc (M + 1) N, binaryGcdSteps a b := by
+  induction N, h using Nat.le_induction with
+  | base => simp [Finset.Icc_eq_empty_of_lt (by omega : M < M + 1)]
+  | succ N hMN ih =>
+      rw [totalSteps_succ, ih, Finset.sum_Icc_succ_top (by omega : M + 1 ≤ N + 1)]
+      omega
+
+/-- **Single-argument cost is a lower bound on the running total (general `a`).** For any
+    `1 ≤ k ≤ N`, the step count of the single call `binaryGcdSteps a k` is dominated by
+    the total over `[1, N]`:
+
+      `binaryGcdSteps a k ≤ totalSteps a N`.
+
+    The elementary lower-bound companion of the `O(log N)` upper bound `totalSteps_le`:
+    a single summand never exceeds the sum of the (nonnegative) step counts. Immediate
+    from `Finset.single_le_sum`. -/
+theorem single_le_totalSteps {a k N : ℕ} (hk1 : 1 ≤ k) (hkN : k ≤ N) :
+    binaryGcdSteps a k ≤ totalSteps a N := by
+  unfold totalSteps
+  exact Finset.single_le_sum (f := fun b => binaryGcdSteps a b)
+    (fun b _ => Nat.zero_le _) (Finset.mem_Icc.2 ⟨hk1, hkN⟩)
+
+/-- **A positive-argument binary-GCD run takes at least one step.** For `a, b ≥ 1`,
+    `1 ≤ binaryGcdSteps a b`: reducing to the successor case, every branch of the
+    defining recurrence contributes an explicit leading `1 + …`, so the count is never
+    `0`. (The count is `0` *only* when one argument is `0`, the two base cases of the
+    definition.) This is the per-call positivity that the general-`a` running total
+    inherits below. -/
+theorem one_le_binaryGcdSteps {a b : ℕ} (ha : 0 < a) (hb : 0 < b) :
+    1 ≤ binaryGcdSteps a b := by
+  rcases a with _ | a'
+  · omega
+  rcases b with _ | b'
+  · omega
+  rw [binaryGcdSteps]
+  split_ifs <;> omega
+
+/-- **General-`a` lower bound on the running total: `N ≤ totalSteps a N`.** For `a ≥ 1`
+    every one of the `N` calls in `[1, N]` costs at least one step
+    (`one_le_binaryGcdSteps`), so the total is at least `N`. This is the elementary
+    lower-bound companion of the `O(log N)` *upper* bound `totalSteps_le`, sandwiching
+    the general-`a` total as `N ≤ totalSteps a N ≤ N·(2·(log₂ a + log₂ N) + 2)`. -/
+theorem card_le_totalSteps {a : ℕ} (ha : 0 < a) (N : ℕ) : N ≤ totalSteps a N := by
+  unfold totalSteps
+  have hcard : (Finset.Icc 1 N).card = N := by rw [Nat.card_Icc]; omega
+  calc N = (Finset.Icc 1 N).card := hcard.symm
+    _ = ∑ _b ∈ Finset.Icc 1 N, 1 := by rw [Finset.sum_const, smul_eq_mul, mul_one]
+    _ ≤ ∑ b ∈ Finset.Icc 1 N, binaryGcdSteps a b :=
+        Finset.sum_le_sum fun b hb => one_le_binaryGcdSteps ha (Finset.mem_Icc.1 hb).1
+
+/-- **The running total is *strictly* monotone in `N` for every `a ≥ 1`.** Strengthens
+    `totalSteps_mono` (which holds unconditionally) on the positive-`a` rows: each new
+    argument `N + 1` costs `binaryGcdSteps a (N+1) ≥ 1` (`one_le_binaryGcdSteps`, valid
+    because `a ≥ 1`), so the running total never plateaus. This generalizes
+    `totalSteps_one_strictMono` from `a = 1` to all `a ≥ 1` — the per-call positivity,
+    not the exact `a = 1` increment `log₂(N+1)+1`, is what strictness actually needs. -/
+theorem totalSteps_strictMono {a : ℕ} (ha : 0 < a) : StrictMono (totalSteps a) := by
+  apply strictMono_nat_of_lt_succ
+  intro N
+  rw [totalSteps_succ]
+  have : 1 ≤ binaryGcdSteps a (N + 1) := one_le_binaryGcdSteps ha (by omega)
+  omega
+
+/-! ### Symmetry of the step count and a general-`a` `log`-in-`a` lower bound
+
+    The file's general-`a` lower bounds on the running total are `card_le_totalSteps`
+    (`N ≤ totalSteps a N`, from per-call positivity) — a bound in the *range length*
+    `N`.  A bound in the *left argument* `a` was missing.  It comes for free from a
+    structural fact the file also lacked: the binary-GCD step count is **symmetric**.
+
+    The definition `binaryGcdSteps` treats its two arguments symmetrically (the two even
+    branches mirror each other, as do the two odd "subtract the smaller" branches), so
+    `binaryGcdSteps a b = binaryGcdSteps b a`.  Symmetry converts the exact `a = 1` row
+    `binaryGcdSteps 1 a = log₂ a + 1` into the exact `b = 1` column
+    `binaryGcdSteps a 1 = log₂ a + 1`; feeding that single argument into
+    `single_le_totalSteps` yields `log₂ a + 1 ≤ totalSteps a N`, an `Ω(log a)` floor
+    complementing both `card_le_totalSteps` (in `N`) and `totalSteps_le` (the `O(log N)`
+    ceiling). -/
+
+/-- Fuel-parametrised symmetry, by strong induction on `a + b`: each recursive call of
+    `binaryGcdSteps` on one side is matched by the mirror call on the other. -/
+private theorem binaryGcdSteps_comm_aux :
+    ∀ n a b : ℕ, a + b ≤ n → binaryGcdSteps a b = binaryGcdSteps b a := by
+  intro n
+  induction n with
+  | zero =>
+    intro a b hab
+    obtain ⟨rfl, rfl⟩ : a = 0 ∧ b = 0 := by omega
+    rfl
+  | succ n ih =>
+    intro a b hab
+    rcases a with _ | a'
+    · rw [binaryGcdSteps.eq_1, binaryGcdSteps_zero_right]
+    rcases b with _ | b'
+    · rw [binaryGcdSteps_zero_right, binaryGcdSteps.eq_1]
+    rw [binaryGcdSteps.eq_3, binaryGcdSteps.eq_3]
+    by_cases ha : (a' + 1) % 2 = 0 <;> by_cases hb : (b' + 1) % 2 = 0
+    · -- both even
+      simp only [if_pos ha, if_pos hb]
+      rw [ih ((a' + 1) / 2) ((b' + 1) / 2) (by omega)]
+    · -- a even, b odd
+      simp only [if_pos ha, if_neg hb]
+      rw [ih ((a' + 1) / 2) (b' + 1) (by omega)]
+    · -- a odd, b even
+      simp only [if_neg ha, if_pos hb]
+      rw [ih (a' + 1) ((b' + 1) / 2) (by omega)]
+    · -- both odd: split on the comparison of the two odd arguments
+      simp only [if_neg ha, if_neg hb]
+      rcases lt_trichotomy (a' + 1) (b' + 1) with hlt | heq | hgt
+      · rw [if_neg (by omega : ¬ a' + 1 > b' + 1), if_pos (by omega : b' + 1 > a' + 1),
+          ih (a' + 1) ((b' + 1 - (a' + 1)) / 2) (by omega)]
+      · obtain rfl : a' = b' := by omega
+        rfl
+      · rw [if_pos (by omega : a' + 1 > b' + 1), if_neg (by omega : ¬ b' + 1 > a' + 1),
+          ih ((a' + 1 - (b' + 1)) / 2) (b' + 1) (by omega)]
+
+/-- **Symmetry of the binary-GCD step count.** `binaryGcdSteps a b = binaryGcdSteps b a`
+    for all `a, b`: the algorithm takes the same number of steps regardless of the order
+    of its arguments.  The definition is symmetric under swapping `a ↔ b` (the two even
+    branches mirror each other, as do the two odd "subtract the smaller" branches), so
+    the step count is too. -/
+theorem binaryGcdSteps_comm (a b : ℕ) :
+    binaryGcdSteps a b = binaryGcdSteps b a :=
+  binaryGcdSteps_comm_aux (a + b) a b le_rfl
+
+/-- **Exact `b = 1` step count.** By symmetry with the `a = 1` row, from any `a ≥ 1` the
+    single call `binaryGcdSteps a 1` costs exactly `log₂ a + 1` steps.  (Mirror of
+    `binaryGcdSteps_one_eq_log`.) -/
+theorem binaryGcdSteps_a_one (a : ℕ) (ha : 1 ≤ a) :
+    binaryGcdSteps a 1 = Nat.log 2 a + 1 := by
+  rw [binaryGcdSteps_comm, binaryGcdSteps_one_eq_log a ha]
+
+/-- **`log`-in-`a` lower bound `log₂ a + 1 ≤ totalSteps a N`.** The single argument
+    `b = 1` already costs `log₂ a + 1` steps (`binaryGcdSteps_a_one`), and a single
+    summand is dominated by the running total (`single_le_totalSteps`).  So for every
+    `a ≥ 1` and `N ≥ 1` the total work over `[1, N]` is at least `log₂ a + 1` — an
+    `Ω(log a)` floor in the *left* argument, complementing `card_le_totalSteps`
+    (`N ≤ totalSteps a N`, in the range length) and the `O(log N)` ceiling
+    `totalSteps_le`. -/
+theorem log_add_one_le_totalSteps (a N : ℕ) (ha : 1 ≤ a) (hN : 1 ≤ N) :
+    Nat.log 2 a + 1 ≤ totalSteps a N := by
+  have h := single_le_totalSteps (a := a) (k := 1) (N := N) le_rfl hN
+  rwa [binaryGcdSteps_a_one a ha] at h
 
 end BinaryGcdOQ01OQ04OQ03

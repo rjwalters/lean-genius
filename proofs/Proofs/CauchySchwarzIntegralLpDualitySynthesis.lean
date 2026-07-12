@@ -238,6 +238,56 @@ theorem eLpNorm_rpow_restrict_iUnion {g : α → ℝ} {S : ℕ → Set α}
     one_div_mul_cancel hqr, ENNReal.rpow_one]
   rw [Measure.restrict_iUnion hSd hSm, lintegral_sum_measure]
 
+/-- **Lᵠ-seminorm `q`-power subadditivity over an arbitrary (not necessarily disjoint)
+    union** — the union-bound companion of `eLpNorm_rpow_restrict_union`. For `0 < q < ∞`
+    and *any* sets `A`, `B`:
+
+      `‖g‖_{q, A ∪ B}^q ≤ ‖g‖_{q, A}^q + ‖g‖_{q, B}^q`.
+
+    Dropping the disjointness `Disjoint A B` and measurability `MeasurableSet B`
+    hypotheses of the exact-additivity lemma turns the identity into an inequality: the
+    overlap `A ∩ B` is counted twice on the right, so the `q`-power can only decrease over
+    the merged support. This is the form the maximality reduction uses when the pieces it
+    glues are only known to *cover* `T = A ∪ B` (rather than partition it), e.g. bounding
+    the norm on a union of raw σ-finite supports before they are disjointified. The proof
+    is the same `eLpNorm_eq_lintegral_rpow_enorm` reduction as its additive sibling, now
+    closed by the measure-monotonicity `Measure.restrict_union_le`
+    (`μ.restrict (A ∪ B) ≤ μ.restrict A + μ.restrict B`) fed through `lintegral_mono'`. -/
+theorem eLpNorm_rpow_restrict_union_le {g : α → ℝ} {A B : Set α}
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞) :
+    eLpNorm g q (μ.restrict (A ∪ B)) ^ q.toReal
+      ≤ eLpNorm g q (μ.restrict A) ^ q.toReal
+        + eLpNorm g q (μ.restrict B) ^ q.toReal := by
+  have hqr : q.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hq0, hqtop⟩
+  simp only [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop, ← ENNReal.rpow_mul,
+    one_div_mul_cancel hqr, ENNReal.rpow_one]
+  refine (lintegral_mono' (Measure.restrict_union_le A B) le_rfl).trans_eq ?_
+  exact lintegral_add_measure _ _ _
+
+/-- **Lᵠ-seminorm `q`-power σ-subadditivity over an arbitrary countable union** — the
+    union-bound companion of `eLpNorm_rpow_restrict_iUnion` (and the countable
+    generalization of `eLpNorm_rpow_restrict_union_le`). For `0 < q < ∞` and *any*
+    countable family `Sₙ` (no disjointness, no measurability):
+
+      `‖g‖_{q, ⋃ₙ Sₙ}^q ≤ ∑ₙ ‖g‖_{q, Sₙ}^q`.
+
+    This is the countable union bound behind step 2 of the maximality reduction: before a
+    maximizing sequence is disjointified, the norm on its union `T = ⋃ₙ Sₙ` is controlled
+    by the sum of the per-set norms, which is exactly what bounds the supremum
+    `c = ⨆_S ‖g_S‖_q`. The proof mirrors the disjoint-additive lemma but replaces the
+    exact `Measure.restrict_iUnion` with the always-valid inequality
+    `Measure.restrict_iUnion_le` (`μ.restrict (⋃ₙ Sₙ) ≤ ∑ₙ μ.restrict (Sₙ)`), closed by
+    `lintegral_mono'` and `lintegral_sum_measure`. -/
+theorem eLpNorm_rpow_restrict_iUnion_le {g : α → ℝ} {S : ℕ → Set α}
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞) :
+    eLpNorm g q (μ.restrict (⋃ n, S n)) ^ q.toReal
+      ≤ ∑' n, eLpNorm g q (μ.restrict (S n)) ^ q.toReal := by
+  have hqr : q.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hq0, hqtop⟩
+  simp only [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop, ← ENNReal.rpow_mul,
+    one_div_mul_cancel hqr, ENNReal.rpow_one]
+  refine (lintegral_mono' Measure.restrict_iUnion_le le_rfl).trans_eq ?_
+  exact lintegral_sum_measure _ _
+
 /-- **Monotonicity of the `q`-power Lᵠ-seminorm under set inclusion** (step 2 ingredient).
     For `0 < q < ∞` and measurable `A ⊆ B`, the `q`-th power of the Lᵠ-seminorm is
     monotone in the restriction set:

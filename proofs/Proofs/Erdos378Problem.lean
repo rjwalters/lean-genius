@@ -106,6 +106,62 @@ theorem binomialSquarefree_symm {n k : ℕ} (hk : k ≤ n) :
   unfold BinomialSquarefree
   rw [Nat.choose_symm hk]
 
+/-- **The first endpoint.** Since `C(n,1) = n`, the first interior binomial is
+squarefree exactly when `n` itself is squarefree. -/
+theorem binomialSquarefree_one_iff (n : ℕ) :
+    BinomialSquarefree n 1 ↔ Squarefree n := by
+  unfold BinomialSquarefree
+  rw [Nat.choose_one_right]
+
+/-- **The last endpoint.** Symmetrically, `C(n, n-1) = n`, so the last interior
+binomial (for `n ≥ 1`) is squarefree exactly when `n` is squarefree.  The two
+endpoints `k = 1` and `k = n-1` are the `k ↦ n-k` image pair of the involution. -/
+theorem binomialSquarefree_self_sub_one_iff {n : ℕ} (hn : 1 ≤ n) :
+    BinomialSquarefree n (n - 1) ↔ Squarefree n := by
+  rw [binomialSquarefree_symm (Nat.sub_le n 1), show n - (n - 1) = 1 from by omega]
+  exact binomialSquarefree_one_iff n
+
+/-- **Trivial upper bound.** The squarefree-binomial count of row `n` is at most
+`n - 1`, the number of interior indices `1 ≤ k < n`. -/
+theorem squarefreeCount_le (n : ℕ) : squarefreeCount n ≤ n - 1 := by
+  unfold squarefreeCount
+  have hsub : (range n).filter (fun k => 1 ≤ k ∧ Squarefree (n.choose k)) ⊆ Finset.Ioo 0 n := by
+    intro k hk
+    rw [Finset.mem_filter, Finset.mem_range] at hk
+    rw [Finset.mem_Ioo]
+    exact ⟨hk.2.1, hk.1⟩
+  calc _ ≤ (Finset.Ioo 0 n).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Nat.card_Ioo]; omega
+
+/-- **Endpoint lower bound.** For squarefree `n ≥ 3`, both endpoints `k = 1` and
+`k = n-1` are distinct squarefree indices (both give `C(n,·) = n`), so row `n` has
+at least two squarefree binomials.  Combined with `squarefreeCount_even_of_odd`,
+an odd squarefree `n ≥ 3` therefore has an *even* count `≥ 2` — consistent with the
+Granville–Ramaré values `2m + 2`. -/
+theorem squarefreeCount_ge_two_of_squarefree {n : ℕ} (hn : 3 ≤ n) (hsf : Squarefree n) :
+    2 ≤ squarefreeCount n := by
+  unfold squarefreeCount
+  set S : Finset ℕ := (range n).filter (fun k => 1 ≤ k ∧ Squarefree (n.choose k)) with hS
+  have h1 : (1 : ℕ) ∈ S := by
+    rw [hS, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, le_refl 1, ?_⟩
+    rw [Nat.choose_one_right]; exact hsf
+  have h2 : (n - 1) ∈ S := by
+    rw [hS, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, by omega, ?_⟩
+    rw [show n.choose (n - 1) = n from by
+      rw [Nat.choose_symm (show (1 : ℕ) ≤ n by omega), Nat.choose_one_right]]
+    exact hsf
+  have hne : (1 : ℕ) ≠ n - 1 := by omega
+  have hpair : ({1, n - 1} : Finset ℕ) ⊆ S := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact h1
+    · exact h2
+  calc 2 = ({1, n - 1} : Finset ℕ).card := by rw [Finset.card_pair hne]
+    _ ≤ S.card := Finset.card_le_card hpair
+
 /-- **Parity theorem.** For odd `n`, the number of squarefree interior binomials
 in row `n` is even.
 
@@ -453,6 +509,23 @@ theorem erdos_378_density_positive (r : ℕ) :
   rw [atLeastSquarefree_eq_compl]
   exact natDensity_compl hd_density
 
+/-- **The explicit Granville–Ramaré density formula.**  Beyond mere existence and
+positivity, the density of `atLeastSquarefree r` has the closed value
+
+    density(r) = 1 − Σ_{0 ≤ m ≤ (r-1)/2} η_m,
+
+the complement of the Granville–Ramaré partial sum of the exact-count densities `η_m`.
+This is the quantitative answer to Erdős #378: `erdos_378_density_exists` /
+`erdos_378_density_positive` assert *that* the density exists and is positive, while this
+records *what it is* — the value that `erdos_378_density_positive` obtains as `1 − d` with
+`d < 1`, here pinned to the explicit sum. No new axiom beyond `complement_density`. -/
+theorem erdos_378_density_eq (r : ℕ) :
+    NaturalDensity (atLeastSquarefree r)
+      (1 - ∑ m ∈ range ((r - 1) / 2 + 1), eta m) := by
+  obtain ⟨d, hd_eq, hd_density, _⟩ := complement_density r
+  rw [atLeastSquarefree_eq_compl, ← hd_eq]
+  exact natDensity_compl hd_density
+
 /-- **Erdős Problem #378 — full resolution.**
 
 For every `r`, the set of `n` with at least `r` squarefree interior binomials has a
@@ -561,5 +634,146 @@ precisely at the (vacuous) threshold `r = 0`. -/
 theorem erdos_378_density_zero : NaturalDensity (atLeastSquarefree 0) 1 := by
   rw [atLeastSquarefree_zero_eq_univ]
   exact natDensity_univ
+
+/-
+## Part IX: Monotonicity of natural density — the density is order-preserving
+
+The framework already records the two extreme bounds `natDensity_nonneg` (density `≥ 0`)
+and `natDensity_le_one` (density `≤ 1`). Both are instances of a single structural fact:
+natural density is *monotone* under set inclusion. Below we prove that general law and
+apply it to the decreasing filtration `atLeastSquarefree_antitone`, obtaining that the
+Erdős #378 densities are **antitone in the threshold** — a larger demand `r` on the number
+of squarefree interior binomials cannot increase the density of qualifying integers. All
+axiom-free (independent of the Granville–Ramaré inputs).
+-/
+
+/-- **Natural density is monotone under inclusion.**  If `S ⊆ T` and both have natural
+densities `d` and `d'`, then `d ≤ d'`.  For every `N` the counting cardinalities satisfy
+`|S ∩ [0,N)| ≤ |T ∩ [0,N)|`, so the ratios are ordered; taking `N` past both convergence
+thresholds forces the limits to be ordered too.  This subsumes both `natDensity_nonneg`
+(the case `S = ∅`, `d = 0`) and `natDensity_le_one` (the case `T = univ`, `d' = 1`).
+Elementary ε-argument, uses none of the axioms. -/
+theorem natDensity_mono {S T : Set ℕ} {d d' : ℝ} (hst : S ⊆ T)
+    (hS : NaturalDensity S d) (hT : NaturalDensity T d') : d ≤ d' := by
+  by_contra hlt
+  push_neg at hlt  -- `d' < d`
+  set ε : ℝ := (d - d') / 2 with hεdef
+  have hε : 0 < ε := by rw [hεdef]; linarith
+  obtain ⟨N₁, hN₁⟩ := hS ε hε
+  obtain ⟨N₂, hN₂⟩ := hT ε hε
+  set N := max (max N₁ N₂) 1 with hNdef
+  have hNpos : 0 < N := lt_of_lt_of_le Nat.zero_lt_one (le_max_right _ _)
+  have hNR : (0 : ℝ) < N := by exact_mod_cast hNpos
+  have hb1 := hN₁ N (le_trans (le_max_left _ _) (le_max_left _ _))
+  have hb2 := hN₂ N (le_trans (le_max_right _ _) (le_max_left _ _))
+  -- counting-ratio monotonicity from the cardinality inclusion
+  have hsub : (S ∩ Set.Iio N) ⊆ (T ∩ Set.Iio N) :=
+    Set.inter_subset_inter_left _ hst
+  have hfinT : (T ∩ Set.Iio N).Finite := (Set.finite_Iio N).inter_of_right T
+  have hcardR : ((S ∩ Set.Iio N).ncard : ℝ) ≤ ((T ∩ Set.Iio N).ncard : ℝ) := by
+    exact_mod_cast Set.ncard_le_ncard hsub hfinT
+  have hratio : ((S ∩ Set.Iio N).ncard : ℝ) / (N : ℝ)
+      ≤ ((T ∩ Set.Iio N).ncard : ℝ) / (N : ℝ) :=
+    div_le_div_of_nonneg_right hcardR (le_of_lt hNR)
+  rw [abs_lt] at hb1 hb2
+  linarith [hb1.1, hb2.2, hratio]
+
+/-- **The Erdős #378 densities are antitone in the threshold.**  For thresholds `r ≤ r'`,
+if the answer sets at both thresholds have natural densities `d` and `d'`, then `d' ≤ d`:
+raising the required number of squarefree interior binomials shrinks the qualifying set
+(`atLeastSquarefree_antitone`), so by `natDensity_mono` its density cannot increase.  This
+is the monotone structure of the density profile `r ↦ d(r)` descending from `d(0) = 1`
+(`erdos_378_density_zero`).  Axiom-free (the densities are supplied as hypotheses, so the
+Granville–Ramaré existence input is not invoked). -/
+theorem erdos_378_density_antitone {r r' : ℕ} {d d' : ℝ} (hr : r ≤ r')
+    (hd : NaturalDensity (atLeastSquarefree r) d)
+    (hd' : NaturalDensity (atLeastSquarefree r') d') : d' ≤ d :=
+  natDensity_mono (atLeastSquarefree_antitone hr) hd' hd
+
+/-- **The density is constant across each odd → even threshold pair.**  The Granville–Ramaré
+value `erdos_378_density_eq` is `density(r) = 1 − Σ_{m ≤ (r-1)/2} η_m`, whose summation range
+bound `(r-1)/2 + 1` takes the *same* value `t + 1` at both `r = 2t+1` and `r = 2t+2` (integer
+division: `(2t)/2 = (2t+1)/2 = t`).  Hence the answer sets at an odd threshold and the next even
+threshold have **identical density** `1 − Σ_{m<t+1} η_m`.  Combined with the antitone profile
+`erdos_378_density_antitone`, this pins down the shape of `r ↦ density(r)`: a descending step
+function that drops only at *odd* thresholds and is flat across each `2t+1 → 2t+2` step. -/
+theorem erdos_378_density_odd_even_pair (t : ℕ) :
+    NaturalDensity (atLeastSquarefree (2 * t + 1))
+        (1 - ∑ m ∈ range (t + 1), eta m)
+      ∧ NaturalDensity (atLeastSquarefree (2 * t + 2))
+        (1 - ∑ m ∈ range (t + 1), eta m) := by
+  refine ⟨?_, ?_⟩
+  · have h := erdos_378_density_eq (2 * t + 1)
+    have he : (2 * t + 1 - 1) / 2 + 1 = t + 1 := by omega
+    rwa [he] at h
+  · have h := erdos_378_density_eq (2 * t + 2)
+    have he : (2 * t + 2 - 1) / 2 + 1 = t + 1 := by omega
+    rwa [he] at h
+
+/-- **Odd and next-even thresholds share every density.**  Corollary of
+`erdos_378_density_odd_even_pair` via `naturalDensity_unique`: any density of
+`atLeastSquarefree (2t+1)` is also a density of `atLeastSquarefree (2t+2)` (they are equal as
+real numbers).  So the strict drops in the Erdős #378 density profile can occur only at even
+→ odd transitions, never across an odd → even step. -/
+theorem atLeastSquarefree_density_odd_even_agree (t : ℕ) {d : ℝ}
+    (h : NaturalDensity (atLeastSquarefree (2 * t + 1)) d) :
+    NaturalDensity (atLeastSquarefree (2 * t + 2)) d := by
+  obtain ⟨h1, h2⟩ := erdos_378_density_odd_even_pair t
+  have hd : d = 1 - ∑ m ∈ range (t + 1), eta m := naturalDensity_unique h h1
+  rwa [hd]
+
+/-
+## Part X: The bottom density boundary and the exact-count densities `η_m`
+
+Two loose ends of the framework. First, the density-`0` boundary dual to
+`natDensity_univ` (density `1`): the empty set has density `0`, pinning the bottom of the
+universal range `[0,1]`. Second, the Granville–Ramaré densities `η_m` themselves —
+`eta m` was *defined* as `Classical.choose` of the existence axiom, but the file never
+records that it is genuinely *the* density of `exactlySquarefree m` (a fact
+`naturalDensity_unique`'s statement alludes to), nor that, being a density, it lies in
+`[0,1]`. We supply all three, and deduce that the explicit density profile
+`k ↦ 1 − Σ_{m<k} η_m` is antitone as a sequence of reals.
+-/
+
+/-- **The empty set has natural density `0`.** The counting ratio `|∅ ∩ [0,N)| / N = 0`
+for every `N`, so the limit is `0` — the bottom boundary dual to `natDensity_univ`
+(density `1`), pinning the low end of the universal range delimited by `natDensity_nonneg`
+and `natDensity_le_one`. Elementary, uses no axioms. -/
+theorem natDensity_empty : NaturalDensity (∅ : Set ℕ) 0 := by
+  intro ε hε
+  refine ⟨1, fun N _ => ?_⟩
+  rw [Set.empty_inter, Set.ncard_empty, Nat.cast_zero, zero_div, sub_zero, abs_zero]
+  exact hε
+
+/-- **`η_m` is genuinely the density of `exactlySquarefree m`.** Unfolds the
+`Classical.choose` definition of `eta` against its specification: `eta m` is not merely a
+value the counting ratios *could* approach but the actual natural density guaranteed by
+the Granville–Ramaré existence input `granville_ramare_density_exists`. This is the lemma
+implicit in every `eta`-based density formula (`erdos_378_density_eq`,
+`erdos_378_density_odd_even_pair`). -/
+theorem natDensity_eta (m : ℕ) : NaturalDensity (exactlySquarefree m) (eta m) :=
+  Classical.choose_spec (granville_ramare_density_exists m)
+
+/-- **Each exact-count density is nonnegative.** `0 ≤ η_m`: as a natural density it cannot
+be negative (`natDensity_nonneg` applied to `natDensity_eta`). -/
+theorem eta_nonneg (m : ℕ) : 0 ≤ eta m := natDensity_nonneg (natDensity_eta m)
+
+/-- **Each exact-count density is at most one.** `η_m ≤ 1`, again because it is a natural
+density (`natDensity_le_one` applied to `natDensity_eta`). -/
+theorem eta_le_one (m : ℕ) : eta m ≤ 1 := natDensity_le_one (natDensity_eta m)
+
+/-- **The explicit density profile is antitone.** The Granville–Ramaré value
+`1 − Σ_{m<k} η_m` (cf. `erdos_378_density_eq`) is non-increasing in `k`: extending the
+summation range only adds nonnegative terms `η_m ≥ 0` (`eta_nonneg`), so it can only
+shrink the complement. For `k ≤ k'`, `1 − Σ_{m<k'} η_m ≤ 1 − Σ_{m<k} η_m`. This is the
+direct value-level counterpart of the set-theoretic antitonicity
+`erdos_378_density_antitone`. -/
+theorem eta_partialSum_compl_antitone {k k' : ℕ} (hk : k ≤ k') :
+    1 - ∑ m ∈ range k', eta m ≤ 1 - ∑ m ∈ range k, eta m := by
+  have hsub : range k ⊆ range k' := fun x hx =>
+    Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) hk)
+  have hle : ∑ m ∈ range k, eta m ≤ ∑ m ∈ range k', eta m :=
+    Finset.sum_le_sum_of_subset_of_nonneg hsub (fun m _ _ => eta_nonneg m)
+  linarith
 
 end Erdos378

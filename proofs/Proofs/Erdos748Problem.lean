@@ -625,6 +625,39 @@ theorem oddFamily_lower_bound (n : ℕ) :
     f n ≥ 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card :=
   le_trans (two_family_bound_ge_oddFamily n) (two_family_lower_bound n)
 
+/--
+**The odd family has size exactly `⌈n/2⌉`.**
+`|O| = (n+1)/2`, where `O` is the set of odd numbers in `[1,n]` (the odd elements
+of `{0,…,n}`, since `0` is even). This discharges the previously prose-only claim
+in `oddFamily_lower_bound` that "`|O| = ⌈n/2⌉`". The proof is a direct induction on
+`n`: passing from `{0,…,n}` to `{0,…,n+1}` adds the new top element `n+1`, which is
+counted iff it is odd, and `omega` checks that this matches the increment of the
+ceiling `(n+1)/2 ↦ (n+2)/2`. In `ℕ` the ceiling `⌈n/2⌉` is written `(n+1)/2`. -/
+theorem oddNumbers_card (n : ℕ) :
+    ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card = (n + 1) / 2 := by
+  induction n with
+  | zero => decide
+  | succ m ih =>
+    rw [Finset.range_add_one, Finset.filter_insert]
+    by_cases h : (m + 1) % 2 = 1
+    · rw [if_pos h, Finset.card_insert_of_notMem (by simp), ih]
+      omega
+    · rw [if_neg h, ih]
+      omega
+
+/--
+**Sharp lower bound via the *odd* family:** `f(n) ≥ 2^{⌈n/2⌉}`.
+This re-derives the exponent of `sharp_lower_bound` through a genuinely different
+witnessing construction: instead of the upper half `U = {⌊n/2⌋+1,…,n}`, it uses the
+`⌈n/2⌉` odd numbers in `[1,n]`, all of whose `2^{⌈n/2⌉}` subsets are sum-free
+(`oddFamily_lower_bound`). Combining `oddFamily_lower_bound` with the exact count
+`oddNumbers_card` (`|O| = (n+1)/2`) yields the same `2^{⌈n/2⌉}` bound as
+`sharp_lower_bound`, confirming that the odd family alone already attains the sharp
+trivial exponent — the "type 2" dominant family of Part VII carries full weight. -/
+theorem oddFamily_lower_bound_ceil (n : ℕ) : f n ≥ 2 ^ ((n + 1) / 2) := by
+  have h := oddFamily_lower_bound n
+  rwa [oddNumbers_card] at h
+
 /-
 ## Part VII: Structure of Sum-Free Sets
 -/
@@ -670,6 +703,24 @@ theorem exists_sumFree_card_ceil (n : ℕ) :
   · -- `|U| = n − ⌊n/2⌋ = ⌈n/2⌉ = (n+1)/2`.
     rw [hU, Nat.card_Icc]; omega
 
+/-- **Enlarging the ground set only adds sum-free subsets.**  For `m ≤ n`, every sum-free
+subset of `{1,…,m}` is a sum-free subset of `{1,…,n}`: sum-freeness (`IsSumFree`) is a
+property of the set itself, independent of the ambient range, and `{1,…,m} ⊆ {1,…,n}`.
+Hence `sumFreeSubsets m ⊆ sumFreeSubsets n`. -/
+theorem sumFreeSubsets_mono {m n : ℕ} (h : m ≤ n) :
+    sumFreeSubsets m ⊆ sumFreeSubsets n := by
+  intro A hA
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  exact ⟨hA.1.trans (Finset.Icc_subset_Icc (le_refl 1) h), hA.2⟩
+
+/-- **The counting function `f` is monotone.**  `f n = #{sum-free subsets of {1,…,n}}` is
+non-decreasing in `n`, since a larger ground set admits every sum-free subset the smaller
+one does (`sumFreeSubsets_mono`).  This is the structural fact behind the OEIS A007865 table
+being non-decreasing (`f_1 ≤ f_2 ≤ ⋯`), and it sharpens the one-sided lower bounds into a
+genuine growth statement.  Axiom-free. -/
+theorem f_mono : Monotone f :=
+  fun _m _n h => Finset.card_le_card (sumFreeSubsets_mono h)
+
 /-
 ## Part VIII: OEIS A007865
 -/
@@ -686,6 +737,9 @@ f(5) = 16
 -- Kernel `decide` suffices (axiom-free): the `decidableIsSumFree` instance reduces
 -- `IsSumFree` to a bounded `∀ … ∈ A` decision, so these small `f n` values compute
 -- in the kernel without `native_decide` (which would add `Lean.ofReduceBool`).
+-- `f 0 = 1`: the ground set `{1,…,0}` is empty, whose only subset is `∅` (sum-free), so the
+-- A007865 table starts at `1` — the base value beneath `f_1` and the base case of `f_mono`.
+theorem f_0 : f 0 = 1 := by decide
 theorem f_1 : f 1 = 2 := by decide
 theorem f_2 : f 2 = 3 := by decide
 theorem f_3 : f 3 = 6 := by decide
@@ -700,6 +754,12 @@ theorem f_4 : f 4 = 9 := by decide
     fact. Beyond the `n = 4` exclusions this adds `5 = 1+4` and `5 = 2+3`, forbidding the
     subsets containing `{1,4,5}` or `{2,3,5}`. -/
 theorem f_5 : f 5 = 16 := by decide
+
+/-- `f 6 = 24`: upgrades the OEIS A007865 table value `f(6) = 24` from prose to a
+    kernel-`decide` fact, extending the machine-checked small-value table one step past
+    `f_5`. Beyond the `n = 5` exclusions this adds the sums `6 = 1+5`, `6 = 2+4`
+    (and `6 = 3+3`), so the count rises from `16` to `24`. -/
+theorem f_6 : f 6 = 24 := by decide
 
 /-
 ## Part IX: Summary
@@ -730,6 +790,59 @@ theorem erdos_748_summary :
   · exact green_upper_bound
   · obtain ⟨ce, co, hce, hco, _⟩ := precise_asymptotic
     exact ⟨ce, co, hce, hco⟩
+
+/-!
+## Part VI: The lower half of the log-asymptotic is unconditional
+
+The Cameron–Erdős conjecture `cameronErdosConjecture` is a two-sided estimate on
+`log₂ (f n) = Real.log (f n) / Real.log 2`. Its upper half needs the deep Green/Sapozhenko
+input (the axiom `green_upper_bound`). Its **lower** half, however, is elementary: the
+sharp counting bound `sharp_lower_bound` (`f n ≥ 2^⌈n/2⌉`) gives `log₂ (f n) ≥ ⌈n/2⌉ ≥ n/2`
+with no axiom at all — and it holds for *every* `n`, not merely eventually. The theorems
+below isolate this axiom-free lower half.
+-/
+
+/-- **Unconditional log₂ lower bound.**  For every `n`, `log₂ (f n) ≥ n/2`.  Taking the
+base-2 logarithm of the sharp counting bound `f n ≥ 2^⌈n/2⌉` (`sharp_lower_bound`) and
+using `⌈n/2⌉ = (n+1)/2 ≥ n/2`.  Axiom-free: the lower half of the Cameron–Erdős asymptotic
+needs none of the Green/Sapozhenko machinery. -/
+theorem logDiv_log_two_f_ge (n : ℕ) :
+    (n : ℝ) / 2 ≤ Real.log (f n) / Real.log 2 := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  -- real-cast lower bound on `f n`
+  have hfge : (2 : ℝ) ^ ((n + 1) / 2) ≤ (f n : ℝ) := by
+    have h := sharp_lower_bound n
+    calc (2 : ℝ) ^ ((n + 1) / 2) = ((2 ^ ((n + 1) / 2) : ℕ) : ℝ) := by push_cast; ring
+      _ ≤ (f n : ℝ) := by exact_mod_cast h
+  have hfpos : (0 : ℝ) < f n := lt_of_lt_of_le (by positivity) hfge
+  -- log of the power bound
+  have hloglb : ((n + 1) / 2 : ℕ) * Real.log 2 ≤ Real.log (f n) := by
+    calc ((n + 1) / 2 : ℕ) * Real.log 2
+          = Real.log ((2 : ℝ) ^ ((n + 1) / 2)) := by rw [Real.log_pow]
+      _ ≤ Real.log (f n) := Real.log_le_log (by positivity) hfge
+  -- `n/2 ≤ ⌈n/2⌉ = (n+1)/2` as reals
+  have hceil : (n : ℝ) / 2 ≤ ((n + 1) / 2 : ℕ) := by
+    have h2 : n ≤ 2 * ((n + 1) / 2) := by omega
+    have : (n : ℝ) ≤ 2 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h2
+    linarith
+  rw [le_div_iff₀ hlog2]
+  calc (n : ℝ) / 2 * Real.log 2
+        ≤ ((n + 1) / 2 : ℕ) * Real.log 2 :=
+          mul_le_mul_of_nonneg_right hceil (le_of_lt hlog2)
+    _ ≤ Real.log (f n) := hloglb
+
+/-- **The Cameron–Erdős lower bound, unconditionally and for all `n`.**  The lower conjunct
+of `cameronErdosConjecture` — `(1 − ε)·(n/2) ≤ log₂ (f n)` — holds for *every* `ε > 0` and
+*every* `n`, with no threshold `N` and no axiom.  It follows from the exact bound
+`log₂ (f n) ≥ n/2` (`logDiv_log_two_f_ge`) since `(1 − ε)·(n/2) ≤ n/2`.  So only the upper
+half of the conjecture carries the Green/Sapozhenko content. -/
+theorem cameronErdos_lower_unconditional {ε : ℝ} (hε : 0 < ε) (n : ℕ) :
+    (1 - ε) * (n / 2 : ℝ) ≤ Real.log (f n) / Real.log 2 := by
+  have hhalf : (0 : ℝ) ≤ (n / 2 : ℝ) := by positivity
+  calc (1 - ε) * (n / 2 : ℝ)
+        ≤ 1 * (n / 2 : ℝ) := mul_le_mul_of_nonneg_right (by linarith) hhalf
+    _ = (n / 2 : ℝ) := one_mul _
+    _ ≤ Real.log (f n) / Real.log 2 := logDiv_log_two_f_ge n
 
 /--
 **Erdős Problem #748: PROVED**

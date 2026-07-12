@@ -65,7 +65,8 @@
       "**The lower bound is purely extremal — no analytic number theory.** Where the matching upper bound (Montgomery–Vaughan) is genuinely hard, the lower bound follows from just two facts: the gaps sum to n−2 (telescoping) and squares are convex (Cauchy–Schwarz). Equality in Cauchy–Schwarz is when all gaps are equal, the heuristic 'evenly spread residues' picture.",
       "**Telescoping kills all interior structure.** The sum of the gaps depends only on the two endpoints a₁ = 1 and a_{φ(n)} = n−1, never on the irregular interior spacing — so ∑ gap = n−2 exactly, with no error term.",
       "**Matching orders close the problem.** Because (n−2)²/(φ(n)−1) ≍ n²/φ(n), the elementary lower bound and the axiomatized MV upper bound together give ∑(a_{k+1}−a_k)² ≍ n²/φ(n), showing the MV bound is tight in order of magnitude — this is why erdosProblemStatus is 'solved'.",
-      "**A gallery gap fixed in passing.** card_reducedResidues (the reduced residues number exactly φ(n)) is proved here outright, whereas the parent entry had left the analogous statement as a sorry."
+      "**A gallery gap fixed in passing.** card_reducedResidues (the reduced residues number exactly φ(n)) is proved here outright, whereas the parent entry had left the analogous statement as a sorry.",
+      "**The lower bound never sees the primes.** The only properties of the reduced residues used are that they form an increasing integer sequence from 1 to n−1 of length φ(n) — so the identical bound ∑(a_{k+1}−a_k)² ≥ (n−2)²/(φ(n)−1) holds for *any* partition of [1, n−1] into φ(n)−1 integer steps, whatever the a_k are. All the genuine arithmetic of Erdős #220 is therefore concentrated in the matching Montgomery–Vaughan *upper* bound; the lower half is a convexity fact about interval partitions that happens to already have the right order n²/φ(n)."
     ],
     "prerequisites": [
       "Euler's totient φ(n) and reduced residue systems",

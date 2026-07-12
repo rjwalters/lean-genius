@@ -156,7 +156,8 @@
       "**Uncountability of ℝ is topological, not arithmetic.** The reals are uncountable purely because they are complete, connected, and have more than one point. No feature of the real line — its order, its field structure, its specific construction — is used in the general theorem; ℝ appears only in the final one-line application.",
       "**The Cantor space is the universal witness.** Every nonempty perfect complete metric space contains an injective image of ℕ → Bool. Since #(ℕ → Bool) = 𝔠, this single embedding simultaneously bounds the cardinality of ℝ, of Cantor's middle-thirds set, of [0,1], and of any perfect Polish space from below by the continuum.",
       "**Subtype uncountability vs. set uncountability.** This Mathlib version has no Set.Uncountable predicate; the natural statement of the core theorem is Uncountable ↥C for the coercion subtype, which is definitionally ¬ C.Countable. Lifting the ambient injection f : (ℕ → Bool) → X to g : (ℕ → Bool) → ↥C keeps the argument entirely at the typeclass level.",
-      "**Connectedness implies perfect.** A connected T1 space with at least two points has no isolated points: an isolated point would be clopen, contradicting connectedness. Mathlib packages this as an instance, so the connected corollary needs no separate topological argument — it is definitionally the main theorem."
+      "**Connectedness implies perfect.** A connected T1 space with at least two points has no isolated points: an isolated point would be clopen, contradicting connectedness. Mathlib packages this as an instance, so the connected corollary needs no separate topological argument — it is definitionally the main theorem.",
+      "**A third, most-general route to uncountability of ℝ.** Alongside Cantor's digit diagonalization and the cardinal-arithmetic identity #ℝ = 𝔠, this gives a purely topological proof: ℝ is uncountable because it is a perfect Polish space. Its advantage is generality — the same perfectSpace_uncountable theorem, instantiated at different spaces, immediately yields the uncountability of the Cantor middle-thirds set, of [0,1], of the irrationals, and of any nonempty complete metric space without isolated points, each in one line. The perfect-set method is also the entry point to the Cantor–Bendixson analysis of closed subsets of Polish spaces."
     ],
     "prerequisites": [
       "Perfect sets and the Cantor scheme in complete metric spaces",
@@ -190,11 +191,19 @@
     },
     {
       "id": "main-and-corollaries",
-      "title": "Main Theorem, Connected Corollary, and ℝ",
+      "title": "Whole-Space Theorem and the Connected Corollary",
       "startLine": 81,
+      "endLine": 96,
+      "summary": "perfectSpace_uncountable specializes the core theorem to C := univ via PerfectSpace.univ_perfect: a nonempty complete metric space with no isolated points is uncountable. uncountable_of_connected then derives the connected/nontrivial case from it — a connected T1 space with two distinct points is automatically perfect, so no separate argument is needed.",
+      "mathContext": "$X$ complete, nonempty, no isolated points $\\Rightarrow X$ uncountable; and connected + $|X|>1$ $\\Rightarrow X$ perfect $\\Rightarrow$ uncountable."
+    },
+    {
+      "id": "real-application",
+      "title": "ℝ is Uncountable (application)",
+      "startLine": 97,
       "endLine": 103,
-      "summary": "perfectSpace_uncountable specializes the core theorem to C := univ via PerfectSpace.univ_perfect; uncountable_of_connected derives the connected/nontrivial case from Mathlib's perfect-space instance; real_uncountable recovers ℝ uncountable as a one-line application.",
-      "mathContext": "$\\mathbb{R}$ is a complete, connected, nontrivial metric space, hence perfect, hence uncountable — no property of the real line beyond these three is used."
+      "summary": "real_uncountable recovers the classical fact that ℝ is uncountable as a one-line instance of uncountable_of_connected: ℝ is a complete, connected, nontrivial metric space, so no property of the real line beyond those three abstract hypotheses is invoked. This is the Baire-category / perfect-set route to uncountability, independent of the diagonal and cardinal-arithmetic proofs.",
+      "mathContext": "$\\mathbb{R}$ complete + connected + nontrivial $\\Rightarrow \\mathrm{Uncountable}\\,\\mathbb{R}$ — the topological (perfect-set) proof, distinct from Cantor diagonalization and $\\#\\mathbb{R} = \\mathfrak{c}$."
     }
   ],
   "conclusion": {

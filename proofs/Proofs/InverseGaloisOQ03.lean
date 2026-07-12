@@ -149,6 +149,28 @@ theorem seven_dvd_Monster_card : 7 ∣ Fintype.card Monster := by
 theorem seventyone_dvd_Monster_card : 71 ∣ Fintype.card Monster := by
   rw [Monster_card]; norm_num
 
+/-- 𝕄 is nontrivial as a group. Immediate from `|𝕄| > 1`; recorded because the
+    element-order (Cauchy) results below are stated for a genuine group with `> 1` element. -/
+theorem Monster_nontrivial : Nontrivial Monster :=
+  Fintype.one_lt_card_iff_nontrivial.mp Monster_card_pos
+
+/-- **𝕄 contains an involution** — an element of order exactly 2.
+    By Cauchy's theorem (`exists_prime_orderOf_dvd_card`), since the prime `2` divides `|𝕄|`
+    there is an element of order `2`. The Monster's even order (`2⁴⁶ ∥ |𝕄|`) is what makes its
+    involution centralizers — the seed of Griess's 1982 construction of 𝕄 — nonempty. -/
+theorem Monster_exists_involution : ∃ g : Monster, orderOf g = 2 :=
+  haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 2 two_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 71.**
+    Cauchy's theorem applied to the largest prime factor `71 ∣ |𝕄|` produces an element of order
+    exactly `71`, substantiating the remark on `seventyone_dvd_Monster_card` that `71` is realised
+    as an element order in the Monster (in fact `71` is the largest prime order of any element
+    of 𝕄). -/
+theorem Monster_exists_element_orderOf_71 : ∃ g : Monster, orderOf g = 71 :=
+  haveI : Fact (Nat.Prime 71) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 71 seventyone_dvd_Monster_card
+
 -- ============================================================================
 -- Part III: Non-Solvability — The Core Structural Result
 -- ============================================================================
@@ -186,7 +208,7 @@ theorem Monster_commutator_eq_top : commutator Monster = ⊤ := by
     h | h
   · exfalso
     apply Monster_not_commutative
-    have hcenter : Subgroup.center Monster = ⊤ := commutator_eq_bot_iff_center_eq_top.mp h
+    have hcenter : Subgroup.center Monster = ⊤ := (commutator_eq_bot_iff_center_eq_top (G := Monster)).mp h
     intro a b
     have ha : a ∈ Subgroup.center Monster := hcenter ▸ Subgroup.mem_top a
     exact (Subgroup.mem_center_iff.mp ha b).symm
@@ -277,7 +299,7 @@ theorem Monster_realizing_field_finrank :
       Module.finrank ℚ K =
         808017424794512875886459904961710757005754368000000000 := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  letI := fK; letI := aK; letI := fdK; letI := gK
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   have hgal : Nat.card (K ≃ₐ[ℚ] K) = Module.finrank ℚ K :=
     IsGalois.card_aut_eq_finrank ℚ K
@@ -298,7 +320,7 @@ theorem Monster_realizing_field_not_solvable :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K), ¬ IsSolvable (K ≃ₐ[ℚ] K) := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  letI := fK; letI := aK; letI := fdK; letI := gK
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   intro hsolv
   haveI := hsolv

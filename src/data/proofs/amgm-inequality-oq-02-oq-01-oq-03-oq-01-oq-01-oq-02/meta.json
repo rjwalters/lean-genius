@@ -61,7 +61,8 @@
       "The k=6 closed form is the first rung whose reduced expression contains a pure cube of a non-leading symmetric polynomial (−2·e₂³) and a pure square (+3·e₃²), alongside the new e₆ term — qualitatively richer than the linear-in-eₖ tails of k≤5.",
       "Every closed-form coefficient is pinned by two independent ring computations: substitution into the recurrence (psum_six_closed) and a fully expanded 6-variable identity (sixth_power_sum_six). The hand-derived coefficients (1, −6, 9, −2, 6, −12, 3, −6, 6, 6, −6) are exactly those forced by e₁p₅ − e₂p₄ + e₃p₃ − e₄p₂ + e₅p₁ − 6e₆.",
       "The aeval bridge built for the k=3 entry (aeval_psum_subtype / aeval_esymm_subtype) is already stated for arbitrary degree n. The k=6 concrete form therefore needs only e6_bridge := aeval_esymm_subtype s f 6 and p6_bridge := aeval_psum_subtype s f 6 — a third confirmation (after k=4, k=5) that the bridge is a reusable, degree-uniform transport.",
-      "Extracting the k=6 recurrence from psum_eq_mul_esymm_sub_sum is purely mechanical once the antidiagonal filter {(1,5),(2,4),(3,3),(4,2),(5,1)} and the sign of the lead term (−1)^(n+1)·n·eₙ = (−1)⁷·6·e₆ = −6e₆ are pinned down, mirroring the k=2..5 derivations exactly."
+      "Extracting the k=6 recurrence from psum_eq_mul_esymm_sub_sum is purely mechanical once the antidiagonal filter {(1,5),(2,4),(3,3),(4,2),(5,1)} and the sign of the lead term (−1)^(n+1)·n·eₙ = (−1)⁷·6·e₆ = −6e₆ are pinned down, mirroring the k=2..5 derivations exactly.",
+      "k=6 is the first composite rung, and its coefficients expose that the 'all non-leading coefficients divisible by k' phenomenon of the prime cases (k=2,3,5) is exactly a primality signature. Here the Girard–Waring coefficient 6·(Σaᵢ−1)!/∏(aᵢ!) has its factor of 6 cancelled by the ∏(aᵢ!) denominator whenever a partition repeats parts: e₁²e₂² gets 9, e₂³ gets −2, e₃² gets +3 — none divisible by 6. Consequently p₆ ≢ e₁⁶ (mod 6) in general, so the Frobenius collapse pₚ ≡ e₁ᵖ that holds at the prime k=5 fails at the composite k=6, precisely because 6 = 2·3 is not prime."
     ],
     "prerequisites": [
       "k=5 closed form AmgmInequalityOQ02OQ01OQ03OQ01OQ01: psum_five_closed and the e₅ definition / e5_bridge.",
@@ -83,11 +84,19 @@
       "mathContext": "$p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$."
     },
     {
-      "id": "universal",
-      "title": "Universal Closed Form (MvPolynomial)",
+      "id": "universal-recurrence",
+      "title": "Universal Recurrence Form (MvPolynomial)",
       "startLine": 65,
+      "endLine": 96,
+      "summary": "psum_six_recurrence extracts p₆ = e₁p₅ − e₂p₄ + e₃p₃ − e₄p₂ + e₅p₁ − 6e₆ from Mathlib's psum_eq_mul_esymm_sub_sum at n=6. The antidiagonal filter {a : a₁+a₂=6, 0<a₁<6} = {(1,5),(2,4),(3,3),(4,2),(5,1)} (five terms now) is pinned by omega and the lead term is (−1)⁷·6·e₆ = −6e₆; five sum_insert steps + ring finish it.",
+      "mathContext": "Recurrence: $p_6 = e_1 p_5 - e_2 p_4 + e_3 p_3 - e_4 p_2 + e_5 p_1 - 6 e_6$."
+    },
+    {
+      "id": "universal-closed",
+      "title": "Universal Closed Form (MvPolynomial)",
+      "startLine": 97,
       "endLine": 119,
-      "summary": "psum_six_recurrence extracts p₆ = e₁p₅ − e₂p₄ + e₃p₃ − e₄p₂ + e₅p₁ − 6e₆ from psum_eq_mul_esymm_sub_sum at n=6 (antidiagonal {(1,5),(2,4),(3,3),(4,2),(5,1)}). psum_six_closed substitutes the proven p₅, p₄, p₃, p₂, p₁ closed forms and ring-normalises.",
+      "summary": "psum_six_closed substitutes the already-reduced psum_five_closed (p₅), psum_four_closed (p₄), psum_three_closed (p₃), psum_two_eq (p₂) and psum_one_eq_esymm_one (p₁) into the recurrence and ring-normalises. k=6 is the first rung whose reduced form carries cubic-in-a-single-eₖ terms: −2·e₂³ and +3·e₃² (the partitions 6=2+2+2 and 6=3+3), on top of the mixed −12·e₁e₂e₃.",
       "mathContext": "In MvPolynomial σ R: $p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$."
     },
     {

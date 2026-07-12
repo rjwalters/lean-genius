@@ -1,3 +1,36 @@
+## Session 2026-07-11 (researcher-2) — VERIFIED axiom-free + literal Δx·Δp ≥ ℏ/2 (standard-deviation form)
+
+Two developments this session on `CauchySchwarzIntegralOQ04.lean`:
+
+**(1) BUILD VERIFIED (finally).** Every prior OQ04 session (researcher-1/3/4) marked the
+file BUILD: UNVERIFIED because the Docker image build died at a containerd metadata I/O
+error. This session confirmed the file elaborates **axiom-free** via the Docker-free path
+`proofs/bin/lake env lean File.lean` against the prebuilt Mathlib oleans (5.3G .lake). All
+key theorems (`robertson_uncertainty`, `heisenberg_canonical`, `gram_eq_iff_parallel`,
+`exists_im_inner_sq_saturated`, `im_inner_smul_saturated_iff`, ...) depend only on
+`[propext, Classical.choice, Quot.sound]`. The 22 pre-existing theorems are all genuinely
+verified — the accumulated UNVERIFIED backlog was purely an operator-docker artifact.
+
+**(2) New content — the literal standard-deviation form.** The whole file stated only the
+*squared* (variance) bound `Var(A)·Var(B) ≥ ¼‖⟪[A,B]⟫‖²`; the OQ-04 prompt literally asks
+for `Δx·Δp ≥ ℏ/2` (product of standard deviations). Added three theorems, 535→~600 lines:
+- `robertson_std_form`: `½‖⟪ψ,(AB−BA)ψ⟫‖ ≤ ‖(A−a)ψ‖·‖(B−b)ψ‖` — the un-squared Robertson
+  bound. Proof: `Real.sqrt` of both sides of `robertson_uncertainty`; `key : lhs² ≤ rhs²`
+  closes by `nlinarith [hrob]` (ring-normalizes `(½x)²=¼x²` and `(‖u‖‖v‖)²=‖u‖²‖v‖²`), then
+  a `calc` chain `x = √(x²) ≤ √(y²) = y` via `Real.sqrt_sq` (nonneg) + `Real.sqrt_le_sqrt`.
+- `heisenberg_std_form`: same at `a=⟨A⟩=Re⟪ψ,Aψ⟫`, `b=⟨B⟩` → `Δ_ψ(A)·Δ_ψ(B) ≥ ½‖⟪[A,B]⟫‖`.
+- `heisenberg_canonical_std`: for unit `ψ` with `(AB−BA)ψ = c•ψ`, the literal
+  `Δ_ψ(A)·Δ_ψ(B) ≥ ‖c‖/2` (= `Δx·Δp ≥ ℏ/2` at `‖c‖=ℏ`). `hnorm : ‖⟪ψ,[A,B]ψ⟫‖ = ‖c‖` via
+  `inner_smul_right`, `inner_self_eq_norm_sq_to_K`, `RCLike.norm_ofReal`, `hψ`.
+All three VERIFIED axiom-free (bin/lake env lean, `#print axioms` = foundational only).
+
+Note: gallery slug `cauchy-schwarz-integral` tracks the PARENT file, not this OQ04 research
+file (confirmed: no src/data/proofs meta references CauchySchwarzIntegralOQ04.lean), so no
+gallery resync needed. The file is now essentially at TERMINUS: squared + std forms,
+Robertson + Schrödinger + canonical, saturation characterization + attainability witness.
+
+---
+
 ## Session 2026-07-10 (researcher-4) — ATTAINABILITY: the Heisenberg bound is sharp (nonempty saturating set)
 
 Added `im_inner_I_smul_saturated` and `exists_im_inner_sq_saturated` to

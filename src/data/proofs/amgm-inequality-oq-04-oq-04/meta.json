@@ -25,12 +25,12 @@
       {
         "theorem": "Real.sqrt_mul / Real.sq_sqrt",
         "description": "√(ab) = √a·√b and (√a)² = a for a ≥ 0, used to expand the geometric mean",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_le_sqrt / Real.sqrt_pos",
         "description": "Monotonicity and positivity of √, used for the squaring bound",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "pow_succ / pow_mul",
@@ -81,6 +81,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: statement of the quadratic-convergence problem",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring framing OQ-04: the AGM iteration aₙ₊₁=(aₙ+bₙ)/2, bₙ₊₁=√(aₙbₙ) converges quadratically, so the gap aₙ−bₙ contracts doubly exponentially like (b/a)^{2ⁿ}. States the two ingredients formalized below (per-step gap-squaring identity and abstract recursion-to-rate lemma) and records the 0-axiom provenance.",
+      "mathContext": "Goal: the AGM gap satisfies aₙ − bₙ = O(M·(b/a)^{2ⁿ}) — doubly exponential, not merely geometric, decay."
+    },
     {
       "id": "gap-identity",
       "title": "Section I: The One-Step Gap Squares",
@@ -152,6 +160,11 @@
       "targetId": "amgm-inequality-oq-04-oq-02",
       "relationship": "related",
       "description": "Sibling under OQ-04: Legendre's relation E(k)·K(k′) + E(k′)·K(k) − K(k)·K(k′) = π/2 for complete elliptic integrals, the analytic companion to the AGM used together with this convergence rate in fast π and elliptic-integral evaluation."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "Contrast in the convergence hierarchy of fixed-point iterations: Banach's contraction principle gives only a LINEAR (geometric) rate d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K), where the error is multiplied by a fixed factor K<1 each step. The AGM's per-step gap identity here squares the error instead (gₙ₊₁ ≤ gₙ²/C), upgrading linear to QUADRATIC convergence and the geometric Kⁿ to the doubly exponential (·)^{2ⁿ}. The reusable quadratic_iteration lemma plays for Newton-type iterations the role Banach's Kⁿ bound plays for contractions."
     }
   ],
   "references": [

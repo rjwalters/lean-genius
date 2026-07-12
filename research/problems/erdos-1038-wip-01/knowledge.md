@@ -153,3 +153,72 @@ in-file patterns); flag clean-cache/host rebuild to confirm before treating as v
 STILL OPEN (potential theory beyond Mathlib): exact faithful infimum `2^(4/3)−1`, the matching
 `sublevelSup' = 2√2` upper bound. Cheap next win: the distinct-root cubic/quartic measures, or
 a monotone-in-`d` statement that `2√(d+1)` is strictly increasing (density of attained values).
+
+## Session 2026-07-11 (researcher-6) — close the attained interval to [2, 2√2] (endpoint included)
+
+**Mode:** REVISIT (RICH, saturated). **Outcome:** +2 theorems, 0 axioms / 0 sorries,
+VERIFIED via local lean 4.26.0 (`#print axioms` = [propext, Classical.choice, Quot.sound]).
+
+Prior sessions gave `exists_faithful_sublevelMeasure_eq`: every measure `m ∈ [2, 2√2)` is
+attained by a faithful distinct-root quadratic `X² − d` — but the interval was **half-open**,
+stopping short of the extremal endpoint (`d < 1` in the quadratic family). The endpoint is
+the boundary case `d = 1`, i.e. the extremal quadratic `q = X² − 1` itself, which is already
+in-file proven faithfully admissible (`quadratic_admissible'`) with measure exactly `2√2`
+(`sublevelMeasure_quadratic`). Wired these together:
+
+- `exists_faithful_sublevelMeasure_eq_Icc {m} (2 ≤ m) (m ≤ 2√2)` — every `m` in the
+  **closed** interval `[2, 2√2]` is an attained faithful sublevel measure. Proof:
+  `rcases eq_or_lt_of_le hm2` → endpoint case discharged by `q`/`quadratic_admissible'`/
+  `sublevelMeasure_quadratic`, interior case delegates to `exists_faithful_sublevelMeasure_eq`.
+- `Icc_subset_faithful_attained` — set-level form: `Set.Icc 2 (2√2) ⊆ {m | ∃ f, faithful f ∧
+  sublevelMeasure f = ofReal m}`. One-line `fun _ hm => …_Icc hm.1 hm.2`.
+
+**Upshot:** the elementary lower half `[2, 2√2]` of the extremal spectrum
+`[2^(4/3) − 1, 2√2]` is now *completely* described — every value attained, endpoint and all,
+with no potential theory. Only the sharp upper bound `sublevelSup' = 2√2` and the exact
+faithful infimum `2^(4/3) − 1` remain open (both need logarithmic potential theory, Tao 2025,
+absent from Mathlib).
+
+**Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+2 thms; 682→710 lines). Gallery
+meta (`src/data/proofs/erdos-1038/meta.json`) tracks the 93-line stub `Erdos1038Problem.lean`,
+NOT this WIP research file, so it is left untouched.
+
+**Verify recipe:** local `~/.elan/.../v4.26.0/bin/lean Proofs/Erdos1038WIP01.lean` with
+`LEAN_PATH` = every `.lake/packages/*/.lake/build/lib/lean` — EXIT 0, 0 errors (two pre-existing
+warnings at 113 simpa / 701 unused-f untouched). Docker not needed. **HAZARD this session:**
+the shared primary checkout `/Users/rwalters/GitHub/lean-genius` was on *another agent's* branch
+(`feature/enricher-5-4-altseries2`, its own 682-line variant) and got `git reset`-wiped mid-edit;
+local `main` ref was also stale (behind origin). Base research worktrees on **`origin/main`**
+(fetch first), external path `/Users/rwalters/lg-r6-*`, symlink `proofs/.lake`, commit immediately.
+
+## Update (2026-07-11, researcher-6 — quadratic-family measure is strictly monotone)
+
+**Mode:** REVISIT (RICH, saturated). **Outcome:** +2 theorems, 0 axioms / 0 sorries,
+VERIFIED local lean 4.26.0 (`#print axioms` = [propext, Classical.choice, Quot.sound]).
+
+Prior sessions proved the distinct-root quadratic family `X² − d` (`0 ≤ d < 1`) has sublevel
+measure `2√(d+1)` and sweeps `[2, 2√2)` (`sublevelMeasure_Xsq_sub_C`,
+`exists_faithful_sublevelMeasure_eq`), but never that the sweep is **order-preserving** — so
+nothing ruled out the parametrisation `d ↦ measure` folding back on itself. Recorded the
+monotonicity:
+
+- `sublevelMeasure_Xsq_sub_C_lt {d₁ d₂} (0≤d₁)(d₂<1)(d₁<d₂) : sublevelMeasure(X²−d₁) <
+  sublevelMeasure(X²−d₂)`. Rewrite both sides by `sublevelMeasure_Xsq_sub_C`, then
+  `ENNReal.ofReal_lt_ofReal_iff (mul_pos two_pos (Real.sqrt_pos.mpr …))` reduces to
+  `2√(d₁+1) < 2√(d₂+1)`, closed by `Real.sqrt_lt_sqrt` + `linarith`.
+- `sublevelMeasure_Xsq_sub_C_strictMonoOn : StrictMonoOn (fun d => sublevelMeasure(X²−C d))
+  (Set.Ico 0 1)` — one-line packaging `fun _ ha _ hb hab => …_lt ha.1 hb.2 hab`.
+
+**Upshot:** the constant term `d` parametrises the elementary measure spectrum `[2, 2√2)`
+strictly monotonically, so each target measure is hit by a *unique* `d` (the sweep is an
+order iso onto its image). Complements the surjectivity theorems with injectivity/ordering.
+Only the sharp `sublevelSup' = 2√2` and exact faithful inf `2^(4/3)−1` remain open (potential
+theory, Tao 2025, absent from Mathlib).
+
+**GOTCHA:** `positivity` on `0 < 2 * √(d₂+1)` FAILS here — it only sees `hd₂ : d₂ < 1`, not
+`0 ≤ d₂` (which comes transitively via `hd₁ ≤ d₁ < d₂`); supply `mul_pos two_pos
+(Real.sqrt_pos.mpr (by linarith))` explicitly instead.
+
+**Files Modified:** proofs/Proofs/Erdos1038WIP01.lean (+2 thms; 747→772 lines). Gallery meta
+(`src/data/proofs/erdos-1038/meta.json`) tracks the 93-line stub `Erdos1038Problem.lean`, NOT
+this WIP research file, so it is left untouched (confirmed: no meta references Erdos1038WIP01).

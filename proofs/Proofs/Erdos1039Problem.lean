@@ -303,6 +303,72 @@ theorem conjecturedBound_div_pommerenkeBound_tendsto_atTop (c : ℝ) (hc : 0 < c
   exact (conjecturedBound_div_pommerenkeBound c hc n hn).symm
 
 /-
+## The KLR–Pommerenke Improvement
+
+The two blocks above measure the KLR bound `c/(n√log n)` and the Pommerenke bound
+`1/(2en²)` each against the conjectured `c/n`.  Comparing the two *lower* bounds directly
+completes the triangle: `klr_better_than_pommerenke` only records that KLR eventually
+*exceeds* Pommerenke (at the fixed constant `c = 1`).  The results here pin the improvement
+*exactly* and show it is unbounded, matching the pattern of the two gap blocks:
+
+* `klrBound_div_pommerenkeBound` — the *exact* ratio is `2ec·n / √log n`.
+* `klrBound_div_pommerenkeBound_tendsto_atTop` — that ratio `→ ∞`, so KLR beats Pommerenke
+  by an unbounded factor (roughly `n / √log n`), for *every* fixed `c > 0`.
+
+Unconditional facts about the bound functions; they use none of the deep axioms.
+-/
+
+/-- **Exact KLR-over-Pommerenke ratio.** For `c > 0` and `n ≥ 2`, the KLR lower bound
+    exceeds the older Pommerenke lower bound by exactly the factor `2ec·n / √log n`:
+    `klrBound c n / pommerenkeBound n = 2ec·n / √log n`.  The quantitative form of
+    `klr_better_than_pommerenke`. -/
+theorem klrBound_div_pommerenkeBound (c : ℝ) (hc : 0 < c) (n : ℕ) (hn : n ≥ 2) :
+    klrBound c n / pommerenkeBound n
+      = 2 * Real.exp 1 * c * n / Real.sqrt (Real.log n) := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have hlog_pos : 0 < Real.log (n : ℝ) := Real.log_pos (by exact_mod_cast show 1 < n by omega)
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  have he : (0 : ℝ) < Real.exp 1 := Real.exp_pos 1
+  have hn0 : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have hs0 : Real.sqrt (Real.log (n : ℝ)) ≠ 0 := hsqrt_pos.ne'
+  have he0 : Real.exp 1 ≠ 0 := he.ne'
+  simp only [klrBound, pommerenkeBound]
+  field_simp
+
+/-- **The KLR improvement over Pommerenke is unbounded.** For every fixed `c > 0` the ratio
+    `klrBound c n / pommerenkeBound n = 2ec·n/√log n → ∞`, so KLR beats Pommerenke by an
+    unbounded factor (`≈ n/√log n`).  Bounded below by `2ec·√n → ∞` (using
+    `√n·√log n ≤ n`, i.e. `log n ≤ n`). -/
+theorem klrBound_div_pommerenkeBound_tendsto_atTop (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto (fun n : ℕ => klrBound c n / pommerenkeBound n)
+      Filter.atTop Filter.atTop := by
+  have hsqrt_atTop : Filter.Tendsto Real.sqrt Filter.atTop Filter.atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    refine ⟨b ^ 2 + 1, fun x hx => ?_⟩
+    calc b ≤ |b| := le_abs_self b
+      _ = Real.sqrt (b ^ 2) := (Real.sqrt_sq_eq_abs b).symm
+      _ ≤ Real.sqrt x := Real.sqrt_le_sqrt (by nlinarith)
+  have hg : Filter.Tendsto (fun n : ℕ => 2 * Real.exp 1 * c * Real.sqrt n)
+      Filter.atTop Filter.atTop :=
+    (hsqrt_atTop.comp tendsto_natCast_atTop_atTop).const_mul_atTop (by positivity)
+  apply Filter.tendsto_atTop_mono' Filter.atTop _ hg
+  filter_upwards [Filter.eventually_ge_atTop 2] with n hn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have hlog_pos : 0 < Real.log (n : ℝ) := Real.log_pos (by exact_mod_cast show 1 < n by omega)
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  have he : (0 : ℝ) < Real.exp 1 := Real.exp_pos 1
+  rw [klrBound_div_pommerenkeBound c hc n hn, le_div_iff₀ hsqrt_pos]
+  have hlogn : Real.log (n : ℝ) ≤ (n : ℝ) := by
+    have := Real.add_one_le_exp (Real.log (n : ℝ)); rw [Real.exp_log hn_pos] at this; linarith
+  have hkey : Real.sqrt n * Real.sqrt (Real.log n) ≤ (n : ℝ) := by
+    rw [← Real.sqrt_mul (Nat.cast_nonneg n)]
+    calc Real.sqrt ((n : ℝ) * Real.log n) ≤ Real.sqrt ((n : ℝ) * (n : ℝ)) :=
+          Real.sqrt_le_sqrt (by nlinarith [mul_le_mul_of_nonneg_left hlogn hn_pos.le])
+      _ = (n : ℝ) := Real.sqrt_mul_self hn_pos.le
+  nlinarith [mul_le_mul_of_nonneg_left hkey (show (0 : ℝ) ≤ 2 * Real.exp 1 * c by positivity)]
+
+/-
 ## Lemniscate Properties
 -/
 
@@ -666,6 +732,41 @@ theorem rho_pos (hf : 0 < f.degree) : 0 < rho f := by
     _ ≤ sSup {r : ℝ | ∃ c : ℂ, isInscribedDisc (sublevelSet f) c r} :=
         le_csSup (bddAbove_inscribed_radii f hf) ⟨z0, hins⟩
 
+/-- **The sublevel set is bounded.** For a polynomial of positive degree, the
+    lemniscate sublevel set `{z : |f(z)| < 1}` sits inside the ball of radius `2`
+    (`sublevelSet_subset_ball`), hence is a bounded subset of `ℂ`. Together with
+    `sublevelSet_isOpen` and `sublevelSet_nonempty` this pins down its basic
+    topology: a nonempty, open, bounded region whose largest inscribed disc is
+    the object of study. -/
+theorem sublevelSet_isBounded (hf : 0 < f.degree) :
+    Bornology.IsBounded (sublevelSet f) :=
+  Metric.isBounded_ball.subset (sublevelSet_subset_ball f hf)
+
+/-- **Universal ceiling `ρ(f) ≤ 2`.** Every inscribed disc `B(c, r)` of the
+    sublevel set is contained in the sublevel set, which itself lies in `B(0, 2)`
+    (`sublevelSet_subset_ball`); comparing the two balls with `inscribed_radius_le`
+    forces `r ≤ 2`, so the supremum `ρ(f)` of all inscribed radii is at most `2`.
+    Combined with `rho_pos`, this bounds `ρ(f) ∈ (0, 2]` for every positive-degree
+    polynomial — a crude but assumption-free ceiling framing the deep lower-bound
+    axioms (`pommerenke_lower`, `klr_lower`), which sharpen the *floor* while this
+    caps the *height*. -/
+theorem rho_le_two (hf : 0 < f.degree) : rho f ≤ 2 := by
+  unfold rho inscribedDiscRadius
+  refine Real.sSup_le ?_ (by norm_num)
+  rintro r ⟨c, hrpos, hsub⟩
+  refine inscribed_radius_le (c := c) (z0 := 0) hrpos (by norm_num : (0 : ℝ) < 2) ?_
+  intro z hz
+  have hzc : z ∈ sublevelSet f := hsub z hz
+  have hb := sublevelSet_subset_ball f hf hzc
+  rw [Metric.mem_ball, dist_zero_right] at hb
+  simpa using hb
+
+/-- **`ρ(f) ∈ (0, 2]`.** Packaging `rho_pos` and `rho_le_two`: for every
+    positive-degree polynomial the inscribed-disc radius is strictly positive and
+    at most `2`. -/
+theorem rho_mem_Ioc (hf : 0 < f.degree) : rho f ∈ Set.Ioc (0 : ℝ) 2 :=
+  ⟨rho_pos f hf, rho_le_two f hf⟩
+
 /-
 ## Random Polynomials
 -/
@@ -723,5 +824,18 @@ polynomials with roots in the unit disc.
 
 **Status**: OPEN - the gap between 1/(n√log n) and 1/n remains.
 -/
+
+/-- **The sublevel set has positive area.**  For a positive-degree polynomial the
+sublevel set `{z : |f(z)| < 1}` is open (`sublevelSet_isOpen`), nonempty
+(`sublevelSet_nonempty` — it contains every root) and bounded (`sublevelSet_isBounded`),
+so its Lebesgue area is strictly positive and finite: `0 < sublevelArea f`.  The positive
+counterpart of the boundedness ceiling, and the reason the inscribed-disc problem is
+non-degenerate (`sublevelArea` is a genuine positive real, not `0` or `∞`). -/
+theorem sublevelArea_pos (hf : 0 < f.degree) : 0 < sublevelArea f := by
+  unfold sublevelArea
+  have hpos : 0 < volume (sublevelSet f) :=
+    (sublevelSet_isOpen f).measure_pos volume (sublevelSet_nonempty f hf)
+  have hlt : volume (sublevelSet f) < ⊤ := (sublevelSet_isBounded f hf).measure_lt_top
+  exact ENNReal.toReal_pos hpos.ne' hlt.ne
 
 end Erdos1039

@@ -113,11 +113,19 @@
     },
     {
       "id": "roots-distinct",
-      "title": "The Two Roots Are Genuinely Distinct",
+      "title": "Sine Positivity: conj ζ ≠ ζ",
       "startLine": 95,
+      "endLine": 131,
+      "summary": "zeta_im computes Im(e^{iθ}) = sin θ; conj_zeta_ne_self_iff deduces that conjugation moves ζ iff sin θ ≠ 0; sin_two_pi_div_pos proves sin(2π/n) > 0 for n ≥ 3 (since 0 < 2π/n < π) and sin_two_pi_div_ne_zero records the nonvanishing — the analytic input that makes conjugation nontrivial.",
+      "mathContext": "$\\mathrm{Im}(e^{i\\theta}) = \\sin\\theta$; $\\sin(2\\pi/n) > 0$ for $n \\geq 3$."
+    },
+    {
+      "id": "roots-distinct-conclusion",
+      "title": "The Two Roots Are Genuinely Distinct",
+      "startLine": 132,
       "endLine": 148,
-      "summary": "Computes Im(e^{iθ}) = sin θ, deduces conjugation moves ζ iff sin θ ≠ 0, proves sin(2π/n) > 0 for n ≥ 3 (0 < 2π/n < π), and concludes conjugation acts nontrivially and the two roots are distinct for every cyclotomic n ≥ 3 — so the index-2 step is sharp.",
-      "mathContext": "$\\mathrm{Im}(e^{i\\theta}) = \\sin\\theta$; $\\sin(2\\pi/n) > 0$ for $n \\geq 3$ ⟹ roots distinct ⟹ $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos 2\\pi/n)] = 2$."
+      "summary": "cyclotomic_conj_ne_self applies the sine nonvanishing to conclude conj ζ ≠ ζ for every n ≥ 3, and cyclotomic_roots_distinct packages that ζ and its conjugate are distinct roots of the index-2 quadratic X² − (2cos 2π/n)X + 1 — so the extension ℚ(ζₙ)/ℚ(cos 2π/n) genuinely has degree 2 (the step is sharp, not merely ≤ 2).",
+      "mathContext": "$\\overline{\\zeta} \\neq \\zeta$ ⟹ two distinct roots ⟹ $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos 2\\pi/n)] = 2$ exactly."
     },
     {
       "id": "consistency",

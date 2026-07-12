@@ -53,14 +53,18 @@ exhibiting *exactly* the two roots `n(1±s)/4`) are local-lean verified
 (Lean v4.26.0 + pinned Mathlib oleans, 0 errors).  The graph-level section
 (`kst_cherry_count_nat`,
 `kst_graph_quadratic`, `kst_edge_bound`, `kst_edge_bound_of_free`) and the
-leading-order closed form added in this session (`kst_radical_envelope`,
+leading-order closed form (`kst_radical_envelope`,
 `kst_edge_bound_leading_order`, giving the recognisable
 `ex(n ; K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n)`), together with the exact C₄
 specialisations `reiman_edge_bound_of_free` (the graph-level Reiman bound
 `4 m ≤ n(1+√(4n-3))`) and its forcing contrapositive `hasK2t_two_of_edge_bound_lt`,
-are elaboration-checked but UNVERIFIED in docker — the containerd build backend was
-down (meta.db / content-store I/O errors) at authoring time.  They should be
-re-verified once the build infra is repaired.
+were authored while the docker containerd backend was down; the *entire file* has
+since been re-verified local-lean (Lean v4.26.0 + pinned Mathlib oleans, 0 errors,
+every key theorem `#print axioms` = `[propext, Classical.choice, Quot.sound]`).
+This session further adds the Vieta relations `kst_vieta_sum` / `kst_vieta_prod`
+(pinning `R⁺+R⁻ = n/2` and `R⁺·R⁻ = -(t-1)n²(n-1)/4` to the quadratic's
+coefficients) and the `K_{2,3}` closed form `k23_quadratic_solve_of_kst`
+(discriminant `8n-7`, `m ≤ ¼ n(1+√(8n-7))`), also local-lean verified.
 -/
 
 import Mathlib
@@ -106,6 +110,22 @@ theorem reiman_quadratic_solve_of_kst (m n s : ℝ)
     (hkst : 4 * m ^ 2 ≤ n ^ 2 * (n - 1) + 2 * n * m) :
     4 * m ≤ n * (1 + s) := by
   refine kst_quadratic_solve 2 m n s hn hs ?_ ?_
+  · rw [hs2]; ring
+  · nlinarith [hkst]
+
+/-- **The `K_{2,3}` case is `t = 3`.**  The next explicit instance of the family
+above `C₄`: for a `K_{2,3}`-free graph the Kővári–Sós–Turán quadratic is
+`4 m² ≤ 2 n²(n-1) + 2 n m` (coefficient `t-1 = 2`), whose discriminant collapses to
+`1 + 4·2·(n-1) = 8n - 7`.  Solving it gives the explicit closed form
+`m ≤ ¼ n(1 + √(8n-7))`, one rung of the Zarankiewicz ladder above the C₄ bound
+`¼ n(1 + √(4n-3))`.  This is the direct analogue of `reiman_quadratic_solve_of_kst`
+at `t = 3`, obtained by specialising `kst_quadratic_solve`. -/
+theorem k23_quadratic_solve_of_kst (m n s : ℝ)
+    (hn : 1 ≤ n) (hs : 0 ≤ s)
+    (hs2 : s ^ 2 = 8 * n - 7)
+    (hkst : 4 * m ^ 2 ≤ 2 * n ^ 2 * (n - 1) + 2 * n * m) :
+    4 * m ≤ n * (1 + s) := by
+  refine kst_quadratic_solve 3 m n s hn hs ?_ ?_
   · rw [hs2]; ring
   · nlinarith [hkst]
 
@@ -160,6 +180,26 @@ theorem kst_quadratic_factor (t n s x : ℝ)
     4 * x ^ 2 - 2 * n * x - (t - 1) * n ^ 2 * (n - 1) =
       4 * (x - n * (1 + s) / 4) * (x - n * (1 - s) / 4) := by
   linear_combination (n ^ 2 / 4) * hs2
+
+/-- **Vieta's sum relation.**  The two roots `R^± = n(1 ± s)/4` of the generalised
+Kővári–Sós–Turán quadratic `4 x² - 2 n x - (t-1) n²(n-1)` sum to `n/2`, matching
+`-b/a = 2n/4` read off from the leading coefficient `a = 4` and linear coefficient
+`b = -2n`.  Note this holds for *any* `s` (the sum is discriminant-free), reflecting
+that the axis of symmetry `n/4` of the parabola does not depend on `t`. -/
+theorem kst_vieta_sum (n s : ℝ) :
+    n * (1 + s) / 4 + n * (1 - s) / 4 = n / 2 := by
+  ring
+
+/-- **Vieta's product relation.**  The two roots `R^± = n(1 ± s)/4`, with
+`s² = 1 + 4(t-1)(n-1)`, multiply to `-(t-1) n²(n-1) / 4`, matching `c/a` read off
+from the leading coefficient `a = 4` and constant coefficient `c = -(t-1)n²(n-1)`.
+Together with `kst_vieta_sum` these are the Vieta relations promised in the
+`kst_quadratic_factor` docstring, pinning both symmetric functions of the roots to
+the quadratic's coefficients; the product carries the whole discriminant dependence
+via `1 - s² = -4(t-1)(n-1)`. -/
+theorem kst_vieta_prod (t n s : ℝ) (hs2 : s ^ 2 = 1 + 4 * (t - 1) * (n - 1)) :
+    (n * (1 + s) / 4) * (n * (1 - s) / 4) = -((t - 1) * n ^ 2 * (n - 1)) / 4 := by
+  nlinarith [hs2]
 
 /-- **Classical Kővári–Sós–Turán closed form.**  From the generalised KST quadratic
 `4 m² ≤ (t-1)·n²(n-1) + 2 n m` (for `t ≥ 2`, `n ≥ 1`, `m ≥ 0`) the edge count obeys the
@@ -487,6 +527,70 @@ theorem not_hasK2t_mono (G : SimpleGraph V) {s t : ℕ} (hst : s ≤ t)
     (h : ¬ HasK2t G s) : ¬ HasK2t G t :=
   fun hcon => h (hasK2t_mono G hst hcon)
 
+/-- **`K_{2,t}`-containment is a monotone graph property.**  If `G ≤ H` (every edge of `G`
+is an edge of `H`) and `G` already contains a `K_{2,t}`, then so does `H`: the very same
+pair `a, b` and common-neighbour set `T` still works, since each adjacency `G.Adj a y`
+promotes to `H.Adj a y` along `G ≤ H`.  Together with `hasK2t_mono` (antitone in `t`) this
+places `HasK2t` in the standard monotone-property framework — containment only grows as the
+graph gains edges. -/
+theorem hasK2t_mono_graph {G H : SimpleGraph V} (hle : G ≤ H) {t : ℕ} (h : HasK2t G t) :
+    HasK2t H t := by
+  obtain ⟨a, b, T, hab, htc, hadj⟩ := h
+  exact ⟨a, b, T, hab, htc, fun y hy => ⟨hle (hadj y hy).1, hle (hadj y hy).2⟩⟩
+
+/-- **`K_{2,t}`-freeness is hereditary to subgraphs.**  Dual to `hasK2t_mono_graph`: if
+`G ≤ H` and `H` is `K_{2,t}`-free, then so is its subgraph `G` — deleting edges cannot create
+a `K_{2,t}`.  So the class of `K_{2,t}`-free graphs is closed under taking subgraphs, the
+hypothesis under which the Kővári–Sós–Turán edge bound (`kst_edge_bound_of_free`) applies. -/
+theorem not_hasK2t_mono_graph {G H : SimpleGraph V} (hle : G ≤ H) {t : ℕ}
+    (h : ¬ HasK2t H t) : ¬ HasK2t G t :=
+  fun hcon => h (hasK2t_mono_graph hle hcon)
+
+/-- **Common neighbours grow with the graph.**  If `G ≤ H` then every common neighbour of a
+pair `a, b` in `G` is one in `H`: `commonNbrs G a b ⊆ commonNbrs H a b`.  The `Finset`-level
+witness behind `hasK2t_mono_graph`, and the reason the codegree `(commonNbrs · a b).card`
+is monotone under edge addition. -/
+theorem commonNbrs_subset_of_le {G H : SimpleGraph V} [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hle : G ≤ H) (a b : V) : commonNbrs G a b ⊆ commonNbrs H a b := by
+  intro v hv
+  simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hv ⊢
+  exact ⟨hle hv.1, hle hv.2⟩
+
+/-- **`K_{2,t}`-containment via the codegree Finset.**  The forbidden-subgraph definition
+`HasK2t` (a distinct pair with a witness set `T` of `≥ t` common neighbours) is equivalent
+to the concrete codegree statement `∃ a ≠ b, t ≤ (commonNbrs G a b).card`.  Forward: any
+witness `T` embeds into `commonNbrs G a b` (`mem_commonNbrs`), so `t ≤ |T| ≤ |commonNbrs|`;
+backward: `commonNbrs G a b` *is* a valid witness set.  This is the bridge between the
+abstract `HasK2t` used in the monotonicity API and the concrete `(commonNbrs · ·).card`
+codegree quantity the Kővári–Sós–Turán counting bounds are stated in — it internalises the
+ad-hoc packing done inside `commonNbrs_card_lt_of_free`. -/
+theorem hasK2t_iff_exists_commonNbrs (G : SimpleGraph V) [DecidableRel G.Adj] (t : ℕ) :
+    HasK2t G t ↔ ∃ a b : V, a ≠ b ∧ t ≤ (commonNbrs G a b).card := by
+  constructor
+  · rintro ⟨a, b, T, hab, htc, hadj⟩
+    refine ⟨a, b, hab, le_trans htc (Finset.card_le_card ?_)⟩
+    intro y hy
+    rw [mem_commonNbrs]
+    exact hadj y hy
+  · rintro ⟨a, b, hab, hcard⟩
+    refine ⟨a, b, commonNbrs G a b, hab, hcard, fun y hy => ?_⟩
+    rw [mem_commonNbrs] at hy
+    exact hy
+
+/-- **The `t = 0` base case: `K_{2,0}` is contained iff the graph has ≥ 2 vertices.**
+`HasK2t G 0` asks only for a distinct pair `a ≠ b` (the empty common-neighbour set `T = ∅`
+vacuously satisfies the `0 ≤ |T|` and adjacency requirements), so it holds exactly when `V`
+is `Nontrivial`.  This is the bottom of the antitone-in-`t` tower (`hasK2t_mono`): every
+graph on two or more vertices contains `K_{2,0}`, and the content only begins at `t ≥ 1`
+where actual common neighbours are required. -/
+theorem hasK2t_zero_iff (G : SimpleGraph V) : HasK2t G 0 ↔ Nontrivial V := by
+  rw [nontrivial_iff]
+  constructor
+  · rintro ⟨a, b, _, hab, -, -⟩
+    exact ⟨a, b, hab⟩
+  · rintro ⟨a, b, hab⟩
+    exact ⟨a, b, ∅, hab, Nat.zero_le _, by simp⟩
+
 /-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
 (`t ≥ 1`) satisfies the classical Kővári–Sós–Turán bound
 
@@ -526,6 +630,43 @@ theorem kst_exact_bound_mono_t (t t' : ℕ) (htt' : t ≤ t') (n : ℝ) (hn : 1 
     nlinarith [hdiff]
   have hsqrt := Real.sqrt_le_sqrt harg
   exact mul_le_mul_of_nonneg_left (by linarith) (by linarith)
+
+/-- **Monotonicity of the exact KST bound in `n`.**  For fixed `t ≥ 1` and `1 ≤ n ≤ n'`
+the Reiman/KST right-hand side is non-decreasing in the vertex count `n`:
+
+      n · (1 + √(1 + 4(t-1)(n-1)))  ≤  n' · (1 + √(1 + 4(t-1)(n'-1))).
+
+Both factors grow: the leading `n ≤ n'`, and the radicand `1 + 4(t-1)(n-1)` increases
+with `n` because `(t-1) ≥ 0`, so its `√` increases; the product of two nonnegative
+non-decreasing factors is non-decreasing.  This is the `n`-companion of
+`kst_exact_bound_mono_t`, recording that the extremal count `ex(n ; K_{2,t})` grows with
+the number of vertices. -/
+theorem kst_exact_bound_mono_n (t : ℕ) (ht : 1 ≤ t) {n n' : ℝ} (hn : 1 ≤ n)
+    (hnn' : n ≤ n') :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n' * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n' - 1))) := by
+  have htm1 : (0 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have hstep : (0 : ℝ) ≤ 4 * ((t : ℝ) - 1) * (n' - n) :=
+    mul_nonneg (mul_nonneg (by norm_num) htm1) (by linarith)
+  have harg : 1 + 4 * ((t : ℝ) - 1) * (n - 1) ≤ 1 + 4 * ((t : ℝ) - 1) * (n' - 1) := by
+    nlinarith [hstep]
+  have hsqrt := Real.sqrt_le_sqrt harg
+  have hc : (0 : ℝ) ≤ 1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1)) := by positivity
+  exact mul_le_mul hnn' (by linarith) hc (by linarith)
+
+/-- **Joint monotonicity of the exact KST bound.**  Combining the `t`- and `n`-directions:
+for `t ≤ t'` (with `t ≥ 1`) and `1 ≤ n ≤ n'`, the Reiman/KST bound at `(t, n)` is dominated
+by the one at `(t', n')`.  A single order statement folding `kst_exact_bound_mono_t` and
+`kst_exact_bound_mono_n`: forbidding a larger `K_{2,t'}` on more vertices only loosens the
+edge bound. -/
+theorem kst_exact_bound_mono (t t' : ℕ) (ht : 1 ≤ t) (htt' : t ≤ t')
+    {n n' : ℝ} (hn : 1 ≤ n) (hnn' : n ≤ n') :
+    n * (1 + Real.sqrt (1 + 4 * ((t : ℝ) - 1) * (n - 1))) ≤
+      n' * (1 + Real.sqrt (1 + 4 * ((t' : ℝ) - 1) * (n' - 1))) :=
+  le_trans (kst_exact_bound_mono_n t ht hn hnn')
+    (kst_exact_bound_mono_t t t' htt' n' (le_trans hn hnn'))
 
 /-- **Monotone (weaker-forbidden) KST bound.**  A `K_{2,t}`-free nonempty graph
 (`t ≥ 1`) also satisfies the KST edge bound for every *larger* forbidden parameter
@@ -693,6 +834,65 @@ theorem hasK2t_two_of_edge_bound_lt (G : SimpleGraph V) [DecidableRel G.Adj] [No
     HasK2t G 2 := by
   by_contra hfree
   exact absurd (reiman_edge_bound_of_free G hfree) (not_le.2 hm)
+
+/-! ### Codegree basics: the common-neighbour count is bounded by the degree
+
+The Kővári–Sós–Turán codegree hypothesis caps `(commonNbrs G a b).card` from above by
+the forbidden-subgraph parameter (`< t` in a `K_{2,t}`-free graph, via
+`commonNbrs_card_lt_of_free`).  Independently of any freeness hypothesis, the codegree
+is bounded by the *degree* of either endpoint — every common neighbour of `a, b` is in
+particular a neighbour of `a` (and of `b`).  These are the elementary set-inclusions
+behind that bound, plus the observation (asserted in the `HasK2t` docstring) that a
+vertex is never its own common neighbour: `a ∉ commonNbrs G a b`, since a simple graph
+has no loops. -/
+
+/-- **Common neighbours are neighbours of the first vertex:**
+    `commonNbrs G a b ⊆ N(a)`.  Immediate from `commonNbrs = N(a) ∩ N(b)`. -/
+theorem commonNbrs_subset_neighborFinset_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : commonNbrs G a b ⊆ G.neighborFinset a := by
+  simp only [commonNbrs]; exact Finset.inter_subset_left
+
+/-- **Common neighbours are neighbours of the second vertex:**
+    `commonNbrs G a b ⊆ N(b)`.  The right-hand companion of
+    `commonNbrs_subset_neighborFinset_left`. -/
+theorem commonNbrs_subset_neighborFinset_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : commonNbrs G a b ⊆ G.neighborFinset b := by
+  simp only [commonNbrs]; exact Finset.inter_subset_right
+
+/-- **Codegree is bounded by the first degree:** `(commonNbrs G a b).card ≤ d(a)`.
+    Every common neighbour of `a, b` is a neighbour of `a`, so the codegree cannot
+    exceed `a`'s degree.  A freeness-free upper bound complementing
+    `commonNbrs_card_lt_of_free` (`< t` in a `K_{2,t}`-free graph). -/
+theorem commonNbrs_card_le_degree_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : (commonNbrs G a b).card ≤ G.degree a := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  exact Finset.card_le_card (commonNbrs_subset_neighborFinset_left G a b)
+
+/-- **Codegree is bounded by the second degree:** `(commonNbrs G a b).card ≤ d(b)`.
+    The right-hand companion of `commonNbrs_card_le_degree_left`; together they give
+    `(commonNbrs G a b).card ≤ min (d a) (d b)`. -/
+theorem commonNbrs_card_le_degree_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : (commonNbrs G a b).card ≤ G.degree b := by
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  exact Finset.card_le_card (commonNbrs_subset_neighborFinset_right G a b)
+
+/-- **A vertex is not its own common neighbour:** `a ∉ commonNbrs G a b`.  Membership
+    would require `G.Adj a a`, impossible in a loopless simple graph (`G.irrefl`).  This
+    proves the parenthetical in the `HasK2t` definition — the common neighbours are
+    automatically distinct from the pair `a, b`. -/
+theorem notMem_commonNbrs_left (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    a ∉ commonNbrs G a b := by
+  rw [mem_commonNbrs]
+  rintro ⟨haa, -⟩
+  exact G.irrefl haa
+
+/-- **A vertex is not its own common neighbour (second slot):** `b ∉ commonNbrs G a b`.
+    The companion of `notMem_commonNbrs_left`; membership would need `G.Adj b b`. -/
+theorem notMem_commonNbrs_right (G : SimpleGraph V) [DecidableRel G.Adj] (a b : V) :
+    b ∉ commonNbrs G a b := by
+  rw [mem_commonNbrs]
+  rintro ⟨-, hbb⟩
+  exact G.irrefl hbb
 
 end GraphLevel
 

@@ -44,12 +44,12 @@
       {
         "theorem": "Real.mul_self_sqrt",
         "description": "0 ≤ a → √a · √a = a; cancels the two 1/√n normalisation factors into a single 1/n",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sq_sqrt",
         "description": "0 ≤ a → (√a)² = a; turns ‖(√n:ℂ)‖² into n in the energy computation",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Complex.conj_ofReal",

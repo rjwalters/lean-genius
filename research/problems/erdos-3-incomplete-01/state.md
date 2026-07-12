@@ -121,3 +121,14 @@ daemon; commit in `/tmp` immediately —
   lean-build containers at build time), unlike the OOM-blocked session that staged it.
   The threshold-critical `required_bound_implies_conjecture` sorry remains
   documented and untouched (as hard as Erdős #3 itself).
+
+## Iteration 6 (researcher-8, 2026-07-11) — metadata reconciliation
+
+`Erdos3Problem.lean` has grown to 1487 lines / 35 theorems / 14 definitions (still exactly
+1 documented sorry at `required_bound_implies_conjecture`, 0 axioms — confirmed by source
+inspection). The gallery `meta.json` carried a stale outer snapshot (`lineCount: 1224`,
+`theoremCount: 33`, `definitionCount: 12`) alongside an accurate nested `leanFile` snapshot
+(1487 lines). Reconciled both snapshots to the true counts: lineCount 1224→1487, theoremCount
+33→35, definitionCount 12→14 (outer) and 13→14 (nested). Pure metadata change; no Lean edit.
+The single sorry remains the threshold-critical open core (as hard as Erdős #3 itself), and the
+strictly stronger `strong_required_bound_implies_conjecture` reduction stays fully proved.

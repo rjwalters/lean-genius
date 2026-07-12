@@ -43,6 +43,25 @@ The top-level file is a working brief. It must contain at minimum:
    `other`) so claim files can reference it.
 4. **Connections** — neighboring problems, both in the gallery and in the
    literature.
+5. **Must prove exactly / does not count** — pin the target so a proof cannot
+   drift into a weaker statement. This section has two parts:
+   - **Definitional pinning.** Resolve every edge case of the formal statement
+     *before* search begins: which objects are quantified over, boundary and
+     degenerate cases, multiplicity/exactness conditions, connectivity or
+     regularity hypotheses — anything a proof could silently weaken. State each
+     as a one-line assertion the final theorem must satisfy.
+   - **Near-misses that do NOT count.** List, by name, the known partial results
+     and restatements that fail to prove the target, so the next iteration does
+     not mistake one for a win. Cover the standard failure families where they
+     apply: wrong multiplicity/exactness, a restricted subclass, reduction to
+     another open problem, bounded/finite verification, and equivalent
+     restatement of the same-strength claim. Add problem-specific traps.
+
+   This convention is adopted from the OpenAI CDC research prompt's "pin the
+   statement + fence off near-misses" technique (see issue #37505 and
+   <https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf>).
+   It applies to problem.md files created going forward; existing files are not
+   retroactively required to add it.
 
 Style is functional; this is a working file, not a publication artifact.
 

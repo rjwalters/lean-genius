@@ -2,6 +2,8 @@ import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.Nat.Factorial.BigOperators
 import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Data.Sym.Card
+import Mathlib.Data.Nat.Choose.Central
+import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.Tactic
 
 /-
@@ -432,6 +434,33 @@ example (n : ℕ) :
     ∑ k ∈ range (n + 1), (k + 2).choose 2 = (n + 3).choose 3 := by
   simpa [simplexNumber] using sum_simplex 2 n
 
+/-! ### The diagonal: central binomial coefficients
+
+The reflection symmetry `simplexNumber_symm` (`P_d(n) = P_n(d)`) fixes the diagonal
+`d = n`, where `P_n(n) = C(2n, n)` is the central binomial coefficient.  This links the
+figurate ladder to two classical sequences: the central binomials themselves and (through
+them) the Catalan numbers. -/
+
+/-- **Diagonal = central binomial coefficient.**  On the symmetric diagonal `d = n` the
+simplex number is the central binomial coefficient: `P_n(n) = C(2n, n) = centralBinom n`.
+This is the fixed line of the reflection symmetry `simplexNumber_symm`. -/
+theorem simplexNumber_diag (n : ℕ) : simplexNumber n n = Nat.centralBinom n := by
+  rw [simplexNumber, Nat.centralBinom_eq_two_mul_choose, two_mul]
+
+/-- **Catalan bridge on the diagonal.**  `(n+1)·Cₙ = P_n(n)`, where `Cₙ` is the `n`-th
+Catalan number: the diagonal simplex number is `(n+1)` times the Catalan number.  Combines
+`simplexNumber_diag` with Mathlib's `succ_mul_catalan_eq_centralBinom`. -/
+theorem succ_mul_catalan_eq_simplexNumber_diag (n : ℕ) :
+    (n + 1) * catalan n = simplexNumber n n := by
+  rw [simplexNumber_diag, succ_mul_catalan_eq_centralBinom]
+
+/-- **The diagonal is even off the origin.**  `2 ∣ P_{n+1}(n+1)`: every central binomial
+coefficient `C(2m, m)` with `m ≥ 1` is even, so the diagonal simplex numbers are even from
+`d = n = 1` onward.  From `simplexNumber_diag` and `Nat.two_dvd_centralBinom_succ`. -/
+theorem two_dvd_simplexNumber_diag_succ (n : ℕ) :
+    2 ∣ simplexNumber (n + 1) (n + 1) := by
+  rw [simplexNumber_diag]; exact Nat.two_dvd_centralBinom_succ n
+
 /-! ### Positivity and monotonicity of the figurate ladder
 
 Basic order facts absent from the file above: every simplex number is positive,
@@ -526,6 +555,52 @@ theorem forwardDiff_simplexNumber (d n : ℕ) :
   simp only [forwardDiff]
   rw [simplexNumber_succ_succ, Nat.add_sub_cancel_left]
 
+/-- **Reverse discrete Fundamental Theorem of Calculus (summing a difference telescopes).**
+The running total of the forward differences of a *monotone* sequence recovers the
+sequence, up to the boundary value `f 0`:
+
+`∑_{j=0}^{n} Δf(j) + f 0 = f (n + 1)`,  i.e.  `partialSum (Δf) n = f(n+1) − f 0`.
+
+This is the antiderivative-of-derivative half of the discrete FTC — the exact converse of
+`forwardDiff_partialSum` (`Δ ∘ ∑ = shift`), completing the `∑ ↔ Δ` duality in *both*
+directions. Monotonicity makes every truncated `ℕ`-subtraction `Δf(j) = f(j+1) − f(j)`
+exact, so the alternating cancellation telescopes cleanly. Proved by induction on `n`,
+peeling the last summand with `Finset.sum_range_succ` and closing each step by `omega` from
+the two-point monotonicity `f(n+1) ≤ f(n+2)`. -/
+theorem partialSum_forwardDiff {f : ℕ → ℕ} (hf : Monotone f) (n : ℕ) :
+    partialSum (forwardDiff f) n + f 0 = f (n + 1) := by
+  induction n with
+  | zero =>
+    show (∑ j ∈ range 1, forwardDiff f j) + f 0 = f 1
+    rw [Finset.sum_range_one]
+    have h01 : f 0 ≤ f 1 := hf (Nat.le_succ 0)
+    have hd : forwardDiff f 0 = f 1 - f 0 := rfl
+    omega
+  | succ n ih =>
+    show (∑ j ∈ range (n + 1 + 1), forwardDiff f j) + f 0 = f (n + 1 + 1)
+    rw [Finset.sum_range_succ]
+    have hd : forwardDiff f (n + 1) = f (n + 1 + 1) - f (n + 1) := rfl
+    have hmono : f (n + 1) ≤ f (n + 1 + 1) := hf (Nat.le_succ (n + 1))
+    unfold partialSum at ih
+    omega
+
+/-- **Reverse discrete FTC on the figurate ladder.** Specialising `partialSum_forwardDiff`
+to the (size-monotone) simplex sequence `P_d`, whose boundary value is `P_d(0) = 1`:
+
+`partialSum (Δ P_d) n + 1 = P_d(n + 1)`.
+
+So summing the first differences of the `d`-dimensional ladder rebuilds it (offset by the
+constant `1 = P_d(0)`), the exact counterpart of `sum_simplex` (`∑ P_d = P_{d+1}`) read
+through the difference operator. -/
+theorem partialSum_forwardDiff_simplexNumber (d n : ℕ) :
+    partialSum (forwardDiff (simplexNumber d)) n + 1 = simplexNumber d (n + 1) := by
+  have h0 : simplexNumber d 0 = 1 := by
+    simp only [simplexNumber, Nat.zero_add, Nat.choose_self]
+  have hmono : Monotone (simplexNumber d) := fun _ _ h => simplexNumber_mono_size d h
+  have hkey := partialSum_forwardDiff hmono n
+  rw [h0] at hkey
+  exact hkey
+
 
 /-! ### Linearity of the discrete Cauchy transform
 
@@ -599,4 +674,227 @@ theorem simplexConv_const (d c n : ℕ) :
     simpa using this
   rw [← iterSum_eq_simplexConv, h, iterSum_one]
 
+
+/-! ### The iterated forward difference: two-sided inverse of iterated summation
+
+The single-step forward difference `forwardDiff` inverts a single `partialSum`
+(`forwardDiff_partialSum`) and strips one figurate dimension (`forwardDiff_simplexNumber`).
+Iterating it `a` times gives the operator `iterForwardDiff a = Δ^a`, and the two
+constructions become *two-sided* inverses: `iterSum a` raises the figurate ladder by
+`a` dimensions (`iterSum_simplexNumber`), and `Δ^a` runs it back down.
+
+The headline is the **general discrete Fundamental Theorem of Calculus**
+`iterForwardDiff_iterSum`: for *any* sequence `f`, differencing an `a`-fold running
+total `a` times recovers the original summand up to the intrinsic shift,
+`Δ^a (∑^a f)(n) = f(n + a)` — the exact discrete analogue of
+`(d/dx)^a ∫^a f = f`. Everything below is a corollary: `iterSum_simplexNumber`
+turns the figurate case `Δ^a P_{a+b} = P_b(· + a)` into a one-line consequence, and
+the `b = 0` slice is the dual of `iterSum_one` (the `a`-fold sum of `1` is `P_a`):
+the `a`-th forward difference of the `a`-dimensional ladder is the constant `1`.
+-/
+
+/-- **Iterated forward-difference operator.** `iterForwardDiff a` applies the forward
+difference `Δ` a total of `a` times: `Δ⁰ = id`, `Δ^{a+1} = Δ ∘ Δ^a`. It is the
+downward-running operator on the figurate ladder, dual to `iterSum`. -/
+def iterForwardDiff : ℕ → (ℕ → ℕ) → (ℕ → ℕ)
+  | 0,     f => f
+  | a + 1, f => forwardDiff (iterForwardDiff a f)
+
+/-- **General discrete Fundamental Theorem of Calculus.** Differencing an `a`-fold
+iterated partial sum `a` times returns the original summand, shifted by `a`:
+
+`Δ^a (∑^a f)(n) = f(n + a)`.
+
+This is the two-sided companion of the single-step `forwardDiff_partialSum`
+(`Δ ∘ ∑ = shift`) and the exact discrete analogue of `(d/dx)^a ∘ ∫^a = id`.
+The shift is intrinsic: each `Δ` reads a running total one index ahead, so `a`
+differences advance the argument by `a`. Proved by induction on `a`, peeling one
+summation layer to `partialSum` via the semigroup law `iterSum_add` and collapsing it
+with `forwardDiff_partialSum`. -/
+theorem iterForwardDiff_iterSum (a : ℕ) (f : ℕ → ℕ) (n : ℕ) :
+    iterForwardDiff a (iterSum a f) n = f (n + a) := by
+  induction a generalizing f n with
+  | zero => rfl
+  | succ a ih =>
+    have hstep : iterSum (a + 1) f = iterSum a (partialSum f) := (iterSum_add a 1 f).symm
+    show forwardDiff (iterForwardDiff a (iterSum (a + 1) f)) n = f (n + (a + 1))
+    rw [hstep]
+    simp only [forwardDiff]
+    rw [ih (partialSum f) (n + 1), ih (partialSum f) n]
+    have hfd := forwardDiff_partialSum f (n + a)
+    simp only [forwardDiff] at hfd
+    have e1 : n + 1 + a = n + a + 1 := by omega
+    have e2 : n + (a + 1) = n + a + 1 := by omega
+    rw [e1, e2, hfd]
+
+/-- **Iterated differencing strips figurate dimensions** — the inverse of the
+dimension-additivity law `iterSum_simplexNumber` (`iterSum a P_b = P_{a+b}`).
+Applying the forward difference `a` times to the `(a+b)`-dimensional simplex sequence
+recovers the `b`-dimensional one, shifted by `a`:
+
+`Δ^a P_{a+b}(n) = P_b(n + a)`.
+
+Immediate from the discrete FTC `iterForwardDiff_iterSum` once `P_{a+b}` is written as
+`iterSum a P_b`. The single-step `forwardDiff_simplexNumber` (`Δ P_{d+1} = P_d(· + 1)`)
+is the case `a = 1`. -/
+theorem iterForwardDiff_simplexNumber (a b n : ℕ) :
+    iterForwardDiff a (simplexNumber (a + b)) n = simplexNumber b (n + a) := by
+  have hfun : (simplexNumber (a + b) : ℕ → ℕ) = iterSum a (simplexNumber b) := by
+    funext m; rw [iterSum_simplexNumber]
+  rw [hfun, iterForwardDiff_iterSum]
+
+/-- **The `a`-th forward difference of the `a`-dimensional ladder is constant `1`** —
+the exact dual of the ladder characterisation `iterSum_one` (the `a`-fold *sum* of the
+constant `1` is `P_a`). Differencing the `a`-dimensional figurate sequence `a` times
+brings it all the way back down to the constant sequence `P_0 ≡ 1`:
+
+`Δ^a P_a(n) = 1`.
+
+The `b = 0` slice of `iterForwardDiff_simplexNumber`, since `P_0 ≡ 1`. Together with
+`iterSum_one` this closes the loop: summation `1 → n → triangular → tetrahedral → …`
+and differencing `… → tetrahedral → triangular → n → 1` are mutually inverse ladders. -/
+theorem iterForwardDiff_self_simplexNumber (a n : ℕ) :
+    iterForwardDiff a (simplexNumber a) n = 1 := by
+  have h : iterForwardDiff a (simplexNumber (a + 0)) n = simplexNumber 0 (n + a) :=
+    iterForwardDiff_simplexNumber a 0 n
+  rw [Nat.add_zero] at h
+  rw [h]
+  simp [simplexNumber]
+
+/-- **Discrete convexity in the size argument.**  For every dimension `d ≥ 1`, the
+figurate sequence `n ↦ P_d(n) = C(n+d, d)` is (discretely) convex:
+
+`2·P_d(n+1) ≤ P_d(n) + P_d(n+2)`.
+
+The order-2 companion of the monotonicity `simplexNumber_mono_size`.  Proof: two
+applications of the Pascal recurrence `simplexNumber_succ_succ` reduce the claim to
+`P_{d-1}(n+1) ≤ P_{d-1}(n+2)`, i.e. the monotonicity of the one-lower ladder — the
+successive first differences `P_d(n+1) − P_d(n) = P_{d-1}(n+1)` are themselves
+non-decreasing. -/
+theorem simplexNumber_convex_size (d n : ℕ) :
+    2 * simplexNumber (d + 1) (n + 1)
+      ≤ simplexNumber (d + 1) n + simplexNumber (d + 1) (n + 2) := by
+  have h1 := simplexNumber_succ_succ d n
+  have h2 := simplexNumber_succ_succ d (n + 1)
+  rw [show n + 1 + 1 = n + 2 from rfl] at h2
+  have hmono : simplexNumber d (n + 1) ≤ simplexNumber d (n + 2) :=
+    simplexNumber_mono_size d (Nat.le_succ _)
+  omega
+
+/-- **Discrete convexity in the dimension argument.**  Symmetric companion of
+`simplexNumber_convex_size`: `d ↦ P_d(n) = C(n+d, d)` is convex in the dimension,
+
+`2·P_{d+1}(n) ≤ P_d(n) + P_{d+2}(n)`   (here at size `n+1`),
+
+obtained from the size version through the reflection symmetry `simplexNumber_symm`
+(`P_d(n) = P_n(d)`).  Together with `simplexNumber_convex_size` this gives convexity of
+the figurate ladder along *both* axes, extending the two-axis monotonicity pair
+`simplexNumber_mono_size` / `simplexNumber_mono_dim`. -/
+theorem simplexNumber_convex_dim (d n : ℕ) :
+    2 * simplexNumber (d + 1) (n + 1)
+      ≤ simplexNumber d (n + 1) + simplexNumber (d + 2) (n + 1) := by
+  rw [simplexNumber_symm (d + 1) (n + 1), simplexNumber_symm d (n + 1),
+      simplexNumber_symm (d + 2) (n + 1)]
+  exact simplexNumber_convex_size n d
+
+/-! ### Ranged and antidiagonal summation across the figurate array
+
+The hockey stick `sum_simplex` sums a *row* of the figurate array `A(d, n) = C(n+d, d)`
+(fixed dimension `d`, increasing size), and `sum_simplex_over_dim` sums a *column*
+(fixed size, increasing dimension); both collapse to a single simplex number
+`P_{d+1}`. The two lemmas below complete the picture of summing along the natural
+lines of the array:
+
+* `sum_Ioc_simplex` — the **ranged (partial) hockey stick**: summing a row only over
+  a window `m < k ≤ n` gives the *difference* of the two endpoint simplex numbers, the
+  telescoping form of `sum_simplex` (its whole-row special case is `m = 0`);
+* `antidiagonal_sum_simplex` — the **antidiagonal** line `d + size = n` of the array,
+  where `A(k, n-k) = C(n, k)`, sums not to a simplex number but to a *power of two*,
+  `∑_{k≤n} P_k(n-k) = 2^n`. This is the third natural direction through Pascal's simplex
+  and the figurate face of the binomial row-sum `∑ C(n,k) = 2^n`.
+-/
+
+/-- **Ranged (partial) hockey-stick identity.** Summing the `d`-dimensional simplex
+numbers over a window `m < k ≤ n` telescopes to the difference of the two endpoint
+`(d+1)`-dimensional numbers, stated additively to stay in `ℕ`:
+
+`P_{d+1}(m) + ∑_{m < k ≤ n} P_d(k) = P_{d+1}(n)`   (for `m ≤ n`).
+
+The whole-row hockey stick `sum_simplex` is the special case `m = 0` (where the left
+endpoint `P_{d+1}(0) = 1 = P_d(0)` is the first summand). Proof: split the range
+`[0, n]` at `m` into `[0, m]` and `(m, n]` and apply `sum_simplex` to each block; the
+window sum is exactly `P_{d+1}(n) − P_{d+1}(m)`. -/
+theorem sum_Ioc_simplex (d : ℕ) {m n : ℕ} (h : m ≤ n) :
+    simplexNumber (d + 1) m + ∑ k ∈ Finset.Ioc m n, simplexNumber d k
+      = simplexNumber (d + 1) n := by
+  have hIoc : Finset.Ioc m n = Finset.Ico (m + 1) (n + 1) := by
+    ext x; simp only [Finset.mem_Ioc, Finset.mem_Ico]; omega
+  rw [← sum_simplex d m, ← sum_simplex d n, hIoc]
+  simp only [Finset.range_eq_Ico]
+  exact Finset.sum_Ico_consecutive _ (Nat.zero_le _) (by omega)
+
+/-- **Antidiagonal entries are binomial coefficients.** Along the antidiagonal
+`d + size = n` of the figurate array, the simplex number collapses to an ordinary
+binomial coefficient: `P_k(n - k) = C(n, k)` whenever `k ≤ n`. Immediate from the
+definition `P_k(m) = C(m + k, k)` with `m = n - k`, since `(n - k) + k = n`. -/
+theorem simplexNumber_antidiagonal {k n : ℕ} (h : k ≤ n) :
+    simplexNumber k (n - k) = n.choose k := by
+  rw [simplexNumber, Nat.sub_add_cancel h]
+
+/-- **Antidiagonal sum is a power of two.** Summing the figurate array along the
+antidiagonal `d + size = n` yields `2^n`:
+
+`∑_{k≤n} P_k(n - k) = 2^n`.
+
+This is the third natural direction through Pascal's simplex, complementing the row
+sum `sum_simplex` and the column sum `sum_simplex_over_dim` (both of which give a single
+simplex number). Because the antidiagonal entries are the binomials `P_k(n-k) = C(n, k)`
+(`simplexNumber_antidiagonal`), this is the figurate manifestation of the binomial
+row-sum `∑_{k≤n} C(n, k) = 2^n` (`Nat.sum_range_choose`). -/
+theorem antidiagonal_sum_simplex (n : ℕ) :
+    ∑ k ∈ range (n + 1), simplexNumber k (n - k) = 2 ^ n := by
+  rw [← Nat.sum_range_choose n]
+  exact Finset.sum_congr rfl fun k hk =>
+    simplexNumber_antidiagonal (by simpa [Nat.lt_succ_iff] using Finset.mem_range.1 hk)
+
+/-- **Alternating antidiagonal sum (inclusion–exclusion face).** Summing the figurate
+array along the antidiagonal `d + size = n` with alternating signs collapses to an
+indicator:
+
+`∑_{k≤n} (-1)^k · P_k(n - k) = [n = 0]`  (i.e. `1` if `n = 0`, else `0`).
+
+This is the *signed* companion of `antidiagonal_sum_simplex` (whose unsigned sum is `2^n`):
+because the antidiagonal entries are the binomials `P_k(n-k) = C(n, k)`
+(`simplexNumber_antidiagonal`), it is the figurate manifestation of the alternating binomial
+identity `∑_{k≤n} (-1)^k C(n, k) = [n = 0]` (`Int.alternating_sum_range_choose`) — the
+inclusion–exclusion direction through Pascal's simplex, complementing the plain row, column,
+and (unsigned) antidiagonal sums. In particular the even- and odd-dimension antidiagonal
+entries balance for every `n ≥ 1`. -/
+theorem alternating_antidiagonal_sum_simplex (n : ℕ) :
+    ∑ k ∈ range (n + 1), (-1 : ℤ) ^ k * (simplexNumber k (n - k) : ℤ)
+      = if n = 0 then 1 else 0 := by
+  rw [← Int.alternating_sum_range_choose (n := n)]
+  refine Finset.sum_congr rfl fun k hk => ?_
+  rw [simplexNumber_antidiagonal (by simpa [Nat.lt_succ_iff] using Finset.mem_range.1 hk)]
+
+/-- **Ranged (partial) hockey stick along the dimension axis.** The dimension-axis
+companion of `sum_Ioc_simplex`: summing a *column* of the figurate array (fixed size `d`,
+increasing dimension) only over a window `m < k ≤ n` telescopes to the difference of the two
+endpoint numbers, stated additively to stay in `ℕ`:
+
+`P_m(d+1) + ∑_{m < k ≤ n} P_k(d) = P_n(d+1)`   (for `m ≤ n`).
+
+The full-column hockey stick `sum_simplex_over_dim` is the special case `m = 0`. Proof: the
+reflection symmetry `simplexNumber_symm` (`P_a(b) = P_b(a)`) turns this into the ranged *row*
+identity `sum_Ioc_simplex`, so the array's two axes carry identical ranged hockey sticks. -/
+theorem sum_Ioc_simplex_over_dim (d : ℕ) {m n : ℕ} (h : m ≤ n) :
+    simplexNumber m (d + 1) + ∑ k ∈ Finset.Ioc m n, simplexNumber k d
+      = simplexNumber n (d + 1) := by
+  have hsum : ∑ k ∈ Finset.Ioc m n, simplexNumber k d
+      = ∑ k ∈ Finset.Ioc m n, simplexNumber d k :=
+    Finset.sum_congr rfl fun k _ => simplexNumber_symm k d
+  rw [simplexNumber_symm m (d + 1), simplexNumber_symm n (d + 1), hsum]
+  exact sum_Ioc_simplex d h
+
 end TetrahedralNumberFormulaOQ01
+

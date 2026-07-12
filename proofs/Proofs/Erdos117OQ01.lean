@@ -561,6 +561,48 @@ theorem growthRate_oscillation_le_window :
   obtain ⟨c₁, c₂, hc1, hc12, hlo, hhi⟩ := limInfLimSup_window
   exact ⟨c₁, c₂, hc1, hc12, by linarith⟩
 
+/-- **Convergence ⟺ `liminf = limsup`.** The two Part-IV formulations of the open question
+    — `growthRateConverges` (the growth rate has *some* limit) and `limInfEqLimSup` (its two
+    cluster extremes coincide) — are equivalent. This is the standard convergence criterion
+    for a bounded real sequence, specialised here: the growth rate is trapped in Pyber's
+    band (`growthRate_lower_bound`/`_upper_bound`), so it is bounded above and below, and for
+    such a sequence Mathlib's `tendsto_of_liminf_eq_limsup` turns `liminf = limsup` into
+    convergence, while `Tendsto.liminf_eq`/`Tendsto.limsup_eq` give the converse. Combined
+    with `exponentialBaseExists_iff_converges`, all three Part-IV phrasings of Erdős #117-OQ-01
+    are one and the same statement. -/
+theorem converges_iff_limInf_eq_limSup :
+    growthRateConverges ↔ limInfEqLimSup := by
+  unfold growthRateConverges limInfEqLimSup
+  constructor
+  · rintro ⟨L, hL⟩
+    have h1 : growthRateLimInf = L := hL.liminf_eq
+    have h2 : growthRateLimSup = L := hL.limsup_eq
+    rw [h1, h2]
+  · intro hEq
+    refine ⟨growthRateLimSup, tendsto_of_liminf_eq_limsup hEq rfl ?_ ?_⟩
+    · obtain ⟨U, hU⟩ := growthRate_upper_bound
+      exact ⟨U, Filter.eventually_atTop.mpr ⟨1, fun n hn => hU n hn⟩⟩
+    · obtain ⟨L, _, hL⟩ := growthRate_lower_bound
+      exact ⟨L, Filter.eventually_atTop.mpr ⟨1, fun n hn => hL n hn⟩⟩
+
+/-- **The open question ⟺ `liminf = limsup`.** Chaining `exponentialBaseExists_iff_converges`
+    with `converges_iff_limInf_eq_limSup`: `h(n)` has a well-defined exponential base iff the
+    liminf and limsup of the growth rate coincide. This is the cleanest single-line statement
+    of Erdős #117-OQ-01 in terms of the cluster values studied in Part III. -/
+theorem exponentialBaseExists_iff_limInfEqLimSup :
+    exponentialBaseExists ↔ limInfEqLimSup :=
+  exponentialBaseExists_iff_converges.trans converges_iff_limInf_eq_limSup
+
+/-- **Convergence ⟺ zero oscillation.** The growth rate converges iff its oscillation
+    `limsup − liminf` is exactly `0`. `growthRate_oscillation_le_window` bounds this
+    oscillation above by the fixed log-width `log(c₂/c₁)` of Pyber's window; this theorem
+    says the open question is precisely whether that bounded oscillation actually vanishes.
+    Immediate from `converges_iff_limInf_eq_limSup` via `sub_eq_zero`. -/
+theorem converges_iff_oscillation_zero :
+    growthRateConverges ↔ growthRateLimSup - growthRateLimInf = 0 := by
+  rw [sub_eq_zero, converges_iff_limInf_eq_limSup]
+  exact ⟨fun h => h.symm, fun h => h.symm⟩
+
 /-- The open question stated precisely -/
 def erdos117OQ01 : Prop := exponentialBaseExists
 

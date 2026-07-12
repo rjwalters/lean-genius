@@ -32,7 +32,7 @@
     "title": "ellipse_halfheight_integral: the Change of Variables",
     "content": "Proves ∫ x in −a..a, √(1 − (x/a)²) = a·(π/2). The substitution x ↦ x/a (intervalIntegral.integral_comp_div, with f = √(1 − ·²) and divisor a) rescales the limits (−a/a = −1, a/a = 1) and extracts the factor a, reducing the integral to Mathlib's integral_sqrt_one_sub_sq = π/2. This is the genuine change of variables the open question requested.",
     "mathContext": "∫_{−a}^{a} √(1 − (x/a)²) dx = a ∫_{−1}^{1} √(1 − u²) du = a·(π/2): u = x/a turns the ellipse's normalized arc into the unit circle's.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "change of variables",
       "unit-circle integral"
@@ -53,7 +53,7 @@
     "title": "ellipse_area_integral: the Ellipse Area Formula",
     "content": "Proves ∫ x in −a..a, 2b·√(1 − (x/a)²) = π·a·b. The constant 2b is pulled out with intervalIntegral.integral_const_mul, and the half-height integral supplies a·(π/2); ring finishes. This is the rigorous ellipse area formula replacing the parent's algebraic placeholder.",
     "mathContext": "Area = ∫ (upper − lower) dx = ∫ 2b·√(1 − (x/a)²) dx = 2b · a·(π/2) = π·a·b.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "ellipse area",
       "integral linearity"
@@ -93,7 +93,7 @@
     "title": "ellipse_volume: the True 2D Lebesgue Measure",
     "content": "Upgrades the 1D area to the genuine planar measure. The filled ellipse is the region between the arcs ∓b·√(1 − (x/a)²) over Icc(−a,a); both arcs are continuous (hence integrable on the compact interval), the lower ≤ the upper, and volume_regionBetween_eq_integral reduces the 2D Lebesgue measure to ∫ (upper − lower) = ∫ 2b·√(1 − (x/a)²), which equals π·a·b by ellipse_area_integral after bridging the Icc set integral to the interval integral.",
     "mathContext": "The honest 'area' is the 2D Lebesgue measure of the solid ellipse; volume_regionBetween_eq_integral certifies it equals the integral of the vertical extent, namely π·a·b.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Lebesgue measure",
       "region between functions",

@@ -43,7 +43,7 @@
       "Conditional mutual information as a first-class definition (conditionalMutualInfo), with the deficit identity I(X;Z|Y) = H(X|Y) − H(X|Y,Z) formalizing the prose claim of the conditioning corollaries"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 191,
+    "lineCount": 249,
     "theoremCount": 8,
     "definitionCount": 1,
     "additionalFiles": [],
@@ -172,9 +172,9 @@
       "Finset"
     ],
     "namespace": "InformationTheory.SSA",
-    "lineCount": 191,
+    "lineCount": 249,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 1,
     "path": "Proofs/ShannonEntropySSA.lean",
     "sorries": 0,
@@ -204,6 +204,12 @@
       "type": "corollary",
       "description": "Conditional mutual information is non-negative: I(X;Z | Y) ≥ 0",
       "leanType": "shannonEntropy (marginalXY pXYZ) + shannonEntropy (marginalYZ pXYZ) - shannonEntropy pXYZ - shannonEntropy (marginalY pXYZ) ≥ 0"
+    },
+    {
+      "name": "conditionalMutualInfo_swap",
+      "type": "theorem",
+      "description": "The X↔Z symmetry of conditional mutual information at the distribution level: I(X;Z|Y) computed from the swapped joint law pXYZ∘reorderXZ equals I(X;Z|Y) from pXYZ. Upgrades the algebraic conditioning_deficit_symm to a genuine invariance, via shannonEntropy_comp_equiv (entropy is unchanged by relabeling outcomes): each of the four entropy terms transports across the swap by a coordinate flip. Axiom-free.",
+      "leanType": "conditionalMutualInfo (pXYZ ∘ reorderXZ) = conditionalMutualInfo pXYZ"
     }
   ],
   "sorries": 0,

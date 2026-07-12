@@ -730,6 +730,39 @@ theorem ramseyNumberColored_bool (k : ℕ) :
     ramseyNumberColored Bool k = ramseyNumber k := rfl
 
 /--
+**The single-colour palette collapses to pure collinearity.**  With a `Subsingleton` (at most
+one colour) *nonempty* palette `C`, every colouring is constant, so the monochromaticity
+constraint `c p = c q` is vacuous: `HasRamseyPropertyColored C A k` holds iff `A` already
+contains a `k`-collinear subset, `∃ S ⊆ A, IsKCollinear S k`.  This is the `|C| = 1` boundary
+of the palette hierarchy — the degenerate bottom end below `ramseyNumberColored_bool` (`|C| = 2`),
+where the Ramsey condition strips down to the underlying Erdős collinearity question with no
+colouring content at all. -/
+theorem hasRamseyPropertyColored_subsingleton_iff {C : Type*} [Subsingleton C] [Nonempty C]
+    {A : Finset Point} {k : ℕ} :
+    HasRamseyPropertyColored C A k ↔ ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k := by
+  constructor
+  · intro h
+    obtain ⟨S, hSA, hSk, _⟩ := h (fun _ => Classical.arbitrary C)
+    exact ⟨S, hSA, hSk⟩
+  · rintro ⟨S, hSA, hSk⟩ c
+    exact ⟨S, hSA, hSk, fun p q _ _ => Subsingleton.elim _ _⟩
+
+/--
+**One colour is the easiest: the bottom of the palette monotonicity chain.**  For a
+`Subsingleton` palette `C` and `k ≥ 3`, `R_C(k) ≤ ramseyNumber k`: a single colour can only
+*lower* the threshold, since `C` embeds into `Bool` (`ramseyNumberColored_mono_colors`) and
+`R_{Bool}(k) = ramseyNumber k` (`ramseyNumberColored_bool`).  This is the lower counterpart of
+`ramseyNumber_le_ramseyNumberColored_fin` (which bounds the `≥ 2`-colour numbers from *below*
+by `ramseyNumber k`); together they pin `ramseyNumber k` as the value at `|C| = 2`, with the
+whole chain `R_{|C|=1}(k) ≤ ramseyNumber k ≤ R_{Fin r}(k)` monotone in the palette size. -/
+theorem ramseyNumberColored_subsingleton_le {C : Type*} [Subsingleton C] {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k ≤ ramseyNumber k := by
+  have e : C ↪ Bool := ⟨fun _ => false, fun a b _ => Subsingleton.elim a b⟩
+  calc ramseyNumberColored C k
+      ≤ ramseyNumberColored Bool k := ramseyNumberColored_mono_colors e hk
+    _ = ramseyNumber k := ramseyNumberColored_bool k
+
+/--
 **A monotone chain in the number of colors.**  For `r ≤ r'`, `R_{Fin r}(k) ≤ R_{Fin r'}(k)`,
 via the canonical embedding `Fin r ↪ Fin r'`.  Combined with `ramseyNumberColored_bool` and
 `finTwoEquiv`, this gives `R(k) = R_{Fin 2}(k) ≤ R_{Fin r}(k)` for every `r ≥ 2`: passing from
@@ -1170,6 +1203,41 @@ theorem erdos_1090_summary :
     -- General case (Hunter via Hales-Jewett)
     (∀ k ≥ 3, ∃ A : Finset Point, HasRamseyProperty A k) :=
   ⟨graham_selfridge, fun k hk => hunter_observation k hk⟩
+
+/-! ## The Ramsey number as a least element
+
+`ramseyNumber` / `ramseyNumberColored` are defined as `sInf` of a set of realizable sizes.
+The two `exists_…_card_eq_ramseyNumber…` theorems show that infimum is *attained*, and the
+`…_le_of_hasRamseyProperty` theorems show it lower-bounds every realizable size.  The `IsLeast`
+packagings below combine these into the single reusable fact that `R(k)` (resp. `R_C(k)`) is the
+**minimum** realizable size — the "genuine minimum, not a mere infimum" the API's prose asserts —
+handing downstream users both membership and lower-bound-ness in one object. -/
+
+/-- **`R(k)` is positive** for `k ≥ 3`: it is at least `k ≥ 3 > 0` (`ramsey_lower_bound`). -/
+theorem ramseyNumber_pos (k : ℕ) (hk : k ≥ 3) : 0 < ramseyNumber k :=
+  lt_of_lt_of_le (by omega) (ramsey_lower_bound k hk)
+
+/-- **`R(k)` is the least realizable size.**  For `k ≥ 3`, `ramseyNumber k` is the minimum of
+the set of cardinalities of finite point sets with the Ramsey property: it is realized by an
+extremal witness (`exists_hasRamseyProperty_card_eq_ramseyNumber`) and bounds every realizable
+size from below (`ramseyNumber_le_of_hasRamseyProperty`).  The `IsLeast` packaging of
+`hasRamseyProperty_realizable_card_iff`. -/
+theorem ramseyNumber_isLeast (k : ℕ) (hk : k ≥ 3) :
+    IsLeast {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}
+      (ramseyNumber k) :=
+  ⟨exists_hasRamseyProperty_card_eq_ramseyNumber k hk,
+   fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumber_le_of_hasRamseyProperty hA⟩
+
+/-- **`R_C(k)` is the least realizable size (colored).**  For a finite palette `C` and `k ≥ 3`,
+`ramseyNumberColored C k` is the minimum cardinality of a finite point set with the `C`-colored
+Ramsey property — realized by `exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored` and a
+lower bound via `ramseyNumberColored_le_of_hasRamseyProperty`.  The colored analogue of
+`ramseyNumber_isLeast`. -/
+theorem ramseyNumberColored_isLeast (C : Type*) [Finite C] (k : ℕ) (hk : k ≥ 3) :
+    IsLeast {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}
+      (ramseyNumberColored C k) :=
+  ⟨exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored C k hk,
+   fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumberColored_le_of_hasRamseyProperty hA⟩
 
 /--
 The main theorem: Erdős #1090 is solved affirmatively.

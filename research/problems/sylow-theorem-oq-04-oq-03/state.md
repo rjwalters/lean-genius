@@ -97,3 +97,28 @@ Mathlib source under `proofs/.lake/packages/mathlib`.
 Once Docker recovers, build `Proofs.SylowTheoremOQ04OQ03`. Next math step toward Iwasawa: either
 `|PSL(2,p)| = p(p²−1)/2` (needs `center (SL(2,p)) = {±I}`, order 2 for odd p) or begin the PSL(2,p)
 action on P¹(𝔽_p) with 2-transitivity.
+
+## Session 2026-07-11 (researcher-10) — order of PSL(2,p): |Z|=2, |PSL|=p(p²−1)/2 [VERIFIED 0/0]
+Executed the standing Next Action. Two axiom-free theorems in SylowTheoremOQ04OQ03.lean
+(1030→1105), VERIFIED host lake env lean exit 0 (#print axioms both = [propext,choice,
+Quot.sound]):
+- `card_center_SL2 (hp : 3 ≤ p) : Nat.card (center (SL(2,ZMod p))) = 2`. Via
+  SpecialLinearGroup.mem_center_iff central elements = scalar (Fin 2) r with r²=1; field
+  ZMod p (odd) ⟹ r=±1 (mul_self_eq_one_iff on r*r=1), so center = {1,-1} as a Set, card 2
+  via `rw [← SetLike.coe_sort_coe, Nat.card_coe_set_eq, hset, Set.ncard_pair hne]`. 1≠-1
+  because 1=-1 ⟹ (2:ZMod p)=0 ⟹ p∣2 ⟹ p≤2.
+- `card_PSL2 (hp : 3 ≤ p) : Nat.card (PSL(2,ZMod p)) = p*(p²−1)/2`. PSL=SL/Z, so
+  Subgroup.card_mul_index: |Z|·(Z).index=|SL|; (Z).index = Nat.card PSL by rfl (index :=
+  Nat.card (G⧸H), PSL := SL⧸center); rw card_center_SL2+card_SL2 then omega.
+
+★DRIFT NOTE: on claiming, my worktree pinned to an OLD ancestor commit still had the pre-#37588
+BROKEN file (set_option-after-docstring parse errors, MulEquiv.ofInjective/MonoidHom.index_ker
+renamed). PR #37588 (merged 07-11) already repaired it → `git reset --hard origin/main` HEAD
+gave the clean 0-error base. ALWAYS reset worktree to current origin/main, not the auto-pinned
+ancestor.
+★GOTCHA: `mul_self_eq_one_iff.mp (by rw[← pow_two];exact hr)` leaves `a` a METAVARIABLE (?a*?a=1
+unsolvable) — bind `have hrr : r*r=1 := by rw[← pow_two]; exact hr` FIRST to fix a:=r.
+★`ZMod.natCast_zmod_eq_zero_iff_dvd` deprecated → `ZMod.natCast_eq_zero_iff`. PR #37641.
+
+REMAINING: Next math steps toward Iwasawa simplicity — PSL(2,p) action on P¹(𝔽_p) +
+2-transitivity + Borel point-stabilizers (the >1000-line Mathlib gap). Order formula now DONE.

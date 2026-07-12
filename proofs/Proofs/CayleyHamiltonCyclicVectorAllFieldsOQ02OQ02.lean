@@ -249,6 +249,124 @@ theorem natDegree_minpoly_le_finrank_centralizer
   rwa [Subalgebra.finrank_toSubmodule, Subalgebra.finrank_toSubmodule,
     CyclicCommutantConverse.finrank_adjoin_eq_natDegree_minpoly M] at hmono
 
+/-- **Strict commutant lower bound for derogatory matrices.**  The always-true bound
+    `deg(minpoly K M) ≤ dim_K C(M)` (`natDegree_minpoly_le_finrank_centralizer`) is an
+    *equality* exactly for nonderogatory `M`
+    (`finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory`).  Hence for a **derogatory**
+    `M` (`minpoly K M ≠ charpoly M`) the inequality is **strict**:
+
+      `deg(minpoly K M) < dim_K C(M)`.
+
+    Equivalently, the commutant of a derogatory matrix is strictly larger than its polynomial
+    algebra `K[M]`: it contains a matrix commuting with `M` that is *not* a polynomial in `M`.
+    This is the dimensional signature of derogatoriness, dual to the nonderogatory equality
+    case `dim_K C(M) = deg(minpoly K M) = n`. -/
+theorem natDegree_minpoly_lt_finrank_centralizer_of_derogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M ≠ M.charpoly) :
+    (minpoly K M).natDegree
+      < Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) := by
+  have hle := natDegree_minpoly_le_finrank_centralizer M
+  have hne :
+      Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+        ≠ (minpoly K M).natDegree := by
+    intro heq
+    exact hM ((finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory M).mp heq)
+  omega
+
+/-- **Dimensional dichotomy of the commutant.**  For every `n × n` matrix `M` the polynomial
+    algebra `K[M]` sits inside the commutant `C(M)`, and the gap between their dimensions
+    detects derogatoriness exactly:
+
+      `dim_K C(M) = deg(minpoly K M)`  if `M` is nonderogatory, and
+      `dim_K C(M) > deg(minpoly K M)`  if `M` is derogatory.
+
+    Packages `finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory` (the equality case)
+    with `natDegree_minpoly_lt_finrank_centralizer_of_derogatory` (the strict case) into a
+    single case split on `minpoly K M = charpoly M`. -/
+theorem finrank_centralizer_dichotomy
+    (M : Matrix (Fin n) (Fin n) K) :
+    (minpoly K M = M.charpoly →
+        Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+          = (minpoly K M).natDegree)
+    ∧ (minpoly K M ≠ M.charpoly →
+        (minpoly K M).natDegree
+          < Module.finrank K
+              ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))) :=
+  ⟨fun h => (finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory M).mpr h,
+   natDegree_minpoly_lt_finrank_centralizer_of_derogatory M⟩
+
+/-! ### Elementwise (matrix-level) forms -/
+
+/-- **Elementwise commutant characterization for nonderogatory `M`.**  All the results
+    above are phrased at the level of the subalgebra `C(M) = Subalgebra.centralizer …`.
+    Unfolded to individual matrices, for a nonderogatory `M` a matrix `N` commutes with
+    `M` **iff** it is a polynomial in `M`:
+
+      `N * M = M * N  ⟺  ∃ p, aeval M p = N`.
+
+    This is the pointwise reading of `centralizer_eq_adjoin_of_nonderogatory`
+    (`C(M) = K[M]`) via `Algebra.adjoin_singleton_eq_range_aeval`: the directly usable
+    "commuting = polynomial" form of the (i) ⟹ (iii) edge. -/
+theorem commute_iff_mem_range_aeval_of_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M = M.charpoly)
+    (N : Matrix (Fin n) (Fin n) K) :
+    N * M = M * N ↔ ∃ p : K[X], (aeval M) p = N := by
+  constructor
+  · intro hcomm
+    have hN : N ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)) := by
+      rw [Subalgebra.mem_centralizer_iff]
+      intro g hg; rw [Set.mem_singleton_iff] at hg; subst hg
+      exact hcomm.symm
+    rw [centralizer_eq_adjoin_of_nonderogatory M hM,
+      Algebra.adjoin_singleton_eq_range_aeval] at hN
+    exact hN
+  · rintro ⟨p, rfl⟩
+    have hmem : (aeval M) p ∈ Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K)) := by
+      rw [Algebra.adjoin_singleton_eq_range_aeval]; exact ⟨p, rfl⟩
+    have hc := adjoin_le_centralizer M hmem
+    rw [Subalgebra.mem_centralizer_iff] at hc
+    exact (hc M (Set.mem_singleton M)).symm
+
+/-- **A derogatory matrix has a commuting non-polynomial — formalized.**  The strict bound
+    `natDegree_minpoly_lt_finrank_centralizer_of_derogatory` says a derogatory commutant is
+    strictly larger than `K[M]`; its docstring reads "it contains a matrix commuting with `M`
+    that is not a polynomial in `M`".  Here that existential is made explicit and turned into
+    an iff:
+
+      `(∃ N, N·M = M·N ∧ N ∉ K[M])  ⟺  M is derogatory (minpoly ≠ charpoly)`.
+
+    Forward: such an `N` witnesses `C(M) ≠ K[M]`, so by
+    `centralizer_eq_adjoin_iff_nonderogatory` `M` is not nonderogatory.  Backward:
+    derogatoriness gives `K[M] < C(M)` (proper, via `adjoin_le_centralizer`), and
+    `SetLike.exists_of_lt` extracts a commuting matrix outside `K[M]`. -/
+theorem exists_commute_not_mem_adjoin_iff_derogatory
+    (M : Matrix (Fin n) (Fin n) K) :
+    (∃ N : Matrix (Fin n) (Fin n) K, N * M = M * N ∧
+        N ∉ Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+      ↔ minpoly K M ≠ M.charpoly := by
+  constructor
+  · rintro ⟨N, hcomm, hnotmem⟩ hnon
+    have hN : N ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)) := by
+      rw [Subalgebra.mem_centralizer_iff]
+      intro g hg; rw [Set.mem_singleton_iff] at hg; subst hg
+      exact hcomm.symm
+    rw [centralizer_eq_adjoin_of_nonderogatory M hnon] at hN
+    exact hnotmem hN
+  · intro hderog
+    have hne : Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))
+        ≠ Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K)) :=
+      fun heq => hderog ((centralizer_eq_adjoin_iff_nonderogatory M).mp heq)
+    have hlt : Algebra.adjoin K ({M} : Set (Matrix (Fin n) (Fin n) K))
+        < Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)) :=
+      lt_of_le_of_ne (adjoin_le_centralizer M) (Ne.symm hne)
+    obtain ⟨N, hNc, hNa⟩ := SetLike.exists_of_lt hlt
+    refine ⟨N, ?_, hNa⟩
+    rw [Subalgebra.mem_centralizer_iff] at hNc
+    exact (hNc M (Set.mem_singleton M)).symm
+
 /-! ### Summary -/
 
 /-- **De Moivre / Cayley–Hamilton OQ-02-OQ-02 summary.**  For an `n × n` matrix

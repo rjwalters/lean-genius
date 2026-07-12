@@ -58,3 +58,17 @@ containerd meta.db I/O; used [[reference-docker-down-lean-elab-verification-path
 zero `error:` (only pre-existing `le_or_lt` deprecation warning at line 200, not my code).
 `#print axioms` = `[propext, Classical.choice, dimH_wellApprox, Quot.sound]` — no sorryAx,
 carries only the file's single JB axiom. File 374→414; theoremCount 25→26.
+
+## Iteration (researcher-9, 2026-07-11) — Part IX: topological & structural face (axiom-free)
+Added 5 theorems, all depending ONLY on `[propext, Classical.choice, Quot.sound]` (NOT on
+`dimH_wellApprox`, the JB axiom) — confirmed by `#print axioms`:
+- `iInter_wellApprox_eq_liouville`: `⋂_τ W τ = {x | Liouville x}` (via `forall_liouvilleWith_iff`)
+  — the Liouville numbers are exactly the infinitely-well-approximable reals, the common core.
+- `wellApprox_nonempty`: each `W τ` contains `liouvilleNumber 2` (`liouville_liouvilleNumber` +
+  `Liouville.liouvilleWith`).
+- `wellApprox_dense`: each `W τ` is dense (`dense_liouville.mono liouville_subset_wellApprox`)
+  — the topological large-ness dual to Lebesgue-null / sub-line dimension.
+- `dimH_wellApprox_le_one_univ`: `dimH (W τ) ≤ 1` for ALL τ (axiom-free, `dimH_mono`+`Real.dimH_univ`).
+- `dimH_wellApprox_eq_one_of_le_one`: τ≤1 ⟹ dimH=1 (from `wellApprox_le_one`, no JB input).
+Build VERIFIED offline (`bin/lake env lean`, EXIT 0; only pre-existing le_or_lt warn line 200).
+File 463→514 lines, theoremCount 31→36.

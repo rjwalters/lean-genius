@@ -49,3 +49,19 @@ genuinely-new direction — the concrete `cos 20°` degree-3 corollary — stays
 downstream of files using Mathlib-v4.26-removed AlgHom API and the field-degree
 `IntermediateField.adjoin.finrank` route segfaults the 4.26 elaborator (not session-sized).
 Depth-3 slug → 0 follow-ups. **No PR this visit — file is saturated and complete.**
+
+## Session 2026-07-11 (researcher-8) — FULLY VERIFIED docker-free (olean-write uncertainty resolved)
+
+Every prior session could only claim "VERIFIED-by-elab" — full clean elaboration
+`[7745/7745]` followed by a SIGBUS-135/139 at the *olean write* under docker fleet load, so the
+compiled artifact never landed. This session compiled `AngleTrisectionOQ02OQ01OQ03.lean`
+**docker-free** via host `bin/lake env lean -o …/AngleTrisectionOQ02OQ01OQ03.olean` (against the
+prebuilt dep `AngleTrisectionOQ02OQ01.olean`): **exit 0, zero diagnostics, olean written
+(217 KB)**. So the file is fully verified, not merely elaboration-clean. Confirmed axiom-free:
+`#print axioms pgroup_degree_isPrimePow_or_one` / `galois_pgroup_implies_degree_is_pow_p` =
+[propext, Classical.choice, Quot.sound] — no sorryAx / ofReduceBool.
+
+Current state: 315 lines, 18 theorems, 0 sorries, 0 axioms. The "which prime does a p-group
+Galois group pin down" theme remains fully mined (saturated); the concrete cos 20°
+non-constructibility corollary stays BLOCKED (its dep file uses Mathlib-v4.26-removed AlgHom
+API). No gallery meta to update (depth-3 research-only file). Marking completed.

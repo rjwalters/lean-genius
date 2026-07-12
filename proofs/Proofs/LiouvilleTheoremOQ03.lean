@@ -460,4 +460,131 @@ theorem not_countable_setOf_exists_liouvilleWith_gt_two :
   rw [dimH_setOf_exists_liouvilleWith_gt_two_eq_one] at h
   exact one_ne_zero h
 
+/-! ## Part IX: The topological & structural face — axiom-free
+
+Parts II–VIII all measure how *small* `W τ` is: for `τ > 2` it is Lebesgue-null
+(`volume_wellApprox_eq_zero`) and of sub-line Hausdorff dimension
+(`dimH_wellApprox_lt_one`).  This part records the complementary fact that each `W τ` is
+nonetheless topologically *large* — it is nonempty and dense — and identifies the exact
+common core of the whole scale.  None of these use the Jarník–Besicovitch axiom
+`dimH_wellApprox`; they rest only on Mathlib's Liouville-number theory. -/
+
+/-- **The whole scale intersects in the Liouville numbers.**  `⋂_{τ} W τ = {x | Liouville x}`:
+a real is well-approximable to *every* order iff it is a Liouville number
+(`forall_liouvilleWith_iff`).  So the Liouville set is precisely the "infinitely
+well-approximable" reals — the common core of the entire `W τ` family, and the object
+whose dimension `0` (`dimH_liouville_eq_zero`) sits below every `dimH (W τ)`. -/
+theorem iInter_wellApprox_eq_liouville :
+    (⋂ τ : ℝ, wellApprox τ) = {x : ℝ | Liouville x} := by
+  ext x
+  simp only [Set.mem_iInter, mem_wellApprox, Set.mem_setOf_eq]
+  exact forall_liouvilleWith_iff
+
+/-- **Every well-approximable set is nonempty.**  It contains the explicit Liouville
+number `liouvilleNumber 2 = ∑ₖ 2^{−k!}`, which is `τ`-well-approximable for every real `τ`
+(`liouville_liouvilleNumber`, `Liouville.liouvilleWith`).  So the family `W τ` never
+degenerates to the empty set, however large the exponent. -/
+theorem wellApprox_nonempty (τ : ℝ) : (wellApprox τ).Nonempty :=
+  ⟨liouvilleNumber 2, (liouville_liouvilleNumber (le_refl 2)).liouvilleWith τ⟩
+
+/-- **Every well-approximable set is dense.**  `W τ` contains the dense set of Liouville
+numbers (`dense_liouville`, `liouville_subset_wellApprox`), hence is dense in `ℝ` for every
+exponent `τ`.  This is the topological counterpart of the metric smallness: for `τ > 2`,
+`W τ` is Lebesgue-null and sub-dimensional yet still meets every open interval — a dense set
+of measure zero. -/
+theorem wellApprox_dense (τ : ℝ) : Dense (wellApprox τ) :=
+  dense_liouville.mono (liouville_subset_wellApprox τ)
+
+/-- **Universal dimension upper bound.**  `dimH (W τ) ≤ 1` for *every* `τ`, with no appeal
+to the axiom: `W τ ⊆ ℝ` and `dimH ℝ = 1` (`Real.dimH_univ`).  The Jarník–Besicovitch axiom
+pins the exact value `2/τ` for `τ ≥ 2`; this trivial upper half holds unconditionally, for
+all exponents including `τ < 2`. -/
+theorem dimH_wellApprox_le_one_univ (τ : ℝ) : dimH (wellApprox τ) ≤ 1 := by
+  calc dimH (wellApprox τ) ≤ dimH (Set.univ : Set ℝ) := dimH_mono (Set.subset_univ _)
+    _ = 1 := Real.dimH_univ
+
+/-- **Full dimension below `τ = 1`, axiom-free.**  For `τ ≤ 1` we have `W τ = univ`
+(`wellApprox_le_one`), so `dimH (W τ) = dimH ℝ = 1` with no analytic input — the
+sub-threshold full-dimension regime that needs none of the Jarník–Besicovitch machinery
+(contrast `dimH_wellApprox_eq_one_of_le_two`, which routes through the axiom at `τ = 2`). -/
+theorem dimH_wellApprox_eq_one_of_le_one {τ : ℝ} (hτ : τ ≤ 1) :
+    dimH (wellApprox τ) = 1 := by
+  rw [wellApprox_le_one hτ]; exact Real.dimH_univ
+
+/-! ## Part X: The category (Baire) face — comeagre yet null
+
+Parts II–VIII established that for `τ > 2` the well-approximable set is *metrically*
+small: Lebesgue-null (`volume_wellApprox_eq_zero`) and of sub-line Hausdorff dimension
+(`dimH_wellApprox_lt_one`).  `wellApprox_dense` already noted it is topologically dense.
+The sharp topological statement is stronger still: each `W τ` is **comeagre
+(residual)** — it contains a dense `Gδ`.  This is inherited for free from Mathlib's
+`eventually_residual_liouville` (the Liouville numbers are residual) because the
+residual filter is upward closed and `{x | Liouville x} ⊆ W τ`.  Combined with the
+measure side it exhibits the textbook **category/measure dichotomy**: for `τ > 2`,
+`W τ` is a comeagre set of Lebesgue measure zero, so `ℝ` decomposes into the meagre
+full-measure complement `(W τ)ᶜ` and the comeagre null set `W τ`. -/
+
+/-- **Each well-approximable set is residual (comeagre).**  `W τ ∈ residual ℝ` for
+every exponent `τ`: it contains the residual Liouville set
+(`eventually_residual_liouville`) and the residual filter is upward closed
+(`Filter.mem_of_superset`).  Axiom-free — strengthens `wellApprox_dense`
+(`dense_of_mem_residual`). -/
+theorem wellApprox_residual (τ : ℝ) : wellApprox τ ∈ residual ℝ :=
+  Filter.mem_of_superset eventually_residual_liouville (liouville_subset_wellApprox τ)
+
+/-- **Comeagre form.**  A residual-a.e. real is `τ`-well-approximable:
+`∀ᶠ x in residual ℝ, x ∈ W τ`.  The `Filter.Eventually` restatement of
+`wellApprox_residual`. -/
+theorem eventually_residual_wellApprox (τ : ℝ) : ∀ᶠ x in residual ℝ, x ∈ wellApprox τ :=
+  wellApprox_residual τ
+
+/-- **The complement is meagre.**  `(W τ)ᶜ` is a meagre set for every `τ`: the reals
+that are *not* `τ`-well-approximable form a first-category set.  Immediate from
+`wellApprox_residual` since `IsMeagre s ↔ sᶜ ∈ residual`. -/
+theorem meagre_compl_wellApprox (τ : ℝ) : IsMeagre (wellApprox τ)ᶜ := by
+  rw [IsMeagre, compl_compl]; exact wellApprox_residual τ
+
+open MeasureTheory in
+/-- **Category/measure dichotomy.**  For `τ > 2` the well-approximable set is
+*simultaneously* comeagre (`wellApprox_residual`) and Lebesgue-null
+(`volume_wellApprox_eq_zero`).  Thus `W τ` is a residual set of measure zero — the
+classical demonstration that Baire category and Lebesgue measure can disagree
+completely: the "typical" real in the category sense lies in `W τ`, while the
+"typical" real in the measure sense does not. -/
+theorem wellApprox_residual_and_volume_zero {τ : ℝ} (hτ : 2 < τ) :
+    wellApprox τ ∈ residual ℝ ∧ volume (wellApprox τ) = 0 :=
+  ⟨wellApprox_residual τ, volume_wellApprox_eq_zero hτ⟩
+
+/-- **The Liouville numbers are residual (comeagre).**  A named restatement of Mathlib's
+`eventually_residual_liouville` as set membership: `{x | Liouville x} ∈ residual ℝ`.  So the
+*topologically typical* real is Liouville — despite the Liouville set being both
+Hausdorff-dimension `0` (`dimH_liouville_eq_zero`) and Lebesgue-null
+(`volume_liouville_eq_zero`).  Axiom-free (pure Baire category). -/
+theorem liouville_residual : {x : ℝ | Liouville x} ∈ residual ℝ :=
+  eventually_residual_liouville
+
+/-- **The non-Liouville reals are meagre.**  `{x | Liouville x}ᶜ` is first category: the
+transcendence-generic (non-Liouville) reals form a meagre set, even though they are
+Lebesgue-conull and dimension-`1`.  Immediate from `liouville_residual`; axiom-free. -/
+theorem meagre_compl_liouville : IsMeagre {x : ℝ | Liouville x}ᶜ := by
+  rw [IsMeagre, compl_compl]; exact liouville_residual
+
+open MeasureTheory in
+/-- **The Liouville measure/category/dimension trichotomy.**  The set of Liouville numbers is
+*simultaneously* Hausdorff-dimension `0`, Lebesgue-null, and comeagre (residual):
+
+    dimH {x | Liouville x} = 0  ∧  volume {x | Liouville x} = 0  ∧  {x | Liouville x} ∈ residual ℝ.
+
+So both classical notions of "smallness" — dimension and measure — declare the Liouville set
+negligible, while Baire category declares it *generic*: the sharpest form of the
+measure-versus-category disagreement, now for the Liouville set itself (the file's
+`wellApprox_residual_and_volume_zero` states the two-way version for `W τ`, `τ > 2`).  The
+dimension component rests on the entry's Jarník–Besicovitch axiom (via
+`dimH_liouville_eq_zero`); the measure and category components are axiom-free. -/
+theorem liouville_dimzero_null_yet_residual :
+    dimH {x : ℝ | Liouville x} = 0 ∧
+      volume {x : ℝ | Liouville x} = 0 ∧
+      {x : ℝ | Liouville x} ∈ residual ℝ :=
+  ⟨dimH_liouville_eq_zero, volume_liouville_eq_zero, liouville_residual⟩
+
 end LiouvilleTheoremOQ03

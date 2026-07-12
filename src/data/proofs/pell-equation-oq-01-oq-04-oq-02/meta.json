@@ -39,7 +39,7 @@
       {
         "theorem": "mul_lt_mul_of_pos_right",
         "description": "a < b → 0 < c → a·c < b·c — scaling by the positive real R(a) preserves strict order, giving strict monotonicity of n ↦ n·R(a)",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       },
       {
         "theorem": "StrictMono.injective",

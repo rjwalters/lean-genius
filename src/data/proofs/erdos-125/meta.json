@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/125",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos125Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos125PositiveLowerDensity.lean",
@@ -20,14 +20,14 @@
       "additive-combinatorics",
       "alphaproof-nexus"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "erdosNumber": 125,
     "erdosUrl": "https://erdosproblems.com/125",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
     "lineCount": 92,
-    "assumptions": "Original Erdos125Problem.lean (92 lines): 0 axioms, 0 sorries, 7 definitions, 0 theorems — states the open question without proving it. Companion Erdos125PositiveLowerDensity.lean integrates DeepMind AlphaProof Nexus's 2026-05-21 proof (arXiv:2605.22763v1) that the positive_lower_density variant of Erdős #125 is FALSE — i.e., lower density of A+B equals 0. Porting from FormalConjectures.Util.ProblemImports to pure Mathlib v4.26.0 is in progress (#20842): 11 of the original 12 sorries are now discharged — the full digit-combinatorics layer (`A_max_k`, `B_max_m`, `A_B_gap`, `A_decomp`, `B_decomp` plus base-3/base-4 head/tail helpers), the irrationality of `log 4 / log 3`, the full Dirichlet-reduction chain (`exists_small_pos_lin_comb_help` via density of the subgroup ℤ+ℤα, `exists_small_pos_lin_comb`, `exists_small_pos_lin_comb_large_k`, `dirichlet_approx`), and the `liminf` bridge (`AB_lowerDensity_eq_zero`, from `density_tends_to_zero` plus the observation that small-density windows must go to infinity since 0 ∈ A+B). 1 deep lemma remains as `sorry`: `scale_step` (the multi-scale counting core); the main theorem `AB_lowerDensity_eq_zero` therefore still transitively depends on one sorried lemma. The Aristotle companion Erdos125PositiveLowerDensityAristotle.lean is a self-contained mirror exposing `scale_step` as the sole automated proof-search target. The canonical statement file (proofRepoPath) carries 0 sorries. The mathematical result is established in the AlphaProof Nexus repository; this gallery entry awaits full mechanization here.",
+    "assumptions": "Original Erdos125Problem.lean (92 lines): 0 axioms, 0 sorries, 7 definitions, 0 theorems — states the open question without proving it. Companion Erdos125PositiveLowerDensity.lean integrates DeepMind AlphaProof Nexus's 2026-05-21 proof (arXiv:2605.22763v1) that the positive_lower_density variant of Erdős #125 is FALSE — i.e., lower density of A+B equals 0. The port from FormalConjectures.Util.ProblemImports to pure Mathlib v4.26.0 is COMPLETE (#20842): all original sorries are discharged — the full digit-combinatorics layer (`A_max_k`, `B_max_m`, `A_B_gap`, `A_decomp`, `B_decomp` plus base-3/base-4 head/tail helpers), the irrationality of `log 4 / log 3`, the full Dirichlet-reduction chain (`exists_small_pos_lin_comb_help` via density of the subgroup ℤ+ℤα, `exists_small_pos_lin_comb`, `exists_small_pos_lin_comb_large_k`, `dirichlet_approx`), the multi-scale counting core `scale_step` (chosen ε=1/(24N) gives factor 11/12 per scale, via digit-decomposition into an injection of the representable window into a product of the smaller window with a residue range of size M ≤ 3^k·(5/6+2εN)), and the `liminf` bridge (`AB_lowerDensity_eq_zero`, from `density_tends_to_zero` plus the observation that small-density windows must go to infinity since 0 ∈ A+B). The file is now `sorry`-free. `#print axioms AB_lowerDensity_eq_zero` (and `scale_step`, `not_positive_lowerDensity_AB`) reports only the standard foundational trio [propext, Classical.choice, Quot.sound] — no `sorryAx`, no `Lean.ofReduceBool`, no `axiom` declarations, no structure-encoded assumptions. The Aristotle companion Erdos125PositiveLowerDensityAristotle.lean is a self-contained mirror that is likewise sorry-free and axiom-free. NOTE: this verifies only the `positive_lower_density` variant that AlphaProof Nexus resolved; Erdős #125's upper-density question and multi-base generalization remain open (`erdosProblemStatus` stays `open`).",
     "mathlib_version": "4.26.0",
     "theoremCount": 0,
     "definitionCount": 7
@@ -203,5 +203,5 @@
       "note": "Source of the ported Lean proof: APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean (370 lines)."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

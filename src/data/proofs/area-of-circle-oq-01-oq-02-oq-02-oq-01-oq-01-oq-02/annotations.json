@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-overview-capstone",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 66 },
+    "type": "concept",
+    "title": "The Capstone of the Hurwitz Isoperimetric Program",
+    "content": "The module docstring lays out the whole strategy. The gallery parent proved the isoperimetric inequality 4πA ≤ L² for smooth closed curves from FIVE disclosed analytic axioms — Fourier decomposition, constant-speed reparametrization (IFT), the Wirtinger sum bound, and two Cauchy–Schwarz bounds — plus the fully-proved algebraic kernel. Across the OQ lineage each of the five axioms was independently discharged 0-axiom in a self-contained companion file. This capstone performs the final assembly: it feeds the four discharged analytic bounds (on the IFT reparametrization) into the algebraic kernel to obtain a fully axiom-free proof. The crucial honesty point spelled out here: the result is stated for RegularClosedCurve, not all SmoothClosedCurve, because the reparametrization axiom is genuinely FALSE at stationary points — so a literal 0-axiom replacement of the parent theorem is impossible, and the regular locus is the maximal domain where the inverse-function-theorem route can succeed. Restricting the hypothesis, rather than adding an axiom, is what makes the end-to-end chain honest.",
+    "mathContext": "Program: Fourier $\\Rightarrow$ Wirtinger $\\Rightarrow$ Cauchy–Schwarz $\\Rightarrow$ IFT reparametrization $\\Rightarrow$ algebraic kernel $\\Rightarrow$ $4\\pi A \\le L^2$, on the regular locus, with 0 axioms and 0 sorries.",
+    "significance": "context",
+    "relatedConcepts": ["isoperimetric inequality", "Hurwitz proof", "axiom discharge", "regular vs smooth curve", "maximal honest endpoint"],
+    "prerequisites": ["the isoperimetric problem", "the notion of a disclosed axiom", "regular closed curves"]
+  },
+  {
     "id": "ann-imports",
     "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
     "range": { "startLine": 67, "endLine": 77 },
@@ -22,6 +34,18 @@
     "significance": "key",
     "relatedConcepts": ["algebraic kernel", "Real.sqrt_sq", "nlinarith", "ordered field inequalities", "self-containment"],
     "prerequisites": ["ordered fields", "square roots", "inequality chaining"]
+  },
+  {
+    "id": "ann-main-statement",
+    "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 125 },
+    "type": "theorem",
+    "title": "The Headline Theorem: isoperimetric_inequality_regular",
+    "content": "The statement of the capstone theorem, before its proof. Its subject is a `RegularClosedCurve` γ — a bundled structure carrying C¹, 2π-periodic coordinate functions with the nowhere-vanishing-speed hypothesis baked in as a field — not an arbitrary `SmoothClosedCurve`. This choice of domain is the whole honesty of the result: regularity is exactly the condition under which the inverse-function-theorem reparametrization is valid, so the type of γ, rather than a disclosed axiom, carries the necessary hypothesis. The single side-condition is `hL : 0 < γ.circumference` (a degenerate point-curve has L = 0 and the ratio 4πA/L² is undefined), and the conclusion `4 * π * γ.area ≤ γ.circumference ^ 2` is the isoperimetric inequality in the scale-free form 4πA ≤ L². Reading the signature makes clear the proof takes no axioms: everything it will invoke is a `have` derived from an imported 0-axiom companion.",
+    "mathContext": "$\\gamma : \\mathrm{RegularClosedCurve},\\ 0 < L = \\gamma.\\text{circumference} \\;\\Rightarrow\\; 4\\pi\\,\\gamma.\\text{area} \\le L^2$; equality iff $\\gamma$ is a circle (the rigidity case, deferred to a companion).",
+    "significance": "key",
+    "relatedConcepts": ["RegularClosedCurve structure", "hypothesis-in-the-type vs disclosed axiom", "scale-free isoperimetric ratio", "positive circumference side-condition"],
+    "prerequisites": ["regular closed curves", "bundled structures in Lean", "the isoperimetric ratio 4πA/L²"]
   },
   {
     "id": "ann-reparam",

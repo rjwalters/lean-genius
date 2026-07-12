@@ -142,6 +142,33 @@ theorem increment_asymptotic_iff_ratioSubOne_asymptotic (R g : ℕ → ℝ)
     field_simp
   rw [tendsto_congr' heq]
 
+/-- **Sharp increment bridge (`l`-scaled, limit form).** The `β`-parametrized companion
+to `increment_asymptotic_iff_ratioSubOne_asymptotic`, valid for *every* `β` including
+`β = 0`. Scaling both the normalized increment and the ratio-excess by `l`, the two have
+the same limit:
+
+`((R(l+1) − R(l))/R(l))·l → β  ↔  (R(l+1)/R(l) − 1)·l → β`.
+
+The right-hand side is the honest *sharp* ratio hypothesis; the left-hand side is exactly
+the power-law increment `Δ_l ~ β·R(l)/l`. This is the rigorous content of the naive
+"Approach A" expansion warned against in the module docstring: under the sharp ratio
+hypothesis (and only then) the increment inherits the leading power-law term. For the
+conjectured `R(k,l) ~ c_k·l^{k-1}/(log l)^{k-2}` the target is `β = k − 1`, but that sharp
+ratio asymptotic is the open regular-variation input, not proved here. Unlike the
+general-`g` reformulation above (which needs `g` eventually nonzero and so cannot express
+`β = 0`), this limit form covers the boundary `β = 0` — the exact threshold between
+`Δ_l = o(R/l)` and genuine power growth. The two scaled quantities are eventually equal,
+so neither direction adds a hypothesis beyond eventual nonvanishing. -/
+theorem increment_div_mul_tendsto_iff_ratioSubOne_mul_tendsto (R : ℕ → ℝ) (β : ℝ)
+    (hpos : ∀ᶠ l in atTop, R l ≠ 0) :
+    Tendsto (fun l => ((R (l + 1) - R l) / R l) * (l : ℝ)) atTop (𝓝 β) ↔
+      Tendsto (fun l => (R (l + 1) / R l - 1) * (l : ℝ)) atTop (𝓝 β) := by
+  have heq : (fun l => ((R (l + 1) - R l) / R l) * (l : ℝ))
+      =ᶠ[atTop] (fun l => (R (l + 1) / R l - 1) * (l : ℝ)) := by
+    filter_upwards [hpos] with l hl
+    rw [increment_div_eq_ratio_sub_one R l hl]
+  rw [tendsto_congr' heq]
+
 /-- **Logarithmic increment–ratio bridge.** For an eventually-positive sequence
 `R`, the *additive* increment of `log R` tends to `0` **iff** the consecutive ratio
 tends to `1`:
@@ -253,6 +280,82 @@ theorem increment_div_tendsto_zero_iff_log_increment_tendsto_zero (R : ℕ → �
   rw [increment_div_tendsto_zero_iff_ratio_tendsto_one R (hpos.mono fun _ hl => ne_of_gt hl),
     log_increment_tendsto_zero_iff_ratio_tendsto_one R hpos]
 
+/-- **The gap increment telescopes into unit increments.** The `m`-step increment is the exact
+(unconditional) sum of the `m` consecutive unit increments:
+
+`R(l+m) − R(l) = ∑_{i<m} (R(l+i+1) − R(l+i))`.
+
+This is the additive backbone of the gap-convergence theorems below (`increment_gap_div_tendsto_zero`
+etc.): each summand is a shifted unit increment, so a bound on unit increments controls the whole
+window exactly, not merely asymptotically. -/
+theorem increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
+    R (l + m) - R l = ∑ i ∈ Finset.range m, (R (l + i + 1) - R (l + i)) := by
+  have h := Finset.sum_range_sub (fun i => R (l + i)) m
+  simpa using h.symm
+
+/-- **The log-gap increment telescopes into unit log-increments.** Applying `increment_gap_eq_sum`
+to `log ∘ R`: the `m`-step log-increment is the exact sum of the `m` consecutive unit
+log-increments,
+
+`log R(l+m) − log R(l) = ∑_{i<m} (log R(l+i+1) − log R(l+i))`.
+
+The multiplicative telescoping `R(l+m)/R(l) = ∏_{i<m} R(l+i+1)/R(l+i)` referenced by
+`ratio_gap_tendsto_one`, read additively through the logarithm — the exact identity underlying
+`log_increment_gap_tendsto_zero`. -/
+theorem log_increment_gap_eq_sum (R : ℕ → ℝ) (l m : ℕ) :
+    Real.log (R (l + m)) - Real.log (R l)
+      = ∑ i ∈ Finset.range m, (Real.log (R (l + i + 1)) - Real.log (R (l + i))) := by
+  have h := Finset.sum_range_sub (fun i => Real.log (R (l + i))) m
+  simpa using h.symm
+
+/-- **The gap-ratio telescopes into a product of unit ratios.** The multiplicative
+companion of `increment_gap_eq_sum` (additive) and `log_increment_gap_eq_sum`
+(log-additive): whenever `R` is nonzero across the window `[l, l+m]`, the `m`-step
+ratio is the exact product of the `m` consecutive unit ratios,
+
+`R(l+m) / R l = ∏_{i<m} R(l+i+1) / R(l+i)`.
+
+This is the multiplicative telescoping `R(l+m)/R(l) = ∏ R(l+i+1)/R(l+i)` invoked (but
+not previously stated) in the docstrings of `ratio_gap_tendsto_one` and
+`ratio_gap_tendsto_pow`; it is their exact algebraic backbone, made explicit here.
+Proof: induction on `m`, splitting off one factor with `div_mul_div_cancel₀` (exactly
+as in `ratio_gap_tendsto_one`'s inductive step). -/
+theorem ratio_gap_eq_prod (R : ℕ → ℝ) (l m : ℕ) (hne : ∀ i ≤ m, R (l + i) ≠ 0) :
+    R (l + m) / R l = ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i)) := by
+  revert hne
+  induction m with
+  | zero =>
+      intro hne
+      simp only [Finset.range_zero, Finset.prod_empty, Nat.add_zero]
+      exact div_self (by simpa using hne 0 le_rfl)
+  | succ m ih =>
+      intro hne
+      show R (l + m + 1) / R l = ∏ i ∈ Finset.range (m + 1), (R (l + i + 1) / R (l + i))
+      rw [Finset.prod_range_succ,
+          ← ih (fun i hi => hne i (Nat.le_succ_of_le hi)),
+          mul_comm, div_mul_div_cancel₀ (hne m (Nat.le_succ m))]
+
+/-- **The product of consecutive ratios tends to `1`.** Under Erdős #1014's ratio
+convergence `R(l+1)/R(l) → 1`, for every fixed gap `m` the product form of the
+gap-ratio converges,
+
+`∏_{i<m} R(l+i+1) / R(l+i) → 1`.
+
+The product-form reading of `ratio_gap_tendsto_one` (to which it is equal on the
+nonvanishing window by `ratio_gap_eq_prod`): each of the `m` factors is a shifted copy
+of the unit ratio, so each tends to `1`, and the finite product of null-factors tends to
+`∏ 1 = 1` (`tendsto_finset_prod`). Notably this needs **no** positivity hypothesis — it
+holds for the product of shifted ratios directly. -/
+theorem prod_consecutive_ratios_tendsto_one (R : ℕ → ℝ) (m : ℕ)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i))) atTop (𝓝 1) := by
+  have h : Tendsto (fun l => ∏ i ∈ Finset.range m, (R (l + i + 1) / R (l + i))) atTop
+      (𝓝 (∏ _i ∈ Finset.range m, (1 : ℝ))) := by
+    refine tendsto_finset_prod _ (fun i _ => ?_)
+    have hi := hratio.comp (tendsto_add_atTop_nat i)
+    simpa using hi
+  simpa using h
+
 /-- **Bounded-gap ratio convergence.** If the consecutive ratio `R(l+1)/R(l)` tends to
 `1` (Erdős #1014) and `R` is eventually positive, then for *every fixed gap* `m` the
 gap-ratio `R(l+m)/R(l)` also tends to `1`.
@@ -350,6 +453,97 @@ theorem log_increment_gap_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
   rw [tendsto_congr' heq]
   have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp hgap
   simpa using this
+
+/-- **General-limit bounded-gap ratio.** If the consecutive ratio `R(l+1)/R(l)` tends
+to a limit `L` (with `R` eventually positive), then for *every fixed gap* `m` the
+gap-ratio `R(l+m)/R(l)` tends to `L^m`:
+
+`R(l+m)/R(l) → L^m`.
+
+The general-`L` companion of `ratio_gap_tendsto_one` (its `L = 1` special case, where
+`1^m = 1`). Telescoping `R(l+m)/R(l) = ∏_{i<m} R(l+i+1)/R(l+i)` into `m` consecutive
+ratios — each `→ L` — the product of `m` copies of `L` is `L^m`; formally by induction on
+`m`, splitting off one factor with `div_mul_div_cancel₀`. For the *diagonal* Ramsey number
+`R(k,k)`, whose growth ratio `R(k+1,k+1)/R(k,k)` is conjectured to tend to a limit
+`L ∈ [2, 4]`, this reads off the growth `R(k+m,k+m)/R(k,k) → L^m` over any fixed window of
+the diagonal index — the exponential-in-the-window statement whose off-diagonal
+`L = 1` degeneration is #1014's smoothness `ratio_gap_tendsto_one`. -/
+theorem ratio_gap_tendsto_pow (R : ℕ → ℝ) (L : ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 L)) :
+    Tendsto (fun l => R (l + m) / R l) atTop (𝓝 (L ^ m)) := by
+  induction m with
+  | zero =>
+      have heq : (fun l => R (l + 0) / R l) =ᶠ[atTop] (fun _ => (1 : ℝ)) := by
+        filter_upwards [hpos] with l hl
+        simp [div_self (ne_of_gt hl)]
+      rw [tendsto_congr' heq, pow_zero]
+      exact tendsto_const_nhds
+  | succ m ih =>
+      have hpos_m : ∀ᶠ l in atTop, 0 < R (l + m) :=
+        (tendsto_add_atTop_nat m).eventually hpos
+      have hshift : Tendsto (fun l => R (l + m + 1) / R (l + m)) atTop (𝓝 L) := by
+        simpa using hratio.comp (tendsto_add_atTop_nat m)
+      have hmul : Tendsto
+          (fun l => R (l + m + 1) / R (l + m) * (R (l + m) / R l)) atTop (𝓝 (L * L ^ m)) :=
+        hshift.mul ih
+      rw [pow_succ']
+      refine hmul.congr' ?_
+      filter_upwards [hpos_m] with l hlm
+      show R (l + m + 1) / R (l + m) * (R (l + m) / R l) = R (l + m + 1) / R l
+      exact div_mul_div_cancel₀ (ne_of_gt hlm)
+
+/-- **General-limit bounded-gap increment.** If the consecutive ratio `R(l+1)/R(l)` tends
+to `L` (with `R` eventually positive), then the normalized increment over any fixed gap `m`
+tends to `L^m − 1`:
+
+`(R(l+m) − R(l))/R(l) → L^m − 1`.
+
+Immediate from `ratio_gap_tendsto_pow`, since `(R(l+m) − R(l))/R(l) = R(l+m)/R(l) − 1`. The
+`L = 1` case recovers `increment_gap_div_tendsto_zero` (`1^m − 1 = 0`, the `o(R)` conclusion),
+so this exhibits Erdős #1014's off-diagonal increment-smallness as the boundary `L = 1` of a
+general geometric-growth statement. -/
+theorem increment_gap_div_tendsto (R : ℕ → ℝ) (L : ℝ) (m : ℕ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 L)) :
+    Tendsto (fun l => (R (l + m) - R l) / R l) atTop (𝓝 (L ^ m - 1)) := by
+  have hgap := ratio_gap_tendsto_pow R L m hpos hratio
+  have heq : (fun l => (R (l + m) - R l) / R l)
+      =ᶠ[atTop] (fun l => R (l + m) / R l - 1) := by
+    filter_upwards [hpos] with l hl
+    rw [sub_div, div_self (ne_of_gt hl)]
+  rw [tendsto_congr' heq]
+  exact hgap.sub_const 1
+
+/-- **General-limit logarithmic bounded-gap increment.** If the consecutive ratio
+`R(l+1)/R(l)` tends to a *positive* limit `L` (with `R` eventually positive), then the
+additive log-increment over any fixed gap `m` tends to `m · log L`:
+
+`log R(l+m) − log R(l) → m · Real.log L`   (for `L > 0`).
+
+The logarithmic companion of `increment_gap_div_tendsto`, and the general-`L` form of
+`log_increment_gap_tendsto_zero` (the case `L = 1`, where `m · log 1 = 0`). Since
+`log R(l+m) − log R(l) = log (R(l+m)/R(l))` and the gap-ratio `R(l+m)/R(l) → L^m`
+(`ratio_gap_tendsto_pow`), continuity of `log` at `L^m ≠ 0` with `Real.log_pow` gives the
+additive limit `log (L^m) = m · log L`. For the *diagonal* Ramsey number with ratio-limit
+`L`, this reads the additive log-growth over a window of size `m` as exactly `m · log L`,
+i.e. linear in the window — the additive shadow of the multiplicative `L^m`. -/
+theorem log_increment_gap_tendsto (R : ℕ → ℝ) (L : ℝ) (m : ℕ) (hL : 0 < L)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 L)) :
+    Tendsto (fun l => Real.log (R (l + m)) - Real.log (R l)) atTop
+      (𝓝 (m * Real.log L)) := by
+  have hgap := ratio_gap_tendsto_pow R L m hpos hratio
+  have hpos_m : ∀ᶠ l in atTop, 0 < R (l + m) := (tendsto_add_atTop_nat m).eventually hpos
+  have heq : (fun l => Real.log (R (l + m)) - Real.log (R l))
+      =ᶠ[atTop] (fun l => Real.log (R (l + m) / R l)) := by
+    filter_upwards [hpos, hpos_m] with l hl hlm
+    rw [Real.log_div (ne_of_gt hlm) (ne_of_gt hl)]
+  rw [tendsto_congr' heq]
+  have hcont : Tendsto (fun l => Real.log (R (l + m) / R l)) atTop (𝓝 (Real.log (L ^ m))) :=
+    (Real.continuousAt_log (pow_ne_zero m (ne_of_gt hL))).tendsto.comp hgap
+  rw [Real.log_pow] at hcont
+  exact hcont
 
 
 end Erdos1014OQ03

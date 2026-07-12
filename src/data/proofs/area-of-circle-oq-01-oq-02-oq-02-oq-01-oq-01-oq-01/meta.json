@@ -73,7 +73,8 @@
       "Wirtinger's inequality and its equality case are both spectral facts: the gap ∫(f')²−∫f² = Σ(n²−1)cₙ² is a manifestly non-negative sum, and rigidity is just the statement that a non-negative sum vanishes iff each term does",
       "The mean-zero hypothesis enters exactly to make the n=0 term non-negative (it kills c₀), which is what makes the whole gap a sum of non-negative terms",
       "Equality extremisers are precisely the first harmonics a cos t + b sin t — geometrically, forcing this in both coordinates of a constant-speed closed curve produces a circle, the isoperimetric extremiser",
-      "Summable.tsum_pos turns 'one coefficient survives' into 'the gap is strictly positive', giving the contradiction that drives the forward (rigidity) direction without needing pointwise Fourier inversion"
+      "Summable.tsum_pos turns 'one coefficient survives' into 'the gap is strictly positive', giving the contradiction that drives the forward (rigidity) direction without needing pointwise Fourier inversion",
+      "Wirtinger's inequality is the sharp Poincaré inequality for the operator −d²/dt² on mean-zero 2π-periodic functions: its first nonzero eigenvalue is λ₁ = 1, attained exactly on the eigenspace spanned by cos t and sin t. The coefficient n²−1 = n² − λ₁ in the spectral gap is the eigenvalue of the n-th mode minus λ₁, so 'equality ⟺ first harmonic' is precisely the statement that the extremiser lies in the λ₁-eigenspace — the eigenvalue-rigidity viewpoint that generalizes to the Laplace–Beltrami spectrum in higher dimensions"
     ],
     "prerequisites": [
       "Fourier series and Parseval's identity",
@@ -119,6 +120,10 @@
     {
       "proofId": "area-of-circle-oq-01-oq-03",
       "relationship": "Grandparent: supplies the axiom-free Fourier decomposition (Parseval for f and f' via integration by parts) reused here as IsoperimetricOQ.fourier_decomposition."
+    },
+    {
+      "proofId": "area-of-circle",
+      "relationship": "Root of the chain (Wiedijk #9, Area of a Circle = πr²). The isoperimetric inequality C²≥4πA is the sharp companion of this area formula, and the rigidity case proved here — equality iff the extremiser is a first harmonic (a circle) — is precisely what makes the disk of area πr² the unique isoperimetric optimum among all curves of given perimeter."
     }
   ],
   "conclusion": {

@@ -188,7 +188,7 @@ theorem rate_equalNoise_le_wideband [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : �
   calc (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c))
       ≤ (Fintype.card ι : ℝ) / 2 * (P / (Fintype.card ι * c)) :=
         mul_le_mul_of_nonneg_left hlog (by positivity)
-    _ = P / (2 * c) := by field_simp; ring
+    _ = P / (2 * c) := by field_simp
 
 /-! ## Strict positivity and the vanishing characterization -/
 
@@ -278,6 +278,54 @@ theorem rate_equalNoise_concaveOn_power [Nonempty ι] {c : ℝ} (hc : 0 < c) :
           * (a * Real.log (1 + x / k) + b * Real.log (1 + y / k)) := by ring
     _ ≤ (Fintype.card ι : ℝ) / 2 * Real.log (a * (1 + x / k) + b * (1 + y / k)) :=
         mul_le_mul_of_nonneg_left hstep hN
+    _ = (Fintype.card ι : ℝ) / 2 * Real.log (1 + (a * x + b * y) / k) := by rw [hsum]
+
+/-- **Strict concavity of the equal-noise capacity in the power budget.**  For `c > 0`
+    the capacity `C(P) = (n/2)·log(1 + P/(n·c))` is *strictly* concave on `[0, ∞)`,
+    sharpening `rate_equalNoise_concaveOn_power` from `ConcaveOn` to `StrictConcaveOn`
+    (mirroring how `rate_equalNoise_strictMono_power` sharpens the monotone version).
+    Strict concavity is the property that makes power time-sharing *strictly* suboptimal
+    and pins down the water-filling optimum as *unique*: no nontrivial convex combination
+    of two distinct budgets is matched by splitting time between them.  The affine
+    reparametrisation `P ↦ 1 + P/(n·c)` is injective, so distinct budgets map to distinct
+    positive arguments where `Real.log` is strictly concave (`strictConcaveOn_log_Ioi`),
+    and the strictly positive scaling `n/2 > 0` preserves the strict inequality. -/
+theorem rate_equalNoise_strictConcaveOn_power [Nonempty ι] {c : ℝ} (hc : 0 < c) :
+    StrictConcaveOn ℝ (Set.Ici 0)
+      (fun P => (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c))) := by
+  have hn : 0 < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hnc : 0 < (Fintype.card ι : ℝ) * c := mul_pos hn hc
+  set k := (Fintype.card ι : ℝ) * c with hk
+  have hkne : k ≠ 0 := hnc.ne'
+  have hNpos : (0 : ℝ) < (Fintype.card ι : ℝ) / 2 := by positivity
+  refine ⟨convex_Ici 0, fun x hx y hy hxy a b ha hb hab => ?_⟩
+  simp only [Set.mem_Ici] at hx hy
+  have hux : (0 : ℝ) < 1 + x / k := by
+    have : 0 ≤ x / k := div_nonneg hx hnc.le; linarith
+  have huy : (0 : ℝ) < 1 + y / k := by
+    have : 0 ≤ y / k := div_nonneg hy hnc.le; linarith
+  -- the injective affine reparametrisation sends `x ≠ y` to distinct positive arguments
+  have hne_arg : (1 + x / k) ≠ (1 + y / k) := by
+    intro h
+    apply hxy
+    have hk2 : x / k = y / k := by linarith
+    field_simp [hkne] at hk2
+    linarith
+  have hsum : a * (1 + x / k) + b * (1 + y / k) = 1 + (a * x + b * y) / k := by
+    field_simp
+    linear_combination k * hab
+  have hstep : a * Real.log (1 + x / k) + b * Real.log (1 + y / k)
+      < Real.log (a * (1 + x / k) + b * (1 + y / k)) := by
+    have := strictConcaveOn_log_Ioi.2 (Set.mem_Ioi.mpr hux) (Set.mem_Ioi.mpr huy)
+      hne_arg ha hb hab
+    simpa only [smul_eq_mul] using this
+  simp only [smul_eq_mul]
+  calc a * ((Fintype.card ι : ℝ) / 2 * Real.log (1 + x / k))
+        + b * ((Fintype.card ι : ℝ) / 2 * Real.log (1 + y / k))
+      = (Fintype.card ι : ℝ) / 2
+          * (a * Real.log (1 + x / k) + b * Real.log (1 + y / k)) := by ring
+    _ < (Fintype.card ι : ℝ) / 2 * Real.log (a * (1 + x / k) + b * (1 + y / k)) :=
+        mul_lt_mul_of_pos_left hstep hNpos
     _ = (Fintype.card ι : ℝ) / 2 * Real.log (1 + (a * x + b * y) / k) := by rw [hsum]
 
 end ShannonWaterFilling

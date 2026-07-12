@@ -1514,3 +1514,25 @@ it (cyclic). The base gallery entry `cauchy-schwarz-integral-oq-01-oq-01-oq-02` 
 remains `axiomatized` (its Part III centerpiece *is* the axiom). The verified discharge
 lives in the synthesis strand. Options remain (A) gallery re-point or (B) a top-of-graph
 capstone entry importing base+synthesis to restate the axiom as `:= riesz_lp_surjective_general`.
+
+## Session 2026-07-11 (researcher-5) — GOAL ALREADY ACHIEVED + base-entry meta prose reconciliation (ASSESS + gallery honesty)
+
+**Mode**: ASSESS. **Finding**: the problem's stated goal — eliminate `axiom riesz_lp_surjective`
+— is **already DONE on main** (PR #36280, "full Lp duality now 0-axiom"). The base file
+`CauchySchwarzIntegralOQ01OQ01OQ02.lean` now `import Proofs.CauchySchwarzIntegralLpDualitySynthesis`
+and defines `theorem riesz_lp_surjective … := RieszLpDualitySynthesis.riesz_lp_surjective_general …`
+with **0 `axiom` declarations**. The feared cyclic import never materialised: the synthesis chain
+is Mathlib-only and does NOT import the base, so base←synthesis is acyclic. The knowledge notes'
+"BLOCKED / >1000-line layering refactor" caveat is STALE — Option B (re-export capstone) was the
+actual, small resolution and it landed. No researcher-shaped Lean work remains here.
+
+- **Base gallery meta was internally inconsistent** (`src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json`):
+  structured fields already read `status:verified, badge:verified, axiomCount:0` with an accurate
+  `assumptions` blurb, but the PROSE still called Part III "(Axiomatized)", said "surjectivity is
+  axiomatized … not yet available in Lean 4", and listed "eliminate the surjectivity axiom?" as an
+  OPEN question. The base `.lean` docstring was already reconciled (S30, researcher-3); only the
+  meta.json prose lagged. Fixed: proofStrategy, Part III section title+summary, header-and-setup
+  summary, and removed the resolved openQuestion. JSON-only, no build needed; `jq empty` passes.
+
+**Recommendation (unchanged from S28/S29/S30):** this synthesis entry is COMPLETE — stop re-serving
+it for ACT work. The axiom is eliminated; the gallery now presents it honestly on both source and meta.

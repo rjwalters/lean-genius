@@ -109,6 +109,25 @@ theorem Q_eq_one_iff (x y : ℤ) : Q x y = 1 ↔ (x = 1 ∨ x = -1) ∧ y = 0 :=
     · exact ⟨Or.inr (by linarith), hy⟩
   · rintro ⟨hx | hx, rfl⟩ <;> subst hx <;> norm_num
 
+/-- **The ramified prime: norm-`2` vectors are `(0, ±1)`.**
+    `Q x y = 2 ↔ x = 0 ∧ (y = 1 ∨ y = -1)`.  Since `x² ≤ 2` and `2y² ≤ 2` bound both
+    coordinates to `{-1, 0, 1}`, the only lattice vectors at squared distance `2` from the
+    origin are `(0, ±1)` — i.e. `±√-2`.  This is the statement that `2` is the *ramified*
+    prime of `ℤ[√-2]`: `2 = Zsqrtd.norm (√-2)` has an essentially unique representation
+    (up to the units `±1` of `Q_eq_one_iff`), completing the analysis of the smallest norm
+    values `{0, 1, 2}` alongside `Q_eq_zero_iff` and `Q_eq_one_iff`. -/
+theorem Q_eq_two_iff (x y : ℤ) : Q x y = 2 ↔ x = 0 ∧ (y = 1 ∨ y = -1) := by
+  unfold Q
+  constructor
+  · intro h
+    have hyb : -1 ≤ y ∧ y ≤ 1 := ⟨by nlinarith [sq_nonneg x, sq_nonneg (y + 1)],
+                                   by nlinarith [sq_nonneg x, sq_nonneg (y - 1)]⟩
+    have hxb : -1 ≤ x ∧ x ≤ 1 := ⟨by nlinarith [sq_nonneg y, sq_nonneg (x + 1)],
+                                   by nlinarith [sq_nonneg y, sq_nonneg (x - 1)]⟩
+    obtain ⟨hy1, hy2⟩ := hyb; obtain ⟨hx1, hx2⟩ := hxb
+    interval_cases x <;> interval_cases y <;> simp_all
+  · rintro ⟨rfl, rfl | rfl⟩ <;> norm_num
+
 /-- **Strict positivity off the origin.**  Every nonzero lattice vector sits at a
     strictly positive squared distance from the origin: `Q x y > 0` whenever
     `(x, y) ≠ (0, 0)`.  A direct consequence of `isRepresented_nonneg` and the
@@ -159,6 +178,21 @@ theorem isRepresented_prod {ι : Type*} (s : Finset ι) (f : ι → ℤ)
     (hf : ∀ i ∈ s, IsRepresented (f i)) : IsRepresented (∏ i ∈ s, f i) :=
   Finset.prod_induction f IsRepresented (fun _ _ => isRepresented_mul)
     isRepresented_one hf
+
+/-- **Closure under powers.**  If `n` is represented then so is every power `nᵏ` — the
+    represented integers form a submonoid, so `Submonoid.pow_mem` applies.  Combined with
+    multiplicativity this shows the distance spectrum of the lattice is closed under the full
+    multiplicative structure, not merely single products. -/
+theorem isRepresented_pow {n : ℤ} (hn : IsRepresented n) (k : ℕ) : IsRepresented (n ^ k) :=
+  representedSubmonoid.pow_mem hn k
+
+/-- **Every perfect square is represented.**  `n = r²` is `Q r 0 = r² + 2·0²`, so the squares
+    (in particular every `Q x 0`) lie in the represented set.  This pins the "degenerate
+    `y = 0`" slice of the form and shows the represented integers contain all of `{r² : r ∈ ℤ}`
+    — the norms of the rational-integer sublattice `ℤ ⊆ ℤ[√-2]`. -/
+theorem isRepresented_of_isSquare {n : ℤ} (hn : IsSquare n) : IsRepresented n := by
+  obtain ⟨r, rfl⟩ := hn
+  exact ⟨r, 0, by unfold Q; ring⟩
 
 /-- The Moree–Osburn lattice point attached to integer coordinates `(x, y)`:
 the point `(x, y·√2) ∈ ℝ²`. -/

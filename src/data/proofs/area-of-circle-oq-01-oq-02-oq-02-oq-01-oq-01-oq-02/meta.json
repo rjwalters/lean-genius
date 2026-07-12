@@ -50,12 +50,12 @@
       {
         "theorem": "Real.sqrt_sq",
         "description": "√(a²) = a for a ≥ 0; turns S² ≤ (2πc)² into S ≤ 2πc inside the algebraic kernel.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "mul_le_mul_of_nonneg_left",
         "description": "Monotonicity of multiplication by a nonnegative constant, chaining the Wirtinger and Cauchy–Schwarz bounds.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       }
     ]
   },
@@ -106,12 +106,20 @@
   },
   "sections": [
     {
-      "id": "sec-overview",
-      "title": "Overview: Axiom-Free Isoperimetric Capstone",
+      "id": "context",
+      "title": "Overview & Context: the capstone of the Hurwitz program",
       "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring, ## Context section. States the goal — the isoperimetric inequality 4πA ≤ L² for regular closed curves with 0 axioms and 0 sorries — and recounts the parent proof's five disclosed analytic axioms (Fourier decomposition, IFT reparametrization, Wirtinger, and the two Cauchy–Schwarz bounds). It then records how each was individually discharged 0-axiom in three self-contained companions (…Fourier, …CauchySchwarz, …IFT), and why the regular locus is the maximal honest endpoint: the reparametrization axiom is genuinely false at stationary points, so a literal 0-axiom replacement of the parent's SmoothClosedCurve statement is impossible.",
+      "mathContext": "Target: $4\\pi A \\le L^2$ for regular closed curves. Parent rests on 5 analytic axioms; each discharged 0-axiom in a companion. Valid on the regular locus where the IFT reparametrization exists."
+    },
+    {
+      "id": "strategy",
+      "title": "Proof Strategy: how the assembly works",
+      "startLine": 50,
       "endLine": 66,
-      "summary": "Module docstring for the final assembly of the Hurwitz isoperimetric program, proving 4πA ≤ L² for regular closed curves with 0 axioms and 0 sorries. These head lines recount how the parent proof rests on five disclosed analytic axioms (Fourier decomposition, IFT reparametrization, Wirtinger, and two Cauchy–Schwarz bounds), how each was individually discharged 0-axiom in self-contained companions, and how this file feeds those discharged bounds into the algebraic kernel — the maximal honest endpoint, since the reparametrization axiom is genuinely false at stationary points off the regular locus.",
-      "mathContext": "The isoperimetric inequality 4πA ≤ L² for a regular closed curve follows a Fourier ⇒ Wirtinger ⇒ Cauchy–Schwarz ⇒ IFT-reparametrization ⇒ arithmetic-kernel chain. Passing to the constant-speed, zero-mean reparametrization (c = L/2π), Wirtinger bounds ∫(x²+y²) ≤ 2πc², L² Cauchy–Schwarz bounds the perimeter integral, and a pointwise Cauchy–Schwarz bounds 2·area ≤ c·S; the algebraic kernel assembles these. Every axiom of the parent is replaced by its 0-axiom companion, giving an end-to-end machine-checked proof on the regular locus."
+      "summary": "Module docstring, ## Proof section. The assembly recipe: exists_nice_reparam_for_regular yields a regular curve ρ with the same circumference and area, constant speed c = L/(2π), and zero mean; wirtinger_sum_bound gives ∫(ρ.x²+ρ.y²) ≤ 2πc²; integral_cauchy_schwarz_sq gives S² ≤ 2π·∫(ρ.x²+ρ.y²); area_cauchy_schwarz_bound_contDiff gives |∫(ρ.x·ρ.y'−ρ.y·ρ.x')| ≤ c·S, hence 2·ρ.area ≤ c·S; and isoperimetric_arithmetic_kernel assembles these into 4π·ρ.area ≤ ρ.circumference², transported back to γ. Closes with the honest Sorries: 0, Axioms: 0 tally.",
+      "mathContext": "Chain: IFT reparam (c=L/2π, zero mean) ⇒ Wirtinger $\\int(x^2{+}y^2)\\le 2\\pi c^2$ ⇒ $S^2\\le 2\\pi\\int(x^2{+}y^2)$ ⇒ $2A\\le cS$ ⇒ arithmetic kernel $\\Rightarrow 4\\pi A\\le L^2$."
     },
     {
       "id": "setup",
@@ -140,6 +148,16 @@
       "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
       "relationship": "extends",
       "description": "Parent isoperimetric entry, which proved 4πA ≤ L² for smooth closed curves from five disclosed analytic axioms (Fourier decomposition, constant-speed reparametrization, the Wirtinger sum bound, and two Cauchy–Schwarz bounds). This capstone replaces every one of those axioms with its independently-discharged 0-axiom companion and assembles them into a fully axiom-free proof on the regular locus — the maximal honest endpoint, since the reparametrization axiom is genuinely false at stationary points."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "builds on",
+      "description": "The reparametrization-invariance companion: proves 0-axiom that arc length ∫√(x'²+y'²) and signed area ∫(x·y'−y·x') are invariant under a period-commuting C¹ reparametrization. These are exactly the circumference/area-preservation clauses that let this capstone pass to the constant-speed zero-mean curve ρ and then transport the proved bound 4πA ≤ L² back to the original γ (the ann-transport step)."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "complements",
+      "description": "The equality/rigidity companion, addressing this entry's first open question. It characterizes the equality case of Wirtinger's inequality 0-axiom — ∫f² = ∫(f')² forces f(t) = a·cos t + b·sin t (only the first harmonic survives) — which is the analytic core of isoperimetric rigidity 4πA = L² ⟺ γ is a circle. Together with this capstone's strict inequality, it supplies both halves of the sharp Hurwitz statement."
     }
   ],
   "conclusion": {

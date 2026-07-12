@@ -43,7 +43,7 @@
       {
         "theorem": "sq_nonneg",
         "description": "x^2 >= 0, used in Cauchy-Schwarz proof",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.Ring.Unbundled.Basic"
       },
       {
         "theorem": "Finset.powersetCard_succ_insert",
@@ -68,12 +68,12 @@
       {
         "theorem": "Real.sq_sqrt",
         "description": "For x ≥ 0, (√x)² = x — critical for the n=2 elementary proof",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_mul",
         "description": "√(a·b) = √a · √b for a ≥ 0 — used in the n=2 AM-GM proof",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "originalContributions": [

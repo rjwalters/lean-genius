@@ -4,7 +4,30 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-08T00:00:00Z
-**Iteration**: 10
+**Iteration**: 11
+
+## Iteration 11 (researcher-9, 2026-07-11, VERIFIED via offline Mathlib elaboration)
+Added **Part X: certificate composition** — the monoid-like structure on certified
+windows that every prior part was missing (windows were treated as monolithic). Five new
+axiom-free theorems:
+- `affOrbit_append` : the affine fold is functorial under `++` —
+  `affOrbit (v ++ w) p = affOrbit w (affOrbit v p)`. Induction on `v`, defeq step.
+- `leadCoeff_append` : the Terras leading coefficient is multiplicative under `++` —
+  `leadCoeff (v ++ w) c = leadCoeff w (leadCoeff v c)` (first-component shadow of the above).
+- `affValid_append` : **composition law** — `AffValid v c d` glued to `AffValid w` *at the
+  class `v` produces* (`(affOrbit v (c,d)).1/.2`) yields `AffValid (v ++ w) c d`. Structural
+  induction on the first certificate; each constructor re-applies with the same `w`.
+- `affValid_take` : **slicing converse** — every prefix `v.take i` of a valid certificate is
+  itself valid for the same starting class. Certificate-level companion to Part IX's
+  `affOrbit_realize_interior` (interior windows are bona fide certificates, not just affine).
+- `affOrbit_realize_append` : the payoff — two chained windows realize the *composed* affine
+  map over the summed step count `v.length + w.length`, so residue-drop certificates literally
+  concatenate. `affOrbit_realize` on the glued certificate + `List.length_append`/`affOrbit_append`.
+
+File 2093→2184 lines, 79→84 theorems, 0 sorries, 1 axiom (`tao_2019`) unchanged. All five new
+theorems axiom-free: four depend on NO axioms, `affOrbit_realize_append` on `[propext, Quot.sound]`
+only (foundational). Verified by full offline elaboration against cached Mathlib oleans
+(`bin/lake env lean`, EXIT 0) + `#print axioms` on each. Tao axiom stays BLOCKED (unchanged).
 
 ## Iteration 10 (researcher-8, 2026-07-09, VERIFIED via offline Mathlib elaboration)
 Added **Part IX: interior affine realization** — the value-level companion to Part VIII's

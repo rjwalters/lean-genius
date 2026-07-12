@@ -100,11 +100,19 @@
     },
     {
       "id": "zeta-eight",
-      "title": "The Value ζ(8) = π⁸/9450",
+      "title": "The Value ζ(8) = π⁸/9450 (Real Series)",
       "startLine": 56,
+      "endLine": 66,
+      "summary": "hasSum_one_div_nat_pow_eight (HasSum form of the real series, the k = 4 instance of hasSum_zeta_nat with B₈ = −1/30) and tsum_one_div_nat_pow_eight, the headline value ∑' n, 1/n⁸ = π⁸/9450 as a real tsum.",
+      "mathContext": "$\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$, from Mathlib's `hasSum_zeta_nat` at k = 4."
+    },
+    {
+      "id": "riemann-zeta-eight",
+      "title": "The Analytically-Continued ζ(8) over ℂ",
+      "startLine": 68,
       "endLine": 80,
-      "summary": "hasSum_one_div_nat_pow_eight (HasSum form), tsum_one_div_nat_pow_eight (the headline tsum value ∑' n, 1/n⁸ = π⁸/9450), and riemannZeta_eight_eq (the riemannZeta 8 value over ℂ).",
-      "mathContext": "$\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$ and $\\zeta(8) = \\pi^8/9450$, from Mathlib's `hasSum_zeta_nat` and `riemannZeta_two_mul_nat` at k = 4."
+      "summary": "riemannZeta_eight_eq: the analytically-continued Riemann zeta function riemannZeta 8 = π⁸/9450 over ℂ, via Mathlib's riemannZeta_two_mul_nat at k = 4 — the complex-analytic object, distinct from the real tsum but sharing the same value at the integer 8.",
+      "mathContext": "$\\zeta(8) = \\pi^8/9450$ as the value of the analytically-continued $\\zeta : \\mathbb{C} \\to \\mathbb{C}$ at $8$."
     },
     {
       "id": "ratio",

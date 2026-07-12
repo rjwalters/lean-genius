@@ -36499,11 +36499,12 @@
     },
     {
       "slug": "erdos-1014-oq-03",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-09T22:44:27.589Z",
-      "status": "active",
-      "lastUpdate": "2026-07-09T22:44:27.678Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-11T23:12:11.262Z",
+      "completed": "2026-07-11T23:12:11.261Z"
     },
     {
       "slug": "erdos-1023-oq-04",
@@ -37178,11 +37179,11 @@
     },
     {
       "slug": "erdos-434-incomplete-01",
-      "phase": "NEW",
+      "phase": "OBSERVE",
       "path": "full",
       "started": "2026-07-10T01:42:11.461Z",
       "status": "active",
-      "lastUpdate": "2026-07-10T01:42:11.461Z"
+      "lastUpdate": "2026-07-11T23:12:11.323Z"
     },
     {
       "slug": "erdos-531-incomplete-01",
@@ -37935,6 +37936,30 @@
       "started": "2026-07-10T03:40:00.240Z",
       "status": "active",
       "lastUpdate": "2026-07-10T03:40:00.240Z"
+    },
+    {
+      "slug": "pascals-hexagon-oq-03-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-11T23:12:11.283Z",
+      "status": "active",
+      "lastUpdate": "2026-07-11T23:12:11.324Z"
+    },
+    {
+      "slug": "roth-theorem-k3-oq-02-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-11T23:12:11.285Z",
+      "status": "active",
+      "lastUpdate": "2026-07-11T23:12:11.324Z"
+    },
+    {
+      "slug": "tetrahedral-number-formula-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-11T23:12:11.289Z",
+      "status": "active",
+      "lastUpdate": "2026-07-11T23:12:11.324Z"
     }
   ],
   "config": {

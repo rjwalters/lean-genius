@@ -24,8 +24,8 @@
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
     "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, 0 structure-encoded hypotheses, no `native_decide` (so no `Lean.ofReduceBool`). `#print axioms` for `torusHom_conj_unipotent` and `card_torus_range` reports only the ordinary foundational axioms `propext`, `Classical.choice`, `Quot.sound`. Every result is machine-checked from Mathlib. The parent simplicity theorem for PSL(2, p) remains open; this entry proves only the verified unipotent-subgroup and split-torus infrastructure and makes no claim about the open question itself.",
-    "lineCount": 978,
-    "theoremCount": 44,
+    "lineCount": 1030,
+    "theoremCount": 45,
     "definitionCount": 8,
     "originalContributions": [
       "unipotentUpper: the matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p)",
@@ -34,7 +34,8 @@
       "torusDiag / torusHom: the split diagonal torus [[a,0],[0,a⁻¹]] packaged as an injective homomorphism (ZMod p)ˣ →* SL(2, ZMod p)",
       "card_torus_range: the torus image has cardinality exactly p−1 (via ZMod.card_units)",
       "torusHom_conj_unipotent: the normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]], proving T normalizes U by conjugation through the square map a ↦ a²",
-      "torus_normalizes_unipotent: each T-conjugate of a unipotent element stays in U (U ⊴ B)"
+      "torus_normalizes_unipotent: each T-conjugate of a unipotent element stays in U (U ⊴ B)",
+      "unipotent_normalClosure_eq_top: the normal closure of the single abelian unipotent subgroup U equals all of SL(2, p) -- the exact \"conjugates of the abelian normal subgroup of a point stabiliser generate G\" hypothesis of Iwasawa's simplicity criterion (sharper than the symmetric generation ⟨U, U⁻⟩ = SL(2, p)), via w·u(t)·w⁻¹ = l(-t)"
     ]
   },
   "mainTheorems": [
@@ -254,12 +255,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 978,
+    "lineCount": 1030,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 8,
-    "theoremCount": 48
+    "theoremCount": 49
   },
   "sorries": 0
 }

@@ -47,6 +47,10 @@
   5. `waterLevel_unique` — **uniqueness** of the water level for a positive
      budget `P > 0` (strict monotonicity of the budget function once any channel
      is active).
+  6. `waterAlloc_pos_iff` / `waterAlloc_eq_zero_iff` — **active-channel
+     characterisation**: a channel is active (`Pᵢ⋆ > 0`) iff its noise floor is
+     below the water level (`Nᵢ < μ`), inactive iff `μ ≤ Nᵢ`; and
+     `waterAlloc_pos_of_le` — active channels stay active as the water rises.
 
   Together (2)+(4)+(5) are exactly the three open items recorded for this
   problem: optimality of `Pᵢ⋆`, existence/uniqueness of `μ`, and the closed
@@ -102,6 +106,40 @@ theorem add_waterAlloc (μ : ℝ) (N : ι → ℝ) (i : ι) :
 /-- The water-filling depth is non-negative. -/
 theorem waterAlloc_nonneg (μ : ℝ) (N : ι → ℝ) (i : ι) :
     0 ≤ waterAlloc μ N i := le_max_right _ _
+
+/-- **Active-channel characterisation.**  A channel receives strictly positive power
+    exactly when its noise floor lies *below* the water level:
+    `0 < waterAlloc μ N i ↔ N i < μ`.  This is the qualitative content of water-filling —
+    a channel is "under water" (active) iff `Nᵢ < μ` — the per-channel primitive under the
+    sum-level `rate_waterAlloc_pos`. -/
+theorem waterAlloc_pos_iff (μ : ℝ) (N : ι → ℝ) (i : ι) :
+    0 < waterAlloc μ N i ↔ N i < μ := by
+  unfold waterAlloc
+  rw [lt_max_iff]
+  constructor
+  · rintro (h | h)
+    · linarith
+    · exact absurd h (lt_irrefl 0)
+  · intro h; exact Or.inl (by linarith)
+
+/-- **Inactive-channel characterisation.**  A channel receives *no* power exactly when its
+    noise floor is at or above the water level: `waterAlloc μ N i = 0 ↔ μ ≤ N i`.  The
+    complement of `waterAlloc_pos_iff` (using non-negativity `waterAlloc_nonneg`); channels
+    "too noisy to reach the surface" carry `Pᵢ⋆ = 0`. -/
+theorem waterAlloc_eq_zero_iff (μ : ℝ) (N : ι → ℝ) (i : ι) :
+    waterAlloc μ N i = 0 ↔ μ ≤ N i := by
+  rw [← not_lt, ← waterAlloc_pos_iff μ N i]
+  constructor
+  · intro h; rw [h]; exact lt_irrefl 0
+  · intro h; exact le_antisymm (not_lt.mp h) (waterAlloc_nonneg μ N i)
+
+/-- **The active set grows as the water rises.**  If channel `i` is active at water level
+    `μ₁` and `μ₁ ≤ μ₂`, it is still active at `μ₂`: raising the water level never switches an
+    active channel off.  Immediate from `waterAlloc_pos_iff` (`Nᵢ < μ₁ ≤ μ₂`); the
+    depth-level companion of `waterAlloc_mono_level`. -/
+theorem waterAlloc_pos_of_le {μ₁ μ₂ : ℝ} (h : μ₁ ≤ μ₂) (N : ι → ℝ) (i : ι)
+    (hi : 0 < waterAlloc μ₁ N i) : 0 < waterAlloc μ₂ N i :=
+  (waterAlloc_pos_iff μ₂ N i).mpr (lt_of_lt_of_le ((waterAlloc_pos_iff μ₁ N i).mp hi) h)
 
 /-! ## Optimality of the water-filling allocation -/
 

@@ -398,6 +398,36 @@ theorem constantConjecture_unique (c₁ c₂ : ℝ)
       (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
   linarith
 
+/-- **`mainConjecture` is the `constantConjecture` at `c = 1/2`.**  The Erdős main
+    conjecture `R(3,k) ~ (1/2)·k²/log k` (`mainConjecture`) is definitionally the
+    generic exact-constant conjecture instantiated at `c = 1/2`.  This wires the
+    standalone `mainConjecture` def into the general `constantConjecture` machinery
+    (`_unique`, `_forces_bracket`, the refutation lemmas). -/
+theorem mainConjecture_iff_constant : mainConjecture ↔ constantConjecture (1/2) :=
+  Iff.rfl
+
+/-- **`pgmConjecture` is the `constantConjecture` at `c = 1/4`.**  The PGM conjecture
+    `R(3,k) ~ (1/4)·k²/log k` (`pgmConjecture`) is definitionally the generic
+    exact-constant conjecture at `c = 1/4`, connecting it to the general machinery. -/
+theorem pgmConjecture_iff_constant : pgmConjecture ↔ constantConjecture (1/4) :=
+  Iff.rfl
+
+/-- **The main and PGM conjectures are mutually exclusive.**  `mainConjecture`
+    (`c = 1/2`) and `pgmConjecture` (`c = 1/4`) cannot both hold: they assert two
+    different exact asymptotic constants for the *same* sequence `R(3,k)`, and
+    `constantConjecture_unique` forces any two such constants to coincide, whereas
+    `1/2 ≠ 1/4`.  This is the machine-checked form of the "in particular … mutually
+    exclusive" remark in `constantConjecture_unique`'s docstring, and — unlike
+    `pgm_conjecture_refuted` (which invokes the Ramsey bound `hhkp_bound`) — it uses
+    *no* Ramsey input at all: it is a purely structural incompatibility of two
+    exact-constant claims, holding for any sequence whatsoever. -/
+theorem main_pgm_mutually_exclusive : ¬ (mainConjecture ∧ pgmConjecture) := by
+  rintro ⟨hm, hp⟩
+  have h : (1 : ℝ) / 2 = 1 / 4 :=
+    constantConjecture_unique (1/2) (1/4)
+      (mainConjecture_iff_constant.mp hm) (pgmConjecture_iff_constant.mp hp)
+  norm_num at h
+
 /- ## Part VII: Related Problems -/
 
 /-
@@ -414,5 +444,212 @@ theorem constantConjecture_unique (c₁ c₂ : ℝ)
 - **Triangle-free Ramsey multiplicity**: How many triangles must appear in a
   2-coloring of K_n if the graph is not triangle-free?
 -/
+
+/- ## Part VIII: Minimality of the axiom set
+
+The file declares ten axioms, but four of the six *analytic* ones carry no logical
+content beyond the two sharpest bounds.  The historical lower bounds form an increasing
+chain of leading constants `1/162 → 1/4 → 1/3 → 1/2`, and a first-order lower bound of
+the shape `R(3,k) ≥ (c−ε)·k²/log k` is monotone in `c`: a bound with the larger constant
+formally implies every bound with a smaller one.  Hence Kim, Bohman–Keevash/PGM and CJMS
+are all consequences of `hhkp_bound`.  Dually, the AKS `O(k²/log k)` upper bound is the
+`ε = 1` instance of Shearer's sharper `(1+o(1))` bound.  So the genuine analytic
+assumptions are exactly `hhkp_bound` and `shearer_upper_bound` (atop the Ramsey-number
+scaffolding); the other four are documentation of the historical record, not independent
+hypotheses.  Nothing below introduces a new axiom. -/
+
+/-- **Monotone weakening of a first-order lower bound.**  If `R(3,k) ≥ (a−ε)·k²/log k`
+    holds eventually for every `ε > 0`, then the same shape holds with any *smaller* leading
+    constant `a' ≤ a`.  The mechanism is the eventual nonnegativity of the atom `k²/log k`
+    (for `k ≥ 2`, where `log k > 0`), which transports `a'−ε ≤ a−ε` through the
+    multiplication.  This is the engine making every pre-HHKP lower bound a formal
+    consequence of the strongest one. -/
+theorem lower_bound_mono {a a' : ℝ} (haa : a' ≤ a)
+    (h : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (a - ε) * k^2 / log k) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (a' - ε) * k^2 / log k := by
+  intro ε hε
+  obtain ⟨k₀, hk₀⟩ := h ε hε
+  refine ⟨max k₀ 2, fun k hk => ?_⟩
+  have hk0 : k ≥ k₀ := le_of_max_le_left hk
+  have hk2 : k ≥ 2 := le_of_max_le_right hk
+  have h2k : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk2
+  have hlog : 0 < log k := Real.log_pos (by linarith)
+  have hatom : 0 ≤ (k:ℝ)^2 / log k := le_of_lt (div_pos (by positivity) hlog)
+  have hmono : (a' - ε) * k^2 / log k ≤ (a - ε) * k^2 / log k := by
+    rw [mul_div_assoc, mul_div_assoc]
+    exact mul_le_mul_of_nonneg_right (by linarith) hatom
+  exact le_trans hmono (hk₀ k hk0)
+
+/-- **HHKP subsumes CJMS (`1/3`).**  The Campos–Jenssen–Michelen–Sahasrabudhe lower bound is a
+    formal consequence of `hhkp_bound`, since `1/3 ≤ 1/2`. -/
+theorem hhkp_subsumes_cjms :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (1/3 - ε) * k^2 / log k :=
+  lower_bound_mono (by norm_num) hhkp_bound
+
+/-- **HHKP subsumes Bohman–Keevash / PGM (`1/4`).**  Consequence of `hhkp_bound`, `1/4 ≤ 1/2`. -/
+theorem hhkp_subsumes_bk_pgm :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (1/4 - ε) * k^2 / log k :=
+  lower_bound_mono (by norm_num) hhkp_bound
+
+/-- **HHKP subsumes Kim (`1/162`).**  Consequence of `hhkp_bound`, `1/162 ≤ 1/2`. -/
+theorem hhkp_subsumes_kim :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (1/162 - ε) * k^2 / log k :=
+  lower_bound_mono (by norm_num) hhkp_bound
+
+/-- **Shearer subsumes AKS.**  The AKS upper bound (`R(3,k) = O(k²/log k)` for *some* `C>0`) is
+    the `ε = 1` instance of Shearer's sharper `(1+o(1))` bound: take `C = 1+1 = 2`. -/
+theorem shearer_subsumes_aks :
+    ∃ C : ℝ, C > 0 ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (R3 k : ℝ) ≤ C * k^2 / log k :=
+  ⟨1 + 1, by norm_num, shearer_upper_bound 1 (by norm_num)⟩
+
+/-- **Four of the ten axioms are logically redundant.**  Every pre-HHKP lower bound (Kim
+    `1/162`, Bohman–Keevash / PGM `1/4`, CJMS `1/3`) is a consequence of `hhkp_bound` (`1/2`),
+    and the AKS upper bound is a consequence of `shearer_upper_bound`.  So the effective
+    analytic assumption set is just `{hhkp_bound, shearer_upper_bound}`: the exact statements of
+    `kim_lower_bound`, `bk_pgm_bound`, `cjms_bound` and `aks_upper_bound` are all *proved* below
+    without invoking those four axioms. -/
+theorem historical_bounds_redundant :
+    (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/162 - ε) * k^2 / log k) ∧
+    (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/4 - ε) * k^2 / log k) ∧
+    (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/3 - ε) * k^2 / log k) ∧
+    (∃ C : ℝ, C > 0 ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≤ C * k^2 / log k) :=
+  ⟨hhkp_subsumes_kim, hhkp_subsumes_bk_pgm, hhkp_subsumes_cjms, shearer_subsumes_aks⟩
+
+/- ## Part IX: The dual (upper-side) monotonicity, and general-sequence uniqueness
+
+The subsumption chain above rests on `lower_bound_mono`: a first-order *lower* bound may be
+weakened to any *smaller* leading constant.  The present section supplies the two structural
+companions that the file was missing.
+
+First, the exact mirror image, `upper_bound_mono`: a first-order *upper* bound
+`R(3,k) ≤ (b+ε)·k²/log k` may be weakened to any *larger* leading constant `b' ≥ b`.  This is
+precisely the widening performed by hand inside `erdos_165` (there the constant `5/4` was
+opened up to `2`); here it is isolated as a reusable lemma.  Combined with Shearer it yields
+`R3_upper_constant_of_one_le`: *every* `b ≥ 1` is a valid first-order upper constant for
+`R(3,k)` — the exact dual of the `hhkp_subsumes_*` family.  Placing this beside
+`R3_upper_constant_ge_half` (every valid upper constant is `≥ 1/2`) sandwiches the set of
+valid asymptotic upper constants inside `[1/2, ∞)` while showing it contains `[1, ∞)`; the
+residual window `[1/2, 1)` is exactly the file's quantitative ignorance about the true
+constant.
+
+Second, `asymptotic_constant_unique`: the R3-specific `constantConjecture_unique` is really an
+instance of a statement about *any* real sequence `f` — at most one leading constant can
+two-side pin it.  We record that general form (`constantConjecture_unique` is its `f = R3`
+instance).  All three results are axiom-free: they use only `asymptotic_constant_le` and the
+eventual positivity of `k²/log k`, no Ramsey input. -/
+
+/-- **Monotone weakening of a first-order upper bound** (dual of `lower_bound_mono`).  If
+    `R(3,k) ≤ (b+ε)·k²/log k` holds eventually for every `ε > 0`, then the same shape holds
+    with any *larger* leading constant `b' ≥ b`.  The mechanism is identical to
+    `lower_bound_mono`: the atom `k²/log k` is eventually nonnegative (for `k ≥ 2`), so
+    `b+ε ≤ b'+ε` transports through the multiplication.  This isolates the widening step that
+    `erdos_165` performs inline. -/
+theorem upper_bound_mono {b b' : ℝ} (hbb : b ≤ b')
+    (h : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b + ε) * k^2 / log k) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b' + ε) * k^2 / log k := by
+  intro ε hε
+  obtain ⟨k₀, hk₀⟩ := h ε hε
+  refine ⟨max k₀ 2, fun k hk => ?_⟩
+  have hk0 : k ≥ k₀ := le_of_max_le_left hk
+  have hk2 : k ≥ 2 := le_of_max_le_right hk
+  have h2k : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk2
+  have hlog : 0 < log k := Real.log_pos (by linarith)
+  have hatom : 0 ≤ (k:ℝ)^2 / log k := le_of_lt (div_pos (by positivity) hlog)
+  have hmono : (b + ε) * k^2 / log k ≤ (b' + ε) * k^2 / log k := by
+    rw [mul_div_assoc, mul_div_assoc]
+    exact mul_le_mul_of_nonneg_right (by linarith) hatom
+  exact le_trans (hk₀ k hk0) hmono
+
+/-- **Every constant `b ≥ 1` is a valid first-order upper constant for `R(3,k)`.**  The dual of
+    the `hhkp_subsumes_*` family: whereas HHKP (`1/2`) forces every smaller constant to be a
+    valid *lower* bound, Shearer (`1`) makes every *larger* constant a valid *upper* bound, via
+    `upper_bound_mono`.  In particular `b = 2` recovers the upper witness used in `erdos_165`. -/
+theorem R3_upper_constant_of_one_le (b : ℝ) (hb : 1 ≤ b) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b + ε) * k^2 / log k :=
+  upper_bound_mono hb shearer_upper_bound
+
+/-- **Shearer subsumes the constant `2`.**  The `b = 2` instance of
+    `R3_upper_constant_of_one_le`; it is the upper-side analogue of `hhkp_subsumes_bk_pgm`, and
+    exactly the widened Shearer bound `erdos_165` uses as its `c₂ = 2` witness. -/
+theorem shearer_subsumes_upper_two :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (2 + ε) * k^2 / log k :=
+  R3_upper_constant_of_one_le 2 (by norm_num)
+
+/-- **Uniqueness of a first-order asymptotic constant, for an arbitrary sequence.**  The
+    R3-specific `constantConjecture_unique` is the `f = fun k => (R3 k : ℝ)` instance of this:
+    for *any* real sequence `f`, at most one leading constant can two-sidedly pin it in the
+    `k²/log k` scale.  A two-sided application of the axiom-free `asymptotic_constant_le`,
+    pairing each constant's lower half against the other's upper half.  No Ramsey input. -/
+theorem asymptotic_constant_unique
+    (f : ℕ → ℝ) (c₁ c₂ : ℝ)
+    (h₁ : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (c₁ - ε) * k^2 / log k ≤ f k ∧ f k ≤ (c₁ + ε) * k^2 / log k)
+    (h₂ : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (c₂ - ε) * k^2 / log k ≤ f k ∧ f k ≤ (c₂ + ε) * k^2 / log k) :
+    c₁ = c₂ := by
+  have h12 : c₁ ≤ c₂ :=
+    asymptotic_constant_le f c₁ c₂
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩)
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₂ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
+  have h21 : c₂ ≤ c₁ :=
+    asymptotic_constant_le f c₂ c₁
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₂ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩)
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
+  linarith
+
+/- ## Part X: The conjecture reduces to the upper bound
+
+The two-sided obstruction of Parts VI–IX pins any exact constant to `[1/2, 1]`.  This final
+section records the sharper structural payoff hiding in that interval: the *lower* endpoint
+`1/2` is not merely a fence but an already-proved theorem (`hhkp_bound`), so the Erdős main
+conjecture `R(3,k) ~ (1/2)·k²/log k` is logically equivalent to a *one-sided* statement —
+improving Shearer's upper constant from `1` down to `1/2`.  We also complete the
+lower-constant/upper-constant symmetry left open in Part IX: `R3_lower_constant_of_le_half`
+is the exact dual of `R3_upper_constant_of_one_le`.  Both are axiom-frugal (only the two
+sharp Ramsey bounds). -/
+
+/-- **Every constant `a ≤ 1/2` is a valid first-order lower constant for `R(3,k)`** (dual of
+    `R3_upper_constant_of_one_le`).  Whereas Shearer (`1`) makes every *larger* constant a valid
+    upper bound, HHKP (`1/2`) makes every *smaller* constant a valid lower bound, via
+    `lower_bound_mono`.  This is the general statement behind the specific `hhkp_subsumes_*`
+    family (`1/162, 1/4, 1/3` are its instances), completing the Part IX symmetry: valid lower
+    constants contain `(−∞, 1/2]`, valid upper constants contain `[1, ∞)`. -/
+theorem R3_lower_constant_of_le_half (a : ℝ) (ha : a ≤ 1/2) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≥ (a - ε) * k^2 / log k :=
+  lower_bound_mono ha hhkp_bound
+
+/-- **The Erdős conjecture reduces to the upper bound.**  Because the lower half of
+    `mainConjecture` — `R(3,k) ≥ (1/2 − ε)·k²/log k` — is already the theorem `hhkp_bound`, the
+    full conjecture `R(3,k) ~ (1/2)·k²/log k` is *equivalent* to its upper half alone:
+
+      `mainConjecture ↔ ∀ ε > 0, eventually R(3,k) ≤ (1/2 + ε)·k²/log k`.
+
+    In other words, settling Erdős #165 is exactly the problem of sharpening Shearer's upper
+    constant from `1` to `1/2`; the matching lower bound is done.  Forward is projection to the
+    upper half; backward pairs the hypothesized upper half with `hhkp_bound`. -/
+theorem mainConjecture_iff_upper_half :
+    mainConjecture ↔
+      (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+          (R3 k : ℝ) ≤ (1/2 + ε) * k^2 / log k) := by
+  constructor
+  · intro h ε hε
+    obtain ⟨k₀, hk₀⟩ := h ε hε
+    exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩
+  · intro hup ε hε
+    obtain ⟨k₁, hk₁⟩ := hhkp_bound ε hε
+    obtain ⟨k₂, hk₂⟩ := hup ε hε
+    exact ⟨max k₁ k₂, fun k hk =>
+      ⟨hk₁ k (le_of_max_le_left hk), hk₂ k (le_of_max_le_right hk)⟩⟩
 
 end Erdos165

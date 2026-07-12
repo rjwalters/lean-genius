@@ -155,25 +155,34 @@
       "description": "Sibling open question under ballot-problem-oq-01 in the same reflection/Catalan circle of ideas."
     }
   ],
-  "references": {
-    "papers": [
-      {
-        "title": "Solution directe du problème résolu par M. Bertrand",
-        "author": "D. André",
-        "year": 1887,
-        "url": "https://en.wikipedia.org/wiki/Bertrand%27s_ballot_problem"
-      }
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Catalan_number",
-      "https://en.wikipedia.org/wiki/Bertrand%27s_ballot_problem"
-    ],
-    "mathlib": [
-      "Mathlib.Combinatorics.Catalan",
-      "Mathlib.Combinatorics.Choose.Central",
-      "Mathlib.Data.Nat.Choose.Basic"
-    ]
-  },
+  "references": [
+    {
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "author": "D. André",
+      "year": 1887,
+      "url": "https://en.wikipedia.org/wiki/Bertrand%27s_ballot_problem"
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Catalan_number",
+      "url": "https://en.wikipedia.org/wiki/Catalan_number"
+    },
+    {
+      "text": "https://en.wikipedia.org/wiki/Bertrand%27s_ballot_problem",
+      "url": "https://en.wikipedia.org/wiki/Bertrand%27s_ballot_problem"
+    },
+    {
+      "text": "Mathlib: Mathlib.Combinatorics.Catalan",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Catalan.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Combinatorics.Choose.Central",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Choose/Central.html"
+    },
+    {
+      "text": "Mathlib: Mathlib.Data.Nat.Choose.Basic",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Choose/Basic.html"
+    }
+  ],
   "leanFile": {
     "namespace": "BallotProblemOQ01OQ03",
     "lineCount": 92,
