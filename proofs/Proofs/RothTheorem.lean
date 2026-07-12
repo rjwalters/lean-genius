@@ -1998,4 +1998,74 @@ theorem sqDiffFree_density_bound_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A :
         + (↑N)⁻¹ * (Real.sqrt ((N : ℝ) ^ 2 / 2) * (↑A.card * ↑N - (↑A.card) ^ 2)) :=
   sqDiffFree_density_bound A (fun _ hr => sqGaussSum_norm_le_of_odd hodd hr) hfree
 
+/-!
+## Part VIII: The two-torsion dichotomy
+
+All of the magnitude machinery so far (`sqGaussSum_normSq_le_gcd`,
+`sqGaussSum_normSq_le_half_of_two_mul_ne`) becomes *vacuous* at a two-torsion
+frequency `2r = 0`: there the kernel `{h : 2rh = 0}` is the whole of `ZMod N`, so
+`gcd((2r).val, N) = N` and the bound degrades to the trivial `‖G(r)‖ ≤ N`.  These
+are precisely the frequencies the earlier results could not reach (they all needed
+`2r` a unit, or `2r ≠ 0`).
+
+The Weyl identity nonetheless pins them down *exactly*.  When `2r = 0` the residual
+phase sum `Σ_{h : 2rh=0} ψ(−r·h²)` runs over **all** of `ZMod N` and equals
+`conj(G(r))`, so the identity `G(r)·conj(G(r)) = N·conj(G(r))` factors as
+`conj(G(r))·(G(r) − N) = 0`.  Over the integral domain `ℂ` this forces a clean
+**dichotomy**: a two-torsion quadratic Gauss sum is either *fully cancelled*
+(`G(r) = 0`) or *fully coherent* (`G(r) = N`) — never anything strictly between.
+The intermediate magnitudes `0 < ‖G(r)‖ < N` that the trivial kernel bound leaves
+open are all impossible.
+-/
+
+/-- The conjugate quadratic Gauss sum is the Gauss sum with a negated phase:
+    `conj(G(r)) = Σ_h ψ(−r·h²)`.  Immediate from `conj_psi` (`conj(ψ a) = ψ(−a)`). -/
+private lemma conj_sqGaussSum {N : ℕ} [NeZero N] (r : ZMod N) :
+    starRingEnd ℂ (sqGaussSum r)
+      = Finset.univ.sum (fun h : ZMod N => ψ (-(r * h ^ 2))) := by
+  simp only [sqGaussSum, map_sum (starRingEnd ℂ), conj_psi]
+
+/-- **Weyl identity at a two-torsion frequency.**  When `2r = 0` the kernel
+    `{h : 2rh = 0}` is all of `ZMod N`, so the residual phase sum collapses to
+    `conj(G(r))` and the Weyl identity reads `G(r)·conj(G(r)) = N·conj(G(r))`. -/
+theorem sqGaussSum_mul_conj_of_two_mul_eq_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hr : 2 * r = 0) :
+    sqGaussSum r * starRingEnd ℂ (sqGaussSum r)
+      = (N : ℂ) * starRingEnd ℂ (sqGaussSum r) := by
+  have hfilter : (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)) = Finset.univ := by
+    apply Finset.filter_true_of_mem
+    intro h _
+    rw [hr, zero_mul]
+  rw [sqGaussSum_mul_conj r, hfilter, conj_sqGaussSum r]
+
+/-- **The two-torsion dichotomy.**  A quadratic Gauss sum at a two-torsion frequency
+    (`2r = 0`) is either `0` or `N` — nothing strictly in between.  Factoring the
+    Weyl identity `G(r)·conj(G(r)) = N·conj(G(r))` as `conj(G(r))·(G(r) − N) = 0`
+    over the integral domain `ℂ`.  This pins down exactly the frequencies at which
+    the kernel-count magnitude bounds are vacuous (they give only `‖G(r)‖ ≤ N`). -/
+theorem sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero {N : ℕ} [NeZero N]
+    {r : ZMod N} (hr : 2 * r = 0) :
+    sqGaussSum r = 0 ∨ sqGaussSum r = (N : ℂ) := by
+  have hid := sqGaussSum_mul_conj_of_two_mul_eq_zero hr
+  have hfac : starRingEnd ℂ (sqGaussSum r) * (sqGaussSum r - (N : ℂ)) = 0 := by
+    linear_combination hid
+  rcases mul_eq_zero.mp hfac with hz | hz
+  · left
+    have h := congrArg (starRingEnd ℂ) hz
+    simpa using h
+  · right
+    exact sub_eq_zero.mp hz
+
+/-- **Magnitude dichotomy at two-torsion frequencies.**  The norm form of the
+    dichotomy: at a two-torsion frequency `‖G(r)‖` is either `0` or `N`, so the only
+    magnitudes attainable are the two extremes.  Contrast with the *unit*-frequency
+    value `‖G(r)‖ = √N` (`sqGaussSum_norm_eq_sqrt_of_isUnit`): the two regimes are
+    completely disjoint. -/
+theorem sqGaussSum_norm_eq_zero_or_eq_natCast_of_two_mul_eq_zero {N : ℕ} [NeZero N]
+    {r : ZMod N} (hr : 2 * r = 0) :
+    ‖sqGaussSum r‖ = 0 ∨ ‖sqGaussSum r‖ = (N : ℝ) := by
+  rcases sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero hr with h | h
+  · left; rw [h, norm_zero]
+  · right; rw [h, Complex.norm_natCast]
+
 end Szemeredi.Roth
