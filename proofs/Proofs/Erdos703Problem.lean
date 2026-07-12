@@ -1134,7 +1134,6 @@ theorem one_le_T_L_of_zero_notMem {n : ℕ} {L : Finset ℕ} (h : 0 ∉ L) :
     _ ≤ _ := Finset.le_sup hmem
 
 /--
-<<<<<<< Updated upstream
 **When every forbidden size exceeds the ground set, the full powerset is `L`-avoiding.**
 If `n < r` for every `r ∈ L`, then no two subsets `A, B ⊆ [n]` can meet in a forbidden
 size: `|A ∩ B| ≤ n < r` for each `r ∈ L`, so `|A ∩ B| ∉ L`. Hence the entire powerset
@@ -1186,7 +1185,8 @@ soon as any attainable size (`≤ n`) is forbidden. -/
 theorem T_L_le_pow_sub_one {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) (hrn : r ≤ n) :
     T_L n L ≤ 2 ^ n - 1 :=
   le_trans (T_L_le_T_of_mem hr) (T_le_pow_sub_one hrn)
-=======
+
+/--
 **Fully-forbidden top endpoint `T_L n L = 0`.** If *every* attainable intersection size is
 forbidden — `range (n+1) ⊆ L`, i.e. `0, 1, …, n ∈ L` — then no nonempty family can avoid `L`:
 any set `A` in a family of subsets of `[n]` has the self-pair `A ∩ A = A` with size
@@ -1224,7 +1224,6 @@ theorem T_L_union_le_min {n : ℕ} {L L' : Finset ℕ} :
     T_L n (L ∪ L') ≤ min (T_L n L) (T_L n L') :=
   le_min (T_L_antitone_forbidden Finset.subset_union_left)
     (T_L_antitone_forbidden Finset.subset_union_right)
->>>>>>> Stashed changes
 
 /-
 ## Part VIII: Summary
