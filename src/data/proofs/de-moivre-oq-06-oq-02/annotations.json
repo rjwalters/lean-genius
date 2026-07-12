@@ -27,7 +27,7 @@
     "proofId": "de-moivre-oq-06-oq-02",
     "range": {
       "startLine": 52,
-      "endLine": 76
+      "endLine": 67
     },
     "type": "technique",
     "title": "The Half-Angle Sine Attains its Minimum at the Endpoints",
@@ -42,6 +42,28 @@
     "prerequisites": [
       "Real.sin_sub_sin",
       "sin/cos sign lemmas"
+    ]
+  },
+  {
+    "id": "ann-dm0602-sin-half-pos",
+    "proofId": "de-moivre-oq-06-oq-02",
+    "range": {
+      "startLine": 69,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "Strict Positivity of the Uniform Denominator",
+    "content": "The private helper `sin_half_pos` records $\\sin(\\delta/2)>0$ for $0<\\delta\\le\\pi$, from `Real.sin_pos_of_pos_of_lt_pi` (its argument $\\delta/2$ lies in $(0,\\pi/2]\\subseteq(0,\\pi)$). Small but load-bearing: it is reused in all three downstream results. Strict positivity is exactly what legitimises the two reciprocal steps — `one_div_le_one_div_of_le` requires a positive denominator — and it is what makes the packaged constant $C=1/\\sin(\\delta/2)$ satisfy $C>0$, the ' $\\exists C>0$ ' half of the uniform-boundedness statement. Without $0<\\delta\\le\\pi$ the arc could touch a singularity and the whole uniform bound would collapse.",
+    "mathContext": "$0<\\delta\\le\\pi \\Rightarrow \\delta/2\\in(0,\\pi/2]\\subseteq(0,\\pi) \\Rightarrow \\sin(\\delta/2)>0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "positivity of the denominator",
+      "reusable helper lemma"
+    ],
+    "prerequisites": [
+      "sign of sine on (0, π)",
+      "the constraint 0 < δ ≤ π"
     ]
   },
   {
