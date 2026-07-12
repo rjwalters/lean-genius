@@ -114,4 +114,43 @@ theorem intCast_not_absolutely_normal (n : ℤ) : ¬ IsAbsolutelyNormal (n : ℝ
 theorem natCast_not_absolutely_normal (n : ℕ) : ¬ IsAbsolutelyNormal (n : ℝ) :=
   fun hn => natCast_not_normal 2 (le_refl 2) n (hn 2 (le_refl 2))
 
+/-!
+### Set-level packaging
+
+The pointwise corollaries above are most reusable as statements about the *set* of
+normal numbers: it is contained in the irrationals and is disjoint from the rationals.
+These are the exact forms a downstream argument invokes when it wants to conclude a
+whole family of numbers (e.g. `Set.range ((↑) : ℚ → ℝ)`) contains no normal number.
+-/
+
+/-- **The normal numbers of base `b` form a subset of the irrationals.**  Set-inclusion
+    packaging of the parent's pointwise `normal_imp_irrational`. -/
+theorem setOf_normal_subset_irrational (b : ℕ) (hb : 2 ≤ b) :
+    {x : ℝ | IsNormalInBase b x} ⊆ {x : ℝ | Irrational x} :=
+  fun x hx => normal_imp_irrational b hb x hx
+
+/-- **The absolutely normal numbers form a subset of the irrationals.**  Absolute-normality
+    analogue of `setOf_normal_subset_irrational`, via `absolutelyNormal_imp_irrational`. -/
+theorem setOf_absolutelyNormal_subset_irrational :
+    {x : ℝ | IsAbsolutelyNormal x} ⊆ {x : ℝ | Irrational x} :=
+  fun x hx => absolutelyNormal_imp_irrational x hx
+
+/-- **The base-`b` normal numbers are disjoint from the rationals.**  The set-level
+    contrapositive: no `q : ℚ` casts to a base-`b`-normal real. Directly from
+    `rational_not_normal`. This is the reusable "a rational is never in the normal set"
+    fact for `Set.range ((↑) : ℚ → ℝ)`. -/
+theorem normal_disjoint_ratCast (b : ℕ) (hb : 2 ≤ b) :
+    Disjoint {x : ℝ | IsNormalInBase b x} (Set.range ((↑) : ℚ → ℝ)) := by
+  rw [Set.disjoint_left]
+  rintro x hx ⟨q, rfl⟩
+  exact rational_not_normal b hb q hx
+
+/-- **The absolutely normal numbers are disjoint from the rationals.**  Absolute-normality
+    analogue of `normal_disjoint_ratCast`, via `rational_not_absolutely_normal`. -/
+theorem absolutelyNormal_disjoint_ratCast :
+    Disjoint {x : ℝ | IsAbsolutelyNormal x} (Set.range ((↑) : ℚ → ℝ)) := by
+  rw [Set.disjoint_left]
+  rintro x hx ⟨q, rfl⟩
+  exact rational_not_absolutely_normal q hx
+
 end ETranscendentalOQ02OQ06
