@@ -4268,4 +4268,144 @@ theorem exists_sqDiffFree_card_gt_sqrt_of_prime_mod_four_one
   have := hp.two_le
   omega
 
+/-! ### Part XXX — the general coset-lift (Paley) construction
+
+Parts XXVIII (`S = {0}`, giving `√N`) and XXIX (`S = {0,d}` with `d` a non-residue and
+`p ≡ 1 mod 4`, giving `2√N`) are the `k = 1, 2` cases of a single **multiplicative lift**:
+*any* square-difference-free set `S ⊆ ℤ/pℤ` lifts, through the reduction
+`φ : ℤ/p²ℤ → ℤ/pℤ`, to the union of cosets `⋃_{s∈S} (s + pℤ)`, which is
+square-difference-free in `ℤ/p²ℤ` with exactly `|S|·p` elements.
+
+The mechanism is uniform.  A nonzero square `n²` in `ℤ/p²ℤ` has `p ∤ n` (else `n² = 0`),
+so `φ n ≠ 0` and `(φ n)²` is a nonzero square in `ℤ/pℤ`.  If `x` sits in coset `s` and
+`x + n²` in coset `t`, then `t = φ(x + n²) = φ x + (φ n)² = s + (φ n)²`, exhibiting the
+nonzero square `(φ n)²` as a difference `t − s` of two elements of `S` — impossible when
+`S` is square-difference-free.  Distinct cosets are `φ`-separated hence disjoint, so the
+cardinality is `|S|·p` on the nose.
+
+This reduces the sharp lower-bound question at `N = p²` to a *pure* combinatorial
+quantity: the largest square-difference-free set of residues in `ℤ/pℤ`, i.e. the
+independence number of the Paley graph on `𝔽_p`, which is `Θ(√p)` — matching the
+single-scale upper bound `N/√minFac = N^{3/4}`.  That extremal count is out of
+Mathlib-4.26 reach, but the lift itself is fully machine-checked, and any *concrete*
+independent set of residues now yields a concrete lower bound. -/
+
+/-- **General coset-lift (Paley) construction.**  A square-difference-free set `S` in
+`ℤ/pℤ` lifts, via the reduction `φ : ℤ/p²ℤ → ℤ/pℤ`, to the union of the cosets
+`s + pℤ` over `s ∈ S`, which is square-difference-free in `ℤ/p²ℤ` and has exactly
+`|S|·p` elements.  Subsumes Part XXVIII (`S = {0}`) and Part XXIX (`S = {0,d}`); the
+extremal case is a Paley-independent residue set of size `√p`, giving `Θ(p^{3/2}) =
+Θ(N^{3/4})`. -/
+theorem sqDiffFree_lift_prime_sq {p : ℕ} (hp : p.Prime)
+    (S : Finset (ZMod p))
+    (hS : ∀ s ∈ S, ∀ n : ZMod p, n ^ 2 ≠ 0 → s + n ^ 2 ∉ S) :
+    ∃ A : Finset (ZMod (p ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (p ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+        ∧ A.card = S.card * p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp.pos.ne'⟩
+  have hpdvd : p ∣ p ^ 2 := ⟨p, (sq p)⟩
+  set φ : ZMod (p ^ 2) →+* ZMod p := ZMod.castHom hpdvd (ZMod p) with hφ
+  -- the coset attached to a residue `s`
+  set g : ZMod p → ℕ → ZMod (p ^ 2) := fun s k => ((s.val + p * k : ℕ) : ZMod (p ^ 2)) with hg
+  set coset : ZMod p → Finset (ZMod (p ^ 2)) := fun s => (Finset.range p).image (g s) with hcoset
+  -- `φ` maps the `s`-coset onto `s`
+  have hφcoset : ∀ s : ZMod p, ∀ y ∈ coset s, φ y = s := by
+    intro s y hy
+    rw [hcoset, Finset.mem_image] at hy
+    obtain ⟨k, _, rfl⟩ := hy
+    have hmap : φ (g s k) = ((s.val + p * k : ℕ) : ZMod p) := by rw [hg]; exact map_natCast φ _
+    rw [hmap]; push_cast
+    rw [ZMod.natCast_self, ZMod.natCast_zmod_val]; ring
+  -- `φ n = 0 ⟹ n² = 0` (so `n² ≠ 0 ⟹ φ n ≠ 0`)
+  have hnzero : ∀ n : ZMod (p ^ 2), φ n = 0 → n ^ 2 = 0 := by
+    intro n hn0
+    have hφn : φ n = ((n.val : ℕ) : ZMod p) := by
+      conv_lhs => rw [← ZMod.natCast_zmod_val n]
+      exact map_natCast φ _
+    rw [hφn] at hn0
+    have hpv : p ∣ n.val := (ZMod.natCast_eq_zero_iff _ _).mp hn0
+    obtain ⟨s, hs⟩ := hpv
+    have hp2 : p ^ 2 ∣ n.val * n.val := ⟨s * s, by rw [hs]; ring⟩
+    have hval : (n ^ 2).val = (n.val * n.val) % p ^ 2 := by rw [pow_two n, ZMod.val_mul]
+    have hz : (n ^ 2).val = 0 := by
+      rw [hval]; obtain ⟨t, ht⟩ := hp2; rw [ht, Nat.mul_mod_right]
+    exact (ZMod.val_eq_zero _).mp hz
+  -- each coset has exactly `p` elements
+  have hcard_coset : ∀ s : ZMod p, (coset s).card = p := by
+    intro s
+    have hinj : Set.InjOn (g s) (Finset.range p) := by
+      intro a ha b hb hab
+      rw [Finset.coe_range, Set.mem_Iio] at ha hb
+      have hlta : s.val + p * a < p ^ 2 := by
+        have := ZMod.val_lt s; rw [sq]
+        calc s.val + p * a < p + p * a := by omega
+          _ = p * (a + 1) := by ring
+          _ ≤ p * p := by gcongr; omega
+      have hltb : s.val + p * b < p ^ 2 := by
+        have := ZMod.val_lt s; rw [sq]
+        calc s.val + p * b < p + p * b := by omega
+          _ = p * (b + 1) := by ring
+          _ ≤ p * p := by gcongr; omega
+      have hva : (g s a).val = s.val + p * a := by rw [hg, ZMod.val_natCast, Nat.mod_eq_of_lt hlta]
+      have hvb : (g s b).val = s.val + p * b := by rw [hg, ZMod.val_natCast, Nat.mod_eq_of_lt hltb]
+      have heq : s.val + p * a = s.val + p * b := by rw [← hva, ← hvb, hab]
+      have : p * a = p * b := by omega
+      exact Nat.eq_of_mul_eq_mul_left hp.pos this
+    rw [hcoset, Finset.card_image_of_injOn hinj, Finset.card_range]
+  -- distinct cosets are `φ`-separated, hence disjoint
+  have hdisj : ∀ s ∈ S, ∀ t ∈ S, s ≠ t → Disjoint (coset s) (coset t) := by
+    intro s _ t _ hst
+    rw [Finset.disjoint_left]
+    intro y hy1 hy2
+    exact hst ((hφcoset s y hy1).symm.trans (hφcoset t y hy2))
+  refine ⟨S.biUnion coset, ?_, ?_⟩
+  · -- square-difference-free
+    intro x hx n hn hmem
+    rw [Finset.mem_biUnion] at hx hmem
+    obtain ⟨s, hsS, hxs⟩ := hx
+    obtain ⟨t, htS, hts⟩ := hmem
+    have hφx : φ x = s := hφcoset s x hxs
+    have hφt : φ (x + n ^ 2) = t := hφcoset t (x + n ^ 2) hts
+    have hφn0 : φ n ≠ 0 := fun h => hn (hnzero n h)
+    have hsqne : (φ n) ^ 2 ≠ 0 := pow_ne_zero 2 hφn0
+    have hsplit : φ (x + n ^ 2) = s + (φ n) ^ 2 := by rw [map_add, map_pow, hφx]
+    rw [hφt] at hsplit
+    exact hS s hsS (φ n) hsqne (hsplit ▸ htS)
+  · -- cardinality `|S|·p`
+    rw [Finset.card_biUnion hdisj]
+    simp only [hcard_coset]
+    rw [Finset.sum_const, smul_eq_mul]
+
+/-- **A three-coset lift at `N = 169`, showing `2√N` is not extremal either.**
+The residues `{0, 2, 7} ⊆ ℤ/13ℤ` are pairwise non-adjacent in the Paley graph
+(every nonzero pairwise difference is a quadratic non-residue), i.e. they form a
+square-difference-free set.  Lifting through `φ : ℤ/169ℤ → ℤ/13ℤ` yields a
+square-difference-free set of `3·13 = 39 = 3√N` elements. -/
+theorem exists_sqDiffFree_card_three_mul_sqrt_mod_169 :
+    ∃ A : Finset (ZMod (13 ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (13 ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+        ∧ A.card = 3 * 13 := by
+  have hp : Nat.Prime 13 := by norm_num
+  have hS : ∀ s ∈ ({0, 2, 7} : Finset (ZMod 13)), ∀ n : ZMod 13,
+      n ^ 2 ≠ 0 → s + n ^ 2 ∉ ({0, 2, 7} : Finset (ZMod 13)) := by decide
+  obtain ⟨A, hfree, hcard⟩ := sqDiffFree_lift_prime_sq hp ({0, 2, 7} : Finset (ZMod 13)) hS
+  refine ⟨A, hfree, ?_⟩
+  rw [hcard]
+  have hc : ({0, 2, 7} : Finset (ZMod 13)).card = 3 := by decide
+  rw [hc]
+
+/-- **The two-coset lower bound `2√N` is not extremal at `N = 169`.**  The Paley
+three-coset set beats it: there is a square-difference-free set in `ℤ/169ℤ` with
+strictly more than `2√N = 26` elements. -/
+theorem exists_sqDiffFree_card_gt_two_sqrt_mod_169 :
+    ∃ A : Finset (ZMod (13 ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (13 ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+        ∧ 2 * Nat.sqrt (13 ^ 2) < A.card := by
+  obtain ⟨A, hfree, hcard⟩ := exists_sqDiffFree_card_three_mul_sqrt_mod_169
+  refine ⟨A, hfree, ?_⟩
+  rw [hcard, Nat.sqrt_eq']
+  norm_num
+
 end Szemeredi.Roth
