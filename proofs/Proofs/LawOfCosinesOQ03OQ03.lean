@@ -790,6 +790,60 @@ theorem hyperbolic_law_of_sines_ac (t : HyperbolicTriangle) :
   rw [div_eq_div_iff hA hC]; linear_combination law_of_sines_ac t
 
 -- ============================================================
+-- PART 9a: Explicit closed form of the common law-of-sines ratio
+-- ============================================================
+
+/-- **Square-root extraction of the Gram numerator along side `a`.** `sinh_a_num_sq`
+    only pins the *square* `(sinh a · sin B · sin C)² = gramNumerator`; since the base
+    `sinh a · sin B · sin C` is strictly positive it is the *positive* square root of the
+    Gram numerator: `sinh a · sin B · sin C = √(gramNumerator)`. This is the step that
+    turns the squared law of sines into an explicit (unsquared) value. -/
+theorem sinh_a_mul_sin_eq_sqrt_gram (t : HyperbolicTriangle) :
+    Real.sinh t.a * (Real.sin t.B * Real.sin t.C) = Real.sqrt (gramNumerator t) := by
+  have hpos : 0 < Real.sinh t.a * (Real.sin t.B * Real.sin t.C) :=
+    mul_pos (sinh_a_pos t) (mul_pos (sin_B_pos t) (sin_C_pos t))
+  rw [← sinh_a_num_sq t, Real.sqrt_sq hpos.le]
+
+/-- **The common law-of-sines ratio in closed form.** `hyperbolic_law_of_sines` shows the
+    three ratios `sinh(side)/sin(opposite angle)` coincide but does not say *what* they
+    equal. Extracting the positive root of the Gram numerator pins the common value
+    explicitly and symmetrically in the three angles:
+
+      sinh a / sin A  =  √(cos²A + cos²B + cos²C + 2 cos A cos B cos C − 1)
+                          / (sin A · sin B · sin C).
+
+    So the "hyperbolic circumradius" constant of the law of sines is a function of the
+    *angles alone* — the manifest symmetry of the right-hand side under permuting
+    `A, B, C` is an independent proof that the three ratios agree. -/
+theorem law_of_sines_common_ratio (t : HyperbolicTriangle) :
+    Real.sinh t.a / Real.sin t.A
+      = Real.sqrt (gramNumerator t)
+          / (Real.sin t.A * Real.sin t.B * Real.sin t.C) := by
+  have hA : Real.sin t.A ≠ 0 := (sin_A_pos t).ne'
+  have hprod : Real.sin t.A * Real.sin t.B * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hA (sin_B_pos t).ne') (sin_C_pos t).ne'
+  rw [div_eq_div_iff hA hprod]
+  linear_combination Real.sin t.A * sinh_a_mul_sin_eq_sqrt_gram t
+
+/-- **The common ratio is the same symmetric expression for all three sides.** Combining
+    the side-`a` closed form `law_of_sines_common_ratio` with the equality of ratios
+    (`hyperbolic_law_of_sines`, `hyperbolic_law_of_sines_ac`) shows every one of the three
+    law-of-sines ratios equals the *single* symmetric value `√(gramNumerator)/(sin A·sin B·sin C)`.
+    This exhibits the invariant `R = sinh(side)/sin(opposite angle)` of the hyperbolic
+    triangle in explicit closed form. -/
+theorem law_of_sines_common_ratio_symm (t : HyperbolicTriangle) :
+    Real.sinh t.a / Real.sin t.A
+        = Real.sqrt (gramNumerator t) / (Real.sin t.A * Real.sin t.B * Real.sin t.C)
+      ∧ Real.sinh t.b / Real.sin t.B
+        = Real.sqrt (gramNumerator t) / (Real.sin t.A * Real.sin t.B * Real.sin t.C)
+      ∧ Real.sinh t.c / Real.sin t.C
+        = Real.sqrt (gramNumerator t) / (Real.sin t.A * Real.sin t.B * Real.sin t.C) := by
+  have ha := law_of_sines_common_ratio t
+  refine ⟨ha, ?_, ?_⟩
+  · rw [← (hyperbolic_law_of_sines t).1]; exact ha
+  · rw [← hyperbolic_law_of_sines_ac t]; exact ha
+
+-- ============================================================
 -- PART 10: Realizability — the defect condition A+B+C<π is SUFFICIENT
 -- ============================================================
 
