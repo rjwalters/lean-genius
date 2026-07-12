@@ -24,9 +24,21 @@
     "prerequisites": ["orthogonal projection onto a subspace", "linear map composition"]
   },
   {
+    "id": "ann-projection-adjoint",
+    "proofId": "cauchy-interlacing-theorem-oq-01",
+    "range": { "startLine": 72, "endLine": 99 },
+    "type": "technique",
+    "title": "The Projection-Adjoint Identity (the workhorse)",
+    "content": "`inner_compress_eq` and `inner_compress_eq'` record the same fact in the two inner-product slots: for `y, z ∈ H`, `⟪compress T H y, z⟫_H = ⟪T ↑y, ↑z⟫_V` and `⟪y, compress T H z⟫_H = ⟪↑y, T ↑z⟫_V`. Both are unconditional (no symmetry of `T` needed) and both reduce to the orthogonal-projection adjoint identity `⟪P_H v, u⟫ = ⟪v, u⟫` for `u ∈ H`. Isolating these two lemmas is what lets the symmetry and Rayleigh results below be one-liners.",
+    "mathContext": "$\\langle P_H v, u\\rangle = \\langle v, u\\rangle$ for $u \\in H$: the orthogonal projection is self-adjoint and fixes $H$ pointwise, so it vanishes when paired against a vector of $H$.",
+    "significance": "supporting",
+    "relatedConcepts": ["orthogonal projection adjoint", "self-adjoint operator", "inner product on a submodule"],
+    "prerequisites": ["orthogonal projection onto a subspace", "adjoint of an orthogonal projection"]
+  },
+  {
     "id": "ann-compress-symmetric",
     "proofId": "cauchy-interlacing-theorem-oq-01",
-    "range": { "startLine": 72, "endLine": 85 },
+    "range": { "startLine": 100, "endLine": 114 },
     "type": "insight",
     "title": "The Compression Inherits Symmetry",
     "content": "`isSymmetric_compress`: for `y, z ∈ H`, the adjoint identity `⟪P_H v, u⟫ = ⟪v, u⟫` (valid because `u ∈ H`) collapses `⟪compress y, z⟫_H` to the ambient `⟪T ↑y, ↑z⟫_V` and `⟪y, compress z⟫_H` to `⟪↑y, T ↑z⟫_V`. These agree precisely because `T` is symmetric. So projecting before pairing against a vector of `H` is invisible, and symmetry passes to the compression.",
@@ -38,7 +50,7 @@
   {
     "id": "ann-rayleigh-agreement",
     "proofId": "cauchy-interlacing-theorem-oq-01",
-    "range": { "startLine": 87, "endLine": 96 },
+    "range": { "startLine": 115, "endLine": 125 },
     "type": "insight",
     "title": "Rayleigh Quotients Agree Exactly",
     "content": "`rayleigh_compress_eq`: the same projection identity with `z = y` gives `⟪compress y, y⟫_H = ⟪T ↑y, ↑y⟫_V`, and the subspace inherits the ambient norm so `‖y‖ = ‖↑y‖` (`Submodule.coe_norm`). Hence `re⟪compress y, y⟫_H / ‖y‖² = re⟪T ↑y, ↑y⟫_V / ‖↑y‖²` exactly. This is the Rayleigh-agreement hypothesis that the abstract parent theorem takes as an input — here proved.",
@@ -50,7 +62,7 @@
   {
     "id": "ann-corollary",
     "proofId": "cauchy-interlacing-theorem-oq-01",
-    "range": { "startLine": 98, "endLine": 138 },
+    "range": { "startLine": 126, "endLine": 166 },
     "type": "insight",
     "title": "The Unconditional Compression Corollary",
     "content": "`cauchy_interlacing_compression`: the spectral data of `T` on `V` and of `compress T H` on `H` are pulled from Mathlib's spectral theorem (`eigenvectorBasis`, `eigenvalues`, `eigenvalues_antitone`), `rayleigh_compress_eq` supplies the Rayleigh hypothesis, and the parent's `cauchy_interlacing` then yields `λ(k.succ) ≤ μ(k) ∧ μ(k) ≤ λ(k.castSucc)`. No hypothesis is needed beyond 'T symmetric, H a codimension-one subspace'.",
