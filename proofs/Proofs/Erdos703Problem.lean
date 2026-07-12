@@ -1133,6 +1133,59 @@ theorem one_le_T_L_of_zero_notMem {n : ℕ} {L : Finset ℕ} (h : 0 ∉ L) :
   calc 1 = ({∅} : Finset (Finset ℕ)).card := (Finset.card_singleton _).symm
     _ ≤ _ := Finset.le_sup hmem
 
+/--
+**When every forbidden size exceeds the ground set, the full powerset is `L`-avoiding.**
+If `n < r` for every `r ∈ L`, then no two subsets `A, B ⊆ [n]` can meet in a forbidden
+size: `|A ∩ B| ≤ n < r` for each `r ∈ L`, so `|A ∩ B| ∉ L`. Hence the entire powerset
+`2^{[n]}` (vacuously) avoids `L`. This is the `L`-avoiding analogue of
+`full_powerset_avoids_r_of_lt`; the hypothesis is vacuously true for `L = ∅`, recovering
+`avoidsLIntersections_empty`. -/
+theorem full_powerset_avoidsL_of_lt (n : ℕ) (L : Finset ℕ) (h : ∀ r ∈ L, n < r) :
+    avoidsLIntersections L ((Finset.range n).powerset) := by
+  intro A B hA _hB
+  rw [Finset.mem_powerset] at hA
+  have hle : (A ∩ B).card ≤ n :=
+    calc (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+      _ ≤ (Finset.range n).card := Finset.card_le_card hA
+      _ = n := Finset.card_range n
+  intro hmem
+  exact absurd (h _ hmem) (by omega)
+
+/--
+**Exact value `T_L n L = 2ⁿ` when every forbidden size exceeds `n`.**
+Once every intersection size in `L` is larger than the ground-set size `n`, no two
+subsets of `[n]` can meet in a forbidden size (`|A ∩ B| ≤ n`), so the whole powerset is a
+valid `L`-avoiding family of size `2ⁿ` (`full_powerset_avoidsL_of_lt`); combined with the
+ceiling `T_L_le_pow` this pins the value exactly. This is the `L`-avoiding analogue of
+`T_eq_pow_of_lt`, and it strictly generalizes the empty-forbidden endpoint `T_L_empty`
+(`L = ∅` satisfies the hypothesis vacuously): the antitone hierarchy `T_L n ·` stays pinned
+at its maximum `2ⁿ` for *every* `L` whose sizes all exceed `n`, and only drops below `2ⁿ`
+once a forbidden size `≤ n` is admitted (`T_L_le_pow_sub_one`). -/
+theorem T_L_eq_pow_of_lt (n : ℕ) (L : Finset ℕ) (h : ∀ r ∈ L, n < r) :
+    T_L n L = 2 ^ n := by
+  refine le_antisymm (T_L_le_pow n L) ?_
+  unfold T_L
+  have hmem : (Finset.range n).powerset ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections L) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.Subset.refl _),
+      full_powerset_avoidsL_of_lt n L h⟩
+  calc 2 ^ n = ((Finset.range n).powerset).card := by
+        rw [Finset.card_powerset, Finset.card_range]
+    _ ≤ _ := Finset.le_sup hmem
+
+/--
+**Strict improvement `T_L n L ≤ 2ⁿ − 1` once a forbidden size is attainable.**
+If some forbidden size `r ∈ L` satisfies `r ≤ n`, then an `L`-avoiding family is in
+particular `r`-avoiding (`T_L_le_T_of_mem`), and no `r`-avoiding family can be the full
+powerset (`T_le_pow_sub_one`, since `C(n,r) ≥ 1`). Hence `T_L n L ≤ T n r ≤ 2ⁿ − 1`. This
+is the strict-drop companion of `T_L_eq_pow_of_lt`: together they give the dichotomy
+`T_L n L = 2ⁿ` exactly when every forbidden size exceeds `n`, and `T_L n L ≤ 2ⁿ − 1` as
+soon as any attainable size (`≤ n`) is forbidden. -/
+theorem T_L_le_pow_sub_one {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) (hrn : r ≤ n) :
+    T_L n L ≤ 2 ^ n - 1 :=
+  le_trans (T_L_le_T_of_mem hr) (T_le_pow_sub_one hrn)
+
 /-
 ## Part VIII: Summary
 -/
