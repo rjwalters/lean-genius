@@ -2488,4 +2488,124 @@ theorem sqGaussSum_eq_zero_of_exists_shift {N : ℕ} [NeZero N] {r : ZMod N}
     sqGaussSum r = 0 :=
   sqGaussSum_eq_zero_of_gcd_shift ((exists_vanishing_shift_iff r).mp h)
 
+
+/-! ### Part XIV — the residual case is maximal: exact decidable vanishing characterization
+
+Part XIII isolates the *residual* frequencies `r·t₀² = 0` (with
+`t₀ = N / gcd((2r).val, N)`) as exactly those the shift method cannot reach.  Here we
+*evaluate* the quadratic Gauss sum on precisely those frequencies and find it is
+**maximal**, never zero.  The mechanism is the reverse kernel containment
+`kernel_eq_smul_gen`: every kernel element is `h = k·t₀`, so on the residual set its
+residual phase is `r·h² = k²·(r·t₀²) = 0`, i.e. `ψ(−r·h²) = 1` for *every* `h` in the
+kernel.  The Weyl residual sum `Σ_{h:2rh=0} ψ(−r·h²)` therefore collapses to the full
+kernel count `g = gcd((2r).val, N)`, giving
+
+    ‖G(r)‖² = N · g,
+
+the largest value permitted by `sqGaussSum_normSq_le_gcd` — hence `G(r) ≠ 0`.
+
+Combined with the shift criterion (`r·t₀² ≠ 0 ⟹ G(r) = 0`,
+`sqGaussSum_eq_zero_of_gcd_shift`) this closes the characterisation to an exact,
+decidable **iff**:
+
+    G(r) = 0  ↔  r·t₀² ≠ 0.
+
+So the single closed-form quantity `r·t₀²` (one `gcd`, one modular multiply) *decides*
+quadratic-Gauss-sum vanishing at every frequency, with **no** residual open input — and
+the shift method (`sqGaussSum_eq_zero_iff_exists_shift`) is *complete*: it certifies
+every vanishing.  This resolves the Part XIII residual gap: the `o(N)` Sárközy
+obstruction is **not** pointwise vanishing (now fully decided) but the cancellation
+among the *non-vanishing* magnitudes `‖G(r)‖ = √(N·gcd(2r,N))`. -/
+
+/-- In the residual case `r·t₀² = 0`, every residual phase is trivial: any kernel
+    element `h` (i.e. `2rh = 0`) satisfies `r·h² = 0`.  Indeed `h = k·t₀` by the reverse
+    kernel containment `kernel_eq_smul_gen`, so `r·h² = k²·(r·t₀²) = 0`. -/
+private theorem residual_phase_zero_of_gcd_phase_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hphase : r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2 = 0)
+    {h : ZMod N} (hh : 2 * r * h = 0) : r * h ^ 2 = 0 := by
+  obtain ⟨k, hk⟩ := kernel_eq_smul_gen (2 * r) h hh
+  rw [hk, gcd_shift_phase_smul, hphase, mul_zero]
+
+/-- **Residual sum is the full kernel count in the residual case.**  When `r·t₀² = 0`
+    every term of the Weyl residual sum is `ψ(0) = 1`, so
+    `Σ_{h:2rh=0} ψ(−r·h²) = #{h : 2rh = 0}`. -/
+private theorem residual_sum_eq_card_of_gcd_phase_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hphase : r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2 = 0) :
+    (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum (fun h => ψ (-(r * h ^ 2)))
+      = ((Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).card : ℂ) := by
+  have hterm : ∀ h ∈ Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0),
+      ψ (-(r * h ^ 2)) = 1 := by
+    intro h hh
+    have hz : r * h ^ 2 = 0 :=
+      residual_phase_zero_of_gcd_phase_zero hphase (Finset.mem_filter.mp hh).2
+    rw [hz, neg_zero, psi_zero]
+  rw [Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul, mul_one]
+
+/-- **Maximal magnitude in the residual case.**  If `r·t₀² = 0` then
+    `‖G(r)‖² = N · gcd((2r).val, N)` — the maximum allowed by `sqGaussSum_normSq_le_gcd`.
+    Every residual phase is trivial, so the Weyl residual sum is the full kernel count `g`. -/
+theorem sqGaussSum_normSq_eq_gcd_of_gcd_phase_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hphase : r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2 = 0) :
+    ‖sqGaussSum r‖ ^ 2 = (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := by
+  have hid := sqGaussSum_mul_conj r
+  rw [residual_sum_eq_card_of_gcd_phase_zero hphase, kernel_card_eq_gcd (2 * r)] at hid
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = sqGaussSum r * starRingEnd ℂ (sqGaussSum r) := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  rw [hid] at hGsq
+  exact_mod_cast hGsq
+
+/-- **The residual case never vanishes.**  If `r·t₀² = 0` then `‖G(r)‖² = N·g > 0`, so
+    `G(r) ≠ 0`.  This is the exact converse of `sqGaussSum_eq_zero_of_gcd_shift`. -/
+theorem sqGaussSum_ne_zero_of_gcd_phase_zero {N : ℕ} [NeZero N] {r : ZMod N}
+    (hphase : r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2 = 0) :
+    sqGaussSum r ≠ 0 := by
+  intro h0
+  have hpos : (0 : ℝ) < (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := by
+    have hN : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+    have hg : (0 : ℝ) < (Nat.gcd (2 * r).val N : ℝ) := by
+      exact_mod_cast Nat.gcd_pos_of_pos_right _ (Nat.pos_of_ne_zero (NeZero.ne N))
+    positivity
+  have hmag := sqGaussSum_normSq_eq_gcd_of_gcd_phase_zero hphase
+  rw [h0, norm_zero, zero_pow (by norm_num : (2 : ℕ) ≠ 0)] at hmag
+  exact (ne_of_lt hpos) hmag
+
+/-- **Exact decidable vanishing characterisation.**  The quadratic Gauss sum vanishes at
+    frequency `r` *iff* the single canonical phase `r·t₀²` (with
+    `t₀ = N / gcd((2r).val, N)`) is nonzero:
+
+        `G(r) = 0  ↔  r · (N / gcd((2r).val, N))² ≠ 0`.
+
+    Backward is the shift criterion `sqGaussSum_eq_zero_of_gcd_shift`; forward is the
+    residual maximality `sqGaussSum_ne_zero_of_gcd_phase_zero` (if the phase is `0`,
+    `‖G(r)‖² = N·g > 0`).  A closed-form `gcd`-plus-multiply test — `decide`-able at any
+    concrete modulus — completely deciding quadratic-Gauss-sum vanishing. -/
+theorem sqGaussSum_eq_zero_iff_gcd_shift {N : ℕ} [NeZero N] (r : ZMod N) :
+    sqGaussSum r = 0 ↔ r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2 ≠ 0 := by
+  constructor
+  · intro h0
+    by_contra hphase
+    exact sqGaussSum_ne_zero_of_gcd_phase_zero hphase h0
+  · exact sqGaussSum_eq_zero_of_gcd_shift
+
+/-- **Vanishing iff some shift certifies it (completeness of the shift method).**  Chaining
+    the exact characterisation with the shift-reachability iff `exists_vanishing_shift_iff`,
+    `G(r) = 0` holds *exactly* when some shift `t` satisfies the vanishing hypotheses
+    `2rt = 0 ∧ r·t² ≠ 0`.  The elementary shift method therefore certifies *every* vanishing
+    of the quadratic Gauss sum — there is no undetected vanishing frequency. -/
+theorem sqGaussSum_eq_zero_iff_exists_shift {N : ℕ} [NeZero N] (r : ZMod N) :
+    sqGaussSum r = 0 ↔ ∃ t : ZMod N, 2 * r * t = 0 ∧ r * t ^ 2 ≠ 0 := by
+  rw [sqGaussSum_eq_zero_iff_gcd_shift r]
+  exact (exists_vanishing_shift_iff r).symm
+
+/-- The exact characterisation decides the concrete witnesses with no shift supplied:
+    `G(4) = 0` in `ℤ/24ℤ` (canonical phase `4·3² = 12 ≠ 0` fires the vanishing branch). -/
+example : sqGaussSum (4 : ZMod 24) = 0 :=
+  (sqGaussSum_eq_zero_iff_gcd_shift 4).mpr (by decide)
+
+/-- Dually, the exact characterisation *certifies non-vanishing*: `G(2) ≠ 0` in `ℤ/8ℤ`,
+    a residual frequency (`2·2² = 8 ≡ 0`) where the maximal magnitude `‖G(2)‖² = 8·4 = 32`
+    forbids vanishing — the shift method's blind spot is genuinely a non-vanishing one. -/
+example : sqGaussSum (2 : ZMod 8) ≠ 0 :=
+  sqGaussSum_ne_zero_of_gcd_phase_zero (by decide)
+
 end Szemeredi.Roth
