@@ -764,6 +764,37 @@ theorem multiplicativeEnergy_comm (A B : Finset ℕ) :
   case right =>
     rintro ⟨⟨b₁, b₂⟩, ⟨a₁, a₂⟩⟩ _; rfl
 
+/-- **Multiplicative energy is monotone under subsets**: if `A' ⊆ A` and `B' ⊆ B` then
+`E(A', B') ≤ E(A, B)`.  Enlarging the two factor sets can only add coincidence
+quadruples: `(A' ×ˢ A') ×ˢ (B' ×ˢ B') ⊆ (A ×ˢ A) ×ˢ (B ×ˢ B)`, and the energy filter
+predicate `a₁·b₁ = a₂·b₂` is unchanged, so `Finset.filter_subset_filter` gives the
+inclusion of energy sets and `Finset.card_le_card` the bound.  This is the
+`multiplicativeEnergy` companion to `productSet_mono` and `HasDistinctProducts.subset`. -/
+theorem multiplicativeEnergy_mono {A A' B B' : Finset ℕ} (hA : A' ⊆ A) (hB : B' ⊆ B) :
+    multiplicativeEnergy A' B' ≤ multiplicativeEnergy A B := by
+  classical
+  unfold multiplicativeEnergy
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  intro q hq
+  simp only [Finset.mem_product] at hq ⊢
+  obtain ⟨⟨ha1, ha2⟩, hb1, hb2⟩ := hq
+  exact ⟨⟨hA ha1, hA ha2⟩, hB hb1, hB hb2⟩
+
+/-- **Trivial upper bound on multiplicative energy**: `E(A, B) ≤ (|A|·|B|)²`.  The energy
+set is a `filter` of the full quadruple set `(A ×ˢ A) ×ˢ (B ×ˢ B)`, whose cardinality is
+`|A|²·|B|² = (|A||B|)²`, so the count of coincidences never exceeds it.  Together with the
+lower bound `multiplicativeEnergy_ge` (`|A||B| ≤ E`) this two-sidedly sandwiches the
+energy: `|A||B| ≤ E(A, B) ≤ (|A||B|)²`. -/
+theorem multiplicativeEnergy_le_sq (A B : Finset ℕ) :
+    multiplicativeEnergy A B ≤ (A.card * B.card) ^ 2 := by
+  classical
+  unfold multiplicativeEnergy
+  refine le_trans (Finset.card_filter_le _ _) ?_
+  rw [Finset.card_product, Finset.card_product, Finset.card_product]
+  apply le_of_eq
+  ring
+
 /-- **Strict energy excess characterizes product collisions.**  Combining the general
 lower bound `|A||B| ≤ E(A, B)` (`multiplicativeEnergy_ge`) with its equality case
 (`distinct_minimal_energy`): the energy *strictly* exceeds `|A||B|` exactly when the
