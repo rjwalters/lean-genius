@@ -35,8 +35,8 @@
       }
     ],
     "assumptions": "The general Jacobi four-square theorem is NOT proved — it is a genuine Mathlib gap requiring either Hurwitz-quaternion order arithmetic or weight-2 modular forms (θ⁴∈M₂(Γ₀(4))), each ≫1000 LOC of absent number theory. This entry proves (a) a 0-axiom general lemma jacobiCount_odd (for odd n the 4∤d filter is vacuous, so jacobiCount n = 8·σ(n)), and (b) a machine-checked oracle jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n, discharged by native_decide. native_decide trusts the Lean compiler and depends on the Lean.ofReduceBool axiom (#print axioms lists it, together with Lean.trustCompiler); naive_sigma_fails and r4_anchor_values also use native_decide. The entry is therefore axiomatized, not axiom-free. The literal `axiom` declaration count in the Lean file is 0; the single counted assumption is Lean.ofReduceBool introduced via native_decide.",
-    "lineCount": 165,
-    "theoremCount": 7,
+    "lineCount": 217,
+    "theoremCount": 10,
     "definitionCount": 3,
     "originalContributions": [
       "r4: the ordered, signed four-square representation count r₄(n), defined as a computable Finset.card over the integer box [-√n,√n]⁴ — an object Mathlib lacks entirely",
@@ -83,31 +83,39 @@
       "id": "representation-count",
       "title": "The Representation Count r₄ and its Box",
       "startLine": 55,
-      "endLine": 76,
+      "endLine": 73,
       "summary": "Defines box n = [-√n,√n]⊆ℤ (all admissible signed components, since x²≤n ⟹ |x|≤√n) and r4 n as the Finset.card of quadruples in box n⁴ whose squares sum to n — the ordered, signed count r₄(n). A sanity example checks r₄(0)=1.",
       "mathContext": "Every component x of a representation of n satisfies x²≤n, hence |x|≤⌊√n⌋, so all representations live in the finite box [-√n,√n]⁴. r₄(n) is then a genuine computable Finset.card."
     },
     {
       "id": "jacobi-rhs",
       "title": "The Jacobi Right-Hand Side and the Odd Case",
-      "startLine": 78,
-      "endLine": 103,
-      "summary": "Defines jacobiCount n = 8·Σ_{d|n,4∤d}d and proves jacobiCount_odd: for odd n the exclusion 4∤d is vacuous (no divisor of an odd number is even), so jacobiCount n = 8·σ(n). This 0-axiom general lemma captures the elementary odd half of Jacobi's formula.",
+      "startLine": 74,
+      "endLine": 113,
+      "summary": "Defines jacobiCount n = 8·Σ_{d|n,4∤d}d and proves jacobiCount_odd: for odd n the exclusion 4∤d is vacuous (no divisor of an odd number is even), so jacobiCount n = 8·σ(n); jacobiCount_prime specialises to an odd prime p (jacobiCount p = 8(p+1)). These 0-axiom general lemmas capture the elementary odd half of Jacobi's formula.",
       "mathContext": "If n is odd and d|n then d is odd, so 4∤d; the filter keeps every divisor (Finset.filter_true_of_mem) and the count collapses to 8·σ(n)."
+    },
+    {
+      "id": "two-adic-structure",
+      "title": "Powers of Two and the 2-adic Structure",
+      "startLine": 114,
+      "endLine": 196,
+      "summary": "The 4∤d exclusion makes jacobiCount depend only on the odd part of n. jacobiCount_two_pow: jacobiCount(2ᵏ)=24 for k≥1 (only d=1,2 survive); jacobiCount_two_pow_const: independence of the exponent for 2ʲ vs 2ᵏ; jacobiCount_of_not_four_dvd handles the 4∤n case; jacobiCount_two_mul and jacobiCount_two_mul_odd_eq give the doubling relation jacobiCount(2m)=3·jacobiCount(m) for odd m — the even-side multiplicative structure, all 0-axiom.",
+      "mathContext": "Since divisors ≡ 0 mod 4 are excluded, only the 2⁰ and 2¹ parts of a power of two contribute (1+2=3, ×8=24); doubling an odd m adds exactly the factor-2 divisors, multiplying the count by 3."
     },
     {
       "id": "convention-guard",
       "title": "Convention Guard: the Naive 8·σ Fails",
-      "startLine": 105,
-      "endLine": 111,
+      "startLine": 197,
+      "endLine": 200,
       "summary": "naive_sigma_fails proves 8·σ(4)=56 while jacobiCount 4 = r₄ 4 = 24 — the 4∤d exclusion drops d=4 and is load-bearing. This blocks any statement that silently uses 8·σ for all n.",
       "mathContext": "σ(4)=1+2+4=7, so 8·σ(4)=56, but the true count is r₄(4)=24; the discrepancy is exactly the excluded divisor d=4."
     },
     {
       "id": "oracle",
       "title": "The Jacobi Oracle and Anchor Values",
-      "startLine": 113,
-      "endLine": 117,
+      "startLine": 201,
+      "endLine": 217,
       "summary": "jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n by native_decide — a machine-checked regression oracle that Jacobi's divisor-sum formula reproduces the brute-force lattice count over a range of small n. r4_anchor_values states the spot anchors r₄(1)=8, r₄(2)=24, r₄(3)=32, r₄(4)=24, r₄(5)=48, r₄(7)=64.",
       "mathContext": "native_decide compiles both sides to native code and compares; it depends on Lean.ofReduceBool, so this is an axiomatized verified computation, not a proof of the general theorem."
     }
@@ -125,12 +133,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 165,
+    "lineCount": 217,
     "path": "Proofs/LagrangeFourSquaresOQ01OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 7
+    "theoremCount": 10
   },
   "sorries": 0
 }
