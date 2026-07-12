@@ -291,6 +291,7 @@ theorem afks_sharp_energy_iteration_count_of_prod_witness
 -- THE TOWER-FREE, VERTEX-COUNT-INDEPENDENT BOUND  N ≤ k²/ε⁴
 -- ═══════════════════════════════════════════════════════════════════
 
+omit [DecidableEq V] in
 /-- **Equipartition mass floor collapses the sharp bound to `k²/ε⁴`.**  The sharp
     iteration count `afks_sharp_energy_iteration_count` reads `N ≤ n²/(ε⁴·m²)`,
     where `n = |V|` and `m` is the minimum mass of a refined part.  This bound still
@@ -321,7 +322,7 @@ theorem afks_sharp_energy_iteration_count_tower_free
     nlinarith [mul_le_mul hmass hmass hn.le (mul_nonneg hk.le hm.le)]
   -- Absorb `n²` into `m²`, so the sharp bound loses its vertex-count dependence.
   have hkey : (Fintype.card V : ℚ) ^ 2 / (eps ^ 4 * m ^ 2) ≤ k ^ 2 / eps ^ 4 := by
-    rw [div_le_div_iff (by positivity) heps4]
+    rw [div_le_div_iff₀ (by positivity) heps4]
     nlinarith [hn2, heps4.le]
   linarith [hbound, hkey]
 
