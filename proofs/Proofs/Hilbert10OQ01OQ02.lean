@@ -3211,6 +3211,68 @@ theorem affinePullback_cancel {a : Rat} (ha : a ≠ 0) (b : Rat) (S : RatSubset)
   rw [affinePullback_comp]
   simp only [inv_mul_cancel₀ ha, add_neg_cancel, affinePullback_id]
 
+/-- **The affine action is invertible on the *other* side (`a ≠ 0`).** The left inverse
+companion of `affinePullback_cancel`: pulling back by the inverse reparametrisation
+`q ↦ a⁻¹·q − a⁻¹·b` undoes pulling back by `q ↦ a·q + b`. With both `affinePullback_cancel`
+(right inverse) this exhibits `affinePullback a b` and `affinePullback a⁻¹ (−a⁻¹·b)` as a
+genuine two-sided inverse pair — the reparametrisations act as a group, not merely a monoid. -/
+theorem affinePullback_cancel_left {a : Rat} (ha : a ≠ 0) (b : Rat) (S : RatSubset) :
+    affinePullback a⁻¹ (-(a⁻¹ * b)) (affinePullback a b S) = S := by
+  rw [affinePullback_comp]
+  have h1 : a * a⁻¹ = 1 := mul_inv_cancel₀ ha
+  have hb : a * -(a⁻¹ * b) + b = 0 := by rw [mul_neg, ← mul_assoc, h1, one_mul]; ring
+  rw [h1, hb, affinePullback_id]
+
+/-! ### Each definability class is an invariant subset of the affine action
+
+The four closure lemmas `affinePullback_is{,Co}DiophantineDefinition` /
+`affinePullback_is{Existential,Universal}…` give one direction (pullback preserves the class);
+the two-sided inverse `affinePullback_cancel_left` supplies the converse (pull the pullback back
+along the inverse reparametrisation), upgrading each to a full *iff* for an **arbitrary** `S`.
+These generalise the `IntSubset`-specific invariances
+`int_diophantine_iff_affinePullback_diophantine` and its Σ₂/Π₂ siblings from ℤ to every
+`S : RatSubset`, substantiating the claim that each of the four classes is genuinely an
+invariant subset of the affine group action. -/
+
+/-- **Σ₁ (Diophantine) invariance under affine pullback, general `S`.** For `a ≠ 0`,
+`affinePullback a b S` is Diophantine iff `S` is. Generalises
+`int_diophantine_iff_affinePullback_diophantine` (the `S = IntSubset` case). -/
+theorem affinePullback_isDiophantineDefinition_iff (a b : Rat) (ha : a ≠ 0) (S : RatSubset) :
+    IsDiophantineDefinition (affinePullback a b S) ↔ IsDiophantineDefinition S := by
+  refine ⟨fun h => ?_, affinePullback_isDiophantineDefinition a b⟩
+  have hb := affinePullback_isDiophantineDefinition a⁻¹ (-(a⁻¹ * b)) h
+  rwa [affinePullback_cancel_left ha b S] at hb
+
+/-- **Π₁ (co-Diophantine) invariance under affine pullback, general `S`.** For `a ≠ 0`,
+`affinePullback a b S` is co-Diophantine iff `S` is. -/
+theorem affinePullback_isCoDiophantineDefinition_iff (a b : Rat) (ha : a ≠ 0) (S : RatSubset) :
+    IsCoDiophantineDefinition (affinePullback a b S) ↔ IsCoDiophantineDefinition S := by
+  refine ⟨fun h => ?_, affinePullback_isCoDiophantineDefinition a b⟩
+  have hb := affinePullback_isCoDiophantineDefinition a⁻¹ (-(a⁻¹ * b)) h
+  rwa [affinePullback_cancel_left ha b S] at hb
+
+/-- **Σ₂ (existential-universal) invariance under affine pullback, general `S`.** For `a ≠ 0`,
+`affinePullback a b S` is Σ₂-definable iff `S` is. Generalises
+`int_existentialUniversal_iff_affinePullback_existentialUniversal`. -/
+theorem affinePullback_isExistentialUniversalDefinition_iff
+    (a b : Rat) (ha : a ≠ 0) (S : RatSubset) :
+    IsExistentialUniversalDefinition (affinePullback a b S) ↔
+      IsExistentialUniversalDefinition S := by
+  refine ⟨fun h => ?_, affinePullback_isExistentialUniversalDefinition a b⟩
+  have hb := affinePullback_isExistentialUniversalDefinition a⁻¹ (-(a⁻¹ * b)) h
+  rwa [affinePullback_cancel_left ha b S] at hb
+
+/-- **Π₂ (universal-existential) invariance under affine pullback, general `S`.** For `a ≠ 0`,
+`affinePullback a b S` is Π₂-definable iff `S` is. Generalises
+`int_universalExistential_iff_affinePullback_universalExistential`. -/
+theorem affinePullback_isUniversalExistentialDefinition_iff
+    (a b : Rat) (ha : a ≠ 0) (S : RatSubset) :
+    IsUniversalExistentialDefinition (affinePullback a b S) ↔
+      IsUniversalExistentialDefinition S := by
+  refine ⟨fun h => ?_, affinePullback_isUniversalExistentialDefinition a b⟩
+  have hb := affinePullback_isUniversalExistentialDefinition a⁻¹ (-(a⁻¹ * b)) h
+  rwa [affinePullback_cancel_left ha b S] at hb
+
 -- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
