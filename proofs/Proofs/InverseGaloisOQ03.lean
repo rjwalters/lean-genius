@@ -377,6 +377,45 @@ Status of sporadic simple groups for the Inverse Galois Problem over ℚ:
 - M₂₃ is the sole remaining open case — see InverseGaloisOQ02.lean.
 -/
 
+/-! ### More element orders (Cauchy) and structural refinements -/
+
+/-- **𝕄 contains an element of order 3.**  Cauchy's theorem applied to the prime
+    `3 ∣ |𝕄|` (`three_dvd_Monster_card`); `3²⁰ ∥ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_3 : ∃ g : Monster, orderOf g = 3 :=
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 3 three_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 5.**  Cauchy's theorem applied to the prime
+    `5 ∣ |𝕄|` (`five_dvd_Monster_card`); `5⁹ ∥ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_5 : ∃ g : Monster, orderOf g = 5 :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 5 five_dvd_Monster_card
+
+/-- **𝕄 contains an element of order 7.**  Cauchy's theorem applied to the prime
+    `7 ∣ |𝕄|` (`seven_dvd_Monster_card`); `7⁶ ∥ |𝕄|`. -/
+theorem Monster_exists_element_orderOf_7 : ∃ g : Monster, orderOf g = 7 :=
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  exists_prime_orderOf_dvd_card 7 seven_dvd_Monster_card
+
+/-- **𝕄 is not cyclic.**  A cyclic group is commutative (`IsCyclic.commGroup`), which
+    would contradict `Monster_not_commutative`.  (Every nonabelian group is non-cyclic; for
+    the simple 𝕄 this is another face of `Monster_center_eq_bot`.) -/
+theorem Monster_not_cyclic : ¬ IsCyclic Monster := by
+  intro h
+  apply Monster_not_commutative
+  intro a b
+  letI := @IsCyclic.commGroup Monster _ h
+  exact mul_comm a b
+
+/-- **𝕄 is not nilpotent.**  Every nilpotent group is solvable
+    (`IsNilpotent.to_isSolvable`), so non-solvability (`Monster_not_solvable`) upgrades to
+    non-nilpotency.  A strengthening of `Monster_not_solvable`: 𝕄 sits outside even the
+    larger class of nilpotent groups, as any non-abelian simple group must. -/
+theorem Monster_not_nilpotent : ¬ Group.IsNilpotent Monster := by
+  intro h
+  haveI := h
+  exact Monster_not_solvable inferInstance
+
 /-- 25 sporadic groups realized + 1 open (M₂₃) = 26 sporadic groups total. -/
 theorem sporadic_census : 25 + 1 = 26 := by norm_num
 
