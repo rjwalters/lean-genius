@@ -849,6 +849,39 @@ theorem qualifyingCount_factorial_lt_succ (n : ℕ) (hn : n ≥ 3) :
   have hpos := qualifyingInLevel_pos n hn
   omega
 
+/-- **Exact one-step recurrence for the qualifying count at factorial points.**
+    For `n ≥ 1`,
+
+      `C((n+1)!) = C(n!) + q(n)`,
+
+    where `q(n) = qualifyingInLevel n` is the single new level adjoined in passing from
+    `n!` to `(n+1)!`.  Directly from the level decomposition
+    `C(n!) = Σ_{l<n} q(l)` (`qualifyingCount_decomposition`) together with
+    `Finset.sum_range_succ`.  This is the fundamental recurrence behind the whole
+    Part XI absolute-growth theory: the linear lower bound
+    (`qualifyingCount_factorial_ge`), monotonicity (`qualifyingCount_factorial_mono`),
+    and strict step-growth (`qualifyingCount_factorial_lt_succ`) all read off this exact
+    increment. -/
+theorem qualifyingCount_factorial_succ {n : ℕ} (hn : n ≥ 1) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))
+      = Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) + qualifyingInLevel n := by
+  rw [qualifyingCount_decomposition (n + 1) (by omega),
+      qualifyingCount_decomposition n hn, Finset.sum_range_succ]
+
+/-- **Strict monotonicity of the qualifying count at factorial points.**  For `3 ≤ n < m`,
+
+      `C(n!) < C(m!)`.
+
+    The strict counterpart of `qualifyingCount_factorial_mono`: chaining the single strict
+    step `qualifyingCount_factorial_lt_succ` (`C(n!) < C((n+1)!)`, valid for `n ≥ 3`) with the
+    non-strict monotonicity `qualifyingCount_factorial_mono` (`C((n+1)!) ≤ C(m!)`) upgrades
+    "non-decreasing" to "strictly increasing" across every gap `n < m` above `3!`. -/
+theorem qualifyingCount_factorial_strictMono {n m : ℕ} (hn : n ≥ 3) (hnm : n < m) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) <
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial m) :=
+  lt_of_lt_of_le (qualifyingCount_factorial_lt_succ n hn)
+    (qualifyingCount_factorial_mono (by omega) (by omega))
+
 /-
 ## Summary
 
