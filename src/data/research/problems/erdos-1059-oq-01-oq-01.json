@@ -45,14 +45,16 @@
       "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
       "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
       "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x",
-      "Gallery entry src/data/proofs/erdos-1059-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos1059OQ01OQ01.lean."
+      "Gallery entry src/data/proofs/erdos-1059-oq-01-oq-01 (meta.json + annotations.json); Lean source proofs/Proofs/Erdos1059OQ01OQ01.lean.",
+      "Erdos1059OQ01OQ01 Part XII (6 axiom-free thm): absolute-growth theory for the PRIME count pi(n!) dual to Part XI's qualifying-count theory — primeCount_factorial_succ (pi((n+1)!)=pi(n!)+p(n)), _mono, _ge (pi(n!) >= n-1 from Bertrand-based primesInLevel_pos), _lt_succ, _strictMono, _unbounded. Uses NO sieve axiom (independent of strong_selberg_density); a factorial-point reproof of the infinitude of primes."
     ],
     "insights": [
       "**Weak axiom is provably insufficient**: ≥1 qualifying prime per interval I(l) = (l!, (l+1)!] gives only C((N+3)!) ≥ N, not density 1. The qualifying-to-prime ratio from this bound is ≈ N/π((N+3)!) → 0.",
       "**Strong axiom captures sieve content**: The Selberg sieve gives qualifying fraction ≈ 1 − O((l+1)/log(l!)) → 1 at each level. The axiom q(l)·(l+1) ≥ p(l)·l captures this with the clean bound l/(l+1).",
       "**Surplus accumulation overcomes deficit**: Each high level contributes ≥1 unit of surplus to the density bound. The finite deficit from early levels is eventually absorbed.",
       "**Factorial growth blocks general-x extension**: Between factorial points, the partial-interval deficit can be as large as p(l)·k (growing factorially), while cumulative surplus grows only linearly in the number of levels. Closing this gap requires within-interval sieve estimates.",
-      "**The strong axiom is the natural intermediate target**: Rather than attacking density 1 directly, the formalization identifies strong_selberg_density as a clean, believable axiom that could be proved from PNT + Brun-Titchmarsh + Selberg sieve, yielding both the main conjecture and density at factorial points."
+      "**The strong axiom is the natural intermediate target**: Rather than attacking density 1 directly, the formalization identifies strong_selberg_density as a clean, believable axiom that could be proved from PNT + Brun-Titchmarsh + Selberg sieve, yielding both the main conjecture and density at factorial points.",
+      "The primeCount_decomposition pi(n!)=sum_{l<n} p(l) plus Bertrand positivity primesInLevel_pos (p(l)>=1 for l>=1) yields the full absolute-growth theory for pi(n!) — recurrence, monotonicity, strict step growth, linear lower bound pi(n!)>=n-1 — entirely without the strong_selberg_density sieve axiom. This mirrors Part XI's qualifying-count theory (C(n!)>=n-3) but is axiom-independent, isolating which growth facts are classical (prime side) vs sieve-conditional (qualifying side)."
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -81,11 +83,11 @@
     {
       "path": "Proofs/Erdos1059OQ01OQ01.lean",
       "filename": "Erdos1059OQ01OQ01.lean",
-      "lineCount": 497,
-      "theoremCount": 12,
+      "lineCount": 1030,
+      "theoremCount": 35,
       "axiomCount": 1,
       "defCount": 2,
-      "sorryCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01OQ01.lean"
     },
@@ -168,5 +170,6 @@
     "erdos-1059-oq-03",
     "erdos-1059-oq-04",
     "erdos-1059-oq-05"
-  ]
+  ],
+  "lastUpdate": "2026-07-11T00:00:00.000Z"
 }
