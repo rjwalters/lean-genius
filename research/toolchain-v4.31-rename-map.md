@@ -236,6 +236,8 @@ These names do not exist in Mathlib `2df2f0150c27` either; the files referencing
 
 - **Trailing orphaned doc-comment before `end`** (new mechanical class): a `/-- … -/` documenting commented-out code or serving as trailing prose, with no declaration following (next token is `end` or EOF), now hard-errors `unexpected token 'end'; expected 'lemma'`. Lean reports the error at the END of the orphaned doc block, which can be mid-line (col ≠ 0). Fix: demote to `/- … -/`. 22 files fixed in batch 3 (Erdos6/13/15/26/53/61/64/75/77/145/158/170/186/208/215/306/520/541/768/779/1174/1177 Problem).
 - **Double set-binder `∀ x y ∈ S, …` no longer parses** (`unexpected token '∈'; expected ','`) — split into `∀ x ∈ S, ∀ y ∈ S, …` (Erdos174Problem). Sweepable pattern: `[∀∃] \w+ \w+ ∈`.
+- **`Finset.card_Icc` → `Nat.card_Icc`** for ℕ-intervals (NOT an import loss — Erdos13Problem has `import Mathlib` and still errored; the ℕ lemma lives in `namespace Nat`, Order/Interval/Finset/Nat.lean:82). Confident rename.
+- **Wave-E lesson:** fix ALL sites of a removed constant before re-verifying — Lean reports only the first few errors, so a file can hide more sites of the same class past the reported window (Erdos683Problem had 3 `Nat.one_lt_iff_ne_one` sites; diag showed 1).
 
 ## Summary counts
 

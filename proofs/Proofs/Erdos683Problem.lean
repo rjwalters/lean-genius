@@ -62,7 +62,7 @@ P(n) is prime when n > 1. Proved from Nat.find_spec.
 -/
 theorem P_is_prime {n : ℕ} (hn : n > 1) : (largestPrimeDivisor n).Prime := by
   unfold largestPrimeDivisor; rw [dif_pos hn]
-  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).1
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd ((by omega : n ≠ 1)))).1
 
 /--
 **Divisibility Property:**
@@ -70,7 +70,7 @@ P(n) divides n when n > 1. Proved from Nat.find_spec.
 -/
 theorem P_divides {n : ℕ} (hn : n > 1) : largestPrimeDivisor n ∣ n := by
   unfold largestPrimeDivisor; rw [dif_pos hn]
-  exact (Nat.find_spec (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp hn))).2
+  exact (Nat.find_spec (Nat.exists_prime_and_dvd ((by omega : n ≠ 1)))).2
 
 /- 
 **Maximality Property:**

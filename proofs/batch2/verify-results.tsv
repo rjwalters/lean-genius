@@ -120,9 +120,9 @@ Erdos1168Problem	RESIDUAL	doctor-unclassified
 Erdos1169Problem	RESIDUAL	proof-drift
 Erdos116Problem	RESIDUAL	unknown-const:Complex.abs
 Erdos1173Problem	RESIDUAL	instance-synth
-Erdos1174Problem	RESIDUAL	parse-error
+Erdos1174Problem	GREEN	
 Erdos1175Problem	RESIDUAL	parse-error
-Erdos1177Problem	RESIDUAL	parse-error
+Erdos1177Problem	GREEN	
 Erdos1181Problem	RESIDUAL	unknown-const:Real.tendsto_log_div_rpow_atTop
 Erdos11Problem	RESIDUAL	decide-maxrecdepth
 Erdos1201Problem	RESIDUAL	doctor-unclassified
@@ -137,19 +137,19 @@ Erdos134Problem	RESIDUAL	instance-synth
 Erdos13Problem	RESIDUAL	unknown-const:Finset.card_Icc
 Erdos140Problem	RESIDUAL	type-mismatch
 Erdos141Problem	GREEN	
-Erdos145Problem	RESIDUAL	parse-error
+Erdos145Problem	GREEN	
 Erdos146Problem	RESIDUAL	instance-synth
 Erdos14Problem	RESIDUAL	type-mismatch
 Erdos155Problem	RESIDUAL	doctor-unclassified
-Erdos158Problem	RESIDUAL	parse-error
-Erdos15Problem	RESIDUAL	parse-error
+Erdos158Problem	GREEN	
+Erdos15Problem	GREEN	
 Erdos161Problem	RESIDUAL	noncomputable
 Erdos162Problem	RESIDUAL	unknown-const:Bool.true_ne_false
 Erdos166Problem	RESIDUAL	unknown-const:Nat.sInf_le
 Erdos167Problem	RESIDUAL	type-mismatch
 Erdos168Problem	GREEN	
 Erdos16Problem	GREEN	
-Erdos170Problem	RESIDUAL	parse-error
+Erdos170Problem	GREEN	
 Erdos174Problem	RESIDUAL	parse-error
 Erdos176Problem	RESIDUAL	unknown-const:Nat.find
 Erdos177Problem	GREEN	
@@ -167,9 +167,9 @@ Erdos1OQ03Aristotle	RESIDUAL	type-mismatch
 Erdos1OQ04	RESIDUAL	doctor-unclassified
 Erdos1Wip01	RESIDUAL	type-mismatch
 Erdos207Problem	RESIDUAL	doctor-unclassified
-Erdos208Problem	RESIDUAL	parse-error
+Erdos208Problem	GREEN	
 Erdos20Problem	RESIDUAL	instance-synth
-Erdos215Problem	RESIDUAL	parse-error
+Erdos215Problem	GREEN	
 Erdos229Problem	GREEN	
 Erdos232Problem	RESIDUAL	unknown-const:Real.Gamma_two
 Erdos233Problem	GREEN	
@@ -286,8 +286,8 @@ Erdos49Problem	RESIDUAL	instance-synth
 Erdos507Problem	RESIDUAL	unclassified
 Erdos509Problem	RESIDUAL	unknown-const:BoundedDiscCover
 Erdos50Problem	RESIDUAL	instance-synth
-Erdos520Problem	RESIDUAL	parse-error
-Erdos521Problem	RESIDUAL	unknown-const:Real.pi
+Erdos520Problem	GREEN	
+Erdos521Problem	GREEN	
 Erdos522Problem	RESIDUAL	dot-notation-drift
 Erdos524Problem	GREEN	
 Erdos526Problem	GREEN	
@@ -297,8 +297,8 @@ Erdos533Problem	RESIDUAL	doctor-unclassified
 Erdos534Problem	RESIDUAL	instance-synth
 Erdos536Problem	GREEN	
 Erdos538Problem	GREEN	
-Erdos53Problem	RESIDUAL	parse-error
-Erdos541Problem	RESIDUAL	parse-error
+Erdos53Problem	GREEN	
+Erdos541Problem	GREEN	
 Erdos542Problem	RESIDUAL	proof-drift
 Erdos545Problem	RESIDUAL	doctor-unclassified
 Erdos546Problem	RESIDUAL	doctor-unclassified
@@ -350,7 +350,7 @@ Erdos642Problem	RESIDUAL	parse-error
 Erdos645Problem	GREEN	
 Erdos646Problem	GREEN	
 Erdos649Problem	RESIDUAL	unknown-const:Nat.primeFactorsList_eq_nil.mp
-Erdos64Problem	RESIDUAL	parse-error
+Erdos64Problem	GREEN	
 Erdos651Problem	RESIDUAL	unknown-const:convexHull
 Erdos652Problem	RESIDUAL	unknown-const:Real.lt_top
 Erdos654Problem	GREEN	
@@ -374,7 +374,7 @@ Erdos693Problem	RESIDUAL	unknown-const:Finset.sort_sorted
 Erdos696Problem	RESIDUAL	unknown-const:ℝ
 Erdos697Problem	RESIDUAL	unknown-const:Real.exp_one_gt_d9
 Erdos698Problem	GREEN	
-Erdos6Problem	RESIDUAL	parse-error
+Erdos6Problem	GREEN	
 Erdos705Problem	RESIDUAL	type-mismatch
 Erdos707Problem	GREEN	
 Erdos708Problem	RESIDUAL	unknown-const:Nat.find
@@ -403,7 +403,7 @@ Erdos74Problem	RESIDUAL	rewrite-drift
 Erdos751Problem	RESIDUAL	type-mismatch
 Erdos756Problem	RESIDUAL	instance-synth
 Erdos757Problem	RESIDUAL	unknown-const:Set.Finite.toFinset_card
-Erdos75Problem	RESIDUAL	parse-error
+Erdos75Problem	GREEN	
 Erdos760Problem	RESIDUAL	unknown-const:Real.log
 Erdos762Problem	GREEN	
 Erdos764Problem	RESIDUAL	instance-synth
@@ -415,8 +415,8 @@ Erdos770Problem	RESIDUAL	unknown-const:X
 Erdos772Problem	RESIDUAL	dot-notation-drift
 Erdos773Problem	RESIDUAL	instance-synth
 Erdos777Problem	RESIDUAL	instance-synth
-Erdos779Problem	RESIDUAL	parse-error
-Erdos77Problem	RESIDUAL	parse-error
+Erdos779Problem	GREEN	
+Erdos77Problem	GREEN	
 Erdos781Problem	RESIDUAL	unknown-const:Finset.univ.image
 Erdos784Problem	RESIDUAL	instance-synth
 Erdos786Problem	GREEN	
@@ -552,7 +552,7 @@ IsoperimetricTheoremOQ02	RESIDUAL	doctor-unclassified
 KnightsTourOblique	RESIDUAL	doctor-unclassified
 KonigsbergOQ01OQ02	RESIDUAL	doctor-unclassified
 KonigsbergOQ01OQ02Recipe	GREEN	
-KummerTheorem	RESIDUAL	unknown-const:Nat.Prime.multiplicity_choose
+KummerTheorem	GREEN	
 LawsOfLargeNumbers	GREEN	
 LawsOfLargeNumbersOQ01	RESIDUAL	doctor-unclassified
 LawsOfLargeNumbersOQ02	RESIDUAL	unknown-const:integral_mul_left

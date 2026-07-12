@@ -97,7 +97,7 @@ theorem upperThird_card (N : ℕ) : (upperThird N).card = N - 2 * N / 3 := by
   · congr 1; ext k
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
     omega
-  · rw [Finset.card_Icc]; omega
+  · rw [Nat.card_Icc]; omega
 
 /-- The upper third achieves the N/3 lower bound. -/
 theorem upperThird_achieves_bound (N : ℕ) (hN : N ≥ 3) :
