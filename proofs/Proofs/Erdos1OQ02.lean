@@ -616,6 +616,39 @@ theorem f_five :
   have hT' : T ∈ ({6, 9, 11, 12, 13} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
+/-- **Cardinality certificate for distinct subset sums (0 axioms).**  A finite set `A`
+    has distinct subset sums exactly when the subset-sum map `S ↦ ∑_{i∈S} i` is injective
+    on `A.powerset`, i.e. when its image has the full cardinality `2^|A| = |A.powerset|`.
+    This converts the `∀ S T` distinctness obligation into a *single* decidable
+    cardinality equality, which `decide` checks by computing the `2^|A|` subset sums and
+    counting distinct values — cheap where the quadratic `fin_cases` over pairs
+    (`2^|A| × 2^|A|` cases) becomes intractable (e.g. `|A| = 6`). -/
+theorem hasDistinctSubsetSums_iff_card (A : Finset ℕ) :
+    hasDistinctSubsetSums A ↔
+    (A.powerset.image (fun S => S.sum id)).card = A.powerset.card := by
+  rw [Finset.card_image_iff]
+  constructor
+  · intro h S hS T hT heq
+    exact h S T (Finset.mem_powerset.mp hS) (Finset.mem_powerset.mp hT) heq
+  · intro h S T hS hT heq
+    exact h (Finset.mem_powerset.mpr hS) (Finset.mem_powerset.mpr hT) heq
+
+/-- f(6) = 24: the Conway–Guy set `{11, 17, 20, 22, 23, 24}` has `2⁶ = 64` distinct
+    subset sums with maximum element `24`.  This is the `n = 6` entry of OEIS A005318,
+    continuing `f_zero`…`f_five`.  The margin over the greedy powers-of-two witness
+    keeps widening: `{1, 2, 4, 8, 16, 32}` also has distinct subset sums but maximum
+    `32`, so `f(6) = 24 < 32 = 2⁵` and the gap `2ⁿ⁻¹ − f(n)` grows again
+    (`8 − 7 = 1`, `16 − 13 = 3`, `32 − 24 = 8`).  The `hasDistinctSubsetSums` obligation
+    is discharged through `hasDistinctSubsetSums_iff_card`: the pairwise `fin_cases` used
+    for `f_two_max`…`f_five` blows up to `64 × 64 = 4096` cases at `n = 6` (heartbeat
+    timeout), so we instead `decide` the single cardinality equality
+    `|image of the 64 subset sums| = 64`. -/
+theorem f_six :
+    ∃ (A : Finset ℕ), A.card = 6 ∧ hasDistinctSubsetSums A ∧ A.sup id = 24 := by
+  refine ⟨{11, 17, 20, 22, 23, 24}, by decide, ?_, by decide⟩
+  rw [hasDistinctSubsetSums_iff_card]
+  decide
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:
@@ -623,9 +656,13 @@ The DFX framework is formalized with:
   fully proved theorem `anticoncentration_bound`, no longer an axiom)
 - 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
-- Small case verifications `f_zero`…`f_five` (proved; `f_four` shows `f(4)=7`
-  beats the greedy powers-of-two witness `{1,2,4,8}` of maximum `8`, and `f_five`
-  shows `f(5)=13 < 16` via the Conway–Guy set `{6,9,11,12,13}`)
+- Small case verifications `f_zero`…`f_six` (proved; `f_four` shows `f(4)=7`
+  beats the greedy powers-of-two witness `{1,2,4,8}` of maximum `8`, `f_five`
+  shows `f(5)=13 < 16` via the Conway–Guy set `{6,9,11,12,13}`, and `f_six`
+  shows `f(6)=24 < 32` via `{11,17,20,22,23,24}`; from `f_four` on, the gap
+  `2ⁿ⁻¹ − f(n)` grows `1, 3, 8`). The reusable certificate
+  `hasDistinctSubsetSums_iff_card` reduces distinctness to one decidable
+  cardinality check, sidestepping the quadratic `fin_cases` blow-up.
 
 The anticoncentration bound is discharged entirely by the probability-free CORE
 built up in the "Verified ingredients toward discharging" section
