@@ -2344,4 +2344,171 @@ theorem not_const_mul_le_gap_of_two_lt {n : ℤ} (hn : n.natAbs = 2)
   push_neg
   exact mul_lt_mul_of_pos_right hc hP
 
+-- ============================================================
+-- SECTION XX: the equality case of the plain-L² Fuglede
+--   stability inequality — the extremal curves for stability
+--   carry *only* second-harmonic deviation from the circle
+-- ============================================================
+
+/-- **The harmonic weight vanishes on the circle band.**  For the three modes `n ∈ {−1, 0, 1}`
+    dropped to form a circle (`|n| ≤ 1`), the Fuglede weight `w(n) = |n|² − |n|` is exactly `0`
+    (companion of `deficit_gap_coef_eq_two_of_natAbs_eq_two` at the other extreme). -/
+private theorem deficit_gap_coef_eq_zero_of_natAbs_le_one {n : ℤ} (hn : n.natAbs ≤ 1) :
+    |(n : ℝ)| ^ 2 - |(n : ℝ)| = 0 := by
+  have : n = -1 ∨ n = 0 ∨ n = 1 := by omega
+  rcases this with h | h | h <;> subst h <;> norm_num
+
+/-- **The sum of two squared norms vanishes iff both vanish.**  Elementary but repeatedly needed
+    below: `‖z‖² + ‖w‖² = 0 ↔ z = 0 ∧ w = 0` in a normed space, since each summand is
+    nonnegative. -/
+private theorem normSq_pair_eq_zero_iff {z w : ℂ} :
+    ‖z‖ ^ 2 + ‖w‖ ^ 2 = 0 ↔ z = 0 ∧ w = 0 := by
+  constructor
+  · intro h
+    have hz2 : ‖z‖ ^ 2 = 0 := by nlinarith [sq_nonneg ‖z‖, sq_nonneg ‖w‖]
+    have hw2 : ‖w‖ ^ 2 = 0 := by nlinarith [sq_nonneg ‖z‖, sq_nonneg ‖w‖]
+    rw [pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)] at hz2 hw2
+    exact ⟨norm_eq_zero.mp hz2, norm_eq_zero.mp hw2⟩
+  · rintro ⟨rfl, rfl⟩; simp
+
+/-- **Termwise equality case of the plain-`L²` domination.**  The mode-by-mode bound
+    `two_mul_tail_le_gap` — twice the unweighted tail summand `≤` the weighted gap summand — is met
+    with *equality* at frequency `n` **iff** either `n` lies in the circle band together with the
+    second harmonic (`|n| ≤ 2`) or the mode carries no energy (`‖ĉₙf‖² + ‖ĉₙg‖² = 0`).
+
+    The three regimes: on `|n| ≤ 1` both sides vanish (the tail indicator is `0` and the weight is
+    `0`, `deficit_gap_coef_eq_zero_of_natAbs_le_one`); on `|n| = 2` the weight is exactly `2`
+    (`deficit_gap_coef_eq_two_of_natAbs_eq_two`) so both sides equal `2·P`; on `|n| ≥ 3` the weight
+    strictly exceeds `2` (`two_lt_deficit_gap_coef_of_three_le`), so `2·P = w·P` forces `P = 0`.
+    This is the per-frequency engine of the stability rigidity theorem. -/
+theorem two_mul_tail_eq_gap_iff {f g : ℝ → ℝ} (hab : (0 : ℝ) < 2 * π) (n : ℤ) :
+    2 * (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      = (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+    ↔ (n.natAbs ≤ 2 ∨
+        ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 = 0) := by
+  set P := ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+      + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 with hP
+  have hPnn : (0 : ℝ) ≤ P := by positivity
+  by_cases hn : 2 ≤ n.natAbs
+  · rw [if_pos hn]
+    rcases Nat.lt_or_ge n.natAbs 3 with h2 | h3
+    · -- |n| = 2: weight is exactly 2, equality is unconditional
+      have hnat2 : n.natAbs = 2 := by omega
+      rw [deficit_gap_coef_eq_two_of_natAbs_eq_two hnat2]
+      exact ⟨fun _ => Or.inl (by omega), fun _ => rfl⟩
+    · -- |n| ≥ 3: weight > 2, so equality forces P = 0
+      have hw : 2 < |(n : ℝ)| ^ 2 - |(n : ℝ)| := two_lt_deficit_gap_coef_of_three_le h3
+      constructor
+      · intro heq
+        refine Or.inr ?_
+        by_contra hPne
+        have hPpos : (0 : ℝ) < P := lt_of_le_of_ne hPnn (Ne.symm hPne)
+        nlinarith [heq, hw, hPpos,
+          mul_pos (show (0 : ℝ) < (|(n : ℝ)| ^ 2 - |(n : ℝ)|) - 2 by linarith) hPpos]
+      · intro hor
+        rcases hor with h | hP0
+        · exfalso; omega
+        · rw [hP0]; ring
+  · -- |n| ≤ 1: both sides vanish
+    rw [if_neg hn]
+    have hnle1 : n.natAbs ≤ 1 := by omega
+    rw [deficit_gap_coef_eq_zero_of_natAbs_le_one hnle1]
+    exact ⟨fun _ => Or.inl (by omega), fun _ => by ring⟩
+
+/-- **Rigidity of the plain-`L²` Fuglede stability inequality.**  For smooth (`C^∞`) period-`2π`
+    coordinates `f, g`, the plain-`L²` domination `two_mul_tsum_tail_le_normalized_deficit` passes
+    through the intermediate inequality
+
+        2 · ∑ₙ 1_{|n|≥2}·(‖ĉₙf‖² + ‖ĉₙg‖²)  ≤  ∑ₙ (|n|²−|n|)·(‖ĉₙf‖² + ‖ĉₙg‖²) .
+
+    This step — the one that trades the exact `H¹` weight for the uniform constant `2` — is an
+    **equality iff every harmonic of order `≥ 3` vanishes**:
+
+        (equality)  ↔  ∀ n, |n| ≥ 3 ⟹ ‖ĉₙf‖² + ‖ĉₙg‖² = 0 .
+
+    Equivalently, the curve's deviation from its best-fit circle is a *pure second harmonic*.  So
+    the sharp constant `2` is realized not merely mode-by-mode (`SECTION XIX`) but by the entire
+    summed inequality, and the extremal class is pinned exactly.
+
+    Proof.  Both families are nonnegative, summable
+    (`summable_tail_normSq_fourierCoeffOn`, `summable_gap_normSq_fourierCoeffOn`) and termwise
+    ordered (`two_mul_tail_le_gap`).  Equality of the totals therefore forces termwise equality
+    (`hasSum_eq_termwise_of_le`), which `two_mul_tail_eq_gap_iff` converts into the pointwise
+    vanishing statement; conversely termwise equality re-sums by `tsum_congr`. -/
+theorem plain_L2_stability_eq_iff
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      = ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+          * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+    ↔ ∀ n : ℤ, 3 ≤ n.natAbs →
+        ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 = 0 := by
+  have hsum_tail := summable_tail_normSq_fourierCoeffOn hf hg hfper hgper hab
+  have hsum_gap := summable_gap_normSq_fourierCoeffOn hf hg hfper hgper hab
+  rw [← tsum_mul_left]
+  set a := fun n : ℤ => 2 * (if 2 ≤ n.natAbs then
+      ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 else 0) with ha_def
+  set b := fun n : ℤ => (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+      * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) with hb_def
+  have hle : ∀ n, a n ≤ b n := fun n => two_mul_tail_le_gap hab n
+  have hsa : Summable a := hsum_tail.mul_left 2
+  have hsb : Summable b := hsum_gap
+  constructor
+  · intro heq n hn3
+    have ha : HasSum a (∑' m, a m) := hsa.hasSum
+    have hb : HasSum b (∑' m, a m) := by rw [heq]; exact hsb.hasSum
+    have hterm := hasSum_eq_termwise_of_le hle ha hb n
+    rcases (two_mul_tail_eq_gap_iff hab n).mp hterm with h | h
+    · omega
+    · exact h
+  · intro hzero
+    have hcong : ∀ n, a n = b n := by
+      intro n
+      apply (two_mul_tail_eq_gap_iff hab n).mpr
+      rcases le_or_gt n.natAbs 2 with h | h
+      · exact Or.inl h
+      · exact Or.inr (hzero n (by omega))
+    exact tsum_congr hcong
+
+/-- **Rigidity of plain-`L²` stability — coordinate (geometric) form.**  The same equality case,
+    read off directly on the Fourier coefficients: the plain-`L²` domination step is an equality
+    **iff every harmonic of order `≥ 3` is absent from *both* coordinates**,
+
+        (equality)  ↔  ∀ n, |n| ≥ 3 ⟹ ĉₙ(f) = 0 ∧ ĉₙ(g) = 0 .
+
+    So the extremal curves for the `L²` Fuglede inequality are exactly those whose departure from a
+    circle lives entirely in the second harmonic — the "flattest" non-circles the deficit tolerates
+    with the sharp constant `2`.  Immediate from `plain_L2_stability_eq_iff` and
+    `normSq_pair_eq_zero_iff`. -/
+theorem plain_L2_stability_eq_iff_second_harmonic
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      = ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+          * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+    ↔ ∀ n : ℤ, 3 ≤ n.natAbs →
+        fourierCoeffOn hab (ofReal ∘ f) n = 0 ∧ fourierCoeffOn hab (ofReal ∘ g) n = 0 := by
+  rw [plain_L2_stability_eq_iff hf hg hfper hgper hab]
+  exact ⟨fun h n hn => normSq_pair_eq_zero_iff.mp (h n hn),
+    fun h n hn => normSq_pair_eq_zero_iff.mpr (h n hn)⟩
+
 end IsoperimetricFourier
