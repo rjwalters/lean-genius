@@ -558,6 +558,73 @@ theorem zeta_two_sq_add_zeta_two_transcendental :
   have h := zeta_even_aeval_transcendental 1 one_pos (Polynomial.X ^ 2 + Polynomial.X) hf
   simpa using h
 
+/-- **Differences of two distinct even zeta values are transcendental over ℚ.**
+
+    The subtractive companion of `zeta_even_add_transcendental`.  For `m < n`,
+    `ζ(2n) − ζ(2m) = qₙ·π^(2n) − qₘ·π^(2m) = qₙ·π^(2n) + (−qₘ)·π^(2m)` is a *nonconstant* rational
+    polynomial in π: writing the lower term with coefficient `−qₘ ≠ 0` keeps both π-powers present
+    with distinct even degrees `2n > 2m`, so nothing collapses it to a monomial or a constant.  Hence
+    it is transcendental over ℚ by the master engine `transcendental_aeval_pi`.  Concretely
+    `ζ(4) − ζ(2) = π⁴/90 − π²/6`, `ζ(6) − ζ(2)`, … are all transcendental.
+
+    Together with `zeta_even_add_transcendental` this closes the two-distinct-value ± frontier:
+    both the sum and the difference of any two even zeta values escape the single-π-power class
+    `ℚ∖{0}·π^(even)` and require the full polynomial engine.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_sub_transcendental (n m : ℕ) (hm : 0 < m) (hmn : m < n) :
+    Transcendental ℚ
+      ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m))) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n (by omega)
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  have hqmneg : (-qm) ≠ 0 := neg_ne_zero.mpr hqm
+  -- The two-term polynomial qₙ·X^(2n) + (−qₘ)·X^(2m); evaluating at π gives the difference.
+  set p : Polynomial ℚ :=
+    Polynomial.C qn * Polynomial.X ^ (2 * n) + Polynomial.C (-qm) * Polynomial.X ^ (2 * m) with hp
+  have hdeg_left : (Polynomial.C qn * Polynomial.X ^ (2 * n)).natDegree = 2 * n :=
+    Polynomial.natDegree_C_mul_X_pow (2 * n) qn hqn
+  have hdeg_right : (Polynomial.C (-qm) * Polynomial.X ^ (2 * m)).natDegree = 2 * m :=
+    Polynomial.natDegree_C_mul_X_pow (2 * m) (-qm) hqmneg
+  have hlt : (Polynomial.C (-qm) * Polynomial.X ^ (2 * m)).natDegree
+      < (Polynomial.C qn * Polynomial.X ^ (2 * n)).natDegree := by
+    rw [hdeg_left, hdeg_right]; omega
+  have hpne : p.natDegree ≠ 0 := by
+    rw [hp, Polynomial.natDegree_add_eq_left_of_natDegree_lt hlt, hdeg_left]; omega
+  -- aeval π p is exactly ζ(2n) − ζ(2m).
+  have haeval : Polynomial.aeval π p
+      = (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) := by
+    rw [hqn_eq, hqm_eq, hp]
+    simp only [map_add, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, map_neg,
+      eq_ratCast]
+    ring
+  rw [← haeval]
+  exact transcendental_aeval_pi p hpne
+
+/-- **ζ(4) − ζ(2) = π⁴/90 − π²/6 is transcendental over ℚ** — a concrete two-term difference. -/
+theorem zeta_four_sub_zeta_two_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 4) - (∑' k : ℕ, 1 / (k : ℝ) ^ 2)) := by
+  have := zeta_even_sub_transcendental 2 1 one_pos (by norm_num)
+  simpa using this
+
+/-- **Subtracting a rational preserves transcendence over ℚ — axiom-free.**  The subtractive
+    companion of `transcendental_add_ratCast`: if `x` is transcendental over ℚ then so is `x − q`
+    for every `q ∈ ℚ`, since `x = (x − q) + q` would otherwise be a sum of algebraics.  Immediate
+    from `transcendental_add_ratCast` applied to `−q`. -/
+theorem transcendental_sub_ratCast {x : ℝ} (hx : Transcendental ℚ x) (q : ℚ) :
+    Transcendental ℚ (x - (q : ℝ)) := by
+  have h := transcendental_add_ratCast hx (-q)
+  simpa [sub_eq_add_neg, Rat.cast_neg] using h
+
+/-- **Rational shifts (by subtraction) of even zeta values are transcendental over ℚ.**  For `n ≥ 1`
+    and any `q ∈ ℚ`, `ζ(2n) − q` is transcendental — the subtractive analogue of
+    `zeta_even_add_ratCast_transcendental`.  Immediate from `zeta_even_transcendental` and the
+    axiom-free shift engine `transcendental_sub_ratCast`.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_sub_ratCast_transcendental (n : ℕ) (hn : 0 < n) (q : ℚ) :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) - (q : ℝ)) :=
+  transcendental_sub_ratCast (zeta_even_transcendental n hn) q
+
 /-!
 ## The open odd case (documentation only)
 
