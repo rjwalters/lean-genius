@@ -9,7 +9,7 @@
   "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
   "currentState": "Verified the elementary Erdős–Graham construction in a new self-contained file; the deep asymptotics remain axiomatized in the companion file.",
   "knowledge": {
-    "progressSummary": "PROGRESS: Erdos771Problem.lean 0-sorry/2-axiom (deep external Erdos-Graham/Alon-Freiman, irreducible). Added sharp closed-form lower bound maxAvoidingSize n m >= n-ceil(m/2), strengthening n-m and tight for small m. Remaining: matching upper bound (exact formula) + the 2 deep asymptotic axioms.",
+    "progressSummary": "SOLVED + EXACT: Erdos771Problem.lean 0-sorry/2-axiom (deep external Erdos-Graham/Alon-Freiman, irreducible). The benchmark family now has the SHARP EXACT closed form maxAvoidingSize n m = n - ceil(m/2) for 1<=m<=n (matching lower + upper bounds), completing the previously one-sided bound. The 2 remaining axioms are the deep asymptotic external results.",
     "builtItems": [
       "prime_multiples_size in Erdos771Construction.lean:64",
       "prime_multiples_avoid in Erdos771Construction.lean:78",
@@ -28,7 +28,8 @@
       "For every m ≥ 1 a prime above m fails to divide m, so the construction always applies (an m-avoiding set always exists).",
       "The two deep bounds (Erdős–Graham lower, Alon–Freiman upper) are genuinely external and stay as axioms; but the o(1) asymptotic + limit form follow from them by elementary real analysis (div_le_iff₀/le_div_iff₀ squeeze), so those need not be axiomatized separately.",
       "In this Docker environment the codegen crash (exit 135/139) is nondeterministic and can MASK a real parse/elaboration error; capture full build output (not tail) to see the actual diagnostic. Here the true error was an open-Classical-in placed after a doc-comment.",
-      "Sharp closed-form lower bound maxAvoidingSize n m >= n - ceil(m/2) (= n-(m+1)/2) for 1<=m<=n, via witness S = {ceil(m/2),...,n} \\ {m}: strictly beats interval_avoiding_lower (n-m) and is TIGHT — matches exact m=1..4 values (n-1,n-1,n-2,n-2). Conjecture (upper bound, follow-up): equality holds via ceil(m/2) pairwise-disjoint sum-m subsets {m},{i,m-i}."
+      "Sharp closed-form lower bound maxAvoidingSize n m >= n - ceil(m/2) (= n-(m+1)/2) for 1<=m<=n, via witness S = {ceil(m/2),...,n} \\ {m}: strictly beats interval_avoiding_lower (n-m) and is TIGHT — matches exact m=1..4 values (n-1,n-1,n-2,n-2). Conjecture (upper bound, follow-up): equality holds via ceil(m/2) pairwise-disjoint sum-m subsets {m},{i,m-i}.",
+      "EXACT closed form maxAvoidingSize n m = n - ceil(m/2) (= n - (m+1)/2) for 1<=m<=n, upgrading the previously one-sided lower bound to equality. Upper bound: any m-avoiding S in {1..n} keeps at most floor(m/2) elements of {1..m}, since x |-> min x (m-x) injects S cap {1..m} into {1..floor(m/2)} (a collision forces two distinct elements summing to m, a forbidden subset sum), plus at most n-m elements above m. Recovers the tabulated small-m values n-1,n-1,n-2,n-2 for m=1..4 uniformly. Axiom-free (Erdos771Problem.lean: maxAvoidingSize_le_sub_ceil_half, maxAvoidingSize_eq_sub_ceil_half)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
