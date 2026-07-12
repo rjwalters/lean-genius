@@ -90,12 +90,20 @@
   ],
   "sections": [
     {
-      "id": "setup",
-      "title": "Statement, strategy, and imports",
+      "id": "module-docstring",
+      "title": "The Open Question and the Norm Dichotomy",
       "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring framing the entry as the answer to the parent's open question 'classify the irreducibles of ℤ[√d] by their norm.' It contrasts the parent's SUFFICIENT half (prime-absolute-value norm ⇒ irreducible/prime, irreducible_of_prime_norm) with the NECESSARY half proved here — an irreducible z has |N(z)| equal to a rational prime p or its square p² (the classical split/ramified vs inert dichotomy) — and states the divisibility engine and the supporting lemma exists_prime_dvd_natCast.",
+      "mathContext": "For $-2 \\le d < 0$: $z$ irreducible in $\\mathbb{Z}[\\sqrt d] \\Rightarrow |N(z)| \\in \\{p, p^2\\}$ for a rational prime $p$. Engine: $z$ prime $\\mid N(z) = z\\bar z \\Rightarrow z \\mid \\uparrow p \\Rightarrow p^2 = |N(z)|\\cdot|N(w)|$."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace Scaffolding",
+      "startLine": 38,
       "endLine": 45,
-      "summary": "Docstring: classify irreducibles of ℤ[√d] by norm for −2 ≤ d < 0. The parent proved the SUFFICIENT half (prime-absolute-value norm ⇒ irreducible/prime); this file proves the NECESSARY half — an irreducible z has |N(z)| equal to a rational prime p or its square p² (split/ramified vs inert). Engine: z prime divides N(z)=z·z̄ ⇒ divides some ↑p ⇒ p²=|N(z)|·|N(w)| ⇒ |N(z)| ∣ p². Import the parent file; open Zsqrtd; namespace; variable d.",
-      "mathContext": "For $-2 \\le d < 0$: $z$ irreducible in $\\mathbb{Z}[\\sqrt d] \\Rightarrow |N(z)| \\in \\{p, p^2\\}$ for a rational prime $p$."
+      "summary": "Imports the parent file NormEuclideanZsqrtdFamilyOQ03OQ02 — the source of both the EuclideanDomain (ℤ√d) instance for −2 ≤ d < 0 (hence the UFD structure that makes irreducible ⟺ prime) and the sufficiency lemma irreducible_of_prime_norm this entry complements. Opens the Zsqrtd namespace (bringing norm, norm_mul, norm_eq_mul_conj into scope unqualified), declares the NormEuclideanZsqrtdFamilyIrredNorm namespace, and fixes the ambient variable d : ℤ.",
+      "mathContext": "Local instance `NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2` makes $\\mathbb{Z}[\\sqrt d]$ a UFD for $-2 \\le d < 0$, so `UniqueFactorizationMonoid.irreducible_iff_prime` converts Irreducible $z$ to Prime $z$."
     },
     {
       "id": "sec-exists-prime-dvd",
@@ -106,12 +114,20 @@
       "mathContext": "$z$ prime, $z \\mid \\uparrow n$, $n \\ne 0 \\Rightarrow \\exists$ rational prime $p$ with $z \\mid \\uparrow p$ (strong induction on $n$, splitting $z \\mid \\uparrow p \\cdot \\uparrow k$ via `Prime.dvd_or_dvd`)."
     },
     {
-      "id": "sec-norm-dichotomy",
-      "title": "The norm of an irreducible is a prime or a prime square",
+      "id": "sec-reduction-to-rational-prime",
+      "title": "From Irreducible to a Rational-Prime Divisor",
       "startLine": 82,
+      "endLine": 110,
+      "summary": "irreducible_norm_eq_prime_or_sq (statement + first half). Installs the parent's euclideanDomain instance, converts Irreducible z to Prime z (irreducible_iff_prime), and rules out the degenerate cases (z ≠ 0, N(z) ≠ 0, |N(z)| ≠ 0). Using norm_eq_mul_conj and norm_nonneg (d < 0 makes the norm nonnegative, so ↑|N(z)| = N(z) = z·star z), it exhibits z ∣ ↑|N(z)| and then feeds this to exists_prime_dvd_natCast to obtain a rational prime p with z ∣ ↑p.",
+      "mathContext": "Irreducible $z \\xRightarrow{\\text{UFD}}$ Prime $z$; $\\uparrow|N(z)| = N(z) = z\\cdot\\overline z$ (norm nonnegative for $d<0$) so $z \\mid \\uparrow|N(z)|$, and exists_prime_dvd_natCast gives a rational prime $p$ with $z \\mid \\uparrow p$."
+    },
+    {
+      "id": "sec-norm-dichotomy",
+      "title": "Norm Comparison Forces a Prime or a Prime Square",
+      "startLine": 111,
       "endLine": 130,
-      "summary": "irreducible_norm_eq_prime_or_sq: for −2 ≤ d < 0, an irreducible z is prime and divides ↑|N(z)| = z·z̄; via exists_prime_dvd_natCast it divides some ↑p, and comparing norms of ↑p = z·w (norm_intCast, norm_mul) gives |N(z)| ∣ p². Since |N(z)| ≠ 1 (norm_eq_one_iff), Nat.dvd_prime_pow forces |N(z)| = p or p².",
-      "mathContext": "$z \\mid \\uparrow|N(z)| = z\\bar z$ and $z \\mid \\uparrow p \\Rightarrow \\uparrow p = zw \\Rightarrow p^2 = |N(z)|\\cdot|N(w)| \\Rightarrow |N(z)| \\mid p^2$; with $|N(z)| \\ne 1$, the divisors of $p^2$ force $|N(z)| \\in \\{p, p^2\\}$ (inert vs split/ramified)."
+      "summary": "Second half of irreducible_norm_eq_prime_or_sq. From z ∣ ↑p write ↑p = z·w; taking norms with norm_intCast (N(↑p) = p²) and norm_mul yields p² = N(z)·N(w), hence |N(z)| ∣ p². Since z is not a unit, |N(z)| ≠ 1 (norm_eq_one_iff), and Nat.dvd_prime_pow restricts the exponent to {0,1,2}; interval_cases discards k=0 and returns |N(z)| = p (split/ramified) or p² (inert).",
+      "mathContext": "$\\uparrow p = zw \\Rightarrow p^2 = |N(z)|\\cdot|N(w)| \\Rightarrow |N(z)| \\mid p^2$; with $|N(z)| \\ne 1$, the divisors of $p^2$ force $|N(z)| \\in \\{p, p^2\\}$ (split/ramified vs inert)."
     }
   ],
   "sorries": 0,
