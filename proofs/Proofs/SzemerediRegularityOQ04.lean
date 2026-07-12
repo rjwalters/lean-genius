@@ -673,4 +673,23 @@ theorem weighted_sq_mean_le {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ 
   rw [weighted_variance_eq s w x μ hmean] at hvar
   linarith
 
+/-- **Strict variance atom: a genuinely deviating cell forces positive energy.**  If some
+    index `j` carries strictly positive weight (`0 < wⱼ`) and its value differs from the
+    weighted mean (`xⱼ ≠ μ`), then the weighted variance is *strictly* positive:
+    `0 < (∑ wᵢxᵢ²) − (∑ wᵢ)·μ²`.  The strict sharpening of `weighted_variance_nonneg`:
+    refining a part in which even one sub-cell of positive measure has density `≠` the
+    parent mean strictly raises the partition energy — the qualitative statement behind the
+    quantitative `weighted_variance_atom_bound` (its single-index instance at `d = xⱼ − μ`). -/
+theorem weighted_variance_pos {ι : Type*} (s : Finset ι) (w x : ι → ℚ) (μ : ℚ)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hmean : ∑ i ∈ s, w i * x i = (∑ i ∈ s, w i) * μ)
+    (j : ι) (hj : j ∈ s) (hwj : 0 < w j) (hxj : x j ≠ μ) :
+    0 < (∑ i ∈ s, w i * x i ^ 2) - (∑ i ∈ s, w i) * μ ^ 2 := by
+  have hatom := weighted_variance_atom_bound s w x μ (x j - μ) hw hmean j hj (le_refl _)
+  have hd : x j - μ ≠ 0 := sub_ne_zero.mpr hxj
+  have hpos : 0 < w j * (x j - μ) ^ 2 := by
+    have hsq : 0 < (x j - μ) ^ 2 := by positivity
+    exact mul_pos hwj hsq
+  linarith [hatom, hpos]
+
 end Szemeredi.RegularityOQ04
