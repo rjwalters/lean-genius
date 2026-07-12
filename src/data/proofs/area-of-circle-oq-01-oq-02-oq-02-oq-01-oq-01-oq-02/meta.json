@@ -50,12 +50,12 @@
       {
         "theorem": "Real.sqrt_sq",
         "description": "√(a²) = a for a ≥ 0; turns S² ≤ (2πc)² into S ≤ 2πc inside the algebraic kernel.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "mul_le_mul_of_nonneg_left",
         "description": "Monotonicity of multiplication by a nonnegative constant, chaining the Wirtinger and Cauchy–Schwarz bounds.",
-        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs"
       }
     ]
   },
