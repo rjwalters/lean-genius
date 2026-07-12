@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED (37 thm, 0 axiom, 0 sorry): added tail/windowed arc-length bound + arc-dominates-chord bridge to the mature Banach error suite",
+    "progressSummary": "SOLVED (40 thm, 0 axiom, 0 sorry): added sharpness of BOTH a priori Lⁿ/(1-L) and a posteriori L/(1-L) constants — affine contraction f(t)=L·t attains both with equality; constants are optimal (estimate_constants_sharp)",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ02OQ01.lean: 6 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Self-contained: contraction given as ∀ x y, |f x − f y| ≤ L·|x − y| with f x* = x* and xₙ₊₁ = f xₙ.",
       "iterate_dist: |xₙ − x*| ≤ Lⁿ·|x₀ − x*| (geometric decay, induction; reproves parent's bound self-containedly).",
@@ -42,7 +42,10 @@
       "BrouwerFixedPointOQ02OQ02OQ01.lean: exists_fixed_point + exists_unique_fixed_point (Banach existence & existence-uniqueness on ℝ). Now 14 theorems, 0 axioms, 0 sorries. Elaboration-clean; olean-write blocked by fleet SIGBUS-135.",
       "BrouwerFixedPointOQ02OQ02OQ01.lean: +2 thms aposteriori_lower_estimate (+_unconditional) — two-sided a posteriori residual control",
       "tail_path_length_bound in BrouwerFixedPointOQ02OQ02OQ01.lean",
-      "displacement_le_path_length in BrouwerFixedPointOQ02OQ02OQ01.lean"
+      "displacement_le_path_length in BrouwerFixedPointOQ02OQ02OQ01.lean",
+      "apriori_estimate_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): affine witness attains Lⁿ/(1-L) with equality ∀n — a priori constant optimal",
+      "aposteriori_estimate_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): affine witness attains L/(1-L) with equality ∀n — a posteriori constant optimal",
+      "estimate_constants_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): packaged existential — one map attains both constants simultaneously; suite is constant-optimal"
     ],
     "insights": [
       "Parent oq-02-oq-02 proves the bound |xₙ − x*| ≤ Lⁿ·|x₀ − x*| which is not directly usable (|x₀ − x*| unknown). The classical fix is the a priori estimate, expressing the bound via the computable first increment |x₁ − x₀|.",
@@ -54,12 +57,12 @@
       "Discharged the one standing gap (researcher-2, 2026-07-09): fixed-point EXISTENCE, previously a hypothesis in every estimate. exists_fixed_point: a contraction |f x−f y|≤L|x−y| with 0≤L<1 on the complete space ℝ HAS a fixed point — bridge the raw real-analytic bound to Mathlib's ContractingWith via LipschitzWith.of_dist_le_mul + Real.dist_eq + Real.coe_toNNReal, then ContractingWith.exists_fixedPoint ⟨K<1, LipschitzWith⟩ 0 (edist_ne_top _ _). exists_unique_fixed_point: full Banach existence+uniqueness (pairs it with the existing fixed_point_unique). x* is now a genuine object, not a standing assumption. Elaboration-clean [7743/7743] (olean-write SIGBUS-135, heavy fleet load).",
       "Added a matching a posteriori LOWER bound |x(n+1)-xn|/(1+L) ≤ |xn-x*| (reverse triangle + one-step contraction), making the residual/increment a two-sided proxy for the error. Only 0≤L needed. Prior estimates were all upper bounds.",
       "Tail arc-length bound: ∑_{k<m}|x_{n+k+1}-x_{n+k}| ≤ Lⁿ|x₁-x₀|/(1-L) — generalizes total_path_length_bound (n=0 case); m→∞ limit bounds |xₙ-x*|",
-      "Arc dominates chord (displacement_le_path_length): |x_{n+m}-xₙ| ≤ arc length, pure telescoping (Finset.sum_range_sub + abs_sum_le_sum_abs); combined with tail_path_length_bound re-derives cauchy_estimate as chord≤arc≤geometric tail"
+      "Arc dominates chord (displacement_le_path_length): |x_{n+m}-xₙ| ≤ arc length, pure telescoping (Finset.sum_range_sub + abs_sum_le_sum_abs); combined with tail_path_length_bound re-derives cauchy_estimate as chord≤arc≤geometric tail",
+      "SHARPNESS: the affine contraction f(t)=L·t (extremal L-contraction, |fa-fb|=L|a-b|) with iterates xₙ=Lⁿ·x₀ about fixed point 0 attains BOTH estimate constants with equality: |xₙ-x*|=Lⁿ/(1-L)·|x₁-x₀| and |xₙ₊₁-x*|=L/(1-L)·|xₙ₊₁-xₙ| for every n. Key: |x₁-x₀|=(1-L)|x₀| and |xₙ₊₁-xₙ|=Lⁿ(1-L)|x₀|, cancelling the (1-L) denominators. Prior iterate_dist_sharp certified only the raw Lⁿ factor, not the derived /(1-L) constants."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "DONE (researcher-2): fixed-point existence discharged (exists_fixed_point / exists_unique_fixed_point) — the standing gap is closed.",
-      "Optional: make apriori_estimate / aposteriori_estimate UNCONDITIONAL by threading exists_fixed_point (drop the x* hypothesis from their statements)."
+      "Sharpness of both estimate constants now certified (apriori/aposteriori). Suite is constant-optimal. Optional future: sharpness of the a posteriori LOWER constant 1/(1+L), or an order-of-convergence (eₙ₊₁/eₙ→L) characterization."
     ]
   },
   "tags": [
@@ -462,5 +465,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ04.lean"
     }
   ],
-  "lastUpdate": "2026-07-09"
+  "lastUpdate": "2026-07-12"
 }
