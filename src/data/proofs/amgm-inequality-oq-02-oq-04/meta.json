@@ -114,6 +114,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring framing the entry as the axiom-free n=3 discharge of the parent's newton_log_concavity axiom and full Maclaurin chain. import Mathlib, open Real, namespace AmgmOQ02OQ04, and the Part-I banner. The elementary symmetric quantities e₁ = x+y+z, e₂ = xy+yz+zx, e₃ = xyz are used inline rather than as separate defs, so every statement is a direct polynomial inequality in x, y, z.",
+      "mathContext": "$e_1 = x+y+z,\\ e_2 = xy+yz+zx,\\ e_3 = xyz$."
+    },
+    {
       "id": "newton",
       "title": "Newton's Inequalities for n=3 (Sum-of-Squares)",
       "startLine": 44,
@@ -130,12 +138,20 @@
       "mathContext": "Squaring/cubing the mean inequalities converts M₁ ≥ M₂ ≥ M₃ into polynomial statements provable by SOS and AM–GM."
     },
     {
-      "id": "mean-chain",
-      "title": "The Maclaurin Chain for the Radical Means",
+      "id": "mean-steps",
+      "title": "Radical Means and the Pairwise Steps M₁ ≥ M₂, M₂ ≥ M₃",
       "startLine": 108,
+      "endLine": 163,
+      "summary": "The honest means M₁ = (x+y+z)/3, M₂ = √((xy+yz+zx)/3), M₃ = (xyz)^(1/3) as noncomputable defs, then the two pairwise inequalities: maclaurin_n3_M1_ge_M2 (√-monotonicity from e₁² ≥ 3e₂) and maclaurin_n3_M2_ge_M3 (comparison of common (1/6)-rpow powers from e₂³ ≥ 27e₃²).",
+      "mathContext": "Comparing the radical means as common 1/6-powers reduces each step to the polynomial inequalities above."
+    },
+    {
+      "id": "chain-capstone",
+      "title": "Full Maclaurin Chain and AM–GM Endpoints",
+      "startLine": 164,
       "endLine": 179,
-      "summary": "The honest means M₁ = (x+y+z)/3, M₂ = √((xy+yz+zx)/3), M₃ = (xyz)^(1/3); maclaurin_n3_M1_ge_M2 (√-monotonicity), maclaurin_n3_M2_ge_M3 (rpow 1/6-power comparison), the packaged chain maclaurin_n3_chain, and maclaurin_n3_am_ge_gm recovering AM ≥ GM.",
-      "mathContext": "Comparing the radical means as common 1/6-powers reduces each step to the polynomial inequalities above; transitivity yields the arithmetic-geometric mean inequality."
+      "summary": "maclaurin_n3_chain packages M₁ ≥ M₂ ∧ M₂ ≥ M₃ (this, with newton_n3_k1/k2, is what discharges the parent's newton_log_concavity axiom for n=3); maclaurin_n3_am_ge_gm recovers classical AM ≥ GM, (x+y+z)/3 ≥ (xyz)^(1/3), as the transitive closure M₁ ≥ M₃.",
+      "mathContext": "Transitivity of the chain yields AM $\\ge$ GM: $\\tfrac{x+y+z}{3} \\ge (xyz)^{1/3}$."
     }
   ],
   "conclusion": {
