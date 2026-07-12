@@ -641,9 +641,13 @@ theorem median_apollonius (A B C : F) :
   set M : F := A + (2⁻¹ : ℝ) • (B - A) with hM
   have hAC : A - C = (M - C) + (2⁻¹ : ℝ) • (A - B) := by rw [hM]; module
   have hBC : B - C = (M - C) - (2⁻¹ : ℝ) • (A - B) := by rw [hM]; module
+  -- Expand each compound norm explicitly so the rewrites target the sum/difference
+  -- terms and never the bare `‖M - C‖` (which `norm_sub_sq_real` would otherwise grab).
+  have e1 := norm_add_sq_real (M - C) ((2⁻¹ : ℝ) • (A - B))
+  have e2 := norm_sub_sq_real (M - C) ((2⁻¹ : ℝ) • (A - B))
   have hy : ‖(2⁻¹ : ℝ) • (A - B)‖ ^ 2 = ‖A - B‖ ^ 2 / 4 := by
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 2⁻¹)]; ring
-  rw [hAC, hBC, norm_add_sq_real, norm_sub_sq_real, hy]; ring
+  rw [hAC, hBC, e1, e2, hy]; ring
 
 /-- **Acute angle ⇔ sub-Pythagorean.**  Generalizing `pythagorean_core_iff` to the acute case:
 the angle at `C` is acute (`⟪A − C, B − C⟫ > 0`) iff the side opposite `C` is *shorter* than the
