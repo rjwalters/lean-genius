@@ -1089,6 +1089,72 @@ theorem maxAvoidingSize_ge_div_two_mul (n m : ℕ) (hm : 1 ≤ m) :
   calc n / (2 * m) ≤ n / p := Nat.div_le_div_left hp2m hp.pos
     _ ≤ maxAvoidingSize n m := primeMultiples_avoiding_lower p m n hp hpm
 
+/-- **Sharp closed-form lower bound `maxAvoidingSize n m ≥ n − ⌈m/2⌉`** (with
+    `⌈m/2⌉ = (m+1)/2` in `ℕ`), for `1 ≤ m ≤ n`.
+
+    The witness is `S = {⌈m/2⌉, …, n} \ {m}`, of size `n − ⌈m/2⌉`.  It avoids `m`:
+    the single element `m` is removed (killing the singleton `{m}`), and any two
+    *distinct* remaining elements are each `≥ ⌈m/2⌉`, so their sum is
+    `≥ ⌈m/2⌉ + (⌈m/2⌉+1) = 2⌈m/2⌉ + 1 > m` — no subset of size `≥ 2` can hit `m`
+    either.  This strictly improves the interval bound `interval_avoiding_lower`
+    (`n − m`) and is in fact tight: it matches the exact small-`m` values
+    `maxAvoidingSize n 1 = n−1`, `… n 2 = n−1`, `… n 3 = n−2`, `… n 4 = n−2`
+    (all `= n − ⌈m/2⌉`). -/
+theorem maxAvoidingSize_ge_sub_ceil_half (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) :
+    maxAvoidingSize n m ≥ n - (m + 1) / 2 := by
+  classical
+  set c := (m + 1) / 2 with hc
+  have hcm : c ≤ m := by rw [hc]; omega
+  have hc1 : 1 ≤ c := by rw [hc]; omega
+  set S := (Finset.Icc c n).erase m with hS
+  -- `S ⊆ {1,…,n}`
+  have hSsub : S ⊆ Icc_n n := by
+    intro x hx
+    rw [hS, Finset.mem_erase, Finset.mem_Icc] at hx
+    rw [Icc_n, Finset.mem_Icc]; omega
+  -- `S` avoids `m`
+  have hSavoid : AvoidSum S m := by
+    intro hmem
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+    rw [Finset.mem_powerset] at hA
+    have hAlb : ∀ a ∈ A, c ≤ a ∧ a ≠ m := by
+      intro a ha
+      have hain := hA ha
+      rw [hS, Finset.mem_erase, Finset.mem_Icc] at hain
+      exact ⟨hain.2.1, hain.1⟩
+    rcases A.eq_empty_or_nonempty with h0 | ⟨a₀, ha₀⟩
+    · rw [h0, Finset.sum_empty] at hAsum; omega
+    · by_cases hcard : 2 ≤ A.card
+      · have h1lt : 1 < A.card := by omega
+        obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp h1lt
+        have hpair : ({x, y} : Finset ℕ) ⊆ A := by
+          intro z hz; rw [Finset.mem_insert, Finset.mem_singleton] at hz
+          rcases hz with rfl | rfl; exacts [hx, hy]
+        have hsum2 : x + y ≤ ∑ a ∈ A, a := by
+          calc x + y = ∑ a ∈ ({x, y} : Finset ℕ), a := by rw [Finset.sum_pair hxy]
+            _ ≤ ∑ a ∈ A, a := Finset.sum_le_sum_of_subset hpair
+        have hxc := (hAlb x hx).1
+        have hyc := (hAlb y hy).1
+        -- `x ≠ y`, both `≥ c` ⟹ `x + y ≥ 2c+1 > m = ∑A`
+        omega
+      · -- singleton: `A = {a₀}`, `∑A = a₀ = m`, contradicting `a₀ ≠ m`
+        have hA1 : A = {a₀} :=
+          Finset.eq_singleton_iff_unique_mem.mpr
+            ⟨ha₀, fun x hx => Finset.card_le_one.mp (by omega) x hx a₀ ha₀⟩
+        rw [hA1, Finset.sum_singleton] at hAsum
+        exact (hAlb a₀ ha₀).2 hAsum
+  -- `|S| = n − c`
+  have hmMem : m ∈ Finset.Icc c n := by rw [Finset.mem_Icc]; omega
+  have hcardS : S.card = n - c := by
+    rw [hS, Finset.card_erase_of_mem hmMem, Nat.card_Icc]; omega
+  -- conclude via `Finset.le_sup`
+  unfold maxAvoidingSize
+  have hmemS : S ∈ (Finset.powerset (Icc_n n)).filter (fun T => AvoidSum T m) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]; exact ⟨hSsub, hSavoid⟩
+  calc n - c = S.card := hcardS.symm
+    _ ≤ _ := Finset.le_sup hmemS
+
 /-- Small primes give good constructions. -/
 def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
   let p := Nat.minFac (m + 1)  -- A prime not dividing m
