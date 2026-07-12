@@ -568,4 +568,54 @@ theorem practical_infinite : {m : ℕ | IsPractical m}.Infinite :=
 theorem exists_practical_gt (N : ℕ) : ∃ m, N < m ∧ IsPractical m :=
   ⟨2 ^ N, N.lt_two_pow_self, two_pow_practical N⟩
 
+/-! ## Sharpness of the `σ`-lower bound: powers of two are extremal
+
+`practical_two_mul_pred_le_sigma` shows every practical `m ≥ 1` satisfies the tight
+divisor-sum bound `2m − 1 ≤ σ(m)`.  Here we compute `σ(2ᵏ)` exactly and find it
+*equals* `2·2ᵏ − 1`, so the powers of two — the file's flagship infinite family
+(`two_pow_practical`) — attain the bound with equality.  Equivalently `2ᵏ` is a
+"almost perfect" number: its proper-divisor sum is `2ᵏ − 1 = 2ᵏ − 1`, one short of
+perfect.  (Whether any *other* almost-perfect numbers exist is a famous open
+problem, so only this extremal direction is elementary.) -/
+
+/-- **Geometric divisor sum.**  `∑_{i<n} 2ⁱ = 2ⁿ − 1`, the running total of powers of
+    two.  Proved by induction: appending the top term `2ⁿ` to `2ⁿ − 1` gives
+    `2ⁿ⁺¹ − 1`. -/
+private theorem sum_range_two_pow (n : ℕ) :
+    ∑ i ∈ Finset.range n, 2 ^ i = 2 ^ n - 1 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih, pow_succ]
+    have : 0 < 2 ^ n := by positivity
+    omega
+
+/-- **`σ(2ᵏ) = 2ᵏ⁺¹ − 1`.**  The divisors of `2ᵏ` are exactly `1, 2, 4, …, 2ᵏ`
+    (`Nat.divisors_prime_pow` for the prime `2`), whose sum is the geometric total
+    `∑_{i≤k} 2ⁱ = 2ᵏ⁺¹ − 1` (`sum_range_two_pow`).  This is the exact value of the
+    divisor sum for the file's flagship infinite family. -/
+theorem sigma_two_pow (k : ℕ) :
+    (divisors (2 ^ k)).sum id = 2 ^ (k + 1) - 1 := by
+  -- `Erdos18.divisors` is definitionally `Nat.divisors`; unfold to expose the prime-power form.
+  show (Nat.divisors (2 ^ k)).sum id = 2 ^ (k + 1) - 1
+  rw [Nat.divisors_prime_pow Nat.prime_two, Finset.sum_map]
+  simp only [Function.Embedding.coeFn_mk, id_eq]
+  exact sum_range_two_pow (k + 1)
+
+/-- **`σ(2ᵏ) = 2·2ᵏ − 1`** — the same value as `sigma_two_pow`, written to match the
+    general lower bound `practical_two_mul_pred_le_sigma` (`2m − 1 ≤ σ(m)`).  So the
+    powers of two attain that bound with *equality*. -/
+theorem sigma_two_pow_eq_two_mul_pred (k : ℕ) :
+    (divisors (2 ^ k)).sum id = 2 * 2 ^ k - 1 := by
+  rw [sigma_two_pow, pow_succ, Nat.mul_comm]
+
+/-- **The lower bound `2m − 1 ≤ σ(m)` is sharp.**  Every power of two is practical
+    (`two_pow_practical`) *and* meets the `practical_two_mul_pred_le_sigma` bound with
+    equality (`sigma_two_pow_eq_two_mul_pred`).  Hence the bound cannot be improved:
+    there are practical numbers of arbitrarily large size with `σ(m) = 2m − 1`
+    exactly. -/
+theorem sigma_lower_bound_tight (k : ℕ) :
+    IsPractical (2 ^ k) ∧ (divisors (2 ^ k)).sum id = 2 * 2 ^ k - 1 :=
+  ⟨two_pow_practical k, sigma_two_pow_eq_two_mul_pred k⟩
+
 end Erdos18OQ01
