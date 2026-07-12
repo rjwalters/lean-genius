@@ -2525,3 +2525,98 @@ theorem maximalDeficiencyIs_nine_iff_kGe30 :
     by_cases hk : k ≤ 29
     · exact deficiency_le_nine_of_k_le_29 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-! ### Section XXXI: the window check closes `k = 30`
+
+One more slice of the elementary ladder.  A deficiency `≥ 10` at `k = 30` forces
+`(n - 29)^{10} ≤ 30!`, and `30! < 1748^{10}` (`factorial_30_lt_1748_pow_ten`), so
+`n - 29 < 1748`, i.e. `n ≤ 1776`.  With the floor `n ≥ 60 (= 2·30)` this leaves the finite
+window `n ∈ {60, …, 1776}` (1717 values).  Here the window is even *emptier* of admissible
+pairs than at `k = 29`: across the whole window **every** `m` is inadmissible — some prime
+`p ∈ {2,3,5,7,11,13,17,19,23,29}` (each `≤ 30`; `30` is not prime so the prime set is
+unchanged from `k = 29`) divides `C(m,30)`.  So there is no admissible pair at all in the
+`k = 30` window, and the window check `deficiency m 30 ≤ 9` holds vacuously for the (empty)
+admissible part.  A single `native_decide` verifies the disjunction and the slice closes,
+pushing the elementary resolution of OQ-02 to **all `k ≤ 30`**.  As always only the concrete
+window fact uses `native_decide` (⇒ `Lean.ofReduceBool`); the structural engine
+`deficiency_le_nine_of_location_window` is `ofReduceBool`-free. -/
+
+/-- `30! < 1748^10`, the numeric input pinning the `k = 30` window: `(n-29)^{10} ≤ 30!`
+forces `n - 29 < 1748`.  `ofReduceBool`-free (kernel `decide`; `1748` is sharp:
+`30! = 265252859812191058636308480000000 < 266326439446884528657715271041024 = 1748^{10}`,
+while `1747^{10} = 264806749164448508676772280919049 ≤ 30!`). -/
+theorem factorial_30_lt_1748_pow_ten : Nat.factorial 30 < 1748 ^ 10 := by decide
+
+/-- **The `k = 30` window check.**  For every `m` in the location window `60 ≤ m ≤ 1776`
+some prime `p ∈ {2,3,5,7,11,13,17,19,23,29}` (each `≤ 30`) divides `C(m,30)` — so `m` is
+inadmissible — or `deficiency m 30 ≤ 9`.  In fact the first disjunct holds for *every* `m`
+in the window: the `k = 30` window contains no admissible pair.  Uses `native_decide`
+(⇒ `Lean.ofReduceBool`): computing `C(m,30)` and `deficiency m 30` for the 1717 values is
+infeasible for kernel `decide`. -/
+theorem window_k30_admissible_deficiency_le_nine :
+    ∀ m ∈ Finset.Icc 60 1776,
+      (2 ∣ Nat.choose m 30 ∨ 3 ∣ Nat.choose m 30 ∨ 5 ∣ Nat.choose m 30 ∨
+       7 ∣ Nat.choose m 30 ∨ 11 ∣ Nat.choose m 30 ∨ 13 ∣ Nat.choose m 30 ∨
+       17 ∣ Nat.choose m 30 ∨ 19 ∣ Nat.choose m 30 ∨ 23 ∣ Nat.choose m 30 ∨
+       29 ∣ Nat.choose m 30)
+      ∨ deficiency m 30 ≤ 9 := by
+  native_decide
+
+/-- Every *admissible* pair in the `k = 30` location window has deficiency `≤ 9`.  From the
+window check: an admissible `m` cannot have any prime `≤ 30` dividing `C(m,30)`, so the
+divisibility disjunction is impossible and `deficiency m 30 ≤ 9` remains.  (In fact the
+`k = 30` window has no admissible pair, so this holds vacuously.) -/
+theorem admissible_k30_window_deficiency_le_nine {m : ℕ} (hlo : 60 ≤ m) (hhi : m ≤ 1776)
+    (h : NoSmallPrimeFactors m 30) : deficiency m 30 ≤ 9 := by
+  have hm : m ∈ Finset.Icc 60 1776 := Finset.mem_Icc.mpr ⟨hlo, hhi⟩
+  rcases window_k30_admissible_deficiency_le_nine m hm with hdvd | hdef
+  · exfalso
+    rcases hdvd with hd | hd | hd | hd | hd | hd | hd | hd | hd | hd
+    · have := h 2 Nat.prime_two hd; omega
+    · have := h 3 Nat.prime_three hd; omega
+    · have := h 5 (by norm_num) hd; omega
+    · have := h 7 (by norm_num) hd; omega
+    · have := h 11 (by norm_num) hd; omega
+    · have := h 13 (by norm_num) hd; omega
+    · have := h 17 (by norm_num) hd; omega
+    · have := h 19 (by norm_num) hd; omega
+    · have := h 23 (by norm_num) hd; omega
+    · have := h 29 (by norm_num) hd; omega
+  · exact hdef
+
+/-- **The location bound closes `k = 30`.**  A one-line instantiation of the window-check
+engine `deficiency_le_nine_of_location_window` at `k = 30, M = 1748`.  The `k = 30` window
+contains no admissible pair, so every admissible pair's deficiency is (vacuously) `≤ 9`. -/
+theorem deficiency_le_nine_of_k_eq_30 {n : ℕ} (hn : 60 ≤ n)
+    (h : NoSmallPrimeFactors n 30) : deficiency n 30 ≤ 9 :=
+  deficiency_le_nine_of_location_window (k := 30) (M := 1748) (by omega) h
+    factorial_30_lt_1748_pow_ten
+    (fun m hlo hhi hadm => admissible_k30_window_deficiency_le_nine (by omega) (by omega) hadm)
+
+/-- **Elementary resolution of OQ-02 for all `k ≤ 30`.**  Combines the `k ≤ 29` reach
+(`deficiency_le_nine_of_k_le_29`) with the window-check bound at `k = 30`
+(`deficiency_le_nine_of_k_eq_30`).  Extends the record slice by one more. -/
+theorem deficiency_le_nine_of_k_le_30 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 30) : deficiency n k ≤ 9 := by
+  by_cases hk29 : k ≤ 29
+  · exact deficiency_le_nine_of_k_le_29 hn h hk29
+  · have hk30 : k = 30 := by omega
+    subst hk30
+    exact deficiency_le_nine_of_k_eq_30 (by omega) h
+
+/-- **Sharpened reduction to `k ≥ 31`.**  `MaximalDeficiencyIs 9` is equivalent to the open
+universal bound restricted to `k ≥ 31`: the cases `k ≤ 30` are now discharged, the `k = 30`
+slice by the window-check location bound `deficiency_le_nine_of_k_le_30`.  Strictly sharper
+than `maximalDeficiencyIs_nine_iff_kGe30`: the window-check engine closes `k = 30`
+computationally (its window contains no admissible pair at all), so the remaining open content
+of OQ-02 lives entirely at `k ≥ 31`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe31 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 31 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 30
+    · exact deficiency_le_nine_of_k_le_30 hv.1 hv.2 hk
+    · exact h n k (by omega) hv

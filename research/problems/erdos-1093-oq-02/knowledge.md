@@ -815,3 +815,37 @@ already-merged engine `deficiency_le_nine_of_location` → high confidence.
 window `{50..b+23}`; `25 = 11001₂` odd binomials and their covering primes (may again need
 ≥3 primes). Clone Section XXV with new constants. Deep frontier (universal bound / `10≤d≤18`
 at k=28) remains BLOCKED on effective analytic NT (ELS) absent from Mathlib.
+
+## Session 2026-07-12 (researcher-6) — Section XXXI: window check closes k=30, frontier k≥31
+
+**Mode:** ACT. Extended the elementary ELS-free location ladder one slice (k=29 → k=30),
+cloning Section XXX (k=29) with new constants. Added 6 theorems (0 sorry, 0 new axiom):
+- `factorial_30_lt_1748_pow_ten` — `30! < 1748^10` (kernel `decide`, ofReduceBool-free;
+  `30! = 265252859812191058636308480000000 < 266326439446884528657715271041024 = 1748^10`;
+  1748 is the LEAST base with `30! < b^10`: `1747^10 = 264806749164448508676772280919049 ≤ 30!`).
+- `window_k30_admissible_deficiency_le_nine` — `native_decide` over `Icc 60 1776` (1717 values):
+  for every m, some prime ∈{2,3,5,7,11,13,17,19,23,29} divides C(m,30) OR deficiency m 30 ≤ 9.
+- `admissible_k30_window_deficiency_le_nine`, `deficiency_le_nine_of_k_eq_30` (one-line via the
+  merged engine `deficiency_le_nine_of_location_window` at k=30,M=1748),
+  `deficiency_le_nine_of_k_le_30`, `maximalDeficiencyIs_nine_iff_kGe31`.
+
+**Numerics (Python-verified before Lean, then confirmed by native_decide):** window-floor
+`(n-29)^10 ≤ 30! < 1748^10` ⇒ `n ≤ 1776`; floor `n ≥ 60 (=2·30)`; window `{60..1776}` = 1717
+values. Prime set `{2,…,29}` unchanged from k=29 (30 is composite, no new prime ≤30). KEY:
+the k=30 window contains **ZERO admissible pairs** — the divisibility disjunct holds for ALL
+1717 m (every C(m,30) has a prime factor ≤30). So k=30 closes by pure inadmissibility; the
+window-check engine's deficiency escape hatch is vacuous here (used anyway for uniformity).
+
+**Build:** VERIFIED (host lean v4.26.0, prebuilt Mathlib+parent oleans, no Docker). Full file
+elaborated 0 errors ~8.5s. `#print axioms`: `factorial_30_lt_1748_pow_ten = [propext]`
+(ofReduceBool-free); window/derived theorems = [propext, Classical.choice, Lean.ofReduceBool,
+Lean.trustCompiler, Quot.sound] (native_decide footprint, matches k=28/29). No sorryAx.
+
+**Frontier:** now `k ≥ 31`. NEXT (k=31): least base b with `31! < b^10` (31 IS prime → prime
+set becomes {2,…,31}, add the `31 ∣ C(m,31)` disjunct); floor `n ≥ 62`; window `{62..b+29}`;
+clone Section XXXI. Deep frontier (universal bound / `10≤d≤18` at k=28) remains BLOCKED on
+effective analytic NT (ELS) absent from Mathlib — the incremental k-by-k march is the only
+session-sized advance. NOTE: this file is research-only (no gallery entry for erdos-1093-oq-02;
+parent erdos-1093 is axiomatized on els_upper_bound), so this is trust-surface-neutral ladder
+extension, not a gallery flip. NOTE: knowledge.md sections were stale (documented ≤k=24) while
+the Lean file had already reached k=29 on origin/main.
