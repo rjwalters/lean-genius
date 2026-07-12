@@ -473,6 +473,29 @@ theorem sum_fixedBy_eq_card_necklaces_mul (n k : ℕ) [NeZero n] :
     _ = @Fintype.card (Quotient (@coloringSetoid n k _))
           (coloringQuotientFintype n k) * n := rfl
 
+/-- **Necklace integrality (Burnside divisibility).**  The total fixed-point sum
+    `∑_{a : ZMod n} |Fix(a)|` over the rotation group is divisible by the group
+    order `n`.  Immediate from the Burnside engine
+    `sum_fixedBy_eq_card_necklaces_mul` (the sum equals `|necklaces| · n`).  This is
+    the general reason every concrete necklace count in this file comes out an
+    integer: the averaged Burnside quotient `(∑ |Fix|)/n` is *exact*, never a
+    truncated division. -/
+theorem card_group_dvd_sum_fixedBy (n k : ℕ) [NeZero n] :
+    n ∣ ∑ a : ZMod n, Fintype.card { c : Coloring n k // IsFixedByRotation a c } := by
+  rw [sum_fixedBy_eq_card_necklaces_mul n k]
+  exact dvd_mul_left n _
+
+/-- **Burnside average (exact form).**  The number of `k`-colored cyclic necklaces
+    of length `n` is exactly the average of the fixed-point counts over the rotation
+    group: `|necklaces| = (∑_{a} |Fix(a)|) / n`, an *exact* natural-number division
+    (no truncation, thanks to `card_group_dvd_sum_fixedBy`).  This is Burnside's
+    lemma in the necklace setting, solved for the orbit count — the general form of
+    the concrete `(8+2+2)/3 = 4` and `(16+2+4+2)/4 = 6` evaluations below. -/
+theorem card_necklaces_eq_sum_fixedBy_div (n k : ℕ) [NeZero n] :
+    @Fintype.card (Quotient (@coloringSetoid n k _)) (coloringQuotientFintype n k)
+      = (∑ a : ZMod n, Fintype.card { c : Coloring n k // IsFixedByRotation a c }) / n := by
+  rw [sum_fixedBy_eq_card_necklaces_mul n k, Nat.mul_div_cancel _ (NeZero.pos n)]
+
 /-- The fixed-point sum for binary 3-necklaces.
     - |Fix(0)| = 8 (identity fixes all `2^3` colorings)
     - |Fix(1)| = 2 (only the two constant colorings have period 1)
