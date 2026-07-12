@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED/RICH: general figurate theory (38 thm, 0 sorry, 0 axiom) now includes the iterated forward-difference operator and general discrete FTC (Δ^a inverts ∑^a), completing the summation↔difference duality at the iterated level.",
+    "progressSummary": "COMPLETE: core hockey-stick theory plus first-moment (weighted) hockey stick; 0 sorries, 0 axioms",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -51,7 +51,10 @@
       "iterForwardDiff (TetrahedralNumberFormulaOQ01.lean:624) — iterated forward-difference operator Δ^a",
       "iterForwardDiff_iterSum (:639) — general discrete FTC: Δ^a(∑^a f)(n) = f(n+a), two-sided inverse of iterSum",
       "iterForwardDiff_simplexNumber (:665) — Δ^a P_{a+b}(n) = P_b(n+a), inverse of iterSum_simplexNumber",
-      "iterForwardDiff_self_simplexNumber (:681) — Δ^a P_a = 1, dual of iterSum_one"
+      "iterForwardDiff_self_simplexNumber (:681) — Δ^a P_a = 1, dual of iterSum_one",
+      "succ_mul_simplexNumber: figurate absorption (j+1)P_d(j+1)=(d+1)P_{d+1}(j) via Nat.choose_succ_right_eq (TetrahedralNumberFormulaOQ01.lean)",
+      "weighted_sum_simplex: first-moment hockey stick sum_{k<=n+1} k*P_d(k) = (d+1)*P_{d+2}(n)",
+      "weighted_sum_simplex_over_dim: dimension-axis dual via simplexNumber_symm"
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -61,7 +64,8 @@
       "Finset.sum_Ico_Ico_comm (a<=i<=j<b triangular swap) + Finset.sum_Ico_eq_sum_range cleanly reduce a nested partial-sum-of-convolution to a single hockey-stick collapse.",
       "VERIFIED (researcher-2, 2026-07-09, GREEN build): the order facts of the figurate ladder P_d(n)=C(n+d,d), absent from the file. simplexNumber_pos (0<P_d(n), Nat.choose_pos on d≤n+d), simplexNumber_mono_size (m≤n⟹P_d(m)≤P_d(n), Nat.choose_le_choose on m+d≤n+d), simplexNumber_mono_dim (a≤b⟹P_a(n)≤P_b(n), reduced to mono_size through the reflection symmetry simplexNumber_symm P_d(n)=P_n(d)). Monotone in BOTH arguments + positive. Complements the exact-value/summation theory with the growth/order structure.",
       "The figurate calculus is ℕ-linear: both iterated summation (iterSum) and simplex convolution (simplexConv) are additive and ℕ-homogeneous in the summand — the summand-side companion to the dimension-side semigroup laws iterSum_add / simplexConv_comp.",
-      "The summation↔difference duality closes at the ITERATED level: iterSum a (raise a dims) and iterForwardDiff a = Δ^a (lower a dims) are two-sided inverses up to the intrinsic shift Δ^a∘∑^a = shift^a; the shift is forced because each Δ reads a running total one index ahead."
+      "The summation↔difference duality closes at the ITERATED level: iterSum a (raise a dims) and iterForwardDiff a = Δ^a (lower a dims) are two-sided inverses up to the intrinsic shift Δ^a∘∑^a = shift^a; the shift is forced because each Δ reads a running total one index ahead.",
+      "Index-weighted figurate row sum (first moment) collapses to a single higher-dim simplex number, discrete analogue of int x*x^d = n^{d+2}/(d+2); engine is pointwise binomial absorption"
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
