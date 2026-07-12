@@ -1064,6 +1064,30 @@ theorem colMin_eq_min_collatz (n : ℕ) : colMin n = min n (colMin (collatz n)) 
       exact hstep.symm
     exact le_trans (min_le_right _ _) hcn
 
+/-- **When a Collatz step preserves the orbit minimum.**  Peeling the head off the orbit
+(`colMin_eq_min_collatz`: `colMin n = min n (colMin (collatz n))`), the step `n ↦ collatz n`
+leaves the orbit minimum unchanged *exactly* when the tail minimum already lies at or below
+the start `n`: `colMin (collatz n) = colMin n ↔ colMin (collatz n) ≤ n`.  Equivalently, the
+head `n` is never the unique orbit minimum unless it is a genuine new low. -/
+theorem colMin_collatz_eq_iff {n : ℕ} :
+    colMin (collatz n) = colMin n ↔ colMin (collatz n) ≤ n := by
+  rw [colMin_eq_min_collatz n]
+  constructor
+  · intro h
+    calc colMin (collatz n) = min n (colMin (collatz n)) := h
+      _ ≤ n := min_le_left _ _
+  · intro h; rw [min_eq_right h]
+
+/-- **A decreasing step preserves the orbit minimum.**  If one Collatz step already drops
+below the start (`collatz n < n`), then `colMin (collatz n) = colMin n`: the minimum of the
+whole orbit is already determined by the post-step value, since the head `n` is not the
+minimum.  This is the abstract principle behind `colMin_two_mul` (where `collatz (2n) = n < 2n`)
+and, iterated along a residue-determined drop window, is why the per-residue families of
+Part II pin down `colMin n` below the start. -/
+theorem colMin_collatz_of_lt {n : ℕ} (h : collatz n < n) :
+    colMin (collatz n) = colMin n :=
+  colMin_collatz_eq_iff.mpr ((colMin_le_self _).trans h.le)
+
 /-- Sharpening `colMin_pow_two_le_one`: the orbit minimum of `2^k` is **exactly**
 `1` (the orbit hits `1` and, being positive, never goes lower). -/
 theorem colMin_pow_two_eq_one (k : ℕ) : colMin (2 ^ k) = 1 := by
