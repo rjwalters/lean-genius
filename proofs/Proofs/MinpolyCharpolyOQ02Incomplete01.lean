@@ -24,6 +24,9 @@ the definition but which the parent omits:
   * `IsDiagonalizable.neg`       — `-M` stays diagonalizable.
   * `IsDiagonalizable.transpose` — the transpose `Mᵀ` is diagonalizable, with
     diagonalizer `(Pᵀ)⁻¹` (eigenvalues are preserved under transpose).
+  * `IsDiagonalizable.conjTranspose` — over a `StarRing` of scalars, the conjugate
+    transpose (Hermitian adjoint) `Mᴴ` is diagonalizable, with diagonalizer
+    `(Pᴴ)⁻¹` (the star-analogue of `transpose`).
   * `IsDiagonalizable.inv`       — the inverse `M⁻¹` is diagonalizable (same `P`),
     because `P⁻¹ M⁻¹ P = (P⁻¹ M P)⁻¹` and the inverse of a diagonal matrix is
     diagonal (`isDiag_inv`).
@@ -105,6 +108,27 @@ theorem IsDiagonalizable.transpose {M : Matrix n n K} (hM : M.IsDiagonalizable) 
     simp only [Matrix.transpose_mul, mul_assoc]
   rw [heq]
   exact hD.transpose
+
+/-- **The conjugate transpose (Hermitian adjoint) is diagonalizable.**  The
+    star-analogue of `IsDiagonalizable.transpose`, requiring a `StarRing` structure
+    on the scalars (e.g. complex conjugation over `ℂ`, or the trivial star over `ℝ`
+    or `ℚ`).  If `P⁻¹ M P` is diagonal then `((Pᴴ)⁻¹)⁻¹ Mᴴ (Pᴴ)⁻¹ = (P⁻¹ M P)ᴴ` is
+    diagonal (`IsDiag.conjTranspose`), so `(Pᴴ)⁻¹` diagonalizes `Mᴴ`.  Unlike the
+    transpose case the diagonalizer involves the conjugate transpose of `P`, and
+    `(P⁻¹)ᴴ = (Pᴴ)⁻¹` is `Matrix.conjTranspose_nonsing_inv`. -/
+theorem IsDiagonalizable.conjTranspose [StarRing K] {M : Matrix n n K}
+    (hM : M.IsDiagonalizable) : (Mᴴ).IsDiagonalizable := by
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPh : IsUnit (Pᴴ) := by
+    rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_conjTranspose]
+    exact isUnit_star.mpr ((Matrix.isUnit_iff_isUnit_det P).mp hP)
+  have hPhdet : IsUnit (Pᴴ).det := (Matrix.isUnit_iff_isUnit_det _).mp hPh
+  refine ⟨(Pᴴ)⁻¹, Matrix.isUnit_nonsing_inv_iff.mpr hPh, ?_⟩
+  have heq : (Pᴴ)⁻¹⁻¹ * Mᴴ * (Pᴴ)⁻¹ = (P⁻¹ * M * P)ᴴ := by
+    rw [Matrix.nonsing_inv_nonsing_inv _ hPhdet, ← Matrix.conjTranspose_nonsing_inv]
+    simp only [Matrix.conjTranspose_mul, mul_assoc]
+  rw [heq]
+  exact hD.conjTranspose
 
 /-- **The inverse of a diagonal matrix is diagonal.**  Writing `A = diagonal (diag A)`
     (valid because `A` is diagonal), `Matrix.inv_diagonal` gives
