@@ -902,6 +902,44 @@ theorem T_L_le_T_of_mem {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) : T_L n L �
   rw [← T_L_singleton]
   exact T_L_antitone_forbidden (Finset.singleton_subset_iff.mpr hr)
 
+/--
+**Base case of the hierarchy: `T_L n ∅ = 2ⁿ`.** With no forbidden intersection sizes the
+`avoidsLIntersections ∅` constraint is vacuous (`avoidsLIntersections_empty`), so the
+extremal family is the *entire* power set `2^{[n]}`, of size `2ⁿ`. This anchors the top of
+the antitone `T_L` hierarchy: every `T_L n L` sits below this maximum. -/
+theorem T_L_empty (n : ℕ) : T_L n ∅ = 2 ^ n := by
+  unfold T_L
+  apply le_antisymm
+  · -- Every admissible family is a subfamily of `2^{[n]}`, so has at most `2ⁿ` members.
+    apply Finset.sup_le
+    intro F hF
+    rw [Finset.mem_filter, Finset.mem_powerset] at hF
+    calc F.card ≤ ((Finset.range n).powerset).card := Finset.card_le_card hF.1
+      _ = 2 ^ n := by rw [Finset.card_powerset, Finset.card_range]
+  · -- The full power set `2^{[n]}` is itself admissible and has exactly `2ⁿ` members.
+    have hmem : (Finset.range n).powerset ∈
+        ((Finset.range n).powerset.powerset).filter (avoidsLIntersections ∅) :=
+      Finset.mem_filter.mpr
+        ⟨Finset.mem_powerset.mpr (Finset.Subset.refl _), avoidsLIntersections_empty _⟩
+    calc (2 : ℕ) ^ n = ((Finset.range n).powerset).card := by
+            rw [Finset.card_powerset, Finset.card_range]
+      _ ≤ _ := Finset.le_sup hmem
+
+/--
+**Universal ceiling: `T_L n L ≤ 2ⁿ`.** No `L`-avoiding family can exceed the full power set.
+Immediate from antitonicity (`∅ ⊆ L`) and the base case `T_L_empty`. -/
+theorem T_L_le_two_pow (n : ℕ) (L : Finset ℕ) : T_L n L ≤ 2 ^ n :=
+  (T_L_antitone_forbidden (Finset.empty_subset L)).trans (le_of_eq (T_L_empty n))
+
+/--
+**The concrete extremal quantity is bounded by the ambient size: `T n r ≤ 2ⁿ`.** Every
+`r`-avoiding family is a subfamily of `2^{[n]}`. Recovered from `T_L_le_two_pow` through the
+singleton bridge `T_L_singleton`, giving a uniform trivial upper bound for every `r` that the
+deep Frankl–Rödl theorem (`frankl_rodl_1987`) then sharpens to `(2 − δ)ⁿ` in the middle range. -/
+theorem T_le_two_pow (n r : ℕ) : T n r ≤ 2 ^ n := by
+  rw [← T_L_singleton]
+  exact T_L_le_two_pow n {r}
+
 /-
 ## Part VIII: Summary
 -/
