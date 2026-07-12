@@ -246,4 +246,55 @@ theorem conditionalMutualInfo_swap (pXYZ : α × β × γ → ℝ) :
     shannonEntropy_comp_equiv (Equiv.prodComm β α) (marginalXY pXYZ)]
   ring
 
+/-! ## Entropy monotonicity under adding a variable, and the bound `I(X ; Z | Y) ≤ H(X | Y)`
+
+All results above bound differences of entropies against each other; a complementary
+*absolute* fact is that entropy only *grows* when a variable is added: dropping `X` from
+the triple cannot increase entropy,
+
+    H(Y, Z) ≤ H(X, Y, Z).
+
+Because `α × β × γ` is definitionally `α × (β × γ)`, the joint law `pXYZ` is *itself* a
+two-variable distribution over `α × (β × γ)`, and its `(β × γ)`-marginal
+`fun (y,z) => ∑ x, pXYZ (x,y,z)` is exactly `marginalYZ pXYZ`.  The parent chain rule
+`entropy_chain_rule` then reads `H(X,Y,Z) = H(Y,Z) + H(X | Y,Z)` with the conditional
+entropy `H(X | Y,Z) ≥ 0` (`conditionalEntropy_nonneg`), giving the monotonicity directly.
+
+Feeding this into the conditioning-deficit identity yields the standard sandwich for the
+conditional mutual information: `0 ≤ I(X ; Z | Y) ≤ H(X | Y)`.  The lower bound is
+`conditionalMutualInfo_nonneg` (strong subadditivity); the upper bound says the extra
+variable `Z` can reduce the conditional entropy of `X` by *at most* all of it — `X` is never
+made *more* uncertain by learning `Z`, and cannot lose more information than it had. -/
+
+/-- **Entropy is monotone under adding a variable.**  `H(Y, Z) ≤ H(X, Y, Z)`: marginalizing
+    out `X` cannot increase entropy.  Since `α × β × γ = α × (β × γ)` definitionally, `pXYZ`
+    is a two-variable law over `α × (β × γ)` whose `(β × γ)`-marginal is `marginalYZ pXYZ`;
+    the parent chain rule `H(X,Y,Z) = H(Y,Z) + H(X | Y,Z)` with `H(X | Y,Z) ≥ 0`
+    (`conditionalEntropy_nonneg`) gives the bound. -/
+theorem entropy_marginalYZ_le {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    shannonEntropy (marginalYZ pXYZ) ≤ shannonEntropy pXYZ := by
+  have hmarg : (fun w : β × γ => ∑ x : α, pXYZ (x, w)) = marginalYZ pXYZ := by
+    funext w; obtain ⟨y, z⟩ := w; rfl
+  have hchain := entropy_chain_rule (pXY := pXYZ) hp hsum
+  rw [hmarg] at hchain
+  have hce := conditionalEntropy_nonneg (pXY := pXYZ) hp hsum
+  linarith
+
+/-- **The conditional mutual information is bounded by the conditional entropy.**
+    `I(X ; Z | Y) ≤ H(X | Y)`, where `H(X | Y) = H(X, Y) − H(Y)`.  Combined with
+    `conditionalMutualInfo_nonneg` this is the sandwich `0 ≤ I(X ; Z | Y) ≤ H(X | Y)`:
+    learning `Z` reduces the conditional entropy of `X` by an amount between `0` and all of
+    `H(X | Y)`.  Immediate from the deficit identity
+    `I(X ; Z | Y) = H(X | Y) − H(X | Y, Z)` and `H(X | Y, Z) = H(X,Y,Z) − H(Y,Z) ≥ 0`
+    (`entropy_marginalYZ_le`). -/
+theorem conditionalMutualInfo_le_conditional_entropy {pXYZ : α × β × γ → ℝ}
+    (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    conditionalMutualInfo pXYZ ≤
+      shannonEntropy (marginalXY pXYZ) - shannonEntropy (marginalY pXYZ) := by
+  unfold conditionalMutualInfo
+  linarith [entropy_marginalYZ_le hp hsum]
+
 end InformationTheory.SSA
