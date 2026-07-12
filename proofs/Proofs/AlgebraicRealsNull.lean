@@ -5,6 +5,7 @@ import Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms
 import Mathlib.Topology.MetricSpace.HausdorffDimension
 import Mathlib.Topology.MetricSpace.Perfect
 import Mathlib.Analysis.Real.Cardinality
+import Mathlib.Analysis.Complex.Cardinality
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -157,6 +158,47 @@ theorem transcendental_reals_mk_eq_continuum :
     lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_reals_countable.le_aleph0
       (by rw [Cardinal.mk_real]; exact Cardinal.aleph0_lt_continuum)
   rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_real]
+
+/-- **The transcendental complex numbers are uncountable.**  The complex analogue of
+`transcendental_reals_uncountable`, supplying the cardinality pillar on `ℂ` — which already
+carries its measure- (`algebraic_complex_null`), dimension- (`algebraic_complex_dimH_zero`),
+category- (`algebraic_complex_meagre`) and descriptive- (`algebraic_complex_no_perfect_subset`)
+smallness analogues, but was missing the cardinality one.
+
+Proof by contradiction: if the transcendental complex numbers were countable then, together
+with the countable algebraic complex numbers
+(`AlgebraicNumbersCountable.algebraic_complex_countable`), their union — all of `ℂ` — would be
+countable, contradicting `not_countable_complex`. -/
+theorem transcendental_complex_uncountable :
+    ¬ {z : ℂ | Transcendental ℚ z}.Countable := by
+  intro hcount
+  have hcompl : {z : ℂ | Transcendental ℚ z}ᶜ.Countable := by
+    rw [show {z : ℂ | Transcendental ℚ z}ᶜ = {z : ℂ | IsAlgebraic ℚ z} from by
+      ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental, not_not]]
+    exact AlgebraicNumbersCountable.algebraic_complex_countable
+  have huniv : (Set.univ : Set ℂ).Countable := by
+    have hu := hcount.union hcompl
+    rwa [Set.union_compl_self] at hu
+  exact not_countable_complex huniv
+
+/-- **The transcendental complex numbers have cardinality the continuum**:
+`#{z | Transcendental ℚ z} = 𝔠`.
+
+The quantitative sharpening of `transcendental_complex_uncountable` and the complex analogue of
+`transcendental_reals_mk_eq_continuum`: there are *precisely* continuum-many transcendental
+complex numbers, exactly as many as there are complex numbers. The algebraic complex numbers are
+countable, hence of cardinality `≤ ℵ₀ < 𝔠 = #ℂ` (`Cardinal.mk_complex`), so deleting them from
+`ℂ` cannot lower the cardinality of what remains (`Cardinal.mk_compl_of_infinite`); the
+transcendentals still carry the full `#ℂ = 𝔠`.  This makes the cardinality pillar quantitative on
+`ℂ` too, matching the real line. -/
+theorem transcendental_complex_mk_eq_continuum :
+    #{z : ℂ | Transcendental ℚ z} = 𝔠 := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have hlt : #{z : ℂ | IsAlgebraic ℚ z} < #(ℂ) :=
+    lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_complex_countable.le_aleph0
+      (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)
+  rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_complex]
 
 -- ============================================================================
 -- § 3. Transcendentals fill almost all of every interval
