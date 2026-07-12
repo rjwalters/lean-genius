@@ -1009,4 +1009,100 @@ theorem signChangesInCoeffs_reverse_neg {p : ℝ[X]} (h0 : p.coeff 0 ≠ 0) :
   have h0' : (-p).coeff 0 ≠ 0 := by rw [coeff_neg]; exact neg_ne_zero.mpr h0
   rw [signChangesInCoeffs_reverse h0', signChangesInCoeffs_neg]
 
+/- ## § 9. Sign changes of a nowhere-zero sequence are adjacent (verified, axiom-free)
+
+The `§ 6` sharpness result `countSignChanges_alternating` assumed *every* adjacent
+pair alternates and concluded the count is `n − 1`.  The structural fact powering it —
+that when no entry vanishes a sign change can only occur between *consecutive* indices —
+is more basic and holds with no alternation hypothesis at all.  We expose it as a
+standalone lemma and then use it to compute `countSignChanges` of an arbitrary
+nowhere-zero sequence *exactly*, as the number of consecutive sign flips.
+
+Classical reading: the textbook definition of "the number of sign variations" counts
+adjacent sign flips of the (nonzero) coefficient list; the file's `countSignChanges`
+uses the more general jump-over-zeros pair definition so that vanishing coefficients are
+handled correctly.  The theorem `countSignChanges_eq_card_adjacent_of_nonzero` shows the
+two definitions coincide precisely when no entry vanishes, so Descartes' `V` may be read
+off consecutive coefficients in that case.  This properly generalises
+`countSignChanges_alternating` (take every adjacent pair alternating: all `n − 1` flips
+are present, recovering the value `n − 1`). -/
+
+/-- **Sign changes of a nowhere-zero sequence are adjacent.**  If `f : Fin n → ℝ` never
+vanishes then any sign change `SignChangeBetween f i j` has `j = i + 1`: were there a gap
+`i + 1 < j`, the intermediate index `i + 1` would have to satisfy `f (i+1) = 0` by the
+"all strictly between vanish" clause, contradicting `hnz`.  Axiom-free, general in `n`;
+the structural core of `countSignChanges_alternating`. -/
+theorem signChangeBetween_adjacent_of_nonzero {n : ℕ} {f : Fin n → ℝ}
+    (hnz : ∀ i, f i ≠ 0) {i j : Fin n}
+    (h : DescartesRuleOfSigns.SignChangeBetween f i j) : j.val = i.val + 1 := by
+  unfold DescartesRuleOfSigns.SignChangeBetween at h
+  obtain ⟨hij, -, -, hbtw, -⟩ := h
+  have hlt : i.val < j.val := Fin.lt_def.mp hij
+  by_contra hne
+  have hgap : i.val + 1 < j.val := by omega
+  have hk : i.val + 1 < n := lt_trans hgap j.isLt
+  exact hnz _ (hbtw ⟨i.val + 1, hk⟩ (Fin.lt_def.mpr (Nat.lt_succ_self _))
+    (Fin.lt_def.mpr hgap))
+
+/-- **Exact count for a nowhere-zero sequence: adjacent flips only.**  If `f : Fin n → ℝ`
+never vanishes, then `countSignChanges f` equals the number of *consecutive* sign flips,
+i.e. the number of `k < n − 1` with `f k · f (k+1) < 0` (written via the zero-extension
+`fun k => if k < n then f ⟨k, _⟩ else 0` so the predicate is total on `ℕ`).  By
+`signChangeBetween_adjacent_of_nonzero` every sign-change pair is adjacent, so the left
+index `k` of a pair `(k, k+1)` is a bijection onto exactly those `k ∈ range (n − 1)` whose
+consecutive product is negative.  Axiom-free, general in `n`; generalises
+`countSignChanges_alternating` (all flips present ⟹ count `n − 1`). -/
+theorem countSignChanges_eq_card_adjacent_of_nonzero {n : ℕ} {f : Fin n → ℝ}
+    (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f
+      = ((Finset.range (n - 1)).filter
+          (fun k => (if h : k < n then f ⟨k, h⟩ else 0)
+                  * (if h : k + 1 < n then f ⟨k + 1, h⟩ else 0) < 0)).card := by
+  unfold DescartesRuleOfSigns.countSignChanges
+  refine Finset.card_bij' (fun p _ => p.1.val)
+    (fun m hm => (⟨m, by
+        have := Finset.mem_range.mp (Finset.mem_filter.mp hm).1; omega⟩,
+      ⟨m + 1, by
+        have := Finset.mem_range.mp (Finset.mem_filter.mp hm).1; omega⟩))
+    ?_ ?_ ?_ ?_
+  · -- forward: the left index of a sign-change pair is an adjacent flip in `range (n-1)`
+    rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+      DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign] at hp
+    have hadj := signChangeBetween_adjacent_of_nonzero hnz
+      (i := i) (j := j) (by
+        simp only [DescartesRuleOfSigns.SignChangeBetween,
+          DescartesRuleOfSigns.oppositeSign]; exact hp)
+    obtain ⟨hij, hi0, hj0, -, hopp⟩ := hp
+    have hj : j.val < n := j.isLt
+    have hi1 : i.val + 1 < n := hadj ▸ hj
+    have hi_lt : i.val < n - 1 := by omega
+    refine Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hi_lt, ?_⟩
+    rw [dif_pos i.isLt, dif_pos hi1]
+    have ei : (⟨i.val, i.isLt⟩ : Fin n) = i := rfl
+    have ej : (⟨i.val + 1, hi1⟩ : Fin n) = j := Fin.ext hadj.symm
+    rw [ei, ej]; exact hopp
+  · -- backward: an adjacent flip yields a genuine sign-change pair
+    intro m hm
+    have hmr : m < n - 1 := Finset.mem_range.mp (Finset.mem_filter.mp hm).1
+    have hflip := (Finset.mem_filter.mp hm).2
+    have hmn : m < n := by omega
+    have hm1n : m + 1 < n := by omega
+    rw [dif_pos hmn, dif_pos hm1n] at hflip
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq,
+      DescartesRuleOfSigns.SignChangeBetween, DescartesRuleOfSigns.oppositeSign]
+    refine ⟨Fin.lt_def.mpr (Nat.lt_succ_self _), hnz _, hnz _, ?_, hflip⟩
+    intro k hk1 hk2
+    have h1 : m < k.val := Fin.lt_def.mp hk1
+    have h2 : k.val < m + 1 := Fin.lt_def.mp hk2
+    omega
+  · -- round trip: pair ↦ left index ↦ pair
+    rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq] at hp
+    have hadj := signChangeBetween_adjacent_of_nonzero hnz (i := i) (j := j) hp
+    exact Prod.ext_iff.mpr ⟨Fin.ext rfl, Fin.ext hadj.symm⟩
+  · -- round trip: index ↦ pair ↦ index
+    intro m _
+    rfl
+
 end DescartesRuleOfSignsOQ01OQ03
