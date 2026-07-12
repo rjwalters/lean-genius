@@ -4017,4 +4017,91 @@ theorem sqDiffFree_card_le_add_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 
   have hfac : a * ((N : ℝ) + M) ≤ (c + M) * ((N : ℝ) + M) := le_trans hprod hstep
   exact le_of_mul_le_mul_right hfac hNM
 
+/-! ### Part XXVIII — Sharpness at a prime-square modulus: an explicit √N construction
+
+Every prior part bounds `|A|` from *above*.  This part supplies the complementary
+*lower* bound at `N = p²`: an explicit square-difference-free set of size exactly
+`p = √N`, so the prime upper bound `|A| ≤ √N` (`sqDiffFree_card_le_sqrt_of_prime`,
+Part XVIII) is **order-tight** and cannot improve to `o(√N)` at prime-square moduli.
+It is the first lower-bound / explicit construction in the file.
+
+The witness is the subgroup `pℤ/p²ℤ = {p·k : 0 ≤ k < p}` of the multiples of `p`.
+Its `p` elements have pairwise differences all divisible by `p`, and the *only*
+square divisible by `p` in `ℤ/p²ℤ` is `0`: if `p ∣ n²` then `p ∣ n` (p prime), so
+`p² ∣ n²`, i.e. `n² = 0`.  Hence no nonzero square is a difference of two elements
+— the set is square-difference-free.
+
+Structural note (not formalized): the true maximum at `N = p²` is *larger*,
+`p · α(Paley(p)) = Θ(p^{3/2}) = Θ(N^{3/4})`, obtained from a Paley-independent
+family of `p`-cosets (two cosets `pℤ` and `d + pℤ` combine into a
+square-difference-free set iff `d` is a quadratic non-residue mod `p`).  The
+subgroup here is the clean `α ≥ 1` base case; the `√N` it certifies already shows
+the pointwise circle-method ceiling `|A| ≤ √N` is tight up to a constant. -/
+
+/-- **Sharpness of the `√N` bound at a prime-square modulus.**  For an odd (indeed
+    any) prime `p` and `N = p²`, the subgroup of multiples of `p`,
+    `{ p·k : 0 ≤ k < p }`, is square-difference-free and has exactly `p = √N`
+    elements.  Hence the maximal square-difference-free set in `ℤ/p²ℤ` has at least
+    `√N` elements: the prime upper bound `|A| ≤ √N` (Part XVIII) is order-tight and
+    does not shrink at prime-square moduli. -/
+theorem exists_sqDiffFree_card_sqrt_of_prime_sq {p : ℕ} (hp : p.Prime) :
+    ∃ A : Finset (ZMod (p ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (p ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) ∧ A.card = p := by
+  haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp.pos.ne'⟩
+  have hp2pos : 0 < p ^ 2 := pow_pos hp.pos 2
+  set f : ℕ → ZMod (p ^ 2) := fun k => ((p * k : ℕ) : ZMod (p ^ 2)) with hf
+  refine ⟨(Finset.range p).image f, ?_, ?_⟩
+  · -- square-difference-free
+    intro x hx n hn hmem
+    -- forward membership ⟹ `p ∣ (·).val`
+    have key : ∀ y ∈ (Finset.range p).image f, p ∣ (y : ZMod (p ^ 2)).val := by
+      intro y hy
+      rw [Finset.mem_image] at hy
+      obtain ⟨k, hk, rfl⟩ := hy
+      rw [Finset.mem_range] at hk
+      have hlt : p * k < p ^ 2 := by rw [sq]; nlinarith [hp.pos, hk]
+      rw [hf, ZMod.val_natCast, Nat.mod_eq_of_lt hlt]
+      exact Dvd.intro k rfl
+    have hpx : p ∣ x.val := key x hx
+    have hpxn : p ∣ (x + n ^ 2).val := key _ hmem
+    -- `p ∣ (n²).val`
+    have hpn2 : p ∣ (n ^ 2).val := by
+      have hadd : (x + n ^ 2).val = (x.val + (n ^ 2).val) % p ^ 2 := ZMod.val_add x (n ^ 2)
+      rw [hadd] at hpxn
+      have hdvd : p ∣ (x.val + (n ^ 2).val) :=
+        (Nat.dvd_mod_iff (dvd_pow_self p (by norm_num))).mp hpxn
+      exact (Nat.dvd_add_right hpx).mp hdvd
+    -- `p ∣ (n²).val ⟹ p² ∣ n.val²  ⟹  n² = 0`
+    have hval : (n ^ 2).val = (n.val * n.val) % p ^ 2 := by rw [pow_two n, ZMod.val_mul]
+    have hpm2 : p ∣ n.val * n.val := by
+      have h1 : p ∣ (n.val * n.val) % p ^ 2 := by rw [← hval]; exact hpn2
+      exact (Nat.dvd_mod_iff (dvd_pow_self p (by norm_num))).mp h1
+    have hpm : p ∣ n.val := (hp.dvd_mul.mp hpm2).elim id id
+    have hp2m : p ^ 2 ∣ n.val * n.val := by
+      obtain ⟨s, hs⟩ := hpm; exact ⟨s * s, by rw [hs]; ring⟩
+    have hzero : (n ^ 2).val = 0 := by
+      rw [hval]; obtain ⟨t, ht⟩ := hp2m; rw [ht, Nat.mul_mod_right]
+    exact hn ((ZMod.val_eq_zero _).mp hzero)
+  · -- card = p
+    rw [Finset.card_image_of_injOn, Finset.card_range]
+    intro a ha b hb hab
+    rw [Finset.coe_range, Set.mem_Iio] at ha hb
+    have hva : (f a).val = p * a := by
+      rw [hf, ZMod.val_natCast, Nat.mod_eq_of_lt (by rw [sq]; nlinarith [hp.pos, ha])]
+    have hvb : (f b).val = p * b := by
+      rw [hf, ZMod.val_natCast, Nat.mod_eq_of_lt (by rw [sq]; nlinarith [hp.pos, hb])]
+    have : p * a = p * b := by rw [← hva, ← hvb, hab]
+    exact Nat.eq_of_mul_eq_mul_left hp.pos this
+
+/-- **`√N`-phrased sharpness corollary.**  Restates
+    `exists_sqDiffFree_card_sqrt_of_prime_sq` with the cardinality written as
+    `Nat.sqrt (p²)`: at a prime-square modulus `N = p²` there is a
+    square-difference-free set of size exactly `⌊√N⌋ = √N`. -/
+theorem exists_sqDiffFree_card_eq_sqrt_of_prime_sq {p : ℕ} (hp : p.Prime) :
+    ∃ A : Finset (ZMod (p ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (p ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+        ∧ A.card = Nat.sqrt (p ^ 2) := by
+  obtain ⟨A, hfree, hcard⟩ := exists_sqDiffFree_card_sqrt_of_prime_sq hp
+  exact ⟨A, hfree, by rw [hcard, Nat.sqrt_eq']⟩
+
 end Szemeredi.Roth
