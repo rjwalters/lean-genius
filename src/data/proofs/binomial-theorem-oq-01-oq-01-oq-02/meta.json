@@ -92,24 +92,32 @@
       "id": "pointwise-derivative",
       "title": "Pointwise Derivative of (1+x)^α",
       "startLine": 34,
-      "endLine": 61,
-      "summary": "hasDerivAt_one_add_rpow proves d/dx (1+x)^α = α(1+x)^(α-1) for x > -1 via HasDerivAt.rpow_const composed with y ↦ 1+y; hasDerivAt_one_add_rpow_zero specializes to x = 0, giving derivative α (matching genBinom α 1 = α).",
+      "endLine": 44,
+      "summary": "hasDerivAt_one_add_rpow proves d/dx (1+x)^α = α(1+x)^(α-1) for x > -1, via HasDerivAt.rpow_const composed with the affine map y ↦ 1+y (whose derivative is 1).",
       "mathContext": "$\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$ for $x > -1$."
     },
     {
       "id": "coefficient-match",
       "title": "Absorption Identity as the Derivative Coefficient",
       "startLine": 45,
-      "endLine": 53,
+      "endLine": 54,
       "summary": "deriv_coeff_eq_absorption restates the parent's absorption identity (k+1)·C(α,k+1) = α·C(α-1,k) as 'coefficient of the derivative = α·C(α-1,k)', the coefficient-by-coefficient reading of term-by-term differentiation.",
       "mathContext": "$(k+1)\\binom{\\alpha}{k+1} = \\alpha\\binom{\\alpha-1}{k}$ — the $x^k$ coefficient of $\\frac{d}{dx}\\sum_j \\binom{\\alpha}{j}x^j$."
     },
     {
+      "id": "derivative-forms",
+      "title": "Value at 0 and the `deriv` Closed Form",
+      "startLine": 55,
+      "endLine": 68,
+      "summary": "hasDerivAt_one_add_rpow_zero specializes the pointwise derivative to x = 0, giving derivative α (matching genBinom α 1 = α); deriv_one_add_rpow repackages the pointwise HasDerivAt as the `deriv`-level closed form deriv (fun x => (1+x)^α) x = α(1+x)^(α-1).",
+      "mathContext": "$\\left.\\frac{d}{dx}(1+x)^\\alpha\\right|_{0} = \\alpha$; and $\\mathrm{deriv}\\,(x \\mapsto (1+x)^\\alpha)\\,x = \\alpha(1+x)^{\\alpha-1}$."
+    },
+    {
       "id": "term-by-term",
       "title": "Term-by-Term Differentiation of the Binomial Power Series",
-      "startLine": 63,
+      "startLine": 69,
       "endLine": 91,
-      "summary": "deriv_one_add_rpow gives the deriv-level closed form; binomial_derivSeries_analytic (the headline) applies HasFPowerSeriesOnBall.fderiv to the parent's binomial_series_analytic, showing (binomialSeries ℝ α).derivSeries is the power series of fderiv ℝ (fun y => (1+y)^α) on the unit ball; fderiv_one_add_rpow_apply_one closes the loop by evaluating that Fréchet derivative at the tangent vector 1 and recovering α(1+x)^(α-1).",
+      "summary": "binomial_derivSeries_analytic (the headline) applies HasFPowerSeriesOnBall.fderiv to the parent's binomial_series_analytic, showing (binomialSeries ℝ α).derivSeries is the power series of fderiv ℝ (fun y => (1+y)^α) on the unit ball; fderiv_one_add_rpow_apply_one closes the loop by evaluating that Fréchet derivative at the tangent vector 1 and recovering α(1+x)^(α-1).",
       "mathContext": "$\\frac{d}{dx}\\sum_k \\binom{\\alpha}{k}x^k = \\sum_k (k+1)\\binom{\\alpha}{k+1}x^k = \\alpha\\sum_k \\binom{\\alpha-1}{k}x^k = \\alpha(1+x)^{\\alpha-1}$, realized as `derivSeries` on the unit ball."
     }
   ],
