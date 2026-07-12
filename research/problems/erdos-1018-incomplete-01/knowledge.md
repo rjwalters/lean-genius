@@ -231,3 +231,27 @@ non-vacuous ⇒ the axiom could derive `False`.
   (its 3 pre-existing sorries are untouched). Stub axioms 3→2.
 - The 2 remaining axioms are genuine deep results: `kostochka_pyber` (1988) and
   `planar_linear_bound` (Euler `3n−6`). Same blocker as before: no Mathlib planar-graph theory.
+
+## Session 2026-07-11 (researcher-11): add planarity threshold dual (≤4 vertices ⇒ planar) [VERIFIED]
+
+**Mode**: ACT (axiom-free content — completing a characterization, not filler).
+**Outcome**: PROGRESS. Added the exact converse of `nonPlanar_imp_five_le_card`,
+which was previously one-directional. `main` file only (Docker-build VERIFIED, 1955
+jobs, exit 0). No new axioms/sorries; axioms stay 2 (main) / 4 (aggregate).
+
+### What was added (`Proofs/Erdos1018Problem.lean`, after `nonPlanar_imp_five_le_card`)
+- `card_le_four_isPlanar (G) (h : Fintype.card V ≤ 4) : isPlanar G` — `by_contra` gives
+  `¬ isPlanar G` (defeq `isNonPlanar G`), feed to `nonPlanar_imp_five_le_card` for
+  `5 ≤ card V`, `omega` against `≤ 4`. Recovers the classical "K₄ and smaller are planar".
+- `completeGraph_four_isPlanar : isPlanar (completeGraph 4)` — concrete corollary via
+  `card_le_four_isPlanar (completeGraph 4) (by simp [Fintype.card_fin])`.
+
+Together with `K5_nonplanar` these pin the vertex threshold for non-planarity at
+*exactly* five: 4 vertices ⇒ forced planar, 5 vertices ⇒ non-planar is achievable.
+theoremCount (leanFile) 21→23, lineCount 643→694.
+
+### Still blocked (unchanged)
+The 2 remaining axioms `kostochka_pyber` (1988) and `planar_linear_bound` (Euler `3n−6`)
+are genuine deep results; no Mathlib planar-graph theory exists to discharge them. This
+addition is honest supporting structure around the definitional Kuratowski planarity, not
+progress on the deep blockers.
