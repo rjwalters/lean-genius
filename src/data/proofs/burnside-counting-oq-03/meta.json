@@ -111,6 +111,30 @@
       "endLine": 402,
       "summary": "Derives 6 binary 4-necklaces (24/4 = 6). States polya_necklace_formula_statement: assuming Burnside and the fixed-point formula, conclude n · necklace_count = Σ k^gcd(r,n).",
       "mathContext": "$\\#\\text{necklaces}(4,2) = 24/4 = 6$. General: $n \\cdot \\#\\text{necklaces}(n,k) = \\sum_{r=0}^{n-1} k^{\\gcd(r,n)} = \\sum_{d \\mid n} \\varphi(n/d) \\cdot k^d$."
+    },
+    {
+      "id": "sec-fixedpoint-corollaries",
+      "title": "§8: General Fixed-Point Corollaries (kernel-checked)",
+      "startLine": 441,
+      "endLine": 499,
+      "summary": "Kernel-checked specializations of polya_cyclic_fixed_count (no native_decide): the identity rotation fixes kⁿ colorings (fixed_count_identity), a coprime step fixes exactly the k constant colorings (fixed_count_of_coprime), each fixed count divides kⁿ and lies in [k, kⁿ], and fp_sum_binary4_kernel re-proves 16+2+4+2=24 without Lean.ofReduceBool.",
+      "mathContext": "$|\\mathrm{Fix}(r)| = k^{\\gcd(r,n)}$, with $\\gcd(0,n)=n$ giving $k^n$ and $\\gcd(r,n)=1$ giving $k$; $k \\le |\\mathrm{Fix}(r)| \\le k^n$ and $|\\mathrm{Fix}(r)| \\mid k^n$."
+    },
+    {
+      "id": "sec-prime-fermat",
+      "title": "§9: Prime Specialization and the Necklace Proof of Fermat's Little Theorem",
+      "startLine": 500,
+      "endLine": 560,
+      "summary": "For prime p the divisor sum collapses to a two-term closed form polya_sum_prime: Σ_{r:Fin p} k^gcd(r,p) = kᵖ + (p−1)·k (r=0 gives kᵖ, the p−1 nonzero rotations are coprime and each give k). fermat_little_of_burnside then gives the classical combinatorial proof of Fermat's little theorem: Burnside's lemma (fixed-point sum = p·necklace_count) forces p ∣ kᵖ − k with NO number-theoretic input (no ZMod.pow_card); FLT is a consequence of the orbit count, not an input. polya_sum_three_binary is the p=3,k=2 instance (=12).",
+      "mathContext": "$\\sum_{r=0}^{p-1} k^{\\gcd(r,p)} = k^p + (p-1)k$ for prime $p$; Burnside gives $p \\mid p\\cdot\\#\\text{necklaces} = k^p+(p-1)k$, and since $(p-1)k = pk-k$ this yields $p \\mid k^p - k$."
+    },
+    {
+      "id": "sec-necklaces6",
+      "title": "§10: Binary 6-Necklaces (OEIS A000031(6) = 14)",
+      "startLine": 561,
+      "endLine": 585,
+      "summary": "Concrete n=6 instance: polya_sum_Z6_binary (Σ 2^gcd(r,6) = 84), its divisor-sum form, their agreement, and polya_binary6_necklace_count (84/6 = 14 binary necklaces of length 6, OEIS A000031).",
+      "mathContext": "$\\sum_{r=0}^{5} 2^{\\gcd(r,6)} = 2^6+2+2^2+2^3+2^2+2 = 84$ and $\\sum_{d\\mid 6}\\varphi(6/d)2^d = 84$, giving $84/6 = 14$ necklaces."
     }
   ],
   "overview": {
@@ -206,12 +230,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 445,
+    "lineCount": 589,
     "path": "Proofs/BurnsideCountingOQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 26,
+    "theoremCount": 32,
     "additionalFiles": [
       "Proofs/BurnsideCountingOQ03Aristotle.lean",
       {
