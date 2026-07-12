@@ -87,5 +87,29 @@
       "modular arithmetic",
       "Kronecker symbol at 2"
     ]
+  },
+  {
+    "id": "ann-kron-wip01-conductor-eight",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 140
+    },
+    "type": "insight",
+    "title": "8 is the exact conductor: (·/2) is primitive",
+    "content": "A period is not the same as the conductor. `kronecker2_add_mul_eight` shows 8 is *a* period of (·/2); Section C shows it is the *minimal* one. `kronecker2_not_period_four` refutes period 4 with the concrete counterexample kronecker2 5 = −1 ≠ 1 = kronecker2 1, and `kronecker2_not_period_two` refutes period 2 via kronecker2 3 = −1 ≠ 1 = kronecker2 1 (a fortiori period 1 fails too). Since every period of a Dirichlet character is a multiple of its conductor, ruling out the proper divisors 4 and 2 of 8 pins the conductor to exactly 8. `kronecker2_conductor_eight` bundles the three facts. Consequence: χ₈ = (·/2) is a PRIMITIVE character mod 8 — not induced from any character of smaller modulus. Primitivity is exactly what the Gauss-sum route to reciprocity requires: an imprimitive character has a vanishing Gauss sum, so the sharp conductor (not just a period) is the usable input.",
+    "mathContext": "The conductor of $\\chi_8=(\\cdot/2)$ is $8$: $\\chi_8(a+8)=\\chi_8(a)$ but $\\chi_8(a+4)\\ne\\chi_8(a)$ and $\\chi_8(a+2)\\ne\\chi_8(a)$. Primitivity $\\Leftrightarrow$ Gauss sum $\\tau(\\chi_8)$ has $|\\tau(\\chi_8)|=\\sqrt{8}\\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conductor of a Dirichlet character",
+      "primitive vs imprimitive character",
+      "Gauss sum nonvanishing",
+      "minimal period"
+    ],
+    "prerequisites": [
+      "Dirichlet characters and conductors",
+      "period vs conductor",
+      "kronecker2 tabulated values (parent)"
+    ]
   }
 ]
