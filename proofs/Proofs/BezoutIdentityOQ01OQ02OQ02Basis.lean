@@ -424,4 +424,91 @@ theorem isPrimitive_iff_isCompl_span_singleton {v : Fin n → ℤ} (hv0 : v ≠ 
   rintro ⟨K, hK⟩
   exact isPrimitive_of_isCompl_span_singleton hv0 hK
 
+/-! ### Internal form: a primitive vector spans a **saturated** (pure) line
+
+The basis-membership and direct-summand characterizations are both *external*: each
+produces an auxiliary object (a completing basis, a complementary submodule) witnessing
+the completion.  The third classical face of primitivity is purely *internal* — a test on
+the line `ℤ · v` alone, referencing no auxiliary datum:
+
+> `ℤ · v` is **saturated** (pure): whenever a nonzero scalar multiple `c • x` lies on the
+> line, `x` already lies on the line.
+
+Equivalently the quotient `ℤⁿ / (ℤ·v)` is torsion-free.  This is the working textbook
+*definition* of a primitive vector in lattice/number theory.  It sits below the
+direct-summand form — over a PID a saturated finite-rank submodule *is* a direct summand,
+but that structure theorem is not needed here: both directions are elementary.  The
+forward direction is the dual functional again (`f (c • x) = c • f x` cancels `c`); the
+converse (for `v ≠ 0`) feeds the gcd criterion `isPrimitive_iff_forall_isUnit_of_dvd`,
+using that any common divisor `d` of the entries yields `x = v / d` with `d • x = v` on
+the line, so saturation forces `d` to be a unit.  Everything stays
+`propext`/`Classical.choice`/`Quot.sound`-only. -/
+
+/-- The line `ℤ · v` is **saturated** (pure): a nonzero scalar multiple `c • x` on the
+line forces `x` onto the line.  This is the internal, complement-free criterion; it says
+exactly that the quotient `ℤⁿ / (ℤ·v)` has no torsion. -/
+def IsSaturatedLine (v : Fin n → ℤ) : Prop :=
+  ∀ (c : ℤ), c ≠ 0 → ∀ x : Fin n → ℤ,
+    c • x ∈ Submodule.span ℤ ({v} : Set (Fin n → ℤ)) →
+      x ∈ Submodule.span ℤ ({v} : Set (Fin n → ℤ))
+
+/-- **A primitive vector spans a saturated line (all `n`).**  If `v` is primitive and
+`c • x = k • v` with `c ≠ 0`, apply the dual functional `f` (`f v = 1`) to get
+`c · f x = k`, hence `c • (f x • v) = c • x`; cancelling `c` in the torsion-free module
+`ℤⁿ` gives `x = f x • v`, so `x` lies on the line.  No `v ≠ 0` hypothesis is needed. -/
+theorem IsPrimitive.isSaturatedLine {v : Fin n → ℤ} (hv : IsPrimitive v) :
+    IsSaturatedLine v := by
+  obtain ⟨f, hf⟩ := (isPrimitive_iff_exists_dual_functional v).mp hv
+  intro c hc x hx
+  rw [Submodule.mem_span_singleton] at hx ⊢
+  obtain ⟨k, hk⟩ := hx
+  refine ⟨f x, ?_⟩
+  have hkf : k = c * f x := by
+    have h1 := congrArg f hk
+    rw [map_smul, map_smul, hf, smul_eq_mul, smul_eq_mul, mul_one] at h1
+    exact h1
+  have hcx : c • (f x • v) = c • x := by
+    rw [← SemigroupAction.mul_smul, ← hkf]; exact hk
+  exact smul_right_injective (Fin n → ℤ) hc hcx
+
+/-- **Converse: a saturated line has a primitive generator (`v ≠ 0`).**  If `ℤ · v` is
+saturated and `v ≠ 0`, then `v` is primitive.  Via the gcd criterion it suffices to show
+every common divisor `d` of the entries is a unit.  Such a `d` is nonzero (else `v = 0`),
+and `x := (fun i => vᵢ / d)` satisfies `d • x = v`, so `d • x` lies on the line;
+saturation hands back `x = k • v`, whence `v = d • x = (d·k) • v` and, cancelling the
+nonzero `v`, `d · k = 1`. -/
+theorem isPrimitive_of_isSaturatedLine {v : Fin n → ℤ} (hv0 : v ≠ 0)
+    (hsat : IsSaturatedLine v) : IsPrimitive v := by
+  rw [isPrimitive_iff_forall_isUnit_of_dvd]
+  intro d hd
+  have hd0 : d ≠ 0 := by
+    rintro rfl
+    apply hv0
+    funext i
+    simpa using zero_dvd_iff.mp (hd i)
+  set x : Fin n → ℤ := fun i => v i / d with hx
+  have hdx : d • x = v := by
+    funext i
+    simp only [hx, Pi.smul_apply, smul_eq_mul]
+    exact Int.mul_ediv_cancel' (hd i)
+  have hmem : d • x ∈ Submodule.span ℤ ({v} : Set (Fin n → ℤ)) := by
+    rw [hdx]; exact Submodule.mem_span_singleton_self v
+  have hxmem := hsat d hd0 x hmem
+  rw [Submodule.mem_span_singleton] at hxmem
+  obtain ⟨k, hk⟩ := hxmem
+  have hdk : (d * k) • v = (1 : ℤ) • v := by
+    rw [SemigroupAction.mul_smul, hk, hdx, one_smul]
+  have hone : d * k = 1 := smul_left_injective ℤ hv0 hdk
+  exact ⟨Units.mkOfMulEqOne d k hone, rfl⟩
+
+/-- **Primitive ⇔ its line is saturated (`v ≠ 0`).**  For nonzero `v`, primitivity is
+*exactly* saturation of the cyclic line `ℤ · v` — the internal, complement-free member of
+the equivalence triad, alongside basis membership (`isPrimitive_iff_mem_basis_all`) and
+the direct-summand form (`isPrimitive_iff_isCompl_span_singleton`).  As with the
+direct-summand form the `v = 0` case is excluded by hypothesis: `ℤ · 0 = ⊥` is vacuously
+saturated yet `0` is never primitive. -/
+theorem isPrimitive_iff_isSaturatedLine {v : Fin n → ℤ} (hv0 : v ≠ 0) :
+    IsPrimitive v ↔ IsSaturatedLine v :=
+  ⟨fun hv => hv.isSaturatedLine, isPrimitive_of_isSaturatedLine hv0⟩
+
 end BezoutPrimitive
