@@ -24,13 +24,14 @@
     "axiomCount": 0,
     "assumptions": "None beyond Mathlib's foundational axioms. Fully machine-checked (0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide). Note: in the local Docker sandbox the file elaborates cleanly across repeated runs but the .olean cache write intermittently aborts with SIGBUS (exit 135), an environment/IO issue independent of the proofs; CI produces the build artifact.",
     "lineCount": 548,
-    "theoremCount": 16,
+    "theoremCount": 20,
     "definitionCount": 2,
     "originalContributions": [
       "IsPrimitive v := ∃ w, w ⬝ᵥ v = 1 — a coordinate-free, manifestly SLₙ(ℤ)-invariant notion of primitivity for integer vectors (absent from Mathlib)",
       "isPrimitive_mulVec_iff: SLₙ(ℤ) preserves primitivity in both directions — the exact invariant transitivity must respect",
       "transvectionSL / transvectionSL_mulVec: the elementary Euclidean-descent generators packaged in SLₙ(ℤ) with their explicit action v ↦ update v i (vᵢ + c·vⱼ)",
-      "orbit_e_isPrimitive: the necessity half of transitivity — every SLₙ(ℤ)-orbit of a basis vector consists of primitive vectors"
+      "orbit_e_isPrimitive: the necessity half of transitivity — every SLₙ(ℤ)-orbit of a basis vector consists of primitive vectors",
+      "BezoutIdentityOQ01OQ02OQ02Invariant.lean — the invariance (necessity) complement to the transitivity results: the content (gcd) of an integer vector is a complete SLₙ(ℤ)-invariant. dvd_mulVec (integer matrices carry common divisors forward), common_dvd_mulVec_iff (SLₙ preserves the full set of common divisors, strengthening isPrimitive_mulVec_iff from primitivity to arbitrary content), sameOrbit_common_dvd_eq (content is an orbit invariant), IsPrimitive.common_dvd_isUnit (primitive = trivial content). Axiom-free."
     ]
   },
   "overview": {
