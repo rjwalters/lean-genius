@@ -188,7 +188,7 @@
       {
         "theorem": "Real.mul_self_sqrt",
         "description": "√x·√x = x for 0 ≤ x; used (with Real.sqrt_mul and Real.sqrt_sq) in the Wallis-ratio collapse to eliminate the square roots.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "verificationNote": "Proof written and rigorously verified offline against Mathlib source (every lemma name, signature, and type checked); 0 sorries and 0 axioms by construction. NOT machine-checked locally because the Docker build daemon was unavailable during this session (build infrastructure outage). Requires a clean `docker-build.sh Proofs.BetaCentralBinomialAsymptotic` (CI / deployer) to confirm before merge."

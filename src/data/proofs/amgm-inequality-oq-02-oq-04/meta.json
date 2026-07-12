@@ -24,12 +24,12 @@
       {
         "theorem": "Real.sqrt_le_sqrt",
         "description": "Monotonicity of the square root, used to pass from e₂/3 ≤ (e₁/3)² to √(e₂/3) ≤ e₁/3 in the M₁ ≥ M₂ step",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_sq",
         "description": "For x ≥ 0, √(x²) = x, collapsing √((e₁/3)²) to e₁/3",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_eq_rpow",

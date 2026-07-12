@@ -166,12 +166,12 @@
       {
         "theorem": "Real.sqrt_le_sqrt",
         "description": "monotonicity of sqrt; upgrades the squared inequality to the linear one.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_sq",
         "description": "sqrt(a^2) = a for a ≥ 0; recovers each side from its square.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "originalContributions": [

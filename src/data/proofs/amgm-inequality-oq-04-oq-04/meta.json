@@ -25,12 +25,12 @@
       {
         "theorem": "Real.sqrt_mul / Real.sq_sqrt",
         "description": "√(ab) = √a·√b and (√a)² = a for a ≥ 0, used to expand the geometric mean",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_le_sqrt / Real.sqrt_pos",
         "description": "Monotonicity and positivity of √, used for the squaring bound",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "pow_succ / pow_mul",

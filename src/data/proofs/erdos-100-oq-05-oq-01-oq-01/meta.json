@@ -30,7 +30,7 @@
       {
         "theorem": "Real.sqrt_sq",
         "description": "0 ≤ a → √(a ^ 2) = a. Finishes each distance computation once the sum of squared coordinate differences is written as k² (e.g. 289 = 17²), yielding dist = k.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Matrix.det_succ_row_zero",
