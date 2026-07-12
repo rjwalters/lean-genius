@@ -556,7 +556,7 @@ theorem fermat_little_of_burnside (p k : ℕ) [NeZero p] (hp : p.Prime)
   have heq : k ^ p + (p - 1) * k = (k ^ p - k) + p * k := by omega
   rw [heq] at hdvd
   -- Cancel the `p·k` term: `p ∣ (kᵖ − k) + p·k` and `p ∣ p·k` give `p ∣ kᵖ − k`.
-  simpa using Nat.dvd_sub' hdvd (dvd_mul_right p k)
+  simpa using Nat.dvd_sub hdvd (dvd_mul_right p k)
 
 /-! ## §10: Binary 6-Necklaces (concrete `n = 6` instance, OEIS A000031(6) = 14) -/
 
