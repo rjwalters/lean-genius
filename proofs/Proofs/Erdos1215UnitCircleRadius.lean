@@ -32,6 +32,10 @@ Main results:
 * `isBounded_levelSet`            : every unit-circle level set is bounded.
 * `isCompact_closedLevelSet`      : the *closed* sublevel set `{z : |P(z)| ≤ C}` is
                                     compact (closed + bounded, Heine–Borel).
+* `norm_eval_le_pow_add_one`      : the dual upper bound `|P(z)| ≤ (‖z‖+1)^{deg P}`.
+* `closedBall_subset_closedLevelSet` : *inner* confinement — the sublevel set
+                                    contains `closedBall(0, C^{1/deg} - 1)`, sandwiching
+                                    it between radii `C^{1/deg} ∓ 1`.
 
 All results are `0`-axiom / `0`-sorry.  (The parent `maclane_labyrinth` — the *deep*
 Mac Lane phenomenon of paths forced through neighbourhoods of `0` — remains
@@ -66,6 +70,23 @@ lemma pow_card_le_multiset_prod (m : Multiset ℝ) (b : ℝ) (hb : 0 ≤ b)
       calc b ^ Multiset.card m * b
           ≤ m.prod * a := mul_le_mul hpow ha hb hprod_nonneg
         _ = a * m.prod := mul_comm _ _
+
+/-- Dual of `pow_card_le_multiset_prod`: a multiset of reals all in `[0, b]` has
+    product `≤ b ^ card`. -/
+lemma multiset_prod_le_pow_card (m : Multiset ℝ) (b : ℝ) (hb : 0 ≤ b)
+    (h : ∀ x ∈ m, 0 ≤ x ∧ x ≤ b) : m.prod ≤ b ^ Multiset.card m := by
+  induction m using Multiset.induction with
+  | empty => simp
+  | cons a m ih =>
+      rw [Multiset.card_cons, pow_succ, Multiset.prod_cons]
+      have ha : 0 ≤ a ∧ a ≤ b := h a (Multiset.mem_cons_self a m)
+      have hrest : ∀ x ∈ m, 0 ≤ x ∧ x ≤ b := fun x hx => h x (Multiset.mem_cons_of_mem hx)
+      have hprod_le : m.prod ≤ b ^ Multiset.card m := ih hrest
+      have hprod_nonneg : 0 ≤ m.prod :=
+        Multiset.prod_nonneg (fun x hx => (hrest x hx).1)
+      calc a * m.prod ≤ b * b ^ Multiset.card m :=
+            mul_le_mul ha.2 hprod_le hprod_nonneg hb
+        _ = b ^ Multiset.card m * b := mul_comm _ _
 
 variable {P : ℂ[X]}
 
@@ -237,5 +258,56 @@ theorem isCompact_closedLevelSet (h : Erdos1215.IsUnitCirclePolynomial P)
     IsCompact (closedLevelSet P C) :=
   Metric.isCompact_of_isClosed_isBounded (isClosed_closedLevelSet C)
     (isBounded_closedLevelSet h hdeg C hC)
+
+/-! ## Inner confinement — the sublevel set contains a ball
+
+The confinement results above are *outer* bounds: the sublevel set is contained in a
+ball of radius `1 + C^{1/deg}`.  The dual factor estimate `‖z - r‖ ≤ ‖z‖ + 1` (each
+root on the unit circle) gives the matching *upper* bound
+`|P(z)| ≤ (‖z‖ + 1)^{deg P}`, and hence an *inner* radius: the sublevel set
+**contains** the closed ball of radius `C^{1/deg} - 1`.  Together the two bounds
+sandwich the sublevel set into the annulus-like region
+`C^{1/deg} - 1 ≤` (radius) `≤ C^{1/deg} + 1`, pinning its size to within an additive
+`2` of `C^{1/deg}` independently of which unit-circle polynomial `P` is used. -/
+
+/-- **Upper bound on `|P(z)|`.** Dual to `pow_sub_one_le_norm_eval`: for a unit-circle
+polynomial, `|P(z)| ≤ (‖z‖ + 1)^{deg P}` for *every* `z`, from `‖z - r‖ ≤ ‖z‖ + 1` on
+each unit-modulus root `r`. -/
+lemma norm_eval_le_pow_add_one (h : Erdos1215.IsUnitCirclePolynomial P) (z : ℂ) :
+    ‖P.eval z‖ ≤ (‖z‖ + 1) ^ P.natDegree := by
+  rw [norm_eval_eq_prod z, norm_leadingCoeff_eq_one h, one_mul]
+  have hcard : Multiset.card (P.roots.map (fun a => ‖z - a‖)) = P.natDegree := by
+    rw [Multiset.card_map]; exact (splits_P.natDegree_eq_card_roots).symm
+  rw [← hcard]
+  refine multiset_prod_le_pow_card _ (‖z‖ + 1) (by positivity) ?_
+  intro x hx
+  rw [Multiset.mem_map] at hx
+  obtain ⟨a, ha, rfl⟩ := hx
+  have hnorm : ‖a‖ = 1 := norm_root_eq_one h ha
+  refine ⟨norm_nonneg _, ?_⟩
+  calc ‖z - a‖ ≤ ‖z‖ + ‖a‖ := norm_sub_le z a
+    _ = ‖z‖ + 1 := by rw [hnorm]
+
+/-- **Inner confinement of the closed sublevel set.** For `C ≥ 1`, the closed sublevel
+set `{z : |P(z)| ≤ C}` of a positive-degree unit-circle polynomial **contains** the
+closed ball of radius `C^{1/deg P} - 1` about the origin: every `z` with
+`‖z‖ ≤ C^{1/deg} - 1` satisfies `|P(z)| ≤ (‖z‖+1)^{deg} ≤ (C^{1/deg})^{deg} = C`.
+Together with `closedLevelSet_subset_closedBall` this sandwiches the sublevel set
+between the balls of radii `C^{1/deg} - 1` and `C^{1/deg} + 1`. -/
+theorem closedBall_subset_closedLevelSet (h : Erdos1215.IsUnitCirclePolynomial P)
+    (hdeg : 0 < P.natDegree) (C : ℝ) (hC : 1 ≤ C) :
+    Metric.closedBall (0 : ℂ) (C ^ ((P.natDegree : ℝ)⁻¹) - 1) ⊆ closedLevelSet P C := by
+  intro z hz
+  rw [Metric.mem_closedBall, dist_zero_right] at hz
+  simp only [closedLevelSet, Set.mem_setOf_eq]
+  have hd0 : P.natDegree ≠ 0 := hdeg.ne'
+  have hkpos : (0 : ℝ) ≤ (P.natDegree : ℝ)⁻¹ := by positivity
+  have hCnn : (0 : ℝ) ≤ C := le_trans zero_le_one hC
+  have h1 : ‖z‖ + 1 ≤ C ^ ((P.natDegree : ℝ)⁻¹) := by linarith
+  have hz1nonneg : (0 : ℝ) ≤ ‖z‖ + 1 := by positivity
+  calc ‖P.eval z‖ ≤ (‖z‖ + 1) ^ P.natDegree := norm_eval_le_pow_add_one h z
+    _ ≤ (C ^ ((P.natDegree : ℝ)⁻¹)) ^ P.natDegree :=
+        pow_le_pow_left₀ hz1nonneg h1 P.natDegree
+    _ = C := Real.rpow_inv_natCast_pow hCnn hd0
 
 end Erdos1215UnitCircleRadius
