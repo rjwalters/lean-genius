@@ -418,7 +418,6 @@ theorem card_even_derangements_eq_even_classes :
       = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsFourTwoCycle σ)).card
         + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card := by
   rw [card_even_derangements, card_fourTwoCycles, card_doubleThreeCycles]
-  norm_num
 
 /-- **The odd derangements are exactly the two odd classes.** The `135` odd
     fixed-point-free permutations decompose as the six-cycle / Pascal–Kirkman class (`120`)
@@ -432,7 +431,6 @@ theorem card_odd_derangements_eq_odd_classes :
       = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card
         + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)).card := by
   rw [card_odd_derangements, card_sixCycles, card_tripleTranspositions]
-  norm_num
 
 /-- **Pascal lines are half the six-cycles.** The `60` Pascal lines are precisely the
     six-cycle class (`120`) folded by the outer-automorphism pairing: `120 / 2 = 60`.
@@ -442,7 +440,6 @@ theorem card_odd_derangements_eq_odd_classes :
 theorem pascal_lines_eq_half_card_sixCycles :
     (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card / 2 = 60 := by
   rw [card_sixCycles]
-  norm_num
 
 /-- **Steiner points are half the double 3-cycles.** The `20` Steiner points are the
     double-3-cycle class (`40`) folded by the outer-automorphism pairing: `40 / 2 = 20`.
@@ -451,6 +448,5 @@ theorem pascal_lines_eq_half_card_sixCycles :
 theorem steiner_points_eq_half_card_doubleThreeCycles :
     (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card / 2 = 20 := by
   rw [card_doubleThreeCycles]
-  norm_num
 
 end PascalsHexagonOQ03Incomplete01
