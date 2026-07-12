@@ -16,7 +16,10 @@
       "SECTION XII (equality case / spectral rigidity): saturating the analytic Wirtinger inequality 2∫f·g′=∫(f′²+g′²) forces EVERY Fourier mode |n|≥2 to vanish (ĉₙf=ĉₙg=0), so f,g are degree-≤1 trig polynomials = the circle. Forward direction of Hurwitz equality-iff-circle.",
       "Mechanism: the Hurwitz deficit is a HasSum of nonnegative per-mode terms with total (2π)⁻¹[∫(f′²+g′²)−2∫f·g′]; under saturation total=0, so le_hasSum forces every summand=0; sharpened bound (|n|²−|n|)(‖a‖²+‖b‖²)≤summand (gap=|n|(‖a‖−‖b‖)²) then kills |n|≥2 modes since |n|²−|n|≥2>0.",
       "SECTION XIII: the Section-XII equality case only forces modes |n|≥2 to vanish, leaving a first-harmonic curve = ELLIPSE in general; the genuine CIRCLE requires the n=1 deficit summand to also vanish, giving ĉ₁f = i·ĉ₁g (a 90° rotation) — the Cauchy–Schwarz/AM–GM equality signature of the circle at the fundamental frequency.",
-      "First-mode rigidity is a clean sum-of-squares identity: ‖a‖²+‖b‖²−2·Im(a·conj b) = (a.im−b.re)²+(a.re+b.im)², so vanishing ⟺ a.im=b.re ∧ a.re=−b.im ⟺ a = i·b."
+      "First-mode rigidity is a clean sum-of-squares identity: ‖a‖²+‖b‖²−2·Im(a·conj b) = (a.im−b.re)²+(a.re+b.im)², so vanishing ⟺ a.im=b.re ∧ a.re=−b.im ⟺ a = i·b.",
+      "SECTION XIV converse: from the circle spectral signature (all modes |n|>=2 dead and c1f=I*c1g) every Hurwitz deficit summand vanishes, so total deficit=0 => Wirtinger saturation 2*int f*g' = int (f'^2+g'^2); full analytic + geometric equality-IFF-circle now COMPLETE, all 0-axiom.",
+      "Reality relation conj(cn(f))=c(-n)(f) for real f (fourierCoeffOn_conj_neg) is the key new lemma: conjugation passes through the real (b-a)^-1 scalar (Complex.conj_ofReal) and the interval integral (integral_conj on Ioc via integral_of_le), fixes the real integrand, and flips the kernel conj(fourier(-n))=fourier n (fourier_neg); handles the n=-1 mode not covered by hone/hhigh.",
+      "n=-1 deficit summand: with c(-1)=conj c1, (conj a * conj conj b).im = -(a * conj b).im (since conj a * b = conj(a*conj b)); the (-1)^2 and -2*(-1) signs combine to reproduce the n=1 summand => 0 via firstMode_deficit_zero."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
@@ -31,15 +34,16 @@
       "firstMode_rigidity (private, AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): ‖a‖²+‖b‖²−2Im(a·conj b)=0 ⟹ a = I·b, via SOS decomposition (Complex.sq_norm + normSq_apply + Complex.ext)",
       "deficit_summand_eq_zero_of_wirtinger_saturation (private): under Wirtinger saturation EVERY deficit summand n²(‖aₙ‖²+‖bₙ‖²)−2n·Im(aₙ conj bₙ)=0 (le_hasSum + area_deficit_summand_nonneg); shared analytic core of Sections XII/XIII",
       "fourierCoeff_first_mode_of_wirtinger_saturation + _of_isoperimetric_saturation: ĉ₁f = I·ĉ₁g under (analytic / geometric constant-speed) saturation",
-      "curve_is_circle_of_isoperimetric_saturation (CAPSTONE): constant-speed saturation ⟹ (∀|n|≥2 ĉₙf=ĉₙg=0) ∧ ĉ₁f=I·ĉ₁g = full forward direction equality-iff-circle, now distinguishing circle from ellipse; 0-axiom"
+      "curve_is_circle_of_isoperimetric_saturation (CAPSTONE): constant-speed saturation ⟹ (∀|n|≥2 ĉₙf=ĉₙg=0) ∧ ĉ₁f=I·ĉ₁g = full forward direction equality-iff-circle, now distinguishing circle from ellipse; 0-axiom",
+      "fourierCoeffOn_conj_neg: conj(cn(ofReal.f))=c(-n)(ofReal.f) reality lemma (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean SECTION XIV)",
+      "firstMode_deficit_zero: a=I*b => ||a||^2+||b||^2-2*Im(a conj b)=0 (converse of firstMode_rigidity)",
+      "deficit_summand_zero_of_spectrum: spectral signature => every n-mode Hurwitz summand =0 (interval_cases n in {-1,0,1} + reality)",
+      "wirtinger_saturation_of_fourier_spectrum + wirtinger_saturation_iff_fourier_spectrum: analytic equality-IFF (0-axiom)",
+      "isoperimetric_saturation_of_fourier_spectrum + isoperimetric_saturation_iff_circle: geometric constant-speed equality-IFF-circle capstone (0-axiom)"
     ],
-    "progressSummary": "PROGRESS: forward equality case now COMPLETE to the genuine circle (SECTION XIII adds n=1 rigidity ĉ₁f=I·ĉ₁g via SOS/Cauchy-Schwarz equality); 0-axiom. Remaining: converse direction for full IFF.",
+    "progressSummary": "COMPLETE: full Hurwitz isoperimetric equality-iff-circle in both analytic (wirtinger_saturation_iff_fourier_spectrum) and geometric constant-speed (isoperimetric_saturation_iff_circle) forms; forward (SECTIONS XI-XIII) + converse (SECTION XIV) both 0-axiom.",
     "nextSteps": [
-      "Assemble the isoperimetric area formula: for a closed C¹ curve t↦(x(t),y(t)) of period 2π, A=∫₀^{2π} x·y' dt (Green/shoelace). Feed x=f, y'=g into hasSum_re_fourierCoeffOn_mul_conj_real to express A via ∑ₙ Re(ĉₙ(x)·conj ĉₙ(y')); with ĉₙ(y')=in·ĉₙ(y) (grandparent identity) this yields the Hurwitz area-in-Fourier form.",
-      "Combine the Fourier area form with arc-length ∫(x'²+y'²)=2π and Wirtinger (already proved) mode-by-mode ⟹ A≤π, equality iff only n=±1 survive (the circle).",
-      "General scale-invariant L²≥4πA by Cauchy–Schwarz dropping the arc-length normalisation.",
-      "Converse (backward direction): first-harmonic-only + amplitude/phase relation (‖a₁‖=‖b₁‖, a₁·conj b₁ purely imaginary) ⟹ Wirtinger equality, completing equality-IFF-circle",
-      "Converse (⟸): from ĉₙf=ĉₙg=0 (|n|≥2) ∧ ĉ₁f=I·ĉ₁g, reconstruct constant speed and 4πA=(2π)²c to close the full IFF equality-iff-circle."
+      "Explicit reconstruction: from the spectral characterization exhibit the parametrization t->(x0+r*cos(t+phi), y0+r*sin(t+phi)) with r=2||c1f||, center (c0f,c0g), turning the Fourier characterization into the pointwise geometric circle equation (x-x0)^2+(y-y0)^2=r^2."
     ]
   },
   "relatedProofs": [
