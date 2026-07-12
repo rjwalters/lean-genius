@@ -7013,4 +7013,107 @@ theorem exists_dense_coset_of_subgroup_freq {N : ℕ} [NeZero N] {g : ℕ} [NeZe
       _ = (A.card : ℝ) ^ 2 := by field_simp
   linarith
 
+/-! ### Part LVII — the relative-density increment: the dense coset carries genuinely higher density
+
+Part LVI (`exists_dense_coset_of_subgroup_freq`) showed that a single nonzero non-unit Fourier
+coefficient forces some coset occupation `n_j = #{x ∈ A : φ x = j}` strictly above the average
+`|A|/g`.  To read this as a genuine *density increment* — the engine of a Sárközy-style descent —
+one must compare `n_j` against the actual size of the coset it lives in, not merely against the
+average.  The coset `{x : φ x = j}` is a fiber of the reduction `φ = castHom (g ∣ N) : ZMod N → ZMod g`;
+since `φ` is a surjective ring homomorphism, every fiber has *exactly* `N/g` elements
+(`castHom_fiber_card`).  Hence the relative density of `A` on the dense coset,
+
+    n_j / (N/g),
+
+strictly exceeds the ambient density `|A|/N` (`exists_dense_coset_relative_density`): the coset
+carries `A` at strictly higher density than the whole group.
+
+**Honest remaining obstruction (the crux of Sárközy over general `N`).**  A true density-increment
+*iteration* would restrict `A` to this dense coset, re-identify the coset (an arithmetic progression
+with common difference `g` and `N/g` terms) with `ZMod (N/g)`, and recurse.  The obstruction is that
+square-difference-freeness does **not** descend along these cosets: for `x = j + g·a`, `y = j + g·b`
+in the coset, `x − y = g·(a − b)`, and `g·(a − b)` being a nonzero square in `ZMod N` is *not*
+equivalent to `a − b` being a square in `ZMod (N/g)`.  The classical Sárközy increment is taken along
+progressions of common difference a *perfect square* `d²` precisely to preserve the avoided set; the
+subgroup `g·ZMod N` used here (dictated by the Fourier support of `badFreqMass`) is not of that form.
+Closing the descent therefore requires relating the Fourier support of `badFreqMass` to square
+common differences — the exact gap flagged in Parts XLVII / LIII.  Everything below is 0-axiom. -/
+
+/-- **Coset (fiber) cardinality.**  Every fiber of the reduction `φ = castHom (g ∣ N) : ZMod N → ZMod g`
+has exactly `N/g` elements:
+
+    #{x : ZMod N | φ x = j} = N / g.
+
+Proof: `φ` is a surjective additive hom, so translation by a preimage `x₀` of `j` gives a bijection
+`fiber 0 ≃ fiber j`; all `g` fibers thus have equal cardinality, and they partition `ZMod N`
+(card `N`), forcing each to be `N/g`. -/
+theorem castHom_fiber_card {N : ℕ} [NeZero N] {g : ℕ} [NeZero g] (hgN : g ∣ N) (j : ZMod g) :
+    (Finset.univ.filter (fun x : ZMod N => (ZMod.castHom hgN (ZMod g)) x = j)).card = N / g := by
+  have hg : 0 < g := Nat.pos_of_ne_zero (NeZero.ne g)
+  set f := (ZMod.castHom hgN (ZMod g)) with hf_def
+  -- All fibers have equal cardinality (translate by a preimage).
+  have hequal : ∀ k : ZMod g,
+      (Finset.univ.filter (fun x : ZMod N => f x = k)).card
+        = (Finset.univ.filter (fun x : ZMod N => f x = 0)).card := by
+    intro k
+    obtain ⟨x₀, hx₀⟩ := ZMod.castHom_surjective hgN k
+    have hset : (Finset.univ.filter (fun x : ZMod N => f x = k))
+        = (Finset.univ.filter (fun x : ZMod N => f x = 0)).map (Equiv.addRight x₀).toEmbedding := by
+      ext y
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map,
+        Equiv.coe_toEmbedding, Equiv.coe_addRight]
+      constructor
+      · intro hy
+        exact ⟨y - x₀, by rw [map_sub, hy, hx₀, sub_self], by abel⟩
+      · rintro ⟨z, hz, rfl⟩
+        rw [map_add, hz, hx₀, zero_add]
+    rw [hset, Finset.card_map]
+  -- The fibers partition `ZMod N`, whose cardinality is `N`.
+  have hpart : N = ∑ k : ZMod g, (Finset.univ.filter (fun x : ZMod N => f x = k)).card := by
+    have h := Finset.card_eq_sum_card_fiberwise
+      (s := (Finset.univ : Finset (ZMod N))) (t := (Finset.univ : Finset (ZMod g)))
+      (f := f) (fun x _ => Finset.mem_univ (f x))
+    rwa [Finset.card_univ, ZMod.card] at h
+  -- Hence `g · (fiber 0).card = N`.
+  have hg_mul : g * (Finset.univ.filter (fun x : ZMod N => f x = 0)).card = N := by
+    have h2 : (∑ k : ZMod g, (Finset.univ.filter (fun x : ZMod N => f x = k)).card)
+        = g * (Finset.univ.filter (fun x : ZMod N => f x = 0)).card := by
+      rw [Finset.sum_congr rfl (fun k _ => hequal k), Finset.sum_const, Finset.card_univ,
+        ZMod.card, smul_eq_mul]
+    rw [← h2]; exact hpart.symm
+  rw [hequal j]
+  exact (Nat.div_eq_of_eq_mul_left hg (by rw [mul_comm]; exact hg_mul.symm)).symm
+
+/-- **Relative-density increment.**  A single nonzero frequency `r ≠ 0` in the order-`g` subgroup
+with `Â(r) ≠ 0` forces a coset `j` on which the *relative* density of `A` strictly exceeds the
+ambient density:
+
+    |A| / N  <  n_j / (N/g),      where n_j = #{x ∈ A : φ x = j}.
+
+Since the coset has exactly `N/g` elements (`castHom_fiber_card`), `n_j / (N/g)` is the honest
+density of `A` on that coset.  This is the concrete density increment produced by a nonzero non-unit
+Fourier mass (`badFreqMass`, Part LIII).  See the section header for the remaining obstruction to
+turning this into a full descent. -/
+theorem exists_dense_coset_relative_density {N : ℕ} [NeZero N] {g : ℕ} [NeZero g] (hgN : g ∣ N)
+    (A : Finset (ZMod N)) {r : ZMod N} (hr : (N / g) ∣ ZMod.val r) (hr0 : r ≠ 0)
+    (hrne : fourierCoeff A r ≠ 0) :
+    ∃ j : ZMod g, (A.card : ℝ) / N <
+      (A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card / ((N / g : ℕ) : ℝ) := by
+  have hg : 0 < g := Nat.pos_of_ne_zero (NeZero.ne g)
+  have hgr : (0 : ℝ) < g := by exact_mod_cast hg
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast NeZero.pos N
+  have hMpos_nat : 0 < N / g := Nat.div_pos (Nat.le_of_dvd (NeZero.pos N) hgN) hg
+  have hMpos : (0 : ℝ) < ((N / g : ℕ) : ℝ) := by exact_mod_cast hMpos_nat
+  have hNeq : (N : ℝ) = ((N / g : ℕ) : ℝ) * g := by
+    have hdm : (N / g) * g = N := Nat.div_mul_cancel hgN
+    exact_mod_cast hdm.symm
+  obtain ⟨j, hj⟩ := exists_dense_coset_of_subgroup_freq hgN A hr hr0 hrne
+  refine ⟨j, ?_⟩
+  set n : ℝ := ((A.filter (fun x => (ZMod.castHom hgN (ZMod g)) x = j)).card : ℝ) with hn
+  -- `hj : |A|/g < n`;  clear the denominator to `|A| < n·g`.
+  rw [div_lt_iff₀ hgr] at hj
+  -- Cross-multiply the goal `|A|/N < n/(N/g)` and finish with `N = (N/g)·g`.
+  rw [div_lt_div_iff₀ hNpos hMpos, hNeq]
+  nlinarith [hj, hMpos]
+
 end Szemeredi.Roth
