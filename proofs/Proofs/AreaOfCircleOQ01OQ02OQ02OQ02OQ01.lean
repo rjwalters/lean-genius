@@ -115,4 +115,68 @@ theorem fourierCoeffOn_iteratedDeriv_even
   rw [show (I * (n : ℂ)) ^ (2 * m)
         = (-1 : ℂ) ^ m * (n : ℂ) ^ (2 * m) from by rw [mul_pow, pow_mul, I_sq]]
 
+/-- **General-order per-mode magnitude.**  Taking norms in the `k`-th derivative
+    eigenvalue identity `ĉₙ(f⁽ᵏ⁾) = (i·n)ᵏ·ĉₙ(f)` collapses the eigenvalue to its
+    modulus `‖(i·n)ᵏ‖ = |n|ᵏ` (since `‖i‖ = 1`), giving for every order `k` and every
+    nonzero mode `n`,
+
+        ‖ĉₙ(f⁽ᵏ⁾)‖ = |n|ᵏ · ‖ĉₙ(f)‖.
+
+    This is the single magnitude law behind the parent's hand-checked special cases
+    `‖ĉₙ(f'')‖ = n²·‖ĉₙ(f)‖` (`norm_fourierCoeffOn_deriv2_eq`, `k = 2`) and
+    `‖ĉₙ(f'''')‖ = n⁴·‖ĉₙ(f)‖` (`norm_fourierCoeffOn_deriv4_eq`, `k = 4`) — now at *all*
+    orders, even and odd alike, since the modulus `|n|ᵏ` erases the phase `(i)ᵏ` that
+    distinguishes them. -/
+theorem norm_fourierCoeffOn_iteratedDeriv
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) (k : ℕ) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖
+      = |(n : ℝ)| ^ k * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  rw [fourierCoeffOn_iteratedDeriv f hf hper hab n hn k, norm_mul, norm_pow]
+  have hnorm : ‖I * (n : ℂ)‖ = |(n : ℝ)| := by
+    rw [norm_mul, Complex.norm_I, one_mul, Complex.norm_intCast]
+  rw [hnorm]
+
+/-- **General-order mode kernel.**  For any order `k` and any nonzero mode `n`, the
+    `k`-th derivative annihilates the `n`-th Fourier coefficient *exactly* when `f`
+    already did:
+
+        ĉₙ(f⁽ᵏ⁾) = 0  ↔  ĉₙ(f) = 0.
+
+    Immediate from `ĉₙ(f⁽ᵏ⁾) = (i·n)ᵏ·ĉₙ(f)` and `(i·n)ᵏ ≠ 0`: differentiation scales
+    each nonzero mode by a nonzero eigenvalue power, so `d^k` has the same kernel as the
+    identity on `{n ≠ 0}`.  Generalizes the parent's `k = 2, 4` kernel lemmas
+    (`fourierCoeffOn_deriv2_eq_zero_iff`, `fourierCoeffOn_deriv4_eq_zero_iff`): the whole
+    derivative tower `f, f', f'', …` shares the same nonzero-mode support. -/
+theorem fourierCoeffOn_iteratedDeriv_eq_zero_iff
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) (k : ℕ) :
+    fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n = 0 ↔
+      fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  rw [fourierCoeffOn_iteratedDeriv f hf hper hab n hn k, mul_eq_zero]
+  have hk : (I * (n : ℂ)) ^ k ≠ 0 :=
+    pow_ne_zero k (mul_ne_zero Complex.I_ne_zero (Int.cast_ne_zero.mpr hn))
+  simp [hk]
+
+/-- **General-order damping: differentiation never shrinks a nonzero mode.**  Since a
+    nonzero integer mode has `|n| ≥ 1`, the magnitude factor `|n|ᵏ ≥ 1`, so the general
+    magnitude identity `norm_fourierCoeffOn_iteratedDeriv` yields, for every order `k` and
+    every nonzero mode `n`,
+
+        ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f⁽ᵏ⁾)‖.
+
+    The all-orders form of the parent's `norm_fourierCoeffOn_le_deriv2` (`k = 2`): each
+    derivative can only *inflate* a nonzero Fourier mode (strictly, once `|n| ≥ 2`), the
+    monotonicity that drives the Wirtinger/Poincaré spectral estimates. -/
+theorem norm_fourierCoeffOn_le_iteratedDeriv
+    (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (hper : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) (k : ℕ) :
+    ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv^[k] f) n‖ := by
+  rw [norm_fourierCoeffOn_iteratedDeriv f hf hper hab n hn k]
+  have h1 : (1 : ℝ) ≤ |(n : ℝ)| := by
+    rw [← Int.cast_abs]; exact_mod_cast Int.one_le_abs hn
+  have hpow : (1 : ℝ) ≤ |(n : ℝ)| ^ k := one_le_pow₀ h1
+  nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hpow]
+
 end IsoperimetricFourier
