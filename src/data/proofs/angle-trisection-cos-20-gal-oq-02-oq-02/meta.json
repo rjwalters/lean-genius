@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "scope-setup",
+      "title": "Scope, Imports, and the Parent Witness",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring stating the goal — that minpoly ℚ (cos 2π/n) is an irreducible factor of the Chebyshev polynomial Tₙ − 1. Imports the trigonometric/Chebyshev/totient libraries and, crucially, Proofs.AngleTrisectionCos20GalOQ02 (the parent supplying the real root identity Tₙ(cos 2π/n) = 1); opens Complex Polynomial in namespace AngleTrisectionCos20GalOQ02OQ02.",
+      "mathContext": "Goal: $\\mathrm{minpoly}_{\\mathbb{Q}}(\\cos 2\\pi/n) \\mid (T_n - 1)$ and is irreducible."
+    },
+    {
       "id": "rational-witness",
       "title": "Section I: The Rational Chebyshev Root and Nonvanishing of Tₙ − 1",
       "startLine": 47,
@@ -164,6 +172,11 @@
       "targetId": "angle-trisection-cos-20-gal",
       "relationship": "related",
       "description": "Grandparent: computes |Gal| = 3 for the cos(20°) minimal polynomial; the irreducible factor of Tₙ − 1 here is the general-n analogue of that concrete cubic."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "The classical trisection impossibility hinges on deg minpoly(cos 20°) = 3 not being a power of 2. Since cos 20° = cos 2π/18, identifying minpoly ℚ (cos 2π/n) as the degree-φ(n)/2 irreducible factor of Tₙ − 1 (this entry) is precisely the general machinery that pins that degree — the constructibility obstruction behind the classical result."
     }
   ],
   "references": [
