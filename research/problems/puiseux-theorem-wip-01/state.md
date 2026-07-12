@@ -21,7 +21,7 @@ of Laurent fields along `x ↦ x^{1/n}`.
 
 ## Attempt Count
 - Total attempts: 6
-- Current approach attempts: 1
+- Current approach attempts: 1 (Part XIV, valuation homomorphism)
 - Approaches tried: 6
 
 ## Blockers
