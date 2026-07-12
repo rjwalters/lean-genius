@@ -415,6 +415,48 @@ theorem connectedSum_sphere_totalPfaffian (n : ℕ) (N : CGBManifold)
   show 2 * cgbConst n + N.totalPfaffian - 2 * cgbConst n = N.totalPfaffian
   ring
 
+/-- **Right identity: `χ(N # S^{2n}) = χ(N)`.**  The mirror of `connectedSum_sphere_chi`
+    (the left identity `χ(S^{2n} # N) = χ(N)`).  With both sides, `S^{2n}` is a genuine
+    *two-sided* identity for connected sum on Euler characteristics — the identity axiom of
+    the connected-sum monoid the docstrings advertise. -/
+theorem connectedSum_sphere_chi_right (n : ℕ) (N : CGBManifold)
+    (h : N.halfDim = (sphereCGB n).halfDim) :
+    (connectedSumCGB N (sphereCGB n) h).chi = N.chi := by
+  rw [connectedSumCGB_chi]
+  show N.chi + (2 : ℤ) - 2 = N.chi
+  ring
+
+/-- **Commutativity on Euler characteristics: `χ(M # N) = χ(N # M)`.**  Connected sum is
+    commutative on `χ` (`χ(M#N) = M.chi + N.chi − 2` is symmetric in `M, N`), the commutativity
+    axiom of the connected-sum monoid.  Together with `connectedSumCGB_chi_assoc` and the
+    two-sided sphere identity (`connectedSum_sphere_chi` / `connectedSum_sphere_chi_right`) this
+    makes `(2n`-manifolds, `#)` a genuine *commutative* monoid on `χ`, with `χ − 2` the induced
+    additive homomorphism to `ℤ`. -/
+theorem connectedSumCGB_chi_comm (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).chi = (connectedSumCGB N M h.symm).chi := by
+  rw [connectedSumCGB_chi, connectedSumCGB_chi]; ring
+
+/-- **Associativity on Euler characteristics: `χ((M # N) # P) = χ(M # (N # P))`.**  Both sides
+    equal `M.chi + N.chi + P.chi − 4`, so connected sum is associative on `χ` — the associativity
+    axiom of the connected-sum monoid.  (The dimension hypotheses force all three `halfDim`s
+    equal, so both nested connected sums are well-formed.) -/
+theorem connectedSumCGB_chi_assoc (M N P : CGBManifold)
+    (hMN : M.halfDim = N.halfDim) (hNP : N.halfDim = P.halfDim) :
+    (connectedSumCGB (connectedSumCGB M N hMN) P (hMN.trans hNP)).chi
+      = (connectedSumCGB M (connectedSumCGB N P hNP) hMN).chi := by
+  rw [connectedSumCGB_chi, connectedSumCGB_chi, connectedSumCGB_chi, connectedSumCGB_chi]
+  ring
+
+/-- **Commutativity on the total Pfaffian: `∫Pf(M # N) = ∫Pf(N # M)`.**  The Gauss-Bonnet
+    companion of `connectedSumCGB_chi_comm`: the connected-sum total curvature
+    `M.totalPfaffian + N.totalPfaffian − 2·cgbConst` is symmetric in `M, N` because the removed
+    sphere correction `2·cgbConst M.halfDim = 2·cgbConst N.halfDim` agrees (`h : M.halfDim =
+    N.halfDim`).  So connected sum is commutative as a Chern-Gauss-Bonnet operation, not merely
+    on `χ`. -/
+theorem connectedSumCGB_totalPfaffian_comm (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).totalPfaffian = (connectedSumCGB N M h.symm).totalPfaffian := by
+  rw [connectedSumCGB_totalPfaffian, connectedSumCGB_totalPfaffian, h]; ring
+
 /-- **Genus-2 surface from two tori.** The connected sum T² # T² is the genus-2
     closed orientable surface, with χ = 0 + 0 − 2 = −2 — matching the classical
     χ(Σ_g) = 2 − 2g at g = 2. -/
