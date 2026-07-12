@@ -23,7 +23,9 @@
       "Quantitative isoperimetric stability (Bonnesen/Fuglede-type): the Hurwitz deficit is not merely nonnegative-with-equality-at-the-circle but CONTROLS each higher harmonic. Extracting one nonnegative term from the deficit HasSum (le_hasSum) and bounding it below via the sharpened per-mode gap (area_deficit_summand_ge_gap, coefficient |n|²−|n|≥2 on |n|≥2) yields 2·(‖ĉₙf‖²+‖ĉₙg‖²) ≤ normalized deficit — a mode-by-mode L²-stability estimate that has the qualitative equality-iff-circle rigidity as its degenerate (deficit=0) case.",
       "SECTION XVI aggregate stability: summing the sharp per-mode Fuglede gaps gives a SINGLE global inequality (2π)²·∑_n(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA. The weight |n|²−|n| vanishes on the three circle modes n∈{−1,0,1}, so the LHS is the total L²/H¹-distance of the curve from the family of circles — the deficit dominates ALL harmonics summed, not one at a time.",
       "Aggregation is a comparison-test argument on the deficit HasSum: gap summand is 0≤gap_n (deficit_gap_coef_nonneg: |n|²−|n|=|n|(|n|−1)≥0 for integer n) and gap_n≤deficit_n (gap_le_deficit_summand = area_deficit_summand_ge_gap in the exact shape of (HSf.add HSg).sub (HSA.mul_left 2)); Summable.of_nonneg_of_le gives summability, Summable.tsum_le_tsum dominates the tsum by the deficit total.",
-      "SECTION XVII: the standard textbook Fuglede stability inequality strips the H¹ frequency weight |n|²−|n| to a plain L²-distance-to-circle bound. Key: |n|²−|n|≥2 uniformly on |n|≥2, so 2·(unweighted tail energy) ≤ weighted gap sum ≤ deficit. Constant 2 is sharp (attained as |n|→2)."
+      "SECTION XVII: the standard textbook Fuglede stability inequality strips the H¹ frequency weight |n|²−|n| to a plain L²-distance-to-circle bound. Key: |n|²−|n|≥2 uniformly on |n|≥2, so 2·(unweighted tail energy) ≤ weighted gap sum ≤ deficit. Constant 2 is sharp (attained as |n|→2).",
+      "SECTION XVIII closes the honesty gap of SECTIONS XV-XVII: those docstrings only *asserted* the Fourier tail was an L²-distance-to-a-circle. tsum_tail_eq_sub_low is the abstract engine — for any HasSum a T over ℤ, the |n|≥2 tail sums to T - (a(-1)+a 0+a 1); the low band {-1,0,1} is finitely supported (hasSum_sum_of_ne_finset_zero) and subtracts off the full HasSum.",
+      "Fed Mathlib Parseval (hasSum_sq_fourierCoeffOn_real) into that engine: the plain unweighted tail ∑_{|n|≥2}‖ĉₙg‖² EQUALS (2π)⁻¹∫g² − (‖ĉ₋₁‖²+‖ĉ₀‖²+‖ĉ₁‖²) — a literal integral, i.e. the squared L² distance of g from its best degree-≤1 trig fit (the circle coordinate). No overclaim: RHS is total energy minus low-mode energy = Bessel distance."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
@@ -53,11 +55,16 @@
       "two_mul_tail_le_gap (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): 2·1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ (|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²), termwise weight-strip",
       "summable_tail_normSq_fourierCoeffOn: unweighted tail ∑ₙ 1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) summable (= squared L²-distance to circle family) via comparison with gap series",
       "two_mul_tsum_tail_le_normalized_deficit: 2·∑ₙ1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ (2π)⁻¹[∫(f²+g²)−2∫fg′], plain L² Fuglede analytic form",
-      "two_mul_tsum_tail_le_isoperimetric_deficit: 2·(2π)²·∑ₙ1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA, geometric Fuglede form, sharp const 2 [0-axiom]"
+      "two_mul_tsum_tail_le_isoperimetric_deficit: 2·(2π)²·∑ₙ1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA, geometric Fuglede form, sharp const 2 [0-axiom]",
+      "two_le_natAbs_of_not_mem_low (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): n∉{-1,0,1} ⟹ 2≤n.natAbs, via push_neg+omega (omega understands Int.natAbs)",
+      "tsum_tail_eq_sub_low (private engine): HasSum a T ⟹ ∑_{|n|≥2} a n = T-(a(-1)+a 0+a 1); Finset.sum_congr rfl + if_neg(by decide) evaluates the low-band sum, HasSum.sub off the finitely-supported complement, HasSum.tsum_eq reads value",
+      "tsum_tail_normSq_fourierCoeffOn_eq_integral_sub_low: per-coordinate plain tail = (2π)⁻¹∫g² − low modes [0-axiom]",
+      "tsum_tail_normSq_fourierCoeffOn_add_eq_integral_sub_low: joint (f,g) tail = (2π)⁻¹∫f²+(2π)⁻¹∫g² − low modes = squared L² distance of curve from family of circles [0-axiom]",
+      "two_mul_integral_tail_le_normalized_deficit: explicit-integral Fuglede — 2·(literal L² distance-to-circle) ≤ normalized Hurwitz deficit, geometric content of the abstract tail bound made fully explicit [0-axiom]"
     ],
-    "progressSummary": "COMPLETE + EXTENDED: SECTION XVII adds the standard textbook Fuglede stability — the isoperimetric deficit dominates the plain (unweighted) squared L²-distance of the curve from a circle with sharp constant 2, complementing the earlier H¹-weighted aggregate bound. All 0-axiom.",
+    "progressSummary": "COMPLETE + EXTENDED through SECTION XVIII: the plain-L² Fuglede tail is now a LITERAL integral (total energy minus the three low modes = squared L²-distance from the best-fit circle), closing the geometric interpretation that SECTIONS XV-XVII only asserted in docstrings; 2·(explicit distance) ≤ deficit. All 0-axiom (propext/Choice/Quot only).",
     "nextSteps": [
-      "Problem is fully solved through SECTION XVII (isoperimetric ineq + full equality-IFF-circle + per-mode/aggregate/plain-L² quantitative stability). Possible further: express tail as explicit distance to a NAMED best-fit circle (recentering by mean + first harmonic), or a lower Bonnesen-type companion (deficit ≤ area·(R_out−R_in)-type)."
+      "Optional: identify (2π)⁻¹∫g² − low modes with an explicit ∫|g−S₁g|² integral (partial-Fourier-sum form) via mode orthogonality, or a lower Bonnesen-type companion (deficit ≤ area·(R_out−R_in)-type) — the latter needs inradius/circumradius geometry outside the current Fourier framework (>500 lines, likely blocked)."
     ]
   },
   "relatedProofs": [

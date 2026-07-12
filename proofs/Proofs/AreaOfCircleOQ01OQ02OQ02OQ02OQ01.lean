@@ -2115,4 +2115,154 @@ theorem two_mul_tsum_tail_le_isoperimetric_deficit
   rw [hLHS] at hmul
   exact hmul
 
+-- ============================================================
+-- SECTION XVIII: the tail energy as a literal integral —
+--   Parseval closes the "L²-distance to a circle" interpretation
+-- ============================================================
+
+/-- **A Fourier index outside `{−1, 0, 1}` has `|n| ≥ 2`.**  The three modes dropped to form a
+    circle are exactly the mean `n = 0` and the two first harmonics `n = ±1`; everything else is
+    a genuine higher harmonic. -/
+private theorem two_le_natAbs_of_not_mem_low {n : ℤ}
+    (hn : n ∉ ({-1, 0, 1} : Finset ℤ)) : 2 ≤ n.natAbs := by
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+  push_neg at hn
+  omega
+
+/-- **Tail of a convergent `ℤ`-indexed series = total minus the three central terms.**  If
+    `a : ℤ → ℝ` sums to `T`, then the higher-frequency tail (`|n| ≥ 2`) sums to `T` with the
+    central band `n ∈ {−1, 0, 1}` removed:
+
+        ∑_{|n|≥2} a n  =  T − (a(−1) + a 0 + a 1) .
+
+    This is the abstract engine that converts a Parseval `HasSum` into an explicit
+    distance-to-a-circle formula.  Proof: the complementary low-mode family
+    `n ↦ 1_{|n|<2}·a n` is finitely supported on `{−1, 0, 1}`, so it has a `HasSum`
+    (`hasSum_sum_of_ne_finset_zero`); subtracting it from the full `HasSum` leaves exactly the
+    tail, whose value is read off by `HasSum.tsum_eq`. -/
+private theorem tsum_tail_eq_sub_low {a : ℤ → ℝ} {T : ℝ} (hHS : HasSum a T) :
+    ∑' n : ℤ, (if 2 ≤ n.natAbs then a n else 0) = T - (a (-1) + a 0 + a 1) := by
+  -- the low modes, as a finitely supported family on {-1, 0, 1}
+  have hlow : HasSum (fun n : ℤ => if 2 ≤ n.natAbs then 0 else a n)
+      (∑ n ∈ ({-1, 0, 1} : Finset ℤ), if 2 ≤ n.natAbs then 0 else a n) := by
+    apply hasSum_sum_of_ne_finset_zero
+    intro n hn
+    rw [if_pos (two_le_natAbs_of_not_mem_low hn)]
+  -- evaluate that finset sum: on {-1,0,1} the guard is always false
+  have hlowsum : (∑ n ∈ ({-1, 0, 1} : Finset ℤ), if 2 ≤ n.natAbs then 0 else a n)
+      = a (-1) + a 0 + a 1 := by
+    have hcong : (∑ n ∈ ({-1, 0, 1} : Finset ℤ), if 2 ≤ n.natAbs then 0 else a n)
+        = ∑ n ∈ ({-1, 0, 1} : Finset ℤ), a n := by
+      apply Finset.sum_congr rfl
+      intro n hn
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+      rcases hn with h | h | h <;> subst h <;> rw [if_neg (by decide)]
+    rw [hcong, Finset.sum_insert (by decide), Finset.sum_insert (by decide),
+      Finset.sum_singleton]
+    ring
+  -- tail = a − low, pointwise
+  have hpt : (fun n : ℤ => if 2 ≤ n.natAbs then a n else 0)
+      = fun n => a n - (if 2 ≤ n.natAbs then 0 else a n) := by
+    funext n; by_cases h : 2 ≤ n.natAbs <;> simp [h]
+  have hTail : HasSum (fun n : ℤ => if 2 ≤ n.natAbs then a n else 0)
+      (T - ∑ n ∈ ({-1, 0, 1} : Finset ℤ), if 2 ≤ n.natAbs then 0 else a n) := by
+    rw [hpt]; exact hHS.sub hlow
+  rw [hTail.tsum_eq, hlowsum]
+
+/-- **The plain tail energy IS the Parseval integral minus the three low modes.**  For a
+    continuous period-`2π` real function `g`, the *unweighted* higher-harmonic energy
+    (all `|n| ≥ 2`) equals the total `L²` energy `(2π)⁻¹∫g²` with the mean (`n = 0`) and the two
+    first harmonics (`n = ±1`) subtracted:
+
+        ∑_{|n|≥2} ‖ĉₙ(g)‖²  =  (2π)⁻¹∫₀^{2π} g²  −  (‖ĉ₋₁(g)‖² + ‖ĉ₀(g)‖² + ‖ĉ₁(g)‖²) .
+
+    By Bessel/Parseval the right-hand side is precisely the squared `L²`-distance of `g` from its
+    best degree-`≤ 1` trigonometric fit `t ↦ ĉ₀ + ĉ₁e^{it} + ĉ₋₁e^{−it}` — the coordinate of a
+    circle.  So this turns the abstract Fourier tail that appears throughout the stability
+    estimates (SECTIONS XV–XVII) into an honest, computable integral distance-to-a-circle,
+    discharging the geometric interpretation those docstrings only asserted.  Proof: Mathlib's
+    Parseval `HasSum` (`hasSum_sq_fourierCoeffOn_real`) fed to `tsum_tail_eq_sub_low`. -/
+theorem tsum_tail_normSq_fourierCoeffOn_eq_integral_sub_low
+    {g : ℝ → ℝ} (hg : Continuous g) (hab : (0 : ℝ) < 2 * π) :
+    ∑' n : ℤ, (if 2 ≤ n.natAbs then ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 else 0)
+      = (2 * π)⁻¹ * (∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2)
+        - (‖fourierCoeffOn hab (ofReal ∘ g) (-1)‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) 0‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) 1‖ ^ 2) := by
+  have hHS : HasSum (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      ((2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2) := by
+    have h := hasSum_sq_fourierCoeffOn_real hg hab
+    simpa [sub_zero, smul_eq_mul] using h
+  exact tsum_tail_eq_sub_low hHS
+
+/-- **Joint (two-coordinate) tail energy as an explicit integral.**  For continuous period-`2π`
+    coordinates `f, g` of a closed plane curve, the joint higher-harmonic energy equals the total
+    `L²` energy of the pair minus their central-band modes:
+
+        ∑_{|n|≥2} (‖ĉₙ(f)‖² + ‖ĉₙ(g)‖²)
+          =  (2π)⁻¹∫f² + (2π)⁻¹∫g²
+             − ((‖ĉ₋₁(f)‖²+‖ĉ₋₁(g)‖²) + (‖ĉ₀(f)‖²+‖ĉ₀(g)‖²) + (‖ĉ₁(f)‖²+‖ĉ₁(g)‖²)) .
+
+    This is the squared `L²`-distance of the curve `t ↦ (f(t), g(t))` from the family of circles.
+    Proof: add the two per-coordinate Parseval `HasSum`s and apply `tsum_tail_eq_sub_low`. -/
+theorem tsum_tail_normSq_fourierCoeffOn_add_eq_integral_sub_low
+    {f g : ℝ → ℝ} (hf : Continuous f) (hg : Continuous g) (hab : (0 : ℝ) < 2 * π) :
+    ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2 + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      = ((2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+          + (2 * π)⁻¹ * (∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2)
+        - ((‖fourierCoeffOn hab (ofReal ∘ f) (-1)‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) (-1)‖ ^ 2)
+            + (‖fourierCoeffOn hab (ofReal ∘ f) 0‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) 0‖ ^ 2)
+            + (‖fourierCoeffOn hab (ofReal ∘ f) 1‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) 1‖ ^ 2)) := by
+  have hHS : HasSum
+      (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      (((2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+        + (2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2) := by
+    have hf' : HasSum (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2)
+        ((2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2) := by
+      simpa [sub_zero, smul_eq_mul] using hasSum_sq_fourierCoeffOn_real hf hab
+    have hg' : HasSum (fun n : ℤ => ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+        ((2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2) := by
+      simpa [sub_zero, smul_eq_mul] using hasSum_sq_fourierCoeffOn_real hg hab
+    exact hf'.add hg'
+  exact tsum_tail_eq_sub_low hHS
+
+/-- **Explicit-integral Fuglede stability — analytic form.**  Substituting the joint integral
+    identity into the aggregate weighted bound gives the plain `L²` Fuglede inequality with the
+    tail written as an *honest integral distance-to-a-circle* rather than an abstract Fourier
+    tail: for smooth (`C^∞`) period-`2π` coordinates `f, g`,
+
+        2·[ (2π)⁻¹∫f² + (2π)⁻¹∫g²
+              − ((‖ĉ₋₁f‖²+‖ĉ₋₁g‖²)+(‖ĉ₀f‖²+‖ĉ₀g‖²)+(‖ĉ₁f‖²+‖ĉ₁g‖²)) ]
+          ≤ (2π)⁻¹·[ ∫((f')²+(g')²) − 2∫ f·g' ] .
+
+    The bracketed quantity on the left is the squared `L²`-deviation of the curve from the nearest
+    circle; twice it is bounded by the normalized Hurwitz deficit, with equality iff every higher
+    harmonic vanishes (`isoperimetric_saturation_iff_circle`).  This is the geometric content of
+    `two_mul_tsum_tail_le_normalized_deficit` made fully explicit.  Proof: rewrite the abstract
+    tail in that bound by the joint integral identity. -/
+theorem two_mul_integral_tail_le_normalized_deficit
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    2 * (((2 * π)⁻¹ * ∫ x in (0 : ℝ)..(2 * π), (f x) ^ 2)
+          + (2 * π)⁻¹ * (∫ x in (0 : ℝ)..(2 * π), (g x) ^ 2)
+        - ((‖fourierCoeffOn hab (ofReal ∘ f) (-1)‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) (-1)‖ ^ 2)
+            + (‖fourierCoeffOn hab (ofReal ∘ f) 0‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) 0‖ ^ 2)
+            + (‖fourierCoeffOn hab (ofReal ∘ f) 1‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) 1‖ ^ 2)))
+      ≤ (2 * π)⁻¹ * ((∫ x in (0 : ℝ)..(2 * π), ((deriv f x) ^ 2 + (deriv g x) ^ 2))
+          - 2 * ∫ x in (0 : ℝ)..(2 * π), f x * deriv g x) := by
+  have hcore := two_mul_tsum_tail_le_normalized_deficit hf hg hfper hgper hab
+  rw [tsum_tail_normSq_fourierCoeffOn_add_eq_integral_sub_low hf.continuous hg.continuous hab]
+    at hcore
+  exact hcore
+
 end IsoperimetricFourier
