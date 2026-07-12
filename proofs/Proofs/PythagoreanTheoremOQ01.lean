@@ -497,6 +497,49 @@ theorem hippocrates_lunes (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ))
   have hsemi := semicircles_on_sides A B C hperp
   linarith
 
+/-- **Thales' theorem / the circumradius of a right triangle.** The right-angle vertex `C`
+lies on the circle whose diameter is the hypotenuse `AB`: the hypotenuse midpoint
+`M = A + ½·(B − A)` is at distance exactly `‖A − B‖ / 2` from `C`. Equivalently, the
+circumradius of a right triangle is half its hypotenuse. This is precisely the inscription of
+`C` in the hypotenuse semicircle that `hippocrates_lunes` invokes ("by Thales the latter passes
+through the right-angle vertex `C`") but does not itself prove. The proof writes
+`M − C = ½·((A−C)+(B−C))` and evaluates
+`‖(A−C)+(B−C)‖² = ‖A−C‖² + 2⟪A−C,B−C⟫ + ‖B−C‖² = ‖A−C‖² + ‖B−C‖² = ‖A−B‖²`, using the right
+angle (`hperp`) and `pythagorean_core`. -/
+theorem thales_circumradius (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2 := by
+  have hsum_sq : ‖(A - C) + (B - C)‖ ^ 2 = ‖A - B‖ ^ 2 := by
+    rw [norm_add_sq_real, hperp]
+    have hp := pythagorean_core A B C hperp
+    linarith
+  have hsum : ‖(A - C) + (B - C)‖ = ‖A - B‖ := by
+    have h1 := norm_nonneg ((A - C) + (B - C))
+    have h2 := norm_nonneg (A - B)
+    nlinarith [hsum_sq, h1, h2]
+  have hdecomp : (A + (2⁻¹ : ℝ) • (B - A)) - C = (2⁻¹ : ℝ) • ((A - C) + (B - C)) := by
+    module
+  rw [hdecomp, norm_smul, hsum, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)]
+  ring
+
+/-- **The hypotenuse midpoint is the circumcenter of the right triangle.** All three vertices
+lie at the same distance `‖A − B‖ / 2` from the hypotenuse midpoint `M = A + ½·(B − A)`: the two
+hypotenuse endpoints trivially (`M` is their midpoint), and the right-angle vertex `C` by
+`thales_circumradius`. So the circumcircle of a right triangle is centred at the hypotenuse
+midpoint with radius half the hypotenuse — the converse-of-Thales companion of
+`thales_circumradius`. -/
+theorem hypotenuse_midpoint_circumcenter (A B C : F) (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
+    ‖(A + (2⁻¹ : ℝ) • (B - A)) - A‖ = ‖A - B‖ / 2 ∧
+      ‖(A + (2⁻¹ : ℝ) • (B - A)) - B‖ = ‖A - B‖ / 2 ∧
+      ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2 := by
+  refine ⟨?_, ?_, thales_circumradius A B C hperp⟩
+  · have hd : (A + (2⁻¹ : ℝ) • (B - A)) - A = (2⁻¹ : ℝ) • (B - A) := by module
+    rw [hd, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹),
+      norm_sub_rev B A]
+    ring
+  · have hd : (A + (2⁻¹ : ℝ) • (B - A)) - B = (2⁻¹ : ℝ) • (A - B) := by module
+    rw [hd, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)]
+    ring
+
 #check @einstein_pythagorean
 #check @pythagorean_via_altitude
 #check @geometric_mean_A
