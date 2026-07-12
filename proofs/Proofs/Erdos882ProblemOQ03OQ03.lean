@@ -212,4 +212,84 @@ theorem antichain_not_sufficient :
     ∃ A : Finset ℕ, A.card = 3 ∧ DivisibilityFree A ∧ ∀ n, ¬ ValidSubset n A :=
   ⟨{2, 3, 5}, by decide, divisibilityFree_two_three_five, not_validSubset_two_three_five⟩
 
+/-! ## Validity is a hereditary set system (independence system)
+
+Beyond the base-case sharpness above, `ValidSubset n` has a clean *structural*
+shape: it is **downward closed** — every subset of a valid set is valid — and it
+**only grows** as the ambient range `n` widens.  Together with the trivial base
+cases (`∅` and every in-range singleton are valid) this exhibits the valid
+subsets of `{1,…,n}` as an *independence system* (abstract simplicial complex).
+The extremal `(1+o(1))·log₂ n` bound of Erdős #882 is exactly the maximal-face
+size of this complex; the lemmas here are the elementary closure properties that
+any such bound implicitly relies on. -/
+
+/-- **`subsetSums` is monotone in the ground set.**  Enlarging `A` to `B ⊇ A` can
+    only add subset sums: every non-empty subset of `A` is a non-empty subset of
+    `B`, so it still contributes its sum. -/
+theorem subsetSums_mono {A B : Finset ℕ} (h : A ⊆ B) :
+    subsetSums A ⊆ subsetSums B := by
+  intro m hm
+  unfold subsetSums nonemptySubsets at hm ⊢
+  rw [Finset.mem_image] at hm ⊢
+  obtain ⟨S, hS, rfl⟩ := hm
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  refine ⟨S, ?_, rfl⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hS.1.trans h, hS.2⟩
+
+/-- **`DivisibilityFree` is inherited by subsets.**  Being a divisibility
+    antichain is a downward-closed property. -/
+theorem DivisibilityFree.subset {S T : Finset ℕ} (hT : DivisibilityFree T)
+    (hST : S ⊆ T) : DivisibilityFree S :=
+  fun a ha b hb hab => hT a (hST ha) b (hST hb) hab
+
+/-- **Validity is downward closed.**  Every subset `B ⊆ A` of a valid set is
+    itself valid: the range bounds pass to elements of `B`, and
+    `subsetSums B ⊆ subsetSums A` (`subsetSums_mono`) keeps the sum set
+    divisibility-free (`DivisibilityFree.subset`).  This makes the valid subsets
+    of `{1,…,n}` an independence system. -/
+theorem validSubset_subset {n : ℕ} {A B : Finset ℕ} (hA : ValidSubset n A)
+    (hBA : B ⊆ A) : ValidSubset n B :=
+  ⟨fun a ha => hA.1 a (hBA ha), hA.2.subset (subsetSums_mono hBA)⟩
+
+/-- **Validity is monotone in the range `n`.**  Widening the ambient interval
+    `{1,…,n}` never destroys validity: the divisibility-free condition on the sum
+    set does not mention `n`, and the only `n`-dependent clause is the upper bound
+    `a ≤ n`, which is preserved when `n` increases. -/
+theorem validSubset_mono_n {n m : ℕ} {A : Finset ℕ} (hA : ValidSubset n A)
+    (hnm : n ≤ m) : ValidSubset m A :=
+  ⟨fun a ha => ⟨(hA.1 a ha).1, (hA.1 a ha).2.trans hnm⟩, hA.2⟩
+
+/-- The empty set is valid for every `n`: it has no elements and its sum set is
+    empty, so both clauses hold vacuously.  (The empty face of the complex.) -/
+theorem validSubset_empty (n : ℕ) : ValidSubset n (∅ : Finset ℕ) := by
+  refine ⟨by simp, ?_⟩
+  have hsub : subsetSums (∅ : Finset ℕ) = ∅ := by
+    unfold subsetSums nonemptySubsets; simp
+  rw [hsub]
+  intro a ha; simp at ha
+
+/-- Every in-range singleton `{a}` (with `1 ≤ a ≤ n`) is valid: its only non-empty
+    subset is `{a}` itself, so every subset sum equals `a` and the one-element sum
+    set is vacuously divisibility-free.  (The vertices of the complex.) -/
+theorem validSubset_singleton {n a : ℕ} (ha : 1 ≤ a ∧ a ≤ n) :
+    ValidSubset n ({a} : Finset ℕ) := by
+  refine ⟨?_, ?_⟩
+  · intro x hx; rw [Finset.mem_singleton] at hx; subst hx; exact ha
+  · have hmem : ∀ m ∈ subsetSums ({a} : Finset ℕ), m = a := by
+      intro m hm
+      unfold subsetSums nonemptySubsets at hm
+      rw [Finset.mem_image] at hm
+      obtain ⟨S, hS, rfl⟩ := hm
+      rw [Finset.mem_filter, Finset.mem_powerset] at hS
+      obtain ⟨hSsub, hSne⟩ := hS
+      have hSa : S = {a} := by
+        rw [Finset.subset_singleton_iff] at hSsub
+        rcases hSsub with h | h
+        · exact absurd h hSne
+        · exact h
+      subst hSa; simp
+    intro x hx y hy hxy
+    exact absurd ((hmem x hx).trans (hmem y hy).symm) hxy
+
 end Erdos882OQ03OQ03
