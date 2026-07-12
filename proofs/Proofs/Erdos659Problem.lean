@@ -502,6 +502,53 @@ theorem representable_mod8_ne_five_seven {n : ℕ} (hn : n ∈ representable_x2_
   ⟨fun h => not_representable_of_mod8 n (Or.inl h) hn,
    fun h => not_representable_of_mod8 n (Or.inr h) hn⟩
 
+/-- **Sharpness of the mod-8 obstruction (attained side).** The set of residues mod 8
+    actually *attained* by representable numbers is **exactly** `{0, 1, 2, 3, 4, 6}`.
+    The `⊆` inclusion is the necessity lemma `representable_mod8_ne_five_seven` (residues
+    `5, 7` are excluded) together with `n % 8 < 8`; the `⊇` inclusion exhibits an explicit
+    representable witness for each of the six permitted residues (`1, 2, 3, 4, 6, 8`). This
+    complements `not_representable_of_mod8`: not only are `5, 7` blocked, but *every* other
+    residue occurs, so the mod-8 test is sharp as a congruence filter. -/
+theorem representable_mod8_image :
+    {r : ℕ | ∃ n, n ∈ representable_x2_2y2 ∧ n % 8 = r} = {0, 1, 2, 3, 4, 6} := by
+  ext r
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨n, hn, rfl⟩
+    have h57 := representable_mod8_ne_five_seven hn
+    have hlt : n % 8 < 8 := Nat.mod_lt n (by norm_num)
+    omega
+  · intro hr
+    rcases hr with h | h | h | h | h | h <;> subst h
+    · exact ⟨8, ⟨0, 2, by norm_num⟩, by norm_num⟩
+    · exact ⟨1, one_representable, by norm_num⟩
+    · exact ⟨2, two_representable, by norm_num⟩
+    · exact ⟨3, three_representable, by norm_num⟩
+    · exact ⟨4, ⟨2, 0, by norm_num⟩, by norm_num⟩
+    · exact ⟨6, ⟨2, 1, by norm_num⟩, by norm_num⟩
+
+/-- **Sharpness of the mod-8 obstruction (blocked side).** The residues mod 8 that *block*
+    representability — those `r < 8` such that no `n ≡ r (mod 8)` is representable — are
+    **exactly** `{5, 7}`. `⊇`: `not_representable_of_mod8`. `⊆`: any other residue `r < 8`
+    lies in `{0,1,2,3,4,6}`, which by `representable_mod8_image` is attained by some
+    representable `n`, contradicting the blocking hypothesis. This is the exact statement
+    that the mod-8 congruence obstruction is `{5, 7}` and nothing more. -/
+theorem mod8_blocking_residues :
+    {r : ℕ | r < 8 ∧ ∀ n, n % 8 = r → n ∉ representable_x2_2y2} = {5, 7} := by
+  ext r
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨hlt, hblock⟩
+    by_contra hne
+    have hr6 : r ∈ ({0, 1, 2, 3, 4, 6} : Set ℕ) := by
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff]; omega
+    rw [← representable_mod8_image] at hr6
+    obtain ⟨n, hn, hnr⟩ := hr6
+    exact hblock n hnr hn
+  · intro hr
+    refine ⟨by omega, fun n hn => not_representable_of_mod8 n ?_⟩
+    rcases hr with h | h <;> subst h <;> [left; right] <;> exact hn
+
 /-- **Strict upper count once a gap appears: `B₂(N) < N` for `N ≥ 5`.** Sharpening `B2_le`
     (`B₂(N) ≤ N`): as soon as the window reaches the first non-representable integer `5`
     (`five_not_representable`), the counted set is a *proper* subset of `Icc 1 N`, so the
