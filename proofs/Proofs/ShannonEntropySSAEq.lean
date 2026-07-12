@@ -600,4 +600,75 @@ theorem conditioning_reduces_entropy_eq_iff {α β γ : Type*}
   · intro h; linarith
   · intro h; linarith
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART VI: Symmetry of conditional mutual information  I(X;Z|Y) = I(Z;X|Y)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- Flatten a triple `Finset`-sum over `α × β × γ` into a single sum over the
+    product type, so that a coordinate permutation becomes an `Equiv` reindexing. -/
+private lemma triple_sum_prod {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ] (f : α → β → γ → ℝ) :
+    (∑ x : α, ∑ y : β, ∑ z : γ, f x y z)
+      = ∑ w : α × β × γ, f w.1 w.2.1 w.2.2 := by
+  rw [Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [Fintype.sum_prod_type]
+
+/-- The `X ↔ Z` reflection of a joint law: `reflectXZ p (z,y,x) = p (x,y,z)`.
+    Reflecting the law and re-reading it as a law on `Z – Y – X` swaps the two
+    outer marginals (`marginalXY ↔ marginalYZ`) while fixing the middle marginal
+    `marginalY_3`; it is the joint distribution of `(Z, Y, X)`. -/
+noncomputable def reflectXZ {α β γ : Type*}
+    (pXYZ : α × β × γ → ℝ) : γ × β × α → ℝ :=
+  fun q => pXYZ (q.2.2, q.2.1, q.1)
+
+/-- **Symmetry of conditional mutual information.**  `I(X;Z|Y) = I(Z;X|Y)`:
+    the conditional mutual information is invariant under exchanging the two outer
+    variables `X` and `Z`.  Concretely, reflecting the joint law by
+    `(z,y,x) ↦ (x,y,z)` leaves `cmiSum` unchanged.  Combined with
+    `ssa_deficit_eq_cmi`, this says the strong-subadditivity deficit
+    `H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y)` is symmetric in `X` and `Z` — as it must
+    be, since `H(X,Y,Z) = H(Z,Y,X)` and the middle marginal `H(Y)` is fixed while
+    the two outer marginals merely swap.  The proof reindexes the defining triple
+    sum by the coordinate transposition; the summand is invariant because its
+    numerator `p·p_Y` is symmetric and its denominator `p_{XY}·p_{YZ}` only
+    commutes. -/
+theorem cmiSum_reflectXZ {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    cmiSum (reflectXZ pXYZ) = cmiSum pXYZ := by
+  unfold cmiSum
+  dsimp only [reflectXZ]
+  rw [triple_sum_prod, triple_sum_prod]
+  refine (Fintype.sum_equiv
+    { toFun := fun (w : α × β × γ) => (w.2.2, w.2.1, w.1)
+      invFun := fun (w : γ × β × α) => (w.2.2, w.2.1, w.1)
+      left_inv := fun ⟨_, _, _⟩ => rfl
+      right_inv := fun ⟨_, _, _⟩ => rfl } _ _ ?_).symm
+  rintro ⟨x, y, z⟩
+  dsimp only [Equiv.coe_fn_mk]
+  by_cases h : pXYZ (x, y, z) = 0
+  · simp [h]
+  · rw [if_neg h, if_neg h]
+    exact congrArg (fun t => pXYZ (x, y, z) * Real.log t)
+      (by rw [show (∑ x' : γ, ∑ z' : α, pXYZ (z', y, x'))
+                   = ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') from Finset.sum_comm]; ring)
+
+/-- **Symmetry of the strong-subadditivity deficit.**  The SSA deficit is
+    unchanged under swapping the roles of the outer variables `X` and `Z`, stated
+    at the level of Shannon entropies of the reflected law.  This is the
+    entropy-side reading of `cmiSum_reflectXZ`. -/
+theorem ssa_deficit_reflectXZ {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' (marginalXY (reflectXZ pXYZ))
+        + shannonEntropy' (marginalYZ (reflectXZ pXYZ))
+        - shannonEntropy' (reflectXZ pXYZ)
+        - shannonEntropy' (marginalY_3 (reflectXZ pXYZ))
+      = shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)
+        - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ) := by
+  have hpr : ∀ xyz, 0 ≤ reflectXZ pXYZ xyz := fun _ => hp _
+  rw [ssa_deficit_eq_cmi hpr, ssa_deficit_eq_cmi hp, cmiSum_reflectXZ]
+
 end InformationTheory
