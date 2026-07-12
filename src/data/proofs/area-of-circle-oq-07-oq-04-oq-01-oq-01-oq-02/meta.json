@@ -31,7 +31,8 @@
       "The product-Fubini step holds for EVERY real weight vector b — no positivity or integrability hypothesis — because the closed value of each factor is supplied by integral_gaussian, which is itself unconditional; positivity is needed only later to write the determinant under a single square root.",
       "The product of weights ∏ᵢ bᵢ is exactly the determinant of the diagonal matrix diag(b₁,…,bₙ), so the closed form π^{n/2}/√(∏ᵢ bᵢ) is literally the diagonal instance of the general quadratic-form Gaussian π^{n/2}/√(det A).",
       "The two algebraic identities that assemble the determinant form — ∏ᵢ √bᵢ = √(∏ᵢ bᵢ) (multiplicativity of the square root on nonnegatives, via rpow at exponent 1/2) and (√π)ⁿ = π^{n/2} — are handled uniformly through Real.sqrt_eq_rpow and the rpow power laws.",
-      "Setting bᵢ = c collapses the product back to a power and recovers the parent's (π/c)^{n/2}, certifying this entry as a strict generalization rather than a parallel result."
+      "Setting bᵢ = c collapses the product back to a power and recovers the parent's (π/c)^{n/2}, certifying this entry as a strict generalization rather than a parallel result.",
+      "Probabilistically, the weight bᵢ is an inverse variance: e^{-bᵢ xᵢ²} is (unnormalized) the density of an independent centered Gaussian with variance σᵢ² = 1/(2bᵢ). The anisotropic integrand is thus a product of independent, differently-scaled coordinates — a diagonal covariance Σ = diag(σ₁²,…,σₙ²) — and the factor √(∏ᵢ bᵢ) = √(det diag b) in the denominator is exactly the |Σ|^{-1/2} that normalizes the multivariate normal density (Bishop, PRML §2.3). Anisotropy is precisely the statement that the coordinates, though still independent, no longer share a common scale."
     ]
   },
   "sections": [
