@@ -719,4 +719,138 @@ theorem integral_sq_iteratedDeriv_eq_iff_first_harmonic
   · intro h
     exact integral_sq_iteratedDeriv_eq_of_first_harmonic f hf hper hab k hk h
 
+
+open ComplexConjugate
+
+-- ============================================================
+-- SECTION IX: bilinear (polarized) Parseval identity
+--             — the area cross-term ∫ f·g in Fourier coordinates
+-- ============================================================
+
+/-- **Additivity of `fourierCoeffOn`** for continuous `ℂ`-valued functions on `[a, b]`.
+    Mathlib supplies `fourierCoeffOn.const_smul` but no additivity lemma; continuity makes
+    `fourier (-n) • F` interval-integrable, so the integral form `fourierCoeffOn_eq_integral`
+    splits over the sum. -/
+private theorem fourierCoeffOn_add_continuous {a b : ℝ} (hab : a < b)
+    {F G : ℝ → ℂ} (hF : Continuous F) (hG : Continuous G) (n : ℤ) :
+    fourierCoeffOn hab (fun x => F x + G x) n
+      = fourierCoeffOn hab F n + fourierCoeffOn hab G n := by
+  have hcoe : Continuous (fun x : ℝ => (fourier (-n)) ((x : AddCircle (b - a)))) :=
+    (map_continuous (fourier (-n))).comp (AddCircle.continuous_mk' _)
+  have hIF : IntervalIntegrable
+      (fun x => (fourier (-n)) ((x : AddCircle (b - a))) • F x) volume a b :=
+    (hcoe.smul hF).intervalIntegrable _ _
+  have hIG : IntervalIntegrable
+      (fun x => (fourier (-n)) ((x : AddCircle (b - a))) • G x) volume a b :=
+    (hcoe.smul hG).intervalIntegrable _ _
+  rw [fourierCoeffOn_eq_integral (fun x => F x + G x) n hab,
+      fourierCoeffOn_eq_integral F n hab, fourierCoeffOn_eq_integral G n hab, ← smul_add]
+  congr 1
+  rw [← intervalIntegral.integral_add hIF hIG]
+  apply intervalIntegral.integral_congr
+  intro x _
+  simp only [smul_add]
+
+/-- **Subtractivity of `fourierCoeffOn`** for continuous `ℂ`-valued functions on `[a, b]`. -/
+private theorem fourierCoeffOn_sub_continuous {a b : ℝ} (hab : a < b)
+    {F G : ℝ → ℂ} (hF : Continuous F) (hG : Continuous G) (n : ℤ) :
+    fourierCoeffOn hab (fun x => F x - G x) n
+      = fourierCoeffOn hab F n - fourierCoeffOn hab G n := by
+  have hcoe : Continuous (fun x : ℝ => (fourier (-n)) ((x : AddCircle (b - a)))) :=
+    (map_continuous (fourier (-n))).comp (AddCircle.continuous_mk' _)
+  have hIF : IntervalIntegrable
+      (fun x => (fourier (-n)) ((x : AddCircle (b - a))) • F x) volume a b :=
+    (hcoe.smul hF).intervalIntegrable _ _
+  have hIG : IntervalIntegrable
+      (fun x => (fourier (-n)) ((x : AddCircle (b - a))) • G x) volume a b :=
+    (hcoe.smul hG).intervalIntegrable _ _
+  rw [fourierCoeffOn_eq_integral (fun x => F x - G x) n hab,
+      fourierCoeffOn_eq_integral F n hab, fourierCoeffOn_eq_integral G n hab, ← smul_sub]
+  congr 1
+  rw [← intervalIntegral.integral_sub hIF hIG]
+  apply intervalIntegral.integral_congr
+  intro x _
+  simp only [smul_sub]
+
+/-- **Polarization identity in `ℂ`:** `‖u + v‖² − ‖u − v‖² = 4·Re(u · conj v)`. -/
+private theorem norm_add_sq_sub_norm_sub_sq (u v : ℂ) :
+    ‖u + v‖ ^ 2 - ‖u - v‖ ^ 2 = 4 * (u * conj v).re := by
+  rw [Complex.sq_norm, Complex.sq_norm]
+  simp only [Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.sub_re,
+    Complex.sub_im, Complex.mul_re, Complex.conj_re, Complex.conj_im]
+  ring
+
+/-- **Bilinear (polarized) Parseval identity on `[0, 2π]`.**  For continuous real functions
+    `f, g`, the real parts of the cross products of their Fourier coefficients sum to the
+    normalised `L²` inner product:
+
+        ∑ₙ Re( ĉₙ(f) · conj ĉₙ(g) )  =  (2π)⁻¹ ∫₀^{2π} f·g .
+
+    This is the polarization of Mathlib's diagonal Parseval `hasSum_sq_fourierCoeffOn`
+    (recovered at `f = g`), obtained from the parallelogram identity
+    `‖u+v‖²−‖u−v‖² = 4·Re(u·conj v)` applied to the coefficient sequences of `f ± g`.  It is
+    the analytic cross-term underlying the Hurwitz–Fourier area formula `A = ∮ x dy = ∫ x·y'`,
+    hence the isoperimetric inequality; Mathlib supplies only the squared-norm (`f = g`) case.
+
+    Proof.  Apply the diagonal Parseval `HasSum` to the continuous functions `f + g` and `f − g`;
+    additivity of `fourierCoeffOn` identifies their coefficients with `ĉₙ(f) ± ĉₙ(g)`.  Subtracting
+    the two `HasSum`s, the termwise polarization identity collapses the summand to
+    `4·Re(ĉₙ(f)·conj ĉₙ(g))`, and the integral identity
+    `∫(f+g)² − ∫(f−g)² = 4∫f·g` collapses the total to `4·(2π)⁻¹∫f·g`; dividing by `4` finishes. -/
+theorem hasSum_re_fourierCoeffOn_mul_conj_real
+    {f g : ℝ → ℝ} (hf : Continuous f) (hg : Continuous g) (hab : (0 : ℝ) < 2 * π) :
+    HasSum (fun n : ℤ =>
+        (fourierCoeffOn hab (ofReal ∘ f) n *
+          conj (fourierCoeffOn hab (ofReal ∘ g) n)).re)
+      ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), f x * g x) := by
+  have hFc : Continuous (ofReal ∘ f) := Complex.continuous_ofReal.comp hf
+  have hGc : Continuous (ofReal ∘ g) := Complex.continuous_ofReal.comp hg
+  -- Diagonal Parseval for `f + g` and `f − g`.
+  have H1 := hasSum_sq_fourierCoeffOn_real (g := fun x => f x + g x) (hf.add hg) hab
+  have H2 := hasSum_sq_fourierCoeffOn_real (g := fun x => f x - g x) (hf.sub hg) hab
+  -- Identify the coefficients of `f ± g` with `ĉₙ(f) ± ĉₙ(g)`.
+  have hadd : ∀ n : ℤ, fourierCoeffOn hab (ofReal ∘ fun x => f x + g x) n
+      = fourierCoeffOn hab (ofReal ∘ f) n + fourierCoeffOn hab (ofReal ∘ g) n := by
+    intro n
+    have he : (ofReal ∘ fun x => f x + g x)
+        = (fun x => (ofReal ∘ f) x + (ofReal ∘ g) x) := by
+      funext x; simp [Function.comp, Complex.ofReal_add]
+    rw [he]; exact fourierCoeffOn_add_continuous hab hFc hGc n
+  have hsub : ∀ n : ℤ, fourierCoeffOn hab (ofReal ∘ fun x => f x - g x) n
+      = fourierCoeffOn hab (ofReal ∘ f) n - fourierCoeffOn hab (ofReal ∘ g) n := by
+    intro n
+    have he : (ofReal ∘ fun x => f x - g x)
+        = (fun x => (ofReal ∘ f) x - (ofReal ∘ g) x) := by
+      funext x; simp [Function.comp, Complex.ofReal_sub]
+    rw [he]; exact fourierCoeffOn_sub_continuous hab hFc hGc n
+  simp only [hadd] at H1
+  simp only [hsub] at H2
+  -- Interval-integrability of the (continuous) squared integrands.
+  have hI1 : IntervalIntegrable (fun x => (f x + g x) ^ 2) volume 0 (2 * π) :=
+    ((hf.add hg).pow 2).intervalIntegrable _ _
+  have hI2 : IntervalIntegrable (fun x => (f x - g x) ^ 2) volume 0 (2 * π) :=
+    ((hf.sub hg).pow 2).intervalIntegrable _ _
+  -- Collapse the summand via the polarization identity …
+  have hfun : (fun n : ℤ =>
+        (fourierCoeffOn hab (ofReal ∘ f) n *
+          conj (fourierCoeffOn hab (ofReal ∘ g) n)).re)
+      = fun n : ℤ => (4 : ℝ)⁻¹ *
+          (‖fourierCoeffOn hab (ofReal ∘ f) n + fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+            - ‖fourierCoeffOn hab (ofReal ∘ f) n - fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) := by
+    funext n
+    rw [norm_add_sq_sub_norm_sub_sq]
+    ring
+  -- … and the total via `∫(f+g)² − ∫(f−g)² = 4∫f·g`.
+  have htot : (2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), f x * g x
+      = (4 : ℝ)⁻¹ * (((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (f x + g x) ^ 2)
+          - ((2 * π - 0)⁻¹ • ∫ x in (0 : ℝ)..(2 * π), (f x - g x) ^ 2)) := by
+    have hpt : (∫ x in (0 : ℝ)..(2 * π), ((f x + g x) ^ 2 - (f x - g x) ^ 2))
+        = ∫ x in (0 : ℝ)..(2 * π), 4 * (f x * g x) := by
+      apply intervalIntegral.integral_congr; intro x _; ring
+    rw [smul_eq_mul, smul_eq_mul, smul_eq_mul, ← mul_sub,
+      ← intervalIntegral.integral_sub hI1 hI2, hpt, intervalIntegral.integral_const_mul]
+    ring
+  rw [hfun, htot]
+  exact (H1.sub H2).mul_left (4 : ℝ)⁻¹
+
 end IsoperimetricFourier

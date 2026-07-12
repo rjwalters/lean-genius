@@ -10,18 +10,22 @@
       "This is the spectral statement behind the whole Fourier approach: differentiation acts diagonally on the Fourier basis with eigenvalue i·n, so d^{2m} has eigenvalue (i·n)^{2m} = (−1)^m·n^{2m}.",
       "Proof = clean induction on k. Step rewrites f⁽ᵏ⁺¹⁾ = (f')⁽ᵏ⁾ via Function.iterate_succ_apply, applies the IH to the smooth periodic function f' (universally quantifying f INSIDE the ∀ so the IH is available at deriv f), then peels one factor i·n with the grandparent first-order identity. Smoothness preserved by contDiff_infty_iff_deriv; periodicity preserved by parent's deriv_periodic_of_periodic.",
       "Smoothness uses ContDiff ℝ ∞ (C^∞), dodging the finite-C^k succ/cast bookkeeping. KEY API in Lean v4.26 Mathlib: ContDiff smoothness lives in WithTop ℕ∞ where ∞ = ((⊤:ℕ∞):WithTop ℕ∞) is NOT the order-top ⊤ (=ω, analytic). So `1 ≤ ∞` is NOT le_top; use `hf.of_le (by exact_mod_cast le_top)` (mathlib's own idiom). ∞ notation is `open scoped ContDiff`. ContDiff.iterate_deriv / contDiff_infty_iff_deriv / contDiff_infty (↔ ∀n:ℕ, ContDiff n) are the smooth-deriv toolkit.",
-      "Corollaries: fourierCoeffOn_deriv2_smooth recovers the parent's −n² as k=2 ((I·n)²=−n² via Complex.I_sq); fourierCoeffOn_iteratedDeriv_even gives the d^{2m} eigenvalue (−1)^m·n^{2m} (mul_pow+pow_mul+I_sq)."
+      "Corollaries: fourierCoeffOn_deriv2_smooth recovers the parent's −n² as k=2 ((I·n)²=−n² via Complex.I_sq); fourierCoeffOn_iteratedDeriv_even gives the d^{2m} eigenvalue (−1)^m·n^{2m} (mul_pow+pow_mul+I_sq).",
+      "Bilinear (polarized) Parseval on an interval is Mathlib-absent: Mathlib provides only the diagonal hasSum_sq_fourierCoeffOn (‖ĉₙ‖²). The cross-term ∑ₙ Re(ĉₙ(f)·conj ĉₙ(g)) = (2π)⁻¹∫f·g follows by polarization from the diagonal via the parallelogram identity ‖u+v‖²−‖u−v‖²=4Re(u·conj v) applied to the coefficients of f±g.",
+      "fourierCoeffOn has no additivity lemma in Mathlib (only fourierCoeffOn.const_smul). Additivity/subtractivity for continuous ℂ-valued functions follows from the integral form fourierCoeffOn_eq_integral + interval-integrability of fourier(-n)•F; coe continuity = (map_continuous (fourier (-n))).comp (AddCircle.continuous_mk' _)."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
       "fourierCoeffOn_iteratedDeriv_smooth (induction engine, f quantified inside for the IH), fourierCoeffOn_iteratedDeriv (user-facing explicit-f form).",
-      "fourierCoeffOn_deriv2_smooth (k=2 recovery of −n²), fourierCoeffOn_iteratedDeriv_even (d^{2m} eigenvalue (−1)^m·n^{2m})."
+      "fourierCoeffOn_deriv2_smooth (k=2 recovery of −n²), fourierCoeffOn_iteratedDeriv_even (d^{2m} eigenvalue (−1)^m·n^{2m}).",
+      "hasSum_re_fourierCoeffOn_mul_conj_real (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean SECTION IX): bilinear Parseval HasSum (fun n => (ĉₙ(f)·conj ĉₙ(g)).re) ((2π)⁻¹•∫₀^{2π} f·g) for continuous real f,g — the L² inner product in Fourier coordinates; 0-axiom verified.",
+      "fourierCoeffOn_add_continuous / fourierCoeffOn_sub_continuous / norm_add_sq_sub_norm_sub_sq (polarization) helpers (same file), 0-axiom."
     ],
-    "progressSummary": "COMPLETE. Child of area-of-circle-oq-01-oq-02-oq-02-oq-02 (the −n² second-derivative identity). Generalizes the one-step iteration to ALL orders: ĉₙ(f⁽ᵏ⁾) = (i·n)ᵏ·ĉₙ(f) for smooth periodic f, by induction on k reusing the grandparent first-order IBP and the parent's deriv-of-periodic-is-periodic. Subsumes the parent (k=2) and exposes the even-order Laplacian eigenvalue (−1)^m·n^{2m}. All 0-axiom verified (no native_decide). Smoothness handled via ContDiff ℝ ∞ to avoid finite-order WithTop ℕ∞ cast bookkeeping.",
+    "progressSummary": "PROGRESS: built the bilinear/polarized Parseval identity ∑ Re(ĉₙ(f)·conj ĉₙ(g))=(2π)⁻¹∫f·g (Mathlib-absent; the L² inner product in Fourier coordinates), the missing analytic cross-term for the Hurwitz–Fourier area formula A=∫x·y'. Diagonal Wirtinger energy IFF already complete; remaining = geometric Green-theorem assembly A≤π (equality=circle).",
     "nextSteps": [
-      "Parseval / energy form: ∑ₙ |ĉₙ(f⁽ᵏ⁾)|² = ∑ₙ n^{2k}|ĉₙ(f)|², the higher Sobolev seminorm in Fourier coordinates (needs the L² completeness / Parseval identity for the 2π-periodic basis).",
-      "Higher Wirtinger / Poincaré: for mean-zero f, ‖f‖₂ ≤ ‖f⁽ᵏ⁾‖₂ with equality on the first harmonic, via the n^{2k} ≥ 1 mode-by-mode bound (the k=1 case drives the isoperimetric proof).",
-      "Odd-order companion: ĉₙ(f⁽²ᵐ⁺¹⁾) = (−1)^m·i·n^{2m+1}·ĉₙ(f), the purely imaginary eigenvalue."
+      "Assemble the isoperimetric area formula: for a closed C¹ curve t↦(x(t),y(t)) of period 2π, A=∫₀^{2π} x·y' dt (Green/shoelace). Feed x=f, y'=g into hasSum_re_fourierCoeffOn_mul_conj_real to express A via ∑ₙ Re(ĉₙ(x)·conj ĉₙ(y')); with ĉₙ(y')=in·ĉₙ(y) (grandparent identity) this yields the Hurwitz area-in-Fourier form.",
+      "Combine the Fourier area form with arc-length ∫(x'²+y'²)=2π and Wirtinger (already proved) mode-by-mode ⟹ A≤π, equality iff only n=±1 survive (the circle).",
+      "General scale-invariant L²≥4πA by Cauchy–Schwarz dropping the arc-length normalisation."
     ]
   },
   "relatedProofs": [
