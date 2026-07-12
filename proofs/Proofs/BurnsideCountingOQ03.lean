@@ -438,6 +438,65 @@ theorem polya_necklace_divisor_formula_of_burnside (n k : ℕ) [NeZero n]
   polya_necklace_divisor_formula n k necklace_count h_burnside
     (fun r => polya_cyclic_fixed_count n k r)
 
+/-! ## §8: General Fixed-Point Corollaries (kernel-checked, `ofReduceBool`-free)
+
+The concrete `n = 4` fixed-point counts in §4 are established by `native_decide`, which
+depends on `Lean.ofReduceBool`. The results below instead specialize the general, kernel-checked
+formula `polya_cyclic_fixed_count` (`|Fix(r)| = k^gcd(r.val, n)`), so they hold for arbitrary
+`n, k` and carry no `native_decide` cost. In particular `fp_sum_binary4_kernel` re-proves the
+headline sum `16 + 2 + 4 + 2 = 24` without `Lean.ofReduceBool`. -/
+
+/-- The identity rotation (`r.val = 0`) fixes **every** coloring: `|Fix(r)| = kⁿ`.
+    Kernel-checked specialization of `polya_cyclic_fixed_count`, since `gcd(0, n) = n`. -/
+theorem fixed_count_identity (n k : ℕ) [NeZero n] (r : Fin n) (hr : r.val = 0) :
+    Fintype.card {c : Fin n → Fin k // IsFixed n k r c} = k ^ n := by
+  rw [polya_cyclic_fixed_count, hr, Nat.gcd_zero_left]
+
+/-- A rotation whose step is **coprime** to the length fixes only the `k` constant colorings:
+    `|Fix(r)| = k`. Generalizes the concrete `r = 1, 3` counts for `n = 4` to every coprime
+    step, with no `native_decide` (hence no `Lean.ofReduceBool` dependency). -/
+theorem fixed_count_of_coprime (n k : ℕ) [NeZero n] (r : Fin n)
+    (hr : Nat.Coprime r.val n) :
+    Fintype.card {c : Fin n → Fin k // IsFixed n k r c} = k := by
+  rw [polya_cyclic_fixed_count, hr.gcd_eq_one, pow_one]
+
+/-- Every fixed-coloring count divides `kⁿ`: since `gcd(r, n) ∣ n`, we get
+    `k^gcd(r,n) ∣ kⁿ`. The Burnside orbit count `kⁿ / n` is thus assembled from divisors
+    of `kⁿ`. -/
+theorem fixed_count_dvd_pow (n k : ℕ) [NeZero n] (r : Fin n) :
+    Fintype.card {c : Fin n → Fin k // IsFixed n k r c} ∣ k ^ n := by
+  rw [polya_cyclic_fixed_count]
+  exact pow_dvd_pow k (Nat.le_of_dvd (NeZero.pos n) (Nat.gcd_dvd_right r.val n))
+
+/-- Upper bound (`k ≥ 1`): every rotation fixes at most `kⁿ` colorings — the identity being
+    the unique maximizer. -/
+theorem fixed_count_le_pow (n k : ℕ) [NeZero n] (r : Fin n) (hk : 1 ≤ k) :
+    Fintype.card {c : Fin n → Fin k // IsFixed n k r c} ≤ k ^ n := by
+  rw [polya_cyclic_fixed_count]
+  exact Nat.pow_le_pow_right hk (Nat.le_of_dvd (NeZero.pos n) (Nat.gcd_dvd_right r.val n))
+
+/-- Lower bound (`k ≥ 1`): every rotation fixes at least the `k` constant colorings, since
+    `1 ≤ gcd(r, n)` for `n > 0`. -/
+theorem fixed_count_ge (n k : ℕ) [NeZero n] (r : Fin n) (hk : 1 ≤ k) :
+    k ≤ Fintype.card {c : Fin n → Fin k // IsFixed n k r c} := by
+  rw [polya_cyclic_fixed_count]
+  calc k = k ^ 1 := (pow_one k).symm
+    _ ≤ k ^ Nat.gcd r.val n :=
+        Nat.pow_le_pow_right hk (Nat.gcd_pos_of_pos_right _ (NeZero.pos n))
+
+/-- **Kernel-checked Burnside sum** for `Z_4` on binary 4-colorings: `16 + 2 + 4 + 2 = 24`,
+    obtained by specializing `polya_cyclic_fixed_count` at each rotation and evaluating the
+    resulting `gcd` powers with `decide`. Unlike `fp_sum_binary4` (which routes through the
+    `native_decide` counts of §4), this proof does **not** depend on `Lean.ofReduceBool`. -/
+theorem fp_sum_binary4_kernel :
+    Fintype.card {c : Fin 4 → Fin 2 // IsFixed 4 2 ⟨0, by norm_num⟩ c} +
+    Fintype.card {c : Fin 4 → Fin 2 // IsFixed 4 2 ⟨1, by norm_num⟩ c} +
+    Fintype.card {c : Fin 4 → Fin 2 // IsFixed 4 2 ⟨2, by norm_num⟩ c} +
+    Fintype.card {c : Fin 4 → Fin 2 // IsFixed 4 2 ⟨3, by norm_num⟩ c} = 24 := by
+  rw [polya_cyclic_fixed_count, polya_cyclic_fixed_count,
+      polya_cyclic_fixed_count, polya_cyclic_fixed_count]
+  decide
+
 #check @MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group
 #check ZMod.addOrderOf_coe
 #check ZMod.natCast_zmod_val
