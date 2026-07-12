@@ -676,4 +676,83 @@ theorem measure_independent_of_category :
       (∃ S : Set ℝ, volume Sᶜ = 0 ∧ IsMeagre S) :=
   ⟨exists_null_not_meagre, exists_conull_meagre⟩
 
+-- ============================================================================
+-- § 7. Measurability and full-measure structure on arbitrary sets
+-- ============================================================================
+
+/-!
+The measure-zero facts above are stated for specific ambient sets (the whole
+line, an interval). Because "countable ⟹ null" uses no structure of the ambient
+set, the algebraic reals subtract nothing from the measure of *any* set `s`: the
+transcendental part `s ∩ {transcendental}` always carries the full measure of `s`,
+and the algebraic part `s ∩ {algebraic}` is always null. Being countable, the
+algebraic reals are moreover Borel-measurable (`Set.Countable.measurableSet`),
+hence so are the transcendentals, so all of these intersections are genuine
+measurable events. Finally the existence corollary sharpens from "contains a
+transcendental" to "contains uncountably many": a positive-measure set cannot
+have countable transcendental part, since a countable set is null.
+-/
+
+/-- **The algebraic reals are measurable.** A countable set is measurable
+(`Set.Countable.measurableSet`), and `ℝ` has measurable singletons. -/
+theorem algebraic_reals_measurableSet :
+    MeasurableSet {x : ℝ | IsAlgebraic ℚ x} :=
+  AlgebraicNumbersCountable.algebraic_reals_countable.measurableSet
+
+/-- **The transcendental reals are measurable**, as the complement of the
+measurable algebraic reals. -/
+theorem transcendental_reals_measurableSet :
+    MeasurableSet {x : ℝ | Transcendental ℚ x} := by
+  rw [show {x : ℝ | Transcendental ℚ x} = {x : ℝ | IsAlgebraic ℚ x}ᶜ from by
+    ext x; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]]
+  exact algebraic_reals_measurableSet.compl
+
+/-- **The algebraic part of any set is null**: `volume (s ∩ {algebraic}) = 0`
+for every `s`. Generalizes `algebraic_inter_interval_null` from intervals to
+arbitrary ambient sets — a subset of a null set is null. -/
+theorem algebraic_inter_null (s : Set ℝ) :
+    volume (s ∩ {x : ℝ | IsAlgebraic ℚ x}) = 0 :=
+  measure_mono_null inter_subset_right algebraic_reals_null
+
+/-- **The transcendentals fill almost all of every set**: for any `s`,
+`volume (s ∩ {transcendental}) = volume s`. Removing the null algebraic reals
+from `s` leaves its measure unchanged (`measure_diff_null`). Generalizes
+`transcendental_full_on_interval` from intervals to arbitrary ambient sets. -/
+theorem transcendental_inter_eq_measure (s : Set ℝ) :
+    volume (s ∩ {x : ℝ | Transcendental ℚ x}) = volume s := by
+  have hset : s ∩ {x : ℝ | Transcendental ℚ x} = s \ {x : ℝ | IsAlgebraic ℚ x} := by
+    ext x; simp only [mem_inter_iff, mem_diff, mem_setOf_eq, Transcendental]
+  rw [hset, measure_diff_null algebraic_reals_null]
+
+/-- **A positive-measure set has positive-measure transcendental part.** Since
+the algebraic part is null (`algebraic_inter_null`), all of `s`'s measure lives
+on its transcendental part `s ∩ {transcendental}`. -/
+theorem pos_measure_inter_transcendental_pos {s : Set ℝ} (hs : 0 < volume s) :
+    0 < volume (s ∩ {x : ℝ | Transcendental ℚ x}) := by
+  rw [transcendental_inter_eq_measure]; exact hs
+
+/-- **Any positive-measure set contains uncountably many transcendentals.**
+Sharpens `exists_transcendental_of_pos_measure` from "at least one" to
+"uncountably many": were `s ∩ {transcendental}` countable it would be null
+(`Set.Countable.measure_zero`), contradicting its positive measure
+(`pos_measure_inter_transcendental_pos`). -/
+theorem pos_measure_inter_transcendental_uncountable {s : Set ℝ}
+    (hs : 0 < volume s) : ¬ (s ∩ {x : ℝ | Transcendental ℚ x}).Countable := by
+  intro hcount
+  exact (pos_measure_inter_transcendental_pos hs).ne' (hcount.measure_zero volume)
+
+/-- **The complex algebraic numbers are measurable**, the complex analogue of
+`algebraic_reals_measurableSet`. -/
+theorem algebraic_complex_measurableSet :
+    MeasurableSet {z : ℂ | IsAlgebraic ℚ z} :=
+  AlgebraicNumbersCountable.algebraic_complex_countable.measurableSet
+
+/-- **The transcendental complex numbers are measurable**, as the complement of
+the measurable complex algebraic numbers. -/
+theorem transcendental_complex_measurableSet :
+    MeasurableSet {z : ℂ | Transcendental ℚ z} := by
+  rw [show {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ from by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]]
+  exact algebraic_complex_measurableSet.compl
+
 end AlgebraicRealsNull
