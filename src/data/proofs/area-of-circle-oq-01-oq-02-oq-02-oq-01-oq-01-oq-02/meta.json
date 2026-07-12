@@ -140,6 +140,16 @@
       "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
       "relationship": "extends",
       "description": "Parent isoperimetric entry, which proved 4πA ≤ L² for smooth closed curves from five disclosed analytic axioms (Fourier decomposition, constant-speed reparametrization, the Wirtinger sum bound, and two Cauchy–Schwarz bounds). This capstone replaces every one of those axioms with its independently-discharged 0-axiom companion and assembles them into a fully axiom-free proof on the regular locus — the maximal honest endpoint, since the reparametrization axiom is genuinely false at stationary points."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "builds on",
+      "description": "The reparametrization-invariance companion: proves 0-axiom that arc length ∫√(x'²+y'²) and signed area ∫(x·y'−y·x') are invariant under a period-commuting C¹ reparametrization. These are exactly the circumference/area-preservation clauses that let this capstone pass to the constant-speed zero-mean curve ρ and then transport the proved bound 4πA ≤ L² back to the original γ (the ann-transport step)."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "complements",
+      "description": "The equality/rigidity companion, addressing this entry's first open question. It characterizes the equality case of Wirtinger's inequality 0-axiom — ∫f² = ∫(f')² forces f(t) = a·cos t + b·sin t (only the first harmonic survives) — which is the analytic core of isoperimetric rigidity 4πA = L² ⟺ γ is a circle. Together with this capstone's strict inequality, it supplies both halves of the sharp Hurwitz statement."
     }
   ],
   "conclusion": {
