@@ -149,6 +149,11 @@
       "targetId": "area-of-circle-oq-07-oq-02-oq-02",
       "relationship": "related",
       "description": "Sibling half-line moments. Its second moment ∫_{(0,∞)} x² e^{-b x²} = √(π/b)/(4b) is exactly half of this entry's whole-line value √(π/a)/(2a) (scaled_gaussian_second_moment), the even-symmetry doubling made explicit."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-05-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling (same parent), the odd/parity complement. It proves the odd moments ∫_ℝ x^{2n+1} e^{-x²} = 0 and packages the full parity-indexed moment sequence at unit scale. This entry lifts the even moments to arbitrary scale a > 0; the odd moments vanish at every scale by the same symmetry, so scaling this entry's even formula and folding in that entry's odd vanishing gives the complete scaled moment table ∫_ℝ x^k e^{-a x²}."
     }
   ],
   "references": [
