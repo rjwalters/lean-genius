@@ -51,7 +51,8 @@
       "maxSqDiffFreeCard 3 = 1 (NOT ≥2): every 2-element subset of ℤ/3ℤ has a pair differing by 1=1², so no 2-element sq-diff-free set exists mod 3. Contrast maxSqDiffFreeCard 5 ≥ 2 ({0,2}), 17 ≥ 2 ({0,3}).",
       "Part XXXVI (researcher-5): the FIRST upper bound in the maxSqDiffFreeCard chain — maxSqDiffFreeCard(p)=1 at every prime p≡3 (mod 4). Everything in Parts XXX–XXXV is a lower bound (coset lifts + coprime-multiplicative law build large sq-diff-free sets), and every concrete witness used p≡1 (mod 4) (5,13,17). That was structural, not luck: when p≡3 (mod 4), −1 is a non-residue, so the quadratic character gives χ(−d)=χ(−1)·χ(d)=−χ(d); hence for every nonzero d exactly one of d,−d is a nonzero square. So ANY two distinct residues a≠b differ by a nonzero square in one of the two directions b−a, a−b, and a sq-diff-free set has ≤1 element. At half of all primes the square-difference Cayley structure is a tournament-like orientation of the complete graph and its independence number collapses to 1 — the modular Sárközy phenomenon in extreme form.",
       "The residue class of p mod 4 EXACTLY decides the independence number regime: p≡3 mod4 ⟹ =1 (Part XXXVI collapse), p≡1 mod4 ⟹ ≥2 (Part XXXVII). Both driven by whether −1 is a square (ZMod.exists_sq_eq_neg_one_iff). Mirror-image constructions: XXXVI uses one of d,−d is a square; XXXVII uses both d,−d are non-squares.",
-      "The {0,d} construction (d nonzero non-residue) is square-difference-free iff both d and −d are non-residues, which holds precisely when −1 is a square (p≡1 mod4)."
+      "The {0,d} construction (d nonzero non-residue) is square-difference-free iff both d and −d are non-residues, which holds precisely when −1 is a square (p≡1 mod4).",
+      "Part XXXVIII: exponential-in-omega(N) lower bound maxSqDiffFreeCard(prod of distinct primes p=1 mod4) >= 2^k, and for squarefree N with all prime factors =1 mod4, maxSqDiffFreeCard(N) >= 2^omega(N) -- super-polynomial along this family (omega(N)~log N/log log N), from CRT super-multiplicativity (Part XXXV) + single-prime {0,d} non-residue floor >=2 (Part XXXVII), NO analysis. Generalises concrete N=1105>=12."
     ],
     "builtItems": [
       "RothTheorem.lean Part VI (researcher-5, 2026-07-05, VERIFIED 0-axiom): sqGaussSum r = ∑_{n∈ZMod N} ψ(r·n²) (quadratic Gauss sum); sqDiffCount A = #{(x,n) : x∈A, x+n²∈A} (square-difference count); sqGaussSum_zero: G(0)=N; sqDiffCount_fourier_complex: SD(A)·N = ∑_r Â(r)·conj(Â(r))·G(r); sqDiffCount_fourier: SD(A) = N⁻¹·∑_r ‖Â(r)‖²·G(r). Proof mirrors triple_count_fourier: expand each term as a triple ψ-sum, bring the r-sum innermost, apply char_orthogonality (∑_r ψ(r·c)=N·[c=0]), collapse the y-sum via y=x+n². #print axioms → [propext, Classical.choice, Quot.sound].",
@@ -134,7 +135,9 @@
       "Part XXXVII helper not_isSquare_neg_of_mod_four_eq_one: p≡1 mod4 ⟹ ¬IsSquare d → ¬IsSquare(-d) (IsSquare(-1)·mul)",
       "Part XXXVII maxSqDiffFreeCard_eq_one_iff_mod_four_eq_three: SHARP DICHOTOMY for odd primes maxSqDiffFreeCard(p)=1 ↔ p≡3 mod4",
       "Part XXXVII two_le_maxSqDiffFreeCard_iff_mod_four_eq_one: companion iff 2≤maxSqDiffFreeCard(p) ↔ p≡1 mod4",
-      "Part XXXVII concrete two_le_maxSqDiffFreeCard_thirteen (via general thm, not decide)"
+      "Part XXXVII concrete two_le_maxSqDiffFreeCard_thirteen (via general thm, not decide)",
+      "two_pow_card_le_maxSqDiffFreeCard_prod (RothTheorem.lean): 2^s.card <= maxSqDiffFreeCard(prod_{i in s} n i) for a distinct-prime =1-mod-4 family via maxSqDiffFreeCard_prod_ge_of_pairwise_coprime + Finset.prod_le_prod; 0 axioms",
+      "two_pow_omega_le_maxSqDiffFreeCard_of_squarefree (RothTheorem.lean): 2^N.primeFactors.card <= maxSqDiffFreeCard N for squarefree N with all prime factors =1 mod4; if-trick NeZero family on N.primeFactors + Nat.prod_primeFactors_of_squarefree + congr-1 instance transport; 0 axioms"
     ],
     "nextSteps": [
       "DONE (researcher-11): two-torsion DICHOTOMY G(r)∈{0,N} at 2r=0 (sqGaussSum_eq_zero_or_eq_natCast_of_two_mul_eq_zero) — the exact characterization at the frequencies the gcd/kernel-count bounds leave vacuous (‖G(r)‖≤N trivially); rules out all intermediate magnitudes 0<‖G(r)‖<N.",
@@ -161,7 +164,8 @@
       "Part XXXV DONE: finite-product multiplicativity over pairwise-coprime families (generalizes Part XXXIV from 2 to n factors), plus the honest documentation that single-modulus square-lift iteration is OBSTRUCTED by non-reducedness of ℤ/N²ℤ. Remaining toward the sharp Θ(N^{3/4}): (i) a growing family of Paley-independent residue sets realizing α(p)=Θ(√p) — combine with prime-square lift maxSqDiffFreeCard(p²)≥p·α(p) and this finite-product law to get maxSqDiffFreeCard(∏pᵢ²) ≥ ∏ pᵢ·α(pᵢ); (ii) the hard global upper bound (every extremal set coset-structured).",
       "UPPER-BOUND FRONTIER (opened by Part XXXVI): at p≡1 (mod 4) the square-difference graph is the undirected Paley graph and maxSqDiffFreeCard(p)=α(Paley(p)); the trivial bound α≤√p (clique-of-a-clique / self-complementarity) is the modular Sárközy density bound at prime modulus and is the natural next upper-bound target (needs the polynomial method or a Hoffman/eigenvalue bound — likely 200–400 lines, not yet attempted). Combined with Part XXXVI this would give maxSqDiffFreeCard(p)≤√p for ALL odd primes (=1 sharp at p≡3 mod4, ≤√p at p≡1 mod4).",
       "Quantitative refinement: prove maxSqDiffFreeCard(p) ≤ √p for p≡1 mod4 in maxSqDiffFreeCard terms (feed Part XVIII/XXVII Weyl sup-norm bound), bracketing 2 ≤ maxSqDiffFreeCard(p) ≤ √p",
-      "Extend dichotomy to prime powers p^k or general odd N: is maxSqDiffFreeCard(N)=1 ⟺ every prime factor ≡3 mod4 and squarefree? (−1 non-square in ℤ/N)"
+      "Extend dichotomy to prime powers p^k or general odd N: is maxSqDiffFreeCard(N)=1 ⟺ every prime factor ≡3 mod4 and squarefree? (−1 non-square in ℤ/N)",
+      "Part XXXVIII gives 2^omega(N) lower bound; matching UPPER bound alpha(Paley(p)) <= sqrt p at p=1 mod4 needs Weil/eigenvalue character-sum machinery absent in Mathlib 4.26 -- blocked, do not attempt elementarily."
     ]
   },
   "leanFiles": [

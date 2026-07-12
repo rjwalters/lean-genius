@@ -5135,4 +5135,77 @@ theorem two_le_maxSqDiffFreeCard_iff_mod_four_eq_one {p : ℕ} (hp : p.Prime) [N
 theorem two_le_maxSqDiffFreeCard_thirteen : 2 ≤ maxSqDiffFreeCard 13 :=
   two_le_maxSqDiffFreeCard_of_mod_four_eq_one (by norm_num) (by norm_num)
 
+/-! ### Part XXXVIII — Exponential-in-`ω(N)` lower bound from the coprime-multiplicative law
+
+Parts XXXIV–XXXV give super-multiplicativity of `maxSqDiffFreeCard` over coprime factors, and
+Part XXXVII gives the per-prime floor `maxSqDiffFreeCard p ≥ 2` at every prime `p ≡ 1 (mod 4)`.
+Chaining the two turns the pointwise floor into an **exponential** lower bound: a product of `k`
+*distinct* primes all `≡ 1 (mod 4)` carries a square-difference-free set of size at least `2 ^ k`.
+
+Because a squarefree `N` is the product of its `ω(N)` distinct prime factors
+(`Nat.prod_primeFactors_of_squarefree`), this reads as
+  `maxSqDiffFreeCard N ≥ 2 ^ ω(N)`
+whenever every prime factor of `N` is `≡ 1 (mod 4)`.  Since `ω(N)` reaches
+`(1 + o(1)) · log N / log log N`, the extremal square-difference-free count is *super-polynomial*
+along this family — a Behrend/Ruzsa-flavoured lower bound obtained with **no analysis**, purely from
+CRT (`maxSqDiffFreeCard_mul_ge_of_coprime`) and the single-prime `{0, d}` non-residue witness of
+Part XXXVII.  It is the qualitative generalisation of the concrete `maxSqDiffFreeCard 1105 ≥ 12`
+(`le_maxSqDiffFreeCard_mod_1105`), where the three factors `5, 13, 17 ≡ 1 (mod 4)` each contribute
+a factor `≥ 2` (the `13`-factor happened to give `3`). -/
+
+/-- **Exponential lower bound over a family of distinct primes `≡ 1 (mod 4)`.**  For an indexing
+finset `s` and `n : ι → ℕ` such that every `n i` (`i ∈ s`) is prime and `≡ 1 (mod 4)`, and the
+`n i` are pairwise distinct on `s`, the product `∏ i ∈ s, n i` carries a square-difference-free
+set of size at least `2 ^ s.card`.  Distinct primes are coprime (`Nat.coprime_primes`), so the
+finite-product super-multiplicativity `maxSqDiffFreeCard_prod_ge_of_pairwise_coprime` applies, and
+each factor `maxSqDiffFreeCard (n i) ≥ 2` (Part XXXVII) turns `∏ 2 = 2 ^ s.card` into the bound. -/
+theorem two_pow_card_le_maxSqDiffFreeCard_prod {ι : Type*} [DecidableEq ι]
+    (n : ι → ℕ) [∀ i, NeZero (n i)] (s : Finset ι)
+    (hp : ∀ i ∈ s, (n i).Prime ∧ n i % 4 = 1)
+    (hinj : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → n i ≠ n j) :
+    2 ^ s.card ≤ maxSqDiffFreeCard (∏ i ∈ s, n i) := by
+  -- distinct primes are coprime, so the finite-product multiplicative law applies
+  have hco : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → Nat.Coprime (n i) (n j) := by
+    intro i hi j hj hij
+    exact (Nat.coprime_primes (hp i hi).1 (hp j hj).1).mpr (hinj i hi j hj hij)
+  have hprod := maxSqDiffFreeCard_prod_ge_of_pairwise_coprime n s hco
+  -- each factor is `≥ 2`, so `2 ^ card = ∏ 2 ≤ ∏ maxSqDiffFreeCard (n i)`
+  have hlb : 2 ^ s.card ≤ ∏ i ∈ s, maxSqDiffFreeCard (n i) := by
+    calc 2 ^ s.card = ∏ _i ∈ s, 2 := (Finset.prod_const 2).symm
+      _ ≤ ∏ i ∈ s, maxSqDiffFreeCard (n i) :=
+          Finset.prod_le_prod' fun i hi =>
+            two_le_maxSqDiffFreeCard_of_mod_four_eq_one (hp i hi).1 (hp i hi).2
+  exact le_trans hlb hprod
+
+/-- **Exponential lower bound in the number of prime factors (squarefree modulus).**  If `N` is
+squarefree and every prime factor of `N` is `≡ 1 (mod 4)`, then
+  `2 ^ ω(N) ≤ maxSqDiffFreeCard N`,
+where `ω(N) = N.primeFactors.card`.  This is the interpretable specialisation of
+`two_pow_card_le_maxSqDiffFreeCard_prod` to the identity family on `N.primeFactors`, using
+`Nat.prod_primeFactors_of_squarefree` to recover `∏ p ∈ N.primeFactors, p = N`. -/
+theorem two_pow_omega_le_maxSqDiffFreeCard_of_squarefree {N : ℕ} [NeZero N]
+    (hsf : Squarefree N) (h4 : ∀ p ∈ N.primeFactors, p % 4 = 1) :
+    2 ^ N.primeFactors.card ≤ maxSqDiffFreeCard N := by
+  classical
+  -- a `NeZero`-safe stand-in for the identity: `0` (never a prime factor) is sent to `1`
+  let n : ℕ → ℕ := fun i => if i = 0 then 1 else i
+  haveI hz : ∀ i : ℕ, NeZero (n i) := fun i => by
+    show NeZero (if i = 0 then 1 else i)
+    split_ifs with h
+    · exact ⟨one_ne_zero⟩
+    · exact ⟨h⟩
+  have hval : ∀ p ∈ N.primeFactors, n p = p := fun p hp => by
+    show (if p = 0 then 1 else p) = p
+    rw [if_neg (Nat.prime_of_mem_primeFactors hp).pos.ne']
+  have hprodN : ∏ p ∈ N.primeFactors, n p = N := by
+    rw [Finset.prod_congr rfl hval, Nat.prod_primeFactors_of_squarefree hsf]
+  have hp : ∀ i ∈ N.primeFactors, (n i).Prime ∧ n i % 4 = 1 := fun i hi => by
+    rw [hval i hi]; exact ⟨Nat.prime_of_mem_primeFactors hi, h4 i hi⟩
+  have hinj : ∀ i ∈ N.primeFactors, ∀ j ∈ N.primeFactors, i ≠ j → n i ≠ n j := by
+    intro i hi j hj hij; rw [hval i hi, hval j hj]; exact hij
+  have key := two_pow_card_le_maxSqDiffFreeCard_prod n N.primeFactors hp hinj
+  have heq : maxSqDiffFreeCard (∏ p ∈ N.primeFactors, n p) = maxSqDiffFreeCard N := by
+    congr 1
+  exact heq ▸ key
+
 end Szemeredi.Roth
