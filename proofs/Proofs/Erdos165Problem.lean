@@ -652,4 +652,100 @@ theorem mainConjecture_iff_upper_half :
     exact ⟨max k₁ k₂, fun k hk =>
       ⟨hk₁ k (le_of_max_le_left hk), hk₂ k (le_of_max_le_right hk)⟩⟩
 
+/- ## Part XI: The set of valid asymptotic constants, and its order interface
+
+Parts VI–X repeatedly manipulate the two half-statements "`b` is a valid first-order
+*upper* constant for `R(3,k)`" and "`a` is a valid first-order *lower* constant".  This
+section names those predicates (`ValidUpperConstant`, `ValidLowerConstant`) and assembles
+the scattered facts into a single order-theoretic interface:
+
+* the valid upper constants form an **up-set** (`ValidUpperConstant_mono`, from
+  `upper_bound_mono`) and the valid lower constants a **down-set**
+  (`ValidLowerConstant_anti`, from `lower_bound_mono`);
+* Shearer gives `1` as a valid upper constant and HHKP gives `1/2` as a valid lower one,
+  so the sets are nonempty with the known containments `[1,∞) ⊆ uppers` and
+  `(−∞,1/2] ⊆ lowers`, while the fences `uppers ⊆ [1/2,∞)` and `lowers ⊆ (−∞,1]` hold;
+* **every** valid lower constant is `≤` **every** valid upper constant
+  (`validLowerConstant_le_validUpperConstant`, from the axiom-free
+  `asymptotic_constant_le`);
+* the headline: the Erdős conjecture is *exactly* the statement that `1/2` is a valid
+  upper constant (`mainConjecture_iff_validUpperConstant_half`), and under it `1/2` is the
+  **least** valid upper constant — the infimum of the valid upper constants is the exact
+  asymptotic constant of `R(3,k)`.
+
+No new axioms: everything is glue over the results of Parts II–X. -/
+
+/-- **`b` is a valid first-order asymptotic upper constant for `R(3,k)`**: for every
+    `ε > 0`, eventually `R(3,k) ≤ (b + ε)·k²/log k`.  This is the recurring upper half of
+    the conjecture predicates (`mainConjecture`, `pgmConjecture`, `constantConjecture`). -/
+def ValidUpperConstant (b : ℝ) : Prop :=
+  ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≤ (b + ε) * k^2 / log k
+
+/-- **`a` is a valid first-order asymptotic lower constant for `R(3,k)`**: for every
+    `ε > 0`, eventually `R(3,k) ≥ (a − ε)·k²/log k`.  The dual of `ValidUpperConstant`. -/
+def ValidLowerConstant (a : ℝ) : Prop :=
+  ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (a - ε) * k^2 / log k
+
+/-- **The valid upper constants form an up-set.**  If `b` is a valid upper constant and
+    `b ≤ b'`, then so is `b'` — a weaker upper bound is still valid (`upper_bound_mono`). -/
+theorem ValidUpperConstant_mono {b b' : ℝ} (hbb : b ≤ b') (h : ValidUpperConstant b) :
+    ValidUpperConstant b' :=
+  upper_bound_mono hbb h
+
+/-- **The valid lower constants form a down-set.**  If `a` is a valid lower constant and
+    `a' ≤ a`, then so is `a'` — a weaker lower bound is still valid (`lower_bound_mono`). -/
+theorem ValidLowerConstant_anti {a a' : ℝ} (haa : a' ≤ a) (h : ValidLowerConstant a) :
+    ValidLowerConstant a' :=
+  lower_bound_mono haa h
+
+/-- **Shearer: `1` is a valid upper constant** (`R(3,k) ≤ (1+ε)·k²/log k`). -/
+theorem shearer_validUpperConstant_one : ValidUpperConstant 1 := shearer_upper_bound
+
+/-- **HHKP: `1/2` is a valid lower constant** (`R(3,k) ≥ (1/2−ε)·k²/log k`). -/
+theorem hhkp_validLowerConstant_half : ValidLowerConstant (1/2) := hhkp_bound
+
+/-- **Every valid upper constant is `≥ 1/2`** (the HHKP fence, `R3_upper_constant_ge_half`). -/
+theorem ValidUpperConstant_ge_half {b : ℝ} (h : ValidUpperConstant b) : (1:ℝ)/2 ≤ b :=
+  R3_upper_constant_ge_half b h
+
+/-- **Every valid lower constant is `≤ 1`** (the Shearer fence, `R3_lower_constant_le_one`). -/
+theorem ValidLowerConstant_le_one {a : ℝ} (h : ValidLowerConstant a) : a ≤ 1 :=
+  R3_lower_constant_le_one a h
+
+/-- **Every `b ≥ 1` is a valid upper constant** (Shearer widened, `R3_upper_constant_of_one_le`);
+    so `[1, ∞) ⊆ {b | ValidUpperConstant b} ⊆ [1/2, ∞)`. -/
+theorem one_le_validUpperConstant {b : ℝ} (hb : 1 ≤ b) : ValidUpperConstant b :=
+  R3_upper_constant_of_one_le b hb
+
+/-- **Every `a ≤ 1/2` is a valid lower constant** (HHKP weakened, `R3_lower_constant_of_le_half`);
+    so `(−∞, 1/2] ⊆ {a | ValidLowerConstant a} ⊆ (−∞, 1]`. -/
+theorem validLowerConstant_of_le_half {a : ℝ} (ha : a ≤ 1/2) : ValidLowerConstant a :=
+  R3_lower_constant_of_le_half a ha
+
+/-- **Every valid lower constant is `≤` every valid upper constant.**  The two families
+    interleave correctly: no valid lower constant can exceed a valid upper one.  A direct
+    application of the axiom-free `asymptotic_constant_le` to `f = R3` — the structural core
+    behind the bracket `[1/2, 1]`. -/
+theorem validLowerConstant_le_validUpperConstant {a b : ℝ}
+    (hl : ValidLowerConstant a) (hu : ValidUpperConstant b) : a ≤ b :=
+  asymptotic_constant_le (fun k => (R3 k : ℝ)) a b hl hu
+
+/-- **The Erdős conjecture ⟺ `1/2` is a valid upper constant.**  Since the lower half of
+    `mainConjecture` is already the theorem `hhkp_bound`, the full conjecture reduces to its
+    upper half — precisely `ValidUpperConstant (1/2)` (`mainConjecture_iff_upper_half`). -/
+theorem mainConjecture_iff_validUpperConstant_half :
+    mainConjecture ↔ ValidUpperConstant (1/2) :=
+  mainConjecture_iff_upper_half
+
+/-- **Under the Erdős conjecture, `1/2` is the least valid upper constant.**  The conjecture
+    makes `1/2` a valid upper constant (`mainConjecture_iff_validUpperConstant_half`), and the
+    HHKP fence `ValidUpperConstant_ge_half` bounds every valid upper constant below by `1/2`.
+    Hence `1/2 = min {b | ValidUpperConstant b}`: the exact asymptotic constant of `R(3,k)` is
+    the infimum of its valid first-order upper constants, and it equals `1/2` iff Erdős #165's
+    conjecture holds. -/
+theorem mainConjecture_imp_isLeast_validUpperConstant (h : mainConjecture) :
+    IsLeast {b : ℝ | ValidUpperConstant b} (1/2) :=
+  ⟨mainConjecture_iff_validUpperConstant_half.mp h,
+   fun b hb => ValidUpperConstant_ge_half hb⟩
+
 end Erdos165
