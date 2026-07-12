@@ -396,6 +396,27 @@ theorem bipartitionNumber_eq_edgeCount_iff {V : Type*} [Fintype V] [LinearOrder 
   have h := bipartitionNumber_add_maxCut G
   omega
 
+/-- **The max-cut is positive iff `G` has an edge.** The positivity dual of
+`maxCut_eq_zero_iff` (`maxCut = 0 ↔ edgeless`): some edge can be cut exactly when some
+edge exists to cut. -/
+theorem maxCut_pos_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    0 < maxCut G ↔ 0 < edgeCount G := by
+  simp only [Nat.pos_iff_ne_zero, ne_eq, maxCut_eq_zero_iff]
+
+/-- **The min-uncut equals the max-cut iff the optimal cut splits the edges exactly in
+half.** By the complementarity `bipartitionNumber G + maxCut G = edgeCount G`, the two
+extremal invariants coincide precisely when each is half the edge count
+(`2 * bipartitionNumber G = edgeCount G`, equivalently `2 * maxCut G = edgeCount G`). This
+is the balanced middle case between the two saturated corners already characterized:
+bipartite (`bipartitionNumber = 0`, `maxCut = edgeCount`) and edgeless
+(`maxCut = 0`, `bipartitionNumber = edgeCount`). -/
+theorem bipartitionNumber_eq_maxCut_iff {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G = maxCut G ↔ 2 * bipartitionNumber G = edgeCount G := by
+  have h := bipartitionNumber_add_maxCut G
+  omega
+
 /-
 # Part 3c: Monotonicity of the cut quantities under edge addition
 
