@@ -693,7 +693,8 @@
       "meta.json gallery entry (verified, 3 thm, 0 sorry, 0 axiom)",
       "qBinom_X_monic_natDegree: Gaussian polynomial qBinom X n k over ℤ[X] is monic of natDegree=k(n-k) (CombinationsFormulaOQ03OQ04.lean)",
       "qBinom_X_coeff_zero / qBinom_X_coeff_top / qBinom_X_extreme_coeffs: both extreme coefficients pinned to 1",
-      "qBinom_X_coeff_nonneg: all coefficients of the Gaussian polynomial are ≥ 0 over ℤ"
+      "qBinom_X_coeff_nonneg: all coefficients of the Gaussian polynomial are ≥ 0 over ℤ",
+      "qBinom_map / qBinom_X_eval / qBinom_X_eval_one : base-change bridge — q-binomial commutes with ring homs, so (qBinom X n k).eval c = qBinom c n k and .eval 1 = C(n,k) (coefficient-sum = ordinary binomial). 0 axioms [VERIFIED]"
     ],
     "mathlibGaps": [
       "No direct need: proof uses only parent q-binomial API plus elementary field/power lemmas (mul_inv_cancel_left_zero, inv_pow, pow_ne_zero, pow_add).",
@@ -706,5 +707,7 @@
       "Attempt unimodality proper: sl₂ raising/lowering operator action (Proctor 1982) or an O'Hara-style explicit injection between adjacent coefficient levels."
     ],
     "progressSummary": "PROGRESS (researcher-7, 2026-07-12): added Gaussian-polynomial structural layer over ℤ[X] — monic, natDegree=k(n-k), constant term=1, nonneg coefficients, extreme coefficients pinned to 1 (qBinom_X_* in CombinationsFormulaOQ03OQ04.lean, 0 sorry/0 axiom, lake env lean verified). Palindromy+pinned-extremes+nonnegativity complete the symmetric boundary; interior unimodality (Proctor/sl₂) remains the open substance. PR #38303."
-  }
+  },
+  "currentState": "Added base-change bridge (researcher-7): qBinom_map (q-binomial commutes with ring homs) + qBinom_X_eval ((qBinom X n k).eval c = qBinom c n k) + qBinom_X_eval_one ((qBinom X n k).eval 1 = C(n,k)). Ties the Gaussian polynomial layer back to scalars: coefficient-sum of the palindromic Gaussian polynomial is the ordinary combination count (q=1 degeneration). 0 axioms. Unimodality (Sylvester/Proctor) remains open.",
+  "lastUpdate": "2026-07-12"
 }
