@@ -234,6 +234,42 @@ theorem IsPrimitive.comp_perm (σ : Equiv.Perm (Fin n)) {v : Fin n → ℤ}
     exact Equiv.sum_comp σ (fun i => w i * v i)
   rw [hsum, hw]
 
+/-- **A unit scalar preserves primitivity.**  Multiplying every entry of `v` by a unit
+`c` (over `ℤ`, `c = ±1`) keeps it primitive: if `w ⬝ᵥ v = 1` then `(c⁻¹ · w) ⬝ᵥ (c · v)
+= c⁻¹·c·(w ⬝ᵥ v) = 1`.  This is the common generalization of `IsPrimitive.neg` (the case
+`c = -1`); like negation and `IsPrimitive.comp_perm`, unit scaling is a primitivity
+invariance that lives beyond the `SLₙ`-orbit itself (it is an `SLₙ`-move only when `n` is
+even), yet holds in every dimension. -/
+theorem IsPrimitive.isUnit_smul {c : ℤ} (hc : IsUnit c) {v : Fin n → ℤ}
+    (h : IsPrimitive v) : IsPrimitive (c • v) := by
+  obtain ⟨w, hw⟩ := h
+  obtain ⟨u, rfl⟩ := hc
+  refine ⟨((u⁻¹ : ℤˣ) : ℤ) • w, ?_⟩
+  rw [smul_dotProduct, dotProduct_smul, hw, smul_eq_mul, smul_eq_mul, mul_one,
+    ← Units.val_mul, inv_mul_cancel, Units.val_one]
+
+/-- **A scalar multiple can only be primitive through a unit scalar.**  If `c · v` is
+primitive then `c` is a unit: a dual `w` gives `c·(w ⬝ᵥ v) = w ⬝ᵥ (c · v) = 1`, so `c ∣ 1`.
+This is the converse companion to `IsPrimitive.isUnit_smul` — together they say that the
+primitivity of a scalar multiple is governed *entirely* by whether the scalar is a unit,
+independently of `v`. -/
+theorem isUnit_of_isPrimitive_smul {c : ℤ} {v : Fin n → ℤ}
+    (h : IsPrimitive (c • v)) : IsUnit c := by
+  obtain ⟨w, hw⟩ := h
+  rw [dotProduct_smul, smul_eq_mul] at hw
+  exact isUnit_of_dvd_one ⟨w ⬝ᵥ v, hw.symm⟩
+
+/-- **Unit scaling is a primitivity equivalence.**  For a unit `c`, `c · v` is primitive
+iff `v` is — the invariance form of `IsPrimitive.isUnit_smul`, obtained by scaling back by
+`c⁻¹`.  Generalizes the sign-invariance implicit in `IsPrimitive.neg` to both directions
+for every unit. -/
+theorem isPrimitive_isUnit_smul_iff {c : ℤ} (hc : IsUnit c) {v : Fin n → ℤ} :
+    IsPrimitive (c • v) ↔ IsPrimitive v := by
+  refine ⟨fun h => ?_, fun h => h.isUnit_smul hc⟩
+  obtain ⟨u, rfl⟩ := hc
+  have h2 := h.isUnit_smul (c := ((u⁻¹ : ℤˣ) : ℤ)) (Units.isUnit u⁻¹)
+  rwa [smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul] at h2
+
 /-- **One-dimensional base case of the descent.**  A vector `v : Fin 1 → ℤ` is
 primitive iff its single entry is a unit, i.e. `v 0 = 1` or `v 0 = -1`.  So in
 dimension `1` the primitive vectors are exactly `±e₁` — the descent has nothing
