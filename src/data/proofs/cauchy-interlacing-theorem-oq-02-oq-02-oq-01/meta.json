@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: the reindexing obstruction and setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Imports (Mathlib + the parent CauchyInterlacingPoincareSubmatrix), the module docstring diagnosing why eigenvalues₀ (built from finrank_euclideanSpace, right-hand side Fintype.card (Fin (n+m))) does not agree on the nose with the parent's operator eigenvalues (built from finrank_euclideanSpace_fin, right-hand side n+m), the note that this is a research file intentionally NOT registered in Proofs.lean, and the ambient context: an arbitrary RCLike field 𝕜 and arbitrary n m : ℕ.",
+      "mathContext": "eigenvalues₀ = eigenvalues finrank_euclideanSpace; the parent uses eigenvalues finrank_euclideanSpace_fin; the two differ only by the non-definitional Fintype.card (Fin (n+m)) = n+m, i.e. a Fin.cast."
+    },
+    {
       "id": "eigenvalues-cast",
       "title": "The finrank-witness bridge",
       "startLine": 47,
