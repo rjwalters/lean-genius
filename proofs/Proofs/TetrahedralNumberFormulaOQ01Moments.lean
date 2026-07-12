@@ -27,11 +27,21 @@ capstone closed form for every ordinary power moment:
 
     ∑_{k ≤ N} kᵐ · P_d(k) = ∑_{r=0}^{m} S(m,r) · (d+r)_r · P_{d+r+1}(N-r)   (`pow_moment_sum_simplex`)
 
-and, as a concrete instance, the second-moment hockey stick
+and, as concrete instances, the second- and third-moment hockey sticks
 
     ∑_{k ≤ N} k² · P_d(k) = (d+1)·P_{d+2}(N-1) + (d+1)(d+2)·P_{d+3}(N-2)    (`sq_moment_sum_simplex`)
+    ∑_{k ≤ N} k³ · P_d(k) = (d+1)·P_{d+2}(N-1) + 3(d+1)(d+2)·P_{d+3}(N-2)
+                              + (d+1)(d+2)(d+3)·P_{d+4}(N-3)                (`cube_moment_sum_simplex`)
 
-the discrete analogue of the continuous moment `∫₀ᴺ x²·x^d dx`.
+the discrete analogues of the continuous moments `∫₀ᴺ x²·x^d dx`, `∫₀ᴺ x³·x^d dx`.
+
+Finally, the **point-dimension** (`d = 0`) slice, where the figurate weight collapses to
+`P_0(k) = 1`, recovers the classical Stirling-number formula for the ordinary power sum
+
+    ∑_{k=0}^{N} kᵐ = ∑_{r=0}^{m} S(m,r) · r! · C(N+1, r+1)                 (`sum_pow_eq_stirlingSecond_choose`)
+
+(the Worpitzky/Faulhaber identity), with the sum-of-squares specialisation
+`∑ k² = C(N+1,2) + 2·C(N+1,3)` (`sum_sq_eq_choose`).
 
 ## Approach
 
@@ -285,5 +295,53 @@ theorem pow_moment_sum_simplex_over_dim (m n N : ℕ) (h : m ≤ N) :
   rw [← pow_moment_sum_simplex m n N h]
   exact Finset.sum_congr rfl fun d _ => by rw [simplexNumber_symm d n]
 
+/-! ### The classical power-sum formula (dimension `0` slice) -/
+
+/-- **Sum of `m`-th powers via Stirling numbers of the second kind.** The `d = 0` slice of
+`pow_moment_sum_simplex`, where the figurate weight collapses to `P_0(k) = 1`
+(`simplexNumber_zero_dim`), recovers the classical closed form for the power sum:
+
+    ∑_{k=0}^{N} kᵐ = ∑_{r=0}^{m} S(m,r) · r! · C(N+1, r+1)        (m ≤ N).
+
+Here `(0+r)_r = r.descFactorial r = r!` (`Nat.descFactorial_self`) and the higher figurate
+number collapses to an ordinary binomial `P_{r+1}(N-r) = C(N-r+(r+1), r+1) = C(N+1, r+1)`.
+This is the standard Stirling-number expression for `∑ kᵐ` (equivalently
+`∑ kᵐ = ∑_r S(m,r)·(N+1)_{r+1}/(r+1)` in falling-factorial form), the Worpitzky/Faulhaber
+identity, obtained here for free as the point-dimension (`d = 0`) case of the figurate
+moment machinery. -/
+theorem sum_pow_eq_stirlingSecond_choose (m N : ℕ) (h : m ≤ N) :
+    ∑ k ∈ range (N + 1), k ^ m
+      = ∑ r ∈ range (m + 1),
+          stirlingSecond m r * (r.factorial * (N + 1).choose (r + 1)) := by
+  have hmoment := pow_moment_sum_simplex m 0 N h
+  simp only [simplexNumber_zero_dim, Nat.mul_one] at hmoment
+  rw [hmoment]
+  apply Finset.sum_congr rfl
+  intro r hr
+  have hrN : r ≤ N := le_trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hr)) h
+  have hfac : (0 + r).descFactorial r = r.factorial := by
+    rw [Nat.zero_add, Nat.descFactorial_self]
+  have hchoose : simplexNumber (0 + r + 1) (N - r) = (N + 1).choose (r + 1) := by
+    rw [Nat.zero_add]
+    unfold simplexNumber
+    congr 1
+    omega
+  rw [hfac, hchoose]
+
+/-- **Sum of squares as a sum of two binomials.** The `m = 2` instance of
+`sum_pow_eq_stirlingSecond_choose` (`S(2,1) = S(2,2) = 1`, `1! = 1`, `2! = 2`):
+
+    ∑_{k=0}^{N} k² = C(N+1, 2) + 2·C(N+1, 3)          (N ≥ 2),
+
+the division-free integer form of the classical `N(N+1)(2N+1)/6`. -/
+theorem sum_sq_eq_choose (N : ℕ) (h : 2 ≤ N) :
+    ∑ k ∈ range (N + 1), k ^ 2
+      = (N + 1).choose 2 + 2 * (N + 1).choose 3 := by
+  rw [sum_pow_eq_stirlingSecond_choose 2 N h]
+  rw [Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_one]
+  norm_num [show stirlingSecond 2 0 = 0 from rfl, show stirlingSecond 2 1 = 1 from rfl,
+    show stirlingSecond 2 2 = 1 from rfl, Nat.factorial_one, Nat.factorial_two]
+
 end TetrahedralNumberFormulaOQ01
+
 
