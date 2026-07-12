@@ -755,6 +755,84 @@ theorem top_not_robust [Fintype V] (h : 3 ≤ Fintype.card V) :
   exact triangle_not_robust'
     ((top_adj a b).mpr hab) ((top_adj b c).mpr hbc) ((top_adj a c).mpr hac)
 
+/-- **On ≤ 2 vertices the complete graph is bipartite (no axiom).** Any injection
+    `V ↪ Bool` — which exists precisely when `card V ≤ card Bool = 2` — 2-colours
+    `⊤`, since adjacent vertices in the complete graph are distinct and an
+    injection separates distinct vertices. This is the positive companion to
+    `top_not_robust`: below the triangle threshold the complete graph collapses to
+    a (height-≤2) bipartite graph. -/
+theorem top_isBipartite'_of_card_le_two [Fintype V] (h : Fintype.card V ≤ 2) :
+    isBipartite' (⊤ : SimpleGraph V) := by
+  obtain ⟨f⟩ := Function.Embedding.nonempty_of_card_le
+    (h.trans_eq Fintype.card_bool.symm)
+  refine ⟨f, ?_⟩
+  intro u v hadj heq
+  exact ((top_adj u v).mp hadj) (f.injective heq)
+
+/-- **`Kₙ` with `n ≤ 2` admits a robustly acyclic orientation (no axiom).** The
+    positive side of the complete-graph threshold: `K₀`, `K₁` (edgeless) and `K₂`
+    (a single edge) are all bipartite, hence robustly orientable. Together with
+    `top_not_robust` this pins the threshold exactly at three vertices. -/
+theorem top_admits_robust_of_card_le_two [Fintype V] (h : Fintype.card V ≤ 2) :
+    admitsRobustAcyclicOrientation (⊤ : SimpleGraph V) :=
+  bipartite_admits_robust (top_isBipartite'_of_card_le_two h)
+
+/-- **Sharp complete-graph threshold (no axiom):** the complete graph `⊤ = Kₙ`
+    admits a robustly acyclic orientation *if and only if* it has at most two
+    vertices. Forward is the contrapositive of `top_not_robust` (three vertices
+    already give a non-orientable triangle); reverse is
+    `top_admits_robust_of_card_le_two`. This is the exact converse companion the
+    file's obstruction results (`triangle_not_robust`, `top_not_robust`) were
+    missing — the complete graph flips from robust to non-robust precisely between
+    two and three vertices. -/
+theorem top_robust_iff [Fintype V] :
+    admitsRobustAcyclicOrientation (⊤ : SimpleGraph V) ↔ Fintype.card V ≤ 2 := by
+  constructor
+  · intro hrob
+    by_contra hc
+    exact top_not_robust (by omega) hrob
+  · exact top_admits_robust_of_card_le_two
+
+/-- **`Kₙ` is a cover graph iff `n ≤ 2` (no axiom).** The poset-facing form of
+    `top_robust_iff` via `cover_graph_characterization`: the complete graph on a
+    finite vertex set is the Hasse diagram of a partial order exactly when it has
+    at most two vertices (an antichain `K₀`/`K₁`, or the two-element chain `K₂`).
+    For `n ≥ 3` this recovers `isCoverGraph_of_triangle`; the new content is the
+    positive converse for `n ≤ 2`. -/
+theorem isCoverGraph_top_iff [Fintype V] :
+    isCoverGraph (⊤ : SimpleGraph V) ↔ Fintype.card V ≤ 2 := by
+  rw [← cover_graph_characterization]; exact top_robust_iff
+
+/-- **Complete bipartite graphs are bipartite (no axiom).** The tautological but
+    load-bearing fact: `K_{V,W}` on the sum type `V ⊕ W` is 2-coloured by
+    `Sum.isRight`, since every edge joins a left vertex to a right vertex. Feeds
+    the positive cover-graph family below. -/
+theorem isBipartite'_completeBipartiteGraph (V W : Type*) :
+    isBipartite' (completeBipartiteGraph V W) := by
+  refine ⟨Sum.isRight, ?_⟩
+  intro u v hadj
+  cases u <;> cases v <;> simp_all [completeBipartiteGraph]
+
+/-- **Complete bipartite graphs admit a robustly acyclic orientation (no axiom).**
+    A large, canonical *positive* family: `K_{V,W}` is bipartite, so orienting all
+    edges from the left part to the right part is robustly acyclic. Via
+    `cover_graph_characterization` (see `isCoverGraph_completeBipartiteGraph`),
+    every `K_{m,n}` is the Hasse diagram of a poset — indeed of the height-two
+    "standard example" order — extending the concrete cover-graph catalogue beyond
+    `isCoverGraph_of_bipartite`'s abstract witness to a named construction. -/
+theorem completeBipartiteGraph_admits_robust (V W : Type*) :
+    admitsRobustAcyclicOrientation (completeBipartiteGraph V W) :=
+  bipartite_admits_robust (isBipartite'_completeBipartiteGraph V W)
+
+/-- **Complete bipartite graphs are cover graphs (no axiom).** The poset-level form
+    of `completeBipartiteGraph_admits_robust`: for any `V, W` the complete
+    bipartite graph `K_{V,W}` is the Hasse diagram of a partial order. A named,
+    infinite catalogue of positive examples complementing the negative
+    complete-graph result `isCoverGraph_top_iff`. -/
+theorem isCoverGraph_completeBipartiteGraph (V W : Type*) [Fintype (V ⊕ W)] :
+    isCoverGraph (completeBipartiteGraph V W) :=
+  cover_graph_characterization.mp (completeBipartiteGraph_admits_robust V W)
+
 /-- Fisher-Fraughnaugh-Langley-West (1997): if the chromatic number of `G` is
     less than its girth, then `G` admits a robustly acyclic orientation. Girth
     is measured by `SimpleGraph.egirth` (shortest *cycle*, `⊤` if acyclic); the
@@ -825,6 +903,16 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
 12c. `isCoverGraph_mono` - **Cover graphs are closed under subgraphs**: `H ≤ G`
     and `G` a cover graph ⟹ `H` a cover graph (poset-level lift of
     `admitsRobust_mono`, formalizing the closure its docstring states informally).
+12d. `top_isBipartite'_of_card_le_two` / `top_admits_robust_of_card_le_two` -
+    `Kₙ` with `n ≤ 2` is bipartite, hence robustly orientable (positive side of
+    the complete-graph threshold).
+12e. `top_robust_iff` - **Sharp complete-graph threshold**: `Kₙ` admits a robustly
+    acyclic orientation ⟺ `n ≤ 2` (exact converse to `top_not_robust`).
+12f. `isCoverGraph_top_iff` - `Kₙ` is a cover graph ⟺ `n ≤ 2` (poset-level form).
+12g. `isBipartite'_completeBipartiteGraph` /
+    `completeBipartiteGraph_admits_robust` / `isCoverGraph_completeBipartiteGraph`
+    - **Complete bipartite graphs `K_{V,W}` are cover graphs**: a named, infinite
+    positive family (the height-two "standard example" posets).
 
 ### Axiomatized (deep results, girth via `SimpleGraph.egirth`):
 13. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
