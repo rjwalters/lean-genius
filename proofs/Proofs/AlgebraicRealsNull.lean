@@ -291,6 +291,41 @@ theorem ae_transcendental_complex :
   rw [Filter.eventually_iff, hset]
   exact compl_mem_ae_iff.mpr algebraic_complex_null
 
+/-- **The transcendental complex numbers are uncountable.**  The complex analogue of
+`transcendental_reals_uncountable`, supplying the cardinality pillar on `ℂ` (previously
+only the measure, dimension, density, descriptive and category pillars were present for
+the complex transcendentals).  If they were countable, then together with the countable
+algebraic complex numbers their union `ℂ` would be countable, contradicting
+`not_countable_complex`. -/
+theorem transcendental_complex_uncountable :
+    ¬ {z : ℂ | Transcendental ℚ z}.Countable := by
+  intro hcount
+  have hcompl : {z : ℂ | Transcendental ℚ z}ᶜ.Countable := by
+    have hset : {z : ℂ | Transcendental ℚ z}ᶜ = {z : ℂ | IsAlgebraic ℚ z} := by
+      ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental, not_not]
+    rw [hset]
+    exact AlgebraicNumbersCountable.algebraic_complex_countable
+  have huniv : (Set.univ : Set ℂ).Countable := by
+    have hu := hcount.union hcompl
+    rwa [Set.union_compl_self] at hu
+  exact not_countable_complex huniv
+
+/-- **The transcendental complex numbers have cardinality the continuum**:
+`#{z | Transcendental ℚ z} = 𝔠`.  The complex analogue of
+`transcendental_reals_mk_eq_continuum`, sharpening `transcendental_complex_uncountable`
+from "not countable" to the exact cardinal value.  The algebraic complex numbers are
+countable, hence of cardinality `≤ ℵ₀ < 𝔠 = #ℂ` (`Cardinal.mk_complex`); deleting a set of
+cardinality strictly below `#ℂ` from `ℂ` leaves the same cardinality
+(`Cardinal.mk_compl_of_infinite`), so the transcendentals still have cardinality `𝔠`. -/
+theorem transcendental_complex_mk_eq_continuum :
+    #{z : ℂ | Transcendental ℚ z} = 𝔠 := by
+  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
+    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
+  have hlt : #{z : ℂ | IsAlgebraic ℚ z} < #(ℂ) :=
+    lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_complex_countable.le_aleph0
+      (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)
+  rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_complex]
+
 -- ============================================================================
 -- § 6. Hausdorff dimension zero — a sharpening of Lebesgue-null
 -- ============================================================================
