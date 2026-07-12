@@ -32,12 +32,12 @@ noncomputable def minCosineSum (A : Finset ℕ) : ℝ :=
 
 /- ## Main Conjecture -/
 
-/-- **Chowla's Cosine Problem (Erdős Problem #510)**: There exists
+/-  **Chowla's Cosine Problem (Erdős Problem #510)**: There exists
     c > 0 such that for every finite A ⊂ ℕ⁺ of size N, there
     exists θ with ∑_{n ∈ A} cos(nθ) < −c√N. -/
 /- ## Known Bounds -/
 
-/-- **Bedert (2025)**: There exists c > 0 such that for all finite
+/-  **Bedert (2025)**: There exists c > 0 such that for all finite
     A ⊂ ℕ⁺ of size N, min_θ ∑ cos(nθ) < −cN^{1/7}. -/
 /- **Ruzsa (2004)**: Improved Bourgain's (1986) bound. The minimum
     cosine sum is at most −exp(O(√(log N))). -/

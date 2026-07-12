@@ -52,7 +52,7 @@ def IsBipartiteGraph (n : ℕ) (G : SimpleGraph (Fin n)) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #575 (Open, Erdős–Simonovits 1982).**
+/-  **Erdős Problem #575 (Open, Erdős–Simonovits 1982).**
 For any finite family F of graphs containing at least one bipartite graph,
 there exists a bipartite G ∈ F such that ex(n; G) = O(ex(n; F)).
 
@@ -61,11 +61,11 @@ In other words, the extremal function of the family is dominated
 member. -/
 /- ## Context: Erdős–Stone–Simonovits -/
 
-/-- **Erdős–Stone–Simonovits Theorem.**
+/-  **Erdős–Stone–Simonovits Theorem.**
 For any non-bipartite graph H with chromatic number χ(H) ≥ 3:
   ex(n; H) = (1 − 1/(χ(H)−1) + o(1)) · n²/2.
 This determines ex(n; H) asymptotically for non-bipartite H. -/
-/-- For bipartite H, ex(n; H) = o(n²) by Kővári–Sós–Turán.
+/-  For bipartite H, ex(n; H) = o(n²) by Kővári–Sós–Turán.
 The exact order is typically a fractional power of n. -/
 /- ## Family Extremal Function Properties -/
 

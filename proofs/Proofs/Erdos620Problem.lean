@@ -116,7 +116,7 @@ def Erdos620Statement : Prop :=
 
 /- ## Part V: Known Bounds -/
 
-/-- **Trivial Lower Bound**
+/-  **Trivial Lower Bound**
 
     Every K₄-free graph on n vertices has an independent set of size Ω(√n).
     Independent sets are triangle-free, so f(n) ≥ c√n for some c > 0.
@@ -130,17 +130,17 @@ axiom shearer_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 16,
       (erdosRogers n : ℝ) ≥ c * Real.sqrt n * Real.sqrt (Real.log n) / Real.log (Real.log n)
 
-/-- **Bollobás-Hind Upper Bound (1991)**
+/-  **Bollobás-Hind Upper Bound (1991)**
 
     f(n) ≪ n^{7/10 + o(1)}
 -/
 
-/-- **Krivelevich Upper Bound (1994)**
+/-  **Krivelevich Upper Bound (1994)**
 
     f(n) ≪ n^{2/3} · (log n)^{1/3}
 -/
 
-/-- **Wolfovitz Upper Bound (2013)**
+/-  **Wolfovitz Upper Bound (2013)**
 
     f(n) ≪ n^{1/2} · (log n)^{120}
 -/
@@ -210,7 +210,7 @@ theorem erdos_rogers_ramsey_connection (n k : ℕ) (hn : n ≥ ramsey3k k) :
 
 /- ## Part IX: Probabilistic Bounds -/
 
-/-- Random K₄-free graphs give upper bounds on f(n).
+/-  Random K₄-free graphs give upper bounds on f(n).
 
     The probabilistic construction shows extremal K₄-free graphs exist
     with small maximum triangle-free induced subgraphs.

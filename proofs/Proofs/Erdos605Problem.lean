@@ -134,7 +134,7 @@ noncomputable def iterLog : ℕ → ℕ
 The key results on u_D(n) for spheres of radius D > 1.
 -/
 
-/--
+/- 
 **Erdős-Hickerson-Pach Bound (1989):**
 For any sphere of radius D > 1, u_D(n) ≫ n · log*(n).
 
@@ -143,7 +143,7 @@ The proof uses a recursive construction based on the Borsuk-Ulam theorem
 and properties of spherical configurations.
 -/
 
-/--
+/- 
 **Swanepoel-Valtr Bound (2004):**
 For any sphere of radius D > 1, u_D(n) ≫ n · √(log n).
 
@@ -151,7 +151,7 @@ This significantly improves the EHP bound. The proof uses algebraic
 constructions on the sphere combined with refined counting arguments.
 -/
 
-/--
+/- 
 **Upper Bound:**
 For any sphere of radius D > 0, u_D(n) ≪ n^{4/3}.
 
@@ -159,7 +159,7 @@ This follows from the Szemerédi-Trotter type incidence bounds
 for points and circles in ℝ³.
 -/
 
-/--
+/- 
 **√2 Sphere Tight Bound:**
 For D = √2, u(n) ≍ n^{4/3}.
 
@@ -192,7 +192,7 @@ axiom erdos_605_superlinear (D : ℝ) (hD : D > 1) : superlinearGrowth D
 theorem erdos_605 (D : ℝ) (hD : D > 1) : superlinearGrowth D :=
   erdos_605_superlinear D hD
 
-/--
+/- 
 The affirmative answer: there exists f(n) → ∞ with u_D(n) ≥ f(n) · n.
 
 We can take f(n) = √(log n).

@@ -43,7 +43,7 @@ noncomputable def totalWeight {n : ℕ} (G : WeightedGraph n) : ℝ :=
 /-- The cut weight for a partition S ⊆ V:
     sum of weights of edges crossing the partition. -/
 noncomputable def cutWeight {n : ℕ} (G : WeightedGraph n) (S : Finset (Fin n)) : ℝ :=
-  ∑ i in S, ∑ j in Sᶜ, G.weight i j
+  ∑ i ∈ S, ∑ j ∈ Sᶜ, G.weight i j
 
 -- ============================================================
 -- Part II: The 1/2 Approximation
@@ -82,7 +82,7 @@ axiom exists_good_partition {n : ℕ} (G : WeightedGraph n) :
 def isUnweighted {n : ℕ} (G : WeightedGraph n) : Prop :=
   ∀ i j, G.weight i j = 0 ∨ G.weight i j = 1
 
-/-- For unweighted graphs, the total weight is the number of edges. -/
+/-  For unweighted graphs, the total weight is the number of edges. -/
 /- unweighted_total: for unweighted graphs, totalWeight G equals
     the number of edges (all weights 0 or 1). -/
 

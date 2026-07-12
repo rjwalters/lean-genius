@@ -63,7 +63,7 @@ def AllModulusLeOne (z : ComplexSeq n) : Prop :=
     depends on the parameter n. -/
 axiom maxPowerSum (z : ComplexSeq n) : ℝ
 
-/-- maxPowerSum is the supremum of |∑ z_i^k| for k ∈ {2, ..., n+1}. -/
+/-  maxPowerSum is the supremum of |∑ z_i^k| for k ∈ {2, ..., n+1}. -/
 /- ## Part II: The Erdős Question -/
 
 /-- Erdős's Question: Does there exist C > 1 such that for all n,
@@ -115,7 +115,7 @@ axiom turan_lower_bound :
 /-- The Turán constant 2e ≈ 5.44. -/
 noncomputable def turanConstant : ℝ := 2 * Real.exp 1
 
-/-- 2e is approximately 5.44. -/
+/-  2e is approximately 5.44. -/
 /- ## Part VI: The Answer -/
 
 /-- The answer depends on the modulus constraint:
@@ -145,7 +145,7 @@ theorem roots_on_circle (n : ℕ) :
   rw [Complex.abs_exp]
   simp
 
-/-- For n-th roots of unity, the k-th power sum is 0 when n ∤ k and n when n ∣ k. -/
+/-  For n-th roots of unity, the k-th power sum is 0 when n ∤ k and n when n ∣ k. -/
 /- ## Part VIII: Dirichlet Polynomial Connection -/
 
 /-- A Dirichlet polynomial: ∑ a_n n^{-s}. -/
@@ -153,7 +153,7 @@ structure DirichletPolynomial where
   coeffs : ℕ → ℂ
   support : Finset ℕ
 
-/-- Power sums of z_i = n_i^{it} for integers n_i yield Dirichlet sums.
+/-  Power sums of z_i = n_i^{it} for integers n_i yield Dirichlet sums.
     This connects Turán's method to L-function zero-free regions. -/
 /- ## Part IX: Summary -/
 

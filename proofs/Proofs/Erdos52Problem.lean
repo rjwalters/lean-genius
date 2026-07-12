@@ -55,14 +55,14 @@ def ErdosProblem52 : Prop :=
 ## Section III: The Erdős–Szemerédi Theorem
 -/
 
-/-- Erdős and Szemerédi (1983) proved the first super-linear lower bound:
+/-  Erdős and Szemerédi (1983) proved the first super-linear lower bound:
 there exists c > 0 such that max(|A+A|, |A·A|) ≥ |A|^{1+c} for all
 finite sets A with |A| ≥ 2. This was the foundational result. -/
 /-
 ## Section IV: Current Best Bound
 -/
 
-/-- Bloom (2025) proved the current best bound:
+/-  Bloom (2025) proved the current best bound:
 max(|A+A|, |A·A|) ≥ |A|^{1270/951 - o(1)} ≈ |A|^{1.335}.
 We state this as: for every ε > 0, there exists N₀ such that for
 |A| ≥ N₀, the bound max(|A+A|, |A·A|) ≥ |A|^{1270/951 - ε} holds. -/

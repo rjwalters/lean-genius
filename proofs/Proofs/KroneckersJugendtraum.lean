@@ -125,7 +125,7 @@ def KroneckerWeberTheorem : Prop :=
     IsAbelianExtension ℚ L →
     ∃ n : ℕ, 0 < n ∧
       IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) ∧
-      ∃ f : L →ₐ[ℚ] CyclotomicField n ℚ, Function.Injective f
+      ∃ f : L →ₐ(_ : ℚ) CyclotomicField n ℚ, Function.Injective f
 
 /-- Cyclotomic extensions of ℚ have abelian Galois groups.
 

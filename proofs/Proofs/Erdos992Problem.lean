@@ -76,7 +76,7 @@ noncomputable def discrepancy (x : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℝ :=
 ## Part III: Known Bounds
 -/
 
-/-- Erdős-Koksma (1949) and Cassels (1950): D(N) ≪ N^{1/2}(log N)^{5/2+o(1)} -/
+/-  Erdős-Koksma (1949) and Cassels (1950): D(N) ≪ N^{1/2}(log N)^{5/2+o(1)} -/
 /-- Baker (1981): D(N) ≪ N^{1/2}(log N)^{3/2+o(1)} — current best general bound -/
 axiom baker_1981 (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
     ∃ C : ℝ, C > 0 ∧
@@ -123,7 +123,7 @@ def conjecture_loglog_polynomial (x : ℕ → ℕ) : Prop :=
 ## Part VI: Lower Bounds
 -/
 
-/-- Lower bound: D(N) ≫ N^{1/2} infinitely often for some α -/
+/-  Lower bound: D(N) ≫ N^{1/2} infinitely often for some α -/
 /-
 ## Part VII: Examples
 -/
@@ -137,7 +137,7 @@ theorem natural_seq_strictly_increasing : StrictlyIncreasingSeq naturalSeq := by
 /-- Example: x_n = 2^n (powers of 2, lacunary with λ = 2) -/
 def powersOfTwo (n : ℕ) : ℕ := 2 ^ n
 
-/-- Powers of 2 satisfy the stronger loglog bound -/
+/-  Powers of 2 satisfy the stronger loglog bound -/
 /-
 ## Part VIII: Summary
 -/

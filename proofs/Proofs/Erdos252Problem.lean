@@ -121,7 +121,7 @@ def SchinzelHypothesisH : Prop :=
       ∃ n : ℤ, ¬ (prime : ℤ) ∣ ∏ p ∈ polys, p.eval n) →
     Set.Infinite {n : ℕ | ∀ p ∈ polys, (p.eval (n : ℤ)).natAbs.Prime}
 
-/-- **Schlage-Puchta (2006)**: Schinzel's Hypothesis H implies irrationality for all k. -/
+/-  **Schlage-Puchta (2006)**: Schinzel's Hypothesis H implies irrationality for all k. -/
 /-- **Prime k-tuples Conjecture** (simplified):
     Admissible k-tuples of linear forms take prime values infinitely often. -/
 def PrimeKTuplesConjecture : Prop :=
@@ -129,7 +129,7 @@ def PrimeKTuplesConjecture : Prop :=
     (∀ p : ℕ, p.Prime → ∃ n : ℕ, ¬ p ∣ ∏ i, (a i * n + b i)) →
     Set.Infinite {n : ℕ | ∀ i : Fin k, ((a i : ℕ) * n + b i).Prime}
 
-/-- **Friedlander-Luca-Stoiciu (2007)**: Prime k-tuples implies irrationality for k ≥ 4. -/
+/-  **Friedlander-Luca-Stoiciu (2007)**: Prime k-tuples implies irrationality for k ≥ 4. -/
 /- ## Basic Properties of Divisor Sums
 
 We verify some basic properties and examples.
@@ -173,7 +173,7 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
   · -- n ≥ 1: bound each term and count
     unfold sigma
     rw [pow_succ]
-    -- σ_k(n) = ∑ d in n.divisors, d^k
+    -- σ_k(n) = ∑ d ∈ n.divisors, d^k
     -- Each d ≤ n, so d^k ≤ n^k. Sum ≤ |n.divisors| · n^k ≤ n · n^k
     calc Finset.sum (Nat.divisors n) (· ^ k)
         ≤ n.divisors.card * n ^ k := by

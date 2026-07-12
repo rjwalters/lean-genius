@@ -124,7 +124,7 @@ def Case_k_2 : Prop :=
       chromaticNumber G ≥ f 2 →
       ∃ S : Finset V, HasRegularSubgraph G 4 S
 
-/-- The k = 2 case is FALSE. -/
+/-  The k = 2 case is FALSE. -/
 /-
 ## Part VI: The Janzer-Steiner-Sudakov Counterexample
 
@@ -144,7 +144,7 @@ axiom jss_counterexample :
 def jss_chromatic_bound (n : ℕ) : ℕ :=
   Nat.floor (Real.log (Real.log n) / Real.log (Real.log (Real.log n)))
 
-/-- The JSS graphs have no 4-regular subgraph. -/
+/-  The JSS graphs have no 4-regular subgraph. -/
 /-
 ## Part VII: The Main Disproof
 
@@ -170,9 +170,9 @@ theorem erdos_641 : ¬ErdosHajnalConjecture :=
 What IS true about chromatic number and substructures.
 -/
 
-/-- High χ implies long odd cycles (Erdős). -/
-/-- High χ implies high clique number or high odd girth (Gyárfás). -/
-/-- Triangle-free graphs have χ = O(√(n / log n)) (Kim). -/
+/-  High χ implies long odd cycles (Erdős). -/
+/-  High χ implies high clique number or high odd girth (Gyárfás). -/
+/-  Triangle-free graphs have χ = O(√(n / log n)) (Kim). -/
 /-
 ## Part IX: Related Conjectures
 
@@ -200,8 +200,8 @@ def ReedConjecture : Prop :=
 How JSS built their counterexample.
 -/
 
-/-- The JSS construction uses random graphs with constraints. -/
-/-- Key lemma: Removing few edges preserves high χ. -/
+/-  The JSS construction uses random graphs with constraints. -/
+/-  Key lemma: Removing few edges preserves high χ. -/
 /-
 ## Part XI: Main Result
 

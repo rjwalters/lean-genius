@@ -205,9 +205,9 @@ theorem allDistinctCircumradii_of_card_three {T : Finset Point} (hT : T.card = 3
         intro y hy; simp only [Finset.mem_insert, Finset.mem_singleton] at hy
         rcases hy with rfl | rfl | rfl <;> assumption
       have hcard : ({a, b, c} : Finset Point).card = 3 := by
-        rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+        rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
             Finset.card_singleton]
-        · exact Finset.not_mem_singleton.mpr hbc
+        · exact Finset.notMem_singleton.mpr hbc
         · simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨hab, hac⟩
       have := Finset.card_lt_card (show ({a, b, c} : Finset Point) ⊂ T from
         ⟨hsub, fun h => hxnot (h hx)⟩)

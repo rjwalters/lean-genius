@@ -138,7 +138,7 @@ A concrete approach:
 The solution uses finitary Ramsey-type arguments.
 -/
 
-/--
+/- 
 **Main Theorem**: Erdős Problem #645 is true.
 Every 2-coloring has a monochromatic 3-AP with d > x.
 -/
@@ -182,7 +182,7 @@ Example coloring: even numbers are true, odd are false.
 -/
 def colorByParity (n : ℕ) : Bool := n % 2 = 0
 
-/--
+/- 
 For colorByParity, the AP (2, 6, 10) works: x = 2, d = 4, all even.
 Here d = 4 > 2 = x ✓
 -/
@@ -191,7 +191,7 @@ Example coloring: n < 5 is true, n ≥ 5 is false.
 -/
 def colorByThreshold (n : ℕ) : Bool := n < 5
 
-/--
+/- 
 For colorByThreshold:
 - Numbers 1, 2, 3, 4 are true
 - Numbers 5, 6, 7, ... are false
@@ -221,7 +221,7 @@ def erdos_645_generalized (k : ℕ) : Prop :=
   k ≥ 3 → ∀ c : ℕ → Bool, ∃ x d : ℕ, 0 < x ∧ x < d ∧
     ∀ i : ℕ, i < k → c (x + i * d) = c x
 
-/--
+/- 
 The original problem is the k = 3 case.
 -/
 /-

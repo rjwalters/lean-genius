@@ -73,7 +73,7 @@ def unitDistGraph (V : Set (EuclideanSpace ℝ (Fin 2))) : SimpleGraph V where
 The two key graph parameters in this problem.
 -/
 
-/--
+/- 
 **Chromatic Number χ(G)**
 
 Uses Mathlib's `SimpleGraph.chromaticNumber`: the minimum number of colors
@@ -84,7 +84,7 @@ needed to properly color G (no two adjacent vertices share a color).
 def isKColorable {V : Type*} [Fintype V] (G : SimpleGraph V) (k : ℕ) : Prop :=
   G.chromaticNumber ≤ k
 
-/--
+/- 
 **Girth g(G)**
 
 Uses Mathlib's `SimpleGraph.girth`: the length of the shortest cycle in G.
@@ -144,7 +144,7 @@ axiom wormald_graph_exists :
     V.card = 6448 ∧ (5 : ℕ∞) ≤ (unitDistGraph ↑V).girth ∧
     (unitDistGraph ↑V).chromaticNumber = 4
 
-/--
+/- 
 **Chilakamarri (1995)**
 
 47 vertices, girth 4, χ = 4.
@@ -209,7 +209,7 @@ theorem girth_5_chi_4 :
 The broader context of coloring the plane.
 -/
 
-/--
+/- 
 **Hadwiger-Nelson Problem**
 
 χ(ℝ²) = chromatic number of the plane = ?
@@ -226,7 +226,7 @@ Problem #705 concerns finite subgraphs with girth restrictions.
 Why geometry constrains chromatic number.
 -/
 
-/--
+/- 
 **Erdős (1959): High girth + high χ exist abstractly.**
 
 For any g, k there exists an abstract graph with girth ≥ g and χ ≥ k.
@@ -310,7 +310,7 @@ def vertexCountGrowth : List (ℕ × ℕ) :=
 Connections to other Erdős problems.
 -/
 
-/--
+/- 
 **Related Erdős Problems:**
 - #508: Chromatic number of unit distance graphs
 - #704: Specific questions about UDG structure

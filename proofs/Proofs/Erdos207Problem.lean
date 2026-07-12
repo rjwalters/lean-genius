@@ -109,7 +109,7 @@ def IsAdmissible (n : ℕ) : Prop :=
 A Steiner triple system of order n exists if and only if n ≡ 1, 3 (mod 6).
 -/
 axiom kirkman_theorem (n : ℕ) :
-    (∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+    (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
       Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔
     (n ≥ 1 ∧ IsAdmissible n)
 
@@ -140,7 +140,7 @@ there exists an STS(n) with girth at least g.
 -/
 def erdos207Conjecture : Prop :=
   ∀ g : ℕ, g ≥ 2 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N → IsAdmissible n →
-    ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
       Fintype.card V = n ∧ IsSteinerTripleSystem H ∧ HasGirthAtLeast H g
 
 /-
@@ -192,7 +192,7 @@ theorem girth_3_iff_pasch_free {V : Type*} [Fintype V] [DecidableEq V]
     HasGirthAtLeast H 3 ↔ IsPaschFree H := by
   sorry
 
-/--
+/- 
 **Anti-Pasch STS:**
 Steiner triple systems avoiding the Pasch configuration have been studied
 extensively. The KSSS result generalizes this to arbitrary girth.
@@ -237,7 +237,7 @@ Related to resolvable STS - can 15 schoolgirls walk in groups of 3 for 7 days
 without any pair walking together twice?
 -/
 def kirkmanSchoolgirlProblem : Prop :=
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
     Fintype.card V = 15 ∧ IsSteinerTripleSystem H ∧ IsResolvable H
 
 /-
@@ -259,7 +259,7 @@ theorem erdos_207_summary :
     -- The conjecture is true
     erdos207Conjecture ∧
     -- Kirkman's condition is necessary and sufficient for STS existence
-    (∀ n : ℕ, n ≥ 1 → (∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph3 V),
+    (∀ n : ℕ, n ≥ 1 → (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
       Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔ IsAdmissible n) := by
   constructor
   · exact kwan_sah_sawhney_simkin_2022

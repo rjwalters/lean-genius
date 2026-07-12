@@ -57,7 +57,7 @@ zero-sum subsets of different sizes by mixing elements appropriately.
 ## Special Cases and Variants
 -/
 
-/-- **Erdős-Szemerédi (1976)**: The conjecture holds for sufficiently large primes -/
+/-  **Erdős-Szemerédi (1976)**: The conjecture holds for sufficiently large primes -/
 /-- **Gao-Hamidoune-Wang (2010)**: The conjecture holds for ALL moduli, not just primes
 
 This is the most general form of Graham's conjecture. -/

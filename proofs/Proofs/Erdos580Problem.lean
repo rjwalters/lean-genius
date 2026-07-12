@@ -80,7 +80,7 @@ The collection of all non-isomorphic trees with exactly k vertices.
 -/
 def allTrees (k : ℕ) : Set (Tree k) := Set.univ
 
-/--
+/- 
 **Number of Trees:**
 By Cayley's formula, there are k^(k-2) labeled trees on k vertices.
 -/
@@ -158,7 +158,7 @@ def KomlosSosConjecture : Prop :=
 Asymptotic and near-exact results.
 -/
 
-/--
+/- 
 **Ajtai-Komlós-Szemerédi Theorem (1995):**
 For any ε > 0 and sufficiently large n:
 If at least (1+ε)n/2 vertices have degree at least (1+ε)n/2,
@@ -187,19 +187,19 @@ theorem erdos_580 : ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G 
 /- ## Part VII: Special Cases and Bounds
 -/
 
-/--
+/- 
 **Path Case:**
 The conjecture is easy for paths: any graph satisfying the LKS condition
 contains all paths of length at most n/2 - 1.
 -/
-/--
+/- 
 **Star Case:**
 Stars (one central vertex connected to all others) are also easy to embed.
 -/
 /- ## Part VIII: Tightness Examples
 -/
 
-/--
+/- 
 **Tightness of LKS:**
 The condition n/2-n/2 is tight: there exist graphs with n/2 - 1 vertices
 of degree n/2 - 1 that miss some tree on n/2 vertices.

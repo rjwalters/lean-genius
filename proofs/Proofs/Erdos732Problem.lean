@@ -143,7 +143,7 @@ def CharacterizationQuestion : Prop :=
     (∀ Xs n, IsWellFormed Xs n →
       (IsBlockCompatible Xs n ↔ condition Xs n))
 
-/--
+/- 
 **Status of Question 1:**
 No simple characterization is known.
 The pair-counting condition is NOT sufficient.
@@ -160,7 +160,7 @@ noncomputable def B (n : ℕ) : ℕ :=
   (Finset.filter (fun Xs => IsBlockCompatible Xs n)
     (Finset.univ : Finset (List ℕ))).card  -- Finite approximation
 
-/--
+/- 
 **Erdős's upper bound:**
 B(n) ≤ exp(O(√n · log n))
 -/
@@ -220,7 +220,7 @@ theorem constant_at_least_half :
 ## Part VII: Examples
 -/
 
-/--
+/- 
 **Example: n = 3**
 The only PBD on {1, 2, 3} is the single block {1, 2, 3}.
 So the only block-compatible sequence is [3].

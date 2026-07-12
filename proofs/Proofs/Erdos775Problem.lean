@@ -124,7 +124,7 @@ axiom spencer_graph_construction :
     ∀ n : ℕ, n ≥ 2 → ∃ (G : SimpleGraph (Fin n)),
       ∃ numSizes : ℕ, numSizes ≥ n - Nat.log 2 n - 10
 
-/--
+/- 
 **Moon-Moser Theorem (1965):**
 Every graph on n vertices has at most n - log₂n + O(1) different clique sizes.
 
@@ -134,7 +134,7 @@ This proves Spencer's construction is optimal for graphs.
 ## Part V: Erdős's Construction
 -/
 
-/--
+/- 
 **Erdős's Hypergraph Construction:**
 Erdős showed there exists a 3-uniform hypergraph on n vertices with
 at least n - log*n different clique sizes.

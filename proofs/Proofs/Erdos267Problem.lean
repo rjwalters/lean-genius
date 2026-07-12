@@ -101,19 +101,19 @@ Since F_n ≈ φ^n / √5 with φ > 1, we have 1/F_n ≈ √5 / φ^n,
 and the geometric series Σ 1/φ^n converges.
 -/
 
-/-- The reciprocal Fibonacci series converges -/
+/-  The reciprocal Fibonacci series converges -/
 /-
 ## Solved Cases
 
 While the main conjecture remains open, specific cases have been proved.
 -/
 
-/-- **Good (1974), Bicknell-Hoggatt (1976)**:
+/-  **Good (1974), Bicknell-Hoggatt (1976)**:
     The sum Σ 1/F_{2^n} is irrational.
 
     This was the first special case proved. The exponential growth of indices
     (2^n) ensures the subsequence is very sparse, yet irrationality holds. -/
-/-- **André-Jeannin (1989)**:
+/-  **André-Jeannin (1989)**:
     The full sum Σ 1/F_n is irrational.
 
     This resolved the question for the complete Fibonacci reciprocal series.

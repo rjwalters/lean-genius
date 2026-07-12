@@ -54,9 +54,9 @@ theorem erdos_321_asymptotics :
 
 /- ## Known Bounds -/
 
-/-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
+/-  **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
     for iterated logs up to level k. -/
-/-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ (1/log 2) · log_r N ·
+/-  **Bleicher–Erdős upper bound (1976)**: R(N) ≤ (1/log 2) · log_r N ·
     (N/log N) · Π log_i N for some r depending on N. -/
 /-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors.
     The main term is N/log N; the precise iterated log correction is

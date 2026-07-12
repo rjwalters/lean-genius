@@ -70,8 +70,8 @@ noncomputable def edgeCount (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj]
 ex(n; K_{r,r}) = max{|E(G)| : G has n vertices and no K_{r,r}}.
 -/
 noncomputable def exKrr (n r : ℕ) : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type) [Fintype V] [DecidableEq V],
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
+  sSup {m : ℕ | ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
+    ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       Fintype.card V = n ∧ isKrrFree G r ∧ edgeCount G = m}
 
 /-
@@ -173,7 +173,7 @@ theorem erdos_714_r3 : erdosConjectureLowerBound 3 := by
 ## Part V: Open Cases (r ≥ 4)
 -/
 
-/--
+/- 
 **r ≥ 4: OPEN**
 No construction achieving ex(n; K_{r,r}) >> n^{2-1/r} is known for r ≥ 4.
 Best known lower bounds are strictly weaker than the conjectured n^{2-1/r}.
@@ -182,19 +182,19 @@ Best known lower bounds are strictly weaker than the conjectured n^{2-1/r}.
 ## Part VI: Construction Methods
 -/
 
-/--
+/- 
 **Projective Planes:**
 For r = 2, extremal graphs come from incidence graphs of projective planes.
 If q is a prime power, the incidence graph of PG(2,q) gives a K_{2,2}-free
 graph with q^2 + q + 1 vertices and (q+1)(q^2+q+1) edges.
 -/
-/--
+/- 
 **Generalized Polygons:**
 For r = 3, constructions use generalized hexagons (girth 12 cages).
 When q is a prime power, these give K_{3,3}-free graphs on O(q^3) vertices
 with O(q^5) edges, matching the n^{5/3} bound.
 -/
-/--
+/- 
 **Norm Graphs (Kollár-Rónyai-Szabó 1996):**
 Algebraic constructions using norms over finite fields give K_{r,r}-free
 graphs with Ω(n^{2-2/(r+1)}) edges, which is weaker than n^{2-1/r} for r ≥ 4.
@@ -203,13 +203,13 @@ graphs with Ω(n^{2-2/(r+1)}) edges, which is weaker than n^{2-1/r} for r ≥ 4.
 ## Part VII: Connection to Other Problems
 -/
 
-/--
+/- 
 **Problem #768: C_4-free graphs**
 Since K_{2,2} = C_4, the r = 2 case is equivalent to Erdős Problem #768.
 The equivalence holds because a graph contains K_{2,2} iff it contains
 a 4-cycle as a subgraph.
 -/
-/--
+/- 
 **Zarankiewicz Problem z(m,n;r,s):**
 The full Zarankiewicz problem asks for the maximum number of 1s in an
 m×n 0-1 matrix with no all-1s r×s submatrix. The graph-theoretic

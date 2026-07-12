@@ -95,7 +95,7 @@ def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
     simp at h
     omega
 
-/-- G_3 is isomorphic to C_6. -/
+/-  G_3 is isomorphic to C_6. -/
 /-
 ## Extremal Numbers
 
@@ -108,9 +108,9 @@ def isFree (G : SimpleGraph V) (H : SimpleGraph W) : Prop :=
 
 /-- The extremal number ex(n, H): max edges in n-vertex H-free graph. -/
 noncomputable def extremalNumber (n : ℕ) (H : SimpleGraph W) : ℕ :=
-  sSup { m : ℕ | ∃ (V : Type*) [Fintype V] [DecidableEq V],
+  sSup { m : ℕ | ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
     Fintype.card V = n ∧
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj], isFree G H ∧ edgeCount G = m }
+    ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj), isFree G H ∧ edgeCount G = m }
 
 /-
 ## Asymptotic Notation
@@ -157,7 +157,7 @@ def exponentVanishes : Prop :=
     (∃ c > 0, (fun n => exGk k n) ≪ (fun n => powerBound c n)) →
     ∀ c, (fun n => exGk k n) ≪ (fun n => powerBound c n) → c < ε
 
-/-- Erdős-Simonovits: if the conjecture holds, c_k → 0. -/
+/-  Erdős-Simonovits: if the conjecture holds, c_k → 0. -/
 /-
 ## Weak Conjecture
 
@@ -196,7 +196,7 @@ For C_6, ex(n, C_6) ≪ n^(7/6) is known.
 /-- The extremal number for C_6. -/
 noncomputable def exC6 (n : ℕ) : ℝ := extremalNumber n (cycleGraph 6 (by omega))
 
-/-- Erdős, Bondy-Simonovits: ex(n, C_6) ≪ n^(7/6). -/
+/-  Erdős, Bondy-Simonovits: ex(n, C_6) ≪ n^(7/6). -/
 /-- The exponent 7/6 = 3/2 - 1/3, so c_3 = 1/3 works. -/
 theorem c3_value : (7 : ℝ) / 6 = 3/2 - 1/3 := by norm_num
 
@@ -211,7 +211,7 @@ theorem k3_case_solved : ∃ c : ℝ, c > 0 ∧
 Basic extremal theory gives n^(3/2) as an upper bound.
 -/
 
-/-- The Kővári-Sós-Turán theorem gives ex(n, K_{s,t}) ≤ C · n^(2-1/s). -/
+/-  The Kővári-Sós-Turán theorem gives ex(n, K_{s,t}) ≤ C · n^(2-1/s). -/
 /-- G_k contains K_{2, C(k,2)}, giving a trivial n^(3/2) bound. -/
 theorem trivial_bound (k : ℕ) (hk : k ≥ 3) :
     ∃ C > 0, ∀ n, exGk k n ≤ C * (n : ℝ) ^ (3/2 : ℝ) := by

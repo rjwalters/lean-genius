@@ -103,11 +103,11 @@ def IsSquarefreePlusTwoPow2 (n : ℕ) : Prop :=
 
 /- ## Connection to Wieferich Primes (Granville-Soundararajan 1998) -/
 
-/-- Granville-Soundararajan: Erdős 11 implies infinitely many non-Wieferich primes -/
+/-  Granville-Soundararajan: Erdős 11 implies infinitely many non-Wieferich primes -/
 /- ## Computational Verification -/
 
-/-- Hercher (2024): Verified for all odd n up to 2^50 -/
-/-- Odlyzko: Earlier verification up to 10^7 -/
+/-  Hercher (2024): Verified for all odd n up to 2^50 -/
+/-  Odlyzko: Earlier verification up to 10^7 -/
 /- ## Density Result -/
 
 /-- Erdős proved the conjecture holds for almost all n -/

@@ -170,7 +170,7 @@ theorem erdos_original_is_false_proved :
       linarith
     -- The filtered set is empty (no sign vector has |sum| ≤ 1)
     have hempty : {ε : Fin 2 → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ 1}.toFinset = ∅ := by
-      rw [Finset.eq_empty_iff_forall_not_mem]
+      rw [Finset.eq_empty_iff_forall_notMem]
       intro ε
       simp only [Set.mem_toFinset, Set.mem_setOf_eq, not_and]
       exact hexceed ε

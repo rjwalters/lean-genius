@@ -87,9 +87,9 @@ theorem necessary_lower_bound (C : ℚ) (hC : 0 < C)
 
 /- ## Odd weird numbers -/
 
-/-- No odd weird number is known. It is an open question (Erdős #470)
+/-  No odd weird number is known. It is an open question (Erdős #470)
     whether any odd weird number exists. -/
-/-- If no odd weird numbers exist, then all weird numbers have abundancy < 4. -/
+/-  If no odd weird numbers exist, then all weird numbers have abundancy < 4. -/
 /- ## Main conjecture -/
 
 /-- Erdős Problem 825: there exists an absolute constant C > 0 such that

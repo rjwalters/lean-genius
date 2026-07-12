@@ -169,7 +169,7 @@ axiom jutila_ramachandra_shorey_bound :
 def polylog_conjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ᶠ k in atTop, (f k : ℝ) < (log k) ^ C
 
-/-- The conjecture is stated but unresolved (open problem).
+/-  The conjecture is stated but unresolved (open problem).
     Cannot be formalized as a clean axiom since its truth value is unknown. -/
 
 /- ## Part VIII: Small Examples -/

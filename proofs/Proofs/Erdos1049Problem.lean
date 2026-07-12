@@ -42,7 +42,7 @@ theorem tau_one : τ 1 = 1 := by
 /-- τ(p) = 2 for prime p. -/
 theorem tau_prime (p : ℕ) (hp : p.Prime) : τ p = 2 := by
   unfold tau
-  rw [hp.divisors, Finset.card_insert_of_not_mem (by simp [hp.one_lt.ne]),
+  rw [hp.divisors, Finset.card_insert_of_notMem (by simp [hp.one_lt.ne]),
       Finset.card_singleton]
 
 /-- τ(p^k) = k + 1 for prime p. -/
@@ -263,7 +263,7 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
     S t = isLambertSeries (fun _ => 1) (1/t) := by
   sorry
 
-/-- Lambert series preserve arithmetic structure. -/
+/-  Lambert series preserve arithmetic structure. -/
 /-
   Lambert series of arithmetic functions have special properties
   (e.g. Dirichlet series convolution structure at the level of coefficients).
@@ -275,7 +275,7 @@ theorem S_as_lambert (t : ℝ) (ht : t > 1) :
 What is known towards Chowla's conjecture.
 -/
 
-/-- S(p/q) is irrational for certain p/q (partial results). -/
+/-  S(p/q) is irrational for certain p/q (partial results). -/
 /-
   S(p/q) is irrational for certain p/q (partial results toward Chowla's conjecture).
   Some specific rational values have been verified.

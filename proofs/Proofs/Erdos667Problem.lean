@@ -153,7 +153,7 @@ theorem cliqueGuarantee_le_n (n p q : ℕ) :
 The function c(p,q) has known values at the endpoints.
 -/
 
-/-- REMOVED (FALSE): Previously claimed H(n; p, C(p-1,2)+1) = n (i.e., graph must
+/-  REMOVED (FALSE): Previously claimed H(n; p, C(p-1,2)+1) = n (i.e., graph must
     be complete). Counterexample: C₄ (4-cycle on Fin 4) satisfies HasDensity 3 2
     (every triple spans exactly 2 edges) but has clique number 2, not 4.
 

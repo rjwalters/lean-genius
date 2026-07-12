@@ -150,7 +150,7 @@ noncomputable def numDifferences (A : Finset ℝ) : ℕ :=
 ## Part VIII: Straus's High-Dimensional Construction
 -/
 
-/-- **Straus's Observation:**
+/-  **Straus's Observation:**
     If 2^k ≥ n, there exist n points in ℝ^k with no isosceles triangle
     that determine at most n-1 distinct distances. -/
 

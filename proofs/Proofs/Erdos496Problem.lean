@@ -43,13 +43,13 @@ def ApproxZero (α : ℝ) (ε : ℝ) : Prop :=
 
 /- ## Main Theorem (Solved) -/
 
-/-- **Erdős Problem #496 / Oppenheim Conjecture** (SOLVED by Margulis 1987):
+/-  **Erdős Problem #496 / Oppenheim Conjecture** (SOLVED by Margulis 1987):
     For irrational α > 0 and any ε > 0, there exist positive integers
     x, y, z with |x² + y² − α·z²| < ε. -/
 
 /- ## Density of Values -/
 
-/-- The set of values taken by the form is dense in ℝ.
+/-  The set of values taken by the form is dense in ℝ.
     This is the stronger consequence of Margulis's theorem. -/
 
 /-- Dense values implies approximation of zero (weaker statement). -/
@@ -68,15 +68,15 @@ theorem dense_implies_approx_zero
 
 /- ## Special Cases and Bounds -/
 
-/-- For α = p/q rational, the form x² + y² − (p/q)z² has a minimum nonzero
+/-  For α = p/q rational, the form x² + y² − (p/q)z² has a minimum nonzero
     value at integer points: min|Q| ≥ 1/q. No approximation is possible. -/
 
-/-- **Davenport–Heilbronn (1946)**: For quadratic forms in n ≥ 5 variables,
+/-  **Davenport–Heilbronn (1946)**: For quadratic forms in n ≥ 5 variables,
     the Oppenheim conjecture holds. Their method uses the circle method. -/
 
 /- ## Connection to Dynamics -/
 
-/-- Margulis's proof uses the action of SO(2,1) on SL(3,ℝ)/SL(3,ℤ).
+/-  Margulis's proof uses the action of SO(2,1) on SL(3,ℝ)/SL(3,ℤ).
     The key insight: the orbit of a lattice under the stabilizer of Q
     is either closed (Q is rational multiple of integral form) or dense. -/
 

@@ -25,6 +25,7 @@
 -/
 
 import Mathlib
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
 open Subgroup Fintype Equiv.Perm
 

@@ -68,7 +68,7 @@ axiom de_bruijn_erdos (n : ℕ) (hn : n ≥ 2) (D : BlockDesign n) :
 def IsMinimalDesign {n : ℕ} (D : BlockDesign n) : Prop :=
   D.numBlocks = n
 
-/-- In minimal designs, every block has the same size -/
+/-  In minimal designs, every block has the same size -/
 /-
 ## Part 3: Projective Plane Constructions
 
@@ -86,7 +86,7 @@ structure ProjectivePlane (q : ℕ) where
   two_points_one_line : ∀ P Q : ℕ, P ∈ points → Q ∈ points → P ≠ Q →
     ∃! L, L ∈ lines ∧ P ∈ L ∧ Q ∈ L
 
-/-- Projective planes exist for every prime power order -/
+/-  Projective planes exist for every prime power order -/
 /-- A projective plane gives a block design achieving t = n = q² + q + 1 -/
 axiom projective_plane_design (q : ℕ) (hq : IsPrimePower q) :
     ∃ D : BlockDesign (q^2 + q + 1), D.numBlocks = q^2 + q + 1
@@ -102,7 +102,7 @@ axiom efsw_1985 (p : ℕ) (hp : IsPrimePower p)
     (D : BlockDesign (p^2 + p + 1)) (h : D.numBlocks > p^2 + p + 1) :
   D.numBlocks ≥ (p^2 + p + 1) + p
 
-/-- Stronger result: unless design is from broken projective plane,
+/-  Stronger result: unless design is from broken projective plane,
     t ≥ n + cp where c ≈ 1.148 -/
 /-
 ## Part 5: The Gap Structure
@@ -114,7 +114,7 @@ What values of t are achievable?
 def achievableBlocks (p : ℕ) : Set ℕ :=
   { t | ∃ D : BlockDesign (p^2 + p + 1), D.numBlocks = t }
 
-/-- t = n is always achievable (projective plane) -/
+/-  t = n is always achievable (projective plane) -/
 /-- Values in (n, n+p) are NOT achievable -/
 axiom gap_theorem (p : ℕ) (hp : IsPrimePower p) :
   ∀ t, p^2 + p + 1 < t → t < p^2 + p + 1 + p →

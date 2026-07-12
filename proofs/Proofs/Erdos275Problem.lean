@@ -105,7 +105,7 @@ def OptimalExample (r : ℕ) : CoveringSystem where
   moduli := fun i => 2^((i : ℕ) + 1)
   moduli_pos := fun i => by simp [Nat.pos_pow_of_pos]
 
-/--
+/- 
 **What the Optimal Example Covers:**
 x is covered iff x is NOT divisible by 2^r.
 -/

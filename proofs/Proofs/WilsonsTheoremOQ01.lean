@@ -400,8 +400,8 @@ lemma unitsProduct_eq_factorial {p : ℕ} (hp : Nat.Prime p) :
   unfold unitsProduct
   have hp2 : p ≥ 2 := hp.two_le
   -- Both sides are products over {1,...,p-1}
-  -- LHS: ∏ a in (range p).filter (coprime · p), id a
-  -- RHS: (p-1)! = ∏ a in Icc 1 (p-1), id a
+  -- LHS: ∏ a ∈ (range p).filter (coprime · p), id a
+  -- RHS: (p-1)! = ∏ a ∈ Icc 1 (p-1), id a
   rw [factorial_eq_Icc_prod]
   congr 1
   ext a
@@ -629,7 +629,7 @@ Computationally verified for n ≤ 200 (gaussWilson_verified_le_200).
 ### Bridge Proof via WilsonsTheoremOQ02
 
 WilsonsTheoremOQ02 proves (sorry-free):
-1. `unitsProduct_cast_eq_abstract`: ↑(unitsProduct n) = ∏ units in ZMod n
+1. `unitsProduct_cast_eq_abstract`: ↑(unitsProduct n) = ∏ units ∈ ZMod n
 2. `gaussWilson_abstract`: ∏ units = -1 ↔ IsCyclic (ZMod n)ˣ
 
 We connect the concrete `unitsProduct n % n = n - 1` to the abstract
@@ -648,7 +648,7 @@ theorem unitsProduct_eq_neg_one_iff_cyclic {n : ℕ} (hn : n ≥ 3) :
   haveI : NeZero n := ⟨by omega⟩
   -- Both OQ01 and OQ02 define unitsProduct identically, so OQ02's proven
   -- lemmas apply directly (Lean unfolds both to the same expression).
-  -- OQ02.unitsProduct_cast_eq_abstract: ↑(unitsProduct n) = ∏ units in ZMod n
+  -- OQ02.unitsProduct_cast_eq_abstract: ↑(unitsProduct n) = ∏ units ∈ ZMod n
   -- OQ02.gaussWilson_abstract: ∏ units = -1 ↔ IsCyclic (ZMod n)ˣ
   have hcast : (↑(unitsProduct n) : ZMod n) = ∏ x : (ZMod n)ˣ, (x : ZMod n) :=
     WilsonsTheoremOQ02.unitsProduct_cast_eq_abstract (show n ≥ 1 by omega)

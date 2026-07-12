@@ -42,7 +42,7 @@ def ContainsK4_3 (n : ℕ) (H : Hypergraph3 n) : Prop :=
 def IsK4Free (n : ℕ) (H : Hypergraph3 n) : Prop :=
   IsThreeUniform n H ∧ ¬ContainsK4_3 n H
 
-/-- ex₃(n, K₄³): the Turán number for K₄³ in 3-uniform hypergraphs.
+/-  ex₃(n, K₄³): the Turán number for K₄³ in 3-uniform hypergraphs.
     The maximum number of edges in a K₄³-free 3-uniform hypergraph on n vertices. -/
 /- ## Turán Density -/
 

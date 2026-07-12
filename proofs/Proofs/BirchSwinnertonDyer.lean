@@ -4789,7 +4789,7 @@ end RegulatorBounds
 PART XLIV: BSD CONSTANT ANALYSIS AND HEIGHT-CONDUCTOR BOUNDS
 ═══════════════════════════════════════════════════════════════════════════════
 
-The BSD constant C(E) = (Ω · R · |Ш| · ∏cₚ) / |E(ℚ)_tors|² arises in the strong
+The BSD constant C(E) = (Ω · R · |Ш| · ∏cₚ) / |E(ℚ)_tors|² arises ∈ the strong
 BSD formula. We analyze how each component contributes and prove structural
 bounds on the constant.
 

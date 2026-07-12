@@ -70,14 +70,14 @@ noncomputable abbrev Λ := ArithmeticFunction.vonMangoldt
 /-- The Chebyshev ψ function: ψ(x) = Σ_{n ≤ x} Λ(n).
     By the prime number theorem, ψ(x) ~ x. -/
 noncomputable def chebyshevPsi (x : ℕ) : ℝ :=
-  ∑ n in Finset.range (x + 1), (Λ n : ℝ)
+  ∑ n ∈ Finset.range (x + 1), (Λ n : ℝ)
 
 /-- The Chebyshev function restricted to an arithmetic progression:
     ψ(x; q, a) = Σ_{n ≤ x, n ≡ a mod q} Λ(n).
     Counts prime powers in the progression a, a+q, a+2q, ... up to x,
     weighted by log p. -/
 noncomputable def chebyshevPsiAP (x q a : ℕ) : ℝ :=
-  ∑ n in (Finset.range (x + 1)).filter (fun n => n % q = a % q), (Λ n : ℝ)
+  ∑ n ∈ (Finset.range (x + 1)).filter (fun n => n % q = a % q), (Λ n : ℝ)
 
 /-- π(x; q, a) counts primes p ≤ x with p ≡ a mod q. -/
 noncomputable def primeCountAP (x q a : ℕ) : ℕ :=
@@ -165,7 +165,7 @@ axiom bombieriVinogradov :
   ∀ A : ℝ, A > 0 →
     ∃ C : ℝ, C > 0 ∧
       ∀ᶠ (x : ℕ) in atTop,
-        ∑ q in (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
+        ∑ q ∈ (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
           ‖chebyshevPsiAP x q 1 - expectedMainTerm x q‖
         ≤ C * x / (Real.log x) ^ A
 
@@ -177,7 +177,7 @@ axiom bombieriVinogradov :
     relative to the main term. -/
 theorem bv_implies_eventual_bound (A : ℝ) (hA : A > 0) :
     ∃ C : ℝ, C > 0 ∧ ∀ᶠ (x : ℕ) in atTop,
-      ∑ q in (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
+      ∑ q ∈ (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
         ‖chebyshevPsiAP x q 1 - expectedMainTerm x q‖
       ≤ C * x / (Real.log x) ^ A :=
   bombieriVinogradov A hA
@@ -185,7 +185,7 @@ theorem bv_implies_eventual_bound (A : ℝ) (hA : A > 0) :
 /-- The Bombieri-Vinogradov theorem with A = 2 gives quadratic-log savings. -/
 theorem bv_A2 :
     ∃ C : ℝ, C > 0 ∧ ∀ᶠ (x : ℕ) in atTop,
-      ∑ q in (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
+      ∑ q ∈ (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
         ‖chebyshevPsiAP x q 1 - expectedMainTerm x q‖
       ≤ C * x / (Real.log x) ^ (2 : ℝ) :=
   bombieriVinogradov 2 (by norm_num)
@@ -214,7 +214,7 @@ work with a weaker-than-BV level of distribution.
 def hasLevelOfDistribution (Q : ℕ → ℕ) : Prop :=
   ∀ A : ℝ, A > 0 →
     ∃ C : ℝ, C > 0 ∧ ∀ᶠ (x : ℕ) in atTop,
-      ∑ q in (Finset.range (Q x + 1)).filter (fun q => 0 < q),
+      ∑ q ∈ (Finset.range (Q x + 1)).filter (fun q => 0 < q),
         ‖chebyshevPsiAP x q 1 - expectedMainTerm x q‖
       ≤ C * x / (Real.log x) ^ A
 
@@ -315,14 +315,14 @@ def PolyaVinogradovHolds : Prop :=
   ∀ (q : ℕ) (hq : q ≥ 2) (χ : DirichletCharacter ℂ q),
     χ ≠ 1 →
     ∀ (M N : ℕ),
-      ‖∑ n in Finset.Icc (M + 1) (M + N), χ n‖ ≤ Real.sqrt q * Real.log q
+      ‖∑ n ∈ Finset.Icc (M + 1) (M + N), χ n‖ ≤ Real.sqrt q * Real.log q
 
 /-- If Pólya-Vinogradov holds, character sums over short intervals
     are bounded by √q · log q, regardless of interval length. -/
 theorem pv_uniform_bound (hPV : PolyaVinogradovHolds)
     (q : ℕ) (hq : q ≥ 2) (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
     (M N : ℕ) :
-    ‖∑ n in Finset.Icc (M + 1) (M + N), χ n‖ ≤ Real.sqrt q * Real.log q :=
+    ‖∑ n ∈ Finset.Icc (M + 1) (M + N), χ n‖ ≤ Real.sqrt q * Real.log q :=
   hPV q hq χ hχ M N
 
 /-- The large sieve inequality (simplified form):

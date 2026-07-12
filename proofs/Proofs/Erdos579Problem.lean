@@ -58,11 +58,11 @@ noncomputable def SimpleGraph.independenceNumber (G : SimpleGraph (Fin n))
 
 /- ## EHSS Result for δ > 1/8 -/
 
-/-- Erdős–Hajnal–Sós–Szemerédi (1983): for δ > 1/8, K₂,₂,₂-free graphs
+/-  Erdős–Hajnal–Sós–Szemerédi (1983): for δ > 1/8, K₂,₂,₂-free graphs
     with ≥ δn² edges have an independent set of linear size -/
 /- ## The Erdős–Hajnal–Sós–Szemerédi Conjecture -/
 
-/-- Erdős Problem 579: For every δ > 0 and n sufficiently large,
+/-  Erdős Problem 579: For every δ > 0 and n sufficiently large,
     every K₂,₂,₂-free graph on n vertices with at least δn² edges
     has an independent set of size ≫_δ n. Open for δ ≤ 1/8. -/
 /- ## Connection to Turán Theory -/

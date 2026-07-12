@@ -119,7 +119,7 @@ theorem sumset_empty : sumset (∅ : Set ℕ) = ∅ := by
   ext n
   simp [sumset]
 
-/-- If A ⊆ B and B is a basis, this does not imply A is a basis
+/-  If A ⊆ B and B is a basis, this does not imply A is a basis
     (in general). But we can state the contrapositive: if a subset
     is not a basis, the subset's complement in the superset matters. -/
 

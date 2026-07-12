@@ -101,7 +101,7 @@ def schinzel_question : Prop :=
     There is NO covering system with antichain moduli -/
 axiom bbmst_theorem : ¬schinzel_question
 
-/-- Equivalent formulation: every covering system has comparable moduli -/
+/-  Equivalent formulation: every covering system has comparable moduli -/
 /-
 ## Density Results
 -/
@@ -131,7 +131,7 @@ def IsKCovering (S : CoveringSystem) (k : ℕ) : Prop :=
 def antichain_k_covering_question (k : ℕ) : Prop :=
   ∃ S : CoveringSystem, IsKCovering S k ∧ HasAntichainModuli S
 
-/-- BBMST implies no k-covering with antichain moduli for any k ≥ 1 -/
+/-  BBMST implies no k-covering with antichain moduli for any k ≥ 1 -/
 /-
 ## Summary
 

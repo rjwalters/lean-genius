@@ -1,4 +1,5 @@
 import Mathlib
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
 /-
 # A₅ is Realizable as a Galois Group over ℚ (InverseGaloisA5)
@@ -1375,7 +1376,7 @@ theorem prod_eval_derivative_eq_ordered_diff :
 -- Strategy: Instead of resultant/discriminant (not in Mathlib), we:
 -- 1. Factor q'(x) = 5((x-1)^4 + 4) = 5(x^2+1)(x^2-4x+5) [Sophie Germain]
 -- 2. Embed SF → ℂ via SplittingField.lift
--- 3. Use product-roots identity: ∏ᵢ(αᵢ-c) = (-1)^n · q(c) in ℂ
+-- 3. Use product-roots identity: ∏ᵢ(αᵢ-c) = (-1)^n · q(c) ∈ ℂ
 -- 4. Compute q(±I) and q(2±I) to get the product values
 -- 5. Transfer back via injectivity
 
@@ -1594,7 +1595,7 @@ private theorem q_eval_2I_product :
 -- Step F7: Connect products to evaluations
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-/-- ∏ᵢ(αᵢ²+1) maps to q(I)·q(-I) = 256 in ℂ.
+/-- ∏ᵢ(αᵢ²+1) maps to q(I)·q(-I) = 256 ∈ ℂ.
     f₁(x) = x²+1 = (x-I)(x+I), so ∏f₁(αᵢ) = [∏(αᵢ-I)][∏(αᵢ+I)] = q(I)·q(-I). -/
 private theorem prod_sq_add_one_eq :
     toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 + 1)) = 256 := by
@@ -1618,7 +1619,7 @@ private theorem prod_sq_add_one_eq :
   rw [neg_mul_neg]
   exact q_eval_I_product
 
-/-- ∏ᵢ(αᵢ²-4αᵢ+5) maps to q(2+I)·q(2-I) = 1280 in ℂ.
+/-- ∏ᵢ(αᵢ²-4αᵢ+5) maps to q(2+I)·q(2-I) = 1280 ∈ ℂ.
     f₂(x) = x²-4x+5 = (x-(2+I))(x-(2-I)). -/
 private theorem prod_quad_eq :
     toComplex (∏ i : Fin 5, ((rootEnum i) ^ 2 - 4 * (rootEnum i) + 5)) = 1280 := by

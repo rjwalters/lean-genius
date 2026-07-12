@@ -69,7 +69,7 @@ theorem turan_triangle_free_bound {α : Type*} [Fintype α] (G : SimpleGraph α)
     omega
   omega
 
-/-- Abstract Turán bound: f(n) ≤ n²/4.
+/-  Abstract Turán bound: f(n) ≤ n²/4.
     (Axiom-dependent: requires that the triangle removal output is triangle-free,
      and that f(n) counts edges of a specific graph.) -/
 /-- The process output has at most n²/4 edges (Turán bound).
@@ -139,7 +139,7 @@ theorem turanDensity_tendsto_zero :
   apply tendsto_of_tendsto_of_tendsto_of_le_of_le
     (tendsto_const_nhds (b := (0:ℝ)))
     ((tendsto_const_nhds (b := (4:ℝ))).div_atTop hn14_atTop)
-  · exact eventually_of_forall (fun n => (turanDensity_mem_Icc n).1)
+  · exact Filter.Eventually.of_forall (fun n => (turanDensity_mem_Icc n).1)
   · filter_upwards [bfl_upper_bound (1/4 : ℝ) (by norm_num), eventually_gt_atTop 0] with n hfn hn
     unfold turanDensity
     rw [if_neg (Nat.pos_iff_ne_zero.mp hn)]

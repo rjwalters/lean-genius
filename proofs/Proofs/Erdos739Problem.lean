@@ -83,7 +83,7 @@ theorem finite_chromatic_subgraphs (V : Type*) (G : SimpleGraph V)
 
 /- ## Part IV: Galvin's Set-Theoretic Observation -/
 
-/-- If the induced subgraph version holds universally,
+/-  If the induced subgraph version holds universally,
     then 2^κ < 2^ν for all cardinals κ < ν. This connects the
     graph-theoretic question to deep cardinal arithmetic. -/
 /- ## Part V: Komjáth's Consistency Result (1988) -/
@@ -98,7 +98,7 @@ axiom komjath_consistency :
 
 /- ## Part VI: Shelah's Result under V=L (1990) -/
 
-/-- Shelah (1990): Under V=L, if χ(G) = ℵ₂, then G has a subgraph
+/-  Shelah (1990): Under V=L, if χ(G) = ℵ₂, then G has a subgraph
     with χ = ℵ₁. Combined with Komjáth, this establishes independence. -/
 /- ## Part VII: The GCH Question (OPEN) -/
 

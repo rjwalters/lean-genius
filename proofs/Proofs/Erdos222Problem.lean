@@ -66,7 +66,7 @@ example : IsSumTwoSquares 13 := ⟨3, 2, rfl⟩
 def IsPrime3Mod4 (p : ℕ) : Prop :=
   p.Prime ∧ p % 4 = 3
 
-/-- **Fermat's criterion:** n > 0 is a sum of two squares iff
+/-  **Fermat's criterion:** n > 0 is a sum of two squares iff
 every prime p ≡ 3 (mod 4) divides n to an even power. -/
 /-- Primes p ≡ 1 (mod 4) are sums of two squares.
     Proved via Mathlib's Nat.Prime.sq_add_sq. -/
@@ -89,8 +89,8 @@ are axiomatized as functions with appropriate properties. -/
 /-- The k-th element of the sum-of-two-squares sequence (0-indexed). -/
 axiom nthSumTwoSquares : ℕ → ℕ
 
-/-- The sequence is strictly increasing. -/
-/-- Every element is a sum of two squares. -/
+/-  The sequence is strictly increasing. -/
+/-  Every element is a sum of two squares. -/
 /-- The gap between the k-th and (k+1)-th sums of two squares. -/
 def gap (k : ℕ) : ℕ :=
   nthSumTwoSquares (k + 1) - nthSumTwoSquares k
@@ -101,7 +101,7 @@ def gap (k : ℕ) : ℕ :=
 noncomputable def countSumTwoSquares (x : ℝ) : ℕ :=
   (SumTwoSquaresSeq ∩ {n | (n : ℝ) ≤ x}).ncard
 
-/-- **Landau's theorem (1908):** The density of sums of two squares
+/-  **Landau's theorem (1908):** The density of sums of two squares
 is asymptotic to cx/√(log x) for some c > 0. -/
 /- ## Part V: Lower Bounds on Gaps -/
 
@@ -112,8 +112,8 @@ axiom erdos_1951_lower_bound :
       ∃ k, nthSumTwoSquares k ≤ n ∧ nthSumTwoSquares (k+1) > n ∧
         (gap k : ℝ) ≥ c * Real.log n / Real.sqrt (Real.log (Real.log n))
 
-/-- **Richards (1982):** limsup of gaps / log n ≥ 1/4. -/
-/-- **Dietmann-Elsholtz-Kalmynin-Konyagin-Maynard (2022):**
+/-  **Richards (1982):** limsup of gaps / log n ≥ 1/4. -/
+/-  **Dietmann-Elsholtz-Kalmynin-Konyagin-Maynard (2022):**
 limsup of gaps / log n ≥ 0.868. -/
 /- ## Part VI: Upper Bound -/
 

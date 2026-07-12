@@ -151,7 +151,7 @@ theorem schurPolynomial_one_row_at_one (n k : ℕ) :
   simp_rw [heach]
   -- Goal: ∑ _ : Sym (Fin k) n, (1 : R) = ↑C(k+n-1,n)
   -- Step: show sum-of-ones-in-R = Fintype.card cast to R
-  -- via Fintype.card_eq_sum_ones (card = ∑ 1 in ℕ) + Nat.cast_sum + Nat.cast_one
+  -- via Fintype.card_eq_sum_ones (card = ∑ 1 ∈ ℕ) + Nat.cast_sum + Nat.cast_one
   rw [show ∑ _ : Sym (Fin k) n, (1 : R) = (Fintype.card (Sym (Fin k) n) : R) from by
     rw [Fintype.card_eq_sum_ones, Nat.cast_sum, Nat.cast_one]]
   -- Apply Sym.card_sym_eq_choose: |Sym α n| = C(|α|+n-1, n) and |Fin k| = k

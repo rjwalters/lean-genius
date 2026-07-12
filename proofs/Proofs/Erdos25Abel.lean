@@ -62,7 +62,7 @@ theorem countExcl_succ (A : Set ℕ) (N : ℕ) :
   rw [Finset.range_add_one]
   simp only [Finset.filter_insert, Nat.succ_ne_zero, ne_eq, not_false_eq_true, and_true]
   split_ifs with h
-  · rw [Finset.card_insert_of_not_mem]
+  · rw [Finset.card_insert_of_notMem]
     · push_cast; ring
     · simp only [Finset.mem_filter, Finset.mem_range]; omega
   · ring

@@ -59,7 +59,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART II: Finite Groups Always Give Finite Generation
 -- ═══════════════════════════════════════════════════════════════
 
-/-- For finite groups, the invariant ring is always finitely generated
+/-  For finite groups, the invariant ring is always finitely generated
     (Emmy Noether's theorem, 1926). This is because:
     1. The Reynolds operator ρ = (1/|G|) Σ_{g∈G} g· is a projection
     2. The invariant ring is a direct summand of the polynomial ring
@@ -78,7 +78,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART III: The Additive Group Case (Weitzenböck)
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Weitzenböck's Theorem** (1932, reproved by Seshadri 1962):
+/-  **Weitzenböck's Theorem** (1932, reproved by Seshadri 1962):
 
     Let G_a = (k, +) act linearly on k[x₁, ..., xₙ].
     If char(k) = 0, then k[x₁,...,xₙ]^{G_a} is finitely generated.
@@ -96,7 +96,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART IV: Zariski's Finiteness Criterion
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Zariski's Finiteness Theorem** (1954):
+/-  **Zariski's Finiteness Theorem** (1954):
 
     If k is a field and L is a subfield of k(x₁,...,xₙ) such that
     the transcendence degree of L/k is at most 2, then L ∩ k[x₁,...,xₙ]

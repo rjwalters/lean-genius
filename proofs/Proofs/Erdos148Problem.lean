@@ -79,7 +79,7 @@ def egyptianDecompositionsOfSize (k : ℕ) : Set (Finset ℕ) :=
 
 /- ## Part III: Small Cases -/
 
-/--
+/- 
 **F(1) = 1:** The only way is 1 = 1/1.
 -/
 
@@ -93,7 +93,7 @@ example : isEgyptianDecomposition {1} := by
     omega
   · simp [unitFractionSum, unitFraction]
 
-/--
+/- 
 **F(2) = 1:** The only way is 1 = 1/2 + 1/2, but we need DISTINCT fractions.
 Actually 1 = 1/2 + 1/3 + 1/6 uses 3 fractions. With exactly 2 distinct fractions,
 there is no solution! So F(2) = 0.
@@ -105,7 +105,7 @@ If n₁ = 2: 1/2 + 1/n₂ = 1 implies 1/n₂ = 1/2, so n₂ = 2 = n₁, not allo
 So F(2) = 0.
 -/
 
-/--
+/- 
 **F(3) = 1:** 1 = 1/2 + 1/3 + 1/6.
 -/
 
@@ -144,24 +144,24 @@ axiom vardi_constant : ℝ
 
 /- ## Part V: Basic Properties -/
 
-/--
+/- 
 **F is increasing (eventually):**
 For large enough k, F(k) < F(k+1).
 -/
 
-/--
+/- 
 **F grows super-exponentially:**
 F(k) grows faster than any exponential in k.
 -/
 
-/--
+/- 
 **Largest denominator bound:**
 If S is a k-decomposition, then max(S) ≤ 2^k - 1.
 -/
 
 /- ## Part VI: The Egyptian Fraction Problem -/
 
-/--
+/- 
 **Any positive rational has an Egyptian fraction representation:**
 For any q ∈ ℚ with q > 0, there exist distinct n₁, ..., nₖ such that
 q = 1/n₁ + ... + 1/nₖ.
@@ -170,7 +170,7 @@ This is a classical result (and computationally achievable via the
 greedy algorithm or other methods).
 -/
 
-/--
+/- 
 **Greedy algorithm (Fibonacci-Sylvester):**
 Given q = a/b with a < b, the greedy algorithm takes n = ceil(b/a)
 and recursively decomposes q - 1/n.
@@ -178,7 +178,7 @@ and recursively decomposes q - 1/n.
 
 /- ## Part VII: Density and Asymptotics -/
 
-/--
+/- 
 **Log F(k) asymptotics:**
 Understanding log F(k) / 2^k is the key asymptotic question.
 
@@ -187,12 +187,12 @@ Current bounds: c·k/log(k) ≤ log₂ F(k) ≤ (1/5+o(1))·2^k·log₂(c₀)
 
 /- ## Part VIII: Related Sequences -/
 
-/--
+/- 
 **OEIS A076393:**
 F(1), F(2), F(3), ... = 1, 0, 1, 14, 147, 3462, ...
 -/
 
-/--
+/- 
 **OEIS A006585:**
 Least n such that there exists a k-decomposition with max denominator n.
 -/

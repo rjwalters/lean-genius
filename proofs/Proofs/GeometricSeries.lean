@@ -61,17 +61,17 @@ For any ring element r and natural number n:
 This fundamental identity arises from the telescoping that occurs when
 multiplying the sum by (1 - r). -/
 theorem finite_geom_sum {R : Type*} [Ring R] (r : R) (n : ℕ) :
-    (1 - r) * ∑ k in range n, r ^ k = 1 - r ^ n :=
+    (1 - r) * ∑ k ∈ range n, r ^ k = 1 - r ^ n :=
   mul_neg_geom_sum r n
 
 /-- The finite sum in the form (sum) * (1 - r) = 1 - r^n -/
 theorem finite_geom_sum' {R : Type*} [Ring R] (r : R) (n : ℕ) :
-    (∑ k in range n, r ^ k) * (1 - r) = 1 - r ^ n :=
+    (∑ k ∈ range n, r ^ k) * (1 - r) = 1 - r ^ n :=
   _root_.geom_sum_mul_neg r n
 
 /-- Alternate form: the sum equals (1 - r^n) / (1 - r) when r ≠ 1 -/
 theorem finite_geom_sum_div {R : Type*} [DivisionRing R] (r : R) (n : ℕ) (hr : r ≠ 1) :
-    ∑ k in range n, r ^ k = (1 - r ^ n) / (1 - r) := by
+    ∑ k ∈ range n, r ^ k = (1 - r ^ n) / (1 - r) := by
   have h1r : 1 - r ≠ 0 := sub_ne_zero.mpr (ne_comm.mpr hr)
   field_simp
   exact _root_.geom_sum_mul_neg r n
@@ -146,7 +146,7 @@ The infinite sum is the limit of finite partial sums. -/
 
 /-- Finite sums approach the infinite sum -/
 theorem finite_to_infinite (r : ℝ) (hr : |r| < 1) :
-    Filter.Tendsto (fun n => ∑ k in range n, r ^ k)
+    Filter.Tendsto (fun n => ∑ k ∈ range n, r ^ k)
       Filter.atTop (nhds ((1 - r)⁻¹)) := by
   have hs : Summable (fun n : ℕ => r ^ n) := geom_series_summable r hr
   have hsum : ∑' k : ℕ, r ^ k = (1 - r)⁻¹ := infinite_geom_sum r hr
@@ -156,13 +156,13 @@ theorem finite_to_infinite (r : ℝ) (hr : |r| < 1) :
 /-! ## Verification Examples -/
 
 /-- Verify: 1 + 2 + 4 + 8 + 16 = 31 = (32 - 1)/(2 - 1) -/
-example : (∑ k in range 5, (2 : ℕ) ^ k) = 31 := by native_decide
+example : (∑ k ∈ range 5, (2 : ℕ) ^ k) = 31 := by native_decide
 
 /-- Verify: 1 + 3 + 9 + 27 = 40 = (81 - 1)/(3 - 1) -/
-example : (∑ k in range 4, (3 : ℕ) ^ k) = 40 := by native_decide
+example : (∑ k ∈ range 4, (3 : ℕ) ^ k) = 40 := by native_decide
 
 /-- Verify: 1 + 1/2 + 1/4 + 1/8 = 15/8 -/
-example : (∑ k in range 4, (1/2 : ℚ) ^ k) = 15/8 := by native_decide
+example : (∑ k ∈ range 4, (1/2 : ℚ) ^ k) = 15/8 := by native_decide
 
 #check finite_geom_sum
 #check infinite_geom_sum

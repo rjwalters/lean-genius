@@ -294,12 +294,12 @@ theorem k3_not_bipartite : ¬IsBipartite K3 := by
 
 /- ## Turán Number Bounds -/
 
-/--
+/- 
 **Turán's Theorem (1941)**:
 ex(n; K_{r+1}) = (1 - 1/r) * n²/2, asymptotically.
 The extremal graph is the Turán graph T(n,r).
 -/
-/--
+/- 
 **Kővári-Sós-Turán Theorem (1954)**:
 For even cycles C_{2k}, we have ex(n; C_{2k}) = O(n^{1+1/k}).
 -/

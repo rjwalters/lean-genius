@@ -86,7 +86,7 @@ def maxNDKOSize (k n : ℕ) : ℕ :=
 /-- The empty set vacuously has the k-fold property for every `k`. -/
 theorem noDividesKOthers_empty (k : ℕ) : NoDividesKOthers k (∅ : Finset ℕ) := by
   intro a ha
-  exact absurd ha (Finset.not_mem_empty a)
+  exact absurd ha (Finset.notMem_empty a)
 
 /-- `k = 0` is degenerate: only the empty set qualifies, since no nonempty set
 can have every element divide fewer than `0` others. -/
@@ -94,7 +94,7 @@ theorem noDividesKOthers_zero_iff (A : Finset ℕ) :
     NoDividesKOthers 0 A ↔ A = ∅ := by
   constructor
   · intro h
-    rw [Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.eq_empty_iff_forall_notMem]
     intro a ha
     exact Nat.not_lt_zero _ (h a ha)
   · rintro rfl
@@ -135,9 +135,9 @@ theorem noDividesKOthers_one_iff_primitive (A : Finset ℕ) :
       exact ⟨hb, hdvd, hne⟩
     rw [Nat.lt_one_iff, Finset.card_eq_zero] at hcard
     rw [hcard] at hmem
-    exact Finset.not_mem_empty b hmem
+    exact Finset.notMem_empty b hmem
   · intro h a ha
-    rw [Nat.lt_one_iff, Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+    rw [Nat.lt_one_iff, Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
     intro b hb
     simp only [properMultiples, Finset.mem_filter] at hb
     obtain ⟨hbA, hdvd, hne⟩ := hb
@@ -237,7 +237,7 @@ private lemma noDivides_upper_half (k n : ℕ) (hk : 1 ≤ k) :
     NoDividesKOthers k (Finset.Icc (n / 2 + 1) n) := by
   intro a ha
   have hempty : properMultiples a (Finset.Icc (n / 2 + 1) n) = ∅ := by
-    rw [Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.eq_empty_iff_forall_notMem]
     intro b hb
     simp only [properMultiples, Finset.mem_filter, Finset.mem_Icc] at hb ha
     obtain ⟨⟨hb1, hb2⟩, hdvd, hne⟩ := hb

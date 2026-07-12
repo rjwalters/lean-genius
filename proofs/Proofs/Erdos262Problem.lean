@@ -111,7 +111,7 @@ axiom factorial_not_irrationality :
 
 /- ## Part IV: Necessary Growth Condition -/
 
-/--
+/- 
 **Root Growth:**
 If a_n is an irrationality sequence, then a_n^{1/n} → ∞.
 -/
@@ -124,24 +124,24 @@ def hančl_condition (a : ℕ → ℕ) : Prop :=
   ∀ ε > 0, ∀ᶠ n in Filter.atTop,
     Real.log (Real.log (a n)) / Real.log 2 / Real.log 2 / n ≥ 1 - ε
 
-/--
+/- 
 **The Double Exponential Bound:**
 For an irrationality sequence, we need roughly a_n ≥ 2^{2^{cn}} for some c > 0.
 -/
 /- ## Part V: Hančl's General Condition -/
 
-/--
+/- 
 **Hančl's General Criterion:**
 If a_n ≪ 2^{2^{n-F(n)}} where F(n) < n and Σ 2^{-F(n)} < ∞,
 then a_n is NOT an irrationality sequence.
 -/
-/--
+/- 
 **Corollary: Slower Growth Fails**
 If a_n grows slower than 2^{2^{n(1-ε)}} for some ε > 0, it's not an irrationality sequence.
 -/
 /- ## Part VI: The Spacing Property -/
 
-/--
+/- 
 **The Spacing Property:**
 a_{n+1}/a_n = 2^{2^{n+1}}/2^{2^n} = 2^{2^n(2-1)} = 2^{2^n}
 grows super-exponentially. This huge gap between consecutive terms

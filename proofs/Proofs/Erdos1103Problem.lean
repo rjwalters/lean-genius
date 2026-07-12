@@ -23,6 +23,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Tactic
+import Mathlib.Data.Nat.Nth
 
 open Finset Filter
 

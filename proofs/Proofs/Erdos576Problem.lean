@@ -106,7 +106,7 @@ def IsSubgraphFree {V : Type*} [Fintype V] [DecidableEq V]
 /-- The Turán number ex(n; H): maximum edges in an n-vertex H-free graph -/
 noncomputable def turanNumber (n : ℕ) {W : Type*} [Fintype W] [DecidableEq W]
     (H : SimpleGraph W) [DecidableRel H.Adj] : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  sSup {m : ℕ | ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V)
     [DecidableRel G.Adj], Fintype.card V = n ∧ IsSubgraphFree G H ∧
     G.edgeFinset.card = m}
 

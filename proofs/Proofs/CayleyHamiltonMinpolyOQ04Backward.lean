@@ -236,8 +236,8 @@ theorem isCyclicVector_of_linearIndependent
     simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
   -- Step 2: mulVec distributes over finite sums
   have hdist : ∀ (s : Finset ℕ),
-      (∑ i in s, p.coeff i • M ^ i).mulVec v =
-      ∑ i in s, p.coeff i • (M ^ i).mulVec v := by
+      (∑ i ∈ s, p.coeff i • M ^ i).mulVec v =
+      ∑ i ∈ s, p.coeff i • (M ^ i).mulVec v := by
     intro s
     induction s using Finset.induction with
     | empty => simp [Matrix.zero_mulVec]

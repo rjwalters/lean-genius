@@ -5,6 +5,7 @@ import Mathlib.Data.Rat.Denumerable
 import Mathlib.Logic.Denumerable
 import Mathlib.Order.SuccPred.Basic
 import Mathlib.Tactic
+import Mathlib.Analysis.Real.Cardinality
 
 /-
 # The Cardinality Gap: ℚ, ℝ, and the Continuum Hypothesis

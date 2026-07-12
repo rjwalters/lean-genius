@@ -112,7 +112,7 @@ f(n) < n
 axiom erdos_gyarfas_upper_bound :
     ∀ n : ℕ, n ≥ 4 → (f n : ℕ) < n
 
-/-- **Specific value**: f(9) = 8 (Erdős-Gyárfás computation). -/
+/-  **Specific value**: f(9) = 8 (Erdős-Gyárfás computation). -/
 
 /-
 ## Part IV: The Asymptotic Solution
@@ -136,7 +136,7 @@ def AsymptoticResult : Prop :=
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       |(f n : ℝ) / n - 5/6| < ε
 
-/-- The asymptotic result follows from BCDP. -/
+/-  The asymptotic result follows from BCDP. -/
 
 /-
 ## Part V: Why 5/6?
@@ -162,7 +162,7 @@ theorem k4_edges : Nat.choose 4 2 = 6 := by norm_num
 ## Part VI: Related Values
 -/
 
-/-- **Small values**: f(4)=f(5)=f(6)=5, f(9)=8 (Erdős-Gyárfás).
+/-  **Small values**: f(4)=f(5)=f(6)=5, f(9)=8 (Erdős-Gyárfás).
 **Monotonicity**: f is non-decreasing (more vertices → more colors needed). -/
 
 /-

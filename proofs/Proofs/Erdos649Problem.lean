@@ -42,7 +42,7 @@ namespace Erdos649
 P(m) is the largest prime dividing m.
 -/
 
-/--
+/- 
 **Greatest Prime Factor** P(m):
 The largest prime number that divides m.
 
@@ -95,7 +95,7 @@ theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by
   have h := gpf_prime_power p 1 hp (by omega)
   simpa [pow_one] using h
 
-/-- P(m * n) = max(P(m), P(n)) for m, n > 1. -/
+/-  P(m * n) = max(P(m), P(n)) for m, n > 1. -/
 /-
 ## Part II: The Erdős Conjecture
 
@@ -191,7 +191,7 @@ theorem no_solution_2_7 : ¬∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n + 1) = 7 := 
 The failure is not just for (2, 7) - there are infinitely many failing pairs.
 -/
 
-/--
+/- 
 **Primitive Root Obstruction:**
 If 2 is a primitive root modulo prime q > 2, then there are constraints on
 which primes p can satisfy P(n) = p, P(n+1) = q.
@@ -211,7 +211,7 @@ axiom tong_theorem (p : ℕ) (hp : p.Prime) :
     ∃ Q : Set ℕ, Q.Infinite ∧ (∀ q ∈ Q, q.Prime) ∧
       ∀ q ∈ Q, ¬∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q
 
-/--
+/- 
 **Specific Counterexample: p = 19, q = 2**
 When 2 is a primitive root modulo 19, there is no n with P(n) = 19 and P(n+1) = 2.
 -/
@@ -291,7 +291,7 @@ theorem infinitely_many_large_gpf (p : ℕ) :
 The deeper reason for the counterexamples.
 -/
 
-/--
+/- 
 **Quadratic Residue Obstruction:**
 If P(n) = p (so n is a p-smooth number times a power of p),
 and P(n+1) = q, this imposes constraints via the Legendre symbol.

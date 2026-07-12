@@ -51,9 +51,9 @@ axiom f (d n : ℕ) : ℕ
 ## Part II: Known Results
 -/
 
-/-- f₁(n) ≍ n²: in one dimension, Θ(n²) points suffice and are necessary. -/
-/-- f₂(3) = 7: exactly 7 points in the plane guarantee a triangle with distinct side lengths. -/
-/-- f_d(3) = d²/2 + O(d) for the three-point case. -/
+/-  f₁(n) ≍ n²: in one dimension, Θ(n²) points suffice and are necessary. -/
+/-  f₂(3) = 7: exactly 7 points in the plane guarantee a triangle with distinct side lengths. -/
+/-  f_d(3) = d²/2 + O(d) for the three-point case. -/
 /-- Erdős-Straus upper bound: f_d(n) ≤ c_n^d for some constant c_n. -/
 axiom erdos_straus_upper_bound (n : ℕ) (hn : n ≥ 3) :
     ∃ c : ℝ, c > 1 ∧ ∀ d : ℕ, d ≥ 1 → (f d n : ℝ) ≤ c ^ d
@@ -62,7 +62,7 @@ axiom erdos_straus_upper_bound (n : ℕ) (hn : n ≥ 3) :
 ## Part III: The Main Question
 -/
 
-/--
+/- 
 **Erdős's Question (OPEN)**: For fixed n ≥ 3, is f_d(n) = 2^{o(d)}?
 
 Equivalently: does log₂(f_d(n)) / d → 0 as d → ∞?

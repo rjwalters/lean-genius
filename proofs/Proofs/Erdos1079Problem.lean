@@ -68,7 +68,7 @@ the Turán graph, some vertex has a neighborhood whose edge count
 exceeds ex(d, K_{r−1}).
 -/
 
-/-- Bollobás–Thomason (1981): For r ≥ 4, if G has n vertices and
+/-  Bollobás–Thomason (1981): For r ≥ 4, if G has n vertices and
     at least ex(n, K_r) edges but is not the Turán graph T(n, r−1),
     then there exists a vertex v of degree d ≥ c·n (for some
     constant c > 0 depending on r) whose neighborhood contains
@@ -83,7 +83,7 @@ Bondy showed that when G has strictly more than ex(n, K_r) edges,
 the max-degree vertex always satisfies the conclusion.
 -/
 
-/-- Bondy (1983): If G has strictly more than ex(n, K_r) edges,
+/-  Bondy (1983): If G has strictly more than ex(n, K_r) edges,
     then the maximum-degree vertex v has neighborhood containing
     at least ex(deg(v), K_{r−1}) edges.
 
@@ -97,7 +97,7 @@ uniquely by the Turán graph. Problem #1079 refines this by
 examining local structure at individual vertices.
 -/
 
-/-- Turán's theorem: any K_r-free graph on n vertices has at most
+/-  Turán's theorem: any K_r-free graph on n vertices has at most
     ex(n, K_r) = turanNumber(n, r) edges. The Turán graph T(n, r−1)
     achieves this bound and is the unique extremal graph. -/
 /-

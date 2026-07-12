@@ -43,12 +43,12 @@ noncomputable def abelianCoverNumber (n : ℕ) : ℕ :=
 
 /- ## Main Problem -/
 
-/-- **Erdős Problem #117**: estimate h(n). Known: exponential in n. -/
+/-  **Erdős Problem #117**: estimate h(n). Known: exponential in n. -/
 /- ## Known Results -/
 
-/-- **Pyber (1987)**: h(n) is exponential. There exist c₂ > c₁ > 1 with
+/-  **Pyber (1987)**: h(n) is exponential. There exist c₂ > c₁ > 1 with
     c₁^n < h(n) < c₂^n. The gap between c₁ and c₂ is open. -/
-/-- **Isaacs Lower Bound**: the exponential lower bound c₁^n was known
+/-  **Isaacs Lower Bound**: the exponential lower bound c₁^n was known
     to Isaacs before Pyber's work. -/
 /- ## Observations -/
 

@@ -88,7 +88,7 @@ noncomputable def minCycleLengthGap (lengths : Set ℕ) : ℕ :=
 ## Part II: Key Relationships
 -/
 
-/--
+/- 
 **Chromatic Number and Minimum Degree:**
 For any graph G with at least one vertex:
   χ(G) ≤ Δ(G) + 1 (greedy coloring bound)
@@ -123,7 +123,7 @@ axiom bondy_vince_theorem (G : SimpleGraph V) :
     ∃ m m' : ℕ, m ∈ cycleLengths G ∧ m' ∈ cycleLengths G ∧ m ≠ m' ∧
       (m : ℤ) - m' ≤ 2 ∧ (m' : ℤ) - m ≤ 2
 
-/--
+/- 
 **Immediate Corollary:**
 The minimum gap between consecutive cycle lengths is at most 2.
 -/

@@ -133,7 +133,7 @@ theorem minpoly_span_eq_lcm_of_generators {ι : Type*} [Fintype ι] [DecidableEq
     annihilator ideals (the order polynomial of each `b i`). -/
 theorem exists_monic_generators {ι : Type*} [Fintype ι] [DecidableEq K]
     (M : Matrix (Fin n) (Fin n) K) (b : Basis ι K (Fin n → K)) :
-    ∃ μ : ι → K[X], (∀ i, vecAnnIdeal M (b i) = Ideal.span {μ i}) ∧
+    ∃ μ : ι → K(_ : X), (∀ i, vecAnnIdeal M (b i) = Ideal.span {μ i}) ∧
       (∀ i, (μ i).Monic) := by
   have hmono : (minpoly K M).Monic := minpoly.monic (isIntegral_matrix M)
   -- each annihilator ideal is principal (PID); pick a generator
@@ -178,7 +178,7 @@ theorem minpoly_eq_lcm {ι : Type*} [Fintype ι] [DecidableEq K]
     polynomials of the vectors of any basis of `Kⁿ`. -/
 theorem exists_minpoly_eq_lcm {ι : Type*} [Fintype ι] [DecidableEq K]
     (M : Matrix (Fin n) (Fin n) K) (b : Basis ι K (Fin n → K)) :
-    ∃ μ : ι → K[X], (∀ i, (μ i).Monic) ∧
+    ∃ μ : ι → K(_ : X), (∀ i, (μ i).Monic) ∧
       (∀ i, vecAnnIdeal M (b i) = Ideal.span {μ i}) ∧
       minpoly K M = Finset.univ.lcm μ := by
   obtain ⟨μ, hgen, hmonic⟩ := exists_monic_generators M b

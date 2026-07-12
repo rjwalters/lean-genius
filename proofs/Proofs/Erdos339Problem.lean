@@ -111,13 +111,13 @@ theorem distinct_subset_general (A : Set ℕ) (r : ℕ) :
   intro n ⟨f, hinj, hA, hsum⟩
   exact ⟨f, hA, hsum⟩
 
-/-- The surprise: density is preserved! Distinct sums are dense when
+/-  The surprise: density is preserved! Distinct sums are dense when
     general sums are dense, even though there are "fewer" of them. -/
 /- ## Part VI: Key Lemmas (Proof Outline) -/
 
-/-- Key observation: In any long arithmetic progression of r-sums,
+/-  Key observation: In any long arithmetic progression of r-sums,
     most can be achieved with distinct elements. -/
-/-- The proof uses: if we have "many" representations with repetition,
+/-  The proof uses: if we have "many" representations with repetition,
     we can perturb to get distinct elements. -/
 /- ## Part VII: Special Cases -/
 

@@ -638,7 +638,7 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
        linarith))
 /-! ## Part V: Graph Case Recovery -/
 
-/-- For graphs (r=2), embeddability in ℝ² is classical planarity.
+/-  For graphs (r=2), embeddability in ℝ² is classical planarity.
     Van Kampen-Flores gives K₅ is NOT planar (not embeddable in ℝ²). -/
 
 /-- The complete graph K_n on n vertices has C(n,2) = n(n-1)/2 edges. -/
@@ -696,7 +696,7 @@ theorem dense_graph_not_planar (ε : ℝ) (hε : ε > 0) :
 
 /-! ## Part VII: Connection to Main Conjecture -/
 
-/-- The main insight: if a graph has more edges than any planar graph on n vertices,
+/-  The main insight: if a graph has more edges than any planar graph on n vertices,
     it must contain a non-planar subgraph. For the graph case, this non-planar
     subgraph can be bounded in size (Kostochka-Pyber theorem, r=2 case). -/
 

@@ -217,7 +217,7 @@ theorem vanishingIdeal_empty :
   ext f
   constructor
   · intro _; exact Submodule.mem_top
-  · intro _ v hv; exact absurd hv (Set.not_mem_empty v)
+  · intro _ v hv; exact absurd hv (Set.notMem_empty v)
 
 /-- The zero locus of a single polynomial is its vanishing set. -/
 theorem zeroLocus_singleton (f : MvPolynomial σ k) :

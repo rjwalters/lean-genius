@@ -60,7 +60,7 @@ axiom erdos_1964_wetzel (family : ι → (ℂ → ℂ))
     (hch_fails : continuum > aleph 1) :
     #ι ≤ ℵ₀
 
-/-- Erdős (1964): If CH holds (𝔠 = ℵ₁), there exist uncountable Wetzel families -/
+/-  Erdős (1964): If CH holds (𝔠 = ℵ₁), there exist uncountable Wetzel families -/
 /- ## Part III: The Easy Case (𝔪⁺ < 𝔠) -/
 
 /-- The successor cardinal -/
@@ -81,23 +81,23 @@ axiom easy_case (m : Cardinal) (hm_inf : ℵ₀ < m) (hm_cont : m < continuum)
 /-- The critical condition: 𝔪⁺ = 𝔠 -/
 def SuccessorEqualsContinuum (m : Cardinal) : Prop := succCard m = continuum
 
-/-- Kumar-Shelah (2017): There exists a ZFC-consistent model where 𝔠 = ℵ₂
+/-  Kumar-Shelah (2017): There exists a ZFC-consistent model where 𝔠 = ℵ₂
 and every family of entire functions with ≤ ℵ₁ values at each point
 has cardinality ≤ ℵ₁. -/
-/-- Schilhan-Weinert (2024): There exists a ZFC-consistent model where 𝔠 = ℵ₂
+/-  Schilhan-Weinert (2024): There exists a ZFC-consistent model where 𝔠 = ℵ₂
 and there is a family of entire functions with ≤ ℵ₁ values at each point
 but cardinality > ℵ₁. -/
 /- ## Part V: The Identity Theorem -/
 
-/-- Two entire functions agreeing on uncountably many points are equal.
+/-  Two entire functions agreeing on uncountably many points are equal.
 This is the key fact making the Wetzel condition nontrivial. -/
 /- ## Part VI: Cardinal Arithmetic Background -/
 
 /-- The continuum is 2^{ℵ₀} -/
 theorem continuum_eq_two_aleph_zero : continuum = 2 ^ ℵ₀ := rfl
 
-/-- If GCH holds at ℵ₀ (i.e., 𝔠 = ℵ₁), there is no cardinal between ℵ₀ and 𝔠 -/
-/-- Under ¬CH, intermediate cardinals exist -/
+/-  If GCH holds at ℵ₀ (i.e., 𝔠 = ℵ₁), there is no cardinal between ℵ₀ and 𝔠 -/
+/-  Under ¬CH, intermediate cardinals exist -/
 /- ## Part VII: Wetzel's Question and CH -/
 
 /-- Wetzel's original question (1963): is every Wetzel family countable? -/
@@ -107,7 +107,7 @@ def WetzelQuestion : Prop :=
     (∀ z₀ : ℂ, #(valuesAtPoint family z₀) ≤ ℵ₀) →
     #ι ≤ ℵ₀
 
-/-- Wetzel's question is equivalent to ¬CH -/
+/-  Wetzel's question is equivalent to ¬CH -/
 /- ## Part VIII: Summary -/
 
 /--

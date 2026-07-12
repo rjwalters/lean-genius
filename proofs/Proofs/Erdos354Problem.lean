@@ -82,7 +82,7 @@ theorem floorSeqTerm_nonneg (α : ℝ) (k : ℕ) (hα : 0 < α) :
 Key partial solutions from Hegyvári's groundbreaking work.
 -/
 
-/-- **Hegyvári's Positive Result (1989)**: If α is a dyadic rational and β is NOT
+/-  **Hegyvári's Positive Result (1989)**: If α is a dyadic rational and β is NOT
 dyadic rational, then the combined floor sequences are complete.
 
 This uses the fact that dyadic rationals give periodic behavior mod powers of 2,
@@ -101,7 +101,7 @@ axiom hegyvari_not_complete (α : ℝ) (k : ℕ) (hα : 2 ≤ α) (hk : 1 ≤ k)
 Another special case of completeness.
 -/
 
-/-- **Van Doorn's Result**: If α < 2 < β < 3, then the sequences are complete.
+/-  **Van Doorn's Result**: If α < 2 < β < 3, then the sequences are complete.
 
 The separation between α and β in this range ensures good coverage. -/
 
@@ -111,7 +111,7 @@ The separation between α and β in this range ensures good coverage. -/
 Extensions of Hegyvári's non-completeness results.
 -/
 
-/-- **Jiang-Ma (2024)**: Non-completeness extends to 1 < α < 2 with β = 2ᵏα
+/-  **Jiang-Ma (2024)**: Non-completeness extends to 1 < α < 2 with β = 2ᵏα
 for sufficiently large k.
 
 This shows the gap phenomenon persists even when α is small. -/
@@ -122,19 +122,19 @@ This shows the gap phenomenon persists even when α is small. -/
 The general question for irrational ratios.
 -/
 
-/-- **Erdős Problem #354 (OPEN)**: For α, β > 0 with α/β irrational,
+/-  **Erdős Problem #354 (OPEN)**: For α, β > 0 with α/β irrational,
 is the combined floor sequence always complete?
 
 The answer is NOT always yes (Hegyvári counterexamples), so the refined
 conjecture asks: for which pairs (α, β) is completeness achieved? -/
 
-/-- The conjecture is known to be FALSE in full generality - counterexamples exist.
+/-  The conjecture is known to be FALSE in full generality - counterexamples exist.
 
 The counterexample construction is technical: one takes α > 2 and β such that
 α/β is irrational but β = 2ᵏ · α for some k. This gives HasIrrationalRatio α β
 while hegyvari_not_complete shows ¬IsComplete α β. -/
 
-/-- The REFINED conjecture: Is completeness achieved when α/β is irrational
+/-  The REFINED conjecture: Is completeness achieved when α/β is irrational
 AND neither α nor β is a power of 2 times the other? -/
 
 /-
@@ -155,7 +155,7 @@ Hegyvári's density results.
 The problem relates to binary expansions.
 -/
 
-/-- With α = β = 1, every positive integer is representable (binary representation).
+/-  With α = β = 1, every positive integer is representable (binary representation).
 This follows from the standard fact that every natural number has a binary representation. -/
 
 /-

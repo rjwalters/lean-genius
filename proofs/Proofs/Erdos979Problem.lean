@@ -61,7 +61,7 @@ theorem solution_zero_zero : solutionSet 0 0 = {∅} := by
   · intro h
     simp [h]
 
-/-- There's no solution for n=0 when k≥1 (need k positive primes).
+/-  There's no solution for n=0 when k≥1 (need k positive primes).
 Axiomatized due to proof complexity with Multiset.sum_pos. -/
 
 /- ## Example: Sum of Two Squares of Primes
@@ -91,36 +91,36 @@ axiom example_24_eq_cubes : ({2, 2, 2} : Multiset ℕ) ∈ solutionSet 24 3
 
 /- ## The Main Results -/
 
-/-- **Erdős (1937)**: lim sup f_2(n) = ∞.
+/-  **Erdős (1937)**: lim sup f_2(n) = ∞.
 
 There are infinitely many n that can be written as p² + q² for primes p, q
 in arbitrarily many ways. This is axiomatized as it requires analytic number theory. -/
 
-/-- **Erdős (unpublished)**: lim sup f_3(n) = ∞.
+/-  **Erdős (unpublished)**: lim sup f_3(n) = ∞.
 
 There are infinitely many n that can be written as p³ + q³ + r³ for primes p, q, r
 in arbitrarily many ways. -/
 
-/-- **Erdős Problem #979 (OPEN for k ≥ 4)**:
+/-  **Erdős Problem #979 (OPEN for k ≥ 4)**:
 Is lim sup f_k(n) = ∞ for all k ≥ 2?
 
 This is axiomatized as a Prop since the answer is unknown for k ≥ 4. -/
 
 /- ## Relationship to Other Problems -/
 
-/-- Connection to Goldbach-type problems: This problem is analogous to asking
+/-  Connection to Goldbach-type problems: This problem is analogous to asking
 whether every large even number is the sum of two primes (Goldbach), but for
 sums of powers of primes. -/
 
-/-- Connection to Waring's problem: Waring's problem asks about representing
+/-  Connection to Waring's problem: Waring's problem asks about representing
 integers as sums of k-th powers. This problem restricts to prime bases. -/
 
-/-- The Hardy-Littlewood method (circle method) is typically used to approach
+/-  The Hardy-Littlewood method (circle method) is typically used to approach
 such problems in analytic number theory. -/
 
 /- ## Properties of the Solution Count -/
 
-/-- If n < 2^k, then there are no solutions (smallest prime is 2).
+/-  If n < 2^k, then there are no solutions (smallest prime is 2).
 Axiomatized due to proof complexity. -/
 
 /-- For k=2, the smallest n with a solution is 8 = 2² + 2². -/

@@ -207,7 +207,7 @@ structure LinearlyReductive (G : Type*) [Group G] where
   /-- For any representation, there exists a Reynolds operator -/
   has_reynolds : ∀ (R : Type*) [CommRing R] [MulAction G R], Prop
 
-/-- **Hilbert's Finiteness Theorem** (for reductive groups):
+/-  **Hilbert's Finiteness Theorem** (for reductive groups):
 
     If G is a linearly reductive group acting on a Noetherian k-algebra R,
     then the ring of invariants R^G is finitely generated.
@@ -251,7 +251,7 @@ geometry and the structure of the additive group G_a.
 
 section NagataCounterexample
 
-/-- **Nagata's Counterexample** (1959):
+/-  **Nagata's Counterexample** (1959):
 
     There exists a field k, a polynomial ring k[x₁, ..., xₙ], and a group G
     acting on it such that the ring of invariants k[x₁, ..., xₙ]^G is NOT
@@ -304,7 +304,7 @@ After Nagata's counterexample, research focused on:
 
 section ModernDevelopments
 
-/-- **Hochster-Roberts Theorem** (1974):
+/-  **Hochster-Roberts Theorem** (1974):
 
     If G is a reductive group acting on a polynomial ring k[x₁, ..., xₙ],
     then the ring of invariants is Cohen-Macaulay.

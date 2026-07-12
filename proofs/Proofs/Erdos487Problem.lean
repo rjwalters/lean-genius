@@ -102,7 +102,7 @@ factorization. Under this bijection:
 def factorizationSet (n : ℕ) : Set (ℕ × ℕ) :=
   {(p, k) | p.Prime ∧ p ^ k ∣ n ∧ ¬(p ^ (k + 1) ∣ n)}
 
-/--
+/- 
 **LCM-Union Correspondence:**
 lcm(a, b) = c iff factorizationSet(a) ∪ factorizationSet(b) = factorizationSet(c)
 (under the max operation on exponents).
@@ -111,12 +111,12 @@ lcm(a, b) = c iff factorizationSet(a) ∪ factorizationSet(b) = factorizationSet
 ## Part III: Davenport-Erdős Theorem (1936)
 -/
 
-/--
+/- 
 **Davenport-Erdős (1936):**
 If A ⊆ ℕ has positive upper logarithmic density, then A contains
 an infinite divisibility chain a₁ | a₂ | a₃ | ...
 -/
-/-- Davenport-Erdős implies infinite divisibility chains in dense sets. -/
+/-  Davenport-Erdős implies infinite divisibility chains in dense sets. -/
 
 /--
 **LCM Triple from Coprime Multipliers:**
@@ -157,7 +157,7 @@ theorem coprime_multipliers_lcm_triple (a k m : ℕ) (ha : a > 0) (hk : k > 1) (
 ## Part IV: Kleitman's Theorem (1971)
 -/
 
-/-- **Union-Free Bound**: max |F| for union-free F ⊆ P([n]) is
+/-  **Union-Free Bound**: max |F| for union-free F ⊆ P([n]) is
 (1 + o(1)) · C(n, ⌊n/2⌋), exponentially smaller than 2^n. -/
 
 /--
@@ -222,7 +222,7 @@ axiom lcm_triple_in_dense_set :
   ∀ A : Set ℕ, HasPositiveUpperDensity A →
     ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ IsLCMTriple a b c
 
-/-- In fact, there are infinitely many such triples in any dense set. -/
+/-  In fact, there are infinitely many such triples in any dense set. -/
 
 /-
 ## Part VI: Examples
@@ -295,7 +295,7 @@ theorem even_numbers_example : IsLCMTriple 4 6 12 := by
 ## Part VII: Proof Structure
 -/
 
-/--
+/- 
 **Proof Outline for Problem 487:**
 
 1. Given A ⊆ ℕ with positive upper density δ > 0.

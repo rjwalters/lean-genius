@@ -93,11 +93,11 @@ Total: ≈ n³/3 + n²/2 operations
 
 /-- Forward elimination operations (exact count) -/
 def forwardElimOps (n : ℕ) : ℕ :=
-  ∑ k in range (n - 1), (n - 1 - k) * (n - k)
+  ∑ k ∈ range (n - 1), (n - 1 - k) * (n - k)
 
 /-- Back-substitution operations -/
 def backSubOps (n : ℕ) : ℕ :=
-  ∑ k in range n, k
+  ∑ k ∈ range n, k
 
 /-- Total Gaussian elimination operations -/
 def gaussianOperations (n : ℕ) : ℕ := forwardElimOps n + backSubOps n

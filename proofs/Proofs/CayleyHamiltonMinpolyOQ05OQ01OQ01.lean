@@ -68,7 +68,7 @@ theorem not_union_proper_subspaces_fin {V : Type*} [AddCommGroup V] [Module K V]
     have hS' : ∀ i ∈ s', S i ≠ ⊤ := fun i hi =>
       hS i (Finset.mem_insert_of_mem hi)
     have hcard' : s'.card < Fintype.card K := by
-      have := Finset.card_insert_of_not_mem hk
+      have := Finset.card_insert_of_notMem hk
       omega
     obtain ⟨w, hw⟩ := ih hS' hcard'
     have hk_proper := hS k (Finset.mem_insert_self k s')

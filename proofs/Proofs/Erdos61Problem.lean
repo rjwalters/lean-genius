@@ -89,7 +89,7 @@ def ErdosHajnalConjecture : Prop :=
 While the main conjecture is open, weaker bounds have been established.
 -/
 
-/--
+/- 
 **Erdős-Hajnal 1989 Bound**
 
 Erdős and Hajnal proved that for any graph H, there exists c_H > 0 such that
@@ -101,7 +101,7 @@ log(n) bound from general Ramsey theory.
 We state this as an axiom since the proof requires probabilistic and
 combinatorial techniques beyond current Mathlib formalization.
 -/
-/--
+/- 
 **Bucić-Nguyen-Scott-Seymour 2023 Bound**
 
 In 2023, Bucić, Nguyen, Scott, and Seymour improved the Erdős-Hajnal bound to

@@ -94,7 +94,7 @@ axiom erdos_freud_finite :
 
 /- ## Structural Observations -/
 
-/-- If A is a Sidon set (all pairwise sums distinct), then every sum has
+/-  If A is a Sidon set (all pairwise sums distinct), then every sum has
     at most one representation: uniqueSums covers all sums of A.
     But Sidon sets have |A ∩ {1,...,N}| ≤ N^{1/2} + O(N^{1/4}), so
     the sumset has ≤ N + O(N^{3/4}) elements, missing ~N integers. -/

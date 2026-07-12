@@ -118,12 +118,12 @@ theorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :
 ## Part V: Bhowmick's Answer (2024)
 -/
 
-/-- Bhowmick's construction: n points with many rich distances. -/
+/-  Bhowmick's construction: n points with many rich distances. -/
 /-- Bhowmick's main result: At least ⌊n/4⌋ rich distances exist. -/
 axiom bhowmick_main (n : ℕ) (hn : n ≥ 4) :
   ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4
 
-/-- Bhowmick's general result for higher multiplicities. -/
+/-  Bhowmick's general result for higher multiplicities. -/
 /-
 ## Part VI: Answer to Erdős Problem #756
 -/
@@ -152,8 +152,8 @@ theorem rich_distances_exist :
     instances not available in Mathlib for this type. -/
 noncomputable axiom squareGrid (n : ℕ) : PointSet
 
-/-- Clemen-Dumitrescu-Liu (2025): On square grid, superpolynomially many rich distances. -/
-/-- The square grid has distances with super-linear multiplicity. -/
+/-  Clemen-Dumitrescu-Liu (2025): On square grid, superpolynomially many rich distances. -/
+/-  The square grid has distances with super-linear multiplicity. -/
 /-
 ## Part VIII: Related Problems
 -/
@@ -171,7 +171,7 @@ def SecondDistanceQuestion : Prop :=
     ∃ d₁ d₂ : ℝ, d₁ ≠ d₂ ∧ d₁ ∈ allDistances A ∧ d₂ ∈ allDistances A ∧
       distanceMultiplicity A d₁ ≤ A.card ∧ distanceMultiplicity A d₂ ≤ A.card
 
-/-- The second distance question is open (see Problem #132). -/
+/-  The second distance question is open (see Problem #132). -/
 /-
 ## Part IX: Asymptotic Analysis
 -/

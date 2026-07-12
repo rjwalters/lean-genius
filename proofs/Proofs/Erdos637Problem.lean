@@ -138,13 +138,13 @@ theorem jkly_no_vertex_restriction (G : SimpleGraph V) (hRamsey : IsRamseyGraph 
 
 /-- The exponent 2/3 is believed to be optimal. -/
 def OptimalityConjecture : Prop :=
-  ∀ ε > 0, ∃ (V : Type*) [Fintype V] [DecidableEq V],
+  ∀ ε > 0, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
     ∃ G : SimpleGraph V, IsRamseyGraph G ∧
       (numDistinctDegrees G : ℝ) ≤ (Fintype.card V : ℝ)^(2/3 + ε)
 
 /-- Upper bound construction. -/
 theorem upper_bound_construction :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V], ∃ G : SimpleGraph V,
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V), ∃ G : SimpleGraph V,
       IsRamseyGraph G ∧ (numDistinctDegrees G : ℝ) ≤ 2 * (Fintype.card V : ℝ)^(2/3 : ℝ) := by
   sorry
 

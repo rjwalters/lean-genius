@@ -129,7 +129,7 @@ theorem partial_sum_formula (n : ℕ) :
 theorem representable_one : IsRepresentable 1 := by
   refine ⟨{4, 5, 6}, ?_, ?_, ?_⟩
   · -- card ≥ 2
-    simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+    simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
   · -- all ≥ 1
     intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl <;> omega
@@ -157,7 +157,7 @@ theorem representable_two : IsRepresentable 2 :=
 theorem representable_three : IsRepresentable 3 := by
   refine ⟨{4, 6, 8}, ?_, ?_, ?_⟩
   · -- card ≥ 2
-    simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+    simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
   · -- all ≥ 1
     intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl <;> omega
@@ -255,7 +255,7 @@ theorem representable_four : IsRepresentable 4 :=
 /-- n = 5 is representable: 5/32 = 6/64 + 7/128 + 11/2048 + 13/8192 + 14/16384. -/
 theorem representable_five : IsRepresentable 5 := by
   refine ⟨{6, 7, 11, 13, 14}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {6, 7, 11, 13, 14} = recipPow2Weight 5
@@ -270,7 +270,7 @@ theorem representable_five : IsRepresentable 5 := by
 /-- n = 6 is representable: 6/64 = 7/128 + 8/256 + 11/2048 + 13/8192 + 14/16384. -/
 theorem representable_six : IsRepresentable 6 := by
   refine ⟨{7, 8, 11, 13, 14}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {7, 8, 11, 13, 14} = recipPow2Weight 6
@@ -286,7 +286,7 @@ theorem representable_six : IsRepresentable 6 := by
     + 20/1048576 + 21/2097152 + 24/16777216. -/
 theorem representable_seven : IsRepresentable 7 := by
   refine ⟨{8, 9, 11, 15, 20, 21, 24}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {8, 9, 11, 15, 20, 21, 24} = recipPow2Weight 7
@@ -314,7 +314,7 @@ theorem representable_le_7 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 7) : IsRepresen
 /-- n = 9 is representable: 9/512 = 10/1024 + 11/2048 + 13/8192 + 14/16384. -/
 theorem representable_nine : IsRepresentable 9 := by
   refine ⟨{10, 11, 13, 14}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_not_mem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {10, 11, 13, 14} = recipPow2Weight 9
@@ -345,7 +345,7 @@ theorem representable_57 : IsRepresentable 57 :=
 theorem representable_120 : IsRepresentable 120 :=
   borwein_loring_family 6 (by omega)
 
-/-- Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
+/-  Tengely–Ulas–Zygadło: all n ≤ 10000 are representable -/
 /- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 261, Part 1: infinitely many n are representable.
@@ -354,7 +354,7 @@ theorem ErdosProblem261_infinitely_many :
     ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsRepresentable n :=
   cusick_infinitely_many
 
-/-- Erdős Problem 261, Part 2 (stronger conjecture): every n ≥ 1 is representable -/
+/-  Erdős Problem 261, Part 2 (stronger conjecture): every n ≥ 1 is representable -/
 /- ## Continuum Representations -/
 
 /-- An infinite representation: a sequence a : ℕ → ℕ of distinct positive integers.

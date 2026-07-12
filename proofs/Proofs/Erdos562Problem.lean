@@ -65,17 +65,17 @@ theorem graph_ramsey_exponential (n : ℕ) (hn : 2 ≤ n) :
 
 /- ## Erdős–Rado Stepping-Up Upper Bound -/
 
-/-- Erdős–Rado stepping-up lemma (1952): bounds R_r in terms of R_{r-1}.
+/-  Erdős–Rado stepping-up lemma (1952): bounds R_r in terms of R_{r-1}.
     This gives R_r(n) ≤ twr_{r-1}(c_r · n²). -/
 /- ## Lower Bounds -/
 
-/-- Erdős–Hajnal lower bound for r = 3:
+/-  Erdős–Hajnal lower bound for r = 3:
     R_3(n) ≥ twr_2(c · n²) = 2^{2^{cn²}}. -/
-/-- General lower bound for r ≥ 3: R_r(n) ≥ twr_{r-1}(c · n).
+/-  General lower bound for r ≥ 3: R_r(n) ≥ twr_{r-1}(c · n).
     This is known for all r but the constant is not optimal. -/
 /- ## The Main Conjecture -/
 
-/-- **Erdős Problem #562**: log_{r-1} R_r(n) ≍ n for r ≥ 3.
+/-  **Erdős Problem #562**: log_{r-1} R_r(n) ≍ n for r ≥ 3.
     Equivalently, R_r(n) = twr_{r-1}(Θ(n)).
     The upper bound gives twr_{r-1}(O(n²)) and the lower bound
     gives twr_{r-1}(Ω(n)). The conjecture is that both can be

@@ -304,7 +304,7 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
     by_cases haS : a ∈ S
     · -- `S` contains `a`; write `S = insert a S'` with `S' = S.erase a ⊆ A`.
       have hSeq : S = insert a (S.erase a) := (Finset.insert_erase haS).symm
-      have haS' : a ∉ S.erase a := Finset.not_mem_erase a S
+      have haS' : a ∉ S.erase a := Finset.notMem_erase a S
       have hS'A : S.erase a ⊆ A := by
         intro x hx
         have hxS : x ∈ S := Finset.mem_of_mem_erase hx
@@ -399,7 +399,7 @@ theorem subsetSums_card_insert_superincreasing
     obtain ⟨s, hs, hEq⟩ := hmem
     have hs1 : 1 ≤ s := subsetSums_pos hlo s hs
     omega
-  rw [subsetSums_insert ha, Finset.card_insert_of_not_mem h_a_notin_union,
+  rw [subsetSums_insert ha, Finset.card_insert_of_notMem h_a_notin_union,
     Finset.card_union_of_disjoint h_disj, h_img_card]
   ring
 
@@ -474,7 +474,7 @@ theorem subsetSums_card_superincreasing :
     · set m := A.max' hne with hm
       have hmem : m ∈ A := A.max'_mem hne
       have hEq : A = insert m (A.erase m) := (Finset.insert_erase hmem).symm
-      have hnotmem : m ∉ A.erase m := Finset.not_mem_erase m A
+      have hnotmem : m ∉ A.erase m := Finset.notMem_erase m A
       have hsub : A.erase m ⊂ A := Finset.erase_ssubset hmem
       have hAe : Superincreasing (A.erase m) := hA.mono (Finset.erase_subset m A)
       have hgt : (A.erase m).sum id < m := sum_erase_max_lt hA hne
@@ -546,7 +546,7 @@ theorem exists_superincreasing_extremal (k : ℕ) :
           · rintro ⟨hxA, hlt⟩; exact ⟨Or.inr hxA, hlt⟩
         rw [hfil]; exact hSI a haA
     refine ⟨insert m A, ?_, hSI', ?_⟩
-    · rw [Finset.card_insert_of_not_mem hmnot, hcard]
+    · rw [Finset.card_insert_of_notMem hmnot, hcard]
     · have hdouble := subsetSums_card_insert_superincreasing hmnot hSI.pos hgt
       have hk1 : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_two_pow
       have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring

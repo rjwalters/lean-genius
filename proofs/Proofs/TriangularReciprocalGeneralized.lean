@@ -52,7 +52,7 @@ theorem altHarmonicPartial_one : altHarmonicPartial 1 = 1 := by
 /-- altHarmonicPartial k equals the partial sum of the alternating harmonic function
     over range (k+1). This connects our definition to hasSum_nat_add_iff. -/
 private lemma partialSum_eq (k : ℕ) :
-    ∑ i in Finset.range (k + 1),
+    ∑ i ∈ Finset.range (k + 1),
       (fun n : ℕ => if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / (n : ℝ)) i =
     altHarmonicPartial k := by
   rw [Finset.sum_range_succ']

@@ -270,7 +270,7 @@ theorem reductive_subgroup_grosshans (G : Type*) [Group G] (H : Subgroup G)
     (h_reductive : True) : GrosshansSubgroup G H :=
   ⟨trivial⟩
 
-/-- **The additive group G_a**: the key non-reductive case.
+/-  **The additive group G_a**: the key non-reductive case.
 
     G_a = (k, +) is the simplest non-reductive algebraic group.
     Whether G_a has finitely generated invariants depends on the specific

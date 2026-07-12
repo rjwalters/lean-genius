@@ -31,7 +31,7 @@ open Set
     every continuous f : [0,1] → [0,1] has a fixed point.
 
     Proof: Let g(x) = f(x) - x. Then g(0) = f(0) ≥ 0 and
-    g(1) = f(1) - 1 ≤ 0. By IVT, ∃ c ∈ [0,1] with g(c) = 0,
+    g(1) = f(1) - 1 ≤ 0. By IVT, ∃ c ∈ (_ : 0,1) with g(c) = 0,
     i.e., f(c) = c. -/
 theorem brouwer_1d (f : ℝ → ℝ) (hf : Continuous f)
     (hf0 : 0 ≤ f 0) (hf0' : f 0 ≤ 1)

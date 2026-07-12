@@ -106,7 +106,7 @@ axiom liu_sawhney_theorem :
             S.Nonempty ∧
             hasBoundedDenom (unitFractionSum S) C
 
-/--
+/- 
 **Bloom's Theorem (2021):**
 The set of integers that can be written as a sum of distinct unit fractions
 summing to 1 has positive density among all integers.
@@ -176,7 +176,7 @@ theorem even_sum_small : (1 : ℚ) / 2 + 1 / 4 + 1 / 6 = 11 / 12 := by
 Liu and Sawhney also showed the bound b ≤ exp(O(1/α)) is optimal.
 -/
 
-/--
+/- 
 **Sharpness Theorem:**
 The dependence b ≤ exp(O(1/α)) is sharp: there exist dense subsets A
 where the minimum achievable denominator requires b ≥ exp(Ω(1/α)).
@@ -190,14 +190,14 @@ Every positive rational can be written as a sum of distinct unit fractions
 (this is the classical Egyptian fraction representation).
 -/
 
-/--
+/- 
 **Egyptian Fraction Representation:**
 Every positive rational q can be written as q = Σ_{n∈S} 1/n
 for some finite set S of distinct positive integers.
 
 This is a classical result, provable by the greedy algorithm.
 -/
-/--
+/- 
 The greedy algorithm: repeatedly subtract the largest unit fraction ≤ q.
 This terminates and produces a valid representation.
 -/
@@ -277,7 +277,7 @@ theorem erdos_310_answer : erdosGrahamConjecture := erdos_310
 ## Part X: Related Results
 -/
 
-/--
+/- 
 **Croot's Theorem:**
 Every set of positive integers with density > 0 contains a finite
 subset whose reciprocals sum to 1.

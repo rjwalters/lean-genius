@@ -101,7 +101,7 @@ def WellDistributed (x : UnitSequence) : Prop :=
       ∀ n : ℕ, ∀ a b : ℝ, 0 ≤ a → b ≤ 1 → a < b →
         |↑(countInInterval x n k (Ioc a b)) - (b - a) * ↑k| < ε * ↑k
 
-/--
+/- 
 **Well-Distributed vs Equidistributed:**
 Well-distribution is strictly stronger than equidistribution.
 - Equidistribution: limₙ→∞ (1/n) #{m ≤ n : xₘ ∈ I} = |I|
@@ -158,7 +158,7 @@ For a lacunary sequence, the α-multiples sequence.
 noncomputable def lacunaryMultipleSequence (s : ℕ → ℕ) (α : ℝ) : UnitSequence :=
   fun n => frac (α * s n)
 
-/--
+/- 
 **Erdős's Lacunary Theorem:**
 For any lacunary sequence (nₖ), the sequence {α · nₖ} is not well-distributed
 for almost all α.
@@ -173,7 +173,7 @@ well-distributed has Lebesgue measure zero.
 The main question.
 -/
 
-/--
+/- 
 **Erdős's Original (Retracted) Claim (1964):**
 Erdős claimed there exists an irrational α such that {αpₙ} is not well-distributed.
 He later retracted this claim in 1985.
@@ -200,13 +200,13 @@ The full conjecture asks whether it holds universally.
 def Erdos997Conjecture : Prop :=
   ∀ α : ℝ, ¬WellDistributed (primeMultipleSequence α)
 
-/--
+/- 
 **Rational Case:**
 For rational α = p/q, the sequence {αpₙ} has only finitely many values
 modulo 1, so cannot be well-distributed in any meaningful sense.
 -/
 
-/--
+/- 
 **The Hard Case: Irrational α**
 For irrational α, the sequence {αpₙ} is equidistributed by Vinogradov.
 But well-distribution is stronger, requiring uniformity over all starting points.
@@ -231,13 +231,13 @@ noncomputable def discrepancy (x : UnitSequence) (N : ℕ) : ℝ :=
   ⨆ (a : ℝ) (b : ℝ) (_ : 0 ≤ a) (_ : b ≤ 1) (_ : a < b),
     |↑(countInInterval x 0 N (Ioc a b)) / ↑N - (b - a)|
 
-/--
+/- 
 **Well-Distribution via Discrepancy:**
 A sequence is well-distributed iff the discrepancy starting at any n
 goes to 0 uniformly.
 -/
 
-/--
+/- 
 **Prime Distribution Irregularity:**
 The primes have inherent irregularities (prime gaps, twin primes, etc.)
 that may propagate to the sequence {αpₙ} regardless of α.
@@ -247,13 +247,13 @@ that may propagate to the sequence {αpₙ} regardless of α.
 ## Part VII: Connections to Diophantine Approximation
 -/
 
-/--
+/- 
 **Connection to Diophantine Approximation:**
 The well-distribution of {αpₙ} is related to how well α can be
 approximated by rationals with prime denominators.
 -/
 
-/--
+/- 
 **Metric Theory:**
 By metric theory of Diophantine approximation, the behavior of {αpₙ}
 for "generic" (measure-theoretic typical) α may differ from all α.
@@ -265,7 +265,7 @@ for "generic" (measure-theoretic typical) α may differ from all α.
 
 /--
 **Current Knowledge (2024):**
-1. ∃ irrational α: {αpₙ} not well-distributed [CLLW24]
+1. ∃ irrational α: {αpₙ} not well-distributed (_ : CLLW24)
 2. For lacunary sequences: not well-distributed for almost all α [Erdős]
 3. Primes are not lacunary (gaps grow, but ratio pₙ₊₁/pₙ → 1)
 4. Universal statement for all α: OPEN
@@ -276,7 +276,7 @@ theorem current_status :
     -- but universality is unknown
     := CLLW_theorem
 
-/--
+/- 
 **Why the Problem is Hard:**
 - Primes are not lacunary: pₙ₊₁/pₙ → 1 by prime number theorem
 - Vinogradov: {αpₙ} IS equidistributed for irrational α
@@ -296,7 +296,7 @@ Is it true that for every α, the sequence {αpₙ} is not well-distributed?
 **Status:** OPEN
 
 **Known Results:**
-- 2024: ∃ irrational α with non-well-distributed {αpₙ} [CLLW24]
+- 2024: ∃ irrational α with non-well-distributed {αpₙ} (_ : CLLW24)
 - Rational α: trivially not well-distributed
 - Lacunary sequences: not well-distributed for almost all α
 

@@ -111,13 +111,13 @@ If r ≥ 4, can the sum of r-2 coprime r-powerful numbers be itself r-powerful?
 Equivalently: is Erdos939Sums r nonempty for all r ≥ 4? -/
 def Erdos939Existence : Prop := ∀ r ≥ 4, (Erdos939Sums r).Nonempty
 
-/-- The existence question remains open -/
+/-  The existence question remains open -/
 /-- **Infinitude Variant** (OPEN)
 
 Are there infinitely many valid sums for each r ≥ 4? -/
 def Erdos939Infinite : Prop := ∀ r ≥ 4, (Erdos939Sums r).Infinite
 
-/-- The infinitude question remains open -/
+/-  The infinitude question remains open -/
 /-
 ## 3-Powerful Triples
 
@@ -132,7 +132,7 @@ def ThreePowerfulTriples := {abc : ℕ × ℕ × ℕ |
   FinsetCoprime {a, b, c} ∧
   a + b = c}
 
-/-- **Nitaj (1995)**: There are infinitely many coprime 3-powerful triples a+b=c -/
+/-  **Nitaj (1995)**: There are infinitely many coprime 3-powerful triples a+b=c -/
 /-
 ## Known Examples
 
@@ -153,8 +153,8 @@ theorem cambie_r5_example_exists : ∃ r ≥ 4, (Erdos939Sums r).Nonempty := by
   · norm_num
   · exact cambie_r5_example
 
-/-- Cambie found solutions for r = 7 -/
-/-- Cambie found solutions for r = 8 -/
+/-  Cambie found solutions for r = 7 -/
+/-  Cambie found solutions for r = 8 -/
 /-
 ## Euler's Conjecture and Lander-Parkin Counterexample
 

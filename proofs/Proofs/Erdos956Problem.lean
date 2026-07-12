@@ -165,8 +165,8 @@ notation "f" => unitDistancePoints
 theorem h_ge_f (n : ℕ) : h n ≥ f n := by
   sorry
 
-/-- Spencer-Szemerédi-Trotter: f(n) = O(n^(4/3)). -/
-/-- f(n) = Ω(n^(1 + c)) for some c > 0. -/
+/-  Spencer-Szemerédi-Trotter: f(n) = O(n^(4/3)). -/
+/-  f(n) = Ω(n^(1 + c)) for some c > 0. -/
 /-
 ## Part VI: Erdős-Pach Upper Bound (1990)
 
@@ -201,7 +201,7 @@ noncomputable def unitDistanceCountGeneral (config : DisjointConvexSets n) : ℕ
 noncomputable def h_general (n : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ config : DisjointConvexSets n, unitDistanceCountGeneral config = m }
 
-/-- **Erdős-Pach**: For general convex sets, h_general(n) ≪ n^(7/5). -/
+/-  **Erdős-Pach**: For general convex sets, h_general(n) ≪ n^(7/5). -/
 /-- h(n) ≤ h_general(n) (translates are special case). -/
 theorem h_le_h_general (n : ℕ) : h n ≤ h_general n := by
   sorry
@@ -235,7 +235,7 @@ theorem conjecture_from_f : (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 10 → (f
 Lower bound examples.
 -/
 
-/-- Lattice construction gives many unit distances. -/
+/-  Lattice construction gives many unit distances. -/
 /-- Grid constructions give Ω(n log n / log log n) unit distances. -/
 axiom grid_construction (n : ℕ) (hn : n ≥ 10) :
     (h n : ℝ) ≥ n * Real.log n / Real.log (Real.log n)
@@ -264,7 +264,7 @@ theorem disk_case (n : ℕ) : ∃ C : CompactConvex,
       unitDistanceCount config ≤ f n + n) := by
   sorry
 
-/-- For line segments, different bounds may apply. -/
+/-  For line segments, different bounds may apply. -/
 /-
 ## Part XII: Main Results
 

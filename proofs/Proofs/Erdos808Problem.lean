@@ -107,7 +107,7 @@ axiom erdos_808_false : ¬ErdosConjecture808
 ## Part III: The Counterexample
 -/
 
-/--
+/- 
 **Alon-Ruzsa-Solymosi counterexample (2020):**
 For arbitrarily large n, there exists A with |A| = n and G with
 ≫ n^{5/3-o(1)} edges such that max(|A +_G A|, |A ·_G A|) ≪ n^{4/3+o(1)}.
@@ -168,7 +168,7 @@ def SumProductConjecture : Prop :=
         max ((A.image (fun p => p.1 + p.2)).card)
             ((A.image (fun p => p.1 * p.2)).card) ≥ n^(2 - ε)
 
-/--
+/- 
 **Specialization:**
 Problem 808 with G = complete graph should give the sum-product conjecture.
 The failure of 808 shows the graph structure matters crucially.
@@ -177,14 +177,14 @@ The failure of 808 shows the graph structure matters crucially.
 ## Part VI: The Construction Idea
 -/
 
-/--
+/- 
 **ARS construction sketch:**
 The counterexample uses additive structure to create many edges
 while keeping sums/products small. Specifically:
 - A is chosen with special arithmetic properties
 - G is bipartite, connecting structured subsets
 -/
-/--
+/- 
 **Why arithmetic structure helps:**
 If A has additive structure (like an arithmetic progression),
 then A + A can be small even with many pairs contributing.

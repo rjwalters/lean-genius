@@ -123,7 +123,7 @@ theorem original_conjecture_false : ¬OriginalConjecture := by
 
 /-- Tao's Lean-verified counterexample at n = 5 -/
 axiom tao_counterexample_n5 :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     G.edgeFinset.card = criticalEdgeCount 5 ∧
     ¬HasDecomposition G 5
 
@@ -133,7 +133,7 @@ theorem smallest_counterexample :
       ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
         G.edgeFinset.card = criticalEdgeCount n →
         HasDecomposition G n) ∧
-    (∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    (∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       G.edgeFinset.card = criticalEdgeCount 5 ∧
       ¬HasDecomposition G 5) := by
   sorry
@@ -153,7 +153,7 @@ theorem vertex_count_matters :
       (∀ G : SimpleGraph (Fin (2*n + 1)),
         G.edgeFinset.card = criticalEdgeCount n →
         HasDecomposition G n) ∧
-      (∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      (∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         G.edgeFinset.card = criticalEdgeCount n ∧
         ¬HasDecomposition G n)) := by
   use 5
@@ -245,7 +245,7 @@ theorem erdos_613_status :
       ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
         G.edgeFinset.card = criticalEdgeCount n →
         HasDecomposition G n) ∧
-    (∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    (∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       G.edgeFinset.card = criticalEdgeCount 5 ∧
       ¬HasDecomposition G 5) := by
   refine ⟨original_conjecture_false, ?_, tao_counterexample_n5⟩

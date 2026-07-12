@@ -499,7 +499,7 @@ theorem density_n10_above_lower_bound : (3 : ℝ) / 8 < 63 / 100 := by norm_num
 -- SECTION IX: Connection to Euler Product
 -- ============================================================
 
-/-- The Euler product ∏_p (1 - p⁻²)⁻¹ = π²/6 is proved in BaselProblemOQ04.
+/-- The Euler product ∏_p (1 - p⁻²)⁻¹ = π²/6 is proved ∈ BaselProblemOQ04.
     Inverting: ∏_p (1 - 1/p²) = 6/π².
 
     This gives the "independence" interpretation: for each prime p, the

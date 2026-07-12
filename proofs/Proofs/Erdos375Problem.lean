@@ -159,11 +159,11 @@ theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
 ## Part IV: Known Partial Results
 -/
 
-/--
+/- 
 **Grimm's Original Result (1969):**
 The conjecture holds when k << log n / log log n.
 -/
-/--
+/- 
 **Erdős-Selfridge Improvement:**
 The conjecture holds when k <= (1 + o(1)) log n.
 -/
@@ -190,7 +190,7 @@ noncomputable def primeGap (n : ℕ) : ℕ :=
   -- The gap after the n-th prime
   0  -- placeholder
 
-/--
+/- 
 **Grimm Implies Prime Gap Bounds:**
 If Grimm's conjecture is true, then prime gaps satisfy
 p_{n+1} - p_n < p_n^{1/2-c} for some c > 0.
@@ -260,11 +260,11 @@ theorem example_90_to_95 :
 ## Part VII: Counting Argument
 -/
 
-/--
+/- 
 **Prime Counting in Composites:**
 A composite n has at least one prime factor, and at most log₂(n) distinct prime factors.
 -/
-/--
+/- 
 **Small Prime Divisors:**
 Many composites have small prime factors.
 This is why the conjecture becomes hard for large k.
@@ -300,7 +300,7 @@ def hallsCondition (n k : ℕ) : Prop :=
        -- |N(S)| >= |S|
        True)  -- simplified
 
-/--
+/- 
 **Hall's Theorem Application:**
 Grimm's conjecture is equivalent to Hall's condition holding
 for all composite blocks.
@@ -331,7 +331,7 @@ theorem erdos_375_summary :
   · exact ramachandra_shorey_tijdeman
   · trivial
 
-/--
+/- 
 **Why Grimm's Conjecture is Hard:**
 The problem becomes difficult because:
 1. Large prime gaps create long composite runs

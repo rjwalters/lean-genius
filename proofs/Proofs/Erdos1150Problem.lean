@@ -242,7 +242,7 @@ axiom bbmst_flat :
       ∀ z : ℂ, ‖z‖ = 1 →
         c₁ * Real.sqrt n ≤ ‖p.eval z‖ ∧ ‖p.eval z‖ ≤ c₂ * Real.sqrt n
 
-/-- **Kahane (1980)**: Ultraflat polynomials exist for unimodular
+/-  **Kahane (1980)**: Ultraflat polynomials exist for unimodular
     coefficients (|aᵢ| = 1, not necessarily ±1).
     This shows the restriction to ±1 is essential for #1150. -/
 /-- BBMST implies the sup norm of some Littlewood polynomial is at most c₂√n.

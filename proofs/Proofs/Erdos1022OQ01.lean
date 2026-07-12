@@ -43,7 +43,7 @@ def HasPropertyBK [Fintype α] (F : Finset (Finset α)) (k : ℕ) : Prop :=
 /-- The empty family has Property B_k for all k. -/
 theorem hasPropertyBK_empty [Fintype α] (k : ℕ) :
     HasPropertyBK (∅ : Finset (Finset α)) k :=
-  ⟨fun _ => 0, fun f hf => absurd hf (Finset.not_mem_empty f)⟩
+  ⟨fun _ => 0, fun f hf => absurd hf (Finset.notMem_empty f)⟩
 
 /-- Property B_k is monotone: subsets of Property B_k families have Property B_k. -/
 theorem hasPropertyBK_subset [Fintype α] {F G : Finset (Finset α)} {k : ℕ}

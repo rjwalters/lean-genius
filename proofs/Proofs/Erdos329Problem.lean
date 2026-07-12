@@ -91,7 +91,7 @@ noncomputable def maxSidonDensity : ℝ :=
 
 /- ## Known Lower Bounds -/
 
-/--
+/- 
 **Erdős**: There exists a Sidon set with upper density at least 1/2.
 -/
 /--
@@ -134,11 +134,11 @@ theorem max_density_le_one :
 
 /- ## Connection to Perfect Difference Sets -/
 
-/--
+/- 
 **Conditional Result**: If every finite Sidon set can be embedded in a
 perfect difference set, then the maximum density is exactly 1.
 -/
-/--
+/- 
 **Converse**: If the maximum density is 1, then every finite Sidon set
 can be embedded in a perfect difference set.
 -/
@@ -156,7 +156,7 @@ theorem singleton_is_sidon (n : ℕ) : IsSidon {n} := by
   rw [ha, hb, hc, hd]
   exact ⟨rfl, rfl⟩
 
-/-- The set {1, 2, 5, 10} is a Sidon set (all 6 pairwise sums are distinct). -/
+/-  The set {1, 2, 5, 10} is a Sidon set (all 6 pairwise sums are distinct). -/
 /- ## Verified Computations -/
 
 /-- 1 + 2 = 3 -/

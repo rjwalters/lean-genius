@@ -87,7 +87,7 @@ The original statement in [Er69b] asked about chromatic number = ℵ₀ (equalit
 rather than ≤ ℵ₀. However, this is trivially impossible.
 -/
 
-/--
+/- 
 **Impossibility of exact ℵ₀**: There cannot exist a graph satisfying the conditions
 with chromatic number *exactly* ℵ₀ for all subgraphs (rather than *at most* ℵ₀).
 
@@ -112,7 +112,7 @@ theorem aleph_0_lt_1 : aleph 0 < aleph 1 :=
 theorem aleph_1_lt_2 : aleph 1 < aleph 2 :=
   aleph_lt_aleph.mpr (by omega)
 
-/-- ℵ_ω is the supremum of ℵ_n for finite n (axiomatized). -/
+/-  ℵ_ω is the supremum of ℵ_n for finite n (axiomatized). -/
 /- ## Why This Problem is Difficult
 
 The jump from finite k to k = 2 (or to ω + 1) is nontrivial because:

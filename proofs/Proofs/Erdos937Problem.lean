@@ -231,7 +231,7 @@ axiom fermat_no_four_squares_in_AP :
 ## Part VII: Easy Construction (Without Coprimality)
 -/
 
-/--
+/- 
 **Extending APs of Powerful Numbers:**
 If a, a+d, ..., a+(k-1)d is an AP of powerful numbers,
 then multiplying each by (a+kd)² gives another AP of powerful numbers.
@@ -239,7 +239,7 @@ then multiplying each by (a+kd)² gives another AP of powerful numbers.
 This shows that without coprimality, arbitrarily long APs of powerful
 numbers exist.
 -/
-/--
+/- 
 **Existence of Long APs (without coprimality):**
 For any k, there exist k powerful numbers in arithmetic progression.
 -/
@@ -287,7 +287,7 @@ def erdosConjectureRPowerful : Prop :=
     (IsRPowerful 3 t.1 ∧ IsRPowerful 3 t.2.1 ∧ IsRPowerful 3 t.2.2.1 ∧ IsRPowerful 3 t.2.2.2 ∧
      CoprimeFourTermAP t.1 t.2.1 t.2.2.1 t.2.2.2) → t ∈ S)
 
-/--
+/- 
 **Conditional Result (assuming ABC):**
 If the ABC conjecture is true, then for r ≥ 4, there are only finitely many
 three-term APs of coprime r-powerful numbers.

@@ -155,7 +155,7 @@ theorem fourth_root_of_unity_primitive
 /-- X²+1 has a root in the splitting field of X⁴-2.
     Among the 4 roots, find a pair a, b with a ≠ ±b. Then (a/b)² + 1 = 0. -/
 theorem x_sq_add_1_has_root_in_x4_sub_2_splitting_field :
-    ∃ ω : (X ^ 4 - C (2 : ℚ) : ℚ[X]).SplittingField,
+    ∃ ω : (X ^ 4 - C (2 : ℚ) : ℚ(_ : X)).SplittingField,
       ω ^ 2 + 1 = 0 := by
   set p := (X ^ 4 - C (2 : ℚ) : ℚ[X])
   have hsep := x_fourth_sub_2_separable

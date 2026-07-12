@@ -129,7 +129,7 @@ theorem card_powerset_pos (s : Finset α) : 0 < s.powerset.card := by
 theorem card_powerset_insert [DecidableEq α] (a : α) (s : Finset α) (ha : a ∉ s) :
     (insert a s).powerset.card = 2 * s.powerset.card := by
   rw [card_powerset_eq_two_pow, card_powerset_eq_two_pow]
-  rw [Finset.card_insert_of_not_mem ha]
+  rw [Finset.card_insert_of_notMem ha]
   ring
 
 /-! ## Relationship to Subsets of Various Sizes

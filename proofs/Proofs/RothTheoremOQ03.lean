@@ -196,7 +196,7 @@ Proof requires the Gowers-Cauchy-Schwarz inequality (iterated
 Cauchy-Schwarz over the hypercube), which is beyond current scope.
 -/
 
-/-- Generalized von Neumann: the k-AP count is controlled by U^{k-1}. -/
+/-  Generalized von Neumann: the k-AP count is controlled by U^{k-1}. -/
 
 -- ============================================================
 -- PART V: The Inverse Theorem

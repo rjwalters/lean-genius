@@ -108,7 +108,7 @@ def containsAllLargeOddCycles (G : SimpleGraph V) : Prop :=
 
 /- ## The Main Statements -/
 
-/--
+/- 
 **Erdős-Hajnal Partial Result:**
 Every graph with chromatic number ≥ ℵ₂ contains all sufficiently large odd cycles.
 
@@ -180,7 +180,7 @@ uncountable chromatic number (but they still contain large odd cycles ≥ 5).
 def isTriangleFree (G : SimpleGraph V) : Prop :=
   ¬hasCycleOfLength G 3
 
-/-- Triangle-free graphs with χ ≥ ℵ₁ contain all odd cycles ≥ 5. -/
+/-  Triangle-free graphs with χ ≥ ℵ₁ contain all odd cycles ≥ 5. -/
 /- ## Thomassen's Strengthening (1983)
 
 Problem #737 asked whether cycles must pass through a specific edge.
@@ -194,21 +194,21 @@ def hasCycleThroughEdge (G : SimpleGraph V) (v w : V) (n : ℕ) : Prop :=
     (∃ i : Fin n, vertices i = v ∧ vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩ = w) ∧
     (∀ i : Fin n, G.Adj (vertices i) (vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩))
 
-/--
+/- 
 **Thomassen's Theorem (1983):**
 For every edge e in a graph with χ ≥ ℵ₁, all sufficiently large cycles
 pass through e.
 -/
 /- ## Small Cycle Behavior -/
 
-/-- Not every graph with χ ≥ ℵ₁ contains a triangle.
+/-  Not every graph with χ ≥ ℵ₁ contains a triangle.
     There exist triangle-free graphs with arbitrary chromatic number. -/
-/-- Graphs with high girth can still have high chromatic number.
+/-  Graphs with high girth can still have high chromatic number.
     (Girth is the minimum cycle length; here we express the property
     directly: no cycles of length < g exist, yet χ ≥ κ.) -/
 /- ## Explicit Bounds -/
 
-/-- For the Erdős-Hajnal-Shelah theorem, the threshold N₀ depends on
+/-  For the Erdős-Hajnal-Shelah theorem, the threshold N₀ depends on
     the structure of the graph, not just its chromatic number. -/
 /- ## Summary
 

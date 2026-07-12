@@ -150,7 +150,7 @@ where `nᵢ` and `kᵢ` are the i-th digits of `n` and `k` in base `p`. -/
 /-- Lucas' theorem: The binomial coefficient mod p is the product of digit-wise binomials.
     This is `Choose.lucas_theorem` from Mathlib. -/
 example {n k p : ℕ} [Fact p.Prime] {a : ℕ} (hn : n < p ^ a) (hk : k < p ^ a) :
-    Nat.choose n k ≡ ∏ i in Finset.range a, Nat.choose (n / p ^ i % p) (k / p ^ i % p) [ZMOD p] :=
+    Nat.choose n k ≡ ∏ i ∈ Finset.range a, Nat.choose (n / p ^ i % p) (k / p ^ i % p) [ZMOD p] :=
   Choose.lucas_theorem hn hk
 
 /-! ## The Digit Sum Formulation

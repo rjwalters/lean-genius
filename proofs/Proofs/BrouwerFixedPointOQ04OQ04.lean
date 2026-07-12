@@ -282,7 +282,7 @@ theorem seq_compact_Icc : IsSeqCompact (Set.Icc (0:ℝ) 1) :=
 
     Proof sketch:
     1. Extract convergent subsequence x_{φ(n)} → x* (by sequential compactness)
-    2. For each n: ∃ y_n ∈ F(x_{φ(n)}) = [l(x_{φ(n)}), u(x_{φ(n)})] with
+    2. For each n: ∃ y_n ∈ F(x_{φ(n)}) = (_ : l(x_{φ(n)}), u(x_{φ(n)})) with
        |x_{φ(n)} - y_n| < ε_{φ(n)} → 0
     3. So y_n → x* too (by triangle inequality)
     4. Since l is lower-semicontinuous: x* ≥ l(x*) (limit of l(x_n) ≤ y_n → x*)
@@ -318,7 +318,7 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
     -- F.lower(x(φ n)) → F.lower(x*): ContinuousOn + convergence in Icc
     have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc (0:ℝ) 1)) := by
       rw [Filter.tendsto_nhdsWithin_iff]
-      exact ⟨hφ_conv, Filter.eventually_of_forall (fun n => hx_in (φ n))⟩
+      exact ⟨hφ_conv, Filter.Eventually.of_forall (fun n => hx_in (φ n))⟩
     have hlower_lim : Filter.Tendsto (fun n => F.lower (x (φ n))) Filter.atTop (nhds (F.lower x*)) :=
       (F.lower_cont.continuousWithinAt hx*_in).comp htend_within
     -- Conclude by limit comparison: F.lower(x(φ n)) ≤ y n, both converge
@@ -336,7 +336,7 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
       simp only [sub_sub_cancel, sub_zero] at h; exact h
     have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc (0:ℝ) 1)) := by
       rw [Filter.tendsto_nhdsWithin_iff]
-      exact ⟨hφ_conv, Filter.eventually_of_forall (fun n => hx_in (φ n))⟩
+      exact ⟨hφ_conv, Filter.Eventually.of_forall (fun n => hx_in (φ n))⟩
     have hupper_lim : Filter.Tendsto (fun n => F.upper (x (φ n))) Filter.atTop (nhds (F.upper x*)) :=
       (F.upper_cont.continuousWithinAt hx*_in).comp htend_within
     exact le_of_tendsto_of_tendsto hy_lim hupper_lim hy_ub

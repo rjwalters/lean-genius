@@ -242,7 +242,7 @@ theorem unitDisc_diameter : transfiniteDiameter (Metric.closedBall (0 : ℂ) 1) 
 ## Properties of Transfinite Diameter
 -/
 
-/-- **NOTE**: General `transfiniteDiameter_mono` is unprovable with `ℝ`-valued `nthDiameter`.
+/-  **NOTE**: General `transfiniteDiameter_mono` is unprovable with `ℝ`-valued `nthDiameter`.
     The `sSup` convention (`sSup S = 0` when `¬BddAbove S`) breaks monotonicity:
     for F = {0,1} ⊆ G = ℂ and n = 2, `nthDiameter F 2 > 0` but `nthDiameter G 2 = 0`
     (since G's value set is unbounded). A correct general version requires `EReal` or `ℝ≥0∞`.
@@ -424,7 +424,7 @@ theorem finite_diameter_zero (F : Set ℂ) (hF : F.Finite) :
       _ = 0 := nthDiameter_eq_zero_of_finite F hF n₀ (by omega) (by omega)
   · exact (transfiniteDiameter_nonneg F).le
 
-/-- **Scaling property — FALSE as stated.**
+/-  **Scaling property — FALSE as stated.**
 
 The current `transfiniteDiameter` definition uses `⨅ n : ℕ, nthDiameter F n`
 (inf over ALL n ≥ 0). Since `nthDiameter F 0 = nthDiameter F 1 = 1` for

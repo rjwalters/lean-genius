@@ -76,7 +76,7 @@ def IsK4Free (G : SimpleGraph V) : Prop :=
 
 One diagonal is guaranteed. -/
 
-/-- Larson's Theorem (1979): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
+/-  Larson's Theorem (1979): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
     with at least one diagonal -/
 /-- Bollobás-Erdős Conjecture (proved by Larson 1979):
     If G is K₄-free and contains no odd cycle with a diagonal, then
@@ -87,7 +87,7 @@ structure BollobasErdosAlternative (G : SimpleGraph V) where
     (G.Reachable u w ↔ ∃ p : G.Walk u w, v ∉ p.support ∨ u = w)
   hasDegree2Vertex : Prop := ∃ v : V, G.degree v ≤ 2
 
-/-- Larson proved Bollobás-Erdős conjecture -/
+/-  Larson proved Bollobás-Erdős conjecture -/
 /- ## Part 3: Voss's Theorem (1982)
 
 Two diagonals are guaranteed - answers the first question. -/
@@ -180,12 +180,12 @@ axiom erdos_1091_general_disproof : ¬ GeneralQuestion
 
 /-- Key insight: K₄-free graphs can still have high chromatic number -/
 theorem K4_free_high_chi_possible :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       IsK4Free G ∧ chromaticNumber G ≥ 4 := by
   use Fin 6, inferInstance, inferInstance, PentagonalWheel
   exact ⟨pentagonal_wheel_K4_free, by rw [pentagonal_wheel_chi_4]; norm_num⟩
 
-/-- Triangle-free graphs can also have arbitrarily high chromatic number
+/-  Triangle-free graphs can also have arbitrarily high chromatic number
     (Mycielski construction) -/
 /- ## Part 7: Summary -/
 

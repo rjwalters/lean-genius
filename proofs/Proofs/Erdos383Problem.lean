@@ -102,10 +102,10 @@ private lemma hasLargestPrimeFactor_iff_maxPrimeFac {n p : ℕ}
 
 -- The product of p² + i for i from 0 to k
 def consecutiveSquareProduct (p k : ℕ) : ℕ :=
-  ∏ i in Icc 0 k, (p ^ 2 + i)
+  ∏ i ∈ Icc 0 k, (p ^ 2 + i)
 
 theorem consecutiveSquareProduct_eq (p k : ℕ) :
-    consecutiveSquareProduct p k = ∏ i in range (k + 1), (p ^ 2 + i) := by
+    consecutiveSquareProduct p k = ∏ i ∈ range (k + 1), (p ^ 2 + i) := by
   simp only [consecutiveSquareProduct]
   congr 1
   ext i

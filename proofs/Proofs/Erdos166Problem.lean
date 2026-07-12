@@ -123,28 +123,28 @@ theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by
 
 /- ## Part III: Known Exact Values -/
 
-/--
+/- 
 **R(3,3) = 6:**
 The most famous small Ramsey number. Any 2-coloring of K_6 contains
 a monochromatic triangle. K_5 can be 2-colored without a monochromatic triangle.
 -/
-/--
+/- 
 **R(4,4) = 18:**
 Any 2-coloring of K_18 contains a monochromatic K_4.
 Finding the exact value required extensive computation.
 -/
-/--
+/- 
 **R(4,5) = 25:**
 The largest exactly known off-diagonal Ramsey number with s = 4.
 -/
-/--
+/- 
 **R(3,k) Bounds:**
 The best known bounds for R(3,k) are
 c₁ · k²/log k ≤ R(3,k) ≤ c₂ · k²/log k.
 -/
 /- ## Part IV: Historical Lower Bounds for R(4,k) -/
 
-/--
+/- 
 **Spencer (1977):**
 R(4,k) ≥ c · (k log k)^{5/2} for some constant c > 0.
 

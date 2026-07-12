@@ -134,7 +134,7 @@ def ErdosGallaiConjecture : Prop :=
 ## Part IV: Known Bounds
 -/
 
-/--
+/- 
 **Original Erdős-Gallai Bound:**
 O(n log n) pieces suffice.
 -/
@@ -202,7 +202,7 @@ def IsValidCovering {G : Graph V} (pieces : Finset (DecompPiece G)) : Prop :=
 -/
 axiom coverNumber (G : Graph V) : ℕ
 
-/--
+/- 
 **Erdős (1971):**
 If we don't require edge-disjointness, n-1 cycles and edges suffice.
 -/

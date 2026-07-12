@@ -85,7 +85,7 @@ def gap (B : Set ℕ) (i : ℕ) : ℕ :=
 S(x) = Σ_{bᵢ < x} (b_{i+1} - bᵢ)²
 -/
 noncomputable def gapSquaredSum (B : Set ℕ) (x : ℕ) : ℝ :=
-  ∑ i in Finset.range x, ((gap B i : ℕ) : ℝ) ^ 2
+  ∑ i ∈ Finset.range x, ((gap B i : ℕ) : ℝ) ^ 2
 
 /--
 **Normalized Gap Statistic:**
@@ -126,7 +126,7 @@ A = {p² : p prime}
 def PrimeSquares : Set ℕ :=
   {n : ℕ | ∃ p : ℕ, p.Prime ∧ n = p ^ 2}
 
-/--
+/- 
 **Squarefree Numbers:**
 When A = prime squares, B = squarefree numbers.
 -/
@@ -137,7 +137,7 @@ When A = {p² : p prime}, the limit exists.
 axiom erdos_squarefree_limit :
   LimitExists PrimeSquares
 
-/--
+/- 
 **Density of Squarefree Numbers:**
 The density of squarefree numbers is 6/π² ≈ 0.6079.
 -/

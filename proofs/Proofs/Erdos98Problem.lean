@@ -60,14 +60,14 @@ noncomputable def h (n : ℕ) : ℕ :=
 
 /- ## Known Upper Bounds -/
 
-/-- Pach's bound: h(n) < n^{log₂ 3} -/
-/-- Erdős–Füredi–Pach improved bound: h(n) < n · exp(c√(log n)) -/
+/-  Pach's bound: h(n) < n^{log₂ 3} -/
+/-  Erdős–Füredi–Pach improved bound: h(n) < n · exp(c√(log n)) -/
 /- ## The Erdős Conjecture -/
 
-/-- Erdős Problem 98: h(n)/n → ∞, i.e. points in general position
+/-  Erdős Problem 98: h(n)/n → ∞, i.e. points in general position
     (no 3 collinear, no 4 concyclic) determine superlinearly many
     distinct distances. Open — Erdős could not even prove h(n) ≥ n. -/
-/-- Weaker open question: h(n) ≥ n for all large n? Even this is unknown. -/
+/-  Weaker open question: h(n) ≥ n for all large n? Even this is unknown. -/
 /- ## Connection to the General Distinct Distances Problem -/
 
 /-- Without the general-position assumption, the Guth–Katz theorem gives

@@ -100,13 +100,13 @@ theorem erdos_189_is_false : ¬ Erdos189Statement := by
 
 /- ## Related Results -/
 
-/--
+/- 
 **Graham's Theorem (1980)**: For right-angled triangles, the answer is YES.
 
 For any finite coloring of ℝ², some color class contains the vertices
 of a right-angled triangle of every area.
 -/
-/--
+/- 
 **Squares are also false**: The statement fails even more strongly for squares.
 This is "easy to see" according to Graham.
 -/

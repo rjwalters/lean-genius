@@ -58,11 +58,11 @@ noncomputable def goldenRatio : ℚ := 1618 / 1000
 def grahamSeq (n : ℕ) : ℕ :=
     if n % 2 = 0 then Nat.fib n - 1 else Nat.fib n + 1
 
-/-- Graham (1964): grahamSeq satisfies strong completeness. -/
-/-- Graham (1964): grahamSeq satisfies fragility. -/
+/-  Graham (1964): grahamSeq satisfies strong completeness. -/
+/-  Graham (1964): grahamSeq satisfies fragility. -/
 /- ## Golden ratio threshold -/
 
-/-- If a_{n+1}/a_n > φ for all n, then A is automatically fragile. -/
+/-  If a_{n+1}/a_n > φ for all n, then A is automatically fragile. -/
 /- ## Main conjecture -/
 
 /-- Erdős Problem 346: if A is lacunary, strongly complete, and fragile,

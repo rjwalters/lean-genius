@@ -135,7 +135,7 @@ theorem r2_23_equals_2 : RkExists 2 2 3 := by
 The situation changes dramatically for k = 3.
 -/
 
-/-- **Bollobás-Hegyvári-Jin Theorem (1997):**
+/-  **Bollobás-Hegyvári-Jin Theorem (1997):**
 For any sequence of integers r₁ < r₂ < ⋯, there exists a sequence B
 with b_{i+1} ≥ r_i · b_i such that (A + A + A) ∩ B ≠ ∅
 for any A with gaps in [2, 3].
@@ -174,7 +174,7 @@ axiom chen_r2_bound :
 Further non-existence results for k ≥ 3.
 -/
 
-/-- **Tang-Yang (2021):**
+/-  **Tang-Yang (2021):**
 Additional non-existence results for specific parameter combinations with k ≥ 3. -/
 /- ##Part VIII: Summary
 

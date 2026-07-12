@@ -42,6 +42,7 @@ import Mathlib.Data.Set.Countable
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 import Proofs.AlgebraicNumbersCountableOQ02
+import Mathlib.Analysis.Real.Cardinality
 
 namespace AlgebraicNumbersCountableOQ02OQ03
 

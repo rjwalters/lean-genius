@@ -35,7 +35,7 @@ prime, `p ≡ a ≡ 1 (mod 4)`, `gcd(p, m) = 1`.  The global assembly splits int
 ## Roadmap for step 2 (confirmed Mathlib lemmas, mathlib v4.26.0)
 
 * `ArithmeticFunction.multiplicative_factorization` + `isMultiplicative_sigma`
-  — `σ N = ∏_{p ∈ N.primeFactors} σ(p^{e_p})` (already used in the packing file).
+  — `σ N = ∏_{p ∈ N.primeFactors} σ(p^{e_p})` (already used ∈ the packing file).
 * `Nat.factorization_prod` — `(∏ x ∈ S, g x).factorization = ∑ x ∈ S, (g x).factorization`
   (needs each `g x ≠ 0`; `σ` of a positive is positive).
 * Evaluate the resulting Finsupp sum at the prime `2` (`Finset.sum_apply'` /

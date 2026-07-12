@@ -114,7 +114,7 @@ private lemma exists_uncovered_in_prod
       ∀ p ∈ S, n % (p : ℤ) ≠ (a p : ℤ) % (p : ℤ) := by
   induction S using Finset.induction with
   | empty =>
-    exact ⟨1, le_rfl, by simp, fun _ hp => absurd hp (Finset.not_mem_empty _)⟩
+    exact ⟨1, le_rfl, by simp, fun _ hp => absurd hp (Finset.notMem_empty _)⟩
   | insert hq_not ih =>
     rename_i q S'
     have hS' : ∀ p ∈ S', Nat.Prime p := fun p hp => hS p (Finset.mem_insert_of_mem hp)

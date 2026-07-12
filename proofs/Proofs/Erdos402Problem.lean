@@ -396,7 +396,7 @@ theorem erdos_402_triple (a b c : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
     ∃ x ∈ ({a, b, c} : Finset ℕ), ∃ y ∈ ({a, b, c} : Finset ℕ),
     Nat.gcd x y ≤ x / ({a, b, c} : Finset ℕ).card := by
   have hcard : ({a, b, c} : Finset ℕ).card = 3 := by
-    simp only [Finset.card_insert_of_not_mem, Finset.card_singleton, Finset.mem_insert,
+    simp only [Finset.card_insert_of_notMem, Finset.card_singleton, Finset.mem_insert,
                Finset.mem_singleton]
     omega
   -- Either gcd(c,a) ≤ c/3 or gcd(c,b) ≤ c/3 (or both)
@@ -506,7 +506,7 @@ theorem erdos_402_quadruple (a b c d : ℕ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < 
     ∃ x ∈ ({a, b, c, d} : Finset ℕ), ∃ y ∈ ({a, b, c, d} : Finset ℕ),
     Nat.gcd x y ≤ x / ({a, b, c, d} : Finset ℕ).card := by
   have hcard : ({a, b, c, d} : Finset ℕ).card = 4 := by
-    simp only [Finset.card_insert_of_not_mem, Finset.card_singleton, Finset.mem_insert,
+    simp only [Finset.card_insert_of_notMem, Finset.card_singleton, Finset.mem_insert,
                Finset.mem_singleton]; omega
   by_cases h1 : Nat.gcd d a ≤ d / 4
   · exact ⟨d, by simp, a, by simp, by rw [hcard]; exact h1⟩

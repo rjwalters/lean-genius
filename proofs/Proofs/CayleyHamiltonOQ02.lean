@@ -151,7 +151,7 @@ theorem power_eq_aeval_mod (A : Matrix n n R) (k : ℕ) :
     degree less than the characteristic polynomial's degree.
     Returns the reduced polynomial together with the equality and degree bound. -/
 theorem aeval_reduced [Nontrivial R] (A : Matrix n n R) (f : R[X]) :
-    ∃ q : R[X], aeval A f = aeval A q ∧
+    ∃ q : R(_ : X), aeval A f = aeval A q ∧
     (q = 0 ∨ q.natDegree < A.charpoly.natDegree) := by
   use f %ₘ A.charpoly
   refine ⟨aeval_eq_aeval_modByMonic A f, ?_⟩

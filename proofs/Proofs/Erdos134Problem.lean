@@ -150,12 +150,12 @@ def erdosGyarfasConjecture : Prop :=
 ## Part IV: Historical Results
 -/
 
-/--
+/- 
 **Erdős-Gyárfás Original Result:**
 The conjecture holds when max degree is ≪ log n / log log n.
 This is a much weaker condition than the full conjecture.
 -/
-/--
+/- 
 **Simonovits Counterexample:**
 For large enough C, there exist triangle-free graphs with max degree ≤ C√n
 that cannot be extended to diameter-2 triangle-free with o(n²) edges.
@@ -215,7 +215,7 @@ def commonNeighborProperty (G : SimpleGraph V) : Prop :=
   ∀ u v : V, u ≠ v → ¬G.Adj u v →
     ∃ w : V, w ≠ u ∧ w ≠ v ∧ G.Adj u w ∧ G.Adj w v
 
-/--
+/- 
 **Equivalence of Diameter 2 Characterizations:**
 For connected graphs, diameter 2 ↔ common neighbor property.
 -/

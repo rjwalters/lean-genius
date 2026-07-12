@@ -183,7 +183,7 @@ theorem reprCount_zero_of_not_mem (A B : Finset ℕ) (m : ℕ)
     (hm : m ∉ (A ×ˢ B).image (fun p => p.1 * p.2)) :
     reprCount A B m = 0 := by
   unfold reprCount
-  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
   intro ⟨a, b⟩
   simp only [Finset.mem_filter, Finset.mem_product, not_and]
   intro hab heq

@@ -19,7 +19,7 @@ namespace ConwayGuy
 
 /-- ∑_{i=0}^{n-1} 2^i + 1 = 2^n -/
 theorem geom_sum_two' (n : ℕ) :
-    ∑ i in Finset.range n, 2 ^ i + 1 = 2 ^ n := by
+    ∑ i ∈ Finset.range n, 2 ^ i + 1 = 2 ^ n := by
   induction n with
   | zero => simp
   | succ n ih =>

@@ -48,13 +48,13 @@ noncomputable def coveringExponent (n : ℕ) : ℝ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
+/-  **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
     Even primes close to n suffice to cover [1, n] with one class each. -/
 /- ## Known Bounds -/
 
-/-- **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
+/-  **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
     The exponent cannot decrease faster than this iterated-log ratio. -/
-/-- Trivial upper bound: εₙ < 1, since we need at least the prime n
+/-  Trivial upper bound: εₙ < 1, since we need at least the prime n
     (if n is prime) or primes up to n. -/
 /- ## Structural Properties -/
 
@@ -95,7 +95,7 @@ theorem single_class_coverage :
         rw [le_div_iff₀ (Nat.cast_pos.mpr hp.pos)]
         exact_mod_cast Nat.div_mul_le_self n p
 
-/-- The total coverage capacity of primes in (n^ε, n] is
+/-  The total coverage capacity of primes in (n^ε, n] is
     ∑_{n^ε < p ≤ n} ⌊n/p⌋ ~ n · (log(1/ε) + O(1)) by Mertens' theorem. -/
 /-- Monotonicity: if ε₁ ≤ ε₂, the primes in (n^ε₁, n] include those
     in (n^ε₂, n], so more primes are available. -/
@@ -116,7 +116,7 @@ theorem exponent_monotone_coverage :
           · exact hε₁₂
       _ < p := hp.2.2.1
 
-/-- Covering with all primes ≤ n (ε = 0): by CRT and the prime number
+/-  Covering with all primes ≤ n (ε = 0): by CRT and the prime number
     theorem, one class per prime suffices to cover [1, n] for large n. -/
 /-- The sieve connection: covering [1,n] by one residue class per prime
     is dual to sieving — excluding one class per prime. -/

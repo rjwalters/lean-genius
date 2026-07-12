@@ -191,13 +191,13 @@ structure NearlyDisjointFamily (α : Type*) [DecidableEq α] (n : ℕ) where
 ## Special Cases
 -/
 
-/-- Projective planes give equality χ(G) = n.
+/-  Projective planes give equality χ(G) = n.
 
 If the n cliques come from a projective plane of order n-1,
 then the union graph has chromatic number exactly n.
 The full condition involves incidence axioms; here simplified. -/
 
-/-- Steiner systems give optimal colorings.
+/-  Steiner systems give optimal colorings.
 
 S(2, n, n²) Steiner systems provide explicit EFL families
 where χ(G) = n. -/
@@ -206,7 +206,7 @@ where χ(G) = n. -/
 ## Related Results and Extensions
 -/
 
-/-- Erdős-Füredi generalization: k-wise intersections.
+/-  Erdős-Füredi generalization: k-wise intersections.
 
 What if cliques can share up to k vertices (instead of 1)?
 Kang et al. also proved this generalization.

@@ -122,7 +122,7 @@ axiom four_cycle_base_case :
       (∀ v : V, G.degree v ≥ 2) →
       Nonempty (FourCycle G)
 
-/-- **Sharpness of the degree condition:**
+/-  **Sharpness of the degree condition:**
     The minimum degree bound 2k is sharp. There exist graphs with
     minimum degree 2k - 1 that do not contain k disjoint 4-cycles. -/
 /-
@@ -150,7 +150,7 @@ axiom four_cycle_base_case :
 ## Part VI: Proof Techniques
 -/
 
-/-- **Wang's proof approach:**
+/-  **Wang's proof approach:**
     The proof proceeds by analyzing the structure of a
     minimal counterexample and showing no such graph exists. -/
 /- **Algorithmic aspect:**

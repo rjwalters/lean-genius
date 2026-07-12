@@ -5,7 +5,7 @@
   Status of parent problem: OPEN
 
   Parent setup.
-  For a monic polynomial f(z) = ∏ᵢ (z - zᵢ) ∈ ℂ[z] with all roots zᵢ in the closed
+  For a monic polynomial f(z) = ∏ᵢ (z - zᵢ) ∈ ℂ[z] with all roots zᵢ ∈ the closed
   unit disc, let ρ(f) be the radius of the largest open disc contained in the
   sublevel set (lemniscate interior) {z : |f(z)| < 1}.  Erdős, Herzog and Piranian
   asked whether ρ(f) ≫ 1/n.  The current record lower bound c/(n√(log n)) of

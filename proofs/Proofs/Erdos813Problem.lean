@@ -64,7 +64,7 @@ def HasCliqueOfSize {n : ℕ} (G : GraphOnN n) (k : ℕ) : Prop :=
 Axiomatized since computing the minimum requires exhaustive search. -/
 axiom h (n : ℕ) : ℕ
 
-/-- h(n) is an achievable bound: every graph with the property has a clique. -/
+/-  h(n) is an achievable bound: every graph with the property has a clique. -/
 /- ## Part IV: Known Bounds -/
 
 /-- Erdős-Hajnal lower bound: h(n) ≫ n^{1/3}. -/
@@ -86,7 +86,7 @@ theorem erdos_hajnal_bounds :
 
 /- ## Part V: Bucić-Sudakov Improvement (2023) -/
 
-/-- Bucić-Sudakov (2023): Improved lower bound h(n) ≫ n^{5/12-o(1)}. -/
+/-  Bucić-Sudakov (2023): Improved lower bound h(n) ≫ n^{5/12-o(1)}. -/
 /-- The exponent 5/12 improves on 1/3. -/
 theorem five_twelfths_better : (5 : ℝ) / 12 > 1 / 3 := by norm_num
 

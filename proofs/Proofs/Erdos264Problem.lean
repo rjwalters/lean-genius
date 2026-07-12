@@ -73,7 +73,7 @@ which grows but not fast enough.
 
 /- ## Known Positive Example -/
 
-/--
+/- 
 **Known Result**: The sequence aₙ = 2^(2ⁿ) IS an irrationality sequence.
 
 This doubly-exponential sequence grows fast enough that no bounded perturbation
@@ -82,7 +82,7 @@ a_{n+1}/aₙ = 2^(2ⁿ) → ∞, which is the key condition.
 -/
 /- ## Kovač-Tao Criteria -/
 
-/--
+/- 
 **Kovač-Tao Negative Criterion**:
 
 A strictly increasing sequence aₙ with ∑ 1/aₙ convergent and
@@ -91,7 +91,7 @@ is NOT an irrationality sequence.
 
 This applies to 2ⁿ and more generally to sequences with bounded ratio a_{n+1}/aₙ.
 -/
-/--
+/- 
 **Kovač-Tao Positive Criterion**:
 
 For any function F : ℕ → ℕ with F(n+1)/F(n) → ∞, there EXISTS an
@@ -101,7 +101,7 @@ This shows irrationality sequences exist at any superexponential growth rate.
 -/
 /- ## Growth Rate Discussion -/
 
-/--
+/- 
 Erdős originally speculated that irrationality sequences might exist with
 polynomial growth, but later retracted this, noting they cannot grow slower
 than exponentially. The Kovač-Tao criteria make this precise:

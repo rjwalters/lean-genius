@@ -167,7 +167,7 @@ noncomputable def minConsecKthResidues (k m p : ℕ) : ℕ :=
     Nat.find h
   else 0
 
-/--
+/- 
 **Existence for Large Primes:**
 For sufficiently large p, consecutive kth power residues always exist.
 -/
@@ -257,7 +257,7 @@ theorem erdos_436_question1 : ∀ k : ℕ, k ≥ 2 → LambdaFinite k 2 :=
 ## Part VI: The m = 3 Case
 -/
 
-/--
+/- 
 **Λ(3,3) = 23532:**
 Proved by Lehmer, Lehmer, Mills, and Selfridge (1962).
 This was one of the early machine-assisted proofs in number theory.
@@ -320,7 +320,7 @@ Thus we always find a pair ≤ {9,10}.
 theorem lambda_2_2_bound : Lambda 2 2 ≤ 9 := by
   rw [lambda_2_2]
 
-/--
+/- 
 **Achieving Λ(2,2) = 9:**
 There exist infinitely many primes where {9,10} is the first
 consecutive pair of quadratic residues.
@@ -339,7 +339,7 @@ def growthRatePolynomial : Prop :=
   ∃ f : ℕ → ℕ, (∀ k : ℕ, k ≥ 2 → Lambda k 2 ≤ f k) ∧
     (∃ d : ℕ, ∀ k : ℕ, k ≥ 2 → f k ≤ k ^ d)
 
-/--
+/- 
 **Growth Rate:**
 The known values suggest rapid growth. The ratios
 77/9 ≈ 8.6, 1224/77 ≈ 15.9, 7888/1224 ≈ 6.4, 202124/7888 ≈ 25.6

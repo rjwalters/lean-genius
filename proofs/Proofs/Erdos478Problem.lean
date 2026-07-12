@@ -57,7 +57,7 @@ theorem factorial_residues_nonzero (p : ℕ) [hp : Fact (Nat.Prime p)] (hp2 : p 
   have := (Nat.Prime.dvd_factorial hp.out).mp heq
   omega
 
-/-- Upper bound: |A_p| ≤ p - 2 for all primes p > 5. -/
+/-  Upper bound: |A_p| ≤ p - 2 for all primes p > 5. -/
 /- ## Ratio Set Identity -/
 
 /-- The ratio set A_p / A_p covers all nonzero residues modulo p.
@@ -131,14 +131,14 @@ theorem factorial_residue_sqrt_lower (p : ℕ) [hp : Fact (Nat.Prime p)] :
 
 /- ## Improved Lower Bound (GSSV 2024) -/
 
-/-- The product set A_p · A_p has near-full size (2024 result). -/
+/-  The product set A_p · A_p has near-full size (2024 result). -/
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #478** (OPEN): |A_p| ~ (1 - 1/e) · p.
+/-  **Erdős Problem #478** (OPEN): |A_p| ~ (1 - 1/e) · p.
     More precisely, |A_p| / p → (1 - 1/e) as p → ∞ through primes. -/
 /- ## Heuristic Motivation -/
 
-/-- The 1 - 1/e heuristic: if factorial residues behaved like random elements
+/-  The 1 - 1/e heuristic: if factorial residues behaved like random elements
     of Z/pZ, each new k! mod p independently hits a new residue with probability
     (p - |current set|)/p. After p-1 steps this gives expected coverage
     p · (1 - (1 - 1/p)^(p-1)) ≈ p · (1 - 1/e). -/

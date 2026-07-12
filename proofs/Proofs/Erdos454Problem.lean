@@ -27,6 +27,7 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Order.LiminfLimsup
 import Mathlib.Topology.Instances.ENat
 import Mathlib.Tactic
+import Mathlib.Data.Nat.Nth
 
 namespace Erdos454
 
@@ -174,7 +175,7 @@ theorem infinitely_many_deviation_ge_2 :
     exact absurd (hM hmem) (by omega)
   -- From the eventual bound, limsup ≤ 1
   have hls : limsup deviationENat atTop ≤ 1 :=
-    limsup_le_of_le ⟨⊥, eventually_of_forall (fun _ => bot_le)⟩ hev
+    limsup_le_of_le ⟨⊥, Filter.Eventually.of_forall (fun _ => bot_le)⟩ hev
   -- But pomerance_1979 says limsup ≥ 2, contradiction: 2 ≤ 1
   exact absurd (pomerance_1979.trans hls) (by norm_num)
 

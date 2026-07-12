@@ -70,7 +70,7 @@ def ErdosQuestion933 : Prop :=
 ## Part III: Mahler's Upper Bound
 -/
 
-/-- **Mahler's Theorem:**
+/-  **Mahler's Theorem:**
     The {2,3}-smooth part of n(n+1) is at most n^{1+o(1)}. -/
 /-- Mahler's result comes from the theory of S-unit equations. -/
 def mahlerSUnitConnection : Prop :=
@@ -81,7 +81,7 @@ def mahlerSUnitConnection : Prop :=
 ## Part IV: Erdős's Lower Bound
 -/
 
-/-- **Erdős's Claim:**
+/-  **Erdős's Claim:**
     For infinitely many n, 2^k · 3^l > n · log n. -/
 /-
 ## Part V: Steinerberger's Construction
@@ -95,7 +95,7 @@ def steinerbergerN (r : ℕ) : ℕ := 2^(3^r)
 theorem steinerberger_n_plus_1 (r : ℕ) :
     steinerbergerN r + 1 = 2^(3^r) + 1 := rfl
 
-/-- Key fact: 2^{3^r} + 1 is divisible by 3^{r+1}. -/
+/-  Key fact: 2^{3^r} + 1 is divisible by 3^{r+1}. -/
 /-- For Steinerberger's construction:
     - k = 3^r (since n = 2^{3^r} is a power of 2)
     - l = r + 1 (since 3^{r+1} | n+1)
@@ -116,8 +116,8 @@ theorem limsup_infinite : ErdosQuestion933 :=
 ## Part VI: Why the Construction Works
 -/
 
-/-- Observation: 2^{3^r} ≡ -1 (mod 3). -/
-/-- More precisely: 2^{3^r} + 1 ≡ 0 (mod 3^{r+1}). -/
+/-  Observation: 2^{3^r} ≡ -1 (mod 3). -/
+/-  More precisely: 2^{3^r} + 1 ≡ 0 (mod 3^{r+1}). -/
 /-- The exponent r+1 comes from the Lifting the Exponent Lemma. -/
 def LTEConnection : Prop :=
   -- LTE: For odd prime p and p | a + b but p ∤ a, b:

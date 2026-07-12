@@ -237,8 +237,8 @@ theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),
         simp +decide [ Erdos167.IsTriangle ];
         native_decide +revert
 
-/-- **Haxell-Kohayakawa (1998)**: τ(G) ≤ (3 - 3/23) · ν(G). -/
-/-- Tuza's conjecture holds for K₄-free graphs (Haxell 1999). -/
+/-  **Haxell-Kohayakawa (1998)**: τ(G) ≤ (3 - 3/23) · ν(G). -/
+/-  Tuza's conjecture holds for K₄-free graphs (Haxell 1999). -/
 /-- Tuza's conjecture holds for planar graphs.
     Planarity is an abstract predicate (Mathlib does not have a general definition). -/
 axiom IsPlanar : SimpleGraph V → Prop

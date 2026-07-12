@@ -61,8 +61,8 @@ def HasSquareSubset (n t : ℕ) : Prop :=
 Axiomatized since the Nat.find formulation requires proving existence. -/
 axiom t (n : ℕ) : ℕ
 
-/-- t_n = 0 when n is a perfect square -/
-/-- t_n > 0 when n is not a perfect square -/
+/-  t_n = 0 when n is a perfect square -/
+/-  t_n > 0 when n is not a perfect square -/
 /-
 ## Part 2: The Example t_6 = 6
 -/
@@ -70,7 +70,7 @@ axiom t (n : ℕ) : ℕ
 /-- 6 · 8 · 12 = 576 = 24² -/
 theorem example_t6_product : 6 * 8 * 12 = 24 * 24 := by native_decide
 
-/-- t_6 = 6 -/
+/-  t_6 = 6 -/
 /-
 ## Part 3: The Largest Prime Divisor
 -/
@@ -104,17 +104,17 @@ axiom selfridge_upper_bound :
 ## Part 5: Lower Bounds
 -/
 
-/-- Strong lower bound for all non-squares -/
+/-  Strong lower bound for all non-squares -/
 /-
 ## Part 6: Upper Bounds
 -/
 
-/-- Upper bound for many n -/
+/-  Upper bound for many n -/
 /-
 ## Part 7: Bui-Pratt-Zaharescu (2024)
 -/
 
-/-- The distribution of t_n follows P(n)'s distribution:
+/-  The distribution of t_n follows P(n)'s distribution:
 for most n with P(n) in a given range, t_n = P(n). -/
 /-
 ## Part 8: Connection to Smooth Numbers
@@ -123,7 +123,7 @@ for most n with P(n) in a given range, t_n = P(n). -/
 /-- y-smooth numbers: integers with all prime factors ≤ y -/
 def IsSmooth (n y : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ y
 
-/-- For smooth n, t_n is relatively small -/
+/-  For smooth n, t_n is relatively small -/
 /-
 ## Part 9: Summary
 -/

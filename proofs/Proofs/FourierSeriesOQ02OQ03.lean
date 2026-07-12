@@ -99,14 +99,14 @@ theorem decayBound_tendsto_zero (C : ℝ≥0) (α : ℝ≥0) (hα : 0 < (α : �
 -- Section 3: Sharpness of the Constant 1/2
 -- ============================================================
 
-/-- **Sharpness**: The constant 1/2 cannot be improved.
+/-  **Sharpness**: The constant 1/2 cannot be improved.
     For each α ∈ (0, 1], there exists a family of α-Hölder functions
     {f_N} such that ‖ĉ_N(f_N)‖ / (C · (T/(2N))^α) → 1/2 as N → ∞.
 
     The extremal family uses "concentrated bump" functions that saturate
     the Hölder bound |f(x) - f(x+h)| = C|h|^α for all x simultaneously
     in the support of e_{-N}(x). -/
-/-- **Lipschitz sharp constant**: For α = 1, the sawtooth function achieves
+/-  **Lipschitz sharp constant**: For α = 1, the sawtooth function achieves
     equality (up to normalization).
 
     The sawtooth f(x) = x - T/2 on [0, T) has Lipschitz constant 1

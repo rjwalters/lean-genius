@@ -133,7 +133,7 @@ theorem f_24_eq : computeF 24 100 = 20 := by native_decide
 theorem f_30_eq : computeF 30 100 = 24 := by native_decide
 theorem f_32_eq : computeF 32 100 = 31 := by native_decide
 
-/-- f(n) values for n = p+1 where p is prime show f(n) ≤ n-1 -/
+/-  f(n) values for n = p+1 where p is prime show f(n) ≤ n-1 -/
 -- p=17: f(18) = 10 ≤ 17 ✓ (better witness exists)
 -- p=19: f(20) = 16 ≤ 19 ✓ (better witness exists)
 -- p=23: f(24) = 20 ≤ 23 ✓

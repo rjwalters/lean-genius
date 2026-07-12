@@ -124,7 +124,7 @@ theorem erdos_6_affirmative : InfinitelyManyIncreasing 2 := erdos_6_solved
 
 /- ## Maynard-Tao Machinery -/
 
-/--
+/- 
 **Key Ingredient: Bounded Gaps Between Primes**
 
 The proof uses the Maynard-Tao theorem: there exists a constant H such that
@@ -133,7 +133,7 @@ infinitely often, there are at least two primes in an interval of length H.
 More precisely, for any m, there are infinitely many n such that
 among n, n+1, ..., n+H, at least m of these are prime.
 -/
-/-- **Maynard-Tao (2013+)**: For any m, there are infinitely many intervals
+/-  **Maynard-Tao (2013+)**: For any m, there are infinitely many intervals
 of bounded length containing ≥ m primes.
 **Zhang (2013)**: First proof of bounded prime gaps. -/
 

@@ -92,12 +92,12 @@ def stanleySequence (n : ℕ) : ℕ → ℕ :=
     else if k = 1 then n
     else k  -- Placeholder for the greedy construction
 
-/--
+/- 
 **Basic Property: Strictly Increasing**
 Stanley sequences are strictly increasing.
 -/
 
-/--
+/- 
 **Basic Property: AP-Free**
 All initial segments of Stanley sequences are AP-free.
 -/
@@ -128,13 +128,13 @@ A(1) consists exactly of integers with no 2 in base-3 expansion.
 axiom a1_characterization :
     ∀ n : ℕ, (∃ k : ℕ, stanleySequence 1 k = n) ↔ noDigit2InBase3 n
 
-/--
+/- 
 **A(1) Elements:**
 First several elements of A(1): 0, 1, 3, 4, 9, 10, 12, 13, 27, ...
 These are sums of distinct powers of 3.
 -/
 
-/--
+/- 
 **A(1) Growth Rate:**
 The k-th element of A(1) is approximately k^(log₂3).
 -/
@@ -145,12 +145,12 @@ The k-th element of A(1) is approximately k^(log₂3).
 Explicit formulas for certain Stanley sequences.
 -/
 
-/--
+/- 
 **A(3^k) Characterization:**
 Similar base-3 characterization exists for A(3^k).
 -/
 
-/--
+/- 
 **A(2·3^k) Characterization:**
 Similar characterization for A(2·3^k).
 -/
@@ -197,7 +197,7 @@ axiom odlyzko_stanley_dichotomy_conjecture :
     ∀ n : ℕ, n > 0 →
     hasPolynomialGrowth n ∨ hasQuadraticLogGrowth n
 
-/--
+/- 
 **A(4) Conjecture:**
 Lindhurst's data (1990) suggests A(4) has the quadratic-log growth.
 This is OEIS A005487.
@@ -209,7 +209,7 @@ This is OEIS A005487.
 Proven results on the growth of Stanley sequences.
 -/
 
-/--
+/- 
 **Moy's Theorem (2011):**
 For all Stanley sequences, for all ε > 0:
 aₖ ≤ (1/2 + ε)k² for all sufficiently large k.
@@ -222,7 +222,7 @@ aₖ ≤ (k-1)(k+2)/2 + n for all k ≥ 0.
 axiom van_doorn_sothanaphan_explicit (n : ℕ) (hn : n > 0) :
     ∀ k : ℕ, stanleySequence n k ≤ (k - 1) * (k + 2) / 2 + n
 
-/--
+/- 
 **Quadratic Upper Bound:**
 aₖ ≤ (k² + k)/2 + n - 1 = O(k²)
 This follows from the van Doorn-Sothanaphan explicit bound.
@@ -267,7 +267,7 @@ Stanley sequences relate to but differ from sum-free sets.
 def IsSumFree (S : Finset ℕ) : Prop :=
   ∀ a b c : ℕ, a ∈ S → b ∈ S → c ∈ S → a + b ≠ c
 
-/--
+/- 
 **AP-Free ≠ Sum-Free:**
 AP-free and sum-free are different conditions.
 Example: {1, 2, 4} is AP-free but not sum-free (1+1=2).

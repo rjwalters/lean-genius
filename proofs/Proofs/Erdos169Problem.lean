@@ -91,7 +91,7 @@ noncomputable def W (k : ℕ) : ℕ :=
     ∀ S : Finset (Fin n), IsArithmeticProgression (S.image (·.val + 1)) k →
       ¬(∀ x ∈ S, c x = true) ∧ ¬(∀ x ∈ S, c x = false) }
 
-/--
+/- 
 **Van der Waerden's Theorem:**
 For all k ≥ 3, W(k) is finite (but grows extremely fast).
 -/
@@ -110,7 +110,7 @@ numbers whose binary representations avoid certain patterns.
 axiom berlekamp_lower_bound (k : ℕ) (hk : k ≥ 3) :
   f k ≥ (Real.log 2 / 2) * k
 
-/--
+/- 
 **Berlekamp's construction:**
 Consider integers n whose base-2 representation has at most ⌊k/2⌋ ones.
 This set is AP-free and has harmonic sum ≥ (log 2 / 2) · k.
@@ -120,7 +120,7 @@ This set is AP-free and has harmonic sum ≥ (log 2 / 2) · k.
 ## Part V: Gerver's Improvement (1977)
 -/
 
-/--
+/- 
 **Gerver (1977):**
 f(k) ≥ (1 - o(1)) k log k
 
@@ -128,7 +128,7 @@ This is a significant improvement over Berlekamp, showing f(k) grows
 faster than linearly in k.
 -/
 
-/--
+/- 
 **Gerver's observation:**
 Problem #3 (whether all f(k) are finite) is equivalent to asking
 whether the set of integers avoiding all APs has finite harmonic sum.
@@ -161,12 +161,12 @@ def RatioQuestion : Prop :=
 ## Part VII: Computational Records
 -/
 
-/--
+/- 
 **f(3) ≥ 3.00849:**
 Due to Wróblewski (1984). Finding 3-AP-free sets with large harmonic sum.
 -/
 
-/--
+/- 
 **f(4) ≥ 4.43975:**
 Due to Walker (2025). The state of the art for 4-AP-free sets.
 -/
@@ -184,7 +184,7 @@ def IsKempnerSet (A : Set ℕ) : Prop :=
   ∃ (b : ℕ) (S : Finset (Fin b)), b ≥ 2 ∧
     A = { n : ℕ | ∀ (d : ℕ), d ∈ (Nat.digits b n) → ∃ s ∈ S, d = s.val }
 
-/--
+/- 
 **Walker (2025):**
 Optimal AP-free sets for harmonic sum can be approximated by Kempner sets.
 For any k ≥ 3 and ε > 0, there exists a Kempner set A lacking k-term APs
@@ -195,17 +195,17 @@ with ∑_{n ∈ A} 1/n ≥ f(k) - ε.
 ## Part IX: Basic Properties
 -/
 
-/--
+/- 
 **f is monotonically decreasing:**
 Larger k means stronger AP-avoidance, so smaller harmonic sums.
 -/
 
-/--
+/- 
 **f(k) > 0 for all k:**
 There always exist non-trivial AP-free sets.
 -/
 
-/--
+/- 
 **The {1} singleton is k-AP-free for all k ≥ 2:**
 -/
 
@@ -213,18 +213,18 @@ There always exist non-trivial AP-free sets.
 ## Part X: Related Problems
 -/
 
-/--
+/- 
 **Problem #3:**
 Is f(k) finite for all k? Gerver showed this is equivalent to the
 finiteness of f(k) for each individual k.
 -/
 
-/--
+/- 
 **Problem #170:**
 Related question about AP-free sets and their density properties.
 -/
 
-/--
+/- 
 **OEIS A005346:**
 Number of subsets of {1,...,n} containing no 3-term AP.
 Grows exponentially but sub-exponentially in n.

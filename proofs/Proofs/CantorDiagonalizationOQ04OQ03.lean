@@ -180,7 +180,7 @@ theorem kleeneFix_le_fixpoint [CompleteLattice α] {f : α → α}
 -- PART 4: The Connection
 -- ============================================================
 
-/-- **The Lawvere-Kleene Connection:**
+/-  **The Lawvere-Kleene Connection:**
 
     In a setting where Y ≅ (Y → Y) (via encode/decode), both the Lawvere
     fixed point and the Kleene fixed point exist. The key insight:
@@ -241,7 +241,7 @@ theorem y_combinator_eq_lawvere {Y : Type*}
     y_comb f = lawvereFixpoint encode decode f := by
   rfl
 
-/-- **The diagonal is the key:**
+/-  **The diagonal is the key:**
     Both Lawvere and Kleene produce fixed points through
     "controlled self-reference". The diagonal map δ(y) = decode(y)(y)
     is the mechanism of self-reference in Lawvere's construction.

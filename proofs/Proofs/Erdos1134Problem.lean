@@ -92,8 +92,8 @@ def HasPositiveLowerDensity (S : Set ℕ) : Prop :=
 For sets closed under x ↦ mᵢx + bᵢ with Σ 1/mᵢ^σ = 1.
 -/
 
-/-- The exponent σ for general affine maps: Σ 1/mᵢ^σ = 1 -/
-/-- Klarner-Rado (1974): General upper bound -/
+/-  The exponent σ for general affine maps: Σ 1/mᵢ^σ = 1 -/
+/-  Klarner-Rado (1974): General upper bound -/
 /-- For our problem, 1/2 + 1/3 + 1/6 = 1, so σ = 1 -/
 theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 
@@ -137,7 +137,7 @@ theorem not_positive_lower_density : ¬HasPositiveLowerDensity A := by
   rw [A_has_zero_density]
   norm_num
 
-/-- Equivalently: |A ∩ [1,X]|/X → 0 as X → ∞ -/
+/-  Equivalently: |A ∩ [1,X]|/X → 0 as X → ∞ -/
 /-
 ## Part 6: Structure of A
 
@@ -202,7 +202,7 @@ The key insight is the structure of the generating functions.
 def characteristic_equation (s : ℝ) : ℝ :=
   (6 : ℝ) ^ (-s) + (1 - (1/2 : ℝ) ^ s)⁻¹ * (3 : ℝ) ^ (-s) - 1
 
-/-- τ is the unique positive root -/
+/-  τ is the unique positive root -/
 /-
 ## Part 9: Open Variants
 

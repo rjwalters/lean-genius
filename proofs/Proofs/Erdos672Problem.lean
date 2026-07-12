@@ -128,7 +128,7 @@ of two or more consecutive positive integers is NEVER a perfect power.
 /-- Product of consecutive integers from n to n+k-1. -/
 def consecutiveProduct (n k : ℕ) : ℕ := apProduct n 1 k
 
-/-- **Erdős-Selfridge Theorem (1975)**: The product of k ≥ 2 consecutive positive integers
+/-  **Erdős-Selfridge Theorem (1975)**: The product of k ≥ 2 consecutive positive integers
 is never a perfect power.
 
 This is a landmark result that took decades to prove. -/

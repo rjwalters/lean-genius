@@ -50,7 +50,7 @@ def IsColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
     Axiomatized since Mathlib's graph coloring infrastructure is evolving. -/
 axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
-/-- The chromatic number is the minimum k for which G is k-colorable. -/
+/-  The chromatic number is the minimum k for which G is k-colorable. -/
 /- ## Complete Graph -/
 
 /-- G contains K_n as a subgraph (has a clique of size n). -/
@@ -74,7 +74,7 @@ axiom gyarfas_equality (G : SimpleGraph V) (k : ℕ) :
     (numOddCycleLengths G ≤ k ∧ chromaticNumber G = 2 * k + 2) ↔
     ContainsClique G (2 * k + 2)
 
-/--
+/- 
 **Gyárfás' Structural Result (1992)**:
 If G is 2-connected with at most k odd cycle lengths, then either:
 1. G contains K_{2k+2}, or
@@ -108,7 +108,7 @@ theorem no_odd_cycles_bipartite (G : SimpleGraph V) :
 def consecutiveOddLengths (start : ℕ) (count : ℕ) : Set ℕ :=
   { n | ∃ i < count, n = 2 * start + 2 * i + 1 }
 
-/--
+/- 
 **Gao-Huo-Ma Theorem (2021)**:
 If χ(G) ≥ 2k + 3, then G contains cycles of k+1 consecutive odd lengths.
 

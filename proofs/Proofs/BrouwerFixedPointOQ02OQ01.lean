@@ -172,7 +172,7 @@ private theorem transitions_parity_bool (n : ℕ) (f : ℕ → Bool) :
     · rw [if_pos hm]
       have hmem : m ∉ (Finset.range m).filter (fun i => f i ≠ f (i + 1)) := by
         simp [Finset.mem_filter, Finset.mem_range]
-      rw [Finset.card_insert_of_not_mem hmem]
+      rw [Finset.card_insert_of_notMem hmem]
       set k := ((Finset.range m).filter (fun i => f i ≠ f (i + 1))).card with hk_def
       have hk := ih
       cases hf0 : f 0 <;> cases hfm : f m <;> cases hfm1 : f (m + 1) <;> simp_all <;> omega

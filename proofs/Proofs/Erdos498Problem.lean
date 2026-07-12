@@ -44,12 +44,12 @@ noncomputable def signedSumCount {n : ℕ} (z : Fin n → ℂ) (w : ℂ) (r : �
 
 /- ## Main Theorem -/
 
-/-- **Kleitman (1965)**: For complex z₁,...,zₙ with |zᵢ| ≥ 1,
+/-  **Kleitman (1965)**: For complex z₁,...,zₙ with |zᵢ| ≥ 1,
     the number of signed sums Σ εᵢzᵢ falling in any unit disc
     is at most C(n, ⌊n/2⌋). -/
 /- ## Historical Results -/
 
-/-- **Erdős (1945)**: For real z₁,...,zₙ with |zᵢ| ≥ 1, at most
+/-  **Erdős (1945)**: For real z₁,...,zₙ with |zᵢ| ≥ 1, at most
     C(n, ⌊n/2⌋) signed sums fall in any interval of length 2.
     This was the original Littlewood–Offord result for reals. -/
 /-- **Erdős (1961)**: For complex zᵢ with |zᵢ| ≥ 1, the count

@@ -36,7 +36,7 @@ noncomputable def cliqueGuarantee (n p q : ℕ) : ℕ :=
 
 -- ========= Aristotle Targets =========
 
-/-- PROVED in Erdos667Problem.lean (researcher-9, 2026-03-27).
+/-  PROVED in Erdos667Problem.lean (researcher-9, 2026-03-27).
     Key steps: (1) 1 ∈ sSup set (singleton is 1-clique via Set.pairwise_singleton),
     (2) m ≥ 2 ∉ set (empty graph ⊥ is m-clique-free, has no edges). -/
 -- theorem cliqueGuarantee_zero (n p : ℕ) (hn : 1 ≤ n) :

@@ -301,9 +301,9 @@ def IsSimilarDissectable (n : ℕ) : Prop :=
 axiom soifer_theorem (n : ℕ) (hn : n ≥ 1) :
     n ≠ 2 → n ≠ 3 → n ≠ 5 → IsSimilarDissectable n
 
-/-- 2 is NOT similar-dissectable. -/
-/-- 3 is NOT similar-dissectable. -/
-/-- 5 is NOT similar-dissectable. -/
+/-  2 is NOT similar-dissectable. -/
+/-  3 is NOT similar-dissectable. -/
+/-  5 is NOT similar-dissectable. -/
 /-
 ## Part IX: Self-Similar Dissections
 
@@ -318,7 +318,7 @@ def IsSelfSimilarDissection (T : Triangle) (n : ℕ) (D : Dissection T n) : Prop
 def IsSelfSimilarDissectable (n : ℕ) : Prop :=
   ∃ T : Triangle, ∃ D : Dissection T n, IsSelfSimilarDissection T n D
 
-/-- **Snover-Waiveris-Williams Theorem**: Self-similar dissection requires
+/-  **Snover-Waiveris-Williams Theorem**: Self-similar dissection requires
     n ∈ {k², k² + m², 3k²} for some k, m. -/
 /-
 ## Part X: Recent Progress
@@ -326,7 +326,7 @@ def IsSelfSimilarDissectable (n : ℕ) : Prop :=
 Zhang (2025) and other developments.
 -/
 
-/-- Zhang's condition: For a ≥ b ≥ 1, large n makes n²ab dissectable. -/
+/-  Zhang's condition: For a ≥ b ≥ 1, large n makes n²ab dissectable. -/
 /-- The set of known dissectable values. -/
 def KnownDissectable : Set ℕ :=
   { n | (∃ k : ℕ, n = k^2) ∨

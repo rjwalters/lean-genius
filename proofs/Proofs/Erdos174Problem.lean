@@ -153,7 +153,7 @@ axiom trapezoid_is_ramsey {n : ℕ} (A : FiniteConfig n) :
 def IsRegularPolygon {n : ℕ} (A : FiniteConfig n) (m : ℕ) : Prop :=
   m ≥ 3 ∧ A.card = m ∧ IsSpherical A
 
-/-- **Kříž (1991):** All regular polygons and polyhedra are Ramsey.
+/-  **Kříž (1991):** All regular polygons and polyhedra are Ramsey.
 Uses permutation group methods and symmetry arguments. -/
 
 /- ## Part VI: Examples -/
@@ -162,19 +162,19 @@ Uses permutation group methods and symmetry arguments. -/
 def twoPoints : FiniteConfig 1 :=
   {![0], ![1]}
 
-/-- Two points always lie on a sphere and are trivially Ramsey (pigeonhole). -/
+/-  Two points always lie on a sphere and are trivially Ramsey (pigeonhole). -/
 
 /-- An equilateral triangle in ℝ². -/
 def equilateralTriangle : FiniteConfig 2 :=
   {![0, 0], ![1, 0], ![0.5, Real.sqrt 3 / 2]}
 
-/-- Equilateral triangles are Ramsey (special case of simplex). -/
+/-  Equilateral triangles are Ramsey (special case of simplex). -/
 
 /-- A unit square in ℝ². -/
 def square : FiniteConfig 2 :=
   {![0, 0], ![1, 0], ![1, 1], ![0, 1]}
 
-/-- Squares are Ramsey (special case of rectangle). -/
+/-  Squares are Ramsey (special case of rectangle). -/
 
 /- ## Part VII: Non-Ramsey Sets -/
 

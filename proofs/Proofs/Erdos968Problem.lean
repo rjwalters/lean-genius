@@ -76,7 +76,7 @@ def flatSteps : Set ℕ := {n | u n = u (n + 1)}
 ## Known Results (Erdős-Prachar 1961)
 -/
 
-/--
+/- 
 **Erdős-Prachar Theorem 1**: The total variation of the normalized prime
 sequence satisfies Σ_{pₙ < x} |uₙ₊₁ - uₙ| ≍ (log x)².
 
@@ -98,7 +98,7 @@ axiom erdos_prachar_decreasing_density : Set.HasPosDensity decreasingSteps
 The main question of Erdős Problem #968.
 -/
 
-/--
+/- 
 **Erdős Problem #968 (OPEN)**: Does the set of increasing steps {n : uₙ < uₙ₊₁}
 have positive natural density?
 
@@ -121,11 +121,11 @@ def increasingTriples : Set ℕ := {n | u n < u (n + 1) ∧ u (n + 1) < u (n + 2
 /-- The set of n where uₙ > uₙ₊₁ > uₙ₊₂ (three consecutive decreases). -/
 def decreasingTriples : Set ℕ := {n | u n > u (n + 1) ∧ u (n + 1) > u (n + 2)}
 
-/--
+/- 
 **Erdős Question (OPEN)**: Are there infinitely many increasing triples
 n with uₙ < uₙ₊₁ < uₙ₊₂?
 -/
-/--
+/- 
 **Erdős Question (OPEN)**: Are there infinitely many decreasing triples
 n with uₙ > uₙ₊₁ > uₙ₊₂?
 -/
@@ -135,7 +135,7 @@ n with uₙ > uₙ₊₁ > uₙ₊₂?
 The behavior of uₙ = pₙ/n is governed by the Prime Number Theorem.
 -/
 
-/--
+/- 
 By PNT, pₙ ~ n log n, so uₙ = pₙ/n ~ log n.
 The sequence grows slowly (logarithmically) on average.
 

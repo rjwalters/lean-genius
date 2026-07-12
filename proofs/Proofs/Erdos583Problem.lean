@@ -110,7 +110,7 @@ structure PathCyclePartition (G : SimpleGraph V) where
 axiom lovasz_theorem (G : SimpleGraph V) :
   ∃ P : PathCyclePartition G, P.paths.length + P.cycles.length ≤ Fintype.card V / 2
 
-/-- Corollary: Every graph partitions into ≤ n-1 paths -/
+/-  Corollary: Every graph partitions into ≤ n-1 paths -/
 /-
 ## Part 4: Chung's Theorem (1978)
 
@@ -143,7 +143,7 @@ structure PathCover (G : SimpleGraph V) where
   paths : List (GraphPath G)
   covers : CoversAllEdges paths
 
-/-- Pyber's Theorem (1996): Connected graphs covered by n/2 + O(n^{3/4}) paths -/
+/-  Pyber's Theorem (1996): Connected graphs covered by n/2 + O(n^{3/4}) paths -/
 /-
 ## Part 6: Fan's Theorem (2002)
 
@@ -183,9 +183,9 @@ def HajosConjecture (n : ℕ) : Prop :=
 Cases where the Erdős-Gallai conjecture is known.
 -/
 
-/-- Trees satisfy the conjecture (trivially: a tree is one path when n > 1) -/
-/-- Complete graphs satisfy the conjecture -/
-/-- Cycles satisfy the conjecture -/
+/-  Trees satisfy the conjecture (trivially: a tree is one path when n > 1) -/
+/-  Complete graphs satisfy the conjecture -/
+/-  Cycles satisfy the conjecture -/
 /-
 ## Part 9: Erdős Problem #583 Statement
 
@@ -207,8 +207,8 @@ theorem erdos_583_conjecture (n : ℕ) :
 Graphs showing the bound ⌈n/2⌉ is tight.
 -/
 
-/-- Stars require only 1 path (the bound is not tight for stars) -/
-/-- Complete bipartite graphs K_{n,n} need many paths.
+/-  Stars require only 1 path (the bound is not tight for stars) -/
+/-  Complete bipartite graphs K_{n,n} need many paths.
     K_{n,n} has 2n vertices and n² edges, needs Θ(n) paths. -/
 /-
 ## Part 11: Summary

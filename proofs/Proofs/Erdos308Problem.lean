@@ -168,7 +168,7 @@ axiom croot_upper_bound :
       -- f(N) ≤ floor of (H_N - 1/2 · (log log N)² / log N) asymptotically
       f N ≤ (H N).num.natAbs
 
-/--
+/- 
 **Croot's Main Theorem (1999):**
 The bounds imply that for large N, f(N) is either ⌊H_N⌋ or ⌊H_N⌋ - 1.
 
@@ -200,7 +200,7 @@ with bounded denominators.
 def IsEgyptianFraction (S : Finset ℕ) : Prop :=
   ∀ n ∈ S, n ≥ 1
 
-/--
+/- 
 **Greedy Algorithm Insight:**
 To represent k, we can use the greedy algorithm:
 - Pick the largest unit fraction ≤ remaining amount
@@ -213,21 +213,21 @@ This doesn't always work optimally with bounded denominators.
 ## Part VIII: Asymptotic Behavior
 -/
 
-/--
+/- 
 **Harmonic Number Asymptotics:**
 H_N = ln(N) + γ + 1/(2N) - 1/(12N²) + O(1/N⁴)
 
 where γ ≈ 0.5772... is the Euler-Mascheroni constant.
 -/
 
-/--
+/- 
 **f(N) Asymptotics:**
 f(N) = ⌊H_N⌋ - Θ((log log N)²/log N)
 
 The second-order term is between (1/2) and (9/2) times (log log N)²/log N.
 -/
 
-/--
+/- 
 **Growth Rate:**
 f(N) grows like ln(N), since H_N ~ ln(N).
 

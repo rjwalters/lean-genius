@@ -40,9 +40,9 @@ def ErdosProblem542 : Prop :=
   ∀ n : ℕ, ∀ A : Finset ℕ, PairwiseLCMExceeds A n →
     reciprocalSum A ≤ 31 / 30
 
-/-- The bound 31/30 is achieved by {2, 3, 5}: 1/2 + 1/3 + 1/5 = 31/30. -/
+/-  The bound 31/30 is achieved by {2, 3, 5}: 1/2 + 1/3 + 1/5 = 31/30. -/
 
-/-- {2, 3, 5} satisfies the LCM condition for n = 5. -/
+/-  {2, 3, 5} satisfies the LCM condition for n = 5. -/
 
 /- ## Chen's Stronger Bound -/
 
@@ -67,13 +67,13 @@ def MaximalSetsConjecture : Prop :=
     1 < reciprocalSum A →
     (A = {2, 3, 5} ∨ A = {3, 4, 5, 7, 11})
 
-/-- {3, 4, 5, 7, 11} achieves sum > 1 under the LCM condition. -/
+/-  {3, 4, 5, 7, 11} achieves sum > 1 under the LCM condition. -/
 
-/-- {3, 4, 5, 7, 11} satisfies the LCM condition for n = 11. -/
+/-  {3, 4, 5, 7, 11} satisfies the LCM condition for n = 11. -/
 
 /- ## Structural Properties -/
 
-/-- The LCM condition implies no element divides another (within {1,...,n}). -/
+/-  The LCM condition implies no element divides another (within {1,...,n}). -/
 
 /-- Singleton sets always satisfy the LCM condition vacuously. -/
 theorem singleton_satisfies_lcm (a n : ℕ) (ha : a ∈ Finset.range (n + 1))

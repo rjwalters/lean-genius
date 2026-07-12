@@ -75,7 +75,7 @@ m(n) is the minimal integer m ≥ n such that the partial harmonic sum reaches 1
     Axiomatized since the minimality requires decidability of real comparisons. -/
 axiom m_of_n (n : ℕ) : ℕ
 
-/-- m(n) is well-defined: the sum eventually exceeds 1 -/
+/-  m(n) is well-defined: the sum eventually exceeds 1 -/
 /-- m(n) is minimal: the sum from n to m(n)-1 is less than 1 -/
 axiom m_of_n_minimal : ∀ n : ℕ, n ≥ 1 →
   partialHarmonicSum n (m_of_n n - 1) < 1
@@ -148,8 +148,8 @@ theorem epsilon_upper_bound : ∀ n : ℕ, n ≥ 1 → epsilon n ≤ 1 / n := by
 For large n, m(n) ≈ e·n since the harmonic sum grows logarithmically.
 -/
 
-/-- Asymptotic: m(n)/n → e as n → ∞ -/
-/-- More precisely: m(n) = ⌊e·n + 1/2⌋ for most n -/
+/-  Asymptotic: m(n)/n → e as n → ∞ -/
+/-  More precisely: m(n) = ⌊e·n + 1/2⌋ for most n -/
 /- ## The Main Question: lim inf n²ε(n) = 0?
 
 Erdős asked whether the lim inf of n²ε(n) equals 0.
@@ -199,8 +199,8 @@ theorem erdos_conjecture_true : erdos_conjecture := by
 Erdős-Graham and Lim-Steinerberger believe the exponent 2 is optimal.
 -/
 
-/-- Conjecture: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0 -/
-/-- Alternative form: ε(n) ≥ c/n² for some constant c > 0 infinitely often -/
+/-  Conjecture: lim inf ε(n)n^{2+δ} = ∞ for all δ > 0 -/
+/-  Alternative form: ε(n) ≥ c/n² for some constant c > 0 infinitely often -/
 /- ## Connection to Diophantine Approximation
 
 The problem is related to how well log(m/n) approximates 1 - γ
@@ -210,7 +210,7 @@ where γ is the Euler-Mascheroni constant.
 /-- The Euler-Mascheroni constant γ ≈ 0.5772... -/
 noncomputable def eulerMascheroni : ℝ := Real.eulerMascheroniConstant
 
-/-- Asymptotic: ε(n) ≈ 1/(m·n) - (something involving Euler-Mascheroni) -/
+/-  Asymptotic: ε(n) ≈ 1/(m·n) - (something involving Euler-Mascheroni) -/
 /- ## Summary
 
 Erdős Problem #314 asks about the lim inf of n²ε(n) where

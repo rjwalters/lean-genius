@@ -76,7 +76,7 @@ The interval (2N/3, N] provides a divisibility-free set.
 def upperThird (N : ℕ) : Finset ℕ :=
   (Finset.range (N + 1)).filter (fun k => 2 * N < 3 * k)
 
-/-- The upper third is divisibility-free.
+/-  The upper third is divisibility-free.
 
     Proof: For a,b,c in (2N/3, N] with a < b and a < c:
     - We have b + c > 4N/3
@@ -120,7 +120,7 @@ axiom bedert_theorem :
       DivisibilityFree A →
       A.card ≤ N / 3 + C
 
-/-- Corollary: The upper third construction is essentially optimal.
+/-  Corollary: The upper third construction is essentially optimal.
 
     Proof: By Bedert's theorem, |A| ≤ N/3 + C. Since |upperThird N| ≥ N/3 - 1,
     we have |A| ≤ |upperThird N| + C + 1. -/

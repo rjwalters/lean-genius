@@ -84,7 +84,7 @@ noncomputable def f (n : ℕ) : ℕ :=
 def IsProductOfConsecutive (n : ℕ) : Prop :=
   ∃ k : ℕ, k ≥ 1 ∧ n.factorial = k * (k + 1)
 
-/-- f(n) = 1 iff n! is a product of two consecutive integers -/
+/-  f(n) = 1 iff n! is a product of two consecutive integers -/
 /-- Example: 3! = 6 = 2 · 3, so f(3) ≤ 1 -/
 theorem example_3_factorial : 3.factorial = 2 * 3 := by
   native_decide
@@ -145,7 +145,7 @@ def UnconditionalTendsto : Prop :=
 def PolynomialFactorialEquation (P : ℕ → ℕ) (n : ℕ) : Prop :=
   ∃ x : ℕ, P x = n.factorial
 
-/-- For f(n) = 1: x(x+1) = n! is a Pell-like equation -/
+/-  For f(n) = 1: x(x+1) = n! is a Pell-like equation -/
 /-- Brocard's problem: n! + 1 = m² has only known solutions n = 4, 5, 7 -/
 def BrocardProblem : Prop :=
   ∀ n m : ℕ, n.factorial + 1 = m^2 → n ∈ ({4, 5, 7} : Set ℕ)
@@ -159,7 +159,7 @@ theorem density_zero (m : ℕ) (hm : m ≥ 1) :
     Filter.Tendsto (fun N => (F m N : ℝ) / N) Filter.atTop (nhds 0) :=
   berend_osgood_1992 m hm
 
-/-- Corollary: f(n) achieves each value only finitely often, in density sense -/
+/-  Corollary: f(n) achieves each value only finitely often, in density sense -/
 /-
 ## Part 9: Summary
 -/

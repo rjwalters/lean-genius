@@ -108,7 +108,7 @@ def macmahonValues : Fin 8 → ℕ
   | 6 => 14
   | 7 => 15
 
-/-- The known values match the sequence definition (axiom pending full proof). -/
+/-  The known values match the sequence definition (axiom pending full proof). -/
 
 /-- Why 3 is skipped: 3 = 1 + 2 = A(0) + A(1) is achievable. -/
 theorem three_is_achievable (A : ℕ → ℕ)
@@ -136,13 +136,13 @@ theorem six_is_achievable (A : ℕ → ℕ)
 The main questions about growth rate remain open.
 -/
 
-/-- **Open Conjecture I**: a_k / k → ∞ as k → ∞.
+/-  **Open Conjecture I**: a_k / k → ∞ as k → ∞.
     This means the sequence grows faster than linear. -/
 
-/-- **Open Conjecture II**: a_k / k^{1+c} → 0 for any c > 0.
+/-  **Open Conjecture II**: a_k / k^{1+c} → 0 for any c > 0.
     This means the sequence grows slower than any polynomial > 1. -/
 
-/-- **Andrews' Conjecture**: a_k ~ (k log k) / (log log k).
+/-  **Andrews' Conjecture**: a_k ~ (k log k) / (log log k).
     The asymptotic growth rate is superlinear but subpolynomial. -/
 
 /-
@@ -151,7 +151,7 @@ The main questions about growth rate remain open.
 Porubský proved some bounds on the growth rate.
 -/
 
-/-- **Porubský's Upper Bound** (1977): For any ε > 0, infinitely many k satisfy
+/-  **Porubský's Upper Bound** (1977): For any ε > 0, infinitely many k satisfy
     a_k < (log k)^ε · (k log k) / (log log k). -/
 
 /-- Counting function: A(x) = number of terms ≤ x. -/
@@ -162,7 +162,7 @@ noncomputable def countingFunction (A : ℕ → ℕ) (x : ℕ) : ℕ :=
 noncomputable def primeCounting (x : ℕ) : ℕ :=
   Finset.card (Finset.filter Nat.Prime (Finset.range (x + 1)))
 
-/-- **Porubský's Density Bound**: limsup A(x)/π(x) ≥ 1/log(2).
+/-  **Porubský's Density Bound**: limsup A(x)/π(x) ≥ 1/log(2).
     The MacMahon sequence is denser than primes by a factor of at least 1/log(2). -/
 
 /-
@@ -171,7 +171,7 @@ noncomputable def primeCounting (x : ℕ) : ℕ :=
 The problem also considers sequences starting with n ≠ 1.
 -/
 
-/-- For general n, the sequence still grows superlinearly (conjectured). -/
+/-  For general n, the sequence still grows superlinearly (conjectured). -/
 
 /-
 ## Summary

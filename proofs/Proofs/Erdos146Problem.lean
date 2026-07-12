@@ -93,7 +93,7 @@ def ErdosSimonovitsConjecture : Prop :=
 ## Part III: Partial Results
 -/
 
-/--
+/- 
 **Alon-Krivelevich-Sudakov Theorem (2003):**
 For bipartite r-degenerate H: ex(n; H) ≪ n^{2-1/4r}.
 
@@ -149,16 +149,16 @@ def completeBipartiteGraph (r s : ℕ) : SimpleGraph (Fin (r + s)) where
   symm := fun i j h => h.symm.imp And.symm And.symm
   loopless := fun i h => by rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
 
-/--
+/- 
 **K_{r,s} is r-degenerate (when r ≤ s):**
 -/
-/--
+/- 
 **Known Turán Number for K_{r,s}:**
 ex(n; K_{r,s}) = Θ(n^{2-1/r}) when r ≤ s.
 
 This is the Kővári-Sós-Turán theorem!
 -/
-/--
+/- 
 **Cycles C_{2k}:**
 Even cycles are 2-degenerate.
 -/
@@ -177,7 +177,7 @@ theorem r2_case_exponents :
     (2 : ℝ) - 1/2 = 3/2 ∧ (2 : ℝ) - 1/8 = 15/8 := by
   constructor <;> norm_num
 
-/--
+/- 
 **Example for r = 2:**
 The 4-cycle C_4 is 2-degenerate and bipartite.
 ex(n; C_4) = Θ(n^{3/2}) is known (Bondy-Simonovits).

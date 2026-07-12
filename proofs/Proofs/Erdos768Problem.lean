@@ -139,8 +139,8 @@ exp(-c√(log N)·log log N).
 noncomputable def exponentFunc (N : ℕ) : ℝ :=
   Real.sqrt (Real.log N) * Real.log (Real.log N)
 
-/-- Erdős's lower bound: density ≥ exp(-c·√(log N)·log log N) -/
-/-- Erdős's upper bound: density ≤ exp(-(1+o(1))·√(log N·log log N)) -/
+/-  Erdős's lower bound: density ≥ exp(-c·√(log N)·log log N) -/
+/-  Erdős's upper bound: density ≤ exp(-(1+o(1))·√(log N·log log N)) -/
 /-
 ## The Main Conjecture
 
@@ -148,7 +148,7 @@ The question asks if there exists c > 0 such that:
 A(N)/N = exp(-(c+o(1))√(log N)·log log N)
 -/
 
-/-- Erdős Problem #768: Does the exact asymptotic exist? -/
+/-  Erdős Problem #768: Does the exact asymptotic exist? -/
 /-
 ## Connection to Simple Groups
 
@@ -166,7 +166,7 @@ def isNonCyclicSimpleGroupOrder (n : ℕ) : Prop :=
   isSimpleGroupOrder n ∧ ¬∃ (G : Type) (_ : Group G) (_ : Fintype G),
     Fintype.card G = n ∧ IsSimpleGroup G ∧ IsCyclic G
 
-/-- Orders of non-cyclic simple groups are in A -/
+/-  Orders of non-cyclic simple groups are in A -/
 /-
 ## Structural Properties
 
@@ -174,7 +174,7 @@ The condition for membership in A is closely related to the structure of
 the divisor lattice and Sylow theory.
 -/
 
-/-- NOTE: A previous version claimed that if n ∈ A and p | n with p² ∤ n, then
+/-  NOTE: A previous version claimed that if n ∈ A and p | n with p² ∤ n, then
     some prime q | n has q ≡ 1 (mod p). This is FALSE:
     n = 12 ∈ A, p = 3, 3 | 12, 9 ∤ 12, but the only other prime divisor is 2,
     and 2 % 3 = 2 ≠ 1. The witness for p = 3 in n = 12 is d = 4 (composite,
@@ -191,7 +191,7 @@ The key insight is that for n to be in A, its prime factorization must be
 noncomputable def logLogDensity (N : ℕ) : ℝ :=
   Real.log (-Real.log (densityA N))
 
-/-- The expected scaling -/
+/-  The expected scaling -/
 /-
 ## Known Values and OEIS
 

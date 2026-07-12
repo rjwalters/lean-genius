@@ -301,7 +301,7 @@ theorem kovari_sos_turan (G : SimpleGraph V) [DecidableRel G.Adj]
     (2 : ℝ) * (Fintype.card V : ℝ) * (G.edgeFinset.card : ℝ) := by
   set n := (Fintype.card V : ℝ)
   set m := (G.edgeFinset.card : ℝ)
-  -- Step 1: Cherry count ∑ d(d-1) ≤ n(n-1) in ℝ
+  -- Step 1: Cherry count ∑ d(d-1) ≤ n(n-1) ∈ ℝ
   have hcherry_real : ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤ n * (n - 1) := by
     have hnat := cherry_count_nat G hfree
     show ∑ v : V, (G.degree v : ℝ) * ((G.degree v : ℝ) - 1) ≤

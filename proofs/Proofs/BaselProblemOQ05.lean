@@ -5,7 +5,7 @@ import Mathlib
 
 ## Open Question
 Can Euler's original proof via the Weierstrass factorization
-sin(πx)/(πx) = ∏_{n=1}^∞ (1 - x²/n²) be formalized in Lean 4?
+sin(πx)/(πx) = ∏_{n=1}^∞ (1 - x²/n²) be formalized ∈ Lean 4?
 
 ## Approach
 Euler's proof proceeds in three steps:

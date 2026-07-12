@@ -38,7 +38,7 @@ namespace Erdos521
 f_n(z) = Σ_{k=0}^n εₖ z^k where each εₖ ∈ {-1, 1} uniformly at random.
 -/
 def RandomPlusMinus1Polynomial (n : ℕ) (ε : ℕ → Int) (z : ℝ) : ℝ :=
-  ∑ k in Finset.range (n + 1), (ε k : ℝ) * z ^ k
+  ∑ k ∈ Finset.range (n + 1), (ε k : ℝ) * z ^ k
 
 /--
 **Valid Coefficient Sequence:**
@@ -53,7 +53,7 @@ Rₙ(ε) counts the number of distinct real roots of the polynomial.
 -/
 axiom realRootCount (n : ℕ) (ε : ℕ → Int) : ℕ
 
-/--
+/- 
 **Real Roots in Interval [-1, 1]:**
 Rₙ[-1,1] counts roots in the interval [-1, 1].
 -/
@@ -83,13 +83,13 @@ axiom kac_constant_pos : kacConstant > 0
 ## Part III: Erdős-Offord Theorem (1956)
 -/
 
-/--
+/- 
 **Expected Number of Real Roots:**
 E[Rₙ] = (2/π + o(1)) log n
 
 The expected real root count over all 2^(n+1) coefficient sequences.
 -/
-/--
+/- 
 **Erdős-Offord (1956):**
 The expected number of real roots satisfies E[Rₙ] = (2/π + o(1)) log n.
 -/
@@ -111,7 +111,7 @@ axiom variance_bound :
 ## Part IV: The Main Conjecture
 -/
 
-/--
+/- 
 **The Erdős Conjecture (OPEN):**
 Almost surely, lim_{n→∞} Rₙ/log n = 2/π.
 
@@ -124,7 +124,7 @@ over infinite binary sequences.
 ## Part V: Do's Theorem (2024)
 -/
 
-/--
+/- 
 **Do's Theorem (2024):**
 For real roots in [-1, 1], almost surely:
   lim_{n→∞} Rₙ[-1,1]/log n = 1/π
@@ -137,7 +137,7 @@ half of all real roots.
 ## Part VI: Kac's Integral Formula
 -/
 
-/--
+/- 
 **Kac's Integral Formula (1943):**
 The expected number of real roots in [a,b] is given by:
   E[Rₙ[a,b]] = ∫_a^b ρ_n(x) dx

@@ -161,8 +161,8 @@ theorem admissible_5tuple_diam_ge_12
     have ha_notin : a ∉ insert b H := by
       simp only [Finset.mem_insert]; push_neg; exact ⟨hab, hna⟩
     have hcardins : (insert a (insert b H)).card = 7 := by
-      rw [Finset.card_insert_of_not_mem ha_notin,
-          Finset.card_insert_of_not_mem hnb, hcard]
+      rw [Finset.card_insert_of_notMem ha_notin,
+          Finset.card_insert_of_notMem hnb, hcard]
     have hins : insert a (insert b H) ⊆
         ({m, m + 2, m + 4, m + 6, m + 8, m + 10} : Finset ℕ) := by
       intro x hx

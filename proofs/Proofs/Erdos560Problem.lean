@@ -69,7 +69,7 @@ def completeBipartiteGraph (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
 
 notation "K[" n "," n "]" => completeBipartiteGraph n
 
-/--
+/- 
 Number of edges in K_{n,n} is n^2.
 -/
 
@@ -148,17 +148,17 @@ theorem size_ramsey_bounds (n : ℕ) (hn : n ≥ 6) :
 ## Part IV: Conlon-Fox-Wigderson Results (2023)
 -/
 
-/--
+/- 
 **General Bipartite Bound (CFW 2023):**
 For s ≤ t, R_hat(K_{s,t}) ≫ s^{2-s/t} * t * 2^s.
 -/
 
-/--
+/- 
 **Asymptotic Result (CFW 2023):**
 When t ≫ s * log(s), we have R_hat(K_{s,t}) ≍ s^2 * t * 2^s.
 -/
 
-/--
+/- 
 **CFW Conjecture:**
 R_hat(K_{n,n}) ≍ n^3 * 2^n for all n.
 
@@ -169,19 +169,19 @@ This is the natural extension of the asymptotic result to the balanced case.
 ## Part V: Basic Properties
 -/
 
-/--
+/- 
 Size Ramsey number is monotonic: if G is a subgraph of G', then R_hat(G) ≤ R_hat(G').
 -/
 
-/--
+/- 
 R_hat(G) ≥ |E(G)| (every witness must have at least as many edges as G).
 -/
 
-/--
+/- 
 R_hat(K_{1,1}) = 1 (a single edge suffices).
 -/
 
-/--
+/- 
 For paths P_n, the size Ramsey number is linear in n.
 -/
 
@@ -199,12 +199,12 @@ noncomputable def classicalRamseyNumber (G : SimpleGraph W) : ℕ :=
 
 notation "R(" G ")" => classicalRamseyNumber G
 
-/--
+/- 
 **Relationship to Classical Ramsey:**
 R_hat(G) ≤ C(R(G), 2), the number of edges in K_{R(G)}.
 -/
 
-/--
+/- 
 **Ramsey for K_{n,n}:**
 Classical Ramsey number for complete bipartite graphs grows doubly exponentially.
 -/
@@ -238,7 +238,7 @@ notation:50 f " = Θ(" g ")" => f = thetaNotation g
 ## Part VIII: Main Results Summary
 -/
 
-/--
+/- 
 **Erdős Problem #560: Size Ramsey Number of K_{n,n}**
 
 Status: OPEN (exact value unknown, bounds established)

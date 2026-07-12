@@ -146,7 +146,7 @@ theorem unbounded_uncountable {F : Set (ℕ → ℕ)} (h : IsUnbounded F) :
   · -- empty F is not unbounded: there is no member to witness against g = 0
     obtain ⟨f, hf, _⟩ := h (fun _ => 0)
     rw [hE] at hf
-    exact (Set.not_mem_empty f) hf
+    exact (Set.notMem_empty f) hf
   · -- write F = range e and diagonalize
     obtain ⟨e, he⟩ := hcount.exists_eq_range hne
     obtain ⟨f, hfF, hfnd⟩ :=

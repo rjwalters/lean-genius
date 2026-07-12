@@ -66,8 +66,8 @@ noncomputable def limitValue : ℝ :=
 
 /- ## Part 3: Known Bounds -/
 
-/-- Erdős-Graham (1980) original lower bound: lim ≥ 1/4. -/
-/-- Erdős-Graham (1980) original upper bound: lim ≤ 5/4. -/
+/-  Erdős-Graham (1980) original lower bound: lim ≥ 1/4. -/
+/-  Erdős-Graham (1980) original upper bound: lim ≤ 5/4. -/
 /-- Grekos (1988) improved lower bound: lim ≥ 1/3. -/
 axiom grekos_lower_1988 :
   ∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R, ((h r : ℕ) : ℝ) / (r^2 : ℝ) ≥ 1/3 - ε
@@ -90,7 +90,7 @@ axiom h_2 : h 2 = 4
 /-- h(3) = 7 (Nash 1993). -/
 axiom h_3 : h 3 = 7
 
-/-- 10 ≤ h(4) ≤ 11 (Plagne 2004). -/
+/-  10 ≤ h(4) ≤ 11 (Plagne 2004). -/
 /-- Check: h(2)/2² = 4/4 = 1. -/
 example : (h 2 : ℚ) / (2^2 : ℚ) = 1 := by
   simp [h_2]
@@ -128,7 +128,7 @@ Erdős-Graham showed: A has an exact order iff consecutive differences are copri
 /-- The consecutive differences of an enumeration a₁ < a₂ < a₃ < ... -/
 def consecutiveDiffs (a : ℕ → ℕ) (k : ℕ) : ℕ := a (k + 1) - a k
 
-/-- A has exact order iff the gcd of all consecutive differences is 1.
+/-  A has exact order iff the gcd of all consecutive differences is 1.
     Erdős-Graham characterization theorem from [ErGr80]. -/
 /- ## Part 7: Plagne's Refinement
 
@@ -136,7 +136,7 @@ Plagne (2004) improved bounds on lower-order terms of h(r),
 giving tighter estimates for the growth of h(r) beyond the leading r² term.
 -/
 
-/-- Plagne's (2004) refined bounds on h(r): r²/3 + cr ≤ h(r) ≤ r²/2 + C
+/-  Plagne's (2004) refined bounds on h(r): r²/3 + cr ≤ h(r) ≤ r²/2 + C
     for explicit constants c, C. This axiom captures the lower-order improvement. -/
 /- ## Part 8: Main Results -/
 

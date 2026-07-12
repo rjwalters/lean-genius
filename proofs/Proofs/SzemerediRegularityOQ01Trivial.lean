@@ -63,7 +63,7 @@ irregular pairs of any partition form the empty set: every pair is ε-regular by
 theorem irregularOrderedPairs_eq_empty_of_one_le (G : SimpleGraph V)
     [DecidableRel G.Adj] {eps : ℚ} (heps : 1 ≤ eps) (parts : Finset (Finset V)) :
     irregularOrderedPairs G eps parts = ∅ := by
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   rintro ⟨P, Q⟩ hx
   simp only [irregularOrderedPairs, Finset.mem_filter, Finset.mem_product] at hx
   exact hx.2.2 (isEpsilonRegular_of_one_le G heps P Q)

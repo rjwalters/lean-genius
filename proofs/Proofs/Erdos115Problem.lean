@@ -32,12 +32,12 @@ axiom IsLemniscateConnected : {n : ℕ} → ComplexPoly n → Prop
 /-- The maximum of |p'(z)| over the lemniscate {z : |p(z)| ≤ 1} -/
 axiom maxDerivOnLemniscate : {n : ℕ} → ComplexPoly n → ℝ
 
-/-- The maximum of |p'(z)| is always non-negative -/
+/-  The maximum of |p'(z)| is always non-negative -/
 /- ## Known Bounds -/
 
-/-- Lower bound: the maximum derivative on a connected lemniscate is at least n.
+/-  Lower bound: the maximum derivative on a connected lemniscate is at least n.
     Equality is achieved by p(z) = zⁿ. -/
-/-- Pommerenke's bound: max |p'| ≤ (e/2) · n² on connected lemniscates -/
+/-  Pommerenke's bound: max |p'| ≤ (e/2) · n² on connected lemniscates -/
 /-- Chebyshev polynomials of degree n -/
 axiom chebyshev_poly : (n : ℕ) → ComplexPoly n
 axiom chebyshev_connected (n : ℕ) (hn : 1 ≤ n) :
@@ -51,7 +51,7 @@ axiom chebyshev_deriv_asymptotic :
 
 /- ## The Eremenko–Lempert Theorem -/
 
-/-- Erdős Problem 115 (PROVED by Eremenko–Lempert):
+/-  Erdős Problem 115 (PROVED by Eremenko–Lempert):
     For connected lemniscates, max |p'| ≤ (1/2 + o(1)) · n² -/
 /-- The bound is sharp: Chebyshev polynomials show n²/2 is the correct constant -/
 theorem ErdosProblem115_sharp :

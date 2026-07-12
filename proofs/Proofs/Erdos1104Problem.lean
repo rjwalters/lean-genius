@@ -116,7 +116,7 @@ set of size k. -/
 def RamseyTriangle (k : ℕ) : ℕ := by
   exact Nat.find (⟨k * k, trivial⟩ : ∃ N : ℕ, True) -- placeholder
 
-/-- R(3,k) = Θ(k²/log k) (Kim 1995, Bohman 2009, Fiz Pontiveros–
+/-  R(3,k) = Θ(k²/log k) (Kim 1995, Bohman 2009, Fiz Pontiveros–
 Griffiths–Morris 2020). The lower bound is by Kim's semi-random method;
 the upper bound follows from triangle Ramsey results. -/
 /- ## Main Asymptotic Bounds -/
@@ -153,9 +153,9 @@ noncomputable def triangleFreeMaxChiEdges : ℕ → ℕ := by
     (_ : DecidableRel G.Adj) (_ : Fintype (G.edgeSet)),
     G.CliqueFree 3 ∧ G.edgeSet.toFinset.card = m ∧ G.chromaticNumber = k }
 
-/-- **Edge variant upper bound (Davies–Illingworth 2022)**:
+/-  **Edge variant upper bound (Davies–Illingworth 2022)**:
 g(m) ≤ (3^{5/3} + o(1))(m/(log m)²)^{1/3}. -/
-/-- **Edge variant lower bound (Kim 1995)**:
+/-  **Edge variant lower bound (Kim 1995)**:
 g(m) ≥ c(m/(log m)²)^{1/3} for some c > 0. -/
 /- ## Mycielski Construction -/
 

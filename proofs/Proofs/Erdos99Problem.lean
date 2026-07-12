@@ -105,18 +105,18 @@ noncomputable def triangularLatticePoint (i j : ℤ) : Plane :=
 def TriangularLattice : Set Plane :=
   { p | ∃ i j : ℤ, p = triangularLatticePoint i j }
 
-/--
+/- 
 Adjacent points in the triangular lattice have distance 1. This captures
 the three lattice directions: horizontal, 60°, and 120°.
 -/
-/--
+/- 
 Any three adjacent lattice points form a unit equilateral triangle.
 This is why the conjecture seems plausible: if optimal configurations
 resemble the lattice, they should contain such triangles.
 -/
 /- ## Part V: Thue's Theorem and Lattice Structure -/
 
-/--
+/- 
 Thue's theorem implies that diameter-minimizing configurations
 asymptotically resemble regions of the triangular lattice. For any ε > 0,
 in a large enough optimal configuration, at least (1 - ε)n points lie
@@ -124,7 +124,7 @@ within distance ε of some triangular lattice point.
 -/
 /- ## Part VI: Small Cases -/
 
-/-- n = 3: An optimal 3-point set must be an equilateral triangle -/
+/-  n = 3: An optimal 3-point set must be an equilateral triangle -/
 /--
 n = 4: The square with unit side length is an optimal 4-point configuration
 that does NOT contain a unit equilateral triangle. This shows the conjecture

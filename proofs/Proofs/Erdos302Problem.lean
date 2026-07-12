@@ -165,7 +165,7 @@ theorem upper_half_sum_free (N : ℕ) (hN : N ≥ 4) : IsUnitFractionSumFree (up
   have : b = c := by omega
   exact absurd this hbc
 
-/-- Basic lower bound: f(N) ≥ (1/2 + o(1))N -/
+/-  Basic lower bound: f(N) ≥ (1/2 + o(1))N -/
 /-- Cambie's construction: odd integers ≤ N/4 plus integers in [N/2, N] -/
 def cambie_set (N : ℕ) : Finset ℕ :=
   (oddIntegers (N / 4)) ∪ (upperHalf N)
@@ -278,7 +278,7 @@ If we allow b = c, then solutions exist when |A| ≥ (2/3 + o(1))N.
 def HasDoubling (A : Finset ℕ) : Prop :=
   ∃ a : ℕ, a ∈ A ∧ 2 * a ∈ A
 
-/-- If |A| > (2/3)N, then A contains some n and 2n -/
+/-  If |A| > (2/3)N, then A contains some n and 2n -/
 /-- The b = c case allows threshold 2/3 > 5/8, so the equal case is
     actually less restrictive than the distinct case. -/
 theorem equal_case_threshold : (2 : ℚ) / 3 > 5 / 8 := by norm_num

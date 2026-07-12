@@ -49,8 +49,8 @@ def IsUnavoidable (S : Finset Configuration) : Prop :=
 -- PART II: Known Unavoidable Sets
 -- ============================================================
 
-/-- The Robertson-Sanders-Seymour-Thomas unavoidable set has 633 configurations. -/
-/-- Appel-Haken's original set had 1936 (later 1476) configurations. -/
+/-  The Robertson-Sanders-Seymour-Thomas unavoidable set has 633 configurations. -/
+/-  Appel-Haken's original set had 1936 (later 1476) configurations. -/
 /-- The Birkhoff diamond has ring size 6 and is reducible. -/
 def birkhoffDiamond : Configuration where
   ringSize := 6

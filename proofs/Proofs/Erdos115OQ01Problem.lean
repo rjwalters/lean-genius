@@ -116,7 +116,7 @@ def IsRatePowerDecay (α : ℝ) : Prop :=
 Faster rates imply slower rates.
 -/
 
-/-- O(1/n) is the fastest possible rate. If it holds, so does O(1/sqrt(n))
+/-  O(1/n) is the fastest possible rate. If it holds, so does O(1/sqrt(n))
     and O(1/log n). These follow since 1/n <= 1/sqrt(n) <= 1/log n for n >= 2. -/
 
 /-- Power decay at rate alpha implies correction tends to zero

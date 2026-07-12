@@ -65,18 +65,18 @@ def FullConjecture : Prop :=
 
 /- ## Known Results -/
 
-/--
+/- 
 **Erdős (1951)**: The limit exists for 0 ≤ α ≤ 2.
 
 Axiomatized because the proof requires careful analysis of squarefree
 distribution using elementary sieve methods.
 -/
-/--
+/- 
 **Hooley (1973)**: The limit exists for 0 ≤ α ≤ 3.
 
 Extended Erdős's method using exponential sum techniques.
 -/
-/--
+/- 
 **Greaves-Harman-Huxley (1997)**: The limit exists for 0 ≤ α ≤ 11/3.
 
 Uses sophisticated exponential sum bounds from sieve theory.

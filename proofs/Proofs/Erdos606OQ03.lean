@@ -33,7 +33,7 @@ namespace Erdos606OQ03
     in `hyperplane_extremes`. -/
 theorem choose_nonneg (n d : ℕ) : n.choose d ≥ 0 := Nat.zero_le _
 
-/-- In general position (no d+1 points on a hyperplane),
+/-  In general position (no d+1 points on a hyperplane),
     n points determine exactly C(n,d) hyperplanes. -/
 /-
   In general position (no d+1 points on a hyperplane),
@@ -44,13 +44,13 @@ theorem choose_nonneg (n d : ℕ) : n.choose d ≥ 0 := Nat.zero_le _
 -- Part II: The Sylvester-Gallai Theorem
 -- ============================================================
 
-/-- Sylvester-Gallai (1893/1944): For any finite set of points
+/-  Sylvester-Gallai (1893/1944): For any finite set of points
     in ℝ² not all collinear, there exists a line through exactly
     two of the points (an "ordinary line"). -/
-/-- Green-Tao (2013): For n sufficiently large non-collinear
+/-  Green-Tao (2013): For n sufficiently large non-collinear
     points in ℝ², there are at least n/2 ordinary lines.
     This is tight (Böröczky examples achieve ~n/2). -/
-/-- The d-dimensional Sylvester-Gallai:
+/-  The d-dimensional Sylvester-Gallai:
 
     For n points in ℝ^d not all on a hyperplane, there exists
     a hyperplane containing exactly d of the points.

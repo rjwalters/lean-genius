@@ -213,7 +213,7 @@ theorem kSubsets_mem_of_subset [DecidableEq α] {s t : Finset α} {e : Finset α
 /-- When s.card < k, there are no k-subsets of s. -/
 theorem kSubsets_eq_empty_of_lt [DecidableEq α] {s : Finset α} {k : ℕ}
     (h : s.card < k) : kSubsets s k = ∅ := by
-  ext e; simp only [kSubsets, Finset.mem_powersetCard, Finset.not_mem_empty, iff_false]
+  ext e; simp only [kSubsets, Finset.mem_powersetCard, Finset.notMem_empty, iff_false]
   intro ⟨he_sub, he_card⟩
   exact absurd (le_trans (Finset.card_le_card he_sub) h.le) (by omega)
 
@@ -254,7 +254,7 @@ theorem ramsey_base (k r n : ℕ) (hr : r ≥ 1) (hn : n ≤ k) :
   · -- n < k case: no k-subsets, vacuously monochromatic
     rw [Finset.not_nonempty_iff_eq_empty] at h_nonempty
     exact ⟨S, ⟨0, hr⟩, Subset.rfl, hS.symm.le, fun e _ he_S =>
-      absurd he_S (h_nonempty ▸ Finset.not_mem_empty e)⟩
+      absurd he_S (h_nonempty ▸ Finset.notMem_empty e)⟩
 
 /-! ## Part VI: Pigeonhole Base Case (k = 1)
 

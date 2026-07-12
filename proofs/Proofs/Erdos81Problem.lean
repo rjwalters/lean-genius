@@ -154,7 +154,7 @@ at most (1/4 - ε)n² cliques for some small ε > 0.
 axiom erdos_ordman_zalcstein (G : SimpleGraph V) (hChordal : IsChordal G) :
     ∃ ε > 0, cliquePartitionNumber G ≤ (1/4 - ε) * (Fintype.card V)^2
 
-/--
+/- 
 **Chen-Erdős-Ordman Split Graph Bound (1994):**
 Every split graph on n vertices has a clique partition with
 at most 3n²/16 + O(n) cliques.
@@ -208,7 +208,7 @@ def HasPerfectEliminationOrdering (G : SimpleGraph V) : Prop :=
     Function.Bijective σ ∧
     ∀ i, @IsSimplicial V _ (G.induce {v | ∃ j ≥ i, σ j = v}) (σ i)
 
-/--
+/- 
 **Chordal ↔ Perfect Elimination Ordering:**
 A graph is chordal if and only if it has a perfect elimination ordering.
 -/
@@ -225,7 +225,7 @@ axiom peo_gives_clique_partition (G : SimpleGraph V) (hChordal : IsChordal G) :
     ∃ P : CliquePartition G,
       P.cliques.card ≤ 2 * cliquePartitionNumber G
 
-/--
+/- 
 **The algorithmic question:**
 Is there a polynomial-time algorithm to find the optimal clique partition
 for chordal graphs? The PEO-based greedy algorithm gives a 2-approximation,
@@ -246,7 +246,7 @@ def intersectionNumber (G : SimpleGraph V) : ℕ :=
       cliques.card ≤ k ∧
       (∀ u v, G.Adj u v → ∃ C ∈ cliques, u ∈ C ∧ v ∈ C))
 
-/--
+/- 
 **Relation to Intersection Number:**
 clique partition number ≥ intersection number
 (partition is more restrictive than cover)

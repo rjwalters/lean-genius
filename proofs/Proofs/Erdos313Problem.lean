@@ -50,7 +50,7 @@ def IsPrimaryPseudoperfect (n : ℕ) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #313 (Open).**
+/-  **Erdős Problem #313 (Open).**
 Are there infinitely many solutions to the equation
   ∑_{p ∈ P} 1/p = 1 − 1/m?
 Equivalently: are there infinitely many primary pseudoperfect numbers?
@@ -105,7 +105,7 @@ theorem solution_47058 : (47058, ({2, 3, 11, 23, 31} : Finset ℕ)) ∈ erdos313
 
 /- ## Structural Properties -/
 
-/-- **Product constraint**: In any solution (m, P), m = ∏ P.
+/-  **Product constraint**: In any solution (m, P), m = ∏ P.
 **Uniqueness**: P is determined by m's prime factorization.
 **At least 8 known**: primary pseudoperfect numbers include
 2, 6, 42, 1806, 47058, 2214502422, 52495396602, 8490421583559688410706771261086. -/

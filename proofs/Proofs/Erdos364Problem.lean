@@ -110,7 +110,7 @@ The Pell equation x² = 8y² + 1 provides solutions: (8,9), (288,289), etc.
 /-- 8 and 9 are consecutive powerful numbers. -/
 theorem pair_8_9 : Powerful 8 ∧ Powerful 9 := ⟨eight_powerful, nine_powerful⟩
 
-/--
+/- 
 There exist infinitely many pairs of consecutive powerful numbers.
 This follows from the Pell equation x² = 8y² + 1, which has infinitely
 many solutions. Each solution (x, y) gives the pair (8y², x²).
@@ -153,7 +153,7 @@ Erdős conjectured there is no triple of consecutive powerful numbers.
 This remains open, though no triple has been found for n < 10²².
 -/
 
-/--
+/- 
 Erdős's conjecture: There is no triple of consecutive powerful numbers.
 
 This is OPEN. Computational searches have verified no triple exists
@@ -170,7 +170,7 @@ Erdős also conjectured a quantitative version: gaps between powerful
 numbers grow polynomially.
 -/
 
-/--
+/- 
 Erdős's stronger conjecture: If nₖ is the k-th powerful number, then
 the gap nₖ₊₂ - nₖ grows like nₖᶜ for some constant c > 0.
 

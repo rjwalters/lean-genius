@@ -51,7 +51,7 @@ def IsWellDistributed (S : Finset ℕ) (m : ℕ) (ε : ℝ) : Prop :=
 ## Part II: Lindström's Result
 -/
 
-/--
+/- 
 **Lindström (1998)**: A Sidon set A ⊂ {1,...,N} with |A| ~ √N
 is itself well-distributed modulo small numbers.
 -/
@@ -73,7 +73,7 @@ axiom sumset_distribution (A : Finset ℕ) (N : ℕ)
 ## Part IV: Even-Odd Distribution
 -/
 
-/--
+/- 
 **Even-Odd Case**: About half of A+A is even and half is odd.
 This is the specific case m = 2.
 -/

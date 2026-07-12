@@ -88,7 +88,7 @@ axiom sudakov_theorem : SudakovBound
     R(K_n) ≥ 2^{n/2}, and K_n has m = n(n-1)/2 edges, so R(K_n) ≥ 2^{Ω(√m)}. -/
 axiom sudakov_bound_tight :
     ∃ c : ℝ, c > 0 ∧ ∀ m : ℕ, m ≥ 1 →
-      ∃ (W : Type) [Fintype W] [DecidableEq W] (G : SimpleGraph W) [DecidableRel G.Adj],
+      ∃ (W : Type) (_ : Fintype W) (_ : DecidableEq W) (G : SimpleGraph W) (_ : DecidableRel G.Adj),
         edgeCount G = m ∧ NoIsolatedVertices G ∧
         (ramseyNumber G : ℝ) ≥ 2 ^ (c * Real.sqrt m)
 
@@ -191,7 +191,7 @@ theorem erdos_546_tight :
       NoIsolatedVertices G →
       (ramseyNumber G : ℝ) ≤ 2 ^ (C * Real.sqrt (edgeCount G))) ∧
     (∃ c : ℝ, c > 0 ∧ ∀ m : ℕ, m ≥ 1 →
-      ∃ (W : Type) [Fintype W] [DecidableEq W] (G : SimpleGraph W) [DecidableRel G.Adj],
+      ∃ (W : Type) (_ : Fintype W) (_ : DecidableEq W) (G : SimpleGraph W) (_ : DecidableRel G.Adj),
         edgeCount G = m ∧ NoIsolatedVertices G ∧
         (ramseyNumber G : ℝ) ≥ 2 ^ (c * Real.sqrt m)) :=
   ⟨sudakov_theorem, sudakov_bound_tight⟩

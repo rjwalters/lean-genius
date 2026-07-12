@@ -79,16 +79,16 @@ def HasClique (A : Set Point2) (k : ℕ) : Prop :=
 
 /- ## Main Questions -/
 
-/-- **Question 1**: Can the chromatic number be infinite?
+/-  **Question 1**: Can the chromatic number be infinite?
     That is, does there exist an infinite general-position set A
     such that χ(G(A)) > k for every k? -/
-/-- **Question 2**: How large can the clique number be? -/
+/-  **Question 2**: How large can the clique number be? -/
 /- ## Known Results -/
 
-/-- **Anning–Erdős (1945)**: An infinite set with all pairwise
+/-  **Anning–Erdős (1945)**: An infinite set with all pairwise
     integer distances must have all points collinear. Therefore
     no infinite clique exists in general position. -/
-/-- **Finite clique consequence**: In general position, the clique
+/-  **Finite clique consequence**: In general position, the clique
     number must be finite (follows from Anning–Erdős). -/
 /-- **Erdős–Anning bound**: Any set of n points with no 3 collinear
     and all pairwise distances integers has n bounded by a function

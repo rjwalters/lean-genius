@@ -102,7 +102,7 @@ noncomputable def minSmoothness (n : ℕ) : ℕ :=
   -- The minimum y such that hasSmootPairRepr n y holds
   0  -- placeholder
 
-/--
+/- 
 **f(n) exists for all n:**
 Every n can be written as a + b with a, b having only "small" prime factors.
 (The question is how small.)
@@ -231,7 +231,7 @@ noncomputable def smoothCount (x y : ℝ) : ℕ :=
   -- The cardinality of {n ≤ x : n is y-smooth}
   0  -- placeholder
 
-/--
+/- 
 **de Bruijn's Asymptotic:**
 For u = log x / log y, ψ(x, y) ~ x · ρ(u) where ρ is the Dickman function.
 -/

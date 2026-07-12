@@ -109,7 +109,7 @@ noncomputable def f_k (k N : ℕ) : ℝ :=
 ## Part IV: Erdős's Upper Bound
 -/
 
-/--
+/- 
 **Erdős 1970 Upper Bound:**
 f_k(N) ≪ log(N)/log(log(N))
 
@@ -117,7 +117,7 @@ The proof uses the observation that for every t, there are < k solutions
 to t = ap with a ∈ A and p prime.
 -/
 
-/--
+/- 
 **Key Lemma:**
 The number of solutions to t = ap with a ∈ A (k-LCM-free) and p prime is < k.
 -/
@@ -126,13 +126,13 @@ The number of solutions to t = ap with a ∈ A (k-LCM-free) and p prime is < k.
 ## Part V: Tang-Zhang 2025 Bounds
 -/
 
-/--
+/- 
 **Tang-Zhang Exponent Bounds:**
 There exist constants 0 < b_k ≤ c_k ≤ 1 such that
 (log N)^{b_k - o(1)} ≤ f_k(N) ≤ (log N)^{c_k + o(1)}
 -/
 
-/--
+/- 
 **Specific bounds for k=3:**
 (log N)^{0.438} ≤ f_3(N) ≤ (log N)^{0.889}
 -/
@@ -163,7 +163,7 @@ def SunflowerConjectureForK (k : ℕ) : Prop :=
       F.card > (c * k)^s →
       ∃ sunflower : Finset (Finset α), sunflower ⊆ F ∧ IsSunflower sunflower k
 
-/--
+/- 
 **Connection to Problem #856:**
 c_k < 1 (non-trivial upper bound) iff sunflower conjecture holds for k.
 -/
@@ -179,13 +179,13 @@ Instead of maximizing Σ 1/n, we maximize |A|.
 noncomputable def g_k (k N : ℕ) : ℕ :=
   sSup { A.card | A : Finset ℕ ∧ (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧ IsLCMFree A k }
 
-/--
+/- 
 **Erdős's Construction (1970):**
 There exists A ⊆ {1,...,N} with |A| ≫ N where no 4 elements
 have uniform pairwise LCM. So g_4(N) ≫ N.
 -/
 
-/--
+/- 
 **Interesting case is k=3:**
 The k=3 case for natural density (Problem #536) remains interesting.
 -/
@@ -204,7 +204,7 @@ theorem divisor_set_lcm (n : ℕ) (hn : n > 0) :
   intros a b ha hb _
   exact Nat.lcm_dvd_iff.mpr ⟨ha, hb⟩
 
-/--
+/- 
 **Example: Prime powers**
 {p, p², ..., p^k} has uniform pairwise LCM equal to lcm of largest pair.
 -/
@@ -225,7 +225,7 @@ def openProblem_precise_exponent : Prop :=
         (Real.log N)^(c_k - ε) ≤ f_k k N ∧
         f_k k N ≤ (Real.log N)^(c_k + ε)
 
-/--
+/- 
 **Gap Analysis:**
 - Erdős bound: log(N)/log(log(N)) (suboptimal)
 - Tang-Zhang for k=3: between (log N)^0.438 and (log N)^0.889

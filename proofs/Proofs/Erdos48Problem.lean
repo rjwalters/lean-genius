@@ -299,7 +299,7 @@ theorem twin_prime_gives_pair (p : ℕ) (hp : p.Prime) (hp2 : (p + 2).Prime) :
   rw [h1, h2]
   ring
 
-/--
+/- 
 **Twin Prime Conjecture Implication:**
 If there are infinitely many twin primes, then Erdős #48 follows.
 -/
@@ -414,7 +414,7 @@ theorem twelve_is_common : (12 : ℕ) ∈ commonValues := by
 ## Part X: Multiplicativity
 -/
 
-/--
+/- 
 **σ is Multiplicative:**
 For coprime m, n: σ(m·n) = σ(m)·σ(n).
 -/

@@ -152,19 +152,19 @@ convex hull of the others (every point is a vertex of the hull).
 def inConvexPosition (A : Finset Point) : Prop :=
   ∀ p ∈ A, p ∉ convexHull ℝ ((A.erase p : Set Point))
 
-/--
+/- 
 **Clemen-Dumitrescu-Liu (2025):**
 For points in convex position with |A| ≥ 5, two rare distances
 always exist.
 -/
 /- ## Part VIII: Related Bounds -/
 
-/--
+/- 
 **Unit Distance Bound (Spencer-Szemerédi-Trotter):**
 The maximum number of unit distances in n points is O(n^{4/3}).
 This constrains how many times any single distance can occur.
 -/
-/--
+/- 
 **Guth-Katz (2015):**
 n points determine at least Ω(n / log n) distinct distances.
 This resolved Erdős's distinct distances conjecture up to

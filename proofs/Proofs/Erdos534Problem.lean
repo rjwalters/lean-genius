@@ -56,13 +56,13 @@ def multiplesOfSmallestPrime (N : ℕ) : Finset ℕ :=
   let p := N.minFac
   (interval N).filter (fun n => p ∣ n)
 
-/-- Multiples of p gives size N/p -/
-/-- This set is GCD-intersecting (all share factor p) -/
+/-  Multiples of p gives size N/p -/
+/-  This set is GCD-intersecting (all share factor p) -/
 /-- Even numbers that share a factor with N -/
 def evenMultiplesSharing (N : ℕ) : Finset ℕ :=
   (interval N).filter (fun n => 2 ∣ n ∧ Nat.gcd n N > 1)
 
-/-- This gives another candidate for the maximum -/
+/-  This gives another candidate for the maximum -/
 /- ## Part 3: The Original Conjecture (WRONG) -/
 
 /-- Erdős-Graham original conjecture -/
@@ -100,7 +100,7 @@ axiom ahlswede_khachatrian_theorem :
 
 /- ## Part 5: Special Cases -/
 
-/-- When N is a prime power p^k, the maximum is p^(k-1) -/
+/-  When N is a prime power p^k, the maximum is p^(k-1) -/
 /-- When N = 2p for odd prime p, the maximum is 2 -/
 /- ## Part 6: Summary
 

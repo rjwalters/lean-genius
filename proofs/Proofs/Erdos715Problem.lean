@@ -66,7 +66,7 @@ def inducedSubgraph {V : Type*} (G : SimpleGraph' V) (S : Set V) : SimpleGraph' 
 def HasRegularSubgraph (r k : ℕ) : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph' V) [DecidableRel G.adj],
     IsRegular G r →
-    ∃ (H : SimpleGraph' V) [DecidableRel H.adj], IsSubgraph H G ∧ IsRegular H k
+    ∃ (H : SimpleGraph' V) (_ : DecidableRel H.adj), IsSubgraph H G ∧ IsRegular H k
 
 /- ## The Main Results -/
 
@@ -87,7 +87,7 @@ theorem alon_friedland_kalai {V : Type*} [Fintype V] [DecidableEq V]
                 loopless := by intro v h; cases h with
                   | inl h => exact G.loopless v h
                   | inr h => simp at h }
-    ∃ (H : SimpleGraph' V) [DecidableRel H.adj], IsSubgraph H G' ∧ IsRegular H 3 := by
+    ∃ (H : SimpleGraph' V) (_ : DecidableRel H.adj), IsSubgraph H G' ∧ IsRegular H 3 := by
   sorry -- Alon-Friedland-Kalai (1984)
 
 /-- Consequence: Every r-regular graph with r ≥ 5 contains a 3-regular subgraph
@@ -114,7 +114,7 @@ theorem K4_minimal_3_regular :
 
 /-- There exist 3-regular graphs without 3-regular proper subgraphs -/
 theorem three_regular_no_proper_3_subgraph :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph' V) [DecidableRel G.adj],
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph' V) (_ : DecidableRel G.adj),
     IsRegular G 3 ∧
     ∀ (H : SimpleGraph' V) [DecidableRel H.adj],
       IsSubgraph H G → IsRegular H 3 → (∀ u v, H.adj u v ↔ G.adj u v) := by

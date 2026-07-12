@@ -164,7 +164,7 @@ example : sharpThreshold 4 3 = 3 * 3 - (2 * 3 + 2) / 3 := by
 
 /- ## Part VI: Comparison with BES Threshold -/
 
-/--
+/- 
 **Asymptotic Agreement:**
 The sharp threshold (r-1)n - ⌈sn/(2s-1)⌉ ≈ (r - 3/2)n asymptotically.
 
@@ -182,7 +182,7 @@ def IsIndependentTransversal (G : RPartiteGraph r n)
   (∀ i : Fin r, T i ∈ G.parts i) ∧
   (∀ i j : Fin r, i ≠ j → ¬G.edges.Adj (T i) (T j))
 
-/--
+/- 
 **Extremal Example:**
 The construction showing r - 3/2 is tight uses parity.
 -/

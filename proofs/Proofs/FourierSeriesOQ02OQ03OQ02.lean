@@ -405,7 +405,7 @@ theorem trig_poly_vacuous (f : AddCircle T → ℂ) (N : ℕ)
 - **Difficulty:** MODERATE (≈200 lines, mostly explicit computation)
 
 ### Axiom 3 (paley_wiener_converse):
-- **Need:** Prove that ∑ ĉ_n · e^{2πinz/T} converges in the strip
+- **Need:** Prove that ∑ ĉ_n · e^{2πinz/T} converges ∈ the strip
   when the coefficients decay exponentially
 - **Key ingredients:** Uniform convergence of holomorphic series,
   Weierstrass theorem that uniform limits of holomorphic functions are

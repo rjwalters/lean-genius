@@ -61,9 +61,9 @@ The key hierarchy: L² ⊋ Lʳ (r∈(1,2)) ⊋ L¹ (each set strictly larger).
 Higher-r membership requires more integrability from the distribution.
 -/
 
-/-- **Lᵣ membership**: E[|X|^r] < ∞. Uses Mathlib's `Memℒp` with ENNReal exponent. -/
+/-- **Lᵣ membership**: E[|X|^r] < ∞. Uses Mathlib's `MemLp` with ENNReal exponent. -/
 abbrev IsLr (X : Ω → ℝ) (r : ℝ) (μ : Measure Ω) : Prop :=
-  Memℒp X (ENNReal.ofReal r) μ
+  MemLp X (ENNReal.ofReal r) μ
 
 /-- **L² implies Lᵣ** for r ≤ 2 in a probability space.
 
@@ -71,7 +71,7 @@ abbrev IsLr (X : Ω → ℝ) (r : ℝ) (μ : Measure Ω) : Prop :=
     This covers the forward direction: every CLT-applicable distribution also satisfies
     the Marcinkiewicz-Zygmund conditions. -/
 theorem l2_implies_lr {X : Ω → ℝ} {r : ℝ} (hr1 : 1 ≤ r) (hr2 : r ≤ 2)
-    (hX : Memℒp X 2 μ) : IsLr X r μ := by
+    (hX : MemLp X 2 μ) : IsLr X r μ := by
   apply hX.mono_exponent
   calc ENNReal.ofReal r ≤ ENNReal.ofReal 2 := ENNReal.ofReal_le_ofReal hr2
     _ = 2 := by norm_num
@@ -226,10 +226,10 @@ theorem pareto_finite_mean {α : ℝ} (hα1 : 1 < α)
 /-- **Pareto(α) has infinite variance** when α ≤ 2 (the 2nd moment diverges). -/
 theorem pareto_not_l2 {α : ℝ} (hα1 : 0 < α) (hα2 : α ≤ 2)
     (X : Ω → ℝ) (hX_dist : ∀ s : ℝ, μ {ω | X ω > s} = ENNReal.ofReal (paretoSurvival α s)) :
-    ¬ Memℒp X 2 μ := by
+    ¬ MemLp X 2 μ := by
   intro h
   have hmem : IsLr X 2 μ := by
-    show Memℒp X (ENNReal.ofReal 2) μ
+    show MemLp X (ENNReal.ofReal 2) μ
     convert h using 2
     norm_num
   rw [pareto_in_lr_iff α hα1 2 (by norm_num) X hX_dist] at hmem
@@ -320,7 +320,7 @@ theorem pareto_complete_rate_hierarchy {α : ℝ} (hα1 : 1 < α) (hα2 : α < 2
     -- 1. Finite mean
     Integrable (X 0) μ ∧
     -- 2. Infinite variance
-    ¬ Memℒp (X 0) 2 μ ∧
+    ¬ MemLp (X 0) 2 μ ∧
     -- 3. SLLN
     (∀ᵐ ω ∂μ, Tendsto (fun n : ℕ => (n : ℝ)⁻¹ • ∑ k ∈ range n, X k ω)
         atTop (𝓝 (∫ x, X 0 x ∂μ))) ∧

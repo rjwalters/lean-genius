@@ -85,7 +85,7 @@ structure SimpleGraph' (V : Type*) where
 def IsBipartite {V : Type*} (G : SimpleGraph' V) : Prop :=
   ∃ f : V → Bool, ∀ v w, G.adj v w → f v ≠ f w
 
-/-- For graphs, the answer is known: a graph appears in every graph
+/-  For graphs, the answer is known: a graph appears in every graph
 of chromatic number ≥ ℵ₁ if and only if it is bipartite.
 Non-bipartite graphs (those containing odd cycles) need not appear. -/
 /-
@@ -97,9 +97,9 @@ colored with 2 colors (no monochromatic edge). -/
 def Is2Colorable {V : Type*} (H : Hypergraph3 V) : Prop :=
   ∃ f : V → Bool, ∀ e ∈ H.edges, ¬ ∃ c, ∀ v ∈ e, f v = c
 
-/-- Any 2-colorable finite 3-uniform hypergraph is unavoidable.
+/-  Any 2-colorable finite 3-uniform hypergraph is unavoidable.
 This is the analog of the bipartite graph case. -/
-/-- The complete 3-uniform hypergraph on 4 vertices (K₄³) has
+/-  The complete 3-uniform hypergraph on 4 vertices (K₄³) has
 chromatic number 3 and is conjectured to be unavoidable. -/
 /-
 ## Section VI: Erdős–Galvin–Hajnal

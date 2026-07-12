@@ -300,7 +300,7 @@ We formalize this for specific even lengths.
 /-- A list is a palindrome if it equals its reverse. -/
 def IsPalindrome (l : List ℕ) : Prop := l = l.reverse
 
-/-- The alternating sum of a concatenation l ++ l.reverse
+/-  The alternating sum of a concatenation l ++ l.reverse
     with even total length gives 0.
     This is the core palindrome-div-11 insight.
     We prove it for specific even lengths via computation. -/

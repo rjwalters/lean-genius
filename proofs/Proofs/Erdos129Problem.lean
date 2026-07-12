@@ -66,7 +66,7 @@ def ErdosProblem129_k3 (r : ℕ) : Prop :=
 
 /- ## Known results -/
 
-/-- Erdős–Gyárfás lower bound for `k = 3`: `R(n;3,r) > C^{√n}` for some `C > 1`.
+/-  Erdős–Gyárfás lower bound for `k = 3`: `R(n;3,r) > C^{√n}` for some `C > 1`.
 That is, for large `n`, no `N < C^{√n}` satisfies `HasRamseyAvoid N n 3 r`. -/
 
 /- ## Basic properties -/

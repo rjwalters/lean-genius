@@ -255,11 +255,11 @@ def erdos190Conjecture : Prop :=
 
 /- ## Part VII: Small Cases -/
 
-/-- H(3) is small (exact value depends on careful analysis). -/
-/-- H(4) is larger. -/
+/-  H(3) is small (exact value depends on careful analysis). -/
+/-  H(4) is larger. -/
 /- ## Part VIII: Connections -/
 
-/--
+/- 
 **Connection to Szemerédi's Theorem**
 
 Szemerédi's theorem guarantees that any dense subset of ℕ contains
@@ -268,7 +268,7 @@ either we find a monochromatic AP (by density) or we've used many
 colors, increasing the chance of a rainbow AP.
 -/
 
-/--
+/- 
 **Canonical vs Standard Ramsey Theory**
 
 In standard Ramsey theory, we want monochromatic structures.
@@ -278,7 +278,7 @@ rainbow colorings. This typically gives smaller numbers.
 
 /- ## Part IX: Why This Is Hard -/
 
-/--
+/- 
 **The Difficulty**
 
 The challenge is obtaining precise asymptotics for H(k).

@@ -72,13 +72,13 @@ noncomputable def spherPartialSum {n : ℕ} (f : Torus n → ℂ)
 -- PART III: Convergence Results
 -- ============================================================
 
-/-- L² convergence holds in all dimensions (Parseval's identity).
+/-  L² convergence holds in all dimensions (Parseval's identity).
     This is the direct analog of the 1D case. -/
-/-- Carleson's theorem does NOT extend to rectangular sums in n ≥ 2.
+/-  Carleson's theorem does NOT extend to rectangular sums in n ≥ 2.
     Fefferman (1971) showed divergence for L¹ functions on T². -/
-/-- For Lipschitz functions on T^n, square partial sums converge uniformly.
+/-  For Lipschitz functions on T^n, square partial sums converge uniformly.
     This extends the 1D Dirichlet-Jordan result. -/
-/-- Bochner-Riesz conjecture (partially solved):
+/-  Bochner-Riesz conjecture (partially solved):
     Spherical partial sums with Bochner-Riesz means of order δ > (n-1)/2
     converge in L^p for 1 ≤ p ≤ ∞. -/
 /-- Parseval's identity: ∫_{T^n} |f|² = Σ_{k ∈ Z^n} |f̂(k)|².

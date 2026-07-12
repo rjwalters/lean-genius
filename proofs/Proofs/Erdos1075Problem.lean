@@ -91,7 +91,7 @@ axiom threshold_decreasing :
   ∀ r : ℕ, r ≥ 2 →
     thresholdConstant (r + 1) < thresholdConstant r
 
-/-- Concrete threshold values for small r -/
+/-  Concrete threshold values for small r -/
 /- ## Part III: The Open Conjecture -/
 
 /--
@@ -117,7 +117,7 @@ def ErdosConjecture1075 : Prop :=
                 ∃ m : ℕ, S.card = m ∧ m > 0 ∧
                 ((H.induced S).numEdges : ℝ) ≥ c * (m : ℝ)^r
 
-/--
+/- 
 The edge threshold (1+ε)(n/r)^r is strictly smaller than εn^r for
 large n when ε is small. This means the hypothesis in the conjecture
 is weaker, so improving the conclusion (density constant) would be
@@ -128,7 +128,7 @@ a genuine strengthening.
 /-- Complete r-uniform hypergraph on m vertices has C(m,r) edges -/
 def completeHypergraphEdges (m r : ℕ) : ℕ := Nat.choose m r
 
-/--
+/- 
 For large m, C(m,r) ~ m^r / r!, establishing the relationship
 between binomial coefficients and the m^r density measure.
 -/

@@ -122,14 +122,14 @@ noncomputable def countLineCompatible (n : ℕ) : ℕ :=
 The key tool for the upper bound.
 -/
 
-/--
+/- 
 **Szemerédi-Trotter Theorem:**
 For n points and m lines in the plane, the number of incidences
 (point-line pairs where the point lies on the line) is O(n^{2/3}m^{2/3} + n + m).
 
 This is a fundamental result in combinatorial geometry.
 -/
-/--
+/- 
 **Consequence for Rich Lines:**
 The number of k-rich lines (lines with ≥ k points) is O(n²/k³ + n/k).
 -/
@@ -179,7 +179,7 @@ axiom upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (countLineCompatible n : ℝ) ≤ Real.exp (C * Real.sqrt n)
 
-/--
+/- 
 **Key Lemma:**
 The total incidences from lines with exactly k points is bounded.
 Summing over k gives control on the sequence count.

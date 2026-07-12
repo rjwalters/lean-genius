@@ -125,7 +125,7 @@ theorem erdos_476 (A : Finset (ZMod p)) (h : 2 ≤ A.card) :
 The proof uses exterior algebra and Grassmann derivatives.
 -/
 
-/--
+/- 
 **Da Silva-Hamidoune Theorem (1994):**
 Let A ⊆ 𝔽ₚ with |A| = n ≥ 2. Then:
   |A +̂ A| ≥ min(2n - 3, p)
@@ -240,7 +240,7 @@ The restricted sumset has a weaker bound (2|A| - 3 vs 2|A| - 1)
 because excluding diagonal sums removes potential elements.
 -/
 
-/--
+/- 
 **Cauchy-Davenport Theorem:**
 For nonempty A, B ⊆ 𝔽ₚ:
   |A + B| ≥ min(|A| + |B| - 1, p)
@@ -259,7 +259,7 @@ Alon, Nathanson, and Ruzsa (1995) gave an alternative proof using
 the polynomial method (Combinatorial Nullstellensatz).
 -/
 
-/--
+/- 
 **Combinatorial Nullstellensatz (Alon, 1999):**
 If f(x₁,...,xₙ) is a polynomial over a field and the coefficient of
 x₁^{d₁}...xₙ^{dₙ} is nonzero where ∑dᵢ = deg(f), then for sets Aᵢ
@@ -270,7 +270,7 @@ with |Aᵢ| > dᵢ, there exist aᵢ ∈ Aᵢ with f(a₁,...,aₙ) ≠ 0.
    and |Aᵢ| > dᵢ, then ∃ aᵢ ∈ Aᵢ with f(a₁,...,aₙ) ≠ 0. Formalizing requires
    polynomial rings over fields in full generality, not just ZMod p. -/
 
-/--
+/- 
 **ANR Proof (1995):**
 Consider f(x, y) = (x + y) - c for c ∈ A +̂ A.
 The polynomial method shows this has enough zeros to force
@@ -289,7 +289,7 @@ The set of sums a₁ + a₂ + ... + aᵣ where all aᵢ are distinct.
 def restrictedSumsetR (A : Finset (ZMod p)) (r : ℕ) : Finset (ZMod p) :=
   (A.powersetCard r).image (fun s => s.sum id)
 
-/--
+/- 
 **Erdős's Generalized Conjecture:**
 |r-fold restricted sumset| ≥ min(r|A| - r² + 1, p)
 

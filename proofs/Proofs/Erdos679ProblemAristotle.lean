@@ -34,7 +34,7 @@ theorem primorial_zero_ari : primorial 0 = 1 := by
 theorem primorial_succ_ari (r : ℕ) :
     primorial (r + 1) = (Nat.nth Nat.Prime r) * primorial r := by
   unfold primorial
-  rw [Finset.range_succ, Finset.prod_insert Finset.not_mem_range_self]
+  rw [Finset.range_add_one, Finset.prod_insert Finset.notMem_range_self]
 
 /-- omega(primorial 0) = 0, since primorial 0 = 1. -/
 theorem omega_primorial_zero_ari : omega (primorial 0) = 0 := by

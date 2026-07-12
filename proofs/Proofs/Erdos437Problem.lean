@@ -132,7 +132,7 @@ noncomputable def u (x : ℕ) : ℝ :=
 ## Part V: Trivial Bounds
 -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 L(x) ≤ x (can't have more squares than partial products, which is ≤ sequence length ≤ x).
 -/
@@ -191,12 +191,12 @@ axiom L_upper_bound :
 ## Part VIII: Proof Ingredients
 -/
 
-/--
+/- 
 **Siegel's Theorem:**
 An elliptic curve over ℚ has only finitely many integral points.
 This implies the o(x) upper bound.
 -/
-/--
+/- 
 **Hyperelliptic Curves Connection:**
 The problem reduces to counting integral points on hyperelliptic curves.
 Bui-Pratt-Zaharescu analyze this using techniques from algebraic number theory.
@@ -215,7 +215,7 @@ theorem powers_of_four_all_squares :
     squareCount a = k - 1 := by
   sorry
 
-/--
+/- 
 **Example: Prime sequence gives no squares after first**
 If a₁ is not a square and aᵢ are distinct primes for i ≥ 2,
 then at most one partial product is a square.

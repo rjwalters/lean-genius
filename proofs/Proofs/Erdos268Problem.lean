@@ -415,7 +415,7 @@ private lemma greedySet_sum (s : ℝ) (hs : 0 < s) :
   -- g is nonneg
   have hg_nn : ∀ n : ℕ, 0 ≤ g n := fun n => by
     simp only [g]; split_ifs <;> [exact div_nonneg one_nonneg Nat.cast_nonneg; exact le_refl _]
-  -- Partial sums: ∑ k in range(N+1), g k = s - budget(N)
+  -- Partial sums: ∑ k ∈ range(N+1), g k = s - budget(N)
   have hpart : ∀ N, ∑ k ∈ Finset.range (N+1), g k = s - greedyBudget s N := by
     intro N
     have hkey := greedyBudget_eq_s_sub_sum s N
@@ -428,7 +428,7 @@ private lemma greedySet_sum (s : ℝ) (hs : 0 < s) :
       apply Finset.sum_congr rfl
       intro k _; simp [hg_def]
     linarith
-  -- ∑ k in range N, g k → s as N → ∞ (budget → 0)
+  -- ∑ k ∈ range N, g k → s as N → ∞ (budget → 0)
   apply HasSum.tsum_eq
   rw [hasSum_iff_tendsto_nat_of_nonneg hg_nn]
   have htend_budget := greedyBudget_tendsto_zero s hs
@@ -506,7 +506,7 @@ private lemma greedySet_nonempty (s : ℝ) (hs : 0 < s) : (greedySet s).Nonempty
     intro n; induction n with
     | zero => exact greedyBudget_zero s
     | succ n ih =>
-      have hnotin : n + 1 ∉ greedySet s := hempty ▸ Set.not_mem_empty _
+      have hnotin : n + 1 ∉ greedySet s := hempty ▸ Set.notMem_empty _
       simp only [greedySet, Set.mem_setOf_eq, not_and, Nat.succ_pos, forall_true_left,
                  not_le, Nat.add_sub_cancel] at hnotin
       rw [ih] at hnotin
@@ -514,7 +514,7 @@ private lemma greedySet_nonempty (s : ℝ) (hs : 0 < s) : (greedySet s).Nonempty
   -- So 1/n > s for all n ≥ 1.
   have hbig : ∀ n : ℕ, 0 < n → s < (1 : ℝ) / n := by
     intro n hn
-    have hnotin : n ∉ greedySet s := hempty ▸ Set.not_mem_empty _
+    have hnotin : n ∉ greedySet s := hempty ▸ Set.notMem_empty _
     simp only [greedySet, Set.mem_setOf_eq, not_and, not_le] at hnotin
     have h := hnotin hn
     rw [hconst (n - 1)] at h

@@ -149,7 +149,7 @@ private lemma companion_orbit_eval (p q : K[X]) (hq : q.natDegree < n) (hq_ne : 
       ∑ k ∈ q.support, q.coeff k * if k = q.natDegree then 1 else 0 from by
     congr 1; ext k; by_cases hk : k ∈ q.support
     · exact hkey k hk
-    · simp [Polynomial.not_mem_support_iff.mp hk]]
+    · simp [Polynomial.notMem_support_iff.mp hk]]
   rw [Finset.sum_eq_single q.natDegree]
   · simp [Polynomial.leadingCoeff]
   · intro k _ hne; simp [hne]

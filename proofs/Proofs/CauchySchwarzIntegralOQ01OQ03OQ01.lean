@@ -25,7 +25,7 @@ This file lifts to the `eLpNorm` API — the standard interface for Lp spaces �
 ## Why This Matters
 
 The eLpNorm API is the standard Lp space interface in Mathlib.
-`Memℒp f p μ` = `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`.
+`MemLp f p μ` = `AEStronglyMeasurable f μ ∧ eLpNorm f p μ < ∞`.
 The product membership theorem (`memLp_mul_of_memLp_ofReal`) is the most
 practically useful consequence of Hölder's inequality.
 
@@ -98,8 +98,8 @@ theorem memLp_mul_of_memLp_ofReal
     {𝕜 : Type*} [NormedField 𝕜]
     {p q : ℝ} (hpq : Real.HolderConjugate p q)
     {f g : α → 𝕜}
-    (hf : Memℒp f (ENNReal.ofReal p) μ) (hg : Memℒp g (ENNReal.ofReal q) μ) :
-    Memℒp (fun a => f a * g a) 1 μ := by
+    (hf : MemLp f (ENNReal.ofReal p) μ) (hg : MemLp g (ENNReal.ofReal q) μ) :
+    MemLp (fun a => f a * g a) 1 μ := by
   refine ⟨hf.1.mul hg.1, ?_⟩
   calc eLpNorm (fun a => f a * g a) 1 μ
       ≤ eLpNorm f (ENNReal.ofReal p) μ * eLpNorm g (ENNReal.ofReal q) μ :=
@@ -168,7 +168,7 @@ useful form of Hölder's inequality: it shows fg ∈ L1 whenever f ∈ Lp and g 
 2. `ENNReal.lintegral_mul_le_Lp_mul_Lq` (Mathlib): lintegral Hölder
 3. `eLpNorm_ofReal_eq` (bridge via `eLpNorm_eq_lintegral_rpow_enorm`): eLpNorm ↔ lintegral
 4. `‖·‖ₑ = (‖·‖₊ : ℝ≥0∞)` definitionally — `exact` closes the Hölder goal
-5. Combine to get eLpNorm Hölder → product Memℒp
+5. Combine to get eLpNorm Hölder → product MemLp
 -/
 
 end HolderELpNorm

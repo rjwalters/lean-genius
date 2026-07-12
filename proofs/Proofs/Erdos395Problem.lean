@@ -99,7 +99,7 @@ def carnielli_carolino_counterexample (n : ℕ) (hn : Even n) (hn2 : n ≥ 2) :
     Fin n → ℂ :=
   fun i => if i.val = 0 then 1 else Complex.I
 
-/-- The counterexample always has |sum| ≥ √2.
+/-  The counterexample always has |sum| ≥ √2.
 Axiomatized because verifying this requires complex norm estimates. -/
 /-- Erdős's original question is FALSE.
 Axiomatized: Carnielli-Carolino (2011) showed the counterexample works. -/

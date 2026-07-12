@@ -72,7 +72,7 @@ theorem reciprocalProduct_factors_pos (P Q : Finset ℕ)
 -- This bound supports prime_set_size_lower_bound: any 58-element prime set has sum < 2,
 -- so if sum(P ∪ Q) ≥ 2, then |P ∪ Q| ≥ 59.
 theorem sum_first_58_primes_lt_two :
-    (∑ p in (Finset.range 272).filter Nat.Prime, (p : ℚ)⁻¹) < 2 := by
+    (∑ p ∈ (Finset.range 272).filter Nat.Prime, (p : ℚ)⁻¹) < 2 := by
   sorry
 
 end Erdos307Aristotle

@@ -68,7 +68,7 @@ def IsAdmissible (c : ℝ) : Prop :=
 Find the exact value of sup{c : IsAdmissible c}.
 -/
 
-/-- **Erdős Problem #757 (OPEN)**: What is the supremum of the set of
+/-  **Erdős Problem #757 (OPEN)**: What is the supremum of the set of
 admissible constants?
 
 Gyárfás-Lehel (1995) proved 1/2 < sSup {c | IsAdmissible c} < 3/5.
@@ -78,12 +78,12 @@ The exact value remains unknown. -/
 ## Known Results (Gyárfás-Lehel 1995)
 -/
 
-/-- **Lower Bound** (Gyárfás-Lehel 1995): The supremum is strictly larger
+/-  **Lower Bound** (Gyárfás-Lehel 1995): The supremum is strictly larger
 than 1/2.
 
 The proof constructs explicit Sidon subsets using a greedy algorithm. -/
 
-/-- **Upper Bound** (Gyárfás-Lehel 1995): The supremum is strictly less
+/-  **Upper Bound** (Gyárfás-Lehel 1995): The supremum is strictly less
 than 3/5.
 
 The proof exhibits a family of almost-Sidon sets where the largest
@@ -93,7 +93,7 @@ Sidon subset has size just under 3n/5. -/
 ## Properties of Sidon Sets
 -/
 
-/-- A Sidon set of size n has exactly n(n-1)/2 + 1 elements in its
+/-  A Sidon set of size n has exactly n(n-1)/2 + 1 elements in its
 difference set (the +1 is for 0). -/
 
 /-- The empty set is Sidon. -/
@@ -132,7 +132,7 @@ This condition is a relaxation of the Sidon property. It says that
 among any 4 elements, we can have at most one "collision" of differences.
 -/
 
-/-- The minimum size of |B - B| for a 4-element set B is 7
+/-  The minimum size of |B - B| for a 4-element set B is 7
 (arithmetic progression case). -/
 
 /-- An almost-Sidon set has the property that no 4-element subset is

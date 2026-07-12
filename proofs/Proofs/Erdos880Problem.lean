@@ -116,7 +116,7 @@ If a + a is even, then an odd number a + b with a ≠ b must exist nearby.
 axiom k2_bounded_gaps :
     ∀ A : Set ℕ, isAdditiveBasis A 2 → hasBoundedGaps (restrictedKFoldSumset A 2)
 
-/--
+/- 
 **Why the k = 2 case works:**
 - Consider the unrestricted sumset 2A = A + A
 - 2A ~ ℕ means almost all integers are in 2A
@@ -125,7 +125,7 @@ axiom k2_bounded_gaps :
 - Since both parities must appear densely, 2×A has bounded gaps
 -/
 
-/--
+/- 
 **The gap bound is exactly 2:**
 There exist bases A with 2A ~ ℕ where gaps of 2 occur infinitely often.
 -/
@@ -143,14 +143,14 @@ This is the negative answer to the Burr-Erdős question.
 axiom k_ge_3_unbounded_gaps :
     ∀ k ≥ 3, ∃ A : Set ℕ, isAdditiveBasis A k ∧ ¬hasBoundedGaps (restrictedKFoldSumset A k)
 
-/--
+/- 
 **Counterexample construction:**
 The counterexample for k ≥ 3 is constructed carefully so that:
 1. kA covers all large integers (basis property)
 2. But k×A has arbitrarily large gaps
 -/
 
-/--
+/- 
 **Why k ≥ 3 is different from k = 2:**
 For k ≥ 3, the distinctness constraint becomes more restrictive.
 There's more "room" for gaps because fewer combinations are available.
@@ -185,7 +185,7 @@ theorem burr_erdos_complete_answer :
 ## Part VII: Related Results
 -/
 
-/--
+/- 
 **Relation to classical additive bases:**
 The classical question asks about kA (unrestricted sums).
 The Erdős-Turán conjecture concerns representation functions.
@@ -200,7 +200,7 @@ The HHP paper also studies this function.
 noncomputable def representationFunction (A : Set ℕ) (k : ℕ) (n : ℕ) : ℕ :=
   Nat.card {S : Finset ℕ | S.card = k ∧ (∀ a ∈ S, a ∈ A) ∧ S.sum id = n}
 
-/--
+/- 
 **Density considerations:**
 Even though k×A ⊆ kA, the restricted sumset can be much sparser.
 For k ≥ 3, this sparseness allows for unbounded gaps.
@@ -210,7 +210,7 @@ For k ≥ 3, this sparseness allows for unbounded gaps.
 ## Part VIII: The Parity Argument in Detail
 -/
 
-/--
+/- 
 **Parity for k = 2:**
 Consider A with 2A ~ ℕ. Then:
 - Sums a + a (same element) are always even
@@ -220,7 +220,7 @@ Consider A with 2A ~ ℕ. Then:
 - Hence gaps in 2×A are bounded
 -/
 
-/--
+/- 
 **Why parity fails for k ≥ 3:**
 For k = 3, sums a + b + c with all distinct can have any parity.
 There's no forced structure like in the k = 2 case.

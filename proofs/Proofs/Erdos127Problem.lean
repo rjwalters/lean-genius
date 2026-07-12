@@ -41,7 +41,7 @@ axiom excessF : ℕ → ℝ
 ## Section III: Complete Graph Tightness
 -/
 
-/-- For complete graphs K_n with m = C(n,2) edges, the Edwards bound
+/-  For complete graphs K_n with m = C(n,2) edges, the Edwards bound
 is tight: f(C(n,2)) = 0. -/
 
 /-
@@ -54,7 +54,7 @@ def ErdosProblem127 : Prop :=
   ∃ seq : ℕ → ℕ, StrictMono seq ∧
     Filter.Tendsto (fun i => excessF (seq i)) Filter.atTop Filter.atTop
 
-/-- Alon's result implies the conjecture: taking mᵢ = i²/2 gives
+/-  Alon's result implies the conjecture: taking mᵢ = i²/2 gives
 f(mᵢ) → ∞. -/
 
 /-
@@ -71,7 +71,7 @@ def OptimalConstantQuestion : Prop :=
 ## Section VI: Structural Properties
 -/
 
-/-- The excess function is subadditive in a weak sense:
+/-  The excess function is subadditive in a weak sense:
 the Edwards bound already accounts for the main term. -/
 
 /-- Every m is within √m of a complete graph C(n,2),

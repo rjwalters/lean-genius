@@ -36,7 +36,7 @@ to contain a prime.
 |---------|-----------|--------|
 | `log_sq_lt_rpow_eventually` | ∀ε>0, ∀ᶠ n:ℕ atTop, C·log(n)² < n^ε | Proved |
 | `nextPrime_le_cramer_bound` | nextPrime(x) ≤ x + C·log(x)² (bridge axiom) | Axiom |
-| `cramer_implies_primeGapConjecture_eventually` | Cramér → ∀ε>0, ∀ᶠ x atTop, ∃ prime in [x, x+x^ε] | Proved |
+| `cramer_implies_primeGapConjecture_eventually` | Cramér → ∀ε>0, ∀ᶠ x atTop, ∃ prime in (_ : x, x+x^ε) | Proved |
 | `cramer_implies_primeGapConjecture` | Cramér → ∀ε>0, PrimeGapConjecture(ε) | Proved (+ BHP) |
 | `density_vs_existence_gap` | ShortIntervalPNT is strictly stronger than existence | Stated |
 
@@ -220,7 +220,7 @@ theorem cramer_implies_primeGapConjecture (ε : ℝ) (hε : 0 < ε) :
 
 /-- **Key observation**: PrimeGapConjecture(ε) gives EXISTENCE but not DENSITY.
 
-    Under Cramér: we proved ∃ prime p ∈ [x, x + x^ε] for large x.
+    Under Cramér: we proved ∃ prime p ∈ (_ : x, x + x^ε) for large x.
     Under ShortIntervalPNT(ε): we need COUNT(primes in [x, x+x^ε]) ≈ x^ε / log(x).
 
     The count version requires not just the largest prime gap to be small,

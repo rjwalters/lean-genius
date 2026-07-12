@@ -135,7 +135,7 @@ def explicit_nongreedy_example_exists : Prop :=
 
 /- ## Part VI: Special Cases and Counterexample -/
 
-/-- **Non-greedy at finite step: the 11/24 example.**
+/-  **Non-greedy at finite step: the 11/24 example.**
 
     R_1(11/24) = 1/3 (the largest unit fraction below 11/24)
     R_2(11/24) = 1/4 + 1/5 = 9/20 = 0.45

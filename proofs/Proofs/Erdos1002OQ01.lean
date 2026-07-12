@@ -110,7 +110,7 @@ private theorem deviation_rational_periodic (p : ℤ) (q : ℕ) (hq : q ≥ 1) (
 
 /-- Summing a periodic function over any q consecutive values gives the same result. -/
 private theorem cyclic_sum_periodic (g : ℕ → ℝ) (q : ℕ) (hper : ∀ k, g (k + q) = g k)
-    (n : ℕ) : ∑ k in Finset.range q, g (n + k) = ∑ k in Finset.range q, g k := by
+    (n : ℕ) : ∑ k ∈ Finset.range q, g (n + k) = ∑ k ∈ Finset.range q, g k := by
   induction n with
   | zero => simp
   | succ m ih =>

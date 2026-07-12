@@ -105,10 +105,10 @@ def Erdos570Conjecture : Prop :=
 
 /- ## Part IV: Proven Cases -/
 
-/-- **EFRS (1993):** The conjecture holds for all even k ≥ 4. -/
-/-- **Sidorenko (1993):** The conjecture holds for k = 3 (triangles). -/
-/-- **Jayawardene (1999):** The conjecture holds for k = 5 (pentagons). -/
-/-- **Cambie-Freschi-Morawski-Petrova-Pokrovskiy (2024):**
+/-  **EFRS (1993):** The conjecture holds for all even k ≥ 4. -/
+/-  **Sidorenko (1993):** The conjecture holds for k = 3 (triangles). -/
+/-  **Jayawardene (1999):** The conjecture holds for k = 5 (pentagons). -/
+/-  **Cambie-Freschi-Morawski-Petrova-Pokrovskiy (2024):**
 The conjecture holds for all odd k ≥ 7. -/
 /- ## Part V: Complete Resolution
 

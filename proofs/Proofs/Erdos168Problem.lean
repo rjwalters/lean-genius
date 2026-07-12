@@ -99,9 +99,9 @@ axiom gsw_limit_exists : ∃ L : ℝ, Tendsto (fun N => (F N : ℝ) / N) atTop (
 noncomputable def limitDensity : ℝ :=
   Classical.choose gsw_limit_exists
 
-/-- The limit is positive. -/
-/-- The limit is less than 1. -/
-/-- Numerical approximation: the limit is approximately 0.5564... -/
+/-  The limit is positive. -/
+/-  The limit is less than 1. -/
+/-  Numerical approximation: the limit is approximately 0.5564... -/
 /- ## Lower Bound Construction -/
 
 /-- A simple lower bound: removing multiples of 3 works.

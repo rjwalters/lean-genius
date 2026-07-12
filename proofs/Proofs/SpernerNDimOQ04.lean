@@ -382,10 +382,10 @@ lemma kuhn_three_doors_contradiction {c : Coloring d N} {K : SpernerTriangulatio
     · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, h₂⟩
     · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, h₃⟩
   have hcard3 : ({k₁, k₂, k₃} : Finset (Fin (d + 1))).card = 3 := by
-    have h23 : k₂ ∉ ({k₃} : Finset (Fin (d + 1))) := Finset.not_mem_singleton.mpr hne₂₃
+    have h23 : k₂ ∉ ({k₃} : Finset (Fin (d + 1))) := Finset.notMem_singleton.mpr hne₂₃
     have h1 : k₁ ∉ ({k₂, k₃} : Finset (Fin (d + 1))) := by
       simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact ⟨hne₁₂, hne₁₃⟩
-    rw [Finset.card_insert_of_not_mem h1, Finset.card_insert_of_not_mem h23,
+    rw [Finset.card_insert_of_notMem h1, Finset.card_insert_of_notMem h23,
         Finset.card_singleton]
   have h3 : 3 ≤ doorDegree c K s := by
     unfold doorDegree; rw [← hcard3]; exact Finset.card_le_card hsub
@@ -441,7 +441,7 @@ lemma walkValid_init {c : Coloring d N} {K : SpernerTriangulation d N}
   intro state
   constructor
   · -- has_record: visited = ∅
-    intro s hs; exact absurd hs (Finset.not_mem_empty _)
+    intro s hs; exact absurd hs (Finset.notMem_empty _)
   · -- doors_valid: rec = fun _ => none, so no records
     intro s k_in k_out h; simp at h
   · -- entry_from_chain: no records
@@ -640,7 +640,7 @@ theorem kuhn_path_terminates {c : Coloring d N} {K : SpernerTriangulation d N}
     ∃ s : K.Simplex, IsFC c K s :=
   sperner_ndim c K hc hbdry_odd
 
-/-- If the current simplex is FC, kuhnWalk returns it immediately (base case). -/
+/-  If the current simplex is FC, kuhnWalk returns it immediately (base case). -/
 /-- Equation lemma: kuhnWalk at FC returns current simplex (used in fc_if_started_fc). -/
 private lemma kuhnWalk_succ_eq_current_of_fc {c : Coloring d N} {K : SpernerTriangulation d N}
     (hKuhn : IsKuhnCompatible c K) (n : ℕ) (state : KuhnState d N c K)

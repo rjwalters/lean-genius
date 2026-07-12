@@ -260,9 +260,9 @@ theorem erdos1183_F_ge_f (n : ℕ) : erdos1183_F n ≥ erdos1183_f n := by
   apply csSup_le_csSup (achievableUnionClosed_bddAbove n)
   · -- achievableSublattice n is nonempty: 0 is achievable (empty family works)
     refine ⟨0, fun χ => ⟨∅, ⟨?_, ?_⟩, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
   · exact achievableSublattice_subset_unionClosed n
 
 /-- **Trivial upper bound:** f(n) ≤ 2^n, since any monochromatic family is a
@@ -272,9 +272,9 @@ theorem erdos1183_f_upper_bound (n : ℕ) : erdos1183_f n ≤ 2 ^ n := by
   apply csSup_le
   · -- nonempty: 0 is achievable (every family has size ≥ 0)
     refine ⟨0, fun χ => ⟨∅, ⟨?_, ?_⟩, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
   · intro k hk
     obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
     have h1 : F.card ≤ (Finset.univ : Finset (Finset (Fin n))).card :=
@@ -289,8 +289,8 @@ theorem erdos1183_F_upper_bound (n : ℕ) : erdos1183_F n ≤ 2 ^ n := by
   apply csSup_le
   · -- nonempty: 0 is achievable
     refine ⟨0, fun χ => ⟨∅, ?_, ⟨0, ?_⟩, Nat.zero_le _⟩⟩
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
-    · intro A hA; exact absurd hA (Finset.not_mem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
+    · intro A hA; exact absurd hA (Finset.notMem_empty A)
   · intro k hk
     obtain ⟨F, _, _, hcard⟩ := hk (fun _ => 0)
     have h1 : F.card ≤ (Finset.univ : Finset (Finset (Fin n))).card :=

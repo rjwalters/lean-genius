@@ -27,7 +27,7 @@ deliver the induction step in the symmetric shape the classic LLL actually maint
 * `prod_const_one_sub` : the uniform neighbour product is a power —
   `∏_{j∈S₁}(1 − x) = (1 − x)^{|S₁|}`.
 * `one_sub_pow_le_prod_of_card_le` : the degree-bound reduction —
-  if `|S₁| ≤ d` then `(1 − x)^d ≤ ∏_{j∈S₁}(1 − x)` (unconditional in `ℝ≥0∞`).
+  if `|S₁| ≤ d` then `(1 − x)^d ≤ ∏_{j∈S₁}(1 − x)` (unconditional ∈ `ℝ≥0∞`).
 * `symmetric_budget_le` : the uniform budget implies the per-block budget —
   `μ(Aᵢ) ≤ x · (1 − x)^d` with `|S₁| ≤ d` gives `μ(Aᵢ) ≤ x · ∏_{S₁}(1 − x)`.
 * `cond_failure_le_x_symmetric` *(flagship)* : the induction-step invariant in symmetric form —

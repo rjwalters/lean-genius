@@ -66,10 +66,10 @@ def almostAllSigns (P : (ℕ → ℤ) → Prop) : Prop :=
 
 /- ## Classical Divergence Results -/
 
-/-- Divergence for almost all z (given almost all signs).
+/-  Divergence for almost all z (given almost all signs).
 When Σ|aₙ|² = ∞, the random series diverges at Lebesgue-a.e. point
 of the unit circle for a.e. sign choice. -/
-/-- Dvoretzky-Erdős (1959): If |aₙ| > c/√n for large n, the series
+/-  Dvoretzky-Erdős (1959): If |aₙ| > c/√n for large n, the series
 diverges for ALL |z| = 1, almost surely. This shows the decay
 condition |aₙ| = o(1/√n) is sharp. -/
 /- ## The Main Result (Michelen-Sawhney 2025) -/
@@ -92,18 +92,18 @@ axiom hausdorff_dimension_one (a : ℕ → ℝ)
 
 /- ## Properties of the Convergence Set -/
 
-/-- The convergence set is uncountable -/
-/-- The convergence set has measure zero despite having full Hausdorff dimension -/
+/-  The convergence set is uncountable -/
+/-  The convergence set has measure zero despite having full Hausdorff dimension -/
 /- ## Examples -/
 
 /-- Example: aₙ = 1/(√n log n) satisfies both conditions -/
 noncomputable def example_seq : ℕ → ℝ := fun n =>
   if n ≥ 2 then 1 / (Real.sqrt n * Real.log n) else 0
 
-/-- The canonical example satisfies both hypotheses -/
-/-- Example: aₙ = 1/√n does NOT satisfy |aₙ| = o(1/√n)
+/-  The canonical example satisfies both hypotheses -/
+/-  Example: aₙ = 1/√n does NOT satisfy |aₙ| = o(1/√n)
 (it is Θ(1/√n), not o(1/√n)) -/
-/-- Example: aₙ = 1/n satisfies Σ|aₙ|² < ∞, so divergentSquares fails -/
+/-  Example: aₙ = 1/n satisfies Σ|aₙ|² < ∞, so divergentSquares fails -/
 /- ## Summary -/
 
 /-- **Erdős Problem #527: Main theorem.**

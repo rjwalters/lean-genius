@@ -177,7 +177,7 @@ theorem threshold_k4 (d : ℕ) : thresholdPower 4 d = 24 * (d : ℝ) ^ 3 := by
 -- Part V: Ratio to Pigeonhole Bound
 -- ============================================================
 
-/-- The pigeonhole bound (k-1)d exceeds the true threshold for moderate d.
+/-  The pigeonhole bound (k-1)d exceeds the true threshold for moderate d.
     We prove this for specific k values where the algebra is clean. -/
 
 /-- For k=2: the threshold 2d is less than the pigeonhole bound (d)² = d². -/

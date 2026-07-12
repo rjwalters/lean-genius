@@ -133,7 +133,7 @@ def IsConstructibleNgon (n : ℕ) : Prop :=
 ## Section IV: Gauss-Wantzel Theorem (Proved)
 
 Proof via degree theory from OQ02OQ03OQ01:
-  1. cos_extension_is_galois: ∃ K with [K:ℚ] = φ(n)/2 containing cos(2π/n)
+  1. cos_extension_is_galois: ∃ K with (K:ℚ) = φ(n)/2 containing cos(2π/n)
   2. minpoly_cos_natDegree_eq: natDeg(minpoly ℚ cos(2π/n)) = φ(n)/2
   3. Forward (→): cos ∈ K with [K:ℚ] = 2^m → φ(n)/2 | 2^m → φ(n) = 2^k
   4. Backward (←): φ(n) = 2^k → φ(n)/2 = 2^(k-1) → K witnesses constructibility

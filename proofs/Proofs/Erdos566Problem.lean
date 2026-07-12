@@ -52,14 +52,14 @@ noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
 
 /- ## Main Question -/
 
-/-- **Erdős Problem #566**: If G is (2k−3)-sparse, is G Ramsey
+/-  **Erdős Problem #566**: If G is (2k−3)-sparse, is G Ramsey
     size linear? That is, ∃ c > 0 such that r̂(G, H) ≤ c · |E(H)|
     for every H with no isolated vertices. -/
 /- ## Known Results -/
 
-/-- **EFRS (1993)**: Any graph G with n vertices and at most n+1
+/-  **EFRS (1993)**: Any graph G with n vertices and at most n+1
     edges is Ramsey size linear. -/
-/-- **Counterexample at 2n−2**: The sparsity condition 2k−3 is
+/-  **Counterexample at 2n−2**: The sparsity condition 2k−3 is
     tight — there exist graphs with 2n−2 edges that are NOT
     Ramsey size linear. -/
 /- ## Related Results -/

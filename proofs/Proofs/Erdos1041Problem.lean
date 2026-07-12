@@ -1,7 +1,7 @@
 /-
   Erdős Problem #1041: Paths in Polynomial Level Sets
 
-  Let f(z) = ∏(z - zᵢ) be a monic polynomial with all roots |zᵢ| < 1 in the
+  Let f(z) = ∏(z - zᵢ) be a monic polynomial with all roots |zᵢ| < 1 ∈ the
   unit disk. Consider the sublevel set {z : |f(z)| < 1}.
 
   **Conjecture (OPEN)**: Must there always exist a path of length less than 2
@@ -49,7 +49,7 @@ This is the known result: the sublevel set {z : |f(z)| < 1} always has
 a connected component containing at least two roots (counting multiplicity).
 -/
 
-/-- **Erdős-Herzog-Piranian Component Lemma (1958)**: For any monic polynomial f
+/-  **Erdős-Herzog-Piranian Component Lemma (1958)**: For any monic polynomial f
 of degree n ≥ 2 with all roots in the open unit disk, the sublevel set
 {z : |f(z)| < 1} has a connected component containing at least two roots
 (counted with multiplicity).
@@ -64,7 +64,7 @@ Can we find not just a connected component, but a SHORT path connecting
 two roots? The conjecture asks for a path of length less than 2.
 -/
 
-/-- **Erdős Problem #1041 (OPEN)**: For any monic polynomial f of degree n ≥ 2
+/-  **Erdős Problem #1041 (OPEN)**: For any monic polynomial f of degree n ≥ 2
 with all roots in the open unit disk, there exists a path of length less
 than 2 within the sublevel set {z : |f(z)| < 1} connecting two roots.
 
@@ -75,10 +75,10 @@ connectivity but a quantitative bound on path length. -/
 ## Special Cases and Variants
 -/
 
-/-- The diameter of the roots within the sublevel set is at most 2 when all
+/-  The diameter of the roots within the sublevel set is at most 2 when all
 roots are in the unit disk. This follows from the triangle inequality. -/
 
-/-- **Quadratic Case**: For a quadratic f(z) = (z - z₁)(z - z₂) with |z₁|, |z₂| < 1,
+/-  **Quadratic Case**: For a quadratic f(z) = (z - z₁)(z - z₂) with |z₁|, |z₂| < 1,
 the segment [z₁, z₂] has length |z₁ - z₂| < 2 and lies in the sublevel set.
 
 This provides the base case n = 2 of the conjecture. -/
@@ -112,7 +112,7 @@ theorem roots_subset_sublevelSet (f : ℂ[X]) :
 ## Length Properties
 -/
 
-/-- The length of any path is at least the distance between endpoints. -/
+/-  The length of any path is at least the distance between endpoints. -/
 
 /-- For points in the unit disk, the distance is less than 2. -/
 theorem dist_in_unit_disk (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z₂‖ < 1) :
@@ -121,7 +121,7 @@ theorem dist_in_unit_disk (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z
     _ < 1 + 1 := by linarith
     _ = 2 := by ring
 
-/-- The straight-line path between two points in the unit disk has length < 2. -/
+/-  The straight-line path between two points in the unit disk has length < 2. -/
 
 /-
 ## Connection to Lemniscates

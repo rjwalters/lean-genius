@@ -150,7 +150,7 @@ axiom mangerel_2022 (f : ℕ → ℝ) (hf : IsAdditive f)
 def erdos1122Conjecture : Prop :=
   ∀ f : ℕ → ℝ, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f
 
-/-- The conjecture is axiomatized as the problem is OPEN. -/
+/-  The conjecture is axiomatized as the problem is OPEN. -/
 /- ## Condition Hierarchy -/
 
 /-- If A = ∅, then |A ∩ [1,X]| = 0 = o(X). -/
@@ -163,10 +163,10 @@ theorem empty_implies_littleO (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : defe
     simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
     intro n _
     rw [h]
-    exact Set.not_mem_empty n
+    exact Set.notMem_empty n
   simp [this, hε]
 
-/-- Mangerel's condition implies o(X): X/(log X)^{2+c} = o(X) as X → ∞. -/
+/-  Mangerel's condition implies o(X): X/(log X)^{2+c} = o(X) as X → ∞. -/
 /-- The hierarchy of conditions:
     empty defect ⊂ Mangerel density ⊂ o(X) density (each strictly weaker). -/
 def conditionHierarchy : Prop :=
@@ -187,8 +187,8 @@ theorem log_has_empty_defect : hasEmptyDefectSet (fun n => Real.log n) := by
 /-- ω(n) = number of distinct prime factors is additive (but not logarithmic). -/
 def omega (n : ℕ) : ℕ := n.primeFactors.card
 
-/-- ω is additive: ω(ab) = ω(a) + ω(b) for coprime a, b. -/
-/-- ω is not logarithmic: it grows much slower than log. -/
+/-  ω is additive: ω(ab) = ω(a) + ω(b) for coprime a, b. -/
+/-  ω is not logarithmic: it grows much slower than log. -/
 /- ## Summary of Known Results -/
 
 /-- Consolidation of the three known positive results:

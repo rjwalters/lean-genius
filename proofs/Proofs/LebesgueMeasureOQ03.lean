@@ -27,7 +27,7 @@ open MeasureTheory
 -- Part I: The Impossibility Result
 -- ============================================================
 
-/-- There is no nonzero, translation-invariant, σ-finite Borel
+/-  There is no nonzero, translation-invariant, σ-finite Borel
     measure on an infinite-dimensional separable Banach space.
 
     Intuition: In ℝⁿ, the unit cube has volume 1. In ℝ^∞, the
@@ -71,7 +71,7 @@ theorem orthonormal_balls_disjoint :
 -- Part III: Gaussian Measures as Replacement
 -- ============================================================
 
-/-- Gaussian measures are the standard replacement for Lebesgue
+/-  Gaussian measures are the standard replacement for Lebesgue
     measure in infinite dimensions.
 
     A Gaussian measure on a Banach space X is determined by:
@@ -82,7 +82,7 @@ theorem orthonormal_balls_disjoint :
     In infinite dimensions, the Gaussian measure exists on the
     Banach space but NOT on the Hilbert space (it lives on a
     larger space — the abstract Wiener space). -/
-/-- The Wiener measure is the canonical Gaussian measure on the
+/-  The Wiener measure is the canonical Gaussian measure on the
     space of continuous paths C([0,1], ℝ).
 
     It is the measure of Brownian motion: a random continuous
@@ -91,7 +91,7 @@ theorem orthonormal_balls_disjoint :
 
     This is the rigorous foundation for Feynman path integrals
     in quantum mechanics. -/
-/-- In ℝⁿ, the Lebesgue measure of the unit ball is:
+/-  In ℝⁿ, the Lebesgue measure of the unit ball is:
     vol(Bⁿ) = π^(n/2) / Γ(n/2 + 1)
 
     This → 0 as n → ∞, showing that "most of the volume

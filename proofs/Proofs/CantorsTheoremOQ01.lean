@@ -5,6 +5,7 @@ import Mathlib.SetTheory.Cardinal.Cofinality
 import Mathlib.Order.SuccPred.Basic
 import Mathlib.Logic.Basic
 import Mathlib.Tactic
+import Mathlib.Analysis.Real.Cardinality
 
 /-
 # The Cardinality of 𝒫(ℝ): What is |P(R)|?

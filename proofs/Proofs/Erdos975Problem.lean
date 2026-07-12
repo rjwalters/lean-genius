@@ -74,7 +74,7 @@ Van der Corput (1939) and Erdős (1952) established that for any irreducible
 polynomial f, the sum Σ τ(f(n)) grows like Θ(x log x).
 -/
 
-/--
+/- 
 **Van der Corput's Lower Bound (1939)**:
 For any irreducible polynomial f with f(n) ≥ 1 eventually,
   Σ_{n ≤ x} τ(f(n)) ≫ x log x
@@ -82,7 +82,7 @@ For any irreducible polynomial f with f(n) ≥ 1 eventually,
 This shows the divisor sum grows at least as fast as x log x.
 -/
 
-/--
+/- 
 **Erdős's Upper Bound (1952)**:
 For any irreducible polynomial f with f(n) ≥ 1 eventually,
   Σ_{n ≤ x} τ(f(n)) ≪ x log x
@@ -98,7 +98,7 @@ The full Erdős Problem #975 asks whether there exists an asymptotic formula
 with a specific constant c = c(f) > 0.
 -/
 
-/--
+/- 
 **Erdős Problem #975** (Open Conjecture):
 For every irreducible non-constant polynomial f ∈ ℤ[x] with f(n) ≥ 1 eventually,
 there exists a constant c = c(f) > 0 such that
@@ -117,7 +117,7 @@ specific limiting constant for general polynomials remains open.
 Hooley (1963) resolved the conjecture for irreducible quadratic polynomials.
 -/
 
-/--
+/- 
 **Hooley's Theorem (1963)**:
 For any irreducible quadratic polynomial f ∈ ℤ[x] with f(n) ≥ 1 eventually,
 there exists c = c(f) > 0 such that Σ τ(f(n)) ~ c · x · log(x).
@@ -136,9 +136,9 @@ beautiful asymptotic formula with constant 3/π.
 /-- The polynomial n² + 1 in ℤ[X]. -/
 noncomputable def poly_n2_plus_1 : ℤ[X] := X ^ 2 + 1
 
-/-- n² + 1 is irreducible over ℤ. -/
+/-  n² + 1 is irreducible over ℤ. -/
 
-/--
+/- 
 **The n² + 1 Asymptotic**:
   Σ_{n ≤ x} τ(n² + 1) = (3/π) · x · log(x) + O(x)
 
@@ -146,7 +146,7 @@ The constant 3/π ≈ 0.9549 arises from deep number-theoretic considerations
 involving the distribution of prime factors of values of n² + 1.
 -/
 
-/--
+/- 
 The stronger form: the error term is O(x).
 -/
 
@@ -176,7 +176,7 @@ theorem divisorCount_twelve : divisorCount 12 = 6 := by
 /-- For prime p, τ(p) = 2. -/
 theorem divisorCount_prime {p : ℕ} (hp : p.Prime) : divisorCount p = 2 := by
   simp only [divisorCount, Nat.Prime.divisors hp]
-  rw [Finset.card_insert_of_not_mem, Finset.card_singleton]
+  rw [Finset.card_insert_of_notMem, Finset.card_singleton]
   simp only [Finset.mem_singleton]
   exact hp.ne_one.symm
 

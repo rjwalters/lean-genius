@@ -127,7 +127,7 @@ The interval (p_n, p_{n+1}) between consecutive primes.
 def gapInterval (n : ℕ) : Set ℕ :=
   {m : ℕ | nthPrime n < m ∧ m < nthPrime (n + 1)}
 
-/--
+/- 
 **Non-empty Gaps:**
 For n ≥ 2, the gap contains composite numbers (the gap is at least 2).
 -/
@@ -154,7 +154,7 @@ def isExceptional (n : ℕ) : Prop := ¬hasRoughNumberInGap n
 ## Part V: Erdős's Counterexample Construction
 -/
 
-/--
+/- 
 **Primorial:**
 n# = product of all primes ≤ n.
 30030 = 2·3·5·7·11·13 = 13#
@@ -162,19 +162,19 @@ Available as `Nat.primorial` from Mathlib.NumberTheory.Primorial.
 (Removed axiom — was unused in any theorem.)
 -/
 
-/--
+/- 
 **Dickson's Conjecture (Special Case):**
 There are infinitely many d such that both 2183 + 30030d and 2201 + 30030d are prime.
 -/
 
-/--
+/- 
 **Erdős's Conditional Counterexample:**
 If p = 2183 + 30030d and q = 2201 + 30030d are consecutive primes,
 then every m ∈ [2184, 2200] + 30030d is divisible by one of 2,3,5,7,11,13.
 Thus the gap (p, q) contains no 18-rough number, but q - p = 18.
 -/
 
-/--
+/- 
 **Infinitely Many Exceptional n (Conditional):**
 Assuming Dickson's conjecture, there are infinitely many exceptional n.
 -/
@@ -216,7 +216,7 @@ axiom gafni_tao_upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ X : ℕ, X ≥ 3 →
     (exceptionalCount X : ℝ) ≤ C * X / (Real.log X)^2
 
-/--
+/- 
 **Gafni-Tao Conditional Asymptotic (2025):**
 Assuming a form of the prime tuples conjecture,
 E(X) ~ c · X / (log X)² for some explicit c > 0.

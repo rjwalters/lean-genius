@@ -158,7 +158,7 @@ theorem conjecture_implies_question2 :
 
 /-- There exist graphs where τ(G) is close to n - √(2n) -/
 def NearTightConstruction : Prop :=
-  ∀ ε > 0, ∃ᶠ n in Filter.atTop, ∃ (V : Type*) [Fintype V] [DecidableEq V],
+  ∀ ε > 0, ∃ᶠ n in Filter.atTop, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
     ∃ G : SimpleGraph V,
       Fintype.card V = n ∧
       (τ G : ℝ) ≥ n - (1 + ε) * Real.sqrt (2 * n)

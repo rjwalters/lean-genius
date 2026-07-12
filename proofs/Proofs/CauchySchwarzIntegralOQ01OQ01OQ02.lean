@@ -52,7 +52,7 @@ theorem gives (L2)* ≅ L2 as a linear isometric equivalence.
     on L2 has the form f ↦ ⟨g, f⟩ for unique g ∈ L2, with ‖φ‖ = ‖g‖.
     Direct application of Mathlib's InnerProductSpace.toDual. -/
 theorem l2_riesz :
-    ∃ Φ : Lp ℝ 2 μ ≃ₗᵢ⋆[ℝ] StrongDual ℝ (Lp ℝ 2 μ),
+    ∃ Φ : Lp ℝ 2 μ ≃ₗᵢ⋆(_ : ℝ) StrongDual ℝ (Lp ℝ 2 μ),
     ∀ g : Lp ℝ 2 μ, ‖Φ g‖ = ‖g‖ :=
   ⟨InnerProductSpace.toDual ℝ (Lp ℝ 2 μ),
    fun g => LinearIsometryEquiv.norm_map _ g⟩

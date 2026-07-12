@@ -152,7 +152,7 @@ for some finite set of distinct positive integers. -/
 def HasEgyptianRep (q : ℚ) : Prop :=
   ∃ S : Finset ℕ, (∀ n ∈ S, n > 0) ∧ unitFractionSum S = q
 
-/-- Every positive rational has an Egyptian fraction representation.
+/-  Every positive rational has an Egyptian fraction representation.
 (This is a classical theorem.) -/
 
 /-
@@ -161,12 +161,12 @@ def HasEgyptianRep (q : ℚ) : Prop :=
 Bloom's proof gives some quantitative bounds.
 -/
 
-/-- For any δ > 0, there exists N such that any A ⊆ {1,...,N} with
+/-  For any δ > 0, there exists N such that any A ⊆ {1,...,N} with
 |A| ≥ δN contains a subset summing to 1.
 
 This is a finitary version of Bloom's theorem. -/
 
-/-- There exist arbitrarily large sets with no unit sum subset.
+/-  There exist arbitrarily large sets with no unit sum subset.
 
 This shows the density condition cannot be dropped entirely. -/
 
@@ -190,7 +190,7 @@ The formalization is ~10,000 lines of Lean code and covers:
 Erdős posed several related problems about unit fractions.
 -/
 
-/-- **Erdős Problem #46**: Can every natural n ≥ 2 be written as
+/-  **Erdős Problem #46**: Can every natural n ≥ 2 be written as
 1 = 1/x₁ + ... + 1/xₖ where all xᵢ ≤ n?
 
 Answer: Yes for n ≥ 5 (various authors). -/

@@ -165,7 +165,7 @@ theorem conj2_trivial_case (G : Hypergraph3) (_hfin : G.IsFinite)
 ## Part VI: Structural Observations
 -/
 
-/-- Subgraph containment is transitive. -/
+/-  Subgraph containment is transitive. -/
 /-- The forbidden family is anti-monotone in G: if G is a subgraph of G'
     (i.e., any graph containing G' also contains G), then avoiding G is
     harder than avoiding G', so F_G(κ) ⊆ F_{G'}(κ). -/

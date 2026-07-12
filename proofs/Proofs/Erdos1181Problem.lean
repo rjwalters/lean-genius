@@ -89,7 +89,7 @@ theorem q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hp_lt : p < q n k)
    Taking logs: q(n,k) ~ (1+o(1)) · k · log(n+k).
    For k = ⌊log n⌋: q(n, log n) ≤ (1+o(1))(log n)². -/
 
-/-- The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
+/-  The trivial upper bound: q(n, log n) ≤ (1+o(1))(log n)².
     This follows from the primorial bound and PNT. -/
 /- Erdős #1181 asks: can we improve the 1+o(1) to 1-c for fixed c > 0?
    That is, does q(n, log n) < (1-c)(log n)² hold eventually?
@@ -217,8 +217,8 @@ noncomputable def chebyshev_theta (x : ℝ) : ℝ :=
   ∑ p ∈ (Finset.Icc 2 ⌊x⌋₊).filter (fun p => (p : ℕ).Prime),
     Real.log (p : ℝ)
 
-/-- PNT for the Chebyshev function: θ(x) ~ x. -/
-/-- The primorial bound: if all primes below q divide m, then
+/-  PNT for the Chebyshev function: θ(x) ~ x. -/
+/-  The primorial bound: if all primes below q divide m, then
     ∏_{p < q, p prime} p ≤ m. -/
 /- Erdős #457 concerns the LOWER bound for q(n, log n):
    is q(n, log n) ≥ (2+ε) log n infinitely often?

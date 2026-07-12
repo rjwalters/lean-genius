@@ -648,7 +648,7 @@ private theorem gh_cycle_extendable_small_k
     · exact absurd (gh_longest_cycle_is_hamiltonian D hsc hout hin l_max hl_max h_max_bound)
         (by omega)
 
-/-- In an SC digraph with Ghouila-Houri conditions, any directed cycle
+/-  In an SC digraph with Ghouila-Houri conditions, any directed cycle
 shorter than n can be extended to a longer cycle.
 
 **Proof strategy for the case k = n-1** (one vertex missing):
@@ -1054,7 +1054,7 @@ can be extended. This is the key step for Moon-Moser.
 
 **Proof sketch** (longest cycle argument):
 Given cycle C of length k < n, pick any u ∉ C.
-• If ∃ i with arc(C[i],u) ∧ arc(u,C[(i+1)%k]): insert u → cycle of length k+1.
+• If ∃ i with arc(C(_ : i),u) ∧ arc(u,C(_ : (i+1)%k)): insert u → cycle of length k+1.
 • Otherwise, by `tournament_cycle_non_insertable`: either all of C beats u
   or u beats all of C.
   – Partition non-cycle vertices into S⁺ (beats all of C) and S⁻ (beaten by all).
@@ -1759,7 +1759,7 @@ Proof structure (grow-cycle approach):
 
 **Future work** (path surgery to eliminate the axiom):
 1. Cross condition (PROVED via `gh_cross_gives_longer_cycle`):
-   If ∃ i with arc(l_max[i], v) AND arc(w, l_max[(i+1)%k]), then
+   If ∃ i with arc(l_max(_ : i), v) AND arc(w, l_max(_ : (i+1)%k)), then
    l_max.rotate(i+1) ++ [v, w] is a cycle of length k+2. Contradicts maximality.
 2. No-cross case: needs SC path surgery (Menger's theorem), ~150-200 lines.
 

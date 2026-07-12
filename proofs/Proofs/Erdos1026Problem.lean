@@ -155,14 +155,14 @@ structure MonotonicDecomposition (n : ℕ) (seq : RealSeq n) where
     (parts i).2.indices k₁ ≠ (parts j).2.indices k₂
   covering : ∀ k : Fin n, ∃ i m hm, (parts i).2.indices ⟨m, hm⟩ = k
 
-/--
+/- 
 **Hanani's Theorem (1957):**
 Every sequence of n elements can be decomposed into at most
 (√2 + o(1))√n monotonic subsequences.
 
 More precisely: at most ⌈√(2n)⌉ monotonic subsequences suffice.
 -/
-/-- The Dilworth-style bound: at most √n increasing + √n decreasing. -/
+/-  The Dilworth-style bound: at most √n increasing + √n decreasing. -/
 /-
 ## Part IV: The Maximum Monotonic Sum Problem
 
@@ -197,8 +197,8 @@ Lower bound (from Hanani): c ≥ 1/√2
 Upper bound (from Cambie): c ≤ 1
 -/
 
-/-- Hanani's lower bound: c ≥ 1/√2 ≈ 0.707. -/
-/-- Cambie's upper bound: c ≤ 1 (by explicit construction). -/
+/-  Hanani's lower bound: c ≥ 1/√2 ≈ 0.707. -/
+/-  Cambie's upper bound: c ≤ 1 (by explicit construction). -/
 /-
 ## Part VI: The Weighted Erdős-Szekeres Theorem
 
@@ -229,7 +229,7 @@ theorem tidor_wang_yang : ∀ (k : ℕ) (hk : k ≥ 1)
     maxMonotonicSum seq ≥ 1 / k :=
   weighted_erdos_szekeres
 
-/-- The optimal constant is exactly 1. -/
+/-  The optimal constant is exactly 1. -/
 /-
 ## Part VII: Related Results
 
@@ -294,7 +294,7 @@ theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
     have : LDS seq + 1 ≤ LDS seq := le_csSup (lds_bddAbove seq) hmem
     omega
 
-/-- The longest monotonic subsequence has length ≥ √n.
+/-  The longest monotonic subsequence has length ≥ √n.
     Follows from lis_lds_bound: if max(LIS,LDS) < √n, then LIS·LDS < n. -/
 /-
 ## Part VIII: Main Results Summary
@@ -315,7 +315,7 @@ theorem erdos_1026 : ∀ (k : ℕ) (hk : k ≥ 1)
     maxMonotonicSum seq ≥ 1 / k :=
   fun k hk seq hDistinct hPos hSum => tidor_wang_yang k hk seq hDistinct hPos hSum
 
-/-- The result is tight: Cambie's construction achieves equality asymptotically.
+/-  The result is tight: Cambie's construction achieves equality asymptotically.
     For any ε > 0 and large enough k, there exists a sequence achieving sum ≤ 1/k + ε. -/
 /-- Connection to tournament theory: there exists a path of length m
     with m² ≥ n. Trivially provable: take m = n, then n² ≥ n for n ≥ 1. -/

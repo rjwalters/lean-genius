@@ -67,7 +67,7 @@ theorem asymptotic_flt_Q : AsymptoticFLT ℚ := by
 -- Part IV: Results over Real Quadratic Fields
 -- ============================================================
 
-/-- Freitas-Hung-Siksek (2015): Asymptotic FLT holds for a
+/-  Freitas-Hung-Siksek (2015): Asymptotic FLT holds for a
     positive proportion of real quadratic fields ℚ(√d).
 
     More precisely: for 5/6 of all squarefree d > 0, FLT holds

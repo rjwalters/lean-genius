@@ -119,14 +119,14 @@ Every graph has a regular induced subgraph: any single vertex
 is 0-regular, and any edge gives a 1-regular induced subgraph.
 -/
 
-/--
+/- 
 **Trivial Bound: F(n) ≥ 1 for n ≥ 1**
 
 Any graph with at least one vertex has a 0-regular induced subgraph
 (a single isolated vertex, or any single vertex forms a trivially
 regular subgraph of degree 0).
 -/
-/--
+/- 
 **Cliques and Independent Sets are Regular**
 
 A clique on k vertices is (k-1)-regular, and an independent set
@@ -148,8 +148,8 @@ contains a monochromatic K_s in color 1 or K_t in color 2.
 -/
 axiom ramseyNumber (s t : ℕ) : ℕ
 
-/-- Ramsey numbers exist and are finite. -/
-/--
+/-  Ramsey numbers exist and are finite. -/
+/- 
 **Ramsey Upper Bound: R(k,k) ≤ 4^k**
 
 The classical Erdős-Szekeres bound gives R(k,k) ≤ C(2k-2,k-1) ≤ 4^k.
@@ -213,7 +213,7 @@ noncomputable def G (k : ℕ) : ℕ :=
     ∃ (S : Finset V), S.card ≥ k + 1 ∧
     ∀ (v : S), (inducedSubgraph Graph S).degree v = k}
 
-/--
+/- 
 **Exact Small Values (Erdős-Fajtlowicz-Staton)**
 
 From computation and analysis:
@@ -261,7 +261,7 @@ def erdos_82_explicit : Prop :=
 Context within graph theory and Erdős's other problems.
 -/
 
-/--
+/- 
 **Degree-Constrained Subgraph (Erdős-Sauer)**
 
 Related question: what is the largest induced subgraph with
@@ -271,7 +271,7 @@ The regular subgraph question is harder because we require ALL
 vertices to have the SAME degree, not just bounded degree.
 -/
 
-/--
+/- 
 **Connection to Ramsey Theory**
 
 If R(k,k) ≤ C^k (best known: C = 4 from Erdős-Szekeres,
@@ -281,7 +281,7 @@ then F(n) ≥ (1/log C) · log(n).
 Any improvement to the Ramsey diagonal bound gives a corresponding
 improvement to the lower bound for F(n).
 -/
-/--
+/- 
 **Probabilistic Constructions**
 
 Random graphs G(n, 1/2) have:

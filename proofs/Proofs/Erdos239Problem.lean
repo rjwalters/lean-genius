@@ -65,7 +65,7 @@ def MultPlusMinusOne : Set (ℕ → ℤ) :=
 
 /-- The partial sum ∑_{n≤N} f(n). -/
 noncomputable def partialSum (f : ℕ → ℤ) (N : ℕ) : ℤ :=
-  ∑ n in Finset.range N, f (n + 1)
+  ∑ n ∈ Finset.range N, f (n + 1)
 
 /-- The mean value (1/N) ∑_{n≤N} f(n). -/
 noncomputable def meanValue (f : ℕ → ℤ) (N : ℕ) : ℝ :=
@@ -113,7 +113,7 @@ theorem completely_mult_is_mult {α : Type*} [Monoid α] (f : ℕ → α)
     (h : IsCompletelyMultiplicative f) : IsMultiplicative f :=
   ⟨h.1, fun m n _ => h.2 m n⟩
 
-/-- A completely multiplicative ±1 function is determined by its values on primes.
+/-  A completely multiplicative ±1 function is determined by its values on primes.
     Proof sketch: Every n ≥ 1 factors as n = p₁^{a₁} ... pₖ^{aₖ}.
     By complete multiplicativity, f(n) = f(p₁)^{a₁} ... f(pₖ)^{aₖ}.
     Since f agrees with g on primes, f(n) = g(n) by induction on Ω(n). -/
@@ -125,14 +125,14 @@ theorem completely_mult_is_mult {α : Type*} [Monoid α] (f : ℕ → α)
 noncomputable def powerI (n : ℕ) : ℂ :=
   if n = 0 then 0 else Complex.exp (Complex.I * Real.log n)
 
-/-- n^i is multiplicative (as a complex function). -/
-/-- |n^i| = 1 for all n ≥ 1 (values on unit circle). -/
+/-  n^i is multiplicative (as a complex function). -/
+/-  |n^i| = 1 for all n ≥ 1 (values on unit circle). -/
 /-- **Wintner-Rényi Counterexample:**
     The function n^i does NOT have a convergent mean.
     This shows the restriction to {-1, 1} is essential. -/
 axiom wintner_renyi_counterexample :
     ¬∃ L : ℂ, ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      Complex.abs ((∑ n in Finset.range N, powerI (n + 1)) / N - L) < ε
+      Complex.abs ((∑ n ∈ Finset.range N, powerI (n + 1)) / N - L) < ε
 
 /-
 ## Part VI: Wirsing's Theorem (1967)
@@ -176,7 +176,7 @@ axiom halasz_characterization (f : ℕ → ℤ)
     ∃ L : ℝ, (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, |meanValue f N - L| < ε) ∧
       (L = 0 ↔ ∀ B > 0, ∃ S : Finset ℕ,
         (∀ p ∈ S, p.Prime) ∧
-        (∑ p in S, (1 - f p : ℝ) / p) > B)
+        (∑ p ∈ S, (1 - f p : ℝ) / p) > B)
 
 /-
 ## Part VIII: The Constant Function
@@ -231,12 +231,12 @@ theorem liouville_limit_zero :
 ## Part X: Connection to Prime Distribution
 -/
 
-/-- **Mean-to-PNT Connection:**
+/-  **Mean-to-PNT Connection:**
     For the Liouville function:
     meanValue λ N → 0  is equivalent to the Prime Number Theorem.
 
     The rate of convergence determines the error term in PNT. -/
-/-- The Riemann Hypothesis is equivalent to a specific rate of convergence. -/
+/-  The Riemann Hypothesis is equivalent to a specific rate of convergence. -/
 /-
 ## Part XI: Summary
 -/

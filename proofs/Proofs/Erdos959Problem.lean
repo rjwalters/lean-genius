@@ -98,7 +98,7 @@ theorem distFrequency_zero (A : Finset (EuclideanSpace ℝ (Fin 2))) :
   suffices h : ((A ×ˢ A).filter (fun p => p.1 ≠ p.2 ∧ dist p.1 p.2 = 0)) = ∅ by
     simp [h]
   ext ⟨a, b⟩
-  simp only [Finset.mem_filter, Finset.mem_product, Finset.not_mem_empty, iff_false, not_and]
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.notMem_empty, iff_false, not_and]
   intro _ hne hdist
   exact hne (dist_eq_zero.mp hdist)
 

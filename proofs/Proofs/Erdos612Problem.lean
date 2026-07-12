@@ -111,7 +111,7 @@ def counterexample_diameter (r n d : ℕ) : ℝ :=
 axiom counterexample_exists :
   ∀ r : ℕ, r ≥ 2 →
     ∀ᶠ n in Filter.atTop,
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         Fintype.card V = n ∧
         G.Connected ∧
         IsKFree G (2 * r) ∧
@@ -196,7 +196,7 @@ axiom amended_k4_colorable :
 
 /-- Cambie-Jooken (2025): K_4-free counterexample -/
 axiom cambie_jooken_counterexample :
-  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     G.Connected ∧
     IsKFree G 4 ∧
     ¬(∃ C : ℝ, let n := Fintype.card V; let d := minDegree G;

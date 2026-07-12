@@ -1348,7 +1348,7 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
 /-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
 
     Proof: Apply derEval14 to any linear relation ∑ gᵢ · basisᵢ = 0, obtaining
-    ∑ gᵢ · ev(basisᵢ) = 0 in ℝ¹⁴. The 14×14 evaluation matrix decomposes into
+    ∑ gᵢ · ev(basisᵢ) = 0 ∈ ℝ¹⁴. The 14×14 evaluation matrix decomposes into
     7 independent 2×2 blocks, each with determinant 12. Solving each 2×2 system
     forces all coefficients to zero. -/
 set_option maxHeartbeats 6400000 in

@@ -308,7 +308,7 @@ private lemma t1_card (b : ℕ × ℕ) : (t1 b).card = 3 := by
     omega
   have h2 : (b.1, b.2 + 1) ∉ ({b} : Finset (ℕ × ℕ)) := by
     simp only [Finset.mem_singleton, Prod.mk.injEq, not_and]; omega
-  rw [Finset.card_insert_of_not_mem h1, Finset.card_insert_of_not_mem h2,
+  rw [Finset.card_insert_of_notMem h1, Finset.card_insert_of_notMem h2,
       Finset.card_singleton]
 
 private lemma t2_card (b : ℕ × ℕ) : (t2 b).card = 3 := by
@@ -318,7 +318,7 @@ private lemma t2_card (b : ℕ × ℕ) : (t2 b).card = 3 := by
     omega
   have h2 : (b.1 + 1, b.2) ∉ ({(b.1, b.2 + 1)} : Finset (ℕ × ℕ)) := by
     simp only [Finset.mem_singleton, Prod.mk.injEq, not_and]; omega
-  rw [Finset.card_insert_of_not_mem h1, Finset.card_insert_of_not_mem h2,
+  rw [Finset.card_insert_of_notMem h1, Finset.card_insert_of_notMem h2,
       Finset.card_singleton]
 
 private lemma topSimps2_card_eq (N : ℕ) :
@@ -442,14 +442,14 @@ private lemma changes_parity_mod2 (n : ℕ) (g : ℕ → Fin 2) :
   induction n with
   | zero => simp
   | succ m ih =>
-    rw [Finset.range_succ, Finset.filter_union, Finset.filter_singleton]
+    rw [Finset.range_add_one, Finset.filter_union, Finset.filter_singleton]
     have hdisj : Disjoint ((Finset.range m).filter (fun k => g k ≠ g (k + 1)))
         (if g m ≠ g (m + 1) then {m} else ∅) := by
       apply Finset.disjoint_left.mpr; intro x hx
       simp only [Finset.mem_filter, Finset.mem_range] at hx
       split_ifs with h
       · simp only [Finset.mem_singleton]; omega
-      · exact Finset.not_mem_empty x
+      · exact Finset.notMem_empty x
     rw [Finset.card_union_of_disjoint hdisj]
     by_cases hne : g m ≠ g (m + 1)
     · rw [if_pos hne, Finset.card_singleton, ih]
@@ -989,7 +989,7 @@ lemma sperner_lowerDim_filter_empty
       T.adj p.1 p.2 = none ∧
       (∀ j : Fin (n + 1), j ≠ p.2 →
         onFace (T.vertex p.1 j) faceIdx))) = ∅ := by
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   rintro ⟨s, k⟩ hmem
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem
   obtain ⟨hDoor, _hAdj, hOnFace⟩ := hmem
@@ -1603,7 +1603,7 @@ private lemma t2_face0_card_ge_two (N : ℕ) {b : ℕ × ℕ}
     · exact t2_face0_in_t2 b
   have h_ne : t1 (b.1+1, b.2) ≠ t2 b := t1_ne_t2 _ _
   have h_pair_card : ({t1 (b.1+1, b.2), t2 b} : Finset (Finset (ℕ × ℕ))).card = 2 := by
-    rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h_ne),
+    rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact h_ne),
         Finset.card_singleton]
   have h_pair_sub :
       ({t1 (b.1+1, b.2), t2 b} : Finset (Finset (ℕ × ℕ))) ⊆
@@ -1633,7 +1633,7 @@ private lemma t2_face1_card_ge_two (N : ℕ) {b : ℕ × ℕ}
     · exact t2_face1_in_t2 b
   have h_ne : t1 (b.1, b.2+1) ≠ t2 b := t1_ne_t2 _ _
   have h_pair_card : ({t1 (b.1, b.2+1), t2 b} : Finset (Finset (ℕ × ℕ))).card = 2 := by
-    rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h_ne),
+    rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact h_ne),
         Finset.card_singleton]
   have h_pair_sub :
       ({t1 (b.1, b.2+1), t2 b} : Finset (Finset (ℕ × ℕ))) ⊆
@@ -1663,7 +1663,7 @@ private lemma t2_face2_card_ge_two (N : ℕ) {b : ℕ × ℕ}
     · exact t2_face2_in_t2 b
   have h_ne : t1 b ≠ t2 b := t1_ne_t2 _ _
   have h_pair_card : ({t1 b, t2 b} : Finset (Finset (ℕ × ℕ))).card = 2 := by
-    rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h_ne),
+    rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact h_ne),
         Finset.card_singleton]
   have h_pair_sub :
       ({t1 b, t2 b} : Finset (Finset (ℕ × ℕ))) ⊆
@@ -2216,7 +2216,7 @@ private lemma containers_two_distinct
   have h₂_in : S₂ ∈ (topSimps2 N).filter (fun s => f ⊆ s) :=
     Finset.mem_filter.mpr ⟨hS₂_in, hS₂_sub⟩
   have h_pair_card : ({S₁, S₂} : Finset (Finset (ℕ × ℕ))).card = 2 := by
-    rw [Finset.card_insert_of_not_mem
+    rw [Finset.card_insert_of_notMem
         (by rw [Finset.mem_singleton]; exact h_ne),
         Finset.card_singleton]
   have h_pair_sub :

@@ -371,18 +371,18 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
       intro j
       have hsub : f (gridToReal v₀) j - gridToReal v₀ j =
         (∑ k, (f (gridToReal v₀) k - gridToReal v₀ k)) -
-        ∑ k in Finset.univ.erase j, (f (gridToReal v₀) k - gridToReal v₀ k) := by
+        ∑ k ∈ Finset.univ.erase j, (f (gridToReal v₀) k - gridToReal v₀ k) := by
         rw [← Finset.add_sum_erase _ _ (Finset.mem_univ j)]; ring
       rw [hsub]
       -- ∑_others ≤ d * ε/(d+1) < ε, and ∑_all > 0, so f_j - p_j > 0 - ε = -ε
-      have hother : ∑ k in Finset.univ.erase j,
+      have hother : ∑ k ∈ Finset.univ.erase j,
           (f (gridToReal v₀) k - gridToReal v₀ k) ≤
           ↑d * (ε / (↑d + 1)) := by
-        calc ∑ k in Finset.univ.erase j,
+        calc ∑ k ∈ Finset.univ.erase j,
               (f (gridToReal v₀) k - gridToReal v₀ k)
-            ≤ ∑ k in Finset.univ.erase j, (ε / (↑d + 1)) :=
+            ≤ ∑ k ∈ Finset.univ.erase j, (ε / (↑d + 1)) :=
               Finset.sum_le_sum (fun k _ => le_of_lt (hupper k))
-          _ ≤ ∑ _ in (Finset.univ : Finset (Fin d)), (ε / (↑d + 1)) :=
+          _ ≤ ∑ _ ∈ (Finset.univ : Finset (Fin d)), (ε / (↑d + 1)) :=
               Finset.sum_le_sum_of_subset_of_nonneg (Finset.erase_subset _ _)
                 (fun _ _ _ => div_nonneg hε.le
                   (by linarith [Nat.cast_nonneg d]))

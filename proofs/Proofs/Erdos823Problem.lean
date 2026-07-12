@@ -63,7 +63,7 @@ theorem sigma_one : sigma 1 = 1 := by unfold sigma; native_decide
 /-- σ(p) = p + 1 for prime p -/
 theorem sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
   simp only [sigma, ArithmeticFunction.sigma_apply, hp.divisors,
-    Finset.sum_insert (Finset.not_mem_singleton.mpr hp.one_lt.ne'),
+    Finset.sum_insert (Finset.notMem_singleton.mpr hp.one_lt.ne'),
     Finset.sum_singleton, pow_one]
   omega
 
@@ -74,7 +74,7 @@ theorem sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
   unfold sigma
   rw [ArithmeticFunction.sigma_apply, Nat.divisors_prime_pow hp]
   simp only [Finset.sum_map, Function.Embedding.coeFn_mk, pow_one]
-  -- Goal: (∑ i in range (k+1), p^i) * (p - 1) = p^(k+1) - 1
+  -- Goal: (∑ i ∈ range (k+1), p^i) * (p - 1) = p^(k+1) - 1
   induction k with
   | zero => simp; omega
   | succ n ih =>
@@ -195,14 +195,14 @@ def sigmaFiber (m : ℕ) : Set ℕ := {n | sigma n = m}
 theorem fiber_24_nonempty : 14 ∈ sigmaFiber 24 ∧ 15 ∈ sigmaFiber 24 :=
   ⟨sigma_14_value, sigma_15_value⟩
 
-/-- Fibers can be arbitrarily large (infinitely many n with same σ value) -/
-/-- Every sufficiently large even number is a σ-value -/
+/-  Fibers can be arbitrarily large (infinitely many n with same σ value) -/
+/-  Every sufficiently large even number is a σ-value -/
 /-
 ## Part VII: Density Results
 -/
 
-/-- The set of σ-values has positive density -/
-/-- Many σ-values have multiple preimages -/
+/-  The set of σ-values has positive density -/
+/-  Many σ-values have multiple preimages -/
 /-
 ## Part VIII: Computational Examples
 -/
@@ -230,7 +230,7 @@ the rich structure of prime factorizations provides enough freedom
 to construct pairs with equal σ values at any prescribed ratio.
 -/
 
-/-- The abundance of σ-pairs enables Pollack's construction -/
+/-  The abundance of σ-pairs enables Pollack's construction -/
 /-
 ## Part X: Summary
 -/

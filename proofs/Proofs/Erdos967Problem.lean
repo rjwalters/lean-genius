@@ -106,7 +106,7 @@ Erdős and Ingham could not decide whether
 noncomputable def sum235 (t : ℝ) : ℂ :=
   1 + reciprocalPow 2 t + reciprocalPow 3 t + reciprocalPow 5 t
 
-/--
+/- 
 **Connection to Four Exponentials Conjecture:**
 The Four Exponentials conjecture implies that for {2, 3, 5},
 the sum never vanishes. (See MathOverflow discussion.)
@@ -187,7 +187,7 @@ theorem yip_construction_t_dependent :
 ## Part VIII: Properties of the Sum
 -/
 
-/--
+/- 
 **At t = 0:**
 When t = 0, the sum is real: 1 + ∑ₖ 1/aₖ > 1 > 0.
 So the conjecture trivially holds at t = 0.

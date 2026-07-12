@@ -61,7 +61,7 @@ theorem nat_div_two_pow_tendsto_zero :
 
 -- Aristotle target: telescoping sum - a(n) = a(0) + sum of gaps
 theorem strictMono_telescope (f : ℕ → ℕ) (hf : StrictMono f) (n : ℕ) :
-    f n = f 0 + ∑ i in Finset.range n, (f (i + 1) - f i) := by
+    f n = f 0 + ∑ i ∈ Finset.range n, (f (i + 1) - f i) := by
   induction n with
   | zero => simp
   | succ n ih =>
@@ -73,8 +73,8 @@ theorem strictMono_telescope (f : ℕ → ℕ) (hf : StrictMono f) (n : ℕ) :
 -- Aristotle target: if all terms in a sum are >= M then sum >= M * n
 theorem finset_sum_ge_of_ge {M : ℝ} {f : ℕ → ℝ} {n : ℕ}
     (hf : ∀ i ∈ Finset.range n, f i ≥ M) :
-    ∑ i in Finset.range n, f i ≥ M * n := by
-  calc ∑ i in Finset.range n, f i ≥ ∑ _ in Finset.range n, M :=
+    ∑ i ∈ Finset.range n, f i ≥ M * n := by
+  calc ∑ i ∈ Finset.range n, f i ≥ ∑ _ ∈ Finset.range n, M :=
         Finset.sum_le_sum hf
     _ = M * n := by simp [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
 

@@ -47,8 +47,8 @@ def IsKChromaticCritical (G : Type) (k : ℕ) : Prop :=
 
 /- ## Known constructions -/
 
-/-- Dirac: there exist 6-chromatic critical graphs with δ > n/2. -/
-/-- Simonovits–Toft: there exist 4-chromatic critical graphs with
+/-  Dirac: there exist 6-chromatic critical graphs with δ > n/2. -/
+/-  Simonovits–Toft: there exist 4-chromatic critical graphs with
     δ ≫ n^{1/3}. -/
 /- ## Toft's conjecture -/
 

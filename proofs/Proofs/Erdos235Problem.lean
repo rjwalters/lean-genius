@@ -33,6 +33,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
+import Mathlib.Data.Nat.Nth
 
 open Real Filter
 open scoped Topology
@@ -59,7 +60,7 @@ noncomputable def primorial (k : ℕ) : ℕ :=
 
 notation "N_" k => primorial k
 
-/--
+/- 
 **Primorial is positive:**
 -/
 
@@ -70,7 +71,7 @@ notation "N_" k => primorial k
 noncomputable def primorialTotient (k : ℕ) : ℕ :=
   Nat.totient (primorial k)
 
-/--
+/- 
 **Totient formula for primorial:**
 φ(p₁·p₂·...·pₖ) = (p₁-1)(p₂-1)·...·(pₖ-1)
 -/
@@ -103,7 +104,7 @@ The elements of coprimeSet sorted as a₁ < a₂ < ... < a_{φ(Nₖ)}
 noncomputable def coprimeSequence (k : ℕ) : List ℕ :=
   (coprimeSet k).sort (· ≤ ·)
 
-/--
+/- 
 **First coprime is 1:**
 a₁ = 1 for all k ≥ 1
 -/
@@ -238,7 +239,7 @@ theorem median_gap : exponentialCDF (Real.log 2) = 1/2 := by
   rw [Real.exp_neg, Real.exp_log (by norm_num : (0:ℝ) < 2)]
   norm_num
 
-/--
+/- 
 **Mean of exponential:**
 The mean of the normalized gaps is 1 (by definition of normalization).
 -/
@@ -247,12 +248,12 @@ The mean of the normalized gaps is 1 (by definition of normalization).
 ## Part VII: Stronger Results
 -/
 
-/--
+/- 
 **Uniform convergence:**
 The convergence is uniform in c on compact sets.
 -/
 
-/--
+/- 
 **Error term:**
 More precisely, f_k(c) = (1 - e^{-c}) + O(1/log k).
 -/
@@ -261,7 +262,7 @@ More precisely, f_k(c) = (1 - e^{-c}) + O(1/log k).
 ## Part VIII: Related Results
 -/
 
-/--
+/- 
 **Maximum gap:**
 The maximum gap in the coprime sequence grows like log Nₖ · log log Nₖ.
 -/
@@ -274,7 +275,7 @@ noncomputable def jacobsthal (n : ℕ) : ℕ :=
   let seq := (Finset.filter (fun a => Nat.Coprime a n) (Finset.range n)).sort (· ≤ ·)
   (seq.zipWith (fun a b => b - a) seq.tail).foldl max 0
 
-/--
+/- 
 **Connection to prime gaps:**
 Gaps between coprimes relate to gaps between primes via sieve methods.
 -/
@@ -290,7 +291,7 @@ where γ is the Euler-Mascheroni constant.
 -/
 noncomputable def eulerGamma : ℝ := 0.5772156649
 
-/--
+/- 
 **Average gap asymptotics:**
 Nₖ/φ(Nₖ) ~ e^γ · log pₖ
 -/

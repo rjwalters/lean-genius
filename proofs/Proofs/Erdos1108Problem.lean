@@ -105,14 +105,14 @@ def PowerfulFactorialSums : Set ℕ :=
 
 /- ## The Main Open Questions -/
 
-/-- **Erdős Problem #1108 (OPEN)**:
+/-  **Erdős Problem #1108 (OPEN)**:
 Q1: For each k ≥ 2, does the set of factorial sums contain only finitely many k-th powers?
 Q2: Does the set of factorial sums contain only finitely many powerful numbers?
 Both questions remain open. -/
 
 /- ## Known Partial Results -/
 
-/-- **Brindza-Erdős (1991)**: For fixed r, if n₁! + ... + nᵣ! is powerful
+/-  **Brindza-Erdős (1991)**: For fixed r, if n₁! + ... + nᵣ! is powerful
 with n₁ ≥ ... ≥ nᵣ, then n₁ is bounded by a constant C(r).
 Related: Problem #398 asks whether 1 + n! = m² has infinitely many solutions. -/
 
@@ -126,7 +126,7 @@ For k ≥ 5, does A_k = {Σ_{n∈S} k^n : S ⊂ ℕ finite} contain only finitel
 def PowerSums (k : ℕ) : Set ℕ :=
   {m : ℕ | ∃ S : Finset ℕ, m = ∑ n ∈ S, k ^ n}
 
-/-- Mahler showed: for k ≤ 4, there are infinitely many squares in PowerSums k.
+/-  Mahler showed: for k ≤ 4, there are infinitely many squares in PowerSums k.
 For k ≥ 5, only one square is known: 1+7+7²+7³ = 400 = 20². -/
 
 /-- Mahler found only one square in PowerSums k for k ≥ 5, namely:

@@ -135,13 +135,13 @@ The difference between cumulative count and linear approximation.
 def errorTerm (A : ℕ → Finset ℕ) (c : ℝ) (N : ℕ) : ℝ :=
   ↑(cumulativeRepCount (A N) N) - c * ↑N
 
-/--
+/- 
 **Erdős-Fuchs Strong Form:**
 Even ∑_{n≤N} r(n) = cN + o(N^{1/4}/(log N)^{1/2}) is impossible.
 
 The error term must eventually exceed N^{1/4}/(log N)^{1/2} infinitely often.
 -/
-/--
+/- 
 **Montgomery-Vaughan Improvement (1990):**
 The error must exceed N^{1/4} infinitely often.
 -/
@@ -151,7 +151,7 @@ The error must exceed N^{1/4} infinitely often.
 Intuition behind the theorem.
 -/
 
-/--
+/- 
 **Key Insight: Variance Accumulation**
 For any set A, the representation function r(n) has inherent variability.
 The cumulative sum ∑ r(n) cannot smooth this out to O(1) error.
@@ -161,7 +161,7 @@ but fluctuations around this are of order √n, leading to
 cumulative error of order N^{1/4}.
 -/
 
-/--
+/- 
 **Analytic Mechanism:**
 The proof uses Fourier analysis. Writing A = {a₁, a₂, ...},
 the representation function has generating function (∑ z^{aᵢ})².
@@ -218,7 +218,7 @@ theorem sidon_not_bounded :
 Generalizations and variants.
 -/
 
-/--
+/- 
 **Problem #764: k-fold Representation**
 The generalization asks about k-fold sums:
 Can ∑_{n≤N} r_k(n) = cN + O(1) where r_k counts representations as
@@ -231,7 +231,7 @@ The Erdős-Fuchs theorem extends to this case.
    cannot be asymptotically close to a constant c > 0 (it must deviate by Ω(n^{-1/4}(log n)^{-1/2})).
    Formalizing this requires defining r_k and stating the precise oscillation bound. -/
 
-/--
+/- 
 **Connection to Waring's Problem:**
 The representation function r(n) for squares relates to sums of two squares.
 Jacobi's formula gives r(n) = 4∑_{d|n} χ(d) where χ is the non-principal

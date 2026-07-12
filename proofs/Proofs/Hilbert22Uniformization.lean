@@ -95,7 +95,7 @@ theorem unitDisk_isConnected : IsConnected UnitDisk := by
 theorem complexPlane_isConnected : IsConnected (Set.univ : Set ℂ) :=
   isConnected_univ
 
-/-- The complex plane is simply connected (stated as an axiom).
+/-  The complex plane is simply connected (stated as an axiom).
     In topology, a space is simply connected if it is path-connected
     and every loop can be continuously contracted to a point. -/
 
@@ -187,13 +187,13 @@ structure RiemannSurface where
 /-- A Riemann surface is simply connected (placeholder definition) -/
 def RiemannSurface.IsSimplyConnected (_S : RiemannSurface) : Prop := True
 
-/-- **The Uniformization Theorem** (Koebe-Poincaré, 1907):
+/-  **The Uniformization Theorem** (Koebe-Poincaré, 1907):
     Every simply connected Riemann surface is conformally equivalent to
     exactly one of: the Riemann sphere, the complex plane, or the unit disk.
 
     This completely classifies simply connected Riemann surfaces. -/
 
-/-- Corollary: Every Riemann surface has a universal cover that is
+/-  Corollary: Every Riemann surface has a universal cover that is
     one of the three model spaces -/
 
 /-- The type of a Riemann surface is determined by its fundamental group:
@@ -225,7 +225,7 @@ def IsAutomorphic {X : Type*} [TopologicalSpace X]
     (Γ : DiscreteGroup X) (f : X → ℂ) : Prop :=
   ∀ (γ : Γ.group) (x : X), f (Γ.action γ x) = f x
 
-/-- The quotient of a simply connected surface by a discrete group
+/-  The quotient of a simply connected surface by a discrete group
     gives a Riemann surface that can be uniformized -/
 
 /-- Fuchsian groups: discrete subgroups of PSL(2,ℝ) acting on the upper half-plane -/
@@ -254,11 +254,11 @@ The Uniformization Theorem connects to many areas of mathematics:
 
 section Connections
 
-/-- Every compact Riemann surface of genus g has a unique hyperbolic metric
+/-  Every compact Riemann surface of genus g has a unique hyperbolic metric
     (for g ≥ 2), a unique Euclidean metric (for g = 1), or a unique
     spherical metric (for g = 0) -/
 
-/-- The modular curve relates to uniformization:
+/-  The modular curve relates to uniformization:
     The modular group SL(2,ℤ) acts on the upper half-plane,
     and the quotient parametrizes elliptic curves -/
 

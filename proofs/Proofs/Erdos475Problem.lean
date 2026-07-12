@@ -89,14 +89,14 @@ axiom hicks_ollis_schmitt_2019 (p : ℕ) [Fact (Nat.Prime p)] :
       (∀ a ∈ A, a ≠ 0) →
       ∃ ordering : List (ZMod p), IsValidOrdering A ordering
 
-/--
+/- 
 **Graham's Original Result:**
 The case t = p - 1 (the full non-zero set) was solved constructively
 by Graham, providing an explicit ordering.
 -/
 /- ## Part IV: Logarithmic Range (Kravitz 2024) -/
 
-/--
+/- 
 **Kravitz (2024):**
 For t ≤ log p / log log p, the conjecture holds.
 Will Sawin independently observed this bound on MathOverflow.
@@ -150,7 +150,7 @@ def HasExplicitValidOrdering {p : ℕ} [Fact (Nat.Prime p)]
   ∃ (f : Finset (ZMod p) → List (ZMod p)),
     IsValidOrdering A (f A)
 
-/--
+/- 
 **Graham's Constructive Proof:**
 Graham's proof for the full non-zero set t = p - 1 was constructive,
 giving an explicit algorithm to produce a valid ordering.

@@ -165,9 +165,9 @@ theorem edgeDensity_union_weighted_avg (G : SimpleGraph V) [DecidableRel G.Adj]
     · rw [mul_zero]; symm; rw [Nat.cast_eq_zero, Finset.card_eq_zero]
       rcases mul_eq_zero.mp h with ha | hb
       · have hA := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp ha)
-        ext x; simp [hA, Finset.not_mem_empty]
+        ext x; simp [hA, Finset.notMem_empty]
       · have hB := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp hb)
-        ext x; simp [Finset.product, hB, Finset.not_mem_empty]
+        ext x; simp [Finset.product, hB, Finset.notMem_empty]
     · exact mul_div_cancel₀ _ h
   -- Inline edge_count_union: e(A₁∪A₂,B) = e(A₁,B) + e(A₂,B)
   have he : (↑(((A₁ ∪ A₂).product B).filter (fun p => G.Adj p.1 p.2)).card : ℚ) =

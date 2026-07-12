@@ -156,7 +156,7 @@ axiom grzesik_hatami_theorem (n : ℕ) (hn : 0 < n) :
     IsTriangleFree G →
     countC5 G ≤ n^5
 
-/-- The balanced blow-up is the unique extremal graph (up to isomorphism).
+/-  The balanced blow-up is the unique extremal graph (up to isomorphism).
 
 When |V| = 5n, the only triangle-free graph with exactly n⁵ copies of C₅
 is the balanced blow-up of C₅.
@@ -167,7 +167,7 @@ is the balanced blow-up of C₅.
 The problem had several partial results before the complete solution.
 -/
 
-/-- **Győri**: An earlier upper bound of approximately 1.03n⁵.
+/-  **Győri**: An earlier upper bound of approximately 1.03n⁵.
 
 Before flag algebras, Győri proved that triangle-free graphs on 5n vertices
 have at most about 1.03n⁵ copies of C₅. This was later improved by Füredi.
@@ -178,7 +178,7 @@ have at most about 1.03n⁵ copies of C₅. This was later improved by Füredi.
 Erdős proposed a more general conjecture for odd cycles.
 -/
 
-/-- **Erdős's General Conjecture** (Open for r > 5):
+/-  **Erdős's General Conjecture** (Open for r > 5):
 
 For odd r ≥ 5, if a graph on rn vertices has girth r (smallest cycle has length r),
 then the number of r-cycles is at most nʳ.

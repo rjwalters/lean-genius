@@ -123,7 +123,7 @@ def ErdosHajnalQuestion (G : SimpleGraph V) : Prop :=
 
 /- ## Part V: The Main Results - Counterexamples -/
 
-/--
+/- 
 **Komjáth's Consistency Result (2013):**
 It is consistent with ZFC that there exists a counterexample.
 -/
@@ -147,7 +147,7 @@ axiom bowler_pitz_counterexample_2024 :
       ∀ H : SimpleGraph V, IsSubgraph H G →
         InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
 
-/--
+/- 
 **Thomassen's Edge-Connectivity Counterexample (2017):**
 For the edge-connectivity variant, a counterexample also exists.
 -/
@@ -160,13 +160,13 @@ The graph has exactly ℵ₁ many vertices.
 def hasAleph1Vertices (V : Type*) : Prop :=
   Cardinal.mk V = Cardinal.aleph 1
 
-/-- **Komjáth's Independence Result:**
+/-  **Komjáth's Independence Result:**
 For graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is
 independent of ZFC: counterexamples exist in some models but not others.
 We axiomatize one direction (consistency of counterexample). -/
 /- ## Part VII: Key Observations -/
 
-/-- **Soukup's construction principle:**
+/-  **Soukup's construction principle:**
 One can build a graph from "ladder" structures of trees where
 the overall graph needs ℵ₁ colors but any infinitely connected
 piece can be colored with fewer colors. -/

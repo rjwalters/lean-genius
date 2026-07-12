@@ -138,7 +138,7 @@ axiom erdos_kakutani_equivalence :
       (∀ i : ℕ, IsQLinearlyIndependent (S i)) ∧
       (⋃ i, S i) = univ
 
-/--
+/- 
 **ℚ-Linearly Independent Sets have Distinct Distances:**
 If S ⊆ ℝ is ℚ-linearly independent, then all pairwise distances in S are distinct.
 -/
@@ -196,12 +196,12 @@ axiom kunen_theorem : ∀ n : ℕ, ContinuumHypothesis → Erdos1127Question' n
 ## Part VII: The Necessity of CH
 -/
 
-/--
+/- 
 **Erdős-Hajnal Result:**
 If CH is false, then for any finite partition of ℝ, there exist four points
 determining at most four distances.
 -/
-/--
+/- 
 **Corollary: Finite partition impossible without CH:**
 The proof connects Erdős-Hajnal (4 points with ≤4 distances) with
 HasDistinctDistances (all 6 pairwise distances distinct).
@@ -211,7 +211,7 @@ This is a contradiction: 4 distinct values cannot cover 6 distinct distances.
 ## Part VIII: The Countable vs Finite Distinction
 -/
 
-/--
+/- 
 **Key Insight:**
 CH allows COUNTABLE decomposition to work, but without CH even FINITE
 decomposition fails. The transition from finite to countable is the crux.
@@ -230,7 +230,7 @@ noncomputable def numDistinctDistances {n : ℕ} (S : Finset (Point n)) : ℕ :=
     | [p, q] => dist' p q
     | _ => 0) |>.toFinset.card
 
-/--
+/- 
 **Erdős Distinct Distances Problem (related):**
 n points in the plane determine at least Ω(n/√log n) distinct distances.
 -/

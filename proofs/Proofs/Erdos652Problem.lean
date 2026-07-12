@@ -113,7 +113,7 @@ theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
 The main positive result: αₖ → ∞ as k → ∞.
 -/
 
-/-- Corollary: αₖ ≥ C√k for some constant C -/
+/-  Corollary: αₖ ≥ C√k for some constant C -/
 
 /-- Main theorem: αₖ → ∞ as k → ∞ -/
 axiom alpha_k_unbounded :

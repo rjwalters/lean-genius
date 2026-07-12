@@ -201,7 +201,7 @@ theorem erdos_826_implies_248 (h : erdos_826_conjecture) : erdos_248_weaker := b
 Understanding when the linear bound can hold.
 -/
 
-/--
+/- 
 **Why the Problem is Hard**
 
 For n + k to have τ(n+k) ≤ Ck, we need n + k to have few divisors
@@ -224,7 +224,7 @@ theorem prime_satisfies_bound (n : ℕ) (hn : Nat.Prime (n + 1)) :
     (σ 0 (n + 1) : ℝ) = 2 := by
   suffices h : σ 0 (n + 1) = 2 by exact_mod_cast h
   rw [ArithmeticFunction.sigma_apply, hn.divisors]
-  simp [Finset.not_mem_singleton.mpr hn.one_lt.ne]
+  simp [Finset.notMem_singleton.mpr hn.one_lt.ne]
 
 /-
 # Part 7: Probabilistic Heuristic
@@ -276,7 +276,7 @@ def hasControlledDivisors (m : ℕ) (bound : ℝ) : Prop :=
 The structural challenges.
 -/
 
-/--
+/- 
 **Difficulty Assessment**
 
 Terence Tao has noted this problem appears difficult. The key

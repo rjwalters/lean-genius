@@ -115,7 +115,7 @@ theorem max_diagonals_in_cycle (k : ℕ) (hk : k ≥ 3) :
 The first non-trivial upper bound.
 -/
 
-/-- **Chen-Erdős-Staton (1996)**: f(n) = O(n^(3/2)). -/
+/-  **Chen-Erdős-Staton (1996)**: f(n) = O(n^(3/2)). -/
 
 /-- The CES exponent is 3/2. -/
 def ces_exponent : ℝ := 3/2
@@ -171,7 +171,7 @@ theorem girth_5_satisfies [DecidableEq V] [Fintype V]
     SatisfiesCycleDiagonalCondition G := by
   sorry
 
-/-- The Turán problem for C₄-free graphs. -/
+/-  The Turán problem for C₄-free graphs. -/
 /-- This shows f(n) ≥ Ω(n^(3/2)) from girth-5 graphs. -/
 theorem f_lower_bound (n : ℕ) (hn : n ≥ 10) :
     f n ≥ Nat.floor ((n : ℝ)^(3/2 : ℝ) / 4) := by
@@ -196,7 +196,7 @@ def IsSublinearExpander (G : SimpleGraph (Fin n)) : Prop :=
     ∃ d : ℕ, d ≥ Nat.floor ((n : ℝ)^ε) ∧
       ∃ λ : ℝ, IsExpander G d λ
 
-/-- **Key Lemma (DMMS)**: Random walks in expanders find cycles with many diagonals. -/
+/-  **Key Lemma (DMMS)**: Random walks in expanders find cycles with many diagonals. -/
 /-
 ## Part X: Short Cycles vs Long Cycles
 

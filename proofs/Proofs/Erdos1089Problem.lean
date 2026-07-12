@@ -80,9 +80,9 @@ axiom g_well_defined :
 Known exact values of g_d(n).
 -/
 
-/-- g_1(3) = 4: four points on a line give 3 distinct distances -/
-/-- g_2(3) = 6: six points in the plane guarantee 3 distinct distances -/
-/-- g_3(3) = 7 (Croft 1962) -/
+/-  g_1(3) = 4: four points on a line give 3 distinct distances -/
+/-  g_2(3) = 6: six points in the plane guarantee 3 distinct distances -/
+/-  g_3(3) = 7 (Croft 1962) -/
 /-- Trivial: g_d(1) = 2 (any two distinct points give 1 distance) -/
 theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
   apply le_antisymm
@@ -129,7 +129,7 @@ theorem g_d_1 (d : ℕ) (hd : d ≥ 1) : g d 1 = 2 := by
         rw [hempty, Finset.card_empty] at this
         omega
 
-/-- NOTE: The previous axiom `g_d_2 : ∀ d ≥ 1, g d 2 = 3` was INCORRECT.
+/-  NOTE: The previous axiom `g_d_2 : ∀ d ≥ 1, g d 2 = 3` was INCORRECT.
     In ℝ^d, d+1 points can be mutually equidistant (regular d-simplex), giving only 1
     distinct distance. So g_d(2) = d + 2, not 3. The correct values: g_1(2) = 3
     (on a line, 3 points always have ≥ 2 distinct distances since equidistant triples
@@ -371,7 +371,7 @@ The inverse function from problem #1083.
 noncomputable def f (d n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ P : Finset (Point d), P.card = n ∧ numDistinctDistances P = k}
 
-/-- Relationship: g_d(n) = min{m : f_d(m) ≥ n} -/
+/-  Relationship: g_d(n) = min{m : f_d(m) ≥ n} -/
 /-
 ## The Open Problem
 

@@ -47,7 +47,7 @@ def HasPropertyB [Fintype α] (F : Finset (Finset α)) : Prop :=
 
 /-- The empty family trivially has Property B. -/
 theorem hasPropertyB_empty [Fintype α] : HasPropertyB (∅ : Finset (Finset α)) :=
-  ⟨∅, fun f hf => absurd hf (Finset.not_mem_empty f)⟩
+  ⟨∅, fun f hf => absurd hf (Finset.notMem_empty f)⟩
 
 /-- Property B is monotone: subsets of Property B families have Property B. -/
 theorem hasPropertyB_subset [Fintype α] {F G : Finset (Finset α)}
@@ -232,7 +232,7 @@ theorem degree_eq_zero_of_not_mem {F : Finset (Finset α)} {a : α}
     (ha : ∀ f ∈ F, a ∉ f) : degree F a = 0 := by
   simp only [degree, Finset.card_eq_zero]
   ext f
-  simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false, not_and]
+  simp only [Finset.mem_filter, Finset.notMem_empty, iff_false, not_and]
   exact ha f
 
 -- ══════════════════════════════════════════════════════════════════
@@ -290,7 +290,7 @@ theorem matching_has_propertyB [Fintype α] (F : Finset (Finset α))
         exact hy.elim (· ▸ h1) (· ▸ h2)
       have : 2 ≤ ((insert f₀ F').filter (x ∈ ·)).card := by
         calc 2 = (insert f₀ ({g} : Finset _)).card := by
-                rw [Finset.card_insert_of_not_mem (Finset.not_mem_singleton.mpr hne),
+                rw [Finset.card_insert_of_notMem (Finset.notMem_singleton.mpr hne),
                     Finset.card_singleton]
             _ ≤ _ := Finset.card_le_card hsub
       linarith [hdeg x]
@@ -319,7 +319,7 @@ theorem matching_has_propertyB [Fintype α] (F : Finset (Finset α))
         rcases Finset.mem_insert.mp hf with rfl | hf
         · -- For f₀: b ∈ f₀ ∩ (S' \ {a}), a ∈ f₀ \ (S' \ {a})
           exact ⟨⟨b, Finset.mem_inter.mpr ⟨hb, Finset.mem_erase.mpr ⟨hba, hf₀_sub b hb⟩⟩⟩,
-                 ⟨a, Finset.mem_sdiff.mpr ⟨ha, Finset.not_mem_erase a S'⟩⟩⟩
+                 ⟨a, Finset.mem_sdiff.mpr ⟨ha, Finset.notMem_erase a S'⟩⟩⟩
         · -- For g ∈ F': a ∉ g (disjointness), so erasing a doesn't affect g
           have ha_not : a ∉ f := Finset.disjoint_left.mp (hdisjoint f hf) ha
           constructor
@@ -447,7 +447,7 @@ theorem erdos_first_moment_bound [Fintype α] (F : Finset (Finset α)) (t : ℕ)
     linarith
   -- Trivial case: F empty
   by_cases hFne : F = ∅
-  · exact ⟨∅, fun f hf => absurd hf (hFne ▸ Finset.not_mem_empty f)⟩
+  · exact ⟨∅, fun f hf => absurd hf (hFne ▸ Finset.notMem_empty f)⟩
   -- For nonempty F: t ≤ |α|
   have ht_le : t ≤ Fintype.card α := by
     obtain ⟨A, hA⟩ := Finset.nonempty_of_ne_empty hFne

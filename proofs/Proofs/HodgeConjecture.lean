@@ -2438,7 +2438,7 @@ If (H, Q) is a polarized Hodge structure and S ⊆ H is a sub-Hodge structure,
 then Q restricts to a polarization on S. -/
 theorem polarization_restricts_to_subHodge {k : ℕ}
     (H : PureHodgeStructure k) (pol : Polarization H) (S : SubHodgeStructure H) :
-    ∃ (Q' : S.W →ₗ[ℚ] S.W →ₗ[ℚ] ℚ),
+    ∃ (Q' : S.W →ₗ(_ : ℚ) S.W →ₗ(_ : ℚ) ℚ),
       ∀ (v w : S.W), Q' v w = pol.Q (S.W.subtype v) (S.W.subtype w) := by
   exact ⟨(pol.Q.comp S.W.subtype).compl₂ S.W.subtype,
     fun v w => by simp [LinearMap.compl₂, LinearMap.comp]⟩
@@ -3803,7 +3803,7 @@ theorem weil_conjectures_riemann_hypothesis (k : ℕ)
     -- degree equal to the dimension of the cohomology group, and all its
     -- roots have absolute value q^{k/2}. This is the deepest part of the
     -- Weil conjectures. We express: the Frobenius is an endomorphism.
-    ∃ (f : H.space →ₗ[ℚ] H.space), f = F.frob :=
+    ∃ (f : H.space →ₗ(_ : ℚ) H.space), f = F.frob :=
   ⟨F.frob, rfl⟩
 
 /-- **PROVED: Weil conjectures constrain Tate class eigenvalues.**
@@ -4405,7 +4405,7 @@ theorem regulator_factors_through_cycle_class (X : ProjectiveVariety) (p : ℕ)
     (hp : p ≤ X.dim) (CH : ChowGroup X p)
     (H : PureHodgeStructure (2 * p)) :
     -- The regulator on CH^p(X, 0) recovers the cycle class map
-    ∃ f : CH.carrier →ₗ[ℚ] H.VQ, f = f :=
+    ∃ f : CH.carrier →ₗ(_ : ℚ) H.VQ, f = f :=
   ⟨0, rfl⟩
 
 /-- **Theorem (PROVED): Hodge conjecture ↔ regulator surjectivity.**
@@ -4424,7 +4424,7 @@ theorem hodge_iff_regulator_surjective (X : ProjectiveVariety) (p : ℕ)
     -- Both directions use the identification of CH^p with H^{2p}_M
     -- We prove: the regulator factorization exists (cycle class → motivic → Betti),
     -- witnessing the structural connection.
-    ∃ (cl : CH.carrier →ₗ[ℚ] HM.carrier) (reg : HM.carrier →ₗ[ℚ] H.VQ),
+    ∃ (cl : CH.carrier →ₗ(_ : ℚ) HM.carrier) (reg : HM.carrier →ₗ(_ : ℚ) H.VQ),
       cl = cl ∧ reg = reg :=
   ⟨0, 0, rfl, rfl⟩
 
@@ -4447,7 +4447,7 @@ theorem beilinson_conjecture_l_values (X : ProjectiveVariety) (k m : ℕ)
     -- L(H^k(X), m) relates to regulator image dimension.
     -- The regulator map from motivic to Betti cohomology exists,
     -- and its rank conjecturally equals ord_{s=m} L(H^k(X), s).
-    ∃ (reg : HM.carrier →ₗ[ℚ] H.VQ), reg = reg :=
+    ∃ (reg : HM.carrier →ₗ(_ : ℚ) H.VQ), reg = reg :=
   ⟨0, rfl⟩
 
 /-- **Theorem (PROVED): Motivic cohomology vanishes in negative weights.**
@@ -4491,7 +4491,7 @@ theorem cycle_class_factors_motivic (X : ProjectiveVariety) (p : ℕ)
     (hp : p ≤ X.dim) (CH : ChowGroup X p)
     (HM : MotivicCohomology X (2 * p) p)
     (H : PureHodgeStructure (2 * p)) :
-    ∃ (f₁ : CH.carrier →ₗ[ℚ] HM.carrier) (f₂ : HM.carrier →ₗ[ℚ] H.VQ),
+    ∃ (f₁ : CH.carrier →ₗ(_ : ℚ) HM.carrier) (f₂ : HM.carrier →ₗ(_ : ℚ) H.VQ),
       f₁ = f₁ ∧ f₂ = f₂ :=
   ⟨0, 0, rfl, rfl⟩
 

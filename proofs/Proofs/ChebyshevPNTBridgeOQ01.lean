@@ -175,7 +175,7 @@ theorem central_binom_lower (n : ℕ) :
     have := Nat.choose_le_middle (2 * n) i
     rwa [show (2 * n) / 2 = n from by omega] at this
   -- Sum bound: ∑ C(2n, i) ≤ (2n+1) * C(2n, n)
-  have h_bound : ∑ i in Finset.range (2 * n + 1), (2 * n).choose i ≤
+  have h_bound : ∑ i ∈ Finset.range (2 * n + 1), (2 * n).choose i ≤
       (2 * n + 1) * (2 * n).choose n := by
     have := Finset.sum_le_card_nsmul (Finset.range (2 * n + 1))
       (fun i => (2 * n).choose i) ((2 * n).choose n) (fun i _ => h_mid i)

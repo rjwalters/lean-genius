@@ -158,7 +158,7 @@ theorem powers_of_two_has_dss (n : ℕ) :
   | zero =>
     simp [hasDistinctSubsetSums, Finset.subset_empty]
   | succ n ih =>
-    rw [Finset.range_succ, Finset.image_insert]
+    rw [Finset.range_add_one, Finset.image_insert]
     apply dss_superincreasing_extend ih
     · -- 2^n > sum({2^0,...,2^(n-1)})
       have hsum : ((Finset.range n).image (2 ^ · : ℕ → ℕ)).sum id =

@@ -115,7 +115,7 @@ R(C_n;3) = 2n for sufficiently large even n
 axiom benevides_skokan_2009 :
     ∃ N : ℕ, ∀ n ≥ N, Even n → R_cycle_3 n = 2 * n
 
-/-- Why 2n for even cycles? The lower bound construction:
+/-  Why 2n for even cycles? The lower bound construction:
 K_{2n-1} can be 3-colored to avoid monochromatic C_n for even n. -/
 
 /-
@@ -124,7 +124,7 @@ K_{2n-1} can be 3-colored to avoid monochromatic C_n for even n. -/
 Odd and even cycles behave very differently!
 -/
 
-/-- Odd cycles require more vertices: the lower bound is 4n-3 vs 2n for even.
+/-  Odd cycles require more vertices: the lower bound is 4n-3 vs 2n for even.
 The structural reason is that odd cycle length creates parity constraints
 with 3-colorings that even cycles avoid via bipartite structure. -/
 
@@ -144,18 +144,18 @@ example : 2 * 4 = 8 := rfl
 The proofs use the Szemerédi Regularity Lemma.
 -/
 
-/-- The regularity method: Szemerédi's Regularity Lemma decomposes
+/-  The regularity method: Szemerédi's Regularity Lemma decomposes
 dense graphs into ε-regular pairs, enabling structural arguments
 for finding long paths and cycles. -/
 
-/-- Blow-up Lemma: regular pairs can embed bounded-degree subgraphs.
+/-  Blow-up Lemma: regular pairs can embed bounded-degree subgraphs.
 This converts regularity decompositions into actual graph embeddings. -/
 
 /-
 ## Part 9: Connection to 2-Color Ramsey Numbers
 -/
 
-/-- For comparison: 2-color Ramsey numbers for cycles.
+/-  For comparison: 2-color Ramsey numbers for cycles.
 R(C_n,C_n) = 2n - 1 for odd n ≥ 5; R(C_n,C_n) = 3n/2 - 1 for even n ≥ 6.
 The 3-color numbers are significantly larger: ratio ~2 for odd cycles. -/
 

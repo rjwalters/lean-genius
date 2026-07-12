@@ -56,7 +56,7 @@ noncomputable def f (n : ℕ) : ℕ :=
 theorem f_one : f 1 = 0 := by
   simp [f, Nat.primeFactors]
 
-/-- f(p) = p for any prime p -/
+/-  f(p) = p for any prime p -/
 /-
 ## Part 2: The Function F(n)
 
@@ -157,7 +157,7 @@ theorem f_no_mean_value :
 max_{n≤x} f(n) ~ x log x / log log x along a sequence of x.
 -/
 
-/-- Erdős (1984): The asymptotic holds for a sequence of x → ∞ -/
+/-  Erdős (1984): The asymptotic holds for a sequence of x → ∞ -/
 /-
 ## Part 6: Conjecture on F(n) for Almost All n
 -/

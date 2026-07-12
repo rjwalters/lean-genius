@@ -16,7 +16,7 @@ progressively stronger levels:
 **Level 1 — Degree criterion (necessary, not sufficient)**:
   If α is constructible, then [ℚ(α):ℚ] is a power of 2.
   Counterexample: cos(2π/7) has [ℚ(α):ℚ] = 3 (not power of 2), non-constructible ✓
-  But: ∃ α with [ℚ(α):ℚ] = 4 = 2² that is NOT constructible.
+  But: ∃ α with (_ : ℚ(α):ℚ) = 4 = 2² that is NOT constructible.
 
 **Level 2 — Galois 2-group criterion (necessary and sufficient)**:
   α is constructible ↔ Gal(minpoly(ℚ,α)) is a 2-group.

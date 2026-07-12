@@ -61,7 +61,7 @@ theorem r3_achieved (N : ℕ) :
     use ∅
     refine ⟨Finset.empty_subset _, ?_, Finset.card_empty⟩
     intro a b c ha _ _
-    exact absurd ha (Finset.not_mem_empty a)
+    exact absurd ha (Finset.notMem_empty a)
   have hfin : S.Finite := by
     apply Set.Finite.subset (Set.finite_Icc 0 (N + 1))
     intro k ⟨A, hAsub, _, hcard⟩
@@ -84,16 +84,16 @@ This was the first non-trivial upper bound, showing 3-AP-free sets have density 
 -/
 def RothBound : Prop := ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (r3 N : ℝ) < ε * N
 
-/-- Roth's explicit bound: r₃(N) ≤ N / log log N. -/
-/--
+/-  Roth's explicit bound: r₃(N) ≤ N / log log N. -/
+/- 
 **Bourgain's Theorem (2008)**: r₃(N) = O(N / (log log N)^{1/2}).
 Improved Roth's bound using Fourier-analytic methods.
 -/
-/--
+/- 
 **Sanders' Theorem (2011)**: r₃(N) = O(N (log log N)^5 / log N).
 First bound with log N in the denominator.
 -/
-/--
+/- 
 **Bloom-Sisask (2020)**: r₃(N) = O(N / (log N)^{1+c}) for some c > 0.
 Breakthrough showing power greater than 1 in the log N exponent.
 -/
@@ -175,7 +175,7 @@ theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto
 
 /- ## Lower Bounds -/
 
-/-- The Behrend construction gives the best known lower bound:
+/-  The Behrend construction gives the best known lower bound:
     r₃(N) ≥ N · exp(-c · √(log N)) for some c > 0. -/
 /- Note: The gap between upper and lower bounds is significant.
    Upper: O(N / (log N)^C) for all C
@@ -220,7 +220,7 @@ private def toBase3Binary : ℕ → ℕ
     base-3 representation uses only digits {0, 1}, plus 1. -/
 def greedyAP3Free (n : ℕ) : ℕ := toBase3Binary n + 1
 
-/-- The greedy sequence is indeed 3-AP-free. -/
+/-  The greedy sequence is indeed 3-AP-free. -/
 /- ## k-term AP Generalization -/
 
 /-- A k-term arithmetic progression: k values a, a+d, a+2d, ..., a+(k-1)d with d ≠ 0. -/

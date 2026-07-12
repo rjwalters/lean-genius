@@ -249,8 +249,8 @@ theorem optimal_code_monotone {n : ℕ} {p : Fin n → ℝ}
           intro k hki hkj
           simp [l', Function.update_apply, hki, hkj]
         calc ∑ k, ((2 : ℝ)⁻¹) ^ (l' k)
-            = ∑ k in Finset.univ, ((2 : ℝ)⁻¹) ^ (l' k) := rfl
-          _ = ∑ k in Finset.univ, ((2 : ℝ)⁻¹) ^ (l k) := by
+            = ∑ k ∈ Finset.univ, ((2 : ℝ)⁻¹) ^ (l' k) := rfl
+          _ = ∑ k ∈ Finset.univ, ((2 : ℝ)⁻¹) ^ (l k) := by
               apply Finset.sum_equiv (Equiv.swap i j) (fun _ _ => Finset.mem_univ _)
               intro k _
               simp only [Equiv.swap_apply_def]
@@ -284,13 +284,13 @@ theorem optimal_code_monotone {n : ℕ} {p : Fin n → ℝ}
         -- Sum reduces to just the i and j terms
         rw [show ∑ k, p k * ((l' k : ℝ) - (l k : ℝ)) =
             p i * ((l' i : ℝ) - l i) + p j * ((l' j : ℝ) - l j) +
-            ∑ k in Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) from by
+            ∑ k ∈ Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) from by
           rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
           congr 1
           rw [← Finset.add_sum_erase _ _ (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ j⟩)]
         ]
         simp only [hl'_i, hl'_j]
-        have hrest : ∑ k in Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) = 0 := by
+        have hrest : ∑ k ∈ Finset.univ.erase j |>.erase i, p k * ((l' k : ℝ) - l k) = 0 := by
           apply Finset.sum_eq_zero
           intro k hk
           rw [Finset.mem_erase] at hk

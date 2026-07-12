@@ -47,7 +47,7 @@ noncomputable def lowerDensity (A : Set ℕ) : ℝ :=
 
 /-- The empty set trivially avoids power-of-two sums. -/
 theorem avoids_empty : AvoidsPowerOfTwoSums ∅ :=
-  fun _ _ ha => absurd ha (Set.not_mem_empty _)
+  fun _ _ ha => absurd ha (Set.notMem_empty _)
 
 /-- Avoidance is monotone: subsets of avoiding sets also avoid. -/
 theorem avoids_mono {A B : Set ℕ} (h : A ⊆ B) (hB : AvoidsPowerOfTwoSums B) :

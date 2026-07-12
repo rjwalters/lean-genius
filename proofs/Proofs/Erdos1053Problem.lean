@@ -104,7 +104,7 @@ theorem perfect_examples :
     IsKPerfect 6 2 ∧ IsKPerfect 28 2 ∧ IsKPerfect 496 2 ∧ IsKPerfect 8128 2 := by
   native_decide
 
-/-- Euler's characterization: even perfect numbers are exactly
+/-  Euler's characterization: even perfect numbers are exactly
     2^(p-1) · (2^p - 1) where 2^p - 1 is a Mersenne prime. -/
 /- ## Multiperfect Numbers (k ≥ 3) -/
 
@@ -114,18 +114,18 @@ theorem triperfect_examples :
     IsKPerfect 120 3 ∧ IsKPerfect 672 3 ∧ IsKPerfect 523776 3 := by
   native_decide
 
-/-- The largest known k for which a k-perfect number exists is k=11.
+/-  The largest known k for which a k-perfect number exists is k=11.
     The k=11 examples are extremely large (thousands of digits). -/
 /- ## The Main Conjecture -/
 
-/-- Erdős Problem #1053: If n is k-perfect (σ(n) = k·n),
+/-  Erdős Problem #1053: If n is k-perfect (σ(n) = k·n),
     must k = o(log log n)?
 
     Formally: for any ε > 0, there exists N such that for all n ≥ N,
     if σ(n) = k·n, then k < ε · log(log n). -/
 /- ## Known Upper Bounds -/
 
-/-- Gronwall's theorem (1913): lim sup σ(n)/(n · log log n) = e^γ
+/-  Gronwall's theorem (1913): lim sup σ(n)/(n · log log n) = e^γ
     where γ is the Euler–Mascheroni constant.
     So σ(n)/n can be as large as ~e^γ · log log n for highly composite n. -/
 /-- Robin's inequality (1984): σ(n) < e^γ · n · log log n for n ≥ 5041,
@@ -136,7 +136,7 @@ axiom robin_inequality_conditional (n : ℕ) (hn : n ≥ 5041) :
 
 /- ## Guy's Finiteness Conjecture -/
 
-/-- Guy's conjecture: For each k ≥ 3, there are only finitely many
+/-  Guy's conjecture: For each k ≥ 3, there are only finitely many
     k-perfect numbers. This is stronger than Erdős's question. -/
 /- ## Relationship to Robin's Criterion -/
 

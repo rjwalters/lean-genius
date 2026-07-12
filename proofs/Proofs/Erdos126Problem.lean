@@ -61,7 +61,7 @@ This is formalized as Tendsto (f(n)/log(n)) atTop atTop.
 def ErdosConjecture126 (f : ℕ → ℕ) : Prop :=
   Tendsto (fun n => (f n : ℝ) / Real.log n) atTop atTop
 
-/-- The main conjecture: if f is the extremal function, then f(n)/log(n) → ∞.
+/-  The main conjecture: if f is the extremal function, then f(n)/log(n) → ∞.
 
     This remains OPEN. Erdős offered $250 for a resolution.
     Axiomatized because no proof or disproof is known. -/
@@ -105,7 +105,7 @@ If true, the Erdős–Turán upper bound is not tight.
 Erdős said this has "never been seriously attacked."
 -/
 
-/-- Erdős noted that f(n) = o(n / log(n)) has never been proved.
+/-  Erdős noted that f(n) = o(n / log(n)) has never been proved.
     This would show the upper bound is not tight, narrowing
     the gap between the known lower and upper bounds.
 
@@ -118,7 +118,7 @@ The prime factors of these sums are bounded by 2n − 1, giving
 at most π(2n − 1) ~ 2n / log(n) distinct prime factors by PNT.
 -/
 
-/-- The trivial upper bound: when A = {1, …, n}, the product's prime factors
+/-  The trivial upper bound: when A = {1, …, n}, the product's prime factors
     are bounded by 2n via the prime number theorem.
 
     This shows f(n) ≤ O(n / log(n)) by explicit construction. -/
@@ -129,7 +129,7 @@ A basic structural observation: f is monotone non-decreasing,
 since any (n+1)-element set contains an n-element subset.
 -/
 
-/-- f is monotone: adding elements to A can only introduce more primes.
+/-  f is monotone: adding elements to A can only introduce more primes.
     Axiomatized as it requires careful combinatorial reasoning
     about sub-multisets of the product. -/
 /-

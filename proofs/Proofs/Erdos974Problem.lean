@@ -146,7 +146,7 @@ theorem erdos_974_solved (n : ℕ) (hn : n ≥ 2) (z : Configuration n)
 /- ## Part VI: Converse Direction
 -/
 
-/-- The nth roots of unity DO have the zero-tuple property when n > 1. -/
+/-  The nth roots of unity DO have the zero-tuple property when n > 1. -/
 /- ## Part VII: Connection to Newton's Identities
 
 Newton's identities connect power sums to elementary symmetric polynomials:

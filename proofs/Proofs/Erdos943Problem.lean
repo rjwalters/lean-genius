@@ -76,7 +76,7 @@ theorem isPowerful_mul {m n : ℕ} (hm : IsPowerful m) (hn : IsPowerful n) :
 
 /- ## Part II: Main Question -/
 
-/-- **Erdős Problem #943**: Is r(n) = n^{o(1)}? That is, for every
+/-  **Erdős Problem #943**: Is r(n) = n^{o(1)}? That is, for every
     ε > 0, is r(n) < n^ε for all sufficiently large n? -/
 /- ## Part III: Known Results -/
 

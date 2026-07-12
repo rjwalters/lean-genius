@@ -104,7 +104,7 @@ private lemma binary_sum : ∀ n : ℕ, ∃ S : Finset ℕ, (∀ x ∈ S, ∃ k 
   induction n using Nat.strongRecOn with
   | _ n ih =>
     match n with
-    | 0 => exact ⟨∅, fun _ h => absurd h (Finset.not_mem_empty _), by simp⟩
+    | 0 => exact ⟨∅, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩
     | n + 1 =>
       -- Let k = Nat.log 2 (n+1), giving 2^k ≤ n+1 < 2^(k+1)
       set k := Nat.log 2 (n + 1) with hk_def
@@ -393,7 +393,7 @@ private lemma fib_plus_one_not_repr : ∀ k, 2 ≤ k →
             -- fib j ≠ fib(k-1) = fib 2 since it was erased
             have hj_ne2 : j ≠ 2 := by
               intro heq; subst heq
-              exact (Finset.not_mem_erase _ _) hx
+              exact (Finset.notMem_erase _ _) hx
             -- So j ≥ 4, fib j ≥ fib 4 = 8
             have : 8 ≤ fib j := by
               have : 4 ≤ j := by omega
@@ -534,7 +534,7 @@ theorem erdos_348_case_2_3 :
 def IsStronglyRobust (a : ℕ → ℕ) (m : ℕ) : Prop :=
   ∀ S : Finset ℕ, S.card = m → IsStronglyComplete (removeIndices a S)
 
-/-- **Known results (not formalized, for reference):**
+/-  **Known results (not formalized, for reference):**
 - Van Doorn's theorem: no strongly complete sequence is 2-robust
   (∀ a, Monotone a → IsStronglyComplete (sequenceToSet a) → ¬IsStronglyRobust a 2)
 - Complete sequences have bounded gaps eventually

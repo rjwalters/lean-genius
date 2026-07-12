@@ -127,27 +127,27 @@ noncomputable def f (c : ℝ) (n : ℕ) : ℕ :=
 The phase transition at c = 1/4.
 -/
 
-/--
+/- 
 **Alon-Trotter Upper Bound:**
 For c < 1/4: f_c(n) ≪ n^{1/2}
 
 There exist triangle-saturated graphs with cn² edges
 where the maximum book size is O(√n).
 -/
-/--
+/- 
 **Fox-Loh Upper Bound (2012):**
 For c < 1/4: f_c(n) ≤ n^{O(1/log log n)}
 
 This disproves Erdős's conjecture that f_c(n) > n^ε for some ε > 0.
 -/
-/--
+/- 
 **Erdős's Polynomial Conjecture: DISPROVED**
 f_c(n) > n^ε for some ε > 0 is FALSE for c < 1/4.
 Fox-Loh (2012) showed f_c(n) ≤ n^{O(1/log log n)}, which is o(n^ε).
 -/
 /- ## Part IV: Known Lower Bounds -/
 
-/--
+/- 
 **Edwards-Khadziivanov-Nikiforov Bound:**
 For c > 1/4: f_c(n) ≥ n/6
 
@@ -163,7 +163,7 @@ but with very weak (tower-type) bounds.
 axiom regularity_lower_bound (c : ℝ) (hc : c > 0) :
   Filter.Tendsto (fun n => (f c n : ℝ)) Filter.atTop Filter.atTop
 
-/--
+/- 
 **Consequence of regularity:** For any M, eventually f_c(n) > M.
 -/
 /- ## Part V: The Phase Transition -/
@@ -199,7 +199,7 @@ Is f_c(n) ≫ log n for c < 1/4?
 def erdos_log_conjecture (c : ℝ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f c n : ℝ) ≥ C * Real.log n
 
-/-- The conjecture f_c(n) ≫ log n remains **OPEN** for c < 1/4. -/
+/-  The conjecture f_c(n) ≫ log n remains **OPEN** for c < 1/4. -/
 
 /- ## Part VII: Main Results Summary -/
 

@@ -153,7 +153,7 @@ axiom naslund_sawin_bound :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       sunflowerNumber n 3 ≤ Nat.ceil ((3 / (2 : ℝ) ^ (2/3 : ℝ) + ε) ^ n)
 
-/--
+/- 
 **Cap Set Connection (Alon-Shpilka-Umans, 2013):**
 The 3-sunflower problem is related to the cap set problem in F₃^n.
 A cap set is a subset of F₃^n with no three-term arithmetic progressions.
@@ -163,7 +163,7 @@ led to the Naslund-Sawin improvement on sunflower bounds.
 
 /- ## Part V: The Sunflower Conjecture -/
 
-/--
+/- 
 **Sunflower Conjecture (Erdős-Rado, 1960):**
 For any fixed k ≥ 3, there exists a constant c(k) such that:
 m(n, k) ≤ c(k)^n
@@ -172,13 +172,13 @@ That is, the number of subsets of {1,...,n} needed to guarantee a k-sunflower
 grows at most exponentially in n.
 -/
 
-/--
+/- 
 **Trivial Upper Bound:**
 m(n, k) ≤ 2^n + 1 since there are only 2^n subsets of {1,...,n}.
 Any family of 2^n + 1 subsets must contain duplicates, hence a trivial 2-sunflower.
 -/
 
-/--
+/- 
 **Lower Bound:**
 m(n, k) ≥ 2^(n/k) for k ≥ 3, since random constructions show sunflower-free
 families of exponential size exist.
@@ -197,13 +197,13 @@ theorem singleton_sunflower_example :
   rcases hA with rfl | rfl | rfl <;> rcases hB with rfl | rfl | rfl <;>
     first | exact absurd rfl hne | simp [inter_eq_empty, Fin.ext_iff]
 
-/--
+/- 
 **Example: Sunflower with Non-empty Core**
 The family {{1,2,3}, {1,2,4}, {1,2,5}} is a 3-sunflower with core {1,2}.
 Each petal is a singleton: {3}, {4}, {5} respectively.
 -/
 
-/--
+/- 
 **Example: Maximum Sunflower-Free Family**
 For k = 3 and sets of size 2 from {1,2,3,4}, a sunflower-free family
 can have at most 4 members, such as {{1,2}, {1,3}, {2,4}, {3,4}}.
@@ -225,13 +225,13 @@ def strong_sunflower_bound (n k ℓ : ℕ) : Prop :=
     family.card > f →
     ContainsSunflower family k
 
-/--
+/- 
 **Weak vs Strong Relationship:**
 The weak sunflower bound m(n, k) can be expressed in terms of the
 strong bounds f(n, k, ℓ) summed over all set sizes 0 ≤ ℓ ≤ n.
 -/
 
-/--
+/- 
 **Union Formulation:**
 Erdős originally stated this using "union" instead of "intersection":
 k sets form a sunflower iff the symmetric differences of any two

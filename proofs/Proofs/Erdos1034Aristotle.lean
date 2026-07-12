@@ -40,8 +40,8 @@ def TripleDistinct.toFinset (T : TripleDistinct V) : Finset V :=
 /-- A triple of distinct elements has cardinality 3. -/
 theorem triple_card (T : TripleDistinct V) : T.toFinset.card = 3 := by
   simp only [TripleDistinct.toFinset]
-  rw [Finset.card_insert_of_not_mem (by simp [T.distinct12, T.distinct13]),
-      Finset.card_insert_of_not_mem (by simp [T.distinct23]),
+  rw [Finset.card_insert_of_notMem (by simp [T.distinct12, T.distinct13]),
+      Finset.card_insert_of_notMem (by simp [T.distinct23]),
       Finset.card_singleton]
 
 -- ═══════════════════════════════════════════════════════════════════

@@ -90,12 +90,12 @@ x not in used such that prev + x is prime (by infinitude of primes).
 -/
 axiom greedySeq : ℕ → ℕ
 
-/--
+/- 
 **Greedy Sequence Initial Condition:**
 The greedy sequence starts with a₁ = 1.
 -/
 
-/--
+/- 
 **Greedy Sequence Recurrence:**
 Each term is the smallest unused integer giving a prime sum.
 -/
@@ -162,13 +162,13 @@ Odlyzko proved such a path exists.
 def primeSumGraph : ℕ → ℕ → Prop :=
   fun i j => i ≠ j ∧ (i + j).Prime
 
-/--
+/- 
 **Connection to Goldbach:**
 The structure of which pairs sum to primes is related to Goldbach's conjecture
 (every even n > 2 is the sum of two primes).
 -/
 
-/--
+/- 
 **Generalization: Other Conditions:**
 One could ask for permutations where consecutive sums satisfy other properties:
 - Always composite
@@ -180,7 +180,7 @@ These variants have different answers.
 /- ## Part VI: Properties of Prime Sum Permutations
 -/
 
-/--
+/- 
 **Parity Constraint:**
 For a + b to be prime > 2, one of a, b must be even and the other odd.
 This constrains the permutation structure.
@@ -189,7 +189,7 @@ The only even prime is 2, so if a_k + a_{k+1} > 2 is prime, it must be odd,
 meaning exactly one of a_k, a_{k+1} is even.
 -/
 
-/--
+/- 
 **Density Considerations:**
 Among the first N integers, roughly half are even and half odd.
 A prime sum permutation must carefully interleave evens and odds.
@@ -198,7 +198,7 @@ A prime sum permutation must carefully interleave evens and odds.
 /- ## Part VII: The Greedy Sequence Values
 -/
 
-/--
+/- 
 **Known Initial Values:**
 The greedy sequence begins: 1, 2, 3, 4, 7, 6, 5, 8, 9, ...
 (Each consecutive sum is prime: 3, 5, 7, 11, 13, 11, 13, 17, ...)

@@ -56,16 +56,16 @@ noncomputable def maxEdgesNoEdgeDisjointCycles (n : ℕ) : ℕ :=
 
 /- ## Pyber–Rödl–Szemerédi Lower Bound -/
 
-/-- Lower bound: f(n) ≥ c · n log log n for some c > 0.
+/-  Lower bound: f(n) ≥ c · n log log n for some c > 0.
     Proved by Pyber, Rödl, and Szemerédi (1995). -/
 /- ## Chakraborti–Janzer–Methuku–Montgomery Upper Bound -/
 
-/-- Upper bound: f(n) ≤ C · n (log n)^c for some constants C, c > 0.
+/-  Upper bound: f(n) ≤ C · n (log n)^c for some constants C, c > 0.
     Proved by Chakraborti, Janzer, Methuku, and Montgomery (2024).
     This was a major breakthrough, nearly closing the gap. -/
 /- ## The Erdős Problem -/
 
-/-- Erdős Problem 585: Determine f(n), the maximum number of edges in an
+/-  Erdős Problem 585: Determine f(n), the maximum number of edges in an
     n-vertex graph with no two edge-disjoint cycles on the same vertex set.
     Currently: Ω(n log log n) ≤ f(n) ≤ O(n (log n)^C). -/
 /-- Generalization: for k ≥ 2 pairwise edge-disjoint cycles on the

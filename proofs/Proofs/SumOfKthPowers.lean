@@ -508,7 +508,7 @@ theorem sum_pow_succ_sub (n k : ℕ) :
 /- ## Connection to Bernoulli Numbers: The General Faulhaber Formula
 
 Mathlib provides the general Faulhaber formula via `Finset.sum_range_pow`, which expresses
-∑_{i=0}^{n-1} i^p as a polynomial in n with Bernoulli number coefficients:
+∑_{i=0}^{n-1} i^p as a polynomial ∈ n with Bernoulli number coefficients:
 
   ∑_{i=0}^{n-1} i^p = ∑_{i=0}^{p} B_i · C(p+1,i) · n^(p+1-i) / (p+1)
 

@@ -523,7 +523,7 @@ theorem infinite_ramsey (r k : ℕ) :
           have := vertex_later (n_min + 1) (invV y) hgt
           rwa [invV_recover y hy_in_H] at this
         -- vertex n_min ∉ rest (since x_min ∉ s.val.erase x_min)
-        have hpivot_not : vertex n_min ∉ rest := hpivot ▸ Finset.not_mem_erase x_min s.val
+        have hpivot_not : vertex n_min ∉ rest := hpivot ▸ Finset.notMem_erase x_min s.val
         -- Apply monochromaticity at step n_min
         have hmono := mono_at n_min rest hrest_card hrest_sub hpivot_not
         -- Reconstruct: s.val = cons (vertex n_min) rest

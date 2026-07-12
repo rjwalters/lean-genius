@@ -136,7 +136,7 @@ theorem zero_mem_diffSet_iff (A : Set ℕ) :
   by_contra hfin
   rw [Set.not_infinite] at hfin
   rw [diffSet_finite_eq_empty A hfin] at h0
-  exact absurd h0 (Set.not_mem_empty 0)
+  exact absurd h0 (Set.notMem_empty 0)
 
 /-- `D(A)` is nonempty if and only if `A` is infinite. -/
 theorem diffSet_nonempty_iff (A : Set ℕ) :
@@ -146,7 +146,7 @@ theorem diffSet_nonempty_iff (A : Set ℕ) :
   by_contra hfin
   rw [Set.not_infinite] at hfin
   rw [diffSet_finite_eq_empty A hfin] at hd
-  exact absurd hd (Set.not_mem_empty d)
+  exact absurd hd (Set.notMem_empty d)
 
 /-- Positive lower density implies positive upper density. -/
 theorem lower_density_implies_upper (A : Set ℕ) :

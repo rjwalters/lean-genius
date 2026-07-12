@@ -122,7 +122,7 @@ def HasModuliInCRange (S : CongruenceSystem) (N : ℕ) (C : ℝ) : Prop :=
 
 /- ## Part V: The Natural Density Product -/
 
-/-- The product ∏(1 - 1/n) over all integers n in [m₁, m₂].
+/-- The product ∏(1 - 1/n) over all integers n ∈ [m₁, m₂].
     This is the "averaging argument" lower bound: choosing residues uniformly at
     random, the expected fraction of uncovered integers equals this product. -/
 noncomputable def naturalDensity (m₁ m₂ : ℕ) : ℝ :=
@@ -147,7 +147,7 @@ private lemma naturalDensity_eq_inv : ∀ n : ℕ, n ≥ 2 → naturalDensity 2 
       have ihm : naturalDensity 2 m = 1 / (m : ℝ) := ih hm
       simp only [naturalDensity]
       have hrng : m + 1 - 2 + 1 = (m - 2 + 1) + 1 := by omega
-      rw [hrng, Finset.range_succ, Finset.map_insert, Finset.prod_insert]
+      rw [hrng, Finset.range_add_one, Finset.map_insert, Finset.prod_insert]
       · rw [show m - 2 + 1 + 2 = m + 1 from by omega]
         simp only [← naturalDensity, ihm]
         have hm_pos : (0 : ℝ) < m := by exact_mod_cast Nat.lt_of_lt_pred (by omega)

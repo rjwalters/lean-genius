@@ -94,7 +94,7 @@ theorem omega_recurrence (n : ℕ) :
 
 /- ## Part IV: Computability Corollaries -/
 
-/-- The recurrence reduces ω_{n+2} to ω_n, so any ω_n is computable
+/-  The recurrence reduces ω_{n+2} to ω_n, so any ω_n is computable
     from the base cases ω_0 = 1 and ω_1 = 2 in ⌊n/2⌋ steps. -/
 
 /-- ω_2 = π via the recurrence from ω_0 = 1. -/

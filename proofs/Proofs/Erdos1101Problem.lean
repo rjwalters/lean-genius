@@ -82,11 +82,11 @@ Erdős conjectured:
 2. YES there exists a good sequence with sub-exponential growth
 -/
 
-/-- **Erdős's First Conjecture**: There is NO good sequence with polynomial growth.
+/-  **Erdős's First Conjecture**: There is NO good sequence with polynomial growth.
 
 If u is good, then u cannot grow like n^k for any fixed k.
 This remains OPEN. -/
-/-- **Erdős's Second Conjecture**: There IS a good sequence with sub-exponential growth.
+/-  **Erdős's Second Conjecture**: There IS a good sequence with sub-exponential growth.
 
 There exists a good sequence u such that log(uₙ) = o(n), meaning uₙ grows
 slower than any exponential e^(cn).
@@ -98,11 +98,11 @@ Erdős proved the existence of SOME good sequence (using primes).
 Sieve theory gives a matching lower bound for gaps.
 -/
 
-/-- **Erdős's Existence Theorem**: There exists a good sequence.
+/-  **Erdős's Existence Theorem**: There exists a good sequence.
 
 Erdős proved this using the sequence of all primes. This shows the "good"
 condition is achievable, but doesn't address the growth rate questions. -/
-/-- **Sieve Lower Bound**: For ANY sequence u satisfying the coprimality and
+/-  **Sieve Lower Bound**: For ANY sequence u satisfying the coprimality and
 convergence conditions, gaps in A(u) are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹.
 
 This shows the bound in the definition of "good" is essentially optimal. -/

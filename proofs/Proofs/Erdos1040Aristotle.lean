@@ -10,7 +10,7 @@
   - No axioms (use theorem ... := by sorry instead)
 
   Notation note: this file targets Mathlib toolchain v4.26.0, in which the
-  `∏ x in s` big-operator syntax and the bundled `Complex.abs` absolute value
+  `∏ x ∈ s` big-operator syntax and the bundled `Complex.abs` absolute value
   were removed.  We therefore use `∏ x ∈ s` and the norm `‖·‖` throughout
   (`‖z‖ = Complex.abs z` for `z : ℂ`), and write value sets with an explicit
   existential rather than the withdrawn `{ f x | x : T // p x }` binder form.
@@ -93,7 +93,7 @@ theorem transfiniteDiameter_nonneg (F : Set ℂ) :
     sublevel set `{z | ‖1‖ < 1}` is empty. -/
 theorem degree_zero_sublevel_empty (p : PolynomialInF F) (hp : p.degree = 0) :
     sublevelSet p = ∅ := by
-  rw [Set.eq_empty_iff_forall_not_mem]
+  rw [Set.eq_empty_iff_forall_notMem]
   intro z
   have h1 : p.eval z = 1 := by
     haveI : IsEmpty (Fin p.degree) := by rw [hp]; infer_instance

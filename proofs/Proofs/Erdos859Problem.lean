@@ -56,12 +56,12 @@ open Nat Finset Filter Asymptotics Real
     - t = 12: {1, 2, 3, 6} ✓
     - t = 7: {1, 6} ✓ -/
 def DivisorSumSet (t : ℕ) : Set ℕ :=
-  {n : ℕ | ∃ s ⊆ Nat.divisors n, t = ∑ i in s, i}
+  {n : ℕ | ∃ s ⊆ Nat.divisors n, t = ∑ i ∈ s, i}
 
 /-- Alternative characterization: n ∈ DivisorSumSet t iff some subset
     of divisors of n sums to t. -/
 theorem mem_divisorSumSet_iff (t n : ℕ) :
-    n ∈ DivisorSumSet t ↔ ∃ s ⊆ Nat.divisors n, t = ∑ i in s, i := by
+    n ∈ DivisorSumSet t ↔ ∃ s ⊆ Nat.divisors n, t = ∑ i ∈ s, i := by
   rfl
 
 /- ## Part II: Natural Density -/
@@ -149,8 +149,8 @@ theorem mem_divisorSumSet_two (n : ℕ) (hn : n > 0) :
       have := hpos x hx; have := hle x hx
       have : x ≠ 2 := fun h => h2ns (h ▸ hx)
       omega
-    have : ∑ i in s, i ≤ 1 := by
-      calc ∑ i in s, i = ∑ _ in s, 1 := Finset.sum_congr rfl (fun x hx => hone x hx)
+    have : ∑ i ∈ s, i ≤ 1 := by
+      calc ∑ i ∈ s, i = ∑ _ ∈ s, 1 := Finset.sum_congr rfl (fun x hx => hone x hx)
         _ = s.card := by simp
         _ ≤ ({1} : Finset ℕ).card := Finset.card_le_card
             (fun x hx => Finset.mem_singleton.mpr (hone x hx))
@@ -267,7 +267,7 @@ theorem practical_examples :
     IsPractical 1 ∧ IsPractical 2 ∧ IsPractical 6 ∧ IsPractical 12 := by
   sorry
 
-/-- Practical numbers have positive density (Margenstern 1991).
+/-  Practical numbers have positive density (Margenstern 1991).
     This relates to our problem since practical n contribute to many dₜ. -/
 /- ## Part X: Subset Sum Problem -/
 
@@ -275,7 +275,7 @@ theorem practical_examples :
     subset of S sum to t? This is NP-complete in general, but
     for divisor sets, special structure helps. -/
 def SubsetSumExists (S : Finset ℕ) (t : ℕ) : Prop :=
-  ∃ s ⊆ S, ∑ i in s, i = t
+  ∃ s ⊆ S, ∑ i ∈ s, i = t
 
 /-- n ∈ DivisorSumSet t iff SubsetSumExists (divisors n) t. -/
 theorem divisorSumSet_subsetSum (n t : ℕ) (hn : n > 0) :
@@ -284,8 +284,8 @@ theorem divisorSumSet_subsetSum (n t : ℕ) (hn : n > 0) :
 
 /- ## Part XI: Growth of σ(n) -/
 
-/-- Average order of σ(n): Σ_{n≤N} σ(n) ~ (π²/12) N². -/
-/-- For "most" n, σ(n) ≈ n · (some logarithmic factor).
+/-  Average order of σ(n): Σ_{n≤N} σ(n) ~ (π²/12) N². -/
+/-  For "most" n, σ(n) ≈ n · (some logarithmic factor).
     This bounds how many n can contribute to DivisorSumSet t for large t. -/
 /- ## Part XII: Summary -/
 

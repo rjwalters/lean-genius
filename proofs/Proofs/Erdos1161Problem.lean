@@ -174,9 +174,9 @@ from [Be25d]. They are not provable from Mathlib and are stated here as axioms
 to capture the formal problem resolution.
 -/
 
-/-- Beker's characterization: for sufficiently large n, if f_k(n) ≥ (n-1)!
+/-  Beker's characterization: for sufficiently large n, if f_k(n) ≥ (n-1)!
     then lcm(1,...,n-k) divides k. [Beker, Be25d] -/
-/-- Beker's maximizer theorem: for all sufficiently large n,
+/-  Beker's maximizer theorem: for all sufficiently large n,
     f_k(n) = (n-1)! if and only if k is the minimal positive integer
     such that lcm(1,...,n-k) divides k.
     We state one direction: the minimal k with lcmRange(n-k) | k achieves (n-1)!.
@@ -247,7 +247,7 @@ private lemma cycleType_eq_singleton_of_prime_order {p : ℕ} (hp : p.Prime)
     intro h
     have h_card : σ.support.card = 0 := by rw [← Equiv.Perm.sum_cycleType]; simp [h]
     have h_empty : σ.support = ∅ := Finset.card_eq_zero.mp h_card
-    simp only [Finset.eq_empty_iff_forall_not_mem, Equiv.Perm.mem_support, not_not] at h_empty
+    simp only [Finset.eq_empty_iff_forall_notMem, Equiv.Perm.mem_support, not_not] at h_empty
     exact h_ne (Equiv.Perm.ext (fun x => by simp [h_empty x]))
   -- Get an element from the nonempty multiset
   have ⟨a, ha⟩ : ∃ a, a ∈ σ.cycleType := by

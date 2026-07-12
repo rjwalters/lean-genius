@@ -103,12 +103,12 @@ def lcmConjecture : Prop :=
 Erdős and Szemerédi established precise bounds for k = 3.
 -/
 
-/-- **Erdős-Szemerédi Upper Bound**: For any sequence A and k = 3,
+/-  **Erdős-Szemerédi Upper Bound**: For any sequence A and k = 3,
 F(A,X,3) ≪ X^(1/3) log X.
 
 This means the exponent 1/3 is achievable for k = 3. We state this as an axiom
 since the proof requires careful number-theoretic analysis. -/
-/-- **Erdős-Szemerédi Lower Bound**: There exists a sequence A such that
+/-  **Erdős-Szemerédi Lower Bound**: There exists a sequence A such that
 F(A,X,3) ≫ X^(1/3) log X for infinitely many X.
 
 This shows the upper bound is essentially tight for k = 3. -/

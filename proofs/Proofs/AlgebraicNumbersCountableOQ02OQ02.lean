@@ -33,6 +33,7 @@ References:
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic
+import Mathlib.Data.Countable.Defs
 
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false
@@ -252,7 +253,7 @@ theorem reals_uncountable_nested : ¬ Countable ℝ := by
   intro h
   haveI := h
   haveI : Nonempty ℝ := ⟨0⟩
-  obtain ⟨f, hf⟩ := Countable.exists_surjective_nat ℝ ⟨(0 : ℝ)⟩
+  obtain ⟨f, hf⟩ := exists_surjective_nat ℝ ⟨(0 : ℝ)⟩
   exact no_surjection_nat_to_real ⟨f, hf⟩
 
 /-

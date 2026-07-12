@@ -99,7 +99,7 @@ While the main question is open, several partial results constrain how
 closely r_A(n) can approximate log(n).
 -/
 
-/--
+/- 
 **Erdős-Sárközy Theorem**
 
 For any set A ⊆ ℕ, the representation function cannot approximate log(n)
@@ -109,7 +109,7 @@ with error o(√log n). More precisely:
 
 This shows that even if r_A(n) ~ log(n), the fluctuations must be significant.
 -/
-/--
+/- 
 **Horváth's Improvement (2007)**
 
 Horváth strengthened the Erdős-Sárközy result: the error cannot stay below

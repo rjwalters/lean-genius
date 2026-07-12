@@ -134,7 +134,7 @@ def StrictlyIncreasingPattern (k : ℕ) : OrderingPattern k := Equiv.refl (Fin k
 def AlternatingPattern (k : ℕ) : OrderingPattern k := by
   sorry  -- Complex definition
 
-/-- For small k, we can check specific patterns -/
+/-  For small k, we can check specific patterns -/
 
 /-- k = 2: Both patterns (increasing and decreasing) appear early -/
 theorem patterns_k2_achievable (n : ℕ) (hn : n ≥ 10) :
@@ -188,7 +188,7 @@ theorem erdos_1936_F_tau_asymptotic : AsymptoticTripleLog F_tau := by
 
 /- ## Why Triple Log? -/
 
-/-- Intuition: The number of patterns is k!, and we need k! ≤ O(n/k) chances.
+/-  Intuition: The number of patterns is k!, and we need k! ≤ O(n/k) chances.
     k! ≈ (k/e)^k, so k^k ≲ n, giving k ≲ log n / log log n.
     But φ values cluster, reducing independence, adding another log factor. -/
 

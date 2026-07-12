@@ -111,8 +111,8 @@ def SmallCounterexamples : Set ℕ := {2, 3, 4, 5, 7, 8, 9}
 /-- There exist counterexamples for m in SmallCounterexamples. -/
 axiom counterexamples_exist :
   ∀ m ∈ SmallCounterexamples,
-    ∃ G : Type, ∃ [Fintype G] [DecidableEq G],
-      ∃ (graph : SimpleGraph G) [DecidableRel graph.Adj],
+    ∃ G : Type, ∃ (_ : Fintype G) (_ : DecidableEq G),
+      ∃ (graph : SimpleGraph G) (_ : DecidableRel graph.Adj),
         edgeCount graph = m ∧ NoIsolatedVertices graph ∧
           ramseyNumberGraph graph > ramseyNumberGraph (maximallyCompleteGraph m)
 

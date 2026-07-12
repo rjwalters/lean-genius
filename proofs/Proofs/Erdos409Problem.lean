@@ -129,10 +129,10 @@ theorem iteration_terminates :
 
 /- ## Main Questions -/
 
-/-- **Part (i)**: Estimate F(n), the iteration count.
+/-  **Part (i)**: Estimate F(n), the iteration count.
     Cambie notes F(n) = o(n) is trivial and F(n) = 1 infinitely often.
     The question asks for good upper bounds on F(n). -/
-/-- **Part (ii)**: Can infinitely many n reach the same prime?
+/-  **Part (ii)**: Can infinitely many n reach the same prime?
     That is, for some prime p, the set {n : ∃ k, totientIterate n k = p}
     is infinite. -/
 /-- **Part (iii)**: What is the density of n reaching a fixed prime p?

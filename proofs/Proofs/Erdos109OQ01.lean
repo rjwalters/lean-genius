@@ -278,7 +278,7 @@ def IsIPSet (S : Set ℕ) : Prop :=
 axiom hindman_theorem (k : ℕ) (coloring : ℕ → Fin k) :
     ∃ c : Fin k, IsIPSet { n | coloring n = c }
 
-/-- **CORRECTED**: A set of positive upper density need NOT contain an IP set.
+/-  **CORRECTED**: A set of positive upper density need NOT contain an IP set.
     Counterexample: A = {n : n mod 3 ≠ 0} has density 2/3 but contains no IP set,
     because any IP set must have elements with all finite sums, and for any
     choice of generators modulo 3, triple sums (or mixed pair sums) will be ≡ 0 mod 3.

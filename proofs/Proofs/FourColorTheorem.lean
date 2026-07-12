@@ -153,7 +153,7 @@ theorem exists_degree_le_five (G : SimpleGraph V) [DecidableRel G.Adj] [Planar G
 -- PART 5: The Five Color Theorem
 -- ============================================================
 
-/-- The Five Color Theorem: Every planar graph is 5-colorable.
+/-  The Five Color Theorem: Every planar graph is 5-colorable.
 
     Proof sketch (by induction on vertices):
     1. Base case: Empty graph is trivially 5-colorable
@@ -215,7 +215,7 @@ def KempeChain (G : SimpleGraph V) (c : G.Coloring (Fin k))
 -- PART 7: The Four Color Theorem
 -- ============================================================
 
-/-- The Four Color Theorem: Every planar graph is 4-colorable.
+/-  The Four Color Theorem: Every planar graph is 4-colorable.
 
     The proof requires:
     1. Showing certain configurations are "reducible" (633 configurations)

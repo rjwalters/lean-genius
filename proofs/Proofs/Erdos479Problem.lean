@@ -56,7 +56,7 @@ For n > 2: If n is odd, then 2^n is even and n is odd, so 2^n ≢ 1 (mod n).
            In particular, 2^n ≢ 1 (mod n) since 1 ≢ 0 (mod 2).
 -/
 
-/--
+/- 
 For n > 1, we have 2^n ≢ 1 (mod n).
 This is why Graham's conjecture requires k ≠ 1.
 -/
@@ -112,11 +112,11 @@ theorem odd_primes_give_two (p : ℕ) (hp : Nat.Prime p) (_hodd : p > 2) :
     p ∈ SolutionSet 2 :=
   ⟨hp.pos, fermat_little p hp⟩
 
-/--
+/- 
 For k = 3, the smallest solution is n = 4700063497.
 This huge value illustrates the computational difficulty.
 -/
-/--
+/- 
 For any n < 4700063497, we have 2^n ≢ 3 (mod n).
 -/
 /-

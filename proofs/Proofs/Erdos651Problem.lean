@@ -90,18 +90,18 @@ This is a Ramsey-type function for convex geometry.
 -/
 axiom f_k (k n : ℕ) : ℕ
 
-/--
+/- 
 **f_k achieves its purpose:**
 Any f_k(n) points in general position contain an n-vertex polyhedron.
 -/
-/--
+/- 
 **f_k is minimal:**
 There exist f_k(n) - 1 points in general position with no n-vertex polyhedron.
 -/
 /- ## Part IV: The Erdős-Klein-Szekeres Case (k = 2)
 -/
 
-/--
+/- 
 **Erdős-Klein-Szekeres:**
 In the plane (k = 2), f_2(n) is the "happy ending problem".
 Erdős-Szekeres (1935) proved: f_2(n) ≤ 2^{n-2} + 1.
@@ -117,7 +117,7 @@ axiom suk_2017 (n : ℕ) (hn : n ≥ 3) :
 /- ## Part V: Monotonicity in Dimension
 -/
 
-/--
+/- 
 **f_k decreases with dimension:**
 f_2(n) > f_3(n) > f_4(n) > ...
 

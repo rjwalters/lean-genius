@@ -93,7 +93,7 @@ For an exact covering, the densities must sum to exactly 1.
 def densitySum (C : CoveringSystem) : ℚ :=
   C.classes.sum fun p => density p.2
 
-/--
+/- 
 **Density lemma:**
 For an exact covering system, the sum of densities equals 1.
 -/
@@ -119,7 +119,7 @@ theorem distinct_moduli_not_exact :
 
 /- ## Part IV: Proof Techniques -/
 
-/--
+/- 
 **Mirsky-Newman generating function approach:**
 Consider the generating function f(x) = Σᵢ x^{aᵢ}/(1 - x^{nᵢ}).
 For an exact covering, f(x) = 1/(1-x) (each integer represented exactly once).
@@ -127,7 +127,7 @@ This imposes analytic constraints on the moduli that cannot be satisfied
 when all moduli are distinct. Axiomatized since the proof requires
 complex analysis of formal power series.
 -/
-/--
+/- 
 **Davenport-Rado LCM argument:**
 If distinct moduli n₁ < n₂ < ... < nₖ give an exact covering,
 the largest modulus nₖ must divide lcm(n₁, ..., n_{k-1}).
@@ -145,7 +145,7 @@ axiom covering_systems_exist :
     ∃ C : CoveringSystem, hasDistinctModuli C ∧
       (∀ n ∈ C.classes, n.2 > 1)  -- No modulus 1 (trivial)
 
-/--
+/- 
 **Example: The Erdős covering system:**
 {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)}
 covers all integers with distinct moduli > 1.

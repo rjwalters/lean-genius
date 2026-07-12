@@ -396,7 +396,7 @@ theorem minpoly_alpha_natDegree (hn : 3 ≤ n) :
 /-- There exists a ℚ-algebra embedding of CyclotomicField into ℂ that sends
     α = ζ + ζ⁻¹ to 2cos(2π/n). Proved in AngleTrisectionEmbedding.lean. -/
 theorem exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
-    ∃ φ : CyclotomicField n ℚ →ₐ[ℚ] ℂ,
+    ∃ φ : CyclotomicField n ℚ →ₐ(_ : ℚ) ℂ,
     φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n)) :=
   AngleTrisectionEmbedding.exists_embedding_alpha_eq_2cos n hn
 
@@ -443,7 +443,7 @@ theorem minpoly_alphaCos_natDegree (hn : 3 ≤ n) :
 
 /-- cos(2π/n) satisfies a monic polynomial over ℚ of degree φ(n)/2. -/
 theorem cos_minimal_poly_degree (hn : 3 ≤ n) :
-    ∃ P : ℚ[X], P.Monic ∧ P.natDegree = Nat.totient n / 2 ∧
+    ∃ P : ℚ(_ : X), P.Monic ∧ P.natDegree = Nat.totient n / 2 ∧
     Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) P = 0 := by
   use minpoly ℚ (alphaCos n)
   refine ⟨minpoly.monic (Algebra.IsIntegral.isIntegral _),

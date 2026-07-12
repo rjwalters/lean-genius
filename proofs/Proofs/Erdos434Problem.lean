@@ -212,7 +212,7 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
 
 /- ## Part VII: Why topK is Optimal -/
 
-/-- Intuition: Using larger numbers means fewer representations.
+/-  Intuition: Using larger numbers means fewer representations.
 
     If A contains small numbers, more integers can be built from them.
     Using only large numbers {n-k+1, ..., n} creates "gaps" in what's

@@ -58,7 +58,7 @@ def IsKCommonSet (k : ℕ) (Ns : Finset ℕ) : Prop :=
   Ns.card = k ∧
   (⋂ n ∈ Ns, factorDifferenceSet n).ncard ≥ k
 
-/-- **Erdős Problem #885 (Partially OPEN)**:
+/-  **Erdős Problem #885 (Partially OPEN)**:
 For every k ≥ 1, there exists a k-common set.
 
 Solved for k ≤ 4, open for k ≥ 5. -/
@@ -67,19 +67,19 @@ Solved for k ≤ 4, open for k ≥ 5. -/
 ## Solved Cases
 -/
 
-/-- **Erdős-Rosenfeld (1997)**: The case k = 2 is true.
+/-  **Erdős-Rosenfeld (1997)**: The case k = 2 is true.
 
 Example: N₁ = 6, N₂ = 12
 - D(6) = {5, 1} (from 1·6, 2·3)
 - D(12) = {11, 4, 1} (from 1·12, 2·6, 3·4)
 - D(6) ∩ D(12) ⊇ {1} with |intersection| ≥ 2 achieved elsewhere. -/
 
-/-- **Jiménez-Urroz (1999)**: The case k = 3 is true.
+/-  **Jiménez-Urroz (1999)**: The case k = 3 is true.
 
 The construction requires finding three highly composite numbers with
 many common factor differences. -/
 
-/-- **Bremner (2019)**: The case k = 4 is true.
+/-  **Bremner (2019)**: The case k = 4 is true.
 
 Bremner used computational search combined with number-theoretic
 techniques to find four integers with ≥ 4 common factor differences. -/
@@ -98,17 +98,17 @@ rapidly because:
 ## Computational Observations
 -/
 
-/-- The number of elements in D(n) equals the number of divisor pairs.
+/-  The number of elements in D(n) equals the number of divisor pairs.
 For n with d(n) divisors, |D(n)| = ⌈d(n)/2⌉. -/
 
-/-- Highly composite numbers have larger factor difference sets,
+/-  Highly composite numbers have larger factor difference sets,
 making them good candidates for finding common elements. -/
 
 /-
 ## Connection to Divisor Structure
 -/
 
-/-- D(n) can be characterized in terms of divisors:
+/-  D(n) can be characterized in terms of divisors:
 d ∈ D(n) iff there exists a divisor a of n with |a - n/a| = d. -/
 
 /-

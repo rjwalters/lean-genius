@@ -138,7 +138,7 @@ A linear functional vanishing (relative to its value at `a`) exactly on the
     line through `a` and `b`.
 -/
 lemma exists_line_functional (a b : E2) :
-    ∃ f : E2 →ₗ[ℝ] ℝ, f a = f b ∧
+    ∃ f : E2 →ₗ(_ : ℝ) ℝ, f a = f b ∧
       ∀ w : E2, (f w = f a ↔ Collinear ℝ ({a, b, w} : Set E2)) := by
   refine' ⟨ _, _ ⟩;
   refine' { toFun := fun w => ( b 0 - a 0 ) * w 1 - ( b 1 - a 1 ) * w 0, map_add' := _, map_smul' := _ };

@@ -237,7 +237,7 @@ problem does NOT always have a solution for reducible representations.
     The first counterexample has 4 singular points and dimension 3.
     The obstruction is related to the Fuchs relation. -/
 axiom bolibrukh_counterexample :
-    ∃ (S : SingularPoints) (n : ℕ) [NeZero n],
+    ∃ (S : SingularPoints) (n : ℕ) (_ : NeZero n),
     ∃ ρ : MonodromyRep n S,
       ¬ρ.isIrreducible n S ∧
       ¬∃ F : FuchsianSystem n S, realizes n S F ρ
@@ -247,7 +247,7 @@ axiom bolibrukh_counterexample :
     Hilbert's 21st problem, as originally stated ("always exists"),
     is false in general. -/
 theorem hilbert21_negative_in_general :
-    ∃ (S : SingularPoints) (n : ℕ) [NeZero n],
+    ∃ (S : SingularPoints) (n : ℕ) (_ : NeZero n),
     ∃ ρ : MonodromyRep n S,
       ¬∃ F : FuchsianSystem n S, realizes n S F ρ := by
   obtain ⟨S, n, _, ρ, _, hno⟩ := bolibrukh_counterexample
@@ -369,7 +369,7 @@ theorem hilbert21_summary :
     (∀ (S : SingularPoints) (ρ : MonodromyRep n S),
       ρ.isIrreducible n S → ∃ F : FuchsianSystem n S, realizes n S F ρ) ∧
     -- General case: negative answer (counterexamples exist)
-    (∃ (S : SingularPoints) (n : ℕ) [NeZero n],
+    (∃ (S : SingularPoints) (n : ℕ) (_ : NeZero n),
       ∃ ρ : MonodromyRep n S, ¬∃ F : FuchsianSystem n S, realizes n S F ρ) := by
   constructor
   · intro S ρ hirr

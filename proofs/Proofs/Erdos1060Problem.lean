@@ -269,14 +269,14 @@ theorem g_gt_k (k : ℕ) (hk : k ≥ 2) : g k > k := by
 ## Part VI: Upper Bound Conjectures (OPEN)
 -/
 
-/--
+/- 
 **Weak Conjecture:**
 f(n) ≤ n^{o(1/log log n)} as n → ∞.
 
 This means: For any ε > 0, there exists N such that for all n > N,
 f(n) ≤ n^{ε/log log n}.
 -/
-/--
+/- 
 **Strong Conjecture:**
 f(n) ≤ (log n)^C for some constant C.
 

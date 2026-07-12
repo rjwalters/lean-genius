@@ -427,7 +427,7 @@ The main theorem proof below assembles these pieces without sorry.
 -/
 
 /-- **HasSum of Lp indicator functions** for a pairwise disjoint partition.
-    The Lp partial sums ∑_{i<N} 1_{f i} converge in Lp norm to 1_{⋃ f i}.
+    The Lp partial sums ∑_{i<N} 1_{f i} converge ∈ Lp norm to 1_{⋃ f i}.
 
     Proof sketch: eLpNorm (1_{⋃_{i≥N} f_i}) p μ = μ(⋃_{i≥N} f i)^{1/p} → 0
     because ∑_{i≥N} μ(f i) → 0 (finite total measure, tail of convergent series).

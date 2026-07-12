@@ -63,7 +63,7 @@ theorem circle_is_ellipse (r : ℝ) (hr : 0 ≤ r) :
 
 /-! ## Part 2: Archimedes' Parabolic Exhaustion -/
 
-/-- The area of a parabolic segment bounded by a chord is 4/3 of the inscribed
+/-  The area of a parabolic segment bounded by a chord is 4/3 of the inscribed
 triangle formed by the chord and the vertex of the parabola.
 
 Archimedes proved this by the method of exhaustion: inscribe a triangle T₀,

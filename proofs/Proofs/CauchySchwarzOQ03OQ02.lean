@@ -197,7 +197,7 @@ theorem minkowski_l2 (f g : Lp ℝ 2 μ) :
 ## Part 7: The Hölder–Minkowski Duality
 
 Hölder and Minkowski are dual inequalities:
-- Hölder bounds the pairing ⟨f, g⟩ = ∑f_i·g_i in terms of Lp and Lq norms
+- Hölder bounds the pairing ⟨f, g⟩ = ∑f_i·g_i ∈ terms of Lp and Lq norms
 - Minkowski bounds the Lp norm of a sum ‖f + g‖_p in terms of individual Lp norms
 
 Together they establish:

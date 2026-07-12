@@ -191,7 +191,7 @@ def scaledConjecture : Prop :=
     ∀ M > 0, ∃ N₀, ∀ N ≥ N₀,
       (countingFunction (sumset A) (2 * N) : ℝ) / countingFunction A N > M
 
-/--
+/- 
 **Status: OPEN**
 -/
 /-- The scaled conjecture remains open: for sparse additive bases A,
@@ -202,7 +202,7 @@ axiom scaled_conjecture_open : scaledConjecture
 ## Part VII: Why the Original Conjecture Fails
 -/
 
-/--
+/- 
 **Intuition:**
 The conjecture fails because a cleverly constructed basis can have
 |A+A| grow at essentially the same rate as |A|.
@@ -220,7 +220,7 @@ unbounded sumset-to-set ratio.
 ## Part VIII: Comparison with Plünnecke-Ruzsa
 -/
 
-/--
+/- 
 **Plünnecke-Ruzsa Inequality:**
 For finite sets, |A+A| ≤ |A|² always.
 More precisely: |hA| ≤ |A|^h.
@@ -237,13 +237,13 @@ for infinite sets.
 ## Part IX: Examples
 -/
 
-/--
+/- 
 **Example: Powers of 2**
 A = {2^k : k ∈ ℕ} is sparse: |A ∩ [1,N]| ≈ log₂(N) = o(N).
 But A is NOT an additive basis of any order.
 -/
-/-- Powers of 2 are not an additive basis of any finite order. -/
-/--
+/-  Powers of 2 are not an additive basis of any finite order. -/
+/- 
 **Example: Squares**
 A = {n² : n ∈ ℕ} is sparse: |A ∩ [1,N]| ≈ √N = o(N).
 A is an additive basis of order 4 (Lagrange's theorem).
@@ -285,7 +285,7 @@ preventing unbounded growth of the ratio.
 -/
 theorem erdos_337 : ¬erdosConjecture := erdos_conjecture_false
 
-/--
+/- 
 **Historical Note:**
 This problem connects additive combinatorics to the structure of
 additive bases. The surprising negative answer shows that sparsity

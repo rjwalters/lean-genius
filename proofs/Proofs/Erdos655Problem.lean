@@ -112,7 +112,7 @@ theorem basic_distance_bound (n : ℕ) (_hn : 2 ≤ n)
 
 /- ## Hunter's Counterexample -/
 
-/-- Zach Hunter showed the conjecture as stated is false:
+/-  Zach Hunter showed the conjecture as stated is false:
     n points equally spaced on a circle satisfy NoConcyclicTriple
     but determine only n/2 distinct distances (not (1+c)n/2) -/
 /- ## The Erdős–Pach Conjecture (Corrected Form) -/

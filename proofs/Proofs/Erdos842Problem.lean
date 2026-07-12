@@ -61,7 +61,7 @@ Every pair of distinct vertices is adjacent.
 theorem triangle_is_complete : ∀ i j : Fin 3, i ≠ j → TriangleGraph.Adj i j :=
   fun _ _ h => h
 
-/--
+/- 
 **Chromatic number of K₃:**
 K₃ has chromatic number exactly 3.
 -/
@@ -177,7 +177,7 @@ The graph has exactly 3n vertices.
 theorem vertex_count (n : ℕ) : Fintype.card (Fin (3 * n)) = 3 * n := by
   exact Fintype.card_fin (3 * n)
 
-/--
+/- 
 **Maximum degree:**
 Each vertex is in one triangle (degree 2 from triangle)
 and part of Hamiltonian cycle (degree 2 from cycle).

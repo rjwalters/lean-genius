@@ -71,7 +71,7 @@ theorem exists_indep_card_ge (G : SimpleGraph V) [DecidableRel G.Adj] (W : Finse
       have hNb_sub : Nb ⊆ W := Finset.filter_subset _ _
       have hNW : N ⊆ W := by rw [hN]; exact Finset.insert_subset_iff.mpr ⟨hvW, hNb_sub⟩
       have hNcard : N.card = degIn G W v + 1 := by
-        rw [hN, Finset.card_insert_of_not_mem hv_notNb, hNb]; rfl
+        rw [hN, Finset.card_insert_of_notMem hv_notNb, hNb]; rfl
       have hNne : N.Nonempty := ⟨v, by rw [hN]; exact Finset.mem_insert_self _ _⟩
       have hW'ss : W' ⊂ W := by rw [hW']; exact Finset.sdiff_ssubset hNW hNne
       -- Induction hypothesis on the strictly smaller `W'`.
@@ -106,7 +106,7 @@ theorem exists_indep_card_ge (G : SimpleGraph V) [DecidableRel G.Adj] (W : Finse
           · exact hI'indep a haI' b hbI' hab
       · -- The weight bound.
         have hcard_eq : ((insert v I').card : ℝ) = (I'.card : ℝ) + 1 := by
-          rw [Finset.card_insert_of_not_mem hv_notI']; push_cast; ring
+          rw [Finset.card_insert_of_notMem hv_notI']; push_cast; ring
         rw [hcard_eq]
         -- Split the sum over `W` as `W' + N`.
         have hsplit : (∑ u ∈ W, (1 : ℝ) / ((degIn G W u : ℝ) + 1))

@@ -142,7 +142,7 @@ axiom ulas_theorem :
 ## Part VI: Bauer-Bennett Theorem (2007)
 -/
 
-/--
+/- 
 **Bauer-Bennett Theorem (2007):**
 For n = 3 or n = 5, there are infinitely many collections of n disjoint
 intervals, each of size exactly 4, whose product is a perfect square.
@@ -151,7 +151,7 @@ intervals, each of size exactly 4, whose product is a perfect square.
 ## Part VII: Bennett-Van Luijk Theorem (2012)
 -/
 
-/--
+/- 
 **Bennett-Van Luijk Theorem (2012):**
 For n ≥ 5, there are infinitely many collections of n disjoint
 intervals, each of size exactly 5, whose product is a perfect square.

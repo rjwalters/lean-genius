@@ -53,9 +53,9 @@ axiom erdos_turan_conjecture (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
 
 /- ## Stronger Forms -/
 
-/-- Stronger conjecture: lim sup r(n) / log n > 0.
+/-  Stronger conjecture: lim sup r(n) / log n > 0.
     This would mean r(n) ≥ c log n infinitely often. -/
-/-- Alternative strengthening: the conclusion holds under the weaker
+/-  Alternative strengthening: the conclusion holds under the weaker
     hypothesis |A ∩ [1,N]| ≫ √N. This encompasses all bases of order 2. -/
 /- ## Known Results -/
 
@@ -173,7 +173,7 @@ theorem repFunction_pos_of_mem (A : Set ℕ) (n : ℕ) (hn : n ∈ A + A) :
 
 /- ## Partial Results -/
 
-/-- Erdős and Fuchs (1956): If A is any set, then
+/-  Erdős and Fuchs (1956): If A is any set, then
     Σ_{n≤N} r(n) cannot be cN + o(N^{1/4} / (log N)^{1/2}).
     This means the average of r(n) fluctuates from its mean. -/
 /-- The total representation sum Σ_{n≤N} r(n) grows without bound for any basis.

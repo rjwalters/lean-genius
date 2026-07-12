@@ -65,11 +65,11 @@ theorem SGraph.toSimpleGraph_adj {n : ℕ} (G : SGraph n) (i j : Fin n) :
 
 /-- The empty vertex set is trivially a clique -/
 theorem isClique_empty {n : ℕ} (G : SGraph n) : IsClique G ∅ :=
-  fun _ hi => absurd hi (Finset.not_mem_empty _)
+  fun _ hi => absurd hi (Finset.notMem_empty _)
 
 /-- The empty vertex set is trivially triangle-free -/
 theorem isTriangleFree_empty {n : ℕ} (G : SGraph n) : IsTriangleFree G ∅ :=
-  fun ⟨_, _, _, ha, _, _, _, _, _, _, _⟩ => absurd ha (Finset.not_mem_empty _)
+  fun ⟨_, _, _, ha, _, _, _, _, _, _, _⟩ => absurd ha (Finset.notMem_empty _)
 
 /-- A clique on n vertices has at most n elements -/
 theorem hasClique_le_n {n : ℕ} (G : SGraph n) (k : ℕ) (h : HasClique G k) :
@@ -135,7 +135,7 @@ theorem isTriangleFree_of_no_triangle {n : ℕ} (G : SGraph n)
   refine ⟨{a, b, c}, ?_, ?_⟩
   · have hab' : a ∉ ({b, c} : Finset _) := by simp [hab, hac]
     have hbc' : b ∉ ({c} : Finset _) := by simp [hbc]
-    rw [Finset.card_insert_of_not_mem hab', Finset.card_insert_of_not_mem hbc',
+    rw [Finset.card_insert_of_notMem hab', Finset.card_insert_of_notMem hbc',
         Finset.card_singleton]
   · intro i hi j hj hij
     simp [Finset.mem_insert, Finset.mem_singleton] at hi hj
@@ -256,7 +256,7 @@ theorem neighborhood_k4_free {n : ℕ} (G : SGraph n) (hK5 : ¬HasClique G 5)
     intro hv
     exact not_mem_neighborhood_self G v (hSN hv)
   refine ⟨insert v S, ?_, clique_in_neighborhood_extends G v S hSN hv hClique⟩
-  rw [Finset.card_insert_of_not_mem hv, hcard]
+  rw [Finset.card_insert_of_notMem hv, hcard]
 
 /-- The neighborhood of any vertex in a K₅-free graph has no K₄.
     Restated using HasClique for compatibility with the k4_free_triangle_free_subset axiom. -/

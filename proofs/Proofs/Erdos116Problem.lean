@@ -48,24 +48,24 @@ noncomputable def sublevelMeasure (P : UnitDiskPoly n) : ℝ :=
 
 /- ## Pommerenke's Bound -/
 
-/-- Pommerenke's bound: the sublevel measure is at least c/n⁴ -/
+/-  Pommerenke's bound: the sublevel measure is at least c/n⁴ -/
 
 /- ## Krishnapur–Lundberg–Ramachandran Bounds -/
 
-/-- KLR lower bound: the sublevel measure is at least c/log n.
+/-  KLR lower bound: the sublevel measure is at least c/log n.
     This proves the Erdős–Herzog–Piranian conjecture. -/
 
-/-- KLR upper bound: there exist polynomials with sublevel measure
+/-  KLR upper bound: there exist polynomials with sublevel measure
     at most C/log log n, showing the lower bound is nearly tight -/
 
 /- ## Pólya's Upper Bound -/
 
-/-- Pólya's bound: the sublevel measure is at most π, and equality holds
+/-  Pólya's bound: the sublevel measure is at most π, and equality holds
     only when all roots coincide (p(z) = (z - z₀)ⁿ for some |z₀| ≤ 1) -/
 
 /- ## The Erdős–Herzog–Piranian Conjecture (PROVED) -/
 
-/-- Erdős Problem 116 (Erdős–Herzog–Piranian, PROVED):
+/-  Erdős Problem 116 (Erdős–Herzog–Piranian, PROVED):
     The sublevel measure |{|p(z)| < 1}| is at least (log n)^{-O(1)}.
     Proved by Krishnapur, Lundberg, and Ramachandran with
     the optimal bound c/log n. -/

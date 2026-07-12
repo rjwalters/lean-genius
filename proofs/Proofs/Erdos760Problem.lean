@@ -108,15 +108,15 @@ axiom cochromaticNumber (G : SimpleGraph V) : ℕ
 Relationships between chromatic and cochromatic numbers.
 -/
 
-/--
+/- 
 **Cochromatic ≤ Chromatic:**
 Every proper coloring is a cochromatic coloring (independent sets are homogeneous).
 -/
-/--
+/- 
 **Complete Graph Cochromatic Number:**
 ζ(Kₙ) = ⌈log₂(n+1)⌉ using recursive halving into cliques.
 -/
-/--
+/- 
 **Upper Bound for Complete Graphs:**
 For Kₘ, ζ(H) ~ m / log m for some subgraph H.
 This shows the bound in Problem 760 is best possible.
@@ -127,12 +127,12 @@ This shows the bound in Problem 760 is best possible.
 The weaker bound proved before AKS.
 -/
 
-/--
+/- 
 **Erdős-Gimbel Theorem (1993):**
 If χ(G) = m, then G contains a subgraph H with
 ζ(H) ≥ c · √(m / log m) for some constant c > 0.
 -/
-/--
+/- 
 **Erdős-Gimbel Numerical Bound:**
 The bound √(m / log m) is weaker than m / log m.
 -/
@@ -153,7 +153,7 @@ axiom aks_theorem :
     ∃ c : ℚ, c > 0 ∧
     ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     ∀ m : ℕ, chromaticNumber G = m → m ≥ 2 →
-    ∃ (W : Type*) [Fintype W] [DecidableEq W] (H : SimpleGraph W),
+    ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (H : SimpleGraph W),
     -- H is (isomorphic to) a subgraph of G
     (cochromaticNumber H : ℚ) ≥ c * m / Real.log m
 
@@ -165,7 +165,7 @@ theorem erdos_760_solved :
     ∃ c : ℚ, c > 0 ∧
     ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     ∀ m : ℕ, chromaticNumber G = m → m ≥ 2 →
-    ∃ (W : Type*) [Fintype W] [DecidableEq W] (H : SimpleGraph W),
+    ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (H : SimpleGraph W),
     (cochromaticNumber H : ℚ) ≥ c * m / Real.log m :=
   aks_theorem
 
@@ -175,7 +175,7 @@ theorem erdos_760_solved :
 How the AKS result was proved.
 -/
 
-/--
+/- 
 **Ramsey-Type Argument:**
 The proof uses Ramsey theory for finding large homogeneous sets.
 
@@ -186,7 +186,7 @@ or independent set of size ~ log n. Iterate this to build the subgraph H.
 ## Part VI: Related Results
 -/
 
-/--
+/- 
 **Ramsey Number Connection:**
 R(k,k) = smallest n such that any 2-coloring of Kₙ has monochromatic Kₖ.
 R(k,k) grows exponentially in k, giving logarithmic homogeneous sets.
@@ -225,7 +225,7 @@ theorem erdos_760 :
     ∃ c : ℚ, c > 0 ∧
      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
      ∀ m : ℕ, chromaticNumber G = m → m ≥ 2 →
-     ∃ (W : Type*) [Fintype W] [DecidableEq W] (H : SimpleGraph W),
+     ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (H : SimpleGraph W),
      (cochromaticNumber H : ℚ) ≥ c * m / Real.log m :=
   aks_theorem
 

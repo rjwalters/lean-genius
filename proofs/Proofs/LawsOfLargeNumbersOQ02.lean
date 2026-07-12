@@ -233,8 +233,8 @@ not just an upper bound on tail probabilities.
 /-- The standard normal CDF: Φ(x) = ∫_{-∞}^{x} (1/√(2π)) exp(-t²/2) dt -/
 axiom standardNormalCDF : ℝ → ℝ
 
-/-- Properties of the standard normal CDF -/
-/-- **Central Limit Theorem** (Lindeberg-Lévy):
+/-  Properties of the standard normal CDF -/
+/-  **Central Limit Theorem** (Lindeberg-Lévy):
 
     For i.i.d. X with mean μ and variance σ² > 0:
     P(√n · (X̄ₙ - μ) / σ ≤ x) → Φ(x) for all x.
@@ -255,7 +255,7 @@ The rate O(1/√n) is optimal: it cannot be improved in general.
 
 /-- The Berry-Esseen constant C (best known: C < 0.4748) -/
 axiom berryEsseenConstant : ℝ
-/-- **Berry-Esseen Theorem**:
+/-  **Berry-Esseen Theorem**:
     The CLT approximation error is bounded by C·ρ/(σ³√n).
 
     This is the sharpest known uniform bound on the normal approximation. -/

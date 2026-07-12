@@ -191,7 +191,7 @@ theorem prod_univ_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] :
     conv_lhs => rw [← h]
     exact inv_mul_cancel _
   rw [← Finset.prod_inv_distrib]
-  -- Goal: ∏ x in univ, x⁻¹ = ∏ x in univ, x
+  -- Goal: ∏ x ∈ univ, x⁻¹ = ∏ x ∈ univ, x
   -- The map x ↦ x⁻¹ is a bijection on univ
   apply Finset.prod_bij (fun a _ => a⁻¹)
   · intros; exact Finset.mem_univ _

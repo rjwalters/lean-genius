@@ -129,7 +129,7 @@ theorem divisibility_includes_main (r k n : ℕ) (hr : r ≥ 1) :
 ## Part III: Classical Examples
 -/
 
-/--
+/- 
 **Kirkman's Schoolgirl Problem:**
 S(2,3,n) exists iff n ≡ 1 or 3 (mod 6) and n ≥ 7.
 
@@ -142,7 +142,7 @@ Has 7 points and 7 lines (blocks), each line contains 3 points.
 -/
 axiom fano_plane_exists : ∃ S : SteinerSystem 2 3 7, True
 
-/--
+/- 
 **Hanani's Results (1961):**
 Characterized when S(3,4,n), S(2,4,n), and S(2,5,n) exist.
 -/
@@ -161,7 +161,7 @@ axiom wilson_theorem_r2 (k : ℕ) (hk : k ≥ 2) :
     ∃ N₀ : ℕ, ∀ n ≥ N₀, DivisibilityConditions 2 k n →
       ∃ S : SteinerSystem 2 k n, True
 
-/--
+/- 
 **Wilson's quantitative bound:**
 The N₀ depends polynomially on k.
 -/

@@ -66,7 +66,7 @@ noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
 -/
 theorem empty_is_independent (G : SimpleGraph V) : IsIndependent G ∅ := by
   intro u hu
-  exact absurd hu (Finset.not_mem_empty u)
+  exact absurd hu (Finset.notMem_empty u)
 
 /-
 ## Part II: The Function f(m, n)

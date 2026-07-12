@@ -94,18 +94,18 @@ def inducedSubgraph (G : SimpleGraph V) (S : Set V) :
 
 /- ## Part IV: Main Conjecture -/
 
-/-- **Erdős Problem #1068 (OPEN)**: Does every graph with chromatic number ℵ₁
+/-  **Erdős Problem #1068 (OPEN)**: Does every graph with chromatic number ℵ₁
     contain a countable subgraph which is infinitely connected?
 
     More precisely: is there a countable set S of vertices such that the
     induced subgraph G[S] is infinitely connected? -/
 /- ## Part V: Known Results -/
 
-/-- **Soukup (2015)**: There exists a graph with uncountable chromatic number
+/-  **Soukup (2015)**: There exists a graph with uncountable chromatic number
     where every UNCOUNTABLE vertex set induces a graph that is NOT infinitely
     connected. This shows that Problem #1068 specifically needs the subgraph
     to be countable — uncountable subgraphs don't work. -/
-/-- **Connection to Problem #1067 (DISPROVED)**: Problem #1067 asked whether
+/-  **Connection to Problem #1067 (DISPROVED)**: Problem #1067 asked whether
     every graph with χ = ℵ₁ contains an infinitely connected subgraph
     with χ = ℵ₁. Soukup showed the answer is NO. Problem #1068 weakens
     this by only asking for a countable infinitely connected subgraph,
@@ -186,7 +186,7 @@ theorem inf_connected_no_finite_separator :
     rw [(hpath p hp).2] at hlast
     exact hv (Option.some.inj hlast ▸ hw_in_S)
 
-/-- **Set-theoretic sensitivity**: Problems about uncountable chromatic
+/-  **Set-theoretic sensitivity**: Problems about uncountable chromatic
     numbers and infinite connectivity often depend on set-theoretic axioms
     beyond ZFC. Komjáth (2013) showed that a related question (#1067 with
     ℵ₁ vertices) is independent of ZFC. Problem #1068 may also be
@@ -194,7 +194,7 @@ theorem inf_connected_no_finite_separator :
 /- set_theoretic_sensitivity: Komjáth (2013) showed a related question (#1067)
     is independent of ZFC; Problem #1068 may also be set-theoretically sensitive. -/
 
-/-- **Bowler-Pikhurko (2024)**: Provided a simplified construction of
+/-  **Bowler-Pikhurko (2024)**: Provided a simplified construction of
     Soukup's counterexample for Problem #1067, which illuminates the
     structure of the problem. Their construction uses tree-like "ladder"
     graphs. -/

@@ -52,7 +52,7 @@ noncomputable def smallestTotientPreimage (a : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #51**: Is there an infinite set A ⊂ ℕ of totient values
+/-  **Erdős Problem #51**: Is there an infinite set A ⊂ ℕ of totient values
     such that the smallest preimage grows faster than the value itself? -/
 
 /- ## Basic Properties of Totient -/

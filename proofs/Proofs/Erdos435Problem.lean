@@ -104,7 +104,7 @@ equals the Hwang-Song formula.
 axiom hwang_song_theorem (n : ℕ) (hn : n ≥ 2) (hNotPP : NotPrimePower n) :
     frobeniusBinomial n = hwangSongFormula n
 
-/--
+/- 
 **Existence of Non-Representable Numbers:**
 For n not a prime power, there exist numbers that cannot be represented.
 -/
@@ -127,7 +127,7 @@ example : ¬IsPrimePower 6 := by
   intro ⟨p, k, hp, hk, heq⟩
   interval_cases k <;> simp_all [Nat.Prime]
 
-/--
+/- 
 **Formula for n = 6:**
 6 = 2¹ · 3¹, so the formula gives:
   [C(6,2)]·(2-1) + [C(6,3)]·(3-1) - 6 = 15·1 + 20·2 - 6 = 49
@@ -141,7 +141,7 @@ example : ¬IsPrimePower 6 := by
 ## Part V: Why Prime Powers are Special
 -/
 
-/--
+/- 
 **Prime Power Case:**
 If n = p^k, then C(n, p^j) ≡ 0 (mod p) for appropriate j,
 making the representation problem degenerate.
@@ -161,12 +161,12 @@ is key to understanding which numbers are representable.
 ## Part VI: Structure of Representable Set
 -/
 
-/--
+/- 
 **Numerical Semigroup:**
 The representable set forms a numerical semigroup (closed under addition,
 contains 0, has finite complement in ℕ).
 -/
-/--
+/- 
 **GCD of Generators:**
 For n not a prime power, gcd{C(n,1), C(n,2), ..., C(n,n-1)} = 1
 (otherwise no Frobenius number would exist).
@@ -175,7 +175,7 @@ For n not a prime power, gcd{C(n,1), C(n,2), ..., C(n,n-1)} = 1
 ## Part VII: Related Results
 -/
 
-/--
+/- 
 **Classical Frobenius Problem:**
 For coprime a, b, the largest non-representable integer is ab - a - b.
 This is the 2-generator case.

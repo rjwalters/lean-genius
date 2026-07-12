@@ -102,7 +102,7 @@ def ERW_conjecture (n : ℕ) : Prop :=
 Alon showed the conjecture is false by proving a strict inequality.
 -/
 
-/--
+/- 
 **Alon's Theorem (2015):**
 Almost surely, τ(G) ≤ n - α(G) - 1 for G ∈ G(n, 1/2).
 
@@ -145,13 +145,13 @@ theorem alon_bohman_huang_2017 :
 ## Part V: Lower and Upper Bounds
 -/
 
-/--
+/- 
 **Graham-Pollak Theorem:**
 The bipartition number satisfies τ(Kₙ) = n - 1 for the complete graph.
 This shows the upper bound n - 1 is achievable.
 -/
 
-/--
+/- 
 **General Lower Bound:**
 For any graph G on n vertices, τ(G) ≥ max(α(G), n - α(G) - τ(G)) in some sense.
 -/
@@ -160,12 +160,12 @@ For any graph G on n vertices, τ(G) ≥ max(α(G), n - α(G) - τ(G)) in some s
 ## Part VI: Properties of Random Graphs G(n, 1/2)
 -/
 
-/--
+/- 
 **Expected Independence Number:**
 For G ∈ G(n, 1/2), the independence number α(G) is typically around 2 log₂ n.
 -/
 
-/--
+/- 
 **Expected Bipartition Number:**
 Combined with the above, τ(G) is typically around n - 2 log₂ n - O(log n).
 -/
@@ -210,7 +210,7 @@ def cliqueCoverNumber (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ cliques : Finset (Finset V),
     cliques.card = k ∧ ∀ v w, G.Adj v w → ∃ C ∈ cliques, v ∈ C ∧ w ∈ C}
 
-/--
+/- 
 **Chromatic Number Connection:**
 The bipartition number relates to the chromatic number of the complement.
 -/
@@ -219,7 +219,7 @@ The bipartition number relates to the chromatic number of the complement.
 ## Part IX: Probabilistic Methods
 -/
 
-/--
+/- 
 **The Probabilistic Method:**
 Alon's proof uses the probabilistic method to show that the expected
 number of edges covered by a random bipartite graph is large enough

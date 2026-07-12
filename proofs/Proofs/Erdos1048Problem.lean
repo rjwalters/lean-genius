@@ -188,7 +188,7 @@ theorem exterior_unbounded (f : ℂ[X]) (hf : f ≠ 0) (c : ℝ) (hc : c > Compl
 Connection to logarithmic capacity.
 -/
 
-/-- The logarithmic capacity of a set.
+/-  The logarithmic capacity of a set.
     Axiomatized since it requires potential theory infrastructure. -/
 
 /-

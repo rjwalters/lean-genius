@@ -99,11 +99,11 @@ This shows that there exist n with arbitrarily many representations.
 axiom mordell_unbounded :
   ∀ M : ℕ, ∃ n : ℕ, cubeRepresentations n ≥ M
 
-/--
+/- 
 **Infinitely Many Large Values:**
 For any fixed k, there exist arbitrarily large n with r₂(n) > k.
 -/
-/--
+/- 
 **Mahler's Theorem (1935):**
 For infinitely many n, r₂(n) ≫ (log n)^{1/4}.
 -/
@@ -142,19 +142,19 @@ two cubes in two different ways.
 -/
 theorem hardy_ramanujan_1729 : cubeRepresentations 1729 = 2 := by native_decide
 
-/--
+/- 
 **Taxicab(3) = 87539319:**
 The smallest number with 3 representations as sum of two cubes.
 87539319 = 167³ + 436³ = 228³ + 423³ = 255³ + 414³
 -/
 /- ## Part V: Theoretical Framework -/
 
-/--
+/- 
 **Density of Sums of Two Cubes:**
 The counting function of numbers representable as sums of two positive cubes
 is asymptotically ~ c · x^{2/3} for some constant c.
 -/
-/--
+/- 
 **Cube-Free Numbers:**
 Most integers cannot be expressed as sums of two cubes.
 -/

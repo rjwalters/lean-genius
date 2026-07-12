@@ -129,7 +129,7 @@ axiom mahler_bound :
     ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (F n : ℝ) ≥ c * Real.log (Real.log n)
 
-/--
+/- 
 **Mahler improves Pólya:**
 The quantitative bound c · log log n → ∞ implies F(n) → ∞.
 -/
@@ -160,7 +160,7 @@ Schinzel's construction uses these.
 -/
 def isSmooth (B n : ℕ) : Prop := ∀ p : ℕ, p.Prime → p ∣ n → p ≤ B
 
-/--
+/- 
 Numbers of the form n(n+1) that are B-smooth exist infinitely often
 when B is chosen appropriately.
 -/
@@ -208,7 +208,7 @@ axiom pasten_bound :
     ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))
 
-/--
+/- 
 **Pasten improves Mahler:**
 (log log n)² / (log log log n) ≫ log log n for large n.
 -/
@@ -284,7 +284,7 @@ The methods are related to n(n+1) = n² + n.
 -/
 noncomputable def P_squared_plus_one (n : ℕ) : ℕ := largestPrimeFactor (n^2 + 1)
 
-/--
+/- 
 **Pasten's Main Result:**
 P(n² + 1) ≫ (log log n)² / (log log log n).
 This was the key advance leading to improved ABC-related bounds.
@@ -308,7 +308,7 @@ rad(abc) = rad(n(n+1)).
 -/
 def radical (n : ℕ) : ℕ := (n.primeFactors).prod id
 
-/--
+/- 
 **ABC Would Imply:**
 Under ABC, F(n) ≥ (log n)^(1-ε) for any ε > 0.
 -/

@@ -85,7 +85,7 @@ def surfaceKodaira : SurfaceClass → KodairaDimension
 -- Part III: Yau's Theorem
 -- ============================================================
 
-/-- Yau's theorem (1977, Fields Medal 1982):
+/-  Yau's theorem (1977, Fields Medal 1982):
     Every compact Kähler manifold with c₁(X) ≤ 0 admits a
     unique Kähler-Einstein metric.
 
@@ -108,7 +108,7 @@ def surfaceKodaira : SurfaceClass → KodairaDimension
 def IsKobayashiHyperbolic (E : Type*) [NormedAddCommGroup E] [NormedSpace ℂ E] : Prop :=
   ∀ f : ℂ → E, Differentiable ℂ f → ∃ c : E, f = Function.const ℂ c
 
-/-- The unit disk 𝔻 is Kobayashi hyperbolic.
+/-  The unit disk 𝔻 is Kobayashi hyperbolic.
     This recovers the hyperbolic case of uniformization. -/
 
 /-- **ℂ is not Kobayashi hyperbolic**: the identity `id : ℂ → ℂ` is a

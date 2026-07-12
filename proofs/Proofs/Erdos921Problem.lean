@@ -43,13 +43,13 @@ structure Graph (V : Type*) where
   symm : ∀ v w, adj v w → adj w v
   loopless : ∀ v, ¬adj v v
 
-/--
+/- 
 **Chromatic number:**
 χ(G) is the minimum k such that G has a proper k-coloring.
 A proper k-coloring assigns colors 1,...,k to vertices such that
 adjacent vertices get different colors.
 -/
-/--
+/- 
 **Odd girth:**
 The length of the shortest odd cycle in G, or 0 if G is bipartite.
 -/
@@ -63,7 +63,7 @@ graphs on n vertices.
 -/
 axiom f (k n : ℕ) : ℕ
 
-/--
+/- 
 **Basic property: f_k(n) is well-defined for k ≥ 4:**
 Graphs with high chromatic number but large odd girth exist.
 -/
@@ -128,11 +128,11 @@ theorem k4_case :
 ## Part IV: General k Case
 -/
 
-/--
+/- 
 **Lower bound for general k:**
 f_k(n) ≫ n^{1/(k-2)} for all k ≥ 4.
 -/
-/--
+/- 
 **Upper bound for general k:**
 f_k(n) ≪ n^{1/(k-2)} for all k ≥ 4.
 -/

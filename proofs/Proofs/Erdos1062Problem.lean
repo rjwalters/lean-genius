@@ -84,13 +84,13 @@ theorem lower_bound_construction (n : ℕ) (hn : n ≥ 3) :
 ## Section IV: Lebensold's Bounds
 -/
 
-/-- Lebensold (1976): for large n, f(n) ≥ 0.6725n. -/
-/-- Lebensold (1976): for large n, f(n) ≤ 0.6736n. -/
+/-  Lebensold (1976): for large n, f(n) ≥ 0.6725n. -/
+/-  Lebensold (1976): for large n, f(n) ≤ 0.6736n. -/
 /-
 ## Section V: The Conjectures
 -/
 
-/-- The limiting density lim f(n)/n exists and lies in [0.6725, 0.6736]. -/
+/-  The limiting density lim f(n)/n exists and lies in [0.6725, 0.6736]. -/
 /-- **Erdős Problem #1062**: Is the limiting density irrational? -/
 def ErdosProblem1062 : Prop :=
   ∃ L : ℝ, Filter.Tendsto (fun n : ℕ => (maxNDTOSize n : ℝ) / n)

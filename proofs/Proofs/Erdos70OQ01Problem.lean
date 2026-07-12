@@ -159,7 +159,7 @@ theorem erdos70_implies_omega_squared :
   intro h n hn
   exact h _ n omega_squared_countable hn
 
-/-- Conversely, the omega^2 conjecture does NOT imply the full conjecture,
+/-  Conversely, the omega^2 conjecture does NOT imply the full conjecture,
     since there are countable ordinals larger than omega^2 (e.g., omega^3). -/
 
 /-
@@ -175,7 +175,7 @@ combinatorial arguments that do not extend to omega^2.
 def OmegaMultKPartition (k n : ℕ) : Prop :=
   PartitionArrow continuum_card (Ordinal.omega0 * (k : Ordinal)) n
 
-/-- Erdos-Rado gives the k=1 case (omega * 1 = omega, which is below omega+n). -/
+/-  Erdos-Rado gives the k=1 case (omega * 1 = omega, which is below omega+n). -/
 
 /-- The stepping-up chain: if omega*k partition holds, it implies omega*(k-1). -/
 theorem stepping_down (k n : ℕ) (hk : 1 ≤ k) :

@@ -201,7 +201,7 @@ characterization: 2^ℵ₀ can be exactly the regular uncountable cardinals.
 def IsPossibleContinuumValue (κ : Cardinal.{0}) : Prop :=
   ContinuumHypothesis.aleph_one ≤ κ ∧ κ.IsRegular
 
-/-- **Easton's Theorem (1970)** restricted to the continuum:
+/-  **Easton's Theorem (1970)** restricted to the continuum:
     Any regular uncountable cardinal ≥ ℵ₁ is a consistent value for 2^ℵ₀.
 
     Easton's proof uses Easton forcing (a product of Cohen-like forcings).
@@ -372,7 +372,7 @@ theorem bounding_le_dominating : boundingNumber ≤ dominatingNumber := by
   · -- F not dominating → rhs = continuum → boundingNumber ≤ continuum
     simp only [hdom, ite_false]
     have hempty : ¬IsUnbounded (∅ : Set (ℕ → ℕ)) := by
-      intro h; obtain ⟨f, hf, _⟩ := h (fun _ => 0); exact Set.not_mem_empty f hf
+      intro h; obtain ⟨f, hf, _⟩ := h (fun _ => 0); exact Set.notMem_empty f hf
     calc boundingNumber
         = ⨅ G : Set (ℕ → ℕ), if IsUnbounded G then Cardinal.mk G
             else ContinuumHypothesis.continuum := rfl

@@ -41,7 +41,7 @@ def HasDistinctPairSums (f : ℤ[X]) : Prop :=
 /-- **Erdős Problem #324**: Does there exist f ∈ ℤ[X] with the distinct
 pair sum property? -/
 def ErdosProblem324 : Prop :=
-  ∃ f : ℤ[X], HasDistinctPairSums f
+  ∃ f : ℤ(_ : X), HasDistinctPairSums f
 
 /-
 ## Section III: The Quintic Conjecture

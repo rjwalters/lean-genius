@@ -77,7 +77,7 @@ The empty set is non-averaging.
 -/
 theorem empty_is_nonAveraging : IsNonAveraging ∅ := by
   intro a ha
-  exact absurd ha (Finset.not_mem_empty a)
+  exact absurd ha (Finset.notMem_empty a)
 
 /--
 Any singleton is non-averaging.
@@ -102,7 +102,7 @@ theorem pair_is_nonAveraging (a b : ℕ) (hab : a ≠ b) : IsNonAveraging {a, b}
 ## Part III: The Lower Bound (Bosznay 1989)
 -/
 
-/--
+/- 
 **Bosznay's Construction (1989):**
 There exist non-averaging sets of size ≥ N^(1/4).
 
@@ -124,11 +124,11 @@ axiom lower_bound_quarter :
 ## Part IV: The Upper Bound
 -/
 
-/--
+/- 
 **Erdős-Sárközy (1990):**
 Original upper bound: F(N) ≪ (N log N)^(1/2).
 -/
-/--
+/- 
 **Conlon-Fox-Pham (2023):**
 Improved upper bound: F(N) ≪ N^(1/4) · (log N)^c for some c.
 -/
@@ -172,7 +172,7 @@ theorem erdos_186_bounds :
   · -- Upper bound from Pham-Zakharov
     exact hUpper N hN
 
-/--
+/- 
 **The o(1) exponent form:** F(N) = N^(1/4+o(1)).
 
 For any ε > 0, eventually N^(1/4 - ε) ≤ F(N) ≤ N^(1/4 + ε).
@@ -207,7 +207,7 @@ theorem nonAveraging_no_centered_AP {A : Finset ℕ} (hA : IsNonAveraging A)
 ## Part VII: Connection to Arithmetic Progressions
 -/
 
-/--
+/- 
 **Roth's Theorem Connection:**
 Roth's theorem says any subset of {1,...,N} of size ≫ N/log N contains
 a 3-term AP. Non-averaging is a weaker condition (only avoids centered APs),
@@ -217,11 +217,11 @@ which is why non-averaging sets can be much larger (N^(1/4) vs N/log N).
 ## Part VIII: The Growth Rate
 -/
 
-/--
+/- 
 The exponent 1/4 is the correct order: F(N) cannot grow slower than N^(1/4-ε)
 for any ε > 0, since Bosznay's construction achieves N^(1/4).
 -/
-/--
+/- 
 The o(1) term in the exponent is necessary (upper bound not exactly N^(1/4)).
 -/
 /-

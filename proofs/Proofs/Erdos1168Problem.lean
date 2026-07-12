@@ -193,7 +193,7 @@ theorem gch_implies_conjecture (hgch : ∀ κ : Cardinal.{0}, 2 ^ κ = Order.suc
 /-- The empty set is vacuously homogeneous for any color. -/
 theorem empty_homogeneous {V : Type*} (f : V → V → ℕ) (i : ℕ) :
     IsHomogeneous f ∅ i :=
-  fun a ha => absurd ha (Set.not_mem_empty a)
+  fun a ha => absurd ha (Set.notMem_empty a)
 
 /-- A singleton is homogeneous for any color. -/
 theorem singleton_homogeneous {V : Type*} (f : V → V → ℕ) (v : V) (i : ℕ) :

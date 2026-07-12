@@ -57,23 +57,23 @@ def Graph.denseSubgraphs {n : ℕ} (G : Graph n) : Prop :=
 
 /- ## Extremal Examples -/
 
-/-- The blow-up of C₅ (Möbius–Kantor type): partition n vertices into 5 parts
+/-  The blow-up of C₅ (Möbius–Kantor type): partition n vertices into 5 parts
     of size ~n/5, connect parts i and i+1 (mod 5). This is triangle-free
     with edge density approaching 2/5 · (1/5)² · n² in large subgraphs. -/
 
 /- ## Partial Results -/
 
-/-- EFRS (Erdős–Faudree–Rousseau–Schelp): the result holds with
+/-  EFRS (Erdős–Faudree–Rousseau–Schelp): the result holds with
     50 replaced by 16. If every subgraph on ≥ n/2 vertices has > n²/16 edges,
     then G contains a triangle. -/
 
-/-- Krivelevich: the result holds with n/2 replaced by 3n/5 and 50 by 25.
+/-  Krivelevich: the result holds with n/2 replaced by 3n/5 and 50 by 25.
     If every subgraph on ≥ 3n/5 vertices has > n²/25 edges, then triangle. -/
 
-/-- Razborov: holds with 1/50 replaced by 27/1024 ≈ 0.0264.
+/-  Razborov: holds with 1/50 replaced by 27/1024 ≈ 0.0264.
     Uses flag algebra methods. -/
 
-/-- Norin–Yepremyan: holds for graphs with at least (1/5 - c)n² edges
+/-  Norin–Yepremyan: holds for graphs with at least (1/5 - c)n² edges
     for some small constant c > 0. -/
 
 /- ## Main Conjecture -/

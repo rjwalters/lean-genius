@@ -165,9 +165,9 @@ private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
     exact Finset.mem_Icc.mpr ⟨by omega, by omega⟩
   -- Main calculation: |S×S| = Σ fibers ≤ Σ 2g = 2g(2N-1)
   calc (S ×ˢ S).card
-      = ∑ m in T, ((S ×ˢ S).filter (fun p => p.1 + p.2 = m)).card :=
+      = ∑ m ∈ T, ((S ×ˢ S).filter (fun p => p.1 + p.2 = m)).card :=
         Finset.card_eq_sum_card_fiberwise hf
-    _ ≤ ∑ _ in T, (2 * g) := by
+    _ ≤ ∑ _ ∈ T, (2 * g) := by
         apply Finset.sum_le_sum; intro m _
         -- FIBER BOUND: |(S×S) ∩ {sum = m}| ≤ 2g
         -- Split into {a ≤ b} and {a > b} halves, each ≤ g

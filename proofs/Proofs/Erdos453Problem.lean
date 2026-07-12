@@ -175,7 +175,7 @@ theorem convexity_implies_product_bound (n : ℕ) (hn : n ≥ 2)
   intro i hi_pos hi_lt
   exact log_to_product n i hn ⟨hi_pos, hi_lt⟩ (hv i hi_pos hi_lt)
 
-/--
+/- 
 **Pomerance (1979):**
 There are infinitely many n such that p_n² > p_{n+i}·p_{n-i} for all 0 < i < n.
 -/
@@ -269,7 +269,7 @@ theorem log_convexity_iff_vertex (n : ℕ) :
     LogConvexityProperty n ↔ IsConvexHullVertex logPrime n := by
   rfl
 
-/--
+/- 
 **From Log to Product:**
 2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
 -/

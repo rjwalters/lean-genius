@@ -86,7 +86,7 @@ axiom maxValidSize : ℕ → ℕ
 The exact formula for maxValidSize(n) is unknown.
 -/
 
-/-- **Erdős Problem #888 (Main Question - OPEN)**: Find the exact formula
+/-  **Erdős Problem #888 (Main Question - OPEN)**: Find the exact formula
 for the maximum size of A ⊆ {1,...,n} with the square-product condition.
 
 The exact answer is unknown. -/
@@ -98,7 +98,7 @@ Sárközy proved that |A| = o(n), meaning the maximum grows sublinearly.
 This uses a counting argument involving the multiplicative structure.
 -/
 
-/-- **Sárközy's Theorem**: The maximum valid set size is o(n).
+/-  **Sárközy's Theorem**: The maximum valid set size is o(n).
 
 For any ε > 0, eventually maxValidSize(n) < ε * n.
 
@@ -133,11 +133,11 @@ theorem primes_valid_construction (n : ℕ) :
   use primesUpTo n
   exact ⟨primes_satisfy_condition n, rfl⟩
 
-/-- **Prime Lower Bound**: maxValidSize(n) ≥ π(n).
+/-  **Prime Lower Bound**: maxValidSize(n) ≥ π(n).
 
 The maximum is at least the number of primes up to n. -/
 
-/-- The primes up to n have cardinality approximately n / log n.
+/-  The primes up to n have cardinality approximately n / log n.
 By the Prime Number Theorem, |primesUpTo n| ~ n / log n. -/
 
 /-

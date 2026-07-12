@@ -60,7 +60,7 @@ def Powerful (m : ℕ) : Prop :=
 def PowerfulAlt (m : ℕ) : Prop :=
   ∃ a b : ℕ, a > 0 ∧ b > 0 ∧ m = a^2 * b^3
 
-/-- The set of integers in [n², (n+1)²). -/
+/-  The set of integers in [n², (n+1)²). -/
 /-- h(n) = count of powerful integers in [n², (n+1)²). -/
 axiom h : ℕ → ℕ
 
@@ -97,8 +97,8 @@ It is not hard to prove that h(n) is unbounded.
 The density of integers n with h(n) = l exists for each l.
 -/
 
-/-- A set A of naturals has natural density d if lim_{N to infty} |A cap [1,N]|/N = d. -/
-/-- Define delta_l as the density of {n : h(n) = l}. -/
+/-  A set A of naturals has natural density d if lim_{N to infty} |A cap [1,N]|/N = d. -/
+/-  Define delta_l as the density of {n : h(n) = l}. -/
 /-
 ## De Koninck-Luca Lower Bound (2004)
 

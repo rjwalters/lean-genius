@@ -143,7 +143,7 @@ exists when n ≡ 2 (mod 4).
 -/
 axiom bose_parker_shrikhande (n : ℕ) (hn : n ≥ 7) : f(n) ≥ 2
 
-/--
+/- 
 **Special Cases:**
 - f(2) = 1 (no pair of orthogonal 2×2 Latin squares)
 - f(6) ≥ 1 (historically difficult; Euler was right that f(6) = 1)
@@ -156,14 +156,14 @@ The question asks whether f(n) grows at least as fast as n^(1/2).
 Progress has been made on improving lower bounds.
 -/
 
-/--
+/- 
 **Chowla-Erdős-Straus Theorem (1960):**
 f(n) ≫ n^(1/91).
 
 For sufficiently large n, f(n) ≥ C · n^(1/91) for some constant C > 0.
 -/
 
-/--
+/- 
 **Wilson's Improvement (1974):**
 f(n) ≫ n^(1/17).
 -/
@@ -213,16 +213,16 @@ def latinSquare3_L : Fin 3 → Fin 3 → Fin 3 :=
 
 def latinSquare3_M : Fin 3 → Fin 3 → Fin 3 :=
 
-/--
+/- 
 f(3) = 2, achieved by the construction above.
 -/
 
-/--
+/- 
 **Example: f(4) = 3**
 For n = 4 = 2², the maximum is n - 1 = 3.
 -/
 
-/--
+/- 
 **Example: f(5) = 4**
 For n = 5 (prime), the maximum is n - 1 = 4.
 -/
@@ -234,7 +234,7 @@ The existence of n - 1 MOLS of order n is equivalent to the existence
 of a projective plane of order n.
 -/
 
-/--
+/- 
 **Projective Plane Connection:**
 f(n) = n - 1 if and only if a projective plane of order n exists.
 
@@ -243,7 +243,7 @@ for non-prime-powers (like n = 6, 10, 12, ...) is generally unknown,
 with n = 10 ruled out by the famous Lam-Thiel-Swiercz computation (1989).
 -/
 
-/--
+/- 
 **No Projective Plane of Order 10:**
 f(10) < 9, proved by exhaustive computer search.
 -/
@@ -255,7 +255,7 @@ MacNeish conjectured f(n) = min{p_i^{a_i} - 1} where n = ∏p_i^{a_i}.
 This was disproved; the true behavior is more complex.
 -/
 
-/--
+/- 
 **MacNeish's Bound:**
 f(n) ≥ min{p_i^{a_i} - 1} where n = ∏p_i^{a_i}.
 

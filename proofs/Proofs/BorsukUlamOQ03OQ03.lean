@@ -2099,7 +2099,7 @@ theorem boundary_doors_odd_informal
 Each interior edge belongs to exactly 2 triangles.
 Each boundary edge belongs to exactly 1 triangle.
 
-∑_triangles (doors in triangle) = 2 × (interior doors) + (boundary doors)
+∑_triangles (doors ∈ triangle) = 2 × (interior doors) + (boundary doors)
 
 If each triangle has an even number of doors:
   LHS is even → 2×(interior) + boundary is even → boundary is even.

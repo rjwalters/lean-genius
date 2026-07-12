@@ -116,13 +116,13 @@ theorem erdos_526_solved (seq : ArcSequence) :
 The critical boundary at a_n = 1/n.
 -/
 
-/--
+/- 
 **Supercritical sequence:** a_n = (1+c)/n for c > 0.
 The arc lengths decrease like 1/n but slightly faster than the critical rate.
 Axiomatized as an ArcSequence since the proofs that (1+c)/n → 0 and
 Σ(1+c)/n diverges require analysis lemmas.
 -/
-/--
+/- 
 **Kahane (1959) + Erdős:**
 a_n = (1+c)/n covers the circle with probability 1 for any c > 0.
 -/
@@ -136,7 +136,7 @@ axiom criticalSeq : ArcSequence
 /-- Erdős: a_n = 1/n covers with probability 1 (critical case) -/
 axiom erdos_critical : CoversWithProbOne criticalSeq
 
-/--
+/- 
 **Subcritical sequence:** a_n = (1-c)/n for 0 < c < 1.
 Arc lengths decrease slightly slower than the critical rate.
 -/
@@ -144,19 +144,19 @@ Arc lengths decrease slightly slower than the critical rate.
 ## Part V: Verification of Shepp's Criterion for Special Cases
 -/
 
-/--
+/- 
 For a_n = (1+c)/n: S_n ≈ (1+c) log n, so exp(S_n)/n² ≈ n^{c-1}.
 When c > 0, the series Σ n^{c-1} diverges (by integral test).
 Hence Shepp's criterion holds.
 -/
 
-/--
+/- 
 For a_n = 1/n: S_n ≈ log n, so exp(S_n)/n² ≈ n/n² = 1/n.
 The harmonic series Σ 1/n diverges, so Shepp's criterion holds.
 This is the critical boundary case.
 -/
 
-/--
+/- 
 For a_n = (1-c)/n: S_n ≈ (1-c) log n, so exp(S_n)/n² ≈ n^{-1-c}.
 The series Σ n^{-1-c} converges for c > 0, so Shepp's criterion fails.
 -/
@@ -167,7 +167,7 @@ The series Σ n^{-1-c} converges for c > 0, so Shepp's criterion fails.
 Almost all the circle is covered under the basic conditions.
 -/
 
-/--
+/- 
 **Dvoretzky (1956):**
 Under the basic conditions (a_n → 0, Σa_n = ∞), the Lebesgue measure
 of the uncovered portion of the circle tends to 0 with probability 1.
@@ -178,7 +178,7 @@ That is, almost all the circle is covered, but there may be uncovered points.
 ## Part VII: The Poisson Process Connection
 -/
 
-/--
+/- 
 **Shepp's proof technique:**
 The key insight is to model the arc placements as a Poisson process
 on the circle × [0,∞). The uncovered set at "time" t relates to the
@@ -186,7 +186,7 @@ gaps in a Poisson process, and the coverage criterion becomes a
 question about the convergence of a series involving gap probabilities.
 -/
 
-/--
+/- 
 **Expected uncovered points:**
 The expected number of uncovered points after n arcs is related to
 exp(-S_n), where S_n is the partial sum. The series Σ exp(S_n)/n²
@@ -204,7 +204,7 @@ example : (1 + 1/2 + 1/3 + 1/4 + 1/5 : ℚ) > 2 := by native_decide
 ## Part IX: Logarithmic Growth and the Critical Boundary
 -/
 
-/--
+/- 
 **The logarithmic growth of harmonic sums:**
 H_n = 1 + 1/2 + ... + 1/n ≈ log n + γ, where γ is the
 Euler-Mascheroni constant. This is why 1/n is the critical threshold:

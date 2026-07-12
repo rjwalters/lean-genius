@@ -110,17 +110,17 @@ def secondLargestComponentSize (G : SimpleGraph V) [Fintype V] [DecidableRel G.A
 The critical behavior of random graphs near p = 1/n.
 -/
 
-/--
+/- 
 **Subcritical regime (p < 1/n):**
 All components have size O(log n) almost surely.
 -/
 
-/--
+/- 
 **Supercritical regime (p > 1/n):**
 A unique giant component of size Θ(n) emerges.
 -/
 
-/--
+/- 
 **Critical regime (p = 1/n):**
 The transition point where the giant component emerges.
 -/
@@ -167,7 +167,7 @@ theorem komlos_sulyok_szemeredi :
   ∃ c : ℝ, c > 0 :=
   ⟨1, by norm_num⟩
 
-/--
+/- 
 **Upper bound for second largest:**
 The second largest component is O(log n).
 -/
@@ -195,7 +195,7 @@ theorem erdos_745 :
 Detailed structure of components at criticality.
 -/
 
-/--
+/- 
 **Component size distribution:**
 At p = 1/n, components other than the giant follow a specific distribution.
 
@@ -204,7 +204,7 @@ The k-th largest component (for k ≥ 2) has size approximately
 where f_k is an explicit function.
 -/
 
-/--
+/- 
 **Number of components of given size:**
 At p = 1/n, the number of components of size k follows a power law.
 -/
@@ -221,7 +221,7 @@ def componentExponent : ℝ := 5 / 2
 The random graph phase transition is related to percolation.
 -/
 
-/--
+/- 
 **Percolation analogy:**
 The random graph transition is analogous to bond percolation on the complete graph.
 
@@ -231,7 +231,7 @@ At the critical point, the system exhibits critical phenomena:
 - Large fluctuations
 -/
 
-/--
+/- 
 **Critical window:**
 The phase transition occurs over a window of width n^{-1/3} around p = 1/n.
 

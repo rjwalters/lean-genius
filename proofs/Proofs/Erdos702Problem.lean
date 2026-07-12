@@ -67,7 +67,7 @@ def HasSingletonPair (F : Finset (Finset ℕ)) : Prop :=
 ## Part III: The Extremal Bound
 -/
 
-/-- **The extremal construction:**
+/-  **The extremal construction:**
     Fix two elements x, y. Take all k-sets containing both x and y.
     This family has size C(n-2, k-2) and avoids singleton intersections. -/
 /- **Why C(n-2, k-2)?**
@@ -90,7 +90,7 @@ axiom frankl_theorem :
       F.card > Nat.choose (n - 2) (k - 2) →
       HasSingletonPair F
 
-/-- **Katona's case k = 4 (unpublished):**
+/-  **Katona's case k = 4 (unpublished):**
     The first case, proved before Frankl's general result. -/
 /-
 ## Part V: Special Cases
@@ -102,7 +102,7 @@ axiom frankl_theorem :
     has a singleton intersection pair. -/
 example : Nat.choose 4 2 = 6 := by native_decide
 
-/-- **The condition k ≥ 4 is necessary:**
+/-  **The condition k ≥ 4 is necessary:**
     For k = 3, the statement fails. There exist large 3-uniform
     families avoiding singleton intersections. -/
 /-

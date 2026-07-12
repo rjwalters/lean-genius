@@ -109,7 +109,7 @@ def treePackingConjecture : Prop :=
 
 /- ## Gyárfás-Lehel Results (1978) -/
 
-/-- **Stars case:** If all but at most 2 trees are stars,
+/-  **Stars case:** If all but at most 2 trees are stars,
 the conjecture holds. -/
 /-- **Stars and paths case:** If all trees are stars or paths,
 the conjecture holds. -/
@@ -125,7 +125,7 @@ verified by exhaustive computation. -/
 axiom fishburn_small_n :
     ∀ n : ℕ, n ≤ 9 → ∀ tc : TreeCollection n, canPack n tc
 
-/-- **Bollobás (1983):** The smallest ⌊n/√2⌋ trees can always
+/-  **Bollobás (1983):** The smallest ⌊n/√2⌋ trees can always
 be packed greedily into Kₙ. This means roughly 70% of the small
 trees can be handled by a simple greedy algorithm. -/
 /- ## Bounded Degree Results -/
@@ -137,11 +137,11 @@ axiom jkko_boundedDegree (Δ : ℕ) :
     ∃ N : ℕ, ∀ n ≥ N, ∀ tc : TreeCollection n,
       boundedDegreeCollection n tc Δ → canPack n tc
 
-/-- **Allen et al. (2021):** The conjecture holds when all trees
+/-  **Allen et al. (2021):** The conjecture holds when all trees
 have max degree ≤ cn/log n, a significant extension of JKKO. -/
 /- ## Packing Large Trees (2024) -/
 
-/-- **Janzer-Montgomery (2024):** There exists c > 0 such that
+/-  **Janzer-Montgomery (2024):** There exists c > 0 such that
 for any tree collection, the largest cn trees can always be packed.
 Combined with Bollobás's result for small trees, only trees of
 intermediate size (roughly 0.7n to (1-c)n vertices) remain unresolved. -/

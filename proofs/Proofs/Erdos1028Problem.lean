@@ -253,22 +253,22 @@ theorem expected_discrepancy_bound (n k : ℕ) (hk : k ≤ n) :
 Erdős's upper bound uses probabilistic method.
 -/
 
-/-- Random sign functions have max discrepancy O(n^(3/2)). -/
+/-  Random sign functions have max discrepancy O(n^(3/2)). -/
 /-
 ## The Lower Bound Technique
 
 Erdős-Spencer used entropy or counting arguments.
 -/
 
-/-- Any sign function has some subset with large discrepancy. -/
+/-  Any sign function has some subset with large discrepancy. -/
 /-
 ## Special Cases
 
 Small cases and explicit computations.
 -/
 
-/-- H(2) = 2 (trivial case). -/
-/-- H(3) = 4. -/
+/-  H(2) = 2 (trivial case). -/
+/-  H(3) = 4. -/
 /-
 ## Connection to Ramsey Theory
 

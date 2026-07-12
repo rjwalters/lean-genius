@@ -563,7 +563,7 @@ whose part-count parity is the pentagonal sign `(-1)^k`.  This is precisely the
 residual term that Franklin's cancellation leaves behind — the right-hand side of
 the FRANKLIN identity below — now pinned down arithmetically. -/
 
-/-- Gauss's sum `∑_{j<k} j` in `ℤ`, in the division-free doubled form. -/
+/-- Gauss's sum `∑_{j<k} j` ∈ `ℤ`, in the division-free doubled form. -/
 private theorem gauss_int (k : ℕ) :
     (∑ j ∈ Finset.range k, (j : ℤ)) * 2 = (k : ℤ) * ((k : ℤ) - 1) := by
   induction k with

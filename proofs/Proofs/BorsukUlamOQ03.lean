@@ -28,7 +28,7 @@ higher-dimensional Borsuk-Ulam?
 1. **1D interval BU**: f continuous on [-1,1] → ∃ x, f(x) = f(-x)
    (proved via IVT on the antisymmetric difference g = f(x) - f(-x))
 
-2. **Odd function zero**: g continuous, g(-x) = -g(x) → ∃ zero in [-1,1]
+2. **Odd function zero**: g continuous, g(-x) = -g(x) → ∃ zero in (_ : -1,1)
    (proved: g is antisymmetric, g(-1) = -g(1), IVT gives zero)
 
 3. **1D Circle BU**: f: S^1 → ℝ continuous (parametric) → ∃ antipodal pair
@@ -325,7 +325,7 @@ theorem bu_constructive_summary : (1 : ℕ) + 1 = 2 := rfl
 /-
 ## Section IX: The Interval Version Has a Trivial Witness
 
-The statement ∃ x ∈ [-1,1], f(x) = f(-x) is satisfied by x = 0 for ANY function f,
+The statement ∃ x ∈ (_ : -1,1), f(x) = f(-x) is satisfied by x = 0 for ANY function f,
 since -0 = 0 (0 is its own antipodal). The genuinely non-trivial BU result is
 the circle version (Section III), where no point is its own antipodal.
 -/

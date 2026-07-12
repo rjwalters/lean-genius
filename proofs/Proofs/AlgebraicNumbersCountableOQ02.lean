@@ -6,6 +6,7 @@ import Mathlib.Data.Set.Countable
 import Mathlib.Tactic
 import Proofs.CantorDiagonalization
 import Proofs.AlgebraicNumbersCountable
+import Mathlib.Analysis.Real.Cardinality
 
 /-
 # ℝ is Uncountable: Cantor's Cardinality Argument (ℵ₀ < 2^ℵ₀ = 𝔠)

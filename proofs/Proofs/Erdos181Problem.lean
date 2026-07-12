@@ -210,7 +210,7 @@ theorem lee_bounded_degree_ramsey :
       G_max_degree ≤ Δ → True :=
   fun _ => ⟨1, one_pos, fun _ _ _ => trivial⟩
 
-/--
+/- 
 **Erdős-Sós Question:**
 Does R(Q_n) / 2^n → ∞ as n → ∞?
 
@@ -330,7 +330,7 @@ theorem ramseyNumber_zero_eq : ramseyNumber 0 = 1 := by
     obtain ⟨f, hf_inj, _⟩ := hN Fin.elim0
     exact no_embedding_small 0 0 (by omega) ⟨f, hf_inj⟩
 
-/--
+/- 
 **Erdős Problem #181: OPEN**
 
 Prove that R(Q_n) ≪ 2^n.

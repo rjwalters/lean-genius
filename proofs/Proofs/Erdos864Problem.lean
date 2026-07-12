@@ -59,7 +59,7 @@ axiom erdos_freud_lower_bound :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxAlmostSidon N : ℝ) ≥ (2 / Real.sqrt 3 - ε) * Real.sqrt (N : ℝ)
 
-/-- **Note**: The Lindström (1969) bound |A| ≤ √N + O(N^{1/4}) for Sidon sets
+/-  **Note**: The Lindström (1969) bound |A| ≤ √N + O(N^{1/4}) for Sidon sets
     requires Fourier-analytic methods not yet available in Mathlib v4.26.0.
     The elementary difference-counting bound k² ≤ 2N + k (proved below as
     `sidon_card_sq_le_2N`) gives |A| ≤ √(2N), improving `sidon_card_sq_le`
@@ -499,7 +499,7 @@ private lemma isSidon_sumRepCount_le_one {B : Finset ℕ} (hS : IsSidon B) (n : 
       exact ⟨a, b, hab.1.1, hab.1.2, hab.2.2⟩
     · unfold sumRepCount at h; omega
   rw [Finset.card_eq_zero] at hS
-  exact (hS ▸ Finset.not_mem_empty n) hmem
+  exact (hS ▸ Finset.notMem_empty n) hmem
 
 /-- The reflected construction: B ∪ (N − B) is almost-Sidon when B is Sidon.
     The only possible collision is at n = N (sums from B-side and reflected-side). -/

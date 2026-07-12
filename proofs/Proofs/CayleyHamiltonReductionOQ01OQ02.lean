@@ -117,7 +117,7 @@ theorem nilpotent_reduction_equiv [NeZero n] (M : Matrix (Fin n) (Fin n) K)
 /-- For upper triangular M, the minimal polynomial divides the product of
     linear factors (X - M i i) from the diagonal.
 
-    Efficiency: the product ∏ᵢ (X - M i i) is computed in O(n) operations
+    Efficiency: the product ∏ᵢ (X - M i i) is computed ∈ O(n) operations
     (just read the diagonal), vs O(n³) for a general charpoly computation. -/
 theorem upper_tri_minpoly_dvd_prod [NeZero n]
     (M : Matrix (Fin n) (Fin n) K) (h : M.BlockTriangular id) :

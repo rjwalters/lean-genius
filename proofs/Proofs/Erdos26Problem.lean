@@ -95,7 +95,7 @@ theorem not_isThick_geometric {r : ℕ} (hr : r > 1) : ¬IsThick fun n : ℕ => 
   rw [this]
   exact summable_geometric_of_lt_one (by positivity) hrR
 
-/-- A constant positive sequence is thick (harmonic series diverges).
+/-  A constant positive sequence is thick (harmonic series diverges).
     Proof: Σ(1/r) = ∞ for any fixed r > 0 over infinite index. -/
 /- ## The Davenport-Erdős Theorem -/
 
@@ -123,7 +123,7 @@ def Erdos26Conjecture : Prop :=
 
 /- ## The Ruzsa Counterexample -/
 
-/-- Ruzsa's counterexample: There exists a strictly increasing sequence A
+/-  Ruzsa's counterexample: There exists a strictly increasing sequence A
     such that for all k, the shifted sequence A + k is NOT Behrend.
 
     The construction uses: n_l ≡ -(k-1) (mod p_k) for all k ≤ l,
@@ -164,9 +164,9 @@ theorem multiplesOf_eq_univ {ι : Type*} (A : ι → ℕ) (h : 1 ∈ range A) :
   simp only [MultiplesOf, mem_range, mem_univ, iff_true]
   exact ⟨(n, i), by simp [hi]⟩
 
-/-- If A contains 1, then A is trivially Behrend.
+/-  If A contains 1, then A is trivially Behrend.
     Proof: MultiplesOf A = ℕ when 1 ∈ A, so density is 1. -/
-/-- A sequence is weakly Behrend with ε ≥ 1 trivially.
+/-  A sequence is weakly Behrend with ε ≥ 1 trivially.
     Proof: 1 - ε ≤ 0 ≤ lowerDensity(S) for any S. -/
 /-- A sequence is not weakly Behrend with ε < 0.
     Proof: 1 - ε > 1 ≥ lowerDensity(S) for any S. -/

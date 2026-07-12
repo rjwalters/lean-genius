@@ -273,7 +273,7 @@ private lemma testBit_sum_distinct_pow (A : Finset ℕ) (j : ℕ) :
       let m := B.max' hne
       have hm_in : m ∈ B := Finset.max'_mem B hne
       let B' := B.erase m
-      have hm_not : m ∉ B' := Finset.not_mem_erase m B
+      have hm_not : m ∉ B' := Finset.notMem_erase m B
       have hB'_card : B'.card = n := by
         rw [Finset.card_erase_of_mem hm_in, hB]; simp
       have hB'_lt : ∀ a ∈ B', a < m := by

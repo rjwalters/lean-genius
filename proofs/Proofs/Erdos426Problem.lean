@@ -92,7 +92,7 @@ by Pólya's enumeration theorem.
 noncomputable def nonIsomorphicGraphs (n : ℕ) : ℝ :=
   (2 : ℝ)^(n.choose 2) / n.factorial
 
-/--
+/- 
 **Pólya's asymptotic:**
 The number of non-isomorphic graphs on n vertices is asymptotically
 2^(n choose 2) / n!.
@@ -102,13 +102,13 @@ The number of non-isomorphic graphs on n vertices is asymptotically
 f(n) = maximum number of unique subgraphs in any graph on n vertices.
 -/
 noncomputable def maxUniqueSubgraphs (n : ℕ) : ℕ :=
-  sSup {k : ℕ | ∃ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+  sSup {k : ℕ | ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
     CountUniqueSubgraphs G = k}
 
 /- ## Part III: Historical Constructions
 -/
 
-/--
+/- 
 **Entringer-Erdős construction (1972):**
 There exist graphs with 2^{(n choose 2) - O(n^{3/2+o(1)})} unique subgraphs.
 -/
@@ -157,7 +157,7 @@ axiom bradac_christoph_2024 :
     ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
       (maxUniqueSubgraphs n : ℝ) < ε * nonIsomorphicGraphs n
 
-/--
+/- 
 **Quantitative bound:**
 The o(1) factor can be made explicit.
 -/

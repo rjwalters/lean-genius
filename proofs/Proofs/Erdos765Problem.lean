@@ -64,16 +64,16 @@ This is the central object of Problem #765.
 -/
 axiom ex_C4 (n : ℕ) : ℕ
 
-/-- ex(n; C₄) is realized by some C₄-free graph on n vertices. -/
+/-  ex(n; C₄) is realized by some C₄-free graph on n vertices. -/
 /- ## Part III: Historical Bounds
 -/
 
-/--
+/- 
 **Erdős-Klein Upper Bound (1938):**
 ex(n; C₄) = O(n^{3/2}).
 This was the first upper bound, establishing the order of magnitude.
 -/
-/--
+/- 
 **Reiman's Bounds (1958):**
 1/(2√2) ≤ lim ex(n;C₄)/n^{3/2} ≤ 1/2.
 This refined the constant, showing the limit exists.
@@ -116,7 +116,7 @@ theorem erdos_765 : ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
 /- ## Part V: Füredi's Exact Result
 -/
 
-/--
+/- 
 **Füredi's Theorem (1983):**
 For q > 13 a prime power and n = q² + q + 1:
 ex(n; C₄) = (1/2)q(q+1)².
@@ -125,7 +125,7 @@ This gives exact values for infinitely many n.
 /- ## Part VI: Refined Bounds and Erdős's Conjecture
 -/
 
-/--
+/- 
 **Erdős's Upper Bound (1975):**
 ex(n; C₄) ≤ (1/2)n^{3/2} + (1/4)n + O(n^{1/2}).
 -/
@@ -137,7 +137,7 @@ def erdos_conjecture : Prop :=
     ∃ c : ℝ, ∀ n > 0, |(ex_C4 n : ℝ) - ((1/2 : ℝ) * (n : ℝ)^(3/2 : ℝ) + (1/4 : ℝ) * n)| ≤
       c * (n : ℝ)^(1/2 : ℝ)
 
-/--
+/- 
 **Ma-Yang Disproof (2023):**
 Erdős's conjecture is FALSE. There exists c > 0 such that for
 a positive density set of n: ex(n; C₄) ≤ (1/2)n^{3/2} + (1/4 - c)n.

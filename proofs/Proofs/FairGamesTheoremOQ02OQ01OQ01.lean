@@ -159,7 +159,7 @@ theorem nat_cast_eq_tsum_indicator (n : ℕ) :
   · simp [Set.indicator_apply, Finset.sum_ite_eq']
   · intro k hk
     simp only [Finset.mem_range, not_lt] at hk
-    exact Set.indicator_of_not_mem (by simp [hk.not_lt])
+    exact Set.indicator_of_notMem (by simp [hk.not_lt])
 
 -- ENNReal tail sum formula: ∫⁻ (τ ω : ℝ≥0∞) ∂μ = ∑' k, μ{k < τ}
 private lemma lintegral_nat_eq_tsum_prob (τ : Ω → ℕ) (hτ_meas : Measurable τ) :
@@ -175,7 +175,7 @@ private lemma lintegral_nat_eq_tsum_prob (τ : Ω → ℕ) (hτ_meas : Measurabl
     · -- Outside range: indicator = 0
       intro k hk
       simp only [Finset.mem_range, not_lt] at hk
-      exact Set.indicator_of_not_mem (not_lt.mpr hk) _
+      exact Set.indicator_of_notMem (not_lt.mpr hk) _
   simp_rw [heq]
   rw [lintegral_tsum (fun k =>
       (measurable_const.indicator (measurableSet_lt measurable_const hτ_meas)).aemeasurable)]
@@ -249,17 +249,17 @@ theorem integral_sum_range_eq_tsum
     (τ : Ω → ℕ) (hτ : IsStoppingTime (ℱ μ X hX_meas) τ)
     (hτ_meas : Measurable τ) (hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ)
     [SigmaFiniteFiltration μ (ℱ μ X hX_meas)] :
-    ∫ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω ∂μ =
+    ∫ ω, ∑ k ∈ Finset.range (τ ω), X (k + 1) ω ∂μ =
       ∑' k : ℕ, ∫ ω, Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω ∂μ := by
   -- Rewrite stopped sum as tsum of indicator terms (pointwise)
-  have sum_eq : ∀ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω =
+  have sum_eq : ∀ ω, ∑ k ∈ Finset.range (τ ω), X (k + 1) ω =
       ∑' k : ℕ, Set.indicator {ω' | k < τ ω'} (1 : Ω → ℝ) ω * X (k + 1) ω := fun ω => by
     rw [tsum_eq_sum (s := Finset.range (τ ω))]
     · apply Finset.sum_congr rfl; intro k hk
       rw [Set.indicator_of_mem (Finset.mem_range.mp hk), Pi.one_apply, one_mul]
     · intro k hk
       simp only [Finset.mem_range, not_lt] at hk
-      rw [Set.indicator_of_not_mem (not_lt.mpr hk), Pi.zero_apply, zero_mul]
+      rw [Set.indicator_of_notMem (not_lt.mpr hk), Pi.zero_apply, zero_mul]
   -- LHS = ∫ ∑' indicator * X
   rw [integral_congr_ae (ae_of_all μ sum_eq)]
   -- Summability of norm integrals: ∑ E[‖F k‖] ≤ E[‖X₀‖] · E[τ] < ∞
@@ -300,7 +300,7 @@ theorem wald_identity
     (τ : Ω → ℕ) (hτ : IsStoppingTime (ℱ μ X hX_meas) τ)
     (hτ_meas : Measurable τ) (hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ)
     [SigmaFiniteFiltration μ (ℱ μ X hX_meas)] :
-    ∫ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω ∂μ =
+    ∫ ω, ∑ k ∈ Finset.range (τ ω), X (k + 1) ω ∂μ =
       (∫ ω, X 0 ω ∂μ) * ∫ ω, (τ ω : ℝ) ∂μ := by
   -- Step 1: Exchange sum and integral (Fubini)
   rw [integral_sum_range_eq_tsum μ X hX_meas hX_indep hτ hτ_meas hτ_int]
@@ -321,7 +321,7 @@ theorem wald_identity
 theorem wald_identity_bounded
     (τ : Ω → ℕ) (hτ : IsStoppingTime (ℱ μ X hX_meas) τ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N)
     [SigmaFiniteFiltration μ (ℱ μ X hX_meas)] :
-    ∫ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω ∂μ =
+    ∫ ω, ∑ k ∈ Finset.range (τ ω), X (k + 1) ω ∂μ =
       (∫ ω, X 0 ω ∂μ) * ∫ ω, (τ ω : ℝ) ∂μ := by
   -- For bounded τ, use finite Fubini
   have hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ := by
@@ -352,7 +352,7 @@ theorem wald_zero_mean_gives_zero_drift
     (hτ_meas : Measurable τ) (hτ_int : Integrable (fun ω => (τ ω : ℝ)) μ)
     (h_zero_mean : ∫ ω, X 0 ω ∂μ = 0)
     [SigmaFiniteFiltration μ (ℱ μ X hX_meas)] :
-    ∫ ω, ∑ k in Finset.range (τ ω), X (k + 1) ω ∂μ = 0 := by
+    ∫ ω, ∑ k ∈ Finset.range (τ ω), X (k + 1) ω ∂μ = 0 := by
   rw [wald_identity μ X hX_meas hX_indep hX_ident hX_int τ hτ hτ_meas hτ_int]
   rw [h_zero_mean, zero_mul]
 

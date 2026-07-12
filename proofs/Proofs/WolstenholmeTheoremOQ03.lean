@@ -105,11 +105,11 @@ theorem regular_iff_not_irregular (p : ℕ) (hp : Nat.Prime p) (h3 : p ≥ 3) :
 def FLT (n : ℕ) : Prop :=
   ∀ x y z : ℤ, x > 0 → y > 0 → z > 0 → x ^ n + y ^ n ≠ z ^ n
 
-/-- FLT holds for n = 1 (trivially false since 1+1=2, so the
+/-  FLT holds for n = 1 (trivially false since 1+1=2, so the
     statement as commonly given requires n ≥ 3). -/
 -- Note: FLT is typically stated for n ≥ 3
 
-/-- FLT holds for n = 2 is false (Pythagorean triples exist).
+/-  FLT holds for n = 2 is false (Pythagorean triples exist).
     The interesting cases are n ≥ 3. -/
 
 /-

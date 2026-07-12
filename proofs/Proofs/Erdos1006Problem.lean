@@ -118,13 +118,13 @@ def oresConjecture : Prop :=
 
 /-- The Grötzsch graph has girth 4 and no robustly acyclic orientation -/
 axiom grotzsch_counterexample :
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     hasGirth G 4 ∧ ¬admitsRobustlyAcyclicOrientation G
 
 /-- Nešetřil-Rödl theorem: For every g ≥ 3, there exists a graph with girth g
     that has no robustly acyclic orientation -/
 axiom nesetril_rodl_1978 (g : ℕ) (hg : g ≥ 3) :
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     hasGirth G g ∧ ¬admitsRobustlyAcyclicOrientation G
 
 /-- Corollary: Ore's conjecture is false -/

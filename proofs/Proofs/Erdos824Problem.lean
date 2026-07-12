@@ -116,11 +116,11 @@ def hCount (x : ℕ) : ℕ :=
 /- ## Part III: Known Results
 -/
 
-/--
+/- 
 **Erdős 1974: h(x)/x → ∞ (limsup)**
 Erdős proved that the ratio h(x)/x is unbounded.
 -/
-/--
+/- 
 **Pollack-Pomerance 2016: h(x)/x → ∞ (limit)**
 They strengthened Erdős's result to show h(x)/x → ∞.
 -/

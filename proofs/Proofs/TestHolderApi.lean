@@ -24,7 +24,7 @@ import Mathlib.Tactic
 
 -- Lp spaces for general p
 #check @MeasureTheory.Lp
-#check @MeasureTheory.Memℒp
+#check @MeasureTheory.MemLp
 
 -- snorm (Lp norm for general p)
 #check @MeasureTheory.snorm

@@ -67,7 +67,7 @@ The set of integers of the form 2^k + p (where p is prime) has positive
 lower density. This was proved by Romanoff in 1934.
 -/
 
-/-- **Romanoff's Theorem (1934)**: The set of integers of the form 2^k + p
+/-  **Romanoff's Theorem (1934)**: The set of integers of the form 2^k + p
 (where p is prime or 1) has positive lower density. -/
 
 /-
@@ -77,7 +77,7 @@ Erdős asked whether by allowing n to have more prime factors, we can
 achieve density arbitrarily close to 1.
 -/
 
-/-- **Erdős Problem #851 (OPEN)**: For any ε > 0, is there some r such that
+/-  **Erdős Problem #851 (OPEN)**: For any ε > 0, is there some r such that
 the density of TwoPowAddSet r is at least 1 - ε?
 
 This asks whether almost all integers can be represented as 2^k + n
@@ -100,7 +100,7 @@ written as 2^k + n for any n with bounded prime factors.
 ## Related Results
 -/
 
-/-- The set of integers NOT of the form 2^k + p (prime) has positive density.
+/-  The set of integers NOT of the form 2^k + p (prime) has positive density.
 This is the "uncovered" portion that Romanoff's theorem leaves. -/
 
 /-

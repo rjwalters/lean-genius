@@ -97,7 +97,7 @@ axiom alon_frankl_lovasz_1986 (n r k t : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (ht 
       edges.card = k ∧ PairwiseDisjoint (edges.image Subtype.val) ∧
       ∀ e ∈ edges, c e = i
 
-/-- Equivalent formulation: chromatic number of Kneser hypergraph -/
+/-  Equivalent formulation: chromatic number of Kneser hypergraph -/
 /-
 ## Part 4: Tightness Construction
 
@@ -107,7 +107,7 @@ The bound is tight: n = kr - 1 + (t-1)(k-1) admits a t-coloring without k disjoi
 /-- The tight bound: n₀ - 1 -/
 def tightBound (k r t : ℕ) : ℕ := k * r - 1 + (t - 1) * (k - 1)
 
-/-- Construction: partition [n] = X₁ ∪ X₂ ∪ ... ∪ Xₜ where |X₁| = kr-1, |Xᵢ| = k-1.
+/-  Construction: partition [n] = X₁ ∪ X₂ ∪ ... ∪ Xₜ where |X₁| = kr-1, |Xᵢ| = k-1.
     Color by first non-empty intersection. This avoids k disjoint monochromatic edges. -/
 /-
 ## Part 5: Special Case: Lovász's Theorem (k = 2)

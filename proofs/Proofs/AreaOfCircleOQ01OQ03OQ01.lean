@@ -221,7 +221,7 @@ theorem arcLength_neg_nat_multiple (γ : SmoothClosedCurve) (n : ℕ) :
 
     Proof: For any y ∈ ℝ, find n : ℕ with n·L > |y|.
     Then s(2nπ) = nL > |y| ≥ y and s(-2nπ) = -nL < -|y| ≤ y.
-    By IVT (s is continuous), ∃ t ∈ [-2nπ, 2nπ] with s(t) = y. -/
+    By IVT (s is continuous), ∃ t ∈ (_ : -2nπ, 2nπ) with s(t) = y. -/
 theorem arcLength_surjective (γ : SmoothClosedCurve)
     (hL : 0 < γ.circumference) :
     Function.Surjective (arcLength γ) := by

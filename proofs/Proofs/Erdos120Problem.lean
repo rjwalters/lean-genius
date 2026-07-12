@@ -131,7 +131,7 @@ cannot contain similar copies with arbitrarily large elements.
 axiom unbounded_avoidable (A : Set ℝ) (hA : ¬ Bornology.IsBounded A) :
     avoidable A
 
-/--
+/- 
 **Sets Dense in an Interval are Avoidable**
 
 If A is dense in some open interval (a,b), then A is avoidable.
@@ -242,7 +242,7 @@ theorem ratio_preserved (A : Set ℝ) (a b : ℝ) (ha : a ≠ 0)
 Key tools from measure theory that relate to this problem.
 -/
 
-/--
+/- 
 **Steinhaus Difference Theorem**
 
 If E has positive Lebesgue measure, then E - E = {x - y : x, y ∈ E}
@@ -250,7 +250,7 @@ contains an open interval around 0.
 
 This is the classical result underlying the universality of finite sets.
 -/
-/--
+/- 
 **Lebesgue Density Theorem**
 
 For a measurable set E, almost every point of E is a point of

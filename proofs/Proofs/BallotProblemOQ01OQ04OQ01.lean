@@ -177,12 +177,12 @@ private lemma card_filter_getopt_eq_count : ∀ (t : List ℤ) (x : ℤ),
   | nil => simp
   | cons hd tl ih =>
     intro x
-    rw [List.length_cons, Finset.range_succ, Finset.filter_insert, List.count_cons]
+    rw [List.length_cons, Finset.range_add_one, Finset.filter_insert, List.count_cons]
     simp only [List.get?_zero]
     by_cases h : hd = x
     · subst h
       simp only [↓reduceIte, Option.some.injEq, ite_true]
-      rw [Finset.card_insert_of_not_mem
+      rw [Finset.card_insert_of_notMem
         (by simp [Finset.mem_filter, Finset.mem_range])]
       rw [← ih x]
       apply Finset.card_bij (fun i _ => i + 1)

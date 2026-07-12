@@ -140,13 +140,13 @@ For a polynomial p, we want to count roots in the unit disk.
 This requires the fundamental theorem of algebra and is complex to formalize.
 -/
 
-/-- The number of roots of p (with multiplicity) in the unit disk.
+/-  The number of roots of p (with multiplicity) in the unit disk.
 This is axiomatized as it requires splitting fields and careful counting. -/
 /-
 ## The Main Results
 -/
 
-/--
+/- 
 **Erdős-Offord Theorem (1956)**: Random degree-n polynomials with ±1 coefficients
 have approximately (2/π) log n real roots on average.
 
@@ -157,7 +157,7 @@ This is one of the foundational results in the theory of random polynomials.
 Formalization requires probability spaces not yet available in Mathlib.
 -/
 
-/--
+/- 
 **Yakir's Theorem (2021)**: For random Rademacher polynomials of degree n,
 the number of roots in the unit disk R_n satisfies R_n/(n/2) → 1 in probability.
 
@@ -170,7 +170,7 @@ Reference: O. Yakir, "Approximately half of the roots of a random Littlewood
 polynomial are inside the disk", 2021.
 -/
 
-/--
+/- 
 **Erdős Problem #522 (OPEN for almost sure convergence)**:
 
 Does R_n/(n/2) → 1 almost surely for random ±1 polynomials?
@@ -209,12 +209,12 @@ has all n roots on the unit circle (the (n+1)-th roots of unity except 1).
 noncomputable def geometricPoly (n : ℕ) : ℂ[X] :=
   ∑ i : Fin (n + 1), X ^ (i : ℕ)
 
-/-- All roots of the geometric polynomial lie on the unit circle (n-th roots of unity). -/
+/-  All roots of the geometric polynomial lie on the unit circle (n-th roots of unity). -/
 /-
 ## Connection to Other Areas
 -/
 
-/--
+/- 
 **Salem Numbers**: A Salem number is a real algebraic integer τ > 1 whose
 conjugates all have absolute value ≤ 1, with at least one conjugate on the
 unit circle. The minimal polynomial of a Salem number is a Littlewood polynomial.
@@ -223,7 +223,7 @@ Random Littlewood polynomials provide insight into the distribution of roots
 that can give rise to Salem-like algebraic integers.
 -/
 
-/--
+/- 
 **Mahler Measure**: For a polynomial p(z) = a_n ∏(z - α_i), the Mahler measure is
 M(p) = |a_n| ∏_{|α_i|>1} |α_i|
 

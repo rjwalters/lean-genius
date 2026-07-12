@@ -27,6 +27,7 @@ import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.GroupTheory.SpecificGroups.KleinFour
 import Mathlib.Tactic
 import Proofs.AbelRuffiniOQ04OQ02OQ02
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
 open Equiv
 

@@ -14,6 +14,7 @@
   where f(n) = min_{i<n} (p_{n+i} + p_{n-i})?
 -/
 import Mathlib
+import Mathlib.Data.Nat.Nth
 
 namespace Erdos454Aristotle
 

@@ -63,13 +63,13 @@ def ErdosProblem125 : Prop :=
 ## Section IV: Known Lower Bounds
 -/
 
-/-- Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. -/
-/-- Hasler–Melfi (2024): improved to |C ∩ [1,x]| ≫ x^{0.9777}. -/
+/-  Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. -/
+/-  Hasler–Melfi (2024): improved to |C ∩ [1,x]| ≫ x^{0.9777}. -/
 /-
 ## Section V: Upper Density Bound
 -/
 
-/-- Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696.
+/-  Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696.
 So even if C has positive density, it cannot fill more than 70% of ℕ. -/
 /-
 ## Section VI: Generalization to Other Bases

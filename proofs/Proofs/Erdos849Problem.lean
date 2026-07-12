@@ -62,7 +62,7 @@ theorem appears_at_least_once (a : ℕ) (ha : 2 ≤ a) :
   · omega
   · simp [Nat.choose_one_right]
 
-/-- 1 appears infinitely many times (as C(n,0) for all n, but k=0 excluded).
+/-  1 appears infinitely many times (as C(n,0) for all n, but k=0 excluded).
 Actually, 1 = C(n,n) but k > n/2, so with our restriction, 1 appears 0 times! -/
 
 /-- 2 appears exactly once: only as C(2,1). -/
@@ -74,12 +74,12 @@ axiom two_multiplicity : binomNMultiplicity 2 = 1
 The related conjecture bounds how many times any value can appear.
 -/
 
-/-- **Singmaster's Conjecture**: There exists a constant N such that no integer
+/-  **Singmaster's Conjecture**: There exists a constant N such that no integer
 appears more than N times in Pascal's triangle.
 
 The best known bound is that multiplicities are O((log n)^c) for some c. -/
 
-/-- Known: No value appears more than 8 times (conjectured bound is 8).
+/-  Known: No value appears more than 8 times (conjectured bound is 8).
 This is based on extensive computation. -/
 
 /-
@@ -121,7 +121,7 @@ theorem choose_3003_1 : Nat.choose 3003 1 = 3003 := by native_decide
 For every t ≥ 1, does there exist a with exactly t occurrences?
 -/
 
-/-- **Erdős Problem #849 (OPEN)**: For every t ≥ 1, there exists a value a
+/-  **Erdős Problem #849 (OPEN)**: For every t ≥ 1, there exists a value a
 that appears exactly t times in Pascal's triangle (with 1 ≤ k ≤ n/2).
 
 This is OPEN for t ≥ 5. -/
@@ -154,7 +154,7 @@ theorem choose_10_1 : Nat.choose 10 1 = 10 := by native_decide
 Upper bounds on how often a value can appear.
 -/
 
-/-- The infinite family C(n,2) = C(n(n-1)/2, 1) gives infinitely many
+/-  The infinite family C(n,2) = C(n(n-1)/2, 1) gives infinitely many
 values with multiplicity ≥ 2. -/
 
 /-
@@ -163,10 +163,10 @@ values with multiplicity ≥ 2. -/
 Connection to OEIS sequences.
 -/
 
-/-- A003015: Numbers that occur 5 or more times in Pascal's triangle.
+/-  A003015: Numbers that occur 5 or more times in Pascal's triangle.
 Currently only {1} is known, and 1 doesn't count with our k ≥ 1 restriction. -/
 
-/-- A182238: Numbers that occur exactly 4 times.
+/-  A182238: Numbers that occur exactly 4 times.
 Includes 3003, 6435, 11440, ... -/
 
 /-- Verification: C(15,6) = 5005 ≠ 6435. Let's verify 6435 placements. -/

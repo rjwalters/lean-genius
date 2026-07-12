@@ -87,10 +87,10 @@ axiom maxAPFamily (N : ℕ) : ℕ
 axiom simonovits_sos_upper (N : ℕ) (hN : N ≥ 1) :
   ∃ C : ℝ, C > 0 ∧ (maxAPFamily N : ℝ) ≤ C * N^2
 
-/-- The quadratic bound is essentially tight: t = Ω(N²) -/
+/-  The quadratic bound is essentially tight: t = Ω(N²) -/
 /- ## Part IV: The Erdős-Graham Conjecture (Disproved) -/
 
-/--
+/- 
 The Erdős-Graham conjecture that APs through ⌊N/2⌋ are optimal was
 disproved by Simonovits-Sós. For large N, the small-sets construction
 through a fixed element beats APs through the middle.
@@ -101,8 +101,8 @@ through a fixed element beats APs through the middle.
 def smallSetsThroughElement (N k : ℕ) : Finset (Finset ℕ) :=
   (interval N).powerset.filter (fun S => k ∈ S ∧ S.card ≤ 3)
 
-/-- This gives C(N-1, 2) + 1 sets (asymptotically N²/2) -/
-/-- This family has the AP-intersection property (any pair of small sets
+/-  This gives C(N-1, 2) + 1 sets (asymptotically N²/2) -/
+/-  This family has the AP-intersection property (any pair of small sets
 through k intersects in {k}, which is a singleton AP) -/
 /- ## Part VI: Szabó's Theorem (1999) -/
 
@@ -111,11 +111,11 @@ axiom szabo_theorem (N : ℕ) (hN : N ≥ 2) :
   ∃ C : ℝ, C > 0 ∧
     |(maxAPFamily N : ℝ) - N^2 / 2| ≤ C * N^(5/3 : ℝ) * (Real.log N)^3
 
-/-- The leading constant is 1/2 -/
+/-  The leading constant is 1/2 -/
 /- ## Part VII: Szabó's Refined Results -/
 
-/-- Szabó's improved lower bound -/
-/-- Szabó conjectured every extremal family has a common element -/
+/-  Szabó's improved lower bound -/
+/-  Szabó conjectured every extremal family has a common element -/
 /- ## Part VIII: Summary -/
 
 /--

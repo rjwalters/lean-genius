@@ -117,7 +117,7 @@ theorem twentyone_all_prime : HasAllPrimeProperty 21 := by
     omega
   interval_cases k <;> simp_all <;> decide
 
-/-- The Erdős-Guy conjecture: These are the ONLY numbers with all-prime property.
+/-  The Erdős-Guy conjecture: These are the ONLY numbers with all-prime property.
     Verified up to 2^44 by Mientka-Weitzenkamp (1969).
 
     We state this as an axiom since it remains unproven in general. -/
@@ -130,11 +130,11 @@ theorem twentyone_all_prime : HasAllPrimeProperty 21 := by
 def Erdos236_Conjecture : Prop :=
   (fun n => (f n : ℝ)) =o[atTop] (fun n => Real.log (n : ℝ))
 
-/-- Erdős's lower bound (1950): f(n) ≫ log log n infinitely often.
+/-  Erdős's lower bound (1950): f(n) ≫ log log n infinitely often.
 
     This shows f can grow at least as fast as log log n for some n.
     It provides evidence that the conjecture is tight. -/
-/-- Vaughan's upper bound (1973): The set of "all-prime" numbers is sparse.
+/-  Vaughan's upper bound (1973): The set of "all-prime" numbers is sparse.
 
     The number of n ≤ N with HasAllPrimeProperty is at most
     exp(-c · (log log log N / log log N) · log N) · N

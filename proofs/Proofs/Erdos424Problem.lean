@@ -42,7 +42,7 @@ noncomputable def generatedCount (N : ℕ) : ℕ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #424**: does generatedSet have positive (lower) density?
+/-  **Erdős Problem #424**: does generatedSet have positive (lower) density?
     That is, lim inf |generatedSet ∩ [1,N]| / N > 0. -/
 /- ## Known Results -/
 
@@ -80,7 +80,7 @@ theorem mod_3_obstruction :
   obtain ⟨n, hn⟩ := ha
   exact sequenceSet_mod3 n a hn
 
-/-- **Density Upper Bound**: since no element is ≡ 1 (mod 3), the density
+/-  **Density Upper Bound**: since no element is ≡ 1 (mod 3), the density
     of generatedSet is at most 2/3 + ε for any ε > 0.
     Follows from mod_3_obstruction via Finset counting: generatedCount N ≤ 2N/3 + 1.
     (Kept as axiom due to the Finset counting complexity.) -/

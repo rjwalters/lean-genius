@@ -90,11 +90,11 @@ x² - Dy² = 1 for non-square D > 0. -/
 def IsPellSolution (x y D : ℕ) : Prop :=
   x^2 = D * y^2 + 1
 
-/-- **Mahler's observation:**
+/-  **Mahler's observation:**
 The Pell equation x² = 8y² + 1 gives consecutive powerful numbers.
 If (x, y) is a solution, then 8y² = x² - 1 = (x-1)(x+1).
 Both 8y² and 8y² + 1 can be powerful. -/
-/-- **Infinitely many from Pell:**
+/-  **Infinitely many from Pell:**
 The Pell equation x² - 8y² = 1 has infinitely many solutions.
 Fundamental solution: (3, 1) giving 8·1 = 8 and 9. -/
 /- ## Part IV: Question 1 - Must One Be a Square? -/
@@ -136,7 +136,7 @@ axiom walker_infinitely_many :
       (∀ k, WalkerEquation (f k).1 (f k).2) ∧
       (∀ k₁ k₂, k₁ < k₂ → (f k₁).2 < (f k₂).2)
 
-/-- **Walker solutions give non-square pairs:** -/
+/-  **Walker solutions give non-square pairs:** -/
 /- ## Part VI: Question 2 - Counting -/
 
 /-- **Counting function:**

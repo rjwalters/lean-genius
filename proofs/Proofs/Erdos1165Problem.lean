@@ -88,7 +88,7 @@ infinitely often", formalized via measure theory.
 axiom prob_favourite_count_io (r : ℕ) : ℝ
   -- P(|F(n)| = r infinitely often)
 
-/-- Basic property: probabilities are between 0 and 1. -/
+/-  Basic property: probabilities are between 0 and 1. -/
 /- ## Part IV: Main Results (SOLVED)
 
 Erdős Problem #1165 asks for the value of

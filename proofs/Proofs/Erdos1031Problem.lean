@@ -82,7 +82,7 @@ theorem isClique_subset (G : SimpleGraph V) (S T : Finset V)
 
 /-- The empty set is trivially independent (vacuous truth). -/
 theorem empty_is_trivial (G : SimpleGraph V) : isTrivialInduced G ∅ :=
-  Or.inl (fun _ h => absurd h (Finset.not_mem_empty _))
+  Or.inl (fun _ h => absurd h (Finset.notMem_empty _))
 
 /-- A singleton set is trivially both independent and a clique. -/
 theorem singleton_is_trivial (G : SimpleGraph V) (v : V) :
@@ -182,7 +182,7 @@ axiom promel_rodl : ∀ c > 0, ∃ c' > 0, ∃ N : ℕ, ∀ n ≥ N,
 The conjecture follows from Prömel-Rödl.
 -/
 
-/-- Any k ≥ 3 has a non-trivial k-regular graph. -/
+/-  Any k ≥ 3 has a non-trivial k-regular graph. -/
 /-
 ## Connection to Ramsey Theory
 
@@ -219,7 +219,7 @@ noncomputable def ramseyNumber (k : ℕ) : ℕ :=
 /-- R(k,k) ≤ 4^k (crude bound). -/
 axiom ramsey_upper_bound (k : ℕ) : ramseyNumber k ≤ 4^k
 
-/-- R(k,k) ≥ 2^(k/2) (probabilistic lower bound). -/
+/-  R(k,k) ≥ 2^(k/2) (probabilistic lower bound). -/
 /-- Ramsey implies log n trivial subgraph. -/
 theorem ramsey_log_trivial (n : ℕ) (hn : n ≥ 4) :
     ∀ (V : Type*) [DecidableEq V] [Fintype V],
@@ -250,7 +250,7 @@ Graphs avoiding large trivial subgraphs are "non-Ramsey".
 def isNonRamsey (G : SimpleGraph V) (c : ℝ) : Prop :=
   noLargeTrivial G (Nat.ceil (c * Real.log (Fintype.card V)))
 
-/-- Non-Ramsey graphs are rare but exist. -/
+/-  Non-Ramsey graphs are rare but exist. -/
 /-
 ## Universality
 

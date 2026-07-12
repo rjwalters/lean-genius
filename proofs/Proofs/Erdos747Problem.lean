@@ -178,7 +178,7 @@ axiom kahn_precise_threshold :
     Filter.atTop
     (nhds 1)
 
-/--
+/- 
 **General r-uniform Case:**
 For r-uniform hypergraphs on rn vertices, the threshold is also ~ n log n.
 -/
@@ -195,7 +195,7 @@ axiom below_threshold_fails :
   ∀ ε > 0, AlmostSurely (fun n =>
     ¬ShamirProperty n (Nat.floor ((1 - ε) * n * Real.log n)))
 
-/--
+/- 
 **Isolated Vertices Obstruction:**
 The main obstruction below the threshold is the existence of isolated vertices.
 -/
@@ -223,7 +223,7 @@ The proof uses sophisticated probabilistic techniques including:
 ## Part VIII: Comparison with Graphs
 -/
 
-/--
+/- 
 **Graph Case (r = 2):**
 For ordinary graphs on 2n vertices, the perfect matching threshold
 is also ≍ n log n (well-known classical result).

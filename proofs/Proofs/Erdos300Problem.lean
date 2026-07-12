@@ -50,7 +50,7 @@ namespace Erdos300
 For a set S ⊆ ℕ, compute Σ_{n∈S} 1/n.
 -/
 noncomputable def unitFractionSum (S : Finset ℕ) : ℝ :=
-  ∑ n in S, (1 : ℝ) / n
+  ∑ n ∈ S, (1 : ℝ) / n
 
 /--
 **Unit Sum-Free Set:**
@@ -96,7 +96,7 @@ Axiomatized because Croot's proof uses deep density arguments beyond Mathlib.
 axiom croot_theorem :
     ∃ c : ℝ, c < 1 ∧ ∀ᶠ N in Filter.atTop, (A N : ℝ) < c * N
 
-/--
+/- 
 **Corollary: Conjecture Disproved.**
 Croot's theorem directly contradicts the conjecture, which asserts A(N)/N → 1.
 Axiomatized because the proof requires careful asymptotic analysis.
@@ -124,7 +124,7 @@ axiom erdos_300_lower_bound :
     ∀ ε > 0, ∀ᶠ N in Filter.atTop,
       (A N : ℝ) ≥ (1 - Real.exp (-1) - ε) * N
 
-/--
+/- 
 **Why Small Fractions Work:**
 If all 1/n < 1/e, then the greedy algorithm avoids sum reaching exactly 1.
 Axiomatized because the detailed subset-sum analysis is non-trivial.
@@ -189,9 +189,9 @@ A number r can be written as a sum of distinct unit fractions.
 Every positive rational has such a representation.
 -/
 def HasEgyptianRepresentation (r : ℚ) : Prop :=
-  ∃ S : Finset ℕ, (∑ n in S, (1 : ℚ) / n) = r
+  ∃ S : Finset ℕ, (∑ n ∈ S, (1 : ℚ) / n) = r
 
-/--
+/- 
 **1 Has Many Representations:**
 1 = 1/2 + 1/3 + 1/6
 1 = 1/2 + 1/4 + 1/5 + 1/20
@@ -217,7 +217,7 @@ def AvoidAllIntegers (A : Finset ℕ) : Prop :=
   ∀ S : Finset ℕ, S ⊆ A → S.Nonempty →
     ∀ k : ℕ, k > 0 → unitFractionSum S ≠ k
 
-/--
+/- 
 **Greedy Algorithm:**
 A greedy construction achieves the lower bound:
 Start with ∅, add n if current sum + 1/n ≠ 1.

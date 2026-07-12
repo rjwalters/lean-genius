@@ -295,8 +295,8 @@ theorem card_sq_eq_one_ge_three_of_not_cyclic_zmod
   have hsub : ({1, -1, u} : Finset (ZMod n)ˣ) ⊆ S := by
     intro y hy; simp at hy; rcases hy with rfl | rfl | rfl <;> assumption
   have hcard : ({1, -1, u} : Finset (ZMod n)ˣ).card = 3 := by
-    rw [Finset.card_insert_of_not_mem (by simp [hne_1_neg1.symm, hu_ne_1.symm])]
-    rw [Finset.card_insert_of_not_mem (by simp [hu_ne_neg1.symm])]
+    rw [Finset.card_insert_of_notMem (by simp [hne_1_neg1.symm, hu_ne_1.symm])]
+    rw [Finset.card_insert_of_notMem (by simp [hu_ne_neg1.symm])]
     simp
   linarith [Finset.card_le_card hsub]
 
@@ -306,7 +306,7 @@ theorem card_sq_eq_one_ge_three_of_not_cyclic_zmod
 
 -- Import-free restatements of lemmas from WilsonsTheoremOQ02
 
-/-- ∏ G = ∏ {x | x² = 1} in any finite commutative group. -/
+/-- ∏ G = ∏ {x | x² = 1} ∈ any finite commutative group. -/
 theorem prod_eq_prod_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] [DecidableEq G] :
     ∏ x : G, x = ∏ x ∈ Finset.univ.filter (fun x : G => x ^ 2 = 1), x := by
   have hsplit : ∏ x : G, x =
@@ -379,7 +379,7 @@ theorem prod_units_one_of_not_cyclic_ext {n : ℕ} (hn : n ≥ 3)
     rw [Finset.nonempty_iff_ne_empty]; intro hempty
     have : S ⊆ {1} := by
       intro x hx; by_contra hxne
-      exact Finset.not_mem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, hxne⟩)
+      exact Finset.notMem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, hxne⟩)
     have := Finset.card_le_card this; simp at this; omega
   obtain ⟨c, hc_mem⟩ := hS_sub1_nonempty
   have hc_in_S : c ∈ S := (Finset.mem_sdiff.mp hc_mem).1
@@ -391,7 +391,7 @@ theorem prod_units_one_of_not_cyclic_ext {n : ℕ} (hn : n ≥ 3)
     have : S ⊆ {1, c} := by
       intro x hx; by_contra hxne
       simp only [Finset.mem_insert, Finset.mem_singleton] at hxne; push_neg at hxne
-      exact Finset.not_mem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, by
+      exact Finset.notMem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, by
         simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact hxne⟩)
     have := Finset.card_le_card this
     have : ({1, c} : Finset (ZMod n)ˣ).card ≤ 2 := Finset.card_insert_le _ _

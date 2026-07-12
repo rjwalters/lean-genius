@@ -45,7 +45,7 @@
   two ends) was previously written, `0`-axiom, in the sibling file
   `AreaOfCircleOQ01OQ03OQ01.lean` (`ArcLengthReparam.exists_arclength_reparam'`). However, as
   of Mathlib v4.26.0 **both that sibling and the parent `AreaOfCircleOQ01OQ02OQ02OQ01.lean`
-  fail to build** (≈40 errors: `Real.contDiff_cos`, `Filter.eventually_of_forall`,
+  fail to build** (≈40 errors: `Real.contDiff_cos`, `Filter.Eventually.of_forall`,
   `HasFDerivAtFilter.congr` were removed/renamed). They are gallery entries marked
   "verified" that have silently bit-rotted (audits use a cheap grep check, not `lake build`).
   This file therefore deliberately depends on **Mathlib only**, importing neither, so that it

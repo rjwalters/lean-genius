@@ -135,7 +135,7 @@ def AlmostSureConvergence (C : ℝ) : Prop :=
   -- P(lim_{n→∞} maxModulus / √(n log n) = C) = 1
   True
 
-/-- Halász proved almost sure convergence to 1. -/
+/-  Halász proved almost sure convergence to 1. -/
 /-
 ## Part VII: Properties of Random Polynomials
 -/
@@ -145,8 +145,8 @@ noncomputable def L2Norm (s : SignVector n) : ℝ :=
   Real.sqrt ((1 / (2 * Real.pi)) * ∫ θ in (0 : ℝ)..(2 * Real.pi),
     (abs (evalOnCircle s θ))^2)
 
-/-- The L² norm is exactly √(n+1). -/
-/-- The max is much larger than the L² norm (by √(log n) factor). -/
+/-  The L² norm is exactly √(n+1). -/
+/-  The max is much larger than the L² norm (by √(log n) factor). -/
 /-- Connection to Kahane's work on random Fourier series. -/
 def kahaneConnection : Prop :=
   -- Random polynomials are a special case of random Fourier series

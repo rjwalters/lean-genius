@@ -83,8 +83,8 @@ ex(n; C_{2k}) = max{|E(G)| : G has n vertices and no C_{2k}}
 ex(n; C_{2k}) is the maximum number of edges in an n-vertex C_{2k}-free graph.
 -/
 noncomputable def exCycle (n k : ℕ) : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type) [Fintype V] [DecidableEq V],
-    ∃ (G : SimpleGraph V) [DecidableRel G.Adj],
+  sSup {m : ℕ | ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V),
+    ∃ (G : SimpleGraph V) (_ : DecidableRel G.Adj),
       Fintype.card V = n ∧ isCycleFree G (2 * k) ∧ edgeCount G = m}
 
 /-
@@ -93,7 +93,7 @@ noncomputable def exCycle (n k : ℕ) : ℕ :=
 Upper and lower bounds on the extremal function.
 -/
 
-/--
+/- 
 **Bondy-Simonovits Upper Bound (1974):**
 ex(n; C_{2k}) ≤ c·k·n^{1+1/k} for some constant c.
 
@@ -248,13 +248,13 @@ theorem luw_vs_benson_k5 : luwExponent 5 < conjecturedExponent 5 := by
 The case k = 2 (4-cycles) is well-understood.
 -/
 
-/--
+/- 
 **Erdős-Klein Theorem (1938):**
 ex(n; C_4) ~ (1/2)·n^{3/2}
 
 The extremal graphs are related to finite projective planes.
 -/
-/--
+/- 
 C_4-free graphs and the Kővári-Sós-Turán theorem.
 For bipartite graphs, ex(n; C_4) is related to the Zarankiewicz problem.
 -/
@@ -265,7 +265,7 @@ For bipartite graphs, ex(n; C_4) is related to the Zarankiewicz problem.
 For odd cycles, the situation is completely different.
 -/
 
-/--
+/- 
 **Odd Cycle Extremal Function:**
 ex(n; C_{2k+1}) = ⌊n²/4⌋ for k ≥ 1 and n > 2k+1.
 

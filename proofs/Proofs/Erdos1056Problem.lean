@@ -25,6 +25,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
+import Mathlib.NumberTheory.Wilson
 
 namespace Erdos1056
 
@@ -173,7 +174,7 @@ theorem wilson_constraint (p : ℕ) (hp : p.Prime) :
     (Finset.Ico 1 p).prod id % p = p - 1 := by
   haveI : Fact p.Prime := ⟨hp⟩
   -- Step 1: Relate Finset.Ico 1 p product to (p-1)!
-  -- ∏ i in Ico 1 p, i = ∏ i in range (p-1), (i+1) = (p-1)!
+  -- ∏ i ∈ Ico 1 p, i = ∏ i ∈ range (p-1), (i+1) = (p-1)!
   have h_eq : (Finset.Ico 1 p).prod id = (p - 1).factorial := by
     rw [Finset.prod_Ico_eq_prod_range]
     simp only [id]
@@ -197,7 +198,7 @@ axiom erdos_1056_conjecture : ∀ k : ℕ, k ≥ 2 → HasSolution k
 
 /- ## Part VI: Noll–Simmons Generalization -/
 
-/-- The Noll–Simmons question: For arbitrarily large k, do there exist
+/-  The Noll–Simmons question: For arbitrarily large k, do there exist
     q₁ < q₂ < ... < qₖ < p (all less than prime p) such that
     q₁! ≡ q₂! ≡ ... ≡ qₖ! (mod p)?
 

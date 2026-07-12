@@ -177,7 +177,7 @@ theorem complete_implies_subcomplete (A : Set ℕ) :
     apply hN₀
     omega
 
-/--
+/- 
 **Density hierarchy:**
 Folkman density implies square root density.
 Axiomatized: The technical bound N^{1/2+ε} ≥ C · N^{1/2} for large N is routine analysis.

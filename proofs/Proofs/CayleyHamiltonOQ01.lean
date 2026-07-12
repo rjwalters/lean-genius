@@ -159,7 +159,7 @@ theorem annihilator_iff_minpoly_dvd {K : Type*} [Field K]
 /-- The characteristic polynomial is a multiple of the minimal polynomial. -/
 theorem charpoly_multiple_of_minpoly {K : Type*} [Field K]
     (M : Matrix n n K) :
-    ∃ q : K[X], M.charpoly = minpoly K M * q := by
+    ∃ q : K(_ : X), M.charpoly = minpoly K M * q := by
   exact Matrix.minpoly_dvd_charpoly M
 
 -- ============================================================
@@ -213,7 +213,7 @@ theorem power_eq_aeval_mod_minpoly {K : Type*} [Field K]
 theorem aeval_reduced_by_minpoly {K : Type*} [Field K]
     [Nontrivial (Matrix n n K)]
     (M : Matrix n n K) (f : K[X]) :
-    ∃ q : K[X], aeval M f = aeval M q ∧
+    ∃ q : K(_ : X), aeval M f = aeval M q ∧
     (q = 0 ∨ q.natDegree < (minpoly K M).natDegree) := by
   use f %ₘ minpoly K M
   refine ⟨aeval_eq_aeval_mod_minpoly M f, ?_⟩

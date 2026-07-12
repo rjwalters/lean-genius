@@ -131,7 +131,7 @@ The bound k + 2 is tight: there exist graphs achieving equality.
 
 /-- The bound k + 2 cannot be improved in general -/
 axiom folkman_bound_tight :
-  ∀ (k : ℕ), ∃ (W : Type*) [Fintype W] [DecidableEq W]
+  ∀ (k : ℕ), ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W)
     (H : SimpleGraph W) [DecidableRel H.Adj],
     hasFolkmanPropertyInduced H k ∧ χ(H) = k + 2
 
@@ -170,7 +170,7 @@ theorem folkman_implies_ratio_bound (k : ℕ) (hk : hasFolkmanPropertyInduced G 
 The proof uses ideas related to greedy coloring.
 -/
 
-/-- Greedy coloring gives χ(G) ≤ Δ(G) + 1.
+/-  Greedy coloring gives χ(G) ≤ Δ(G) + 1.
 Folkman graphs have structure that limits max degree effectively. -/
 
 /-
@@ -187,7 +187,7 @@ def erdosHajnalQuestion (k : ℕ) : Prop :=
         2 * S.card ≥ U.card - k) →
     chromaticNumber' H ≤ k + 2
 
-/-- Folkman answered the Erdős-Hajnal question affirmatively. -/
+/-  Folkman answered the Erdős-Hajnal question affirmatively. -/
 
 /-
 ## Part 9: Related Results
@@ -195,7 +195,7 @@ def erdosHajnalQuestion (k : ℕ) : Prop :=
 Connections to other graph coloring results.
 -/
 
-/-- Related: Ramsey theorem gives large cliques or independent sets.
+/-  Related: Ramsey theorem gives large cliques or independent sets.
 Brooks' theorem: χ(G) ≤ Δ(G) unless G is complete or an odd cycle. -/
 
 /-
@@ -210,7 +210,7 @@ theorem erdos_922_summary :
     -- For all k, Folkman property implies chromatic bound
     (∀ (k : ℕ), hasFolkmanPropertyInduced G k → χ(G) ≤ k + 2) ∧
     -- The bound is tight
-    (∀ (k : ℕ), ∃ (W : Type*) [Fintype W] [DecidableEq W]
+    (∀ (k : ℕ), ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W)
       (H : SimpleGraph W) [DecidableRel H.Adj],
       hasFolkmanPropertyInduced H k ∧ χ(H) = k + 2) ∧
     -- k = 0 case gives bipartiteness

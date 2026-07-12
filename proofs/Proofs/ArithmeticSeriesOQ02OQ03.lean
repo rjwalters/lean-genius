@@ -119,8 +119,8 @@ theorem euler_characteristic (k : ℕ) :
   rw [Finset.sum_range_succ'] at h
   simp only [pow_zero, one_mul, Nat.choose_zero_right, Nat.cast_one] at h
   -- Show the shifted sum equals the negation of our target sum
-  suffices hsuff : ∑ x in range (k + 1), (-1 : ℤ) ^ (x + 1) * ↑(Nat.choose (k + 1) (x + 1)) =
-      -(∑ j in range (k + 1), (-1 : ℤ) ^ j * ↑(Nat.choose (k + 1) (j + 1))) by
+  suffices hsuff : ∑ x ∈ range (k + 1), (-1 : ℤ) ^ (x + 1) * ↑(Nat.choose (k + 1) (x + 1)) =
+      -(∑ j ∈ range (k + 1), (-1 : ℤ) ^ j * ↑(Nat.choose (k + 1) (j + 1))) by
     linarith
   rw [← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl

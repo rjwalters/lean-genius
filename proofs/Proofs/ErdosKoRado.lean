@@ -114,7 +114,7 @@ axiom at_most_k_intersecting_cyclic_intervals (n k : ℕ) (hn : n ≥ 2 * k) (hk
     There are (n-1)! cyclic orders (fixing one element). -/
 def numCyclicOrders (n : ℕ) : ℕ := (n - 1).factorial
 
-/-- Each k-set appears as a cyclic interval in exactly k!(n-k)! cyclic orders.
+/-  Each k-set appears as a cyclic interval in exactly k!(n-k)! cyclic orders.
 
     **Proof:** Once we choose which of the k elements is "first" in the cycle (k choices),
     the k elements must appear consecutively. The remaining n-k elements can be arranged
@@ -666,7 +666,7 @@ axiom sunflower_lemma {n k p : ℕ} (hk : 0 < k) (hp : p ≥ 2)
     (hcard : A.card > (p - 1) ^ k * k.factorial) :
     HasSunflower A p
 
-/-- Alweiss-Lovett-Wu-Zhang improved sunflower lemma (2020):
+/-  Alweiss-Lovett-Wu-Zhang improved sunflower lemma (2020):
     The threshold is improved from (p-1)^k · k! to (C · log k · log log k)^k · p
     for an absolute constant C. This breakthrough proved a long-standing conjecture. -/
 /-- The improved sunflower lemma (Alweiss-Lovett-Wu-Zhang 2020).

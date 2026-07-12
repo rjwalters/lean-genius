@@ -223,7 +223,7 @@ private lemma overlap_zero_not_image (A B : Finset ℤ) (k : ℤ)
   unfold overlap
   apply Finset.card_eq_zero.mpr
   ext ⟨a, b⟩
-  simp only [Finset.mem_filter, Finset.mem_product, Finset.not_mem_empty, iff_false, not_and]
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.notMem_empty, iff_false, not_and]
   intro ⟨ha, hb⟩ heq
   exact hk (Finset.mem_image.mpr ⟨(a, b), Finset.mem_product.mpr ⟨ha, hb⟩, heq.symm⟩)
 

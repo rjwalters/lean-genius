@@ -437,7 +437,7 @@ theorem gFunc_ge_k_plus_two (k : ℕ) : gFunc k ≥ k + 2 := by
   have := gFunc_gt k
   omega
 
-/-- The conjecture implies g grows faster than any polynomial:
+/-  The conjecture implies g grows faster than any polynomial:
     if log g(k) ~ k/log k, then g(k) grows super-polynomially. -/
 
 /-

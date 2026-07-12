@@ -96,15 +96,15 @@ noncomputable def k (N : ℕ) : ℕ :=
 ## Basic Bounds
 -/
 
-/-- k(N) ≥ 1 for N ≥ 6 (since {2,3,6} works) -/
-/-- k(N) ≤ N (trivial upper bound: can't have more sets than elements) -/
+/-  k(N) ≥ 1 for N ≥ 6 (since {2,3,6} works) -/
+/-  k(N) ≤ N (trivial upper bound: can't have more sets than elements) -/
 /-
 ## Sunflower Lower Bound
 
 Using the sunflower lemma, one can construct many disjoint sets with equal sums.
 -/
 
-/-- Sunflower bound: at least N·exp(-O(√(log N))) disjoint sets exist
+/-  Sunflower bound: at least N·exp(-O(√(log N))) disjoint sets exist
     with equal reciprocal sums (not necessarily 1) -/
 /-
 ## Main Result: k(N) = (1 - o(1))·log N
@@ -116,7 +116,7 @@ Hunter and Sawhney, using Bloom's Theorem 3, showed k(N) is essentially log N.
 axiom hunter_sawhney_lower (ε : ℝ) (hε : ε > 0) :
   ∃ N₀ : ℕ, ∀ N ≥ N₀, (k N : ℝ) ≥ (1 - ε) * Real.log N
 
-/-- Upper bound: k(N) ≤ log N + O(1) -/
+/-  Upper bound: k(N) ≤ log N + O(1) -/
 /-- Main theorem: k(N) = (1 - o(1))·log N
     Equivalently: k(N) / log N → 1 as N → ∞ -/
 axiom erdos_296_main :

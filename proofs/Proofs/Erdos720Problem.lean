@@ -64,9 +64,9 @@ def CycleGraph (n : ℕ) (hn : n ≥ 3) : GraphOnN n where
   symm := by intro i j h; rcases h with h1|h2|h3|h4 <;> simp [*]
   loopless := by intro i h; rcases h with h1|h2|h3|h4 <;> omega
 
-/-- The number of edges in a path Pₙ.
+/-  The number of edges in a path Pₙ.
     A path on n vertices has exactly n-1 edges: connecting consecutive vertices. -/
-/-- The number of edges in a cycle Cₙ.
+/-  The number of edges in a cycle Cₙ.
     A cycle on n vertices has exactly n edges: n-1 path edges plus the closing edge. -/
 /-
 ## Part II: Size Ramsey Numbers
@@ -143,7 +143,7 @@ axiom beck_cycle_theorem :
 /-- Beck's constant for paths is finite. -/
 def beckPathConstant : ℝ := 900 -- Dudek-Prałat (2017) improved bound
 
-/-- The improved bound from Dudek-Prałat (2017). -/
+/-  The improved bound from Dudek-Prałat (2017). -/
 /-
 ## Part V: Lower Bounds
 -/
@@ -207,7 +207,7 @@ def ramseyComparison : Prop :=
 ## Part VIII: Related Results
 -/
 
-/-- Generalization to trees: size Ramsey of bounded-degree trees is linear. -/
+/-  Generalization to trees: size Ramsey of bounded-degree trees is linear. -/
 /-- Connection to Problem #559: size Ramsey of bounded-degree graphs. -/
 def problemConnection559 : Prop :=
   -- Problem #559 asks about R̂(G) for graphs with max degree Δ

@@ -119,13 +119,13 @@ def erdos_615_conjecture : Prop :=
 Results that suggested the conjecture might be true.
 -/
 
-/--
+/- 
 **Erdős-Hajnal-Sós-Szemerédi (1983):**
 For any fixed ε > 0: rt(n; 4, εn) < (1/8 + o(1))n²
 
 This shows the threshold 1/8 is correct for linear independence number.
 -/
-/--
+/- 
 **Sudakov (2003):**
 rt(n; 4, ne^(-f(n))) = o(n²) whenever f(n)/√log n → ∞
 
@@ -138,7 +138,7 @@ the Ramsey-Turán number becomes subquadratic.
 The answer to the conjecture is NO.
 -/
 
-/--
+/- 
 **Fox-Loh-Zhao Theorem (2015):**
 rt(n; 4, ne^(-f(n))) >= (1/8 - o(1))n² whenever f(n) = o(√(log n / log log n))
 
@@ -193,7 +193,7 @@ def isInCriticalWindow (f : ℕ → ℝ) : Prop :=
 Concrete instances of the Ramsey-Turán function.
 -/
 
-/--
+/- 
 **Turán's Theorem:**
 ex(n, K₄) = (1 - 1/3)(n choose 2) = (1/3)n(n-1)/2 ≈ (1/6)n²
 
@@ -233,7 +233,7 @@ so we're looking at edge-colored complete graphs.
 def isRamseyRelated (k ℓ : ℕ) : Prop :=
   ∀ n : ℕ, rt n k ℓ ≤ (n * (n - 1) / 2 : ℕ)
 
-/--
+/- 
 **Turán-Type Problem:**
 ex(n, H) = max edges in n-vertex H-free graph.
 
@@ -245,7 +245,7 @@ rt(n; k, ℓ) ≤ ex(n, Kₖ) since RT graphs are Kₖ-free.
 Fox-Loh-Zhao's proof constructs a specific graph achieving (1/8 - o(1))n² edges.
 -/
 
-/--
+/- 
 **Simonovits-Sós Construction:**
 The balanced complete 3-partite graph with parts of size n/3 minus a random graph.
 

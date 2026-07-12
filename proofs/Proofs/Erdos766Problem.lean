@@ -98,7 +98,7 @@ contains a triangle, so ex(n; G) ≤ ex(n; K₃) = ⌊n²/4⌋.
 axiom dirac_erdos_theorem (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ k) :
     f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1
 
-/--
+/- 
 **Turán's Theorem (Classical)**:
 ex(n; K_r) = (1 - 1/(r-1)) · n²/2 + O(n)
 

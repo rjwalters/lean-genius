@@ -158,7 +158,7 @@ axiom anderson_keisler_existence :
 /-- The characterization question: what is the necessary and sufficient condition
     for a space to be dimension-stable? -/
 def CharacterizationQuestion : Prop :=
-  ∃ (P : (S : Type*) → [TopologicalSpace S] → Prop),
+  ∃ (P : (S : Type*) → (_ : TopologicalSpace S) → Prop),
     ∀ (S : Type*) [TopologicalSpace S] (n : ℕ),
       hasDimensionExactly S n →
       (IsDimensionStable S n ↔ P S)
@@ -169,7 +169,7 @@ def CharacterizationQuestion : Prop :=
 Properties that dimension-stable spaces must/may have.
 -/
 
-/-- If S is dimension-stable at n, then dim(S^k) <= n for all finite k
+/-  If S is dimension-stable at n, then dim(S^k) <= n for all finite k
     follows from induction on the product. More precisely,
     dim(S × S × S) <= dim(S × S) + dim(S) = n + n, but the
     actual dimension might be n if the product is "well-behaved". -/

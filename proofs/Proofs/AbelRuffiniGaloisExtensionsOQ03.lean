@@ -45,6 +45,7 @@
 -/
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.Tactic
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
 open Equiv Equiv.Perm Subgroup
 

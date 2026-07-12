@@ -235,7 +235,7 @@ theorem isWieferich_3511 : IsWieferich 3511 :=
 theorem at_least_two_wieferich : ∃ p q : ℕ, p ≠ q ∧ IsWieferich p ∧ IsWieferich q :=
   ⟨1093, 3511, by omega, isWieferich_1093, isWieferich_3511⟩
 
-/-- The structural parallel: both exceptional prime families have exactly
+/-  The structural parallel: both exceptional prime families have exactly
     two known examples and similar heuristic density (≈ 1/p).
     | Property           | Wolstenholme primes | Wieferich primes   |
     |---------------------|--------------------|--------------------|

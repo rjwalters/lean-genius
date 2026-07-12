@@ -120,8 +120,8 @@ noncomputable def representationCount (m n : ℕ) : ℕ :=
     (Finset.Icc (i + 1) (n - 1)).filter (fun j =>
       ulamSeq i + ulamSeq j = m) |>.card
 
-/-- ulamSeq(n+1) has exactly one representation using earlier terms. -/
-/-- ulamSeq(n+1) is minimal: no smaller value has a unique representation. -/
+/-  ulamSeq(n+1) has exactly one representation using earlier terms. -/
+/-  ulamSeq(n+1) is minimal: no smaller value has a unique representation. -/
 /-- The Ulam sequence is injective (follows from strict monotonicity). -/
 theorem ulamSeq_injective : Function.Injective ulamSeq :=
   ulamSeq_strictMono.injective

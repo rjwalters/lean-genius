@@ -69,7 +69,7 @@ theorem stoppingTime_two : stoppingTime 2 = 1 := by
 
 /-- Sum of stopping times up to N (conditional on reaching 1) -/
 noncomputable def totalStoppingTime (N : ℕ) : ℕ :=
-  ∑ n in range N, stoppingTime (n + 1)
+  ∑ n ∈ range N, stoppingTime (n + 1)
 
 /-- Average stopping time up to N -/
 noncomputable def avgStoppingTime (N : ℕ) : ℝ :=
@@ -136,7 +136,7 @@ def exactConstant : Prop :=
 ## Part VI: Concrete Values
 -/
 
-/-- σ(1) = 0, σ(2) = 1, σ(3) = 7, σ(4) = 2, σ(5) = 5, σ(6) = 8 -/
+/-  σ(1) = 0, σ(2) = 1, σ(3) = 7, σ(4) = 2, σ(5) = 5, σ(6) = 8 -/
 -- These can be verified by computation
 
 /-- The average for small N grows roughly logarithmically -/

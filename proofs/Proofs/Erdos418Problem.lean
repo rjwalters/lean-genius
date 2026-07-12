@@ -118,10 +118,10 @@ theorem four_is_cototient : IsCototientValue 4 := ⟨8, by native_decide⟩
 The smallest non-cototient is 10. No n satisfies n - φ(n) = 10.
 -/
 
-/-- 10 is the smallest non-cototient. We state this as an axiom since
+/-  10 is the smallest non-cototient. We state this as an axiom since
     proving it requires checking all n. -/
 
-/-- The list of small non-cototients (OEIS A005278):
+/-  The list of small non-cototients (OEIS A005278):
     10, 26, 34, 50, 52, 58, 86, 100, ... -/
 
 /-
@@ -137,9 +137,9 @@ def browkinSchinzelBase : ℕ := 509203
 /-- The Browkin-Schinzel witness sequence: 2^(k+1) · 509203. -/
 def browkinSchinzelWitness (k : ℕ) : ℕ := 2^(k + 1) * browkinSchinzelBase
 
-/-- Browkin-Schinzel (1995): All numbers 2^(k+1) · 509203 are non-cototients. -/
+/-  Browkin-Schinzel (1995): All numbers 2^(k+1) · 509203 are non-cototients. -/
 
-/-- **Erdős Problem #418 (SOLVED)**: There are infinitely many non-cototients.
+/-  **Erdős Problem #418 (SOLVED)**: There are infinitely many non-cototients.
 
     Proof: The Browkin-Schinzel sequence 2^(k+1) · 509203 provides
     infinitely many distinct non-cototients. -/
@@ -155,7 +155,7 @@ of two DISTINCT primes), every odd number is a cototient value.
 def StrengthenedGoldbach : Prop :=
   ∀ n : ℕ, n > 6 → Even n → ∃ p q : ℕ, p ≠ q ∧ p.Prime ∧ q.Prime ∧ n = p + q
 
-/-- Under strengthened Goldbach, every odd number is a cototient value.
+/-  Under strengthened Goldbach, every odd number is a cototient value.
 
     Proof idea: For odd m ≥ 7, m + 1 is even > 6, so m + 1 = p + q with
     p ≠ q prime. Then cototient(p·q) = p·q - φ(p·q) = p·q - (p-1)(q-1)

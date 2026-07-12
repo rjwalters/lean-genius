@@ -59,11 +59,11 @@ theorem numSubgroups_pos (n : ℕ) : 0 < numSubgroups n := by
 
 /- ## Part II: Trivial Bounds -/
 
-/-- **Trivial Upper Bound:**
+/-  **Trivial Upper Bound:**
     f(n) ≤ 2^(n!) since each subgroup is a subset of S_n.
     Provable once numSubgroups is made concrete (each subgroup ↔ subset of S_n). -/
 
-/-- **Lower Bound from Elementary Abelian 2-Groups:**
+/-  **Lower Bound from Elementary Abelian 2-Groups:**
     S_n contains (Z/2Z)^⌊n/2⌋ as a subgroup (transpositions on disjoint pairs).
     This subgroup has 2^⌊n/2⌋ elements and hence many subgroups. -/
 
@@ -130,10 +130,10 @@ theorem pyber_theorem :
     This is ⌊n/2⌋ (achieved by disjoint transpositions). -/
 def maxElem2Rank (n : ℕ) : ℕ := n / 2
 
-/-- The subgroup (Z/2Z)^⌊n/2⌋ in S_n: products of disjoint transpositions.
+/-  The subgroup (Z/2Z)^⌊n/2⌋ in S_n: products of disjoint transpositions.
     This is the largest elementary abelian 2-subgroup. -/
 
-/-- Number of subgroups of (Z/2Z)^k.
+/-  Number of subgroups of (Z/2Z)^k.
     The Gaussian binomial coefficient sum grows as 2^(k²/4).
     Not axiomatized: would need a concrete definition via the subgroup lattice
     of (ZMod 2)^k, plus Gaussian binomial coefficient asymptotics. -/
@@ -147,10 +147,10 @@ theorem constant_explanation :
 
 /- ## Part VI: Subgroup Orders -/
 
-/-- The "statistical theorem on their order" part of the problem:
+/-  The "statistical theorem on their order" part of the problem:
     What is the distribution of |H| as H ranges over subgroups of S_n? -/
 
-/-- Most subgroups of S_n are 2-groups (qualitative observation).
+/-  Most subgroups of S_n are 2-groups (qualitative observation).
     The elementary abelian 2-subgroups dominate the count.
     A precise formalization would require defining the proportion of 2-group
     subgroups among all subgroups of S_n, which needs a Fintype instance

@@ -90,7 +90,7 @@ at least Ω(n/log n) distinct distances.
 This is the closest result to Erdős's conjecture.
 -/
 
-/--
+/- 
 **Guth-Katz Theorem (2015)**
 
 Every set of n points in the plane determines at least Ω(n/log n)
@@ -98,7 +98,7 @@ distinct distances.
 
 This is weaker than Erdős's conjecture by a factor of √(log n).
 -/
-/--
+/- 
 **Upper Bound Construction**
 
 The √n × √n integer grid achieves only O(n/√(log n)) distinct distances.
@@ -197,12 +197,12 @@ theorem conjecture_implies_guthKatz (h : Erdos89Conjecture) :
 The gap between Ω(n/log n) and O(n/√(log n)) remains open.
 -/
 
-/--
+/- 
 **Early Bound (Chung 1992)**
 
 The first significant progress: Ω(n^(4/5)) distinct distances.
 -/
-/--
+/- 
 **Tardos Bound (2004)**
 
 An exponent improvement: Ω(n^0.8641...).

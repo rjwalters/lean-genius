@@ -164,7 +164,7 @@ theorem finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : G.Colorable 
     _ = indepNumber H * k := by
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin]; ring
 
-/-- The Erdős–Hajnal conjecture (related): for every H, graphs not containing
+/-  The Erdős–Hajnal conjecture (related): for every H, graphs not containing
     H as induced subgraph have polynomially large cliques or independent sets -/
 /- erdos_hajnal_related: the Erdős–Hajnal conjecture states that graphs
   not containing H as induced subgraph have polynomially large cliques or
@@ -207,7 +207,7 @@ theorem strong_implies_basic :
   intro ⟨G, hchrom, hlin⟩
   exact ⟨G, hchrom, linear_implies_large G hlin⟩
 
-/-- Erdős Problem 75 (basic form): There exists a graph with uncountable
+/-  Erdős Problem 75 (basic form): There exists a graph with uncountable
     chromatic number and the large independence set property -/
 /-- Erdős Problem 75 (strong form): There exists a graph with uncountable
     chromatic number where every large finite subgraph has linear independence number -/

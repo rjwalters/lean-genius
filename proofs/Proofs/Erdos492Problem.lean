@@ -125,7 +125,7 @@ def isUniformlyDistributed (x : ℕ → ℝ) : Prop :=
       (fun N => (Finset.filter (fun n => x n ∈ Ico a b) (Finset.range N)).card / N)
       Filter.atTop (nhds (b - a))
 
-/--
+/- 
 **Weyl's Equidistribution Theorem:**
 For irrational α, the sequence ({αn})_{n≥1} is u.d. mod 1.
 -/
@@ -272,7 +272,7 @@ theorem conjecture_iff_ae (A : UnityRatioSeq) :
     erdosConjecture A ↔ almostAllUniform A := by
   sorry
 
-/--
+/- 
 **Schmidt's Measure Result:**
 In the counterexample, the non-u.d. set has positive measure.
 -/

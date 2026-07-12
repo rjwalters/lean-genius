@@ -321,7 +321,7 @@ theorem gallagher_implies_conjecture (hRH : RiemannHypothesis) :
 ## Section VII: Partial Results on Gap Distribution
 -/
 
-/-- Large gaps exist: g_n/log n can be made arbitrarily large.
+/-  Large gaps exist: g_n/log n can be made arbitrarily large.
 (Rankin, Pintz, Ford–Green–Konyagin–Tao, Maynard) -/
 
 /-- The average normalized gap tends to 1 by the Prime Number Theorem. -/

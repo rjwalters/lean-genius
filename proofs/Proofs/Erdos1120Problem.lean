@@ -154,8 +154,8 @@ theorem abs_polyVal_zero_eq_one_of_unimodular (p : UnitRootedPoly n)
 axiom erdos_1120_conjecture :
   ∀ M : ℝ, ∃ N₀ : ℕ, ∀ n ≥ N₀, worstCasePathLength n ≥ M
 
-/-- Trivial lower bound: the worst case is always ≥ 1 -/
-/-- Clunie–Netanyahu: a path from 0 to |z|=1 always exists in E -/
+/-  Trivial lower bound: the worst case is always ≥ 1 -/
+/-  Clunie–Netanyahu: a path from 0 to |z|=1 always exists in E -/
 /-- Erdős's growth conjecture: worst case grows slowly -/
 axiom erdos_growth_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n > 0 → worstCasePathLength n ≤ C * n

@@ -378,7 +378,7 @@ theorem k3_no_classical_robust :
         have h10r := hr 1 0 h10 (by decide)
         omega
 
-/-- Girth-3 witness using the classical definition: K₃ has girth 3, χ=3,
+/-  Girth-3 witness using the classical definition: K₃ has girth 3, χ=3,
     and no classically robust orientation.
 
     The triangle K₃ = (⊤ : SimpleGraph (Fin 3)) witnesses the girth-3 case:

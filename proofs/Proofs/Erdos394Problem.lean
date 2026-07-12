@@ -42,7 +42,7 @@ namespace Erdos394
 m(m+1)(m+2)···(m+k-1)
 -/
 def consecutiveProduct (m k : ℕ) : ℕ :=
-  ∏ i in range k, (m + i)
+  ∏ i ∈ range k, (m + i)
 
 /--
 **The Function t_k(n):**
@@ -96,7 +96,7 @@ theorem primes_large_t2 :
 S_k(x) = Σ_{n≤x} t_k(n)
 -/
 noncomputable def S (k : ℕ) (x : ℕ) : ℕ :=
-  ∑ n in range (x + 1), if n ≥ 1 then t k n else 0
+  ∑ n ∈ range (x + 1), if n ≥ 1 then t k n else 0
 
 /--
 **Trivial Lower Bound:**
@@ -129,7 +129,7 @@ axiom erdos_hall_upper_bound :
       (S 2 x : ℝ) ≤ C * (Real.log (Real.log (Real.log x))) /
                        (Real.log (Real.log x)) * x^2
 
-/-- **Corollary: Original Conjecture is True.**
+/-  **Corollary: Original Conjecture is True.**
 Follows from erdos_hall_upper_bound since (log log log x)/(log log x) → 0. -/
 
 /- ## Part V: The Erdős-Hall Conjecture -/
@@ -168,22 +168,22 @@ def hierarchy_conjecture : Prop :=
 
 /- ## Part VII: Special Cases (Factorials) -/
 
-/--
+/- 
 **t_{n-1}(n!) = 2:**
 The product 2·3·4···n = n! is divisible by n!.
 -/
 
-/--
+/- 
 **t_{n-2}(n!) ≪ n:**
 For n-2 consecutive integers, we need a larger starting point.
 -/
 
-/--
+/- 
 **This Bound is Sharp:**
 For n = 2^r, we have t_{n-2}(n!) ≳ n.
 -/
 
-/--
+/- 
 **Erdős-Hall Question about Factorials:**
 Does t_{n-3}(n!) have any special structure?
 -/
@@ -207,20 +207,20 @@ axiom selfridge_n_10 : strict_decrease_property 10
 
 /- ## Part IX: Why This is Interesting -/
 
-/--
+/- 
 **Connection to Divisibility:**
 Products of consecutive integers have nice divisibility properties:
 - k! | m(m+1)···(m+k-1) for all m (binomial coefficient argument)
 - The question is about divisibility by other n
 -/
 
-/--
+/- 
 **Probabilistic Intuition:**
 For random m, the probability that n | m(m+1)···(m+k-1) is roughly k/n
 for large n. Thus t_k(n) ≈ n/k on average.
 -/
 
-/--
+/- 
 **Connection to Smooth Numbers:**
 t_k(n) is small when n is "smooth" (has only small prime factors),
 since smooth numbers appear more frequently in short intervals.

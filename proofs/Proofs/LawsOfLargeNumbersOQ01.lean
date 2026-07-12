@@ -173,7 +173,7 @@ For Pareto(α, x_m): E[X] = αx_m/(α-1) < ∞ iff α > 1.
     (e.g., Pareto(α, x_m) with 1 < α ≤ 2 has finite mean but infinite variance). -/
 theorem finite_variance_implies_slln_applicable
     (X : ℕ → Ω → ℝ)
-    (hL2 : ∀ i, MeasureTheory.Memℒp (X i) 2 μ) :
+    (hL2 : ∀ i, MeasureTheory.MemLp (X i) 2 μ) :
     MeasureTheory.Integrable (X 0) μ :=
   (hL2 0).integrable (by norm_num)
 
@@ -238,7 +238,7 @@ So SLLN applies whenever E[|X|ᵖ] < ∞ for ANY p ≥ 1.
 /-- **SLLN for Lᵖ distributions** (p ≥ 1).
 
     If X has finite p-th moment for some p ≥ 1, then Kolmogorov's SLLN applies.
-    The key: `Memℒp X p μ` with `p ≥ 1` implies `Integrable X μ` (finite first moment).
+    The key: `MemLp X p μ` with `p ≥ 1` implies `Integrable X μ` (finite first moment).
 
     This covers all classical cases:
     - p = 1: L¹ (finite mean) — minimum for LLN
@@ -247,7 +247,7 @@ So SLLN applies whenever E[|X|ᵖ] < ∞ for ANY p ≥ 1.
 theorem slln_for_Lp_distributions
     {p : ℝ≥0∞} (hp : 1 ≤ p)
     (X : ℕ → Ω → ℝ)
-    (hLp : ∀ i, MeasureTheory.Memℒp (X i) p μ)
+    (hLp : ∀ i, MeasureTheory.MemLp (X i) p μ)
     (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
     (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
     ∀ᵐ ω ∂μ, Filter.Tendsto
@@ -294,7 +294,7 @@ Corollaries and extensions of Kolmogorov's SLLN under various conditions.
     Chebyshev's WLLN applies too, but Kolmogorov gives the stronger a.s. result. -/
 theorem slln_for_Linfty
     (X : ℕ → Ω → ℝ)
-    (hLinfty : ∀ i, MeasureTheory.Memℒp (X i) ∞ μ)
+    (hLinfty : ∀ i, MeasureTheory.MemLp (X i) ∞ μ)
     (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
     (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
     ∀ᵐ ω ∂μ, Filter.Tendsto

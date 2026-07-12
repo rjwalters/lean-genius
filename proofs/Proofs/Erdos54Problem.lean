@@ -51,12 +51,12 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 
 /- ## Burr–Erdős lower bound -/
 
-/-- Burr–Erdős (1985): No Ramsey 2-complete set can be too sparse.
+/-  Burr–Erdős (1985): No Ramsey 2-complete set can be too sparse.
 There exists `c > 0` such that no Ramsey 2-complete `A` has
 `|A ∩ [1,N]| ≤ c · (log N)²` for all large `N`. -/
 /- ## Conlon–Fox–Pham upper bound -/
 
-/-- Conlon–Fox–Pham (2021): There exists a Ramsey 2-complete set
+/-  Conlon–Fox–Pham (2021): There exists a Ramsey 2-complete set
 with `|A ∩ [1,N]| ≪ (log N)²`. -/
 /- ## Main problem (solved) -/
 

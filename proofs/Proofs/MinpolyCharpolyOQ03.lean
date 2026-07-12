@@ -301,7 +301,7 @@ unconditional facts about `InvariantFactorChain`:
 * `prodFactors_ne_zero` — trivial corollary of `prodFactors_monic`.
 * `prodFactors_natDegree` — the natDegree of the product equals the
   sum of factor natDegrees. Needed for the eventual dimension argument
-  `∑ deg pᵢ = n` in OQ-03-OQ-04.
+  `∑ deg pᵢ = n` ∈ OQ-03-OQ-04.
 * `chain_natDegree_le` — divisibility chain ⇒ natDegree chain. Useful
   for proving that `lastFactor` has the maximal natDegree, which is
   what makes it the minimal polynomial in the RCF correspondence.

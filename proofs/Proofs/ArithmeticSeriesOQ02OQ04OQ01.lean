@@ -47,7 +47,7 @@ theorem choose_descFactorial (n k : ℕ) :
 -- Part II: Explicit Product Formula
 -- ============================================================
 
-/-- **Explicit Product Formula**: C(n, k) * k! = ∏ i in range k, (n - i).
+/-- **Explicit Product Formula**: C(n, k) * k! = ∏ i ∈ range k, (n - i).
 
     Unfolding descFactorial: n*(n-1)*...*(n-k+1). -/
 theorem choose_product (n k : ℕ) :
@@ -128,7 +128,7 @@ theorem check_n5_k2 : Nat.choose 5 2 * 2.factorial = 20 := by native_decide
 /-- C(6,3) * 3! = 6*5*4 = 120. C(6,3) = 20, 20 * 6 = 120. -/
 theorem check_n6_k3 : Nat.choose 6 3 * 3.factorial = 120 := by native_decide
 
-/-- Product formula agrees: ∏ i in range 2, (5 - i) = 5*4 = 20. -/
+/-- Product formula agrees: ∏ i ∈ range 2, (5 - i) = 5*4 = 20. -/
 theorem check_product_n5_k2 : ∏ i ∈ range 2, (5 - i) = 20 := by native_decide
 
 /-
@@ -140,7 +140,7 @@ theorem check_product_n5_k2 : ∏ i ∈ range 2, (5 - i) = 20 := by native_decid
     choose_descFactorial: C(n,k) * k! = descFactorial(n, k)
 
   Part II - Explicit Product:
-    choose_product: C(n,k) * k! = ∏ i in range k, (n - i)
+    choose_product: C(n,k) * k! = ∏ i ∈ range k, (n - i)
 
   Part III - Structural Properties:
     choose_full_factorial: C(n,k) * k! * (n-k)! = n!
@@ -158,7 +158,7 @@ theorem check_product_n5_k2 : ∏ i ∈ range 2, (5 - i) = 20 := by native_decid
   Part VI - Concrete Checks:
     check_n5_k2: C(5,2) * 2! = 20
     check_n6_k3: C(6,3) * 6! = 120
-    check_product_n5_k2: ∏ i in range 2, (5-i) = 20
+    check_product_n5_k2: ∏ i ∈ range 2, (5-i) = 20
 
   Key Insight:
     Descending: C(n,k) * k! = n*(n-1)*...*(n-k+1)   [ordered selections from n]

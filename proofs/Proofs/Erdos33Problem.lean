@@ -58,14 +58,14 @@ noncomputable def normalizedDensity (A : Set ℕ) (N : ℕ) : ℝ :=
 /-- The set of squares {0, 1, 4, 9, 16, ...} -/
 def squares : Set ℕ := { n | ∃ m : ℕ, n = m^2 }
 
-/-- **Erdős**: There exist additive complements of squares with finite
+/-  **Erdős**: There exist additive complements of squares with finite
     limsup > 1. This shows the problem is non-trivial.
 
     Construction idea: Include enough elements to cover all residue classes
     that aren't covered by squares, but not too many. -/
 /- ## Lower Bounds on liminf -/
 
-/-- **Moser (1965)**: For any additive complement of squares A,
+/-  **Moser (1965)**: For any additive complement of squares A,
     liminf |A ∩ {1,...,N}| / √N > 1.06.
 
     This was the first quantitative lower bound, showing you can't be
@@ -104,14 +104,14 @@ theorem goldenRatio_squared : goldenRatio^2 = goldenRatio + 1 := by
 /-- The Van Doorn constant: 2φ^(5/2) ≈ 6.66 -/
 noncomputable def vanDoornConstant : ℝ := 2 * goldenRatio^((5 : ℝ)/2)
 
-/-- **Van Doorn's construction**: There exists an additive complement A
+/-  **Van Doorn's construction**: There exists an additive complement A
     such that |A ∩ {1,...,N}| / √N ≤ 2φ^(5/2) for all N.
 
     This gives limsup ≤ 2φ^(5/2) ≈ 6.66.
 
     The construction uses a greedy algorithm that adds elements to A
     in a way that optimizes coverage while minimizing density. -/
-/-- 2φ^(5/2) ≈ 6.66 -/
+/-  2φ^(5/2) ≈ 6.66 -/
 /- ## The Main Open Questions -/
 
 /-- **Open Question 1**: What is the exact minimum value of the limsup?

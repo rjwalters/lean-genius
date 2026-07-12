@@ -55,7 +55,7 @@ axiom W : ℕ → ℕ
 
 /- ## Part II: Known Small Values -/
 
-/--
+/- 
 **Known exact values:**
 W(3,3) = 9, W(3,4) = 18, W(3,5) = 22, W(3,6) = 32, W(3,7) = 46.
 These are computed by exhaustive search over all 2-colorings.
@@ -98,7 +98,7 @@ axiom hunter_lower_bound :
     ∃ c : ℝ, c > 0 ∧
     ∀ k ≥ 3, (W k : ℝ) ≥ exp (c * (log k)^2 / log (log k))
 
-/--
+/- 
 **W(3,k) is superpolynomial:**
 For any fixed polynomial degree d, W(3,k) > k^d for all large enough k.
 This follows from Hunter's lower bound since exp(c(log k)²/log log k) grows
@@ -129,7 +129,7 @@ axiom bloom_sisask_upper_bound :
 
 /- ## Part VI: Connection to 3-AP Free Sets -/
 
-/--
+/- 
 **Roth density bound:**
 Any subset of {1,...,n} with density > r₃(n)/n avoids 3-APs,
 where r₃(n) is the maximum size of a 3-AP-free subset of {1,...,n}.
@@ -137,14 +137,14 @@ W(3,k) relates to r₃(n) because blue-coloring avoiding k-APs
 must be "thin", while red-coloring avoiding 3-APs must be "dense".
 -/
 
-/--
+/- 
 **Behrend's construction (1946):**
 There exist 3-AP-free subsets of {1,...,n} of size
 n · exp(-c · √(log n)). This gives a lower bound on r₃(n)
 and hence lower bounds on W(3,k) via the Roth connection.
 -/
 
-/--
+/- 
 **Kelley-Meka breakthrough (2023):**
 Sets without 3-APs in {1,...,n} have density at most
 exp(-c · (log n)^{1/12}). This dramatically improved previous bounds
@@ -165,7 +165,7 @@ def exact_growth_conjecture : Prop :=
     ∀ k ≥ N, exp ((log k)^(2-ε)) ≤ W k ∧
              (W k : ℝ) ≤ exp ((log k)^(2+ε))
 
-/--
+/- 
 **Current state of the gap:**
 Lower: exp(c(log k)²/log log k) — exponent ≈ 2
 Upper: exp(C(log k)^9) — exponent = 9
@@ -174,14 +174,14 @@ Closing this gap from [2, 9] is a major open problem.
 
 /- ## Part VIII: Related Problems -/
 
-/--
+/- 
 **Szemerédi's theorem (1975):**
 For any δ > 0 and k ≥ 3, any subset of {1,...,n} with density ≥ δ
 contains a k-AP for n sufficiently large. This generalizes Roth's
 theorem (k=3) and provides the existence proof for all W(r,k).
 -/
 
-/--
+/- 
 **Diagonal van der Waerden numbers W(k,k):**
 The diagonal case grows much faster — at least tower-type.
 Gowers' quantitative proof of Szemerédi's theorem gives bounds,

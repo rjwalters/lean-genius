@@ -227,7 +227,7 @@ theorem disjoint_2_colors {α I : Type*} (A : I → Set α)
       · exact hne i (hij ▸ hj)
       · have hmem : e i ∈ A i ∩ A j := ⟨he i, hj ▸ hd j⟩
         rw [hdisj i j hij] at hmem
-        exact Set.not_mem_empty _ hmem
+        exact Set.notMem_empty _ hmem
     have h_ei : (⟨if ∃ j, e i = d j then (0 : Fin 2) else 1⟩ : ULift (Fin 2)) = color :=
       hcolor (e i) (he i)
     rw [if_neg h2] at h_ei

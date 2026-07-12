@@ -76,7 +76,7 @@ theorem isConstructible_one : IsConstructible (1 : ℂ) :=
 def IsQuadraticExtension (F K : Type*) [Field F] [Field K] [Algebra F K] : Prop :=
   Module.finrank F K = 2
 
-/-- A tower of quadratic extensions: a sequence of fields with each step
+/-  A tower of quadratic extensions: a sequence of fields with each step
     having degree ≤ 2 over the previous one.
 
     For the constructibility criterion, we need that the total degree
@@ -211,7 +211,7 @@ theorem regular_7gon_impossible_degree :
 -- PART 6: Galois Characterization (Sufficient Condition)
 -- ============================================================
 
-/-- **The Galois criterion (characterization):**
+/-  **The Galois criterion (characterization):**
     An algebraic number α is constructible iff the Galois group
     Gal(minpoly(ℚ,α)) is a 2-group.
 

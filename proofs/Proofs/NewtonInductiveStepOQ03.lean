@@ -55,12 +55,12 @@ namespace QNewton
 
 /-- The q-Pochhammer product: qPoch n q = ∏_{i=1}^{n} (1 - q^i). -/
 noncomputable def qPoch (n : ℕ) (q : ℝ) : ℝ :=
-  ∏ i in Finset.range n, (1 - q ^ (i + 1))
+  ∏ i ∈ Finset.range n, (1 - q ^ (i + 1))
 
 /-- The Gaussian binomial coefficient:
     gaussBinom n k q = [∏_{i=0}^{k-1} (1-q^{n-i})] / qPoch k q -/
 noncomputable def gaussBinom (n k : ℕ) (q : ℝ) : ℝ :=
-  (∏ i in Finset.range k, (1 - q ^ (n - i))) / qPoch k q
+  (∏ i ∈ Finset.range k, (1 - q ^ (n - i))) / qPoch k q
 
 /-!
 ## Part II: Positivity for q ∈ (0,1)
@@ -74,7 +74,7 @@ lemma qPoch_pos {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (n : ℕ) : 0 < qPoch n q 
   Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
 
 lemma gaussBinom_num_pos {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (hkn : k ≤ n) :
-    0 < ∏ i in Finset.range k, (1 - q ^ (n - i)) :=
+    0 < ∏ i ∈ Finset.range k, (1 - q ^ (n - i)) :=
   Finset.prod_pos _ (fun i hi =>
     one_sub_pow_pos hq0 hq1 (by have := Finset.mem_range.mp hi; omega))
 
@@ -95,7 +95,7 @@ theorem gaussBinom_ratio_mul {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1)
   unfold gaussBinom qPoch
   rw [Finset.prod_range_succ (f := fun i => 1 - q ^ (n - i)),
       Finset.prod_range_succ (f := fun i => 1 - q ^ (i + 1))]
-  have hpoch : 0 < ∏ i in Finset.range k, (1 - q ^ (i + 1)) :=
+  have hpoch : 0 < ∏ i ∈ Finset.range k, (1 - q ^ (i + 1)) :=
     Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
   have hdk1 : (1 - q ^ (k + 1)) ≠ 0 := (one_sub_pow_pos hq0 hq1 (by omega)).ne'
   field_simp [hpoch.ne', hdk1]

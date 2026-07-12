@@ -150,7 +150,7 @@ theorem measure_compl_Icc_pos {A : Set ℝ} {a b : ℝ}
 theorem independent_size_zero (A : ℝ → Set ℝ) :
     ∃ X : Finset ℝ, X.card = 0 ∧ ∀ x ∈ (↑X : Set ℝ), ∀ y ∈ (↑X : Set ℝ),
       x ≠ y → x ∉ A y := by
-  exact ⟨∅, rfl, fun x hx => (Finset.not_mem_empty x hx).elim⟩
+  exact ⟨∅, rfl, fun x hx => (Finset.notMem_empty x hx).elim⟩
 
 /-- An independent set of size 1 exists for any family. -/
 theorem independent_size_one (A : ℝ → Set ℝ) :

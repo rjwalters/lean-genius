@@ -17,7 +17,7 @@ is a stated `TODO` in Mathlib's `Combinatorics.Enumerative.Partition.GenFun`
 (Weiyi Wang, 2025); we prove the equivalent multiplicative reciprocal here.
 
   * `factor_telescope`  — the per-factor geometric telescoping
-    `(∑_j X^{m·j}) · (1 - Xᵐ) = 1` in `ℤ⟦X⟧` (Mathlib's
+    `(∑_j X^{m·j}) · (1 - Xᵐ) = 1` ∈ `ℤ⟦X⟧` (Mathlib's
     `tsum_pow_mul_one_sub_of_constantCoeff_eq_zero`);
   * `partition_genFun_mul_euler_eq_one` — multiply the two convergent products
     factor-by-factor (`Multipliable.tprod_mul`), each combined factor collapsing

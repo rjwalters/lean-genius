@@ -442,7 +442,7 @@ private lemma open_walk_last_target_excess (walk : List V) (n : ℕ) (hn : 1 ≤
     conv_lhs => rw [this]
     exact hwn
   rw [show T.card = (T.erase (n - 1)).card + 1 from by
-    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    rw [← Finset.card_insert_of_notMem (Finset.notMem_erase _ _)]
     simp [Finset.insert_erase hn1_in_T]]
   congr 1
   -- Bijection: (T \ {n-1}) → S via i ↦ i+1
@@ -482,7 +482,7 @@ private lemma open_walk_first_source_excess (walk : List V) (n : ℕ) (hn : 1 �
     simp only [S, Finset.mem_filter, Finset.mem_range]
     exact ⟨by omega, hw0⟩
   rw [show S.card = (S.erase 0).card + 1 from by
-    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    rw [← Finset.card_insert_of_notMem (Finset.notMem_erase _ _)]
     simp [Finset.insert_erase h0_in_S]]
   congr 1
   -- Bijection: (S \ {0}) → T via i ↦ i-1
@@ -662,7 +662,7 @@ private lemma maxTrail_used_eq (E : Finset (V × V)) (v : V) :
           simp only [List.head?_cons, Option.some.injEq] at hmh
           rw [h_inner, List.get_cons_zero]; exact hmh
       have hcRem : c ∉ maxTrailRem (E.erase c) c.2 :=
-        fun hmem => Finset.not_mem_erase c E (maxTrailRem_subset _ _ hmem)
+        fun hmem => Finset.notMem_erase c E (maxTrailRem_subset _ _ hmem)
       have hIH := ih _ hcard (E.erase c) c.2 rfl
       ext x
       rw [hmrem]
@@ -719,7 +719,7 @@ private lemma maxTrail_used_eq (E : Finset (V × V)) (v : V) :
       have hmrem : maxTrailRem E v = E := by unfold maxTrailRem; simp [hout]
       rw [hmrem, Finset.sdiff_self]
       ext x
-      simp only [Finset.not_mem_empty, Finset.mem_image, Finset.mem_range, false_iff,
+      simp only [Finset.notMem_empty, Finset.mem_image, Finset.mem_range, false_iff,
                  not_exists, not_and]
       intro i hi_lt _
       rw [hmtail] at hi_lt
@@ -874,7 +874,7 @@ private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
             simp only [hmtail, List.get_cons_succ]
             exact ih _ hcard (E.erase e) e.2 rfl j' hlen_j
           rw [hstep0] at heq
-          exact absurd (heq ▸ hstepj) (Finset.not_mem_erase e E)
+          exact absurd (heq ▸ hstepj) (Finset.notMem_erase e E)
       | succ i' =>
         cases j with
         | zero =>
@@ -902,7 +902,7 @@ private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
             simp only [hmtail, List.get_cons_succ]
             exact ih _ hcard (E.erase e) e.2 rfl i' hlen_i
           rw [hstep0] at heq
-          exact absurd (heq.symm ▸ hstepi) (Finset.not_mem_erase e E)
+          exact absurd (heq.symm ▸ hstepi) (Finset.notMem_erase e E)
         | succ j' =>
           -- Both steps are in inner trail
           simp only [hmtail, List.get_cons_succ]

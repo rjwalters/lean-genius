@@ -106,7 +106,7 @@ def FSet (n : ℕ) : Set ℕ :=
 
 /- ## Basic Properties -/
 
-/-- F(n) ≤ n + √n (trivial upper bound).
+/-  F(n) ≤ n + √n (trivial upper bound).
     Since any composite m < n has p(m) ≤ √m ≤ √n, we get m + p(m) < n + √n. -/
 /- ## The Main Conjectures -/
 
@@ -123,8 +123,8 @@ def erdos385Question1 : Prop :=
 def erdos385Question2 : Prop :=
   Tendsto (fun n => (F n : ℤ) - n) atTop atTop
 
-/-- Question 1: F(n) > n for all sufficiently large n. -/
-/-- Question 2: F(n) - n → ∞. -/
+/-  Question 1: F(n) > n for all sufficiently large n. -/
+/-  Question 2: F(n) - n → ∞. -/
 /- ## Connection to Problem #430
 
 Sarosh Adenwalla observed that Question 1 is equivalent to Problem #430:

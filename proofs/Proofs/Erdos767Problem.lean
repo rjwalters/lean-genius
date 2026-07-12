@@ -99,9 +99,9 @@ axiom erdos_lower (k n : ℕ) (hn : n ≥ k + 1) :
 ## Part IV: Special Cases
 -/
 
-/-- Pósa: g_1(n) = 2n - 4 for n ≥ 4 -/
-/-- Erdős: g_2(n) = 3n - 9 for n ≥ 6 -/
-/-- Erdős: g_3(n) = 4n - 16 for n ≥ 8 -/
+/-  Pósa: g_1(n) = 2n - 4 for n ≥ 4 -/
+/-  Erdős: g_2(n) = 3n - 9 for n ≥ 6 -/
+/-  Erdős: g_3(n) = 4n - 16 for n ≥ 8 -/
 /-
 ## Part V: Jiang's Theorem (2004)
 -/

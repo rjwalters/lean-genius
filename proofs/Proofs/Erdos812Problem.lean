@@ -39,15 +39,15 @@ contains a monochromatic complete subgraph K_n.
 -/
 axiom R : ℕ → ℕ
 
-/--
+/- 
 **Basic Ramsey number properties:**
 R(1) = 1, R(2) = 2, and R is strictly increasing.
 -/
-/--
+/- 
 **Known Ramsey numbers:**
 R(3) = 6, R(4) = 18.
 -/
-/--
+/- 
 **Ramsey bounds:**
 The classical bounds are:
 - Lower bound: R(n) ≥ 2^{n/2} (Erdős probabilistic argument)
@@ -96,7 +96,7 @@ axiom problem_165_bound :
 ## Part IV: Consequences
 -/
 
-/--
+/- 
 **Ratio bound implies exponential growth:**
 If R(n+1)/R(n) ≥ 1 + c, then R(n) ≥ R(k) · (1+c)^{n-k},
 giving true exponential growth.

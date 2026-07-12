@@ -41,7 +41,7 @@ notation "dimLeq" => coveringDimension
 def hasDimensionExactly (X : Type*) (n : ℕ) : Prop :=
   dimLeq X n ∧ (n > 0 → ¬dimLeq X (n - 1))
 
-/--
+/- 
 **Product Dimension Inequality:**
 For 'nice' spaces: dim(X × Y) ≤ dim(X) + dim(Y).
 The problem asks when this can be a strict inequality.
@@ -97,8 +97,8 @@ theorem erdos_909 : erdos909Statement := by
 
 /- ## Part V: Supporting Results -/
 
-/-- dim(ℝ^n) = n (standard result) -/
-/-- If Y ⊆ X, then dim(Y) ≤ dim(X) (monotonicity) -/
+/-  dim(ℝ^n) = n (standard result) -/
+/-  If Y ⊆ X, then dim(Y) ≤ dim(X) (monotonicity) -/
 /- ## Part VI: Summary -/
 
 /--

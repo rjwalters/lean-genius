@@ -87,7 +87,7 @@ Proved F(k) ≥ 2^{ck²/log k} for some constant c > 0.
 Improved to F(k) ≥ 2^{2^{k-1}/k}.
 -/
 
-/-- Erdős-Spencer lower bound: F(k) ≥ 2^{ck²/log k}. -/
+/-  Erdős-Spencer lower bound: F(k) ≥ 2^{ck²/log k}. -/
 /-- Balogh et al. (2017): F(k) ≥ 2^{2^{k-1}/k}. -/
 axiom balogh_2017 :
   ∀ k : ℕ, k ≥ 1 → F k ≥ 2^(2^(k-1) / k)
@@ -155,7 +155,7 @@ theorem F_1 : F 1 = 1 := by
 theorem F_2 : F 2 = 8 := by
   sorry -- Verified by exhaustive computation; needs finite-coloring reduction to formalize.
 
-/-- F(3) ≥ 11: Lower bound for 3-element sets. -/
+/-  F(3) ≥ 11: Lower bound for 3-element sets. -/
 /-
 ## Upper Bounds
 
@@ -163,7 +163,7 @@ The original upper bounds from Folkman's proof are very weak.
 Improvements have been made using probabilistic methods.
 -/
 
-/-- Folkman's original upper bound is at least tower-type. -/
+/-  Folkman's original upper bound is at least tower-type. -/
 /-
 ## Connection to Rado's Theorem
 
@@ -177,7 +177,7 @@ The equation system is:
 Rado's theorem guarantees this for any k.
 -/
 
-/-- Folkman follows from Rado's theorem. -/
+/-  Folkman follows from Rado's theorem. -/
 /-
 ## The Main Question
 

@@ -75,7 +75,7 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
 -- L² membership is equivalent to integrability of squared norm
 theorem memLp_two_iff_sq_integrable {f : α → ℝ} (hf : AEStronglyMeasurable f μ) :
-    Memℒp f 2 μ ↔ Integrable (fun x => ‖f x‖ ^ 2) μ :=
+    MemLp f 2 μ ↔ Integrable (fun x => ‖f x‖ ^ 2) μ :=
   memLp_two_iff_integrable_sq_norm hf
 
 -- The inner product of L² functions is integrable

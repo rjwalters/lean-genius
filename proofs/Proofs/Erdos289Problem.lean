@@ -60,7 +60,7 @@ def ValidDecomposition (k : ℕ) (blocks : Fin k → IntervalBlock) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
+/-  **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
     a valid decomposition of 1 into k disjoint non-adjacent interval blocks. -/
 /- ## Basic Properties -/
 
@@ -83,12 +83,12 @@ theorem nonadj_implies_disjoint (I J : IntervalBlock) :
 
 /- ## Hickerson–Montgomery Example -/
 
-/-- The Hickerson–Montgomery example: 5 intervals summing to 2.
+/-  The Hickerson–Montgomery example: 5 intervals summing to 2.
     [2,7], [9,10], [17,18], [34,35], [84,85].
     This shows the feasibility of interval decomposition for targets other than 1. -/
 /- ## Structural Observations -/
 
-/-- The harmonic series diverges, so the total available reciprocal sum
+/-  The harmonic series diverges, so the total available reciprocal sum
     from any tail of ℕ is unbounded. This is necessary for the problem
     to have solutions for arbitrarily many blocks. -/
 /-- Each interval block contributes at most (hi-lo+1)/lo.
@@ -128,7 +128,7 @@ theorem interval_recipsum_lower (I : IntervalBlock) :
         exact div_le_div_of_le_left (by positivity) hn_pos hhi_pos
               (Nat.cast_le.mpr hn.2)
 
-/-- To achieve exactly 1 with many small-contribution blocks, we need
+/-  To achieve exactly 1 with many small-contribution blocks, we need
     blocks at large values of n. The gap constraint forces intervals
     to spread out, making the target harder to hit exactly. -/
 /-- The problem without the non-adjacency constraint is easier: one can

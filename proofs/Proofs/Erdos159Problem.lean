@@ -166,9 +166,9 @@ end RamseyC4Kn
 
 /- ## Known bounds -/
 
-/-- Szemerédi's upper bound: `R(C₄, Kₙ) ≤ C · n² / (log n)²` for some
+/-  Szemerédi's upper bound: `R(C₄, Kₙ) ≤ C · n² / (log n)²` for some
 constant `C > 0` and sufficiently large `n`. -/
-/-- Spencer's lower bound: `R(C₄, Kₙ) ≥ c · n^{3/2} / (log n)^{3/2}`
+/-  Spencer's lower bound: `R(C₄, Kₙ) ≥ c · n^{3/2} / (log n)^{3/2}`
 for some constant `c > 0` and sufficiently large `n`. -/
 /- ## Main conjecture -/
 
@@ -253,7 +253,7 @@ theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
       right
       obtain ⟨u, v, huv, hnadj⟩ := h
       refine ⟨{u, v}, ?_, ?_⟩
-      · rw [Finset.card_insert_of_not_mem (Finset.not_mem_singleton.mpr huv),
+      · rw [Finset.card_insert_of_notMem (Finset.notMem_singleton.mpr huv),
             Finset.card_singleton]
       · intro x hx y hy hxy
         simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy

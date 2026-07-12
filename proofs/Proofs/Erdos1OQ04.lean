@@ -146,9 +146,9 @@ private lemma sum_pow_two_inj : ∀ (n : ℕ) (S T : Finset ℕ),
     by_cases hnS : n ∈ S <;> by_cases hnT : n ∈ T
     · -- Both contain n: erase n from both, apply IH
       have hSe : S.erase n ⊆ Finset.range n :=
-        subset_range_pred ((Finset.erase_subset n S).trans hS) (Finset.not_mem_erase n S)
+        subset_range_pred ((Finset.erase_subset n S).trans hS) (Finset.notMem_erase n S)
       have hTe : T.erase n ⊆ Finset.range n :=
-        subset_range_pred ((Finset.erase_subset n T).trans hT) (Finset.not_mem_erase n T)
+        subset_range_pred ((Finset.erase_subset n T).trans hT) (Finset.notMem_erase n T)
       have h1 := Finset.add_sum_erase S (fun i : ℕ => 2 ^ i) hnS
       have h2 := Finset.add_sum_erase T (fun i : ℕ => 2 ^ i) hnT
       have heq' : (S.erase n).sum (fun i : ℕ => 2 ^ i) =

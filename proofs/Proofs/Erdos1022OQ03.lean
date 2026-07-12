@@ -319,7 +319,7 @@ theorem monoProb_le_half (t : ℕ) (ht : 2 ≤ t) : monoProb t ≤ 1 / 2 := by
 /-- The empty family trivially has Property B (no sets to violate). -/
 theorem hasPropertyB_empty [Fintype α] :
     HasPropertyB (∅ : Finset (Finset α)) :=
-  ⟨∅, fun _ hf => absurd hf (not_mem_empty _)⟩
+  ⟨∅, fun _ hf => absurd hf (notMem_empty _)⟩
 
 /-- Any family with all sets having size ≥ 2 and intersection degree 0
     (all sets pairwise disjoint) has Property B. Each set can be
@@ -369,7 +369,7 @@ theorem propertyB_of_disjoint [Fintype α] (F : Finset (Finset α))
         exact Nat.pos_of_ne_zero (fun h => hint (card_eq_zero.mp h))
       have : 1 ≤ intDegree (insert f₀ F') f₀ :=
         Nat.one_le_iff_ne_zero.mpr (fun h =>
-          not_mem_empty g (h ▸ this : g ∈ intNeighbors (insert f₀ F') f₀))
+          notMem_empty g (h ▸ this : g ∈ intNeighbors (insert f₀ F') f₀))
       linarith [hdisj f₀ (mem_insert_self f₀ F')]
     -- Since f₀ is disjoint from F', elements of f₀ don't appear in F' sets
     -- So modifying S' on f₀ doesn't affect F' coloring

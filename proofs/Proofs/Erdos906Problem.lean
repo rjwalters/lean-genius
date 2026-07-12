@@ -87,7 +87,7 @@ For a polynomial of degree d, f^{(n)} = 0 for all n > d.
 Thus derivativeZeroSet f n = ℂ for any sequence eventually exceeding d.
 This is why the problem requires transcendental functions. -/
 
-/-- Polynomials eventually have zero derivatives.
+/-  Polynomials eventually have zero derivatives.
 Axiomatized as it requires degree theory. -/
 
 /-- For polynomials, the property is trivially satisfied.
@@ -98,7 +98,7 @@ axiom polynomial_trivial (p : Polynomial ℂ) :
 
 /- ## The Main Problem -/
 
-/-- **Erdős Problem #906 (STATUS UNCLEAR)**:
+/-  **Erdős Problem #906 (STATUS UNCLEAR)**:
 
 Does there exist an entire, non-zero, transcendental function f : ℂ → ℂ
 such that HasDenseDerivativeZeros f holds?
@@ -123,26 +123,26 @@ axiom exp_is_entire : IsEntire Complex.exp
 Proof: e^z is not a polynomial since all its derivatives equal itself. -/
 axiom exp_is_transcendental : IsTranscendental Complex.exp
 
-/-- e^z ≠ 0 for any z ∈ ℂ. All derivatives of e^z equal e^z.
+/-  e^z ≠ 0 for any z ∈ ℂ. All derivatives of e^z equal e^z.
 Axiomatized as it requires complex exponential properties. -/
 
-/-- However, exp does NOT satisfy the dense zeros property.
+/-  However, exp does NOT satisfy the dense zeros property.
 All derivatives of e^z equal e^z, which has no zeros.
 Axiomatized due to proof complexity with Set.ext. -/
 
 /- ## Related Concepts -/
 
-/-- Connection to the Pólya-Erdős conjecture about zeros of derivatives.
+/-  Connection to the Pólya-Erdős conjecture about zeros of derivatives.
 Pólya's shire theorem and Erdős's work on zeros of polynomials
 are related background. -/
 
-/-- Connection to the distribution of zeros of entire functions.
+/-  Connection to the distribution of zeros of entire functions.
 The Weierstrass factorization theorem gives control over zeros,
 but not the density property for subsequences. -/
 
 /- ## Properties of the Zero Set -/
 
-/-- For a non-constant entire function, each individual zero set
+/-  For a non-constant entire function, each individual zero set
 { z : f^{(k)}(z) = 0 } is discrete (isolated points) unless f^{(k)} ≡ 0.
 The union over a sequence can be dense. -/
 

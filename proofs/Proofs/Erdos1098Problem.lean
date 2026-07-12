@@ -246,19 +246,19 @@ theorem abelian_no_edges (G : Type*) [Group G]
   have : g ∈ Subgroup.center G := by simp [habel]
   exact Subgroup.mem_center_iff.mp this h
 
-/--
+/- 
 **Infinite Non-Abelian Groups:**
 Can have infinite cliques (e.g., free groups).
 -/
 /- ## Part VII: Examples
 -/
 
-/--
+/- 
 **Example: S_n (Symmetric Group):**
 The symmetric group S_n has center {1} (trivial) for n ≥ 3.
 So [S_n : Z(S_n)] = n! and clique number ≤ n!.
 -/
-/--
+/- 
 **Example: Dihedral Groups:**
 D_n has center of index 2n (or 2n for odd n, n for even n).
 -/
@@ -275,7 +275,7 @@ theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] :
 /- ## Part VIII: Generalizations
 -/
 
-/--
+/- 
 **Commuting Probability:**
 For finite G, Pr(G) = |{(g,h) : gh = hg}| / |G|².
 -/
@@ -283,7 +283,7 @@ For finite G, Pr(G) = |{(g,h) : gh = hg}| / |G|².
 noncomputable def commutingProbability (G : Type*) [Group G] [Finite G] : ℚ :=
   (Nat.card {p : G × G | p.1 * p.2 = p.2 * p.1} : ℚ) / ((Nat.card G : ℚ) ^ 2)
 
-/--
+/- 
 **Relation to Clique Number:**
 Higher commuting probability → smaller clique number.
 -/
@@ -303,7 +303,7 @@ Groups with bounded finite conjugacy classes - related concept.
 def isBFCGroup (G : Type*) [Group G] : Prop :=
   ∃ n : ℕ, ∀ g : G, (conjugacyClass g).Finite ∧ (conjugacyClass g).ncard ≤ n
 
-/--
+/- 
 **Connection to BFC:**
 Z(G) having finite index is related to BFC property.
 -/

@@ -52,10 +52,10 @@ noncomputable def g (n : ℕ) : ℕ :=
 noncomputable def preimageCount (n : ℕ) : ℕ :=
   Nat.card { m : ℕ // phi m = n }
 
-/-- The preimage count is finite for each n. -/
+/-  The preimage count is finite for each n. -/
 /- ## Known Results -/
 
-/-- **Pillai's Theorem:**
+/-  **Pillai's Theorem:**
     lim sup g(n) = ∞, i.e., g(n) is unbounded. -/
 /-- **Erdős's Theorem (1935):**
     There exists c > 0 such that g(n) > n^c for infinitely many n. -/
@@ -65,7 +65,7 @@ axiom erdos_1935 :
 /-- The Erdős constant from 1935. -/
 noncomputable def erdosConstant1935 : ℝ := 0.1 -- placeholder
 
-/-- Erdős's lower bound with the constant. -/
+/-  Erdős's lower bound with the constant. -/
 /- ## Lichtman's Result (2022) -/
 
 /-- The Lichtman exponent: 0.71568... -/
@@ -76,7 +76,7 @@ noncomputable def lichtmanExponent : ℝ := 0.71568
 axiom lichtman_theorem :
   ∀ N : ℕ, ∃ n ≥ N, (preimageCount n : ℝ) > n^lichtmanExponent
 
-/-- Lichtman's result on primes with smooth p-1. -/
+/-  Lichtman's result on primes with smooth p-1. -/
 /- ## The Conjecture -/
 
 /-- **Erdős Conjecture (Problem #821):**
@@ -106,8 +106,8 @@ axiom smooth_implies_conjecture :
 
 /- ## Upper Bounds -/
 
-/-- Upper bound: g(n) ≤ n^(1+o(1)) trivially. -/
-/-- For most n, g(n) is relatively small. -/
+/-  Upper bound: g(n) ≤ n^(1+o(1)) trivially. -/
+/-  For most n, g(n) is relatively small. -/
 /- ## Examples -/
 
 /-- g(1) = 2 (since φ(1) = φ(2) = 1). -/

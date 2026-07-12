@@ -1500,7 +1500,7 @@ with the chain rule for `complModulus` (§4) to discharge the
     Discharge the seven hypotheses with the §10 chain rule and integrability
     facts (`integrandK_hasDerivAt_in_k`, `dIntegrandK_continuous`), the §11
     uniform bound (`dIntegrandK_abs_le_bound` plus `boundDIntegrandK_integrable`),
-    and `Filter.eventually_of_forall` / `MeasureTheory.ae_of_all` to lift
+    and `Filter.Eventually.of_forall` / `MeasureTheory.ae_of_all` to lift
     pointwise statements to ae-statements. The lemma yields
     `HasDerivAt ellipticK (∫₀^{π/2} dIntegrandK k θ dθ) k`, and the §16
     integral identity `integral_dIntegrandK_eq` rewrites the integral to

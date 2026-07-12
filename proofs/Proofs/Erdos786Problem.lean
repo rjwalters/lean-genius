@@ -108,13 +108,13 @@ axiom selfridge_construction :
 
 /- ## Upper Bounds -/
 
-/--
+/- 
 **Ruzsa (unpublished)**: The maximum size of a multiplicative cardinality set
 in {1,...,N} is at most (1-c)N for some constant c > 0.
 
 This would show that density 1 is impossible, but the proof was never published.
 -/
-/--
+/- 
 A simple lower bound: integers with a prime factor > √N form a MulCardSet
 of size ≥ (log 2)N.
 -/

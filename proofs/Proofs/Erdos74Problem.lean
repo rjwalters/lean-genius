@@ -118,7 +118,7 @@ theorem isBipartiteIffDistZero_finite (V : Type*) [Fintype V] (G : SimpleGraph V
     rw [hEempty, SimpleGraph.deleteEdges_empty] at hbip
     exact hbip
 
-/-- Counterexample: The complete graph on ℕ is NOT bipartite but has
+/-  Counterexample: The complete graph on ℕ is NOT bipartite but has
     edgeDistToBipartite = 0 (discovered by Aristotle 2026-01-14).
 
 **Proof sketch**:
@@ -183,7 +183,7 @@ def Erdos74Question : Prop :=
 Several cases of this problem have been resolved.
 -/
 
-/--
+/- 
 **Rödl's Linear Case (1982)**
 
 For any constant ε > 0, there exists a graph with infinite chromatic number
@@ -204,7 +204,7 @@ def SqrtNQuestion : Prop :=
     hasInfiniteChromaticNumber V G ∧
     hasAlmostBipartiteSubgraphs V G (fun n => ⌈Real.sqrt n⌉₊)
 
-/--
+/- 
 **Uncountable Chromatic Number Fails**
 
 If we require the chromatic number to be uncountable (≥ ℵ₁), then the

@@ -96,14 +96,14 @@ Erdős and Nathanson posed several related questions about when an additive
 basis must contain a minimal subbasis.
 -/
 
-/--
+/- 
 **Erdős Problem #868 Part (i) (OPEN)**: If A is an additive basis of order 2
 and f(n) → ∞ as n → ∞, must A contain a minimal basis of order 2?
 
 The condition f(n) → ∞ means representations become unbounded - each large n
 has more and more ways to be written as a sum of two elements from A.
 -/
-/--
+/- 
 **Erdős Problem #868 Part (ii) (OPEN)**: If A is an additive basis of order 2
 and f(n) > ε log n for all large n (for any fixed ε > 0), must A contain a
 minimal basis of order 2?
@@ -131,8 +131,8 @@ axiom erdos_nathanson_1979 (A : Set ℕ) :
 /-- The critical constant from the Erdős-Nathanson theorem. -/
 noncomputable def erdosNathansonConstant : ℝ := (Real.log (4/3))⁻¹
 
-/-- The Erdős-Nathanson constant is approximately 3.476. -/
-/--
+/-  The Erdős-Nathanson constant is approximately 3.476. -/
+/- 
 **Härtter-Nathanson Theorem**: There exist additive bases (of any order h > 1)
 that do NOT contain any minimal subbasis.
 
@@ -161,7 +161,7 @@ The mystery lies in the gap between:
 - f(n) > c log n for c = (log 4/3)⁻¹: SUFFICIENT (Erdős-Nathanson 1979)
 -/
 
-/--
+/- 
 The hierarchy of growth conditions: if f(n) > c log n for c = (log 4/3)⁻¹,
 then f(n) > ε log n for any ε > 0 (since c ≈ 3.476 > ε).
 -/

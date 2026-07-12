@@ -139,7 +139,7 @@ lemma doob_maximal_real_of_nnreal {Ω : Type*} {m : MeasurableSpace Ω}
     _ = ∫ ω in S, f N ω ∂μ :=
         ENNReal.toReal_ofReal (integral_nonneg fun ω => hpos N ω)
     _ ≤ ∫ ω, f N ω ∂μ :=
-        setIntegral_le_integral (hf.integrable N) (eventually_of_forall (hpos N))
+        setIntegral_le_integral (hf.integrable N) (Filter.Eventually.of_forall (hpos N))
 
 /-- The set {ω | ∃ n ≤ N, thresh ≤ f n ω} is measurable for adapted f -/
 lemma maximal_set_measurable {Ω : Type*} {m : MeasurableSpace Ω}
@@ -157,7 +157,7 @@ lemma maximal_set_measurable {Ω : Type*} {m : MeasurableSpace Ω}
     · rintro ⟨n, hn, h⟩; exact ⟨n, Nat.lt_succ_of_le hn, h⟩
     · rintro ⟨n, hn, h⟩; exact ⟨n, Nat.lt_succ_iff.mp hn, h⟩
   rw [heq]
-  apply MeasurableSet.biUnion (Finset.toSet_finite _).countable
+  apply MeasurableSet.biUnion (Finset.finite_toSet _).countable
   intro n _
   -- {thresh ≤ f n} is measurable because f n is measurable (adapted, then filtered ≤ ambient)
   exact measurableSet_le measurable_const ((hf.adapted n).measurable.mono (ℱ.le n))

@@ -138,11 +138,11 @@ axiom moser_bound :
     ∀ (S : Finset Plane), S.card = n → InConvexPosition S →
       maxDistinctDistances S ≥ (n + 2) / 3
 
-/--
+/- 
 **Erdős-Fishburn Bound (1994):**
 f(n) ≥ ⌊n/3 + 1⌋ = ⌊(n+3)/3⌋
 -/
-/--
+/- 
 **Dumitrescu's Bound (2006):**
 f(n) ≥ ⌈(13n-6)/36⌉
 -/
@@ -173,7 +173,7 @@ axiom regular_polygon_distances :
     ∃ (S : Finset Plane), S.card = n ∧ InConvexPosition S ∧
       maxDistinctDistances S = (n + 1) / 2
 
-/--
+/- 
 **Upper Bound on f(n):**
 The conjecture, if true, would be tight: f(n) ≤ ⌊n/2⌋ + 1 in general.
 -/
@@ -252,7 +252,7 @@ axiom stronger_conjecture_is_false : strongerConjectureDisproved
 Erdős also conjectured a continuous version.
 -/
 
-/--
+/- 
 **Convex Curve Conjecture (FALSE as stated):**
 Every convex curve has a point p such that every circle centered at p
 intersects the curve in at most 2 points.
@@ -260,7 +260,7 @@ intersects the curve in at most 2 points.
 Bárány and Roldán-Pensado (2013) showed the boundary of any acute
 triangle is a counterexample.
 -/
-/--
+/- 
 **Weakened Curve Conjecture:**
 Bárány and Roldán-Pensado proved that for any planar convex body,
 there exists a boundary point p such that every circle centered at p

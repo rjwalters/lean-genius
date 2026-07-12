@@ -133,8 +133,8 @@ Several upper bounds are known for E(x), with progressively better exponents.
 axiom elementary_upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 1 → |E(x)| ≤ C * x^(1/2 : ℝ)
 
-/-- Prime Number Theorem improvement: E(x) = o(x^(1/2)) -/
-/-- Walfisz (1963): Best unconditional bound E(x) ≪ x^(1/2 - δ(x))
+/-  Prime Number Theorem improvement: E(x) = o(x^(1/2)) -/
+/-  Walfisz (1963): Best unconditional bound E(x) ≪ x^(1/2 - δ(x))
     where δ(x) → 0 slowly -/
 /-
 ## Part 6: The Lower Bound
@@ -164,7 +164,7 @@ If E(x) ≪ x^(1/4), then the Riemann Hypothesis follows!
    implication requires connecting the error bound to the zero-free region of ζ(s).
    This is a deep analytic number theory result that cannot be formalized as a trivial implication. -/
 
-/-- Under RH, Liu (2016): E(x) ≪ x^(11/35 + o(1)) -/
+/-  Under RH, Liu (2016): E(x) ≪ x^(11/35 + o(1)) -/
 /-- The exponent 11/35 ≈ 0.314 vs conjectured 1/4 = 0.25 -/
 theorem liu_exponent : (11 : ℝ) / 35 > 1 / 4 := by norm_num
 
@@ -188,7 +188,7 @@ theorem mu_one : μ 1 = 1 := by rfl
 theorem mu_prime (p : ℕ) (hp : Nat.Prime p) : μ p = -1 := by
   simp only [μ, ArithmeticFunction.moebius_apply_prime hp]
 
-/-- The squarefree counting formula via Möbius inversion -/
+/-  The squarefree counting formula via Möbius inversion -/
 /-
 ## Part 9: Related Error Terms and Zeta Zeros
 
@@ -202,7 +202,7 @@ theorem classical_zero_free_region :
     s.im.abs > 2 → True :=  -- ζ(s) ≠ 0
   ⟨1, by norm_num, fun _ _ _ => trivial⟩
 
-/-- Wider zero-free regions would improve E(x) bounds -/
+/-  Wider zero-free regions would improve E(x) bounds -/
 /-
 ## Part 10: Summary and Main Theorem
 

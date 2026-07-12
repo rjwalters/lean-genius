@@ -60,7 +60,7 @@ theorem psum_one_eq_esymm_one :
   have hfilt : (Finset.antidiagonal 1).filter (fun a : ℕ × ℕ => a.1 ∈ Set.Ioo 0 1) = ∅ := by
     ext ⟨a, b⟩
     simp only [Finset.mem_filter, Finset.mem_antidiagonal, Set.mem_Ioo,
-               Finset.not_mem_empty, iff_false, not_and, not_lt]
+               Finset.notMem_empty, iff_false, not_and, not_lt]
     omega
   simp only [hfilt, Finset.sum_empty]
   ring

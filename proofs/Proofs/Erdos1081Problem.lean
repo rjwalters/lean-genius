@@ -59,7 +59,7 @@ m is squarefull iff m = a² · b³ for some a, b ≥ 1.
 def IsSquarefullAlt (m : ℕ) : Prop :=
   ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ m = a^2 * b^3
 
-/--
+/- 
 **Equivalence of squarefull characterizations:**
 -/
 /--
@@ -179,7 +179,7 @@ S(x) = #{n ≤ x : n is squarefull} ~ ζ(3/2)/ζ(3) · √x
 noncomputable def S (x : ℕ) : ℕ :=
   (Finset.range (x + 1)).filter (fun n => IsSquarefull n) |>.card
 
-/--
+/- 
 **Asymptotic for squarefull count:**
 S(x) ~ c · √x where c = ζ(3/2)/ζ(3) ≈ 2.173
 -/
@@ -208,7 +208,7 @@ axiom odoni_disproof : ¬erdos_conjecture
 ## Part V: Odoni's Lower Bound
 -/
 
-/--
+/- 
 **Odoni's Lower Bound (1981):**
 A(x) ≫ exp(c · log log log x / log log x) · x / √(log x)
 
@@ -227,7 +227,7 @@ This is the correct exponent for the counting function.
 -/
 noncomputable def alpha : ℝ := 1 - (2 : ℝ)^(-(1/3 : ℝ))
 
-/--
+/- 
 **Blomer-Granville Theorem (2006):**
 A(x) = (log log x)^O(1) · x / (log x)^α
 
@@ -260,7 +260,7 @@ theorem alpha_less_than_half : alpha < 1/2 := by
 ## Part VII: Why the Conjecture Failed
 -/
 
-/--
+/- 
 **Heuristic explanation:**
 Erdős's conjecture was based on a simple probabilistic model:
 - Squarefull numbers up to x: ~ c₁√x
@@ -283,7 +283,7 @@ disproportionately to sums.
 ## Part VIII: Connection to Quadratic Forms
 -/
 
-/--
+/- 
 **Connection to quadratic forms:**
 Blomer-Granville's approach uses the theory of binary quadratic forms
 with large discriminant.

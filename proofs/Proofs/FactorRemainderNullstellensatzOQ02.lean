@@ -5,7 +5,7 @@ The Combinatorial Nullstellensatz (Alon 1999) is a powerful algebraic tool
 for proving combinatorial results via polynomial non-vanishing.
 
 **Theorem** (Alon 1999): Let F be a field, f ∈ F[x₁,...,xₙ] a polynomial
-of total degree Σ tᵢ. If the coefficient of ∏ xᵢ^tᵢ in f is nonzero,
+of total degree Σ tᵢ. If the coefficient of ∏ xᵢ^tᵢ ∈ f is nonzero,
 and S₁,...,Sₙ ⊆ F with |Sᵢ| > tᵢ for all i, then there exist
 a₁ ∈ S₁,...,aₙ ∈ Sₙ with f(a₁,...,aₙ) ≠ 0.
 
@@ -123,7 +123,7 @@ open MvPolynomial in
     **Proof idea** (not fully formalized):
     1. For each i, let gᵢ(xᵢ) = ∏_{s ∈ Sᵢ} (xᵢ - s).
     2. Reduce f modulo g₁,...,gₙ to get remainder r with degᵢ(r) < |Sᵢ|.
-    3. The coefficient of ∏ xᵢ^tᵢ survives in r (degree argument).
+    3. The coefficient of ∏ xᵢ^tᵢ survives ∈ r (degree argument).
     4. So r ≠ 0, and r agrees with f on S₁ × ... × Sₙ.
     5. By grid_nonvanishing, r (hence f) doesn't vanish on the grid.
 

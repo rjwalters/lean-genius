@@ -97,14 +97,14 @@ theorem H_one_asymptotic :
   obtain ⟨K₂, hK₂, hup⟩ := saias_1998_upper_bound
   exact ⟨K₁, K₂, hK₁, hK₂, fun x hx => ⟨hlow x hx, hup x hx⟩⟩
 
-/-- Weingartner's precise asymptotic: H₁(x) ~ c · x/log x where c ≈ 0.878 -/
+/-  Weingartner's precise asymptotic: H₁(x) ~ c · x/log x where c ≈ 0.878 -/
 /-
 ## Part 4: The Case 0 < C < 1
 
 Trivial lower bound by union bound.
 -/
 
-/-- For C < 1, the union bound gives (1-C)x survivors.
+/-  For C < 1, the union bound gives (1-C)x survivors.
     The sum of x/a over a ∈ A is at most x · Σ 1/a ≤ Cx,
     so at least (1-C)x elements survive (minus rounding). -/
 /-- For 0 < C < 1, the answer is YES (trivially): any c works since the
@@ -127,7 +127,7 @@ theorem alpha_lt_one (C : ℝ) (hC : C > 1) : alpha C < 1 := by
   rw [Real.exp_lt_one_iff]
   linarith
 
-/-- Ruzsa: For C > 1, H_C(x) = x^{α+o(1)} where α = e^{1-C} -/
+/-  Ruzsa: For C > 1, H_C(x) = x^{α+o(1)} where α = e^{1-C} -/
 /-- Weingartner (2025): Precise asymptotics for C > 1 -/
 axiom weingartner_2025 (C : ℝ) (hC : C > 1) :
     ∃ K₁ K₂ : ℝ, K₁ > 0 ∧ K₂ > 0 ∧ ∀ x : ℕ, x ≥ 2 →
@@ -145,7 +145,7 @@ axiom negative_answer_large_C (C : ℝ) (hC : C > 1) :
 Shows the polynomial bound is best possible.
 -/
 
-/-- The Schinzel-Szekeres construction (1959):
+/-  The Schinzel-Szekeres construction (1959):
     For any c > 0, there exist sets A with reciprocal sum ≤ 1
     achieving sievedCount ≤ 2x/(log x)^c. This shows x/(log x)^c
     is the correct scale for the C = 1 lower bound. -/
@@ -174,10 +174,10 @@ def validSet (A : Finset ℕ) : Prop := ∀ a ∈ A, 2 ≤ a
 Related to other sieving problems.
 -/
 
-/-- Connection to Problem #542: the problem of dense divisors.
+/-  Connection to Problem #542: the problem of dense divisors.
     Both problems study how the structure of a set of divisors
     (measured by reciprocal sums) controls sieving outcomes. -/
-/-- The general principle: the reciprocal sum Σ 1/n of A controls
+/-  The general principle: the reciprocal sum Σ 1/n of A controls
     how effectively A sieves [1,x]. The phase transition at C = 1
     separates linear-like behavior from sublinear behavior. -/
 /-

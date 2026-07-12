@@ -117,7 +117,7 @@ noncomputable def fourierPartialSum (f : ℝ → ℂ) (N : ℕ) : ℝ → ℂ :=
 noncomputable def fourierError (f : ℝ → ℂ) (N : ℕ) : ℝ :=
   Real.sqrt (∫ x in (0 : ℝ)..1, ‖f x - fourierPartialSum f N x‖^2)
 
-/-- Parseval's identity: the L² norm equals the sum of squared Fourier coefficients. -/
+/-  Parseval's identity: the L² norm equals the sum of squared Fourier coefficients. -/
 /- ## Part III: The Ergodic Average -/
 
 /-- The fractional part {x} = x - ⌊x⌋. -/
@@ -147,16 +147,16 @@ def StrongLawHoldsAE (f : ℝ → ℂ) (n : ℕ → ℕ) : Prop :=
 
 /- ## Part V: Known Results -/
 
-/-- **Raikov's Theorem**: For geometric sequences nₖ = aᵏ, the strong law
+/-  **Raikov's Theorem**: For geometric sequences nₖ = aᵏ, the strong law
     holds for all f ∈ L² without any decay condition on Fourier error.
 
     This is the cleanest case: geometric sequences have enough
     "independence" for the strong law to hold unconditionally. -/
-/-- **Kac-Salem-Zygmund (1948)**: If the Fourier error decays like
+/-  **Kac-Salem-Zygmund (1948)**: If the Fourier error decays like
     1/(log n)^c for c > 1, the strong law holds for any lacunary sequence.
 
     This was the first general result for lacunary sequences. -/
-/-- **Erdős (1949)**: Improved to 1/(log log n)^c for c > 1.
+/-  **Erdős (1949)**: Improved to 1/(log log n)^c for c > 1.
 
     This was a significant improvement, replacing log with log log. -/
 /-- **Matsuyama (1966)**: Further improved to c > 1/2 for log log decay.
@@ -290,7 +290,7 @@ The problem connects to:
 4. Diophantine approximation: distribution of fractional parts
 -/
 
-/-- Weyl's equidistribution theorem: fractional parts of αn are equidistributed
+/-  Weyl's equidistribution theorem: fractional parts of αn are equidistributed
     for irrational α. This is a precursor to the strong law. -/
 /- ## Part XII: Summary -/
 

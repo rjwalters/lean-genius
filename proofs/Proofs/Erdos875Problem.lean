@@ -58,7 +58,7 @@ def HasPolynomialGaps (a : ℕ → ℕ) (c : ℝ) : Prop :=
   ∀ᶠ (n : ℕ) in Filter.atTop,
     (a (n + 1) - a n : ℝ) ≤ (n : ℝ) ^ c
 
-/-- **Erdős Problem #875 — Gap Question (Open).**
+/-  **Erdős Problem #875 — Gap Question (Open).**
     Determine the infimum of c such that no admissible sequence has
     a(n+1) − a(n) ≤ n^c for all large n. -/
 /-- Can an admissible sequence satisfy a(n+1)/a(n) → 1?

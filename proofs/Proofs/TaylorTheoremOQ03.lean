@@ -154,7 +154,7 @@ theorem euler_partial_sum_tendsto :
 
 /-! ## Tail Bounds -/
 
-/-- **Euler number approximation error**
+/-  **Euler number approximation error**
 
 |e - Σ_{k<n} 1/k!| ≤ 3/n! for n ≥ 1.
 The tail Σ_{k≥n} 1/k! is bounded by a geometric series with ratio 1/(n+1). -/

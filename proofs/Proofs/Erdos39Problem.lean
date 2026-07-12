@@ -87,13 +87,13 @@ theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A)
 
 /- ## Known Lower Bounds (Constructions) -/
 
-/-- **Greedy Construction**: The greedy algorithm produces an infinite
+/-  **Greedy Construction**: The greedy algorithm produces an infinite
     Sidon set with A(N) ≫ N^{1/3}.
     (Add n to A if no sum collision with existing elements.) -/
-/-- **Ajtai-Komlós-Szemerédi (1981)**: There exists an infinite Sidon set
+/-  **Ajtai-Komlós-Szemerédi (1981)**: There exists an infinite Sidon set
     with A(N) ≫ (N log N)^{1/3}.
     First improvement over greedy, earned $25 from Erdős. -/
-/-- **Ruzsa (1998)**: There exists an infinite Sidon set with
+/-  **Ruzsa (1998)**: There exists an infinite Sidon set with
     A(N) ≫ N^{√2-1+o(1)} ≈ N^{0.414}.
     Current best construction, earned $100 from Erdős. -/
 /-- √2 - 1 ≈ 0.41421... is the Ruzsa exponent. -/
@@ -132,7 +132,7 @@ theorem erdos39_gap : Real.sqrt 2 - 1 < (1:ℝ)/2 := by
 
 /- ## Related Results -/
 
-/-- **Erdős-Rényi Construction**: For any ε > 0, there exists a set A with
+/-  **Erdős-Rényi Construction**: For any ε > 0, there exists a set A with
     A(N) ≫ N^{1/2-ε} AND all representation numbers bounded.
     (r(n) = #{(a,b) ∈ A² : a + b = n} ≤ C_ε for all n.)
 

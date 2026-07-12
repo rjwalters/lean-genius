@@ -90,7 +90,7 @@ def linearHypergraphs3 (n : ℕ) : Set (Hypergraph (Fin n)) :=
 noncomputable def f (n : ℕ) : ℕ :=
   sInf { independenceNumber H | H ∈ linearHypergraphs3 n }
 
-/-- f(n) is the guaranteed independent set size. -/
+/-  f(n) is the guaranteed independent set size. -/
 /-
 ## Erdős's Bounds
 
@@ -173,8 +173,8 @@ def isSteinerTripleSystem (H : Hypergraph V) : Prop :=
   is3UniformLinear H ∧
   ∀ u v : V, u ≠ v → ∃! e ∈ H, u ∈ e ∧ v ∈ e
 
-/-- Steiner triple systems exist for n ≡ 1, 3 (mod 6). -/
-/-- STS are the densest 3-uniform linear hypergraphs: they have n(n-1)/6 edges. -/
+/-  Steiner triple systems exist for n ≡ 1, 3 (mod 6). -/
+/-  STS are the densest 3-uniform linear hypergraphs: they have n(n-1)/6 edges. -/
 /-
 ## Probabilistic Lower Bound
 
@@ -185,21 +185,21 @@ Random independent sets give the lower bound.
 noncomputable def expectedIndependent (H : Hypergraph V) (p : ℝ) : ℝ :=
   p * Fintype.card V - (H.card : ℝ) * p^3
 
-/-- Optimizing p gives the lower bound. -/
+/-  Optimizing p gives the lower bound. -/
 /-
 ## Upper Bound Construction
 
 Constructions matching the lower bound.
 -/
 
-/-- There exist 3-uniform linear hypergraphs with small independence number. -/
+/-  There exist 3-uniform linear hypergraphs with small independence number. -/
 /-
 ## Comparison of Bounds
 
 The Phelps-Rödl bound is between Erdős's bounds.
 -/
 
-/-- (n log n)^(1/2) is between n^(1/2) and n^(2/3) for n ≥ 3. -/
+/-  (n log n)^(1/2) is between n^(1/2) and n^(2/3) for n ≥ 3. -/
 /-- The log factor refines Erdős's gap: (n log n)^{1/2} = n^{1/2+o(1)}. -/
 /-
 ## Summary

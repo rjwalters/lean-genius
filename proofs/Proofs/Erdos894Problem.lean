@@ -140,10 +140,10 @@ theorem erdos_894 : ErdosConjecture894 := lacunary_finitely_colorable
 
 /- ## Part VI: Quantitative Bounds (Peres-Schlag 2010) -/
 
-/-- **Peres-Schlag Theorem (2010):**
+/-  **Peres-Schlag Theorem (2010):**
     For a lacunary sequence with ratio (1+ε), the chromatic number is
     O(ε⁻¹ log(1/ε)). -/
-/-- The bound ε⁻¹ log(1/ε) is essentially optimal. -/
+/-  The bound ε⁻¹ log(1/ε) is essentially optimal. -/
 /- ## Part VII: Cayley Graphs -/
 
 /-- The Cayley graph on ℤ with connection set A. -/

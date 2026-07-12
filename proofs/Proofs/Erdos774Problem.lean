@@ -120,9 +120,9 @@ theorem dissociated_is_proportionately (A : Set ℕ) :
     ||f||_1 ≪ |∑_{n∈A} f(n)e(nθ)| for some θ. -/
 def IsSidonHarmonic (A : Set ℕ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ f : ℕ → ℂ, (∀ n, n ∉ A → f n = 0) →
-    ∃ θ : ℝ, (∑ n in Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
+    ∃ θ : ℝ, (∑ n ∈ Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
       Complex.abs (f n)) ≤
-      C * Complex.abs (∑ n in Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
+      C * Complex.abs (∑ n ∈ Finset.range (Nat.succ (sSup {n | n ∈ A ∧ f n ≠ 0})),
         f n * Complex.exp (2 * Real.pi * Complex.I * n * θ))
 
 /-

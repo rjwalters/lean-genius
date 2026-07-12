@@ -48,7 +48,7 @@ noncomputable def independenceNumber (G : SimpleGraph V) [DecidableRel G.Adj] : 
 
 /-- Every graph has an independent set (the empty set). -/
 theorem exists_independent_set (G : SimpleGraph V) : ∃ S : Finset V, IsIndependentSet G S :=
-  ⟨∅, fun u hu => (Finset.not_mem_empty u hu).elim⟩
+  ⟨∅, fun u hu => (Finset.notMem_empty u hu).elim⟩
 
 /-- Singleton sets are always independent. -/
 theorem singleton_independent (G : SimpleGraph V) (v : V) : IsIndependentSet G {v} := by
@@ -81,10 +81,10 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 def hasNoOddCycle (G : SimpleGraph V) : Prop :=
   ∀ (u : V) (p : G.Walk u u), p.IsCycle → Even p.length
 
-/-- Characterization: bipartite iff no odd cycles. -/
+/-  Characterization: bipartite iff no odd cycles. -/
 /- ## Part IV: The Trivial k=0 Case -/
 
-/-- An odd cycle on 2m+1 vertices has independence number exactly m. -/
+/-  An odd cycle on 2m+1 vertices has independence number exactly m. -/
 /-- Key lemma: odd cycles violate the k=0 condition.
     A cycle on 2m+1 vertices has independence number m < (2m+1)/2. -/
 theorem odd_cycle_violates_strict (m : ℕ) (hm : m ≥ 1) :
@@ -264,7 +264,7 @@ theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
 
 /- ## Part IX: Bounds on f(k) -/
 
-/-- Reed's proof gives some explicit bound, though not optimal. -/
+/-  Reed's proof gives some explicit bound, though not optimal. -/
 /-- Finding optimal bounds remains of interest. -/
 def openQuestion_optimal_bound : Prop :=
   ∃ f : ℕ → ℕ, (∀ k, f k ≤ reed_bound k) ∧
@@ -274,7 +274,7 @@ def openQuestion_optimal_bound : Prop :=
 
 /- ## Part X: Connection to Chromatic Number -/
 
-/-- Bipartite graphs are exactly 2-colorable. -/
+/-  Bipartite graphs are exactly 2-colorable. -/
 /-- Almost-bipartite graphs have chromatic number at most 2 + (number of removed vertices). -/
 end Erdos73
 

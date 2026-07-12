@@ -56,7 +56,7 @@ lemma odd_count_lower_bound (n : ℕ) :
       rw [Finset.range_add_one, Finset.filter_insert]
       split_ifs with hmod
       · -- k is odd: insert k, k ∉ range k so card increases by 1
-        rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
+        rw [Finset.card_insert_of_notMem (by simp [Finset.mem_filter, Finset.mem_range])]
         omega
       · -- k is even: no change to filter, card unchanged
         omega
@@ -144,7 +144,7 @@ theorem counterexample_positive_density (m : ℕ) (hm : m ≥ 1) :
       | succ j ihj =>
         rw [Finset.range_add_one, Finset.filter_insert]
         split_ifs with hmod
-        · rw [Finset.card_insert_of_not_mem (by simp [Finset.mem_filter, Finset.mem_range])]
+        · rw [Finset.card_insert_of_notMem (by simp [Finset.mem_filter, Finset.mem_range])]
           omega
         · omega
     exact key (n + 1)

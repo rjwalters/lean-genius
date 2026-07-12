@@ -51,7 +51,7 @@ def achievableEdgeCounts (r n k s : ℕ) : Set ℕ :=
 /-- The achievable set is always nonempty (the empty hypergraph is valid). -/
 private theorem achievable_nonempty (r n k s : ℕ) :
     (achievableEdgeCounts r n k s).Nonempty :=
-  ⟨0, ∅, ⟨fun _ h => absurd h (Finset.not_mem_empty _),
+  ⟨0, ∅, ⟨fun _ h => absurd h (Finset.notMem_empty _),
     fun F hF hFs => absurd (Finset.card_eq_zero.mpr (Finset.subset_empty.mp hF) ▸ hFs)
       (by omega)⟩, rfl⟩
 

@@ -55,7 +55,7 @@ theorem S_nonneg (P : PointConfig) : (S P : ℝ) ≥ 0 := Nat.cast_nonneg _
 ## Part II: Fishburn's Cubic Bound
 -/
 
-/-- Fishburn's theorem: ∑ f(u)² = O(n³) for convex polygons -/
+/-  Fishburn's theorem: ∑ f(u)² = O(n³) for convex polygons -/
 /-
 ## Part III: The Regular n-gon
 
@@ -72,9 +72,9 @@ noncomputable def regularNGon (n : ℕ) : PointConfig :=
 /-- S(regular n-gon): the squared-multiplicity sum for the regular n-gon -/
 noncomputable def S_regular (n : ℕ) : ℕ := S (regularNGon n)
 
-/-- The regular n-gon achieves Θ(n³):
+/-  The regular n-gon achieves Θ(n³):
     there exist c₁, c₂ > 0 such that c₁·n³ ≤ S(regular_n) ≤ c₂·n³ -/
-/-- The regular n-gon is in convex position (for n ≥ 3) -/
+/-  The regular n-gon is in convex position (for n ≥ 3) -/
 /-
 ## Part IV: The Asymptotic Constant
 

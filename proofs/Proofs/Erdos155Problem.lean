@@ -42,7 +42,7 @@ private noncomputable def sidonSets (N : ℕ) : Finset (Finset ℕ) :=
 private theorem empty_mem_sidonSets (N : ℕ) : ∅ ∈ sidonSets N := by
   simp only [sidonSets, Finset.mem_filter, Finset.mem_powerset, Finset.empty_subset,
              true_and, IsSidonSet]
-  intro a _ _ _ ha; exact absurd ha (Finset.not_mem_empty a)
+  intro a _ _ _ ha; exact absurd ha (Finset.notMem_empty a)
 
 private theorem sidonSets_nonempty (N : ℕ) : (sidonSets N).Nonempty :=
   ⟨∅, empty_mem_sidonSets N⟩
@@ -117,18 +117,18 @@ theorem maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1 :=
 axiom erdos_turan_upper (N : ℕ) (hN : N ≥ 1) :
     (maxSidonSize N : ℝ) ≤ Real.sqrt (N : ℝ) + (N : ℝ) ^ ((1 : ℝ) / 4) + 1
 
-/-- Lower bound: F(N) ≥ (1 - o(1))·√N.
+/-  Lower bound: F(N) ≥ (1 - o(1))·√N.
     Singer's construction and refinements give Sidon sets of size ~√N. -/
 /- ## The Main Conjecture -/
 
-/-- Erdős Problem #155: For every k ≥ 1, F(N+k) ≤ F(N) + 1
+/-  Erdős Problem #155: For every k ≥ 1, F(N+k) ≤ F(N) + 1
     for all sufficiently large N.
 
     This says F(N) can increase by at most 1 over any fixed-length
     interval [N, N+k], once N is large enough (depending on k). -/
 /- ## Stronger Form -/
 
-/-- The stronger conjecture: F(N+k) ≤ F(N) + 1 holds even for
+/-  The stronger conjecture: F(N+k) ≤ F(N) + 1 holds even for
     k ≈ ε·√N, i.e., F increases by at most 1 over intervals
     of length proportional to √N. -/
 /- ## Consequences -/
@@ -148,7 +148,7 @@ theorem increase_count_le (M : ℕ) :
       have hnotmem : M ∉ Finset.filter (fun N => maxSidonSize (N + 1) > maxSidonSize N)
           (Finset.range M) :=
         fun hmem => absurd (Finset.mem_range.mp (Finset.mem_of_mem_filter _ hmem)) (lt_irrefl _)
-      rw [Finset.card_insert_of_not_mem hnotmem]
+      rw [Finset.card_insert_of_notMem hnotmem]
       -- F(M+1) = F(M) + 1 from h and maxSidon_step
       have : maxSidonSize (M + 1) = maxSidonSize M + 1 :=
         le_antisymm (maxSidon_step M) h
@@ -156,7 +156,7 @@ theorem increase_count_le (M : ℕ) :
     · -- F(M+1) = F(M): count unchanged, bound follows from monotonicity
       exact le_trans ih (maxSidon_monotone M)
 
-/-- F(N+1) = F(N) for "most" values of N: the number of increase points
+/-  F(N+1) = F(N) for "most" values of N: the number of increase points
     below M is at most (1+ε)√M. Follows from increase_count_le (count ≤ F(M))
     and erdos_turan_upper (F(M) ≤ √M + M^{1/4} + 1). The remaining gap is
     the elementary inequality M^{1/4} + 1 ≤ ε√M for large M. -/

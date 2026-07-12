@@ -81,7 +81,7 @@ axiom elementary_upper_bound :
     ∀ k : ℕ, k > 0 →
       (v k : ℝ) ≤ k * vardiConstant ^ (2^k : ℕ)
 
-/-- Maximum denominator bound: in any k-term decomposition,
+/-  Maximum denominator bound: in any k-term decomposition,
 the largest denominator is at most k · uₖ. -/
 
 /- ## Conjectures -/
@@ -100,10 +100,10 @@ def ErdosConjecture293Strong : Prop :=
 
 /- ## Small Values -/
 
-/-- v(1) = 2: The only 1-term decomposition would need 1/n = 1, but
+/-  v(1) = 2: The only 1-term decomposition would need 1/n = 1, but
 we require distinct terms. Actually, n = 1 works, so v(1) = 2. -/
 
-/-- v(3) = 4: The unique 3-term decomposition is 1 = 1/2 + 1/3 + 1/6,
+/-  v(3) = 4: The unique 3-term decomposition is 1 = 1/2 + 1/3 + 1/6,
 so the first missing denominator is 4. -/
 
 /- ## Summary -/

@@ -52,7 +52,7 @@ axiom erdos_bounds (d : ℕ) (hd : d ≥ 3) :
 ## Part III: Solymosi-Vu Improvement
 -/
 
-/--
+/- 
 **Solymosi-Vu**: For d ≥ 4, f_d(n) ≫ n^{2/d - c/d²} for some constant c > 0.
 
 This improves the lower bound from n^{1/d} toward the conjectured n^{2/d}.
@@ -61,7 +61,7 @@ This improves the lower bound from n^{1/d} toward the conjectured n^{2/d}.
 ## Part IV: The Conjecture
 -/
 
-/--
+/- 
 **Erdős's Conjecture (OPEN)**: f_d(n) = n^{2/d - o(1)}.
 
 The conjectured lower bound matches the grid upper bound up to

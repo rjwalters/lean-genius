@@ -70,7 +70,7 @@ This achieves the minimum permanent among all doubly stochastic matrices.
 noncomputable def uniformMatrix (n : ℕ) (hn : n ≠ 0) : Matrix (Fin n) (Fin n) ℝ :=
   fun _ _ => (1 : ℝ) / n
 
-/-- The uniform matrix is doubly stochastic. -/
+/-  The uniform matrix is doubly stochastic. -/
 /--
 Example: The 2×2 uniform matrix [[1/2, 1/2], [1/2, 1/2]].
 -/
@@ -97,7 +97,7 @@ The main diagonal (identity permutation) product.
 def mainDiagonalProduct {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) : ℝ :=
   ∏ i, M i i
 
-/--
+/- 
 For the uniform matrix, every diagonal product equals n^{-n}.
 -/
 /-
@@ -120,7 +120,7 @@ theorem perm_eq_sum_diagonalProducts {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) 
     perm' M = ∑ σ : Equiv.Perm (Fin n), diagonalProduct M σ := by
   rfl
 
-/--
+/- 
 For the uniform matrix, the permanent equals n^{-n} · n!.
 This is the minimum among all doubly stochastic matrices.
 -/
@@ -228,7 +228,7 @@ theorem two_by_two_diagonals (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
       Equiv.swap_apply_right, Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.head_cons, Matrix.head_fin_const]
 
-/--
+/- 
 For a 2×2 doubly stochastic matrix, max(a², (1-a)²) ≥ 1/4.
 This verifies Erdős #499 for n = 2.
 -/

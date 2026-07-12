@@ -126,19 +126,19 @@ theorem A_unbounded : ∀ N : ℕ, ∃ n ∈ A, n > N := by
     exact Finset.mem_range.mpr (Nat.lt_succ_of_le this)
   exact hinf (Set.Finite.subset (Finset.finite_toSet _) hsub)
 
-/--
+/- 
 **Crocker's Theorem** (1971):
 There are ≫ log log N elements of A in {1, ..., N}.
 
 More precisely: ∃ c > 0, ∀ large N, countA(N) ≥ c · log log N.
 -/
-/--
+/- 
 **Pan's Theorem** (2011):
 For any ε > 0, there are ≫ N^(1-ε) elements of A in {1, ..., N}.
 
 This is a significant improvement over Crocker.
 -/
-/--
+/- 
 **Pan's Bound Reformulated:**
 Pan's bound countA(N) ≫ N^{1-ε} implies countA(N)/N ≫ N^{-ε}.
 

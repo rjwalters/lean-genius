@@ -64,7 +64,7 @@ This generalizes the Davenport-Erdős theorem (1936) which proved the
 case Xₙ = {0} for all n (i.e., avoiding multiples of all n ∈ A).
 -/
 
-/-- **Erdős Problem #486** (OPEN)
+/-  **Erdős Problem #486** (OPEN)
 
 For any choice of forbidden residue classes Xₙ ⊆ ℤ/nℤ, the modular
 avoidance set B = {m : ∀n, m ∉ Xₙ (mod n)} has a logarithmic density.
@@ -82,7 +82,7 @@ this set always has logarithmic density.
 def zeroAvoidanceSet (A : Set ℕ) : Set ℕ :=
   {m : ℕ | ∀ n ∈ A, ¬(n ∣ m) ∨ n = 0}
 
-/-- **Davenport-Erdős Theorem** (1936)
+/-  **Davenport-Erdős Theorem** (1936)
 
 For any A ⊆ ℕ, the set of numbers not divisible by any element of A
 has a logarithmic density. This is the Xₙ = {0} case of Problem #486.

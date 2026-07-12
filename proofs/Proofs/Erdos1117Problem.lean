@@ -59,21 +59,21 @@ theorem nu_finite (f : ℂ → ℂ) (_hent : IsEntire f) (_hnm : ¬ IsMonomial f
     (_hr : r > 0) : (nu f r : ℕ∞) < ⊤ :=
   WithTop.coe_lt_top _
 
-/-- For a non-monomial entire function, ν(r) ≥ 1 for all r > 0
+/-  For a non-monomial entire function, ν(r) ≥ 1 for all r > 0
     (the maximum is always achieved on a compact set). -/
 /- ## Question 1: lim sup ν(r) = ∞ (SOLVED) -/
 
-/-- Herzog–Piranian (1968): There exists a non-monomial entire function f
+/-  Herzog–Piranian (1968): There exists a non-monomial entire function f
     with lim sup_{r→∞} ν(r) = ∞.
     That is, for every N, there exist arbitrarily large r with ν(r) ≥ N. -/
 /- ## Question 2: lim inf ν(r) = ∞ (OPEN) -/
 
-/-- Erdős Problem #1117 (open part): Does there exist a non-monomial
+/-  Erdős Problem #1117 (open part): Does there exist a non-monomial
     entire function f with lim inf_{r→∞} ν(r) = ∞?
     That is, for every N, eventually ν(r) ≥ N for all sufficiently large r. -/
 /- ## Glücksam–Pardo-Simón Approximate Result (2024) -/
 
-/-- Glücksam–Pardo-Simón (2024): An "approximate" affirmative answer
+/-  Glücksam–Pardo-Simón (2024): An "approximate" affirmative answer
     to Question 2. They construct entire functions where the maximum
     modulus is achieved at many points for most radii, in a suitable
     approximate sense. -/

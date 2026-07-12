@@ -83,7 +83,7 @@ def hypothesisK_fails (k : ℕ) : Prop :=
 ## Part III: Mahler's Theorem (k = 3)
 -/
 
-/--
+/- 
 **Mahler's Theorem (1936):**
 Hypothesis K is FALSE for k = 3 (cubes).
 There exist infinitely many n such that r_3(n) ≫ n^{1/12}.
@@ -141,7 +141,7 @@ def hypothesisKStar (k : ℕ) : Prop :=
 ## Part VII: Positive Density Sets
 -/
 
-/--
+/- 
 **Erdős's Claim:**
 If B is the set of k-th powers of any set of positive density, then
 limsup r_B^{(k)}(n) = ∞. Axiomatized as: sets of k-th powers from

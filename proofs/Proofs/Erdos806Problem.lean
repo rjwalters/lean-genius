@@ -118,7 +118,7 @@ axiom alon_bukh_sudakov_upper_bound :
           ∃ B : Finset ℤ, IsBasisFor B A ∧
             (B.card : ℝ) ≤ C * (Real.log (Real.log n) / Real.log n) * Real.sqrt n
 
-/--
+/- 
 **Answer to Erdős Problem #806:**
 For any A ⊆ {1, ..., n} with |A| ≤ √n, there exists B with
 A ⊆ B + B and |B| = o(√n). This follows from the Alon-Bukh-Sudakov
@@ -194,7 +194,7 @@ theorem trivial_basis (A : Finset ℤ) :
 ## Part VIII: Asymptotic Notation
 -/
 
-/--
+/- 
 **The logarithmic factor tends to zero:**
 (log log n / log n) → 0 as n → ∞. This is a standard calculus result
 ensuring the Alon-Bukh-Sudakov bound gives |B| = o(√n).

@@ -100,7 +100,7 @@ def Coloring (k : ℕ) := ℕ → Fin k
 def IsMonochromatic {k : ℕ} (c : Coloring k) (S : Set ℕ) : Prop :=
   ∃ color : Fin k, ∀ n ∈ S, c n = color
 
-/--
+/- 
 **Hindman's Theorem (1974):**
 For any finite coloring of ℕ, there exists an infinite set B such that
 FS(B) is monochromatic.

@@ -171,15 +171,15 @@ theorem induced_ramsey_number_finite (n : ℕ) (G : Graph (Fin n)) :
 /- ## Part VI: Historical Bounds
 -/
 
-/--
+/- 
 **Rödl's Bipartite Bound (1973):**
 For bipartite graphs G on n vertices, R*(G) ≤ 2^{O(n)}.
 -/
-/--
+/- 
 **Kohayakawa-Prömel-Rödl Bound (1998):**
 R*(G) < 2^{O(n(log n)²)} for all graphs G on n vertices.
 -/
-/--
+/- 
 **Conlon-Fox-Sudakov Bound (2012):**
 R*(G) < 2^{O(n log n)} for all graphs G on n vertices.
 -/
@@ -260,7 +260,7 @@ theorem induced_ramsey_ge_ordinary (n : ℕ) (G : Graph (Fin n)) :
   -- the colour values agree by proof irrelevance of the edge-membership witness.
   exact ⟨heH.ne, hcol⟩
 
-/--
+/- 
 **Gap can be large:**
 There exist graphs where R*(G) is much larger than R(G).
 For example, complete bipartite graphs can exhibit superpolynomial gaps.

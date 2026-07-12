@@ -79,15 +79,15 @@ noncomputable def acyclicChromaticNumber {V : Type*} [Fintype V]
     quantifying over types, which is problematic in Lean's type theory. -/
 axiom f (d : ℕ) : ℕ
 
-/-- f(d) is realized by some graph with maximum degree ≤ d.
+/-  f(d) is realized by some graph with maximum degree ≤ d.
     This guarantees the existence of extremal graphs. -/
 /- ## Part 3: Known Bounds -/
 
-/-- Greedy upper bound: f(d) ≤ d² + 1.
+/-  Greedy upper bound: f(d) ≤ d² + 1.
     A simple greedy coloring argument: at each step, at most d² color pairs
     involving the current vertex and its neighbors' colors could create
     bichromatic paths, so d² + 1 colors always suffice. -/
-/-- Erdős lower bound: f(d) ≥ d^{4/3 - o(1)}.
+/-  Erdős lower bound: f(d) ≥ d^{4/3 - o(1)}.
     Uses probabilistic constructions with Sidon (B₂) sets.
     Dense Sidon sets in ℤ_p yield bipartite graphs where many colors
     are forced for any acyclic coloring. -/
@@ -108,7 +108,7 @@ axiom precise_lower_bound :
 
 /- ## Part 4: The Theta Bound -/
 
-/-- The complete asymptotic: f(d) = Θ(d^{4/3}).
+/-  The complete asymptotic: f(d) = Θ(d^{4/3}).
     Combines the AMR upper bound and precise lower bound into a single statement.
     The remaining (log d)^{1/3} gap between upper and lower bounds is still open. -/
 /- ## Part 5: Connection to B₂ Sequences (Sidon Sets) -/
@@ -126,7 +126,7 @@ def is_B2_sequence (A : Finset ℕ) : Prop :=
 
 /- ## Part 6: f(d) = o(d²) — The Original Question -/
 
-/-- The original Erdős question: is f(d) = o(d²)?
+/-  The original Erdős question: is f(d) = o(d²)?
     This follows from the AMR upper bound f(d) ≤ C·d^{4/3},
     since d^{4/3} / d² = d^{-2/3} → 0 as d → ∞. -/
 /- ## Part 7: Summary -/

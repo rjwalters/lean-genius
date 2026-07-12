@@ -246,7 +246,7 @@ noncomputable def R3 (N : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ S : Finset ℕ, (∀ x ∈ S, x ≤ N) ∧
     (∀ a d : ℕ, d > 0 → a ∈ S → a + d ∈ S → a + 2*d ∈ S → False) ∧ S.card = m }
 
-/--
+/- 
 **Trivial lower bound:**
 f₃(n) ≥ R₃(3^n).
 
@@ -257,7 +257,7 @@ AP-free sets embed to cap sets (lines generalize APs).
 ## Part V: Known Bounds
 -/
 
-/--
+/- 
 **Moser's Lower Bound:**
 f₃(n) ≫ 3^n/√n.
 
@@ -429,7 +429,7 @@ f₃(n) ≤ 3^n / n (explicit upper bound).
 axiom meshulam_upper_bound (n : ℕ) (hn : n ≥ 1) :
     f3 n ≤ 3^n / n
 
-/--
+/- 
 **Ellenberg-Gijswijt (2016):**
 The cap set problem for F_3^n was resolved with:
 f₃(n) ≤ c^n for c < 3.

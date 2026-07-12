@@ -75,7 +75,7 @@ noncomputable def g (n : ℕ) : ℕ :=
   -- This is noncomputable because we're taking a supremum
   n  -- Placeholder; actual definition would involve supremum
 
-/--
+/- 
 **Trivial upper bound:**
 g(n) ≤ n since clique sizes are in {1, 2, ..., n}.
 This follows because clique sizes range from 1 to n.
@@ -94,11 +94,11 @@ theorem singleton_is_clique {V : Type*} (G : SimpleGraph V) (v : V) :
 ## Part III: Moon-Moser Bounds (1965)
 -/
 
-/--
+/- 
 **Moon-Moser upper bound:**
 g(n) ≤ n - ⌊log₂ n⌋
 -/
-/--
+/- 
 **Moon-Moser lower bound:**
 g(n) > n - log₂ n - 2 log log n
 -/
@@ -122,7 +122,7 @@ noncomputable def logStar : ℕ → ℕ
     if Nat.log 2 (n + 2) ≤ 1 then 1
     else 1 + logStar (Nat.log 2 (n + 2))
 
-/--
+/- 
 **log*(n) is very slowly growing:**
 log*(n) ≤ 5 for all n ≤ 2^65536.
 Computing logStar(2^16) = logStar(65536) = 4 directly.
@@ -131,7 +131,7 @@ Computing logStar(2^16) = logStar(65536) = 4 directly.
 ## Part V: Erdős's Conjecture
 -/
 
-/--
+/- 
 **Erdős's improved lower bound (1966):**
 g(n) > n - log₂ n - log*(n) - C for some constant C.
 -/
@@ -212,7 +212,7 @@ A related problem about clique numbers and graph structure.
 ## Part IX: Examples
 -/
 
-/--
+/- 
 **Complete graph K_n:**
 Has cliques of sizes 1, 2, 3, ..., n.
 So g(n) ≥ n for any n (from K_n alone... but we define g as max distinct sizes).

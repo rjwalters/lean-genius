@@ -74,7 +74,7 @@ def IsSubgraph {V : Type*} (H G : SimpleGraph V) : Prop :=
 Definition of the extremal function.
 -/
 
-/--
+/- 
 **Bipartite Subgraph Size:**
 Maximum edges in a bipartite subgraph of G.
 Axiomatized as the supremum over all bipartite subgraphs.
@@ -96,7 +96,7 @@ axiom f (m : ℕ) : ℕ
 Every graph has a bipartite subgraph with at least half the edges.
 -/
 
-/--
+/- 
 **Trivial Lower Bound:**
 Every graph contains a bipartite subgraph with at least m/2 edges.
 
@@ -194,20 +194,20 @@ theorem alon_main_theorem :
 Connections to other extremal graph theory problems.
 -/
 
-/--
+/- 
 **Comparison to General Graphs:**
 For arbitrary (not necessarily triangle-free) graphs,
 we only get m/2 guaranteed bipartite edges.
 
 Triangle-freeness gives us the extra Θ(m^{4/5}) term.
 -/
-/--
+/- 
 **Mantel's Theorem (1907):**
 A triangle-free graph on n vertices has at most n²/4 edges.
 
 This is a classical bound on triangle-free graphs.
 -/
-/--
+/- 
 **Kővári-Sós-Turán Theorem:**
 Bounds on bipartite Turán numbers, which constrains
 the structure of triangle-free graphs.

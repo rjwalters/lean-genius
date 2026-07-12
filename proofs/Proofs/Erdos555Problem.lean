@@ -57,13 +57,13 @@ noncomputable def ramseyEvenCycle (n k : ℕ) : ℕ :=
 
 /- ## Erdős Lower Bound -/
 
-/-- Erdős lower bound: R(C₂ₙ; k) ≫ k^{1+1/(2n)} -/
-/-- Erdős upper bound: R(C₂ₙ; k) ≪ k^{1+1/(n-1)} for n ≥ 2 -/
+/-  Erdős lower bound: R(C₂ₙ; k) ≫ k^{1+1/(2n)} -/
+/-  Erdős upper bound: R(C₂ₙ; k) ≪ k^{1+1/(n-1)} for n ≥ 2 -/
 /- ## C₄ Case: Chung–Graham Bounds -/
 
-/-- Chung–Graham lower bound for C₄: R(C₄; k) > k² - k + 1
+/-  Chung–Graham lower bound for C₄: R(C₄; k) > k² - k + 1
     when k - 1 is a prime power -/
-/-- Chung–Graham upper bound for C₄: R(C₄; k) ≤ k² + k + 1 for all k -/
+/-  Chung–Graham upper bound for C₄: R(C₄; k) ≤ k² + k + 1 for all k -/
 /- ## The Erdős–Graham Problem -/
 
 /-- Erdős Problem 555 (Erdős–Graham): Determine the exact value of R(C₂ₙ; k).

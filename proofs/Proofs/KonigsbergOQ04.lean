@@ -172,7 +172,7 @@ theorem k3Circuit_isEulerian : k3Circuit.isEulerian := by
   refine ⟨by decide, fun a b hadj => ?_⟩
   cases a <;> cases b <;> simp_all [k3Digraph, k3Circuit]
 
-/-- Three arborescences rooted at A in K3. -/
+/-  Three arborescences rooted at A in K3. -/
 
 /-- Arborescence 1: B->A, C->A (both go directly to root). -/
 def k3Arb1 : Arborescence k3Digraph A where

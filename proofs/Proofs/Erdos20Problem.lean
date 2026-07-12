@@ -60,7 +60,7 @@ axiom sunflowerNumber (n k : ℕ) : ℕ
 
 /- ## The Sunflower Lemma (Erdős-Rado 1960) -/
 
-/-- **Erdős-Rado Sunflower Lemma (1960)**:
+/-  **Erdős-Rado Sunflower Lemma (1960)**:
     f(n,k) ≤ (k-1)^n · n! -/
 
 /-- The Erdős-Rado bound explicitly. -/
@@ -128,12 +128,12 @@ example : IsSunflower ({{1,2}, {3,4}, {5,6}} : Finset (Finset ℕ)) 3 := by
 
 /- ## Applications -/
 
-/-- **Matrix multiplication**: Sunflower bounds relate to matrix multiplication
+/-  **Matrix multiplication**: Sunflower bounds relate to matrix multiplication
     exponent lower bounds. -/
 
-/-- **Property testing**: Used in algorithms for testing set properties. -/
+/-  **Property testing**: Used in algorithms for testing set properties. -/
 
-/-- **Circuit complexity**: Connections to ACC circuit lower bounds. -/
+/-  **Circuit complexity**: Connections to ACC circuit lower bounds. -/
 
 /- ## Problem Status -/
 

@@ -200,7 +200,7 @@ A ⊆ {1, ..., N}.
 def InRange (A : Finset ℕ) (N : ℕ) : Prop :=
   ∀ n ∈ A, 1 ≤ n ∧ n ≤ N
 
-/--
+/- 
 For A ⊆ {1, ..., N}, the reciprocal sum is at most H_N.
 -/
 /-
@@ -230,7 +230,7 @@ theorem max_weighted_sum_little_o :
 ## Part VII: Erdős-Sárközi-Szemerédi (1968)
 -/
 
-/--
+/- 
 **Erdős-Sárközi-Szemerédi (1968):**
 Independent proof of the same result using different methods.
 Published in J. London Math. Soc.
@@ -239,7 +239,7 @@ Published in J. London Math. Soc.
 ## Part VIII: Behrend's Bound for Primitive Sets (1935)
 -/
 
-/--
+/- 
 **Behrend (1935):**
 For primitive sets A ⊆ {1, ..., N}:
   (1/log N) · Σ_{n ∈ A} 1/n = O(1/√(log log N))
@@ -260,7 +260,7 @@ def exampleSet (N : ℕ) : Finset ℕ :=
   (range (N + 1)).filter (fun n =>
     n ≥ Nat.sqrt N ∧ ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n)
 
-/--
+/- 
 The example set satisfies the condition.
 -/
 /--
@@ -300,7 +300,7 @@ theorem erdos_858_solution :
     weightedSum A N < ε :=
   alexander_1966
 
-/--
+/- 
 Alternative statement using limits.
 -/
 /-

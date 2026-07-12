@@ -125,7 +125,7 @@ noncomputable def expVal (D : DiscreteDist k) (n : ℕ) (f : (Fin n → Fin k) �
 /-- Expected value of a marginal function: E[g(Xⱼ)] = ∑_a p(a) g(a) for each j.
     Proof: ∑_x (∏_i p(x_i)) * g(x_j)
          = ∑_x ∏_i h_i(x_i)   where h_i(a) = if i=j then p(a)*g(a) else p(a)
-         = ∏_i ∑_a h_i(a)     (by Fintype.prod_sum applied in reverse)
+         = ∏_i ∑_a h_i(a)     (by Fintype.prod_sum applied ∈ reverse)
          = (∑_a p(a)*g(a)) * ∏_{i≠j} (∑_a p(a))
          = (∑_a p(a)*g(a)) * 1 = ∑_a p(a)*g(a). -/
 lemma expVal_marginal (D : DiscreteDist k) (n : ℕ) (g : Fin k → ℝ) (j : Fin n) :

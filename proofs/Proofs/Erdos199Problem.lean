@@ -70,7 +70,7 @@ Baumgartner showed that ℝ can be partitioned into two sets,
 neither containing an infinite arithmetic progression.
 -/
 
-/-- Baumgartner's partition: ℝ = A ∪ B where neither has an infinite AP -/
+/-  Baumgartner's partition: ℝ = A ∪ B where neither has an infinite AP -/
 /-- From the partition, we can derive that A is 3-AP-free (vacuously for the right construction) -/
 axiom baumgartner_3AP_free :
     ∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ
@@ -104,7 +104,7 @@ The Hamel basis for ℝ over ℚ is not constructively definable.
 In ZF without AC, the problem may have a different answer.
 -/
 
-/-- Van der Waerden's theorem: for any finite coloring of ℕ, some color
+/-  Van der Waerden's theorem: for any finite coloring of ℕ, some color
     class contains arbitrarily long arithmetic progressions -/
 /-
 ## Part VI: Examples and Intuition

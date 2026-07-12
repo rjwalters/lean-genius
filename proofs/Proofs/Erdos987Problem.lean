@@ -59,7 +59,7 @@ Sₙ(k) = ∑_{j=1}^n e(k·xⱼ)
 This is a sum of unit vectors in the complex plane.
 -/
 noncomputable def partialSum (x : ℕ → ℝ) (k n : ℕ) : ℂ :=
-  ∑ j in Finset.range n, e (k * x (j + 1))
+  ∑ j ∈ Finset.range n, e (k * x (j + 1))
 
 /--
 **The Aₖ Function:**
@@ -82,14 +82,14 @@ All sequence elements are in (0,1).
 def InUnitInterval (x : ℕ → ℝ) : Prop :=
   ∀ n : ℕ, n ≥ 1 → 0 < x n ∧ x n < 1
 
-/--
+/- 
 **Erdős (1964): Supremum is Unbounded**
 For any sequence, the supremum of partial sums over n is unbounded as k → ∞.
 
 "Easy to see": limsup_{k→∞} (sup_n |∑_{j≤n} e(kxⱼ)|) = ∞
 -/
 
-/--
+/- 
 **Erdős (1965): Logarithmic Lower Bound**
 Aₖ ≫ log k for infinitely many k.
 
@@ -119,7 +119,7 @@ This shows that linear growth is achievable (no explosion).
 axiom clunie_upper_construction :
     ∃ x : ℕ → ℝ, InUnitInterval x ∧ ∀ k : ℕ, A x k ≤ k
 
-/--
+/- 
 **Tao's Independent Proof:**
 Tao independently found that Aₖ ≫ √k infinitely often.
 -/
@@ -136,13 +136,13 @@ The sequence takes only finitely many distinct values.
 def FinitelyManyDistinct (x : ℕ → ℝ) : Prop :=
   ∃ S : Finset ℝ, ∀ n : ℕ, n ≥ 1 → x n ∈ S
 
-/--
+/- 
 **Liu's Theorem (1969):**
 If there are finitely many distinct points, then for any ε > 0,
 Aₖ ≫ k^{1-ε} infinitely often.
 -/
 
-/--
+/- 
 **Clunie's Observation:**
 Under the finite distinct points assumption, Aₖ = ∞ infinitely often!
 (Noted in MathSciNet review of Liu's paper)
@@ -195,7 +195,7 @@ theorem known_bounds :
 Understanding the problem geometrically.
 -/
 
-/--
+/- 
 **Weyl's Equidistribution:**
 For equidistributed sequences (like nα mod 1 for irrational α),
 the sums have cancellation.
@@ -218,7 +218,7 @@ def discrepancy (x : ℕ → ℝ) (n : ℕ) : ℝ :=
   ⨆ (a b : ℝ) (hab : 0 ≤ a ∧ a < b ∧ b ≤ 1),
     |((Finset.range n).filter (fun j => a ≤ x (j+1) ∧ x (j+1) < b)).card / n - (b - a)|
 
-/--
+/- 
 **Erdős-Turán Inequality:**
 Exponential sums control discrepancy.
 -/

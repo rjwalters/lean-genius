@@ -2369,14 +2369,14 @@ theorem partitionsFrom_zero (S : Finset ℕ) :
 /-- No partition of n > 0 has all parts in ∅. -/
 theorem partitionsFrom_empty_card {n : ℕ} (hn : 0 < n) :
     (partitionsFrom ∅ n).card = 0 := by
-  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
   intro p hp
   simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
   -- p must have at least one part since n > 0
   have hne : p.parts ≠ 0 := by
     intro heq; have := p.parts_sum; rw [heq] at this; simp at this; omega
   obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero hne
-  exact absurd (hp a ha) (Finset.not_mem_empty a)
+  exact absurd (hp a ha) (Finset.notMem_empty a)
 
 /-- **RR1 mod partitions are partitionsFrom the appropriate set.**
     rr1Mod5Partitions n = partitionsFrom {k ∈ [0..n] | k > 0 ∧ (k%5=1 ∨ k%5=4)} n -/
@@ -3117,7 +3117,7 @@ theorem subsetsWithSum_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (n : ℕ
         push_neg at hkn
         rw [Finset.card_eq_zero]
         ext T
-        simp only [Finset.mem_filter, Finset.mem_powerset, Finset.not_mem_empty, iff_false,
+        simp only [Finset.mem_filter, Finset.mem_powerset, Finset.notMem_empty, iff_false,
           not_and]
         intro _
         rw [Finset.sum_insert (fun h => hk (by assumption))]
@@ -3216,7 +3216,7 @@ theorem partitionsFrom_singleton_card (k n : ℕ) (hk : 0 < k) :
     · intro hp; subst hp
       simp [Multiset.mem_replicate, hk.ne']
   · -- k ∤ n: no partitions
-    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
     intro p hp
     simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
     have hall : ∀ a ∈ p.parts, a = k := fun a ha => by
@@ -3252,7 +3252,7 @@ The analogous bridge theorem for partitions with repetition:
 
 This requires decomposing partitions by the multiplicity of each element,
 which is the combinatorial content of the identity
-  ∏_{k ∈ S} 1/(1-X^k) = ∑_n |{partitions of n with parts in S}| X^n
+  ∏_{k ∈ S} 1/(1-X^k) = ∑_n |{partitions of n with parts ∈ S}| X^n
 
 The proof proceeds by Finset.induction on S:
 - Base: coeff n (partGF ∅) = [n = 0] = |partitionsFrom ∅ n|

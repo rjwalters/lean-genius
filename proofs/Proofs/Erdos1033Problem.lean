@@ -53,7 +53,7 @@ noncomputable def turanThreshold (n : ℕ) : ℕ := n^2 / 4
 def isAboveTuran (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   edgeCount G > turanThreshold (Fintype.card V)
 
-/-- Turán's theorem: graphs above threshold have triangles. -/
+/-  Turán's theorem: graphs above threshold have triangles. -/
 /-
 ## Triangles and Degree Sums
 
@@ -174,7 +174,7 @@ h(n) ≤ 2(√3 - 1)n
 axiom erdos_laskar_upper (n : ℕ) (hn : n ≥ 3) :
   (h n : ℝ) ≤ erdosLaskarConstant * n
 
-/-- There exists a graph achieving the upper bound. -/
+/-  There exists a graph achieving the upper bound. -/
 /-
 ## Erdős-Laskar Lower Bound (1985)
 
@@ -343,11 +343,11 @@ noncomputable def maxTriangleDegreeSum (G : SimpleGraph V) [DecidableRel G.Adj]
 
 /-- h(n) equals minimum of maxTriangleDegreeSum over all dense graphs. -/
 theorem h_as_min (n : ℕ) (hn : n ≥ 3) :
-    h n = sInf {k : ℕ | ∃ (V : Type*) [DecidableEq V] [Fintype V],
+    h n = sInf {k : ℕ | ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
       Fintype.card V = n ∧
       ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj], isAboveTuran G ∧
         ∀ T : Triangle G, triangleDegreeSum G T ≤ k} := by
-  set Tset := {k : ℕ | ∃ (V : Type*) [DecidableEq V] [Fintype V],
+  set Tset := {k : ℕ | ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
       Fintype.card V = n ∧
       ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj], isAboveTuran G ∧
         ∀ T : Triangle G, triangleDegreeSum G T ≤ k}
@@ -439,7 +439,7 @@ def isExtremal (n : ℕ) (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   isAboveTuran G ∧
   ∀ T : Triangle G, triangleDegreeSum G T ≤ h n
 
-/-- Extremal graphs exist. -/
+/-  Extremal graphs exist. -/
 /-
 ## Relation to Turán Graph
 
@@ -471,7 +471,7 @@ theorem bipartite_no_triangle (n : ℕ) :
   have hAB_mem : ∀ v : V, v ∈ A ∨ v ∈ B := by
     intro v; have := Finset.mem_union.mp (hAB ▸ Finset.mem_univ v); exact this
   have hAB_excl : ∀ v : V, v ∈ A → v ∈ B → False := by
-    intro v ha hb; exact Finset.not_mem_empty v (hABdisj ▸ Finset.mem_inter.mpr ⟨ha, hb⟩)
+    intro v ha hb; exact Finset.notMem_empty v (hABdisj ▸ Finset.mem_inter.mpr ⟨ha, hb⟩)
   -- Case split on v1's part
   rcases hAB_mem T.v1 with h1A | h1B
   · -- v1 ∈ A
@@ -689,7 +689,7 @@ private lemma turanPlus1_degree_one (n : ℕ) (hn : n ≥ 4) :
 /-- Adding one edge to Turán creates triangle with specific degrees.
     Proof: use turanPlus1 = K_{n/2, n-n/2} + edge(0,1) on Fin n. -/
 theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
-    ∃ (V : Type*) [DecidableEq V] [Fintype V],
+    ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
     Fintype.card V = n ∧
     ∃ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
     edgeCount G = turanThreshold n + 1 ∧
@@ -721,12 +721,12 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
     have hpair_sub : ({⟨0, by omega⟩, ⟨1, by omega⟩} : Finset (Fin n)) ⊆ lower :=
       Finset.insert_subset_iff.mpr ⟨hv0_lower, Finset.singleton_subset_iff.mpr hv1_lower⟩
     -- Sum over upper: each vertex has degree n/2
-    have hsum_upper : ∑ v in upper, (turanPlus1 n).degree v = (n - n / 2) * (n / 2) := by
+    have hsum_upper : ∑ v ∈ upper, (turanPlus1 n).degree v = (n - n / 2) * (n / 2) := by
       rw [Finset.sum_const_nat (fun v hv =>
           turanPlus1_degree_upper n hn v ((Finset.mem_filter.mp hv).2)),
           card_upper]
     -- Sum over {0, 1}: each has degree n - n/2 + 1
-    have hsum_pair : ∑ v in ({⟨0, by omega⟩, ⟨1, by omega⟩} : Finset (Fin n)),
+    have hsum_pair : ∑ v ∈ ({⟨0, by omega⟩, ⟨1, by omega⟩} : Finset (Fin n)),
         (turanPlus1 n).degree v = 2 * (n - n / 2 + 1) := by
       rw [Finset.sum_pair hv01_ne,
           turanPlus1_degree_zero n hn, turanPlus1_degree_one n hn]
@@ -735,7 +735,7 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
     have hrest_card : (lower \ {⟨0, by omega⟩, ⟨1, by omega⟩}).card = n / 2 - 2 := by
       rw [Finset.card_sdiff hpair_sub, card_lower, Finset.card_pair hv01_ne]
     -- Sum over lower \ {0, 1}: each has degree n - n/2
-    have hsum_rest : ∑ v in lower \ {⟨0, by omega⟩, ⟨1, by omega⟩},
+    have hsum_rest : ∑ v ∈ lower \ {⟨0, by omega⟩, ⟨1, by omega⟩},
         (turanPlus1 n).degree v = (n / 2 - 2) * (n - n / 2) := by
       rw [Finset.sum_const_nat (fun v hv => ?_), hrest_card]
       have hvm := Finset.mem_sdiff.mp hv
@@ -748,9 +748,9 @@ theorem turan_plus_one (n : ℕ) (hn : n ≥ 4) :
       exact turanPlus1_degree_lower_other n hn v hv2 hvl
     -- Combine: total degree sum
     have hsum_total : ∑ v : Fin n, (turanPlus1 n).degree v = 2 * (n / 2 * (n - n / 2) + 1) := by
-      -- Rewrite ∑ v : Fin n as ∑ v in Finset.univ (definitionally equal), then use h_union
+      -- Rewrite ∑ v : Fin n as ∑ v ∈ Finset.univ (definitionally equal), then use h_union
       have huniv : ∑ v : Fin n, (turanPlus1 n).degree v =
-                   ∑ v in lower ∪ upper, (turanPlus1 n).degree v :=
+                   ∑ v ∈ lower ∪ upper, (turanPlus1 n).degree v :=
         Finset.sum_congr h_union.symm (fun _ _ => rfl)
       rw [huniv, Finset.sum_union h_disj]
       -- Split lower into {0,1} and rest

@@ -64,16 +64,16 @@ def IsRepresentableFromLevel (r : ℕ) (d : Fin r → ℕ) (k n : ℕ) : Prop :=
 
 /- ## Pomerance's Necessity -/
 
-/-- Pomerance's result: the condition Σ 1/(dᵢ-1) ≥ 1 is necessary
+/-  Pomerance's result: the condition Σ 1/(dᵢ-1) ≥ 1 is necessary
     for all sufficiently large integers to be representable -/
 /- ## First Question (PROVED) -/
 
-/-- Erdős Problem 124, Question 1 (PROVED): if Σ 1/(dᵢ-1) ≥ 1,
+/-  Erdős Problem 124, Question 1 (PROVED): if Σ 1/(dᵢ-1) ≥ 1,
     then all sufficiently large integers are representable.
     Proved by Aristotle via Alexeev's method. -/
 /- ## Second Question (Open in General) -/
 
-/-- Erdős Problem 124, Question 2 (Open): with the additional condition
+/-  Erdős Problem 124, Question 2 (Open): with the additional condition
     gcd(d₁,...,dᵣ) = 1, for any k ≥ 1, all sufficiently large integers
     can be represented using P(dᵢ, k). Proved for {3,4,7}. -/
 /-- The case {3, 4, 7} is verified for Question 2 -/

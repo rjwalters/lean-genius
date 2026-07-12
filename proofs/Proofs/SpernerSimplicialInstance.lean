@@ -486,7 +486,7 @@ lemma AbstractSimplicialData.faceOf_eq
 /-- Vertex j is not in face k iff j = k.
 The forward direction: if vertexEnum j is not in s.erase(vertexEnum k),
 then vertexEnum j = vertexEnum k (since vertexEnum j ∈ s), hence j = k by injectivity.
-The backward direction: vertexEnum k ∉ s.erase(vertexEnum k) by Finset.not_mem_erase. -/
+The backward direction: vertexEnum k ∉ s.erase(vertexEnum k) by Finset.notMem_erase. -/
 lemma AbstractSimplicialData.vertexEnum_not_mem_faceOf_iff
     (s : Finset V) (hs : s ∈ D.topSimplices) (j k : Fin (n+1)) :
     D.vertexEnum s hs j ∉ D.faceOf s hs k ↔ j = k := by

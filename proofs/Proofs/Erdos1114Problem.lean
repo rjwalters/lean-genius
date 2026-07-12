@@ -67,7 +67,7 @@ By Rolle's theorem, f' has exactly n distinct real roots in (a₀, a₀+nd).
 -/
 def CriticalPoints (f : Polynomial ℝ) (n : ℕ) := Fin n → ℝ
 
-/--
+/- 
 **Rolle's theorem gives critical points:**
 Between each pair of consecutive roots of f, there's a root of f'.
 -/
@@ -119,7 +119,7 @@ axiom balint_theorem {n : ℕ} (hn : n ≥ 2) {a₀ d : ℝ} (hd : d > 0)
       DistFromMidpoint c a₀ d n ⟨j.val, by omega⟩ →
       Gap c i < Gap c j
 
-/--
+/- 
 **Symmetric formulation:**
 For n critical points c₁ < c₂ < ... < cₙ, the gaps satisfy:
 g₁ > gₙ₋₁ ≥ g₂ > gₙ₋₂ ≥ ... (interleaved from ends toward middle)
@@ -141,7 +141,7 @@ axiom quartic_gap_property (c : Fin 4 → ℝ)
 ## Part VI: Lorch's Generalizations (1976)
 -/
 
-/-- Lorch (1976) extended Bálint's result to higher derivatives:
+/-  Lorch (1976) extended Bálint's result to higher derivatives:
     for f⁽ᵏ⁾ with k < n, the gaps between consecutive zeros also
     exhibit monotonicity from the midpoint outward. -/
 /-

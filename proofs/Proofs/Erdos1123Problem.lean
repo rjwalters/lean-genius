@@ -79,18 +79,18 @@ def erdos_ulam_question : Prop := ∃ f : B1 → B2, Function.Bijective f
 
 /- ## Part III: Just-Krawczyk's Resolution -/
 
-/-- Just-Krawczyk Theorem (1984): Under the Continuum Hypothesis,
+/-  Just-Krawczyk Theorem (1984): Under the Continuum Hypothesis,
     B₁ and B₂ ARE isomorphic. Both algebras have cardinality ℵ₁
     under CH with similar saturation properties, yielding an isomorphism
     by back-and-forth. -/
-/-- The isomorphism question is independent of ZFC:
+/-  The isomorphism question is independent of ZFC:
     - Under CH: B₁ ≅ B₂ (Just-Krawczyk 1984)
     - Without CH: the question may have a different answer -/
 /- ## Part IV: Ideal Properties -/
 
-/-- Both I₁ and I₂ are σ-ideals (closed under countable unions),
+/-  Both I₁ and I₂ are σ-ideals (closed under countable unions),
     contain all finite sets, and are closed under subsets. -/
-/-- The quotient P(ℕ)/Fin (mod finite sets) is NOT isomorphic to B₁ or B₂.
+/-  The quotient P(ℕ)/Fin (mod finite sets) is NOT isomorphic to B₁ or B₂.
     Fin has no upper bound in ℕ, unlike the density-zero ideals. -/
 /- ## Part V: Summary -/
 

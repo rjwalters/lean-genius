@@ -42,7 +42,7 @@ namespace Erdos1040
 ## Definitions (copied from Erdos1040Problem.lean for self-containment)
 -/
 
-/-- A polynomial f(z) = ∏ (z - rᵢ) with all roots in F. -/
+/-- A polynomial f(z) = ∏ (z - rᵢ) with all roots ∈ F. -/
 structure PolynomialInF (F : Set ℂ) where
   /-- The degree (number of roots). -/
   degree : ℕ

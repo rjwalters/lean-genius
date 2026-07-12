@@ -14,7 +14,7 @@ axes generate a free group, established there as
 
 ```
 hausdorff_free_subgroup :
-  ∃ (φ ψ : ℝ³ ≃ₗᵢ[ℝ] ℝ³),
+  ∃ (φ ψ : ℝ³ ≃ₗᵢ(_ : ℝ) ℝ³),
     Function.Injective (FreeGroup.lift (fun b => if b then φ.toLinearEquiv else ψ.toLinearEquiv))
 ```
 

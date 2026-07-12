@@ -124,7 +124,7 @@ For t=3, r=2: this gives 3 - 2^{-2} = 3 - 1/4 = 11/4 = 2.75.
 noncomputable def hypergraphExponent (t r : ℕ) : ℝ :=
   (t : ℝ) - (r : ℝ)^(1 - (t : ℝ))
 
-/--
+/- 
 Upper bound (Erdős 1964):
   ex_t(n, K_t(r)) ≤ C · n^{t - r^{1-t}}
 
@@ -141,7 +141,7 @@ The O(·) hides a constant depending on t. This lower bound is established
 via probabilistic methods but the constant in the exponent is not tight.
 -/
 
-/--
+/- 
 Erdős's lower bound (1964):
   ex_t(n, K_t(r)) ≥ c · n^{t - C·r^{1-t}}
 
@@ -236,7 +236,7 @@ of Erdős and Hajnal, but these give exponents strictly less than
 t - r^{1-t}. The gap between upper and lower bounds grows with t.
 -/
 
-/--
+/- 
 **Stepping-up lemma (Erdős-Hajnal):**
 If ex_{t-1}(n, K_{t-1}(r)) ≥ n^α then ex_t(n, K_t(r)) ≥ n^{α+1-o(1)}.
 

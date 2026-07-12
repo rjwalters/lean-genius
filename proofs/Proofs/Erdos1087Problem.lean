@@ -227,7 +227,7 @@ structure RepeatedDistance where
   multiplicity : ℕ
   hpos : distance > 0
 
-/--
+/- 
 **Connection to Unit Distances:**
 Degenerate quadruples relate to repeated distances:
 If distance d appears m times, it contributes Θ(m²) to degenerate quadruples.
@@ -259,7 +259,7 @@ theorem trivial_upper_bound (n : ℕ) (hn : n ≥ 4) :
   simp only [f, maxDegenerateQuadruples, Nat.cast_zero]
   positivity
 
-/--
+/- 
 **Non-trivial Lower Bound Exists:**
 There exist configurations with many degenerate quadruples.
 The integer lattice grid gives Ω(n² log n) unit distances.
@@ -276,11 +276,11 @@ Erdős conjectured g(n) ∼ n/√(log n), proved by Guth-Katz (2015).
 noncomputable def distinctDistances (S : Finset Point) : ℕ :=
   ((S ×ˢ S).image (fun p => dist' p.1 p.2)).card
 
-/--
+/- 
 **Guth-Katz Theorem (2015):**
 Any n-point set has Ω(n/log n) distinct distances.
 -/
-/--
+/- 
 **Relation to Problem 1087:**
 Few distinct distances means many repeated distances,
 which leads to more degenerate quadruples.

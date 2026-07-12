@@ -95,7 +95,7 @@ The answer is YES - such a signing always exists.
 axiom beck_1981 :
     ∀ family : SeqFamily, ExistsBoundedSigning family
 
-/-- The key insight: the bound C can be chosen to depend only on d, not on the specific family -/
+/-  The key insight: the bound C can be chosen to depend only on d, not on the specific family -/
 /-
 ## Part 5: Beck's Improvement (2017)
 
@@ -111,11 +111,11 @@ axiom beck_2017 :
 
 /- ## Part 6: Related Results -/
 
-/-- **Spencer's Theorem (Related):**
+/-  **Spencer's Theorem (Related):**
     For finite set systems with n sets over n elements, the discrepancy is O(√n).
     Problem #178 extends these ideas to infinite collections of infinite sequences.
     The infinite case requires new methods beyond Spencer's approach. -/
-/-- **Erdős-Ginzburg-Ziv Connection:**
+/-  **Erdős-Ginzburg-Ziv Connection:**
     Among 2n-1 integers, some n have sum divisible by n.
     Problem #178 asks about balanced colorings rather than zero-sum subsequences,
     but both concern controlling sums in combinatorial structures. -/
@@ -130,7 +130,7 @@ theorem non_uniform_trivial (family : SeqFamily) (d : ℕ) :
   obtain ⟨C, f, hf⟩ := (beck_1981 family) d
   exact ⟨C, f, hf⟩
 
-/-- **Probabilistic Method Limitation:**
+/-  **Probabilistic Method Limitation:**
     Random signings give expected discrepancy O(√m) by the central limit theorem.
     But we need O_d(1) independent of m, showing random methods are insufficient. -/
 /- ## Part 8: Connections and Open Questions -/

@@ -133,7 +133,7 @@ theorem erdos_1169_open_in_zfc :
 -- PART 6: Monotonicity Properties
 -- ============================================================
 
-/-- The partition relation is monotone decreasing in the clique parameter:
+/-  The partition relation is monotone decreasing in the clique parameter:
     if α → (β, k)² and j ≤ k, then α → (β, j)². -/
 /-- Proved from the definition by restricting the Fin k embedding to Fin j. -/
 theorem partition_monotone_clique (α β : Ordinal) (k j : ℕ)

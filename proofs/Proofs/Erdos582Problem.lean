@@ -180,7 +180,7 @@ This is the current best known upper bound.
 -/
 axiom folkman_upper_bound : folkmanNumber_2_3_4 ≤ 941
 
-/--
+/- 
 **Spencer's Bound (1988):**
 f(2,3,4) ≤ 3 × 10⁹
 
@@ -197,11 +197,11 @@ theorem folkman_bounds : 19 ≤ folkmanNumber_2_3_4 ∧ folkmanNumber_2_3_4 ≤ 
 ## Part VI: Historical Bounds Timeline
 -/
 
-/--
+/- 
 **Frankl-Rödl Bound (1986):**
 f(2,3,4) ≤ 7 × 10¹¹
 -/
-/--
+/- 
 **Lu's Bound (2007):**
 f(2,3,4) ≤ 9697
 -/
@@ -227,7 +227,7 @@ theorem bounds_improvement :
 ## Part VII: Ramsey Theory Context
 -/
 
-/--
+/- 
 **Classical Ramsey Number R(3,3):**
 R(3,3) = 6, the minimum n such that any 2-coloring of K_n
 contains a monochromatic triangle.
@@ -252,7 +252,7 @@ Minimum vertices in K_n-free graph where every r-coloring has monochromatic K_k.
 -- Opaque constant: defensive; prevents any future bound axiom from reducing to 0 ≥ k.
 opaque folkmanNumber (r k n : ℕ) : ℕ
 
-/--
+/- 
 **f(2,3,3) = ∞:**
 There is no K₃-free graph where every 2-coloring has a monochromatic triangle.
 
@@ -268,12 +268,12 @@ requires additional machinery about graph substructures.
 ## Part IX: Computational Approaches
 -/
 
-/--
+/- 
 **Explicit Construction:**
 Lu (2007) gave an explicit construction of a Folkman graph on 9697 vertices
 using algebraic methods (Cayley graphs over finite fields).
 -/
-/--
+/- 
 **Computer Search:**
 The Dudek-Rödl bound uses probabilistic and computer-assisted methods
 to verify existence of a 941-vertex Folkman graph.

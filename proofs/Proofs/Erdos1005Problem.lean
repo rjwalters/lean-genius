@@ -70,9 +70,9 @@ axiom longestSimilarRun (n : ℕ) : ℕ
 -- § 3: Known Bounds
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Lower bound: f(n) ≥ n/12 for large n. -/
-/-- Upper bound: f(n) ≤ n/4 + O(1). -/
-/-- **Erdős Problem #1005** (OPEN): Is there a constant c > 0 such that
+/-  Lower bound: f(n) ≥ n/12 for large n. -/
+/-  Upper bound: f(n) ≤ n/4 + O(1). -/
+/-  **Erdős Problem #1005** (OPEN): Is there a constant c > 0 such that
     f(n) = (c + o(1))·n? That is, does the longest similar run grow linearly
     with a definite leading constant? -/
 /-- If a/b < c/d are consecutive Farey fractions (bc - ad = 1),

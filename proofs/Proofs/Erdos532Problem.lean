@@ -203,7 +203,7 @@ theorem finite_sums_add_disjoint {A : Set ℕ} {S T : Finset ℕ}
 ## Part VI: Ultrafilter Proof (Modern Approach)
 -/
 
-/--
+/- 
 **Ultrafilter Characterization:**
 The modern proof of Hindman's theorem uses the fact that (βℕ, +) has
 idempotent ultrafilters p (where p + p = p), and an IP set is precisely
@@ -214,7 +214,7 @@ compactification βℕ satisfying p + p = p under the extended addition.
 Its existence follows from Ellis's lemma applied to the compact
 right-topological semigroup (βℕ, +).
 -/
-/--
+/- 
 **Ultrafilter Proof Strategy:**
 1. (βℕ, +) is a compact right-topological semigroup
 2. By Ellis's lemma, it has an idempotent p = p + p
@@ -229,7 +229,7 @@ an idempotent ultrafilter witnesses the monochromatic IP set.
 ## Part VII: Hales-Jewett Connection
 -/
 
-/--
+/- 
 **Relation to Hales-Jewett:**
 Hindman's theorem can be derived from the Hales-Jewett theorem, showing
 the deep connections in Ramsey theory. Specifically, the Hales-Jewett theorem

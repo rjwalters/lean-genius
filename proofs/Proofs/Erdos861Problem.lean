@@ -113,7 +113,7 @@ noncomputable def countSidonSets (N : ℕ) : ℕ :=
 ## Part III: Known Asymptotic for f(N)
 -/
 
-/--
+/- 
 **Erdős-Turán theorem:**
 f(N) ~ √N as N → ∞.
 More precisely, f(N) = (1 + o(1))√N.
@@ -219,7 +219,7 @@ Empty set is Sidon.
 -/
 theorem empty_is_sidon : IsSidon ∅ := by
   intro a b c d ha
-  exact (Finset.not_mem_empty a ha).elim
+  exact (Finset.notMem_empty a ha).elim
 
 /--
 Singleton is Sidon.
@@ -229,7 +229,7 @@ theorem singleton_is_sidon (n : ℕ) : IsSidon {n} := by
   simp only [Finset.mem_singleton] at ha hb hc hd
   constructor <;> omega
 
-/--
+/- 
 Adding element preserves Sidon if no sum collision.
 -/
 /-

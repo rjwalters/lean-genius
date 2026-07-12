@@ -258,7 +258,7 @@ theorem maxGap_trivial_upper (n k : ℕ) (hn : n ≥ 1) :
     rwa [Finset.mem_sort] at hx
   exact Finset.mem_Icc.mp (setAFinset_subset_Icc n k hn hmem)
 
-/-- Note: a previous `maxGap_pigeonhole` axiom stating `maxGap * card ≥ n^k - n`
+/-  Note: a previous `maxGap_pigeonhole` axiom stating `maxGap * card ≥ n^k - n`
     was removed because the bound is incorrect — counterexample: n=2, k=2 gives
     setA = {3} (only 3 has a divisor in (2,4)), so card=1, maxGap=0, but n^k-n=2.
     A correct pigeonhole bound involves the actual span (last-first) of the sorted

@@ -205,7 +205,7 @@ private lemma multiplesCount_succ' (A : Finset ℕ) (N : ℕ) :
     simp only [Finset.mem_filter, Finset.mem_Icc, not_and]; omega
   rw [hset, Finset.filter_insert]
   split
-  · exact Finset.card_insert_of_not_mem hmem
+  · exact Finset.card_insert_of_notMem hmem
   · rfl
 
 /-- Periodicity of the counting function:

@@ -29,7 +29,7 @@ noncomputable def binaryDigit (t : ℝ) (k : ℕ) : ℤ :=
 /-- Random sign polynomial: P_n(t, x) = Σ_{k=1}^{n} sign_k(t) · x^k
     where sign_k(t) = (-1)^{ε_k(t)} is determined by binary digits of t. -/
 noncomputable def randSignPoly (t : ℝ) (n : ℕ) (x : ℝ) : ℝ :=
-  ∑ k in Finset.range n, (binaryDigit t (k + 1) : ℝ) * x ^ (k + 1)
+  ∑ k ∈ Finset.range n, (binaryDigit t (k + 1) : ℝ) * x ^ (k + 1)
 
 /-- M_n(t): the maximum modulus of the random sign polynomial on [-1,1]. -/
 noncomputable def polyMax (t : ℝ) (n : ℕ) : ℝ :=
@@ -37,12 +37,12 @@ noncomputable def polyMax (t : ℝ) (n : ℕ) : ℝ :=
 
 /- ## Known Lower Bound (Erdős) -/
 
-/-- Erdős (unpublished): For almost all t ∈ (0,1) and every ε > 0,
+/-  Erdős (unpublished): For almost all t ∈ (0,1) and every ε > 0,
     M_n(t)/n^{1/2-ε} → ∞ as n → ∞. This means M_n(t) grows at least
     almost as fast as √n. -/
 /- ## Known Upper Bound (Chung) -/
 
-/-- Chung: For almost all t ∈ (0,1), there exist infinitely many n such that
+/-  Chung: For almost all t ∈ (0,1), there exist infinitely many n such that
     M_n(t) ≤ C · √(n / log log n) for some absolute constant C. -/
 /- ## Main Open Problem -/
 

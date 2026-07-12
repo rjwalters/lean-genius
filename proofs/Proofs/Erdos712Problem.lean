@@ -73,7 +73,7 @@ noncomputable def turanNumber (n r k : ℕ) : ℕ :=
 
 /-- Alternative definition using supremum -/
 def turanNumberDef (n r k : ℕ) : Prop :=
-  ∀ m : ℕ, (∃ (V : Type*) [DecidableEq V] [Fintype V] (H : Hypergraph V r),
+  ∀ m : ℕ, (∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V) (H : Hypergraph V r),
     Fintype.card V = n ∧ isCliqueFree H k ∧ H.edgeCount = m) →
     m ≤ turanNumber n r k
 
@@ -97,7 +97,7 @@ noncomputable def turanGraphDensity (k : ℕ) : ℝ :=
 axiom turan_theorem (k : ℕ) (hk : k ≥ 2) :
   turanDensity 2 k = turanGraphDensity k
 
-/-- **Turán Graph Extremality:**
+/-  **Turán Graph Extremality:**
 The Turán graph T(n, k-1) — the balanced complete (k-1)-partite graph — achieves
 the maximum number of edges among K_k-free graphs on n vertices. -/
 
@@ -108,7 +108,7 @@ the maximum number of edges among K_k-free graphs on n vertices. -/
 /-- Turán's conjecture for K_4^3: the density is 5/9 -/
 def turanConjectureK43 : ℝ := 5 / 9
 
-/-- **Turán Hypergraph T(n,4,3):**
+/-  **Turán Hypergraph T(n,4,3):**
 The conjectured extremal 3-uniform hypergraph for K_4^3 is obtained by
 partitioning n vertices into 4 balanced parts and taking all 3-edges
 that meet at least 2 of the 4 parts. This gives ≈ (5/9)C(n,3) edges. -/
@@ -169,11 +169,11 @@ theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :
 ## Part VIII: Related Conjectures
 -/
 
-/-- **Extremal Structure Conjecture:**
+/-  **Extremal Structure Conjecture:**
 For any r ≥ 2, k > r, the extremal K_k^r-free hypergraph is a balanced
 k-partition construction (generalization of the Turán graph). -/
 
-/-- **Mubayi's conjecture for K_5^3:**
+/-  **Mubayi's conjecture for K_5^3:**
 π_3(K_5^3) = 3/4, achieved by taking 3-edges meeting at least 2 parts
 of a balanced 5-partition. -/
 
@@ -185,12 +185,12 @@ of a balanced 5-partition. -/
 ## Part X: Connections to Other Problems
 -/
 
-/-- **Connection to Ramsey Theory:**
+/-  **Connection to Ramsey Theory:**
 π_r(K_k^r) < 1 is equivalent to the Ramsey-type statement that sufficiently
 dense r-uniform hypergraphs must contain K_k^r. Since Ramsey numbers for
 hypergraphs exist, the Turán density is strictly less than 1. -/
 
-/-- **Connection to Coding Theory:**
+/-  **Connection to Coding Theory:**
 Turán-type hypergraphs correspond to optimal covering codes: an r-uniform
 hypergraph on n vertices avoiding K_k^r corresponds to a covering design
 with prescribed intersection properties. -/

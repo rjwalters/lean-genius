@@ -71,7 +71,7 @@ Axiomatized because it involves an infimum over all PBDs.
 -/
 axiom h (n : ℕ) : ℝ
 
-/-- h(n) correctly measures deficiency from √n -/
+/-  h(n) correctly measures deficiency from √n -/
 /-
 ## Part III: Known Upper Bounds on h(n)
 -/
@@ -95,7 +95,7 @@ def projectivePlanePoints (q : ℕ) : ℕ := q^2 + q + 1
 /-- A projective plane of order q has lines with q + 1 points -/
 def projectivePlaneLineSize (q : ℕ) : ℕ := q + 1
 
-/--
+/- 
 **Shrikhande-Singhi (1985):**
 Every PBD on n points with blocks ≥ √n - c can be embedded
 in a projective plane of order n + i for some i ≤ c + 2.
@@ -126,7 +126,7 @@ axiom h_correlates_with_prime_gap :
     ∀ n : ℕ, n ≥ 100 →
       h n ≤ C * (largestPrimeGap n : ℝ)
 
-/--
+/- 
 **Cramér's conjecture:**
 H(n) = O((log n)²). If true, this gives h(n) = O((log n)²).
 -/
@@ -134,12 +134,12 @@ H(n) = O((log n)²). If true, this gives h(n) = O((log n)²).
 ## Part VI: Special Cases
 -/
 
-/--
+/- 
 **Perfect square prime case:**
 For n = q² with q prime, the affine plane AG(2,q) gives
 a PBD with all blocks of size exactly q = √n.
 -/
-/-- For n slightly above q², blocks of size ≥ q - 1 are achievable. -/
+/-  For n slightly above q², blocks of size ≥ q - 1 are achievable. -/
 /-
 ## Part VII: Summary
 -/

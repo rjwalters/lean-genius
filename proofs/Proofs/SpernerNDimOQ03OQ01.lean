@@ -32,7 +32,7 @@ open Set
     has a fixed point.
 
     Proof: Let g(x) = f(x) - x. Then g(0) = f(0) ≥ 0 and g(1) = f(1) - 1 ≤ 0.
-    By the IVT applied to f and id, ∃ c ∈ [0,1] with f(c) = c. -/
+    By the IVT applied to f and id, ∃ c ∈ (_ : 0,1) with f(c) = c. -/
 theorem brouwer_1d (f : ℝ → ℝ) (hf : Continuous f)
     (hf_maps : ∀ x ∈ Icc (0:ℝ) 1, f x ∈ Icc 0 1) :
     ∃ c ∈ Icc (0:ℝ) 1, f c = c := by

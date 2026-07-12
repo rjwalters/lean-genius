@@ -26,7 +26,7 @@ open Cardinal
 /-- κ = (2^ℵ₀)⁺: the successor of the continuum cardinal. -/
 noncomputable def kappa : Cardinal := Order.succ (2 ^ ℵ₀)
 
-/-- κ is uncountable: κ > ℵ₀. -/
+/-  κ is uncountable: κ > ℵ₀. -/
 /-
 ## Section II: Countable Subsets
 -/
@@ -73,7 +73,7 @@ def ErdosProblem598Minimal : Prop :=
   ∃ c : CountableSubset (Set.Iio kappa) → Set.Iio kappa,
     ChromaticCompleteness (Set.Iio kappa) c
 
-/-- Under CH (continuum hypothesis), κ = ℵ₂. The problem becomes
+/-  Under CH (continuum hypothesis), κ = ℵ₂. The problem becomes
 whether ℵ₂-many colors suffice for countable subsets with the
 completeness property. -/
 /-

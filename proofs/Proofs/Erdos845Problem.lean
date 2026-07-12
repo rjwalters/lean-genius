@@ -88,7 +88,7 @@ van Doorn and Everts (2025) proved that every positive integer has
 a 6-bounded representation, completely disproving Erdős's conjecture.
 -/
 
-/--
+/- 
 van Doorn and Everts (2025): Every positive integer can be written as
 a sum of distinct 3-smooth numbers b₁ < ... < bₜ with bₜ < 6b₁.
 
@@ -97,7 +97,7 @@ This disproves Erdős's conjecture: the set has density 1, not 0.
 Reference: W. van Doorn and A. Everts, "Smooth sums with small spacings",
 arXiv:2511.04585 (2025).
 -/
-/--
+/- 
 Corollary: Erdős's conjecture is false.
 Since all positive integers have 6-bounded representations, the set
 has density 1, not 0 as conjectured.
@@ -109,7 +109,7 @@ What is the smallest C such that all large integers have C-bounded
 representations? Call this optimal constant C*.
 -/
 
-/--
+/- 
 Erdős and Lewin (1996): The optimal constant C* satisfies C* > 2.
 There exist arbitrarily large integers that cannot be written as
 2-bounded sums of distinct 3-smooth numbers.
@@ -117,7 +117,7 @@ There exist arbitrarily large integers that cannot be written as
 Reference: Erdős, P. and Lewin, M., "d-complete sequences of integers",
 Math. Comp. (1996), 837-840.
 -/
-/--
+/- 
 van Doorn and Everts (2025): The optimal constant C* satisfies C* ≥ 3.
 There exist arbitrarily large integers that cannot be written as
 sums with ratio less than 3.
@@ -141,7 +141,7 @@ def nonDivisible (B : Finset (ℕ × ℕ)) : Prop :=
   ∀ p q : ℕ × ℕ, p ∈ B → q ∈ B → p ≠ q →
     ¬(smoothNum p.1 p.2 ∣ smoothNum q.1 q.2)
 
-/--
+/- 
 Every positive integer can be written as a sum of distinct 3-smooth
 numbers where no summand divides any other (Jansen et al.).
 

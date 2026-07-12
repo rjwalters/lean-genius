@@ -63,7 +63,7 @@ theorem f_monotone : Monotone f := by
 
 /-- Tutte and Zykov: ω = 2 graphs can have arbitrarily large χ -/
 axiom tutte_zykov_construction :
-  ∀ k : ℕ, ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∀ k : ℕ, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     cliqueNumber G = 2 ∧ chromaticNumber G ≥ k
 
 /-- This means f(n) → ∞ -/
@@ -72,7 +72,7 @@ theorem f_unbounded : ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, f n ≥ M := by
 
 /-- Triangle-free graphs with large chromatic number -/
 theorem triangle_free_large_chi :
-    ∀ k : ℕ, ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∀ k : ℕ, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       (∀ v w x : V, ¬(G.Adj v w ∧ G.Adj w x ∧ G.Adj v x)) ∧
       chromaticNumber G ≥ k := by
   intro k
@@ -224,7 +224,7 @@ theorem erdos_627_status :
       ∀ n : ℕ, n ≥ 2 →
         c₁ * n / (Real.log n)^2 ≤ f n ∧
         f n ≤ c₂ * n / (Real.log n)^2) ∧
-    (∀ k : ℕ, ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    (∀ k : ℕ, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       cliqueNumber G = 2 ∧ chromaticNumber G ≥ k) := by
   exact ⟨erdos_asymptotic, tutte_zykov_construction⟩
 

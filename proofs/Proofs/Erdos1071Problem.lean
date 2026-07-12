@@ -213,10 +213,10 @@ theorem maximal_packing_nonempty (S : Set UnitSegment) (hmax : IsMaximalPacking 
   by_contra h
   rw [Set.not_nonempty_iff_eq_empty] at h
   have hblock := hmax.2 horizontalMidSegment horizontalMidSegment_in_square
-    (by rw [h]; exact Set.not_mem_empty _)
+    (by rw [h]; exact Set.notMem_empty _)
   obtain ⟨t, ht, _⟩ := hblock
   rw [h] at ht
-  exact Set.not_mem_empty _ ht
+  exact Set.notMem_empty _ ht
 
 /-
 # Part 5: Existence of Maximal Packings via Zorn's Lemma

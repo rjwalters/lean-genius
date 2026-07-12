@@ -41,11 +41,11 @@ namespace Erdos320
 
 /-- The harmonic sum H_n = 1 + 1/2 + ... + 1/n. -/
 noncomputable def harmonicSum (n : ℕ) : ℚ :=
-  ∑ i in Finset.range n, (1 : ℚ) / (i + 1)
+  ∑ i ∈ Finset.range n, (1 : ℚ) / (i + 1)
 
 /-- A subset sum of unit fractions: ∑_{n∈A} 1/n for A ⊆ {1,...,N}. -/
 noncomputable def subsetSum (A : Finset ℕ) : ℚ :=
-  ∑ n in A.filter (· > 0), (1 : ℚ) / n
+  ∑ n ∈ A.filter (· > 0), (1 : ℚ) / n
 
 /-- The set of all possible subset sums from {1,...,N}. -/
 noncomputable def allSubsetSums (N : ℕ) : Finset ℚ :=
@@ -79,12 +79,12 @@ noncomputable def log₃ (x : ℝ) : ℝ := Real.log (Real.log (Real.log x))
 
 /-- Product of iterated logs: ∏_{i=3}^k log_i N. -/
 noncomputable def iterLogProduct (N : ℝ) (k : ℕ) : ℝ :=
-  ∏ i in Finset.Icc 3 k, iterLog i N
+  ∏ i ∈ Finset.Icc 3 k, iterLog i N
 
 /- ## Part III: Bleicher-Erdős Lower Bound (1975)
 -/
 
-/-- **Bleicher-Erdős Lower Bound (1975):**
+/-  **Bleicher-Erdős Lower Bound (1975):**
     log S(N) ≥ (N/log N)(log 2 · ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ k. -/
 /-- The lower bound shows S(N) grows very fast. -/
@@ -100,7 +100,7 @@ theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
 /- ## Part IV: Bleicher-Erdős Upper Bound (1976)
 -/
 
-/-- **Bleicher-Erdős Upper Bound (1976):**
+/-  **Bleicher-Erdős Upper Bound (1976):**
     log S(N) ≤ (N/log N)(log_r N · ∏_{i=3}^r log_i N)
     valid for r ≥ 1 and log_{2r} N ≥ 1. -/
 /-- The gap between upper and lower bounds. -/
@@ -110,7 +110,7 @@ noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
 /- ## Part V: BGMS Improved Lower Bound (2025)
 -/
 
-/-- **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
+/-  **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
     log S(N) ≥ (N/log N)(2 log 2 (1 - 3/(2 log_k N)) ∏_{i=3}^k log_i N)
     valid for k ≥ 4 and log_k N ≥ 3/2. -/
 /-- The BGMS bound improves upon Bleicher-Erdős. -/
@@ -152,7 +152,7 @@ noncomputable def egyptianCount (q : ℚ) (N : ℕ) : ℕ :=
   ((Finset.range N).powerset.filter
     (fun A => IsEgyptianFraction q (A.image (· + 1)))).card
 
-/-- **Problem #321 Connection:**
+/-  **Problem #321 Connection:**
     Related to counting Egyptian fraction representations. -/
 /- ## Part VIII: Specific Values and Bounds
 -/
@@ -166,8 +166,8 @@ theorem S_two : S 2 = 4 := oeis_A072207.2.1
 /-- S(3) = 8: all subsets give distinct sums. -/
 theorem S_three : S 3 = 8 := oeis_A072207.2.2.1
 
-/-- For small N, S(N) = 2^N (all sums distinct). -/
-/-- For large N, collisions occur: S(N) < 2^N. -/
+/-  For small N, S(N) = 2^N (all sums distinct). -/
+/-  For large N, collisions occur: S(N) < 2^N. -/
 /- ## Part IX: OEIS Sequence A072207
 -/
 

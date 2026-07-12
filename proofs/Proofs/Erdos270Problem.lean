@@ -165,7 +165,7 @@ C(2n, n) = (2n)! / (n!)²
 -/
 def centralBinomial (n : ℕ) : ℕ := Nat.choose (2 * n) n
 
-/-- **Connection to Rising Product:**
+/-  **Connection to Rising Product:**
 1/C(2n,n) = n! / ((n+1)(n+2)⋯(2n)) = 1/((n+1)⋯(n+n)).
 Technical: involves factorial identities. -/
 /--
@@ -174,7 +174,7 @@ The sum Σ 1/C(2n,n) equals this transcendental number.
 -/
 noncomputable def hansenConstant : ℝ := 1/3 + 2 * Real.pi / (3 : ℝ)^(5/2 : ℝ)
 
-/--
+/- 
 **Hansen's Theorem (1975):**
 Σ_{n≥1} 1/C(2n,n) = 1/3 + 2π/3^(5/2)
 
@@ -202,7 +202,7 @@ def NondecreasingConjecture : Prop :=
   ∀ f : ℕ → ℕ, TendsToInfinity f → IsNondecreasing f →
     Irrational (productReciprocalSeries f)
 
-/--
+/- 
 **Measure Zero Result:**
 The set of possible values for nondecreasing f has Lebesgue measure zero.
 
@@ -213,15 +213,15 @@ but it's not a proof!
 ## Part VII: Examples and Bounds
 -/
 
-/--
+/- 
 **Convergence:**
 For any f with f(n) → ∞, the series converges.
 
 Proof idea: Eventually f(n) ≥ 2, so terms are ≤ 1/((n+1)(n+2)) ∼ 1/n².
 -/
-/-- **Upper Bound:**
+/-  **Upper Bound:**
 The series is bounded above by Σ 1/n! (comparison with exponential series). -/
-/-- **Lower Bound:** The series is positive (all terms are positive). -/
+/-  **Lower Bound:** The series is positive (all terms are positive). -/
 /-
 ## Part VIII: Summary
 -/

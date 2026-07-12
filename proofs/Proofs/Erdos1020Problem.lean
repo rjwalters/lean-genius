@@ -74,7 +74,7 @@ Maximum edges in r-uniform hypergraph on n vertices with no k-matching.
 
 /-- f(n; r, k): maximum edges avoiding k independent edges -/
 noncomputable def f (n r k : ℕ) : ℕ :=
-  sSup {m : ℕ | ∃ (V : Type*) [DecidableEq V] [Fintype V],
+  sSup {m : ℕ | ∃ (V : Type*) (_ : DecidableEq V) (_ : Fintype V),
     Fintype.card V = n ∧
     ∃ H : Hypergraph V r, H.edges.card = m ∧ HasNoKMatching H k}
 
@@ -140,13 +140,13 @@ axiom luczak_mieczkowska :
 Known cases where the conjecture is verified.
 -/
 
-/-- Kleitman's result: conjecture holds when n = rk -/
+/-  Kleitman's result: conjecture holds when n = rk -/
 /-- Huang-Loh-Sudakov: conjecture holds for n ≥ 3kr² -/
 axiom huang_loh_sudakov :
   ∀ r k : ℕ, r ≥ 3 → k ≥ 1 →
     ∀ n ≥ 3 * k * r^2, f n r k = conjecturedValue n r k
 
-/-- Frankl's small n result -/
+/-  Frankl's small n result -/
 /-
 ## Upper Bounds
 
@@ -239,8 +239,8 @@ theorem combined_lower_bound (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n
 ## Monotonicity
 -/
 
-/-- f is increasing in n -/
-/-- f is increasing in k -/
+/-  f is increasing in n -/
+/-  f is increasing in k -/
 /-
 ## Asymptotic Behavior
 
@@ -303,7 +303,7 @@ theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1
           exact Nat.choose_anti (n - 1) (by omega) (by omega)
       _ > c1 := by omega
 
-/-- Asymptotic: f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞ -/
+/-  Asymptotic: f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞ -/
 /-
 ## The Open Problem
 

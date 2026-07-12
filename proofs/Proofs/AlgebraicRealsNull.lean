@@ -6,6 +6,7 @@ import Mathlib.Topology.MetricSpace.HausdorffDimension
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
+import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
 /-!
 # The Algebraic Reals are Lebesgue-Null (Measure Zero)

@@ -118,8 +118,8 @@ This is the central object of study in Erdős Problem #781.
 noncomputable def f (k : ℕ) : ℕ :=
   Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified; actual min is complex
 
-/-- f is well-defined for k ≥ 1. -/
-/-- f(k) is minimal. -/
+/-  f is well-defined for k ≥ 1. -/
+/-  f(k) is minimal. -/
 /- ## The Original Conjecture (FALSE) -/
 
 /--
@@ -141,7 +141,7 @@ The lower bound from the original conjecture IS correct.
 axiom BEF_lower_bound (k : ℕ) (hk : k ≥ 1) :
     f k ≥ k^2 - k + 1
 
-/--
+/- 
 **Brown-Erdős-Freedman (1990) Upper Bound:**
 f(k) ≤ (k³ - 4k + 9)/3
 
@@ -189,7 +189,7 @@ theorem conjecture_formula (k : ℕ) : k^2 - k + 1 = k * (k - 1) + 1 := by
 
 /- ## Why The Conjecture Fails -/
 
-/--
+/- 
 **Key Insight: Alon-Spencer Construction**
 
 The conjecture f(k) = k² - k + 1 would imply quadratic growth.
@@ -213,7 +213,7 @@ def IsAscendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
 noncomputable def g (k : ℕ) : ℕ :=
   Nat.find (⟨k^3, trivial⟩ : ∃ n : ℕ, True)  -- Simplified
 
-/-- Ascending and descending waves have similar growth.
+/-  Ascending and descending waves have similar growth.
     In fact, the paper is titled "Ascending waves" because the
     analysis works similarly for both cases. -/
 /- ## Quasi-Progressions -/
@@ -225,7 +225,7 @@ def IsQuasiProgression {k : ℕ} (seq : Fin k → ℕ) (d error : ℕ) : Prop :=
     let gap := seq ⟨i.val + 1, by omega⟩ - seq i
     d - error ≤ gap ∧ gap ≤ d + error
 
-/-- Descending waves are quasi-progressions where gaps decrease. -/
+/-  Descending waves are quasi-progressions where gaps decrease. -/
 /- ## Summary -/
 
 /--

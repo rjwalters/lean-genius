@@ -73,7 +73,7 @@ def SatisfiesCondition (χ : Coloring) : Prop :=
 Van der Waerden's theorem guarantees monochromatic APs exist in any finite coloring.
 -/
 
-/-- Van der Waerden's theorem: any r-coloring of a sufficiently long initial
+/-  Van der Waerden's theorem: any r-coloring of a sufficiently long initial
     segment of ℕ contains a monochromatic k-term AP -/
 /-
 ## Part 4: Spencer's 3-Coloring Result
@@ -127,7 +127,7 @@ axiom hunter_theorem :
 How many colors are needed for various bounds?
 -/
 
-/-- For f(a) = a^ε (any ε > 0), 2 colors suffice -/
+/-  For f(a) = a^ε (any ε > 0), 2 colors suffice -/
 /-- 1 color is never sufficient (van der Waerden) -/
 theorem one_color_insufficient :
     ¬∃ χ : ℕ → Fin 1, ∀ k : ℕ, 3 ≤ k →
@@ -151,7 +151,7 @@ theorem one_color_insufficient :
 Known bounds on the constants.
 -/
 
-/-- The optimal exponent in Erdős's construction -/
+/-  The optimal exponent in Erdős's construction -/
 /-
 ## Part 9: Summary
 -/

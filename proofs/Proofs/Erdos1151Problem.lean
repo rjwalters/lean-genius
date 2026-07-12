@@ -86,7 +86,7 @@ theorem chebyshevNodes_injective (n : ℕ) (hn : 0 < n) :
     Reused from Erdős #1153 formalization. -/
 noncomputable def lagrangeBasis (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n)
     (x : ℝ) : ℝ :=
-  ∏ i in Finset.univ.erase k, (x - nodes i) / (nodes k - nodes i)
+  ∏ i ∈ Finset.univ.erase k, (x - nodes i) / (nodes k - nodes i)
 
 /-- The Lagrange interpolation operator 𝓛ⁿ: maps continuous functions to
     their interpolation polynomial at the given nodes.

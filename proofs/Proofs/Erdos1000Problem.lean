@@ -722,7 +722,7 @@ theorem usedSum_zero (A : IncreasingSeq) : usedSum A 0 = 0 := by
   unfold usedSum
   suffices h : ((A.seq 0).divisors.filter (fun e => ∃ j, j < 0 ∧ e = A.seq j)) = ∅ by
     simp [h]
-  rw [Finset.eq_empty_iff_forall_not_mem]
+  rw [Finset.eq_empty_iff_forall_notMem]
   intro e
   simp only [Finset.mem_filter, Nat.mem_divisors, not_and]
   intro _

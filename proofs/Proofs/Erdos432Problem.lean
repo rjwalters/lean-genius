@@ -143,7 +143,7 @@ theorem coprime_set_bound :
     _ ≤ (Finset.range n).card := Finset.card_image_le
     _ = n := Finset.card_range n
 
-/--
+/- 
 Ostmann's related problem (#431): if A + B = ℕ (an additive
 complement pair), can A + B be pairwise coprime? Clearly not
 for A + B = ℕ, but the question is about near-complements.

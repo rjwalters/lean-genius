@@ -85,12 +85,12 @@ The 2-fold case was solved first. Erdős and Fuchs (1956) proved that
 no set A can have ∑ 1_A * 1_A = cN + o(N^{1/4} / (log N)^{1/2}).
 -/
 
-/--
+/- 
 **Erdős-Fuchs (1956):**
 No set has ∑ 1_A * 1_A = cN + o(N^{1/4} / (log N)^{1/2}).
 The foundational result for representation function error terms.
 -/
-/--
+/- 
 **Corollary of Erdős-Fuchs:**
 No set has ∑ 1_A * 1_A = cN + O(1).
 Since O(1) ⊂ o(N^{1/4} / (log N)^{1/2}), bounded error is also impossible.
@@ -135,7 +135,7 @@ def ErrorOscillates (f : ℕ → ℕ) (c : ℝ) : Prop :=
   (∀ N₀ : ℕ, ∃ N ≥ N₀, ((f N) : ℝ) - c * N > (N : ℝ)^(1/4 : ℝ)) ∧
   (∀ N₀ : ℕ, ∃ N ≥ N₀, ((f N) : ℝ) - c * N < -(N : ℝ)^(1/4 : ℝ))
 
-/--
+/- 
 **Error Oscillation:**
 For any infinite set A, the error must oscillate by at least N^{1/4}
 infinitely often — it cannot even stay on one side.
@@ -155,11 +155,11 @@ theorem squares_not_linear (c : ℝ) (hc : c > 0) :
 Montgomery and Vaughan (1990) refined the Erdős-Fuchs result.
 -/
 
-/--
+/- 
 **Montgomery-Vaughan (1990):**
 Refined Erdős-Fuchs to show o(N^{1/4}) is impossible (without the log factor).
 -/
-/--
+/- 
 **Tightness of the 1/4 exponent:**
 There exist sets where the error is O(N^{α}) for any α > 1/4.
 The 1/4 exponent is essentially best possible.

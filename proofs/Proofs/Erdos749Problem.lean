@@ -111,7 +111,7 @@ theorem repFunction_eq_zero_of_not_mem (A : Set ℕ) (n : ℕ) (h : n ∉ sumSet
     repFunction A n = 0 := by
   rw [Finset.card_eq_zero]
   ext a
-  simp only [Finset.mem_filter, Finset.mem_range, Finset.not_mem_empty, iff_false]
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]
   rintro ⟨_, ha, hna, _⟩
   exact h ⟨a, n - a, ha, hna, by omega⟩
 

@@ -88,11 +88,11 @@ def StrongerQuestion : Prop :=
 
 /- ## Part III: Vinogradov's Theorem -/
 
-/--
+/- 
 **Vinogradov's Three Primes Theorem (1937):**
 Every sufficiently large odd integer is the sum of three primes.
 -/
-/--
+/- 
 **Vinogradov for distinct primes:**
 The three primes can be chosen to be pairwise distinct.
 -/
@@ -139,7 +139,7 @@ This follows by strong induction using `vinogradov_smaller_primes`.
 axiom all_primes_in_QLim :
   ∀ p : ℕ, Nat.Prime p → p ∈ QLim vinogradovQ₀
 
-/--
+/- 
 **Answer to Ulam's question: YES**
 The sequence Qᵢ grows without bound.
 Axiomatized because the proof requires showing infinitely many primes
@@ -200,7 +200,7 @@ theorem Q1_contains_23 : 23 ∈ QSeq ulamQ₀ 1 := by
     · exact Nat.prime_def_lt''.mpr ⟨by norm_num, fun m hm h => by interval_cases m <;> simp_all⟩
     · norm_num
 
-/--
+/- 
 **Does Q∞ contain all primes starting from {3,5,7,11}?**
 This is a computational question; conjectured to be true.
 -/
@@ -234,12 +234,12 @@ theorem QSeq_primes (Q₀ : Set ℕ) (hQ₀ : ∀ p ∈ Q₀, Nat.Prime p) (i : 
 
 /- ## Part VII: Why Vinogradov Works -/
 
-/--
+/- 
 **The key induction step:**
 If Q contains all primes ≤ n, and n ≥ N (Vinogradov's constant),
 then Q can be extended to contain all primes ≤ n + 1.
 -/
-/--
+/- 
 **Eventually all primes are included:**
 By strong induction, starting from large enough Q₀.
 -/

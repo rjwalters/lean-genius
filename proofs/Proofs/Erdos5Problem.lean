@@ -59,7 +59,7 @@ def IsLimitPointOfGaps (C : ℝ) : Prop :=
 
 /- ## Known Results -/
 
-/-- 0 ∈ S: Goldston–Pintz–Yıldırım (2009) proved
+/-  0 ∈ S: Goldston–Pintz–Yıldırım (2009) proved
     lim inf (p_{n+1} - p_n) / log(p_n) = 0. -/
 /-- ∞ ∈ S: Westzynthius (1931) proved the gaps can be arbitrarily large
     relative to log(p_n). Formally: for every M, there exist infinitely many n
@@ -74,7 +74,7 @@ theorem hildebrand_maier_large_gaps (C : ℝ) (hC : 0 < C) :
     ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ normalizedGap n > C :=
   gaps_unbounded C
 
-/-- Merikoski (2020): at least 1/3 of any bounded interval [0, T]
+/-  Merikoski (2020): at least 1/3 of any bounded interval [0, T]
     is covered by S. Formally: the Lebesgue measure of
     S ∩ [0, T] is at least T/3 for all T > 0. -/
 /- ## The Conjecture -/

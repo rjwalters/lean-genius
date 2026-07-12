@@ -365,7 +365,7 @@ theorem fibLikeSeq_pos : ∀ n, fibLikeSeq n > 0 := by
       simp only [fibLikeSeq]
       omega
 
-/-- Key insight: Why does λ < 2 work but λ = 2 fail?
+/-  Key insight: Why does λ < 2 work but λ = 2 fail?
 
     For λ = 2 (powers of 2), the reciprocal sums are dyadic rationals k/2^n.
     These form a discrete set with gaps, so they can't fill an interval.

@@ -237,7 +237,7 @@ def RamseyStyleProperty : Prop :=
     ∃ X : Finset ℕ, X ⊆ IntegerSet n ∧ HasMonochromaticSubset c X ∧
       logInverseSum X ≥ (1 - ε) * tripleLog n
 
-/--
+/- 
 **Classical Ramsey gives monochromatic cliques of size ≈ 2 log n.**
 The 1/log x weighting converts this to weighted sum considerations.
 -/
@@ -325,7 +325,7 @@ theorem monochromatic_pair_exists (n : ℕ) (hn : n ≥ 3) (c : SimpleEdgeColori
     omega
   · omega
 
-/--
+/- 
 **Growth of ∑ 1/log x for {2, ..., k}**
 The sum ∑_{x=2}^{k} 1/log x grows like k/log k.
 -/
@@ -351,7 +351,7 @@ The 1/log x weight is special because it gives the log log log n threshold.
 noncomputable def weightedSum (X : Finset ℕ) (w : ℕ → ℝ) : ℝ :=
   X.sum w
 
-/--
+/- 
 **With weight 1/x instead of 1/log x, the threshold would be different.**
 -/
 /-

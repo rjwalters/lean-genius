@@ -183,7 +183,7 @@ theorem erdos_989_solved :
 
 /- ## Part VI: Connection to Discrepancy Theory -/
 
-/-- **General Discrepancy Theory Context**
+/-  **General Discrepancy Theory Context**
 
 The circle discrepancy problem is part of a broader theory studying how
 uniformly a sequence can be distributed with respect to test sets.
@@ -208,7 +208,7 @@ noncomputable def generalCircleDiscrepancy (A : PointSequence) (n : ℕ) : ℝ :
 
 /- ## Part VII: Proof Techniques -/
 
-/-- **Beck's Lower Bound Technique (Fourier Analysis)**
+/-  **Beck's Lower Bound Technique (Fourier Analysis)**
 
 The lower bound f(r) ≫ √r uses Fourier analysis on ℝ².
 Key steps:
@@ -219,7 +219,7 @@ Key steps:
 
 The Bessel function J₁ satisfies |J₁(x)| ~ 1/√x for large x, which
 is the source of the √r behavior. -/
-/-- **Beck's Upper Bound Technique (Probabilistic Construction)**
+/-  **Beck's Upper Bound Technique (Probabilistic Construction)**
 
 The upper bound uses a randomized construction:
 1. Start with the integer lattice ℤ²
@@ -274,7 +274,7 @@ def openQuestion_higher_dimensions (d : ℕ) (hd : d ≥ 2) : Prop :=
 
 /- ## Part IX: Related Results -/
 
-/-- **Schmidt's Theorem (Related)**
+/-  **Schmidt's Theorem (Related)**
 
 For the classical discrepancy problem with axis-aligned boxes in [0,1]^d:
   D(N) ≥ c · (log N)^{d/2}
@@ -284,7 +284,7 @@ Circles behave differently due to their curved boundaries. -/
 /- Schmidt's theorem: For axis-aligned boxes in [0,1]^d, the discrepancy
    D(N) ≥ c · (log N)^{d/2}. The full statement involves sup over all
    axis-aligned boxes of |count - N·volume|. We state a simplified version. -/
-/-- **Alexander's Theorem (Half-Planes)**
+/-  **Alexander's Theorem (Half-Planes)**
 
 For half-plane discrepancy in ℝ²:
   f(r) ≫ r^{1/4}

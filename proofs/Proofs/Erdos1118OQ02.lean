@@ -50,13 +50,13 @@ theorem constant_superlevel (n : ℕ) (w : ℂ) (c : ℝ) :
 -- Part II: The 1D vs nD Comparison
 -- ============================================================
 
-/-- In 1D (n=1): The superlevel set E(c) ⊂ ℂ ≅ ℝ² has
+/-  In 1D (n=1): The superlevel set E(c) ⊂ ℂ ≅ ℝ² has
     finite 2-dimensional Lebesgue measure iff the growth of f
     is sufficiently fast.
 
     Camera-Gol'dberg criterion: |E(c)| < ∞ iff
     ∫₀^∞ r/(log log M(r)) dr < ∞ where M(r) = max_{|z|=r} |f(z)|. -/
-/-- In nD (n ≥ 2): The superlevel set E(c) ⊂ ℂⁿ ≅ ℝ^(2n)
+/-  In nD (n ≥ 2): The superlevel set E(c) ⊂ ℂⁿ ≅ ℝ^(2n)
     has a richer structure.
 
     Key differences from 1D:
@@ -66,7 +66,7 @@ theorem constant_superlevel (n : ℕ) (w : ℂ) (c : ℝ) :
        pseudoconvex domain (Oka's theorem)
     3. Hartogs extension: if E(c) has "small" complement,
        f extends holomorphically (no 1D analogue) -/
-/-- In several complex variables, log|f| is plurisubharmonic:
+/-  In several complex variables, log|f| is plurisubharmonic:
     Δᵢlog|f| ≥ 0 for each complex variable zᵢ.
 
     The superlevel sets of plurisubharmonic functions are

@@ -91,12 +91,12 @@ def strausSet (N : ℕ) : Finset ℕ :=
   let size := if N < boundary then 2 * m - 1 else 2 * m
   Finset.filter (fun x => x > N - size ∧ x ≤ N) (Finset.range (N + 1))
 
-/--
+/- 
 **Straus's Lower Bound:**
 The construction shows liminf k(N)/√N ≥ 2.
 -/
 
-/--
+/- 
 **Straus's Upper Bound:**
 limsup k(N)/√N ≤ 4/√3 ≈ 2.309.
 -/
@@ -116,12 +116,12 @@ theorem straus_constant_value : strausConstant = 4 / Real.sqrt 3 := rfl
 -/
 noncomputable def ensConstant : ℝ := Real.sqrt (143 / 27)
 
-/--
+/- 
 **ENS Upper Bound (1991):**
 limsup k(N)/√N ≤ √(143/27).
 -/
 
-/--
+/- 
 **ENS improves Straus:**
 √(143/27) < 4/√3, so the ENS bound is strictly better.
 Axiomatized since this requires numerical computation beyond native_decide.
@@ -145,7 +145,7 @@ axiom deshouillers_freiman_main :
 axiom k_limit_is_two :
     Filter.Tendsto (fun N => (k N : ℝ) / Real.sqrt N) Filter.atTop (nhds 2)
 
-/--
+/- 
 **Optimal sets are often intervals:**
 Deshouillers-Freiman showed that for some N, the optimal A has
 the form (N-k, N] ∩ ℕ.
@@ -169,13 +169,13 @@ def example_N9 : Finset ℕ := {4, 5, 6, 7, 8, 9}
 
 /- ## Part VII: Sum Set Properties -/
 
-/--
+/- 
 **Sum set cardinality bound:**
 |S_r| is at most C(|A|, r), and equals C(|A|, r) when all sums are distinct.
 This follows since each r-element subset gives at most one sum.
 -/
 
-/--
+/- 
 **Total sum constraint:**
 If A ⊆ {1,...,N} and sums are disjoint, the total number of distinct sums
 is bounded by the sum range. For r-element sums from A ⊆ {1,...,N},
@@ -184,7 +184,7 @@ sums lie in [r, r·N], giving at most r·(N-1)+1 values per level.
 
 /- ## Part VIII: Summary -/
 
-/--
+/- 
 **Summary of Erdős Problem #874:**
 
 **Question:** Is k(N) ~ 2√N?

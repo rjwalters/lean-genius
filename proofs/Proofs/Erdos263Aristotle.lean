@@ -121,7 +121,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
     _ < 1 / (D - 1) := by
           rw [div_lt_div_iff₀ hD2_pos hD1_pos]; nlinarith
 
--- Sum splitting: ∑' n, f n = (∑ n in range N, f n) + f N + ∑' n, f (n + N + 1).
+-- Sum splitting: ∑' n, f n = (∑ n ∈ range N, f n) + f N + ∑' n, f (n + N + 1).
 -- This is a standard Mathlib result (tsum_eq_zero_add, sum_add_tsum_compl, etc.).
 theorem tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     ∑' n, f n = (∑ n ∈ Finset.range N, f n) + f N + ∑' n, f (n + N + 1) := by

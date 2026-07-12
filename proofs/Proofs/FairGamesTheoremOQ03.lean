@@ -290,7 +290,7 @@ theorem doobs_maximal_inequality
     _ = ∫ ω in S, f N ω ∂μ :=
         ENNReal.toReal_ofReal (integral_nonneg fun ω => hpos N ω)
     _ ≤ ∫ ω, f N ω ∂μ :=
-        setIntegral_le_integral (hf.integrable N) (eventually_of_forall (hpos N))
+        setIntegral_le_integral (hf.integrable N) (Filter.Eventually.of_forall (hpos N))
 
 end FairGamesOQ03
 

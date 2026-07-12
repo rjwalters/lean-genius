@@ -188,7 +188,7 @@ axiom forward_direction (g : ℕ) :
     isBipartite g → isDegenerate g 2 →
     (fun n => (extremalNumber n g : ℝ)) ≪ (fun n => (n : ℝ).rpow (3/2))
 
-/--
+/- 
 **Backward Direction (DISPROVED):**
 There exist bipartite graphs with ex(n;G) ≪ n^{3/2} that are NOT 2-degenerate.
 Proved from Janzer's counterexample below (see `janzer_beats_threshold`).

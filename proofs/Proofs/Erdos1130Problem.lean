@@ -62,7 +62,7 @@ noncomputable def upsilon (P : InterpolationNodes n) : ℝ :=
 
 /- ## Erdős's Initial Bound -/
 
-/-- Erdős's bound: Υ < √n for all node configurations -/
+/-  Erdős's bound: Υ < √n for all node configurations -/
 /- ## The Logarithmic Bound (PROVED) -/
 
 /-- The optimal bound: Υ ≤ (2/π) log n + O(1).
@@ -73,7 +73,7 @@ axiom logarithmic_bound :
 
 /- ## De Boor–Pinkus Characterization -/
 
-/-- De Boor–Pinkus: the points maximizing Υ equalize the max Lebesgue
+/-  De Boor–Pinkus: the points maximizing Υ equalize the max Lebesgue
     function across all subintervals -/
 /- ## Structural Properties -/
 
@@ -118,7 +118,7 @@ theorem lebesgue_at_node (P : InterpolationNodes n) (k : Fin n) :
     · simp [lagrangeBasis_other P j k h]
   simp_rw [heq, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
-/-- The Lebesgue function is ≥ 1 everywhere on [-1,1]. -/
+/-  The Lebesgue function is ≥ 1 everywhere on [-1,1]. -/
 /- ## Erdős Problem 1130 (PROVED from logarithmic_bound) -/
 
 /-- Erdős Problem 1130 (PROVED): Υ(x₁,...,xₙ) = O(log n).

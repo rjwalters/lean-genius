@@ -111,7 +111,7 @@ c₀ ≈ 0.3044... is an explicit constant appearing in the asymptotic formula.
 -/
 noncomputable def c₀ : ℝ := 0.3044  -- Approximation; actual value is more precise
 
-/--
+/- 
 **Main Theorem (Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, Ventullo 2025):**
 t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}) for some c > 0.
 
@@ -147,17 +147,17 @@ t(n) ≥ n/3 for all n ≥ 43632, and 43632 is the best possible threshold.
 axiom lower_bound_explicit :
     ∀ n : ℕ, n ≥ 43632 → t n ≥ n / 3
 
-/--
+/- 
 **Optimality of 43632:**
 The threshold 43632 is sharp.
 -/
 /- ## Part VI: Small Cases -/
 
-/--
+/- 
 **Small Values:**
 Explicit computation of t(n) for small n.
 -/
-/--
+/- 
 **Exception at n = 4:**
 t(4) = 3 > 4/e ≈ 1.47, so n = 4 is a genuine exception to t(n) ≤ n/e.
 -/

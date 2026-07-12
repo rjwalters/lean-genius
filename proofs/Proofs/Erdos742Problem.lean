@@ -95,9 +95,9 @@ def MurtyPlesnikBound (n : ℕ) : ℕ := n^2 / 4
 ## Part IV: The Complete Bipartite Graph (Extremal Example)
 -/
 
-/-- K_{a,b} achieves exactly a·b edges with diameter 2.
+/-  K_{a,b} achieves exactly a·b edges with diameter 2.
     For a = ⌊n/2⌋, b = ⌈n/2⌉, this gives ⌊n²/4⌋ edges. -/
-/-- The balanced complete bipartite graph achieves ⌊n²/4⌋ edges.
+/-  The balanced complete bipartite graph achieves ⌊n²/4⌋ edges.
     For n = 2k: (k) * (k) = k² = (2k)²/4 = n²/4
     For n = 2k+1: (k) * (k+1) = k² + k = (2k+1)²/4 = n²/4 (integer division) -/
 /-- K_{⌊n/2⌋, ⌈n/2⌉} is a minimal diameter-2 graph.
@@ -140,8 +140,8 @@ theorem bound_is_tight :
 def conjecture_history : String :=
   "Ore (1960s) → Murty-Simon → Murty-Plesník (1979) → Caccetta-Häggkvist"
 
-/-- Caccetta-Häggkvist (1979) studied diameter-critical graphs. -/
-/-- Füredi's proof uses probabilistic and extremal methods. -/
+/-  Caccetta-Häggkvist (1979) studied diameter-critical graphs. -/
+/-  Füredi's proof uses probabilistic and extremal methods. -/
 /-
 ## Part VII: Related Concepts
 -/
@@ -164,7 +164,7 @@ theorem minimal_iff_critical (G : SimpleGraph V) :
     · intro u v hadj
       exact ⟨hadj, hCrit u v hadj⟩
 
-/-- For diameter d ≥ 3, the extremal problem has different answers. -/
+/-  For diameter d ≥ 3, the extremal problem has different answers. -/
 /-
 ## Part VIII: Summary
 -/

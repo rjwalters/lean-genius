@@ -371,7 +371,7 @@ private lemma complement_eq_prod (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli,
     -- Sum of constant (a-1) over compS = (a-1) * compS.card
     rw [Finset.sum_congr rfl hfib_card, Finset.sum_const, smul_eq_mul, mul_comm]
 
-/-- Product fraction identity: ∏((n-1)/n) = ∏(n-1) / ∏n in ℝ, for positive naturals. -/
+/-- Product fraction identity: ∏((n-1)/n) = ∏(n-1) / ∏n ∈ ℝ, for positive naturals. -/
 private lemma prod_sub_one_div (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
     (↑(moduli.prod (fun n => n - 1)) : ℝ) / ↑(moduli.prod id) =
     moduli.prod (fun n => 1 - 1 / (↑n : ℝ)) := by

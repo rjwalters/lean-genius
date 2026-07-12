@@ -171,7 +171,7 @@ section Applications
 noncomputable def geodesicLagrangian : ℝ → ℝ → ℝ → ℝ :=
   fun _ _ y' => Real.sqrt (1 + y'^2)
 
-/-- Geodesics in Euclidean space are straight lines.
+/-  Geodesics in Euclidean space are straight lines.
     This follows from Euler-Lagrange applied to the arc length functional. -/
 
 /-- **Classical Mechanics**: L = T - V (kinetic minus potential energy).

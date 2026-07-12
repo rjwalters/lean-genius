@@ -137,7 +137,7 @@ axiom furedi_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ A : Finset Point, IsConvexPolygon A → A.card ≥ 3 →
     (unitDistanceCount A : ℝ) ≤ C * A.card * Real.log A.card
 
-/--
+/- 
 **Aggarwal's Bound (2015):**
 n log₂n + 4n unit distance pairs (current best).
 -/
@@ -195,7 +195,7 @@ def ErdosSumConjecture : Prop :=
   ∀ A : Finset Point, IsConvexPolygon A →
     (A.sum fun x => equidistantCount A x) < 4 * A.card
 
-/--
+/- 
 **Sum Conjecture Lower Bound:**
 The Edelsbrunner-Hajnal construction shows ∑g(x) can exceed 4n - O(1).
 -/

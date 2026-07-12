@@ -63,14 +63,14 @@ noncomputable def maxDiffB2rSize (r N : ℕ) : ℕ :=
 
 /- ## Classical Sidon Case (r = 1) -/
 
-/-- For r = 1 (Sidon sets), both constants equal 1:
+/-  For r = 1 (Sidon sets), both constants equal 1:
     |A| ~ √N for both sum and difference versions -/
 /- ## The Erdős Problem -/
 
-/-- Erdős Problem 863: For r ≥ 2, do the asymptotic constants for
+/-  Erdős Problem 863: For r ≥ 2, do the asymptotic constants for
     B₂[r] sets and difference B₂[r] sets differ?
     The conjecture is c'ᵣ < cᵣ, meaning difference sets are smaller. -/
-/-- Weaker version: just prove cᵣ ≠ c'ᵣ for some r ≥ 2 -/
+/-  Weaker version: just prove cᵣ ≠ c'ᵣ for some r ≥ 2 -/
 /- ## Part II: Basic Properties of B₂[r] Sets -/
 
 /-- B₂[r] property is monotone in r: B₂[r] implies B₂[r'] for r ≤ r' -/
@@ -90,7 +90,7 @@ theorem inRange_mono {A : Finset ℕ} {N N' : ℕ} (h : InRange A N)
 
 /-- Empty set is in range for any N -/
 theorem inRange_empty (N : ℕ) : InRange ∅ N :=
-  fun _ ha => absurd ha (Finset.not_mem_empty _)
+  fun _ ha => absurd ha (Finset.notMem_empty _)
 
 /-- The empty set is B₂[r] for any r -/
 theorem isB2r_empty (r : ℕ) : IsB2r ∅ r := by

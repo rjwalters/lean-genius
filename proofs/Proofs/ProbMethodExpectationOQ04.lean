@@ -200,7 +200,7 @@ theorem exists_avoiding_all_events {ω ι : Type*} (Ω : Finset ω) (hΩ : Ω.No
   rw [Finset.card_eq_zero] at hz
   have hmem : i ∈ I.filter (fun i => A i w) := Finset.mem_filter.mpr ⟨hi, hAi⟩
   rw [hz] at hmem
-  exact absurd hmem (Finset.not_mem_empty i)
+  exact absurd hmem (Finset.notMem_empty i)
 
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 

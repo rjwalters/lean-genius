@@ -91,13 +91,13 @@ H is a spanning subgraph of G if V(H) = V(G) and E(H) ⊆ E(G).
 def IsSpanningSubgraph (H G : SimpleGraph V) : Prop :=
   ∀ v w, H.Adj v w → G.Adj v w
 
-/--
+/- 
 **Subgraph monotonicity:**
 Subgraphs have chromatic number at most that of the parent.
 -/
 /- ## Part IV: Mycielski's Construction (Context) -/
 
-/--
+/- 
 **Mycielski Graphs:**
 There exist triangle-free graphs with arbitrarily high chromatic number.
 This was proved by Mycielski (1955) using an iterative construction.
@@ -187,7 +187,7 @@ def HFreeSubgraphProblem (H : Type*) [Fintype H] [DecidableEq H]
         IsSpanningSubgraph Gsub G ∧
         HasChromaticNumberAtLeast Gsub k
 
-/--
+/- 
 **Rödl's General Theorem:**
 The H-free version holds for any bipartite H.
 -/

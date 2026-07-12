@@ -86,7 +86,7 @@ noncomputable def countUnitCircles3 (P : PointSet) : ℕ :=
 Each pair of points determines at most 2 unit circles.
 -/
 
-/-- Two points at distance d < 2 determine exactly 2 unit circles through both -/
+/-  Two points at distance d < 2 determine exactly 2 unit circles through both -/
 
 /-- Two points at distance exactly 2 determine exactly 1 unit circle.
     PROVED: The unique center is the midpoint m = (p+q)/2.
@@ -168,9 +168,9 @@ theorem two_points_no_circle :
 ## Upper Bounds
 -/
 
-/-- Trivial upper bound: at most n(n-1) unit circles with 3+ points -/
+/-  Trivial upper bound: at most n(n-1) unit circles with 3+ points -/
 
-/-- Harborth-Mengersen refinement: at most n(n-1)/3 -/
+/-  Harborth-Mengersen refinement: at most n(n-1)/3 -/
 
 /-
 ## Lower Bound Constructions
@@ -178,9 +178,9 @@ theorem two_points_no_circle :
 Elekes showed Ω(n^{3/2}) is achievable.
 -/
 
-/-- There exist point sets achieving Ω(n^{3/2}) unit circles -/
+/-  There exist point sets achieving Ω(n^{3/2}) unit circles -/
 
-/-- Simple lower bound: Ω(n) is easy -/
+/-  Simple lower bound: Ω(n) is easy -/
 
 /-
 ## The Main Conjecture
@@ -299,7 +299,7 @@ Related to the Szemerédi-Trotter theorem.
 noncomputable def incidenceCount (P : PointSet) (Circ : Finset UnitCircle) : ℕ :=
   {pc : Point × UnitCircle | pc.1 ∈ P ∧ pc.2 ∈ Circ ∧ OnCircle pc.1 pc.2}.ncard
 
-/-- Szemerédi-Trotter type bound for point-circle incidences (Clarkson et al.)
+/-  Szemerédi-Trotter type bound for point-circle incidences (Clarkson et al.)
     The number of incidences is O(n^{2/3}m^{2/3} + n + m). -/
 
 /-
@@ -312,13 +312,13 @@ Maximum unit circles with 3+ points for small n.
 noncomputable def maxUnitCircles (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ P : PointSet, P.card = n ∧ countUnitCircles3 P = k}
 
-/-- Known values: f(3) = 1 (any 3 points give at most 1 unit circle through all 3) -/
+/-  Known values: f(3) = 1 (any 3 points give at most 1 unit circle through all 3) -/
 
-/-- f(4) = 4 -/
+/-  f(4) = 4 -/
 
-/-- f(5) = 8 -/
+/-  f(5) = 8 -/
 
-/-- f(6) = 13 -/
+/-  f(6) = 13 -/
 
 /-
 ## The Open Problem

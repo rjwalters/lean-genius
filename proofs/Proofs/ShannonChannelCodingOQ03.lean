@@ -63,7 +63,7 @@ lemma gibbs_inequality {α : Type*} [Fintype α] [DecidableEq α]
     {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
     (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
     shannonEntropy p ≤ -∑ x, p x * Real.log (q x) := by
-  -- shannonEntropy p = -∑ p·log p (since 0·log 0 = 0 in Lean)
+  -- shannonEntropy p = -∑ p·log p (since 0·log 0 = 0 ∈ Lean)
   have hse : shannonEntropy p = -∑ x : α, p x * Real.log (p x) := by
     unfold shannonEntropy
     congr 1

@@ -115,8 +115,8 @@ The Erdős-Szekeres bounds and Spencer's improvement.
 axiom erdos_szekeres_upper :
   ∀ k ≥ 2, R k ≤ Nat.choose (2*k - 2) (k - 1)
 
-/-- Asymptotic form of upper bound: R(k) ≤ 4^k / √(πk) · (1 + o(1)) -/
-/-- Erdős-Szekeres lower bound from probabilistic method -/
+/-  Asymptotic form of upper bound: R(k) ≤ 4^k / √(πk) · (1 + o(1)) -/
+/-  Erdős-Szekeres lower bound from probabilistic method -/
 /-- Spencer's improved lower bound constant: √2/e -/
 axiom spencer_lower_bound :
   ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
@@ -159,27 +159,27 @@ theorem conjecture_equiv : erdos1029Conjecture ↔ erdos1029ConjectureAlt := by
 What we know: the ratio is bounded below, but possibly not above.
 -/
 
-/-- The ratio is bounded below by Spencer's constant -/
+/-  The ratio is bounded below by Spencer's constant -/
 /-- If conjecture is false, ratio is bounded -/
 def conjectureNegation : Prop :=
   ∃ M : ℝ, ∀ k : ℕ, ramseyRatio k ≤ M
 
-/-- Negation equivalence: the conjecture fails iff the ratio is bounded -/
+/-  Negation equivalence: the conjecture fails iff the ratio is bounded -/
 /-
 ## Small Values
 
 Known exact values of Ramsey numbers.
 -/
 
-/-- R(1) = 1 (trivial) -/
-/-- R(2) = 2 (need 2 vertices for an edge) -/
+/-  R(1) = 1 (trivial) -/
+/-  R(2) = 2 (need 2 vertices for an edge) -/
 /-- R(3) = 6 (classical result) -/
 axiom R_3 : R 3 = 6
 
 /-- R(4) = 18 (Greenwood-Gleason 1955) -/
 axiom R_4 : R 4 = 18
 
-/-- R(5) is between 43 and 48 -/
+/-  R(5) is between 43 and 48 -/
 /-
 ## Ratio Values for Small k
 

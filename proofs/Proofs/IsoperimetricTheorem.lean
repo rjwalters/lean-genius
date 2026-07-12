@@ -259,7 +259,7 @@ theorem circle_isOptimal (c : Circle) : IsOptimal c.toCurve := by
   rw [isOptimal_iff_ratio]
   exact circle_achieves_optimal_ratio c
 
-/-- **Characterization of Equality** (Axiomatized)
+/-  **Characterization of Equality** (Axiomatized)
 
 A curve achieves equality in the isoperimetric inequality if and only if
 it is a circle.

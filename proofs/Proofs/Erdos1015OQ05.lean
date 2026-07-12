@@ -158,7 +158,7 @@ theorem HasRamseyProperty_of_add {r s n₁ n₂ : ℕ} (hr : r ≥ 2) (hs : s �
         exact ⟨this.1, hxy⟩
       use insert v red
       constructor
-      · rw [card_insert_of_not_mem hv_notin, card_map]; omega
+      · rw [card_insert_of_notMem hv_notin, card_map]; omega
       · exact extend_red_clique c v red hred_sub hred_is_clique hv_notin
     · -- Found s-blue clique, transfer back
       right
@@ -211,7 +211,7 @@ theorem HasRamseyProperty_of_add {r s n₁ n₂ : ℕ} (hr : r ≥ 2) (hs : s �
         exact ⟨this.1, hxy⟩
       use insert v blue
       constructor
-      · rw [card_insert_of_not_mem hv_notin, card_map]; omega
+      · rw [card_insert_of_notMem hv_notin, card_map]; omega
       · exact extend_blue_clique c v blue hblue_sub hblue_is_clique hv_notin
 
 /-- Pascal's rule for ramseyBound: C(r+s, r) = C(r+s-1, r-1) + C(r+s-1, r).

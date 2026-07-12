@@ -132,7 +132,7 @@ theorem ramsey_two_s (s : ℕ) (c : EdgeColoring (Fin s)) :
     obtain ⟨i, j, hne, hred⟩ := h
     use {i, j}
     constructor
-    · rw [card_insert_of_not_mem, card_singleton]; simp [hne]
+    · rw [card_insert_of_notMem, card_singleton]; simp [hne]
     · unfold IsRedClique
       simp only [coe_insert, coe_singleton]
       intro x hx y hy hxy
@@ -372,7 +372,7 @@ theorem ramsey_theorem : ∀ r s : ℕ, r ≥ 1 → s ≥ 1 →
           exact ⟨this.1, hxy⟩
         use insert v red
         constructor
-        · rw [card_insert_of_not_mem hv_notin, card_map]
+        · rw [card_insert_of_notMem hv_notin, card_map]
           omega
         · exact extend_red_clique c v red hred_sub hred_is_clique hv_notin
       · -- Found blue (s+2)-clique
@@ -440,7 +440,7 @@ theorem ramsey_theorem : ∀ r s : ℕ, r ≥ 1 → s ≥ 1 →
           exact ⟨this.1, hxy⟩
         use insert v blue
         constructor
-        · rw [card_insert_of_not_mem hv_notin, card_map]
+        · rw [card_insert_of_notMem hv_notin, card_map]
           omega
         · exact extend_blue_clique c v blue hblue_sub hblue_is_clique hv_notin
 

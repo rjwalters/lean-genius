@@ -94,21 +94,21 @@ def Erdos85Negation : Prop :=
 The asymptotic behavior of f(n) is well-understood.
 -/
 
-/--
+/- 
 **Asymptotic Upper Bound**
 
 f(n) < √n + 1 for all n ≥ 4.
 
 This means if minimum degree exceeds √n, a 4-cycle must exist.
 -/
-/--
+/- 
 **Asymptotic Behavior**
 
 f(n) = (1 + o(1))√n as n → ∞.
 
 The minimum degree threshold grows like the square root of n.
 -/
-/--
+/- 
 **Base Case**: f(4) = 2.
 
 In a graph on 4 vertices, minimum degree ≥ 2 guarantees a 4-cycle.

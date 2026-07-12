@@ -80,7 +80,7 @@ noncomputable def g (k n : ℕ) : ℕ :=
   Finset.sup (Finset.filter (fun A => IsValidSubset A n k)
     (Finset.powerset (Finset.range (n + 1)))) Finset.card
 
-/--
+/- 
 **g is well-defined:**
 The maximum exists since we're optimizing over a finite set.
 -/
@@ -95,7 +95,7 @@ Count of n-smooth integers with exactly r distinct prime factors.
 noncomputable def omega_count (n r : ℕ) : ℕ :=
   (Finset.range (n + 1)).filter (fun m => m.factors.toFinset.card = r) |>.card
 
-/--
+/- 
 **Asymptotic Formula for omega_count:**
 |{m ≤ n : ω(m) = r}| ~ ((log log n)^{r-1} / (r-1)!) · n/log n
 -/
@@ -166,7 +166,7 @@ def erdosConjecture796 : Prop :=
 ## Part VI: The k = 2 Case (Problem #425)
 -/
 
-/--
+/- 
 **g₂(n) and Primes:**
 For k = 2, we need A with no m having ≥2 representations.
 This is closely related to the prime counting function.
@@ -183,7 +183,7 @@ def IsNearOptimal3 (A : Finset ℕ) (n : ℕ) : Prop :=
   IsValidSubset A n 3 ∧
   (A.card : ℝ) ≥ (1 - 0.01) * (g 3 n : ℝ)
 
-/--
+/- 
 **Optimal sets resemble Ω=2 integers:**
 Integers with exactly 2 prime factors (with multiplicity).
 -/
@@ -191,7 +191,7 @@ Integers with exactly 2 prime factors (with multiplicity).
 ## Part VIII: Multiplicative Structure
 -/
 
-/--
+/- 
 **Divisor Function Connection:**
 If τ(m) = d (divisor count), then m has ≤ d/2 representations.
 Numbers with τ(m) ≤ 2k-1 are "safe" for g_k.

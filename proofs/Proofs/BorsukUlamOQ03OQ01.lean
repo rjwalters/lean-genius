@@ -313,7 +313,7 @@ theorem multi_function_interval_bu (ι : Type*) (f : ι → ℝ → ℝ) :
     ∃ x ∈ Icc (-1:ℝ) 1, ∀ i, f i x = f i (-x) :=
   ⟨0, by norm_num, fun i => by rw [neg_zero]⟩
 
-/-- **WARNING: This axiom is FALSE.** It claims two continuous functions
+/-  **WARNING: This axiom is FALSE.** It claims two continuous functions
     f, g: ℝ² → ℝ must simultaneously agree at antipodal points on S¹.
 
     Counterexample: f(x,y) = x, g(x,y) = y.

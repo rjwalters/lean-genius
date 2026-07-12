@@ -94,11 +94,11 @@ axiom exC3C4_le_exC4 (n : ℕ) : exC3C4 n ≤ exC4 n
 
 /- ## Part IV: Kővári-Sós-Turán Theorem -/
 
-/-- **Kővári-Sós-Turán Theorem (1954):**
+/-  **Kővári-Sós-Turán Theorem (1954):**
 ex(n; C₄) ≤ (1/2)n^(3/2) + (1/4)n
 
 This gives the upper bound for C₄-free graphs. -/
-/-- **KST asymptotic:**
+/-  **KST asymptotic:**
 ex(n; C₄) ~ (1/2)n^(3/2) as n → ∞. -/
 /- ## Part V: Erdős-Simonovits Result -/
 
@@ -106,7 +106,7 @@ ex(n; C₄) ~ (1/2)n^(3/2) as n → ∞. -/
 ex(n; {C₄, C₅}) = max edges in n-vertex {C₄, C₅}-free graph. -/
 axiom exC4C5 (n : ℕ) : ℕ
 
-/-- **{C₄, C₅}-free extremal number:**
+/-  **{C₄, C₅}-free extremal number:**
 Erdős and Simonovits proved ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n). -/
 /- ## Part VI: The Conjecture -/
 
@@ -121,7 +121,7 @@ def erdos573Conjecture : Prop :=
 
 /- ## Part VII: Known Bounds -/
 
-/-- **Upper bound (from KST):**
+/-  **Upper bound (from KST):**
 ex(n; {C₃, C₄}) ≤ ex(n; C₄) ≤ (1/2)n^(3/2) + O(n). -/
 /-- **Lower bound construction:**
 Certain bipartite graphs (like incidence graphs of projective planes)
@@ -138,12 +138,12 @@ These are automatically triangle-free (bipartite). -/
 def polarityGraphEdges (q : ℕ) : ℕ :=
   (q + 1) * q * (q + 1)
 
-/-- **Projective plane construction achieves near-optimal density:**
+/-  **Projective plane construction achieves near-optimal density:**
 The incidence graph of PG(2, q) for prime q is {C₃, C₄}-free
 with 2(q² + q + 1) vertices and (q + 1)³ edges. -/
 /- ## Part IX: The Asymptotic Gap -/
 
-/-- **The asymptotic gap between C₄-free and {C₃,C₄}-free:**
+/-  **The asymptotic gap between C₄-free and {C₃,C₄}-free:**
 - ex(n; C₄) ~ (1/2)n^(3/2)
 - Conjectured: ex(n; {C₃, C₄}) ~ (n/2)^(3/2) = (1/(2√2))n^(3/2)
 - The ratio is √2 ≈ 1.41

@@ -182,13 +182,13 @@ theorem real_padic_closure_contrast :
 
 /-- ℚ_p has field extensions of every degree n ≥ 1 (AdjoinRoot(X^n - p) has degree n). -/
 theorem padic_extensions_unbounded (n : ℕ) (hn : 1 ≤ n) :
-    ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_[p] K), Module.finrank ℚ_[p] K = n :=
+    ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_(_ : p) K), Module.finrank ℚ_[p] K = n :=
   ⟨AdjoinRoot (X ^ n - C (p : ℚ_[p])), inferInstance, inferInstance,
    padic_root_extension_finrank n hn⟩
 
 /-- For any bound N, ℚ_p has an extension of degree exceeding N. -/
 theorem padic_extensions_strictly_unbounded (N : ℕ) :
-    ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_[p] K), N < Module.finrank ℚ_[p] K := by
+    ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_(_ : p) K), N < Module.finrank ℚ_[p] K := by
   obtain ⟨K, hf, ha, hrk⟩ := padic_extensions_unbounded (N + 1) (by omega)
   exact ⟨K, hf, ha, hrk ▸ by omega⟩
 
@@ -198,7 +198,7 @@ theorem degree_contrast_summary :
     Module.finrank ℝ ℂ = 2 ∧
     (∀ n : ℕ, 1 ≤ n →
       Module.finrank ℚ_[p] (AdjoinRoot (X ^ n - C (p : ℚ_[p]))) = n) ∧
-    (∀ n : ℕ, 1 ≤ n → ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_[p] K),
+    (∀ n : ℕ, 1 ≤ n → ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_(_ : p) K),
       Module.finrank ℚ_[p] K = n) ∧
     ¬ Module.Finite ℚ_[p] (AlgebraicClosure ℚ_[p]) :=
   ⟨real_complex_finrank, padic_root_extension_finrank,

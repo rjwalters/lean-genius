@@ -205,8 +205,8 @@ private lemma hasPropertyP_one_triple_has_edge
     G.Adj a b ∨ G.Adj a c ∨ G.Adj b c := by
   unfold hasPropertyP at hP
   have hcard : ({a, b, c} : Finset V).card = 1 + 2 := by
-    rw [Finset.card_insert_of_not_mem (by simp [hab, hac]),
-        Finset.card_insert_of_not_mem (by simp [hbc]),
+    rw [Finset.card_insert_of_notMem (by simp [hab, hac]),
+        Finset.card_insert_of_notMem (by simp [hbc]),
         Finset.card_singleton]
   have h := hP {a, b, c} hcard
   unfold inducedMaxDegree at h
@@ -347,7 +347,7 @@ private theorem edgeCount_ge_of_propertyP1 {n : ℕ} (hn : n ≥ 3)
         ext x; simp [others_def, Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton]
         tauto
       rw [this, Finset.card_sdiff (by simp),
-          Finset.card_insert_of_not_mem (by simp [hab]), Finset.card_singleton,
+          Finset.card_insert_of_notMem (by simp [hab]), Finset.card_singleton,
           Fintype.card_fin]
     -- Each c in others has an edge to a or b
     have hedge_exists : ∀ c ∈ others, G.Adj a c ∨ G.Adj b c := by

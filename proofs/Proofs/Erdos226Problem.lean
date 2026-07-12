@@ -145,7 +145,7 @@ axiom barth_schneider_1970 :
       IsTranscendental f ∧
       (∀ x : ℝ, x ∈ A ↔ (f x).re ∈ B)
 
-/--
+/- 
 **Monotonicity on ℝ:**
 The Barth-Schneider construction yields a function that is
 monotonic when restricted to the real line.
@@ -198,7 +198,7 @@ theorem general_question_affirmative : GeneralQuestion := by
 
 /- ## Part VIII: Extensions -/
 
-/--
+/- 
 **Complex Extension (1971):**
 Barth and Schneider extended their result to ℂ in 1971.
 For countable dense A, B ⊆ ℂ, there exists a transcendental
@@ -206,7 +206,7 @@ entire f with f(A) = B.
 -/
 /- ## Part IX: Why This Works -/
 
-/--
+/- 
 **Key Insight 3: Transcendence:**
 The function is necessarily transcendental; no polynomial
 can satisfy the required property for infinite dense sets.

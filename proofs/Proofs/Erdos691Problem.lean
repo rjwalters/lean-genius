@@ -133,9 +133,9 @@ def HasDivergentReciprocalSum (A : Set ℕ) : Prop :=
   ∀ C : ℝ, 0 < C → ∃ (S : Finset ℕ), ↑S ⊆ A ∧
     C ≤ S.sum (fun a => (1 : ℝ) / (a : ℝ))
 
-/-- For pairwise coprime A: Behrend iff Σ 1/a = ∞.
+/-  For pairwise coprime A: Behrend iff Σ 1/a = ∞.
     This is a classical result in multiplicative number theory. -/
-/-- The set of all primes is Behrend (since Σ 1/p = ∞). -/
+/-  The set of all primes is Behrend (since Σ 1/p = ∞). -/
 /- ## Part V: Block Sequences and Tenenbaum's Theorem -/
 
 /-- A lacunary sequence with bounded ratios:
@@ -151,8 +151,8 @@ def IsBlockSequence (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → ℝ) : Prop :=
   ∀ m : ℕ, m ∈ A ↔
     ∃ k : ℕ, (n k : ℝ) < (m : ℝ) ∧ (m : ℝ) ≤ (1 + η k) * (n k : ℝ)
 
-/-- If Σ ηₖ < ∞ (converges), the block sequence is NOT Behrend. -/
-/-- **Tenenbaum's Theorem (1996)**: For lacunary block sequences with bounded
+/-  If Σ ηₖ < ∞ (converges), the block sequence is NOT Behrend. -/
+/-  **Tenenbaum's Theorem (1996)**: For lacunary block sequences with bounded
     ratios and ηₖ = k^{−β}:
     - β < log 2 implies A is Behrend
     - β > log 2 implies A is not Behrend

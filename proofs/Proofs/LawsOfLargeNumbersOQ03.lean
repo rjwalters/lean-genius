@@ -226,7 +226,7 @@ axiom vonNeumann_mean_ergodic
     {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
     [IsProbabilityMeasure μ]
     (T : Ω → Ω) (hT : MeasurePreserving T μ μ) (hTm : Measurable T)
-    (f : Ω → ℝ) (hf : Integrable f μ) (hf2 : MemℒpClass 2 f μ) :
+    (f : Ω → ℝ) (hf : Integrable f μ) (hf2 : MemLpClass 2 f μ) :
     ∃ f_star : Ω → ℝ,
       Tendsto (fun n => ∫ ω, (birkhoffAverage T f n ω - f_star ω) ^ 2 ∂μ) atTop (nhds 0) ∧
       (∀ᵐ ω ∂μ, f_star (T ω) = f_star ω)
@@ -299,7 +299,7 @@ def doublingMap (x : ℝ) : ℝ := 2 * x - ⌊2 * x⌋
 -- PART 10: Hierarchy of Convergence Modes
 -- ============================================================
 
-/-- Summary of how the LLN generalizes through ergodic theory:
+/-  Summary of how the LLN generalizes through ergodic theory:
 
     **Classical SLLN** (i.i.d., finite variance):
     - Random variables: i.i.d. X₁, X₂, ...

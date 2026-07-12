@@ -221,7 +221,7 @@ lemma open_walk_last_target_excess' (walk : List V) (n : ℕ) (hn : 1 ≤ n)
     rw [hidx]
     exact hwn
   rw [show T.card = (T.erase (n - 1)).card + 1 from by
-    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    rw [← Finset.card_insert_of_notMem (Finset.notMem_erase _ _)]
     simp [Finset.insert_erase hn1_in_T]]
   congr 1
   -- Bijection: (T \ {n - 1}) → S via i ↦ i + 1
@@ -284,7 +284,7 @@ lemma open_walk_first_source_excess' (walk : List V) (n : ℕ) (hn : 1 ≤ n)
     simp only [S, Finset.mem_filter, Finset.mem_range]
     exact ⟨by omega, hw0⟩
   rw [show S.card = (S.erase 0).card + 1 from by
-    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    rw [← Finset.card_insert_of_notMem (Finset.notMem_erase _ _)]
     simp [Finset.insert_erase h0_in_S]]
   congr 1
   -- Bijection: (S \ {0}) → T via i ↦ i - 1

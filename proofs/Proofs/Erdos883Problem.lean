@@ -53,7 +53,7 @@ By inclusion-exclusion, this equals the count of integers ≤ n divisible by 2 o
 -/
 def threshold (n : ℕ) : ℕ := n / 2 + n / 3 - n / 6
 
-/--
+/- 
 The threshold equals the count of integers ≤ n divisible by 2 or 3.
 This is by inclusion-exclusion: |mult of 2| + |mult of 3| - |mult of 6|.
 The count of multiples of d in {0,...,n} is ⌊n/d⌋ + 1 (including 0).
@@ -67,7 +67,7 @@ The extremal set: integers ≤ n divisible by 2 or 3.
 def extremalSet (n : ℕ) : Finset ℕ :=
   (Finset.range (n + 1)).filter (fun m => m ≥ 1 ∧ (2 ∣ m ∨ 3 ∣ m))
 
-/--
+/- 
 The extremal set has no triangles in the coprime graph.
 Every pair of elements shares a common factor (2 or 3).
 Proof: For any a, b in the extremal set, both are divisible by 2 or 3.
@@ -112,7 +112,7 @@ def erdos_883_question_1 (n : ℕ) (A : Finset ℕ) : Prop :=
   ∃ cycle : List ℕ, cycle.length = k ∧ isCoprimeCycle cycle ∧
     ∀ x ∈ cycle, x ∈ A
 
-/--
+/- 
 Question 1 remains open: the specific constant 1/3 has not been proved.
 Erdős-Sárkőzy proved the weaker version with some constant c < 1/3.
 The conjecture is that the answer is YES.
@@ -195,11 +195,11 @@ theorem erdos_883 :
 
 /- ## Part VII: Properties of the Coprime Graph -/
 
-/--
+/- 
 The coprime graph on sets above the threshold has chromatic number ≥ 3.
 This is because it contains odd cycles, and bipartite graphs have chromatic number ≤ 2.
 -/
-/--
+/- 
 Small odd cycles always exist above threshold.
 -/
 /- ## Part VIII: Connection to Inclusion-Exclusion -/

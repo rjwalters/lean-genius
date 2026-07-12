@@ -18,6 +18,7 @@ import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
+import Mathlib.Data.Nat.Nth
 
 namespace Erdos854
 

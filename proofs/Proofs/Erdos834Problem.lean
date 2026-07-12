@@ -113,12 +113,12 @@ minimum degree ≥ 7?
 
 /-- The transversal-critical version of the question -/
 def transversal_question : Prop :=
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph V),
     IsUniform H 3 ∧ IsTransversalCritical H 3 ∧ minDegree H ≥ 7
 
 /-- The chromatic-critical version of the question -/
 def chromatic_question : Prop :=
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph V),
     IsUniform H 3 ∧ IsChromaticCritical H 3 ∧ minDegree H ≥ 7
 
 /- ## Li's Theorem (2025)
@@ -143,7 +143,7 @@ Lovász showed that chromatic-critical hypergraphs with high minimum degree exis
 
 /-- Lovász: 3-chromatic-critical hypergraphs with arbitrarily high minimum degree exist -/
 axiom lovasz_construction : ∀ d : ℕ,
-  ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
+  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph V),
     IsUniform H 3 ∧ IsChromaticCritical H 3 ∧ minDegree H ≥ d
 
 /-- The chromatic version answer: YES -/
@@ -168,14 +168,14 @@ given their work on vertex covers and matching theory.
 -/
 
 /-- The bound 6 is tight: there exist examples achieving it -/
-axiom tight_bound_exists : ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
+axiom tight_bound_exists : ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph V),
   IsUniform H 3 ∧ IsTransversalCritical H 3 ∧ minDegree H = 6
 
 /-- Main summary theorem -/
 theorem erdos_834_summary :
     (∀ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
       IsUniform H 3 → IsTransversalCritical H 3 → minDegree H ≤ 6) ∧
-    (∀ d : ℕ, ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
+    (∀ d : ℕ, ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph V),
       IsUniform H 3 ∧ IsChromaticCritical H 3 ∧ minDegree H ≥ d) := by
   exact ⟨fun V _ _ H => li_bound V H, lovasz_construction⟩
 

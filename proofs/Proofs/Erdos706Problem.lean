@@ -31,7 +31,7 @@ axiom multiDistChromatic : ℕ → ℕ
 
 /- ## Main Conjecture -/
 
-/-- **Polynomial Bound Conjecture**: L(r) ≤ r^{O(1)}.
+/-  **Polynomial Bound Conjecture**: L(r) ≤ r^{O(1)}.
     That is, there exist constants C, k such that L(r) ≤ C · r^k
     for all r ≥ 1. -/
 /- ## Known Bounds -/

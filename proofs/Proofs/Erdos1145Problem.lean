@@ -619,7 +619,7 @@ theorem ratio_condition_necessary :
 
 /- ## Part VIII: Average Representation -/
 
-/-- For a two-set basis, the sum of representations up to N equals
+/-  For a two-set basis, the sum of representations up to N equals
     the product of counting functions (approximately).
 
     Σ_{n≤N} r_{A,B}(n) = |A ∩ [0,N]| · |B ∩ [0,N]| - (error term)
@@ -687,11 +687,11 @@ theorem sum_of_reps_lower_bound (A B : Set ℕ) (N : ℕ) :
     _ ≤ (Finset.range (N + 1)).sum (fun n => twoSetRepFunc A B n) :=
         Finset.sum_le_sum (fun n _ => hfiber_le n)
 
-/-- If A + B is a basis and both sets have density ≫ √N, then the average
+/-  If A + B is a basis and both sets have density ≫ √N, then the average
     representation grows without bound. -/
 /- ## Part IX: Partial Results -/
 
-/-- If A = B and the conjecture holds (i.e., from Erdős–Turán),
+/-  If A = B and the conjecture holds (i.e., from Erdős–Turán),
     then r_{A,A}(n) ≥ 6 infinitely often (Grekos et al.).
     This extends to the two-set case when A and B are "close enough." -/
 /- ## Part X: Structural Results -/

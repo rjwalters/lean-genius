@@ -224,11 +224,11 @@ example : divisorRatio 3 = 3/2 := by
     ne_eq, not_false_eq_true, dite_true, Nat.cast_ofNat]
   norm_num
 
-/--
+/- 
 **Small ratios:**
 τ(n+1)/τ(n) can be arbitrarily small.
 -/
-/--
+/- 
 **Large ratios:**
 τ(n+1)/τ(n) can be arbitrarily large.
 -/
@@ -246,11 +246,11 @@ def PrimeKTupleConjecture : Prop :=
     (∀ p : ℕ, Nat.Prime p → ∃ i, (h i : ℤ) % p ≠ 0) →
     ∃ᶠ n in Filter.atTop, ∀ i, Nat.Prime (n + h i)
 
-/--
+/- 
 **The conjecture implies density:**
 Under the prime k-tuple conjecture, density follows easily.
 -/
-/--
+/- 
 **Eberhard's unconditional proof:**
 Eberhard proved the density result without assuming any unproved conjectures.
 -/
@@ -280,7 +280,7 @@ theorem eberhard_strong : AllRationalsAppear := by
   rw [div_eq_div_iff (Nat.cast_ne_zero.mpr htau_ne) (Nat.cast_ne_zero.mpr (by omega : q ≠ 0))]
   exact_mod_cast heq.trans (mul_comm (tau n) p)
 
-/--
+/- 
 **Related: Problem #946:**
 Problem 946 asks related questions about divisor function values.
 -/
@@ -296,11 +296,11 @@ The average value of τ(n+1)/τ(n) over n ≤ N.
 noncomputable def averageRatio (N : ℕ) : ℝ :=
   (∑ n ∈ Finset.range N, divisorRatio (n + 1)) / N
 
-/--
+/- 
 **The average is 1:**
 On average, τ(n+1) ≈ τ(n).
 -/
-/--
+/- 
 **Distribution of log ratios:**
 log(τ(n+1)/τ(n)) has a limiting distribution.
 -/

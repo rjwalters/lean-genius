@@ -309,7 +309,7 @@ theorem isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·)) := 
   have ⟨hac, hbd⟩ := pow2_sum_inj (a + c) a b c d le_rfl hab hcd heq
   exact ⟨congr_arg (2 ^ ·) hac, congr_arg (2 ^ ·) hbd⟩
 
-/-- There exists a Sidon set of size at least √N / 2 in {1,...,N}.
+/-  There exists a Sidon set of size at least √N / 2 in {1,...,N}.
 
 **Proof**: Use powers of 2 up to N: {1, 2, 4, ..., 2^k} where 2^k ≤ N < 2^{k+1}.
 This gives k+1 elements and k ≈ log₂(N), so k+1 ≈ log₂(N).

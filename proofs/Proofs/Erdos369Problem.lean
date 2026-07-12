@@ -141,7 +141,7 @@ def ErdosConjecture369_k2 : Prop :=
 
 /- ## Part V: Balog–Wooley Partial Result -/
 
-/--
+/- 
 **Balog–Wooley (1998):**
 There exist infinitely many n such that n and n+1 are both
 n^ε-smooth (variant 1: each m is m^ε-smooth).

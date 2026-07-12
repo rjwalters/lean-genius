@@ -74,7 +74,7 @@ in increasing order: 0 = x₁ < x₂ < x₃ < ⋯
     Axiomatized because the ordering infrastructure is not straightforward in Lean. -/
 axiom qSequence (q : ℝ) (k : ℕ) : ℝ
 
-/-- For 1 < q < 2, the sequence begins 0, 1, q, ... -/
+/-  For 1 < q < 2, the sequence begins 0, 1, q, ... -/
 /-- The gap between consecutive terms: x_{k+1} - x_k -/
 noncomputable def gap (q : ℝ) (k : ℕ) : ℝ := qSequence q (k + 1) - qSequence q k
 
@@ -247,7 +247,7 @@ theorem smallestPisot_is_pisot : IsPisot smallestPisot := by
         < Real.sqrt 1 := Real.sqrt_lt_sqrt hpos hlt
       _ = 1 := Real.sqrt_one
 
-/-- Siegel's theorem: q₀ is the smallest Pisot-Vijayaraghavan number. -/
+/-  Siegel's theorem: q₀ is the smallest Pisot-Vijayaraghavan number. -/
 /-- The golden ratio φ = (1 + √5)/2 ≈ 1.618 is also a Pisot number. -/
 noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
 
@@ -383,12 +383,12 @@ axiom bugeaud_characterization (q : ℝ) (hq1 : 1 < q) (hq2 : q ≤ 2) :
     IsPisot q ↔ ∀ m : ℕ, m ≥ 1 →
       ∃ δ : ℝ, δ > 0 ∧ ∀ᶠ k in Filter.atTop, gapM q m k ≥ δ
 
-/-- Erdős-Joó-Schnitzer Refinement (1996):
+/-  Erdős-Joó-Schnitzer Refinement (1996):
     For 1 < q < φ, only need to check m = 2. -/
 /- ## Part VII: Density Result
 -/
 
-/-- As q → 1⁺, QRepresentable(q) becomes arbitrarily dense in [0, N].
+/-  As q → 1⁺, QRepresentable(q) becomes arbitrarily dense in [0, N].
     This explains why the gap property should hold for q close to 1. -/
 /- ## Part VIII: Summary
 -/

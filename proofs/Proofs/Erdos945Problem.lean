@@ -85,7 +85,7 @@ polylogarithmic length.
 def Erdos945Prop : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ᶠ x in atTop, (F x : ℝ) ≤ x.log ^ C
 
-/-- **Erdős Problem #945** (OPEN)
+/-  **Erdős Problem #945** (OPEN)
 
 Is F(x) ≤ (log x)^{O(1)}? That is, is the maximal length of consecutive
 integers with distinct divisor counts bounded by a polynomial in log x?
@@ -106,7 +106,7 @@ def Erdos945Collision : Prop :=
     (b : ℝ) ∈ Set.Icc x (x + x.log ^ C) ∧
     τ a = τ b
 
-/-- The two formulations are equivalent -/
+/-  The two formulations are equivalent -/
 /-
 ## Known Bounds (Erdős-Mirsky 1952)
 
@@ -114,12 +114,12 @@ Erdős and Mirsky established both lower and upper bounds on F(x).
 The gap between them remains open after 70+ years.
 -/
 
-/-- **Erdős-Mirsky Lower Bound** (1952)
+/-  **Erdős-Mirsky Lower Bound** (1952)
 
 F(x) ≫ (log x)^{1/2} / log log x
 
 This shows F(x) grows at least like a fractional power of log x. -/
-/-- **Erdős-Mirsky Upper Bound** (1952)
+/-  **Erdős-Mirsky Upper Bound** (1952)
 
 log F(x) ≪ (log x)^{1/2} / log log x
 
@@ -130,7 +130,7 @@ Equivalently: F(x) ≪ exp(O((log x)^{1/2} / log log x)) -/
 Beker improved the Erdős-Mirsky upper bound significantly.
 -/
 
-/-- **Beker's Upper Bound**
+/-  **Beker's Upper Bound**
 
 F(x) ≪ exp(O((log x)^{1/3 + o(1)}))
 

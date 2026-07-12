@@ -38,8 +38,8 @@ open WeightedMaxCut
     (i.e., cutting more edges by joining S). -/
 noncomputable def greedyStep {n : ℕ} (G : WeightedGraph n)
     (S : Finset (Fin n)) (k : Fin n) : Finset (Fin n) :=
-  let wToS := ∑ j in S, G.weight k j      -- weight from k to S members
-  let wToSc := ∑ j in Sᶜ, G.weight k j    -- weight from k to non-S members
+  let wToS := ∑ j ∈ S, G.weight k j      -- weight from k to S members
+  let wToSc := ∑ j ∈ Sᶜ, G.weight k j    -- weight from k to non-S members
   -- If wToSc ≥ wToS, put k in S (cutting edges to Sᶜ)
   -- Otherwise, keep k in Sᶜ (cutting edges to S)
   if wToSc ≥ wToS then S ∪ {k} else S
@@ -57,8 +57,8 @@ noncomputable def greedyPartition {n : ℕ} (G : WeightedGraph n) : Finset (Fin 
     placed vertices. -/
 noncomputable def greedyContrib {n : ℕ} (G : WeightedGraph n)
     (S : Finset (Fin n)) (k : Fin n) : ℝ :=
-  let wToS := ∑ j in S, G.weight k j
-  let wToSc := ∑ j in Sᶜ, G.weight k j
+  let wToS := ∑ j ∈ S, G.weight k j
+  let wToSc := ∑ j ∈ Sᶜ, G.weight k j
   max wToS wToSc
 
 /-- max(a, b) ≥ (a + b) / 2 for nonneg reals. -/
@@ -73,7 +73,7 @@ theorem max_ge_avg {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
 theorem greedyContrib_ge_half {n : ℕ} (G : WeightedGraph n)
     (S : Finset (Fin n)) (k : Fin n) :
     greedyContrib G S k ≥
-    (∑ j in S, G.weight k j + ∑ j in Sᶜ, G.weight k j) / 2 := by
+    (∑ j ∈ S, G.weight k j + ∑ j ∈ Sᶜ, G.weight k j) / 2 := by
   unfold greedyContrib
   apply max_ge_avg
   · apply Finset.sum_nonneg; intro j _; exact G.nonneg k j
@@ -86,7 +86,7 @@ theorem greedyContrib_ge_half {n : ℕ} (G : WeightedGraph n)
 /-- The weight sum from any vertex k partitions over S and Sᶜ. -/
 theorem weight_sum_partition {n : ℕ} (G : WeightedGraph n)
     (S : Finset (Fin n)) (k : Fin n) :
-    ∑ j in S, G.weight k j + ∑ j in Sᶜ, G.weight k j = ∑ j, G.weight k j := by
+    ∑ j ∈ S, G.weight k j + ∑ j ∈ Sᶜ, G.weight k j = ∑ j, G.weight k j := by
   rw [← Finset.sum_union (Finset.disjoint_compl_right)]
   simp [Finset.union_compl]
 
@@ -96,7 +96,7 @@ theorem totalWeight_eq {n : ℕ} (G : WeightedGraph n) :
 
 /-- cutWeight using the partition complement symmetry. -/
 theorem cutWeight_comm {n : ℕ} (G : WeightedGraph n) (S : Finset (Fin n)) :
-    cutWeight G S = ∑ j in Sᶜ, ∑ i in S, G.weight j i := by
+    cutWeight G S = ∑ j ∈ Sᶜ, ∑ i ∈ S, G.weight j i := by
   unfold cutWeight
   rw [Finset.sum_comm]
   congr 1; ext j; congr 1; ext i

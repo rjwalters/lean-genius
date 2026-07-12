@@ -167,7 +167,7 @@ axiom bollobas_erdos_tau_one :
 /-- The threshold n + 3 - 2√n is optimal -/
 axiom bollobas_erdos_optimal :
   ∀ ε > 0, ∃ᶠ n in Filter.atTop,
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
       Fintype.card V = n ∧
       (∀ C : Finset V, IsMaximalClique G C →
         (C.card : ℝ) ≥ n + 3 - 2 * Real.sqrt n - ε) ∧
@@ -196,7 +196,7 @@ theorem turan_graph_tau (n r : ℕ) (hr : r ≥ 2) :
 axiom random_graph_clique_transversal :
   ∀ c : ℝ, 0 < c → c < 1 →
     ∃ᶠ n in Filter.atTop,
-      ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         Fintype.card V = n ∧
         (∀ C : Finset V, IsMaximalClique G C → C.card ≥ n ^ (c / Real.log (Real.log n))) ∧
         (τ G : ℝ) ≥ (1 - c - 0.01) * n

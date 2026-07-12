@@ -1513,7 +1513,7 @@ The classes MA and AM differ in who speaks first:
 
     A language L is in MA if there exists a probabilistic poly-time verifier V
     such that:
-    - Completeness: x ∈ L ⟹ ∃ proof π. Pr[V(x, π, r) accepts] ≥ 2/3
+    - Completeness: x ∈ L ⟹ ∃ proof π. Pr(_ : V(x, π, r) accepts) ≥ 2/3
     - Soundness: x ∉ L ⟹ ∀ proofs π. Pr[V(x, π, r) accepts] ≤ 1/3
 
     Intuition: Merlin sends a proof, Arthur flips coins and verifies.
@@ -1700,7 +1700,7 @@ We state IP and the theorem as axioms since the full proof requires:
     Languages having polynomial-round interactive proofs with poly-time verifier.
 
     Formally: L ∈ IP iff there exists verifier V such that:
-    - Completeness: x ∈ L ⟹ ∃ prover P. Pr[V ↔ P accepts x] ≥ 2/3
+    - Completeness: x ∈ L ⟹ ∃ prover P. Pr(_ : V ↔ P accepts x) ≥ 2/3
     - Soundness: x ∉ L ⟹ ∀ provers P*. Pr[V ↔ P* accepts x] ≤ 1/3 -/
 def IP : Set (Nat → Bool) :=
   { problem | True }  -- Abstract placeholder
@@ -2451,7 +2451,7 @@ theorem quantum_complexity_landscape :
     PCP(r(n), q(n)) is the class of languages L where:
     - The verifier uses r(n) random bits
     - The verifier queries q(n) bits of the proof
-    - Completeness: x ∈ L ⟹ ∃ proof with Pr[verify accepts] = 1
+    - Completeness: x ∈ L ⟹ ∃ proof with Pr(_ : verify accepts) = 1
     - Soundness: x ∉ L ⟹ ∀ proofs, Pr[verify accepts] ≤ 1/2
 
     The soundness gap can be amplified to 2^{-q} by repetition. -/
@@ -11751,7 +11751,7 @@ axiom buhrman_fortnow_thierauf :
 def MA_EXP : Set (Nat → Bool) :=
   { L | ∃ (V : Nat → Nat → Nat → Bool) (p : Polynomial),
     -- V is an exp-time verifier that takes input, proof, and random bits
-    -- x ∈ L ↔ ∃ proof. Pr[V(x, proof, random) = 1] ≥ 2/3
+    -- x ∈ L ↔ ∃ proof. Pr(_ : V(x, proof, random) = 1) ≥ 2/3
     ∀ n, L n = true ↔ ∃ w ≤ 2^(p.eval n), V n w 0 = true }
 
 /-- The circuit lower bound hierarchy:
@@ -14624,7 +14624,7 @@ theorem factoring_not_NP_hard_argument :
 /-- QMA: Quantum Merlin-Arthur (quantum analog of NP).
 
     L ∈ QMA iff there exists a polynomial-time quantum verifier V such that:
-    - x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr[V(x, |ψ⟩) accepts] ≥ 2/3
+    - x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr(_ : V(x, |ψ⟩) accepts) ≥ 2/3
     - x ∉ L ⟹ ∀ quantum proofs |ψ⟩, Pr[V(x, |ψ⟩) accepts] ≤ 1/3
 
     Key containments:
@@ -16323,7 +16323,7 @@ theorem self_testing_technique :
 
     A language L is in QMA if there exists a polynomial-time quantum
     verifier V such that:
-    - Completeness: x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr[V(x,|ψ⟩) accepts] ≥ 2/3
+    - Completeness: x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr(_ : V(x,|ψ⟩) accepts) ≥ 2/3
     - Soundness: x ∉ L ⟹ ∀ quantum proofs |ψ⟩, Pr[V(x,|ψ⟩) accepts] ≤ 1/3
 
     Key results:

@@ -53,7 +53,7 @@ a minimum length k such that r disjoint intervals of length ≥ k have
 a product that is NOT a perfect power?
 -/
 
-/-- **Erdős Problem #930 (OPEN)**: For every r > 0, there exists k such that
+/-  **Erdős Problem #930 (OPEN)**: For every r > 0, there exists k such that
 if I₁,...,Iᵣ are r disjoint intervals of consecutive integers, each of length
 at least k, then their combined product is never a perfect power.
 
@@ -70,7 +70,7 @@ The famous theorem that the product of consecutive integers is never
 a perfect power. This resolved a long-standing conjecture.
 -/
 
-/-- **Erdős-Selfridge Theorem (1975)**: The product of two or more consecutive
+/-  **Erdős-Selfridge Theorem (1975)**: The product of two or more consecutive
 positive integers is never a perfect power.
 
 In other words, for any n ≥ 0 and k ≥ 2:
@@ -90,7 +90,7 @@ there's a prime whose multiplicity is not divisible by any given l.
 noncomputable def nextPrime (k : ℕ) : ℕ :=
   Nat.find (Nat.exists_infinite_primes k)
 
-/-- **Erdős-Selfridge Technical Lemma**: For k ≥ 3, l ≥ 2, and n + k ≥ nextPrime(k),
+/-  **Erdős-Selfridge Technical Lemma**: For k ≥ 3, l ≥ 2, and n + k ≥ nextPrime(k),
 there exists a prime p ≥ k such that l does not divide the multiplicity of p
 in the factorization of (n+1)(n+2)...(n+k).
 
@@ -125,7 +125,7 @@ example : IsPower 8 := ⟨2, 3, by norm_num, rfl⟩
 /-- 27 = 3³ is a perfect power. -/
 example : IsPower 27 := ⟨3, 3, by norm_num, rfl⟩
 
-/-- 2 is NOT a perfect power.
+/-  2 is NOT a perfect power.
 
 Proof: If 2 = m^l with l > 1, then:
 - m = 0: 0^l = 0 ≠ 2

@@ -80,12 +80,12 @@ theorem lcm_consecutive (n : ℕ) (hn : n > 0) :
   have : Nat.gcd n (n + 1) = 1 := Nat.coprime_self_add_one n
   simp [Nat.lcm, this]
 
-/--
+/- 
 **Counting for naturals:**
 For A = ℕ, the pairs (n, n+1) with lcm ≤ x are those with n(n+1) ≤ x.
 This gives approximately √x many pairs, so A(x) ≈ √x.
 -/
-/--
+/- 
 **The liminf for naturals:**
 For A = ℕ, liminf A(x)/√x = 1. This is the maximum possible value,
 making the natural numbers the extremal sequence for this problem.
@@ -135,7 +135,7 @@ axiom van_doorn_sharp_bound :
 ## Part IV: The Liminf Question
 -/
 
-/--
+/- 
 **Second question: liminf A(x)/√x ≤ 1?**
 For any infinite increasing sequence A, the liminf of the normalized
 ratio A(x)/√x is at most 1. This means no sequence can "consistently"

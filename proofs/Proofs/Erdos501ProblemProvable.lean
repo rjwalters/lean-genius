@@ -110,7 +110,7 @@ theorem independent_pair_exists (A : SetFamily) (hA : BoundedOuterMeasureFamily 
 
 /- ## Part IV: The Continuum Hypothesis Result -/
 
-/-- Under CH, there exists a bounded outer measure family with no
+/-  Under CH, there exists a bounded outer measure family with no
     infinite independent set. (Hechler, 1972)
 
     This is stated as a conditional: CH implies the negation of the

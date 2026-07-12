@@ -149,7 +149,7 @@ odd cycle length can occur.
 -/
 lemma noOddCycles_of_boolColoring {G : SimpleGraph V} (c : G.Coloring Bool) :
     oddCycleLengths G = ∅ := by
-  rw [Set.eq_empty_iff_forall_not_mem]
+  rw [Set.eq_empty_iff_forall_notMem]
   intro n hn
   simp only [oddCycleLengths, cycleLengths, Set.mem_setOf_eq] at hn
   obtain ⟨⟨u, p, _, hlen⟩, hodd⟩ := hn

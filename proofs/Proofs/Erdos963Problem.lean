@@ -295,7 +295,7 @@ theorem dissociated_extend {A B : Finset ℝ}
 
 /- ## Cardinality Bound for diffSumFinset -/
 
-/-- The difference-sum finset has at most 3^|B| elements (tight bound).
+/-  The difference-sum finset has at most 3^|B| elements (tight bound).
     Each value T.sum - S.sum depends only on the "signed partition": for each
     b ∈ B, whether b ∈ S \ T (contributes -b), b ∈ T \ S (contributes +b),
     or b ∈ S ∩ T / b ∉ S ∪ T (contributes 0). There are 3^|B| signed
@@ -325,7 +325,7 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
     -- (∅).powerset = {∅}, product {∅}×{∅} = {(∅,∅)}, Disjoint ∅ ∅ holds
     simp [Finset.powerset_empty, Finset.filter_true_of_mem]
   | @insert a s ha ih =>
-    rw [Finset.card_insert_of_not_mem ha, pow_succ, mul_comm]
+    rw [Finset.card_insert_of_notMem ha, pow_succ, mul_comm]
     -- Suffices: |D(insert a s)| = 3 * |D(s)|
     -- We show D(insert a s) has exactly 3× as many elements via three injective maps
     -- from D(s) with pairwise disjoint images covering D(insert a s).
@@ -531,7 +531,7 @@ theorem greedy_dissociated (A : Finset ℝ) (k : ℕ)
     -- Extend B
     obtain ⟨a, haAB, hins⟩ := dissociated_extend hB h3k
     exact ⟨insert a B, hins,
-      by rw [Finset.card_insert_of_not_mem (Finset.mem_sdiff.mp haAB).2, hBcard]⟩
+      by rw [Finset.card_insert_of_notMem (Finset.mem_sdiff.mp haAB).2, hBcard]⟩
 
 /-- Auxiliary: ∑_{i<k} 2^i = 2^k - 1 (geometric series for ℕ). -/
 private lemma sum_range_pow_two (k : ℕ) :

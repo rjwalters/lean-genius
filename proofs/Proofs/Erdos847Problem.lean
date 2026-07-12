@@ -140,14 +140,14 @@ theorem counterexample_exists :
 
 /- ## Part V: Connection to Szemerédi's Theorem -/
 
-/--
+/- 
 **Szemerédi's Theorem (1975):**
 For any k ≥ 3 and δ > 0, there exists N such that any subset of [1,N]
 with density ≥ δ contains a k-term arithmetic progression.
 
 This implies that AP-free sets have density 0.
 -/
-/--
+/- 
 **Density consequence:**
 An AP-free subset of [1,N] has size o(N).
 More precisely: |A ∩ [1,N]| / N → 0 as N → ∞.
@@ -166,7 +166,7 @@ The counterexample likely uses a construction where:
 3. No single finite collection works for all subsets
 -/
 
-/--
+/- 
 **Finite unions are very restrictive:**
 If A = A₁ ∪ ... ∪ Aₖ with each Aᵢ AP-free, then any finite B ⊆ A
 can be covered by k AP-free sets. But the ENR condition is weaker.
@@ -247,13 +247,13 @@ Adjacent problem in the Erdős collection on AP-free sets.
 
 /- ## Part VIII: Roth's Theorem and Bounds -/
 
-/--
+/- 
 **Roth's Theorem (1953):**
 The k=3 case of Szemerédi: any dense subset of [1,N] contains a 3-AP.
 
 This was the first major result on AP-free sets.
 -/
-/--
+/- 
 **Best known bounds (Kelley-Meka 2023):**
 An AP-free subset of [1,N] has size at most N exp(-c (log N)^{1/12}).
 -/

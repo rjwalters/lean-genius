@@ -165,7 +165,7 @@ theorem isClique_pair {v w : V} (h : G.Adj v w) :
 /-- The cardinality of a pair of distinct elements is two. -/
 theorem card_pair_eq_two {v w : V} (h : v ≠ w) :
     ({v, w} : Finset V).card = 2 := by
-  rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h)]
+  rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact h)]
   simp
 
 /-- Membership in `edgeCliques`: the two-element sets that are cliques are

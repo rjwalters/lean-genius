@@ -113,7 +113,7 @@ theorem sylvester_identity (n : ℕ) :
   simp [sylvester]
   ring
 
-/-- The telescoping property that leads to Σ 1/u_k = 1. -/
+/-  The telescoping property that leads to Σ 1/u_k = 1. -/
 /-- Sylvester's sequence sums to 1 (limit form). -/
 axiom sylvester_sum_equals_one :
     Tendsto (fun n => ∑ k ∈ Finset.range n, (1 : ℝ) / sylvester k)
@@ -193,7 +193,7 @@ theorem sylvester_double_exponential :
   have h := Metric.tendsto_atTop.mp vardiConstant_is_limit ε hε
   exact h
 
-/-- The ratio u_{n+1}/u_n² approaches 1. -/
+/-  The ratio u_{n+1}/u_n² approaches 1. -/
 /-
 ## Part VII: Connection to Other Problems
 -/

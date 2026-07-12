@@ -42,8 +42,8 @@ structure Overpartition (n : ℕ) where
     enumerating partitions and their overline subsets). -/
 axiom numOverpartitions : ℕ → ℕ
 
-/-- Small values: p̄(0) = 1 (empty partition, no parts to overline). -/
-/-- p̄(1) = 2 (partitions: {1}; overlined choices: ∅ or {1}). -/
+/-  Small values: p̄(0) = 1 (empty partition, no parts to overline). -/
+/-  p̄(1) = 2 (partitions: {1}; overlined choices: ∅ or {1}). -/
 /-- p̄(2) = 4 (partitions: {2}, {1,1}; overlined: 2 + 2 = 4). -/
 /-! ## Part III: Key Properties -/
 

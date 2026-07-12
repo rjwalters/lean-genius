@@ -418,7 +418,7 @@ theorem strong_implies_weak : Erdos358Strong → Erdos358Weak := by
 
 /- ## Part IV: Known Observations -/
 
-/--
+/- 
 **Trivial observation (Egami):**
 f(n) ≥ 1 for all large n is trivially achieved by A = naturals,
 since every n ≥ 1 equals itself (the sum from n to n).

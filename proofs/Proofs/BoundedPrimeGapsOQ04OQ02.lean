@@ -158,7 +158,7 @@ infrastructure (ZMod.gaussSum, character evaluation, roots of unity).
 axiom gaussSumBound :
   ∀ (q : ℕ) (hq : q ≥ 2) (χ : DirichletCharacter ℂ q),
     χ ≠ 1 →
-    ‖∑ t in Finset.range q, χ t * Complex.exp (2 * Real.pi * Complex.I * t / q)‖
+    ‖∑ t ∈ Finset.range q, χ t * Complex.exp (2 * Real.pi * Complex.I * t / q)‖
     = Real.sqrt q
 
 /-
@@ -187,7 +187,7 @@ axiom polyaVinogradov :
   ∀ (q : ℕ) (hq : q ≥ 2) (χ : DirichletCharacter ℂ q),
     χ ≠ 1 →
     ∀ (M N : ℕ),
-      ‖∑ n in Finset.Icc (M + 1) (M + N), χ n‖ ≤ Real.sqrt q * Real.log q
+      ‖∑ n ∈ Finset.Icc (M + 1) (M + N), χ n‖ ≤ Real.sqrt q * Real.log q
 
 /-
 ### Addition 3: Large Sieve Inequality
@@ -221,12 +221,12 @@ Farey fractions and their spacing is new work.
     (The (N+Q²) factor can be improved to (N-1+Q²) but this suffices.) -/
 axiom largeSieve :
   ∀ (N Q : ℕ) (a : ℕ → ℂ),
-    ∑ q in (Finset.range (Q + 1)).filter (fun q => 1 < q),
-      ∑ r in (Finset.range q).filter (fun r => Nat.Coprime r q),
-        ‖∑ n in Finset.range (N + 1),
+    ∑ q ∈ (Finset.range (Q + 1)).filter (fun q => 1 < q),
+      ∑ r ∈ (Finset.range q).filter (fun r => Nat.Coprime r q),
+        ‖∑ n ∈ Finset.range (N + 1),
           a n * Complex.exp (2 * Real.pi * Complex.I * n * r / q)‖ ^ 2
     ≤ ((N : ℝ) + (Q : ℝ) ^ 2) *
-      ∑ n in Finset.range (N + 1), ‖a n‖ ^ 2
+      ∑ n ∈ Finset.range (N + 1), ‖a n‖ ^ 2
 
 /-
 ### Addition 4: Siegel-Walfisz Theorem
@@ -441,13 +441,13 @@ theorem bv_from_minimal_additions :
     ∀ A : ℝ, A > 0 →
       ∃ C : ℝ, C > 0 ∧
         ∀ᶠ (x : ℕ) in atTop,
-          ∑ q in (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
+          ∑ q ∈ (Finset.range (Nat.sqrt x + 1)).filter (fun q => 0 < q),
             ‖chebyshevPsiAP x q 1 - expectedMainTerm x q‖
           ≤ C * x / (Real.log x) ^ A := by
   -- This is exactly the BV axiom from OQ04, now derivable from the 6 additions
   exact bombieriVinogradov
 
-/-- **Reduction theorem**: If all 6 additions are proved in Mathlib, then
+/-  **Reduction theorem**: If all 6 additions are proved in Mathlib, then
     the `bombieriVinogradov` axiom in OQ04 can be replaced by a theorem.
 
     More precisely: the 6 additions together imply BV, and BV together
@@ -516,12 +516,12 @@ what the Mathlib PR would contain, using existing API.
     This uses Mathlib's Complex.exp for the exponential and
     DirichletCharacter evaluation for χ(t). -/
 noncomputable def dirichletGaussSum (q : ℕ) (χ : DirichletCharacter ℂ q) : ℂ :=
-  ∑ t in Finset.range q, χ t * Complex.exp (2 * Real.pi * Complex.I * t / q)
+  ∑ t ∈ Finset.range q, χ t * Complex.exp (2 * Real.pi * Complex.I * t / q)
 
 /-- τ(χ₀) for the principal character: τ(χ₀) = Σ_{t coprime to q} e^{2πit/q}.
     This is the Ramanujan sum c_q(1), which equals μ(q) for squarefree q. -/
 noncomputable def principalGaussSum (q : ℕ) [NeZero q] : ℂ :=
-  ∑ t in (Finset.range q).filter (fun t => Nat.Coprime t q),
+  ∑ t ∈ (Finset.range q).filter (fun t => Nat.Coprime t q),
     Complex.exp (2 * Real.pi * Complex.I * t / q)
 
 /-- The key identity: τ(χ) · τ(χ̄) = χ(-1) · q for primitive characters.

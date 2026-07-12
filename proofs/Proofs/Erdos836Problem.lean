@@ -140,7 +140,7 @@ This gives ~4^r/√r vertices.
 def AlonVertexCount (r : ℕ) : ℝ :=
   4^r / Real.sqrt r
 
-/--
+/- 
 **Alon's hypergraph properties:**
 - r-uniform
 - Intersecting
@@ -150,7 +150,7 @@ def AlonVertexCount (r : ℕ) : ℝ :=
 Axiomatized because verifying these properties requires detailed
 combinatorial analysis of the partition-based construction.
 -/
-/--
+/- 
 **Exponential growth:**
 The counterexample shows vertices can grow as 4^r/√r, not O(r²).
 Axiomatized: the inequality 4^r/√r > r² for large r follows from

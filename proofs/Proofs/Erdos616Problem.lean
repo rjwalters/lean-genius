@@ -111,7 +111,7 @@ def ErdosProblem616 (r : ℕ) (t : ℕ) : Prop :=
     HasLocalCoveringBound G (localThreshold r) →
     coveringNumber G ≤ t
 
-/--
+/- 
 **The optimal constant t(r):**
 There exists an optimal t(r) that works for all such hypergraphs.
 -/
@@ -126,7 +126,7 @@ but requiring at least this many vertices to cover.
 -/
 axiom eht_lower_bound :
   ∀ r : ℕ, r ≥ 3 →
-    ∃ (V : Type*) [Fintype V] (G : UniformHypergraph V r),
+    ∃ (V : Type*) (_ : Fintype V) (G : UniformHypergraph V r),
       HasLocalCoveringBound G (localThreshold r) ∧
       (coveringNumber G : ℝ) ≥ (3 : ℝ) / 16 * r + 7 / 8
 
@@ -172,7 +172,7 @@ For 4-uniform hypergraphs, the threshold is 3·4 - 3 = 9 vertices.
 -/
 def threshold_4uniform : ℕ := localThreshold 4  -- = 9
 
-/--
+/- 
 **Small r computations:**
 The bounds give:
 - r = 3: 1.4375 ≤ t(3) ≤ 0.6 (lower bound > upper bound suggests tightening needed)
@@ -184,7 +184,7 @@ The bounds become meaningful for larger r.
 
 /- ## Part VI: Why the Condition 3r-3? -/
 
-/--
+/- 
 **The threshold 3r-3:**
 This specific threshold arises from extremal considerations.
 
@@ -227,12 +227,12 @@ theorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}
 
 /- ## Part VIII: Fractional Relaxation -/
 
-/--
+/- 
 **Fractional covering number τ*(G):**
 The LP relaxation of the covering number.
 Instead of picking vertices (0/1), allow fractional weights.
 -/
-/--
+/- 
 **Fractional vs Integer:**
 τ*(G) ≤ τ(G) always.
 The gap between them relates to the integrality gap.
@@ -262,7 +262,7 @@ then τ(G) ≤ t(r).
 theorem erdos_616_summary :
     -- Lower bound exists
     (∀ r : ℕ, r ≥ 3 →
-      ∃ (V : Type*) [Fintype V] (G : UniformHypergraph V r),
+      ∃ (V : Type*) (_ : Fintype V) (G : UniformHypergraph V r),
         HasLocalCoveringBound G (localThreshold r) ∧
         (coveringNumber G : ℝ) ≥ lowerCoefficient * r) ∧
     -- Upper bound holds

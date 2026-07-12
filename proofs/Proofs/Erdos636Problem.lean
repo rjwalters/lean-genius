@@ -108,7 +108,7 @@ Graphs with bounded homogeneous sets.
 /-- The Ramsey number R(k,k) bounds when such graphs exist. -/
 def ramseyBound (k : ℕ) : ℕ := 2^(2*k)  -- Rough upper bound
 
-/-- For n ≥ R(k,k), there exist graphs with ω, α ≤ k. -/
+/-  For n ≥ R(k,k), there exist graphs with ω, α ≤ k. -/
 /-- The Ramsey graph condition: ω(G), α(G) ≤ C log n. -/
 def IsRamseyGraph (G : SimpleGraph (Fin n)) (C : ℝ) : Prop :=
   cliqueNumber G ≤ Nat.ceil (C * Real.log n) ∧
@@ -120,7 +120,7 @@ def IsRamseyGraph (G : SimpleGraph (Fin n)) (C : ℝ) : Prop :=
 The weaker bound they proved.
 -/
 
-/-- **Erdős-Faudree-Sós Theorem**: Ramsey graphs have ≥ cn^(3/2) distinct signatures. -/
+/-  **Erdős-Faudree-Sós Theorem**: Ramsey graphs have ≥ cn^(3/2) distinct signatures. -/
 /-- The EFS bound is n^(3/2). -/
 def efs_exponent : ℝ := 3/2
 
@@ -173,8 +173,8 @@ theorem theta_bound (C : ℝ) (hC : C > 0) :
 Key ideas in the Kwan-Sudakov proof.
 -/
 
-/-- The proof uses a careful probabilistic argument. -/
-/-- Key lemma: Signatures are well-distributed across the (v, e) plane. -/
+/-  The proof uses a careful probabilistic argument. -/
+/-  Key lemma: Signatures are well-distributed across the (v, e) plane. -/
 /-- The vertex count v ranges from 0 to n. -/
 theorem vertex_count_range (n : ℕ) (G : SimpleGraph (Fin n)) (S : Finset (Fin n)) :
     S.card ≤ n := Finset.card_le_univ S
@@ -191,7 +191,7 @@ theorem edge_count_range [DecidableEq V] [Fintype V]
 The role of the homogeneity condition.
 -/
 
-/-- Without the Ramsey condition, the bound can be smaller. -/
+/-  Without the Ramsey condition, the bound can be smaller. -/
 /-- Cliques have few distinct signatures. -/
 theorem clique_few_signatures (n : ℕ) :
     distinctSignatureCount (⊤ : SimpleGraph (Fin n)) ≤ n + 1 := by
@@ -202,7 +202,7 @@ theorem empty_few_signatures (n : ℕ) :
     distinctSignatureCount (⊥ : SimpleGraph (Fin n)) ≤ n + 1 := by
   sorry
 
-/-- The Ramsey condition forces "complexity" that yields many signatures. -/
+/-  The Ramsey condition forces "complexity" that yields many signatures. -/
 /-
 ## Part X: Related Problems
 
@@ -221,7 +221,7 @@ def ErdosHajnalConjecture : Prop :=
         -- If G excludes H as induced subgraph, G has large clique or independent set
         True
 
-/-- Counting induced paths, cycles, etc. -/
+/-  Counting induced paths, cycles, etc. -/
 /-
 ## Part XI: Main Result
 

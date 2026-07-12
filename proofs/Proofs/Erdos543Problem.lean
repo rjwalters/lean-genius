@@ -70,10 +70,10 @@ noncomputable def spanningProbability (G : Type*) [AddCommGroup G] [Fintype G]
     dependent type-level quantification. -/
 axiom f (N : ℕ) : ℕ
 
-/-- f is well-defined: for each N ≥ 1, f(N) ≤ N (the full group trivially spans). -/
+/-  f is well-defined: for each N ≥ 1, f(N) ≤ N (the full group trivially spans). -/
 /- ## Part III: Elementary Properties -/
 
-/-- The empty set only spans the trivial group: if ∅ spans G then |G| = 1. -/
+/-  The empty set only spans the trivial group: if ∅ spans G then |G| = 1. -/
 /-- A set containing all generators spans. -/
 theorem spanning_of_generators {G : Type*} [AddCommGroup G] [Fintype G]
     (A : Finset G) (hgen : ∀ g : G, ∃ S : Finset G, S ⊆ A ∧ S.sum id = g) :
@@ -81,7 +81,7 @@ theorem spanning_of_generators {G : Type*} [AddCommGroup G] [Fintype G]
 
 /- ## Part IV: The Erdős-Rényi Upper Bound -/
 
-/-- **Erdős-Rényi (1965):** f(N) ≤ log₂ N + O(log log N).
+/-  **Erdős-Rényi (1965):** f(N) ≤ log₂ N + O(log log N).
 
 More precisely, there exists a constant C such that for all N ≥ 2,
 f(N) ≤ ⌈log₂ N⌉ + C · log(log N).
@@ -138,10 +138,10 @@ theorem little_o_conjecture_false : ¬LittleOConjecture :=
 
 /- ## Part VI: Lower Bound -/
 
-/-- **Information-theoretic lower bound:**
+/-  **Information-theoretic lower bound:**
 A random k-subset has at most 2^k possible subset sums.
 To cover N elements, we need roughly 2^k ≥ N, i.e., k ≥ log₂ N. -/
-/-- **Erdős-Hall (1978):** The bound cannot improve to o(log log log N).
+/-  **Erdős-Hall (1978):** The bound cannot improve to o(log log log N).
 
 This intermediate result showed that even a much weaker improvement
 than o(log log N) fails, foreshadowing the full disproof. -/
@@ -153,7 +153,7 @@ theorem cyclic_spanning_characterization (N : ℕ) [NeZero N] (A : Finset (ZMod 
     IsSpanningSet A ↔ ∀ m : ZMod N, ∃ S : Finset (ZMod N), S ⊆ A ∧ S.sum id = m := by
   rfl
 
-/-- For prime p, if |A| ≥ p in ℤ/pℤ, then A spans (since A must equal all of ℤ/pℤ). -/
+/-  For prime p, if |A| ≥ p in ℤ/pℤ, then A spans (since A must equal all of ℤ/pℤ). -/
 /- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #543:**

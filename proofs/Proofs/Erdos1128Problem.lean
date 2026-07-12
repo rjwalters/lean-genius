@@ -119,7 +119,7 @@ theorem exists_bad_coloring :
 
 /- ## Part V: The Two-Dimensional Analogue -/
 
-/--
+/- 
 **Two-dimensional analogue:**
 Even the 2D version ℵ₁² → (ℵ₀)²₂ is false.
 There exists a 2-coloring of ℵ₁ × ℵ₁ with no countably infinite

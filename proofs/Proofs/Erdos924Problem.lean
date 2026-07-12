@@ -178,11 +178,11 @@ The correct statement: K_4-free graph with monochromatic K_3.
 def FolkmanNumber_3_2 : Prop :=
   ErdosHajnalQuestion 2 3
 
-/--
+/- 
 **Folkman Number f(3; 2) ≤ 941:**
 Graham showed f(3; 2) ≤ 941.
 -/
-/--
+/- 
 **Folkman Number f(3; 2) = 786 (Best known as of recent):**
 The exact value of f(3; 2) was determined to be 786.
 -/
@@ -197,7 +197,7 @@ monochromatic K_l.
 -/
 axiom RamseyNumber (l : ℕ) : ℕ
 
-/--
+/- 
 **Comparison with Ramsey Numbers:**
 Folkman graphs achieve the Ramsey property while avoiding K_{l+1},
 which is remarkable since the complete graph K_n (for large n) trivially

@@ -42,8 +42,8 @@ def ErdosProblem685 : Prop :=
 
 /- ## Trivial lower bound -/
 
-/-- Trivial lower bound: `ω(C(n,k)) > log C(n,k) / log n`. -/
-/-- The lower bound is asymptotically tight for `k > n^{1-o(1)}`. -/
+/-  Trivial lower bound: `ω(C(n,k)) > log C(n,k) / log n`. -/
+/-  The lower bound is asymptotically tight for `k > n^{1-o(1)}`. -/
 /- ## Basic properties -/
 
 /-- `ω(1) = 0`: 1 has no prime divisors. -/

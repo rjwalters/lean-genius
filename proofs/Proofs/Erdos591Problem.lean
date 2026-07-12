@@ -59,21 +59,21 @@ axiom OrdinalRamseyProperty (α : Ordinal.{0}) (n : ℕ) : Prop
 The following results establish the boundary of what we know:
 -/
 
-/--
+/- 
 Specker's theorem (1957): The ordinal Ramsey property holds for α = ω².
 That is, ω² → (ω², 3)².
 
 Specker showed that any 2-coloring of pairs from ω² must contain either
 a red copy of ω² or a blue triangle.
 -/
-/--
+/- 
 Specker also showed the property FAILS for α = ω^n when 3 ≤ n < ω.
 There exist colorings of K_{ω^n} with no red K_{ω^n} and no blue K_3.
 
 This is surprising: larger ordinals can actually have WORSE Ramsey properties!
 The gap between ω² (works) and ω³ (fails) is remarkable.
 -/
-/--
+/- 
 Chang's theorem: The property holds for α = ω^ω.
 This is Erdős Problem 590.
 

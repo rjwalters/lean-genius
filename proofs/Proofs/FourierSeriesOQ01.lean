@@ -175,7 +175,7 @@ a.e. convergence.
 
 Note: We state this for measurable f : AddCircle T → ℂ with finite L² norm. -/
 axiom carleson_hunt_maximal
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
     (λ : ℝ) (hλ : 0 < λ) :
     haarAddCircle {x : AddCircle T | ENNReal.ofReal λ < carlesonMaximal f x} ≤
       ENNReal.ofReal ((carlesonConstant / λ) ^ 2 *
@@ -199,7 +199,7 @@ def IsTrigPoly (g : AddCircle T → ℂ) : Prop :=
 
 /-- For a trigonometric polynomial of degree M, S_N g = g for all N ≥ M. -/
 theorem fourierPartialSum_of_trigPoly
-    {g : AddCircle T → ℂ} (hg : IsTrigPoly g) (hgL2 : Memℒp g 2 haarAddCircle)
+    {g : AddCircle T → ℂ} (hg : IsTrigPoly g) (hgL2 : MemLp g 2 haarAddCircle)
     {N : ℕ} (hN : ∀ n : ℤ, fourierCoeff g n ≠ 0 → |n| ≤ N) :
     ∀ x, fourierPartialSum g N x =
       ∑ n ∈ Icc (-(N : ℤ)) (N : ℤ), fourierCoeff g n * fourier n x := by
@@ -208,7 +208,7 @@ theorem fourierPartialSum_of_trigPoly
 
 /-- Helper: on `AddCircle T`, `fourier k` is integrable. -/
 private theorem fourier_integrable (k : ℤ) : Integrable (fourier (T := T) k) haarAddCircle :=
-  (Memℒp.of_bound (map_continuous (fourier k)).aestronglyMeasurable 1
+  (MemLp.of_bound (map_continuous (fourier k)).aestronglyMeasurable 1
     (Filter.Eventually.of_forall (fun x => by
       have : ‖fourier k x‖ = 1 := by simp [fourier_apply]
       linarith))).integrable (by norm_num)
@@ -303,10 +303,10 @@ theorem trigPoly_exact_convergence
 
 A trig poly g(x) = Σ_{|n|≤M} c_n * fourier n x is a finite sum of bounded continuous
 functions on a compact probability space, hence automatically square-integrable.
-Uses `Memℒp.of_bound` since `haarAddCircle` is a finite (probability) measure. -/
-theorem IsTrigPoly.memℒp_two
+Uses `MemLp.of_bound` since `haarAddCircle` is a finite (probability) measure. -/
+theorem IsTrigPoly.memLp_two
     (g : AddCircle T → ℂ) (hg : IsTrigPoly g) :
-    Memℒp g 2 haarAddCircle := by
+    MemLp g 2 haarAddCircle := by
   obtain ⟨M, c, _, hg_eq⟩ := hg
   -- g is a finite sum of bounded continuous functions
   have hg_cont : Continuous g := by
@@ -322,8 +322,8 @@ theorem IsTrigPoly.memℒp_two
       _ = ∑ n ∈ Icc (-(M : ℤ)) M, ‖c n‖ := by
           congr 1; ext n
           rw [norm_mul, show ‖fourier n x‖ = 1 from by simp [fourier_apply], mul_one]
-  -- Apply Memℒp.of_bound (works for finite measures, here a probability measure)
-  exact Memℒp.of_bound hg_cont.aestronglyMeasurable _
+  -- Apply MemLp.of_bound (works for finite measures, here a probability measure)
+  exact MemLp.of_bound hg_cont.aestronglyMeasurable _
     (Filter.Eventually.of_forall hbound)
 
 /-
@@ -376,7 +376,7 @@ Proof outline:
 3. Define g x = ∑_{S₀} ĉ_n * fourier n x (a trig poly).
 4. ‖f_Lp - g_Lp‖² = ∫ ‖f x - g x‖² (L2 norm formula + a.e. equality). -/
 theorem trigPoly_L2_approx
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
     {ε : ℝ} (hε : 0 < ε) :
     ∃ g : AddCircle T → ℂ, IsTrigPoly g ∧
       (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2 := by
@@ -606,17 +606,17 @@ Combined with Chebyshev's inequality and the Carleson-Hunt bound:
 Since ‖h‖_{L²} can be made arbitrarily small (density of trig polys),
 the divergence set has measure 0. -/
 theorem divergenceSet_measure_bound
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle)
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle)
     {δ : ℝ} (hδ : 0 < δ)
     {ε : ℝ} (hε : 0 < ε)
-    (g : AddCircle T → ℂ) (hg : IsTrigPoly g) (hgL2 : Memℒp g 2 haarAddCircle)
+    (g : AddCircle T → ℂ) (hg : IsTrigPoly g) (hgL2 : MemLp g 2 haarAddCircle)
     (happrox : (∫ x, ‖f x - g x‖ ^ 2 ∂haarAddCircle) < ε ^ 2) :
     haarAddCircle (divergenceSet (T := T) f δ) ≤
       ENNReal.ofReal ((carlesonConstant + 1) ^ 2 * ε ^ 2 / (δ / 2) ^ 2) := by
   -- Step 1: Extract M₀ from trig poly convergence
   obtain ⟨M₀, hM₀⟩ := trigPoly_exact_convergence g hg
   -- Step 2: Set up integrability for the approximation error h = f - g
-  have hfmg_L2 : Memℒp (f - g) 2 haarAddCircle := hf.sub hgL2
+  have hfmg_L2 : MemLp (f - g) 2 haarAddCircle := hf.sub hgL2
   have hf_int : Integrable f haarAddCircle := hf.integrable (by norm_num)
   have hg_int : Integrable g haarAddCircle := hgL2.integrable (by norm_num)
   -- Step 3: Divergence set ⊆ {|h| > δ/2} ∪ {S*h > δ/2}
@@ -654,9 +654,9 @@ theorem divergenceSet_measure_bound
     have hd2sq_pos : (0 : ℝ) < (δ / 2) ^ 2 := by positivity
     have hd2sq_ne_zero : ENNReal.ofReal ((δ / 2) ^ 2) ≠ 0 :=
       (ENNReal.ofReal_pos.mpr hd2sq_pos).ne'
-    -- Integrability of ‖f-g‖² from Memℒp 2
+    -- Integrability of ‖f-g‖² from MemLp 2
     have hfmg_sq : Integrable (fun x => ‖(f - g) x‖ ^ 2) haarAddCircle :=
-      (memℒp_two_iff_integrable_sq_norm hfmg_L2.1).mp hfmg_L2
+      (memLp_two_iff_integrable_sq_norm hfmg_L2.1).mp hfmg_L2
     -- ENNReal.ofReal(‖f-g‖²) is AEMeasurable
     have hφ_ae : AEMeasurable (fun x => ENNReal.ofReal (‖(f - g) x‖ ^ 2)) haarAddCircle :=
       ENNReal.measurable_ofReal.comp_aemeasurable hfmg_sq.aemeasurable
@@ -727,7 +727,7 @@ The proof uses:
 - Density of trigonometric polynomials in L² (from Mathlib)
 - A standard density argument reducing a.e. convergence to the maximal bound -/
 theorem carleson_ae_convergence
-    (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle) :
+    (f : AddCircle T → ℂ) (hf : MemLp f 2 haarAddCircle) :
     ∀ᵐ x ∂haarAddCircle,
       Tendsto (fun N : ℕ => fourierPartialSum f N x) atTop (𝓝 (f x)) := by
   -- Strategy:
@@ -768,7 +768,7 @@ theorem carleson_ae_convergence
       calc haarAddCircle (divergenceSet f δk)
           ≤ ENNReal.ofReal ((carlesonConstant + 1) ^ 2 * ε_r ^ 2 / (δk / 2) ^ 2) :=
             divergenceSet_measure_bound hf hδk hε_r_pos g hgpoly
-              (IsTrigPoly.memℒp_two g hgpoly) happrox
+              (IsTrigPoly.memLp_two g hgpoly) happrox
         _ ≤ r := by
             -- (C+1)^2 * ε_r^2 / (δk/2)^2 = r.toReal/2 ≤ r.toReal
             have h_real : (carlesonConstant + 1) ^ 2 * ε_r ^ 2 / (δk / 2) ^ 2 ≤ r.toReal := by
@@ -818,8 +818,8 @@ theorem carleson_continuous
       Tendsto (fun N : ℕ => fourierPartialSum (⇑f) N x) atTop (𝓝 (f x)) := by
   apply carleson_ae_convergence
   -- Continuous functions on a compact space are in L²
-  -- Use Memℒp.of_bound: f is bounded by ‖f‖ (sup norm), and haarAddCircle is finite
-  exact Memℒp.of_bound f.continuous.aestronglyMeasurable ‖f‖
+  -- Use MemLp.of_bound: f is bounded by ‖f‖ (sup norm), and haarAddCircle is finite
+  exact MemLp.of_bound f.continuous.aestronglyMeasurable ‖f‖
     (Filter.Eventually.of_forall f.norm_coe_le_norm)
 
 /-- **Corollary**: Carleson strengthens Parseval.
@@ -838,7 +838,7 @@ theorem carleson_and_parseval
   constructor
   · exact hasSum_fourier_series_L2 f
   · apply carleson_ae_convergence
-    exact Lp.memℒp f
+    exact Lp.memLp f
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

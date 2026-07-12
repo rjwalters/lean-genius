@@ -252,7 +252,7 @@ theorem largest_prime_exp_one (u v p : ℕ) (hu : u > 0) (huv : u ≤ v)
     omega
   rw [Finset.sum_eq_zero hexp_rest, hexp_self]
 
-/-- NOTE: The previous axiom exp_ge_two_needs_square was INCORRECT.
+/-  NOTE: The previous axiom exp_ge_two_needs_square was INCORRECT.
     Counterexample: [3,6] with p=3. Exponent is 2 (from v₃(3)=1, v₃(6)=1)
     but there is no k ∈ [3,6] with 9 | k. The exponent ≥ 2 can come from
     multiple distinct multiples of p, not just from p² dividing a single term.
@@ -601,7 +601,7 @@ fit in [1, v].
 def noPrimeLargerThanSqrt (u v : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → u ≤ p → p ≤ v → p ≤ Nat.sqrt v
 
-/-- NOTE: The previous axiom condition_iff_no_large_prime was INCORRECT.
+/-  NOTE: The previous axiom condition_iff_no_large_prime was INCORRECT.
     Counterexample: [24, 28]. No primes in [24,28] (all composite), so
     noPrimeLargerThanSqrt is vacuously true. But the product 24·25·26·27·28
     has largest prime factor 13 (from 26 = 2·13), and 13 appears with

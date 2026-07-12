@@ -112,7 +112,7 @@ axiom sierpinski_kurepa :
     IsUncountable A →
     (∀ c : Fin 2, ∃ a b : X, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) = c)
 
-/--
+/- 
 **In Partition Notation:**
 2^ℵ₀ → (ℵ₁)²₂ holds unconditionally.
 Every 2-coloring of pairs from the continuum has an uncountable monochromatic set.
@@ -151,7 +151,7 @@ axiom shelah_consistency :
       ∀ A : Set M, IsUncountable A →
         ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
-/--
+/- 
 **Shelah's Large Continuum:**
 Shelah's counterexample model has a very large continuum —
 much larger than ℵ₂. The model satisfies c > ℵ₂.
@@ -201,13 +201,13 @@ def NegativePartition : Prop :=
     ∀ A : Set (Fin 2 → ℕ), IsUncountable A →
     ∃ c : Fin 3, ∃ a b : Fin 2 → ℕ, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
-/--
+/- 
 **Higher Color Numbers:**
 For k ≥ 4 colors, the partition relation 2^ℵ₀ → (ℵ₁)^k₂ is at least
 as hard as the 3-color case. Failure for 3 colors implies failure
 for all higher k.
 -/
-/--
+/- 
 **Ramsey Theory Connection:**
 The Erdős-Rado theorem establishes that for the 2-color case,
 (2^κ)⁺ → (κ⁺)²₂ holds for all infinite cardinals κ.
@@ -215,13 +215,13 @@ The 3-color case is more delicate and depends on cardinal arithmetic.
 -/
 /- ## Part IX: The Argument Structure -/
 
-/--
+/- 
 **Why CH Helps:**
 Under CH, |ℝ| = ℵ₁, so ℝ can be well-ordered in order type ω₁.
 For any 3-coloring of pairs, a diagonal argument over this well-ordering
 produces an uncountable monochromatic set by transfinite induction.
 -/
-/--
+/- 
 **Why Larger c Might Fail:**
 With larger c, the continuum has "more room" for colorings to avoid
 monochromatic uncountable sets. Forcing constructions can exploit

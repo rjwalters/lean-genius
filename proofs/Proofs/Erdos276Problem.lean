@@ -39,12 +39,12 @@ def HasNoUniversalDivisor (a : ℕ → ℕ) : Prop :=
 
 /- ## Main Question -/
 
-/-- **Erdős Problem #276**: Does there exist a primefree Lucas sequence
+/-  **Erdős Problem #276**: Does there exist a primefree Lucas sequence
     with no universal divisor? The answer is YES (Graham 1964), but the
     deeper question is whether covering congruences are necessary. -/
 /- ## Graham's Construction -/
 
-/-- **Graham (1964)**: There exist coprime composites a₀, a₁ such that
+/-  **Graham (1964)**: There exist coprime composites a₀, a₁ such that
     the Lucas sequence they generate is primefree. The construction
     uses covering congruences: for each index position, some prime in
     a fixed finite set divides the corresponding term. -/

@@ -116,7 +116,7 @@ def KhintchineConjecture' : Prop :=
 ## Part V: The Key Difference
 -/
 
-/-- Weyl says: ∀ E, (∃ null set N_E such that ∀ α ∉ N_E, equidist holds)
+/-  Weyl says: ∀ E, (∃ null set N_E such that ∀ α ∉ N_E, equidist holds)
     Khintchine asks: ∃ null set N such that ∀ α ∉ N, (∀ E, equidist holds)
     The difference: can the exceptional set be made independent of E? -/
 
@@ -128,7 +128,7 @@ def WeylOrder : Prop :=
 def KhintchineOrder : Prop :=
   ∀ᵐ α ∂volume, ∀ E : Set ℝ, MeasurableSet E → IsEquidistributed α E (volume E).toReal
 
-/-- The quantifier exchange is NOT valid! -/
+/-  The quantifier exchange is NOT valid! -/
 /-
 ## Part VI: Marstrand's Disproof
 -/
@@ -138,9 +138,9 @@ def KhintchineOrder : Prop :=
     There exist α such that equidistribution fails for some E. -/
 axiom marstrand_disproof : ¬KhintchineConjecture
 
-/-- Equivalently: there exists α in every full-measure set
+/-  Equivalently: there exists α in every full-measure set
     such that some E fails equidistribution for α. -/
-/-- The bad E can be constructed for any given α (outside a measure zero set). -/
+/-  The bad E can be constructed for any given α (outside a measure zero set). -/
 /-
 ## Part VII: What Goes Wrong
 -/
@@ -162,7 +162,7 @@ def avoidanceConstruction : Prop :=
 ## Part VIII: Related Results
 -/
 
-/-- For irrational α, {kα} is equidistributed mod 1 (Weyl's original). -/
+/-  For irrational α, {kα} is equidistributed mod 1 (Weyl's original). -/
 /-- Equidistribution for intervals is much easier than for general sets. -/
 def intervalVsGeneral : Prop :=
   -- Intervals: always works for irrational α

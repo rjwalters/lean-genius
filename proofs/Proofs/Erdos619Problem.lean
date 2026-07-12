@@ -106,7 +106,7 @@ axiom h3_upper_bound (V : Type*) [Fintype V] (G : SimpleGraph V) :
     G.Connected → TriangleFree G →
     h G 3 ≤ Fintype.card V
 
-/--
+/- 
 **h₃(G) ≥ n - c:**
 There exist triangle-free graphs G on n vertices with h₃(G) ≥ n - c.
 This shows the h₃ ≤ n bound is tight up to a constant.
@@ -145,7 +145,7 @@ def erdos_619_upper_bound_form : Prop :=
 
 /- ## Part V: Without Triangle-Free Constraint -/
 
-/--
+/- 
 **Without triangle-free (Alon-Gyárfás-Ruszinkó 2000):**
 Adding n/2 edges always suffices to achieve diameter 4 when triangles are allowed.
 The triangle-free constraint is what makes the h₄ case significantly harder.
@@ -161,11 +161,11 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   symm := by intro i j h; cases h <;> (right; assumption) <;> (left; assumption)
   loopless := by intro v h; cases h <;> omega
 
-/-- The path graph is triangle-free. -/
-/-- Pₙ has diameter n-1. -/
+/-  The path graph is triangle-free. -/
+/-  Pₙ has diameter n-1. -/
 /- ## Part VII: Monotonicity Properties -/
 
-/--
+/- 
 **h_r decreases with r:**
 Larger target diameter is easier to achieve, so h_r(G) ≥ h_{r+1}(G).
 This gives the chain h₃(G) ≥ h₄(G) ≥ h₅(G).

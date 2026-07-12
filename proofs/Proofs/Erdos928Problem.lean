@@ -50,15 +50,15 @@ noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
     (n.primeFactors.toList.maximum?).getD 1
   else 1
 
-/--
+/- 
 **Basic property: P(n) divides n**
 -/
 
-/--
+/- 
 **P(n) is prime for n > 1**
 -/
 
-/--
+/- 
 **P(p) = p for prime p**
 -/
 
@@ -92,7 +92,7 @@ This is the delay differential equation defining ρ.
 -/
 axiom dickman_function : ℝ → ℝ
 
-/--
+/- 
 **Dickman function properties:**
 - ρ(u) = 1 for u ∈ [0, 1]
 - ρ(2) = 1 - ln(2) ≈ 0.307
@@ -109,7 +109,7 @@ The number of y-friable integers ≤ x.
 noncomputable def psi (x y : ℝ) : ℕ :=
   ((Finset.range ⌊x⌋₊.succ).filter (fun n => n > 0 ∧ largestPrimeFactor n ≤ ⌊y⌋₊)).card
 
-/--
+/- 
 **Dickman's Theorem (1930):**
 The density of α-smooth numbers is ρ(1/α).
 
@@ -193,7 +193,7 @@ axiom wang_conditional (α β : ℝ) (hα : 0 < α ∧ α < 1)
 
 /- ## Part VIII: The Elliott-Halberstam Conjecture -/
 
-/--
+/- 
 **Elliott-Halberstam Conjecture:**
 A strengthening of the Bombieri-Vinogradov theorem about
 distribution of primes in arithmetic progressions.
@@ -212,7 +212,7 @@ of the literature on this problem.
 -/
 abbrev Pplus := largestPrimeFactor
 
-/--
+/- 
 **Related: P(n(n+1))**
 Schinzel studied the largest prime factor of n(n+1).
 For infinitely many n: P(n(n+1)) ≤ n^{O(1/log log n)}.

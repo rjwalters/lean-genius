@@ -1,4 +1,5 @@
 import Mathlib
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
 /-
 # Galois Group of x⁵ - 4x + 2 is S₅ (Abel-Ruffini OQ-04 Extension)

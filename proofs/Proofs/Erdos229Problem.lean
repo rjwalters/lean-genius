@@ -65,7 +65,7 @@ def Erdos229Question : Prop :=
 
 /- ## Key Insight: Why Discrete Sets? -/
 
-/--
+/- 
 **Why discrete sets matter**: The identity theorem says that if an analytic
 function has a limit point of zeros, it is identically zero. Therefore, we
 can only prescribe zeros on discrete sets.
@@ -96,7 +96,7 @@ theorem erdos_229_answer : Erdos229Question := barth_schneider_theorem
 
 /- ## Explicit Formulation -/
 
-/--
+/- 
 Equivalent explicit formulation from Barth-Schneider:
 
 For any sequence of discrete sets {Sₖ}, there exist:
@@ -107,16 +107,16 @@ such that f^(nₖ)(z) = 0 for all z ∈ Sₖ.
 -/
 /- ## Special Cases -/
 
-/--
+/- 
 **Special case**: For a single discrete set S, we can find an entire function
 with prescribed zeros. This is the classical Weierstrass factorization theorem.
 -/
-/--
+/- 
 **Special case**: We can also prescribe zeros of a specific derivative.
 -/
 /- ## Related Results -/
 
-/--
+/- 
 **Related result**: The iterated derivative of an entire function is entire.
 This follows from the fact that holomorphic functions are infinitely differentiable.
 -/

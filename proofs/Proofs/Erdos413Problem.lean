@@ -380,7 +380,7 @@ theorem barrier_pred_is_prime_power_or_one (n : ℕ) (hn : n ≥ 2)
         rw [Nat.mem_primeFactors]
         exact ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd _, hne⟩
       rw [h0] at this
-      exact Finset.not_mem_empty _ this
+      exact Finset.notMem_empty _ this
     left; omega
   · -- ω(n-1) = 1 means exactly one prime factor
     have h_eq : omega (n - 1) = 1 := by omega

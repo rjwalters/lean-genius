@@ -123,7 +123,7 @@ Erdős made two conjectures about the growth rate:
 2. aₙ^(1/2ⁿ) → 1 is necessary
 -/
 
-/-- Erdős's first conjecture: single exponential growth is achievable.
+/-  Erdős's first conjecture: single exponential growth is achievable.
     NOTE: This follows from kovac_tao_theorem — if a_n^{1/β^n} → ∞ for some β > 1,
     then a_n^{1/n} → ∞ since a_n^{1/n} ≥ a_n^{1/β^n} for large n (when β^n ≥ n).
     See Erdos265Aristotle.lean for the reduction. -/

@@ -357,7 +357,7 @@ theorem properUnitaryDivisors_pairing {n : ℕ} (hn : 1 < n) :
       (∀ p ∈ pairs, p.1 < p.2 ∧ p.1 * p.2 = n ∧
         p.1 ∈ properUnitaryDivisors n ∧ p.2 ∈ properUnitaryDivisors n) ∧
       (∀ s ∈ singleton, s * s = n ∧ s ∈ properUnitaryDivisors n) :=
-  ⟨∅, none, fun _ h => absurd h (Finset.not_mem_empty _),
+  ⟨∅, none, fun _ h => absurd h (Finset.notMem_empty _),
     fun _ h => absurd h (by simp)⟩
 
 /-

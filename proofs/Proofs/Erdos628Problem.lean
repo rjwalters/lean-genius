@@ -197,7 +197,7 @@ def TihanySymmetric (a : ℕ) : Prop := TihanyForPair a a
 
 /-- Odd cycle has chromatic number 3 -/
 theorem odd_cycle_chi_3 (n : ℕ) (hn : n ≥ 3) (hodd : n % 2 = 1) :
-    ∃ (V : Type*) [Fintype V] [DecidableEq V] (C : SimpleGraph V),
+    ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (C : SimpleGraph V),
       Fintype.card V = n ∧ chromaticNumber C = 3 := by
   sorry
 

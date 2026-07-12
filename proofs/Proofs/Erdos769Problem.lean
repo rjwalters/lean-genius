@@ -98,7 +98,7 @@ def mainQuestion : Prop :=
 
 /- ## Packing vs Volume -/
 
-/-- Beyond volume (Σ sideᵢⁿ = 1), cubes must pack geometrically.
+/-  Beyond volume (Σ sideᵢⁿ = 1), cubes must pack geometrically.
 There exist volume-valid configurations that cannot actually be packed. -/
 
 /- ## Summary -/

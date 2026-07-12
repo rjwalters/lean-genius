@@ -96,7 +96,7 @@ A graph is planar iff it has no K₅ or K₃,₃ minor (Wagner's theorem, 1937).
 def isPlanar (G : SimpleGraph V) : Prop :=
   ¬HasMinor G K5 ∧ ¬HasMinor G K33
 
-/-- Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
+/-  Euler's formula bound: planar graphs have ≤ 3n - 6 edges. -/
 /-
 ## Saturated Planar Graphs
 
@@ -363,7 +363,7 @@ Erdős also proved a quantitative lower bound on the size of saturated planar su
 /-- The lower bound on saturated planar subgraph size. -/
 def saturatedPlanarSize (n k : ℕ) : ℕ := k / n
 
-/-- Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
+/-  Erdős (1969): Graphs with n²/4 + k edges have saturated planar subgraphs on ≫ k/n vertices. -/
 /-
 ## Connection to Turán Theory
 

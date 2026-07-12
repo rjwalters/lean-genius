@@ -71,7 +71,7 @@ def MaderConjecture : Prop :=
 ## Historical Results
 -/
 
-/-- Dirac (1960): 2n-2 edges forces a K₄ subdivision. -/
+/-  Dirac (1960): 2n-2 edges forces a K₄ subdivision. -/
 /-- Mader (1967): Exponential bound suffices. -/
 axiom mader_1967 :
   ∀ n r : ℕ, n ≥ r → r ≥ 2 →
@@ -88,7 +88,7 @@ Proved independently by Komlós-Szemerédi and Bollobás-Thomason.
 /-- Komlós-Szemerédi (1996): The conjecture is true. -/
 axiom komlos_szemeredi_1996 : MaderConjecture
 
-/-- Bollobás-Thomason (1996): Alternative proof. -/
+/-  Bollobás-Thomason (1996): Alternative proof. -/
 /-
 ## Specific Bounds
 
@@ -112,9 +112,9 @@ The Bollobás-Thomason paper also characterizes highly linked graphs.
 A graph is k-linked if any 2k vertices can be paired by k disjoint paths.
 -/
 
-/-- A graph is k-linked if any 2k vertices can be connected by k disjoint paths.
+/-  A graph is k-linked if any 2k vertices can be connected by k disjoint paths.
     Axiomatized as a predicate since full path-disjointness is complex to formalize. -/
-/-- Sufficiently dense graphs are highly linked. -/
+/-  Sufficiently dense graphs are highly linked. -/
 /-
 ## Minors vs Subdivisions
 
@@ -122,9 +122,9 @@ A subdivision is stronger than a minor: if H is a subdivision in G,
 then H is a minor of G, but not conversely.
 -/
 
-/-- Minor relationship: H is a minor of G.
+/-  Minor relationship: H is a minor of G.
     Axiomatized since the full definition requires edge contraction. -/
-/-- Subdivision implies minor. -/
+/-  Subdivision implies minor. -/
 /-
 ## Applications
 
@@ -134,7 +134,7 @@ The Komlós-Szemerédi theorem has applications in:
 3. Proving Hadwiger's conjecture for certain graph classes
 -/
 
-/-- Hadwiger's Conjecture (open): χ(G) ≥ r implies G has Kᵣ minor.
+/-  Hadwiger's Conjecture (open): χ(G) ≥ r implies G has Kᵣ minor.
     One of the most important open problems in graph theory.
     The Komlós-Szemerédi result on subdivisions is related but distinct. -/
 

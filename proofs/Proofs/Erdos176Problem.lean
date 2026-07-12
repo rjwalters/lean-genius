@@ -194,7 +194,7 @@ theorem spencer_power_of_two (t : ℕ) :
 ## Part VI: Erdős's Lower Bound (1963)
 -/
 
-/--
+/- 
 **α_c Definition:**
 The exponent in Erdős's lower bound depends on c.
 -/
@@ -204,13 +204,13 @@ axiom alpha_c_exists : ∃ f : ℝ → ℝ, ∀ c > 0, f c > 0
 
 noncomputable def alpha_c (c : ℝ) : ℝ := Classical.choose alpha_c_exists c
 
-/--
+/- 
 **Erdős 1963 Lower Bound:**
 For any c > 0, N(k, ck) > (1 + α_c)^k.
 
 This shows exponential growth is necessary.
 -/
-/--
+/- 
 **Behavior of α_c:**
 - α_c → 0 as c → 0 (small discrepancy is easy to avoid)
 - α_c → √2 - 1 as c → 1 (approaching van der Waerden)
@@ -242,7 +242,7 @@ def SqrtDiscrepancyConjecture : Prop :=
   ∃ C : ℝ, C > 1 ∧ ∀ k : ℕ, k > 1 →
     (Nkl k ⌈Real.sqrt k⌉.toNat : ℝ) ≤ C ^ k
 
-/--
+/- 
 **Current State:**
 Even N(k, 2) has "no decent bound" according to Erdős-Graham.
 The best known bounds are super-exponential.
@@ -251,13 +251,13 @@ The best known bounds are super-exponential.
 ## Part VIII: Relationship to Other Problems
 -/
 
-/--
+/- 
 **Connection to Erdős Discrepancy Problem:**
 The Erdős Discrepancy Conjecture (proved by Tao, 2015) states that
 for any f : ℕ → {-1,1}, sup_d sup_N |Σ_{i≤N} f(id)| = ∞.
 Our problem concerns APs rather than homogeneous APs.
 -/
-/--
+/- 
 **Szemerédi's Theorem:**
 Any subset of ℕ with positive upper density contains arbitrarily long APs.
 This is related but different: Erdős #176 asks about colorings, not subsets.

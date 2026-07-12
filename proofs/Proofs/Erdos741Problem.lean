@@ -335,7 +335,7 @@ theorem part2_gives_non_syndetic (h : ErdosProblem741_basis) :
     push_neg at habs
     exact hpart A₁ A₂ heq hdisj ⟨habs.1, habs.2⟩⟩
 
-/-- Syndetic implies positive density. -/
+/-  Syndetic implies positive density. -/
 /-- Part 2 (if true) would imply Part 1 fails for the specific basis A. -/
 theorem part2_contradicts_part1_for_basis (h2 : ErdosProblem741_basis) :
     ∃ A : Set ℕ, HasPosDensity (sumset A A) ∧

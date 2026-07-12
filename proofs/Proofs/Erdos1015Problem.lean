@@ -106,8 +106,8 @@ noncomputable def f (t : ℕ) : ℕ :=
 ## Moon's Theorem: f(3) = 4
 -/
 
-/-- Moon (1966): f(3) = 4 for triangles -/
-/-- Moon's result for specific n ≥ 8 -/
+/-  Moon (1966): f(3) = 4 for triangles -/
+/-  Moon's result for specific n ≥ 8 -/
 /-
 ## Ramsey Bound
 -/
@@ -117,8 +117,8 @@ noncomputable def f (t : ℕ) : ℕ :=
     as a function since the definition via sInf requires an existence proof. -/
 axiom ramseyNumber (s t : ℕ) : ℕ
 
-/-- Erdős's observation: f(t) ≤ R(t,t) - 1 ≤ 4^t -/
-/-- R(t,t) ≤ 4^t (crude bound) -/
+/-  Erdős's observation: f(t) ≤ R(t,t) - 1 ≤ 4^t -/
+/-  R(t,t) ≤ 4^t (crude bound) -/
 /-
 ## Burr-Erdős-Spencer Exact Formula
 -/
@@ -145,5 +145,5 @@ theorem f_upper_bound (t : ℕ) (ht : t ≥ 3) : f t < ramseyNumber t (t - 1) + 
 The questions f(t)^{1/t} → 1? and f(t) ≪ t? are both answered NO.
 -/
 
-/-- f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t -/
+/-  f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t -/
 /-- f(t) grows exponentially, not linearly -/

@@ -197,7 +197,7 @@ theorem erdos_417_ratio_gt_one : erdos417RatioGtOne :=
 
 /- ## Part IV: Intuition for the Conjecture -/
 
-/--
+/- 
 **Why V(x) Might Be Much Larger Than V'(x)**
 
 V'(x) only counts totients from small inputs (m ≤ x).
@@ -211,7 +211,7 @@ Example: 2^10 = 1024, but φ(2^10) = 512. So 512 ∈ V(600) but 512 ∉ V'(600).
 
 /- ## Part V: Connection to Problem #416 -/
 
-/--
+/- 
 **Problem #416**
 
 Problem #416 asks about the structure of the totient range more directly.
@@ -261,7 +261,7 @@ theorem prime_sub_one_even (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) : Even (p - 1
 
 /- ## Part VII: Asymptotic Estimates -/
 
-/--
+/- 
 **Asymptotic Behavior**
 
 Known: V(x) ~ cx/log(x) for some constant c (density of totient values).
@@ -271,7 +271,7 @@ The question is whether their ratio has a limit and what it is.
 
 /- ## Part VIII: Why This Is Hard -/
 
-/--
+/- 
 **The Challenge**
 
 Understanding V(x)/V'(x) requires knowing:

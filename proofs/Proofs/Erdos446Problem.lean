@@ -71,14 +71,14 @@ noncomputable def alpha : ℝ :=
 
 /- ## Historical Results -/
 
-/-- **Besicovitch (1934):** liminf δ(n) = 0.
+/-  **Besicovitch (1934):** liminf δ(n) = 0.
 The density can get arbitrarily small along subsequences. -/
 
-/-- **Erdős (1935):** δ(n) = o(1).
+/-  **Erdős (1935):** δ(n) = o(1).
 The density tends to 0 as n → ∞, strengthening Besicovitch's result
 from liminf to full convergence. -/
 
-/-- **Erdős (1960):** δ(n) = (log n)^{-α + o(1)}.
+/-  **Erdős (1960):** δ(n) = (log n)^{-α + o(1)}.
 First quantitative estimate with the correct exponent α.
 For any ε > 0 and large enough n: -/
 
@@ -100,7 +100,7 @@ there exists c > 0 such that δ₁(n) ≥ c · δ(n) for all large n. -/
 axiom ford_2008_disproof :
   ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 10, deltaR n 1 ≥ c * delta n
 
-/-- **Ford's generalization:**
+/-  **Ford's generalization:**
 For each r ≥ 1, δᵣ(n) ≫ᵣ δ(n). Integers with exactly r divisors
 in (n, 2n) have density comparable to the total density. -/
 

@@ -111,7 +111,7 @@ remove at least one vertex from each path, giving 3^m minimal cuts.
 -/
 axiom seymour_construction (m : ℕ) : c(3*m + 2) ≥ 3^m
 
-/--
+/- 
 **Corollary:** α ≥ 3^{1/3} ≈ 1.442
 
 Taking the mth root of c(3m+2) ≥ 3^m and letting m → ∞.
@@ -136,7 +136,7 @@ H(1/3) ≈ 0.9183
 -/
 axiom binaryEntropy_one_third : binaryEntropy (1/3) = Real.log 3 / Real.log 2 - 2/3
 
-/--
+/- 
 2^{H(1/3)} ≈ 1.8899
 -/
 /-

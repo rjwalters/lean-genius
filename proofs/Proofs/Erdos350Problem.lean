@@ -65,12 +65,12 @@ theorem one_two_dissociated : DistinctSubsetSums {1, 2} := by
   -- Use decide or native_decide for the finite exhaustion
   fin_cases hX <;> fin_cases hY <;> simp_all [Finset.sum_empty, Finset.sum_singleton, Finset.sum_pair]
 
-/-- The powers of 2: {1, 2, 4, ..., 2^k} form a dissociated set.
+/-  The powers of 2: {1, 2, 4, ..., 2^k} form a dissociated set.
 This is the extremal example achieving equality in Ryavec's bound. -/
 
 /- ## Main Theorems -/
 
-/-- **Ryavec's Theorem (Erdős #350)**: If A is a finite dissociated set of positive integers,
+/-  **Ryavec's Theorem (Erdős #350)**: If A is a finite dissociated set of positive integers,
 then the sum of reciprocals is strictly less than 2.
 
 This was proved by Ryavec but never formally published. The proof is reproduced
@@ -79,13 +79,13 @@ in [BeEr74] (Benkoski-Erdős 1974).
 We axiomatize this because the proof requires careful analysis of the structure
 of dissociated sets and their subset sums. -/
 
-/-- **Ryavec's Sharp Bound**: The sum of reciprocals satisfies
+/-  **Ryavec's Sharp Bound**: The sum of reciprocals satisfies
 ∑_{n∈A} 1/n ≤ 2 - 2^(1-|A|), with equality iff A = {1, 2, ..., 2^k}.
 
 This stronger form shows the bound approaches 2 only as |A| → ∞,
 and the extremal sets are precisely the powers of 2. -/
 
-/-- **Hanson-Steele-Stenger Generalization** [HSS77]:
+/-  **Hanson-Steele-Stenger Generalization** [HSS77]:
 For all s > 0, ∑_{n∈A} 1/n^s < 1/(1 - 2^(-s)).
 
 When s = 1, this gives ∑ 1/n < 1/(1 - 1/2) = 2, recovering Ryavec's bound.
@@ -93,7 +93,7 @@ The general form shows the phenomenon extends to all positive powers. -/
 
 /- ## Bounds and Cardinality -/
 
-/-- A dissociated set of positive integers has at most n elements if all
+/-  A dissociated set of positive integers has at most n elements if all
 elements are at most 2^n - 1. This is because there are only 2^n possible
 subset sums in the range [0, n·(2^n-1)]. -/
 
@@ -120,7 +120,7 @@ def IsSidonSet (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
 
-/-- Every dissociated set is a Sidon set.
+/-  Every dissociated set is a Sidon set.
 (The converse is false: {1, 2, 5, 10} is Sidon but not dissociated.) -/
 
 /- ## Numerical Examples -/

@@ -145,7 +145,7 @@ axiom laczkovich_theorem :
     ∀ r s : ℝ, r > 0 → s > 0 → SameArea r s →
       TranslationEquidecomposable (disk r) (square s)
 
-/-- The number of pieces in Laczkovich's proof is approximately 10^50. -/
+/-  The number of pieces in Laczkovich's proof is approximately 10^50. -/
 /-- Translation equidecomposable implies isometry equidecomposable.
     Translations are isometries, so this follows immediately. -/
 axiom translation_implies_isometry (A B : Set Point) :
@@ -160,8 +160,8 @@ theorem tarski_solved : TarskiProblem := by
 ## Part VI: Key Features of the Proof
 -/
 
-/-- The pieces are not Lebesgue measurable. -/
-/-- Dubins-Hirsch-Karush: Can't do it with measurable pieces. -/
+/-  The pieces are not Lebesgue measurable. -/
+/-  Dubins-Hirsch-Karush: Can't do it with measurable pieces. -/
 /-
 ## Part VII: Summary
 -/

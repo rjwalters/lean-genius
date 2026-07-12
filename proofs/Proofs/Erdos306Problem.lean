@@ -175,7 +175,7 @@ appear exactly once, which may interact well with the constraint
 on denominators.
 -/
 
-/-- Every positive rational can be written with squarefree denominator
+/-  Every positive rational can be written with squarefree denominator
 (by reducing to lowest terms). -/
 /-
 ## The Density of k-Distinct-Prime Products
@@ -190,8 +190,8 @@ This sparsity affects the difficulty of the problem.
 /-- The number of products of 2 distinct primes up to n. -/
 axiom twoPrimeProductCount : ℕ → ℕ
 
-/-- The number of products of 3 distinct primes up to n. -/
-/-- Asymptotic density of products of k distinct primes.
+/-  The number of products of 3 distinct primes up to n. -/
+/-  Asymptotic density of products of k distinct primes.
 The count is roughly n × (log log n)^(k-1) / ((k-1)! × log n). -/
 /-
 ## Why 2 Primes is Harder than 3 Primes
@@ -206,7 +206,7 @@ The squarefree denominator condition may be necessary to ensure
 the representation exists.
 -/
 
-/-- The 2-prime case is open. -/
+/-  The 2-prime case is open. -/
 /-- The 3-prime integer version is solved. -/
 theorem three_prime_status : three_prime_integer_version := three_prime_solved
 

@@ -35,7 +35,7 @@ namespace Erdos597
 that it is uncountable but every smaller ordinal is countable. -/
 axiom omega_1 : Ordinal
 
-/-- ω₁ is uncountable. -/
+/-  ω₁ is uncountable. -/
 /-- The first infinite ordinal ω (identified with ℕ). -/
 def omega : Ordinal := Ordinal.omega
 
@@ -43,12 +43,12 @@ def omega : Ordinal := Ordinal.omega
 larger than ω₁ but smaller than ω₁². -/
 axiom omega_1_times_omega : Ordinal
 
-/-- ω₁ · ω is defined as the ordinal product. -/
+/-  ω₁ · ω is defined as the ordinal product. -/
 /-- The ordinal square ω₁² = ω₁ · ω₁. This is the "source" ordinal
 whose pairs are 2-colored in the partition relation. -/
 axiom omega_1_squared : Ordinal
 
-/-- ω₁² is defined as ordinal exponentiation. -/
+/-  ω₁² is defined as ordinal exponentiation. -/
 /- ## Graph Structures -/
 
 /-- A simple graph on a type α: a symmetric irreflexive relation on vertices. -/

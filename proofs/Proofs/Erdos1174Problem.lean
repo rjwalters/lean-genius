@@ -144,7 +144,7 @@ def erdos_1174b : Prop :=
 ## Part IV: Ramsey Theory Context
 -/
 
-/--
+/- 
 **Infinite Ramsey Theorem (2 colors):**
 For any 2-coloring of edges of K_ω, there exists a monochromatic K_ω.
 This uses the COMPLETE graph. Problem 1174 asks if the same holds
@@ -180,7 +180,7 @@ def partitionProperty {V : Type*} (G : SimpleGraph V)
       ∃ c : Fin numColors, ∀ v w, v ∈ (↑S : Set V) → w ∈ (↑S : Set V) → v ≠ w →
         G.Adj v w ∧ f v w = c
 
-/--
+/- 
 **Nešetřil-Rödl Theorem (Context):**
 For each fixed k, there exists a K₄-free graph G with G → (3)²_k.
 This shows the finite-color version is achievable. The challenge

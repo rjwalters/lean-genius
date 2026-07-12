@@ -6,7 +6,7 @@
   These lemmas expose the concrete IsPractical examples for Aristotle.
 
   IsPractical n = ∀ k ≤ sigma n, n ∈ DivisorSumSet k
-  DivisorSumSet t = {n | ∃ s ⊆ Nat.divisors n, t = ∑ i in s, i}
+  DivisorSumSet t = {n | ∃ s ⊆ Nat.divisors n, t = ∑ i ∈ s, i}
 
   All definitions come from Erdos859Problem.lean; no sorries in definitions.
 -/

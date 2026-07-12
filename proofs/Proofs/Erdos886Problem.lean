@@ -60,7 +60,7 @@ noncomputable def criticalInterval (n : ℕ) (ε : ℝ) : Set ℝ :=
 noncomputable def intervalWidth (n : ℕ) (ε : ℝ) : ℝ :=
   (n : ℝ)^(1/2 - ε)
 
-/-- For large n, the interval width is o(√n). -/
+/-  For large n, the interval width is o(√n). -/
 /- ## Part III: Divisors in the Critical Interval
 -/
 
@@ -88,7 +88,7 @@ def ruzsaConjecture : Prop :=
 /- ## Part V: Erdős-Rosenfeld Result
 -/
 
-/-- **Erdős-Rosenfeld Theorem (1997):**
+/-  **Erdős-Rosenfeld Theorem (1997):**
     There are infinitely many n with four divisors in (√n, √n + n^{1/4}).
     Note: This uses ε = 1/4, which gives a wider interval than the conjecture. -/
 /-- The Erdős-Rosenfeld result: infinitely many n have ≥ 4 divisors in (√n, √n + n^{1/4}). -/
@@ -104,7 +104,7 @@ def factorDifferenceSet (n : ℕ) : Finset ℤ :=
     |>.filter (fun dd' => dd'.1 > dd'.2)
     |>.image (fun dd' => (dd'.1 : ℤ) - (dd'.2 : ℤ))
 
-/-- The factor-difference set is nonempty when n has at least 2 divisors. -/
+/-  The factor-difference set is nonempty when n has at least 2 divisors. -/
 /- ## Part VII: Divisor Density Near √n
 -/
 
@@ -119,7 +119,7 @@ def ruzsaConjectureAlt : Prop :=
     ∀ δ : ℝ, δ > 0 → ∃ N : ℕ, ∀ n ≥ N,
       localDivisorDensity n ε < δ
 
-/-- The two formulations are equivalent. -/
+/-  The two formulations are equivalent. -/
 /- ## Part VIII: Examples
 -/
 
@@ -137,7 +137,7 @@ theorem trivial_bound (n : ℕ) (ε : ℝ) (hε : ε > 0) (hn : n ≥ 1) :
   unfold divisorsNearSqrt divisorCount divisorsInInterval
   apply card_filter_le
 
-/-- τ(n) ≤ 2√n for all n ≥ 1. -/
+/-  τ(n) ≤ 2√n for all n ≥ 1. -/
 /- ## Part X: Summary
 -/
 

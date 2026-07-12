@@ -577,7 +577,7 @@ private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [Deci
     have : D.outDegree u = 0 := by
       unfold Digraph.outDegree Digraph.outNeighbors
       rw [Finset.card_eq_zero]; ext x
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.not_mem_empty, iff_false]
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]
       intro hx; exact absurd (hempty ▸ hstuck x hx) (List.not_mem_nil _)
     linarith
   intro k

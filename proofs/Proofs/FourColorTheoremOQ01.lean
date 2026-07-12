@@ -109,7 +109,7 @@ theorem free_color_of_degree_lt (G : SimpleGraph V) [DecidableRel G.Adj]
     intro heq
     rw [heq, Finset.card_univ] at hcard
     exact Nat.lt_irrefl _ hcard
-  rw [Finset.ne_univ_iff_exists_not_mem] at hne
+  rw [Finset.ne_univ_iff_exists_notMem] at hne
   exact hne
 
 -- ============================================================
@@ -184,7 +184,7 @@ theorem five_color_one_swap_suffices (usedColors : ℕ)
 -- PART 6: Why 4-Color Kempe Fails (Two Swaps Needed)
 -- ============================================================
 
-/-- For 4 colors with a degree-5 vertex:
+/-  For 4 colors with a degree-5 vertex:
     - 5 neighbors use colors from Fin 4
     - By pigeonhole, at least 2 share a color
     - But all 4 colors may appear (e.g., colors 0,1,2,3,3)
@@ -254,7 +254,7 @@ theorem five_color_no_double_swap :
 -- PART 8: Heawood's Counterexample Structure
 -- ============================================================
 
-/-- Heawood (1890) exhibited a specific planar graph where Kempe's
+/-  Heawood (1890) exhibited a specific planar graph where Kempe's
     4-color proof method fails. The graph has the property that:
 
     For a specific degree-5 vertex v with 4-colored neighbors:
@@ -289,7 +289,7 @@ theorem heawood_crossing_forced
 -- PART 9: What a Human-Readable 4CT Proof Would Need
 -- ============================================================
 
-/-- For a human-readable proof, we'd need to avoid the finite case check
+/-  For a human-readable proof, we'd need to avoid the finite case check
     of 1,936 (or 633) configurations. Possible approaches:
 
     1. **Algebraic approach**: Reformulate as algebraic identity
@@ -326,7 +326,7 @@ theorem flow_coloring_equivalence (k : ℕ) (hk : k ≥ 2) :
 -- PART 10: Graph Classes with Human-Readable 4-Color Proofs
 -- ============================================================
 
-/-- While the GENERAL Four Color Theorem lacks a human-readable proof,
+/-  While the GENERAL Four Color Theorem lacks a human-readable proof,
     specific graph classes have clean proofs:
 
     1. Outerplanar graphs: 3-colorable (by induction on ears)
@@ -357,7 +357,7 @@ theorem four_colorable_small (G : SimpleGraph V) [DecidableRel G.Adj]
 -- PART 11: The Minimum Counterexample Structure
 -- ============================================================
 
-/-- If the 4CT were false, there would be a smallest counterexample.
+/-  If the 4CT were false, there would be a smallest counterexample.
     This minimum counterexample G must satisfy:
     1. G is planar
     2. G is not 4-colorable
@@ -391,7 +391,7 @@ theorem min_counterexample_has_low_degree
 -- PART 12: The Configuration Checking Bottleneck
 -- ============================================================
 
-/-- The Appel-Haken proof checks 1,936 configurations.
+/-  The Appel-Haken proof checks 1,936 configurations.
     Robertson-Sanders-Seymour-Thomas (1997) reduced this to 633.
     Each configuration is a small planar graph pattern around a
     vertex of degree 4 or 5 in a minimum counterexample.

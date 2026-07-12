@@ -94,7 +94,7 @@ such that lim(k→∞) bₖ/k² does not exist?
 This remains open. We state it with an unknown answer placeholder.
 -/
 
-/--
+/- 
 **Erdős Problem #326 (OPEN)**:
 
 Given any additive basis A of order 2, does there always exist a subset
@@ -111,7 +111,7 @@ that aₖ/k² diverges. Cassels disproved this by showing there exists a basis
 where the growth ratio converges.
 -/
 
-/--
+/- 
 **Cassels' Theorem (1957)**:
 
 There exists an additive basis A of order 2, enumerated as A = {a₁ < a₂ < ···},

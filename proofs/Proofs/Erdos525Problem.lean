@@ -52,7 +52,7 @@ def IsLittlewoodPolynomial (p : Polynomial ℂ) : Prop :=
 def LittlewoodPolynomials (n : ℕ) : Set (Polynomial ℂ) :=
   {p | p.natDegree = n ∧ IsLittlewoodPolynomial p}
 
-/-- There are exactly 2^(n+1) Littlewood polynomials of degree n -/
+/-  There are exactly 2^(n+1) Littlewood polynomials of degree n -/
 /-- The unit circle in ℂ -/
 def UnitCircle : Set ℂ := {z : ℂ | abs z = 1}
 
@@ -68,7 +68,7 @@ noncomputable def minModulus (p : Polynomial ℂ) : ℝ :=
 def HasSmallValue (p : Polynomial ℂ) : Prop :=
   ∃ z ∈ UnitCircle, abs (p.eval z) < 1
 
-/-- Equivalent: minModulus < 1.
+/-  Equivalent: minModulus < 1.
     This is a basic property of the infimum: the set of values is nonempty
     (unit circle is nonempty) so the infimum < 1 iff some value < 1. -/
 /-- Almost all Littlewood polynomials have m(f) < 1.
@@ -100,12 +100,12 @@ axiom konyagin_upper_bound :
   ∀ ε > 0, ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
     ({p ∈ LittlewoodPolynomials n | minModulus p > n^(-(1/2 : ℝ) + ε)}).ncard < δ * 2^n
 
-/-- The exponent -1/2 is essentially optimal -/
+/-  The exponent -1/2 is essentially optimal -/
 /-
 ## Part V: Konyagin-Schlag Lower Bound
 -/
 
-/-- Konyagin-Schlag Theorem (1999): The lower tail is thin.
+/-  Konyagin-Schlag Theorem (1999): The lower tail is thin.
     For any ε > 0: limsup P(m(f) ≤ εn^{-1/2}) ≪ ε -/
 /-
 ## Part VI: Cook-Nguyen Universal Distribution
@@ -135,12 +135,12 @@ def IsRudinShapiro (p : Polynomial ℂ) (n : ℕ) : Prop :=
   p.natDegree = 2^n - 1 ∧ IsLittlewoodPolynomial p ∧
   ∀ z ∈ UnitCircle, abs (p.eval z) ≤ Real.sqrt (2^(n+1))
 
-/-- Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
+/-  Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
 /-- The constant polynomial 1 + z + z² + ... + zⁿ has minimum on the unit circle -/
 def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
   ∑ i ∈ Finset.range (n+1), X^i
 
-/-- The minimum modulus of the all-ones polynomial -/
+/-  The minimum modulus of the all-ones polynomial -/
 /-
 ## Part VIII: Connection to Other Problems
 -/
@@ -150,7 +150,7 @@ def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
 noncomputable def MahlerMeasure (p : Polynomial ℂ) : ℝ :=
   Real.exp (∫ t in Set.Icc 0 1, Real.log (abs (p.eval (Complex.exp (2 * Real.pi * t * I)))))
 
-/-- For Littlewood polynomials, M(p) is related to m(p) -/
+/-  For Littlewood polynomials, M(p) is related to m(p) -/
 /-- Lehmer's Problem: Is there a Littlewood polynomial with M(p) < 1? -/
 def LehmerQuestion : Prop :=
   ∃ p : Polynomial ℂ, IsLittlewoodPolynomial p ∧ MahlerMeasure p < 1

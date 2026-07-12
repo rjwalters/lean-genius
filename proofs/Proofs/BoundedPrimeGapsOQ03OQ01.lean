@@ -61,7 +61,7 @@ theorem not_admissible_consecutive (a : ℕ) :
   intro hadm
   have h2 := hadm 2 (by norm_num)
   simp only [Finset.image_insert, Finset.image_singleton] at h2
-  rw [Finset.card_insert_of_not_mem (by simp; omega), Finset.card_singleton] at h2
+  rw [Finset.card_insert_of_notMem (by simp; omega), Finset.card_singleton] at h2
   omega
 
 /-- No arithmetic progression {a, a+2, a+4} is admissible:
@@ -72,7 +72,7 @@ theorem not_admissible_ap_diff2 (a : ℕ) :
   intro hadm
   have h3 := hadm 3 (by norm_num)
   simp only [Finset.image_insert, Finset.image_singleton] at h3
-  rw [Finset.card_insert_of_not_mem, Finset.card_insert_of_not_mem,
+  rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
       Finset.card_singleton] at h3
   · omega
   · simp only [Finset.mem_singleton]; omega

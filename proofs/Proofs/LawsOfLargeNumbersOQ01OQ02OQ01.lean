@@ -179,9 +179,9 @@ theorem kronecker_lemma
       intro i; have h : a i ≠ 0 := (ha_pos i).ne'; field_simp
     have key := Finset.sum_range_by_parts a (fun i => x i / a i) (m + 1)
     simp only [smul_eq_mul, Nat.add_sub_cancel] at key
-    -- `key : ∑ i in range (m+1), a i * (x i / a i)
-    --          = a m * (∑ i in range (m+1), x i / a i)
-    --            - ∑ i in range m, (a (i+1) - a i) * (∑ j in range (i+1), x j / a j)`
+    -- `key : ∑ i ∈ range (m+1), a i * (x i / a i)
+    --          = a m * (∑ i ∈ range (m+1), x i / a i)
+    --            - ∑ i ∈ range m, (a (i+1) - a i) * (∑ j ∈ range (i+1), x j / a j)`
     rw [Finset.sum_congr rfl (fun i _ => hx i)] at key
     exact key
   -- telescoping identity for the weight partial sums
@@ -395,7 +395,7 @@ theorem martingale_sum_of_indep_mean_zero [IsProbabilityMeasure μ]
 
 /-- **Kolmogorov's a.s.-convergence criterion, reduced to the `L¹` bound.** For
 independent mean-zero integrable random variables `X i` whose shifted partial
-sums `∑_{i≤n} Xᵢ` are uniformly bounded in `L¹`, the series `∑ i, X i` converges
+sums `∑_{i≤n} Xᵢ` are uniformly bounded ∈ `L¹`, the series `∑ i, X i` converges
 almost surely.
 
 This is Kolmogorov's convergence criterion modulo the deterministic `L¹` bound
@@ -1129,9 +1129,9 @@ theorem abs_integral_trunc_le_tail_moment_of_centered
       + {ω | t < |X ω|}.indicator X ω) = X := by
     funext ω
     rcases le_or_gt (|X ω|) t with h | h
-    · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_not_mem (by exact not_lt.mpr h)]
+    · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_notMem (by exact not_lt.mpr h)]
       exact add_zero (X ω)
-    · rw [Set.indicator_of_not_mem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
+    · rw [Set.indicator_of_notMem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
       exact zero_add (X ω)
   -- hence `∫ 𝟙{|X| ≤ t}·X = -∫ 𝟙{t < |X|}·X`, since `∫ X = 0`
   have hsum : ∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ
@@ -1959,7 +1959,7 @@ measurable `X` and any threshold `t`, the truncation `Yₜ = 𝟙{|X| ≤ t}·X`
 Immediate from Mathlib's `variance_le_expectation_sq` applied to the (measurable, hence
 `AEStronglyMeasurable`) truncation.  The (a) brick feeding the Kolmogorov criterion (S5): the
 weighted variance sum `∑ᵢ Var(Yᵢ)/aᵢ²` is thereby dominated by the weighted second-moment sum
-`∑ᵢ aᵢ⁻²·𝔼[Yᵢ²]` proved summable in § RealVarianceSummable. -/
+`∑ᵢ aᵢ⁻²·𝔼[Yᵢ²]` proved summable ∈ § RealVarianceSummable. -/
 theorem variance_trunc_le_integral_sq [IsProbabilityMeasure μ]
     (X : Ω → ℝ) (hX : Measurable X) (t : ℝ) :
     variance (fun ω => {ω | |X ω| ≤ t}.indicator X ω) μ

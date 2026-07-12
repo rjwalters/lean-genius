@@ -266,7 +266,7 @@ theorem deg_le_two_iff_no_triple (A : ι → Finset α) :
     have hx : x ∈ A i ∩ A j ∩ A k := by
       rw [Finset.mem_inter, Finset.mem_inter]; exact ⟨⟨hi.2, hj.2⟩, hk.2⟩
     rw [hempty] at hx
-    exact absurd hx (Finset.not_mem_empty x)
+    exact absurd hx (Finset.notMem_empty x)
 
 /-- The same criterion as the vanishing of the third inclusion–exclusion layer. -/
 theorem deg_le_two_iff_sieveLayer_three (A : ι → Finset α) :

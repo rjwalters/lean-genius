@@ -244,7 +244,7 @@ theorem geometric_from_newton (x : ℝ) (hx : ‖x‖ < 1) :
   14. genBinom_nat_finite_sum: corollary of standard_binomial
   15. genBinom_recurrence_deriv: (k+1)*C(alpha,k+1) = C(alpha,k)*(alpha-k)
   16. genBinom_ode_coeff: ODE coefficient identity for (1+x)*f'=alpha*f
-  17. smeval_descPochhammer_int_eq_prod: (descPochhammer ℤ n).smeval α = ∏ j in range n, (α-j)
+  17. smeval_descPochhammer_int_eq_prod: (descPochhammer ℤ n).smeval α = ∏ j ∈ range n, (α-j)
   18. ring_choose_eq_genBinom: Ring.choose α k = genBinom α k
   19. newton_generalized_binomial: HasSum Sum C(α,k)x^k = (1+x)^α (PROVED!)
 

@@ -230,7 +230,7 @@ theorem mersenne_base_range : [3, 7, 31, 127].prod = 83349 := by norm_num
 -- SECTION IV: Dynamic Range Optimality
 -- ============================================================
 
-/-- For k pairwise coprime numbers in [2, w], the product is maximized
+/-  For k pairwise coprime numbers in [2, w], the product is maximized
     by choosing the k smallest primes ≤ w. This follows from:
     (1) coprime integers decompose into prime power channels
     (2) primes maximize the product-per-channel

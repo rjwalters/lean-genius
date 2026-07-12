@@ -188,7 +188,7 @@ theorem basis_monotone {A B : Set ℕ} (hA : isAdditiveBasis2 A) (hAB : A ⊆ B)
   intro a ha b hb hab
   exact hn a (hAB ha) b (hAB hb) hab
 
-/--
+/- 
 **Minimal Bases are Thin:**
 A minimal basis cannot have too many redundant elements.
 -/
@@ -210,7 +210,7 @@ The set {1, 2, 4, 8, 16, ...} = {2^n : n ∈ ℕ} is NOT a basis of order 2.
 -/
 def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2 ^ k}
 
-/--
+/- 
 **Example: Complement of Sparse Set**
 If A = ℕ \ S where S is sparse enough, then A is a basis of order 2.
 -/
@@ -227,12 +227,12 @@ axiom disjoint_bases_exist :
 ## Part VIII: Why the Problem is Hard
 -/
 
-/--
+/- 
 **Challenge 1:**
 The Härtter-Nathanson examples show that bases without minimal sub-bases exist.
 But those examples may not arise from unions of disjoint bases.
 -/
-/--
+/- 
 **Challenge 2:**
 The disjointness condition is restrictive. When A₁ and A₂ are disjoint,
 cross-sums a₁ + a₂ (with a₁ ∈ A₁, a₂ ∈ A₂) are "new" representations.

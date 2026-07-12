@@ -120,9 +120,9 @@ def exactBound (n : ℕ) : ℕ :=
 The behavior differs for small n.
 -/
 
-/-- For n ≤ 5, all edges can avoid monochromatic triangles.
+/-  For n ≤ 5, all edges can avoid monochromatic triangles.
     This is because K_5 has a 2-coloring with no mono triangle. -/
-/-- For n = 6, exactly 10 edges can avoid mono triangles.
+/-  For n = 6, exactly 10 edges can avoid mono triangles.
     R(3,3) = 6 means K_6 must have a mono triangle. -/
 /-- Ramsey number R(3,3) = 6. -/
 axiom ramsey_3_3 : ∀ c : EdgeColoring 6, IsSymmetricColoring c →
@@ -139,13 +139,13 @@ axiom keevash_sudakov_main (n : ℕ) (hn : n ≥ 7)
     (c : EdgeColoring n) (hc : IsSymmetricColoring c) :
     countEdgesNotInMono c ≤ n^2 / 4
 
-/-- The bound is tight: there exist colorings achieving it. -/
+/-  The bound is tight: there exist colorings achieving it. -/
 /-- The extremal construction: balanced complete bipartite coloring. -/
 def balancedBipartiteColoring (n : ℕ) : EdgeColoring n :=
   fun i j => if i.val < n / 2 ∧ j.val ≥ n / 2 then true else
              if i.val ≥ n / 2 ∧ j.val < n / 2 then true else false
 
-/-- The bipartite coloring achieves the bound. -/
+/-  The bipartite coloring achieves the bound. -/
 /- ## Part VII: Connection to Ramsey Theory
 
 This problem is closely related to R(3,3).
@@ -165,15 +165,15 @@ theorem edge_partition (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring 
     push_neg at h
     exact ⟨hij, h⟩
 
-/-- The edges not in mono triangles form a bipartite-like structure. -/
+/-  The edges not in mono triangles form a bipartite-like structure. -/
 /- ## Part VIII: Pyber's Covering Result
 
 A related result on covering edges with mono cliques.
 -/
 
-/-- **Pyber (1986)**: The edges of any 2-colored K_n can be covered
+/-  **Pyber (1986)**: The edges of any 2-colored K_n can be covered
     by at most ⌊n²/4⌋ + 2 monochromatic cliques. -/
-/-- Erdős-Rousseau-Schelp: Asymptotic version for large n. -/
+/-  Erdős-Rousseau-Schelp: Asymptotic version for large n. -/
 /-- Complete solution combining all cases. -/
 axiom keevash_sudakov_complete (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :
     countEdgesNotInMono c ≤ exactBound n

@@ -235,8 +235,8 @@ theorem IsAdmissible_mono_t {A : Finset ℕ} {N t t' : ℕ} (h : t ≤ t')
 /-- The set of achievable cardinalities is nonempty (∅ is always admissible). -/
 theorem f_set_nonempty (N t : ℕ) :
     {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t}.Nonempty :=
-  ⟨0, ∅, rfl, ⟨fun _ h => absurd h (Finset.not_mem_empty _),
-    fun _ _ h => absurd h (Finset.not_mem_empty _)⟩⟩
+  ⟨0, ∅, rfl, ⟨fun _ h => absurd h (Finset.notMem_empty _),
+    fun _ _ h => absurd h (Finset.notMem_empty _)⟩⟩
 
 /-- The set of achievable cardinalities is bounded above by N. -/
 theorem f_set_bddAbove (N t : ℕ) :

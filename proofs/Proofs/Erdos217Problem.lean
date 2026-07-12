@@ -64,12 +64,12 @@ axiom example_n_eq_4 : ∃ P : PointConfig 4,
 axiom pomerance_n_eq_5 : ∃ P : PointConfig 5,
     NoThreeCollinear 5 P ∧ HasTriangularMultiplicity 5 P
 
-/-- Palásti: configurations exist for all n ≤ 8. -/
+/-  Palásti: configurations exist for all n ≤ 8. -/
 /-
 ## Part III: Erdős's Conjecture
 -/
 
-/--
+/- 
 **Erdős's Conjecture (OPEN)**: For all sufficiently large n, no such
 configuration exists. The property should fail eventually.
 -/

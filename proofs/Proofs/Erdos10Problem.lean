@@ -49,7 +49,7 @@ noncomputable def Set.lowerDensity (S : Set ℕ) : ℝ :=
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #10 (Open).**
+/-  **Erdős Problem #10 (Open).**
 Is there some k such that every integer > 1 is the sum of a prime and
 at most k powers of 2?
 
@@ -58,32 +58,32 @@ arbitrarily large integers not so representable. -/
 
 /- ## Gallagher's Density Theorem -/
 
-/-- **Gallagher (1975).** For any ε > 0 there exists k(ε) such that the
+/-  **Gallagher (1975).** For any ε > 0 there exists k(ε) such that the
 set of integers representable as a prime plus at most k(ε) powers of 2
 has lower density at least 1 − ε. -/
 
 /- ## Granville–Soundararajan Conjecture -/
 
-/-- **Granville–Soundararajan (1998) — Odd Part.**
+/-  **Granville–Soundararajan (1998) — Odd Part.**
 Every odd integer > 1 is the sum of a prime and at most 3 powers of 2. -/
 
-/-- **Granville–Soundararajan (1998) — Even Part.**
+/-  **Granville–Soundararajan (1998) — Even Part.**
 Every even integer ≥ 2 is the sum of a prime and at most 4 powers of 2. -/
 
 /- ## Counterexample to k = 3 for Even Integers -/
 
-/-- **Grechuk's observation.** The number 1117175146 is not the sum of
+/-  **Grechuk's observation.** The number 1117175146 is not the sum of
 a prime and at most 3 powers of 2. This shows that the Granville–
 Soundararajan conjecture cannot be extended to all integers with k = 3. -/
 
 /- ## Infinitely Many Exceptions for k = 2 -/
 
-/-- There are infinitely many even integers that are not the sum of a
+/-  There are infinitely many even integers that are not the sum of a
 prime and 2 powers of 2. This follows from covering congruence arguments. -/
 
 /- ## Conjectured Infinitely Many Exceptions for k = 3 -/
 
-/-- It is conjectured (following Grechuk's observation and parity arguments)
+/-  It is conjectured (following Grechuk's observation and parity arguments)
 that there are infinitely many even integers not the sum of a prime and
 at most 3 powers of 2. -/
 

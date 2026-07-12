@@ -95,8 +95,8 @@ def Erdos803Conjecture : Prop :=
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       vertexCount V ≥ N →
       HasLogDensity G →
-      ∃ (W : Type*) [Fintype W] [DecidableEq W],
-      ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
+      ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W),
+      ∃ (H : SimpleGraph W) (_ : DecidableRel H.Adj),
       ∃ (f : W ↪ V),
         (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
         vertexCount W = m ∧
@@ -105,7 +105,7 @@ def Erdos803Conjecture : Prop :=
 
 /- ##Alon's Counterexample (2008) -/
 
-/-- Alon's theorem (2008): The conjecture is FALSE. For every D > 1 and
+/-  Alon's theorem (2008): The conjecture is FALSE. For every D > 1 and
 large n, there exists a graph G with n vertices and ≥ n log n edges such
 that any D-balanced subgraph H has ≤ m√(log m) + log D edges. -/
 /-- The conjecture is false: Alon's counterexample applies for D = 2. -/
@@ -122,15 +122,15 @@ axiom erdos_simonovits_polynomial :
       ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
         vertexCount V ≥ N →
         (edgeCount G : ℝ) ≥ (vertexCount V : ℝ)^(1 + c) →
-        ∃ (W : Type*) [Fintype W] [DecidableEq W],
-        ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
+        ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W),
+        ∃ (H : SimpleGraph W) (_ : DecidableRel H.Adj),
         ∃ (f : W ↪ V),
           (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
           vertexCount W = m ∧
           IsDBalanced H D ∧
           (edgeCount H : ℝ) ≥ (m : ℝ)^(1 + c)
 
-/-- Janzer-Sudakov (2023): Best positive result for logarithmic density.
+/-  Janzer-Sudakov (2023): Best positive result for logarithmic density.
 Any graph with n log n edges contains a O(1)-balanced subgraph on m
 vertices with m√(log m)/(log log m)^(3/2) edges. -/
 /- ##Summary -/
@@ -147,8 +147,8 @@ theorem erdos_803_summary :
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           vertexCount V ≥ N →
           (edgeCount G : ℝ) ≥ (vertexCount V : ℝ)^(1 + c) →
-          ∃ (W : Type*) [Fintype W] [DecidableEq W],
-          ∃ (H : SimpleGraph W) [DecidableRel H.Adj],
+          ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W),
+          ∃ (H : SimpleGraph W) (_ : DecidableRel H.Adj),
           ∃ (f : W ↪ V),
             (∀ w₁ w₂, H.Adj w₁ w₂ → G.Adj (f w₁) (f w₂)) ∧
             vertexCount W = m ∧

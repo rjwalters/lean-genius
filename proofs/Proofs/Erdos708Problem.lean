@@ -98,7 +98,7 @@ axiom g_three : g 3 = 4
 
 /- ## Part IV: Bounds on g(n) -/
 
-/-- **Trivial upper bound:**
+/-  **Trivial upper bound:**
 g(n) ≤ n² (very rough — the full interval always works). -/
 /-- **Erdős-Surányi lower bound:**
 g(n) ≥ (2 - o(1))n
@@ -133,9 +133,9 @@ Axiomatized since computing the optimal scaling requires optimization
 over all choices of A. -/
 axiom c (n : ℕ) : ℝ
 
-/-- **Known values of c_n:**
+/-  **Known values of c_n:**
 c₂ = 1 (interval of length max(a,b) suffices for 2 elements). -/
-/-- c₃ = √2 (need ~41% more length for 3 elements). -/
+/-  c₃ = √2 (need ~41% more length for 3 elements). -/
 /- ## Part VII: Examples -/
 
 /-- **Example: g(2) = 2**

@@ -144,12 +144,12 @@ S(N) = |{n ≤ N : n = a² + b² for some a, b}|.
 noncomputable def sumOfTwoSquaresCount (N : ℕ) : ℕ :=
   (Finset.range (N + 1)).filter (fun n => r2 n > 0) |>.card
 
-/--
+/- 
 **Landau's Theorem (1908):**
 S(N) ~ c · N / √(log N) where c = 1/√2 · ∏_{p≡3 mod 4} (1-1/p²)^{-1/2}.
 The density of sums of two squares decays like (log N)^{-1/2}.
 -/
-/--
+/- 
 **Why Landau Matters:**
 For a Sidon set A of squares, each sum a² + b² must be distinct.
 Since sums of two squares are sparse (density (log N)^{-1/2}),
@@ -159,7 +159,7 @@ this constrains |A|.
 ## Part VI: Probabilistic Method
 -/
 
-/--
+/- 
 **Random Construction (Alon-Erdős):**
 A random subset of squaresUpTo N with density p yields expected
 |A| ~ pN elements, with ~p²N² pairwise sums.
@@ -178,7 +178,7 @@ Refined counting gives α = 2/3.
 ## Part VII: Upper Bound Analysis
 -/
 
-/--
+/- 
 **Upper Bound Proof Sketch:**
 If A ⊆ squaresUpTo N has |A| = m, then A has m(m+1)/2 pairwise sums.
 Each sum ≤ 2N² and is a sum of two squares.

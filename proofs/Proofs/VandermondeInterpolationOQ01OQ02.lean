@@ -116,7 +116,7 @@ theorem evalNodes_injective (hv : Function.Injective v) :
 /-- **Existence (concrete form).** For any target values `r` there is a
 polynomial of degree `< n` interpolating the data — the Lagrange interpolant. -/
 theorem exists_eval_eq (hv : Function.Injective v) (r : Fin n → F) :
-    ∃ p : F[X], p.degree < (n : ℕ) ∧ ∀ j, p.eval (v j) = r j := by
+    ∃ p : F(_ : X), p.degree < (n : ℕ) ∧ ∀ j, p.eval (v j) = r j := by
   refine ⟨interp v r, ?_, fun j => ?_⟩
   · have h := Lagrange.degree_interpolate_lt (s := univ) (v := v) (r := r) hv.injOn
     rwa [card_univ_fin] at h

@@ -74,22 +74,22 @@ f(n) > √(2n)
 axiom erdos_szekeres_lower (n : ℕ) (hn : n ≥ 1) :
     f n > Real.sqrt (2 * n)
 
-/--
+/- 
 **Erdős-Szekeres (1959) growth:**
 lim f(n)^{1/n} = 1
 -/
 
-/--
+/- 
 **Erdős probabilistic bound:**
 log f(n) ≪ n^{1-c} for some c > 0
 -/
 
-/--
+/- 
 **Atkinson (1961):**
 log f(n) ≪ n^{1/2} log n
 -/
 
-/--
+/- 
 **Odlyzko (1982):**
 log f(n) ≪ n^{1/3} (log n)^{4/3}
 -/
@@ -202,7 +202,7 @@ When we require a₁ < a₂ < ... < aₙ instead of ≤.
 noncomputable def fDistinct (n : ℕ) : ℝ :=
   sInf {maxOnUnitCircle a | a : Fin n → ℕ, Function.Injective a}
 
-/--
+/- 
 **Bourgain-Chang (2018):**
 log f*(n) ≪ (n log n)^{1/2} log log n
 -/
@@ -218,7 +218,7 @@ For a set A of n integers, find θ minimizing ∑_{a ∈ A} cos(aθ).
 def chowlaMinimum (A : Finset ℤ) : ℝ :=
   sInf {∑ a ∈ A, Real.cos (a * θ) | θ : ℝ}
 
-/--
+/- 
 **Atkinson's observation:**
 If for any set A of n integers there exists θ with ∑_{a ∈ A} cos(aθ) < -Mₙ,
 then log f*(n) ≪ Mₙ log n.
@@ -243,7 +243,7 @@ theorem product_at_root_of_unity (a : Fin n → ℕ) (k : ℕ) (hk : k ≥ 1)
   rw [show a i = k * (a i / k) + a i % k from (Nat.div_add_mod (a i) k).symm,
       pow_add, pow_mul, hz, one_pow, one_mul]
 
-/--
+/- 
 **Lower bound at primitive root:**
 There exists a root of unity where the product is not too small.
 -/
@@ -252,7 +252,7 @@ There exists a root of unity where the product is not too small.
 ## Part VIII: Summary of Bounds
 -/
 
-/--
+/- 
 **Timeline of bounds on log f(n):**
 
 1959 Erdős-Szekeres: f(n) > √(2n), so log f(n) > (1/2) log(2n)
@@ -262,7 +262,7 @@ There exists a root of unity where the product is not too small.
 1996 Belov-Konyagin: log f(n) ≪ (log n)^4  [BEST UPPER]
 -/
 
-/--
+/- 
 **Gap between bounds:**
 Lower: log f(n) ≥ (1/2) log n  (from f(n) > √(2n))
 Upper: log f(n) ≤ C (log n)^4

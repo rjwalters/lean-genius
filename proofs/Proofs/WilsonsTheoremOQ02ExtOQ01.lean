@@ -20,7 +20,7 @@ groups**, answering OQ-01. The headline statement is the classical
 ## Main results
 - `prod_eq_one_of_two_torsion_card_ge_three`: `|S| ≥ 3 ⟹ ∏ G = 1`
   (the two-involution trick, fully general — the direct OQ-01 answer).
-- `prod_eq_one_of_card_ne_two`: `|S| ≠ 2 ⟹ ∏ G = 1` (folds in the trivial
+- `prod_eq_one_of_card_ne_two`: `|S| ≠ 2 ⟹ ∏ G = 1` (folds ∈ the trivial
   `|S| ∈ {0,1}` cases).
 - `prod_eq_unique_involution`: a unique involution `t ⟹ ∏ G = t`.
 - `miller_prod`: the full Miller disjunction.
@@ -82,7 +82,7 @@ theorem prod_eq_one_of_two_torsion_card_ge_three
     rw [Finset.nonempty_iff_ne_empty]; intro hempty
     have : S ⊆ {1} := by
       intro x hx; by_contra hxne
-      exact Finset.not_mem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, hxne⟩)
+      exact Finset.notMem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, hxne⟩)
     have := Finset.card_le_card this; simp at this; omega
   obtain ⟨c, hc_mem⟩ := hS_sub1_nonempty
   have hc_in_S : c ∈ S := (Finset.mem_sdiff.mp hc_mem).1
@@ -94,7 +94,7 @@ theorem prod_eq_one_of_two_torsion_card_ge_three
     have : S ⊆ {1, c} := by
       intro x hx; by_contra hxne
       simp only [Finset.mem_insert, Finset.mem_singleton] at hxne; push_neg at hxne
-      exact Finset.not_mem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, by
+      exact Finset.notMem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, by
         simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact hxne⟩)
     have := Finset.card_le_card this
     have : ({1, c} : Finset G).card ≤ 2 := Finset.card_insert_le _ _

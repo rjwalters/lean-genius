@@ -180,11 +180,11 @@ This gives infinitely many n with exactly 4 representations.
 def FourRepFamily (a b : ℕ) (ha : a ≥ 2) (hb : b ≥ 2) : ℕ :=
   2 ^ (a - 1) + 3 ^ b + 2 ^ (a - 1)
 
-/--
+/- 
 **The four representations agree:**
 All four formulas give the same n.
 -/
-/--
+/- 
 **Infinitely many with 4 reps:**
 -/
 /-

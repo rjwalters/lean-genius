@@ -153,7 +153,7 @@ Erdős and Sárközy proved a weaker bound: g_3(n) ≫ 3^n / n^{O(1)}.
 This is the polynomial-factor approximation to the full conjecture.
 -/
 
-/-- **Erdős-Sárközy Theorem**: g_3(n) ≫ 3^n / n^{O(1)}.
+/-  **Erdős-Sárközy Theorem**: g_3(n) ≫ 3^n / n^{O(1)}.
 
 There exists a constant O > 0 such that 3^n / n^O = O(g_3(n)).
 This is a partial result toward the main conjecture. -/

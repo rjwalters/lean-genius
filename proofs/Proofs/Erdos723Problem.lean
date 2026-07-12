@@ -60,7 +60,7 @@ def PrimePowerConjecture : Prop :=
 
 /- ## Existence for Prime Power Orders (Solved) -/
 
-/--
+/- 
 **Classical Result**: Projective planes exist for every prime power order.
 
 For a prime power q = p^k, the projective plane PG(2, q) can be constructed
@@ -69,7 +69,7 @@ and lines are 2-dimensional subspaces.
 -/
 /- ## Verified for Small Orders -/
 
-/--
+/- 
 The Prime Power Conjecture has been verified for all orders n ≤ 11.
 
 For n = 1, 2, 3, 4, 5, 7, 8, 9, 11 (prime powers): planes exist.
@@ -95,7 +95,7 @@ axiom bruck_ryser :
 
 /- ## The Lam Result for Order 10 -/
 
-/--
+/- 
 **Lam's Theorem (1997)**: There is no projective plane of order 10.
 
 This was proved by a massive computer search, which took over a decade of

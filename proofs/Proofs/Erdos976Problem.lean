@@ -70,11 +70,11 @@ def F_f (f : Polynomial ℤ) (n : ℕ) : ℕ :=
 ## Part II: Known Lower Bounds
 -/
 
-/--
+/- 
 **Nagell-Ricci bound (1922):**
 F_f(n) ≫ n log n for any irreducible f of degree ≥ 2.
 -/
-/--
+/- 
 **Erdős bound (1952):**
 F_f(n) ≫ n(log n)^{log log log n}.
 Improved the Nagell-Ricci bound using sieve methods.
@@ -115,7 +115,7 @@ def conjecture_degree_growth (f : Polynomial ℤ) : Prop :=
 ## Part IV: Upper Bounds
 -/
 
-/--
+/- 
 **Trivial upper bound:**
 F_f(n) ≤ max_{1≤m≤n} |f(m)| ≈ n^d for polynomial of degree d.
 -/

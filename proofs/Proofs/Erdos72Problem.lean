@@ -109,7 +109,7 @@ def Erdos72Statement : Prop :=
 
 /- ## Part V: Known Results (Axiomatized) -/
 
-/-- **Bollobás (1977)**
+/-  **Bollobás (1977)**
 
     If A is an infinite arithmetic progression containing even numbers,
     then A is strongly unavoidable.
@@ -117,7 +117,7 @@ def Erdos72Statement : Prop :=
     Note: Arithmetic progressions have positive density, so this doesn't
     directly solve the problem, but shows the cycle-forcing phenomenon.
 -/
-/-- **Verstraëte (2005)**
+/-  **Verstraëte (2005)**
 
     Non-constructively proved that Erdős Problem #72 has an affirmative answer.
     Some density-0 set A exists with the required property.
@@ -172,7 +172,7 @@ theorem powersOfTwo_all_even (n : ℕ) (hn : n ∈ powersOfTwo) (hn_pos : n > 0)
 noncomputable def optimalThreshold (A : Set ℕ) : ℝ :=
   sInf {c : ℝ | c > 0 ∧ isUnavoidable A c}
 
-/-- Liu-Montgomery gives some explicit bound for powers of 2. -/
+/-  Liu-Montgomery gives some explicit bound for powers of 2. -/
 /-- Finding the exact optimal threshold for powers of 2 remains open. -/
 def openQuestion_optimal_threshold : Prop :=
   ∃ c : ℝ, optimalThreshold powersOfTwo = c ∧ c < 100

@@ -189,11 +189,11 @@ theorem max_representable_le_harmonic (N k : ℕ) (hk : IsRepresentable N k) :
 ## Part VI: Asymptotic Bounds
 -/
 
-/--
+/- 
 **Harmonic-Logarithm Relation:**
 H_N = log N + γ + O(1/N), where γ ≈ 0.5772 is Euler-Mascheroni.
 -/
-/--
+/- 
 **Trivial Upper Bound on F(N):**
 F(N) ≤ ⌊log N⌋ + 2 for all N ≥ 1.
 
@@ -217,7 +217,7 @@ axiom yokota_lower_bound_1997 (N : ℕ) (hN : N ≥ 10) :
 ## Part VIII: Croot's Result (1999)
 -/
 
-/--
+/- 
 **Croot's Threshold (1999):**
 Every integer k ≤ H_N - (9/2 + o(1))(log log N)²/log N is representable.
 
@@ -227,7 +227,7 @@ This gives a precise characterization of which integers are representable.
 ## Part IX: Yokota's Refined Bound (2002)
 -/
 
-/--
+/- 
 **Yokota's Refined Lower Bound (2002):**
 F(N) ≥ log N + γ - (π²/3 + o(1))(log log N)² / log N.
 
@@ -258,7 +258,7 @@ theorem erdos_309_answer :
     -- Follows from yokota_lower_bound_1997
     sorry
 
-/--
+/- 
 **Asymptotic Characterization:**
 F(N) ~ log N + γ as N → ∞.
 -/
@@ -286,7 +286,7 @@ def egyptianFractionProperty : Prop :=
 ## Part XII: Connection to Harmonic Series
 -/
 
-/--
+/- 
 **Harmonic Series Divergence:**
 The harmonic series ∑_{n=1}^{∞} 1/n diverges, which implies H_N → ∞.
 This means more integers become representable as N grows.

@@ -105,7 +105,7 @@ This is the specific example in Erdős's question.
 -/
 noncomputable def f_example : Polynomial ℤ := X^4 + 2
 
-/--
+/- 
 **n⁴ + 2 is irreducible:**
 This follows from Eisenstein's criterion with p = 2.
 -/
@@ -126,7 +126,7 @@ noncomputable def powerFreeDensity (f : Polynomial ℤ) (k : ℕ) (x : ℕ) : �
 ## Part IV: Erdős's Result (1953)
 -/
 
-/--
+/- 
 **Erdős 1953:**
 If f is an irreducible polynomial of degree d > 2 with d ≠ 2^l, then
 there are infinitely many n such that f(n) is (d-1)-power-free.
@@ -165,7 +165,7 @@ theorem first_question_yes :
 ## Part VI: Heath-Brown and Browning on (d-2)-Power-Free
 -/
 
-/--
+/- 
 **Heath-Brown 2006:**
 For k ≥ 10, there are infinitely many n with f(n) being (k-2)-power-free.
 -/
@@ -206,7 +206,7 @@ The question falls outside the range k ≥ 9 covered by Browning.
 def squarefree_conjecture_n4_plus_2 : Prop :=
   ∀ N : ℕ, ∃ n : ℕ, n > N ∧ IsSquarefree ((n^4 + 2 : ℤ).natAbs)
 
-/--
+/- 
 **Status: OPEN**
 The conjecture is not proven or disproven.
 -/
@@ -226,7 +226,7 @@ axiom n4_plus_2_cubefree :
 ## Part VIII: Related Problems
 -/
 
-/--
+/- 
 **Related open problems mentioned by Erdős:**
 - Does 2ⁿ ± 1 represent infinitely many k-th power-free integers?
 - Does n! ± 1 represent infinitely many k-th power-free integers?

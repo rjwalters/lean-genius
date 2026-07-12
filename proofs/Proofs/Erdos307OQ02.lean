@@ -29,7 +29,7 @@ namespace Erdos307OQ02
 
 /-- Sum of reciprocals of elements in a finite set. -/
 noncomputable def reciprocalSum (S : Finset ℕ) : ℚ :=
-  ∑ n in S, (n : ℚ)⁻¹
+  ∑ n ∈ S, (n : ℚ)⁻¹
 
 /-- Product of two reciprocal sums. -/
 noncomputable def reciprocalProduct (P Q : Finset ℕ) : ℚ :=
@@ -185,8 +185,8 @@ theorem one_helps_balance {P Q : Finset ℕ}
     reciprocalSum P > 1 := by
   unfold reciprocalSum
   -- Split P = {1} ∪ (P \ {1})
-  have h_split : ∑ n in P, (n : ℚ)⁻¹ =
-      (1 : ℚ)⁻¹ + ∑ n in P.erase 1, (n : ℚ)⁻¹ := by
+  have h_split : ∑ n ∈ P, (n : ℚ)⁻¹ =
+      (1 : ℚ)⁻¹ + ∑ n ∈ P.erase 1, (n : ℚ)⁻¹ := by
     rw [← Finset.add_sum_erase P _ h1P]
   rw [h_split]
   simp only [inv_one]
@@ -196,7 +196,7 @@ theorem one_helps_balance {P Q : Finset ℕ}
     rw [Finset.erase_nonempty]
     exact ⟨h1P, Finset.one_lt_card.mp hP_nonempty⟩
   -- Each term 1/n ≥ 0, and there's at least one positive term
-  have h_pos : 0 < ∑ n in P.erase 1, (n : ℚ)⁻¹ := by
+  have h_pos : 0 < ∑ n ∈ P.erase 1, (n : ℚ)⁻¹ := by
     apply Finset.sum_pos
     · intro n hn
       have : n ≠ 0 := by

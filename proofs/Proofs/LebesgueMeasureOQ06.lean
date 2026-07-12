@@ -552,7 +552,7 @@ private lemma evalWord_nonempty_anyInv (l : List (Bool × Bool))
 -- PARTIAL PROOF: Rotation matrices defined and shown orthogonal.
 -- LinearIsometryEquivs constructed. orbit_ne proved via inductive encoding in ℤ[√2].
 theorem hausdorff_free_subgroup :
-    ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
+    ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ(_ : ℝ) EuclideanSpace ℝ (Fin 3)),
     Function.Injective
       (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)) := by
   -- Trig identity: cos θ = 1/3, sin θ = 2√2/3, where θ = arccos(1/3)

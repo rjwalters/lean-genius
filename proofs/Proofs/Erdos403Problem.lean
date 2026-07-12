@@ -41,7 +41,7 @@ Sums of distinct factorials and their divisibility properties.
 **Sum of Distinct Factorials:**
 Given a finite set S of natural numbers, compute Σₐ∈S a!
 -/
-def sumFactorials (S : Finset ℕ) : ℕ := ∑ a in S, a.factorial
+def sumFactorials (S : Finset ℕ) : ℕ := ∑ a ∈ S, a.factorial
 
 /--
 **Strictly Increasing Sequence:**
@@ -140,7 +140,7 @@ The largest k such that 2^k divides n.
 def twoAdicValuation (n : ℕ) : ℕ :=
   if n = 0 then 0 else (n.factorization 2)
 
-/--
+/- 
 **Lin's 2-adic Bound:**
 If S is a set of distinct positive integers containing 2, then
 the 2-adic valuation of Σₐ∈S a! is at most 254.
@@ -148,7 +148,7 @@ the 2-adic valuation of Σₐ∈S a! is at most 254.
 This is the key technical result.
 -/
 
-/--
+/- 
 **Corollary: 2^m Bound**
 If 2^m = Σₐ∈S a! with 2 ∈ S, then m ≤ 254.
 
@@ -197,7 +197,7 @@ theorem three_solution_m3 : sumFactorials {1, 2, 4} = 3 ^ 3 := by
 theorem three_solution_m6 : sumFactorials {1, 2, 3, 6} = 3 ^ 6 := by
   native_decide
 
-/--
+/- 
 **Lin's Theorem for Powers of 3:**
 The equation 3^m = Σ aᵢ! has exactly 5 solutions: m ∈ {0, 1, 2, 3, 6}.
 -/
@@ -208,12 +208,12 @@ The equation 3^m = Σ aᵢ! has exactly 5 solutions: m ∈ {0, 1, 2, 3, 6}.
 Key insight: Factorial growth dominates exponential growth.
 -/
 
-/--
+/- 
 **Factorial Growth Dominates:**
 For large enough a, a! > 2^(a+c) for any constant c.
 -/
 
-/--
+/- 
 **Few Terms Possible:**
 If 2^m = Σₐ∈S a! and max(S) ≥ 8, then |S| is bounded.
 
@@ -221,7 +221,7 @@ Since 8! = 40320 > 2^15, large factorials severely limit the number of terms
 that can sum to a power of 2.
 -/
 
-/--
+/- 
 **Upper Bound on Maximum Element:**
 If 2^m = Σₐ∈S a!, then max(S) ≤ some explicit bound.
 
@@ -244,13 +244,13 @@ Axiomatized since computing exact values requires deep number-theoretic analysis
 noncomputable def maxPrimePowerDiv (a : ℕ) (p : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ S : Finset ℕ, a ∈ S ∧ p ^ k ∣ sumFactorials S }
 
-/--
+/- 
 **Lin's Bound for f(2,2):**
 f(2,2) ≤ 254 where f(a,p) is the maximum k such that p^k divides
 a sum of distinct factorials containing a!.
 -/
 
-/--
+/- 
 **Problem 404 Connection:**
 The study of f(a,p) generalizes Problem 403.
 

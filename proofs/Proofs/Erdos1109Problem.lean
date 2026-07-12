@@ -128,13 +128,13 @@ noncomputable def f (N : ℕ) : ℕ :=
 ## Part IV: Erdős-Sárközy Bounds (1987)
 -/
 
-/--
+/- 
 **Erdős-Sárközy Lower Bound (1987):**
 f(N) ≫ log N
 
 Construction: A set of size log N can be found with squarefree sumset.
 -/
-/--
+/- 
 **Erdős-Sárközy Upper Bound (1987):**
 f(N) ≪ N^{3/4} log N
 -/
@@ -200,7 +200,7 @@ This asks whether f(N) is bounded by a polynomial in log N.
 def question2_polylogarithmic : Prop :=
   ∃ k : ℕ, ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 → (f N : ℝ) ≤ C * (Real.log N)^(k : ℝ)
 
-/--
+/- 
 **Erdős-Sárközy Conjecture:**
 The lower bound is closer to the truth, i.e., f(N) is polylogarithmic.
 -/
@@ -208,7 +208,7 @@ The lower bound is closer to the truth, i.e., f(N) is polylogarithmic.
 ## Part VIII: Related Problems
 -/
 
-/--
+/- 
 **Connection to Problem #1103:**
 The infinite analogue asks for the minimum growth rate of a sequence
 a₁ < a₂ < ⋯ such that all a_i + a_j are squarefree.
@@ -1098,7 +1098,7 @@ theorem mod_9_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
   -- (image.image g).card ≤ 4 since range is {1,2,3,4}.
   -- For each val v in image of g, the preimage in the original image has card ≤ 1
   -- (since we can't have both v and 9-v).
-  -- So image.card = ∑_{v in image g} |preimage of v| ≤ 4 × 1 = 4.
+  -- So image.card = ∑_{v ∈ image g} |preimage of v| ≤ 4 × 1 = 4.
   -- But image.card ≥ 5. Contradiction.
 
   -- For now, we use a simpler approach: since we need ≥ 5 from {1,...,8},

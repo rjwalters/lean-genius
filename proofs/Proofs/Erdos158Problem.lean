@@ -61,7 +61,7 @@ axiom b2_one_iff_sidon {A : Set ℕ} : B2 1 A ↔ IsSidonSet A
 
 /- ## Main Results -/
 
-/--
+/- 
 **Erdős-Sárközy-Sós (1994)**: For infinite Sidon sets,
   liminf |A ∩ {1,...,N}| / N^{1/2} * (log N)^{1/2} < ∞.
 
@@ -108,7 +108,7 @@ theorem sidon_case_true {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) 
 
 /- ## Context: Why √N? -/
 
-/-- For a Sidon set A ⊆ {1,...,N}, we have |A| ≤ √N + O(N^{1/4}).
+/-  For a Sidon set A ⊆ {1,...,N}, we have |A| ≤ √N + O(N^{1/4}).
 
     This is because if a₁ + a₂ = b₁ + b₂ (with ordered pairs distinct),
     then we get different sums. The number of such sums is O(N),

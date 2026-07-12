@@ -197,7 +197,7 @@ theorem mt_runtime_via_lll (m : ℕ) (d : ℕ) (hd_pos : 0 < d) :
 -- SECTION IV: Comparison with Erdős Classical Bound
 -- ============================================================
 
-/-- Erdős 1963 allows families of size up to 2^{n-1} - 1 (from |F|·2 < 2^n).
+/-  Erdős 1963 allows families of size up to 2^{n-1} - 1 (from |F|·2 < 2^n).
     The constructive LLL allows up to ~2^{n-3}/n.
     For large n, the LLL bound is weaker by a factor of ~4n.
 

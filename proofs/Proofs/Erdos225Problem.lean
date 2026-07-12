@@ -282,7 +282,7 @@ theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :
 
 /- ## The Fejér-Riesz Theorem Connection -/
 
-/--
+/- 
 A non-negative trigonometric polynomial (one with f(θ) ≥ 0 for all θ)
 can be written as |g(θ)|² for some trigonometric polynomial g.
 This is the Fejér-Riesz theorem.

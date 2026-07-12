@@ -232,7 +232,7 @@ private lemma exists_finset_plane_card (n : ℕ) : ∃ S : Finset Plane, S.card 
       by_contra h; push_neg at h
       exact absurd (S.finite_toSet.subset fun x _ => Finset.mem_coe.mpr (h x))
         Set.infinite_univ
-    exact ⟨insert p S, by rw [Finset.card_insert_of_not_mem hp, hS]⟩
+    exact ⟨insert p S, by rw [Finset.card_insert_of_notMem hp, hS]⟩
 
 /-- For any n >= 1, at least one n-point extremal configuration exists.
     Proved: the set of achievable unit distance counts is nonempty and bounded,

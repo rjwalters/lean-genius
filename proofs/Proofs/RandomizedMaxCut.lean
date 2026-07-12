@@ -93,7 +93,7 @@ def ofAssignment {V : Type*} [DecidableEq V] [Fintype V] {G : SimpleGraph V}
       simp only [Finset.disjoint_iff_inter_eq_empty]
       ext v
       simp only [Finset.mem_inter, Finset.mem_filter, Finset.mem_univ, true_and,
-        Bool.not_eq_true, Finset.not_mem_empty, iff_false, not_and]
+        Bool.not_eq_true, Finset.notMem_empty, iff_false, not_and]
       intro h
       simp [h]
 

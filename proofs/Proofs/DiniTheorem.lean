@@ -111,7 +111,7 @@ theorem limitPow_not_continuousOn : ¬ ContinuousOn limitPow (Icc (0 : ℝ) 1) :
     simpa using (tendsto_const_nhds (x := (1 : ℝ))).sub h0
   have ha_within :
       Tendsto (fun k : ℕ => 1 - 1 / ((k : ℝ) + 1)) atTop (𝓝[Icc (0 : ℝ) 1] 1) :=
-    tendsto_nhdsWithin_iff.2 ⟨ha_tendsto, eventually_of_forall ha_mem⟩
+    tendsto_nhdsWithin_iff.2 ⟨ha_tendsto, Filter.Eventually.of_forall ha_mem⟩
   -- continuity would force `limitPow (aₖ) → limitPow 1 = 1`
   have h1mem : (1 : ℝ) ∈ Icc (0 : ℝ) 1 := mem_Icc.2 ⟨zero_le_one, le_refl 1⟩
   have hcomp :
@@ -135,7 +135,7 @@ theorem pow_not_tendstoUniformlyOn :
   intro h
   exact limitPow_not_continuousOn <|
     h.continuousOn <| Eventually.frequently <|
-      eventually_of_forall fun n => (pow_continuous n).continuousOn
+      Filter.Eventually.of_forall fun n => (pow_continuous n).continuousOn
 
 /-! ## Companion witness: `xⁿ` on `[0,1)` (compactness of the domain is necessary) -/
 

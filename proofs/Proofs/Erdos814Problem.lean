@@ -84,14 +84,14 @@ axiom sauermann_constant (k : ℕ) (hk : k ≥ 2) :
 Historical progression of results.
 -/
 
-/--
+/- 
 **Original EFRS Bound (1990):**
 Erdős, Faudree, Rousseau, and Schelp proved that a subgraph exists
 with at most n - cₖ√n vertices.
 
 This was the first quantitative result.
 -/
-/--
+/- 
 **Mousset-Noever-Skorić Improvement (2017):**
 Improved the bound to n - cₖ·n/log(n) vertices.
 
@@ -169,7 +169,7 @@ theorem edgeThreshold_two (n : ℕ) (hn : n ≥ 1) :
   simp only [edgeThreshold, Nat.choose]
   omega
 
-/--
+/- 
 **Extremal Graph:**
 The EFRS paper constructs graphs with exactly the threshold minus one edges
 that avoid minimum-degree-k subgraphs on (1-ε)n vertices.

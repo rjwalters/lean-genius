@@ -71,7 +71,7 @@ theorem nonTrilinear_mono {S T : Set (Fin 2 → ℝ)} (hST : S ⊆ T)
 
 /-- The empty set is non-trilinear -/
 theorem nonTrilinear_empty : NonTrilinear (∅ : Set (Fin 2 → ℝ)) :=
-  fun _ hp => absurd hp (Set.not_mem_empty _)
+  fun _ hp => absurd hp (Set.notMem_empty _)
 
 /-- A singleton set is non-trilinear -/
 theorem nonTrilinear_singleton (p : Fin 2 → ℝ) :
@@ -173,7 +173,7 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
       ext x; constructor
       · intro hx
         exact absurd (hA (hB (Finset.mem_coe.mpr hx))) (by simp [Set.iUnion_of_empty])
-      · exact fun hx => absurd hx (Finset.not_mem_empty _)
+      · exact fun hx => absurd hx (Finset.notMem_empty _)
     exact ⟨∅, by simp, by simp [hBe], nonTrilinear_empty⟩
   · -- If k > 0, apply pigeonhole to get ε = 1/k
     have hkpos : 0 < k := Nat.pos_of_ne_zero hk

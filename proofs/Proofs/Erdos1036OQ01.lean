@@ -62,7 +62,7 @@ def IsNonRamsey {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) (c : 
 
 /-- For every c > 0, there exist arbitrarily large non-Ramsey(c) graphs. -/
 axiom nonRamseyExistsTrue (c : ℝ) (hc : c > 0) (k : ℕ) :
-    ∃ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
     k ≤ Fintype.card V ∧ IsNonRamsey G c
 
 /-- Shelah's exponential lower bound: non-Ramsey(c) graphs have exponentially

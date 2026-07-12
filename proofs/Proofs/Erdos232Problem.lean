@@ -133,10 +133,10 @@ noncomputable def upperDensity (A : Set (EuclideanSpace ℝ (Fin 2))) : ℝ :=
     (MeasureTheory.volume (Metric.closedBall (0 : EuclideanSpace ℝ (Fin 2)) R)).toReal
   ) Filter.atTop
 
-/--
+/- 
 Upper density is always in [0, 1].
 -/
-/--
+/- 
 Monotonicity: if A ⊆ B then δ̄(A) ≤ δ̄(B).
 -/
 /-
@@ -150,14 +150,14 @@ The supremum of upper densities over all unit-distance-free measurable sets.
 noncomputable def maxDensity : ℝ :=
   sSup {d : ℝ | ∃ A : Set (EuclideanSpace ℝ (Fin 2)), IsUnitDistanceFree A ∧ upperDensity A = d}
 
-/--
+/- 
 This supremum is well-defined and bounded.
 -/
 /-
 ## Part VI: Trivial Upper Bound
 -/
 
-/--
+/- 
 **Trivial Bound: m₁ ≤ 1/2**
 
 For any unit vector u, the sets A and A + u must be disjoint.
@@ -185,7 +185,7 @@ theorem translation_disjoint (A : Set (EuclideanSpace ℝ (Fin 2)))
 ## Part VII: Lower Bounds (Constructions)
 -/
 
-/--
+/- 
 **Hexagonal Lattice Construction:**
 The union of open discs of radius 1/2 at a suitably spaced hexagonal lattice
 gives density π/(8√3) ≈ 0.2267.
@@ -258,7 +258,7 @@ The empty set has density 0.
 -/
 theorem empty_unitDistanceFree : IsUnitDistanceFree ∅ := by
   intro p q hp _ _
-  exact False.elim (Set.not_mem_empty p hp)
+  exact False.elim (Set.notMem_empty p hp)
 
 /--
 **Single Point Example:**
@@ -311,7 +311,7 @@ theorem unitDistanceFree_is_independent (A : Set (EuclideanSpace ℝ (Fin 2)))
   have h := hA p q hp hq hadj
   exact hne h
 
-/--
+/- 
 **Chromatic Number Connection:**
 If χ is the chromatic number of the plane (4 ≤ χ ≤ 7), then
 m₁ ≤ 1/χ would give an upper bound. Since m₁ ≤ 0.247 < 1/4, this is

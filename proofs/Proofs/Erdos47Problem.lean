@@ -99,7 +99,7 @@ We state the qualitative version as the main result.
 -/
 axiom bloom_theorem : ErdosConjecture47
 
-/--
+/- 
 **Bloom's quantitative bound:**
 There exists an absolute constant C such that if A ⊆ {1, …, N}
 and ∑ 1/a ≥ C · (log log log N / log log N) · log N, then
@@ -107,13 +107,13 @@ A contains a unit fraction subset.
 -/
 /- ## Part V: Liu–Sawhney Improvement -/
 
-/--
+/- 
 **Liu–Sawhney Improvement [LiSa24]:**
 The threshold can be improved to ∑ 1/a ≫ (log N)^{4/5 + o(1)}.
 -/
 /- ## Part VI: Pomerance's Optimality -/
 
-/--
+/- 
 **Pomerance's construction:**
 There exist sets A ⊆ {1, …, N} with ∑ 1/a ≫ (log log N)²
 that contain no unit fraction subset. This shows Erdős's guess

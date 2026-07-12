@@ -162,22 +162,22 @@ axiom mcgehee_pigno_smith_theorem : LittlewoodConjecture
 /-- The constant in Littlewood's conjecture. -/
 noncomputable def littlewoodConstant : ℝ := 1 / (4 * π)
 
-/-- Explicit version of the bound. -/
+/-  Explicit version of the bound. -/
 /-
 ## Part VI: Sharpness
 -/
 
-/-- The log N lower bound is essentially optimal. -/
+/-  The log N lower bound is essentially optimal. -/
 /-- Geometric progressions achieve the lower bound. -/
 def geometricProgression (N : ℕ) : Finset ℤ :=
   Finset.image (fun k => (k : ℤ)) (Finset.range N)
 
-/-- For arithmetic progressions, the bound is approximately log N. -/
+/-  For arithmetic progressions, the bound is approximately log N. -/
 /-
 ## Part VII: Hardy's Inequality Connection
 -/
 
-/-- Hardy's inequality (discrete form). -/
+/-  Hardy's inequality (discrete form). -/
 /-- The MPS proof uses Hardy's inequality in a crucial way. -/
 def hardyConnection : Prop :=
   -- McGehee-Pigno-Smith showed that Hardy's inequality implies
@@ -209,7 +209,7 @@ private lemma expTwoPiI_conj (n : ℤ) (θ : ℝ) :
          = ∑_{m,n} e(mθ)*e(-nθ) = ∑_{m,n} e((m-n)θ)    [ring computation] -/
 private lemma expSumNorm_sq_double (A : Finset ℤ) (θ : ℝ) :
     (expSumNorm A θ)^2 =
-      ∑ mn in A ×ˢ A, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - (mn.2 : ℝ)) * θ) := by
+      ∑ mn ∈ A ×ˢ A, Real.cos (2 * Real.pi * ((mn.1 : ℝ) - (mn.2 : ℝ)) * θ) := by
   -- Step 1: |S|^2 = (S * conj S).re
   have key : (expSumNorm A θ)^2 = (expSum A θ * starRingEnd ℂ (expSum A θ)).re := by
     rw [expSumNorm, Complex.sq_abs]
@@ -314,7 +314,7 @@ def flatPolynomialProblem : Prop :=
 noncomputable def weightedExpSum (A : Finset ℤ) (w : ℤ → ℂ) (θ : ℝ) : ℂ :=
   A.sum (fun n => w n * expTwoPiI (n * θ))
 
-/-- For unit weights, the L¹ norm is at least c log N. -/
+/-  For unit weights, the L¹ norm is at least c log N. -/
 /-- Generalization to higher-dimensional character sums. -/
 def higherDimensionalGeneralization : Prop :=
   -- Similar bounds exist for sums over ℤᵈ

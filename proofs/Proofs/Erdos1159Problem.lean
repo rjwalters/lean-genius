@@ -58,7 +58,7 @@ theorem empty_not_blocking_set {P L : Type*} [Membership P L] [Nonempty L] :
   intro h
   obtain ⟨l⟩ := ‹Nonempty L›
   obtain ⟨p, hp, _⟩ := h l
-  exact Set.not_mem_empty p hp
+  exact Set.notMem_empty p hp
 
 -- ## Part III: Structural Results (Proved from Mathlib)
 

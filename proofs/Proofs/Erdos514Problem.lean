@@ -172,7 +172,7 @@ noncomputable def pathLengthUpTo (γ : ℝ → ℂ) (R : ℝ) : ℝ :=
     (∀ i, Complex.abs (γ (t i)) ≤ R) ∧
     L = ∑ i : Fin n, Complex.abs (γ (t i.succ) - γ (t i.castSucc))}
 
-/--
+/- 
 **Part 2: Open Problem**
 Can we bound the path length in terms of M(r)?
 
@@ -200,7 +200,7 @@ def DominatesMaxModulusPower (f : ℂ → ℂ) (γ : ℝ → ℂ) : Prop :=
     Tendsto (fun t =>
       Complex.abs (f (γ t)) / (maxModulus f (Complex.abs (γ t))) ^ ε) atTop atTop
 
-/--
+/- 
 **Part 3: Open Problem**
 Does such a path exist for every transcendental entire f?
 -/
@@ -223,7 +223,7 @@ f(z) = sin(z) is transcendental entire.
 -/
 def sinFunction : ℂ → ℂ := Complex.sin
 
-/--
+/- 
 **Maximum Modulus of Exponential:**
 M(r) for e^z equals e^r (achieved on positive real axis).
 -/
@@ -246,7 +246,7 @@ noncomputable def orderOfGrowth (f : ℂ → ℂ) : ℝ :=
   sSup {ρ : ℝ | ∀ ε > 0, ∃ R : ℝ, R > 0 ∧ ∀ r > R,
     maxModulus f r ≤ Real.exp (r ^ (ρ + ε))}
 
-/--
+/- 
 **Finite Order:**
 An entire function has finite order if ρ < ∞.
 The exponential has order 1.
@@ -272,7 +272,7 @@ Axiomatized since Taylor coefficient extraction requires holomorphic function th
 noncomputable def centralIndex (f : ℂ → ℂ) (r : ℝ) : ℕ :=
   sSup {n : ℕ | ∀ m : ℕ, m ≠ n → maxModulus f r ≥ r ^ n}
 
-/--
+/- 
 **Wiman-Valiron Approximation:**
 Near the maximum modulus point, f behaves like z^ν(r).
 This suggests why a path achieving super-polynomial growth exists.

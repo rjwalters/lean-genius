@@ -209,15 +209,15 @@ theorem h_gt_3_at_11 : gcdPowerSeq 11 3 ≠ 1 := by native_decide
   analysis in Lean — not yet available in Mathlib for this specific h(n).
 -/
 
-/-- **Q2 (OPEN)**: Is h(n) unbounded? Specifically, does
+/-  **Q2 (OPEN)**: Is h(n) unbounded? Specifically, does
     lim inf h(n) = ∞? -/
-/-- **Q3 (OPEN)**: If p is the largest prime with (p-1)|n and p > n^ε,
+/-  **Q3 (OPEN)**: If p is the largest prime with (p-1)|n and p > n^ε,
     is h(n) = p? -/
 /-- The gcd fold value divides any individual term. -/
 private theorem fold_gcd_dvd_mem {S : Finset ℕ} {a : ℕ} (ha : a ∈ S) (f : ℕ → ℕ) :
     S.fold Nat.gcd 0 f ∣ f a := by
   induction S using Finset.cons_induction with
-  | empty => exact absurd ha (Finset.not_mem_empty _)
+  | empty => exact absurd ha (Finset.notMem_empty _)
   | cons b S' hb ih =>
     rw [Finset.fold_cons hb]
     rcases Finset.mem_cons.mp ha with rfl | ha'
