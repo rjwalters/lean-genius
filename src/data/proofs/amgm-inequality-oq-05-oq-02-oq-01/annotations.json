@@ -56,6 +56,18 @@
     "prerequisites": ["Real.finset_prod_rpow", "Finset.mul_sum"]
   },
   {
+    "id": "ann-classical-eq-of-const",
+    "proofId": "amgm-inequality-oq-05-oq-02-oq-01",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "insight",
+    "title": "classical_amgm_eq_of_const: the trivial converse recorded",
+    "content": "The easy half of the equality case, stated explicitly so callers do not have to re-derive it: if every xᵢ equals a common value c then the geometric and arithmetic means coincide. It is not proved from scratch — it is the `.mpr` direction of classical_amgm_eq_iff applied to the pairwise-equality proof `fun i j => (hc i).trans (hc j).symm` (xᵢ = c = xⱼ). Recording it separately makes the equality locus usable in both directions and documents that constancy is genuinely sufficient, not merely necessary.",
+    "mathContext": "$(\\forall i,\\ x_i = c) \\Rightarrow \\left(\\prod_i x_i\\right)^{1/n} = \\dfrac{\\sum_i x_i}{n}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["equality case", "sufficiency direction", "Eq.trans"],
+    "prerequisites": ["classical_amgm_eq_iff", "Iff.mpr"]
+  },
+  {
     "id": "ann-classical-lt",
     "proofId": "amgm-inequality-oq-05-oq-02-oq-01",
     "range": { "startLine": 154, "endLine": 163 },
