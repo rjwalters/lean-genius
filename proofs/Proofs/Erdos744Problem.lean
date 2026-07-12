@@ -455,6 +455,125 @@ theorem maxCut_mono {V : Type*} [Fintype V] [LinearOrder V]
     _ ≤ (Finset.univ : Finset (V → Bool)).sup' Finset.univ_nonempty (bichromaticEdges H) :=
         Finset.le_sup' (bichromaticEdges H) (Finset.mem_univ c)
 
+/-
+# Part 3c: The Erdős max-cut bound — every graph cuts at least half its edges
+
+The single most famous fact about the max-cut, due to Erdős himself: some
+2-coloring separates at least half of all edges, equivalently `edgeCount G ≤ 2 ·
+maxCut G`. Dually, at most half of the edges must be deleted to make `G`
+bipartite (`bipartitionNumber G ≤ maxCut G`).
+
+The proof is the classical averaging argument. Over all `2^{|V|}` colorings, a
+fixed edge `u v` is separated by exactly half of them — the involution flipping
+the color of `u` alone pairs the separating colorings with the non-separating
+ones (`card_colorings_cut`). Summing over edges (Fubini) shows the *average*
+bichromatic count is `edgeCount G / 2`, and the maximum is at least the average.
+Everything is `ℕ`-valued and axiom-free; we clear denominators to avoid division.
+-/
+
+/-- **Half of all colorings separate a fixed edge.** For `u ≠ v`, exactly half of
+the `2^{|V|}` two-colorings give `u` and `v` different colors:
+`2 · |{c | c u ≠ c v}| = |all colorings|`. The involution flipping the color of
+`u` alone is a bijection between the separating and non-separating colorings. -/
+theorem card_colorings_cut {V : Type*} [Fintype V] [LinearOrder V] (u v : V)
+    (huv : u ≠ v) :
+    2 * (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
+      = Fintype.card (V → Bool) := by
+  have hpart : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
+      + (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card
+      = Fintype.card (V → Bool) := by
+    rw [Finset.filter_card_add_filter_neg_card_eq_card]; rfl
+  have hcard : (Finset.univ.filter (fun c : V → Bool => c u ≠ c v)).card
+      = (Finset.univ.filter (fun c : V → Bool => ¬ c u ≠ c v)).card := by
+    apply Finset.card_bij'
+      (fun c _ => Function.update c u (!c u))
+      (fun c _ => Function.update c u (!c u))
+    · intro c hc
+      funext w; by_cases hw : w = u
+      · subst hw; simp only [Function.update_self, Bool.not_not]
+      · simp only [Function.update_of_ne hw]
+    · intro c hc
+      funext w; by_cases hw : w = u
+      · subst hw; simp only [Function.update_self, Bool.not_not]
+      · simp only [Function.update_of_ne hw]
+    · intro c hc
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+        Function.update_self, Function.update_of_ne (Ne.symm huv)] at hc ⊢
+      revert hc; cases c u <;> cases c v <;> decide
+    · intro c hc
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+        Function.update_self, Function.update_of_ne (Ne.symm huv)] at hc ⊢
+      revert hc; cases c u <;> cases c v <;> decide
+  omega
+
+/-- **The total bichromatic count over all colorings.** Summing the cut size over
+every 2-coloring double-counts each edge exactly `2^{|V|-1}` times; clearing the
+`½` this reads `2 · ∑_c bichromaticEdges G c = edgeCount G · |all colorings|`.
+This is the Fubini/averaging identity behind the max-cut bound. -/
+theorem two_mul_sum_bichromaticEdges {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    2 * (∑ c : V → Bool, bichromaticEdges G c)
+      = edgeCount G * Fintype.card (V → Bool) := by
+  set E : Finset (V × V) := Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ G.Adj p.1 p.2)
+    with hE
+  -- rewrite each cut count as a filter of the edge set E
+  have hbi : ∀ c : V → Bool,
+      bichromaticEdges G c = (E.filter (fun p => c p.1 ≠ c p.2)).card := by
+    intro c
+    unfold bichromaticEdges
+    rw [hE, Finset.filter_filter]
+    congr 1; ext p; simp only [Finset.mem_filter]; tauto
+  -- Fubini: swap the sum over colorings with the sum over edges
+  have hsum : (∑ c : V → Bool, bichromaticEdges G c)
+      = ∑ p ∈ E, (Finset.univ.filter (fun c : V → Bool => c p.1 ≠ c p.2)).card := by
+    simp only [hbi, Finset.card_filter]
+    rw [Finset.sum_comm]
+  rw [hsum, Finset.mul_sum]
+  -- each edge is separated by exactly half the colorings
+  have hterm : ∀ p ∈ E, 2 * (Finset.univ.filter (fun c : V → Bool => c p.1 ≠ c p.2)).card
+      = Fintype.card (V → Bool) := by
+    intro p hp
+    simp only [hE, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    exact card_colorings_cut p.1 p.2 (_root_.ne_of_lt hp.1)
+  rw [Finset.sum_congr rfl hterm, Finset.sum_const, smul_eq_mul, hE]
+  rfl
+
+/-- **Erdős's max-cut bound.** Every graph has a 2-coloring separating at least
+half of its edges: `edgeCount G ≤ 2 · maxCut G`. This is the foundational lower
+bound on the max-cut, proved by averaging over all colorings. -/
+theorem edgeCount_le_two_mul_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    edgeCount G ≤ 2 * maxCut G := by
+  have hpos : 0 < Fintype.card (V → Bool) := Fintype.card_pos
+  -- the average is at most the maximum, over all colorings
+  have hle : (∑ c : V → Bool, bichromaticEdges G c)
+      ≤ Fintype.card (V → Bool) * maxCut G := by
+    have := Finset.sum_le_card_nsmul (Finset.univ : Finset (V → Bool))
+      (bichromaticEdges G) (maxCut G)
+      (fun c _ => Finset.le_sup' (bichromaticEdges G) (Finset.mem_univ c))
+    simpa [Finset.card_univ, smul_eq_mul] using this
+  -- edgeCount · card = 2 · ∑ ≤ 2 · card · maxCut, then cancel card
+  have hchain : edgeCount G * Fintype.card (V → Bool)
+      ≤ (2 * maxCut G) * Fintype.card (V → Bool) := by
+    rw [← two_mul_sum_bichromaticEdges G]
+    calc 2 * (∑ c : V → Bool, bichromaticEdges G c)
+        ≤ 2 * (Fintype.card (V → Bool) * maxCut G) := by
+          exact Nat.mul_le_mul_left 2 hle
+      _ = (2 * maxCut G) * Fintype.card (V → Bool) := by ring
+  exact Nat.le_of_mul_le_mul_right hchain hpos
+
+/-- **At most half of the edges need deleting to make `G` bipartite.** Dual form
+of Erdős's max-cut bound: `bipartitionNumber G ≤ maxCut G`, i.e. the minimum
+number of edges whose removal makes `G` bipartite never exceeds the number the
+best cut separates. Immediate from `edgeCount_le_two_mul_maxCut` and the
+complementarity `bipartitionNumber G + maxCut G = edgeCount G`. -/
+theorem bipartitionNumber_le_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ maxCut G := by
+  have hcomp := bipartitionNumber_add_maxCut G
+  have hbound := edgeCount_le_two_mul_maxCut G
+  omega
+
 /--
 **The f_k(n) Function**
 
