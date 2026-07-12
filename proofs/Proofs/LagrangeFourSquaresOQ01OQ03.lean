@@ -328,6 +328,53 @@ theorem jacobiCount_eq_zero_iff (n : ℕ) : jacobiCount n = 0 ↔ n = 0 := by
   · rintro rfl
     exact jacobiCount_zero
 
+/-- **Jacobi's count never exceeds `8·σ` (0-axiom, general).** The `4 ∤ d` filter only
+removes divisors, so the filtered divisor-sum is bounded by the full one:
+`jacobiCount n ≤ 8·σ(n)` for every `n`.  Equality holds precisely in the "no `2²` in `n`"
+regime (`jacobiCount_of_not_four_dvd`); the gap opens exactly when `4 ∣ n`
+(`jacobiCount_lt_of_four_dvd`).  This is the uniform upper envelope that the convention
+guard `naive_sigma_fails` witnesses being strict at `n = 4`. -/
+theorem jacobiCount_le (n : ℕ) : jacobiCount n ≤ 8 * ∑ d ∈ n.divisors, d := by
+  unfold jacobiCount
+  refine Nat.mul_le_mul (le_refl 8) ?_
+  exact Finset.sum_le_sum_of_subset_of_nonneg
+    (Finset.filter_subset (fun d => ¬ 4 ∣ d) n.divisors) (fun i _ _ => Nat.zero_le i)
+
+/-- **The bound is strict exactly when `4 ∣ n` (0-axiom, general).** For `4 ∣ n` (`n ≠ 0`)
+the count falls strictly below the naive `8·σ(n)`: by the even-side recursion
+`jacobiCount_four_dvd`, the excluded `4 ∣ d` divisors contribute `32·σ(n/4) > 0`
+(the divisor `1` of `n/4` alone forces `σ(n/4) ≥ 1`).  So `jacobiCount n < 8·σ(n)`,
+quantifying the deficit as exactly `32·σ(n/4)` — e.g. `n = 4`: `24 < 56` with deficit
+`32 = 32·σ(1)`, the `naive_sigma_fails` witness. -/
+theorem jacobiCount_lt_of_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : n ≠ 0) :
+    jacobiCount n < 8 * ∑ d ∈ n.divisors, d := by
+  have H := jacobiCount_four_dvd h4 hn
+  have hn4 : n / 4 ≠ 0 := by
+    rw [Ne, Nat.div_eq_zero_iff]; push_neg
+    exact ⟨by norm_num, Nat.le_of_dvd (Nat.pos_of_ne_zero hn) h4⟩
+  have hpos : 1 ≤ ∑ e ∈ (n / 4).divisors, e :=
+    Finset.single_le_sum (f := fun d => d) (fun i _ => Nat.zero_le i)
+      (by rw [Nat.mem_divisors]; exact ⟨one_dvd _, hn4⟩)
+  omega
+
+/-- **Exact characterization of the naive-formula regime (0-axiom, general).** For every
+positive `n`, Jacobi's count equals the naive `8·σ(n)` *iff* `4 ∤ n`:
+
+    jacobiCount n = 8·σ(n)  ↔  ¬ 4 ∣ n     (n ≠ 0).
+
+The forward direction is `jacobiCount_lt_of_four_dvd` (a `4 ∣ n` would force a strict
+drop), the reverse is `jacobiCount_of_not_four_dvd`.  This is the sharp boundary the
+whole file organizes around: `jacobiCount_odd` and `jacobiCount_two_mul_odd_eq` live on
+the `¬4∣n` side (count `= 8·σ` of the odd part), while `jacobiCount_four_dvd` governs the
+complementary `4 ∣ n` side where the naive formula genuinely fails
+(`naive_sigma_fails`). -/
+theorem jacobiCount_eq_eight_sigma_iff {n : ℕ} (hn : n ≠ 0) :
+    jacobiCount n = 8 * ∑ d ∈ n.divisors, d ↔ ¬ 4 ∣ n := by
+  constructor
+  · intro heq h4
+    exact absurd heq (jacobiCount_lt_of_four_dvd h4 hn).ne
+  · exact jacobiCount_of_not_four_dvd
+
 /-- **Convention guard (0-axiom).** The naive formula `8·σ(n)` is WRONG for `n = 4`:
 `8·σ(4) = 8·(1+2+4) = 56`, whereas the true count is `r4 4 = 24`. Equivalently the
 `4 ∤ d` exclusion drops the divisor `d = 4`. This is exactly why the general formula

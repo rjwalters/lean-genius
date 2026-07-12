@@ -35,8 +35,8 @@
       }
     ],
     "assumptions": "The general Jacobi four-square theorem is NOT proved — it is a genuine Mathlib gap requiring either Hurwitz-quaternion order arithmetic or weight-2 modular forms (θ⁴∈M₂(Γ₀(4))), each ≫1000 LOC of absent number theory. This entry proves (a) a 0-axiom general lemma jacobiCount_odd (for odd n the 4∤d filter is vacuous, so jacobiCount n = 8·σ(n)), and (b) a machine-checked oracle jacobi_oracle : ∀ n∈[1,24], r₄ n = jacobiCount n, discharged by native_decide. native_decide trusts the Lean compiler and depends on the Lean.ofReduceBool axiom (#print axioms lists it, together with Lean.trustCompiler); naive_sigma_fails and r4_anchor_values also use native_decide. The entry is therefore axiomatized, not axiom-free. The literal `axiom` declaration count in the Lean file is 0; the single counted assumption is Lean.ofReduceBool introduced via native_decide.",
-    "lineCount": 355,
-    "theoremCount": 20,
+    "lineCount": 402,
+    "theoremCount": 23,
     "definitionCount": 3,
     "originalContributions": [
       "r4: the ordered, signed four-square representation count r₄(n), defined as a computable Finset.card over the integer box [-√n,√n]⁴ — an object Mathlib lacks entirely",
@@ -48,7 +48,8 @@
       "jacobiCount_two_pow: 0-axiom general closed form — for every k≥1, jacobiCount(2^k)=24 (the 4∤d filter keeps only divisors 1 and 2), the elementary even-side companion to jacobiCount_odd, revealing r₄ is constant on powers of two",
       "jacobiCount_two_pow_const: 0-axiom corollary — Jacobi's count is independent of the exponent, jacobiCount(2^j)=jacobiCount(2^k) for all j,k≥1",
       "jacobiCount_odd_prime_pow: 0-axiom general prime-power case — for an odd prime p every power p^k is odd so the 4∤d filter is vacuous, giving jacobiCount(p^k)=8·Σ_{i=0}^{k}p^i; the missing prime-power value between jacobiCount_prime (k=1) and jacobiCount_two_pow (p=2), and (with multiplicativity of r₄/8) the data that determines jacobiCount on every n from its factorization",
-      "jacobiCount_odd_prime_pow_geom: 0-axiom geometric closed form jacobiCount(p^k)=8·(p^{k+1}−1)/(p−1) for odd prime p, recovering jacobiCount_prime's 8·(p+1) at k=1; jacobiCount_nine anchors r₄(9)=104=8·σ(9) inside the oracle range"
+      "jacobiCount_odd_prime_pow_geom: 0-axiom geometric closed form jacobiCount(p^k)=8·(p^{k+1}−1)/(p−1) for odd prime p, recovering jacobiCount_prime's 8·(p+1) at k=1; jacobiCount_nine anchors r₄(9)=104=8·σ(9) inside the oracle range",
+      "jacobiCount_le / jacobiCount_lt_of_four_dvd / jacobiCount_eq_eight_sigma_iff (0-axiom, general): the sharp naive-formula boundary — jacobiCount n <= 8*sigma(n) always, with strict inequality exactly when 4|n (deficit 32*sigma(n/4)), so jacobiCount n = 8*sigma(n) iff not 4|n (for n != 0); pins when Jacobi's count collapses to the naive 8*sigma and formalizes why naive_sigma_fails at n=4"
     ]
   },
   "overview": {
