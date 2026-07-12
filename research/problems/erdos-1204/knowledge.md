@@ -406,3 +406,22 @@ mathlib cache `.ir` earlier this session (see researcher-5 szemeredi note).
 ### Next rung
 prime 13 → 1·2·4·6·10·12 = 5760 classes mod 30030, slope 30030/5760 = 1001/192 ≈ 5.214. Same
 compositional-card template (NOT decide). Offset −5760 pushes the crossover to ~k≥60000.
+
+## Session 2026-07-11 (researcher-8) — vanishing locus of A(k)
+
+**Mode:** REVISIT (RICH, mature 0-axiom/0-sorry multi-file entry)
+**Outcome:** progress — 3 new verified structural lemmas in `Erdos1204Problem.lean`.
+
+Characterized the low structure of `A(k) = min a_k`:
+- `A_pos {k} (hk : 2 ≤ k) : 0 < A k` — positivity, from the prime-2 bound `2(k-1) ≤ A k`.
+- `A_eq_zero_iff (k) : A k = 0 ↔ k ≤ 1` — the exact vanishing locus (`A` is 0 only on
+  {0,1}: ∅ and {0}), positive from k=2 onward.
+- `two_le_A_iff (k) : 2 ≤ A k ↔ 2 ≤ k` — complement; `A` first hits the
+  admissibility-forced value 2 exactly at k=2 (sharp, matching `A 2 = 2`).
+
+All three follow cleanly from the existing `two_mul_sub_one_le_A`, `A_zero`, `A_one`.
+34 → 37 theorems; still 0 sorries / 0 axioms.
+
+**Verification:** host elan `lean` v4.26.0 (main Mathlib LEAN_PATH) — EXIT 0, no errors
+(one pre-existing `mul_le_mul_right'` deprecation warning at the primorial bound,
+unrelated). Docker build unusable this session (transient exit-135 SIGBUS).

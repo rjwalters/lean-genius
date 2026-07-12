@@ -388,6 +388,43 @@ theorem A_one : A 1 = 0 := by
   refine Nat.le_zero.mp ?_
   simpa using A_le (a := ({0} : Finset ℕ)) (by simp) (admissible_singleton 0)
 
+/-- **`A(k)` is positive for `k ≥ 2`.** As soon as an admissible set must contain two
+distinct elements of the same parity (the prime-`2` constraint), its maximum is at least
+`2(k-1) ≥ 2 > 0` (`two_mul_sub_one_le_A`). This is the positive half of the vanishing
+characterization `A_eq_zero_iff`. -/
+theorem A_pos {k : ℕ} (hk : 2 ≤ k) : 0 < A k := by
+  have h := two_mul_sub_one_le_A k
+  omega
+
+/-- **Vanishing locus of `A`: `A(k) = 0 ↔ k ≤ 1`.** The empty set and the singleton `{0}`
+are the only admissible sets with maximum `0` (`A_zero`, `A_one`), and every admissible set
+of `k ≥ 2` elements is forced by the prime `2` to reach a maximum `≥ 2(k-1) ≥ 2`
+(`A_pos`). So `A` vanishes exactly on `{0, 1}` and is positive from `k = 2` onward. -/
+theorem A_eq_zero_iff (k : ℕ) : A k = 0 ↔ k ≤ 1 := by
+  constructor
+  · intro h
+    rcases Nat.lt_or_ge k 2 with hk | hk
+    · omega
+    · have := A_pos hk; omega
+  · intro hk
+    interval_cases k
+    · exact A_zero
+    · exact A_one
+
+/-- **`A(k) ≥ 2 ↔ k ≥ 2`.** The complement of the vanishing characterization
+`A_eq_zero_iff`: `A` reaches the first admissibility-forced value `2` exactly when
+`k ≥ 2`, matching `A 2 = 2` as the sharp base case (below that `A` is `0`). -/
+theorem two_le_A_iff (k : ℕ) : 2 ≤ A k ↔ 2 ≤ k := by
+  constructor
+  · intro h
+    rcases Nat.lt_or_ge k 2 with hk | hk
+    · have : A k = 0 := (A_eq_zero_iff k).mpr (by omega)
+      omega
+    · exact hk
+  · intro hk
+    have h := two_mul_sub_one_le_A k
+    omega
+
 /-- **`A(2) = 2`.** The upper bound comes from the admissible set `{0, 2}`. The lower
 bound `A(2) ≥ 2` is where admissibility first bites: the only `2`-set with maximum `1` is
 `{0, 1}`, which is *not* admissible, so the minimal maximum jumps from the packing value
