@@ -58,13 +58,19 @@
       "The nonzero-ness of the rational coefficient qₙ is obtained for free from positivity of the series (ζ(2n) > 0), avoiding any Bernoulli-number vanishing lemma",
       "zeta_even_ratio_eq_rat_mul_pi_pow (0-axiom): for m<n, ζ(2n)/ζ(2m) = (nonzero-rational)·π^(2(n-m)) — the axiom-free structural skeleton beneath zeta_even_ratio_transcendental, recording unconditionally that even zeta values are multiplicatively π-power-incommensurable over ℚ (their quotient is never rational). Transcendence enters only when π^(2(n-m)) is declared transcendental; mirrors how zeta_even_eq_rat_mul_pi_pow isolates the axiom for single values",
       "zeta_even_finset_prod_eq_rat_mul_pi_pow (0-axiom): for an arbitrary finite family (f i)_{i∈s} of positive indices, ∏_{i∈s} ζ(2 f i) = (nonzero-rational)·π^(2 ∑_{i∈s} f i) — the Finset generalisation of the pairwise product identity, proved by induction on s. Shows the class ℚ∖{0}·π^(even) housing the even zeta values is closed under ALL finite products, not merely two factors; uses only Euler's closed form, no hermite_lindemann",
-      "zeta_even_finset_prod_transcendental: any finite product ∏_{i∈s} ζ(2 f i) over a nonempty family of positive indices is transcendental over ℚ (its π-exponent 2∑ f i ≥ 2 is positive) — the Finset companion of zeta_even_product_transcendental, showing no finite product of even zeta values can be algebraic"
+      "zeta_even_finset_prod_transcendental: any finite product ∏_{i∈s} ζ(2 f i) over a nonempty family of positive indices is transcendental over ℚ (its π-exponent 2∑ f i ≥ 2 is positive) — the Finset companion of zeta_even_product_transcendental, showing no finite product of even zeta values can be algebraic",
+      "transcendental_aeval_pi: master engine — every nonconstant ℚ-polynomial of π is transcendental over ℚ (via Transcendental.aeval + pi_transcendental_over_rationals); covers arbitrary rational polynomial combinations of π-powers, not just the monomials q·π^m handled by the multiplicative engines.",
+      "zeta_even_add_transcendental: for m<n, the SUM ζ(2n)+ζ(2m)=qₙ·π^(2n)+qₘ·π^(2m) is transcendental over ℚ — the additive frontier, escaping the single-π-power class ℚ∖{0}·π^(even) that houses all the multiplicative results; proved via transcendental_aeval_pi on the two-term polynomial of distinct even degrees.",
+      "zeta_two_add_zeta_four_transcendental: concrete instance ζ(2)+ζ(4)=π²/6+π⁴/90 transcendental over ℚ.",
+      "transcendental_add_ratCast (0-axiom): additive companion of transcendental_ratCast_mul — adding any rational preserves transcendence (x=(x+q)−q difference of algebraics).",
+      "zeta_even_add_ratCast_transcendental: rational shifts ζ(2n)+q are transcendental over ℚ — additive analogue of the ℚ*-scaling closure zeta_even_ratCast_mul_transcendental.",
+      "REPAIR: zeta_even_weighted_prod_eq_rat_mul_pi_pow was committed [UNVERIFIED] (#37361) with a double-counted exponent (coefficient qa^(g a) instead of qa, since zeta_even_pow_eq_rat_mul_pi_pow already absorbs the g a power) — the file did not compile on Mathlib 4.26.0. Fixed to qa; whole file now compiles and is axiom-clean (single hermite_lindemann assumption)."
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 441,
+    "lineCount": 533,
     "assumptions": "Depends on the axiom hermite_lindemann (Lindemann–Weierstrass theorem, giving transcendence of π), imported via Proofs.PiTranscendental. Mathlib does not yet contain a complete Lindemann–Weierstrass development, and irrationality of π^(2n) provably requires transcendence of π (irrational_pi alone is insufficient, as irrationality does not lift through powers). Everything else is machine-checked with 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25,
+    "theoremCount": 30,
     "definitionCount": 0
   },
   "overview": {
@@ -162,9 +168,9 @@
       "Real"
     ],
     "namespace": "BaselProblemOQ01OQ02",
-    "lineCount": 441,
+    "lineCount": 533,
     "axiomCount": 0,
-    "theoremCount": 25,
+    "theoremCount": 30,
     "definitionCount": 0,
     "path": "Proofs/BaselProblemOQ01OQ02.lean",
     "sorries": 0
