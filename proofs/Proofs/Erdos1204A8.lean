@@ -43,16 +43,15 @@ namespace Erdos1204
 
 open Finset
 
-/-- A set whose image in `ZMod p` is all of `ZMod p` cannot be admissible: it fails
-to miss any residue class at the prime `p`. This is the workhorse for killing the
-"forced" sets that arise in the lower-bound case analysis. -/
-private theorem not_admissible_of_image_univ {a : Finset ℕ} {p : ℕ} (hp : p.Prime)
-    (hcov : a.image (fun x : ℕ => (x : ZMod p)) = Finset.univ) : ¬ Admissible a := by
+/-- A set that hits *every* residue class modulo `p` cannot be admissible: it fails
+to miss any class at the prime `p`. This is the workhorse for killing the "forced"
+sets that arise in the lower-bound case analysis (checked by `decide` at concrete
+primes). -/
+private theorem not_admissible_of_covers {a : Finset ℕ} {p : ℕ} (hp : p.Prime)
+    (hcov : ∀ r : ZMod p, ∃ x ∈ a, (x : ZMod p) = r) : ¬ Admissible a := by
   intro ha
   obtain ⟨r, hr⟩ := ha p hp
-  have hmem : r ∈ a.image (fun x : ℕ => (x : ZMod p)) := by
-    rw [hcov]; exact Finset.mem_univ r
-  obtain ⟨x, hx, hxr⟩ := Finset.mem_image.mp hmem
+  obtain ⟨x, hx, hxr⟩ := hcov r
   exact hr x hx hxr
 
 /-- The witness `{0,2,6,8,12,18,20,26}` (the `A(7)` witness plus `26`) is admissible:
@@ -107,7 +106,7 @@ theorem no_admissible_eight_evens {a : Finset ℕ}
     have heq : a = ({2, 4, 8, 10, 14, 16, 20, 22} : Finset ℕ) :=
       Finset.eq_of_subset_of_card_le hs (by rw [hcard]; decide)
     rw [heq] at ha
-    exact not_admissible_of_image_univ (p := 5) (by decide) (by decide) ha
+    exact not_admissible_of_covers (p := 5) (by decide) (by decide) ha
   · -- misses class 1 mod 3 ⇒ pool {0,2,6,8,12,14,18,20,24} (card 9)
     have hs : a ⊆ ({0, 2, 6, 8, 12, 14, 18, 20, 24} : Finset ℕ) := by
       intro x hx
@@ -132,7 +131,7 @@ theorem no_admissible_eight_evens {a : Finset ℕ}
       have heq : a = ({0, 2, 8, 12, 14, 18, 20, 24} : Finset ℕ) :=
         Finset.eq_of_subset_of_card_le hs5 (by rw [hcard]; decide)
       rw [heq] at ha
-      exact not_admissible_of_image_univ (p := 7) (by decide) (by decide) ha
+      exact not_admissible_of_covers (p := 7) (by decide) (by decide) ha
     · -- miss 2 mod 5 ⇒ ⊆ {0,6,8,14,18,20,24} (card 7)
       have hs5 : a ⊆ ({0, 6, 8, 14, 18, 20, 24} : Finset ℕ) := by
         intro x hx
@@ -192,7 +191,7 @@ theorem no_admissible_eight_evens {a : Finset ℕ}
       have heq : a = ({0, 4, 6, 10, 12, 16, 22, 24} : Finset ℕ) :=
         Finset.eq_of_subset_of_card_le hs5 (by rw [hcard]; decide)
       rw [heq] at ha
-      exact not_admissible_of_image_univ (p := 7) (by decide) (by decide) ha
+      exact not_admissible_of_covers (p := 7) (by decide) (by decide) ha
     · -- miss 4 mod 5 ⇒ ⊆ {0,6,10,12,16,18,22} (card 7)
       have hs5 : a ⊆ ({0, 6, 10, 12, 16, 18, 22} : Finset ℕ) := by
         intro x hx
@@ -259,7 +258,7 @@ theorem no_admissible_eight_odds {a : Finset ℕ}
       have heq : a = ({1, 5, 7, 11, 13, 17, 23, 25} : Finset ℕ) :=
         Finset.eq_of_subset_of_card_le hs5 (by rw [hcard]; decide)
       rw [heq] at ha
-      exact not_admissible_of_image_univ (p := 7) (by decide) (by decide) ha
+      exact not_admissible_of_covers (p := 7) (by decide) (by decide) ha
   · -- misses class 1 mod 3 ⇒ forced 8-set {3,5,9,11,15,17,21,23}, covers mod 5
     have hs : a ⊆ ({3, 5, 9, 11, 15, 17, 21, 23} : Finset ℕ) := by
       intro x hx
@@ -269,7 +268,7 @@ theorem no_admissible_eight_odds {a : Finset ℕ}
     have heq : a = ({3, 5, 9, 11, 15, 17, 21, 23} : Finset ℕ) :=
       Finset.eq_of_subset_of_card_le hs (by rw [hcard]; decide)
     rw [heq] at ha
-    exact not_admissible_of_image_univ (p := 5) (by decide) (by decide) ha
+    exact not_admissible_of_covers (p := 5) (by decide) (by decide) ha
   · -- misses class 2 mod 3 ⇒ pool {1,3,7,9,13,15,19,21,25} (card 9)
     have hs : a ⊆ ({1, 3, 7, 9, 13, 15, 19, 21, 25} : Finset ℕ) := by
       intro x hx
@@ -301,7 +300,7 @@ theorem no_admissible_eight_odds {a : Finset ℕ}
       have heq : a = ({1, 3, 9, 13, 15, 19, 21, 25} : Finset ℕ) :=
         Finset.eq_of_subset_of_card_le hs5 (by rw [hcard]; decide)
       rw [heq] at ha
-      exact not_admissible_of_image_univ (p := 7) (by decide) (by decide) ha
+      exact not_admissible_of_covers (p := 7) (by decide) (by decide) ha
     · -- miss 3 mod 5 ⇒ ⊆ {1,7,9,15,19,21,25} (card 7)
       have hs5 : a ⊆ ({1, 7, 9, 15, 19, 21, 25} : Finset ℕ) := by
         intro x hx
