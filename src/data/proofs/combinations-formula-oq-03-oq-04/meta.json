@@ -72,6 +72,14 @@
       "summary": "Module docstring stating the target (palindromy of Gaussian q-binomials as the symmetric half of Sylvester's unimodality theorem), the proof outline via both q-Pascal identities, and an explicit honesty note that unimodality itself is NOT proved."
     },
     {
+      "id": "setup",
+      "title": "Setup: namespace and the field hypothesis",
+      "startLine": 45,
+      "endLine": 50,
+      "summary": "Enters namespace QBinomialCoefficients, opens Nat, and fixes the ambient ring as an arbitrary field [Field R]. The field hypothesis is essential rather than cosmetic: the reciprocity identity substitutes q ↦ q⁻¹, so R must contain the inverse of every nonzero q — exactly what a field guarantees. This is the smallest setting in which the palindromy statement is even expressible.",
+      "mathContext": "R : Type* with [Field R]; needed so q⁻¹ exists for every q ≠ 0 in the reciprocity q ↦ q⁻¹."
+    },
+    {
       "id": "reciprocal",
       "title": "Main — Self-Reciprocity / Palindromy",
       "startLine": 51,
