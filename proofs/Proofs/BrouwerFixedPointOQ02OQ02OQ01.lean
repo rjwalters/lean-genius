@@ -771,4 +771,70 @@ theorem increment_tendsto_zero (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 
     simpa using h0.mul_const |x 1 - x 0|
   exact squeeze_zero (fun _ => abs_nonneg _) hbound hg
 
+/-! ### Tail arc length and the arc-dominates-chord bridge
+
+`total_path_length_bound` bounds the *full* orbit arc length `∑_{k<m}|x_{k+1}−x_k|` by
+`|x₁−x₀|/(1−L)`; it is the `n = 0` case of a windowed estimate.  The two results below
+close the arc-length picture:
+
+  * `tail_path_length_bound` — the arc length of the window `[n, n+m)` decays like `Lⁿ`:
+    `∑_{k<m}|x_{n+k+1}−x_{n+k}| ≤ Lⁿ·|x₁−x₀|/(1−L)`.  Its `n = 0` case is
+    `total_path_length_bound`; its `m → ∞` limit bounds the distance from `xₙ` to the
+    fixed point (the arc from `xₙ` onward dominates `|xₙ − x*|`).
+
+  * `displacement_le_path_length` — a purely telescoping fact (no contraction needed):
+    the chord `|x_{n+m}−xₙ|` never exceeds the arc `∑_{k<m}|x_{n+k+1}−x_{n+k}|`.
+
+Composed, they re-derive `cauchy_estimate` (`|x_{n+m}−xₙ| ≤ Lⁿ/(1−L)·|x₁−x₀|`) with the
+arc length as the intermediate quantity, exhibiting the Cauchy bound as "chord ≤ arc ≤
+geometric tail". -/
+
+/-- **Tail arc-length bound.**  For a contraction with `0 ≤ L < 1` and iteration
+    `xₙ₊₁ = f xₙ`, the arc length of the window `[n, n+m)` decays geometrically in the
+    window start:
+    `∑_{k<m} |x_{n+k+1} − x_{n+k}| ≤ Lⁿ · |x₁ − x₀| / (1 − L)`.
+    The `n = 0` case is `total_path_length_bound`; each increment obeys `step_dist`
+    (`|x_{n+k+1} − x_{n+k}| ≤ L^{n+k}·|x₁ − x₀|`) and the partial geometric sum
+    `∑_{k<m} L^{n+k} = Lⁿ(1 − Lᵐ)/(1 − L) ≤ Lⁿ/(1 − L)`. -/
+theorem tail_path_length_bound (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (n m : ℕ) :
+    ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)| ≤ L ^ n * |x 1 - x 0| / (1 - L) := by
+  have hc : (0 : ℝ) < 1 - L := by linarith
+  -- exact partial geometric sum, cleared of the division
+  have hgs : ∀ j, (∑ k ∈ Finset.range j, L ^ k) * (1 - L) = 1 - L ^ j := by
+    intro j
+    induction j with
+    | zero => simp
+    | succ j ih => rw [Finset.sum_range_succ, add_mul, ih, pow_succ]; ring
+  have hgeom : (∑ k ∈ Finset.range m, L ^ k) ≤ 1 / (1 - L) := by
+    rw [le_div_iff₀ hc, hgs m]
+    linarith [pow_nonneg hL0 m]
+  have hstep : ∀ k, |x (n + k + 1) - x (n + k)| ≤ L ^ n * L ^ k * |x 1 - x 0| := by
+    intro k
+    have h := step_dist f L hL0 hf x hx (n + k)
+    rwa [pow_add] at h
+  calc ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)|
+      ≤ ∑ k ∈ Finset.range m, L ^ n * L ^ k * |x 1 - x 0| :=
+        Finset.sum_le_sum (fun k _ => hstep k)
+    _ = L ^ n * |x 1 - x 0| * ∑ k ∈ Finset.range m, L ^ k := by
+        rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro k _; ring
+    _ ≤ L ^ n * |x 1 - x 0| * (1 / (1 - L)) :=
+        mul_le_mul_of_nonneg_left hgeom (mul_nonneg (pow_nonneg hL0 n) (abs_nonneg _))
+    _ = L ^ n * |x 1 - x 0| / (1 - L) := by ring
+
+/-- **Arc dominates chord (telescoping).**  With no contraction hypothesis, the straight-line
+    displacement `|x_{n+m} − xₙ|` never exceeds the arc length `∑_{k<m}|x_{n+k+1} − x_{n+k}|`
+    of the intervening steps.  Pure telescoping: `x_{n+m} − xₙ = ∑_{k<m}(x_{n+k+1} − x_{n+k})`
+    (`Finset.sum_range_sub`), then `|∑| ≤ ∑|·|`.  Combined with `tail_path_length_bound`, this
+    re-derives `cauchy_estimate` via `chord ≤ arc ≤ Lⁿ/(1−L)·|x₁−x₀|`. -/
+theorem displacement_le_path_length (x : ℕ → ℝ) (n m : ℕ) :
+    |x (n + m) - x n| ≤ ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)| := by
+  have htel : x (n + m) - x n = ∑ k ∈ Finset.range m, (x (n + k + 1) - x (n + k)) := by
+    have h := Finset.sum_range_sub (fun k => x (n + k)) m
+    simpa [Nat.add_assoc] using h.symm
+  calc |x (n + m) - x n|
+      = |∑ k ∈ Finset.range m, (x (n + k + 1) - x (n + k))| := by rw [htel]
+    _ ≤ ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)| := Finset.abs_sum_le_sum_abs _ _
+
 end BrouwerOQ02OQ02OQ01
