@@ -5945,5 +5945,105 @@ theorem maxSqDiffFreeCard_density_le_of_squarefree_odd {N : ℕ} [NeZero N] (hod
       ≤ (1 + (N : ℝ) / Real.sqrt (N.minFac)) / N := by gcongr
     _ = 1 / N + 1 / Real.sqrt (N.minFac) := by field_simp
 
+/-! ### Part XLVII — The master spectral-sum (pushforward) identity: every `Lᵖ` moment at once
+
+Parts XVII–XXVI evaluate the moments of the Weyl coefficient magnitude one exponent at a time —
+the second moment `Σ‖G(r)‖²` (Part XX) and its divisor-sum form `Σ_{d∣N,d<N} N·d·φ(N/d)`
+(`sqGaussSum_normSq_sum_eq_divisor_sum_of_odd`, Part XXVI).  Every one of them is a special case of a
+single **pushforward identity**.  The exact spectral distribution of Part XXV
+(`sqGaussSum_normSq_level_set_card_of_odd`: exactly `φ(N/d)` nonzero frequencies attain
+`‖G(r)‖² = N·d`, over the proper divisors `d ∣ N`) together with its exhaustiveness
+(`sqGaussSum_spectral_partition_of_odd`) says that the image of the counting measure on the `N−1`
+nonzero frequencies under `r ↦ ‖G(r)‖²` is *exactly* the divisor measure `d ↦ φ(N/d)` supported on
+`{N·d : d ∣ N, d < N}`.  Integrating an **arbitrary** test function `f` against both sides gives, for
+odd `N`,
+
+    Σ_{r≠0} f(‖G(r)‖²) = Σ_{d∣N, d<N} φ(N/d)·f(N·d).
+
+This is the master identity of the entire moment tower.  Recovered as instances:
+* `f = id` → the second moment (Part XXVI);
+* `f = (√·)ᵐ` → the `m`-th absolute moment `Σ‖G(r)‖ᵐ` (`..._norm_pow_sum_...` below);
+* `f = √·` (`m = 1`) → the `L¹` first moment `Σ‖G(r)‖ = √N·Σ_{d∣N,d<N} φ(N/d)√d`
+  (`..._norm_sum_...` below) — the exact quantity computed independently for the circle-method
+  `L¹` bound;
+* `f = 𝟙[· ≥ t]` → the tail (major-arc) frequency counts.
+
+No new analysis is used beyond the exhaustive spectral partition
+(`sqGaussSum_gcd_mem_proper_divisors_of_odd`) and the per-level count of Part XXV; the proof is the
+`p = 2` argument of `sqGaussSum_normSq_sum_eq_divisor_sum_of_odd` with the constant summand `N·d`
+replaced by `f(N·d)`.
+
+Honest caveat (motivation, not a machine-checked claim): the `L¹` moment is `Θ(N^{3/2}) = o(N²)`
+(bounded by `N·d(N)` via `√d ≤ √N` and Part XXVI's partition), yet — like the exactly-`Θ(N²)`
+second moment of Part XVII — it still does **not** discharge the density bound to `o(N)`: pairing
+`Σ|Â(r)|²‖G(r)‖ ≤ (max_r|Â(r)|²)·Σ‖G(r)‖` against the only available `L^∞` spectral bound
+`|Â(r)|² ≤ |A|²` loses a factor `√N`.  So this master identity delimits, rather than breaks, the
+single-scale barrier — no fixed `Lᵖ` moment of the Weyl coefficient reaches the Sárközy `o(N)`
+density; that requires the multi-scale density-increment iteration (out of Mathlib reach, Part XXVII). -/
+
+/-- **Master spectral-sum / pushforward identity (odd modulus).**  For odd `N` and any real test
+function `f`, the frequency sum of `f(‖G(r)‖²)` over the nonzero frequencies equals the divisor sum
+weighting each attained magnitude `N·d` (`d ∣ N`, `d < N`) by its exact spectral multiplicity
+`φ(N/d)`:
+
+    Σ_{r≠0} f(‖G(r)‖²) = Σ_{d∣N, d<N} φ(N/d)·f(N·d).
+
+The single identity from which every `Lᵖ` moment of the quadratic Gauss sum follows; the second
+moment (`sqGaussSum_normSq_sum_eq_divisor_sum_of_odd`) is the `f = id` instance. -/
+theorem sqGaussSum_spectral_sum_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (f : ℝ → ℝ) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => f (‖sqGaussSum r‖ ^ 2))
+      = ((N.divisors).filter (· < N)).sum
+          (fun d => (Nat.totient (N / d) : ℝ) * f ((N : ℝ) * d)) := by
+  have hfiber : ∀ r ∈ (Finset.univ \ ({0} : Finset (ZMod N))),
+      Nat.gcd (2 * r).val N ∈ (N.divisors).filter (· < N) := fun r hr =>
+    sqGaussSum_gcd_mem_proper_divisors_of_odd hodd
+      (by rw [Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2)
+  rw [← Finset.sum_fiberwise_of_maps_to hfiber (fun r => f (‖sqGaussSum r‖ ^ 2))]
+  apply Finset.sum_congr rfl
+  intro d hd
+  rw [Finset.mem_filter, Nat.mem_divisors] at hd
+  rw [Finset.sum_congr rfl (g := fun _ => f ((N : ℝ) * d))
+        (fun r hr => by
+          rw [Finset.mem_filter] at hr
+          rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r, hr.2])]
+  rw [Finset.sum_const, sqGaussSum_gcd_level_set_card_of_odd hodd hd.1.1 hd.2, nsmul_eq_mul]
+
+/-- **All natural-power absolute moments at once (odd modulus).**  The `f = (√·)ᵐ` instance of the
+master identity `sqGaussSum_spectral_sum_of_odd`: since `‖G(r)‖ = √(‖G(r)‖²)`,
+
+    Σ_{r≠0} ‖G(r)‖ᵐ = Σ_{d∣N, d<N} φ(N/d)·(√(N·d))ᵐ.
+
+`m = 2` recovers the second moment `Σ N·d·φ(N/d)`; `m = 1` is the `L¹` first moment below. -/
+theorem sqGaussSum_norm_pow_sum_eq_divisor_sum_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (m : ℕ) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ m)
+      = ((N.divisors).filter (· < N)).sum
+          (fun d => (Nat.totient (N / d) : ℝ) * (Real.sqrt ((N : ℝ) * d)) ^ m) := by
+  rw [show (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ m)
+        = (Finset.univ \ {(0 : ZMod N)}).sum (fun r => (Real.sqrt (‖sqGaussSum r‖ ^ 2)) ^ m) from
+      Finset.sum_congr rfl (fun r _ => by rw [Real.sqrt_sq (norm_nonneg _)])]
+  exact sqGaussSum_spectral_sum_of_odd hodd (fun x => (Real.sqrt x) ^ m)
+
+/-- **Exact `L¹` first moment of the Weyl coefficient (odd modulus).**  The `m = 1` instance of
+`sqGaussSum_norm_pow_sum_eq_divisor_sum_of_odd`, with `√(N·d) = √N·√d` factored out:
+
+    Σ_{r≠0} ‖G(r)‖ = √N · Σ_{d∣N, d<N} φ(N/d)·√d.
+
+The exact mean absolute magnitude of the quadratic Gauss sum — the `L¹` companion of the exact
+second moment (Part XX) — evaluated purely from the spectral partition, with no Gauss-sum
+reciprocity.  It is `Θ(N^{3/2}) = o(N²)` yet (see Part XLVII) does not by itself furnish the
+Sárközy `o(N)` density. -/
+theorem sqGaussSum_norm_sum_eq_divisor_sum_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖)
+      = Real.sqrt N * ((N.divisors).filter (· < N)).sum
+          (fun d => (Nat.totient (N / d) : ℝ) * Real.sqrt d) := by
+  have hN0 : (0 : ℝ) ≤ N := Nat.cast_nonneg N
+  have h1 := sqGaussSum_norm_pow_sum_eq_divisor_sum_of_odd hodd 1
+  simp only [pow_one] at h1
+  rw [h1, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro d hd
+  rw [Real.sqrt_mul hN0]
+  ring
+
 end Szemeredi.Roth
 
