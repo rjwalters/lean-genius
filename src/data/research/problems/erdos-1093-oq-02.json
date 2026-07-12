@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-12T06:52:59Z",
+  "lastUpdate": "2026-07-12",
   "path": "full",
   "parentId": "erdos-1093",
   "tier": "C",
@@ -44,7 +44,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED, local `lake env lean` exit 0): Sections XXVII+XXVIII extend the ELS-free location ladder to close k=26 AND k=27, moving the elementary open frontier to k>=28 (deficiency_le_nine_of_k_eq_26/_27, _le_26/_27, maximalDeficiencyIs_nine_iff_kGe28 — the terminal elementary reduction, since k=28 is exactly where the record pair (284,28) lives). Each rung: a deficiency>=10 forces (n-(k-1))^10 <= k! < M^10 (k=26:M=458, k=27:M=637, both sharp), pinning a finite window 2k..k+M-2 on which a small-prime disjunction certifies every value inadmissible (k=26: {2,3,5} over 431 vals; k=27: {2,3,7,11} over 609 vals). Concrete divisibility uses native_decide (Lean.ofReduceBool); structural results ofReduceBool-free; no new axiom declarations. Remaining open content (k>=28) is irreducibly analytic — needs the ELS short-interval smooth-count bound absent from Mathlib; the ladder cannot continue past k=28 where the location window admits a genuine deficiency-9 example.",
+    "progressSummary": "PROGRESS (researcher-11, 2026-07-12, VERIFIED lake env lean exit 0, axiom-free [propext,Classical.choice,Quot.sound]): recast the FactorialGrowth size-obstruction in binomial form. Added factorial_add_eq_choose_mul + factorial_add_le_sq_iff_choose_mul_le + exists_choose_mul_factorial_le to Erdos1093OQ02FactorialGrowth.lean, formalizing the documented next-step equivalence (k+D)!≤(k!)² ⟺ C(k+D,D)·D!≤k! and its eventual-domination corollary. Elementary open frontier (k≥28) unchanged — irreducibly analytic, needs ELS short-interval smooth-count.",
     "builtItems": [
       "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
       "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
@@ -79,7 +79,8 @@
       "not_admissible_k21_of_range / deficiency_le_nine_of_k_eq_21 / deficiency_le_nine_of_k_le_21",
       "maximalDeficiencyIs_nine_iff_kGe22: reduces open content of OQ-02 to k>=22",
       "deficiency_le_of_sq_factorial_lt (Erdos1093ProblemOQ02.lean:753): uniform transfer principle — for all k, (k!)²<(k+D+1)! ⟹ deficiency n k ≤ D; subsumes the infinite family of per-k sharp ceilings into one theorem. deficiency_record_le_18 refactored to a 1-line corollary (k=28,D=18).",
-      "Erdos1093OQ02FactorialGrowth.lean: exists_factorial_add_le_sq — ∀ D, ∃ k₀, ∀ k≥k₀, (k+D)!≤(k!)² (any k₀=3D works); elementary chain via factorial_mul_ascFactorial + factorial_mul_pow_le_factorial + two_pow_le_succ_factorial helper. VERIFIED axiom-free (local lean v4.26.0, exit 0, deps: propext/Classical.choice/Quot.sound only)."
+      "Erdos1093OQ02FactorialGrowth.lean: exists_factorial_add_le_sq — ∀ D, ∃ k₀, ∀ k≥k₀, (k+D)!≤(k!)² (any k₀=3D works); elementary chain via factorial_mul_ascFactorial + factorial_mul_pow_le_factorial + two_pow_le_succ_factorial helper. VERIFIED axiom-free (local lean v4.26.0, exit 0, deps: propext/Classical.choice/Quot.sound only).",
+      "Erdos1093OQ02FactorialGrowth.lean (+3 thm, 0 sorry/0 new axiom, lake env lean VERIFIED): factorial_add_eq_choose_mul ((k+D)! = C(k+D,D)·D!·k! via Nat.choose_mul_factorial_mul_factorial), factorial_add_le_sq_iff_choose_mul_le ((k+D)!≤(k!)² ↔ C(k+D,D)·D!≤k!, cancel k! via Nat.mul_le_mul_right_iff), exists_choose_mul_factorial_le (∀D ∃k₀ ∀k≥k₀ C(k+D,D)·D!≤k!, binomial reading of exists_factorial_add_le_sq)"
     ],
     "insights": [
       "The parent's deficiency_284_28 = 9 alone does NOT exhibit a valid deficiency example: the deficiency count is defined unconditionally, but the ELS problem requires C(n,k) to have no prime factor ≤ k. Checking admissibility only needs primes ≤ k (Kummer is unnecessary): C(284,28) is a ~110-bit bignum, so native_decide computes it and tests divisibility by primes ≤ 28 instantly.",
@@ -97,7 +98,8 @@
       "The elementary sharp bound (k+deficiency)! ≤ (k!)² is a UNIFORM ceiling, not a per-k specialization: any single factorial certificate (k!)² < (k+D+1)! promotes to deficiency n k ≤ D for every admissible pair. The k=28,D=18 record ceiling is one instance.",
       "Elementary theory is SATURATED: both the sharp factorial bound and the location bound are provably powerless for the open content (large k). The k-ladder location bounds (k=16..21 merged, k=22/23 in flight PR#36915) close one k per session and can never reach all k — enumeration theater. Open resolution needs analytic short-interval prime-density input.",
       "META (negative): the sharp factorial bound (k+D)!≤(k!)² holds for EVERY fixed window shift D once k≥3D, so the sharp size bound alone is compatible with unboundedly large deficiency windows and cannot by itself establish any finite maximal deficiency (e.g. 9) for OQ-02 — a genuinely arithmetic (p-adic/Kummer) input is required, not merely size.",
-      "Proof avoids all analysis: (b+D+1).ascFactorial D ≤ (b+2D)^D ≤ (2(b+1))^D = 2^D(b+1)^D ≤ b!(b+1)^D ≤ (b+D)! for 2D≤b; ℕ-subtraction dodged by b-parametrization k=b+D."
+      "Proof avoids all analysis: (b+D+1).ascFactorial D ≤ (b+2D)^D ≤ (2(b+1))^D = 2^D(b+1)^D ≤ b!(b+1)^D ≤ (b+D)! for 2D≤b; ℕ-subtraction dodged by b-parametrization k=b+D.",
+      "The FactorialGrowth size-obstruction (k+D)!≤(k!)² is EQUIVALENT to the binomial statement C(k+D,D)·D!≤k! (divide the identity (k+D)!=C(k+D,D)·D!·k! by k!>0). This recasts the meta-theorem in terms of the binomial coefficient C(k+D,D) — the actual object of Erdős #1093 — showing the (k!)² ceiling constrains C(k+D,D) only up to the k!/D! slack, hence tolerates unboundedly wide windows D."
     ],
     "mathlibGaps": [
       "No smooth-number density estimates (ψ(x,y) / Dickman ρ) in Mathlib v4.26 — the Erdős–Lacampagne–Selfridge analytic input needed for the k ≥ 15 tail of OQ-02 cannot yet be formalized without building this."
