@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-kron-wip01-congr-left",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "The Dirichlet-character periodicity of (a/n)",
+    "content": "`kronecker_congr_left` is the defining property of the Kronecker symbol as a Dirichlet character modulo n: for odd positive n, the value (a/n) depends only on the residue class a mod n. On odd positive moduli the parent's `kronecker_eq_jacobi` identifies (a/n) with the Jacobi symbol, so Mathlib's `jacobiSym.mod_left'` — residue-invariance of the Jacobi symbol in its numerator — transports directly. The full-period and unit-shift forms (`kronecker_add_mul_left`, `kronecker_periodic_left`) then follow from the residue identity (a + n·k) % n = a % n.",
+    "mathContext": "For a fundamental discriminant $D$, $n \\mapsto (D/n)$ is a primitive Dirichlet character of conductor $|D|$; periodicity in the argument, $(a/n)=(b/n)$ whenever $a\\equiv b\\pmod n$, is the character axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet character",
+      "Jacobi symbol residue-invariance",
+      "quadratic residues mod n"
+    ],
+    "prerequisites": [
+      "Jacobi symbol",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-kron-wip01-kronecker2-period",
+    "proofId": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Full period 8 for the (a/2) character",
+    "content": "`kronecker2_add_mul_eight` generalizes the parent's single-step `kronecker2_periodic` ((a+8/2)=(a/2)) to the full period statement (a+8·k/2)=(a/2) for every integer k. Since `kronecker2` visibly depends only on a mod 8 (`kronecker2_congr`) and (a + 8·k) % 8 = a % 8, adding any multiple of 8 fixes the value — completing the identification of (·/2) as a real Dirichlet character modulo 8.",
+    "mathContext": "The second-supplement character $(2/\\cdot)$ / $(\\cdot/2)$ is the even real Dirichlet character $\\chi_8$ modulo $8$; full periodicity with period $8$ is the character's modulus.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet character mod 8",
+      "second supplement",
+      "period of a character"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Kronecker symbol at 2"
+    ]
+  }
+]
