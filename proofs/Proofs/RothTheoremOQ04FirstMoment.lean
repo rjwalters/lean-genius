@@ -30,6 +30,14 @@
   (Plancherel) `∑_r ‖G(r)‖² = N · #{n² = m²}` bounds.  It is the exact input a
   quantitative Sárközy density estimate needs.
 
+  * `sum_norm_sqGaussSum_eq_of_prime` / `sum_norm_sqGaussSum_bound_eq_of_prime` /
+    `sum_norm_sqGaussSum_eq_bound_of_prime` — the ceiling is **sharp**.  At a
+    prime modulus `N ≠ 2` the exact magnitudes `‖G(0)‖ = N`, `‖G(r)‖ = √N`
+    (`r ≠ 0`) give the closed form `∑_r ‖G(r)‖ = N + (N-1)·√N`, and the divisor
+    sum `√N·∑_{d∣N}φ(N/d)√d` collapses to *exactly* the same value (only the two
+    divisors `1, N` contribute).  So the odd-modulus bound holds with equality at
+    every odd prime — it is the best possible upper bound of this shape.
+
   All results are fully machine-checked, 0 sorries, no `native_decide`.
 -/
 import Mathlib
@@ -105,5 +113,61 @@ theorem sum_norm_sqGaussSum_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
     _ = Real.sqrt N * ∑ k ∈ range N, Real.sqrt (N.gcd k) := by rw [step3]
     _ = Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d := by
           rw [sum_weight_gcd_eq_divisor_sum N hN (fun m : ℕ => Real.sqrt m)]
+
+/-- **Exact first moment at (odd) prime moduli.**  For a prime `N ≠ 2`, every
+    nonzero frequency contributes exactly `‖G(r)‖ = √N`
+    (`sqGaussSum_norm_eq_sqrt_of_prime`, from the exact magnitude
+    `‖G(r)‖² = N·gcd(2r,N) = N`), while the principal frequency contributes
+    `‖G(0)‖ = N` (`sqGaussSum_zero`).  There are `N-1` nonzero frequencies, so the
+    first moment has the closed form
+
+      `∑_{r} ‖G(r)‖ = N + (N-1)·√N`.
+
+    This is the exact value the general odd-modulus ceiling
+    `sum_norm_sqGaussSum_le_of_odd` bounds; see
+    `sum_norm_sqGaussSum_eq_bound_of_prime` for sharpness. -/
+theorem sum_norm_sqGaussSum_eq_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖ = (N : ℝ) + ((N : ℝ) - 1) * Real.sqrt N := by
+  have h0 : (0 : ZMod N) ∈ (univ : Finset (ZMod N)) := mem_univ 0
+  -- principal term ‖G(0)‖ = N
+  have hg0 : ‖sqGaussSum (0 : ZMod N)‖ = (N : ℝ) := by
+    rw [sqGaussSum_zero, Complex.norm_natCast]
+  -- each nonzero frequency contributes √N
+  have hconst : ∀ r ∈ (univ : Finset (ZMod N)).erase 0, ‖sqGaussSum r‖ = Real.sqrt N :=
+    fun r hr => sqGaussSum_norm_eq_sqrt_of_prime hp hN2 (Finset.ne_of_mem_erase hr)
+  have hcard : ((univ : Finset (ZMod N)).erase 0).card = N - 1 := by
+    rw [Finset.card_erase_of_mem h0, Finset.card_univ, ZMod.card]
+  have hsum_erase : ∑ r ∈ (univ : Finset (ZMod N)).erase 0, ‖sqGaussSum r‖
+      = ((N : ℝ) - 1) * Real.sqrt N := by
+    rw [Finset.sum_congr rfl hconst, Finset.sum_const, hcard, nsmul_eq_mul,
+      Nat.cast_sub hp.one_lt.le, Nat.cast_one]
+  rw [← Finset.add_sum_erase univ (fun r => ‖sqGaussSum r‖) h0, hg0, hsum_erase]
+
+/-- **The odd-modulus ceiling collapses to the exact value at primes.**  For a
+    prime `N ≠ 2`, `N.divisors = {1, N}`, so the divisor sum on the right of
+    `sum_norm_sqGaussSum_le_of_odd` is `φ(N)·√1 + φ(1)·√N = (N-1) + √N`, and
+
+      `√N · ∑_{d ∣ N} φ(N/d)·√d = √N·((N-1) + √N) = N + (N-1)·√N`. -/
+theorem sum_norm_sqGaussSum_bound_eq_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (_hN2 : N ≠ 2) :
+    Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d
+      = (N : ℝ) + ((N : ℝ) - 1) * Real.sqrt N := by
+  rw [Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne]
+  simp only [Nat.div_one, Nat.div_self hp.pos, Nat.totient_one, Nat.totient_prime hp,
+    Nat.cast_one, Real.sqrt_one, mul_one, one_mul]
+  rw [Nat.cast_sub hp.one_lt.le, Nat.cast_one, mul_add,
+    Real.mul_self_sqrt (by positivity : (0 : ℝ) ≤ (N : ℝ))]
+  ring
+
+/-- **Sharpness of the odd-modulus first-moment ceiling.**  At every prime
+    modulus `N ≠ 2` the bound `sum_norm_sqGaussSum_le_of_odd` is attained with
+    equality: both sides equal `N + (N-1)·√N`.  Hence the multiplicative divisor
+    sum `√N·∑_{d∣N}φ(N/d)√d` is the *best possible* upper bound of this shape —
+    it cannot be replaced by any strictly smaller arithmetic function without
+    failing at the primes. -/
+theorem sum_norm_sqGaussSum_eq_bound_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2) :
+    ∑ r : ZMod N, ‖sqGaussSum r‖
+      = Real.sqrt N * ∑ d ∈ N.divisors, ((N / d).totient : ℝ) * Real.sqrt d :=
+  (sum_norm_sqGaussSum_eq_of_prime hp hN2).trans
+    (sum_norm_sqGaussSum_bound_eq_of_prime hp hN2).symm
 
 end Szemeredi.Roth
