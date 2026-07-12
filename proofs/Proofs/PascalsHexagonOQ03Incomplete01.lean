@@ -1,5 +1,6 @@
 import Mathlib.Data.Fintype.Perm
 import Mathlib.GroupTheory.Perm.Basic
+import Mathlib.Combinatorics.Derangements.Finite
 import Mathlib.Tactic
 
 /-
@@ -181,6 +182,43 @@ theorem card_fixedPointFree :
     disjoint and exhaustive. Only the `120 / 40 / 15` classes carry geometric
     meaning; the `90` `(4,2)`-permutations are inert. -/
 theorem fixedPointFree_census_sum : 120 + 90 + 40 + 15 = 265 := by norm_num
+
+/-! ### Bridge to Mathlib's derangement theory (kernel-checkable `D₆`)
+
+`card_fixedPointFree` establishes `D₆ = 265` by `native_decide` (which trusts the
+compiler via `Lean.ofReduceBool`). The predicate `FixedPointFree σ = ∀ i, σ i ≠ i` is
+*definitionally* membership in Mathlib's `derangements (Fin 6)`, so the count is an
+instance of Mathlib's derangement theory. Making that identification explicit both
+records the mathematical content (the census counts derangements) and yields a
+`Lean.ofReduceBool`-free derivation of the total `265`, since `numDerangements 6`
+reduces in the kernel via the derangement recurrence. -/
+
+/-- **The fixed-point-free permutations are exactly the derangements.** The filter count
+equals Mathlib's `numDerangements`: `#{σ ∈ Sym(6) | FixedPointFree σ} = numDerangements 6`.
+Since `FixedPointFree σ` unfolds to `∀ i, σ i ≠ i`, i.e. `σ ∈ derangements (Fin 6)`, the
+subtype is `↥(derangements (Fin 6))`, whose cardinality is `numDerangements (card (Fin 6)) =
+numDerangements 6` by `card_derangements_eq_numDerangements`. This identifies the census's
+total with the standard derangement number. -/
+theorem card_fixedPointFree_eq_numDerangements :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card
+      = numDerangements 6 := by
+  have h1 : (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card
+      = Fintype.card {σ : Equiv.Perm (Fin 6) // FixedPointFree σ} :=
+    (Fintype.card_subtype _).symm
+  have h2 : Fintype.card {σ : Equiv.Perm (Fin 6) // FixedPointFree σ}
+      = Fintype.card ↑(derangements (Fin 6)) :=
+    Fintype.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)
+  have h3 : Fintype.card ↑(derangements (Fin 6)) = numDerangements 6 := by
+    rw [card_derangements_eq_numDerangements, Fintype.card_fin]
+  rw [h1, h2, h3]
+
+/-- **`D₆ = 265`, kernel-checkable.** The `Lean.ofReduceBool`-free companion of
+`card_fixedPointFree`: routing the count through `card_fixedPointFree_eq_numDerangements`
+reduces the claim to `numDerangements 6 = 265`, which the kernel evaluates from the
+derangement recurrence via `decide` (no `native_decide`, hence no compiler-trust axiom). -/
+theorem card_fixedPointFree_eq_265_kernel :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card = 265 := by
+  rw [card_fixedPointFree_eq_numDerangements]; decide
 
 /-!
 ## Hexagrammum Mysticum object counts (Conway–Ryba pairing)
