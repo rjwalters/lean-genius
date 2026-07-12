@@ -750,7 +750,7 @@ theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : I
     rw [List.mem_map]
     exact ⟨D i i, Finset.mem_toList.mpr (Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩),
       sub_self _⟩
-  simp only [hzero, Matrix.diagonal_zero] at hconj2
+  rw [hzero] at hconj2
   -- undo the conjugation: from `P⁻¹ · prod · P = 0` conclude `prod = 0`
   have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
   have hcancel : ∀ X : Matrix n n K, P * (P⁻¹ * X * P) * P⁻¹ = X := by
@@ -760,8 +760,8 @@ theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : I
   calc (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod
       = P * (P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P) * P⁻¹ :=
         (hcancel _).symm
-    _ = P * 0 * P⁻¹ := by rw [hconj2]
-    _ = 0 := by rw [Matrix.mul_zero, Matrix.zero_mul]
+    _ = P * diagonal 0 * P⁻¹ := by rw [hconj2]
+    _ = 0 := by simp
 
 /-- **A diagonalizable matrix is annihilated by a product of distinct linear factors.**
     The existential, diagonalizer-free form of `prod_sub_eigen_smul_eq_zero`: every
