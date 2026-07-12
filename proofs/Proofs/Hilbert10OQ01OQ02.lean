@@ -3177,6 +3177,40 @@ theorem int_universalExistential_iff_affinePullback_universalExistential
     have hpq := hP q
     simpa only [affinePullback, hq] using hpq
 
+/-! ### The affine group acts on `RatSubset`
+
+The affine reparametrisations `q ↦ a·q + b` (with `a ≠ 0`) form a group — the
+affine group `ℚ ⋊ ℚˣ` — and `affinePullback` is its (contravariant) action on
+`RatSubset`. These are the algebraic identities underlying the affine-invariance
+theorems above (`int_diophantine_iff_affinePullback_diophantine` and its Σ₂/Π₂
+siblings): the converse directions are exactly the composition law with the inverse
+reparametrisation. Combined with the closure lemmas
+`affinePullback_is{,Co}DiophantineDefinition` / `…{Existential,Universal}…`, this
+says each of the four definability classes is an invariant subset of the action. -/
+
+/-- **Identity of the affine action.** Pulling back along `q ↦ q` (`a = 1, b = 0`)
+is the identity on `RatSubset`. -/
+theorem affinePullback_id (S : RatSubset) : affinePullback 1 0 S = S := by
+  funext q; simp [affinePullback]
+
+/-- **Composition law of the affine action.** Pulling back by `q ↦ a·q + b` after
+`q ↦ c·q + d` is pulling back by the composite `q ↦ (c·a)·q + (c·b + d)`:
+`affinePullback a b (affinePullback c d S) = affinePullback (c·a) (c·b + d) S`. So
+`affinePullback` turns composition of affine maps into composition of pullbacks
+(contravariantly). -/
+theorem affinePullback_comp (a b c d : Rat) (S : RatSubset) :
+    affinePullback a b (affinePullback c d S) = affinePullback (c * a) (c * b + d) S := by
+  funext q; simp only [affinePullback]; congr 1; ring
+
+/-- **The affine action is invertible (`a ≠ 0`).** Pulling back by `q ↦ a·q + b`
+undoes pulling back by its inverse reparametrisation `q ↦ a⁻¹·q − a⁻¹·b`, recovering
+`S`. This is the composition law specialised to the inverse pair, and is exactly the
+round-trip used in the converse halves of the affine-invariance equivalences. -/
+theorem affinePullback_cancel {a : Rat} (ha : a ≠ 0) (b : Rat) (S : RatSubset) :
+    affinePullback a b (affinePullback a⁻¹ (-(a⁻¹ * b)) S) = S := by
+  rw [affinePullback_comp]
+  simp only [inv_mul_cancel₀ ha, add_neg_cancel, affinePullback_id]
+
 -- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
