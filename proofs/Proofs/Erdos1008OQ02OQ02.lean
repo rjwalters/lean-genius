@@ -65,6 +65,20 @@ This session further adds the Vieta relations `kst_vieta_sum` / `kst_vieta_prod`
 (pinning `R⁺+R⁻ = n/2` and `R⁺·R⁻ = -(t-1)n²(n-1)/4` to the quadratic's
 coefficients) and the `K_{2,3}` closed form `k23_quadratic_solve_of_kst`
 (discriminant `8n-7`, `m ≤ ¼ n(1+√(8n-7))`), also local-lean verified.
+
+The final `GraphLevel` subsection generalises the whole graph-level development
+from the `s = 2` (`K_{2,t}`) slice to the full **`K_{s,t}`** family, at the level
+of the Kővári–Sós–Turán *combinatorial core* (the `s`-star double-count): `HasKst`
+(the general `K_{s,t}` containment), the bridge `hasKst_two_iff_hasK2t`,
+`codegree_lt_of_kstFree`, and the double-count `kst_star_count_nat` /
+`kst_star_count_choose` / `kst_star_count_of_free` proving
+`∑_v C(d_v, s) ≤ (t-1)·C(n, s)` for `K_{s,t}`-free graphs — the exact `s`-analogue
+of `kst_cherry_count_nat`.  The passage from this codegree bound to a closed-form
+`ex(n ; K_{s,t})` edge bound needs only the convexity of `x ↦ C(x, s)` (Jensen);
+that single analytic step is *not* claimed here (for `s = 2` it is the
+Cauchy–Schwarz `sq_sum_le_card` already used).  All additions are local-lean
+verified (Lean v4.26.0 + pinned Mathlib oleans, 0 errors) and axiom-free
+(`#print axioms kst_star_count_of_free = [propext, Classical.choice, Quot.sound]`).
 -/
 
 import Mathlib
@@ -893,6 +907,169 @@ theorem notMem_commonNbrs_right (G : SimpleGraph V) [DecidableRel G.Adj] (a b : 
   rw [mem_commonNbrs]
   rintro ⟨-, hbb⟩
   exact G.irrefl hbb
+
+/-!
+### General `K_{s,t}` codegree double-count (Kővári–Sós–Turán combinatorial core)
+
+The graph-level bounds above are the `s = 2` slice of Kővári–Sós–Turán: two
+vertices (`K_{2,t}`) and a codegree hypothesis on *pairs*.  The genuine
+Kővári–Sós–Turán double-count is the `s`-general statement — count *`s`-stars*
+`(S, v)` with `S` an `s`-subset of `N(v)`:
+
+      ∑_v C(d_v, s) = ∑_{S : |S| = s} codeg(S) ≤ (t-1)·C(n, s),
+
+valid in a `K_{s,t}`-free graph because every `s`-set of vertices then has at
+most `t-1` common neighbours.  This is the exact `s`-generalisation of
+`kst_cherry_count_nat` (which is the `s = 2` case, `∑ d(d-1) = ∑ 2·C(d,2)`).
+
+The double-count itself needs no analysis and is proved here in full.  The
+*remaining* gap toward a closed-form `ex(n ; K_{s,t}) = O((t-1)^{1/s}·n^{2-1/s})`
+edge bound is the convexity step `∑_v C(d_v, s) ≥ n·C(2m/n, s)` (Jensen for the
+convex map `x ↦ C(x, s) = x(x-1)⋯(x-s+1)/s!`), which for `s = 2` degenerates to
+the Cauchy–Schwarz `sq_sum_le_card` used above but for general `s` requires the
+convexity of the descending factorial — that analytic step is deliberately *not*
+claimed here.
+-/
+
+/-- **General `K_{s,t}` containment.**  There is a set `S` of `s` vertices with at
+least `t` common neighbours `T` (every vertex of `T` adjacent to every vertex of
+`S`).  This is the bipartite `K_{s,t}` as a subgraph — no edges are required
+*within* `S` or *within* `T`.  For `s = 2` it is equivalent to `HasK2t`
+(`hasKst_two_iff_hasK2t`).  The common neighbours `T` are automatically disjoint
+from `S` (a vertex adjacent to itself is excluded by `G.irrefl`), so no extra
+disjointness hypothesis is needed.  `Fintype`/`DecidableEq` are carried by the
+enclosing section but unused by this definition and the `s = 2` bridge. -/
+def HasKst (G : SimpleGraph V) (s t : ℕ) : Prop :=
+  ∃ (S T : Finset V), S.card = s ∧ t ≤ T.card ∧ (∀ a ∈ S, ∀ v ∈ T, G.Adj a v)
+
+/-- **`HasKst` at `s = 2` is `HasK2t`.**  The general `s`-set formulation
+specialises to the ordered-pair `K_{2,t}` definition used by the graph-level KST
+API above: an `s = 2` witness set `{a, b}` (`a ≠ b` from `S.card = 2`) is exactly
+a distinct pair, and "every vertex of `T` adjacent to every vertex of `S`" unpacks
+to "adjacent to both `a` and `b`". -/
+theorem hasKst_two_iff_hasK2t (G : SimpleGraph V) (t : ℕ) :
+    HasKst G 2 t ↔ HasK2t G t := by
+  constructor
+  · rintro ⟨S, T, hScard, hTcard, hadj⟩
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hScard
+    refine ⟨a, b, T, hab, hTcard, fun y hy => ⟨?_, ?_⟩⟩
+    · exact hadj a (by simp) y hy
+    · exact hadj b (by simp) y hy
+  · rintro ⟨a, b, T, hab, hTcard, hadj⟩
+    refine ⟨{a, b}, T, Finset.card_pair hab, hTcard, ?_⟩
+    intro x hx v hv
+    rw [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact (hadj v hv).1
+    · exact (hadj v hv).2
+
+/-- **Codegree bound from `K_{s,t}`-freeness.**  In a `K_{s,t}`-free graph any
+`s`-set `S` of vertices has fewer than `t` common neighbours: otherwise those
+`≥ t` common neighbours would witness a `K_{s,t}`.  The `s`-general analogue of
+`commonNbrs_card_lt_of_free` (the `s = 2` codegree-`< t` statement).  The common
+neighbours of `S` are collected as `univ.filter (S ⊆ N(v))`. -/
+theorem codegree_lt_of_kstFree (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hfree : ¬ HasKst G s t) (S : Finset V) (hS : S.card = s) :
+    (Finset.univ.filter (fun v => S ⊆ G.neighborFinset v)).card < t := by
+  by_contra h
+  push_neg at h
+  refine hfree ⟨S, Finset.univ.filter (fun v => S ⊆ G.neighborFinset v), hS, h, ?_⟩
+  intro a ha v hv
+  rw [Finset.mem_filter] at hv
+  have hav : a ∈ G.neighborFinset v := hv.2 ha
+  rw [SimpleGraph.mem_neighborFinset] at hav
+  exact hav.symm
+
+/-- **General `s`-star double count (`ℕ`, powerset form).**  If every `s`-set of
+vertices has at most `κ` common neighbours, then the total number of `s`-stars
+`∑_v |{S ⊆ N(v) : |S| = s}|` is at most `κ · C(n, s)`.
+
+The proof double-counts incidences `(S, v)` with `S ∈ (N(v)).powersetCard s`:
+summed over `v` and swapped (`Finset.sum_comm`), the fibre over each `s`-set `S`
+is exactly its common-neighbour set `univ.filter (S ⊆ N(v))`, bounded by `κ`; the
+number of `s`-sets is `C(n, s)` (`Finset.card_powersetCard`).  This is the
+`s`-generalisation of the cherry double-count `kst_cherry_count_nat`. -/
+theorem kst_star_count_nat (G : SimpleGraph V) [DecidableRel G.Adj] (s κ : ℕ)
+    (hfree : ∀ S : Finset V, S.card = s →
+      (Finset.univ.filter (fun v => S ⊆ G.neighborFinset v)).card ≤ κ) :
+    ∑ v : V, ((G.neighborFinset v).powersetCard s).card ≤
+      κ * (Fintype.card V).choose s := by
+  have hsub : ∀ v : V,
+      (G.neighborFinset v).powersetCard s ⊆ (Finset.univ : Finset V).powersetCard s := by
+    intro v S hS
+    rw [Finset.mem_powersetCard] at hS ⊢
+    exact ⟨Finset.subset_univ _, hS.2⟩
+  have expand : ∀ v : V, ((G.neighborFinset v).powersetCard s).card =
+      ∑ S ∈ (Finset.univ : Finset V).powersetCard s,
+        (if S ∈ (G.neighborFinset v).powersetCard s then 1 else 0) := by
+    intro v
+    rw [← Finset.card_filter, Finset.filter_mem_eq_inter,
+      Finset.inter_eq_right.mpr (hsub v)]
+  calc ∑ v : V, ((G.neighborFinset v).powersetCard s).card
+      = ∑ v : V, ∑ S ∈ (Finset.univ : Finset V).powersetCard s,
+          (if S ∈ (G.neighborFinset v).powersetCard s then 1 else 0) :=
+        Finset.sum_congr rfl (fun v _ => expand v)
+    _ = ∑ S ∈ (Finset.univ : Finset V).powersetCard s, ∑ v : V,
+          (if S ∈ (G.neighborFinset v).powersetCard s then 1 else 0) := Finset.sum_comm
+    _ ≤ ∑ _S ∈ (Finset.univ : Finset V).powersetCard s, κ := by
+        apply Finset.sum_le_sum
+        intro S hS
+        rw [Finset.mem_powersetCard] at hS
+        rw [← Finset.card_filter]
+        have hset : (Finset.univ.filter
+            (fun v => S ∈ (G.neighborFinset v).powersetCard s)) =
+            Finset.univ.filter (fun v => S ⊆ G.neighborFinset v) := by
+          ext v
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_powersetCard]
+          constructor
+          · rintro ⟨hsv, _⟩; exact hsv
+          · intro hsv; exact ⟨hsv, hS.2⟩
+        rw [hset]
+        exact hfree S hS.2
+    _ = ((Finset.univ : Finset V).powersetCard s).card * κ := by
+        rw [Finset.sum_const, smul_eq_mul]
+    _ = κ * (Fintype.card V).choose s := by
+        rw [Finset.card_powersetCard, Finset.card_univ]; ring
+
+/-- **General `s`-star double count (`choose` form).**  The recognisable
+Kővári–Sós–Turán inequality on binomial codegrees: if every `s`-set has at most
+`κ` common neighbours then
+
+      ∑_v C(d_v, s) ≤ κ · C(n, s).
+
+Rewrites `kst_star_count_nat` via `|{S ⊆ N(v) : |S| = s}| = C(d_v, s)`
+(`Finset.card_powersetCard` + `card_neighborFinset_eq_degree`).  Setting `s = 2`,
+`κ = t-1` recovers the content of `kst_cherry_count_nat`
+(`∑ d(d-1) = ∑ 2·C(d,2) ≤ (t-1)·2·C(n,2)`). -/
+theorem kst_star_count_choose (G : SimpleGraph V) [DecidableRel G.Adj] (s κ : ℕ)
+    (hfree : ∀ S : Finset V, S.card = s →
+      (Finset.univ.filter (fun v => S ⊆ G.neighborFinset v)).card ≤ κ) :
+    ∑ v : V, (G.degree v).choose s ≤ κ * (Fintype.card V).choose s := by
+  have h := kst_star_count_nat G s κ hfree
+  calc ∑ v : V, (G.degree v).choose s
+      = ∑ v : V, ((G.neighborFinset v).powersetCard s).card := by
+        apply Finset.sum_congr rfl
+        intro v _
+        rw [Finset.card_powersetCard, SimpleGraph.card_neighborFinset_eq_degree]
+    _ ≤ κ * (Fintype.card V).choose s := h
+
+/-- **`K_{s,t}`-free binomial codegree bound.**  The genuine Kővári–Sós–Turán
+double-count in its forbidden-subgraph form: a `K_{s,t}`-free graph (`t ≥ 1`)
+satisfies
+
+      ∑_v C(d_v, s) ≤ (t-1) · C(n, s).
+
+Combines `kst_star_count_choose` with `codegree_lt_of_kstFree` (every `s`-set has
+`< t`, i.e. `≤ t-1`, common neighbours).  This is the `s`-general combinatorial
+core; the passage to a closed-form edge bound needs the convexity of
+`x ↦ C(x, s)` (Jensen), the analytic step recorded in the section note above. -/
+theorem kst_star_count_of_free (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    ∑ v : V, (G.degree v).choose s ≤ (t - 1) * (Fintype.card V).choose s := by
+  apply kst_star_count_choose G s (t - 1)
+  intro S hS
+  have h := codegree_lt_of_kstFree G s t hfree S hS
+  omega
 
 end GraphLevel
 

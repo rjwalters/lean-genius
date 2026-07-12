@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (UNVERIFIED, docker infra down): graph-level K_{2,t} KST development now has BOTH directions — the K_{2,t}-free edge upper bounds AND the forcing/existence converse (edges over threshold ⟹ K_{2,t}). OQ deliverable (graph-level K_{2,t} bound) complete; only re-verification pending build-backend repair.",
+    "progressSummary": "PROGRESS (VERIFIED host-lean v4.26.0, axiom-free): generalized the K_{2,t} graph-level KST bound to the s-general combinatorial core — HasKst def + hasKst_two_iff_hasK2t bridge + kst_star_count_nat/_choose/_of_free giving ∑_v C(d_v,s) ≤ (t-1)·C(n,s) for K_{s,t}-free graphs (+163L, 1 def + 5 thm). Remaining gap to a closed-form edge bound is the convexity/Jensen of x↦C(x,s), documented precisely. The prior s=2 OQ deliverable remains complete/verified.",
     "builtItems": [
       "kst_quadratic_solve (Erdos1008OQ02OQ02.lean): solves the general K_{2,t} KST quadratic 4m^2 <= (t-1)n^2(n-1)+2nm for the upper root 4m <= n(1+s), s=sqrt(1+4(t-1)(n-1))",
       "reiman_quadratic_solve_of_kst: t=2 specialisation recovering the sibling C4 lemma verbatim (1+4(t-1)(n-1)=4n-3)",
@@ -49,21 +49,29 @@
       "hasK2t_of_edge_bound_lt / hasK2t_of_edge_bound_leading_order_lt / hasK2t_two_of_edge_bound_leading_order_lt in Erdos1008OQ02OQ02.lean (GraphLevel): the KST forcing/existence direction — edges above the exact / leading-order / Reiman-C4 threshold force HasK2t; one-line contrapositives of the corresponding upper bounds (PR #37195, UNVERIFIED docker-down)",
       "hasK2t_mono / not_hasK2t_mono : K_{2,t}-containment is antitone in t (HasK2t G t → HasK2t G s for s≤t, same witness T reused) and dually K_{2,t}-freeness is monotone (¬HasK2t G s → ¬HasK2t G t) — the nested lattice ⋯⊇Free(s)⊇Free(t)⊇⋯. [VERIFIED axiom-free, lean-elab exit 0, #print axioms=propext/Quot.sound]",
       "kst_lower_root_exact (Erdos1008OQ02OQ02.lean): the LOWER root R⁻=n(1-s)/4 also makes the general KST quadratic vanish exactly (4R⁻²=(t-1)n²(n-1)+2nR⁻), companion to kst_root_exact; both roots n(1±s)/4 now certified [VERIFIED local-lean v4.26.0, 0 errors]",
-      "kst_quadratic_factor (Erdos1008OQ02OQ02.lean): FULL factorization 4x²-2nx-(t-1)n²(n-1)=4(x-n(1+s)/4)(x-n(1-s)/4) over the two roots n(1±s)/4 — the definitive 'solving the quadratic' identity; encodes Vieta R⁺+R⁻=n/2, R⁺R⁻=-(t-1)n²(n-1)/4; proof linear_combination (n²/4)*hs2 [VERIFIED local-lean v4.26.0, 0 errors]"
+      "kst_quadratic_factor (Erdos1008OQ02OQ02.lean): FULL factorization 4x²-2nx-(t-1)n²(n-1)=4(x-n(1+s)/4)(x-n(1-s)/4) over the two roots n(1±s)/4 — the definitive 'solving the quadratic' identity; encodes Vieta R⁺+R⁻=n/2, R⁺R⁻=-(t-1)n²(n-1)/4; proof linear_combination (n²/4)*hs2 [VERIFIED local-lean v4.26.0, 0 errors]",
+      "HasKst def (general K_{s,t} containment: s-set with ≥t common neighbours) in Erdos1008OQ02OQ02.lean:~918",
+      "hasKst_two_iff_hasK2t bridge (HasKst G 2 t ↔ HasK2t G t) tying general s to existing s=2 API",
+      "codegree_lt_of_kstFree (K_{s,t}-free ⟹ every s-set has <t common nbrs)",
+      "kst_star_count_nat / kst_star_count_choose (∑_v C(d_v,s) ≤ κ·C(n,s) under codegree hypothesis)",
+      "kst_star_count_of_free (∑_v C(d_v,s) ≤ (t-1)·C(n,s), the s-general KST core) — all axiom-free, host-lean VERIFIED v4.26.0"
     ],
     "insights": [
       "The C4 algebraic core generalises to K_{2,t} with zero structural change: replace the single-common-neighbour bound by (t-1), so s^2=4n-3 becomes s^2=1+4(t-1)(n-1) and the KST quadratic gains a (t-1) factor on the n^2(n-1) term. Same nlinarith case-split proof works.",
       "Leading-order closed form is ex(n;K_{2,t}) <= (1/2)(sqrt(t-1)*n^{3/2}+n), matching the classical Kovari-Sos-Turan asymptotic.",
       "The graph-level file only had the K_{2,t}-free upper bounds; the forcing converse (too many edges ⟹ K_{2,t}) is what makes KST an extremal theorem and was missing. Trivial via by_contra + absurd (bound) (not_le.2 hm).",
       "HasK2t (∃ a≠b, T with t≤|T|, all of T common-adjacent to a,b) is antitone in t by reusing the SAME witness T and only weakening its cardinality bound t↦s (le_trans). This gives the K_{2,t}-free-class monotonicity for free — orthogonal to the edge-bound/KST machinery, a pure structural fact about the forbidden-subgraph predicate.",
-      "The problem title ('explicit closed-form solve of the KST quadratic') is fully witnessed at the algebraic level by kst_quadratic_factor: the quadratic 4x²-2nx-(t-1)n²(n-1) has EXACTLY the two roots n(1±s)/4 with s²=1+4(t-1)(n-1), so the Reiman/KST upper bound n(1+s)/4 loses nothing algebraically — all residual slack in ex(n;K_{2,t}) is extremal-graph existence, not the quadratic-formula step. Equality goal closed by linear_combination with coefficient n²/4 (the s²-coefficient of the discriminant), not nlinarith."
+      "The problem title ('explicit closed-form solve of the KST quadratic') is fully witnessed at the algebraic level by kst_quadratic_factor: the quadratic 4x²-2nx-(t-1)n²(n-1) has EXACTLY the two roots n(1±s)/4 with s²=1+4(t-1)(n-1), so the Reiman/KST upper bound n(1+s)/4 loses nothing algebraically — all residual slack in ex(n;K_{2,t}) is extremal-graph existence, not the quadratic-formula step. Equality goal closed by linear_combination with coefficient n²/4 (the s²-coefficient of the discriminant), not nlinarith.",
+      "The genuine Kővári–Sós–Turán double-count is the s-general s-star count ∑_v C(d_v,s)=∑_{|S|=s} codeg(S) ≤ (t-1)·C(n,s); the file previously had only the s=2 (K_{2,t}) slice. Proved the full s-general combinatorial core (kst_star_count_nat/_choose/_of_free) via Finset.powersetCard double-counting + Finset.sum_comm, exactly mirroring kst_cherry_count_nat but with powersetCard s in place of offDiag. No analysis needed; axiom-free."
     ],
     "mathlibGaps": [
-      "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan."
+      "No graph-level general cherry-count sum_v C(d_v,2) <= (t-1)*C(n,2) for K_{2,t}-free graphs in the gallery; parent Erdos1008Problem only proves the t=2 (C4) case kovari_sos_turan.",
+      "Convexity of the descending-factorial / generalized binomial x↦C(x,s)=x(x-1)…(x-s+1)/s! (Jensen ∑_v C(d_v,s) ≥ n·C(2m/n,s)) is the sole remaining analytic step from the s-general codegree bound to a closed-form ex(n;K_{s,t})=O((t-1)^{1/s}·n^{2-1/s}) edge bound; for s=2 it degenerates to Cauchy–Schwarz (sq_sum_le_card, already present)."
     ],
     "nextSteps": [
       "VERIFY the graph-level GraphLevel section of Erdos1008OQ02OQ02.lean once containerd/docker build backend is repaired (this session: meta.db + content-store blob I/O errors)",
-      "Optional: derive the leading-order asymptotic ex(n;K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n) as an explicit ℝ corollary of kst_edge_bound"
+      "Optional: derive the leading-order asymptotic ex(n;K_{2,t}) ≤ ½(√(t-1)·n^{3/2}+n) as an explicit ℝ corollary of kst_edge_bound",
+      "Prove convexity of x↦C(x,s) on x≥s-1 and apply Jensen to upgrade kst_star_count_of_free to the closed-form K_{s,t} edge bound m ≤ ½((t-1)^{1/s}·n^{2-1/s}+ (s-1)·n)-style estimate; substantial analytic step (~200+ lines)."
     ]
   },
   "tags": [
