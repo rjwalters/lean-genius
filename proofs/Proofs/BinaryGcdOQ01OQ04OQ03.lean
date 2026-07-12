@@ -1076,4 +1076,199 @@ example :
           - (totalSteps 1 100 : ℚ) / (100 : ℚ) < 2 :=
   avgSteps_one_concentration 100 (by norm_num)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XVI: A GENERAL-`a` LOWER BOUND  (average is Ω(log N) for every fixed a)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- Everything above pins the `a = 1` row. The genuinely new content here is a
+-- lower bound valid for EVERY fixed left argument `a ≥ 1`. The engine is a sharp
+-- geometric invariant of the binary-GCD recursion:
+--
+--     b + a ≤ a · 2 ^ (binaryGcdSteps a b)          (`binaryGcdSteps_geom_bound`)
+--
+-- i.e. `b ≤ a·(2^S − 1)`, tight e.g. at `(a, b) = (3, 9)` (S = 2, `9 = 3·(2²−1)`)
+-- and along the worst-case family `(1, 2^n − 1)`. Taking `log₂` gives the exact
+-- per-call floor
+--
+--     log₂ b ≤ binaryGcdSteps a b + log₂ a           (`log_le_binaryGcdSteps_add_log`)
+--
+-- so `binaryGcdSteps a b ≥ log₂ b − log₂ a`: for fixed `a` the cost still grows
+-- like `log₂ b` in the second argument. Summing over `b ∈ [1, N]` and feeding in
+-- the exact `a = 1` total (`totalSteps_one_eq`) bounds the general-`a` total below
+-- by the `a = 1` reference total up to an `O(N)` slack (`totalSteps_ge`), giving
+-- the general-`a` average the same `Ω(log N)` order as the `a = 1` row
+-- (`avgSteps_ge`) — the order of Brent's average-case result, now for every `a`.
+-- The sharp `0.7050` constant remains out of reach (see file header).
+
+/-- **Geometric invariant of the binary-GCD recursion.** For all `a, b ≥ 1`,
+
+      b + a ≤ a · 2 ^ (binaryGcdSteps a b),
+
+    equivalently `b ≤ a·(2 ^ steps − 1)`. Each recursion step at most doubles the
+    right side (`2^S = 2·2^(S−1)`) while the invariant is preserved in every branch
+    of `binaryGcdSteps`; the subtraction branch `a ≤ b` (both odd) is the tight one,
+    where `b = a + 2·((b−a)/2)` exactly doubles the child bound. Strong induction on
+    `a + b`, mirroring the worst-case upper bound `binaryGcdSteps_le_log`. -/
+theorem binaryGcdSteps_geom_bound (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    b + a ≤ a * 2 ^ binaryGcdSteps a b := by
+  suffices h : ∀ n : ℕ, ∀ a b : ℕ, a + b ≤ n → 1 ≤ a → 1 ≤ b →
+      b + a ≤ a * 2 ^ binaryGcdSteps a b from
+    h (a + b) a b le_rfl ha hb
+  intro n
+  induction n with
+  | zero => intro a b hab ha hb; omega
+  | succ n ih =>
+    intro a b hab ha hb
+    obtain ⟨a', rfl⟩ : ∃ k, a = k + 1 := ⟨a - 1, by omega⟩
+    obtain ⟨b', rfl⟩ : ∃ k, b = k + 1 := ⟨b - 1, by omega⟩
+    rw [binaryGcdSteps.eq_3]
+    split
+    · rename_i ha_even
+      split
+      · -- both even
+        rename_i hb_even
+        set A := (a' + 1) / 2 with hAdef
+        set B := (b' + 1) / 2 with hBdef
+        have hA : 1 ≤ A := by omega
+        have hB : 1 ≤ B := by omega
+        have hxa : a' + 1 = 2 * A := by omega
+        have hxb : b' + 1 = 2 * B := by omega
+        have hIH := ih A B (by omega) hA hB
+        have hP : 0 < 2 ^ binaryGcdSteps A B := by positivity
+        rw [pow_add, pow_one, hxa, hxb]
+        nlinarith [hIH, hP]
+      · -- a even, b odd
+        set A := (a' + 1) / 2 with hAdef
+        have hA : 1 ≤ A := by omega
+        have hxa : a' + 1 = 2 * A := by omega
+        have hIH := ih A (b' + 1) (by omega) hA (by omega)
+        have hP : 0 < 2 ^ binaryGcdSteps A (b' + 1) := by positivity
+        rw [pow_add, pow_one, hxa]
+        nlinarith [hIH, hP]
+    · split
+      · -- a odd, b even
+        rename_i ha_odd hb_even
+        set B := (b' + 1) / 2 with hBdef
+        have hB : 1 ≤ B := by omega
+        have hxb : b' + 1 = 2 * B := by omega
+        have hIH := ih (a' + 1) B (by omega) (by omega) hB
+        have hP : 0 < 2 ^ binaryGcdSteps (a' + 1) B := by positivity
+        rw [pow_add, pow_one, hxb]
+        nlinarith [hIH, hP]
+      · split
+        · -- both odd, a > b
+          rename_i ha_odd hb_odd hgt
+          set D := (a' + 1 - (b' + 1)) / 2 with hDdef
+          have hD : 1 ≤ D := by omega
+          have hIH := ih D (b' + 1) (by omega) hD (by omega)
+          have hP : 0 < 2 ^ binaryGcdSteps D (b' + 1) := by positivity
+          have haeq : a' + 1 = b' + 1 + 2 * D := by omega
+          rw [pow_add, pow_one, haeq]
+          nlinarith [hIH, hP]
+        · -- both odd, a ≤ b
+          rename_i ha_odd hb_odd hle
+          by_cases hEq : b' + 1 - (a' + 1) = 0
+          · -- a = b
+            have hzero : (b' + 1 - (a' + 1)) / 2 = 0 := by omega
+            have haeqb : a' + 1 = b' + 1 := by omega
+            rw [hzero, binaryGcdSteps_zero_right, Nat.add_zero, pow_one]
+            omega
+          · -- a < b
+            set E := (b' + 1 - (a' + 1)) / 2 with hEdef
+            have hE : 1 ≤ E := by omega
+            have hIH := ih (a' + 1) E (by omega) (by omega) hE
+            have hP : 0 < 2 ^ binaryGcdSteps (a' + 1) E := by positivity
+            have hbe : b' + 1 = a' + 1 + 2 * E := by omega
+            rw [pow_add, pow_one, hbe]
+            nlinarith [hIH, hP]
+
+/-- **Exact per-call `log₂` floor (general `a`).** For all `a, b ≥ 1`,
+
+      log₂ b ≤ binaryGcdSteps a b + log₂ a,
+
+    i.e. `binaryGcdSteps a b ≥ log₂ b − log₂ a`. Tight at `(a, b) = (3, 9)`
+    (`log₂ 9 = 3 = 2 + log₂ 3`). This is the general-`a` counterpart of the exact
+    `a = 1` identity `binaryGcdSteps 1 b = log₂ b + 1`: dropping the left argument
+    down to `1` can save at most `log₂ a` steps. Immediate from the geometric
+    invariant `binaryGcdSteps_geom_bound` (`b ≤ a·2^S`) by taking `log₂`. -/
+theorem log_le_binaryGcdSteps_add_log (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    Nat.log 2 b ≤ binaryGcdSteps a b + Nat.log 2 a := by
+  have hmul : b + a ≤ a * 2 ^ binaryGcdSteps a b := binaryGcdSteps_geom_bound a b ha hb
+  have hb2 : b ≤ a * 2 ^ binaryGcdSteps a b := by omega
+  have h1 : 2 ^ Nat.log 2 b ≤ b := Nat.pow_log_le_self 2 (by omega)
+  have h2 : a < 2 ^ (Nat.log 2 a + 1) := Nat.lt_pow_succ_log_self (by norm_num) a
+  have h3 : 2 ^ Nat.log 2 b < 2 ^ (Nat.log 2 a + 1 + binaryGcdSteps a b) :=
+    calc 2 ^ Nat.log 2 b ≤ b := h1
+      _ ≤ a * 2 ^ binaryGcdSteps a b := hb2
+      _ < 2 ^ (Nat.log 2 a + 1) * 2 ^ binaryGcdSteps a b :=
+          mul_lt_mul_of_pos_right h2 (by positivity)
+      _ = 2 ^ (Nat.log 2 a + 1 + binaryGcdSteps a b) := by rw [← pow_add]
+  by_contra hcon
+  push_neg at hcon
+  have hle : 2 ^ (Nat.log 2 a + 1 + binaryGcdSteps a b) ≤ 2 ^ Nat.log 2 b :=
+    Nat.pow_le_pow_right (by norm_num) (by omega)
+  omega
+
+/-- **General-`a` total lower bound vs. the `a = 1` reference total.** For `a ≥ 1`,
+
+      totalSteps 1 N ≤ totalSteps a N + N · (log₂ a + 1).
+
+    Summing the per-call floor `log_le_binaryGcdSteps_add_log` over `b ∈ [1, N]`
+    and substituting the exact `a = 1` total `totalSteps_one_eq`. The general-`a`
+    total therefore trails the (verified `Θ(N·log N)`) `a = 1` total by only an
+    `O(N)` slack, so it inherits the same `Ω(N·log N)` order. -/
+theorem totalSteps_one_le_totalSteps_add (a N : ℕ) (ha : 1 ≤ a) :
+    totalSteps 1 N ≤ totalSteps a N + N * (Nat.log 2 a + 1) := by
+  have hsum : (∑ b ∈ Finset.Icc 1 N, Nat.log 2 b)
+      ≤ ∑ b ∈ Finset.Icc 1 N, (binaryGcdSteps a b + Nat.log 2 a) := by
+    apply Finset.sum_le_sum
+    intro b hb
+    rw [Finset.mem_Icc] at hb
+    exact log_le_binaryGcdSteps_add_log a b ha hb.1
+  have hsplit : (∑ b ∈ Finset.Icc 1 N, (binaryGcdSteps a b + Nat.log 2 a))
+      = totalSteps a N + N * Nat.log 2 a := by
+    unfold totalSteps
+    rw [Finset.sum_add_distrib, Finset.sum_const, Nat.card_Icc, Nat.add_sub_cancel,
+      smul_eq_mul]
+  rw [totalSteps_one_eq]
+  have hexp : N * (Nat.log 2 a + 1) = N * Nat.log 2 a + N := by ring
+  rw [hexp]
+  linarith [hsum, hsplit]
+
+/-- **General-`a` matching Ω(N·log N) lower bound.** For `a ≥ 1`,
+
+      (N − ⌊N/2⌋)·(log₂ N − 1) ≤ totalSteps a N + N · (log₂ a + 1).
+
+    Chains the `a = 1` density lower bound `totalSteps_one_ge` with the reference
+    comparison `totalSteps_one_le_totalSteps_add`. For fixed `a` the right-hand
+    `N · (log₂ a + 1)` term is `O(N)`, so `totalSteps a N` is `Ω(N·log N)` — the
+    general-`a` extension of the `a = 1` `Θ` result. -/
+theorem totalSteps_ge (a N : ℕ) (ha : 1 ≤ a) :
+    (N - N / 2) * (Nat.log 2 N - 1) ≤ totalSteps a N + N * (Nat.log 2 a + 1) :=
+  le_trans (totalSteps_one_ge N) (totalSteps_one_le_totalSteps_add a N ha)
+
+/-- **General-`a` average-case Ω(log N) lower bound.** For `a ≥ 1` and `N ≥ 1`,
+
+      (log₂ N − 1)/2 − (log₂ a + 1)  ≤  (∑_{b=1}^{N} binaryGcdSteps a b) / N.
+
+    Dividing the reference comparison `totalSteps_one_le_totalSteps_add` by `N` and
+    feeding in the `a = 1` average floor `avgSteps_one_ge`. For fixed `a` the
+    subtracted `log₂ a + 1` is a constant, so the mean over `b ∈ [1, N]` is a genuine
+    `Ω(log N)` for every left argument — the ORDER of Brent's average-case result,
+    now uniform in `a`. The sharp `0.7050` leading constant remains out of reach. -/
+theorem avgSteps_ge (a N : ℕ) (ha : 1 ≤ a) (hN : 0 < N) :
+    ((Nat.log 2 N : ℚ) - 1) / 2 - ((Nat.log 2 a : ℚ) + 1)
+      ≤ (totalSteps a N : ℚ) / (N : ℚ) := by
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  have h1 := avgSteps_one_ge N hN
+  have h2 := totalSteps_one_le_totalSteps_add a N ha
+  have h2Q : (totalSteps 1 N : ℚ)
+      ≤ (totalSteps a N : ℚ) + (N : ℚ) * ((Nat.log 2 a : ℚ) + 1) := by
+    exact_mod_cast h2
+  have hdiv : (totalSteps 1 N : ℚ) / (N : ℚ) - (totalSteps a N : ℚ) / (N : ℚ)
+      ≤ (Nat.log 2 a : ℚ) + 1 := by
+    rw [div_sub_div_same, div_le_iff₀ hNQ]
+    nlinarith [h2Q]
+  linarith [h1, hdiv]
+
 end BinaryGcdOQ01OQ04OQ03
