@@ -1090,6 +1090,49 @@ theorem T_L_empty (n : ℕ) : T_L n ∅ = 2 ^ n := by
         rw [Finset.card_powerset, Finset.card_range]
     _ ≤ _ := Finset.le_sup hmem
 
+/--
+**A singleton family avoids `L` iff its one set has a permitted cardinality.**
+The family `{A}` has only the self-pair `A ∩ A = A`, so it avoids every forbidden size
+in `L` exactly when `|A| ∉ L`. This is the `L`-avoiding structural analogue of the
+`avoidsRIntersection` self-pair observation, and the tool that produces admissible
+singleton families for lower bounds on `T_L`. -/
+theorem avoidsLIntersections_singleton_family {L : Finset ℕ} {A : Finset ℕ} :
+    avoidsLIntersections L {A} ↔ A.card ∉ L := by
+  unfold avoidsLIntersections
+  constructor
+  · intro h
+    have := h A A (Finset.mem_singleton_self A) (Finset.mem_singleton_self A)
+    simpa using this
+  · intro h B C hB hC
+    rw [Finset.mem_singleton] at hB hC
+    subst hB; subst hC
+    simpa using h
+
+/--
+**Positive lower endpoint `1 ≤ T_L n L` whenever `0 ∉ L`.** The singleton family `{∅}`
+has its only intersection size equal to `0` (`avoidsLIntersections_singleton_family`), so as
+long as `0` is not a forbidden size it is an admissible `L`-avoiding family, giving
+`T_L n L ≥ 1`. This is the nontrivial lower endpoint of the antitone hierarchy `T_L n ·`:
+together with the ceiling `T_L_le_pow` it sandwiches `1 ≤ T_L n L ≤ 2ⁿ` for every `L` missing
+`0`, the `L`-avoiding analogue of `one_le_T`. -/
+theorem one_le_T_L_of_zero_notMem {n : ℕ} {L : Finset ℕ} (h : 0 ∉ L) :
+    1 ≤ T_L n L := by
+  unfold T_L
+  have hmem : ({∅} : Finset (Finset ℕ)) ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections L) := by
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · rw [Finset.mem_powerset]
+      intro B hB
+      rw [Finset.mem_singleton] at hB
+      subst hB
+      rw [Finset.mem_powerset]
+      exact Finset.empty_subset _
+    · rw [avoidsLIntersections_singleton_family]
+      simpa using h
+  calc 1 = ({∅} : Finset (Finset ℕ)).card := (Finset.card_singleton _).symm
+    _ ≤ _ := Finset.le_sup hmem
+
 /-
 ## Part VIII: Summary
 -/
