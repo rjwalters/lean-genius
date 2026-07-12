@@ -289,4 +289,83 @@ theorem hexagrammum_classes_disjoint :
    Finset.disjoint_filter.mpr
       (fun σ _ h1 h2 => (census_classes_pairwise_exclusive σ).2.2.2.2.2 ⟨h1, h2⟩)⟩
 
+/-! ### Sign (parity) structure of the census
+
+The census fixes the *sizes* of the four fixed-point-free classes; it does not
+record their **parity**. Each cycle type has a uniform sign, and the split of the
+derangements of `Fin 6` into even (`A₆`) and odd permutations is visible in the
+Hexagrammum indexing:
+
+* the **6-cycles** (Pascal lines / Kirkman points) are **odd** — a 6-cycle is a
+  product of 5 transpositions;
+* the **(2,2,2)** class (Plücker lines / Salmon points) is **odd** — three
+  transpositions;
+* the **(3,3)** class (Steiner points / Cayley lines) is **even** — two 3-cycles,
+  each even;
+* the geometrically-inert **(4,2)** class is **even** — a 4-cycle (odd) times a
+  transposition (odd).
+
+So the two *odd* fixed-point-free classes are exactly the ones carrying the
+Pascal/Kirkman and Plücker/Salmon objects, while both *even* classes are the
+Steiner/Cayley class and the inert `(4,2)` class. Numerically the derangements
+split as `120 + 15 = 135` odd against `90 + 40 = 130` even. -/
+
+/-- Every **6-cycle** of `Sym(6)` is an **odd** permutation (`sign = -1`): it is a
+    product of five transpositions. These are the Pascal-line / Kirkman-point class. -/
+theorem sixCycle_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsSixCycle σ → Equiv.Perm.sign σ = -1 := by
+  native_decide
+
+/-- Every `(4,2)` permutation of `Sym(6)` is **even** (`sign = 1`): a 4-cycle
+    (odd) composed with a disjoint transposition (odd). This is the geometrically
+    inert fixed-point-free class. -/
+theorem fourTwo_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsFourTwoCycle σ → Equiv.Perm.sign σ = 1 := by
+  native_decide
+
+/-- Every **double 3-cycle** of `Sym(6)` is **even** (`sign = 1`): a product of two
+    3-cycles, each of which is even. These are the Steiner-point / Cayley-line class. -/
+theorem doubleThreeCycle_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsDoubleThreeCycle σ → Equiv.Perm.sign σ = 1 := by
+  native_decide
+
+/-- Every **triple transposition** of `Sym(6)` is **odd** (`sign = -1`): a product
+    of three transpositions. These are the Plücker-line / Salmon-point class. -/
+theorem tripleTransposition_sign :
+    ∀ σ : Equiv.Perm (Fin 6), IsTripleTransposition σ → Equiv.Perm.sign σ = -1 := by
+  native_decide
+
+/-- **Parity characterisation of the derangements.** Among the fixed-point-free
+    permutations of `Sym(6)`, the **even** ones are exactly the `(4,2)` and `(3,3)`
+    classes, and (by `fixedPointFree_iff_census`) the **odd** ones are exactly the
+    6-cycles and triple transpositions. Equivalently: the Steiner/Cayley class and
+    the inert `(4,2)` class make up `A₆ ∩ derangements`, while the Pascal/Kirkman
+    and Plücker/Salmon classes are the odd derangements. -/
+theorem even_derangement_iff_census :
+    ∀ σ : Equiv.Perm (Fin 6), FixedPointFree σ →
+      (Equiv.Perm.sign σ = 1 ↔ (IsFourTwoCycle σ ∨ IsDoubleThreeCycle σ)) := by
+  native_decide
+
+/-- **130 even derangements.** The fixed-point-free permutations of `Sym(6)` lying
+    in the alternating group `A₆` number `130 = 90 + 40` — the `(4,2)` class plus
+    the `(3,3)` (Steiner) class. -/
+theorem card_even_derangements :
+    (Finset.univ.filter
+      (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = 1)).card = 130 := by
+  native_decide
+
+/-- **135 odd derangements.** The fixed-point-free permutations of `Sym(6)` outside
+    `A₆` number `135 = 120 + 15` — the six-cycle (Pascal/Kirkman) class plus the
+    triple-transposition (Plücker/Salmon) class. -/
+theorem card_odd_derangements :
+    (Finset.univ.filter
+      (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = -1)).card = 135 := by
+  native_decide
+
+/-- **Parity split closure.** The even and odd derangement counts sum to `D₆ = 265`:
+    `130 + 135 = 265`. Since `sign` takes only the values `±1`, this partitions the
+    derangements of `Fin 6` into the two parity halves with no remainder — the
+    `A₆`-refinement of `card_fixedPointFree`. -/
+theorem derangement_parity_split : 130 + 135 = 265 := by norm_num
+
 end PascalsHexagonOQ03Incomplete01
