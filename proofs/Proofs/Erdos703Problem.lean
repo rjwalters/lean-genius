@@ -902,6 +902,54 @@ theorem T_L_le_T_of_mem {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) : T_L n L �
   rw [← T_L_singleton]
   exact T_L_antitone_forbidden (Finset.singleton_subset_iff.mpr hr)
 
+/--
+**Trivial ceiling `T_L n L ≤ 2ⁿ`.** Every `L`-avoiding family still lives inside `2^{[n]}`,
+which has `2ⁿ` members, so the sup of family sizes is at most `2ⁿ` regardless of which
+intersection sizes are forbidden. This is the `L`-avoiding analogue of `T_le_pow`, and the
+uniform upper endpoint of the whole hierarchy: `T_L n L ≤ 2ⁿ` for *every* `L`, with equality
+at `L = ∅` (`T_L_empty`). -/
+theorem T_L_le_pow (n : ℕ) (L : Finset ℕ) : T_L n L ≤ 2 ^ n := by
+  unfold T_L
+  apply Finset.sup_le
+  intro F hF
+  rw [Finset.mem_filter, Finset.mem_powerset] at hF
+  calc F.card ≤ ((Finset.range n).powerset).card := Finset.card_le_card hF.1
+    _ = 2 ^ n := by rw [Finset.card_powerset, Finset.card_range]
+
+/--
+**`T_L` is monotone in the ground set.** If `m ≤ n` then any `L`-avoiding family of subsets
+of `[m]` is also an `L`-avoiding family of subsets of `[n]` — the predicate
+`avoidsLIntersections L` depends only on the sets, not on the ambient ground set — so
+`T_L m L ≤ T_L n L`. The `L`-avoiding analogue of `T_mono_ground`. -/
+theorem T_L_mono_ground {m n : ℕ} {L : Finset ℕ} (h : m ≤ n) : T_L m L ≤ T_L n L := by
+  unfold T_L
+  apply Finset.sup_mono
+  apply Finset.filter_subset_filter
+  apply Finset.powerset_mono.mpr
+  apply Finset.powerset_mono.mpr
+  intro x hx
+  rw [Finset.mem_range] at hx ⊢
+  omega
+
+/--
+**Empty-forbidden endpoint `T_L n ∅ = 2ⁿ`.** With no forbidden intersection sizes the
+constraint is vacuous (`avoidsLIntersections_empty`), so the full powerset `2^{[n]}` is itself
+an admissible family, of size `2ⁿ`; combined with the ceiling `T_L_le_pow` this pins the value
+exactly. This is the lower endpoint of the antitone hierarchy `T_L n · `: as forbidden sizes
+are added the maximum only shrinks from `2ⁿ` (cf. `T_L_antitone_forbidden`, `T_L_insert_le`),
+and it complements the single-size ceiling `T_L n {r} = T n r` at the top. -/
+theorem T_L_empty (n : ℕ) : T_L n ∅ = 2 ^ n := by
+  refine le_antisymm (T_L_le_pow n ∅) ?_
+  unfold T_L
+  have hmem : (Finset.range n).powerset ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsLIntersections ∅) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.Subset.refl _),
+      avoidsLIntersections_empty _⟩
+  calc 2 ^ n = ((Finset.range n).powerset).card := by
+        rw [Finset.card_powerset, Finset.card_range]
+    _ ≤ _ := Finset.le_sup hmem
+
 /-
 ## Part VIII: Summary
 -/
