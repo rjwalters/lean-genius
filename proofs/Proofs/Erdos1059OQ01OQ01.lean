@@ -816,6 +816,39 @@ theorem qualifyingCount_factorial_unbounded (M : ℕ) : ∃ N : ℕ, ∀ n : ℕ
   have hge := qualifyingCount_factorial_ge n (by omega)
   omega
 
+/-- **Monotonicity of the qualifying count at factorial points.**  For `1 ≤ n ≤ m`,
+    `C(n!) ≤ C(m!)`.  From the level decomposition `C(n!) = Σ_{l<n} q(l)`
+    (`qualifyingCount_decomposition`), enlarging the evaluation point `n` only adjoins
+    additional non-negative level contributions `q(l)` for `n ≤ l < m`.  This is the
+    absolute-count monotonicity underlying the linear lower bound
+    `qualifyingCount_factorial_ge`. -/
+theorem qualifyingCount_factorial_mono {n m : ℕ} (hn : n ≥ 1) (hnm : n ≤ m) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) ≤
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial m) := by
+  have hsub : Finset.range n ⊆ Finset.range m := by
+    intro x hx; simp only [Finset.mem_range] at hx ⊢; omega
+  rw [qualifyingCount_decomposition n hn, qualifyingCount_decomposition m (by omega)]
+  exact Finset.sum_le_sum_of_subset hsub
+
+/-- **Strict step-growth of the qualifying count at factorial points.**  For `n ≥ 3`,
+
+      `C(n!) < C((n+1)!)`.
+
+    Passing from `n!` to `(n+1)!` adjoins exactly level `n`, whose contribution
+    `q(n) ≥ 1` is strictly positive (`qualifyingInLevel_pos`, valid for `n ≥ 3`).  So the
+    qualifying count strictly increases at *every* factorial step beyond `3!` — the
+    per-step sharpening of the unboundedness result `qualifyingCount_factorial_unbounded`:
+    the count does not merely tend to infinity, it advances at each successive factorial. -/
+theorem qualifyingCount_factorial_lt_succ (n : ℕ) (hn : n ≥ 3) :
+    Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) <
+      Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1)) := by
+  have key : Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial (n + 1))
+      = Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) + qualifyingInLevel n := by
+    rw [qualifyingCount_decomposition (n + 1) (by omega),
+        qualifyingCount_decomposition n (by omega), Finset.sum_range_succ]
+  have hpos := qualifyingInLevel_pos n hn
+  omega
+
 /-
 ## Summary
 
