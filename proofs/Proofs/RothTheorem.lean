@@ -5511,4 +5511,110 @@ theorem prime_factors_mod_four_eq_three_of_maxSqDiffFreeCard_eq_one
     two_le_maxSqDiffFreeCard_of_prime_dvd_of_mod_four_eq_one hp h1 hdvd
   omega
 
+/-! ### Part XLII — Necessity half, prime-power obstruction: `p² ∣ N ⟹ 2 ≤ maxSqDiffFreeCard N`
+
+The odd-part necessity of Part XLI rules out prime factors `p ≡ 1 (mod 4)`, but a modulus can
+still fall outside the value-`1` locus `{1,2} ∪ {p, 2p : p ≡ 3 (mod 4)}` by being *non-squarefree*
+(e.g. `4`, `9`, `25`, `p²`).  Here we close that gap with a single uniform statement covering
+**every** prime (including `p = 2`, i.e. `4 ∣ N`).
+
+The engine is the arithmetic fact that a natural number `a` divisible by `p` exactly once is a
+non-square modulo `p²`: if `y² ≡ a (mod p²)` then `p ∣ y²`, so `p ∣ y` by primality, whence
+`p² ∣ y² ≡ a` — contradicting `p² ∤ a`.  Pushing the witness `d = (p : ℤ/Nℤ)` forward along the
+reduction `ℤ/Nℤ → ℤ/p²ℤ` (squares map to squares, so *non*-squares lift back), both `d = p` and
+`-d = p·(p-1)` are non-squares mod `p²`, giving a two-element square-difference-free set `{0, d}`. -/
+
+/-- **A natural with exactly one factor of `p` is a non-square mod `p².`**  If `p ∣ a` but
+`p² ∤ a`, then `(a : ℤ/p²ℤ)` is not a square.  A hypothetical square root `y` gives
+`y² ≡ a (mod p²)`; reducing mod `p` forces `p ∣ y` (primality), so `p² ∣ y² ≡ a`, contradicting
+`p² ∤ a`. -/
+private lemma not_isSquare_natCast_zmod_sq {p a : ℕ} (hp : p.Prime)
+    (hdvd : p ∣ a) (hndvd : ¬ p ^ 2 ∣ a) : ¬ IsSquare ((a : ZMod (p ^ 2))) := by
+  haveI := Fact.mk hp
+  haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp.pos.ne'⟩
+  rintro ⟨y, hy⟩
+  set b := y.val with hb
+  have hyv : ((b : ℕ) : ZMod (p ^ 2)) = y := ZMod.natCast_rightInverse y
+  have hcast : ((a : ZMod (p ^ 2))) = ((b * b : ℕ) : ZMod (p ^ 2)) := by
+    rw [Nat.cast_mul, hyv, ← hy]
+  have hmod : a ≡ b * b [MOD p ^ 2] := (ZMod.natCast_eq_natCast_iff _ _ _).mp hcast
+  -- reduce mod `p`: `a ≡ 0` and `a ≡ b·b`, so `p ∣ b·b`, hence `p ∣ b`
+  have hmodp : a ≡ b * b [MOD p] := hmod.of_dvd (dvd_pow_self p two_ne_zero)
+  have hpa : a ≡ 0 [MOD p] := (Nat.modEq_zero_iff_dvd).mpr hdvd
+  have hpbb : p ∣ b * b := (Nat.modEq_zero_iff_dvd).mp (hmodp.symm.trans hpa)
+  have hpb : p ∣ b := (hp.dvd_mul.mp hpbb).elim id id
+  obtain ⟨t, ht⟩ := hpb
+  -- now `b·b = p²·t²`, so `a ≡ 0 (mod p²)`, i.e. `p² ∣ a`
+  have hfin : a ≡ 0 [MOD p ^ 2] := by
+    refine hmod.trans ?_
+    rw [Nat.modEq_zero_iff_dvd]
+    exact ⟨t * t, by rw [ht]; ring⟩
+  exact hndvd ((Nat.modEq_zero_iff_dvd).mp hfin)
+
+/-- **Necessity half, prime-power obstruction.**  If `p² ∣ N` for *any* prime `p`, then
+`2 ≤ maxSqDiffFreeCard N`.  The witness is `d = (p : ℤ/Nℤ)`: reducing to `ℤ/p²ℤ` sends `d ↦ p` and
+`-d ↦ -p = p·(p-1)`, both of which have exactly one factor of `p` and so are non-squares
+(`not_isSquare_natCast_zmod_sq`); non-squareness lifts back along the ring hom via `IsSquare.map`.
+Together with `{0, d}` this yields a size-`2` square-difference-free set.
+
+This covers `p = 2` (`4 ∣ N`) and every odd prime power `p^k`, `k ≥ 2`, uniformly, closing the
+non-squarefree gap in the value-`1` locus. -/
+theorem two_le_maxSqDiffFreeCard_of_prime_sq_dvd
+    {N p : ℕ} [NeZero N] (hp : p.Prime) (hdvd : p ^ 2 ∣ N) :
+    2 ≤ maxSqDiffFreeCard N := by
+  haveI := Fact.mk hp
+  haveI : NeZero (p ^ 2) := ⟨pow_ne_zero 2 hp.pos.ne'⟩
+  -- `p² ∤ p`
+  have hnp2p : ¬ p ^ 2 ∣ p := by
+    intro h
+    have hpp2 : p ∣ p ^ 2 := dvd_pow_self p two_ne_zero
+    have heq : p ^ 2 = p := Nat.dvd_antisymm h hpp2
+    rw [pow_two] at heq
+    exact hp.one_lt.ne' (Nat.eq_of_mul_eq_mul_left hp.pos (by rw [mul_one]; exact heq))
+  -- `p² ∤ p·(p-1)`
+  have hnp2 : ¬ p ^ 2 ∣ p * (p - 1) := by
+    intro h
+    rw [pow_two] at h
+    have hpd : p ∣ (p - 1) := (Nat.mul_dvd_mul_iff_left hp.pos).mp h
+    have hpos : 0 < p - 1 := by have := hp.two_le; omega
+    have := Nat.le_of_dvd hpos hpd
+    omega
+  -- reduction homomorphism `f : ℤ/Nℤ → ℤ/p²ℤ`
+  set f : ZMod N →+* ZMod (p ^ 2) := ZMod.castHom hdvd (ZMod (p ^ 2)) with hf
+  have hfp : f (p : ZMod N) = (p : ZMod (p ^ 2)) := by rw [hf, map_natCast]
+  -- cast identity `↑(p·(p-1)) = -↑p` in `ℤ/p²ℤ`
+  have hcastneg : ((p * (p - 1) : ℕ) : ZMod (p ^ 2)) = -(p : ZMod (p ^ 2)) := by
+    have hpp : ((p : ZMod (p ^ 2))) ^ 2 = 0 := by rw [← Nat.cast_pow, ZMod.natCast_self]
+    have h1 : ((p - 1 : ℕ) : ZMod (p ^ 2)) = (p : ZMod (p ^ 2)) - 1 := by
+      rw [Nat.cast_sub hp.one_le, Nat.cast_one]
+    rw [Nat.cast_mul, h1]
+    linear_combination hpp
+  refine two_le_maxSqDiffFreeCard_iff.mpr ⟨(p : ZMod N), ?_, ?_, ?_⟩
+  · -- `↑p ≠ 0` : otherwise `N ∣ p`, forcing `p² ∣ p`
+    rw [Ne, ZMod.natCast_eq_zero_iff]
+    exact fun h => hnp2p (dvd_trans hdvd h)
+  · -- `↑p` is a non-residue : else `IsSquare (f ↑p) = IsSquare (p : ℤ/p²ℤ)`
+    intro hsq
+    exact not_isSquare_natCast_zmod_sq hp (dvd_refl p) hnp2p (hfp ▸ hsq.map f)
+  · -- `-↑p` is a non-residue : `f (-↑p) = -↑p = ↑(p·(p-1))`, a non-residue mod `p²`
+    intro hsq
+    have hfneg : f (-(p : ZMod N)) = -(p : ZMod (p ^ 2)) := by rw [map_neg, hfp]
+    have hsq2 : IsSquare (-(p : ZMod (p ^ 2))) := hfneg ▸ hsq.map f
+    exact (hcastneg ▸ not_isSquare_natCast_zmod_sq hp (dvd_mul_right p (p - 1)) hnp2) hsq2
+
+/-- **The value-`1` locus is squarefree.**  If `maxSqDiffFreeCard N = 1`, then `N` is squarefree:
+any prime square `p² ∣ N` would force `2 ≤ maxSqDiffFreeCard N` by
+`two_le_maxSqDiffFreeCard_of_prime_sq_dvd`.  Combined with the odd-part result
+`prime_factors_mod_four_eq_three_of_maxSqDiffFreeCard_eq_one`, the value-`1` locus is now pinned to
+squarefree moduli whose odd prime factors are all `≡ 3 (mod 4)` — matching `{1,2} ∪ {p, 2p : p ≡ 3
+(mod 4)}` except for the yet-to-exclude case of two distinct odd prime factors. -/
+theorem squarefree_of_maxSqDiffFreeCard_eq_one {N : ℕ} [NeZero N]
+    (hN : maxSqDiffFreeCard N = 1) : Squarefree N := by
+  rw [Nat.squarefree_iff_prime_squarefree]
+  intro p hp hdvd
+  have hdvd2 : p ^ 2 ∣ N := by rw [pow_two]; exact hdvd
+  have h2 : 2 ≤ maxSqDiffFreeCard N :=
+    two_le_maxSqDiffFreeCard_of_prime_sq_dvd hp hdvd2
+  omega
+
 end Szemeredi.Roth
