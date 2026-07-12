@@ -381,6 +381,18 @@ axiom planar_linear_bound : ∀ (V : Type*) [Fintype V] [DecidableEq V],
   ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
     isPlanar G → edgeCount G ≤ 3 * Fintype.card V - 6
 
+/-- **Edge-count criterion for non-planarity (pointwise contrapositive of
+    `planar_linear_bound`).**  Any graph with strictly more than `3n − 6` edges is
+    non-planar.  Unlike `superlinear_forces_nonplanar`, which is asymptotic — it
+    needs the vertex count to pass a density-crossover threshold `N` — this is a
+    direct, threshold-free test: it certifies a *specific* graph non-planar the moment
+    its edge count exceeds the Euler budget `3n − 6`.  Being the plain contrapositive
+    of the planar edge bound, it carries the same single axiom and no more. -/
+theorem nonPlanar_of_edgeCount_gt {G : SimpleGraph V} [DecidableRel G.Adj]
+    (h : 3 * Fintype.card V - 6 < edgeCount G) : isNonPlanar G := by
+  intro hPlanar
+  exact absurd (planar_linear_bound V G hPlanar) (Nat.not_le.mpr h)
+
 /-- **Pure crossover inequality (axiom-free).** For every ε > 0 there is a
     threshold N — explicitly `⌈3^(1/ε)⌉ + 1` — beyond which super-linear growth
     strictly dominates any linear bound: `n^(1+ε) > 3n` for all `n ≥ N`.
