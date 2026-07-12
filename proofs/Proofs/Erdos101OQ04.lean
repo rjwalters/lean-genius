@@ -3326,4 +3326,50 @@ theorem ternary_conic_sq_sum_pos_of_mem (p q r : ℝ)
     0 < p ^ 2 + q ^ 2 + r ^ 2 :=
   lt_of_lt_of_le (by norm_num) (ternary_conic_sq_sum_ge_of_mem p q r h)
 
+/-! ### Sharpness of the ellipsoidal shell: both extreme radii are attained
+
+`ternary_conic_sq_sum_mem_Icc` confines the squared abscissa radius to `[5/2, 10]`, and the
+docstring identifies these as the squared extreme semi-axes.  The two witnesses below prove
+those endpoints are actually *attained* on the surface `Q = 5`, so the image of `p²+q²+r²`
+over the conic is exactly the closed interval `[5/2, 10]` — the shell characterization is
+sharp, not merely an enclosure. -/
+
+/-- The upper radius bound `10` is attained on `Q = 5`: the trace-free point
+`(√5, -√5, 0)` satisfies `Q = 5` and `p²+q²+r² = 10`.  The trace `p+q+r` vanishes, so all of
+`Q = ½·((p²+q²+r²) + (p+q+r)²)` comes from the radius term — the maximal-radius direction. -/
+theorem exists_ternary_conic_sq_sum_eq_ten :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+      ∧ p ^ 2 + q ^ 2 + r ^ 2 = 10 := by
+  refine ⟨Real.sqrt 5, -Real.sqrt 5, 0, ?_, ?_⟩
+  · have h : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
+/-- The lower radius bound `5/2` is attained on `Q = 5`: the diagonal point
+`(√(5/6), √(5/6), √(5/6))` satisfies `Q = 5` and `p²+q²+r² = 5/2`.  Here `p = q = r`, the
+trace direction `(1,1,1)` — the minimal-radius semi-axis of the ellipsoid. -/
+theorem exists_ternary_conic_sq_sum_eq_five_halves :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+      ∧ p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2 := by
+  refine ⟨Real.sqrt (5 / 6), Real.sqrt (5 / 6), Real.sqrt (5 / 6), ?_, ?_⟩
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
+/-- **The `[5/2, 10]` radius range is sharp.**  Both endpoints of
+`ternary_conic_sq_sum_mem_Icc` are attained on the conic `Q = 5`: the maximum `10` at the
+trace-free point `(√5, -√5, 0)` and the minimum `5/2` at the diagonal point
+`(√(5/6), √(5/6), √(5/6))`.  Together with the containment `ternary_conic_sq_sum_mem_Icc`,
+the image of `p²+q²+r²` over the surface is *exactly* `[5/2, 10]`: the ellipsoidal shell's
+extreme semi-axes `√(5/2)` and `√10` are genuinely realized, upgrading the docstring's
+"sharp" from prose to proof. -/
+theorem ternary_conic_sq_sum_range_sharp :
+    (∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+        ∧ p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2)
+      ∧ (∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5
+        ∧ p ^ 2 + q ^ 2 + r ^ 2 = 10) :=
+  ⟨exists_ternary_conic_sq_sum_eq_five_halves, exists_ternary_conic_sq_sum_eq_ten⟩
+
 end Erdos101OQ04
