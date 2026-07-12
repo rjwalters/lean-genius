@@ -406,4 +406,51 @@ theorem card_odd_derangements :
     `A₆`-refinement of `card_fixedPointFree`. -/
 theorem derangement_parity_split : 130 + 135 = 265 := by norm_num
 
+/-- **The even derangements are exactly the two even classes.** The `130` even
+    fixed-point-free permutations decompose as the `(4,2)` class (`90`) plus the double
+    3-cycle / Steiner class (`40`): `130 = 90 + 40`.  Stated at the level of the actual
+    filtered cardinalities (not just the numerals), it identifies `A₆ ∩ derangements` with
+    the union of the two even cycle-type classes.  Derived by rewriting the established
+    census cards — it introduces no new `native_decide`. -/
+theorem card_even_derangements_eq_even_classes :
+    (Finset.univ.filter
+        (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = 1)).card
+      = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsFourTwoCycle σ)).card
+        + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card := by
+  rw [card_even_derangements, card_fourTwoCycles, card_doubleThreeCycles]
+  norm_num
+
+/-- **The odd derangements are exactly the two odd classes.** The `135` odd
+    fixed-point-free permutations decompose as the six-cycle / Pascal–Kirkman class (`120`)
+    plus the triple-transposition / Plücker–Salmon class (`15`): `135 = 120 + 15`.  The
+    odd-parity companion of `card_even_derangements_eq_even_classes`, identifying the odd
+    derangements with the two geometrically-active Hexagrammum classes.  No new
+    `native_decide`. -/
+theorem card_odd_derangements_eq_odd_classes :
+    (Finset.univ.filter
+        (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ ∧ Equiv.Perm.sign σ = -1)).card
+      = (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card
+        + (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsTripleTransposition σ)).card := by
+  rw [card_odd_derangements, card_sixCycles, card_tripleTranspositions]
+  norm_num
+
+/-- **Pascal lines are half the six-cycles.** The `60` Pascal lines are precisely the
+    six-cycle class (`120`) folded by the outer-automorphism pairing: `120 / 2 = 60`.
+    Bridges the permutation census (`card_sixCycles`) directly to the geometric count,
+    sharpening the numeral-only `pascal_lines_eq_60` by anchoring the `120` to the actual
+    filtered cardinality.  No new `native_decide`. -/
+theorem pascal_lines_eq_half_card_sixCycles :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsSixCycle σ)).card / 2 = 60 := by
+  rw [card_sixCycles]
+  norm_num
+
+/-- **Steiner points are half the double 3-cycles.** The `20` Steiner points are the
+    double-3-cycle class (`40`) folded by the outer-automorphism pairing: `40 / 2 = 20`.
+    The Steiner/Cayley companion of `pascal_lines_eq_half_card_sixCycles`, anchoring
+    `steiner_points_eq_20` to `card_doubleThreeCycles`.  No new `native_decide`. -/
+theorem steiner_points_eq_half_card_doubleThreeCycles :
+    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => IsDoubleThreeCycle σ)).card / 2 = 20 := by
+  rw [card_doubleThreeCycles]
+  norm_num
+
 end PascalsHexagonOQ03Incomplete01
