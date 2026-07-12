@@ -79,22 +79,30 @@
       "id": "sec-bridge",
       "title": "Convergent ⟹ Bounded",
       "startLine": 73,
-      "endLine": 91,
-      "summary": "Lemma exists_bound_of_tendsto: a convergent sequence y n → L admits a uniform bound ‖y n‖ ≤ C. Uses Metric.isBounded_range_of_tendsto to bound the range, then isBounded_iff_forall_norm_le to extract C.",
+      "endLine": 85,
+      "summary": "Variable block (Banach space E, normed space F) and lemma exists_bound_of_tendsto: a convergent sequence y n → L admits a uniform bound ‖y n‖ ≤ C. Uses Metric.isBounded_range_of_tendsto to bound the range, then isBounded_iff_forall_norm_le to extract C.",
       "mathContext": "A convergent sequence in a normed space is bounded. This is the single analytic fact that turns resonance (unbounded orbit) into divergence (no limit)."
     },
     {
       "id": "sec-divergence",
       "title": "The Divergence Principle",
-      "startLine": 92,
-      "endLine": 117,
-      "summary": "Theorem exists_divergent_orbit_of_unbounded_opNorm: unbounded operator norms ⟹ a point x with n ↦ T n x non-convergent (contradicting exists_bound_of_tendsto at the resonance point). Theorem exists_divergent_orbit_unbounded: the same point has an unbounded orbit, ∀ C, ∃ n, C < ‖T n x‖, by unfolding the resonance witness.",
-      "mathContext": "Resonance gives $\\sup_n \\|T_n x\\| = \\infty$. Since a convergent sequence is bounded, $(T_n x)$ has no limit; and directly, for every $C$ some $\\|T_n x\\|$ exceeds $C$."
+      "startLine": 87,
+      "endLine": 100,
+      "summary": "Theorem exists_divergent_orbit_of_unbounded_opNorm: unbounded operator norms ⟹ a point x with n ↦ T n x non-convergent. Extracts the parent's resonance point, then rules out a limit via exists_bound_of_tendsto — a convergent orbit would be bounded, contradicting resonance.",
+      "mathContext": "Resonance gives $\\sup_n \\|T_n x\\| = \\infty$; since a convergent sequence is bounded, $(T_n x)$ can have no limit."
+    },
+    {
+      "id": "sec-unbounded-orbit",
+      "title": "The Unbounded-Orbit Witness",
+      "startLine": 102,
+      "endLine": 112,
+      "summary": "Theorem exists_divergent_orbit_unbounded: the resonance point x has, in fact, an unbounded orbit — ∀ C, ∃ n, C < ‖T n x‖ — the strong divergence witness with no finite envelope. Proved by by_contra + push_neg, feeding the negated bound back into the resonance witness.",
+      "mathContext": "For every $C$ some $\\|T_n x\\|$ exceeds $C$: the orbit escapes every bound, strictly stronger than mere non-convergence."
     },
     {
       "id": "sec-fourier",
       "title": "du Bois-Reymond Reduction (Scalar Form)",
-      "startLine": 118,
+      "startLine": 114,
       "endLine": 132,
       "summary": "Theorem exists_divergent_partialSums: for functionals S : ℕ → V →L[ℂ] ℂ on a complex Banach space with unbounded norms, there is f with S n f non-convergent. Documented as the V = C(𝕋), S n f = n-th Fourier partial sum at 0 instantiation; the unbounded-norm hypothesis is the Lebesgue-constant growth.",
       "mathContext": "Specialising $F = \\mathbb{C}$ yields the form matching Fourier partial sums: $\\|S_n\\| = L_n$ (Lebesgue constants), and $L_n \\to \\infty$ produces a continuous function with a Fourier series divergent at $0$."
