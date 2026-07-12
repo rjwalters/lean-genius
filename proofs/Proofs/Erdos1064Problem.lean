@@ -172,6 +172,47 @@ theorem erdos_1064_resolution :
     -- The problem is fully resolved
     A_less.Infinite := glw_infinitely_many
 
+/- ## Complement: A₊ is also infinite (axiom-free)
+
+The density-1 result (`lucaPomerance_density_one`) is the deep analytic input and
+implies `A₊` is infinite, but that infinitude is elementary and needs no analysis:
+**every odd prime lies in `A₊`.**  For a prime `p` we have `φ(p) = p − 1`, so
+`n − φ(n) = p − (p − 1) = 1` and `φ(1) = 1`; hence `φ(p) = p − 1 > 1 = φ(n − φ(n))`
+whenever `p ≥ 3`.  As there are infinitely many primes, `A₊` is infinite —
+mirroring the explicit-family proof that `A₋` is infinite, so *both* comparison
+sets are unconditionally infinite. -/
+
+/-- Every odd prime `p` lies in `A₊`, i.e. `φ(p) > φ(p − φ(p))`:
+    `φ(p) = p − 1`, `p − φ(p) = 1`, and `φ(1) = 1 < p − 1`. -/
+theorem mem_A_greater_of_prime {p : ℕ} (hp : p.Prime) (hp3 : 3 ≤ p) : p ∈ A_greater := by
+  have hφ : Nat.totient p = p - 1 := Nat.totient_prime hp
+  have hsub : p - Nat.totient p = 1 := by rw [hφ]; omega
+  show Nat.totient p > Nat.totient (p - Nat.totient p)
+  rw [hsub, hφ, Nat.totient_one]
+  omega
+
+/-- **`A₊` is infinite (axiom-free).**  The elementary complement to
+    `glw_infinitely_many`: every odd prime lies in `A₊`
+    (`mem_A_greater_of_prime`) and there are infinitely many primes, so `A₊` is
+    infinite with no appeal to the density-1 axiom `lucaPomerance_density_one`. -/
+theorem A_greater_infinite : A_greater.Infinite := by
+  have hsub : {p : ℕ | p.Prime} \ {2} ⊆ A_greater := by
+    rintro p ⟨hp, hp2⟩
+    have hprime : p.Prime := hp
+    have hne : p ≠ 2 := by simpa using hp2
+    have h2le : 2 ≤ p := hprime.two_le
+    exact mem_A_greater_of_prime hprime (by omega)
+  exact Set.Infinite.mono hsub
+    (Nat.infinite_setOf_prime.diff (Set.finite_singleton 2))
+
+/-- **Both comparison sets are infinite (axiom-free).**  Combining
+    `glw_infinitely_many` (`A₋` infinite, explicit family `15·2^(k+1)`) with
+    `A_greater_infinite` (`A₊` infinite, odd primes): the totient comparison
+    `φ(n)` vs `φ(n − φ(n))` flips in *both* directions infinitely often, with
+    neither infinitude relying on the density axiom. -/
+theorem A_less_and_A_greater_infinite : A_less.Infinite ∧ A_greater.Infinite :=
+  ⟨glw_infinitely_many, A_greater_infinite⟩
+
 /- ## The Pattern: 15 · 2^k ∈ A_less
 
 For n = 15 · 2^k, we have φ(n) < φ(n - φ(n)).
