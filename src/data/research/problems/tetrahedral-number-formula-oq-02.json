@@ -1,0 +1,102 @@
+{
+  "slug": "tetrahedral-number-formula-oq-02",
+  "title": "Uniform Cleared-Denominator Polynomial Form for Higher-Dimensional Figurate Sums",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{k=0}^{n} \\binom{k+d-1}{d} = \\binom{n+d}{d+1}\n\\qquad\\text{(hockey-stick identity, dimension } d)",
+    "plain": "The base gallery proof (`tetrahedral-number-formula`) shows that summing the",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-07-09T20:46:01-07:00",
+    "iteration": 1,
+    "focus": "Solved: uniform cleared-denominator polynomial form proved and verified axiom-free.",
+    "blockers": [],
+    "nextAction": "None — problem complete.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: uniform cleared-denominator polynomial form for the figurate partial sum proved (0 sorries, 0 custom axioms).",
+    "builtItems": [
+      "factorial_mul_sum_simplex (TetrahedralNumberFormulaOQ02.lean:82): (d+1)!·∑_{k≤n}C(k+d,d) = ∏_{i<d+1}(n+1+i), the uniform cleared-denominator polynomial form for every dimension d",
+      "factorial_mul_sum_simplex_asc (TetrahedralNumberFormulaOQ02.lean:88): same via ascending factorial (n+1).ascFactorial (d+1)",
+      "sum_simplex_closed (TetrahedralNumberFormulaOQ02.lean:96): S_d(n) = C(n+d+1, d+1)",
+      "factorial_dvd_prod_consec (TetrahedralNumberFormulaOQ02.lean:104): (d+1)! ∣ ∏_{i<d+1}(n+1+i) — integrality of product of d+1 consecutive integers, as a corollary",
+      "sum_simplex_eq_prod_div (TetrahedralNumberFormulaOQ02.lean:111): division form with exact division proved",
+      "sum_simplex_two / sum_simplex_three (TetrahedralNumberFormulaOQ02.lean:119,130): d=2,3 rungs 6·S_2=(n+1)(n+2)(n+3), 24·S_3=(n+1)(n+2)(n+3)(n+4)"
+    ],
+    "insights": [
+      "The oq-02 target (uniform cleared-denominator form of the partial SUM) is an immediate but previously-unrecorded composition of two OQ01 lemmas kept separate there: sum_simplex (hockey stick) and factorial_mul_simplexNumber_prod (cleared closed form). Composing at dimension d+1 gives (d+1)!·S_d(n)=∏(n+1+i).",
+      "The cleared identity yields the classical integrality fact (d+1)!∣(product of d+1 consecutive integers) for free, since the exact quotient is the natural number S_d(n).",
+      "Uses OQ01 simplexNumber convention P_d(k)=C(k+d,d) (so P_2 is triangular T_{k+1}); the d=2/d=3 rungs are the tetrahedral pattern one dimension up from the parent entry, not the parent's index-shifted C(k+1,2) convention."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Optional: express (d+1)!·S_d(n) as an explicit Polynomial ℤ (monic degree d+1) to make the 'polynomial form' a first-class Mathlib Polynomial rather than a product expression."
+    ],
+    "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "algebra",
+    "figurate-numbers"
+  ],
+  "relatedProofs": [
+    "tetrahedral-number-formula"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-10T05:15:55.896Z",
+  "lastUpdate": "2026-07-12",
+  "leanFiles": [
+    {
+      "path": "Proofs/TetrahedralNumberFormula.lean",
+      "filename": "TetrahedralNumberFormula.lean",
+      "lineCount": 147,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormula.lean"
+    },
+    {
+      "path": "Proofs/TetrahedralNumberFormulaOQ01.lean",
+      "filename": "TetrahedralNumberFormulaOQ01.lean",
+      "lineCount": 901,
+      "theoremCount": 50,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/TetrahedralNumberFormulaOQ01Absorption.lean",
+      "filename": "TetrahedralNumberFormulaOQ01Absorption.lean",
+      "lineCount": 159,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01Absorption.lean"
+    }
+  ]
+}
