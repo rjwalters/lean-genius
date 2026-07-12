@@ -605,3 +605,50 @@ docker `[7744/7744]` green, `#print axioms` = propext/Classical.choice/Quot.soun
   This session added no parent-axiom reduction (this slug's remaining hard target
   is Pfister, a multi-session effort); it enriched the oq-03 subtree with the
   constructive positive-side counterpart to the already-formalized negative side.
+
+## Session 2026-07-12 (researcher-5) — frontier assessment: square-count reduction is CEP-hard (no clean session win)
+Investigated the two open nextSteps that ask to reduce the number of squares in
+the Motzkin/Robinson rational-SOS certificates toward the Pfister bound 2ⁿ
+(Motzkin n=2 → 4, Robinson n=3 → 8). **Conclusion: not a clean session; this is
+the Cassels–Ellison–Pfister boundary case.** Motzkin `M = 1+x⁴y²+x²y⁴−3x²y²` is
+*the* classical polynomial witnessing that the Pythagoras number of ℝ(x,y) is
+exactly 4 — it IS a sum of 4 rational squares (Pfister upper bound) but provably
+NOT a sum of 3 (Cassels–Ellison–Pfister 1971, a hard theorem). So hitting 4 is a
+known-hard result, and 4 is optimal.
+
+What I ruled out concretely (all verified in sympy):
+- **Naive Cassels–Pfister descent in x overshoots.** Completing the square with
+  the leading x-coeff y² gives the exact identity
+  `M = (y·x² + (y³−3y)/2)² + ¼(y²−1)²(4−y²)`; the remainder ¼(y²−1)²(4−y²) is a
+  function of y alone but is **negative for |y|>2**, so it is not a sum of squares
+  in ℝ(y). The completion is algebraically valid but useless for a real SOS. Same
+  for the symmetric descent in y. No polynomial completion works (the "1−p²≥0 for
+  all y" constraint forces p constant, then the x²-coeff constraint fails).
+- **Product-compression stalls at the "5th-square obstruction."** The certificate
+  gives `(4+4x²+4y²)·M = 3G0²+G1²+G2²+G3²+G4²` = 5 (rationally-distinct) squares.
+  A sum-of-4-squares is a quaternion norm |q|² (Euler's 4-square identity is
+  multiplicative), but the extra 5th square e² breaks multiplicativity:
+  `(|p|²+e²)·|q|² = |pq|² + e²|q|²` = 4+4 = 8 squares, never 4. Removing the 5th
+  square genuinely requires the Pfister induction (closure of D(4-Pfister) under
+  addition over ℝ(x,y)), i.e. the deep content — not a product identity.
+- **Gram-rank reduction gives no clean rational win.** The 21-square rep
+  `N²M = Σ_{21}(qᵢdⱼ)²` (N=4+4x²+4y²) has Gram **rank exactly 11** over the
+  degree-≤5 monomials, so `(1+x²+y²)²·M` is a *weighted* 11-square SOS
+  `Σₖ dₖ ℓₖ²` with pivots dₖ ∈ {1,2,1,2,5,7/2,3/4,5/14,1,7/2,5/14} (exact rational
+  LDLᵀ). Most pivots are non-square, so as a real SOS it is 11 squares with
+  IRRATIONAL √dₖ coefficients (awkward but valid for IsSumOfSquaresRF). Clearing
+  the weights to rational **unit**-coefficient squares via Lagrange (each dₖ =
+  sum of ≤4 rational squares) balloons the count to **24 > 21** — worse than the
+  file's existing 21. So there is no clean rational improvement below 21 with these
+  denominators; 21 (rational, unit-coeff) is near the practical floor short of the
+  full Pfister/CEP machinery.
+
+**Recommendation for future sessions:** do NOT re-attempt "21→4 Motzkin" as a
+quick certificate hunt — it is CEP-boundary-hard. A genuine 4-square rep would
+need either (a) formalizing Pfister's constructive n=2 bound (Cassels–Pfister
+subform descent + level of ℝ(y)=2), or (b) importing a specific published
+explicit 4-rational-square Motzkin certificate and verifying it by field_simp;ring
+(the verification is cheap; FINDING the exact rational functions is the hard part
+and is the CEP content). Same story one dimension up for Robinson (n=3 → 8).
+The oq-03 strand is at its tractable frontier; the sole remaining parent axiom
+pfister_bound_aux is the honest deep frontier.
