@@ -585,6 +585,30 @@ private theorem no_three_quadratic_roots {F : Type*} [Field F]
   have hb : b = 0 := by rw [ha, zero_mul, zero_add] at e1; exact e1
   exact hab ⟨ha, hb⟩
 
+/-- **A nonzero quadratic has at most two roots (Finset-cardinality form).**  Over any
+finite field `F`, the solution set of `a·t² + b·t + c = 0` has at most two elements
+whenever the leading pair `(a, b) ≠ (0, 0)`.  The packaged `Finset.card` form of
+`no_three_quadratic_roots`, and the abstract root-counting fact behind the parabola secant
+bound `parabola_inter_line_card_le_two` (which is its instance for the substituted line
+quadratic over `ZMod p`). -/
+theorem quadratic_roots_card_le_two {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+    (a b c : F) (hab : ¬ (a = 0 ∧ b = 0)) :
+    (Finset.univ.filter (fun t => a * t ^ 2 + b * t + c = 0)).card ≤ 2 := by
+  by_contra hcon
+  rw [not_le] at hcon
+  obtain ⟨i, j, k, hi, hj, hk, hij, hik, hjk⟩ := Finset.two_lt_card_iff.mp hcon
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hi hj hk
+  exact no_three_quadratic_roots a b c hab i j k hi hj hk hij hik hjk
+
+/-- **Nonzero quadratic over `ZMod p` has at most two roots.**  The `ZMod p`
+specialization of `quadratic_roots_card_le_two`, in the exact finite field where the
+Grünbaum parabola lives — the directly-usable root-count feeding
+`parabola_inter_line_card_le_two`. -/
+theorem zmod_quadratic_roots_card_le_two (p : ℕ) [NeZero p] [Fact p.Prime]
+    (a b c : ZMod p) (hab : ¬ (a = 0 ∧ b = 0)) :
+    (Finset.univ.filter (fun t : ZMod p => a * t ^ 2 + b * t + c = 0)).card ≤ 2 :=
+  quadratic_roots_card_le_two a b c hab
+
 /-- **Parabola secant bound** (S3-B2 deliverable).
 
 For `p` an odd prime, every affine line `{(x,y) : α·x + β·y = γ}` with
