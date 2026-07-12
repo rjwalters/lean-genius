@@ -602,6 +602,27 @@ theorem kronecker_periodic_numerator (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n %
   rw [kronecker_mod_numerator (a + (n : ℤ)) n hn hno, kronecker_mod_numerator a n hn hno,
     Int.add_emod_right]
 
+/-- **The numerator character `(·/n)` is constant on residue classes (congruence form).**
+    For odd positive `n`, congruent numerators give equal symbols: `a₁ ≡ a₂ (mod n)`
+    implies `(a₁/n) = (a₂/n)`. This is the numerator-side analog of Mathlib's
+    `jacobiSym.mod_left'`, and the precise sense in which `(·/n)` is a genuine function on
+    `ℤ / nℤ` — the form used to *define* the induced Dirichlet character on `ZMod n`
+    (stronger than the representative form `kronecker_mod_numerator`, which only reduces to
+    the canonical residue `a % n`). `sorry`-free, axiom-free. -/
+theorem kronecker_mod_numerator' (a₁ a₂ : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (h : a₁ % (n : ℤ) = a₂ % (n : ℤ)) :
+    kronecker a₁ (n : ℤ) = kronecker a₂ (n : ℤ) := by
+  rw [kronecker_mod_numerator a₁ n hn hno, kronecker_mod_numerator a₂ n hn hno, h]
+
+/-- **The numerator character `(·/n)` is invariant under adding any integer multiple of `n`.**
+    For odd positive `n` and any `k : ℤ`, `(a + k·n / n) = (a/n)`. The full period-`n`
+    statement generalising the single-step `kronecker_periodic_numerator` (the `k = 1` case),
+    obtained from the congruence form since `(a + k·n) % n = a % n`. `sorry`-free,
+    axiom-free. -/
+theorem kronecker_add_mul_numerator (a k : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (a + k * (n : ℤ)) (n : ℤ) = kronecker a (n : ℤ) :=
+  kronecker_mod_numerator' (a + k * (n : ℤ)) a n hn hno (Int.add_mul_emod_self_right a k n)
+
 /-! ### Section 9: the supplementary laws as Mathlib's canonical characters
 
 Section 8 states the supplementary laws in explicit `if`-form (readable residue
