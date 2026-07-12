@@ -1,5 +1,26 @@
 [
   {
+    "id": "ann-engine-helpers",
+    "proofId": "amgm-inequality-oq-05-oq-02-oq-01",
+    "range": { "startLine": 48, "endLine": 67 },
+    "type": "technique",
+    "title": "Log-transport and positivity helpers for the engine",
+    "content": "Three private lemmas that prepare the ground for the equality engine. log_prod_rpow is the key algebraic bridge: taking logs turns the weighted geometric mean ∏ xᵢ^{wᵢ} into the weighted sum of logs ∑ wᵢ·log xᵢ (via Real.log_prod on strictly positive factors and Real.log_rpow termwise) — the identity that lets a multiplicative statement be attacked with the additive machinery of concave Jensen. prod_rpow_pos and mean_pos record that, for positive weights and inputs, both the geometric mean and the arithmetic mean are strictly positive; this positivity is exactly what licenses the later log-injectivity step (Real.log_injOn_pos) when comparing the two means.",
+    "mathContext": "$\\log\\!\\left(\\prod_i x_i^{w_i}\\right) = \\sum_i w_i \\log x_i$, with $\\prod_i x_i^{w_i} > 0$ and $\\sum_i w_i x_i > 0$ for $w_i, x_i > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.log_prod",
+      "Real.log_rpow",
+      "Finset.prod_pos",
+      "Finset.sum_pos",
+      "log turns products into sums"
+    ],
+    "prerequisites": [
+      "Real.rpow and its logarithm",
+      "strict positivity of finite products and sums"
+    ]
+  },
+  {
     "id": "ann-engine-pairwise",
     "proofId": "amgm-inequality-oq-05-oq-02-oq-01",
     "range": { "startLine": 71, "endLine": 99 },
