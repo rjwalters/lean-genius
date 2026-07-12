@@ -146,9 +146,21 @@
     }
   ],
   "crossReferences": [
-    "eisenstein-criterion-oq-01",
-    "abel-ruffini",
-    "algebraic-numbers-countable"
+    {
+      "targetId": "eisenstein-criterion-oq-01",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Eisenstein's Criterion and the Irreducibility of Xⁿ − p. The present entry extends or refines it."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Related result: Abel-Ruffini Theorem."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "Related result: Countability of Algebraic Numbers."
+    }
   ],
   "sorries": [],
   "mainTheorems": [

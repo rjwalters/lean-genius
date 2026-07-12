@@ -110,10 +110,26 @@
     }
   ],
   "crossReferences": [
-    "amgm-inequality-oq-02-oq-02",
-    "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
-    "newton-power-sum-identities-oq-01",
-    "descartes-rule-of-signs"
+    {
+      "targetId": "amgm-inequality-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Ancestor in this entry’s line: Newton's Log-Concavity: Complete Proof of Maclaurin's Step. The present entry extends or refines it."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
+      "relationship": "related",
+      "description": "Related result: Maclaurin's Step via Mathlib Symmetric Functions: Resolving the Newton-Identities Question."
+    },
+    {
+      "targetId": "newton-power-sum-identities-oq-01",
+      "relationship": "related",
+      "description": "Related result: Newton's Identities in Low Degree: Power Sums from Elementary Symmetric Polynomials."
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "related",
+      "description": "Related result: Descartes' Rule of Signs."
+    }
   ],
   "references": [
     {
