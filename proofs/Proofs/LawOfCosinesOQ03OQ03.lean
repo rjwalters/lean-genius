@@ -1014,6 +1014,15 @@ def HyperbolicTriangle.rotate (t : HyperbolicTriangle) : HyperbolicTriangle wher
 theorem side_eq_iff_angle_eq_bc (t : HyperbolicTriangle) : t.b = t.c ↔ t.B = t.C :=
   side_eq_iff_angle_eq t.rotate
 
+/-- **Isosceles criterion for the `(c,a)/(C,A)` pair.** `c = a ↔ C = A`, the third leg of
+    the cyclic isosceles trio completing `side_eq_iff_angle_eq` (`a = b ↔ A = B`) and
+    `side_eq_iff_angle_eq_bc` (`b = c ↔ B = C`), obtained by applying the `(b,c)` criterion
+    to `rotate` (which cycles `(a,b,c) → (b,c,a)`, sending the `(b,c)` pair to `(c,a)`). With
+    its two companions this gives the isosceles criterion for every pair of a hyperbolic
+    triangle. -/
+theorem side_eq_iff_angle_eq_ca (t : HyperbolicTriangle) : t.c = t.a ↔ t.C = t.A :=
+  side_eq_iff_angle_eq_bc t.rotate
+
 /-- **Equilateral ⟺ equiangular.** A hyperbolic triangle has all three sides equal iff it
     has all three angles equal. The `⟸` direction is `equilateral_sides_eq` (equal angles
     force equal sides); the `⟹` direction combines the two isosceles criteria
