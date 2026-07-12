@@ -105,25 +105,29 @@
       "title": "Overview, the continuum function, and the helper",
       "startLine": 1,
       "endLine": 43,
-      "summary": "Docstring positioning the file against the parent (CH + König/Easton at 2^{ℵ₀}) and stating Easton's three constraints; imports Mathlib, opens Cardinal/Ordinal, defines contFn α = 2^{ℵ_α}, and proves the helper two_ne_zero_card ((2:Cardinal) ≠ 0) used by the monotonicity lemma."
+      "summary": "Docstring positioning the file against the parent (CH + König/Easton at 2^{ℵ₀}) and stating Easton's three constraints; imports Mathlib, opens Cardinal/Ordinal, defines contFn α = 2^{ℵ_α}, and proves the helper two_ne_zero_card ((2:Cardinal) ≠ 0) used by the monotonicity lemma.",
+      "mathContext": "The continuum function $\\operatorname{contFn}\\alpha = 2^{\\aleph_\\alpha}$; Easton's theorem says its only ZFC constraints are monotonicity, Cantor ($\\aleph_\\alpha < 2^{\\aleph_\\alpha}$), and König ($\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$)."
     },
     {
       "title": "Monotonicity",
       "startLine": 44,
       "endLine": 49,
-      "summary": "contFn_monotone (monotone in the index, via power_le_power_left and aleph_le_aleph) — only ≤, not strict, between distinct indices."
+      "summary": "contFn_monotone (monotone in the index, via power_le_power_left and aleph_le_aleph) — only ≤, not strict, between distinct indices.",
+      "mathContext": "$\\alpha \\le \\beta \\Rightarrow 2^{\\aleph_\\alpha} \\le 2^{\\aleph_\\beta}$ (via power_le_power_left on $\\aleph_\\alpha \\le \\aleph_\\beta$) — only $\\le$, since e.g. $2^{\\aleph_0} = 2^{\\aleph_1}$ is consistent."
     },
     {
       "title": "Cantor and König constraints",
       "startLine": 61,
       "endLine": 73,
-      "summary": "aleph_lt_contFn (Cantor), aleph_lt_cof_contFn (König, generalized, from lt_cof_power), and the classical aleph0_lt_cof_continuum; plus contFn_ne_aleph (no fixed point)."
+      "summary": "aleph_lt_contFn (Cantor), aleph_lt_cof_contFn (König, generalized, from lt_cof_power), and the classical aleph0_lt_cof_continuum; plus contFn_ne_aleph (no fixed point).",
+      "mathContext": "Cantor: $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$. König: $\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$ (so $2^{\\aleph_0} \\ne \\aleph_\\omega$). Together they give $2^{\\aleph_\\alpha} \\ne \\aleph_\\alpha$ (no fixed point)."
     },
     {
       "title": "Packaged admissibility constraints",
       "startLine": 75,
       "endLine": 79,
-      "summary": "contFn_constraints: the three Easton constraints (Cantor, König, monotonicity) bundled as the necessary conditions on any consistent continuum pattern."
+      "summary": "contFn_constraints: the three Easton constraints (Cantor, König, monotonicity) bundled as the necessary conditions on any consistent continuum pattern.",
+      "mathContext": "The conjunction $\\aleph_\\alpha < 2^{\\aleph_\\alpha}$, $\\operatorname{cf}(2^{\\aleph_\\alpha}) > \\aleph_\\alpha$, and $\\alpha\\le\\beta \\Rightarrow 2^{\\aleph_\\alpha}\\le 2^{\\aleph_\\beta}$ — by Easton's theorem, the complete list of ZFC constraints on the continuum function."
     }
   ],
   "sorries": []
