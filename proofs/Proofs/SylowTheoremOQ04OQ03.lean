@@ -1276,4 +1276,95 @@ theorem card_sylow_ge (hp : 5 ≤ p) :
   have hle : p ≤ n - 1 := Nat.le_of_dvd (by omega) hdvd
   omega
 
+omit [Fact (Nat.Prime p)] in
+/-- **Arithmetic core of the exact Sylow count.**  A divisor `n` of `p² − 1` that is
+`≡ 1 (mod p)` and `≥ p + 1` equals `p + 1` exactly (for `p ≥ 5`).  This is the purely
+number-theoretic step that turns the Sylow *lower* bound `card_sylow_ge` into an
+*equality*, avoiding the explicit normalizer/Borel matrix computation.
+
+Proof sketch: write `n = p·a + 1` (from `n ≡ 1`) and `p² − 1 = n·m`.  The equation
+`p² = p·(a·m) + (m + 1)` forces `p ∣ m + 1`, hence `m + 1 ≥ p`.  If `a ≥ 2` then
+`n ≥ 2p + 1`, so `(2p + 1)·p ≤ n·(m + 1) = (p² − 1) + n ≤ 2(p² − 1)`, i.e.
+`2p² + p + 1 ≤ 2p²`, impossible.  Thus `a = 1` and `n = p + 1`. -/
+theorem sylow_count_arith (hp : 5 ≤ p) {n : ℕ}
+    (hdvd : n ∣ p ^ 2 - 1) (hmod : n ≡ 1 [MOD p]) (hge : p + 1 ≤ n) :
+    n = p + 1 := by
+  have hpsq : 25 ≤ p ^ 2 := by nlinarith
+  obtain ⟨m, hm⟩ := hdvd
+  have hn1 : 1 ≤ n := by omega
+  have hdvd1 : p ∣ n - 1 := (Nat.modEq_iff_dvd' hn1).mp hmod.symm
+  obtain ⟨a, ha⟩ := hdvd1
+  have hn : n = p * a + 1 := by omega
+  have hm1 : 1 ≤ m := by
+    rcases Nat.eq_zero_or_pos m with h | h
+    · subst h; simp at hm; omega
+    · exact h
+  have hpm : p ^ 2 = n * m + 1 := by omega
+  have hkey : p ^ 2 = p * (a * m) + (m + 1) := by rw [hpm, hn]; ring
+  have hdvdm : p ∣ m + 1 := by
+    have h1 : p ∣ p ^ 2 := ⟨p, by ring⟩
+    have h2 : p ∣ p * (a * m) := ⟨a * m, rfl⟩
+    have h3 : m + 1 = p ^ 2 - p * (a * m) := by omega
+    rw [h3]; exact Nat.dvd_sub h1 h2
+  have hmp : p ≤ m + 1 := Nat.le_of_dvd (by omega) hdvdm
+  by_contra hne
+  have ha1 : 1 ≤ a := by
+    rcases Nat.eq_zero_or_pos a with h | h
+    · subst h; simp only [Nat.mul_zero, Nat.zero_add] at hn; omega
+    · exact h
+  have ha2 : 2 ≤ a := by
+    rcases lt_or_ge a 2 with h | h
+    · have hai : a = 1 := by omega
+      exact absurd (show n = p + 1 by rw [hn, hai]; ring) hne
+    · exact h
+  have hn2p : 2 * p + 1 ≤ n := by rw [hn]; nlinarith [ha2, hp]
+  have hnle : n ≤ p ^ 2 - 1 := Nat.le_of_dvd (by omega) ⟨m, hm⟩
+  have hlow : (2 * p + 1) * p ≤ n * (m + 1) := Nat.mul_le_mul hn2p hmp
+  have heq : n * (m + 1) = (p ^ 2 - 1) + n := by rw [mul_add_one, ← hm]
+  rw [heq] at hlow
+  have hexp : (2 * p + 1) * p = 2 * p ^ 2 + p := by ring
+  rw [hexp] at hlow
+  omega
+
+/-- **The index of the unipotent Sylow subgroup is `p² − 1`.**  From
+`|U|·[SL : U] = |SL|` (`Subgroup.card_mul_index`) with `|U| = p`
+(`card_unipotentHom_range`) and `|SL(2, p)| = p·(p² − 1)` (`card_SL2`). -/
+theorem index_unipotentSylow :
+    (↑(unipotentSylow (p := p)) :
+        Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))).index = p ^ 2 - 1 := by
+  have hp0 : 0 < p := (Fact.out : p.Prime).pos
+  have hcard : Nat.card (↑(unipotentSylow (p := p)) :
+      Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p :=
+    card_unipotentHom_range
+  have hmul := Subgroup.card_mul_index
+    (↑(unipotentSylow (p := p)) :
+      Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+  rw [hcard, card_SL2] at hmul
+  exact Nat.eq_of_mul_eq_mul_left hp0 hmul
+
+/-- **Exact Sylow count: `SL(2, p)` has exactly `p + 1` Sylow `p`-subgroups for
+`p ≥ 5`.**  Sharpens the lower bound `card_sylow_ge` to an equality.  Sylow's theorem
+gives `n_p ∣ [SL : U] = p² − 1` (`Sylow.card_dvd_index` + `index_unipotentSylow`) and
+`n_p ≡ 1 (mod p)` (`card_sylow_modEq_one`); together with `n_p ≥ p + 1`
+(`card_sylow_ge`) the arithmetic lemma `sylow_count_arith` forces `n_p = p + 1`.
+This matches the classical `n_p = |P¹(𝔽_p)| = p + 1` — the number of Borel subgroups /
+points of the projective line on which `PSL(2, p)` acts — obtained here without the
+explicit normalizer-is-Borel matrix computation. -/
+theorem card_sylow_eq (hp : 5 ≤ p) :
+    Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p + 1 := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  have hdvd : Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ∣ p ^ 2 - 1 := by
+    have h := Sylow.card_dvd_index (unipotentSylow (p := p))
+    rwa [index_unipotentSylow] at h
+  have hmod : Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) ≡ 1 [MOD p] :=
+    card_sylow_modEq_one p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+  have hge := card_sylow_ge hp
+  exact sylow_count_arith hp hdvd hmod hge
+
 end SylowOQ04OQ03
+
+#print axioms SylowOQ04OQ03.sylow_count_arith
+#print axioms SylowOQ04OQ03.index_unipotentSylow
+#print axioms SylowOQ04OQ03.card_sylow_eq
