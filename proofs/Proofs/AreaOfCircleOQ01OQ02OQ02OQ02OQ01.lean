@@ -2511,4 +2511,225 @@ theorem plain_L2_stability_eq_iff_second_harmonic
   exact ⟨fun h n hn => normSq_pair_eq_zero_iff.mp (h n hn),
     fun h n hn => normSq_pair_eq_zero_iff.mpr (h n hn)⟩
 
+-- ============================================================
+-- SECTION XXI: the equality case of the *weighted* (H¹ → gap)
+--   step — completing the equality classification of the full
+--   stability chain  deficit ≥ ∑ gap ≥ 2·(L²-distance-to-circle)
+-- ============================================================
+
+/-- **Per-mode equality case of the weighted (H¹ → gap) step.**  The sharpened per-frequency
+    bound `area_deficit_summand_ge_gap`,
+
+        (|n|² − |n|)·(‖a‖² + ‖b‖²)  ≤  n²‖a‖² + n²‖b‖² − 2n·Im(a·conj b) ,
+
+    is met with *equality* at a frequency `n ≠ 0` **iff** the harmonic is a positively-oriented
+    circle of matched radii:
+
+        ‖a‖ = ‖b‖   and   n·Im(a·conj b) = |n|·(‖a‖·‖b‖) .
+
+    The gap `Dₙ − Gₙ = |n|·(‖a‖ − ‖b‖)² + 2·(|n|·‖a‖·‖b‖ − n·Im(a·conj b))` is a sum of two
+    nonnegative pieces (the second by `|Im(a·conj b)| ≤ ‖a‖‖b‖`, Cauchy–Schwarz in `ℂ`), so it
+    vanishes iff both do: the first forces `‖a‖ = ‖b‖` (as `|n| > 0`), the second the orientation
+    identity.  Given `‖a‖ = ‖b‖` these two conditions say exactly `a·conj b = ±i·‖a‖²` with the
+    sign of `n` — i.e. `b = −sgn(n)·i·a`, the `n`-th harmonic tracing a circle in the correct
+    sense.  This is the per-frequency engine of the weighted-step rigidity theorem. -/
+theorem area_deficit_summand_eq_gap_iff (a b : ℂ) {n : ℤ} (hn : n ≠ 0) :
+    (|(n : ℝ)| ^ 2 - |(n : ℝ)|) * (‖a‖ ^ 2 + ‖b‖ ^ 2)
+      = (n : ℝ) ^ 2 * ‖a‖ ^ 2 + (n : ℝ) ^ 2 * ‖b‖ ^ 2
+        - 2 * ((n : ℝ) * (a * conj b).im)
+    ↔ ‖a‖ = ‖b‖ ∧ (n : ℝ) * (a * conj b).im = |(n : ℝ)| * (‖a‖ * ‖b‖) := by
+  have hsq : |(n : ℝ)| ^ 2 = (n : ℝ) ^ 2 := sq_abs _
+  have himabs : |(a * conj b).im| ≤ ‖a‖ * ‖b‖ := by
+    have h := Complex.abs_im_le_norm (a * conj b)
+    rwa [norm_mul, Complex.norm_conj] at h
+  have hbound : (n : ℝ) * (a * conj b).im ≤ |(n : ℝ)| * (‖a‖ * ‖b‖) :=
+    calc (n : ℝ) * (a * conj b).im
+        ≤ |(n : ℝ) * (a * conj b).im| := le_abs_self _
+      _ = |(n : ℝ)| * |(a * conj b).im| := abs_mul _ _
+      _ ≤ |(n : ℝ)| * (‖a‖ * ‖b‖) := mul_le_mul_of_nonneg_left himabs (abs_nonneg _)
+  have hP1 : (0 : ℝ) ≤ |(n : ℝ)| * (‖a‖ - ‖b‖) ^ 2 :=
+    mul_nonneg (abs_nonneg _) (sq_nonneg _)
+  have hP2 : (0 : ℝ) ≤ |(n : ℝ)| * (‖a‖ * ‖b‖) - (n : ℝ) * (a * conj b).im := by
+    linarith [hbound]
+  have hNne : (n : ℝ) ≠ 0 := Int.cast_ne_zero.mpr hn
+  have hNpos : (0 : ℝ) < |(n : ℝ)| := abs_pos.mpr hNne
+  constructor
+  · intro heq
+    -- The gap `Dₙ − Gₙ` is `P₁ + 2·P₂ = 0`; both pieces nonnegative ⇒ both vanish.
+    have hsum0 : |(n : ℝ)| * (‖a‖ - ‖b‖) ^ 2
+        + 2 * (|(n : ℝ)| * (‖a‖ * ‖b‖) - (n : ℝ) * (a * conj b).im) = 0 := by
+      linear_combination -heq + (‖a‖ ^ 2 + ‖b‖ ^ 2) * hsq
+    have hP1z : |(n : ℝ)| * (‖a‖ - ‖b‖) ^ 2 = 0 := by linarith [hP1, hP2, hsum0]
+    have hP2z : |(n : ℝ)| * (‖a‖ * ‖b‖) - (n : ℝ) * (a * conj b).im = 0 := by
+      linarith [hP1, hP2, hsum0]
+    have hnormsq : (‖a‖ - ‖b‖) ^ 2 = 0 := by
+      rcases mul_eq_zero.mp hP1z with h | h
+      · exact absurd h hNpos.ne'
+      · exact h
+    have hnorm : ‖a‖ = ‖b‖ :=
+      sub_eq_zero.mp ((pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)).mp hnormsq)
+    exact ⟨hnorm, by linarith [hP2z]⟩
+  · rintro ⟨hnorm, horient⟩
+    linear_combination (‖a‖ ^ 2 + ‖b‖ ^ 2) * hsq + 2 * horient
+      - |(n : ℝ)| * (‖a‖ - ‖b‖) * hnorm
+
+/-- **Rigidity of the weighted (H¹ → gap) step.**  For smooth (`C^∞`) period-`2π` coordinates
+    `f, g`, the Hurwitz deficit series and the frequency-weighted gap series agree,
+
+        ∑ₙ (|n|² − |n|)·(‖ĉₙf‖² + ‖ĉₙg‖²)  =  ∑ₙ [ n²‖ĉₙf‖² + n²‖ĉₙg‖² − 2n·Im(ĉₙf·conj ĉₙg) ] ,
+
+    (the second sum being the normalized isoperimetric deficit `L² − 4πA`, up to scaling)
+    **iff every nonzero harmonic is a positively-oriented circle of matched radii**:
+
+        ∀ n ≠ 0,  ‖ĉₙf‖ = ‖ĉₙg‖  ∧  n·Im(ĉₙf·conj ĉₙg) = |n|·(‖ĉₙf‖·‖ĉₙg‖) .
+
+    This pins the equality case of the step that turns the raw deficit into the `H¹`-gap energy:
+    it is an equality exactly when *no* harmonic contributes any "non-circular" excess — the
+    tangential/orientation defect `|n|·‖ĉₙf‖·‖ĉₙg‖ − n·Im(ĉₙf·conj ĉₙg)` and the radius mismatch
+    `‖ĉₙf‖ − ‖ĉₙg‖` both vanish at every frequency.
+
+    Proof.  Both families are summable (`summable_gap_normSq_fourierCoeffOn`, `HSdef.summable`)
+    and termwise ordered (`gap_le_deficit_summand`).  Equal totals force termwise equality
+    (`hasSum_eq_termwise_of_le`), which `area_deficit_summand_eq_gap_iff` converts to the pointwise
+    circle condition on each `n ≠ 0` (the `n = 0` term is `0 = 0` unconditionally); conversely
+    termwise equality re-sums by `tsum_congr`. -/
+theorem weighted_step_eq_iff
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2)
+      = ∑' n : ℤ, ((n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+          - 2 * ((n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+              * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im))
+    ↔ ∀ n : ℤ, n ≠ 0 →
+        ‖fourierCoeffOn hab (ofReal ∘ f) n‖ = ‖fourierCoeffOn hab (ofReal ∘ g) n‖
+          ∧ (n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+                * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im
+              = |(n : ℝ)| * (‖fourierCoeffOn hab (ofReal ∘ f) n‖
+                  * ‖fourierCoeffOn hab (ofReal ∘ g) n‖) := by
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  have hsum_gap := summable_gap_normSq_fourierCoeffOn hf hg hfper hgper hab
+  set G := fun n : ℤ => (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+      * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) with hG
+  set D := fun n : ℤ => (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+        + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+      - 2 * ((n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+          * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im) with hD
+  have hle : ∀ n, G n ≤ D n := fun n => gap_le_deficit_summand hab n
+  have hsG : Summable G := hsum_gap
+  have hsD : Summable D := HSdef.summable
+  constructor
+  · intro heq n hn
+    have hGs : HasSum G (∑' m, G m) := hsG.hasSum
+    have hDs : HasSum D (∑' m, G m) := by rw [heq]; exact hsD.hasSum
+    have hterm := hasSum_eq_termwise_of_le hle hGs hDs n
+    exact (area_deficit_summand_eq_gap_iff (fourierCoeffOn hab (ofReal ∘ f) n)
+      (fourierCoeffOn hab (ofReal ∘ g) n) hn).mp hterm
+  · intro hcond
+    refine tsum_congr (fun n => ?_)
+    rcases eq_or_ne n 0 with rfl | hn
+    · simp only [Int.cast_zero, abs_zero]
+      ring
+    · exact (area_deficit_summand_eq_gap_iff (fourierCoeffOn hab (ofReal ∘ f) n)
+        (fourierCoeffOn hab (ofReal ∘ g) n) hn).mpr (hcond n hn)
+
+/-- **Full equality classification of the plain-`L²` Fuglede chain (capstone).**  Collecting the
+    two rigidity theorems, the entire stability chain
+
+        2·(L²-distance-to-circle)  ≤  ∑ₙ (|n|²−|n|)·(‖ĉₙf‖²+‖ĉₙg‖²)  ≤  L² − 4πA
+
+    is an **equality end-to-end** — the isoperimetric deficit equals *twice* the squared
+    `L²`-distance of the curve from its best-fit circle, with the sharp constant `2` — **iff both**:
+
+    * every harmonic of order `≥ 3` vanishes (`ĉₙf = ĉₙg = 0`), i.e. the deviation from the circle
+      is a pure *second* harmonic (the weight-to-constant-`2` step, `SECTION XX`), **and**
+    * every nonzero harmonic is a positively-oriented circle of matched radii
+      (`‖ĉₙf‖ = ‖ĉₙg‖` and `n·Im(ĉₙf·conj ĉₙg) = |n|·‖ĉₙf‖·‖ĉₙg‖`, the weighted-step
+      `weighted_step_eq_iff`).
+
+    Together these say the extremal curves are exactly `center + first harmonic (a circle) +
+    second harmonic (a doubly-wound circle)` with matched radii and correct orientation, nothing
+    higher — the complete extremal family realizing the sharp Fuglede constant `2`.
+
+    Proof.  The chain is a sandwich `T ≤ G ≤ D` of three convergent sums (`two_mul_tail_le_gap`,
+    `gap_le_deficit_summand`, summed by `tsum_le_tsum`).  Equality of the outer terms `T = D`
+    forces both inner equalities `T = G` and `G = D` (`linarith` on the sandwich), which
+    `plain_L2_stability_eq_iff_second_harmonic` and `weighted_step_eq_iff` translate into the two
+    stated pointwise conditions; conversely the two conditions give `T = G` and `G = D`, whose
+    composition is `T = D`. -/
+theorem full_L2_stability_eq_iff
+    {f g : ℝ → ℝ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
+    (hfper : ∀ t, f (t + 2 * π) = f t) (hgper : ∀ t, g (t + 2 * π) = g t)
+    (hab : (0 : ℝ) < 2 * π) :
+    2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      = ∑' n : ℤ, ((n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+          - 2 * ((n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+              * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im))
+    ↔ (∀ n : ℤ, 3 ≤ n.natAbs →
+          fourierCoeffOn hab (ofReal ∘ f) n = 0 ∧ fourierCoeffOn hab (ofReal ∘ g) n = 0)
+        ∧ (∀ n : ℤ, n ≠ 0 →
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ = ‖fourierCoeffOn hab (ofReal ∘ g) n‖
+            ∧ (n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+                  * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im
+                = |(n : ℝ)| * (‖fourierCoeffOn hab (ofReal ∘ f) n‖
+                    * ‖fourierCoeffOn hab (ofReal ∘ g) n‖)) := by
+  have hTG := plain_L2_stability_eq_iff_second_harmonic hf hg hfper hgper hab
+  have hGD := weighted_step_eq_iff hf hg hfper hgper hab
+  have hsum_tail := summable_tail_normSq_fourierCoeffOn hf hg hfper hgper hab
+  have hsum_gap := summable_gap_normSq_fourierCoeffOn hf hg hfper hgper hab
+  have HSf := hasSum_nsq_normSq_fourierCoeffOn hf hfper hab
+  have HSg := hasSum_nsq_normSq_fourierCoeffOn hg hgper hab
+  have HSA := hasSum_fourier_area_formula hf.continuous hg hgper hab
+  have HSdef := (HSf.add HSg).sub (HSA.mul_left 2)
+  -- The sandwich `T ≤ G ≤ D` of the three convergent sums.
+  have hT2G : 2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+        ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+          + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 else 0)
+      ≤ ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+          * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) := by
+    rw [← tsum_mul_left]
+    exact Summable.tsum_le_tsum (fun n => two_mul_tail_le_gap hab n) (hsum_tail.mul_left 2) hsum_gap
+  have hGDle : (∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+          * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2))
+      ≤ ∑' n : ℤ, ((n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+          - 2 * ((n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+              * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im)) :=
+    Summable.tsum_le_tsum (fun n => gap_le_deficit_summand hab n) hsum_gap HSdef.summable
+  constructor
+  · intro h
+    have h1 : 2 * ∑' n : ℤ, (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2 else 0)
+        = ∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+            * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) := by
+      linarith [hT2G, hGDle, h]
+    have h2 : (∑' n : ℤ, (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+            * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+                + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2))
+        = ∑' n : ℤ, ((n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+              + (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+            - 2 * ((n : ℝ) * (fourierCoeffOn hab (ofReal ∘ f) n
+                * conj (fourierCoeffOn hab (ofReal ∘ g) n)).im)) := by
+      linarith [hT2G, hGDle, h]
+    exact ⟨hTG.mp h1, hGD.mp h2⟩
+  · rintro ⟨hc1, hc2⟩
+    have h1 := hTG.mpr hc1
+    have h2 := hGD.mpr hc2
+    rw [h1, h2]
+
 end IsoperimetricFourier

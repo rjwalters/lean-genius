@@ -27,7 +27,9 @@
       "SECTION XVIII closes the honesty gap of SECTIONS XV-XVII: those docstrings only *asserted* the Fourier tail was an L²-distance-to-a-circle. tsum_tail_eq_sub_low is the abstract engine — for any HasSum a T over ℤ, the |n|≥2 tail sums to T - (a(-1)+a 0+a 1); the low band {-1,0,1} is finitely supported (hasSum_sum_of_ne_finset_zero) and subtracts off the full HasSum.",
       "Fed Mathlib Parseval (hasSum_sq_fourierCoeffOn_real) into that engine: the plain unweighted tail ∑_{|n|≥2}‖ĉₙg‖² EQUALS (2π)⁻¹∫g² − (‖ĉ₋₁‖²+‖ĉ₀‖²+‖ĉ₁‖²) — a literal integral, i.e. the squared L² distance of g from its best degree-≤1 trig fit (the circle coordinate). No overclaim: RHS is total energy minus low-mode energy = Bessel distance.",
       "The plain-L² Fuglede constant 2 (SECTION XVII) is EXACTLY the minimum of the harmonic weight w(n)=|n|²−|n| over higher modes |n|≥2: attained at |n|=2 (w=2), strict (w>2) for |n|≥3. This upgrades the asserted \"sharp constant 2\" docstring claim to a proved optimality theorem — raising the constant breaks the termwise bound for any curve with a nontrivial second harmonic.",
-      "SECTION XX: equality case of the plain-L² Fuglede stability inequality. The weight-to-constant-2 step 2·∑_{|n|≥2}P_n ≤ ∑_n(|n|²−|n|)P_n is EQUALITY iff every harmonic |n|≥3 vanishes — the deviation from the best-fit circle is a PURE SECOND HARMONIC. Sharpens SECTION XIX (mode-by-mode weight=2) to the full summed inequality and pins the extremal class exactly."
+      "SECTION XX: equality case of the plain-L² Fuglede stability inequality. The weight-to-constant-2 step 2·∑_{|n|≥2}P_n ≤ ∑_n(|n|²−|n|)P_n is EQUALITY iff every harmonic |n|≥3 vanishes — the deviation from the best-fit circle is a PURE SECOND HARMONIC. Sharpens SECTION XIX (mode-by-mode weight=2) to the full summed inequality and pins the extremal class exactly.",
+      "SECTION XXI: equality case of the WEIGHTED (H¹→gap) step, the other half of the Fuglede-chain rigidity. Per-mode gap Dₙ−Gₙ = |n|(‖a‖−‖b‖)² + 2(|n|‖a‖‖b‖ − n·Im(a·conj b)) splits into TWO nonnegative pieces (2nd via Cauchy-Schwarz |Im(a·conj b)|≤‖a‖‖b‖); equality (n≠0) iff BOTH vanish iff ‖a‖=‖b‖ ∧ n·Im(a·conj b)=|n|·‖a‖·‖b‖ — the harmonic is a positively-oriented circle of matched radii (b=−sgn(n)·i·a).",
+      "SECTION XXI capstone full_L2_stability_eq_iff: the ENTIRE stability chain 2·(L²-dist) ≤ ∑gap ≤ deficit is an equality end-to-end IFF (a) all harmonics |n|≥3 vanish (weight→2 step, SECTION XX) AND (b) every nonzero harmonic is a positively-oriented circle of matched radii (weighted step). Extremal family = center + first harmonic (circle) + second harmonic (doubly-wound circle), nothing higher. Proof = linarith on the sandwich T≤G≤D forces both inner equalities, each translated by the two rigidity theorems."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
@@ -67,12 +69,15 @@
       "two_mul_tail_eq_gap_iff (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean SECTION XX): termwise equality 2·tail=weight·P iff n.natAbs≤2 ∨ P=0 [0-axiom]",
       "plain_L2_stability_eq_iff (SECTION XX): summed equality 2·∑tail=∑weight·P iff ∀n,|n|≥3⟹‖ĉₙf‖²+‖ĉₙg‖²=0 [0-axiom]",
       "plain_L2_stability_eq_iff_second_harmonic (SECTION XX): coordinate form, equality iff ∀|n|≥3, ĉₙf=0∧ĉₙg=0 [0-axiom]",
-      "helpers deficit_gap_coef_eq_zero_of_natAbs_le_one (weight=0 on circle band) + normSq_pair_eq_zero_iff [0-axiom]"
+      "helpers deficit_gap_coef_eq_zero_of_natAbs_le_one (weight=0 on circle band) + normSq_pair_eq_zero_iff [0-axiom]",
+      "area_deficit_summand_eq_gap_iff (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean SECTION XXI): per-mode equality of the weighted step, Gₙ=Dₙ ↔ ‖a‖=‖b‖ ∧ (n)·Im(a·conj b)=|n|·(‖a‖·‖b‖) for n≠0 [0-axiom]",
+      "weighted_step_eq_iff (SECTION XXI): summed weighted-step equality ∑gap=∑deficit ↔ ∀n≠0 the circular condition; via hasSum_eq_termwise_of_le + per-mode iff [0-axiom]",
+      "full_L2_stability_eq_iff (SECTION XXI capstone): 2·∑tail=∑deficit ↔ (∀|n|≥3 ĉ=0) ∧ (∀n≠0 circular); sandwich T≤G≤D + plain_L2_stability_eq_iff_second_harmonic + weighted_step_eq_iff [0-axiom]"
     ],
-    "progressSummary": "PROGRESS: SECTION XX proves the equality/rigidity case of the plain-L² Fuglede stability inequality (extremal curves = pure second-harmonic deviation from circle). 3 new 0-axiom theorems.",
+    "progressSummary": "PROGRESS: SECTION XXI completes the equality classification of the plain-L² Fuglede stability chain — per-mode + summed equality of the weighted step, and capstone full_L2_stability_eq_iff giving the complete extremal family (center + 1st + 2nd harmonic circles). 3 new 0-axiom theorems.",
     "nextSteps": [
-      "Characterize equality in the WEIGHTED step hcore (∑weight·P ≤ normalized deficit) — the remaining inequality between the L² drop and the actual isoperimetric deficit; combined with SECTION XX this would give the full equality-to-deficit chain",
-      "Construct an EXPLICIT extremal curve (mean + first + second harmonic only) realizing 2·(L²-distance)=deficit to make the sharpness geometric, not just spectral"
+      "Construct an EXPLICIT extremal curve (mean + first + second harmonic only, matched radii, correct orientation) realizing 2·(L²-distance)=deficit to make sharpness geometric, not just spectral — the extremal family is now pinned by full_L2_stability_eq_iff.",
+      "Package the per-mode circle condition b=−sgn(n)·i·a as an explicit equivalent of the orientation identity (currently ‖a‖=‖b‖ ∧ n·Im=|n|‖a‖‖b‖)."
     ]
   },
   "relatedProofs": [
