@@ -22,7 +22,8 @@
       "n=-1 deficit summand: with c(-1)=conj c1, (conj a * conj conj b).im = -(a * conj b).im (since conj a * b = conj(a*conj b)); the (-1)^2 and -2*(-1) signs combine to reproduce the n=1 summand => 0 via firstMode_deficit_zero.",
       "Quantitative isoperimetric stability (Bonnesen/Fuglede-type): the Hurwitz deficit is not merely nonnegative-with-equality-at-the-circle but CONTROLS each higher harmonic. Extracting one nonnegative term from the deficit HasSum (le_hasSum) and bounding it below via the sharpened per-mode gap (area_deficit_summand_ge_gap, coefficient |n|²−|n|≥2 on |n|≥2) yields 2·(‖ĉₙf‖²+‖ĉₙg‖²) ≤ normalized deficit — a mode-by-mode L²-stability estimate that has the qualitative equality-iff-circle rigidity as its degenerate (deficit=0) case.",
       "SECTION XVI aggregate stability: summing the sharp per-mode Fuglede gaps gives a SINGLE global inequality (2π)²·∑_n(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA. The weight |n|²−|n| vanishes on the three circle modes n∈{−1,0,1}, so the LHS is the total L²/H¹-distance of the curve from the family of circles — the deficit dominates ALL harmonics summed, not one at a time.",
-      "Aggregation is a comparison-test argument on the deficit HasSum: gap summand is 0≤gap_n (deficit_gap_coef_nonneg: |n|²−|n|=|n|(|n|−1)≥0 for integer n) and gap_n≤deficit_n (gap_le_deficit_summand = area_deficit_summand_ge_gap in the exact shape of (HSf.add HSg).sub (HSA.mul_left 2)); Summable.of_nonneg_of_le gives summability, Summable.tsum_le_tsum dominates the tsum by the deficit total."
+      "Aggregation is a comparison-test argument on the deficit HasSum: gap summand is 0≤gap_n (deficit_gap_coef_nonneg: |n|²−|n|=|n|(|n|−1)≥0 for integer n) and gap_n≤deficit_n (gap_le_deficit_summand = area_deficit_summand_ge_gap in the exact shape of (HSf.add HSg).sub (HSA.mul_left 2)); Summable.of_nonneg_of_le gives summability, Summable.tsum_le_tsum dominates the tsum by the deficit total.",
+      "SECTION XVII: the standard textbook Fuglede stability inequality strips the H¹ frequency weight |n|²−|n| to a plain L²-distance-to-circle bound. Key: |n|²−|n|≥2 uniformly on |n|≥2, so 2·(unweighted tail energy) ≤ weighted gap sum ≤ deficit. Constant 2 is sharp (attained as |n|→2)."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
@@ -48,11 +49,15 @@
       "summable_gap_normSq_fourierCoeffOn (H¹-defect ∑(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²)<∞), AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean:~1840, 0-axiom",
       "tsum_gap_normSq_fourierCoeffOn_le_normalized_deficit (analytic global: ∑_n(|n|²−|n|)(...)≤(2π)⁻¹(∫(f²+g²)−2∫fg)), AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean:~1870, 0-axiom",
       "tsum_gap_normSq_fourierCoeffOn_le_isoperimetric_deficit (geometric global Bonnesen/Fuglede: (2π)²∑(|n|²−|n|)(...)≤L²−4πA), AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean:~1930, 0-axiom",
-      "private helpers deficit_gap_coef_nonneg + gap_le_deficit_summand (comparison-test ingredients)"
+      "private helpers deficit_gap_coef_nonneg + gap_le_deficit_summand (comparison-test ingredients)",
+      "two_mul_tail_le_gap (AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean): 2·1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ (|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²), termwise weight-strip",
+      "summable_tail_normSq_fourierCoeffOn: unweighted tail ∑ₙ 1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) summable (= squared L²-distance to circle family) via comparison with gap series",
+      "two_mul_tsum_tail_le_normalized_deficit: 2·∑ₙ1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ (2π)⁻¹[∫(f²+g²)−2∫fg′], plain L² Fuglede analytic form",
+      "two_mul_tsum_tail_le_isoperimetric_deficit: 2·(2π)²·∑ₙ1_{|n|≥2}(‖ĉₙf‖²+‖ĉₙg‖²) ≤ L²−4πA, geometric Fuglede form, sharp const 2 [0-axiom]"
     ],
-    "progressSummary": "COMPLETE + QUANTITATIVE + GLOBAL: full Hurwitz equality-iff-circle (SECTIONS XI-XIV) strengthened to per-mode stability (SECTION XV) and now AGGREGATED (SECTION XVI) into a single global L²-distance-to-circle estimate (2π)²∑_n(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²)≤L²−4πA plus its H¹-defect summability, all 0-axiom. The deficit controls the total deviation of the curve from a circle, all harmonics summed.",
+    "progressSummary": "COMPLETE + EXTENDED: SECTION XVII adds the standard textbook Fuglede stability — the isoperimetric deficit dominates the plain (unweighted) squared L²-distance of the curve from a circle with sharp constant 2, complementing the earlier H¹-weighted aggregate bound. All 0-axiom.",
     "nextSteps": [
-      "Convert the abstract tsum ∑(|n|²−|n|)(‖ĉₙf‖²+‖ĉₙg‖²) into a concrete L²-norm ‖(f,g)−nearestCircle‖²_{L²} by relating ∑_{|n|≥2}‖ĉₙ‖² to the L² norm of the projection onto the |n|≥2 subspace (needs an explicit trigonometric-polynomial nearest-circle and a Parseval subtraction of the n∈{−1,0,1} modes)."
+      "Problem is fully solved through SECTION XVII (isoperimetric ineq + full equality-IFF-circle + per-mode/aggregate/plain-L² quantitative stability). Possible further: express tail as explicit distance to a NAMED best-fit circle (recentering by mean + first harmonic), or a lower Bonnesen-type companion (deficit ≤ area·(R_out−R_in)-type)."
     ]
   },
   "relatedProofs": [
