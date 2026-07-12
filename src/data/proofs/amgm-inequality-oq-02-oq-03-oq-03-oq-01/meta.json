@@ -61,7 +61,8 @@
       "Newton's *identities* (Mathlib's NewtonIdentities) are equalities over an arbitrary CommRing and carry zero order information; Newton's *inequalities* (log-concavity) are strictly stronger order facts that cannot follow from equalities alone",
       "The role of the Newton identity 2e₂ = (Σx)² − Σx² is to *translate* Newton's inequality at k=1 into the Cauchy-Schwarz statement n·Σxᵢ² ≥ (Σxᵢ)² — the identity reduces, but the inequality still needs Cauchy-Schwarz",
       "Mathlib already supplies the missing engine elsewhere: sq_sum_le_card_mul_sum_sq (the f=g Chebyshev/Cauchy-Schwarz bound) closes the k=1 step with 0 axioms",
-      "The 1/k-power gap between the cleared-denominator inequality and the Maclaurin-mean inequality is pure Real.sqrt (k=1 case) or rpow monotonicity — no symmetric-function content"
+      "The 1/k-power gap between the cleared-denominator inequality and the Maclaurin-mean inequality is pure Real.sqrt (k=1 case) or rpow monotonicity — no symmetric-function content",
+      "The resolution is exhibited constructively, not merely argued. Rather than only reasoning meta-mathematically that equalities cannot imply an inequality, the file discharges the parent's maclaurin_step axiom at k=1 as an honest 0-axiom theorem (maclaurin_step_one) whose sole positivity input is Cauchy-Schwarz — so the claim 'the Newton identities can't do it, Cauchy-Schwarz can' is machine-checked by a proof that uses exactly that engine and no identity."
     ],
     "prerequisites": [
       "Elementary symmetric polynomials and Maclaurin means",
@@ -72,12 +73,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header: The Question and Its Answer",
+      "id": "open-question",
+      "title": "The Open Question and the Parent Axiom",
       "startLine": 1,
+      "endLine": 13,
+      "summary": "States the open question verbatim — can maclaurin_step be proved from Mathlib.RingTheory.MvPolynomial.NewtonIdentities? — and records the context: the parent AmgmInequalityOQ02 keeps the Maclaurin step Mₖ ≥ Mₖ₊₁ as an axiom whose stated route is Newton's log-concavity (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))(eₖ₊₁/C(n,k+1)) plus monotonicity of real powers.",
+      "mathContext": "Mₖ = (eₖ/C(n,k))^{1/k}; the parent's maclaurin_step axiom asserts Mₖ ≥ Mₖ₊₁ via log-concavity of the normalized elementary symmetric means."
+    },
+    {
+      "id": "answer-and-contributions",
+      "title": "Answer: Identities Are Order-Free; the Engine Is Cauchy–Schwarz",
+      "startLine": 14,
       "endLine": 61,
-      "summary": "States the open question and answers it: maclaurin_step cannot be derived from Mathlib's NewtonIdentities (ring equalities) alone, because its engine is the log-concavity inequality, which requires Cauchy-Schwarz. Documents the sibling AmgmInequalityOQ02OQ02 de-axiomatization (via Cauchy-Schwarz, not identities).",
-      "mathContext": "Distinguishes the algebraic Newton identities (e_k ↔ p_k, any CommRing) from the analytic Newton inequalities (log-concavity, ordered field). Only the latter give maclaurin_step."
+      "summary": "Answers 'No — not from NewtonIdentities alone': mul_esymm_eq_sum / psum_eq_mul_esymm_sub_sum are ring equalities over an arbitrary CommRing and carry no order information, while Newton's inequality eₖ² ≥ eₖ₋₁eₖ₊₁ is a strictly stronger ℝ-specific positivity fact requiring Cauchy-Schwarz. Lists the file's three 0-axiom contributions (cauchy_schwarz_engine, newton_inequality_k1, maclaurin_step_one) that exhibit the mechanism at k=1, and notes the genuine general de-axiomatization lives in the sibling AmgmInequalityOQ02OQ02 (via Cauchy-Schwarz + induction, not identities).",
+      "mathContext": "Distinguishes the algebraic Newton identities (eₖ ↔ pₖ, any CommRing) from the analytic Newton inequalities (log-concavity, ordered field). Only the latter give maclaurin_step, and their engine is Cauchy-Schwarz."
     },
     {
       "id": "cauchy-schwarz",
