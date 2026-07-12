@@ -2068,4 +2068,87 @@ theorem sqGaussSum_norm_eq_zero_or_eq_natCast_of_two_mul_eq_zero {N : ℕ} [NeZe
   · left; rw [h, norm_zero]
   · right; rw [h, Complex.norm_natCast]
 
+
+
+/-! ## Part IX: The second-moment (Plancherel) identity for the quadratic Gauss sum
+
+The pointwise magnitude work (Parts VII–VIII) approximates the classical `√(2N)`
+Gauss-sum bound frequency by frequency.  Here is its exact *averaged* form: the
+total `L²` mass of the quadratic Gauss sum over all frequencies equals `N` times
+the number of "square-collision" pairs `#{(n, m) : n² = m²}`.  This is a
+Plancherel/Parseval identity for `G`, obtained by the same character-orthogonality
+bookkeeping as `triple_count_fourier`, and it is exact — no triangle inequality is
+used.  It is the correct second moment: it shows the *average* size of `G(r)` is
+`√N`, the matching lower bound to the pointwise value `‖G(r)‖ = √N` at unit
+frequencies. -/
+
+/-- **Plancherel identity for the quadratic Gauss sum (complex form).**
+`∑_r G(r)·conj(G(r)) = N · #{(n, m) : n² = m²}`.  Expanding the product of `ψ`-sums
+gives the linear phase `ψ(r·(n² − m²))`; summing over `r` collapses via character
+orthogonality to `N` exactly on the square-collision diagonal `n² = m²`. -/
+theorem sqGaussSum_second_moment_complex {N : ℕ} [NeZero N] :
+    (∑ r : ZMod N, sqGaussSum r * starRingEnd ℂ (sqGaussSum r))
+      = (N : ℂ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℂ) := by
+  -- Expand each `G·conj G` as a double `ψ`-sum with merged phase `r·(n² − m²)`.
+  have hterm : ∀ r : ZMod N, sqGaussSum r * starRingEnd ℂ (sqGaussSum r)
+      = ∑ n : ZMod N, ∑ m : ZMod N, ψ (r * (n ^ 2 - m ^ 2)) := by
+    intro r
+    rw [conj_sqGaussSum]
+    simp only [sqGaussSum]
+    rw [Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl (fun n _ => Finset.sum_congr rfl (fun m _ => ?_))
+    rw [← psi_add]
+    congr 1
+    ring
+  simp_rw [hterm]
+  -- Reorder the sums so `r` is innermost: `∑_r ∑_n ∑_m → ∑_n ∑_m ∑_r`.
+  rw [Finset.sum_comm]
+  have hreorder : (∑ n : ZMod N, ∑ r : ZMod N, ∑ m : ZMod N, ψ (r * (n ^ 2 - m ^ 2)))
+      = ∑ n : ZMod N, ∑ m : ZMod N, ∑ r : ZMod N, ψ (r * (n ^ 2 - m ^ 2)) :=
+    Finset.sum_congr rfl (fun n _ => Finset.sum_comm)
+  rw [hreorder]
+  -- Character orthogonality kills every off-diagonal `n² ≠ m²` frequency.
+  simp_rw [char_orthogonality, sub_eq_zero]
+  -- Collapse the surviving `if` over `ZMod N × ZMod N` to `N · card`.
+  rw [← Finset.sum_product', Finset.univ_product_univ, ← Finset.sum_filter,
+      Finset.sum_const, nsmul_eq_mul, mul_comm]
+
+/-- **Plancherel identity for the quadratic Gauss sum (real `‖·‖²` form).**
+`∑_r ‖G(r)‖² = N · #{(n, m) : n² = m²}`.  The exact total `L²` mass of `G` over all
+frequencies.  Since the principal term already contributes `‖G(0)‖² = N²`, this
+pins the average of `‖G(r)‖²` at `≈ N`, i.e. the average magnitude is `√N`. -/
+theorem sqGaussSum_second_moment {N : ℕ} [NeZero N] :
+    (∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℝ) := by
+  have hcast : ((∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2 : ℝ) : ℂ)
+      = (((N : ℝ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℝ)) : ℂ) := by
+    push_cast
+    rw [← sqGaussSum_second_moment_complex]
+    refine Finset.sum_congr rfl (fun r _ => ?_)
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+    push_cast
+    ring
+  exact_mod_cast hcast
+
+/-- **Nonzero-frequency `L²` mass.**  Splitting off the principal term
+`‖G(0)‖² = N²`, the total `L²` mass carried by the *nonzero* frequencies is exactly
+`N·D − N²`, where `D = #{(n, m) : n² = m²}`.  This is an exact evaluation of the
+error-frequency mass — the quantity the pointwise bounds of Parts VII–VIII estimate
+one frequency at a time. -/
+theorem sqGaussSum_second_moment_nonzero {N : ℕ} [NeZero N] :
+    (∑ r ∈ Finset.univ.erase (0 : ZMod N), ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℝ) - (N : ℝ) ^ 2 := by
+  have hall := sqGaussSum_second_moment (N := N)
+  have h0 : ‖sqGaussSum (0 : ZMod N)‖ ^ 2 = (N : ℝ) ^ 2 := by
+    rw [sqGaussSum_zero, Complex.norm_natCast]
+  have hsum : (∑ r ∈ Finset.univ.erase (0 : ZMod N), ‖sqGaussSum r‖ ^ 2)
+      + ‖sqGaussSum (0 : ZMod N)‖ ^ 2 = ∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2 :=
+    Finset.sum_erase_add _ _ (Finset.mem_univ 0)
+  rw [h0] at hsum
+  linarith [hsum, hall]
+
 end Szemeredi.Roth
