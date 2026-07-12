@@ -383,6 +383,37 @@ theorem A_add_S_le_S_succ (k : ℕ) : A (k + 1) + S k ≤ S (k + 1) := by
   rw [← hsum, hsplit]
   omega
 
+/-- **Sharp per-step sum increment.** Combining the sum recurrence `A_add_S_le_S_succ`
+(`A(k+1) + S(k) ≤ S(k+1)`) with the parity diameter floor `two_mul_sub_one_le_A (k+1)`
+(`2·k ≤ A(k+1)`) yields an explicit lower bound on the one-step growth of the minimal
+sum:
+
+`2·k + S(k) ≤ S(k+1)`.
+
+Telescoped, `∑_{j<k} 2j = k(k-1) ≤ S(k)` recovers the parity floor `sub_mul_le_S`; this
+is exactly its per-step form, and the quantitative sharpening of the qualitative
+`S_le_S_succ`. -/
+theorem two_mul_add_S_le_S_succ (k : ℕ) : 2 * k + S k ≤ S (k + 1) := by
+  have h1 := A_add_S_le_S_succ k
+  have h2 : 2 * k ≤ A (k + 1) := by simpa using two_mul_sub_one_le_A (k + 1)
+  omega
+
+/-- **Strict monotonicity of the minimal sum (for `k ≥ 1`).** For `k ≥ 1` the minimal
+sum strictly increases, `S(k) < S(k+1)`: the per-step increment `two_mul_add_S_le_S_succ`
+gives `S(k+1) ≥ S(k) + 2k ≥ S(k) + 2`. (At `k = 0` only equality holds, `S 0 = S 1 = 0`.)
+This is the sum-side analogue of the diameter's `A_lt_A_succ`, upgrading the weak
+`S_le_S_succ` to a strict inequality off the degenerate `0 → 1` step. -/
+theorem S_lt_S_succ {k : ℕ} (hk : 1 ≤ k) : S k < S (k + 1) := by
+  have h := two_mul_add_S_le_S_succ k
+  omega
+
+/-- **The shifted minimal sum is strictly monotone.** `j ↦ S(j+1)` is strictly
+increasing, each step `S(j+1) < S(j+2)` being `S_lt_S_succ` at `k = j+1 ≥ 1`. The
+sum-side analogue of `A_succ_strictMono`; it strengthens `S_monotone` to strict growth
+on `{k ≥ 1}` (where `S` is only weakly monotone at the `0 → 1` step, `S 0 = S 1 = 0`). -/
+theorem S_succ_strictMono : StrictMono (fun j => S (j + 1)) :=
+  strictMono_nat_of_lt_succ (fun j => S_lt_S_succ (Nat.succ_le_succ (Nat.zero_le j)))
+
 /- ## Divergence of the sum and average extremal quantities
 
 The diameter `A(k)` diverges (`A_tendsto_atTop` in `Erdos1204Problem`). Since the
