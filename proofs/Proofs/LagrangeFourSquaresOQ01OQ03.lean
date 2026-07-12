@@ -275,6 +275,32 @@ squares" — `r₄(n) > 0` — is predicted by the formula for all `n ≥ 1`. -/
 theorem jacobiCount_pos {n : ℕ} (hn : 1 ≤ n) : 0 < jacobiCount n :=
   lt_of_lt_of_le (by norm_num) (eight_le_jacobiCount hn)
 
+/-- **Jacobi's count is always a multiple of `8` (0-axiom, general).** By construction
+`jacobiCount n = 8·Σ_{d∣n, 4∤d} d`, so `8 ∣ jacobiCount n` for every `n`.  This is the
+divisibility shadow of the geometry: the signed four-square representations come in
+orbits of size `8` under sign-and-transposition on the first-nonzero coordinate, so
+`r₄(n) ≡ 0 (mod 8)` — consistent with the oracle values (`r4 1 = 8`, `r4 4 = 24`, …). -/
+theorem eight_dvd_jacobiCount (n : ℕ) : 8 ∣ jacobiCount n := by
+  unfold jacobiCount
+  exact dvd_mul_right 8 _
+
+/-- **The count vanishes at `0` (0-axiom).** `jacobiCount 0 = 0`: `0` has no divisors, so
+the divisor sum is empty.  The boundary complement of `jacobiCount_pos`. -/
+theorem jacobiCount_zero : jacobiCount 0 = 0 := by
+  simp [jacobiCount, Nat.divisors_zero]
+
+/-- **The count vanishes exactly at `0` (0-axiom, general).** `jacobiCount n = 0 ↔ n = 0`:
+positive on every `n ≥ 1` (`jacobiCount_pos`) and zero at `n = 0` (`jacobiCount_zero`).
+The formula's prediction that `r₄(n) > 0` precisely for `n ≥ 1` — every positive integer
+is a sum of four squares, and `0` is the sole exception to a *positive* count. -/
+theorem jacobiCount_eq_zero_iff (n : ℕ) : jacobiCount n = 0 ↔ n = 0 := by
+  constructor
+  · intro h
+    by_contra hn
+    exact (jacobiCount_pos (Nat.one_le_iff_ne_zero.mpr hn)).ne' h
+  · rintro rfl
+    exact jacobiCount_zero
+
 /-- **Convention guard (0-axiom).** The naive formula `8·σ(n)` is WRONG for `n = 4`:
 `8·σ(4) = 8·(1+2+4) = 56`, whereas the true count is `r4 4 = 24`. Equivalently the
 `4 ∤ d` exclusion drops the divisor `d = 4`. This is exactly why the general formula
