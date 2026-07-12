@@ -31,6 +31,7 @@ import Mathlib.Combinatorics.HalesJewett
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Order.Interval.Set.Infinite
 
 open Set Finset
 
@@ -1267,6 +1268,56 @@ theorem ramseyNumberColored_isLeast (C : Type*) [Finite C] (k : ℕ) (hk : k ≥
       (ramseyNumberColored C k) :=
   ⟨exists_hasRamseyPropertyColored_card_eq_ramseyNumberColored C k hk,
    fun _ ⟨_A, hcard, hA⟩ => hcard ▸ ramseyNumberColored_le_of_hasRamseyProperty hA⟩
+
+/-! ## The realizable-size set as an up-ray `Set.Ici`
+
+The `…_realizable_card_iff` theorems characterise which cardinalities `n` admit a Ramsey
+witness by the *pointwise* condition `R(k) ≤ n`.  Repackaging that iff as a single **set
+equality** identifies the realizable-size set with the order up-ray `Set.Ici (R k)` — a closed,
+gap-free interval `[R(k), ∞)` — which in turn exhibits it as an *infinite* set.  This is the
+`Set.Ici` counterpart of the `IsLeast` packaging: `IsLeast` records the bottom element, while
+`= Set.Ici (R k)` records the entire shape.  A colored positivity fact
+(`ramseyNumberColored_pos`) rounds out the colored API to match the uncolored `ramseyNumber_pos`.
+-/
+
+/-- **`R_C(k)` is positive** for a finite nonempty palette `C` and `k ≥ 3`: it is at least
+`k ≥ 3 > 0` (`ramseyNumberColored_lower_bound`).  The colored analogue of `ramseyNumber_pos`. -/
+theorem ramseyNumberColored_pos (C : Type*) [Finite C] [Nonempty C] (k : ℕ) (hk : k ≥ 3) :
+    0 < ramseyNumberColored C k :=
+  lt_of_lt_of_le (by omega) (ramseyNumberColored_lower_bound C k hk)
+
+/-- **The realizable-size set is exactly the up-ray `[R(k), ∞)`.**  For `k ≥ 3`, the set of
+cardinalities of finite point sets with the Ramsey property equals `Set.Ici (ramseyNumber k)`.
+This is the set-level form of `hasRamseyProperty_realizable_card_iff`: no gaps, no upper cutoff —
+every size at or above the threshold is realized and nothing below it is. -/
+theorem hasRamseyProperty_realizable_setOf_eq_Ici {k : ℕ} (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}
+      = Set.Ici (ramseyNumber k) := by
+  ext n
+  simpa only [Set.mem_setOf_eq, Set.mem_Ici] using hasRamseyProperty_realizable_card_iff hk n
+
+/-- **The realizable-size set is infinite.**  For `k ≥ 3` there are arbitrarily large finite
+point sets with the Ramsey property: the realizable cardinalities form the infinite up-ray
+`Set.Ici (ramseyNumber k)` (`hasRamseyProperty_realizable_setOf_eq_Ici`), and `ℕ` has no maximal
+element.  The Ramsey property is therefore not a knife-edge phenomenon confined near the
+threshold. -/
+theorem hasRamseyProperty_realizable_setOf_infinite {k : ℕ} (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Infinite := by
+  rw [hasRamseyProperty_realizable_setOf_eq_Ici hk]
+  exact Set.Ici_infinite _
+
+/-- **The colored realizable-size set is exactly the up-ray `[R_C(k), ∞)`.**  For a finite
+palette `C` and `k ≥ 3`, the set of cardinalities of finite point sets with the `C`-colored
+Ramsey property equals `Set.Ici (ramseyNumberColored C k)`.  The colored analogue of
+`hasRamseyProperty_realizable_setOf_eq_Ici`, the set-level form of
+`hasRamseyPropertyColored_realizable_card_iff`. -/
+theorem hasRamseyPropertyColored_realizable_setOf_eq_Ici {C : Type*} [Finite C] {k : ℕ}
+    (hk : k ≥ 3) :
+    {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}
+      = Set.Ici (ramseyNumberColored C k) := by
+  ext n
+  simpa only [Set.mem_setOf_eq, Set.mem_Ici] using
+    hasRamseyPropertyColored_realizable_card_iff hk n
 
 /--
 The main theorem: Erdős #1090 is solved affirmatively.
