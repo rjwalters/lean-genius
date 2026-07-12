@@ -758,6 +758,134 @@ theorem m_eq_three_case (n : ℕ) (hn : n ≥ 3) :
           omega
       _ ≤ _ := Finset.le_sup hmem
 
+/-- `4` is a positive subset sum of `S` iff `4 ∈ S` **or** both `1 ∈ S` and `3 ∈ S`: the
+    only nonempty sets of distinct naturals summing to `4` are `{4}` and `{1, 3}` (any
+    element `≥ 5` overshoots; excluding `3` and `4` leaves candidates `≤ 2` summing to at
+    most `0 + 1 + 2 = 3 < 4`, so `3` is forced; then the complement `A ∖ {3}` sums to `1`,
+    forcing `1`).  This is the first target whose two representations `{4}` and `{1, 3}`
+    are *disjoint pairs* rather than nested, yet — like `m = 3` — still cost only two
+    deletions, so the value stays at `n - 2`. -/
+theorem four_mem_subsetSums_iff (S : Finset ℕ) :
+    (4 : ℕ) ∈ subsetSums S ↔ (4 ∈ S ∨ (1 ∈ S ∧ 3 ∈ S)) := by
+  constructor
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image] at h
+    obtain ⟨⟨A, hA, hAsum⟩, _⟩ := h
+    rw [Finset.mem_powerset] at hA
+    have hle : ∀ a ∈ A, a ≤ 4 := by
+      intro a ha
+      have hsum := Finset.single_le_sum (f := fun x => x) (fun i _ => Nat.zero_le i) ha
+      rw [hAsum] at hsum; exact hsum
+    by_cases h4 : (4 : ℕ) ∈ A
+    · exact Or.inl (hA h4)
+    · -- With `4 ∉ A`, first `3 ∈ A`: else all elements are `≤ 2`, summing to `≤ 3 < 4`.
+      have h3A : (3 : ℕ) ∈ A := by
+        by_contra h3
+        have hsub : A ⊆ ({0, 1, 2} : Finset ℕ) := by
+          intro a ha
+          have hle4 := hle a ha
+          have ha4 : a ≠ 4 := fun he => h4 (he ▸ ha)
+          have ha3 : a ≠ 3 := fun he => h3 (he ▸ ha)
+          simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+        have hbound : ∑ x ∈ A, x ≤ ∑ x ∈ ({0, 1, 2} : Finset ℕ), x :=
+          Finset.sum_le_sum_of_subset hsub
+        have h012 : (∑ x ∈ ({0, 1, 2} : Finset ℕ), x) = 3 := by decide
+        rw [hAsum, h012] at hbound
+        omega
+      -- Given `3 ∈ A`, the remaining elements sum to `1`, which forces `1 ∈ A`.
+      have h1A : (1 : ℕ) ∈ A := by
+        have herase : (3 : ℕ) + ∑ x ∈ A.erase 3, x = 4 := by
+          rw [Finset.add_sum_erase A (fun x => x) h3A]; exact hAsum
+        have hsum1 : ∑ x ∈ A.erase 3, x = 1 := by omega
+        by_contra h1
+        have hz : ∀ a ∈ A.erase 3, a = 0 := by
+          intro a ha
+          have hane1 : a ≠ 1 := fun he => h1 (Finset.mem_of_mem_erase (he ▸ ha))
+          have haleq : a ≤ ∑ x ∈ A.erase 3, x :=
+            Finset.single_le_sum (f := fun x => x) (fun i _ => Nat.zero_le i) ha
+          rw [hsum1] at haleq
+          omega
+        have hz0 : ∑ x ∈ A.erase 3, x = 0 := Finset.sum_eq_zero hz
+        omega
+      exact Or.inr ⟨hA h1A, hA h3A⟩
+  · intro h
+    rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+    rcases h with h4 | ⟨h1, h3⟩
+    · refine ⟨⟨{4}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr h4
+      · simp
+    · refine ⟨⟨{1, 3}, ?_, ?_⟩, by norm_num⟩
+      · rw [Finset.mem_powerset, Finset.insert_subset_iff, Finset.singleton_subset_iff]
+        exact ⟨h1, h3⟩
+      · rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 3)]
+
+/-- **`m = 4` characterization.** `S` avoids the subset sum `4` iff `4 ∉ S` and not both
+    `1, 3 ∈ S`. -/
+theorem avoid_four_iff (S : Finset ℕ) :
+    AvoidSum S 4 ↔ (4 ∉ S ∧ ¬ (1 ∈ S ∧ 3 ∈ S)) := by
+  unfold AvoidSum
+  rw [four_mem_subsetSums_iff, not_or]
+
+/-- **Exact value at `m = 4`.** For `n ≥ 4` the largest `4`-avoiding subset of `{1,…,n}`
+    has size exactly `n - 2` — the value *plateaus* at `n - 2` (as at `m = 3`) before its
+    next drop to `n - 3` at `m = 5`.  Optimality: avoiding `4` forces `4 ∉ S` and
+    (`1 ∉ S` or `3 ∉ S`), two distinct missing elements. Realization: `{1,…,n} ∖ {3, 4}`
+    avoids `4` (via `avoid_four_iff`). Together with `maxAvoidingSize_one`,
+    `m_eq_two_case_exact` and `m_eq_three_case` this pins the profile
+    `n-1, n-1, n-2, n-2` at the targets `m = 1, 2, 3, 4`. -/
+theorem m_eq_four_case (n : ℕ) (hn : n ≥ 4) :
+    maxAvoidingSize n 4 = n - 2 := by
+  classical
+  unfold maxAvoidingSize
+  have h4mem : (4 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  apply le_antisymm
+  · apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, hSavoid⟩ := hS
+    rw [avoid_four_iff] at hSavoid
+    obtain ⟨h4, h13⟩ := hSavoid
+    rw [not_and_or] at h13
+    rcases h13 with h1 | h3
+    · have h1mem : (1 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+      have hsub : S ⊆ ((Icc_n n).erase 1).erase 4 := by
+        intro x hx
+        rw [Finset.mem_erase, Finset.mem_erase]
+        exact ⟨fun he => h4 (he ▸ hx), fun he => h1 (he ▸ hx), hSsub hx⟩
+      calc S.card ≤ (((Icc_n n).erase 1).erase 4).card := Finset.card_le_card hsub
+        _ = n - 2 := by
+          have h4e : (4 : ℕ) ∈ (Icc_n n).erase 1 := by
+            rw [Finset.mem_erase]; exact ⟨by norm_num, h4mem⟩
+          rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h1mem, Icc_n, Nat.card_Icc]
+          omega
+    · have h3mem : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+      have hsub : S ⊆ ((Icc_n n).erase 3).erase 4 := by
+        intro x hx
+        rw [Finset.mem_erase, Finset.mem_erase]
+        exact ⟨fun he => h4 (he ▸ hx), fun he => h3 (he ▸ hx), hSsub hx⟩
+      calc S.card ≤ (((Icc_n n).erase 3).erase 4).card := Finset.card_le_card hsub
+        _ = n - 2 := by
+          have h4e : (4 : ℕ) ∈ (Icc_n n).erase 3 := by
+            rw [Finset.mem_erase]; exact ⟨by norm_num, h4mem⟩
+          rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h3mem, Icc_n, Nat.card_Icc]
+          omega
+  · have h3mem : (3 : ℕ) ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+    have h4e : (4 : ℕ) ∈ (Icc_n n).erase 3 := by
+      rw [Finset.mem_erase, Icc_n, Finset.mem_Icc]; omega
+    have hmem : ((Icc_n n).erase 3).erase 4 ∈
+        (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 4) := by
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨(Finset.erase_subset _ _).trans (Finset.erase_subset _ _), ?_⟩
+      rw [avoid_four_iff]
+      refine ⟨Finset.notMem_erase 4 _, ?_⟩
+      rintro ⟨_, hmem3⟩
+      have hno3 : (3 : ℕ) ∉ (Icc_n n).erase 3 := Finset.notMem_erase 3 _
+      exact hno3 (Finset.mem_of_mem_erase hmem3)
+    calc n - 2 = (((Icc_n n).erase 3).erase 4).card := by
+          rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h3mem, Icc_n, Nat.card_Icc]
+          omega
+      _ ≤ _ := Finset.le_sup hmem
+
 /-- **General interval lower bound.** The interval `{m+1,…,n}` avoids `m` (all of
     its elements exceed `m`, so no nonempty subset sum can equal `m`) and has
     `n - m` elements, hence `maxAvoidingSize n m ≥ n - m`. This unifies the `m = 1`
