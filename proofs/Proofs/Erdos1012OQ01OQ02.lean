@@ -496,4 +496,35 @@ theorem edgeThreshold_min_at_unique_odd (n : ℕ) (hn : 5 ≤ n) (hodd : Odd n) 
   · -- k > k₀ = m-1: strictly increasing branch, bottom index m-1 with n ≤ 2(m-1)+3
     exact edgeThreshold_monotone_right_strict (2 * m + 1) hgt (by omega) (by omega)
 
+/-- **The even-`n` minimizing band is genuinely two points.**  For even `n ≥ 5` the
+    minimizer `k₀ = (n-3)/2` is the turning point (`n = 2k₀+4`), so the two adjacent
+    clique sizes `k₀` and `k₀+1` carry the *same* threshold:
+
+        edgeThreshold n ((n-3)/2) = edgeThreshold n ((n-3)/2 + 1).
+
+    This is `edgeThreshold_flat_at_turning` specialised to the global minimizer `k₀`,
+    exhibiting the width-2 flat bottom that the odd case (`edgeThreshold_min_at_unique_odd`)
+    lacks. -/
+theorem edgeThreshold_min_pair_even_eq (n : ℕ) (hn : 5 ≤ n) (heven : Even n) :
+    edgeThreshold n ((n - 3) / 2) = edgeThreshold n ((n - 3) / 2 + 1) := by
+  obtain ⟨m, rfl⟩ := heven
+  exact edgeThreshold_flat_at_turning (m + m) ((m + m - 3) / 2) (by omega)
+
+/-- **The successor `k₀+1` is also a global minimizer (even `n`).**  Completing the
+    even-`n` picture left open by `edgeThreshold_min_at` (which only names `k₀ = (n-3)/2`)
+    and dual to `edgeThreshold_min_at_unique_odd` (odd `n`, *unique* minimizer): for even
+    `n ≥ 5` the adjacent size `k₀+1` attains the same global minimum, so for every clique
+    size `k` with `k+2 ≤ n`,
+
+        edgeThreshold n ((n-3)/2 + 1) ≤ edgeThreshold n k.
+
+    Immediate by rewriting through the flat-band equality `edgeThreshold_min_pair_even_eq`
+    and applying the weak global bound `edgeThreshold_min_at`.  Together with
+    `edgeThreshold_min_at` this certifies both endpoints of the width-2 minimizing band. -/
+theorem edgeThreshold_min_at_succ_even (n : ℕ) (hn : 5 ≤ n) (heven : Even n) {k : ℕ}
+    (hk : k + 2 ≤ n) :
+    edgeThreshold n ((n - 3) / 2 + 1) ≤ edgeThreshold n k := by
+  rw [← edgeThreshold_min_pair_even_eq n hn heven]
+  exact edgeThreshold_min_at n hn hk
+
 end Erdos1012OQ01OQ02
