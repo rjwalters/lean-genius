@@ -74,6 +74,16 @@
       "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
       "relationship": "thematic",
       "description": "Grandparent: Gaussian integers ℤ[i] = ℤ[√-1] as a Euclidean domain; the norm dichotomy here is the d = −1 arithmetic behind the sum-of-two-squares factorization of rational primes."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "instantiated by",
+      "description": "The d = −1 payoff. This entry's abstract dichotomy (irreducible ⟹ norm p or p²) leaves open which rational primes are split (norm p) versus inert (norm p²) — a genuinely d-dependent question. For ℤ[i] = ℤ[√-1] that split criterion is precisely Fermat's theorem: an odd prime has norm-p irreducible factors (equivalently p = a² + b²) iff p ≡ 1 mod 4, while p ≡ 3 mod 4 stays inert with norm p². Fermat's Sum of Two Squares supplies exactly the congruence condition this norm bound cannot see."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+      "relationship": "instantiated by",
+      "description": "The d = −2 payoff. For ℤ[√-2] the split-vs-inert split of a rational prime is decided by (−2/p): p is inert (norm p², irreducible) iff p ≡ 5 or 7 mod 8, and otherwise splits with norm p (equivalently p = x² + 2y²). That sibling classifies exactly the inert primes whose existence the abstract norm dichotomy proved here guarantees but does not identify."
     }
   ],
   "sections": [
