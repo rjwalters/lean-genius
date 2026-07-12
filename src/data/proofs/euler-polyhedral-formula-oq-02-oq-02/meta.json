@@ -46,7 +46,7 @@
     "lineCount": 612,
     "assumptions": "0 sorries; 0 axiom declarations; 2 structure-encoded assumptions. (1) CGBManifold.chern_gauss_bonnet encodes the Chern-Gauss-Bonnet identity ∫_M Pf(Ω) = (2π)^n·χ(M); Mathlib v4.26.0 has no Pfaffian of a curvature form, no integration of characteristic forms over manifolds, and no manifold Euler characteristic, so the identity is taken as a field rather than derived. (2) ClosedOddManifold.chi_zero encodes the Poincaré-duality fact that closed odd-dimensional manifolds have χ=0. All 54 theorems are then derived; the sphere Euler characteristics, normalization-constant lemmas, and the 2×2 Pfaffian identity are independently verified (depend only on propext/Classical.choice/Quot.sound). #print axioms confirms no sorryAx and no Lean.ofReduceBool.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 62,
+    "theoremCount": 84,
     "definitionCount": 12
   },
   "overview": {
@@ -63,7 +63,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The Chern-Gauss-Bonnet theorem unifies the discrete and smooth Gauss-Bonnet theorems as the n=1 case of a statement valid in every even dimension: a transcendental curvature integral ∫_M Pf(Ω) lands exactly on (2π)^n times the integer Euler characteristic. While the geometric identity itself is structure-encoded (pending Riemannian geometry in Mathlib), the surrounding combinatorics — sphere Euler characteristics, the (2π)^n normalization, the 2×2 Pfaffian identity, multiplicativity of χ under products, and odd-dimensional vanishing — are fully machine-verified and explain why the Pfaffian is the right even-dimensional integrand.",
+    "summary": "The Chern-Gauss-Bonnet theorem unifies the discrete and smooth Gauss-Bonnet theorems as the n=1 case of a statement valid in every even dimension: a transcendental curvature integral ∫_M Pf(Ω) lands exactly on (2π)^n times the integer Euler characteristic. While the geometric identity itself is structure-encoded (pending Riemannian geometry in Mathlib), the surrounding combinatorics — sphere Euler characteristics, the (2π)^n normalization, the 2×2 Pfaffian identity, multiplicativity of χ under products, and odd-dimensional vanishing — are fully machine-verified and explain why the Pfaffian is the right even-dimensional integrand. A homological layer (Part XVI) records the Betti numbers of Σ_g (b₀=1, b₁=2g, b₂=1) and re-derives χ(Σ_g)=2−2g from the Euler–Poincaré formula χ=Σ(−1)ⁱbᵢ, independently of the geometric route; Poincaré duality bᵢ=b_{2−i} forces b₁=2g even and hence χ even.",
     "implications": "Reduces a future full formalization of Chern-Gauss-Bonnet to a single missing geometric ingredient — the Pfaffian of a curvature form and its integration over a manifold — by isolating and verifying all the surrounding algebra and combinatorics now. The structure-encoded identity is an honest placeholder: when Mathlib gains Riemannian geometry and characteristic forms, only CGBManifold.chern_gauss_bonnet must be discharged, and the 37 downstream theorems follow unchanged. The entry also makes the discrete/smooth Gauss-Bonnet entries literal n=1 instances, knitting the gallery's Gauss-Bonnet thread into one hierarchy.",
     "openQuestions": [
       "Once Mathlib has the Pfaffian of an antisymmetric matrix and de Rham integration, derive CGBManifold.chern_gauss_bonnet rather than assuming it, removing the structure-encoded assumption.",
@@ -154,10 +154,10 @@
       "Real"
     ],
     "namespace": "ChernGaussBonnet",
-    "lineCount": 701,
+    "lineCount": 819,
     "axiomCount": 0,
-    "theoremCount": 67,
-    "definitionCount": 12,
+    "theoremCount": 84,
+    "definitionCount": 13,
     "path": "Proofs/EulerPolyhedralOQ02OQ02.lean",
     "sorries": 0
   },
