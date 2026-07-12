@@ -186,4 +186,33 @@ theorem kPointLineCount_two (P : PlanarPointSet) :
     · unfold collinear; ring
     · exact collinear_self_right a _
 
+/-- **The arc's exact `2`-point-line count.** The lifted Grünbaum parabola has
+exactly `C(p, 2)` two-point lines: it has `p` points (`realParabola_card`), and by
+`kPointLineCount_two` every pair is a line.  The `k = 2` value of the arc's profile. -/
+theorem realParabolaSet_kPointLineCount_two (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) : kPointLineCount (realParabolaSet p hp) 2 = p.choose 2 := by
+  rw [kPointLineCount_two, show (realParabolaSet p hp).points = realParabola p from rfl,
+    realParabola_card p hp]
+
+/-- **Complete line-profile of the Grünbaum arc.**  For the lifted parabola the
+`k`-point-line count is determined at *every* `k` simultaneously:
+`kPointLineCount (realParabolaSet p) k = C(p, 2)` if `k = 2`, and `0` otherwise.
+The whole incidence profile collapses to a single nonzero value at `k = 2` — the
+sharpest possible statement of "an arc is a pure pairs-only configuration."  It
+unifies the three regimes established above: `k ≤ 1` vanishes
+(`kPointLineCount_eq_zero_of_le_one`), `k = 2` is `C(p, 2)`
+(`realParabolaSet_kPointLineCount_two`), and `k ≥ 3` vanishes by general position
+(`realParabolaSet_kPointLineCount_zero`).  In particular the four-point count
+`realParabolaSet_fourPointLineCount_zero` is the `k = 4 ≠ 2` instance. -/
+theorem realParabolaSet_kPointLineCount_profile (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (k : ℕ) :
+    kPointLineCount (realParabolaSet p hp) k = if k = 2 then p.choose 2 else 0 := by
+  rcases lt_trichotomy k 2 with hk | hk | hk
+  · rw [if_neg (by omega : k ≠ 2)]
+    exact kPointLineCount_eq_zero_of_le_one _ (by omega)
+  · rw [hk, if_pos rfl]
+    exact realParabolaSet_kPointLineCount_two p hp
+  · rw [if_neg (by omega : k ≠ 2)]
+    exact realParabolaSet_kPointLineCount_zero p hp (by omega)
+
 end Erdos101OQ04OQ01
