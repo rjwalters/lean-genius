@@ -2739,5 +2739,190 @@ example : sqGaussSum (4 : ZMod 24) = 0 :=
 example : sqGaussSum (2 : ZMod 8) ≠ 0 :=
   sqGaussSum_ne_zero_of_gcd_phase_zero (by decide)
 
+/-!
+### Part XVI — The elementary gcd-sum input is subquadratic (`o(N²)`)
+
+Part XV reduced the composite-`N` circle-method density bound to a purely
+arithmetic estimate on `Σ_{r≠0} gcd((2r).val, N)`.  This subsection discharges
+that estimate unconditionally, with *no* Gauss-sum reciprocity, via Pillai's
+divisor-sum identity and the elementary divisor bound `d(N) ≤ 2√N`:
+
+    Σ_{r<N} gcd(N,r) = Σ_{d∣N} d·φ(N/d) ≤ N·d(N) ≤ 2·N·⌊√N⌋ = o(N²),
+
+and hence, after the `r ↦ 2r` doubling bound `gcd(2x,N) ≤ 2·gcd(x,N)`,
+
+    Σ_{r≠0} gcd((2r).val, N) ≤ 4·N·⌊√N⌋,    Σ_{r≠0} ‖G(r)‖² ≤ 4·N²·⌊√N⌋.
+-/
+
+/-- **Pillai's gcd-sum identity.**  Summing `gcd N r` over a complete residue
+system `r ∈ {0,…,N-1}` groups the terms by the divisor `d = gcd N r ∣ N`; the
+fiber `{r < N : gcd N r = d}` has exactly `φ(N/d)` elements
+(`Nat.totient_div_of_dvd`), so `Σ_{r<N} gcd(N,r) = Σ_{d∣N} d·φ(N/d)`. -/
+theorem gcd_sum_pillai (N : ℕ) :
+    ∑ r ∈ Finset.range N, Nat.gcd N r = ∑ d ∈ N.divisors, d * Nat.totient (N / d) := by
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · simp
+  rw [← Finset.sum_fiberwise_of_maps_to (t := N.divisors) (g := fun r => Nat.gcd N r)
+      (f := fun r => Nat.gcd N r) ?_]
+  · refine Finset.sum_congr rfl fun d hd => ?_
+    have hdvd : d ∣ N := Nat.dvd_of_mem_divisors hd
+    have hcard : (Finset.filter (fun r => Nat.gcd N r = d) (Finset.range N)).card
+        = Nat.totient (N / d) := (Nat.totient_div_of_dvd hdvd).symm
+    calc ∑ r ∈ Finset.filter (fun r => Nat.gcd N r = d) (Finset.range N), Nat.gcd N r
+        = ∑ _r ∈ Finset.filter (fun r => Nat.gcd N r = d) (Finset.range N), d := by
+          refine Finset.sum_congr rfl fun r hr => (Finset.mem_filter.mp hr).2
+      _ = (Finset.filter (fun r => Nat.gcd N r = d) (Finset.range N)).card * d := by
+          rw [Finset.sum_const, smul_eq_mul]
+      _ = d * Nat.totient (N / d) := by rw [hcard, Nat.mul_comm]
+  · intro r _
+    rw [Nat.mem_divisors]
+    exact ⟨Nat.gcd_dvd_left N r, hN.ne'⟩
+
+/-- **Elementary upper bound.**  Since `φ(N/d) ≤ N/d` and `d·(N/d) = N` for `d ∣ N`,
+every Pillai term is `≤ N`, so `Σ_{r<N} gcd(N,r) ≤ N·d(N)`. -/
+theorem gcd_sum_le_card_divisors_mul (N : ℕ) :
+    ∑ r ∈ Finset.range N, Nat.gcd N r ≤ N * N.divisors.card := by
+  rw [gcd_sum_pillai, Finset.card_eq_sum_ones, Finset.mul_sum]
+  refine Finset.sum_le_sum fun d hd => ?_
+  have hdvd : d ∣ N := Nat.dvd_of_mem_divisors hd
+  have hle : d * Nat.totient (N / d) ≤ d * (N / d) :=
+    Nat.mul_le_mul_left d (Nat.totient_le _)
+  calc d * Nat.totient (N / d) ≤ d * (N / d) := hle
+    _ = N := Nat.mul_div_cancel' hdvd
+    _ = N * 1 := (Nat.mul_one N).symm
+
+/-- **Divisor-count bound.**  Divisors of `N` pair up as `(d, N/d)`; the smaller
+member of each pair is `≤ √N`, and the reflection `d ↦ N/d` injects the large
+divisors into the small ones, so `d(N) = #{d ∣ N} ≤ 2·⌊√N⌋`. -/
+theorem card_divisors_le_two_mul_sqrt (N : ℕ) :
+    N.divisors.card ≤ 2 * Nat.sqrt N := by
+  rcases Nat.eq_zero_or_pos N with rfl | hN
+  · simp
+  set s := Nat.sqrt N with hs
+  set A := N.divisors.filter (fun d => d ≤ s) with hA
+  set B := N.divisors.filter (fun d => ¬ d ≤ s) with hB
+  have hsplit : A.card + B.card = N.divisors.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  have hAle : A.card ≤ s := by
+    calc A.card ≤ (Finset.Icc 1 s).card := by
+          apply Finset.card_le_card
+          intro d hd
+          rw [hA, Finset.mem_filter] at hd
+          rw [Finset.mem_Icc]
+          exact ⟨Nat.pos_of_mem_divisors hd.1, hd.2⟩
+      _ = s := by rw [Nat.card_Icc]; omega
+  have hBle : B.card ≤ A.card := by
+    apply Finset.card_le_card_of_injOn (fun d => N / d)
+    · intro d hd
+      simp only [Finset.mem_coe, hB, Finset.mem_filter] at hd
+      obtain ⟨hdD, hdgt⟩ := hd
+      have hddvd : d ∣ N := Nat.dvd_of_mem_divisors hdD
+      have hdpos : 0 < d := Nat.pos_of_mem_divisors hdD
+      have hdgt' : s + 1 ≤ d := by omega
+      simp only [Finset.mem_coe, hA, Finset.mem_filter]
+      refine ⟨Nat.mem_divisors.mpr ⟨Nat.div_dvd_of_dvd hddvd, hN.ne'⟩, ?_⟩
+      have hlt : N / d < s + 1 := by
+        rw [Nat.div_lt_iff_lt_mul hdpos]
+        calc N < (s + 1) * (s + 1) := Nat.lt_succ_sqrt N
+          _ ≤ (s + 1) * d := by gcongr
+      omega
+    · intro d1 h1 d2 h2 heq
+      simp only [Finset.mem_coe, hB, Finset.mem_filter] at h1 h2
+      have hd1 : d1 ∣ N := Nat.dvd_of_mem_divisors h1.1
+      have hd2 : d2 ∣ N := Nat.dvd_of_mem_divisors h2.1
+      have e1 : N / (N / d1) = d1 := Nat.div_div_self hd1 hN.ne'
+      have e2 : N / (N / d2) = d2 := Nat.div_div_self hd2 hN.ne'
+      have heq' : N / d1 = N / d2 := heq
+      rw [← e1, ← e2, heq']
+  omega
+
+/-- **Subquadratic gcd sum.**  Combining Pillai's identity `Σ gcd ≤ N·d(N)` with
+`d(N) ≤ 2√N` gives `Σ_{r<N} gcd(N,r) ≤ 2·N·⌊√N⌋`, which is `o(N²)`. -/
+theorem gcd_sum_le_two_mul_N_mul_sqrt (N : ℕ) :
+    ∑ r ∈ Finset.range N, Nat.gcd N r ≤ 2 * N * Nat.sqrt N := by
+  calc ∑ r ∈ Finset.range N, Nat.gcd N r
+      ≤ N * N.divisors.card := gcd_sum_le_card_divisors_mul N
+    _ ≤ N * (2 * Nat.sqrt N) := Nat.mul_le_mul_left N (card_divisors_le_two_mul_sqrt N)
+    _ = 2 * N * Nat.sqrt N := by ring
+
+/-- `ZMod.val` is a bijection `ZMod N → {0,…,N-1}`, transporting the gcd sum. -/
+theorem gcd_val_sum_eq_range {N : ℕ} [NeZero N] :
+    ∑ s : ZMod N, Nat.gcd (ZMod.val s) N = ∑ k ∈ Finset.range N, Nat.gcd k N := by
+  apply Finset.sum_nbij' (i := fun s : ZMod N => ZMod.val s) (j := fun k : ℕ => (k : ZMod N))
+  · intro s _; simp only [Finset.mem_range]; exact ZMod.val_lt s
+  · intro k _; exact Finset.mem_univ _
+  · intro s _; exact ZMod.natCast_zmod_val s
+  · intro k hk; simp only [Finset.mem_range] at hk; exact ZMod.val_natCast_of_lt hk
+  · intro s _; rfl
+
+/-- `gcd(2x, N) ≤ 2·gcd(x, N)`: a common divisor of `2x` and `N` divides `2N`,
+so it divides `gcd(2x,2N) = 2·gcd(x,N)`. -/
+theorem gcd_two_mul_le {x N : ℕ} (hN : 0 < N) :
+    Nat.gcd (2 * x) N ≤ 2 * Nat.gcd x N := by
+  have hdvd : Nat.gcd (2 * x) N ∣ 2 * Nat.gcd x N := by
+    rw [← Nat.gcd_mul_left 2 x N]
+    exact Nat.dvd_gcd (Nat.gcd_dvd_left _ _)
+      ((Nat.gcd_dvd_right (2 * x) N).trans (dvd_mul_left N 2))
+  have hpos : 0 < 2 * Nat.gcd x N := by
+    have := Nat.gcd_pos_of_pos_right x hN; omega
+  exact Nat.le_of_dvd hpos hdvd
+
+/-- Pointwise doubling bound in `ZMod N`: `gcd((2r).val, N) ≤ 2·gcd(r.val, N)`,
+since `(2r).val ≡ 2·r.val [MOD N]` and gcd is `mod N`-invariant. -/
+theorem gcd_two_val_le {N : ℕ} [NeZero N] (r : ZMod N) :
+    Nat.gcd (2 * r).val N ≤ 2 * Nat.gcd r.val N := by
+  have hpos : 0 < N := NeZero.pos N
+  have hcast : (2 * r : ZMod N) = ((2 * r.val : ℕ) : ZMod N) := by
+    rw [Nat.cast_mul, Nat.cast_ofNat, ZMod.natCast_zmod_val]
+  have hval : (2 * r).val = (2 * r.val) % N := by
+    rw [hcast, ZMod.val_natCast]
+  rw [hval]
+  have hmod : Nat.gcd ((2 * r.val) % N) N = Nat.gcd (2 * r.val) N := by
+    rw [← Nat.gcd_rec N (2 * r.val), Nat.gcd_comm]
+  rw [hmod]
+  exact gcd_two_mul_le hpos
+
+/-- **Second-moment gcd input, fully evaluated.**  The frequency sum controlling
+the composite-`N` circle-method bound is subquadratic (`o(N²)`):
+
+    Σ_{r≠0} gcd((2r).val, N) ≤ 4·N·⌊√N⌋. -/
+theorem gcd_two_shift_sum_le {N : ℕ} [NeZero N] :
+    ∑ r ∈ (Finset.univ \ {(0 : ZMod N)}), Nat.gcd (2 * r).val N ≤ 4 * N * Nat.sqrt N := by
+  calc ∑ r ∈ (Finset.univ \ {(0 : ZMod N)}), Nat.gcd (2 * r).val N
+      ≤ ∑ r : ZMod N, Nat.gcd (2 * r).val N :=
+        Finset.sum_le_sum_of_subset (Finset.subset_univ _)
+    _ ≤ ∑ r : ZMod N, 2 * Nat.gcd r.val N :=
+        Finset.sum_le_sum (fun r _ => gcd_two_val_le r)
+    _ = 2 * ∑ r : ZMod N, Nat.gcd r.val N := by rw [Finset.mul_sum]
+    _ = 2 * ∑ k ∈ Finset.range N, Nat.gcd k N := by rw [gcd_val_sum_eq_range]
+    _ = 2 * ∑ k ∈ Finset.range N, Nat.gcd N k := by
+        rw [Finset.sum_congr rfl (fun k _ => Nat.gcd_comm k N)]
+    _ ≤ 2 * (2 * N * Nat.sqrt N) :=
+        Nat.mul_le_mul_left 2 (gcd_sum_le_two_mul_N_mul_sqrt N)
+    _ = 4 * N * Nat.sqrt N := by ring
+
+/-- **Explicit unconditional second moment.**  Feeding the subquadratic gcd bound
+`gcd_two_shift_sum_le` into `sqGaussSum_normSq_sum_le_gcd_sum` (`Σ‖G‖² ≤ N·Σgcd`)
+gives an explicit `o(N³)` second moment for *every* modulus `N`, with no odd/prime
+restriction and no Gauss-sum reciprocity:
+
+    Σ_{r≠0} ‖G(r)‖² ≤ 4·N²·⌊√N⌋.
+
+Chained with the L²-averaged density bound `sqDiffFree_density_bound_l2`, this makes
+the composite-`N` circle-method error term fully explicit and unconditional. -/
+theorem sqGaussSum_normSq_sum_le_sqrt {N : ℕ} [NeZero N] :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      ≤ 4 * (N : ℝ) ^ 2 * Nat.sqrt N := by
+  have hcast : (Finset.univ \ {(0 : ZMod N)}).sum (fun r => (Nat.gcd (2 * r).val N : ℝ))
+      ≤ ((4 * N * Nat.sqrt N : ℕ) : ℝ) := by
+    rw [← Nat.cast_sum]
+    exact_mod_cast gcd_two_shift_sum_le
+  calc (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      ≤ (N : ℝ) * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => (Nat.gcd (2 * r).val N : ℝ)) := sqGaussSum_normSq_sum_le_gcd_sum
+    _ ≤ (N : ℝ) * ((4 * N * Nat.sqrt N : ℕ) : ℝ) :=
+        mul_le_mul_of_nonneg_left hcast (Nat.cast_nonneg N)
+    _ = 4 * (N : ℝ) ^ 2 * Nat.sqrt N := by push_cast; ring
+
 end Szemeredi.Roth
 
