@@ -814,6 +814,92 @@ theorem genusSurfaceCGB_chi_even' (g : ℕ) : Even (genusSurfaceCGB g).chi := by
   obtain ⟨k, hk⟩ := genusSurface_first_betti_even g
   exact ⟨1 - (k : ℤ), by rw [hk]; push_cast; ring⟩
 
+-- ============================================================================
+-- Part XVII: The Cartesian-product monoid — (CGBManifolds, ×) with the point as
+--            identity, and χ a monoid homomorphism to (ℤ, ·)
+-- ============================================================================
+
+/-
+  Part X exhibits the *connected-sum* monoid `(2n`-manifolds, `#)`, with the sphere
+  `S^{2n}` as identity and `χ − 2` the induced additive homomorphism to `(ℤ, +)`.
+  The Cartesian product `×` (`prodCGB`) carries the complementary monoid structure:
+  it is commutative and associative on `χ`, its identity is the single **point**
+  (the `0`-dimensional manifold with `χ = 1`), and `χ` is *multiplicative*
+  (`prodCGB_chi`).  So `χ` is a monoid homomorphism `((CGBManifolds, ×) → (ℤ, ·))`,
+  exactly as `χ − 2` is one `((·, #) → (ℤ, +))`.  Everything reduces to the
+  commutative-ring structure of `ℤ`, hence is fully verified (the two
+  structure-encoded CGB assumptions are not invoked).
+-/
+
+/-- **The point manifold** — the `0`-dimensional closed manifold consisting of a single
+    point: `halfDim = 0`, `χ = 1`, `∫Pf = 1` (the empty Pfaffian integrates to the point
+    count).  It is the identity for the Cartesian product `prodCGB`. -/
+def pointCGB : CGBManifold where
+  halfDim := 0
+  chi := 1
+  totalPfaffian := 1
+  chern_gauss_bonnet := by rw [cgbConst_zero]; norm_num
+
+/-- `χ(pt) = 1`: the point has Euler characteristic one. -/
+@[simp] theorem pointCGB_chi : pointCGB.chi = 1 := rfl
+
+/-- `dim(pt) = 0`: the point is `0`-dimensional. -/
+@[simp] theorem pointCGB_dim : pointCGB.dim = 0 := rfl
+
+/-- `∫Pf(pt) = 1`: the point's total Pfaffian is its point count. -/
+@[simp] theorem pointCGB_totalPfaffian : pointCGB.totalPfaffian = 1 := rfl
+
+/-- **Left identity for `×` (Euler characteristic): `χ(pt × M) = χ(M)`.**  Since
+    `χ(pt) = 1` and `χ` is multiplicative, the point is a left identity for the
+    Cartesian-product monoid — the multiplicative analogue of the sphere's role as
+    connected-sum identity (`connectedSum_sphere_chi`). -/
+theorem prodCGB_point_chi (M : CGBManifold) : (prodCGB pointCGB M).chi = M.chi := by
+  rw [prodCGB_chi]; show (1 : ℤ) * M.chi = M.chi; rw [one_mul]
+
+/-- **Right identity for `×` (Euler characteristic): `χ(M × pt) = χ(M)`.**  The mirror of
+    `prodCGB_point_chi`; together they make the point a genuine *two-sided* identity for
+    the product monoid on `χ`. -/
+theorem prodCGB_chi_point (M : CGBManifold) : (prodCGB M pointCGB).chi = M.chi := by
+  rw [prodCGB_chi]; show M.chi * (1 : ℤ) = M.chi; rw [mul_one]
+
+/-- **Commutativity on Euler characteristics: `χ(M × N) = χ(N × M)`.**  `χ` is multiplicative
+    and `ℤ` is commutative, so the Cartesian product is commutative on `χ` — the commutativity
+    axiom of the product monoid, paralleling `connectedSumCGB_chi_comm`. -/
+theorem prodCGB_chi_comm (M N : CGBManifold) :
+    (prodCGB M N).chi = (prodCGB N M).chi := by
+  rw [prodCGB_chi, prodCGB_chi]; ring
+
+/-- **Associativity on Euler characteristics: `χ((M × N) × P) = χ(M × (N × P))`.**  Both sides
+    equal `χ(M)·χ(N)·χ(P)`, so the Cartesian product is associative on `χ` — the associativity
+    axiom of the product monoid, paralleling `connectedSumCGB_chi_assoc`. -/
+theorem prodCGB_chi_assoc (M N P : CGBManifold) :
+    (prodCGB (prodCGB M N) P).chi = (prodCGB M (prodCGB N P)).chi := by
+  rw [prodCGB_chi, prodCGB_chi, prodCGB_chi, prodCGB_chi]; ring
+
+/-- **Left identity for `×` (total curvature): `∫Pf(pt × M) = ∫Pf(M)`.**  The total Pfaffian
+    multiplies under products (`prodCGB_totalPfaffian`) and `∫Pf(pt) = 1`, so the point is
+    also neutral for the Gauss-Bonnet total curvature — the product monoid is realised on
+    `∫Pf`, not merely on `χ`. -/
+theorem prodCGB_point_totalPfaffian (M : CGBManifold) :
+    (prodCGB pointCGB M).totalPfaffian = M.totalPfaffian := by
+  rw [prodCGB_totalPfaffian]; show (1 : ℝ) * M.totalPfaffian = M.totalPfaffian; rw [one_mul]
+
+/-- **Commutativity on the total curvature: `∫Pf(M × N) = ∫Pf(N × M)`.**  The Gauss-Bonnet
+    companion of `prodCGB_chi_comm`: the product total Pfaffian `M.totalPfaffian ·
+    N.totalPfaffian` is symmetric in `M, N`, so the Cartesian product is commutative as a
+    Chern-Gauss-Bonnet operation. -/
+theorem prodCGB_totalPfaffian_comm (M N : CGBManifold) :
+    (prodCGB M N).totalPfaffian = (prodCGB N M).totalPfaffian := by
+  rw [prodCGB_totalPfaffian, prodCGB_totalPfaffian]; ring
+
+/-- **The point is `0`-dimensional identity: `dim(pt × M) = dim M`.**  Cartesian product adds
+    dimensions (`prodCGB_dim`) and `dim(pt) = 0`, so multiplying by the point preserves
+    dimension — confirming the point is the product identity on the full invariant triple
+    `(dim, χ, ∫Pf)`, just as the sphere `S^{2n}` is the connected-sum identity in each
+    fixed dimension. -/
+theorem prodCGB_point_dim (M : CGBManifold) : (prodCGB pointCGB M).dim = M.dim := by
+  rw [prodCGB_dim]; show pointCGB.dim + M.dim = M.dim; rw [pointCGB_dim, zero_add]
+
 end ChernGaussBonnet
 
 end
