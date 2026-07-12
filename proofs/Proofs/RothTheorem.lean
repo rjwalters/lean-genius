@@ -3939,4 +3939,82 @@ theorem sqGaussSum_normSq_sum_eq_divisor_sum_of_odd {N : ℕ} [NeZero N] (hodd :
   rw [Finset.sum_const, sqGaussSum_gcd_level_set_card_of_odd hodd hd.1.1 hd.2,
     nsmul_eq_mul, mul_comm]
 
+/-! ### Part XXVII — The sharp single-scale cardinality bound at odd modulus
+
+Every prior cardinality statement fed the master lemma `sqDiffFree_card_le_of_supNorm`
+either the *exact* prime magnitude `M = √N` (`sqDiffFree_card_le_sqrt_of_prime`, primes
+only) or the *crude* all-modulus magnitude `M = N/√2` (`sqDiffFree_card_le_of_ne_zero`,
+from the lossy "proper divisor `≤ N/2`" estimate).  Neither used the **exact** odd-modulus
+Weyl sup-norm `max_{r≠0}‖G(r)‖ = N/√(minFac N)` established in
+`sqGaussSum_norm_isGreatest_of_odd` / `sqGaussSum_norm_max_value_eq_of_odd`.
+
+Plugging that exact maximum into the master lemma gives the **sharpest single-scale
+cardinality bound the entire circle-method / Weyl line can produce** at odd `N`, with the
+provably-optimal constant.  It strictly refines `sqDiffFree_card_le_of_ne_zero`: for odd
+`N > 1` one always has `minFac N ≥ 3`, so `N/√(minFac N) ≤ N/√3 < N/√2`.  It also
+subsumes the prime capstone as the special case `minFac N = N` (`M = √N`).
+
+Honest scope (the documented no-go, unchanged): this is a *pointwise* sup-norm bound, so it
+delivers `|A| = o(N)` **iff** `minFac N → ∞` along the modulus sequence (e.g. `N` prime).
+At bounded smallest prime factor — odd prime powers `N = p^a`, `minFac = p` fixed —
+`N/√p = Θ(N)` and the bound is genuinely `Θ(N)`; that ceiling is *sharp*, not a proof
+artifact, by `sqGaussSum_normSq_isGreatest_of_odd`.  Breaking it needs the multi-scale
+density-increment iteration, which is out of Mathlib-4.26 reach. -/
+
+/-- **Sharp single-scale cardinality bound at odd modulus (product form).**  Feeding the
+    master lemma the *exact* Weyl sup-norm `M = N/√(minFac N)`
+    (`sqGaussSum_norm_max_value_eq_of_odd`, the achieved maximum
+    `sqGaussSum_norm_isGreatest_of_odd`): a square-difference-free `A ⊆ ℤ/Nℤ` at odd
+    `N > 1` satisfies
+
+    `|A|·(N + N/√(minFac N)) ≤ N·(#{n : n² = 0} + N/√(minFac N))`.
+
+    Strictly sharper than the `N/√2` bound `sqDiffFree_card_le_of_ne_zero` (since odd
+    `N > 1 ⟹ minFac N ≥ 3`), and it is the tightest sup-norm the Weyl reduction admits. -/
+theorem sqDiffFree_card_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) * ((N : ℝ) + (N : ℝ) / Real.sqrt (N.minFac))
+      ≤ (N : ℝ) * (((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ)
+          + (N : ℝ) / Real.sqrt (N.minFac)) := by
+  have hval := sqGaussSum_norm_max_value_eq_of_odd (N := N) hN
+  have hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ (N : ℝ) / Real.sqrt (N.minFac) := by
+    intro r hr
+    rw [← hval, sqGaussSum_norm_eq_sqrt_gcd_of_odd hodd r]
+    apply Real.sqrt_le_sqrt
+    have hle := gcd_two_val_le_div_minFac_of_odd hodd hN hr
+    have hcast : ((Nat.gcd (2 * r).val N : ℕ) : ℝ) ≤ ((N / N.minFac : ℕ) : ℝ) := by
+      exact_mod_cast hle
+    exact mul_le_mul_of_nonneg_left hcast (Nat.cast_nonneg N)
+  have hM : (0 : ℝ) ≤ (N : ℝ) / Real.sqrt (N.minFac) := by positivity
+  exact sqDiffFree_card_le_of_supNorm hM A hG hfree
+
+/-- **Sharp single-scale cardinality bound at odd modulus (additive form).**  Cancelling
+    the common factor `N + N/√(minFac N) > 0` from the product form
+    `sqDiffFree_card_le_of_odd` yields the clean closed inequality
+
+    `|A| ≤ #{n : n² = 0} + N/√(minFac N)`.
+
+    For odd `N` with `minFac N → ∞` and few nilpotent square roots (e.g. squarefree,
+    `#{n : n² = 0} = 1`) this is `|A| = o(N)` — the Sárközy density decay on that modulus
+    class.  Specialising to a prime `N` gives `|A| ≤ 1 + √N`. -/
+theorem sqDiffFree_card_le_add_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ)
+      ≤ ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ)
+          + (N : ℝ) / Real.sqrt (N.minFac) := by
+  have hprod := sqDiffFree_card_le_of_odd hodd hN A hfree
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+  set a : ℝ := (A.card : ℝ) with ha
+  set c : ℝ := ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) with hc
+  set M : ℝ := (N : ℝ) / Real.sqrt (N.minFac) with hMdef
+  have hM : (0 : ℝ) ≤ M := by rw [hMdef]; positivity
+  have hc0 : (0 : ℝ) ≤ c := by rw [hc]; positivity
+  have hNM : (0 : ℝ) < (N : ℝ) + M := by linarith
+  -- `a·(N+M) ≤ N·(c+M) ≤ (c+M)·(N+M)`, then cancel the positive factor `N+M`.
+  have hstep : (N : ℝ) * (c + M) ≤ (c + M) * ((N : ℝ) + M) := by nlinarith [hM, hc0]
+  have hfac : a * ((N : ℝ) + M) ≤ (c + M) * ((N : ℝ) + M) := le_trans hprod hstep
+  exact le_of_mul_le_mul_right hfac hNM
+
 end Szemeredi.Roth
