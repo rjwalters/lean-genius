@@ -3028,6 +3028,72 @@ theorem four_onQuartic_collinear_iff_sq {a b c d : ℝ × ℝ}
     exact ⟨h1, by
       linear_combination (1 / 2 : ℝ) * (a.1 + b.1 + c.1 + d.1) * h1 - (1 / 2 : ℝ) * h2⟩
 
+/-- **Anchored-pair collinearity is common-line membership.**
+For any four planar points whose first two have distinct abscissae (`a.1 ≠ b.1`),
+the two anchored triples `a b c` and `a b d` are *simultaneously* collinear iff all
+four points lie on a single common non-vertical affine line `y = m·x + e`.
+
+This is the missing bridge between the file's signed-area determinant predicate
+`collinear` (used throughout `fourPointLineCount`) and an *explicit* line: the slope
+and intercept are `m = (b.2 − a.2)/(b.1 − a.1)` and `e = a.2 − m·a.1`.  It is purely
+planar — no `onQuartic` hypothesis — so it is reusable for any curve-incidence
+argument that needs to name the line through a four-point line (e.g. the
+Solymosi–Stojaković construction, which reasons about slopes/intercepts rather than
+determinants). -/
+theorem collinear_anchored_pair_iff_common_line {a b c d : ℝ × ℝ} (hab : a.1 ≠ b.1) :
+    (collinear a b c ∧ collinear a b d) ↔
+      ∃ m e : ℝ, a.2 = m * a.1 + e ∧ b.2 = m * b.1 + e ∧
+        c.2 = m * c.1 + e ∧ d.2 = m * d.1 + e := by
+  have hne : b.1 - a.1 ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
+  constructor
+  · rintro ⟨hcol_c, hcol_d⟩
+    have hcol_c' : (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2) := hcol_c
+    have hcol_d' : (b.1 - a.1) * (d.2 - a.2) = (d.1 - a.1) * (b.2 - a.2) := hcol_d
+    refine ⟨(b.2 - a.2) / (b.1 - a.1), a.2 - (b.2 - a.2) / (b.1 - a.1) * a.1, ?_, ?_, ?_, ?_⟩
+    · ring
+    · have hb2 : b.2 - a.2 = (b.2 - a.2) / (b.1 - a.1) * (b.1 - a.1) := by
+        rw [div_mul_eq_mul_div, eq_div_iff hne]
+      linear_combination hb2
+    · have hc2 : c.2 - a.2 = (b.2 - a.2) / (b.1 - a.1) * (c.1 - a.1) := by
+        rw [div_mul_eq_mul_div, eq_div_iff hne]; linear_combination hcol_c'
+      linear_combination hc2
+    · have hd2 : d.2 - a.2 = (b.2 - a.2) / (b.1 - a.1) * (d.1 - a.1) := by
+        rw [div_mul_eq_mul_div, eq_div_iff hne]; linear_combination hcol_d'
+      linear_combination hd2
+  · rintro ⟨m, e, ha, hb, hc, hd⟩
+    refine ⟨?_, ?_⟩
+    · show (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2)
+      rw [ha, hb, hc]; ring
+    · show (b.1 - a.1) * (d.2 - a.2) = (d.1 - a.1) * (b.2 - a.2)
+      rw [ha, hb, hd]; ring
+
+/-- **A line meets the quartic `y = x⁴ − 5x²` in four points iff their abscissae lie
+on the fixed sphere `Σx = 0 ∧ Σx² = 10`.**
+
+Chains the common-line bridge `collinear_anchored_pair_iff_common_line` with the Vieta
+sum-of-squares criterion `four_onQuartic_collinear_iff_sq`: four points on the quartic
+with pairwise-distinct abscissae lie on one affine line `y = m·x + e` iff their
+abscissae satisfy `Σx = 0` and `Σx² = 10`.
+
+This is the geometric phrasing of the arithmetization the file describes in prose (a
+line `y = mx + e` meets the quartic where `x⁴ − 5x² − mx − e = 0`, whose four roots
+have `e₁ = 0`, `e₂ = −5`, equivalently `Σx² = 10`): every four-point line's abscissae
+lie on a *single fixed* 2-sphere `{Σx = 0, Σx² = 10} ⊂ ℝ⁴`, independent of the slope
+`m` and intercept `e`.  The rigidity of that fixed sphere (no scaling freedom) is
+exactly why beating the linear floor `quartic_linear_lower_bound` is hard: the OPEN
+`solymosi_stojakovic_lower_bound` asks for super-linearly many distinct 4-subsets of an
+`n`-set all landing on this one sphere. -/
+theorem four_onQuartic_onLine_iff_sq {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1) :
+    (∃ m e : ℝ, a.2 = m * a.1 + e ∧ b.2 = m * b.1 + e ∧
+        c.2 = m * c.1 + e ∧ d.2 = m * d.1 + e) ↔
+      (a.1 + b.1 + c.1 + d.1 = 0 ∧
+       a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + d.1 ^ 2 = 10) := by
+  rw [← collinear_anchored_pair_iff_common_line hab,
+      four_onQuartic_collinear_iff_sq ha hb hc hd hab hbc hca hbd hda hcd]
+
 /-- **The four-point-line quadruple condition is a fixed ternary conic.**
 Eliminating the fourth abscissa via `Σx = 0` (so `x₃ = −(x₀+x₁+x₂)`), the engine's
 sum-of-squares condition `Σx² = 10` is *equivalent* to the ternary quadratic relation
