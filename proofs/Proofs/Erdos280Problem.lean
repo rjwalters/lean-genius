@@ -45,7 +45,7 @@ noncomputable def CountAvoiders (N : ℕ) (n a : ℕ → ℕ) (k : ℕ) : ℕ :=
 
 /-- Growth rate constraint: nₖ > (1+ε)k log k for some ε > 0 -/
 def SatisfiesGrowthBound (n : ℕ → ℕ) (ε : ℝ) : Prop :=
-  ε > 0 ∧ ∀ k : ℕ, k ≥ 2 → (n k : ℝ) > (1 + ε) * k * log k
+  ε > 0 ∧ ∀ k : ℕ, k ≥ 2 → (n k : ℝ) > (1 + ε) * k * Real.log k
 
 /- ## Part II: The Conjecture (DISPROVED) -/
 
@@ -75,11 +75,11 @@ theorem cambie_increasing : ∀ i j : ℕ, i < j → cambie_n i < cambie_n j := 
   simp [cambie_n]
   exact Nat.pow_lt_pow_right (by norm_num : 1 < 2) hij
 
-/-- Cambie's sequence satisfies the growth bound (2^k ≫ k log k) -/
-/-- Key insight: every m with 1 < m < 2^k is covered by some congruence class.
+/- Cambie's sequence satisfies the growth bound (2^k ≫ k log k) -/
+/- Key insight: every m with 1 < m < 2^k is covered by some congruence class.
 Only m = 1 avoids all classes. The proof uses binary representation:
 for m > 1, the highest power of 2 dividing m identifies a covering class. -/
-/-- For Cambie's construction, the count of avoiders is exactly 1 (just m = 1).
+/- For Cambie's construction, the count of avoiders is exactly 1 (just m = 1).
 This directly contradicts the conjecture requiring count ≥ c·k. -/
 /- ## Part IV: Refutation of the Conjecture -/
 
@@ -92,7 +92,7 @@ theorem erdos_280_disproved : ¬OriginalConjecture := original_conjecture_false
 
 /- ## Part V: Why the Bound is Best Possible -/
 
-/-- The k-th prime pₖ ~ k log k (Prime Number Theorem).
+/- The k-th prime pₖ ~ k log k (Prime Number Theorem).
 If nₖ < k log k were allowed, we could use primes as moduli,
 creating a much more constrained covering problem. -/
 /- ## Part VI: Summary -/

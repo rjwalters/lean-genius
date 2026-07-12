@@ -88,7 +88,7 @@ The Erdős-Simonovits supersaturation theorem (1983): for any fixed graph H,
 if |E(G)| > ex(n, H), then G contains Ω(n^{v(H)}) copies of H.
 -/
 
-/-- Erdős-Simonovits supersaturation: exceeding the Turán threshold for K_r
+/- Erdős-Simonovits supersaturation: exceeding the Turán threshold for K_r
     by a positive fraction forces Ω(n^r) copies of K_r. -/
 /-
 ## The Kruskal-Katona Theorem
@@ -102,7 +102,7 @@ edges, the one minimizing triangle count is the "colex" graph.
 def shadow (F : Finset (Finset V)) : Finset (Finset V) :=
   F.biUnion (fun s => s.image (fun v => s.erase v))
 
-/-- Kruskal-Katona theorem: the shadow of a k-uniform family of size m
+/- Kruskal-Katona theorem: the shadow of a k-uniform family of size m
     is minimized by the initial segment of the colex order.
     Here stated as a lower bound on shadow size. -/
 /-
@@ -127,7 +127,7 @@ axiom razborov_triangle_density (d : ℝ) (hd1 : 1 / 2 ≤ d) (hd2 : d ≤ 1)
     ∃ N₀ : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
       (G : SimpleGraph V) [DecidableRel G.Adj],
       Fintype.card V ≥ N₀ →
-      edgeDensity G ≥ d →
+      _root_.edgeDensity G ≥ d →
       cliqueDensity G 3 ≥ razborovMinTriangleDensity d - ε
 
 /-
@@ -144,7 +144,7 @@ axiom reiher_k4_density (d : ℝ) (hd1 : 2 / 3 ≤ d) (hd2 : d ≤ 1)
     ∃ N₀ : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
       (G : SimpleGraph V) [DecidableRel G.Adj],
       Fintype.card V ≥ N₀ →
-      edgeDensity G ≥ d →
+      _root_.edgeDensity G ≥ d →
       cliqueDensity G 4 ≥ ε
 
 /-
@@ -163,10 +163,10 @@ def exactKrDensityOpen (r : ℕ) : Prop :=
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
       (G : SimpleGraph V) [DecidableRel G.Adj],
       Fintype.card V ≥ N₀ →
-      edgeDensity G ≥ d →
+      _root_.edgeDensity G ≥ d →
       cliqueDensity G r ≥ g d - ε
 
-/-- **Open Question**: Exact K_r density for r ≥ 5. -/
+/- **Open Question**: Exact K_r density for r ≥ 5. -/
 /-
 ## Summary
 

@@ -100,7 +100,7 @@ a filter on the finite box `[-n, n]^m`. `mem_reps_iff` shows the box never clips
 real representation, so `(reps m n).card = r_m(n)`. -/
 
 /-- Integer `m`-tuples `f` with `Σ (f i)² = n`, as a `Finset`. -/
-def reps (m n : ℕ) : Finset (Fin m → ℤ) :=
+noncomputable def reps (m n : ℕ) : Finset (Fin m → ℤ) :=
   (Fintype.piFinset (fun _ : Fin m => Finset.Icc (-(n : ℤ)) (n : ℤ))).filter
     (fun f => ∑ i, (f i) ^ 2 = (n : ℤ))
 

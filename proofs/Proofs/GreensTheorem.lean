@@ -171,7 +171,7 @@ structure GreenRegion where
   -- We represent the region abstractly
   dummy : Unit
 
-/-- **Green's Theorem (General Form)**
+/- **Green's Theorem (General Form)**
 
 For a continuously differentiable vector field F = (P, Q) and a region D
 bounded by a positively oriented, piecewise smooth, simple closed curve C:

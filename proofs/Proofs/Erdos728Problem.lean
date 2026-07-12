@@ -69,7 +69,7 @@ We want a + b to be in the range (n + C log n, n + C' log n).
 a + b is in the range (n + C log n, n + C' log n).
 -/
 def hasLogarithmicGap (a b n : ℕ) (C C' : ℝ) : Prop :=
-  (n : ℝ) + C * log n < (a + b : ℝ) ∧ (a + b : ℝ) < (n : ℝ) + C' * log n
+  (n : ℝ) + C * Real.log n < (a + b : ℝ) ∧ (a + b : ℝ) < (n : ℝ) + C' * Real.log n
 
 /--
 **Size Condition:**
@@ -108,14 +108,14 @@ This classical result shows the divisibility strongly constrains a + b.
 -/
 axiom erdos_1968_bound :
     ∃ K : ℝ, K > 0 ∧ ∀ a b n : ℕ,
-      a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * log n
+      a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * Real.log n
 
 /--
 **Consequence:**
 For a! * b! | n! with large n, a + b is very close to n.
 -/
 theorem factorial_divisibility_bound (a b n : ℕ) (h : a ! * b ! ∣ n !) :
-    ∃ K : ℝ, K > 0 ∧ (a + b : ℝ) ≤ n + K * log n := by
+    ∃ K : ℝ, K > 0 ∧ (a + b : ℝ) ≤ n + K * Real.log n := by
   obtain ⟨K, hK, hbound⟩ := erdos_1968_bound
   exact ⟨K, hK, hbound a b n h⟩
 
@@ -195,7 +195,7 @@ This determines the power of prime p dividing n!.
 def legendreSum (n p : ℕ) : ℕ :=
   (Finset.range n).sum fun i => n / p ^ (i + 1)
 
-/--
+/-
 **Divisibility via Legendre:**
 a! * b! | n! * (a + b - n)! iff for every prime p,
 v_p(n!) + v_p((a+b-n)!) >= v_p(a!) + v_p(b!).
@@ -210,7 +210,7 @@ Connection to Problem #729 and general factorial divisibility.
 Problem #729 asks related questions about factorial divisibility
 with different parameter constraints. -/
 
-/--
+/-
 **General Principle:**
 The divisibility a! * b! | n! is equivalent to:
 The multinomial coefficient n! / (a! * b! * (n-a-b)!) being well-defined

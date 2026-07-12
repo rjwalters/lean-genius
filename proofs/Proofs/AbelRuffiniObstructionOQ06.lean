@@ -82,7 +82,7 @@ theorem perm_fin_three_solvable : IsSolvable (Equiv.Perm (Fin 3)) := by
     rw [nat_card_alternatingGroup, Nat.card_eq_fintype_card, Fintype.card_fin]; decide
   haveI : IsCyclic (alternatingGroup (Fin 3)) := isCyclic_of_prime_card hcard
   haveI : IsSolvable (alternatingGroup (Fin 3)) :=
-    isSolvable_of_comm (fun a b => IsCyclic.commutative.comm a b)
+    isSolvable_of_comm (fun a b => IsCyclic.isMulCommutative.is_comm.comm a b)
   refine solvable_of_ker_le_range
     (alternatingGroup (Fin 3)).subtype Equiv.Perm.sign ?_
   rw [Subgroup.range_subtype]
@@ -119,7 +119,7 @@ theorem alt_fin_four_solvable : IsSolvable (alternatingGroup (Fin 4)) := by
   haveI hcyc : IsCyclic (alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4)) :=
     isCyclic_of_prime_card hcard3
   haveI hqSolv : IsSolvable (alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4)) :=
-    isSolvable_of_comm (fun a b => IsCyclic.commutative.comm a b)
+    isSolvable_of_comm (fun a b => IsCyclic.isMulCommutative.is_comm.comm a b)
   refine solvable_of_ker_le_range
     (alternatingGroup.kleinFour (Fin 4)).subtype
     (QuotientGroup.mk' (alternatingGroup.kleinFour (Fin 4))) ?_

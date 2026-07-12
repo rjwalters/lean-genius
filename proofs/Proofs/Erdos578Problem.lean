@@ -98,7 +98,7 @@ def erdos_bollobas_conjecture : Prop :=
 
 /- ## Part V: Riordan's Theorem (2000) -/
 
-/-- Riordan's Theorem (2000): For any edge probability p > 1/4, the random graph
+/- Riordan's Theorem (2000): For any edge probability p > 1/4, the random graph
     G(2^d, p) almost surely contains a copy of Q_d.
     This is STRONGER than the original conjecture (which only required p = 1/2).
     Published in Combinatorics, Probability and Computing. -/
@@ -115,7 +115,7 @@ axiom threshold_at_quarter :
         AlmostSurely (fun d =>
           ContainsHypercube (riordanRandomGraph d p (by linarith) (by linarith)) d))
 
-/-- Riordan also showed the number of Q_d copies in G(2^d, p) is asymptotically
+/- Riordan also showed the number of Q_d copies in G(2^d, p) is asymptotically
     normally distributed (not just that at least one exists). -/
 /- ## Part VII: Hypercube Properties -/
 

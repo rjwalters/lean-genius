@@ -336,17 +336,17 @@ def LatticeTriangle.ymax (T : LatticeTriangle) : ℤ :=
 /-- The bounding-box `Finset` of lattice points enclosing the vertices of
     `T`.  Every interior (and boundary) lattice point of `T` lies in this
     finite rectangle. -/
-noncomputable def LatticeTriangle.boundingBox (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+def LatticeTriangle.boundingBox (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
   (Finset.Icc T.xmin T.xmax) ×ˢ (Finset.Icc T.ymin T.ymax)
 
 /-- The set of strictly-interior lattice points of `T` as a `Finset`,
     obtained by filtering the bounding box through `StrictInterior`. -/
-noncomputable def LatticeTriangle.realInterior (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+def LatticeTriangle.realInterior (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
   T.boundingBox.filter T.StrictInterior
 
 /-- The strictly-interior lattice-point count `I(T)`.  This is the "real"
     geometric quantity Pick's formula `pickInterior` is supposed to match. -/
-noncomputable def LatticeTriangle.realInteriorCount (T : LatticeTriangle) : ℕ :=
+def LatticeTriangle.realInteriorCount (T : LatticeTriangle) : ℕ :=
   T.realInterior.card
 
 -- ════════════════════════════════════════════════════════════════

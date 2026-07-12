@@ -54,12 +54,12 @@ open Finset
 /-- The box of admissible signed integer components for a four-square representation
 of `n`: every component `x` with `x² ≤ n` satisfies `|x| ≤ √n`, i.e. `x ∈ [-√n, √n]`.
 So all representations of `n` live inside `box n ^ 4`. -/
-noncomputable def box (n : ℕ) : Finset ℤ := Finset.Icc (-(Nat.sqrt n : ℤ)) (Nat.sqrt n : ℤ)
+def box (n : ℕ) : Finset ℤ := Finset.Icc (-(Nat.sqrt n : ℤ)) (Nat.sqrt n : ℤ)
 
 /-- `r4 n` counts the **ordered, signed** quadruples `(x₁,x₂,x₃,x₄) ∈ ℤ⁴` with
 `x₁²+x₂²+x₃²+x₄² = n` (zeros and signs allowed). This is the classical `r₄(n)`.
 It is a genuine, computable `Finset.card` over the finite box `box n ^ 4`. -/
-noncomputable def r4 (n : ℕ) : ℕ :=
+def r4 (n : ℕ) : ℕ :=
   (((box n ×ˢ box n ×ˢ box n ×ˢ box n).filter
     (fun p => p.1 ^ 2 + p.2.1 ^ 2 + p.2.2.1 ^ 2 + p.2.2.2 ^ 2 = (n : ℤ))).card)
 

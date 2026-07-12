@@ -408,7 +408,7 @@ theorem approachBGroup_not_isCyclic
   haveI : IsCyclic (approachBGroup hp hp_dvd) := hcyc
   obtain ⟨x, hx⟩ := exists_actionHom_not_fixed hp hp_dvd
   set g : Multiplicative (ZMod p) := Multiplicative.ofAdd 1 with hg
-  have hcomm := (IsCyclic.commutative (α := approachBGroup hp hp_dvd)).comm
+  have hcomm := (IsCyclic.isMulCommutative (α := approachBGroup hp hp_dvd)).is_comm.comm
       (SemidirectProduct.inr g) (SemidirectProduct.inl x)
   have hL := congrArg SemidirectProduct.left hcomm
   simp only [SemidirectProduct.mul_left, SemidirectProduct.left_inl,

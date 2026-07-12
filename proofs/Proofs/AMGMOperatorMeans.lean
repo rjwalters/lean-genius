@@ -126,14 +126,14 @@ theorem loewner_refl (A : Matrix n n ℝ) : A ≤_L A := by
 theorem loewner_trans {A B C : Matrix n n ℝ}
     (hAB : A ≤_L B) (hBC : B ≤_L C) : A ≤_L C := by
   unfold LoewnerLE at *
-  have h : C - A = (C - B) + (B - A) := by ext i j; simp [sub_apply, add_apply]
+  have h : C - A = (C - B) + (B - A) := by ext i j; simp [Matrix.sub_apply, Matrix.add_apply]
   rw [h]; exact hBC.add hAB
 
 /-- The Loewner order respects addition -/
 theorem loewner_add_right {A B C : Matrix n n ℝ}
     (h : A ≤_L B) : A + C ≤_L B + C := by
   unfold LoewnerLE at *
-  have : B + C - (A + C) = B - A := by ext i j; simp [sub_apply, add_apply]
+  have : B + C - (A + C) = B - A := by ext i j; simp [Matrix.sub_apply, Matrix.add_apply]
   rw [this]; exact h
 
 /-- The Loewner order respects non-negative scalar multiplication -/
@@ -141,7 +141,7 @@ theorem loewner_smul {A B : Matrix n n ℝ} {c : ℝ}
     (hc : 0 ≤ c) (h : A ≤_L B) : c • A ≤_L c • B := by
   unfold LoewnerLE at *
   have : c • B - c • A = c • (B - A) := by
-    ext i j; simp only [smul_apply, sub_apply, smul_eq_mul]; ring
+    ext i j; simp only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]; ring
   rw [this]; exact h.smul hc
 
 /-
@@ -164,7 +164,7 @@ theorem loewner_le_arithMean_left {A B : Matrix n n ℝ}
     (h : A ≤_L B) : A ≤_L matArithMean A B := by
   unfold LoewnerLE matArithMean
   have heq : (1 / 2 : ℝ) • (A + B) - A = (1 / 2 : ℝ) • (B - A) := by
-    ext i j; simp only [smul_apply, sub_apply, add_apply, smul_eq_mul]; ring
+    ext i j; simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul]; ring
   rw [heq]
   exact h.smul (by linarith : (0 : ℝ) ≤ 1 / 2)
 
@@ -173,7 +173,7 @@ theorem loewner_le_arithMean_right {A B : Matrix n n ℝ}
     (h : B ≤_L A) : B ≤_L matArithMean A B := by
   unfold LoewnerLE matArithMean
   have heq : (1 / 2 : ℝ) • (A + B) - B = (1 / 2 : ℝ) • (A - B) := by
-    ext i j; simp only [smul_apply, sub_apply, add_apply, smul_eq_mul]; ring
+    ext i j; simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul]; ring
   rw [heq]
   exact h.smul (by linarith : (0 : ℝ) ≤ 1 / 2)
 
@@ -225,7 +225,7 @@ theorem operator_am_gm_eq_of_eq (A : Matrix n n ℝ) (hA : RealPosDef A) :
   rw [matGeomMean_self]
   unfold matArithMean
   ext i j
-  simp only [smul_apply, add_apply, smul_eq_mul]
+  simp only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]
   ring
 
 /-
@@ -241,7 +241,7 @@ theorem matWeightedArithMean_half (A B : Matrix n n ℝ) :
     matWeightedArithMean (1/2) A B = matArithMean A B := by
   unfold matWeightedArithMean matArithMean
   ext i j
-  simp only [smul_apply, add_apply, smul_eq_mul]
+  simp only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]
   ring
 
 /-- Weighted arithmetic mean preserves PSD -/

@@ -70,7 +70,7 @@ instance alternatingFinThree_isSolvable : IsSolvable (alternatingGroup (Fin 3)) 
   have hcard : Nat.card (alternatingGroup (Fin 3)) = 3 := by
     rw [nat_card_alternatingGroup, Nat.card_eq_fintype_card, Fintype.card_fin]; rfl
   haveI : IsCyclic (alternatingGroup (Fin 3)) := isCyclic_of_prime_card hcard
-  exact isSolvable_of_comm fun a b => (IsCyclic.commutative).comm a b
+  exact isSolvable_of_comm fun a b => IsCyclic.isMulCommutative.is_comm.comm a b
 
 /-- The alternating group `A₂` is trivial of order `1`, hence solvable. -/
 instance alternatingFinTwo_isSolvable : IsSolvable (alternatingGroup (Fin 2)) := by
