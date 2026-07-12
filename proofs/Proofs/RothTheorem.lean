@@ -2387,4 +2387,105 @@ example {N : ℕ} [NeZero N] {r : ZMod N} (hr2 : 2 * r = 0) (hr0 : r ≠ 0) :
 example : sqGaussSum (4 : ZMod 24) = 0 :=
   sqGaussSum_eq_zero_of_gcd_shift (by decide)
 
+/-! ### Part XIII — exact iff-characterization of the shift-reachable vanishing set
+
+The effective criterion `sqGaussSum_eq_zero_of_gcd_shift` gives one implication: the
+canonical phase `r·t₀² ≠ 0` (with `t₀ = N / gcd((2r).val, N)`) *forces* `G(r) = 0`.
+The converse question is whether the *existence* of any vanishing shift already
+implies the canonical test fires.  It does, and the missing input is the reverse
+kernel containment `{t : 2rt = 0} ⊆ ⟨t₀⟩`: every annihilator of `2r` is a scalar
+multiple of the canonical generator `t₀`.  Combined with the forward containment
+`⟨t₀⟩ ⊆ kernel` (`two_mul_kernel_gen_eq_zero`) this pins the kernel *exactly* as the
+cyclic subgroup `⟨t₀⟩`, and upgrades the criterion to the exact characterisation
+`(∃ shift t : 2rt = 0 ∧ r·t² ≠ 0) ↔ r·t₀² ≠ 0`.  The right-hand side is a single
+decidable `gcd`-plus-multiplication test, so this decides membership in the
+shift-reachable vanishing set at any concrete frequency — and, dually, isolates the
+*residual* frequencies `r·t₀² = 0` where no shift works and the residual-phase
+recursion `S(r) = Σ_{h:2rh=0} ψ(−r h²)` is genuinely required for an `o(N)` bound.
+
+As throughout Parts VIII–XII this stays pointwise; it sharpens *which* frequencies
+the shift method decides, not the Sárközy density itself. -/
+
+/-- **Reverse kernel containment** `{t : c·t = 0} ⊆ ⟨t₀⟩`.  Every annihilator `t` of a
+    ring element `c : ZMod N` is a scalar multiple of the canonical cyclic generator
+    `t₀ = N / gcd(c.val, N)`.  Proof: `c·t = 0` casts to `N ∣ c.val·t.val`; writing
+    `c.val = g·a`, `N = g·b` with `g = gcd(c.val, N)` and `Coprime a b`, this gives
+    `b ∣ a·t.val`, hence `b ∣ t.val` by coprimality, so `t = (t.val/b)·t₀`. -/
+private theorem kernel_eq_smul_gen {N : ℕ} [NeZero N] (c t : ZMod N)
+    (ht : c * t = 0) :
+    ∃ k : ZMod N, t = k * ((N / Nat.gcd c.val N : ℕ) : ZMod N) := by
+  set g := Nat.gcd c.val N with hg
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hgpos : 0 < g := Nat.gcd_pos_of_pos_right c.val hNpos
+  have hgc : g ∣ c.val := Nat.gcd_dvd_left c.val N
+  have hgN : g ∣ N := Nat.gcd_dvd_right c.val N
+  -- casts of vals
+  have hcv : (c.val : ZMod N) = c := by rw [ZMod.natCast_val, ZMod.cast_id]
+  have htv : (t.val : ZMod N) = t := by rw [ZMod.natCast_val, ZMod.cast_id]
+  -- `c*t = 0` ⟹ `N ∣ c.val * t.val`
+  have hzero : ((c.val * t.val : ℕ) : ZMod N) = 0 := by rw [Nat.cast_mul, hcv, htv, ht]
+  have hdvd : N ∣ c.val * t.val := by
+    rwa [ZMod.natCast_eq_zero_iff] at hzero
+  -- factor `c.val` and `N` by `g`, with coprime cofactors
+  set a := c.val / g with ha
+  set b := N / g with hb
+  have hcval : g * a = c.val := Nat.mul_div_cancel' hgc
+  have hNval : g * b = N := Nat.mul_div_cancel' hgN
+  have hcop : Nat.Coprime a b := Nat.coprime_div_gcd_div_gcd hgpos
+  -- descend the divisibility to `b ∣ t.val`
+  have hdvd' : g * b ∣ g * (a * t.val) := by
+    rw [hNval, ← mul_assoc, hcval]; exact hdvd
+  have hbat : b ∣ a * t.val := Nat.dvd_of_mul_dvd_mul_left hgpos hdvd'
+  have hbt : b ∣ t.val := (Nat.Coprime.symm hcop).dvd_of_dvd_mul_left hbat
+  obtain ⟨k, hk⟩ := hbt                               -- t.val = b * k
+  refine ⟨(k : ZMod N), ?_⟩
+  have ht' : t = ((b * k : ℕ) : ZMod N) := by rw [← htv, hk]
+  rw [ht', Nat.cast_mul]
+  ring
+
+/-- **Kernel membership iff.**  `t` annihilates `2r` exactly when it is a scalar
+    multiple of the canonical generator `t₀ = N / gcd((2r).val, N)`; i.e. the
+    annihilator kernel `{t : 2rt = 0}` is precisely the cyclic subgroup `⟨t₀⟩`.
+    Forward is `kernel_eq_smul_gen`; reverse is `two_mul_kernel_gen_eq_zero`. -/
+theorem two_mul_eq_zero_iff_smul_gen {N : ℕ} [NeZero N] (r t : ZMod N) :
+    2 * r * t = 0 ↔
+      ∃ k : ZMod N, t = k * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) := by
+  constructor
+  · intro ht
+    exact kernel_eq_smul_gen (2 * r) t ht
+  · rintro ⟨k, rfl⟩
+    have hcomm :
+        2 * r * (k * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N))
+          = k * (2 * r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N)) := by ring
+    rw [hcomm, two_mul_kernel_gen_eq_zero, mul_zero]
+
+/-- **Exact characterisation of the shift-reachable vanishing set.**  A shift `t`
+    with `2rt = 0 ∧ r·t² ≠ 0` (which forces `G(r) = 0` by `sqGaussSum_eq_zero_of_shift`)
+    *exists* iff the single canonical phase `r·t₀²` is nonzero.  Forward: any such `t`
+    is `k·t₀` (reverse kernel containment), and `r·t² = k²·(r·t₀²)` by
+    `gcd_shift_phase_smul`, so `r·t₀² = 0` would force `r·t² = 0`.  Reverse: `t₀`
+    itself is the witness (`two_mul_kernel_gen_eq_zero`).  The right-hand side is a
+    decidable closed-form test. -/
+theorem exists_vanishing_shift_iff {N : ℕ} [NeZero N] (r : ZMod N) :
+    (∃ t : ZMod N, 2 * r * t = 0 ∧ r * t ^ 2 ≠ 0) ↔
+      r * ((N / Nat.gcd (2 * r).val N : ℕ) : ZMod N) ^ 2 ≠ 0 := by
+  constructor
+  · rintro ⟨t, ht2, htne⟩
+    obtain ⟨k, hk⟩ := kernel_eq_smul_gen (2 * r) t ht2
+    intro hcontra
+    apply htne
+    rw [hk, gcd_shift_phase_smul, hcontra, mul_zero]
+  · intro hne
+    exact ⟨_, two_mul_kernel_gen_eq_zero r, hne⟩
+
+/-- **Vanishing via the shift method is decidable and iff the canonical test.**  If
+    the canonical phase test fires (`r·t₀² ≠ 0`) then `G(r) = 0`; conversely, whenever
+    *some* shift makes `G(r)` provably vanish through `sqGaussSum_eq_zero_of_shift`,
+    the canonical test already detects it.  Concretely, the shift method certifies
+    `G(r) = 0` iff `r·t₀² ≠ 0`. -/
+theorem sqGaussSum_eq_zero_of_exists_shift {N : ℕ} [NeZero N] {r : ZMod N}
+    (h : ∃ t : ZMod N, 2 * r * t = 0 ∧ r * t ^ 2 ≠ 0) :
+    sqGaussSum r = 0 :=
+  sqGaussSum_eq_zero_of_gcd_shift ((exists_vanishing_shift_iff r).mp h)
+
 end Szemeredi.Roth
