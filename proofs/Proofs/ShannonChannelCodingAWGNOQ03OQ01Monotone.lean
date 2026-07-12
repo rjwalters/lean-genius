@@ -327,4 +327,80 @@ theorem waterLevel_mono_budget (N : ι → ℝ) {μ₁ μ₂ P₁ P₂ : ℝ}
   -- `P₂ < P₁` contradicts `P₁ ≤ P₂`
   linarith
 
+/-! ## Strict monotonicity in the power budget -/
+
+/-- **The per-channel rate is *strictly* monotone in power.**  For fixed positive
+noise `N`, allocating strictly more power strictly increases the rate:
+`P₁ < P₂ ⟹ ½ log(1 + P₁/N) < ½ log(1 + P₂/N)`.  The strict sharpening of
+`perUseCapacity_mono`, using strict monotonicity of `Real.log`. -/
+theorem perUseCapacity_strictMono {N : ℝ} (hN : 0 < N) {P₁ P₂ : ℝ}
+    (hP1 : 0 ≤ P₁) (hP : P₁ < P₂) :
+    perUseCapacity P₁ N < perUseCapacity P₂ N := by
+  unfold perUseCapacity
+  apply mul_lt_mul_of_pos_left _ (by norm_num : (0 : ℝ) < 1 / 2)
+  apply Real.log_lt_log
+  · have : 0 ≤ P₁ / N := div_nonneg hP1 hN.le
+    linarith
+  · have hdiv : P₁ / N < P₂ / N := by
+      apply (div_lt_div_iff_of_pos_right hN).mpr hP
+    linarith
+
+/-- **The water level is *strictly* monotone in the power budget.**  Let `μ₁`, `μ₂`
+realise budgets `P₁`, `P₂` with `0 < P₁` and `P₁ < P₂`.  Then `μ₁ < μ₂`: strictly
+more power strictly raises the water surface.  The strict sharpening of
+`waterLevel_mono_budget` — if the level failed to rise (`μ₁ = μ₂`) the budgets
+`g(μ₁) = g(μ₂)` would coincide, contradicting `P₁ < P₂`. -/
+theorem waterLevel_strictMono_budget (N : ι → ℝ) {μ₁ μ₂ P₁ P₂ : ℝ}
+    (h1 : waterBudget N μ₁ = P₁) (h2 : waterBudget N μ₂ = P₂)
+    (hP1 : 0 < P₁) (hP : P₁ < P₂) :
+    μ₁ < μ₂ := by
+  rcases eq_or_lt_of_le (waterLevel_mono_budget N h1 h2 hP1 hP.le) with heq | hlt
+  · exfalso
+    have : P₁ = P₂ := by rw [← h1, ← h2, heq]
+    linarith
+  · exact hlt
+
+/-- **The parallel-Gaussian capacity is *strictly* monotone in the power budget.**
+Let `μ₁`, `μ₂` be the water levels realising budgets `P₁`, `P₂` with `0 < P₁` and
+`P₁ < P₂`.  Then the water-filling capacity strictly increases:
+
+    parallelRate N (waterAlloc μ₁ N) < parallelRate N (waterAlloc μ₂ N).
+
+The strict sharpening of `capacity_mono_budget`.  Since `P₁ > 0` some channel is
+active at `μ₁` (`Nᵢ₀ < μ₁`); as the level strictly rises (`μ₁ < μ₂`, by
+`waterLevel_strictMono_budget`) that channel receives strictly more power and hence
+strictly more rate (`perUseCapacity_strictMono`), while every other channel's rate
+is nondecreasing (`waterAlloc_mono_level` + `perUseCapacity_mono`).  Summing with
+`Finset.sum_lt_sum` gives the strict inequality. -/
+theorem capacity_strictMono_budget (N : ι → ℝ) (hN : ∀ i, 0 < N i)
+    {μ₁ μ₂ P₁ P₂ : ℝ}
+    (h1 : waterBudget N μ₁ = P₁) (h2 : waterBudget N μ₂ = P₂)
+    (hP1 : 0 < P₁) (hP : P₁ < P₂) :
+    parallelRate N (waterAlloc μ₁ N) < parallelRate N (waterAlloc μ₂ N) := by
+  have hμlt : μ₁ < μ₂ := waterLevel_strictMono_budget N h1 h2 hP1 hP
+  -- a positive budget forces some active channel at level μ₁
+  have hact : ∃ i, 0 < waterAlloc μ₁ N i := by
+    by_contra hcon
+    push_neg at hcon
+    have hle : waterBudget N μ₁ ≤ 0 := by
+      unfold waterBudget; exact Finset.sum_nonpos fun i _ => hcon i
+    rw [h1] at hle; linarith
+  obtain ⟨i₀, hi₀⟩ := hact
+  have hNlt : N i₀ < μ₁ := (waterAlloc_pos_iff μ₁ N i₀).mp hi₀
+  -- the active channel gets strictly more power
+  have haa : waterAlloc μ₁ N i₀ < waterAlloc μ₂ N i₀ := by
+    unfold waterAlloc
+    rw [max_eq_left (by linarith : (0 : ℝ) ≤ μ₁ - N i₀),
+        max_eq_left (by linarith : (0 : ℝ) ≤ μ₂ - N i₀)]
+    linarith
+  have hstrict : perUseCapacity (waterAlloc μ₁ N i₀) (N i₀)
+      < perUseCapacity (waterAlloc μ₂ N i₀) (N i₀) :=
+    perUseCapacity_strictMono (hN i₀) (waterAlloc_nonneg μ₁ N i₀) haa
+  unfold parallelRate
+  apply Finset.sum_lt_sum
+  · intro i _
+    exact perUseCapacity_mono (hN i) (waterAlloc_nonneg μ₁ N i)
+      (waterAlloc_mono_level hμlt.le N i)
+  · exact ⟨i₀, Finset.mem_univ i₀, hstrict⟩
+
 end ShannonWaterFilling
