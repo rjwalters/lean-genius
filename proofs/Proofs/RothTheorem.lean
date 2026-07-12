@@ -4859,4 +4859,101 @@ theorem le_maxSqDiffFreeCard_mod_65 : 6 ≤ maxSqDiffFreeCard (13 * 5) := by
   rw [hAcard, hcS, hcT] at hle
   omega
 
+/-! ### Part XXXV — the multiplicative law across an arbitrary family of coprime moduli
+
+Part XXXIV combined **two** coprime moduli.  Chaining that step along a finite family of
+*pairwise* coprime moduli gives the full finite-product law
+  `∏ᵢ maxSqDiffFreeCard (nᵢ) ≤ maxSqDiffFreeCard (∏ᵢ nᵢ)`,
+the Lean form of "the extremal square-difference-free count is super-multiplicative over
+coprime factorisations".  Combined with the prime-square lift `maxSqDiffFreeCard_prime_sq_ge`
+(`maxSqDiffFreeCard (p²) ≥ p · maxSqDiffFreeCard p`) this is the mechanism behind the
+Ruzsa-type density-exponent lower bound: a product of distinct prime squares carries a
+square-difference-free set whose size is the product of the per-prime coset bounds.
+
+**Honesty note on the direction of iteration.**  The iteration here is over *distinct*
+coprime factors, **not** repeated squaring of a single modulus.  The naive
+`maxSqDiffFreeCard (N^(2^k)) ≥ N^(2^k − 1) · maxSqDiffFreeCard N` for `k ≥ 2` is *not*
+obtainable from the square lift: the lift `sqDiffFree_lift_sq_of_squarefree` requires the
+base ring `ℤ/Nℤ` to be **reduced** (`N` squarefree) — that is where
+`ZMod.sq_eq_zero_iff_eq_zero_of_squarefree` turns `n² ≠ 0` upstairs into `(φ n)² ≠ 0`
+downstairs — and `ℤ/N²ℤ` is *never* reduced (`(N : ℤ/N²ℤ)² = 0` with `N ≠ 0`).  So the
+reducedness step fails at the second iterate and the single lift is genuinely a one-shot.
+Distinct coprime factors sidestep this obstruction entirely. -/
+
+/-- Every modulus admits the one-element square-difference-free set `{0}` (the predicate is
+vacuous there: `n² ≠ 0` already forces `0 + n² = n² ∉ {0}`), so `maxSqDiffFreeCard N ≥ 1`. -/
+theorem one_le_maxSqDiffFreeCard (N : ℕ) [NeZero N] : 1 ≤ maxSqDiffFreeCard N := by
+  have hfree : IsSqDiffFree ({0} : Finset (ZMod N)) := by
+    intro x hx n hn hmem
+    rw [Finset.mem_singleton] at hx hmem
+    subst hx
+    rw [zero_add] at hmem
+    exact hn hmem
+  have hc : ({0} : Finset (ZMod N)).card = 1 := Finset.card_singleton 0
+  have := le_maxSqDiffFreeCard_of_isSqDiffFree hfree
+  omega
+
+/-- A finite product of nonzero naturals is nonzero, as a `NeZero` instance.  This makes
+`maxSqDiffFreeCard (∏ i ∈ s, n i)` well-typed whenever every factor is `NeZero`. -/
+instance instNeZeroFinsetProd {ι : Type*} (n : ι → ℕ) [∀ i, NeZero (n i)]
+    (s : Finset ι) : NeZero (∏ i ∈ s, n i) :=
+  ⟨Finset.prod_ne_zero_iff.mpr fun i _ => NeZero.ne (n i)⟩
+
+/-- **Super-multiplicativity of the extremal square-difference-free count over an arbitrary
+family of pairwise coprime moduli.**  For `n : ι → ℕ` with each `n i ≠ 0` and the `n i`
+pairwise coprime on a finset `s`,
+  `∏ i ∈ s, maxSqDiffFreeCard (n i) ≤ maxSqDiffFreeCard (∏ i ∈ s, n i)`.
+Proved by induction on `s`, peeling one factor at a time through the two-factor law
+`maxSqDiffFreeCard_mul_ge_of_coprime`.  This is the finite-product generalisation of
+Part XXXIV. -/
+theorem maxSqDiffFreeCard_prod_ge_of_pairwise_coprime {ι : Type*} [DecidableEq ι]
+    (n : ι → ℕ) [∀ i, NeZero (n i)] (s : Finset ι)
+    (hco : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → Nat.Coprime (n i) (n j)) :
+    ∏ i ∈ s, maxSqDiffFreeCard (n i) ≤ maxSqDiffFreeCard (∏ i ∈ s, n i) := by
+  induction s using Finset.induction with
+  | empty => simpa using one_le_maxSqDiffFreeCard 1
+  | @insert a t ha ih =>
+    simp only [Finset.prod_insert ha]
+    -- `n a` is coprime to the product of the remaining factors
+    have hcop : Nat.Coprime (n a) (∏ i ∈ t, n i) :=
+      Nat.Coprime.prod_right fun i hi =>
+        hco a (Finset.mem_insert_self a t) i (Finset.mem_insert_of_mem hi)
+          (fun h => ha (h ▸ hi))
+    -- the coprimality hypothesis restricts to `t`
+    have hco_t : ∀ i ∈ t, ∀ j ∈ t, i ≠ j → Nat.Coprime (n i) (n j) :=
+      fun i hi j hj => hco i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj)
+    calc maxSqDiffFreeCard (n a) * ∏ i ∈ t, maxSqDiffFreeCard (n i)
+        ≤ maxSqDiffFreeCard (n a) * maxSqDiffFreeCard (∏ i ∈ t, n i) :=
+          Nat.mul_le_mul (le_refl _) (ih hco_t)
+      _ ≤ maxSqDiffFreeCard (n a * ∏ i ∈ t, n i) :=
+          maxSqDiffFreeCard_mul_ge_of_coprime hcop
+
+/-- **A three-distinct-prime density witness.**  The square-difference-free bases
+`{0,2} ⊆ ℤ/5ℤ`, `{0,2,7} ⊆ ℤ/13ℤ`, `{0,3} ⊆ ℤ/17ℤ` give `maxSqDiffFreeCard 5 ≥ 2`,
+`maxSqDiffFreeCard 13 ≥ 3`, `maxSqDiffFreeCard 17 ≥ 2`, and `5, 13, 17` are pairwise coprime,
+so the multiplicative law chains to `maxSqDiffFreeCard (5·13·17) ≥ 2·3·2 = 12` at
+`N = 1105`.  The modulus is squarefree but not a prime power, so none of the coset lifts
+reach it — only the coprime-multiplicative law does. -/
+theorem le_maxSqDiffFreeCard_mod_1105 : 12 ≤ maxSqDiffFreeCard (5 * 13 * 17) := by
+  have h5 : 2 ≤ maxSqDiffFreeCard 5 := by
+    have hfree : IsSqDiffFree ({0, 2} : Finset (ZMod 5)) := by decide
+    have hc : ({0, 2} : Finset (ZMod 5)).card = 2 := by decide
+    have := le_maxSqDiffFreeCard_of_isSqDiffFree hfree; omega
+  have h13 : 3 ≤ maxSqDiffFreeCard 13 := by
+    have hfree : IsSqDiffFree ({0, 2, 7} : Finset (ZMod 13)) := by decide
+    have hc : ({0, 2, 7} : Finset (ZMod 13)).card = 3 := by decide
+    have := le_maxSqDiffFreeCard_of_isSqDiffFree hfree; omega
+  have h17 : 2 ≤ maxSqDiffFreeCard 17 := by
+    have hfree : IsSqDiffFree ({0, 3} : Finset (ZMod 17)) := by decide
+    have hc : ({0, 3} : Finset (ZMod 17)).card = 2 := by decide
+    have := le_maxSqDiffFreeCard_of_isSqDiffFree hfree; omega
+  have c1 : Nat.Coprime (5 * 13) 17 := by decide
+  have c2 : Nat.Coprime 5 13 := by decide
+  have step1 := maxSqDiffFreeCard_mul_ge_of_coprime (M := 5 * 13) (N := 17) c1
+  have step2 := maxSqDiffFreeCard_mul_ge_of_coprime (M := 5) (N := 13) c2
+  have h65 : 6 ≤ maxSqDiffFreeCard (5 * 13) := by
+    have := le_trans (Nat.mul_le_mul h5 h13) step2; omega
+  have := le_trans (Nat.mul_le_mul h65 h17) step1
+  omega
+
 end Szemeredi.Roth
