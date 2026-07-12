@@ -3344,4 +3344,131 @@ theorem forward_gap_fiveTimes_eq_85 (k : ℕ) :
   norm_num at h
   exact h
 
+-- ----------------------------------------------------------------------------
+-- Shared landing, opposite verdict:  the trichotomy is NOT a function of D(n)
+-- ----------------------------------------------------------------------------
+-- Both parametric families transport onto the SAME landing.  The reversal seed
+-- `18m+3 = 3·(6m+1)` and the forward seed `20m+5 = 5·(4m+1)` are distinct, yet
+--     D((18m+3)·2^(k+1))  =  D((20m+5)·2^(k+1))  =  (14m+3)·2^(k+1),
+-- because the double iterate keeps only `2a − φ(b) = 2(14m+3)` and forgets the
+-- seed shape.  Consequently `φ(D(n))` is IDENTICAL for the two families.  Yet the
+-- verdict differs: because `φ(18m+3) = 12m·2^k < φ(20m+5) = 16m·2^k`, the shared
+-- landing sits ABOVE `18m+3` (reversal) and BELOW `20m+5` (forward).  So the
+-- double-iterate comparison `φ(n) vs φ(D(n))` is decided by the seed's own totient,
+-- NOT by the landing point: two seeds with an identical `D(n)` (hence identical
+-- `φ(D(n))`) can fall on opposite sides of the trichotomy.
+
+/-- **`D`-landing of the prime-triple reversal family.**  For a seed `a = 18m+3`
+    with `4m+1`, `6m+1` prime, the double iterate of the whole family is
+    `D((18m+3)·2^(k+1)) = (14m+3)·2^(k+1)`.  (Extracted from the transport chain
+    inside `reversal_gap_primeTriple`; the landing is proved WITHOUT assuming
+    `14m+3` prime — that primality only enters when evaluating `φ` of the landing.) -/
+theorem dblIter_primeTriple {m : ℕ} (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (k : ℕ) : dblIter ((18 * m + 3) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3) = 2 * (12 * m + 3) := by
+    rw [hφa]; omega
+  rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+      show 2 * (18 * m + 3) - 8 * m = (14 * m + 3) * 2 from by omega]
+  ring
+
+/-- **`D`-landing of the fiveTimes forward family.**  For a seed `a = 5·(4m+1)`
+    (`m ≥ 3`) with `4m+1`, `12m+5` prime, the double iterate of the whole family is
+    `D(5·(4m+1)·2^(k+1)) = (14m+3)·2^(k+1)` — the SAME landing as the prime-triple
+    reversal family `dblIter_primeTriple`, from a genuinely different seed. -/
+theorem dblIter_fiveTimes {m : ℕ} (hm : 3 ≤ m) (hp : (4 * m + 1).Prime)
+    (hb : (12 * m + 5).Prime) (k : ℕ) :
+    dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+  have hcop : Nat.Coprime 5 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (5 * (4 * m + 1)) = 16 * m := by
+    rw [Nat.totient_mul hcop, show Nat.totient 5 = 4 from by decide,
+        Nat.totient_prime hp]; omega
+  have hφb : Nat.totient (12 * m + 5) = 12 * m + 4 := by rw [Nat.totient_prime hb]; omega
+  have ha_odd : Odd (5 * (4 * m + 1)) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 5) := Nat.odd_iff.mpr (by omega)
+  have hstep : 2 * (5 * (4 * m + 1)) - Nat.totient (5 * (4 * m + 1)) = 2 * (12 * m + 5) := by
+    rw [hφa]; omega
+  rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+      show 2 * (5 * (4 * m + 1)) - (12 * m + 4) = (14 * m + 3) * 2 from by omega]
+  ring
+
+/-- **Shared landing.**  The prime-triple reversal seed `18m+3` and the fiveTimes
+    forward seed `5·(4m+1) = 20m+5` — two different odd seeds — send their entire
+    `·2^(k+1)` families onto the IDENTICAL double iterate `(14m+3)·2^(k+1)`.  So
+    `φ(D(n))` is the same for both families, for every `k`. -/
+theorem dblIter_primeTriple_eq_fiveTimes {m : ℕ} (hm : 3 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (hb : (12 * m + 5).Prime) (k : ℕ) :
+    dblIter ((18 * m + 3) * 2 ^ (k + 1)) = dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) := by
+  rw [dblIter_primeTriple hp hq k, dblIter_fiveTimes hm hp hb k]
+
+/-- **Shared landing, opposite verdict.**  For `m ≥ 3` with `4m+1`, `6m+1`, `12m+5`,
+    `14m+3` all prime, the reversal seed `18m+3` and the forward seed `5·(4m+1)`
+    send their families onto the *same* double iterate `(14m+3)·2^(k+1)`, yet fall
+    on opposite sides of the totient trichotomy: `(18m+3)·2^(k+1) ∈ ReversalSet`
+    (`φ(n) < φ(D(n))`) while `5·(4m+1)·2^(k+1) ∈ ForwardSet` (`φ(D(n)) < φ(n)`).
+    This is a structural obstruction to any "landing determines verdict" heuristic:
+    the classification is decided by the seed's own totient, not by `D(n)`.
+    (An `m` realising all four primalities exists, e.g. `m = 7`:
+    `4m+1=29, 6m+1=43, 12m+5=89, 14m+3=101`, cf. `shared_landing_opposite_verdict_129_145`.) -/
+theorem shared_landing_opposite_verdict {m : ℕ} (hm : 3 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (hb : (12 * m + 5).Prime) (he : (14 * m + 3).Prime) (k : ℕ) :
+    dblIter ((18 * m + 3) * 2 ^ (k + 1)) = dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)) ∧
+      (18 * m + 3) * 2 ^ (k + 1) ∈ ReversalSet ∧
+      5 * (4 * m + 1) * 2 ^ (k + 1) ∈ ForwardSet :=
+  ⟨dblIter_primeTriple_eq_fiveTimes hm hp hq hb k,
+   mem_ReversalSet_primeTriple (by omega) hp hq he k,
+   mem_ForwardSet_fiveTimes (q := 4 * m + 1) hp (by omega) (by omega)
+     (by rw [show 3 * (4 * m + 1) + 2 = 12 * m + 5 from by ring]; exact hb) k⟩
+
+/-- **The two verdict margins differ by exactly `2^(k+2)` at the shared landing.**
+    The families share `φ(D(n)) = (14m+2)·2^k`; the reversal seed has totient
+    `12m·2^k` and the forward seed `16m·2^k`.  So the reversal margin
+    `φ(D(n)) − φ(reversal) = (2m+2)·2^k` exceeds the forward margin
+    `φ(forward) − φ(D(n)) = (2m−2)·2^k` by exactly `4·2^k = 2^(k+2)`, a fixed offset
+    independent of `m` (the two margins straddle the common landing and their sum,
+    `4m·2^k`, is the seed-totient gap `16m·2^k − 12m·2^k`).  Reuses the exact forward
+    gap `forward_gap_fiveTimes_eq`. -/
+theorem shared_landing_gap_difference {m : ℕ} (hm : 3 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime)
+    (hb : (12 * m + 5).Prime) (he : (14 * m + 3).Prime) (k : ℕ) :
+    (Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        - Nat.totient ((18 * m + 3) * 2 ^ (k + 1)))
+      - (Nat.totient (5 * (4 * m + 1) * 2 ^ (k + 1))
+        - Nat.totient (dblIter (5 * (4 * m + 1) * 2 ^ (k + 1)))) = 2 ^ (k + 2) := by
+  rw [reversal_gap_primeTriple (by omega) hp hq he k, forward_gap_fiveTimes_eq hm hp hb he k,
+      ← Nat.sub_mul, show 2 * m + 2 - (2 * m - 2) = 4 from by omega,
+      show 2 ^ (k + 2) = 4 * 2 ^ k from by rw [pow_add]; ring]
+
+/-- **Concrete instance at `m = 7` (`seeds 129 and 145`).**  The reversal seed
+    `129 = 3·43` and the forward seed `145 = 5·29` both send their `·2^(k+1)`
+    families onto the shared prime landing `101·2^(k+1)`, yet `129·2^(k+1)` reverses
+    (`φ = 84·2^k < 100·2^k = φ(D)`) while `145·2^(k+1)` goes forward
+    (`φ(D) = 100·2^k < 112·2^k = φ`).  `129` is one of the four isolated reversal
+    seeds named in the original problem; `145` is a fiveTimes forward seed. -/
+theorem shared_landing_opposite_verdict_129_145 (k : ℕ) :
+    dblIter (129 * 2 ^ (k + 1)) = 101 * 2 ^ (k + 1) ∧
+      dblIter (145 * 2 ^ (k + 1)) = 101 * 2 ^ (k + 1) ∧
+      Nat.totient (129 * 2 ^ (k + 1)) < Nat.totient (dblIter (129 * 2 ^ (k + 1))) ∧
+      Nat.totient (dblIter (145 * 2 ^ (k + 1))) < Nat.totient (145 * 2 ^ (k + 1)) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · simpa using dblIter_primeTriple (m := 7) (by norm_num) (by norm_num) k
+  · simpa using dblIter_fiveTimes (m := 7) (by norm_num) (by norm_num) (by norm_num) k
+  · simpa using mem_ReversalSet_primeTriple (m := 7) (by norm_num) (by norm_num)
+      (by norm_num) (by norm_num) k
+  · simpa using mem_ForwardSet_fiveTimes (q := 29) (by norm_num) (by norm_num)
+      (by norm_num) (by norm_num) k
+
 end Erdos1064OQ03
