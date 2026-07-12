@@ -4,7 +4,7 @@
   "parentId": "area-of-circle-oq-01-oq-02-oq-02",
   "status": "in-progress",
   "knowledge": {
-    "score": 10,
+    "score": 12,
     "insights": [
       "The parent OQ-02 proves the first-order IBP identity ĉₙ(f') = i·n·ĉₙ(f) for periodic C¹ functions (Hurwitz's Fourier route to the isoperimetric inequality). Iterating it once gives the second-derivative identity ĉₙ(f'') = (i·n)²·ĉₙ(f) = −n²·ĉₙ(f).",
       "The −n² eigenvalue is exactly what drives Wirtinger's inequality: every Fourier mode of f'' contributes a factor n² ≥ 1, with equality only on the first harmonic — the circle, the equality case of C² ≥ 4πA.",
@@ -13,7 +13,8 @@
       "(i·n)·(i·n) collapses to −n² via Complex.I_mul_I (I*I = -1) after a ring normalization that pulls out (I*I)·n².",
       "The n=0 companion is governed by FTC, not the i·n divide-by-n identity: fourier 0 = 1 so c₀(f') is the period-average of f', and intervalIntegral.integral_deriv_eq_sub + periodicity forces it to 0. Together with the -n² eigenvalue (n≠0) this pins the full differentiation spectrum: 0 on constants, i·n on the n-th harmonic.",
       "Wirtinger inequality ∫f²≤∫(f')² (mean-zero, period 2π) is a clean termwise hasSum_le on the two Parseval sums: |ĉₙ(f')|²=n²|ĉₙ(f)|² and n²≥1 for n≠0, with the n=0 mode killed on both sides (ĉ₀(f')=0 companion, ĉ₀(f)=0 zero-mean).",
-      "Hurwitz assembly: the analytic Wirtinger inequality (∫f² ≤ ∫(f′)²) yields the isoperimetric area bound A ≤ π in one line via 0 ≤ ∫(y′−x)², which expands to 2A ≤ ∫(y′)²+∫x²; Wirtinger upgrades ∫x² to ∫(x′)² and the arc-length normalisation ∫((x′)²+(y′)²)=2π collapses the RHS to 2π."
+      "Hurwitz assembly: the analytic Wirtinger inequality (∫f² ≤ ∫(f′)²) yields the isoperimetric area bound A ≤ π in one line via 0 ≤ ∫(y′−x)², which expands to 2A ≤ ∫(y′)²+∫x²; Wirtinger upgrades ∫x² to ∫(x′)² and the arc-length normalisation ∫((x′)²+(y′)²)=2π collapses the RHS to 2π.",
+      "The k-th derivative eigenvalue ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f) makes ALL magnitude/kernel/damping corollaries order-uniform, erasing the hardcoded k=2,4 split: ‖(i·n)ᵏ‖=|n|ᵏ (norm_mul, Complex.norm_I, Complex.norm_intCast) gives ‖ĉₙ(f⁽ᵏ⁾)‖=|n|ᵏ·‖ĉₙ(f)‖ (even AND odd orders, since the modulus erases the phase iᵏ); (i·n)ᵏ≠0 gives the shared nonzero-mode kernel; |n|ᵏ≥1 for n≠0 (one_le_pow₀ ∘ Int.one_le_abs) gives the all-orders damping ‖ĉₙ(f)‖≤‖ĉₙ(f⁽ᵏ⁾)‖. 0 custom axioms (PR#38382)."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 2 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity.",
@@ -24,7 +25,7 @@
       "memLp_two_of_continuous helper: continuous ℝ→ℂ is L² on Ioc(0,2π) via MemLp.of_bound + IsCompact.exists_bound_of_continuousOn",
       "hurwitz_area_bound in AreaOfCircleOQ01OQ02OQ02OQ02OQ02.lean: for C¹ (x,y) with period-2π mean-zero x and ∫((x′)²+(y′)²)=2π, ∫ x·y′ ≤ π (VERIFIED 0/0, Docker-built)"
     ],
-    "progressSummary": "PROGRESS: analytic Wirtinger inequality assembled into Hurwitz isoperimetric area bound A ≤ π (arc-length normalised). Follow-ups: equality→circle, general L²≥4πA by Cauchy–Schwarz.",
+    "progressSummary": "PROGRESS: general-order Fourier magnitude/kernel/damping added to child OQ...OQ01 (PR#38382, 0-axiom). From the k-th eigenvalue ĉₙ(f⁽ᵏ⁾)=(i·n)ᵏ·ĉₙ(f), stated at ALL orders: ‖ĉₙ(f⁽ᵏ⁾)‖=|n|ᵏ·‖ĉₙ(f)‖, kernel ĉₙ(f⁽ᵏ⁾)=0↔ĉₙ(f)=0, and damping ‖ĉₙ(f)‖≤‖ĉₙ(f⁽ᵏ⁾)‖ — unifying the parent hardcoded k=2 (−n²) and k=4 (n⁴) magnitude/kernel/damping corollaries into single all-orders laws. Analytic Wirtinger→Hurwitz A≤π assembled elsewhere in the tree.",
     "nextSteps": [
       "Assemble the full isoperimetric inequality C²≥4πA: express area A and perimeter C via Fourier coefficients of the (mean-adjusted) boundary parametrisation and apply wirtinger_inequality mode-by-mode; equality iff only n=±1 harmonics survive (circle). Requires Greens-theorem area formula A=½∮(x dy − y dx) in Fourier form.",
       "Characterise the equality case of wirtinger_inequality: ∫f²=∫(f')² iff ĉₙ(f)=0 for all |n|≥2 (only the first harmonic), i.e. f(t)=a cos t + b sin t.",
