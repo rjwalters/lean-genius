@@ -14,11 +14,16 @@ Everything is built on the *merged* metric/circle API of `Proofs.FeuerbachsTheor
 
 ## What this file proves (0 axioms, 0 sorries)
 
-* `onSphere_neg` — the antipode of a model point is a model point (`‖−P‖ = ‖P‖`).
-* `scos_neg_right`, `scos_neg_left` — the spherical cosine flips sign under antipode
-  (`⟪P, −Q⟫ = −⟪P, Q⟫`), the algebraic source of the pole swap.
-* `sdist_antipode` — a model point and its antipode are at the maximal spherical distance
-  `π` (`arccos (−1)`).
+The core antipodal primitives `onSphere_neg`, `scos_neg_right` and `sdist_antipode`
+now live in the *merged* file `Proofs.FeuerbachsTheoremOQ04` (they were absorbed there
+alongside `sCircle_antipodal_center`); this file reuses them and supplies the
+remaining antipodal-symmetry layer:
+
+* `scos_neg_left` — the spherical cosine flips sign in the left slot under antipode
+  (`⟪−P, Q⟫ = −⟪P, Q⟫`), the companion of the merged `scos_neg_right`.
+* `scos_neg_neg` — negating *both* points preserves the spherical cosine.
+* `sdist_neg_neg` — the antipodal map is a spherical isometry
+  (`sdist (−P) (−Q) = sdist P Q`).
 * `sCircle_neg_centre` — the **two-pole identity** `sCircle O ρ = sCircle (−O) (π − ρ)`:
   a spherical circle is centred on either pole, with complementary angular radius.
 -/
@@ -31,16 +36,6 @@ open scoped RealInnerProductSpace
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
-/-- The antipode of a model point is again a model point: negation preserves the unit norm. -/
-theorem onSphere_neg {P : E} (hP : OnSphere P) : OnSphere (-P) := by
-  unfold OnSphere at hP ⊢
-  rw [norm_neg]; exact hP
-
-/-- The spherical cosine flips sign in the right slot under the antipodal map: this is the
-algebraic engine behind the pole swap, since `cos (π − ρ) = −cos ρ` matches `⟪P, −O⟫`. -/
-theorem scos_neg_right (P Q : E) : scos P (-Q) = - scos P Q := by
-  unfold scos; rw [inner_neg_right]
-
 /-- The spherical cosine flips sign in the left slot under the antipodal map. -/
 theorem scos_neg_left (P Q : E) : scos (-P) Q = - scos P Q := by
   unfold scos; rw [inner_neg_left]
@@ -51,13 +46,6 @@ the involution `P ↦ −P` is a symmetry of the spherical-cosine pairing.  The 
 of the individual slot-flip lemmas. -/
 theorem scos_neg_neg (P Q : E) : scos (-P) (-Q) = scos P Q := by
   rw [scos_neg_left, scos_neg_right, neg_neg]
-
-/-- **A model point and its antipode are at maximal spherical distance `π`.**  The inner
-product `⟪P, −P⟫ = −‖P‖² = −1`, and `arccos (−1) = π`. -/
-theorem sdist_antipode {P : E} (hP : OnSphere P) : sdist P (-P) = Real.pi := by
-  unfold sdist
-  rw [inner_neg_right, real_inner_self_eq_norm_sq, hP, one_pow]
-  exact Real.arccos_neg_one
 
 /-- **The antipodal map is a spherical isometry.**  Negating both points leaves the spherical
 distance unchanged: `sdist (−P) (−Q) = sdist P Q`.  Since `sdist = arccos ∘ ⟪·,·⟫` and the two
