@@ -587,4 +587,40 @@ theorem liouville_dimzero_null_yet_residual :
       {x : ℝ | Liouville x} ∈ residual ℝ :=
   ⟨dimH_liouville_eq_zero, volume_liouville_eq_zero, liouville_residual⟩
 
+/-! ## The full-measure complement is also dense
+
+`wellApprox_dense` shows the `τ`-well-approximable numbers are dense.  For `τ > 2` the set
+is Lebesgue-null (`volume_wellApprox_eq_zero`), so its *complement* carries full measure —
+and a full-measure set in `ℝ` is dense, because a null set has empty interior
+(`MeasureTheory.Measure.interior_eq_empty_of_null`, using that `volume` is an open-positive
+measure).  Hence for `τ > 2` **both `W τ` and its complement are dense**: the topological
+face of the measure-versus-category tension, complementary to the comeagre-yet-null
+statement `wellApprox_residual_and_volume_zero`. -/
+
+open MeasureTheory in
+/-- **The complement of `W τ` is dense for `τ > 2`.**  Since `W τ` is Lebesgue-null it has
+empty interior, so its complement (the full-measure set of *badly*-approximable-past-`τ`
+numbers) is dense. -/
+theorem dense_compl_wellApprox {τ : ℝ} (hτ : 2 < τ) : Dense (wellApprox τ)ᶜ :=
+  (interior_eq_empty_iff_dense_compl).mp
+    (MeasureTheory.Measure.interior_eq_empty_of_null (volume_wellApprox_eq_zero hτ))
+
+/-- **A set and its complement both dense.**  For `τ > 2` the `τ`-well-approximable numbers
+`W τ` are dense (`wellApprox_dense`, category/genericity) and so is their complement
+(`dense_compl_wellApprox`, full measure).  This packages the topological form of the
+measure/category dichotomy: neither `W τ` nor its complement has any interior. -/
+theorem wellApprox_dense_and_dense_compl {τ : ℝ} (hτ : 2 < τ) :
+    Dense (wellApprox τ) ∧ Dense (wellApprox τ)ᶜ :=
+  ⟨wellApprox_dense τ, dense_compl_wellApprox hτ⟩
+
+open MeasureTheory in
+/-- **The complement of the Liouville set is dense.**  The Liouville numbers are null
+(`volume_liouville_eq_zero`), hence have empty interior, so the (full-measure) set of
+non-Liouville numbers is dense — even though the Liouville set is itself a dense comeagre
+`Gδ` (`liouville_residual`, `wellApprox_dense`).  Both the generic-but-null Liouville set
+and its full-measure complement are dense. -/
+theorem dense_compl_liouville : Dense {x : ℝ | Liouville x}ᶜ :=
+  (interior_eq_empty_iff_dense_compl).mp
+    (MeasureTheory.Measure.interior_eq_empty_of_null volume_liouville_eq_zero)
+
 end LiouvilleTheoremOQ03
