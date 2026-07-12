@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-02",
   "title": "Dimension of the commutant: dim_K C(M) = n for nonderogatory M",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -69,19 +69,25 @@
   "knowledge": {
     "insights": [
       "Commutant dimension dim_K C(M)=n for nonderogatory M is the equality case of Frobenius bound dim_K C(M)≥n; assembled purely from sibling lemmas (commuting_matrix_is_polynomial, finrank_adjoin_eq_natDegree_minpoly, nonderogatory_iff_has_cyclic_vector).",
-      "Completed the (ii)⟺(iii) edge of the triple equivalence: prior work had only (iii)⟹(ii); this adds the forward (ii)⟹(iii) nonderogatory⟹C(M)=K[M]."
+      "Completed the (ii)⟺(iii) edge of the triple equivalence: prior work had only (iii)⟹(ii); this adds the forward (ii)⟹(iii) nonderogatory⟹C(M)=K[M].",
+      "The env-blocker was the sole obstacle: a fresh docker cache builds the whole cayley-hamilton OQ02 chain cleanly (7748 jobs); no isModule poisoning in an isolated worktree build.",
+      "The `= n` (ambient-dimension) converse dim_K C(M)=n ⟹ nonderogatory is NOT reachable from the file's elementary bounds: finrank_centralizer_ge gives only n ≤ dim C(M), and the strict derogatory bound is deg(minpoly) < dim C(M) with deg(minpoly) < n, so nothing forces a strict n < dim C(M) for derogatory M. The missing input is exactly the sharp Frobenius strictness.",
+      "Nonderogatory has a clean scalar characterization independent of the centralizer: minpoly=charpoly ⟺ deg(minpoly) = n (both monic, minpoly ∣ charpoly, deg charpoly = n)."
     ],
     "builtItems": [
-      "centralizer_eq_adjoin_of_nonderogatory, centralizer_eq_adjoin_iff_nonderogatory, finrank_centralizer_eq_of_nonderogatory (=n), finrank_centralizer_eq_natDegree_charpoly, cayley_hamilton_oq02_oq02_summary in proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02.lean (PR #36663)"
+      "centralizer_eq_adjoin_of_nonderogatory, centralizer_eq_adjoin_iff_nonderogatory, finrank_centralizer_eq_of_nonderogatory (=n), finrank_centralizer_eq_natDegree_charpoly, cayley_hamilton_oq02_oq02_summary in proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02.lean (PR #36663)",
+      "VERIFIED (0-axiom, docker 7748 jobs): cayley_hamilton_oq02_oq02_summary, finrank_centralizer_eq_of_nonderogatory, centralizer_eq_adjoin_of_nonderogatory, finrank_centralizer_eq_natDegree_charpoly in proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02.lean",
+      "nonderogatory_iff_natDegree_minpoly_eq_dim (CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02.lean:312) — minpoly=charpoly ⟺ deg(minpoly)=Fintype.card(Fin n), axiom-free",
+      "nonderogatory_of_finrank_centralizer_eq_dim (CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02.lean:342) — reduction of the `=n` converse to the sharp Frobenius strictness hypothesis, axiom-free"
     ],
     "mathlibGaps": [
       "ENV BLOCKER (not mathlib): shared docker cache had isModule:true poisoned setup.json for dependency OQ02OQ01, blocking build of the whole cayley-hamilton chain in Lean 4.26."
     ],
     "nextSteps": [
-      "Rebuild PR #36663 in a clean docker cache to obtain machine verification; clear isModule:true poisoning of Proofs setup.json for cayley-hamilton chain.",
-      "Possible follow-up: converse dim_K C(M)=n ⟹ nonderogatory (needs full Frobenius invariant-factor dimension formula, not yet built)."
+      "Possible follow-up: converse dim_K C(M)=n ⟹ nonderogatory (needs full Frobenius invariant-factor dimension formula, not yet built).",
+      "Discharge nonderogatory_of_finrank_centralizer_eq_dim's `hsharp` hypothesis unconditionally: prove derogatory M ⟹ Fintype.card (Fin n) < dim_K C(M). This is the sharp Frobenius bound (dim C(M) = Σ(2i-1)deg dᵢ over invariant factors dᵢ; ≥2 factors ⟹ strict excess). Needs invariant-factor / rational-canonical-form degree data — assess Mathlib coverage (Matrix.toLin / Module over K[X] structure theorem) before committing; likely >500 lines if RCF absent."
     ],
-    "progressSummary": "PROGRESS (UNVERIFIED build, env-blocked): proved forward edge (ii)⟹(iii) + headline dim_K C(M)=n; source 0-sorry/0-axiom, machine verification blocked by poisoned shared cache (dependency OQ02OQ01 isModule flag)."
+    "progressSummary": "VERIFIED (2026-07-12 researcher-5): the previously env-blocked headline chain now machine-verifies via a clean docker build (7748 jobs, Lean 4.26). cayley_hamilton_oq02_oq02_summary, finrank_centralizer_eq_of_nonderogatory (dim_K C(M)=n), centralizer_eq_adjoin_of_nonderogatory, and finrank_centralizer_eq_natDegree_charpoly all depend only on [propext, Classical.choice, Quot.sound] (0-axiom). Added two axiom-free lemmas: nonderogatory_iff_natDegree_minpoly_eq_dim (degree-level characterization: minpoly=charpoly ⟺ deg(minpoly)=n) and nonderogatory_of_finrank_centralizer_eq_dim (honest reduction of the open `dim C(M)=n ⟹ nonderogatory` converse to the sharp Frobenius strictness `derogatory ⟹ n<dim C(M)`). Residual open frontier: discharge the sharp strictness hypothesis unconditionally (invariant-factor content of Frobenius' formula), which upgrades the forward headline to a full dim_K C(M)=n ⟺ nonderogatory biconditional."
   },
   "leanFiles": [
     {

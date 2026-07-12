@@ -298,6 +298,60 @@ theorem finrank_centralizer_dichotomy
   ⟨fun h => (finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory M).mpr h,
    natDegree_minpoly_lt_finrank_centralizer_of_derogatory M⟩
 
+/-! ### The ambient-dimension (`= n`) reading of the converse -/
+
+/-- **Nonderogatory ⟺ the minimal polynomial has full degree `n`.**  A matrix is
+    nonderogatory (`minpoly K M = charpoly M`) **iff** its minimal polynomial already attains
+    the maximal possible degree `n = Fintype.card (Fin n)`.  Since `minpoly K M ∣ charpoly M`
+    are monic with `deg (charpoly M) = n` (`Matrix.charpoly_natDegree_eq_dim`), equality of the
+    two polynomials is equivalent to equality of their degrees
+    (`Polynomial.eq_of_monic_of_dvd_of_natDegree_le`).  This is the scalar (degree-level)
+    characterization of nonderogatoriness, complementing the centralizer-dimension criteria:
+    it is the hypothesis that the headline `finrank_centralizer_eq_of_nonderogatory`
+    (`dim_K C(M) = n`) consumes. -/
+theorem nonderogatory_iff_natDegree_minpoly_eq_dim
+    (M : Matrix (Fin n) (Fin n) K) :
+    minpoly K M = M.charpoly ↔ (minpoly K M).natDegree = Fintype.card (Fin n) := by
+  constructor
+  · intro h; rw [h, M.charpoly_natDegree_eq_dim]
+  · intro hdeg
+    have hM : IsIntegral K M := IsIntegral.of_finite K M
+    have hdvd : minpoly K M ∣ M.charpoly := minpoly.dvd K M (Matrix.aeval_self_charpoly M)
+    have hmin_monic : (minpoly K M).Monic := minpoly.monic hM
+    have hdeg' : M.charpoly.natDegree ≤ (minpoly K M).natDegree := by
+      rw [M.charpoly_natDegree_eq_dim, hdeg]
+    exact (Polynomial.eq_of_monic_of_dvd_of_natDegree_le hmin_monic M.charpoly_monic hdvd
+      hdeg').symm
+
+/-- **The `= n` converse is exactly the sharp Frobenius bound.**  The headline
+    `finrank_centralizer_eq_of_nonderogatory` proves the forward implication
+    `nonderogatory M → dim_K C(M) = n`.  Its converse `dim_K C(M) = n → nonderogatory M`
+    is *not* derivable from the elementary bounds in this file: `finrank_centralizer_ge`
+    (`n ≤ dim_K C(M)`) together with the strict derogatory bound
+    `natDegree_minpoly_lt_finrank_centralizer_of_derogatory` (`deg(minpoly) < dim_K C(M)`)
+    only give `n ≤ dim_K C(M)` — never a *strict* `n < dim_K C(M)` for derogatory `M`, since
+    `deg(minpoly) < n` there.  The precise missing input is the **sharp Frobenius strictness**:
+    every derogatory matrix has `n < dim_K C(M)` (the invariant-factor content of Frobenius'
+    formula `dim_K C(M) = Σ (2i-1) deg dᵢ`, with `≥ 2` invariant factors forcing a strict
+    excess), which is not yet formalized in this chain.
+
+    This lemma records that reduction honestly: **assuming** the sharp strictness hypothesis,
+    `dim_K C(M) = n` forces `M` nonderogatory.  Discharging `hsharp` unconditionally is the
+    sole remaining gap between the forward headline and a full `dim_K C(M) = n ⟺ nonderogatory`
+    biconditional at the ambient dimension. -/
+theorem nonderogatory_of_finrank_centralizer_eq_dim
+    (hsharp : ∀ M : Matrix (Fin n) (Fin n) K, minpoly K M ≠ M.charpoly →
+        Fintype.card (Fin n) < Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))))
+    (M : Matrix (Fin n) (Fin n) K)
+    (h : Module.finrank K
+        ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+        = Fintype.card (Fin n)) :
+    minpoly K M = M.charpoly := by
+  by_contra hderog
+  have hlt := hsharp M hderog
+  omega
+
 /-! ### Elementwise (matrix-level) forms -/
 
 /-- **Elementwise commutant characterization for nonderogatory `M`.**  All the results
