@@ -81,4 +81,37 @@ theorem rational_not_absolutely_normal (q : ℚ) :
     ¬ IsAbsolutelyNormal (q : ℝ) :=
   fun hn => rational_not_normal 2 (le_refl 2) q (hn 2 (le_refl 2))
 
+/-- **A normal number is distinct from every integer.**  Integer specialization of
+    `normal_ne_ratCast`: if `x` is normal in base `b ≥ 2`, then `x ≠ (n : ℝ)` for every
+    `n : ℤ`. Immediate from `intCast_not_normal`. -/
+theorem normal_ne_intCast (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (hx : IsNormalInBase b x)
+    (n : ℤ) : x ≠ (n : ℝ) := by
+  rintro rfl
+  exact intCast_not_normal b hb n hx
+
+/-- **A normal number is distinct from every natural number.**  Natural specialization of
+    `normal_ne_ratCast`, via `natCast_not_normal`. -/
+theorem normal_ne_natCast (b : ℕ) (hb : 2 ≤ b) (x : ℝ) (hx : IsNormalInBase b x)
+    (n : ℕ) : x ≠ (n : ℝ) := by
+  rintro rfl
+  exact natCast_not_normal b hb n hx
+
+/-- **Absolute normality implies irrationality.**  An absolutely normal number is in
+    particular normal in base `2`, hence irrational by `normal_imp_irrational`. The
+    absolute-normality specialization of the parent's positive implication, and the exact
+    strength used in `rational_not_absolutely_normal`. -/
+theorem absolutelyNormal_imp_irrational (x : ℝ) (hx : IsAbsolutelyNormal x) :
+    Irrational x :=
+  normal_imp_irrational 2 (le_refl 2) x (hx 2 (le_refl 2))
+
+/-- **Integers are not absolutely normal.**  An integer is not normal in base `2`, so it
+    fails absolute normality. Integer analogue of `rational_not_absolutely_normal`. -/
+theorem intCast_not_absolutely_normal (n : ℤ) : ¬ IsAbsolutelyNormal (n : ℝ) :=
+  fun hn => intCast_not_normal 2 (le_refl 2) n (hn 2 (le_refl 2))
+
+/-- **Naturals are not absolutely normal.**  Natural analogue of
+    `rational_not_absolutely_normal`. -/
+theorem natCast_not_absolutely_normal (n : ℕ) : ¬ IsAbsolutelyNormal (n : ℝ) :=
+  fun hn => natCast_not_normal 2 (le_refl 2) n (hn 2 (le_refl 2))
+
 end ETranscendentalOQ02OQ06
