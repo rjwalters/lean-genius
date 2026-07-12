@@ -47,7 +47,7 @@ noncomputable def minCosineSum (A : Finset ℕ) : ℝ :=
 
 /- ## Optimality -/
 
-/-- **Sidon Set Construction**: For A = B − B where B is a Sidon set
+/- **Sidon Set Construction**: For A = B − B where B is a Sidon set
     of size ≈ √N, the set A has size N and the minimum cosine sum
     is ≈ −√N. This shows √N is the best possible exponent. -/
 /- ## Observations -/

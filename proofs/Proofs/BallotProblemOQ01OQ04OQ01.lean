@@ -1116,7 +1116,7 @@ example : upstepsAboveAxisC [1,1,-1,-1] = 2 := by native_decide  -- Dyck (type 2
 
 /- ## Summary of Progress -/
 
-/-- **Progress Summary**: We have proved the COMPLETE FORWARD DIRECTION of the Chung-Feller bijection,
+/- **Progress Summary**: We have proved the COMPLETE FORWARD DIRECTION of the Chung-Feller bijection,
     plus new supporting lemmas that well-type the bijection candidate:
 
     **Session 1 results (proved)**:

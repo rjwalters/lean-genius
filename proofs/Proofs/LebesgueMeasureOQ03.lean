@@ -103,7 +103,7 @@ theorem orthonormal_balls_disjoint :
    Vol(Bⁿ) = πⁿ/² / Γ(n/2 + 1) → 0.)
 -/
 
-/-- The concentration of measure phenomenon:
+/- The concentration of measure phenomenon:
     In high dimensions, a Lipschitz function on the sphere Sⁿ⁻¹
     is approximately constant on most of the sphere.
 

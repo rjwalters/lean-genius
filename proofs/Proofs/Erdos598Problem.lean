@@ -80,5 +80,5 @@ completeness property. -/
 ## Section VI: Monotonicity
 -/
 
-/-- If the coloring exists for m, it exists for any m' ≥ m.
+/- If the coloring exists for m, it exists for any m' ≥ m.
 Larger ground sets only provide more room. -/

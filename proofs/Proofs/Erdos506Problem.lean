@@ -91,7 +91,7 @@ noncomputable def minCircles (n : ℕ) : ℕ :=
     small values of n where Elliott's theorem does not apply. -/
 /- ## Connection to Sylvester–Gallai -/
 
-/-- The circle problem is analogous to the Sylvester–Gallai theorem
+/- The circle problem is analogous to the Sylvester–Gallai theorem
     for lines: n non-collinear points determine at least n lines.
     The circle analogue asks for the minimum number of circles from
     non-concyclic points. -/

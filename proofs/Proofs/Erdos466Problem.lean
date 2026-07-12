@@ -75,5 +75,5 @@ theorem fracDist_bound : ∀ x : ℝ, fracDist x ≤ 1/2 := by
 
 /-  N(X, δ) is monotone non-decreasing in X: a larger disk can
 accommodate at least as many separated points. -/
-/-- N(X, δ) is monotone non-increasing in δ: a stricter separation
+/- N(X, δ) is monotone non-increasing in δ: a stricter separation
 requirement can only reduce the maximum count. -/

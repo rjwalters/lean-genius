@@ -112,7 +112,7 @@ theorem trivial_upper_bound :
           exact_mod_cast hle
       _ ≤ c * (n : ℝ) ^ (1 / 2) := hbound n hn⟩
 
-/-- **Powerful number structure**: Every powerful number can be
+/- **Powerful number structure**: Every powerful number can be
     written as a²b³ for some a, b ≥ 1. The special structure
     constrains which pairs can sum to n. -/
 /- ## Part IV: Observations -/

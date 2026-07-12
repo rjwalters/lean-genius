@@ -117,6 +117,6 @@ theorem basic_distance_bound (n : ℕ) (_hn : 2 ≤ n)
     but determine only n/2 distinct distances (not (1+c)n/2) -/
 /- ## The Erdős–Pach Conjecture (Corrected Form) -/
 
-/-- Erdős Problem 655 (Erdős–Pach, corrected): Under the stronger condition
+/- Erdős Problem 655 (Erdős–Pach, corrected): Under the stronger condition
     that no 4 points are concyclic (and no 3 collinear), do the points
     determine at least (1+c)n/2 distinct distances? -/

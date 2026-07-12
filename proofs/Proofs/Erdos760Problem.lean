@@ -29,10 +29,7 @@ similarly high cochromatic number.
 Reference: https://erdosproblems.com/760
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 open SimpleGraph Finset
 

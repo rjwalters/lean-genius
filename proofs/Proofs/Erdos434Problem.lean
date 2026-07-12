@@ -280,7 +280,7 @@ theorem greedy_eq_topK (n k : ℕ) : greedyConstruct n k = topK n k := rfl
 /-- Upper bound: With gcd(A) = 1, non-representables are finite.
     The count is bounded by the Frobenius number. -/
 theorem nonrep_finite {A : Set ℕ} (hA : A.Nonempty)
-    (hcop : ∃ a b ∈ A, Nat.Coprime a b) :
+    (hcop : ∃ a ∈ A, ∃ b ∈ A, Nat.Coprime a b) :
     (NonRepresentable A).Finite := by
   sorry
 

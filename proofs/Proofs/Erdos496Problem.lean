@@ -89,6 +89,6 @@ theorem irrational_not_rational (α : ℝ) (hirr : Irrational α) :
 
 /- ## Quantitative Refinements -/
 
-/-- **Eskin–Margulis–Mozes (1998)**: Quantitative Oppenheim.
+/- **Eskin–Margulis–Mozes (1998)**: Quantitative Oppenheim.
     The number of integer points (x,y,z) with |Q(x,y,z)| < δ and
     max(|x|,|y|,|z|) ≤ T grows as c·δ·T as T → ∞. -/

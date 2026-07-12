@@ -94,7 +94,7 @@ theorem pac_sample_complexity (d : ℕ) (ε δ : ℝ) (hd : 0 < d)
 -- PART IV: FUNDAMENTAL THEOREM (PLACEHOLDER)
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- Fundamental theorem of statistical learning:
+/- Fundamental theorem of statistical learning:
     A hypothesis class is PAC learnable iff it has finite VC dimension.
     Placeholder: requires formalizing the PAC learning model, uniform
     convergence, and the full equivalence chain. -/

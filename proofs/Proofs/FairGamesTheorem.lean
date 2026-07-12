@@ -394,7 +394,7 @@ it explains why casinos profit (games are unfair) and why "systems" don't work.
 
 section Conclusion
 
-/-- **Summary of the Fair Games Theorem**
+/- **Summary of the Fair Games Theorem**
 
     For a martingale f (fair game) and bounded stopping time τ:
     - E[f_τ] = E[f_0]

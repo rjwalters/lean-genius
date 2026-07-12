@@ -237,7 +237,7 @@ sets with "few" arithmetic configurations.
 of additive combinatorics). -/
 def IsB2Sequence (S : Set ℝ) : Prop := IsSidon S
 
-/-- The Sidon set constant problem: what is the largest Sidon subset
+/- The Sidon set constant problem: what is the largest Sidon subset
 guaranteed in a set of size n? This is asymptotically √n. -/
 
 end Erdos757

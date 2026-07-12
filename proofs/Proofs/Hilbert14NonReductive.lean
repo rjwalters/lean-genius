@@ -289,7 +289,7 @@ theorem reductive_subgroup_grosshans (G : Type*) [Group G] (H : Subgroup G)
 -- PART IV: SUMMARY OF CHARACTERIZATION
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- **Complete characterization of non-reductive invariant theory:**
+/- **Complete characterization of non-reductive invariant theory:**
 
     For a non-reductive group H acting on a polynomial ring:
 

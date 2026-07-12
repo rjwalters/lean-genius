@@ -34,11 +34,7 @@ References:
 Tags: additive-combinatorics, grid, density, Hales-Jewett, squares
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Prod.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Finset
 

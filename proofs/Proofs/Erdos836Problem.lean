@@ -30,11 +30,7 @@ References:
 Tags: combinatorics, hypergraphs, chromatic-number, intersecting-families
 -/
 
-import Mathlib.Combinatorics.SetFamily.Intersecting
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos836
 

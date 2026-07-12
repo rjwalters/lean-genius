@@ -82,4 +82,4 @@ theorem graph_ramsey_exponential (n : ℕ) (hn : 2 ≤ n) :
     tightened to twr_{r-1}(Θ(n)). -/
 /- ## Small Cases -/
 
-/-- R_3(4) is known: R_3(4) = 13. -/
+/- R_3(4) is known: R_3(4) = 13. -/

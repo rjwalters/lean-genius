@@ -87,6 +87,6 @@ def GeneralizedDensityQuestion (bases : List ℕ) : Prop :=
           ∀ x : ℕ, x ≥ N₀ →
             (countingC x : ℝ) / x ≥ δ - ε
 
-/-- For bases 3 and 4: log₄(2) + log₄(2)/log₄(3) =
+/- For bases 3 and 4: log₄(2) + log₄(2)/log₄(3) =
 log(2)/log(3) + log(2)/log(4) ≈ 0.631 + 0.5 = 1.131 > 1,
 satisfying the condition. -/

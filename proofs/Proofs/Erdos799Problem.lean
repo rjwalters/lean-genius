@@ -28,11 +28,7 @@ References:
           Combinatorica (1999), 453-472.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Basic
+import Mathlib
 
 open SimpleGraph Finset
 

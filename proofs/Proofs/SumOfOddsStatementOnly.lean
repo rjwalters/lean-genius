@@ -38,7 +38,7 @@ noncomputable section
 
 namespace SumOfOddsStatement
 
-/--
+/-
 The sum of the first `n` odd natural numbers equals `n ^ 2`.
 
 This is a classic identity (Pythagoras' gnomon argument):

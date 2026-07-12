@@ -260,7 +260,7 @@ where Chvátal's conjecture holds.
 ## Part VIII: Summary
 -/
 
-/--
+/-
 **Erdős Problem #701: Status**
 
 **Conjecture (Chvátal, 1974):**

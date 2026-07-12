@@ -141,7 +141,7 @@ This is currently the best known upper bound. -/
 Under Cramér's conjecture about prime gaps, F(x) ≪ (log x)².
 -/
 
-/-- **Conditional on Cramér's Conjecture**
+/- **Conditional on Cramér's Conjecture**
 
 If Cramér's conjecture holds (prime gaps ≪ (log p)²), then F(x) ≪ (log x)².
 This would nearly resolve the problem. -/

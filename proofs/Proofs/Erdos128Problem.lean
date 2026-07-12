@@ -78,5 +78,5 @@ def Graph.denseSubgraphs {n : ℕ} (G : Graph n) : Prop :=
 
 /- ## Main Conjecture -/
 
-/-- Erdős Problem #128: If every induced subgraph on ≥ ⌊n/2⌋ vertices
+/- Erdős Problem #128: If every induced subgraph on ≥ ⌊n/2⌋ vertices
     has more than n²/50 edges, then G contains a triangle. ($250 prize) -/

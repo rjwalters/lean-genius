@@ -52,7 +52,7 @@ noncomputable def abelianCoverNumber (n : ℕ) : ℕ :=
     to Isaacs before Pyber's work. -/
 /- ## Observations -/
 
-/-- **Trivial Case n = 1**: every pair of elements commutes, so G is Abelian.
+/- **Trivial Case n = 1**: every pair of elements commutes, so G is Abelian.
     Then h(1) = 1. -/
 /- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
     condition on the group. The covering number h(n) measures how far the group

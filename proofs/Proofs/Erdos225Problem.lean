@@ -289,7 +289,7 @@ This is the Fejér-Riesz theorem.
 -/
 /- ## Relationship to Littlewood's Conjecture -/
 
-/--
+/-
 Littlewood's conjecture (now theorem) states that for unimodular polynomials
 (coefficients ±1), the L¹ norm on the unit circle is Ω(log n).
 

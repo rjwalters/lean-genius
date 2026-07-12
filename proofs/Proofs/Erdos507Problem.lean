@@ -79,5 +79,5 @@ noncomputable def heilbronn (n : ℕ) : ℝ :=
 
 /- ## Related Results -/
 
-/-- In higher dimensions d ≥ 3, the analogous problem asks for
+/- In higher dimensions d ≥ 3, the analogous problem asks for
     the minimum volume simplex. Less is known; the gap is wider. -/

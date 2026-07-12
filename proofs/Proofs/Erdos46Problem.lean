@@ -81,4 +81,4 @@ theorem mono_subset {r : ℕ} {c : FiniteColouring r} {S T : Finset ℕ}
   obtain ⟨col, hcol⟩ := hS
   exact ⟨col, fun n hn => hcol n (hTS hn)⟩
 
-/-- A unit fraction representation has at least two elements. -/
+/- A unit fraction representation has at least two elements. -/

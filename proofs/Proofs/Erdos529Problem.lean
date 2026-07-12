@@ -33,6 +33,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
+set_option autoImplicit true
+
 open Real
 
 namespace Erdos529

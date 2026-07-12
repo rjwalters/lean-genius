@@ -29,6 +29,8 @@ import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Topology.Basic
 import Mathlib.Analysis.Complex.Basic
 
+set_option autoImplicit true
+
 namespace Erdos1119
 
 open Cardinal Set

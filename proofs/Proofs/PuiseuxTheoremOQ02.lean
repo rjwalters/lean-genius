@@ -222,7 +222,7 @@ Part V: Properties of the Iterated Construction
 theorem single_variable_is_univariate (K : Type*) :
     MultiHahnSeries 1 K = HahnSeries ℚ K := rfl
 
-/-- In characteristic 0, the Puiseux construction is "stable":
+/- In characteristic 0, the Puiseux construction is "stable":
     applying it twice gives the same result as applying it once,
     because the first application already gives an algebraically
     closed field, so the second is a trivial extension.

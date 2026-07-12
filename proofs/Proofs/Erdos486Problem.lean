@@ -101,7 +101,7 @@ def HasNaturalDensity (A : Set ℕ) (d : ℝ) : Prop :=
     (fun n => (Finset.filter (· ∈ A) (Finset.range (n + 1))).card / ((n : ℝ) + 1))
     Filter.atTop (nhds d)
 
-/-- **Besicovitch Counterexample** (1934)
+/- **Besicovitch Counterexample** (1934)
 
 There exists A ⊆ ℕ such that the zero-avoidance set has logarithmic density
 but NOT natural density. This justifies studying logarithmic density. -/

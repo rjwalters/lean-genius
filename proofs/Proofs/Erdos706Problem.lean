@@ -54,7 +54,7 @@ theorem erdos_706_lower :
 
 /- ## Exponential Upper Bound -/
 
-/-- **Known Exponential Bound**: L(r) grows at most exponentially.
+/- **Known Exponential Bound**: L(r) grows at most exponentially.
     From the Frankl–Wilson method in higher dimensions, one can
     derive exponential-type bounds. The polynomial question asks
     whether this can be dramatically improved. -/

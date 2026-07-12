@@ -94,4 +94,4 @@ by the product formula. More generally, the sup of a set containing 1 is ≥ 1. 
 /-  Part 3 implies Part 2: if partial sums grow like `n^{1+c}`, then individual
 terms must be large infinitely often. -/
 
-/-- The maximum modulus is nonneg since it is the sup of a set of norms. -/
+/- The maximum modulus is nonneg since it is the sup of a set of norms. -/

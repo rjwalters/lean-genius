@@ -69,7 +69,7 @@ theorem first_supplement (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) :
 axiom HilbertSymbol (a b : ℤ) (p : ℕ) : ℤ
 
 /-  The Hilbert symbol takes values in {-1, 1}. -/
-/-- The Hilbert product formula: ∏_v (a,b)_v = 1.
+/- The Hilbert product formula: ∏_v (a,b)_v = 1.
     This is the deepest form of quadratic reciprocity, expressing it as
     a local-global principle. The product is over all places (primes + ∞).
 

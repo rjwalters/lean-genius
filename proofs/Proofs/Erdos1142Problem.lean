@@ -178,7 +178,7 @@ theorem erdos1142_complete_le_105 :
 
 -- ## Relationship to Problem #236
 
-/-- Problem #236 asks: is the count of prime differences o(log n)?
+/- Problem #236 asks: is the count of prime differences o(log n)?
 If this stronger conjecture holds, then eventually no n can have
 ALL ⌊log₂ n⌋ differences being prime, suggesting the set is finite. -/
 -- TODO: stronger_implies_eventually_not_all_prime

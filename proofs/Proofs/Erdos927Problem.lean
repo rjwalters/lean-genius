@@ -30,10 +30,7 @@ References:
 Tags: graph-theory, cliques, extremal-combinatorics
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos927
 

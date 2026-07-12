@@ -211,7 +211,7 @@ are mathematically equivalent. For rectangles, this is formally proved above.
 For general TypeI regions, the equivalence is documented here.
 -/
 
-/-- Abstract connection: Mathlib's divergence theorem IS a form of Stokes' theorem.
+/- Abstract connection: Mathlib's divergence theorem IS a form of Stokes' theorem.
 
     `integral2_divergence_prod_of_hasFDerivWithinAt_off_countable` proves:
       ∫∫_rect div(F) dA = ∮_∂rect F·n ds

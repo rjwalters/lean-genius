@@ -210,7 +210,7 @@ The threshold value arises from inclusion-exclusion.
 theorem threshold_by_inclusion_exclusion (n : ℕ) :
     threshold n = n / 2 + n / 3 - n / 6 := rfl
 
-/--
+/-
 For large n, threshold(n) ≈ (2/3)n.
 -/
 end Erdos883

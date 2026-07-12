@@ -162,7 +162,7 @@ def IsBlockSequence (A : Set ℕ) (n : ℕ → ℕ) (η : ℕ → ℝ) : Prop :=
     Math. Proc. Cambridge Philos. Soc. (1996), 355-367. -/
 /- ## Part VI: The Erdős Problem (Open) -/
 
-/-- Erdős Problem 691: Find a necessary and sufficient condition for
+/- Erdős Problem 691: Find a necessary and sufficient condition for
     A to be a Behrend sequence.
 
     The general characterization remains OPEN. Known partial results:

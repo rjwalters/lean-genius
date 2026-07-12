@@ -177,7 +177,7 @@ The monotonicity question is subtle because adding vertices might create
 "room" for C₄-avoiding configurations with high minimum degree.
 -/
 
-/--
+/-
 The Kővári-Sós-Turán theorem gives bounds on C₄-free graphs:
 A C₄-free graph on n vertices has at most (1/2)n^{3/2} + n/2 edges.
 -/

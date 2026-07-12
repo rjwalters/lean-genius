@@ -117,7 +117,7 @@ question about growth rates.
 /-- The sequence of squares of consecutive primes: 4, 9, 25, 49, ... -/
 noncomputable def primeSquares (n : ℕ) : ℕ := (Nat.nth Nat.Prime n) ^ 2
 
-/-- **Problem #208 Strong Form**: Is the sequence of prime squares good?
+/- **Problem #208 Strong Form**: Is the sequence of prime squares good?
 
 This specific question remains open and connects to the general theory. -/
 end Erdos1101

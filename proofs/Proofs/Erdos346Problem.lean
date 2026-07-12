@@ -76,5 +76,5 @@ def ErdosProblem346 : Prop :=
         ∀ δ : ℚ, 0 < δ → ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n → 0 < a n →
           |((a (n + 1) : ℚ) / (a n : ℚ)) - goldenRatio| < δ
 
-/-- There exist very irregular sequences satisfying both properties
+/- There exist very irregular sequences satisfying both properties
     whose ratio does not converge. -/

@@ -114,7 +114,7 @@ theorem invariant_one {G R : Type*} [Group G] [CommRing R]
 -- PART V: The Boundary of Finite Generation
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Nagata's Counterexample** (1959):
+/- **Nagata's Counterexample** (1959):
 
     There exists a non-reductive algebraic group G acting linearly
     on k[x₁,...,x₃₂] (32 variables) such that the invariant ring

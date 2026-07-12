@@ -123,7 +123,7 @@ theorem complementary_sums (n : ℕ) :
 
 /- ## Implications -/
 
-/--
+/-
 A positive answer to Problem #377 would imply that "most" of the prime reciprocal sum
 comes from primes dividing C(2n,n):
 ∑_{p ≤ n, p | C(2n,n)} 1/p = (1 - o(1)) log(log(n))

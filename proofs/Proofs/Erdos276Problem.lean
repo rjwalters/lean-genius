@@ -63,7 +63,7 @@ theorem gcd_propagation (a : ℕ → ℕ) (hluc : IsLucasSequence a)
 
 /- ## Covering Congruence Mechanism -/
 
-/-- **Covering system**: a finite collection of congruence classes
+/- **Covering system**: a finite collection of congruence classes
     a_i (mod m_i) that covers all integers. Graham's proof shows
     the Fibonacci-like sequence is periodic mod each m_i, and the
     residue classes where each prime divides form a covering system. -/

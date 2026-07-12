@@ -72,6 +72,6 @@ noncomputable def directedRamsey : ℕ → ℕ → ℕ := fun _ _ => 0  -- axiom
 /-  **Path Variant**: When "transitive tournament" is replaced by
     "directed path," the exact answer is (n-1)(m-1) + 1. -/
 
-/-- **Connection to Ramsey Theory**: The directed Ramsey number k(n,m)
+/- **Connection to Ramsey Theory**: The directed Ramsey number k(n,m)
     satisfies k(n,m) ≤ R(n,m) where R is the classical Ramsey number,
     since any undirected independent set is also a directed independent set. -/

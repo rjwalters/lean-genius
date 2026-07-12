@@ -77,6 +77,6 @@ theorem coxeter_polynomial_growth (n : ℕ) :
     maxTwoDistSize n ≤ (n + 2).choose 2 :=
   upper_bound_bbs n
 
-/-- Erdős initially claimed f(n) ≤ n^O(1) but found an error,
+/- Erdős initially claimed f(n) ≤ n^O(1) but found an error,
     only obtaining f(n) ≤ exp(n^{1-o(1)}). The BBS result vindicated
     his original belief. -/

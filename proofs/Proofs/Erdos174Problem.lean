@@ -101,7 +101,7 @@ def graham_conjecture : Prop :=
     the rotation group acts transitively. -/
 def IsSubtransitive {n : ℕ} (A : FiniteConfig n) : Prop :=
   ∃ (m : ℕ) (S : Set (EuclideanSpace ℝ (Fin m))),
-    (∀ x y ∈ S, ∃ (R : EuclideanSpace ℝ (Fin m) ≃ᵢ EuclideanSpace ℝ (Fin m)),
+    (∀ x ∈ S, ∀ y ∈ S, ∃ (R : EuclideanSpace ℝ (Fin m) ≃ᵢ EuclideanSpace ℝ (Fin m)),
       R x = y ∧ ∀ z ∈ S, R z ∈ S) ∧
     (∃ (f : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin m)),
       (∀ x y, dist (f x) (f y) = dist x y) ∧

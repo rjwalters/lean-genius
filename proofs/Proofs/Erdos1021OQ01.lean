@@ -168,7 +168,7 @@ theorem lower_bound_exponent_tendsto :
 
 /-! ## Part VI: The OQ-01 in Context -/
 
-/-- **Summary of OQ-01 status**:
+/- **Summary of OQ-01 status**:
 
     Known:
     - k = 3: SOLVED (ex(n, G_3) = ex(n, C_6) ≪ n^{7/6} < n^{3/2})

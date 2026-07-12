@@ -67,6 +67,6 @@ noncomputable def SimpleGraph.independenceNumber (G : SimpleGraph (Fin n))
     has an independent set of size ≫_δ n. Open for δ ≤ 1/8. -/
 /- ## Connection to Turán Theory -/
 
-/-- The octahedron is K₂,₂,₂. By the Kruskal–Katona theorem,
+/- The octahedron is K₂,₂,₂. By the Kruskal–Katona theorem,
     the Turán number ex(n; K₂,₂,₂) = (1/8 + o(1))n².
     This explains the threshold δ = 1/8 in the EHSS result. -/

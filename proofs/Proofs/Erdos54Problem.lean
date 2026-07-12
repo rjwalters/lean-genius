@@ -74,5 +74,5 @@ def ErdosProblem54 : Prop :=
 
 /- ## Earlier upper bound -/
 
-/-- Burr–Erdős (1985): There exists a Ramsey 2-complete set with
+/- Burr–Erdős (1985): There exists a Ramsey 2-complete set with
 `|A ∩ [1,N]| < (2 log₂ N)³`. This was improved by Conlon–Fox–Pham. -/

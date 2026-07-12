@@ -26,10 +26,7 @@ References:
 - Erdős (1949), Dirac (1952), Toft (1970), Stiebitz (1987), Luo-Ma-Yang (2023)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open SimpleGraph Finset
 

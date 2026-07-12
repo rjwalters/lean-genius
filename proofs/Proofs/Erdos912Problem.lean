@@ -213,7 +213,7 @@ theorem erdos_912_summary :
         (h n : ℝ) ≤ c₂ * Real.sqrt (n / Real.log n) :=
   erdos_selfridge_asymptotic
 
-/--
+/-
 **The constant gap:**
 We know c₁ ≤ c ≤ c₂ but not the exact value of c.
 Tao conjectures c = √(2π).

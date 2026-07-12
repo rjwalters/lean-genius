@@ -252,4 +252,4 @@ end LiminfFinite
 -- ## Main Open Questions
 
 /-  Erdos Problem #839, Question 1: Is lim sup(a_n/n) = infinity? -/
-/-- Erdos Problem #839, Question 2: Does the logarithmic density vanish? -/
+/- Erdos Problem #839, Question 2: Does the logarithmic density vanish? -/

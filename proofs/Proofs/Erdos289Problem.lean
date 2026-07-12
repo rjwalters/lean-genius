@@ -131,5 +131,5 @@ theorem interval_recipsum_lower (I : IntervalBlock) :
 /-  To achieve exactly 1 with many small-contribution blocks, we need
     blocks at large values of n. The gap constraint forces intervals
     to spread out, making the target harder to hit exactly. -/
-/-- The problem without the non-adjacency constraint is easier: one can
+/- The problem without the non-adjacency constraint is easier: one can
     always decompose 1 into disjoint intervals (Erdős–Graham remark). -/

@@ -23,6 +23,8 @@ of n reaching a fixed prime?
 
 import Mathlib
 
+set_option autoImplicit true
+
 open Filter
 open scoped Nat
 

@@ -162,4 +162,4 @@ theorem example_maximal_sidon : IsMaximalSidon ({1, 2, 4} : Finset ℕ) 4 := by
 /-  Erdős Problem 42: For every M ≥ 1 and N sufficiently large,
     every maximal Sidon set A ⊆ {1,...,N} has a companion Sidon set
     B of size M with (A−A) ∩ (B−B) = {0} -/
-/-- Constructive version: there exists a function f(M) bounding N₀ -/
+/- Constructive version: there exists a function f(M) bounding N₀ -/

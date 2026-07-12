@@ -70,6 +70,6 @@ noncomputable def h (n : ℕ) : ℕ :=
 /-  Weaker open question: h(n) ≥ n for all large n? Even this is unknown. -/
 /- ## Connection to the General Distinct Distances Problem -/
 
-/-- Without the general-position assumption, the Guth–Katz theorem gives
+/- Without the general-position assumption, the Guth–Katz theorem gives
     Ω(n/log n) distinct distances for any n points. General position
     should give more, but the quantitative improvement is unknown. -/

@@ -119,5 +119,5 @@ All 20 ordered triple sums (a ≤ b ≤ c) are distinct:
 
 Note: The previously claimed {1,2,4,8} is NOT B₃ since 1+1+4 = 2+2+2 = 6. -/
 
-/-- The trivial upper bound: a B₃ set in {1,...,N} has at most
+/- The trivial upper bound: a B₃ set in {1,...,N} has at most
 O(N^{1/3}) elements since distinct sums lie in {3,...,3N}. -/

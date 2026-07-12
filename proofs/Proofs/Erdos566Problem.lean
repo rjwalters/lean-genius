@@ -64,7 +64,7 @@ noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
     Ramsey size linear. -/
 /- ## Related Results -/
 
-/-- **Sparsity threshold**: The (2k−3) bound is the boundary
+/- **Sparsity threshold**: The (2k−3) bound is the boundary
     between graphs that might be Ramsey size linear and those
     that provably are not. Trees (n−1 edges) are known to be
     Ramsey size linear. -/

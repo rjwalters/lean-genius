@@ -64,5 +64,5 @@ def ErdosProblem87_strong : Prop :=
 /-  Upper bound: `R(k) ≤ 4^k`. -/
 /- ## Counterexample to original conjecture -/
 
-/-- Faudree–McKay: `R(W) = 17` for the pentagonal wheel `W` with `χ(W) = 4`,
+/- Faudree–McKay: `R(W) = 17` for the pentagonal wheel `W` with `χ(W) = 4`,
 while `R(4) = 18`, disproving `R(G) ≥ R(k)`. -/

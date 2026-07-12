@@ -244,7 +244,7 @@ theorem sq_count (N : ℕ) : (Finset.range (N + 1)).card = N + 1 := by
 /-  Erdős Problem #477 (OPEN): No polynomial of degree ≥ 2 has a perfect complement.
     Erdős and Graham (1980) conjectured the answer is NO. -/
 /-  Conjecture: No perfect complement exists for f(x) = x^k, any k ≥ 2 -/
-/-- Erdős Problem #477 Main Statement (OPEN):
+/- Erdős Problem #477 Main Statement (OPEN):
 Is there a polynomial f : ℤ → ℤ of degree ≥ 2 and set A ⊆ ℤ
 such that for any n ∈ ℤ there is exactly one a ∈ A and b ∈ f(ℤ)
 with n = a + b?

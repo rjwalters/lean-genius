@@ -89,6 +89,6 @@ at most 3 powers of 2. -/
 
 /- ## Romanoff's Theorem -/
 
-/-- **Romanoff (1934).** A positive proportion of integers are the sum of
+/- **Romanoff (1934).** A positive proportion of integers are the sum of
 a prime and a power of 2 (i.e., the k = 1 case already has positive
 lower density). -/

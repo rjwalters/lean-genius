@@ -200,7 +200,7 @@ The Phelps-Rödl bound is between Erdős's bounds.
 -/
 
 /-  (n log n)^(1/2) is between n^(1/2) and n^(2/3) for n ≥ 3. -/
-/-- The log factor refines Erdős's gap: (n log n)^{1/2} = n^{1/2+o(1)}. -/
+/- The log factor refines Erdős's gap: (n log n)^{1/2} = n^{1/2+o(1)}. -/
 /-
 ## Summary
 

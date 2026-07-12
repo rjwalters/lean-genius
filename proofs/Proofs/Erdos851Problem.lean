@@ -136,7 +136,7 @@ A key observation: if m ≡ 0 (mod 2^k) for all small k, then m
 cannot be written as 2^k + n for small n, limiting representations.
 -/
 
-/-- The covering problem: for large r, does TwoPowAddSet r contain
+/- The covering problem: for large r, does TwoPowAddSet r contain
 almost all integers? -/
 
 /-

@@ -29,12 +29,7 @@ References:
 - Pollack-Pomerance [PoPo16]: Trans. Amer. Math. Soc. Ser. B (2016)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Finset BigOperators Filter
 

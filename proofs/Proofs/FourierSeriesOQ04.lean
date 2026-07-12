@@ -81,7 +81,7 @@ noncomputable def spherPartialSum {n : ℕ} (f : Torus n → ℂ)
 /-  Bochner-Riesz conjecture (partially solved):
     Spherical partial sums with Bochner-Riesz means of order δ > (n-1)/2
     converge in L^p for 1 ≤ p ≤ ∞. -/
-/-- Parseval's identity: ∫_{T^n} |f|² = Σ_{k ∈ Z^n} |f̂(k)|².
+/- Parseval's identity: ∫_{T^n} |f|² = Σ_{k ∈ Z^n} |f̂(k)|².
     This holds for all f ∈ L²(T^n) and is the basis for L² convergence. -/
 /-
 | Property | n=1 | n=2 | n≥3 |

@@ -71,5 +71,5 @@ def ErdosProblem121_Conjecture : Prop :=
 
 /-  `F_k` is monotone in `N`. -/
 
-/-- `F_k` is anti-monotone in `k`: more elements required to form a
+/- `F_k` is anti-monotone in `k`: more elements required to form a
 product makes it easier to avoid squares. -/

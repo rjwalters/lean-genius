@@ -215,7 +215,7 @@ theorem nine_in_S : 9 ∈ S := by
 
 /- ## Bounds Comparison -/
 
-/--
+/-
 **Linear Bound Implies Positive Density:**
 If one could prove countA(N) ≥ cN for some c > 0 and all large N,
 this would immediately imply positive upper density.

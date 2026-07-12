@@ -76,4 +76,4 @@ def IsRepresentableFromLevel (r : ℕ) (d : Fin r → ℕ) (k n : ℕ) : Prop :=
 /-  Erdős Problem 124, Question 2 (Open): with the additional condition
     gcd(d₁,...,dᵣ) = 1, for any k ≥ 1, all sufficiently large integers
     can be represented using P(dᵢ, k). Proved for {3,4,7}. -/
-/-- The case {3, 4, 7} is verified for Question 2 -/
+/- The case {3, 4, 7} is verified for Question 2 -/

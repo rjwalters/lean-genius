@@ -410,5 +410,5 @@ theorem erdos_302_summary :
     (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, (f N : ℚ) ≤ (9/10 + ε) * N) :=
   ⟨cambie_lower_bound, van_doorn_upper_bound⟩
 
-/-- The exact asymptotic density of f(N)/N remains OPEN. -/
+/- The exact asymptotic density of f(N)/N remains OPEN. -/
 end Erdos302

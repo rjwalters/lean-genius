@@ -28,11 +28,7 @@ References:
 Tags: additive-combinatorics, sum-free-sets, extremal-combinatorics
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 namespace Erdos789
 

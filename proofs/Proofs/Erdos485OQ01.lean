@@ -4,6 +4,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+set_option autoImplicit true
+
 set_option maxHeartbeats 800000
 
 /-

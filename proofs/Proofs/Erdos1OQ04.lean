@@ -225,7 +225,7 @@ theorem powers_of_two_dss (n : ℕ) :
       rw [← sum_S, ← sum_T]; exact heq
     rw [hS_eq, hT_eq, sum_pow_two_inj n S' T' hS'_range hT'_range sum_eq]
 
-/-- The gap between 2^{n-1} (powers of 2 bound) and f(n) (optimal) grows:
+/- The gap between 2^{n-1} (powers of 2 bound) and f(n) (optimal) grows:
     for n = 4, powers give max 8 but optimal is 7;
     for n = 5, powers give max 16 but optimal is 13. -/
 

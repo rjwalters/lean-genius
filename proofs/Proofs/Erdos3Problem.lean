@@ -922,7 +922,7 @@ theorem sharp_required_bound_implies_conjecture :
       _ ≤ C * (N : ℝ) / (Real.log N * (Real.log (Real.log N)) ^ (1 + δ)) := hN
   exact hdiv (summable_of_sharpBound hδ hC hcount)
 
-/-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
+/- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
 
 /-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
     The contrapositive of `summable_of_strongBound`, packaged as a positive density

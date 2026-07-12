@@ -30,11 +30,7 @@ References:
 - See also Erdős Problem #695
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Finset BigOperators Filter
 

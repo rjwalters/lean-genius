@@ -79,6 +79,6 @@ theorem hildebrand_maier_large_gaps (C : ℝ) (hC : 0 < C) :
     S ∩ [0, T] is at least T/3 for all T > 0. -/
 /- ## The Conjecture -/
 
-/-- Erdős Problem #5: The set S of limit points of (p_{n+1} - p_n)/log(p_n)
+/- Erdős Problem #5: The set S of limit points of (p_{n+1} - p_n)/log(p_n)
     equals [0, ∞). That is, for every C ≥ 0, C is a limit point of
     the normalized gap sequence. -/

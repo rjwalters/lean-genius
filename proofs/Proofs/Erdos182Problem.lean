@@ -140,7 +140,7 @@ Each step reduces the graph while preserving "enough" structure.
 The iteration depth is O(log log n), giving the final bound.
 -/
 
-/-- The problem is fully resolved: extremal function is Θ(n log log n).
+/- The problem is fully resolved: extremal function is Θ(n log log n).
 
 This is the main summary theorem combining Janzer-Sudakov (upper bound)
 and Pyber-Rödl-Szemerédi (lower bound). -/

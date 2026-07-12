@@ -59,7 +59,7 @@ def unrepresentableWithout (A : Set ℕ) (n h : ℕ) : Set ℕ :=
     Stöhr 1955 for h = 2). Whether the stronger property holds is open. -/
 /- ## The Open Question -/
 
-/-- Erdős Problem #330 (Erdős–Nathanson): Does there exist a minimal
+/- Erdős Problem #330 (Erdős–Nathanson): Does there exist a minimal
     basis A of order h with positive density such that for every n ∈ A,
     the set of integers unrepresentable without n also has positive
     upper density? -/

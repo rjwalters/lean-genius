@@ -66,6 +66,6 @@ noncomputable def ramseyEvenCycle (n k : ℕ) : ℕ :=
 /-  Chung–Graham upper bound for C₄: R(C₄; k) ≤ k² + k + 1 for all k -/
 /- ## The Erdős–Graham Problem -/
 
-/-- Erdős Problem 555 (Erdős–Graham): Determine the exact value of R(C₂ₙ; k).
+/- Erdős Problem 555 (Erdős–Graham): Determine the exact value of R(C₂ₙ; k).
     The lower and upper bounds have different exponents (1+1/(2n) vs 1+1/(n-1)),
     and closing this gap is open. -/

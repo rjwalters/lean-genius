@@ -574,7 +574,7 @@ is transcendental, which is trivially true. The conjecture applies to less
 structured situations.
 -/
 
-/-- **Stated as a conjecture (not proved)**
+/- **Stated as a conjecture (not proved)**
 
 The Four Exponentials Conjecture: one of four exponentials must be transcendental.
 

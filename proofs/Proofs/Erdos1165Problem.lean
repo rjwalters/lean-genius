@@ -148,7 +148,7 @@ These provide context for the problem, though they are not
 directly part of the problem statement.
 -/
 
-/-- **Bass-Griffin (1985)**: In the 1D case, for large n, the maximum
+/- **Bass-Griffin (1985)**: In the 1D case, for large n, the maximum
     visit count is achieved at a unique site almost surely.
     This motivates the 2D question: in higher dimensions, the
     structure of favourite sites becomes more complex. -/

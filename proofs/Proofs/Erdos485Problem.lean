@@ -188,7 +188,7 @@ def isLacunary (p : Polynomial ℚ) : Prop :=
   ∃ gaps : List ℕ, gaps.length = termCount p - 1 ∧
   ∀ g ∈ gaps, g ≥ 2
 
-/--
+/-
 Squaring a lacunary polynomial tends to produce more terms due to
 fewer cancellations between cross-terms.
 -/

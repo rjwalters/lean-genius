@@ -137,7 +137,7 @@ theorem brouwer_from_kakutani {n : ℕ}
 -- Part VI: Application to Game Theory
 -- ============================================================
 
-/-- Nash equilibrium existence context:
+/- Nash equilibrium existence context:
 
     In an n-player game, the best response correspondence
     BR : strategy profiles → 2^(strategy profiles)

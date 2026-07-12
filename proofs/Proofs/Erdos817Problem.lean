@@ -576,5 +576,5 @@ This implies that avoiding 3-APs requires sparse sets. The question is:
 how sparse must ⟨A⟩ be, and how does this constrain A?
 -/
 
-/-- Szemerédi's theorem (axiom): dense sets contain long arithmetic progressions. -/
+/- Szemerédi's theorem (axiom): dense sets contain long arithmetic progressions. -/
 end Erdos817

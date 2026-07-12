@@ -195,5 +195,5 @@ theorem maxSidonSize_3 : maxSidonSize 3 = 3 := by
       simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
       omega) (fun x hx => by simp only [Finset.mem_insert, Finset.mem_singleton] at hx; omega)
 
-/-- Known small values for larger N (OEIS A003022).
+/- Known small values for larger N (OEIS A003022).
     F(6)=4, F(11)=5, F(18)=6. -/

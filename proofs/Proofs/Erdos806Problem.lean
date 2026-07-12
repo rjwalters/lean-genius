@@ -203,7 +203,7 @@ ensuring the Alon-Bukh-Sudakov bound gives |B| = o(√n).
 ## Part IX: Summary
 -/
 
-/--
+/-
 **Erdős Problem #806: SOLVED**
 
 Q: For A ⊆ {1, ..., n} with |A| ≤ √n, does there exist B with

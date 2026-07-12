@@ -99,7 +99,7 @@ theorem complexPlane_isConnected : IsConnected (Set.univ : Set ℂ) :=
     In topology, a space is simply connected if it is path-connected
     and every loop can be continuously contracted to a point. -/
 
-/-- The unit disk is simply connected (stated as an axiom).
+/- The unit disk is simply connected (stated as an axiom).
     This follows from convexity: every convex subset of ℝⁿ is simply connected. -/
 
 end ModelSpaces
@@ -160,7 +160,7 @@ the full Uniformization Theorem.
 
 section RiemannMappingTheorem
 
-/-- **Riemann Mapping Theorem** (1851, rigorous proof by Koebe 1912):
+/- **Riemann Mapping Theorem** (1851, rigorous proof by Koebe 1912):
     Every simply connected proper open subset of ℂ is conformally equivalent
     to the open unit disk.
 
@@ -196,7 +196,7 @@ def RiemannSurface.IsSimplyConnected (_S : RiemannSurface) : Prop := True
 /-  Corollary: Every Riemann surface has a universal cover that is
     one of the three model spaces -/
 
-/-- The type of a Riemann surface is determined by its fundamental group:
+/- The type of a Riemann surface is determined by its fundamental group:
     - Sphere: trivial π₁, compact
     - Plane: trivial π₁, non-compact with small ends
     - Disk: trivial π₁, non-compact with large ends -/
@@ -236,7 +236,7 @@ structure FuchsianGroup where
   /-- Discrete subgroup of automorphisms of the upper half-plane -/
   isDiscrete : True
 
-/-- Every compact Riemann surface of genus g ≥ 2 is uniformized by
+/- Every compact Riemann surface of genus g ≥ 2 is uniformized by
     the upper half-plane (or equivalently, the unit disk) modulo
     a Fuchsian group -/
 
@@ -262,7 +262,7 @@ section Connections
     The modular group SL(2,ℤ) acts on the upper half-plane,
     and the quotient parametrizes elliptic curves -/
 
-/-- Belyi's Theorem (1979): A Riemann surface is defined over ℚ̄ iff it
+/- Belyi's Theorem (1979): A Riemann surface is defined over ℚ̄ iff it
     admits a holomorphic map to ℙ¹ ramified over at most 3 points.
     This connects uniformization to arithmetic geometry. -/
 

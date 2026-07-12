@@ -81,7 +81,7 @@ with measure 2√2, achieving the supremum.
 -/
 
 /-  The polynomial (x+1)(x-1)^m for m ≥ 3 witnesses that the infimum is < 2. -/
-/-- The quadratic x² - 1 achieves sublevel measure 2√2. -/
+/- The quadratic x² - 1 achieves sublevel measure 2√2. -/
 /-
 ## Numerical Bounds
 

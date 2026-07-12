@@ -69,7 +69,7 @@ This determines ex(n; H) asymptotically for non-bipartite H. -/
 The exact order is typically a fractional power of n. -/
 /- ## Family Extremal Function Properties -/
 
-/-- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
+/- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
 only reduce the extremal function. -/
 /-
   ex(n; F) ≤ ex(n; G) for any G ∈ F: adding more forbidden graphs

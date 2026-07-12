@@ -90,7 +90,7 @@ def HasClique (A : Set Point2) (k : ℕ) : Prop :=
     no infinite clique exists in general position. -/
 /-  **Finite clique consequence**: In general position, the clique
     number must be finite (follows from Anning–Erdős). -/
-/-- **Erdős–Anning bound**: Any set of n points with no 3 collinear
+/- **Erdős–Anning bound**: Any set of n points with no 3 collinear
     and all pairwise distances integers has n bounded by a function
     of the diameter. -/
 /- ## Observations -/

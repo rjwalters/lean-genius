@@ -143,7 +143,7 @@ since any (n+1)-element set contains an n-element subset.
 - No significant progress since 1934 on narrowing the bounds.
 -/
 
-/-- The conjecture implies the lower bound is not tight:
+/- The conjecture implies the lower bound is not tight:
     if f(n)/log(n) → ∞ then f(n) is not O(log(n)).
 
     Axiomatized: the proof requires showing that if a sequence g(n)/log(n) → ∞

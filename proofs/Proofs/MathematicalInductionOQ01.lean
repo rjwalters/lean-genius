@@ -140,7 +140,7 @@ theorem induction_from_well_ordering (P : ℕ → Prop)
 -- PART V: Ordinal Arithmetic via Transfinite Induction
 -- ═══════════════════════════════════════════════════════════════
 
-/-- Example: Every ordinal has a Cantor normal form.
+/- Example: Every ordinal has a Cantor normal form.
     Base: 0 = ω^0 · 0. Successor: add 1. Limit: take supremum.
     (This is a statement rather than full construction.) -/
 /- cantor_normal_form_exists: every ordinal α can be written

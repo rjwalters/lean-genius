@@ -24,9 +24,7 @@
   - Engelking "Dimension Theory" (1978)
 -/
 
-import Mathlib.Topology.Basic
-import Mathlib.Topology.Separation.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open TopologicalSpace
 
@@ -217,7 +215,7 @@ theorem not_stable_if_product_lower (S : Type*) [TopologicalSpace S] (n m : ℕ)
 def EuclideanNotStable (n : ℕ) (hn : n ≥ 1) : Prop :=
   ¬ IsDimensionStable (Fin n → ℝ) n
 
-/-- The characterization remains open for general topological spaces.
+/- The characterization remains open for general topological spaces.
     Known partial results:
     1. All 0-dimensional spaces are stable (trivially)
     2. Compact manifolds are NOT stable (dimension is additive)

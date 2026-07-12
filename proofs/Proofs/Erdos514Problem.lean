@@ -306,7 +306,7 @@ theorem erdos_514_summary :
       ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=
   fun f hf => erdos_514_part1 f hf
 
-/--
+/-
 **Key Insight:**
 For a transcendental entire function, the maximum modulus M(r) grows
 faster than any polynomial. The Boas result says we can find a PATH

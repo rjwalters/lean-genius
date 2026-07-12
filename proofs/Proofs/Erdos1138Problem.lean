@@ -221,7 +221,7 @@ theorem bertrand_postulate (n : ℕ) (hn : 1 ≤ n) :
   obtain ⟨p, h1, h2, h3⟩ := Nat.bertrand n (by omega)
   exact ⟨p, h1, h2, h3⟩
 
-/-- Cramér's conjecture on maximal prime gaps:
+/- Cramér's conjecture on maximal prime gaps:
     lim sup d(x) / (log x)² = 1, where d(x) is the maximal gap below x.
     This is OPEN and much stronger than what is currently known. -/
 end Erdos1138

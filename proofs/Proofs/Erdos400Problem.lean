@@ -168,4 +168,4 @@ theorem g2_binomial_connection (n : ℕ) :
 -/
 
 /-  For k = 2, the supremum is attained by some pair (a, b). -/
-/-- The average of g₂ over [1,x] is asymptotically c₂ · log x. -/
+/- The average of g₂ over [1,x] is asymptotically c₂ · log x. -/

@@ -182,7 +182,7 @@ theorem root_of_sign_change (p : ℝ[X]) (a b : ℝ) (hab : a < b)
     · exact h
   exact ⟨c, hca', hcb', hc⟩
 
-/-- Removing a root factor reduces sign changes.
+/- Removing a root factor reduces sign changes.
     If p(r) = 0 and p = (x - r) · q, then the sign changes of q at r
     relate to those of p. -/
 /- sign_changes_factor: if p = (x - r) · q with p(r) = 0, then

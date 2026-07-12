@@ -34,6 +34,8 @@ import Mathlib.RingTheory.Polynomial.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
+set_option autoImplicit true
+
 open Finset
 
 -- ## Core Definition

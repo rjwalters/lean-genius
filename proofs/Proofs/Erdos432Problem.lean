@@ -156,7 +156,7 @@ for A + B = ℕ, but the question is about near-complements.
 
 /- ## Part VI: Summary -/
 
-/--
+/-
 **Summary:**
 Erdős Problem #432 asks how dense the sumset A + B can be when all
 its elements are pairwise coprime. The pairwise coprime constraint

@@ -93,5 +93,5 @@ theorem seven_reaches_one : ReachesOne 7 := ⟨11, by native_decide⟩
 /-  Krasikov–Lagarias (2003): The number of m ≤ x that reach 1 is at least x^{0.84}. -/
 /- ## The Conjecture -/
 
-/-- Erdős Problem #1135 (Collatz Conjecture): Every positive integer
+/- Erdős Problem #1135 (Collatz Conjecture): Every positive integer
     eventually reaches 1 under iteration of the Collatz function. -/

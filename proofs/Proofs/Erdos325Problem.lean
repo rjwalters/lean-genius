@@ -119,7 +119,7 @@ def IsSumTwoPower (k n : ℕ) : Prop := ∃ a b : ℕ, a ^ k + b ^ k = n
 noncomputable def cardIsSumTwoPowerBelow (k x : ℕ) : ℕ :=
   {n ∈ Set.Iic x | IsSumTwoPower k n}.ncard
 
-/-- **Mahler-Erdős Theorem (1938)**: f_{k,2}(x) ≫ x^{2/k}.
+/- **Mahler-Erdős Theorem (1938)**: f_{k,2}(x) ≫ x^{2/k}.
 
 This is the analogue of the conjecture for two terms, and it IS proved.
 We state it as an axiom since the proof requires analytic methods. -/

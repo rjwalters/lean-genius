@@ -24,9 +24,7 @@ References:
 - Kierstead-Szemerédi-Trotter [KST84]: Complete proof
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos921
 

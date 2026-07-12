@@ -27,10 +27,7 @@ Reference: https://erdosproblems.com/271
 Also known as: Stanley sequences, greedy AP-free sequences
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Algebra.Order.Ring.Nat
+import Mathlib
 
 open Nat Finset
 

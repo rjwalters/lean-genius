@@ -150,6 +150,6 @@ theorem non_extendable_constraint :
 
 /- ## Erdős–Szekeres Connection -/
 
-/-- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
+/- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
     numbers contains an increasing subsequence of length r or a decreasing
     one of length s. This guarantees long monotone subsequences but not APs. -/

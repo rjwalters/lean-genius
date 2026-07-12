@@ -123,12 +123,12 @@ theorem distinct_subset_general (A : Set ℕ) (r : ℕ) :
 
 /-- For r = 2 (sumsets), this is about A + A vs A +̂ A. -/
 theorem case_r_equals_2 (A : Set ℕ) :
-    rSums A 2 = { n | ∃ a b ∈ A, a + b = n } :=
+    rSums A 2 = { n | ∃ a ∈ A, ∃ b ∈ A, a + b = n } :=
   rfl -- by definition
 
 /-- For r = 2 distinct, this is the "restricted sumset". -/
 theorem case_r_equals_2_distinct (A : Set ℕ) :
-    rDistinctSums A 2 = { n | ∃ a b ∈ A, a ≠ b ∧ a + b = n } := by
+    rDistinctSums A 2 = { n | ∃ a ∈ A, ∃ b ∈ A, a ≠ b ∧ a + b = n } := by
   ext n
   simp only [rDistinctSums, Set.mem_setOf_eq]
   constructor

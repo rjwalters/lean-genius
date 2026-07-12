@@ -232,7 +232,7 @@ theorem egyptian_eq_unit_fraction (S : Finset ℕ) (q : ℚ) :
   unfold IsEgyptianFraction IsUnitFractionSum
   exact Iff.rfl
 
-/-- The greedy algorithm (Fibonacci-Sylvester) gives an Egyptian fraction
+/- The greedy algorithm (Fibonacci-Sylvester) gives an Egyptian fraction
 representation for any positive rational ≤ 1. Known classical result. -/
 /- ## Summary
 

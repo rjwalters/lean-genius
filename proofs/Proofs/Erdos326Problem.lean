@@ -132,7 +132,7 @@ This disproves Erdős's original formulation where A = B was required.
    a sub-basis B that oscillates in its growth rate.
 -/
 
-/--
+/-
 For any order 2 basis, elements can't grow faster than k².
 This is a standard result from additive combinatorics.
 -/

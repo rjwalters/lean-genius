@@ -332,7 +332,7 @@ theorem chebyshev_rate_implies_convergence
 -- SECTION 9: Summary Statistics
 -- ============================================================
 
-/-- Axiom count summary (post-S2 ACT 2026-05-13):
+/- Axiom count summary (post-S2 ACT 2026-05-13):
     - 1 axiom for standardNormalCDF (CLT statement scaffolding; genuinely beyond Mathlib v4.26)
     - 1 axiom for berryEsseenConstant (Berry-Esseen scaffolding; genuinely beyond Mathlib v4.26)
     Total: 2 axioms, 0 sorries

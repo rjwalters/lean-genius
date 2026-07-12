@@ -70,5 +70,5 @@ noncomputable def sublevelMeasure (P : UnitDiskPoly n) : ℝ :=
     Proved by Krishnapur, Lundberg, and Ramachandran with
     the optimal bound c/log n. -/
 
-/-- The remaining open question: determine which polynomials
+/- The remaining open question: determine which polynomials
     minimize the sublevel measure -/

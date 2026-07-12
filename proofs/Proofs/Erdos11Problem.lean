@@ -110,4 +110,4 @@ def IsSquarefreePlusTwoPow2 (n : ℕ) : Prop :=
 /-  Odlyzko: Earlier verification up to 10^7 -/
 /- ## Density Result -/
 
-/-- Erdős proved the conjecture holds for almost all n -/
+/- Erdős proved the conjecture holds for almost all n -/

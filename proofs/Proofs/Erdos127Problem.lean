@@ -74,5 +74,5 @@ def OptimalConstantQuestion : Prop :=
 /-  The excess function is subadditive in a weak sense:
 the Edwards bound already accounts for the main term. -/
 
-/-- Every m is within √m of a complete graph C(n,2),
+/- Every m is within √m of a complete graph C(n,2),
 where f is small. This constrains the growth of f. -/

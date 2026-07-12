@@ -116,7 +116,7 @@ theorem nonrep_finite_of_one_mem {A : Set ℕ} (h1 : 1 ∈ A) :
     `Set.Iio (a * b)`, a finite set.  A coprime pair involving `0` forces
     `1 ∈ A`, the degenerate case. -/
 theorem nonrep_finite {A : Set ℕ}
-    (hcop : ∃ a b ∈ A, Nat.Coprime a b) :
+    (hcop : ∃ a ∈ A, ∃ b ∈ A, Nat.Coprime a b) :
     (NonRepresentable A).Finite := by
   obtain ⟨a, ha, b, hb, hcop⟩ := hcop
   rcases Nat.eq_zero_or_pos a with rfl | hapos

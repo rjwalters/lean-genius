@@ -516,7 +516,7 @@ theorem even_of_isUnitaryPerfect (n : ℕ) (hn : IsUnitaryPerfect n) : Even n :=
 ## The Main Conjecture (OPEN)
 -/
 
-/-- **Erdős Problem #1052 (OPEN)**
+/- **Erdős Problem #1052 (OPEN)**
 Are there only finitely many unitary perfect numbers?
 Known: 6, 60, 90, 87360, 146361946186458562560000 (only 5 known). -/
 

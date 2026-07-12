@@ -275,7 +275,7 @@ def openQuestion_optimal_bound : Prop :=
 /- ## Part X: Connection to Chromatic Number -/
 
 /-  Bipartite graphs are exactly 2-colorable. -/
-/-- Almost-bipartite graphs have chromatic number at most 2 + (number of removed vertices). -/
+/- Almost-bipartite graphs have chromatic number at most 2 + (number of removed vertices). -/
 end Erdos73
 
 /-

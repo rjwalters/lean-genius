@@ -146,4 +146,4 @@ The questions f(t)^{1/t} → 1? and f(t) ≪ t? are both answered NO.
 -/
 
 /-  f(t)^{1/t} → 4 (not 1) since f(t) ≈ R(t, t-1) ≈ 4^t / √t -/
-/-- f(t) grows exponentially, not linearly -/
+/- f(t) grows exponentially, not linearly -/

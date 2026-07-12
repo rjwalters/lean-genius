@@ -94,4 +94,4 @@ theorem reciprocal_sum_singleton (a : ℕ) (ha : 0 < a) :
     reciprocalSum {a} = 1 / (a : ℚ) := by
   simp [reciprocalSum]
 
-/-- The Schinzel-Szekeres theorem solves Erdős Problem 542. -/
+/- The Schinzel-Szekeres theorem solves Erdős Problem 542. -/

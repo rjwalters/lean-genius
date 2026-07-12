@@ -33,6 +33,8 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
+set_option autoImplicit true
+
 open Finset BigOperators
 
 namespace Erdos476

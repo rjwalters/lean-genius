@@ -693,7 +693,7 @@ theorem Finset.max'_ge_card_sub_one (S : Finset ℕ) (hS : S.Nonempty) :
   rw [Finset.card_range] at hle
   omega
 
-/-- For a dissociated set B ⊆ A of non-negative integer-valued reals (i.e., each
+/- For a dissociated set B ⊆ A of non-negative integer-valued reals (i.e., each
     element of B is (↑m : ℝ) for some m : ℕ with m > 0), the total sum is at
     least 2^|B| - 1. This follows from the 2^|B| subset sums being distinct
     non-negative integers with the maximum (= sum(B)) ≥ 2^|B| - 1.

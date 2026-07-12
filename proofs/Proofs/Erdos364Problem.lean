@@ -180,7 +180,7 @@ This implies no consecutive triple exists, but is much stronger.
 ## Partial Results
 -/
 
-/--
+/-
 Chan (2025): There is no triple n-1, n, n+1 of consecutive powerful
 numbers where n is a perfect cube.
 

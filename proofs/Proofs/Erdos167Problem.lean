@@ -244,7 +244,7 @@ theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),
 axiom IsPlanar : SimpleGraph V → Prop
 /- ## Fractional Version -/
 
-/-- **Fractional Tuza's Conjecture (proved):**
+/- **Fractional Tuza's Conjecture (proved):**
     The fractional relaxation τ*(G) ≤ 2·ν*(G) holds for all graphs.
     A fractional triangle cover assigns weights w(e) ∈ [0,1] to edges
     such that every triangle has total weight ≥ 1, and τ*(G) minimizes

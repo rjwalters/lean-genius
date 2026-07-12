@@ -29,9 +29,7 @@ References:
 Tags: number-theory, totient, iteration, distribution
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Log
+import Mathlib
 
 open Nat
 

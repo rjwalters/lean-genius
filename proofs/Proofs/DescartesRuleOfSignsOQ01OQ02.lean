@@ -304,7 +304,7 @@ while the sign variation analysis provides the *counting* structure (mod 2).
 Both are necessary; neither alone suffices.
 -/
 
-/-- **The answer**: Both components are needed. This encodes the structural
+/- **The answer**: Both components are needed. This encodes the structural
     fact that the parity proof decomposes into conjugate pairing (complex
     analysis) plus sign variation arithmetic (combinatorial algebra). -/
 /-

@@ -32,11 +32,7 @@ References:
 Tags: combinatorics, block-designs, enumeration
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos732
 

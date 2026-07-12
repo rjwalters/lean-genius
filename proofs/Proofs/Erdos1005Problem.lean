@@ -134,7 +134,7 @@ theorem mediant_between {n : ℕ} (f g : FareyFraction n)
     push_cast
     nlinarith [hlt, (div_lt_div_iff hfq hgq).mp hlt]
 
-/-- The number of Farey fractions of order n is approximately 3n²/π² + O(n log n). -/
+/- The number of Farey fractions of order n is approximately 3n²/π² + O(n log n). -/
 -- This is a deep result (Möbius inversion); we don't formalize it here.
 
 end Erdos1005

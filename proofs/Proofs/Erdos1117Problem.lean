@@ -79,5 +79,5 @@ theorem nu_finite (f : ℂ → ℂ) (_hent : IsEntire f) (_hnm : ¬ IsMonomial f
     approximate sense. -/
 /- ## Hadamard Three-Circles Context -/
 
-/-- The maximum modulus M(r) is a nondecreasing function of r for
+/- The maximum modulus M(r) is a nondecreasing function of r for
     nonconstant entire functions (by the maximum modulus principle). -/

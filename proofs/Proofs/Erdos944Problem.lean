@@ -92,7 +92,7 @@ critical edge set has size > r. -/
 ## The Open Case: k = 4
 -/
 
-/-- **OPEN**: Does there exist a 4-vertex-critical graph with no critical edges?
+/- **OPEN**: Does there exist a 4-vertex-critical graph with no critical edges?
 
 This is the last remaining case of Dirac's conjecture. All k ≥ 5 are solved. -/
 

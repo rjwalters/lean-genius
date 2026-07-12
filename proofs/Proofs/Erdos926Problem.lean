@@ -202,7 +202,7 @@ of a random tuple. This gives a set with:
 - Properties useful for embedding forbidden subgraphs
 -/
 
-/--
+/-
 **Container Method:**
 Alternative approach using hypergraph containers.
 -/

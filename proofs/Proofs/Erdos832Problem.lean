@@ -30,6 +30,8 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 
+set_option autoImplicit true
+
 namespace Erdos832
 
 /- ## Part I: Basic Definitions -/

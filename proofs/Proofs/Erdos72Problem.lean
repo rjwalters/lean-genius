@@ -183,7 +183,7 @@ def openQuestion_optimal_threshold : Prop :=
 def hasControlledGrowth (A : Set ℕ) (f : ℕ → ℕ) : Prop :=
   ∀ n : ℕ, countingFunction A n ≤ f n
 
-/-- Liu-Montgomery actually proves a more general result for sets with
+/- Liu-Montgomery actually proves a more general result for sets with
     logarithmic growth of even numbers. -/
 end Erdos72
 

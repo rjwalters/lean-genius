@@ -75,5 +75,5 @@ set of prime factors of n. -/
 /-  The infimum of φ(n)/n over all n > 0 is 0. In particular,
 liminf_{n→∞} φ(n)/n = 0 (achieved along primorials). -/
 
-/-- The supremum of φ(n)/n for n > 1 is strictly less than 1
+/- The supremum of φ(n)/n for n > 1 is strictly less than 1
 (only φ(1)/1 = 1; for n > 1, φ(n)/n < 1). -/

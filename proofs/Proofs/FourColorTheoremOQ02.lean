@@ -57,7 +57,7 @@ def birkhoffDiamond : Configuration where
   interiorSize := 4
   ring_ge := by omega
 
-/-- Lower bound: any unavoidable reducible set needs ≥ 10 configurations.
+/- Lower bound: any unavoidable reducible set needs ≥ 10 configurations.
     This follows from the existence of planar graphs where each
     configuration can appear in at most 1/10 of the faces. -/
 /-

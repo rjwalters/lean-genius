@@ -105,6 +105,6 @@ chromatic number 3 and is conjectured to be unavoidable. -/
 ## Section VI: Erdős–Galvin–Hajnal
 -/
 
-/-- Erdős, Galvin, and Hajnal investigated which structures must appear
+/- Erdős, Galvin, and Hajnal investigated which structures must appear
 in hypergraphs of large chromatic number. Their work established the
 framework for Problem 593. -/

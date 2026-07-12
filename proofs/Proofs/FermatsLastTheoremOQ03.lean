@@ -87,7 +87,7 @@ theorem asymptotic_flt_Q : AsymptoticFLT ℚ := by
     - Over fields with complex places: very little known
 -/
 
-/-- The key obstruction: modularity of elliptic curves.
+/- The key obstruction: modularity of elliptic curves.
 
     Over ℚ: proved by Breuil-Conrad-Diamond-Taylor (2001).
     Over totally real fields: partial results (many cases proved).

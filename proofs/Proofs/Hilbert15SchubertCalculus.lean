@@ -442,7 +442,7 @@ The problem is now considered **SOLVED**, though some would say "continuously
 being refined" as new perspectives emerge (quantum cohomology, K-theory, etc.).
 -/
 
-/-- Hilbert's 15th Problem: Summary statement
+/- Hilbert's 15th Problem: Summary statement
 
 The problem asked for rigorous foundations of Schubert's enumerative calculus.
 This was achieved through intersection theory on Grassmannians, with:

@@ -20,6 +20,8 @@ Reference: https://erdosproblems.com/451
 
 import Mathlib
 
+set_option autoImplicit true
+
 open Finset Real
 
 /-- The product (n-1)(n-2)⋯(n-k) for n > k. -/

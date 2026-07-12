@@ -733,7 +733,7 @@ theorem r2_implies_main_r2 :
 
 /-! ## Part VIII: Summary -/
 
-/-- **Progress on the sorry definitions**:
+/- **Progress on the sorry definitions**:
 
     1. `isEmbeddable` (parent sorry) → `isEmbeddableConc` (concrete definition) ✓
        Now defined via vertex maps with simplex separation condition.

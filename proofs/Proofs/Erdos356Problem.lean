@@ -23,11 +23,7 @@ References:
 - Erdős-Graham [ErGr80]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.List.Basic
-import Mathlib.Data.List.Range
+import Mathlib
 
 open Nat Finset List
 

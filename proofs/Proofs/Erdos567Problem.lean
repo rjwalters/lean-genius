@@ -86,5 +86,5 @@ def IsRamseySizeLinear {V : Type} (G : Graph' V) : Prop :=
 
 /-  Bradač–Gishboliner–Sudakov: every subdivision of K₄ with ≥ 6 vertices
     is Ramsey size linear. H₅ is such a subdivision. -/
-/-- EFRS (1993): graphs with ≤ n+1 edges and no isolated vertices
+/- EFRS (1993): graphs with ≤ n+1 edges and no isolated vertices
     are Ramsey size linear. -/

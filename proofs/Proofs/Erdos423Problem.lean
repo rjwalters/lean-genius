@@ -26,6 +26,8 @@ import Mathlib.Data.List.Range
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+set_option autoImplicit true
+
 open Nat Finset
 
 namespace Erdos423

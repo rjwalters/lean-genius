@@ -46,7 +46,7 @@ def IsK4Free (n : ℕ) (H : Hypergraph3 n) : Prop :=
     The maximum number of edges in a K₄³-free 3-uniform hypergraph on n vertices. -/
 /- ## Turán Density -/
 
-/-- The Turán density: π(K₄³) = lim_{n→∞} ex₃(n, K₄³) / C(n,3). -/
+/- The Turán density: π(K₄³) = lim_{n→∞} ex₃(n, K₄³) / C(n,3). -/
 /- ## Turán's Lower Bound (1941) -/
 
 /- ## Razborov's Upper Bound (2010) -/

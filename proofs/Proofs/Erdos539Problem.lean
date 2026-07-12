@@ -173,7 +173,7 @@ def openExponentQuestion : Prop :=
 ## Part X: Summary
 -/
 
-/-- **Erdős Problem #539: OPEN (bounds established)**
+/- **Erdős Problem #539: OPEN (bounds established)**
 
 Question: For A ⊆ ℕ of size n, what is the minimum size of
 { a / gcd(a,b) : a, b ∈ A }?

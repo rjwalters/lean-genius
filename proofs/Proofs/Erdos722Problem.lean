@@ -292,7 +292,7 @@ theorem erdos_722_summary :
   · exact fun k hk => wilson_theorem_r2 k hk
   · exact fano_plane_exists
 
-/--
+/-
 **Historical Note:**
 Steiner systems are named after Jakob Steiner, though Thomas Kirkman
 studied them first. The existence problem was a major open question in

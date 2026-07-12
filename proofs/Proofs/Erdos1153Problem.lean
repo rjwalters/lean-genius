@@ -2,6 +2,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
+set_option autoImplicit true
+
 /-
 # Erdős Problem #1153 - Lebesgue Constants of Lagrange Interpolation
 

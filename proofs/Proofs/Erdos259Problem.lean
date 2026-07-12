@@ -218,7 +218,7 @@ number is divisible by p² is 1/p², and these events are approximately
 independent for different primes.
 -/
 
-/-- The density of squarefree numbers is 6/π² ≈ 0.6079...
+/- The density of squarefree numbers is 6/π² ≈ 0.6079...
 
 Note: Squarefree n ↔ n.minSqFac = none for n > 0, so we use this
 computable characterization for the filter. -/

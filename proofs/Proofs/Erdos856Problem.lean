@@ -40,6 +40,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
+set_option autoImplicit true
+
 open Nat Real Finset BigOperators
 
 namespace Erdos856

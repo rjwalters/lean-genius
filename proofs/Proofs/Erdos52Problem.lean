@@ -151,7 +151,7 @@ def GeneralizedSumProduct (m : ℕ) : Prop :=
 ## Section VII: Connection to Problem 53
 -/
 
-/-- Problem 52 implies a weak form of Problem 53.
+/- Problem 52 implies a weak form of Problem 53.
 If max(|A+A|, |A·A|) is large, then A generates many sums or products.
 Problem 53 (resolved by Chang 2003) asks about sums and products
 of distinct subsets rather than pairwise operations. -/

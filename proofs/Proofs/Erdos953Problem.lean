@@ -285,7 +285,7 @@ theorem erdos_953_summary :
       ∀ r : ℝ, r ≥ 1 → ENNReal.ofReal (C * r ^ α) ≤ maxMeasure r) :=
   ⟨trivial_upper_bound, kovac_lower_bound⟩
 
-/--
+/-
 The main open question.
 -/
 end Erdos953

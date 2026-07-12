@@ -107,7 +107,7 @@ theorem algebraic_countable_type :
 -- Part V: The Key Choiceless Step
 -- ============================================================
 
-/-- The proof above avoids full AC because:
+/- The proof above avoids full AC because:
     1. Polynomial ℤ is constructively countable (finite support over ℤ)
     2. Root sets are constructively finite (degree bound)
     3. Set.countable_iUnion with countable index and finite fibers

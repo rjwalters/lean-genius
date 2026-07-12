@@ -226,7 +226,7 @@ number of edges covered by a random bipartite graph is large enough
 to achieve the improved bound.
 -/
 
-/--
+/-
 **Concentration Inequalities:**
 The "almost surely" statements use concentration inequalities
 (Chernoff bounds, etc.) to show the behavior holds with probability
