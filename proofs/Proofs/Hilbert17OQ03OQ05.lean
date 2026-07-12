@@ -527,7 +527,93 @@ theorem motzkinFun_posDef_iff (c : ℝ) :
   · intro hc x y
     exact motzkinFun_pos_of_lt_three hc x y
 
+/-! ## Constructive Artin certificate for the whole PSD family (rational SOS)
+
+`motzkinPoly_psd_not_sos` shows every `0 < c ≤ 3` member is PSD but *not* a
+polynomial sum of squares.  Artin's theorem nevertheless guarantees each is a sum
+of squares of *rational functions*.  Here we make that constructive **uniformly
+across the entire PSD segment** `c ≤ 3`, extending the classical single-`c = 3`
+Motzkin certificate (`Hilbert17MotzkinRationalSOS`) to the whole family.
+
+The multiplier `g = 4 + 4x² + 4y²` is itself a strictly positive sum of squares,
+and the Positivstellensatz identity
+
+    g · Mₐ  =  3·G₀² + G₁² + G₂² + G₃² + G₄²
+             + (√(3−c)·2xy)² + (√(3−c)·2x²y)² + (√(3−c)·2xy²)²
+
+is an honest 10-term SOS whenever `c ≤ 3` (so `√(3−c)` is real), where
+`G₀ = 2xy − x³y − xy³`, `G₁ = x³y − xy³`, `G₂ = 2x − 2xy²`, `G₃ = 2y − 2x²y`,
+`G₄ = 2 − 2x²y²`.  The first five squares are exactly the `c = 3` certificate;
+the extra three absorb the non-negative slack `(3 − c)·g·x²y²` opened up when
+`c < 3`.  Since `g` is a positive SOS, `Mₐ = (g·Mₐ)/g` is a sum of squares of
+rational functions — a concrete instance of Artin's theorem valid across the full
+PSD range, recovering the Motzkin certificate at the boundary `c = 3`.  All
+`0`-axiom. -/
+
+/-- The positive SOS multiplier `g = 4 + 4x² + 4y²` of the Artin certificate. -/
+noncomputable def motzkinMultiplier : MvPolynomial (Fin 2) ℝ :=
+  4 + 4 * X 0 ^ 2 + 4 * X 1 ^ 2
+
+/-- The multiplier is a sum of squares: `g = 2² + (2x)² + (2y)²`. -/
+theorem motzkinMultiplier_isSOS : IsSOS motzkinMultiplier := by
+  refine ⟨3, ![2, 2 * X 0, 2 * X 1], ?_⟩
+  rw [motzkinMultiplier, Fin.sum_univ_three]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_two, Matrix.tail_cons]
+  ring
+
+/-- The multiplier is strictly positive everywhere (`≥ 4 > 0`), so dividing by it
+    is legitimate — this is what makes the certificate a genuine rational-SOS
+    representation. -/
+theorem motzkinMultiplier_pos (v : Fin 2 → ℝ) :
+    0 < MvPolynomial.eval v motzkinMultiplier := by
+  rw [motzkinMultiplier]
+  simp only [map_add, map_mul, map_pow, map_ofNat, eval_X]
+  positivity
+
+/-- **Positivstellensatz certificate for the PSD family.** For every `c ≤ 3` the
+    product `g · Mₐ` of the positive multiplier `g = 4 + 4x² + 4y²` with the family
+    member `Mₐ` is an explicit sum of `10` squares.  The extra `√(3−c)` squares
+    vanish at `c = 3`, recovering the classical Motzkin certificate. -/
+theorem motzkinPoly_mul_multiplier_isSOS {c : ℝ} (hc : c ≤ 3) :
+    IsSOS (motzkinMultiplier * motzkinPoly c) := by
+  set s : MvPolynomial (Fin 2) ℝ := C (Real.sqrt (3 - c)) with hs_def
+  have hs : s ^ 2 = 3 - C c := by
+    rw [hs_def, ← map_pow, Real.sq_sqrt (by linarith : (0 : ℝ) ≤ 3 - c),
+      map_sub, map_ofNat]
+  refine ⟨10, ![
+    2 * X 0 * X 1 - X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    2 * X 0 * X 1 - X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    2 * X 0 * X 1 - X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    X 0 ^ 3 * X 1 - X 0 * X 1 ^ 3,
+    2 * X 0 - 2 * (X 0 * X 1 ^ 2),
+    2 * X 1 - 2 * (X 0 ^ 2 * X 1),
+    2 - 2 * (X 0 ^ 2 * X 1 ^ 2),
+    s * (2 * X 0 * X 1),
+    s * (2 * X 0 ^ 2 * X 1),
+    s * (2 * X 0 * X 1 ^ 2)], ?_⟩
+  rw [motzkinMultiplier, motzkinPoly]
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero,
+    Matrix.cons_val_succ, mul_pow, hs]
+  ring
+
+/-- **Constructive Artin for the whole PSD Motzkin family.** For every `c ≤ 3`
+    there is a strictly positive sum-of-squares multiplier `g` with `g · Mₐ` a sum
+    of squares.  Hence `Mₐ = (g · Mₐ)/g` is a sum of squares of rational functions
+    — a concrete, uniform instance of Artin's theorem across the entire PSD segment
+    `c ≤ 3`, complementing the polynomial-SOS *failure* on `0 < c ≤ 3`
+    (`motzkinPoly_psd_not_sos`) and recovering the classical certificate at
+    `c = 3`. -/
+theorem motzkinPoly_artin_certificate {c : ℝ} (hc : c ≤ 3) :
+    ∃ g : MvPolynomial (Fin 2) ℝ,
+      IsSOS g ∧
+      (∀ v : Fin 2 → ℝ, 0 < MvPolynomial.eval v g) ∧
+      IsSOS (g * motzkinPoly c) :=
+  ⟨motzkinMultiplier, motzkinMultiplier_isSOS, motzkinMultiplier_pos,
+    motzkinPoly_mul_multiplier_isSOS hc⟩
+
 end Hilbert17OQ03OQ05
 
 -- Axiom audit: should list only propext, Classical.choice, Quot.sound.
 #print axioms Hilbert17OQ03OQ05.motzkinPoly_not_sos
+#print axioms Hilbert17OQ03OQ05.motzkinPoly_artin_certificate
