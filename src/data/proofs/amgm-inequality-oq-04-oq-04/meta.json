@@ -160,6 +160,11 @@
       "targetId": "amgm-inequality-oq-04-oq-02",
       "relationship": "related",
       "description": "Sibling under OQ-04: Legendre's relation E(k)·K(k′) + E(k′)·K(k) − K(k)·K(k′) = π/2 for complete elliptic integrals, the analytic companion to the AGM used together with this convergence rate in fast π and elliptic-integral evaluation."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "Contrast in the convergence hierarchy of fixed-point iterations: Banach's contraction principle gives only a LINEAR (geometric) rate d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K), where the error is multiplied by a fixed factor K<1 each step. The AGM's per-step gap identity here squares the error instead (gₙ₊₁ ≤ gₙ²/C), upgrading linear to QUADRATIC convergence and the geometric Kⁿ to the doubly exponential (·)^{2ⁿ}. The reusable quadratic_iteration lemma plays for Newton-type iterations the role Banach's Kⁿ bound plays for contractions."
     }
   ],
   "references": [
