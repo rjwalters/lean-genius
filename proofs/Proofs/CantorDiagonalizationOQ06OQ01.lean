@@ -296,4 +296,64 @@ theorem uncountable_Ioo : Uncountable (Set.Ioo (0 : ℝ) 1) := by
   obtain ⟨e, he⟩ := exists_surjective_nat (Set.Ioo (0 : ℝ) 1)
   exact not_surjective_nat_Ioo e he
 
+/-! ## The sharp localization interval `[1/9, 2/9]`
+
+The docstring claims the diagonal is *squeezed between* `∑ 1/10^(n+1) = 1/9` and
+`∑ 2/10^(n+1) = 2/9`, but only the upper end (`≤ 2/9`, inside `diagonalReal_lt_one`)
+was formalized.  Here we supply the matching lower bound `1/9 ≤ diagonalReal f` — every
+digit `db f n ≥ 1`, so the series dominates the geometric minorant `∑ (1/10)^(n+1) = 1/9`
+— and record the sharp two-sided localization `diagonalReal f ∈ [1/9, 2/9]`, tightening
+`diagonalReal_mem_Ioo`.  Still routed entirely through the bespoke `diagonalReal`. -/
+
+/-- The shifted geometric minorant `∑' i, (1/10)^(i+1)` is summable (the `db f · ≥ 1`
+lower bound of the defining series). -/
+theorem summable_geo_shift_one : Summable (fun i : ℕ => (1 / 10 : ℝ) ^ (i + 1)) :=
+  (summable_nat_add_iff 1).mpr
+    (summable_geometric_of_lt_one (by norm_num) (by norm_num))
+
+/-- The geometric minorant sums to `1/9`: `∑' i, (1/10)^(i+1) = 1/9`.  The lower dual of
+`tsum_geo_shift` (which gives the majorant `2/9`). -/
+theorem tsum_geo_shift_one : ∑' i : ℕ, (1 / 10 : ℝ) ^ (i + 1) = 1 / 9 := by
+  calc ∑' i : ℕ, (1 / 10 : ℝ) ^ (i + 1)
+      = ∑' i : ℕ, (1 / 10 : ℝ) * (1 / 10 : ℝ) ^ i :=
+        tsum_congr (fun i => by rw [pow_succ]; ring)
+    _ = (1 / 10 : ℝ) * ∑' i : ℕ, (1 / 10 : ℝ) ^ i := by rw [tsum_mul_left]
+    _ = (1 / 10 : ℝ) * (1 - 1 / 10)⁻¹ := by
+          rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
+    _ = 1 / 9 := by norm_num
+
+/-- A generic term *lower* bound: `(1/10)^(i+1) ≤ db f m / 10^(i+1)`, since every diagonal
+digit is `≥ 1`.  The lower dual of `term_le'`. -/
+theorem term_ge' (f : ℕ → ℝ) (m i : ℕ) :
+    (1 / 10 : ℝ) ^ (i + 1) ≤ (db f m : ℝ) / 10 ^ (i + 1) := by
+  rw [div_pow, one_pow]
+  gcongr
+  have h1 : (1 : ℤ) ≤ db f m := by have := db_pos f m; omega
+  exact_mod_cast h1
+
+/-- **The diagonal is at least `1/9`.**  `1/9 ≤ diagonalReal f`: every term dominates the
+geometric minorant `(1/10)^(n+1)` (as `db f n ≥ 1`), and the minorant sums to `1/9`.  The
+sharp lower dual of `diagonalReal_le_two_ninths`, strengthening `diagonalReal_pos`. -/
+theorem diagonalReal_ge_one_ninth (f : ℕ → ℝ) : 1 / 9 ≤ diagonalReal f := by
+  rw [diagonalReal, ← tsum_geo_shift_one]
+  exact Summable.tsum_mono summable_geo_shift_one (summable_term f)
+    (fun k => term_ge' f k k)
+
+/-- **The diagonal is at most `2/9`.**  `diagonalReal f ≤ 2/9`, since every term is bounded
+by the geometric majorant `2·(1/10)^(n+1)` summing to `2/9`.  This is the sharp upper bound
+(previously available only inline inside `diagonalReal_lt_one`), named here to pair with
+`diagonalReal_ge_one_ninth`. -/
+theorem diagonalReal_le_two_ninths (f : ℕ → ℝ) : diagonalReal f ≤ 2 / 9 := by
+  rw [diagonalReal, ← tsum_geo_shift]
+  exact Summable.tsum_mono (summable_term f) summable_geo_shift (fun k => term_le' f k k)
+
+/-- **Sharp localization `diagonalReal f ∈ [1/9, 2/9]`.**  Digits in `{1,2}` squeeze the
+diagonal between the geometric minorant `1/9` and majorant `2/9`.  This is the tight form
+of `diagonalReal_mem_Ioo` (which only asserted `∈ (0,1)`): uncountability is carried by the
+tiny subinterval `[1/9, 2/9]`, and every digit-`1` listing has its diagonal at `1/9` while
+every digit-`2` listing reaches `2/9`, so both endpoints are attained. -/
+theorem diagonalReal_mem_Icc (f : ℕ → ℝ) :
+    diagonalReal f ∈ Set.Icc (1 / 9 : ℝ) (2 / 9) :=
+  ⟨diagonalReal_ge_one_ninth f, diagonalReal_le_two_ninths f⟩
+
 end CantorDiagonalizationOQ06OQ01
