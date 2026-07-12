@@ -473,6 +473,28 @@ theorem not_unboundedOnPrimePowers_of_le_const_mul_log {f : ℕ → ℝ} {C : �
   obtain ⟨p, k, hp, hk, hgt⟩ := h C
   exact absurd hgt (not_lt.mpr (hf p k hp hk))
 
+/-- **Closure of the failing class under nonnegative scaling (ideal-side dual of
+`unboundedOnPrimePowers_smul`).**  If `f` fails the Erdős #897 hypothesis — say
+`f(p^k) ≤ M·log(p^k)` on every prime power — then so does `c • f` for any `c ≥ 0`:
+scaling the bound by `c ≥ 0` gives `c·f(p^k) ≤ (c·M)·log(p^k)`, so the `O(log)`
+criterion `not_unboundedOnPrimePowers_of_le_const_mul_log` applies with constant `c·M`.
+Together with `unboundedOnPrimePowers_smul` (largeness survives positive scaling) this
+shows both the "large" filter and the complementary `O(log)` ideal are **positive
+cones** — closed under multiplication by nonnegative scalars — completing the cone
+structure recorded in the module header. -/
+theorem not_unboundedOnPrimePowers_smul {f : ℕ → ℝ}
+    (hf : ¬ UnboundedOnPrimePowers f) {c : ℝ} (hc : 0 ≤ c) :
+    ¬ UnboundedOnPrimePowers (fun n => c * f n) := by
+  unfold UnboundedOnPrimePowers at hf
+  push_neg at hf
+  obtain ⟨M, hM⟩ := hf
+  apply not_unboundedOnPrimePowers_of_le_const_mul_log (C := c * M)
+  intro p k hp hk
+  show c * f (p ^ k) ≤ c * M * Real.log (p ^ k)
+  calc c * f (p ^ k)
+      ≤ c * (M * Real.log (p ^ k)) := mul_le_mul_of_nonneg_left (hM p k hp hk) hc
+    _ = c * M * Real.log (p ^ k) := by ring
+
 /-
 ## (9) Sup-closure: the order structure is a lattice filter / ideal
 
