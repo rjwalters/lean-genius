@@ -384,6 +384,32 @@ theorem unboundedOnPrimePowers_of_ge_logSqWeight {g : ℕ → ℝ}
     UnboundedOnPrimePowers g :=
   unboundedOnPrimePowers_of_ge logSqWeight_unboundedOnPrimePowers hg
 
+/-- **Congruence: the hypothesis is an invariant of the prime-power restriction.**
+`UnboundedOnPrimePowers f` reads `f` only through its values `f(p^k)` at prime powers
+(`p` prime, `k ≥ 1`), so two functions agreeing there share the property:
+
+`(∀ prime powers p^k, f(p^k) = g(p^k)) → (UnboundedOnPrimePowers f ↔ UnboundedOnPrimePowers g)`.
+
+This is the equality core unifying the domination lemma `unboundedOnPrimePowers_of_ge`
+with its contrapositive `not_unboundedOnPrimePowers_of_le`: agreement on prime powers
+supplies both `≤` directions at once, so the property genuinely factors through the
+restriction of `f` to the prime powers. In particular the values of `f` *off* the prime
+powers are irrelevant to the Erdős #897 hypothesis. -/
+theorem unboundedOnPrimePowers_congr {f g : ℕ → ℝ}
+    (h : ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) = g (p ^ k)) :
+    UnboundedOnPrimePowers f ↔ UnboundedOnPrimePowers g :=
+  ⟨fun hf => unboundedOnPrimePowers_of_ge hf (fun p k hp hk => (h p k hp hk).le),
+   fun hg => unboundedOnPrimePowers_of_ge hg (fun p k hp hk => (h p k hp hk).ge)⟩
+
+/-- **Equality companion of the `logSqWeight` cone.** Any function that *equals*
+`logSqWeight` on every prime power satisfies the Erdős #897 hypothesis — the equality
+specialization of the domination corollary `unboundedOnPrimePowers_of_ge_logSqWeight`,
+routed through `unboundedOnPrimePowers_congr`. -/
+theorem unboundedOnPrimePowers_of_eq_logSqWeight {g : ℕ → ℝ}
+    (hg : ∀ p k : ℕ, p.Prime → 1 ≤ k → g (p ^ k) = logSqWeight (p ^ k)) :
+    UnboundedOnPrimePowers g :=
+  (unboundedOnPrimePowers_congr hg).mpr logSqWeight_unboundedOnPrimePowers
+
 /-
 ## (7) Structural properties of the witness `logSqWeight`
 
