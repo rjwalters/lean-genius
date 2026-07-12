@@ -116,6 +116,32 @@ noncomputable def Triangle.area (T : Triangle) : ℝ :=
   Real.sqrt (T.semiperimeter * (T.semiperimeter - T.a) *
              (T.semiperimeter - T.b) * (T.semiperimeter - T.c))
 
+/-- **Congruent triangles have equal area.**  Heron's formula
+`Area = √(s(s−a)(s−b)(s−c))` is a *symmetric* function of the side lengths `a, b, c`
+(the semiperimeter `s` is half their sum, and the radicand's remaining factor is the
+product over the three sides), so it depends only on the *multiset* `{a, b, c}` — which is
+exactly what `Congruent` fixes.  Hence congruence preserves area: the area invariant on
+which the `Dissection.area_partition` balance condition rests is genuinely a congruence
+invariant. -/
+theorem congruent_implies_equal_area {T₁ T₂ : Triangle} (h : Congruent T₁ T₂) :
+    T₁.area = T₂.area := by
+  have hs : T₁.semiperimeter = T₂.semiperimeter := by
+    unfold Triangle.semiperimeter
+    have hh := congrArg Multiset.sum h
+    simp only [Congruent, Multiset.sum_coe, List.sum_cons, List.sum_nil, add_zero] at hh
+    linarith
+  have hprod :
+      (T₂.semiperimeter - T₁.a) * ((T₂.semiperimeter - T₁.b) * (T₂.semiperimeter - T₁.c))
+        = (T₂.semiperimeter - T₂.a) * ((T₂.semiperimeter - T₂.b) * (T₂.semiperimeter - T₂.c)) := by
+    have hp := congrArg
+      (fun m => (Multiset.map (fun x => T₂.semiperimeter - x) m).prod) h
+    simpa only [Congruent, Multiset.map_coe, List.map_cons, List.map_nil,
+      Multiset.prod_coe, List.prod_cons, List.prod_nil, mul_one] using hp
+  unfold Triangle.area
+  rw [hs]
+  congr 1
+  linear_combination T₂.semiperimeter * hprod
+
 /-- A dissection of triangle T into n pieces where the pieces partition T by area.
     Note: area equality is necessary but not sufficient for a genuine tiling;
     a full formalization would also require disjointness and coverage. -/
