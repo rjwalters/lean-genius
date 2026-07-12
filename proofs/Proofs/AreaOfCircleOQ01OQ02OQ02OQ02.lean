@@ -485,4 +485,48 @@ theorem fourierCoeffOn_deriv4_zero (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
     fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) 0 = 0 := by
   simpa using fourierCoeffOn_deriv4_periodic_all f hf hperiod hab 0
 
+/-- **The biharmonic operator is the harmonic operator applied to `f''` (`d⁴ = d²∘d²`).**
+    The fourth-derivative magnitude scales the *second*-derivative modes by exactly `n²`,
+
+        ‖ĉₙ(f'''')‖ = n² · ‖ĉₙ(f'')‖   for   n ≠ 0.
+
+    Where `norm_fourierCoeffOn_deriv4_eq` gives the full `n⁴` factor relative to `f`, this
+    records the intermediate one-order step relative to `f''`: it is `norm_fourierCoeffOn_deriv2_eq`
+    instantiated at `g = f''` (whose second derivative is `f''''`), making the composition law
+    `n⁴ = n² · n²` a machine-checked consequence of applying the second-derivative eigenvalue
+    identity twice rather than an independent computation. -/
+theorem norm_fourierCoeffOn_deriv4_eq_sq_mul_deriv2 (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n‖
+      = (n : ℝ) ^ 2 * ‖fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n‖ := by
+  have hdf : ContDiff ℝ 3 (deriv f) := (contDiff_succ_iff_deriv (n := 3)).mp hf |>.2.2
+  have hddf : ContDiff ℝ 2 (deriv (deriv f)) :=
+    (contDiff_succ_iff_deriv (n := 2)).mp hdf |>.2.2
+  have hper2 : ∀ t, deriv (deriv f) (t + 2 * π) = deriv (deriv f) t :=
+    deriv2_periodic_of_periodic f (2 * π) hperiod
+  exact norm_fourierCoeffOn_deriv2_eq (deriv (deriv f)) hddf hper2 hab n hn
+
+/-- **The biharmonic and harmonic operators share their kernel on nonzero modes.**  For any
+    `n ≠ 0`,
+
+        ĉₙ(f'''') = 0  ↔  ĉₙ(f'') = 0,
+
+    the `d⁴ = d²∘d²` counterpart of `fourierCoeffOn_deriv4_eq_zero_iff` (which compares against
+    `f`).  It is `fourierCoeffOn_deriv2_eq_zero_iff` instantiated at `g = f''`, so a mode is
+    killed by the fourth derivative exactly when it is killed by the second — both scale it by a
+    nonzero eigenvalue power.  Together with the direct-to-`f` version this shows the whole even
+    tower `f, f'', f''''` has the same nonzero-mode support. -/
+theorem fourierCoeffOn_deriv4_eq_zero_iff_deriv2 (f : ℝ → ℝ) (hf : ContDiff ℝ 4 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (ofReal ∘ deriv (deriv (deriv (deriv f)))) n = 0 ↔
+      fourierCoeffOn hab (ofReal ∘ deriv (deriv f)) n = 0 := by
+  have hdf : ContDiff ℝ 3 (deriv f) := (contDiff_succ_iff_deriv (n := 3)).mp hf |>.2.2
+  have hddf : ContDiff ℝ 2 (deriv (deriv f)) :=
+    (contDiff_succ_iff_deriv (n := 2)).mp hdf |>.2.2
+  have hper2 : ∀ t, deriv (deriv f) (t + 2 * π) = deriv (deriv f) t :=
+    deriv2_periodic_of_periodic f (2 * π) hperiod
+  exact fourierCoeffOn_deriv2_eq_zero_iff (deriv (deriv f)) hddf hper2 hab n hn
+
 end IsoperimetricFourier
