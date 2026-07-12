@@ -1,4 +1,11 @@
-# Batch 2/3 verification state (updated batch 3, 2026-07-12)
+# Batch 2/3 verification state (updated batch 3 FINAL, 2026-07-12)
+
+## BATCH 3 FINAL NUMBERS
+- verify-results.tsv: 586 tracked files — 141 GREEN / 445 RESIDUAL
+- Wave D 164: 30 green | Wave B2 158: 35 green | Wave C 230: 49 green
+- Wave E 25 (batch-3 fixes): 18 green | E2: Erdos13 green | E3: Erdos683 green
+- Cumulative batches 1-3: ~195 verified green (55 batch-1 + 141 tsv − 1 overlap)
+- The ENTIRE queued verification backlog (targets A/B/C/D) is now verified.
 
 ## Verification waves (all results merged into verify-results.tsv)
 

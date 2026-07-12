@@ -106,7 +106,7 @@ theorem choose_gt_one {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) : n.choose k
       rw [Nat.choose_succ_succ]
       have h1 : 0 < n'.choose k' := Nat.choose_pos (by omega)
       have h2 : 0 < n'.choose (k' + 1) := Nat.choose_pos (by omega)
-      omega
+      exact Nat.add_le_add h1 h2
 
 /--
 **Alternative Statement:**
