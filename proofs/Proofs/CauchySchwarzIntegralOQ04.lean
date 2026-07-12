@@ -141,6 +141,26 @@ theorem gram_eq_iff_parallel {u v : E} (hu : u ≠ 0) (hv : v ≠ 0) :
       linarith
   · intro h; rw [h]
 
+/-- **Strict Gram inequality off the minimum-uncertainty locus.**  For nonzero centred
+    vectors `u, v` that are *not* parallel (no `r ≠ 0` with `v = r • u`), the sharp
+    Cauchy–Schwarz / Gram bound is **strict**:
+
+      `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² < ‖u‖²·‖v‖²`.
+
+    This is the `<`-completion of the `≤` bound `inner_sq_le_gram` and its `=`-case
+    `gram_eq_iff_parallel`: equality holds *exactly* on the parallel (minimum-uncertainty)
+    states, so anywhere off that locus the inequality is strict.  With
+    `u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ` it says the Schrödinger uncertainty bound is strictly
+    positive unless `ψ` is a generalized coherent/squeezed state
+    `(B−⟨B⟩)ψ = r·(A−⟨A⟩)ψ`. -/
+theorem inner_sq_lt_gram_of_not_parallel {u v : E} (hu : u ≠ 0) (hv : v ≠ 0)
+    (hpar : ¬ ∃ r : 𝕜, r ≠ 0 ∧ v = r • u) :
+    (RCLike.re (inner 𝕜 u v)) ^ 2 + (RCLike.im (inner 𝕜 u v)) ^ 2
+      < ‖u‖ ^ 2 * ‖v‖ ^ 2 := by
+  rcases lt_or_eq_of_le (inner_sq_le_gram (𝕜 := 𝕜) u v) with h | h
+  · exact h
+  · exact absurd ((gram_eq_iff_parallel hu hv).mp h) hpar
+
 /-! ## The full Robertson uncertainty relation
 
 The lemmas above are the Cauchy–Schwarz core.  Here we assemble them into the
