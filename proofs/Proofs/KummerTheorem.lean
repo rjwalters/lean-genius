@@ -78,16 +78,16 @@ adding `k` and `n - k` in base `p`.
 
 The carry positions are exactly those `i` where `k % p^i + (n-k) % p^i ≥ p^i`. -/
 theorem kummer {p n k b : ℕ} (hp : p.Prime) (hkn : k ≤ n) (hnb : Nat.log p n < b) :
-    multiplicity p (Nat.choose n k) =
+    emultiplicity p (Nat.choose n k) =
       ((Ico 1 b).filter fun i => p ^ i ≤ k % p ^ i + (n - k) % p ^ i).card :=
-  Nat.Prime.multiplicity_choose hp hkn hnb
+  Nat.Prime.emultiplicity_choose hp hkn hnb
 
 /-- Alternative formulation: multiplicity in `C(n + k, k)` counts carries when adding
     `k` and `n` in base `p`. -/
 theorem kummer' {p n k b : ℕ} (hp : p.Prime) (hnb : Nat.log p (n + k) < b) :
-    multiplicity p (Nat.choose (n + k) k) =
+    emultiplicity p (Nat.choose (n + k) k) =
       ((Ico 1 b).filter fun i => p ^ i ≤ k % p ^ i + n % p ^ i).card :=
-  Nat.Prime.multiplicity_choose' hp hnb
+  Nat.Prime.emultiplicity_choose' hp hnb
 
 /-! ## Concrete Examples
 
@@ -165,7 +165,7 @@ the identity C(n,k) = n! / (k! × (n-k)!). -/
 
 /-- Legendre's formula for factorial multiplicity in terms of digit sums. -/
 theorem legendre_digit_sum {n p : ℕ} (hp : p.Prime) :
-    (p - 1) * (multiplicity p n !).get (multiplicity.finite_nat_iff.mpr ⟨hp.ne_one, factorial_pos n⟩) =
+    (p - 1) * multiplicity p n ! =
       n - (p.digits n).sum :=
   Nat.Prime.sub_one_mul_multiplicity_factorial hp
 

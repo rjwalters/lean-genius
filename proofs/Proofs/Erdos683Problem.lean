@@ -46,7 +46,7 @@ P(n) is the largest prime dividing n, or 1 if n ≤ 1.
 -/
 noncomputable def largestPrimeDivisor (n : ℕ) : ℕ :=
   if h : n > 1 then
-    Nat.find (Nat.exists_prime_and_dvd (Nat.one_lt_iff_ne_one.mp h))
+    Nat.find (Nat.exists_prime_and_dvd (by omega : n ≠ 1))
     -- In reality this is sup of prime divisors; we axiomatize the key properties
   else 1
 

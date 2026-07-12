@@ -23,6 +23,7 @@ f_n(z) = Σ_{k=0}^n εₖ z^k, is it true that almost surely:
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 
 open Nat Real
