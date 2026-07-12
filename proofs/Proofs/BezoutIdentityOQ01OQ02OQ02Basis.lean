@@ -301,4 +301,127 @@ theorem no_det_one_completion_neg_fin_one :
   rw [exists_det_one_completion_fin_one_iff]
   norm_num
 
+/-! ### Module-theoretic form: a primitive vector spans a direct summand
+
+The basis-membership characterization `isPrimitive_iff_mem_basis_all` is the
+*coordinate* form of unimodular completion.  Its coordinate-free shadow is the
+statement that the cyclic submodule `ℤ · v` is a **direct summand** of `ℤⁿ`: there
+is a complementary submodule `K` with `ℤⁿ = ℤ·v ⊕ K`.  This is the classical
+"primitive = saturated/pure = direct summand" theorem.  Unlike basis membership it
+hands back a *canonical* complement: the kernel of the dual functional `x ↦ w · x`
+supplied by primitivity (`w · v = 1`), giving the explicit internal direct sum
+`ℤⁿ = ℤ·v ⊕ ker(w · –)`.  Everything stays `propext`/`Classical.choice`/`Quot.sound`-only. -/
+
+/-- **Primitivity as a linear retraction.**  `v` is primitive iff it admits a
+`ℤ`-linear functional `f : ℤⁿ → ℤ` with `f v = 1` — i.e. the inclusion
+`ℤ → ℤⁿ, c ↦ c • v` has a `ℤ`-linear left inverse.  This is the coordinate-free
+reading of the dot-product dual `w · v = 1`: the Bézout covector `w` becomes the
+functional `x ↦ w · x`, and conversely a functional is recovered from its values on
+the standard basis (`f x = ∑ⱼ xⱼ · f eⱼ`, the same evaluation used in
+`isPrimitive_of_mem_basis`). -/
+theorem isPrimitive_iff_exists_dual_functional (v : Fin n → ℤ) :
+    IsPrimitive v ↔ ∃ f : (Fin n → ℤ) →ₗ[ℤ] ℤ, f v = 1 := by
+  constructor
+  · rintro ⟨w, hw⟩
+    refine ⟨{ toFun := fun x => w ⬝ᵥ x
+              map_add' := fun x y => by
+                simp only [dotProduct, Pi.add_apply, mul_add, Finset.sum_add_distrib]
+              map_smul' := fun c x => by
+                simp only [RingHom.id_apply, smul_eq_mul, dotProduct, Pi.smul_apply,
+                  Finset.mul_sum]
+                exact Finset.sum_congr rfl fun i _ => by ring }, hw⟩
+  · rintro ⟨f, hf⟩
+    refine ⟨fun j => f (Pi.single j (1 : ℤ)), ?_⟩
+    have key : ∀ x : Fin n → ℤ, f x = ∑ j, x j * f (Pi.single j (1 : ℤ)) := by
+      intro x
+      conv_lhs => rw [← (Pi.basisFun ℤ (Fin n)).sum_repr x]
+      rw [map_sum]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      rw [Pi.basisFun_repr, Pi.basisFun_apply, map_smul, smul_eq_mul]
+    calc (fun j => f (Pi.single j (1 : ℤ))) ⬝ᵥ v
+        = ∑ j, v j * f (Pi.single j (1 : ℤ)) := by
+          simp only [dotProduct]; exact Finset.sum_congr rfl fun j _ => mul_comm _ _
+      _ = f v := (key v).symm
+      _ = 1 := hf
+
+/-- **Canonical splitting from a dual functional.**  If a `ℤ`-linear functional `f`
+sends `v` to `1`, then `ℤⁿ` is the internal direct sum of the line `ℤ · v` and the
+hyperplane `ker f`: `IsCompl (ℤ · v) (ker f)`.  Disjointness: an element `c • v` of
+the kernel has `0 = f (c • v) = c`, so it vanishes.  Codisjointness: `x` splits as
+`(f x) • v + (x − (f x) • v)`, the first term on the line and the second in the
+kernel (`f` of it is `f x − f x = 0`).  The idempotent `x ↦ (f x) • v` is the
+projection onto the line along the kernel. -/
+theorem isCompl_span_singleton_ker_of_apply_eq_one {v : Fin n → ℤ}
+    {f : (Fin n → ℤ) →ₗ[ℤ] ℤ} (hf : f v = 1) :
+    IsCompl (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) (LinearMap.ker f) := by
+  refine ⟨?_, ?_⟩
+  · rw [Submodule.disjoint_def]
+    intro x hx hxk
+    rw [Submodule.mem_span_singleton] at hx
+    obtain ⟨c, rfl⟩ := hx
+    rw [LinearMap.mem_ker, map_smul, hf, smul_eq_mul, mul_one] at hxk
+    rw [hxk, zero_smul]
+  · rw [codisjoint_iff, Submodule.eq_top_iff']
+    intro x
+    rw [Submodule.mem_sup]
+    refine ⟨f x • v, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v),
+      x - f x • v, ?_, by abel⟩
+    rw [LinearMap.mem_ker, map_sub, map_smul, hf, smul_eq_mul, mul_one, sub_self]
+
+/-- **A primitive vector generates a direct summand (canonical complement).**  For
+primitive `v` there is a dual functional `f` with `f v = 1` for which
+`ℤⁿ = ℤ·v ⊕ ker f`.  This records the completing decomposition *together with* the
+functional that produces it — the canonical, basis-free unimodular completion. -/
+theorem IsPrimitive.isCompl_span_singleton_ker {v : Fin n → ℤ} (hv : IsPrimitive v) :
+    ∃ f : (Fin n → ℤ) →ₗ[ℤ] ℤ,
+      f v = 1 ∧ IsCompl (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) (LinearMap.ker f) := by
+  obtain ⟨f, hf⟩ := (isPrimitive_iff_exists_dual_functional v).mp hv
+  exact ⟨f, hf, isCompl_span_singleton_ker_of_apply_eq_one hf⟩
+
+/-- **A primitive vector spans a direct summand (existence form).**  `ℤ·v` is a
+direct summand of `ℤⁿ`: some complementary submodule `K` satisfies
+`IsCompl (ℤ·v) K`.  This is the module-theoretic essence of unimodular completion,
+complementary to the basis-membership form `isPrimitive_iff_mem_basis_all`. -/
+theorem IsPrimitive.isCompl_span_singleton {v : Fin n → ℤ} (hv : IsPrimitive v) :
+    ∃ K : Submodule ℤ (Fin n → ℤ),
+      IsCompl (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) K := by
+  obtain ⟨f, _, hcompl⟩ := hv.isCompl_span_singleton_ker
+  exact ⟨LinearMap.ker f, hcompl⟩
+
+/-- **Converse: a complemented line has a primitive generator (`v ≠ 0`).**  If the
+line `ℤ · v` is a direct summand of `ℤⁿ` and `v ≠ 0`, then `v` is primitive.  The
+complementary projection `ℤⁿ ↠ ℤ·v` composed with the coordinate isomorphism
+`ℤ·v ≃ ℤ` — available because `ℤⁿ` is torsion-free and `v ≠ 0` — is a functional
+sending `v` to `1`, so `isPrimitive_iff_exists_dual_functional` closes it.  The
+hypothesis `v ≠ 0` is essential: at `v = 0` the line is `⊥`, trivially complemented
+by `⊤`, yet `0` is not primitive. -/
+theorem isPrimitive_of_isCompl_span_singleton {v : Fin n → ℤ} (hv0 : v ≠ 0)
+    {K : Submodule ℤ (Fin n → ℤ)}
+    (h : IsCompl (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) K) :
+    IsPrimitive v := by
+  rw [isPrimitive_iff_exists_dual_functional]
+  have hv : v ∈ Submodule.span ℤ ({v} : Set (Fin n → ℤ)) :=
+    Submodule.mem_span_singleton_self v
+  refine ⟨(LinearEquiv.toSpanNonzeroSingleton ℤ (Fin n → ℤ) v hv0).symm.toLinearMap.comp
+      ((Submodule.span ℤ ({v} : Set (Fin n → ℤ))).linearProjOfIsCompl K h), ?_⟩
+  have hproj :
+      (Submodule.span ℤ ({v} : Set (Fin n → ℤ))).linearProjOfIsCompl K h v = ⟨v, hv⟩ :=
+    Submodule.linearProjOfIsCompl_apply_left h ⟨v, hv⟩
+  rw [LinearMap.comp_apply, LinearEquiv.coe_coe, hproj, LinearEquiv.symm_apply_eq,
+    LinearEquiv.toSpanNonzeroSingleton_one]
+
+/-- **Primitive ⇔ its line is a direct summand (`v ≠ 0`).**  For a nonzero integer
+vector `v`, primitivity is *exactly* the property that the cyclic submodule `ℤ · v`
+splits off as a direct summand of `ℤⁿ`.  This is the coordinate-free counterpart of
+the basis-membership characterization `isPrimitive_iff_mem_basis_all`, packaged as a
+clean equivalence once the degenerate `v = 0` case (never primitive, always
+`⊥`-complemented) is excluded by hypothesis. -/
+theorem isPrimitive_iff_isCompl_span_singleton {v : Fin n → ℤ} (hv0 : v ≠ 0) :
+    IsPrimitive v ↔
+      ∃ K : Submodule ℤ (Fin n → ℤ),
+        IsCompl (Submodule.span ℤ ({v} : Set (Fin n → ℤ))) K := by
+  refine ⟨fun hv => hv.isCompl_span_singleton, ?_⟩
+  rintro ⟨K, hK⟩
+  exact isPrimitive_of_isCompl_span_singleton hv0 hK
+
 end BezoutPrimitive
