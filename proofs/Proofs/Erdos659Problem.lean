@@ -659,4 +659,51 @@ theorem fourPointProperty_from_avoiding_configs (S : Finset (ℝ × ℝ))
   push_neg at hContra  -- distinctDistances T < 3
   omega
 
+/-! ## More closure structure and explicit families of representable numbers
+
+The `representable_x2_2y2` API above records that the norm form `x² + 2y²` is
+multiplicative (`representable_mul`), contains `1, 2, 3`, all squares, and all powers
+of `2`.  The following round out the closure properties actually used when reasoning
+about which integers appear as distances in the Moree–Osburn lattice. -/
+
+/-- **Multiplying by a square preserves representability.**  If `n = x² + 2y²` then so is
+    `k²·n` for every `k`.  Immediate from `representable_mul` and `sq_representable`; it
+    expresses that representability by the norm form `x² + 2y²` only depends on `n` up to
+    square factors (one direction — the "square part is free" half). -/
+theorem representable_mul_sq {n : ℕ} (hn : n ∈ representable_x2_2y2) (k : ℕ) :
+    k ^ 2 * n ∈ representable_x2_2y2 :=
+  representable_mul (sq_representable k) hn
+
+/-- **Doubling preserves representability.**  If `n = x² + 2y²` then so is `2n`
+    (`2 = 0² + 2·1²` is representable and the form is multiplicative).  The ramified prime
+    `√-2` may always be adjoined. -/
+theorem two_mul_representable {n : ℕ} (hn : n ∈ representable_x2_2y2) :
+    2 * n ∈ representable_x2_2y2 :=
+  representable_mul two_representable hn
+
+/-- **The "twice-a-square" family `2k²` is representable**, with the direct witness
+    `2k² = 0² + 2·k²`.  A family of representable numbers distinct from the squares
+    (`sq_representable`) and the powers of two (`two_pow_representable`): these are the
+    norms of the elements `k·√-2 ∈ ℤ[√-2]`. -/
+theorem two_mul_sq_representable (k : ℕ) : 2 * k ^ 2 ∈ representable_x2_2y2 :=
+  ⟨0, (k : ℤ), by push_cast; ring⟩
+
+/-- **A square times a power of two is representable**, `k²·2ʲ = x² + 2y²`.  Combines
+    `sq_representable` and `two_pow_representable` through `representable_mul`, exhibiting a
+    two-parameter family of norms from `ℤ[√-2]`. -/
+theorem sq_mul_two_pow_representable (k j : ℕ) :
+    k ^ 2 * 2 ^ j ∈ representable_x2_2y2 :=
+  representable_mul (sq_representable k) (two_pow_representable j)
+
+/-- `13 ≡ 5 (mod 8)` is **not** representable as `x² + 2y²` (`13` is inert in `ℤ[√-2]`).
+    Extends the inert-prime catalogue `five_not_representable`, `seven_not_representable`
+    past the first two, via the mod-8 obstruction `not_representable_of_mod8`. -/
+theorem thirteen_not_representable : 13 ∉ representable_x2_2y2 :=
+  not_representable_of_mod8 13 (Or.inl (by decide))
+
+/-- `23 ≡ 7 (mod 8)` is **not** representable as `x² + 2y²` (`23` inert in `ℤ[√-2]`), the
+    inert-`7 mod 8` companion of `thirteen_not_representable`. -/
+theorem twentythree_not_representable : 23 ∉ representable_x2_2y2 :=
+  not_representable_of_mod8 23 (Or.inr (by decide))
+
 end Erdos659
