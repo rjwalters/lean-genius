@@ -73,12 +73,17 @@ of the Kővári–Sós–Turán *combinatorial core* (the `s`-star double-count)
 `codegree_lt_of_kstFree`, and the double-count `kst_star_count_nat` /
 `kst_star_count_choose` / `kst_star_count_of_free` proving
 `∑_v C(d_v, s) ≤ (t-1)·C(n, s)` for `K_{s,t}`-free graphs — the exact `s`-analogue
-of `kst_cherry_count_nat`.  The passage from this codegree bound to a closed-form
-`ex(n ; K_{s,t})` edge bound needs only the convexity of `x ↦ C(x, s)` (Jensen);
-that single analytic step is *not* claimed here (for `s = 2` it is the
-Cauchy–Schwarz `sq_sum_le_card` already used).  All additions are local-lean
-verified (Lean v4.26.0 + pinned Mathlib oleans, 0 errors) and axiom-free
-(`#print axioms kst_star_count_of_free = [propext, Classical.choice, Quot.sound]`).
+of `kst_cherry_count_nat`.  This session then carries out the remaining **convexity
+(Jensen) step** and lands the closed-form edge bound: `kst_analytic_core` (the
+abstract power-mean upgrade), `kst_general_power_bound`
+(`(2m-(s-1)n)^s ≤ (t-1) n^{2s-1}`) and its `s`-th root
+`kst_general_edge_bound_rpow` (`2m ≤ (t-1)^{1/s} n^{2-1/s} + (s-1)n`), the classical
+Kővári–Sós–Turán bound for the full `K_{s,t}` family.  The convexity input is
+Mathlib's power-mean inequality `pow_sum_le_card_mul_sum_pow` (Jensen for `x ↦ x^s`),
+fed by the elementary casts `Nat.pow_sub_le_descFactorial` and
+`Nat.descFactorial_le_pow`.  All additions are local-lean verified (Lean v4.26.0 +
+pinned Mathlib oleans, 0 errors) and axiom-free
+(`#print axioms kst_general_edge_bound_rpow = [propext, Classical.choice, Quot.sound]`).
 -/
 
 import Mathlib
@@ -923,12 +928,15 @@ most `t-1` common neighbours.  This is the exact `s`-generalisation of
 `kst_cherry_count_nat` (which is the `s = 2` case, `∑ d(d-1) = ∑ 2·C(d,2)`).
 
 The double-count itself needs no analysis and is proved here in full.  The
-*remaining* gap toward a closed-form `ex(n ; K_{s,t}) = O((t-1)^{1/s}·n^{2-1/s})`
-edge bound is the convexity step `∑_v C(d_v, s) ≥ n·C(2m/n, s)` (Jensen for the
-convex map `x ↦ C(x, s) = x(x-1)⋯(x-s+1)/s!`), which for `s = 2` degenerates to
-the Cauchy–Schwarz `sq_sum_le_card` used above but for general `s` requires the
-convexity of the descending factorial — that analytic step is deliberately *not*
-claimed here.
+convexity step toward a closed-form `ex(n ; K_{s,t}) = O((t-1)^{1/s}·n^{2-1/s})`
+edge bound — `∑_v C(d_v, s) ≥ n·C(2m/n, s)`, Jensen for the convex map
+`x ↦ C(x, s)` — **is now carried out** below (`kst_analytic_core`,
+`kst_general_power_bound`, `kst_general_edge_bound_rpow`).  Rather than proving
+convexity of the descending factorial directly, we route through the sharp
+elementary lower bound `C(d, s) ≥ (d-s+1)^s/s!` (each of the `s` descending factors
+is `≥ d-s+1`, `Nat.pow_sub_le_descFactorial`) and Mathlib's power-mean inequality
+`pow_sum_le_card_mul_sum_pow` (Jensen for the convex `x ↦ x^s`), which for `s = 2`
+degenerates to the Cauchy–Schwarz `sq_sum_le_card` used above.
 -/
 
 /-- **General `K_{s,t}` containment.**  There is a set `S` of `s` vertices with at
@@ -1070,6 +1078,184 @@ theorem kst_star_count_of_free (G : SimpleGraph V) [DecidableRel G.Adj]
   intro S hS
   have h := codegree_lt_of_kstFree G s t hfree S hS
   omega
+
+/-! ### The convexity (Jensen) step: from codegrees to a closed-form power bound
+
+The combinatorial core `kst_star_count_of_free` delivers `∑_v C(d_v, s) ≤ (t-1) C(n, s)`.
+The section note above flagged the remaining passage to a closed-form edge bound as
+"the convexity of `x ↦ C(x, s)` (Jensen)".  We now carry out exactly that step, in the
+sharp elementary form used in the classical Kővári–Sós–Turán proof.
+
+The convexity input is packaged by Mathlib's power-mean inequality
+`pow_sum_le_card_mul_sum_pow` (`(∑ f)^s ≤ n^{s-1} ∑ f^s` for `f ≥ 0`), which is Jensen
+for the convex map `x ↦ x^s`.  Two elementary casts feed it:
+
+* `Nat.pow_sub_le_descFactorial` : `(d+1-s)^s ≤ d(d-1)⋯(d-s+1) = s! · C(d, s)`
+  (each of the `s` descending factors is `≥ d-s+1`), giving `f_v := (d_v+1-s)` with
+  `f_v^s ≤ s! · C(d_v, s)`;
+* `Nat.descFactorial_le_pow` : `s! · C(n, s) ≤ n^s`.
+
+Chaining `(2m - (s-1)n) ≤ ∑_v f_v`, the power mean, the codegree bound and `s!·C(n,s) ≤ n^s`
+yields the sharp KST power bound `(2m - (s-1)n)^s ≤ (t-1) · n^{2s-1}`. -/
+
+/-- **Abstract analytic core of general Kővári–Sós–Turán.**  For any degree sequence
+`d : ι → ℕ` on a finite vertex set with `2M = ∑_v d_v` (handshake) satisfying the
+codegree double-count `∑_v C(d_v, s) ≤ (t-1) · C(n, s)`, the power-mean inequality
+(Jensen for `x ↦ x^s`) upgrades it to the closed-form power bound
+
+      (2M - (s-1)·n)^s ≤ (t-1) · n^{2s-1}
+
+whenever `2M ≥ (s-1)·n` (the meaningful regime; below it the graph is trivially sparse).
+This is stated abstractly in the degree sequence so it can be instantiated on any graph
+via `kst_general_power_bound`. -/
+theorem kst_analytic_core {ι : Type*} [Fintype ι] (d : ι → ℕ) (s t : ℕ)
+    (hs : 1 ≤ s) (ht : 1 ≤ t) (M : ℝ)
+    (hM : (2 : ℝ) * M = ∑ v, (d v : ℝ))
+    (hcore : ∑ v, ((d v).choose s : ℝ) ≤ ((t : ℝ) - 1) * ((Fintype.card ι).choose s : ℝ))
+    (hL : (0 : ℝ) ≤ 2 * M - ((s : ℝ) - 1) * (Fintype.card ι)) :
+    (2 * M - ((s : ℝ) - 1) * (Fintype.card ι)) ^ s
+      ≤ ((t : ℝ) - 1) * (Fintype.card ι : ℝ) ^ (2 * s - 1) := by
+  set N : ℝ := (Fintype.card ι : ℝ) with hN
+  set f : ι → ℝ := fun v => ((d v + 1 - s : ℕ) : ℝ) with hf_def
+  have htR : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+  have hNnn : (0 : ℝ) ≤ N := by positivity
+  have hfnn : ∀ v ∈ (Finset.univ : Finset ι), 0 ≤ f v := fun v _ => by positivity
+  -- per-vertex factor bound: `f_v^s ≤ s! · C(d_v, s)`
+  have per : ∀ v, f v ^ s ≤ (s.factorial : ℝ) * ((d v).choose s : ℝ) := by
+    intro v
+    have h : (d v + 1 - s) ^ s ≤ s.factorial * (d v).choose s := by
+      calc (d v + 1 - s) ^ s ≤ (d v).descFactorial s := Nat.pow_sub_le_descFactorial _ _
+        _ = s.factorial * (d v).choose s := Nat.descFactorial_eq_factorial_mul_choose _ _
+    have := (Nat.cast_le (α := ℝ)).mpr h
+    push_cast at this ⊢
+    simpa [hf_def] using this
+  -- `s! · C(n, s) ≤ n^s`
+  have facN : (s.factorial : ℝ) * ((Fintype.card ι).choose s : ℝ) ≤ N ^ s := by
+    have h : s.factorial * (Fintype.card ι).choose s ≤ (Fintype.card ι) ^ s := by
+      calc s.factorial * (Fintype.card ι).choose s = (Fintype.card ι).descFactorial s :=
+            (Nat.descFactorial_eq_factorial_mul_choose _ _).symm
+        _ ≤ (Fintype.card ι) ^ s := Nat.descFactorial_le_pow _ _
+    have := (Nat.cast_le (α := ℝ)).mpr h
+    push_cast at this
+    simpa [hN] using this
+  -- summed factor bound: `∑ f_v^s ≤ (t-1) n^s`
+  have sumf_sq : ∑ v, f v ^ s ≤ ((t : ℝ) - 1) * N ^ s := by
+    calc ∑ v, f v ^ s ≤ ∑ v, (s.factorial : ℝ) * ((d v).choose s : ℝ) :=
+          Finset.sum_le_sum (fun v _ => per v)
+      _ = (s.factorial : ℝ) * ∑ v, ((d v).choose s : ℝ) := by rw [← Finset.mul_sum]
+      _ ≤ (s.factorial : ℝ) * (((t : ℝ) - 1) * ((Fintype.card ι).choose s : ℝ)) :=
+          mul_le_mul_of_nonneg_left hcore (by positivity)
+      _ = ((t : ℝ) - 1) * ((s.factorial : ℝ) * ((Fintype.card ι).choose s : ℝ)) := by ring
+      _ ≤ ((t : ℝ) - 1) * N ^ s := mul_le_mul_of_nonneg_left facN (by linarith)
+  -- linear lower bound: `2M - (s-1)n ≤ ∑ f_v`
+  have sumf_lin : 2 * M - ((s : ℝ) - 1) * N ≤ ∑ v, f v := by
+    have hterm : ∀ v ∈ (Finset.univ : Finset ι), ((d v : ℝ) + 1 - s) ≤ f v := by
+      intro v _
+      have hsub : (↑(d v + 1) : ℝ) - s ≤ ((d v + 1 - s : ℕ) : ℝ) := by
+        rcases le_total s (d v + 1) with h | h
+        · rw [Nat.cast_sub h]
+        · rw [Nat.sub_eq_zero_of_le h]
+          simp only [Nat.cast_zero, sub_nonpos]
+          exact_mod_cast h
+      simpa [hf_def] using (by push_cast at hsub ⊢; linarith : ((d v : ℝ) + 1 - s) ≤ f v)
+    calc 2 * M - ((s : ℝ) - 1) * N
+        = ∑ v, ((d v : ℝ) + 1 - s) := by
+          rw [Finset.sum_sub_distrib, Finset.sum_add_distrib, hM]
+          simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, hN]
+          ring
+      _ ≤ ∑ v, f v := Finset.sum_le_sum hterm
+  -- power mean (Jensen for `x ↦ x^s`)
+  have hpm : (∑ v, f v) ^ s ≤ N ^ (s - 1) * ∑ v, f v ^ s := by
+    have h := pow_sum_le_card_mul_sum_pow hfnn (s - 1)
+    rw [Nat.sub_add_cancel hs] at h
+    simpa [hN, Finset.card_univ] using h
+  -- assemble
+  have step1 : (2 * M - ((s : ℝ) - 1) * N) ^ s ≤ (∑ v, f v) ^ s :=
+    pow_le_pow_left₀ hL sumf_lin s
+  have step2 : (∑ v, f v) ^ s ≤ N ^ (s - 1) * (((t : ℝ) - 1) * N ^ s) :=
+    hpm.trans (mul_le_mul_of_nonneg_left sumf_sq (by positivity))
+  have hexp : N ^ (s - 1) * (((t : ℝ) - 1) * N ^ s) = ((t : ℝ) - 1) * N ^ (2 * s - 1) := by
+    rw [show 2 * s - 1 = (s - 1) + s by omega, pow_add]; ring
+  calc (2 * M - ((s : ℝ) - 1) * N) ^ s
+      ≤ N ^ (s - 1) * (((t : ℝ) - 1) * N ^ s) := step1.trans step2
+    _ = ((t : ℝ) - 1) * N ^ (2 * s - 1) := hexp
+
+/-- **General Kővári–Sós–Turán closed-form power bound.**  A `K_{s,t}`-free graph on
+`n` vertices with `m` edges (`s ≥ 1`, `t ≥ 1`) satisfies
+
+      (2m - (s-1)·n)^s ≤ (t-1) · n^{2s-1}
+
+whenever `2m ≥ (s-1)·n`.  This is the sharp closed form of the codegree double-count
+`kst_star_count_of_free`: instantiating the abstract Jensen core `kst_analytic_core` at
+`d = G.degree`, `2m = ∑_v d_v` (handshake), and the `K_{s,t}`-free codegree bound.
+
+Taking `s`-th roots gives the classical leading-order edge bound
+`2m ≤ (t-1)^{1/s} · n^{2-1/s} + (s-1)·n`, i.e.
+`ex(n; K_{s,t}) ≤ ½ (t-1)^{1/s} n^{2-1/s} + ½(s-1) n` — see `kst_general_edge_bound_rpow`. -/
+theorem kst_general_power_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t)
+    (hL : ((s : ℝ) - 1) * (Fintype.card V) ≤ 2 * (G.edgeFinset.card : ℝ)) :
+    (2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V)) ^ s
+      ≤ ((t : ℝ) - 1) * (Fintype.card V : ℝ) ^ (2 * s - 1) := by
+  refine kst_analytic_core (fun v => G.degree v) s t hs ht (G.edgeFinset.card : ℝ) ?_ ?_ ?_
+  · rw [← Nat.cast_sum, G.sum_degrees_eq_twice_card_edges]; push_cast; ring
+  · have h := kst_star_count_of_free G s t ht hfree
+    calc ∑ v, ((G.degree v).choose s : ℝ)
+        = ((∑ v, (G.degree v).choose s : ℕ) : ℝ) := by push_cast; rfl
+      _ ≤ (((t - 1) * (Fintype.card V).choose s : ℕ) : ℝ) := by exact_mod_cast h
+      _ = ((t : ℝ) - 1) * ((Fintype.card V).choose s : ℝ) := by
+          rw [Nat.cast_mul, Nat.cast_sub ht, Nat.cast_one]
+  · linarith [hL]
+
+/-- **General Kővári–Sós–Turán edge bound (classical closed form).**  Taking `s`-th
+roots in `kst_general_power_bound` gives the recognisable Kővári–Sós–Turán bound: a
+`K_{s,t}`-free graph on `n` vertices with `m` edges (`s ≥ 1`, `t ≥ 1`) satisfies
+
+      2m ≤ (t-1)^{1/s} · n^{2 - 1/s} + (s-1)·n,
+
+i.e. `ex(n; K_{s,t}) ≤ ½ (t-1)^{1/s} n^{2 - 1/s} + ½(s-1) n`.  Unconditional: in the
+sparse regime `2m < (s-1)n` the bound is immediate from nonnegativity of the leading
+term; otherwise `kst_general_power_bound` supplies `(2m-(s-1)n)^s ≤ (t-1) n^{2s-1}`
+and the monotone `s`-th root (`Real.rpow`) extracts the stated inequality
+(`((t-1) n^{2s-1})^{1/s} = (t-1)^{1/s} n^{(2s-1)/s} = (t-1)^{1/s} n^{2-1/s}`).
+
+For `s = 2` this reads `2m ≤ (t-1)^{1/2} n^{3/2} + n`, the `√(t-1)·n^{3/2}` leading
+order matched by the algebraic solve `kst_edge_bound_leading_order` in the `s = 2` core. -/
+theorem kst_general_edge_bound_rpow (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    2 * (G.edgeFinset.card : ℝ)
+      ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹)
+        + ((s : ℝ) - 1) * (Fintype.card V) := by
+  have hNnn : (0 : ℝ) ≤ (Fintype.card V : ℝ) := by positivity
+  have hTnn : (0 : ℝ) ≤ (t : ℝ) - 1 := by
+    have : (1 : ℝ) ≤ (t : ℝ) := by exact_mod_cast ht
+    linarith
+  have hrhs : (0 : ℝ) ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) :=
+    mul_nonneg (Real.rpow_nonneg hTnn _) (Real.rpow_nonneg hNnn _)
+  rcases le_or_gt (((s : ℝ) - 1) * (Fintype.card V : ℝ)) (2 * (G.edgeFinset.card : ℝ)) with hL | hL
+  · -- main regime `2m ≥ (s-1)n`: take the `s`-th root of the power bound
+    have hpow := kst_general_power_bound G s t hs ht hfree hL
+    have hLnn : (0 : ℝ) ≤ 2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ) := by
+      linarith
+    have hcast : ((2 * s - 1 : ℕ) : ℝ) = 2 * (s : ℝ) - 1 := by
+      have h2 : 1 ≤ 2 * s := by omega
+      rw [Nat.cast_sub h2]; push_cast; ring
+    have key : ((Fintype.card V : ℝ) ^ (2 * s - 1)) ^ ((s : ℝ)⁻¹)
+        = (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) := by
+      rw [← Real.rpow_natCast (Fintype.card V : ℝ) (2 * s - 1), ← Real.rpow_mul hNnn]
+      congr 1
+      rw [hcast]; field_simp
+    have hroot : 2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ)
+        = ((2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ)) ^ s) ^ ((s : ℝ)⁻¹) :=
+      (Real.pow_rpow_inv_natCast hLnn (by omega)).symm
+    have hLle : 2 * (G.edgeFinset.card : ℝ) - ((s : ℝ) - 1) * (Fintype.card V : ℝ)
+        ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) := by
+      rw [hroot]
+      refine (Real.rpow_le_rpow (by positivity) hpow (by positivity)).trans ?_
+      rw [Real.mul_rpow hTnn (by positivity), key]
+    linarith [hLle]
+  · -- sparse regime `2m < (s-1)n`: bound is immediate
+    linarith [hrhs, hL]
 
 end GraphLevel
 
