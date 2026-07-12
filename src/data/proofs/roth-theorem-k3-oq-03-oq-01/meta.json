@@ -66,9 +66,9 @@
       "Translation invariance (kAPCount_count_translate, kAPCount_nondeg_translate, kAPCount_indicator_translate): the affine symmetry Λ_k(1_{A+t}) = Λ_k(1_A) underlying the density-increment method"
     ],
     "axiomCount": 0,
-    "lineCount": 929,
+    "lineCount": 963,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide, no sorryAx, no Lean.ofReduceBool. The operators are re-declared self-containedly in this file's namespace; the file imports Mathlib.",
-    "theoremCount": 40,
+    "theoremCount": 42,
     "definitionCount": 5
   },
   "overview": {
@@ -222,9 +222,9 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 1008,
+    "lineCount": 1080,
     "axiomCount": 0,
-    "theoremCount": 41,
+    "theoremCount": 47,
     "definitionCount": 5,
     "path": "Proofs/RothTheoremOQ03OQ01.lean",
     "sorries": 0

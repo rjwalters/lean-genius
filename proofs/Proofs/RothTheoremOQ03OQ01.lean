@@ -163,6 +163,40 @@ theorem kAPCount_eq_zero_of_zero {N : ℕ} [NeZero N] (k : ℕ)
         Finset.sum_congr rfl (fun d _ => hprod x d))]
   simp
 
+/-- **Conjugation symmetry of the k-AP count.**  Complex-conjugating every function
+    argument conjugates the count: `conj (Λ_k(f₀,…,f_{k-1})) = Λ_k(conj f₀,…,conj f_{k-1})`.
+    The complex conjugation `starRingEnd ℂ` is a ring homomorphism, so it distributes over
+    the finite double sum and the length-`k` product; the real prefactor `(N⁻¹)²` is fixed
+    (`N` is a natural-number cast).  Conjugation is the operation at the heart of the Gowers
+    `U^{k-1}` norm (`gowersNorm`, via `conjugateByWeight`), so this symmetry is a basic
+    building block of the generalized von Neumann argument. -/
+theorem kAPCount_conj {N : ℕ} [NeZero N] (k : ℕ) (f : Fin k → ZMod N → ℂ) :
+    starRingEnd ℂ (kAPCount k f) = kAPCount k (fun i x => starRingEnd ℂ (f i x)) := by
+  unfold kAPCount
+  rw [map_mul, map_pow, map_inv₀, map_natCast, map_sum]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro d _
+  rw [map_prod]
+
+/-- **The combinatorial k-AP count is real (self-conjugate).**  Feeding the real-valued
+    indicator `1_A` into every slot gives a self-conjugate value: `conj (Λ_k(1_A,…,1_A)) =
+    Λ_k(1_A,…,1_A)`.  Immediate from `kAPCount_conj` together with `conj (1_A x) = 1_A x`
+    (the indicator takes only the real values `0, 1`).  Consistent with
+    `kAPCount_indicator_eq_count`, which exhibits the same value as `(N⁻¹)²` times a natural
+    number. -/
+theorem kAPCount_indicator_conj {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N)) :
+    starRingEnd ℂ (kAPCount k (fun _ => indicatorZMod A))
+      = kAPCount k (fun _ => indicatorZMod A) := by
+  rw [kAPCount_conj]
+  congr 1
+  funext i x
+  unfold indicatorZMod
+  split <;> simp
+
 -- ============================================================
 -- Multilinearity in each slot
 --
