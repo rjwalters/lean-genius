@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
   "title": "The Kronecker Symbol as a Periodic Character",
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
-  "description": "Completes the parent Kronecker-symbol file with the Dirichlet-character periodicity that its Section 5 motivates but leaves unproved: the numerator character (a/n) at odd positive n depends only on a mod n and has full period n, and the (a/2) character kronecker2 has full period 8 (generalizing the parent's single-step kronecker2_periodic) and depends only on a mod 8. All five results are machine-verified, 0 axioms and 0 sorries, derived from the parent's public API.",
+  "description": "Completes the parent Kronecker-symbol file with the Dirichlet-character periodicity that its Section 5 motivates but leaves unproved: the numerator character (a/n) at odd positive n depends only on a mod n and has full period n, and the (a/2) character kronecker2 has full period 8 (generalizing the parent's single-step kronecker2_periodic) and depends only on a mod 8; moreover 8 is the exact conductor — (·/2) is a primitive character mod 8, periodic with no proper divisor of 8 as a period (kronecker2_not_period_four, kronecker2_not_period_two, kronecker2_conductor_eight). All eight results are machine-verified, 0 axioms and 0 sorries, derived from the parent's public API.",
   "references": [
     {
       "authors": "Leopold Kronecker",
@@ -45,7 +45,7 @@
     "definitionCount": 0,
     "lineCount": 142,
     "dateAdded": "2026-07-11",
-    "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed.",
+    "assumptions": "0 axioms, 0 sorries — every result is machine-verified from the parent file's public API (propext, Classical.choice, Quot.sound only; the two kronecker2 results use only propext). Status is kept 'wip'/'axiomatized' to match the parent: the file proves genuine new lemmas (numerator periodicity of (a/n) for odd positive n via kronecker_congr_left / kronecker_add_mul_left / kronecker_periodic_left, and full period-8 periodicity of the (a/2) character via kronecker2_congr / kronecker2_add_mul_eight, plus the exact conductor 8 / primitivity of (·/2) via kronecker2_not_period_four / kronecker2_not_period_two / kronecker2_conductor_eight) but the broader open target — wiring kronecker2 into the definition at even moduli and generalized quadratic reciprocity for arbitrary fundamental discriminants — remains unformalized, exactly as documented in the parent's module note. Nothing new is assumed.",
     "mathlibDependencies": [
       {
         "theorem": "jacobiSym.mod_left'",
@@ -54,13 +54,13 @@
       },
       {
         "theorem": "Int.add_mul_emod_self_left",
-        "description": "(a + b·c) % b = a % b. The single residue identity powering full periodicity: instantiated at b = n it gives kronecker_add_mul_left, at b = 8 it gives kronecker2_add_mul_eight.",
-        "module": "Mathlib.Data.Int.GCD"
+        "description": "(a + b·c) % b = a % b. The single residue identity powering full periodicity: instantiated at b = n it gives kronecker_add_mul_left, at b = 8 it gives kronecker2_add_mul_eight. A Lean-core lemma available transitively through Mathlib (not declared in Mathlib itself).",
+        "module": "Init.Data.Int.DivMod.Bootstrap"
       },
       {
         "theorem": "Int.emod_emod_of_dvd",
-        "description": "Collapses a nested modulus (x % m) % d = x % d when d ∣ m. Used in the private helper kronecker2_mod_eight to reduce kronecker2 x to a function of x % 8 (with 2 ∣ 8 and 8 ∣ 8).",
-        "module": "Mathlib.Data.Int.Order"
+        "description": "Collapses a nested modulus (x % m) % d = x % d when d ∣ m. Used in the private helper kronecker2_mod_eight to reduce kronecker2 x to a function of x % 8 (with 2 ∣ 8 and 8 ∣ 8). A Lean-core lemma available transitively through Mathlib (not declared in Mathlib itself).",
+        "module": "Init.Data.Int.DivMod.Bootstrap"
       }
     ],
     "relatedProblems": [
@@ -73,13 +73,14 @@
   },
   "overview": {
     "historicalContext": "The Kronecker symbol (a/n), completed by Leopold Kronecker in 1885, is the canonical quadratic character in analytic number theory: for a fundamental discriminant D of a quadratic field ℚ(√D), the map n ↦ (D/n) is a primitive Dirichlet character encoding prime splitting via class field theory. The defining property of a Dirichlet character mod n is periodicity in its argument — the symbol depending only on the residue class. The parent file ElementaryQuadraticReciprocityOQ03OQ02 builds the symbol, proves complete multiplicativity in both arguments, and motivates the Dirichlet-character interpretation, but leaves the numerator periodicity itself informal. This file supplies it.",
-    "problemStatement": "Formalize the Dirichlet-character periodicity of the Kronecker symbol left implicit in the parent: (1) for odd positive n, (a/n) depends only on a mod n and is periodic with full period n; (2) the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8, generalizing the parent's single-step kronecker2_periodic.",
-    "text": "Proves the numerator-side Dirichlet-character periodicity of the Kronecker symbol: residue-class dependence and full periodicity of (a/n) at odd positive n, and full period-8 periodicity of the (a/2) character kronecker2.",
-    "proofStrategy": "On odd positive moduli the parent's kronecker_eq_jacobi identifies (a/n) with the Jacobi symbol, so Mathlib's jacobiSym.mod_left' (residue-invariance of the Jacobi symbol in its numerator) transports directly to kronecker_congr_left; full periodicity kronecker_add_mul_left and the unit shift kronecker_periodic_left follow since (a + n·k) % n = a % n. For the (a/2) character, kronecker2 depends only on a % 8 (a two-line residue reduction), giving kronecker2_congr, and (a + 8·k) % 8 = a % 8 then yields the full period kronecker2_add_mul_eight, generalizing the parent's single-step kronecker2_periodic. No axioms or sorries are introduced.",
+    "problemStatement": "Formalize the Dirichlet-character periodicity of the Kronecker symbol left implicit in the parent: (1) for odd positive n, (a/n) depends only on a mod n and is periodic with full period n; (2) the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8, generalizing the parent's single-step kronecker2_periodic; (3) 8 is the *minimal* period — (·/2) is not periodic mod 4 or mod 2, so it is a primitive Dirichlet character of exact conductor 8.",
+    "text": "Proves the numerator-side Dirichlet-character periodicity of the Kronecker symbol: residue-class dependence and full periodicity of (a/n) at odd positive n, full period-8 periodicity of the (a/2) character kronecker2, and the sharpness that 8 is its exact conductor (primitivity).",
+    "proofStrategy": "On odd positive moduli the parent's kronecker_eq_jacobi identifies (a/n) with the Jacobi symbol, so Mathlib's jacobiSym.mod_left' (residue-invariance of the Jacobi symbol in its numerator) transports directly to kronecker_congr_left; full periodicity kronecker_add_mul_left and the unit shift kronecker_periodic_left follow since (a + n·k) % n = a % n. For the (a/2) character, kronecker2 depends only on a % 8 (a two-line residue reduction), giving kronecker2_congr, and (a + 8·k) % 8 = a % 8 then yields the full period kronecker2_add_mul_eight, generalizing the parent's single-step kronecker2_periodic. Minimality of the period is witnessed concretely from the parent's tabulated values: kronecker2 5 = −1 ≠ 1 = kronecker2 1 rules out period 4 (kronecker2_not_period_four) and kronecker2 3 = −1 ≠ 1 = kronecker2 1 rules out period 2 (kronecker2_not_period_two), so kronecker2_conductor_eight records 8 as the exact conductor. No axioms or sorries are introduced.",
     "keyInsights": [
       "The defining axiom of a Dirichlet character mod n — periodicity in the argument — is, for the Kronecker symbol at odd positive n, exactly the numerator residue-invariance of the Jacobi symbol (Mathlib's jacobiSym.mod_left'), transported through the parent's agreement lemma kronecker_eq_jacobi.",
       "Full periodicity with period n reduces to the single congruence (a + n·k) % n = a % n (Int.add_mul_emod_self_left); no case analysis on n is needed once residue-invariance is available.",
-      "The (a/2) character kronecker2 is visibly a function of a mod 8, so its full period-8 periodicity (a+8k/2)=(a/2) — generalizing the parent's single-step k=1 result — follows from the same residue-shift identity, completing the identification of (·/2) as a Dirichlet character mod 8."
+      "The (a/2) character kronecker2 is visibly a function of a mod 8, so its full period-8 periodicity (a+8k/2)=(a/2) — generalizing the parent's single-step k=1 result — follows from the same residue-shift identity, completing the identification of (·/2) as a Dirichlet character mod 8.",
+      "Establishing 8 as the *exact* conductor — not merely a period — is what makes (·/2) primitive: the concrete witnesses kronecker2 5 = −1 ≠ kronecker2 1 (kills period 4) and kronecker2 3 = −1 ≠ kronecker2 1 (kills period 2) show the character does not descend to any proper divisor of 8. Primitivity is the precise hypothesis the Gauss-sum route to reciprocity needs, since only primitive characters have nonvanishing Gauss sums."
     ]
   },
   "sections": [
@@ -106,11 +107,19 @@
       "endLine": 106,
       "summary": "Private helper `kronecker2_mod_eight` (kronecker2 x = kronecker2 (x % 8) via Int.emod_emod_of_dvd), then `kronecker2_congr` (a ≡ b mod 8 ⟹ equal) and `kronecker2_add_mul_eight` (full period 8, generalizing the parent's single-step kronecker2_periodic).",
       "mathContext": "$(\\cdot/2)$ is the even real Dirichlet character $\\chi_8$ modulo $8$: $\\mathrm{kronecker2}(a+8k)=\\mathrm{kronecker2}(a)$."
+    },
+    {
+      "id": "section-c",
+      "title": "Section C: 8 is the minimal period — (·/2) is primitive (conductor 8)",
+      "startLine": 107,
+      "endLine": 142,
+      "summary": "`kronecker2_not_period_four` (period 4 fails, witnessed by kronecker2 5 = −1 ≠ 1 = kronecker2 1) and `kronecker2_not_period_two` (period 2 fails, witnessed by kronecker2 3 = −1 ≠ 1 = kronecker2 1), bundled with the full period-8 result in `kronecker2_conductor_eight`: 8 is the exact minimal period, so (·/2) = χ₈ is a *primitive* Dirichlet character mod 8, not induced from any smaller modulus. This upgrades the period-8 statement to the sharp conductor — the input the Gauss-sum route requires, since only primitive characters have nonvanishing Gauss sums.",
+      "mathContext": "$\\chi_8=(\\cdot/2)$ has exact conductor $8$: periodic mod $8$ but not mod $4$ or mod $2$, hence primitive with nonvanishing Gauss sum $\\tau(\\chi_8)$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the Dirichlet-character periodicity that the parent Kronecker-symbol file motivates but leaves informal: for odd positive n the symbol (a/n) depends only on a mod n and is periodic with full period n, and the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8 (generalizing the parent's single-step result). Five theorems, 0 axioms, 0 sorries, all derived from the parent's public API.",
-    "implications": "Periodicity in the argument is the defining axiom of a Dirichlet character, so these lemmas turn the parent's prose identification of (·/n) and (·/2) as characters into machine-checked fact. That periodic-character structure is the exact structural input the Gauss-sum route to generalized quadratic reciprocity (for arbitrary fundamental discriminants, not just odd prime moduli) is built on — this file supplies the character axiom that route assumes.",
+    "summary": "Formalizes the Dirichlet-character periodicity that the parent Kronecker-symbol file motivates but leaves informal: for odd positive n the symbol (a/n) depends only on a mod n and is periodic with full period n, and the (a/2) character kronecker2 depends only on a mod 8 and is periodic with full period 8 (generalizing the parent's single-step result), and 8 is its exact conductor — (·/2) is primitive, periodic mod 8 but not mod 4 or mod 2. Eight theorems, 0 axioms, 0 sorries, all derived from the parent's public API.",
+    "implications": "Periodicity in the argument is the defining axiom of a Dirichlet character, so these lemmas turn the parent's prose identification of (·/n) and (·/2) as characters into machine-checked fact. That periodic-character structure is the exact structural input the Gauss-sum route to generalized quadratic reciprocity (for arbitrary fundamental discriminants, not just odd prime moduli) is built on — this file supplies the character axiom that route assumes. The conductor-8 primitivity (kronecker2_conductor_eight) sharpens this: the Gauss-sum route needs a *primitive* character, and only primitive characters have nonvanishing Gauss sums, so pinning the exact conductor — not merely a period — is what makes (·/2) usable there.",
     "openQuestions": [
       "Package these periodicities as an actual `DirichletCharacter` (or `ZMod n →* ℤ`) instance rather than free-standing periodicity lemmas, so the symbol can be fed directly to Mathlib's Dirichlet-character and L-function machinery.",
       "Extend the numerator periodicity from odd positive n to the full Kronecker symbol at even and negative moduli, wiring kronecker2 into the definition — the broader open target the parent's module note flags as unformalized.",
@@ -164,6 +173,21 @@
       "name": "kronecker2_add_mul_eight",
       "statement": "kronecker2 (a + 8 * k) = kronecker2 a",
       "description": "Full period 8 for kronecker2, generalizing the parent's single-step (k = 1) kronecker2_periodic — identifying (·/2) as a Dirichlet character mod 8."
+    },
+    {
+      "name": "kronecker2_not_period_four",
+      "statement": "¬ ∀ a : ℤ, kronecker2 (a + 4) = kronecker2 a",
+      "description": "kronecker2 is NOT periodic mod 4: at a = 1, kronecker2 5 = −1 ≠ 1 = kronecker2 1 (using the parent's kronecker2_five and kronecker2_one). So (·/2) does not descend to a character mod 4."
+    },
+    {
+      "name": "kronecker2_not_period_two",
+      "statement": "¬ ∀ a : ℤ, kronecker2 (a + 2) = kronecker2 a",
+      "description": "kronecker2 is NOT periodic mod 2: at a = 1, kronecker2 3 = −1 ≠ 1 = kronecker2 1 (using kronecker2_three, kronecker2_one). A fortiori it is not 1-periodic, so no proper divisor of 8 is a period."
+    },
+    {
+      "name": "kronecker2_conductor_eight",
+      "statement": "(∀ a k : ℤ, kronecker2 (a + 8 * k) = kronecker2 a) ∧ (¬ ∀ a : ℤ, kronecker2 (a + 4) = kronecker2 a) ∧ (¬ ∀ a : ℤ, kronecker2 (a + 2) = kronecker2 a)",
+      "description": "8 is the exact conductor of (·/2): full period 8 together with the failure of periods 4 and 2 shows 8 is the minimal period, so χ₈ = (·/2) is a primitive Dirichlet character mod 8. This is the sharp input the Gauss-sum route to reciprocity needs, since only primitive characters have nonvanishing Gauss sums."
     }
   ]
 }
