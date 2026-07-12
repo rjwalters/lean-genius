@@ -597,6 +597,65 @@ theorem f_four :
   have hT' : T ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
+/-- **`f(4) ≥ 7`: no four-element set with maximum `≤ 6` has distinct subset sums.**
+    Since distinct subset sums force `0 ∉ A`, a counterexample would be a four-element
+    subset of `{1,…,6}`; the finite check over those subsets (enumerated by `fin_cases`,
+    each refuted by `card ≠ 4` or an explicit subset-sum collision via the bounded,
+    decidable form of the hypothesis) rules them all out.  This is the matching lower
+    bound that upgrades the upper witness `f_four` to the exact value `f_four_eq`.
+
+    The enumeration is deliberately kept as many *shallow* `decide`s (one per case), not
+    one deep `decide` over the whole powerset: the latter overflows the Lean kernel's C
+    stack (SIGBUS / build exit code 135). -/
+theorem f_four_lower {A : Finset ℕ} (h4 : A.card = 4)
+    (hDSS : hasDistinctSubsetSums A) : 7 ≤ A.sup id := by
+  by_contra hlt
+  push_neg at hlt
+  -- Distinct subset sums force `0 ∉ A` (else `∅` and `{0}` collide).
+  have h0 : (0 : ℕ) ∉ A := by
+    intro h0A
+    have hcollide : (∅ : Finset ℕ) = {0} :=
+      hDSS ∅ {0} (Finset.empty_subset _)
+        (by simpa [Finset.singleton_subset_iff] using h0A) (by simp)
+    simp at hcollide
+  -- Hence every element lies in `[1, 6]`, so `A ⊆ Icc 1 6`.
+  have hsub : A ⊆ Finset.Icc 1 6 := by
+    intro a ha
+    rw [Finset.mem_Icc]
+    refine ⟨?_, ?_⟩
+    · rcases Nat.eq_zero_or_pos a with h | h
+      · exact absurd (h ▸ ha) h0
+      · exact h
+    · have hle : a ≤ A.sup id := Finset.le_sup (f := id) ha
+      omega
+  have hmem : A ∈ (Finset.Icc 1 6).powerset := Finset.mem_powerset.mpr hsub
+  -- Bounded (hence decidable) form of the distinct-subset-sums hypothesis.
+  have hDSS' : ∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T :=
+    fun S hS T hT h => hDSS S T (Finset.mem_powerset.mp hS) (Finset.mem_powerset.mp hT) h
+  fin_cases hmem <;>
+    first
+      | exact absurd h4 (by decide)
+      | exact absurd hDSS' (by decide)
+
+/-- **`f(4) = 7` (OEIS A005318, `n = 4`).**  The minimal possible largest element of a
+    four-element distinct-subset-sums set is exactly `7`: attained by `{3,5,6,7}`
+    (`f_four`) and by no set with maximum `≤ 6` (`f_four_lower`).  This pins the `n = 4`
+    value of the Erdős distinct-subset-sums extremal function, the first case where the
+    powers-of-two witness `{1,2,4,8}` (maximum `8`) is not optimal. -/
+theorem f_four_eq :
+    (∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id = 7) ∧
+      (∀ (A : Finset ℕ), A.card = 4 → hasDistinctSubsetSums A → 7 ≤ A.sup id) :=
+  ⟨f_four, fun _A h hDSS => f_four_lower h hDSS⟩
+
+/-- **Powers of two are not extremal at `n = 4`.**  The witness `{3,5,6,7}` has distinct
+    subset sums with maximum `7 < 8 = 2^{4-1}`, so the minimal largest element drops
+    strictly below the powers-of-two value `2^{n-1}` — the first `n` where the geometric
+    construction of `Erdos1OQ02OQ01` (max `= 2^{n-1}`) is beaten (Conway–Guy). -/
+theorem f_four_lt_geometric :
+    ∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id < 2 ^ (4 - 1) := by
+  obtain ⟨A, hcard, hDSS, hsup⟩ := f_four
+  exact ⟨A, hcard, hDSS, by rw [hsup]; norm_num⟩
+
 /-- f(5) = 13: the Conway–Guy set `{6, 9, 11, 12, 13}` has `2⁵ = 32` distinct subset
     sums with maximum element `13`.  This is the `n = 5` entry of OEIS A005318,
     continuing `f_zero`…`f_four`, and the margin over the greedy powers-of-two witness
