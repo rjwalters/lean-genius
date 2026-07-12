@@ -2139,4 +2139,92 @@ theorem sqGaussSum_norm_eq_zero_of_two_mul_eq_zero {N : ℕ} [NeZero N] {r : ZMo
     ‖sqGaussSum r‖ = 0 := by
   rw [sqGaussSum_eq_zero_of_two_mul_eq_zero hr2 hr0, norm_zero]
 
+/-! ### Part IX: the general shift-vanishing criterion
+
+The one-line shift behind `sqGaussSum_eq_zero_of_two_mul_eq_zero` never used the
+shift amount `1` in any essential way.  Reindexing the Gauss sum by `n ↦ n + t`
+for an **arbitrary** `t : ZMod N` gives
+`r·(n + t)² = r·n² + (2rt)·n + r·t²`, so as soon as `2rt = 0` the mixed term drops
+and every term picks up the same constant phase `ψ(r·t²)`:
+`G(r) = ψ(r·t²)·G(r)`.  If additionally `r·t² ≠ 0` then `ψ(r·t²) ≠ 1`, forcing
+`G(r) = 0`.  The two-torsion result is exactly the `t = 1` instance
+(`2r·1 = 2r = 0`, `r·1² = r ≠ 0`).
+
+This is *strictly* stronger: it vanishes many frequencies that are **not**
+two-torsion.  A concrete witness is `N = 24`, `r = 4`, `t = 3`: here
+`2·4·3 = 24 = 0` and `4·3² = 36 = 12 ≠ 0` in `ℤ/24ℤ`, so `G(4) = 0` even though
+`2·4 = 8 ≠ 0` (so the two-torsion theorem says nothing about `r = 4`).  The
+mechanism is that `2rt = 0` forces `rt` into the two-torsion subgroup `{0, N/2}`;
+the criterion fires precisely when `rt = N/2` with `t` odd, which — over a modulus
+with a nontrivial odd part — reaches `r`'s outside the two-torsion subgroup.
+
+Like its special case this remains a *pointwise* vanishing statement and does not
+touch the `o(N)` Sárközy density bound, which needs the residual-phase recursion
+at the frequencies this criterion leaves untouched (those with no admissible
+shift `t`). -/
+
+/-- **General shift-vanishing criterion for quadratic Gauss sums.**  If some shift
+    `t` kills the linear term (`2·r·t = 0`) while keeping the constant phase
+    nontrivial (`r·t² ≠ 0`), then the Gauss sum vanishes: `G(r) = 0`.
+
+    Reindexing `n ↦ n + t` (a bijection of `ZMod N`) sends
+    `ψ(r·(n+t)²) = ψ(r·n²)·ψ(r·t²)` once `2rt = 0`, so `G(r) = ψ(r·t²)·G(r)`; the
+    hypothesis `r·t² ≠ 0` makes `ψ(r·t²) ≠ 1`, forcing `G(r) = 0`.  Generalizes
+    `sqGaussSum_eq_zero_of_two_mul_eq_zero` (the `t = 1` case) and reaches
+    non-two-torsion frequencies (see `sqGaussSum_four_eq_zero_mod_24`). -/
+theorem sqGaussSum_eq_zero_of_shift {N : ℕ} [NeZero N] {r t : ZMod N}
+    (h2 : 2 * r * t = 0) (hrt : r * t ^ 2 ≠ 0) :
+    sqGaussSum r = 0 := by
+  -- Each shifted term factors off the constant phase ψ(r·t²), using (2rt)·n = 0.
+  have hstep : ∀ n : ZMod N, ψ (r * (n + t) ^ 2) = ψ (r * n ^ 2) * ψ (r * t ^ 2) := by
+    intro n
+    rw [← psi_add]
+    congr 1
+    have hz : 2 * r * t * n = 0 := by rw [h2, zero_mul]
+    linear_combination hz
+  -- Reindex n ↦ n+t (a bijection of ZMod N): ∑ ψ(r(n+t)²) = ∑ ψ(r n²) = G(r).
+  have hreindex :
+      (Finset.univ.sum fun n : ZMod N => ψ (r * (n + t) ^ 2)) = sqGaussSum r := by
+    rw [sqGaussSum]
+    apply Finset.sum_equiv (Equiv.addRight t)
+    · intro n; simp
+    · intro n _; rfl
+  -- Combine the two evaluations of the shifted sum: G(r) = G(r)·ψ(r·t²).
+  have hfix : sqGaussSum r = sqGaussSum r * ψ (r * t ^ 2) := by
+    calc sqGaussSum r
+        = Finset.univ.sum fun n : ZMod N => ψ (r * (n + t) ^ 2) := hreindex.symm
+      _ = Finset.univ.sum fun n : ZMod N => ψ (r * n ^ 2) * ψ (r * t ^ 2) :=
+            Finset.sum_congr rfl (fun n _ => hstep n)
+      _ = (Finset.univ.sum fun n : ZMod N => ψ (r * n ^ 2)) * ψ (r * t ^ 2) := by
+            rw [← Finset.sum_mul]
+      _ = sqGaussSum r * ψ (r * t ^ 2) := by rw [sqGaussSum]
+  -- ψ(r·t²) ≠ 1, so G(r)·(1 − ψ(r·t²)) = 0 forces G(r) = 0.
+  have hψ : ψ (r * t ^ 2) ≠ 1 := psi_ne_one _ hrt
+  have hzero : sqGaussSum r * (1 - ψ (r * t ^ 2)) = 0 := by linear_combination hfix
+  rcases mul_eq_zero.mp hzero with h | h
+  · exact h
+  · exact absurd (sub_eq_zero.mp h).symm hψ
+
+/-- **Norm form of the shift criterion.**  Under an admissible shift the Gauss sum
+    has norm `0`. -/
+theorem sqGaussSum_norm_eq_zero_of_shift {N : ℕ} [NeZero N] {r t : ZMod N}
+    (h2 : 2 * r * t = 0) (hrt : r * t ^ 2 ≠ 0) :
+    ‖sqGaussSum r‖ = 0 := by
+  rw [sqGaussSum_eq_zero_of_shift h2 hrt, norm_zero]
+
+/-- The two-torsion vanishing theorem is the `t = 1` instance of the shift
+    criterion.  (Recorded as a sanity check that `sqGaussSum_eq_zero_of_shift`
+    subsumes `sqGaussSum_eq_zero_of_two_mul_eq_zero`.) -/
+example {N : ℕ} [NeZero N] {r : ZMod N} (hr2 : 2 * r = 0) (hr0 : r ≠ 0) :
+    sqGaussSum r = 0 :=
+  sqGaussSum_eq_zero_of_shift (t := 1) (by rw [mul_one]; exact hr2) (by rwa [one_pow, mul_one])
+
+/-- **A non-two-torsion vanishing frequency.**  In `ℤ/24ℤ` the frequency `r = 4`
+    is *not* two-torsion (`2·4 = 8 ≠ 0`), yet its quadratic Gauss sum vanishes,
+    `G(4) = 0`, via the shift `t = 3`: `2·4·3 = 24 = 0` while `4·3² = 12 ≠ 0`.
+    This exhibits `sqGaussSum_eq_zero_of_shift` reaching strictly past the
+    two-torsion subgroup. -/
+theorem sqGaussSum_four_eq_zero_mod_24 : sqGaussSum (4 : ZMod 24) = 0 :=
+  sqGaussSum_eq_zero_of_shift (t := 3) (by decide) (by decide)
+
 end Szemeredi.Roth
