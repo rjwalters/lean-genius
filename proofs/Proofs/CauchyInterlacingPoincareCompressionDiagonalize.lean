@@ -48,7 +48,7 @@ file, and `0`-axiom / `0`-sorry.
 Research file — intentionally NOT registered in `Proofs.lean`.
 -/
 
-open Polynomial
+open Polynomial UniqueFactorizationMonoid
 
 namespace CauchyInterlacing.PoincareCompression
 
