@@ -137,4 +137,53 @@ theorem kPointLineCount_eq_zero_of_card_lt (P : PlanarPointSet) {k : ℕ}
   have hle := Finset.card_le_card hS
   omega
 
+/-- **Low-`k` vacuity.** A `k`-point line needs *two distinct anchors* to pin a
+direction, so it carries at least two points: `kPointLineCount P k = 0` whenever
+`k ≤ 1`. Any witnessing subset `S` supplies `a ≠ b` in `S`, forcing `2 ≤ |S| = k ≤ 1`.
+This is the low end of the support: together with `kPointLineCount_eq_zero_of_card_lt`
+(the high end, `|P| < k`) it confines the count to the band `2 ≤ k ≤ |P|`, outside of
+which it vanishes identically. -/
+theorem kPointLineCount_eq_zero_of_le_one (P : PlanarPointSet) {k : ℕ}
+    (hk : k ≤ 1) : kPointLineCount P k = 0 := by
+  rw [kPointLineCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro S hS
+  simp only [Finset.mem_powerset] at hS
+  rintro ⟨hScard, a, b, ha, hb, hab, -⟩
+  have hsub : ({a, b} : Finset (ℝ × ℝ)) ⊆ S := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact ha
+    · exact hb
+  have hle := Finset.card_le_card hsub
+  rw [Finset.card_pair hab] at hle
+  omega
+
+/-- **Exact `k = 2` value: every pair is a line.** Two distinct points always lie on a
+(unique) common line, so *every* `2`-element subset is a `2`-point line and
+`kPointLineCount P 2 = C(|P|, 2)`. The witness for a pair `{a, b}` is the pair itself:
+`collinear a b a` (degenerate, `(b₁−a₁)·0 = 0·(b₂−a₂)`) and `collinear a b b`
+(`collinear_self_right`) hold trivially. This is the *equality* boundary of the generic
+upper bound `kPointLineCount_le_choose` (which is `≤ C(|P|, k)` for all `k`): at `k = 2`
+the collinearity constraint is vacuous, so the bound is attained. It sits at the bottom
+of the support band `[2, |P|]`, one step below the general-position `= 0` region `k ≥ 3`. -/
+theorem kPointLineCount_two (P : PlanarPointSet) :
+    kPointLineCount P 2 = P.points.card.choose 2 := by
+  rw [kPointLineCount, ← Finset.card_powersetCard 2 P.points]
+  congr 1
+  ext S
+  simp only [Finset.mem_filter, Finset.mem_powerset, Finset.mem_powersetCard]
+  constructor
+  · rintro ⟨hsub, hcard, -⟩
+    exact ⟨hsub, hcard⟩
+  · rintro ⟨hsub, hcard⟩
+    refine ⟨hsub, hcard, ?_⟩
+    obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hcard
+    refine ⟨a, b, Finset.mem_insert_self _ _,
+      Finset.mem_insert_of_mem (Finset.mem_singleton_self _), hab, fun p hp => ?_⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl
+    · unfold collinear; ring
+    · exact collinear_self_right a _
+
 end Erdos101OQ04OQ01
