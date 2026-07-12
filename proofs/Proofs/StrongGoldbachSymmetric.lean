@@ -994,4 +994,108 @@ theorem half_totient_succ_le_half_of_odd {m : ℕ} (hm : Odd m) (h1 : 1 < m) :
   obtain ⟨t, ht⟩ := Nat.totient_even (by omega : 2 < m)
   omega
 
+/-! ## Mod-3 Offset Constraint and the Hexagonal Fine Structure of the Comet
+
+Every ceiling above uses either the *parity* of the offset (one class mod `2`) or the
+*coprimality* constraint (the Euler totient).  A third, independent constraint runs mod
+`3` whenever the midpoint `m` is not itself a multiple of `3`.
+
+If `m - k` and `m + k` are both primes **exceeding `3`**, then neither is divisible by
+`3`.  Working mod `3`, the two offsets that would spoil this — `k ≡ m` (making `3 ∣ m - k`)
+and `k ≡ -m` (making `3 ∣ m + k`) — are *distinct and nonzero* precisely because
+`m ≢ 0 (mod 3)`, so together they exhaust both nonzero residues.  The surviving offset
+is therefore `3 ∣ k`.
+
+At an **odd** midpoint coprime to `3` this combines with the parity constraint
+`symmetric_pair_offset_parity` (offset even) to force `6 ∣ k`.  This is the *hexagonal
+fine structure* of the Goldbach comet: at midpoints coprime to `6`, the contributing
+offsets cluster on the multiples of `6`, and the comet height is bounded by roughly
+`m / 6` — a threefold improvement over the elementary parity ceiling
+`symmetricPairCount_le_half`. -/
+
+/-- **Mod-3 offset constraint.**  If `3 ∤ m` and `k < m` is the offset of a symmetric
+prime pair whose smaller summand exceeds `3` (`3 < m - k`, hence both summands exceed
+`3`), then `3 ∣ k`.
+
+The primes `m - k, m + k > 3` are not divisible by `3`.  The two residue classes for
+`k` that would violate this — `k ≡ m` and `k ≡ -m (mod 3)` — are the two *nonzero*
+classes (distinct because `m ≢ 0`), so the only surviving class is `3 ∣ k`. -/
+theorem symmetric_pair_offset_mod3 {m k : ℕ} (hm3 : ¬ 3 ∣ m) (hk : k < m)
+    (h3 : 3 < m - k) (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    3 ∣ k := by
+  have hmk3 : ¬ (3 ∣ (m - k)) := by
+    intro hd; rcases hp1.eq_one_or_self_of_dvd 3 hd with h | h <;> omega
+  have hmpk3 : ¬ (3 ∣ (m + k)) := by
+    intro hd; rcases hp2.eq_one_or_self_of_dvd 3 hd with h | h <;> omega
+  -- Eliminate truncated subtraction so `omega` sees genuine linear relations.
+  obtain ⟨d, rfl⟩ : ∃ d, m = k + d := ⟨m - k, by omega⟩
+  rw [Nat.add_sub_cancel_left] at hmk3 h3
+  -- With both residues fixed, `omega` discharges each mod-3 case.
+  rcases (by omega : k % 3 = 0 ∨ k % 3 = 1 ∨ k % 3 = 2) with h | h | h <;>
+    rcases (by omega : d % 3 = 0 ∨ d % 3 = 1 ∨ d % 3 = 2) with h' | h' | h' <;> omega
+
+-- `m = 25` (coprime to 3): the offset `k = 6` of the pair `(19, 31)` is divisible by 3.
+example : (3 : ℕ) ∣ 6 :=
+  symmetric_pair_offset_mod3 (m := 25) (by decide) (by norm_num) (by norm_num)
+    (by decide) (by decide)
+
+/-- **Hexagonal offset constraint at odd midpoints.**  For odd `m > 2` coprime to `3`,
+every symmetric-pair offset `k < m` whose smaller summand exceeds `3` satisfies `6 ∣ k`:
+it is even (opposite parity to the odd `m`, `symmetric_pair_offset_parity`) and divisible
+by `3` (`symmetric_pair_offset_mod3`).  This is the period-`6` banding of the Goldbach
+comet at midpoints coprime to `6`. -/
+theorem symmetric_pair_offset_dvd_six {m k : ℕ} (hm : Odd m) (hm2 : 2 < m)
+    (hm3 : ¬ 3 ∣ m) (hk : k < m) (h3 : 3 < m - k)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    6 ∣ k := by
+  have hpar := symmetric_pair_offset_parity hm2 hk hp1 hp2
+  have hmodd : m % 2 = 1 := Nat.odd_iff.mp hm
+  have h3k := symmetric_pair_offset_mod3 hm3 hk h3 hp1 hp2
+  obtain ⟨t, ht⟩ := h3k
+  omega
+
+/-- **Hexagonal ceiling on the comet height.**  For odd `m` coprime to `3`, every
+contributing offset is either the lone exceptional offset `k = m - 3` (whose smaller
+summand is the prime `3`) or a multiple of `6` (`symmetric_pair_offset_dvd_six`).  Hence
+the comet height is at most one more than the number of multiples of `6` below `m` —
+roughly `m / 6`.  This is a threefold sharpening of the parity ceiling
+`symmetricPairCount_le_half`, and at midpoints coprime to `6` it beats the half-totient
+ceiling `symmetricPairCount_le_half_totient_succ_of_odd` as well. -/
+theorem symmetricPairCount_le_card_dvd_six_succ {m : ℕ} (hm : Odd m) (hm3 : ¬ 3 ∣ m) :
+    symmetricPairCount m ≤ ((Finset.range m).filter (fun k => 6 ∣ k)).card + 1 := by
+  rcases le_or_gt m 2 with hle | hgt
+  · -- Odd `m ≤ 2` forces `m = 1`, where the comet height is `0`.
+    have hm1 : m = 1 := by obtain ⟨j, hj⟩ := hm; omega
+    subst hm1; decide
+  · rw [symmetricPairCount]
+    refine (Finset.card_le_card ?_).trans (Finset.card_insert_le (m - 3) _)
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_range] at hk
+    obtain ⟨hkm, hp1, hp2⟩ := hk
+    by_cases hk3 : k = m - 3
+    · rw [hk3]; exact Finset.mem_insert_self _ _
+    · refine Finset.mem_insert_of_mem ?_
+      simp only [Finset.mem_filter, Finset.mem_range]
+      refine ⟨hkm, ?_⟩
+      have hmodd : m % 2 = 1 := Nat.odd_iff.mp hm
+      have hpar := symmetric_pair_offset_parity hgt hkm hp1 hp2
+      have hp1' := hp1.two_le
+      have hkeven : k % 2 = 0 := by omega
+      have hne : m - k ≠ 3 := fun h => hk3 (by omega)
+      have h3 : 3 < m - k := by omega
+      exact symmetric_pair_offset_dvd_six hm hgt hm3 hkm h3 hp1 hp2
+
+-- `m = 5` (coprime to 6): the only multiple of `6` below `5` is `0`, so the hexagonal
+-- ceiling gives `symmetricPairCount 5 ≤ 1 + 1 = 2` — matching the exact height `2`
+-- (`10 = 5 + 5 = 3 + 7`) and sharper than the half-totient ceiling `φ(5)/2 + 1 = 3`.
+example : symmetricPairCount 5 ≤ ((Finset.range 5).filter (fun k => 6 ∣ k)).card + 1 :=
+  symmetricPairCount_le_card_dvd_six_succ (by decide) (by decide)
+example : ((Finset.range 5).filter (fun k => 6 ∣ k)).card = 1 := by decide
+
+-- `m = 25`: multiples of `6` below `25` are `0, 6, 12, 18, 24` (five), ceiling `5 + 1 = 6`.
+-- The exceptional offset `k = 22 = 25 - 3` (from `50 = 3 + 47`) is the one contributing
+-- offset not divisible by `6`; the others (`6, 12, 18`) all are.  Actual height `4 ≤ 6`.
+example : symmetricPairCount 25 ≤ ((Finset.range 25).filter (fun k => 6 ∣ k)).card + 1 :=
+  symmetricPairCount_le_card_dvd_six_succ (by decide) (by decide)
+
 end StrongGoldbach
