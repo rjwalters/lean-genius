@@ -6763,4 +6763,91 @@ theorem subgroup_parseval_energy {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 < g) (hg
     rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]
   exact_mod_cast hcomplex
 
+/-! ### Part LV — the equidistribution floor: excess subgroup energy = deviation from balance
+
+Part LIV proved the exact identity `Σ_{r : (N/g) ∣ r.val} ‖Â(r)‖² = g · #{congruent pairs mod g}`.
+The zero frequency `r = 0` always lies in the subgroup (`(N/g) ∣ 0`) and contributes exactly
+`‖Â(0)‖² = |A|²`.  Peeling it off turns the subgroup-Parseval identity into a **variance /
+excess decomposition**
+
+    g · #{congruent pairs mod g} = |A|² + Σ_{r : (N/g)∣r.val, r≠0} ‖Â(r)‖²,
+
+whose right-hand tail is a sum of nonnegative Fourier masses.  Reading the two sides:
+
+* **Floor (Cauchy–Schwarz for free).**  Dropping the nonnegative tail gives the equidistribution
+  floor `|A|² ≤ g · #{congruent pairs}` — the additive-energy lower bound that a separate
+  Cauchy–Schwarz would produce, here obtained purely from Fourier positivity.  Equality holds iff
+  every nonzero subgroup frequency vanishes, i.e. iff `A` is perfectly equidistributed across the
+  `g` cosets modulo `g`.
+
+* **Strict increment.**  Conversely, a *single* nonzero subgroup frequency with `Â(r) ≠ 0` forces
+  `|A|² < g · #{congruent pairs}`: `A` carries strictly more congruent pairs than an equidistributed
+  set, i.e. it concentrates on some coset of `g·ZMod N`.  This is the exact density-increment
+  trigger — a large `badFreqMass` (Part LIII) lives on such nonzero subgroup frequencies, so it
+  forces coset concentration and lets the Sárközy problem descend to modulus `g`.
+
+Everything here is 0-axiom, built directly on `subgroup_parseval_energy`. -/
+
+/-- **Subgroup-Parseval excess decomposition.**  Splitting off the zero frequency (which always lies
+in the order-`g` subgroup and contributes `‖Â(0)‖² = |A|²`) rewrites the coset additive energy as its
+equidistributed value `|A|²/g` plus the nonzero subgroup Fourier mass:
+
+    g · #{(x,x') ∈ A×A : g ∣ (x−x').val} = |A|² + Σ_{r : (N/g)∣r.val, r≠0} ‖Â(r)‖². -/
+theorem subgroup_parseval_energy_split {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 < g) (hgN : g ∣ N)
+    (A : Finset (ZMod N)) :
+    (g : ℝ) * (((A ×ˢ A).filter
+        (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card)
+      = (A.card : ℝ) ^ 2 +
+        ((Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).erase 0).sum
+          (fun r => ‖fourierCoeff A r‖ ^ 2) := by
+  rw [← subgroup_parseval_energy hg hgN A]
+  set S := Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r) with hS
+  have h0mem : (0 : ZMod N) ∈ S := by
+    simp only [hS, Finset.mem_filter, Finset.mem_univ, true_and, ZMod.val_zero, Nat.dvd_zero]
+  rw [← Finset.add_sum_erase S _ h0mem]
+  congr 1
+  rw [fourierCoeff_zero']
+  simp
+
+/-- **Equidistribution floor (additive-energy Cauchy–Schwarz from Fourier positivity).**  The coset
+additive energy of `A` modulo `g` is at least its equidistributed value:
+
+    |A|² ≤ g · #{(x,x') ∈ A×A : g ∣ (x−x').val},
+
+equivalently `#{congruent pairs} ≥ |A|²/g`.  Obtained by dropping the nonnegative nonzero-frequency
+tail of the excess decomposition; equality holds iff every nonzero subgroup frequency vanishes. -/
+theorem subgroup_additive_energy_floor {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 < g) (hgN : g ∣ N)
+    (A : Finset (ZMod N)) :
+    (A.card : ℝ) ^ 2 ≤ (g : ℝ) * (((A ×ˢ A).filter
+        (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card) := by
+  rw [subgroup_parseval_energy_split hg hgN A]
+  have htail : (0 : ℝ) ≤
+      ((Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).erase 0).sum
+        (fun r => ‖fourierCoeff A r‖ ^ 2) :=
+    Finset.sum_nonneg (fun r _ => by positivity)
+  linarith
+
+/-- **Strict density increment.**  A single nonzero frequency `r` in the order-`g` subgroup with
+`Â(r) ≠ 0` forces strictly more congruent pairs than an equidistributed set:
+
+    |A|² < g · #{(x,x') ∈ A×A : g ∣ (x−x').val}.
+
+Hence `A` concentrates on a coset of `g·ZMod N` — the exact trigger that turns a nonzero non-unit
+Fourier mass (`badFreqMass`, Part LIII) into a coset density increment for Sárközy descent. -/
+theorem subgroup_additive_energy_strict {N : ℕ} [NeZero N] {g : ℕ} (hg : 0 < g) (hgN : g ∣ N)
+    (A : Finset (ZMod N)) {r : ZMod N} (hr : (N / g) ∣ ZMod.val r) (hr0 : r ≠ 0)
+    (hrne : fourierCoeff A r ≠ 0) :
+    (A.card : ℝ) ^ 2 < (g : ℝ) * (((A ×ˢ A).filter
+        (fun p : ZMod N × ZMod N => g ∣ ZMod.val (p.1 - p.2))).card) := by
+  rw [subgroup_parseval_energy_split hg hgN A]
+  have hrmem : r ∈ (Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).erase 0 := by
+    rw [Finset.mem_erase]
+    exact ⟨hr0, Finset.mem_filter.mpr ⟨Finset.mem_univ r, hr⟩⟩
+  have htail : (0 : ℝ) <
+      ((Finset.univ.filter (fun r : ZMod N => (N / g) ∣ ZMod.val r)).erase 0).sum
+        (fun r => ‖fourierCoeff A r‖ ^ 2) :=
+    Finset.sum_pos' (fun s _ => by positivity)
+      ⟨r, hrmem, pow_pos (norm_pos_iff.mpr hrne) 2⟩
+  linarith
+
 end Szemeredi.Roth
