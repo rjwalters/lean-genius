@@ -666,4 +666,58 @@ theorem atLeastSquarefree_density_odd_even_agree (t : ℕ) {d : ℝ}
   have hd : d = 1 - ∑ m ∈ range (t + 1), eta m := naturalDensity_unique h h1
   rwa [hd]
 
+/-
+## Part X: The bottom density boundary and the exact-count densities `η_m`
+
+Two loose ends of the framework. First, the density-`0` boundary dual to
+`natDensity_univ` (density `1`): the empty set has density `0`, pinning the bottom of the
+universal range `[0,1]`. Second, the Granville–Ramaré densities `η_m` themselves —
+`eta m` was *defined* as `Classical.choose` of the existence axiom, but the file never
+records that it is genuinely *the* density of `exactlySquarefree m` (a fact
+`naturalDensity_unique`'s statement alludes to), nor that, being a density, it lies in
+`[0,1]`. We supply all three, and deduce that the explicit density profile
+`k ↦ 1 − Σ_{m<k} η_m` is antitone as a sequence of reals.
+-/
+
+/-- **The empty set has natural density `0`.** The counting ratio `|∅ ∩ [0,N)| / N = 0`
+for every `N`, so the limit is `0` — the bottom boundary dual to `natDensity_univ`
+(density `1`), pinning the low end of the universal range delimited by `natDensity_nonneg`
+and `natDensity_le_one`. Elementary, uses no axioms. -/
+theorem natDensity_empty : NaturalDensity (∅ : Set ℕ) 0 := by
+  intro ε hε
+  refine ⟨1, fun N _ => ?_⟩
+  rw [Set.empty_inter, Set.ncard_empty, Nat.cast_zero, zero_div, sub_zero, abs_zero]
+  exact hε
+
+/-- **`η_m` is genuinely the density of `exactlySquarefree m`.** Unfolds the
+`Classical.choose` definition of `eta` against its specification: `eta m` is not merely a
+value the counting ratios *could* approach but the actual natural density guaranteed by
+the Granville–Ramaré existence input `granville_ramare_density_exists`. This is the lemma
+implicit in every `eta`-based density formula (`erdos_378_density_eq`,
+`erdos_378_density_odd_even_pair`). -/
+theorem natDensity_eta (m : ℕ) : NaturalDensity (exactlySquarefree m) (eta m) :=
+  Classical.choose_spec (granville_ramare_density_exists m)
+
+/-- **Each exact-count density is nonnegative.** `0 ≤ η_m`: as a natural density it cannot
+be negative (`natDensity_nonneg` applied to `natDensity_eta`). -/
+theorem eta_nonneg (m : ℕ) : 0 ≤ eta m := natDensity_nonneg (natDensity_eta m)
+
+/-- **Each exact-count density is at most one.** `η_m ≤ 1`, again because it is a natural
+density (`natDensity_le_one` applied to `natDensity_eta`). -/
+theorem eta_le_one (m : ℕ) : eta m ≤ 1 := natDensity_le_one (natDensity_eta m)
+
+/-- **The explicit density profile is antitone.** The Granville–Ramaré value
+`1 − Σ_{m<k} η_m` (cf. `erdos_378_density_eq`) is non-increasing in `k`: extending the
+summation range only adds nonnegative terms `η_m ≥ 0` (`eta_nonneg`), so it can only
+shrink the complement. For `k ≤ k'`, `1 − Σ_{m<k'} η_m ≤ 1 − Σ_{m<k} η_m`. This is the
+direct value-level counterpart of the set-theoretic antitonicity
+`erdos_378_density_antitone`. -/
+theorem eta_partialSum_compl_antitone {k k' : ℕ} (hk : k ≤ k') :
+    1 - ∑ m ∈ range k', eta m ≤ 1 - ∑ m ∈ range k, eta m := by
+  have hsub : range k ⊆ range k' := fun x hx =>
+    Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp hx) hk)
+  have hle : ∑ m ∈ range k, eta m ≤ ∑ m ∈ range k', eta m :=
+    Finset.sum_le_sum_of_subset_of_nonneg hsub (fun m _ _ => eta_nonneg m)
+  linarith
+
 end Erdos378
