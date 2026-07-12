@@ -221,6 +221,15 @@ These names do not exist in Mathlib `2df2f0150c27` either; the files referencing
 - **`PartENat` is gone** from v4.31 (`multiplicity` refactor completed; use `ℕ∞`/`emultiplicity`). ChebyshevPNTBridgeOQ01 and siblings.
 - **`Λ` is now a reserved/invalid identifier character** (`unexpected token 'Λ'; expected identifier`) — files defining von-Mangoldt-style notation `Λ` break (BoundedPrimeGapsOQ04).
 - **`Irreducible.multiplicity_factorial`** removed (emultiplicity wave), **`Nat.log_lt`** renamed (verify: `Nat.log_lt_of_lt_pow`?), **`Nat.find_eq_iff`** dot-form drift (CollatzStructuredOQ03).
+
+### Batch-3 resolutions of the batch-2 discoveries (grep-verified in v4.31 Mathlib source in-container)
+
+- **`Nat.log_lt`** → `Nat.log_lt_iff_lt_pow (hb : 1 < b) (hy : y ≠ 0) : log b y < x ↔ y < b ^ x` (Data/Nat/Log.lean:107); the one-directional `Nat.log_lt_of_lt_pow (hy : y ≠ 0) : y < b ^ x → log b y < x` also exists (line 175). Signature change (extra `hb`) → semi-mechanical, per-site.
+- **`Nat.find_eq_iff` still EXISTS** (`Mathlib/Data/Nat/Find.lean:85`) — the `Unknown constant Nat.find_eq_iff.mpr` residual is a transitive-import loss: add `import Mathlib.Data.Nat.Find` (→ §3).
+- **`Nat.card_Icc` / `Finset.card_Icc` still EXIST** (`Mathlib/Order/Interval/Finset/Nat.lean:82` et al.) — import loss: add `import Mathlib.Order.Interval.Finset.Nat` (→ §3).
+- **`Real.tendsto_log_nat_atTop` is GONE** (zero hits for `log_nat_atTop` in all of v4.31 Mathlib). Rebuild per-site as `Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop` (`tendsto_log_atTop` confirmed at Analysis/SpecialFunctions/Log/Basic.lean:350). Doctor-class (goal-shape dependent).
+- **`Nat.one_lt_iff_ne_one`** and **`Nat.not_eq_zero_of_lt`**: zero hits in v4.31 Mathlib AND Batteries — removed (were core/Batteries lemmas). Both are omega-trivial: replace call sites with `omega` (or `Nat.pos_iff_ne_zero` variants). Semi-mechanical.
+- **`Nat.Prime.multiplicity_choose`** → `Prime.emultiplicity_choose` / `Prime.emultiplicity_choose'` (confirmed used at NumberTheory/Padics/PadicVal/Basic.lean:621/631); ℕ∞-valued now — sites comparing to `PartENat` need the emultiplicity rework (Doctor-class).
 - Verified-green big-op-only files flip immediately (BinomialTheorem, Erdos307Aristotle, Erdos524Problem, RandomizedMaxcutOQ02); most other bigop roots carry deeper signature/tactic drift.
 
 ## Summary counts
