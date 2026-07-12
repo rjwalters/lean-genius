@@ -6,6 +6,8 @@ import Mathlib.Topology.MetricSpace.HausdorffDimension
 import Mathlib.Topology.MetricSpace.Perfect
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Analysis.Complex.Cardinality
+import Mathlib.NumberTheory.Transcendental.Liouville.Measure
+import Mathlib.NumberTheory.Transcendental.Liouville.Residual
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -57,6 +59,17 @@ measure-theoretic, route to the existence of transcendentals.
 * `exists_transcendental_of_pos_measure`
                                    : a positive-measure set contains a transcendental
 * `algebraic_complex_null`         : `volume {z : ℂ | IsAlgebraic ℚ z} = 0`
+* `measure_independent_of_category`: measure- and category-smallness are logically
+                                     independent — both off-diagonal corners of the
+                                     `2 × 2` table are realised (Liouville numbers:
+                                     null but not meagre; non-Liouville reals: conull
+                                     but meagre)
+
+The measure and category pillars are *aligned* on the algebraic reals (small in both)
+and the transcendentals (large in both), but that alignment is not forced: the
+**Liouville numbers** are Lebesgue-null yet comeagre, and their complement is conull yet
+meagre, so all four measure/category combinations occur in `ℝ`
+(`measure_independent_of_category`).
 
 0 sorries, 0 axioms (no `native_decide`).
 -/
@@ -290,41 +303,6 @@ theorem ae_transcendental_complex :
     ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
   rw [Filter.eventually_iff, hset]
   exact compl_mem_ae_iff.mpr algebraic_complex_null
-
-/-- **The transcendental complex numbers are uncountable.**  The complex analogue of
-`transcendental_reals_uncountable`, supplying the cardinality pillar on `ℂ` (previously
-only the measure, dimension, density, descriptive and category pillars were present for
-the complex transcendentals).  If they were countable, then together with the countable
-algebraic complex numbers their union `ℂ` would be countable, contradicting
-`not_countable_complex`. -/
-theorem transcendental_complex_uncountable :
-    ¬ {z : ℂ | Transcendental ℚ z}.Countable := by
-  intro hcount
-  have hcompl : {z : ℂ | Transcendental ℚ z}ᶜ.Countable := by
-    have hset : {z : ℂ | Transcendental ℚ z}ᶜ = {z : ℂ | IsAlgebraic ℚ z} := by
-      ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental, not_not]
-    rw [hset]
-    exact AlgebraicNumbersCountable.algebraic_complex_countable
-  have huniv : (Set.univ : Set ℂ).Countable := by
-    have hu := hcount.union hcompl
-    rwa [Set.union_compl_self] at hu
-  exact not_countable_complex huniv
-
-/-- **The transcendental complex numbers have cardinality the continuum**:
-`#{z | Transcendental ℚ z} = 𝔠`.  The complex analogue of
-`transcendental_reals_mk_eq_continuum`, sharpening `transcendental_complex_uncountable`
-from "not countable" to the exact cardinal value.  The algebraic complex numbers are
-countable, hence of cardinality `≤ ℵ₀ < 𝔠 = #ℂ` (`Cardinal.mk_complex`); deleting a set of
-cardinality strictly below `#ℂ` from `ℂ` leaves the same cardinality
-(`Cardinal.mk_compl_of_infinite`), so the transcendentals still have cardinality `𝔠`. -/
-theorem transcendental_complex_mk_eq_continuum :
-    #{z : ℂ | Transcendental ℚ z} = 𝔠 := by
-  have hcompl : {z : ℂ | Transcendental ℚ z} = {z : ℂ | IsAlgebraic ℚ z}ᶜ := by
-    ext z; simp only [mem_setOf_eq, mem_compl_iff, Transcendental]
-  have hlt : #{z : ℂ | IsAlgebraic ℚ z} < #(ℂ) :=
-    lt_of_le_of_lt AlgebraicNumbersCountable.algebraic_complex_countable.le_aleph0
-      (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)
-  rw [hcompl, Cardinal.mk_compl_of_infinite _ hlt, Cardinal.mk_complex]
 
 -- ============================================================================
 -- § 6. Hausdorff dimension zero — a sharpening of Lebesgue-null
@@ -636,5 +614,66 @@ theorem algebraic_complex_meagre : IsMeagre {z : ℂ | IsAlgebraic ℚ z} := by
     ext z; simp only [mem_compl_iff, mem_setOf_eq, Transcendental]
   rw [IsMeagre, hcompl]
   exact transcendental_complex_residual
+
+/-!
+## Measure ⊥ category: the two smallness notions are logically independent
+
+The sections above establish two *aligned* facts: the algebraic reals are small in
+**both** senses (null ∧ meagre) and the transcendentals are large in **both** (conull
+∧ comeagre).  Taken alone this alignment might suggest measure-smallness and
+category-smallness are the same phenomenon.  They are not.  The **Liouville numbers**
+separate them: they are Lebesgue-null (`volume_setOf_liouville`) yet comeagre
+(`eventually_residual_liouville`), hence a null set that is *not* meagre.  Dually, the
+**non-Liouville reals** are conull (full measure) yet meagre.  With the algebraic reals
+(null ∧ meagre) and the transcendentals (conull ∧ comeagre) already in hand, **all four**
+measure/category combinations are realised in `ℝ`, so neither notion of smallness implies
+the other.  (A comeagre set is never meagre in the nonempty Baire space `ℝ`, by
+`not_isMeagre_of_mem_residual`, which is what makes the separation strict.)
+-/
+
+/-- **The Liouville numbers are Lebesgue-null.**  Wraps Mathlib's
+`volume_setOf_liouville`; recorded here as the measure half of the null-but-comeagre
+witness that separates measure from category. -/
+theorem liouville_reals_null : volume {x : ℝ | Liouville x} = 0 :=
+  volume_setOf_liouville
+
+/-- **The Liouville numbers are comeagre (residual).**  Wraps
+`eventually_residual_liouville`; the category half of the separating witness. -/
+theorem liouville_reals_residual : {x : ℝ | Liouville x} ∈ residual ℝ :=
+  eventually_residual_liouville
+
+/-- **The Liouville numbers are not meagre.**  A residual set in the nonempty Baire space
+`ℝ` is never meagre (`not_isMeagre_of_mem_residual`).  So the Liouville numbers are a
+Lebesgue-null set that is *not* meagre — measure-small but category-large. -/
+theorem liouville_reals_not_meagre : ¬ IsMeagre {x : ℝ | Liouville x} :=
+  not_isMeagre_of_mem_residual liouville_reals_residual
+
+/-- **Null does not imply meagre.**  The Liouville numbers witness a Lebesgue-null set
+that fails to be meagre, so measure-zero carries no category information. -/
+theorem exists_null_not_meagre : ∃ S : Set ℝ, volume S = 0 ∧ ¬ IsMeagre S :=
+  ⟨{x : ℝ | Liouville x}, liouville_reals_null, liouville_reals_not_meagre⟩
+
+/-- **Conull does not imply comeagre; equivalently, meagre does not imply null.**  The
+*non-Liouville* reals `{x | Liouville x}ᶜ` are conull — their complement, the Liouville
+numbers, is Lebesgue-null (`liouville_reals_null`) — yet meagre, since that same
+complement is comeagre (`liouville_reals_residual`).  A full-measure set that is
+nonetheless topologically negligible. -/
+theorem exists_conull_meagre : ∃ S : Set ℝ, volume Sᶜ = 0 ∧ IsMeagre S :=
+  ⟨{x : ℝ | Liouville x}ᶜ, by rw [compl_compl]; exact liouville_reals_null,
+    by rw [IsMeagre, compl_compl]; exact liouville_reals_residual⟩
+
+/-- **Measure-smallness and category-smallness are logically independent.**  Both
+off-diagonal corners of the `2 × 2` table are realised in `ℝ`: a Lebesgue-null set that
+is *not* meagre (the Liouville numbers, `exists_null_not_meagre`) and a conull set that
+*is* meagre (the non-Liouville reals, `exists_conull_meagre`).  Hence neither notion of
+smallness implies the other.  Together with the diagonal already proved here — the
+algebraic reals are null ∧ meagre (`algebraic_reals_null`, `algebraic_reals_meagre`) and
+the transcendentals conull ∧ comeagre (`transcendental_reals_conull`,
+`transcendental_reals_residual`) — every one of the four measure/category combinations
+occurs. -/
+theorem measure_independent_of_category :
+    (∃ S : Set ℝ, volume S = 0 ∧ ¬ IsMeagre S) ∧
+      (∃ S : Set ℝ, volume Sᶜ = 0 ∧ IsMeagre S) :=
+  ⟨exists_null_not_meagre, exists_conull_meagre⟩
 
 end AlgebraicRealsNull
