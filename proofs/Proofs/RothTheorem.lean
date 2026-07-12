@@ -6097,5 +6097,80 @@ theorem sqGaussSum_norm_sum_of_prime {p : ℕ} [NeZero p] (hp : p.Prime) (hN2 : 
     omega
   rw [hcard, Nat.cast_sub hp.one_lt.le, Nat.cast_one]
 
+/-! ### Part XLIX — The TOTAL `L¹` mass over ALL frequencies: the boundary correction disappears
+
+Part XLVII computes the `L¹` first moment over the `N−1` *nonzero* frequencies as a *proper* divisor
+sum `√N·Σ_{d∣N, d<N} φ(N/d)√d`, with the top divisor `d = N` conspicuously excluded.  Restoring the
+zero frequency `r = 0` — whose contribution is the flat maximum `‖G(0)‖ = N` (`sqGaussSum_zero`) —
+supplies exactly the missing summand: `N = √N·√N` is precisely `√N` times the `d = N` term
+`φ(N/N)·√N = φ(1)·√N = √N`.  So the total mass has the **exceptional-term-free** closed form
+
+    Σ_{r ∈ ZMod N} ‖G(r)‖ = √N · Σ_{d∣N} φ(N/d)·√d,
+
+a clean full Dirichlet-type divisor sum with no boundary correction — the zero frequency is not an
+outlier to the spectral distribution but the completion of it.  The proper-divisor sum of Part XLVII
+was an artefact of excluding `r = 0`; over the whole group the divisor sum closes.
+
+The coefficient `Σ_{d∣N} φ(N/d)√d` is the Dirichlet convolution `(φ ⋆ (·^{1/2}))(N)` of two
+multiplicative functions, hence multiplicative in `N`; at a prime `p` it is `φ(p)·√1 + φ(1)·√p =
+(p−1) + √p`, recovering the total prime mass `Σ_{r} ‖G(r)‖ = √p·((p−1)+√p) = p + (p−1)√p`
+(`sqGaussSum_norm_sum_total_of_prime` below): the trivial term `p` plus the `(p−1)√p` of Part XLVIII. -/
+
+/-- **Exact total `L¹` mass over ALL frequencies (odd modulus).**  Adjoining the zero-frequency term
+`‖G(0)‖ = N` (`sqGaussSum_zero`) to the nonzero first moment of Part XLVII
+(`sqGaussSum_norm_sum_eq_divisor_sum_of_odd`) completes the proper divisor sum: `N = √N·√N` is exactly
+the missing `d = N` summand `φ(1)·√N`.  Hence the entire `L¹` mass carries the boundary-correction-free
+closed form
+
+    Σ_{r ∈ ZMod N} ‖G(r)‖ = √N · Σ_{d∣N} φ(N/d)·√d,
+
+the full Dirichlet divisor sum `√N·(φ ⋆ √)(N)`. -/
+theorem sqGaussSum_norm_sum_total_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ.sum (fun r : ZMod N => ‖sqGaussSum r‖))
+      = Real.sqrt N * ((N.divisors).sum (fun d => (Nat.totient (N / d) : ℝ) * Real.sqrt d)) := by
+  have hN0 : (0 : ℝ) ≤ N := Nat.cast_nonneg N
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  -- split the univ sum into the zero frequency and the nonzero frequencies
+  have hsplit : (Finset.univ.sum (fun r : ZMod N => ‖sqGaussSum r‖))
+      = ‖sqGaussSum (0 : ZMod N)‖
+        + (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖) := by
+    rw [← Finset.erase_eq]
+    exact (Finset.add_sum_erase Finset.univ _ (Finset.mem_univ 0)).symm
+  -- the zero frequency contributes the flat maximum N
+  have hzero : ‖sqGaussSum (0 : ZMod N)‖ = (N : ℝ) := by
+    rw [sqGaussSum_zero, Complex.norm_natCast]
+  -- split the top divisor d = N off the full divisor sum
+  have hNmem : N ∈ N.divisors := Nat.mem_divisors_self N (NeZero.ne N)
+  have hdiv : (N.divisors).sum (fun d => (Nat.totient (N / d) : ℝ) * Real.sqrt d)
+      = (Nat.totient (N / N) : ℝ) * Real.sqrt N
+        + ((N.divisors).erase N).sum (fun d => (Nat.totient (N / d) : ℝ) * Real.sqrt d) :=
+    (Finset.add_sum_erase _ _ hNmem).symm
+  -- erasing the top divisor is the same as keeping the proper divisors
+  have herase : (N.divisors).erase N = (N.divisors).filter (· < N) := by
+    ext d
+    simp only [Finset.mem_erase, Finset.mem_filter]
+    constructor
+    · rintro ⟨hdN, hd⟩
+      exact ⟨hd, lt_of_le_of_ne (Nat.le_of_dvd hNpos (Nat.mem_divisors.mp hd).1) hdN⟩
+    · rintro ⟨hd, hlt⟩
+      exact ⟨Nat.ne_of_lt hlt, hd⟩
+  rw [hsplit, hzero, hdiv, herase, Nat.div_self hNpos, Nat.totient_one, Nat.cast_one, one_mul,
+    sqGaussSum_norm_sum_eq_divisor_sum_of_odd hodd, mul_add, Real.mul_self_sqrt hN0]
+
+/-- **Exact total `L¹` mass at a prime modulus.**  The `N = p` instance of
+`sqGaussSum_norm_sum_total_of_odd`: adding the zero-frequency term `p` (`sqGaussSum_zero`) to the
+nonzero prime first moment `(p−1)√p` (`sqGaussSum_norm_sum_of_prime`) gives the total mass
+
+    Σ_{r ∈ ZMod p} ‖G(r)‖ = p + (p−1)·√p.  -/
+theorem sqGaussSum_norm_sum_total_of_prime {p : ℕ} [NeZero p] (hp : p.Prime) (hN2 : p ≠ 2) :
+    (Finset.univ.sum (fun r : ZMod p => ‖sqGaussSum r‖)) = (p : ℝ) + ((p : ℝ) - 1) * Real.sqrt p := by
+  have hp0 : (0 : ℝ) ≤ p := Nat.cast_nonneg p
+  have hsplit : (Finset.univ.sum (fun r : ZMod p => ‖sqGaussSum r‖))
+      = ‖sqGaussSum (0 : ZMod p)‖
+        + (Finset.univ \ {(0 : ZMod p)}).sum (fun r => ‖sqGaussSum r‖) := by
+    rw [← Finset.erase_eq]
+    exact (Finset.add_sum_erase Finset.univ _ (Finset.mem_univ 0)).symm
+  rw [hsplit, sqGaussSum_zero, Complex.norm_natCast, sqGaussSum_norm_sum_of_prime hp hN2]
+
 end Szemeredi.Roth
 
