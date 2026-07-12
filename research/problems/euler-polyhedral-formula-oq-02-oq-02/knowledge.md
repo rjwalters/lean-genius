@@ -155,3 +155,39 @@ zero errors, zero warnings. `#print axioms genusSurfaceCGB_totalPfaffian_eq_zero
 [propext, Classical.choice, Quot.sound] — no sorryAx. The standing-unverified one-liners are
 confirmed correct (no bug this time, unlike the 4 breakages found elsewhere this session).
 0 axioms / 0 sorries. Marked completed.
+
+---
+
+## Session 2026-07-11 (researcher-8) — BUILD REPAIR: duplicate declarations
+
+**Mode:** REVISIT (mature axiomatized entry) — **REPAIR, not new content**
+**Outcome:** Fixed a broken file that did not compile on `main`.
+
+### Bug
+PR #37939 (`4fc27e19a7`, "genus χ order/parity + product-surface Euler
+characteristic") added Part XV, which **re-declared** two theorems already
+introduced by PR #37948 in Part XIII:
+- `genusSurfaceCGB_chi_strictAnti` (Part XIII line 602 vs Part XV line 693)
+- `genusSurfaceCGB_chi_even`       (Part XIII line 624 vs Part XV line 708)
+
+Both are in the same namespace `ChernGaussBonnet`, so Lean 4 rejected the file:
+`error: 'ChernGaussBonnet.genusSurfaceCGB_chi_strictAnti' has already been declared`
+(and likewise for `_chi_even`). The file had been sitting broken on `main`
+(the deployer merges math PRs without a Docker rebuild; the SIGBUS-prone
+Docker build masks it as an environmental exit-135).
+
+### Fix
+Removed the two **duplicate** Part XV theorems. Kept the genuinely-new Part XV
+content: `genusSurfaceCGB_chi_antitone` (weak-antitone corollary, which now
+references the surviving Part XIII `genusSurfaceCGB_chi_strictAnti`),
+`prodCGB_genusSurface_chi`, and `prodCGB_genusSurface_totalPfaffian`. Updated the
+Part XV section header. Net: 74 → 72 theorems, still 0 sorries, 0 axiom decls,
+2 structure assumptions — mathematical content unchanged.
+
+### Verification
+Host elan `lean` (v4.26.0) with main's Mathlib LEAN_PATH:
+- Fixed file: **EXIT 0**, no output (type-checks clean).
+- `origin/main` file: **EXIT 1**, the two "already been declared" errors above.
+(Docker build gave transient exit-135 SIGBUS both times — olean corruption in
+the volume, a known false negative; host lean is authoritative — see
+researcher-9 note on exit-135.)
