@@ -783,4 +783,133 @@ theorem exists_min_size_for_sparse_bound [DecidableEq V] (hV : 0 < Fintype.card 
     (Nat.le_div_iff_mul_le hV).mp hcoeff
   exact propertyB_of_sparse F (Fintype.card V + 1 + N) N (by omega) hmin hsparse hbound
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 10: Sharp *logarithmic* modulus of divergence
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  § 9 exhibits an *explicit* modulus of divergence in value form: the target
+  coefficient `N` is reached by step `t₀ = |V| + 1 + N` (`admissibleCoeff_ge_self`,
+  `exists_min_size_for_sparse_bound`).  That modulus is honest but *crude* — it is
+  **linear** in `N`, obtained by throwing away the exponential in `2^N ≤ c(|V|+1+N)`.
+  Yet the defining relation `N ≤ c(t) ⇔ N·|V| ≤ 2^{t-1}` shows the true cost of
+  reaching value `N` is only **logarithmic**: `t` need only clear `1 + ⌈log₂(N·|V|)⌉`.
+
+  This section installs that sharp threshold.  The pivot is the elementary
+  characterization `admissibleCoeff_ge_iff` (a one-line consequence of
+  `Nat.le_div_iff_mul_le`), which via `Nat.clog` sharpens to the exact
+  `N ≤ c(t) ⇔ clog₂(N·|V|) ≤ t-1`.  Reading it forwards gives the logarithmic
+  modulus `t₀ = clog₂(N·|V|) + 1`; a machine-checked inequality then confirms this
+  is never worse than § 9's linear `|V| + 1 + N` (and generically exponentially
+  smaller).  The Property-B payoff of § 9 is re-derived with this sharp `t₀`.
+-/
+
+/-- **Coefficient exceeds a target iff the threshold clears `N·|V|`.**  The defining
+    equivalence behind every divergence bound in this file, stated once as a clean
+    `↔`: the admissible coefficient `c(t) = ⌊2^{t-1}/|V|⌋` reaches a target value `N`
+    exactly when the raw first-moment threshold `2^{t-1}` clears `N` full copies of
+    the ground set,
+
+        `N ≤ c(t)  ↔  N·|V| ≤ 2^{t-1}`.
+
+    Immediate from `Nat.le_div_iff_mul_le` (the floor's Galois connection with
+    multiplication).  Every bound of §§ 5-9 is an estimate of one side of this
+    equivalence; isolating it makes the sharp logarithmic modulus below a two-line
+    consequence. -/
+theorem admissibleCoeff_ge_iff (hV : 0 < Fintype.card V) (N t : ℕ) :
+    N ≤ firstMomentThreshold t / Fintype.card V
+      ↔ N * Fintype.card V ≤ firstMomentThreshold t := by
+  rw [Nat.le_div_iff_mul_le hV]
+
+/-- **Sharp `clog` characterization of the modulus.**  Feeding
+    `admissibleCoeff_ge_iff` through the ceiling-logarithm Galois connection
+    `Nat.le_pow_iff_clog_le` (`x ≤ 2^y ↔ clog₂ x ≤ y`) pins the *exact* step at which
+    the coefficient reaches `N`:
+
+        `N ≤ c(t)  ↔  clog₂(N·|V|) ≤ t - 1`.
+
+    So the threshold is attained precisely when `t` clears `clog₂(N·|V|) + 1`: a
+    **logarithmic** modulus, exponentially sharper than § 9's linear `|V| + 1 + N`. -/
+theorem admissibleCoeff_ge_iff_clog_le (hV : 0 < Fintype.card V) (N t : ℕ) :
+    N ≤ firstMomentThreshold t / Fintype.card V
+      ↔ Nat.clog 2 (N * Fintype.card V) ≤ t - 1 := by
+  rw [admissibleCoeff_ge_iff hV]
+  unfold firstMomentThreshold
+  exact Nat.le_pow_iff_clog_le (by norm_num)
+
+/-- **The logarithmic modulus (forward form).**  Reading
+    `admissibleCoeff_ge_iff_clog_le` forwards: the target coefficient `N` is reached
+    at *every* step past the logarithmic threshold `t₀ = clog₂(N·|V|) + 1`,
+
+        `clog₂(N·|V|) + 1 ≤ t  ⟹  N ≤ c(t)`.
+
+    This is the sharp counterpart of `admissibleCoeff_ge_self` (whose witness step is
+    the linear `|V| + 1 + N`); here the step is only logarithmic in `N`. -/
+theorem admissibleCoeff_ge_of_clog_le (hV : 0 < Fintype.card V) (N t : ℕ)
+    (ht : Nat.clog 2 (N * Fintype.card V) + 1 ≤ t) :
+    N ≤ firstMomentThreshold t / Fintype.card V := by
+  rw [admissibleCoeff_ge_iff_clog_le hV]
+  omega
+
+/-- **The logarithmic modulus improves on § 9's linear one.**  A machine-checked
+    proof that the sharp threshold never exceeds the crude one,
+
+        `clog₂(N·|V|) + 1  ≤  |V| + 1 + N`,
+
+    so `admissibleCoeff_ge_of_clog_le` strictly dominates `admissibleCoeff_ge_self`.
+    Proof: `N·|V| ≤ 2^N · 2^{|V|} = 2^{N+|V|}` (from `n < 2^n` twice), hence
+    `clog₂(N·|V|) ≤ N + |V|` by `Nat.clog_le_of_le_pow`.  The gap between the two
+    moduli is generically exponential — `clog₂(N·|V|) ≈ log₂ N + log₂ |V|` against the
+    linear `N + |V|`. -/
+theorem admissibleCoeff_log_modulus_le_linear (N : ℕ) :
+    Nat.clog 2 (N * Fintype.card V) + 1 ≤ Fintype.card V + 1 + N := by
+  have hb : N * Fintype.card V ≤ 2 ^ (N + Fintype.card V) := by
+    calc N * Fintype.card V
+          ≤ 2 ^ N * 2 ^ (Fintype.card V) :=
+            Nat.mul_le_mul (Nat.le_of_lt Nat.lt_two_pow_self)
+              (Nat.le_of_lt Nat.lt_two_pow_self)
+      _ = 2 ^ (N + Fintype.card V) := (pow_add 2 N (Fintype.card V)).symm
+  have hc : Nat.clog 2 (N * Fintype.card V) ≤ N + Fintype.card V :=
+    Nat.clog_le_of_le_pow hb
+  omega
+
+/-- **Eventual dominance with the sharp witness.**  The `atTop` companion of
+    `admissibleCoeff_ge_of_clog_le`: for every target `N` the coefficient is
+    eventually at least `N`, now with the *logarithmic* witness step
+    `t₀ = clog₂(N·|V|) + 1` in place of the linear witness of
+    `admissibleCoeff_eventually_ge`. -/
+theorem admissibleCoeff_eventually_ge_sharp (hV : 0 < Fintype.card V) (N : ℕ) :
+    ∀ᶠ t in Filter.atTop, N ≤ firstMomentThreshold t / Fintype.card V :=
+  Filter.eventually_atTop.mpr
+    ⟨Nat.clog 2 (N * Fintype.card V) + 1,
+      fun _t ht => admissibleCoeff_ge_of_clog_le hV N _ ht⟩
+
+/-- **Large minimum size defeats any fixed sparseness coefficient — logarithmically
+    (the sharp payoff).**  The § 9 payoff `exists_min_size_for_sparse_bound` with the
+    linear modulus replaced by the sharp logarithmic one: every fixed `N`-sparse
+    family of `≥ t₀`-sets has Property B already for a minimum size
+
+        `t₀ = clog₂(N·|V|) + 1`,
+
+    only *logarithmic* in the sparseness bound `N`, and — as certified by the middle
+    conjunct `t₀ ≤ |V| + 1 + N` — never worse than the linear threshold of § 9.  So
+    absorbing a constant sparseness coefficient `N` costs only `O(log N)` in the
+    minimum set size, not `O(N)`.  Proof: `admissibleCoeff_ge_of_clog_le` at the
+    logarithmic step yields `N ≤ c(t₀)`, hence `N·|V| ≤ 2^{t₀-1}`, exactly the
+    hypothesis `propertyB_of_sparse` needs; the improvement bound is
+    `admissibleCoeff_log_modulus_le_linear`. -/
+theorem exists_min_size_for_sparse_bound_sharp [DecidableEq V] (hV : 0 < Fintype.card V)
+    (N : ℕ) :
+    ∃ t₀ : ℕ, 1 ≤ t₀ ∧ t₀ ≤ Fintype.card V + 1 + N ∧ ∀ (F : Finset (Finset V)),
+      (∀ e ∈ F, t₀ ≤ e.card) → IsSparse F N → HasPropertyB F := by
+  refine ⟨Nat.clog 2 (N * Fintype.card V) + 1, by omega,
+    admissibleCoeff_log_modulus_le_linear N, fun F hmin hsparse => ?_⟩
+  have hcoeff : N ≤ firstMomentThreshold (Nat.clog 2 (N * Fintype.card V) + 1)
+      / Fintype.card V :=
+    admissibleCoeff_ge_of_clog_le hV N _ (le_refl _)
+  have hbound : N * Fintype.card V
+      ≤ firstMomentThreshold (Nat.clog 2 (N * Fintype.card V) + 1) :=
+    (admissibleCoeff_ge_iff hV N _).mp hcoeff
+  exact propertyB_of_sparse F _ N (by omega) hmin hsparse hbound
+
 end Erdos1022OQ02
