@@ -3828,4 +3828,115 @@ theorem sqGaussSum_max_level_set_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
   rw [sqGaussSum_gcd_level_set_card_of_odd hodd hd_dvd hd_lt, hddef,
     Nat.div_div_self hmf_dvd hN0, Nat.totient_prime hmf_prime]
 
+/-! ### Part XXVI — The spectral partition is exhaustive: the level sets tile the whole spectrum
+
+Part XXV computed the count `φ(N/d)` of each individual gcd level set `{r ≠ 0 : gcd((2r).val,N) = d}`
+but left open the *global* question: do these level sets, ranging over the proper divisors `d ∣ N`,
+account for **every** nonzero frequency, with none missed or double-counted?  They do, and this
+closes the loop on the whole Part XVII–XXV moment tower.
+
+The map `r ↦ gcd((2r).val, N)` sends each nonzero frequency to a *proper* divisor of `N`: it is a
+divisor of `N` always, and for `r ≠ 0` it is strictly below `N` because `2r ≠ 0` (as `2` is a unit
+for odd `N`), so `0 < (2r).val < N` forces `gcd((2r).val, N) ≤ (2r).val < N`.  Hence the fibers of
+this map partition the `N − 1` nonzero frequencies, and `Finset.card_eq_sum_card_fiberwise` with the
+per-fiber counts of Part XXV yields the exhaustiveness identity
+
+    Σ_{d ∣ N, d < N} φ(N/d) = N − 1.
+
+This is the spectral incarnation of Gauss's divisor-sum identity `Σ_{d ∣ N} φ(d) = N` (drop the
+`d = N` term `φ(1) = 1`): it certifies that the exact distribution of Part XXV is a genuine finite
+measure whose total mass is the full nonzero spectrum — nothing lives outside the enumerated levels.
+As a structural consequence, the second moment (Part XX) is now an *honest* partition sum
+`Σ_{r≠0} ‖G(r)‖² = N · Σ_{d ∣ N, d < N} d · φ(N/d)` (`sqGaussSum_normSq_sum_eq_divisor_sum_of_odd`),
+grouping the frequency gcd-sum by its constant value on each level. -/
+
+/-- **Nonzero frequencies land on proper divisors (odd modulus).**  For `N` odd and `r ≠ 0`,
+the gcd `gcd((2r).val, N)` is a *proper* divisor of `N`: it always divides `N`, and it is
+strictly below `N` because `2` is a unit (odd `N`) so `2r ≠ 0`, giving `0 < (2r).val < N` and
+hence `gcd((2r).val, N) ≤ (2r).val < N`.  This is the membership hypothesis that lets the gcd
+map fiber the nonzero spectrum over the proper divisors. -/
+theorem sqGaussSum_gcd_mem_proper_divisors_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    {r : ZMod N} (hr0 : r ≠ 0) :
+    Nat.gcd (2 * r).val N ∈ (N.divisors).filter (· < N) := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have h2r : (2 * r : ZMod N) ≠ 0 := by
+    intro h
+    obtain ⟨w, hw⟩ := isUnit_iff_exists_inv.mp h2
+    apply hr0
+    calc r = (w * 2) * r := by rw [mul_comm w 2, hw, one_mul]
+      _ = w * (2 * r) := by rw [mul_assoc]
+      _ = w * 0 := by rw [h]
+      _ = 0 := mul_zero w
+  have hval_pos : 0 < (2 * r).val := by
+    rcases Nat.eq_zero_or_pos (2 * r).val with hz | hpos
+    · exact absurd (ZMod.val_injective N (by rw [hz, ZMod.val_zero])) h2r
+    · exact hpos
+  rw [Finset.mem_filter, Nat.mem_divisors]
+  refine ⟨⟨Nat.gcd_dvd_right _ _, NeZero.ne N⟩, ?_⟩
+  calc Nat.gcd (2 * r).val N ≤ (2 * r).val :=
+        Nat.le_of_dvd hval_pos (Nat.gcd_dvd_left _ _)
+    _ < N := ZMod.val_lt _
+
+/-- **Exhaustive spectral partition (odd modulus).**  The gcd level sets of the nonzero
+frequencies, indexed by the proper divisors `d ∣ N` (`d < N`), partition the entire spectrum:
+summing their Part XXV counts `φ(N/d)` recovers the total number `N − 1` of nonzero frequencies.
+Proof: the fiber map `r ↦ gcd((2r).val, N)` lands in the proper divisors
+(`sqGaussSum_gcd_mem_proper_divisors_of_odd`), so `Finset.card_eq_sum_card_fiberwise` decomposes
+`|univ \ {0}| = N − 1` into the per-level counts. -/
+theorem sqGaussSum_spectral_partition_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ((N.divisors).filter (· < N)).sum (fun d => Nat.totient (N / d)) = N - 1 := by
+  -- number of nonzero frequencies
+  have hcard : (Finset.univ \ ({0} : Finset (ZMod N))).card = N - 1 := by
+    rw [show Finset.univ \ ({0} : Finset (ZMod N)) = Finset.univ.erase 0 from
+      Finset.sdiff_singleton_eq_erase _ _,
+      Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ZMod.card]
+  -- the fiber map `r ↦ gcd((2r).val, N)` lands in the proper divisors
+  have hfiber : ∀ r ∈ (Finset.univ \ ({0} : Finset (ZMod N))),
+      Nat.gcd (2 * r).val N ∈ (N.divisors).filter (· < N) := fun r hr =>
+    sqGaussSum_gcd_mem_proper_divisors_of_odd hodd
+      (by rw [Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2)
+  rw [← hcard, Finset.card_eq_sum_card_fiberwise
+    (f := fun r => Nat.gcd (2 * r).val N)
+    (t := (N.divisors).filter (· < N))
+    (fun r hr => Finset.mem_coe.mpr (hfiber r (Finset.mem_coe.mp hr)))]
+  apply Finset.sum_congr rfl
+  intro d hd
+  rw [Finset.mem_filter, Nat.mem_divisors] at hd
+  exact (sqGaussSum_gcd_level_set_card_of_odd hodd hd.1.1 hd.2).symm
+
+/-- **Second moment as an honest divisor-partition sum (odd modulus).**  Grouping the exact
+frequency gcd-sum `Σ_{r≠0} ‖G(r)‖² = N·Σ_{r≠0} gcd((2r).val,N)` by the constant value the gcd
+takes on each level set (Part XXV) turns the second moment into an explicit sum over the proper
+divisors:
+
+    Σ_{r≠0} ‖G(r)‖² = N · Σ_{d ∣ N, d < N} d · φ(N/d).
+
+This is the divisor-sum form of the Part XX second moment, obtained purely from the exhaustive
+spectral partition: each of the `φ(N/d)` frequencies in level `d` contributes `N·d`. -/
+theorem sqGaussSum_normSq_sum_eq_divisor_sum_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * ((N.divisors).filter (· < N)).sum
+          (fun d => (d : ℝ) * (Nat.totient (N / d) : ℝ)) := by
+  rw [sqGaussSum_normSq_sum_eq_gcd_sum_of_odd hodd]
+  congr 1
+  have hfiber : ∀ r ∈ (Finset.univ \ ({0} : Finset (ZMod N))),
+      Nat.gcd (2 * r).val N ∈ (N.divisors).filter (· < N) := fun r hr =>
+    sqGaussSum_gcd_mem_proper_divisors_of_odd hodd
+      (by rw [Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2)
+  rw [← Finset.sum_fiberwise_of_maps_to hfiber
+    (fun r => (Nat.gcd (2 * r).val N : ℝ))]
+  apply Finset.sum_congr rfl
+  intro d hd
+  rw [Finset.mem_filter, Nat.mem_divisors] at hd
+  -- on the fiber `gcd = d`, every summand is the constant `(d : ℝ)`
+  rw [Finset.sum_congr rfl (g := fun _ => (d : ℝ))
+        (fun r hr => by rw [Finset.mem_filter] at hr; rw [hr.2])]
+  rw [Finset.sum_const, sqGaussSum_gcd_level_set_card_of_odd hodd hd.1.1 hd.2,
+    nsmul_eq_mul, mul_comm]
+
 end Szemeredi.Roth
