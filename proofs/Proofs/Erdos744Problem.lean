@@ -590,6 +590,48 @@ theorem two_mul_bipartitionNumber_le_edgeCount {V : Type*} [Fintype V] [LinearOr
   have hle := bipartitionNumber_le_maxCut G
   omega
 
+/-- **Erdős's max-cut bound, canonical ceiling form:** the best 2-colouring
+separates at least `⌈m/2⌉` edges, `(edgeCount G + 1) / 2 ≤ maxCut G` (natural-number
+`/` is floor division, so `(m + 1) / 2 = ⌈m/2⌉`). This is the sharp textbook
+statement of `edgeCount_le_two_mul_maxCut` (`m ≤ 2·maxCut`): for an odd number of
+edges it strictly beats the naive `⌊m/2⌋`, guaranteeing e.g. `2` cut edges when
+`m = 3`. -/
+theorem edgeCount_add_one_div_two_le_maxCut {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    (edgeCount G + 1) / 2 ≤ maxCut G := by
+  have hbound := edgeCount_le_two_mul_maxCut G
+  omega
+
+/-- **Min-uncut floor bound:** the best 2-colouring leaves at most `⌊m/2⌋` edges
+monochromatic, `bipartitionNumber G ≤ edgeCount G / 2`. The natural-number
+division form of `two_mul_bipartitionNumber_le_edgeCount` (`2·bip ≤ m`) and the
+exact dual of `edgeCount_add_one_div_two_le_maxCut`: at most half the edges must be
+deleted to make `G` bipartite. -/
+theorem bipartitionNumber_le_edgeCount_div_two {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ edgeCount G / 2 := by
+  have hbound := two_mul_bipartitionNumber_le_edgeCount G
+  omega
+
+/-- **The canonical half-edge sandwich (⌊⌋ / ⌈⌉ forms).** Packages Erdős's max-cut
+bound and its min-uncut dual in their sharp natural-number-division forms:
+
+    bipartitionNumber G  ≤  ⌊m/2⌋  ≤  ⌈m/2⌉  ≤  maxCut G,
+
+where `m = edgeCount G`. The textbook rendering of the `2·`-multiplied sandwich
+`bipartitionNumber ≤ edgeCount/2 ≤ maxCut` implicit in
+`two_mul_bipartitionNumber_le_edgeCount` / `edgeCount_le_two_mul_maxCut`: at most
+half the edges are monochromatic and at least half are cut, under one optimal
+colouring. -/
+theorem half_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G ≤ edgeCount G / 2 ∧
+      edgeCount G / 2 ≤ (edgeCount G + 1) / 2 ∧
+      (edgeCount G + 1) / 2 ≤ maxCut G :=
+  ⟨bipartitionNumber_le_edgeCount_div_two G,
+   Nat.div_le_div_right (Nat.le_succ _),
+   edgeCount_add_one_div_two_le_maxCut G⟩
+
 /-
 # Part 3d: Single-edge Lipschitz continuity
 
