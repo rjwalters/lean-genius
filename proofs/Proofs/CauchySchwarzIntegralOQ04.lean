@@ -719,6 +719,61 @@ theorem heisenberg_canonical_sum {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   rw [hnorm] at h
   exact h
 
+/-! ## The weighted (tunable) sum uncertainty relation
+
+The additive relation `Var(A) + Var(B) ≥ ‖⟪[A,B]⟫‖` (`robertson_sum_form`) uses the
+*equal-weight* AM–GM `‖u‖² + ‖v‖² ≥ 2‖u‖‖v‖`.  The weighted AM–GM
+`t‖u‖² + t⁻¹‖v‖² ≥ 2‖u‖‖v‖` (any `t > 0`) gives a one-parameter family of sum-form
+bounds
+
+  `t·‖(A−a)ψ‖² + t⁻¹·‖(B−b)ψ‖² ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`,
+
+with `robertson_sum_form` the `t = 1` case.  The free scale `t` lets one rebalance the
+two variances — choosing `t = ‖v‖/‖u‖` recovers the sharp product bound `2‖u‖‖v‖`,
+while any other `t` still yields a valid (looser) additive certificate.  This tunable
+form is what underlies scale-optimized / state-independent sum uncertainty estimates. -/
+
+/-- **Robertson uncertainty relation, weighted (tunable) sum form.**  For symmetric
+`A, B`, any state `ψ`, real shifts `a, b`, and any weight `t > 0`,
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖ ≤ t·‖(A−a)ψ‖² + t⁻¹·‖(B−b)ψ‖²`.
+
+The one-parameter generalization of `robertson_sum_form` (recovered at `t = 1`),
+obtained from the standard-deviation form `robertson_std_form` by the *weighted*
+AM–GM `t‖u‖² + t⁻¹‖v‖² ≥ 2‖u‖‖v‖`, itself the identity
+`t‖u‖² + t⁻¹‖v‖² − 2‖u‖‖v‖ = t⁻¹(t‖u‖ − ‖v‖)² ≥ 0`. -/
+theorem robertson_weighted_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) {t : ℝ} (ht : 0 < t) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ t * ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 + t⁻¹ * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  have hstd := robertson_std_form hA hB ψ a b
+  have htne : t ≠ 0 := ne_of_gt ht
+  set u := ‖A ψ - (a : 𝕜) • ψ‖ with hu_def
+  set v := ‖B ψ - (b : 𝕜) • ψ‖ with hv_def
+  -- weighted AM–GM: `t·u² + t⁻¹·v² − 2uv = t⁻¹·(t·u − v)² ≥ 0`.
+  have heq : t * u ^ 2 + t⁻¹ * v ^ 2 - 2 * (u * v) = t⁻¹ * (t * u - v) ^ 2 := by
+    field_simp
+    ring
+  have hamgm : 2 * (u * v) ≤ t * u ^ 2 + t⁻¹ * v ^ 2 := by
+    nlinarith [mul_nonneg (le_of_lt (inv_pos.mpr ht)) (sq_nonneg (t * u - v)), heq]
+  -- chain with the standard-deviation bound `½‖comm‖ ≤ u·v`.
+  linarith [hstd, hamgm]
+
+/-- **Heisenberg uncertainty principle, weighted (tunable) sum form.**  Instantiating
+`robertson_weighted_sum_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`,
+`⟨B⟩ = Re⟪ψ,Bψ⟫` makes each summand a (scaled) variance:
+
+  `Var_ψ(A)·t + Var_ψ(B)·t⁻¹ ≥ ‖⟪ψ, (AB−BA)ψ⟫‖`   (any `t > 0`).
+
+The tunable companion of `heisenberg_sum_form` (the `t = 1` case). -/
+theorem heisenberg_weighted_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) {t : ℝ} (ht : 0 < t) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖
+      ≤ t * ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        + t⁻¹ * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
+  robertson_weighted_sum_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ))) ht
+
 end CauchySchwarzIntegralOQ04
 
 #print axioms CauchySchwarzIntegralOQ04.gram_eq_iff_parallel
