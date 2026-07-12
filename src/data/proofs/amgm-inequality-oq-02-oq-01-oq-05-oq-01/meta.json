@@ -39,7 +39,8 @@
       "newton_k2_allreals_three: Newton's k = 2 rung e₂² ≥ 3e₁e₃ for THREE arbitrary reals (no sign hypothesis) — a strict strengthening of the gallery's nonnegative NewtonLC.newton_ineq, which genuinely uses eₖ ≥ 0",
       "newton_k2_sos_identity: the exact algebraic certificate e₂² − 3e₁e₃ = ½[(xy−yz)² + (yz−zx)² + (zx−xy)²], a `ring` identity over ℝ that makes the inequality a manifest sum of squares",
       "newton_k2_allreals_three_cleared: the integer-cleared form 2·e₂² ≥ 6·(e₁e₃) matching the general statement 2(n-2)e₂² ≥ 3(n-1)e₁e₃ specialized at n = 3 (with the corrected constant 3(n-1)/(2(n-2)), not the reciprocal-swapped value)",
-      "newton_k2_equality_iff: the exact equality locus e₂² = 3e₁e₃ ⟺ xy = yz = zx (all pair products equal), noting this is strictly larger than the diagonal x = y = z"
+      "newton_k2_equality_iff: the exact equality locus e₂² = 3e₁e₃ ⟺ xy = yz = zx (all pair products equal), noting this is strictly larger than the diagonal x = y = z",
+      "newton_k2_symmetric_means: the result in the literal normalized (Maclaurin) symmetric-means form S₂² ≥ S₁S₃ with S₁ = e₁/3, S₂ = e₂/3, S₃ = e₃ — exactly the shape the open question asks for, sign-agnostic because the C(3,k) denominators are constants; factors the defect as (e₂² − 3e₁e₃)/9 ≥ 0 and delegates to newton_k2_allreals_three"
     ]
   },
   "overview": {
@@ -51,7 +52,8 @@
       "The all-reals rung needs no analysis, just an SOS certificate. Because e₂² − 3e₁e₃ is exactly half the sum of the three squared pair-product differences, the inequality is a manifest sum of squares — the same phenomenon that guarantees, by Hilbert's theorem, that any nonnegative quartic in ≤ 3 variables is SOS.",
       "This strengthens the existing nonnegative proof. The gallery's NewtonLC.newton_ineq proves the rung using eₖ ≥ 0; dropping that hypothesis (as here for n = 3) is a genuine strengthening, since Newton's inequalities are really facts about real-rooted polynomials, not about signs.",
       "The equality locus is subtler than the diagonal. e₂² = 3e₁e₃ holds iff all three pair products agree (xy = yz = zx), which is strictly larger than x = y = z: e.g. (1,0,0) attains equality. The SOS certificate exposes this exactly, since the defect vanishes iff each pair-product difference does.",
-      "The cleared constant is 3(n-1)/(2(n-2)), not its reciprocal. Averaging S₂² ≥ S₁S₃ back to elementary symmetric sums gives C(n,2)²/(C(n,1)C(n,3)) = 3(n-1)/(2(n-2)); at n = 3 this is 3, matching e₂² ≥ 3e₁e₃."
+      "The cleared constant is 3(n-1)/(2(n-2)), not its reciprocal. Averaging S₂² ≥ S₁S₃ back to elementary symmetric sums gives C(n,2)²/(C(n,1)C(n,3)) = 3(n-1)/(2(n-2)); at n = 3 this is 3, matching e₂² ≥ 3e₁e₃.",
+      "The literal open-question shape needs no positivity side-conditions. Restated in normalized means (newton_k2_symmetric_means), S₂² ≥ S₁S₃ with S₁ = e₁/3, S₂ = e₂/3, S₃ = e₃ reduces to (e₂² − 3e₁e₃)/9 ≥ 0 — the C(3,k) denominators are constants, so the inequality is sign-agnostic and follows directly from the cleared form. The file closes with a #print axioms audit confirming the proof rests only on propext / Classical.choice / Quot.sound (no native_decide, no Lean.ofReduceBool), so the verified / 0-axiom badge is honest."
     ],
     "prerequisites": [
       "Elementary symmetric polynomials e₁ = x+y+z, e₂ = xy+yz+zx, e₃ = xyz",
@@ -95,8 +97,15 @@
       "id": "equality-locus",
       "title": "Exact Equality Locus",
       "startLine": 68,
-      "endLine": 105,
+      "endLine": 103,
       "summary": "newton_k2_equality_iff: e₂² = 3e₁e₃ ⟺ xy = yz = zx. Forward: defect 0 forces the sum of three squares to 0, hence each square to 0 (by_contra + positivity). Backward: equal pair products make every squared difference vanish. Notes the locus is strictly larger than x = y = z."
+    },
+    {
+      "id": "symmetric-means-form",
+      "title": "Maclaurin (Symmetric-Means) Form + Axiom Audit",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "newton_k2_symmetric_means: the literal open-question statement S₂² ≥ S₁S₃ with S₁ = e₁/3, S₂ = e₂/3, S₃ = e₃. Factors the difference as (e₂² − 3e₁e₃)/9 ≥ 0 and delegates to newton_k2_allreals_three; the constant C(3,k) denominators need no positivity side-conditions, so the statement is sign-agnostic. The file closes with #print axioms newton_k2_symmetric_means, a kernel audit confirming dependence only on propext / Classical.choice / Quot.sound."
     }
   ],
   "crossReferences": [
