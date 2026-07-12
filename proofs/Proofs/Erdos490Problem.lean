@@ -72,6 +72,26 @@ theorem productSet_eq_image (A B : Finset ℕ) :
   · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
   · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩; exact ⟨a, ha, b, hb, rfl⟩
 
+/-- **The universal product-count bound**: `|A·B| ≤ |A|·|B|`, with *no* distinctness
+hypothesis.  The product set is the image of the product map on `A ×ˢ B`, and an image
+never has more elements than its domain (`Finset.card_image_le`), so `|A·B| ≤ |A ×ˢ B| =
+|A|·|B|`.  This is the trivial upper bound that the entire problem is about *saturating*:
+`HasDistinctProducts A B` is exactly the equality case (see `hasDistinctProducts_iff_card_le`),
+and Szemerédi's theorem asks how large `|A|·|B|` can be while the bound stays tight. -/
+theorem productSet_card_le (A B : Finset ℕ) :
+    (productSet A B).card ≤ A.card * B.card := by
+  rw [productSet_eq_image, ← Finset.card_product A B]
+  exact Finset.card_image_le
+
+/-- **`HasDistinctProducts` is empty on the left**: `A·∅ = ∅` and `∅·B = ∅`, so the
+degenerate pairs carry no products.  (Recorded as `simp` lemmas so the product set
+collapses automatically.) -/
+@[simp] theorem productSet_empty_left (B : Finset ℕ) : productSet ∅ B = ∅ := by
+  simp [productSet]
+
+@[simp] theorem productSet_empty_right (A : Finset ℕ) : productSet A ∅ = ∅ := by
+  ext n; simp [productSet]
+
 /-- **`HasDistinctProducts` is injectivity of the product map.**  The cardinality
 condition `|A·B| = |A||B|` holds iff `(a, b) ↦ a·b` is injective on `A ×ˢ B`
 (via `Finset.card_image_iff`). -/
@@ -79,6 +99,19 @@ theorem hasDistinctProducts_iff_injOn (A B : Finset ℕ) :
     HasDistinctProducts A B ↔ Set.InjOn (fun p : ℕ × ℕ => p.1 * p.2) ↑(A ×ˢ B) := by
   rw [HasDistinctProducts, productSet_eq_image, ← Finset.card_product A B,
     Finset.card_image_iff]
+
+/-- **Distinct products = saturating the universal bound.**  Since `|A·B| ≤ |A|·|B|`
+always holds (`productSet_card_le`), the equality defining `HasDistinctProducts` is
+equivalent to the single reverse inequality `|A|·|B| ≤ |A·B|`.  So to certify a pair has
+distinct products one need only exhibit that its product set is *at least* as large as
+`|A|·|B|` — the matching upper bound is automatic.  This is the inequality form used
+throughout extremal arguments. -/
+theorem hasDistinctProducts_iff_card_le (A B : Finset ℕ) :
+    HasDistinctProducts A B ↔ A.card * B.card ≤ (productSet A B).card := by
+  rw [HasDistinctProducts]
+  constructor
+  · intro h; rw [h]
+  · intro h; exact le_antisymm (productSet_card_le A B) h
 
 /-- **The two distinctness notions agree.**  `ProductMapInjective` (the elementwise
 quantified form) is equivalent to `HasDistinctProducts` (the cardinality form). -/
