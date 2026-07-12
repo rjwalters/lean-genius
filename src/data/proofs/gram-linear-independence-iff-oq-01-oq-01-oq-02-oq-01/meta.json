@@ -112,7 +112,7 @@
       {
         "theorem": "Real.sqrt_le_sqrt / Real.sqrt_sq / Real.sqrt_mul",
         "description": "Monotonicity and the inverse of squaring for the real square root: descend ‖det A‖² ≤ (∏ ‖col j‖)² to ‖det A‖ ≤ ∏ ‖col j‖, and evaluate √(n·M²) = √n·M for the uniform bound.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Finset.prod_le_prod / Finset.prod_const / Finset.prod_pow",

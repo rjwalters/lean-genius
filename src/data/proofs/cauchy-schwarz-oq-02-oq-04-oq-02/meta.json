@@ -34,7 +34,7 @@
       {
         "theorem": "Real.sqrt_mul",
         "description": "√(x·y) = √x · √y for x ≥ 0. Splits the energy seminorm of a product, used in absolute homogeneity and the √-form Cauchy-Schwarz.",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_le_sqrt",

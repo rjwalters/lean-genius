@@ -23,12 +23,12 @@
       {
         "theorem": "Real.sqrt_mul",
         "description": "sqrt(a*b) = sqrt(a)*sqrt(b) for a >= 0",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       },
       {
         "theorem": "Real.sqrt_sq",
         "description": "sqrt(x^2) = x for x >= 0",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "module": "Mathlib.Data.Real.Sqrt"
       }
     ],
     "originalContributions": [
