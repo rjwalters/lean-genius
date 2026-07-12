@@ -4600,4 +4600,171 @@ theorem le_maxSqDiffFreeCard_mod_169 : 39 ≤ maxSqDiffFreeCard (13 ^ 2) := by
   have h := le_maxSqDiffFreeCard_of_isSqDiffFree (A := A) hAfree
   rw [hAcard] at h; omega
 
+
+
+/-! ### Part XXXIII — the coset lift works at every SQUAREFREE modulus (primality dropped)
+
+Parts XXX–XXXII established the coset lift and the super-multiplicativity of the extremal
+square-difference-free count `maxSqDiffFreeCard` across the step `p ↦ p²` **for prime `p`**.
+The primality hypothesis can be weakened, but *not* to arbitrary `N`: the lift
+`ℤ/Nℤ → ℤ/N²ℤ` through `φ = castHom (N ∣ N²)` is square-difference-free **iff `N` is
+squarefree**.  The subtle point is a single reducedness step.  For `x ∈ coset s` and
+`x + n²` in the lift with `n² ≠ 0`, one needs `(φ n)² ≠ 0` to feed the base
+square-difference-freeness.  Equivalently `ZMod N` must be *reduced* (`y² = 0 → y = 0`),
+which holds exactly when `N` is squarefree.  Concretely the lift **fails** at
+`N = 4`: `coset 0 = {0,4,8,12} ⊆ ℤ/16ℤ` contains `0` and `4 = 2²` with `2² ≠ 0` in `ℤ/16ℤ`,
+a nonzero square difference, because `2 ≠ 0` yet `2² = 0` in `ℤ/4ℤ`.
+
+For squarefree `N` the step `N ∣ a² ⟹ N ∣ a` (`Squarefree.dvd_pow_iff_dvd`) restores the
+argument.  We record the general lift and the resulting super-multiplicativity
+
+  `maxSqDiffFreeCard (N²) ≥ N · maxSqDiffFreeCard N`  for every squarefree `N ≥ 1`,
+
+which subsumes the prime case `maxSqDiffFreeCard_prime_sq_ge` and applies at **composite**
+squarefree moduli that the prime-square constructions of Parts XXVIII–XXXII cannot reach.
+The concrete witness `le_maxSqDiffFreeCard_mod_441` lifts the three-element base set
+`{0,2,10} ⊆ ℤ/21ℤ` to a square-difference-free set of `3·21 = 63 = 3√N` elements in the
+composite squarefree square `ℤ/441ℤ` (`441 = 21² = 3²·7²`, with `21 = 3·7` squarefree). -/
+
+/-- **`ZMod N` is reduced when `N` is squarefree.**  If `N` is squarefree then `x² = 0`
+forces `x = 0` in `ZMod N` — squarefreeness is exactly the absence of nonzero nilpotents. -/
+theorem ZMod.sq_eq_zero_iff_eq_zero_of_squarefree {N : ℕ} [NeZero N] (hsf : Squarefree N)
+    (x : ZMod N) : x ^ 2 = 0 → x = 0 := by
+  intro hx
+  have hz : (x.val * x.val) % N = 0 := by
+    have h0 : (x ^ 2).val = 0 := (ZMod.val_eq_zero _).mpr hx
+    rwa [pow_two x, ZMod.val_mul] at h0
+  have hNv : N ∣ x.val := by
+    have hNdvd : N ∣ x.val ^ 2 := by rw [pow_two]; exact Nat.dvd_of_mod_eq_zero hz
+    exact (hsf.dvd_pow_iff_dvd (by norm_num : (2 : ℕ) ≠ 0)).mp hNdvd
+  exact (ZMod.val_eq_zero x).mp (Nat.eq_zero_of_dvd_of_lt hNv (ZMod.val_lt x))
+
+/-- **The coset lift works at every squarefree modulus.**  For squarefree `N ≥ 1`, a
+square-difference-free residue set `S ⊆ ℤ/Nℤ` lifts through `φ : ℤ/N²ℤ → ℤ/Nℤ` to a
+square-difference-free set of exactly `|S|·N` elements.  Generalizes
+`sqDiffFree_lift_prime_sq` from prime to squarefree moduli; the squarefree hypothesis is
+sharp (`ZMod N` must be reduced, cf. the `N = 4` failure discussed above). -/
+theorem sqDiffFree_lift_sq_of_squarefree {N : ℕ} [NeZero N] (hsf : Squarefree N)
+    (S : Finset (ZMod N))
+    (hS : ∀ s ∈ S, ∀ n : ZMod N, n ^ 2 ≠ 0 → s + n ^ 2 ∉ S) :
+    ∃ A : Finset (ZMod (N ^ 2)),
+      (∀ x ∈ A, ∀ n : ZMod (N ^ 2), n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+        ∧ A.card = S.card * N := by
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  haveI : NeZero (N ^ 2) := ⟨pow_ne_zero 2 (NeZero.ne N)⟩
+  have hpdvd : N ∣ N ^ 2 := ⟨N, (sq N)⟩
+  set φ : ZMod (N ^ 2) →+* ZMod N := ZMod.castHom hpdvd (ZMod N) with hφ
+  -- the coset attached to a residue `s`
+  set g : ZMod N → ℕ → ZMod (N ^ 2) := fun s k => ((s.val + N * k : ℕ) : ZMod (N ^ 2)) with hg
+  set coset : ZMod N → Finset (ZMod (N ^ 2)) := fun s => (Finset.range N).image (g s) with hcoset
+  -- `φ` maps the `s`-coset onto `s`
+  have hφcoset : ∀ s : ZMod N, ∀ y ∈ coset s, φ y = s := by
+    intro s y hy
+    rw [hcoset, Finset.mem_image] at hy
+    obtain ⟨k, _, rfl⟩ := hy
+    have hmap : φ (g s k) = ((s.val + N * k : ℕ) : ZMod N) := by rw [hg]; exact map_natCast φ _
+    rw [hmap]; push_cast
+    rw [ZMod.natCast_self, ZMod.natCast_zmod_val]; ring
+  -- `φ n = 0 ⟹ n² = 0` (a multiple of `N` squares to a multiple of `N²`, no primality needed)
+  have hnzero : ∀ n : ZMod (N ^ 2), φ n = 0 → n ^ 2 = 0 := by
+    intro n hn0
+    have hφn : φ n = ((n.val : ℕ) : ZMod N) := by
+      conv_lhs => rw [← ZMod.natCast_zmod_val n]
+      exact map_natCast φ _
+    rw [hφn] at hn0
+    have hpv : N ∣ n.val := (ZMod.natCast_eq_zero_iff _ _).mp hn0
+    obtain ⟨s, hs⟩ := hpv
+    have hp2 : N ^ 2 ∣ n.val * n.val := ⟨s * s, by rw [hs]; ring⟩
+    have hval : (n ^ 2).val = (n.val * n.val) % N ^ 2 := by rw [pow_two n, ZMod.val_mul]
+    have hz : (n ^ 2).val = 0 := by
+      rw [hval]; obtain ⟨t, ht⟩ := hp2; rw [ht, Nat.mul_mod_right]
+    exact (ZMod.val_eq_zero _).mp hz
+  -- each coset has exactly `N` elements
+  have hcard_coset : ∀ s : ZMod N, (coset s).card = N := by
+    intro s
+    have hinj : Set.InjOn (g s) (Finset.range N) := by
+      intro a ha b hb hab
+      rw [Finset.coe_range, Set.mem_Iio] at ha hb
+      have hlta : s.val + N * a < N ^ 2 := by
+        have := ZMod.val_lt s; rw [sq]
+        calc s.val + N * a < N + N * a := by omega
+          _ = N * (a + 1) := by ring
+          _ ≤ N * N := by gcongr; omega
+      have hltb : s.val + N * b < N ^ 2 := by
+        have := ZMod.val_lt s; rw [sq]
+        calc s.val + N * b < N + N * b := by omega
+          _ = N * (b + 1) := by ring
+          _ ≤ N * N := by gcongr; omega
+      have hva : (g s a).val = s.val + N * a := by rw [hg, ZMod.val_natCast, Nat.mod_eq_of_lt hlta]
+      have hvb : (g s b).val = s.val + N * b := by rw [hg, ZMod.val_natCast, Nat.mod_eq_of_lt hltb]
+      have heq : s.val + N * a = s.val + N * b := by rw [← hva, ← hvb, hab]
+      have : N * a = N * b := by omega
+      exact Nat.eq_of_mul_eq_mul_left hNpos this
+    rw [hcoset, Finset.card_image_of_injOn hinj, Finset.card_range]
+  -- distinct cosets are `φ`-separated, hence disjoint
+  have hdisj : ∀ s ∈ S, ∀ t ∈ S, s ≠ t → Disjoint (coset s) (coset t) := by
+    intro s _ t _ hst
+    rw [Finset.disjoint_left]
+    intro y hy1 hy2
+    exact hst ((hφcoset s y hy1).symm.trans (hφcoset t y hy2))
+  refine ⟨S.biUnion coset, ?_, ?_⟩
+  · -- square-difference-free
+    intro x hx n hn hmem
+    rw [Finset.mem_biUnion] at hx hmem
+    obtain ⟨s, hsS, hxs⟩ := hx
+    obtain ⟨t, htS, hts⟩ := hmem
+    have hφx : φ x = s := hφcoset s x hxs
+    have hφt : φ (x + n ^ 2) = t := hφcoset t (x + n ^ 2) hts
+    -- reducedness of `ZMod N` (squarefree) turns `n² ≠ 0` into `(φ n)² ≠ 0`
+    have hsqne : (φ n) ^ 2 ≠ 0 := fun hsq0 =>
+      hn (hnzero n (ZMod.sq_eq_zero_iff_eq_zero_of_squarefree hsf (φ n) hsq0))
+    have hsplit : φ (x + n ^ 2) = s + (φ n) ^ 2 := by rw [map_add, map_pow, hφx]
+    rw [hφt] at hsplit
+    exact hS s hsS (φ n) hsqne (hsplit ▸ htS)
+  · -- cardinality `|S|·N`
+    rw [Finset.card_biUnion hdisj]
+    simp only [hcard_coset]
+    rw [Finset.sum_const, smul_eq_mul]
+
+/-- **Super-multiplicativity of the extremal count at every squarefree modulus.**  Weakening
+the primality hypothesis of `maxSqDiffFreeCard_prime_sq_ge` to squarefreeness: for squarefree
+`N ≥ 1` the coset lift carries an extremal square-difference-free set in `ℤ/Nℤ` to one `N`
+times larger in `ℤ/N²ℤ`, so `maxSqDiffFreeCard (N²) ≥ N · maxSqDiffFreeCard N`. -/
+theorem maxSqDiffFreeCard_sq_ge_of_squarefree {N : ℕ} [NeZero N] (hsf : Squarefree N) :
+    N * maxSqDiffFreeCard N ≤ maxSqDiffFreeCard (N ^ 2) := by
+  haveI : NeZero (N ^ 2) := ⟨pow_ne_zero 2 (NeZero.ne N)⟩
+  obtain ⟨S, hS, hScard⟩ := exists_isSqDiffFree_card_eq_max N
+  obtain ⟨A, hAfree, hAcard⟩ := sqDiffFree_lift_sq_of_squarefree hsf S hS
+  calc N * maxSqDiffFreeCard N = S.card * N := by rw [hScard]; ring
+    _ = A.card := hAcard.symm
+    _ ≤ maxSqDiffFreeCard (N ^ 2) := le_maxSqDiffFreeCard_of_isSqDiffFree hAfree
+
+/-- **The prime super-multiplicativity is a special case.**  Re-derives
+`maxSqDiffFreeCard_prime_sq_ge` from the squarefree `maxSqDiffFreeCard_sq_ge_of_squarefree`
+(primes are squarefree), confirming primality was inessential — squarefreeness suffices. -/
+theorem maxSqDiffFreeCard_prime_sq_ge' {p : ℕ} (hp : p.Prime) [NeZero p] :
+    p * maxSqDiffFreeCard p ≤ maxSqDiffFreeCard (p ^ 2) :=
+  maxSqDiffFreeCard_sq_ge_of_squarefree hp.squarefree
+
+/-- **A composite-modulus instance of the squarefree super-multiplicativity.**  Primality is
+not needed, only squarefreeness: the three-element base `{0,2,10} ⊆ ℤ/21ℤ` is
+square-difference-free (each nonzero pairwise difference avoids the nonzero squares mod `21`),
+and `21 = 3·7` is squarefree, so it lifts to a square-difference-free set of
+`3·21 = 63 = 3√N` elements in `ℤ/441ℤ`, giving `maxSqDiffFreeCard 441 ≥ 63`.  The modulus
+`441 = 21²` is composite, so the prime-square constructions of Parts XXVIII–XXXII do not
+apply. -/
+theorem le_maxSqDiffFreeCard_mod_441 : 63 ≤ maxSqDiffFreeCard (21 ^ 2) := by
+  haveI : NeZero (21 : ℕ) := ⟨by norm_num⟩
+  have hsf : Squarefree (21 : ℕ) := by
+    rw [show (21 : ℕ) = 3 * 7 from rfl, Nat.squarefree_mul (by norm_num)]
+    exact ⟨Nat.prime_three.prime.squarefree, (by norm_num : Nat.Prime 7).prime.squarefree⟩
+  have hS : ∀ s ∈ ({0, 2, 10} : Finset (ZMod 21)), ∀ n : ZMod 21,
+      n ^ 2 ≠ 0 → s + n ^ 2 ∉ ({0, 2, 10} : Finset (ZMod 21)) := by decide
+  obtain ⟨A, hAfree, hAcard⟩ :=
+    sqDiffFree_lift_sq_of_squarefree hsf ({0, 2, 10} : Finset (ZMod 21)) hS
+  have hc : ({0, 2, 10} : Finset (ZMod 21)).card = 3 := by decide
+  have h := le_maxSqDiffFreeCard_of_isSqDiffFree (A := A) hAfree
+  rw [hAcard, hc] at h
+  omega
+
 end Szemeredi.Roth
