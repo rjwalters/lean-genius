@@ -1902,4 +1902,100 @@ theorem sqGaussSum_normSq_le_gcd {N : ℕ} [NeZero N] (r : ZMod N) :
   have h := sqGaussSum_normSq_le r
   rwa [kernel_card_eq_gcd (2 * r)] at h
 
+/-- **`‖G(r)‖ ≤ √(N · gcd(2r, N))`.**  The square-root form of `sqGaussSum_normSq_le_gcd`,
+    giving the pointwise magnitude of the quadratic Gauss sum directly as
+    `√(N · gcd((2r).val, N))`.  At unit frequencies (`gcd = 1`) this is the familiar `√N`;
+    the extra factor `√(gcd(2r, N))` measures exactly how the composite structure of `N`
+    can inflate the sum at non-unit frequencies. -/
+theorem sqGaussSum_norm_le_sqrt_gcd {N : ℕ} [NeZero N] (r : ZMod N) :
+    ‖sqGaussSum r‖ ≤ Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)) := by
+  have hmono := Real.sqrt_le_sqrt (sqGaussSum_normSq_le_gcd r)
+  rwa [Real.sqrt_sq (norm_nonneg _)] at hmono
+
+/-- A proper divisor is at most half: if `0 < m < N` then `2 · gcd(m, N) ≤ N`.  The gcd
+    divides `N` and is at most `m < N`, hence a *proper* divisor, so `N / gcd ≥ 2`. -/
+private theorem two_mul_gcd_le {m N : ℕ} (hpos : 0 < m) (hlt : m < N) :
+    2 * Nat.gcd m N ≤ N := by
+  set d := Nat.gcd m N with hd
+  have hNpos : 0 < N := lt_of_le_of_lt (Nat.zero_le m) hlt
+  have hdvd : d ∣ N := Nat.gcd_dvd_right m N
+  have hdpos : 0 < d := Nat.pos_of_dvd_of_pos hdvd hNpos
+  have hdlt : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hpos) hlt
+  obtain ⟨k, hk⟩ := hdvd
+  have hk2 : 2 ≤ k := by
+    by_contra h
+    push_neg at h
+    interval_cases k
+    · simp at hk; omega
+    · simp at hk; omega
+  calc 2 * d ≤ k * d := Nat.mul_le_mul_right d hk2
+    _ = d * k := Nat.mul_comm k d
+    _ = N := hk.symm
+
+/-- **Sub-maximal magnitude off the `2`-torsion.**  Whenever `2r ≠ 0`, the frequency
+    `(2r).val` is a nonzero residue `< N`, so its gcd with `N` is a *proper* divisor and
+    `sqGaussSum_normSq_le_gcd` sharpens to
+
+    `‖G(r)‖² ≤ N² / 2`,  i.e.  `‖G(r)‖ ≤ N / √2`.
+
+    This is the first *uniform* bound covering non-unit frequencies: it shows the quadratic
+    Gauss sum is strictly sub-maximal (`< N`) at every frequency except the trivial `2`-torsion
+    `{r : 2r = 0}`.  (At a `2`-torsion `r ≠ 0` — only possible for even `N` — the kernel is all
+    of `ZMod N` and `‖G(r)‖` can reach the full `N`.) -/
+theorem sqGaussSum_normSq_le_half_of_two_mul_ne {N : ℕ} [NeZero N] {r : ZMod N}
+    (hr : 2 * r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / 2 := by
+  have hpos : 0 < (2 * r).val := ZMod.val_pos.mpr hr
+  have hlt : (2 * r).val < N := ZMod.val_lt (2 * r)
+  have hnat : 2 * Nat.gcd (2 * r).val N ≤ N := two_mul_gcd_le hpos hlt
+  have hgle : (Nat.gcd (2 * r).val N : ℝ) ≤ (N : ℝ) / 2 := by
+    have := (Nat.cast_le (α := ℝ)).mpr hnat
+    push_cast at this; linarith
+  have hNnn : (0 : ℝ) ≤ N := Nat.cast_nonneg N
+  calc ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := sqGaussSum_normSq_le_gcd r
+    _ ≤ (N : ℝ) * ((N : ℝ) / 2) := mul_le_mul_of_nonneg_left hgle hNnn
+    _ = (N : ℝ) ^ 2 / 2 := by ring
+
+/-- **Uniform sub-maximal magnitude at odd moduli.**  For `N` odd, `2` is a unit, so `2r = 0`
+    forces `r = 0`; hence *every* nonzero frequency has `2r ≠ 0` and inherits the sub-maximal
+    bound `‖G(r)‖² ≤ N² / 2`.  Unlike the exact `√N` evaluation, this needs no unit hypothesis on
+    `r` itself — it holds at the non-unit nonzero frequencies of a composite odd `N` too. -/
+theorem sqGaussSum_normSq_le_half_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / 2 := by
+  apply sqGaussSum_normSq_le_half_of_two_mul_ne
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  intro h
+  obtain ⟨u, hu⟩ := h2
+  have hz : (↑u⁻¹ : ZMod N) * (2 * r) = 0 := by rw [h, mul_zero]
+  rw [← hu, ← mul_assoc, Units.inv_mul, one_mul] at hz
+  exact hr hz
+
+/-- **`‖G(r)‖ ≤ N / √2` at odd moduli.**  Square-root form of `sqGaussSum_normSq_le_half_of_odd`:
+    the uniform magnitude bound `‖G(r)‖ ≤ √(N²/2)` valid at every nonzero frequency of an odd
+    modulus, supplying a *single* `M` for `sqDiffFree_density_bound` over all odd `N`. -/
+theorem sqGaussSum_norm_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N} (hr : r ≠ 0) :
+    ‖sqGaussSum r‖ ≤ Real.sqrt ((N : ℝ) ^ 2 / 2) := by
+  have hmono := Real.sqrt_le_sqrt (sqGaussSum_normSq_le_half_of_odd hodd hr)
+  rwa [Real.sqrt_sq (norm_nonneg _)] at hmono
+
+/-- **Square-difference density bound at odd moduli (unconditional in `N`).**  The uniform
+    sub-maximal magnitude `‖G(r)‖ ≤ √(N²/2)` discharges the analytic hypothesis of
+    `sqDiffFree_density_bound` with `M = N/√2` for *every* odd `N` — composite included — extending
+    the prime-modulus capstone `sqDiffFree_density_bound_of_prime` past the field case.
+
+    Honesty note: `M = N/√2` is of the same order as `N`, so — unlike the prime case's `M = √N` —
+    this does **not** by itself force `|A| = o(N)`.  It is a genuine unconditional statement for all
+    odd moduli, but quantitatively weak; a nontrivial odd-composite Sárközy density still needs the
+    residual-phase cancellation in `Σ_{h : 2rh=0} ψ(−rh²)` (a smaller Gauss sum) that the triangle
+    inequality in `sqGaussSum_normSq_le` discards. -/
+theorem sqDiffFree_density_bound_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ^ 2
+      ≤ (A.card : ℝ) * (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card
+        + (↑N)⁻¹ * (Real.sqrt ((N : ℝ) ^ 2 / 2) * (↑A.card * ↑N - (↑A.card) ^ 2)) :=
+  sqDiffFree_density_bound A (fun _ hr => sqGaussSum_norm_le_of_odd hodd hr) hfree
+
 end Szemeredi.Roth
