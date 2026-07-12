@@ -91,17 +91,17 @@
   "sections": [
     {
       "id": "docstring",
-      "title": "Module Docstring: Open Question and Symmetry Strategy",
+      "title": "Module Docstring, Imports, and Namespace Setup",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "States the open question — add the vanishing odd moments to complete the Gaussian moment sequence — and outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero. Emphasizes that the vanishing is genuine symmetry, not non-integrability, and that folding it with the parent's even moments yields the full parity-indexed sequence.",
+      "endLine": 49,
+      "summary": "States the open question — add the vanishing odd moments to complete the Gaussian moment sequence — and outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero. Emphasizes that the vanishing is genuine symmetry, not non-integrability, and that folding it with the parent's even moments yields the full parity-indexed sequence. Closes with the `open Real MeasureTheory` / `open scoped Nat` setup (making `⁼‼` double-factorial notation available) and the `namespace AreaOfCircleOQ07OQ05OQ01OQ01` declaration.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
     },
     {
       "id": "odd-moment",
       "title": "The Odd Moments Vanish",
       "startLine": 50,
-      "endLine": 71,
+      "endLine": 72,
       "summary": "theorem gaussian_odd_moment: ∫_ℝ x^{2n+1} e^{-x²} = 0. Sets f x = x^{2n+1} e^{-x²}, proves oddness f(-x) = -f(x) via Odd.neg_pow and neg_sq, then chains integral_neg_eq_self (∫ f(-x) = ∫ f) with the oddness rewrite ∫ f(-x) = -∫ f (integral_neg) to get ∫ f = -∫ f, closed by linarith. Unconditional — no integrability needed.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
     },
@@ -109,7 +109,7 @@
       "id": "first-moment",
       "title": "Sanity Check: The First Odd Moment",
       "startLine": 73,
-      "endLine": 77,
+      "endLine": 78,
       "summary": "theorem gaussian_first_odd_moment: ∫_ℝ x e^{-x²} = 0, the n = 0 instance, confirming the general formula on the simplest case.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x\\, e^{-x^2}\\,dx = 0$"
     },
@@ -117,7 +117,7 @@
       "id": "full-sequence",
       "title": "The Full Moment Sequence",
       "startLine": 79,
-      "endLine": 97,
+      "endLine": 98,
       "summary": "theorem gaussian_moment: ∫_ℝ x^k e^{-x²} = if Even k then (k-1)‼·√π/2^{k/2} else 0. Case-splits on Nat.even_or_odd k; the even branch k = k'+k' rewrites to the parent's gaussian_even_moment (using (k'+k')/2 = k' and k'+k' = 2k'), the odd branch k = 2k'+1 reduces to gaussian_odd_moment with the parity discharged by Nat.not_even_iff_odd.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{k} e^{-x^2}\\,dx = \\begin{cases}(k-1)!!\\sqrt{\\pi}/2^{k/2} & k\\text{ even}\\\\ 0 & k\\text{ odd}\\end{cases}$"
     }
