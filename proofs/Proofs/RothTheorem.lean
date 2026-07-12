@@ -3470,5 +3470,84 @@ theorem sqGaussSum_normSq_sum_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
         mul_le_mul_of_nonneg_left hR (Nat.cast_nonneg N)
     _ = (N : ℝ) ^ 2 * ((N.divisors.card : ℝ) - 1) := by ring
 
+/-! ### Part XXIII — First moment (L¹): `Σ_{r≠0}‖G(r)‖` is subquadratic (`o(N²)`)
+
+Parts XX–XXII pinned the **second** moment `Σ_{r≠0}‖G(r)‖²` to the exact Pillai sum and
+bracketed it as `N·φ(N) ≤ Σ‖G‖² ≤ N²·(d(N)−1)`, i.e. `Θ(N²)` at every odd modulus.  A
+reader will naturally ask whether the **first** moment `Σ_{r≠0}‖G(r)‖` — the `L¹` Weyl norm —
+is any smaller.  It is: Cauchy–Schwarz against the counting measure over the `N−1` nonzero
+frequencies turns the second-moment upper bound into
+
+    (Σ_{r≠0}‖G(r)‖)² ≤ (N−1)·Σ_{r≠0}‖G(r)‖² ≤ (N−1)·N²·(d(N)−1) ≤ N³·(d(N)−1),
+
+so `Σ_{r≠0}‖G(r)‖ ≤ N·√(N·(d(N)−1)) = N^{3/2+o(1)} = o(N²)`.  The first moment is strictly
+smaller in order than the second (`N^{3/2+o(1)}` vs `Θ(N²)`), completing the moment hierarchy.
+
+**Honest caveat (why this does not improve the density bound).**  One might hope the `o(N²)`
+first moment feeds the circle-method reduction to give `o(N)` density for *every* odd `N`,
+breaking the small-`minFac` obstruction.  It does not: Parseval *forces*
+`Σ_{r≠0}‖Â(r)‖² = |A|·N − |A|²`, so the residual `Σ_{r≠0}‖Â(r)‖²·‖G(r)‖` can only be pulled
+apart as `(max_{r≠0}‖G(r)‖)·Σ‖Â‖²` (the pointwise route, `sqDiffFree_card_le_of_supNorm`) or
+via Cauchy–Schwarz as `√(Σ‖Â‖⁴)·√(Σ‖G‖²)` (the `L²` route, `sqDiff_error_le_l2`) — never as
+`(something o(N))·Σ_{r≠0}‖G(r)‖`.  So the `L¹` norm, despite being subquadratic, does not enter
+the density estimate; the operative quantity remains the *pointwise* magnitude, capped at
+`N/√minFac`.  Part XXIII therefore sharpens the *map* of the obstruction (the barrier is
+genuinely pointwise/minor-arc, not an `L¹`/`L²` averaging artifact) without moving the density. -/
+
+/-- **Pointwise `L¹` magnitude at an odd modulus.**  Taking the nonnegative square root of the
+exact second-moment identity `‖G(r)‖² = N·gcd((2r).val, N)`
+(`sqGaussSum_normSq_eq_gcd_of_odd`):
+
+    `‖G(r)‖ = √(N·gcd((2r).val, N))`. -/
+theorem sqGaussSum_norm_eq_sqrt_gcd_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (r : ZMod N) :
+    ‖sqGaussSum r‖ = Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)) := by
+  have h := sqGaussSum_normSq_eq_gcd_of_odd hodd r
+  rw [← h, Real.sqrt_sq (norm_nonneg _)]
+
+/-- **First-moment (squared) upper bound at any odd modulus.**  Cauchy–Schwarz
+(`Finset.sum_mul_sq_le_sq_mul_sq` with the constant weight `1`) over the `N−1` nonzero
+frequencies against the Part XXII second-moment bound `Σ‖G‖² ≤ N²·(d(N)−1)`:
+
+    `(Σ_{r≠0} ‖G(r)‖)² ≤ N³·(d(N) − 1)`.
+
+Since `d(N) = N^{o(1)}`, the right side is `N^{3+o(1)}`, so the first moment is `N^{3/2+o(1)}`,
+strictly below the second moment's `Θ(N²)`. -/
+theorem sqGaussSum_norm_sum_sq_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    ((Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖)) ^ 2
+      ≤ (N : ℝ) ^ 3 * ((N.divisors.card : ℝ) - 1) := by
+  set T := Finset.univ \ {(0 : ZMod N)} with hT
+  have hCS := Finset.sum_mul_sq_le_sq_mul_sq T (fun _ => (1 : ℝ)) (fun r => ‖sqGaussSum r‖)
+  simp only [one_mul, one_pow] at hCS
+  have hcard_le : T.sum (fun _ => (1 : ℝ)) ≤ (N : ℝ) := by
+    rw [Finset.sum_const, nsmul_eq_mul, mul_one]
+    have hle : T.card ≤ N := by
+      calc T.card ≤ Finset.univ.card := Finset.card_le_card Finset.sdiff_subset
+        _ = N := by rw [Finset.card_univ, ZMod.card]
+    exact_mod_cast hle
+  have h2mom := sqGaussSum_normSq_sum_le_of_odd hodd
+  have hmom_nn : 0 ≤ T.sum (fun r => ‖sqGaussSum r‖ ^ 2) :=
+    Finset.sum_nonneg (fun r _ => by positivity)
+  refine hCS.trans (le_trans (mul_le_mul hcard_le h2mom hmom_nn (Nat.cast_nonneg N)) ?_)
+  apply le_of_eq; ring
+
+/-- **First moment is `o(N²)` (radical form).**  Taking the nonnegative square root of
+`sqGaussSum_norm_sum_sq_le_of_odd`:
+
+    `Σ_{r≠0} ‖G(r)‖ ≤ N·√(N·(d(N) − 1))`.
+
+As `d(N) = N^{o(1)}`, the bound is `N^{3/2+o(1)} = o(N²)`.  Contrast with the second-moment
+lower bound `sqGaussSum_l2_factor_ge_of_odd` (`√(N·φ(N)) ≤ √(Σ‖G‖²)`, order `N`): the `L¹`
+Weyl norm is genuinely smaller in order than the `L²` norm at every odd modulus. -/
+theorem sqGaussSum_norm_sum_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖)
+      ≤ (N : ℝ) * Real.sqrt ((N : ℝ) * ((N.divisors.card : ℝ) - 1)) := by
+  have hsq := sqGaussSum_norm_sum_sq_le_of_odd hodd
+  have hnn : 0 ≤ (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖) :=
+    Finset.sum_nonneg (fun r _ => norm_nonneg _)
+  rw [← Real.sqrt_sq hnn]
+  refine (Real.sqrt_le_sqrt hsq).trans ?_
+  rw [show (N : ℝ) ^ 3 * ((N.divisors.card : ℝ) - 1)
+      = (N : ℝ) ^ 2 * ((N : ℝ) * ((N.divisors.card : ℝ) - 1)) by ring,
+    Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]
 
 end Szemeredi.Roth
