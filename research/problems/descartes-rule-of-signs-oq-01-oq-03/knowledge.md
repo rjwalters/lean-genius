@@ -34,3 +34,39 @@ Descartes-proof content).
 **Verification (docker DOWN — containerd meta.db/blob I/O, NOT disk).** Direct `lean` elab vs
 pinned Mathlib v4.26.0 (see [[reference-docker-down-lean-elab-verification-path]]): exit 0, only
 2 pre-existing `unused variable hp` warnings. Meta `descartes-rule-of-signs` synced 8→7 axioms.
+
+## Session 2026-07-11 (researcher-1) — §9 reflection complementarity (Descartes for negative roots)
+
+**Mode**: ACT (SOLVED-side; frontier extension). The invariance family §7/§8 covered
+scaling, negation, reversal, positive-dilation `p(cX)` (c>0) — all of which FIX V — but
+the **reflection `p(-X)`** (which sends positive↔negative roots, the transformation
+behind Descartes for negative roots) was absent. It does NOT preserve V; instead there
+is a sharp complementarity.
+
+**Added to `DescartesRuleOfSignsOQ01OQ03.lean` (4 theorems, VERIFIED 0-axiom
+`{propext, Classical.choice, Quot.sound}`, host `lake env lean` EXIT 0):**
+- `countSignChanges_nowhere_zero` : for nowhere-zero f, the sign-change set = adjacent
+  pairs (i,i+1) with f i·f(i+1)<0 (no zeros to skip over → SignChangeBetween ⟺ adjacent+opp).
+- `card_adjacent` : `#{(i,j) : j=i+1}` in Fin n × Fin n = n-1 (card_bij' to range(n-1)).
+- `countSignChanges_alternate_add` : **V(f) + V(alt f) = n-1** for nowhere-zero f, where
+  alt f i = (-1)^i f i. Core: on an adjacent pair, (alt f)i·(alt f)(i+1) = -(f i·f(i+1)),
+  so opp-sign test holds for EXACTLY one of f, alt f → the two sign-change sets partition
+  the n-1 adjacent gaps (`Finset.filter_card_add_filter_neg_card_eq_card`).
+- `signChangesInCoeffs_comp_neg_X_add` : **V(p) + V(p(-X)) = deg p** for gap-free p (all
+  coeff 0..deg nonzero). Bridge: (p(-X)).coeff k = (-1)^k coeff k via `comp_C_mul_X_coeff`
+  at c=-1 (`-X = C(-1)*X`); reflected coeffSequence = (-1)^d · alt(coeffSequence p), global
+  (-1)^d factor killed by `countSignChanges_const_smul`, then alternate_add (n=d+1, n-1=d).
+
+**Key API / GOTCHAs**:
+- `comp_C_mul_X_coeff` : (p.comp(C c*X)).coeff k = c^k·p.coeff k (reused from §7's dilation).
+- Exponent identity `(-1)^(d-i) = (-1)^d·(-1)^i` (i≤d): via (-1)^i squared = 1
+  (`Even.neg_one_pow`) + pow_add on (d-i)+i=d.
+- ★`fun i => ... cp i` where cp:Fin(d+1)→ℝ and `(i:ℕ)` coercion present: MUST annotate
+  binder `fun (i : Fin (d+1)) => ...` else Lean infers i:ℕ from the coercion and `cp i` fails.
+- ★card_bij' mapsTo: prove `i.val < n-1` as a SEPARATE `have hlt := by omega` then
+  `mem_range.mpr hlt` — `mem_range.mpr (by omega)` fails (omega can't see hyps through the
+  dependent bij-function goal).
+
+### Terminus (unchanged)
+Transformation family now complete. Remaining open work is the deep (B1)-(B3) Sturm/Descartes
+comparison (structure-encoded assumptions in SturmReduction), genuinely multi-week.

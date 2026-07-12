@@ -1109,4 +1109,189 @@ theorem signChangesInCoeffs_comp_C_mul_X {c : ℝ} (hc : 0 < c) (p : ℝ[X]) :
     rw [hcoe]
     exact countSignChanges_mul_pos (fun i => pow_pos hc _) _
 
+/- ## § 9. The reflection `p(X) ↦ p(−X)` and Descartes for negative roots
+   (verified, axiom-free)
+
+The invariances of § 7 all *fix* the positive-root count and hence `V`.  The
+reflection `X ↦ −X` is different: it sends the positive roots of `p` to the
+*negative* roots and vice versa, and it is the transformation underlying the
+second half of Descartes' rule (`#{negative roots of p} ≤ V(p(−X))`).  Unlike a
+positive dilation, `p(−X)` alternates the signs of the coefficients
+(`(p(−X)).coeff k = (−1)^k · p.coeff k`), so it does *not* preserve `V`.
+
+Instead there is a sharp **complementarity**.  For a *nowhere-zero* coefficient
+pattern (no interior gaps), every one of the `n − 1` adjacent gaps is a sign
+change of exactly one of `p`, `p(−X)`: a persistence of sign in `p` becomes a
+change in `p(−X)` and vice versa.  Hence
+
+    V(p) + V(p(−X)) = deg p              (all coefficients `0 … deg p` nonzero).
+
+This is the exact combinatorial identity behind "Descartes bounds the positive
+*and* the negative roots": for a full (gap-free) polynomial the two Descartes
+counts partition the degree.  We prove it first at the level of sequences
+(`countSignChanges_alternate_add`) and then transport it to polynomials. -/
+
+/-- For a **nowhere-zero** sequence, a sign change can only occur between *adjacent*
+indices (no zeros can sit between to be skipped over), so the sign-change set is the
+set of adjacent pairs `(i, i+1)` with `f i · f (i+1) < 0`. -/
+theorem countSignChanges_nowhere_zero {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f
+      = (Finset.univ.filter (fun p : Fin n × Fin n =>
+          p.2.val = p.1.val + 1 ∧ f p.1 * f p.2 < 0)).card := by
+  classical
+  unfold DescartesRuleOfSigns.countSignChanges
+  congr 1
+  ext p
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, decide_eq_true_eq]
+  constructor
+  · intro hsc
+    obtain ⟨hij, _hi, hj, hbtw, hopp⟩ := hsc
+    refine ⟨?_, hopp⟩
+    have hlt : p.1.val < p.2.val := Fin.lt_def.mp hij
+    by_contra hne
+    have hgap : p.1.val + 1 < p.2.val := by omega
+    have hk : p.1.val + 1 < n := lt_trans hgap p.2.isLt
+    exact hnz _ (hbtw ⟨p.1.val + 1, hk⟩ (Fin.lt_def.mpr (Nat.lt_succ_self _))
+      (Fin.lt_def.mpr hgap))
+  · rintro ⟨hadj, hopp⟩
+    refine ⟨Fin.lt_def.mpr (by omega), hnz _, hnz _, ?_, hopp⟩
+    intro k hk1 hk2
+    have a := Fin.lt_def.mp hk1
+    have b := Fin.lt_def.mp hk2
+    omega
+
+/-- The set of adjacent index pairs `{(i, j) : j = i + 1}` in `Fin n × Fin n` has
+cardinality `n − 1`: the left index `i` ranges over `{0, …, n − 2}` and determines
+the pair. -/
+theorem card_adjacent (n : ℕ) :
+    (Finset.univ.filter (fun p : Fin n × Fin n => p.2.val = p.1.val + 1)).card = n - 1 := by
+  classical
+  rw [show n - 1 = (Finset.range (n - 1)).card from (Finset.card_range _).symm]
+  refine Finset.card_bij' (fun p _ => p.1.val)
+    (fun m hm => (⟨m, by have := Finset.mem_range.mp hm; omega⟩,
+                  ⟨m + 1, by have := Finset.mem_range.mp hm; omega⟩))
+    ?_ ?_ ?_ ?_
+  · rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    have hj : j.val < n := j.isLt
+    have hlt : i.val < n - 1 := by omega
+    exact Finset.mem_range.mpr hlt
+  · intro m hm
+    have hmr : m < n - 1 := Finset.mem_range.mp hm
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  · rintro ⟨i, j⟩ hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    exact Prod.ext_iff.mpr ⟨Fin.ext rfl, Fin.ext hp.symm⟩
+  · intro m _
+    rfl
+
+/-- **Reflection complementarity (sequence form).**  For a nowhere-zero sequence
+`f : Fin n → ℝ`, the sign changes of `f` and of its sign-alternated version
+`i ↦ (−1)^i · f i` together cover each of the `n − 1` adjacent gaps *exactly once*:
+
+    `V(f) + V(alt f) = n − 1`.
+
+Because no entry vanishes, both counts are carried entirely by adjacent pairs; and
+for an adjacent pair `(i, i+1)`, `(alt f) i · (alt f)(i+1) = −(f i · f (i+1))`, so the
+"opposite sign" test holds for exactly one of `f`, `alt f`.  The two sign-change sets
+therefore partition the adjacent pairs, whose count is `n − 1` (`card_adjacent`).
+Axiom-free. -/
+theorem countSignChanges_alternate_add {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f
+      + DescartesRuleOfSigns.countSignChanges (fun i => (-1 : ℝ) ^ (i : ℕ) * f i)
+      = n - 1 := by
+  classical
+  set g : Fin n → ℝ := fun i => (-1 : ℝ) ^ (i : ℕ) * f i with hg
+  have hgnz : ∀ i, g i ≠ 0 := fun i =>
+    mul_ne_zero (pow_ne_zero _ (by norm_num)) (hnz i)
+  have gprod : ∀ i j : Fin n, j.val = i.val + 1 → g i * g j = -(f i * f j) := by
+    intro i j hij
+    simp only [hg]
+    have hpow : (-1 : ℝ) ^ (i : ℕ) * (-1 : ℝ) ^ (j : ℕ) = -1 := by
+      rw [← pow_add]; exact Odd.neg_one_pow ⟨(i : ℕ), by omega⟩
+    linear_combination (f i * f j) * hpow
+  rw [countSignChanges_nowhere_zero hnz, countSignChanges_nowhere_zero hgnz]
+  set Adj : Finset (Fin n × Fin n) :=
+    Finset.univ.filter (fun p : Fin n × Fin n => p.2.val = p.1.val + 1) with hAdj
+  have hF : (Finset.univ.filter (fun p : Fin n × Fin n =>
+        p.2.val = p.1.val + 1 ∧ f p.1 * f p.2 < 0))
+      = Adj.filter (fun p => f p.1 * f p.2 < 0) := by
+    rw [hAdj, Finset.filter_filter]
+  have hG : (Finset.univ.filter (fun p : Fin n × Fin n =>
+        p.2.val = p.1.val + 1 ∧ g p.1 * g p.2 < 0))
+      = Adj.filter (fun p => ¬ f p.1 * f p.2 < 0) := by
+    rw [hAdj, Finset.filter_filter]
+    apply Finset.filter_congr
+    rintro ⟨i, j⟩ _
+    constructor
+    · rintro ⟨hadj, hopp⟩
+      refine ⟨hadj, ?_⟩
+      rw [gprod i j hadj] at hopp
+      intro hc; linarith
+    · rintro ⟨hadj, hopp⟩
+      refine ⟨hadj, ?_⟩
+      rw [gprod i j hadj]
+      have hfij : f i * f j ≠ 0 := mul_ne_zero (hnz i) (hnz j)
+      rcases lt_or_gt_of_ne hfij with h | h
+      · exact absurd h hopp
+      · linarith
+  rw [hF, hG, Finset.filter_card_add_filter_neg_card_eq_card, hAdj, card_adjacent]
+
+/-- **Reflection complementarity (polynomial form) — Descartes for positive *and*
+negative roots.**  If every coefficient `p.coeff 0, …, p.coeff (deg p)` is nonzero
+(a *gap-free* polynomial), then
+
+    `V(p) + V(p(−X)) = deg p`.
+
+The two Descartes bounds — `V(p)` on the positive roots and `V(p(−X))` on the
+negative roots — therefore *partition* the degree: no gap can be a sign persistence
+for both `p` and its reflection.  Proof: `(p(−X)).coeff k = (−1)^k · p.coeff k`
+(`comp_C_mul_X_coeff` at `c = −1`), so up to the global nonzero factor `(−1)^{deg p}`
+the reflected coefficient sequence is the sign-alternation of `p`'s; the global factor
+leaves `V` unchanged (`countSignChanges_const_smul`) and
+`countSignChanges_alternate_add` closes it (`n = deg p + 1`, `n − 1 = deg p`).
+Axiom-free. -/
+theorem signChangesInCoeffs_comp_neg_X_add {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs p
+      + DescartesRuleOfSigns.signChangesInCoeffs (p.comp (-X))
+      = p.natDegree := by
+  classical
+  set d := p.natDegree with hd
+  have hXeq : (-X : ℝ[X]) = C (-1) * X := by
+    rw [C_neg, C_1, neg_mul, one_mul]
+  have hcomp_ne : p.comp (-X) ≠ 0 := by
+    rw [hXeq, Ne, comp_C_mul_X_eq_zero_iff
+      (mem_nonZeroDivisors_of_ne_zero (by norm_num : (-1 : ℝ) ≠ 0))]
+    exact hp
+  have hdeg : (p.comp (-X)).natDegree = d := by
+    rw [hXeq, natDegree_comp, natDegree_C_mul_X (-1) (by norm_num), mul_one, hd]
+  unfold DescartesRuleOfSigns.signChangesInCoeffs
+  rw [dif_neg hp, dif_neg hcomp_ne, hdeg]
+  set cp : Fin (d + 1) → ℝ := DescartesRuleOfSigns.coeffSequence p d with hcp
+  have hcpnz : ∀ i, cp i ≠ 0 := by
+    intro i
+    rw [hcp]
+    simp only [DescartesRuleOfSigns.coeffSequence]
+    exact hnz _ (by have := i.isLt; omega)
+  have hbridge : DescartesRuleOfSigns.coeffSequence (p.comp (-X)) d
+      = fun (i : Fin (d + 1)) => ((-1 : ℝ) ^ d) * ((-1 : ℝ) ^ (i : ℕ) * cp i) := by
+    funext i
+    have hile : (i : ℕ) ≤ d := by have := i.isLt; omega
+    have hexp : ((-1 : ℝ)) ^ (d - (i : ℕ)) = (-1) ^ d * (-1) ^ (i : ℕ) := by
+      have h1 : (-1 : ℝ) ^ d = (-1) ^ (d - (i : ℕ)) * (-1) ^ (i : ℕ) := by
+        rw [← pow_add, Nat.sub_add_cancel hile]
+      have h2 : ((-1 : ℝ) ^ (i : ℕ)) * (-1) ^ (i : ℕ) = 1 := by
+        rw [← pow_add]; exact Even.neg_one_pow ⟨(i : ℕ), by ring⟩
+      calc (-1 : ℝ) ^ (d - (i : ℕ))
+          = (-1) ^ (d - (i : ℕ)) * ((-1) ^ (i : ℕ) * (-1) ^ (i : ℕ)) := by rw [h2]; ring
+        _ = ((-1) ^ (d - (i : ℕ)) * (-1) ^ (i : ℕ)) * (-1) ^ (i : ℕ) := by ring
+        _ = (-1) ^ d * (-1) ^ (i : ℕ) := by rw [← h1]
+    simp only [DescartesRuleOfSigns.coeffSequence, hcp]
+    rw [hXeq, comp_C_mul_X_coeff, hexp]
+    ring
+  rw [hbridge, countSignChanges_const_smul (pow_ne_zero d (by norm_num : (-1 : ℝ) ≠ 0))]
+  have hmain := countSignChanges_alternate_add hcpnz
+  simpa using hmain
+
 end DescartesRuleOfSignsOQ01OQ03
