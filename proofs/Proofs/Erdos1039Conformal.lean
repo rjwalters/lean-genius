@@ -39,6 +39,11 @@
      extremal inscribed disc of a lemniscate typically sits where f is flat (near a
      critical point), this is exactly why a *direct* conformal bound on ρ(f) is not
      available and the area approach of KLR is used instead.
+  7. `inscribed_radius_mul_norm_deriv_le_one` — the division-free product form
+     r·|f'(c)| ≤ 1, valid *unconditionally* (no f'(c) ≠ 0 needed); it absorbs the
+     critical-point case as 0 ≤ 1 rather than producing a junk value.
+  8. `conformal_estimate_sharp_identity` — sharpness: for f = id the estimate holds
+     with equality (r = 1 = 1/|f'(0)|), so the constant 1 cannot be improved.
 -/
 
 import Mathlib
@@ -75,7 +80,8 @@ theorem norm_le_one_on_closedBall
     ∀ z ∈ closedBall c r, ‖f z‖ ≤ 1 := by
   have hclosed : IsClosed {w : ℂ | ‖f w‖ ≤ 1} :=
     isClosed_le (continuous_norm.comp hcont) continuous_const
-  have hball_sub : ball c r ⊆ {w : ℂ | ‖f w‖ ≤ 1} := fun w hw => le_of_lt (hsub hw)
+  have hball_sub : ball c r ⊆ {w : ℂ | ‖f w‖ ≤ 1} :=
+    fun w hw => le_of_lt (show ‖f w‖ < 1 from hsub hw)
   have hclos : closure (ball c r) ⊆ {w : ℂ | ‖f w‖ ≤ 1} :=
     hclosed.closure_subset_iff.mpr hball_sub
   rw [closure_ball c hr.ne'] at hclos
@@ -110,6 +116,23 @@ theorem inscribed_radius_le_inv_norm_deriv
   rw [le_div_iff₀ hpos]
   calc r * ‖deriv f c‖ ≤ r * (1 / r) := by
         exact mul_le_mul_of_nonneg_left h hr.le
+    _ = 1 := by rw [mul_one_div, div_self hr.ne']
+
+/-- **Conformal estimate, product form (unconditional).**
+The clean multiplicative form `r · ‖f'(c)‖ ≤ 1` of the inscribed-radius estimate,
+valid for *every* inscribed disc — including one centred at a critical point, where it
+degenerates harmlessly to `0 ≤ 1`.  Unlike `inscribed_radius_le_inv_norm_deriv` it needs
+no hypothesis `f'(c) ≠ 0`: the division-free statement absorbs the critical-point case
+instead of producing Lean's junk value `1/0 = 0`.  This is the sharpest way to package
+the direct conformal bound of OQ-03 — an "uncertainty-principle"-shaped inequality
+between the inscribed radius and the derivative. -/
+theorem inscribed_radius_mul_norm_deriv_le_one
+    {f : ℂ → ℂ} {c : ℂ} {r : ℝ} (hr : 0 < r)
+    (hdiff : Differentiable ℂ f)
+    (hsub : ball c r ⊆ sublevel f) :
+    r * ‖deriv f c‖ ≤ 1 := by
+  have h := inscribed_ball_norm_deriv_le hr hdiff hsub
+  calc r * ‖deriv f c‖ ≤ r * (1 / r) := mul_le_mul_of_nonneg_left h hr.le
     _ = 1 := by rw [mul_one_div, div_self hr.ne']
 
 /-
@@ -162,3 +185,23 @@ theorem conformal_estimate_vacuous_at_critical_point :
   · simp
   · simp only [deriv_const', norm_zero, div_zero]
     norm_num
+
+/-- **Sharpness at a non-critical centre.**
+The counterpart to `conformal_estimate_vacuous_at_critical_point`: away from critical
+points the estimate is not merely informative but *tight*.  For the identity `f = id`
+the lemniscate interior `{‖z‖ < 1}` is exactly the unit disc `ball 0 1`, which is
+inscribed with radius `r = 1`; the derivative is `f'(0) = 1 ≠ 0`, and the bound
+`r ≤ 1/‖f'(0)‖` holds with **equality** `1 = 1/1`.  So the constant `1` in
+`inscribed_radius_mul_norm_deriv_le_one` cannot be improved: the direct conformal
+estimate is exact for the degree-one lemniscate. -/
+theorem conformal_estimate_sharp_identity :
+    ∃ (f : ℂ → ℂ) (c : ℂ) (r : ℝ),
+      0 < r ∧ Differentiable ℂ f ∧ ball c r ⊆ sublevel f ∧
+      deriv f c ≠ 0 ∧ r = 1 / ‖deriv f c‖ ∧ r * ‖deriv f c‖ = 1 := by
+  refine ⟨id, 0, 1, one_pos, differentiable_id, ?_, ?_, ?_, ?_⟩
+  · intro z hz
+    rw [mem_ball_zero_iff] at hz
+    simpa [sublevel] using hz
+  · simp [deriv_id']
+  · simp [deriv_id']
+  · simp [deriv_id']
