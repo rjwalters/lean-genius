@@ -252,3 +252,45 @@ exists for odd p (all residues of u²+v² mod 3,7 achievable) — the real obstr
 full Fermat characterization scaledLattice_achievable_iff already stubbed at line 421 (open frontier).
 
 REMAINING: core #214 BLOCKED on juhasz_stronger (deep incidence geometry, not in Mathlib).
+
+## Session 2026-07-11 (researcher-8) — GENERAL prime ≡ 3 (mod 4) obstruction [VERIFIED axiom-free]
+
+**Mode:** REVISIT — lifted the file's concrete `p = 3` obstruction to the full odd-prime
+mechanism. Extended `Erdos214Incomplete01OQ01.lean` (596→665, Mathlib-only, 0 ax / 0 sorry).
+VERIFIED host `bin/lake env lean` exit 0; `#print axioms` = `[propext, Classical.choice,
+Quot.sound]` only (no `sorryAx`/`ofReduceBool`) for all 3 new thms.
+
+### Key realization
+`sq_add_sq_three_dvd` (3∣u²+v² ⟹ 3∣u ∧ 3∣v) and its avoidance corollary
+`scaledLattice_dist_ne_sqrt_of_three_dvd_not_nine` were only the `r=3` special case. The
+real mechanism is: for ANY prime `r ≡ 3 (mod 4)`, `-1` is a quadratic non-residue mod `r`,
+so `r∣u²+v² ⟹ r∣u ∧ r∣v`. Mathlib supplies the crux directly:
+`ZMod.mod_four_ne_three_of_sq_eq_neg_sq (hx : x≠0) (hxy : x²=-y²) : p%4≠3`.
+
+### Added (3 theorems, 0 sorry, 0 axioms)
+- `sq_add_sq_prime_dvd {r} [Fact r.Prime] (hr : r%4=3) (u v : ℤ) (h : (r:ℤ)∣u²+v²) :
+  (r:ℤ)∣u ∧ (r:ℤ)∣v` — the general obstruction; `sq_add_sq_three_dvd` is now its `r=3`
+  instance. Proof: cast `u²+v²=0` into `ZMod r` (`ZMod.intCast_zmod_eq_zero_iff_dvd` +
+  `push_cast; linear_combination`), get `u²=-v²`; if `¬r∣u` then `(u:ZMod r)≠0` and
+  `mod_four_ne_three_of_sq_eq_neg_sq` contradicts `hr`; symmetric for `v`.
+- `scaledLattice_dist_ne_sqrt_of_prime_dvd_not_sq {p q} … {r n} [Fact r.Prime] (hr:r%4=3)
+  (hdvd:r∣n) (hnsq:¬r²∣n) : dist p q ≠ √n` — generalizes `_of_three_dvd_not_nine`. From
+  `dist²=2(u²+v²)=n` and `r` odd (r%4=3), `r∣2(u²+v²) ⟹ r∣u²+v²` via
+  `Prime.dvd_mul` (r∣2 impossible: `Nat.le_of_dvd`+omega), then `sq_add_sq_prime_dvd`
+  ⟹ r²∣u²+v² ⟹ r²∣n, contradicting `hnsq`.
+- `scaledLattice_dist_ne_sqrt_fiftysix` — concrete √56 (=2³·7) avoided via `r=7`. Chosen to
+  escape ALL earlier families: 56≡0 mod8 (achievable residue), 56≡8 mod16 (escapes n≡12
+  mod16), 3∤56 (escapes r=3) — caught ONLY by the r=7 obstruction. `Fact (Nat.Prime 7)`
+  must be supplied by `haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩` (not auto-synthesized).
+
+### Gotchas (reusable)
+- `Int.coe_nat_prime` is GONE; use `Nat.prime_iff_prime_int.mp (Fact.out) : Prime (r:ℤ)`.
+- Concrete prime instances (`r=7`) need an explicit local `haveI : Fact (Nat.Prime 7)`;
+  term-mode application fails "failed to synthesize Fact (Nat.Prime 7)".
+
+### Frontier
+Unchanged: core #214 BLOCKED on `juhasz_stronger`. The odd-prime obstruction now holds for
+every `r≡3 mod4` — the last elementary sufficient-avoidance mechanism before the full Fermat
+sum-of-two-squares characterization (`n/2` a SoS ⟺ every prime ≡3 mod4 in `n/2` to even
+power). Formalizing that biconditional (Mathlib has `Nat.Prime.sq_add_sq` and
+`SumTwoSquares.lean`) is the remaining substantial axiom-free target.
