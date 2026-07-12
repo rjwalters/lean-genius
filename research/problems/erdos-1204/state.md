@@ -1,24 +1,35 @@
 # Current State
 
-**Phase**: ACTIVE
+**Phase**: ACT
 **Since**: 2026-06-25
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
 
 Extending the exact-value frontier A(k) = min largest element of an admissible k-tuple
 (= Hardy–Littlewood minimal diameter H(k)). Values now A(2)=2, A(3)=6, A(4)=8, A(5)=12,
-A(6)=16, A(7)=20, each in an axiom-free companion file.
+A(6)=16, A(7)=20, **A(8)=26** (this iteration), each in an axiom-free companion file.
 
 ## Active Approach
 
-Finite case analysis combining small primes. A(7)=20 (this session, iteration 6) was
-expected to need primes 2,3,5,7 but in fact closes with only 2,3,5: within each
-10-element single-parity window {0,2,…,18} / {1,3,…,19} the mod-3 classes have sizes
-4,3,3, so missing the size-4 class leaves 6 slots (< 7, contradiction) and missing
-either size-3 class leaves a *forced* 7-set. There are TWO forced 7-sets per parity
-(vs one at A(6)), but all four are mod-5-complete, so p=5 alone kills them — the prime
-7 is not yet binding.
+Finite case analysis combining small primes. Iteration 7 (2026-07-11) closed
+**A(8) = 26 EXACT** (`Erdos1204A8.lean`, `A_eight`), upgrading the previous file which
+had only the upper bound `A(8) ≤ 26` and a weak `A(8) ≥ 21` (one-step monotonicity),
+explicitly left as future work.
+
+This is the first frontier value where the prime **7 becomes binding**. The lower bound
+(max ≤ 25 ⇒ 8-set in a 13-element single-parity window {0,2,…,24} / {1,3,…,25}): the
+mod-3 classes now have sizes **5,4,4** (vs 4,3,3 at A(7)).
+- Missing the size-5 class leaves exactly 8 slots = one *forced* 8-set, which is
+  mod-5-complete ⇒ killed at p=5.
+- Missing a size-4 class leaves a 9-element pool. Four of its five mod-5 classes have
+  two elements and one is a singleton; an admissible 8-subset must miss a mod-5 class,
+  but a two-element class can't be dropped by removing a single element, so the missed
+  class is the singleton — pinning the 8-subset to a *forced* set that is mod-7-complete
+  ⇒ killed at p=7. (Even branches mod3≡1,2 and odd branches mod3≡0,2 each give one.)
+
+Helper `not_admissible_of_covers` (a set hitting every class mod p is not admissible,
+`decide`-checked at concrete p) cleanly kills all forced sets.
 
 ## Blockers
 
@@ -26,25 +37,23 @@ The headline asymptotics A(k) ∼ k log k and the B(k) estimate remain OPEN — 
 analytic sieve theory (summing p/(p−1) factors / CRT counting) not yet formalized. The
 per-value frontier keeps advancing but the case analysis grows with each new prime.
 
-Infra note (2026-07-08): the shared docker Mathlib-cache volume developed a
-filesystem-level SIGBUS (exit 135) corruption that fails EVERY `import Mathlib` build at
-the Erdos1204Problem dependency in ~1s; `--repair-cache` (`cache get!`) reported success
-but did NOT fix it, and a full `--nuke` volume reset needs a zero-container window. A(7)
-was verified via the host-lake bypass (`lake exe cache get` + `lake env lean`,
-outside docker) instead.
+Infra note (2026-07-11): the shared docker Mathlib-cache volume STILL has the SIGBUS
+(exit 135) corruption — this session it failed at `Mathlib.Algebra.CharP.Frobenius`
+(`unexpected end of input` on the `.trace` file) during cache download/decompress. A(8)
+was verified via the **host-lake bypass**: symlink existing `Proofs/*.olean` into a tmp
+LEAN_PATH root, then `~/.elan/.../v4.26.0/bin/lean Proofs/Erdos1204A7.lean -o …` then
+`…A8.lean` (host Mathlib oleans are intact). `#print axioms A_eight` = only
+propext/Classical.choice/Quot.sound (axiom-free; `decide`, not `native_decide`).
 
 ## Next Action
 
-A(8)=26 (H(8) jumps by 6, not 4): the witness is a diameter-26 admissible 8-tuple, e.g.
-verify {0,2,6,8,12,18,20,26}. The lower bound (max ≤ 25, 8-set) enlarges the parity
-windows to 13 evens {0,2,…,24} / 13 odds {1,3,…,25}; missing a mod-3 class leaves up to
-~9 elements, so the forced-set argument branches further and the prime 7 (and possibly
-mod-5 interplay) should finally become binding. Expect the case analysis to grow — a
-generic "single-parity window minus one mod-p class" helper lemma may be worth factoring
-out before A(8)/A(9).
+A(9)=30 (H(9)=30, back to +4). Lower bound: 15-element parity windows {0,2,…,28} /
+{1,3,…,29}; mod-3 class sizes 5,5,5. Expect p=7 firmly binding and the case analysis to
+grow again — worth factoring a generic "single-parity window minus one mod-p class"
+helper (pool → forced set → killed by next prime) before A(9)/A(10) to tame growth.
 
 ## Attempt Counts
 
-- Total attempts: 6
-- Current approach attempts: 1
+- Total attempts: 7
+- Current approach attempts: 2
 - Approaches tried: 2
