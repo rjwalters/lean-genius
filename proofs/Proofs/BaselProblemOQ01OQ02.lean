@@ -521,6 +521,43 @@ theorem zeta_even_add_ratCast_transcendental (n : ℕ) (hn : 0 < n) (q : ℚ) :
     Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) + (q : ℝ)) :=
   transcendental_add_ratCast (zeta_even_transcendental n hn) q
 
+/-- **Every nonconstant ℚ-polynomial of a single even zeta value is transcendental over ℚ.**
+
+    For `n ≥ 1` and any `f ∈ ℚ[X]` of positive degree, `f(ζ(2n))` is transcendental over ℚ.  This is
+    the single-value analogue of the master engine `transcendental_aeval_pi` (which handles `f(π)`):
+    it unifies *all* rational-polynomial expressions in one even zeta value under a single statement.
+    In particular it subsumes the per-shape closure results as special cases —
+    `zeta_even_pow_transcendental` (`f = Xʲ`), `zeta_even_ratCast_mul_transcendental` (`f = C c · X`),
+    and `zeta_even_add_ratCast_transcendental` (`f = X + C q`) — and it further covers *mixed*
+    polynomials such as `X² + X` that combine a power and the value itself, which none of those
+    shape-specific theorems reach.  It follows from `zeta_even_transcendental` via
+    `Transcendental.aeval`: a nonconstant polynomial has nonzero leading coefficient, which over the
+    field ℚ is a nonzerodivisor, so `aeval` preserves transcendence.
+
+    **Assumption:** `hermite_lindemann` (transcendence of π). -/
+theorem zeta_even_aeval_transcendental (n : ℕ) (hn : 0 < n) (f : Polynomial ℚ) (hf : f.natDegree ≠ 0) :
+    Transcendental ℚ (Polynomial.aeval (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) f) := by
+  refine (zeta_even_transcendental n hn).aeval f hf ?_
+  rw [mem_nonZeroDivisors_iff_ne_zero, Polynomial.leadingCoeff_ne_zero]
+  intro h0
+  exact hf (by rw [h0, Polynomial.natDegree_zero])
+
+/-- **ζ(2)² + ζ(2) is transcendental over ℚ** — a concrete *mixed* polynomial of a single even zeta
+    value (`f = X² + X`, so `f(ζ(2)) = ζ(2)² + ζ(2) = π⁴/36 + π²/6`).  Unlike the two-term sum
+    `zeta_two_add_zeta_four_transcendental` (which adds two *distinct* zeta values) this combines a
+    *power* of one value with the value itself, an expression reachable only through the general
+    polynomial engine `zeta_even_aeval_transcendental`. -/
+theorem zeta_two_sq_add_zeta_two_transcendental :
+    Transcendental ℚ ((∑' k : ℕ, 1 / (k : ℝ) ^ 2) ^ 2 + (∑' k : ℕ, 1 / (k : ℝ) ^ 2)) := by
+  -- The mixed polynomial X² + X has natDegree 2 ≠ 0 (the X² term dominates the X term).
+  have hlt : (Polynomial.X : Polynomial ℚ).natDegree
+      < (Polynomial.X ^ 2 : Polynomial ℚ).natDegree := by
+    rw [Polynomial.natDegree_X, Polynomial.natDegree_X_pow]; omega
+  have hf : (Polynomial.X ^ 2 + Polynomial.X : Polynomial ℚ).natDegree ≠ 0 := by
+    rw [Polynomial.natDegree_add_eq_left_of_natDegree_lt hlt, Polynomial.natDegree_X_pow]; omega
+  have h := zeta_even_aeval_transcendental 1 one_pos (Polynomial.X ^ 2 + Polynomial.X) hf
+  simpa using h
+
 /-!
 ## The open odd case (documentation only)
 
