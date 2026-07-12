@@ -196,4 +196,52 @@ theorem two_distance_examples :
       ¬ IsTwoDistance4 t0 t1 t2 t3 :=
   ⟨unitSquare_isTwoDistance, rhombus60_isTwoDistance, rectangle_not_isTwoDistance⟩
 
+/-! ### Equilateral triangle plus centroid — a second, non-similar `{1,3}` realization
+
+An equilateral triangle together with its centroid is another concrete two-distance
+four-point set: the three centre-to-vertex distances are all equal and each is shorter
+than the (equal) triangle sides.  Placing the centroid at the origin and the three
+vertices on the unit circle (`e1, e2, e3` at radius `1`, `120°` apart) gives centre-to-
+vertex squared distance `1` and side squared distance `3`, so the spectrum is again
+`{1, 3}` — *numerically the same* as the 60° rhombus.  Yet the two configurations are
+**not similar**: here the squared-distance multiset is three `1`s and three `3`s (the
+centroid is equidistant from all three vertices), whereas the rhombus has five `1`s and a
+single `3`.  So the spectrum alone does not determine the configuration, and the
+`√3` in the coordinates again cancels to leave a rational spectrum. -/
+
+noncomputable def e0 : ℝ × ℝ := (0, 0)
+noncomputable def e1 : ℝ × ℝ := (1, 0)
+noncomputable def e2 : ℝ × ℝ := (-1 / 2, Real.sqrt 3 / 2)
+noncomputable def e3 : ℝ × ℝ := (-1 / 2, -Real.sqrt 3 / 2)
+
+/-- The equilateral-triangle-plus-centroid squared-distance spectrum is exactly `{1, 3}`:
+the three centre-to-vertex distances squared are `1`, the three triangle sides squared
+are `3`. -/
+theorem triangleCenter_spectrum : sqDistSet4 e0 e1 e2 e3 = {1, 3} := by
+  have hs : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have h01 : sqDist e0 e1 = 1 := by simp only [sqDist, e0, e1]; norm_num
+  have h02 : sqDist e0 e2 = 1 := by
+    simp only [sqDist, e0, e2]; linear_combination (1 / 4 : ℝ) * hs
+  have h03 : sqDist e0 e3 = 1 := by
+    simp only [sqDist, e0, e3]; linear_combination (1 / 4 : ℝ) * hs
+  have h12 : sqDist e1 e2 = 3 := by
+    simp only [sqDist, e1, e2]; linear_combination (1 / 4 : ℝ) * hs
+  have h13 : sqDist e1 e3 = 3 := by
+    simp only [sqDist, e1, e3]; linear_combination (1 / 4 : ℝ) * hs
+  have h23 : sqDist e2 e3 = 3 := by
+    simp only [sqDist, e2, e3]; linear_combination hs
+  unfold sqDistSet4
+  rw [h01, h02, h03, h12, h13, h23]
+  ext x
+  simp only [Finset.mem_insert, Finset.mem_singleton]
+  tauto
+
+/-- The equilateral triangle plus its centroid is a two-distance set — a concrete
+realization sharing the rhombus's `{1, 3}` spectrum but with a distinct distance
+multiset (hence a non-similar configuration). -/
+theorem triangleCenter_isTwoDistance : IsTwoDistance4 e0 e1 e2 e3 := by
+  unfold IsTwoDistance4
+  rw [triangleCenter_spectrum, Finset.card_insert_of_notMem (by norm_num),
+    Finset.card_singleton]
+
 end Erdos659TwoDistance
