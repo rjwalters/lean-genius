@@ -130,6 +130,21 @@
       "targetId": "basel-problem",
       "relationship": "related",
       "description": "A sibling landmark where π appears from a non-geometric object: Basel gives ∑ 1/n² = π²/6, as this entry gives ∫ e^{-x²} = √π. Both are canonical instances of π surfacing outside its defining circle — one from an infinite series, one from an integral with no elementary antiderivative."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child: generalizes the b = 1 real value √π proved here to the complex parameter, ∫_ℝ e^{-b x²} dx = (π/b)^{1/2} for every b : ℂ with Re b > 0 (from Mathlib's integral_gaussian_complex over the right half-plane), and includes a bridge theorem recovering this entry's real √π as the b = 1 specialization."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child: evaluates the half-line Gaussian ∫_{0}^{∞} e^{-b x²} dx = √(π/b)/2 (from integral_gaussian_Ioi) and, via the even-symmetry bridge ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}, re-derives this entry's ∫_ℝ e^{-x²} = √π along an independent route — a cross-check of the value proved here."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-incomplete-01",
+      "relationship": "related",
+      "description": "Resolves this entry's first open question. From the same integral_gaussian it proves the standard-normal normalization ∫ (1/√(2π))e^{-x²/2} = 1 (and the b = 1/2 value ∫ e^{-x²/2} = √(2π)), turning the √π seed established here into the full normal-distribution density normalization constants."
     }
   ],
   "references": [
