@@ -517,6 +517,48 @@ theorem avoid_four_card_le (n : ℕ) (hn : 4 ≤ n) (S : Finset ℕ) (hS : S ⊆
         rw [Finset.card_erase_of_mem h4e, Finset.card_erase_of_mem h3mem, Icc_n, Nat.card_Icc]
         omega
 
+/-! ## General structural lemmas: the uniform upper bound `f(n) ≤ n − 1`
+
+The exact small cases above each begin from the same elementary observation — the singleton
+`{m}` is always a subset that sums to `m`, so **any** `m`-avoiding set must omit `m` itself.
+Recorded once and for all, this gives a uniform upper bound: for every `m` with `1 ≤ m ≤ n`,
+the largest `m`-avoiding subset of `{1,…,n}` has size at most `n − 1` (the single forced
+deletion of `m`). The `m = 1, 2` cases show this bound is *tight*; from `m = 3` on the value
+drops strictly below it. (The complementary monotonicity — avoidance is inherited by subsets —
+is recorded below as `subsetSums_mono` / `AvoidSum_antitone`.) -/
+
+/-- **The singleton is always a subset sum.** For `0 < m`, if `m ∈ S` then `m` is a positive
+    subset sum of `S`, witnessed by the singleton `{m}`. This is the common seed of every
+    optimality argument: avoiding `m` forces `m ∉ S`. -/
+theorem subsetSums_self_mem (S : Finset ℕ) (m : ℕ) (hm : 0 < m) (hmem : m ∈ S) :
+    m ∈ subsetSums S := by
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  refine ⟨⟨{m}, ?_, ?_⟩, hm⟩
+  · rw [Finset.mem_powerset]; exact Finset.singleton_subset_iff.mpr hmem
+  · simp
+
+/-- **General necessary condition.** For `0 < m`, any `m`-avoiding set omits `m`: the singleton
+    `{m}` would otherwise realize `m` as a subset sum (`subsetSums_self_mem`). This single fact
+    underlies the optimality half of every case `avoid_one_card_le`, `avoid_two_card_le`,
+    `avoid_three_card_le`. -/
+theorem avoid_imp_notMem (S : Finset ℕ) (m : ℕ) (hm : 0 < m) (hav : AvoidSum S m) :
+    m ∉ S := fun hmem => hav (subsetSums_self_mem S m hm hmem)
+
+/-- **Uniform upper bound `f(n) ≤ n − 1`.** For every `m` with `1 ≤ m ≤ n`, every `m`-avoiding
+    subset of `{1,…,n}` has size at most `n − 1`: avoiding `m` forces `m ∉ S` (`avoid_imp_notMem`)
+    and `m ∈ {1,…,n}`, so `S ⊆ {1,…,n} ∖ {m}`. This is the single deletion common to all cases;
+    the sharper drops (e.g. `n − 2` at `m = 3`) come from *additional* forced deletions. -/
+theorem avoid_card_le (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) (S : Finset ℕ)
+    (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) : S.card ≤ n - 1 := by
+  have hmS : m ∉ S := avoid_imp_notMem S m hm hav
+  have hmem : m ∈ Icc_n n := by rw [Icc_n, Finset.mem_Icc]; omega
+  have hsub : S ⊆ (Icc_n n).erase m := by
+    intro x hx
+    rw [Finset.mem_erase]
+    exact ⟨fun he => hmS (he ▸ hx), hS hx⟩
+  calc S.card ≤ ((Icc_n n).erase m).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Finset.card_erase_of_mem hmem, Icc_n, Nat.card_Icc]; omega
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
