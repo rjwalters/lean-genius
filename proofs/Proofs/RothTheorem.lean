@@ -3709,4 +3709,123 @@ theorem sqGaussSum_norm_max_value_eq_of_odd {N : ℕ} [NeZero N] (hN : 1 < N) :
   rw [hcast, show (N : ℝ) * ((N : ℝ) / (N.minFac : ℝ)) = (N : ℝ) ^ 2 / (N.minFac : ℝ) by ring,
     Real.sqrt_div (by positivity), Real.sqrt_sq (by positivity)]
 
+/-! ### Part XXV — The exact spectral level-set distribution of the Weyl coefficient (odd modulus)
+
+Parts XVII–XXIV computed *moments* of the nonzero-frequency Weyl coefficient
+`r ↦ ‖G(r)‖²` (max, first/second moments, divisor sums).  Here we compute the underlying
+**distribution** those are moments of.  For odd `N` the exact per-frequency magnitude
+`‖G(r)‖² = N·gcd((2r).val, N)` (`sqGaussSum_normSq_eq_gcd_of_odd`) is constant on the gcd
+level sets, and each level set has a totient count.
+
+Since `r ↦ 2r` is a bijection of `ZMod N` (`2` is a unit for odd `N`) and `s ↦ s.val`
+identifies `ZMod N` with `{0,…,N−1}`, the level set of frequencies with
+`gcd((2r).val, N) = d` is in bijection with `{k < N : gcd(N, k) = d}`, whose cardinality is
+`φ(N/d)` by `Nat.totient_div_of_dvd`.  Thus, for every proper divisor `d ∣ N` (`d < N`):
+
+    #{ r ≠ 0 : ‖G(r)‖² = N·d } = φ(N/d).
+
+This single identity *subsumes* every earlier moment (`Σ_{r≠0}‖G‖² = N·Σ_{d∣N,d<N} d·φ(N/d)`
+is Part XX, the max at `d = N/minFac` is Part XXIV).  Its consumer punchline
+(`sqGaussSum_max_level_set_card_of_odd`) is that the *maximal* Weyl coefficient is attained at
+exactly `minFac(N) − 1` frequencies — the quantitative "few large frequencies" fact that a
+major/minor-arc split of the circle method needs. -/
+
+/-- **Exact gcd level-set count (odd modulus).**  For `N` odd and a proper divisor `d ∣ N`
+(`d < N`), the number of nonzero frequencies `r` with `gcd((2r).val, N) = d` is exactly the
+totient `φ(N/d)`.  Proof: reindex by the bijection `r ↦ 2r` (`2` a unit) composed with
+`s ↦ s.val`, landing in `{k < N : gcd(N,k) = d}` whose count is `Nat.totient_div_of_dvd`. -/
+theorem sqGaussSum_gcd_level_set_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    {d : ℕ} (hd : d ∣ N) (hdN : d < N) :
+    ((Finset.univ \ {(0 : ZMod N)}).filter
+        (fun r => Nat.gcd (2 * r).val N = d)).card = Nat.totient (N / d) := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp hodd
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  obtain ⟨w, hw⟩ := isUnit_iff_exists_inv.mp h2   -- hw : 2 * w = 1
+  rw [Nat.totient_div_of_dvd hd]
+  refine Finset.card_bij (fun r _ => (2 * r).val) ?_ ?_ ?_
+  · -- maps into `{k ∈ range N | N.gcd k = d}`
+    intro r hr
+    rw [Finset.mem_filter] at hr ⊢
+    refine ⟨Finset.mem_range.mpr (ZMod.val_lt _), ?_⟩
+    rw [Nat.gcd_comm]; exact hr.2
+  · -- injective (via `s ↦ s.val` injective, then cancel the unit `2`)
+    intro r₁ _ r₂ _ heq
+    have hw' : (w : ZMod N) * 2 = 1 := by rw [mul_comm]; exact hw
+    have h2r : (2 * r₁ : ZMod N) = 2 * r₂ := ZMod.val_injective N heq
+    calc r₁ = (w * 2) * r₁ := by rw [hw', one_mul]
+      _ = w * (2 * r₁) := by rw [mul_assoc]
+      _ = w * (2 * r₂) := by rw [h2r]
+      _ = (w * 2) * r₂ := by rw [mul_assoc]
+      _ = r₂ := by rw [hw', one_mul]
+  · -- surjective
+    intro k hk
+    rw [Finset.mem_filter, Finset.mem_range] at hk
+    obtain ⟨hklt, hkgcd⟩ := hk
+    have hk0 : k ≠ 0 := by
+      rintro rfl
+      rw [Nat.gcd_zero_right] at hkgcd
+      omega
+    set s : ZMod N := (k : ZMod N) with hsdef
+    have hsval : s.val = k := by rw [hsdef, ZMod.val_natCast_of_lt hklt]
+    have h2ws : (2 : ZMod N) * (w * s) = s := by rw [← mul_assoc, hw, one_mul]
+    have hs0 : s ≠ 0 := by
+      intro h; rw [h, ZMod.val_zero] at hsval; exact hk0 hsval.symm
+    refine ⟨w * s, ?_, ?_⟩
+    · rw [Finset.mem_filter]
+      refine ⟨?_, ?_⟩
+      · rw [Finset.mem_sdiff, Finset.mem_singleton]
+        refine ⟨Finset.mem_univ _, ?_⟩
+        intro hz
+        rw [hz, mul_zero] at h2ws
+        exact hs0 h2ws.symm
+      · rw [h2ws, hsval, Nat.gcd_comm]; exact hkgcd
+    · show (2 * (w * s)).val = k
+      rw [h2ws, hsval]
+
+/-- **Exact spectral distribution of the Weyl coefficient (odd modulus).**  Restatement of the
+gcd level-set count directly in terms of the squared magnitude: for `N` odd and a proper divisor
+`d ∣ N`, exactly `φ(N/d)` nonzero frequencies attain `‖G(r)‖² = N·d`.  (Equality of the two
+filter sets is `sqGaussSum_normSq_eq_gcd_of_odd` together with cancelling the positive factor
+`N`.) -/
+theorem sqGaussSum_normSq_level_set_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N)
+    {d : ℕ} (hd : d ∣ N) (hdN : d < N) :
+    ((Finset.univ \ {(0 : ZMod N)}).filter
+        (fun r => ‖sqGaussSum r‖ ^ 2 = (N : ℝ) * d)).card = Nat.totient (N / d) := by
+  rw [← sqGaussSum_gcd_level_set_card_of_odd hodd hd hdN]
+  congr 1
+  apply Finset.filter_congr
+  intro r _
+  rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r]
+  have hN0 : (0 : ℝ) < N := by exact_mod_cast NeZero.pos N
+  constructor
+  · intro h
+    have hcast := mul_left_cancel₀ (ne_of_gt hN0) h
+    exact_mod_cast hcast
+  · intro h; rw [h]
+
+/-- **The maximal Weyl coefficient is attained at exactly `minFac(N) − 1` frequencies
+(odd modulus).**  The unique largest gcd level (`d = N/minFac`, Part XXIV) has count
+`φ(N / (N/minFac)) = φ(minFac N) = minFac N − 1`, since `minFac N` is prime.
+
+This is the quantitative "few large frequencies" statement: the `Θ(N)` obstruction to a Weyl
+sup-norm reduction (`sqGaussSum_norm_max_value_eq_of_odd`) lives on only `minFac(N) − 1` of the
+`N − 1` nonzero frequencies — precisely the major arcs a refined circle-method argument would
+isolate and treat separately from the `√N`-sized minor arcs. -/
+theorem sqGaussSum_max_level_set_card_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN : 1 < N) :
+    ((Finset.univ \ {(0 : ZMod N)}).filter
+        (fun r => Nat.gcd (2 * r).val N = N / N.minFac)).card = N.minFac - 1 := by
+  have hN0 : N ≠ 0 := by omega
+  have hmf_dvd : N.minFac ∣ N := Nat.minFac_dvd N
+  have hmf_prime : N.minFac.Prime := Nat.minFac_prime (by omega)
+  have hmf_ge2 : 2 ≤ N.minFac := hmf_prime.two_le
+  set d := N / N.minFac with hddef
+  have hd_dvd : d ∣ N := Nat.div_dvd_of_dvd hmf_dvd
+  have hd_lt : d < N := Nat.div_lt_self (by omega) hmf_ge2
+  rw [sqGaussSum_gcd_level_set_card_of_odd hodd hd_dvd hd_lt, hddef,
+    Nat.div_div_self hmf_dvd hN0, Nat.totient_prime hmf_prime]
+
 end Szemeredi.Roth
