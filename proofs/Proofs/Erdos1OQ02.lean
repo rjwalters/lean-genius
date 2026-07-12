@@ -578,6 +578,106 @@ theorem f_three :
   have hT' : T ∈ ({1, 2, 4} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
   fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
 
+/-! ## Part V: The `n = 4` extremal value — powers of two are not optimal
+
+For `n ≤ 3` the minimal possible largest element `f(n)` of an `n`-element
+distinct-subset-sums set is attained by the powers of two `{2⁰,…,2^{n-1}}`
+(maximum `2^{n-1}`), as recorded in `f_one`/`f_two_max`/`f_three`.  At `n = 4`
+this stops: the powers of two `{1,2,4,8}` have maximum `8`, yet `{3,5,6,7}` also
+has distinct subset sums with maximum `7 < 8`.  This is the first instance of the
+Conway–Guy phenomenon — the reason the Erdős distinct-subset-sums problem is
+genuinely hard is precisely that the extremal construction is *not* the geometric
+one.  We prove `f(4) = 7` (OEIS A005318, entry `n = 4`):
+
+* **Upper bound** `f(4) ≤ 7` (`f_four_upper`): the witness `{3,5,6,7}`.
+* **Lower bound** `f(4) ≥ 7` (`f_four_lower`): no four-element set with maximum
+  `≤ 6` has distinct subset sums — a finite check over the 4-subsets of `{1,…,6}`,
+  routed through the decidable image-cardinality reformulation below.
+-/
+
+/-- **Distinct subset sums via image cardinality (0 axioms).**  A finite set has
+    distinct subset sums iff its subset-sum map is injective on the powerset, i.e.
+    the image of `S ↦ Σ S` over `A.powerset` has full cardinality `2^{|A|}`.  This is
+    the `Finset`-computable reformulation that makes the `f(4)` lower bound a finite
+    `decide`. -/
+theorem image_card_of_hasDistinctSubsetSums {A : Finset ℕ}
+    (h : hasDistinctSubsetSums A) :
+    (A.powerset.image (fun S => S.sum id)).card = 2 ^ A.card := by
+  have hinj : Set.InjOn (fun S : Finset ℕ => S.sum id) (↑A.powerset : Set (Finset ℕ)) := by
+    intro S hS T hT heq
+    rw [Finset.mem_coe, Finset.mem_powerset] at hS hT
+    exact h S T hS hT heq
+  rw [Finset.card_image_of_injOn hinj, Finset.card_powerset]
+
+/-- **`f(4) ≤ 7`: the Conway witness `{3,5,6,7}`.**  This four-element set has
+    `2⁴ = 16` distinct subset sums (`0,3,5,6,7,8,9,10,11,12,13,14,15,16,18,21`) with
+    maximum element `7`, strictly below the powers-of-two value `2^{4-1} = 8`.  The
+    `hasDistinctSubsetSums` obligation is discharged by enumerating the sixteen
+    subsets (`fin_cases` over the powerset) and deciding each subset-pair sum
+    comparison, exactly as in `f_two_max`/`f_three`. -/
+theorem f_four_upper :
+    ∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id = 7 := by
+  refine ⟨{3, 5, 6, 7}, by decide, ?_, by decide⟩
+  intro S T hS hT heq
+  have hS' : S ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hS
+  have hT' : T ∈ ({3, 5, 6, 7} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hS' <;> fin_cases hT' <;> revert heq <;> decide
+
+/-- **`f(4) ≥ 7`: no four-element set with maximum `≤ 6` has distinct subset sums.**
+    Since distinct subset sums force `0 ∉ A`, a counterexample would be a
+    four-element subset of `{1,…,6}`; the finite check over the fifteen such subsets
+    (via the decidable image-cardinality reformulation) rules them all out. -/
+theorem f_four_lower {A : Finset ℕ} (h4 : A.card = 4)
+    (hDSS : hasDistinctSubsetSums A) : 7 ≤ A.sup id := by
+  by_contra hlt
+  push_neg at hlt
+  -- Distinct subset sums force `0 ∉ A` (else `∅` and `{0}` collide).
+  have h0 : (0 : ℕ) ∉ A := by
+    intro h0A
+    have hcollide : (∅ : Finset ℕ) = {0} :=
+      hDSS ∅ {0} (Finset.empty_subset _)
+        (by simpa [Finset.singleton_subset_iff] using h0A) (by simp)
+    simp at hcollide
+  -- Hence every element lies in `[1, 6]`, so `A ⊆ Icc 1 6`.
+  have hsub : A ⊆ Finset.Icc 1 6 := by
+    intro a ha
+    rw [Finset.mem_Icc]
+    refine ⟨?_, ?_⟩
+    · rcases Nat.eq_zero_or_pos a with h | h
+      · exact absurd (h ▸ ha) h0
+      · exact h
+    · have hle : a ≤ A.sup id := Finset.le_sup (f := id) ha
+      omega
+  have hmem : A ∈ (Finset.Icc 1 6).powerset := Finset.mem_powerset.mpr hsub
+  -- Bounded (hence decidable) form of the distinct-subset-sums hypothesis.
+  have hDSS' : ∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T :=
+    fun S hS T hT h => hDSS S T (Finset.mem_powerset.mp hS) (Finset.mem_powerset.mp hT) h
+  -- Finite check: enumerate the 64 subsets of `{1,…,6}`.  Each concrete case is
+  -- refuted either by `card ≠ 4` or by exhibiting a subset-sum collision (`decide`
+  -- on the bounded predicate, exactly the shape used in `f_two_max`/`f_three`).
+  fin_cases hmem <;>
+    first
+      | exact absurd h4 (by decide)
+      | exact absurd hDSS' (by decide)
+
+/-- **`f(4) = 7` (OEIS A005318, `n = 4`).**  The minimal possible largest element of
+    a four-element distinct-subset-sums set is exactly `7`: it is attained by
+    `{3,5,6,7}` and by no set with maximum `≤ 6`. -/
+theorem f_four :
+    (∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id = 7) ∧
+      (∀ (A : Finset ℕ), A.card = 4 → hasDistinctSubsetSums A → 7 ≤ A.sup id) :=
+  ⟨f_four_upper, fun _A h hDSS => f_four_lower h hDSS⟩
+
+/-- **Powers of two are not extremal at `n = 4`.**  The witness `{3,5,6,7}` has
+    distinct subset sums with maximum `7 < 8 = 2^{4-1}`, so the minimal largest
+    element drops strictly below the powers-of-two value `2^{n-1}` — the onset of the
+    Conway–Guy phenomenon and the first `n` where the geometric construction of
+    `Erdos1OQ02OQ01` (max `= 2^{n-1}`) is beaten. -/
+theorem f_four_lt_geometric :
+    ∃ (A : Finset ℕ), A.card = 4 ∧ hasDistinctSubsetSums A ∧ A.sup id < 2 ^ (4 - 1) := by
+  obtain ⟨A, hcard, hDSS, hsup⟩ := f_four_upper
+  exact ⟨A, hcard, hDSS, by rw [hsup]; norm_num⟩
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:

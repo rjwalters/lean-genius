@@ -20,7 +20,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 606,
+    "lineCount": 706,
     "assumptions": "0 axioms. The former anticoncentration_bound axiom (2^n ≤ 3√Q + 2 for distinct-subset-sums sets) is now PROVED in-file (theorem anticoncentration_bound) by an elementary, probability-free discharge: the second-moment identity over the powerset, a parity-aware central-interval count, and a discrete Chebyshev tail. dfx_lower_bound and pow2_dss proved; sum_sq_cauchy_schwarz proved. Fully machine-checked, 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -119,6 +119,10 @@
       "endLine": 194,
       "summary": "Concrete verification: f_one (DSS set with 1 element, max = 1), f_two_max (DSS set with 2 elements, max = 2). Also improvement_factor (n < n² for n ≥ 2) as a technical lemma.",
       "mathContext": "`f_one`: $\\{1\\}$ has all $2^1 = 2$ subset sums distinct ($0$ and $1$); $\\max = 1$. `f_two_max`: $\\{1,2\\}$ has all $2^2 = 4$ subset sums distinct with $\\max = 2$ (the `hasDistinctSubsetSums` witness discharged by `fin_cases` over the four subsets + `decide`). `improvement_factor`: $n < n^2$ for $n \\geq 2$ (in $\\mathbb{N}$, proved by `omega`) — the algebraic core of the asymptotic comparison DFX $\\sim 2^n/\\sqrt{n}$ vs counting $\\sim 2^n/n$."
+    },
+    {
+      "title": "Part V: The n=4 Extremal Value (powers of two are not optimal)",
+      "content": "Establishes f(4) = 7 in both directions. Upper bound f_four_upper: the Conway witness {3,5,6,7} has 16 distinct subset sums with maximum 7 < 8 = 2^{4-1}. Lower bound f_four_lower: since distinct subset sums force 0 not in A, any counterexample would be a 4-subset of {1,...,6}; a finite check over those subsets (via the decidable bounded-forall reformulation of the powerset injectivity) rules them all out. Corollaries: f_four (the two-sided equality) and f_four_lt_geometric (the first strict improvement over the geometric construction of Erdos1OQ02OQ01). Helper image_card_of_hasDistinctSubsetSums records the injective-image / 2^{|A|} reformulation. All 0-axiom / 0-sorry / 0-native_decide."
     }
   ],
   "conclusion": {
@@ -177,6 +181,12 @@
       "type": "supporting",
       "description": "DFX bound improves the basic counting bound by factor √n for n ≥ 2",
       "leanType": "n ≥ 2 → (n:ℝ) < n²"
+    },
+    {
+      "name": "f_four",
+      "type": "core",
+      "description": "f(4) = 7 (OEIS A005318): the minimal largest element of a 4-element distinct-subset-sums set is exactly 7, attained by {3,5,6,7} and by no set with max <= 6. The first n at which powers of two (max 2^{n-1}=8) are NOT optimal — the onset of the Conway-Guy phenomenon.",
+      "leanType": "(exists A, A.card = 4 and hasDistinctSubsetSums A and A.sup id = 7) and (forall A, A.card = 4 -> hasDistinctSubsetSums A -> 7 <= A.sup id)"
     }
   ],
   "references": [
@@ -211,9 +221,9 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 606,
+    "lineCount": 706,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 24,
     "definitionCount": 0,
     "path": "Proofs/Erdos1OQ02.lean",
     "sorries": 0
@@ -223,6 +233,7 @@
   "highlights": [
     "Anticoncentration axiom DISCHARGED (0-axiom, fully verified): the former anticoncentration_bound axiom 2^n <= 3*sqrt(Q)+2 is now a proved theorem. Combine: the 2^n doubled deviations are 2^n distinct same-parity integers with second moment 2^n*Q; splitting at radius ceil(2*sqrt Q) the central-interval count bounds the near band by L+1 and discrete Chebyshev bounds the tail by 2^n/4, giving (3/4)2^n <= 2*sqrt(Q)+1 <= 3*sqrt(Q)+2. The entry is now status=verified.",
     "Central-interval count landed (card_le_of_sameParity_interval, 0-axiom): a finite set of integers all of one parity confined to [-L,L] has <= L+1 elements (via v |-> (v+L)/2 injecting into Icc 0 L). This is the LAST combinatorial input to discharging anticoncentration_bound with the sharp constant 3 -- joins second_moment_identity, the 2^|A|-distinct-integers image, and the Chebyshev tail. Only the real-sqrt optimization assembly remains.",
-    "Verified inputs toward discharging the anticoncentration axiom (0-axiom): subset sums are injective on the powerset for a distinct-subset-sums set (subsetSum_injOn_of_distinct), hence the 2^|A| doubled deviations 2*Sum_T - S are 2^|A| DISTINCT integers (card_doubledDrop_image_of_distinct) -- the precise 'distinct integers' input to the central-interval count that recovers the sharp constant 3. Joins second_moment_identity + card_mul_le_second_moment; only the parity-aware interval count + real-sqrt combine remain."
+    "Verified inputs toward discharging the anticoncentration axiom (0-axiom): subset sums are injective on the powerset for a distinct-subset-sums set (subsetSum_injOn_of_distinct), hence the 2^|A| doubled deviations 2*Sum_T - S are 2^|A| DISTINCT integers (card_doubledDrop_image_of_distinct) -- the precise 'distinct integers' input to the central-interval count that recovers the sharp constant 3. Joins second_moment_identity + card_mul_le_second_moment; only the parity-aware interval count + real-sqrt combine remain.",
+    "f(4) = 7 proved in full (OEIS A005318): the minimal largest element of a 4-element distinct-subset-sums set is exactly 7. Upper bound via the Conway witness {3,5,6,7}; lower bound via a finite axiom-free check over the 4-subsets of {1,...,6}. This is the first n where the powers-of-two construction (max 2^{n-1}=8) is beaten (7 < 8) — the onset of the Conway-Guy phenomenon and the structural reason Erdos #1 is hard."
   ]
 }
