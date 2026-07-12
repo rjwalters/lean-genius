@@ -527,6 +527,35 @@ theorem not_hasK2t_mono (G : SimpleGraph V) {s t : ℕ} (hst : s ≤ t)
     (h : ¬ HasK2t G s) : ¬ HasK2t G t :=
   fun hcon => h (hasK2t_mono G hst hcon)
 
+/-- **`K_{2,t}`-containment is a monotone graph property.**  If `G ≤ H` (every edge of `G`
+is an edge of `H`) and `G` already contains a `K_{2,t}`, then so does `H`: the very same
+pair `a, b` and common-neighbour set `T` still works, since each adjacency `G.Adj a y`
+promotes to `H.Adj a y` along `G ≤ H`.  Together with `hasK2t_mono` (antitone in `t`) this
+places `HasK2t` in the standard monotone-property framework — containment only grows as the
+graph gains edges. -/
+theorem hasK2t_mono_graph {G H : SimpleGraph V} (hle : G ≤ H) {t : ℕ} (h : HasK2t G t) :
+    HasK2t H t := by
+  obtain ⟨a, b, T, hab, htc, hadj⟩ := h
+  exact ⟨a, b, T, hab, htc, fun y hy => ⟨hle (hadj y hy).1, hle (hadj y hy).2⟩⟩
+
+/-- **`K_{2,t}`-freeness is hereditary to subgraphs.**  Dual to `hasK2t_mono_graph`: if
+`G ≤ H` and `H` is `K_{2,t}`-free, then so is its subgraph `G` — deleting edges cannot create
+a `K_{2,t}`.  So the class of `K_{2,t}`-free graphs is closed under taking subgraphs, the
+hypothesis under which the Kővári–Sós–Turán edge bound (`kst_edge_bound_of_free`) applies. -/
+theorem not_hasK2t_mono_graph {G H : SimpleGraph V} (hle : G ≤ H) {t : ℕ}
+    (h : ¬ HasK2t H t) : ¬ HasK2t G t :=
+  fun hcon => h (hasK2t_mono_graph hle hcon)
+
+/-- **Common neighbours grow with the graph.**  If `G ≤ H` then every common neighbour of a
+pair `a, b` in `G` is one in `H`: `commonNbrs G a b ⊆ commonNbrs H a b`.  The `Finset`-level
+witness behind `hasK2t_mono_graph`, and the reason the codegree `(commonNbrs · a b).card`
+is monotone under edge addition. -/
+theorem commonNbrs_subset_of_le {G H : SimpleGraph V} [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hle : G ≤ H) (a b : V) : commonNbrs G a b ⊆ commonNbrs H a b := by
+  intro v hv
+  simp only [commonNbrs, Finset.mem_inter, SimpleGraph.mem_neighborFinset] at hv ⊢
+  exact ⟨hle hv.1, hle hv.2⟩
+
 /-- **K_{2,t}-free edge bound.**  A genuinely K_{2,t}-free nonempty graph
 (`t ≥ 1`) satisfies the classical Kővári–Sós–Turán bound
 
