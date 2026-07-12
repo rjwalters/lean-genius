@@ -1225,6 +1225,29 @@ theorem T_L_union_le_min {n : ℕ} {L L' : Finset ℕ} :
   le_min (T_L_antitone_forbidden Finset.subset_union_left)
     (T_L_antitone_forbidden Finset.subset_union_right)
 
+/--
+**Sharp top-endpoint characterization `T_L n L = 2ⁿ ↔ ∀ r ∈ L, n < r`.**
+The antitone hierarchy `L ↦ T_L n L` sits at its maximum `2ⁿ` *exactly* when every
+forbidden intersection size exceeds the ground-set size `n`.  This packages as a single
+`iff` the dichotomy that `T_L_eq_pow_of_lt` and `T_L_le_pow_sub_one` state only in prose:
+* `⟸` is `T_L_eq_pow_of_lt` — with all forbidden sizes `> n`, no two subsets of `[n]` can
+  meet in a forbidden size, so the entire powerset is admissible and `T_L = 2ⁿ`;
+* `⟹` is the contrapositive of `T_L_le_pow_sub_one` — the moment some *attainable* size
+  `r ∈ L` with `r ≤ n` is forbidden, the count drops strictly to `≤ 2ⁿ − 1 < 2ⁿ`.
+Together with the bottom endpoint `T_L_eq_zero_of_range_subset` (`T_L = 0` once
+`range (n+1) ⊆ L`) this pins both extremes of the hierarchy. -/
+theorem T_L_eq_pow_iff {n : ℕ} {L : Finset ℕ} :
+    T_L n L = 2 ^ n ↔ ∀ r ∈ L, n < r := by
+  constructor
+  · intro h
+    by_contra hcon
+    push_neg at hcon
+    obtain ⟨r, hrL, hrn⟩ := hcon
+    have hle : T_L n L ≤ 2 ^ n - 1 := T_L_le_pow_sub_one hrL hrn
+    have hpos : 0 < 2 ^ n := pow_pos (by norm_num) n
+    omega
+  · exact T_L_eq_pow_of_lt n L
+
 /-
 ## Part VIII: Summary
 -/
