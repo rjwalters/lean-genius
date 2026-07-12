@@ -540,6 +540,66 @@ theorem hypotenuse_midpoint_circumcenter (A B C : F) (hperp : ⟪A - C, B - C⟫
     rw [hd, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)]
     ring
 
+-- ============================================================
+-- Converses: recovering the right angle from the metric data
+-- ============================================================
+
+/-- **Converse of the (metric) Pythagorean theorem.**  The forward direction
+`pythagorean_core` shows a right angle at `C` forces `‖A−B‖² = ‖A−C‖² + ‖B−C‖²`.  This is the
+converse: *whenever* the hypotenuse square equals the sum of the leg squares, the angle at `C`
+must be right (`⟪A−C, B−C⟫ = 0`).  Expanding `‖A−B‖² = ‖(A−C)−(B−C)‖²
+= ‖A−C‖² − 2⟪A−C,B−C⟫ + ‖B−C‖²` and comparing with the hypothesis leaves `2⟪A−C,B−C⟫ = 0`.
+Together with `pythagorean_core` this makes the right angle *equivalent* to the numerical
+Pythagorean relation (`pythagorean_core_iff`). -/
+theorem pythagorean_core_converse (A B C : F)
+    (h : ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) := by
+  have hR : ‖A - B‖ ^ 2
+      = ‖A - C‖ ^ 2 - 2 * ⟪A - C, B - C⟫ + ‖B - C‖ ^ 2 := by
+    have hAB : A - B = (A - C) - (B - C) := by abel
+    rw [hAB]; exact norm_sub_sq_real _ _
+  rw [hR] at h
+  linarith
+
+/-- **Pythagoras characterises the right angle.**  Combining `pythagorean_core` with its
+converse: the angle at `C` is right iff the metric Pythagorean identity holds. -/
+theorem pythagorean_core_iff (A B C : F) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) ↔ ‖A - B‖ ^ 2 = ‖A - C‖ ^ 2 + ‖B - C‖ ^ 2 :=
+  ⟨pythagorean_core A B C, pythagorean_core_converse A B C⟩
+
+/-- **Converse of Thales' theorem.**  `thales_circumradius` shows the right-angle vertex lies on
+the circle with diameter `AB` (distance exactly `‖A−B‖/2` from the hypotenuse midpoint
+`M = A + ½·(B−A)`).  This is the converse — the classical statement that *any* point `C` on that
+circle sees the diameter at a right angle: if `‖M − C‖ = ‖A−B‖/2` then `⟪A−C, B−C⟫ = 0`.
+Writing `M − C = ½·((A−C)+(B−C))`, the hypothesis says `‖(A−C)+(B−C)‖ = ‖A−B‖`; squaring and
+expanding both sides (via `norm_add_sq_real` on the left, `norm_sub_sq_real` on the right,
+since `A−B = (A−C)−(B−C)`) cancels the common leg-square terms and forces `4⟪A−C,B−C⟫ = 0`.
+This is exactly the inscription of `C` in the hypotenuse semicircle that `hippocrates_lunes`
+invokes but did not prove in that direction. -/
+theorem thales_converse (A B C : F)
+    (h : ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) := by
+  have hdecomp : (A + (2⁻¹ : ℝ) • (B - A)) - C = (2⁻¹ : ℝ) • ((A - C) + (B - C)) := by module
+  rw [hdecomp, norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0:ℝ) < 2⁻¹)] at h
+  have hnorm : ‖(A - C) + (B - C)‖ = ‖A - B‖ := by linarith
+  have hsq : ‖(A - C) + (B - C)‖ ^ 2 = ‖A - B‖ ^ 2 := by rw [hnorm]
+  -- Expand each side explicitly (avoids `norm_sub_sq_real` mis-firing on `‖A−C‖²`).
+  have hL : ‖(A - C) + (B - C)‖ ^ 2
+      = ‖A - C‖ ^ 2 + 2 * ⟪A - C, B - C⟫ + ‖B - C‖ ^ 2 := norm_add_sq_real _ _
+  have hR : ‖A - B‖ ^ 2
+      = ‖A - C‖ ^ 2 - 2 * ⟪A - C, B - C⟫ + ‖B - C‖ ^ 2 := by
+    have hAB : A - B = (A - C) - (B - C) := by abel
+    rw [hAB]; exact norm_sub_sq_real _ _
+  rw [hL, hR] at hsq
+  linarith
+
+/-- **Thales characterises the right angle.**  Combining `thales_circumradius` with its
+converse: the angle at `C` is right iff `C` lies on the circle with diameter `AB` (the
+hypotenuse midpoint is equidistant, at `‖A−B‖/2`, from `C`). -/
+theorem thales_iff (A B C : F) :
+    ⟪A - C, B - C⟫ = (0 : ℝ) ↔ ‖(A + (2⁻¹ : ℝ) • (B - A)) - C‖ = ‖A - B‖ / 2 :=
+  ⟨thales_circumradius A B C, thales_converse A B C⟩
+
 #check @einstein_pythagorean
 #check @pythagorean_via_altitude
 #check @geometric_mean_A
