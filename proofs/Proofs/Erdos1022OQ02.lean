@@ -629,4 +629,60 @@ theorem admissibleCoeff_mono {a b : ℕ} (hab : a ≤ b) :
       ≤ firstMomentThreshold b / Fintype.card V :=
   Nat.div_le_div_right (firstMomentThreshold_mono hab)
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 9: Strict monotonicity and the coefficient's own divergence
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  § 8 records the bare *non-strict* monotone envelope `c(a) ≤ c(b)`.  The
+  companion strict statement — that once the coefficient has become positive it
+  is genuinely *strictly* increasing over *any* gap `a < b`, not merely the
+  consecutive step of `admissibleCoeff_lt_of_pos` — completes the qualitative
+  picture underlying OQ-02's "growth rate": beyond the positivity threshold
+  `t₀ = |V|` the admissible coefficient never plateaus.  We also extract, as a
+  reusable named result, the divergence of the coefficient itself (so far only
+  available inlined inside `exists_admissible_coeff`).
+-/
+
+/-- **Strict monotonicity of the admissible coefficient past the positivity
+    threshold.**  Once the minimum set size reaches `|V|` the coefficient
+    `c(t) = ⌊2^{t-1}/|V|⌋` is strictly increasing over *arbitrary* gaps: for
+    `|V| ≤ a < b`, `c(a) < c(b)`.  This upgrades the non-strict envelope
+    `admissibleCoeff_mono` and the consecutive-step `admissibleCoeff_lt_of_pos`
+    to a full strict order relation, chaining one strict step at `a` (positive by
+    `admissibleCoeff_pos_of_card_le`) with monotonicity `c(a+1) ≤ c(b)`. -/
+theorem admissibleCoeff_strictMono_of_card_le (hV : 0 < Fintype.card V) {a b : ℕ}
+    (ha : Fintype.card V ≤ a) (hab : a < b) :
+    firstMomentThreshold a / Fintype.card V
+      < firstMomentThreshold b / Fintype.card V := by
+  have ha1 : 1 ≤ a := le_trans hV ha
+  have hpos : 0 < firstMomentThreshold a / Fintype.card V :=
+    admissibleCoeff_pos_of_card_le hV a ha
+  have hstep : firstMomentThreshold a / Fintype.card V
+      < firstMomentThreshold (a + 1) / Fintype.card V :=
+    admissibleCoeff_lt_of_pos hV a ha1 hpos
+  exact lt_of_lt_of_le hstep (admissibleCoeff_mono (by omega))
+
+/-- **`StrictMonoOn` packaging.**  The admissible coefficient
+    `c(t) = ⌊2^{t-1}/|V|⌋` is strictly monotone on `[|V|, ∞)` — the idiomatic
+    order-theoretic form of `admissibleCoeff_strictMono_of_card_le`, recording
+    that the coefficient is eventually a strictly increasing function of the
+    minimum set size `t`. -/
+theorem admissibleCoeff_strictMonoOn (hV : 0 < Fintype.card V) :
+    StrictMonoOn (fun t => firstMomentThreshold t / Fintype.card V)
+      (Set.Ici (Fintype.card V)) :=
+  fun _a ha _b _hb hab =>
+    admissibleCoeff_strictMono_of_card_le hV (Set.mem_Ici.mp ha) hab
+
+/-- **The admissible coefficient diverges (named form).**  The coefficient
+    `c(t) = ⌊2^{t-1}/|V|⌋ → ∞` as `t → ∞`, over any fixed nonempty ground set.
+    This is exactly the `Filter.Tendsto` witness constructed inline inside
+    `exists_admissible_coeff`, extracted here as a standalone reusable theorem:
+    the exponential threshold survives division by the fixed ground-set size, so
+    the integer coefficient the problem asks about genuinely tends to infinity. -/
+theorem admissibleCoeff_tendsto_atTop (hV : 0 < Fintype.card V) :
+    Filter.Tendsto (fun t => firstMomentThreshold t / Fintype.card V)
+      Filter.atTop Filter.atTop :=
+  (tendsto_div_const_atTop hV).comp firstMomentThreshold_tendsto_atTop
+
 end Erdos1022OQ02
