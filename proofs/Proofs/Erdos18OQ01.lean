@@ -553,4 +553,19 @@ theorem twelve_practical : IsPractical 12 := by
   norm_num at h
   exact h
 
+/-- **There are infinitely many practical numbers.**  The set of practical numbers is
+    infinite: the powers of two `2^k` are all practical (`two_pow_practical`) and
+    `k ↦ 2^k` is injective (`Nat.pow_right_injective`), so they form an infinite family
+    inside `{m | IsPractical m}`.  This packages the file's first infinite family into
+    the global statement that practical numbers never run out. -/
+theorem practical_infinite : {m : ℕ | IsPractical m}.Infinite :=
+  Set.infinite_of_injective_forall_mem
+    (Nat.pow_right_injective (le_refl 2)) (fun k => two_pow_practical k)
+
+/-- **Practical numbers are unbounded.**  For every `N` there is a practical number
+    exceeding it — the power of two `2^N > N` (`Nat.lt_two_pow_self`), practical by
+    `two_pow_practical`.  The explicit-witness form of `practical_infinite`. -/
+theorem exists_practical_gt (N : ℕ) : ∃ m, N < m ∧ IsPractical m :=
+  ⟨2 ^ N, N.lt_two_pow_self, two_pow_practical N⟩
+
 end Erdos18OQ01
