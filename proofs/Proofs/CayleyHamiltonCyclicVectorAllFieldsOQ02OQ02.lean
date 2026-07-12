@@ -249,6 +249,55 @@ theorem natDegree_minpoly_le_finrank_centralizer
   rwa [Subalgebra.finrank_toSubmodule, Subalgebra.finrank_toSubmodule,
     CyclicCommutantConverse.finrank_adjoin_eq_natDegree_minpoly M] at hmono
 
+/-- **Strict commutant lower bound for derogatory matrices.**  The always-true bound
+    `deg(minpoly K M) ≤ dim_K C(M)` (`natDegree_minpoly_le_finrank_centralizer`) is an
+    *equality* exactly for nonderogatory `M`
+    (`finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory`).  Hence for a **derogatory**
+    `M` (`minpoly K M ≠ charpoly M`) the inequality is **strict**:
+
+      `deg(minpoly K M) < dim_K C(M)`.
+
+    Equivalently, the commutant of a derogatory matrix is strictly larger than its polynomial
+    algebra `K[M]`: it contains a matrix commuting with `M` that is *not* a polynomial in `M`.
+    This is the dimensional signature of derogatoriness, dual to the nonderogatory equality
+    case `dim_K C(M) = deg(minpoly K M) = n`. -/
+theorem natDegree_minpoly_lt_finrank_centralizer_of_derogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M ≠ M.charpoly) :
+    (minpoly K M).natDegree
+      < Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) := by
+  have hle := natDegree_minpoly_le_finrank_centralizer M
+  have hne :
+      Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+        ≠ (minpoly K M).natDegree := by
+    intro heq
+    exact hM ((finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory M).mp heq)
+  omega
+
+/-- **Dimensional dichotomy of the commutant.**  For every `n × n` matrix `M` the polynomial
+    algebra `K[M]` sits inside the commutant `C(M)`, and the gap between their dimensions
+    detects derogatoriness exactly:
+
+      `dim_K C(M) = deg(minpoly K M)`  if `M` is nonderogatory, and
+      `dim_K C(M) > deg(minpoly K M)`  if `M` is derogatory.
+
+    Packages `finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory` (the equality case)
+    with `natDegree_minpoly_lt_finrank_centralizer_of_derogatory` (the strict case) into a
+    single case split on `minpoly K M = charpoly M`. -/
+theorem finrank_centralizer_dichotomy
+    (M : Matrix (Fin n) (Fin n) K) :
+    (minpoly K M = M.charpoly →
+        Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+          = (minpoly K M).natDegree)
+    ∧ (minpoly K M ≠ M.charpoly →
+        (minpoly K M).natDegree
+          < Module.finrank K
+              ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))) :=
+  ⟨fun h => (finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory M).mpr h,
+   natDegree_minpoly_lt_finrank_centralizer_of_derogatory M⟩
+
 /-! ### Summary -/
 
 /-- **De Moivre / Cayley–Hamilton OQ-02-OQ-02 summary.**  For an `n × n` matrix
