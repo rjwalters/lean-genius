@@ -1294,4 +1294,33 @@ theorem signChangesInCoeffs_comp_neg_X_add {p : ℝ[X]} (hp : p ≠ 0)
   have hmain := countSignChanges_alternate_add hcpnz
   simpa using hmain
 
+/-- **Explicit reflected count — the negative-root Descartes bound in closed form.**  For a
+gap-free polynomial the complementarity `signChangesInCoeffs_comp_neg_X_add`
+(`V(p) + V(p(−X)) = deg p`) rearranges to the explicit value
+
+    `V(p(−X)) = deg p − V(p)`.
+
+This is the form actually cited for the *negative* half of Descartes' rule: the number of
+negative roots of `p` is bounded by `deg p − V(p)`, the degree minus the positive-root bound.
+Immediate (`omega`) from the additive identity. Axiom-free. -/
+theorem signChangesInCoeffs_comp_neg_X_eq_sub {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.comp (-X))
+      = p.natDegree - DescartesRuleOfSigns.signChangesInCoeffs p := by
+  have h := signChangesInCoeffs_comp_neg_X_add hp hnz
+  omega
+
+/-- **Fully-alternating ⟺ reflection sign-constant.**  For a gap-free polynomial the two
+extremes of the complementarity `V(p) + V(p(−X)) = deg p` coincide: the reflection `p(−X)`
+has *no* sign changes (all its coefficients share a sign) **iff** `p` is *fully alternating*
+(`V(p) = deg p`, every adjacent coefficient pair flips sign).  The Descartes reading: `p`
+attains the maximal positive-root bound `deg p` exactly when `p(−X)` attains the minimal
+one `0`.  Immediate (`omega`) from the additive identity. Axiom-free. -/
+theorem signChangesInCoeffs_comp_neg_X_eq_zero_iff {p : ℝ[X]} (hp : p ≠ 0)
+    (hnz : ∀ k, k ≤ p.natDegree → p.coeff k ≠ 0) :
+    DescartesRuleOfSigns.signChangesInCoeffs (p.comp (-X)) = 0
+      ↔ DescartesRuleOfSigns.signChangesInCoeffs p = p.natDegree := by
+  have h := signChangesInCoeffs_comp_neg_X_add hp hnz
+  omega
+
 end DescartesRuleOfSignsOQ01OQ03
