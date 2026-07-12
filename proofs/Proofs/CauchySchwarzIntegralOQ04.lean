@@ -610,6 +610,48 @@ theorem heisenberg_canonical_std {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   rw [hnorm] at h
   linarith [h]
 
+/-- **Schrödinger uncertainty principle, standard-deviation form.**  The Schrödinger
+analogue of `robertson_std_form`: taking square roots of the (nonnegative) two sides of
+`schrodinger_uncertainty` — whose right side `‖(A−a)ψ‖²·‖(B−b)ψ‖²` is the square of the
+product of standard deviations — gives the tighter-than-Heisenberg bound
+
+  `√(¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪(A−a)ψ,(B−b)ψ⟫)²) ≤ ‖(A−a)ψ‖·‖(B−b)ψ‖`.
+
+Dropping the covariance term under the root recovers `robertson_std_form`. -/
+theorem schrodinger_std_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    Real.sqrt ((1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) ^ 2)
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ := by
+  have hsch := schrodinger_uncertainty hA hB ψ a b
+  have hr : (0 : ℝ) ≤ ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖ :=
+    mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  rw [show ‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖
+        = Real.sqrt ((‖A ψ - (a : 𝕜) • ψ‖ * ‖B ψ - (b : 𝕜) • ψ‖) ^ 2) from
+      (Real.sqrt_sq hr).symm]
+  apply Real.sqrt_le_sqrt
+  rw [mul_pow]
+  exact hsch
+
+/-- **Schrödinger uncertainty principle, standard-deviation form at the expectation
+values.**  Instantiating `schrodinger_std_form` at `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+turns each right-hand factor into a standard deviation, giving Schrödinger's sharpening of
+`heisenberg_std_form`:
+
+  `√(¼‖⟪ψ,[A,B]ψ⟫‖² + Cov_ψ(A,B)²) ≤ Δ_ψ(A)·Δ_ψ(B)`,
+
+with `Cov_ψ(A,B) = Re⟪(A−⟨A⟩)ψ,(B−⟨B⟩)ψ⟫`.  The square-root companion of
+`schrodinger_variance_form`, and the Schrödinger counterpart of `heisenberg_std_form`. -/
+theorem schrodinger_std_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    Real.sqrt ((1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ)
+            (B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ)) ^ 2)
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ :=
+  schrodinger_std_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
 /-! ## The additive (sum) uncertainty relation `Var(A) + Var(B) ≥ ‖⟪ψ,[A,B]ψ⟫‖`
 
 All the forms above are *multiplicative*: they bound the **product** of the
