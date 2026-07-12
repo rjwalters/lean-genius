@@ -449,4 +449,32 @@ theorem consecutive_gap_div_le_rpow_sub_one_of_bound {θ : ℝ} {x p q : ℕ}
       ≤ (x : ℝ) ^ θ / x := by gcongr
     _ = (x : ℝ) ^ (θ - 1) := hdiv
 
+/-- **θ-generic effective individual-gap bound.** The effective (pointwise) counterpart of
+`consecutive_gap_le_rpow_of_bound`, and the θ-generic form of `consecutive_gap_le_eps_effective`
+(whose exponent is `θ = 0.525`): from a power bound `maxPrimeGap x ≤ x^θ` at a point `x > 0`
+that has passed the explicit threshold `1 ≤ ε · x^(1-θ)` (equivalently `x^(θ-1) ≤ ε`, the point
+where the `θ`-envelope has dropped below `ε`), *every* consecutive-prime gap `q - p` with
+`q ≤ x` already satisfies `q - p ≤ ε · x`.  Composes `consecutive_gap_le_rpow_of_bound` with the
+threshold `x^θ = x^θ · 1 ≤ x^θ · (ε · x^(1-θ)) = ε · x`.  This completes the θ-generic
+consecutive-gap trilogy — `_le_rpow_of_bound` (`≤ x^θ`), `_div_le_rpow_sub_one_of_bound`
+(`/x ≤ x^(θ-1)`), and this effective `≤ ε·x` form — to exactly parallel the BHP-specific
+trilogy, so any future BHP strengthening supplies all three at once.  As in the BHP-specific
+version, positivity of `ε` is forced by the threshold, not assumed. -/
+theorem consecutive_gap_le_eps_of_bound {θ : ℝ} {x p q : ℕ} (ε : ℝ)
+    (hx : 0 < x) (hbound : (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ)
+    (hthr : 1 ≤ ε * (x : ℝ) ^ (1 - θ))
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q) (hqx : q ≤ x)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    ((q - p : ℕ) : ℝ) ≤ ε * x := by
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast hx
+  have hxθ : (0 : ℝ) < (x : ℝ) ^ θ := Real.rpow_pos_of_pos hx_pos θ
+  have h1 : ((q - p : ℕ) : ℝ) ≤ (x : ℝ) ^ θ :=
+    consecutive_gap_le_rpow_of_bound hbound hp hq hpq hqx hcons
+  -- The threshold `1 ≤ ε·x^(1-θ)` lifts (scale by `x^θ > 0`) to `x^θ ≤ ε·x`.
+  have h2 : (x : ℝ) ^ θ ≤ ε * x := by
+    have hstep := mul_le_mul_of_nonneg_right hthr (le_of_lt hxθ)
+    rwa [one_mul, mul_assoc, ← Real.rpow_add hx_pos,
+      show (1 : ℝ) - θ + θ = 1 by ring, Real.rpow_one] at hstep
+  exact le_trans h1 h2
+
 end Erdos1138OQ03
