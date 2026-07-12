@@ -1300,4 +1300,20 @@ theorem packingDensity_range_subset_Icc :
   rintro x ⟨d, rfl⟩
   exact ⟨d.nonneg, d.le_one⟩
 
+/-- **The density functional attains exactly the unit interval.**
+`range PackingDensity.density = Set.Icc 0 1`: the image of the density projection is
+*precisely* `[0, 1]`, not merely contained in it. This upgrades
+`packingDensity_range_subset_Icc` (`⊆`) to an equality by supplying the reverse
+inclusion — every `x ∈ [0, 1]` is realized, by the packing `⟨x, hx.1, hx.2⟩` whose two
+structure fields are exactly the interval endpoints. So beyond having its two endpoints
+attained (`isLeast_packingDensity_range`, `isGreatest_packingDensity_range`), the
+functional is *surjective onto* `[0, 1]`: it attains every intermediate value too — a
+genuine strengthening, since a bounded map with both endpoints attained can still skip
+interior values. No axioms. -/
+theorem range_packingDensity_eq_Icc :
+    Set.range (PackingDensity.density) = Set.Icc 0 1 := by
+  apply Set.Subset.antisymm packingDensity_range_subset_Icc
+  rintro x ⟨hx0, hx1⟩
+  exact ⟨⟨x, hx0, hx1⟩, rfl⟩
+
 end KeplerConjectureOQ04
