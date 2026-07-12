@@ -85,5 +85,63 @@
       "endLine": 121,
       "summary": "qBinom_reflect (the right-to-left convenience form q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q) and qBinom_reciprocal_involutive (applying the twisted reflection twice returns the original, confirming it is an involution as any palindrome reflection must be)."
     }
+  ],
+  "conclusion": {
+    "summary": "A self-contained, axiom-free Lean file establishing that the Gaussian q-binomial coefficient [n,k]_q is palindromic, in the clean field form [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹} (for q ≠ 0), together with its reflected convenience form and an involutivity check. The proof is a single induction on n that expands the original by one q-Pascal identity and the reflection by the other, matching the two sides coefficient-by-coefficient. This is the symmetric half of Sylvester's 1878 theorem; the unimodal half is deliberately left open.",
+    "implications": "Palindromy is exactly the piece of Sylvester's theorem that is elementary, and isolating it cleanly turns the open unimodality question into 'a symmetric sequence is unimodal', halving what remains to be proved. The identity also encodes the geometric duality between k-dimensional subspaces of 𝔽_qⁿ and their (n−k)-dimensional annihilators (which reverses the q-grading), and it is the q-analogue of the ordinary binomial symmetry C(n,k) = C(n,n−k) recovered at q = 1. Because the argument is purely arithmetic over a field, it is robust and reusable as a lemma toward any future unimodality formalization.",
+    "openQuestions": [
+      "Unimodality of the coefficient sequence of [n,k]_q — the substantive half of Sylvester's theorem — requiring either an sl₂-action (Proctor 1982) or an explicit injection between adjacent coefficient levels (O'Hara 1990). This is the actual content of the open question and is not attempted here.",
+      "Recast palindromy as a genuine coefficient-reversal statement over ℤ[q] (rather than the field identity with q⁻¹), so that it composes directly with a coefficient-level unimodality argument.",
+      "Formalize the subspace-counting interpretation, deriving palindromy from the bijection between k- and (n−k)-dimensional subspaces of 𝔽_qⁿ instead of from the recurrence."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Sylvester, J. J.",
+      "title": "Proof of the hitherto undemonstrated fundamental theorem of invariants",
+      "year": "1878",
+      "note": "Philosophical Magazine. Establishes that the coefficient sequence of the Gaussian binomial is symmetric and unimodal; the symmetry (palindromy) half is what is formalized here."
+    },
+    {
+      "authors": "Proctor, R. A.",
+      "title": "Solution of two difficult combinatorial problems with linear algebra",
+      "year": "1982",
+      "note": "American Mathematical Monthly 89(10). The first fully rigorous proof of unimodality via an sl₂ (raising/lowering operator) action — the open half of the result."
+    },
+    {
+      "authors": "O'Hara, K. M.",
+      "title": "Unimodality of Gaussian coefficients: a constructive proof",
+      "year": "1990",
+      "note": "Journal of Combinatorial Theory, Series A 53(1). A purely combinatorial (injection-based) proof of unimodality, avoiding representation theory."
+    },
+    {
+      "authors": "Andrews, G. E.",
+      "title": "The Theory of Partitions",
+      "year": "1976",
+      "note": "Encyclopedia of Mathematics and its Applications, Cambridge University Press. Standard reference for Gaussian binomials, q-Pascal recurrences, and their symmetry as generating functions for partitions in a box."
+    },
+    {
+      "authors": "Kac, V. and Cheung, P.",
+      "title": "Quantum Calculus",
+      "year": "2002",
+      "note": "Springer Universitext. Develops q-binomial coefficients and the two q-Pascal rules used here as the engine of the palindromy induction."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-03",
+      "relationship": "extends",
+      "description": "Parent. Defines the q-binomial coefficient over an arbitrary commutative ring via the q-Pascal recurrence and proves BOTH q-Pascal identities (qBinom_pascal, qBinom_pascal') plus the vanishing lemma qBinom_eq_zero_of_lt — exactly the toolkit this file inducts with to prove palindromy."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "specializes",
+      "description": "Grandparent. The ordinary binomial coefficient and its symmetry C(n,k) = C(n,n−k); palindromy of the q-binomial is the q-analogue that degenerates to this classical symmetry at q = 1."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The classical binomial theorem, whose coefficients are the q = 1 specialization of the Gaussian binomials studied here; the q-Pascal recurrences reduce to ordinary Pascal's rule at q = 1."
+    }
   ]
 }
