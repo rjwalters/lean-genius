@@ -70,7 +70,8 @@
       "The entire content of 'degree d is not a power of two' is the single fact 'd has an odd prime factor' — `q ∣ 2^k ⟹ q ∣ 2 ⟹ q = 2` is the whole proof, with no case analysis on k.",
       "Both the Wantzel degree predicate and the Galois 2-group predicate are *definitionally* `IsPowTwo` applied to a natural number (`p.natDegree` resp. `Fintype.card G`), so one arithmetic lemma serves both sides of the constructibility characterization.",
       "The parent's three separate `interval_cases k <;> simp_all` proofs become a single instance of `not_degreePowerOfTwo_of_natDegree_three`; the criterion extends for free to degree 5 (regular 11-gon) and any odd-prime degree.",
-      "On the group side, Cauchy's theorem (`exists_prime_orderOf_dvd_card`) turns the abstract obstruction into a concrete witness: an element whose order is the offending odd prime cannot exist in a 2-group."
+      "On the group side, Cauchy's theorem (`exists_prime_orderOf_dvd_card`) turns the abstract obstruction into a concrete witness: an element whose order is the offending odd prime cannot exist in a 2-group.",
+      "The obstruction is an odd prime *factor*, not an odd degree — so it also catches even composite degrees. `not_isPowTwo_six` uses 3 ∣ 6: a degree need not be odd to fail Wantzel, only to carry an odd prime factor. This is strictly stronger than both the parent's degree-3 arguments and the naive 'odd degree ⟹ non-constructible' heuristic — e.g. cos(2π/13) has an even degree-6 minimal polynomial (φ(13)/2 = 6 = 2·3) yet is non-constructible."
     ],
     "prerequisites": [
       "Divisibility and prime factorization over ℕ",
