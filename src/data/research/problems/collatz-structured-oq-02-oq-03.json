@@ -63,7 +63,12 @@
       "CollatzStructuredOQ02OQ03CertMaximal.lean (self-contained, re-declares AffValid+deriveVec exactly, import Mathlib only — mother at kernel SIGBUS ceiling): affValid_eq_deriveVec_self (CANONICAL GENERATION/MAXIMALITY: EVERY valid cert v for ANY class (c,d) is literally deriveVec v.length c d, structural induction on AffValid, each extending step has c%2=0 so deriveVec skips its c%2=1 halt and takes the d%2 branch) + affValid_nil_of_odd_modulus (odd modulus ⟹ empty cert, the structural reason deriveVec halts on c%2=1) + affValid_length_eq_deriveVec_self. Removes the residue-determined-window length side-hypothesis of affValid_iff_prefix_deriveVec in fully general form. 3 thm, axioms [propext,Quot.sound] only.",
       "affOrbit_snd_bound, affOrbit_snd_mono (constant fold bound + monotone in d) in CollatzStructuredOQ02OQ03ConstBound.lean",
       "affine_value_lt / affine_value_lt_of_threshold (affine drop: raw + closed-form threshold) in ConstBound.lean",
-      "affValid_attainsBelow_of_large / affValid_attainsBelow_of_large_pow (uniform eventual-drop, no D<r condition) in ConstBound.lean"
+      "affValid_attainsBelow_of_large / affValid_attainsBelow_of_large_pow (uniform eventual-drop, no D<r condition) in ConstBound.lean",
+      "deriveVec_length_le (CollatzStructuredOQ02OQ03CertUnique.lean): (deriveVec fuel c d).length <= fuel, axiom-free",
+      "affValid_prefix_deriveVec_of_length (CertUnique.lean): AffValid v c d and v.length <= fuel imply v prefix of deriveVec fuel c d, induction on AffValid, axiom-free",
+      "affValid_length_le_deriveVec (CertUnique.lean): length maximality v.length <= (deriveVec fuel c d).length, axiom-free",
+      "deriveVec_prefix_mono (CertUnique.lean): fuel <= fuel2 implies deriveVec fuel c d prefix of deriveVec fuel2 c d, axiom-free",
+      "affValid_prefix_deriveVec_pow (CertUnique.lean): dyadic prefix maximality with intrinsic bound v.length <= 2b+1 (drops self-referential hypothesis of affValid_prefix_deriveVec), axiom-free"
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -91,7 +96,16 @@
       "Mechanize certificate GENERATION as a tactic/decision procedure now that affValid_eq_deriveVec_self identifies the generator as deriveVec v.length c d.",
       "Attempt the unconditional density→1 (Terras/Korec) milestone toward tao_2019, rather than more finite residue levels (enumeration theater).",
       "Tao axiom genuinely blocked (deep analytic, >>1000 lines).",
-      "Sharpen the Part XIII eventual-drop threshold: the bound D+1<=3^a(d+1) is worst-case (all triples first); a tighter constant estimate would shrink the m-threshold and could pin the exact finite set of non-dropping members per determined-drop class."
+      "Sharpen the Part XIII eventual-drop threshold: the bound D+1<=3^a(d+1) is worst-case (all triples first); a tighter constant estimate would shrink the m-threshold and could pin the exact finite set of non-dropping members per determined-drop class.",
+      "Part XI maximality (researcher-11 2026-07-12, VERIFIED axiom-free): deriveVec produces the MAXIMAL valid certificate. Both AffValid constructors (odd/even) require c%2=0 -- exactly the branch deriveVec takes before emitting a bit -- so the certificate recursion and the engine recursion stay in lockstep. affValid_prefix_deriveVec_of_length: AffValid v c d and v.length <= fuel imply v is a prefix of deriveVec fuel c d, by induction on the AffValid derivation. This DISCHARGES the self-referential hypothesis v.length <= (deriveVec ...).length that affValid_prefix_deriveVec assumed, replacing it with the intrinsic fuel budget v.length <= fuel (met by fuel = v.length).",
+      "deriveVec_length_le: (deriveVec fuel c d).length <= fuel unconditionally (induction on fuel; each recorded bit consumes one fuel). Gives affValid_length_le_deriveVec: v.length <= (deriveVec fuel c d).length -- the length-maximality capstone: no valid certificate is strictly longer than the window the fuel reaches. Also deriveVec_prefix_mono: fuel <= fuel2 implies deriveVec fuel c d is a prefix of deriveVec fuel2 c d (the shorter derived window is itself AffValid with length <= fuel <= fuel2, so the prefix lemma applies) -- the derived certificates for a fixed class form a CHAIN under prefix, converging to the maximal transcript once the window closes."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Closure length bound: prove any AffValid v (2^b) r has v.length <= 2b+1 (track the 2-adic valuation of the leading coefficient: even steps drop v2(c) by 1, odd steps preserve it since 3 is odd, and no two odd steps are consecutive), so fuel = 2b+1 is always sufficient and affValid_prefix_deriveVec_pow applies unconditionally.",
+      "Mechanize certificate GENERATION: a tactic/decision procedure computing the forced parity vector v and AffValid certificate from a residue r mod 2^b automatically.",
+      "Attempt the unconditional density->1 (Terras/Korec) as the real milestone toward tao_2019, rather than adding more finite residue levels (enumeration theater).",
+      "Tao axiom genuinely blocked (deep analytic, >>1000 lines)."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
