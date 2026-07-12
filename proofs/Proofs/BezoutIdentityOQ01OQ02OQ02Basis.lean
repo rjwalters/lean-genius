@@ -511,4 +511,53 @@ theorem isPrimitive_iff_isSaturatedLine {v : Fin n → ℤ} (hv0 : v ≠ 0) :
     IsPrimitive v ↔ IsSaturatedLine v :=
   ⟨fun hv => hv.isSaturatedLine, isPrimitive_of_isSaturatedLine hv0⟩
 
+/-! ### Canonical form: the quotient `ℤⁿ / (ℤ·v)` is torsion-free
+
+`IsSaturatedLine v` is our hand-rolled statement that `ℤ·v` is pure.  Mathlib already
+has the canonical name for "the quotient module has no torsion": the typeclass
+`NoZeroSMulDivisors ℤ (ℤⁿ ⧸ ℤ·v)`, whose sole field says `c • x̄ = 0 → c = 0 ∨ x̄ = 0`.
+Reading `x̄ = 0` back through `Submodule.Quotient.mk_eq_zero` as `x ∈ ℤ·v` turns this
+typeclass into exactly saturation, so primitivity of a nonzero `v` is *precisely* the
+statement that `ℤⁿ / (ℤ·v)` is torsion-free.  This is the theorem that plugs the whole
+primitivity triad into Mathlib's torsion-free API (e.g. over the PID `ℤ`, the quotient
+is then finite free of rank `n − 1`).  Everything stays `propext`/`Classical.choice`/
+`Quot.sound`-only. -/
+
+/-- **Primitive ⇔ the quotient line is torsion-free (`v ≠ 0`).**  For nonzero `v`,
+primitivity of `v` is exactly the statement that `ℤⁿ / (ℤ·v)` carries no nonzero
+torsion, i.e. `NoZeroSMulDivisors ℤ (ℤⁿ ⧸ ℤ·v)`.  This is the canonical Mathlib
+reformulation of `isPrimitive_iff_isSaturatedLine`: the quotient map sends
+`c • x = 0` to `c • x ∈ ℤ·v`, and `x̄ = 0` to `x ∈ ℤ·v`, converting the typeclass field
+into the saturation criterion verbatim.  As with the saturation and direct-summand
+forms, the degenerate `v = 0` case is excluded: `ℤⁿ / ⊥ ≅ ℤⁿ` is torsion-free yet `0`
+is never primitive. -/
+theorem isPrimitive_iff_noZeroSMulDivisors_quotient {v : Fin n → ℤ} (hv0 : v ≠ 0) :
+    IsPrimitive v ↔
+      NoZeroSMulDivisors ℤ
+        ((Fin n → ℤ) ⧸ Submodule.span ℤ ({v} : Set (Fin n → ℤ))) := by
+  set N : Submodule ℤ (Fin n → ℤ) := Submodule.span ℤ ({v} : Set (Fin n → ℤ)) with hN
+  rw [isPrimitive_iff_isSaturatedLine hv0]
+  constructor
+  · intro hsat
+    constructor
+    intro c y h
+    rcases eq_or_ne c 0 with hc | hc
+    · exact Or.inl hc
+    · refine Or.inr ?_
+      obtain ⟨x, rfl⟩ := N.mkQ_surjective y
+      have hcx : c • x ∈ N := by
+        rw [← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_smul,
+          Submodule.mkQ_apply]
+        exact h
+      have hx := hsat c hc x hcx
+      rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
+      exact hx
+  · intro hnz c hc x hx
+    have h0 : c • (N.mkQ x) = 0 := by
+      rw [← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
+      exact hx
+    rcases hnz.eq_zero_or_eq_zero_of_smul_eq_zero h0 with hc0 | hx0
+    · exact absurd hc0 hc
+    · rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hx0
+
 end BezoutPrimitive
