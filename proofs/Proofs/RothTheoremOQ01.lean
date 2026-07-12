@@ -477,6 +477,26 @@ theorem threeAPFree_card_le_bourgain
           (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) :=
         rothNumberNat_le_bourgain N hN
 
+/-- **Sharpest density bound for an arbitrary 3-AP-free set: the pointwise minimum.**
+The universal-set lift of `rothNumberNat_le_min_bourgain_blasi`: every 3-AP-free finite set
+`s ⊆ [0, N)` (`N ≥ 3`) is bounded by the *better* of the Bourgain and Bloom–Sisask bounds,
+
+  `#s ≤ min (C · N · (log log N / log N)^{1/2})  (N / (log N)^{1+c})`.
+
+Combining `threeAPFree_card_le_bourgain` and `threeAPFree_card_le_blasi` via `le_min`, this
+is the tightest bound an application can quote for a specific set — for each `N` it is
+whichever of the two known savings is stronger, with no need to pick in advance. Inherits
+exactly the one imported Bloom–Sisask assumption through the Bloom–Sisask branch; adds no
+new axiom. -/
+theorem threeAPFree_card_le_min_bourgain_blasi
+    {s : Finset ℕ} (hs : ThreeAPFree (s : Set ℕ)) {N : ℕ} (hN : 3 ≤ N)
+    (hsub : ∀ x ∈ s, x < N) :
+    (s.card : ℝ) ≤
+      min (bourgainConst * (N : ℝ) *
+            (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2))
+          ((N : ℝ) / Real.log N ^ (1 + RothTheoremOQ02.blasiConst)) :=
+  le_min (threeAPFree_card_le_bourgain hs hN hsub) (threeAPFree_card_le_blasi hs hN hsub)
+
 /-- **Roth's 1953 saving factor vanishes.**  `1 / log log N → 0`.  This is the
 qualitative content of Roth's original theorem (`r₃(N) ≪ N / log log N ⟹ r₃(N) = o(N)`),
 the weakest saving in the landscape table.  Recorded here as the companion of
