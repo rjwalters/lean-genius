@@ -521,4 +521,90 @@ theorem historical_bounds_redundant :
     (∃ C : ℝ, C > 0 ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≤ C * k^2 / log k) :=
   ⟨hhkp_subsumes_kim, hhkp_subsumes_bk_pgm, hhkp_subsumes_cjms, shearer_subsumes_aks⟩
 
+/- ## Part IX: The dual (upper-side) monotonicity, and general-sequence uniqueness
+
+The subsumption chain above rests on `lower_bound_mono`: a first-order *lower* bound may be
+weakened to any *smaller* leading constant.  The present section supplies the two structural
+companions that the file was missing.
+
+First, the exact mirror image, `upper_bound_mono`: a first-order *upper* bound
+`R(3,k) ≤ (b+ε)·k²/log k` may be weakened to any *larger* leading constant `b' ≥ b`.  This is
+precisely the widening performed by hand inside `erdos_165` (there the constant `5/4` was
+opened up to `2`); here it is isolated as a reusable lemma.  Combined with Shearer it yields
+`R3_upper_constant_of_one_le`: *every* `b ≥ 1` is a valid first-order upper constant for
+`R(3,k)` — the exact dual of the `hhkp_subsumes_*` family.  Placing this beside
+`R3_upper_constant_ge_half` (every valid upper constant is `≥ 1/2`) sandwiches the set of
+valid asymptotic upper constants inside `[1/2, ∞)` while showing it contains `[1, ∞)`; the
+residual window `[1/2, 1)` is exactly the file's quantitative ignorance about the true
+constant.
+
+Second, `asymptotic_constant_unique`: the R3-specific `constantConjecture_unique` is really an
+instance of a statement about *any* real sequence `f` — at most one leading constant can
+two-side pin it.  We record that general form (`constantConjecture_unique` is its `f = R3`
+instance).  All three results are axiom-free: they use only `asymptotic_constant_le` and the
+eventual positivity of `k²/log k`, no Ramsey input. -/
+
+/-- **Monotone weakening of a first-order upper bound** (dual of `lower_bound_mono`).  If
+    `R(3,k) ≤ (b+ε)·k²/log k` holds eventually for every `ε > 0`, then the same shape holds
+    with any *larger* leading constant `b' ≥ b`.  The mechanism is identical to
+    `lower_bound_mono`: the atom `k²/log k` is eventually nonnegative (for `k ≥ 2`), so
+    `b+ε ≤ b'+ε` transports through the multiplication.  This isolates the widening step that
+    `erdos_165` performs inline. -/
+theorem upper_bound_mono {b b' : ℝ} (hbb : b ≤ b')
+    (h : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b + ε) * k^2 / log k) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b' + ε) * k^2 / log k := by
+  intro ε hε
+  obtain ⟨k₀, hk₀⟩ := h ε hε
+  refine ⟨max k₀ 2, fun k hk => ?_⟩
+  have hk0 : k ≥ k₀ := le_of_max_le_left hk
+  have hk2 : k ≥ 2 := le_of_max_le_right hk
+  have h2k : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk2
+  have hlog : 0 < log k := Real.log_pos (by linarith)
+  have hatom : 0 ≤ (k:ℝ)^2 / log k := le_of_lt (div_pos (by positivity) hlog)
+  have hmono : (b + ε) * k^2 / log k ≤ (b' + ε) * k^2 / log k := by
+    rw [mul_div_assoc, mul_div_assoc]
+    exact mul_le_mul_of_nonneg_right (by linarith) hatom
+  exact le_trans (hk₀ k hk0) hmono
+
+/-- **Every constant `b ≥ 1` is a valid first-order upper constant for `R(3,k)`.**  The dual of
+    the `hhkp_subsumes_*` family: whereas HHKP (`1/2`) forces every smaller constant to be a
+    valid *lower* bound, Shearer (`1`) makes every *larger* constant a valid *upper* bound, via
+    `upper_bound_mono`.  In particular `b = 2` recovers the upper witness used in `erdos_165`. -/
+theorem R3_upper_constant_of_one_le (b : ℝ) (hb : 1 ≤ b) :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b + ε) * k^2 / log k :=
+  upper_bound_mono hb shearer_upper_bound
+
+/-- **Shearer subsumes the constant `2`.**  The `b = 2` instance of
+    `R3_upper_constant_of_one_le`; it is the upper-side analogue of `hhkp_subsumes_bk_pgm`, and
+    exactly the widened Shearer bound `erdos_165` uses as its `c₂ = 2` witness. -/
+theorem shearer_subsumes_upper_two :
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (2 + ε) * k^2 / log k :=
+  R3_upper_constant_of_one_le 2 (by norm_num)
+
+/-- **Uniqueness of a first-order asymptotic constant, for an arbitrary sequence.**  The
+    R3-specific `constantConjecture_unique` is the `f = fun k => (R3 k : ℝ)` instance of this:
+    for *any* real sequence `f`, at most one leading constant can two-sidedly pin it in the
+    `k²/log k` scale.  A two-sided application of the axiom-free `asymptotic_constant_le`,
+    pairing each constant's lower half against the other's upper half.  No Ramsey input. -/
+theorem asymptotic_constant_unique
+    (f : ℕ → ℝ) (c₁ c₂ : ℝ)
+    (h₁ : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (c₁ - ε) * k^2 / log k ≤ f k ∧ f k ≤ (c₁ + ε) * k^2 / log k)
+    (h₂ : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (c₂ - ε) * k^2 / log k ≤ f k ∧ f k ≤ (c₂ + ε) * k^2 / log k) :
+    c₁ = c₂ := by
+  have h12 : c₁ ≤ c₂ :=
+    asymptotic_constant_le f c₁ c₂
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩)
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₂ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
+  have h21 : c₂ ≤ c₁ :=
+    asymptotic_constant_le f c₂ c₁
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₂ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩)
+      (fun ε hε => by obtain ⟨k₀, hk₀⟩ := h₁ ε hε; exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩)
+  linarith
+
 end Erdos165
