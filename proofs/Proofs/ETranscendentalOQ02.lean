@@ -1183,12 +1183,16 @@ theorem exists_match_ge_of_count_gt (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k →
       (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) with hA
   set B := (Finset.range P).filter
       (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) with hB
-  have hBA : B ⊆ A := Finset.filter_subset_filter _ (Finset.range_subset.mpr hPN)
+  have hsub : Finset.range P ⊆ Finset.range N :=
+    fun a ha => Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp ha) hPN)
+  have hBA : B ⊆ A := Finset.filter_subset_filter _ hsub
   have hBcard : B.card ≤ P := by
     calc B.card ≤ (Finset.range P).card := Finset.card_filter_le _ _
       _ = P := Finset.card_range P
   have hne : (A \ B).Nonempty := by
-    rw [← Finset.card_pos, Finset.card_sdiff hBA]
+    rw [Finset.sdiff_nonempty]
+    intro hAB
+    have hle := Finset.card_le_card hAB
     omega
   obtain ⟨n, hn⟩ := hne
   rw [Finset.mem_sdiff] at hn
