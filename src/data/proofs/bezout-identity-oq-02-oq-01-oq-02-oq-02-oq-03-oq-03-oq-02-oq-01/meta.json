@@ -100,14 +100,16 @@
       "title": "A prime element divides the image of a rational prime",
       "startLine": 46,
       "endLine": 81,
-      "summary": "exists_prime_dvd_natCast: by strong induction on n, a prime element of ℤ[√d] dividing ↑n (n ≠ 0) divides ↑p for some rational prime p. Each step factors off a prime p ∣ n, writes n = p·k, and splits z ∣ ↑p·↑k via Prime.dvd_or_dvd — either z ∣ ↑p (done) or z ∣ ↑k and recurse; n = 1 is impossible since z ∣ 1 would make z a unit."
+      "summary": "exists_prime_dvd_natCast: by strong induction on n, a prime element of ℤ[√d] dividing ↑n (n ≠ 0) divides ↑p for some rational prime p. Each step factors off a prime p ∣ n, writes n = p·k, and splits z ∣ ↑p·↑k via Prime.dvd_or_dvd — either z ∣ ↑p (done) or z ∣ ↑k and recurse; n = 1 is impossible since z ∣ 1 would make z a unit.",
+      "mathContext": "$z$ prime, $z \\mid \\uparrow n$, $n \\ne 0 \\Rightarrow \\exists$ rational prime $p$ with $z \\mid \\uparrow p$ (strong induction on $n$, splitting $z \\mid \\uparrow p \\cdot \\uparrow k$ via `Prime.dvd_or_dvd`)."
     },
     {
       "id": "sec-norm-dichotomy",
       "title": "The norm of an irreducible is a prime or a prime square",
       "startLine": 82,
       "endLine": 130,
-      "summary": "irreducible_norm_eq_prime_or_sq: for −2 ≤ d < 0, an irreducible z is prime and divides ↑|N(z)| = z·z̄; via exists_prime_dvd_natCast it divides some ↑p, and comparing norms of ↑p = z·w (norm_intCast, norm_mul) gives |N(z)| ∣ p². Since |N(z)| ≠ 1 (norm_eq_one_iff), Nat.dvd_prime_pow forces |N(z)| = p or p²."
+      "summary": "irreducible_norm_eq_prime_or_sq: for −2 ≤ d < 0, an irreducible z is prime and divides ↑|N(z)| = z·z̄; via exists_prime_dvd_natCast it divides some ↑p, and comparing norms of ↑p = z·w (norm_intCast, norm_mul) gives |N(z)| ∣ p². Since |N(z)| ≠ 1 (norm_eq_one_iff), Nat.dvd_prime_pow forces |N(z)| = p or p².",
+      "mathContext": "$z \\mid \\uparrow|N(z)| = z\\bar z$ and $z \\mid \\uparrow p \\Rightarrow \\uparrow p = zw \\Rightarrow p^2 = |N(z)|\\cdot|N(w)| \\Rightarrow |N(z)| \\mid p^2$; with $|N(z)| \\ne 1$, the divisors of $p^2$ force $|N(z)| \\in \\{p, p^2\\}$ (inert vs split/ramified)."
     }
   ],
   "sorries": 0,
