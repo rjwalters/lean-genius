@@ -79,7 +79,8 @@
       "**The inverse is an algorithm, not just an existence theorem.** Inverting id + g is the contraction T_y x = y − g x; its iterates are the successive approximations and their limit is f⁻¹ y, so the abstract fixed point of the parent becomes a runnable iteration with certified accuracy.",
       "**A priori and a posteriori bounds answer different questions.** The a priori bound kⁿ/(1−k) fixes the iteration count in advance from the first step; the a posteriori bound ‖xₙ − xₙ₊₁‖/(1−k) is a computable stopping criterion measured during the run. Both are exposed.",
       "**Uniqueness comes free from the contraction.** Because T_y has a unique fixed point, the inverse is the only solution of x + g x = y — recovering injectivity of id + g from the iterative side, complementing the parent's antilipschitz argument.",
-      "**Seed at the target for the cleanest constant.** Starting the iteration at x₀ = y makes the first increment exactly ‖g y‖, so the error after n steps is ‖g y‖·kⁿ/(1−k) — a bound depending only on the data g, y and the contraction constant."
+      "**Seed at the target for the cleanest constant.** Starting the iteration at x₀ = y makes the first increment exactly ‖g y‖, so the error after n steps is ‖g y‖·kⁿ/(1−k) — a bound depending only on the data g, y and the contraction constant.",
+      "**The contraction constant is independent of the target y.** T_y = (translate by y) ∘ (−g) differs from −g only by a constant shift, so ‖T_y a − T_y b‖ = ‖g a − g b‖ ≤ k‖a − b‖ with the *same* k for every right-hand side y. One modulus therefore governs the whole inverse family at once: it explains why the parent's f⁻¹ is uniformly (1−k)⁻¹-Lipschitz across all y, and why the Picard rate kⁿ and both error bounds hold with a y-independent constant — the target only relocates the fixed point, never the speed of convergence."
     ],
     "exampleSections": [
       {
