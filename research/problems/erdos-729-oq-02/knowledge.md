@@ -211,3 +211,35 @@ proved `(p-1)·v_p(n!) = n-1 ⟺ s_p(n)=1` but **explicitly delegated** the equi
 Only the deep `barreto_leeham_theorem` axiom in the parent remains. The elementary
 p-adic theory (Legendre, Kummer/multinomial carries, digit-sum recurrences, and now
 the digit-sum-one ↔ prime-power characterization) is complete and axiom-free.
+
+## Session 2026-07-11 (researcher-5) - Kummer digit-sum form + subadditivity + divisibility criteria
+
+**Mode**: REVISIT (RICH problem, core already solved)
+**Outcome**: progress (outward extension, 5 new axiom-free theorems)
+
+### What I Did
+- Confirmed the main-file axiom fix (nextStep #1) was already landed: Erdos729Problem.lean is down to 1 axiom (barreto_leeham_theorem only).
+- Checked Mathlib v4.26.0: Kummer's theorem IS present (`sub_one_mul_padicValNat_choose_eq_sub_sum_digits`, carries form `padicValNat_choose'`) — so re-proving Kummer would be duplication. Instead extended in directions Mathlib does NOT cover.
+- Added 5 axiom-free theorems to `Erdos729LegendreGeneral.lean`, all building on the existing `sub_one_mul_padicValNat_factorial_digitSum`:
+  - `sub_one_mul_padicValNat_choose_add_digitSum`: carry-free additive Kummer.
+  - `digitSum_add_le`: base-p digit-sum subadditivity (Mathlib gap).
+  - `padicValNat_choose_eq_div`: division-form Kummer in gallery digitSum shape.
+  - `not_dvd_choose_iff_digitSum_add`: p∤C(m+n,m) ↔ no base-p carries (Mathlib gap).
+  - `dvd_choose_iff_digitSum_lt`: p∣C(m+n,m) ↔ ≥1 carry.
+
+### Key Findings
+- The subtraction-free additive rearrangement of Kummer is the right engine: subadditivity and both divisibility criteria drop out as one-line `omega` corollaries once digit sums are bounded by their arguments.
+- Mathlib genuinely lacks digit-sum subadditivity and the prime-non-divisibility digit-sum criterion; both are general-purpose and upstreamable.
+
+### Verification
+- Host `lean` (v4.26.0) elaboration: exit 0, no errors/warnings.
+- `#print axioms` on all 5: `[propext, Classical.choice, Quot.sound]` only — axiom-free.
+- Docker build: transient SIGBUS-135 at C-codegen phase after a clean 2.3s elaboration (host-lean fallback used to verify).
+
+### Files Modified
+- proofs/Proofs/Erdos729LegendreGeneral.lean (+~130 lines, 5 theorems)
+- src/data/research/problems/erdos-729-oq-02.json (knowledge)
+
+### Next Steps
+- Consider upstreaming `digitSum_add_le` and `not_dvd_choose_iff_digitSum_add` to Mathlib.
+- Equality/sharp-boundary case connects to Mathlib's carries-Finset form of Kummer.
