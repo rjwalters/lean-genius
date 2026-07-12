@@ -576,6 +576,40 @@ theorem IsDiagonalizable.listProd_of_commute_distinct {M P : Matrix n n K}
   refine IsDiagonalizable.prod_of_commonDiagonalizer hP L (fun N hN => ?_)
   exact commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist (hL N hN)
 
+/-- **Distinct-eigenvalue simultaneous diagonalization — the difference.**  If `P` diagonalizes
+    `M` with pairwise distinct eigenvalues and `N` commutes with `M`, then `M - N` is
+    diagonalizable.  Commuting with the distinct-spectrum `M` forces `N` to share `M`'s
+    diagonalizer (`commonDiagonalizer_of_commute_distinct`), after which the shared-`P`
+    difference law `sub_of_commonDiagonalizer` applies.  The subtractive companion of
+    `add_of_commute_distinct`; with it the distinct-spectrum commutant is closed under `+`,
+    `-` and `*`. -/
+theorem IsDiagonalizable.sub_of_commute_distinct {M N P : Matrix n n K}
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : M * N = N * M) :
+    (M - N).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hNdiag := commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist hcomm
+  exact IsDiagonalizable.sub_of_commonDiagonalizer hP hMdiag hNdiag
+
+/-- **Distinct-eigenvalue simultaneous diagonalization — the sum of a whole family.**  If `P`
+    diagonalizes `M` with pairwise distinct eigenvalues and *every* matrix `N i` (`i ∈ s`)
+    commutes with `M`, then the finite sum `∑ i ∈ s, N i` is diagonalizable.  Each `N i` is
+    forced to share `M`'s diagonalizer `P` (`commonDiagonalizer_of_commute_distinct`), after
+    which the shared-`P` sum law `sum_of_commonDiagonalizer` applies.  The `Finset`-indexed
+    additive analogue of `listProd_of_commute_distinct` (a genuine `Finset` — not merely a
+    `List` — statement, since addition is commutative); it shows the distinct-spectrum
+    commutant `ℂ[M]` is closed under arbitrary finite sums. -/
+theorem IsDiagonalizable.sum_of_commute_distinct {ι : Type*} (s : Finset ι)
+    {M P : Matrix n n K} (N : ι → Matrix n n K)
+    (hP : IsUnit P) (hMdiag : (P⁻¹ * M * P).IsDiag)
+    (hdist : ∀ i j, i ≠ j → (P⁻¹ * M * P) i i ≠ (P⁻¹ * M * P) j j)
+    (hcomm : ∀ i ∈ s, M * N i = N i * M) :
+    (∑ i ∈ s, N i).IsDiagonalizable := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact IsDiagonalizable.sum_of_commonDiagonalizer s N hP
+    (fun i hi => commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist (hcomm i hi))
+
 /-! ### Necessity of the common-diagonalizer hypothesis
 
 `mul_of_commonDiagonalizer` requires `M` and `N` to share a single diagonalizer `P`;
