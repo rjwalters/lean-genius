@@ -319,6 +319,46 @@ theorem practical_represents_all_of_sigma_le_two_mul {m : ℕ} (hp : IsPractical
   · exact practical_represents_le hp hle
   · exact practical_top_segment hp (by omega) hk
 
+/-- **A practical number represents its entire bottom double-block `[0, 2m)`.**
+    `practical_represents_le` covers `[0, m]`; this doubles it to `[0, 2m)` using *only*
+    divisors of `m` (no divisors of `2m`).  For `m ≤ k < 2m` write `k = m + (k - m)` with
+    `k - m < m`, represent the remainder `k - m` by divisors of `m`, and adjoin the divisor
+    `m` itself — fresh, since the remainder's representing set sums to `k - m < m`, so none
+    of its elements is `m`.  This is the `practical_two_mul` peel argument kept inside
+    `divisors m`, the reusable primitive under both the doubling closure and the
+    `σ`-lower-bound corollary below.  It is tight: for `m = 2ᵏ` the range `[0, 2m)` is
+    exactly `[0, σ(m)]` (`σ(2ᵏ) = 2m − 1`). -/
+theorem practical_represents_lt_two_mul {m : ℕ} (hp : IsPractical m) {k : ℕ}
+    (hk : k < 2 * m) : IsRepresentable k m := by
+  have hm1 : 1 ≤ m := hp.1
+  rcases lt_or_ge k m with hlt | hge
+  · exact practical_represents_le hp (le_of_lt hlt)
+  · -- `m ≤ k < 2m`: peel the divisor `m`, represent the remainder `k - m < m`.
+    have hj : k - m < m := by omega
+    obtain ⟨S, hS, hsum⟩ := practical_represents_le hp (le_of_lt hj)
+    have hmS : m ∉ S := by
+      intro hmem
+      have hle : m ≤ S.sum id :=
+        Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hmem
+      rw [hsum] at hle
+      omega
+    refine ⟨insert m S, ?_, ?_⟩
+    · rw [Finset.insert_subset_iff]
+      exact ⟨Nat.mem_divisors.mpr ⟨dvd_refl m, by omega⟩, hS⟩
+    · rw [Finset.sum_insert hmS, hsum]
+      simp only [id_eq]
+      omega
+
+/-- **Every practical number satisfies `2m − 1 ≤ σ(m)`.**  Since `2m − 1 < 2m` it is
+    representable (`practical_represents_lt_two_mul`), so the `σ(m)` ceiling
+    `representable_le_sigma` forces `2m − 1 ≤ (divisors m).sum id`.  This sharpens
+    `practical_pred_le_sigma` (`m − 1 ≤ σ(m)`) to the tight bound — practical numbers are
+    "almost perfect or abundant"; equality `σ(m) = 2m − 1` holds exactly for the powers of
+    two `m = 2ᵏ`. -/
+theorem practical_two_mul_pred_le_sigma {m : ℕ} (hm : 1 ≤ m) (hp : IsPractical m) :
+    2 * m - 1 ≤ (divisors m).sum id :=
+  representable_le_sigma (practical_represents_lt_two_mul hp (by omega))
+
 /-! ## Multiplicative closure under doubling
 
 If `m` is practical, so is `2m`.  This is the smallest case of the
