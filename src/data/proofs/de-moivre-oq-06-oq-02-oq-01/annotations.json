@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-dm060201-docstring",
+    "proofId": "de-moivre-oq-06-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Averaging Repairs the Dirichlet Kernel",
+    "content": "The docstring frames the construction. The Dirichlet kernel $D_n(\\theta)=\\sin((n+\\tfrac12)\\theta)/\\sin(\\theta/2)$ represents Fourier partial sums, but it changes sign and $\\|D_n\\|_1\\sim\\log n$, so partial sums can diverge. Fejér's remedy is the **Cesàro average** $F_N=\\frac{1}{N+1}\\sum_{n=0}^{N}D_n$, whose kernel is nonnegative and concentrates at the origin. This file constructs $F_N$ from the parent family's Dirichlet kernels and proves the three properties — closed form, nonnegativity, uniform decay away from the singularities $\\theta\\in2\\pi\\mathbb{Z}$ — that drive Fejér's theorem on uniform Cesàro convergence.",
+    "mathContext": "$F_N(\\theta)=\\frac{1}{N+1}\\sum_{n=0}^{N}D_n(\\theta)$ with $D_n(\\theta)=2\\big(\\sum_{k=0}^{n}\\cos(k\\theta)\\big)-1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fejér kernel",
+      "Dirichlet kernel",
+      "Cesàro summability",
+      "approximate identity"
+    ],
+    "prerequisites": [
+      "Dirichlet kernel closed form",
+      "Cesàro (arithmetic) means"
+    ]
+  },
+  {
+    "id": "ann-dm060201-telescoping",
+    "proofId": "de-moivre-oq-06-oq-02-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "Telescoping the Half-Integer Sine Sum",
+    "content": "The engine of the closed form is a single product-to-sum step. `two_sin_half_mul_sin_odd` proves $2\\sin(\\theta/2)\\sin((m+\\tfrac12)\\theta)=\\cos(m\\theta)-\\cos((m+1)\\theta)$ — the identity $\\cos(X-Y)-\\cos(X+Y)=2\\sin X\\sin Y$ with $X=(m+\\tfrac12)\\theta$, $Y=\\theta/2$ (so $X-Y=m\\theta$, $X+Y=(m+1)\\theta$), reduced by `Real.cos_sub`/`Real.cos_add` and `ring`. Distributing $2\\sin(\\theta/2)$ across $\\sum_{m=0}^{N}\\sin((m+\\tfrac12)\\theta)$ and applying this term-by-term makes consecutive cosines cancel; `sum_sin_half_odd` runs the induction (`Finset.sum_range_succ` + `linear_combination`) to collapse the sum to its endpoints $\\cos(0)-\\cos((N+1)\\theta)=1-\\cos((N+1)\\theta)$. This is the same telescoping technique the grandparent used for the Dirichlet closed forms, here applied to the half-integer frequencies $(m+\\tfrac12)$ that appear in the Cesàro sum.",
+    "mathContext": "$2\\sin(\\theta/2)\\sum_{m=0}^{N}\\sin((m+\\tfrac12)\\theta)=\\sum_{m=0}^{N}\\big(\\cos(m\\theta)-\\cos((m+1)\\theta)\\big)=1-\\cos((N+1)\\theta)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product-to-sum identity",
+      "telescoping sum",
+      "induction on Finset.range"
+    ],
+    "prerequisites": [
+      "Real.cos_sub / Real.cos_add",
+      "Finset.sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-dm060201-dirichlet",
+    "proofId": "de-moivre-oq-06-oq-02-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "The Symmetric Dirichlet Kernel in Closed Form",
+    "content": "`dirichletKernel n θ` is defined as $2\\big(\\sum_{k=0}^{n}\\cos(k\\theta)\\big)-1$, the symmetric kernel $1+2\\sum_{k=1}^{n}\\cos(k\\theta)=\\sum_{k=-n}^{n}e^{ik\\theta}$. `dirichletKernel_closed_form` puts it in the classical form $D_n(\\theta)=\\sin((n+\\tfrac12)\\theta)/\\sin(\\theta/2)$ for $\\sin(\\theta/2)\\ne0$, immediately from the grandparent's Lagrange cosine identity $\\sum_{k=0}^{n}\\cos(k\\theta)=\\tfrac12+\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}$: doubling and subtracting $1$ cancels the $\\tfrac12$ and clears the factor $2$ in the denominator (`field_simp`/`ring`). This is the object whose Cesàro average is taken next.",
+    "mathContext": "$D_n(\\theta)=2\\big(\\tfrac12+\\tfrac{\\sin((n+\\frac12)\\theta)}{2\\sin(\\theta/2)}\\big)-1=\\tfrac{\\sin((n+\\frac12)\\theta)}{\\sin(\\theta/2)}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet kernel",
+      "Lagrange's trigonometric identity",
+      "geometric sum of exponentials"
+    ],
+    "prerequisites": [
+      "DeMoivreOQ06.lagrange_cos_sum"
+    ]
+  },
+  {
+    "id": "ann-dm060201-closed-form",
+    "proofId": "de-moivre-oq-06-oq-02-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 139
+    },
+    "type": "technique",
+    "title": "The Fejér Closed Form: a Perfect Square",
+    "content": "`fejerKernel N θ` is the Cesàro average $\\frac{1}{N+1}\\sum_{n=0}^{N}D_n(\\theta)$. `sum_dirichletKernel` computes the sum: rewriting each $D_n$ by its closed form and factoring $1/\\sin(\\theta/2)$ gives $\\sum_{n=0}^{N}D_n=\\tfrac{1}{\\sin(\\theta/2)}\\sum_{n=0}^{N}\\sin((n+\\tfrac12)\\theta)$; the telescoping `sum_sin_half_odd` supplies $\\sum\\sin((n+\\tfrac12)\\theta)=\\tfrac{1-\\cos((N+1)\\theta)}{2\\sin(\\theta/2)}$, and the double-angle identity $1-\\cos((N+1)\\theta)=2\\sin^2((N+1)\\theta/2)$ — proved locally with `Real.cos_two_mul` and `Real.sin_sq_add_cos_sq` after a `set` to protect the half-angle from the rewrite — turns it into $\\sin^2((N+1)\\theta/2)/\\sin^2(\\theta/2)$. Dividing by $N+1$ (`fejerKernel_closed_form`, via `div_div`) yields the celebrated $F_N(\\theta)=\\dfrac{\\sin^2((N+1)\\theta/2)}{(N+1)\\sin^2(\\theta/2)}$. The kernel is now manifestly a square over a positive quantity.",
+    "mathContext": "$\\sum_{n=0}^{N}D_n=\\tfrac{\\sin^2((N+1)\\theta/2)}{\\sin^2(\\theta/2)}\\ \\Rightarrow\\ F_N(\\theta)=\\tfrac{\\sin^2((N+1)\\theta/2)}{(N+1)\\sin^2(\\theta/2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fejér kernel closed form",
+      "double-angle identity",
+      "Cesàro mean"
+    ],
+    "prerequisites": [
+      "sum_sin_half_odd",
+      "Real.cos_two_mul",
+      "Real.sin_sq_add_cos_sq"
+    ]
+  },
+  {
+    "id": "ann-dm060201-nonneg-bound",
+    "proofId": "de-moivre-oq-06-oq-02-oq-01",
+    "range": {
+      "startLine": 141,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Nonnegativity and Concentration: the Approximate Identity",
+    "content": "The two properties that distinguish the Fejér kernel from the Dirichlet kernel. `fejerKernel_nonneg` reads $0\\le F_N(\\theta)$ straight off the closed form — a squared numerator over the positive denominator $(N+1)\\sin^2(\\theta/2)$ (`div_nonneg`, `positivity`); the sign-changing Dirichlet kernel has no such lower bound, and this is exactly why Cesàro means converge where partial sums may not. `fejerKernel_uniform_bound` gives the concentration estimate: on the arc $\\theta\\in[\\delta,2\\pi-\\delta]$, the numerator satisfies $\\sin^2((N+1)\\theta/2)\\le1$ while the parent's `sin_half_ge_of_mem_arc` forces $\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$, so $F_N(\\theta)\\le\\frac{1}{(N+1)\\sin^2(\\delta/2)}$ — an $O(1/N)$ decay uniform in $\\theta$, proved by `div_le_div_iff_of_pos_right` (numerator step) chained with `one_div_le_one_div_of_le` (denominator step). Nonnegativity plus this decay away from the origin are precisely the two hypotheses of an approximate identity, the analytic heart of Fejér's theorem.",
+    "mathContext": "$0\\le F_N(\\theta)$ everywhere; $F_N(\\theta)\\le\\frac{1}{(N+1)\\sin^2(\\delta/2)}\\xrightarrow[N\\to\\infty]{}0$ on $[\\delta,2\\pi-\\delta]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "approximate identity",
+      "nonnegative summability kernel",
+      "concentration at the origin",
+      "Fejér's theorem"
+    ],
+    "prerequisites": [
+      "fejerKernel_closed_form",
+      "DeMoivreOQ06OQ02.sin_half_ge_of_mem_arc",
+      "div_le_div_iff_of_pos_right",
+      "one_div_le_one_div_of_le"
+    ]
+  }
+]
