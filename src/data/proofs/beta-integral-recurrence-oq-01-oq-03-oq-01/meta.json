@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: docstring, imports, and setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring framing the leaf: the parent BetaIntegralRecurrenceOQ01OQ03 supplied the diagonal real integral ∫₀¹ xⁿ(1-x)ⁿ = (n!)²/(2n+1)!, and this leaf supplies the full off-diagonal value ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!, proved two independent ways — the complex bridge (Route 1) and a self-contained integration-by-parts recurrence that never leaves ℝ (Route 2), with an agreement lemma checking they coincide. Notes that neither the off-diagonal real integral nor its recurrence is in Mathlib. Imports the grandparent BetaIntegralRecurrence, opens Complex/intervalIntegral/MeasureTheory, and enters namespace BetaIntegralRecurrenceOQ01OQ03OQ01.",
+      "mathContext": "$\\int_0^1 x^m(1-x)^n\\,dx = \\dfrac{m!\\,n!}{(m+n+1)!}$, proved two ways."
+    },
+    {
       "id": "complex-bridge",
       "title": "Route 1 — the complex bridge",
       "startLine": 42,
