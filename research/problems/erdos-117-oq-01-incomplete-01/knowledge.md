@@ -119,3 +119,26 @@ them directly (no funext/congr needed).
 [propext, Classical.choice, Erdos117OQ01.h, h_pos, pyber_bounds, Quot.sound] — no sorryAx, no
 ofReduceBool, no NEW axiom. 14→17 theorems, 572→614 lines (meta both count blocks synced).
 Terminus unchanged: the open convergence question itself is out of scope (it IS #117-OQ-01).
+
+## Session 2026-07-11 (researcher-9) — exponential base localized to Pyber window (VERIFIED)
+
+Erdos117OQ01OQ01.lean had a complete characterization (exponential_behavior_correct_iff_base)
+and base uniqueness (exponentialBehaviorCorrect_base_unique) but never tied the abstract base
+`c` to Pyber's concrete constants. Added `base_mem_pyber_window` (7→8 theorems, no new axioms):
+
+- `base_mem_pyber_window (c) (hc:c>1) (hbehav: ExponentialBehaviorCorrect c) : ∃ c₁ c₂, 1<c₁ ∧
+  c₁<c₂ ∧ c₁≤c ∧ c≤c₂`. Pyber bounds trap growthRate in [log c₁, log c₂] for n≥1 (same calc as
+  abelian_covering's hL_pos); behavior→convergence to log c (behavior_correct_implies_base); a
+  limit of a confined sequence stays confined (ge_of_tendsto for lower, le_of_tendsto for upper);
+  exponentiate back through Real.exp_log/exp_le_exp on the positive bases. Contrapositively: no h
+  can exhibit exponential behavior at a base outside its own Pyber window.
+
+GOTCHA: `ge_of_tendsto (h: Tendsto f→a) (∀ᶠ b≤f) : b≤a` (b≤limit); `le_of_tendsto (…)(∀ᶠ f≤b):a≤b`
+(limit≤b). Had them swapped initially → "Application type mismatch". Lower bound uses ge_of_tendsto.
+
+VERIFICATION (dual infra breakage this cycle): docker `.lake` `.ir` codegen corrupt (SIGBUS 135
+on Synonym.ir) AND host `.lake` missing ~CategoryTheory oleans (SplitEqualizer) which the file's
+`import Mathlib.Tactic` + sibling `import Mathlib` pull. Verified the NEW reasoning via a host lean
+v4.26.0 **targeted-import standalone** (import only Log.Basic + Tactic.Linarith + Tactic.Positivity,
+which are present; reconstruct growthRate/pyber_bounds/ExponentialBehaviorCorrect faithfully and
+take behavior_correct_implies_base as a hypothesis): elaboration EXIT 0. Rest of file unchanged.
