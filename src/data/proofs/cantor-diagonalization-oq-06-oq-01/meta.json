@@ -53,13 +53,15 @@
       "diagonalReal_ne: diagonalReal f ≠ f n for every n, by direct digit disagreement",
       "not_surjective_nat_real / not_exists_surjective_nat_real: Cantor's theorem in enumeration form, witnessed constructively rather than via cardinality",
       "uncountable_real: ℝ is uncountable (Uncountable instance), derived purely from the explicit diagonalReal witness via exists_surjective_nat — NO appeal to Cardinal.not_countable_real",
-      "not_surjective_of_countable: no countable type α surjects onto ℝ (the general form of uncountability), obtained by composing an α-surjection ℕ→α with the diagonal argument"
+      "not_surjective_of_countable: no countable type α surjects onto ℝ (the general form of uncountability), obtained by composing an α-surjection ℕ→α with the diagonal argument",
+      "diagonalReal_pos / diagonalReal_lt_one / diagonalReal_mem_Ioo: the digit-{1,2} diagonal is squeezed between ∑1/10^(n+1)=1/9 and ∑2/10^(n+1)=2/9, so diagonalReal f ∈ (0,1) for every f (via the geometric majorant tsum_geo_shift = 2/9)",
+      "not_surjective_nat_Ioo / uncountable_Ioo: the open unit interval (0,1) is uncountable — the diagonal of any listing lands in (0,1) yet differs from every listed real — strengthening uncountable_real to an arbitrarily small subinterval, still with NO appeal to Cardinal.not_countable_real"
     ],
     "dateAdded": "2026-07-11",
-    "lineCount": 239,
+    "lineCount": 299,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; #print axioms reports only [propext, Classical.choice, Quot.sound]. No use of Cardinal.not_countable_real.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
+    "theoremCount": 22,
     "definitionCount": 4
   },
   "overview": {
@@ -148,7 +150,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A complete, fully verified (0 sorries, 0 axioms) constructive form of Cantor's diagonal argument: an explicit definable real diagonalReal f whose n-th decimal digit differs from that of f n, giving diagonalReal f ≠ f n directly and hence that no f : ℕ → ℝ is surjective — without invoking Cardinal.not_countable_real or #ℝ = 𝔠.",
+    "summary": "A complete, fully verified (0 sorries, 0 axioms) constructive form of Cantor's diagonal argument: an explicit definable real diagonalReal f whose n-th decimal digit differs from that of f n, giving diagonalReal f ≠ f n directly and hence that no f : ℕ → ℝ is surjective — without invoking Cardinal.not_countable_real or #ℝ = 𝔠. The Mathlib-vocabulary corollaries Uncountable ℝ and not_surjective_of_countable are then derived from this bespoke witness, and the construction is sharpened to show the diagonal always lands in the open unit interval (0,1) — squeezed between ∑1/10^(n+1)=1/9 and ∑2/10^(n+1)=2/9 — yielding Uncountable (0,1): uncountability is already carried by an arbitrarily small subinterval.",
     "implications": "Turns the parent entry's cardinality-based uncountability of ℝ into an explicit witness, matching how the diagonal argument is taught and providing a reusable digit-level template for downstream diagonalizations. The floor/head-tail computation is a self-contained way to force a real to disagree with a prescribed sequence.",
     "openQuestions": [
       "Show diagonalReal f ∈ [0,1] and package the result as an explicit injection {sequences} ↪ ℝ.",
@@ -161,9 +163,9 @@
     ],
     "opens": [],
     "namespace": "CantorDiagonalizationOQ06OQ01",
-    "lineCount": 209,
+    "lineCount": 299,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 22,
     "definitionCount": 4,
     "path": "Proofs/CantorDiagonalizationOQ06OQ01.lean",
     "sorries": 0
