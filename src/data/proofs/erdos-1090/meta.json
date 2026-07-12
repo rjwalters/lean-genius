@@ -110,16 +110,17 @@
       "Mathlib.Combinatorics.HalesJewett",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Set.Finite.Basic"
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Interval.Set.Infinite"
     ],
     "opens": [
       "Set",
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 1276,
+    "lineCount": 1327,
     "axiomCount": 0,
-    "theoremCount": 46,
+    "theoremCount": 50,
     "definitionCount": 20,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0
