@@ -182,6 +182,11 @@
       "description": "Parent formalization; this file lifts its pointwise Dirichlet-kernel bounds to uniform-in-(n, θ) bounds on a compact arc away from the singularities."
     },
     {
+      "targetId": "de-moivre-oq-06-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Child formalization; builds the Fejér kernel as the Cesàro average of the Dirichlet kernels, reusing this file's arc endpoint lower bound sin(θ/2) ≥ sin(δ/2) for the uniform Fejér bound (addresses the Fejér open question below)."
+    },
+    {
       "targetId": "de-moivre-oq-05",
       "relationship": "sibling",
       "description": "Companion in the De Moivre geometric-sum family."
