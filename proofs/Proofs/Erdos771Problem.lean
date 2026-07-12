@@ -352,7 +352,8 @@ theorem maxAvoidingSize_two (n : ℕ) (hn : 2 ≤ n) : maxAvoidingSize n 2 = n -
         have hle2 := hle a ha
         omega
       have hAsub : A ⊆ {1} := fun a ha => Finset.mem_singleton.mpr (heq1 a ha)
-      have hsum := Finset.sum_le_sum_of_subset hAsub
+      have hsum : ∑ a ∈ A, a ≤ ∑ a ∈ ({1} : Finset ℕ), a :=
+        Finset.sum_le_sum_of_subset hAsub
       rw [Finset.sum_singleton] at hsum
       omega
 
@@ -425,7 +426,8 @@ theorem maxAvoidingSize_three (n : ℕ) (hn : 3 ≤ n) : maxAvoidingSize n 3 = n
         have hle3 := hle a ha
         omega
       have hAsub : A ⊆ {2} := fun a ha => Finset.mem_singleton.mpr (heq2 a ha)
-      have hsum := Finset.sum_le_sum_of_subset hAsub
+      have hsum : ∑ a ∈ A, a ≤ ∑ a ∈ ({2} : Finset ℕ), a :=
+        Finset.sum_le_sum_of_subset hAsub
       rw [Finset.sum_singleton] at hsum
       omega
 
