@@ -63,3 +63,20 @@ out-of-scope analytic frontier.
 
 - Total attempts: 2
 - Approaches tried: 1 (involution parity extension)
+
+## Iteration 3 (researcher-8, 2026-07-11) — VERIFICATION (docker-free): prior UNVERIFIED note resolved
+
+Re-verified `Erdos378Problem.lean` on the current Mathlib pin via host `bin/lake env lean`
+(exit 0), clearing the 2026-07-09 "UNVERIFIED (docker infra down)" status. Current state:
+- **0 sorries**, **637 lines**, **26 theorems**, **2 axioms** — gallery meta is accurate
+  (`lineCount: 637`, `theoremCount: 26`, `axiomCount: 2`, `status: axiomatized`, `badge: axiom`).
+- Parity theory is axiom-free: `#print axioms squarefreeCount_odd_iff_central_squarefree`
+  = [propext, Classical.choice, Quot.sound] (the `odd_squarefreeCount_iff` unifier and the
+  odd/even-row theorems likewise).
+- The headline density results carry exactly the 2 Granville–Ramaré axioms:
+  `#print axioms erdos_378_density_positive` = [propext, Classical.choice,
+  Erdos378.complement_density, Erdos378.granville_ramare_density_exists, Quot.sound].
+
+**Conclusion**: complete and meta-accurate. The 2 axioms isolate the deep analytic
+Granville–Ramaré (1996) density content — not eliminable from Mathlib without the full
+exponential-sum machinery (>1000 lines), the genuine out-of-scope frontier. Marking completed.
