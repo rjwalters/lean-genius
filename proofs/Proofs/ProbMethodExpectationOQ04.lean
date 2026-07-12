@@ -202,6 +202,53 @@ theorem exists_avoiding_all_events {ω ι : Type*} (Ω : Finset ω) (hΩ : Ω.No
   rw [hz] at hmem
   exact absurd hmem (Finset.notMem_empty i)
 
+/-- **Probabilistic-method existence, uniform per-event bound.**  The interface a concrete
+model actually plugs into: if *every* event `A i` occurs at no more than `c` samples and the
+crude union total `|I| · c` is still `< |Ω|`, then some sample avoids **every** event.  This
+is the shape of the Ramsey argument — each of the `C(n,k)` candidate `k`-cliques is
+monochromatic in the same `2^{1 - C(k,2)}` fraction of colourings, and `C(n,k) · that < 1`
+delivers a good colouring — with no per-event bookkeeping beyond the uniform bound `c`.
+Derived from `exists_avoiding_all_events` by `∑_{i} #{w : A i w} ≤ ∑_{i} c = |I| · c`. -/
+theorem exists_avoiding_all_events_of_uniform_bound {ω ι : Type*}
+    (Ω : Finset ω) (hΩ : Ω.Nonempty) (I : Finset ι) (A : ι → ω → Prop)
+    [∀ i w, Decidable (A i w)] {c : ℚ}
+    (hc : ∀ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ) ≤ c)
+    (h : (I.card : ℚ) * c < Ω.card) :
+    ∃ w ∈ Ω, ∀ i ∈ I, ¬ A i w := by
+  apply exists_avoiding_all_events Ω hΩ I A
+  calc ∑ i ∈ I, ((Ω.filter (fun w => A i w)).card : ℚ)
+      ≤ ∑ _i ∈ I, c := Finset.sum_le_sum hc
+    _ = (I.card : ℚ) * c := by rw [Finset.sum_const, nsmul_eq_mul]
+    _ < Ω.card := h
+
+/-- **Union-bound count of good samples (Bonferroni).**  A quantitative refinement of
+`exists_avoiding_all_events`: the number of samples avoiding every event is at least
+`|Ω| − ∑_i #{w : A i w}` — here stated additively over `ℕ` as
+`|Ω| ≤ #{avoiding} + ∑_i #{w : A i w}`.  Where `exists_avoiding_all_events` produces *one*
+good sample when the total incidence is `< |Ω|`, this bounds *how many* there are, so a
+strict inequality yields a whole positive-density set of good outcomes.  Proof: the bad
+samples `{w : ∃ i ∈ I, A i w}` inject into `⋃_i {w : A i w}`, whose size is at most
+`∑_i #{w : A i w}` by `Finset.card_biUnion_le`; add the complement split. -/
+theorem card_avoiding_add_events_ge {ω ι : Type*} (Ω : Finset ω) (I : Finset ι)
+    (A : ι → ω → Prop) [∀ i w, Decidable (A i w)] [DecidableEq ω] :
+    Ω.card ≤ (Ω.filter (fun w => ∀ i ∈ I, ¬ A i w)).card
+      + ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+  classical
+  have hsplit : (Ω.filter (fun w => ∀ i ∈ I, ¬ A i w)).card
+      + (Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)).card = Ω.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  have hbad : (Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)).card
+      ≤ ∑ i ∈ I, (Ω.filter (fun w => A i w)).card := by
+    have hsub : Ω.filter (fun w => ¬ ∀ i ∈ I, ¬ A i w)
+        ⊆ I.biUnion (fun i => Ω.filter (fun w => A i w)) := by
+      intro w hw
+      rw [Finset.mem_filter] at hw
+      push_neg at hw
+      obtain ⟨i, hi, hAi⟩ := hw.2
+      exact Finset.mem_biUnion.mpr ⟨i, hi, Finset.mem_filter.mpr ⟨hw.1, hAi⟩⟩
+    exact (Finset.card_le_card hsub).trans Finset.card_biUnion_le
+  omega
+
 /-! ## Application: strengthening `expected_mono_cliques` toward Erdős 1947
 
 The parent gallery lemma `expected_mono_cliques` only records that the expected
