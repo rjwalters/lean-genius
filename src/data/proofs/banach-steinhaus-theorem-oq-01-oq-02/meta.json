@@ -102,12 +102,20 @@
       "mathContext": "Nonempty interior of a sublevel set would force pointwise — hence uniform — boundedness."
     },
     {
-      "id": "comeagre",
-      "title": "The Resonance Set Is Comeagre and Dense",
+      "id": "comeagre-core",
+      "title": "The Resonance Set Is Comeagre (Meagre Complement)",
       "startLine": 114,
+      "endLine": 146,
+      "summary": "resonanceSet_comeagre: under unbounded operator norms, Rᶜ ⊆ ⋃ₙ {x | ∀i ‖gᵢx‖ ≤ n}, each term closed with empty interior (hence nowhere dense, hence meagre), so Rᶜ is meagre and R ∈ residual E. resonanceSet_compl_isMeagre restates this as the equivalent meagre phrasing of the complement (the pointwise-bounded points).",
+      "mathContext": "$R^c \\subseteq \\bigcup_n\\{x:\\forall i,\\|g_i x\\|\\le n\\}$, a countable union of nowhere-dense sets, so $R^c$ is meagre and $R$ is residual."
+    },
+    {
+      "id": "dense-and-recovery",
+      "title": "Density and Recovery of the Single Resonance Point",
+      "startLine": 148,
       "endLine": 163,
-      "summary": "resonanceSet_comeagre: Rᶜ ⊆ ⋃ₙ (closed, empty-interior, hence nowhere-dense) sublevel sets, so Rᶜ is meagre and R is residual. resonanceSet_compl_isMeagre is the equivalent meagre phrasing. resonanceSet_dense upgrades comeagre to dense via the Baire property. resonance_of_comeagre recovers the parent's single resonance point.",
-      "mathContext": "Residual = comeagre; in a Baire space residual sets are dense."
+      "summary": "The consequences of comeagreness. resonanceSet_dense: since a Banach space is a Baire space, the residual resonance set is dense (dense_of_mem_residual) — resonance points are arbitrarily close to every point. resonance_of_comeagre: a comeagre (in particular nonempty) set yields a single resonance point, recovering the parent gallery entry's resonance statement and showing this result genuinely strengthens it.",
+      "mathContext": "In a Baire space residual ⇒ dense; nonemptiness of R recovers the single-point condensation of singularities."
     }
   ],
   "references": [
