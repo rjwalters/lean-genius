@@ -1490,6 +1490,42 @@ theorem iSup_ramificationValueSubgroup :
     mem_ramificationValueSubgroup.mpr ⟨q.num, hq.symm⟩
   exact le_iSup ramificationValueSubgroup ⟨q.den, q.pos⟩ hmem
 
+/-- **The value-subgroup tower is an order embedding of the divisibility poset.** The
+inclusion `(1/n)ℤ ≤ (1/n')ℤ` holds *exactly* when `n ∣ n'` — the converse of
+`ramificationValueSubgroup_mono`. So `n ↦ ramificationValueSubgroup n` faithfully mirrors
+`(ℕ⁺, ∣)` inside `AddSubgroup ℚ`: no two distinct divisibility relations collapse to the same
+inclusion.  The forward direction extracts `n ∣ n'` from the fact that the generator `1/n`
+must then be an integer multiple `k/n'` of `1/n'`, forcing `n' = k·n`. -/
+theorem ramificationValueSubgroup_le_iff {n n' : ℕ+} :
+    ramificationValueSubgroup n ≤ ramificationValueSubgroup n' ↔ n ∣ n' := by
+  constructor
+  · intro hle
+    obtain ⟨k, hk⟩ := mem_ramificationValueSubgroup.mp
+      (hle (mem_ramificationValueSubgroup.mpr ⟨1, rfl⟩))
+    have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
+    have hn'0 : ((n' : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n'.pos.ne'
+    rw [div_eq_div_iff hn0 hn'0] at hk
+    have hdvd : (n : ℤ) ∣ (n' : ℤ) := by
+      refine ⟨k, ?_⟩
+      have hq : ((n' : ℤ) : ℚ) = ((n : ℤ) : ℚ) * (k : ℚ) := by
+        push_cast at hk ⊢; linear_combination hk
+      exact_mod_cast hq
+    exact PNat.dvd_iff.mpr (by exact_mod_cast hdvd)
+  · exact ramificationValueSubgroup_mono
+
+/-- **The value-subgroup tower is injective.** Distinct ramification levels give distinct
+value subgroups: `ramificationValueSubgroup n = ramificationValueSubgroup n'` forces `n = n'`.
+Immediate from the order-embedding `ramificationValueSubgroup_le_iff` and antisymmetry of `∣`
+on `ℕ⁺` (`n ∣ n'` and `n' ∣ n` ⟹ `n = n'`).  Together with `iSup_ramificationValueSubgroup`
+this pins the tower as a *faithful* exhausting filtration of `ℚ` — every level is genuinely
+new. -/
+theorem ramificationValueSubgroup_injective :
+    Function.Injective ramificationValueSubgroup := by
+  intro n n' h
+  have h1 : n ∣ n' := ramificationValueSubgroup_le_iff.mp h.le
+  have h2 : n' ∣ n := ramificationValueSubgroup_le_iff.mp h.ge
+  exact PNat.coe_injective (Nat.dvd_antisymm (PNat.dvd_iff.mp h1) (PNat.dvd_iff.mp h2))
+
 end ValueGroupSubgroup
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
