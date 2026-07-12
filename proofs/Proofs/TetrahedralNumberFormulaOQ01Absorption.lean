@@ -121,4 +121,38 @@ theorem four_pow_le_two_mul_diag {d : ℕ} (hd : 0 < d) :
   rw [simplexNumber_diag_eq_centralBinom d]
   exact Nat.four_pow_le_two_mul_self_mul_centralBinom d hd
 
+/-- **Cross absorption — raising the dimension vs. raising the size.**  Both single-step
+absorptions (`simplexNumber_absorption`, `simplexNumber_size_absorption`) equal
+`(n+d+1)·P_d(n)`, so raising the *dimension* and raising the *size* are related by a swap
+of the two weights:
+
+`(d+1) · P_{d+1}(n) = (n+1) · P_d(n+1)`.
+
+Equivalently `P_{d+1}(n)/P_d(n+1) = (n+1)/(d+1)` — the reflection symmetry `P_d(n) = P_n(d)`
+made multiplicative. This is the diagonal-independent identity tying the two absorption
+recurrences together; it specialises (at fixed small `n`) to the classical
+triangular↔tetrahedral column relations. -/
+theorem simplexNumber_dim_size_absorption (d n : ℕ) :
+    (d + 1) * simplexNumber (d + 1) n = (n + 1) * simplexNumber d (n + 1) := by
+  rw [← simplexNumber_absorption d n]
+  exact simplexNumber_size_absorption d n
+
+/-- **The central simplex diagonal is strictly increasing.**  `d ↦ P_d(d) = C(2d, d)` is a
+`StrictMono` function of `d`.  From the diagonal doubling recurrence
+`(d+1)·P_{d+1}(d+1) = 2(2d+1)·P_d(d)` (`simplexNumber_diag_succ`): since `2(2d+1) > d+1` and
+`P_d(d) > 0`, we get `(d+1)·P_d(d) < (d+1)·P_{d+1}(d+1)`, and cancelling `d+1` gives
+`P_d(d) < P_{d+1}(d+1)`.  So the central binomial coefficients `C(2d,d)` strictly increase —
+the monotone spine underlying their `4^d/√(πd)` growth. -/
+theorem simplexNumber_diag_strictMono :
+    StrictMono (fun d => simplexNumber d d) := by
+  apply strictMono_nat_of_lt_succ
+  intro d
+  show simplexNumber d d < simplexNumber (d + 1) (d + 1)
+  have hrec := simplexNumber_diag_succ d
+  have hpos : 0 < simplexNumber d d := simplexNumber_pos d d
+  have hmul : (d + 1) * simplexNumber d d < 2 * (2 * d + 1) * simplexNumber d d := by
+    have h := Nat.mul_pos (show 0 < 3 * d + 1 by omega) hpos
+    nlinarith [h]
+  exact lt_of_mul_lt_mul_left (hmul.trans_eq hrec.symm) (Nat.zero_le _)
+
 end TetrahedralNumberFormulaOQ01
