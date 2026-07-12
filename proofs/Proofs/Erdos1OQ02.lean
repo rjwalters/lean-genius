@@ -772,6 +772,63 @@ theorem hasDistinctSubsetSums_image_mul {A : Finset ℕ}
   rw [hsumS, hsumT] at hsum
   rw [hA S T hSA hTA (Nat.eq_of_mul_eq_mul_left hc hsum)]
 
+/-! ## Part V: Intrinsic (parameter-free) counting bounds
+
+The counting bound `erdos_1_counting_bound` in `Erdos1Problem` is stated relative to an
+*externally supplied* upper bound `N ≥ a` for every `a ∈ A`, giving `2^|A| ≤ |A|·N + 1`.
+The sharpest and most intrinsic form of the same pigeonhole argument bounds the `2^|A|`
+distinct subset sums by the total sum `∑A` alone — no ambient `N` needed — since every
+subset sum lies in `[0, ∑A]`. This `2^|A| ≤ (∑A) + 1` bound is strictly sharper than the
+`N`-form (because `∑A ≤ |A|·N`) and depends only on `A` itself, making it the natural
+building block from which the ambient-`N` and largest-element walls both follow.
+-/
+
+/-- **Intrinsic sum counting wall (0 axioms).**  A set with distinct subset sums satisfies
+`2^|A| ≤ (∑ a ∈ A, a) + 1`: the `2^|A|` subsets have distinct sums, each lying in the
+`(∑A + 1)`-element range `[0, ∑A]`, so pigeonhole forces `2^|A| ≤ ∑A + 1`.  Unlike
+`erdos_1_counting_bound` (which needs an externally supplied `N ≥ a`), this bound is
+parameter-free — it depends on `A` alone — and is strictly sharper, since `∑A ≤ |A|·N`.
+It is the intrinsic origin of the whole Erdős #1 counting bound. -/
+theorem two_pow_card_le_sum_succ {A : Finset ℕ}
+    (hDSS : hasDistinctSubsetSums A) :
+    2 ^ A.card ≤ A.sum id + 1 := by
+  -- The subset-sum map is injective on the powerset (distinctness), so its image has
+  -- cardinality `2^|A|`.
+  have hinj : Set.InjOn (fun (S : Finset ℕ) => S.sum id) (↑A.powerset : Set (Finset ℕ)) := by
+    intro S hS T hT heq
+    rw [Finset.mem_coe, Finset.mem_powerset] at hS hT
+    exact hDSS S T hS hT heq
+  have himg_card : (A.powerset.image (fun S => S.sum id)).card = 2 ^ A.card := by
+    rw [Finset.card_image_of_injOn hinj, Finset.card_powerset]
+  -- Every subset sum lies in `[0, ∑A]`, so the image sits inside `range (∑A + 1)`.
+  have himg_sub : A.powerset.image (fun S => S.sum id) ⊆ Finset.range (A.sum id + 1) := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨S, hSmem, rfl⟩ := hx
+    rw [Finset.mem_powerset] at hSmem
+    rw [Finset.mem_range]
+    have hle : S.sum id ≤ A.sum id := Finset.sum_le_sum_of_subset hSmem
+    omega
+  calc 2 ^ A.card
+      = (A.powerset.image (fun S => S.sum id)).card := himg_card.symm
+    _ ≤ (Finset.range (A.sum id + 1)).card := Finset.card_le_card himg_sub
+    _ = A.sum id + 1 := Finset.card_range _
+
+/-- **Intrinsic largest-element counting wall (0 axioms).**  Specialising the sum wall
+`two_pow_card_le_sum_succ` to `A`'s own maximum gives `2^|A| ≤ |A|·(sup A) + 1`, using
+`∑A ≤ |A|·(sup A)` (`sum_le_card_mul_max`).  This is the sharpest `N`-form counting bound
+for `A`: it uses the *exact* largest element `A.sup id` rather than an arbitrary ambient
+`N ≥ a`, so it refines `erdos_1_counting_bound` whenever the supplied `N` overshoots the
+true maximum.  It is exactly the wall exploited by the exhaustive small-case lower bound
+`f_four_lower`. -/
+theorem two_pow_card_le_card_mul_sup_succ {A : Finset ℕ}
+    (hDSS : hasDistinctSubsetSums A) :
+    2 ^ A.card ≤ A.card * A.sup id + 1 := by
+  have h1 := two_pow_card_le_sum_succ hDSS
+  have h2 : A.sum id ≤ A.card * A.sup id :=
+    sum_le_card_mul_max A (A.sup id) (fun a ha => Finset.le_sup (f := id) ha)
+  omega
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:
