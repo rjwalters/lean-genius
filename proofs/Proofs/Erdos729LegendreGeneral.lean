@@ -165,6 +165,142 @@ theorem padicValNat_factorial_pos_iff (p n : ℕ) (hp : p.Prime) :
     0 < padicValNat p n.factorial ↔ p ≤ n := by
   rw [Nat.pos_iff_ne_zero, ne_eq, padicValNat_factorial_eq_zero_iff p n hp, Nat.not_lt]
 
+/-! ## Kummer's theorem in additive digit-sum form, and its divisibility corollaries
+
+The general Legendre identity `(p-1)·v_p(n!) = n − s_p(n)` above is precisely the
+starting point flagged in `sub_one_mul_padicValNat_factorial_digitSum`.  Applying
+it to `(m+n)!`, `m!`, `n!` and combining with the valuation-additive factorisation
+`C(m+n,m)·m!·n! = (m+n)!` yields the **carry-free additive form of Kummer's
+theorem**:
+
+    (p−1)·v_p(C(m+n,m)) + s_p(m+n) = s_p(m) + s_p(n).
+
+Mathlib carries Kummer only in the *truncated-subtraction* shape
+`sub_one_mul_padicValNat_choose_eq_sub_sum_digits'`
+(`(p-1)·v_p = s_p(k)+s_p(n) − s_p(n+k)` in ℕ).  The additive rearrangement below
+is subtraction-free, which is what makes the two genuinely new corollaries fall
+out cleanly and which Mathlib does **not** state:
+
+  * `digitSum_add_le` — base-`p` **digit-sum subadditivity** `s_p(m+n) ≤ s_p(m)+s_p(n)`
+    (the base-`p` Hamming-weight triangle inequality; not in Mathlib), and
+  * `not_dvd_choose_iff_digitSum_add` / `dvd_choose_iff_digitSum_lt` — the sharp
+    **digit-sum criterion for whether a prime divides a binomial coefficient**:
+    `p ∤ C(m+n,m) ↔ s_p(m+n) = s_p(m)+s_p(n)` (no carries), and its negation
+    `p ∣ C(m+n,m) ↔ s_p(m+n) < s_p(m)+s_p(n)` (at least one carry). -/
+
+/-- **Kummer's theorem, carry-free additive form.**  For every prime `p`,
+
+  `(p − 1)·v_p(C(m+n, m)) + s_p(m+n) = s_p(m) + s_p(n)`.
+
+The subtraction-free rearrangement of Kummer's theorem.  Proof: the factorisation
+`C(m+n,m)·m!·n! = (m+n)!` makes `v_p` additive (`padicValNat.mul`, all factors
+nonzero), so `v_p((m+n)!) = v_p(C) + v_p(m!) + v_p(n!)`; scaling by `p−1` and
+substituting the Legendre identity `(p−1)·v_p(k!) = k − s_p(k)`
+(`sub_one_mul_padicValNat_factorial_digitSum`) for each of `m`, `n`, `m+n`, the
+`k` terms cancel and `omega` clears the (bounded) natural subtractions using
+`s_p(k) ≤ k`. -/
+theorem sub_one_mul_padicValNat_choose_add_digitSum (p m n : ℕ) (hp : p.Prime) :
+    (p - 1) * padicValNat p ((m + n).choose m) + digitSum p (m + n)
+      = digitSum p m + digitSum p n := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hstep : (m + n).choose m * m.factorial * n.factorial = (m + n).factorial := by
+    have h := Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right m n)
+    simpa [Nat.add_sub_cancel_left] using h
+  have hcne : (m + n).choose m ≠ 0 := (Nat.choose_pos (Nat.le_add_right m n)).ne'
+  have hmf : m.factorial ≠ 0 := Nat.factorial_ne_zero m
+  have hnf : n.factorial ≠ 0 := Nat.factorial_ne_zero n
+  have hval : padicValNat p (m + n).factorial
+      = padicValNat p ((m + n).choose m) + padicValNat p m.factorial
+        + padicValNat p n.factorial := by
+    rw [← hstep, padicValNat.mul (mul_ne_zero hcne hmf) hnf, padicValNat.mul hcne hmf]
+  have h2 : (p - 1) * padicValNat p ((m + n).choose m)
+      + (p - 1) * padicValNat p m.factorial
+      + (p - 1) * padicValNat p n.factorial
+      = (p - 1) * padicValNat p (m + n).factorial := by
+    rw [hval, Nat.mul_add, Nat.mul_add]
+  have leg_m := sub_one_mul_padicValNat_factorial_digitSum p m hp
+  have leg_n := sub_one_mul_padicValNat_factorial_digitSum p n hp
+  have leg_mn := sub_one_mul_padicValNat_factorial_digitSum p (m + n) hp
+  have hsm : digitSum p m ≤ m := by simpa [digitSum] using Nat.digit_sum_le p m
+  have hsn : digitSum p n ≤ n := by simpa [digitSum] using Nat.digit_sum_le p n
+  have hsmn : digitSum p (m + n) ≤ m + n := by
+    simpa [digitSum] using Nat.digit_sum_le p (m + n)
+  omega
+
+/-- **Base-`p` digit-sum subadditivity** (the base-`p` Hamming-weight triangle
+inequality): for every prime `p`,
+
+  `s_p(m + n) ≤ s_p(m) + s_p(n)`.
+
+Adding never *increases* the total base-`p` digit sum — carries only merge digits.
+Immediate from the carry-free Kummer identity: the shortfall
+`s_p(m)+s_p(n) − s_p(m+n)` equals `(p−1)·v_p(C(m+n,m)) ≥ 0`.  Not a named Mathlib
+lemma. -/
+theorem digitSum_add_le (p m n : ℕ) (hp : p.Prime) :
+    digitSum p (m + n) ≤ digitSum p m + digitSum p n := by
+  have h := sub_one_mul_padicValNat_choose_add_digitSum p m n hp
+  omega
+
+/-- **Kummer's theorem, division form (gallery `digitSum` shape).**  For every
+prime `p`,
+
+  `v_p(C(m+n, m)) = (s_p(m) + s_p(n) − s_p(m+n)) / (p − 1)`,
+
+the exact count of base-`p` carries when adding `m` and `n`.  Obtained from the
+additive form by transposing `s_p(m+n)` and dividing by `p − 1 > 0`
+(`Nat.mul_div_cancel_left`); the numerator subtraction is exact by
+`digitSum_add_le`.  Mathlib states only the multiplied subtraction form, not this
+division form. -/
+theorem padicValNat_choose_eq_div (p m n : ℕ) (hp : p.Prime) :
+    padicValNat p ((m + n).choose m)
+      = (digitSum p m + digitSum p n - digitSum p (m + n)) / (p - 1) := by
+  have hadd := sub_one_mul_padicValNat_choose_add_digitSum p m n hp
+  have hp1 : 0 < p - 1 := by have := hp.two_le; omega
+  have hmul : (p - 1) * padicValNat p ((m + n).choose m)
+      = digitSum p m + digitSum p n - digitSum p (m + n) := by omega
+  rw [← hmul, Nat.mul_div_cancel_left _ hp1]
+
+/-- **Digit-sum criterion for a prime NOT dividing a binomial coefficient.**  For
+every prime `p`,
+
+  `p ∤ C(m+n, m) ↔ s_p(m+n) = s_p(m) + s_p(n)`,
+
+i.e. `p` misses the binomial exactly when adding `m` and `n` in base `p` produces
+no carries (Kummer's carry count is `0`).  The `p = 2` case is the classical
+"`C(m+n,m)` is odd iff the binary supports of `m` and `n` are disjoint".  Derived
+from the additive Kummer identity via `dvd_iff_padicValNat_ne_zero` and
+`p − 1 > 0`.  Not a named Mathlib lemma. -/
+theorem not_dvd_choose_iff_digitSum_add (p m n : ℕ) (hp : p.Prime) :
+    ¬ (p ∣ (m + n).choose m) ↔ digitSum p (m + n) = digitSum p m + digitSum p n := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hcne : (m + n).choose m ≠ 0 := (Nat.choose_pos (Nat.le_add_right m n)).ne'
+  have hadd := sub_one_mul_padicValNat_choose_add_digitSum p m n hp
+  have hp1 : 0 < p - 1 := by have := hp.two_le; omega
+  rw [dvd_iff_padicValNat_ne_zero hcne, not_not]
+  constructor
+  · intro h
+    rw [h] at hadd
+    omega
+  · intro h
+    have hz : (p - 1) * padicValNat p ((m + n).choose m) = 0 := by omega
+    rcases Nat.mul_eq_zero.mp hz with h1 | h2
+    · omega
+    · exact h2
+
+/-- **Digit-sum criterion for a prime dividing a binomial coefficient.**  The
+complement of `not_dvd_choose_iff_digitSum_add`: for every prime `p`,
+
+  `p ∣ C(m+n, m) ↔ s_p(m+n) < s_p(m) + s_p(n)`,
+
+i.e. `p` divides the binomial exactly when adding `m` and `n` in base `p` produces
+at least one carry.  Strictness comes from pairing the non-divisibility criterion
+with digit-sum subadditivity `s_p(m+n) ≤ s_p(m)+s_p(n)`. -/
+theorem dvd_choose_iff_digitSum_lt (p m n : ℕ) (hp : p.Prime) :
+    p ∣ (m + n).choose m ↔ digitSum p (m + n) < digitSum p m + digitSum p n := by
+  have hle := digitSum_add_le p m n hp
+  rw [← not_iff_not, not_dvd_choose_iff_digitSum_add p m n hp, not_lt]
+  omega
+
 -- The numerical content (v_p(n!) = (n - s_p(n))/(p-1) for many p, n) is certified
 -- independently in `research/problems/erdos-729-oq-02/verify_legendre_general.py`
 -- (no Lean `decide` on `Nat.digits`, which is well-founded and does not reduce
@@ -179,5 +315,10 @@ theorem padicValNat_factorial_pos_iff (p n : ℕ) (hp : p.Prime) :
 #check @modEq_digitSum
 #check @padicValNat_factorial_eq_zero_iff
 #check @padicValNat_factorial_pos_iff
+#check @sub_one_mul_padicValNat_choose_add_digitSum
+#check @digitSum_add_le
+#check @padicValNat_choose_eq_div
+#check @not_dvd_choose_iff_digitSum_add
+#check @dvd_choose_iff_digitSum_lt
 
 end Erdos729Legendre
