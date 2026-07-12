@@ -116,6 +116,30 @@ theorem hypercubeEdges_succ (n : ℕ) :
     rw [Nat.succ_sub_one, Nat.succ_sub_one, pow_succ]
     ring
 
+/-- **`Qₙ` has edges exactly when `n ≥ 1`:** `0 < |E(Qₙ)| = n·2ⁿ⁻¹` for every `n > 0`.
+The empty cube `Q₀` (a single vertex, no edges) is the sole edgeless hypercube; every
+positive-dimensional cube has edges. -/
+theorem hypercubeEdges_pos {n : ℕ} (hn : 0 < n) : 0 < hypercubeEdges n := by
+  unfold hypercubeEdges
+  exact Nat.mul_pos hn (pow_pos (by norm_num) _)
+
+/-- **The edge count strictly grows with each dimension:** `|E(Qₙ)| < |E(Q_{n+1})|`.
+Immediate from the Cartesian-product recurrence `hypercubeEdges_succ`
+(`|E(Q_{n+1})| = 2·|E(Qₙ)| + |V(Qₙ)|`): passing to `Q_{n+1}` duplicates every existing
+edge and adds the `|V(Qₙ)| = 2ⁿ > 0` matching edges, so the count increases at every step
+(including `Q₀ → Q₁`, where `0 < 1`). -/
+theorem hypercubeEdges_lt_succ (n : ℕ) : hypercubeEdges n < hypercubeEdges (n + 1) := by
+  rw [hypercubeEdges_succ]
+  have hv : 0 < hypercubeVertices n := hypercubeVertices_pos n
+  omega
+
+/-- **`hypercubeEdges` is strictly monotone:** `m < n → |E(Q_m)| < |E(Qₙ)|`.  The global
+form of `hypercubeEdges_lt_succ`, obtained by chaining the single-step strict increase.
+So distinct-dimensional hypercubes never share an edge count — the dimension `n` is
+recoverable from `|E(Qₙ)|`. -/
+theorem hypercubeEdges_strictMono : StrictMono hypercubeEdges :=
+  strictMono_nat_of_lt_succ hypercubeEdges_lt_succ
+
 /-
 **Degree in Qₙ:** every vertex has degree n.
 -/
@@ -545,6 +569,19 @@ elaborator stack overflow.) -/
 theorem hasC2k_three_iff_hasC6 {V : Type*} (H : SimpleGraph V) :
     HasC2k H 3 ↔ HasC6 H := by
   show HasCycle H (2 * 3) ↔ HasCycle H 6
+  rfl
+
+/-- **`HasC2k H 2` is exactly `HasC4 H`.**  The generalized even-cycle predicate at
+`k = 2` (a `2·2 = 4`-cycle) coincides with the square predicate `HasC4`, the `k = 2`
+sibling of `hasC2k_three_iff_hasC6`.  Both sides reduce to the same `HasCycle H 4`, so the
+identification is definitional (`2·2` computes to `4`); unlike the `k = 3` case no
+`unseal HasCycle`/`unseal HasC6` is needed, since `HasC4` — in contrast to `HasC6` — is
+not marked `@[irreducible]`.  Together with `hasC2k_three_iff_hasC6` this pins down that
+the `HasC2k` family specialises correctly at exactly the two cycle lengths (`C₄`, `C₆`)
+that Conder's `3`-edge-colouring simultaneously avoids. -/
+theorem hasC2k_two_iff_hasC4 {V : Type*} (H : SimpleGraph V) :
+    HasC2k H 2 ↔ HasC4 H := by
+  show HasCycle H (2 * 2) ↔ HasCycle H 4
   rfl
 
 /-- **The generalized conjecture at `k = 3` is a `C₆`-forcing statement.**
