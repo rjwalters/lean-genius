@@ -1291,6 +1291,76 @@ theorem ramification_orderTop_range {K : Type*} [Field K] (n : ℕ+) :
 end ValueGroup
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART XIV: THE VALUE-GROUP TOWER — MONOTONICITY AND UNION
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Part XIV: the chain `ℤ ⊆ ½ℤ ⊆ ⅓ℤ ⊆ …` and its union `ℚ`, at the valuation level
+
+Part XIII computed the value group of each level separately: the level-`n` Laurent field
+`K((x^{1/n}))` has value group exactly `(1/n)ℤ` (`ramification_orderTop_range`), and the
+full Puiseux field has value group all of `ℚ` (`puiseux_orderTop_range`). What Part XIII
+*asserted* but did not prove is that these fit into a **directed chain** whose **union**
+recovers `ℚ` — the valuation-theoretic shadow of the field colimit
+`iSup_puiseuxRamificationSubfield` (`K⦃⦃x⦄⦄ = ⨆ₙ K((x^{1/n}))`).
+
+This part supplies exactly those two missing statements, phrased on the *attained*
+`orderTop` sets so they are genuine facts about Puiseux series rather than about the
+abstract subgroups `(1/n)ℤ ⊆ ℚ`:
+
+* `ramification_valueGroup_mono` — if `n ∣ n'` then every value attained at level `n` is
+  attained at level `n'`. The witness is the *same* series: `IsPuiseuxOfRamification.mono`
+  reindexes it without touching its `orderTop`. This is the inclusion `(1/n)ℤ ⊆ (1/n')ℤ`.
+* `iUnion_ramification_valueGroup` — the union over all `n` of the level-`n` value groups is
+  the whole finite part of `WithTop ℚ`, i.e. all of `ℚ`. Forward: each attained value is a
+  genuine `orderTop` of a nonzero series, hence `≠ ⊤`. Backward: a rational `q` is realized
+  at its own denominator level, `q = q.num / q.den` with ramification `q.den`.
+
+Together they upgrade the per-level computation of Part XIII into the tower
+`ℤ ⊆ ½ℤ ⊆ ⅓ℤ ⊆ …` with `⋃ₙ (1/n)ℤ = ℚ`, closing the value-group side of the colimit.
+-/
+
+section ValueGroupTower
+
+/-- **Monotonicity of the value-group tower.** If `n ∣ n'` then every `orderTop` value
+attained by a nonzero level-`n` series is also attained at level `n'` — realized by the
+*same* series, reindexed via `IsPuiseuxOfRamification.mono`. This is the inclusion
+`(1/n)ℤ ⊆ (1/n')ℤ` of value groups, the valuation shadow of
+`puiseuxRamificationSubfield_mono`. -/
+theorem ramification_valueGroup_mono {K : Type*} [Field K] {n n' : ℕ+} (hdvd : n ∣ n') :
+    {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧ f.orderTop = v}
+      ⊆ {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n' f ∧ f ≠ 0 ∧ f.orderTop = v} := by
+  rintro v ⟨f, hf, hf0, rfl⟩
+  exact ⟨f, hf.mono hdvd, hf0, rfl⟩
+
+/-- **The value-group tower exhausts `ℚ`.** The union over all ramification levels `n` of
+the level-`n` value groups is precisely the finite part of `WithTop ℚ`, i.e. every
+rational is attained at some level (namely its own denominator). This is the
+valuation-theoretic image of the field colimit `iSup_puiseuxRamificationSubfield`:
+`⋃ₙ (1/n)ℤ = ℚ`. -/
+theorem iUnion_ramification_valueGroup {K : Type*} [Field K] :
+    (⋃ n : ℕ+, {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧ f.orderTop = v})
+      = {v : WithTop ℚ | v ≠ ⊤} := by
+  ext v
+  simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨n, f, _, hf0, rfl⟩
+    exact HahnSeries.orderTop_ne_top.2 hf0
+  · intro hv
+    obtain ⟨q, rfl⟩ := WithTop.ne_top_iff_exists.mp hv
+    refine ⟨⟨q.den, q.pos⟩, ?_⟩
+    obtain ⟨f, hf, hf0, hfv⟩ := exists_ramification_orderTop_eq (K := K) ⟨q.den, q.pos⟩ q.num
+    refine ⟨f, hf, hf0, ?_⟩
+    rw [hfv]
+    have hq : ((q.num : ℚ) / ((⟨q.den, q.pos⟩ : ℕ+) : ℚ)) = q := Rat.num_div_den q
+    exact_mod_cast hq
+
+end ValueGroupTower
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
