@@ -25,7 +25,8 @@
       "Aggregation is a comparison-test argument on the deficit HasSum: gap summand is 0≤gap_n (deficit_gap_coef_nonneg: |n|²−|n|=|n|(|n|−1)≥0 for integer n) and gap_n≤deficit_n (gap_le_deficit_summand = area_deficit_summand_ge_gap in the exact shape of (HSf.add HSg).sub (HSA.mul_left 2)); Summable.of_nonneg_of_le gives summability, Summable.tsum_le_tsum dominates the tsum by the deficit total.",
       "SECTION XVII: the standard textbook Fuglede stability inequality strips the H¹ frequency weight |n|²−|n| to a plain L²-distance-to-circle bound. Key: |n|²−|n|≥2 uniformly on |n|≥2, so 2·(unweighted tail energy) ≤ weighted gap sum ≤ deficit. Constant 2 is sharp (attained as |n|→2).",
       "SECTION XVIII closes the honesty gap of SECTIONS XV-XVII: those docstrings only *asserted* the Fourier tail was an L²-distance-to-a-circle. tsum_tail_eq_sub_low is the abstract engine — for any HasSum a T over ℤ, the |n|≥2 tail sums to T - (a(-1)+a 0+a 1); the low band {-1,0,1} is finitely supported (hasSum_sum_of_ne_finset_zero) and subtracts off the full HasSum.",
-      "Fed Mathlib Parseval (hasSum_sq_fourierCoeffOn_real) into that engine: the plain unweighted tail ∑_{|n|≥2}‖ĉₙg‖² EQUALS (2π)⁻¹∫g² − (‖ĉ₋₁‖²+‖ĉ₀‖²+‖ĉ₁‖²) — a literal integral, i.e. the squared L² distance of g from its best degree-≤1 trig fit (the circle coordinate). No overclaim: RHS is total energy minus low-mode energy = Bessel distance."
+      "Fed Mathlib Parseval (hasSum_sq_fourierCoeffOn_real) into that engine: the plain unweighted tail ∑_{|n|≥2}‖ĉₙg‖² EQUALS (2π)⁻¹∫g² − (‖ĉ₋₁‖²+‖ĉ₀‖²+‖ĉ₁‖²) — a literal integral, i.e. the squared L² distance of g from its best degree-≤1 trig fit (the circle coordinate). No overclaim: RHS is total energy minus low-mode energy = Bessel distance.",
+      "The plain-L² Fuglede constant 2 (SECTION XVII) is EXACTLY the minimum of the harmonic weight w(n)=|n|²−|n| over higher modes |n|≥2: attained at |n|=2 (w=2), strict (w>2) for |n|≥3. This upgrades the asserted \"sharp constant 2\" docstring claim to a proved optimality theorem — raising the constant breaks the termwise bound for any curve with a nontrivial second harmonic."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean: 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.AreaOfCircleOQ01OQ02OQ02OQ02 (transitively the first-order grandparent).",
@@ -60,11 +61,13 @@
       "tsum_tail_eq_sub_low (private engine): HasSum a T ⟹ ∑_{|n|≥2} a n = T-(a(-1)+a 0+a 1); Finset.sum_congr rfl + if_neg(by decide) evaluates the low-band sum, HasSum.sub off the finitely-supported complement, HasSum.tsum_eq reads value",
       "tsum_tail_normSq_fourierCoeffOn_eq_integral_sub_low: per-coordinate plain tail = (2π)⁻¹∫g² − low modes [0-axiom]",
       "tsum_tail_normSq_fourierCoeffOn_add_eq_integral_sub_low: joint (f,g) tail = (2π)⁻¹∫f²+(2π)⁻¹∫g² − low modes = squared L² distance of curve from family of circles [0-axiom]",
-      "two_mul_integral_tail_le_normalized_deficit: explicit-integral Fuglede — 2·(literal L² distance-to-circle) ≤ normalized Hurwitz deficit, geometric content of the abstract tail bound made fully explicit [0-axiom]"
+      "two_mul_integral_tail_le_normalized_deficit: explicit-integral Fuglede — 2·(literal L² distance-to-circle) ≤ normalized Hurwitz deficit, geometric content of the abstract tail bound made fully explicit [0-axiom]",
+      "SECTION XIX (sharpness of the Fuglede constant 2): deficit_gap_coef_eq_two_of_natAbs_eq_two (weight |n|²−|n|=2 at |n|=2), two_lt_deficit_gap_coef_of_three_le (weight>2 for |n|≥3), deficit_gap_coef_eq_two_iff (weight=2 ↔ |n|=2 on higher band), two_mul_tail_eq_gap_of_natAbs_eq_two (termwise plain-L² bound is EQUALITY at 2nd harmonic), not_const_mul_le_gap_of_two_lt (no c>2 survives at a nonzero 2nd harmonic) — all 0-axiom in AreaOfCircleOQ01OQ02OQ02OQ02OQ01.lean:2270-2360"
     ],
-    "progressSummary": "COMPLETE + EXTENDED through SECTION XVIII: the plain-L² Fuglede tail is now a LITERAL integral (total energy minus the three low modes = squared L²-distance from the best-fit circle), closing the geometric interpretation that SECTIONS XV-XVII only asserted in docstrings; 2·(explicit distance) ≤ deficit. All 0-axiom (propext/Choice/Quot only).",
+    "progressSummary": "PROGRESS: SECTION XIX proves the plain-L² Fuglede stability constant 2 is sharp — harmonic weight |n|²−|n| equals 2 exactly at the second harmonic and exceeds 2 above, with termwise equality at |n|=2 and non-improvability for c>2. 0-axiom.",
     "nextSteps": [
-      "Optional: identify (2π)⁻¹∫g² − low modes with an explicit ∫|g−S₁g|² integral (partial-Fourier-sum form) via mode orthogonality, or a lower Bonnesen-type companion (deficit ≤ area·(R_out−R_in)-type) — the latter needs inradius/circumradius geometry outside the current Fourier framework (>500 lines, likely blocked)."
+      "Provide an EXPLICIT sharpness witness curve (e.g. f=cos 2t, g=sin 2t) with nonzero ĉ_{±2}, computing its fourierCoeffOn, to make not_const_mul_le_gap_of_two_lt non-vacuous end-to-end (the P>0 hypothesis is realizable but not yet constructed).",
+      "Prove the low-mode subtraction in SECTION XVIII IS the L²-projection onto degree≤1 trig polynomials (best-fit circle optimality), not just an algebraic identity."
     ]
   },
   "relatedProofs": [

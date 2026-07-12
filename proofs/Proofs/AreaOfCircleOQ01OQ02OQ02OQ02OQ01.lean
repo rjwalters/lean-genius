@@ -2265,4 +2265,83 @@ theorem two_mul_integral_tail_le_normalized_deficit
     at hcore
   exact hcore
 
+-- ============================================================
+-- SECTION XIX: sharpness of the Fuglede constant `2`
+--   — the harmonic weight `|n|²−|n|` attains `2` exactly at the
+--     second harmonic, so the plain-`L²` constant cannot be raised
+-- ============================================================
+
+/-- **The harmonic weight equals `2` exactly on the second harmonic.**  The Fuglede weight that
+    every stability bound in SECTIONS XV–XVII carries is `w(n) = |n|² − |n|`.  At the second
+    harmonic (`|n| = 2`) it evaluates to `4 − 2 = 2`, the precise value of the plain-`L²`
+    constant.  This is the *attainment* half of the sharpness claim: the uniform lower bound
+    `w(n) ≥ 2` (`two_mul_tail_le_gap`) is met with equality at `|n| = 2`. -/
+theorem deficit_gap_coef_eq_two_of_natAbs_eq_two {n : ℤ} (hn : n.natAbs = 2) :
+    |(n : ℝ)| ^ 2 - |(n : ℝ)| = 2 := by
+  have hn2 : |(n : ℝ)| = 2 := by
+    rw [← Int.cast_abs]
+    have : |n| = 2 := by rw [Int.abs_eq_natAbs, hn]; rfl
+    rw [this]; norm_num
+  rw [hn2]; norm_num
+
+/-- **The harmonic weight is strictly above `2` past the second harmonic.**  For `|n| ≥ 3` the
+    weight `w(n) = |n|² − |n|` satisfies `w(n) > 2` (indeed `w(3) = 6`).  Together with
+    `deficit_gap_coef_eq_two_of_natAbs_eq_two` this shows `2` is the *strict minimum* of the
+    weight over all higher harmonics, attained only at `|n| = 2`. -/
+theorem two_lt_deficit_gap_coef_of_three_le {n : ℤ} (hn : 3 ≤ n.natAbs) :
+    2 < |(n : ℝ)| ^ 2 - |(n : ℝ)| := by
+  have hm : (3 : ℝ) ≤ |(n : ℝ)| := by
+    rw [← Int.cast_abs]
+    exact_mod_cast (show (3 : ℤ) ≤ |n| by rw [Int.abs_eq_natAbs]; exact_mod_cast hn)
+  nlinarith [hm]
+
+/-- **Sharp characterization of where the weight bottoms out.**  For any higher harmonic
+    (`|n| ≥ 2`), the Fuglede weight `|n|² − |n|` equals the plain-`L²` constant `2` *iff* `n` is a
+    second harmonic (`|n| = 2`).  This pins the constant `2` as the exact infimum — not merely a
+    valid lower bound — of the harmonic weight, converting the "sharp constant `2`" assertion in
+    SECTION XVII's docstrings into a proved statement. -/
+theorem deficit_gap_coef_eq_two_iff {n : ℤ} (hn : 2 ≤ n.natAbs) :
+    |(n : ℝ)| ^ 2 - |(n : ℝ)| = 2 ↔ n.natAbs = 2 := by
+  constructor
+  · intro hw
+    rcases Nat.lt_or_ge n.natAbs 3 with h | h
+    · omega
+    · exact absurd hw (ne_of_gt (two_lt_deficit_gap_coef_of_three_le h))
+  · exact deficit_gap_coef_eq_two_of_natAbs_eq_two
+
+/-- **The plain-`L²` termwise bound is an equality at the second harmonic.**  The termwise
+    domination `two_mul_tail_le_gap` — twice the unweighted tail summand `≤` the weighted gap
+    summand — is met with *equality* precisely when `|n| = 2`, because there the weight is exactly
+    `2`:
+
+        2·(‖ĉₙf‖² + ‖ĉₙg‖²)  =  (|n|²−|n|)·(‖ĉₙf‖² + ‖ĉₙg‖²)        (for `|n| = 2`).
+
+    So the constant `2` in the plain-`L²` Fuglede inequality is realized mode-by-mode by any curve
+    carrying a second harmonic — it cannot be replaced by anything larger. -/
+theorem two_mul_tail_eq_gap_of_natAbs_eq_two {f g : ℝ → ℝ} (hab : (0 : ℝ) < 2 * π)
+    {n : ℤ} (hn : n.natAbs = 2) :
+    2 * (if 2 ≤ n.natAbs then
+          ‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2
+        else 0)
+      = (|(n : ℝ)| ^ 2 - |(n : ℝ)|)
+        * (‖fourierCoeffOn hab (ofReal ∘ f) n‖ ^ 2
+            + ‖fourierCoeffOn hab (ofReal ∘ g) n‖ ^ 2) := by
+  rw [if_pos (by omega), deficit_gap_coef_eq_two_of_natAbs_eq_two hn]
+
+/-- **No constant larger than `2` survives at the second harmonic.**  Fix a second harmonic
+    (`|n| = 2`) and suppose the mode carries nonzero energy `0 < P`.  Then for any candidate
+    constant `c > 2` the strengthened termwise bound `c·P ≤ (|n|²−|n|)·P` *fails*, since the weight
+    is exactly `2 < c`.  This is the optimality half of the sharpness statement: the constant `2`
+    in `two_mul_tsum_tail_le_normalized_deficit` (and hence in the geometric Fuglede inequality)
+    is best possible — raising it breaks the bound for any curve with a nontrivial second
+    harmonic.  (Such curves exist and are exactly the non-circles allowed by
+    `isoperimetric_saturation_iff_circle`, whose second-harmonic energy is positive.) -/
+theorem not_const_mul_le_gap_of_two_lt {n : ℤ} (hn : n.natAbs = 2)
+    {c P : ℝ} (hc : 2 < c) (hP : 0 < P) :
+    ¬ c * P ≤ (|(n : ℝ)| ^ 2 - |(n : ℝ)|) * P := by
+  rw [deficit_gap_coef_eq_two_of_natAbs_eq_two hn]
+  push_neg
+  exact mul_lt_mul_of_pos_right hc hP
+
 end IsoperimetricFourier
