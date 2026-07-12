@@ -598,4 +598,75 @@ theorem fundamental_error_estimate_unconditional (f : ℝ → ℝ) (L : ℝ) (hL
   obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
   exact ⟨xstar, hfp, fun x => fundamental_error_estimate f L hL1 hf xstar hfp x⟩
 
+/-! ### The a posteriori estimate refines the a priori estimate, and a pointwise fundamental *lower* bound
+
+Two facts about the *sharpness* of the estimates above, neither recorded so far:
+
+  * **The a posteriori bound is never worse than the a priori bound**
+    (`aposteriori_le_apriori`).  At step `n+1` the a posteriori estimate
+    `L/(1−L)·|xₙ₊₁ − xₙ|` (computed from the latest, observed increment) is `≤` the
+    a priori estimate `Lⁿ⁺¹/(1−L)·|x₁ − x₀|` (computed before iterating), because the
+    observed increment itself obeys `|xₙ₊₁ − xₙ| ≤ Lⁿ·|x₁ − x₀|` (`step_dist`).  So
+    the computable stopping criterion is always at least as tight as the a priori
+    iteration count — the a posteriori estimate genuinely refines the a priori one.
+
+  * **A pointwise fundamental *lower* bound** (`fundamental_error_lower`).  The
+    fundamental estimate `fundamental_error_estimate` bounds the distance to `x*`
+    *above* by the residual, `|x − x*| ≤ |x − f x|/(1−L)`.  Its complementary lower
+    bound `|x − f x|/(1 + L) ≤ |x − x*|` holds at *any* point `x` (only `0 ≤ L`
+    needed): a small residual is not merely sufficient but *necessary* for proximity
+    to `x*`, so `|x − f x|` is a two-sided proxy for `|x − x*|`.  This is the
+    pointwise (Ostrowski, sequence-free) form of `aposteriori_lower_estimate`, just
+    as `fundamental_error_estimate` is the pointwise form of `aposteriori_estimate`.
+    Proof: `|x − f x| ≤ |x − x*| + |x* − f x| ≤ |x − x*| + L·|x − x*|`. -/
+
+/-- **The a posteriori bound refines the a priori bound.**  At step `n+1` the a
+    posteriori estimate (latest increment) is never larger than the a priori estimate
+    (first increment): `L/(1−L)·|xₙ₊₁ − xₙ| ≤ Lⁿ⁺¹/(1−L)·|x₁ − x₀|`.  The computable
+    stopping criterion is thus always at least as sharp as the pre-iteration count.
+    Proof: `step_dist` gives `|xₙ₊₁ − xₙ| ≤ Lⁿ·|x₁ − x₀|`, and scaling by the
+    nonnegative factor `L/(1−L)` turns `Lⁿ` into `Lⁿ⁺¹`. -/
+theorem aposteriori_le_apriori (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (n : ℕ) :
+    L / (1 - L) * |x (n + 1) - x n| ≤ L ^ (n + 1) / (1 - L) * |x 1 - x 0| := by
+  have hcontr : (0 : ℝ) < 1 - L := by linarith
+  have hinc := step_dist f L hL0 hf x hx n
+  have hfrac : (0 : ℝ) ≤ L / (1 - L) := div_nonneg hL0 (le_of_lt hcontr)
+  calc L / (1 - L) * |x (n + 1) - x n|
+      ≤ L / (1 - L) * (L ^ n * |x 1 - x 0|) := mul_le_mul_of_nonneg_left hinc hfrac
+    _ = L ^ (n + 1) / (1 - L) * |x 1 - x 0| := by rw [pow_succ]; ring
+
+/-- **Fundamental (Ostrowski) *lower* error bound at an arbitrary point.**  For any
+    fixed point `x*` of an `L`-contraction (`0 ≤ L`), every point `x` satisfies
+    `|x − f x| / (1 + L) ≤ |x − x*|`: the residual `|x − f x|` is, up to the factor
+    `1 + L`, a lower bound on the distance to `x*`, complementing the upper bound
+    `fundamental_error_estimate`.  Only `0 ≤ L` is needed (no `L < 1`).  This is the
+    pointwise, sequence-free form of `aposteriori_lower_estimate`. -/
+theorem fundamental_error_lower (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (xstar : ℝ) (hfp : f xstar = xstar) (x : ℝ) :
+    |x - f x| / (1 + L) ≤ |x - xstar| := by
+  have hpos : (0 : ℝ) < 1 + L := by linarith
+  have hstep : |f x - xstar| ≤ L * |x - xstar| := by
+    have h := hf x xstar
+    rw [hfp] at h
+    exact h
+  have ht : |x - f x| ≤ |x - xstar| + |xstar - f x| := abs_sub_le _ _ _
+  rw [abs_sub_comm xstar (f x)] at ht
+  rw [div_le_iff₀ hpos]
+  nlinarith [ht, hstep]
+
+/-- **Unconditional fundamental *lower* error bound.**  With no assumed fixed point: a
+    contraction on `ℝ` has a fixed point `x*` (the unique one) for which
+    `|x − f x| / (1 + L) ≤ |x − x*|` holds at *every* point `x`.  The hypothesis-free
+    form of `fundamental_error_lower`, threading `exists_fixed_point`; together with
+    `fundamental_error_estimate_unconditional` it pins `|x − x*|` to the band
+    `[ |x − f x|/(1+L), |x − f x|/(1−L) ]` from the single residual `|x − f x|`. -/
+theorem fundamental_error_lower_unconditional (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L)
+    (hL1 : L < 1) (hf : ∀ x y, |f x - f y| ≤ L * |x - y|) :
+    ∃ xstar : ℝ, f xstar = xstar ∧ ∀ x, |x - f x| / (1 + L) ≤ |x - xstar| := by
+  obtain ⟨xstar, hfp⟩ := exists_fixed_point f L hL0 hL1 hf
+  exact ⟨xstar, hfp, fun x => fundamental_error_lower f L hL0 hf xstar hfp x⟩
+
 end BrouwerOQ02OQ02OQ01
