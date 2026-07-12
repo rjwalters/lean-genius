@@ -1475,6 +1475,36 @@ theorem signChangesInCoeffs_quadratic_no_change {a b c : ℝ} (ha : a ≠ 0)
   exact countSignChanges_three_mid_ne_zero (by simpa using hb)
     (by simpa using h01) (by simpa using h12)
 
+/-- **One sign change — zero middle, opposite outer signs.**  If `b = 0` and `a·c < 0`
+(sign pattern `+ 0 −` or `− 0 +`) then `a·X² + c` has exactly one coefficient sign change,
+jumping over the vanishing middle term.  This is the *general* form of the base file's
+`X² − 1` example, and — being the `b = 0` complement of `signChangesInCoeffs_quadratic_one_left`
+/ `_one_right` — completes the sign-change classification to **every** real quadratic. -/
+theorem signChangesInCoeffs_quadratic_mid_zero_one {a b c : ℝ} (ha : a ≠ 0)
+    (hb : b = 0) (hac : a * c < 0) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 1 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_zero_pos (by simpa using hb) (by simpa using hac)
+
+/-- **No sign change — zero middle, non-opposite outer signs.**  If `b = 0` and `0 ≤ a·c`
+then `a·X² + c` has no coefficient sign change: the general form of `X² + 1`.  With
+`signChangesInCoeffs_quadratic_mid_zero_one` and the four nonzero-middle corollaries, the
+coefficient sign-change count of an arbitrary real quadratic is now determined in **all**
+sign configurations of `(a, b, c)`. -/
+theorem signChangesInCoeffs_quadratic_mid_zero_no_change {a b c : ℝ} (ha : a ≠ 0)
+    (hb : b = 0) (hac : 0 ≤ a * c) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 0 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_zero_zero (by simpa using hb) (by simpa using hac)
+
+/-- **Concrete tight witness `X² − 3X + 2 = (X − 1)(X − 2)`.**  Coefficient sequence
+`[1, −3, 2]` (`+ − +`), so exactly two coefficient sign changes — matching its two positive
+roots `1, 2`.  A degree-`2` polynomial *attaining* Descartes' upper bound with distinct
+positive roots (the base file's examples `X² ± 1` only realise `V = 1` and `V = 0`). -/
+theorem signChanges_x2_sub_3x_add_2 :
+    signChangesInCoeffs (C 1 * X ^ 2 + C (-3) * X + C 2 : ℝ[X]) = 2 :=
+  signChangesInCoeffs_quadratic_alternating (by norm_num) (by norm_num) (by norm_num)
+
 end QuadraticFamily
 
 end DescartesRuleOfSignsOQ01OQ03

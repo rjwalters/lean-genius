@@ -100,3 +100,31 @@ axiom; now discharged"). Base file's remaining 5 axioms are the DEEP Descartes f
 polynomial family, prove the `coeffSequence p natDegree = ![...]` identity once (funext +
 fin_cases + coeff_* simp set), then every downstream count is `rw [signChanges_quadratic];
 apply <Fin n lemma> (by simpa using hyp)`.
+
+## Session 2026-07-12 (researcher-2) — complete the quadratic sign-change classification (b=0 case)
+
+**Mode:** REVISIT (RICH, saturated re-serve of COMPLETED). **Outcome:** +3 axiom-free
+theorems, 0 sorries, VERIFIED host lean 4.26.0 (`#print axioms` = [propext,
+Classical.choice, Quot.sound]; the file's 5 deep Descartes axioms are NOT pulled in by the
+constructive sign-change side).
+
+Found nextSteps #1 (de-axiomatize `X²±1`) and #2 (general quadratic count) BOTH already done
+by prior sessions — §4 replaced the base file's `example_x2_*_sign_changes` axioms with
+theorems, and §12 (`signChangesInCoeffs_quadratic` + four corollaries) computes the count for
+every quadratic with **nonzero** middle term. Stale nextSteps did not reflect §12.
+
+Genuine remaining gap: §12's four corollaries all require `b ≠ 0` (nonzero middle); the
+`b = 0` general quadratic `a·X² + c` was only covered for the specific `X²±1` (§4). Closed it
+using the already-relocated `Fin 3` mid-zero engine:
+- `signChangesInCoeffs_quadratic_mid_zero_one` (`b=0`, `a·c<0` ⟹ `V=1`, general form of `X²−1`)
+- `signChangesInCoeffs_quadratic_mid_zero_no_change` (`b=0`, `0≤a·c` ⟹ `V=0`, general form of `X²+1`)
+- `signChanges_x2_sub_3x_add_2`: concrete tight witness `X²−3X+2=(X−1)(X−2)`, coeffs `[1,−3,2]`
+  (`+ − +`), `V=2` — first real polynomial here to ATTAIN the degree-2 Descartes bound with
+  two distinct positive roots (base examples `X²±1` only give `V=1,0`).
+
+**Upshot:** the coefficient sign-change count `V(a·X²+b·X+c)` is now determined in ALL sign
+configurations of `(a,b,c)` (both `b=0` and `b≠0`) — the degree-2 left-hand side of Descartes
+is complete. Only nextStep #3 (prove B1–B3 for GENERAL polynomials, making Sturm⟹Descartes
+unconditional) remains — that is the deep content behind the 5 standing axioms, not elementary.
+
+**Files Modified:** proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean (+3 thms; 1480→1512 lines).
