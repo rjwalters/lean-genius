@@ -552,4 +552,42 @@ theorem sqDiffFree_card_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (A : Finse
   · have hcancel := le_of_mul_le_mul_left (by nlinarith [hquad] : a * a ≤ a * (c₀ + M)) hapos
     linarith
 
+/-- **Sárközy's `√N` density bound at prime moduli — the clean single-modulus form.**
+    Specializing the sharp odd-modulus ceiling `sqDiffFree_card_le_of_odd` to a prime `N ≠ 2`
+    makes *both* structural quantities collapse to their extreme values:
+    * `minFac(N) = N` (the smallest prime factor of a prime is itself), so the sub-maximal
+      Gauss magnitude is the sharp `N/√minFac(N) = N/√N = √N` (`Real.div_sqrt`);
+    * `#{n : n² = 0} = 1` — over the field `ℤ/Nℤ` the only square root of `0` is `0`
+      (`sq_eq_zero_iff`, no zero divisors).
+
+    Hence any square-difference-free `A ⊆ ℤ/Nℤ` at a prime `N ≠ 2` satisfies
+
+      `|A| ≤ 1 + √N`,
+
+    i.e. density `|A|/N ≤ (1 + √N)/N → 0`.  This is the genuine Sárközy conclusion along the
+    prime moduli: a fully machine-checked `o(N)` bound on the size of a set with no nonzero
+    square difference, with no bounded-`minFac` obstruction (that obstruction, documented on
+    `sqDiffFree_card_le_of_odd`, is exactly what primality removes).  `0` axioms. -/
+theorem sqDiffFree_card_le_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A) :
+    (A.card : ℝ) ≤ 1 + Real.sqrt N := by
+  have hodd : Odd N := hp.odd_of_ne_two hN2
+  have hbase := sqDiffFree_card_le_of_odd hodd A hfree
+  -- `minFac N = N`: the smallest prime factor of a prime is itself.
+  have hmf : N.minFac = N := by
+    rcases hp.eq_one_or_self_of_dvd N.minFac (Nat.minFac_dvd N) with h | h
+    · exact absurd h (Nat.minFac_prime hp.ne_one).ne_one
+    · exact h
+  -- `#{n : n² = 0} = 1`: over the field `ℤ/Nℤ`, `n² = 0 ↔ n = 0`.
+  have hcount : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card = 1 := by
+    haveI : Fact N.Prime := ⟨hp⟩
+    have hset : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)) = {0} := by
+      ext n
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton,
+        sq_eq_zero_iff]
+    rw [hset, Finset.card_singleton]
+  rw [hcount, hmf, Real.div_sqrt] at hbase
+  simpa using hbase
+
 end Szemeredi.Roth
