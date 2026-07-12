@@ -147,6 +147,11 @@
       "targetId": "arsinh-log-formula-oq-01-oq-01",
       "relationship": "ancestor",
       "description": "The grandparent supplies the antiderivative of the conjugate integrand 1/√(1+t²) (namely arsinh); this entry continues the same hand-built-antiderivative theme, here for cosh² (absent from Mathlib)."
+    },
+    {
+      "targetId": "arsinh-log-formula-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Parallel cousin. It derives the identical catenoid lateral surface area π(b + sinh b·cosh b) by the same √(1 + sinh²x) = cosh x collapse and the same hand-built cosh² antiderivative, but complements this entry by also giving the catenary arc length in classical logarithmic closed form ½(b√(1+b²) + log(b + √(1+b²))) — using arsinh x = log(x + √(1+x²)). Read together they present the catenoid area from two matching routes and the arc length in both the sinh and the logarithmic forms."
     }
   ],
   "references": [
