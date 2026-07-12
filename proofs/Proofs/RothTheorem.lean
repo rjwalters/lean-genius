@@ -3408,5 +3408,67 @@ theorem sqGaussSum_l2_factor_ge_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (hN :
       Real.sqrt ((Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)) :=
   Real.sqrt_le_sqrt (sqGaussSum_normSq_sum_ge_of_odd hodd hN)
 
+/-! ### Part XXII — Divisor upper bound: the second moment is `N^{2+o(1)}` (tight bracket)
+
+Part XXI extracted the lower bound `N·φ(N) ≤ Σ_{r≠0}‖G(r)‖²`.  Here we furnish the matching
+**upper** bound directly from the exact Pillai form.  Each Pillai term is dominated by `N`:
+
+    d·φ(N/d) ≤ d·(N/d) = N          (since `φ(m) ≤ m` and `d ∣ N`),
+
+so summing over the `d(N) = |N.divisors|` divisors gives `P(N) = Σ_{d∣N} d·φ(N/d) ≤ N·d(N)`,
+whence
+
+    Σ_{r≠0} ‖G(r)‖² = N·(P(N) − N) ≤ N²·(d(N) − 1).
+
+Because `d(N) = N^{o(1)}` (the divisor function is subpolynomial), this pins the second moment
+to `N^{2+o(1)}`, *sharpening* the crude explicit Part XVI bound `≤ 4N²⌊√N⌋` (order `N^{2.5}`)
+to essentially optimal order.  Combined with the Part XXI lower bound `N·φ(N) ≤ Σ‖G‖²` it
+brackets the second moment as `N·φ(N) ≤ Σ‖G‖² ≤ N²·(d(N)−1)`, both sides `N^{2+o(1)}`, closing
+the order-of-magnitude question and reconfirming that the L²-averaged circle-method route is
+`Θ(N²)`-capped at every odd modulus. -/
+
+/-- **Pillai's divisor sum is bounded by `N·d(N)`.**  Each term `d·φ(N/d)` is at most
+`d·(N/d) = N` (using `φ(m) ≤ m` and `d ∣ N`), so the full sum over the `|N.divisors|`
+divisors is at most `N·|N.divisors|`. -/
+theorem pillai_le_mul_card_divisors {N : ℕ} :
+    ∑ d ∈ N.divisors, d * Nat.totient (N / d) ≤ N * N.divisors.card := by
+  calc ∑ d ∈ N.divisors, d * Nat.totient (N / d)
+      ≤ ∑ _d ∈ N.divisors, N := by
+        apply Finset.sum_le_sum
+        intro d hd
+        have hdvd : d ∣ N := Nat.dvd_of_mem_divisors hd
+        calc d * Nat.totient (N / d)
+            ≤ d * (N / d) := Nat.mul_le_mul (le_refl d) (Nat.totient_le (N / d))
+          _ = N := Nat.mul_div_cancel' hdvd
+    _ = N * N.divisors.card := by
+        rw [Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+
+/-- **Second-moment upper bound at any odd modulus.**  Feeding `pillai_le_mul_card_divisors`
+into the exact Pillai form `sqGaussSum_normSq_sum_eq_divisors_of_odd`:
+
+    Σ_{r≠0} ‖G(r)‖² ≤ N²·(d(N) − 1).
+
+Since `d(N) = N^{o(1)}`, the second moment is `N^{2+o(1)}`, sharpening the crude Part XVI
+bound `≤ 4N²⌊√N⌋` (order `N^{2.5}`) to essentially optimal order.  With the Part XXI lower
+bound `N·φ(N) ≤ Σ‖G‖²` this yields the tight bracket `N·φ(N) ≤ Σ‖G‖² ≤ N²·(d(N)−1)`. -/
+theorem sqGaussSum_normSq_sum_le_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)
+      ≤ (N : ℝ) ^ 2 * ((N.divisors.card : ℝ) - 1) := by
+  rw [sqGaussSum_normSq_sum_eq_divisors_of_odd hodd]
+  have hcast : ((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ)
+      ≤ (N : ℝ) * (N.divisors.card : ℝ) := by
+    calc ((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ)
+        ≤ ((N * N.divisors.card : ℕ) : ℝ) := by exact_mod_cast pillai_le_mul_card_divisors
+      _ = (N : ℝ) * (N.divisors.card : ℝ) := by push_cast; ring
+  have hR : ((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ) - N
+      ≤ (N : ℝ) * ((N.divisors.card : ℝ) - 1) := by
+    have hid : (N : ℝ) * ((N.divisors.card : ℝ) - 1)
+        = (N : ℝ) * (N.divisors.card : ℝ) - N := by ring
+    rw [hid]; linarith [hcast]
+  calc (N : ℝ) * (((∑ d ∈ N.divisors, d * Nat.totient (N / d) : ℕ) : ℝ) - N)
+      ≤ (N : ℝ) * ((N : ℝ) * ((N.divisors.card : ℝ) - 1)) :=
+        mul_le_mul_of_nonneg_left hR (Nat.cast_nonneg N)
+    _ = (N : ℝ) ^ 2 * ((N.divisors.card : ℝ) - 1) := by ring
+
 
 end Szemeredi.Roth
