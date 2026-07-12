@@ -4528,4 +4528,76 @@ theorem sqDiffFree_lift_prime_sq_iff {p : ℕ} (hp : p.Prime)
     rw [hφt] at hsplit
     exact hS s hsS (φ n) hsqne (hsplit ▸ htS)
 
+
+/-! ### Part XXXII — the EXTREMAL square-difference-free count is super-multiplicative
+
+Parts XXVIII–XXXI produced concrete and coset-structured lower bounds for the maximal
+square-difference-free set at a prime-square modulus `N = p²`.  Here we package the
+prime→prime² coset lift (`sqDiffFree_lift_prime_sq`, Part XXX) as a clean *structural*
+theorem about the **maximum cardinality** of a square-difference-free set, denoted
+`maxSqDiffFreeCard N`.  The lift shows this extremal count is super-multiplicative across
+the step `p ↦ p²`:
+
+  `maxSqDiffFreeCard (p²) ≥ p · maxSqDiffFreeCard p`.
+
+Equivalently, an *extremal* square-difference-free residue set in `ℤ/pℤ` (the Paley
+independence number) lifts on the nose to `p` times as many elements in `ℤ/p²ℤ`.  This turns
+the earlier one-off constructions into a single quantified inequality on the extremal
+function, and — via the achievement lemma — records that the maximum is genuinely attained. -/
+
+/-- A finite set `A ⊆ ℤ/Nℤ` is **square-difference-free** when no two of its elements differ
+by a nonzero square: for every `x ∈ A` and every `n` with `n² ≠ 0`, `x + n² ∉ A`. -/
+def IsSqDiffFree {N : ℕ} (A : Finset (ZMod N)) : Prop :=
+  ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A
+
+instance instDecidableIsSqDiffFree {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    Decidable (IsSqDiffFree A) :=
+  inferInstanceAs (Decidable (∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A))
+
+/-- The **maximum cardinality** of a square-difference-free subset of `ℤ/Nℤ`.  The family of
+square-difference-free finsets is a nonempty (it contains `∅`) finite family, so this
+supremum is attained (see `exists_isSqDiffFree_card_eq_max`). -/
+noncomputable def maxSqDiffFreeCard (N : ℕ) [NeZero N] : ℕ :=
+  (Finset.univ.filter fun A : Finset (ZMod N) => IsSqDiffFree A).sup Finset.card
+
+/-- Any square-difference-free set has cardinality at most the extremal count. -/
+theorem le_maxSqDiffFreeCard_of_isSqDiffFree {N : ℕ} [NeZero N] {A : Finset (ZMod N)}
+    (hA : IsSqDiffFree A) : A.card ≤ maxSqDiffFreeCard N := by
+  rw [maxSqDiffFreeCard]
+  exact Finset.le_sup (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hA⟩)
+
+/-- The extremal count is **attained**: there is a square-difference-free set whose
+cardinality is exactly `maxSqDiffFreeCard N`. -/
+theorem exists_isSqDiffFree_card_eq_max (N : ℕ) [NeZero N] :
+    ∃ A : Finset (ZMod N), IsSqDiffFree A ∧ A.card = maxSqDiffFreeCard N := by
+  have hne : (Finset.univ.filter fun A : Finset (ZMod N) => IsSqDiffFree A).Nonempty := by
+    refine ⟨∅, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
+    intro x hx
+    exact absurd hx (Finset.notMem_empty x)
+  obtain ⟨A, hA, hsup⟩ := Finset.exists_mem_eq_sup _ hne Finset.card
+  exact ⟨A, (Finset.mem_filter.mp hA).2, by rw [maxSqDiffFreeCard]; exact hsup.symm⟩
+
+/-- **The extremal square-difference-free count is super-multiplicative across `p ↦ p²`.**
+For a prime `p`, the coset lift of Part XXX carries an extremal square-difference-free
+residue set in `ℤ/pℤ` to a square-difference-free set in `ℤ/p²ℤ` of exactly `p` times the
+size, so `maxSqDiffFreeCard (p²) ≥ p · maxSqDiffFreeCard p`.  Because the largest
+square-difference-free residue set in `ℤ/pℤ` is the Paley independence number `α(p)`, this
+reads `maxSqDiffFreeCard (p²) ≥ p · α(p)` — the coset-structured lower bound as a single
+inequality on the extremal function. -/
+theorem maxSqDiffFreeCard_prime_sq_ge {p : ℕ} (hp : p.Prime) [NeZero p] :
+    p * maxSqDiffFreeCard p ≤ maxSqDiffFreeCard (p ^ 2) := by
+  obtain ⟨S, hS, hScard⟩ := exists_isSqDiffFree_card_eq_max p
+  obtain ⟨A, hAfree, hAcard⟩ := sqDiffFree_lift_prime_sq hp S hS
+  calc p * maxSqDiffFreeCard p = S.card * p := by rw [hScard]; ring
+    _ = A.card := hAcard.symm
+    _ ≤ maxSqDiffFreeCard (p ^ 2) := le_maxSqDiffFreeCard_of_isSqDiffFree hAfree
+
+/-- **Concrete instance of the structural bound at `N = 169`.**  The Paley three-coset set
+`{0,2,7} ⊆ ℤ/13ℤ` (square-difference-free, so `maxSqDiffFreeCard 13 ≥ 3`) lifts to a
+square-difference-free set of `3·13 = 39` elements, giving `maxSqDiffFreeCard 169 ≥ 39`. -/
+theorem le_maxSqDiffFreeCard_mod_169 : 39 ≤ maxSqDiffFreeCard (13 ^ 2) := by
+  obtain ⟨A, hAfree, hAcard⟩ := exists_sqDiffFree_card_three_mul_sqrt_mod_169
+  have h := le_maxSqDiffFreeCard_of_isSqDiffFree (A := A) hAfree
+  rw [hAcard] at h; omega
+
 end Szemeredi.Roth
