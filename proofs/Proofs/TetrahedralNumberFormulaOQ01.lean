@@ -782,5 +782,44 @@ theorem antidiagonal_sum_simplex (n : ℕ) :
   exact Finset.sum_congr rfl fun k hk =>
     simplexNumber_antidiagonal (by simpa [Nat.lt_succ_iff] using Finset.mem_range.1 hk)
 
+/-- **Alternating antidiagonal sum (inclusion–exclusion face).** Summing the figurate
+array along the antidiagonal `d + size = n` with alternating signs collapses to an
+indicator:
+
+`∑_{k≤n} (-1)^k · P_k(n - k) = [n = 0]`  (i.e. `1` if `n = 0`, else `0`).
+
+This is the *signed* companion of `antidiagonal_sum_simplex` (whose unsigned sum is `2^n`):
+because the antidiagonal entries are the binomials `P_k(n-k) = C(n, k)`
+(`simplexNumber_antidiagonal`), it is the figurate manifestation of the alternating binomial
+identity `∑_{k≤n} (-1)^k C(n, k) = [n = 0]` (`Int.alternating_sum_range_choose`) — the
+inclusion–exclusion direction through Pascal's simplex, complementing the plain row, column,
+and (unsigned) antidiagonal sums. In particular the even- and odd-dimension antidiagonal
+entries balance for every `n ≥ 1`. -/
+theorem alternating_antidiagonal_sum_simplex (n : ℕ) :
+    ∑ k ∈ range (n + 1), (-1 : ℤ) ^ k * (simplexNumber k (n - k) : ℤ)
+      = if n = 0 then 1 else 0 := by
+  rw [← Int.alternating_sum_range_choose (n := n)]
+  refine Finset.sum_congr rfl fun k hk => ?_
+  rw [simplexNumber_antidiagonal (by simpa [Nat.lt_succ_iff] using Finset.mem_range.1 hk)]
+
+/-- **Ranged (partial) hockey stick along the dimension axis.** The dimension-axis
+companion of `sum_Ioc_simplex`: summing a *column* of the figurate array (fixed size `d`,
+increasing dimension) only over a window `m < k ≤ n` telescopes to the difference of the two
+endpoint numbers, stated additively to stay in `ℕ`:
+
+`P_m(d+1) + ∑_{m < k ≤ n} P_k(d) = P_n(d+1)`   (for `m ≤ n`).
+
+The full-column hockey stick `sum_simplex_over_dim` is the special case `m = 0`. Proof: the
+reflection symmetry `simplexNumber_symm` (`P_a(b) = P_b(a)`) turns this into the ranged *row*
+identity `sum_Ioc_simplex`, so the array's two axes carry identical ranged hockey sticks. -/
+theorem sum_Ioc_simplex_over_dim (d : ℕ) {m n : ℕ} (h : m ≤ n) :
+    simplexNumber m (d + 1) + ∑ k ∈ Finset.Ioc m n, simplexNumber k d
+      = simplexNumber n (d + 1) := by
+  have hsum : ∑ k ∈ Finset.Ioc m n, simplexNumber k d
+      = ∑ k ∈ Finset.Ioc m n, simplexNumber d k :=
+    Finset.sum_congr rfl fun k _ => simplexNumber_symm k d
+  rw [simplexNumber_symm m (d + 1), simplexNumber_symm n (d + 1), hsum]
+  exact sum_Ioc_simplex d h
+
 end TetrahedralNumberFormulaOQ01
 
