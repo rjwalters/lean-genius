@@ -595,6 +595,49 @@ theorem admissibleCoeff_ge_two_pow_sub (hV : 0 < Fintype.card V) (t : ℕ)
   have hk := admissibleCoeff_ge_two_pow_of_card hV (t - Fintype.card V - 1)
   rwa [show Fintype.card V + 1 + (t - Fintype.card V - 1) = t from by omega] at hk
 
+/-
+  §§ 5-7 above bound the coefficient `c(t) = ⌊2^{t-1}/|V|⌋` up to the unavoidable
+  truncated-division `±1` error (`admissibleCoeff_step_bracket`, `admissibleCoeff_bracket`).
+  That error vanishes *exactly* when `|V|` divides the threshold — i.e. when `|V|` is a
+  power of two.  In that case the floor is inert: the coefficient is a clean power of two
+  and doubles with no correction, exhibiting the sharpness of the `+1` slack in the step
+  bracket (it is attained only away from power-of-two ground sets).
+-/
+
+/-- **Exact coefficient for a power-of-two ground set.**  When `|V| = 2^j` with `j ≤ t-1`,
+    the divisor exactly divides the threshold `2^{t-1}`, so the floor in
+    `c(t) = ⌊2^{t-1}/|V|⌋` is inert and the coefficient is the clean power of two
+
+        `c(t) = 2^{t-1-j}`.
+
+    This is the exact special case of the "tracks the real density to within one vertex"
+    bracket `threshold_lt_succ_coeff_mul`: for power-of-two ground sets the one-vertex slack
+    is zero.  Proof: `2^{t-1} / 2^j = 2^{t-1-j}` by `Nat.pow_div`. -/
+theorem admissibleCoeff_eq_of_card_eq_two_pow {j : ℕ} (t : ℕ)
+    (hcard : Fintype.card V = 2 ^ j) (hj : j ≤ t - 1) :
+    firstMomentThreshold t / Fintype.card V = 2 ^ (t - 1 - j) := by
+  unfold firstMomentThreshold
+  rw [hcard, Nat.pow_div hj (by norm_num)]
+
+/-- **The coefficient doubles *exactly* for a power-of-two ground set.**  When `|V| = 2^j`
+    the truncated division loses nothing, so the "at least doubles / at most doubles + 1"
+    step bracket `admissibleCoeff_step_bracket` collapses to exact doubling:
+
+        `c(t+1) = 2·c(t)`      (for `t ≥ 1`, `j ≤ t-1`).
+
+    So the `+1` slack in `admissibleCoeff_step_bracket` / `admissibleCoeff_le_two_mul_succ`
+    is a genuine feature of non-power-of-two ground sets: it is contributed entirely by the
+    per-step remainder `2^{t-1} mod |V|`, which is `0` precisely when `|V| ∣ 2^{t-1}`.  Proof:
+    evaluate the exact value `admissibleCoeff_eq_of_card_eq_two_pow` at `t` and `t+1`. -/
+theorem admissibleCoeff_doubles_of_card_eq_two_pow {j : ℕ} (t : ℕ) (ht : 1 ≤ t)
+    (hcard : Fintype.card V = 2 ^ j) (hj : j ≤ t - 1) :
+    firstMomentThreshold (t + 1) / Fintype.card V
+      = 2 * (firstMomentThreshold t / Fintype.card V) := by
+  rw [admissibleCoeff_eq_of_card_eq_two_pow (t + 1) hcard (by omega),
+      admissibleCoeff_eq_of_card_eq_two_pow t hcard hj,
+      show t + 1 - 1 - j = (t - 1 - j) + 1 from by omega, pow_succ]
+  ring
+
 -- ══════════════════════════════════════════════════════════════════
 -- § 8: Monotonicity of the admissible coefficient in `t`
 -- ══════════════════════════════════════════════════════════════════
