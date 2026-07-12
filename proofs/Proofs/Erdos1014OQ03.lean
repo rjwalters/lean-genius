@@ -497,5 +497,56 @@ theorem log_increment_gap_tendsto (R : ℕ → ℝ) (L : ℝ) (m : ℕ) (hL : 0 
   rw [Real.log_pow] at hcont
   exact hcont
 
+/-! ## Reciprocal-sequence duality
+
+The increment–ratio bridge is stable under reciprocation.  The consecutive ratio
+of the reciprocal sequence `l ↦ (R l)⁻¹` is the reciprocal of that of `R`, and
+reciprocation fixes the limit `1`, so the borderline `o(R)` behavior transfers
+verbatim to the reciprocal (density-like) sequence `1/R`.  Applied to `R(k, ·)`,
+Erdős #1014's ratio-convergence `R(k,l+1)/R(k,l) → 1` yields not only
+`Δ_l(k) = o(R(k,l))` but also the dual statement that the reciprocal density
+`1/R(k,l)` has vanishing normalized increment. -/
+
+/-- The consecutive ratio of the reciprocal sequence `l ↦ (R l)⁻¹` is the
+reciprocal of the consecutive ratio of `R`.  Holds unconditionally (both sides
+are `0` when a denominator vanishes). -/
+theorem inv_ratio_eq (R : ℕ → ℝ) (l : ℕ) :
+    (R (l + 1))⁻¹ / (R l)⁻¹ = (R (l + 1) / R l)⁻¹ := by
+  rcases eq_or_ne (R l) 0 with h | h
+  · simp [h]
+  · rcases eq_or_ne (R (l + 1)) 0 with h2 | h2
+    · simp [h2]
+    · field_simp
+
+/-- **Reciprocal ratio convergence.** The consecutive ratio of `R` tends to `1`
+**iff** the consecutive ratio of the reciprocal sequence `l ↦ (R l)⁻¹` does —
+reciprocation is a self-inverse map continuous at, and fixing, the limit `1`. -/
+theorem reciprocal_ratio_tendsto_one_iff (R : ℕ → ℝ) :
+    Tendsto (fun l => (R (l + 1))⁻¹ / (R l)⁻¹) atTop (𝓝 1) ↔
+      Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1) := by
+  have heq : (fun l => (R (l + 1))⁻¹ / (R l)⁻¹)
+      =ᶠ[atTop] (fun l => (R (l + 1) / R l)⁻¹) :=
+    Eventually.of_forall (inv_ratio_eq R)
+  rw [tendsto_congr' heq]
+  constructor
+  · intro h; simpa using h.inv₀
+  · intro h; simpa using h.inv₀
+
+/-- **Reciprocal-increment duality.** For an eventually-nonzero sequence `R`, the
+normalized increment of the reciprocal sequence `l ↦ (R l)⁻¹` tends to `0` **iff**
+the consecutive ratio of `R` tends to `1`.
+
+The reciprocal companion of `increment_div_tendsto_zero_iff_ratio_tendsto_one`:
+applied to `R(k, ·)`, Erdős #1014's `R(k,l+1)/R(k,l) → 1` transfers to the
+reciprocal (density-like) sequence `1/R(k,l)`, whose increment is likewise
+`o(1/R(k,l))`. -/
+theorem reciprocal_increment_div_tendsto_zero_iff (R : ℕ → ℝ)
+    (hpos : ∀ᶠ l in atTop, R l ≠ 0) :
+    Tendsto (fun l => ((R (l + 1))⁻¹ - (R l)⁻¹) / (R l)⁻¹) atTop (𝓝 0) ↔
+      Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1) := by
+  have hinv : ∀ᶠ l in atTop, (R l)⁻¹ ≠ 0 := by
+    filter_upwards [hpos] with l hl using inv_ne_zero hl
+  rw [increment_div_tendsto_zero_iff_ratio_tendsto_one (fun l => (R l)⁻¹) hinv]
+  exact reciprocal_ratio_tendsto_one_iff R
 
 end Erdos1014OQ03
