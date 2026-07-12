@@ -147,8 +147,20 @@
     ]
   },
   "crossReferences": [
-    "stars-and-bars-weak-compositions-oq-01",
-    "stars-and-bars-weak-compositions-oq-03",
-    "stars-and-bars-weak-compositions-oq-02"
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-01",
+      "relationship": "extends",
+      "description": "Builds on this entry’s parent line: Generating-function view of weak compositions: ∑ₙ #(weak comps) Xⁿ = 1/(1−X)ᵏ. The present entry extends/refines that result."
+    },
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-03",
+      "relationship": "related",
+      "description": "Related result in the stars-and-bars / weak-compositions family: Stars-and-bars duality: weak ↔ positive compositions via an explicit ±1 bijection."
+    },
+    {
+      "targetId": "stars-and-bars-weak-compositions-oq-02",
+      "relationship": "related",
+      "description": "Related result in the stars-and-bars / weak-compositions family: Bounded-parts refinement of weak compositions via inclusion–exclusion."
+    }
   ]
 }
