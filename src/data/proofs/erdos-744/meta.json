@@ -56,12 +56,16 @@
       "complete_graph_edges theorem relating to binomial coefficients",
       "erdos_conjecture_false theorem: negation of the conjecture",
       "f_k_formula theorem: general formula via Rödl-Tuza",
-      "erdos_744_statement theorem: combined main result"
+      "erdos_744_statement theorem: combined main result",
+      "card_colorings_cut: for u ≠ v, exactly half of the 2^|V| two-colorings separate the edge {u,v} (2·|{c | c u ≠ c v}| = |all colorings|), proved by the involution that flips the color of u alone — a bijection between the separating and non-separating colorings.",
+      "two_mul_sum_bichromaticEdges: the Fubini/averaging identity 2·∑_c bichromaticEdges G c = edgeCount G · 2^|V|, obtained by swapping the sum over colorings with the sum over edges and applying the per-edge count.",
+      "edgeCount_le_two_mul_maxCut: Erdős's max-cut bound — every graph has a 2-coloring separating at least half of its edges (edgeCount G ≤ 2·maxCut G), by max ≥ average over all colorings; ℕ-valued with denominators cleared, axiom-free.",
+      "bipartitionNumber_le_maxCut: dual of the max-cut bound — at most half of the edges must be deleted to make G bipartite (bipartitionNumber G ≤ maxCut G), immediate from the bound and the complementarity bipartitionNumber + maxCut = edgeCount."
     ],
     "axiomCount": 1,
     "lineCount": 634,
     "assumptions": "1 axiom: rodl_tuza_theorem (the deep Rödl–Tuza 1985 result, stated as an assumption since a full formalization of the extremal argument is out of scope). The chromatic number is now defined intrinsically (least number of colors admitting a proper coloring) rather than axiomatized, and is proved well-defined by chromaticNumber_le_card. 0 sorries.",
-    "theoremCount": 14,
+    "theoremCount": 18,
     "definitionCount": 14
   },
   "overview": {
