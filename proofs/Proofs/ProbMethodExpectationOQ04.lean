@@ -492,4 +492,26 @@ theorem expectedMonoCliques_self (k : ℕ) :
   unfold expectedMonoCliques
   rw [Nat.choose_self, Nat.cast_one, one_mul]
 
+/-- **Canonical `zpow`-free rational form of the expected count.**
+`E(n,k) = (C(n,k)·2) / 2^{C(k,2)}` — the value-level companion of
+`expectedMonoCliques_lt_one_iff` (which compares the numerator to the denominator).
+Rewriting away the integer `zpow (1 − C(k,2))` into a plain `ℕ`-power quotient is the form
+every downstream numeric estimate or evaluation of `E` actually wants; the `< 1` iff is
+then just `div_lt_one` on this quotient. -/
+theorem expectedMonoCliques_eq_div (n k : ℕ) :
+    expectedMonoCliques n k = ((n.choose k : ℚ) * 2) / (2 : ℚ) ^ (k.choose 2) := by
+  unfold expectedMonoCliques
+  rw [sub_eq_add_neg, zpow_add₀ (by norm_num : (2 : ℚ) ≠ 0), zpow_one, zpow_neg,
+    zpow_natCast, div_eq_mul_inv]
+  ring
+
+/-- **The expected count is nonnegative** — the base fact recorded by the parent gallery
+lemma `expected_mono_cliques`, on which the whole first-moment argument rests: `E(n,k) ≥ 0`
+for all `n, k`. The `< 1` upper bounds sit *above* this floor; together they trap `E` in
+`[0, 1)` on the sub-threshold range, the exact window the probabilistic method exploits.
+The strict companion `0 < E ↔ k ≤ n` is `expectedMonoCliques_pos_iff`. -/
+theorem expectedMonoCliques_nonneg (n k : ℕ) : 0 ≤ expectedMonoCliques n k := by
+  unfold expectedMonoCliques
+  exact mul_nonneg (Nat.cast_nonneg _) (zpow_nonneg (by norm_num : (0 : ℚ) ≤ 2) _)
+
 end ProbMethod.ExpectationOQ04
