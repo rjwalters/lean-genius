@@ -101,6 +101,33 @@ theorem congruent_implies_similar {T₁ T₂ : Triangle}
     (h : Congruent T₁ T₂) : Similar T₁ T₂ :=
   ⟨1, one_pos, by simpa only [Congruent, one_mul] using h.symm⟩
 
+/-- **Similarity is reflexive.** Every triangle is similar to itself with ratio `k = 1`. -/
+theorem similar_refl (T : Triangle) : Similar T T :=
+  ⟨1, one_pos, by simp⟩
+
+/-- **Similarity is symmetric.** If `T₁ ~ T₂` with ratio `k`, then `T₂ ~ T₁` with the
+    reciprocal ratio `k⁻¹ > 0`: scaling the side-length multiset by `k⁻¹` inverts the
+    relation. -/
+theorem similar_symm {T₁ T₂ : Triangle} (h : Similar T₁ T₂) : Similar T₂ T₁ := by
+  obtain ⟨k, hk, hmul⟩ := h
+  have hk0 : k ≠ 0 := ne_of_gt hk
+  refine ⟨k⁻¹, by positivity, ?_⟩
+  have hmap := congrArg (Multiset.map (fun x : ℝ => k⁻¹ * x)) hmul
+  simpa [Multiset.map_coe, inv_mul_cancel_left₀ hk0] using hmap.symm
+
+/-- **Similarity is transitive.** If `T₁ ~ T₂` with ratio `k` and `T₂ ~ T₃` with ratio `j`,
+    then `T₁ ~ T₃` with the product ratio `j·k > 0`. Together with `similar_refl` and
+    `similar_symm` this makes `Similar` an equivalence relation, matching the
+    `congruent_refl / symm / trans` triple for `Congruent`. -/
+theorem similar_trans {T₁ T₂ T₃ : Triangle} (h₁ : Similar T₁ T₂) (h₂ : Similar T₂ T₃) :
+    Similar T₁ T₃ := by
+  obtain ⟨k, hk, hk2⟩ := h₁
+  obtain ⟨j, hj, hj2⟩ := h₂
+  refine ⟨j * k, by positivity, ?_⟩
+  have hmap := congrArg (Multiset.map (fun x : ℝ => j * x)) hk2
+  rw [hj2]
+  simpa [Multiset.map_coe, mul_assoc] using hmap
+
 /-
 ## Part III: Triangle Dissection
 
@@ -289,6 +316,15 @@ theorem three_dissectable : IsDissectable 3 := by
 def Conjecture_4k3_refined : Prop :=
   ∀ p : ℕ, p.Prime → p ≠ 3 → (∃ k : ℕ, p = 4 * k + 3) → ¬IsDissectable p
 
+/-- **The unrefined conjecture implies the refined one.** `Conjecture_4k3_refined` merely
+    adds the hypothesis `p ≠ 3`, so it is logically weaker: anything proving non-dissectability
+    for *all* primes of the form `4k+3` in particular proves it for those `≠ 3`. (The converse
+    fails precisely at `p = 3`, which `three_dissectable` shows *is* dissectable, so
+    `Conjecture_4k3` as stated is already false there — the refinement is the salvageable
+    form.) -/
+theorem conjecture_implies_refined (h : Conjecture_4k3) : Conjecture_4k3_refined :=
+  fun p hp _ hk => h p hp hk
+
 /-
 ## Part VII: Open Cases
 
@@ -327,9 +363,7 @@ def IsSimilarDissectable (n : ℕ) : Prop :=
 axiom soifer_theorem (n : ℕ) (hn : n ≥ 1) :
     n ≠ 2 → n ≠ 3 → n ≠ 5 → IsSimilarDissectable n
 
-/-- 2 is NOT similar-dissectable. -/
-/-- 3 is NOT similar-dissectable. -/
-/-- 5 is NOT similar-dissectable. -/
+/- 2, 3, 5 are NOT similar-dissectable (the Soifer exceptions). -/
 /-
 ## Part IX: Self-Similar Dissections
 
@@ -344,7 +378,7 @@ def IsSelfSimilarDissection (T : Triangle) (n : ℕ) (D : Dissection T n) : Prop
 def IsSelfSimilarDissectable (n : ℕ) : Prop :=
   ∃ T : Triangle, ∃ D : Dissection T n, IsSelfSimilarDissection T n D
 
-/-- **Snover-Waiveris-Williams Theorem**: Self-similar dissection requires
+/- **Snover-Waiveris-Williams Theorem**: Self-similar dissection requires
     n ∈ {k², k² + m², 3k²} for some k, m. -/
 /-
 ## Part X: Recent Progress
@@ -352,7 +386,8 @@ def IsSelfSimilarDissectable (n : ℕ) : Prop :=
 Zhang (2025) and other developments.
 -/
 
-/-- Zhang's condition: For a ≥ b ≥ 1, large n makes n²ab dissectable. -/
+/- Zhang's condition: For a ≥ b ≥ 1, large n makes n²ab dissectable. -/
+
 /-- The set of known dissectable values. -/
 def KnownDissectable : Set ℕ :=
   { n | (∃ k : ℕ, n = k^2) ∨
