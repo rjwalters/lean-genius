@@ -41,20 +41,40 @@
   },
   "sections": [
     {
+      "id": "exponent-swap-lemma",
       "title": "The exponent-swap lemma",
-      "content": "The headline lemma integral_sin_pow_mul_cos_pow_swap asserts ∫_0^{π/2} sinᵃθ cosᵇθ = ∫_0^{π/2} sinᵇθ cosᵃθ for a, b : ℕ. The proof applies intervalIntegral.integral_comp_sub_left with center π/2 and interval [0, π/2], which is fixed by the reflection (its endpoints map to π/2−π/2 = 0 and π/2−0 = π/2). The complementary-angle identities sin(π/2−θ)=cos θ and cos(π/2−θ)=sin θ rewrite the reflected integrand into cosᵃθ sinᵇθ, and one integral_congr with mul_comm transposes the factors onto the target."
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring, imports (Mathlib), opens (Real, intervalIntegral, MeasureTheory), namespace, then the headline lemma integral_sin_pow_mul_cos_pow_swap: ∫₀^{π/2} sinᵃθ cosᵇθ = ∫₀^{π/2} sinᵇθ cosᵃθ for a,b : ℕ, by the reflection θ ↦ π/2−θ (which fixes [0,π/2]) via intervalIntegral.integral_comp_sub_left and the complementary-angle identities.",
+      "content": "The headline lemma integral_sin_pow_mul_cos_pow_swap asserts ∫_0^{π/2} sinᵃθ cosᵇθ = ∫_0^{π/2} sinᵇθ cosᵃθ for a, b : ℕ. The proof applies intervalIntegral.integral_comp_sub_left with center π/2 and interval [0, π/2], which is fixed by the reflection (its endpoints map to π/2−π/2 = 0 and π/2−0 = π/2). The complementary-angle identities sin(π/2−θ)=cos θ and cos(π/2−θ)=sin θ rewrite the reflected integrand into cosᵃθ sinᵇθ, and one integral_congr with mul_comm transposes the factors onto the target.",
+      "mathContext": "$\\int_0^{\\pi/2}\\sin^a\\theta\\cos^b\\theta\\,d\\theta = \\int_0^{\\pi/2}\\sin^b\\theta\\cos^a\\theta\\,d\\theta$ via $\\theta\\mapsto\\tfrac{\\pi}{2}-\\theta$."
     },
     {
+      "id": "real-exponents-beta",
       "title": "Real exponents and the Beta function",
-      "content": "Because the reflection rewrites only the bases of the powers, the identical script proves integral_sin_rpow_mul_cos_rpow_swap for arbitrary real exponents (Real.rpow), with no positivity or integrability hypothesis. Instantiating the exponents at 2x−1 and 2y−1 yields integral_beta_trig_symm, the trigonometric form of Euler's Beta symmetry B(x,y)=B(y,x) — obtained without any Gamma-function machinery."
+      "startLine": 65,
+      "endLine": 94,
+      "summary": "integral_sin_rpow_mul_cos_rpow_swap: the same reflection proves the swap for arbitrary real exponents (Real.rpow), no positivity/integrability hypothesis. Instantiating at 2x−1, 2y−1 gives integral_beta_trig_symm, the trigonometric form of Euler's Beta symmetry B(x,y)=B(y,x) with no Gamma machinery.",
+      "content": "Because the reflection rewrites only the bases of the powers, the identical script proves integral_sin_rpow_mul_cos_rpow_swap for arbitrary real exponents (Real.rpow), with no positivity or integrability hypothesis. Instantiating the exponents at 2x−1 and 2y−1 yields integral_beta_trig_symm, the trigonometric form of Euler's Beta symmetry B(x,y)=B(y,x) — obtained without any Gamma-function machinery.",
+      "mathContext": "$B(x,y)=B(y,x)$ from $\\int_0^{\\pi/2}\\sin^{2x-1}\\theta\\cos^{2y-1}\\theta\\,d\\theta$ symmetry."
     },
     {
+      "id": "recovering-parent",
       "title": "Recovering the parent",
-      "content": "The natural-number lemma at a = 1 (with sin θ ^ 1 = sin θ, cos θ ^ 1 = cos θ) is the parent's single-power reflection identity ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ, re-proved here as integral_sin_mul_cos_pow_eq_reflect. This confirms the new statement strictly generalizes the parent and supplies the reusable bridge the open question asked for."
+      "startLine": 95,
+      "endLine": 108,
+      "summary": "integral_sin_mul_cos_pow_eq_reflect: the a=1 specialisation (sinθ^1=sinθ, cosθ^1=cosθ) recovers the parent's single-power reflection identity ∫ sinθ·cosᵐθ = ∫ cosθ·sinᵐθ, confirming this file strictly generalizes the parent and supplies the bridge the open question requested.",
+      "content": "The natural-number lemma at a = 1 (with sin θ ^ 1 = sin θ, cos θ ^ 1 = cos θ) is the parent's single-power reflection identity ∫ sin θ · cosᵐ θ = ∫ cos θ · sinᵐ θ, re-proved here as integral_sin_mul_cos_pow_eq_reflect. This confirms the new statement strictly generalizes the parent and supplies the reusable bridge the open question asked for.",
+      "mathContext": "$\\int_0^{\\pi/2}\\sin\\theta\\cos^m\\theta = \\int_0^{\\pi/2}\\cos\\theta\\sin^m\\theta$ (the $a=1$ case)."
     },
     {
+      "id": "scope-boundary",
       "title": "Scope and boundary",
-      "content": "This file isolates the symmetry content of the trigonometric power integrals. The complementary half — the evaluation of ∫ sin^{2x−1}θ cos^{2y−1}θ as a ratio of Gamma values, and the bridge to Mathlib's Real.betaIntegral via t = sin²θ — needs the Gamma recurrence and is left to the Beta/Gamma API, marking the boundary of the elementary reflection method."
+      "startLine": 109,
+      "endLine": 117,
+      "summary": "Closing cross-check (the diagonal a=b is fixed by the swap) and a scope note: this file isolates only the symmetry content; the complementary evaluation ∫ sin^{2x−1}θ cos^{2y−1}θ as a Gamma ratio (and the t=sin²θ bridge to Real.betaIntegral) needs the Gamma recurrence and is left to the Beta/Gamma API.",
+      "content": "This file isolates the symmetry content of the trigonometric power integrals. The complementary half — the evaluation of ∫ sin^{2x−1}θ cos^{2y−1}θ as a ratio of Gamma values, and the bridge to Mathlib's Real.betaIntegral via t = sin²θ — needs the Gamma recurrence and is left to the Beta/Gamma API, marking the boundary of the elementary reflection method.",
+      "mathContext": "Boundary: the Gamma-ratio evaluation and the $t=\\sin^2\\theta$ substitution to $B(x,y)$ are out of scope."
     }
   ],
   "crossReferences": [
