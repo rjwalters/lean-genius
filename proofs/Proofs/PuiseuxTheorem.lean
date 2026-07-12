@@ -1080,6 +1080,18 @@ theorem iSup_puiseuxRamificationSubring {K : Type*} [Ring K] :
   obtain ⟨n, hn⟩ := hx
   exact (le_iSup (puiseuxRamificationSubring K) n) hn
 
+/-- **The ramification subring tower is directed.** `n ↦ puiseuxRamificationSubring K n` is
+`Directed (· ≤ ·)`: any two levels `n, m` are dominated by `n*m` (both `n ∣ n*m` and `m ∣ n*m`,
+so `puiseuxRamificationSubring_mono` embeds each level into level `n*m`). This is the
+order-theoretic hypothesis that makes `iSup_puiseuxRamificationSubring` a *filtered* colimit of
+Laurent subrings rather than an arbitrary supremum — the ring-level companion of
+`directed_ramification_valueGroup`. -/
+theorem directed_puiseuxRamificationSubring {K : Type*} [Ring K] :
+    Directed (· ≤ ·) (puiseuxRamificationSubring K) := by
+  intro n m
+  exact ⟨n * m, puiseuxRamificationSubring_mono (dvd_mul_right n m),
+    puiseuxRamificationSubring_mono (dvd_mul_left m n)⟩
+
 end Filtration
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -1188,6 +1200,18 @@ theorem iSup_puiseuxRamificationSubfield {K : Type*} [Field K] :
   rw [mem_puiseuxSubfield] at hx
   obtain ⟨n, hn⟩ := hx
   exact (le_iSup (puiseuxRamificationSubfield K) n) hn
+
+/-- **The ramification subfield tower is directed.** `n ↦ puiseuxRamificationSubfield K n` is
+`Directed (· ≤ ·)`: any two levels `n, m` are dominated by `n*m` via
+`puiseuxRamificationSubfield_mono`. This is the directedness that makes
+`iSup_puiseuxRamificationSubfield` a *filtered* colimit of Laurent fields — the field-level
+companion of `directed_puiseuxRamificationSubring` and `directed_ramification_valueGroup`,
+completing the "colimit of Laurent fields `K((x^{1/n}))`" picture as a directed system. -/
+theorem directed_puiseuxRamificationSubfield {K : Type*} [Field K] :
+    Directed (· ≤ ·) (puiseuxRamificationSubfield K) := by
+  intro n m
+  exact ⟨n * m, puiseuxRamificationSubfield_mono (dvd_mul_right n m),
+    puiseuxRamificationSubfield_mono (dvd_mul_left m n)⟩
 
 end FieldFiltration
 
