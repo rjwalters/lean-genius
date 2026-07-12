@@ -213,6 +213,89 @@ theorem A_greater_infinite : A_greater.Infinite := by
 theorem A_less_and_A_greater_infinite : A_less.Infinite ∧ A_greater.Infinite :=
   ⟨glw_infinitely_many, A_greater_infinite⟩
 
+/- ## Sharper structure of A₊: prime powers
+
+`mem_A_greater_of_prime` shows every odd prime lies in `A₊`.  The same mechanism
+extends verbatim to *prime powers*, which is strictly stronger: for a prime power
+`n = p^j`,
+`φ(p^j) = p^(j-1)(p-1)`, so `n − φ(n) = p^j − p^(j-1)(p-1) = p^(j-1)`, and hence
+the comparison reduces to `φ(p^j) = p^(j-1)(p-1)` versus `φ(p^(j-1)) ≤ p^(j-1)`.
+Whenever `p − 1 ≥ 2` (i.e. `p ≥ 3`) this gives `φ(p^j) ≥ 2·p^(j-1) > p^(j-1)`,
+so `p^j ∈ A₊` for *every* exponent `j ≥ 1` — not merely `j = 1`.  Remarkably the
+even prime is not fully excluded: for `p = 2` the same bound works as soon as
+`j ≥ 2` (`n − φ(n) = 2^(j-1)` and `φ(2^(j-1)) = 2^(j-2) < 2^(j-1) = φ(2^j)`),
+giving a *second explicit family* `2^(k+2)` witnessing `A₊`'s infinitude —
+structurally parallel to the `15·2^(k+1)` family for `A₋`. -/
+
+/-- **Every odd prime power lies in `A₊`.**  Generalises `mem_A_greater_of_prime`
+    (the `j = 1` case) to arbitrary `p^j`, `j ≥ 1`, with `p` an odd prime:
+    `φ(p^j) = p^(j-1)(p-1) ≥ 2·p^(j-1) > p^(j-1) ≥ φ(p^(j-1)) = φ(p^j − φ(p^j))`. -/
+theorem mem_A_greater_of_odd_prime_pow {p : ℕ} (hp : p.Prime) (hodd : Odd p)
+    {j : ℕ} (hj : 1 ≤ j) : p ^ j ∈ A_greater := by
+  obtain ⟨m, rfl⟩ : ∃ m, j = m + 1 := ⟨j - 1, by omega⟩
+  -- an odd prime is at least 3
+  have hp3 : 3 ≤ p := by
+    rcases hodd with ⟨t, rfl⟩; have := hp.two_le; omega
+  -- φ(p^(m+1)) = p^m · (p − 1)
+  have hφ : Nat.totient (p ^ (m + 1)) = p ^ m * (p - 1) :=
+    Nat.totient_prime_pow_succ hp m
+  -- p^(m+1) = p^m·(p−1) + p^m, hence n − φ(n) = p^m
+  have hid : p ^ m * (p - 1) + p ^ m = p ^ (m + 1) := by
+    have hp1 : p - 1 + 1 = p := by omega
+    calc p ^ m * (p - 1) + p ^ m
+        = p ^ m * (p - 1 + 1) := by ring
+      _ = p ^ m * p := by rw [hp1]
+      _ = p ^ (m + 1) := by rw [pow_succ]
+  have hsub : p ^ (m + 1) - Nat.totient (p ^ (m + 1)) = p ^ m := by rw [hφ]; omega
+  -- φ(p^m) ≤ p^m < 2·p^m ≤ p^m·(p−1) = φ(p^(m+1))
+  have hlb : p ^ m * 2 ≤ p ^ m * (p - 1) := mul_le_mul_left' (by omega) (p ^ m)
+  have hle : Nat.totient (p ^ m) ≤ p ^ m := Nat.totient_le _
+  have hpm : 0 < p ^ m := pow_pos hp.pos m
+  show Nat.totient (p ^ (m + 1))
+      > Nat.totient (p ^ (m + 1) - Nat.totient (p ^ (m + 1)))
+  rw [hsub, hφ]
+  omega
+
+/-- **Every power `2^j` with `j ≥ 2` lies in `A₊`.**  The even-prime companion of
+    `mem_A_greater_of_odd_prime_pow`: `φ(2^j) = 2^(j-1)`, `2^j − φ(2^j) = 2^(j-1)`,
+    and `φ(2^(j-1)) = 2^(j-2) < 2^(j-1) = φ(2^j)`.  (`j = 1` fails: `2 ∈ A₌`.) -/
+theorem mem_A_greater_of_two_pow {j : ℕ} (hj : 2 ≤ j) : 2 ^ j ∈ A_greater := by
+  obtain ⟨m, rfl⟩ : ∃ m, j = m + 2 := ⟨j - 2, by omega⟩
+  -- φ(2^(m+2)) = 2^(m+1)
+  have hφ : Nat.totient (2 ^ (m + 2)) = 2 ^ (m + 1) := by
+    have h := Nat.totient_prime_pow_succ Nat.prime_two (m + 1)
+    simpa using h
+  -- φ(2^(m+1)) = 2^m
+  have hφ2 : Nat.totient (2 ^ (m + 1)) = 2 ^ m := by
+    have h := Nat.totient_prime_pow_succ Nat.prime_two m
+    simpa using h
+  -- 2^(m+2) = 2^(m+1) + 2^(m+1), so n − φ(n) = 2^(m+1)
+  have h2 : (2 : ℕ) ^ (m + 2) = 2 ^ (m + 1) + 2 ^ (m + 1) := by rw [pow_succ]; ring
+  have hsub : 2 ^ (m + 2) - Nat.totient (2 ^ (m + 2)) = 2 ^ (m + 1) := by rw [hφ]; omega
+  -- 2^(m+1) = 2^m + 2^m > 2^m = φ(n − φ(n))
+  have h3 : (2 : ℕ) ^ (m + 1) = 2 ^ m + 2 ^ m := by rw [pow_succ]; ring
+  have hpm : 0 < (2 : ℕ) ^ m := pow_pos (by norm_num) m
+  show Nat.totient (2 ^ (m + 2))
+      > Nat.totient (2 ^ (m + 2) - Nat.totient (2 ^ (m + 2)))
+  rw [hsub, hφ, hφ2]
+  omega
+
+/-- The map `k ↦ 2^(k+2)` is injective. -/
+theorem two_pow_witness_injective : Function.Injective (fun k : ℕ => 2 ^ (k + 2)) := by
+  intro a b hab
+  simp only at hab
+  have := Nat.pow_right_injective (le_refl 2) hab
+  omega
+
+/-- **`A₊` is infinite via powers of two (axiom-free).**  A second explicit
+    witness family for `A₊`'s infinitude, independent of the odd-prime family in
+    `A_greater_infinite`: every `2^(k+2)` lies in `A₊` and `k ↦ 2^(k+2)` is
+    injective.  This mirrors `glw_infinitely_many`'s `15·2^(k+1)` family for `A₋`,
+    so *each* comparison set has a clean powers-of-two-based explicit witness. -/
+theorem A_greater_infinite_via_two_pow : A_greater.Infinite :=
+  Set.infinite_of_injective_forall_mem two_pow_witness_injective
+    (fun k => mem_A_greater_of_two_pow (Nat.le_add_left 2 k))
+
 /- ## The Pattern: 15 · 2^k ∈ A_less
 
 For n = 15 · 2^k, we have φ(n) < φ(n - φ(n)).

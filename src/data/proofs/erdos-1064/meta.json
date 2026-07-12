@@ -43,10 +43,12 @@
       "Formal statement of both parts of Erdős Problem 1064",
       "Explicit counterexamples (30, 60, 66) verified computationally",
       "The pattern 15·2^k for the reverse inequality",
-      "Generalized statement for f(n) = o(n)"
+      "Generalized statement for f(n) = o(n)",
+      "Prime-power sharpening of A₊: every odd prime power p^j (j≥1) lies in A₊, generalizing the odd-prime case",
+      "A second axiom-free witness family for A₊'s infinitude: every 2^(k+2) lies in A₊ (powers of two), mirroring the 15·2^k family for A₋"
     ],
     "axiomCount": 1,
-    "lineCount": 182,
+    "lineCount": 306,
     "prerequisites": [
       "Euler's totient function φ(n) and its multiplicativity",
       "Natural density of subsets of ℕ",
@@ -54,7 +56,7 @@
       "Prime factorization and coprimality"
     ],
     "assumptions": "1 axiom: lucaPomerance_density_one (the density-1 result of Luca-Pomerance 2002, requiring analytic number theory). The former glw_infinitely_many axiom (Grytczuk-Luca-Wojtowicz 2001, infinitely many n with phi(n) < phi(n-phi(n))) is now constructively PROVED via the explicit family n = 15*2^(k+1). Concrete illustrative examples use native_decide (Lean.ofReduceBool). See Lean source for complete statements.",
-    "theoremCount": 4,
+    "theoremCount": 11,
     "definitionCount": 4
   },
   "overview": {
@@ -193,9 +195,9 @@
       "Nat"
     ],
     "namespace": "Erdos1064",
-    "lineCount": 223,
+    "lineCount": 306,
     "axiomCount": 1,
-    "theoremCount": 7,
+    "theoremCount": 11,
     "definitionCount": 4,
     "path": "Proofs/Erdos1064Problem.lean",
     "sorries": 0
