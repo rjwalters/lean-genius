@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-one-le-gap",
+    "proofId": "erdos-220-incomplete-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Every Reduced-Residue Gap is at Least 1",
+    "content": "one_le_gap shows that for any modulus n ≥ 2 and index k with k+1 < φ(n), the gap gap n hn k = E n hn (k+1) − E n hn k is ≥ 1. After unfolding gap and E and discharging the two dif_pos branches, the two enumerated residues are the values of the strictly monotone order embedding Finset.orderEmbOfFin at ⟨k, _⟩ and ⟨k+1, _⟩; its strictMono gives a strict ℕ inequality, hence a ≥ +1 gap, which casts to the reals. This lemma is modulus-agnostic — it uses no primality — and is the sole ingredient that later pins the prime gaps to exactly 1.",
+    "mathContext": "$a_{k+1} - a_k \\ge 1$ because $a_{k+1} > a_k$ are distinct naturals (the enumeration is strictly increasing).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.orderEmbOfFin",
+      "strict monotonicity",
+      "order embedding",
+      "reduced residue enumeration"
+    ],
+    "prerequisites": [
+      "OrderEmbedding.strictMono",
+      "Nat cast into ℝ"
+    ]
+  },
+  {
+    "id": "ann-gap-prime-eq-one",
+    "proofId": "erdos-220-incomplete-01-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "Every Prime Gap Equals Exactly 1 (Zero-Sum-of-Nonnegatives)",
+    "content": "gap_prime_eq_one is the heart of the entry. Rather than compute the enumeration index-by-index, it observes: (i) each gapⱼ − 1 ≥ 0 on range (φ(p) − 1) by one_le_gap; (ii) their sum is (∑ gapⱼ) − (p − 2) = 0, using the sibling's telescoping identity sum_gaps (∑ gapⱼ = n − 2) together with φ(p) = p − 1 so the number of terms is p − 2; (iii) Finset.sum_eq_zero_iff_of_nonneg then forces every term gapⱼ − 1 to be 0, i.e. gapⱼ = 1. This is precisely the equality case of Cauchy–Schwarz phrased combinatorially: nonnegative deviations from the mean that sum to zero must all vanish.",
+    "mathContext": "$\\sum_j (g_j - 1) = \\big(\\sum_j g_j\\big) - (p-2) = 0$ with $g_j \\ge 1 \\Rightarrow g_j = 1\\ \\forall j$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum_eq_zero_iff_of_nonneg",
+      "telescoping sum",
+      "Cauchy–Schwarz equality case",
+      "constant sequence"
+    ],
+    "prerequisites": [
+      "Erdos220OQ01.sum_gaps",
+      "Nat.totient_prime",
+      "Finset.sum_sub_distrib"
+    ]
+  },
+  {
+    "id": "ann-sumsq-gaps-prime",
+    "proofId": "erdos-220-incomplete-01-oq-01",
+    "range": {
+      "startLine": 134,
+      "endLine": 142
+    },
+    "type": "theorem",
+    "title": "The General Prime Squared-Gap Identity ∑gaps² = p − 2",
+    "content": "sumSq_gaps_prime is the entry's main result: for every prime p, ∑_{k < φ(p)−1} (gap p hn k)² = p − 2. The proof rewrites the sum of squares to a plain sum via a Finset.sum_congr that replaces each (gapₖ)² by gapₖ — legitimate because gap_prime_eq_one gives gapₖ = 1 and 1² = 1 — and then applies the sibling's telescoping sum_gaps. This generalizes the companion entry's sumSq_gaps_seven (the single value 5 = 7 − 2, checked on a hard-coded list) to a statement uniform in p, stated about the genuine strictly-increasing reduced-residue enumeration.",
+    "mathContext": "$g_k = 1 \\Rightarrow g_k^2 = g_k \\Rightarrow \\sum_k g_k^2 = \\sum_k g_k = p - 2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "reduced residues",
+      "squared gap sum",
+      "Erdős #220",
+      "Finset.sum_congr"
+    ],
+    "prerequisites": [
+      "gap_prime_eq_one",
+      "Erdos220OQ01.sum_gaps"
+    ]
+  },
+  {
+    "id": "ann-cauchy-schwarz-equality",
+    "proofId": "erdos-220-incomplete-01-oq-01",
+    "range": {
+      "startLine": 148,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "Primes are the Cauchy–Schwarz Equality Case",
+    "content": "cauchy_schwarz_equality_prime shows the sibling's product-form lower bound sq_le_card_mul_sumSq, which reads (p−2)² ≤ (φ(p)−1)·∑gap² for every n, becomes an EQUALITY at every prime: (p−2)² = (φ(p)−1)·∑gap². Substituting sumSq_gaps_prime (∑gap² = p−2) and card_gaps_prime (φ(p)−1 = p−2 as a real) reduces the claim to (p−2)² = (p−2)·(p−2), closed by ring. Conceptually: Cauchy–Schwarz ∑gᵢ² ≥ (∑gᵢ)²/m is an equality exactly when the gᵢ are constant, and for primes the gap sequence is the constant 1,1,…,1 — so primes are precisely where Erdős #220's elementary lower bound is sharp.",
+    "mathContext": "Equality in $\\big(\\sum g_i\\big)^2 \\le m \\sum g_i^2$ holds iff all $g_i$ are equal; for primes $g_i \\equiv 1$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Cauchy–Schwarz inequality",
+      "equality case",
+      "Erdos220OQ01.sq_le_card_mul_sumSq",
+      "sharp bound"
+    ],
+    "prerequisites": [
+      "sumSq_gaps_prime",
+      "card_gaps_prime"
+    ]
+  },
+  {
+    "id": "ann-p7-sanity",
+    "proofId": "erdos-220-incomplete-01-oq-01",
+    "range": {
+      "startLine": 156,
+      "endLine": 160
+    },
+    "type": "example",
+    "title": "Sanity Check: p = 7 Reproduces the Companion's Value 5",
+    "content": "The closing example specializes sumSq_gaps_prime to p = 7, obtaining ∑ (gap 7 _ k)² = 7 − 2 = 5 — the exact value the companion entry erdos-220-incomplete-01 verified by decide on the explicit gap list [1,1,1,1,1]. This confirms the general theorem agrees with the hand-checked instance while being proved uniformly for all primes, not by enumeration.",
+    "mathContext": "$\\varphi(7) - 1 = 5$ gaps, all equal $1$, so $\\sum g_k^2 = 5 = 7 - 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consistency check",
+      "erdos-220-incomplete-01",
+      "specialization"
+    ],
+    "prerequisites": [
+      "sumSq_gaps_prime"
+    ]
+  }
+]
