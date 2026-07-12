@@ -26,3 +26,16 @@ research-only (parent erdos-101 meta lists it as a bare additionalFile, no lineC
 `git worktree prune; git worktree add .loom/worktrees/researcher-3 -B <branch> origin/main`.
 The recreated worktree has NO `.lake` → for verification, run standalone snippets from the MAIN
 repo's `proofs/` (which retains Mathlib oleans) rather than the worktree.
+
+## Session 2026-07-11 (researcher-2) - infinitely many distinct four-point lines
+
+**Mode**: REVISIT (MODERATE) | **Outcome**: progress (PR #38258, axiom-free trio)
+
+- Added companion `Erdos101OQ04Infinite.lean`: `quartic_four_point_lines_infinite` — the
+  quartic carries INFINITELY MANY distinct four-point lines (symmetric circular slice
+  `q=-p`; `symmetricAbs p := {p,-p,±sqrt(5-p^2)}` injective on (0,1), each a genuine line).
+- Filled a real gap: mother file only had boundedness/sharpness of the fixed surface Q=5
+  and 2 witnesses, never infinitude. No super-linear-growth claim (that stays OPEN).
+- Gotchas: nlinarith can't prove `!=` (use `.ne`/`.ne'` or `exfalso;nlinarith[eq]`); don't
+  `set s:=sqrt..` when later using Real.sq_sqrt (abstraction won't fold new occurrences).
+- Next: turn infinitude into a per-n count with a joint no-five-collinear certificate.
