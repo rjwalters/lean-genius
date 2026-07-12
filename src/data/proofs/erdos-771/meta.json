@@ -76,12 +76,14 @@
       "m_eq_one_case (proved), m_eq_two_case (proved): special cases",
       "smallPrimeConstruction: practical construction via Nat.minFac",
       "IsSumFree, sum_free_upper_bound (unformalized): comparison with sum-free sets",
-      "erdos_771, erdos_771_main, erdos_771_solved: main theorem statements"
+      "erdos_771, erdos_771_main, erdos_771_solved: main theorem statements",
+      "subsetSums_mono / avoidSum_subset: subset sums are monotone under inclusion (T ⊆ S ⟹ subsetSums T ⊆ subsetSums S), so AvoidSum is HEREDITARY to subsets (S avoids m ⟹ every T ⊆ S avoids m) — the structural reason maxAvoidingSize is a genuine maximum. Axiom-free.",
+      "avoidSum_zero / maxAvoidingSize_zero: the degenerate small-target endpoint. Since 0 is never a positive subset sum, every set avoids 0 (avoidSum_zero), so the whole box {1,…,n} witnesses maxAvoidingSize n 0 = n. This coincides with the large-target value maxAvoidingSize_eq_of_lt (n·n < m ⟹ = n): the extremal size is n at BOTH ends of the target range and dips only in the interior. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "axiomCount": 2,
-    "lineCount": 645,
+    "lineCount": 691,
     "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 0 sorries.",
-    "theoremCount": 30,
+    "theoremCount": 34,
     "definitionCount": 16,
     "additionalFiles": [
       "Proofs/Erdos771Aristotle.lean",
@@ -214,9 +216,9 @@
       "Nat"
     ],
     "namespace": "Erdos771",
-    "lineCount": 645,
+    "lineCount": 691,
     "axiomCount": 2,
-    "theoremCount": 30,
+    "theoremCount": 34,
     "definitionCount": 16,
     "sorries": 0,
     "path": "Proofs/Erdos771Problem.lean",

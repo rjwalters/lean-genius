@@ -110,6 +110,34 @@ theorem self_mem_subsetSums (S : Finset ℕ) (a : ℕ) (ha : a ∈ S) (hpos : 0 
   · rw [Finset.mem_powerset]; simpa using ha
   · simp
 
+/-- **Subset sums are monotone under inclusion.** If `T ⊆ S` then every subset sum of `T`
+    is a subset sum of `S`: `subsetSums T ⊆ subsetSums S`.  A subset `A ⊆ T` is also a
+    subset `A ⊆ S`, so its sum survives into `subsetSums S`. -/
+theorem subsetSums_mono {S T : Finset ℕ} (h : T ⊆ S) : subsetSums T ⊆ subsetSums S := by
+  intro x hx
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hx ⊢
+  obtain ⟨⟨A, hA, hAsum⟩, hpos⟩ := hx
+  rw [Finset.mem_powerset] at hA
+  exact ⟨⟨A, Finset.mem_powerset.mpr (hA.trans h), hAsum⟩, hpos⟩
+
+/-- **Avoidance is hereditary to subsets.** If `S` avoids the sum `m` then so does every
+    subset `T ⊆ S`: fewer elements can only remove subset sums, never create the target `m`.
+    Contrapositive of `subsetSums_mono`.  This is the structural reason `maxAvoidingSize` is
+    a genuine maximum — any avoiding set stays avoiding when trimmed — and complements the
+    ambient-box monotonicity `maxAvoidingSize_monotone`. -/
+theorem avoidSum_subset {S T : Finset ℕ} (h : T ⊆ S) (m : ℕ) (hS : AvoidSum S m) :
+    AvoidSum T m :=
+  fun hmem => hS (subsetSums_mono h hmem)
+
+/-- **Every set avoids the sum `0`.**  The target `0` is never a *positive* subset sum
+    (`subsetSums` filters out `0`), so `AvoidSum S 0` holds vacuously for every `S`.  This is
+    the degenerate base of the avoidance theory, dual to the large-target regime
+    `avoid_full` (`n·n < m`): both endpoints of the target range are trivially avoidable. -/
+theorem avoidSum_zero (S : Finset ℕ) : AvoidSum S 0 := by
+  intro hmem
+  rw [subsetSums, Finset.mem_filter] at hmem
+  exact absurd hmem.2 (lt_irrefl 0)
+
 /-- Every avoiding subset of `{1,…,n}` has size at most `n`. -/
 theorem maxAvoidingSize_le (n m : ℕ) : maxAvoidingSize n m ≤ n := by
   classical
@@ -263,6 +291,24 @@ theorem maxAvoidingSize_one (n : ℕ) : maxAvoidingSize n 1 = n - 1 := by
       intro a ha
       rw [Finset.mem_Icc] at ha
       omega
+
+/-- **Exact value at the target `m = 0`: `maxAvoidingSize n 0 = n`.**  Since `0` is never a
+    positive subset sum (`avoidSum_zero`), *every* subset of `{1,…,n}` avoids it, so the whole
+    box `{1,…,n}` is an avoiding witness of the maximal size `n`.  This is the degenerate
+    small-target endpoint of `maxAvoidingSize`, sitting one step below `maxAvoidingSize_one`
+    (`= n-1`), and it coincides with the large-target value `maxAvoidingSize_eq_of_lt`
+    (`n·n < m ⟹ = n`): the extremal size is `n` at *both* ends of the target range and dips
+    only in the interior where the sum obstruction bites. -/
+theorem maxAvoidingSize_zero (n : ℕ) : maxAvoidingSize n 0 = n := by
+  classical
+  refine le_antisymm (maxAvoidingSize_le n 0) ?_
+  unfold maxAvoidingSize
+  have hmem : Icc_n n ∈
+      (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 0) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.Subset.refl _, avoidSum_zero _⟩
+  calc n = (Icc_n n).card := by rw [Icc_n, Nat.card_Icc]; omega
+    _ ≤ _ := Finset.le_sup hmem
 
 /-- f(n) is the largest k satisfying f_property. -/
 theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
