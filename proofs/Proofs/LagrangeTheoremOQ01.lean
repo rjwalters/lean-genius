@@ -102,6 +102,29 @@ theorem sylow_count_dvd_card (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
     Nat.card (Sylow p G) ∣ Nat.card G :=
   P.card_dvd_index.trans P.toSubgroup.index_dvd_card
 
+/-- **The index of a Sylow p-subgroup equals `|G| / p^k`** where `p^k ‖ |G|`.
+    Since `|P| = p^(vₚ|G|)` is the full p-power dividing `|G|` (`sylow_card_eq`),
+    Lagrange `|G| = |P|·[G:P]` (`lagrange_index`) gives `[G:P] = |G| / p^(vₚ|G|)`.
+    This identifies the abstract index with the concrete "p-free part" `|G|/p^k`
+    appearing in the classical statement of the Third Sylow Theorem. -/
+theorem sylow_index_eq_card_div_pow (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
+    P.toSubgroup.index = Nat.card G / p ^ (Nat.card G).factorization p := by
+  have hlag : Nat.card G
+      = p ^ (Nat.card G).factorization p * P.toSubgroup.index := by
+    rw [← sylow_card_eq p P]; exact lagrange_index P.toSubgroup
+  have hb : 0 < p ^ (Nat.card G).factorization p := pow_pos hp.out.pos _
+  exact (Nat.div_eq_of_eq_mul_right hb hlag).symm
+
+/-- **Sharp Third Sylow Theorem, `n_p ∣ |G|/p^k`.**  The classical divisibility stated in
+    the file header (`n_p ∣ |G|/p^k`): the number of Sylow p-subgroups divides the p-free
+    part `|G|/p^k` of the group order.  Combine `sylow_count_dvd_index` (`n_p ∣ [G:P]`) with
+    the identification `[G:P] = |G|/p^k` (`sylow_index_eq_card_div_pow`).  Strictly sharper
+    than `sylow_count_dvd_card` (`n_p ∣ |G|`), which discards the `p^k` factor. -/
+theorem sylow_count_dvd_card_div_pow (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
+    Nat.card (Sylow p G) ∣ Nat.card G / p ^ (Nat.card G).factorization p := by
+  rw [← sylow_index_eq_card_div_pow p P]
+  exact sylow_count_dvd_index p P
+
 /-- The number of Sylow p-subgroups is congruent to 1 mod p. -/
 theorem sylow_count_mod_p (p : ℕ) [hp : Fact p.Prime] :
     Nat.card (Sylow p G) % p = 1 := by
@@ -284,6 +307,18 @@ theorem sylow_q_normal_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
     have hmod := sylow_count_mod_p (G := G) q
     rw [hpeq, Nat.mod_eq_of_lt hpq] at hmod
     exact hp.one_lt.ne' hmod
+
+/-- **The Sylow q-subgroup of a group of order `p·q` is unique** (`n_q = 1`), `p < q`
+    prime.  Immediate from its normality (`sylow_q_normal_of_card_eq_pq`) via the normality
+    criterion (`sylow_normal_iff_card_eq_one`): a normal Sylow subgroup is the only one.
+    This is the counting-level shadow of the structural non-simplicity result, and the exact
+    input (`n_q = 1`) used when classifying groups of order `p·q`. -/
+theorem card_sylow_q_eq_one_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : p < q) (Q : Sylow q G) (hG : Nat.card G = p * q) :
+    Nat.card (Sylow q G) = 1 := by
+  haveI : Fact q.Prime := ⟨hq⟩
+  exact (sylow_normal_iff_card_eq_one q Q).mp
+    (sylow_q_normal_of_card_eq_pq p q hp hq hpq Q hG)
 
 /-- **Every group of order `p·q` (with `p < q` prime) has a normal subgroup of order
     `q`.** Existence form of `sylow_q_normal_of_card_eq_pq`: rather than assume a Sylow
