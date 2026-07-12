@@ -68,21 +68,24 @@
       "title": "Problem Statement and the Cube-Root Identity",
       "summary": "Module docstring framing OQ-03 (the k=3 threshold and the expected-count balance), and cubeRoot_cube: (x³)^(1/3) = x for x ≥ 0 via Real.pow_rpow_inv_natCast",
       "startLine": 1,
-      "endLine": 49
+      "endLine": 49,
+      "mathContext": "$(x^3)^{1/3} = x$ for $x \\ge 0$; the expected-triple balance $\\binom{n}{3}/d^2 = \\ln 2$ gives $n(n-1)(n-2) = 6d^2\\ln 2$."
     },
     {
       "id": "threshold",
       "title": "The Threshold Sandwich",
       "summary": "birthday_triple_threshold: (6d²ln2)^(1/3) ≤ n ≤ (6d²ln2)^(1/3) + 2 from L ≤ n³ and (n-2)³ ≤ L via cube-root monotonicity",
       "startLine": 50,
-      "endLine": 84
+      "endLine": 84,
+      "mathContext": "With $L = 6d^2\\ln 2$: $(n-2)^3 \\le n(n-1)(n-2) = L \\le n^3$, so taking cube roots (monotone on $[0,\\infty)$) gives $L^{1/3} \\le n \\le L^{1/3} + 2$."
     },
     {
       "id": "gap",
       "title": "Packaged Threshold Gap",
       "summary": "birthday_triple_threshold_gap: |n − (6d²ln2)^(1/3)| ≤ 2",
       "startLine": 85,
-      "endLine": 116
+      "endLine": 116,
+      "mathContext": "$\\bigl|\\,n - (6d^2\\ln 2)^{1/3}\\,\\bigr| \\le 2$ — the two-sided band repackaged as an absolute-error bound, i.e. $n = (6d^2\\ln 2)^{1/3} + O(1)$."
     }
   ],
   "conclusion": {
