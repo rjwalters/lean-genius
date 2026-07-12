@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (iteration 9, PR #38239, VERIFIED axiom-free): Part XI certificate uniqueness/completeness. affValid_unique + affValid_eq_deriveVec discharge the standing nextStep (deriveVec is the ONLY parity vector consistent with the orbit over its window). Placed in companion module CollatzStructuredOQ02OQ03CertUnique.lean because mother file is at kernel memory ceiling. 0 new axioms.",
+    "progressSummary": "PROGRESS (iteration 10, researcher-1 2026-07-12, VERIFIED axiom-free): Part XI extended with the PREFIX/maximality direction of certificate uniqueness (the standing harder nextStep). affValid_isPrefix — a shorter valid certificate for a class (c,d) is a PREFIX of any longer valid certificate for the same class (upgrades affValid_unique from equal-length to arbitrary length: each bit v[i] is pinned to orbit parity collatz^[i] d %2 via Part VIII at m=0, independent of length, so the valid certificates for a fixed class form a CHAIN under the prefix order — the forced window grows monotonically, never branches). affValid_prefix_deriveVec — every valid certificate of length ≤ deriveVec length is a prefix of the canonical deriveVec output, so deriveVec is the MAXIMAL element of that prefix chain. Both in companion module CollatzStructuredOQ02OQ03CertUnique.lean (mother file at kernel memory ceiling); depend only on [propext, Quot.sound] — independent of tao_2019. 0 new axioms.",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -77,13 +77,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Mechanize certificate GENERATION: a tactic/decision procedure that, given a residue r mod 2^b, computes the forced parity vector v and AffValid certificate automatically (currently v and the AffValid chain are supplied by hand). This would let parityVector_attainsBelow discharge any residue-determined class fully automatically and could batch-prove the stable classes at a new level.",
-      "Refactor the existing mod32/mod128 hand chases (lines ~282-423) to route through affOrbit_realize via certificates, deleting the iterate_succ_apply' boilerplate (engine now exists; left untouched this iteration to minimize build surface).",
-      "Tao axiom genuinely blocked (deep analytic, >>1000 lines).",
-      "Combine attainsBelow_density_of_residues with the decidable dropCert engine: define goodResidues M = (range M).filter (dropCert-based predicate) and prove its card lower-bounds the density automatically — turning ANY new level into zero new proof.",
-      "Attempt the unconditional density→1 (Terras/Korec) as the real milestone toward tao_2019, rather than adding more finite residue levels (which is enumeration theater).",
-      "With parity forcing in place (affValid_orbit_parity), the natural strengthening is a UNIQUENESS/COMPLETENESS statement: deriveVec produces the ONLY parity vector consistent with the orbit over its window (the forced window is maximal), i.e. any AffValid v (2^b) r has v a prefix of deriveVec's output. This would characterize residue-determined windows exactly rather than merely certifying particular ones.",
-      "Prefix/maximality direction of uniqueness: any AffValid v (2^b) r (of ANY length, not just the derived length) is a PREFIX of deriveVec output — requires reasoning that deriveVec produces the maximal forced window. Harder than equal-length uniqueness (which is done)."
+      "Maximality of deriveVec length: prove deriveVec produces the FULL forced window (no valid certificate is strictly longer than deriveVec unless the class is not residue-determined), completing the exact characterization begun by affValid_prefix_deriveVec.",
+      "Mechanize certificate GENERATION: a tactic/decision procedure computing the forced parity vector v and AffValid certificate from a residue r mod 2^b automatically.",
+      "Attempt the unconditional density→1 (Terras/Korec) as the real milestone toward tao_2019, rather than adding more finite residue levels (enumeration theater).",
+      "Tao axiom genuinely blocked (deep analytic, >>1000 lines)."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
