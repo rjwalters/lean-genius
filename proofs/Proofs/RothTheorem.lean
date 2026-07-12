@@ -2924,5 +2924,67 @@ theorem sqGaussSum_normSq_sum_le_sqrt {N : ℕ} [NeZero N] :
         mul_le_mul_of_nonneg_left hcast (Nat.cast_nonneg N)
     _ = 4 * (N : ℝ) ^ 2 * Nat.sqrt N := by push_cast; ring
 
+/-! ### Part XVII — Exact second moment at a prime modulus: the L² direction is capped
+
+Parts XV–XVI drive the composite-`N` circle-method error through an *upper* bound
+on the second moment `Σ_{r≠0} ‖G(r)‖²` (culminating in `≤ 4N²⌊√N⌋`).  A natural
+hope is that this second moment is `o(N²)`, which would push the L²-averaged
+density bound `sqDiffFree_density_bound_l2` down to the `o(N)` Sárközy density.
+
+This subsection proves that hope is **false**: at an odd-prime modulus the second
+moment is computed *exactly* and equals `N² − N = Θ(N²)`.  So the L²-averaged
+direction can never reach `o(N²)`, and the per-frequency `√N` cancellation it
+averages away must instead be used *pointwise* — exactly what
+`sqDiffFree_density_bound_of_prime` does.  This is an honest cap on Parts XV–XVI,
+not a further tightening of them.
+-/
+
+/-- **Exact second moment at an odd-prime modulus (Plancherel identity).**
+For `N` an odd prime, `ZMod N` is a field, so every nonzero frequency `r` is a
+unit and `2r` is a unit (`2` is a unit mod an odd prime).  Hence `‖G(r)‖² = N`
+*exactly* at each of the `N − 1` nonzero frequencies:
+
+    Σ_{r≠0} ‖G(r)‖² = (N − 1)·N = N² − N.
+
+This is an exact equality — simultaneously an upper *and a lower* bound — so it
+shows the `o(N²)` second-moment target implicit in the L²-averaged circle method
+(Parts XV–XVI) is unreachable: the second moment is `Θ(N²)`, never `o(N²)`. -/
+theorem sqGaussSum_normSq_sum_eq_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2) :
+    (Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2) = (N : ℝ) ^ 2 - N := by
+  haveI := Fact.mk hp
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hmod : N % 2 = 1 := Nat.odd_iff.mp (hp.odd_of_ne_two hN2)
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have hconst : ∀ r ∈ (Finset.univ \ {(0 : ZMod N)}), ‖sqGaussSum r‖ ^ 2 = (N : ℝ) := by
+    intro r hr
+    have hr0 : r ≠ 0 := Finset.notMem_singleton.mp (Finset.mem_sdiff.mp hr).2
+    exact sqGaussSum_normSq_eq_of_isUnit (h2.mul (isUnit_iff_ne_zero.mpr hr0))
+  have hcard : (Finset.univ \ {(0 : ZMod N)}).card = N - 1 := by
+    rw [Finset.card_sdiff, Finset.inter_univ, Finset.card_univ, Finset.card_singleton,
+      ZMod.card]
+  rw [Finset.sum_congr rfl hconst, Finset.sum_const, hcard, nsmul_eq_mul]
+  have hN1 : 1 ≤ N := hp.pos
+  rw [Nat.cast_sub hN1]
+  push_cast
+  ring
+
+/-- **The L²-averaged minor-arc factor does not decay (prime modulus).**
+`√(Σ_{r≠0} ‖G(r)‖²) ≥ N − 1`, so the second-moment input to the L²-averaged
+density bound `sqDiffFree_density_bound_l2` is `Θ(N)` at a prime modulus and
+cannot furnish the `o(N)` Sárközy density on its own — only the pointwise `√N`
+magnitude (`sqDiffFree_density_bound_of_prime`) can. -/
+theorem sqGaussSum_l2_factor_ge_of_prime {N : ℕ} [NeZero N] (hp : N.Prime) (hN2 : N ≠ 2) :
+    (N : ℝ) - 1 ≤
+      Real.sqrt ((Finset.univ \ {(0 : ZMod N)}).sum (fun r => ‖sqGaussSum r‖ ^ 2)) := by
+  rw [sqGaussSum_normSq_sum_eq_of_prime hp hN2]
+  have hN1 : (1 : ℝ) ≤ N := by exact_mod_cast hp.pos
+  have h0 : (0 : ℝ) ≤ (N : ℝ) - 1 := by linarith
+  have hsq : ((N : ℝ) - 1) ^ 2 ≤ (N : ℝ) ^ 2 - N := by nlinarith
+  calc (N : ℝ) - 1 = Real.sqrt (((N : ℝ) - 1) ^ 2) := (Real.sqrt_sq h0).symm
+    _ ≤ Real.sqrt ((N : ℝ) ^ 2 - N) := Real.sqrt_le_sqrt hsq
+
 end Szemeredi.Roth
 
