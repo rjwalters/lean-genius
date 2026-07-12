@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T11:03:20-07:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Landed the second-moment identity + discrete Chebyshev tail (0-axiom) toward discharging anticoncentration_bound.",
     "blockers": [],
-    "nextAction": "Parity-aware central-interval count + subset-sum injectivity to eliminate the axiom (constant 3 needs interval-count route, not the (M^3-M)/12 spread).",
+    "nextAction": "Anticoncentration axiom DISCHARGED (verified). Optional: prove MINIMALITY of the f(n) witnesses (f_zero…f_five currently give existence of sets attaining sup=f(n), not that f(n) is the minimum), or add f_six=24 witness. Erdős #1 constant-factor c·2ⁿ conjecture itself remains open.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (both parent oq-02 and child oq-01 verified 0-axiom). Session 2026-07-08 added the matching powers-of-two extremal construction to oq-01, resolving its top open question (c ≤ 1/2 two-sided wall). Erdős #1 conjecture (constant-factor c·2^n) itself remains open.",
+    "progressSummary": "FOLLOW-UP (researcher-7, 2026-07-11): RE-VERIFIED Erdos1OQ02.lean compiles fully 0-axiom (anticoncentration_bound + dfx_lower_bound both [propext,Classical.choice,Quot.sound]) — the anticoncentration axiom is genuinely discharged, the 'eliminate the axiom' nextAction is COMPLETE. Added f_five: f(5)=13 Conway–Guy witness {6,9,11,12,13}, extending the OEIS A005318 small-case sequence by one. --- COMPLETED (both parent oq-02 and child oq-01 verified 0-axiom). Session 2026-07-08 added the matching powers-of-two extremal construction to oq-01, resolving its top open question (c ≤ 1/2 two-sided wall). Erdős #1 conjecture (constant-factor c·2^n) itself remains open.",
     "builtItems": [
       "Corrected axiom anticoncentration_bound (Chebyshev form) in Erdos1OQ02.lean",
       "Re-proved dfx_lower_bound: 2ⁿ ≤ 3·√n·N+2 (0 sorries) in Erdos1OQ02.lean",
       "Repaired Mathlib-4.26 build breakages in sum_sq_le_card_mul_max_sq, sum_sq_cauchy_schwarz, improvement_factor",
       "Erdos1OQ02OQ01.lean Section 4: geomSet, twoPow_injective, card_geomSet, mem_geomSet, sum_image_twoPow, geomSet_hasDistinctSubsetSums, sum_geomSet, max'_geomSet, exists_extremal_geomSet (8 thm + 1 def, host-verified 0-axiom/0-sorry).",
-      "Erdos1OQ02OQ01.lean Section 5: Superincreasing (def), Superincreasing.erase (hereditary), Superincreasing.hasDistinctSubsetSums (self-contained strong-induction proof peeling the max, no geomSum_injective), geomSet_superincreasing (+ example re-deriving geomSet distinctness from the general principle). 3 thm + 1 def, docker-verified 0-axiom/0-sorry [7743]."
+      "Erdos1OQ02OQ01.lean Section 5: Superincreasing (def), Superincreasing.erase (hereditary), Superincreasing.hasDistinctSubsetSums (self-contained strong-induction proof peeling the max, no geomSum_injective), geomSet_superincreasing (+ example re-deriving geomSet distinctness from the general principle). 3 thm + 1 def, docker-verified 0-axiom/0-sorry [7743].",
+      "Erdos1OQ02.lean f_five (researcher-7, 2026-07-11, VERIFIED 0-axiom [propext,Classical.choice,Quot.sound], plain `decide` not native_decide): f(5)=13 small-case existence witness via Conway–Guy set {6,9,11,12,13} (2⁵=32 distinct subset sums, max 13), continuing OEIS A005318 f_zero…f_four. Shows doubling {1,2,4,8,16} (max 16) is beaten by a widening margin (2⁴−f(5)=3 vs 2³−f(4)=1). Same fin_cases-over-powerset ×decide recipe as f_four. Also RE-VERIFIED the whole file compiles 0-axiom: anticoncentration_bound and dfx_lower_bound both [propext,Classical.choice,Quot.sound] — the formerly-axiomatized Chebyshev anticoncentration step 2ⁿ≤3√Q+2 is genuinely discharged."
     ],
     "insights": [
       "The 'incomplete-01' snapshot (2 sorries, dated 2026-03-30) is obsolete: those sorries were filled long ago. The live file Erdos1OQ02.lean had 0 sorries but a FALSE axiom.",
@@ -67,5 +68,5 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:27:56.397Z",
-  "lastUpdate": "2026-06-28"
+  "lastUpdate": "2026-07-11T00:00:00.000Z"
 }
