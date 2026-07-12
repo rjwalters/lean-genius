@@ -141,6 +141,52 @@ theorem waterAlloc_pos_of_le {μ₁ μ₂ : ℝ} (h : μ₁ ≤ μ₂) (N : ι �
     (hi : 0 < waterAlloc μ₁ N i) : 0 < waterAlloc μ₂ N i :=
   (waterAlloc_pos_iff μ₂ N i).mpr (lt_of_lt_of_le ((waterAlloc_pos_iff μ₁ N i).mp hi) h)
 
+/-- **The water-filling depth is monotone in the water level.**  Raising the water level
+    can only deepen every channel: `μ₁ ≤ μ₂ ⟹ (μ₁ − Nᵢ)₊ ≤ (μ₂ − Nᵢ)₊`.  The depth-level
+    statement whose active-set corollary is `waterAlloc_pos_of_le`; immediate from
+    monotonicity of `max`. -/
+theorem waterAlloc_mono_level {μ₁ μ₂ : ℝ} (h : μ₁ ≤ μ₂) (N : ι → ℝ) (i : ι) :
+    waterAlloc μ₁ N i ≤ waterAlloc μ₂ N i := by
+  unfold waterAlloc
+  exact max_le_max (by linarith) (le_refl 0)
+
+/-- The per-channel capacity is non-negative for non-negative power and positive noise:
+    `½·log(1 + P/N) ≥ 0` since `1 + P/N ≥ 1`. -/
+theorem perUseCapacity_nonneg {P N : ℝ} (hP : 0 ≤ P) (hN : 0 < N) :
+    0 ≤ perUseCapacity P N := by
+  unfold perUseCapacity
+  have h1 : (1 : ℝ) ≤ 1 + P / N := by have := div_nonneg hP hN.le; linarith
+  have := Real.log_nonneg h1
+  linarith
+
+/-- The per-channel capacity is strictly positive for positive power and positive noise:
+    `½·log(1 + P/N) > 0` since `1 + P/N > 1`. -/
+theorem perUseCapacity_pos {P N : ℝ} (hP : 0 < P) (hN : 0 < N) :
+    0 < perUseCapacity P N := by
+  unfold perUseCapacity
+  have h1 : (1 : ℝ) < 1 + P / N := by have := div_pos hP hN; linarith
+  have := Real.log_pos h1
+  linarith
+
+/-- The total water-filling budget is non-negative: `∑ᵢ (μ − Nᵢ)₊ ≥ 0` as a sum of
+    non-negative depths (`waterAlloc_nonneg`). -/
+theorem waterBudget_nonneg (N : ι → ℝ) (μ : ℝ) : 0 ≤ waterBudget N μ :=
+  Finset.sum_nonneg (fun i _ => waterAlloc_nonneg μ N i)
+
+/-- **Positive rate from an active channel (sum level).**  If at least one channel is
+    active (`∃ i, Nᵢ < μ`) then the water-filling allocation achieves a strictly positive
+    total rate: `0 < parallelRate N (waterAlloc μ N)`.  The sum-level companion of the
+    per-channel `waterAlloc_pos_iff`: every capacity term is non-negative
+    (`perUseCapacity_nonneg`), and the active channel contributes a strictly positive one
+    (`waterAlloc_pos_iff` + `perUseCapacity_pos`), so the sum is positive. -/
+theorem rate_waterAlloc_pos (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ : ℝ}
+    (hex : ∃ i, N i < μ) : 0 < parallelRate N (waterAlloc μ N) := by
+  unfold parallelRate
+  obtain ⟨j, hj⟩ := hex
+  refine Finset.sum_pos' (fun i _ => perUseCapacity_nonneg (waterAlloc_nonneg μ N i) (hN i))
+    ⟨j, Finset.mem_univ j, ?_⟩
+  exact perUseCapacity_pos ((waterAlloc_pos_iff μ N j).mpr hj) (hN j)
+
 /-! ## Optimality of the water-filling allocation -/
 
 /-- **Per-channel tangent bound** (the first-order optimality condition, in
