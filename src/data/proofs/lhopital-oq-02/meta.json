@@ -145,6 +145,21 @@
         "cauchy-mvt"
       ],
       "targetId": "lhopital"
+    },
+    {
+      "targetId": "lhopital-oq-02-incomplete-01",
+      "relationship": "extended by",
+      "description": "Applies exactly this ∞/∞ rule: derives the classic growth-comparison limits (ln x)/x → 0 and x/eˣ → 0 (the c = 0 cases) and (x + ln x)/x → 1 as direct corollaries. It is the downstream payoff of the ∞/∞ form proved here."
+    },
+    {
+      "targetId": "lhopital-oq-01",
+      "relationship": "related",
+      "description": "The converse-failure counterexample for L'Hôpital: f(x) = x + sin x, g(x) = x have lim f/g = 1 while lim f'/g' does not exist. It shows the hypothesis 'f'/g' → c' assumed here is genuinely required — the rule is one-directional, so a limit existing on the f/g side does not license passing to derivatives."
+    },
+    {
+      "targetId": "lhopital-oq-04",
+      "relationship": "related",
+      "description": "An alternative derivation of L'Hôpital's 0/0 form via the Taylor / leading-order expansion rather than the Cauchy Mean Value Theorem used for this ∞/∞ form. Reading the two together contrasts the MVT route (which extends cleanly to the ∞/∞ case here) with the Taylor route (which localises the 0/0 case), relevant to this entry's open question on reducing 0/0 to ∞/∞."
     }
   ],
   "sorries": 0,
