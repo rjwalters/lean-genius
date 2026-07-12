@@ -510,6 +510,31 @@ theorem le_sublevelSup'_Xsq {d : ℝ} (hd0 : 0 ≤ d) (hd1 : d < 1) :
     (le_iSup_of_le (Xsq_sub_C_admissible' ⟨hd0, le_of_lt hd1⟩)
       (sublevelMeasure_Xsq_sub_C hd0 hd1).ge)
 
+/-- **The quadratic family sweeps its measure interval strictly monotonically.** For
+    `0 ≤ d₁ < d₂ < 1`, the sublevel measure of `X² − d₁` is strictly smaller than that of
+    `X² − d₂`: deepening the constant term (spreading the two roots `±√d` apart) strictly
+    enlarges the sublevel set `(−√(d+1), √(d+1))`. The measure `2√(d+1)` is strictly
+    increasing in `d`, so the sweep of `[2, 2√2)` by `exists_faithful_sublevelMeasure_eq`
+    is order-preserving — each target value is hit by a *unique* `d`. -/
+theorem sublevelMeasure_Xsq_sub_C_lt {d₁ d₂ : ℝ} (hd₁ : 0 ≤ d₁) (hd₂ : d₂ < 1)
+    (h : d₁ < d₂) :
+    sublevelMeasure (X ^ 2 - C d₁) < sublevelMeasure (X ^ 2 - C d₂) := by
+  rw [sublevelMeasure_Xsq_sub_C hd₁ (lt_trans h hd₂),
+    sublevelMeasure_Xsq_sub_C (le_trans hd₁ h.le) hd₂,
+    ENNReal.ofReal_lt_ofReal_iff
+      (mul_pos two_pos (Real.sqrt_pos.mpr (by linarith)))]
+  have hsqrt : Real.sqrt (d₁ + 1) < Real.sqrt (d₂ + 1) :=
+    Real.sqrt_lt_sqrt (by linarith) (by linarith)
+  linarith
+
+/-- **The quadratic sublevel measure is strictly monotone on `[0, 1)`.** The `StrictMonoOn`
+    packaging of `sublevelMeasure_Xsq_sub_C_lt`: `d ↦ sublevelMeasure (X² − d)` is strictly
+    increasing on `Set.Ico 0 1`. Hence the parametrisation of the elementary measure spectrum
+    `[2, 2√2)` by the constant term is an order isomorphism onto its image. -/
+theorem sublevelMeasure_Xsq_sub_C_strictMonoOn :
+    StrictMonoOn (fun d : ℝ => sublevelMeasure (X ^ 2 - C d)) (Set.Ico 0 1) :=
+  fun _ ha _ hb hab => sublevelMeasure_Xsq_sub_C_lt ha.1 hb.2 hab
+
 /-- **Every measure `m ∈ [2, 2√2)` is realised exactly by a faithful distinct-root
     quadratic.**  This formalizes the surjectivity claim above: solving `2√(d+1) = m`
     gives `d = m²/4 − 1`, which lies in `[0, 1)` precisely when `2 ≤ m < 2√2`, so the
