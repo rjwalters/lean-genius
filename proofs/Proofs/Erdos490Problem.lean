@@ -795,6 +795,46 @@ theorem multiplicativeEnergy_le_sq (A B : Finset ℕ) :
   apply le_of_eq
   ring
 
+/-- **Sharp upper bound on multiplicative energy** (positive factor `A`): `E(A, B) ≤ |A|²·|B|`.
+When `0 ∉ A`, an energy quadruple `((a₁, a₂), (b₁, b₂))` is determined by its first three
+coordinates `(a₁, a₂, b₁)`: the relation `a₁·b₁ = a₂·b₂` fixes `b₂` uniquely because `a₂ ≠ 0`
+is cancellable.  So the forgetful map `((a₁, a₂), (b₁, b₂)) ↦ ((a₁, a₂), b₁)` injects the
+energy set into `(A ×ˢ A) ×ˢ B`, giving `E ≤ |A|²·|B|`.  This is far sharper than the trivial
+`multiplicativeEnergy_le_sq` (`E ≤ (|A||B|)²`): it replaces one factor of `|A||B|` by a single
+`|A|`, tightening the sandwich to `|A||B| ≤ E(A, B) ≤ |A|²·|B|`.  The positivity hypothesis is
+necessary — with `0 ∈ A` the collisions `0·b₁ = 0·b₂` make `b₂` free and the bound fails. -/
+theorem multiplicativeEnergy_le_sq_mul {A B : Finset ℕ} (hA : (0 : ℕ) ∉ A) :
+    multiplicativeEnergy A B ≤ A.card ^ 2 * B.card := by
+  classical
+  unfold multiplicativeEnergy
+  refine le_trans (Finset.card_le_card_of_injOn
+    (t := (A ×ˢ A) ×ˢ B) (fun q => (q.1, q.2.1)) ?_ ?_) ?_
+  · rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hq ⊢
+    exact ⟨⟨hq.1.1.1, hq.1.1.2⟩, hq.1.2.1⟩
+  · rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq ⟨⟨a₁', a₂'⟩, ⟨b₁', b₂'⟩⟩ hq' heq
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hq hq'
+    simp only [Prod.mk.injEq] at heq
+    obtain ⟨⟨rfl, rfl⟩, rfl⟩ := heq
+    have hrel : a₁ * b₁ = a₂ * b₂ := hq.2
+    have hrel' : a₁ * b₁ = a₂ * b₂' := hq'.2
+    have ha2ne : a₂ ≠ 0 := fun h => hA (h ▸ hq.1.1.2)
+    have : b₂ = b₂' := Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero ha2ne)
+      (by rw [← hrel, hrel'])
+    subst this; rfl
+  · exact le_of_eq (by rw [Finset.card_product, Finset.card_product]; ring)
+
+/-- **Sharp upper bound on multiplicative energy** (positive factor `B`): `E(A, B) ≤ |A|·|B|²`.
+The mirror of `multiplicativeEnergy_le_sq_mul` in the second factor, obtained from it by the
+symmetry `multiplicativeEnergy_comm`.  Requiring `0 ∉ B`, the third coordinate `a₂` is now the
+one pinned down, so the energy injects into `A ×ˢ (B ×ˢ B)`.  Together the two sharp bounds give
+`E(A, B) ≤ |A|·|B|·min(|A|, |B|)`. -/
+theorem multiplicativeEnergy_le_mul_sq {A B : Finset ℕ} (hB : (0 : ℕ) ∉ B) :
+    multiplicativeEnergy A B ≤ A.card * B.card ^ 2 := by
+  rw [multiplicativeEnergy_comm]
+  calc multiplicativeEnergy B A ≤ B.card ^ 2 * A.card := multiplicativeEnergy_le_sq_mul hB
+    _ = A.card * B.card ^ 2 := by ring
+
 /-- **Strict energy excess characterizes product collisions.**  Combining the general
 lower bound `|A||B| ≤ E(A, B)` (`multiplicativeEnergy_ge`) with its equality case
 (`distinct_minimal_energy`): the energy *strictly* exceeds `|A||B|` exactly when the
