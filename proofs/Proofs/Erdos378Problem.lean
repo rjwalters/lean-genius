@@ -106,6 +106,62 @@ theorem binomialSquarefree_symm {n k : ℕ} (hk : k ≤ n) :
   unfold BinomialSquarefree
   rw [Nat.choose_symm hk]
 
+/-- **The first endpoint.** Since `C(n,1) = n`, the first interior binomial is
+squarefree exactly when `n` itself is squarefree. -/
+theorem binomialSquarefree_one_iff (n : ℕ) :
+    BinomialSquarefree n 1 ↔ Squarefree n := by
+  unfold BinomialSquarefree
+  rw [Nat.choose_one_right]
+
+/-- **The last endpoint.** Symmetrically, `C(n, n-1) = n`, so the last interior
+binomial (for `n ≥ 1`) is squarefree exactly when `n` is squarefree.  The two
+endpoints `k = 1` and `k = n-1` are the `k ↦ n-k` image pair of the involution. -/
+theorem binomialSquarefree_self_sub_one_iff {n : ℕ} (hn : 1 ≤ n) :
+    BinomialSquarefree n (n - 1) ↔ Squarefree n := by
+  rw [binomialSquarefree_symm (Nat.sub_le n 1), show n - (n - 1) = 1 from by omega]
+  exact binomialSquarefree_one_iff n
+
+/-- **Trivial upper bound.** The squarefree-binomial count of row `n` is at most
+`n - 1`, the number of interior indices `1 ≤ k < n`. -/
+theorem squarefreeCount_le (n : ℕ) : squarefreeCount n ≤ n - 1 := by
+  unfold squarefreeCount
+  have hsub : (range n).filter (fun k => 1 ≤ k ∧ Squarefree (n.choose k)) ⊆ Finset.Ioo 0 n := by
+    intro k hk
+    rw [Finset.mem_filter, Finset.mem_range] at hk
+    rw [Finset.mem_Ioo]
+    exact ⟨hk.2.1, hk.1⟩
+  calc _ ≤ (Finset.Ioo 0 n).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Nat.card_Ioo]; omega
+
+/-- **Endpoint lower bound.** For squarefree `n ≥ 3`, both endpoints `k = 1` and
+`k = n-1` are distinct squarefree indices (both give `C(n,·) = n`), so row `n` has
+at least two squarefree binomials.  Combined with `squarefreeCount_even_of_odd`,
+an odd squarefree `n ≥ 3` therefore has an *even* count `≥ 2` — consistent with the
+Granville–Ramaré values `2m + 2`. -/
+theorem squarefreeCount_ge_two_of_squarefree {n : ℕ} (hn : 3 ≤ n) (hsf : Squarefree n) :
+    2 ≤ squarefreeCount n := by
+  unfold squarefreeCount
+  set S : Finset ℕ := (range n).filter (fun k => 1 ≤ k ∧ Squarefree (n.choose k)) with hS
+  have h1 : (1 : ℕ) ∈ S := by
+    rw [hS, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, le_refl 1, ?_⟩
+    rw [Nat.choose_one_right]; exact hsf
+  have h2 : (n - 1) ∈ S := by
+    rw [hS, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, by omega, ?_⟩
+    rw [show n.choose (n - 1) = n from by
+      rw [Nat.choose_symm (show (1 : ℕ) ≤ n by omega), Nat.choose_one_right]]
+    exact hsf
+  have hne : (1 : ℕ) ≠ n - 1 := by omega
+  have hpair : ({1, n - 1} : Finset ℕ) ⊆ S := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact h1
+    · exact h2
+  calc 2 = ({1, n - 1} : Finset ℕ).card := by rw [Finset.card_pair hne]
+    _ ≤ S.card := Finset.card_le_card hpair
+
 /-- **Parity theorem.** For odd `n`, the number of squarefree interior binomials
 in row `n` is even.
 
