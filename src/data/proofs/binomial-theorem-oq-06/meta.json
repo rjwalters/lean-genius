@@ -116,6 +116,11 @@
       "targetId": "catalan-numbers-oq-01",
       "relationship": "thematic",
       "description": "The central binomial coefficient C(2n,n) computed here is, up to the factor 1/(n+1), the n-th Catalan number Cₙ = C(2n,n)/(n+1). The lattice-path / Catalan reading of ∑ C(n,k)² = C(2n,n) is exactly the combinatorial interpretation flagged in this entry's open questions, and the Catalan cluster develops that enumerative side."
+    },
+    {
+      "targetId": "binomial-theorem-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Sibling in the binomial-theorem thread. Vandermonde's convolution here counts r objects drawn from a set split into two blocks of sizes m and n; that entry carries the same 'partition into blocks and count' idea to arbitrarily many categories, deriving the multinomial distribution's aggregation (lumping) property from the multinomial theorem."
     }
   ],
   "conclusion": {
