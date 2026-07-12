@@ -2911,3 +2911,48 @@ theorem maximalDeficiencyIs_nine_iff_kGe34 :
     by_cases hk : k ≤ 33
     · exact deficiency_le_nine_of_k_le_33 hv.1 hv.2 hk
     · exact h n k (by omega) hv
+
+/-
+## Section XXXV: The closed-form logarithmic deficiency ceiling
+
+Every deficiency ceiling above is a *transfer principle* — it takes an external
+numeric certificate (`(k!)² < (k+D+1)!` for the factorial method, `k! < M^{d₀+1}`
+plus window inadmissibility for the location method) and returns `deficiency ≤ D`.
+None of them exposes the ceiling as a single *closed-form function of `k`*.
+
+The multiplicative bound `(k+1)^{deficiency n k} ≤ k!` of Section IX
+(`deficiency_pow_succ_le_factorial`) supplies exactly that: taking base-`(k+1)`
+logarithms turns it into the explicit, certificate-free ceiling
+
+    `deficiency n k ≤ log_{k+1}(k!)`,
+
+a computable natural number depending on `k` alone.  It is uniform over all
+admissible pairs and free of the axiomatized ELS bound.
+
+This is the honest closed form of the size obstruction, and it makes the
+saturation of the elementary method quantitative.  The ceiling is only the *crude*
+power ceiling (the sharp distinct-values bound `deficiency_ascFactorial_le_factorial`
+is tighter — e.g. `18` versus `log_{29}(28!) = 20` at the record `k = 28`), yet it
+already grows without bound in `k`: since `(k!)² ≥ (k+10)!` for every `k ≥ 16`
+(`sharp_bound_permits_deficiency_ten`), no size-only ceiling — this one included —
+can descend to the conjectural constant `9` for large `k`.  Closing OQ-02 uniformly
+needs the arithmetic (short-interval `k`-smooth density) input the pure size bound
+cannot supply.
+-/
+
+/-- **Closed-form logarithmic deficiency ceiling.**  For an admissible pair with
+`k ≥ 1`,
+
+    `deficiency n k ≤ Nat.log (k + 1) (k !)`.
+
+Unlike the factorial-ceiling (`deficiency_le_of_sq_factorial_lt`) and location-bound
+(`deficiency_le_of_windowFloor_pow_lt`) transfer principles, which each consume an
+external numeric certificate, this exhibits the ceiling as an *explicit computable
+function of `k`* — the base-`(k+1)` logarithm of `k!`.  Immediate from the Section IX
+multiplicative bound `(k+1)^{deficiency n k} ≤ k!` (`deficiency_pow_succ_le_factorial`)
+via `Nat.le_log_of_pow_le`.  Uniform in `n` and independent of the axiomatized ELS
+bound `els_upper_bound`. -/
+theorem deficiency_le_log_factorial {n k : ℕ} (hn : 2 * k ≤ n) (hk : 1 ≤ k)
+    (h : NoSmallPrimeFactors n k) :
+    deficiency n k ≤ Nat.log (k + 1) (Nat.factorial k) :=
+  Nat.le_log_of_pow_le (by omega) (deficiency_pow_succ_le_factorial hn h)
