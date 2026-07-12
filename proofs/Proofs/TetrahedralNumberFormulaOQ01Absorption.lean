@@ -43,8 +43,7 @@ absorption identity `Nat.succ_mul_choose_eq`, and the multiplicative counterpart
 additive Pascal rule `simplexNumber_succ_succ`. -/
 theorem simplexNumber_absorption (d n : ℕ) :
     (n + d + 1) * simplexNumber d n = (d + 1) * simplexNumber (d + 1) n := by
-  have key := Nat.succ_mul_choose_eq (n + d) d
-  simp only [Nat.succ_eq_add_one] at key
+  have key := Nat.add_one_mul_choose_eq (n + d) d
   unfold simplexNumber
   rw [show n + (d + 1) = n + d + 1 from by ring, key]
   ring
