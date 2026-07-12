@@ -460,4 +460,66 @@ theorem powerForm_totient {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠
   have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
   rw [Nat.totient_mul hcop, Nat.totient_prime_pow hp hk, Nat.totient_prime_pow hq hl]
 
+/-! ### The remaining classical multiplicative invariants: `ω`, radical, `Ω`, squarefree
+
+The divisor-count `τ(p^k q^l) = (k+1)(l+1)` (`powerForm_card_divisors`) and totient
+`φ` (`powerForm_totient`) read the two exponents through the coprime split
+`p^k ⊥ q^l`. The same split pins the rest of the standard arithmetic-function
+readouts of a two-prime power form, completing the multiplicative-invariant
+picture on top of the divisor grid. -/
+
+/-- **Number of distinct prime factors `ω(p^k q^l) = 2`.** For distinct primes `p ≠ q`
+and positive exponents, a two-prime power form has exactly two distinct prime factors.
+Immediate from `powerForm_primeFactors` (the prime-factor set is `{p, q}`) and
+`Finset.card_pair`. The `ω` companion of the divisor-count `τ` and totient `φ`. -/
+theorem powerForm_card_primeFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).primeFactors.card = 2 := by
+  rw [powerForm_primeFactors hp hq hpq hk hl, Finset.card_pair hpq]
+
+/-- **Radical of a power form `rad(p^k q^l) = p·q`.** For distinct primes `p ≠ q` and
+positive exponents, the product of the distinct prime factors of `p^k q^l` is `p·q` —
+the squarefree kernel is independent of the exponents. Immediate from
+`powerForm_primeFactors` and `Finset.prod_pair`. -/
+theorem powerForm_prod_primeFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).primeFactors.prod id = p * q := by
+  rw [powerForm_primeFactors hp hq hpq hk hl, Finset.prod_pair hpq, id_eq, id_eq]
+
+open ArithmeticFunction in
+/-- **Number of prime factors with multiplicity `Ω(p^k q^l) = k + l`.** For prime bases
+`p, q` (distinctness not needed), the total count of prime factors of a power form,
+counted with multiplicity, is the sum of the exponents. Since `Ω` is completely additive
+(`cardFactors_mul`) and `Ω(pᵏ) = k` on prime powers (`cardFactors_apply_prime_pow`), this
+is the additive companion of the multiplicative `ω`, `τ`, `φ` readouts. -/
+theorem powerForm_cardFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (k l : ℕ) :
+    cardFactors (p ^ k * q ^ l) = k + l := by
+  rw [cardFactors_mul (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne'),
+    cardFactors_apply_prime_pow hp, cardFactors_apply_prime_pow hq]
+
+/-- **Squarefree power forms are exactly the small-exponent ones.** For distinct primes
+`p ≠ q`, `p^k q^l` is squarefree iff both exponents are `≤ 1`:
+
+    Squarefree (p^k q^l) ↔ k ≤ 1 ∧ l ≤ 1.
+
+Through `Nat.squarefree_iff_factorization_le_one`, squarefreeness is `∀ r, factorization r ≤ 1`;
+the `p`- and `q`-exponents are `k` and `l` (`factorization_powerForm_left`/`_right`) and every
+other prime contributes `0`. So the four squarefree two-prime forms are `1, p, q, pq` — the
+`gcd`/`lcm` lattice grid capped at exponent `1`, i.e. the divisors of the radical `p·q`
+(`powerForm_prod_primeFactors`). -/
+theorem powerForm_squarefree_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) : Squarefree (p ^ k * q ^ l) ↔ k ≤ 1 ∧ l ≤ 1 := by
+  have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
+  have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
+  rw [Nat.squarefree_iff_factorization_le_one (mul_ne_zero hp0 hq0)]
+  constructor
+  · intro h
+    refine ⟨?_, ?_⟩
+    · have := h p; rwa [factorization_powerForm_left hp hq hpq] at this
+    · have := h q; rwa [factorization_powerForm_right hp hq hpq] at this
+  · rintro ⟨hk, hl⟩ r
+    rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
+      hq.factorization_pow, Finsupp.single_apply, Finsupp.single_apply]
+    split_ifs <;> omega
+
 end Erdos1110
