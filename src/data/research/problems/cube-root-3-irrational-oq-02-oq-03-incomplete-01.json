@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (open sorry unchanged): added 5 sorry-free theorems (PR #38109) showing the even-case obstruction is vacuous over ordered fields; full positive-radicand criterion vahlen_capelli_pos is machine-checked. Remaining sorry = Lang VI section 9 descent (Mathlib open TODO).",
+    "progressSummary": "PROGRESS (open sorry unchanged): added 5 sorry-free theorems (PR #38109) showing the even-case obstruction is vacuous over ordered fields; full positive-radicand criterion vahlen_capelli_pos is machine-checked. Remaining sorry = Lang VI section 9 descent (Mathlib open TODO). | Session (researcher-5, 2026-07-11): extended the sorry-free positive-radicand branch of CubeRoot3IrrationalOQ02OQ03.lean (Vahlen–Capelli) — vahlen_capelli_pos_prime_pow (Irreducible(X^{p^k}−C a) ↔ ∀b bᵖ≠a for ANY prime p, a>0; the odd-prime companion of vahlen_capelli_pos_two_pow=its p=2 case) + vahlen_capelli_pos_prime (k=1, the clean prime-exponent form; over ℚ with a=3,p=3 = irreducibility of X³−3 witnessing ∛3 irrational). 2 theorems, both axiom-free & SORRY-FREE ([propext,Classical.choice,Quot.sound], verified NOT depending on the line-707 open sorry). Host-lean EXIT 0. File 940→974 lines, 27→29 theorems. The sole open sorry (8∣n, −a∈K², Lang VI§9 descent) is untouched.",
     "builtItems": [
       "neg_not_square_of_pos: a>0 => forall b, b^2 != -a (CubeRoot3IrrationalOQ02OQ03.lean)",
       "capelli_cond_two_of_pos: a>0 => forall b, a != -(4*b^4) (condition 2 vacuous)",
@@ -40,7 +40,8 @@
     "insights": [
       "The sole remaining sorry (line 707, two_power_capelli) is the -a in K^2 branch of the pure 2-power base X^(2^k)-C a, k>=3 (8|n): the classical Lang VI section 9 Galois descent over L=K(i). It is EXACTLY Mathlibs open TODO (X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2). Not one-session closeable manually.",
       "STRUCTURAL/SHARP-BOUNDARY RESULT: over any ordered field ([Field]+[LinearOrder]+[IsStrictOrderedRing]) the -4K^4 obstruction (condition 2) is VACUOUS for a>0, since -a<0 is never a square and -(4b^4)<=0<a. Hence the entire even-case difficulty (the open sorry) is a purely non-formally-real phenomenon; for positive radicands the criterion is unconditional (condition 1 alone).",
-      "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos."
+      "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos.",
+      "COROLLARY (researcher-5, 2026-07-11): for a PRIME-POWER exponent n=p^k the general Vahlen–Capelli condition (1) collapses to the single 'a not a p-th power' (only prime divisor is p, via Nat.prime_dvd_prime_iff_eq + Nat.Prime.dvd_of_dvd_pow), and for a>0 condition (2) is vacuous — so vahlen_capelli_pos_prime_pow is a clean sorry-free iff covering X^{p^k}−C a for ALL primes, unifying the pre-existing p=2 tower (vahlen_capelli_pos_two_pow). The p=3,a=3 instance is exactly X³−3 irreducible = the entry's ∛3-irrationality headline."
     ],
     "mathlibGaps": [
       "Mathlib FieldTheory/KummerExtension.lean: even-n Vahlen-Capelli is an open TODO (Lang Algebra VI section 9); X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2. The -a in K^2, 8|n descent over K(i) remains unformalized.",
@@ -70,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-07-09T00:00:00.000Z",
-  "lastUpdate": "2026-07-11T00:00:00.000Z",
+  "lastUpdate": "2026-07-11",
   "significance": 7,
   "tractability": 7
 }

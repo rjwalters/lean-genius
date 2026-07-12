@@ -937,4 +937,38 @@ theorem vahlen_capelli_pos_two_pow {K : Type*} [Field K] [LinearOrder K] [IsStri
       (dvd_pow_self 2 (by omega)) b
   · exact two_power_capelli_pos hk ha
 
+/-- **Prime-power exponent, positive radicand (any prime `p`).** For `n = p^k` the only
+prime divisor is `p`, so condition (1) collapses to "not a `p`-th power": over a
+`LinearOrderedField` with `a > 0`,
+
+  `Irreducible (X^(p^k) − C a) ↔ ∀ b, bᵖ ≠ a`.
+
+This is the odd-prime companion of `vahlen_capelli_pos_two_pow` (its `p = 2` instance) and
+the `k`-fold tower version of `vahlen_capelli_pos_prime`.  E.g. over `ℚ`, for the non-cube
+`a = 3` it makes `X³ − 3`, `X⁹ − 3`, `X²⁷ − 3`, … simultaneously irreducible. -/
+theorem vahlen_capelli_pos_prime_pow {K : Type*} [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) {a : K} (ha : 0 < a) :
+    Irreducible (X ^ p ^ k - C a) ↔ ∀ b : K, b ^ p ≠ a := by
+  rw [vahlen_capelli_pos (Nat.one_le_pow k p hp.pos) ha]
+  constructor
+  · intro h b
+    exact h p hp (dvd_pow_self p (by omega)) b
+  · intro h q hq hqpk b
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow hqpk)
+    exact h b
+
+/-- **Prime exponent, positive radicand.** The `k = 1` case of
+`vahlen_capelli_pos_prime_pow`: over a `LinearOrderedField` with `a > 0` and `p` prime,
+
+  `Irreducible (X^p − C a) ↔ ∀ b, bᵖ ≠ a`.
+
+The cleanest form of the criterion — for a prime exponent condition (1) is exactly "not a
+`p`-th power", and for positive `a` condition (2) is vacuous.  Over `ℚ` with `a = 3` (`p = 3`)
+this is the irreducibility of `X³ − 3`, the polynomial witnessing that `∛3` is irrational. -/
+theorem vahlen_capelli_pos_prime {K : Type*} [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] {p : ℕ} (hp : p.Prime) {a : K} (ha : 0 < a) :
+    Irreducible (X ^ p - C a) ↔ ∀ b : K, b ^ p ≠ a := by
+  have h := vahlen_capelli_pos_prime_pow hp (le_refl 1) ha (a := a)
+  rwa [pow_one] at h
+
 end CubeRoot3IrrationalOQ02OQ03
