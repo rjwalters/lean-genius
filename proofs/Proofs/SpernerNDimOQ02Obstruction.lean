@@ -95,6 +95,29 @@ theorem no_canon_rep_of_lexMin_small {d N : ℕ} (t : GridSimplex d N) (v : Bary
     hmin (t'.verts k) (by rw [← hrange]; exact ⟨k, rfl⟩)
   exact not_canon_of_lexMin_small t' v hvmem hmin' hsmall hcanon
 
+/-- **The chain base is never small in every coordinate.**  The hypothesis-free core of
+the obstruction: for *any* grid simplex `t`, a barycentric point `v` all of whose
+coordinates are `< d` can never be the base `t.verts 0`.  Indeed `base_miss_ge_d` forces
+the base's `miss` coordinate to be `≥ d`, which `v`'s small coordinates cannot match.  No
+canonicality or lex-minimality assumption is needed — it is a property of the base alone,
+and is exactly what makes a small lex-minimum unreachable in `not_canon_of_lexMin_small`. -/
+theorem base_ne_of_small {d N : ℕ} (t : GridSimplex d N) (v : BaryPoint d N)
+    (hsmall : ∀ j, (v.coords j) < d) : v ≠ t.verts 0 := by
+  intro h
+  have hge : d ≤ (t.verts 0).coords t.miss := t.base_miss_ge_d
+  rw [← h] at hge
+  exact absurd hge (by have := hsmall t.miss; omega)
+
+/-- **Range form of canonicality.**  Unfolds `IsCanon t` (the base is `lexLE` every indexed
+vertex) to the set form: the base `t.verts 0` is `lexLE` every vertex `w` in the cell's
+vertex *set* `Set.range t.verts`.  This is the shape the general obstruction consumes
+(`no_canon_rep_of_lexMin_small` compares against `Set.range`), so it bridges the indexed
+predicate to the geometry-level statement "the base is a lex-minimum of the cell". -/
+theorem isCanon_base_lexLE_of_mem {d N : ℕ} (t : GridSimplex d N) (h : IsCanon t)
+    {w : BaryPoint d N} (hw : w ∈ Set.range t.verts) : (t.verts 0).lexLE w := by
+  obtain ⟨k, rfl⟩ := hw
+  exact h k
+
 /-- The three barycentric points of the witness cell. -/
 def p2 : BaryPoint 2 2 := ⟨![2, 0, 0], by decide⟩
 def p1 : BaryPoint 2 2 := ⟨![1, 1, 0], by decide⟩
