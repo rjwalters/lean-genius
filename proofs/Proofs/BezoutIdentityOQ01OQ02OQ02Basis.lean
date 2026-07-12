@@ -134,4 +134,75 @@ theorem isPrimitive_iff_mem_basis (hn : 1 < n) (v : Fin n → ℤ) :
   rintro ⟨b, i, rfl⟩
   exact isPrimitive_of_mem_basis b i
 
+/-! ### Removing the dimension hypothesis: the characterization holds for **all** `n`
+
+The `1 < n` hypothesis on the *forward* direction above comes only from the transitivity
+theorem `exists_sl_mulVec_basis_of_isPrimitive`, which is genuinely false at `n = 1`
+(the group `SL₁(ℤ)` is trivial, so `(1)` and `(−1)` lie in distinct orbits — see the
+parent file's `not_forall_isPrimitive_sl_equiv_fin_one`).  But the *basis* characterization
+is about **unimodular** completion (transition determinant `±1`, i.e. `GLₙ(ℤ)`), not the
+`SL` orbit: at `n = 1` a primitive vector is `(±1)`, and `{(−1)}` is perfectly well a
+`ℤ`-basis of `ℤ¹` even though `(−1)` is not an `SL₁` image of `(1)`.  Supplying that single
+missing case (`Basis.unitsSMul` scales the standard basis by the unit `v 0 = ±1`) upgrades
+the characterization to an **all-`n`** statement. -/
+
+/-- **Unimodular completion at `n = 1`.**  A primitive vector `v : Fin 1 → ℤ` (so `v 0`
+is a unit `±1`) is the sole member of a `ℤ`-basis of `ℤ¹`, namely the standard basis scaled
+by the unit `v 0`.  This is the case the `SL`-based `exists_basis_apply_eq_of_isPrimitive`
+cannot reach, because it needs a determinant-`+1` completion. -/
+theorem exists_basis_apply_eq_of_isPrimitive_fin_one {v : Fin 1 → ℤ}
+    (hv : IsPrimitive v) (i : Fin 1) :
+    ∃ b : Basis (Fin 1) ℤ (Fin 1 → ℤ), b i = v := by
+  obtain ⟨w, hw⟩ := hv
+  have hdot : w ⬝ᵥ v = w 0 * v 0 := by simp [dotProduct]
+  have hwv : w 0 * v 0 = 1 := by rw [← hdot]; exact hw
+  have hvw : v 0 * w 0 = 1 := by rw [mul_comm]; exact hwv
+  -- `v 0` is a unit `±1`; build it explicitly with inverse `w 0`.
+  let u : ℤˣ := ⟨v 0, w 0, hvw, hwv⟩
+  refine ⟨(Pi.basisFun ℤ (Fin 1)).unitsSMul (fun _ => u), ?_⟩
+  have h0 : i = 0 := Subsingleton.elim _ _
+  subst h0
+  rw [Basis.unitsSMul_apply]
+  funext j
+  have hj : j = 0 := Subsingleton.elim _ _
+  subst hj
+  simp only [Pi.smul_apply, Pi.basisFun_apply, Pi.single_eq_same, Units.smul_def,
+    smul_eq_mul, mul_one]
+  rfl
+
+/-- **Unimodular completion, all `n`, prescribed slot.**  For every `n`, a primitive vector
+`v` is the `i`-th member of some `ℤ`-basis of `ℤⁿ`.  For `n ≥ 2` this is the `SL`-based
+`exists_basis_apply_eq_of_isPrimitive`; for `n = 1` it is the unit-scaling above; `n = 0`
+has no index `i`. -/
+theorem exists_basis_apply_eq_of_isPrimitive_all {v : Fin n → ℤ}
+    (hv : IsPrimitive v) (i : Fin n) :
+    ∃ b : Basis (Fin n) ℤ (Fin n → ℤ), b i = v := by
+  match n, v, hv, i with
+  | 0, _, _, i => exact i.elim0
+  | 1, v, hv, i => exact exists_basis_apply_eq_of_isPrimitive_fin_one hv i
+  | (_ + 2), v, hv, i => exact exists_basis_apply_eq_of_isPrimitive (by omega) hv i
+
+/-- **A primitive vector extends to a `ℤ`-basis, all `n`.**  Existence form of unimodular
+completion valid in every dimension.  (At `n = 0` there are no primitive vectors — the empty
+dot product cannot equal `1` — so the statement is vacuously true.) -/
+theorem exists_basis_mem_of_isPrimitive_all {v : Fin n → ℤ} (hv : IsPrimitive v) :
+    ∃ (b : Basis (Fin n) ℤ (Fin n → ℤ)) (i : Fin n), b i = v := by
+  match n, v, hv with
+  | 0, v, hv =>
+      obtain ⟨w, hw⟩ := hv
+      simp only [dotProduct, Finset.univ_eq_empty, Finset.sum_empty] at hw
+      exact absurd hw zero_ne_one
+  | (k + 1), v, hv =>
+      obtain ⟨b, hb⟩ := exists_basis_apply_eq_of_isPrimitive_all hv (0 : Fin (k + 1))
+      exact ⟨b, 0, hb⟩
+
+/-- **Primitive ⇔ member of a `ℤ`-basis, in every dimension.**  The all-`n` upgrade of
+`isPrimitive_iff_mem_basis`: with the `n = 1` case supplied, primitivity is *exactly* the
+property of occurring as a member of some `ℤ`-basis of `ℤⁿ`, with no dimension hypothesis. -/
+theorem isPrimitive_iff_mem_basis_all (v : Fin n → ℤ) :
+    IsPrimitive v ↔ ∃ (b : Basis (Fin n) ℤ (Fin n → ℤ)) (i : Fin n), b i = v := by
+  refine ⟨exists_basis_mem_of_isPrimitive_all, ?_⟩
+  rintro ⟨b, i, rfl⟩
+  exact isPrimitive_of_mem_basis b i
+
 end BezoutPrimitive
