@@ -56,6 +56,16 @@
       "targetId": "amgm-inequality",
       "relationship": "related",
       "description": "Delivers the AM-GM family's most familiar member — geometric mean ≤ arithmetic mean for n positive reals, sharp iff the reals are equal — in the canonical (∏ xᵢ)^{1/n} versus (∑ xᵢ)/n form."
+    },
+    {
+      "targetId": "amgm-inequality-oq-05-oq-01",
+      "relationship": "related",
+      "description": "A sibling equality-case characterisation under the same oq-05 parent: the equality case of Hölder's inequality for finite sums. Like this entry it supplies a sharpness clause that Mathlib provides the inequality for but does not package, and both are read off from the same strict convexity/concavity (Jensen) equality machinery — here strictConcaveOn_log_Ioi.map_sum_eq_iff, there the conjugate-exponent convexity underlying Hölder."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Newton's log-concavity and the Maclaurin step Mₖ ≥ Mₖ₊₁ for the normalised elementary symmetric means Sₖ = eₖ/C(n,k). The Maclaurin chain S₁ ≥ S₂^{1/2} ≥ … ≥ Sₙ^{1/n} refines exactly this AM ≥ GM result: its endpoints are S₁ = (∑ xᵢ)/n = A and Sₙ^{1/n} = (∏ xᵢ)^{1/n} = G, so it interpolates intermediate symmetric means strictly between the arithmetic and geometric means of this entry — the symmetric-function counterpart of the power-mean chain in the first open question."
     }
   ],
   "references": [
