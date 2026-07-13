@@ -868,4 +868,58 @@ theorem sublevelArea_pos (hf : 0 < f.degree) : 0 < sublevelArea f := by
   have hlt : volume (sublevelSet f) < ⊤ := (sublevelSet_isBounded f hf).measure_lt_top
   exact ENNReal.toReal_pos hpos.ne' hlt.ne
 
+/-!
+## The assembled ordering chain of the four bound functions
+
+The comparison blocks above prove the three "upper" separations pairwise
+(`klrBound_lt_conjecturedBound`, `conjecturedBound_lt_benchmarkBound`) and record the exact
+KLR-over-Pommerenke ratio (`klrBound_div_pommerenkeBound`), and their docstrings assert the
+full ordering `pommerenke < klr < conjectured < benchmark`.  Here that chain is assembled into
+a single statement.  The bottom rung `pommerenke < klr` is proved pointwise (for `1 ≤ c`) via
+`√(log n) ≤ √n ≤ n < 2ec·n`, and then combined with the two upper rungs into `bounds_chain`.
+Unconditional facts about the bound *functions*; none of the deep axioms are used. -/
+
+/-- **The Pommerenke bound is below the KLR bound (pointwise).**  For `1 ≤ c` and `n ≥ 2`,
+`pommerenkeBound n = 1/(2en²) < c/(n√log n) = klrBound c n`.  Clearing the positive
+denominators reduces to `√(log n) < 2ec·n`, which holds because `√(log n) ≤ √n ≤ n` and
+`2ec ≥ 2e > 1`.  The pointwise companion of the exact ratio `klrBound_div_pommerenkeBound`. -/
+theorem pommerenkeBound_lt_klrBound_of_one_le (c : ℝ) (hc : 1 ≤ c) (n : ℕ) (hn : n ≥ 2) :
+    pommerenkeBound n < klrBound c n := by
+  simp only [pommerenkeBound, klrBound]
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast show 0 < n by omega
+  have hn2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hlog_pos : 0 < Real.log (n : ℝ) := Real.log_pos (by exact_mod_cast show 1 < n by omega)
+  have hsqrt_pos : 0 < Real.sqrt (Real.log (n : ℝ)) := Real.sqrt_pos.mpr hlog_pos
+  have he : 0 < Real.exp 1 := Real.exp_pos 1
+  have hlogle : Real.log (n : ℝ) ≤ (n : ℝ) := by
+    have := Real.add_one_le_exp (Real.log (n : ℝ)); rw [Real.exp_log hn_pos] at this; linarith
+  have hsqrtn_le : Real.sqrt (n : ℝ) ≤ (n : ℝ) := by
+    calc Real.sqrt (n : ℝ) ≤ Real.sqrt ((n : ℝ) ^ 2) := Real.sqrt_le_sqrt (by nlinarith)
+      _ = (n : ℝ) := Real.sqrt_sq hn_pos.le
+  have hA : Real.sqrt (Real.log (n : ℝ)) ≤ (n : ℝ) :=
+    (Real.sqrt_le_sqrt hlogle).trans hsqrtn_le
+  have h1 : (n : ℝ) * Real.sqrt (Real.log (n : ℝ)) ≤ (n : ℝ) ^ 2 := by nlinarith [hA, hn_pos]
+  have hK1 : (1 : ℝ) < 2 * Real.exp 1 * c := by nlinarith [Real.exp_one_gt_d9, hc, he]
+  rw [div_lt_div_iff₀ (by positivity) (by positivity), one_mul]
+  nlinarith [h1, hK1, mul_pos hn_pos hn_pos]
+
+/-- **The full ordering chain of the four bounds.**  For an admissible constant `1 ≤ c < π/2`
+and degree `n ≥ 3`,
+
+  `pommerenkeBound n < klrBound c n < conjecturedBound c n < benchmarkBound n`,
+
+i.e. `1/(2en²) < c/(n√log n) < c/n < π/(2n)`.  This assembles the pointwise bottom rung
+`pommerenkeBound_lt_klrBound_of_one_le` with the two upper rungs
+`klrBound_lt_conjecturedBound` and `conjecturedBound_lt_benchmarkBound` into the single
+ordering the comparison-block docstrings describe.  The admissible window `1 ≤ c < π/2 ≈ 1.5708`
+is non-empty.  Axiom-free. -/
+theorem bounds_chain (c : ℝ) (hc : 1 ≤ c) (hc' : c < Real.pi / 2) (n : ℕ) (hn : n ≥ 3) :
+    pommerenkeBound n < klrBound c n ∧
+    klrBound c n < conjecturedBound c n ∧
+    conjecturedBound c n < benchmarkBound n := by
+  have hcpos : 0 < c := by linarith
+  refine ⟨pommerenkeBound_lt_klrBound_of_one_le c hc n (by omega),
+    klrBound_lt_conjecturedBound c hcpos n hn,
+    conjecturedBound_lt_benchmarkBound c hc' n (by omega)⟩
+
 end Erdos1039
