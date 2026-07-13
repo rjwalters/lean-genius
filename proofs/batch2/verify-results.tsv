@@ -1920,7 +1920,7 @@ Erdos978Problem	RESIDUAL	parse-error
 Erdos979Problem	GREEN	
 Erdos97Problem	RESIDUAL	parse-error
 Erdos980Problem	RESIDUAL	unknown-const:Nat.Prime.nthPrime
-Erdos981Problem	RESIDUAL	signature-drift
+Erdos981Problem	GREEN	
 Erdos982Problem	GREEN	
 Erdos983Problem	GREEN	
 Erdos984Problem	GREEN	
@@ -2306,7 +2306,7 @@ PellEquationOQ01	RESIDUAL	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	RESIDUAL	rewrite-drift
 PentagonalNumberTheoremOQ01OQ01	RESIDUAL	rewrite-drift
 PentagonalNumberTheoremOQ01OQ02	RESIDUAL	rewrite-drift
-PerfectNumbers	RESIDUAL	signature-drift
+PerfectNumbers	GREEN	
 PerfectNumbersOQ03	RESIDUAL	type-mismatch
 PiTranscendental	GREEN	
 PicardIterationExplicitOQ0102	RESIDUAL	instance-synth

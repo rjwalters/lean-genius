@@ -34,6 +34,7 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.NumberTheory.LegendreSymbol.Basic
 
 open Filter Asymptotics Nat
+open scoped Topology
 
 namespace Erdos981
 
