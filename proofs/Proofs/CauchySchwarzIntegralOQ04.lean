@@ -1217,6 +1217,84 @@ theorem maccone_pati_stronger_than_robertson_sum {A B : E →ₗ[𝕜] E} (hA : 
   · rw [habs]; linarith [hpos, hmin_pos]
   · rw [habs]; linarith [hneg, hmin_neg]
 
+/-- **Schrödinger saturation — the full minimum-uncertainty family.**  Over a field with
+a genuine imaginary unit (`RCLike.I ≠ 0`, i.e. `ℂ`), for symmetric `A, B`, a state `ψ`
+and real shifts `a, b` with both centred vectors `u = (A−a)ψ`, `v = (B−b)ψ` nonzero, the
+**Schrödinger** bound `schrodinger_uncertainty` holds with **equality**
+
+    `¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪u,v⟫)² = ‖u‖²·‖v‖²`
+
+**iff** `u` and `v` are parallel, `v = r • u` for some `r ≠ 0`.
+
+Unlike the Robertson saturation `im_inner_sq_eq_iff_robertson_saturated` — which demands
+the *extra* purely-imaginary-ratio (vanishing-covariance) condition `Re⟪u,v⟫ = 0` — the
+Schrödinger bound is saturated by the **entire** proportional family.  With
+`u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ` these are *all* the minimum-uncertainty states — coherent
+**and** squeezed — `(B−⟨B⟩)ψ = r·(A−⟨A⟩)ψ`, `r ∈ ℂ∖{0}`; Robertson's subclass is the
+purely-imaginary slice `Re r = 0` (cf. `im_inner_smul_saturated_iff`).  This is the
+operator-level (physical, commutator-expectation) dressing of the inner-product
+equality `gram_eq_iff_parallel`.
+
+Proof: over `ℂ` the commutator norm is *exactly* `‖⟪ψ,[A,B]ψ⟫‖ = 2·|Im⟪u,v⟫|` — here
+`‖I‖ = 1`, so the Robertson estimate `hnb` of `robertson_uncertainty` is tight — whence
+`¼‖⟪ψ,[A,B]ψ⟫‖² = (Im⟪u,v⟫)²` and the Schrödinger equation collapses to the Gram
+equality `(Re⟪u,v⟫)² + (Im⟪u,v⟫)² = ‖u‖²‖v‖²`, characterized by `gram_eq_iff_parallel`. -/
+theorem schrodinger_saturated_iff {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) (hI : (RCLike.I : 𝕜) ≠ 0)
+    (hu : A ψ - (a : 𝕜) • ψ ≠ 0) (hv : B ψ - (b : 𝕜) • ψ ≠ 0) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) ^ 2
+      = ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2
+      ↔ ∃ r : 𝕜, r ≠ 0 ∧ B ψ - (b : 𝕜) • ψ = r • (A ψ - (a : 𝕜) • ψ) := by
+  set u := A ψ - (a : 𝕜) • ψ with hudef
+  set v := B ψ - (b : 𝕜) • ψ with hvdef
+  have hid : inner 𝕜 ψ (A (B ψ) - B (A ψ)) = inner 𝕜 u v - inner 𝕜 v u :=
+    inner_commutator_eq_sub hA hB ψ a b
+  have hconj : inner 𝕜 v u = (starRingEnd 𝕜) (inner 𝕜 u v) := (inner_conj_symm v u).symm
+  have hIeq : ‖(RCLike.I : 𝕜)‖ = 1 := RCLike.norm_I_of_ne_zero hI
+  have h2 : ‖(2 : 𝕜)‖ = 2 := RCLike.norm_two
+  -- Over ℂ the commutator norm is *exactly* `2·|Im⟪u,v⟫|` (Robertson's estimate is tight).
+  have hnb : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ = 2 * |RCLike.im (inner 𝕜 u v)| := by
+    rw [hid, hconj, RCLike.sub_conj, norm_mul, norm_mul, RCLike.norm_ofReal, h2, hIeq]
+    ring
+  have hcomm : (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      = (RCLike.im (inner 𝕜 u v)) ^ 2 := by
+    rw [hnb, mul_pow, sq_abs]; ring
+  rw [hcomm, add_comm]
+  exact gram_eq_iff_parallel hu hv
+
+/-- **Schrödinger saturation, variance form — the minimum-uncertainty capstone.**  For
+observables with **nonzero commutator expectation** `⟪ψ, (AB−BA)ψ⟫ ≠ 0` over `ℂ`
+(`RCLike.I ≠ 0`), the Schrödinger relation *at the expectation-value shifts*
+`a = ⟨A⟩ = Re⟪ψ,Aψ⟫`, `b = ⟨B⟩ = Re⟪ψ,Bψ⟫` (the physically standard variance form
+`schrodinger_variance_form`) is saturated
+
+    `Var_ψ(A)·Var_ψ(B) = ¼‖⟪ψ,[A,B]ψ⟫‖² + (Re⟪(A−⟨A⟩)ψ,(B−⟨B⟩)ψ⟫)²`
+
+**iff** the fluctuation vectors are proportional,
+`(B−⟨B⟩)ψ = r·(A−⟨A⟩)ψ` for some `r ≠ 0`.
+
+This is the clean physical statement: a state achieves the (covariance-corrected)
+minimum uncertainty **exactly** when its `B`-fluctuation is a scalar multiple of its
+`A`-fluctuation.  The nonvanishing-fluctuation side conditions of
+`schrodinger_saturated_iff` are *free* here — a nonzero commutator forces both variances
+strictly positive (`centred_ne_zero_of_commutator_ne_zero`), so no separate hypothesis
+`(A−⟨A⟩)ψ ≠ 0`, `(B−⟨B⟩)ψ ≠ 0` is needed. -/
+theorem schrodinger_variance_saturated_iff {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (hI : (RCLike.I : 𝕜) ≠ 0)
+    (hcomm : inner 𝕜 ψ (A (B ψ) - B (A ψ)) ≠ 0) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + RCLike.re (inner 𝕜 (A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ)
+            (B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ)) ^ 2
+      = ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+      ↔ ∃ r : 𝕜, r ≠ 0 ∧ B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ
+          = r • (A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ) := by
+  obtain ⟨hu, hv⟩ := centred_ne_zero_of_commutator_ne_zero hA hB ψ
+    (RCLike.re (inner 𝕜 ψ (A ψ))) (RCLike.re (inner 𝕜 ψ (B ψ))) hcomm
+  exact schrodinger_saturated_iff hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ))) hI hu hv
+
 /-! ### L² specialization — the integral Cauchy–Schwarz core
 
   OQ-04's problem statement names the *integral* Cauchy–Schwarz inequality in `L²`,
@@ -1315,3 +1393,5 @@ end CauchySchwarzIntegralOQ04
 #print axioms CauchySchwarzIntegralOQ04.maccone_pati_uncertainty_neg
 #print axioms CauchySchwarzIntegralOQ04.maccone_pati_variance_form
 #print axioms CauchySchwarzIntegralOQ04.maccone_pati_stronger_than_robertson_sum
+#print axioms CauchySchwarzIntegralOQ04.schrodinger_saturated_iff
+#print axioms CauchySchwarzIntegralOQ04.schrodinger_variance_saturated_iff
