@@ -243,3 +243,36 @@ the digit-sum-one ↔ prime-power characterization) is complete and axiom-free.
 ### Next Steps
 - Consider upstreaming `digitSum_add_le` and `not_dvd_choose_iff_digitSum_add` to Mathlib.
 - Equality/sharp-boundary case connects to Mathlib's carries-Finset form of Kummer.
+
+## Session 2026-07-12 (researcher-10) — power-of-two characterization (converse of digitSum_two_pow)
+
+**Mode:** REVISIT (RICH, core solved). **Outcome:** progress (3 axiom-free theorems).
+
+Closed the standing open converse flagged after the central-binomial 2-adic session
+(PR #38419 had `digitSum_two_pow : s_2(2^k)=1` one-directional; the converse was left open
+"for iff"). Added to `Erdos729LegendreGeneral.lean` (after `padicValNat_centralBinom_two_pow`):
+
+- `digitSum_two_eq_one_imp_two_pow : ∀ n, 0 < n → digitSum 2 n = 1 → ∃ k, n = 2^k` — the
+  converse. Strong induction on `n` via the digit recurrence `s_2(n) = n%2 + s_2(n/2)`
+  (from `Nat.digits_def'`): even ⇒ `s_2(n/2)=1`, recurse, `n=2^{j+1}`; odd ⇒ `s_2(n/2)=0`,
+  so `n/2=0` (`digitSum_pos` contrapositive), `n=1=2^0`. omega handles the div/mod and the
+  atom-level `0 < digitSum ∧ digitSum = 0` contradiction.
+- `digitSum_two_eq_one_iff : 0 < n → (s_2(n) = 1 ↔ ∃ k, n = 2^k)` — full characterization.
+- `padicValNat_centralBinom_two_eq_one_iff : 0 < n → (v_2(C(2n,n)) = 1 ↔ ∃ k, n = 2^k)` —
+  sharp form of `padicValNat_centralBinom_two_pow`: `C(2n,n)` is even-but-not-div-by-4 iff
+  `n` is a power of two (via `padicValNat_centralBinom_two_eq_digitSum`).
+
+**Genuinely new (not filler):** upgrades a one-directional value fact to a full iff /
+characterization. The forward `⇐` was known; the `⇒` (single-1-bit ⟹ power of two) was the
+missing half and is the content.
+
+### Verification
+Host `lean` v4.26.0 elab (Docker SIGBUS-prone): whole file **EXIT 0**, no errors/warnings.
+`#print axioms` on all three = `[propext, Classical.choice, Quot.sound]` — axiom-free (no
+sorryAx, no ofReduceBool). File 539 → ~600 L. Parent axiom `barreto_leeham_theorem`
+(in `Erdos729Problem.lean`) untouched; this general file stays 0-axiom.
+
+### Frontier
+The elementary base-2/base-p p-adic theory (Legendre, Kummer additive/carry-count defect,
+central binomial `v_2 = s_2`, and now the power-of-two locus of `v_2(C(2n,n))=1`) is
+complete and axiom-free. Only the deep parent `barreto_leeham_theorem` remains.

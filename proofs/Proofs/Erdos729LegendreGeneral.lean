@@ -449,6 +449,65 @@ theorem padicValNat_centralBinom_two_pow (k : ℕ) :
     padicValNat 2 (Nat.centralBinom (2 ^ k)) = 1 := by
   rw [padicValNat_centralBinom_two_eq_digitSum, digitSum_two_pow]
 
+/-! ### The power-of-two characterization: `s_2(n) = 1 ↔ n` is a power of two
+
+`digitSum_two_pow` gives one direction (`s_2(2^k) = 1`); this block supplies the
+**converse** `s_2(n) = 1 → ∃ k, n = 2^k`, upgrading the one-way fact to a full
+characterization.  The converse is the honest content: a positive integer has a single
+`1`-bit in binary exactly when it is a power of two.  It sharpens
+`padicValNat_centralBinom_two_pow` from a one-directional value to the **iff**
+`v_2(C(2n, n)) = 1 ↔ n` is a power of two — the exact locus where the central binomial
+coefficient is even but not a multiple of `4`. -/
+
+/-- **A positive integer with base-2 digit sum `1` is a power of two.**  The converse of
+`digitSum_two_pow`.  By strong induction on `n` via the digit recurrence
+`s_2(n) = n % 2 + s_2(n / 2)`: if `n` is even the leading bit is `0`, so `s_2(n/2) = 1`
+and `n/2 = 2^j` by induction, whence `n = 2^{j+1}`; if `n` is odd the leading bit is `1`,
+forcing `s_2(n/2) = 0`, hence `n/2 = 0` (`digitSum_pos`) and `n = 1 = 2^0`. -/
+theorem digitSum_two_eq_one_imp_two_pow :
+    ∀ n : ℕ, 0 < n → digitSum 2 n = 1 → ∃ k, n = 2 ^ k := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn hs
+    have hrec : digitSum 2 n = n % 2 + digitSum 2 (n / 2) := by
+      show (Nat.digits 2 n).sum = n % 2 + (Nat.digits 2 (n / 2)).sum
+      rw [Nat.digits_def' (by norm_num : 1 < 2) hn]; simp
+    rcases Nat.mod_two_eq_zero_or_one n with h0 | h1
+    · -- `n` even: leading bit `0`, so `s_2(n/2) = 1` and we recurse.
+      have hd1 : digitSum 2 (n / 2) = 1 := by omega
+      have hpos : 0 < n / 2 := by omega
+      have hlt : n / 2 < n := Nat.div_lt_self hn (by norm_num)
+      obtain ⟨j, hj⟩ := ih (n / 2) hlt hpos hd1
+      have hn2 : n = 2 * (n / 2) := by omega
+      exact ⟨j + 1, by rw [hn2, hj, pow_succ, Nat.mul_comm]⟩
+    · -- `n` odd: leading bit `1` uses up the whole digit sum, so `s_2(n/2) = 0`.
+      have hd0 : digitSum 2 (n / 2) = 0 := by omega
+      have hz : n / 2 = 0 := by
+        by_contra hne
+        have := digitSum_pos (p := 2) hne
+        omega
+      exact ⟨0, by rw [pow_zero]; omega⟩
+
+/-- **The base-2 digit sum is `1` iff `n` is a power of two** (`n ≥ 1`).  Combines
+`digitSum_two_pow` (`⇐`) with `digitSum_two_eq_one_imp_two_pow` (`⇒`): among positive
+integers, `s_2(n) = 1` characterizes the powers of two exactly. -/
+theorem digitSum_two_eq_one_iff (n : ℕ) (hn : 0 < n) :
+    digitSum 2 n = 1 ↔ ∃ k, n = 2 ^ k := by
+  refine ⟨digitSum_two_eq_one_imp_two_pow n hn, ?_⟩
+  rintro ⟨k, rfl⟩
+  exact digitSum_two_pow k
+
+/-- **`v_2(C(2n, n)) = 1 ↔ n` is a power of two** (`n ≥ 1`).  The sharp form of
+`padicValNat_centralBinom_two_pow`: the central binomial coefficient `C(2n, n)` is even
+but not divisible by `4` exactly when `n` is a power of two, since
+`v_2(C(2n, n)) = s_2(n)` (`padicValNat_centralBinom_two_eq_digitSum`) and `s_2(n) = 1`
+characterizes the powers of two. -/
+theorem padicValNat_centralBinom_two_eq_one_iff (n : ℕ) (hn : 0 < n) :
+    padicValNat 2 (Nat.centralBinom n) = 1 ↔ ∃ k, n = 2 ^ k := by
+  rw [padicValNat_centralBinom_two_eq_digitSum]
+  exact digitSum_two_eq_one_iff n hn
+
 /-! ### The carry-count form: bridging `digitSum` to Mathlib's `padicValNat_choose'`
 
 The Kummer identities above are phrased through the base-`p` **digit sum**.  Mathlib's
@@ -535,5 +594,8 @@ theorem not_dvd_choose_iff_no_carries (p m n : ℕ) {b : ℕ} (hp : p.Prime)
 #check @one_le_padicValNat_centralBinom_two
 #check @digitSum_two_pow
 #check @padicValNat_centralBinom_two_pow
+#check @digitSum_two_eq_one_imp_two_pow
+#check @digitSum_two_eq_one_iff
+#check @padicValNat_centralBinom_two_eq_one_iff
 
 end Erdos729Legendre
