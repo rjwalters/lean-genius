@@ -52,7 +52,7 @@ structure Hypergraph (V : Type*) where
 All edges have exactly r vertices.
 -/
 def IsUniform (H : Hypergraph V) (r : ℕ) : Prop :=
-  ∀ e ∈ H.edges, (Set.toFinite e).toFinset.card = r
+  ∀ e ∈ H.edges, e.ncard = r
 
 /--
 **Intersecting hypergraph:**
