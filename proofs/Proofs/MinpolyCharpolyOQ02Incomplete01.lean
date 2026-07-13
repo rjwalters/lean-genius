@@ -892,4 +892,62 @@ theorem exists_diagonalizable_sub_not_diagonalizable :
   obtain ⟨M, N, hM, hN, hMN⟩ := exists_diagonalizable_add_not_diagonalizable
   exact ⟨M, -N, hM, IsDiagonalizable.neg hN, by rwa [sub_neg_eq_add]⟩
 
+/-! ### The minimal polynomial divides the splitting annihilator (constructive squarefreeness)
+
+The splitting annihilator `∏_{λ ∈ S}(M − λ·1) = 0` (over the distinct eigenvalues `S`,
+`prod_sub_eigen_smul_eq_zero`) is exactly `aeval M` applied to the polynomial
+`∏_{λ ∈ S}(X − C λ)`.  Hence the minimal polynomial `minpoly K M` divides this product of
+*distinct* linear factors (`minpoly.dvd`), which is separable — its roots, the elements of
+`S`, are pairwise distinct (`separable_prod_X_sub_C_iff'`) — and therefore squarefree.  This
+gives a self-contained, constructive proof that the minimal polynomial of a diagonalizable
+matrix is squarefree, built entirely from this file's splitting annihilator rather than the
+parent's abstract `Matrix.IsDiagonalizable.squarefree_minpoly`.  It is the polynomial-level
+counterpart of `exists_prod_linear_factors_eq_zero`. -/
+
+open Polynomial in
+/-- `aeval M` of the product `∏_{λ ∈ S}(X − C λ)` over the distinct eigenvalues equals the
+splitting-annihilator list product `∏_{λ ∈ S}(M − λ·1)`, hence vanishes. -/
+theorem aeval_prod_X_sub_C_eigen {M P : Matrix n n K} (hP : IsUnit P.det)
+    (hD : (P⁻¹ * M * P).IsDiag) :
+    aeval M (∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, (X - C s)) = 0 := by
+  rw [map_prod,
+    show (∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, aeval M (X - C s))
+        = ∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ,
+            (M - s • (1 : Matrix n n K)) from
+      Finset.prod_congr rfl (fun s _ => by
+        rw [map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]),
+    ← Finset.prod_map_toList]
+  exact prod_sub_eigen_smul_eq_zero hP hD
+
+open Polynomial in
+/-- **The minimal polynomial divides the splitting annihilator.**  For a matrix `M`
+diagonalized by `P`, `minpoly K M` divides `∏_{λ ∈ S}(X − C λ)` over the finite set `S` of
+distinct eigenvalues (diagonal entries of `P⁻¹MP`). -/
+theorem IsDiagonalizable.minpoly_dvd_prod_eigen {M P : Matrix n n K} (hP : IsUnit P.det)
+    (hD : (P⁻¹ * M * P).IsDiag) :
+    minpoly K M ∣
+      ∏ s ∈ Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ, (X - C s) := by
+  apply minpoly.dvd
+  exact aeval_prod_X_sub_C_eigen hP hD
+
+open Polynomial in
+/-- The product `∏_{s ∈ S}(X − C s)` over a `Finset` of scalars is squarefree: it is separable
+because its roots (the elements of `S`) are pairwise distinct. -/
+theorem squarefree_prod_X_sub_C_finset (S : Finset K) :
+    Squarefree (∏ s ∈ S, (X - C s)) :=
+  (Polynomial.separable_prod_X_sub_C_iff'.mpr (fun _ _ _ _ h => h)).squarefree
+
+open Polynomial in
+/-- **Constructive squarefreeness of the minimal polynomial of a diagonalizable matrix.**
+Since `minpoly K M` divides the separable product `∏_{λ ∈ S}(X − C λ)` (the splitting
+annihilator), it is itself squarefree.  A self-contained re-derivation of the parent's
+`Matrix.IsDiagonalizable.squarefree_minpoly`, sourced from this file's annihilator. -/
+theorem IsDiagonalizable.squarefree_minpoly_of_annihilator {M : Matrix n n K}
+    (hM : M.IsDiagonalizable) : Squarefree (minpoly K M) := by
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact Squarefree.squarefree_of_dvd
+    (IsDiagonalizable.minpoly_dvd_prod_eigen hPdet hD)
+    (squarefree_prod_X_sub_C_finset _)
+
 end MinpolyCharpolyOQ02Incomplete01
