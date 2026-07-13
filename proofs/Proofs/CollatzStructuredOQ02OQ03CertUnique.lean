@@ -101,4 +101,68 @@ theorem affValid_prefix_deriveVec {b r : ℕ} {v : List Bool}
     v <+: deriveVec (2 * b + 1) (2 ^ b) r :=
   affValid_isPrefix hv (affValidB_sound (affValidB_deriveVec _ _ _)) hlen
 
+/-! ## Part XI (cont.) — the valid certificates are *exactly* the prefixes of `deriveVec`
+
+`affValid_prefix_deriveVec` shows one containment: every valid certificate is a prefix of the
+canonical vector.  The converse containment is **prefix closure** of validity, which holds for
+a structural reason: the `AffValid` inductive consumes bits from the *front*, so truncating a
+valid transcript's tail only ends the derivation earlier at `nil` while every surviving head
+condition is unchanged.  Together the two containments pin the valid-certificate set of a class
+to a single chain — the set of initial segments of `deriveVec` — completing the exact
+characterization of the residue-determined parity window. -/
+
+/-- **Prefix closure of validity.**  If `v` is a valid certificate for the affine class
+`(c, d)`, then so is every prefix `w` of `v`.  Each `AffValid` constructor pins the head parity
+and recurses into the tail with the class advanced one Collatz step, so dropping trailing bits
+just terminates the derivation sooner at `nil`; the head conditions that remain are untouched.
+Hence the valid certificates for a fixed class are *downward closed* under the prefix order. -/
+theorem affValid_prefix_closed {v w : List Bool} {c d : ℕ}
+    (hv : AffValid v c d) (hw : w <+: v) : AffValid w c d := by
+  induction hv generalizing w with
+  | nil =>
+      obtain ⟨t, ht⟩ := hw
+      cases w with
+      | nil => exact AffValid.nil
+      | cons b w' => exact absurd ht (List.cons_ne_nil _ _)
+  | odd hc hd _htail ih =>
+      obtain ⟨t, ht⟩ := hw
+      cases w with
+      | nil => exact AffValid.nil
+      | cons b w' =>
+          rw [List.cons_append] at ht
+          injection ht with hb hrest
+          subst hb
+          exact AffValid.odd hc hd (ih ⟨t, hrest⟩)
+  | even hc hd _htail ih =>
+      obtain ⟨t, ht⟩ := hw
+      cases w with
+      | nil => exact AffValid.nil
+      | cons b w' =>
+          rw [List.cons_append] at ht
+          injection ht with hb hrest
+          subst hb
+          exact AffValid.even hc hd (ih ⟨t, hrest⟩)
+
+/-- The canonical auto-derived vector is a valid certificate for its class (named for reuse
+below; the term appears inline in `affValid_eq_deriveVec`). -/
+theorem affValid_deriveVec (b r : ℕ) :
+    AffValid (deriveVec (2 * b + 1) (2 ^ b) r) (2 ^ b) r :=
+  affValidB_sound (affValidB_deriveVec _ _ _)
+
+/-- **Exact characterization of valid certificates.**  A parity list `v` is a valid certificate
+for the residue class `r (mod 2^b)` *within* the residue-determined window (length not exceeding
+the canonical vector's) **iff** it is a prefix of the auto-derived `deriveVec (2b+1) (2^b) r`.
+So the valid certificates for the class are *exactly* the initial segments of one canonical
+vector: forward is `affValid_prefix_deriveVec`, backward is `affValid_prefix_closed` applied to
+`affValid_deriveVec`.  This closes the uniqueness/completeness thread — the residue-determined
+window admits a single chain of transcripts, not a branching family. -/
+theorem affValid_iff_prefix_deriveVec {b r : ℕ} {v : List Bool} :
+    (AffValid v (2 ^ b) r ∧ v.length ≤ (deriveVec (2 * b + 1) (2 ^ b) r).length)
+      ↔ v <+: deriveVec (2 * b + 1) (2 ^ b) r := by
+  constructor
+  · rintro ⟨hv, hlen⟩
+    exact affValid_prefix_deriveVec hv hlen
+  · intro hpre
+    exact ⟨affValid_prefix_closed (affValid_deriveVec b r) hpre, hpre.length_le⟩
+
 end CollatzStructuredOQ02OQ03
