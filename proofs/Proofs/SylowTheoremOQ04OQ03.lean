@@ -1161,6 +1161,33 @@ theorem card_PSL2 (hp : 3 ≤ p) :
   rw [hidx] at hmul
   omega
 
+/-- **`|PSL(2, p)| ≥ 60` for `p ≥ 5`.**  Evaluating `card_PSL2 = p(p²−1)/2` at `p ≥ 5`
+gives `p(p²−1) ≥ 5·24 = 120`, so `|PSL(2, p)| ≥ 60` — matching the classical fact that
+`PSL(2, 5) ≅ A₅` (order `60`) is the smallest member of the family, the smallest nonabelian
+simple group.  A concrete order floor on the target group of the simplicity theorem. -/
+theorem card_PSL2_ge_sixty (hp : 5 ≤ p) :
+    60 ≤ Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
+  rw [card_PSL2 (by omega)]
+  have hp2 : 25 ≤ p ^ 2 := by nlinarith
+  have hq : 24 ≤ p ^ 2 - 1 := by omega
+  have hpq : 120 ≤ p * (p ^ 2 - 1) := by
+    calc 120 = 5 * 24 := by norm_num
+      _ ≤ p * (p ^ 2 - 1) := Nat.mul_le_mul hp hq
+  omega
+
+/-- **`|PSL(2, p)| > 1` for `p ≥ 5`.**  The nontriviality floor, immediate from
+`card_PSL2_ge_sixty`. -/
+theorem one_lt_card_PSL2 (hp : 5 ≤ p) :
+    1 < Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) :=
+  lt_of_lt_of_le (by norm_num) (card_PSL2_ge_sixty hp)
+
+/-- **`PSL(2, p)` is nontrivial for `p ≥ 5`.**  A prerequisite of the simplicity statement
+(a simple group is by definition nontrivial): since `|PSL(2, p)| ≥ 60 > 1`, the group has more
+than one element (`Finite.one_lt_card_iff_nontrivial`). -/
+theorem nontrivial_PSL2 (hp : 5 ≤ p) :
+    Nontrivial (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) :=
+  Finite.one_lt_card_iff_nontrivial.mp (one_lt_card_PSL2 hp)
+
 /-!
 ## The unipotent Sylow `p`-subgroup is cyclic of order `p`
 
