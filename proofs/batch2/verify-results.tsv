@@ -1659,7 +1659,7 @@ Erdos753Problem	GREEN
 Erdos754Problem	GREEN	
 Erdos756Problem	RESIDUAL	proof-drift
 Erdos757Problem	RESIDUAL	unknown-const:Set.Finite.toFinset_card
-Erdos758Problem	RESIDUAL	proof-drift
+Erdos758Problem	GREEN	
 Erdos75Problem	GREEN	
 Erdos760Problem	GREEN	
 Erdos761Problem	GREEN	
@@ -1984,7 +1984,7 @@ FiveColorTheorem	GREEN
 FourColorTheorem	GREEN	
 FourColorTheoremOQ01	RESIDUAL	unknown-const:Finset.ne_univ_iff_exists_notMem
 FourColorTheoremOQ02	GREEN	
-FourSquareDistributionOQ01	RESIDUAL	proof-drift
+FourSquareDistributionOQ01	GREEN	
 FourSquareDistributionOQ04Arrange	GREEN	
 FourSquareDistributionOQ04ArrangeProof	GREEN	
 FourSquareDistributionOQ04Bridge	GREEN	
@@ -2423,7 +2423,7 @@ ShannonSourceCodingOQ02	RESIDUAL	type-mismatch
 ShannonSourceCodingOQ03	RESIDUAL	unknown-const:Fintype.sum_piFinset_succ
 ShapleyFolkman	GREEN	
 ShapleyFolkmanAristotle	RESIDUAL	proof-drift
-ShapleyFolkmanOQ01	RESIDUAL	type-mismatch
+ShapleyFolkmanOQ01	GREEN	
 ShapleyFolkmanOQ03	GREEN	
 ShapleyFolkmanOQ04	GREEN	
 SkolemNoetherMatrixAut	RESIDUAL	unknown-const:Matrix.isUnit_det_iff_isUnit_mulVecLin
@@ -2487,7 +2487,7 @@ SpernerTuckerCrossPolytopeHemisphereIso	GREEN
 SpernerTuckerCrossPolytopeLabelling	GREEN	
 SpernerTuckerDoorGraph	GREEN	
 SpernerTuckerDoorGraphTower	GREEN	
-SpernerTuckerEndpointTransport	RESIDUAL	proof-drift
+SpernerTuckerEndpointTransport	GREEN	
 SpernerTuckerEquatorMatchingGraph	GREEN	
 SpernerTuckerHexagonDirectedEngine	GREEN	
 SpernerTuckerHexagonPseudomanifold	GREEN	
@@ -2602,7 +2602,7 @@ TestHLTension	RESIDUAL	unknown-const:Finset.card_sdiff_eq_card_sub_card_inter
 TestHolderApi	RESIDUAL	unknown-const:MeasureTheory.snorm
 TestSphereLocEuc	RESIDUAL	proof-drift
 TestWolstenholme	RESIDUAL	unknown-const:ZMod.prod_univ_prime
-TestZetaNonzero	RESIDUAL	proof-drift
+TestZetaNonzero	GREEN	
 ThreeSquares	GREEN	
 ThreeSquaresGaussEureka	GREEN	
 ThreeSquaresRationalBridge	GREEN	

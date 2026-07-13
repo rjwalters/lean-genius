@@ -65,7 +65,7 @@ noncomputable def Decomposition.map {ι : Type*} {S : ι → Set E} {t : Finset 
     rw [← LinearMap.image_convexHull]
     exact Set.mem_image_of_mem f (D.mem_convexHull i hi)
   point_eq_zero i hi := by rw [D.point_eq_zero i hi, map_zero]
-  sum_eq := by rw [← D.sum_eq, map_sum]
+  sum_eq := by rw [← map_sum]; exact congrArg f D.sum_eq
 
 @[simp]
 lemma Decomposition.map_point {ι : Type*} {S : ι → Set E} {t : Finset ι} {x : E}
