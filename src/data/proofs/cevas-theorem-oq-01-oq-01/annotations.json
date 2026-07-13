@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-ceva0101-ambient-setting",
+    "proofId": "cevas-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Basis-Free Setting: General Euclidean Geometry, Not ℝ²",
+    "content": "Unlike the affine companion file (CevasTheoremOQ01.lean), which reasons with signed side ratios in coordinates, this file works directly inside Mathlib's abstract Euclidean geometry: an arbitrary real inner-product space V (NormedAddCommGroup + InnerProductSpace ℝ) together with a torsor P of points (MetricSpace + NormedAddTorsor V P). Angles are EuclideanGeometry.angle (∠), distances are the torsor metric, and cevian feet are pinned down by strict betweenness (Sbtw ℝ B D C) rather than coordinate parameters. Because nothing here fixes a basis or a dimension, every result applies to any Euclidean model Mathlib supports — the plane, three-space, or an infinite-dimensional Hilbert space restricted to a triangle. The module docstring frames the two ingredients the file supplies: the cevian ratio law and its cyclic product, the trigonometric companion of the affine form.",
+    "mathContext": "V \\text{ a real inner-product space},\\; P \\text{ a } \\mathrm{NormedAddTorsor}\\text{ over } V;\\quad \\angle = \\mathrm{EuclideanGeometry.angle},\\quad D \\text{ constrained by } \\mathrm{Sbtw}\\,\\mathbb{R}\\,B\\,D\\,C.",
+    "significance": "context",
+    "relatedConcepts": ["inner-product space", "NormedAddTorsor", "EuclideanGeometry.angle", "basis-free geometry"],
+    "prerequisites": ["InnerProductSpace", "MetricSpace", "Sbtw"]
+  },
+  {
+    "id": "ann-ceva0101-ncol-perm",
+    "proofId": "cevas-theorem-oq-01-oq-01",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "technique",
+    "title": "Permutation-Invariance of Non-Collinearity",
+    "content": "ncol_perm is a small but pervasive bookkeeping lemma: it transports a three-point non-collinearity statement ¬Collinear ℝ {a,b,c} to any reindexing ¬Collinear ℝ {x,y,z} whose underlying set is equal. Its one-line proof (rw [hs]; exact h) exploits that Collinear is a predicate on the point set, so it does not see the order in which the points are listed. This matters because Mathlib's law of sines, dist_eq_dist_mul_sin_angle_div_sin_angle, expects its non-collinearity hypothesis in a specific vertex order; ncol_perm lets a single hypothesis hABC be reshaped on demand (to BDA, CDA, BCA, CAB, …) each time the law is invoked, avoiding a proliferation of separately-proved facts. The set-equality side conditions are themselves discharged uniformly by `ext p; simp only [...]; tauto`.",
+    "mathContext": "\\{x,y,z\\} = \\{a,b,c\\} \\;\\Rightarrow\\; \\bigl(\\neg\\mathrm{Collinear}\\,\\{a,b,c\\} \\Rightarrow \\neg\\mathrm{Collinear}\\,\\{x,y,z\\}\\bigr),\\quad\\text{since collinearity depends only on the set.}",
+    "significance": "technical",
+    "relatedConcepts": ["collinearity", "set equality", "permutation invariance", "law of sines vertex order"],
+    "prerequisites": ["Collinear", "Set.ext", "tauto"]
+  },
+  {
     "id": "ann-ceva0101-not-collinear-cevian",
     "proofId": "cevas-theorem-oq-01-oq-01",
     "range": { "startLine": 53, "endLine": 68 },
