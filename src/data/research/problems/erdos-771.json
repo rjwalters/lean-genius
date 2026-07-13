@@ -9,7 +9,7 @@
   "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
   "currentState": "Verified the elementary Erdős–Graham construction in a new self-contained file; the deep asymptotics remain axiomatized in the companion file.",
   "knowledge": {
-    "progressSummary": "SOLVED + EXACT: Erdos771Problem.lean 0-sorry/2-axiom (deep external Erdos-Graham/Alon-Freiman, irreducible). The benchmark family now has the SHARP EXACT closed form maxAvoidingSize n m = n - ceil(m/2) for 1<=m<=n (matching lower + upper bounds), completing the previously one-sided bound. The 2 remaining axioms are the deep asymptotic external results.",
+    "progressSummary": "PROGRESS: Proved the GENERAL optimality upper bound |S| ≤ n − ⌈m/2⌉ for m-avoiding S⊆{1,…,n} (1≤m≤n) via a disjoint family of m-representations — subsumes the four hand-proved per-m rungs at once and settles the small-m regime. 0-sorry/0-axiom. Deep asymptotics remain blocked.",
     "builtItems": [
       "prime_multiples_size in Erdos771Construction.lean:64",
       "prime_multiples_avoid in Erdos771Construction.lean:78",
@@ -26,7 +26,8 @@
       "two_mul_sum_Icc_n (Erdos771Problem.lean): Gauss closed form 2·∑_{a=1}^n a = n(n+1)",
       "subsetSums_Icc_n (Erdos771Problem.lean): subsetSums {1,…,n} = Icc 1 (n(n+1)/2)",
       "avoid_full_iff (Erdos771Problem.lean): AvoidSum {1,…,n} m ↔ m=0 ∨ n(n+1)/2 < m (sharp)",
-      "maxAvoidingSize_eq_n_iff (Erdos771Problem.lean): maxAvoidingSize n m = n ↔ m=0 ∨ n(n+1)/2 < m"
+      "maxAvoidingSize_eq_n_iff (Erdos771Problem.lean): maxAvoidingSize n m = n ↔ m=0 ∨ n(n+1)/2 < m",
+      "avoid_card_le_general + supporting blk/blk_sum/blk_subset/blk_disjoint/sum_mem_subsetSums + avoid_card_le_general_matches_ladder in Erdos771GeneralUpperBound.lean (7 decls, 0-sorry/0-axiom)"
     ],
     "insights": [
       "If every element of S is a multiple of p, so is every subset sum, so S avoids any m with p ∤ m — the engine of the Erdős–Graham lower bound. Primality is not even needed for avoidance.",
@@ -35,7 +36,8 @@
       "In this Docker environment the codegen crash (exit 135/139) is nondeterministic and can MASK a real parse/elaboration error; capture full build output (not tail) to see the actual diagnostic. Here the true error was an open-Classical-in placed after a doc-comment.",
       "Sharp closed-form lower bound maxAvoidingSize n m >= n - ceil(m/2) (= n-(m+1)/2) for 1<=m<=n, via witness S = {ceil(m/2),...,n} \\ {m}: strictly beats interval_avoiding_lower (n-m) and is TIGHT — matches exact m=1..4 values (n-1,n-1,n-2,n-2). Conjecture (upper bound, follow-up): equality holds via ceil(m/2) pairwise-disjoint sum-m subsets {m},{i,m-i}.",
       "EXACT closed form maxAvoidingSize n m = n - ceil(m/2) (= n - (m+1)/2) for 1<=m<=n, upgrading the previously one-sided lower bound to equality. Upper bound: any m-avoiding S in {1..n} keeps at most floor(m/2) elements of {1..m}, since x |-> min x (m-x) injects S cap {1..m} into {1..floor(m/2)} (a collision forces two distinct elements summing to m, a forbidden subset sum), plus at most n-m elements above m. Recovers the tabulated small-m values n-1,n-1,n-2,n-2 for m=1..4 uniformly. Axiom-free (Erdos771Problem.lean: maxAvoidingSize_le_sub_ceil_half, maxAvoidingSize_eq_sub_ceil_half).",
-      "Sharp avoidance threshold: {1,…,n} is a COMPLETE sequence — its subset sums realise EVERY value in [1, n(n+1)/2]. Hence the full box avoids m iff m=0 or m > n(n+1)/2, and maxAvoidingSize n m = n exactly on that boundary. Sharpens the crude n²<m threshold of avoid_full/maxAvoidingSize_eq_of_lt to the exact total n(n+1)/2."
+      "Sharp avoidance threshold: {1,…,n} is a COMPLETE sequence — its subset sums realise EVERY value in [1, n(n+1)/2]. Hence the full box avoids m iff m=0 or m > n(n+1)/2, and maxAvoidingSize n m = n exactly on that boundary. Sharpens the crude n²<m threshold of avoid_full/maxAvoidingSize_eq_of_lt to the exact total n(n+1)/2.",
+      "GENERAL upper bound (small-m regime): any m-avoiding S⊆{1,…,n} with 1≤m≤n has |S| ≤ n − ⌈m/2⌉. Mechanism: the ⌈m/2⌉ representations {m},{1,m−1},…,{i,m−i} are pairwise-disjoint m-summing subsets of {1,…,n}; an avoiding set omits ≥1 element from each, forcing ⌈m/2⌉ distinct deletions. Subsumes the m=1..4 ladder uniformly."
     ],
     "mathlibGaps": [],
     "nextSteps": [
