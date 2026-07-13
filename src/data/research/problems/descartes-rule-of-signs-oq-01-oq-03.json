@@ -38,7 +38,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Solved + degree-2 sign-change side COMPLETE. Sturm⟹Descartes formalized (conditional on SturmReduction bridge; unconditional on linear X−c). The coefficient sign-change count V(a·X²+b·X+c) is now determined for EVERY real quadratic in all sign configs of (a,b,c) (§4 X²±1, §12 nonzero-middle, this session b=0 general + tight witness X²−3X+2). 0 sorries; the file carries 5 deep standing axioms for the general Descartes direction (nextStep #3), not elementarily removable.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-12): general Fin n sign-change extremes + ceiling (V<=n-1, alternating=n-1, same-sign=0) uniformizing the Fin 3 template; axiom-free, offline EXIT 0. Deep B1-B3-for-general-p direction remains axiomatized.",
     "builtItems": [
       "upper_bound_core / parity_core: omega-closed reduction skeleton over N (axiom-free)",
       "SturmReduction structure bridging Sturm's variation count to Descartes' coefficient sign-change count",
@@ -53,7 +53,8 @@
       "signChangesInCoeffs_eq_natDegree_of_alternating (r6): polynomial-level SHARPNESS of Descartes' degree bound — a nowhere-zero, strictly sign-alternating coefficient sequence gives V(p) = natDegree p exactly; lifts the sequence-level countSignChanges_alternating to polynomials, the companion of signChangesInCoeffs_le_natDegree — axiom-free",
       "x3_minus_x2_plus_x_minus_1_signChanges (r6): first concrete degree-3 validation, signChangesInCoeffs (X^3 - X^2 + X - 1) = 3 (coeff sequence [1,-1,1,-1], Descartes-tight cubic), derived from the general sharpness theorem — axiom-free",
       "signChangesInCoeffs_quadratic_mid_zero_one/_mid_zero_no_change: the b=0 general quadratic a·X²+c count (general form of X²∓1), completing V(a·X²+b·X+c) for ALL sign configs of (a,b,c)",
-      "signChanges_x2_sub_3x_add_2: concrete tight witness X²−3X+2=(X−1)(X−2) with V=2 attaining the degree-2 Descartes bound (two distinct positive roots)"
+      "signChanges_x2_sub_3x_add_2: concrete tight witness X²−3X+2=(X−1)(X−2) with V=2 attaining the degree-2 Descartes bound (two distinct positive roots)",
+      "countSignChanges_le_of_nowhere_zero, countSignChanges_alternating_eq, countSignChanges_same_sign_eq_zero (general Fin n bounds) in DescartesRuleOfSignsOQ01OQ03.lean"
     ],
     "insights": [
       "The entire 'exact count => bound + parity' content reduces to two omega lemmas once the count is written as a non-increasing difference hi - lo; the inequality and the parity fall out of upper_bound_core and parity_core respectively.",
@@ -63,7 +64,8 @@
       "The base file's axiomatised concrete counts (example_x2_minus_1_sign_changes = 1, example_x2_plus_1_sign_changes = 0) are removable: with a Fin 3 middle-zero sign-change lemma the coefficient sequences [1,0,-1] and [1,0,1] are counted axiom-free (natDegree via compute_degree!, coefficients via simp on coeffSequence/coeff_X_pow/coeff_one).",
       "The full Fin 3 sign-change count is governed by the two ADJACENT pairs: count = [f0*f1<0] + [f1*f2<0] whenever the middle f1 is nonzero (the jump-over pair (0,2) is impossible once f1 != 0). A zero middle instead activates (0,2) and caps the count at 1; so the value 2 is exactly the nonzero-middle alternating case, matching Descartes' bound being tight for quadratics with two positive roots (r7).",
       "The degree bound V(p) <= natDegree p is SHARP at the polynomial level: any p whose coefficients are all nonzero and strictly alternate in sign attains V(p) = natDegree p (signChangesInCoeffs_eq_natDegree_of_alternating), a direct lift of the sequence-level countSignChanges_alternating via coeffSequence; the cubic X^3-X^2+X-1 realises the degree-3 case (r6).",
-      "§4 (de-axiomatize X²±1) and §12 (general nonzero-middle quadratic sign-change count) were already complete from prior sessions; the stale nextSteps did not reflect §12."
+      "§4 (de-axiomatize X²±1) and §12 (general nonzero-middle quadratic sign-change count) were already complete from prior sessions; the stale nextSteps did not reflect §12.",
+      "General Fin n sign-change bounds (DescartesRuleOfSignsOQ01OQ03.lean): V(f)<=n-1 universal ceiling (sequence form of Descartes degree bound), all-alternating => V=n-1 (maximal), all-same-sign => V=0. One-line corollaries of countSignChanges_nowhere_zero + card_adjacent; generalize the hand-written Fin 3 fin_cases family to arbitrary n."
     ],
     "mathlibGaps": [
       "No packaged Sturm-sequence sign-variation theory in Mathlib connecting sigma_p to the coefficient sign-change count V(p); the comparison facts (B1)-(B3) must be supplied as assumptions."
