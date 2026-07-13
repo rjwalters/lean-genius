@@ -1,6 +1,7 @@
 import Mathlib.RingTheory.HahnSeries.Basic
 import Mathlib.RingTheory.HahnSeries.Multiplication
 import Mathlib.RingTheory.HahnSeries.Summable
+import Mathlib.RingTheory.HahnSeries.Valuation
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
@@ -1614,6 +1615,151 @@ theorem ramificationValueSubgroup_sup (n m : ℕ+) :
     linear_combination (-(k : ℚ)) * hbez
 
 end ValueGroupSubgroup
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART XVI: THE ORDER VALUATION AS A MATHLIB `AddValuation`
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Part XVI: `orderTop` is a genuine `HahnSeries.addVal` on the Puiseux field
+
+Parts XIII–XV computed the **value group** — the image of `orderTop` — as a raw set, an
+`AddSubgroup ℚ`, and a directed tower. But `orderTop` is not merely a function with a nice
+image: it is an **additive valuation** in the sense of Mathlib's `AddValuation`, carrying
+the two defining axioms
+
+* `v(fg) = v(f) + v(g)` (multiplicativity), and
+* `min (v f) (v g) ≤ v(f+g)` (the ultrametric / strong-triangle inequality).
+
+Because `HahnSeries ℚ K` is itself a **field** (Mathlib `HahnSeries.instField`, since `ℚ`
+is a `LinearOrderedAddCommGroup` and `K` is a field), the valuation additionally satisfies
+the field laws `v(f⁻¹) = -v(f)` and `v(f/g) = v(f) - v(g)`, and is nondegenerate
+(`v(f) = ⊤ ↔ f = 0`).  This part records that upgrade: the ad-hoc `orderTop` bookkeeping of
+Parts XIII–XV *is* the Mathlib valuation `HahnSeries.addVal ℚ K`, whose value group was
+already computed to be all of `ℚ`.
+
+* `puiseuxAddVal` — `HahnSeries.addVal ℚ K`, the order valuation, as a first-class object;
+* `puiseuxAddVal_apply` — it agrees with `orderTop`, the bridge back to Parts XIII–XV;
+* `puiseuxAddVal_mul` / `puiseuxAddVal_add` — the two valuation axioms
+  (multiplicativity + ultrametric) — facts the `orderTop`-only work never stated;
+* `puiseuxAddVal_inv` / `puiseuxAddVal_div` / `puiseuxAddVal_pow` — the field/power laws;
+* `puiseuxAddVal_eq_top_iff` — nondegeneracy;
+* `puiseuxAddVal_surjective` / `puiseux_puiseuxAddVal_range` — the value group is **all** of
+  `WithTop ℚ` (every value, `⊤` included, is attained), the valuation-object form of
+  `puiseux_orderTop_range`;
+* `exists_puiseux_puiseuxAddVal_eq` — every finite value is attained by a *Puiseux* series
+  (ties the valuation to the subfield, reusing `exists_puiseux_orderTop_eq`);
+* `ramification_puiseuxAddVal_range` — restricted to level `n`, the value group is exactly
+  `(1/n)ℤ` (reuses `ramification_orderTop_range`).
+-/
+
+section OrderValuation
+
+/-- **The order valuation on the Puiseux field.**  `HahnSeries.addVal ℚ K` is Mathlib's
+additive valuation sending a Hahn series to its `orderTop` (least exponent, `⊤` for `0`).
+Over a field `K` it is an honest `AddValuation` on the field `HahnSeries ℚ K = K⦃⦃x⦄⦄`,
+supplying the valuation axioms behind the raw `orderTop` value-group computations of
+Parts XIII–XV. -/
+noncomputable def puiseuxAddVal (K : Type*) [Field K] :
+    AddValuation (HahnSeries ℚ K) (WithTop ℚ) :=
+  HahnSeries.addVal ℚ K
+
+/-- The order valuation is `orderTop`: the bridge from Part XVI back to the value-group
+computations of Parts XIII–XV. -/
+@[simp] theorem puiseuxAddVal_apply {K : Type*} [Field K] (f : HahnSeries ℚ K) :
+    puiseuxAddVal K f = f.orderTop :=
+  HahnSeries.addVal_apply
+
+/-- **Multiplicativity of the valuation:** `v(fg) = v(f) + v(g)`.  Equivalently
+`orderTop (f*g) = orderTop f + orderTop g` — the first valuation axiom, never recorded by
+the `orderTop`-only Parts XIII–XV. -/
+theorem puiseuxAddVal_mul {K : Type*} [Field K] (f g : HahnSeries ℚ K) :
+    puiseuxAddVal K (f * g) = puiseuxAddVal K f + puiseuxAddVal K g :=
+  (puiseuxAddVal K).map_mul f g
+
+/-- **The ultrametric (strong triangle) inequality:** `min (v f) (v g) ≤ v(f+g)`.  The
+second valuation axiom. -/
+theorem puiseuxAddVal_add {K : Type*} [Field K] (f g : HahnSeries ℚ K) :
+    min (puiseuxAddVal K f) (puiseuxAddVal K g) ≤ puiseuxAddVal K (f + g) :=
+  (puiseuxAddVal K).map_add f g
+
+/-- `v(1) = 0`. -/
+@[simp] theorem puiseuxAddVal_one {K : Type*} [Field K] :
+    puiseuxAddVal K (1 : HahnSeries ℚ K) = 0 :=
+  (puiseuxAddVal K).map_one
+
+/-- `v(0) = ⊤`. -/
+@[simp] theorem puiseuxAddVal_zero {K : Type*} [Field K] :
+    puiseuxAddVal K (0 : HahnSeries ℚ K) = ⊤ :=
+  (puiseuxAddVal K).map_zero
+
+/-- **Power law:** `v(fⁿ) = n • v(f)`. -/
+theorem puiseuxAddVal_pow {K : Type*} [Field K] (f : HahnSeries ℚ K) (n : ℕ) :
+    puiseuxAddVal K (f ^ n) = n • puiseuxAddVal K f :=
+  (puiseuxAddVal K).map_pow f n
+
+/-- **Inversion negates the valuation:** `v(f⁻¹) = -v(f)`.  A field law, available because
+`HahnSeries ℚ K` is a field. -/
+theorem puiseuxAddVal_inv {K : Type*} [Field K] (f : HahnSeries ℚ K) :
+    puiseuxAddVal K f⁻¹ = -(puiseuxAddVal K f) :=
+  (puiseuxAddVal K).map_inv
+
+/-- **Quotient law:** `v(f/g) = v(f) - v(g)`. -/
+theorem puiseuxAddVal_div {K : Type*} [Field K] (f g : HahnSeries ℚ K) :
+    puiseuxAddVal K (f / g) = puiseuxAddVal K f - puiseuxAddVal K g :=
+  (puiseuxAddVal K).map_div
+
+/-- **Nondegeneracy:** the valuation is `⊤` only on `0` — the maximal-ideal / support
+characterization for the order valuation of the Puiseux field. -/
+@[simp] theorem puiseuxAddVal_eq_top_iff {K : Type*} [Field K] {f : HahnSeries ℚ K} :
+    puiseuxAddVal K f = ⊤ ↔ f = 0 :=
+  (puiseuxAddVal K).top_iff
+
+/-- **Every finite value is attained by a Puiseux series.**  For each rational `q` the
+single-term series `single q 1` is a nonzero Puiseux series whose valuation is `q`.  The
+valuation-object form of `exists_puiseux_orderTop_eq`, tying `puiseuxAddVal` to the Puiseux
+subfield. -/
+theorem exists_puiseux_puiseuxAddVal_eq {K : Type*} [Field K] (q : ℚ) :
+    ∃ f : HahnSeries ℚ K, IsPuiseuxSeries f ∧ f ≠ 0 ∧
+      puiseuxAddVal K f = (q : WithTop ℚ) := by
+  obtain ⟨f, hf, hf0, hfv⟩ := exists_puiseux_orderTop_eq (K := K) q
+  exact ⟨f, hf, hf0, by rw [puiseuxAddVal_apply]; exact hfv⟩
+
+/-- **The value group of the Puiseux valuation is all of `ℚ`.**  The set of finite valuation
+values attained by nonzero Puiseux series is precisely `{v : WithTop ℚ | v ≠ ⊤}`.  This is
+`puiseux_orderTop_range` transported along `puiseuxAddVal_apply` — the value-group statement
+phrased for the genuine `AddValuation`. -/
+theorem puiseux_puiseuxAddVal_range {K : Type*} [Field K] :
+    {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxSeries f ∧ f ≠ 0 ∧ puiseuxAddVal K f = v}
+      = {v : WithTop ℚ | v ≠ ⊤} := by
+  simp only [puiseuxAddVal_apply]
+  exact puiseux_orderTop_range
+
+/-- **The order valuation is surjective.**  Every value in `WithTop ℚ` — including `⊤`
+(attained only by `0`) — is hit: the valuation realises the full value group `ℚ` plus the
+`⊤` of the zero series.  Capstone of the value-group computation at the `AddValuation`
+level. -/
+theorem puiseuxAddVal_surjective {K : Type*} [Field K] :
+    Function.Surjective (puiseuxAddVal K) := by
+  intro v
+  rcases eq_or_ne v ⊤ with rfl | hv
+  · exact ⟨0, puiseuxAddVal_zero⟩
+  · obtain ⟨q, rfl⟩ := WithTop.ne_top_iff_exists.mp hv
+    obtain ⟨f, _, _, hfv⟩ := exists_puiseux_puiseuxAddVal_eq (K := K) q
+    exact ⟨f, hfv⟩
+
+/-- **The value group of the level-`n` Laurent subfield is exactly `(1/n)ℤ`.**  The set of
+valuation values attained by nonzero `(1/n)`-ramified series is precisely `{k/n : k ∈ ℤ}` —
+`ramification_orderTop_range` transported to `puiseuxAddVal`. -/
+theorem ramification_puiseuxAddVal_range {K : Type*} [Field K] (n : ℕ+) :
+    {v : WithTop ℚ |
+        ∃ f : HahnSeries ℚ K, IsPuiseuxOfRamification n f ∧ f ≠ 0 ∧ puiseuxAddVal K f = v}
+      = {v : WithTop ℚ | ∃ k : ℤ, v = (((k : ℚ) / (n : ℚ) : ℚ) : WithTop ℚ)} := by
+  simp only [puiseuxAddVal_apply]
+  exact ramification_orderTop_range n
+
+end OrderValuation
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY

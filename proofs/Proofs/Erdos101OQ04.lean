@@ -3653,4 +3653,93 @@ theorem ternary_conic_sq_sum_lower_sharp :
   · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
     nlinarith [h]
 
+/-! ### A one-parameter *family* of oblique four-point-line quadruples
+
+`oblique_quadruple_onQuartic_collinear` exhibits a *single* oblique quadruple. The two
+lemmas below upgrade that isolated point to a genuine one-parameter family: for every
+`s` and every `u` with `u² = 5 − 3s²`, the abscissae `(2s, 0, −s+u, −s−u)` solve the
+arithmetic criterion `Σx = 0 ∧ Σx² = 10`, hence form a four-point line on the quartic.
+The family is parametrised by a point `(s, u)` on the ellipse `3s² + u² = 5`.  Every
+member carries the abscissa `0`, so a *symmetric* member `(a, −a, b, −b)` would have to be
+the degenerate `(0, 0, u, −u)` (the slice `s = 0`); hence every **non-degenerate** member,
+`s ≠ 0`, is genuinely oblique — the abscissa `0` is present but its would-be partner
+`2s ≠ 0` breaks the negation symmetry.  This does **not** touch the OPEN super-linear growth
+(`solymosi_stojakovic_lower_bound`), which needs super-linearly many *distinct* solution
+sets; it records that the oblique solutions the engine accepts form a continuum, not a
+lone example. -/
+
+/-- **A one-parameter family of oblique quadruples solves the arithmetic criterion.**
+For any `s u : ℝ` with `u² = 5 − 3s²` (i.e. `(s, u)` on the ellipse `3s² + u² = 5`), the
+abscissae `(2s, 0, −s+u, −s−u)` satisfy `Σx = 0` and `Σx² = 10`.  The sum vanishes
+identically; the sum of squares is `4s² + 0 + (s²−2su+u²) + (s²+2su+u²) = 6s² + 2u²`, which
+`u² = 5 − 3s²` collapses to `6s² + 2(5 − 3s²) = 10`. -/
+theorem parametric_oblique_criterion (s u : ℝ) (hu : u ^ 2 = 5 - 3 * s ^ 2) :
+    2 * s + 0 + (-s + u) + (-s - u) = 0 ∧
+      (2 * s) ^ 2 + (0 : ℝ) ^ 2 + (-s + u) ^ 2 + (-s - u) ^ 2 = 10 := by
+  refine ⟨by ring, ?_⟩
+  linear_combination 2 * hu
+
+/-- **The one-parameter family forms four-point lines on the quartic.**
+For `u² = 5 − 3s²` with the four abscissae `2s, 0, −s+u, −s−u` pairwise distinct, the four
+points above them on `y = x⁴ − 5x²` are collinear — a genuine four-point line anchored
+through the `(2s, ·)` and `(0, ·)` points.  The parametric analogue of
+`symmetric_quadruple_onQuartic_collinear` and `oblique_quadruple_onQuartic_collinear`,
+derived directly from the sum-of-squares criterion `four_onQuartic_collinear_iff_sq` via
+`parametric_oblique_criterion`; the members with `s ≠ 0` are oblique. -/
+theorem parametric_oblique_onQuartic_collinear (s u : ℝ) (hu : u ^ 2 = 5 - 3 * s ^ 2)
+    (h01 : 2 * s ≠ 0) (h12 : (0 : ℝ) ≠ -s + u) (h20 : -s + u ≠ 2 * s)
+    (h13 : (0 : ℝ) ≠ -s - u) (h30 : -s - u ≠ 2 * s) (h23 : -s + u ≠ -s - u) :
+    collinear (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2)
+        (-s + u, (-s + u) ^ 4 - 5 * (-s + u) ^ 2) ∧
+      collinear (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2)
+        (-s - u, (-s - u) ^ 4 - 5 * (-s - u) ^ 2) := by
+  rw [four_onQuartic_collinear_iff_sq
+      (show onQuartic (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) from rfl)
+      (show onQuartic (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2) from rfl)
+      (show onQuartic (-s + u, (-s + u) ^ 4 - 5 * (-s + u) ^ 2) from rfl)
+      (show onQuartic (-s - u, (-s - u) ^ 4 - 5 * (-s - u) ^ 2) from rfl)
+      h01 h12 h20 h13 h30 h23]
+  exact parametric_oblique_criterion s u hu
+
+/-! ### Four-point lines realized on the fixed ternary conic `Q = 5`
+
+`quartic_quadruple_sum_zero_sq_iff_ternary` reduces the sum-of-squares condition
+`Σx² = 10` (with `Σx = 0`) to the fixed ternary conic
+`Q(x₀,x₁,x₂) = x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in the three free abscissae,
+and its docstring records the structural upshot in prose: *a four-point line on the
+quartic is exactly a point `(x₀,x₁,x₂)` on `Q = 5` with `x₃ = −(x₀+x₁+x₂)`*.  The two
+theorems below make that statement a checked fact and pin the concrete symmetric family
+onto the same conic. -/
+
+/-- **A four-point line on the quartic is a point on the ternary conic `Q = 5`.**
+Four collinear points on `y = x⁴ − 5x²` with pairwise-distinct abscissae satisfy both
+`Σx = 0` and the ternary conic relation
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in their first three abscissae (the fourth being
+`x₃ = −(x₀+x₁+x₂)`).  This upgrades the prose remark on
+`quartic_quadruple_sum_zero_sq_iff_ternary` into a theorem, composing the sum-of-squares
+criterion `four_onQuartic_collinear_iff_sq` with the conic reduction: the four-point-line
+locus is exactly the fixed conic `Q = 5`, with no `x⁴` term surviving. -/
+theorem four_onQuartic_collinear_ternary_conic {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1)
+    (hcol : collinear a b c ∧ collinear a b d) :
+    a.1 + b.1 + c.1 + d.1 = 0 ∧
+      a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 = 5 := by
+  obtain ⟨hsum, hsq⟩ :=
+    (four_onQuartic_collinear_iff_sq ha hb hc hd hab hbc hca hbd hda hcd).mp hcol
+  exact ⟨hsum, (quartic_quadruple_sum_zero_sq_iff_ternary a.1 b.1 c.1 d.1 hsum).mp hsq⟩
+
+/-- **The symmetric family lies on the ternary conic `Q = 5`.**  For `a² + b² = 5`, the free
+triple `(a, −a, b)` of the symmetric quadruple `(a, −a, b, −b)` satisfies the ternary conic
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5`, because the cross terms collapse to
+`Q(a, −a, b) = a² + b²`.  So the concrete linear witnesses of `quartic_linear_lower_bound`
+are exactly points of the conic `Q = 5` that `four_onQuartic_collinear_ternary_conic`
+identifies as the four-point-line locus — the linear baseline of the open
+super-linear-growth question, realized on the conic. -/
+theorem symmetric_triple_on_ternary_conic (a b : ℝ) (hab : a ^ 2 + b ^ 2 = 5) :
+    a ^ 2 + (-a) ^ 2 + b ^ 2 + a * (-a) + (-a) * b + b * a = 5 := by
+  linear_combination hab
+
+
 end Erdos101OQ04

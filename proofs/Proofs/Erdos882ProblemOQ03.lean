@@ -86,7 +86,7 @@ theorem DivisibilityFree.mono {S T : Finset ℕ} (h : S ⊆ T)
 
 /-- The empty set is divisibility-free (vacuously). -/
 theorem divisibilityFree_empty : DivisibilityFree (∅ : Finset ℕ) :=
-  fun a ha => absurd ha (Finset.not_mem_empty a)
+  fun a ha => absurd ha (Finset.notMem_empty a)
 
 /-- Every singleton is divisibility-free (vacuously — there are no two *distinct*
     elements to divide one another). -/
@@ -326,7 +326,7 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
     by_cases haS : a ∈ S
     · -- `S` contains `a`; write `S = insert a S'` with `S' = S.erase a ⊆ A`.
       have hSeq : S = insert a (S.erase a) := (Finset.insert_erase haS).symm
-      have haS' : a ∉ S.erase a := Finset.not_mem_erase a S
+      have haS' : a ∉ S.erase a := Finset.notMem_erase a S
       have hS'A : S.erase a ⊆ A := by
         intro x hx
         have hxS : x ∈ S := Finset.mem_of_mem_erase hx
@@ -424,7 +424,7 @@ theorem subsetSums_card_insert_superincreasing
     obtain ⟨s, hs, hEq⟩ := hmem
     have hs1 : 1 ≤ s := subsetSums_pos hlo s hs
     omega
-  rw [subsetSums_insert ha, Finset.card_insert_of_not_mem h_a_notin_union,
+  rw [subsetSums_insert ha, Finset.card_insert_of_notMem h_a_notin_union,
     Finset.card_union_of_disjoint h_disj, h_img_card]
   ring
 
@@ -499,7 +499,7 @@ theorem subsetSums_card_superincreasing :
     · set m := A.max' hne with hm
       have hmem : m ∈ A := A.max'_mem hne
       have hEq : A = insert m (A.erase m) := (Finset.insert_erase hmem).symm
-      have hnotmem : m ∉ A.erase m := Finset.not_mem_erase m A
+      have hnotmem : m ∉ A.erase m := Finset.notMem_erase m A
       have hsub : A.erase m ⊂ A := Finset.erase_ssubset hmem
       have hAe : Superincreasing (A.erase m) := hA.mono (Finset.erase_subset m A)
       have hgt : (A.erase m).sum id < m := sum_erase_max_lt hA hne
@@ -571,7 +571,7 @@ theorem exists_superincreasing_extremal (k : ℕ) :
           · rintro ⟨hxA, hlt⟩; exact ⟨Or.inr hxA, hlt⟩
         rw [hfil]; exact hSI a haA
     refine ⟨insert m A, ?_, hSI', ?_⟩
-    · rw [Finset.card_insert_of_not_mem hmnot, hcard]
+    · rw [Finset.card_insert_of_notMem hmnot, hcard]
     · have hdouble := subsetSums_card_insert_superincreasing hmnot hSI.pos hgt
       have hk1 : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_two_pow
       have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
@@ -1082,5 +1082,38 @@ theorem validSubset_elem_not_dvd_total {n : ℕ} {A : Finset ℕ} {a : ℕ}
   have h := validSubset_subsetSum_not_dvd_total hV
     (Finset.singleton_subset_iff.mpr ha) (Finset.singleton_nonempty a) hne
   simpa using h
+
+/-- **Validity forces divisibility-freeness of the generators themselves.**  Every
+    element of `A` is one of its own singleton subset sums (`subset_subsetSums`), so
+    the divisibility-free condition on `subsetSums A` restricts to `A`: a valid set is
+    in particular a *primitive* (divisibility-free) set.  This is a necessary
+    condition that the full subset-sum constraint of Erdős #882 strictly strengthens
+    — it is far from sufficient, as `extremal_distinct_not_valid` shows. -/
+theorem ValidSubset.divisibilityFree_base {n : ℕ} {A : Finset ℕ}
+    (h : ValidSubset n A) : DivisibilityFree A :=
+  h.2.mono (subset_subsetSums A)
+
+/-- **Distinct subset sums do NOT imply validity: the counting extremum is strictly
+    weaker than Erdős #882 validity.**  The superincreasing set `{1,2}` attains the
+    full `2² − 1 = 3` distinct subset sums — it meets the counting ceiling
+    `subsetSums_card_le` with equality — yet it is *not* a valid subset for any `n`:
+    its subset sums are `{1,2,3}` and `1 ∣ 2`.  So realising the maximum possible
+    number of distinct subset sums (the superincreasing / powers-of-two regime) does
+    not certify divisibility-freeness of those sums.  This is exactly why the true
+    Erdős #882 answer `(1+o(1)) log₂ n` sits far below the naive counting ceiling of
+    `2^{|A|} − 1` distinct sums: the validity constraint bites long before the
+    counting one does. -/
+theorem extremal_distinct_not_valid :
+    ∃ A : Finset ℕ, Superincreasing A ∧
+      (subsetSums A).card = 2 ^ A.card - 1 ∧ (∀ n, ¬ ValidSubset n A) := by
+  have hSI : Superincreasing ({1, 2} : Finset ℕ) := by
+    intro a ha; fin_cases ha <;> decide
+  refine ⟨{1, 2}, hSI, subsetSums_card_superincreasing hSI, ?_⟩
+  intro _ hvalid
+  have h1 : (1 : ℕ) ∈ subsetSums ({1, 2} : Finset ℕ) :=
+    subset_subsetSums _ (by decide)
+  have h2 : (2 : ℕ) ∈ subsetSums ({1, 2} : Finset ℕ) :=
+    subset_subsetSums _ (by decide)
+  exact (hvalid.2 1 h1 2 h2 (by decide)).1 (by decide)
 
 end Erdos882OQ03
