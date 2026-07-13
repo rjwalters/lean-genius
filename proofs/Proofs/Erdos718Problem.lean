@@ -11,10 +11,7 @@ contains a subdivision of Kᵣ?
 Reference: https://erdosproblems.com/718
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open scoped Classical
 

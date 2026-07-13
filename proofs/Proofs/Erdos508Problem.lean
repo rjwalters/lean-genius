@@ -29,7 +29,7 @@ import Mathlib.Tactic
 noncomputable def unitDistGraph : SimpleGraph (EuclideanSpace ℝ (Fin 2)) where
   Adj x y := dist x y = 1 ∧ x ≠ y
   symm x y h := by constructor <;> [rw [dist_comm]; exact Ne.symm] <;> exact h.1 <;> exact h.2
-  loopless x h := h.2 rfl
+  loopless.irrefl x h := h.2 rfl
 
 /-- The chromatic number of the plane: χ(ℝ²).
     This is the chromatic number of the unit-distance graph on ℝ².

@@ -21,6 +21,8 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A simple graph on n vertices. -/

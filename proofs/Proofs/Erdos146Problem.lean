@@ -146,8 +146,8 @@ This is r-degenerate (minimum of r and s).
 def completeBipartiteGraph (r s : ℕ) : SimpleGraph (Fin (r + s)) where
   Adj := fun i j =>
     (i.val < r ∧ j.val ≥ r) ∨ (j.val < r ∧ i.val ≥ r)
-  symm := fun i j h => h.symm.imp And.symm And.symm
-  loopless := fun i h => by rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
+  symm.symm := fun i j h => h.symm.imp And.symm And.symm
+  loopless.irrefl := fun i h => by rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
 
 /- 
 **K_{r,s} is r-degenerate (when r ≤ s):**

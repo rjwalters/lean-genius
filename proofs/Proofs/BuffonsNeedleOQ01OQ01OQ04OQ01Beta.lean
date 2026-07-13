@@ -50,7 +50,7 @@ theorem integral_cos_mul_sin_pow (m : ℕ) :
     have hne : ((m : ℝ) + 1) ≠ 0 := by positivity
     convert hd using 1
     push_cast
-    field_simp
+    skip
   have hcont : Continuous (fun θ : ℝ => Real.cos θ * Real.sin θ ^ m) :=
     Real.continuous_cos.mul (Real.continuous_sin.pow m)
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv

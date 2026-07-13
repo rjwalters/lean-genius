@@ -1,8 +1,6 @@
 import Proofs.PtolemysComplexProof
 import Proofs.PtolemysTheoremOQ01OQ02
-import Mathlib.Analysis.Complex.Trigonometric
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Synthesis: Curvature-Parametrized Ptolemy via curvatureSin

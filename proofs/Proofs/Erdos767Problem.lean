@@ -24,8 +24,7 @@ References:
 Tags: graph-theory, extremal-graphs, cycles, chords
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 namespace Erdos767
 

@@ -30,10 +30,7 @@ References:
   Ark. Mat. (1984), 109-119.
 -/
 
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
 
 open Complex Set MeasureTheory
 

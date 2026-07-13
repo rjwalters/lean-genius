@@ -16,6 +16,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Filter
 
+open scoped Classical
+
 open Filter Real
 
 namespace Erdos1211

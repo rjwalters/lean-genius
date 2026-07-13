@@ -18,11 +18,7 @@ References: [Er98], [KoLu25] arXiv:2506.04883
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
 
@@ -149,7 +145,7 @@ theorem f_pos {n : ℕ} (hn : 1 ≤ n) : 0 < f n := by
 /-- f(n) ≥ n for all n: each term τ(2^k - 1) ≥ 1. -/
 theorem f_ge (n : ℕ) : n ≤ f n := by
   unfold f
-  calc n = (Finset.Icc 1 n).card := by simp [Finset.card_Icc]; omega
+  calc n = (Finset.Icc 1 n).card := by simp [Nat.card_Icc]; omega
     _ = ∑ _ ∈ Finset.Icc 1 n, 1 := by rw [Finset.sum_const]; simp
     _ ≤ ∑ k ∈ Finset.Icc 1 n, tau (2 ^ k - 1) := by
         apply Finset.sum_le_sum; intro k hk
@@ -190,7 +186,7 @@ theorem f_decomp (n : ℕ) :
 theorem f_gap_lower_bound {n : ℕ} (hn : 1 ≤ n) :
     2 * n ≤ ∑ k ∈ Finset.Icc (n + 1) (2 * n), tau (2 ^ k - 1) := by
   have hcard : (Finset.Icc (n + 1) (2 * n)).card = n := by
-    rw [Finset.card_Icc]; omega
+    rw [Nat.card_Icc]; omega
   calc 2 * n
       = ∑ _ ∈ Finset.Icc (n + 1) (2 * n), 2 := by
         rw [Finset.sum_const, hcard, smul_eq_mul]; ring

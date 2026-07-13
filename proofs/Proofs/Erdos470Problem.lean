@@ -28,6 +28,8 @@ import Mathlib.Data.Finset.Powerset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Nat.Prime.Nth
 
+open scoped Classical
+
 open Nat Finset Set
 
 namespace Erdos470
@@ -75,7 +77,7 @@ instance decidableIsPseudoperfect (n : ℕ) : Decidable (IsPseudoperfect n) :=
     fun ⟨S, hsub, hsum⟩ => ⟨S, Finset.mem_powerset.mpr hsub, hsum⟩⟩
 
 /-- Decidability of IsWeird. -/
-instance decidableIsWeird (n : ℕ) : Decidable (IsWeird n) :=
+noncomputable instance decidableIsWeird (n : ℕ) : Decidable (IsWeird n) :=
   inferInstanceAs (Decidable (IsAbundant n ∧ ¬IsPseudoperfect n))
 
 /-

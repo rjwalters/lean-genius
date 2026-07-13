@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Topology
+
 /-
 # Steiner's Formula: d/dr Vol(B_r^n) = Area(∂B_r^n)
 # (area-of-circle-oq-01-oq-02-oq-03-oq-03)

@@ -30,11 +30,7 @@ References:
 - Erdős-Graham: "Old and New Problems in Combinatorial Number Theory"
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Nat.Prime.Basic
+import Mathlib
 
 open Nat Finset BigOperators
 

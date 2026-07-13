@@ -30,11 +30,7 @@ References:
 Tags: number-theory, gcd, extremal-combinatorics, sunflower, open
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Nat Real Finset
 

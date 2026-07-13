@@ -1,6 +1,4 @@
-import Mathlib.Combinatorics.Enumerative.Partition.Basic
-import Mathlib.RingTheory.PowerSeries.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Rogers-Ramanujan and Schur Partition Identities (OQ-01)

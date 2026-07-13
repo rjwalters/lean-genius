@@ -113,8 +113,8 @@ K₄ is the unique known explicit example.
     size-linearity predicates, which all range over `SimpleGraph ℕ`. -/
 def completeGraphN (n : ℕ) : SimpleGraph ℕ where
   Adj u v := u ≠ v ∧ u < n ∧ v < n
-  symm := fun _ _ h => ⟨h.1.symm, h.2.2, h.2.1⟩
-  loopless := fun _ h => h.1 rfl
+  symm.symm := fun _ _ h => ⟨h.1.symm, h.2.2, h.2.1⟩
+  loopless.irrefl := fun _ h => h.1 rfl
 
 /-- K₄ is NOT Ramsey size linear. -/
 axiom K4_not_linear : isRamseySizeSuperlinear (completeGraphN 4)

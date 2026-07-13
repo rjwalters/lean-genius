@@ -1,9 +1,4 @@
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Analysis.Calculus.Deriv.Pow
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Area from Circumference Integration

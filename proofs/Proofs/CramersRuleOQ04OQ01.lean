@@ -1,7 +1,4 @@
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
-import Mathlib.LinearAlgebra.Matrix.Adjugate
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Cramer's rule OQ-04 → OQ-01: the adjugate behind Cayley–Hamilton

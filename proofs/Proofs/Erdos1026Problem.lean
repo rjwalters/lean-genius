@@ -35,13 +35,7 @@ References:
 - Tidor, Wang, Yang: "1-color avoiding paths" (2016)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Sort
-import Mathlib.Algebra.BigOperators.Finprod
+import Mathlib
 import Archive.Wiedijk100Theorems.AscendingDescendingSequences
 
 open Finset BigOperators

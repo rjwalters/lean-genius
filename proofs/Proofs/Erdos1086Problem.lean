@@ -31,6 +31,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 namespace Erdos1086
 
 open Real

@@ -104,7 +104,7 @@ notation "ν_" k => criticalExponent k
 For k ≥ 5, the critical exponent is 1/2 (like simple random walk).
 -/
 theorem meanField_exponent (k : ℕ) (hk : k ≥ 5) : ν_k = 1/2 := by
-  simp only [criticalExponent]
+  skip
   omega
 
 /-

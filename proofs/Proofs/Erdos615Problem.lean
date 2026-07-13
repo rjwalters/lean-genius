@@ -29,11 +29,7 @@ Reference:
   problem", Combinatorica
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 open scoped Classical
 

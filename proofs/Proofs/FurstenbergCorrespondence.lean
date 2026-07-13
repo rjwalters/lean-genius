@@ -36,6 +36,8 @@ References:
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Furstenberg
 
 open MeasureTheory Set

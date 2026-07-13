@@ -66,7 +66,7 @@ marked `verified`.
 -/
 
 import Proofs.BallotProblemOQ01OQ02OQ01OQ02
-import Mathlib.Tactic
+import Mathlib
 
 open ProbabilityTheory Set MeasureTheory
 

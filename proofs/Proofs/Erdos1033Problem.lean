@@ -14,12 +14,7 @@ a triangle whose vertices have degrees summing to at least h(n). Estimate h(n).
 Reference: https://erdosproblems.com/1033
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.DegreeSum
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
+import Mathlib
 
 open Finset
 

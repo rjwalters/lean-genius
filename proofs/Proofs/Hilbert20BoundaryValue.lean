@@ -153,7 +153,7 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteS
     minimizing the energy functional J(v) = (1/2)a(v,v) - F(v).
 
     The solution u minimizes J over V. -/
-def EnergyFunctional (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ) (v : V) : ℝ :=
+noncomputable def EnergyFunctional (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ) (v : V) : ℝ :=
   (1/2) * a v v - F v
 
 end LaxMilgram

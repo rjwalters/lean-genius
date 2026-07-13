@@ -169,7 +169,7 @@ theorem maxSidonSize_1 : maxSidonSize 1 = 1 := by
   apply le_antisymm
   · apply Finset.sup_le; intro S hS
     exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
-      (by simp [Finset.card_Icc])
+      (by simp [Nat.card_Icc])
   · exact maxSidon_optimal 1 {1} (fun a b c d ha hb _ _ hab _ _ => by
       simp only [Finset.mem_singleton] at ha hb; omega)
       (fun x hx => by simp only [Finset.mem_singleton] at hx; subst hx; omega)
@@ -179,7 +179,7 @@ theorem maxSidonSize_2 : maxSidonSize 2 = 2 := by
   apply le_antisymm
   · apply Finset.sup_le; intro S hS
     exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
-      (by simp [Finset.card_Icc])
+      (by simp [Nat.card_Icc])
   · have : ({1, 2} : Finset ℕ).card = 2 := by decide
     rw [← this]; exact maxSidon_optimal 2 {1, 2} (fun a b c d ha hb hc hd hab hcd heq => by
       simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd
@@ -191,7 +191,7 @@ theorem maxSidonSize_3 : maxSidonSize 3 = 3 := by
   apply le_antisymm
   · apply Finset.sup_le; intro S hS
     exact le_trans (Finset.card_le_card (Finset.mem_powerset.mp (Finset.mem_filter.mp hS).1))
-      (by simp [Finset.card_Icc])
+      (by simp [Nat.card_Icc])
   · have : ({1, 2, 3} : Finset ℕ).card = 3 := by decide
     rw [← this]; exact maxSidon_optimal 3 {1, 2, 3} (fun a b c d ha hb hc hd hab hcd heq => by
       simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb hc hd

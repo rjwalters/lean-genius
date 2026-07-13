@@ -125,8 +125,8 @@ theorem rand_approx_tight_of_proper2Coloring (G : SimpleGraph V) [DecidableRel G
     adjacent exactly when they lie on opposite sides. -/
 def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
   Adj u v := u.isLeft ≠ v.isLeft
-  symm := fun _ _ h => Ne.symm h
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => Ne.symm h
+  loopless.irrefl := fun _ h => h rfl
 
 instance (m n : ℕ) : DecidableRel (completeBipartite m n).Adj :=
   fun u v => inferInstanceAs (Decidable (u.isLeft ≠ v.isLeft))

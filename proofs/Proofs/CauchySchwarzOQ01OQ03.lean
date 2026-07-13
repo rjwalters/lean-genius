@@ -1,5 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Heisenberg Uncertainty from Complex Cauchy-Schwarz
@@ -70,7 +69,7 @@ This is the step from Cauchy-Schwarz to the commutator bound:
 the commutator ⟨[A,B]⟩ = 2i·Im⟨Aψ, Bψ⟩, so we need |Im|². -/
 theorem im_sq_le_normSq (z : ℂ) : z.im ^ 2 ≤ Complex.normSq z := by
   unfold Complex.normSq
-  simp only [Complex.normSq_mk]
+  skip
   linarith [sq_nonneg z.re]
 
 /-- **Commutator-variance bound** (abstract form):

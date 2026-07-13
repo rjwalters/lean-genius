@@ -43,6 +43,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos559
 
 /- ## Basic Definitions -/
@@ -55,18 +57,18 @@ structure FiniteGraph (V : Type*) [Fintype V] where
   dec : DecidableRel adj := by infer_instance
 
 /-- The number of edges in a graph -/
-def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
     (G : FiniteGraph V) : ℕ :=
   (Finset.filter (fun p : V × V => p.1 < p.2 ∧ G.adj p.1 p.2)
     Finset.univ).card
 
 /-- The degree of a vertex -/
-def degree {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def degree {V : Type*} [Fintype V] [DecidableEq V]
     (G : FiniteGraph V) (v : V) : ℕ :=
   (Finset.filter (fun u => G.adj v u) Finset.univ).card
 
 /-- The maximum degree of a graph -/
-def maxDegree {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def maxDegree {V : Type*} [Fintype V] [DecidableEq V]
     (G : FiniteGraph V) : ℕ :=
   Finset.sup Finset.univ (degree G)
 

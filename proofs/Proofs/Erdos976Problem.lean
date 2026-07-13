@@ -25,10 +25,7 @@ References:
 - Tenenbaum [Te90]: Current best rigorous bound
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.Polynomial.Basic
+import Mathlib
 
 namespace Erdos976
 

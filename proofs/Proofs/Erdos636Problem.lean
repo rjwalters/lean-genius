@@ -254,7 +254,7 @@ def erdos_636_answer : String :=
   "SOLVED: Kwan-Sudakov (2021) proved Θ(n^(5/2)) distinct signatures"
 
 /-- The optimal exponent. -/
-def erdos_636_exponent : ℝ := 5/2
+noncomputable def erdos_636_exponent : ℝ := 5/2
 
 #check erdos_636
 #check kwan_sudakov

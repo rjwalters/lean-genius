@@ -18,10 +18,7 @@ Background:
 Tags: extremal-graph-theory, multipartite-graphs, minimum-degree, cliques
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 open Nat Real
 

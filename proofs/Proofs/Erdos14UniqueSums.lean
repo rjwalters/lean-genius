@@ -28,11 +28,7 @@
   Tags: number-theory, additive-combinatorics, sidon-sets, erdos-problem
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos14
 
@@ -169,7 +165,7 @@ private lemma card_strict_pairs (F : Finset ℕ) :
       (fun ⟨a, b⟩ h => ⟨(b, a), by simp only [Finset.mem_filter, Finset.mem_product] at h ⊢; exact ⟨⟨h.1.2, h.1.1⟩, h.2⟩, rfl⟩)
   -- Combine: 2 * |{b<a}| = |offDiag| = k*(k-1)
   have h_card := Finset.card_union_of_disjoint h_disj
-  rw [← h_eq, Finset.card_offDiag] at h_card; omega
+  rw [← h_eq, Finset.offDiag_card] at h_card; omega
 
 /-- Sidon sets have size at most 2√N in {1,...,N}.
 

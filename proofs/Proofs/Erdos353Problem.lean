@@ -28,11 +28,7 @@ References:
 - Koizumi [Ko25]: Complete resolution for trapezoids and triangles
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Geometry.Euclidean.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Sqrt
+import Mathlib
 
 open MeasureTheory Set Pointwise
 

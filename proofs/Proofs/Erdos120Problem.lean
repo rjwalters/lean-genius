@@ -22,14 +22,7 @@ Reference: https://erdosproblems.com/120
 Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Measure.MeasureSpaceDef
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Set.Function
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Set MeasureTheory Filter
 

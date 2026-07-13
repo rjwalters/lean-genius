@@ -24,10 +24,7 @@ References:
 - Mattheus-Verstraete [MaVe23]: Solution
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Sym.Sym2
+import Mathlib
 
 open Finset
 

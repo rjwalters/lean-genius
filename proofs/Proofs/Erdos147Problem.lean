@@ -18,9 +18,7 @@ References:
 - Janzer: Disproof via explicit construction
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 namespace Erdos147
 

@@ -27,10 +27,7 @@ References:
 - Rotkiewicz [Ro64b]: Primitive roots
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.FieldTheory.Finite.Basic
+import Mathlib
 
 open Nat BigOperators Finset
 

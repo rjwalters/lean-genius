@@ -3,7 +3,7 @@
   These are the 2 remaining proof obligations — both product-measure integrability conditions.
 
   Proved so far (no longer sorried in main file):
-    - angular_integral (∫_{-π}^π 1 = 2π): proved via set_integral_const + volume_Ioo
+    - angular_integral (∫_{-π}^π 1 = 2π): proved via setIntegral_const + volume_Ioo
     - double_integral_eq_polar: proved via integral_comp_polarCoord_symm + set_integral_congr
     - gaussian_sq_eq_double_integral: proved structurally via integral_prod + ring
     - polar_integral_factorization: proved structurally via restrict_prod + integral_prod + ring

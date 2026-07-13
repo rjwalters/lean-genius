@@ -13,13 +13,7 @@ Erdős and Graham (1980) proved `B(x) > x^{1-o(1)}`.
 *Reference:* [erdosproblems.com/380](https://www.erdosproblems.com/380)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.NumberTheory.Bertrand
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 

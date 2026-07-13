@@ -25,6 +25,8 @@
 import Mathlib
 import Proofs.LebesgueMeasureOQ01OQ01OQ02
 
+open scoped Classical
+
 open MeasureTheory Set
 open LebesgueMeasureOQ01OQ01OQ02
 

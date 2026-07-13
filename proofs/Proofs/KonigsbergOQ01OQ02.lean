@@ -84,7 +84,7 @@ theorem sum_outDegree_eq_edgeCount (G : DiGraph V) :
     rw [Finset.card_eq_sum_ones, Finset.sum_filter]
   simp_rw [step]
   rw [Finset.sum_comm]
-  simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  skip
   exact Finset.card_eq_sum_ones.symm
 
 /-- Sum of all in-degrees = |E|. Same proof by symmetry on second endpoint. -/
@@ -96,7 +96,7 @@ theorem sum_inDegree_eq_edgeCount (G : DiGraph V) :
     rw [Finset.card_eq_sum_ones, Finset.sum_filter]
   simp_rw [step]
   rw [Finset.sum_comm]
-  simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  skip
   exact Finset.card_eq_sum_ones.symm
 
 /-- Sum of out-degrees = sum of in-degrees. -/

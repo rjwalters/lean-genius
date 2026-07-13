@@ -1,5 +1,7 @@
 import Proofs.InverseGaloisD4
 
+open scoped Classical
+
 /-
 # Inverse Galois D₄ — OQ-01: The Semidirect-Product Structure ℤ/4 ⋊ ℤ/2
 

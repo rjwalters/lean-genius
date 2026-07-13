@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Classical
+
 /-
 # Thomae's Function: Continuity at Irrationals, Discontinuity at Rationals
 

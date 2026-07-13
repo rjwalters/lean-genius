@@ -1,9 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Erdos Problem #853: Smallest Missing Prime Gap

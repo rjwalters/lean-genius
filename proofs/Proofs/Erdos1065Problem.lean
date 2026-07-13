@@ -1,7 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 Erdős Problem #1065 — Primes of the Form 2^k · q + 1

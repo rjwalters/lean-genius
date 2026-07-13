@@ -64,7 +64,7 @@ def IsMonochromatic (c : TwoColoring) (S : Set ℝ) : Prop :=
 The first uncountable cardinal. This represents the cardinality of
 the set of countable ordinals.
 -/
-def aleph_one : Cardinal := Cardinal.aleph 1
+noncomputable def aleph_one : Cardinal := Cardinal.aleph 1
 
 /--
 **Has cardinality ℵ₁:**

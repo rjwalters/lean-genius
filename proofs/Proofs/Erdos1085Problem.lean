@@ -28,7 +28,7 @@
   - Clarkson et al., "Combinatorial complexity bounds..." (1990)
 -/
 
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 

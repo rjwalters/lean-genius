@@ -16,13 +16,7 @@ Reference: https://erdosproblems.com/479
 OEIS: A036236 (minimal n for each k)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Int.ModEq
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.ZMod.Basic
-import Mathlib.FieldTheory.Finite.Basic
-import Mathlib.Data.Set.Card
+import Mathlib
 
 open Nat Set
 

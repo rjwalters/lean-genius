@@ -12,7 +12,7 @@ import Mathlib
 namespace Erdos612
 
 /-- The amended coefficient: (3 - 2/k) for K_{k+1}-free -/
-def amended_alpha (k : ℕ) : ℝ :=
+noncomputable def amended_alpha (k : ℕ) : ℝ :=
   3 - 2 / k
 
 /-- As k → ∞, the coefficient (3 - 2/k) tends to 3 -/

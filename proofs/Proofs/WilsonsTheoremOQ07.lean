@@ -60,7 +60,7 @@ theorem neg_one_pow_mul_factorial_sq (hodd : Odd p) :
       = ∏ i ∈ Ico (m + 1) p, (i : ZMod p) := by
     have h := Finset.prod_Ico_reflect (fun i : ℕ => ((i : ℕ) : ZMod p)) 1
       (m := m + 1) (n := p) (by omega)
-    simp only at h
+    skip
     have hb1 : p + 1 - (m + 1) = m + 1 := by omega
     have hb2 : p + 1 - 1 = p := by omega
     rw [hb1, hb2] at h

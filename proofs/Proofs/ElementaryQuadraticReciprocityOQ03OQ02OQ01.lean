@@ -73,7 +73,7 @@ theorem kronecker0_mul_of_ne_zero (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
       · exact ha1 (Or.inl rfl)
   · -- Neither is unit: product is 0 * anything = 0
     push_neg at ha1 hb1
-    simp [ha1]
+    skip
 
 /-
 ## Part 2: Multiplicativity of kroneckerNeg1

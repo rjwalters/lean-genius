@@ -28,8 +28,8 @@ def IsBipartite (G : SimpleGraph V) : Prop :=
 
 def triangleGraph : SimpleGraph (Fin 3) where
   Adj u v := u ≠ v
-  symm u v h := h.symm
-  loopless v := fun h => h rfl
+  symm.symm u v h := h.symm
+  loopless.irrefl v := fun h => h rfl
 
 /-
   ## Section 1: Triangle Graph Properties

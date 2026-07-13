@@ -76,7 +76,7 @@ theorem bipartition_edges_between {V : Type*} (G : SimpleGraph V) (X Y : Set V)
   | inr huy =>
     right
     have hvx : v ∈ X := by
-      have := G.symm hadj
+      have := G.adj_symm hadj
       have hiff' := h.2.2 this
       exact hiff'.mpr huy
     exact ⟨huy, hvx⟩

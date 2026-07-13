@@ -382,6 +382,6 @@ theorem f_le_sqrt (n : ℕ) (hn : n > 0) : f n ≤ Nat.sqrt n := by
         rw [Finset.mem_Icc]
         exact ⟨hk.1.1, solution_le_sqrt n k hk.1.1 hk.2⟩
     _ ≤ Nat.sqrt n := by
-        simp only [Finset.card_Icc]; omega
+        skip; omega
 
 end Erdos1060

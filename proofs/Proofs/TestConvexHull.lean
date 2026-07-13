@@ -1,11 +1,4 @@
-import Mathlib.Topology.Basic
-import Mathlib.Topology.Compactness.Compact
-import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Analysis.Convex.Basic
-import Mathlib.Analysis.Convex.Combination
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Topology.Algebra.Module.FiniteDimension
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
 
 -- Check for proper space compactness
 #check @ProperSpace.isCompact_closedBall

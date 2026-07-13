@@ -22,11 +22,7 @@ the subsequence of σ-values of superabundant numbers.
 Reference: https://erdosproblems.com/1054
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Finset.Sort
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 
@@ -79,7 +75,7 @@ theorem prime_sortedDivisors (p : ℕ) (hp : p.Prime) :
   rw [prime_divisors_eq p hp]
   have hp2 : p ≥ 2 := hp.two_le
   -- {1, p} sorted with (· ≤ ·) gives [1, p] since 1 < p
-  simp [Finset.sort_cons, Finset.sort_singleton]
+  skip
   constructor
   · omega
   · rfl

@@ -1,5 +1,7 @@
 import Mathlib
 
+open scoped Classical
+
 /-
 # Erdős #29 OQ-02: Corrected Basis Size Lower Bound
 

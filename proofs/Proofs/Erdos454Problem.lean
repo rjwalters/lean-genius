@@ -22,12 +22,7 @@
   Tags: number-theory, primes, analytic-number-theory
 -/
 
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Order.Filter.Basic
-import Mathlib.Order.LiminfLimsup
-import Mathlib.Topology.Instances.ENat
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Nth
+import Mathlib
 
 namespace Erdos454
 
@@ -40,7 +35,7 @@ noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
 
 /-- The first prime is 2. -/
 theorem nthPrime_zero : nthPrime 0 = 2 := by
-  simp [nthPrime, Nat.nth_prime_zero]
+  simp [nthPrime, Nat.nth_prime_zero_eq_two]
 
 /-- The second prime is 3. -/
 theorem nthPrime_one : nthPrime 1 = 3 := by

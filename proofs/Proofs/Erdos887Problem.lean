@@ -14,11 +14,7 @@ in such intervals. The general case remains open.
 Reference: https://erdosproblems.com/887
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.Order.Field.Basic
+import Mathlib
 
 namespace Erdos887
 
@@ -32,11 +28,11 @@ def divisors (n : ℕ) : Finset ℕ :=
 def tau (n : ℕ) : ℕ := (divisors n).card
 
 /-- Divisors of n lying in the real interval [a, b] -/
-def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
+noncomputable def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
   (divisors n).filter (fun d => a ≤ d ∧ (d : ℝ) ≤ b)
 
 /-- Count of divisors of n in the interval [a, b] -/
-def countDivisorsInInterval (n : ℕ) (a b : ℝ) : ℕ :=
+noncomputable def countDivisorsInInterval (n : ℕ) (a b : ℝ) : ℕ :=
   (divisorsInInterval n a b).card
 
 /- ## Part 2: The Erdős-Rosenfeld Conjecture -/
@@ -46,7 +42,7 @@ def erdosRosenfeldInterval (n : ℕ) (C : ℝ) : Set ℝ :=
   { x | Real.sqrt n < x ∧ x ≤ Real.sqrt n + C * (n : ℝ) ^ (1/4 : ℝ) }
 
 /-- Count of divisors of n in the Erdős-Rosenfeld interval -/
-def divisorsNearSqrt (n : ℕ) (C : ℝ) : ℕ :=
+noncomputable def divisorsNearSqrt (n : ℕ) (C : ℝ) : ℕ :=
   countDivisorsInInterval n (Real.sqrt n) (Real.sqrt n + C * (n : ℝ) ^ (1/4 : ℝ))
 
 /-- The Erdős-Rosenfeld Conjecture (strong form):
@@ -106,13 +102,13 @@ axiom divisor_bound_epsilon :
 /- ## Part 6: Interval Width Variations -/
 
 /-- The symmetric interval case: divisors in (√n - c·n^{1/4}, √n + c·n^{1/4}) -/
-def divisorsSymmetricInterval (n : ℕ) (c : ℝ) : ℕ :=
+noncomputable def divisorsSymmetricInterval (n : ℕ) (c : ℝ) : ℕ :=
   countDivisorsInInterval n
     (Real.sqrt n - c * (n : ℝ) ^ (1/4 : ℝ))
     (Real.sqrt n + c * (n : ℝ) ^ (1/4 : ℝ))
 
 /-- Divisors near √n with general exponent α: (√n, √n + C·n^α) -/
-def divisorsNearSqrtAlpha (n : ℕ) (C α : ℝ) : ℕ :=
+noncomputable def divisorsNearSqrtAlpha (n : ℕ) (C α : ℝ) : ℕ :=
   countDivisorsInInterval n (Real.sqrt n) (Real.sqrt n + C * (n : ℝ) ^ α)
 
 /-- For α > 1/2 the interval grows faster than √n, so no uniform

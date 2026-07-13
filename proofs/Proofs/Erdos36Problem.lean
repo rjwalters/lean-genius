@@ -25,7 +25,7 @@ open Finset
 -- ============================================================================
 
 /-- The interval {1, ..., 2N} as a finset of integers. -/
-def interval (N : ℕ) : Finset ℤ := Finset.Icc 1 (2 * ↑N)
+noncomputable def interval (N : ℕ) : Finset ℤ := Finset.Icc 1 (2 * ↑N)
 
 /-- The overlap of sets A, B at difference k: the number of pairs
     (a, b) with a ∈ A, b ∈ B, a − b = k. -/
@@ -138,7 +138,7 @@ def maxOverlapC (A B : Finset ℤ) : ℕ :=
 
 /-- Computable version of `M(N)`. Uses `maxOverlapC` and inline definitions
     to avoid noncomputable intermediate functions. -/
-def MC (N : ℕ) : ℕ :=
+noncomputable def MC (N : ℕ) : ℕ :=
   let I := Finset.Icc (1 : ℤ) (2 * ↑N)
   let parts := I.powerset.filter (fun A => A.card = N)
   let vals := parts.image (fun A => maxOverlapC A (I \ A))

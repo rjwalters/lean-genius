@@ -11,11 +11,7 @@ Let g(n) be the minimum guaranteed independent set size. Estimate g(n).
 Reference: https://erdosproblems.com/1025
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Sym.Sym2
+import Mathlib
 
 open Finset
 

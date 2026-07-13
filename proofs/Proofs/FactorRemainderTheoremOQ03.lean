@@ -1,9 +1,4 @@
-import Mathlib.Algebra.Polynomial.Div
-import Mathlib.Algebra.Polynomial.FieldDivision
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Algebra.MvPolynomial.Basic
-import Mathlib.RingTheory.Ideal.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Factor Theorem to Nullstellensatz Bridge

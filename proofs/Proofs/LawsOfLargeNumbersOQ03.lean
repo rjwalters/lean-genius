@@ -1,11 +1,4 @@
-import Mathlib.Dynamics.Ergodic.MeasurePreserving
-import Mathlib.Dynamics.Ergodic.Ergodic
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Measure.MeasureSpace
-import Mathlib.Probability.Notation
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Laws of Large Numbers OQ-03: Dependent Random Variables and Ergodic Theory

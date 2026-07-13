@@ -32,9 +32,7 @@ This is the complete, machine-checked version of the parent file's line-537 `sor
 -/
 
 import Proofs.CentralLimitTheoremOQ02
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 open MeasureTheory Filter
 

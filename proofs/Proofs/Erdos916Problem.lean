@@ -25,6 +25,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Fintype.Card
 
+open scoped Classical
+
 open SimpleGraph
 
 namespace Erdos916

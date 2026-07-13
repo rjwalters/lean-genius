@@ -41,9 +41,7 @@ References:
 - Parent file: Proofs.Erdos1059OQ02 (has the buggy axiom for l ≥ 3)
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1059OQ02OQ01
 

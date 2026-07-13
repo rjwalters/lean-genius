@@ -1,6 +1,4 @@
-import Mathlib.Data.ZMod.Basic
-import Mathlib.FieldTheory.Finite.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- Wilson's theorem: (p-1)! ≡ -1 (mod p)
 -- In ZMod p: product of nonzero elements = -1

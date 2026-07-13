@@ -25,11 +25,7 @@ Related: Problem #510 (Chowla cosine problem)
 Tags: analysis, harmonic-analysis, unit-circle, products
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 open Real Complex
 open scoped BigOperators
@@ -215,7 +211,7 @@ log f*(n) ≪ (n log n)^{1/2} log log n
 **Chowla cosine problem (Problem #510):**
 For a set A of n integers, find θ minimizing ∑_{a ∈ A} cos(aθ).
 -/
-def chowlaMinimum (A : Finset ℤ) : ℝ :=
+noncomputable def chowlaMinimum (A : Finset ℤ) : ℝ :=
   sInf {∑ a ∈ A, Real.cos (a * θ) | θ : ℝ}
 
 /- 

@@ -108,11 +108,11 @@ def balancedBlowupC5 (n : ℕ) : SimpleGraph (Fin 5 × Fin n) where
   symm := by
     constructor
     intro x y h
-    exact cycleGraph5.symm h
+    exact cycleGraph5.adj_symm h
   loopless := by
     constructor
     intro x h
-    exact cycleGraph5.loopless x.1 h
+    exact cycleGraph5.loopless.irrefl x.1 h
 
 /-- The balanced blow-up of C₅ is triangle-free.
 

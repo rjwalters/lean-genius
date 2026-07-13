@@ -421,7 +421,7 @@ private theorem eval_grassmannianClass (d n : ℕ) :
 private theorem qNumber_polyK₀_ne_zero (n : ℕ) (hn : n > 0) :
     qNumber polyK₀ n ≠ 0 := by
   intro h
-  have hc : coeff (qNumber polyK₀ n) 0 = 0 := by rw [h]; simp
+  have hc : coeff (qNumber polyK₀ n) 0 = 0 := by rw [h]; skip
   simp only [qNumber, polyK₀, coeff_sum, coeff_X_pow, Finset.sum_ite_eq',
              Finset.mem_range] at hc
   omega

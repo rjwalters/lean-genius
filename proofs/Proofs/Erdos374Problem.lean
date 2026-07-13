@@ -18,9 +18,7 @@ Status: OPEN.
 Reference: https://erdosproblems.com/374
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib
 
 open Classical
 

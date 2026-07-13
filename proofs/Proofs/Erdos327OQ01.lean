@@ -21,10 +21,7 @@ with reduced form (a', b') are exactly { (m·s·a', m·s·b') : m ≥ 1 } where 
 *Reference:* [erdosproblems.com/327](https://www.erdosproblems.com/327)
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
 

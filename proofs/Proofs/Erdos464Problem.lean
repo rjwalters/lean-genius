@@ -21,8 +21,7 @@ References:
 - Peres, Schlag: Improved quantitative bounds
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 namespace Erdos464
 

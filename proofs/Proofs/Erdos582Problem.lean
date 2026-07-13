@@ -89,7 +89,7 @@ Given a coloring, the subgraph of edges with a specific color.
 def monochromaticSubgraph (G : SimpleGraph V) (c : EdgeColoring G) (color : Bool) :
     SimpleGraph V where
   Adj v w := G.Adj v w ∧ ∃ h : G.Adj v w, c ⟨s(v, w), G.edge_mem_edgeSet.mpr h⟩ = color
-  symm v w := by
+  symm.symm v w := by
     intro ⟨hadj, hcolor⟩
     constructor
     · exact G.symm hadj

@@ -28,10 +28,7 @@ References:
 - Łuczak (1990): "Component behavior near the critical point"
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Probability.Notation
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open SimpleGraph Real
 
@@ -58,20 +55,20 @@ structure RandomGraphModel where
 **Critical probability:**
 At p = 1/n, the random graph undergoes a phase transition.
 -/
-def criticalProbability (n : ℕ) : ℝ := 1 / n
+noncomputable def criticalProbability (n : ℕ) : ℝ := 1 / n
 
 /--
 **Critical random graph G(n, 1/n):**
 The random graph at the critical threshold.
 -/
-def criticalRandomGraph (n : ℕ) (hn : n ≥ 1) : RandomGraphModel where
+noncomputable def criticalRandomGraph (n : ℕ) (hn : n ≥ 1) : RandomGraphModel where
   n := n
   p := 1 / n
   hp_nonneg := by positivity
   hp_le_one := by
     have : (1 : ℝ) / n ≤ 1 := by
       rw [div_le_one (by positivity : (n : ℝ) > 0)]
-      simp only [one_le_cast]
+      skip
       exact hn
     exact this
 
@@ -145,7 +142,7 @@ theorem critical_giant_size :
 **Critical exponent 2/3:**
 The scaling exponent for the giant component at the critical point.
 -/
-def criticalExponent : ℝ := 2 / 3
+noncomputable def criticalExponent : ℝ := 2 / 3
 
 /-
 ## Part V: Komlós-Sulyok-Szemerédi Theorem
@@ -213,7 +210,7 @@ At p = 1/n, the number of components of size k follows a power law.
 **The 5/2 exponent:**
 The power law exponent for component size distribution.
 -/
-def componentExponent : ℝ := 5 / 2
+noncomputable def componentExponent : ℝ := 5 / 2
 
 /-
 ## Part VII: Connection to Percolation

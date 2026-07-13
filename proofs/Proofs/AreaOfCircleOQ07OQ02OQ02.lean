@@ -78,7 +78,7 @@ theorem first_half_moment (b : ℝ) (hb : 0 < b) :
         (x * Real.exp (-b * x ^ 2)) x := by
     intro x _
     convert (((hasDerivAt_pow 2 x).const_mul (-b)).exp).const_mul (-(2 * b)⁻¹) using 1
-    field_simp
+    skip
     ring
   -- boundary behaviour: primitive → 0
   have htendsto :
@@ -106,8 +106,8 @@ theorem second_half_moment (b : ℝ) (hb : 0 < b) :
     have h := (((hasDerivAt_id x).const_mul (-(2 * b)⁻¹))).mul
       (((hasDerivAt_pow 2 x).const_mul (-b)).exp)
     convert h using 1
-    simp only [id_eq]
-    field_simp
+    skip
+    skip
     ring
   -- g → 0 at +∞
   have htendsto :

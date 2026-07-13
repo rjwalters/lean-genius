@@ -85,7 +85,7 @@ theorem gal_card_dvd_120 :
         (Polynomial.SplittingField.splits p)]
     exact x_fifth_sub_2_natDegree
   rw [hcard] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 -- ============================================================================
 -- Part III: Φ₅ Has a Root in the Splitting Field

@@ -23,6 +23,8 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 import Proofs.Erdos395Problem
 
+open scoped Classical
+
 open Complex Erdos395 Real Finset
 
 namespace Erdos395OQ01Incomplete01

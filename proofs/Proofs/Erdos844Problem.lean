@@ -27,11 +27,7 @@ References:
 Tags: number-theory, squarefree, intersecting-families, extremal, solved
 -/
 
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 open Nat Finset
 

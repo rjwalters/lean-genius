@@ -31,11 +31,7 @@ References:
 Tags: additive-combinatorics, finite-fields, sequencing, partial-sums
 -/
 
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos475
 

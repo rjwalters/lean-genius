@@ -1,12 +1,4 @@
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Algebra.GCDMonoid.Finset
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.Choose.Factorization
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.NumberTheory.Primorial
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hanson's Bound: lcm(1,...,n) ≤ 3^n

@@ -17,6 +17,8 @@ Reference: https://erdosproblems.com/469
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos469
 
 -- ## Definitions

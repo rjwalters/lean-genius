@@ -19,6 +19,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace LagrangeOQ01
 
 open Subgroup Fintype

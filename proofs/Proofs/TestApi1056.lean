@@ -7,6 +7,8 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 def intervalProd' (a b : ℕ) : ℕ :=
   (Finset.Ico a b).prod id
 

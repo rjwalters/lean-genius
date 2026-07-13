@@ -17,13 +17,7 @@ Known:
 Reference: https://erdosproblems.com/700
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Multiplicity
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 /- ## Definitions -/
 

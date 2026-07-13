@@ -1,6 +1,5 @@
 import Proofs.PtolemysComplexProof
-import Mathlib.Analysis.SpecialFunctions.Arsinh
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Hyperbolic Ptolemy Theorem in the Poincaré Disk (K = -1)  —  OQ-02

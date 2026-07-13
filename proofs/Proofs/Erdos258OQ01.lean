@@ -73,10 +73,7 @@ Reference: https://erdosproblems.com/258
 Erdős–Straus, "Some number theoretic results", Pacific J. Math. 36 (1971).
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Mathlib.NumberTheory.Real.Irrational
-import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib
 
 open scoped BigOperators
 open Nat Finset

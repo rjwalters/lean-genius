@@ -1,5 +1,7 @@
 import Proofs.InverseGaloisD4OQ01
 
+open scoped Classical
+
 /-
 # Inverse Galois D₄ — OQ-01 (external packaging): `D₄ ≅ ℤ/4 ⋊ ℤ/2`
 

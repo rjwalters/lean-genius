@@ -65,10 +65,10 @@ def HasDiameter2 (G : SimpleGraph V) : Prop := HasDiameter G 2
 /-- The graph G with edge (u,v) deleted. -/
 def deleteEdge (G : SimpleGraph V) (u v : V) : SimpleGraph V where
   Adj := fun x y => G.Adj x y ∧ ¬(({x, y} : Set V) = {u, v})
-  symm := fun x y ⟨hadj, hne⟩ => ⟨G.symm hadj, by
+  symm.symm := fun x y ⟨hadj, hne⟩ => ⟨G.symm hadj, by
     simp only [Set.pair_comm] at hne ⊢
     exact hne⟩
-  loopless := fun x ⟨hadj, _⟩ => G.loopless x hadj
+  loopless.irrefl := fun x ⟨hadj, _⟩ => G.loopless x hadj
 
 /-- An edge (u,v) is critical for diameter if deleting it increases the diameter. -/
 def IsCriticalEdge (G : SimpleGraph V) (u v : V) : Prop :=

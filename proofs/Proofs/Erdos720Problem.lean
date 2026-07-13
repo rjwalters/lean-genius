@@ -29,11 +29,7 @@
   - Related: Problem #559 (size Ramsey for bounded-degree graphs)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 open scoped Classical
 

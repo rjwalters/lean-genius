@@ -26,8 +26,7 @@ The conjecture says the answer is precisely Θ(log n) with a sharp constant.
 Related: Erdős #617 (balanced colourings), Erdős #161, #163.
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos162
 

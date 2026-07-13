@@ -11,9 +11,7 @@ the three-dimensional case remains **OPEN**.
 *Reference:* [erdosproblems.com/193](https://www.erdosproblems.com/193)
 -/
 
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Basic definitions -/
 

@@ -144,7 +144,7 @@ Based on the analysis above, c should be 1/2.
 -/
 
 /-- The conjectured value: c = 1/2 -/
-def conjecturedConstant : ℝ := 1 / 2
+noncomputable def conjecturedConstant : ℝ := 1 / 2
 
 /-- The main open question: is the asymptotic constant exactly 1/2? -/
 def constantIs1Over2 : Prop :=

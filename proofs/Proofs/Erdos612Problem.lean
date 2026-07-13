@@ -62,7 +62,7 @@ axiom basic_diameter_bound :
 /- ## Original Conjecture 1: K_{2r}-free -/
 
 /-- The coefficient in the original conjecture for K_{2r}-free graphs -/
-def alpha_2r (r : ℕ) : ℝ :=
+noncomputable def alpha_2r (r : ℕ) : ℝ :=
   (2 * (r - 1) * (3 * r + 2)) / (2 * r^2 - 1)
 
 /-- Divisibility condition for Conjecture 1 -/
@@ -83,7 +83,7 @@ def OriginalConjecture1 (r : ℕ) : Prop :=
 /- ## Original Conjecture 2: K_{2r+1}-free -/
 
 /-- The coefficient for K_{2r+1}-free graphs -/
-def alpha_2r1 (r : ℕ) : ℝ :=
+noncomputable def alpha_2r1 (r : ℕ) : ℝ :=
   (3 * r - 1) / r
 
 /-- Divisibility condition for Conjecture 2 -/
@@ -104,7 +104,7 @@ def OriginalConjecture2 (r : ℕ) : Prop :=
 /- ## Counterexamples (Czabarka-Singgih-Székely 2021) -/
 
 /-- The counterexample diameter bound -/
-def counterexample_diameter (r n d : ℕ) : ℝ :=
+noncomputable def counterexample_diameter (r n d : ℕ) : ℝ :=
   (6 * r - 5) * n / ((2 * r - 1) * d + 2 * r - 3)
 
 /-- Counterexamples exist for r ≥ 2 -/
@@ -141,7 +141,7 @@ theorem conjecture1_base_case : OriginalConjecture1 1 := by
 /- ## The Amended Conjecture -/
 
 /-- The amended coefficient: (3 - 2/k) for K_{k+1}-free -/
-def amended_alpha (k : ℕ) : ℝ :=
+noncomputable def amended_alpha (k : ℕ) : ℝ :=
   3 - 2 / k
 
 /-- Amended Conjecture (Czabarka-Singgih-Székely):

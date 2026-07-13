@@ -35,6 +35,8 @@ The following was proved by Aristotle:
 
 import Mathlib
 
+open scoped Classical
+
 
 open Set SimpleGraph Finset
 

@@ -5,6 +5,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Image
 import Mathlib.Tactic
 
+open scoped Classical
+
 -- IsB3 definition from the problem file
 def IsB3 (A : Finset ℕ) : Prop :=
   ∀ a₁ ∈ A, ∀ b₁ ∈ A, ∀ c₁ ∈ A,

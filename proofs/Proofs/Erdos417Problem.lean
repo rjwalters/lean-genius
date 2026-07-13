@@ -35,6 +35,8 @@ Licensed under the Apache License, Version 2.0.
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Set Filter Finset
 
 namespace Erdos417

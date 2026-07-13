@@ -85,14 +85,14 @@ def Gap (c : Fin n → ℝ) (i : Fin (n - 1)) : ℝ :=
 **Midpoint of roots:**
 The center of the root interval (a₀, aₙ).
 -/
-def Midpoint (a₀ d : ℝ) (n : ℕ) : ℝ :=
+noncomputable def Midpoint (a₀ d : ℝ) (n : ℕ) : ℝ :=
   a₀ + n * d / 2
 
 /--
 **Distance from midpoint:**
 How far each critical point is from the midpoint.
 -/
-def DistFromMidpoint (c : Fin n → ℝ) (a₀ d : ℝ) (n : ℕ) (i : Fin n) : ℝ :=
+noncomputable def DistFromMidpoint (c : Fin n → ℝ) (a₀ d : ℝ) (n : ℕ) (i : Fin n) : ℝ :=
   |c i - Midpoint a₀ d n|
 
 /-

@@ -203,7 +203,7 @@ theorem pinnedDistances_subset_all (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (h
     pinnedDistances x A ⊆ allDistinctDistances A := by
   intro d hd
   unfold pinnedDistances at hd
-  simp only [mem_image, mem_filter] at hd
+  skip
   obtain ⟨y, ⟨hy_mem, hy_ne⟩, hy_dist⟩ := hd
   unfold allDistinctDistances
   simp only [mem_image, mem_filter, mem_product]

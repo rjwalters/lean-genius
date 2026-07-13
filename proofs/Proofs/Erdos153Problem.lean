@@ -114,7 +114,7 @@ private lemma card_lt_swap (A : Finset ℕ) :
   · intro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h
     exact Prod.ext (Prod.mk.inj h).2 (Prod.mk.inj h).1
   · intro ⟨a, b⟩ hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    skip
     exact ⟨⟨b, a⟩, by simp [Finset.mem_filter, Finset.mem_product, hp.1.2, hp.1.1, hp.2], rfl⟩
 
 /-- Upper triangle cardinality: |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2. -/

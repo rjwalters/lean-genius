@@ -44,8 +44,8 @@ We work with `Fin n` as the vertex set.
 -/
 def CompleteGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj := fun v w => v ≠ w
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Edge of a complete graph:**

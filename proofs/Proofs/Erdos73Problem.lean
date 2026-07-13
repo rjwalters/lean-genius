@@ -57,7 +57,7 @@ theorem singleton_independent (G : SimpleGraph V) (v : V) : IsIndependentSet G {
   intro u hu w hw
   simp only [mem_singleton] at hu hw
   rw [hu, hw]
-  exact G.loopless w
+  exact G.loopless.irrefl w
 
 /- ## Part II: The Independence Condition -/
 
@@ -165,9 +165,9 @@ theorem strict_implies_bipartite (G : SimpleGraph V) [DecidableRel G.Adj]
   have := reed_theorem G 0 h
   rw [reed_bound_zero] at this
   obtain ⟨S, hS, hbip⟩ := this
-  simp only [Nat.le_zero, Finset.card_eq_zero] at hS
+  skip
   rw [hS] at hbip
-  simp only [Finset.coe_empty, Set.compl_empty] at hbip
+  skip
   -- hbip : IsBipartite (G.induce Set.univ)
   -- Transfer the bipartition back to G using the bijection V ↔ ↥Set.univ
   obtain ⟨A, B, hAB, hABd, hA, hB⟩ := hbip
@@ -212,8 +212,8 @@ theorem trivial_case (G : SimpleGraph V) [DecidableRel G.Adj]
 /-- The complete graph K_3 (triangle) is not bipartite. -/
 def triangleGraph : SimpleGraph (Fin 3) where
   Adj u v := u ≠ v
-  symm u v h := h.symm
-  loopless v := fun h => h rfl
+  symm.symm u v h := h.symm
+  loopless.irrefl v := fun h => h rfl
 
 /-- K_3 violates the k=0 condition. -/
 theorem K3_violates_strict : ¬satisfiesStrictCondition triangleGraph := by

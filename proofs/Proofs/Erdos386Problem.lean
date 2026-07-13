@@ -19,12 +19,7 @@ primes `p_i · p_{i+1} · ⋯ · p_j`. Known examples include:
 This remains an open problem.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Section 1: Prime enumeration

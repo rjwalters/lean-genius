@@ -1,10 +1,6 @@
 import Proofs.CantorsTheoremOQ01
 import Proofs.CantorsTheoremOQ01OQ03
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Continuum
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Generalised Cofinality Exclusion for |𝒫(ℝ)|

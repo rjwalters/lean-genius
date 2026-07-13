@@ -1,9 +1,4 @@
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Topology.Algebra.InfiniteSum.Basic
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Analysis.PSeries
-import Mathlib.Analysis.Normed.Group.InfiniteSum
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Sum of Reciprocals of Triangular Numbers

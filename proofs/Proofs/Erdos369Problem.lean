@@ -27,10 +27,7 @@ We define B-smooth numbers, the consecutive smooth property,
 and state both the main conjecture and Balog–Wooley partial result.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos369
 

@@ -124,7 +124,7 @@ theorem Xn_sub_p_ne_zero_Qp (n : ℕ) (hn : 1 ≤ n) :
   have h : (C (p : ℚ_[p])).natDegree < (X ^ n : ℚ_[p][X]).natDegree := by
     simp [natDegree_C, natDegree_pow, natDegree_X]; omega
   have hne := natDegree_sub_eq_left_of_natDegree_lt h
-  intro heq; simp [heq] at hne; simp [natDegree_pow, natDegree_X] at hne; omega
+  intro heq; simp [heq] at hne; skip; omega
 
 /-- natDegree(X^n - C p) = n over ℚ_p. -/
 theorem natDegree_Xn_sub_p (n : ℕ) (hn : 1 ≤ n) :

@@ -59,8 +59,8 @@ For studying finite subgraphs of infinite graphs.
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj := fun v w => G.Adj v.val w.val
-  symm := fun v w h => G.symm h
-  loopless := fun v h => G.loopless v.val h
+  symm.symm := fun v w h => G.adj_symm h
+  loopless.irrefl := fun v h => G.loopless.irrefl v.val h
 
 /-- The chromatic number of the induced subgraph on S. -/
 noncomputable def subgraphChromaticNumber (G : SimpleGraph V) (S : Set V) : ℕ∞ :=

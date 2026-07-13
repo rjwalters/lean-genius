@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 Cunningham Chains and Form A Primes: Long Chain Existence

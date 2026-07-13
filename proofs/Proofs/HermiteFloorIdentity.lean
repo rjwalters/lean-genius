@@ -56,7 +56,7 @@ theorem int_hermite_sum (n : ℕ) (hn : 0 < n) (a : ℤ) :
     -- `∑_{range(n+1)} g = (∑_{range n} g(·+1)) + g 0`  and  `= (∑_{range n} g) + g n`.
     have h1 := Finset.sum_range_succ' (fun j : ℕ => (b + (j : ℤ)) / (n : ℤ)) n
     have h2 := Finset.sum_range_succ (fun j : ℕ => (b + (j : ℤ)) / (n : ℤ)) n
-    simp only at h1 h2
+    skip
     -- Endpoint quotients: `g 0 = b/n` and `g n = b/n + 1`.
     have hg0 : (b + (((0 : ℕ) : ℤ))) / (n : ℤ) = b / (n : ℤ) := by norm_num
     have hgn : (b + ((n : ℤ))) / (n : ℤ) = b / (n : ℤ) + 1 := by

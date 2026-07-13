@@ -164,7 +164,7 @@ def completeTripartite (a b c : ℕ) : SimpleGraph (Fin a ⊕ Fin b ⊕ Fin c) w
     | Sum.inr (Sum.inr _), Sum.inl _ => True
     | Sum.inr (Sum.inr _), Sum.inr (Sum.inl _) => True
     | _, _ => False
-  symm := by constructor; intro x y; simp only; cases x <;> cases y <;> simp
+  symm := by constructor; intro x y; skip; cases x <;> cases y <;> skip
   loopless := by constructor; intro x; simp only; cases x <;> simp
 
 /-- Sauer's counterexample: K_{1,m,m} shows f(2) ≥ 1.

@@ -23,6 +23,8 @@
 import Mathlib
 import Proofs.Erdos553Problem
 
+open scoped Classical
+
 open SimpleGraph Finset Fintype
 
 namespace Erdos553ProblemAristotle

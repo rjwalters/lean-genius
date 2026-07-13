@@ -111,7 +111,7 @@ private lemma tendsto_succ_div_pow (a : ℕ) :
     tendsto_const_nhds.add (tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop)
   rw [add_zero] at h
   exact h.congr (eventually_atTop.mpr ⟨1, fun n hn => by
-    have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega); field_simp⟩)
+    have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega); skip⟩)
 
 /-- For any fixed b : ℕ, (log n / log(n+1))^b → 1 as n → ∞.
     Uses squeeze: for n ≥ 2, 1 - 1/(n·log 2) ≤ log n/log(n+1) ≤ 1, and both → 1. -/

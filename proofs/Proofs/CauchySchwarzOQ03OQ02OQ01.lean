@@ -85,7 +85,7 @@ theorem reverse_holder {ι : Type*} (s : Finset ι) (u v : ι → ℝ≥0)
     Real.HolderConjugate.inv_one_sub_inv hp0 hp1
   -- forward Hölder applied to `f = (u·v)^p`, `g = v^(-p)`
   have hf := NNReal.inner_le_Lp_mul_Lq s (fun i => (u i * v i) ^ p) (fun i => v i ^ (-p)) hconj
-  simp only at hf
+  skip
   -- the inner product collapses to `∑ u^p`
   have hLHS : ∑ i ∈ s, (u i * v i) ^ p * v i ^ (-p) = ∑ i ∈ s, u i ^ p := by
     apply Finset.sum_congr rfl

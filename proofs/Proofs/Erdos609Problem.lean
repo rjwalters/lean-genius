@@ -34,10 +34,7 @@
     [JY25] Janzer, Yip, "Improved bounds for monochromatic odd cycles" (2025)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Real SimpleGraph
 

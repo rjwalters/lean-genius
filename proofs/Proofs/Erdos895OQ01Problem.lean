@@ -258,7 +258,7 @@ private lemma greedy_indep_of_bounded_deg {n : ℕ} (G : GraphOnInterval n) [Dec
             apply ha_not_rem
             apply Finset.mem_insert.mpr; right
             apply Finset.mem_inter.mpr
-            exact ⟨by rw [SimpleGraph.mem_neighborFinset]; exact G.symm hAdj,
+            exact ⟨by rw [SimpleGraph.mem_neighborFinset]; exact G.adj_symm hAdj,
                    (Finset.mem_sdiff.mp ha_mem).1⟩
           · exact hS'_indep a b ha' hb' hab hAdj
 

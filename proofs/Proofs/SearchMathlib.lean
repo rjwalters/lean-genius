@@ -1,8 +1,5 @@
 -- Test file to understand Mathlib API for compact convex hulls in finite dimensions
-import Mathlib.Topology.Compactness.Compact
-import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Analysis.Convex.Combination
-import Mathlib.Analysis.Convex.Hull
+import Mathlib
 
 open Set Submodule Filter
 

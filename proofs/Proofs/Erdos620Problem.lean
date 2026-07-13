@@ -71,8 +71,8 @@ theorem triangleFree_implies_K4Free (G : SimpleGraph V) (h : TriangleFree G) :
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj := fun x y => G.Adj x.val y.val
-  symm := fun x y h => G.symm h
-  loopless := fun x => G.loopless x.val
+  symm.symm := fun x y h => G.symm h
+  loopless.irrefl := fun x => G.loopless x.val
 
 /-- The size of a vertex set. -/
 def vertexCount (S : Finset V) : ℕ := S.card

@@ -23,10 +23,7 @@
     velocity model of hyperbolic geometry" (2000)
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib
 
 set_option linter.unusedVariables false
 

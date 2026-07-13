@@ -25,9 +25,7 @@ Related: Problem #1068
 Original: Erdős-Hajnal (1966)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib
 
 open Cardinal SimpleGraph
 

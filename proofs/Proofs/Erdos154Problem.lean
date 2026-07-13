@@ -20,8 +20,7 @@ References:
 - Kolountzakis (1999): Strengthened version
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos154
 

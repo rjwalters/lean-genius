@@ -20,14 +20,7 @@ b - a ≥ t, we have (b - a) ∤ b. How large can |A| be?
 Reference: https://erdosproblems.com/635
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Interval
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset
 

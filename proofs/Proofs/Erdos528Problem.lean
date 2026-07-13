@@ -24,11 +24,7 @@
   Tags: combinatorics, probability, statistical-mechanics, self-avoiding-walks
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib
 
 namespace Erdos528
 

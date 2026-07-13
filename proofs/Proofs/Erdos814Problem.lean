@@ -62,7 +62,7 @@ def edgeThreshold (k n : ℕ) : ℕ :=
 The minimum degree over all vertices.
 -/
 def minDegree {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Finset.univ.inf' (by simp) (fun v => G.degree v)
+  Finset.univ.inf' (by skip) (fun v => G.degree v)
 
 /--
 **Subgraph Size Fraction:**

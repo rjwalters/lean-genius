@@ -34,10 +34,7 @@ finite group G via the conjugation action. The key insight:
 group-theory, sylow, orbit-stabilizer, enumeration, normalizer
 -/
 
-import Mathlib.GroupTheory.Sylow
-import Mathlib.GroupTheory.Index
-import Mathlib.Algebra.Group.Subgroup.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open MulAction
 

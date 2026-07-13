@@ -30,12 +30,7 @@ References:
 - Erdős, P.: Problems in number theory and combinatorics
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.Factors
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
 
 open Nat Finset
 

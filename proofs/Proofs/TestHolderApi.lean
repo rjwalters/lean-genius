@@ -1,10 +1,5 @@
 -- Test Hölder inequality API availability in Docker Mathlib
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.MeanInequalitiesPow
-import Mathlib.Tactic
+import Mathlib
 
 -- Available:
 #check NNReal.young_inequality

@@ -1,9 +1,4 @@
-import Mathlib.GroupTheory.Sylow
-import Mathlib.GroupTheory.Coset.Basic
-import Mathlib.GroupTheory.Index
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Sylow's Theorems

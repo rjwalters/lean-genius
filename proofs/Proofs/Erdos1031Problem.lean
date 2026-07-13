@@ -336,8 +336,8 @@ private theorem adj_gives_pred (i j k : ℕ) (hi : i < k) (hj : j < k) (hk : k �
 /-- The cycle graph on k vertices. -/
 private def cycleGraph' (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
   Adj := cycleAdj k
-  symm := cycleAdj_symm k
-  loopless := cycleAdj_loopless k hk
+  symm.symm := cycleAdj_symm k
+  loopless.irrefl := cycleAdj_loopless k hk
 
 /-- Universal graphs contain regular subgraphs. -/
 theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
@@ -349,8 +349,8 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
   let W := ULift.{_, 0} (Fin k)
   let H : SimpleGraph W := {
     Adj := fun a b => cycleAdj k a.down b.down
-    symm := fun a b h => cycleAdj_symm k a.down b.down h
-    loopless := fun a h => cycleAdj_loopless k hk3 a.down h
+    symm.symm := fun a b h => cycleAdj_symm k a.down b.down h
+    loopless.irrefl := fun a h => cycleAdj_loopless k hk3 a.down h
   }
   have hWcard : Fintype.card W = k := by
     change Fintype.card (ULift (Fin k)) = k

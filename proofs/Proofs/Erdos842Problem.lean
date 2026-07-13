@@ -51,8 +51,8 @@ A complete graph on 3 vertices (K₃).
 -/
 def TriangleGraph : SimpleGraph (Fin 3) where
   Adj := fun i j => i ≠ j
-  symm := fun _ _ h => Ne.symm h
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => Ne.symm h
+  loopless.irrefl := fun _ h => h rfl
 
 /--
 **Triangle graph is K₃:**

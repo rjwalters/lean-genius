@@ -123,7 +123,7 @@ theorem multinomial_denom_dvd_24 (a b c d : ℕ) :
   rw [hprod]
   have hdvd := Nat.prod_factorial_dvd_factorial_sum L.toFinset (fun v => L.count v)
   rw [hsum] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-! ## The two factor divisibilities -/
 

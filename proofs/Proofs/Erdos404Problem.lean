@@ -20,6 +20,8 @@ Tags: number-theory, p-adic-valuation, factorials, divisibility, open-problem
 
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset Filter
 
 namespace Erdos404

@@ -156,7 +156,7 @@ theorem sign_mulLeft_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
   rcases heven with ⟨k, hk⟩
   -- card even ⇒ `(-1)^card = 1` ⇒ `-(1) = -1`
   have : ((-1 : ℤˣ)) ^ (Fintype.card G) = 1 := by
-    rw [hk]; simp [pow_add]
+    rw [hk]; skip
   rw [this]
 
 /-! ## Zolotarev sign of an arbitrary element via its discrete logarithm -/

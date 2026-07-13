@@ -7,7 +7,7 @@ import Mathlib.Tactic
 
 -- Test: What's the ℤ Icc card API?
 #check @Int.Icc_toFinset_card
-#check @Finset.card_Icc_of_le
+#check @Nat.card_Icc_of_le
 #check @Int.card_Icc
 
 -- Test: direct computation for Icc card

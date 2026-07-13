@@ -19,9 +19,7 @@ References:
 - [Ad22] Adenwalla (2022): Improved to k ≤ 4
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos195
 
@@ -35,7 +33,7 @@ def IsPermutation (f : ℤ → ℤ) : Prop :=
     a, a+d, a+2d, ..., a+(k-1)d -/
 def IsAP (xs : List ℤ) : Prop :=
   xs.length ≥ 2 ∧ ∃ d : ℤ, d ≠ 0 ∧ ∀ i : ℕ, i + 1 < xs.length →
-    xs.get! (i + 1) - xs.get! i = d
+    xs.get! (i + 1) - xs[i]! = d
 
 /-- A monotone arithmetic progression (MAP) in a permutation f:
     An AP x₁ < x₂ < ... < xₖ such that the positions of these values
@@ -44,7 +42,7 @@ def IsMonotoneAP (f : ℤ → ℤ) (xs : List ℤ) : Prop :=
   IsAP xs ∧
   xs.Chain' (· < ·) ∧
   ∀ i j : ℕ, i < j → j < xs.length →
-    ∃ pᵢ pⱼ : ℤ, f pᵢ = xs.get! i ∧ f pⱼ = xs.get! j ∧ pᵢ < pⱼ
+    ∃ pᵢ pⱼ : ℤ, f pᵢ = xs[i]! ∧ f pⱼ = xs[j]! ∧ pᵢ < pⱼ
 
 /-- The permutation f contains a monotone AP of length k -/
 def HasMAP (f : ℤ → ℤ) (k : ℕ) : Prop :=

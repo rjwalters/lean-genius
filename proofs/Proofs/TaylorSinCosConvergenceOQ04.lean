@@ -1,9 +1,4 @@
-import Mathlib.Analysis.Calculus.Taylor
-import Mathlib.Analysis.Calculus.IteratedDeriv.Lemmas
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Mathlib.Tactic
+import Mathlib
 import Proofs.TaylorSinCosConvergence
 
 /-

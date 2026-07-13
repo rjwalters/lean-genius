@@ -32,10 +32,7 @@ References:
 - See also Problem #553
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open SimpleGraph
 

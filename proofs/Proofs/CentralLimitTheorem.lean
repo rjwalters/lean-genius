@@ -1,13 +1,4 @@
-import Mathlib.Probability.Distributions.Gaussian.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.Fourier.FourierTransform
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
-import Mathlib.Probability.Independence.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Calculus.Taylor
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Central Limit Theorem

@@ -1,5 +1,7 @@
 import Mathlib
 
+set_option maxRecDepth 40000
+
 /-
 # Degree-`k` binomial truncation lower bound for `(1 + a)ⁿ`
 

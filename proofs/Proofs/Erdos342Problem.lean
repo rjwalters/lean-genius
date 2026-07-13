@@ -28,6 +28,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib
 
+open scoped Classical
+
 open Nat Finset
 
 namespace Erdos342

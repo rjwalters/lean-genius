@@ -125,10 +125,10 @@ noncomputable def countDegenerateQuadruples (S : Finset Point) : ℕ :=
   ((S.powersetCard 4).filter (fun T =>
     ∃ (h : T.card = 4), isDegenerate (
       let pts := T.toList
-      (pts.get ⟨0, by simp [h]⟩,
-       pts.get ⟨1, by simp [h]⟩,
-       pts.get ⟨2, by simp [h]⟩,
-       pts.get ⟨3, by simp [h]⟩)
+      (pts.get ⟨0, by skip⟩,
+       pts.get ⟨1, by skip⟩,
+       pts.get ⟨2, by skip⟩,
+       pts.get ⟨3, by skip⟩)
     )
   )).card
 

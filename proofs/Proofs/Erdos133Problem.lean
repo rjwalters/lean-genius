@@ -28,11 +28,9 @@ References:
 Tags: graph-theory, extremal-combinatorics, diameter, triangle-free
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
+import Mathlib
+
+open scoped Classical
 
 namespace Erdos133
 

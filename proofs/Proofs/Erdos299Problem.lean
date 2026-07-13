@@ -42,16 +42,7 @@ References:
 - [ErGr80] Erdős-Graham, "Old and new problems and results in combinatorial number theory"
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.Asymptotics.Defs
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Tactic
+import Mathlib
 
 
 open Filter Asymptotics Finset

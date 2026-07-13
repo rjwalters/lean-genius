@@ -16,6 +16,8 @@
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos636Aristotle
 
 open SimpleGraph Finset Function

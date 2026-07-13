@@ -29,6 +29,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.InnerProductSpace.Basic
 
+open scoped Classical
+
 open Real Finset
 
 namespace Erdos91

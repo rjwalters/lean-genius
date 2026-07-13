@@ -29,6 +29,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.NumberTheory.Zsqrtd.Basic
 import Mathlib.Algebra.Order.Field.Basic
 
+open scoped Classical
+
 open Finset Nat
 
 namespace Erdos438

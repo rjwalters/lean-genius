@@ -33,11 +33,9 @@ References:
 Tags: graph-theory, hypergraphs, chromatic-number, vertex-degree, extremal
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
+
+open scoped Classical
 
 namespace Erdos833
 

@@ -17,11 +17,7 @@ Status: OPEN
 Reference: https://erdosproblems.com/661
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Definition -/
 

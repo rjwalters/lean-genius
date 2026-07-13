@@ -24,9 +24,7 @@ References:
 - Erdős (1960): Original formulation
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Topology.Basic
+import Mathlib
 
 open MeasureTheory
 

@@ -36,6 +36,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
+open scoped Classical
+
 open Real Set Finset
 
 namespace Erdos862

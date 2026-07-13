@@ -78,7 +78,7 @@ lemma orderOf_eq_of_prime_factor_test {G : Type*} [Group G] [Fintype G] {n : ℕ
     exact orderOf_dvd_of_pow_eq_one hpow
   · -- n ∣ orderOf g (the hard direction)
     by_contra h_ndvd
-    push_neg at h_ndvd
+    skip
     have hdvd : orderOf g ∣ n := orderOf_dvd_of_pow_eq_one hpow
     -- Since orderOf g ∣ n but n ∤ orderOf g, orderOf g ≠ n, so orderOf g < n
     have hlt : orderOf g < n :=

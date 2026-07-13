@@ -19,8 +19,7 @@ References:
 - Erdős (1975): Original problem and upper bounds
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos1088
 

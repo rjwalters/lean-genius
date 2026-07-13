@@ -18,11 +18,7 @@ is impossible. His result applies to any h-fold convolution.
 Tags: additive-combinatorics, analytic-number-theory, convolutions
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open scoped Classical
 

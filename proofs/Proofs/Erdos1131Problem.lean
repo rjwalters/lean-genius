@@ -383,7 +383,7 @@ private lemma integral_sin_mul (k : ℕ) (hk : k ≥ 1) :
     have h1 := (Real.hasDerivAt_cos ((↑k : ℝ) * x)).comp x
       ((hasDerivAt_id x).const_mul (↑k : ℝ))
     have h2 := h1.const_mul (-(1 / (↑k : ℝ)))
-    convert h2 using 1; field_simp; ring
+    convert h2 using 1; skip; ring
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hd
     ((Real.continuous_sin.comp (continuous_const.mul continuous_id)).intervalIntegrable _ _)]
   simp [Real.cos_zero]; field_simp; ring

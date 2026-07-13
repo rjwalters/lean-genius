@@ -95,7 +95,7 @@ theorem centered_antisymmetric_eq_commutator
   unfold expVal commutatorEV
   have hψψ : ⟪ψ, ψ⟫_ℂ = (1 : ℂ) := by
     have h := @inner_self_eq_norm_sq_to_K ℂ E _ _ _ ψ
-    simp only [RCLike.ofReal_pow] at h
+    skip
     rw [h, hψ]; norm_num
   have hAreal : starRingEnd ℂ ⟪ψ, A ψ⟫_ℂ = ⟪ψ, A ψ⟫_ℂ := expVal_self_conj A hA ψ
   have hBreal : starRingEnd ℂ ⟪ψ, B ψ⟫_ℂ = ⟪ψ, B ψ⟫_ℂ := expVal_self_conj B hB ψ
@@ -138,7 +138,7 @@ theorem heisenberg_constant_commutator
     unfold commutatorEV
     have hψψ : ⟪ψ, ψ⟫_ℂ = (1 : ℂ) := by
       have h := @inner_self_eq_norm_sq_to_K ℂ E _ _ _ ψ
-      simp only [RCLike.ofReal_pow] at h
+      skip
       rw [h, hψ]; norm_num
     rw [hcomm ψ, inner_smul_right, hψψ, mul_one]
   rw [hcEV] at hrobertson

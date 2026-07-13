@@ -56,11 +56,7 @@ The following was proved by Aristotle:
   Tags: number-theory, covering-systems, combinatorics
 -/
 
-import Mathlib.Data.Int.ModEq
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 
 namespace Erdos202

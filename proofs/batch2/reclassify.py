@@ -22,7 +22,7 @@ class MR:
 ORDER = ['A','B2','C','D1','D2','E','E2','E3','F1','F2','G','H1','H2',
          'T1','T2','S1','S2','S3',
          'W0smoke','W0aa','W0ab','W0ac','W0ad','W0ae','W0af','W0ag','W0ah',
-         'DR1','DR2','DR3','REG']
+         'DR1','DR2','DR3','REG','DR5','DR6a','DR6b','DR6ra','DR6rb','DR7a','DR7b','DR8a','DR8b']
 
 entries = {}
 for w in ORDER:

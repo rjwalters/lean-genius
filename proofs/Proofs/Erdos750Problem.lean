@@ -20,11 +20,9 @@ Status: OPEN
 Reference: https://erdosproblems.com/750
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open scoped Classical
 
 open SimpleGraph
 

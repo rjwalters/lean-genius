@@ -33,13 +33,7 @@ References:
 - Ambrus et al. (2023): "The density of planar sets avoiding unit distances"
 -/
 
-import Mathlib.Analysis.InnerProductSpace.EuclideanDist
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
-import Mathlib.MeasureTheory.Measure.MeasureSpace
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Analysis.Normed.Group.Basic
-import Mathlib.Order.LiminfLimsup
+import Mathlib
 
 open MeasureTheory Set Metric Filter
 

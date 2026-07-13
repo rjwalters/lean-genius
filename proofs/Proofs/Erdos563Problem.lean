@@ -22,6 +22,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 open Finset
 
 /- ## Core Definitions -/

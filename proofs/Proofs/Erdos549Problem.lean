@@ -24,6 +24,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Finset Function Set SimpleGraph
 
 /- ## Trees and Bipartite Graphs -/
@@ -65,7 +67,7 @@ def HasMonochromaticCopy {V W : Type*} (G : SimpleGraph V) (H : SimpleGraph W)
     ∀ u v : W, H.Adj u v → G.Adj (f u) (f v) ∧ c ⟦(f u, f v)⟧ = color
 
 /-- The Ramsey number R(H) for a graph H -/
-def RamseyNumber {W : Type*} (H : SimpleGraph W) : ℕ :=
+noncomputable def RamseyNumber {W : Type*} (H : SimpleGraph W) : ℕ :=
   Nat.find (ramsey_exists H)
 where
   ramsey_exists (H : SimpleGraph W) : ∃ n : ℕ, ∀ c : EdgeTwoColoring (Fin n),

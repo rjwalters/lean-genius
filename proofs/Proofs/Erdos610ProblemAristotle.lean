@@ -20,6 +20,8 @@
 import Mathlib
 import Proofs.Erdos610Problem
 
+open scoped Classical
+
 open Finset Function SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V]

@@ -14,6 +14,8 @@
 import Proofs.Erdos625Problem
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos625Aristotle
 
 open Erdos625 SimpleGraph

@@ -27,11 +27,7 @@ References:
 - Related to Erdős Problems #607 and #732.
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.List.Sort
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib
 
 open Finset Real
 
@@ -69,7 +65,7 @@ def pointsOnLine (P : PointSet) (L : Set (ℝ × ℝ)) : ℕ :=
 **Lines with at least 2 points:**
 The set of lines determined by a point configuration.
 -/
-def richLines (P : PointSet) : Finset (Set (ℝ × ℝ)) :=
+noncomputable def richLines (P : PointSet) : Finset (Set (ℝ × ℝ)) :=
   (P ×ˢ P).image (fun ⟨p, q⟩ => lineThrough p q) |>.filter (fun L => pointsOnLine P L ≥ 2)
 
 /-

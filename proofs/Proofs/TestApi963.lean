@@ -1,5 +1,4 @@
-import Mathlib.Data.Nat.Log
-import Mathlib.Tactic
+import Mathlib
 
 -- Nat.log_anti_left : {b c n : ℕ} → 1 < c → c ≤ b → Nat.log b n ≤ Nat.log c n
 -- So log_anti_left (1 < 2) (2 ≤ 3) gives Nat.log 3 n ≤ Nat.log 2 n

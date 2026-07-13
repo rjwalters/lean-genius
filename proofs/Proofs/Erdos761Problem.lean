@@ -117,7 +117,7 @@ theorem isAcyclicColoring_of_no_mono_edge {V : Type*} {G : SimpleGraph V} {k : �
   -- In the multi-step case: the last edge gives O.dir b v with
   -- c b = i = c v, contradicting h b v (c b ≠ c v).
   cases hcycle with
-  | single hr => exact absurd (O.consistent v v hr.2.2) (G.loopless v)
+  | single hr => exact absurd (O.consistent v v hr.2.2) (G.loopless.irrefl v)
   | tail _ hr => exact absurd (hr.1.trans hr.2.1.symm) (h _ v hr.2.2)
 
 -- ═══════════════════════════════════════════════════════════════════════

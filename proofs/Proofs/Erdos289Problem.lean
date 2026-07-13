@@ -19,10 +19,7 @@ non-adjacent intervals I₁, ..., Iₖ ⊂ ℕ (each with |Iᵢ| ≥ 2) such tha
 - <https://erdosproblems.com/289>
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Interval
-import Mathlib.Data.Rat.Defs
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
 

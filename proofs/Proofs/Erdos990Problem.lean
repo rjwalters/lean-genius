@@ -27,12 +27,7 @@
   Tags: analysis, polynomials, equidistribution, discrepancy
 -/
 
-import Mathlib.Data.Complex.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Topology.MetricSpace.Basic
+import Mathlib
 
 namespace Erdos990
 
@@ -52,7 +47,7 @@ noncomputable def polyDegree (d : ℕ) (p : ComplexPoly d) : ℕ :=
   d -- Simplified; actual definition would find highest nonzero term
 
 /-- Number of nonzero coefficients (sparsity) -/
-def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
+noncomputable def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
   (Finset.univ.filter (fun i => p i ≠ 0)).card
 
 /-- The argument (angle) of a complex number in [0, 2π) -/

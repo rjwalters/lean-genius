@@ -25,10 +25,7 @@ The function F_k(n) is axiomatized along with the main conjecture and
 the Burr-Erdős-Graham-Sós lower bound.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 open Finset
 

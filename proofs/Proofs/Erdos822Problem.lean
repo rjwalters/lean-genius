@@ -17,6 +17,8 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Set.Function
 import Mathlib.Order.Filter.Basic
 
+open scoped Classical
+
 namespace Erdos822
 
 open Nat

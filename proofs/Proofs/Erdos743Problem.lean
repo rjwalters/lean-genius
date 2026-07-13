@@ -26,9 +26,7 @@ References:
 - https://erdosproblems.com/743
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 open Nat Finset
 

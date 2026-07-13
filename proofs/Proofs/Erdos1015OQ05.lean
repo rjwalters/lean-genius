@@ -30,6 +30,8 @@
 import Mathlib
 import Proofs.RamseysTheorem
 
+open scoped Classical
+
 namespace Erdos1015OQ05
 
 open RamseysTheorem Finset

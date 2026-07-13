@@ -189,7 +189,7 @@ theorem solymosi_equiv : SolymosiConjecture ↔ SolymosiConjectureAlt := by
   constructor
   · intro h
     by_contra hall
-    push_neg at hall
+    skip
     exact h hall
   · intro ⟨k, hk⟩ hq2
     exact hk (hq2 k)

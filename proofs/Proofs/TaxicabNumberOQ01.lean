@@ -24,6 +24,8 @@
 -/
 import Mathlib
 
+set_option maxRecDepth 40000
+
 namespace TaxicabNumberOQ01
 
 /-- Unordered pairs `(a, b)` with `1 ≤ a ≤ b ≤ 12` and `a³ + b³ = n`.

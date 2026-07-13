@@ -27,6 +27,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Subgroup Fintype
 
 abbrev A4 : Type* := alternatingGroup (Fin 4)

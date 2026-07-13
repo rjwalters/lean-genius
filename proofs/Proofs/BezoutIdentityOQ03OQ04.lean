@@ -1,6 +1,4 @@
-import Mathlib.Data.Int.GCD
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Efficient Verified CRT Computation

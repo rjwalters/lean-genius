@@ -353,7 +353,7 @@ theorem decay_implies_regularity' (β α : ℝ) (hβα : α + 1 < β) (hα : 0 <
   refine ⟨⟨2 ^ (1 - α) * ∑' n : ℤ, ‖fourierCoeff (⇑f) n‖ * (2 * Real.pi * |↑n| / T) ^ α,
            hK_nonneg⟩,
           holderWith_of_dist_bound (fun x y => ?_)⟩
-  simp only [NNReal.coe_mk]
+  skip
   rw [hα_nnreal]
   -- f x - f y = Σ c_n • (fourier n x - fourier n y)
   have h_diff : HasSum (fun n : ℤ => fourierCoeff (⇑f) n • (fourier n x - fourier n y))

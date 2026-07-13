@@ -27,10 +27,7 @@ Heuristic: log(x₁ + y₁√D) ≈ √D, but the distribution is poorly underst
 Reference: Lenstra, "Solving the Pell Equation" (2002)
 -/
 
-import Mathlib.NumberTheory.Pell
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 open Pell Real
 

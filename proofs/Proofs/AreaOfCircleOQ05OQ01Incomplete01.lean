@@ -30,9 +30,7 @@ is independent of the scale a, which is exactly why π appears with the single p
 **Sorry count**: 0. All steps fully proved.
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.Analysis.SpecialFunctions.PolarCoord
-import Mathlib.Tactic
+import Mathlib
 import Proofs.AreaOfCircleOQ05
 import Proofs.AreaOfCircleOQ05OQ01
 
@@ -152,7 +150,7 @@ theorem polar_integral_factorization_scaled (a : ℝ) (ha : 0 < a) :
   rw [integral_prod _ hf]
   have h_vol : (volume (Ioo (-π) π)).toReal = π - -π := by
     rw [Real.volume_Ioo, ENNReal.toReal_ofReal (by linarith [pi_pos])]
-  simp_rw [set_integral_const, smul_eq_mul, h_vol]
+  simp_rw [setIntegral_const, smul_eq_mul, h_vol]
   rw [integral_mul_left, angular_integral]
   ring
 

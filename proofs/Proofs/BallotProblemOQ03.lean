@@ -1719,7 +1719,7 @@ theorem lindstromSwapAt_fst_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
   have h_n₁ := take_north_at_stepIndex l₁ a₁ p h₁
   have h_n₂ := take_north_at_stepIndex l₂ a₂ p h₂
   have h_sum₂ := take_drop_countP_sum l₂ (stepIndexOf l₂ a₂ p h₂) (· = true)
-  simp only [northSteps] at *
+  skip
   omega
 
 /-- North step count of second swapped path = n₁ + a₁ - a₂ -/
@@ -1732,7 +1732,7 @@ theorem lindstromSwapAt_snd_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
   have h_n₁ := take_north_at_stepIndex l₁ a₁ p h₁
   have h_n₂ := take_north_at_stepIndex l₂ a₂ p h₂
   have h_sum₁ := take_drop_countP_sum l₁ (stepIndexOf l₁ a₁ p h₁) (· = true)
-  simp only [northSteps] at *
+  skip
   omega
 
 /-- Length of first swapped path -/

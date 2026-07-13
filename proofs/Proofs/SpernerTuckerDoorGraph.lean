@@ -285,7 +285,6 @@ theorem doorGraph_degree_eq_shared
       exact ⟨hv, w, (hne w hw).symm, hw'⟩
     · -- injective: a shared door of two neighbours touches three simplices
       intro w₁ h₁ w₂ h₂ heq
-      dsimp only at heq
       obtain ⟨hv₁, hw₁⟩ := hgspec w₁ h₁
       obtain ⟨_, hw₂⟩ := hgspec w₂ h₂
       rw [heq] at hw₁

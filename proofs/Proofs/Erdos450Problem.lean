@@ -29,6 +29,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos450
 
 open Finset

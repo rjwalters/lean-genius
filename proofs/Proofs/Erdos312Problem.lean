@@ -19,14 +19,7 @@ exponentially close to 1, given a large enough total reciprocal sum.
 Reference: Erdős-Graham [ErGr80]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Order.Filter.Basic
-import Mathlib.Analysis.PSeries
+import Mathlib
 
 open Finset Real Filter
 

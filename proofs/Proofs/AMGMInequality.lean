@@ -1,7 +1,4 @@
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Arithmetic Mean - Geometric Mean Inequality

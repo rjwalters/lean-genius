@@ -1,7 +1,4 @@
-import Mathlib.Analysis.Calculus.LHopital
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Analysis.Calculus.FDeriv.Comp
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # L'Hôpital's Rule OQ-03: Multivariate Generalization

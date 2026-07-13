@@ -32,10 +32,7 @@ References:
   sets" J. Combin. Theory Ser. A (1991), 78-84.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos616
 
@@ -149,8 +146,8 @@ The optimal coefficient c where t(r) ~ c·r satisfies:
   3/16 ≤ c ≤ 1/5
   0.1875 ≤ c ≤ 0.2
 -/
-def lowerCoefficient : ℝ := 3 / 16  -- = 0.1875
-def upperCoefficient : ℝ := 1 / 5   -- = 0.2
+noncomputable def lowerCoefficient : ℝ := 3 / 16  -- = 0.1875
+noncomputable def upperCoefficient : ℝ := 1 / 5   -- = 0.2
 
 theorem coefficient_bounds :
     lowerCoefficient ≤ upperCoefficient := by

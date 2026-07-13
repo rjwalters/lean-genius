@@ -80,10 +80,10 @@ theorem hasPath3_symm (G : SimpleGraph V) (u v : V) :
   constructor
   · intro ⟨a, b, h1, h2, h3, h4, h5, h6, ha, hab, hb⟩
     exact ⟨b, a, h3.symm, h2.symm, h1.symm, h5.symm, h4.symm, h6.symm,
-           G.symm hb, G.symm hab, G.symm ha⟩
+           G.adj_symm hb, G.adj_symm hab, G.adj_symm ha⟩
   · intro ⟨a, b, h1, h2, h3, h4, h5, h6, ha, hab, hb⟩
     exact ⟨b, a, h3.symm, h2.symm, h1.symm, h5.symm, h4.symm, h6.symm,
-           G.symm hb, G.symm hab, G.symm ha⟩
+           G.adj_symm hb, G.adj_symm hab, G.adj_symm ha⟩
 
 /-
 ## Part III: Equal-Degree Pair Connected by Path

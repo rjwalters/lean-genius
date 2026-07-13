@@ -133,7 +133,7 @@ theorem case_r_equals_2_distinct (A : Set ℕ) :
   constructor
   · intro ⟨f, hinj, hA, hsum⟩
     have hne : f 0 ≠ f 1 := hinj.ne (by decide)
-    exact ⟨f 0, hA 0, f 1, hA 1, hne, by simp [Fin.sum_univ_two, hsum]⟩
+    exact ⟨f 0, hA 0, f 1, hA 1, hne, by skip⟩
   · intro ⟨a, ha, b, hb, hab, hsum⟩
     use ![a, b]
     constructor

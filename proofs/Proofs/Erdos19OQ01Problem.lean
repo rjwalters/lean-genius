@@ -57,8 +57,8 @@ structure EFLFamily (n : ℕ) where
     belong to the same clique and are distinct. This is a Mathlib SimpleGraph. -/
 def eflGraph (n : ℕ) (F : EFLFamily n) : SimpleGraph (Fin (n * n)) where
   Adj x y := x ≠ y ∧ ∃ i : Fin n, x ∈ F.cliques i ∧ y ∈ F.cliques i
-  symm _ _ := fun ⟨hne, i, hx, hy⟩ => ⟨hne.symm, i, hy, hx⟩
-  loopless _ := fun ⟨hne, _⟩ => hne rfl
+  symm.symm _ _ := fun ⟨hne, i, hx, hy⟩ => ⟨hne.symm, i, hy, hx⟩
+  loopless.irrefl _ := fun ⟨hne, _⟩ => hne rfl
 
 /-
 ## Part II: Colorability using GraphCore

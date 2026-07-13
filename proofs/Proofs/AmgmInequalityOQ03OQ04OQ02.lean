@@ -43,11 +43,7 @@ which satisfies ln_q(x) → log(x) as q → 1.  The Tsallis entropy is
 - Rényi, A. (1961). On measures of entropy and information. 4th Berkeley Symp.
 -/
 
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Calculus.Deriv.Slope
-import Mathlib.Tactic
+import Mathlib
 
 open Filter Topology
 

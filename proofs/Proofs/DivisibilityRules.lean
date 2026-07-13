@@ -75,7 +75,7 @@ theorem ofDigits_modEq_alternatingDigitSum (d : ℕ) (hd : 0 < d)
     simp only [Nat.ofDigits]
     have hb_neg : (b : ℤ) ≡ -1 [ZMOD ↑d] := by
       rw [Int.ModEq]
-      simp only [Int.emod_emod_of_dvd]
+      skip
       omega
     have h_mul : (↑b * ↑(Nat.ofDigits b rest) : ℤ) ≡
         -1 * alternatingDigitSum rest [ZMOD ↑d] :=

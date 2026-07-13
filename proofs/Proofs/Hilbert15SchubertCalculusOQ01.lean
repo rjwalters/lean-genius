@@ -1,10 +1,4 @@
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.DivisionRing
-import Mathlib.LinearAlgebra.FreeModule.Finite.Basic
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.Data.Set.Card
-import Mathlib.Algebra.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hilbert 15 OQ-01: Schubert Calculus Formalizability Assessment

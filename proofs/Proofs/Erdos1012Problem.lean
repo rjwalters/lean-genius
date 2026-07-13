@@ -12,10 +12,7 @@ Determine or estimate f(k).
 Reference: https://erdosproblems.com/1012
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Fintype.Basic
+import Mathlib
 
 open SimpleGraph Finset
 

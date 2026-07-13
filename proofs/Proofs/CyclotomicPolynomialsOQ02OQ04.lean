@@ -45,7 +45,7 @@ theorem sharpRadius_antitone {C : ℝ} (hC : 1 ≤ C) {k k' : ℕ} (hk : 1 ≤ k
     1 + C ^ ((k' : ℝ)⁻¹) ≤ 1 + C ^ ((k : ℝ)⁻¹) := by
   have hkpos : (0 : ℝ) < (k : ℝ) := by exact_mod_cast hk
   have hcast : (k : ℝ) ≤ (k' : ℝ) := by exact_mod_cast hkk'
-  have hinv : (k' : ℝ)⁻¹ ≤ (k : ℝ)⁻¹ := inv_le_inv_of_le hkpos hcast
+  have hinv : (k' : ℝ)⁻¹ ≤ (k : ℝ)⁻¹ := inv_anti₀ hkpos hcast
   have hle : C ^ ((k' : ℝ)⁻¹) ≤ C ^ ((k : ℝ)⁻¹) :=
     Real.rpow_le_rpow_of_exponent_le hC hinv
   linarith

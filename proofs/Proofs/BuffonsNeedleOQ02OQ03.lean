@@ -138,7 +138,7 @@ noncomputable def totalLength (n : ℕ) (segs : List (LineSegment n)) : ℝ :=
 lemma integrable_totalCrossings (n : ℕ) (segs : List (LineSegment n)) :
     Integrable (totalCrossings n segs) (kinematicMeasure n) := by
   induction segs with
-  | nil => simp only [totalCrossings_nil]; exact integrable_zero _ _ _
+  | nil => skip; exact integrable_zero _ _ _
   | cons s rest ih =>
     simp_rw [totalCrossings_cons]
     exact (crossing_integrable n s).add ih

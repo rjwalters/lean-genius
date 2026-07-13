@@ -39,6 +39,8 @@ import Mathlib
 import Proofs.SzemerediCore
 import Proofs.SzemerediRegularity
 
+set_option maxRecDepth 40000
+
 namespace SzemerediFKComparison
 
 open Szemeredi.Core Szemeredi.Regularity Classical

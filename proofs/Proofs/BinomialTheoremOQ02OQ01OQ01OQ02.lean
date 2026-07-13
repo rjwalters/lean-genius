@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.BinomialTheoremOQ02OQ01
 
 /-

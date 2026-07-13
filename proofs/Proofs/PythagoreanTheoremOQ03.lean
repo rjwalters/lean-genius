@@ -32,14 +32,7 @@ The Pythagorean theorem generalizes to non-Euclidean geometries:
 Tags: geometry, non-euclidean, hyperbolic, spherical, pythagorean-theorem
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Tactic
+import Mathlib
 
 set_option linter.unusedVariables false
 

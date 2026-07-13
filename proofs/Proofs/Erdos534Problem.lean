@@ -22,11 +22,7 @@ define the optimal family construction, and axiomatize the
 Ahlswede-Khachatrian theorem with special cases.
 -/
 
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
+import Mathlib
 
 open scoped Classical
 

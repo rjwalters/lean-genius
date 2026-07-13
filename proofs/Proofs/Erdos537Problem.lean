@@ -30,6 +30,8 @@ import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 namespace Erdos537
 
 /-

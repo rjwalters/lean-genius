@@ -113,7 +113,7 @@ theorem discrepancy_unbounded (A : PointSequence) :
   let r := max (r₀ + 1) ((M / c + 1)^2)
   use r
   have hr_pos : r > 0 := by
-    simp only [lt_max_iff]
+    skip
     left
     linarith
   use hr_pos

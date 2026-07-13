@@ -1,10 +1,4 @@
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Integral.MeanInequalities
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.MeanInequalitiesPow
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Explicit Lp Minkowski via the Hölder Chain (OQ-02-OQ-02)
@@ -165,7 +159,7 @@ theorem conjugate_exponent_identity {p q : ℝ} (hp : 1 < p)
   have hq : q = p / (p - 1) := by
     rw [Real.HolderConjugate] at hpq
     obtain ⟨hp', hq', hpq'⟩ := hpq
-    field_simp at hpq' ⊢
+    skip
     linarith
   rw [hq]
   field_simp

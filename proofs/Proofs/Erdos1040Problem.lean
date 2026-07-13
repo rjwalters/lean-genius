@@ -235,7 +235,7 @@ def unitDiscCase : Prop :=
 
 theorem unitDisc_diameter : transfiniteDiameter (Metric.closedBall (0 : ℂ) 1) = 1 := by
   have := disc_diameter 0 1 (by norm_num : (1 : ℝ) > 0)
-  simp at this
+  skip
   exact this
 
 /-

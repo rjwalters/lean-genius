@@ -20,6 +20,8 @@ Reference:
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Topology.Filter
 
+open scoped Classical
+
 open Filter Real
 
 namespace Erdos1217

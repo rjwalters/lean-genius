@@ -52,11 +52,11 @@ noncomputable section
 
 /-- pₙ: the smallest prime ≡ 1 (mod n).
     By Dirichlet's theorem, this exists for all n ≥ 1. -/
-def smallestPrimeMod1 (n : ℕ) : ℕ :=
+noncomputable def smallestPrimeMod1 (n : ℕ) : ℕ :=
   sInf {p : ℕ | p.Prime ∧ n ∣ (p - 1)}
 
 /-- mₙ: the smallest positive integer m with n | φ(m). -/
-def smallestTotientDiv (n : ℕ) : ℕ :=
+noncomputable def smallestTotientDiv (n : ℕ) : ℕ :=
   sInf {m : ℕ | 0 < m ∧ n ∣ m.totient}
 
 -- ═══════════════════════════════════════════════════════════════════════

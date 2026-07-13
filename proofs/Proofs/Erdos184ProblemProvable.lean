@@ -36,6 +36,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos184
@@ -183,7 +185,7 @@ theorem bucic_montgomery_bound :
 /--
 **Minimum Degree:**
 -/
-def minDegree (G : Graph V) : ℕ :=
+noncomputable def minDegree (G : Graph V) : ℕ :=
   (Finset.univ.image (fun v => G.degree v)).min' (by simp [Finset.image_nonempty])
 
 /--

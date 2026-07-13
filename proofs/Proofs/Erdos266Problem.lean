@@ -18,12 +18,7 @@
              arXiv:2406.17593 (2024)
 -/
 
-import Mathlib.NumberTheory.Real.Irrational
-import Mathlib.Topology.Algebra.InfiniteSum.Real
-import Mathlib.Data.Rat.Cast.Lemmas
-import Mathlib.Topology.Algebra.InfiniteSum.Order
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Analysis.PSeries
+import Mathlib
 
 namespace Erdos266
 

@@ -1,6 +1,4 @@
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Image
-import Mathlib.Tactic
+import Mathlib
 
 -- Check what APIs are available for fiber-based cardinality bounds
 #check @Finset.card_le_card_of_injOn

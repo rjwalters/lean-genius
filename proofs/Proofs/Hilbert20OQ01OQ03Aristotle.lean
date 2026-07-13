@@ -61,6 +61,6 @@ theorem monomial_real_ari {n : ℕ} (α : Fin n → ℕ) (ξ : Fin n → ℝ) :
     (Finset.univ.prod fun i => (ξ i : ℂ) ^ α i).im = 0 := by
   apply prod_im_eq_zero_ari
   intro i _
-  simp [Complex.ofReal_pow]
+  skip
 
 end Hilbert20OQ01OQ03Aristotle

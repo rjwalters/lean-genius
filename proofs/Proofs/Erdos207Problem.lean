@@ -25,10 +25,7 @@ References:
 - Erdős, P. (1976): Problems and results in combinatorial analysis [Er76]
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open Finset
 

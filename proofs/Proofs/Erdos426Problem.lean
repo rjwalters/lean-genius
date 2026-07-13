@@ -30,11 +30,7 @@ References:
 - Bradač-Christoph (2024): "Unique subgraphs are rare", arXiv:2410.16233
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open scoped Classical
 

@@ -172,8 +172,8 @@ def completeBipartite (a b : ℕ) : SimpleGraph (Fin a ⊕ Fin b) where
     | .inl _, .inr _ => True
     | .inr _, .inl _ => True
     | _, _ => False
-  symm u v := by cases u <;> cases v <;> simp
-  loopless v := by cases v <;> simp
+  symm.symm u v := by cases u <;> cases v <;> simp
+  loopless.irrefl v := by cases v <;> simp
 
 instance completeBipartite_decidableAdj (a b : ℕ) :
     DecidableRel (completeBipartite a b).Adj := by
@@ -207,7 +207,7 @@ private theorem completeBipartite_adj_iff {a b : ℕ}
 theorem completeBipartite_cliqueFree (a b : ℕ) :
     (completeBipartite a b).CliqueFree 3 := by
   intro s
-  simp only [SimpleGraph.IsNClique, not_and]
+  skip
   intro hcliq hcard
   -- s has 3 elements; extract them
   rw [SimpleGraph.isClique_iff] at hcliq

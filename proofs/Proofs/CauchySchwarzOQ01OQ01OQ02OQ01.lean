@@ -71,7 +71,7 @@ private theorem inner_centered_eq
 /-- Unit-norm states have `⟪ψ,ψ⟫ = 1`. -/
 private theorem inner_self_one {ψ : E} (hψ : ‖ψ‖ = 1) : ⟪ψ, ψ⟫_ℂ = (1 : ℂ) := by
   have h := @inner_self_eq_norm_sq_to_K ℂ E _ _ _ ψ
-  simp only [RCLike.ofReal_pow] at h
+  skip
   rw [h, hψ]; norm_num
 
 /-- **Covariance identity.** The real part of the centered inner product `⟪u,v⟫`

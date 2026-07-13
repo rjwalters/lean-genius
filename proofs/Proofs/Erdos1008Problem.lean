@@ -343,8 +343,8 @@ private def KB (p q : ℕ) : SimpleGraph (Fin p ⊕ Fin q) where
   Adj := fun
     | .inl _, .inr _ | .inr _, .inl _ => True
     | _, _ => False
-  symm u v := by cases u <;> cases v <;> simp
-  loopless v := by cases v <;> simp
+  symm.symm u v := by cases u <;> cases v <;> simp
+  loopless.irrefl v := by cases v <;> simp
 
 private instance kbDecRel (p q : ℕ) : DecidableRel (KB p q).Adj :=
   fun u v => by unfold KB; cases u <;> cases v <;> simp <;> exact inferInstance

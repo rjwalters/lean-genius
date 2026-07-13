@@ -23,9 +23,7 @@ or a copy of γ in color 2.
 - https://erdosproblems.com/597
 -/
 
-import Mathlib.SetTheory.Ordinal.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.Data.Set.Basic
+import Mathlib
 
 namespace Erdos597
 

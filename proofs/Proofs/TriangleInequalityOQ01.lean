@@ -29,9 +29,7 @@ genuine normed space precisely on the range `1 ≤ p`.
 **Extends**: TriangleInequality.lean (the elementary normed/metric forms)
 -/
 
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Mathlib.MeasureTheory.Function.LpSpace.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open scoped ENNReal NNReal
 

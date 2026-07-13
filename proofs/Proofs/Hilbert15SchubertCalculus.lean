@@ -1,11 +1,4 @@
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.DivisionRing
-import Mathlib.LinearAlgebra.FreeModule.Finite.Basic
-import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.Data.Set.Card
-import Mathlib.Algebra.Field.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Hilbert's 15th Problem: Rigorous Foundation of Schubert's Enumerative Calculus

@@ -1,9 +1,5 @@
 import Proofs.MinkowskiFundamentalTheorem
-import Mathlib.Analysis.Convex.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Group.GeometryOfNumbers
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Dirichlet's Approximation Theorem via Minkowski's Lattice Point Theorem

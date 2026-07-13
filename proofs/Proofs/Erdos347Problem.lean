@@ -18,6 +18,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 open Set
 
 /- ## Subset sums -/

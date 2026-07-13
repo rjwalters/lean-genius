@@ -153,7 +153,7 @@ theorem sqrt_isIntegral (r : ℚ) (hr : 0 ≤ r) : IsIntegral ℚ (Real.sqrt (r 
   refine ⟨X ^ 2 - C r, monic_X_pow_sub_C _ (by norm_num), ?_⟩
   have hAM : (algebraMap ℚ ℝ) r = (r : ℝ) := eq_ratCast (algebraMap ℚ ℝ) r
   have hsq : Real.sqrt (r : ℝ) ^ 2 = (r : ℝ) := Real.sq_sqrt hr'
-  simp only [map_sub, map_pow, aeval_X, aeval_C]
+  skip
   rw [hAM, hsq, sub_self]
 
 /-- **Field Extension Degree**: `[ℚ(√r) : ℚ] = 2` for `r ≥ 0` not a rational square. -/

@@ -23,6 +23,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos608
 
 open SimpleGraph Finset Real

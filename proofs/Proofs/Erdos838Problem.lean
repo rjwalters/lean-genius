@@ -22,10 +22,9 @@ Related: Problem #107
 Tags: combinatorial-geometry, convex-sets, point-configurations, general-position
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib
+
+open scoped Classical
 
 open Real
 

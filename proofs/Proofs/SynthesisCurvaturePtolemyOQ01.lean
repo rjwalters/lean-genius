@@ -1,5 +1,5 @@
 import Proofs.SynthesisCurvaturePtolemy
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Synthesis: curvatureSin satisfies the curvature ODE  y'' + K·y = 0  (OQ-01)

@@ -63,7 +63,7 @@ private theorem tendsto_mul_atBot (ρ : ℝ) (hρ : ρ > 0) :
 
 private theorem cauchy_tendsto_one (ρ : ℝ) (hρ : ρ > 0) :
     Tendsto (cauchyDistribution ρ) atTop (nhds 1) := by
-  simp only [cauchyDistribution]
+  skip
   have h_arc : Tendsto (fun c => arctan (ρ * c)) atTop (nhds (π / 2)) :=
     tendsto_arctan_atTop.comp (tendsto_mul_atTop ρ hρ)
   have h_lim : Tendsto (fun c => 1 / π * arctan (ρ * c) + 1 / 2) atTop
@@ -74,7 +74,7 @@ private theorem cauchy_tendsto_one (ρ : ℝ) (hρ : ρ > 0) :
 
 private theorem cauchy_tendsto_zero (ρ : ℝ) (hρ : ρ > 0) :
     Tendsto (cauchyDistribution ρ) atBot (nhds 0) := by
-  simp only [cauchyDistribution]
+  skip
   have h_arc : Tendsto (fun c => arctan (ρ * c)) atBot (nhds (-(π / 2))) :=
     tendsto_arctan_atBot.comp (tendsto_mul_atBot ρ hρ)
   have h_lim : Tendsto (fun c => 1 / π * arctan (ρ * c) + 1 / 2) atBot

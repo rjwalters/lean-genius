@@ -16,6 +16,10 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
+set_option maxRecDepth 40000
+
 open Nat in
 /-- The condition that for every k with k! < n, n - k! is composite. -/
 def AllFactorialSubtractionsComposite (n : ℕ) : Prop :=

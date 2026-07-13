@@ -30,11 +30,7 @@ References:
 - [Ma13] Mauldin, "Some problems and ideas of Erdős in analysis and geometry" (2013)
 -/
 
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.Determinant
-import Mathlib.Data.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos352
 

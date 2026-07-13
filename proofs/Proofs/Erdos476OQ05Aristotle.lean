@@ -168,7 +168,7 @@ lemma case1_exists (A B : Finset (ZMod p))
           (Finset.card_pos.mp (by omega))
           (Finset.card_pos.mp (by rw [Finset.card_erase_of_mem hbB]; omega))
       rw [Finset.card_erase_of_mem hbB] at hCD
-      simp only [Nat.inf_eq_min] at hCD
+      skip
       omega
     have hhi : (A + (B.erase b)).card ≤ A.card + B.card - 1 := by
       have := Finset.card_le_card (Finset.add_subset_add_left (Finset.erase_subset b B))

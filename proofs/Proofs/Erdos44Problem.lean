@@ -245,7 +245,7 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
         exfalso
         have ha' : 1 ≤ a := by omega
         have hb' : 1 ≤ b := by omega
-        simp only [pow_zero] at heq
+        skip
         by_cases hd : d = 0
         · subst hd; simp only [pow_zero] at heq
           have : 2 ^ a ≥ 2 := Nat.one_le_pow a 2 (by norm_num) |>.trans_lt (by omega) |>.le

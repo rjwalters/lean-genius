@@ -10,13 +10,7 @@ a saturated planar graph with more than 3 vertices?
 Reference: https://erdosproblems.com/1019
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open SimpleGraph
 
@@ -147,8 +141,8 @@ A triangle is a saturated planar graph on 3 vertices.
 /-- The complete graph K_n. -/
 def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := i ≠ j
-  symm := fun _ _ h => h.symm
-  loopless := fun _ h => h rfl
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
 
 instance completeGraph_decidable (n : ℕ) : DecidableRel (completeGraph n).Adj :=
   fun i j => if h : i = j then isFalse (fun h' => h' h) else isTrue h
@@ -200,8 +194,8 @@ Checking for substructures.
 /-- The induced subgraph on a set of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj u v := G.Adj u.val v.val
-  symm := fun _ _ h => G.symm h
-  loopless := fun _ h => G.loopless _ h
+  symm.symm := fun _ _ h => G.symm h
+  loopless.irrefl := fun _ h => G.loopless _ h
 
 /-- A graph contains a saturated planar subgraph on k vertices. -/
 def hasSaturatedPlanarSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -376,8 +370,8 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
     | Sum.inl _, Sum.inr _ => True
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
-  symm := fun x y h => by cases x <;> cases y <;> simp_all
-  loopless := fun x h => by cases x <;> simp at h
+  symm.symm := fun x y h => by cases x <;> cases y <;> simp_all
+  loopless.irrefl := fun x h => by cases x <;> simp at h
 
 instance completeBipartite_decidable (m n : ℕ) : DecidableRel (completeBipartite m n).Adj :=
   fun x y => match x, y with

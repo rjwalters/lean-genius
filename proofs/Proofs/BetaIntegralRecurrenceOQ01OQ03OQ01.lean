@@ -105,7 +105,7 @@ theorem integral_recurrence (m n : ℕ) :
     simp only [Nat.add_sub_cancel] at h
     convert h using 1
     push_cast
-    field_simp
+    skip
   have hu' : IntervalIntegrable (fun x => ((n : ℝ) + 1) * (1 - x) ^ n * (-1)) volume 0 1 := by
     apply Continuous.intervalIntegrable; fun_prop
   have hv' : IntervalIntegrable (fun x : ℝ => x ^ m) volume 0 1 := by

@@ -25,11 +25,7 @@ References:
 - Lee (2017): Proved bounded-degree Ramsey conjecture (doesn't apply to Q_n)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos181
 

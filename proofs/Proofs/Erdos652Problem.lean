@@ -28,11 +28,7 @@ Mathialagan (2021): For 2 ≤ k ≤ n^{1/3}, R(xₖ) ≫ √(kn)
 Tags: combinatorial-geometry, distinct-distances, point-sets
 -/
 
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos652
 
@@ -48,7 +44,7 @@ Point sets in ℝ² and distinct distance counts.
 abbrev Point := ℝ × ℝ
 
 /-- Distance between two points -/
-def dist (p q : Point) : ℝ :=
+noncomputable def dist (p q : Point) : ℝ :=
   Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)
 
 /-- A finite point set in the plane -/

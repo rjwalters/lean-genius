@@ -18,11 +18,7 @@ when all residues are equal, giving density
 Reference: https://erdosproblems.com/278
 -/
 
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- ## Core Definitions
 

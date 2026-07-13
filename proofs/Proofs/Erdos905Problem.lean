@@ -28,11 +28,7 @@ References:
 Tags: graph-theory, extremal-graph-theory, triangles, turan
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open Nat Finset
 

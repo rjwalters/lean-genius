@@ -228,7 +228,7 @@ theorem hasUnitEmbedding_two_mul_edges {V : Type*} [Fintype V] [DecidableEq V]
     refine ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ u, ⟨v, huv⟩⟩,
             Finset.mem_filter.mpr ⟨Finset.mem_univ v, ⟨u, huv.symm⟩⟩⟩
   have hbase : hasUnitEmbedding V G.Adj (support G).card :=
-    hasUnitEmbedding_of_cover (fun v => G.loopless v) (support G) hcover
+    hasUnitEmbedding_of_cover (fun v => G.loopless.irrefl v) (support G) hcover
   -- The support has at most `2m` vertices: each non-isolated vertex has degree ≥ 1, and
   -- the degrees sum to `2m` (handshake lemma).
   have hle : (support G).card ≤ 2 * G.edgeFinset.card := by

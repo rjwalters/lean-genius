@@ -26,9 +26,7 @@ References:
          Combinatorica (1983), pp. 133-134
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 open SimpleGraph Cardinal
 

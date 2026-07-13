@@ -32,11 +32,7 @@ References:
 - OEIS A146968: Powerful numbers n! ± 1 (empty for large n)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib
 
 open Nat Filter BigOperators Finset
 

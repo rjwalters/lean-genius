@@ -31,13 +31,7 @@ from PrimeGapBounds.lean.
   arXiv:1002.0442.
 -/
 
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Data.Nat.Prime.Nth
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 
@@ -92,7 +86,7 @@ theorem nth_prime_eventually_lt_mul (ε : ℝ) (hε : 0 < ε) :
   have hlt : (1 : ℝ) < 1 + ε := by linarith
   have h := nth_prime_asymptotic.eventually (Iio_mem_nhds hlt)
   filter_upwards [h, eventually_ge_atTop 3] with n hn hn3
-  simp only [Set.mem_Iio] at hn
+  skip
   have hn_cast : (3 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn3
   have hlog_pos : 0 < Real.log (↑n : ℝ) := Real.log_pos (by linarith)
   have hn_pos : (0 : ℝ) < ↑n := by linarith

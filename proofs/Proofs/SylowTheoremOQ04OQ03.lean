@@ -60,6 +60,8 @@
 
 import Mathlib
 
+set_option maxRecDepth 40000
+
 open Matrix
 
 namespace SylowOQ04OQ03

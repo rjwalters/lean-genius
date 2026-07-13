@@ -67,7 +67,7 @@ def ContainsSubgraph {V W : Type*} [Fintype V] [Fintype W]
 /-- The complement of a graph. -/
 def complement {V : Type*} (G : SimpleGraph V) : SimpleGraph V where
   Adj := fun u v => u ≠ v ∧ ¬G.Adj u v
-  symm := by constructor; intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.symm h)⟩
+  symm := by constructor; intro u v ⟨hne, hadj⟩; exact ⟨hne.symm, fun h => hadj (G.adj_symm h)⟩
   loopless := by constructor; intro v ⟨hne, _⟩; exact hne rfl
 
 /-- R(H₁, H₂) = minimum N such that every 2-coloring of K_N contains

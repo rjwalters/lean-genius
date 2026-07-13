@@ -1,6 +1,4 @@
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.PGroup
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hierarchy of Constructibility Criteria

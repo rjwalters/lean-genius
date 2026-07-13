@@ -20,10 +20,7 @@ Key Results (proved here):
 Reference: https://erdosproblems.com/201
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Int.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Arithmetic progressions

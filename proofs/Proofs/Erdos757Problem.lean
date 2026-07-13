@@ -166,7 +166,7 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
     · exact absurd rfl h₁.2.2
   -- The off-diagonal has 12 pairs, so its image has 12 elements
   have hOD_card : F.offDiag.card = 12 := by
-    rw [Finset.card_offDiag, hF_card]; norm_num
+    rw [Finset.offDiag_card, hF_card]; norm_num
   have hImg_card : (F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)).card = 12 := by
     rw [Finset.card_image_of_injOn hDiffInj, hOD_card]
   -- The image consists of nonzero elements in B - B

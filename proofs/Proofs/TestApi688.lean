@@ -1,8 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 -- Test rpow monotonicity
 example (n : ℕ) (ε₁ ε₂ : ℝ) (h1 : 1 ≤ (n : ℝ)) (h2 : ε₁ ≤ ε₂) :

@@ -16,7 +16,7 @@ def orthCompHomeomorph (v : EuclideanSpace ℝ (Fin 4)) (hv : ‖v‖ = 1) :
       rw [finrank_euclideanSpace_fin]
     have h2 : Module.finrank ℝ (Submodule.span ℝ {v}) = 1 := by
       rw [finrank_span_singleton]
-      simp [hv, norm_ne_zero_iff.mpr (by intro h; simp [h] at hv)]
+      simp [hv, norm_ne_zero_iff.mpr (by intro h; skip)]
     have h3 := Submodule.finrank_add_finrank_orthogonal
       (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin 4))))
     omega

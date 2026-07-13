@@ -1,8 +1,4 @@
-import Mathlib.Algebra.Polynomial.RuleOfSigns
-import Mathlib.Algebra.Polynomial.Roots
-import Mathlib.Algebra.Polynomial.Div
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Tactic
+import Mathlib
 
 set_option maxHeartbeats 400000
 

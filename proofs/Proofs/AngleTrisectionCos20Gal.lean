@@ -307,7 +307,7 @@ private theorem gal_card_dvd_six :
     (Polynomial.card_rootSet_eq_natDegree p_separable
       (SplittingField.splits p)).trans p_natDegree
   rw [hcard] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-
 ## Part V: The Splitting Field Has Degree 3

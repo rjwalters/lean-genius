@@ -25,11 +25,13 @@ Reference: https://erdosproblems.com/749
 import Mathlib
 import Proofs.Erdos340GreedySidon
 
+open scoped Classical
+
 /- ## Core Definitions -/
 
 /-- The representation function r_A(n): the number of ways to write n = a + b
     with a, b ∈ A and a ≤ b. -/
-def repFunction (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def repFunction (A : Set ℕ) (n : ℕ) : ℕ :=
   Finset.card ((Finset.range (n + 1)).filter (fun a => a ∈ A ∧ (n - a) ∈ A ∧ a ≤ n - a))
 
 /-- The sumset A + A = {a + b : a, b ∈ A}. -/

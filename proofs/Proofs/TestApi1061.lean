@@ -1,6 +1,4 @@
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 namespace TestE1061
 

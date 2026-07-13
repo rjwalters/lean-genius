@@ -23,11 +23,7 @@ g(n) ~ 2n^{1/2}?
 - Yu (2015), Kohonen (2017): Modern improvements
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Order.Bounds.Basic
+import Mathlib
 
 open Finset Nat
 

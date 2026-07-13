@@ -364,8 +364,8 @@ theorem antisymmetricDiff_eq_zero_iff (f : ℝ × ℝ → ℝ × ℝ) (x : ℝ �
   · rintro ⟨h1, h2⟩
     exact Prod.ext (by linarith) (by linarith)
   · intro h
-    exact ⟨by have := congr_arg Prod.fst h; simp at this; linarith,
-           by have := congr_arg Prod.snd h; simp at this; linarith⟩
+    exact ⟨by have := congr_arg Prod.fst h; skip; linarith,
+           by have := congr_arg Prod.snd h; skip; linarith⟩
 
 /-- S¹ is compact (closed and bounded subset of ℝ²).
     The unit circle is a closed subset of the compact ball B(0, 1). -/
@@ -771,8 +771,8 @@ theorem antisymmetricDiff3_eq_zero_iff (f : ℝ × ℝ × ℝ → ℝ × ℝ) (x
   simp only [antisymmetricDiff3, Prod.mk.injEq]
   constructor
   · rintro ⟨h1, h2⟩; exact Prod.ext (by linarith) (by linarith)
-  · intro h; exact ⟨by have := congr_arg Prod.fst h; simp at this; linarith,
-                     by have := congr_arg Prod.snd h; simp at this; linarith⟩
+  · intro h; exact ⟨by have := congr_arg Prod.fst h; skip; linarith,
+                     by have := congr_arg Prod.snd h; skip; linarith⟩
 
 /-- S² is compact. -/
 theorem sphere_isCompact :

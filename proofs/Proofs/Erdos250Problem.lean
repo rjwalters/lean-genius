@@ -101,7 +101,7 @@ theorem sigma_le_sq (n : ℕ) (hn : n ≠ 0) : divisorSum 1 n ≤ n ^ 2 := by
           exact ⟨Nat.pos_of_dvd_of_pos (Nat.dvd_of_mem_divisors hd) (Nat.pos_of_ne_zero hn),
                  Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.dvd_of_mem_divisors hd)⟩
         calc n.divisors.card ≤ (Finset.Icc 1 n).card := Finset.card_le_card hsub
-          _ = n := by simp [Finset.card_Icc]; omega
+          _ = n := by simp [Nat.card_Icc]; omega
     _ = n ^ 2 := by ring
 
 /-

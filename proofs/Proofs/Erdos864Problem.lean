@@ -19,8 +19,7 @@ representations as a + b with a ≤ b ∈ A. What is the maximum |A|?
 - <https://erdosproblems.com/864>
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Finset
 

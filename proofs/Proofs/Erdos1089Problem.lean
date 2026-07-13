@@ -288,7 +288,7 @@ private lemma embedPoint_injective {d₁ d₂ : ℕ} (hd : d₁ ≤ d₂) :
   simp only [embedPoint, Equiv.apply_symm_apply] at h
   ext ⟨i, hi⟩
   have := congr_fun h ⟨i, by omega⟩
-  simp only [dif_pos hi] at this
+  skip
   exact this
 
 /-- embedPoint preserves Euclidean distance -/

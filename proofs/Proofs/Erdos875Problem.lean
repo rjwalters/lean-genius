@@ -17,10 +17,7 @@ Status: OPEN
 Reference: https://erdosproblems.com/875
 -/
 
-import Mathlib.Tactic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Nat.Bitwise
+import Mathlib
 
 open Finset
 

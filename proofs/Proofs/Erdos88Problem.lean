@@ -90,8 +90,8 @@ The central objects of the problem.
 /-- The induced subgraph on a subset S of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj := fun u v => G.Adj u.val v.val
-  symm := fun u v h => G.symm h
-  loopless := fun u h => G.loopless u.val h
+  symm.symm := fun u v h => G.symm h
+  loopless.irrefl := fun u h => G.loopless u.val h
 
 /-- The number of edges in the induced subgraph on S. -/
 noncomputable def inducedEdgeCount [Fintype V] [DecidableEq V]

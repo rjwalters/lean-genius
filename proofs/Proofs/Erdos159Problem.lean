@@ -15,10 +15,7 @@ the known upper and lower bounds (deep results not in Mathlib).
 *Reference:* [erdosproblems.com/159](https://www.erdosproblems.com/159)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Fin.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 import Proofs.RamseysTheorem
 
 open SimpleGraph
@@ -110,9 +107,9 @@ theorem ramsey_C4_Kn_exists (n : ℕ) (hn : 1 ≤ n) :
   -- Construct edge coloring: red = G's edges, blue = complement edges
   let c : RamseysTheorem.EdgeColoring (Fin N) :=
     { color := fun x y => if G.Adj x y then true else false
-      symm := fun x y => by
+      symm.symm := fun x y => by
         simp only [show G.Adj x y ↔ G.Adj y x from G.adj_comm]
-      irrefl := fun x => if_neg (G.loopless x) }
+      irrefl := fun x => if_neg (G.loopless.irrefl x) }
   rcases hRamsey c with ⟨red, hred_card, hred_clique⟩ | ⟨blue, hblue_card, hblue_clique⟩
   · -- Red 4-clique in the coloring → 4-clique in G → C₄ in G
     left

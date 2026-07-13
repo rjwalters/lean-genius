@@ -75,7 +75,7 @@ def addEdges (G : SimpleGraph V) (E : Set (Sym2 V)) : SimpleGraph V where
     constructor
     intro u v h
     cases h with
-    | inl h => left; exact G.symm h
+    | inl h => left; exact G.adj_symm h
     | inr h => right; simp [Sym2.eq_swap]; exact h
   loopless := by
     constructor

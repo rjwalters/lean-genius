@@ -11,6 +11,8 @@
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos780Aristotle
 
 open Finset

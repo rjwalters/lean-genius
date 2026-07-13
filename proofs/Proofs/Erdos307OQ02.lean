@@ -63,14 +63,14 @@ private lemma reciprocal_sum_two_primes_le {P : Finset ℕ}
   have hb_pos : (0 : ℚ) < b := by linarith
   rcases hab3 with h3 | h3
   · have : (a : ℚ)⁻¹ ≤ 1 / 3 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      rw [one_div]; exact inv_anti₀ (by norm_num) h3
     have : (b : ℚ)⁻¹ ≤ 1 / 2 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+      rw [one_div]; exact inv_anti₀ (by norm_num) hb2
     linarith
   · have : (a : ℚ)⁻¹ ≤ 1 / 2 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+      rw [one_div]; exact inv_anti₀ (by norm_num) ha2
     have : (b : ℚ)⁻¹ ≤ 1 / 3 := by
-      rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+      rw [one_div]; exact inv_anti₀ (by norm_num) h3
     linarith
 
 /-- For 3 distinct primes, reciprocal sum ≤ 31/30.
@@ -83,8 +83,8 @@ theorem reciprocal_sum_three_primes_le {Q : Finset ℕ}
     (hcard : Q.card = 3) (hQ : IsSetOfPrimes Q) :
     reciprocalSum Q ≤ 31 / 30 := by
   obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
-  simp only [reciprocalSum, Finset.sum_insert (by simp [hab, hac]),
-    Finset.sum_insert (by simp [hbc]), Finset.sum_singleton]
+  simp only [reciprocalSum, Finset.sum_insert (by skip),
+    Finset.sum_insert (by skip), Finset.sum_singleton]
   have ha : Nat.Prime a := hQ a (by simp)
   have hb : Nat.Prime b := hQ b (by simp)
   have hc : Nat.Prime c := hQ c (by simp)
@@ -99,9 +99,9 @@ theorem reciprocal_sum_three_primes_le {Q : Finset ℕ}
   have hb_pos : (0 : ℚ) < b := by linarith
   have hc_pos : (0 : ℚ) < c := by linarith
   -- Each 1/p ≤ 1/2
-  have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
-  have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
-  have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
+  have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) ha2
+  have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hb2
+  have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hc2
   -- Pigeonhole: at least one of a, b, c is ≥ 5
   -- (Only primes < 5 are 2 and 3, so at most 2 of 3 distinct primes can be < 5)
   have h5 : (5 : ℚ) ≤ a ∨ (5 : ℚ) ≤ b ∨ (5 : ℚ) ≤ c := by
@@ -114,38 +114,38 @@ theorem reciprocal_sum_three_primes_le {Q : Finset ℕ}
   -- one is ≥ 3 (can't both be 2), so its reciprocal ≤ 1/3.
   -- Total ≤ 1/2 + 1/3 + 1/5 = 31/30.
   rcases h5 with h5a | h5b | h5c
-  · have ha5 : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5a
+  · have ha5 : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_anti₀ (by norm_num) h5a
     have : (3 : ℚ) ≤ b ∨ (3 : ℚ) ≤ c := by
       by_contra h; push_neg at h
       have : b = 2 := by have : b < 3 := by exact_mod_cast h.1; omega
       have : c = 2 := by have : c < 3 := by exact_mod_cast h.2; omega
       exact hbc (by omega)
     rcases this with h3 | h3
-    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
       linarith
-    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
       linarith
-  · have hb5 : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5b
+  · have hb5 : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_anti₀ (by norm_num) h5b
     have : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ c := by
       by_contra h; push_neg at h
       have : a = 2 := by have : a < 3 := by exact_mod_cast h.1; omega
       have : c = 2 := by have : c < 3 := by exact_mod_cast h.2; omega
       exact hac (by omega)
     rcases this with h3 | h3
-    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
       linarith
-    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
       linarith
-  · have hc5 : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h5c
+  · have hc5 : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_anti₀ (by norm_num) h5c
     have : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
       by_contra h; push_neg at h
       have : a = 2 := by have : a < 3 := by exact_mod_cast h.1; omega
       have : b = 2 := by have : b < 3 := by exact_mod_cast h.2; omega
       exact hab (by omega)
     rcases this with h3 | h3
-    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
       linarith
-    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
       linarith
 
 -- ============================================================

@@ -99,7 +99,7 @@ theorem hasDerivAt_dalzellAntideriv (x : ℝ) :
     convert this using 1; push_cast; ring
   have h1 : HasDerivAt (fun x : ℝ => 4 * x) (4 : ℝ) x := by
     have := (hasDerivAt_id x).const_mul (4 : ℝ)
-    convert this using 1; simp
+    convert this using 1; skip
   have ha : HasDerivAt (fun x : ℝ => 4 * arctan x) (4 / (1 + x ^ 2)) x := by
     have := (hasDerivAt_arctan x).const_mul (4 : ℝ)
     convert this using 1; ring

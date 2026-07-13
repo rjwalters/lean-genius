@@ -14,11 +14,7 @@ The conjecture is that `ℓ(N) ~ N^{1/2}`.
 This remains an open problem.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 /-
 ## Section 1: Sidon set definition
@@ -326,7 +322,7 @@ theorem sidon_subset_interval_bound (S : Finset ℤ) (N : ℕ) (hN : 1 ≤ N)
            by linarith [(hRange a hab.1.1).2, (hRange b hab.1.2).2]⟩
   -- |[1, 2N]| = 2N
   have h_icc : (Finset.Icc (1 : ℤ) (2 * ↑N)).card = 2 * N := by
-    simp [Finset.card_Icc]; omega
+    simp [Nat.card_Icc]; omega
   -- k(k+1)/2 ≤ 2N
   have h_sum_le : k * (k + 1) / 2 ≤ 2 * N := by
     calc k * (k + 1) / 2
@@ -378,7 +374,7 @@ theorem sidon_subset_interval_bound_sharp (S : Finset ℤ) (N : ℕ) (hN : 1 ≤
     · linarith [(hRange a hab.1.1).2, (hRange b hab.1.2).2]
   -- |[2, 2N]| = 2N - 1
   have h_icc : (Finset.Icc (2 : ℤ) (2 * ↑N)).card = 2 * N - 1 := by
-    simp [Finset.card_Icc]; omega
+    simp [Nat.card_Icc]; omega
   -- k(k+1)/2 ≤ 2N - 1
   have h_sum_le : k * (k + 1) / 2 ≤ 2 * N - 1 := by
     calc k * (k + 1) / 2
@@ -417,7 +413,7 @@ theorem interval_sidon_upper (N : ℕ) (hN : 1 ≤ N) :
 
 /-- The card of Finset.Icc 1 N equals N for integers. -/
 private theorem icc_one_card (N : ℕ) : (Finset.Icc (1 : ℤ) ↑N).card = N := by
-  simp [Finset.card_Icc]; omega
+  simp [Nat.card_Icc]; omega
 
 /-- The corrected Erdős Problem 530 is proved: ℓ(N) = Θ(√N).
     Lower bound from KSS axiom; upper bound from interval sum counting (proved).

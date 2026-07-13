@@ -1,7 +1,4 @@
-import Mathlib.NumberTheory.SumTwoSquares
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Data.Nat.PrimeFin
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Sum of Two Squares: the Full General-n Characterization

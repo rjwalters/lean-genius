@@ -22,6 +22,8 @@
 
 import Mathlib
 
+open scoped Topology
+
 namespace Erdos673
 
 open Nat Finset Real Filter

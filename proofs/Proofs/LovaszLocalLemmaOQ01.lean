@@ -26,7 +26,7 @@ so this is the honest measure-theoretic anchor for the OQ-01 program.
 All statements live over an arbitrary `Fintype` index; `IsProbabilityMeasure` is
 derived from mutual independence, not assumed.
 -/
-import Mathlib.Probability.Independence.Basic
+import Mathlib
 
 open MeasureTheory ProbabilityTheory Finset
 open scoped ENNReal

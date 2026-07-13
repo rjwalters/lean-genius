@@ -484,7 +484,7 @@ theorem tstar_achieves_frankl_bound {n k t : ℕ}
     simp only [target, mem_powersetCard] at hu
     use u ∪ T
     constructor
-    · simp only [mem_filter, mem_powersetCard_univ]
+    · skip
       constructor
       · rw [card_union_of_disjoint]
         · rw [hu.2, hT]; omega

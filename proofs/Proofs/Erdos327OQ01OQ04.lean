@@ -13,9 +13,7 @@ witness family {(3k, 6k) : 1 ≤ k ≤ ⌊N/6⌋}.
 -/
 
 import Proofs.Erdos327OQ01
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos327OQ01OQ04
 

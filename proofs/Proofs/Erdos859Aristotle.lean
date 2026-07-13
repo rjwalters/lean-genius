@@ -18,6 +18,8 @@
 
 import Mathlib
 
+open scoped Topology
+
 namespace Erdos859Aristotle
 
 open Nat Finset Filter

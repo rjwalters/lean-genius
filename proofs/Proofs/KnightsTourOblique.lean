@@ -1492,7 +1492,7 @@ theorem applyD4_inv_left (g : Bool × Fin 4) (s : Square) :
   fin_cases k <;> cases b <;>
     simp only [applyD4, d4Inv, rotateSquareN, reflectSquare, rotateSquare90,
                Bool.false_eq_true, if_false, if_true, ite_false, ite_true, Fin.isValue] <;>
-    (ext <;> simp only [Fin.ext_iff] <;> omega)
+    (ext <;> skip <;> omega)
 
 /-- Rotation by 90° is injective -/
 theorem rotateSquare90_injective : Function.Injective rotateSquare90 := by
@@ -1560,7 +1560,7 @@ theorem rotate90_preserves_adj (s1 s2 : Square) :
   constructor
   · intro h
     have hoff := rotate_knight_offset h
-    simp only [Fin.val_natCast] at hoff ⊢
+    skip
     rw [h2]
     exact hoff
   · intro h
@@ -1569,7 +1569,7 @@ theorem rotate90_preserves_adj (s1 s2 : Square) :
     have hrot := rotate_knight_offset h
     have hrot2 := rotate_knight_offset hrot
     have hrot3 := rotate_knight_offset hrot2
-    simp only [Fin.val_natCast] at hrot3 ⊢
+    skip
     convert hrot3 using 2 <;> omega
 
 /-- X-reflection of a knight offset is still a knight offset: (dx, dy) → (-dx, dy) -/
@@ -1591,13 +1591,13 @@ theorem reflect_preserves_adj (s1 s2 : Square) :
   constructor
   · intro h
     have hoff := reflect_knight_offset h
-    simp only [Fin.val_natCast] at hoff ⊢
+    skip
     convert hoff using 2
     omega
   · intro h
     -- Double reflection is identity: apply again
     have hrefl := reflect_knight_offset h
-    simp only [Fin.val_natCast] at hrefl ⊢
+    skip
     convert hrefl using 2
     omega
 

@@ -23,11 +23,7 @@
   Tags: graph-theory, chromatic-number, independent-set, folkman
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Nat.Basic
+import Mathlib
 
 namespace Erdos922
 

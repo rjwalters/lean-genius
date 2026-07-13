@@ -51,7 +51,7 @@ def CycleGraph (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
     intro i h
     cases h with
     | inl h =>
-      simp only [Fin.val_fin_lt] at h
+      skip
       have : (i.val + 1) % k ≠ i.val := by
         intro heq
         have : k ∣ 1 := by
@@ -60,7 +60,7 @@ def CycleGraph (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
         omega
       exact this h
     | inr h =>
-      simp only [Fin.val_fin_lt] at h
+      skip
       have : (i.val + 1) % k ≠ i.val := by
         intro heq
         omega

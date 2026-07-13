@@ -36,7 +36,9 @@ open Finset BigOperators
 private lemma odd_of_zmod2_one (m : ℕ) (h : (m : ZMod 2) = 1) : Odd m := by
   rw [Nat.odd_iff]
   have hval := ZMod.val_natCast (n := 2) m
-  rw [h] at hval; simpa using hval.symm
+  rw [h] at hval
+  rw [show (1 : ZMod 2).val = 1 from rfl] at hval
+  omega
 
 -- ============================================================
 -- SECTION II: Grid Points and Colorings
@@ -455,7 +457,7 @@ theorem interior_doors_even (c : Coloring d N) (K : SpernerTriangulation d N) :
       show isDoorAt c K (adjMap K p).1 (adjMap K p).2 ∧
            K.adj (adjMap K p).1 (adjMap K p).2 ≠ none
       simp only [adjMap, hadj_eq]
-      exact ⟨(door_transfer hadj_eq).mp hdoor, by rw [hadj_back]; exact Option.noConfusion⟩
+      exact ⟨(door_transfer hadj_eq).mp hdoor, by rw [hadj_back]; exact (Option.some_ne_none _)⟩
   · -- Fixed-point-free: adjMap p ≠ p for p ∈ S
     intro p hp
     simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hp

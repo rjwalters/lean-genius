@@ -113,7 +113,7 @@ theorem card_primitiveRoots : (primitiveRoots (p := p) (hp := hp)).card = Nat.to
     rw [card_units_eq_pred_prime (p := p) (hp := hp)]
   have hcount := IsCyclic.card_orderOf_eq_totient (α := (ZMod p)ˣ) hdvd
   -- Convert filter card to set card
-  simp only at hcount ⊢
+  skip
   convert hcount using 2
 
 /-- Alternative statement: the number of primitive roots equals φ(p-1). -/

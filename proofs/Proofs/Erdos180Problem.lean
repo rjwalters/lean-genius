@@ -25,6 +25,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos180
 
 /- ## Part I: Turán Numbers -/

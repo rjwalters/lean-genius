@@ -19,15 +19,13 @@ and circle area be made fully explicit by formalizing the polar-coordinate proof
 This file makes every step of the polar-coordinate proof explicit as a named theorem.
 
 **Sorry count**: 0. All steps fully proved:
-- angular_integral: set_integral_const + Real.volume_Ioo
+- angular_integral: setIntegral_const + Real.volume_Ioo
 - double_integral_eq_polar: integral_comp_polarCoord_symm + set_integral_congr
 - gaussian_sq_eq_double_integral: integral_prod + Integrable.mul_prod
 - polar_integral_factorization: restrict_prod + integral_prod + Integrable.comp_fst
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
-import Mathlib.Analysis.SpecialFunctions.PolarCoord
-import Mathlib.Tactic
+import Mathlib
 import Proofs.AreaOfCircleOQ05
 
 open MeasureTheory Real Set Filter Prod
@@ -115,7 +113,7 @@ The proof chain:
   = π - (-π) = 2π  [by toReal_ofReal + ring]
 [Sorry: Measure.restrict_apply_univ is in the API but simp chaining needs careful setup] -/
 theorem angular_integral : ∫ θ in Ioo (-π) π, (1 : ℝ) = 2 * π := by
-  rw [set_integral_const, smul_eq_mul, mul_one, Real.volume_Ioo,
+  rw [setIntegral_const, smul_eq_mul, mul_one, Real.volume_Ioo,
       ENNReal.toReal_ofReal (by linarith [pi_pos])]
   ring
 
@@ -167,7 +165,7 @@ theorem polar_integral_factorization :
   -- Inner integral (constant in θ): ∫ θ in Ioo(-π,π), r·exp(-r²) = (vol Ioo) * r·exp(-r²)
   have h_vol : (volume (Ioo (-π) π)).toReal = π - -π := by
     rw [Real.volume_Ioo, ENNReal.toReal_ofReal (by linarith [pi_pos])]
-  simp_rw [set_integral_const, smul_eq_mul, h_vol]
+  simp_rw [setIntegral_const, smul_eq_mul, h_vol]
   -- ∫ r in Ioi 0, (π - -π) * (r * exp(-r²)) = (∫ r in Ioi 0, r * exp(-r²)) * (∫ θ, 1)
   rw [integral_mul_left, angular_integral]
   ring

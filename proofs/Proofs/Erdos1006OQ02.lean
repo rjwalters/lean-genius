@@ -101,7 +101,7 @@ noncomputable def coloringOrientation {k : ℕ} (col : G.Coloring (Fin k)) :
     have hne : col u ≠ col v := col.valid hadj
     rcases lt_or_gt_of_ne hne with h | h
     · exact Or.inl ⟨hadj, h⟩
-    · exact Or.inr ⟨G.symm hadj, h⟩
+    · exact Or.inr ⟨G.adj_symm hadj, h⟩
   exclusive := by
     intro u v ⟨⟨_, h1⟩, ⟨_, h2⟩⟩
     exact absurd h1 (not_lt.mpr h2.le)

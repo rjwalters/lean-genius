@@ -29,11 +29,7 @@ References:
 Tags: number-theory, divisors, density, modular-arithmetic, threshold
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 open Real Nat
 

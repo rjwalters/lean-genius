@@ -1,6 +1,4 @@
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Four Color Theorem: Survey for Lean 4 Formalization

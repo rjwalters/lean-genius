@@ -87,7 +87,7 @@ theorem exp_neg_one_eq_tsum_alt :
     rexp (-1) = ∑' k, altFactTerm k := by
   have : rexp (-1) = NormedSpace.exp (-1 : ℝ) := by
     rw [Real.exp_eq_exp_ℝ]
-  rw [this, NormedSpace.exp_eq_tsum (𝔸 := ℝ)]
+  rw [this, NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
   refine tsum_congr fun k => ?_
   simp only [altFactTerm, smul_eq_mul]
   ring

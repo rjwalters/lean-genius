@@ -70,8 +70,8 @@ theorem hypercubeAdj_irrefl {k : ℕ} (v : HypercubeVertex k) : ¬hypercubeAdj v
 /-- The k-dimensional hypercube graph -/
 def hypercubeGraph (k : ℕ) : SimpleGraph (HypercubeVertex k) where
   Adj := hypercubeAdj
-  symm := fun v w => (hypercubeAdj_symm v w).mp
-  loopless := hypercubeAdj_irrefl
+  symm.symm := fun v w => (hypercubeAdj_symm v w).mp
+  loopless.irrefl := hypercubeAdj_irrefl
 
 notation "Q(" k ")" => hypercubeGraph k
 

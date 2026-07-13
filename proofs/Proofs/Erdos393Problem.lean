@@ -29,10 +29,7 @@ References:
 Tags: number-theory, factorials, diophantine-equations, ABC-conjecture
 -/
 
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos393
 

@@ -1,10 +1,6 @@
 import Proofs.CantorsTheoremOQ01
 import Proofs.CantorsTheoremOQ01OQ02
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Continuum
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # König's Constraint, Formalized Without Axioms

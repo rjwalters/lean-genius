@@ -20,8 +20,7 @@
   - Mathlib: Zsqrtd (ℤ[√d] ring)
 -/
 
-import Mathlib.NumberTheory.Zsqrtd.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace FundamentalArithmeticOQ02
 

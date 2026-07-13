@@ -142,9 +142,9 @@ theorem sigma_add_eq_coprime6 (a : ℕ) (ha : a ≠ 0)
     (hcop2 : Nat.Coprime 2 a) (hcop3 : Nat.Coprime 3 a) :
     sigma 1 a + sigma 1 (2 * a) = sigma 1 (3 * a) := by
   have hmul2 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
-    sigma_isMultiplicative hcop2
+    isMultiplicative_sigma hcop2
   have hmul3 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
-    sigma_isMultiplicative hcop3
+    isMultiplicative_sigma hcop3
   rw [hmul2, hmul3]
   have hs2 : sigma 1 2 = 3 := by native_decide
   have hs3 : sigma 1 3 = 4 := by native_decide

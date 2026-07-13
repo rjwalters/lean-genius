@@ -13,6 +13,8 @@ divides two distinct others. How large is f(n)? Is lim f(n)/n irrational?
 
 import Mathlib
 
+open scoped Classical
+
 /-
 ## Section I: The Divisibility Condition
 -/

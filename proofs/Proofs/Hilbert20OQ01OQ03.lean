@@ -4,6 +4,8 @@ import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # Dencker's Energy Estimate Approach to Local Solvability
 

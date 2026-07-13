@@ -14,12 +14,7 @@
   2. oddNumbers_card: counting odd numbers in {1,...,2N}
   3. oddNumbers_no_triple: parity pigeonhole argument
 -/
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic
+import Mathlib
 
 open Finset Real
 
@@ -47,7 +42,7 @@ noncomputable def upperExponent (k : ℕ) : ℝ :=
 theorem upperExponent_increasing (k : ℕ) (hk : k ≥ 1) :
     upperExponent k < upperExponent (k + 1) := by
   simp only [upperExponent, sub_lt_sub_iff_left]
-  exact pow_lt_pow_right (by norm_num : (2:ℝ)⁻¹ < 1) (by omega)
+  exact pow_lt_pow_right₀ (by norm_num : (2:ℝ)⁻¹ < 1) (by omega)
 
 -- Routine lemma: the odd numbers in {1,...,2N} have cardinality N
 theorem oddNumbers_card (N : ℕ) : (oddNumbers N).card = N := by

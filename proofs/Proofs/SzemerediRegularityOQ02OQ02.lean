@@ -51,6 +51,8 @@ import Proofs.SzemerediCore
 import Proofs.SzemerediRegularity
 import Proofs.SzemerediRegularityOQ02
 
+set_option maxRecDepth 40000
+
 namespace SzemerediFKComparisonSharp
 
 open Szemeredi.Core Szemeredi.Regularity SzemerediFKComparison Classical

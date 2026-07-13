@@ -17,11 +17,7 @@ Is it true that there are only finitely many such collections with
 Reference: https://erdosproblems.com/363
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open BigOperators
 
@@ -40,7 +36,7 @@ structure ConsecutiveInterval where
   length_pos : length > 0
 
 /-- The set of integers in an interval. -/
-def ConsecutiveInterval.elements (I : ConsecutiveInterval) : Finset ℤ :=
+noncomputable def ConsecutiveInterval.elements (I : ConsecutiveInterval) : Finset ℤ :=
   Finset.Icc I.start (I.start + I.length - 1)
 
 /-- The product of integers in an interval. -/

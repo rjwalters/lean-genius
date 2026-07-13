@@ -14,11 +14,7 @@
   - catalan_convolution: requires Vandermonde identity
   - catalan_mono: requires catalan_mul_succ first
 -/
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat Finset BigOperators
 

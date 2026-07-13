@@ -25,11 +25,7 @@ Context:
 Tags: set-theory, ramsey-theory
 -/
 
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.Tactic
+import Mathlib
 
 open Cardinal Ordinal
 

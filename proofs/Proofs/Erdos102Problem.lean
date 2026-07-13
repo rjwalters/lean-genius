@@ -20,6 +20,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Definitions -/
 
 /-- A planar point configuration. -/

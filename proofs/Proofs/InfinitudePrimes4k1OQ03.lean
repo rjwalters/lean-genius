@@ -1,6 +1,5 @@
 import Proofs.InfinitudePrimes4k1
-import Mathlib.NumberTheory.LSeries.PrimesInAP
-import Mathlib.NumberTheory.DirichletCharacter.Orthogonality
+import Mathlib
 
 /-!
 # Density 1/2 of Primes ≡ 1 (mod 4) — OQ-03

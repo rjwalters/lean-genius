@@ -131,7 +131,7 @@ theorem g3_first_order :
         ε * n / Real.log n := by
   intro ε hε
   have := erdos_1964_main 3 2 (by norm_num) ⟨by norm_num, by norm_num⟩ ε hε
-  simp only [pow_one, Nat.factorial_one, Nat.cast_one, div_one] at this
+  skip
   exact this
 
 /-

@@ -222,7 +222,7 @@ theorem kempeSwap_proper_internal (G : SimpleGraph V) [DecidableRel G.Adj]
     · exact hne hsw
   · -- u not in chain, v in: symmetric case
     rw [if_neg hu, if_pos hv]
-    have ⟨hu1, hu2⟩ := h_maximal v u (G.symm hadj) hv hu
+    have ⟨hu1, hu2⟩ := h_maximal v u (G.adj_symm hadj) hv hu
     intro heq
     have hsw : f u = Equiv.swap c₁ c₂ (f v) := heq
     rw [Equiv.swap_apply_def] at hsw

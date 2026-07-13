@@ -14,11 +14,7 @@ but computations by Lacampagne and Selfridge cast doubt on this for nₖ = 30030
 Reference: https://erdosproblems.com/854
 -/
 
-import Mathlib.NumberTheory.PrimeCounting
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
-import Mathlib.Data.Nat.Nth
+import Mathlib
 
 namespace Erdos854
 
@@ -34,7 +30,7 @@ theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
 theorem nthPrime_mono : StrictMono nthPrime := Nat.nth_prime_strictMono
 
 theorem nthPrime_zero : nthPrime 0 = 2 := by
-  simp [nthPrime, Nat.nth_prime_zero]
+  simp [nthPrime, Nat.nth_prime_zero_eq_two]
 
 theorem nthPrime_one : nthPrime 1 = 3 := by
   simp [nthPrime, Nat.nth_prime_one]
