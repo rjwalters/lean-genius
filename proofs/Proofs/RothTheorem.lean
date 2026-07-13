@@ -1912,6 +1912,60 @@ theorem sqGaussSum_norm_le_sqrt_gcd {N : ℕ} [NeZero N] (r : ZMod N) :
   have hmono := Real.sqrt_le_sqrt (sqGaussSum_normSq_le_gcd r)
   rwa [Real.sqrt_sq (norm_nonneg _)] at hmono
 
+/-- **Exact Gauss-sum magnitude at odd moduli.**  For `N` odd, `2` is a unit, so every
+    element `h` of the Weyl kernel (`2r·h = 0`) already satisfies `r·h = 0`, hence
+    `r·h² = 0` and the residual phase `ψ(−r·h²) = ψ(0) = 1`.  The residual sum in the
+    Weyl identity `sqGaussSum_mul_conj` therefore collapses to the *cardinality* of the
+    kernel with **no cancellation**, upgrading the bound `sqGaussSum_normSq_le_gcd` to the
+    exact evaluation
+
+      `‖G(r)‖² = N · gcd((2r).val, N)`.
+
+    At unit frequencies (`gcd = 1`) this recovers `‖G(r)‖² = N`
+    (`sqGaussSum_normSq_eq_of_isUnit`); at non-unit odd frequencies (e.g. `N = 9`, `r = 3`,
+    `gcd = 3`) it pins the magnitude exactly, closing the residual-cancellation gap the
+    triangle inequality left open.  This is the pointwise input driving the *exact* odd
+    first moment `∑_r ‖G(r)‖ = √N·∑_{d∣N}φ(N/d)√d`. -/
+theorem sqGaussSum_normSq_eq_gcd_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (r : ZMod N) :
+    ‖sqGaussSum r‖ ^ 2 = (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ) := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by
+      rw [Nat.dvd_iff_mod_eq_zero]; have := Nat.odd_iff.mp hodd; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  -- every kernel element `h` has residual phase `ψ(−r·h²) = 1`
+  have hphase : ∀ h ∈ Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0),
+      ψ (-(r * h ^ 2)) = 1 := by
+    intro h hh
+    have hk : 2 * r * h = 0 := (Finset.mem_filter.1 hh).2
+    have hrh : r * h = 0 := by
+      obtain ⟨u, hu_eq⟩ := h2
+      have hz : (↑(u⁻¹) : ZMod N) * (2 * (r * h)) = 0 := by
+        rw [show (2 : ZMod N) * (r * h) = 2 * r * h from by ring, hk, mul_zero]
+      rwa [← hu_eq, ← mul_assoc, Units.inv_mul, one_mul] at hz
+    have hrh2 : r * h ^ 2 = 0 := by rw [sq, ← mul_assoc, hrh, zero_mul]
+    rw [hrh2, neg_zero, psi_zero]
+  -- the residual sum collapses to the kernel cardinality = gcd
+  have hsum : (Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)).sum
+        (fun h => ψ (-(r * h ^ 2))) = (Nat.gcd (2 * r).val N : ℂ) := by
+    rw [Finset.sum_congr rfl hphase, Finset.sum_const, kernel_card_eq_gcd (2 * r),
+      nsmul_eq_mul, mul_one]
+  have hid := sqGaussSum_mul_conj r
+  rw [hsum] at hid
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = sqGaussSum r * starRingEnd ℂ (sqGaussSum r) := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  rw [hid] at hGsq
+  exact_mod_cast hGsq
+
+/-- **`‖G(r)‖ = √(N · gcd(2r, N))` at odd moduli.**  Square-root form of
+    `sqGaussSum_normSq_eq_gcd_of_odd`: the pointwise magnitude is *exactly*
+    `√(N · gcd((2r).val, N))`, not merely bounded by it (`sqGaussSum_norm_le_sqrt_gcd`). -/
+theorem sqGaussSum_norm_eq_sqrt_gcd_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) (r : ZMod N) :
+    ‖sqGaussSum r‖ = Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)) := by
+  have h := sqGaussSum_normSq_eq_gcd_of_odd hodd r
+  rw [← h, Real.sqrt_sq (norm_nonneg _)]
+
 /-- A proper divisor is at most half: if `0 < m < N` then `2 · gcd(m, N) ≤ N`.  The gcd
     divides `N` and is at most `m < N`, hence a *proper* divisor, so `N / gcd ≥ 2`. -/
 private theorem two_mul_gcd_le {m N : ℕ} (hpos : 0 < m) (hlt : m < N) :
