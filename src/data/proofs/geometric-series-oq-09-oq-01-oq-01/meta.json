@@ -62,6 +62,14 @@
       "endLine": 147,
       "summary": "hasSum_block: grouping by the block index n : ℕ (finite inner sums over Fin q) gives HasSum (fun n => ∑_{a:Fin q} r^(q·n+a)) (1−r)⁻¹ via HasSum.prod_fiberwise + hasSum_fintype. hasSum_residue_fiberwise: grouping by the residue a : Fin q (after Equiv.prodComm) gives HasSum (fun a => ∑_n r^(q·n+a)) (1−r)⁻¹, fibers summed by summable_geometric_residue. tsum_residues_eq_geometric_via_reindex: recovers the parent recombination ∑_{a∈range q} ∑_n r^(q·n+a) = ∑ rᵐ via HasSum.unique and Fin.sum_univ_eq_sum_range — now a corollary of the regrouping, not the closed forms.",
       "mathContext": "$\\sum_{a<q}\\sum_n r^{qn+a}=\\sum_m r^m=\\tfrac{1}{1-r}$ by fiberwise summation."
+    },
+    {
+      "id": "even-odd-and-concrete",
+      "title": "Even/Odd (q = 2) Case and Concrete Value Check",
+      "startLine": 144,
+      "endLine": 160,
+      "summary": "hasSum_residue_prod_two: the q = 2 specialisation of hasSum_residue_prod, exhibiting the split of ∑ rᵐ into the even/odd blocks (n, a) ↦ r^(2n + a), a ∈ {0, 1} — the same Nat.divModEquiv 2 mechanism Mathlib uses for the even/odd parts of the cos/sin Taylor series, here for the geometric series. A concrete example then checks the general theorem at r = 1/2, q = 3: the three-fold residue series over ℕ × Fin 3 sums to 1/(1 − 1/2) = 2 (tsum_residue_prod + norm_num), grounding the abstract reindexing in an arithmetic instance. The section closes the GeometricSeriesOQ09OQ01OQ01 namespace.",
+      "mathContext": "$q=2$: $\\sum_{p}r^{2p_1+p_2}=(1-r)^{-1}$ over $\\mathbb{N}\\times\\mathrm{Fin}\\,2$; sanity check $\\sum_{p}(1/2)^{3p_1+p_2}=2$ at $r=1/2,\\ q=3$."
     }
   ],
   "meta": {
@@ -169,7 +177,8 @@
     "summary": "For ‖r‖ < 1 over any complete normed field and modulus q ≠ 0, the q-fold residue-class splitting of the geometric series is established as a genuine reindexing of the summation: transporting Mathlib's HasSum (r^·) (1−r)⁻¹ along the bijection ℕ ≃ ℕ × Fin q (Nat.divModEquiv, m ↦ (m/q, m%q)) gives hasSum_residue_prod: HasSum (fun (p : ℕ × Fin q) => r^(q·p.1 + p.2)) (1−r)⁻¹. Fiberwise summation (HasSum.prod_fiberwise) then regroups this two-dimensional series two ways — by block index n (finite inner sums over Fin q, hasSum_block) and by residue a (infinite geometric subseries over ℕ after Equiv.prodComm, hasSum_residue_fiberwise) — the latter reproving the parent recombination ∑_{a<q} ∑_n r^(q·n+a) = ∑ rᵐ = 1/(1−r) (tsum_residues_eq_geometric_via_reindex) as a Fubini corollary rather than from the closed forms. 160 lines, 9 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Answers the open question of geometric-series-oq-09-oq-01: the q-fold splitting is the relabelling ℕ ≅ ℕ × Fin q applied to the summation, with the analytic content reduced to the counting identity q·(m/q) + m%q = m and the unconditional convergence that makes fiberwise regrouping legitimate. This is the same reindex-then-regroup mechanism Mathlib uses for the even/odd parts of the cos/sin Taylor series (Nat.divModEquiv 2), here at arbitrary modulus q for the geometric series.",
     "openQuestions": [
-      "Generalise the reindexing from the geometric series to an arbitrary absolutely convergent ∑_m c_m, identifying the residue multisection ∑_{a<q} ∑_n c_{q·n+a} = ∑_m c_m as a Fubini consequence of summability via Nat.divModEquiv."
+      "Generalise the reindexing from the geometric series to an arbitrary absolutely convergent ∑_m c_m, identifying the residue multisection ∑_{a<q} ∑_n c_{q·n+a} = ∑_m c_m as a Fubini consequence of summability via Nat.divModEquiv.",
+      "Relate this partition-of-ℕ multisection to the classical roots-of-unity filter. Over a field with a primitive q-th root of unity ζ, the residue subseries extractor is ∑_n r^(q·n+a) = q⁻¹ ∑_{j<q} ζ^(−aj)·(1 − ζ^j·r)⁻¹; does the Nat.divModEquiv reindexing recover this Fourier-analytic identity — i.e. is the fiberwise regrouping the ζ = 1 (averaging) coordinate of the discrete Fourier transform over ℤ/qℤ, so that summing the extractor over a collapses back to the geometric total (1 − r)⁻¹?"
     ]
   }
 }
