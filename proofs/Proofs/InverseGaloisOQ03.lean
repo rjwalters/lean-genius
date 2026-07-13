@@ -186,7 +186,7 @@ theorem Monster_commutator_eq_top : commutator Monster = ⊤ := by
     h | h
   · exfalso
     apply Monster_not_commutative
-    have hcenter : Subgroup.center Monster = ⊤ := commutator_eq_bot_iff_center_eq_top.mp h
+    have hcenter : Subgroup.center Monster = ⊤ := (commutator_eq_bot_iff_center_eq_top (G := Monster)).mp h
     intro a b
     have ha : a ∈ Subgroup.center Monster := hcenter ▸ Subgroup.mem_top a
     exact (Subgroup.mem_center_iff.mp ha b).symm
@@ -277,7 +277,7 @@ theorem Monster_realizing_field_finrank :
       Module.finrank ℚ K =
         808017424794512875886459904961710757005754368000000000 := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  letI := fK; letI := aK; letI := fdK; letI := gK
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   have hgal : Nat.card (K ≃ₐ[ℚ] K) = Module.finrank ℚ K :=
     IsGalois.card_aut_eq_finrank ℚ K
@@ -298,7 +298,7 @@ theorem Monster_realizing_field_not_solvable :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K), ¬ IsSolvable (K ≃ₐ[ℚ] K) := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  letI := fK; letI := aK; letI := fdK; letI := gK
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   intro hsolv
   haveI := hsolv
