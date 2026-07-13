@@ -593,6 +593,36 @@ theorem genusSurfaceCGB_genus_of_chi (g : ℕ) :
     2 * (g : ℤ) = 2 - (genusSurfaceCGB g).chi := by
   rw [genusSurfaceCGB_chi]; ring
 
+/-- **Total curvature is also a complete invariant of the genus surfaces**:
+    `∫Pf(Σ_g) = ∫Pf(Σ_h) ↔ g = h`.  The Gauss-Bonnet total curvature `4π(1 − g)` is faithful in the
+    genus, exactly like the Euler characteristic (`genusSurfaceCGB_chi_inj`) — unsurprising since the
+    two differ only by the positive constant `2π` (`genusSurfaceCGB_gauss_bonnet`), but it records that
+    the *analytic* invariant, not just the topological one, distinguishes all closed orientable
+    surfaces. -/
+theorem genusSurfaceCGB_totalPfaffian_inj (g h : ℕ) :
+    (genusSurfaceCGB g).totalPfaffian = (genusSurfaceCGB h).totalPfaffian ↔ g = h := by
+  rw [genusSurfaceCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian]
+  have hpi : (0 : ℝ) < 2 * π := by positivity
+  constructor
+  · intro heq
+    have h2 : (2 - 2 * (g : ℝ)) = (2 - 2 * (h : ℝ)) :=
+      mul_right_cancel₀ (ne_of_gt hpi) heq
+    have : (g : ℝ) = (h : ℝ) := by linarith
+    exact_mod_cast this
+  · intro hgh; subst hgh; rfl
+
+/-- **Total curvature strictly decreases with genus**: `g < h ⟹ ∫Pf(Σ_h) < ∫Pf(Σ_g)`.  Each added
+    handle makes the total Gauss-Bonnet curvature `4π(1 − g)` strictly more negative — the monotone
+    refinement of the sign trichotomy below, and the quantitative form of "more topology forces more
+    negative curvature". -/
+theorem genusSurfaceCGB_totalPfaffian_strictAnti {g h : ℕ} (hgh : g < h) :
+    (genusSurfaceCGB h).totalPfaffian < (genusSurfaceCGB g).totalPfaffian := by
+  rw [genusSurfaceCGB_totalPfaffian, genusSurfaceCGB_totalPfaffian]
+  have hpi : (0 : ℝ) < 2 * π := by positivity
+  have hgh' : (g : ℝ) < (h : ℝ) := by exact_mod_cast hgh
+  have hfac : (2 - 2 * (h : ℝ)) < (2 - 2 * (g : ℝ)) := by linarith
+  exact mul_lt_mul_of_pos_right hfac hpi
+
 /-- **Euler characteristic is strictly decreasing in genus.**  `g ↦ χ(Σ_g) = 2 − 2g` is
     `StrictAnti`: every added handle strictly lowers the Euler characteristic.  This is the
     order-theoretic sharpening of the injectivity `genusSurfaceCGB_chi_inj` — the embedding
