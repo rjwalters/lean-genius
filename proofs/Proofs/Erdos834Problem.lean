@@ -31,6 +31,7 @@
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos834
 
@@ -52,9 +53,11 @@ def IsUniform {V : Type*} (H : Hypergraph V) (k : ℕ) : Prop :=
 noncomputable def degree {V : Type*} [DecidableEq V] (H : Hypergraph V) (v : V) : ℕ :=
   Set.ncard { e ∈ H.edges | v ∈ e }
 
-/-- Minimum degree across all vertices appearing in some edge -/
+/-- Minimum degree across all vertices appearing in some edge.
+    (v4.31 migration: `⨅` over `ℕ` needs a `CompleteLattice ℕ` (no `Top ℕ`);
+    use `sInf` over the degree image, with the empty→0 convention.) -/
 noncomputable def minDegree {V : Type*} [DecidableEq V] (H : Hypergraph V) : ℕ :=
-  ⨅ v ∈ (⋃ e ∈ H.edges, (e : Set V)), degree H v
+  sInf { d : ℕ | ∃ v ∈ (⋃ e ∈ H.edges, (e : Set V)), degree H v = d }
 
 /- ## Transversal Number τ(H)
 
@@ -66,9 +69,11 @@ The transversal number τ(H) is the minimum size of a transversal.
 def IsTransversal {V : Type*} (H : Hypergraph V) (T : Finset V) : Prop :=
   ∀ e ∈ H.edges, (T ∩ e).Nonempty
 
-/-- The transversal number: minimum size of a transversal -/
+/-- The transversal number: minimum size of a transversal.
+    (v4.31 migration: `⨅ … else ⊤` over `ℕ` needs `Top ℕ`; use `sInf` over the
+    cardinalities of the transversals, empty→0.) -/
 noncomputable def transversalNumber {V : Type*} [DecidableEq V] (H : Hypergraph V) : ℕ :=
-  ⨅ T : Finset V, if IsTransversal H T then T.card else ⊤
+  sInf { n : ℕ | ∃ T : Finset V, IsTransversal H T ∧ T.card = n }
 
 /- ## Transversal-Criticality
 
@@ -96,9 +101,11 @@ The chromatic number χ(H) is the minimum k for which a proper k-coloring exists
 def IsProperColoring {V : Type*} (H : Hypergraph V) (k : ℕ) (c : V → Fin k) : Prop :=
   ∀ e ∈ H.edges, e.card ≥ 2 → ∃ v₁ v₂, v₁ ∈ e ∧ v₂ ∈ e ∧ c v₁ ≠ c v₂
 
-/-- The chromatic number: minimum colors needed -/
+/-- The chromatic number: minimum colors needed.
+    (v4.31 migration: `⨅ … else ⊤` over `ℕ` needs `Top ℕ`; use `sInf` over the
+    colour counts that admit a proper colouring, empty→0.) -/
 noncomputable def chromaticNumber {V : Type*} [DecidableEq V] (H : Hypergraph V) : ℕ :=
-  ⨅ k : ℕ, if (∃ c : V → Fin k, IsProperColoring H k c) then k else ⊤
+  sInf { k : ℕ | ∃ c : V → Fin k, IsProperColoring H k c }
 
 /-- A hypergraph is k-chromatic-critical -/
 def IsChromaticCritical {V : Type*} [DecidableEq V] (H : Hypergraph V) (k : ℕ) : Prop :=

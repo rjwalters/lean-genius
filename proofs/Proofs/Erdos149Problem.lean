@@ -20,6 +20,7 @@
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos149
 

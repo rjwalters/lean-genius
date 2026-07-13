@@ -23,6 +23,7 @@ References:
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos444
 
@@ -41,7 +42,7 @@ def InfiniteSubset (A : Set ℕ) : Prop :=
 **The generalized divisor function d_A(n):**
 d_A(n) = |{a ∈ A : a | n}|, the number of divisors of n that belong to A.
 -/
-def d_A (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def d_A (A : Set ℕ) (n : ℕ) : ℕ :=
   (Finset.filter (fun a => a ∈ A ∧ a ∣ n) (Finset.range (n + 1))).card
 
 /--
@@ -55,7 +56,7 @@ noncomputable def H_A (A : Set ℕ) (x : ℕ) : ℝ :=
 **Maximum divisor count:**
 M_A(x) = max_{n < x} d_A(n), the maximum of d_A over [1, x).
 -/
-def M_A (A : Set ℕ) (x : ℕ) : ℕ :=
+noncomputable def M_A (A : Set ℕ) (x : ℕ) : ℕ :=
   (Finset.range x).sup (d_A A)
 
 /-

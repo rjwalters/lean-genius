@@ -30,6 +30,7 @@ Tags: number-theory, divisors, density, modular-arithmetic, threshold
 -/
 
 import Mathlib
+open scoped Classical
 
 open Real Nat
 

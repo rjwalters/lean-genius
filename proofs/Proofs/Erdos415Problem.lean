@@ -25,6 +25,7 @@
 -/
 
 import Mathlib
+open scoped Classical
 
 open Nat Function Finset
 
@@ -44,8 +45,10 @@ def omega : ℕ → ℕ := fun n => n.primeFactors.card
 
 /- ## Ordering Patterns -/
 
-/-- An ordering pattern on k elements is a permutation of Fin k -/
-def OrderingPattern (k : ℕ) := Equiv.Perm (Fin k)
+/-- An ordering pattern on k elements is a permutation of Fin k.
+    (v4.31 migration: `abbrev` so the `Equiv.Perm` FunLike coercion and
+    `Fintype` instance are transparently available at use sites.) -/
+abbrev OrderingPattern (k : ℕ) := Equiv.Perm (Fin k)
 
 /-- The number of ordering patterns on k elements is k! -/
 theorem orderingPattern_card (k : ℕ) :
@@ -105,10 +108,10 @@ def Question1_ExactConstant : Prop :=
 
 /-- The strictly decreasing pattern: φ(m+1) > φ(m+2) > ... > φ(m+k) -/
 def StrictlyDecreasingPattern (k : ℕ) : OrderingPattern k :=
-  ⟨fun i => ⟨k - 1 - i.val, by omega⟩,
-   fun i => ⟨k - 1 - i.val, by omega⟩,
-   by intro i; simp; omega,
-   by intro i; simp; omega⟩
+  ⟨fun i => ⟨k - 1 - i.val, by have := i.isLt; omega⟩,
+   fun i => ⟨k - 1 - i.val, by have := i.isLt; omega⟩,
+   by intro i; have := i.isLt; ext; simp; omega,
+   by intro i; have := i.isLt; ext; simp; omega⟩
 
 /-- Question 2: Is the strictly decreasing pattern always the first to fail? -/
 def Question2_DecreasingFirst : Prop :=
@@ -122,8 +125,8 @@ noncomputable def NaturalPattern (k : ℕ) : OrderingPattern k := by
 /-- Question 3: Is the natural pattern the most likely to appear? -/
 def Question3_NaturalMostLikely : Prop :=
   ∀ n k : ℕ, ∀ pattern : OrderingPattern k,
-    (Finset.univ.filter fun m => m + k ≤ n ∧ PhiRealizesPattern m k (NaturalPattern k)).card ≥
-    (Finset.univ.filter fun m => m + k ≤ n ∧ PhiRealizesPattern m k pattern).card
+    ((Finset.range (n + 1)).filter fun m => m + k ≤ n ∧ PhiRealizesPattern m k (NaturalPattern k)).card ≥
+    ((Finset.range (n + 1)).filter fun m => m + k ≤ n ∧ PhiRealizesPattern m k pattern).card
 
 /- ## Specific Pattern Analysis -/
 
@@ -169,7 +172,7 @@ theorem phi_small_values : ∀ ε > 0, ∃ᶠ n in Filter.atTop,
 /- ## Extension to Other Functions -/
 
 /-- The same asymptotic holds for σ -/
-def F_sigma (n : ℕ) : ℕ :=
+noncomputable def F_sigma (n : ℕ) : ℕ :=
   Nat.find (F_sigma_exists n) - 1
 where
   F_sigma_exists (n : ℕ) : ∃ k : ℕ, ¬∀ pattern : OrderingPattern k,
@@ -199,7 +202,7 @@ theorem phi_range_size (n : ℕ) (hn : n ≥ 2) :
 
 /-- Many values share the same φ value (e.g., φ(1) = φ(2) = 1) -/
 theorem phi_collisions : ∀ k : ℕ, ∃ v : ℕ,
-    (Finset.range 1000000).filter (fun n => phi n = v) |>.card ≥ k := by
+    ((Finset.range 1000000).filter (fun n => phi n = v)).card ≥ k := by
   sorry
 
 /- ## Main Problem Statement -/

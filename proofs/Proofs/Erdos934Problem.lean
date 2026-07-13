@@ -31,6 +31,7 @@ Tags: graph-theory, extremal-combinatorics, edge-distance, bounded-degree
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos934
 
@@ -80,7 +81,7 @@ def HasTSeparatedEdges {V : Type*} [Fintype V] [DecidableEq V]
 /-- h_t(d) is the minimum m such that any graph with m edges and max degree ≤ d
     has two t-separated edges -/
 noncomputable def h (t d : ℕ) : ℕ :=
-  Nat.find (⟨d^t + 1, sorry⟩ : ∃ m, ∀ V : Type*, ∀ _ : Fintype V,
+  Nat.find (⟨d^t + 1, sorry⟩ : ∃ m, ∀ V : Type, ∀ _ : Fintype V,
     ∀ G : SimpleGraph V, [DecidableEq V] → [DecidableRel G.Adj] →
     maxDegree G ≤ d → numEdges G ≥ m → HasTSeparatedEdges G t)
 

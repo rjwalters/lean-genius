@@ -15,6 +15,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset
 
@@ -70,11 +71,15 @@ def isIndependent (H : Hypergraph V) (S : Finset V) : Prop :=
 noncomputable def independenceNumber (H : Hypergraph V) : ℕ :=
   sSup { k : ℕ | ∃ S : Finset V, isIndependent H S ∧ S.card = k }
 
-/-- Every hypergraph has an independent set (the empty set). -/
-theorem exists_independent (H : Hypergraph V) : ∃ S : Finset V, isIndependent H S := by
+/-- Every hypergraph without an empty edge has an independent set (the empty set).
+    (v4.31 migration: the empty set is independent iff `∅ ∉ H` — if `∅ ∈ H` then
+    `∅ ⊆ ∅` witnesses a contained edge, so the empty-edge hypothesis is required.) -/
+theorem exists_independent (H : Hypergraph V) (hne : ∅ ∉ H) :
+    ∃ S : Finset V, isIndependent H S := by
   use ∅
-  intro e _ he
-  simp at he
+  intro e he hsub
+  rw [Finset.subset_empty] at hsub
+  exact hne (hsub ▸ he)
 
 /-
 ## The Extremal Function f(n)
@@ -159,8 +164,7 @@ def erdos_1024_question : Prop :=
 /-- The answer: f(n) ≍ (n log n)^(1/2). -/
 theorem erdos_1024_solved : erdos_1024_question := by
   obtain ⟨c, C, hc, hC, N, hN⟩ := phelps_rodl
-  use c, C, hc, hC, asymptoticBound, N
-  exact hN
+  exact ⟨c, C, hc, hC, asymptoticBound, N, hN⟩
 
 /-
 ## Steiner Triple Systems

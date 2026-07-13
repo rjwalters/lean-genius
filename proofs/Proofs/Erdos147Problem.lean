@@ -19,6 +19,7 @@ References:
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos147
 
@@ -37,7 +38,7 @@ axiom turanNumber (H : SimpleGraph (Fin k)) (n : ℕ) : ℕ
 /--
 The minimum degree of a simple graph on Fin k.
 -/
-noncomputable def minDegree (G : SimpleGraph (Fin k)) : ℕ :=
+noncomputable def minDegree [NeZero k] (G : SimpleGraph (Fin k)) : ℕ :=
   Finset.inf' Finset.univ ⟨0, Finset.mem_univ 0⟩
     (fun v => (Finset.univ.filter (fun w => G.Adj v w)).card)
 

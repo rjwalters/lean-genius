@@ -26,6 +26,7 @@ import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+open scoped Classical
 
 namespace Erdos452
 

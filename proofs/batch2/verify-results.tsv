@@ -685,7 +685,7 @@ Erdos1022Problem	GREEN
 Erdos1023OQ01	GREEN	
 Erdos1023OQ01Problem	GREEN	
 Erdos1023Problem	GREEN	
-Erdos1024Problem	RESIDUAL	instance-synth
+Erdos1024Problem	GREEN	
 Erdos1025Problem	GREEN	
 Erdos1026OQ05Extremal	RESIDUAL	proof-drift
 Erdos1026OQ05KMonotonic	RESIDUAL	rewrite-drift
@@ -926,17 +926,17 @@ Erdos130WIP01	RESIDUAL	proof-drift
 Erdos132Problem	GREEN	
 Erdos133Problem	RESIDUAL	elab-drift
 Erdos134Problem	GREEN	
-Erdos136Problem	RESIDUAL	instance-synth
+Erdos136Problem	GREEN	
 Erdos13Problem	GREEN	
 Erdos140Problem	RESIDUAL	type-mismatch
 Erdos141Problem	GREEN	
 Erdos142Problem	GREEN	
 Erdos144Problem	GREEN	
 Erdos145Problem	GREEN	
-Erdos146Problem	RESIDUAL	instance-synth
-Erdos147Problem	RESIDUAL	instance-synth
+Erdos146Problem	GREEN	
+Erdos147Problem	GREEN	
 Erdos148Problem	GREEN	
-Erdos149Problem	RESIDUAL	instance-synth
+Erdos149Problem	GREEN	
 Erdos14Problem	GREEN	
 Erdos14UniqueSums	RESIDUAL	proof-drift
 Erdos150Problem	GREEN	
@@ -965,7 +965,7 @@ Erdos170Problem	GREEN
 Erdos171Problem	RESIDUAL	type-mismatch
 Erdos173Problem	GREEN	
 Erdos174Problem	RESIDUAL	instance-synth
-Erdos176Problem	RESIDUAL	instance-synth
+Erdos176Problem	GREEN	
 Erdos177Problem	GREEN	
 Erdos178Problem	GREEN	
 Erdos179Aristotle	RESIDUAL	proof-drift
@@ -1122,7 +1122,7 @@ Erdos319Problem	RESIDUAL	proof-drift
 Erdos31Problem	GREEN	
 Erdos320Problem	RESIDUAL	unknown-const:erdos_320_open_bounds
 Erdos321Problem	GREEN	
-Erdos321ProblemR1	RESIDUAL	instance-synth
+Erdos321ProblemR1	GREEN	
 Erdos322Problem	GREEN	
 Erdos323Problem	RESIDUAL	unknown-const:IsSumOfPowers_one_iff.mpr
 Erdos324Problem	RESIDUAL	parse-error
@@ -1184,7 +1184,7 @@ Erdos363Problem	GREEN
 Erdos364Problem	GREEN	
 Erdos365Problem	RESIDUAL	instance-synth
 Erdos367Problem	RESIDUAL	unknown-const:twoFullPart_le
-Erdos368Problem	RESIDUAL	instance-synth
+Erdos368Problem	GREEN	
 Erdos369Problem	RESIDUAL	unknown-const:Nat.dvd_of_dvd_of_dvd
 Erdos36Problem	RESIDUAL	unknown-const:white_lower
 Erdos370Problem	RESIDUAL	proof-drift
@@ -1235,8 +1235,8 @@ Erdos410Problem	GREEN
 Erdos411Problem	RESIDUAL	unknown-const:totientStep_ge
 Erdos413Problem	RESIDUAL	rewrite-drift
 Erdos414Problem	RESIDUAL	rewrite-drift
-Erdos415Problem	RESIDUAL	instance-synth
-Erdos415ProblemAristotle	RESIDUAL	instance-synth
+Erdos415Problem	GREEN	
+Erdos415ProblemAristotle	GREEN	
 Erdos416Problem	GREEN	
 Erdos417Problem	GREEN	
 Erdos418Problem	GREEN	
@@ -1247,7 +1247,7 @@ Erdos421Problem	RESIDUAL	parse-error
 Erdos422Problem	GREEN	
 Erdos423Problem	PRE-EXISTING	never-compiled:n
 Erdos424Problem	RESIDUAL	unknown-const:sequence_monotone
-Erdos425Problem	RESIDUAL	instance-synth
+Erdos425Problem	GREEN	
 Erdos426Problem	GREEN	
 Erdos427Problem	GREEN	
 Erdos428Problem	RESIDUAL	unknown-const:primeDensityRatio_nonneg
@@ -1263,7 +1263,7 @@ Erdos434Problem	RESIDUAL	unknown-const:sylvester_frobenius
 Erdos435Problem	GREEN	
 Erdos436Problem	GREEN	
 Erdos437Aristotle	RESIDUAL	unknown-const:div_le_one_of_le
-Erdos437Problem	RESIDUAL	instance-synth
+Erdos437Problem	GREEN	
 Erdos438Problem	GREEN	
 Erdos439Problem	GREEN	
 Erdos43Problem	RESIDUAL	rewrite-drift
@@ -1271,7 +1271,7 @@ Erdos440Problem	GREEN
 Erdos441Aristotle	RESIDUAL	proof-drift
 Erdos442Problem	GREEN	
 Erdos443Problem	GREEN	
-Erdos444Problem	RESIDUAL	instance-synth
+Erdos444Problem	GREEN	
 Erdos445Problem	RESIDUAL	instance-synth
 Erdos446Problem	GREEN	
 Erdos447Problem	RESIDUAL	instance-synth
@@ -1280,7 +1280,7 @@ Erdos44Problem	RESIDUAL	proof-drift
 Erdos44SidonLowerBound	GREEN	
 Erdos450Problem	GREEN	
 Erdos451Problem	PRE-EXISTING	never-compiled:hp
-Erdos452Problem	RESIDUAL	instance-synth
+Erdos452Problem	GREEN	
 Erdos453OQ02	RESIDUAL	type-mismatch
 Erdos453Problem	RESIDUAL	type-mismatch
 Erdos454Aristotle	GREEN	
@@ -1303,7 +1303,7 @@ Erdos471Problem	RESIDUAL	unknown-const:Set.Finite.of_finset
 Erdos472Problem	RESIDUAL	instance-synth
 Erdos473Problem	GREEN	
 Erdos474Problem	RESIDUAL	parse-error
-Erdos475Problem	RESIDUAL	instance-synth
+Erdos475Problem	GREEN	
 Erdos476Aristotle	RESIDUAL	elab-drift
 Erdos476OQ05Aristotle	RESIDUAL	unknown-const:b₂
 Erdos476OQ05Problem	RESIDUAL	unknown-const:Nat.min_add_sub_cancel'
@@ -1315,7 +1315,7 @@ Erdos47Problem	GREEN
 Erdos481Problem	GREEN	
 Erdos483OQ02	RESIDUAL	elab-drift
 Erdos483Problem	RESIDUAL	elab-drift
-Erdos484Problem	RESIDUAL	instance-synth
+Erdos484Problem	GREEN	
 Erdos485OQ01	PRE-EXISTING	never-compiled:d
 Erdos485OQ02	RESIDUAL	instance-synth
 Erdos485Problem	GREEN	
@@ -1383,12 +1383,12 @@ Erdos540Problem	GREEN
 Erdos541Problem	GREEN	
 Erdos542Problem	GREEN	
 Erdos543Problem	RESIDUAL	proof-drift
-Erdos545Problem	RESIDUAL	instance-synth
-Erdos546Problem	RESIDUAL	instance-synth
+Erdos545Problem	GREEN	
+Erdos546Problem	GREEN	
 Erdos547Problem	GREEN	
 Erdos548Aristotle	RESIDUAL	instance-synth
-Erdos548Problem	RESIDUAL	instance-synth
-Erdos548ProblemAristotle	RESIDUAL	instance-synth
+Erdos548Problem	GREEN	
+Erdos548ProblemAristotle	GREEN	
 Erdos549Problem	RESIDUAL	instance-synth
 Erdos549ProblemAristotle	RESIDUAL	type-mismatch
 Erdos54Problem	GREEN	
@@ -1412,9 +1412,9 @@ Erdos560Problem	RESIDUAL	elab-drift
 Erdos561Problem	GREEN	
 Erdos562Problem	GREEN	
 Erdos563Problem	GREEN	
-Erdos565Problem	RESIDUAL	instance-synth
+Erdos565Problem	GREEN	
 Erdos566Problem	GREEN	
-Erdos567Problem	RESIDUAL	instance-synth
+Erdos567Problem	GREEN	
 Erdos568Problem	GREEN	
 Erdos569Problem	GREEN	
 Erdos570Problem	RESIDUAL	type-mismatch
@@ -1434,7 +1434,7 @@ Erdos580Problem	RESIDUAL	type-mismatch
 Erdos581Problem	GREEN	
 Erdos582Problem	RESIDUAL	dot-notation-drift
 Erdos583Problem	RESIDUAL	proof-drift
-Erdos584Problem	RESIDUAL	instance-synth
+Erdos584Problem	GREEN	
 Erdos585Problem	RESIDUAL	elab-drift
 Erdos586Problem	GREEN	
 Erdos587Problem	GREEN	
@@ -1471,10 +1471,10 @@ Erdos610ProblemAristotle	RESIDUAL	instance-synth
 Erdos611Aristotle	RESIDUAL	instance-synth
 Erdos611Problem	RESIDUAL	instance-synth
 Erdos611ProblemAristotle	RESIDUAL	instance-synth
-Erdos612Problem	RESIDUAL	instance-synth
+Erdos612Problem	GREEN	
 Erdos612ProblemAristotle	RESIDUAL	unknown-const:Filter.Tendsto.const_mul_zero
 Erdos613Aristotle	RESIDUAL	instance-synth
-Erdos613Problem	RESIDUAL	instance-synth
+Erdos613Problem	GREEN	
 Erdos613ProblemAristotle	RESIDUAL	instance-synth
 Erdos614Problem	RESIDUAL	instance-synth
 Erdos615Problem	GREEN	
@@ -1502,12 +1502,12 @@ Erdos627Aristotle	GREEN
 Erdos627Problem	GREEN	
 Erdos627ProblemAristotle	GREEN	
 Erdos628Aristotle	RESIDUAL	instance-synth
-Erdos628Problem	RESIDUAL	instance-synth
+Erdos628Problem	GREEN	
 Erdos628ProblemAristotle	GREEN	
 Erdos629Aristotle	RESIDUAL	unknown-const:Nat.sInf
 Erdos629Problem	RESIDUAL	type-mismatch
-Erdos630Aristotle	RESIDUAL	instance-synth
-Erdos630Problem	RESIDUAL	instance-synth
+Erdos630Aristotle	GREEN	
+Erdos630Problem	GREEN	
 Erdos630ProblemAristotle	GREEN	
 Erdos631Aristotle	GREEN	
 Erdos631Problem	GREEN	
@@ -1520,13 +1520,13 @@ Erdos636Aristotle	GREEN
 Erdos636Problem	GREEN	
 Erdos636ProblemAristotle	GREEN	
 Erdos637Aristotle	RESIDUAL	dot-notation-drift
-Erdos637Problem	RESIDUAL	instance-synth
+Erdos637Problem	GREEN	
 Erdos637ProblemAristotle	GREEN	
 Erdos638Problem	GREEN	
 Erdos639Problem	GREEN	
 Erdos63Problem	GREEN	
 Erdos640Problem	RESIDUAL	type-mismatch
-Erdos641Problem	RESIDUAL	instance-synth
+Erdos641Problem	GREEN	
 Erdos642Aristotle	RESIDUAL	unknown-const:SimpleGraph.edgeFinset_card_le
 Erdos642Problem	RESIDUAL	parse-error
 Erdos643Problem	RESIDUAL	signature-drift
@@ -1569,7 +1569,7 @@ Erdos674Aristotle	RESIDUAL	unknown-const:Nat.Prime.dvd_gcd
 Erdos674Problem	GREEN	
 Erdos674ProblemAristotle	GREEN	
 Erdos675Problem	GREEN	
-Erdos676Problem	RESIDUAL	instance-synth
+Erdos676Problem	GREEN	
 Erdos677Problem	RESIDUAL	type-mismatch
 Erdos678Aristotle	RESIDUAL	unknown-const:Erdos678.intervalLcm_eq_intervalLcm'
 Erdos678Problem	GREEN	
@@ -1591,7 +1591,7 @@ Erdos692Problem	GREEN
 Erdos693Problem	RESIDUAL	unknown-const:Finset.sort_sorted
 Erdos694Problem	GREEN	
 Erdos696Problem	GREEN	
-Erdos697Problem	RESIDUAL	instance-synth
+Erdos697Problem	GREEN	
 Erdos698Problem	GREEN	
 Erdos699Problem	GREEN	
 Erdos69Problem	RESIDUAL	proof-drift
@@ -1603,7 +1603,7 @@ Erdos704Problem	RESIDUAL	type-mismatch
 Erdos705Problem	GREEN	
 Erdos706Problem	GREEN	
 Erdos707Problem	GREEN	
-Erdos708Problem	RESIDUAL	instance-synth
+Erdos708Problem	GREEN	
 Erdos709Problem	GREEN	
 Erdos70OQ01Problem	RESIDUAL	unknown-const:Ordinal.mul_lt_mul_of_pos_left
 Erdos70Problem	GREEN	
@@ -1615,7 +1615,7 @@ Erdos714Problem	GREEN
 Erdos715Problem	RESIDUAL	parse-error
 Erdos715ProblemAristotle	RESIDUAL	parse-error
 Erdos716Problem	GREEN	
-Erdos717Problem	RESIDUAL	instance-synth
+Erdos717Problem	GREEN	
 Erdos718Problem	RESIDUAL	dot-notation-drift
 Erdos719Problem	PRE-EXISTING	never-compiled:H.edges
 Erdos71Problem	GREEN	
@@ -1668,7 +1668,7 @@ Erdos763Problem	GREEN
 Erdos764Problem	GREEN	
 Erdos765Problem	GREEN	
 Erdos766Problem	RESIDUAL	parse-error
-Erdos767Problem	RESIDUAL	instance-synth
+Erdos767Problem	GREEN	
 Erdos768Problem	GREEN	
 Erdos769Problem	RESIDUAL	proof-drift
 Erdos76OQ02	GREEN	
@@ -1679,7 +1679,7 @@ Erdos773Problem	RESIDUAL	unknown-const:pow_lt_pow_left
 Erdos774Problem	GREEN	
 Erdos775Problem	RESIDUAL	instance-synth
 Erdos776Problem	RESIDUAL	instance-synth
-Erdos777Problem	RESIDUAL	instance-synth
+Erdos777Problem	GREEN	
 Erdos778Problem	GREEN	
 Erdos779Problem	GREEN	
 Erdos77Problem	GREEN	
@@ -1688,10 +1688,10 @@ Erdos780Problem	RESIDUAL	signature-drift
 Erdos781Problem	RESIDUAL	proof-drift
 Erdos782Problem	RESIDUAL	type-mismatch
 Erdos783Problem	RESIDUAL	instance-synth
-Erdos784Problem	RESIDUAL	instance-synth
+Erdos784Problem	GREEN	
 Erdos785Problem	GREEN	
 Erdos786Problem	GREEN	
-Erdos787Problem	RESIDUAL	instance-synth
+Erdos787Problem	GREEN	
 Erdos788Problem	GREEN	
 Erdos789Problem	GREEN	
 Erdos790Problem	GREEN	
@@ -1709,7 +1709,7 @@ Erdos79Incomplete01	RESIDUAL	signature-drift
 Erdos79Incomplete01OQ01	RESIDUAL	signature-drift
 Erdos79Problem	GREEN	
 Erdos79ProblemAristotle	GREEN	
-Erdos800Problem	RESIDUAL	instance-synth
+Erdos800Problem	GREEN	
 Erdos801Problem	RESIDUAL	parse-error
 Erdos802Problem	GREEN	
 Erdos803Problem	RESIDUAL	instance-synth
@@ -1717,8 +1717,8 @@ Erdos804Problem	RESIDUAL	instance-synth
 Erdos805Problem	GREEN	
 Erdos806Problem	RESIDUAL	parse-error
 Erdos807Problem	RESIDUAL	dot-notation-drift
-Erdos808Problem	RESIDUAL	instance-synth
-Erdos809Problem	RESIDUAL	instance-synth
+Erdos808Problem	GREEN	
+Erdos809Problem	GREEN	
 Erdos80Problem	GREEN	
 Erdos810Problem	GREEN	
 Erdos811Problem	GREEN	
@@ -1747,7 +1747,7 @@ Erdos830Problem	GREEN
 Erdos831Problem	PRE-EXISTING	never-compiled:p_e1
 Erdos832Problem	PRE-EXISTING	never-compiled:V
 Erdos833Problem	RESIDUAL	elab-drift
-Erdos834Problem	RESIDUAL	instance-synth
+Erdos834Problem	GREEN	
 Erdos835Problem	GREEN	
 Erdos836Problem	RESIDUAL	instance-synth
 Erdos838Problem	RESIDUAL	noncomputable
@@ -1805,7 +1805,7 @@ Erdos878Problem	RESIDUAL	instance-synth
 Erdos879Problem	GREEN	
 Erdos87Problem	GREEN	
 Erdos880Problem	GREEN	
-Erdos882Problem	RESIDUAL	instance-synth
+Erdos882Problem	GREEN	
 Erdos882ProblemOQ03	PRE-EXISTING	never-compiled:a
 Erdos882ProblemOQ03OQ02	GREEN	
 Erdos883Problem	GREEN	
@@ -1834,7 +1834,7 @@ Erdos901ProblemAristotle	GREEN
 Erdos902Problem	GREEN	
 Erdos903Problem	RESIDUAL	unknown-const:p
 Erdos904Problem	GREEN	
-Erdos905Problem	RESIDUAL	instance-synth
+Erdos905Problem	GREEN	
 Erdos906Problem	GREEN	
 Erdos907Problem	GREEN	
 Erdos908Problem	GREEN	
@@ -1868,7 +1868,7 @@ Erdos930Problem	GREEN
 Erdos932Problem	RESIDUAL	proof-drift
 Erdos933Problem	GREEN	
 Erdos933ProblemAristotle	GREEN	
-Erdos934Problem	RESIDUAL	instance-synth
+Erdos934Problem	GREEN	
 Erdos934ProblemAristotle	RESIDUAL	proof-drift
 Erdos935Problem	GREEN	
 Erdos936Problem	RESIDUAL	unknown-const:Nat.pow_dvd_pow_of_dvd
@@ -1931,7 +1931,7 @@ Erdos989Problem	RESIDUAL	proof-drift
 Erdos98Problem	GREEN	
 Erdos990Problem	RESIDUAL	instance-synth
 Erdos992Problem	GREEN	
-Erdos993Problem	RESIDUAL	instance-synth
+Erdos993Problem	GREEN	
 Erdos994Problem	GREEN	
 Erdos995Problem	GREEN	
 Erdos996Problem	GREEN	

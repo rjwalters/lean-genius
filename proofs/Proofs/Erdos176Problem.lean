@@ -31,6 +31,7 @@ References:
 -/
 
 import Mathlib
+open scoped Classical
 
 open Nat Finset BigOperators
 
@@ -53,7 +54,10 @@ The elements are a, a+d, a+2d, ..., a+(k-1)d.
 -/
 theorem arithProg_mem (a d k n : ℕ) :
     n ∈ ArithProg a d k ↔ ∃ i < k, n = a + i * d := by
-  simp [ArithProg]
+  simp only [ArithProg, Finset.mem_image, Finset.mem_range]
+  constructor
+  · rintro ⟨i, hi, rfl⟩; exact ⟨i, hi, rfl⟩
+  · rintro ⟨i, hi, rfl⟩; exact ⟨i, hi, rfl⟩
 
 /--
 **AP Size:**
@@ -61,10 +65,8 @@ An arithmetic progression with k terms has exactly k elements (when d > 0).
 -/
 theorem arithProg_card (a d k : ℕ) (hd : d > 0) :
     (ArithProg a d k).card = k := by
-  simp only [ArithProg, card_image_of_injective]
-  · exact card_range k
-  · intro i j hij
-    omega
+  rw [ArithProg, Finset.card_image_of_injective _
+    (fun i j hij => Nat.eq_of_mul_eq_mul_right hd (by omega)), card_range]
 
 /-
 ## Part II: ±1 Colorings and Discrepancy

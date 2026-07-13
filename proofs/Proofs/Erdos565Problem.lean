@@ -53,6 +53,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+open scoped Classical
 
 open Nat Real SimpleGraph
 
@@ -125,7 +126,7 @@ def HasMonochromaticInducedCopy {V W : Type*} [Fintype V] [Fintype W]
     ∃ f : V ↪ W,
       (∀ u v : V, G.Adj u v ↔ H.Adj (f u) (f v)) ∧
       (∀ u v : V, G.Adj u v → ∃ he : H.Adj (f u) (f v),
-        c ⟨⟦(f u, f v)⟧, he⟩ = color)
+        c ⟨s(f u, f v), he⟩ = color)
 
 /- ## Part IV: Induced Ramsey Numbers
 -/
@@ -222,7 +223,7 @@ noncomputable def ordinaryRamseyNumber (n : ℕ) (G : Graph (Fin n)) : ℕ :=
     ∃ color : EdgeColor,
       ∃ f : Fin n ↪ Fin m,
         ∀ u v : Fin n, G.Adj u v → ∃ he : (completeGraph (Fin m)).Adj (f u) (f v),
-          c ⟨⟦(f u, f v)⟧, he⟩ = color }
+          c ⟨s(f u, f v), he⟩ = color }
 
 /--
 **R*(G) ≥ R(G):**

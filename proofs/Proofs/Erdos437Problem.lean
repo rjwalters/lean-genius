@@ -28,6 +28,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.List.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Real Nat Finset
 
@@ -277,9 +278,9 @@ theorem erdos_437_summary :
     -- The main question is answered affirmatively
     erdos437Conjecture ∧
     -- L(x) is o(x)
-    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
+    (∀ ε : ℝ, ε > 0 → ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
     -- But L(x) > x^(1-ε) for any ε
-    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) :=
+    (∀ ε : ℝ, ε > 0 → ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) :=
   ⟨erdos_437, L_little_o_x, erdos_437⟩
 
 /--
