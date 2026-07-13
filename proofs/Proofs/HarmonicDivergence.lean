@@ -138,8 +138,8 @@ theorem group_sum_ge_half (k : ℕ) (hk : k ≥ 1) :
     have h2k_pos : (2 : ℝ)^k > 0 := by positivity
     have h2k1_pos : (2 : ℝ)^(k+1) > 0 := by positivity
     field_simp
-    have : (2 : ℝ)^(k+1) = 2 * 2^k := by ring
-    linarith
+    push_cast
+    ring
   linarith [hsum, hconst, hcard]
 
 /-! ## Contrast with Convergent Series

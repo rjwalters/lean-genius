@@ -123,7 +123,7 @@ theorem case_N_1 : ∀ A : Finset (ZMod 1), A.Nonempty → HasZeroSumSubset A :=
   · exact Subset.refl A
   constructor
   · exact hA
-  · simp [subsetSum]
+  · exact Subsingleton.elim (subsetSum A) 0
 
 /-  The Davenport constant D(ℤ/Nℤ) = N: the smallest d such that every
     sequence of length ≥ d has a zero-sum subsequence.

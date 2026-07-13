@@ -66,7 +66,7 @@ theorem image_mul_eq_filter_dvd {p : ℕ} (hp : 0 < p) (n : ℕ) :
   constructor
   · rintro ⟨j, ⟨hj1, hj2⟩, rfl⟩
     refine ⟨⟨?_, ?_⟩, Dvd.intro j rfl⟩
-    · calc 1 ≤ p * 1 := by simpa using hp
+    · calc 1 ≤ p * 1 := by rw [mul_one]; omega
         _ ≤ p * j := by exact Nat.mul_le_mul_left p hj1
     · rw [mul_comm]; exact (Nat.le_div_iff_mul_le hp).mp hj2
   · rintro ⟨⟨hk1, hk2⟩, ⟨j, rfl⟩⟩

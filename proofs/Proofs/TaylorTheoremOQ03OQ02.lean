@@ -78,7 +78,9 @@ theorem deriv_neg_sin_fun : deriv (fun x => -Real.sin x) = fun x => -Real.cos x 
 theorem deriv_neg_cos_fun : deriv (fun x => -Real.cos x) = Real.sin := by
   ext x
   have h : HasDerivAt (fun x => -Real.cos x) (Real.sin x) x := by
-    simpa using (Real.hasDerivAt_cos x).neg
+    have h0 : HasDerivAt (fun x => -Real.cos x) (-(-Real.sin x)) x :=
+      (Real.hasDerivAt_cos x).neg
+    rwa [neg_neg] at h0
   exact h.deriv
 
 /-- The `k`-th iterated derivative of `cos` is one of `cos, -sin, -cos, sin`.

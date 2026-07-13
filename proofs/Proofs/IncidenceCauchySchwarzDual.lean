@@ -63,7 +63,7 @@ theorem incidences_flip : incidences (flip Inc) = incidences Inc := by
   -- the residual goal closes by reflexivity (the `flip` decidability instance is
   -- definitionally the ambient one).
   unfold incidences deg
-  simp only [Finset.card_filter]
+  simp only [Finset.card_filter, Function.flip_def]
   rw [Finset.sum_comm]
 
 -- ═══════════════════════════════════════════════════

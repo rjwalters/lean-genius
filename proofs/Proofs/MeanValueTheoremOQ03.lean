@@ -358,7 +358,8 @@ theorem antiderivatives_differ_by_constant
     fun y hy => sub_eq_zero.mpr (heq y hy)
   have hC : ∀ y ∈ Ico a b, ‖deriv f y - deriv g y‖ ≤ 0 :=
     fun y hy => by rw [h0 y hy]; simp
-  have hbound := mean_value_inequality hh hC x hx
+  have hbound := norm_image_sub_le_of_norm_deriv_le_segment'
+    (f' := fun y => deriv f y - deriv g y) hh hC x hx
   rw [zero_mul] at hbound
   exact sub_eq_zero.mp (norm_eq_zero.mp (le_antisymm hbound (norm_nonneg _)))
 

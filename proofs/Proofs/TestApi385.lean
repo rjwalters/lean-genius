@@ -5,9 +5,10 @@ import Mathlib
 #check Nat.minFac_prime
 #check Nat.minFac_dvd
 
--- Test: minFac_sq_le_self
-example (n : ℕ) (hn : n > 1) : n.minFac ^ 2 ≤ n := by
-  exact Nat.minFac_sq_le_self (by omega)
+-- Test: minFac_sq_le_self (v4.31: now takes 0 < n and ¬Prime n — the bound is
+-- false for primes, e.g. n = 5 has minFac 5 and 5² > 5)
+example (n : ℕ) (hn : n > 1) (hcomp : ¬ n.Prime) : n.minFac ^ 2 ≤ n := by
+  exact Nat.minFac_sq_le_self (by omega) hcomp
 
 -- Test: le_sqrt API name
 #check @Nat.le_sqrt'

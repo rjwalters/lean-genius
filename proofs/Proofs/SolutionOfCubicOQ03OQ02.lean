@@ -71,7 +71,9 @@ theorem cardanoD_neg_of_casus (p q : ℝ) (h : isCasusIrreducibilis p q) :
 theorem p_neg_of_casus (p q : ℝ) (h : isCasusIrreducibilis p q) :
     p < 0 := by
   simp only [isCasusIrreducibilis, discriminant] at h
-  nlinarith [sq_nonneg q]
+  by_contra hp
+  push_neg at hp
+  nlinarith [sq_nonneg q, pow_nonneg hp 3, mul_nonneg hp (mul_nonneg hp hp)]
 
 -- ============================================================
 -- Section 3: Cardano's Formula Involves Complex Numbers

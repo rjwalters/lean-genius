@@ -72,8 +72,13 @@ Show translate C x = (· + x) '' C, then use IsCompact.image with continuity of 
 -/
 theorem translate_compact (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fin 2))
     (hC : IsCompact C) : IsCompact (translate C x) := by
-  convert hC.image _ using 1;
-  continuity
+  have himg : translate C x = (fun c => c + x) '' C := by
+    ext y
+    constructor
+    · rintro ⟨c, hc, rfl⟩; exact ⟨c, hc, rfl⟩
+    · rintro ⟨c, hc, rfl⟩; exact ⟨c, hc, rfl⟩
+  rw [himg]
+  exact hC.image (continuous_add_const x)
 
 -- Routine: Translation preserves nonemptiness
 theorem translate_nonempty (C : Set (EuclideanSpace ℝ (Fin 2))) (x : EuclideanSpace ℝ (Fin 2))

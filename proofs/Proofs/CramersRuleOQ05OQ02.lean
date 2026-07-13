@@ -164,6 +164,7 @@ the unit-conjugation form, matching the parent entry). -/
 theorem IsSimilar.charpoly_eq {M N : Matrix n n R} (h : IsSimilar M N) :
     N.charpoly = M.charpoly := by
   obtain ⟨U, rfl⟩ := h
+  rw [CramersRuleOQ05.conj_apply, Matrix.coe_units_inv U]
   exact Matrix.charpoly_units_conj U M
 
 /-- **Capstone.**  If `M ~ N`, then for every polynomial `p` the matrices `p(M)`

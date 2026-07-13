@@ -143,6 +143,7 @@ theorem multiplier_ne_zero : multiplier ≠ 0 := by
   intro h
   have := congrArg (eval (fun i => if i = 0 then (1 : ℝ) else 0)) h
   simp only [multiplier, map_add, map_mul, map_pow, map_ofNat, eval_X, map_zero] at this
+  simp only [show (2 : Fin 3) ≠ 0 by decide, if_false] at this
   norm_num at this
 
 /-- The image of the multiplier in `ℝ(x, y, z)` is nonzero. -/

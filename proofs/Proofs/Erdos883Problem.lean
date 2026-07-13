@@ -80,7 +80,7 @@ A cycle a₁ - a₂ - ... - aₖ - a₁ means each consecutive pair is coprime.
 -/
 def isCoprimeCycle (cycle : List ℕ) : Prop :=
   cycle.length ≥ 3 ∧
-  (∀ i : Fin cycle.length, Nat.Coprime (cycle.get i) (cycle.get ⟨(i.val + 1) % cycle.length, by omega⟩))
+  (∀ i : Fin cycle.length, Nat.Coprime (cycle.get i) (cycle.get ⟨(i.val + 1) % cycle.length, Nat.mod_lt _ i.pos⟩))
 
 /- ## Part III: Erdős-Sárkőzy Theorem on Odd Cycles -/
 

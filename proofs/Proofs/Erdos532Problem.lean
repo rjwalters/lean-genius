@@ -251,8 +251,8 @@ Axiomatized because the finite version requires detailed Ramsey bounds.
 -/
 axiom hindman_finite_exists (k : ℕ) :
   ∃ N : ℕ, ∀ c : Fin N → Fin (k + 1),
-    ∃ a b : Fin N, a.val + b.val < N ∧
-      c a = c b ∧ c a = c ⟨a.val + b.val, by omega⟩
+    ∃ a b : Fin N, ∃ hab : a.val + b.val < N,
+      c a = c b ∧ c a = c ⟨a.val + b.val, hab⟩
 
 /--
 **Hindman Numbers (Finite Version):**

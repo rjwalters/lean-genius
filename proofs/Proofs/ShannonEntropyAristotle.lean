@@ -117,7 +117,10 @@ theorem conditioning_reduces_entropy {α β : Type*} [Fintype α] [Fintype β]
         have h_sum_ineq : ∑ x : α, ∑ y : β, (∑ x', pXY (x', y)) * (∑ y', pXY (x, y')) = (∑ x : α, ∑ y : β, pXY (x, y)) * (∑ x : α, ∑ y : β, pXY (x, y)) := by
           simp +decide only [← Finset.sum_mul, ← Finset.mul_sum _ _ _];
           rw [ Finset.sum_comm ];
-        rw [ h_sum_ineq, show ∑ x : α, ∑ y : β, pXY ( x, y ) = 1 by simpa only [ ← Finset.sum_product' ] using hsum ] ; norm_num;
+        rw [ h_sum_ineq, show ∑ x : α, ∑ y : β, pXY ( x, y ) = 1 by
+          rw [← Finset.sum_product']
+          rw [← Finset.univ_product_univ] at hsum
+          simpa using hsum ] ; norm_num;
       linarith [ show I ≥ ∑ x, ∑ y, pXY ( x, y ) - ∑ x, ∑ y, ( ∑ x', pXY ( x', y ) ) * ∑ y', pXY ( x, y' ) by exact le_trans ( by simp +decide [ Finset.sum_sub_distrib ] ) ( Finset.sum_le_sum fun x _ => Finset.sum_le_sum fun y _ => h_ineq x y ) ]
 
 end InformationTheory.Aristotle

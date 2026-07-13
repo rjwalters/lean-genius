@@ -107,7 +107,19 @@ theorem single_class_not_covering (c : CongruenceClass) :
   simp only [CongruenceClass.toSet, mem_setOf_eq, Int.ModEq]
   have hm := c.modulus_pos
   have hr := c.residue_valid
-  omega
+  have hr0 : (0 : ℤ) ≤ (c.residue : ℤ) := Int.natCast_nonneg _
+  have hrm : ((c.residue : ℤ) % c.modulus) = c.residue := by
+    rw [Int.emod_eq_of_lt hr0 (by exact_mod_cast hr)]
+  rcases Nat.lt_or_ge (c.residue + 1) c.modulus with hlt | hge
+  · -- residue + 1 < modulus, so (residue+1) % modulus = residue+1 ≠ residue
+    have h1 : ((c.residue : ℤ) + 1) % c.modulus = c.residue + 1 := by
+      rw [Int.emod_eq_of_lt (by linarith) (by exact_mod_cast hlt)]
+    rw [h1, hrm]; omega
+  · -- residue + 1 = modulus, so (residue+1) % modulus = 0 ≠ residue
+    have heq : c.residue + 1 = c.modulus := by omega
+    have h1 : ((c.residue : ℤ) + 1) % c.modulus = 0 := by
+      rw [show (c.residue : ℤ) + 1 = (c.modulus : ℤ) by exact_mod_cast heq, Int.emod_self]
+    rw [h1, hrm]; omega
 
 /-- A covering system with distinct moduli has at least two classes. -/
 theorem covering_distinct_has_ge_two_classes (cs : CoveringSystem)

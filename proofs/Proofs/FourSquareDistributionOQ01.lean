@@ -2660,7 +2660,7 @@ def applyPerm (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) : Fin 4 → ℤ :=
 @[simp] lemma applyPerm_one (v : Fin 4 → ℤ) :
     applyPerm (1 : Equiv.Perm (Fin 4)) v = v := by
   funext i
-  simp [applyPerm]
+  simp [applyPerm, Equiv.Perm.one_symm]
 
 /-- Left-action composition: `(σ * τ) • v = σ • (τ • v)`. -/
 @[simp] lemma applyPerm_mul (σ τ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :

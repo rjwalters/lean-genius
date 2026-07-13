@@ -68,8 +68,9 @@ theorem fib_prime_imp_index_prime_or_four {n : ℕ}
   -- Its Fibonacci value is a proper divisor of `fib n`.
   have hfd : Nat.fib d ∣ Nat.fib n := Nat.fib_dvd d n hd_dvd
   have h2 : 2 ≤ Nat.fib d := by
+    have h3 : Nat.fib 3 = 2 := by decide
     have : Nat.fib 3 ≤ Nat.fib d := Nat.fib_mono hd3
-    simpa using this
+    rwa [h3] at this
   have hlt : Nat.fib d < Nat.fib n := (Nat.fib_lt_fib (by omega : 2 ≤ d)).mpr hdn
   -- A prime cannot have a divisor strictly between `1` and itself.
   rcases hp.eq_one_or_self_of_dvd (Nat.fib d) hfd with h1 | hself

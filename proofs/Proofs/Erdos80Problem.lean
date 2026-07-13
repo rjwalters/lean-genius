@@ -92,9 +92,9 @@ def hasBook (G : SimpleGraph V) (m : ℕ) : Prop :=
 **Maximum Book Size:**
 The largest book in the graph.
 -/
-noncomputable def maxBookSize (G : SimpleGraph V) : ℕ :=
+noncomputable def maxBookSize [Nonempty V] (G : SimpleGraph V) : ℕ :=
   Finset.sup' (Finset.univ ×ˢ Finset.univ).attach
-    (by simp [Finset.attach_nonempty_iff])
+    (by simp [Finset.attach_nonempty_iff, Finset.univ_nonempty_iff])
     (fun ⟨⟨u, v⟩, _⟩ => if G.Adj u v then bookSize G u v else 0)
 
 /- ## Part II: The f_c(n) Function

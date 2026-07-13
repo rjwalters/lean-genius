@@ -671,7 +671,7 @@ theorem P_nontrivial : P ≠ Set.univ := by
   | inl h_none =>
     -- Φ e emptyOracle n = none, but hs says it's some
     rw [h_none] at hs
-    exact Option.noConfusion hs
+    exact absurd hs (by simp)
   | inr h_wrong =>
     -- Φ e emptyOracle n = some (r, s') with r ≠ f n
     obtain ⟨r, s', hrs, hne⟩ := h_wrong
