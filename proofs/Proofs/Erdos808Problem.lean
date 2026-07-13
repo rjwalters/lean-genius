@@ -42,6 +42,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset
 
@@ -95,8 +96,8 @@ def ErdosConjecture808 : Prop :=
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       ∀ A : Finset ℕ, A.card = n →
         ∀ G : Finset (ℕ × ℕ), isGraphOn G A →
-          (G.card : ℝ) ≥ n^(1 + c) →
-          max (graphSumset A G).card (graphProductset A G).card ≥ n^(1 + c - ε)
+          (G.card : ℝ) ≥ (n : ℝ)^(1 + c) →
+          (max (graphSumset A G).card (graphProductset A G).card : ℝ) ≥ (n : ℝ)^(1 + c - ε)
 
 /--
 **The conjecture is FALSE:**
@@ -136,7 +137,7 @@ axiom ars_positive_bound :
       ∀ A : Finset ℕ, A.card = n →
         ∀ G : Finset (ℕ × ℕ), isGraphOn G A →
           (max (graphSumset A G).card (graphProductset A G).card : ℝ) ≥
-            c * (G.card : ℝ)^(3/2) * (n : ℝ)^(-7/4)
+            c * (G.card : ℝ)^(3/2 : ℝ) * (n : ℝ)^(-7/4 : ℝ)
 
 /--
 **What the positive bound says:**
@@ -149,7 +150,7 @@ theorem positive_bound_interpretation :
         ∀ A : Finset ℕ, A.card = n →
           ∀ G : Finset (ℕ × ℕ), isGraphOn G A →
             (max (graphSumset A G).card (graphProductset A G).card : ℝ) ≥
-              c * (G.card : ℝ)^(3/2) * (n : ℝ)^(-7/4) :=
+              c * (G.card : ℝ)^(3/2 : ℝ) * (n : ℝ)^(-7/4 : ℝ) :=
   ars_positive_bound
 
 /-
@@ -165,8 +166,8 @@ def SumProductConjecture : Prop :=
   ∀ ε : ℝ, ε > 0 →
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       ∀ A : Finset ℕ, A.card = n →
-        max ((A.image (fun p => p.1 + p.2)).card)
-            ((A.image (fun p => p.1 * p.2)).card) ≥ n^(2 - ε)
+        (max (((A ×ˢ A).image (fun p => p.1 + p.2)).card)
+            (((A ×ˢ A).image (fun p => p.1 * p.2)).card) : ℝ) ≥ (n : ℝ)^(2 - ε)
 
 /- 
 **Specialization:**
@@ -205,7 +206,7 @@ theorem erdos_808_summary :
         ∀ A : Finset ℕ, A.card = n →
           ∀ G : Finset (ℕ × ℕ), isGraphOn G A →
             (max (graphSumset A G).card (graphProductset A G).card : ℝ) ≥
-              c * (G.card : ℝ)^(3/2) * (n : ℝ)^(-7/4)) := by
+              c * (G.card : ℝ)^(3/2 : ℝ) * (n : ℝ)^(-7/4 : ℝ)) := by
   exact ⟨erdos_808_false, ars_positive_bound⟩
 
 end Erdos808
