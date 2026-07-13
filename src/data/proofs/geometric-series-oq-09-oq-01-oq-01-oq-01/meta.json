@@ -32,6 +32,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview and Ambient Setup",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports (Mathlib.Topology.Algebra.InfiniteSum.Group, Mathlib.Logic.Equiv.Fin.Basic) and the module docstring, which states the three results — the reindexing HasSum (fun p : ℕ × Fin q => f(q·p.1 + p.2)) S, the hypothesis-free block regrouping, and the residue multisection — and records the characterisation answering the parent's open question: the residue identity holds for EVERY summable f, the only nontrivial input being residue-subseries summability, which is automatic from injectivity. The 'Why This Is Not Already in Mathlib' note isolates the new content as the assembly of Nat.divModEquiv, Equiv.hasSum_iff, HasSum.prod_fiberwise and Summable.comp_injective. The section opens namespace GeometricSeriesOQ09OQ01OQ01OQ01 and fixes the ambient data: M an AddCommGroup with a UniformSpace, IsUniformAddGroup, CompleteSpace and T2Space, f : ℕ → M and target S.",
+      "mathContext": "Ambient hypotheses: $M$ a complete Hausdorff uniform abelian group ($[\\mathrm{CompleteSpace}\\,M]$, $[\\mathrm{T2Space}\\,M]$, $[\\mathrm{IsUniformAddGroup}\\,M]$), $f:\\mathbb{N}\\to M$, and $\\mathrm{HasSum}\\,f\\,S$; no norm or Banach structure."
+    },
+    {
       "id": "residue-summability",
       "title": "Residue Map Injectivity and Subseries Summability",
       "startLine": 65,
@@ -128,6 +136,11 @@
       "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-01",
       "question": "Quantify the multisection two-sidedly: for f : ℕ → M with all q residue subseries n ↦ f(q·n+a) summable, is f itself necessarily summable (a converse to the multisection), and does ∑_{a<q} ∑_n f(q·n+a) then equal ∑_m f m even when M is only Hausdorff (not complete)? Identify the minimal hypotheses under which residue-subseries summability is equivalent to summability of f.",
       "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-02",
+      "question": "Replace the arithmetic modulus q by an arbitrary finite-index subgroup: for a countable abelian group G with a finite-index subgroup H ≤ G and any summable f : G → M, does the coset multisection ∑_{c ∈ G/H} ∑_{h ∈ H} f(c + h) = ∑_{g ∈ G} f(g) hold unconditionally, the modulus-q case being G = ℕ (or ℤ) with H = qℤ? The finite fibers become the cosets G/H, but the residue-subseries reindexing n ↦ q·n+a must be replaced by the H-action g ↦ c + g; does its injectivity (hence Summable.comp_injective) still supply the only nontrivial input, and can the identity be assembled from HasSum.prod_fiberwise along the projection G ≃ (G/H) × H when H is infinite?",
+      "significance": "low"
     }
   ],
   "crossReferences": [
@@ -170,7 +183,8 @@
     "summary": "For any summable family f : ℕ → M valued in a complete Hausdorff uniform abelian group and modulus q ≠ 0, the q-fold residue multisection is established as a genuine reindexing-plus-Fubini, with no geometric closed forms: transporting HasSum f S along ℕ ≃ ℕ × Fin q (Nat.divModEquiv) gives hasSum_reindex: HasSum (fun (p : ℕ × Fin q) => f(q·p.1 + p.2)) S. Fiberwise summation (HasSum.prod_fiberwise) regroups two ways — by block index n (finite inner sums, hasSum_block, hypothesis-free) and by residue a (infinite subseries, hasSum_multisection, with each subseries summable via Summable.comp_injective on the injective n ↦ q·n+a). The multisection identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m (tsum_multisection) then holds for EVERY summable f — the characterisation the parent's open question requested. 163 lines, 10 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Answers geometric-series-oq-09-oq-01-oq-01's open question: the multisection viewpoint is intrinsic to summability, not to the geometric closed forms. The analytic content reduces to the counting bijection q·(m/q)+m%q = m plus the injectivity of n ↦ q·n+a, after which discrete Fubini does all the work. The block regrouping needs no hypothesis at all (finite fibers); only the infinite-fiber residue regrouping consumes summability, and that minimally. This is the abstract form of the even/odd Nat.divModEquiv 2 mechanism Mathlib uses for the cos/sin Taylor series.",
     "openQuestions": [
-      "Establish a two-sided multisection: when all q residue subseries are summable, is f summable (converse), and what are the minimal separation/completeness hypotheses for ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m?"
+      "Establish a two-sided multisection: when all q residue subseries are summable, is f summable (converse), and what are the minimal separation/completeness hypotheses for ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m?",
+      "Generalise the modulus to a finite-index subgroup: for a countable abelian group G with H ≤ G of finite index and summable f : G → M, does the coset multisection ∑_{c∈G/H} ∑_{h∈H} f(c+h) = ∑_g f(g) hold unconditionally, recovering the modulus-q case as G = ℕ, H = qℤ, via HasSum.prod_fiberwise along G ≃ (G/H) × H?"
     ]
   }
 }
