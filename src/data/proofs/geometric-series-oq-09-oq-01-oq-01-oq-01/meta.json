@@ -32,6 +32,14 @@
   },
   "sections": [
     {
+      "id": "preamble-and-imports",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports Mathlib's infinite-sum-over-groups and Fin-equiv infrastructure, then a module docstring stating the result: the q-fold multisection of the geometric parent generalises to ANY summable family f : ℕ → M valued in a complete Hausdorff uniform abelian group, via the reindexing ℕ ≃ ℕ × Fin q (Nat.divModEquiv). The docstring's parts — 'What This Proves' (reindexing, block regrouping, residue multisection), 'The Characterisation' (the regrouping ∑_{a<q} ∑'_n f(q·n+a) = S holds unconditionally for every summable f, a pure Fubini/prod_fiberwise fact), and 'Why This Is Not Already in Mathlib' (the assembly of divModEquiv + prod_fiberwise + comp_injective) — frame the entry. Declares the ambient group M and family f.",
+      "mathContext": "For every $\\mathrm{HasSum}\\,f\\,S$ and $q\\ge1$: $\\sum_{a<q}\\sum'_n f(qn+a) = \\sum'_m f(m) = S$, unconditionally over a complete Hausdorff uniform abelian group."
+    },
+    {
       "id": "residue-summability",
       "title": "Residue Map Injectivity and Subseries Summability",
       "startLine": 65,
@@ -128,6 +136,16 @@
       "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-01",
       "question": "Quantify the multisection two-sidedly: for f : ℕ → M with all q residue subseries n ↦ f(q·n+a) summable, is f itself necessarily summable (a converse to the multisection), and does ∑_{a<q} ∑_n f(q·n+a) then equal ∑_m f m even when M is only Hausdorff (not complete)? Identify the minimal hypotheses under which residue-subseries summability is equivalent to summability of f.",
       "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-02",
+      "question": "Prove the composition law at the summable-family level: for moduli p, q the residue multisection by p·q factors as the multisection by q followed by a further multisection of each residue subseries by p, i.e. the reindexings compose along Nat.divModEquiv (pq) ≃ (divModEquiv q then divModEquiv p) — lifting the geometric associativity to arbitrary summable f.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-03",
+      "question": "Delimit the role of unconditional summability: exhibit a conditionally convergent real series ∑ f(m) (not Summable) whose residue regrouping ∑_{a<q} ∑_n f(q·n+a) either fails to converge or converges to a value ≠ ∑ f(m), confirming that plain Summable is necessary for the unconditional multisection.",
+      "significance": "low"
     }
   ],
   "crossReferences": [
@@ -170,7 +188,9 @@
     "summary": "For any summable family f : ℕ → M valued in a complete Hausdorff uniform abelian group and modulus q ≠ 0, the q-fold residue multisection is established as a genuine reindexing-plus-Fubini, with no geometric closed forms: transporting HasSum f S along ℕ ≃ ℕ × Fin q (Nat.divModEquiv) gives hasSum_reindex: HasSum (fun (p : ℕ × Fin q) => f(q·p.1 + p.2)) S. Fiberwise summation (HasSum.prod_fiberwise) regroups two ways — by block index n (finite inner sums, hasSum_block, hypothesis-free) and by residue a (infinite subseries, hasSum_multisection, with each subseries summable via Summable.comp_injective on the injective n ↦ q·n+a). The multisection identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m (tsum_multisection) then holds for EVERY summable f — the characterisation the parent's open question requested. 163 lines, 10 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Answers geometric-series-oq-09-oq-01-oq-01's open question: the multisection viewpoint is intrinsic to summability, not to the geometric closed forms. The analytic content reduces to the counting bijection q·(m/q)+m%q = m plus the injectivity of n ↦ q·n+a, after which discrete Fubini does all the work. The block regrouping needs no hypothesis at all (finite fibers); only the infinite-fiber residue regrouping consumes summability, and that minimally. This is the abstract form of the even/odd Nat.divModEquiv 2 mechanism Mathlib uses for the cos/sin Taylor series.",
     "openQuestions": [
-      "Establish a two-sided multisection: when all q residue subseries are summable, is f summable (converse), and what are the minimal separation/completeness hypotheses for ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m?"
+      "Establish a two-sided multisection: when all q residue subseries are summable, is f summable (converse), and what are the minimal separation/completeness hypotheses for ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m?",
+      "Prove the composition law: the multisection by p·q factors as multisection by q then by p, so the reindexings compose along Nat.divModEquiv — associativity of iterated splittings for arbitrary summable f.",
+      "Show plain Summable is necessary: exhibit a conditionally convergent ∑ f(m) whose residue regrouping fails or changes value, ruling out a mere-convergence version of the unconditional multisection."
     ]
   }
 }
