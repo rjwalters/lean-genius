@@ -33,13 +33,16 @@ cancellation is q^{(k+1)(n-k)}·(1/q)^{k+1} = q^{(k+1)(n-k-1)}, valid since q �
 - [x] Self-reciprocity / palindromy: [n,k]_q = q^{k(n-k)}·[n,k]_{1/q}  (main)
 - [x] Reflected form: q^{k(n-k)}·[n,k]_{1/q} = [n,k]_q
 - [x] Involutivity sanity check of the reflection
-- [ ] OPEN: coefficient unimodality (Sylvester/Proctor) — not attempted here
+- [x] `k = 1` unimodality milestone: coefficients of `[n,1]_q` are the all-ones
+      vector `(1,…,1)` over `ℤ`, proved palindromic AND unimodal
+- [ ] OPEN: coefficient unimodality for general `k` (Sylvester/Proctor)
 
 ## Honesty Note
-This is the palindromy/symmetry ingredient only. It does NOT prove unimodality,
-which is the substantive content of the open question. Full unimodality requires
-either an sl₂-action argument or an explicit injection between coefficient levels
-and is not formalized here.
+The palindromy/symmetry results are for *all* `k`. Unimodality — the substantive
+content of the open question — is proved here ONLY for `k = 1` (the flat all-ones
+coefficient sequence), as an explicit first milestone. Full unimodality for
+general `k` requires either an sl₂-action argument or an explicit injection
+between coefficient levels and is NOT formalized here.
 -/
 
 namespace QBinomialCoefficients
@@ -117,5 +120,70 @@ involution on the q-binomial, as a palindrome reflection must be. -/
 theorem qBinom_reciprocal_involutive (q : R) (hq : q ≠ 0) (n k : ℕ) :
     qBinom q n k = q ^ (k * (n - k)) * ((q⁻¹) ^ (k * (n - k)) * qBinom q n k) := by
   rw [← mul_assoc, ← mul_pow, mul_inv_cancel₀ hq, one_pow, one_mul]
+
+/-! ### The k = 1 case of Sylvester's unimodality theorem
+
+Palindromy (proved above) is only the *symmetric* half of Sylvester's theorem;
+the substantive half is **unimodality** of the coefficient sequence, which is the
+open question. Below we discharge the first requested milestone: the `k = 1` case.
+
+The Gaussian binomial `[n,1]_q` is the `q`-number `[n]_q = 1 + q + ⋯ + q^{n-1}`,
+whose coefficient sequence is the all-ones vector `(1,1,…,1)` of length `n`. That
+sequence is (trivially) both palindromic and unimodal, giving the `k = 1` case of
+Sylvester's theorem at the level of actual polynomial coefficients over `ℤ`. -/
+
+/-- **Geometric-sum form of the q-number.** `[n]_q = ∑_{i<n} q^i`. This exhibits
+`[n]_q`, equivalently `[n,1]_q = qBinom q n 1`, as an explicit polynomial whose
+coefficients we can read off. Proved over an arbitrary commutative ring. -/
+theorem qNumber_eq_geom_sum {S : Type*} [CommRing S] (q : S) :
+    ∀ n : ℕ, qNumber q n = ∑ i ∈ Finset.range n, q ^ i
+  | 0 => by simp
+  | n + 1 => by
+      rw [qNumber_succ, qNumber_eq_geom_sum q n, Finset.mul_sum,
+          Finset.sum_range_succ', pow_zero]
+      have hstep : ∑ i ∈ Finset.range n, q * q ^ i
+          = ∑ i ∈ Finset.range n, q ^ (i + 1) :=
+        Finset.sum_congr rfl fun i _ => (pow_succ' q i).symm
+      rw [hstep]; ring
+
+/-- **Explicit coefficients of the `k = 1` Gaussian binomial over `ℤ`.**
+Realizing `q` as the indeterminate `X`, the `j`-th coefficient of `[n,1]_q` is
+`1` for `j < n` and `0` otherwise — the all-ones coefficient sequence of length
+`n`. This is the concrete polynomial-coefficient statement that the abstract
+`q`-number reasoning bridges to. -/
+theorem qBinom_one_coeff (n j : ℕ) :
+    (qBinom (Polynomial.X : Polynomial ℤ) n 1).coeff j = if j < n then 1 else 0 := by
+  rw [qBinom_one_right, qNumber_eq_geom_sum, Polynomial.finset_sum_coeff]
+  simp only [Polynomial.coeff_X_pow]
+  rw [Finset.sum_ite_eq]
+  simp [Finset.mem_range]
+
+/-- **Palindromy of the `k = 1` coefficient sequence.** For `1 ≤ n`, the length-`n`
+coefficient vector of `[n,1]_q` reads the same forwards and backwards about the
+degree `k(n-k) = n-1`: `a_j = a_{(n-1)-j}` for every `j ≤ n-1`. This is the
+`k = 1` instance of the palindromy proved abstractly above, now at the level of
+`ℤ`-coefficients. -/
+theorem qBinom_one_coeff_symm (n j : ℕ) (hn : 1 ≤ n) (hj : j ≤ n - 1) :
+    (qBinom (Polynomial.X : Polynomial ℤ) n 1).coeff j
+      = (qBinom (Polynomial.X : Polynomial ℤ) n 1).coeff (n - 1 - j) := by
+  rw [qBinom_one_coeff, qBinom_one_coeff, if_pos (by omega), if_pos (by omega)]
+
+/-- A sequence `a : ℕ → ℤ` is **unimodal** when it rises weakly to some peak index
+`m` and falls weakly thereafter: `a` is nondecreasing on `[0,m]` and nonincreasing
+on `[m,∞)`. This is the coefficient-sequence notion appearing in Sylvester's
+theorem on the Gaussian binomial coefficients. -/
+def UnimodalSeq (a : ℕ → ℤ) : Prop :=
+  ∃ m : ℕ, (∀ i j, i ≤ j → j ≤ m → a i ≤ a j) ∧ (∀ i j, m ≤ i → i ≤ j → a j ≤ a i)
+
+/-- **Unimodality of the `k = 1` Gaussian binomial (first Sylvester milestone).**
+The coefficient sequence of `[n,1]_q` — the all-ones vector `(1,…,1)` of length
+`n` — is unimodal, with peak taken at the top degree `n-1`. Together with
+`qBinom_one_coeff_symm` this establishes the `k = 1` case of Sylvester's theorem
+(symmetric *and* unimodal) at the level of actual `ℤ`-polynomial coefficients.
+Unimodality for general `k` (Sylvester 1878 / Proctor 1982 via sl₂) remains open. -/
+theorem qBinom_one_unimodal (n : ℕ) :
+    UnimodalSeq (fun j => (qBinom (Polynomial.X : Polynomial ℤ) n 1).coeff j) := by
+  refine ⟨n - 1, ?_, ?_⟩ <;> intro i j h1 h2 <;>
+    simp only [qBinom_one_coeff] <;> split_ifs <;> omega
 
 end QBinomialCoefficients

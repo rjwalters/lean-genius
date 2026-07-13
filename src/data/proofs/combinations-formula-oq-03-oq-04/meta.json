@@ -2,7 +2,7 @@
   "id": "combinations-formula-oq-03-oq-04",
   "title": "Self-Reciprocity (Palindromy) of Gaussian q-Binomial Coefficients",
   "slug": "combinations-formula-oq-03-oq-04",
-  "description": "Proves that the Gaussian (q-)binomial coefficient [n choose k]_q, viewed as a polynomial in q, is palindromic (self-reciprocal) of degree k·(n-k). Over a field this is the clean algebraic identity [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹}, equivalently that the coefficient sequence reads the same forwards and backwards (a_j = a_{k(n-k)-j}). This palindromy is the symmetric half of Sylvester's theorem (1878) that the coefficient sequence is symmetric and unimodal; unimodality itself (Proctor 1982, via sl₂) is the substantive open question and is NOT proved here. Built on the parent's recurrence-defined q-binomial library via both q-Pascal identities. 3 theorems, 0 sorries, 0 axioms — verified over a field.",
+  "description": "Proves that the Gaussian (q-)binomial coefficient [n choose k]_q, viewed as a polynomial in q, is palindromic (self-reciprocal) of degree k·(n-k). Over a field this is the clean algebraic identity [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹}, equivalently that the coefficient sequence reads the same forwards and backwards (a_j = a_{k(n-k)-j}). This palindromy is the symmetric half of Sylvester's theorem (1878) that the coefficient sequence is symmetric and unimodal; unimodality itself (Proctor 1982, via sl₂) is the substantive open question and is NOT proved here. Built on the parent's recurrence-defined q-binomial library via both q-Pascal identities. Also discharges the first requested milestone of the unimodality open question: the k=1 case, where [n,1]_q = [n]_q has the all-ones coefficient sequence (1,…,1) over ℤ, proved palindromic AND unimodal at the level of actual polynomial coefficients. 7 theorems, 1 definition, 0 sorries, 0 axioms — verified.",
   "meta": {
     "author": "Lean Genius Researcher",
     "status": "verified",
@@ -10,10 +10,10 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 121,
-    "theoremCount": 3,
-    "definitionCount": 0,
-    "assumptions": "The reciprocity identity is proved over an arbitrary field R for any nonzero q (invertibility of q is genuinely needed to form q⁻¹ and to cancel q^{k+1}·(q⁻¹)^{k+1} = 1). No characteristic or positivity hypotheses. The underlying q-binomial coefficients are the parent's, defined over an arbitrary commutative ring via the q-Pascal recurrence. #print axioms reports only the foundational propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",
+    "lineCount": 189,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "assumptions": "The reciprocity identity is proved over an arbitrary field R for any nonzero q (invertibility of q is genuinely needed to form q⁻¹ and to cancel q^{k+1}·(q⁻¹)^{k+1} = 1). No characteristic or positivity hypotheses. The k=1 unimodality milestone is proved concretely over ℤ (the Gaussian binomial realized as a Polynomial ℤ via the indeterminate X); its geometric-sum lemma holds over any commutative ring. The underlying q-binomial coefficients are the parent's, defined over an arbitrary commutative ring via the q-Pascal recurrence. #print axioms reports only the foundational propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",
     "tags": [
       "combinatorics",
       "q-analogs",
@@ -30,7 +30,9 @@
       "Machine-checked self-reciprocity (palindromy) of the Gaussian binomial: [n,k]_q = q^{k(n-k)}·[n,k]_{q⁻¹} over an arbitrary field, proved by induction on n using BOTH parent q-Pascal identities (the first for the reflected side, the second for the original)",
       "Identification of the exact algebraic mechanism of palindromy: the reflected recurrence matches the original because expanding the left by the second q-Pascal identity and the reflected right by the first q-Pascal identity produces termwise-equal sides after the cancellation q^{(k+1)(n-k)}·(q⁻¹)^{k+1} = q^{(k+1)(n-k-1)}",
       "Reflected convenience form q^{k(n-k)}·[n,k]_{q⁻¹} = [n,k]_q and an involutivity sanity check confirming the twisted reflection q ↦ q⁻¹ is an involution",
-      "Explicit, honestly-scoped separation of the symmetric (palindromy) half of Sylvester's theorem — proved here — from the unimodal half, which remains open"
+      "Explicit, honestly-scoped separation of the symmetric (palindromy) half of Sylvester's theorem — proved here — from the unimodal half, which remains open for general k",
+      "First milestone toward the unimodality open question: geometric-sum form [n]_q = ∑_{i<n} q^i over any commutative ring (qNumber_eq_geom_sum), the explicit ℤ-coefficient formula coeff_j [n,1]_q = (1 if j<n else 0) (qBinom_one_coeff), and a reusable UnimodalSeq predicate on ℤ-sequences",
+      "Machine-checked k=1 case of Sylvester's theorem at the level of actual polynomial coefficients: the length-n all-ones coefficient sequence of [n,1]_q is both palindromic (qBinom_one_coeff_symm) and unimodal (qBinom_one_unimodal)"
     ],
     "prerequisites": [
       "Gaussian (q-)binomial coefficients and the two q-Pascal recurrences (parent entry combinations-formula-oq-03)",
@@ -43,9 +45,9 @@
     "namespace": "QBinomialCoefficients",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 121,
-    "theoremCount": 3,
-    "definitionCount": 0
+    "lineCount": 189,
+    "theoremCount": 7,
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The Gaussian binomial coefficient [n choose k]_q was studied by Gauss as the generating polynomial counting k-dimensional subspaces of an n-dimensional vector space over F_q. As a polynomial in q it has degree k(n-k) and nonnegative integer coefficients. In 1878 J. J. Sylvester proved, in the course of his work on invariant theory and the resolution of a conjecture of Cayley, that this coefficient sequence is not merely symmetric but unimodal — it rises to a peak and then falls. The symmetry (palindromy) is elementary and classical; the unimodality is deep. The first fully rigorous proof of unimodality was given by R. Proctor in 1982 using the representation theory of sl₂ (a 'raising/lowering operator' argument), following K. O'Hara's later combinatorial proof (1990). Sylvester's theorem is the prototype for a large family of unimodality results in algebraic combinatorics.",
