@@ -184,3 +184,41 @@ fragile `gcongr` with explicit `mul_le_mul_of_nonneg_right (le_max_left _ _) hlo
 `↑(p^k)` — nonneg/aux hyps must match that form or `gcongr`/`rw` fail. Prefer explicit
 `mul_le_mul_of_nonneg_right` over `gcongr` when a cast-sensitive side-goal is involved. SIXTH
 verification-found breakage this session.
+
+## Session 2026-07-12 (researcher-3) — Section (15): negation normal form + explicit witness value (VERIFIED)
+
+**Mode**: REVISIT (MODERATE). The predicate-algebra suite (up-set/domination, smul, add/sub,
+max/min, affine, plus O(log)/bounded selectivity criteria) is extensive but the *fundamental
+De Morgan normal form* of the hypothesis was never stated as an iff, and the reference witness
+`logSqWeight` had no explicit prime-power evaluation. Added both (all 0-axiom, `#print axioms`
+= `[propext, Classical.choice, Quot.sound]`):
+
+- **`not_unboundedOnPrimePowers_iff`** — `¬ UnboundedOnPrimePowers f ↔ ∃ M, ∀ p k, p.Prime → 1 ≤ k
+  → f(p^k) ≤ M·log(p^k)`. The De Morgan dual of the `∀M ∃pk` definition; **subsumes every
+  selectivity criterion in the file** — `not_unboundedOnPrimePowers_of_le_const_mul_log` is exactly
+  its `←` half, and `logN`/`ω`/bounded are the constants `M=1`, `1/log 2`, `C/log 2`. Proof:
+  `unfold UnboundedOnPrimePowers; push_neg; rfl`. ★push_neg leaves the goal as `P ↔ P` (identical
+  sides) but does NOT auto-close it — a trailing `rfl` (Iff.rfl) is required. (Stating the RHS with
+  `Real.log (p^k)` elaborates to `Real.log (↑p^k)`, matching the def's cast-then-pow form exactly.)
+- **`logSqWeight_primePow`** — `logSqWeight (p^k) = (log p)²` (prime `p`, `k≥1`): the witness is
+  *constant in the exponent* since `p^k` and `p` share prime support `{p}`. Proof:
+  `rw [logSqWeight_eq_of_primeFactors_eq (Nat.primeFactors_pow p (by omega)), logSqWeight_prime hp]`.
+- **`logSqWeight_primePow_div_log`** — `logSqWeight (p^k)/log(↑p^k) = (log p)/k`: the exact
+  normalized witness value, making explicit why `logSqWeight` witnesses the hypothesis (ratio → ∞
+  along `k=1`, `p→∞`). Proof: `logSqWeight_primePow` + `Real.log_pow` + `pow_two` + `mul_comm` +
+  `mul_div_mul_left _ _ hlogp'` (cancels one `log p`); NO field_simp/ring needed — the explicit
+  `mul_div_mul_left` closes by rw-rfl. (`field_simp` alone also closes but is order-fragile.)
+
+**Why not scaffolding.** The iff is the canonical characterization of the "failing" class and
+unifies the file's scattered selectivity lemmas under one normal form; the witness evaluations are
+the explicit computation the earlier `logSqWeight_unboundedOnPrimePowers` existence proof only used
+implicitly. Part I forward implication (analytic, limsup of consecutive differences) remains OPEN —
+unchanged, not session-sized.
+
+**Verification.** `./bin/lake env lean Proofs/Erdos897OQ01.lean` exit 0, no errors/warnings (parent
+`Erdos897Problem.olean` present in worktree cache, so single-file elab resolves the import — no docker
+needed this session). Counts: 741→793 lines, 37→40 thm, 1 def, 0 axioms/0 sorries. meta.json synced
+(meta.* and leanFile.* both 741/37 → 793/40).
+
+**No follow-up OQ.** The normal form closes the selectivity story; the remaining frontier is the
+analytic Part I forward implication (documented OPEN across all prior sessions).
