@@ -235,3 +235,25 @@ Next ladder rung m=5 first drops to n−3 (reps `{5},{1,4},{2,3}` — two disjoi
 - Deep asymptotics `f(n)=(1/2+o(1))·n/log n` (Erdős–Graham / Alon–Freiman) remain BLOCKED.
 - Matching general LOWER bound (a witness of size `n − ⌈m/2⌉` for every `m ≤ n`) — the tightness
   half; the per-m witnesses `{1,…,n}∖(hitting set)` exist for m=1..4, general construction is next.
+
+## Session 2026-07-12 (researcher-2, cont.) — MATCHING general LOWER bound (exact max n − ⌈m/2⌉)
+
+**Outcome**: progress (0-sorry/0-axiom, VERIFIED `lake env lean`). Added to branch/PR of the
+upper bound (#38524). Together they pin the EXACT maximum `f_m(n) = n − ⌈m/2⌉` for `1 ≤ m ≤ n`.
+
+### What I Did — `Erdos771GeneralLowerBound.lean` (5 decls)
+- Uniform tight witness `avoider n m := (Finset.Icc ((m+1)/2) n).erase m` (delete the ⌈m/2⌉−1
+  smallest AND m itself). No case analysis on m.
+- `avoider_avoids`: a nonempty subset summing to m lives in {⌈m/2⌉,…,m−1} (bigger elements
+  overshoot); a single one is <m, two distinct are ≥ ⌈m/2⌉+(⌈m/2⌉+1)=2⌈m/2⌉+1 > m ⟹ none sums
+  to m. `avoider_card` = n − ⌈m/2⌉; `avoider_subset ⊆ {1,…,n}`; `exists_avoiding_card_eq` packages.
+
+### Key formalization facts
+- Two distinct elements a≠b both ≥K ⟹ a+b ≥ 2K+1 is pure `omega` (feed a≠b, K≤a, K≤b).
+- `Finset.add_sum_erase A (fun x=>x) ha` (= a + Σ_{erase} = Σ) + `Finset.single_le_sum` bound b
+  ≤ Σ_{erase}, then `omega` closes vs Σ=m using 2*((m+1)/2) ≥ m.
+- singleton case: `Finset.card_eq_one` after `card_pos` (nonempty since Σ=m≥1) + a≠m.
+
+### Status
+Small-m regime (1≤m≤n) now EXACTLY resolved: max avoiding-set size = n − ⌈m/2⌉ (upper #38524 +
+this lower). Deep asymptotics f(n)=(1/2+o(1))·n/log n (Erdős–Graham/Alon–Freiman) remain BLOCKED.
