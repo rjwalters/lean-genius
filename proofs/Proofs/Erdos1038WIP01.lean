@@ -1091,4 +1091,102 @@ theorem sublevelInfDeg2_eq_two : sublevelInfDeg2 = ENNReal.ofReal 2 :=
   le_antisymm sublevelInfDeg2_le_two
     (le_iInf fun _ => le_iInf fun hf => two_le_sublevelMeasure_of_deg2 hf)
 
+/-! ### The degree-`2` faithful supremum is exactly `2√2`
+
+The dual of `sublevelInfDeg2_eq_two`.  The exact closed form `√((a − b)² + 4)`
+(`sublevelMeasure_quadraticGen`) is **increasing** in the root separation `|a − b|`, which for
+`a, b ∈ [-1,1]` is maximised at `|a − b| = 2` (roots `±1`).  Hence the degree-`2` sublevel
+measure never exceeds `√(4 + 4) = √8 = 2√2`, and that bound is *attained* by `x² − 1`
+(`quadraticGen 1 (-1)`).  So the degree-`2` restriction of the Erdős #1038 supremum is
+**exactly `2√2`** — and it already matches the conjectured true supremum `2√2` (Tao 2025).
+Unlike the infimum side, where the elementary degree-`2` value `2` is strictly above the true
+infimum `2^(4/3) − 1`, on the supremum side the quadratic `x² − 1` is already a *global*
+extremiser: the extremal witness is elementary even though the matching upper bound over *all*
+degrees needs logarithmic potential theory. -/
+
+/-- **Every faithful quadratic `(X − a)(X − b)` with `a, b ∈ [-1,1]` has sublevel measure
+    `≤ 2√2`.**  The exact value `√((a − b)² + 4)` is bounded by `√8 = 2√2` because the root
+    separation satisfies `(a − b)² ≤ 4`. -/
+theorem sublevelMeasure_quadraticGen_le {a b : ℝ} (ha : a ∈ Set.Icc (-1 : ℝ) 1)
+    (hb : b ∈ Set.Icc (-1 : ℝ) 1) :
+    sublevelMeasure (quadraticGen a b) ≤ ENNReal.ofReal (2 * Real.sqrt 2) := by
+  rw [sublevelMeasure_quadraticGen ha hb]
+  apply ENNReal.ofReal_le_ofReal
+  obtain ⟨ha1, ha2⟩ := ha
+  obtain ⟨hb1, hb2⟩ := hb
+  have hD : (a - b) ^ 2 ≤ 4 := by
+    nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ a - b + 2)
+      (by linarith : (0:ℝ) ≤ 2 - (a - b))]
+  have h8 : (2:ℝ) * Real.sqrt 2 = Real.sqrt 8 := by
+    rw [show (8:ℝ) = 2 ^ 2 * 2 by norm_num, Real.sqrt_mul (by positivity),
+      Real.sqrt_sq (by norm_num)]
+  rw [h8]
+  exact Real.sqrt_le_sqrt (by linarith)
+
+/-- **Every faithful degree-`2` polynomial has sublevel measure `≤ 2√2`.**  It factors as
+    `(X − a)(X − b)` with `a, b ∈ [-1,1]` (as in `two_le_sublevelMeasure_of_deg2`), and
+    `sublevelMeasure_quadraticGen_le` applies. -/
+theorem sublevelMeasure_le_two_sqrt_two_of_deg2 {f : Polynomial ℝ}
+    (hf : MonicRealRootedIn01Deg2 f) :
+    sublevelMeasure f ≤ ENNReal.ofReal (2 * Real.sqrt 2) := by
+  obtain ⟨hf', hdeg⟩ := hf
+  have hc2 : f.roots.card = 2 := by rw [hf'.2, hdeg]
+  obtain ⟨a, b, hab⟩ := Multiset.card_eq_two.mp hc2
+  have hprod : (f.roots.map fun r => X - C r).prod = f :=
+    prod_multiset_X_sub_C_of_monic_of_roots_card_eq hf'.1.1 hf'.2
+  have hfeq : f = quadraticGen a b := by
+    rw [hab] at hprod
+    simp only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton,
+      Multiset.prod_cons, Multiset.prod_singleton] at hprod
+    show f = (X - C a) * (X - C b)
+    exact hprod.symm
+  have ha : a ∈ Set.Icc (-1 : ℝ) 1 := hf'.1.2 a (by rw [hab]; simp)
+  have hb : b ∈ Set.Icc (-1 : ℝ) 1 := hf'.1.2 b (by rw [hab]; simp)
+  rw [hfeq]
+  exact sublevelMeasure_quadraticGen_le ha hb
+
+/-- The **degree-`2` faithful supremum** of sublevel-set measures. -/
+noncomputable def sublevelSupDeg2 : ℝ≥0∞ :=
+  ⨆ (f : Polynomial ℝ) (_ : MonicRealRootedIn01Deg2 f), sublevelMeasure f
+
+/-- **The degree-`2` faithful supremum is `≤ 2√2`** (`sublevelMeasure_le_two_sqrt_two_of_deg2`
+    applied under the supremum). -/
+theorem sublevelSupDeg2_le_two_sqrt_two :
+    sublevelSupDeg2 ≤ ENNReal.ofReal (2 * Real.sqrt 2) :=
+  iSup_le fun _ => iSup_le fun hf => sublevelMeasure_le_two_sqrt_two_of_deg2 hf
+
+/-- **`2√2 ≤` the degree-`2` faithful supremum**, attained by `x² − 1 = (X − 1)(X + 1)`
+    (`quadraticGen 1 (-1)`), whose sublevel measure is `√((1 − (−1))² + 4) = √8 = 2√2`. -/
+theorem le_sublevelSupDeg2 :
+    ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSupDeg2 := by
+  have hadm : MonicRealRootedIn01Deg2 (quadraticGen 1 (-1)) :=
+    ⟨quadraticGen_admissible' (by norm_num) (by norm_num), quadraticGen_natDegree 1 (-1)⟩
+  have hmeas : sublevelMeasure (quadraticGen 1 (-1)) = ENNReal.ofReal (2 * Real.sqrt 2) := by
+    rw [sublevelMeasure_quadraticGen (by norm_num) (by norm_num)]
+    congr 1
+    rw [show ((1:ℝ) - (-1)) ^ 2 + 4 = 8 by norm_num, show (8:ℝ) = 2 ^ 2 * 2 by norm_num,
+      Real.sqrt_mul (by positivity), Real.sqrt_sq (by norm_num)]
+  exact le_iSup_of_le (quadraticGen 1 (-1)) (le_iSup_of_le hadm hmeas.ge)
+
+/-- **The degree-`2` faithful supremum is exactly `2√2`.**  Every monic quadratic splitting
+    into two real roots in `[-1,1]` has sublevel measure `≤ 2√2`
+    (`sublevelSupDeg2_le_two_sqrt_two`), and `x² − 1` attains `2√2` (`le_sublevelSupDeg2`).
+    This pins the degree-`2` slice of the extremal supremum: it is `2√2` — *already equal* to
+    the conjectured true supremum, with the extremal polynomial `x² − 1` an explicit global
+    extremiser (contrast the infimum, where the degree-`2` value `2` strictly exceeds the true
+    infimum `2^(4/3) − 1`). -/
+theorem sublevelSupDeg2_eq_two_sqrt_two :
+    sublevelSupDeg2 = ENNReal.ofReal (2 * Real.sqrt 2) :=
+  le_antisymm sublevelSupDeg2_le_two_sqrt_two le_sublevelSupDeg2
+
+/-- **The degree-`2` faithful spectrum spans exactly `[2, 2√2]`.**  Combining
+    `sublevelInfDeg2_eq_two` and `sublevelSupDeg2_eq_two_sqrt_two`: over all monic quadratics
+    splitting into two roots in `[-1,1]`, the sublevel measure ranges from `2` (double root) to
+    `2√2` (roots `±1`), both attained.  Equivalently the closed form `√((a − b)² + 4)` traverses
+    `[2, 2√2]` as `|a − b|` runs over `[0, 2]`. -/
+theorem sublevelInfDeg2_lt_sublevelSupDeg2 : sublevelInfDeg2 < sublevelSupDeg2 := by
+  rw [sublevelInfDeg2_eq_two, sublevelSupDeg2_eq_two_sqrt_two]
+  apply ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by norm_num) |>.mpr
+  nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2), Real.sqrt_nonneg 2]
+
 end Erdos1038WIP01
