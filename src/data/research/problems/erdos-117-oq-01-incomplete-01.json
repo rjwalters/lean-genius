@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-5, 2026-07-12): added the first SUFFICIENT-condition results to the oscillation companion. Submultiplicativity of h (h(m+n)≤h(m)·h(n)) ⟹ oscillation=0 and a single exponential base exists (Fekete, lifted from parent submultiplicative_implies_convergence into the oscillation/base language); contrapositive gives a necessary condition on any counterexample. 3 new theorems, 0 new axioms (inherits only h/h_pos/pyber_bounds). The convergence question itself remains open (#117-OQ-01).",
+    "progressSummary": "PROGRESS (researcher-10, 2026-07-12): added the DUAL sufficient condition to the oscillation companion. Supermultiplicativity h(m)·h(n)≤h(m+n) ⟹ convergence / oscillation=0 / exponential base exists — derived by applying Mathlib Subadditive.tendsto_lim to −log(h n) (bounded below via the Pyber UPPER bound), the mirror of the parent submultiplicative (subadditive) Fekete result. Capstone not_exponentialBaseExists_implies_not_multiplicative: any counterexample must violate BOTH one-sided multiplicative laws. 5 new theorems, 0 new axioms (inherits only h/h_pos/pyber_bounds). The convergence question itself remains open (#117-OQ-01).",
     "builtItems": [
       "Erdos117OQ01.base_implies_behavior — proved (was sorry): convergence to log c ⇒ ExponentialBehavior c for ε ∈ (0,c)",
       "Erdos117OQ01.ExponentialBehavior — corrected statement to ε ∈ (0,c) (unrestricted ∀ε>0 form is false)",
@@ -38,7 +38,9 @@
       "Erdos117OQ01OQ01.lean: base_mem_pyber_window — exponential base c localized to Pyber interval [c₁,c₂] (c₁≤c≤c₂). New reasoning VERIFIED host lean v4.26.0 targeted-import standalone (elab EXIT 0); full-file/sibling import-Mathlib blocked by host .lake missing CategoryTheory oleans + docker .ir corruption. 7→8 theorems.",
       "Erdos117OQ01Incomplete01.lean: submultiplicative_implies_oscillation_zero — h(m+n)≤h(m)·h(n) ⟹ oscillation=0 (Fekete via converges_iff_oscillation_zero)",
       "Erdos117OQ01Incomplete01.lean: submultiplicative_implies_exponentialBaseExists — submultiplicative h ⟹ exponential base exists (OQ resolved yes in this sub-case)",
-      "Erdos117OQ01Incomplete01.lean: not_exponentialBaseExists_implies_not_submultiplicative — any counterexample must break submultiplicativity"
+      "Erdos117OQ01Incomplete01.lean: not_exponentialBaseExists_implies_not_submultiplicative — any counterexample must break submultiplicativity",
+      "supermultiplicative_implies_convergence in Erdos117OQ01Incomplete01.lean",
+      "supermultiplicative_implies_oscillation_zero, supermultiplicative_implies_exponentialBaseExists, not_exponentialBaseExists_implies_not_supermultiplicative, not_exponentialBaseExists_implies_not_multiplicative in Erdos117OQ01Incomplete01.lean"
     ],
     "insights": [
       "The 'exponential behavior at base c' notion is only a theorem for ε ∈ (0,c): the lower bound (c−ε)ⁿ ≤ h(n) fails for ε ≥ c because (ε−c)ⁿ at even n outgrows h(n) ≤ c₂ⁿ.",
@@ -47,7 +49,9 @@
       "positivity on (c-ε)^n consults the local context for the base's sign: it needs `0 < c-ε` as a named hypothesis (via linarith) before use, otherwise it fails to prove nonnegativity.",
       "The (hypothetical) exponential base c of ExponentialBehaviorCorrect is PINNED to Pyber window [c₁,c₂]: base_mem_pyber_window shows behavior at c>1 forces c₁≤c≤c₂. Pyber bounds trap growthRate in [log c₁, log c₂] eventually; behavior→convergence to log c (behavior_correct_implies_base); limit of a confined sequence stays confined (ge_of_tendsto/le_of_tendsto); exponentiate back through positivity. Ties the abstract base invariant (exponentialBehaviorCorrect_base_unique) to concrete constants — contrapositively no h has exponential behavior at a base outside its own Pyber window.",
       "GOTCHA le_of_tendsto vs ge_of_tendsto: ge_of_tendsto (Tendsto f→a) (∀ᶠ b≤f) : b≤a (b≤limit); le_of_tendsto (Tendsto f→a) (∀ᶠ f≤b) : a≤b (limit≤b). For lower bound log c₁≤log c use ge_of_tendsto with hev_l:log c₁≤growthRate.",
-      "First SUFFICIENT condition in the companion: the parent Fekete result submultiplicative_implies_convergence, lifted into the oscillation/base language, resolves Erdos #117 OQ-01 positively whenever h is submultiplicative. Contrapositive: a genuinely oscillating (no-base) h must be super-multiplicative at some (m,n) — a necessary condition on any counterexample. No new axioms (inherits only the 3 Pyber axioms)."
+      "First SUFFICIENT condition in the companion: the parent Fekete result submultiplicative_implies_convergence, lifted into the oscillation/base language, resolves Erdos #117 OQ-01 positively whenever h is submultiplicative. Contrapositive: a genuinely oscillating (no-base) h must be super-multiplicative at some (m,n) — a necessary condition on any counterexample. No new axioms (inherits only the 3 Pyber axioms).",
+      "supermultiplicative_implies_convergence (researcher-10): the DUAL Fekete sufficient condition. Mathlib has no Superadditive API, so h(m)·h(n)≤h(m+n) ⟹ convergence is obtained by applying Subadditive.tendsto_lim to g n = −log(h n) (subadditive iff log h superadditive), with g n/n = −growthRate n bounded below by −log c₂ from the Pyber UPPER bound. Mirror of the parent submultiplicative proof which used the lower bound.",
+      "not_exponentialBaseExists_implies_not_multiplicative (researcher-10): sharpened counterexample constraint — since EITHER sub- OR super-multiplicativity alone forces convergence, any genuine counterexample to #117-OQ-01 (oscillating growth rate) must violate BOTH one-sided multiplicative laws simultaneously."
     ],
     "mathlibGaps": [],
     "nextSteps": [
