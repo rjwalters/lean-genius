@@ -53,9 +53,11 @@ def ChenBound : Prop :=
     ∀ A : Finset ℕ, PairwiseLCMExceeds A n →
       reciprocalSum A < 1/3 + 1/4 + 1/5 + 1/7 + 1/11
 
-/-- The Chen bound value equals 2927/4620. -/
+/-- The Chen bound value equals 4699/4620. (Statement repair for v4.31: the
+    previous RHS 2927/4620 was numerically wrong — 1/3+1/4+1/5+1/7+1/11
+    = 1540+1155+924+660+420 over 4620 = 4699/4620.) -/
 theorem chen_bound_value :
-    (1 : ℚ)/3 + 1/4 + 1/5 + 1/7 + 1/11 = 2927/4620 := by
+    (1 : ℚ)/3 + 1/4 + 1/5 + 1/7 + 1/11 = 4699/4620 := by
   norm_num
 
 /- ## Maximal Sets Conjecture -/
