@@ -342,4 +342,102 @@ theorem affValid_prefix_deriveVec_pow {b r : ℕ} {v : List Bool}
     v <+: deriveVec (2 * b + 1) (2 ^ b) r :=
   affValid_prefix_deriveVec_of_length hv hlen
 
+/-! ## Part XII (cont.) — odd steps are at most half of the window
+
+`affValid_no_two_consecutive_odd` records the *shape* constraint that a valid certificate
+never contains `true :: true`.  This section turns that qualitative fact into a **quantitative
+count bound**: in any list with no two adjacent `true`s, at most `⌈length/2⌉` of the entries
+are `true`.  Applied to a certificate `v` this bounds the number of *odd* (tripling) steps
+`v.count true` by one more than the number of *even* (halving) steps `v.count false`.
+
+The bound is the certificate-level statement of the classical Collatz fact that triplings can
+never outnumber halvings by more than one over any window.  It is sharp: the alternating
+transcript `true :: false :: true :: … :: true` (which arises for `d` odd) attains
+`2·count true = length + 1`.
+
+Honest reach: this yields `a ≤ b + 1` for a window with `a = v.count true` triplings and
+`b = v.count false` halvings, which is strictly weaker than the drop criterion `3^a < 2^b`
+(the latter needs `a` genuinely smaller than `b·log 2 / log 3 ≈ 0.63 b`).  It is the exact
+combinatorial content extractable from adjacency alone, no more.  Axiom-free (independent of
+`tao_2019`, no `decide`). -/
+
+/-- **General count bound (bounded induction form).**  In any `Bool` list with no two adjacent
+`true`s — expressed as `List.IsChain` for the relation "an odd bit forces the next to be even"
+— twice the number of `true`s is at most `length + 1`.  Proved by induction on a length budget
+`n`: an even head defers to the tail (one shorter), an odd head forces the following bit to be
+even and peels *two* entries (`true :: false`) adding one `true` for two positions. -/
+theorem count_true_le_of_noTwoTrue :
+    ∀ (n : ℕ) (v : List Bool), v.length ≤ n →
+      List.IsChain (fun a b => a = true → b = false) v →
+      2 * v.count true ≤ v.length + 1 := by
+  intro n
+  induction n with
+  | zero =>
+      intro v hlen _
+      have : v = [] := List.length_eq_zero_iff.mp (Nat.le_zero.mp hlen)
+      subst this; simp
+  | succ n ih =>
+      intro v hlen hchain
+      match v with
+      | [] => simp
+      | [a] =>
+          have : List.count true [a] ≤ 1 := by cases a <;> simp
+          simp only [List.length_singleton]; omega
+      | a :: b :: rest =>
+          have hrel : a = true → b = false := hchain.rel_head
+          have htail : List.IsChain (fun a b => a = true → b = false) (b :: rest) :=
+            hchain.of_cons
+          have hlen' : (b :: rest).length ≤ n := by
+            simp only [List.length_cons] at hlen ⊢; omega
+          rcases Bool.dichotomy a with ha | ha
+          · -- even head: `count true` unchanged, tail is one shorter
+            have hc : List.count true (a :: b :: rest) = List.count true (b :: rest) := by
+              simp [ha]
+            have hih := ih (b :: rest) hlen' htail
+            rw [hc]; simp only [List.length_cons] at hih ⊢; omega
+          · -- odd head forces `b = false`; peel two entries, adding one `true`
+            have hb : b = false := hrel ha
+            have hc : List.count true (a :: b :: rest) = 1 + List.count true rest := by
+              simp [ha, hb]; omega
+            have htail2 : List.IsChain (fun a b => a = true → b = false) rest := htail.of_cons
+            have hlen2 : rest.length ≤ n := by simp only [List.length_cons] at hlen; omega
+            have hih := ih rest hlen2 htail2
+            rw [hc]; simp only [List.length_cons]; omega
+
+/-- **General count bound.**  A `Bool` list with no two adjacent `true`s has
+`2 · (count true) ≤ length + 1`.  The unbudgeted form of `count_true_le_of_noTwoTrue`, taking
+the length itself as the budget. -/
+theorem two_mul_count_true_le_of_isChain {v : List Bool}
+    (h : List.IsChain (fun a b => a = true → b = false) v) :
+    2 * v.count true ≤ v.length + 1 :=
+  count_true_le_of_noTwoTrue v.length v le_rfl h
+
+/-- Partition identity for `Bool` lists: every entry is `true` or `false`, so
+`count true + count false = length`. -/
+theorem count_true_add_count_false (v : List Bool) :
+    v.count true + v.count false = v.length := by
+  induction v with
+  | nil => simp
+  | cons a t ih => cases a <;> simp <;> omega
+
+/-- **Odd steps are at most half the window.**  For any valid parity certificate `v`, twice
+the number of odd (tripling) steps is at most `length + 1`.  Immediate from
+`affValid_no_two_consecutive_odd` (no `true :: true`) via the general count bound. -/
+theorem affValid_two_mul_count_true_le {v : List Bool} {c d : ℕ}
+    (hv : AffValid v c d) : 2 * v.count true ≤ v.length + 1 :=
+  two_mul_count_true_le_of_isChain (affValid_no_two_consecutive_odd hv)
+
+/-- **Triplings never exceed halvings by more than one.**  For any valid parity certificate,
+the number of odd (tripling) steps `count true` is at most one more than the number of even
+(halving) steps `count false`.  This is the certificate-level form of the classical fact that
+a `3n+1` step is always followed by a halving, so over any window `a ≤ b + 1` where
+`a = #odd`, `b = #even`.  Combined with the mother module's drop criterion
+`3^(count true) < 2^(count false)`, it quantifies exactly how far short of the drop threshold
+adjacency alone leaves us: `a ≤ b + 1` does not imply `3^a < 2^b`. -/
+theorem affValid_count_true_le_count_false_succ {v : List Bool} {c d : ℕ}
+    (hv : AffValid v c d) : v.count true ≤ v.count false + 1 := by
+  have h1 := affValid_two_mul_count_true_le hv
+  have h2 := count_true_add_count_false v
+  omega
+
 end CollatzStructuredOQ02OQ03

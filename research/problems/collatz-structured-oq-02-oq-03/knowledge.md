@@ -742,3 +742,50 @@ Quot.sound]`.
 - Closure length bound: any `AffValid v (2^b) r` has `v.length ≤ 2b+1` (track `v₂(c)`:
   even steps drop it by 1, odd steps preserve it, no two consecutive odds), making
   `fuel = 2b+1` always sufficient so `affValid_prefix_deriveVec_pow` becomes unconditional.
+
+## Session 2026-07-13 (researcher-1) — Part XII (cont.): odd steps ≤ half the window
+
+**Mode**: REVISIT (RICH, knowledge score 62). **Outcome**: progress — axiom-free,
+build-verified (`LAKE_UNSAFE=1 ./bin/lake env lean` against main's cached oleans, EXIT 0,
+no warnings; `#print axioms` on all four new results = `[propext, Classical.choice, Quot.sound]`).
+
+### What I Did
+Turned the qualitative Part XII shape law `affValid_no_two_consecutive_odd` (no `true :: true`)
+into a **quantitative count bound** in the companion `CollatzStructuredOQ02OQ03CertUnique.lean`.
+Five theorems (Part XII cont.):
+- `count_true_le_of_noTwoTrue` — general list lemma (budgeted induction form): any `Bool` list
+  that is a `List.IsChain` for "an odd bit forces the next to be even" has
+  `2 * count true ≤ length + 1`. Two-step budget induction on a length bound `n`: an even head
+  defers to the tail (one shorter); an odd head forces the following bit `false` and peels TWO
+  entries (`true :: false`), adding one `true` for two positions.
+- `two_mul_count_true_le_of_isChain` — unbudgeted wrapper (`fuel = v.length`).
+- `count_true_add_count_false` — Bool partition identity `count true + count false = length`.
+- `affValid_two_mul_count_true_le` — `AffValid v c d ⟹ 2·(v.count true) ≤ v.length + 1`.
+- `affValid_count_true_le_count_false_succ` — **triplings ≤ halvings + 1**:
+  `v.count true ≤ v.count false + 1` over every certified window.
+
+### Key Findings
+- The bound is SHARP: the alternating transcript `true :: false :: … :: true` (arising when `d`
+  is odd) attains `2·count true = length + 1`.
+- **Honest reach (not a density push).** `a ≤ b + 1` (with `a = #odd`, `b = #even`) is strictly
+  weaker than the mother module's drop criterion `3^a < 2^b` (which needs `a < b·log2/log3 ≈
+  0.63 b`). Adjacency alone does NOT force a drop — this is the *exact* combinatorial content
+  extractable from odd/even adjacency, no more, and it explains precisely why Part XII could not
+  reach the drop criterion. Floor unchanged (115/128), `tao_2019` BLOCKED.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03CertUnique.lean (+5 thm, 345→443 lines; 0 axioms)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (insights/builtItems/progressSummary)
+
+### GOTCHA / process
+- `cases ha : a` (Bool) substitutes into the GOAL, breaking a `rw [hc]` whose `hc` still
+  mentions `a`; use `rcases Bool.dichotomy a with ha | ha` to keep `a` un-substituted in the goal.
+- The CertUnique *olean* on disk was stale (predated Part XII), so a scratch that *imports*
+  CertUnique could not see `affValid_no_two_consecutive_odd`; building the CertUnique *source*
+  file directly against the (current) mother olean works. Add new companion theorems in-file.
+
+### Next Steps (unchanged, genuinely hard)
+- Closure length bound `AffValid v (2^b) r ⟹ v.length ≤ 2b+1` via tracking `v₂(leadCoeff)`
+  (even steps drop it by 1, odd steps preserve it) — would make `affValid_prefix_deriveVec_pow`
+  unconditional. My count bound is a partial ingredient (bounds #odd, not yet the length).
+- Terras natural-density-1 remains the only real lever; `tao_2019` BLOCKED.
