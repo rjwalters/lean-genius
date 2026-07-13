@@ -34,6 +34,7 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Nat Real
 
@@ -46,7 +47,7 @@ namespace Erdos368
 **Largest Prime Factor:**
 The largest prime dividing n, or 0 if n ≤ 1.
 -/
-noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
+def largestPrimeFactor (n : ℕ) : ℕ :=
   if h : n > 1 then (n.primeFactors.max' (Nat.nonempty_primeFactors.mpr h))
   else 0
 
@@ -57,7 +58,7 @@ notation "gpf(" n ")" => largestPrimeFactor n
 **F(n): Largest Prime Factor of n(n+1):**
 This is the central function in Erdős Problem #368.
 -/
-noncomputable def F (n : ℕ) : ℕ := largestPrimeFactor (n * (n + 1))
+def F (n : ℕ) : ℕ := largestPrimeFactor (n * (n + 1))
 
 /--
 For n ≥ 1, n(n+1) ≥ 2, so F(n) is well-defined.
@@ -92,7 +93,7 @@ theorem primeFactors_product_coprime (n : ℕ) (hn : n ≥ 1) :
 Thus F(n) = max(gpf(n), gpf(n+1)).
 -/
 axiom F_eq_max (n : ℕ) (hn : n ≥ 1) :
-    F n = max (gpf n) (gpf (n + 1))
+    F n = max (gpf(n)) (gpf(n + 1))
 
 /- ## Part III: Pólya's Theorem (1918)
 -/
