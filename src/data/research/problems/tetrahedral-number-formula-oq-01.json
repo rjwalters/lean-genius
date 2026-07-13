@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (VERIFIED 0-axiom [propext,Classical.choice,Quot.sound]): ordinary power moments ∑ k^m·P_d(k) closed in TetrahedralNumberFormulaOQ01Moments.lean via the Stirling-second change of basis x^m=∑S(m,r)(x)_r (the missing Mathlib identity, built here) applied to the parent falling-factorial moment; +5 thm incl explicit second-moment sq_moment_sum_simplex. Realizes the Stirling/Bell figurate-moment follow-up.",
+    "progressSummary": "COMPLETE (VERIFIED 0-axiom). Both change-of-basis directions now formalized: powers→falling-factorials via Stirling SECOND kind (Moments file) AND rising-factorials→powers via Stirling FIRST kind (new FirstKind file). The first-kind file adds the dual ascFactorial_eq_sum_stirlingFirst_pow (missing Mathlib lemma), the row-sum ∑stirlingFirst n k=n!, and the payoff factorial_mul_simplexNumber_eq_sum_stirlingFirst_pow exhibiting d!·P_d(n) as an explicit Stirling-first polynomial in (n+1).",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -60,7 +60,10 @@
       "pow_eq_sum_stirlingSecond_descFactorial (TetrahedralNumberFormulaOQ01Moments.lean): x^m = ∑_{r≤m} S(m,r)·(x)_r — the missing Mathlib power↔falling-factorial change of basis, by induction on m",
       "descFactorial_moment_fixed_range (TetrahedralNumberFormulaOQ01Moments.lean): fixed-top-index form ∑_{k≤N}(k)_r·P_d(k) = (d+r)_r·P_{d+r+1}(N-r) for r≤N",
       "pow_moment_sum_simplex (TetrahedralNumberFormulaOQ01Moments.lean): ∑_{k≤N} k^m·P_d(k) = ∑_{r≤m} S(m,r)·(d+r)_r·P_{d+r+1}(N-r), m≤N — ordinary power-moment hockey stick",
-      "sq_moment_sum_simplex (TetrahedralNumberFormulaOQ01Moments.lean): ∑_{k≤N} k²·P_d(k) = (d+1)·P_{d+2}(N-1) + (d+1)(d+2)·P_{d+3}(N-2), N≥2 — explicit second-moment closed form"
+      "sq_moment_sum_simplex (TetrahedralNumberFormulaOQ01Moments.lean): ∑_{k≤N} k²·P_d(k) = (d+1)·P_{d+2}(N-1) + (d+1)(d+2)·P_{d+3}(N-2), N≥2 — explicit second-moment closed form",
+      "ascFactorial_eq_sum_stirlingFirst_pow (TetrahedralNumberFormulaOQ01FirstKind.lean): x.ascFactorial n = ∑_{k≤n} stirlingFirst n k · x^k — the DUAL change of basis (rising factorial in the power basis via unsigned Stirling numbers of the FIRST kind), the missing-from-Mathlib companion of pow_eq_sum_stirlingSecond_descFactorial; induction on n mirroring the second-kind proof. VERIFIED 0-axiom.",
+      "sum_stirlingFirst_eq_factorial (TetrahedralNumberFormulaOQ01FirstKind.lean): ∑_{k≤n} stirlingFirst n k = n! — row-sum of first-kind Stirling numbers (permutations by cycle count), x=1 specialization via Nat.one_ascFactorial. VERIFIED 0-axiom.",
+      "factorial_mul_simplexNumber_eq_sum_stirlingFirst_pow (TetrahedralNumberFormulaOQ01FirstKind.lean): d!·P_d(n) = ∑_{k≤d} stirlingFirst d k · (n+1)^k — the figurate number as an EXPLICIT degree-d Stirling-first polynomial in (n+1), composing factorial_mul_simplexNumber with the dual change of basis. On-theme quantitative form of \"the d-dim simplex number is a degree-d polynomial\". VERIFIED 0-axiom."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -81,10 +84,8 @@
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
     ],
     "nextSteps": [
-      "Ordinary power moments now closed (pow_moment_sum_simplex); realizes the Stirling/Bell follow-up. Optional: dimension-axis companion via simplexNumber_symm, and a cube_moment (m=3) corollary.",
-      "Optional: Norlund/finite-difference expansion of iterSum on a polynomial base sequence now follows by combining iterSum_eq_simplexConv with a binomial expansion of P_d(n-k).",
-      "Optional: express card_sym as an explicit nested multi-index Finset sum over {0<=i1<=...<=id<=n} to make the weakly-increasing-tuple face literal.",
-      "Convolution of arithmetic-progression / polynomial sequences against the simplex kernel, now reducible via the linearity package to simplexConv of id and constants."
+      "Both Stirling change-of-basis directions now closed for the figurate moment theory. Optional: the signed descFactorial↔power first-kind identity over ℤ (requires signed Stirling first kind, not in Mathlib as ℕ).",
+      "Optional: the analogous second-kind row-sum ∑_k stirlingSecond n k = Bell(n) (Bell number), the second-kind companion of sum_stirlingFirst_eq_factorial."
     ],
     "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
