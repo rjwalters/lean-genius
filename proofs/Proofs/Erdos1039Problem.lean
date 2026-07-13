@@ -987,4 +987,112 @@ theorem pommerenkeBound_tendsto_zero :
   simp only [pommerenkeBound]
   exact tendsto_const_nhds.div_atTop hden
 
+/-
+## Rotation Invariance of ρ
+
+The Erdős–Herzog–Piranian extremal quantity `ρ(f)` depends only on the *rotation
+orbit* of the root configuration, never on its overall angular placement.  Rotating
+every root by a fixed unimodular `u` (`‖u‖ = 1`) rotates the sublevel set `{|f| < 1}`
+rigidly about the origin, and a rigid rotation is an isometry of `ℂ`, so it carries
+inscribed discs to inscribed discs of the same radius.  Hence `ρ` is invariant under
+the full circle group `{u : ‖u‖ = 1}` acting on the roots — the extremal problem has
+an `O(2)` symmetry, and one may WLOG normalise the argument of any single root.  In
+particular (`u = -1`) negating all roots leaves `ρ` unchanged.
+-/
+
+/-- Rotate every root of `f` by a fixed unimodular `u` (`‖u‖ = 1`).  Roots stay in the
+    closed unit disc because `‖u · z‖ = ‖z‖`. -/
+noncomputable def UnitDiscPolynomial.rotate (f : UnitDiscPolynomial) (u : ℂ) (hu : ‖u‖ = 1) :
+    UnitDiscPolynomial where
+  degree := f.degree
+  roots := fun i => u * f.roots i
+  roots_in_disc := fun i => by rw [norm_mul, hu, one_mul]; exact f.roots_in_disc i
+
+/-- The evaluation of the rotated polynomial factors through a rescaling of the argument:
+    `(rotate f u)(z) = uᵈᵉᵍ · f(u⁻¹ z)`, since each factor `z - u·rᵢ = u·(u⁻¹z - rᵢ)`. -/
+theorem rotate_eval (f : UnitDiscPolynomial) (u : ℂ) (hu : ‖u‖ = 1) (z : ℂ) :
+    (f.rotate u hu).eval z = u ^ f.degree * f.eval (u⁻¹ * z) := by
+  have hu0 : u ≠ 0 := by rintro rfl; rw [norm_zero] at hu; exact zero_ne_one hu
+  simp only [UnitDiscPolynomial.eval, UnitDiscPolynomial.rotate]
+  have hfac : ∀ i : Fin f.degree, z - u * f.roots i = u * (u⁻¹ * z - f.roots i) := by
+    intro i; rw [mul_sub, ← mul_assoc, mul_inv_cancel₀ hu0, one_mul]
+  rw [Finset.prod_congr rfl (fun i _ => hfac i), Finset.prod_mul_distrib, Finset.prod_const,
+    Finset.card_univ, Fintype.card_fin]
+
+/-- A rotation by a unimodular factor does not change the modulus of the value:
+    `‖(rotate f u)(z)‖ = ‖f(u⁻¹ z)‖`. -/
+theorem rotate_norm_eval (f : UnitDiscPolynomial) (u : ℂ) (hu : ‖u‖ = 1) (z : ℂ) :
+    ‖(f.rotate u hu).eval z‖ = ‖f.eval (u⁻¹ * z)‖ := by
+  rw [rotate_eval, norm_mul, norm_pow, hu, one_pow, one_mul]
+
+/-- The sublevel set of the rotated polynomial is the rigid rotation `z ↦ u·z` of the
+    original sublevel set. -/
+theorem rotate_sublevelSet (f : UnitDiscPolynomial) (u : ℂ) (hu : ‖u‖ = 1) :
+    sublevelSet (f.rotate u hu) = (fun z => u * z) '' sublevelSet f := by
+  have hu0 : u ≠ 0 := by rintro rfl; rw [norm_zero] at hu; exact zero_ne_one hu
+  ext z
+  simp only [sublevelSet, Set.mem_setOf_eq, Set.mem_image]
+  rw [rotate_norm_eval]
+  constructor
+  · intro hz
+    exact ⟨u⁻¹ * z, hz, by rw [← mul_assoc, mul_inv_cancel₀ hu0, one_mul]⟩
+  · rintro ⟨w, hw, rfl⟩
+    rwa [show u⁻¹ * (u * w) = w by rw [← mul_assoc, inv_mul_cancel₀ hu0, one_mul]]
+
+/-- A disc of radius `r` inscribed in the rotated set `u · S` corresponds to a disc of the
+    *same* radius `r` inscribed in `S` (centre transported by `u⁻¹`).  The map `z ↦ u·z` is
+    an isometry, so it neither shrinks nor grows inscribed discs. -/
+theorem isInscribedDisc_rotate {S : Set ℂ} {c : ℂ} {r : ℝ} (u : ℂ) (hu : ‖u‖ = 1) :
+    isInscribedDisc ((fun z => u * z) '' S) c r ↔ isInscribedDisc S (u⁻¹ * c) r := by
+  have hu0 : u ≠ 0 := by rintro rfl; rw [norm_zero] at hu; exact zero_ne_one hu
+  unfold isInscribedDisc
+  constructor
+  · rintro ⟨hr, h⟩
+    refine ⟨hr, fun w hw => ?_⟩
+    have hz : ‖u * w - c‖ < r := by
+      have heq : u * w - c = u * (w - u⁻¹ * c) := by
+        rw [mul_sub, ← mul_assoc, mul_inv_cancel₀ hu0, one_mul]
+      rw [heq, norm_mul, hu, one_mul]; exact hw
+    obtain ⟨x, hxS, hx⟩ := h (u * w) hz
+    rwa [← mul_left_cancel₀ hu0 hx]
+  · rintro ⟨hr, h⟩
+    refine ⟨hr, fun z hz => ?_⟩
+    refine ⟨u⁻¹ * z, ?_, ?_⟩
+    swap
+    · show u * (u⁻¹ * z) = z
+      rw [← mul_assoc, mul_inv_cancel₀ hu0, one_mul]
+    apply h
+    have heq : u⁻¹ * z - u⁻¹ * c = u⁻¹ * (z - c) := by ring
+    rw [heq, norm_mul, norm_inv, hu, inv_one, one_mul]; exact hz
+
+/-- The set of radii of inscribed discs is unchanged by the rotation `z ↦ u·z`. -/
+theorem rotate_inscribed_radii_eq {S : Set ℂ} (u : ℂ) (hu : ‖u‖ = 1) :
+    {r : ℝ | ∃ c : ℂ, isInscribedDisc ((fun z => u * z) '' S) c r}
+      = {r : ℝ | ∃ c : ℂ, isInscribedDisc S c r} := by
+  have hu0 : u ≠ 0 := by rintro rfl; rw [norm_zero] at hu; exact zero_ne_one hu
+  ext r
+  simp only [Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨c, hc⟩
+    exact ⟨u⁻¹ * c, (isInscribedDisc_rotate u hu).mp hc⟩
+  · rintro ⟨c, hc⟩
+    refine ⟨u * c, (isInscribedDisc_rotate u hu).mpr ?_⟩
+    rwa [show u⁻¹ * (u * c) = c by rw [← mul_assoc, inv_mul_cancel₀ hu0, one_mul]]
+
+/-- **Rotation invariance of ρ.**  For any unimodular `u` (`‖u‖ = 1`), rotating all roots
+    of `f` by `u` leaves the inscribed-disc radius unchanged: `ρ(rotate f u) = ρ(f)`.  The
+    Erdős #1039 extremal quantity therefore depends only on the rotation orbit of the root
+    configuration — the minimisation problem carries the full circle-group `O(2)` symmetry,
+    so one may WLOG fix the argument of any single root. -/
+theorem rotate_rho (f : UnitDiscPolynomial) (u : ℂ) (hu : ‖u‖ = 1) :
+    rho (f.rotate u hu) = rho f := by
+  unfold rho inscribedDiscRadius
+  rw [rotate_sublevelSet f u hu, rotate_inscribed_radii_eq (S := sublevelSet f) u hu]
+
+/-- **Reflection (negation) invariance.**  The special case `u = -1`: negating every root
+    (equivalently replacing `f(z)` by `(-1)ᵈᵉᵍ f(-z)`) leaves `ρ` unchanged. -/
+theorem neg_roots_rho (f : UnitDiscPolynomial) :
+    rho (f.rotate (-1) (by simp)) = rho f :=
+  rotate_rho f (-1) (by simp)
+
 end Erdos1039
