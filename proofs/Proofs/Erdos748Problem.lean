@@ -928,4 +928,73 @@ theorem cameronErdos_lower_unconditional {ε : ℝ} (hε : 0 < ε) (n : ℕ) :
 -/
 theorem erdos_748 : cameronErdosConjecture := cameron_erdos_proved
 
+/-
+## Part XIV: Structural closure properties of sum-free sets
+
+The counting results above rest on two concrete families of sum-free sets — the *odd
+numbers* (`oddNumbers_sumFree`) and the *upper half* `{⌈n/2⌉,…,n}` (`upperHalf_sumFree`).
+This section records the two structural principles that explain and generalize them:
+
+* **Parity.** A set consisting *entirely of odd numbers* is automatically sum-free, because
+  the sum of two odd numbers is even and hence cannot lie in an all-odd set. This is the
+  conceptual reason `oddNumbers_sumFree` holds — it is a property of *any* set of odd
+  numbers, not just the canonical interval family.
+* **Dilation.** Sum-freeness is invariant under the multiplicative dilation `x ↦ k·x`
+  (`k ≥ 1`): `a = b + c` scales to `ka = kb + kc`, so `k·A` has a forbidden sum exactly
+  when `A` does. Dilation is injective for `k ≥ 1`, so `|k·A| = |A|`; hence dilation
+  transports a sum-free set of any size into a sparser range verbatim.
+
+Both are elementary and fully verified (0 new axioms, independent of the two deep
+Green/Sapozhenko asymptotic axioms).
+-/
+
+/--
+**All-odd sets are sum-free.** If every element of `A` is odd then `A` is sum-free: for
+`b, c ∈ A` the sum `b + c` is even, so it cannot equal any (odd) element `a ∈ A`. This is
+the parity mechanism behind `oddNumbers_sumFree`, isolated as a property of an arbitrary
+set of odd numbers.
+-/
+theorem sumFree_of_forall_odd {A : Finset ℕ} (h : ∀ x ∈ A, Odd x) : IsSumFree A := by
+  intro a b c ha hb hc heq
+  obtain ⟨i, hi⟩ := h a ha
+  obtain ⟨j, hj⟩ := h b hb
+  obtain ⟨k, hk⟩ := h c hc
+  omega
+
+/--
+**Dilation invariance.** For `k ≥ 1`, if `A` is sum-free then so is its dilation
+`k · A = A.image (k * ·)`. A forbidden identity `ka = kb + kc = k(b + c)` in the image
+cancels `k` (using `0 < k`) to a forbidden identity `a = b + c` in `A`, contradicting
+sum-freeness of `A`.
+-/
+theorem sumFree_image_mul {A : Finset ℕ} {k : ℕ} (hk : 0 < k) (hA : IsSumFree A) :
+    IsSumFree (A.image (fun x => k * x)) := by
+  intro a b c ha hb hc heq
+  simp only [Finset.mem_image] at ha hb hc
+  obtain ⟨x, hx, rfl⟩ := ha
+  obtain ⟨y, hy, rfl⟩ := hb
+  obtain ⟨z, hz, rfl⟩ := hc
+  have hxyz : x = y + z :=
+    Nat.eq_of_mul_eq_mul_left hk (by rw [mul_add]; exact heq)
+  exact hA x y z hx hy hz hxyz
+
+/--
+**Dilation preserves size.** For `k ≥ 1` the dilation map `x ↦ k·x` is injective on `ℕ`,
+so `|k · A| = |A|`.
+-/
+theorem card_image_mul {A : Finset ℕ} {k : ℕ} (hk : 0 < k) :
+    (A.image (fun x => k * x)).card = A.card :=
+  Finset.card_image_of_injective A (fun _ _ h => Nat.eq_of_mul_eq_mul_left hk h)
+
+/--
+**Dilation transports a sum-free set of the same cardinality.** Combining the two previous
+results: for `k ≥ 1`, `k · A` is a sum-free set with exactly `|A|` elements. So any lower
+bound on the maximum sum-free size (e.g. the extremal `⌈n/2⌉` of `max_sumFree_card_eq_ceil`)
+is realized verbatim inside the dilated, sparser range `k · {1,…,n}` — sum-freeness is a
+scale-invariant property.
+-/
+theorem sumFree_image_mul_card {A : Finset ℕ} {k : ℕ} (hk : 0 < k) (hA : IsSumFree A) :
+    IsSumFree (A.image (fun x => k * x)) ∧ (A.image (fun x => k * x)).card = A.card :=
+  ⟨sumFree_image_mul hk hA, card_image_mul hk⟩
+
 end Erdos748
