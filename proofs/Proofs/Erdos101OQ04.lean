@@ -3742,4 +3742,46 @@ theorem symmetric_triple_on_ternary_conic (a b : ℝ) (hab : a ^ 2 + b ^ 2 = 5) 
   linear_combination hab
 
 
+/-! ### Positive definiteness of the four-point-line ternary form
+
+`ternary_conic_nonneg` shows `Q ≥ 0` (positive semidefiniteness).  Here we add the
+cyclic sum-of-squares certificate `2Q = (x₀+x₁)² + (x₁+x₂)² + (x₂+x₀)²` and upgrade
+semidefiniteness to *definiteness*: `Q = 0` only at the origin.  This is what makes the
+level set `Q = 5` a nondegenerate compact ellipsoid, complementing the shell bounds
+`ternary_conic_sq_sum_mem_Icc` and their sharpness. -/
+
+/-- **The four-point-line ternary form is a sum of squares.**  The quadratic form
+`Q(x₀,x₁,x₂) = x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀` governing the reduced four-point-line
+locus satisfies `2·Q = (x₀+x₁)² + (x₁+x₂)² + (x₂+x₀)²`.  This is the certificate behind the
+"ellipse" classification of the conic `Q = 5`. -/
+theorem quartic_ternary_form_two_mul_eq_sos (x₀ x₁ x₂ : ℝ) :
+    2 * (x₀ ^ 2 + x₁ ^ 2 + x₂ ^ 2 + x₀ * x₁ + x₁ * x₂ + x₂ * x₀)
+      = (x₀ + x₁) ^ 2 + (x₁ + x₂) ^ 2 + (x₂ + x₀) ^ 2 := by ring
+
+
+/-- **The four-point-line ternary form is positive definite.**  `Q = 0` forces
+`x₀ = x₁ = x₂ = 0`: with `2Q = (x₀+x₁)² + (x₁+x₂)² + (x₂+x₀)²`, a zero value makes all three
+squares vanish, and the linear system `x₀+x₁ = x₁+x₂ = x₂+x₀ = 0` has only the trivial
+solution.  Positive-definiteness is exactly what makes `Q = 5` a *nondegenerate, bounded*
+ellipse (a single point would need `Q = 0`), confirming the file's ellipse framing. -/
+theorem quartic_ternary_form_eq_zero_iff (x₀ x₁ x₂ : ℝ) :
+    x₀ ^ 2 + x₁ ^ 2 + x₂ ^ 2 + x₀ * x₁ + x₁ * x₂ + x₂ * x₀ = 0 ↔
+      x₀ = 0 ∧ x₁ = 0 ∧ x₂ = 0 := by
+  constructor
+  · intro h
+    have hsos : (x₀ + x₁) ^ 2 + (x₁ + x₂) ^ 2 + (x₂ + x₀) ^ 2 = 0 := by
+      have hid := quartic_ternary_form_two_mul_eq_sos x₀ x₁ x₂
+      linarith
+    have h01 : x₀ + x₁ = 0 :=
+      sq_eq_zero_iff.mp (le_antisymm
+        (by nlinarith [sq_nonneg (x₁ + x₂), sq_nonneg (x₂ + x₀)]) (sq_nonneg _))
+    have h12 : x₁ + x₂ = 0 :=
+      sq_eq_zero_iff.mp (le_antisymm
+        (by nlinarith [sq_nonneg (x₀ + x₁), sq_nonneg (x₂ + x₀)]) (sq_nonneg _))
+    have h20 : x₂ + x₀ = 0 :=
+      sq_eq_zero_iff.mp (le_antisymm
+        (by nlinarith [sq_nonneg (x₀ + x₁), sq_nonneg (x₁ + x₂)]) (sq_nonneg _))
+    exact ⟨by linarith, by linarith, by linarith⟩
+  · rintro ⟨rfl, rfl, rfl⟩; ring
+
 end Erdos101OQ04
