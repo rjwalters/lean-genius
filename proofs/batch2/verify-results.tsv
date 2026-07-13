@@ -120,7 +120,7 @@ AreaOfCircleOQ01OQ03OQ01	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ03OQ02	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ02	RESIDUAL	proof-drift
 AreaOfCircleOQ02OQ01	RESIDUAL	proof-drift
-AreaOfCircleOQ02OQ04	RESIDUAL	parse-error
+AreaOfCircleOQ02OQ04	GREEN	
 AreaOfCircleOQ03OQ01	GREEN	
 AreaOfCircleOQ03OQ02OQ01	GREEN	
 AreaOfCircleOQ03OQ02OQ02	RESIDUAL	type-mismatch
@@ -1373,7 +1373,7 @@ Erdos531Problem	GREEN
 Erdos532Problem	RESIDUAL	proof-drift
 Erdos533Problem	RESIDUAL	type-mismatch
 Erdos534Problem	GREEN	
-Erdos535Problem	RESIDUAL	parse-error
+Erdos535Problem	GREEN	
 Erdos536Problem	GREEN	
 Erdos537Problem	RESIDUAL	type-mismatch
 Erdos538Problem	GREEN	
@@ -1553,7 +1553,7 @@ Erdos662Problem	RESIDUAL	noncomputable
 Erdos663Problem	GREEN	
 Erdos664Problem	GREEN	
 Erdos665Problem	GREEN	
-Erdos666Problem	RESIDUAL	parse-error
+Erdos666Problem	GREEN	
 Erdos667Aristotle	GREEN	
 Erdos667Problem	RESIDUAL	instance-synth
 Erdos668Problem	GREEN	
@@ -2113,7 +2113,7 @@ Hilbert5OQ02	RESIDUAL	instance-synth
 Hilbert6PhysicsAxioms	RESIDUAL	type-mismatch
 Hilbert9CyclotomicReciprocity	GREEN	
 Hilbert9QuadraticSubfield	GREEN	
-Hilbert9Reciprocity	RESIDUAL	parse-error
+Hilbert9Reciprocity	GREEN	
 HodgeConjecture	RESIDUAL	proof-drift
 HurwitzTheoremOQ04	RESIDUAL	slow-timeout
 IncidenceCauchySchwarzDual	RESIDUAL	proof-drift
@@ -2267,7 +2267,7 @@ MeanValueTheoremOQ04OQ03	GREEN
 MinkowskiFundamentalTheoremOQ02	RESIDUAL	proof-drift
 MinkowskiTheoremOQ02	RESIDUAL	unknown-const:ENNReal.ofReal_lt_ofReal_of_nonneg
 MinkowskiTheoremOQ03	RESIDUAL	unknown-const:Nat.card_le_one
-MinkowskiTheoremOQ04OQ03	RESIDUAL	parse-error
+MinkowskiTheoremOQ04OQ03	GREEN	
 MinpolyCharpolyOQ01	RESIDUAL	type-mismatch
 MinpolyCharpolyOQ03	RESIDUAL	type-mismatch
 MinpolyCharpolyOQ03OQ01	RESIDUAL	type-mismatch
@@ -2633,7 +2633,7 @@ UrysohnsLemmaOQ01OQ01OQ01OQ01	GREEN
 UrysohnsLemmaOQ01OQ01OQ02	GREEN	
 UrysohnsLemmaOQ01OQ01OQ02OQ01	GREEN	
 UrysohnsLemmaOQ01OQ01OQ02OQ02	GREEN	
-VandermondeInterpolationOQ01OQ02	RESIDUAL	parse-error
+VandermondeInterpolationOQ01OQ02	GREEN	
 VandermondeInterpolationOQ01OQ02OQ01	GREEN	
 VietasFormulasOQ02	RESIDUAL	proof-drift
 VietasFormulasOQ03OQ01	RESIDUAL	proof-drift

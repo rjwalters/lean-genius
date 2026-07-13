@@ -1,0 +1,10 @@
+===== Erdos256Problem
+error: Proofs/Erdos256Problem.lean:54:41: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos256Problem.lean:236:50: unsolved goals
+case e_a
+n : ℕ
+===== Erdos801Problem
+error: Proofs/Erdos801Problem.lean:52:36: Invalid field `IsIndepSet`: The environment does not contain `SimpleGraph.IsIndepSet`, so it is not possible to project the field `IsIndepSet` from an expression
+  G
+of type `SimpleGraph (Fin n)`

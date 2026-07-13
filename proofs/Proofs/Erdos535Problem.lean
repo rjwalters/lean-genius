@@ -57,7 +57,7 @@ def IsSubsetOfInterval (A : Finset ℕ) (N : ℕ) : Prop :=
 
 /-- f_r(N): Maximum size of A ⊆ {1,...,N} with no r elements sharing pairwise gcd -/
 noncomputable def f (r N : ℕ) : ℕ :=
-  sSup {A.card | A : Finset ℕ, IsSubsetOfInterval A N ∧ HasNoRGCDSubset A r}
+  sSup {k | ∃ A : Finset ℕ, (IsSubsetOfInterval A N ∧ HasNoRGCDSubset A r) ∧ A.card = k}
 
 /-
 ## Part 2: Trivial Bounds

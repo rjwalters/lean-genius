@@ -201,7 +201,7 @@ Hilbert asked for "the most general reciprocity law." Artin's theorem provides:
    extensions via L-functions and automorphic representations.
 -/
 
-/-- The Langlands program generalizes Artin reciprocity to non-abelian extensions.
+/- The Langlands program generalizes Artin reciprocity to non-abelian extensions.
 
 While Artin's theorem completely answers Hilbert's 9th problem for abelian
 extensions, the Langlands program (1967-present) seeks reciprocity laws

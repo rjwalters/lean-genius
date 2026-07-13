@@ -104,8 +104,8 @@ theorem euclideanModelVolume_mono (n : ℕ) (r s : ℝ) (hr : 0 ≤ r) (hrs : r 
   exact pow_le_pow_left₀ hr hrs n
 
 /-- Euclidean model volume scaling law: V_0^n(λr) = λ^n · V_0^n(r). -/
-theorem euclideanModelVolume_scaling (n : ℕ) (r λ : ℝ) (hλ : 0 ≤ λ) :
-    euclideanModelVolume n (λ * r) = λ ^ n * euclideanModelVolume n r := by
+theorem euclideanModelVolume_scaling (n : ℕ) (r lam : ℝ) (hlam : 0 ≤ lam) :
+    euclideanModelVolume n (lam * r) = lam ^ n * euclideanModelVolume n r := by
   unfold euclideanModelVolume
   rw [mul_pow]
   ring
@@ -235,7 +235,6 @@ theorem euclidean_volume_ratio_eq (n : ℕ) (r s : ℝ) (hr : 0 < r) (hrs : r �
   simp only [euclideanManifold, euclideanModelVolume]
   rw [div_pow]
   field_simp [ne_of_gt (pow_pos hr n)]
-  ring
 
 /-- In Euclidean space, volume doubling is exactly 2^n.
     Vol(B(p, 2r)) = 2^n · Vol(B(p, r)). -/
