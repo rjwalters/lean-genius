@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "overview-and-goal",
+      "title": "Overview: What Mathlib Has and What This Adds",
+      "startLine": 1,
+      "endLine": 51,
+      "mathContext": "Goal: the finite Dirichlet kernel $\\tfrac12 + \\sum_{k=1}^{n}\\cos(kx) = \\sin((n+\\tfrac12)x)/(2\\sin\\tfrac{x}{2})$, absent from Mathlib (which records only the infinite series $\\texttt{Real.cos\\_eq\\_tsum}$).",
+      "summary": "The module docstring states the four Werner product-to-sum identities and the two finite telescoped sums they generate (the cosine and sine Dirichlet/Lagrange identities), then the kernel closed form ½ + ∑ cos(kx) = sin((n+½)x)/(2·sin(x/2)) valid when sin(x/2) ≠ 0. It scopes the contribution against Mathlib: the Werner and sum-to-product identities exist upstream (Real.two_mul_cos_mul_cos, Real.cos_add_cos, …) but the finite telescoped trigonometric sums — the heart of classical Fourier analysis, since a Fourier partial sum is convolution against the Dirichlet kernel Dₙ — do not; Mathlib records only the infinite power series Real.cos_eq_tsum. The stated crux is that each summand, multiplied by 2·sin(x/2), is a telescoping difference produced by one Werner identity. The file is verified with 0 sorries, 0 axiom declarations and no native_decide."
+    },
+    {
       "id": "werner-identities",
       "title": "The Four Werner Product-to-Sum Identities",
       "startLine": 52,
