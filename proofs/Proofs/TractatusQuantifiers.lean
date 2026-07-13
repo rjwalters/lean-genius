@@ -18,8 +18,8 @@ domains this is unproblematic; for infinite domains the claim is
 philosophically contentious (Geach 1981, Soames 1983).
 
 We formalize the first-order extension, prove key structural
-theorems, and leave the N-operator connection to a follow-up that
-depends on the N-operator formalization (#10723).
+theorems, and leave the N-operator connection to future work
+(see the accompanying paper's Future Work section).
 -/
 
 namespace Tractatus
@@ -219,12 +219,8 @@ This requires `Nonempty D` to go from right to left.
 
 theorem forall_vacuous [Nonempty D] (p : FOProp S D) (w : World S) :
     (FOProp.forall_ (fun _ => p)).eval w ↔ p.eval w := by
-  simp [FOProp.eval]
-  constructor
-  · intro h
-    exact h (Classical.arbitrary D)
-  · intro h _
-    exact h
+  simp only [FOProp.eval]
+  exact ⟨fun h => h (Classical.arbitrary D), fun h _ => h⟩
 
 -- ---------------------------------------------------------------
 -- Theorem 7: Double negation (first-order level)
@@ -281,8 +277,8 @@ Soames (1983) shows it undermines the claim that all of logic
 reduces to truth-functional operations on elementary propositions.
 
 The finite-domain connection theorem (quantifier_as_nOp_finite)
-depends on the N-operator formalization (#10723) and will be
-added when that is merged.
+requires a formalization of the N-operator itself and is left to
+future work.
 -/
 
 end Tractatus
