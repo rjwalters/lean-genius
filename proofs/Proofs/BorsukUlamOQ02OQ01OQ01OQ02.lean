@@ -75,12 +75,12 @@ theorem not_exotic_of_singleton_primeFactors (n d p : ℕ) (hp : Nat.Prime p)
 theorem not_exotic_prime_pow (p k d : ℕ) (hp : Nat.Prime p) (hk : k ≠ 0) :
     ¬IsExotic (p ^ k) d :=
   not_exotic_of_singleton_primeFactors (p ^ k) d p hp
-    (Nat.primeFactors_prime_pow hk hp.prime)
+    (Nat.primeFactors_prime_pow hk hp)
 
 /-- For any prime p and k ≥ 1: buDimFormula(p^k, d) = buDim(p, d). -/
 theorem buDimFormula_prime_pow (p k d : ℕ) (hp : Nat.Prime p) (hk : k ≠ 0) :
     buDimFormula (p ^ k) d = buDim p d := by
-  simp [buDimFormula, Nat.primeFactors_prime_pow hk hp.prime]
+  simp [buDimFormula, Nat.primeFactors_prime_pow hk hp]
 
 -- ============================================================
 -- PART III: Formula Monotonicity (No Axioms Needed)
@@ -176,7 +176,7 @@ theorem buDimFormula_six (d : ℕ) : buDimFormula 6 d = buDim 2 d ⊔ buDim 3 d 
 
 /-- All n ∈ [2, 5] are prime powers (having exactly one prime factor). -/
 theorem small_n_not_exotic_shape : ∀ n ∈ Finset.Icc 2 5, n.primeFactors.card ≤ 1 := by
-  decide
+  native_decide
 
 /-- n = 6 is not exotic under the formula conjecture (axiom). -/
 theorem not_exotic_six (d : ℕ) : ¬IsExotic 6 d :=

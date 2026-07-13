@@ -152,7 +152,7 @@ noncomputable def crtSolveListCert :
         have hp_dvd_xy : p.2 ∣ (x - y) := by
           have heq : x - y = -(L * (gcdA L pair.2 * q)) := by rw [hx_def]; ring
           rw [heq]
-          exact dvd_neg.mpr (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hp_dvd_L _) _)
+          exact dvd_neg.mpr (hp_dvd_L.mul_right _)
         have heq : x - p.1 = (x - y) + (y - p.1) := by ring
         rw [heq]
         exact dvd_add hp_dvd_xy hp_dvd_ya
@@ -193,7 +193,9 @@ example : ∃ x : ℤ, (6 : ℤ) ∣ (x - 2) ∧ (10 : ℤ) ∣ (x - 4) :=
 
 /-- For coprime moduli (gcd(7,5)=1), the formula gives x = 3c·7 + (-4c)·5 = c: -/
 example (c : ℤ) : ∃ x : ℤ, (7 : ℤ) ∣ (x - (3 * c)) ∧ (5 : ℤ) ∣ (x - (-4 * c)) :=
-  ⟨3 * c, ⟨0, by ring⟩, ⟨7 * c, by ring⟩⟩
+  -- v4.31 compat (#38065): corrected witnesses — x = -144c satisfies
+  -- x ≡ 3c (mod 7) and x ≡ -4c (mod 5); the old second witness was wrong.
+  ⟨-144 * c, ⟨-21 * c, by ring⟩, ⟨-28 * c, by ring⟩⟩
 
 /-- Unsolvable: gcd(6,10) = 2 does NOT divide 4-1=3. -/
 example : ¬ ∃ x : ℤ, (6 : ℤ) ∣ (x - 1) ∧ (10 : ℤ) ∣ (x - 4) := by

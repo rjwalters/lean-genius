@@ -64,7 +64,7 @@ private lemma summable_altFactTerm : Summable altFactTerm :=
 
 private theorem exp_neg_one_eq_tsum_alt :
     rexp (-1) = ∑' k, altFactTerm k := by
-  rw [show rexp (-1) = NormedSpace.exp (-1 : ℝ) from Real.exp_eq_exp_ℝ,
+  rw [show rexp (-1) = NormedSpace.exp (-1 : ℝ) from congrFun Real.exp_eq_exp_ℝ (-1),
       NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
   apply tsum_congr; intro k; simp only [altFactTerm, smul_eq_mul]; ring
 
@@ -78,12 +78,18 @@ private theorem numDerangements_eq_factorial_mul_altSum (n : ℕ) :
   | _ n ih =>
   match n with
   | 0 => simp [altFactPartialSum, altFactTerm]
-  | 1 => simp [altFactPartialSum, altFactTerm, Finset.sum_range_succ]; ring
+  | 1 => simp [altFactPartialSum, altFactTerm, Finset.sum_range_succ]
   | n + 2 =>
     rw [numDerangements_add_two]; push_cast
     rw [ih n (by omega), ih (n + 1) (by omega)]
     rw [altFactPartialSum_succ (n + 1), altFactPartialSum_succ n]
-    simp only [altFactTerm, Nat.factorial_succ]; push_cast; ring
+    simp only [altFactTerm, Nat.factorial_succ]; push_cast
+    have hn1 : ((n : ℝ) + 1) ≠ 0 := by positivity
+    have hn1' : ((n : ℝ) + 1 + 1) ≠ 0 := by positivity
+    have hn2 : ((n : ℝ) + 2) ≠ 0 := by positivity
+    have hnf : ((n.factorial : ℕ) : ℝ) ≠ 0 := fne n
+    field_simp
+    ring
 
 private theorem derangements_div_factorial (n : ℕ) :
     (numDerangements n : ℝ) / (n.factorial : ℝ) = altFactPartialSum n := by
@@ -122,6 +128,7 @@ private lemma alt_partial_sum_nonneg (m : ℕ) (N : ℕ) :
     rw [Finset.sum_range_succ, Finset.sum_range_succ]
     by_cases hN' : Even N'
     · obtain ⟨j, rfl⟩ := hN'
+      rw [show j + j = 2 * j from (two_mul j).symm]
       have hpair : 0 ≤ (-1 : ℝ) ^ (2 * j) / ((m + 2 * j).factorial : ℝ) +
           (-1 : ℝ) ^ (2 * j + 1) / ((m + (2 * j + 1)).factorial : ℝ) := by
         have h1 : (-1 : ℝ) ^ (2 * j) = 1 := by simp [pow_mul, neg_one_sq]
@@ -159,12 +166,13 @@ private lemma alt_partial_sum_le_first (m : ℕ) (N : ℕ) :
   induction N using Nat.strong_induction_on with
   | _ N ih =>
   match N with
-  | 0 => simp; exact div_nonneg one_pos.le (fpos m).le
+  | 0 => simp
   | 1 => simp only [range_one, sum_singleton, pow_zero, zero_add]; exact le_refl _
   | N' + 2 =>
     rw [Finset.sum_range_succ, Finset.sum_range_succ]
     by_cases hN' : Even N'
     · obtain ⟨j, rfl⟩ := hN'
+      rw [show j + j = 2 * j from (two_mul j).symm]
       have hneg : (-1 : ℝ) ^ (2 * j + 1) / ((m + (2 * j + 1)).factorial : ℝ) ≤ 0 :=
         div_nonpos_of_nonpos_of_nonneg
           (by simp [pow_succ, pow_mul, neg_one_sq]) (fpos _).le
@@ -231,11 +239,11 @@ theorem errorTailSum_recurrence (m : ℕ) :
     simp only [Nat.zero_add, pow_zero, one_div]
     congr 1
     apply tsum_congr; intro k
-    congr 2; omega
+    rw [show m + 1 + k = m + (k + 1) from by omega]
   -- Step 2: The tail is -errorTailSum(m+1)
   have hneg : ∑' k, ((-1 : ℝ) ^ (k + 1) / ((m + 1 + k).factorial : ℝ)) =
       -errorTailSum (m + 1) := by
-    simp only [errorTailSum, ← tsum_neg (summable := hs1)]
+    simp only [errorTailSum, ← tsum_neg]
     apply tsum_congr; intro k
     rw [pow_succ]; ring
   linarith
@@ -298,7 +306,7 @@ theorem error_closed_form (n : ℕ) :
   have hsplit := tsum_split (n + 1)
   have hcancel : altFactPartialSum n - ∑' k, altFactTerm k =
       -(∑' k, altFactTerm (n + 1 + k)) := by
-    rw [hsplit]; ring
+    rw [hsplit]; unfold altFactPartialSum; ring
   rw [hcancel, tail_eq_signed (n + 1)]
   rw [show (-1 : ℝ) ^ (n + 1) = (-1 : ℝ) ^ n * (-1) from pow_succ (-1) n]
   ring
@@ -353,7 +361,7 @@ theorem normalized_error_tendsto :
     intro n; rw [error_closed_form]
     have : (-1 : ℝ) ^ n * ((-1 : ℝ) ^ n * errorTailSum (n + 1)) = errorTailSum (n + 1) := by
       rw [← mul_assoc, ← pow_add, show n + n = 2 * n from by ring]; simp [pow_mul]
-    linarith
+    rw [this]
   simp_rw [hsimp]
   -- Squeeze between 1 - 1/(n+2) and 1
   rw [Metric.tendsto_atTop]
@@ -362,7 +370,7 @@ theorem normalized_error_tendsto :
     obtain ⟨M, hM⟩ := exists_nat_gt (1 / ε)
     exact ⟨M, by
       rw [div_lt_iff₀ (show (0 : ℝ) < ↑M + 2 by positivity)]
-      calc (1 : ℝ) < ε * ↑M := by rwa [div_lt_iff₀ hε] at hM
+      calc (1 : ℝ) < ε * ↑M := by rw [div_lt_iff₀ hε] at hM; linarith
         _ ≤ ε * (↑M + 2) := by linarith [hε]⟩
   exact ⟨N, fun n hn => by
     rw [Real.dist_eq]
@@ -391,7 +399,7 @@ theorem normalized_error_tendsto :
     calc |errorTailSum (n + 1) * ((n + 1).factorial : ℝ) - 1|
         ≤ 1 / (↑n + 2 : ℝ) := habs
       _ ≤ 1 / (↑N + 2 : ℝ) := by
-          apply div_le_div_of_nonneg_left one_pos (show (0 : ℝ) < ↑N + 2 by positivity)
+          apply div_le_div_of_nonneg_left zero_le_one (show (0 : ℝ) < ↑N + 2 by positivity)
           push_cast; exact_mod_cast show N + 2 ≤ n + 2 by omega
       _ < ε := hN⟩
 

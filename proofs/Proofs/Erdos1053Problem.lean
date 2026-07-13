@@ -54,7 +54,7 @@ theorem sigma_one : sigma 1 = 1 := by native_decide
 /-- σ(n) ≥ n for n > 0, since n divides itself and is thus a summand. -/
 theorem sigma_ge_self (n : ℕ) (hn : n > 0) : sigma n ≥ n := by
   unfold sigma
-  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _)
+  exact Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _)
     (Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩)
 
 /-- k-perfect numbers have k ≥ 1, since σ(n) ≥ n > 0 forces k·n ≥ n. -/
@@ -63,14 +63,16 @@ theorem kperfect_k_ge_one (n k : ℕ) (h : IsKPerfect n k) : k ≥ 1 := by
   · -- k = 0: σ(n) = 0, but σ(n) ≥ n > 0
     exfalso
     have h0 := h.2; simp at h0
-    linarith [sigma_ge_self n h.1]
+    have h1 := h.1
+    have h2 := sigma_ge_self n h1
+    omega
   · omega
 
 /-- For k-perfect n, perfectMultiplicity n = k (exact division). -/
 theorem perfectMultiplicity_kperfect (n k : ℕ) (h : IsKPerfect n k) :
     perfectMultiplicity n = k := by
   unfold perfectMultiplicity
-  rw [h.2]
+  rw [h.2, Nat.mul_comm]
   exact Nat.mul_div_cancel_left k h.1
 
 /- ## Classical Perfect Numbers (k = 2) -/
@@ -96,7 +98,7 @@ theorem one_perfect_unique : ∀ n : ℕ, IsKPerfect n 1 → n = 1 := by
 
 /-- Complete characterization: n is 1-perfect if and only if n = 1. -/
 theorem IsKPerfect_one_iff (n : ℕ) : IsKPerfect n 1 ↔ n = 1 :=
-  ⟨one_perfect_unique n, fun h => h ▸ ⟨Nat.one_pos, by simp [sigma_one]⟩⟩
+  ⟨one_perfect_unique n, fun h => by subst h; exact ⟨Nat.one_pos, by simp [sigma_one]⟩⟩
 
 /-- k=2: classical perfect numbers. The first few: 6, 28, 496, 8128.
     Proved by computation: σ(6) = 12 = 2·6, σ(28) = 56 = 2·28, etc. -/

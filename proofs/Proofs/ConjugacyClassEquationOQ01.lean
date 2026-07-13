@@ -74,6 +74,7 @@ example (g : Equiv.Perm (Fin 3)) : Nat.card (ConjClasses.mk g).carrier ∣ 6 := 
   have h6 : Nat.card (Equiv.Perm (Fin 3)) = 6 := by
     simp only [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
     decide
-  simpa [h6] using conjClass_card_dvd_card g
+  rw [← h6]
+  exact conjClass_card_dvd_card g
 
 end ConjugacyClassEquationOQ01
