@@ -1,4 +1,66 @@
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 12, #38065, 2026-07-13)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 14, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 14 (structured classes + instance-synth tail, #38065)
+
+Classes: parse-error(69) + signature-drift(33) + elab-drift(42) +
+dot-notation-drift(27) + instance-synth(178 remainder) = 349 rows. Branch
+`feature/issue-38065`, container `dr24` (cpus 0-5, 11g, cache v431).
+
+### Key finding: backfill already ran; synth/structured rows are per-file repairs
+
+Zero-edit re-verify of all 171 structured rows flipped **0**; of all 178 synth
+rows flipped **5** (AngleTrisectionOQ03 subtree ×4 + FourthRoot2SplittingFieldOQ01
+— stale dep-backfill flips). Confirms inc-8..13 meta-finding. Parse/synth fix is
+NECESSARY-BUT-NOT-SUFFICIENT on the majority: unblocking the parser or the synth
+failure surfaces a deeper class (tm/pd/proof-drift) that belongs to another pass;
+those rows do not flip on the mechanical fix alone — revert to keep the tree clean.
+
+### Waves (all in-container verified, lake exit 0, then ledger-flipped)
+
+- **DR24w1** (+12): set-builder projection/subtype rewrites (Erdos256/801/1115),
+  notation-scope+import (EgorovTheorem Bochner-∫∂ import, LebesgueMeasureOQ03
+  `open scoped InnerProductSpace`+real_inner lemmas), Finset.min'→.min.getD 0
+  (Erdos577), rewrite-order/sq (Feuerbach), + 5 stale synth flips.
+- **DR24w2** (+6, dot-notation): Nat.totient_prime, Real.toNat→⌊·⌋₊, G.edist +
+  Std.Symm/Irrefl ⟨⟩ fields, Nat.find ∃-witness, Finset.Pairwise→(↑S).Pairwise,
+  List.enum→zipIdx (tuple swap) + .get?→[·]?.
+- **DR24w3** (+7, signature): σ scope ArithmeticFunction.sigma, Std.Symm/Irrefl,
+  TopologicalSpace.MetrizableSpace, G.chromaticNumber(ℕ∞), Ordinal bot_le,
+  ENNReal pos_iff_ne_zero.mpr, Bornology.IsBounded.
+- **DR24w4** (+6, elab): /-! before imports→/-, List.Sorted→SortedLT, Type*→Type
+  universe-metavar (§7o), Cardinal.{0} pins, ne_of_gt ambiguity→omega.
+- **DR24w5/w6/w7** (+15, instance-synth): isCyclic_of_prime_card Nat.card bridge,
+  ℕ→ℤ eval cast, .min.getD 0 totality, NeZero for Fin-univ, statement repairs
+  (.ncard<⊤→.Finite, Multiset+1→.map(·+1), toFinite.toFinset.card→ncard),
+  Nat.card↑(Set∩Set), Classical+card_filter_le, (dif_neg).ge→rw, Sym2 Finset
+  annotation, .sum→.sum id, List.get_mem Fin-index.
+
+**Increment 14 running total: +44 GREEN** (1362 → 1406). Per class: parse-error
+69→62, signature-drift 33→26, elab-drift 42→36, dot-notation-drift 27→21,
+instance-synth 178→160. Recipes in rename-map §7p.
+
+### Increment 14 statement repairs (operator policy 2026-07-13)
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos948Problem | `CountableColorsVersion` | `{…}.ncard < ⊤` (ill-typed: ncard is ℕ, needs Top ℕ) → `{…}.Finite` (intended finiteness) |
+| Erdos958Problem | `distinctDistances` | `Multiset.range (n-1) + 1` (OfNat Multiset) → `(Multiset.range (n-1)).map (·+1)` (the set {1,…,n-1}) |
+| Erdos836Problem | `IsUniform` | `(Set.toFinite e).toFinset.card = r` (Finite ↑e false for infinite edge) → `e.ncard = r` |
+
+### Increment 14 infra confirmations
+
+- **virtiofs truncation hit repeatedly** (TestApi826 L22, Erdos1115 L104,
+  Erdos990 L204, Erdos472 L327 — phantom `unexpected end of input`/`unknown
+  tactic` at EOF): `docker restart dr24` before re-verifying flips them 0→PASS.
+  ALWAYS re-verify a phantom-parse/EOF FAIL by exit code after a restart.
+- `List.enum`→`List.zipIdx` swaps the tuple order `(idx,elem)`→`(elem,idx)`.
+- The `∫ … ∂μ` notation lives in `Mathlib.MeasureTheory.Integral.Bochner.Basic`
+  (top-level `notation3`, NOT scoped) — curated-import files need that import,
+  not just `open MeasureTheory`. `Integral.SetIntegral` module is now
+  `Integral.Bochner.Set`.
+- `List.Sorted r` (general relation) split into `SortedLT`/`SortedLE`/etc.;
+  `Finset.lowerCentralSeries`→`Subgroup.lowerCentralSeries (S : Subgroup G)`
+  (group→subgroup arg, deep rework — DEFERRED).
 
 ## DOCTOR INCREMENT 12 (parse-error + signature/elab/dot-notation drift, #38065)
 
