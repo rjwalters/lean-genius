@@ -1,0 +1,99 @@
+========================================================================
+Fermat defect-one: polynomial parameterization search (Method A)
+========================================================================
+
+### Exponent n = 2
+  [Method A] n=2 d=1 B=6: 156 degree-1 polys, up to 3796416 triples (pruned by a<=b symmetry) ...
+    HIT sign=+: a=[-3, -4], b=[-1, -3], c=[-3, -5]
+    HIT sign=+: a=[-3, -4], b=[-1, -3], c=[3, 5]
+    HIT sign=+: a=[-3, -4], b=[1, 3], c=[-3, -5]
+    HIT sign=+: a=[-3, -4], b=[1, 3], c=[3, 5]
+    HIT sign=+: a=[-1, -4], b=[-2, -3], c=[-2, -5]
+    HIT sign=+: a=[-1, -4], b=[-2, -3], c=[2, 5]
+    HIT sign=+: a=[-1, -4], b=[2, 3], c=[-2, -5]
+    HIT sign=+: a=[-1, -4], b=[2, 3], c=[2, 5]
+    HIT sign=+: a=[1, -4], b=[2, -3], c=[2, -5]
+    HIT sign=+: a=[1, -4], b=[2, -3], c=[-2, 5]
+    HIT sign=+: a=[1, -4], b=[-2, 3], c=[2, -5]
+    HIT sign=+: a=[1, -4], b=[-2, 3], c=[-2, 5]
+    HIT sign=+: a=[3, -4], b=[1, -3], c=[3, -5]
+    HIT sign=+: a=[3, -4], b=[1, -3], c=[-3, 5]
+    HIT sign=+: a=[3, -4], b=[-1, 3], c=[3, -5]
+    HIT sign=+: a=[3, -4], b=[-1, 3], c=[-3, 5]
+    HIT sign=+: a=[-2, -3], b=[1, 4], c=[-2, -5]
+    HIT sign=+: a=[-2, -3], b=[1, 4], c=[2, 5]
+    HIT sign=+: a=[-1, -3], b=[3, 4], c=[-3, -5]
+    HIT sign=+: a=[-1, -3], b=[3, 4], c=[3, 5]
+    HIT sign=+: a=[1, -3], b=[-3, 4], c=[3, -5]
+    HIT sign=+: a=[1, -3], b=[-3, 4], c=[-3, 5]
+    HIT sign=+: a=[2, -3], b=[-1, 4], c=[2, -5]
+    HIT sign=+: a=[2, -3], b=[-1, 4], c=[-2, 5]
+    HIT sign=+: a=[-2, 3], b=[-1, 4], c=[2, -5]
+    HIT sign=+: a=[-2, 3], b=[-1, 4], c=[-2, 5]
+    HIT sign=+: a=[-1, 3], b=[-3, 4], c=[3, -5]
+    HIT sign=+: a=[-1, 3], b=[-3, 4], c=[-3, 5]
+    HIT sign=+: a=[1, 3], b=[3, 4], c=[-3, -5]
+    HIT sign=+: a=[1, 3], b=[3, 4], c=[3, 5]
+    HIT sign=+: a=[2, 3], b=[1, 4], c=[-2, -5]
+    HIT sign=+: a=[2, 3], b=[1, 4], c=[2, 5]
+  [Method A] n=2 d=1: tested 1910376 triples, 32 nonconstant hit(s)
+  [Method A] n=2 d=2 B=3: 294 degree-2 polys, up to 25412184 triples (pruned by a<=b symmetry) ...
+  [Method A] n=2 d=2: tested 12749310 triples, 0 nonconstant hit(s)
+  [Method A] n=2 d=3 B=1: 54 degree-3 polys, up to 157464 triples (pruned by a<=b symmetry) ...
+  [Method A] n=2 d=3: tested 80190 triples, 0 nonconstant hit(s)
+
+### Exponent n = 3
+  [Method A] n=3 d=1 B=6: 156 degree-1 polys, up to 3796416 triples (pruned by a<=b symmetry) ...
+  [Method A] n=3 d=1: tested 1910376 triples, 0 nonconstant hit(s)
+  [Method A] n=3 d=2 B=3: 294 degree-2 polys, up to 25412184 triples (pruned by a<=b symmetry) ...
+  [Method A] n=3 d=2: tested 12749310 triples, 0 nonconstant hit(s)
+  [Method A] n=3 d=3 B=1: 54 degree-3 polys, up to 157464 triples (pruned by a<=b symmetry) ...
+  [Method A] n=3 d=3: tested 80190 triples, 0 nonconstant hit(s)
+
+### Exponent n = 4
+  [Method A] n=4 d=1 B=6: 156 degree-1 polys, up to 3796416 triples (pruned by a<=b symmetry) ...
+  [Method A] n=4 d=1: tested 1910376 triples, 0 nonconstant hit(s)
+  [Method A] n=4 d=2 B=3: 294 degree-2 polys, up to 25412184 triples (pruned by a<=b symmetry) ...
+  [Method A] n=4 d=2: tested 12749310 triples, 0 nonconstant hit(s)
+  [Method A] n=4 d=3 B=1: 54 degree-3 polys, up to 157464 triples (pruned by a<=b symmetry) ...
+  [Method A] n=4 d=3: tested 80190 triples, 0 nonconstant hit(s)
+
+### Exponent n = 5
+  [Method A] n=5 d=1 B=6: 156 degree-1 polys, up to 3796416 triples (pruned by a<=b symmetry) ...
+  [Method A] n=5 d=1: tested 1910376 triples, 0 nonconstant hit(s)
+  [Method A] n=5 d=2 B=3: 294 degree-2 polys, up to 25412184 triples (pruned by a<=b symmetry) ...
+  [Method A] n=5 d=2: tested 12749310 triples, 0 nonconstant hit(s)
+  [Method A] n=5 d=3 B=1: 54 degree-3 polys, up to 157464 triples (pruned by a<=b symmetry) ...
+  [Method A] n=5 d=3: tested 80190 triples, 0 nonconstant hit(s)
+
+========================================================================
+SUMMARY (nonconstant hits within coefficient box)
+========================================================================
+  n=2, deg=1, B=6: 32 hit(s)
+      sign=+: a(-3 + -4*t)^2 + b(-1 + -3*t)^2 - c(-3 + -5*t)^2 = +1
+      sign=+: a(-3 + -4*t)^2 + b(-1 + -3*t)^2 - c(3 + 5*t)^2 = +1
+      sign=+: a(-3 + -4*t)^2 + b(1 + 3*t)^2 - c(-3 + -5*t)^2 = +1
+      sign=+: a(-3 + -4*t)^2 + b(1 + 3*t)^2 - c(3 + 5*t)^2 = +1
+      sign=+: a(-1 + -4*t)^2 + b(-2 + -3*t)^2 - c(-2 + -5*t)^2 = +1
+      ... and 27 more
+  n=2, deg=2, B=3: NONE
+  n=2, deg=3, B=1: NONE
+  n=3, deg=1, B=6: NONE
+  n=3, deg=2, B=3: NONE
+  n=3, deg=3, B=1: NONE
+  n=4, deg=1, B=6: NONE
+  n=4, deg=2, B=3: NONE
+  n=4, deg=3, B=1: NONE
+  n=5, deg=1, B=6: NONE
+  n=5, deg=2, B=3: NONE
+  n=5, deg=3, B=1: NONE
+
+  Nonconstant hits at n=2 (OUTSIDE the n>=3 conjecture): 32
+  Nonconstant hits at n>=3 (the conjecture range):       0
+
+  Interpretation: n=2 hits are Pythagorean-type identities and lie
+  outside the n>=3 defect-one conjecture. ZERO nonconstant hits at
+  n>=3 within the box is consistent with — and rigorously explained
+  by — the Method B / Mason-Stothers obstruction (param_obstruction.py),
+  which forbids ANY nonconstant family for n>=3 at any coefficient size
+  and any degree.
