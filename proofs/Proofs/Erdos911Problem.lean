@@ -18,14 +18,7 @@ such that any 2-coloring of the edges of H contains a monochromatic copy of G.
 **Reference:** [Er82e, p.78]
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Maps
-import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
+import Mathlib
 
 namespace Erdos911
 

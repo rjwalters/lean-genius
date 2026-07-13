@@ -25,11 +25,7 @@ References:
   - Mathlib: ZMod.cauchy_davenport
 -/
 
-import Mathlib.Combinatorics.Additive.CauchyDavenport
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.NAry
-import Mathlib.Tactic.IntervalCases
+import Mathlib
 
 open Finset Function
 open scoped Pointwise
@@ -780,8 +776,7 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
           | zero => simpa using ha₀A
           | succ n ih =>
             have := hclosed _ ih
-            convert this using 1
-            push_cast; ring
+            convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
         have horbit : ∀ k : Fin p, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A :=
           fun k => horbit_nat k.val
         have himg_card : (Finset.univ.image (fun k : Fin p =>

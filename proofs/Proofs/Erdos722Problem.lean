@@ -37,10 +37,7 @@ References:
 Tags: combinatorics, design-theory, steiner-systems, block-designs
 -/
 
-import Mathlib.Combinatorics.SetFamily.Intersecting
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
+import Mathlib
 
 open scoped Classical
 

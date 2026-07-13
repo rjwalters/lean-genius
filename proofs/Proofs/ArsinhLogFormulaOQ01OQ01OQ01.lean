@@ -70,7 +70,7 @@ theorem hasDerivAt_sqrtAntideriv (t : ℝ) :
     (hasDerivAt_id t).mul hsqrt
   -- add the arsinh term, then divide by 2
   have hsum := (hprod.add (Real.hasDerivAt_arsinh t)).div_const 2
-  convert hsum using 1
+  convert hsum using 1 <;> (first | rfl | ring | norm_num)
   -- value equality: √(1+t²) = ((1·√ + t·(2t/(2√))) + (√)⁻¹)/2
   have hs : Real.sqrt (1 + t ^ 2) ^ 2 = 1 + t ^ 2 := sq_sqrt_one_add_sq t
   have hpos : 0 < Real.sqrt (1 + t ^ 2) := sqrt_one_add_sq_pos t

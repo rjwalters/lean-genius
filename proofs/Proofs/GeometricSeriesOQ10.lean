@@ -144,8 +144,7 @@ theorem hasSum_cube_mul_geometric (hr : ‖r‖ < 1) :
     ring
   rw [hfun]
   -- Functions now match; only the value needs simplification.
-  convert hcomb using 1
-  skip
+  convert hcomb using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
   ring
 
 /-- **Third moment, `tsum` form**: `∑ n³ · rⁿ = r(1+4r+r²)/(1-r)⁴`. -/

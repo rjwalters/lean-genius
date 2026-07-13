@@ -235,7 +235,7 @@ theorem multinomial_cross_moment {α : Type*} [DecidableEq α]
             (multinomialProb s p n k * (k i : ℝ) * (1 + b) ^ k j) 0 := fun k _ => by
         have hd1 := deriv_add_pow (k i)
         have hd2 := (hd1.const_mul (multinomialProb s p n k)).mul_const ((1 + b) ^ k j)
-        convert hd2 using 1
+        convert hd2 using 1 <;> (first | rfl | ring | norm_num)
       have h := HasDerivAt.sum key
       have feq : (∑ k ∈ s.piAntidiag n, fun a =>
             multinomialProb s p n k * (1 + a) ^ k i * (1 + b) ^ k j) =
@@ -263,7 +263,7 @@ theorem multinomial_cross_moment {α : Type*} [DecidableEq α]
       -- comp before simp so base points match syntactically
       have hcomp := houter.comp 0 hinner
       simp only [mul_zero, add_zero, Function.comp] at hcomp
-      convert hcomp using 1; ring
+      convert hcomp using 1 <;> (first | rfl | ring | norm_num)
     have hfg : (fun a => ∑ k ∈ s.piAntidiag n,
           multinomialProb s p n k * (1 + a) ^ k i * (1 + b) ^ k j) =
               fun a => (1 + p i * a + p j * b : ℝ) ^ n :=
@@ -313,7 +313,7 @@ theorem multinomial_cross_moment {α : Type*} [DecidableEq α]
       -- hcomp : HasDerivAt (fun b => (1+pj*b)^(n-1)) (↑(n-1) * pj) 0
       have hscaled := hcomp.const_mul ((n : ℝ) * p i)
       -- hscaled : HasDerivAt (fun b => n*pi*(1+pj*b)^(n-1)) (n*pi*(↑(n-1)*pj)) 0
-      convert hscaled using 1; ring
+      convert hscaled using 1 <;> (first | rfl | ring | norm_num)
     have hfg : (fun b => ∑ k ∈ s.piAntidiag n,
           multinomialProb s p n k * (k i : ℝ) * (1 + b) ^ k j) =
               fun b => (n : ℝ) * p i * (1 + p j * b) ^ (n - 1) :=

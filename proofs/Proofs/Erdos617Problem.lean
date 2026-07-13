@@ -28,11 +28,7 @@ References:
   complete graphs. Discrete Math., 79-86.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Fin.Basic
+import Mathlib
 
 namespace Erdos617
 

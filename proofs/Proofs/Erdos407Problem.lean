@@ -28,9 +28,7 @@ References:
 - Bajpai-Bennett [BaBe24]: Acta Arith. (2024)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Nat Finset
 

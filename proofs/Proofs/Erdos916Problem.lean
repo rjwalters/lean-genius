@@ -21,9 +21,7 @@ References:
   in a graph", Arch. Math. (Basel) 25, 210-215
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
-import Mathlib.Data.Fintype.Card
+import Mathlib
 
 open scoped Classical
 

@@ -306,7 +306,7 @@ theorem rh_implies_density_for_all_theta_gt_half
   intro θ hθ
   have hε : θ - 1/2 > 0 := by linarith
   have := shortIntervalPNT_rh_conditional h (θ - 1/2) hε
-  convert this using 2; ring
+  convert this using 2 <;> (first | rfl | ring | norm_num)
 
 -- ============================================================
 -- PART 6: Existence vs. Density — The Gap

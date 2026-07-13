@@ -28,12 +28,7 @@ order-type version. This avoids requiring a linear order on the product type.
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib.SetTheory.Ordinal.Arithmetic
-import Mathlib.SetTheory.Cardinal.Ordinal
-import Mathlib.SetTheory.Cardinal.Cofinality
-import Mathlib.SetTheory.Cardinal.Order
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Order.InitialSeg
+import Mathlib
 
 open Cardinal Ordinal Set
 
@@ -302,7 +297,7 @@ private theorem erdosHajnal_not_countably_colorable
   -- Rows is a subset of T, and its subtype has cardinality > ℵ₀
   -- Convert to Set for easier manipulation
   have hRowsSet : ℵ₀ < Cardinal.mk {α : T | domColor α = c₀} := by
-    convert hc₀ using 1
+    convert hc₀ using 1 <;> (first | rfl | ring | norm_num)
   -- Step 4: Pick two rows α₁ < α₂ with dominant color c₀
   obtain ⟨α₁, α₂, hα₁, hα₂, hlt_α⟩ := exists_two_distinct hRowsSet
   -- Both rows have uncountable c₀-fibers
@@ -311,11 +306,11 @@ private theorem erdosHajnal_not_countably_colorable
   -- The c₀-fiber in row α₁: {β | f(α₁, β) = c₀} is uncountable
   have hfiber₁ : ℵ₀ < Cardinal.mk {β : T | f (α₁, β) = c₀} := by
     have := hdom_spec α₁; rw [hα₁_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- The c₀-fiber in row α₂ is nonempty (since uncountable)
   have hfiber₂ : ℵ₀ < Cardinal.mk {β : T | f (α₂, β) = c₀} := by
     have := hdom_spec α₂; rw [hα₂_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Pick any β₂ from the c₀-fiber of row α₂
   obtain ⟨β₂, hβ₂⟩ := nonempty_of_uncountable hfiber₂
   -- Step 5: By cofinality, find β₁ > β₂ in the c₀-fiber of row α₁
@@ -546,7 +541,7 @@ private theorem erdosHajnal2_not_aleph1_colorable
   obtain ⟨c₀, hc₀⟩ := exists_large_fiber domColor hTunc hC
   set Rows := domColor ⁻¹' {c₀} with hRows_def
   have hRowsSet : ℵ₁ < Cardinal.mk {α : T | domColor α = c₀} := by
-    convert hc₀ using 1
+    convert hc₀ using 1 <;> (first | rfl | ring | norm_num)
   -- Step 4: Pick two rows α₁ < α₂ with dominant color c₀
   obtain ⟨α₁, α₂, hα₁, hα₂, hlt_α⟩ := exists_two_distinct_large hRowsSet
   have hα₁_dom : domColor α₁ = c₀ := hα₁
@@ -554,11 +549,11 @@ private theorem erdosHajnal2_not_aleph1_colorable
   -- The c₀-fiber in row α₁ has size > ℵ₁
   have hfiber₁ : ℵ₁ < Cardinal.mk {β : T | f (α₁, β) = c₀} := by
     have := hdom_spec α₁; rw [hα₁_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- The c₀-fiber in row α₂ has size > ℵ₁
   have hfiber₂ : ℵ₁ < Cardinal.mk {β : T | f (α₂, β) = c₀} := by
     have := hdom_spec α₂; rw [hα₂_dom] at this
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Pick any β₂ from the c₀-fiber of row α₂
   obtain ⟨β₂, hβ₂⟩ := nonempty_of_large hfiber₂
   -- Step 5: By cofinality, find β₁ > β₂ in the c₀-fiber of row α₁

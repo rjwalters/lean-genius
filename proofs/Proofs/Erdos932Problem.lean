@@ -228,7 +228,7 @@ axiom erdos_932 : { r : ℕ | erdos932Condition r }.Infinite
 theorem erdos_932_alt :
     { r : ℕ | 2 ≤ (Finset.Ioo (nthPrime r) (nthPrime (r + 1)) |>.filter
       (fun m => maxPrimeFactor m < nthPrime (r + 1) - nthPrime r)).card }.Infinite := by
-  convert erdos_932 using 1
+  convert erdos_932 using 1 <;> (first | rfl | ring | norm_num)
 
 /- ## Part VI: The Density-Zero Result (SOLVED) -/
 
@@ -261,7 +261,7 @@ axiom erdos_932_density_zero :
 theorem erdos_932_variants_one_le :
     HasDensity { r : ℕ | 1 ≤ (Finset.Ioo (nthPrime r) (nthPrime (r + 1)) |>.filter
       (fun m => maxPrimeFactor m < nthPrime (r + 1) - nthPrime r)).card } 0 := by
-  convert erdos_932_density_zero using 1
+  convert erdos_932_density_zero using 1 <;> (first | rfl | ring | norm_num)
 
 /- ## Part VII: Examples and Analysis -/
 

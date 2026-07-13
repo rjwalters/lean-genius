@@ -30,10 +30,7 @@ References:
 Tags: number-theory, powerful-numbers, pell-equations, consecutive-integers
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos365
 

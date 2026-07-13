@@ -380,8 +380,7 @@ theorem hasDerivAt_cosh (x : ℝ) : HasDerivAt Real.cosh (Real.sinh x) x := by
   have hsinhEq : Real.sinh x = (Real.exp x - Real.exp (-x)) / 2 := Real.sinh_eq x
   rw [hsinhEq]
   have := (h1.add h2').div_const 2
-  convert this using 1
-  ring
+  convert this using 1 <;> (first | rfl | ring)
 
 /-- HasDerivAt for sinh: sinh'(x) = cosh(x). -/
 theorem hasDerivAt_sinh (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
@@ -394,8 +393,7 @@ theorem hasDerivAt_sinh (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
   have hcoshEq : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
   rw [hcoshEq]
   have := (h1.sub h2').div_const 2
-  convert this using 1
-  ring
+  convert this using 1 <;> (first | rfl | ring)
 
 /-- cosh'(0) = sinh(0) = 0, confirming cosh has a minimum at 0. -/
 theorem cosh_deriv_zero : HasDerivAt Real.cosh 0 0 := by
@@ -429,8 +427,7 @@ theorem cos_second_order_at_zero :
   simp [Real.sin_zero] at h
   have hconst := hasDerivAt_const (0 : ℝ) (1 : ℝ)
   have := hconst.sub h
-  convert this using 1
-  ring
+  convert this using 1 <;> (first | rfl | ring)
 
 /-- sin(0) = 0 and cos(0) = 1 (building blocks for flat limit). -/
 theorem trig_at_zero : Real.sin 0 = 0 ∧ Real.cos 0 = 1 :=
@@ -1053,10 +1050,10 @@ private theorem cosh_ge_one_add_sq_div_two_nonneg (x : ℝ) (hx : 0 ≤ x) :
   have hf_deriv : ∀ t ∈ interior (Set.Icc 0 x), 0 ≤ deriv f t := by
     intro t ht
     have hd3 : HasDerivAt (fun y : ℝ => y ^ 2 / 2) t t := by
-      convert (hasDerivAt_pow 2 t).div_const 2 using 1; ring
+      convert (hasDerivAt_pow 2 t).div_const 2 using 1 <;> (first | rfl | ring | norm_num)
     have hd : HasDerivAt f (Real.sinh t - t) t := by
       show HasDerivAt (fun y => Real.cosh y - 1 - y ^ 2 / 2) (Real.sinh t - t) t
-      convert ((hasDerivAt_cosh t).sub (hasDerivAt_const t 1)).sub hd3 using 1; ring
+      convert ((hasDerivAt_cosh t).sub (hasDerivAt_const t 1)).sub hd3 using 1 <;> (first | rfl | ring | norm_num)
     rw [hd.deriv]
     have ht_mem := interior_subset ht
     linarith [sinh_ge_id t ht_mem.1]

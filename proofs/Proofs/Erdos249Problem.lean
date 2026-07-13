@@ -113,8 +113,7 @@ private theorem hasSum_n_mul_half_pow :
     HasSum (fun n : ℕ => (n : ℝ) * (1 / 2 : ℝ) ^ n) 2 := by
   have h := hasSum_coe_mul_geometric_of_norm_lt_one
     (show ‖(1 / 2 : ℝ)‖ < 1 by norm_num)
-  convert h using 1
-  norm_num
+  convert h using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
 
 /-- Upper bound: the sum is at most 2.
 

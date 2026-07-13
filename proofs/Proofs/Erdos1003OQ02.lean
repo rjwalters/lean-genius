@@ -29,8 +29,7 @@ arbitrarily large k.
 Reference: https://erdosproblems.com/1003
 -/
 
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 open Nat Set
 

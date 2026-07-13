@@ -419,7 +419,7 @@ theorem no_turn_angle_4_in_tour (t : ClosedTour) (i : Fin 62) :
   -- tourMoves[i+1] = getMoveVector s1 s2
   have hmv2 : (tourMoves t)[i.val + 1]'(by rw [tourMoves_length]; omega) = getMoveVector s1 s2 := by
     have h := tourMoves_getElem_lt t (i.val + 1) hi1_lt_63
-    convert h using 3
+    convert h using 3 <;> (first | rfl | ring | norm_num)
   -- Adjacencies
   have hadj01 : knightGraph.Adj s0 s1 := tour_consecutive_adj t i.val (by omega)
   have hadj12 : knightGraph.Adj s1 s2 := tour_consecutive_adj t (i.val + 1) (by omega)
@@ -1748,7 +1748,7 @@ theorem getMoveVector_rotate90 (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have hadj : isKnightOffset ((↑(7 - s2.2.val) : Int) - ↑(7 - s1.2.val))
                               ((s2.1 : Int) - s1.1) = true := by
     have := rotate_knight_offset h
-    simp only [Fin.val_natCast] at this ⊢
+    skip
     convert this using 2; all_goals omega
   -- Unfold definitions
   simp only [getMoveVector, rotateSquare90, rotateMoveVector]
@@ -1773,7 +1773,7 @@ theorem getMoveVector_reflect (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have hadj : isKnightOffset ((↑(7 - s2.1.val) : Int) - ↑(7 - s1.1.val))
                               ((s2.2 : Int) - s1.2) = true := by
     have := reflect_knight_offset h
-    simp only [Fin.val_natCast] at this ⊢
+    skip
     convert this using 2; all_goals omega
   -- Unfold definitions
   simp only [getMoveVector, reflectSquare, reflectMoveVector]

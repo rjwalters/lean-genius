@@ -166,8 +166,7 @@ theorem erdos_572_k3 : erdosConjectureLowerBound 3 := by
   · intro n hn
     have h := hc n hn
     -- 4/3 = 1 + 1/3, so this follows from Benson's result
-    convert h using 2
-    norm_num
+    convert h using 2 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
 
 theorem erdos_572_k5 : erdosConjectureLowerBound 5 := by
   unfold erdosConjectureLowerBound
@@ -178,8 +177,7 @@ theorem erdos_572_k5 : erdosConjectureLowerBound 5 := by
   · intro n hn
     have h := hc n hn
     -- 6/5 = 1 + 1/5, so this follows from Benson's result
-    convert h using 2
-    norm_num
+    convert h using 2 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
 
 /-
 ## Part V: Comparison of Exponents

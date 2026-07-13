@@ -115,8 +115,7 @@ theorem hasSum_sq_mul_geometric (hr : ‖r‖ < 1) :
     ring
   rw [hfun]
   -- Functions now match; only the value needs simplification.
-  convert hcomb using 1
-  skip
+  convert hcomb using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
   ring
 
 /-- **Second moment, `tsum` form**: `∑ n² · rⁿ = r(1+r)/(1-r)³`. -/

@@ -813,7 +813,7 @@ theorem zetaValue_three_tail_ub (N : ℕ) (hN : 1 ≤ N) :
           Finset.sum_le_sum fun k _ => by
             have h := cube_succ_inv_le_telescoping ((k : ℝ) + N)
               (by have : (0 : ℝ) ≤ k := Nat.cast_nonneg k; linarith)
-            convert h using 2; push_cast; ring
+            convert h using 2 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       _ = 1 / (2 * (N : ℝ) ^ 2) - 1 / (2 * ((M : ℝ) + N) ^ 2) :=
           telescope_sum_eq N M
       _ ≤ 1 / (2 * (N : ℝ) ^ 2) := sub_le_self _ (by positivity)

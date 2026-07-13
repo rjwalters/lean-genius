@@ -44,8 +44,7 @@ theorem hasSum_even_zeta_two :
       = (fun k : ℕ => (1 / 4 : ℝ) * (1 / (k : ℝ) ^ 2)) := by
     funext k; push_cast; ring
   rw [hfe]
-  convert h4 using 1
-  ring
+  convert h4 using 1 <;> (first | rfl | ring)
 
 /-- Odd-indexed Basel sum: `∑_k 1/(2k+1)² = π²/8`. Derived from `hasSum_zeta_two`
     by the even/odd split: ζ(2) = (even part π²/24) + (odd part), so the odd part
