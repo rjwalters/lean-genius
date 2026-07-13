@@ -118,7 +118,10 @@
   "conclusion": {
     "summary": "This entry formalizes Key Lemma 2 of the LLL-for-Ramsey plan — the monochromatic-clique bad-event probability p = 2^(1−C(k,2)) — entirely by finite counting, with 0 axioms and 0 sorries. Together with the dependency-degree bound of the sibling entry (Key Lemma 3), it constitutes the complete combinatorial input to the symmetric LLL feasibility test e·p·(d+1) ≤ 1 that underlies Spencer's improved diagonal Ramsey lower bound.",
     "implications": "The exact probability p and the dependency degree d are the only Ramsey-specific quantities the symmetric LLL needs; both are now machine-checked, axiom-free counting statements independent of the (not-yet-formalized) measure-theoretic LLL machinery. This isolates the remaining work to the abstract LLL itself.",
-    "openQuestions": "Formalizing the symmetric Lovász Local Lemma proper (the conditional-probability induction over dependency graphs) in Mathlib, and combining it with Key Lemmas 2 and 3 to discharge the axiom spencer_diagonal_lower_bound in Proofs/RamseyR4kExtensions.lean. Key Lemma 3's Lean file additionally needs a Mathlib-4.26 API-drift repair before it can be merged."
+    "openQuestions": [
+      "Formalizing the symmetric Lovász Local Lemma proper (the conditional-probability induction over dependency graphs) in Mathlib, and combining it with Key Lemmas 2 and 3 to discharge the axiom spencer_diagonal_lower_bound in Proofs/RamseyR4kExtensions.lean. Key Lemma 3's Lean file additionally needs a Mathlib-4.26 API-drift repair before it can be merged.",
+      "This file pins the two-colour bad-event probability to the exact rational p = 2^{1−C(k,2)} via the 'exactly two constant colourings' counting core. Does the same finite count generalize to r colours — p = r^{1−C(k,2)} for the event that a fixed k-clique is monochromatic under a uniform random r-colouring of the edges — and what LLL feasibility threshold (and resulting lower bound on the multicolour Ramsey number R_r(k)) does that exact probability yield?"
+    ]
   },
   "mainTheorems": [
     {
