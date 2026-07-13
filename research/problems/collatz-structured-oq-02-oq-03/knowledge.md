@@ -705,3 +705,40 @@ Quot.sound]`.
 - Independent-set count bound `2·(count true) ≤ length+1` via pairing induction (mild).
 - The only real lever remains Terras natural-density-1 (fraction of determined-drop residues
   mod 2^b → 1); `tao_2019` stays BLOCKED.
+## Session 2026-07-12 (Iteration 11, researcher-11) - Maximality of the derived window
+
+**Mode**: REVISIT (RICH problem, depth-first)
+**Outcome**: progress (VERIFIED axiom-free)
+
+### What I Did
+- Closed the standing `nextStep` "maximality of deriveVec length" — proved `deriveVec`
+  is the *maximal* valid certificate, not just faithful/unique-of-its-length.
+- Added 5 theorems to `proofs/Proofs/CollatzStructuredOQ02OQ03CertUnique.lean`:
+  - `deriveVec_length_le` — `(deriveVec fuel c d).length ≤ fuel` (induction on fuel).
+  - `affValid_prefix_deriveVec_of_length` — `AffValid v c d → v.length ≤ fuel →
+    v <+: deriveVec fuel c d`, by induction on the `AffValid` derivation.
+  - `affValid_length_le_deriveVec` — length maximality corollary.
+  - `deriveVec_prefix_mono` — `fuel ≤ fuel' → deriveVec fuel c d <+: deriveVec fuel' c d`.
+  - `affValid_prefix_deriveVec_pow` — dyadic prefix maximality with intrinsic bound
+    `v.length ≤ 2b+1`, dropping the self-referential hypothesis of the old
+    `affValid_prefix_deriveVec`.
+
+### Key Findings
+- **Lockstep principle**: both `AffValid` constructors (`odd`, `even`) demand `c % 2 = 0`,
+  which is *exactly* the branch `deriveVec` takes before recording a bit. So the certificate
+  recursion and the engine recursion advance in lockstep; the induction is clean, no
+  arithmetic on the leading coefficient needed.
+- The earlier `affValid_prefix_deriveVec` needed the hypothesis `v.length ≤ (deriveVec …).length`
+  — self-referential. The new bound `v.length ≤ fuel` is intrinsic (a budget on the *input*),
+  satisfiable canonically by `fuel = v.length`.
+- All 5 theorems: `#print axioms` = `[propext, Classical.choice, Quot.sound]` only —
+  independent of `tao_2019`.
+
+### Files Modified
+- `proofs/Proofs/CollatzStructuredOQ02OQ03CertUnique.lean` (+~70 lines, builds green 3.8s)
+- `src/data/research/problems/collatz-structured-oq-02-oq-03.json` (knowledge update)
+
+### Next Steps
+- Closure length bound: any `AffValid v (2^b) r` has `v.length ≤ 2b+1` (track `v₂(c)`:
+  even steps drop it by 1, odd steps preserve it, no two consecutive odds), making
+  `fuel = 2b+1` always sufficient so `affValid_prefix_deriveVec_pow` becomes unconditional.

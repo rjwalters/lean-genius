@@ -248,5 +248,98 @@ theorem affValid_true_succ_false {v : List Bool} {c d : ℕ} (hv : AffValid v c 
   rw [e1, e2] at hdrop
   simp only [hi, hi2] at hdrop
   exact not_affValid_true_true hdrop
+/-! ## Part XI (cont.) — Length maximality of the derived window
+
+The prefix results above (`affValid_prefix_deriveVec`) still assume a comparison against
+`deriveVec`'s *own* length.  The lemmas below discharge that hypothesis at its root: the
+`deriveVec` engine records a bit under exactly the branch condition (`c` even) that the
+`AffValid` constructors demand, so the certificate recursion and the engine recursion stay
+in lockstep.  Consequently a valid certificate is *never* longer than the window the fuel
+can reach — `deriveVec` produces the maximal faithful transcript — and increasing the fuel
+only extends the window, never revising a recorded bit.  This settles the standing
+"maximality of `deriveVec` length" step: no valid certificate is strictly longer than
+`deriveVec fuel c d` once `fuel` covers it, and the canonical choice `fuel = v.length`
+always covers it.  Still axiom-free (independent of `tao_2019`; no `decide`). -/
+
+/-- The auto-derived window never records more bits than its fuel: `deriveVec` stops as soon
+as the leading coefficient turns odd or the fuel runs out, so `(deriveVec fuel c d).length ≤
+fuel` unconditionally.  This is the intrinsic length budget that replaces the
+self-referential bound `v.length ≤ (deriveVec …).length`. -/
+theorem deriveVec_length_le : ∀ (fuel c d : ℕ), (deriveVec fuel c d).length ≤ fuel := by
+  intro fuel
+  induction fuel with
+  | zero => intro c d; simp [deriveVec]
+  | succ f ih =>
+    intro c d
+    rw [deriveVec]
+    split_ifs
+    · simp
+    · simp only [List.length_cons]; exact Nat.succ_le_succ (ih (3 * c) (3 * d + 1))
+    · simp only [List.length_cons]; exact Nat.succ_le_succ (ih (c / 2) (d / 2))
+
+/-- **Maximality of the derived window (prefix form).**  Any valid certificate `v` for the
+affine class `(c, d)` whose length is within the available `fuel` is a *prefix* of the
+auto-derived window `deriveVec fuel c d`.  Unlike `affValid_prefix_deriveVec`, this needs no
+hypothesis comparing `v` to `deriveVec`'s own length — only `v.length ≤ fuel`, met by the
+canonical choice `fuel = v.length`.  Proof: induction on the `AffValid` derivation.  Both
+constructors (`odd`, `even`) require `c % 2 = 0`, which is exactly the branch `deriveVec`
+takes before recording a bit, so at each step the engine emits the same parity the
+certificate does and recurses into the same successor pair. -/
+theorem affValid_prefix_deriveVec_of_length :
+    ∀ {v : List Bool} {c d : ℕ}, AffValid v c d → ∀ {fuel : ℕ}, v.length ≤ fuel →
+      v <+: deriveVec fuel c d := by
+  intro v c d hv
+  induction hv with
+  | nil => intro fuel _; exact List.nil_prefix
+  | @odd v c d hc hd _ ih =>
+    intro fuel hfuel
+    obtain ⟨fuel', rfl⟩ : ∃ f, fuel = f + 1 := by
+      cases fuel with
+      | zero => simp only [List.length_cons] at hfuel; omega
+      | succ f => exact ⟨f, rfl⟩
+    rw [deriveVec, if_neg (by omega : ¬ c % 2 = 1), if_pos hd]
+    obtain ⟨t, ht⟩ := ih (show v.length ≤ fuel' by
+      simp only [List.length_cons] at hfuel; omega)
+    exact ⟨t, by rw [List.cons_append, ht]⟩
+  | @even v c d hc hd _ ih =>
+    intro fuel hfuel
+    obtain ⟨fuel', rfl⟩ : ∃ f, fuel = f + 1 := by
+      cases fuel with
+      | zero => simp only [List.length_cons] at hfuel; omega
+      | succ f => exact ⟨f, rfl⟩
+    rw [deriveVec, if_neg (by omega : ¬ c % 2 = 1), if_neg (by omega : ¬ d % 2 = 1)]
+    obtain ⟨t, ht⟩ := ih (show v.length ≤ fuel' by
+      simp only [List.length_cons] at hfuel; omega)
+    exact ⟨t, by rw [List.cons_append, ht]⟩
+
+/-- **Length maximality.**  A valid certificate is never longer than the auto-derived window
+the fuel can reach: `deriveVec` yields the *longest* faithful transcript of the
+residue-determined parity window.  Immediate from the prefix form via `IsPrefix.length_le`. -/
+theorem affValid_length_le_deriveVec {v : List Bool} {c d fuel : ℕ}
+    (hv : AffValid v c d) (hfuel : v.length ≤ fuel) :
+    v.length ≤ (deriveVec fuel c d).length :=
+  (affValid_prefix_deriveVec_of_length hv hfuel).length_le
+
+/-- **Fuel monotonicity of the engine.**  Increasing the fuel only *extends* the derived
+window — it never revises an already-recorded bit: `deriveVec fuel c d` is a prefix of
+`deriveVec fuel' c d` whenever `fuel ≤ fuel'`.  (The shorter window is itself a valid
+certificate by `affValidB_deriveVec`, and its length is `≤ fuel ≤ fuel'`, so the previous
+lemma applies.)  Hence the derived certificates for a fixed class form a *chain* under the
+prefix order, stabilizing at the maximal valid transcript once the window closes. -/
+theorem deriveVec_prefix_mono {c d fuel fuel' : ℕ} (h : fuel ≤ fuel') :
+    deriveVec fuel c d <+: deriveVec fuel' c d :=
+  affValid_prefix_deriveVec_of_length
+    (affValidB_sound (affValidB_deriveVec fuel c d))
+    (le_trans (deriveVec_length_le fuel c d) h)
+
+/-- **Prefix maximality for the dyadic engine, without a self-referential hypothesis.**  For
+the residue class `r (mod 2^b)`, any valid certificate `v` of length `≤ 2b+1` is a prefix of
+the canonical window `deriveVec (2b+1) (2^b) r`.  This is `affValid_prefix_deriveVec` with its
+hypothesis `v.length ≤ (deriveVec …).length` replaced by the intrinsic fuel budget
+`v.length ≤ 2b+1` — a bound on the engine's input, not a quantity read back off its output. -/
+theorem affValid_prefix_deriveVec_pow {b r : ℕ} {v : List Bool}
+    (hv : AffValid v (2 ^ b) r) (hlen : v.length ≤ 2 * b + 1) :
+    v <+: deriveVec (2 * b + 1) (2 ^ b) r :=
+  affValid_prefix_deriveVec_of_length hv hlen
 
 end CollatzStructuredOQ02OQ03
