@@ -373,4 +373,45 @@ theorem not_pgroup_any_of_two_primes_dvd (α : ℝ) (hα : IsIntegral ℚ α)
   have e₂ : q₂ = p := pgroup_prime_dvd_degree_eq α hα hp hq₂ hgt hd₂ hP
   exact hne (e₁.trans e₂.symm)
 
+/-! ### Group-structural layer: a p-group Galois group is nilpotent, hence solvable
+
+The criteria above are all about the *arithmetic of the degree* (`natDegree = p^k`
+and its prime factors).  This section records the complementary **group-theoretic
+structure**: a `p`-group is nilpotent (`IsPGroup.isNilpotent`), and every nilpotent
+group is solvable (`IsNilpotent.to_isSolvable`), so a `p`-group Galois group is
+solvable.  Solvability of the Galois group is the algebraic gateway to
+*expressibility by radicals* (Galois' criterion), which is why the constructibility
+question — a `2`-group tower of quadratic extensions — sits inside the wider
+solvable-by-radicals picture.  These use no property of the degree at all, only the
+`p`-group hypothesis on the group itself. -/
+
+/-- **A p-group Galois group is nilpotent.**  For any prime `p`, if `Gal(minpoly ℚ α)`
+is a `p`-group then it is a nilpotent group: the finite Galois group is a finite
+`p`-group, and finite `p`-groups are nilpotent (`IsPGroup.isNilpotent`). -/
+theorem pgroup_gal_isNilpotent (α : ℝ) (_hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    Group.IsNilpotent (minpoly ℚ α).Gal := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact hGal.isNilpotent
+
+/-- **A p-group Galois group is solvable.**  Nilpotent groups are solvable
+(`IsNilpotent.to_isSolvable`), so `pgroup_gal_isNilpotent` upgrades to solvability —
+the hypothesis of Galois' radical-solvability criterion.  In particular the
+constructibility-relevant `2`-group case yields a solvable Galois group. -/
+theorem pgroup_gal_isSolvable (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    IsSolvable (minpoly ℚ α).Gal := by
+  haveI : Group.IsNilpotent (minpoly ℚ α).Gal := pgroup_gal_isNilpotent α hα hp hGal
+  infer_instance
+
+/-- **Non-solvable Galois group ⟹ not a p-group (for any prime).**  The contrapositive
+of `pgroup_gal_isSolvable`: if `Gal(minpoly ℚ α)` fails to be solvable then it is not a
+`p`-group for *any* prime `p` (so, in particular, not the `2`-group required for
+constructibility).  A group-structural non-constructibility criterion complementing the
+degree-arithmetic obstructions above. -/
+theorem not_pgroup_of_not_solvable (α : ℝ) (hα : IsIntegral ℚ α)
+    (hns : ¬ IsSolvable (minpoly ℚ α).Gal) {p : ℕ} (hp : p.Prime) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal :=
+  fun hGal => hns (pgroup_gal_isSolvable α hα hp hGal)
+
 end AngleTrisectionOQ02OQ01OQ03
