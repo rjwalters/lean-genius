@@ -175,6 +175,6 @@ theorem tangentGreatCircle_at_point {O P : E} {ρ : ℝ} (hO : OnSphere O) (hρ0
   have hPin : P ∈ sCircle O ρ ∩ sGreatCircle (tangentPole P O ρ) := ⟨⟨hP, hPscos⟩, hPgc⟩
   rw [hinter] at hPin
   rw [Set.mem_singleton_iff] at hPin
-  rw [hinter, hPin]
+  rw [hinter, ← hPin]
 
 end FeuerbachsTheoremOQ04

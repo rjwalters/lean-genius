@@ -170,6 +170,7 @@ theorem primes_admissible (n : ℕ) :
     IsAdmissible (Finset.filter Nat.Prime (Finset.range n)) := by
   intro a ha b hb hab
   simp only [Finset.mem_filter] at ha hb
+  have ha2 := ha.2.two_le
   exact Nat.Prime.coprime_iff_not_dvd ha.2 |>.mpr
     (fun h => hab (hb.2.eq_one_or_self_of_dvd a h |>.resolve_left (by omega)))
 

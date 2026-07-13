@@ -155,7 +155,7 @@ theorem second_conjecture_holds : SecondConjecture := by
   have hCltXε : C < X ^ ε := by
     have : C + 1 ≤ X ^ ε := calc
       C + 1 = ((C + 1) ^ ((1 : ℝ) / ε)) ^ ε := by
-            rw [← rpow_mul hC1nn]; congr 1; field_simp
+            rw [← rpow_mul hC1nn]; rw [one_div, inv_mul_cancel₀ hε.ne', rpow_one]
         _ ≤ X ^ ε := rpow_le_rpow (rpow_nonneg hC1nn _) hXge hε.le
     linarith
   -- C·X^(1/2) < X^ε · X^(1/2) = X^(1/2+ε)

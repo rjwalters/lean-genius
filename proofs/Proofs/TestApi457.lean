@@ -25,7 +25,7 @@ open Finset
 
 -- Test: omega for modular arithmetic
 example (n p : ℕ) (hp : p > 0) (h : n % p = 0) : p ∣ (n + p) := by
-  rw [Nat.dvd_iff_mod_eq_zero]; omega
+  rw [Nat.dvd_iff_mod_eq_zero, Nat.add_mod, h, Nat.mod_self]; rfl
 
 -- Test: dvd transitivity with product membership
 example (s : Finset ℕ) (a b : ℕ) (ha : a ∈ s) (hab : b ∣ a) :

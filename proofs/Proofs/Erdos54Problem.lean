@@ -32,7 +32,7 @@ def Colouring2 (A : Set ℕ) := { n : ℕ // n ∈ A } → Bool
 /-- The subset sums from a single colour class. -/
 def monoSubsetSums (A : Set ℕ) (c : Colouring2 A) (colour : Bool) : Set ℕ :=
     { s | ∃ (S : Finset ℕ),
-      (∀ n ∈ S, n ∈ A ∧ c ⟨n, ‹_›⟩ = colour) ∧
+      (∀ n ∈ S, ∃ hn : n ∈ A, c ⟨n, hn⟩ = colour) ∧
       S.sum id = s }
 
 /- ## Ramsey 2-completeness -/

@@ -159,8 +159,12 @@ theorem card_F20 : Nat.card F20 = 20 := by
       rintro ⟨g, i, j, rfl⟩
       refine ⟨(⟨i % 5, Nat.mod_lt _ (by norm_num)⟩, ⟨j % 4, Nat.mod_lt _ (by norm_num)⟩), ?_⟩
       apply Subtype.ext
-      have e1 : σ ^ (i % 5) = σ ^ i := by rw [← orderOf_sigma]; exact pow_mod_orderOf σ i
-      have e2 : τ ^ (j % 4) = τ ^ j := by rw [← orderOf_tau]; exact pow_mod_orderOf τ j
+      have e1 : σ ^ (i % 5) = σ ^ i := by
+        have := pow_mod_orderOf σ i
+        rwa [orderOf_sigma] at this
+      have e2 : τ ^ (j % 4) = τ ^ j := by
+        have := pow_mod_orderOf τ j
+        rwa [orderOf_tau] at this
       simp only [Fin.val_mk]
       rw [e1, e2]
     calc Nat.card F20 ≤ Nat.card (Fin 5 × Fin 4) := Nat.card_le_card_of_surjective _ hsurj

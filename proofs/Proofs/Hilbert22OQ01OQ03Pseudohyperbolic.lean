@@ -152,6 +152,7 @@ lemma psh_schwarzPick_center {f : ℂ → ℂ}
     (hmaps : MapsTo f (ball 0 1) (ball 0 1)) (hf0 : f 0 = 0)
     {z : ℂ} (hz : ‖z‖ < 1) : psh (f z) 0 ≤ psh z 0 := by
   rw [psh_zero_right, psh_zero_right]
-  exact Complex.norm_le_norm_of_mapsTo_ball_self hd hmaps hf0 hz
+  exact Complex.norm_le_norm_of_mapsTo_ball_self hd
+    (hmaps.mono_right Metric.ball_subset_closedBall) hf0 hz
 
 end Hilbert22OQ01OQ03

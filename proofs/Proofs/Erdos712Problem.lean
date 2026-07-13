@@ -157,9 +157,8 @@ theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :
     · -- Use Kruskal-Katona bound: π ≤ 1 - 1/k < 1 for k > 1
       have hkk := kruskal_katona_upper r k (by omega) hk
       have hk_pos : (0 : ℝ) < k := by
-        have : k > r := hk
-        have : r > 2 := hr
-        linarith
+        have : 0 < k := by omega
+        exact_mod_cast this
       have h_one_div_k_pos : (0 : ℝ) < 1 / k := by positivity
       calc turanDensity r k ≤ 1 - 1 / k := hkk
         _ < 1 := by linarith

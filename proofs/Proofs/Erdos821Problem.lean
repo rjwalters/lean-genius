@@ -114,7 +114,7 @@ axiom smooth_implies_conjecture :
 
 /-- g(1) = 2 (since φ(1) = φ(2) = 1). -/
 theorem preimage_of_1 : phi 1 = 1 ∧ phi 2 = 1 := by
-  simp [phi, Nat.totient]
+  constructor <;> decide
 
 /- ## Summary
 

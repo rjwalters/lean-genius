@@ -60,6 +60,7 @@ theorem powerfulPart_is_powerful (n : ℕ) (p : ℕ) (hp : p.Prime)
   rcases n.eq_zero_or_pos with rfl | hn
   · -- powerfulPart 0 = 1 and p ∤ 1 for prime p
     simp only [powerfulPart, Nat.factorization_zero, Finsupp.prod_zero_index] at hd
+    exact absurd hd hp.not_dvd_one
   -- p divides a Finsupp product; find which factor p divides
   unfold powerfulPart at hd ⊢
   obtain ⟨q, hq_mem, hq_dvd⟩ := (hp.prime.dvd_finsuppProd_iff (g := fun p k =>

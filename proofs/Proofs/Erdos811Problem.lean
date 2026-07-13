@@ -44,7 +44,7 @@ def completeEdgeCount (n : ℕ) : ℕ := n * (n - 1) / 2
 structure EdgeColoring (n m : ℕ) where
   color : Fin n → Fin n → Fin m
   symmetric : ∀ u v, color u v = color v u
-  irrefl : ∀ v, color v v = ⟨0, by omega⟩  -- diagonal doesn't matter
+  irrefl : ∀ v, color v v = ⟨0, (color v v).pos⟩  -- diagonal doesn't matter (Fin m is inhabited via color v v)
 
 /-- Color degree: number of edges of color c incident to vertex v -/
 noncomputable def colorDegree (χ : EdgeColoring n m) (v : Fin n) (c : Fin m) : ℕ :=

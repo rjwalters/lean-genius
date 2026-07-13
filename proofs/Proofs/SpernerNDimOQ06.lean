@@ -232,7 +232,7 @@ theorem no_pred_source {v₀ : V} (h : K.IsSource v₀) : ∀ w, K.succ w ≠ so
   intro w hw
   have hp : K.pred v₀ = some w := (K.symm w v₀).mp hw
   rw [show K.pred v₀ = none from h] at hp
-  exact Option.noConfusion hp
+  exact absurd hp (by simp)
 
 /-- **Kuhn's algorithm terminates.**  From any source door, following opposite doors
 reaches a fully-coloured simplex within `Fintype.card V` pivots. -/

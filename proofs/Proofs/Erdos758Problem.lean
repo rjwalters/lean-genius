@@ -90,6 +90,7 @@ def knownValues : Fin 19 → ℕ
   | ⟨8, _⟩ => 4  | ⟨9, _⟩ => 4  | ⟨10, _⟩ => 4 | ⟨11, _⟩ => 4
   | ⟨12, _⟩ => 5 | ⟨13, _⟩ => 5 | ⟨14, _⟩ => 5
   | ⟨15, _⟩ => 6 | ⟨16, _⟩ => 6 | ⟨17, _⟩ => 6 | ⟨18, _⟩ => 6
+  | ⟨n + 19, h⟩ => absurd h (by omega)
 
 /-- z(n+1) = knownValues(n) for 0 ≤ n ≤ 18. -/
 axiom known_values_correct (i : Fin 19) : z (i.val + 1) = knownValues i

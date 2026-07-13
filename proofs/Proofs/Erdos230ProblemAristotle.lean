@@ -43,9 +43,11 @@ theorem supNorm_le_of_ultraflat {n : ℕ} (P : UnimodularPolynomial n) (ε : ℝ
     (hflat : IsUltraflat P ε) :
     supNormOnCircle P ≤ (1 + ε) * Real.sqrt n := by
   unfold supNormOnCircle
-  apply iSup_le; intro z
-  apply iSup_le; intro hz
-  exact (hflat z hz).2
+  -- the bound is nonnegative: z = 1 lies on the circle and ‖evaluate P 1‖ ≥ 0
+  have hb : (0 : ℝ) ≤ (1 + ε) * Real.sqrt n :=
+    le_trans (norm_nonneg _) (hflat 1 (by simp)).2
+  refine Real.iSup_le (fun z => ?_) hb
+  exact Real.iSup_le (fun hz => (hflat z hz).2) hb
 
 /-
   ## Section 3: Main Disproof
