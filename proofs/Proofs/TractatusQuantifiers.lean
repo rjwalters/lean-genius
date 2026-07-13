@@ -220,10 +220,6 @@ This requires `Nonempty D` to go from right to left.
 theorem forall_vacuous [Nonempty D] (p : FOProp S D) (w : World S) :
     (FOProp.forall_ (fun _ => p)).eval w ↔ p.eval w := by
   simp [FOProp.eval]
-  · intro h
-    exact h (Classical.arbitrary D)
-  · intro h _
-    exact h
 
 -- ---------------------------------------------------------------
 -- Theorem 7: Double negation (first-order level)

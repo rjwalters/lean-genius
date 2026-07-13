@@ -29,7 +29,9 @@ def AllFactorialSubtractionsComposite (n : ℕ) : Prop :=
 theorem prime_223 : Nat.Prime 223 := by decide
 
 /-- The next prime after 211 is 223 (no primes in 212..222). -/
-theorem next_prime_after_211 : ∀ n, 211 < n → n < 223 → ¬n.Prime := by decide
+theorem next_prime_after_211 : ∀ n, 211 < n → n < 223 → ¬n.Prime := by
+  intro n h1 h2
+  interval_cases n <;> norm_num
 
 /-- 199 is prime (key fact: 223 - 4! = 199). -/
 theorem prime_199 : Nat.Prime 199 := by decide

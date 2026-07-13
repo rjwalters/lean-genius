@@ -200,7 +200,7 @@ private lemma icc_recipPow2_sum (a m : ℕ) :
 theorem borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
     let n := 2 ^ (m + 1) - m - 2
     IsRepresentable n := by
-  obtain rfl | hm2 := hm.eq_or_gt
+  obtain rfl | hm2 := Nat.eq_or_lt_of_le hm
   · -- m = 1: n = 2^2 - 3 = 1
     exact representable_one
   · -- m ≥ 2: use consecutive block {n+1, ..., n+m}
@@ -210,8 +210,7 @@ theorem borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
     have hn_sum : n + m + 2 = 2 ^ (m + 1) := by simp only [n]; omega
     refine ⟨Finset.Icc (n + 1) (n + m), ?_, ?_, ?_⟩
     · -- card ≥ 2
-      rw [show Finset.Icc (n + 1) (n + m) = Finset.Ico (n + 1) (n + m + 1) from
-        (Finset.Ico_succ_right).symm, Finset.card_Ico]
+      rw [Nat.card_Icc]
       omega
     · -- all elements ≥ 1
       intro k hk; simp only [Finset.mem_Icc] at hk; omega
@@ -255,7 +254,7 @@ theorem representable_four : IsRepresentable 4 :=
 /-- n = 5 is representable: 5/32 = 6/64 + 7/128 + 11/2048 + 13/8192 + 14/16384. -/
 theorem representable_five : IsRepresentable 5 := by
   refine ⟨{6, 7, 11, 13, 14}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {6, 7, 11, 13, 14} = recipPow2Weight 5
@@ -270,7 +269,7 @@ theorem representable_five : IsRepresentable 5 := by
 /-- n = 6 is representable: 6/64 = 7/128 + 8/256 + 11/2048 + 13/8192 + 14/16384. -/
 theorem representable_six : IsRepresentable 6 := by
   refine ⟨{7, 8, 11, 13, 14}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {7, 8, 11, 13, 14} = recipPow2Weight 6
@@ -286,7 +285,7 @@ theorem representable_six : IsRepresentable 6 := by
     + 20/1048576 + 21/2097152 + 24/16777216. -/
 theorem representable_seven : IsRepresentable 7 := by
   refine ⟨{8, 9, 11, 15, 20, 21, 24}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {8, 9, 11, 15, 20, 21, 24} = recipPow2Weight 7
@@ -314,7 +313,7 @@ theorem representable_le_7 (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 7) : IsRepresen
 /-- n = 9 is representable: 9/512 = 10/1024 + 11/2048 + 13/8192 + 14/16384. -/
 theorem representable_nine : IsRepresentable 9 := by
   refine ⟨{10, 11, 13, 14}, ?_, ?_, ?_⟩
-  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
+  · simp [Finset.card_insert_of_notMem, Finset.card_singleton]
   · intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl | rfl <;> omega
   · show recipPow2Sum {10, 11, 13, 14} = recipPow2Weight 9
@@ -375,7 +374,7 @@ def IsInfiniteRep (a : ℕ → ℕ) (x : ℚ) : Prop :=
 theorem ErdosProblem261_continuum :
     ∃ x : ℚ, ∃ f : Set.Icc (0 : ℝ) 1 → (ℕ → ℕ),
       ∀ t, IsInfiniteRep (f t) x :=
-  ⟨0, fun _ n => n + 1, fun _ => ⟨fun i => by omega, fun i j hij => by omega⟩⟩
+  ⟨0, fun _ n => n + 1, fun _ => ⟨fun i => by beta_reduce; omega, fun i j hij => by beta_reduce; omega⟩⟩
 
 /-- Erdős's weakened form: some rational admits at least two distinct representations.
     NOTE: Trivially satisfiable because IsInfiniteRep lacks convergence. -/
@@ -383,6 +382,6 @@ theorem ErdosProblem261_two_reps :
     ∃ x : ℚ, ∃ a b : ℕ → ℕ,
       IsInfiniteRep a x ∧ IsInfiniteRep b x ∧ a ≠ b :=
   ⟨0, fun n => 2 * n + 1, fun n => 2 * n + 2,
-    ⟨fun i => by omega, fun i j hij => by omega⟩,
-    ⟨fun i => by omega, fun i j hij => by omega⟩,
+    ⟨fun i => by beta_reduce; omega, fun i j hij => by beta_reduce; omega⟩,
+    ⟨fun i => by beta_reduce; omega, fun i j hij => by beta_reduce; omega⟩,
     fun h => by have := congr_fun h 0; omega⟩

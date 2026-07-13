@@ -73,7 +73,7 @@ theorem hasDerivAt_sqrtAntideriv (t : ℝ) :
   -- value equality: √(1+t²) = ((1·√ + t·(2t/(2√))) + (√)⁻¹)/2
   have hs : Real.sqrt (1 + t ^ 2) ^ 2 = 1 + t ^ 2 := sq_sqrt_one_add_sq t
   have hpos : 0 < Real.sqrt (1 + t ^ 2) := sqrt_one_add_sq_pos t
-  convert hsum using 1 <;> (first | rfl | ring1 | nlinarith [hs, hpos])
+  convert hsum using 1 <;> (first | rfl | ring1 | (field_simp; nlinarith [hs, hpos]))
 
 /-- The integrand `t ↦ √(1 + t²)` is continuous everywhere. -/
 theorem continuous_sqrt_integrand :

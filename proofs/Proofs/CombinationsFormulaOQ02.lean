@@ -52,19 +52,13 @@ theorem catalan_one : catalan 1 = 1 := by
   simp [catalan]
 
 /-- C₂ = 2. -/
-theorem catalan_two : catalan 2 = 2 := by
-  simp [catalan]
-  norm_num
+theorem catalan_two : catalan 2 = 2 := by decide
 
 /-- C₃ = 5. -/
-theorem catalan_three : catalan 3 = 5 := by
-  simp [catalan]
-  norm_num
+theorem catalan_three : catalan 3 = 5 := by decide
 
 /-- C₄ = 14. -/
-theorem catalan_four : catalan 4 = 14 := by
-  simp [catalan]
-  norm_num
+theorem catalan_four : catalan 4 = 14 := by decide
 
 /-- C₅ = 42. -/
 theorem catalan_five : catalan 5 = 42 := by
