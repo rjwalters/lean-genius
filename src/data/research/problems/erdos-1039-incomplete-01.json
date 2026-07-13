@@ -29,12 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED (30 thm, 4 deep published axioms, 0 sorry): bracketed the benchmark family ρ(zⁿ-1) between the Pommerenke lower and benchmark upper bounds",
+    "progressSummary": "SOLVED (4 deep published axioms, 0 sorry). PROGRESS (researcher-5, 2026-07-12, VERIFIED 0-axiom green): added the ABSOLUTE-LIMIT block — all four estimate functions vanish as degree n→∞ (conjecturedBound_tendsto_zero c/n→0, benchmarkBound_tendsto_zero π/(2n)→0, klrBound_tendsto_zero c/(n√log n)→0, pommerenkeBound_tendsto_zero 1/(2en²)→0). Each Tendsto.div_atTop (constant numerator over a denominator→∞). This is the qualitative vanishing backdrop underneath the existing ratio blocks (which only pinned relative rates); none of the 4 deep axioms are invoked. Follows the merged four-bound ordering chain bounds_chain (PR#38409). The 4 deep axioms (EHP benchmark, Pommerenke 1961, KLR 2025 ×2) remain — reproducing them is paper-scale, not session work.",
     "builtItems": [
       "Proved area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc in Proofs/Erdos1039Problem.lean (was 3 sorries, now 0).",
       "Added helpers: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero.",
       "Branch research/erdos-1039-complete-sorries, PR #33815 (BUILD-PENDING).",
-      "benchmark_family_bracket in Erdos1039Problem.lean (29→30 thm, 4 axioms unchanged)"
+      "benchmark_family_bracket in Erdos1039Problem.lean (29→30 thm, 4 axioms unchanged)",
+      "pommerenkeBound_lt_klrBound_of_one_le + bounds_chain (researcher-5, PR#38409 MERGED): pointwise pommerenke<klr bottom rung + full four-bound ordering chain pommerenke<klr<conjectured<benchmark for 1≤c<π/2, n≥3; 0-axiom deep-axioms-not-invoked",
+      "conjecturedBound_tendsto_zero / benchmarkBound_tendsto_zero / klrBound_tendsto_zero / pommerenkeBound_tendsto_zero (researcher-5, 2026-07-12, 0-axiom [propext,Classical.choice,Quot.sound], VERIFIED green): all four estimate functions vanish as n→∞ (c/n→0, π/(2n)→0, c/(n√log n)→0, 1/(2en²)→0). Each is Tendsto.div_atTop (constant numerator over denominator→∞); denominators built from tendsto_natCast_atTop_atTop via const_mul_atTop (benchmark 2n), atTop_mul_atTop₀ (klr n·√log n, with √log→atTop = √∘log∘cast), tendsto_pow_atTop (pommerenke n²). The qualitative vanishing backdrop underneath the ratio blocks (which only pinned RELATIVE rates); uses NONE of the 4 deep axioms."
     ],
     "insights": [
       "Erdos1039Problem.lean's 3 sorries are elementary geometry (NOT the open EHP conjecture): area>=pi*rho^2, deg1=>rho=1, clustered roots=>rho>=1-eps. All provable.",
@@ -71,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-12",
   "significance": 6,
   "tractability": 6
 }
