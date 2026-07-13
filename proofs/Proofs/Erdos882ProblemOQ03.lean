@@ -1011,4 +1011,25 @@ theorem max'_proper_subsetSums_eq {A : Finset ℕ} (hA : A.Nonempty)
       subsetSums_le_sum _ (subset_subsetSums A (A.min'_mem hA))
     exact ⟨by omega, sum_sub_min'_mem_subsetSums hA hcard⟩
 
+/-- **`DivisibilityFree` is exactly a divisibility antichain.**
+    Bridges the file's ad-hoc predicate to Mathlib's `IsAntichain (· ∣ ·)`,
+    unlocking the general antichain API for reuse.  The two definitions coincide
+    because `IsAntichain` already quantifies over *both* orders of every pair, so
+    a single `¬(a ∣ b)` for all `a ≠ b` is equivalent to the symmetric
+    `¬(a ∣ b) ∧ ¬(b ∣ a)`. -/
+theorem divisibilityFree_iff_isAntichain (S : Finset ℕ) :
+    DivisibilityFree S ↔ IsAntichain (· ∣ ·) (↑S : Set ℕ) := by
+  constructor
+  · intro h a ha b hb hab
+    exact (h a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb) hab).1
+  · intro h a ha b hb hab
+    exact ⟨h (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab,
+           h (Finset.mem_coe.mpr hb) (Finset.mem_coe.mpr ha) (Ne.symm hab)⟩
+
+/-- Forward direction packaged for direct use: a divisibility-free set *is* a
+    Mathlib divisibility antichain. -/
+theorem DivisibilityFree.isAntichain {S : Finset ℕ} (h : DivisibilityFree S) :
+    IsAntichain (· ∣ ·) (↑S : Set ℕ) :=
+  (divisibilityFree_iff_isAntichain S).mp h
+
 end Erdos882OQ03
