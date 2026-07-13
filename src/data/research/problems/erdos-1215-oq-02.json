@@ -40,8 +40,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AREA BOUND (researcher-11, 2026-07-12, VERIFIED 0-axiom): new Erdos1215UnitCircleArea.lean lifts the radius sandwich to an explicit PLANAR-AREA sandwich π·(C^{1/deg}−1)² ≤ area({|P|≤C}) ≤ π·(1+C^{1/deg})² (C≥1) for every IsUnitCirclePolynomial, plus finiteness via compactness. Root-independent quantitative confinement of the Mac Lane labyrinth region. --- FOLLOW-UP (researcher-7, 2026-07-11, VERIFIED 0-axiom): added the INNER confinement dual to the outer sublevel bound — norm_eval_le_pow_add_one (|P(z)|≤(‖z‖+1)^deg) and closedBall_subset_closedLevelSet (sublevel set ⊇ closedBall(0,C^{1/deg}−1) for C≥1), sandwiching the sublevel set between radii C^{1/deg}∓1. --- PROGRESS (researcher-8, 2026-07-11): realized the research nextStep 'the sublevel set is compact' — extended Erdos1215UnitCircleRadius.lean (176→241L, +5 thm +1 def, 0-sorry/0-axiom [propext,Classical.choice,Quot.sound]) from the OPEN level set to the CLOSED sublevel set. Added norm_le_sharp_of_norm_eval_le (≤-variant of the sharp radius: |P(z)|≤C ⟹ ‖z‖≤1+C^{1/deg}); closedLevelSet def {z:|P(z)|≤C}; isClosed_closedLevelSet (preimage of closed ball under continuous |P|=P.continuous.norm); isBounded_closedLevelSet (sharp radius); and the capstone isCompact_closedLevelSet (Heine–Borel Metric.isCompact_of_isClosed_isBounded in ℂ). Compactness precondition for reducing Mac Lane path-length to component geometry. Deep maclane_labyrinth axiom (base #1215) still open. PROGRESS (researcher-3 2026-07-11): New file Erdos1215UnitCircleRadiusLimit.lean (4 results, 0-sorry / 0-axiom; #pr",
+    "progressSummary": "MONOTONICITY & MEMBERSHIP (researcher-5, 2026-07-12, VERIFIED 0-axiom): new file Erdos1215UnitCircleMonotone.lean records how the closed sublevel set closedLevelSet P C = {|P|<=C} behaves as a function of the LEVEL C (the radius/area sandwiches all fix C). closedLevelSet_mono (C1<=C2 => set inclusion; the labyrinth region only grows with C), volume_closedLevelSet_mono (hence planar Lebesgue measure is nondecreasing in C, via measure_mono), isRoot_mem_closedLevelSet (every root lies in the set for C>=0, |P|=0 there), zero_mem_closedLevelSet (origin lies in the set for C>=1, since P(0)=1 for a unit-circle poly), closedLevelSet_nonempty (C>=1 => nonempty via 0), and levelSet_subset_closedLevelSet (the open Mac Lane region {|P|<C} sits inside the closed {|P|<=C}). 6 theorems, all [propext,Classical.choice,Quot.sound]. --- AREA BOUND (researcher-11, 2026-07-12, VERIFIED 0-axiom): new Erdos1215UnitCircleArea.lean lifts the radius sandwich to an explicit PLANAR-AREA sandwich π·(C^{1/deg}−1)² ≤ area({|P|≤C}) ≤ π·(1+C^{1/deg})² (C≥1) for every IsUnitCirclePolynomial, plus finiteness via compactness. Root-independent quantitative confinement of the Mac Lane labyrinth region. --- FOLLOW-UP (researcher-7, 2026-07-11, VERIFIED 0-axiom): added the INNER confinement dual to the outer sublevel bound — norm_eval_le_pow_add_one (|P(z)|≤(‖z‖+1)^deg) and closedBall_subset_closedLevelSet (sublevel set ⊇ closedBall(0,C^{1/deg}−1) for C≥1), sandwiching the sublevel set between radii C^{1/deg}∓1. --- PROGRESS (researcher-8, 2026-07-11): realized the research nextStep 'the sublevel set is compact' — extended Erdos1215UnitCircleRadius.lean (176→241L, +5 thm +1 def, 0-sorry/0-axiom [propext,Classical.choice,Quot.sound]) from the OPEN level set to the CLOSED sublevel set. Added norm_le_sharp_of_norm_eval_le (≤-variant of the sharp radius: |P(z)|≤C ⟹ ‖z‖≤1+C^{1/deg}); closedLevelSet def {z:|P(z)|≤C}; isClosed_closedLevelSet (preimage of closed ball under continuous |P|=P.continuous.norm); isBounded_closedLevelSet (sharp radius); and the capstone isCompact_closedLevelSet (Heine–Borel Metric.isCompact_of_isClosed_isBounded in ℂ). Compactness precondition for reducing Mac Lane path-length to component geometry. Deep maclane_labyrinth axiom (base #1215) still open. PROGRESS (researcher-3 2026-07-11): New file Erdos1215UnitCircleRadiusLimit.lean (4 results, 0-sorry / 0-axiom; #pr",
     "builtItems": [
+      "Erdos1215UnitCircleMonotone.lean (researcher-5, 2026-07-12, 0-axiom VERIFIED): monotone/membership block for the sublevel set as a function of the level C — closedLevelSet_mono (C1<=C2 => closedLevelSet P C1 subset closedLevelSet P C2), volume_closedLevelSet_mono (measure nondecreasing in C via measure_mono), isRoot_mem_closedLevelSet (roots in set for C>=0), zero_mem_closedLevelSet (0 in set for C>=1 via P(0)=1), closedLevelSet_nonempty (C>=1), levelSet_subset_closedLevelSet (open {|P|<C} subset closed {|P|<=C}). 6 thm [propext,Classical.choice,Quot.sound].",
       "eventually_levelSet_subset_closedBall (Erdos1215UnitCircleRadiusLimit.lean): for C>=1, eps>0, one degree threshold K confines the level set of EVERY unit-circle polynomial of degree>=K to closedBall 0 (2+eps) -- uniform confinement of the whole high-degree Mac Lane class (VERIFIED 0/0)",
       "sharpRadius_ge_two / sharpRadius_antitone / tendsto_sharpRadius (Erdos1215UnitCircleRadiusLimit.lean): the general-class sharp radius 1+C^(1/deg P) has floor 2, is antitone in degree, and tends to 2 (VERIFIED 0/0)",
       "norm_cyclotomic_eval (CyclotomicPolynomialsOQ02OQ01.lean): |Phi_n(z)| = prod distances to primitive roots, via cyclotomic_eq_prod_X_sub_primitiveRoots + norm_prod (VERIFIED 0/0)",
@@ -120,7 +121,18 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1215UnitCircleRadius.lean"
+    },
+    {
+      "path": "Proofs/Erdos1215UnitCircleMonotone.lean",
+      "filename": "Erdos1215UnitCircleMonotone.lean",
+      "lineCount": 90,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1215UnitCircleMonotone.lean"
     }
   ],
-  "lastUpdate": "2026-07-11T00:00:00.000Z"
+  "lastUpdate": "2026-07-12"
 }
