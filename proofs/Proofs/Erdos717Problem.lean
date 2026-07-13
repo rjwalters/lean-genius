@@ -35,6 +35,7 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Nat.Log
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open SimpleGraph
 

@@ -20,6 +20,7 @@
 -/
 
 import Mathlib
+open scoped Classical
 
 open Finset Function SimpleGraph Nat
 
@@ -50,9 +51,12 @@ example : criticalEdgeCount 5 = 44 := by native_decide
 def IsBipartite (G : SimpleGraph V) : Prop :=
   G.IsBipartite
 
-/-- The maximum degree of a graph -/
+/-- The maximum degree of a graph.
+    (v4.31 migration: `Finset.max'` needs `Nonempty V`; use `Finset.sup` so the
+    definition is total, with the mathematically-standard convention that the
+    empty graph has maximum degree 0.) -/
 noncomputable def maxDegree (G : SimpleGraph V) : ℕ :=
-  Finset.univ.image (fun v => G.degree v) |>.max' (by simp)
+  (Finset.univ.image (fun v => G.degree v)).sup id
 
 /-- A graph has bounded max degree -/
 def HasMaxDegreeLT (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -163,7 +167,7 @@ theorem vertex_count_matters :
 /- ## Asymptotic Analysis -/
 
 /-- The gap between bounds -/
-def boundGap (n : ℕ) : ℝ :=
+noncomputable def boundGap (n : ℕ) : ℝ :=
   (Real.sqrt 2 - 0.577) * n^(3/2 : ℝ) + n
 
 /-- The gap grows as n^{3/2} -/
