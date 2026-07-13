@@ -280,3 +280,60 @@ cleared on retry; the real proof errors were fixed before those.
 Counts: 1247→1276 L, 45→46 thm, 0-axiom/0-sorry unchanged, status stays `verified`.
 Remaining blocked directions unchanged (Sylvester-Gallai def, explicit HJ-dimension numeric bound).
 No follow-up OQ (engine saturated; a Fin-r-specific exact value would need HJ).
+
+## Session 2026-07-12 (researcher-6): affine invariance of the Ramsey property
+
+**Mode**: ACT (look-outward on a SOLVED entry). **Outcome**: progress, 0-axiom.
+Prior sessions saturated the Ramsey-NUMBER API (colored + uncolored monotonicity,
+lower bounds, padding, realizable-card-iff, exact one-colour value) and the
+collinearity-faithfulness bridge to Mathlib. A genuine STRUCTURAL gap remained:
+the file had `hasRamseyProperty_mono` (superset) and `_antitone` (in k) but NO
+result on how the property behaves under geometric transformations of the plane —
+no image/affine/map theorem at all. Filled it:
+
+- `hasRamseyProperty_affine_image (L : Point →ₗ[ℝ] Point) (hL : Injective L) (b)`:
+  if `A` has the Ramsey property for `k`, so does `A.image (fun x => b + L x)` —
+  the image under any injective affine self-map of the plane. Proof: pull the
+  test colouring `c'` back to `c' ∘ f` (`f x = b + L x`), get the mono
+  `k`-collinear `S ⊆ A`, push it forward: `S.image f ⊆ A.image f`
+  (`Finset.image_subset_image`), card preserved (`card_image_of_injective`, `f`
+  injective from `hL` + `add_left_cancel`), collinear on the IMAGE line
+  `⟨b + L l.point, L l.direction, hdir⟩` with the SAME parameter `t` (affine maps
+  preserve the affine parameter: `f(l.point + t•l.direction) = (b+L l.point) +
+  t•(L l.direction)` by `map_add`/`map_smul` + `abel`), direction nonzero because
+  `L` injective (`L d = 0 = L 0 ⟹ d = 0`), and mono transports back verbatim.
+- `hasRamseyProperty_vadd (b)`: translation invariance (`L = id`).
+- `hasRamseyProperty_smul (hc : c ≠ 0)`: dilation invariance (`b = 0`,
+  `L = c • id`, injective via `smul_right_injective Point hc`). Together with
+  `_vadd` this gives invariance under every homothety `x ↦ b + c•x`, `c ≠ 0`.
+
+Upshot: the extremal Erdős-#1090 configurations form whole AFFINE-EQUIVALENCE
+classes — a witness in one coordinate frame is a witness for every affine image.
+This is the invariance analogue of the erdos-101 (similarity) / erdos-634
+(collinearity-preserving-bijection) structural transfers.
+
+### Gotchas (v4.26)
+- The `MonochromaticKCollinear` mono clause binds BOTH points first, THEN both
+  memberships: `∀ p q : Point, p∈S → q∈S → c p = c q`. So `rintro p q hp hq`
+  (NOT `rintro p hp q hq` — that mis-binds `hp` to a Point and errors at the
+  `Finset.mem_image.1 hp` application).
+- Collinearity-on-image goal: `refine ⟨t, ?_⟩; show f q = (b+L l.point) + t•L l.direction;
+  simp only [hf, ht, map_add, map_smul]; abel`. The `show` forces the anonymous-
+  `Line`-constructor field projections to their defeq values so `abel` can close.
+- Injectivity of `f = fun x => b + L x`: `simp only [hf] at hxy` to beta-reduce
+  before `add_left_cancel hxy` (gives `L x = L y`), then `hL`.
+- File 1339→1452 L, 51→56 thm (defs 20 unchanged), 0 sorry / 0 axiom.
+
+### Verification
+Docker build: clean `[2433/2433] Built Proofs.Erdos1090Problem (4.5s)` after the
+`rintro` fix; a temp-`#print axioms` build confirmed all three new theorems depend
+only on `[propext, Classical.choice, Quot.sound]`. Post-strip reseal builds hit
+the recurring fleet-memory SIGBUS-135 / SIGSEGV-139 at olean-write (pure infra,
+documented repeatedly on this node) — the stripped file is byte-identical to the
+already-green pre-temp state.
+
+Remaining next-steps unchanged: `SylvesterGallai` still a placeholder DEF —
+confirmed Sylvester–GALLAI is still NOT in Mathlib (the only `Sylvester` hits are
+the Sylvester *matrix*/resultant and Sylvester's law of inertia, unrelated);
+quantitative NUMERIC upper bound on R(k) (HJ dimension non-explicit); projection-
+body dedup (3 verified copies).

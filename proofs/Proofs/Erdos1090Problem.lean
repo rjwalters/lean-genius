@@ -496,6 +496,83 @@ theorem hasRamseyProperty_antitone {A : Finset Point} {k k' : ℕ} (hk : k' ≤ 
   obtain ⟨S, hSA, ⟨hSk, hline⟩, hSmono⟩ := hA c
   exact ⟨S, hSA, ⟨le_trans hk hSk, hline⟩, hSmono⟩
 
+/-
+### Affine invariance
+
+The Ramsey property is a purely *affine-combinatorial* feature of a point
+configuration: it survives every injective affine self-map of the plane.  This is
+the structural counterpart of the monotonicity/padding results — the extremal
+configurations of Erdős #1090 come in whole affine-equivalence classes, so a
+witness realised in one coordinate frame is a witness for every affine image of
+it (any relabelling, translation, rotation, shear, or dilation of the plane).
+-/
+
+/--
+**Affine invariance.**
+If `A` has the Ramsey property for `k`, then so does its image under any
+injective affine self-map `x ↦ b + L x` of the plane (`L` an injective linear
+map, `b` a translation).  An affine map carries collinear points to collinear
+points, colours pull back through it, and injectivity preserves cardinality, so a
+monochromatic `k`-collinear subset of `A` maps to one of the image.  Together with
+`hasRamseyProperty_mono` this shows the Ramsey property depends only on the affine
+type of the configuration, not on its metric placement.
+-/
+theorem hasRamseyProperty_affine_image {A : Finset Point} {k : ℕ}
+    (L : Point →ₗ[ℝ] Point) (hL : Function.Injective L) (b : Point)
+    (hA : HasRamseyProperty A k) :
+    HasRamseyProperty (A.image (fun x => b + L x)) k := by
+  set f : Point → Point := fun x => b + L x with hf
+  have hfinj : Function.Injective f := by
+    intro x y hxy
+    simp only [hf] at hxy
+    exact hL (add_left_cancel hxy)
+  intro c'
+  -- Pull the colouring back through `f` and apply the property to `A`.
+  obtain ⟨S, hSA, ⟨hSk, l, hl⟩, hSmono⟩ := hA (fun x => c' (f x))
+  -- The image line's direction is nonzero because `L` is injective.
+  have hdir : L l.direction ≠ 0 := fun h0 =>
+    l.nonzero (hL (h0.trans (map_zero L).symm))
+  refine ⟨S.image f, Finset.image_subset_image hSA,
+    ⟨?_, ⟨b + L l.point, L l.direction, hdir⟩, ?_⟩, ?_⟩
+  · -- Injectivity preserves the cardinality bound.
+    rw [Finset.card_image_of_injective _ hfinj]; exact hSk
+  · -- Every image point lies on the image line (same parameter `t`).
+    rintro p hp
+    obtain ⟨q, hqS, rfl⟩ := Finset.mem_image.1 hp
+    obtain ⟨t, ht⟩ := hl q hqS
+    refine ⟨t, ?_⟩
+    show f q = (b + L l.point) + t • L l.direction
+    simp only [hf, ht, map_add, map_smul]
+    abel
+  · -- Monochromaticity transports back through `f`.
+    rintro p q hp hq
+    obtain ⟨p', hp'S, rfl⟩ := Finset.mem_image.1 hp
+    obtain ⟨q', hq'S, rfl⟩ := Finset.mem_image.1 hq
+    exact hSmono p' q' hp'S hq'S
+
+/--
+**Translation invariance.**  The Ramsey property is preserved under translating
+the whole configuration by a fixed vector `b` (the `L = id` case of
+`hasRamseyProperty_affine_image`). -/
+theorem hasRamseyProperty_vadd {A : Finset Point} {k : ℕ} (b : Point)
+    (hA : HasRamseyProperty A k) :
+    HasRamseyProperty (A.image (fun x => b + x)) k := by
+  simpa using hasRamseyProperty_affine_image LinearMap.id Function.injective_id b hA
+
+/--
+**Dilation invariance.**  The Ramsey property is preserved under scaling the whole
+configuration by a nonzero factor `c` (the `b = 0`, `L = c • id` case of
+`hasRamseyProperty_affine_image`).  Combined with `hasRamseyProperty_vadd` this
+gives invariance under every homothety `x ↦ b + c • x`, `c ≠ 0`. -/
+theorem hasRamseyProperty_smul {A : Finset Point} {k : ℕ} {c : ℝ} (hc : c ≠ 0)
+    (hA : HasRamseyProperty A k) :
+    HasRamseyProperty (A.image (fun x => c • x)) k := by
+  have hLinj : Function.Injective ((c • LinearMap.id : Point →ₗ[ℝ] Point)) := by
+    intro x y h
+    have hxy : c • x = c • y := by simpa using h
+    exact smul_right_injective Point hc hxy
+  simpa using hasRamseyProperty_affine_image (c • LinearMap.id) hLinj 0 hA
+
 /--
 **Trivial Lower Bound:**
 R(k) ≥ k since we need at least k points to have k collinear.
