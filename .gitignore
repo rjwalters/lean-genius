@@ -19,6 +19,7 @@ aristotle-results/llm-mapping-cache.json
 # The secrets lines above are belt-and-suspenders on top of this.
 .loom/*
 !.loom/roles/
+!.loom/hooks/
 .loom-managed
 research/*.pid
 research/*.log
