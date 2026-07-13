@@ -7,36 +7,21 @@ periodically merging PRs, syncing data, building, and deploying.
 > (`git show dc9fdffa30^:.lean/roles/deployer.md`) and observed deployer cycles.
 > Shared conventions: see [`COMMON.md`](./COMMON.md).
 
-## KNOWN GAP — deploy pipeline currently BLOCKED (issue #38387)
-
-The pipeline entry point `scripts/deploy/sync-and-deploy.sh` is **absent from
-`main`**: it was deleted (along with the rest of `scripts/deploy/`, root
-`package.json`, and `wrangler.toml`) by commit `dc9fdffa30` (PR #37576, merged
-2026-07-11). This is the cause of the chronic "deploy BLOCKED" status in every
-deployer cycle since. The script is recoverable verbatim from history:
-
-```bash
-git show dc9fdffa30^:scripts/deploy/sync-and-deploy.sh
-```
-
-**Do not write a replacement from scratch** — restoration (after a secrets scan)
-is tracked in #38387. Until it lands, run the *merge-only flow* below; the
-Sync-Data / Build / Deploy stages are unavailable, and "Deployment URL: N/A
-(pipeline unavailable)" is the correct report line.
-
-Cloudflare evidence for the deploy target: the historical script ran
-`wrangler pages deploy` against Cloudflare Pages project `lean-genious`
-(deploy URLs `https://<hash>.lean-genious.pages.dev`, production
-`https://leangenius.org`); a `.wrangler/` state directory exists at the repo
-root; `wrangler.toml` was deleted by the same commit.
+> **Pipeline restored (issue #38398 PR R1).** `scripts/deploy/sync-and-deploy.sh`
+> (with the rest of `scripts/deploy/`, root `package.json`, and `wrangler.toml`)
+> was mass-deleted by commit `dc9fdffa30` (PR #37576, merged 2026-07-11) — the
+> cause of the chronic "deploy BLOCKED" status in every deployer cycle from
+> 07-11 until the restore landed. The full pipeline below is available again.
+> Deploy target: Cloudflare Pages project `lean-genious` (deploy URLs
+> `https://<hash>.lean-genious.pages.dev`, production `https://leangenius.org`).
 
 ## Responsibilities
 
 1. **Merge pull requests** — merge all ready PRs, aggressively resolve conflicts
-2. **Sync data files** — update research-listings.json with actual iteration counts *(blocked)*
-3. **Build website** — compile the site and catch errors *(blocked)*
-4. **Deploy to Cloudflare** — push the built site to production *(blocked)*
-5. **Commit changes** — push data-sync changes back to main *(blocked)*
+2. **Sync data files** — update research-listings.json with actual iteration counts
+3. **Build website** — compile the site and catch errors
+4. **Deploy to Cloudflare** — push the built site to production
+5. **Commit changes** — push data-sync changes back to main
 
 ## Merge Eligibility (both flows)
 
@@ -46,8 +31,21 @@ root; `wrangler.toml` was deleted by the same commit.
 - Merge PRs whose mergeable state is MERGEABLE; report CONFLICTING ones (their
   authors rebase). After each merge, GitHub recomputes the queue: expect an
   all-UNKNOWN wave that re-settles in ~30-100s before the next state is trusted.
+- **Diff-stat gate (issue #38398, `dc9fdffa30` guard)**: never auto-merge a PR
+  whose `gh pr view <n> --json additions,deletions,changedFiles` reports
+  **deletions > 100 (lines) or changedFiles > 500**. On 2026-07-11 a
+  single-file research PR silently carried 9,927 file deletions through the
+  auto-merge path (a disk-slimmed worktree + `git add -A`) and wiped most of
+  the repository — nothing in the merge path checked the diff stat.
+  `sync-and-deploy.sh` enforces this automatically (skips the PR, logs loudly,
+  and posts one idempotent explanatory PR comment — it does NOT add labels or
+  close the PR; operator visibility comes from the comment + the cycle report).
+  Apply the same check manually in the merge-only flow. Thresholds are
+  env-overridable for one intentional cycle: `DEPLOY_GATE_MAX_DELETIONS`,
+  `DEPLOY_GATE_MAX_CHANGED_FILES`. Gated PRs go in the cycle report as
+  "skipped (diff-stat gate)" so the operator decides their fate.
 
-## Current Merge-Only Flow (each cycle, ~30 min)
+## Merge-Only Flow (fallback when the pipeline script is unavailable)
 
 1. **Check signals** — `stop-deployer` / `stop-all`; usage throttle: deployer is
    high-priority, defer only at level >= 4 (see COMMON.md).
@@ -57,10 +55,10 @@ root; `wrangler.toml` was deleted by the same commit.
    `N CONFLICTING / 0 MERGEABLE / 0 UNKNOWN` is done for the cycle — do not
    re-poll a settled queue; only new PR numbers change the state.
 4. **Report**: PRs merged, queue state (X CONFLICTING / Y MERGEABLE / Z UNKNOWN),
-   HEAD sha, deploy status (blocked), next cycle time.
+   diff-stat-gated PRs, HEAD sha, deploy status, next cycle time.
 5. Sleep `DEPLOYER_INTERVAL` minutes (default: 30); repeat.
 
-## Full Pipeline (when `sync-and-deploy.sh` is restored)
+## Full Pipeline
 
 ```bash
 ./scripts/deploy/sync-and-deploy.sh              # full pipeline
@@ -125,6 +123,10 @@ status; deploy URL (or "N/A (pipeline unavailable)"); next run time.
 ## Do NOT
 
 - Merge draft PRs or PRs labeled `loom:review-requested`
+- Auto-merge a PR past the diff-stat gate (deletions > 100 lines or
+  changedFiles > 500) — skip it, log it, let the operator decide (#38398)
+- Add labels to or close PRs from the deploy script without operator
+  visibility — the gate posts an explanatory comment instead
 - Auto-resolve `*.lean` conflicts
 - Write an ad-hoc replacement deploy script (restore from history via #38387)
 - Remove locked or running worktrees
