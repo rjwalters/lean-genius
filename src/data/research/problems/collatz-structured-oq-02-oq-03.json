@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-11 2026-07-12, VERIFIED axiom-free): closed the certificate uniqueness/completeness thread with the EXACT characterization affValid_iff_prefix_deriveVec — the valid parity certificates for a class r (mod 2^b) are EXACTLY the prefixes of the canonical deriveVec. Key new lemma affValid_prefix_closed (prefix-closure of AffValid, NO axioms) supplies the converse containment to affValid_prefix_deriveVec. In companion CollatzStructuredOQ02OQ03CertUnique.lean; independent of tao_2019.",
+    "progressSummary": "PROGRESS (researcher-11 2026-07-12, axiom-free): settled the deriveVec MAXIMALITY next-step in cleanest general form — affValid_eq_deriveVec_self proves every valid certificate v for any class (c,d) equals deriveVec v.length c d (canonical generation; the engine run at the certs own length reproduces it), with affValid_nil_of_odd_modulus (odd modulus forces empty cert) the structural reason deriveVec halts exactly when AffValid can no longer extend. Self-contained companion CollatzStructuredOQ02OQ03CertMaximal.lean (mother at kernel ceiling). tao_2019 axiom remains deep-blocked.",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -59,7 +59,8 @@
       "CollatzStructuredOQ02OQ03CertUnique.lean: affValid_unique — two valid parity certificates of equal length for the same affine class (c,d) are identical (List.ext_getElem + Part VIII affValid_orbit_parity at m=0 pins each bit to collatz^[i] d % 2; Bool.toNat injective). affValid_eq_deriveVec — deriveVec (2b+1)(2^b) r is the canonical/unique certificate of its length for r mod 2^b. Axiom-free [propext,Quot.sound].",
       "affValid_prefix_closed (CollatzStructuredOQ02OQ03CertUnique.lean): AffValid is downward-closed under the prefix order — every prefix of a valid certificate is valid (induction on the front-consuming AffValid derivation; NO axioms at all)",
       "affValid_deriveVec (CertUnique.lean): named validity of the canonical auto-derived vector deriveVec (2b+1) (2^b) r for its class",
-      "affValid_iff_prefix_deriveVec (CertUnique.lean): EXACT characterization — a bounded-length parity list is a valid certificate for r (mod 2^b) IFF it is a prefix of deriveVec; the valid-certificate set is exactly the initial segments of one canonical vector"
+      "affValid_iff_prefix_deriveVec (CertUnique.lean): EXACT characterization — a bounded-length parity list is a valid certificate for r (mod 2^b) IFF it is a prefix of deriveVec; the valid-certificate set is exactly the initial segments of one canonical vector",
+      "CollatzStructuredOQ02OQ03CertMaximal.lean (self-contained, re-declares AffValid+deriveVec exactly, import Mathlib only — mother at kernel SIGBUS ceiling): affValid_eq_deriveVec_self (CANONICAL GENERATION/MAXIMALITY: EVERY valid cert v for ANY class (c,d) is literally deriveVec v.length c d, structural induction on AffValid, each extending step has c%2=0 so deriveVec skips its c%2=1 halt and takes the d%2 branch) + affValid_nil_of_odd_modulus (odd modulus ⟹ empty cert, the structural reason deriveVec halts on c%2=1) + affValid_length_eq_deriveVec_self. Removes the residue-determined-window length side-hypothesis of affValid_iff_prefix_deriveVec in fully general form. 3 thm, axioms [propext,Quot.sound] only."
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -81,11 +82,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Maximality of deriveVec length: prove deriveVec produces the FULL forced window (no valid certificate is strictly longer than deriveVec unless the class is not residue-determined), completing the exact characterization begun by affValid_prefix_deriveVec.",
-      "Mechanize certificate GENERATION: a tactic/decision procedure computing the forced parity vector v and AffValid certificate from a residue r mod 2^b automatically.",
-      "Attempt the unconditional density→1 (Terras/Korec) as the real milestone toward tao_2019, rather than adding more finite residue levels (enumeration theater).",
-      "Tao axiom genuinely blocked (deep analytic, >>1000 lines).",
-      "deriveVec LENGTH maximality: prove deriveVec produces the FULL forced window (no valid certificate strictly longer, unless the class is not residue-determined) — the exact-characterization now pins the SET of valid certs to prefixes of deriveVec; what remains is showing deriveVec cannot be extended, i.e. deriveVec halts exactly when c%2=1 first occurs."
+      "Fuel-sufficiency for the 2^b window: show deriveVec (2b+1) (2^b) r reaches its odd-modulus halt within 2b+1 fuel for every r, so the length side-condition in affValid_iff_prefix_deriveVec is automatically satisfied (v_2(c) drops by 1 per even-step, stays on odd-steps — needs bounding the odd-step count).",
+      "Mechanize certificate GENERATION as a tactic/decision procedure now that affValid_eq_deriveVec_self identifies the generator as deriveVec v.length c d.",
+      "Attempt the unconditional density→1 (Terras/Korec) milestone toward tao_2019, rather than more finite residue levels (enumeration theater).",
+      "Tao axiom genuinely blocked (deep analytic, >>1000 lines)."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
