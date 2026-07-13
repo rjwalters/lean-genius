@@ -97,9 +97,14 @@ create_worktree() {
             git fetch origin main 2>/dev/null || true
             git stash 2>/dev/null || true
 
-            # Deployer works on main, so reset to origin/main
-            if git reset --hard origin/main 2>/dev/null; then
-                print_success "Synced with origin/main"
+            # Reset the deployer branch to origin/main. `checkout -B` (rather
+            # than a plain reset of whatever is checked out) also self-heals a
+            # worktree that drifted onto the wrong branch: on 2026-07-11 a
+            # deploy cycle checked out `main` here, which blocked every other
+            # checkout of main for two days and left feature/deployer orphaned
+            # for the branch sweeper.
+            if git checkout -B "$BRANCH_NAME" origin/main 2>/dev/null; then
+                print_success "Synced $BRANCH_NAME with origin/main"
             else
                 print_warning "Could not sync with origin/main"
             fi
@@ -180,9 +185,20 @@ You are the **deployer** agent. Your mission is to keep the website current.
 
 ## Environment
 
-- REPO_ROOT: $REPO_ROOT
+- WORKTREE (your working directory): $WORKTREE_PATH
+- REPO_ROOT (shared — do NOT work here): $REPO_ROOT
 - INTERVAL: $INTERVAL minutes
 - LOG_FILE: $LOG_FILE
+
+## Critical Rules
+
+- Do ALL work from your worktree: \`cd $WORKTREE_PATH\` before every cycle.
+  NEVER run the pipeline from $REPO_ROOT — that checkout is shared by every
+  concurrently-running agent, and cycles run there clobber their state
+  (incident 2026-07-11: a cycle in the wrong directory ended with the
+  deployer worktree squatting on \`main\` for two days).
+- Never check out \`main\` in your worktree. It stays on \`feature/deployer\`;
+  the pipeline fast-forwards it to origin/main automatically.
 
 ## Your Workflow (Repeat Every $INTERVAL Minutes)
 
@@ -194,9 +210,9 @@ You are the **deployer** agent. Your mission is to keep the website current.
    fi
    \`\`\`
 
-2. **Run the deploy pipeline**
+2. **Run the deploy pipeline** (always from the worktree)
    \`\`\`bash
-   ./scripts/deploy/sync-and-deploy.sh
+   cd $WORKTREE_PATH && ./scripts/deploy/sync-and-deploy.sh
    \`\`\`
 
 3. **Report results**

@@ -335,6 +335,12 @@ trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTE
 # main is always protected (master was retired via #13577)
 echo "main" >> "$PROTECTED_BRANCHES_FILE"
 
+# The deployer's long-lived worktree branch is always protected, even if the
+# worktree has temporarily drifted off it (2026-07-11: a deploy cycle left the
+# worktree on `main`, and the orphaned feature/deployer was swept, making the
+# drift unrecoverable by relaunch).
+echo "feature/deployer" >> "$PROTECTED_BRANCHES_FILE"
+
 # Branches checked out in worktrees are protected
 git worktree list --porcelain 2>/dev/null | grep "^branch refs/heads/" | sed 's|^branch refs/heads/||' >> "$PROTECTED_BRANCHES_FILE"
 
