@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-ceva0101-not-collinear-cevian",
+    "proofId": "cevas-theorem-oq-01-oq-01",
+    "range": { "startLine": 53, "endLine": 68 },
+    "type": "insight",
+    "title": "Cevian Feet Keep the Sub-Triangle Non-Degenerate",
+    "content": "not_collinear_cevian establishes the geometric hygiene the whole file depends on: if A, B, C are not collinear and D lies strictly between B and C (Sbtw ℝ B D C), then A, B, D are not collinear. The proof argues by contradiction — assuming A, B, D collinear, it uses that B, D, C are collinear (from D on segment BC) together with B ≠ D to apply Collinear.collinear_insert_iff_of_ne, concluding A, B, D, C are all collinear, which contradicts hABC. This guarantees the law of sines can be applied in each sub-triangle without a vanishing sine.",
+    "mathContext": "\\neg\\,\\mathrm{Collinear}\\{A,B,C\\}\\;\\wedge\\;\\mathrm{Sbtw}\\,B\\,D\\,C\\;\\Rightarrow\\;\\neg\\,\\mathrm{Collinear}\\{A,B,D\\}\\\\\nD\\in\\overline{BC}\\;\\Rightarrow\\;\\mathrm{line}(B,D)=\\mathrm{line}(B,C),\\text{ so } A\\notin\\mathrm{line}(B,D)",
+    "significance": "supporting",
+    "relatedConcepts": ["collinearity", "strict betweenness", "non-degenerate triangle", "collinear_insert_iff_of_ne"],
+    "prerequisites": ["Sbtw", "Collinear", "ncol_perm"]
+  },
+  {
+    "id": "ann-ceva0101-cevian-ratio-law",
+    "proofId": "cevas-theorem-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 110 },
+    "type": "insight",
+    "title": "The Cevian Ratio Law: BD/DC = (AB·sin∠BAD)/(AC·sin∠DAC)",
+    "content": "cevian_dist_ratio is the trigonometric heart of Ceva's theorem. For a non-degenerate triangle ABC with D strictly between B and C, it relates the side-division ratio to a ratio of sines at the apex A. The proof applies Mathlib's law of sines (dist_eq_dist_mul_sin_angle_div_sin_angle) in the two sub-triangles ABD and ACD, giving dist B D and dist C D each as a side length times a sine of an apex angle over the sine of the angle at D. The angles ∠ADB and ∠ADC are supplementary because D sits on the straight segment BC (∠BDC = π, via angle_add_angle_eq_pi_of_angle_eq_pi), so sin∠ADB = sin∠ADC (Real.sin_pi_sub); this common, strictly positive sine (sin_pos_of_not_collinear) cancels via div_div_div_cancel_right₀, leaving the ratio law.",
+    "mathContext": "\\frac{\\mathrm{dist}\\,B\\,D}{\\mathrm{dist}\\,D\\,C}=\\frac{\\mathrm{dist}\\,A\\,B\\,\\cdot\\,\\sin\\angle BAD}{\\mathrm{dist}\\,A\\,C\\,\\cdot\\,\\sin\\angle DAC}\\\\\n\\text{Law of sines: } BD=\\frac{AB\\sin\\angle DAB}{\\sin\\angle BDA},\\;\\; CD=\\frac{AC\\sin\\angle DAC}{\\sin\\angle CDA}\\\\\n\\angle ADB+\\angle ADC=\\pi\\;\\Rightarrow\\;\\sin\\angle ADB=\\sin\\angle ADC>0",
+    "significance": "key",
+    "relatedConcepts": ["law of sines", "supplementary angles", "cevian", "sine ratio"],
+    "prerequisites": ["not_collinear_cevian", "dist_eq_dist_mul_sin_angle_div_sin_angle", "Real.sin_pi_sub", "sin_pos_of_not_collinear"]
+  },
+  {
+    "id": "ann-ceva0101-trig-ceva-product",
+    "proofId": "cevas-theorem-oq-01-oq-01",
+    "range": { "startLine": 112, "endLine": 163 },
+    "type": "insight",
+    "title": "The Trigonometric Ceva Product Identity",
+    "content": "trig_ceva_product multiplies the cevian ratio law over all three cevians of the triangle. Permuting the non-collinearity hypothesis (ncol_perm) to feed the ratio law at each apex — A for cevian AD, B for BE, C for CF — produces three equations whose product is taken. Pairwise vertex distinctness (A≠B, A≠C, B≠C, each forced by non-collinearity of a degenerate pair) makes the side lengths dist A B, dist A C, dist B C nonzero. After rewriting the symmetric distances (dist_comm) and the three ratio laws, field_simp clears denominators: each side length occurs once in a numerator and once in a denominator, so they cancel in pairs, and only the sine ratios remain. The result is the trigonometric Ceva product identity, the sine-ratio companion of the affine side-ratio form.",
+    "mathContext": "\\frac{BD}{DC}\\cdot\\frac{CE}{EA}\\cdot\\frac{AF}{FB}=\\frac{\\sin\\angle BAD\\cdot\\sin\\angle CBE\\cdot\\sin\\angle ACF}{\\sin\\angle DAC\\cdot\\sin\\angle EBA\\cdot\\sin\\angle FCB}\\\\\n\\text{Each of } AB,BC,CA \\text{ appears once up and once down} \\Rightarrow \\text{cancels}",
+    "significance": "key",
+    "relatedConcepts": ["Ceva's theorem", "trigonometric form", "concurrency", "telescoping cancellation"],
+    "prerequisites": ["cevian_dist_ratio", "ncol_perm", "dist_ne_zero", "field_simp"]
+  }
+]
