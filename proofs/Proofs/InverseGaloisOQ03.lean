@@ -510,4 +510,65 @@ theorem Monster_rigid_triple_orders :
   ⟨Monster_exists_involution, Monster_exists_element_orderOf_3,
     Monster_exists_orderOf_twentynine⟩
 
+-- ============================================================================
+-- Part IX: 𝕄 is not a prime power — genuinely multi-prime Sylow theory
+-- ============================================================================
+
+/-
+The structural results so far (non-abelian, perfect, non-solvable, non-nilpotent,
+non-cyclic) all flow from `|𝕄|` being *non-prime*.  A sharper arithmetic fact is
+that `|𝕄|` is not even a prime *power*: `Monster_card_factored` exhibits fifteen
+distinct prime factors `2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 41, 47, 59, 71`
+— which are exactly the *supersingular primes* of monstrous moonshine.  In
+particular 𝕄 is not a `p`-group for any prime `p`, so its Sylow theory is
+genuinely multi-prime: no single Sylow subgroup exhausts the group (contrast a
+`p`-group, where the whole group is its own unique Sylow `p`-subgroup).  All
+derived from the six axioms of Part I; no new assumptions.
+-/
+
+/-- **`|𝕄|` is not a prime power.**  If `|𝕄| = p ^ k` with `p` prime, then since both
+    `2 ∣ |𝕄|` and `3 ∣ |𝕄|`, the prime `p` would be forced to equal both `2` and `3`
+    (`Nat.Prime.dvd_of_dvd_pow`), which is absurd.  This is strictly stronger than
+    `Monster_card_not_prime`: `|𝕄|` is not `p^k` for *any* exponent `k`, reflecting the
+    fifteen distinct primes in its factorization. -/
+theorem Monster_not_prime_power :
+    ¬ ∃ p k : ℕ, Nat.Prime p ∧ Fintype.card Monster = p ^ k := by
+  rintro ⟨p, k, hp, hpk⟩
+  have h2 : (2 : ℕ) ∣ p ^ k := hpk ▸ two_dvd_Monster_card
+  have h3 : (3 : ℕ) ∣ p ^ k := hpk ▸ three_dvd_Monster_card
+  have hp2 : (2 : ℕ) ∣ p := Nat.prime_two.dvd_of_dvd_pow h2
+  have hp3 : (3 : ℕ) ∣ p := Nat.prime_three.dvd_of_dvd_pow h3
+  have e2 : (2 : ℕ) = p := (hp.eq_one_or_self_of_dvd 2 hp2).resolve_left (by norm_num)
+  have e3 : (3 : ℕ) = p := (hp.eq_one_or_self_of_dvd 3 hp3).resolve_left (by norm_num)
+  omega
+
+/-- **𝕄 is not a `p`-group** for any prime `p`.  A finite `p`-group has prime-power
+    order (`IsPGroup.iff_card`), but `|𝕄|` is not a prime power
+    (`Monster_not_prime_power`).  Hence, unlike a `p`-group — which is its own unique
+    Sylow `p`-subgroup — the Monster's Sylow structure spans all fifteen of its prime
+    divisors. -/
+theorem Monster_not_pgroup (p : ℕ) [Fact p.Prime] : ¬ IsPGroup p Monster := by
+  intro h
+  obtain ⟨n, hn⟩ := IsPGroup.iff_card.mp h
+  refine Monster_not_prime_power ⟨p, n, Fact.out, ?_⟩
+  simpa [Nat.card_eq_fintype_card] using hn
+
+/-- **`|𝕄|` has at least two distinct prime factors.**  Both `2` and `3` lie in
+    `(|𝕄|).primeFactors` (each is prime, divides `|𝕄|`, and `|𝕄| ≠ 0`), so the set of
+    prime factors has cardinality `≥ 2`.  The Finset-cardinality shadow of
+    `Monster_not_prime_power` (the full count is `15`, the supersingular primes). -/
+theorem Monster_two_le_card_primeFactors :
+    2 ≤ (Fintype.card Monster).primeFactors.card := by
+  have hne : Fintype.card Monster ≠ 0 := by have := Monster_card_pos; omega
+  have h2 : 2 ∈ (Fintype.card Monster).primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨Nat.prime_two, two_dvd_Monster_card, hne⟩
+  have h3 : 3 ∈ (Fintype.card Monster).primeFactors :=
+    Nat.mem_primeFactors.mpr ⟨Nat.prime_three, three_dvd_Monster_card, hne⟩
+  have hsub : ({2, 3} : Finset ℕ) ⊆ (Fintype.card Monster).primeFactors := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  calc (2 : ℕ) = ({2, 3} : Finset ℕ).card := by decide
+    _ ≤ (Fintype.card Monster).primeFactors.card := Finset.card_le_card hsub
+
 end InverseGaloisOQ03
