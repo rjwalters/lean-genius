@@ -1,0 +1,57 @@
+# Root .gitignore — added as PR A of #38387 (engine check-in + runtime-state hygiene).
+# Keep secrets first; later sections are runtime state, caches, and build outputs.
+
+# ── Secrets — never commit ─────────────────────────────────────────────
+.env
+.env.*
+.loom/tokens/
+.loom/lean-daemon-state.json
+.loom/usage-cache.json
+.loom-checkpoint
+.claude/settings.local.json
+.claude/projects/
+.claude/worktrees/
+aristotle-results/llm-mapping-cache.json
+*.token
+
+# ── Loom / agent runtime state ─────────────────────────────────────────
+# .loom is runtime state EXCEPT .loom/roles/ (tracked role definitions).
+# The secrets lines above are belt-and-suspenders on top of this.
+.loom/*
+!.loom/roles/
+.loom-managed
+research/*.pid
+research/*.log
+proofs/err.log
+scripts/enricher/*.log
+scripts/enricher/logs/
+
+# ── Build artifacts / caches ───────────────────────────────────────────
+.lake
+.lake/
+.build-cache/
+.erdos-cache/
+.wrangler/
+node_modules/
+dist/
+public/
+test-results/
+.lean/state/
+.lean/research/
+
+# ── Fleet queues / derived research state ──────────────────────────────
+research/claims/
+research/enrichment-claims/
+research/references/
+research/quality-history/
+research/candidate-pool.json
+research/db/
+aristotle-results/
+
+# ── Generated site data (build outputs; see scripts/research/build.ts) ─
+# proofs-side pair is emitted by the annotations build (src/data/proofs/index.ts docs);
+# research-side pair by scripts/research/build.ts. All four are never tracked on main.
+src/data/proofs/data-manifest.json
+src/data/proofs/listings.json
+src/data/research/research-data-manifest.json
+src/data/research/research-listings.json
