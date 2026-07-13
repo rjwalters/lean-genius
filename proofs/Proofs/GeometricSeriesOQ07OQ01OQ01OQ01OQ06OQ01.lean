@@ -67,7 +67,8 @@ theorem binom_ortho (N j k : ℕ) (hjN : j ≤ N) :
     · rw [Nat.choose_eq_zero_of_lt hmj]; ring
   · -- `k ≤ j`: split off the low terms `m < k`, reindex `m = k + t`, apply `Nat.choose_mul`
     have hsplit : range (N + 1) = range k ∪ Ico k (N + 1) := by
-      rw [Finset.range_eq_Ico, Finset.Ico_union_Ico_eq_Ico (by omega) (by omega)]
+      simp only [Finset.range_eq_Ico]
+      rw [Finset.Ico_union_Ico_eq_Ico (by omega) (by omega)]
     rw [hsplit, Finset.sum_union (by
       rw [Finset.range_eq_Ico]; exact Finset.Ico_disjoint_Ico_consecutive 0 k (N + 1))]
     -- the `range k` part is zero

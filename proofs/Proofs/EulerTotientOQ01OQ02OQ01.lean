@@ -69,7 +69,7 @@ theorem carmichael_eq_totient {p : ℕ} (k : ℕ) (hp : p.Prime) (hodd : p ≠ 2
     explicit polynomial in `p` and `k`. -/
 theorem carmichael_odd_prime_pow {p k : ℕ} (hp : p.Prime) (hodd : p ≠ 2) (hk : 0 < k) :
     Carmichael (p ^ k) = p ^ (k - 1) * (p - 1) := by
-  rw [carmichael_pow_of_prime_ne_two k hp hodd, Nat.totient_prime_pow hp hk]
+  rw [carmichael_eq_totient k hp hodd, Nat.totient_prime_pow hp hk]
 
 /-- **`λ(p) = p − 1` for an odd prime `p`** (the `k = 1` case): the full multiplicative group
     `(ℤ/pℤ)ˣ` is cyclic of order `p − 1`, so its universal exponent is `p − 1`. -/

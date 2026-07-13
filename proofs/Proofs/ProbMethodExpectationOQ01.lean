@@ -19,6 +19,7 @@ import Mathlib
 namespace ProbMethodExpectationOQ01
 
 open MeasureTheory Finset
+open scoped ENNReal
 
 -- ============================================================
 -- PART I: Finite Probability as a Special Case
@@ -75,7 +76,7 @@ theorem first_moment_method {Ω : Type*} [MeasurableSpace Ω]
   -- X ω ≥ 1 a.e. (ℕ-valued: either 0 or ≥ 1)
   have hae : ∀ᵐ ω ∂μ, (1 : ℝ) ≤ (X ω : ℝ) := by
     rw [ae_iff]
-    convert h0 using 1
+    convert h0 using 2
     ext ω
     simp only [Set.mem_setOf_eq, not_le]
     constructor
@@ -86,7 +87,7 @@ theorem first_moment_method {Ω : Type*} [MeasurableSpace Ω]
       simp [h_eq]
   have h1 : 1 ≤ ∫ ω, (X ω : ℝ) ∂μ := by
     have hle := integral_mono_ae (integrable_const 1) hX_integ hae
-    rwa [integral_const, measure_univ, ENNReal.one_toReal, one_smul] at hle
+    rwa [integral_const, probReal_univ, one_smul] at hle
   linarith
 
 -- ============================================================
@@ -114,6 +115,6 @@ noncomputable def indicatorRV {Ω : Type*} [MeasurableSpace Ω]
 theorem expectation_indicator {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) [IsProbabilityMeasure μ] (A : Set Ω) (hA : MeasurableSet A) :
     ∫ ω, indicatorRV A ω ∂μ = (μ A).toReal := by
-  simp [indicatorRV, integral_indicator hA]
+  simp [indicatorRV, integral_indicator hA, measureReal_def]
 
 end ProbMethodExpectationOQ01

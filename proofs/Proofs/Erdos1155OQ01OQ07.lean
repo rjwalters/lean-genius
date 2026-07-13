@@ -142,11 +142,11 @@ theorem kRemovalExponent_near_two (δ : ℝ) (hδ : 0 < δ) :
   suffices 2 / ((r : ℝ) + 1) < δ by linarith
   rw [div_lt_iff₀ h_pos]
   calc 2 ≤ δ * ⌈2 / δ⌉₊ := by
-          rw [← div_le_iff₀ hδ]
+          rw [← div_le_iff₀' hδ]
           exact Nat.le_ceil (2 / δ)
-    _ ≤ δ * ((r : ℝ) + 1) := by
-          apply mul_le_mul_of_nonneg_left _ (le_of_lt hδ)
-          exact_mod_cast (show ⌈2 / δ⌉₊ ≤ r + 1 from by omega)
+    _ < δ * ((r : ℝ) + 1) := by
+          apply mul_lt_mul_of_pos_left _ hδ
+          exact_mod_cast (show ⌈2 / δ⌉₊ < r + 1 from by omega)
 
 -- ============================================================================
 -- § 4. Generalized Conjecture

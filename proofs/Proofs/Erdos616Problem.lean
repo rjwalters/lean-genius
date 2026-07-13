@@ -214,8 +214,9 @@ theorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}
     use v
     intro e he
     obtain ⟨w, hw, hwe⟩ := hv e he
-    simp at hw
-    rwa [hw]
+    simp only [Set.mem_singleton_iff] at hw
+    subst hw
+    exact hwe
   · intro ⟨v, hv⟩
     use v
     intro e he
@@ -271,7 +272,10 @@ theorem erdos_616_summary :
   · intro r hr
     have := eht_lower_bound r hr
     obtain ⟨V, _, G, hlocal, hbound⟩ := this
-    exact ⟨V, inferInstance, G, hlocal, by linarith⟩
+    refine ⟨V, inferInstance, G, hlocal, ?_⟩
+    unfold lowerCoefficient
+    have hr0 : (0 : ℝ) ≤ r := by positivity
+    linarith
   · intro r hr V _ G hlocal
     exact eht_upper_bound r hr V G hlocal
 

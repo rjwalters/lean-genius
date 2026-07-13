@@ -138,8 +138,7 @@ theorem taylorPolynomial_tendsto_globalBound
         one_pow, one_mul]
       exact hM n (-x)
     have key := taylorPolynomial_tendsto (fun x => f (-x)) 0 (-b) hb' M hg hgM
-    have hval : (fun x => f (-x)) (-b) = f b := by simp
-    rw [hval] at key
+    simp only [neg_neg] at key
     exact key.congr (fun n => reflect_taylor_eq f n b)
   · -- `b = 0`: the Taylor polynomials are constantly `f 0`.
     subst hb

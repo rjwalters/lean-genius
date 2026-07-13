@@ -414,7 +414,7 @@ lemma exists_smaller_cube (d : CubeDissection) (h_diff : d.allDifferentSizes)
   have hc_min_smallest : ∀ c' ∈ d.cubes, c'.z = c_min.z → c_min.side ≤ c'.side := by
     intro c' hc' hc'z
     apply hc_min_le
-    exact Finset.mem_filter.mpr ⟨hc', by rwa [hc_min_z]⟩
+    exact Finset.mem_filter.mpr ⟨hc', by first | exact hc'z | exact hc'z.trans hc_min_z⟩
   -- c_min.side ≤ c.side
   have hc_min_le_c : c_min.side ≤ c.side :=
     hc_min_le c (Finset.mem_filter.mpr ⟨hc, rfl⟩)

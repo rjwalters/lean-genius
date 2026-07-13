@@ -50,7 +50,16 @@ theorem rpow_decay_bound (C : ℝ) (hC : C > 0) (c : ℝ) (hc : c > 0) (ε : ℝ
       C * (n : ℝ) ^ (3/2 - c) ≤ ε * (n : ℝ) ^ (3/2 : ℝ) := by
         -- We can divide both sides by $n^{3/2-c}$ to get $C \leq \epsilon \cdot n^c$.
         suffices h_div : ∃ N : ℕ, ∀ n ≥ N, C ≤ ε * (n : ℝ) ^ c by
-          obtain ⟨ N, hN ⟩ := h_div; use N + 1; intros n hn; convert mul_le_mul_of_nonneg_right ( hN n ( by linarith ) ) ( Real.rpow_nonneg ( Nat.cast_nonneg n ) ( 3/2 - c ) ) using 1 ; rw [ mul_assoc, ← Real.rpow_add ( Nat.cast_pos.mpr <| by linarith ) ] ; ring;
+          obtain ⟨ N, hN ⟩ := h_div; use N + 1; intros n hn
+          have hnpos : (0 : ℝ) < (n : ℝ) := by
+            have : 1 ≤ n := by omega
+            exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one this
+          have hsplit : (n : ℝ) ^ (3/2 : ℝ) = (n : ℝ) ^ c * (n : ℝ) ^ (3/2 - c) := by
+            rw [← Real.rpow_add hnpos] ; congr 1 ; ring
+          calc C * (n : ℝ) ^ (3/2 - c)
+              ≤ (ε * (n : ℝ) ^ c) * (n : ℝ) ^ (3/2 - c) :=
+                mul_le_mul_of_nonneg_right (hN n (by linarith)) (Real.rpow_nonneg (Nat.cast_nonneg n) _)
+            _ = ε * (n : ℝ) ^ (3/2 : ℝ) := by rw [hsplit] ; ring
         exact ⟨ ⌈ ( C / ε ) ^ ( 1 / c ) ⌉₊ + 1, fun n hn => by rw [ ← div_le_iff₀' hε ] ; exact le_trans ( by rw [ ← Real.rpow_mul ( by positivity ), one_div_mul_cancel hc.ne.symm, Real.rpow_one ] ) ( Real.rpow_le_rpow ( by positivity ) ( Nat.le_of_ceil_le <| Nat.le_of_succ_le hn ) <| by positivity ) ⟩
 
 /-

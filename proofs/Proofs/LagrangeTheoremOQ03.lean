@@ -184,7 +184,7 @@ theorem sq_mem_of_index_two {G : Type*} [Group G] [Fintype G]
   haveI : Fintype (G ⧸ H) := Fintype.ofFinite _
   rw [← QuotientGroup.eq_one_iff]
   have hcard : Fintype.card (G ⧸ H) = 2 := by
-    rw [← Subgroup.index_eq_card]; exact hindex
+    rw [← Nat.card_eq_fintype_card, ← Subgroup.index_eq_card]; exact hindex
   have : (QuotientGroup.mk' H g) ^ Fintype.card (G ⧸ H) = 1 := pow_card_eq_one
   rw [hcard] at this
   exact this

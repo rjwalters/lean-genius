@@ -86,7 +86,7 @@ theorem not_isThick_of_finite {ι : Type*} [Finite ι] (A : ι → ℕ) : ¬IsTh
 /-- A geometric sequence r^n with r > 1 is not thick.
     Proof: Σ(1/r^n) = 1/(1 - 1/r) < ∞ for r > 1. -/
 theorem not_isThick_geometric {r : ℕ} (hr : r > 1) : ¬IsThick fun n : ℕ => r ^ n := by
-  simp only [IsThick, not_not]
+  simp only [IsThick, not_not, Nat.cast_pow]
   have hrR : (1 : ℝ) / r < 1 := by
     rw [div_lt_one (Nat.cast_pos.mpr (by omega : (0 : ℕ) < r))]
     exact_mod_cast hr

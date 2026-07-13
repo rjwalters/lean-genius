@@ -88,7 +88,7 @@ theorem verma_Fpower_eq_qFactorial
   induction n with
   | zero => simp [qFactorial]
   | succ n ih =>
-    rw [Function.iterate_succ, Function.comp, ih, D.F.map_smul, D.F_action n, smul_smul]
+    rw [Function.iterate_succ_apply', ih, D.F.map_smul, D.F_action n, smul_smul]
     congr 1
     rw [qFactorial_succ]
     ring
@@ -170,7 +170,8 @@ theorem qNumber_three_eq {k : Type*} [CommRing k] (q : k) :
 /-- [2]_q! = 1 + q: the q-factorial [2]_q! equals [1]_q · [2]_q = 1 · (1+q). -/
 theorem qFactorial_two_eq {k : Type*} [CommRing k] (q : k) :
     qFactorial q 2 = 1 + q := by
-  simp only [qFactorial_succ, qFactorial_one, qNumber_succ, qNumber_one, mul_one, mul_one]
+  show qFactorial q (1 + 1) = 1 + q
+  rw [qFactorial_succ, qFactorial_one, mul_one, qNumber_succ, qNumber_one, mul_one]
 
 /-- F² · v₀ = (1 + q) · v₂ in the Verma module (using [2]_q! = 1 + q). -/
 theorem verma_F_sq_v0
@@ -188,8 +189,8 @@ theorem verma_F_cube_v0
     D.F^[3] (D.v 0) = ((1 + q + q ^ 2) * (1 + q)) • D.v 3 := by
   rw [verma_Fpower_eq_qFactorial]
   congr 1
-  simp only [qFactorial_succ, qFactorial_one, qNumber_succ, qNumber_one, qNumber_zero,
-             mul_one, mul_zero, add_zero]
+  have h3 : qFactorial q 3 = qNumber q 3 * (qNumber q 2 * (qNumber q 1 * qFactorial q 0)) := rfl
+  rw [h3, qFactorial_zero, qNumber_one, qNumber_two_eq, qNumber_three_eq]
   ring
 
 -- ============================================================
