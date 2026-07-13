@@ -517,3 +517,17 @@ after imports on v4.31 — this is the single highest-yield instance-synth fix.
 | `List.prod_ne_zero h` | now takes `0 ∉ l` | batch24 Kummer |
 | kabstract/rw proof-irrelevance loss (patterns with proof args / set-vars) | refold via `rw [show lhs = rhs from rfl]`, defeq-recast `have h' : <folded> := h`; never `simp at h` when other hyps depend on h — copy first | batch15 Ballot family |
 | statement repairs (operator policy 2026-07-13) | fix false statements to intended-true form; never vacuous, never sorry | see STATUS.md increment-7 statement-repairs table (7 files) |
+
+### 7l. Doctor increment-9 recipes (#38065, 2026-07-13, rewrite-drift + tm/pd remainder)
+
+| v4.31 symptom | fix | source |
+|---|---|---|
+| `rw [h]` fails to find pattern hidden in a **let-bound structure literal's projections** (`cfg.d` with `cfg := {d := t, …}`) | `subst h` (or `simp only [structField]`) to reduce projections BEFORE rewriting | CevasTheorem |
+| `2 * ?m / 2` (Nat.mul_div_cancel_left) no longer matches after `pow_succ` | use `pow_succ'` (gives `a * a^k`, not `a^k * a`) | AngleTrisectionOQ02OQ03Ext, CollatzCyclesOQ04 |
+| `Nat.totient_pos (h)` — now an Iff | `Nat.totient_pos.mpr h` | AngleTrisection/Erdos417/EulerTotient family |
+| `List.scanl` no longer unfolds under simp/rw (defined via `scanlM`) | `List.scanl_cons` / `List.scanl_nil` | Erdos1054 |
+| `ring`/`rpow_natCast` no longer bridge `π^(2:ℝ)` (rpow) ↔ `π^2` (npow) | insert targeted `π^(k:ℝ) = π^k` conversions; keep `show (2:ℝ)=…` rewrites TARGETED (a blanket one also hits the `2` in `1/2`) | BuffonsNeedle |
+| SimpleGraph field-assignment `symm.symm :=` / `loopless.irrefl :=` invalid | plain `symm :=` / `loopless :=` | Erdos1018 |
+| `nth_rewrite 1 [← Nat.mod_add_div …]` picks wrong occurrence | `conv_lhs => rw [← …]` | QuadraticReciprocityAlgorithmOQ03M2 |
+| `theorem` whose conclusion is a **function type** (data, not Prop) rejected | change keyword to `def` | Erdos688 sieve_duality |
+| `→` now binds tighter than `↔` in a mixed `∀ n, P → Q ↔ R` statement | parenthesize the intended grouping `∀ n, P → (Q ↔ R)` | Erdos207 |
