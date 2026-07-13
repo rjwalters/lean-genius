@@ -246,6 +246,27 @@ the parent's "Must prove exactly / does not count" section in
 `research/problems/<slug>/problem.md` (element 5 in `research/PROBLEMS-STRUCTURE.md`)
 — an equivalent same-strength restatement is already a named near-miss there.
 
+**Blocked-route registry (tracker JSON shape, issue #38388).** Record blocked
+routes in the problem tracker `src/data/research/problems/<id>.json` under
+`currentState.blockers`. Entries are either a legacy plain string (valid
+forever) or — REQUIRED for new blocked-route entries — a structured object:
+
+```json
+{
+  "route": "second-moment / L² averaging",
+  "reopenCriterion": "materially new mechanism required",
+  "blockedAt": "2026-07-12"
+}
+```
+
+`route` names the blocked approach by mathematical mechanism;
+`reopenCriterion` states when it may be retried (default, and the bar for
+equivalent-strength blocks: "materially new mechanism required");
+`blockedAt` is an optional ISO date. **Enforcement:** do not re-attempt a
+blocked route unless its `reopenCriterion` is met. An entry without an
+explicit criterion (including every legacy string entry) carries the implicit
+default "materially new mechanism required".
+
 **OQ-chain depth guard (MANDATORY).** Follow-up questions become child gallery
 entries via the Seeker (`<parent>-oq-NN`), which can recurse without bound. Before
 proposing any follow-up:
@@ -287,7 +308,9 @@ When several researchers work one problem or problem family concurrently
   another researcher's route looks favored; converge only when your route is
   properly blocked. A route stalling at a lemma of equivalent strength to the
   target is blocked per the equivalent-strength check above — reopen bar:
-  "materially new mechanism required".
+  "materially new mechanism required". Record it as a structured
+  `currentState.blockers` entry (`{ route, reopenCriterion, blockedAt? }`) per
+  the blocked-route registry above.
 
 **Spawner-side convention (binding on the orchestrator/operator, not just
 researchers):** when dispatching multiple researchers onto one problem family,

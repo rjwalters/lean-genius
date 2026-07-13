@@ -195,6 +195,55 @@ export interface KnownResults {
 }
 
 /**
+ * A structured blocked-route entry (blocked-route registry, see issue #38388).
+ *
+ * New blocked-route entries MUST use this object form with an explicit
+ * `reopenCriterion`. Legacy plain-string entries remain valid forever and
+ * carry the implicit default criterion `DEFAULT_REOPEN_CRITERION`.
+ */
+export interface BlockerEntry {
+  /** What is blocked — the route/approach identity (by mathematical mechanism) */
+  route: string
+  /** When the route may be retried; default: "materially new mechanism required" */
+  reopenCriterion: string
+  /** ISO date the route was blocked (optional) */
+  blockedAt?: string
+}
+
+/**
+ * A blocker is either a legacy plain string or a structured BlockerEntry.
+ */
+export type Blocker = string | BlockerEntry
+
+/**
+ * Default reopen bar for blocked routes (see .lean/roles/researcher.md and
+ * .claude/commands/lean-research.md — equivalent-strength check).
+ */
+export const DEFAULT_REOPEN_CRITERION = 'materially new mechanism required'
+
+/**
+ * Tolerant display text for a blocker entry (single source of truth).
+ *
+ * - Legacy strings render verbatim.
+ * - Structured entries render as `route — reopen: criterion`.
+ * - Pre-schema "wildcat" objects (ad-hoc keys already in the data) fall back
+ *   through `description`/`summary` before JSON.stringify, so nothing ever
+ *   renders as "[object Object]".
+ */
+export function blockerText(b: Blocker): string {
+  if (typeof b === 'string') return b
+  const entry = b as Partial<BlockerEntry> & { description?: unknown; summary?: unknown }
+  const label =
+    (typeof entry.route === 'string' && entry.route) ||
+    (typeof entry.description === 'string' && entry.description) ||
+    (typeof entry.summary === 'string' && entry.summary) ||
+    JSON.stringify(b)
+  return typeof entry.reopenCriterion === 'string' && entry.reopenCriterion !== ''
+    ? `${label} — reopen: ${entry.reopenCriterion}`
+    : label
+}
+
+/**
  * Current state of research on a problem
  */
 export interface ResearchState {
@@ -203,7 +252,7 @@ export interface ResearchState {
   iteration: number
   focus: string
   activeApproach?: string
-  blockers: string[]
+  blockers: Blocker[]
   nextAction: string
   attemptCounts: {
     total: number
