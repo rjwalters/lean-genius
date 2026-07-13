@@ -121,9 +121,7 @@ theorem cube_sum_factorization (x y z : R) :
 /-- When x + y + z = 0, we get x³ + y³ + z³ = 3xyz. -/
 theorem cube_sum_when_sum_zero (x y z : R) (h : x + y + z = 0) :
     x ^ 3 + y ^ 3 + z ^ 3 = 3 * (x * y * z) := by
-  have := cube_sum_factorization x y z
-  linarith [show (x + y + z) * (x ^ 2 + y ^ 2 + z ^ 2 - x * y - x * z - y * z) = 0
-    from by rw [h]; ring]
+  linear_combination (x ^ 2 + y ^ 2 + z ^ 2 - x * y - x * z - y * z) * h
 
 /-- The square of the sum identity: (Σ xᵢ)² = Σ xᵢ² + 2·Σ_{i<j} xᵢxⱼ.
     This is the relationship p₁² = p₂ + 2·e₂. -/

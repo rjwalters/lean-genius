@@ -1719,7 +1719,7 @@ Erdos806Problem	RESIDUAL	parse-error
 Erdos807Problem	RESIDUAL	dot-notation-drift
 Erdos808Problem	RESIDUAL	instance-synth
 Erdos809Problem	RESIDUAL	instance-synth
-Erdos80Problem	RESIDUAL	proof-drift
+Erdos80Problem	GREEN	
 Erdos810Problem	GREEN	
 Erdos811Problem	RESIDUAL	proof-drift
 Erdos812Problem	RESIDUAL	proof-drift
@@ -1733,7 +1733,7 @@ Erdos819Problem	GREEN
 Erdos81Problem	RESIDUAL	instance-synth
 Erdos820Aristotle	GREEN	
 Erdos820Problem	GREEN	
-Erdos821Problem	RESIDUAL	proof-drift
+Erdos821Problem	GREEN	
 Erdos822Problem	RESIDUAL	instance-synth
 Erdos823Problem	RESIDUAL	unknown-const:ArithmeticFunction.totient
 Erdos824Problem	RESIDUAL	elab-drift
@@ -2429,8 +2429,8 @@ ShapleyFolkmanOQ04	GREEN
 SkolemNoetherMatrixAut	RESIDUAL	unknown-const:Matrix.isUnit_det_iff_isUnit_mulVecLin
 SkolemNoetherMatrixAutAristotle	RESIDUAL	unknown-const:Matrix.isUnit_det_iff_isUnit_mulVecLin
 SolutionOfCubicOQ03OQ01	RESIDUAL	rewrite-drift
-SolutionOfCubicOQ03OQ02	RESIDUAL	proof-drift
-SolutionOfCubicOQ03OQ03	RESIDUAL	proof-drift
+SolutionOfCubicOQ03OQ02	GREEN	
+SolutionOfCubicOQ03OQ03	GREEN	
 SolutionOfCubicOQ03OQ05	RESIDUAL	proof-drift
 SolutionOfCubicOQ05	GREEN	
 SophieGermain	GREEN	
@@ -2635,7 +2635,7 @@ UrysohnsLemmaOQ01OQ01OQ02OQ01	GREEN
 UrysohnsLemmaOQ01OQ01OQ02OQ02	GREEN	
 VandermondeInterpolationOQ01OQ02	GREEN	
 VandermondeInterpolationOQ01OQ02OQ01	GREEN	
-VietasFormulasOQ02	RESIDUAL	proof-drift
+VietasFormulasOQ02	GREEN	
 VietasFormulasOQ03OQ01	RESIDUAL	proof-drift
 WaringGgLowerBoundsOQ02	RESIDUAL	decide-maxrecdepth
 WilsonsTheoremOQ01	RESIDUAL	rewrite-drift

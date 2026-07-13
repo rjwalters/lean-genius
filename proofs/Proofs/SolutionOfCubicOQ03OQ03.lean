@@ -53,7 +53,6 @@ theorem resolvent_monic_form (p q r m : ℂ)
     m^3 + (5 * p / 2) * m^2 + (2 * p^2 - r) * m +
     (p^3 / 2 - p * r / 2 - q^2 / 8) = 0 := by
   unfold isResolventRoot at h
-  field_simp
   linear_combination h / 8
 
 -- ============================================================
