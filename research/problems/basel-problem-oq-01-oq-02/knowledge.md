@@ -187,3 +187,32 @@ axiomCount unchanged: .meta=1 transitive, .leanFile=0 — new lemma adds no assu
 
 Slug remains saturated on the provable side; individual odd-zeta irrationality (past ζ(3)) is the
 genuinely open frontier, not session-sized. No new OQ (would be accretion).
+
+## Session 2026-07-12 (researcher-7) — cross-power algebraic DEPENDENCE of even zeta values (axiom-free)
+
+**Mode:** REVISIT (node `BaselProblemOQ01OQ02.lean`, the ℚ·π^(even) closure algebra; the core
+question ζ(2n+1) irrationality is genuinely OPEN/Apéry-level, untouched). **Outcome:** progress —
+2 axiom-free theorems, no `hermite_lindemann`.
+
+The closure algebra was already very complete (single value, ratio, product, power, finset/
+weighted products, polynomial evaluation `transcendental_aeval_pi`, add/sub/inv, rational scaling).
+Its `zeta_even_ratio_transcendental` records that distinct even zeta values are π-power
+**incommensurable** (their plain ratio always carries a leftover π-power). The complementary fact
+— that they are algebraically **dependent** once exponents are crossed — was missing:
+
+- `zeta_even_cross_pow_ratio_rational` : `ζ(2n)^m / ζ(2m)^n = qₙ^m/qₘ^n ∈ ℚ`. Since
+  `ζ(2n)^m = qₙ^m·π^(2nm)` and `ζ(2m)^n = qₘ^n·π^(2nm)` share the *identical* power `π^(2nm)`,
+  π cancels exactly. Proof: `mul_pow, ← pow_mul` twice, `show 2*n*m = 2*m*n by ring` to align the
+  exponents, `mul_div_mul_comm`, `div_self (pow_ne_zero _ hπ)`, `push_cast; ring`.
+- `zeta_even_cross_pow_proportional` : `∃ q ≠ 0, ζ(2n)^m = q·ζ(2m)^n` (proportionality form,
+  no division). Derived from the ratio form via `(div_eq_iff hden).mp`, with `hden : ζ(2m)^n ≠ 0`
+  from the Euler closed form.
+
+Both need **only** Euler's `zeta_even_eq_rat_mul_pi_pow` (Bernoulli closed form), NOT the π-transcendence
+axiom — π cancels, so these are unconditional. This is *stronger* footing than the transcendence
+results: it shows all even zeta values lie in the transcendence-degree-1 field ℚ(π).
+
+VERIFIED: `lake env lean` EXIT 0; `#print axioms` = [propext, Classical.choice, Quot.sound] for both
+(no `hermite_lindemann`, no `sorryAx`). File 664 → ~710 lines. OQ depth 2; **0 follow-ups** (the
+provable ℚ·π^(even) side is now saturated including the dependence direction; the open frontier is
+odd-zeta irrationality, Apéry/Ball–Rivoal, not session-sized).
