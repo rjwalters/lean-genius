@@ -186,10 +186,13 @@ theorem Monster_commutator_eq_top : commutator Monster = ⊤ := by
     h | h
   · exfalso
     apply Monster_not_commutative
-    have hcenter : Subgroup.center Monster = ⊤ := commutator_eq_bot_iff_center_eq_top.mp h
+    -- v4.31: `commutator_eq_bot_iff_center_eq_top` is absent from the pinned
+    -- Mathlib oleans; route through `commutator_eq_bot_iff_le_centralizer`.
+    have hle : (⊤ : Subgroup Monster) ≤ Subgroup.centralizer (⊤ : Subgroup Monster) :=
+      Subgroup.commutator_eq_bot_iff_le_centralizer.mp h
     intro a b
-    have ha : a ∈ Subgroup.center Monster := hcenter ▸ Subgroup.mem_top a
-    exact (Subgroup.mem_center_iff.mp ha b).symm
+    have hb := hle (Subgroup.mem_top b)
+    exact Subgroup.mem_centralizer_iff.mp hb a (Subgroup.mem_top a)
   · exact h
 
 /-- 𝕄 has trivial center: `Z(𝕄) = ⊥`.
@@ -277,7 +280,8 @@ theorem Monster_realizing_field_finrank :
       Module.finrank ℚ K =
         808017424794512875886459904961710757005754368000000000 := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  -- (v4.31: obtained class hypotheses are already local instances;
+  -- re-registering them via haveI creates divergent instance keys)
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   have hgal : Nat.card (K ≃ₐ[ℚ] K) = Module.finrank ℚ K :=
     IsGalois.card_aut_eq_finrank ℚ K
@@ -298,7 +302,8 @@ theorem Monster_realizing_field_not_solvable :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K), ¬ IsSolvable (K ≃ₐ[ℚ] K) := by
   obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
-  haveI := fK; haveI := aK; haveI := fdK; haveI := gK
+  -- (v4.31: obtained class hypotheses are already local instances;
+  -- re-registering them via haveI creates divergent instance keys)
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   intro hsolv
   haveI := hsolv

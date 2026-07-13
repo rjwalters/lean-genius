@@ -143,7 +143,7 @@ theorem constructible_totient_pow2 (n : ℕ) (h : ngonConstructible n = true) :
 
 /-- The constructible n-gons form a decidable subset of ℕ:
     for each n ≥ 3, we can compute whether the n-gon is constructible. -/
-theorem ngon_constructibility_computable (n : ℕ) (hn : 3 ≤ n) :
+def ngon_constructibility_computable (n : ℕ) (hn : 3 ≤ n) :
     Decidable (IsConstructibleNgon n) :=
   decidable_of_iff (ngonConstructible n = true) (ngonConstructible_correct n hn)
 

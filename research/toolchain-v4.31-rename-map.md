@@ -453,3 +453,44 @@ automatic in argument position); wrap when projections follow:
 containers after host edits on /Volumes/Stripe worktrees — `docker restart <c>`
 before building (see STATUS.md "increment 5B verification-infrastructure notes";
 also covers the runner5 false-mtime-FAIL pitfall).
+
+### 7h. Doctor increment-6 recipes (#38065, 2026-07-13, instance-synth: cyclotomic cluster)
+
+**ROOT CAUSE of the 48-row InverseGalois*/AngleTrisection* cyclotomic mystery**
+(finally solved): `DivisionRing.toRatAlgebra : Algebra ℚ R` at default priority
+wins `Algebra ℚ K` synthesis over the structure-canonical algebra instances
+(`SplittingField.instAlgebra`, `CyclotomicField.instAlgebra`,
+`IntermediateField.algebra'`, …). The chosen instance is defeq to the canonical
+one only at **default transparency**, so every class keyed on the canonical
+algebra (`Normal`, `IsSplittingField`, `IsGalois`, `IsCyclotomicExtension`,
+quotient `Mul`/`Group`, `Module.Free`) fails to synthesize while explicit
+application succeeds — the exact "instance exists yet synth fails, explicit
+application works" symptom flagged unresolved since increment 1.
+
+| pattern | fix | notes |
+|---|---|---|
+| `Normal/IsSplittingField/IsGalois/IsCyclotomicExtension ℚ …` synth fails, explicit application works | `attribute [instance 10] DivisionRing.toRatAlgebra` after imports | THE cyclotomic-cluster root fix; demotes the ℚ-algebra instance below structure-canonical ones. Flipped 4/10 roots outright |
+| `Module.Free ℚ ↥F` / big cyclotomic tower `(deterministic) timeout at typeclass (20000 heartbeats)` | `set_option synthInstance.maxHeartbeats 80000` (file-level) | pairs with the demotion; InverseGaloisD4/D4OQ02 |
+| `H.Normal` / `Mul (Gal(…) ⧸ H)` synth fails after demotion, `H : Subgroup (…).Gal` | re-register at the `≃ₐ` spelling: `haveI : @Subgroup.Normal (L ≃ₐ[ℚ] L) AlgEquiv.aut H := ‹H.Normal›` | `Polynomial.Gal` = `SplittingField ≃ₐ[ℚ] SplittingField` via `deriving Group`; the two group spellings are not reducibly-equal keys |
+| redundant `haveI := fK; haveI := aK; …` re-registering `obtain`ed class hypotheses | **delete them** | obtained class hypotheses are already local instances; re-registering via `haveI :=` creates divergent instance keys that break downstream synthesis (InverseGaloisOQ03) |
+| `solvableByRad.isSolvable' hirr hα h` (deprecated inductive `IsSolvableByRad`) | membership bridge: `induction h` → `α ∈ solvableByRad F E`, then `isSolvable_gal_of_irreducible hmem hirr hα` (hyps `clear`ed before induction; arg order is membership-first) | AbelRuffini `isSolvable'` alias reordered args |
+| `open scoped` element commutator: `⁅a,b⁆` `failed to synthesize Bracket G G` | `open scoped commutatorElement` | `commutatorElement` is now a scoped instance (Algebra/Group/Commutator.lean) |
+| `s3/s4 solvable` via `decide`/`native_decide` on `derivedSeries … = ⊥` | group-theoretic proof: sign-kernel `solvable_of_ker_le_range` + `alternatingGroup.kleinFour` API + prime-card `isCyclic_of_prime_card` helper | v4.31 lost the `Decidable (derivedSeries … = ⊥)` instances |
+| `FaithfulSMul (subgroup) (F)` on a `MulSemiringAction.compHom … subtype` action | pin the SMul key: `@FaithfulSMul _ _ (altAction n).toDistribMulAction.toMulAction.toSMul where …` | subgroup-restriction SMul is defeq but not reducibly to the header's synthesized one |
+| `simpa using hdvd` after `Fintype.card_perm` (goal `_ ∣ 24`, hdvd `_ ∣ 4!`) | `simpa [Nat.factorial] using hdvd` | confirms 7f; norm_num/simp no longer evaluates `n!` |
+| `convert X using 1` leaves an associativity gap (`a*(b*c*d) ∈ P` vs `a*b*c*d ∈ P`) | `have h : a*b*c*d = a*(b*c*d) := by group; rw [h]; exact X` | v4.31 convert stricter; InverseGaloisA5/AbelRuffiniOQ04OQ01 |
+| `commutator_eq_bot_iff_center_eq_top.mp` — Unknown constant | route via `Subgroup.commutator_eq_bot_iff_le_centralizer.mp` + `mem_centralizer_iff` | lemma absent from pinned oleans |
+| `Subgroup.index_mul_card` on `Fintype.card` goal | `rw [← Nat.card_eq_fintype_card, …, Subgroup.index_mul_card]` | lemma is now `Nat.card`-stated |
+| `DihedralGroup.noConfusion hx` motive-inference failure | `simp only [DihedralGroup.one_def, reduceCtorEq] at hx` | bare `noConfusion` can't infer motive |
+| `dirichletUnitTheorem.w₀ K` (explicit K) | drop K — `w₀` binder is now implicit (`variable {K}`) | Kronecker/Stark |
+| well-founded `def f` no longer `rfl`-transparent (`halvings 0 = 0 := rfl` fails) | equation lemmas: `by simp [f]` for base, `by conv_lhs => rw [f]` for step | AngleTrisectionOQ03OQ02 |
+| Decidable-**valued** `theorem foo : Decidable P` "not a proposition" | change `theorem` → `def` | Decidable instances/definitions must be `def` |
+| `Nat.log_pow (h : 1 < b)` "expected `log 2 (2^k)=k`, got `∀ x, …`" | pass the explicit exponent: `Nat.log_pow h k` | |
+| `set x := e … rw [hx_def]`/`simp only [hx_def]` "no occurrence" (set-vars) | prove membership by term-level `Finset.mem_filter.mpr ⟨…⟩`; `rw [hS_def]` right before an `ext`; add the set-var to the simp set | v4.31 set-vars opaque to simp/rw lemma sets (confirms 5B) |
+| `natDegree` of explicit polynomial via `norm_num [natDegree_*]` | `compute_degree!` | confirms 7e |
+| leftover `T_k(cos)` transfer ℚ→ℝ→ℂ hits `whnf` heartbeat blowup | stay in ℂ: `Chebyshev.aeval_T` + `Complex.ofReal_cos` + `Chebyshev.T_complex_cos` | AngleTrisectionOQ02OQ03OQ01 |
+| `ring` treats `x^(k+1)`, `x^(k+2)` as independent zpow atoms | rewrite all to the single atom `x^(k:ℤ)` via `zpow_add_one₀` first, then `field_simp; ring` | |
+
+**All ℚ-field-extension gallery files** (Galois theory, cyclotomic, splitting
+fields, number fields) should carry `attribute [instance 10] DivisionRing.toRatAlgebra`
+after imports on v4.31 — this is the single highest-yield instance-synth fix.

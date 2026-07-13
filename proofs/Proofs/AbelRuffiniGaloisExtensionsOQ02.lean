@@ -62,9 +62,14 @@
   - Stacks project, tag 09DW (Fundamental theorem of Galois theory).
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.Index
+import Mathlib
 import Proofs.AbelRuffiniGaloisExtensionsOQ01
+
+/- v4.31 compat (#38065 increment 6): demote `DivisionRing.toRatAlgebra`
+(see InverseGaloisD4.lean for the root-cause note). -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
 
 namespace AbelRuffiniGaloisExtensionsOQ02
 

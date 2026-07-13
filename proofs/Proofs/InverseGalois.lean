@@ -13,6 +13,14 @@ import Mathlib.RingTheory.Polynomial.GaussLemma
 import Mathlib.NumberTheory.LSeries.PrimesInAP
 import Proofs.NthRootIrrationalOQ01
 
+/- v4.31 compat (#38065 increment 6): `DivisionRing.toRatAlgebra` (default
+priority) wins `Algebra ℚ K` synthesis over the structure-canonical instances
+(defeq only at default transparency), breaking downstream `Normal`/
+`IsSplittingField`/`IsGalois`/`IsCyclotomicExtension` synthesis. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
+
 /-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
 does not fire during typeclass synthesis when the modulus is a variable (its
 explicit universe-polymorphic `K` fails synthesis-time unification), although
@@ -20,14 +28,6 @@ explicit application succeeds; re-register a `ℚ`-specialized copy. -/
 instance isCyclotomicExtensionRatCompatInverseGalois (n : ℕ) :
     IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
   CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
-
-/-- v4.31 compat (#38065): same synthesis-unification regression for the
-splitting-field `Normal` instance — `Polynomial.SplittingField.instNormal`
-exists in Mathlib but does not fire during typeclass synthesis over `ℚ`,
-although explicit application succeeds; re-register a `ℚ`-specialized copy. -/
-instance instNormalRatSplittingFieldCompatInverseGalois (f : Polynomial ℚ) :
-    Normal ℚ f.SplittingField :=
-  Polynomial.SplittingField.instNormal f
 
 
 /-
@@ -493,8 +493,22 @@ theorem solvable_iff_solvable_galois_group
     {E : Type*} [Field E] [Algebra F E]
     {α : E} {q : Polynomial F}
     (hirr : Irreducible q) (hα : Polynomial.aeval α q = 0) :
-    α ∈ solvableByRad F E → IsSolvable q.Gal :=
-  fun h => isSolvable_gal_of_irreducible h hirr hα
+    IsSolvableByRad F α → IsSolvable q.Gal := by
+  -- v4.31: `solvableByRad.isSolvable'` is now `isSolvable_gal_of_irreducible`
+  -- with membership hypothesis `α ∈ solvableByRad F E` first; bridge the
+  -- deprecated inductive `IsSolvableByRad` to membership by induction
+  -- (clearing `hα`/`hirr` first so they are not generalized into the motive).
+  intro h
+  have hmem : α ∈ solvableByRad F E := by
+    clear hα hirr
+    induction h with
+    | base a => exact IntermediateField.algebraMap_mem _ a
+    | add a b _ _ ha hb => exact add_mem ha hb
+    | neg a _ ha => exact neg_mem ha
+    | mul a b _ _ ha hb => exact mul_mem ha hb
+    | inv a _ ha => exact inv_mem ha
+    | rad a n hn _ ha => exact solvableByRad.rad_mem hn ha
+  exact isSolvable_gal_of_irreducible hmem hirr hα
 
 /-
 ## Summary and Open Questions
@@ -703,14 +717,12 @@ theorem gal_card_dvd_six :
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   -- |Perm(rootSet)| = (|rootSet|)! = 3! = 6
   rw [Fintype.card_perm] at hdvd
-  -- v4.31: `rw` no longer matches the `set`-bound `p` against the literal
-  -- polynomial inside the lemma statement; use term-mode `.trans` (defeq) and
-  -- close the factorial arithmetic explicitly.
-  have hcard : Fintype.card (p.rootSet p.SplittingField) = 3 :=
-    (Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
-        (Polynomial.SplittingField.splits p)).trans x_cube_sub_2_natDegree
-  rw [hcard, show Nat.factorial 3 = 6 from rfl] at hdvd
-  exact hdvd
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 3 := by
+    rw [Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
+        (Polynomial.SplittingField.splits p)]
+    exact x_cube_sub_2_natDegree
+  rw [hcard] at hdvd
+  simpa [Nat.factorial] using hdvd
 
 -- Helper: X²+X+1 has a root in the splitting field of X³-2
 -- (the ratio of any two distinct roots satisfies X²+X+1 = 0)
@@ -838,10 +850,10 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
   -- galActionHom is injective
   have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
   -- |rootSet| = 3
-  -- v4.31: term-mode `.trans` instead of `rw` (see gal_card_dvd_six above)
-  have hcard_root : Fintype.card (p.rootSet p.SplittingField) = 3 :=
-    (Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
-        (Polynomial.SplittingField.splits p)).trans x_cube_sub_2_natDegree
+  have hcard_root : Fintype.card (p.rootSet p.SplittingField) = 3 := by
+    rw [Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
+        (Polynomial.SplittingField.splits p)]
+    exact x_cube_sub_2_natDegree
   -- |Gal| = 6 = |Perm(rootSet)| (since 3! = 6)
   have hcard_gal : Fintype.card p.Gal = 6 := x_cube_sub_2_gal_card
   have hcard_perm : Fintype.card (Equiv.Perm (p.rootSet p.SplittingField)) = 6 := by
@@ -1000,11 +1012,6 @@ theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
   -- Step 2: The p-th cyclotomic splitting field E is Galois over ℚ
   set E := (Polynomial.cyclotomic p ℚ).SplittingField with hE_def
   haveI : IsGalois ℚ E := cyclotomic_field_isGalois p
-  -- v4.31 compat: typeclass synthesis no longer unfolds the `set`-bound `E`,
-  -- so also register the instance under the unfolded spelling (needed by
-  -- `IsGalois.of_fixedField_normal_subgroup` / `normalAutEquivQuotient` below).
-  haveI : IsGalois ℚ (Polynomial.cyclotomic p ℚ).SplittingField :=
-    cyclotomic_field_isGalois p
   -- Step 3: Isomorphism Gal(E/ℚ) ≅ (ℤ/pℤ)ˣ and generator
   let iso := cyclotomic_galois_group_iso_units_zmod p
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
@@ -1012,25 +1019,25 @@ theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
   set σ : (Polynomial.cyclotomic p ℚ).Gal := iso.symm (g ^ n) with hσ_def
   set H : Subgroup (Polynomial.cyclotomic p ℚ).Gal := Subgroup.zpowers σ with hH_def
   -- Step 5: H is normal (Gal is abelian since (ℤ/pℤ)ˣ is abelian)
-  haveI hH_norm : H.Normal := ⟨fun x hx a => by
+  haveI : H.Normal := ⟨fun x hx a => by
     suffices h : a * x * a⁻¹ = x by rw [h]; exact hx
     -- Commutativity via iso: Gal ≃* (ℤ/pℤ)ˣ (commutative)
     have hab : a * x = x * a :=
       iso.injective (by rw [map_mul, map_mul, mul_comm])
     rw [hab]; group⟩
-  -- v4.31 compat: `Polynomial.Gal` is a plain `def`, so instances stated over
-  -- `Subgroup Gal(L/K)` (= `Subgroup (L ≃ₐ[ℚ] L)`, e.g. the quotient-group
-  -- structure and the fixed-field instances used below) no longer see
-  -- `hH_norm` during synthesis; re-register it keyed on the unfolded spelling.
-  haveI hH_norm' : (show Subgroup ((Polynomial.cyclotomic p ℚ).SplittingField ≃ₐ[ℚ]
-      (Polynomial.cyclotomic p ℚ).SplittingField) from H).Normal := hH_norm
+  -- v4.31: downstream lemmas (`IsGalois.of_fixedField_normal_subgroup`,
+  -- `normalAutEquivQuotient`, quotient-group instances) key `H.Normal` on the
+  -- `E ≃ₐ[ℚ] E` spelling of the group, which no longer unifies reducibly with
+  -- `(cyclotomic p ℚ).Gal`; re-register the instance at that type.
+  haveI : @Subgroup.Normal
+      ((Polynomial.cyclotomic p ℚ).SplittingField ≃ₐ[ℚ]
+        (Polynomial.cyclotomic p ℚ).SplittingField)
+      AlgEquiv.aut H := ‹H.Normal›
   -- Step 6: Fixed field K = E^H
   set K := IntermediateField.fixedField H with hK_def
   -- Step 7: K/ℚ is Galois (Normal + Separable)
   -- IsGalois.of_fixedField_normal_subgroup: fixedField of normal subgroup is Galois
-  -- (v4.31 compat: apply the instance explicitly; synthesis no longer unfolds
-  -- the `set`-bound `K`)
-  haveI : IsGalois ℚ ↥K := IsGalois.of_fixedField_normal_subgroup H
+  haveI : IsGalois ℚ ↥K := inferInstance
   -- Step 8: Compute |H| = (p-1)/n
   have hH_card : Nat.card ↥H = (p - 1) / n := by
     -- |H| = |zpowers(σ)| = orderOf(σ)
@@ -1088,7 +1095,11 @@ theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
       exact ⟨m, by
         show e g ^ m = x
         have hm' : g ^ m = e.symm x := hm
-        rw [← map_zpow e, hm', e.apply_symm_apply]⟩⟩⟩
+        -- v4.31: `rw` chains fail here because the quotient group appears in
+        -- two non-reducibly-equal spellings (`.Gal ⧸ H` vs `Gal(SF/ℚ) ⧸ H`);
+        -- close by defeq-tolerant `exact` instead.
+        have h1 : e (g ^ m) = x := by rw [hm']; exact e.apply_symm_apply x
+        exact (map_zpow e g m).symm.trans h1⟩⟩⟩
   -- Step 11: |Gal(K/ℚ)| = n
   have hK_card : Fintype.card (↥K ≃ₐ[ℚ] ↥K) = n := by
     rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank ℚ ↥K]; exact hK_degree
