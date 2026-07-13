@@ -271,7 +271,7 @@ BoundedPrimeGapsOQ03OQ01	GREEN
 BoundedPrimeGapsOQ03OQ01OQ01	GREEN	
 BoundedPrimeGapsOQ03OQ01OQ01OQ01	GREEN	
 BoundedPrimeGapsOQ03OQ01OQ04	GREEN	
-BoundedPrimeGapsOQ03OQ02	RESIDUAL	unknown-const:primes.length
+BoundedPrimeGapsOQ03OQ02	GREEN	
 BoundedPrimeGapsOQ03OQ03	GREEN	
 BoundedPrimeGapsOQ04	RESIDUAL	lambda-reserved-token
 BoundedPrimeGapsOQ04OQ01	RESIDUAL	type-mismatch
@@ -614,7 +614,7 @@ Erdos1006OQ01	RESIDUAL	signature-drift
 Erdos1006OQ01OQ02	RESIDUAL	signature-drift
 Erdos1006OQ02	RESIDUAL	elab-drift
 Erdos1006OQ03	GREEN	
-Erdos1006OQ04	RESIDUAL	unknown-const:v
+Erdos1006OQ04	GREEN	
 Erdos1006OQ04Decidability	RESIDUAL	unclassified
 Erdos1006Problem	RESIDUAL	instance-synth
 Erdos1007OQ01	RESIDUAL	proof-drift

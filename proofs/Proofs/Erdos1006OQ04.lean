@@ -149,7 +149,7 @@ theorem coloringOrientation_arc_irrefl {k : ℕ} (col : G.Coloring (Fin k)) (v :
 theorem coloringOrientation_arc_ne {k : ℕ} (col : G.Coloring (Fin k)) (u v : V)
     (harc : (coloringOrientation G col).arc u v) : u ≠ v := by
   intro heq; subst heq
-  exact coloringOrientation_arc_irrefl col v harc
+  exact coloringOrientation_arc_irrefl col u harc
 
 /-- Same-colored vertices are not adjacent: a proper coloring gives distinct colors
     on adjacent vertices, so equal colors means non-adjacent. -/
