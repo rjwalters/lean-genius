@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1204",
   "title": "Erdős #1204",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-12): proved the EXACT value A(9)=30 (companion Erdos1204A9.lean), tightening the earlier 27<=A(9)<=30 bracket to equality and extending the exact frontier to A(2..9)=2,6,8,12,16,20,26,30. New lower bound admissible_nine_sup_ge: an admissible set misses one residue class mod each of 2,3,5, so within {0,..,29} it survives at most 30*(1/2)*(2/3)*(4/5)=8 residues (checked by decide over all 2*3*5=30 class-triples), which is < 9 — so any admissible 9-set has an element >=30. Notably p=7 is NOT needed (unlike A(8)=26): the primorial 2*3*5=30 equals the window length {0,..,29}, forcing the mod-2,3,5 density below 9. 0 sorries / 0 axioms ([propext,Classical.choice,Quot.sound] only, no native_decide), docker-verified Lean v4.26.0 (7746 jobs).",
+    "progressSummary": "PROGRESS (researcher-5, 2026-07-12): proved the EXACT value A(10)=32 (Erdos1204A10.lean), extending the exact frontier to A(2..10)=2,6,8,12,16,20,26,30,32. Like A(9), the lower bound is settled by the mod-2,3,5 sieve ALONE (p=7 not needed): the exact max over all 30 missed-class triples of the range-32 avoidance filter is exactly 9<10 (by decide), correcting an earlier next-step note that predicted p=7 would be binding. 0 sorries / 0 axioms ([propext,Classical.choice,Quot.sound], no native_decide), host-lake verified Lean v4.26.0.",
     "builtItems": [
       "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
       "Erdos1204.missing_class_of_card_lt",
@@ -49,7 +49,10 @@
       "Erdos1204A9.lean: admissible_witness_nine + A_nine_le (A(9)<=30) + A_nine_ge (A(9)>=27 via A_lt_A_succ at A(8)=26) + A_nine_bounds; 0 axioms/0 sorries",
       "theorem admissible_nine_sup_ge — every admissible 9-set has sup ≥ 30, via the mod-2,3,5 CRT filter-card bound (8<9).",
       "theorem A_nine : A 9 = 30 — the exact Hardy–Littlewood minimal diameter H(9), closing the 27≤A(9)≤30 bracket.",
-      "theorem A_nine_ge : 30 ≤ A 9 and updated A_nine_bounds sharp sandwich."
+      "theorem A_nine_ge : 30 ≤ A 9 and updated A_nine_bounds sharp sandwich.",
+      "admissible_witness_ten (Erdos1204A10.lean): {0,2,6,8,12,18,20,26,30,32} = A(9) witness + 32 is admissible (misses class 1 mod2, 1 mod3, 4 mod5, 3 mod7); gives A(10)<=32",
+      "admissible_ten_sup_ge (Erdos1204A10.lean): every admissible 10-set has sup>=32, via mod-2,3,5 sieve fin_cases r2,r3,r5 <;> decide (filter card <=9 over range 32)",
+      "A_ten / A_ten_ge / A_ten_bounds (Erdos1204A10.lean): A(10)=32 exact, axiom-free [propext,Classical.choice,Quot.sound], extends frontier A(2..10)=2,6,8,12,16,20,26,30,32"
     ],
     "insights": [
       "Admissibility is purely local: only the residue pattern mod each prime matters.",
@@ -65,13 +68,14 @@
       "The vanishing locus of A is exactly {0,1}: A(0)=A(1)=0 (∅ and {0}), while every admissible k-set with k≥2 is forced by the prime 2 to have maximum ≥2(k-1)≥2, so A is strictly positive from k=2.",
       "A(9) sits in 27 <= A(9) <= 30 (H(9)=30). The exact value needs the exhaustive p=2,3,5,7 pruning over {0,..,29} (as A(8)=26 required over {0,..,25}); the general slope ladder Erdos1204C..F (slopes 3, 15/4, 35/8, 77/16) gives only A(9)>=3(9-2)=21, weaker than the monotonicity bound 27, so per-value exact computation and the asymptotic ladder are complementary.",
       "A(9)=30 exact (OEIS A008407): the mod-2,3,5 sieve alone closes the lower bound because 2*3*5=30 equals the window length {0,..,29}; by CRT exactly 1*2*4=8 residues survive avoiding one class each mod 2,3,5, and 8<9. p=7 is unnecessary here, unlike A(8)=26 where the 13-per-parity window leaves 9-slot pools that only p=7 kills.",
-      "Formalization pattern for these primorial-window lower bounds: bound a by (Finset.range N).filter (fun x:ℕ => (x:ZMod p1)≠r1 ∧ ...), then close all class-choices at once with fin_cases r1 <;> ... <;> decide proving the filter card ≤ target-1. Much shorter than the per-branch forced-set case bash used for A(8). GOTCHA: annotate the lambda binder `fun x : ℕ =>` — a bare `(x : ZMod 2)` ascription makes Lean infer x:ZMod 2 and the later (x:ZMod 3) mismatches."
+      "Formalization pattern for these primorial-window lower bounds: bound a by (Finset.range N).filter (fun x:ℕ => (x:ZMod p1)≠r1 ∧ ...), then close all class-choices at once with fin_cases r1 <;> ... <;> decide proving the filter card ≤ target-1. Much shorter than the per-branch forced-set case bash used for A(8). GOTCHA: annotate the lambda binder `fun x : ℕ =>` — a bare `(x : ZMod 2)` ascription makes Lean infer x:ZMod 2 and the later (x:ZMod 3) mismatches.",
+      "A(10)=32 (Erdos1204A10.lean): the mod-2,3,5 sieve ALONE closes the lower bound — p=7 is NOT needed. The exact max over all 2*3*5=30 missed-class triples of |{x<32 : x avoids one class each mod 2,3,5}| is exactly 9 < 10 (checked by decide), correcting the earlier next-step prediction that averaged density 32*(1/2)(2/3)(4/5)=8.53 to guess ~10-11 survivors and expected p=7 to become binding. Window length 32 sits just above the primorial 2*3*5=30 yet density stays below target 10."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove A(10)=32: window {0,..,31}, need to rule out admissible 10-sets with sup ≤ 31. The clean mod-2,3,5 density is 32*(1/2)*(2/3)*(4/5)=8.53→ up to ~10-11 survive, so p=7 becomes binding again (as at A(8)); expect an A(8)-style forced-set case analysis. Non-trivial but mechanical.",
-      "Generalize the primorial-window observation: when the search window {0,..,P-1} has length equal to a primorial P=2·3·…·p_j, the mod-2..p_j sieve density is exactly φ-like ∏(p_i-1)/p_i · P, giving a clean closed-form lower bound A(k) ≥ P whenever that density < k. This is the elementary mod-small-primes lower bound flagged in prior nextSteps.",
-      "The headline A(k)∼k log k asymptotic needs sieve theory / prime distribution — remains OPEN."
+      "Prove A(11)=36: window {0,..,35}, target 11. Check whether the mod-2,3,5(,7) sieve density stays below 11 (decide over class-tuples) or whether a genuine forced-set case analysis is needed — A(10) showed the averaged-density heuristic is unreliable, so COMPUTE the exact per-tuple max before predicting which primes are binding.",
+      "Generalize the primorial-window observation into a reusable lemma: for the first j primes with primorial P=prod p_i, an admissible set inside {0,..,P-1} has card <= prod (p_i-1) via CRT (ZMod P ≅ prod ZMod p_i), giving A(k) >= P whenever prod(p_i-1) < k. Mathlib: ZMod.chineseRemainder. Est ~300-500 lines; moderate risk.",
+      "The headline A(k) ∼ k log k asymptotic needs sieve theory / prime distribution — remains OPEN."
     ],
     "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n",
     "score": 27
