@@ -831,4 +831,71 @@ theorem scaledLattice_dist_ne_sqrt_two_mul_of_odd_padicValNat
     ⟨p, q, hp, hq, h⟩
   exact hodd (hreal r hmem hr4)
 
+/-!
+### The all-`n` master characterization
+
+The capstone `scaledLattice_realizes_sqrt_two_mul_iff_factorization` characterizes the
+realizable *half*-values `√(2m)`.  Every realizable distance `√n` has `n` even
+(`scaledLattice_achievable_iff` forces `n = 2·(u²+v²)`), so the two combine into a single
+characterization valid for **every** natural `n`: `√n` is a lattice distance iff `n` is even
+**and** `n/2` is a sum of two squares (equivalently, every prime `≡ 3 (mod 4)` divides `n/2`
+to an even power).  This subsumes the entire file at once — the odd-`n` avoidance results are
+the `¬ Even n` branch, and the mod-4/8/16 and prime-power obstructions are the failure of the
+`n/2` factorization condition.
+-/
+
+/-- **All-`n` master characterization (factorization form).**  For every natural number `n`,
+`√n` is a distance between two points of `√2·ℤ²` **iff** `n` is even and every prime
+`r ≡ 3 (mod 4)` divides `n/2` to an even power.  Combines `scaledLattice_achievable_iff`
+(which forces `n` even) with the half-value capstone
+`scaledLattice_realizes_sqrt_two_mul_iff_factorization`. -/
+theorem scaledLattice_realizes_sqrt_iff (n : ℕ) :
+    (∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧ dist p q = Real.sqrt n)
+      ↔ Even n ∧ ∀ r ∈ (n / 2).primeFactors, r % 4 = 3 → Even (padicValNat r (n / 2)) := by
+  constructor
+  · rintro ⟨p, q, hp, hq, h⟩
+    obtain ⟨u, v, huv⟩ := (scaledLattice_achievable_iff n).mp ⟨p, q, hp, hq, h⟩
+    have h2 : (2 : ℕ) ∣ n := by
+      have : (2 : ℤ) ∣ (n : ℤ) := ⟨u ^ 2 + v ^ 2, huv⟩
+      exact_mod_cast this
+    obtain ⟨c, hc⟩ := h2
+    have hev : Even n := ⟨c, by omega⟩
+    have key : 2 * (n / 2) = n := by omega
+    have hcast : Real.sqrt (n : ℝ) = Real.sqrt (2 * ((n / 2 : ℕ) : ℝ)) := by
+      congr 1
+      have hc' : ((n : ℕ) : ℝ) = ((2 * (n / 2) : ℕ) : ℝ) := by rw [key]
+      rw [hc']; push_cast; ring
+    rw [hcast] at h
+    exact ⟨hev, (scaledLattice_realizes_sqrt_two_mul_iff_factorization (n / 2)).mp
+      ⟨p, q, hp, hq, h⟩⟩
+  · rintro ⟨hev, hfact⟩
+    obtain ⟨c, hc⟩ := hev
+    have key : 2 * (n / 2) = n := by omega
+    have hcast : Real.sqrt (n : ℝ) = Real.sqrt (2 * ((n / 2 : ℕ) : ℝ)) := by
+      congr 1
+      have hc' : ((n : ℕ) : ℝ) = ((2 * (n / 2) : ℕ) : ℝ) := by rw [key]
+      rw [hc']; push_cast; ring
+    rw [hcast]
+    exact (scaledLattice_realizes_sqrt_two_mul_iff_factorization (n / 2)).mpr hfact
+
+/-- **All-`n` master characterization (sum-of-two-squares form).**  `√n` is a distance
+between two points of `√2·ℤ²` **iff** `n` is even and `n/2` is a sum of two squares.  The
+transparent restatement of `scaledLattice_realizes_sqrt_iff` via Fermat's two-square theorem
+`Nat.eq_sq_add_sq_iff`: the realizable distances are exactly `√(2m)` with `m` a norm of a
+Gaussian integer. -/
+theorem scaledLattice_realizes_sqrt_iff_half_sum_two_squares (n : ℕ) :
+    (∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧ dist p q = Real.sqrt n)
+      ↔ Even n ∧ ∃ x y : ℕ, n / 2 = x ^ 2 + y ^ 2 := by
+  rw [scaledLattice_realizes_sqrt_iff]
+  constructor
+  · rintro ⟨hev, hf⟩; exact ⟨hev, Nat.eq_sq_add_sq_iff.mpr hf⟩
+  · rintro ⟨hev, hs⟩; exact ⟨hev, Nat.eq_sq_add_sq_iff.mp hs⟩
+
+/-- **Odd distances are never realized (from the master iff).**  If `n` is odd then `√n` is
+not a lattice distance — the `¬ Even n` branch of `scaledLattice_realizes_sqrt_iff`, reproving
+`scaledLattice_dist_ne_sqrt_odd` from the single all-`n` characterization. -/
+theorem scaledLattice_not_realizes_sqrt_of_odd {n : ℕ} (hodd : ¬ Even n) :
+    ¬ ∃ p q : Plane, p ∈ ScaledLattice ∧ q ∈ ScaledLattice ∧ dist p q = Real.sqrt n :=
+  fun h => hodd ((scaledLattice_realizes_sqrt_iff n).mp h).1
+
 end Erdos214Incomplete01OQ01
