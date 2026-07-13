@@ -105,8 +105,8 @@ AreaOfCircleOQ01OQ02OQ01OQ03	RESIDUAL	unknown-const:pi_lt_3141593
 AreaOfCircleOQ01OQ02OQ02	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier	RESIDUAL	decide-maxrecdepth
-AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT	RESIDUAL	type-mismatch
-AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso	RESIDUAL	type-mismatch
+AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT	GREEN	
+AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ02	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam	GREEN	
@@ -277,7 +277,7 @@ BoundedPrimeGapsOQ04	RESIDUAL	lambda-reserved-token
 BoundedPrimeGapsOQ04OQ01	RESIDUAL	type-mismatch
 BoundedPrimeGapsOQ04OQ01Aristotle	RESIDUAL	rewrite-drift
 BoundedPrimeGapsOQ04OQ02	RESIDUAL	lambda-reserved-token
-BrianchonTheorem	RESIDUAL	type-mismatch
+BrianchonTheorem	GREEN	
 BrianchonTheoremOQ01OQ02	RESIDUAL	proof-drift
 BrouwerFixedPointOQ01OQ02OQ03OQ01	RESIDUAL	unknown-const:Metric.mem_closedBall_zero_iff.mpr
 BrouwerFixedPointOQ01OQ03	GREEN	
@@ -412,7 +412,7 @@ CayleyHamiltonReductionOQ01	RESIDUAL	type-mismatch
 CayleyHamiltonReductionOQ01OQ02	RESIDUAL	type-mismatch
 CayleyHamiltonReductionOQ02	RESIDUAL	type-mismatch
 CayleysTheoremOQ01OQ01OQ02OQ02OQ01	GREEN	
-CayleysTheoremOQ01OQ02OQ02	RESIDUAL	type-mismatch
+CayleysTheoremOQ01OQ02OQ02	RESIDUAL	rewrite-drift
 CentralLimitTheorem	RESIDUAL	unknown-const:tendsto_one_plus_div_pow_exp
 CentralLimitTheoremOQ01OQ01	RESIDUAL	proof-drift
 CentralLimitTheoremOQ01OQ01OQ04	RESIDUAL	proof-drift
@@ -430,7 +430,7 @@ CentralLimitTheoremOQ03OQ01Aristotle	RESIDUAL	rewrite-drift
 CevasTheorem	RESIDUAL	rewrite-drift
 CevasTheoremNonEuclidean	GREEN	
 CevasTheoremNonEuclideanOQ01	GREEN	
-CevasTheoremNonEuclideanOQ01OQ01	RESIDUAL	type-mismatch
+CevasTheoremNonEuclideanOQ01OQ01	GREEN	
 CevasTheoremNonEuclideanOQ01OQ02	GREEN	
 CevasTheoremNonEuclideanOQ02	GREEN	
 CevasTheoremNonEuclideanOQ03	GREEN	
@@ -552,11 +552,11 @@ DirichletsTheorem	RESIDUAL	parse-error
 DirichletsTheoremOQ01OQ01	RESIDUAL	type-mismatch
 DirichletsTheoremOQ03	RESIDUAL	type-mismatch
 DissectionOfCubesOQ01OQ02	GREEN	
-DissectionOfCubesOQ02OQ02	RESIDUAL	type-mismatch
+DissectionOfCubesOQ02OQ02	RESIDUAL	rewrite-drift
 DissectionOfCubesOQ03	RESIDUAL	rewrite-drift
 DissectionOfCubesOQ03OQ02	RESIDUAL	rewrite-drift
-DissectionOfCubesOQ04	RESIDUAL	type-mismatch
-DissectionOfCubesOQ04Aristotle	RESIDUAL	type-mismatch
+DissectionOfCubesOQ04	RESIDUAL	rewrite-drift
+DissectionOfCubesOQ04Aristotle	RESIDUAL	rewrite-drift
 DivisibilityBy3	GREEN	
 DivisibilityBy3OQ03	RESIDUAL	unknown-const:Nat.sum_digits_lt
 DivisibilityBy3OQ03OQ02	RESIDUAL	proof-drift
@@ -590,7 +590,7 @@ ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01	GREEN
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01	GREEN	
-ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02	RESIDUAL	type-mismatch
+ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02	RESIDUAL	rewrite-drift
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02	GREEN	
@@ -601,8 +601,8 @@ ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ03	RESIDUAL	unknown-const:legendreSym.eq_one_iff_isSquare
 Erdos1000OQ01	RESIDUAL	rewrite-drift
-Erdos1000OQ02	RESIDUAL	type-mismatch
-Erdos1000Problem	RESIDUAL	type-mismatch
+Erdos1000OQ02	RESIDUAL	rewrite-drift
+Erdos1000Problem	RESIDUAL	rewrite-drift
 Erdos1001OQ02OQ01	RESIDUAL	type-mismatch
 Erdos1002OQ01	RESIDUAL	type-mismatch
 Erdos1002OQ01OQ01	RESIDUAL	type-mismatch
@@ -668,10 +668,10 @@ Erdos1018OQ04Incomplete01	RESIDUAL	type-mismatch
 Erdos1018OQ04Incomplete01Aristotle	RESIDUAL	proof-drift
 Erdos1018Problem	RESIDUAL	rewrite-drift
 Erdos1019Problem	RESIDUAL	unknown-const:completeBipartite
-Erdos101OQ01	RESIDUAL	type-mismatch
-Erdos101OQ01OQ02	RESIDUAL	type-mismatch
-Erdos101OQ04	RESIDUAL	type-mismatch
-Erdos101OQ04OQ01	RESIDUAL	type-mismatch
+Erdos101OQ01	GREEN	
+Erdos101OQ01OQ02	GREEN	
+Erdos101OQ04	GREEN	
+Erdos101OQ04OQ01	GREEN	
 Erdos1020Problem	RESIDUAL	signature-drift
 Erdos1021Aristotle	RESIDUAL	rewrite-drift
 Erdos1021OQ01	RESIDUAL	rewrite-drift
@@ -735,7 +735,7 @@ Erdos1050ProblemAristotle	RESIDUAL	unknown-const:summable_of_summable_norm
 Erdos1051Problem	RESIDUAL	type-mismatch
 Erdos1052Problem	RESIDUAL	rewrite-drift
 Erdos1053Problem	RESIDUAL	type-mismatch
-Erdos1054AlmostAllOQ01	RESIDUAL	type-mismatch
+Erdos1054AlmostAllOQ01	RESIDUAL	rewrite-drift
 Erdos1054AlmostAllOQ0103	RESIDUAL	type-mismatch
 Erdos1054ConstructionD	RESIDUAL	unknown-const:p
 Erdos1054OQ01	RESIDUAL	unknown-const:p
@@ -790,7 +790,7 @@ Erdos1095OQ01Problem	RESIDUAL	partenat-removal
 Erdos1096Problem	RESIDUAL	unknown-const:intermediate_value_zero_of_neg_of_pos
 Erdos1097OQ01	RESIDUAL	instance-synth
 Erdos1097Problem	RESIDUAL	instance-synth
-Erdos1098OQ01	RESIDUAL	type-mismatch
+Erdos1098OQ01	RESIDUAL	instance-synth
 Erdos1098OQ01OQ01	RESIDUAL	instance-synth
 Erdos1098OQ03	RESIDUAL	proof-drift
 Erdos1098OQ04	RESIDUAL	type-mismatch
@@ -1085,7 +1085,7 @@ Erdos286Problem	GREEN
 Erdos287Problem	RESIDUAL	elab-drift
 Erdos288Problem	RESIDUAL	rewrite-drift
 Erdos289Problem	RESIDUAL	unknown-const:div_le_div_of_le_left
-Erdos28AdditiveBases	RESIDUAL	type-mismatch
+Erdos28AdditiveBases	GREEN	
 Erdos28Problem	RESIDUAL	proof-drift
 Erdos291Problem	RESIDUAL	proof-drift
 Erdos292Problem	GREEN	
@@ -1114,7 +1114,7 @@ Erdos30Problem	GREEN
 Erdos310Problem	RESIDUAL	proof-drift
 Erdos312Problem	RESIDUAL	unknown-const:Finset.insert_subset.mpr
 Erdos313Problem	GREEN	
-Erdos314Problem	RESIDUAL	type-mismatch
+Erdos314Problem	RESIDUAL	proof-drift
 Erdos315Problem	RESIDUAL	proof-drift
 Erdos318Aristotle	GREEN	
 Erdos318Problem	GREEN	
@@ -1151,9 +1151,9 @@ Erdos340GreedyGrowth	GREEN
 Erdos340GreedyRpowBound	RESIDUAL	type-mismatch
 Erdos340GreedySidon	GREEN	
 Erdos340GreedySidonExtension	GREEN	
-Erdos340GreedySidonOQ02	RESIDUAL	type-mismatch
+Erdos340GreedySidonOQ02	GREEN	
 Erdos340GreedySidonOQ05	GREEN	
-Erdos340SidonErdosTuran	RESIDUAL	type-mismatch
+Erdos340SidonErdosTuran	GREEN	
 Erdos341Problem	RESIDUAL	rewrite-drift
 Erdos342Problem	RESIDUAL	proof-drift
 Erdos343Problem	GREEN	
@@ -1212,11 +1212,11 @@ Erdos394Problem	GREEN
 Erdos395OQ01	RESIDUAL	instance-synth
 Erdos395OQ01Incomplete01	RESIDUAL	instance-synth
 Erdos395Problem	RESIDUAL	instance-synth
-Erdos396OQ04OQ01OQ01	RESIDUAL	type-mismatch
-Erdos396OQ04OQ01OQ01OQ02	RESIDUAL	type-mismatch
+Erdos396OQ04OQ01OQ01	GREEN	
+Erdos396OQ04OQ01OQ01OQ02	GREEN	
 Erdos396OQ04OQ01OQ01OQ02OQ01	RESIDUAL	type-mismatch
-Erdos396OQ04OQ01OQ01OQ02OQ02	RESIDUAL	type-mismatch
-Erdos396OQ04OQ01OQ01OQ03	RESIDUAL	type-mismatch
+Erdos396OQ04OQ01OQ01OQ02OQ02	GREEN	
+Erdos396OQ04OQ01OQ01OQ03	GREEN	
 Erdos397Problem	RESIDUAL	proof-drift
 Erdos399Problem	GREEN	
 Erdos39Problem	RESIDUAL	type-mismatch
@@ -1426,10 +1426,10 @@ Erdos576Problem	RESIDUAL	parse-error
 Erdos577Problem	RESIDUAL	parse-error
 Erdos578Problem	RESIDUAL	proof-drift
 Erdos579Problem	RESIDUAL	type-mismatch
-Erdos57OddClosedWalk	RESIDUAL	type-mismatch
+Erdos57OddClosedWalk	GREEN	
 Erdos57OddGirthBound	RESIDUAL	type-mismatch
-Erdos57Problem	RESIDUAL	type-mismatch
-Erdos57ProblemAristotle	RESIDUAL	type-mismatch
+Erdos57Problem	GREEN	
+Erdos57ProblemAristotle	GREEN	
 Erdos580Problem	RESIDUAL	type-mismatch
 Erdos581Problem	RESIDUAL	type-mismatch
 Erdos582Problem	RESIDUAL	dot-notation-drift
@@ -1726,7 +1726,7 @@ Erdos812Problem	RESIDUAL	proof-drift
 Erdos813Problem	RESIDUAL	parse-error
 Erdos814Problem	RESIDUAL	instance-synth
 Erdos816Problem	RESIDUAL	type-mismatch
-Erdos817Aristotle	RESIDUAL	type-mismatch
+Erdos817Aristotle	RESIDUAL	unknown-const:a
 Erdos817Problem	RESIDUAL	proof-drift
 Erdos818Aristotle	RESIDUAL	instance-synth
 Erdos819Problem	GREEN	
@@ -1943,7 +1943,7 @@ Erdos9Problem	GREEN
 ErdosKoRado	RESIDUAL	signature-drift
 ErdosMordellChordIdentity	RESIDUAL	proof-drift
 ErdosMordellInequalityOQ01	RESIDUAL	proof-drift
-ErdosRamseyLowerBound	RESIDUAL	type-mismatch
+ErdosRamseyLowerBound	GREEN	
 EulerIdentityOQ01	RESIDUAL	proof-drift
 EulerIdentityOQ01OQ02OQ01	RESIDUAL	instance-synth
 EulerPolyhedralFormula	RESIDUAL	proof-drift
@@ -1999,8 +1999,8 @@ FourierSeriesOQ02OQ03OQ02	RESIDUAL	unknown-const:Real.exp_le_one_of_nonpos
 FourierSeriesOQ02OQ03WIP01	GREEN	
 FourierSeriesOQ02OQ04	RESIDUAL	rewrite-drift
 FourierSeriesOQ04	GREEN	
-FourierSeriesOQ04OQ01	RESIDUAL	type-mismatch
-FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	type-mismatch
+FourierSeriesOQ04OQ01	RESIDUAL	rewrite-drift
+FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	rewrite-drift
 FourthRoot2Degree4OQ02	RESIDUAL	unknown-const:FourthRoot2Degree4OQ02.finrank_adjoin_eq
 FourthRoot2GaloisClosure	GREEN	
 FourthRoot2GaloisClosureOQ03	GREEN	
@@ -2190,7 +2190,7 @@ LagrangeFourSquaresOQ01OQ03	RESIDUAL	noncomputable
 LagrangeFourSquaresOQ02	RESIDUAL	proof-drift
 LagrangeFourSquaresOQ02OQ02	GREEN	
 LagrangeFourSquaresOQ04	RESIDUAL	proof-drift
-LagrangeFourSquaresOQ05	RESIDUAL	type-mismatch
+LagrangeFourSquaresOQ05	RESIDUAL	rewrite-drift
 LagrangeTheorem	RESIDUAL	instance-synth
 LagrangeTheoremOQ01	RESIDUAL	type-mismatch
 LagrangeTheoremOQ01OQ01	RESIDUAL	rewrite-drift
@@ -2298,9 +2298,9 @@ PartitionTheoremOQ01OQ01	RESIDUAL	unknown-const:Finset.mem_empty
 PartitionTheoremOQ03	RESIDUAL	unknown-const:Nat.Partition.IsOdd.card
 PartitionTheoremOQ04	GREEN	
 PartitionTheoremOQ04Aristotle	GREEN	
-PascalsHexagon	RESIDUAL	type-mismatch
+PascalsHexagon	GREEN	
 PascalsHexagonOQ02	RESIDUAL	type-mismatch
-PascalsHexagonOQ03	RESIDUAL	type-mismatch
+PascalsHexagonOQ03	GREEN	
 PascalsHexagonOQ03Incomplete01Derangements	RESIDUAL	unknown-const:Nat.numDerangements
 PellEquationOQ01	RESIDUAL	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	RESIDUAL	rewrite-drift
@@ -2357,9 +2357,9 @@ QuadraticReciprocityOQ03OQ01	RESIDUAL	instance-synth
 QuadraticReciprocityOQ03OQ01Exp	RESIDUAL	instance-synth
 RamanujanSumFallacy	GREEN	
 RamseyHypergraph	RESIDUAL	type-mismatch
-RamseyR4kExtensions	RESIDUAL	type-mismatch
-RamseyR4kExtensionsOQ03	RESIDUAL	type-mismatch
-RamseyR4kExtensionsOQ03OQ02	RESIDUAL	type-mismatch
+RamseyR4kExtensions	GREEN	
+RamseyR4kExtensionsOQ03	GREEN	
+RamseyR4kExtensionsOQ03OQ02	GREEN	
 RamseysTheorem	GREEN	
 RamseysTheoremOQ02	GREEN	
 RamseysTheoremOQ04	PRE-EXISTING	never-compiled:n
