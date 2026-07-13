@@ -479,4 +479,35 @@ theorem Monster_realizing_field_finrank_71_dvd :
   refine ⟨K, fK, aK, fdK, gK, ?_⟩
   rw [hfr]; norm_num
 
+/-! ### Thompson's rigid triple `(2A, 3B, 29A)` — the element-order skeleton
+
+The realizability of 𝕄 over ℚ (Thompson 1984) rests on a *rigid rational triple*
+of conjugacy classes — the classes 2A, 3B, 29A, of element orders 2, 3, 29
+respectively.  The orders 2 and 3 are already realized above
+(`Monster_exists_involution`, `Monster_exists_element_orderOf_3`); here we add the
+missing prime 29 and package the three class orders together.  All derived from
+`Monster_card` alone via `Monster_cauchy` — no new axioms. -/
+
+/-- 29 divides `|𝕄|` (the prime of Thompson's class 29A). -/
+theorem twentynine_dvd_Monster_card : 29 ∣ Fintype.card Monster := by
+  rw [Monster_card]; norm_num
+
+/-- **𝕄 contains an element of order 29**: the class **29A** of Thompson's rigid
+    triple `(2A, 3B, 29A)` — the rational rigid triple whose existence forces,
+    via the rigidity criterion, the Galois realization `Gal(K/ℚ) ≅ 𝕄`
+    (`Monster_realizable_over_Q`). -/
+theorem Monster_exists_orderOf_twentynine : ∃ g : Monster, orderOf g = 29 :=
+  Monster_cauchy 29 (by norm_num) twentynine_dvd_Monster_card
+
+/-- **Thompson's rigid triple has genuine group elements.** Packaging the three
+    class orders `(2, 3, 29)` of the rigid triple `(2A, 3B, 29A)` into a single
+    statement: 𝕄 simultaneously contains elements of orders 2, 3 and 29 — the
+    element-order skeleton of the rational rigid triple underlying Thompson's
+    (1984) realization of 𝕄 over ℚ. -/
+theorem Monster_rigid_triple_orders :
+    (∃ g : Monster, orderOf g = 2) ∧ (∃ g : Monster, orderOf g = 3) ∧
+      (∃ g : Monster, orderOf g = 29) :=
+  ⟨Monster_exists_involution, Monster_exists_element_orderOf_3,
+    Monster_exists_orderOf_twentynine⟩
+
 end InverseGaloisOQ03
