@@ -183,7 +183,7 @@ theorem totient_rational_30 :
 theorem totient_density (n : ℕ) (hn : n ≠ 0) :
     (Nat.totient n : ℚ) / n = ∏ p ∈ n.primeFactors, (1 - (p : ℚ)⁻¹) := by
   have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn
-  rw [totient_rational_formula, mul_div_assoc, div_self hn', mul_one]
+  rw [totient_rational_formula, mul_comm, mul_div_assoc, div_self hn', mul_one]
 
 /-- **Ramanujan's sum interpretation**: The product formula shows that
     the totient density depends only on the RADICAL of n (the product

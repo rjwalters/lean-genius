@@ -266,7 +266,7 @@ theorem altitude_geometric_mean (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   have hCHperp : ⟪C - altitudeFoot A B C, A - B⟫ = (0 : ℝ) := foot_perp A B C hAB hperp
   have hperp2 : ⟪A - altitudeFoot A B C, C - altitudeFoot A B C⟫ = (0 : ℝ) := by
     rw [hAHpar, real_inner_smul_left,
-        real_inner_comm (A - B) (C - altitudeFoot A B C), hCHperp, mul_zero]
+        real_inner_comm (C - altitudeFoot A B C) (A - B), hCHperp, mul_zero]
   -- Pythagoras on the right sub-triangle `A H C`: `|AC|² = |AH|² + |CH|²`.
   have hsub := pythagorean_core A C (altitudeFoot A B C) hperp2
   have hgA := geometric_mean_A A B C hAB          -- `|AC|² = |AB|·|AH|`
@@ -293,7 +293,7 @@ theorem altitude_length (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   have hlhs : 0 ≤ ‖C - altitudeFoot A B C‖ := norm_nonneg _
   have hrhs : 0 ≤ ‖A - C‖ * ‖B - C‖ / ‖A - B‖ := by positivity
   have hsq : ‖C - altitudeFoot A B C‖ ^ 2 = (‖A - C‖ * ‖B - C‖ / ‖A - B‖) ^ 2 := by
-    rw [hgm, hAH, hHB]; field_simp; ring
+    rw [hgm, hAH, hHB]; field_simp
   rw [← Real.sqrt_sq hlhs, hsq, Real.sqrt_sq hrhs]
 
 include hAB in
@@ -310,7 +310,6 @@ theorem triArea_hypotenuse_eq_legs (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [altitude_length A B C hAB hperp]
   field_simp
-  ring
 
 include hAB in
 /-- **Einstein's key step, leg-`CA` piece: the similar sub-triangle's area scales as the
@@ -332,7 +331,6 @@ theorem triArea_sub_A_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [dist_A_foot A B C hAB]
   field_simp
-  ring
 
 include hAB in
 /-- **Einstein's key step, leg-`CB` piece.**  The altitude from `C` cuts off the sub-triangle
@@ -351,7 +349,6 @@ theorem triArea_sub_B_ratio (hperp : ⟪A - C, B - C⟫ = (0 : ℝ)) :
   unfold triArea
   rw [dist_foot_B A B C hAB hperp]
   field_simp
-  ring
 
 include hAB in
 /-- **The area-level dissection: the two similar pieces reconstitute the whole.**  The altitude

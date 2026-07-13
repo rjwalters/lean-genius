@@ -114,7 +114,6 @@ theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
   · -- m > 2: φ(m) is even, contradicts odd n
     push_neg at hm2
     have heven := totient_even hm2
-    rw [← hm_eq] at heven
     obtain ⟨k₁, hk₁⟩ := heven
     obtain ⟨k₂, hk₂⟩ := hodd
     omega
@@ -132,7 +131,7 @@ theorem V_mono {x y : ℕ} (h : x ≤ y) : V x ≤ V y := by
 /-- 0 is not a totient value (φ(m) ≥ 1 for all m ≥ 1). -/
 theorem zero_not_totient_value : ¬IsTotientValue 0 := by
   intro ⟨m, hm, heq⟩
-  have := Nat.totient_pos hm
+  have := Nat.totient_pos.mpr hm
   omega
 
 /-- 4 is a totient value: φ(5) = 4. -/

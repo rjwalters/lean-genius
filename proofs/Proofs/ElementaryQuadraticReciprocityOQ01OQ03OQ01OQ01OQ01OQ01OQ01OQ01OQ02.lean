@@ -376,11 +376,10 @@ theorem sign_gridTranspose (m n : ℕ) :
     quadratic-reciprocity exponent. -/
 private theorem negOnePow_congr {a b : ℕ} (h : a % 2 = b % 2) :
     (-1 : ℤˣ) ^ a = (-1 : ℤˣ) ^ b := by
-  rcases Nat.even_or_odd a with ha | ha
-  · have hb : Even b := Nat.even_iff.mpr (by have := Nat.even_iff.mp ha; omega)
-    rw [ha.neg_one_pow, hb.neg_one_pow]
-  · have hb : Odd b := Nat.odd_iff.mpr (by have := Nat.odd_iff.mp ha; omega)
-    rw [ha.neg_one_pow, hb.neg_one_pow]
+  refine neg_one_pow_congr ?_
+  constructor <;> intro he
+  · rw [Nat.even_iff] at he ⊢; omega
+  · rw [Nat.even_iff] at he ⊢; omega
 
 /-- **Parity bridge for the transpose-sign exponent.**
 

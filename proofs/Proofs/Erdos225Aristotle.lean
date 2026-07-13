@@ -39,7 +39,7 @@ theorem constant_one_not_nonconstant :
 /-- Unit circle points have norm 1 (basic Mathlib fact). -/
 theorem exp_on_unit_circle (θ : ℝ) :
     ‖Complex.exp (Complex.I * ↑θ)‖ = 1 := by
-  rw [Complex.norm_exp_ofReal_mul_I]
+  rw [mul_comm, Complex.norm_exp_ofReal_mul_I]
 
 /-- The norm of e^(iθ) - e^(iφ) equals 2|sin((θ-φ)/2)|.
     Proof via Euler's formula + Pythagorean identity + cos double angle. -/
@@ -86,8 +86,8 @@ theorem unit_circle_root_coeff_norm (c₀ c₁ : ℂ) (hc₁ : c₁ ≠ 0)
   rwa [norm_div, norm_neg, div_eq_one_iff_eq (by rwa [norm_ne_zero_iff])] at hroot1
 
 /-- If |α| = 1 then |−α| = 1. -/
-theorem norm_neg_of_norm_one (α : ℂ) (hα : ‖α��� = 1) :
-    ‖-α��� = 1 := by
+theorem norm_neg_of_norm_one (α : ℂ) (hα : ‖α‖ = 1) :
+    ‖-α‖ = 1 := by
   rw [norm_neg]; exact hα
 
 /-- The supremum of |α + e^(iθ)| for |α| = 1 is 2. -/

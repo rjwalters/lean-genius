@@ -104,8 +104,10 @@ theorem zero_is_logarithmic : hasLogarithmicForm (fun _ => 0) := by
 theorem logarithmic_is_additive (f : ℕ → ℝ) (hf : hasLogarithmicForm f) : IsAdditive f := by
   obtain ⟨c, hc⟩ := hf
   intro a b ha hb _
-  simp only [hc a ha, hc b hb, hc (a * b) (Nat.one_le_iff_ne_zero.mpr (by omega))]
-  rw [Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]
+  simp only [hc a ha, hc b hb,
+    hc (a * b) (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)))]
+  push_cast
+  rw [Real.log_mul (by positivity) (by positivity)]
   ring
 
 /- ## Erdős's Known Results -/
@@ -155,14 +157,16 @@ def erdos1122Conjecture : Prop :=
 theorem empty_implies_littleO (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : defectIsLittleO f := by
   intro ε hε
   use 1
-  intro X _
-  have : defectCount f X = 0 := by
+  intro X hX
+  have hzero : defectCount f X = 0 := by
     unfold defectCount
     simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
     intro n _
     rw [h]
     exact Set.notMem_empty n
-  simp [this, hε]
+  rw [hzero, Nat.cast_zero]
+  have hXpos : (0 : ℝ) < X := by exact_mod_cast (by omega : 0 < X)
+  positivity
 
 /-  Mangerel's condition implies o(X): X/(log X)^{2+c} = o(X) as X → ∞. -/
 /-- The hierarchy of conditions:

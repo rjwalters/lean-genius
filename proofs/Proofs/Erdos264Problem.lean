@@ -122,16 +122,13 @@ example : ∀ n, (2 : ℕ)^(n+1) / 2^n = 2 := by
 /-- Double exponential has ratio 2^(2ⁿ) which grows without bound -/
 example : ∀ n, 2^(2^(n+1)) / 2^(2^n) = 2^(2^n) := by
   intro n
-  rw [pow_succ 2 n]
-  ring_nf
-  rw [← pow_mul]
-  congr 1
-  ring
+  have hpos : 0 < (2 : ℕ) ^ (2 ^ n) := by positivity
+  rw [show (2 : ℕ) ^ (n + 1) = 2 ^ n + 2 ^ n from by rw [pow_succ]; ring,
+      pow_add, Nat.mul_div_cancel_left _ hpos]
 
 /-- Factorial ratio is n+1, which grows but stays finite -/
 example : ∀ n, Nat.factorial (n+1) / Nat.factorial n = n + 1 := by
   intro n
-  rw [Nat.factorial_succ]
-  skip
+  rw [Nat.factorial_succ, Nat.mul_div_cancel _ (Nat.factorial_pos n)]
 
 end Erdos264

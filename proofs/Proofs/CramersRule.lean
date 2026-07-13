@@ -67,7 +67,7 @@ with column i replaced by the vector b.
 
 This is the classic formula: x_i = det(A with col i ← b) -/
 theorem cramer_component (A : Matrix n n R) (b : n → R) (i : n) :
-    A.cramer b i = (A.updateColumn i b).det :=
+    A.cramer b i = (A.updateCol i b).det :=
   Matrix.cramer_apply A b i
 
 /-! ## The Main Theorem: Cramer's Rule
@@ -148,7 +148,7 @@ For a 2×2 system, Cramer's Rule gives the familiar formulas:
 example {F : Type*} [Field F] (A : Matrix (Fin 2) (Fin 2) F) (b : Fin 2 → F)
     (hdet : A.det ≠ 0) :
     A.mulVec (A.det⁻¹ • A.cramer b) = b := by
-  rw [mulVec_smul, cramers_rule, smul_smul, inv_mul_cancel hdet, one_smul]
+  rw [mulVec_smul, cramers_rule, smul_smul, inv_mul_cancel₀ hdet, one_smul]
 
 /-! ## Verification: The Core Identity -/
 

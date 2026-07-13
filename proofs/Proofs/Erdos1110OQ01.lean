@@ -180,7 +180,7 @@ theorem factorization_powerForm_left {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
   rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
       hq.factorization_pow, Finsupp.single_eq_same,
-      Finsupp.single_eq_of_ne (Ne.symm hpq), add_zero]
+      Finsupp.single_eq_of_ne hpq, add_zero]
 
 /-- **The `q`-adic exponent of a power form.** For distinct primes `p ≠ q`, the
 `q`-factorization of `p^k q^l` is exactly `l`. -/
@@ -189,7 +189,7 @@ theorem factorization_powerForm_right {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
   have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
   have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
   rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
-      hq.factorization_pow, Finsupp.single_eq_of_ne hpq, Finsupp.single_eq_same,
+      hq.factorization_pow, Finsupp.single_eq_of_ne (Ne.symm hpq), Finsupp.single_eq_same,
       zero_add]
 
 /-- **Divisibility of power forms is the product order on exponents.** For distinct

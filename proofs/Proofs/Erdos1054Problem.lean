@@ -170,12 +170,12 @@ theorem scanl_add_ge_init (a : ℕ) (l : List ℕ) :
     ∀ x ∈ l.scanl (· + ·) a, x ≥ a := by
   induction l generalizing a with
   | nil =>
-    simp [List.scanl]
+    simp [List.scanl_cons, List.scanl_nil]
   | cons d t ih =>
     intro x hx
-    simp only [List.scanl, List.mem_cons] at hx
+    simp only [List.scanl_cons, List.mem_cons] at hx
     cases hx with
-    | inl heq => rw [heq]
+    | inl heq => exact heq.ge
     | inr hmem => exact le_trans (Nat.le_add_right a d) (ih (a + d) x hmem)
 
 /--
@@ -319,13 +319,13 @@ theorem partial_sums_skip_2 (m : ℕ) (hm : m ≥ 1) :
     2 ∉ partialDivisorSums m := by
   simp only [partialDivisorSums]
   obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
-  rw [hsd, List.scanl, List.tail_cons]
+  rw [hsd, List.scanl_cons, List.tail_cons]
   show 2 ∉ rest.scanl (· + ·) (0 + 1)
   match rest with
   | [] =>
-    simp [List.scanl]
+    simp [List.scanl_cons, List.scanl_nil]
   | d₂ :: rest' =>
-    simp only [List.scanl, List.mem_cons]
+    simp only [List.scanl_cons, List.mem_cons]
     push_neg
     constructor
     · omega  -- 2 ≠ 0 + 1
@@ -387,13 +387,13 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
     5 ∉ partialDivisorSums m := by
   simp only [partialDivisorSums]
   obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
-  rw [hsd, List.scanl, List.tail_cons]
+  rw [hsd, List.scanl_cons, List.tail_cons]
   show 5 ∉ rest.scanl (· + ·) (0 + 1)
   match rest with
   | [] =>
-    simp [List.scanl]
+    simp [List.scanl_cons, List.scanl_nil]
   | d₂ :: rest' =>
-    simp only [List.scanl, List.mem_cons]
+    simp only [List.scanl_cons, List.mem_cons]
     push_neg
     have hm2 := m_ge_2_of_cons2 m hm d₂ rest' hsd
     have hd2_ge_2 : d₂ ≥ 2 := by
@@ -405,7 +405,7 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
     · match rest' with
       | [] =>
         -- Two divisors: scanl (+) (1+d₂) [] = [1+d₂]
-        simp [List.scanl]
+        simp [List.scanl_cons, List.scanl_nil]
         -- Need 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction via not_second_divisor_4
         intro h5eq
         have hd2_eq_4 : d₂ = 4 := by omega
@@ -413,7 +413,7 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
         exact not_second_divisor_4 m hm2 [] hsd
       | d₃ :: rest'' =>
         -- Three+ divisors
-        simp only [List.scanl, List.mem_cons]
+        simp only [List.scanl_cons, List.mem_cons]
         push_neg
         constructor
         · -- 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction.
