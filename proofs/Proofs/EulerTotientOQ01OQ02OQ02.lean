@@ -91,7 +91,8 @@ theorem carmichael_two_pow {k : ℕ} (hk : 3 ≤ k) :
 theorem exponent_units_two_pow {k : ℕ} (hk : 3 ≤ k) :
     Monoid.exponent (ZMod (2 ^ k))ˣ = 2 ^ (k - 2) := by
   haveI : NeZero (2 ^ k) := ⟨pow_ne_zero k (by norm_num)⟩
-  rw [← carmichael_eq_exponent', carmichael_two_pow hk]
+  rw [← carmichael_eq_exponent' (2 ^ k)]
+  exact carmichael_two_pow hk
 
 /-! ### The strict divisor phenomenon `λ(2ᵏ) < φ(2ᵏ)` -/
 
