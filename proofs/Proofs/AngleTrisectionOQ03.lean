@@ -43,10 +43,10 @@ theorem dvd_pow_two_is_pow_two {d m : ℕ} (hd : 0 < d) (h : d ∣ 2 ^ m) :
     · obtain ⟨d', rfl⟩ := h2
       have hd' : 0 < d' := by omega
       have h' : d' ∣ 2 ^ m := by
-        rw [pow_succ] at h
+        rw [pow_succ'] at h
         exact (Nat.mul_dvd_mul_iff_left (by omega : 0 < 2)).mp h
       obtain ⟨k, hk⟩ := ih hd' h'
-      exact ⟨k + 1, by rw [hk, pow_succ]⟩
+      exact ⟨k + 1, by rw [hk, pow_succ, Nat.mul_comm]⟩
     · have hd1 : d = 1 := by
         by_contra hne
         obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : d ≠ 1)
@@ -92,7 +92,7 @@ theorem pow_two_iff_all_prime_factors_two {d : ℕ} (hd : 0 < d) :
     induction d using Nat.strongRecOn with
     | _ d ih =>
       by_cases hd1 : d = 1
-      · exact ⟨0, by rw [hd1]⟩
+      · exact ⟨0, by rw [hd1, pow_zero]⟩
       · have hd2 : 1 < d := by omega
         obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : d ≠ 1)
         have hp2 : p = 2 := hall p hp hpd
@@ -117,7 +117,10 @@ procedure is purely arithmetic.
     If d = 2^k then k < 2^k = d, so we only check k in {0, ..., d}. -/
 instance decidable_is_pow_two (d : ℕ) : Decidable (∃ k : ℕ, d = 2 ^ k) := by
   by_cases hd : d = 0
-  · exact isFalse (by rintro ⟨k, hk⟩; simp [hd] at hk)
+  · exact isFalse (by
+      rintro ⟨k, hk⟩
+      rw [hd] at hk
+      exact absurd hk.symm (Nat.pow_pos (by norm_num : 0 < 2)).ne')
   · exact decidable_of_iff (∃ k ∈ Finset.range (d + 1), d = 2 ^ k) ⟨
       fun ⟨k, _, hk⟩ => ⟨k, hk⟩,
       fun ⟨k, hk⟩ => ⟨k, Finset.mem_range.mpr (by subst hk; exact Nat.lt_succ_of_lt Nat.lt_two_pow_self), hk⟩
@@ -154,7 +157,7 @@ instance decidable_totientIsPow2 (n : ℕ) : Decidable (TotientIsPow2 n) := by
     The decision procedure:
     1. Compute φ(n) (polynomial time via factorization)
     2. Check if φ(n) is a power of 2 (O(log n) divisions) -/
-theorem decidable_ngon_constructibility (n : ℕ) (hn : 3 ≤ n) :
+def decidable_ngon_constructibility (n : ℕ) (hn : 3 ≤ n) :
     Decidable (IsConstructibleNgon n) :=
   decidable_of_iff (TotientIsPow2 n) (gauss_wantzel_theorem n hn).symm
 
