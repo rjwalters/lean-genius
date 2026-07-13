@@ -257,4 +257,31 @@ theorem not_exponentialBaseExists_implies_not_multiplicative
   ⟨not_exponentialBaseExists_implies_not_submultiplicative hno,
    not_exponentialBaseExists_implies_not_supermultiplicative hno⟩
 
+/-- **Every subsequential limit of the growth rate lies in Pyber's window.**  If a subsequence
+`k ↦ growthRate (φ k)` (indexed by any strictly monotone `φ : ℕ → ℕ`) converges to a value `x`,
+then `x` lies in the fixed band `[log c₁, log c₂]`.  This is strictly stronger than the
+liminf/limsup confinement `limInf_limSup_mem_window`, which pins down only the two *extreme*
+cluster values: here the *entire* set of subsequential limits — every accumulation point of the
+growth rate, whether or not the sequence converges — is trapped inside Pyber's exponential
+window.  In particular the growth rate can neither escape upward toward an unbounded exponential
+base nor collapse downward below `c₁`, no matter along which subsequence one looks.
+
+Proof: the pointwise window `growthRate_window` gives `log c₁ ≤ growthRate n ≤ log c₂` for all
+`n ≥ 1`; a strictly monotone `φ` tends to `atTop`, so `φ k ≥ 1` eventually, hence the
+subsequence is eventually inside the band, and passing to the limit (`ge_of_tendsto` /
+`le_of_tendsto`, using that `[log c₁, log c₂]` is closed) confines `x`. -/
+theorem growthRate_subseq_limit_mem_window {φ : ℕ → ℕ} (hφ : StrictMono φ) {x : ℝ}
+    (hx : Filter.Tendsto (fun k => growthRate (φ k)) Filter.atTop (nhds x)) :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧ x ∈ Set.Icc (Real.log c₁) (Real.log c₂) := by
+  obtain ⟨c₁, c₂, hc1, hc12, hwin⟩ := growthRate_window
+  -- A strictly monotone `φ : ℕ → ℕ` diverges, so the subsequence index is eventually `≥ 1`.
+  have hev_ge1 : ∀ᶠ k in Filter.atTop, 1 ≤ φ k :=
+    hφ.tendsto_atTop.eventually (Filter.eventually_ge_atTop 1)
+  have hev1 : ∀ᶠ k in Filter.atTop, Real.log c₁ ≤ growthRate (φ k) := by
+    filter_upwards [hev_ge1] with k hk using (hwin (φ k) hk).1
+  have hev2 : ∀ᶠ k in Filter.atTop, growthRate (φ k) ≤ Real.log c₂ := by
+    filter_upwards [hev_ge1] with k hk using (hwin (φ k) hk).2
+  exact ⟨c₁, c₂, hc1, hc12,
+    Set.mem_Icc.mpr ⟨ge_of_tendsto hx hev1, le_of_tendsto hx hev2⟩⟩
+
 end Erdos117OQ01Incomplete01

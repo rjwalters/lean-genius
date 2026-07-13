@@ -40,7 +40,8 @@
       "Erdos117OQ01Incomplete01.lean: submultiplicative_implies_exponentialBaseExists — submultiplicative h ⟹ exponential base exists (OQ resolved yes in this sub-case)",
       "Erdos117OQ01Incomplete01.lean: not_exponentialBaseExists_implies_not_submultiplicative — any counterexample must break submultiplicativity",
       "supermultiplicative_implies_convergence in Erdos117OQ01Incomplete01.lean",
-      "supermultiplicative_implies_oscillation_zero, supermultiplicative_implies_exponentialBaseExists, not_exponentialBaseExists_implies_not_supermultiplicative, not_exponentialBaseExists_implies_not_multiplicative in Erdos117OQ01Incomplete01.lean"
+      "supermultiplicative_implies_oscillation_zero, supermultiplicative_implies_exponentialBaseExists, not_exponentialBaseExists_implies_not_supermultiplicative, not_exponentialBaseExists_implies_not_multiplicative in Erdos117OQ01Incomplete01.lean",
+      "Erdos117OQ01Incomplete01.growthRate_subseq_limit_mem_window: EVERY subsequential limit of growthRate is confined to Pyber window [log c₁, log c₂] — strictly stronger than limInf_limSup_mem_window (which pins only the two extreme cluster values). Any strictMono φ:ℕ→ℕ with growthRate∘φ → x forces x∈[log c₁,log c₂]. Proof: pointwise growthRate_window + hφ.tendsto_atTop (φ k≥1 eventually) + ge_of_tendsto/le_of_tendsto (Icc closed). Inherits ONLY the 3 parent Pyber axioms, 0 new. VERIFIED [propext,Classical.choice,Quot.sound]+h/h_pos/pyber_bounds."
     ],
     "insights": [
       "The 'exponential behavior at base c' notion is only a theorem for ε ∈ (0,c): the lower bound (c−ε)ⁿ ≤ h(n) fails for ε ≥ c because (ε−c)ⁿ at even n outgrows h(n) ≤ c₂ⁿ.",
