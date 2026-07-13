@@ -60,7 +60,7 @@ theorem deriv_exp_neg (x : ℝ) :
   have h : HasDerivAt (fun t => Real.exp (-t)) (-Real.exp (-x)) x := by
     have h1 : HasDerivAt (fun t : ℝ => -t) (-1) x := (hasDerivAt_id x).neg
     have h2 := (Real.hasDerivAt_exp (-x)).comp x h1
-    simpa using h2
+    simpa [Function.comp_def] using h2
   exact h.deriv
 
 /-- **Iterated derivatives of the reflected exponential.**
@@ -106,7 +106,7 @@ theorem exp_taylor_tendsto_neg {x : ℝ} (hx : x < 0) :
   have hcontdiff : ContDiff ℝ ⊤ (fun s => Real.exp (-s)) := by fun_prop
   have key := taylorPolynomial_tendsto (fun s => Real.exp (-s)) 0 y hy0 1 hcontdiff hM
   -- The limit `f y = exp(-y) = exp x`.
-  have hfy : (fun s => Real.exp (-s)) y = Real.exp x := by rw [hxy]
+  have hfy : Real.exp (-y) = Real.exp x := by rw [hxy]
   rw [hfy] at key
   -- The Taylor polynomial of the reflection at `0` is exactly `∑ xᵏ/k!`.
   refine key.congr ?_

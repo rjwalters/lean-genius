@@ -153,7 +153,7 @@ theorem zpq_index_bound (p q n : ℕ) (hp : Nat.Prime p) (hn : 0 < n) :
   calc 2 * n - 1 = doldIndex p (2 * n - 1) :=
         (doldIndex_prime p n hp hn).symm
     _ ≤ doldIndex (p * q) (2 * n - 1) :=
-        doldIndex_dvd_mono p (p * q) (2 * n - 1) ⟨q, mul_comm q p⟩
+        doldIndex_dvd_mono p (p * q) (2 * n - 1) ⟨q, rfl⟩
 
 /-- Every composite number >= 2 has a prime divisor giving a Dold index bound. -/
 theorem doldIndex_composite_prime_bound (g n : ℕ) (hg : 2 ≤ g) :

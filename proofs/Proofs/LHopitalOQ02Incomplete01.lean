@@ -92,7 +92,8 @@ theorem id_div_exp_atTop :
   have hg' : ∀ x ∈ Ioi (0 : ℝ), Real.exp x ≠ 0 := fun x _ => (Real.exp_pos x).ne'
   have hgTop : Tendsto Real.exp atTop atTop := Real.tendsto_exp_atTop
   have hdiv : Tendsto (fun x : ℝ => (1 : ℝ) / Real.exp x) atTop (𝓝 0) := by
-    simpa only [one_div] using tendsto_inv_atTop_zero.comp Real.tendsto_exp_atTop
+    simpa only [one_div, Function.comp_def] using
+      tendsto_inv_atTop_zero.comp Real.tendsto_exp_atTop
   exact LHopitalInfty.lhopital_infty_atTop hff' hgg' hg' hgTop hdiv
 
 /-! ═══════════════════════════════════════════════════════════════════════════════

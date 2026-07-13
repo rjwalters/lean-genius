@@ -188,8 +188,12 @@ theorem erdos_933 : ErdosQuestion933 := steinerberger_proof
 /-- Main result statement. -/
 theorem erdos_933_main :
     ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧
-      (consecutiveSmoothPart n : ℝ) / (n * Real.log n) > M :=
-  erdos_933
+      (consecutiveSmoothPart n : ℝ) / (n * Real.log n) > M := by
+  intro M
+  obtain ⟨n, hn2, hgt⟩ := erdos_933 M
+  refine ⟨n, hn2, ?_⟩
+  unfold smoothRatio at hgt
+  rwa [if_neg (show ¬n ≤ 1 by omega)] at hgt
 
 /-- The problem is completely solved. -/
 theorem erdos_933_solved : ErdosQuestion933 := erdos_933

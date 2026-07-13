@@ -94,7 +94,9 @@ theorem a4_no_subgroup_order_six :
     have hord : orderOf x = 3 := by
       have : orderOf (f x) = 3 := hσ.orderOf
       rwa [orderOf_injective f hfinj x] at this
-    have hx3 : x ^ 3 = 1 := by rw [← hord]; exact pow_orderOf_eq_one x
+    have hx3 : x ^ 3 = 1 := by
+      have h := pow_orderOf_eq_one x
+      rwa [hord] at h
     have hxsq : (x ^ 2) ^ 2 = x := by
       have h4 : (x ^ 2) ^ 2 = x ^ 3 * x := by group
       rw [h4, hx3, one_mul]

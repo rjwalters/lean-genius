@@ -65,8 +65,8 @@ noncomputable def sumSquaredMultiplicities (P : PointConfig) : ℕ :=
 /-- Alternative formulation: count quadruples $(p,q,r,s)$ with $d(p,q) = d(r,s)$.
 Related by $\sum \tilde{f}(u)^2 = \frac{1}{4} \cdot |\{(p,q,r,s) : d(p,q) = d(r,s)\}|$. -/
 noncomputable def countEqualDistancePairs (P : PointConfig) : ℕ :=
-  ((P ×ˢ P) ×ˢ (P ×ˢ P)).filter fun ((p,q), (r,s)) =>
-    p ≠ q ∧ r ≠ s ∧ dist p q = dist r s |>.card
+  (((P ×ˢ P) ×ˢ (P ×ˢ P)).filter fun ((p,q), (r,s)) =>
+    p ≠ q ∧ r ≠ s ∧ dist p q = dist r s).card
 
 /- ## Geometric Conditions -/
 

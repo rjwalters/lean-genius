@@ -49,11 +49,11 @@ def isNotRamseyForTriangle (G : SimpleGraph V) : Prop :=
     -- No monochromatic triangle exists
     ¬∃ (a b c : V) (hab : G.Adj a b) (hbc : G.Adj b c) (hca : G.Adj c a),
       color ⟨s(a, b), hab⟩ = color ⟨s(b, c), hbc⟩ ∧
-      color ⟨s(b, c), hbc⟩ = color ⟨s(a, c), hca⟩
+      color ⟨s(b, c), hbc⟩ = color ⟨s(a, c), hca.symm⟩
 
 /-- An independent set in G is a set of vertices with no edges between them. -/
 def hasIndependentSetOfSize (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∃ (S : Finset V), S.card ≥ k ∧ G.IsCliqueFree 2 ↑S
+  ∃ (S : Finset V), S.card ≥ k ∧ G.CliqueFreeOn (↑S) 2
 
 /-- The independence number α(G): the maximum size of an independent set.
     Axiomatized since computing the supremum requires decidability of

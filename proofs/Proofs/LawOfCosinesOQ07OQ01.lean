@@ -59,8 +59,8 @@ satisfies the parallelogram identity.  This is the statement the parent entry
 `law-of-cosines-oq-07` derives from Apollonius's median identity; here it is the
 easy half of the Jordan–von Neumann characterisation. -/
 theorem parallelogram_of_innerProductSpace [InnerProductSpace 𝕜 E] (x y : E) :
-    ‖x + y‖ * ‖x + y‖ + ‖x - y‖ * ‖x - y‖ = 2 * (‖x‖ * ‖x‖ + ‖y‖ * ‖y‖) :=
-  parallelogram_law_with_norm 𝕜 x y
+    ‖x + y‖ * ‖x + y‖ + ‖x - y‖ * ‖x - y‖ = 2 * (‖x‖ * ‖x‖ + ‖y‖ * ‖y‖) := by
+  simpa only [pow_two] using parallelogram_law_with_norm 𝕜 x y
 
 /-- **Converse direction (sufficiency): the Fréchet–von Neumann–Jordan theorem.**
 A normed `𝕜`-space whose norm satisfies the parallelogram identity can be endowed
@@ -82,7 +82,7 @@ theorem nonempty_innerProductSpace_iff_parallelogram :
   constructor
   · rintro ⟨inst⟩
     letI := inst
-    exact fun x y => parallelogram_law_with_norm 𝕜 x y
+    exact fun x y => by simpa only [pow_two] using parallelogram_law_with_norm 𝕜 x y
   · intro h
     haveI : InnerProductSpaceable E := ⟨h⟩
     exact nonempty_innerProductSpace 𝕜 E

@@ -151,7 +151,7 @@ theorem lhopital_zero_taylor_iterated_coeff {f g : ℝ → ℝ} {a : ℝ} {n : �
 private theorem deriv_one_sub_cos : deriv (fun x : ℝ => 1 - Real.cos x) = fun x => Real.sin x := by
   funext x
   have : HasDerivAt (fun x : ℝ => 1 - Real.cos x) (Real.sin x) x := by
-    simpa using (hasDerivAt_const x (1 : ℝ)).sub (Real.hasDerivAt_cos x)
+    simpa using (Real.hasDerivAt_cos x).const_sub 1
   exact this.deriv
 
 /-- Derivative of `x ↦ x²` is `x ↦ 2x`. -/
