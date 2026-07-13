@@ -555,6 +555,46 @@ theorem forwardDiff_simplexNumber (d n : ℕ) :
   simp only [forwardDiff]
   rw [simplexNumber_succ_succ, Nat.add_sub_cancel_left]
 
+/-- **Iterated differencing peels figurate dimensions with a shift.** Applying the forward
+difference `k` times to the `(d+k)`-dimensional ladder strips exactly `k` dimensions,
+leaving the `d`-dimensional ladder shifted by `k`:
+
+`Δ^k P_{d+k}(n) = P_d(n + k)`.
+
+The `k`-fold iterate of the one-step `forwardDiff_simplexNumber` (`Δ P_{d+1} = P_d(·+1)`);
+each application both lowers the dimension by one and advances the argument by one, so the
+shift accumulates to `k`. Proved by induction on `k` (the shift bookkeeping is why the
+argument advances rather than staying at `n`). -/
+theorem iterate_forwardDiff_simplexNumber (k : ℕ) : ∀ d n : ℕ,
+    (forwardDiff^[k] (simplexNumber (d + k))) n = simplexNumber d (n + k) := by
+  induction k with
+  | zero => intro d n; simp
+  | succ k ih =>
+    intro d n
+    rw [show d + (k + 1) = (d + 1) + k from by ring, Function.iterate_succ_apply']
+    -- expand only the OUTER `forwardDiff` (by defeq), leaving `forwardDiff^[k]` intact
+    show (forwardDiff^[k] (simplexNumber ((d + 1) + k))) (n + 1)
+        - (forwardDiff^[k] (simplexNumber ((d + 1) + k))) n = simplexNumber d (n + (k + 1))
+    rw [ih (d + 1) (n + 1), ih (d + 1) n,
+      show (n + 1) + k = (n + k) + 1 from by ring, show n + (k + 1) = (n + k) + 1 from by ring]
+    have h := forwardDiff_simplexNumber d (n + k)
+    unfold forwardDiff at h
+    exact h
+
+/-- **The `d`-th finite difference of the `d`-dimensional simplex number is `1`.**
+`Δ^d P_d ≡ 1`: iterating the forward difference `d` times on the `d`-dimensional figurate
+ladder collapses it to the constant sequence `1`. This is the exact discrete analogue of
+the calculus fact that the `d`-th derivative of `xᵈ/d!` is the constant `1` — `P_d(n) =
+C(n+d, d)` is a degree-`d` "polynomial" in `n` with leading coefficient `1/d!`, and `d`
+differences annihilate all lower-order terms. The `d = k`, base-dimension-`0` case of
+`iterate_forwardDiff_simplexNumber` (`Δ^d P_d = P_0(·+d) = 1`, since `P_0 ≡ 1`); it is the
+capstone of the summation↔difference duality, dual to the hockey-stick `sum_simplex`
+building the ladder up by `d`-fold summation. -/
+theorem iterate_forwardDiff_simplexNumber_self (d n : ℕ) :
+    (forwardDiff^[d] (simplexNumber d)) n = 1 := by
+  have h := iterate_forwardDiff_simplexNumber d 0 n
+  simpa using h
+
 /-- **Reverse discrete Fundamental Theorem of Calculus (summing a difference telescopes).**
 The running total of the forward differences of a *monotone* sequence recovers the
 sequence, up to the boundary value `f 0`:
