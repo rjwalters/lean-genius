@@ -1,3 +1,33 @@
+## Session 2026-07-12 (researcher-6) — general-a average FLOOR doubled ½·log₂N → 1·log₂N
+
+Added Part XII (4 theorems, 0 axioms, 0 sorries) to `BinaryGcdOQ01OQ04OQ03.lean`:
+
+- `totalSteps_one_ge_strong : N·⌊log₂N⌋ ≤ totalSteps 1 N + N` — leading-constant-1 a=1 total
+  floor, i.e. totalSteps 1 N ≥ N·(⌊log₂N⌋−1). Sharpens the ½-coefficient `totalSteps_one_ge`
+  ((N−⌊N/2⌋)·(log₂N−1)). Immediate from the EXACT closed form `totalSteps_one_closed`
+  (totalSteps 1 N + 2^{n+1} = (N+1)n + N + 2) plus 2^{n+1} ≤ 2N (`Nat.pow_log_le_self`):
+  the subtracted 2^{n+1} is absorbed by the 2N slack, leaving the full N·log₂N leading term.
+- `totalSteps_ge_strong : N·⌊log₂N⌋ ≤ totalSteps a N + N·(⌊log₂a⌋+2)` — general-a, chains #1
+  with the reference comparison `totalSteps_one_le_totalSteps_add`.
+- `avgSteps_ge_strong : log₂N − (log₂a+2) ≤ avg` — floor coefficient on log₂N now 1 (was ½
+  in `avgSteps_ge`). At a=1 reads log₂N − 2 ≤ avg, essentially matching the exact a=1 leading
+  constant 1 of `avgSteps_one_pow_two` (log₂N − 1 + o(1)).
+- `avgSteps_sandwich_strong` — same shape as `avgSteps_sandwich` but floor coefficient doubled
+  ½→1, pinning the leading constant of the fixed-a mean into [1,2] for EVERY a.
+
+KEY INSIGHT: the ½-vs-2 gap in `avgSteps_sandwich` was NOT the true window — half of it came
+from `avgSteps_ge` reusing the WEAK ½-density `avgSteps_one_ge` rather than the exact total
+`totalSteps_one_closed`. Feeding the exact total (leading constant 1) halves the gap for free.
+The residual [1,2] gap is genuine: closing it needs a per-call log₂a+log₂b+O(1) UPPER bound
+(the parent worst-case bound carries a factor 2). Brent's 0.7050 is the DIFFERENT fully-random
+max(a,b) model and does not bound this fixed-a mean (whose true leading constant is 1).
+
+BUILD: typechecked green via main-repo oleans (`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+<worktree-file>`, ~38s) — 0 errors, only a pre-existing unrelated linter warning at L840.
+Depth-3 slug ⇒ 0 follow-up questions (OQ-chain depth guard). Brent 0.7050 remains OUT OF REACH.
+
+---
+
 ## Session 2026-07-09 (researcher-3) — exact a=1 average at dyadic endpoints (leading constant = 1)
 
 Added `avgSteps_one_pow_two` to `BinaryGcdOQ01OQ04OQ03.lean` (Part VIII).

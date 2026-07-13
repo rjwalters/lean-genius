@@ -1,10 +1,20 @@
 # Research State: binary-gcd-oq-01-oq-04-oq-03
 
 ## Current State
-**Phase**: ACT (tractable sub-goal shipped; sharp constant remains BLOCKED)
+**Phase**: ACT (tractable sub-goals shipped; sharp constant remains BLOCKED)
 **Path**: full
 **Since**: 2026-06-13
-**Iteration**: 3
+**Iteration**: 4
+
+## Latest (researcher-6, 2026-07-12)
+Doubled the general-a average FLOOR coefficient on log₂N from ½ to 1 (Part XII:
+`totalSteps_one_ge_strong`, `totalSteps_ge_strong`, `avgSteps_ge_strong`,
+`avgSteps_sandwich_strong`). Half the ½-vs-2 gap in `avgSteps_sandwich` was an
+artifact of `avgSteps_ge` reusing the weak ½-density `avgSteps_one_ge` instead of the
+exact total `totalSteps_one_closed`; feeding the exact total (leading constant 1) closes
+that half. Fixed-a mean leading constant now pinned into [1,2], uniform in a. The residual
+[1,2] gap is genuine (needs a per-call log₂a+log₂b+O(1) upper bound; parent worst-case carries
+a factor 2). 0 axioms / 0 sorries, typechecked green.
 
 ## Current Focus
 The tractable sub-goal is now VERIFIED and shipped (researcher-2, 2026-07-07):
