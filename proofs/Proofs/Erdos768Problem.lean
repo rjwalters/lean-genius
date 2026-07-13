@@ -87,7 +87,7 @@ private lemma prime_mem_of_dvd_list_prod {p : ℕ} (hp : p.Prime) {l : List ℕ}
     rcases hp.prime.dvd_or_dvd hdvd with ha | ht
     · -- p | a and both prime, so p = a
       have heq : p = a := by
-        rcases (hl a (List.mem_cons_self a t)).eq_one_or_self_of_dvd p ha with h | h
+        rcases (hl a (List.mem_cons_self)).eq_one_or_self_of_dvd p ha with h | h
         · exact absurd h hp.ne_one
         · exact h
       exact List.mem_cons.mpr (Or.inl heq)
