@@ -267,7 +267,7 @@ theorem fano_dual_property :
       e₁ ∈ fanoPlane.edges → e₂ ∈ fanoPlane.edges → e₁ ≠ e₂ →
       (e₁ ∩ e₂).card = 1 := by
   intro e₁ e₂ he₁ he₂ hne
-  simp only [fanoPlane, fanoEdges, triple] at he₁ he₂
+  simp only [fanoPlane, fanoEdges, triple, Finset.mem_insert, Finset.mem_singleton] at he₁ he₂
   rcases he₁ with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
     rcases he₂ with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
     first | (exfalso; exact hne rfl) | decide
