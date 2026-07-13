@@ -103,7 +103,7 @@ AreaOfCircleOQ01OQ02OQ01OQ01	RESIDUAL	rewrite-drift
 AreaOfCircleOQ01OQ02OQ01OQ01OQ01	RESIDUAL	rewrite-drift
 AreaOfCircleOQ01OQ02OQ01OQ03	RESIDUAL	unknown-const:pi_lt_3141593
 AreaOfCircleOQ01OQ02OQ02	GREEN	
-AreaOfCircleOQ01OQ02OQ02OQ01OQ01	RESIDUAL	signature-drift
+AreaOfCircleOQ01OQ02OQ02OQ01OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT	RESIDUAL	type-mismatch
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso	RESIDUAL	type-mismatch
@@ -333,8 +333,8 @@ CantorDiagonalizationOQ04OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ04OQ03Aristotle	RESIDUAL	instance-synth
 CantorsTheoremOQ01	GREEN	
 CantorsTheoremOQ01OQ01	RESIDUAL	elab-drift
-CantorsTheoremOQ01OQ02	RESIDUAL	type-mismatch
-CantorsTheoremOQ01OQ03	RESIDUAL	type-mismatch
+CantorsTheoremOQ01OQ02	GREEN	
+CantorsTheoremOQ01OQ03	GREEN	
 CantorsTheoremOQ01OQ03OQ04	RESIDUAL	type-mismatch
 CatalanNumbersOQ01OQ01OQ02OQ04	GREEN	
 CatalanNumbersOQ01OQ04OQ02	RESIDUAL	rewrite-drift
@@ -2232,7 +2232,7 @@ LebesgueMeasureOQ01OQ01OQ02	RESIDUAL	type-mismatch
 LebesgueMeasureOQ01OQ01OQ02Riemann	RESIDUAL	type-mismatch
 LebesgueMeasureOQ03	RESIDUAL	parse-error
 LebesgueMeasureOQ03OQ01	RESIDUAL	parse-error
-LebesgueMeasureOQ04	RESIDUAL	type-mismatch
+LebesgueMeasureOQ04	GREEN	
 LebesgueMeasureOQ06	RESIDUAL	unknown-const:List.chain'_append.mp
 LebesgueMeasureOQ06OQ01	RESIDUAL	unknown-const:List.chain'_append.mp
 LeibnizPi	GREEN	
@@ -2240,7 +2240,7 @@ LeibnizPiOQ02	GREEN
 LeibnizPiOQ02Aristotle	GREEN	
 LeibnizPiOQ03	RESIDUAL	proof-drift
 LiouvilleTheorem	RESIDUAL	instance-synth
-LiouvilleTheoremOQ03	RESIDUAL	type-mismatch
+LiouvilleTheoremOQ03	GREEN	
 LiouvilleTheoremOQ04	RESIDUAL	proof-drift
 LittleWedderburnOQ01OQ02	RESIDUAL	elab-drift
 LovaszLocalLemmaOQ01	RESIDUAL	unknown-const:measurableSet_generateFrom

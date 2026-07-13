@@ -1,0 +1,26 @@
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ03.lean:369:6: unsolved goals
+case a
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:370:8: Tactic `rfl` failed: The left-hand side
+  (ĉ x✝).im
+is not definitionally equal to the right-hand side
+error: Proofs/AreaOfCircleOQ01OQ03.lean:472:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+===== ContinuumHypothesisOQ02
+error: Proofs/ContinuumHypothesisOQ02.lean:222:38: Application type mismatch: The argument
+  Order.succ_le_succ (LT.lt.le hα)
+has type
+error: Proofs/ContinuumHypothesisOQ02.lean:301:23: failed to synthesize instance of type class
+  Decidable (IsUnbounded F)
+
+error: Proofs/ContinuumHypothesisOQ02.lean:306:23: failed to synthesize instance of type class
+  Decidable (IsDominating F)
+
+error: Proofs/ContinuumHypothesisOQ02.lean:325:6: failed to synthesize instance of type class
+  Decidable (IsDominating F)
+
