@@ -560,3 +560,34 @@ file has errors OTHER than the unknown-const. Pure-uc rows (0 other own errors)
 flip from the rename alone; MIXED rows (uc + rewrite/omega/simp drift) need the
 full per-file repair and belong to the type-mismatch/proof-drift passes — a
 speculative rename there won't flip the row, so revert it (keep the tree clean).
+
+### 7m. Doctor increment-10 recipes (#38065, 2026-07-13, tm/pd + mixed remainder)
+
+**Meta-finding:** zero-edit re-verify of all 792 type-mismatch(223)+proof-drift(246)
++unknown-const(323) RESIDUAL rows flipped 0 — the dependency backfill already
+ran (matches inc-8). 706 are own-only (self-contained), 86 dep-masked, only 13
+distinct dep hubs (BallotProblemOQ03OQ02 ×7, SpernerSimplicialInstance ×5,
+BallotProblemOQ01OQ02OQ01 ×4).
+
+| pattern | fix | notes |
+|---|---|---|
+| `Finset.map ⟨(· + 1), by omega⟩` / `by intro; omega` map-injectivity | `by intro a b h; simpa using h` | omega no longer beta-reduces `(· + 1) a` — the injectivity hyp `(·+1) a = (·+1) b` is an unreduced redex omega abstracts to opaque atoms (Erdos534/702). HIGH-FREQ. |
+| injective `(fun _ _ h => by omega)` for `fun k => a + k*d` | `intro x y h; simp only [add_right_inj] at h; exact Nat.eq_of_mul_eq_mul_right hd h` | omega can't cancel the `k*d` var-product; need explicit mult-cancel with `d>0` in scope (Erdos71) |
+| `simp only [Nat.succ_eq_add_one] at *` before omega | when induction gives `Nat.succ k` but hyps use `k+1` | atom split blocks omega (Erdos342 ulamSeq_ge) |
+| `by omega` proving False from `Finset.le_sup … : id n ≤ M` + `M < n` | `by simp only [id_eq]; omega` | `id n` is an opaque atom ≠ `n` for omega (Erdos28) |
+| decimal-literal `norm_num` regression: `0.247 - 0.22936 = 0.01764` leaves `⊢ … = 1764e-5` | ascribe `:ℝ` + `norm_num [show (0.247:ℝ)=247/1000 from by norm_num, …]` per literal | norm_num reduces the RHS to scientific `OfScientific` form but won't close the equation; `norm_num1` also fails without the denominator rewrites (Erdos232) |
+| `field_simp` leaves `Real.pi = √Real.pi ^ 2`, `ring` fails | `rw [Real.sq_sqrt Real.pi_pos.le]` | sqrt² needs the explicit lemma, not ring (Erdos1124) |
+| `simp [h_2]` leaves `4 / 2^2 = 1` (ℚ) | append `norm_num` | simp no longer finishes rational numerals (Erdos336) |
+| `simp only [Fin.prod_univ_two]` won't fire on `∏ i : Fin p.degree, …` (structure-projection degree) | `show ∏ i : Fin 2, (z - ![…] i) = …; simp [Fin.prod_univ_two]` (delete now-dead `ring`) | `p.degree` doesn't reduce to the literal `2` for simp-lemma matching; a `show` forces it. `rw [Fin.prod_univ_two]` ALSO fails ("pattern `∏ i, ?f i` not found") — use non-`only` `simp` (Erdos1040) |
+| anonymous `‹h > 0›` binder in an `axiom`/def statement "assumption failed ⊢ h>0" | name the binder: `∀ h:ℝ, ∀ hh:h>0, …` and reference `hh` | v4.31 anonymous-hypothesis resolution changed inside `∀ h, h>0 → …` (Erdos173) |
+| after binder rename, `push_neg` yields `∀ T', … → ¬…` but hyp is `¬∃ T', … ∧ …` | wrap: `fun T' hc hm => hNotMono ⟨T', hc, hm⟩` | v4.31 push_neg normal-form differs from the stored `¬∃` (Erdos173) |
+| `nlinarith` can't use a `d ≥ 3` (ℕ) fact over ℝ | add `have h3 : (3:ℝ) ≤ d := by exact_mod_cast hd` to the hint list | the ℕ hypothesis isn't auto-cast into nlinarith's real hint pool (Erdos1083) |
+| `interval_cases k` "could not find upper bound" for `p^k = N` | derive `p ∣ N` (→ `p ≤ N`) and `k ≤ log_p N` (via `2^(K+1) > N`) as explicit `have`s FIRST, then `interval_cases p <;> interval_cases k <;> revert … <;> decide` | v4.31 interval_cases won't infer a bound from a `pow` equation (Erdos435 ¬IsPrimePower 6) |
+| `Real.log_nonneg (by norm_num)` needs `1 ≤ ↑n + 2` with variable `n` | `by have := Nat.cast_nonneg (α:=ℝ) n; push_cast; linarith` | norm_num can't discharge a cast-variable bound (Erdos605 decreasing_by) |
+| missing `have hkd_pos : 0 < k^d` present in a sibling theorem | re-add via `pow_pos _hk d` | migration dropped the `have`; the underscore-named `_hk : 0 < k` still usable (Erdos681) |
+
+**Statement repairs (operator policy):**
+| file | declaration | repair |
+|---|---|---|
+| Erdos450Problem | `hasDivisorIn_succ` | hypothesis `1 ≤ n` → `2 ≤ n`: at n=1 the witness d=n+1=2 fails `d < 2n = 2`; the true statement needs n≥2 |
+| Erdos542Problem | `chen_bound_value` | RHS `2927/4620` numerically wrong → `4699/4620` (1/3+1/4+1/5+1/7+1/11 = (1540+1155+924+660+420)/4620) |
