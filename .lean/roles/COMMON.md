@@ -102,6 +102,13 @@ of tracked files missing on disk and sparse-checkout off (`LAUNCH_ANYWAY=1`
 overrides), and the deployer skips auto-merging PRs with >100 deleted lines or
 >500 changed files (see `deployer.md`).
 
+## PR Hygiene (Stacked Snapshots)
+
+Any agent that opens PRs from a long-lived branch must close the ancestor PR
+when a newer head from the same branch opens (one branch, one open PR). Full
+rule and commands: `researcher.md` Step 5.6 ("Close Ancestor PRs When a Newer
+Head Opens").
+
 ## Honesty Standards
 
 - Do not describe trivial results as significant.
