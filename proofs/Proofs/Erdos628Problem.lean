@@ -22,6 +22,7 @@
 
 import Mathlib
 import Proofs.GraphCore
+open scoped Classical
 
 open Finset Function Nat GraphCore
 open SimpleGraph hiding chromaticNumber
@@ -68,9 +69,11 @@ def TihanyConjecture : Prop :=
       IsCliqueFree G k →
       IsSplittable G a b
 
-/-- The conjecture for specific (a,b) -/
+/-- The conjecture for specific (a,b).
+    (v4.31 migration: pin the graph-carrier universe to `Type` so downstream
+    definitions like `TihanySymmetric` do not leave a universe metavariable.) -/
 def TihanyForPair (a b : ℕ) : Prop :=
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     let k := a + b - 1
     chromaticNumber G = k →
     IsCliqueFree G k →
@@ -84,7 +87,7 @@ axiom brown_jung_theorem :
 
 /-- This means: χ = 5, K_5-free implies (3,3)-splittable -/
 theorem tihany_3_3 :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       chromaticNumber G = 5 →
       IsCliqueFree G 5 →
       IsSplittable G 3 3 := by

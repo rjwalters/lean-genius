@@ -20,6 +20,7 @@
 
 import Mathlib
 import Proofs.GraphCore
+open scoped Classical
 
 open Finset Function Nat GraphCore
 open SimpleGraph hiding chromaticNumber
@@ -96,9 +97,12 @@ axiom thomassen_five_list :
 
 /- ## Bipartite Graphs -/
 
-/-- A graph is bipartite iff it has no odd cycles -/
+/-- A graph is bipartite iff it has no odd cycles.
+    (v4.31 migration: `G.IsCycle n` is not Mathlib API; a cycle of length `n`
+    is spelled via a closed `Walk` that `IsCycle` and has `length = n`.) -/
 theorem bipartite_iff_no_odd_cycle (G : SimpleGraph V) :
-    G.IsBipartite ↔ ∀ n : ℕ, n % 2 = 1 → ¬G.IsCycle n := by
+    G.IsBipartite ↔
+      ∀ n : ℕ, n % 2 = 1 → ¬∃ (v : V) (w : G.Walk v v), w.IsCycle ∧ w.length = n := by
   sorry
 
 /-- Bipartite graphs have χ ≤ 2 -/
