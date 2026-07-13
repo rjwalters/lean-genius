@@ -124,6 +124,43 @@ theorem not_summable_one_div_nat_mul_log :
     ((summable_nat_add_iff 2).mpr hsum).congr (fun n => by unfold f₂; push_cast; ring)
   exact not_summable_f₂ hshift
 
+/-- **The whole divergent half-line: `∑ 1/(n · (log n)^s)` diverges for every `s ≤ 1`.**
+The exponent-`s` generalization of `not_summable_one_div_nat_mul_log` (the `s = 1` base):
+for any `s ≤ 1` the Bertrand series still diverges, because on the tail `n ≥ 3`
+(`log n ≥ 1`) the exponent decrease makes the term *larger*, `(log n)^s ≤ (log n)^1 = log n`,
+so `1/(n·(log n)^s) ≥ 1/(n·log n)` and divergence transfers by comparison. Combined with the
+convergent companion `summable_one_div_nat_mul_log_rpow` (`s = 1+δ`, `δ > 0`) this pins the
+Bertrand-series convergence boundary as the sharp dichotomy at `s = 1`: divergent for all
+`s ≤ 1`, convergent for all `s > 1`. -/
+theorem not_summable_one_div_nat_mul_log_rpow_of_le_one {s : ℝ} (hs : s ≤ 1) :
+    ¬ Summable (fun n : ℕ => 1 / ((n : ℝ) * (Real.log n) ^ s)) := by
+  intro hsum
+  apply not_summable_one_div_nat_mul_log
+  rw [← summable_nat_add_iff 3]
+  rw [← summable_nat_add_iff 3] at hsum
+  refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) hsum
+  · push_cast
+    have hlogpos : 0 < Real.log ((n : ℝ) + 3) :=
+      Real.log_pos (by have := Nat.cast_nonneg (α := ℝ) n; linarith)
+    positivity
+  · push_cast
+    have hn3 : (0 : ℝ) < (n : ℝ) + 3 := by positivity
+    have hlog1 : (1 : ℝ) ≤ Real.log ((n : ℝ) + 3) := by
+      rw [Real.le_log_iff_exp_le hn3]
+      calc Real.exp 1 ≤ 3 :=
+            Real.exp_one_lt_d9.le.trans (by norm_num : (2.7182818286 : ℝ) ≤ 3)
+        _ ≤ (n : ℝ) + 3 := by have := Nat.cast_nonneg (α := ℝ) n; linarith
+    have hlogpos : 0 < Real.log ((n : ℝ) + 3) := lt_of_lt_of_le one_pos hlog1
+    have hrpow_le : (Real.log ((n : ℝ) + 3)) ^ s ≤ Real.log ((n : ℝ) + 3) := by
+      calc (Real.log ((n : ℝ) + 3)) ^ s
+          ≤ (Real.log ((n : ℝ) + 3)) ^ (1 : ℝ) :=
+            Real.rpow_le_rpow_of_exponent_le hlog1 hs
+        _ = Real.log ((n : ℝ) + 3) := Real.rpow_one _
+    have hBpos : 0 < ((n : ℝ) + 3) * (Real.log ((n : ℝ) + 3)) ^ s :=
+      mul_pos hn3 (Real.rpow_pos_of_pos hlogpos s)
+    apply one_div_le_one_div_of_le hBpos
+    exact mul_le_mul_of_nonneg_left hrpow_le hn3.le
+
 /-!
 ### Convergent companion: `∑ 1/(n · (log n)^{1+δ})` converges for `δ > 0`
 
