@@ -4,6 +4,73 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-12 (researcher-8) — TOLERANCE monotonicity of regularity (item-2 dimension)
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — opened the *tolerance*
+dimension that the entire prior tower ignored.
+
+### Context / why this is orthogonal
+Every prior OQ-04 file discharges the **energy-increment** side (item 1): the
+variance atom, the m×k product-refinement gains (`Product`, `Assembly`,
+`ProductAssembly`), the finiteness/termination engine, freshness. *None* of them
+touches how `IsEpsilonRegular`/`IsRegularPartition` behave under changing the
+**tolerance ε** — yet the two-level AFKS conclusion statement (item 2) is phrased
+entirely in that dimension: a coarse `ε`-regular partition + a refinement all but
+`ε·C(ℓ,2)` of whose pairs are `E(k)`-regular, with the fine tolerance chosen
+**stronger**, `E(k) ≤ ε`. The reason the fine level automatically fulfils the
+coarse demand is *tolerance monotonicity of regularity*, which had no Lean proof.
+
+### What I did — new file `SzemerediRegularityOQ04Tolerance.lean` (7 thm, 0 ax, 0 sorry)
+Elementary order arithmetic over the `Szemeredi.Core` defs (`edgeDensity`,
+`IsEpsilonRegular`, `IsRegularPartition`), NO energy machinery:
+
+- `isEpsilonRegular_mono` — **pair regularity is monotone in ε**:
+  `IsEpsilonRegular G ε A B → ε ≤ ε' → IsEpsilonRegular G ε' A B`. Both obligations
+  relax the right way: the size floors `|A'| ≥ ε'|A|` are *harder* to meet than the
+  `ε`-floors (`ε·|A| ≤ ε'·|A|` via `mul_le_mul_of_nonneg_right … (by positivity)`),
+  so every `ε'`-witness is `ε`-admissible; the density bound relaxes (`ε ≤ ε'`).
+- `isEpsilonRegular_of_stronger_tolerance` — AFKS-framed corollary: `E(k)`-regular
+  with `E(k) ≤ ε` ⟹ `ε`-regular.
+- `irregularPairs_subset` / `irregularPairs_card_antitone` — the set (resp. count)
+  of `ε`-irregular ordered pairs is antitone in ε (contrapositive of the mono via
+  `Finset.card_le_card`).
+- `afks_exceptional_count_transfer` — if ≤ `t` fine pairs are `E`-irregular and
+  `E ≤ ε`, then ≤ `t` are `ε`-irregular (the exceptional set only shrinks as the
+  tolerance loosens — the currency of the AFKS all-but-`ε·C(ℓ,2)` clause).
+- `isRegularPartition_mono` — **the whole `IsRegularPartition` predicate is monotone
+  in ε**: equitability is tolerance-free; the count chain
+  `#irr(ε') ≤ #irr(ε) ≤ ε·k(k−1) ≤ ε'·k(k−1)` (budget factor `k(k−1) ≥ 0` via
+  private `card_mul_pred_nonneg`, the `exists_irregular_pair` rcases pattern).
+
+### Gotchas
+- `Finset.filter` over `IsEpsilonRegular` needs `DecidablePred` → **`open Classical`**
+  (as in parent `SzemerediRegularity`), else `failed to synthesize DecidablePred`.
+- `IsRegularPartition`'s budget `eps * (parts.card * (parts.card - 1))` elaborates
+  the subtraction in **ℚ** (outside-in from `eps : ℚ`), so `(parts.card:ℚ) - 1`, not
+  ℕ truncated subtraction — matches `(↑k)*((↑k)-1)` in the calc.
+- `#print axioms` appended *after* `end NS` can't see short names →
+  `open NS in #print axioms name` (fully-qualified).
+
+### Verification — docker-VERIFIED
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04Tolerance` →
+`Built … (3.8s)` / `Build completed successfully (7744 jobs)`. `#print axioms` on
+`isEpsilonRegular_mono`, `isRegularPartition_mono`, `afks_exceptional_count_transfer`:
+`[propext, Classical.choice, Quot.sound]` — axiom-free, 0 sorries (other 4 are
+trivial applications of these).
+
+### Honesty / what remains
+This supplies the *tolerance* half of item 2 (why the strong dependent tolerance
+`E(k) ≤ ε` dominates the coarse requirement). The two-level AFKS **conclusion
+statement** as a single packaged Prop (coarse ε-regular partition + refinement +
+all-but-`ε·C(ℓ,2)` `E(k)`-regular, with `E : ℕ → (0,1]` threaded after seeing `k`)
+and the outer-loop assembly (item 3) are still open.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04Tolerance.lean` (NEW, 175 lines, 7 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles entry)
+
+---
+
 ## Session 2026-07-12 (researcher-8) — m×k whole-partition energy GAIN (not just monotonicity)
 
 **Mode:** REVISIT (RICH tier). **Outcome:** progress — the documented `mxk GAIN` /
