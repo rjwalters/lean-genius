@@ -6,7 +6,7 @@
   "path": "full",
   "tier": "MODERATE",
   "started": "2026-04-05T03:59:25.465Z",
-  "lastUpdate": "2026-07-11T00:00:00.000Z",
+  "lastUpdate": "2026-07-12T00:00:00.000Z",
   "significance": 7,
   "tractability": 2,
   "tags": [
@@ -56,7 +56,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "BUILD (researcher-10, 2026-07-11) [VERIFIED host-lean 0-sorry/0-axiom, propext/Classical/Quot only]: sharpened the Sylow count from lower bound n_p>=p+1 (card_sylow_ge, researcher-6) to EXACT n_p=p+1 (card_sylow_eq). Route is purely arithmetic, avoiding the normalizer=Borel matrix computation: index_unipotentSylow gives [SL(2,p):U]=p^2-1 (Subgroup.card_mul_index), Sylow.card_dvd_index gives n_p | p^2-1, card_sylow_modEq_one gives n_p=1 mod p, and sylow_count_arith closes n_p=p+1 (a second divisor m of p^2-1 forces p | m+1 hence m>=p-1, incompatible with n_p>=2p+1). Matches classical n_p=|P1(F_p)|=p+1. File 1279->1360 L, 53->56 thm. Remaining toward PSL(2,p) simple: SL(2,p)-action on P1, 2-transitivity, Borel stabilizer, then assemble IwasawaStructure.",
+    "progressSummary": "BUILD (researcher-10, 2026-07-11) [VERIFIED host-lean 0-sorry/0-axiom, propext/Classical/Quot only]: sharpened the Sylow count from lower bound n_p>=p+1 (card_sylow_ge, researcher-6) to EXACT n_p=p+1 (card_sylow_eq). Route is purely arithmetic, avoiding the normalizer=Borel matrix computation: index_unipotentSylow gives [SL(2,p):U]=p^2-1 (Subgroup.card_mul_index), Sylow.card_dvd_index gives n_p | p^2-1, card_sylow_modEq_one gives n_p=1 mod p, and sylow_count_arith closes n_p=p+1 (a second divisor m of p^2-1 forces p | m+1 hence m>=p-1, incompatible with n_p>=2p+1). Matches classical n_p=|P1(F_p)|=p+1. File 1279->1360 L, 53->56 thm. Remaining toward PSL(2,p) simple: SL(2,p)-action on P1, 2-transitivity, Borel stabilizer, then assemble IwasawaStructure. | Follow-up (researcher-10, 2026-07-12) [VERIFIED 0-axiom/0-sorry]: added the classical order-p element count. sylowP_eq_of_mem (a nontrivial element is in a UNIQUE Sylow) + card_orderOf_eq_p (SL(2,p) has exactly p²−1 elements of order p): the p+1 Sylows partition the order-p elements into (p−1)-blocks, (p+1)(p−1)=p²−1, via Finset.card_biUnion with PairwiseDisjoint. Realises the count advertised in the file docstrings. 2 theorems, 0 new axioms; file 1451→1568 L, 62→64 thm.",
     "insights": [
       "The 'Sylow counting argument' framing of the problem is directly realisable as a LOWER BOUND without the full Iwasawa/P^1 machinery: (1) U=range unipotentHom is a Sylow p-subgroup (unipotentSylow); (2) U is NOT normal because its normal closure is all of SL(2,p) (unipotent_normalClosure_eq_top) while |U|=p<|SL|; (3) a unique Sylow would be normal (Sylow.normal_of_subsingleton), so n_p != 1; (4) Sylow III forces n_p ≡ 1 (mod p), and n_p != 1 then gives n_p >= p+1 — the classical p+1 Borels / points of P^1(F_p). The non-normality of U (not raw counting) is the crux; Sylow III supplies the arithmetic jump from >1 to >=p+1.",
       "Perfectness lifts cleanly from the cover to the quotient: for any surjective φ:G↠H, map φ (commutator G) = commutator H (Subgroup.map_commutator + map_top_of_surjective), so a perfect group has perfect quotients. Applied to mk':SL(2,p)↠PSL(2,p)=SL/Z this turns commutator (SL)=⊤ into commutator (PSL)=⊤ — the Iwasawa perfectness hypothesis for the actual simple-group candidate PSL(2,p), not just its cover.",
@@ -68,7 +68,8 @@
       "The range p≥5 in the simplicity theorem is exactly the range where the perfectness engine fires: a=2 gives a²−1=3, a unit iff p∉{2,3}. This pins the failure at p=2,3 to the non-invertibility of 3 (=2²−1) mod p, matching PSL(2,2)≅S₃ and PSL(2,3)≅A₄ being non-simple.",
       "The generation ⟨U,U⁻⟩ = SL(2,p) is the concrete Bruhat/Gauss decomposition and needs no P¹ action: (i) w = u(-1)·l(1)·u(-1) and diag(a) = u(a)·l(-a⁻¹)·u(a)·w are explicit words in the root groups, so w and the entire torus T lie in ⟨U,U⁻⟩; (ii) any g with lower-left c≠0 factors as u(ac⁻¹)·w·diag(c)·u(dc⁻¹) (the top-right entry closes via ad-bc=1); (iii) g with c=0 has g₀₀≠0, and l(1)·g has lower-left g₀₀≠0, so l(-1)·(l(1)·g) pulls it into the Bruhat cell. This is the missing 'PSL-conjugates of U generate' clause of Iwasawa, obtained entirely inside SL(2,ZMod p).",
       "n_p=p+1 EXACTLY is reachable by pure arithmetic, bypassing the normalizer=Borel matrix computation the prior nextStep assumed necessary: Sylow.card_dvd_index gives n_p | [SL:U]=p^2-1, and among divisors of (p-1)(p+1) that are =1 mod p and >=p+1, only p+1 survives (a second factor m of p^2-1 must satisfy p | m+1, forcing m>=p-1, too large unless n_p=p+1). Much cheaper than computing N_SL(U)=upper-triangular Borel of order p(p-1).",
-      "Nontriviality/order-floor of the target group: |PSL(2,p)|=p(p²-1)/2 ≥ 60 for p≥5 (equality at p=5, PSL(2,5)≅A₅). Nontrivial (PSL2) is a definitional prerequisite of the simplicity theorem, now established. Derived purely arithmetically from card_PSL2."
+      "Nontriviality/order-floor of the target group: |PSL(2,p)|=p(p²-1)/2 ≥ 60 for p≥5 (equality at p=5, PSL(2,5)≅A₅). Nontrivial (PSL2) is a definitional prerequisite of the simplicity theorem, now established. Derived purely arithmetically from card_PSL2.",
+      "Order-p element count via disjoint Sylow blocks: order-p elements of SL(2,p) = Finset.univ.biUnion (fun P:Sylow => (univ.filter (·∈P)).erase 1); PairwiseDisjoint from sylowP_eq_of_mem (unique Sylow of a nontrivial element); each block has p−1 elements (card_erase_of_mem + Fintype.card_subtype/Nat.card_eq_fintype_card + card_sylowP); Fintype.card(Sylow p G)=p+1 from card_sylow_eq. Arithmetic (p+1)(p−1)=p²−1 via obtain p=n+1, (n+2)*n+1=(n+1)^2 by ring then omega (treats n²/(n+1)² as atoms). This realises the classical count the file's docstrings advertised as the next ingredient."
     ],
     "mathlibGaps": [
       "No cardinality of SL(2,𝔽_p) or PSL(2,p) in Mathlib (need |SL(2,𝔽_p)| = p(p²−1)).",
@@ -96,7 +97,8 @@
       "card_sylow_eq in SylowTheoremOQ04OQ03.lean — EXACT Sylow count n_p=p+1 for SL(2,p), p>=5. Sharpens card_sylow_ge (>=) to equality via Sylow.card_dvd_index (n_p | p^2-1) + card_sylow_modEq_one (n_p=1 mod p) + sylow_count_arith. Matches classical n_p=|P1(F_p)| WITHOUT the normalizer-is-Borel matrix computation. VERIFIED 0/0.",
       "SylowTheoremOQ04OQ03.lean: card_PSL2_ge_sixty — |PSL(2,p)| ≥ 60 for p≥5 (matches PSL(2,5)≅A₅, smallest nonabelian simple group)",
       "SylowTheoremOQ04OQ03.lean: one_lt_card_PSL2 — |PSL(2,p)| > 1 for p≥5",
-      "SylowTheoremOQ04OQ03.lean: nontrivial_PSL2 — Nontrivial (PSL(2,p)) for p≥5 (prerequisite of the simplicity statement)"
+      "SylowTheoremOQ04OQ03.lean: nontrivial_PSL2 — Nontrivial (PSL(2,p)) for p≥5 (prerequisite of the simplicity statement)",
+      "SylowTheoremOQ04OQ03.lean sylowP_eq_of_mem + card_orderOf_eq_p (researcher-10, 2026-07-12, VERIFIED 0-axiom/0-sorry, propext/Classical/Quot only): the classical order-p element count. sylowP_eq_of_mem — a non-identity element lies in a UNIQUE Sylow p-subgroup (from sylowP_inf_eq_bot). card_orderOf_eq_p — SL(2,p) has EXACTLY p²−1 elements of order p for p≥5: the order-p elements = ⋃ (P non-identity) over the p+1 Sylows (card_sylow_eq), a disjoint union of (p−1)-blocks (Finset.card_biUnion + PairwiseDisjoint via sylowP_eq_of_mem), giving (p+1)(p−1)=p²−1. Forward inclusion: g order p ⟹ IsPGroup.of_card on zpowers g ⟹ exists_le_sylow. Reverse: orderOf_dvd_natCard ⟨g,hgP⟩ + Subgroup.orderOf_coe + card_sylowP ⟹ orderOf g ∣ p prime."
     ]
   },
   "leanFiles": [
@@ -246,8 +248,8 @@
     {
       "path": "Proofs/SylowTheoremOQ04OQ03.lean",
       "filename": "SylowTheoremOQ04OQ03.lean",
-      "lineCount": 1279,
-      "theoremCount": 53,
+      "lineCount": 1568,
+      "theoremCount": 64,
       "axiomCount": 0,
       "defCount": 9,
       "sorryCount": 0,
