@@ -857,7 +857,7 @@ Certain cases of the congruent number problem have been known for centuries.
 theorem curveMinusX_eq_congruent_one :
     curveMinusX = congruentNumberCurve 1 (by norm_num) := by
   apply EllipticCurveQ.ext
-  · simp [curveMinusX, congruentNumberCurve]; norm_num
+  · simp [curveMinusX, congruentNumberCurve]
   · simp [curveMinusX, congruentNumberCurve]
 
 /-- 1 is NOT a congruent number (proved by Fermat using infinite descent).
@@ -1617,6 +1617,7 @@ def heightPairing (h : CanonicalHeight E) (x y : ℝ) : ℝ :=
 theorem heightPairing_symm (h : CanonicalHeight E) (x y : ℝ) :
     heightPairing h x y = heightPairing h y x := by
   unfold heightPairing
+  rw [add_comm x y]
   ring
 
 /-- The canonical height is related to the height pairing by ĥ(P) = ⟨P, P⟩.

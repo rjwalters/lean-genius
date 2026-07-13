@@ -165,7 +165,13 @@ example : (C (ZMod 7) (2 : ℤ)).eval ((3 : ZMod 7) + (3 : ZMod 7)⁻¹)
   exact chebyshevC_eval_zmod 7 3 h3 2
 
 /-- Same data, both sides reduced to the explicit value `6 : ZMod 7`. -/
-example : (3 : ZMod 7) ^ 2 + ((3 : ZMod 7)⁻¹) ^ 2 = 6 := by decide
+example : (3 : ZMod 7) ^ 2 + ((3 : ZMod 7)⁻¹) ^ 2 = 6 := by
+  -- `decide` cannot evaluate `ZMod.inv` (well-founded `xgcd` recursion),
+  -- so identify `3⁻¹ = 5` via `3 * 5 = 1` first.
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  have h3 : (3 : ZMod 7)⁻¹ = 5 := inv_eq_of_mul_eq_one_right (by decide)
+  rw [h3]
+  decide
 
 /-- In `ZMod 11`: a degree-3 instance over a different finite field. -/
 example : (C (ZMod 11) (3 : ℤ)).eval ((2 : ZMod 11) + (2 : ZMod 11)⁻¹)

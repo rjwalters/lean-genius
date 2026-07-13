@@ -37,7 +37,9 @@ private theorem ed_crt_necessary {m n a b : R}
   rwa [show (x - b) - (x - a) = a - b from by ring] at this
 
 /-- Sufficiency: if gcd(m,n) ∣ (a - b), construct a solution via Bézout. -/
-private theorem ed_crt_sufficient {m n a b : R}
+/- v4.31 compat (#38065): de-privatized — used by ChineseRemainderNonCoprimeList,
+and v4.31 enforces module-scoped privacy. -/
+theorem ed_crt_sufficient {m n a b : R}
     (h : EuclideanDomain.gcd m n ∣ (a - b)) :
     ∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b) := by
   obtain ⟨q, hq⟩ := h

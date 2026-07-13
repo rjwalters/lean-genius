@@ -401,30 +401,30 @@ theorem three_mul_choose_three (n : ℕ) (hn : 2 ≤ n) :
     -- And 6 * C(m+2, 3) = (m+2)!/(m-1)! when m ≥ 1, but ℕ arithmetic is messy.
     -- Use Nat.choose_succ_succ repeatedly:
     -- C(m+2, 3) = C(m+1, 2) + C(m+1, 3)
-    -- For the base relation, use omega after reducing to known identities
-    rw [Nat.choose_two_right]
-    -- Goal: 3 * (m+2).choose 3 = (m+2) * (m+1) / 2 * m
-    -- Use the identity: (m+2).choose 3 = (m+2) * (m+1) * m / 6
+    -- For the base relation, multiply both sides by 2 and cancel.
+    have e1 : m + 2 - 1 = m + 1 := by omega
+    have h2' : 2 * (m + 2).choose 2 = (m + 2) * (m + 1) := by
+      rw [h2, e1]
+    -- Use the identity: 6 * (m+2).choose 3 = (m+2) * (m+1) * m
     -- which follows from Nat.choose applied to a product
     have six_choose : 6 * (m + 2).choose 3 = (m + 2) * (m + 1) * m := by
       have h := Nat.descFactorial_eq_factorial_mul_choose (m + 2) 3
       rw [Nat.descFactorial_succ, Nat.descFactorial_succ, Nat.descFactorial_succ,
           Nat.descFactorial_zero] at h
       have e2 : m + 2 - 2 = m := by omega
-      have e1 : m + 2 - 1 = m + 1 := by omega
       have e0 : m + 2 - 0 = m + 2 := by omega
       rw [e2, e1, e0] at h
       have hf : Nat.factorial 3 = 6 := rfl
       rw [hf] at h
       rw [← h]; ring
-    -- Now: 3 * C(m+2, 3) = (m+2)*(m+1)*m/2
-    -- And: (m+2)*(m+1)/2 * m = (m+2)*(m+1)*m/2
-    have even_prod : 2 ∣ (m + 2) * (m + 1) := by
-      rcases Nat.even_or_odd (m + 2) with ⟨k, hk⟩ | ⟨k, hk⟩
-      · exact ⟨k * (m + 1), by rw [hk]; ring⟩
-      · have : m + 1 = 2 * k := by omega
-        exact ⟨(m + 2) * k, by rw [this]; ring⟩
-    omega
+    -- Now cancel the factor 2:
+    -- 2 * (3 * C(m+2,3)) = 6 * C(m+2,3) = (m+2)*(m+1)*m = 2 * (C(m+2,2) * m)
+    have key : 2 * (3 * (m + 2).choose 3) = 2 * ((m + 2).choose 2 * m) := by
+      calc 2 * (3 * (m + 2).choose 3) = 6 * (m + 2).choose 3 := by ring
+        _ = (m + 2) * (m + 1) * m := six_choose
+        _ = 2 * (m + 2).choose 2 * m := by rw [h2']
+        _ = 2 * ((m + 2).choose 2 * m) := by ring
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num) key
 
 /-- Triples relate to pairs: E[triples] = E[pairs] * (n-2)/(3d)
     when n ≥ 2. This follows from 3 * C(n,3) = C(n,2) * (n-2). -/
@@ -476,18 +476,18 @@ theorem expectedQuads_lt_four (n d : ℕ) (h : n < 4) : expectedQuads n d = 0 :=
   unfold expectedQuads; exact expectedKTuples_lt n d 4 h
 
 /-- Quad threshold (d=365): need C(n,4) > 365^3 = 48627125.
-    C(188,4) = 51,895,981 > 48,627,125. -/
+    C(188,4) = 50,404,915 > 48,627,125. -/
 theorem std_expected_quads_188_gt_one :
     expectedQuads 188 stdDays > 1 := by
   rw [expectedQuads_def]
-  have h1 : Nat.choose 188 4 = 51895981 := by native_decide
+  have h1 : Nat.choose 188 4 = 50404915 := by native_decide
   rw [h1]; simp [stdDays]; norm_num
 
-/-- C(187,4) = 47,791,135 < 48,627,125 = 365^3, so E[quads] < 1. -/
-theorem std_expected_quads_187_lt_one :
-    expectedQuads 187 stdDays < 1 := by
+/-- C(186,4) = 48,277,230 < 48,627,125 = 365^3, so E[quads] < 1. -/
+theorem std_expected_quads_186_lt_one :
+    expectedQuads 186 stdDays < 1 := by
   rw [expectedQuads_def]
-  have h1 : Nat.choose 187 4 = 47791135 := by native_decide
+  have h1 : Nat.choose 186 4 = 48277230 := by native_decide
   rw [h1]; simp [stdDays]; norm_num
 
 -- ## Part XV: Summary of Thresholds
@@ -495,13 +495,13 @@ theorem std_expected_quads_187_lt_one :
 /-- Summary: the first n where E[k-tuples] > 1 for the standard birthday problem.
     - k=2 (pairs): n=28 (first where C(n,2) > 365)
     - k=3 (triples): n=94 (first where C(n,3) > 365^2)
-    - k=4 (quads): n=188 (first where C(n,4) > 365^3)
+    - k=4 (quads): n=187 (first where C(n,4) > 365^3)
 
     The threshold grows roughly as (k! * 365^(k-1))^(1/k) ≈ 365^(1-1/k) * k!^(1/k). -/
 theorem thresholds_summary :
     (28 : ℕ).choose 2 > 365 ∧ (27 : ℕ).choose 2 ≤ 365 ∧
     (94 : ℕ).choose 3 > 365 ^ 2 ∧ (93 : ℕ).choose 3 ≤ 365 ^ 2 ∧
-    (188 : ℕ).choose 4 > 365 ^ 3 ∧ (187 : ℕ).choose 4 ≤ 365 ^ 3 := by
+    (187 : ℕ).choose 4 > 365 ^ 3 ∧ (186 : ℕ).choose 4 ≤ 365 ^ 3 := by
   refine ⟨by native_decide, by native_decide, by native_decide,
           by native_decide, by native_decide, by native_decide⟩
 
@@ -514,7 +514,7 @@ example : 365 < Nat.choose 28 2 := by native_decide
 example : Nat.choose 27 2 < 365 := by native_decide
 example : Nat.choose 94 3 = 134044 := by native_decide
 example : Nat.choose 93 3 = 129766 := by native_decide
-example : Nat.choose 188 4 = 51895981 := by native_decide
-example : Nat.choose 187 4 = 47791135 := by native_decide
+example : Nat.choose 188 4 = 50404915 := by native_decide
+example : Nat.choose 187 4 = 49332470 := by native_decide
 
 end BirthdayProblemOQ01

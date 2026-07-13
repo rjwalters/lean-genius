@@ -37,17 +37,17 @@ theorem dvd_listLcm {m : R} {ms : List R} (hm : m ∈ ms) : m ∣ listLcm ms := 
   | cons a as ih =>
     simp only [listLcm]
     rcases List.mem_cons.mp hm with rfl | has
-    · exact EuclideanDomain.dvd_lcm_left a (listLcm as)
+    · exact EuclideanDomain.dvd_lcm_left _ _
     · exact dvd_trans (ih has) (EuclideanDomain.dvd_lcm_right a (listLcm as))
 
 /-- If each element of a list divides d, then listLcm divides d. -/
 theorem listLcm_dvd {ms : List R} {d : R} (h : ∀ m ∈ ms, m ∣ d) : listLcm ms ∣ d := by
   induction ms with
-  | nil => simp [listLcm]; exact one_dvd d
+  | nil => simp [listLcm]
   | cons a as ih =>
     simp only [listLcm]
     exact EuclideanDomain.lcm_dvd
-      (h a (List.mem_cons_self a as))
+      (h a List.mem_cons_self)
       (ih (fun m hm => h m (List.mem_cons.mpr (Or.inr hm))))
 
 /-- A system of congruences: list of (target, modulus) pairs. -/
@@ -98,8 +98,7 @@ theorem gcd_listLcm_dvd_listLcm_gcd (ms : List R) (c : R) :
     have h1 := gcd_lcm_dvd_lcm_gcd m (listLcm rest) c
     -- Step 2: by IH, gcd(L, c) ∣ listLcm(rest.map(gcd · c))
     -- Step 3: monotonicity of lcm
-    have h2 := lcm_dvd_lcm_right ih
-    exact dvd_trans h1 h2
+    exact dvd_trans h1 (lcm_dvd_lcm_right ih)
 
 -- ═══════════════════════════════════════════════════
 -- Part III: Key Transfer Lemma
@@ -153,7 +152,7 @@ theorem ed_crt_list_sufficient {sys : System R}
     -- Need: gcd(listLcm(moduli rest), pair.2) ∣ (y - pair.1)
     have hcompat_head : ∀ p ∈ rest, EuclideanDomain.gcd p.2 pair.2 ∣ (p.1 - pair.1) := by
       intro p hp
-      exact hcompat p pair (List.mem_cons.mpr (Or.inr hp)) (List.mem_cons_self pair rest)
+      exact hcompat p pair (List.mem_cons.mpr (Or.inr hp)) List.mem_cons_self
     have h_gcd_dvd := gcd_listLcm_dvd_sub hy hcompat_head
     -- Apply 2-moduli CRT
     obtain ⟨x, hx_lcm, hx_pair⟩ := ed_crt_sufficient h_gcd_dvd

@@ -103,6 +103,9 @@ theorem conjAut_sq : conjAut n * conjAut n = 1 := by
     have h1 := hζ.autToPow_spec ℚ (conjAut n)
     rw [conjAut_zeta_eq_inv n] at h1
     convert h1 using 2
+    -- v4.31: `convert using 2` no longer closes `u = autToPow ℚ hζ (conjAut n)`
+    -- at reducible transparency; it holds by delta + proof irrelevance.
+    rfl
   have h_pow_one : abstractZeta n ^ ((u : ZMod n).val + 1) = 1 := by
     rw [pow_succ, h_spec, inv_mul_cancel₀ hζ_ne]
   have h_dvd : n ∣ ((u : ZMod n).val + 1) := by
@@ -301,7 +304,9 @@ theorem finrank_over_alphaField (hn : 3 ≤ n) :
     Polynomial.C 1
   -- aeval ζ p = 0
   have h_aeval : Polynomial.aeval ζ p = 0 := by
-    have h := zeta_quadratic_over_alpha n (by omega : 0 < n)
+    -- v4.31: the `let`s in the statement no longer zeta-reduce on `have`,
+    -- so ascribe the reduced type (defeq) to keep `linarith` able to see it.
+    have h : ζ ^ 2 - α * ζ + 1 = 0 := zeta_quadratic_over_alpha n (by omega : 0 < n)
     -- Evaluate polynomial at ζ: 1*ζ² + (-α)*ζ + 1
     simp only [p, Polynomial.aeval_add, Polynomial.aeval_mul,
       Polynomial.aeval_C, Polynomial.aeval_X, Polynomial.aeval_X_pow,
@@ -343,8 +348,8 @@ theorem alphaField_degree_ge (hn : 3 ≤ n) :
       _ = Nat.totient n := htower.symm
   omega
 
-/-- [alphaField : ℚ] ≤ φ(n)/2. -/
 set_option maxHeartbeats 400000 in
+/-- [alphaField : ℚ] ≤ φ(n)/2. -/
 theorem alphaField_degree_le (hn : 3 ≤ n) :
     Module.finrank ℚ (alphaField n) ≤ Nat.totient n / 2 := by
   have hle := alphaField_le_maxRealSubfield n hn
@@ -555,15 +560,17 @@ theorem chebyshev_T_eval_half_sum_inv (K : Type*) [Field K] [Algebra ℚ K]
     match k with
     | 0 =>
       simp [Chebyshev.T_zero, Polynomial.aeval_one]
+      norm_num
     | 1 =>
-      simp [show (1 : ℤ) = ((1 : ℕ) : ℤ) from rfl, Chebyshev.T_one,
-        Polynomial.aeval_X, zpow_one]
+      simp [Chebyshev.T_one, Polynomial.aeval_X, zpow_one]
     | k + 2 =>
       have ih1 := ih (k + 1) (by omega)
       have ih0 := ih k (by omega)
+      -- v4.31 normal form: `T ℚ (↑k + 1)` rather than `T ℚ ↑(k + 1)`
+      push_cast at ih1
       rw [show ((k + 2 : ℕ) : ℤ) = (↑k : ℤ) + 2 from by omega]
       rw [Chebyshev.T_add_two]
-      simp only [map_sub, map_mul, Polynomial.aeval_ofNat, Polynomial.aeval_X]
+      simp only [map_sub, map_mul, map_ofNat, Polynomial.aeval_X]
       rw [ih1, ih0]
       have hxk1 : x ^ ((k : ℤ) + 1) ≠ 0 := zpow_ne_zero _ hx
       have hxk : x ^ (k : ℤ) ≠ 0 := zpow_ne_zero _ hx
@@ -602,12 +609,13 @@ theorem galAutOfCoprime_spec (hn : 3 ≤ n) (k : ℕ) (hk : k < n) (hc : Nat.Cop
   have h_spec : abstractZeta n ^ ((aep τ : (ZMod n)ˣ) : ZMod n).val =
       τ (abstractZeta n) := by
     convert h_raw using 2
+    -- v4.31: bridge `autEquivPow` / `autToPow` (defeq: delta + proof irrelevance)
+    rfl
   rw [h_aep] at h_spec
   -- Now h_spec : ζ ^ ((unitOfCoprime k hc : ZMod n).val) = τ(ζ)
   -- Compute: (unitOfCoprime k hc : ZMod n).val = k (since k < n)
   have h_val : ((ZMod.unitOfCoprime k hc : (ZMod n)ˣ) : ZMod n).val = k := by
-    show (ZMod.IsUnit.unit _ : ZMod n).val = k
-    simp [ZMod.IsUnit.unit, ZMod.unitOfCoprime, Units.IsUnit.unit]
+    rw [ZMod.coe_unitOfCoprime]
     exact ZMod.val_natCast_of_lt (by omega)
   rw [h_val] at h_spec
   -- h_spec : ζ ^ k = τ(ζ), convert ℕ pow to ℤ pow
@@ -655,21 +663,25 @@ theorem galAut_alphaCos_embedding (hn : 3 ≤ n) (k : ℕ) (hk : k < n)
   set w := φ ζ
   -- Step 3: Use algebraic Chebyshev identity
   have hw_ne : w ≠ 0 := by
-    intro hw; apply hζ_ne
-    have : φ ζ = 0 := hw
-    exact φ.injective (by rw [this, map_zero])
+    intro hw
+    apply hζ_ne
+    apply φ.injective
+    -- v4.31: the injectivity goal surfaces the `RingHom` coercion; realign it.
+    show φ ζ = φ 0
+    rw [map_zero]
+    exact hw
   have h_cheb := chebyshev_T_eval_half_sum_inv ℂ w hw_ne k
   -- h_cheb : T_k((w + w⁻¹)/2) = (w^k + (w^k)⁻¹)/2
   rw [← h_cheb]
   -- Goal: T_k((w + w⁻¹)/2) = ↑(cos(2kπ/n))
   -- Step 4: (w + w⁻¹)/2 = ↑(cos(2π/n))
   have h_w_cos : (w + w⁻¹) / 2 = ↑(Real.cos (2 * Real.pi / ↑n)) := by
-    have : φ (alpha n) = w + w⁻¹ := by
-      simp [alpha, map_add, map_inv₀, w]
-    rw [hφ] at this
-    have h2 : (2 : ℂ) ≠ 0 := two_ne_zero
-    field_simp at this ⊢
-    linarith [this]
+    have hsum : w + w⁻¹ = (↑(2 * Real.cos (2 * Real.pi / ↑n)) : ℂ) := by
+      rw [← hφ]
+      simp [w, ζ, alpha, map_add, map_inv₀]
+    rw [hsum]
+    push_cast
+    ring
   rw [h_w_cos]
   -- Goal: T_k(↑(cos(2π/n))) = ↑(cos(2kπ/n))
   -- Step 5: Use Chebyshev.T_real_cos lifted to ℂ
@@ -679,12 +691,17 @@ theorem galAut_alphaCos_embedding (hn : 3 ≤ n) (k : ℕ) (hk : k < n)
   rw [show Polynomial.aeval (Complex.ofReal (Real.cos (2 * Real.pi / ↑n)))
       (Chebyshev.T ℚ (↑k : ℤ)) =
     Complex.ofReal (Polynomial.aeval (Real.cos (2 * Real.pi / ↑n))
-      (Chebyshev.T ℚ (↑k : ℤ))) from by
-    rw [← Polynomial.aeval_algHom_apply (IsScalarTower.toAlgHom ℚ ℝ ℂ)]]
+      (Chebyshev.T ℚ (↑k : ℤ))) from
+    -- v4.31: `Complex.ofReal` no longer matches `⇑(IsScalarTower.toAlgHom ℚ ℝ ℂ)`
+    -- syntactically for `rw`, but they are defeq, so `exact`-style application works.
+    Polynomial.aeval_algHom_apply (IsScalarTower.toAlgHom ℚ ℝ ℂ)
+      (Real.cos (2 * Real.pi / ↑n)) (Chebyshev.T ℚ (↑k : ℤ))]
   congr 1
   rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
-  -- Goal: Real.cos (↑k * (2 * π / ↑n)) = Real.cos (2 * ↑k * π / ↑n)
-  congr 1; ring
+  -- Goal: Real.cos (↑↑k * (2 * π / ↑n)) = Real.cos (2 * ↑k * π / ↑n)
+  congr 1
+  push_cast
+  ring
 
 /-- The minimal polynomial of alphaCos in CyclotomicField equals the minimal
     polynomial of cos(2π/n) in ℝ. -/
@@ -722,7 +739,7 @@ theorem cos_coprime_is_root (hn : 3 ≤ n) (k : ℕ) (hk : k < n) (hc : Nat.Copr
   -- Apply φ: aeval (φ(τ_k(αc))) (minpoly ℚ cos(2π/n)) = 0 in ℂ
   have h_root_C : Polynomial.aeval (φ (galAutOfCoprime n hn k hc (alphaCos n)))
       (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0 := by
-    rw [Polynomial.aeval_algHom_apply φ.toAlgHom]
+    rw [Polynomial.aeval_algHom_apply φ]
     simp [h_root]
   rw [h_emb] at h_root_C
   -- h_root_C : aeval (↑cos(2kπ/n) : ℂ) (minpoly ℚ cos(2π/n)) = 0

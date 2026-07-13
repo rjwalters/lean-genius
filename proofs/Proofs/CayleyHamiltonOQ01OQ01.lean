@@ -130,7 +130,7 @@ theorem cyclic_vecAnnIdeal_eq_minpoly (M : Matrix (Fin n) (Fin n) K) (v : Fin n 
   -- Step 3: The remainder r = f %ₘ minpoly K M also kills v
   have hr : aeval M.mulVecLin (f %ₘ minpoly K M) v = 0 := by
     have hdiv : f = f %ₘ (minpoly K M) + (minpoly K M) * (f /ₘ (minpoly K M)) :=
-      (Polynomial.modByMonic_add_div f hMonic).symm
+      (Polynomial.modByMonic_add_div f (minpoly K M)).symm
     have hfv2 : aeval M.mulVecLin f v = aeval M.mulVecLin (f %ₘ minpoly K M) v := by
       conv_lhs => rw [hdiv]
       simp only [map_add, map_mul, LinearMap.add_apply, Module.End.mul_apply,

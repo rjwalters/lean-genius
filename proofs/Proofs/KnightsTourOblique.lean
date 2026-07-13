@@ -1488,11 +1488,9 @@ theorem rotate_reflect_conjugate (s : Square) :
 /-- applyD4 with inverse gives identity -/
 theorem applyD4_inv_left (g : Bool × Fin 4) (s : Square) :
     applyD4 (d4Inv g) (applyD4 g s) = s := by
-  obtain ⟨b, k⟩ := g
-  fin_cases k <;> cases b <;>
-    simp only [applyD4, d4Inv, rotateSquareN, reflectSquare, rotateSquare90,
-               Bool.false_eq_true, if_false, if_true, ite_false, ite_true, Fin.isValue] <;>
-    (ext <;> skip <;> omega)
+  revert s
+  revert g
+  decide
 
 /-- Rotation by 90° is injective -/
 theorem rotateSquare90_injective : Function.Injective rotateSquare90 := by
@@ -1748,7 +1746,6 @@ theorem getMoveVector_rotate90 (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have hadj : isKnightOffset ((↑(7 - s2.2.val) : Int) - ↑(7 - s1.2.val))
                               ((s2.1 : Int) - s1.1) = true := by
     have := rotate_knight_offset h
-    simp only [Fin.val_natCast] at this ⊢
     convert this using 2; all_goals omega
   -- Unfold definitions
   simp only [getMoveVector, rotateSquare90, rotateMoveVector]
@@ -1773,7 +1770,6 @@ theorem getMoveVector_reflect (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have hadj : isKnightOffset ((↑(7 - s2.1.val) : Int) - ↑(7 - s1.1.val))
                               ((s2.2 : Int) - s1.2) = true := by
     have := reflect_knight_offset h
-    simp only [Fin.val_natCast] at this ⊢
     convert this using 2; all_goals omega
   -- Unfold definitions
   simp only [getMoveVector, reflectSquare, reflectMoveVector]

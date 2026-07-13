@@ -364,8 +364,7 @@ theorem parseval_periodic_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
   constructor;
   · convert parseval_AddCircle_lift ( 2 * Real.pi ) ( fun x => Complex.ofReal ( f x ) ) _ _ |>.1;
     all_goals try exact Fact.mk hab;
-    · ext; simp [hĉ, fourierCoeff_liftIoc_eq];
-      rfl;
+    · apply Complex.ext <;> (try simp [hĉ, fourierCoeff_liftIoc_eq]) <;> try rfl
     · exact Complex.continuous_ofReal.comp hf.continuous;
     · exact fun x => by simp +decide [ hperiod ] ;
   · have := @parseval_AddCircle_lift ( 2 * Real.pi ) ?_ ( fun x => Complex.ofReal ( f x ) ) ?_ ?_ <;> norm_num at *;
@@ -459,6 +458,7 @@ theorem IsoperimetricOQ.realFourierCoeff_deriv_sq_eq (f : ℝ → ℝ) (hf : Con
                                     · rw [ IsoperimetricOQ.norm_fourierCoeffOn_deriv_eq f hf hperiod n hn ] ; ring;
                                       norm_num [ mul_assoc, mul_comm, mul_left_comm ]
 
+set_option maxRecDepth 4000 in
 theorem IsoperimetricOQ.integral_sq_eq_integral_norm_sq_lift_general (T : ℝ) [hT : Fact (0 < T)]
     (f : ℝ → ℝ) (hf : Continuous f) (hperiod : ∀ t, f (t + T) = f t) :
     let F := AddCircle.liftIoc T 0 (Complex.ofReal ∘ f)
@@ -467,7 +467,7 @@ theorem IsoperimetricOQ.integral_sq_eq_integral_norm_sq_lift_general (T : ℝ) [
         convert AddCircle.intervalIntegral_preimage T 0 ( fun x => ‖AddCircle.liftIoc T 0 ( Complex.ofReal ∘ f ) x‖ ^ 2 ) using 1 ; norm_num [ hperiod ] ; ring;
         · norm_num [ AddCircle.liftIoc ];
           refine' intervalIntegral.integral_congr fun t ht => _ ; simp_all +decide [ AddCircle.equivIoc ] ; ring; (
-          cases eq_or_lt_of_le ( show 0 ≤ t from by cases Set.mem_uIcc.mp ht <;> linarith [ hT.1 ] ) <;> simp_all +decide [ toIocMod ] ; ring;
+          cases eq_or_lt_of_le ( show 0 ≤ t from by cases Set.mem_uIcc.mp ht <;> linarith [ hT.1 ] ) <;> simp_all +decide [ toIocMod, -self_sub_toIocDiv_zsmul ] ; ring;
           rw [ show f t = f ( t - ( toIocDiv hT.1 0 t ) * T ) from by simpa [ sub_mul ] using Function.Periodic.int_mul hperiod ( toIocDiv hT.1 0 t ) ( t - ( toIocDiv hT.1 0 t ) * T ) ]);
         · rw [ ← MeasureTheory.integral_const_mul ] ; ring;
           have := @AddCircle.volume_eq_smul_haarAddCircle T hT; simp_all +decide [ MeasureTheory.measureReal_def ] ; ring;
@@ -535,15 +535,15 @@ theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
       (c 0 = (1 / Real.sqrt (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t) := by
   refine' ⟨ fun n => IsoperimetricOQ.realFourierCoeff f n, _, _, _, _, _ ⟩;
   · have := IsoperimetricOQ.parseval_periodic_real_continuous f hf.continuous hperiod ( by positivity ) ( fun n => fourierCoeffOn ( by positivity ) ( Complex.ofReal ∘ f ) n ) rfl;
-    convert this.1.mul_left ( 2 * Real.pi ) using 2 ; ring;
+    convert this.1.mul_left ( 2 * Real.pi ) using 2 ; try ring;
     rw [ IsoperimetricOQ.realFourierCoeff_sq_eq ] ; ring;
   · have := IsoperimetricOQ.parseval_periodic_real_continuous ( deriv f ) ( hf.continuous_deriv le_rfl ) ( fun t => ?_ ) ( by positivity ) ( fun n => fourierCoeffOn ( show 0 < 2 * Real.pi by positivity ) ( Complex.ofReal ∘ deriv f ) n ) rfl;
-    · convert this.1.mul_left ( 2 * Real.pi ) using 2 ; ring;
+    · convert this.1.mul_left ( 2 * Real.pi ) using 2 ; try ring;
       convert IsoperimetricOQ.realFourierCoeff_deriv_sq_eq f hf hperiod ‹_› using 1 ; ring;
     · have h_deriv_periodic : ∀ t, deriv f (t + 2 * Real.pi) = deriv f t := by
         intro t
         have h_eq : ∀ t, deriv f (t + 2 * Real.pi) = deriv (fun t => f (t + 2 * Real.pi)) t := by
-          exact?
+          exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
         aesop;
       exact h_deriv_periodic t;
   · obtain ⟨ h₁, h₂ ⟩ := IsoperimetricOQ.parseval_periodic_real_continuous f hf.continuous hperiod ( show 0 < 2 * Real.pi by positivity ) ( fun n => fourierCoeffOn ( show 0 < 2 * Real.pi by positivity ) ( Complex.ofReal ∘ f ) n ) rfl;
@@ -553,7 +553,7 @@ theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
                                                                                                                         · exact hf.continuous_deriv le_rfl;
                                                                                                                         · intro t; exact (by
                                                                                                                           have h_deriv_periodic : deriv (fun t => f (t + 2 * Real.pi)) t = deriv f (t + 2 * Real.pi) := by
-                                                                                                                            exact?;
+                                                                                                                            exact deriv_comp_add_const f (2 * π) t;
                                                                                                                           aesop);
     convert h_parseval_deriv using 1;
     rw [ ← tsum_mul_left ];
@@ -860,9 +860,13 @@ theorem SmoothClosedCurve.meanSubtract_area (γ : SmoothClosedCurve) :
     integral_deriv_periodic_zero γ.x γ.smooth_x γ.periodic_x
   have hiy : ∫ t in (0 : ℝ)..(2 * π), deriv γ.y t = 0 :=
     integral_deriv_periodic_zero γ.y γ.smooth_y γ.periodic_y
-  rw [intervalIntegral.integral_sub
-    ((continuous_const.mul hdx_cont).intervalIntegrable 0 (2 * π))
-    ((continuous_const.mul hdy_cont).intervalIntegrable 0 (2 * π)),
+  have h1_int : IntervalIntegrable (fun t => cy * deriv γ.x t)
+      MeasureTheory.volume 0 (2 * π) :=
+    (continuous_const.mul hdx_cont).intervalIntegrable 0 (2 * π)
+  have h2_int : IntervalIntegrable (fun t => cx * deriv γ.y t)
+      MeasureTheory.volume 0 (2 * π) :=
+    (continuous_const.mul hdy_cont).intervalIntegrable 0 (2 * π)
+  rw [intervalIntegral.integral_sub h1_int h2_int,
     intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
     hix, hiy, mul_zero, mul_zero, sub_self, add_zero]
 
@@ -1236,7 +1240,7 @@ theorem exists_arclength_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumfer
       -- Derive σ's derivative at c*p via chain rule on s ∘ σ = id
       have hσ_diff : DifferentiableAt ℝ σ (c * p) :=
         (show ContDiff ℝ 1 σ from arclengthInv_contDiff γ hReg hL).differentiable
-          le_rfl |>.differentiableAt
+          one_ne_zero |>.differentiableAt
       have hid_da : HasDerivAt (s ∘ σ) 1 (c * p) := by
         have heq : s ∘ σ = id := funext (arclengthInv_right γ hReg hL)
         simp only [heq]; exact hasDerivAt_id _
@@ -1328,7 +1332,7 @@ theorem exists_arclength_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumfer
       -- σ is differentiable (from arclengthInv_contDiff)
       have hσ_diff : DifferentiableAt ℝ σ (c * t) :=
         (show ContDiff ℝ 1 σ from arclengthInv_contDiff γ hReg hL).differentiable
-          le_rfl |>.differentiableAt
+          one_ne_zero |>.differentiableAt
       -- s ∘ σ = id, so (s ∘ σ)' = 1 at c*t
       have hid_da : HasDerivAt (s ∘ σ) 1 (c * t) := by
         have heq : s ∘ σ = id := funext (arclengthInv_right γ hReg hL)
