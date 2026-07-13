@@ -1221,4 +1221,73 @@ theorem X_pow_two_pow_sub_C_three_irreducible {k : ℕ} (hk : 1 ≤ k) :
   (vahlen_capelli_pos_two_pow hk (by norm_num : (0 : ℚ) < 3)).mpr
     (three_not_pth_power_rat (by norm_num))
 
+-- ============================================================
+-- PART 8: Fields in which −1 is a square
+-- (the imaginary unit `i ∈ K` collapses condition (2) into condition (1),
+--  exactly as positivity does in PART 7, but for a *different* class of fields)
+-- ============================================================
+
+/-- If `−1` is a square in `K` and `a` is **not** a square, then `−a` is not a square either.
+
+The imaginary unit `j = √−1` turns any square root of `−a` into one of `a`:
+`b² = −a ⟹ (j·b)² = j²·b² = (−1)(−a) = a`.  So over a field containing `i`, the two
+"quadratic residue" predicates for `a` and `−a` coincide — the `−a ∈ K²` branch of the
+`2`-power descent is therefore **vacuous** whenever `a` is a non-square, mirroring
+`neg_not_square_of_pos` in the ordered case. -/
+theorem neg_not_square_of_neg_one_square {K : Type*} [Field K] {a : K}
+    (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    ∀ b : K, b ^ 2 ≠ -a := by
+  obtain ⟨j, hj⟩ := hj
+  intro b hb
+  exact h1 (j * b) (by rw [mul_pow, hj, hb]; ring)
+
+/-- **Capelli condition (2) is implied by condition (1) when `−1` is a square.**
+If `−1 = j²` and `a` is not a square then `a ≠ −4b⁴` for every `b`, because
+`−4b⁴ = (−1)·(2b²)² = (j·2b²)²` would exhibit `a` as a square.
+
+So over a field containing `i` the `−4·K⁴` obstruction — the genuinely two-dimensional
+content of the criterion over general fields — collapses into "not a square": `−4·K⁴ ⊆ K²`.
+This is the exact analogue of `capelli_cond_two_of_pos`, replacing the order hypothesis by
+`i ∈ K`. -/
+theorem capelli_cond_two_of_neg_one_square {K : Type*} [Field K] {a : K}
+    (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    ∀ b : K, a ≠ -(4 * b ^ 4) := by
+  obtain ⟨j, hj⟩ := hj
+  intro b hb
+  exact h1 (j * (2 * b ^ 2)) (by rw [mul_pow, hj, hb]; ring)
+
+/-- **Pure `2`-power base when `−1` is a square, via the norm-descent keystone alone.**
+Over a field in which `−1` is a square, if `a` is not a square then `X^(2^k) − C a` is
+irreducible for every `k ≥ 1`.
+
+By `neg_not_square_of_neg_one_square`, `−a` is a non-square, so the norm-descent keystone
+`two_power_capelli_of_neg_not_square` applies directly — the `−a ∈ K²` branch of the Lang
+VI §9 descent (`two_power_capelli_neg_square`) never fires here, just as positivity
+sidesteps it in `two_power_capelli_pos`. -/
+theorem two_power_capelli_of_neg_one_square {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k)
+    {a : K} (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) :=
+  two_power_capelli_of_neg_not_square hk h1 (neg_not_square_of_neg_one_square hj h1)
+
+/-- **Vahlen–Capelli criterion when `−1` is a square (condition (2) drops out).**
+Over a field `K` containing a square root of `−1`, for `a : K` and `n ≥ 1`,
+
+  `Irreducible (X^n − C a) ↔ ∀ p prime, p ∣ n → ∀ b, b^p ≠ a`.
+
+Condition (2) (the `−4·K⁴` obstruction) is subsumed by condition (1) because
+`−4·K⁴ ⊆ K²` when `i ∈ K` (`capelli_cond_two_of_neg_one_square`), so the criterion is the
+clean condition (1) alone — the imaginary-unit twin of the ordered-field simplification
+`vahlen_capelli_pos` (PART 7).  Applies to `ℂ`, the algebraic closure of any field, `ℚ(i)`,
+and every finite field `𝔽_q` with `q ≡ 1 [MOD 4]`. -/
+theorem vahlen_capelli_of_neg_one_square {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n)
+    {a : K} (hj : ∃ j : K, j ^ 2 = -1) :
+    Irreducible (X ^ n - C a) ↔ ∀ p : ℕ, Nat.Prime p → p ∣ n → ∀ b : K, b ^ p ≠ a := by
+  rw [vahlen_capelli hn]
+  constructor
+  · exact fun h => h.1
+  · intro h1
+    exact ⟨h1, fun h4 =>
+      capelli_cond_two_of_neg_one_square hj
+        (h1 2 Nat.prime_two ((by norm_num : (2 : ℕ) ∣ 4).trans h4))⟩
+
 end CubeRoot3IrrationalOQ02OQ03
