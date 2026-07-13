@@ -150,7 +150,8 @@ example : crtFin m357 a357 ≡ 23 [ZMOD 105] := by
   have h23 : ∀ i : Fin 3, (23 : ℤ) ≡ a357 i [ZMOD m357 i] := by decide
   have hprod : (∏ i : Fin 3, m357 i) = 105 := by decide
   have := crtFin_canonical m357 a357 pairwise_coprime_m357 23 h23
-  rwa [hprod] at this
+  rw [hprod] at this
+  exact this.symm
 
 end Example
 

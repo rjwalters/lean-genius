@@ -92,10 +92,10 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
   specialize this hn (fun x hx => ?_) (?_) <;> norm_num [h_periodic] at *
   · convert HasDerivAt.ofReal_comp
       (hasDerivAt_deriv_iff.mpr <| show DifferentiableAt ℝ f x from
-        hf.contDiffAt.differentiableAt <| by norm_num) using 1
+        hf.contDiffAt.differentiableAt <| by norm_num) using 1 <;>
+      (first | rfl | ring1 | (push_cast; ring1) | (norm_num; done) | simp)
   · exact Continuous.intervalIntegrable
       (by exact Complex.continuous_ofReal.comp (hf.continuous_deriv le_rfl)) _ _
   · rw [this]; ring; norm_num [hn, Real.pi_ne_zero]
-    rw [show f (Real.pi * 2) = f 0 by simpa [mul_comm] using hperiod 0]; ring
 
 end IsoperimetricOQAristotle

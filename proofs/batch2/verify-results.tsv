@@ -55,7 +55,7 @@ AlgebraicRealsNull	GREEN
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	RESIDUAL	signature-drift
 AmgmInequalityOQ02Defs	RESIDUAL	dot-notation-drift
-AmgmInequalityOQ02OQ01OQ02	RESIDUAL	proof-drift
+AmgmInequalityOQ02OQ01OQ02	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01	GREEN	
@@ -74,15 +74,15 @@ AmgmInequalityOQ05OQ01	GREEN
 AngleTrisection	GREEN	
 AngleTrisectionCos20Gal	GREEN	
 AngleTrisectionCos20GalOQ01	GREEN	
-AngleTrisectionCos20GalOQ01OQ01	RESIDUAL	proof-drift
+AngleTrisectionCos20GalOQ01OQ01	GREEN	
 AngleTrisectionCos20GalOQ01OQ02	GREEN	
 AngleTrisectionCos20GalOQ01OQ02OQ02	RESIDUAL	instance-synth
-AngleTrisectionCos20GalOQ03	RESIDUAL	proof-drift
+AngleTrisectionCos20GalOQ03	GREEN	
 AngleTrisectionCos20GalOQ03OQ01	RESIDUAL	type-mismatch
 AngleTrisectionEmbedding	GREEN	
 AngleTrisectionOQ02	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ01OQ02	RESIDUAL	rewrite-drift
-AngleTrisectionOQ02OQ01OQ02Aristotle	RESIDUAL	proof-drift
+AngleTrisectionOQ02OQ01OQ02Aristotle	GREEN	
 AngleTrisectionOQ02OQ01OQ02Incomplete01	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ03	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ03Ext	RESIDUAL	rewrite-drift
@@ -115,7 +115,7 @@ AreaOfCircleOQ01OQ02OQ02OQ02OQ01	GREEN
 AreaOfCircleOQ01OQ02OQ02OQ02OQ02	RESIDUAL	unknown-const:wirtinger_inequality
 AreaOfCircleOQ01OQ02OQ03OQ03	RESIDUAL	unknown-const:Filter.eventually_nhdsWithin_of_forall
 AreaOfCircleOQ01OQ03	RESIDUAL	decide-maxrecdepth
-AreaOfCircleOQ01OQ03Aristotle	RESIDUAL	proof-drift
+AreaOfCircleOQ01OQ03Aristotle	GREEN	
 AreaOfCircleOQ01OQ03OQ01	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ03OQ02	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ02	RESIDUAL	proof-drift
@@ -126,11 +126,11 @@ AreaOfCircleOQ03OQ02OQ01	GREEN
 AreaOfCircleOQ03OQ02OQ02	RESIDUAL	proof-drift
 AreaOfCircleOQ03OQ02OQ02OQ01	RESIDUAL	proof-drift
 AreaOfCircleOQ03OQ03	GREEN	
-AreaOfCircleOQ03OQ03OQ02	RESIDUAL	proof-drift
+AreaOfCircleOQ03OQ03OQ02	GREEN	
 AreaOfCircleOQ05OQ01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
-AreaOfCircleOQ05OQ01Aristotle	RESIDUAL	proof-drift
+AreaOfCircleOQ05OQ01Aristotle	GREEN	
 AreaOfCircleOQ05OQ01Incomplete01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
-AreaOfCircleOQ05OQ03OQ05	RESIDUAL	type-mismatch
+AreaOfCircleOQ05OQ03OQ05	RESIDUAL	proof-drift
 AreaOfCircleOQ05OQ04	GREEN	
 AreaOfCircleOQ07OQ02OQ02	GREEN	
 AreaOfCircleOQ07OQ03OQ02	GREEN	
@@ -141,10 +141,10 @@ AreaOfCircleOQ07OQ05OQ01	RESIDUAL	type-mismatch
 AreaOfCircleOQ07OQ05OQ01OQ01	RESIDUAL	type-mismatch
 AreaOfCircleOQ07OQ05OQ01OQ02	RESIDUAL	type-mismatch
 AreaOfCircleOQ07OQ05OQ02	RESIDUAL	type-mismatch
-ArithmeticSeriesOQ00OQ02	RESIDUAL	proof-drift
+ArithmeticSeriesOQ00OQ02	GREEN	
 ArithmeticSeriesOQ00OQ02OQ01	RESIDUAL	instance-synth
 ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
-ArithmeticSeriesOQ02OQ02OQ03OQ01	RESIDUAL	proof-drift
+ArithmeticSeriesOQ02OQ02OQ03OQ01	GREEN	
 ArithmeticSeriesOQ02OQ03	RESIDUAL	unknown-const:Nat.choose_two_middle
 ArithmeticSeriesOQ02OQ04OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01	GREEN	
@@ -220,11 +220,11 @@ BezoutIdentityOQ02OQ02	RESIDUAL	unknown-const:euclids_lemma_irreducible
 BezoutIdentityOQ02OQ02OQ01OQ03	GREEN	
 BezoutIdentityOQ02OQ04	RESIDUAL	instance-synth
 BezoutIdentityOQ03OQ01OQ01OQ02OQ02	GREEN	
-BezoutIdentityOQ03OQ02OQ01	RESIDUAL	proof-drift
+BezoutIdentityOQ03OQ02OQ01	GREEN	
 BezoutIdentityOQ03OQ03	RESIDUAL	unknown-const:Int.coe_nat_dvd.mpr
 BezoutIdentityOQ03OQ04	RESIDUAL	unknown-const:Int.Coprime.mul_dvd_of_dvd_of_dvd
 BezoutIdentityOQ04OQ01	RESIDUAL	rewrite-drift
-BezoutIdentityOQ04OQ01OQ01	RESIDUAL	type-mismatch
+BezoutIdentityOQ04OQ01OQ01	RESIDUAL	proof-drift
 BinaryGcdOQ02	GREEN	
 BinaryGcdOQ02OQ01	RESIDUAL	rewrite-drift
 BinomialTheorem	GREEN	
@@ -250,7 +250,7 @@ BirthdayProblemOQ01OQ01	RESIDUAL	parse-error
 BirthdayProblemOQ01OQ01Aristotle	RESIDUAL	parse-error
 BirthdayProblemOQ01OQ01OQ03	RESIDUAL	parse-error
 BirthdayProblemOQ02OQ01	RESIDUAL	unknown-const:Finset.sum_range_id_eq_sum_range_succ_div_two
-BirthdayProblemOQ03OQ01	RESIDUAL	proof-drift
+BirthdayProblemOQ03OQ01	GREEN	
 BirthdayProblemOQ03OQ01OQ02	GREEN	
 BirthdayProblemOQ03OQ03	RESIDUAL	proof-drift
 BorsukUlamOQ02	RESIDUAL	unknown-const:EuclideanSpace.equiv_symm_pi_lp_apply
@@ -326,7 +326,7 @@ CantorDiagonalizationOQ02OQ03	GREEN
 CantorDiagonalizationOQ03	GREEN	
 CantorDiagonalizationOQ03OQ01Incomplete01	RESIDUAL	type-mismatch
 CantorDiagonalizationOQ04	GREEN	
-CantorDiagonalizationOQ04OQ01	RESIDUAL	proof-drift
+CantorDiagonalizationOQ04OQ01	GREEN	
 CantorDiagonalizationOQ04OQ01OQ01	RESIDUAL	instance-synth
 CantorDiagonalizationOQ04OQ01OQ01OQ01	RESIDUAL	instance-synth
 CantorDiagonalizationOQ04OQ03	RESIDUAL	instance-synth
@@ -653,7 +653,7 @@ Erdos1014OQ03LogIncrement	RESIDUAL	type-mismatch
 Erdos1014OQ03Obstruction	RESIDUAL	type-mismatch
 Erdos1014OQ04	GREEN	
 Erdos1014Problem	RESIDUAL	type-mismatch
-Erdos1015OQ05	RESIDUAL	proof-drift
+Erdos1015OQ05	GREEN	
 Erdos1015Problem	PRE-EXISTING	never-compiled:n
 Erdos1017OQ01	RESIDUAL	type-mismatch
 Erdos1017OQ04	GREEN	
@@ -1025,7 +1025,7 @@ Erdos226Problem	RESIDUAL	unknown-const:Rat.denseRange_ratCast
 Erdos229Problem	GREEN	
 Erdos230LowerBound	GREEN	
 Erdos230ProblemAristotle	RESIDUAL	proof-drift
-Erdos231Problem	RESIDUAL	proof-drift
+Erdos231Problem	GREEN	
 Erdos232Problem	RESIDUAL	proof-drift
 Erdos233Problem	GREEN	
 Erdos234Problem	RESIDUAL	type-mismatch
@@ -1033,7 +1033,7 @@ Erdos235Problem	RESIDUAL	proof-drift
 Erdos236Problem	GREEN	
 Erdos237Problem	RESIDUAL	instance-synth
 Erdos239Problem	RESIDUAL	proof-drift
-Erdos240Aristotle	RESIDUAL	proof-drift
+Erdos240Aristotle	GREEN	
 Erdos241Problem	GREEN	
 Erdos242Problem	RESIDUAL	type-mismatch
 Erdos246Problem	GREEN	
@@ -1237,7 +1237,7 @@ Erdos413Problem	RESIDUAL	rewrite-drift
 Erdos414Problem	RESIDUAL	rewrite-drift
 Erdos415Problem	RESIDUAL	instance-synth
 Erdos415ProblemAristotle	RESIDUAL	instance-synth
-Erdos416Problem	RESIDUAL	proof-drift
+Erdos416Problem	GREEN	
 Erdos417Problem	RESIDUAL	rewrite-drift
 Erdos418Problem	GREEN	
 Erdos419Problem	GREEN	

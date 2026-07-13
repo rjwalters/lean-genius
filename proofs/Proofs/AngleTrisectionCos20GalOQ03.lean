@@ -149,7 +149,7 @@ private theorem q_comp_eq_p :
   apply Polynomial.funext; intro x
   simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_sub,
     Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
-  unfold q_eis_rat p
+  unfold q_eis_rat
   simp only [Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_mul,
     Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one,
     Polynomial.eval_ofNat]

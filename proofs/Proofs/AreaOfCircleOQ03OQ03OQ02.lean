@@ -70,15 +70,20 @@ theorem parabolicTriangleArea_det (x₁ x₂ x₃ : ℝ) :
 
 /-- **Parabolic triangle area with midpoint**: For a, b on the parabola y = x²,
 the triangle with vertices at a, b, and midpoint m = (a+b)/2 has
-signed area (b-a)³/8. -/
+signed area (b-a)³/8.
+
+(Statement repair for the v4.31 migration: the vertices are listed in
+increasing x-order `a, (a+b)/2, b` — the original order `a, b, (a+b)/2`
+gives the clockwise orientation, whose signed area is -(b-a)³/8, making
+the stated equality false.) -/
 theorem parabolic_triangle_area_midpoint (a b : ℝ) :
-    parabolicTriangleArea a b ((a + b) / 2) = (b - a) ^ 3 / 8 := by
+    parabolicTriangleArea a ((a + b) / 2) b = (b - a) ^ 3 / 8 := by
   unfold parabolicTriangleArea
   ring
 
 /-- The area is positive when a < b. -/
 theorem parabolic_triangle_area_pos (a b : ℝ) (hab : a < b) :
-    0 < parabolicTriangleArea a b ((a + b) / 2) := by
+    0 < parabolicTriangleArea a ((a + b) / 2) b := by
   rw [parabolic_triangle_area_midpoint]
   positivity
 
@@ -89,17 +94,25 @@ When we subdivide [a, b] at midpoint m = (a+b)/2, we get two sub-intervals
 (using their own midpoints) have area exactly 1/8 of the parent. -/
 
 /-- **Left sub-triangle area**: The triangle on [a, m] with midpoint (3a+b)/4
-has area (b-a)³/64. -/
+has area (b-a)³/64.
+
+(Statement repair for the v4.31 migration: vertices reordered to increasing
+x-order `a, (3a+b)/4, (a+b)/2` so the signed area is positive; the original
+order yielded -(b-a)³/64.) -/
 theorem left_subtriangle_area (a b : ℝ) :
-    parabolicTriangleArea a ((a + b) / 2) ((a + (a + b) / 2) / 2) =
+    parabolicTriangleArea a ((a + (a + b) / 2) / 2) ((a + b) / 2) =
     (b - a) ^ 3 / 64 := by
   unfold parabolicTriangleArea
   ring
 
 /-- **Right sub-triangle area**: The triangle on [m, b] with midpoint (a+3b)/4
-has area (b-a)³/64. -/
+has area (b-a)³/64.
+
+(Statement repair for the v4.31 migration: vertices reordered to increasing
+x-order `(a+b)/2, (a+3b)/4, b` so the signed area is positive; the original
+order yielded -(b-a)³/64.) -/
 theorem right_subtriangle_area (a b : ℝ) :
-    parabolicTriangleArea ((a + b) / 2) b (((a + b) / 2 + b) / 2) =
+    parabolicTriangleArea ((a + b) / 2) (((a + b) / 2 + b) / 2) b =
     (b - a) ^ 3 / 64 := by
   unfold parabolicTriangleArea
   ring
@@ -109,24 +122,24 @@ theorem right_subtriangle_area (a b : ℝ) :
 /-- **Each sub-triangle is 1/8 of the parent**: The left sub-triangle area
 equals (1/8) times the parent triangle area. -/
 theorem left_subtriangle_ratio (a b : ℝ) :
-    parabolicTriangleArea a ((a + b) / 2) ((a + (a + b) / 2) / 2) =
-    (1 / 8) * parabolicTriangleArea a b ((a + b) / 2) := by
+    parabolicTriangleArea a ((a + (a + b) / 2) / 2) ((a + b) / 2) =
+    (1 / 8) * parabolicTriangleArea a ((a + b) / 2) b := by
   rw [left_subtriangle_area, parabolic_triangle_area_midpoint]
   ring
 
 /-- **Each sub-triangle is 1/8 of the parent** (right side). -/
 theorem right_subtriangle_ratio (a b : ℝ) :
-    parabolicTriangleArea ((a + b) / 2) b (((a + b) / 2 + b) / 2) =
-    (1 / 8) * parabolicTriangleArea a b ((a + b) / 2) := by
+    parabolicTriangleArea ((a + b) / 2) (((a + b) / 2 + b) / 2) b =
+    (1 / 8) * parabolicTriangleArea a ((a + b) / 2) b := by
   rw [right_subtriangle_area, parabolic_triangle_area_midpoint]
   ring
 
 /-- **Two sub-triangles together are 1/4 of the parent**: This is the key ratio
 that drives Archimedes' geometric series. -/
 theorem subtriangle_sum_ratio (a b : ℝ) :
-    parabolicTriangleArea a ((a + b) / 2) ((a + (a + b) / 2) / 2) +
-    parabolicTriangleArea ((a + b) / 2) b (((a + b) / 2 + b) / 2) =
-    (1 / 4) * parabolicTriangleArea a b ((a + b) / 2) := by
+    parabolicTriangleArea a ((a + (a + b) / 2) / 2) ((a + b) / 2) +
+    parabolicTriangleArea ((a + b) / 2) (((a + b) / 2 + b) / 2) b =
+    (1 / 4) * parabolicTriangleArea a ((a + b) / 2) b := by
   rw [left_subtriangle_area, right_subtriangle_area, parabolic_triangle_area_midpoint]
   ring
 
@@ -185,5 +198,7 @@ of the parabola, which makes the area formula cubic in the interval length:
 T ∝ (b-a)³. Halving the interval reduces the area by factor 2³ = 8,
 and two such sub-triangles contribute 2/8 = 1/4 of the parent area.
 -/
+
+end
 
 end AreaOfCircleOQ03OQ03OQ02

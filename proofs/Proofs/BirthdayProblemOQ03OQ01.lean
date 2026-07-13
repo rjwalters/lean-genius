@@ -208,11 +208,17 @@ This is key for the recursive structure.
 /-- Restriction to the first n people has weakly smaller fibers. -/
 theorem fiberAt_restrict_le {n d : ℕ} (f : Fin (n + 1) → Fin d) (j : Fin d) :
     (fiberAt (f ∘ Fin.castSucc) j).card ≤ (fiberAt f j).card := by
-  apply Finset.card_le_card
-  intro i hi
-  simp only [fiberAt, Finset.mem_filter, Finset.mem_univ, true_and,
-    Function.comp] at hi ⊢
-  exact hi
+  have hsub : (fiberAt (f ∘ Fin.castSucc) j).image Fin.castSucc ⊆ fiberAt f j := by
+    intro i hi
+    simp only [Finset.mem_image] at hi
+    obtain ⟨k, hk, rfl⟩ := hi
+    simp only [fiberAt, Finset.mem_filter, Finset.mem_univ, true_and,
+      Function.comp] at hk ⊢
+    exact hk
+  calc (fiberAt (f ∘ Fin.castSucc) j).card
+      = ((fiberAt (f ∘ Fin.castSucc) j).image Fin.castSucc).card :=
+        (Finset.card_image_of_injective _ (Fin.castSucc_injective n)).symm
+    _ ≤ (fiberAt f j).card := Finset.card_le_card hsub
 
 /-- If an (n+1)-assignment has all fibers bounded by m, so does its restriction. -/
 theorem restrict_valid {n d m : ℕ} (f : Fin (n + 1) → Fin d)

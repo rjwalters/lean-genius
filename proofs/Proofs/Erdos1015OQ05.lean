@@ -119,8 +119,8 @@ theorem HasRamseyProperty_of_add {r s n₁ n₂ : ℕ} (hr : r ≥ 2) (hs : s �
     let c0 : EdgeColoring (Fin 0) :=
       ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩
     rcases h1 c0 with ⟨red, hred_card, _⟩ | ⟨blue, hblue_card, _⟩
-    · have := red.card_le_univ; simp [Fintype.card_fin] at this; omega
-    · have := blue.card_le_univ; simp [Fintype.card_fin] at this; omega
+    · have := red.card_le_univ; simp only [Fintype.card_fin] at this; omega
+    · have := blue.card_le_univ; simp only [Fintype.card_fin] at this; omega
   intro c
   -- Pick vertex 0
   let v : Fin (n₁ + n₂) := ⟨0, by omega⟩
