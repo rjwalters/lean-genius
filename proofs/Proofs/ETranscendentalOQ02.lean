@@ -1166,6 +1166,104 @@ theorem match_count_ge_linear_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   rw [div_mul_cancel₀ _ hNR.ne'] at hmul
   exact le_of_lt hmul
 
+/-- **Occurrence past a threshold.** A pure-`Finset` strengthening of
+    `exists_match_lt_of_count_pos`: if the count of tuple-`s` matches over
+    `Finset.range N` *exceeds* the threshold `P` (with `P ≤ N`), then a matching
+    position exists with `P ≤ n < N` — an occurrence *beyond* the first `P`
+    starting positions. Proof: the matches below `P` number at most `P`, so once
+    the total exceeds `P` the set-difference `A \ B` (matches in `[0,N)` minus
+    matches in `[0,P)`) is nonempty; any element is a match at a position `≥ P`.
+    Carries no normality hypothesis. -/
+theorem exists_match_ge_of_count_gt (b : ℕ) (x : ℝ) (k : ℕ) (s : Fin k → Fin b)
+    (P N : ℕ) (hPN : P ≤ N)
+    (hgt : P < ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card) :
+    ∃ n, P ≤ n ∧ n < N ∧ ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  set A := (Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) with hA
+  set B := (Finset.range P).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) with hB
+  have hsub : Finset.range P ⊆ Finset.range N :=
+    fun a ha => Finset.mem_range.mpr (lt_of_lt_of_le (Finset.mem_range.mp ha) hPN)
+  have hBA : B ⊆ A := Finset.filter_subset_filter _ hsub
+  have hBcard : B.card ≤ P := by
+    calc B.card ≤ (Finset.range P).card := Finset.card_filter_le _ _
+      _ = P := Finset.card_range P
+  have hne : (A \ B).Nonempty := by
+    rw [Finset.sdiff_nonempty]
+    intro hAB
+    have hle := Finset.card_le_card hAB
+    omega
+  obtain ⟨n, hn⟩ := hne
+  rw [Finset.mem_sdiff] at hn
+  obtain ⟨hnA, hnB⟩ := hn
+  have hnA' := hnA
+  rw [hA, Finset.mem_filter, Finset.mem_range] at hnA'
+  refine ⟨n, ?_, hnA'.1, hnA'.2⟩
+  by_contra hlt
+  push_neg at hlt
+  exact hnB (by rw [hB, Finset.mem_filter, Finset.mem_range]; exact ⟨hlt, hnA'.2⟩)
+
+/-- **Effective recurrence (bounded-gap occurrences).** Given a modulus of
+    normality, *every* tuple `s` of length `k` occurs at some position in the
+    window `[P, N₀)` for the explicit bound
+    `N₀ := max (max (M k (b^{-k}/2)) 1) (2·bᵏ·P + 1)`, for *every* threshold `P`.
+    So occurrences are not merely infinite (`normal_ktuple_infinitely_often`) but
+    appear with an explicit gap: after any point `P`, the next occurrence lies
+    below a concrete function of the modulus, `k`, and `P`. This upgrades
+    `first_occurrence_lt_of_modulus` (essentially its `P = 0` content) to an
+    effective recurrence statement at an arbitrary starting point. Proof: the
+    effective density bound `match_count_ge_linear_of_modulus` gives at least
+    `(b^{-k}/2)·N₀` matches below `N₀`; the choice `N₀ > 2·bᵏ·P` makes this count
+    exceed `P`, so `exists_match_ge_of_count_gt` extracts a match at position
+    `≥ P`. -/
+theorem next_occurrence_lt_of_modulus (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (M : ℕ → ℝ → ℕ) (hM : EffectivelyNormalWithModulus b x M)
+    (k : ℕ) (s : Fin k → Fin b) (P : ℕ) :
+    ∃ n, P ≤ n ∧
+      n < max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1) (2 * b ^ k * P + 1) ∧
+      ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hposk : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  set N₀ : ℕ :=
+    max (max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1) (2 * b ^ k * P + 1) with hN0def
+  have hmodle : max (M k ((b : ℝ) ^ (-(k : ℤ)) / 2)) 1 ≤ N₀ := le_max_left _ _
+  have hTle : 2 * b ^ k * P + 1 ≤ N₀ := le_max_right _ _
+  have hcount := match_count_ge_linear_of_modulus b hb x M hM k s N₀ hmodle
+  -- b^{-k} · b^k = 1
+  have hbk1 : (b : ℝ) ^ (-(k : ℤ)) * (b : ℝ) ^ k = 1 := by
+    rw [← zpow_natCast (b : ℝ) k, ← zpow_add₀ hbR.ne']
+    simp
+  -- P < (b^{-k}/2)·N₀
+  have hPcountR : (P : ℝ) <
+      (((Finset.range N₀).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) := by
+    have hpos2 : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) / 2 := div_pos hposk two_pos
+    have hTleR : ((2 * b ^ k * P + 1 : ℕ) : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast hTle
+    have hexp : ((2 * b ^ k * P + 1 : ℕ) : ℝ) = 2 * (b : ℝ) ^ k * (P : ℝ) + 1 := by
+      push_cast; ring
+    have hmono : (b : ℝ) ^ (-(k : ℤ)) / 2 * (2 * (b : ℝ) ^ k * (P : ℝ) + 1)
+        ≤ (b : ℝ) ^ (-(k : ℤ)) / 2 * (N₀ : ℝ) := by
+      apply mul_le_mul_of_nonneg_left _ (le_of_lt hpos2)
+      rw [← hexp]; exact hTleR
+    have hval : (b : ℝ) ^ (-(k : ℤ)) / 2 * (2 * (b : ℝ) ^ k * (P : ℝ) + 1)
+        = (P : ℝ) + (b : ℝ) ^ (-(k : ℤ)) / 2 := by
+      have hrw : (b : ℝ) ^ (-(k : ℤ)) / 2 * (2 * (b : ℝ) ^ k * (P : ℝ) + 1)
+          = (b : ℝ) ^ (-(k : ℤ)) * (b : ℝ) ^ k * (P : ℝ)
+              + (b : ℝ) ^ (-(k : ℤ)) / 2 := by ring
+      rw [hrw, hbk1]; ring
+    have hstep : (P : ℝ) < (b : ℝ) ^ (-(k : ℤ)) / 2 * (N₀ : ℝ) := by
+      linarith [hmono, hval, hpos2]
+    linarith [hstep, hcount]
+  have hPcount : P < ((Finset.range N₀).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card := by
+    exact_mod_cast hPcountR
+  have hPN : P ≤ N₀ := by
+    have h1 : 1 ≤ b ^ k := Nat.one_le_pow _ _ (by omega)
+    have hPT : P ≤ 2 * b ^ k * P + 1 := by nlinarith [h1, Nat.zero_le P]
+    exact le_trans hPT hTle
+  exact exists_match_ge_of_count_gt b x k s P N₀ hPN hPcount
+
 -- ============================================================
 -- PART IV.10: THE CONSERVATION LAW
 -- ============================================================
