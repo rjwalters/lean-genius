@@ -554,4 +554,62 @@ appeal to `Cardinal.not_countable_real` or `#ℝ = 𝔠`. -/
 theorem mk_seq_le_mk_real : Cardinal.mk (ℕ → Bool) ≤ Cardinal.mk ℝ :=
   Cardinal.mk_le_of_injective seqReal_injective
 
+/-! ## Injectivity of the diagonal map on its digit-choices
+
+`diagonalReal_congr` shows the diagonal map is *constant* on enumerations sharing a
+diagonal digit-sequence.  The converse — that it *separates* distinct digit-sequences —
+was missing.  It falls straight out of the crux `digit_diagonalReal` (the `n`-th digit of
+`diagonalReal f` reads back exactly `db f n`), giving an exact biconditional and hence an
+order-preserving embedding of `{1,2}`-digit sequences into `[1/9, 2/9]`. -/
+
+/-- **Converse of `diagonalReal_congr` (injectivity on digit-choices).**  Equal diagonal
+reals have equal diagonal digit-choices at every position.  Reading the `n`-th digit of
+each side and applying the crux `digit_diagonalReal` collapses the hypothesis to
+`db f n = db g n`. -/
+theorem db_eq_of_diagonalReal_eq {f g : ℕ → ℝ} (h : diagonalReal f = diagonalReal g)
+    (n : ℕ) : db f n = db g n := by
+  have hd := congrArg (fun x => digit x n) h
+  simpa only [digit_diagonalReal] using hd
+
+/-- **Characterization of equal diagonal reals.**  `diagonalReal f = diagonalReal g` iff the
+diagonal digit-choices agree everywhere.  Forward is `db_eq_of_diagonalReal_eq`; reverse is a
+termwise `tsum_congr`, since `diagonalReal` depends on `f` only through the sequence `db f`.
+This sharpens `diagonalReal_congr` (whose digit-equality hypothesis is merely sufficient) to
+an exact biconditional at the level of the `{1,2}`-valued choices actually used. -/
+theorem diagonalReal_eq_iff_db {f g : ℕ → ℝ} :
+    diagonalReal f = diagonalReal g ↔ ∀ n, db f n = db g n := by
+  refine ⟨fun h n => db_eq_of_diagonalReal_eq h n, fun h => ?_⟩
+  unfold diagonalReal
+  exact tsum_congr fun n => by rw [h n]
+
+/-- **Digit-choices separate diagonal reals.**  Contrapositive of
+`db_eq_of_diagonalReal_eq`: a single position of disagreement in the digit-choices already
+forces the diagonal reals apart.  Combined with `diagonalReal_mono`, the diagonal
+construction is an order-preserving *embedding* of digit-choice sequences into the reals. -/
+theorem diagonalReal_ne_of_db_ne {f g : ℕ → ℝ} {n : ℕ} (h : db f n ≠ db g n) :
+    diagonalReal f ≠ diagonalReal g :=
+  fun heq => h (db_eq_of_diagonalReal_eq heq n)
+
+/-! ## Set-theoretic form: the witness is missing from the enumeration -/
+
+/-- **The diagonal real is missing from the enumeration** — the set-theoretic form of
+`diagonalReal_ne` and of this problem's title.  `diagonalReal f` lies outside `Set.range f`,
+so no enumeration `f : ℕ → ℝ` lists it. -/
+theorem diagonalReal_notMem_range (f : ℕ → ℝ) : diagonalReal f ∉ Set.range f := by
+  rintro ⟨n, hn⟩
+  exact diagonalReal_ne f n hn.symm
+
+/-- **The range of any enumeration is a proper subset of `ℝ`.**  `Set.range f ≠ Set.univ`,
+exhibited by the explicit missing witness `diagonalReal f`; the `Set.range` restatement of
+`not_surjective_nat_real`. -/
+theorem range_ne_univ (f : ℕ → ℝ) : Set.range f ≠ Set.univ := by
+  intro h
+  apply diagonalReal_notMem_range f
+  rw [h]
+  exact Set.mem_univ _
+
+-- Axiom audit: the new results are axiom-free (only propext/Classical.choice/Quot.sound).
+#print axioms diagonalReal_eq_iff_db
+#print axioms diagonalReal_notMem_range
+
 end CantorDiagonalizationOQ06OQ01
