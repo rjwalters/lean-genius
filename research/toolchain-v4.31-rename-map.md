@@ -630,3 +630,37 @@ tree clean (the parse edit is correct but the row can't go GREEN yet).
 | `∆` (symmetric difference) — `expected token` | `open scoped symmDiff` after imports (notation is now `scoped[symmDiff]`) | Erdos431 flipped; Erdos1123 hit deeper `Set.symmDiff_comm` unknown |
 | `p \| q` where `\|` means divides | `p ∣ q` (`∣` U+2223, not ASCII pipe) | Erdos490Aristotle (had deeper omega drift, didn't flip) |
 | `∂` measure-integral / `⟪_,_⟫` inner-product notation — `expected token` | `open MeasureTheory` / `open scoped RealInnerProductSpace` (notation-scope loss, §7d family) | EgorovTheorem, LebesgueMeasureOQ03 (deeper, not swept) |
+
+### 7o. Doctor increment-13 recipes (#38065, 2026-07-13, type-mismatch + proof-drift + rewrite-drift remainder)
+
+| v4.31 symptom | fix | source |
+|---|---|---|
+| `iSup_le`/`iSup₂_le` on `⨆ z, ⨆ _, (f z : ℝ) ≤ a` → "typeclass instance problem is stuck" | `Real.iSup_le (fun i => …) (0 ≤ a)`, nested for double sups — ℝ is conditionally complete, not a `CompleteLattice`, so `iSup_le` doesn't apply | Erdos230ProblemAristotle |
+| Fin-bound `by omega` inside `∃ a b, P ∧ Q ⟨…, proof-needing-P⟩` — omega can't see the conjunct `P` at binder position | rewrite to dependent existential `∃ a b, ∃ hP : P, Q ⟨…, hP⟩` (same logical content) | Erdos532; also `Nat.mod_lt _ i.pos` for `Fin cycle.length` (Erdos883) |
+| `rw [h]` "motive is not type correct" where `h`'s LHS/RHS appears in a dependent type (`D : Decomposition S t x`, `σ : Perm (Fin 5)`) | rewrite the OTHER operand first (`rw [← map_sum]; exact congrArg f h`), or `have := lemma; rwa [order_fact] at this` — never `rw` a literal that also indexes a `Fin n`/structure param | ShapleyFolkmanOQ01, InverseGaloisF20OQ02 |
+| `Option.noConfusion h` (`h : none = some _`) motive-inference failure | `exact absurd h (by simp)` | SpernerNDimOQ06, PNPBarriersSound (sibling of §7k Dihedral noConfusion) |
+| `simpa using (hasDerivAt_cos x).neg` — `-cos` elaborated via wrong module instance (`RCLike.toInnerProductSpaceReal.toModule` vs `Semiring.toModule`) | build the `HasDerivAt` with the explicit derivative value: `have h0 : HasDerivAt (fun x => -f x) (-(-f' x)) x := (hasDerivAt … ).neg; rwa [neg_neg] at h0` | TaylorTheoremOQ03OQ02 |
+| `taylor_mean_remainder_lagrange_iteratedDeriv hx` — first arg was `0 < x`, now `x₀ ≠ x`; result set is `uIcc`/`uIoo` not `Icc`/`Ioo` | pass `hx.ne` (for `x₀=0`: `0 ≠ x`), and bridge `Set.uIcc 0 x = Icc 0 x` via `Set.uIcc_of_le hx.le` + `uIoo` via `min/max_eq` | TaylorTheoremOQ03OQ01 |
+| `Subgroup.normalizer (P : Subgroup G)` — now takes `Set G` | `Subgroup.normalizer ((P : Subgroup G) : Set G)` (`normalizer_eq_top_iff` still Subgroup-Normal-valued) | SylowTheoremOQ02OQ01Nilpotent (confirms §7b) |
+| `mul_lt_mul_of_pos_left _ hd` on goal `d * e < d` (no `* 1` on RHS) | `mul_lt_of_lt_one_right hd` (needs `e < 1`); then `rw [exp_lt_one_iff, neg_lt_zero]` for `exp(neg) < 1` | YangMills2DOQ01 |
+| `Nat.fib 3` / `Nat.totient` literals no longer reduce under `simpa` (mono-lemma gives `fib 3 ≤ fib m`, want `2 ≤ fib m`) | `have h3 : Nat.fib 3 = 2 := by decide; rwa [h3] at this` | FibonacciIdentitiesOQ02 (×2), Erdos821 (`constructor <;> decide` for totient) |
+| exhaustive `Fin N` `def … | ⟨0,_⟩ => … | ⟨N-1,_⟩ => …` → "Missing cases: Fin.mk (…N…)" | add out-of-range arm `| ⟨n + N, h⟩ => absurd h (by omega)` | Erdos758Problem |
+| `Nat.find ⟨witness, by trivial⟩` where the predicate is a metavariable (`?m (Fintype.card V)`) or the witness makes the pred FALSE | annotate the predicate `Nat.find (p := fun k => ∃ …) ⟨…⟩` AND supply a genuinely-true witness (constant coloring isn't proper — use `Fintype.equivFin V` injective); add `open Classical in` for `DecidablePred` | Erdos760Problem (chromaticNumber), Erdos774 (n+1 card bound) |
+| anonymous `‹_›` proof inside a set-builder conjunction `{s | ∃ S, (∀ n∈S, n∈A ∧ c ⟨n,‹_›⟩=…) ∧ …}` | thread via dependent existential `∃ hn : n ∈ A, c ⟨n, hn⟩ = …` | Erdos54Problem (sibling of §7m Erdos173 anon-binder) |
+| `rw [hinter, hPin]` where `hPin : P = foo P` re-substitutes P inside `foo` (self-referential nesting) | rewrite backward `rw [hinter, ← hPin]` to collapse `foo P → P` | FeuerbachsTheoremOQ04TangentLine |
+| conditionally-completed `positivity` fails on `1 + x^2 ≠ 0` (needs strict, gets ≠0) | `have : (0:ℝ) < 1 + x^2 := by positivity; exact this.ne'` | LeibnizPiOQ03 |
+| `mean_value_inequality hh hC` fails to unify `deriv (f-g)` with the supplied value `deriv f - deriv g` | apply the underlying Mathlib lemma directly with an explicit `(f' := fun y => deriv f y - deriv g y)`: `norm_image_sub_le_of_norm_deriv_le_segment' (f' := …) hh hC` | MeanValueTheoremOQ03 |
+| `Complex.norm_le_norm_of_mapsTo_ball_self hd hmaps …` — `hmaps` now needs `MapsTo f ball closedBall` | `hmaps.mono_right Metric.ball_subset_closedBall` | Hilbert22OQ01OQ03Pseudohyperbolic |
+| `(conj U M).charpoly` vs `charpoly_units_conj` giving `(↑U*M*(↑U)⁻¹)` and `↑U⁻¹`/`(↑U)⁻¹` mismatch | `rw [conj_apply, Matrix.coe_units_inv U]` (unit-inv-cast → matrix-inv-of-cast) | CramersRuleOQ05OQ02 |
+| `flip Inc x y` opaque after `Finset.sum_comm` | add `Function.flip_def` to the `simp only` set | IncidenceCauchySchwarzDual |
+| `(Equiv.symm 1)` / `(iso (iso.symm v))` not simplified | `Equiv.Perm.one_symm` (qualified!) / `RelIso.apply_symm_apply` | FourSquareDistributionOQ01, SpernerTuckerEndpointTransport |
+| omega counterexample missing a product/mod atom: `syl(m+1)-1 = product`, `product = t+t` unlinked; `syl m.succ` vs `syl (m+1)` split | `rw [ht] at hsub` (substitute product) + `simp only [Nat.succ_eq_add_one]` before omega | SylvesterSequenceOQ01OQ03 (confirms §7m succ split) |
+| `Nat.card_Icc`/`Nat.card_range` needed before omega for `card (Icc 1 (sqrt n)) ≤ sqrt n` | `rw [Nat.card_Icc]; omega` | Erdos1060Problem |
+| `Int.ModEq` goal `¬ (r+1) ≡ r [ZMOD m]` where omega can't model `% m` (variable modulus) | case-split `Nat.lt_or_ge (r+1) m`, prove each `(r+1)%m` value via `Int.emod_eq_of_lt`/`Int.emod_self` | Erdos8OQ02 |
+
+**Meta-finding (confirms inc-8/9/10/12):** the dependency backfill already ran —
+these are genuine per-file v4.31 repairs. The 76 single-own-error files across
+type-mismatch/proof-drift/rewrite-drift are the highest-confidence one-edit bucket;
+~40 flipped cleanly this session. Virtiofs truncation ("unexpected end of input",
+`Unknown identifier CramersRuleOQ0`) recurs on /Volumes/Stripe worktrees after host
+edits — `docker restart dr23` before rebuild.

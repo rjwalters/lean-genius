@@ -1,4 +1,77 @@
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 12, #38065, 2026-07-13)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 13, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 13 (type-mismatch + proof-drift + rewrite-drift remainder, #38065)
+
+Classes at start: type-mismatch(223) + proof-drift(222) + rewrite-drift(101).
+Branch `feature/issue-38065-c`, worktree doctor-b, container dr23, cache volume
+lean-mathlib-cache-v431-b. Worked from the freshest committed diag (diag-DR20a.txt,
+792 files / 3313 own-file errors) — the DR19tm/DR19pd diags were empty ("no error
+lines captured"). Targeted the 76 single-own-error files across my three classes
+first (highest confidence), one mechanical fix per file.
+
+### Waves (all in-container verified, lake exit 0, then ledger-flipped)
+
+- **DR23a** (+7): Fibonacci fib_3 non-reduction, Taylor HasDerivAt.neg module-
+  instance + uIcc-signature drift, Sylow normalizer Set-arg, YangMills
+  mul_lt_of_lt_one_right, Sperner Option.noConfusion motive.
+- **DR23b** (+6): Erdos883/532 Fin-bound scoping (dependent `∃ hab`), Erdos8OQ02
+  emod case-split, Erdos879 prime two_le, Erdos1060 Nat.card_Icc, Erdos525OQ02
+  statement repair.
+- **DR23c** (+4): Erdos674 mul_assoc rewrite, Erdos540 ZMod-1 Subsingleton,
+  Erdos465 rpow inv_mul_cancel, **Erdos306 statement repair** (sum = 101/210).
+- **DR23d** (+5): Erdos821 decide, Vietas linear_combination over CommRing,
+  SolutionOfCubic nlinarith cube hints + linear_combination, Erdos80 Nonempty V.
+- **DR23e** (+8): Erdos690/935 close-goal, Erdos712 cast, GeometricSeries
+  eq_div_of_mul_eq, Erdos774 valid Nat.find witness, Erdos54 anon-binder,
+  Erdos760 proper-coloring witness via equivFin, Erdos869 rintro/not_exists.
+- **DR23f** (+4): SubsetCount pow_succ ring, PascalsHexagon adjugate_transpose
+  `.symm`, HermiteLegendre 0<p→1≤p bridge, CramersRule conj_apply + coe_units_inv.
+- **DR23g** (+4): HarmonicDivergence push_cast/ring, Erdos902 Nat.cast_one,
+  InfinitudePrimes explicit R-unfold, ShannonEntropy univ_product_univ bridge.
+- **DR23h** (+4): Hilbert17 Fin-3 if_false decide, PNPBarriers Option none≠some,
+  Hilbert22 MapsTo mono_right ball_subset_closedBall, Erdos956 explicit image.
+- **DR23i** (+4): MeanValueTheorem direct norm_image_sub w/ explicit f',
+  IncidenceCauchySchwarz Function.flip_def, LeibnizPi explicit ne' from
+  positivity, Feuerbach ← hPin.
+- **DR23j** (+2): Sylvester rw ht into hsub + succ_eq_add_one atom split,
+  SchroederBernstein fwdOrbit 0 def-reduce via rfl.
+- **DR23k** (+5): FourSquare Perm.one_symm, SpernerTucker RelIso.apply_symm_apply,
+  TestZeta one_re, ShapleyFolkman map_sum+congrArg (avoid dependent-var motive),
+  Erdos758 Fin-19 exhaustiveness catch-all.
+- **DR23l** (+2): Erdos230 Real.iSup_le twice (ℝ conditionally complete, not
+  `iSup_le`!), InverseGaloisF20 pow_mod_orderOf via have+rwa (avoid Fin-5 motive).
+
+**Increment 13 running total: +55 GREEN** (1317 → 1372). Recipes in rename-map §7o.
+
+### Increment 13 statement repairs (operator policy 2026-07-13: fix false → intended-true)
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos525OQ02 | `sqrt_cancellation_terms` | added `hd : 0 < d`: `n^d ≥ n` is false at d=0 (n^0=1 < n for n≥2). No callers. |
+| Erdos306Problem | `example_one_representation` | RHS `= 1` → `= 101/210`: the six 2-distinct-prime unit fractions 1/6+1/10+1/14+1/15+1/21+1/35 sum to 101/210, not 1 (LCD 210 gives 35+21+15+14+10+6). No callers; docstring corrected. |
+
+### Highest-value new recipes (increment 13)
+
+- **`∑` over ℝ uses `Real.iSup_le` (conditional-complete), NOT `iSup_le`** — a
+  bare `iSup_le`/`iSup₂_le` on `⨆ z, ⨆ _, (f z : ℝ)` gives "typeclass instance
+  problem is stuck" (ℝ is not a CompleteLattice). Use `Real.iSup_le (hf) (0 ≤ bound)`,
+  nesting it for double sups. (Erdos230)
+- **Fin-bound proofs inside a `∃`-conjunction** — `∃ a b, P ∧ Q ⟨…, by omega using P⟩`
+  fails because omega can't see the conjunct `P` at the Fin-binder position. Rewrite
+  to `∃ a b, ∃ hP : P, Q ⟨…, hP⟩` (dependent existential threads the proof). Same
+  logical content. (Erdos532, Erdos883 via `Nat.mod_lt _ i.pos`)
+- **`rw [h]` where `h` mentions a value the surrounding structure depends on**
+  ("motive is not type correct: `D : Decomposition S t x` expected `… t _a`") —
+  rewrite the OTHER side first (`rw [← map_sum]; exact congrArg f h`), or use
+  `have := lemma; rwa [order_fact] at this` instead of rewriting the literal that
+  also appears in a `Fin n`/dependent type. (ShapleyFolkman, InverseGaloisF20)
+- **`Option.noConfusion h` (h : none = some _) motive-inference failure** →
+  `exact absurd h (by simp)`. Recurs (Sperner, PNPBarriers; sibling of §7k Dihedral).
+- **`decide`/reduction lemmas no longer fire on `Nat.fib k`/`Nat.totient`/`ZMod.re`
+  literals under `simpa`** — supply the value explicitly: `have : Nat.fib 3 = 2 := by
+  decide; rwa […]`. (Fibonacci ×2, Erdos821)
+- **exhaustive `Fin N` pattern-match now needs an explicit out-of-range arm** —
+  add `| ⟨n + N, h⟩ => absurd h (by omega)`. (Erdos758)
 
 ## DOCTOR INCREMENT 12 (parse-error + signature/elab/dot-notation drift, #38065)
 
