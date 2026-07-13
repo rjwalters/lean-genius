@@ -142,6 +142,86 @@ theorem sortDesc_getElem_le_of_le {s t : Multiset α} (h : s ≤ t) (i : ℕ)
       _ ≤ i := by rw [hzero]; simpa using htake_le
   omega
 
+/-- **Co-selection under multiset containment (the lower interlacing bound).**
+For any `LinearOrder`, if `s ≤ t` as multisets then the `i`-th largest element of `s`
+is `≥` the `(i + (card t − card s))`-th largest element of `t` (both descending, with
+multiplicity):
+
+  `(t.sort (· ≥ ·))[i + (card t − card s)] ≤ (s.sort (· ≥ ·))[i]`.
+
+This is the co-selection companion of `sortDesc_getElem_le_of_le` — the shift by the
+cardinality gap `card t − card s` is exactly the index displacement of the classical
+two-sided Cauchy interlacing inequality.  Proof is the mirror of the upper bound, counting
+elements `≤ a := (s.sort)[i]` from the tail: the drop-`i` tail of `s` gives
+`card s − i ≤ countP (· ≤ a) s ≤ countP (· ≤ a) t`, while if `(t.sort)[i+d] > a` the
+length-`(i+d+1)` prefix of `t` is entirely `> a`, forcing `countP (· ≤ a) t ≤ card s − i − 1`
+— a contradiction. -/
+theorem sortDesc_getElem_ge_of_le {s t : Multiset α} (h : s ≤ t) (i : ℕ)
+    (hi : i < Multiset.card s) :
+    (t.sort (· ≥ ·))[i + (Multiset.card t - Multiset.card s)]'(by
+        rw [Multiset.length_sort]
+        have := Multiset.card_le_card h; omega) ≤
+      (s.sort (· ≥ ·))[i]'(by rw [Multiset.length_sort]; exact hi) := by
+  have hcards : Multiset.card s ≤ Multiset.card t := Multiset.card_le_card h
+  set d := Multiset.card t - Multiset.card s with hd
+  have hiS : i < (s.sort (· ≥ ·)).length := by rw [Multiset.length_sort]; exact hi
+  have hidT : i + d < (t.sort (· ≥ ·)).length := by rw [Multiset.length_sort]; omega
+  set a : α := (s.sort (· ≥ ·))[i] with ha
+  classical
+  -- Lower bound: at least `card s - i` elements of `s` are `≤ a` (the drop-`i` tail).
+  have hlow : Multiset.card s - i ≤ Multiset.countP (fun x => x ≤ a) s := by
+    have hsub : (↑((s.sort (· ≥ ·)).drop i) : Multiset α) ≤ s := by
+      calc (↑((s.sort (· ≥ ·)).drop i) : Multiset α)
+          ≤ (↑(s.sort (· ≥ ·)) : Multiset α) :=
+            Multiset.coe_le.mpr (List.drop_sublist _ _).subperm
+        _ = s := Multiset.sort_eq _ _
+    have hall : ∀ x ∈ (↑((s.sort (· ≥ ·)).drop i) : Multiset α), x ≤ a := by
+      intro x hx
+      exact ha ▸ sortDesc_ge_of_mem_drop s i hiS (Multiset.mem_coe.mp hx)
+    have hcard : Multiset.card (↑((s.sort (· ≥ ·)).drop i) : Multiset α)
+        = Multiset.card s - i := by
+      rw [Multiset.coe_card, List.length_drop, Multiset.length_sort]
+    calc Multiset.card s - i
+        = Multiset.card (↑((s.sort (· ≥ ·)).drop i) : Multiset α) := hcard.symm
+      _ = Multiset.countP (fun x => x ≤ a) (↑((s.sort (· ≥ ·)).drop i) : Multiset α) :=
+          (Multiset.countP_eq_card.mpr hall).symm
+      _ ≤ Multiset.countP (fun x => x ≤ a) s := Multiset.countP_le_of_le _ hsub
+  have hlowT : Multiset.card s - i ≤ Multiset.countP (fun x => x ≤ a) t :=
+    hlow.trans (Multiset.countP_le_of_le _ h)
+  -- Suppose the `(i+d)`-th largest of `t` were `> a`; derive `countP (· ≤ a) t ≤ card s - i - 1`.
+  by_contra hcon
+  push_neg at hcon  -- hcon : a < (t.sort (· ≥ ·))[i + d]
+  have hupp : Multiset.countP (fun x => x ≤ a) t ≤ Multiset.card s - i - 1 := by
+    have hsplit : (↑(t.sort (· ≥ ·)) : Multiset α)
+        = (↑((t.sort (· ≥ ·)).take (i + d + 1)) : Multiset α)
+          + (↑((t.sort (· ≥ ·)).drop (i + d + 1)) : Multiset α) := by
+      rw [Multiset.coe_add, List.take_append_drop]
+    have hzero : Multiset.countP (fun x => x ≤ a)
+        (↑((t.sort (· ≥ ·)).take (i + d + 1)) : Multiset α) = 0 := by
+      rw [Multiset.countP_eq_zero]
+      intro x hx
+      have hxge : (t.sort (· ≥ ·))[i + d] ≤ x :=
+        sortDesc_le_of_mem_take t (i + d) hidT (Multiset.mem_coe.mp hx)
+      exact not_le.mpr (lt_of_lt_of_le hcon hxge)
+    have hdrop_le : Multiset.countP (fun x => x ≤ a)
+        (↑((t.sort (· ≥ ·)).drop (i + d + 1)) : Multiset α) ≤ Multiset.card s - i - 1 := by
+      calc Multiset.countP (fun x => x ≤ a)
+              (↑((t.sort (· ≥ ·)).drop (i + d + 1)) : Multiset α)
+          ≤ Multiset.card (↑((t.sort (· ≥ ·)).drop (i + d + 1)) : Multiset α) :=
+            Multiset.countP_le_card _ _
+        _ = Multiset.card s - i - 1 := by
+            rw [Multiset.coe_card, List.length_drop, Multiset.length_sort]; omega
+    calc Multiset.countP (fun x => x ≤ a) t
+        = Multiset.countP (fun x => x ≤ a) (↑(t.sort (· ≥ ·)) : Multiset α) := by
+          rw [Multiset.sort_eq]
+      _ = Multiset.countP (fun x => x ≤ a)
+              (↑((t.sort (· ≥ ·)).take (i + d + 1)) : Multiset α)
+            + Multiset.countP (fun x => x ≤ a)
+              (↑((t.sort (· ≥ ·)).drop (i + d + 1)) : Multiset α) := by
+          rw [hsplit, Multiset.countP_add]
+      _ ≤ Multiset.card s - i - 1 := by rw [hzero]; simpa using hdrop_le
+  omega
+
 end Multiset
 
 namespace CauchyInterlacing.SortedInterlacing
@@ -189,5 +269,31 @@ theorem sortDesc_roots_orthogonal_compress_le_of_reducing
           (roots_charpoly_orthogonal_compress_le_of_reducing H hH hHp))) :=
   Multiset.sortDesc_getElem_le_of_le
     (roots_charpoly_orthogonal_compress_le_of_reducing H hH hHp) i hi
+
+/-- **Lower (co-selection) termwise Cauchy interlacing over a reducing subspace.**
+The two-sided companion of `sortDesc_roots_compress_le_of_reducing`: over `ℝ`, on a reducing
+subspace `H` the `i`-th largest eigenvalue (charpoly root, descending, with multiplicity) of
+the `H`-compression is bounded *below* by the shifted eigenvalue of `T`:
+
+  `((charpoly T).roots.sort (· ≥ ·))[i + (deg gap)] ≤ ((charpoly (compress T H)).roots.sort (· ≥ ·))[i]`,
+
+where the index gap is `card (charpoly T).roots − card (charpoly (compress T H)).roots`
+(the codimension when the charpolys split).  Together with
+`sortDesc_roots_compress_le_of_reducing` this is the full two-sided sorted Cauchy interlacing
+`λ_{i+gap}(T) ≤ λ_i(H-block) ≤ λ_i(T)` on the algebraic (charpoly-root) track.  Read straight
+off the abstract co-selection lemma `Multiset.sortDesc_getElem_ge_of_le` applied to the
+sub-multiset containment `roots_charpoly_compress_le_of_reducing`. -/
+theorem sortDesc_roots_compress_ge_of_reducing
+    {T : V →ₗ[ℝ] V} (H : Submodule ℝ V)
+    (hH : ∀ y ∈ H, T y ∈ H) (hHp : ∀ y ∈ Hᗮ, T y ∈ Hᗮ) (i : ℕ)
+    (hi : i < Multiset.card (LinearMap.charpoly (compress T H)).roots) :
+    ((LinearMap.charpoly T).roots.sort (· ≥ ·))[i + (Multiset.card (LinearMap.charpoly T).roots
+        - Multiset.card (LinearMap.charpoly (compress T H)).roots)]'(by
+        rw [Multiset.length_sort]
+        have := Multiset.card_le_card (roots_charpoly_compress_le_of_reducing H hH hHp)
+        omega) ≤
+      ((LinearMap.charpoly (compress T H)).roots.sort (· ≥ ·))[i]'(by
+        rw [Multiset.length_sort]; exact hi) :=
+  Multiset.sortDesc_getElem_ge_of_le (roots_charpoly_compress_le_of_reducing H hH hHp) i hi
 
 end CauchyInterlacing.SortedInterlacing
