@@ -679,4 +679,67 @@ theorem rpow_inv_nat_tendsto_one_of_ratio_tendsto_one (R : ℕ → ℝ)
   filter_upwards [hpos] with l hl
   rw [Real.rpow_def_of_pos hl, mul_comm (Real.log (R l)) ((l : ℝ)⁻¹)]
 
+/-
+## Closure properties of the ratio-convergence class
+
+Everything above studies *consequences* of Erdős #1014's hypothesis `R(l+1)/R(l) → 1`.
+Here we record that the class of sequences satisfying it is itself robust: it is
+unchanged by nonzero constant rescaling, invariant under index shifts, and closed
+under pointwise products and real powers.  Thus `R(l+1)/R(l) → 1` is a genuine
+tail/normalization-invariant property (regular variation of index `0`), independent
+of the particular scale of `R` — a Ramsey number and any fixed nonzero multiple of it
+stand or fall together, and products/powers of #1014-type sequences are again of
+#1014 type.  This is orthogonal to the increment / log-increment / gap / reciprocal /
+root-test bridges above, which all analyse a *single* fixed sequence.
+-/
+
+/-- Nonzero constant rescaling leaves the consecutive ratio **pointwise identical**. -/
+theorem ratio_const_mul_eq (R : ℕ → ℝ) (c : ℝ) (hc : c ≠ 0) (l : ℕ) :
+    (c * R (l + 1)) / (c * R l) = R (l + 1) / R l :=
+  mul_div_mul_left _ _ hc
+
+/-- **Scale invariance.** If `R` satisfies #1014's ratio hypothesis then so does `c · R`
+    for any `c ≠ 0` — indeed the two ratio sequences are equal term by term. -/
+theorem ratio_tendsto_one_const_mul (R : ℕ → ℝ) (c : ℝ) (hc : c ≠ 0)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => (c * R (l + 1)) / (c * R l)) atTop (𝓝 1) :=
+  hratio.congr fun l => (ratio_const_mul_eq R c hc l).symm
+
+/-- **Shift invariance.** Shifting the index by any `s` preserves the ratio limit:
+    `R(· + s)` again satisfies #1014's ratio hypothesis. -/
+theorem ratio_tendsto_one_shift (R : ℕ → ℝ) (s : ℕ)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => R (l + s + 1) / R (l + s)) atTop (𝓝 1) :=
+  hratio.comp (tendsto_add_atTop_nat s)
+
+/-- **Product closure.** The pointwise product of two sequences each satisfying #1014's
+    ratio hypothesis again satisfies it — the product of the two ratios tends to
+    `1 · 1 = 1`. -/
+theorem ratio_tendsto_one_mul (R S : ℕ → ℝ)
+    (hR : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1))
+    (hS : Tendsto (fun l => S (l + 1) / S l) atTop (𝓝 1)) :
+    Tendsto (fun l => (R (l + 1) * S (l + 1)) / (R l * S l)) atTop (𝓝 1) := by
+  have hmul := hR.mul hS
+  rw [one_mul] at hmul
+  have key : (fun l => (R (l + 1) * S (l + 1)) / (R l * S l))
+      = (fun l => R (l + 1) / R l * (S (l + 1) / S l)) := by
+    funext l; rw [div_mul_div_comm]
+  rw [key]; exact hmul
+
+/-- **Power closure.** If `R` is eventually positive and satisfies #1014's ratio
+    hypothesis, then for every real exponent `p` the sequence `R^p` satisfies it too:
+    the ratio of `p`-th powers is the `p`-th power of the ratio, which tends to
+    `1 ^ p = 1`. -/
+theorem ratio_tendsto_one_rpow (R : ℕ → ℝ) (p : ℝ)
+    (hpos : ∀ᶠ l in atTop, 0 < R l)
+    (hratio : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1)) :
+    Tendsto (fun l => R (l + 1) ^ p / R l ^ p) atTop (𝓝 1) := by
+  have hcont : Tendsto (fun x : ℝ => x ^ p) (𝓝 1) (𝓝 1) := by
+    have h := (Real.continuousAt_rpow_const 1 p (Or.inl one_ne_zero)).tendsto
+    rwa [Real.one_rpow] at h
+  have hcomp := hcont.comp hratio
+  refine hcomp.congr' ?_
+  filter_upwards [hpos, (tendsto_add_atTop_nat 1).eventually hpos] with l hl hl1
+  rw [Function.comp_apply, Real.div_rpow hl1.le hl.le]
+
 end Erdos1014OQ03
