@@ -310,7 +310,21 @@ done
 # =============================================================================
 
 if echo "$COMMAND" | grep -qE 'gh\s+pr\s+merge'; then
-    deny "Use ./.loom/scripts/merge-pr.sh <PR_NUMBER> instead of 'gh pr merge'. The script merges via the GitHub API without local checkout, which avoids worktree errors."
+    # .loom/scripts/ is gitignored runtime state and is not installed in this
+    # repo, so resolve the merge script from the loom checkout as a fallback
+    # rather than pointing agents at a path that doesn't exist.
+    MERGE_PR_SCRIPT="./.loom/scripts/merge-pr.sh"
+    if [[ ! -x "$MERGE_PR_SCRIPT" ]]; then
+        for candidate in \
+            "${LOOM_HOME:-$HOME/GitHub/loom}/defaults/scripts/merge-pr.sh" \
+            "$HOME/GitHub/loom/defaults/scripts/merge-pr.sh"; do
+            if [[ -x "$candidate" ]]; then
+                MERGE_PR_SCRIPT="$candidate"
+                break
+            fi
+        done
+    fi
+    deny "Use $MERGE_PR_SCRIPT <PR_NUMBER> instead of 'gh pr merge'. The script merges via the GitHub API without local checkout, which avoids worktree errors. Known issue: on this host the script's post-merge verify false-negatives ('Merge API call returned but PR is not merged') even when the merge succeeded — always confirm with 'gh pr view <PR_NUMBER> --json state' before retrying."
 fi
 
 # =============================================================================
