@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED-CORE + OUTWARD EXTENSION (researcher-5 2026-07-12): added the sharp 2-adic valuation of the central binomial coefficient v_2(C(2n,n))=s_2(n) (previously only div-form + non-divisibility criterion + evenness existed), the general-p exact multiplied form, a sharpened evenness lower bound, s_2(2^k)=1, and v_2(C(2^{k+1},2^k))=1. 5 new theorems, 0 domain axioms ([propext,choice,Quot] only).",
+    "progressSummary": "PROGRESS: closed the open power-of-two converse (s_2(n)=1⟹n=2^k), completing the iff and the sharp v_2(C(2n,n))=1 ↔ n=2^k. Elementary p-adic theory saturated + axiom-free; only deep parent barreto_leeham_theorem remains.",
     "builtItems": [
       "digitSum_prime_mul_add (p n r)(hp:1<p)(hr:r<p): (Nat.digits p (p*n+r)).sum = (Nat.digits p n).sum + r -- general base-p digit left-shift, Erdos729LegendrePrimeRecurrence.lean",
       "digitSum_prime_mul (p n)(hp:1<p): s_p(p*n)=s_p(n) -- r=0 invariant",
@@ -75,7 +75,8 @@
       "digitSum_base_mul: s_p(p*n)=s_p(n) -- multiplying by base appends a trailing 0 digit ((p*n)%p=0, (p*n)/p=n via Nat.digits_def'), leaving digit sum unchanged. General reusable lemma (Mathlib gap). Its p=2 instance s_2(2n)=s_2(n) turns the no-carry criterion into classical 2|C(2n,n): at p=2, p not-dvd C(2n,n) iff s_2(2n)=2*s_2(n) forces s_2(n)=0 iff n=0.",
       "Central binomial C(2n,n)=Nat.centralBinom n is the m=n case of the Kummer digit-sum machinery: v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1) counts carries of n+n base p. digitSum_pos (n!=0 => s_p(n)>0) from getLast_digit_ne_zero (top base-p digit nonzero) + List.le_sum_of_mem.",
       "The sharp 2-adic valuation v_2(C(2n,n))=s_2(n) follows because doubling never carries in base 2 (s_2(2n)=s_2(n) via digitSum_base_mul), cancelling one of the two s_2(n) terms in the m=n Kummer identity.",
-      "At n=2^k the central binomial coefficient is exactly ≡2 mod 4 (v_2=1) since s_2(2^k)=1."
+      "At n=2^k the central binomial coefficient is exactly ≡2 mod 4 (v_2=1) since s_2(2^k)=1.",
+      "Part: power-of-2 characterization — digitSum_two_eq_one_imp_two_pow (converse s_2(n)=1⟹∃k,n=2^k via strong induction on digit recurrence s_2(n)=n%2+s_2(n/2)), digitSum_two_eq_one_iff (full iff), padicValNat_centralBinom_two_eq_one_iff (v_2(C(2n,n))=1 ↔ n=2^k, sharp form of ..two_pow). 3 axiom-free thm, host-lean EXIT 0. Closes the open converse from PR#38419."
     ],
     "mathlibGaps": [],
     "nextSteps": [
