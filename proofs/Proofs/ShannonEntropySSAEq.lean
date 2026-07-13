@@ -671,4 +671,51 @@ theorem ssa_deficit_reflectXZ {α β γ : Type*}
   have hpr : ∀ xyz, 0 ≤ reflectXZ pXYZ xyz := fun _ => hp _
   rw [ssa_deficit_eq_cmi hpr, ssa_deficit_eq_cmi hp, cmiSum_reflectXZ]
 
+/-- **`reflectXZ` is an involution.**  Reflecting the outer variables twice restores the
+    original law: `reflectXZ (reflectXZ p) = p`.  So `reflectXZ` is a genuine involution on
+    joint distributions, and the `X ↔ Z` symmetry of the SSA deficit (`ssa_deficit_reflectXZ`)
+    and of the conditional mutual information (`cmiSum_reflectXZ`) is the symmetry of a
+    `ℤ/2` action, not merely a one-way inequality. -/
+theorem reflectXZ_involutive {α β γ : Type*}
+    (pXYZ : α × β × γ → ℝ) : reflectXZ (reflectXZ pXYZ) = pXYZ := by
+  funext ⟨x, y, z⟩; rfl
+
+/-- **`reflectXZ` fixes the middle marginal.**  `p_Y(reflectXZ p) = p_Y(p)`: reflecting the
+    outer variables leaves the distribution of the middle variable `Y` unchanged.  This is
+    the `H(Y)` term that stays put while the two outer marginals swap. -/
+theorem marginalY_3_reflectXZ {α β γ : Type*} [Fintype α] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    marginalY_3 (reflectXZ pXYZ) = marginalY_3 pXYZ := by
+  funext y
+  simp only [marginalY_3, reflectXZ]
+  exact Finset.sum_comm
+
+/-- **`reflectXZ` swaps the `(X,Y)` and `(Y,Z)` marginals (first swap).**  The `(X,Y)`-marginal
+    of the reflected law, read at `(z,y)`, is the `(Y,Z)`-marginal of the original at `(y,z)`:
+    `p_{XY}(reflectXZ p)(z,y) = p_{YZ}(p)(y,z)`.  Concretely `∑ₓ p(x,y,z)` computed on either
+    side.  Together with `marginalYZ_reflectXZ` this is the outer-marginal swap the prose of
+    `reflectXZ` describes. -/
+theorem marginalXY_reflectXZ {α β γ : Type*} [Fintype α]
+    (pXYZ : α × β × γ → ℝ) (z : γ) (y : β) :
+    marginalXY (reflectXZ pXYZ) (z, y) = marginalYZ pXYZ (y, z) := by
+  simp only [marginalXY, marginalYZ, reflectXZ]
+
+/-- **`reflectXZ` swaps the `(X,Y)` and `(Y,Z)` marginals (second swap).**  The `(Y,Z)`-marginal
+    of the reflected law, read at `(y,x)`, is the `(X,Y)`-marginal of the original at `(x,y)`:
+    `p_{YZ}(reflectXZ p)(y,x) = p_{XY}(p)(x,y)`.  Both equal `∑_z p(x,y,z)`. -/
+theorem marginalYZ_reflectXZ {α β γ : Type*} [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) (y : β) (x : α) :
+    marginalYZ (reflectXZ pXYZ) (y, x) = marginalXY pXYZ (x, y) := by
+  simp only [marginalXY, marginalYZ, reflectXZ]
+
+/-- **The strong-subadditivity equality condition is symmetric in `X` and `Z`.**  A joint law
+    `p` saturates SSA (equivalently, `cmiSum p = 0` — the Markov chain `X – Y – Z`) iff its
+    `X ↔ Z` reflection does.  Immediate from `cmiSum_reflectXZ`; it records that the Markov
+    property `X – Y – Z` is the same as `Z – Y – X`. -/
+theorem cmiSum_eq_zero_reflectXZ_iff {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    cmiSum (reflectXZ pXYZ) = 0 ↔ cmiSum pXYZ = 0 := by
+  rw [cmiSum_reflectXZ]
+
 end InformationTheory
