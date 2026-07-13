@@ -2,8 +2,47 @@
 
 **Phase**: ACT (arithmetization complete: four-point-line counting on the quartic is now the additive problem "count 4-subsets with Σx=0 ∧ Σx²=10")
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-09 (Iteration 12, researcher-6)
-**Iteration**: 12
+**Last Updated**: 2026-07-12 (Iteration 13, researcher-6)
+**Iteration**: 13
+
+## Iteration 13 (researcher-6, 2026-07-12) — rational (Diophantine) layer: secant parametrization of the conic [VERIFIED, docker-clean]
+
+**Outcome (VERIFIED, 0 axioms, 0 sorries; docker-build Lean v4.26.0, 3063 jobs,
+`✔ Built Proofs.Erdos101OQ04Rational`).** New companion file
+`Proofs/Erdos101OQ04Rational.lean` opening the *arithmetic* geometry of the
+four-point-line conic `Q(p,q,r)=p²+q²+r²+pq+qr+rp=5` (prior sessions pinned only its
+*metric* geometry — the ellipsoidal shell `[5/2,10]`).
+
+New declarations:
+- **`ternary_conic_secant`** — the general **secant / rational-parametrization** lemma.
+  From any base point on `Q=5` and any direction `(da,db,dc)`, if `τ·Q_d = −N`
+  (`N` = directional gradient `(2a₀+b₀+c₀)da+(2b₀+a₀+c₀)db+(2c₀+a₀+b₀)dc`,
+  `Q_d` = the form on the direction), then the secant point `(a₀,b₀,c₀)+τ(da,db,dc)`
+  is again on `Q=5`. Division-free (ring-valid), so rational data forces `τ` and the
+  new point rational. Proof: the polynomial identity `Q(P₀+τd)=Q(P₀)+τN+τ²Q_d`
+  collapses via `linear_combination hbase + τ * hsec`. Since `Q=5` carries the rational
+  point `(−8/3,1/3,1)`, it is rationally parametrized ⇒ **infinitely many rational
+  four-point lines** lie on the quartic `y=x⁴−5x²`.
+- **A second explicit oblique rational four-point line** `(−7/3,2,−1/3,2/3)`, produced
+  via a concrete secant (base = integer point `(−1,2,1)`, direction `(1,0,1)`, `τ=−4/3`):
+  `new_oblique_point_via_secant` (lands on `Q=5` through the lemma),
+  `new_oblique_triple_on_ternary_conic` / `new_oblique_quadruple_criterion`
+  (`Σx=0 ∧ Σx²=10`), `new_oblique_quadruple_not_symmetric` (abscissa `2` present but
+  `−2` absent ⇒ not negation-closed ⇒ strictly oblique),
+  `new_oblique_quadruple_distinct_from_witness` (`−7/3` ∉ old abscissa set ⇒ a genuinely
+  different line), and `new_oblique_quadruple_onQuartic_collinear` (the four points are
+  collinear on the quartic).
+
+**Scope honesty**: arithmetic-structure layer only. Does NOT touch the OPEN
+`solymosi_stojakovic_lower_bound` (deep `n^{2−o(1)}` random-projection construction);
+the quartic route caps at `Ω(n)`. Value = the rational parametrization is the mechanism
+any *explicit* rational/integer super-linear construction would build on, and it
+supplies the first non-isolated arithmetic structure on the conic.
+
+**Note on iteration 12** (below): its three oblique-witness additions to
+`Erdos101OQ04.lean` were flagged UNVERIFIED (docker outage). This session's build
+confirms the parent `Erdos101OQ04.lean` compiles clean (as a dependency of the new
+companion), so those additions are now transitively verified.
 
 ## Iteration 12 (researcher-6, 2026-07-09) — concrete OBLIQUE quadruple witness [UNVERIFIED — docker infra down]
 
