@@ -1976,7 +1976,7 @@ FermatsLastTheoremOQ03	RESIDUAL	type-mismatch
 FeuerbachsTheoremDefsOQ04	RESIDUAL	type-mismatch
 FeuerbachsTheoremOQ01Aristotle	RESIDUAL	parse-error
 FeuerbachsTheoremOQ01OQ03	RESIDUAL	unknown-const:h1
-FeuerbachsTheoremOQ04TangentLine	RESIDUAL	proof-drift
+FeuerbachsTheoremOQ04TangentLine	GREEN	
 FeuerbachsTheoremOQ05	RESIDUAL	dot-notation-drift
 FibonacciIdentitiesOQ02	GREEN	
 FibonacciIdentitiesOQ02OQ02PrimeIndex	GREEN	
@@ -2116,7 +2116,7 @@ Hilbert9QuadraticSubfield	GREEN
 Hilbert9Reciprocity	GREEN	
 HodgeConjecture	RESIDUAL	proof-drift
 HurwitzTheoremOQ04	RESIDUAL	slow-timeout
-IncidenceCauchySchwarzDual	RESIDUAL	proof-drift
+IncidenceCauchySchwarzDual	GREEN	
 InclusionExclusion	GREEN	
 InclusionExclusionSecondBonferroni	RESIDUAL	unknown-const:sieveLayer_eq_sum_choose
 InfinitudePrimes	GREEN	
@@ -2238,7 +2238,7 @@ LebesgueMeasureOQ06OQ01	RESIDUAL	unknown-const:List.chain'_append.mp
 LeibnizPi	GREEN	
 LeibnizPiOQ02	GREEN	
 LeibnizPiOQ02Aristotle	GREEN	
-LeibnizPiOQ03	RESIDUAL	proof-drift
+LeibnizPiOQ03	GREEN	
 LiouvilleTheorem	RESIDUAL	instance-synth
 LiouvilleTheoremOQ03	GREEN	
 LiouvilleTheoremOQ04	GREEN	
@@ -2261,7 +2261,7 @@ MeanValueTheoremOQ02OQ01OQ02	GREEN
 MeanValueTheoremOQ02OQ02UIcc	GREEN	
 MeanValueTheoremOQ02OQ04	GREEN	
 MeanValueTheoremOQ02OQ04OQ01	RESIDUAL	type-mismatch
-MeanValueTheoremOQ03	RESIDUAL	type-mismatch
+MeanValueTheoremOQ03	GREEN	
 MeanValueTheoremOQ04	RESIDUAL	type-mismatch
 MeanValueTheoremOQ04OQ03	GREEN	
 MinkowskiFundamentalTheoremOQ02	RESIDUAL	proof-drift
