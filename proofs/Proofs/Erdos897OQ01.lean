@@ -738,4 +738,56 @@ theorem unboundedOnPrimePowers_affine {f : ℕ → ℝ} (hf : UnboundedOnPrimePo
     {c d : ℝ} (hc : 0 < c) : UnboundedOnPrimePowers (fun n => c * f n + d) :=
   unboundedOnPrimePowers_add_const (unboundedOnPrimePowers_smul hf hc) d
 
+/-
+## (15) Negation normal form and the explicit witness value
+
+The many ad-hoc selectivity criteria of sections (2), (8), (10) — `logN`, `ω`,
+`O(log)`, bounded — all instantiate a single fact: `f` *fails* the hypothesis
+exactly when it is bounded by *some* constant multiple of `log` on prime powers.
+This is the De Morgan normal form of the `∀ M, ∃ …` definition; making it an `iff`
+turns every "not unbounded" proof into "exhibit one witnessing constant `M`", and
+`not_unboundedOnPrimePowers_of_le_const_mul_log` becomes its immediate `←` half.
+
+We also record the explicit value of the reference witness `logSqWeight` on a
+prime power: it is *constant in the exponent*, `logSqWeight (p^k) = (log p)²`,
+which is precisely why `logSqWeight` witnesses the hypothesis (its normalized
+value `logSqWeight(p^k)/log(p^k) = (log p)/k` blows up along `k = 1`, `p → ∞`).
+-/
+
+/-- **Negation normal form of the Erdős #897 hypothesis.** `f` fails to be unbounded
+on prime powers *iff* it is dominated on prime powers by a single constant multiple of
+`log`: `∃ M, ∀ prime power p^k, f(p^k) ≤ M·log(p^k)`.  This is the De Morgan dual of the
+`∀ M, ∃ …` definition (`push_neg`), and it subsumes every selectivity criterion in the
+file — `not_unboundedOnPrimePowers_of_le_const_mul_log` is exactly its reverse implication,
+and `logN`/`ω`/bounded are the special constants `M = 1`, `1/log 2`, `C/log 2`. -/
+theorem not_unboundedOnPrimePowers_iff {f : ℕ → ℝ} :
+    ¬ UnboundedOnPrimePowers f ↔
+      ∃ M : ℝ, ∀ p k : ℕ, p.Prime → 1 ≤ k → f (p ^ k) ≤ M * Real.log (p ^ k) := by
+  unfold UnboundedOnPrimePowers
+  push_neg
+  rfl
+
+/-- **Explicit witness value on a prime power.** `logSqWeight (p^k) = (log p)²` for prime
+`p` and `k ≥ 1`: the weight is *constant in the exponent* because `p^k` and `p` share the
+prime support `{p}` (`logSqWeight_eq_of_primeFactors_eq` + `logSqWeight_prime`).  This is the
+structural reason `logSqWeight` witnesses the hypothesis: the numerator `(log p)²` grows with
+`p` while the denominator `log(p^k) = k·log p` only carries a single `log p`, so the ratio
+`(log p)/k` is unbounded along `k = 1`, `p → ∞`. -/
+theorem logSqWeight_primePow {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) :
+    logSqWeight (p ^ k) = (Real.log p) ^ 2 := by
+  rw [logSqWeight_eq_of_primeFactors_eq (Nat.primeFactors_pow p (by omega)),
+    logSqWeight_prime hp]
+
+/-- **The normalized witness value is exactly `(log p)/k`.**
+`logSqWeight (p^k) / log(p^k) = (log p)/k` for prime `p` and `k ≥ 1`.  Combines
+`logSqWeight_primePow` with `log(p^k) = k·log p`; cancelling one factor of the positive
+`log p` leaves `(log p)/k`.  Taking `k = 1` and `p → ∞` makes this unbounded, giving a
+fully explicit re-derivation of `logSqWeight_unboundedOnPrimePowers`. -/
+theorem logSqWeight_primePow_div_log {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) :
+    logSqWeight (p ^ k) / Real.log ((p : ℝ) ^ k) = Real.log p / k := by
+  have hlogp : 0 < Real.log p := Real.log_pos (by exact_mod_cast hp.one_lt)
+  have hlogp' : Real.log p ≠ 0 := ne_of_gt hlogp
+  rw [logSqWeight_primePow hp hk, Real.log_pow, pow_two,
+    mul_comm (k : ℝ) (Real.log p), mul_div_mul_left _ _ hlogp']
+
 end Erdos897
