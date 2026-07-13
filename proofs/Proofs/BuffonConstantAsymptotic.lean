@@ -329,7 +329,7 @@ lemma ratio_tendsto_one :
     simpa only [sub_zero] using hc.sub h1n
   have hdiv : Tendsto (fun n : ℕ => (1 : ℝ) / (1 - 1 / (n : ℝ))) atTop (𝓝 1) := by
     have h := hc.div hden (by norm_num)
-    simpa only [div_one] using h
+    simpa only [Pi.div_def, div_one] using h
   refine hdiv.congr' ?_
   filter_upwards [eventually_ge_atTop 2] with n hn
   have hnpos : (0 : ℝ) < n := by

@@ -849,7 +849,7 @@ private lemma iadj_cases {s s' : Fin m}
         by have := congr_arg Fin.val hs'_eq; simp at this; omega,
         by have := congr_arg Fin.val hk'_eq; simp at this; omega,
         h⟩
-    · rw [dif_neg h] at hadj; exact Option.noConfusion hadj
+    · rw [dif_neg h] at hadj; exact (Option.some_ne_none _ hadj.symm).elim
   · -- k.val ≠ 0
     rw [dif_neg hk] at hadj
     by_cases h : (0 : ℕ) < s.val
@@ -861,7 +861,7 @@ private lemma iadj_cases {s s' : Fin m}
         by have := congr_arg Fin.val hs'_eq; simp at this; omega,
         by have := congr_arg Fin.val hk'_eq; simp at this; omega,
         h⟩
-    · rw [dif_neg h] at hadj; exact Option.noConfusion hadj
+    · rw [dif_neg h] at hadj; exact (Option.some_ne_none _ hadj.symm).elim
 
 private lemma iadj_symm' {s s' : Fin m}
     {k k' : Fin 2}
@@ -986,6 +986,7 @@ lemma intervalTriangulation_adj_zero {m : ℕ} (hm : 0 < m) (i : Fin m)
   show iadj m i ⟨0, by omega⟩ = _
   unfold iadj
   rw [dif_pos rfl, dif_pos h]
+  rfl
 
 end Interval
 
@@ -1015,7 +1016,7 @@ def trivialTriangle : Triangulation ℕ 2 where
   adj := fun _ _ => none
   adj_symm := fun _ _ _ _ h => Option.noConfusion h
   adj_vertex := fun _ _ _ _ h => Option.noConfusion h
-  adj_ne := fun _ _ _ _ h => Option.noConfusion h
+  adj_ne := fun _ _ _ _ h => (Option.some_ne_none _ h.symm).elim
 
 /-! ## Interval Sperner's Lemma
 

@@ -57,7 +57,7 @@ The independence number α(G) is the size of the largest independent set.
 An independent set has no edges between its vertices.
 -/
 def hasIndependentSet (G : SimpleGraph V) (ℓ : ℕ) : Prop :=
-  ∃ S : Finset V, S.card ≥ ℓ ∧ G.IsAnticlique S
+  ∃ S : Finset V, S.card ≥ ℓ ∧ G.IsIndepSet (S : Set V)
 
 /--
 **Ramsey-Turán Condition:**
@@ -74,7 +74,8 @@ rt(n; k, ℓ) = max{|E(G)| : G has n vertices, no Kₖ, no independent set of si
 This is the maximum edge count in an n-vertex graph with the RT condition.
 -/
 noncomputable def rt (n k ℓ : ℕ) : ℕ :=
-  Nat.find (⟨0, by trivial⟩ : ∃ m : ℕ, ∀ G : SimpleGraph (Fin n),
+  Nat.find (⟨Fintype.card (Sym2 (Fin n)), fun G _ => Finset.card_le_univ G.edgeFinset⟩ :
+    ∃ m : ℕ, ∀ G : SimpleGraph (Fin n),
     isRTGraph G k ℓ → G.edgeFinset.card ≤ m)
 
 /--
@@ -109,7 +110,7 @@ an independent set of size n/log n?
 def erdos_615_conjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧
   ∀ᶠ n : ℕ in Filter.atTop,
-    (rt n 4 (n / Nat.log n) : ℝ) < (threshold_one_eighth - c) * n^2
+    (rt n 4 (n / Nat.log 2 n) : ℝ) < (threshold_one_eighth - c) * n^2
 
 /-
 ## Part III: Known Upper Bounds

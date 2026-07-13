@@ -111,7 +111,8 @@ Together with injectivity and surjectivity this is the short exact sequence
 `1 → Inn(G) → Aut(G) → Out(G) → 1`. -/
 theorem range_inn_subtype_eq_ker_outMk :
     (Inn G).subtype.range = (outMk G).ker := by
-  rw [Subgroup.range_subtype, outMk, QuotientGroup.ker_mk']
+  rw [Subgroup.range_subtype, outMk]
+  exact (QuotientGroup.ker_mk' (N := Inn G)).symm
 
 /-! ### Identification of `Inn(G)` with `G / Z(G)` -/
 

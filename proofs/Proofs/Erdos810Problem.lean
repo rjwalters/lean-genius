@@ -128,7 +128,7 @@ theorem dense_graph_has_C4_large_n (ε : ℝ) (hε : ε > 0) :
   rw [not_nonempty_iff] at h_no
   -- h_no : ∀ C4 : CycleFour G, False  (G is C₄-free)
   have hn1 : 1 ≤ n := by omega
-  have hE := hKST n hn1 G h_no  -- |E| ≤ C·n^{3/2}
+  have hE := hKST n hn1 G h_no.false  -- |E| ≤ C·n^{3/2}
   -- Combined: ε·n² ≤ C·n^{3/2}
   have h_combined : ε * (↑n : ℝ) ^ 2 ≤ C * (↑n : ℝ) ^ ((3 : ℝ) / 2) :=
     le_trans hd hE

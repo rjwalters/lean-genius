@@ -263,7 +263,7 @@ Is δ₁(n,m) unimodal in m for m > n + 1?
 -/
 theorem erdos_692 :
     -- Upper bound exists
-    (∀ n m, n ≥ 2 → ∃ c > 0, delta1 n m ≤ 1 / (Real.log n) ^ c) ∧
+    (∀ n m, n ≥ 2 → ∃ c : ℝ, c > 0 ∧ delta1 n m ≤ 1 / (Real.log n) ^ c) ∧
     -- Unimodality is FALSE
     ¬(∀ n ≥ 2, erdosUnimodalityQuestion n) := by
   constructor

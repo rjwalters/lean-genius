@@ -79,7 +79,8 @@ theorem heathBrown_bound : (5.5 : ℝ) ∈ admissibleExponents := by
   obtain ⟨hL, c, hc, hbound⟩ := h
   exact ⟨by norm_num, c, hc, fun a q hq hcop => le_trans (hbound a q hq hcop) (by
     apply mul_le_mul_of_nonneg_left
-    · exact Real.rpow_le_rpow (Nat.cast_nonneg q) (by norm_num : (5:ℝ) ≤ 5.5)
+    · apply Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hq)
+      norm_num
     · linarith)⟩
 
 /-- The Linnik constant is at most 5 (from Xylouris) -/
@@ -110,11 +111,13 @@ theorem optimal_implies_le_one (h : optimalLinnikConjecture) :
   by_contra hlt
   push_neg at hlt
   -- linnikConstant > 1, so pick ε = (linnikConstant - 1) / 2 > 0
-  set δ := (linnikConstant - 1) / 2
-  have hδ_pos : δ > 0 := by linarith
-  have h1 := h δ hδ_pos  -- (1 + δ) ∈ admissibleExponents
-  have h2 := csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ h1  -- linnikConstant ≤ 1 + δ
+  have hδ_pos : (linnikConstant - 1) / 2 > 0 := div_pos (sub_pos.mpr hlt) two_pos
+  have h1 := h _ hδ_pos  -- (1 + δ) ∈ admissibleExponents
+  have h2 : linnikConstant ≤ 1 + (linnikConstant - 1) / 2 :=
+    csInf_le ⟨0, fun L hL => le_of_lt hL.1⟩ h1
   -- But 1 + δ = 1 + (linnikConstant - 1)/2 = (linnikConstant + 1)/2 < linnikConstant
+  have h3 : (linnikConstant - 1) / 2 < linnikConstant - 1 :=
+    half_lt_self (sub_pos.mpr hlt)
   linarith
 
 /-- Known range: 1 ≤ linnikConstant ≤ 5 -/

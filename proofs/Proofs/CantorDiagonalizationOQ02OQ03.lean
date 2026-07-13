@@ -43,7 +43,7 @@ open Cardinal Ordinal
 theorem regular_sup_bounded {κ : Cardinal.{u}} (hκ : κ.IsRegular)
     {ι : Type u} (hι : #ι < κ) (f : ι → Ordinal.{u})
     (hf : ∀ i, f i < κ.ord) : iSup f < κ.ord :=
-  Ordinal.iSup_lt_ord (hκ.cof_eq ▸ hι) hf
+  Ordinal.iSup_lt_ord (by rw [hκ.cof_eq]; exact hι) hf
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part II: Successor Cardinals Below Infinite Cardinals

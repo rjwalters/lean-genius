@@ -1587,7 +1587,7 @@ theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
     exact integrandK_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκs) θ
   -- Apply the parametric integral derivative lemma and extract the deriv.
   have h := intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
-    hε_pos hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
+    (Metric.ball_mem_nhds k hε_pos) hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
   have h_deriv :
       HasDerivAt
         (fun κ => ∫ θ in (0 : ℝ)..π / 2,

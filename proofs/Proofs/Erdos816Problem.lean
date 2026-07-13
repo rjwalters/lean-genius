@@ -168,7 +168,7 @@ and n² + n + 1 edges contains an equal-degree pair joined by a path of length 3
 -/
 axiom erdos_816_full :
     ∀ n : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      @satisfiesEH816 V _ _ G _ n →
+      satisfiesEH816 G n →
       hasEqualDegreePath3Pair G
 
 /-
@@ -201,7 +201,7 @@ Adding one more edge forces it.
 -/
 theorem erdos_816_summary :
     ∀ n : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-      @satisfiesEH816 V _ _ G _ n →
+      satisfiesEH816 G n →
       hasEqualDegreePath3Pair G :=
   erdos_816_full
 

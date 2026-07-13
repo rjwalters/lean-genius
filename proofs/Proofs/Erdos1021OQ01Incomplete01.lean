@@ -128,8 +128,9 @@ theorem gap_tendsto_zero : Tendsto gap atTop (𝓝 0) := by
     the lower bound approaches the KST upper exponent. This discharges the parent's
     `lower_bound_exponent_tendsto`. -/
 theorem lowerExp_tendsto : Tendsto lowerExp atTop (𝓝 (3 / 2)) := by
-  have := (tendsto_const_nhds (x := (3 : ℝ) / 2)).sub gap_tendsto_zero
-  simpa [lowerExp] using this
+  have h := (tendsto_const_nhds (x := (3 : ℝ) / 2)).sub gap_tendsto_zero
+  rw [sub_zero] at h
+  exact h.congr fun _ => rfl
 
 /-- For every `k ≥ 2` the lower exponent is strictly below the upper exponent `3/2`:
     the asymptotic gap is open for every finite `k`. -/

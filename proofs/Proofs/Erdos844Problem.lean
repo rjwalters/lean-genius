@@ -38,7 +38,7 @@ namespace Erdos844
 -/
 
 /-- The interval {1, ..., N} -/
-def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => by omega⟩
+def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩
 
 /-- A set has the non-squarefree product property if ab is not squarefree for all a,b in A -/
 def HasNonSquarefreeProducts (A : Finset ℕ) : Prop :=
@@ -75,7 +75,7 @@ lemma even_product_not_squarefree (a b : ℕ) (ha : 2 ∣ a) (hb : 2 ∣ b) (hab
     rw [hk, hm]
     ring
   have : 2 * 2 ∣ a * b := h4
-  exact hsq.natSq_dvd_self_of_dvd 2 (Nat.Prime.prime (Nat.prime_two)) this
+  exact absurd (Nat.isUnit_iff.mp (hsq 2 this)) (by norm_num)
 
 /-- If a is not squarefree, then ab is not squarefree for any b > 0 -/
 lemma nonsquarefree_product (a b : ℕ) (ha : ¬Squarefree a) (hb : b > 0) :
@@ -83,10 +83,7 @@ lemma nonsquarefree_product (a b : ℕ) (ha : ¬Squarefree a) (hb : b > 0) :
   intro hsq
   apply ha
   intro p hp
-  have := hsq p hp
-  intro hdiv
-  have : p * p ∣ a * b := Nat.mul_dvd_mul_right hdiv b
-  exact hsq.natSq_dvd_self_of_dvd p hp this
+  exact hsq p (dvd_mul_of_dvd_left hp b)
 
 /-- The optimal set has the non-squarefree product property -/
 axiom optimal_set_has_property :

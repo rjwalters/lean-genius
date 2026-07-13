@@ -198,7 +198,7 @@ bound from Mathlib (or an explicit `τ(n) ≤ 2√n` crude bound suffices once
 `δ > 1/2`, with the general `δ` requiring the `n^ε` bound).
 NOT build-verified. -/
 theorem renormTail_tendsto_zero_of_poly_growth (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
-    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
+    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n : ℕ in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
     Filter.Tendsto (fun N => renormTail a N) Filter.atTop (nhds 0) := by
   sorry
 
@@ -214,7 +214,7 @@ here `a` may oscillate arbitrarily as long as it stays above a power of `n`.
 Combines Lemma B (`T_N → 0 ⟹ liminf = 0`) with Lemma A. -/
 theorem irrational_of_poly_growth (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
     (hconv : Summable (generalTerm a))
-    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
+    (δ : ℝ) (hδ : 0 < δ) (hgrow : ∀ᶠ n : ℕ in Filter.atTop, (n : ℝ) ^ δ ≤ a n) :
     Irrational (S a) := by
   apply irrational_of_liminf_renormTail_zero a ha hconv
   have htend := renormTail_tendsto_zero_of_poly_growth a ha δ hδ hgrow

@@ -177,7 +177,8 @@ theorem genEigenspace_lt_succ_of_lt_maxGenEigenspaceIndex [FiniteDimensional K V
         = ((f.genEigenspace μ).comp WithTop.coeOrderHom.toOrderHom) m := by
     intro m hm
     obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hm
-    simpa using hstab d
+    show f.genEigenspace μ (k : ℕ∞) = f.genEigenspace μ ((k + d : ℕ) : ℕ∞)
+    exact hstab d
   -- But `maxGenEigenspaceIndex` is the *least* such index, contradicting `k < it`.
   have hle : f.maxGenEigenspaceIndex μ ≤ k := Nat.sInf_le hmem
   exact absurd hk (not_lt.mpr hle)

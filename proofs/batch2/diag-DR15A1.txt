@@ -1,0 +1,4429 @@
+===== AbelRuffiniGaloisExtensionsOQ04
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:91:56: Application type mismatch: The argument
+  hn_xy_z
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:109:20: Application type mismatch: The argument
+  hxy
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:133:27: Application type mismatch: The argument
+  le_normalizer ?m.301
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ04.lean:182:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?H ⊓ ?K).subgroupOf ?K
+in the target expression
+===== AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:73:40: Application type mismatch: The argument
+  LT.lt.le (Nat.Prime.pos hp)
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:101:30: Application type mismatch: The argument
+  0
+has type
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:107:66: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↥H
+in the target expression
+error: Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean:133:50: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↥↑P
+in the target expression
+===== AbelRuffiniOQ06OQ01
+error: Proofs/AbelRuffiniOQ06OQ01.lean:69:4: Type mismatch
+  Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le
+has type
+===== AbelRuffiniOQ07NotSolvable
+error: Proofs/AbelRuffiniOQ07NotSolvable.lean:81:56: Application type mismatch: The argument
+  hα
+has type
+error: Proofs/AbelRuffiniOQ07NotSolvable.lean:81:42: Application type mismatch: The argument
+  f_irreducible
+has type
+===== AbelRuffiniOQ11
+error: Proofs/AbelRuffiniOQ11.lean:62:13: Type mismatch: After simplification, term
+  gal_one_isSolvable
+ has type
+===== AlgebraicNumbersCountableOQ02OQ03
+error: Proofs/AlgebraicNumbersCountableOQ02OQ03.lean:109:5: Function expected at
+  le_add_left ?m.36
+but this term has type
+error: Proofs/AlgebraicNumbersCountableOQ02OQ03.lean:109:17: Application type mismatch: The argument
+  κ
+has type
+error: Proofs/AlgebraicNumbersCountableOQ02OQ03.lean:136:10: Type mismatch
+  add_le_add_right h_alg ?m.96
+has type
+===== AlgebraicNumbersCountableOQ04
+error: Proofs/AlgebraicNumbersCountableOQ04.lean:195:13: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.26 / Real.log 2 = ?m.28
+in the target expression
+error: Proofs/AlgebraicNumbersCountableOQ04.lean:261:54: linarith failed to find a contradiction
+c : Fin (Nat.succ 0).succ → ℚ
+hc : c 0 • Real.log 2 + c 1 • Real.log 3 = 0
+error: Proofs/AlgebraicNumbersCountableOQ04.lean:267:8: Type mismatch: After simplification, term
+  hc
+ has type
+error: Proofs/AlgebraicNumbersCountableOQ04.lean:281:54: linarith failed to find a contradiction
+c : Fin (Nat.succ 0).succ → ℚ
+hc : c 0 • Real.log 2 + c 1 • Real.log 3 = 0
+===== AmgmInequalityOQ02OQ01OQ02OQ01Aristotle
+error: Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean:59:51: Application type mismatch: The argument
+  one_ne_zero
+has type
+error: Proofs/AmgmInequalityOQ02OQ01OQ02OQ01Aristotle.lean:58:32: unsolved goals
+σ : Type u_1
+R : Type u_2
+===== AmgmInequalityOQ03OQ04
+error: Proofs/AmgmInequalityOQ03OQ04.lean:82:28: Application type mismatch: The argument
+  LT.lt.ne' hx
+has type
+error: Proofs/AmgmInequalityOQ03OQ04.lean:108:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i ∈ s, p i * p i ^ (?α - 1)
+in the target expression
+error: Proofs/AmgmInequalityOQ03OQ04.lean:221:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Real.log ?x⁻¹
+in the target expression
+error: Proofs/AmgmInequalityOQ03OQ04.lean:230:2: Type mismatch
+  renyi_eq_neg_log_powerMean s p hp hs 2
+    (Mathlib.Meta.NormNum.isNat_eq_false (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 2))
+===== AmgmInequalityOQ03OQ04OQ02
+error: Proofs/AmgmInequalityOQ03OQ04OQ02.lean:198:4: Type mismatch: After simplification, term
+  h
+ has type
+===== AmgmInequalityOQ04OQ02
+error: Proofs/AmgmInequalityOQ04OQ02.lean:1590:4: Application type mismatch: The argument
+  hε_pos
+has type
+===== AngleTrisectionCos20GalOQ03OQ01
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:56:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:135:59: Application type mismatch: The argument
+  q_eis_int
+has type
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:140:59: Application type mismatch: The argument
+  q_eis_int
+has type
+error: Proofs/AngleTrisectionCos20GalOQ03OQ01.lean:159:59: Application type mismatch: The argument
+  q_eis_int
+has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:539:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ03.lean:542:72: Tactic `assumption` failed
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:4: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+===== AreaOfCircleOQ03OQ02OQ01
+error: Proofs/AreaOfCircleOQ03OQ02OQ01.lean:170:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ01.lean:495:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/AreaOfCircleOQ03OQ02OQ01.lean:503:2: Type mismatch: After simplification, term
+  hdiv
+ has type
+===== AreaOfCircleOQ05OQ03OQ05
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:156:4: Invalid argument name `ε` for function `hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:162:4: Application type mismatch: The argument
+  one_pos
+has type
+===== AreaOfCircleOQ07OQ03OQ02
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:67:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:84:4: No goals to be solved
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:109:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑x ^ (1 / 2 - 1)
+error: Proofs/AreaOfCircleOQ07OQ03OQ02.lean:109:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑x ^ (1 / 2 - 1)
+in the target expression
+===== AreaOfCircleOQ07OQ05
+error: Proofs/AreaOfCircleOQ07OQ05.lean:61:4: Type mismatch: After simplification, term
+  hasDerivAt_id x
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:67:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+has type
+===== AreaOfCircleOQ07OQ05OQ01
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+===== AreaOfCircleOQ07OQ05OQ01OQ01
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+===== AreaOfCircleOQ07OQ05OQ01OQ02
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+===== AreaOfCircleOQ07OQ05OQ02
+error: Proofs/AreaOfCircleOQ07OQ05.lean:61:4: Type mismatch: After simplification, term
+  hasDerivAt_id x
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:67:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+has type
+===== ArithmeticSeriesOQ02OQ04OQ01
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:43:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.factorial ?k * Nat.choose ?n ?k
+in the target expression
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:67:2: Type mismatch
+  Nat.factorial_mul_descFactorial h
+has type
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:73:19: Application type mismatch: The argument
+  Eq.symm (choose_descFactorial n k)
+has type
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:104:21: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:109:21: unexpected identifier after decimal point; consider parenthesizing the number
+error: Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean:116:21: unexpected identifier after decimal point; consider parenthesizing the number
+===== BallotProblemOQ03OQ01OQ01
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ01OQ01OQ01
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ01OQ01OQ01Aristotle
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ01OQ02
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ01OQ02Aristotle
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ01OQ02Helpers
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ02
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BaselProblemOQ03OQ01
+error: Proofs/BaselProblemOQ03OQ01.lean:64:2: Type mismatch: After simplification, term
+  Real.summable_one_div_nat_pow.mpr
+    (Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 1))
+===== BaselProblemOQ04OQ03
+error: Proofs/BaselProblemOQ04OQ03.lean:71:4: No goals to be solved
+error: Proofs/BaselProblemOQ04OQ03.lean:81:46: Type mismatch
+  div_add_mod N d
+error: Proofs/BaselProblemOQ04OQ03.lean:81:46: Type mismatch
+  div_add_mod N d
+has type
+error: Proofs/BaselProblemOQ04OQ03.lean:83:29: linarith failed to find a contradiction
+case h1
+d : ℕ
+error: Proofs/BaselProblemOQ04OQ03.lean:84:27: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |(-?a)|
+in the target expression
+===== BaselProblemOQ09
+error: Proofs/BaselProblemOQ09.lean:98:4: Type mismatch: After simplification, term
+  h
+ has type
+===== BaselProblemOQ0901
+error: Proofs/BaselProblemOQ0901.lean:95:4: Type mismatch: After simplification, term
+  h
+ has type
+===== BaselProblemOQ09OQ01
+error: Proofs/BaselProblemOQ09OQ01.lean:91:4: Type mismatch: After simplification, term
+  h
+ has type
+===== BaselProblemOQ10OQ01
+error: Proofs/BaselProblemOQ10OQ01.lean:128:2: Type mismatch: After simplification, term
+  Tendsto.comp tendsto_inv_atTop_zero hden
+ has type
+===== BetaCentralBinomialExplicitRate
+error: Proofs/BetaCentralBinomialExplicitRate.lean:93:2: Type mismatch
+  LE.le.trans hstep ?m.86
+has type
+error: Proofs/BetaCentralBinomialExplicitRate.lean:136:6: Type mismatch: After simplification, term
+  log_gap_le_telescope m j hm
+ has type
+===== BetaCentralBinomialExplicitRateOQ02
+error: Proofs/BetaCentralBinomialExplicitRate.lean:93:2: Type mismatch
+  LE.le.trans hstep ?m.86
+has type
+error: Proofs/BetaCentralBinomialExplicitRate.lean:136:6: Type mismatch: After simplification, term
+  log_gap_le_telescope m j hm
+ has type
+===== BetaCentralBinomialOGF
+error: Proofs/BetaCentralBinomialOGF.lean:187:21: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  √x * √x
+in the target expression
+error: Proofs/BetaCentralBinomialOGF.lean:193:72: unsolved goals
+case hc
+x : ℝ
+error: Proofs/BetaCentralBinomialOGF.lean:234:6: Type mismatch
+  HasDerivAt.comp t ?m.607 hg
+has type
+===== BezoutIdentity
+error: Proofs/BezoutIdentity.lean:178:39: Type mismatch
+  Int.gcd_dvd_left
+has type
+error: Proofs/BezoutIdentity.lean:179:39: Type mismatch
+  Int.gcd_dvd_right
+has type
+===== BezoutIdentityOQ02OQ01OQ01OQ01OQ01
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:71:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:68:40: This simp argument is unused:
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:75:2: Tactic `assumption` failed
+⊢ 1 ∉ I
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:97:48: Type mismatch
+  totalDegree_C
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ01.lean:98:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  f * g
+in the target expression
+===== BezoutIdentityOQ02OQ01OQ02
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:49:35: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero α
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:16: Application type mismatch: The argument
+  Int.gcd_dvd_left
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:34: Application type mismatch: The argument
+  Int.gcd_dvd_right
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:60:20: Type mismatch
+  Int.dvd_gcd ?m.24 ?m.25
+has type
+===== BezoutIdentityOQ02OQ01OQ02OQ03
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:49:35: invalid binder annotation, type is not a class instance
+  CancelCommMonoidWithZero α
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:16: Application type mismatch: The argument
+  Int.gcd_dvd_left
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:59:34: Application type mismatch: The argument
+  Int.gcd_dvd_right
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02.lean:60:20: Type mismatch
+  Int.dvd_gcd ?m.24 ?m.25
+has type
+===== BezoutIdentityOQ02OQ02OQ01OQ03
+error: Proofs/BezoutIdentityOQ02OQ02OQ01OQ03.lean:245:6: Type mismatch: After simplification, term
+  hb
+ has type
+===== BezoutIdentityOQ03OQ01OQ01OQ02OQ02
+error: Proofs/BezoutIdentityOQ03OQ01OQ01OQ02OQ02.lean:150:2: Type mismatch: After simplification, term
+  h
+ has type
+===== BezoutIdentityOQ04OQ01OQ01
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:49:40: Type mismatch
+  mul hM hN
+has type
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:117:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:124:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+===== BinomialTheoremOQ02OQ01
+error: Proofs/BinomialTheoremOQ02OQ01.lean:236:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  p i + (1 - p i)
+in the target expression
+error: Proofs/BinomialTheoremOQ02OQ01.lean:249:6: Type mismatch: After simplification, term
+  hc
+ has type
+error: Proofs/BinomialTheoremOQ02OQ01.lean:346:6: Type mismatch: After simplification, term
+  hc
+ has type
+error: Proofs/BinomialTheoremOQ02OQ01.lean:378:8: Type mismatch: After simplification, term
+  hc
+ has type
+===== BinomialTheoremOQ02OQ01OQ01OQ02
+error: Proofs/BinomialTheoremOQ02OQ01.lean:236:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  p i + (1 - p i)
+in the target expression
+error: Proofs/BinomialTheoremOQ02OQ01.lean:249:6: Type mismatch: After simplification, term
+  hc
+ has type
+error: Proofs/BinomialTheoremOQ02OQ01.lean:346:6: Type mismatch: After simplification, term
+  hc
+ has type
+error: Proofs/BinomialTheoremOQ02OQ01.lean:378:8: Type mismatch: After simplification, term
+  hc
+ has type
+===== BinomialTheoremOQ02OQ02
+error: Proofs/BinomialTheoremOQ02OQ02.lean:88:67: unsolved goals
+m n r : ℕ
+⊢ ∑ ij ∈ antidiagonal r, n.choose ij.1 * m.choose ij.2 = ∑ ij ∈ antidiagonal r, m.choose ij.2 * n.choose ij.1
+error: Proofs/BinomialTheoremOQ02OQ02.lean:111:9: unsolved goals
+case zero
+m : ℕ
+error: Proofs/BinomialTheoremOQ02OQ02.lean:112:14: Type mismatch
+  choose_succ_succ m r
+has type
+error: Proofs/BinomialTheoremOQ02OQ02.lean:119:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== BinomialTheoremOQ02OQ03
+error: Proofs/BinomialTheoremOQ02OQ03.lean:108:54: Application type mismatch: The argument
+  mem_univ i
+has type
+error: Proofs/BinomialTheoremOQ02OQ03.lean:113:62: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/BinomialTheoremOQ02OQ03.lean:140:8: Function expected at
+  single_le_sum (fun j x => Nat.zero_le (?m.75 j)) ?m.82
+but this term has type
+error: Proofs/BinomialTheoremOQ02OQ03.lean:170:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, k i.succ
+in the target expression
+===== BinomialTheoremOQ02OQ04
+error: Proofs/BinomialTheoremOQ02OQ04.lean:132:39: invalid `▸` notation, argument
+  h
+has type
+error: Proofs/BinomialTheoremOQ02OQ04.lean:149:23: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i ∈ s, (g i + if i = a then j else 0)
+in the target expression
+error: Proofs/BinomialTheoremOQ02OQ04.lean:175:2: Type mismatch
+  multinomial_by_induction univ ![1, 1, 1] n
+has type
+===== BinomialTheoremOQ02OQ04OQ02
+error: Proofs/BinomialTheoremOQ02OQ04OQ02.lean:80:24: Application type mismatch: The argument
+  ↑M
+has type
+error: Proofs/BinomialTheoremOQ02OQ04OQ02.lean:122:4: Application type mismatch: The argument
+  ↑M
+has type
+error: Proofs/BinomialTheoremOQ02OQ04OQ02.lean:138:20: Application type mismatch: The argument
+  ↑M
+has type
+===== BirthdayProblemOQ03OQ01OQ02
+error: Proofs/BirthdayProblemOQ03OQ01OQ02.lean:2128:2: Type mismatch: After simplification, term
+  h
+ has type
+===== BorsukUlamOQ02OQ01OQ01OQ02
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:78:35: Application type mismatch: The argument
+  Nat.Prime.prime hp
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:83:52: Application type mismatch: The argument
+  Nat.Prime.prime hp
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:82:42: unsolved goals
+p k d : ℕ
+hp : Nat.Prime p
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:179:2: Tactic `decide` failed for proposition
+  ∀ n ∈ Finset.Icc 2 5, n.primeFactors.card ≤ 1
+because its `Decidable` instance
+===== BorsukUlamOQ02OQ01OQ01OQ02OQ03
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:78:35: Application type mismatch: The argument
+  Nat.Prime.prime hp
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:83:52: Application type mismatch: The argument
+  Nat.Prime.prime hp
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:82:42: unsolved goals
+p k d : ℕ
+hp : Nat.Prime p
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:179:2: Tactic `decide` failed for proposition
+  ∀ n ∈ Finset.Icc 2 5, n.primeFactors.card ≤ 1
+because its `Decidable` instance
+===== BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:78:35: Application type mismatch: The argument
+  Nat.Prime.prime hp
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:83:52: Application type mismatch: The argument
+  Nat.Prime.prime hp
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:82:42: unsolved goals
+p k d : ℕ
+hp : Nat.Prime p
+error: Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean:179:2: Tactic `decide` failed for proposition
+  ∀ n ∈ Finset.Icc 2 5, n.primeFactors.card ≤ 1
+because its `Decidable` instance
+===== BorsukUlamOQ02OQ01OQ04OQ01
+error: Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean:89:43: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean:117:24: No goals to be solved
+error: Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean:146:28: Application type mismatch: The argument
+  hm
+error: Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean:146:28: Application type mismatch: The argument
+  hm
+has type
+error: Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean:140:60: unsolved goals
+p n : ℕ
+inst✝ : Fact (Nat.Prime p)
+===== BorsukUlamOQ02OQ03
+error: Proofs/BorsukUlamOQ02OQ03.lean:156:53: Application type mismatch: The argument
+  mul_comm q p
+has type
+===== BorsukUlamOQ03OQ02
+error: Proofs/BorsukUlamOQ03OQ02.lean:82:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/BorsukUlamOQ03OQ02.lean:99:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/BorsukUlamOQ03OQ02.lean:124:4: Type mismatch: After simplification, term
+  this
+ has type
+===== BoundedPrimeGapsOQ04OQ01
+error: Proofs/BoundedPrimeGapsOQ04OQ01.lean:211:9: Type mismatch
+  ↑i
+has type
+===== BrouwerFixedPointOQ02
+error: Proofs/BrouwerFixedPointOQ02.lean:118:36: Application type mismatch: The argument
+  Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)
+    (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one) (Eq.refl false)
+error: Proofs/BrouwerFixedPointOQ02.lean:122:38: mod_cast has type
+  ?m.560 < Nat.succ ?m.561
+but is expected to have type
+error: Proofs/BrouwerFixedPointOQ02.lean:123:4: linarith failed to find a contradiction
+f : ℝ → ℝ
+hf : Continuous f
+error: Proofs/BrouwerFixedPointOQ02.lean:124:2: linarith failed to find a contradiction
+f : ℝ → ℝ
+hf : Continuous f
+===== BrouwerFixedPointOQ02OQ01
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:107:80: unsolved goals
+case «0».«1»
+h : 0 + 1 = 0
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:142:2: Type mismatch: After simplification, term
+  Eq.symm hval
+ has type
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:284:13: Invalid field `lt_or_lt`: The environment does not contain `Function.lt_or_lt`, so it is not possible to project the field `lt_or_lt` from an expression
+  hne
+of type `i₀ = i₁ → False`
+error: Proofs/BrouwerFixedPointOQ02OQ01.lean:284:27: Tactic `rcases` failed: `x✝ : ?m.573` is not an inductive datatype
+warning: Proofs/BrouwerFixedPointOQ02OQ01.lean:305:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+===== BrouwerFixedPointOQ02OQ02
+error: Proofs/BrouwerFixedPointOQ02OQ02.lean:151:17: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.48 < ?m.47 * 2 ^ n
+in the target expression
+error: Proofs/BrouwerFixedPointOQ02OQ02.lean:223:7: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.84 * C ≤ ?m.85
+in the target expression
+error: Proofs/BrouwerFixedPointOQ02OQ02.lean:233:54: Application type mismatch: The argument
+  hn
+has type
+===== BrouwerFixedPointOQ02OQ03
+error: Proofs/BrouwerFixedPointOQ02OQ03.lean:91:39: failed to prove positivity/nonnegativity/nonzeroness
+error: Proofs/BrouwerFixedPointOQ02OQ03.lean:92:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |?a| ^ 2
+error: Proofs/BrouwerFixedPointOQ02OQ03.lean:92:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |?a| ^ 2
+in the target expression
+error: Proofs/BrouwerFixedPointOQ02OQ03.lean:115:41: Application type mismatch: The argument
+  hlt
+has type
+error: Proofs/BrouwerFixedPointOQ02OQ03.lean:115:53: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+===== BrouwerFixedPointOQ04OQ02
+error: Proofs/BrouwerFixedPointOQ04OQ02.lean:469:4: Application type mismatch: The argument
+  fun j => MixedStrategy (G.strategies j)
+has type
+error: Proofs/BrouwerFixedPointOQ04OQ02.lean:470:14: Type mismatch
+  mixed_strategy_nonempty (G.strategies_pos j)
+has type
+===== BrouwerFixedPointOQ04OQ03
+error: Proofs/BrouwerFixedPointOQ04OQ03.lean:86:26: invalid binder annotation, type is not a class instance
+  ?m.4
+error: Proofs/BrouwerFixedPointOQ04OQ03.lean:154:16: Application type mismatch: The argument
+  hfp
+has type
+===== BrouwerFixedPointOQ04OQ04
+error: Proofs/BrouwerFixedPointOQ04OQ03.lean:86:26: invalid binder annotation, type is not a class instance
+  ?m.4
+error: Proofs/BrouwerFixedPointOQ04OQ03.lean:154:16: Application type mismatch: The argument
+  hfp
+has type
+===== BuffonConstantAsymptotic
+error: Proofs/BuffonConstantAsymptotic.lean:332:4: Type mismatch: After simplification, term
+  h
+ has type
+===== BuffonsNeedleOQ01
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== BuffonsNeedleOQ01OQ01OQ01
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== BuffonsNeedleOQ01OQ04
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== BuffonsNeedleOQ02OQ01
+error: Proofs/BuffonsNeedleOQ02OQ01.lean:301:4: Type mismatch: After simplification, term
+  Filter.Tendsto.inv_tendsto_atTop hsqrt
+ has type
+===== BuffonsNeedleOQ02OQ01OQ01
+error: Proofs/BuffonsNeedleOQ02OQ01.lean:301:4: Type mismatch: After simplification, term
+  Filter.Tendsto.inv_tendsto_atTop hsqrt
+ has type
+===== CantorDiagonalizationOQ01OQ01OQ02
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:68:60: Invalid field `card`: The environment does not contain `Quot.card`, so it is not possible to project the field `card` from an expression
+  (2 ^ ℵ₀).ord.cof
+of type `Quot ⇑isEquivalent`
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:69:38: unsolved goals
+⊢ 1 < ?m.12
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:74:43: Invalid field `card`: The environment does not contain `Quot.card`, so it is not possible to project the field `card` from an expression
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:74:43: Invalid field `card`: The environment does not contain `Quot.card`, so it is not possible to project the field `card` from an expression
+  (κ ^ ℵ₀).ord.cof
+of type `Quot ⇑isEquivalent`
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:90:2: Type mismatch
+  isRegular_aleph_succ 1
+has type
+===== CantorDiagonalizationOQ02OQ03
+error: Proofs/CantorDiagonalizationOQ02OQ03.lean:46:35: Type mismatch
+  hι
+has type
+===== CantorDiagonalizationOQ03OQ01Incomplete01
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:161:61: Application type mismatch: The argument
+  e a
+has type
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:161:71: Type mismatch
+  g x
+has type
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:167:39: Application type mismatch: The argument
+  h
+has type
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:168:35: Application type mismatch: The argument
+  Eq.symm heq
+has type
+===== CantorDiagonalizationOQ04
+error: Proofs/CantorDiagonalizationOQ04.lean:186:53: Application type mismatch: The argument
+  he
+has type
+error: Proofs/CantorDiagonalizationOQ04.lean:227:2: Type mismatch
+  Eq.symm (congr_arg f (congr_fun (c.retract ?m.15) ?m.16))
+has type
+===== CauchySchwarz
+error: Proofs/CauchySchwarz.lean:64:5: expected token
+error: Proofs/CauchySchwarz.lean:72:4: expected token
+error: Proofs/CauchySchwarz.lean:135:18: expected token
+error: Proofs/CauchySchwarz.lean:72:4: expected token
+error: Proofs/CauchySchwarz.lean:135:18: expected token
+error: Proofs/CauchySchwarz.lean:130:38: Type mismatch
+error: Proofs/CauchySchwarz.lean:135:18: expected token
+error: Proofs/CauchySchwarz.lean:130:38: Type mismatch
+  a
+error: Proofs/CauchySchwarz.lean:130:38: Type mismatch
+  a
+has type
+===== CauchySchwarzOQ03
+error: Proofs/CauchySchwarzOQ03.lean:160:4: Type mismatch: After simplification, term
+  h
+ has type
+===== CauchySchwarzOQ03OQ02
+error: Proofs/CauchySchwarzOQ03OQ02.lean:84:19: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/CauchySchwarzOQ03OQ02.lean:119:25: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/CauchySchwarzOQ03OQ02.lean:119:8: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/CauchySchwarzOQ03OQ02.lean:224:20: Application type mismatch: The argument
+  hp
+has type
+===== CauchySchwarzOQ07OQ01
+error: Proofs/CauchySchwarzOQ07OQ01.lean:55:4: Type mismatch
+  parallelogram_law_with_norm 𝕜 x y
+has type
+===== CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:62:69: unsolved goals
+case e_f
+K : Type u_1
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:72:26: Invalid argument name `b` for function `Finset.sup_lt_iff`
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:89:2: Type mismatch
+  hcoeff
+has type
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:248:9: unsolved goals
+case zero
+K : Type u_1
+===== CayleyHamiltonMinpolyOQ01OQ01
+error: Proofs/CayleyHamiltonMinpolyOQ01OQ01.lean:180:4: Type mismatch: After simplification, term
+  hstab d
+ has type
+===== CayleyHamiltonMinpolyOQ02OQ01OQ02
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean:51:44: Application type mismatch: The argument
+  f
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean:90:61: Application type mismatch: The argument
+  a
+has type
+===== CayleyHamiltonMinpolyOQ04Backward
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:235:39: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:245:28: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:248:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, ?f ↑i
+in the target expression
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:275:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?g (∑ x ∈ ?s, ?f x)
+in the target expression
+===== CayleyHamiltonMinpolyOQ04BackwardAristotle
+error: Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean:110:46: Type mismatch
+  this
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean:108:63: unsolved goals
+K : Type u_1
+inst✝ : Field K
+===== CayleyHamiltonMinpolyOQ05
+error: Proofs/CayleyHamiltonMinpolyOQ05.lean:38:36: Application type mismatch: The argument
+  hmonic
+has type
+===== CayleyHamiltonOQ01OQ01OQ01
+error: Proofs/CayleyHamiltonOQ01OQ01OQ01.lean:76:4: Type mismatch: After simplification, term
+  h2
+ has type
+===== CayleyHamiltonOQ01OQ01OQ01OQ01
+error: Proofs/CayleyHamiltonOQ01OQ01OQ01.lean:76:4: Type mismatch: After simplification, term
+  h2
+ has type
+===== CayleyHamiltonOQ02OQ01Analytic
+error: Proofs/CayleyHamiltonOQ02OQ01Analytic.lean:73:4: Type mismatch: After simplification, term
+  ContinuousLinearMap.hasDerivAt ofRealCLM
+ has type
+error: Proofs/CayleyHamiltonOQ02OQ01Analytic.lean:85:6: Type mismatch: After simplification, term
+  Continuous.comp continuous_exp (Continuous.mul continuous_const continuous_ofReal)
+ has type
+error: Proofs/CayleyHamiltonOQ02OQ01Analytic.lean:109:2: Type mismatch: After simplification, term
+  hasDerivAt_cexp_mul (lam 0) t
+ has type
+===== CayleyHamiltonOQ04OQ02
+error: Proofs/CayleyHamiltonOQ04OQ02.lean:135:10: overloaded, errors 
+  135:29 Application type mismatch: The argument
+    ℝ
+error: Proofs/CayleyHamiltonOQ04OQ02.lean:172:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  A.det
+in the target expression
+error: Proofs/CayleyHamiltonOQ04OQ02.lean:214:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  A.det
+in the target expression
+===== CayleyHamiltonReductionOQ01
+error: Proofs/CayleyHamiltonReductionOQ01.lean:93:47: Application type mismatch: The argument
+  hm
+has type
+===== CayleyHamiltonReductionOQ01OQ02
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:52:24: typeclass instance problem is stuck
+  Semiring ?m.31
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:86:52: Application type mismatch: The argument
+  hXk_monic
+has type
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:84:40: unsolved goals
+K : Type u_1
+inst✝ : Field K
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:110:52: Application type mismatch: The argument
+  hmonic
+has type
+===== CayleyHamiltonReductionOQ02
+error: Proofs/CayleyHamiltonReductionOQ02.lean:86:47: Application type mismatch: The argument
+  hm
+has type
+===== CayleysTheoremOQ01OQ02OQ02
+error: Proofs/CayleysTheoremOQ01OQ02OQ02.lean:114:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (QuotientGroup.mk' ?N).ker
+in the target expression
+===== CentralLimitTheoremOQ01OQ02OQ01OQ03
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean:63:4: `ring_nf` made no progress on the goal
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean:93:2: Type mismatch: After simplification, term
+  HasDerivAt.sub (hasDerivAt_const t (↑μ * I)) h
+error: Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ03.lean:93:2: Type mismatch: After simplification, term
+  HasDerivAt.sub (hasDerivAt_const t (↑μ * I)) h
+ has type
+===== CentralLimitTheoremOQ02OQ04
+error: Proofs/CentralLimitTheoremOQ02OQ04.lean:371:4: Type mismatch: After simplification, term
+  Measurable.comp measurable_norm hX
+ has type
+error: Proofs/CentralLimitTheoremOQ02OQ04.lean:1347:31: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Measure.real ?μ ?s
+in the target expression
+===== ChebyshevBoundsOQ03OQ02
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:58:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:91:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x_1 ∈ ?m.164, θ (x ^ (1 / x_1))
+in the target expression
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:91:72: Application type mismatch: The argument
+  h2mem
+has type
+===== ChebyshevBoundsOQ0601
+error: Proofs/ChebyshevBoundsOQ0601.lean:60:4: Type mismatch: After simplification, term
+  this
+ has type
+===== ChineseRemainderNonCoprimeOQ01
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:130:26: Type mismatch
+  m / m.gcd n
+has type
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:146:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:157:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:159:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== ChineseRemainderNonCoprimeOQ01OQ01
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:130:26: Type mismatch
+  m / m.gcd n
+has type
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:146:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:157:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:159:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== ChineseRemainderNonCoprimeOQ03OQ02
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:142:2: unsolved goals
+case pos
+R : Type u_1
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:180:96: unsolved goals
+R : Type u_1
+inst✝¹ : EuclideanDomain R
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:184:96: unsolved goals
+R : Type u_1
+inst✝¹ : EuclideanDomain R
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:216:57: Application type mismatch: The argument
+  Eq.symm hgrab'
+has type
+===== CombinationsFormulaOQ01OQ04
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== ComplexityCore
+error: Proofs/ComplexityCore.lean:285:29: Application type mismatch: The argument
+  hs
+has type
+===== ConjugacyClassEquationOQ01
+error: Proofs/ConjugacyClassEquationOQ01.lean:77:2: Type mismatch: After simplification, term
+  conjClass_card_dvd_card g
+ has type
+===== ConjugacyClassEquationOQ0102
+error: Proofs/ConjugacyClassEquationOQ01.lean:77:2: Type mismatch: After simplification, term
+  conjClass_card_dvd_card g
+ has type
+===== CramersRuleOQ01OQ02OQ03
+error: Proofs/CramersRuleOQ01OQ02OQ03.lean:96:4: Type mismatch: After simplification, term
+  mul_schurInv_00 A hq
+ has type
+error: Proofs/CramersRuleOQ01OQ02OQ03.lean:104:4: Type mismatch: After simplification, term
+  mul_schurInv_11 A hd
+ has type
+error: Proofs/CramersRuleOQ01OQ02OQ03.lean:169:4: Type mismatch: After simplification, term
+  schurInv_mul_00 A hq
+ has type
+error: Proofs/CramersRuleOQ01OQ02OQ03.lean:177:4: Type mismatch: After simplification, term
+  schurInv_mul_11 A hd
+ has type
+===== CramersRuleOQ01OQ03
+error: Proofs/CramersRuleOQ01OQ03.lean:39:47: Type mismatch
+  Fintype.card_perm
+has type
+error: Proofs/CramersRuleOQ01OQ03.lean:58:39: Function expected at
+  n
+but this term has type
+error: Proofs/CramersRuleOQ01OQ03.lean:78:36: Function expected at
+  n
+but this term has type
+error: Proofs/CramersRuleOQ01OQ03.lean:80:27: Function expected at
+  n
+but this term has type
+===== CramersRuleOQ05
+error: Proofs/CramersRuleOQ05.lean:74:2: Type mismatch
+  charpoly_units_conj U N
+has type
+===== CramersRuleOQ05OQ01
+error: Proofs/CramersRuleOQ05.lean:74:2: Type mismatch
+  charpoly_units_conj U N
+has type
+===== CramersRuleOQ05OQ02
+error: Proofs/CramersRuleOQ05.lean:74:2: Type mismatch
+  charpoly_units_conj U N
+has type
+===== CubeRoot3IrrationalOQ02OQ01
+error: Proofs/CubeRoot3IrrationalOQ02OQ01.lean:97:15: Type mismatch
+  minpoly.eq_X_sub_C ℚ q
+has type
+error: Proofs/CubeRoot3IrrationalOQ02OQ01.lean:120:15: Type mismatch
+  minpoly.eq_X_sub_C ℚ q
+has type
+error: Proofs/CubeRoot3IrrationalOQ02OQ01.lean:131:5: unsolved goals
+⊢ 1 < 3
+error: Lean exited with code 1
+===== CyclotomicPolynomialsOQ02OQ04
+error: Proofs/CyclotomicPolynomialsOQ02OQ04.lean:70:4: Type mismatch: After simplification, term
+  h
+ has type
+===== CyclotomicPolynomialsOQ02OQ06
+error: Proofs/CyclotomicPolynomialsOQ02OQ04.lean:70:4: Type mismatch: After simplification, term
+  h
+ has type
+===== DeMoivreOQ03OQ01
+error: Proofs/DeMoivreOQ03OQ01.lean:34:29: Type mismatch
+  hθ_lo
+has type
+error: Proofs/DeMoivreOQ03OQ01.lean:34:43: Type mismatch
+  hθ_hi
+has type
+error: Proofs/DeMoivreOQ03OQ01.lean:72:30: Application type mismatch: The argument
+  Continuous.mul (Continuous.mul continuous_const continuous_ofReal) continuous_const
+has type
+===== DerangementsConvergenceOQ02
+error: Proofs/DerangementsConvergenceOQ02.lean:131:2: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/DerangementsConvergenceOQ02.lean:136:2: Type mismatch: After simplification, term
+  h
+ has type
+===== DerangementsConvergenceOQ05
+error: Proofs/DerangementsConvergenceOQ05.lean:160:4: Type mismatch: After simplification, term
+  Tendsto.comp numDerangements_tendsto_inv_e hsub
+ has type
+===== DerangementsConvergenceOQ05OQ01
+error: Proofs/DerangementsConvergenceOQ05.lean:160:4: Type mismatch: After simplification, term
+  Tendsto.comp numDerangements_tendsto_inv_e hsub
+ has type
+===== DerangementsOQ03OQ01OQ02
+error: Proofs/DerangementsOQ03OQ01OQ02.lean:67:53: Type mismatch
+  exp_eq_exp_ℝ
+has type
+error: Proofs/DerangementsOQ03OQ01OQ02.lean:66:39: unsolved goals
+⊢ rexp (-1) = ∑' (k : ℕ), altFactTerm k
+error: Proofs/DerangementsOQ03OQ01OQ02.lean:81:71: No goals to be solved
+error: Proofs/DerangementsOQ03OQ01OQ02.lean:81:71: No goals to be solved
+info: Proofs/DerangementsOQ03OQ01OQ02.lean:86:60: Try this:
+  [apply] ring_nf
+error: Proofs/DerangementsOQ03OQ01OQ02.lean:82:10: unsolved goals
+n✝ n : ℕ
+ih : ∀ m < n + 2, ↑(numDerangements m) = ↑m ! * altFactPartialSum m
+===== DerangementsOQ04OQ01OQ01
+error: Proofs/DerangementsOQ04OQ01OQ01.lean:56:2: Type mismatch: After simplification, term
+  hcomp
+ has type
+===== DesarguesTheorem
+error: Proofs/DesarguesTheorem.lean:156:49: Application type mismatch: The argument
+  a = 0
+has type
+error: Proofs/DesarguesTheorem.lean:163:9: Application type mismatch: The argument
+  (crossProduct b) c = (∑ i, a i * c i) • b - (∑ i, a i * b i) • c
+has type
+error: Proofs/DesarguesTheorem.lean:170:61: unsolved goals
+a b c : Fin 3 → ℝ
+⊢ ∑ x,
+error: Proofs/DesarguesTheorem.lean:217:71: unsolved goals
+a b c d e f : Fin 3 → ℝ
+⊢ ((LinearMap.mk₂ ℝ (fun a b => ![a 1 * b 2 - a 2 * b 1, -(b 2 * a 0) + a 2 * b 0, -(a 1 * b 0) + b 1 * a 0]) ⋯ ⋯ ⋯ ⋯)
+===== DiniTheoremOQ01OQ01
+error: Proofs/DiniTheoremOQ01OQ01.lean:59:4: Type mismatch: After simplification, term
+  Tendsto.comp (Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero 1) hto
+ has type
+===== DirichletApproximationOQ04OQ02
+error: Proofs/DirichletApproximationOQ04OQ02.lean:73:2: Type mismatch: After simplification, term
+  this
+ has type
+===== DirichletsTheoremOQ01OQ01
+error: Proofs/DirichletsTheoremOQ01OQ01.lean:173:4: Application type mismatch: The argument
+  Eq.symm (at_most_one_exceptional_conductor Q hQ c hc χ₂ χ_exc hN₂ hN_exc hχ₂ hχ_exc h₂ h_exc)
+has type
+error: Proofs/DirichletsTheoremOQ01OQ01.lean:200:40: Application type mismatch: The argument
+  hN₂
+has type
+===== DirichletsTheoremOQ03
+error: Proofs/DirichletsTheoremOQ03.lean:82:50: Application type mismatch: The argument
+  Mathlib.Meta.NormNum.isRat_le_true
+    (Mathlib.Meta.NormNum.IsNNRat.to_isRat
+error: Proofs/DirichletsTheoremOQ03.lean:114:28: linarith failed to find a contradiction
+h : optimalLinnikConjecture
+hlt : 1 < linnikConstant
+error: Proofs/DirichletsTheoremOQ03.lean:118:2: linarith failed to find a contradiction
+h : optimalLinnikConjecture
+hlt : 1 < linnikConstant
+===== DissectionOfCubesOQ02OQ02
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.11 ⧸ ?m.13) (↑?x) 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:73:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?n • ↑?a
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?x = 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:131:48: unsolved goals
+r : ℝ
+x : AngleQuot
+===== DissectionOfCubesOQ04
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.11 ⧸ ?m.13) (↑?x) 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:73:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?n • ↑?a
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?x = 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:131:48: unsolved goals
+r : ℝ
+x : AngleQuot
+===== DissectionOfCubesOQ04Aristotle
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Eq (?m.11 ⧸ ?m.13) (↑?x) 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:73:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?n • ↑?a
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?x = 0
+in the target expression
+error: Proofs/DissectionOfCubesOQ02OQ02.lean:131:48: unsolved goals
+r : ℝ
+x : AngleQuot
+===== DivisibilityByThreeOQ01OQ02Aristotle
+error: Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean:38:55: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean:38:42: unsolved goals
+n : ℕ
+hn : 0 < n
+error: Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean:36:58: unsolved goals
+n : ℕ
+hn : 0 < n
+error: Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean:66:52: Application type mismatch: The argument
+  hmem
+has type
+===== DivisibilityByThreeOQ02
+error: Proofs/DivisibilityByThreeOQ02.lean:55:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  alternatingSum (a :: rest')
+in the target expression
+error: Proofs/DivisibilityByThreeOQ02.lean:75:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/DivisibilityByThreeOQ02.lean:78:27: Application type mismatch: The argument
+  ih
+has type
+error: Proofs/DivisibilityByThreeOQ02.lean:93:4: unsolved goals
+case pos
+d B : ℕ
+===== DivisibilityRules
+error: Proofs/DivisibilityRules.lean:63:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  alternatingDigitSum (a :: rest')
+in the target expression
+error: Proofs/DivisibilityRules.lean:79:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DivisibilityRules.lean:82:27: Application type mismatch: The argument
+  ih
+has type
+error: Proofs/DivisibilityRules.lean:100:4: unsolved goals
+case pos
+d b : ℕ
+===== DivisibilityRulesOQ01
+error: Proofs/DivisibilityRulesOQ01.lean:52:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  alternatingDigitSum (a :: rest')
+in the target expression
+error: Proofs/DivisibilityRulesOQ01.lean:66:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DivisibilityRulesOQ01.lean:69:27: Application type mismatch: The argument
+  ih
+has type
+error: Proofs/DivisibilityRulesOQ01.lean:84:2: Type mismatch
+  ofDigits_modEq_alternatingDigitSum d hd b hb (b.digits n)
+has type
+===== DivisibilityRulesOQ02
+error: Proofs/DivisibilityRules.lean:63:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  alternatingDigitSum (a :: rest')
+in the target expression
+error: Proofs/DivisibilityRules.lean:79:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DivisibilityRules.lean:82:27: Application type mismatch: The argument
+  ih
+has type
+error: Proofs/DivisibilityRules.lean:100:4: unsolved goals
+case pos
+d b : ℕ
+===== DivisibilityTruncationGeneralOQ01OQ01
+error: Proofs/DivisibilityRules.lean:63:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  alternatingDigitSum (a :: rest')
+in the target expression
+error: Proofs/DivisibilityRules.lean:79:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/DivisibilityRules.lean:82:27: Application type mismatch: The argument
+  ih
+has type
+error: Proofs/DivisibilityRules.lean:100:4: unsolved goals
+case pos
+d b : ℕ
+===== DivisibilityTruncationGeneralOQ03
+error: Proofs/DivisibilityTruncationGeneralOQ03.lean:71:51: Application type mismatch: The argument
+  dvd_refl d
+has type
+error: Proofs/DivisibilityTruncationGeneralOQ03.lean:109:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(Nat.gcdA 10 d % ↑d).natAbs
+in the target expression
+===== DyckCatalanCountOQ01OQ01
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:85:4: Invalid pattern variable: Variable name must be atomic, but `Tree.nil` has multiple components
+warning: Proofs/DyckCatalanCountOQ01OQ01.lean:90:41: `Tree.nil` has been deprecated: Use `BinaryTree.nil` instead
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:96:0: Not a definitional equality: the left-hand side
+  Tree.decodeForest Tree.nil
+is not definitionally equal to the right-hand side
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:96:86: Type mismatch
+  rfl
+has type
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:98:0: Not a definitional equality: the left-hand side
+  Tree.decodeForest (Tree.node a l r)
+is not definitionally equal to the right-hand side
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:381:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ a
+in the target expression
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:383:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (-1) ^ a
+in the target expression
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean:571:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  sign (Equiv.addLeft b) ^ n
+in the target expression
+===== ElementaryQuadraticReciprocityOQ03OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean:61:2: Type mismatch
+  Eq.symm (jacobiSym.mod_left a n)
+has type
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean:175:2: Type mismatch
+  Eq.symm (jacobiSym.mod_left a n)
+has type
+===== ElementaryQuadraticReciprocityOQ03OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean:39:2: Type mismatch
+  Eq.symm (jacobiSym.mod_left a n)
+has type
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean:66:62: unsolved goals
+n : ℕ
+hn : 1 < n
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean:71:20: Function expected at
+  χ₈
+but this term has type
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean:85:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  jacobiSym (↑7) 13
+in the target expression
+===== Erdos1000OQ02
+error: Proofs/Erdos1000Problem.lean:171:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {x ∈ Icc 1 (k + 2) | ∀ j < k + 1, (k + 2) / x.gcd (k + 2) ≠ j + 1}
+in the target expression
+===== Erdos1000Problem
+error: Proofs/Erdos1000Problem.lean:171:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {x ∈ Icc 1 (k + 2) | ∀ j < k + 1, (k + 2) / x.gcd (k + 2) ≠ j + 1}
+in the target expression
+===== Erdos1001OQ02OQ01
+error: Proofs/Erdos1001OQ02OQ01.lean:367:2: Type mismatch: After simplification, term
+  Tendsto.inv_tendsto_atTop hpow
+ has type
+===== Erdos1002OQ01
+error: Proofs/Erdos1002OQ01.lean:44:2: No goals to be solved
+error: Proofs/Erdos1002OQ01.lean:68:4: Type mismatch
+  Tendsto.comp tendsto_arctan_atTop (tendsto_mul_atTop ρ hρ)
+error: Proofs/Erdos1002OQ01.lean:68:4: Type mismatch
+  Tendsto.comp tendsto_arctan_atTop (tendsto_mul_atTop ρ hρ)
+has type
+error: Proofs/Erdos1002OQ01.lean:65:53: unsolved goals
+case e'_3
+ρ : ℝ
+error: Proofs/Erdos1002OQ01.lean:79:4: Type mismatch
+  Tendsto.comp tendsto_arctan_atBot (tendsto_mul_atBot ρ hρ)
+has type
+===== Erdos1002OQ01OQ01
+error: Proofs/Erdos1002OQ01OQ01.lean:144:6: Invalid argument name `g` for function `squeeze_zero_norm`
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/Erdos1002OQ01OQ01.lean:146:2: No goals to be solved
+error: Proofs/Erdos1002OQ01OQ01.lean:164:6: Invalid argument name `g` for function `squeeze_zero_norm`
+error: Proofs/Erdos1002OQ01OQ01.lean:164:6: Invalid argument name `g` for function `squeeze_zero_norm`
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/Erdos1002OQ01OQ01.lean:166:2: No goals to be solved
+warning: Proofs/Erdos1002OQ01OQ01.lean:208:33: `continuous_finset_sum` has been deprecated: Use `continuous_finsetSum` instead
+error: Proofs/Erdos1002OQ01OQ01.lean:209:31: Application type mismatch: The argument
+===== Erdos1005ProblemOQ02
+error: Proofs/Erdos1005ProblemOQ02.lean:1805:2: Type mismatch: After simplification, term
+  h
+ has type
+===== Erdos1008OQ01
+error: Proofs/Erdos1008OQ01.lean:236:41: Application type mismatch: The argument
+  hne
+has type
+===== Erdos100OQ02
+error: Proofs/Erdos100OQ02.lean:73:2: Type mismatch: After simplification, term
+  Tendsto.inv_tendsto_atTop hlog
+ has type
+===== Erdos1013ConstantRatio
+error: Proofs/Erdos1013ConstantRatio.lean:78:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1013ConstantRatio.lean:123:4: Type mismatch: After simplification, term
+  Tendsto.comp hasym (tendsto_add_atTop_nat 1)
+ has type
+===== Erdos1013UnconditionalRatio
+error: Proofs/Erdos1013UnconditionalRatio.lean:94:2: Type mismatch: After simplification, term
+  Tendsto.comp h2 tendsto_natCast_atTop_atTop
+ has type
+error: Proofs/Erdos1013UnconditionalRatio.lean:205:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1013UnconditionalRatio.lean:377:4: Type mismatch: After simplification, term
+  Tendsto.comp Real.tendsto_log_atTop tendsto_natCast_atTop_atTop
+ has type
+===== Erdos1014OQ02
+error: Proofs/Erdos1014Problem.lean:66:4: unsolved goals
+case neg
+l : ℕ
+error: Proofs/Erdos1014Problem.lean:113:16: Application type mismatch: The argument
+  eventually_atTop.mpr (Exists.intro 1 fun n hn => ?m.141)
+has type
+error: Proofs/Erdos1014Problem.lean:113:54: unsolved goals
+a : ℕ
+h : Tendsto (fun n => 1 + (↑n)⁻¹) atTop (𝓝 1)
+error: Proofs/Erdos1014Problem.lean:128:38: typeclass instance problem is stuck
+  Archimedean ?m.184
+===== Erdos1014OQ03
+error: Proofs/Erdos1014OQ03.lean:177:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:181:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:229:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:233:4: Type mismatch: After simplification, term
+  this
+ has type
+===== Erdos1014OQ03Concrete
+error: Proofs/Erdos1014Problem.lean:66:4: unsolved goals
+case neg
+l : ℕ
+error: Proofs/Erdos1014Problem.lean:113:16: Application type mismatch: The argument
+  eventually_atTop.mpr (Exists.intro 1 fun n hn => ?m.141)
+has type
+error: Proofs/Erdos1014Problem.lean:113:54: unsolved goals
+a : ℕ
+h : Tendsto (fun n => 1 + (↑n)⁻¹) atTop (𝓝 1)
+error: Proofs/Erdos1014Problem.lean:128:38: typeclass instance problem is stuck
+  Archimedean ?m.184
+===== Erdos1014OQ03LogIncrement
+error: Proofs/Erdos1014OQ03.lean:177:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:181:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:229:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:233:4: Type mismatch: After simplification, term
+  this
+ has type
+===== Erdos1014OQ03Obstruction
+error: Proofs/Erdos1014OQ03.lean:177:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:181:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:229:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Erdos1014OQ03.lean:233:4: Type mismatch: After simplification, term
+  this
+ has type
+===== Erdos1014Problem
+error: Proofs/Erdos1014Problem.lean:66:4: unsolved goals
+case neg
+l : ℕ
+error: Proofs/Erdos1014Problem.lean:113:16: Application type mismatch: The argument
+  eventually_atTop.mpr (Exists.intro 1 fun n hn => ?m.141)
+has type
+error: Proofs/Erdos1014Problem.lean:113:54: unsolved goals
+a : ℕ
+h : Tendsto (fun n => 1 + (↑n)⁻¹) atTop (𝓝 1)
+error: Proofs/Erdos1014Problem.lean:128:38: typeclass instance problem is stuck
+  Archimedean ?m.184
+===== Erdos1017OQ01
+error: Proofs/Erdos1017OQ01.lean:116:37: Type mismatch
+  Eq.symm (Nat.div_add_mod n 2)
+has type
+error: Proofs/Erdos1017OQ01.lean:123:8: unsolved goals
+n : ℕ
+h2 : n = n / 2 * 2 + n % 2
+error: Proofs/Erdos1017OQ01.lean:129:8: unsolved goals
+n : ℕ
+h2 : n = n / 2 * 2 + n % 2
+error: Proofs/Erdos1017OQ01.lean:211:14: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+a b : ℕ
+===== Erdos1017Problem
+error: Proofs/Erdos1017OQ01.lean:116:37: Type mismatch
+  Eq.symm (Nat.div_add_mod n 2)
+has type
+error: Proofs/Erdos1017OQ01.lean:123:8: unsolved goals
+n : ℕ
+h2 : n = n / 2 * 2 + n % 2
+error: Proofs/Erdos1017OQ01.lean:129:8: unsolved goals
+n : ℕ
+h2 : n = n / 2 * 2 + n % 2
+error: Proofs/Erdos1017OQ01.lean:211:14: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+a b : ℕ
+===== Erdos1018OQ04
+error: Proofs/Erdos1018OQ04.lean:80:6: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => #{ edges := _a, uniform := ⋯ }.edges = t.choose r
+Error: Application type mismatch: The argument
+===== Erdos1018OQ04Incomplete01
+error: Proofs/Erdos1018OQ04.lean:80:6: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => #{ edges := _a, uniform := ⋯ }.edges = t.choose r
+Error: Application type mismatch: The argument
+===== Erdos1021OQ01Incomplete01
+error: Proofs/Erdos1021OQ01Incomplete01.lean:132:2: Type mismatch: After simplification, term
+  this
+ has type
+===== Erdos1023OQ01
+error: Proofs/Erdos1023OQ01.lean:504:4: Type mismatch: After simplification, term
+  hc
+ has type
+===== Erdos1023Problem
+error: Proofs/Erdos1023Problem.lean:310:48: Application type mismatch: The argument
+  Nat.one_le_iff_ne_zero.mp hn1
+has type
+error: Proofs/Erdos1023Problem.lean:322:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  -?m.195 < ?m.196
+in the target expression
+error: Proofs/Erdos1023Problem.lean:324:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.203 / (2 ^ n / √↑n) < ?m.202
+in the target expression
+===== Erdos1027OQ03
+error: Proofs/Erdos1027OQ03.lean:164:21: Application type mismatch: The argument
+  Nat.cast_nonneg
+has type
+===== Erdos1029LowerBound
+error: Proofs/Erdos1029LowerBound.lean:25:18: Application type mismatch: The argument
+  Sym2.mk
+has type
+error: Proofs/Erdos1029LowerBound.lean:30:2: Type mismatch
+  Sym2.card_image_offDiag S
+has type
+error: Proofs/Erdos1029LowerBound.lean:115:49: Application type mismatch: The argument
+  he
+has type
+===== Erdos1039Conformal
+error: Proofs/Erdos1039Conformal.lean:78:65: Type mismatch
+  le_of_lt ?m.78
+has type
+===== Erdos1039ProblemAristotle
+error: Proofs/Erdos1039ProblemAristotle.lean:29:56: unsolved goals
+f : UnitDiscPolynomial
+hf : f.degree = 1
+error: Proofs/Erdos1039ProblemAristotle.lean:35:89: unsolved goals
+f : UnitDiscPolynomial
+hf : f.degree = 1
+error: Proofs/Erdos1039ProblemAristotle.lean:64:44: Application type mismatch: The argument
+  hc
+has type
+error: Proofs/Erdos1039ProblemAristotle.lean:66:11: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case hs
+===== Erdos1040Problem
+error: Proofs/Erdos1040Problem.lean:281:10: Application type mismatch: The argument
+  nthDiameter F n
+has type
+error: Proofs/Erdos1040Problem.lean:281:9: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/Erdos1040Problem.lean:283:2: No goals to be solved
+warning: Proofs/Erdos1040Problem.lean:384:22: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos1040Problem.lean:283:2: No goals to be solved
+warning: Proofs/Erdos1040Problem.lean:384:22: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos1040Problem.lean:394:20: Invalid field `lt_or_lt`: The environment does not contain `Function.lt_or_lt`, so it is not possible to project the field `lt_or_lt` from an expression
+  hne_ij
+of type `i = j → False`
+===== Erdos1049Problem
+error: Proofs/Erdos1049Problem.lean:57:2: Type mismatch
+  Finset.card_product ?m.17 ?m.18
+has type
+error: Proofs/Erdos1049Problem.lean:134:38: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?a ^ ?m) ^ ?n
+in the target expression
+error: Proofs/Erdos1049Problem.lean:138:43: Application type mismatch: The argument
+  LT.lt.le hr_lt
+has type
+error: Proofs/Erdos1049Problem.lean:153:57: Application type mismatch: The argument
+  LT.lt.le hr_lt
+has type
+===== Erdos1050Problem
+error: Proofs/Erdos1050Problem.lean:63:48: Application type mismatch: The argument
+  fun n => 2 * (1 / ↑q) ^ n
+has type
+error: Proofs/Erdos1050Problem.lean:101:33: Application type mismatch: The argument
+  fun n => 4 * (1 / 2) ^ n
+has type
+error: Proofs/Erdos1050Problem.lean:102:41: unsolved goals
+⊢ 0 ≤ ?m.62
+error: Proofs/Erdos1050Problem.lean:102:55: unsolved goals
+error: Proofs/Erdos1050Problem.lean:102:55: unsolved goals
+⊢ ?m.62 < 1
+error: Proofs/Erdos1050Problem.lean:104:29: Tactic `cases` failed with a nested error:
+===== Erdos1051Problem
+error: Proofs/Erdos1051Problem.lean:87:58: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos1051Problem.lean:87:71: Type mismatch
+  n + 1
+has type
+error: Proofs/Erdos1051Problem.lean:89:21: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos1051Problem.lean:90:32: Type mismatch
+  n + 1
+has type
+===== Erdos1053Problem
+error: Proofs/Erdos1053Problem.lean:57:2: Type mismatch
+  Finset.single_le_sum (fun x x_1 => Nat.zero_le (?m.13 x))
+    (Nat.mem_divisors.mpr ⟨dvd_refl n, fun a => sigma_ge_self._proof_1_1 n hn a⟩)
+error: Proofs/Erdos1053Problem.lean:66:4: linarith failed to find a contradiction
+case zero
+n : ℕ
+error: Proofs/Erdos1053Problem.lean:74:2: Type mismatch
+  Nat.mul_div_cancel_left k h.left
+has type
+error: Proofs/Erdos1053Problem.lean:99:39: Application type mismatch: The argument
+  Nat.one_pos
+has type
+===== Erdos1054AlmostAllOQ01
+error: Proofs/Erdos1054AlmostAllOQ01.lean:97:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?m.43 :: List.scanl (fun x1 x2 => x1 + x2) (a + b) l).getLast ⋯
+in the target expression
+error: Proofs/Erdos1054AlmostAllOQ01.lean:123:52: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?m.146 :: ?m.147).tail
+in the target expression
+===== Erdos1054AlmostAllOQ0103
+error: Proofs/Erdos1054AlmostAllOQ0103.lean:71:2: Type mismatch: After simplification, term
+  dvd_lcm hmem
+ has type
+===== Erdos1056Aristotle
+error: Proofs/Erdos1056Aristotle.lean:29:14: unsolved goals
+case succ
+m : ℕ
+error: Proofs/Erdos1056Aristotle.lean:51:35: Type mismatch
+  ZMod.val_natCast ?m.52
+has type
+error: Proofs/Erdos1056Aristotle.lean:52:49: Type mismatch
+  ZMod.val_neg_one
+has type
+error: Proofs/Erdos1056Aristotle.lean:63:34: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos1057Problem
+error: Proofs/Erdos1057Problem.lean:204:6: Type mismatch
+  orderOf_eq_card_of_forall_mem_zpowers hg
+has type
+===== Erdos105OQ05
+error: Proofs/Erdos105OQ05.lean:67:27: Application type mismatch: The argument
+  v
+has type
+error: Proofs/Erdos105OQ05.lean:84:12: Application type mismatch: The argument
+  hpq
+has type
+===== Erdos1065CunninghamChains
+error: Proofs/Erdos1065CunninghamChains.lean:182:29: Application type mismatch: The argument
+  List.not_mem_nil ?m.53
+has type
+error: Proofs/Erdos1065CunninghamChains.lean:193:36: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  chain
+of type `List ℕ`
+error: Proofs/Erdos1065CunninghamChains.lean:196:8: unsolved goals
+case nil
+⊢ IsCunninghamChain [] → sorry ()
+error: Proofs/Erdos1065CunninghamChains.lean:200:10: unsolved goals
+case cons.nil
+hd : ℕ
+===== Erdos1068Problem
+error: Proofs/Erdos1068Problem.lean:238:42: Application type mismatch: The argument
+  V
+has type
+===== Erdos1070Problem
+error: Proofs/Erdos1070Problem.lean:193:40: Type mismatch
+  Nat.cast_nonneg
+has type
+===== Erdos1073Problem
+error: Proofs/Erdos1073Problem.lean:127:4: Type mismatch
+  this
+has type
+error: Proofs/Erdos1073Problem.lean:141:31: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  Prime.one_lt hp
+of type `(succ 1).le p`
+===== Erdos1080OQ03
+error: Proofs/Erdos1080OQ03.lean:506:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Walk.nil.support
+in the target expression
+error: Proofs/Erdos1080OQ03.lean:542:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Walk.nil.edges
+in the target expression
+error: Proofs/Erdos1080OQ03.lean:682:37: unknown tactic
+error: Proofs/Erdos1080OQ03.lean:671:29: Type mismatch
+  k
+error: Proofs/Erdos1080OQ03.lean:671:29: Type mismatch
+  k
+has type
+===== Erdos1093OQ02FactorialGrowth
+error: Proofs/Erdos1093OQ02FactorialGrowth.lean:68:16: Type mismatch: After simplification, term
+  factorial_pos b
+ has type
+===== Erdos1098OQ01
+error: Proofs/Erdos1098OQ01.lean:51:2: Type mismatch
+  hz h
+has type
+error: Proofs/Erdos1098OQ01.lean:75:20: overloaded, errors 
+  failed to synthesize instance of type class
+    Insert G (Finset G)
+error: Proofs/Erdos1098OQ01.lean:99:21: Type mismatch
+  hy
+has type
+error: Proofs/Erdos1098OQ01.lean:120:27: Application type mismatch: The argument
+  mul_comm g h
+has type
+===== Erdos1098OQ04
+error: Proofs/Erdos1098OQ04.lean:77:24: Invalid field `comm`: The environment does not contain `IsMulCommutative.comm`, so it is not possible to project the field `comm` from an expression
+  h
+of type `IsMulCommutative G`
+error: Proofs/Erdos1098OQ04.lean:77:44: Application type mismatch: The argument
+  fun a b => h a b
+has type
+error: Proofs/Erdos1098OQ04.lean:83:9: Application type mismatch: The argument
+  mul_comm
+has type
+===== Erdos109OQ01
+error: Proofs/Erdos109OQ01.lean:84:16: Application type mismatch: The argument
+  hnm
+has type
+error: Proofs/Erdos109OQ01.lean:132:49: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos109OQ01.lean:132:59: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos109OQ01.lean:216:13: No goals to be solved
+error: Proofs/Erdos109OQ01.lean:219:13: No goals to be solved
+error: Proofs/Erdos109OQ01.lean:228:23: Application type mismatch: The argument
+===== Erdos109OQ01Aristotle
+error: Proofs/Erdos109OQ01Aristotle.lean:51:16: Application type mismatch: The argument
+  hnm
+has type
+===== Erdos1104OQ01
+error: Proofs/Erdos1104OQ01.lean:296:25: Type mismatch: After simplification, term
+  h
+ has type
+===== Erdos1104Problem
+error: Proofs/Erdos1104Problem.lean:45:2: Type mismatch
+  SimpleGraph.colorable_of_fintype G
+has type
+error: Proofs/Erdos1104Problem.lean:52:2: Type mismatch
+  SimpleGraph.chromaticNumber_le_card
+has type
+error: Proofs/Erdos1104Problem.lean:59:2: No goals to be solved
+warning: Proofs/Erdos1104Problem.lean:58:8: This simp argument is unused:
+  SimpleGraph.IsClique
+error: Proofs/Erdos1104Problem.lean:66:39: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 2
+===== Erdos1111Problem
+error: Proofs/Erdos1111Problem.lean:60:2: Type mismatch
+  (induce (↑S) G).chromaticNumber
+has type
+error: Proofs/Erdos1111Problem.lean:84:0: declaration `Erdos1111.d_func` contains universe level metavariables at the expression
+  HasElZaharErdosProperty.{?u.12} t c d
+in the declaration body
+error: Proofs/Erdos1111Problem.lean:91:0: declaration `Erdos1111.ElZaharErdosConjecture` contains universe level metavariables at the expression
+  HasElZaharErdosProperty.{?u.22} t c d
+in the declaration body
+===== Erdos1113Problem
+error: Proofs/Erdos1113Problem.lean:94:4: Type mismatch
+  h
+has type
+===== Erdos1114Problem
+error: Proofs/Erdos1114Problem.lean:96:5: Application type mismatch: The argument
+  i
+has type
+===== Erdos1130Problem
+error: Proofs/Erdos1130Problem.lean:51:30: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos1130Problem.lean:98:27: Application type mismatch: The argument
+  heq
+has type
+error: Proofs/Erdos1130Problem.lean:118:38: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos1130Problem.lean:118:4: unsolved goals
+case neg
+n : ℕ
+===== Erdos1142Problem
+error: Proofs/Erdos1142Problem.lean:107:24: Type mismatch
+  LT.lt.le
+    (LE.le.trans_lt
+===== Erdos1145Problem
+error: Proofs/Erdos1145Problem.lean:220:76: No goals to be solved
+error: Proofs/Erdos1145Problem.lean:224:59: Application type mismatch: The argument
+  ?m.14
+error: Proofs/Erdos1145Problem.lean:224:59: Application type mismatch: The argument
+  ?m.14
+has type
+error: Proofs/Erdos1145Problem.lean:225:11: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/Erdos1145Problem.lean:232:58: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ ?n * ?a
+error: Proofs/Erdos1145Problem.lean:232:58: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ ?n * ?a
+in the target expression
+===== Erdos1149Aristotle
+error: Proofs/Erdos1149Aristotle.lean:29:58: Application type mismatch: The argument
+  hN
+has type
+error: Proofs/Erdos1149Aristotle.lean:29:20: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos1149Aristotle.lean:31:17: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+error: Proofs/Erdos1149Aristotle.lean:31:64: Application type mismatch: The argument
+  rfl
+has type
+===== Erdos1149Problem
+error: Proofs/BaselProblemOQ04OQ03.lean:71:4: No goals to be solved
+error: Proofs/BaselProblemOQ04OQ03.lean:81:46: Type mismatch
+  div_add_mod N d
+error: Proofs/BaselProblemOQ04OQ03.lean:81:46: Type mismatch
+  div_add_mod N d
+has type
+error: Proofs/BaselProblemOQ04OQ03.lean:83:29: linarith failed to find a contradiction
+case h1
+d : ℕ
+error: Proofs/BaselProblemOQ04OQ03.lean:84:27: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  |(-?a)|
+in the target expression
+===== Erdos1155OQ01
+error: Proofs/Erdos1155OQ01.lean:197:4: Type mismatch
+  this
+has type
+error: Proofs/Erdos1155OQ01.lean:201:4: linarith failed to find a contradiction
+case refine_3
+this : triangleRemovalEdges 2 ≤ 2
+===== Erdos1155OQ01OQ01
+error: Proofs/Erdos1155OQ01.lean:197:4: Type mismatch
+  this
+has type
+error: Proofs/Erdos1155OQ01.lean:201:4: linarith failed to find a contradiction
+case refine_3
+this : triangleRemovalEdges 2 ≤ 2
+===== Erdos1155OQ02
+error: Proofs/Erdos1155OQ01.lean:197:4: Type mismatch
+  this
+has type
+error: Proofs/Erdos1155OQ01.lean:201:4: linarith failed to find a contradiction
+case refine_3
+this : triangleRemovalEdges 2 ≤ 2
+===== Erdos1156Problem
+error: Proofs/Erdos1156Problem.lean:87:22: Type mismatch
+  h
+has type
+error: Proofs/Erdos1156Problem.lean:96:11: Application type mismatch: The argument
+  Fin.elim0
+has type
+===== Erdos1176Problem
+error: Proofs/Erdos1176Problem.lean:109:0: declaration `Erdos1176.ErdosProblem1176` contains universe level metavariables at the expression
+  Eq.{?u.11 + 2} (chromaticNumber.{u_2, ?u.11} G)
+    (DFunLike.coe.{?u.11 + 2, ?u.11 + 2, ?u.11 + 2} aleph.{?u.11} (OfNat.ofNat.{?u.11 + 1} 1))
+error: Proofs/Erdos1176Problem.lean:136:4: Type mismatch
+  hcol
+has type
+error: Proofs/Erdos1176Problem.lean:185:25: Application type mismatch: The argument
+  e
+has type
+error: Proofs/Erdos1176Problem.lean:180:34: unsolved goals
+V : Type u_1
+C : Type u_2
+===== Erdos1178Problem
+error: Proofs/Erdos1178Problem.lean:109:25: Application type mismatch: The argument
+  sarkozy_selkow_result r e hr he
+has type
+error: Proofs/Erdos1178Problem.lean:178:49: unsolved goals
+⊢ conjecturedValue 3 3 = 6
+error: Proofs/Erdos1178Problem.lean:181:55: unsolved goals
+error: Proofs/Erdos1178Problem.lean:181:55: unsolved goals
+⊢ conjecturedValue 3 4 = 7
+error: Proofs/Erdos1178Problem.lean:184:55: unsolved goals
+error: Proofs/Erdos1178Problem.lean:184:55: unsolved goals
+⊢ conjecturedValue 4 3 = 9
+error: Proofs/Erdos1178Problem.lean:245:31: Application type mismatch: The argument
+===== Erdos1179OQ01OQ02
+error: Proofs/Erdos1179OQ01OQ02.lean:78:4: Type mismatch: After simplification, term
+  this
+ has type
+===== Erdos1183Problem
+error: Proofs/Erdos1183Problem.lean:120:17: Application type mismatch: The argument
+  k
+has type
+error: Proofs/Erdos1183Problem.lean:153:8: Unexpected syntax
+  fin_cases (χ x)
+warning: Proofs/Erdos1183Problem.lean:159:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos1183Problem.lean:190:4: linarith failed to find a contradiction
+case refine_3
+n : ℕ
+===== Erdos1201Problem
+error: Proofs/Erdos1201Problem.lean:436:4: type class instance expected
+  Real.instLE = PartialOrder.toPreorder.toLE
+error: Proofs/Erdos1201Problem.lean:437:4: type class instance expected
+error: Proofs/Erdos1201Problem.lean:437:4: type class instance expected
+  densityFun S N = ?convert_5 / ?convert_6
+error: Proofs/Erdos1201Problem.lean:438:4: Type mismatch
+error: Proofs/Erdos1201Problem.lean:438:4: Type mismatch
+  le_trans (Finset.card_filter_le ?m.156 ?m.157) ?m.159
+has type
+error: Proofs/Erdos1201Problem.lean:434:76: unsolved goals
+case convert_4
+S : Set ℕ
+===== Erdos140Problem
+error: Proofs/Erdos140Problem.lean:128:71: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 2
+error: Proofs/Erdos140Problem.lean:141:4: Tactic `assumption` failed
+C : ℝ
+error: Proofs/Erdos140Problem.lean:158:44: Application type mismatch: The argument
+  hC
+has type
+error: Proofs/Erdos140Problem.lean:164:71: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ c ≤ 3
+===== Erdos14Problem
+error: Proofs/Erdos14Problem.lean:66:66: Application type mismatch: The argument
+  N
+has type
+error: Proofs/Erdos14Problem.lean:87:66: Application type mismatch: The argument
+  N
+has type
+===== Erdos152OQ01
+error: Proofs/Erdos152Problem.lean:216:52: Application type mismatch: The argument
+  Eq.symm hab
+has type
+error: Proofs/Erdos152Problem.lean:217:29: Application type mismatch: The argument
+  rfl
+has type
+error: Proofs/Erdos152Problem.lean:217:35: No goals to be solved
+error: Proofs/Erdos152Problem.lean:227:8: Type mismatch: After simplification, term
+  h
+error: Proofs/Erdos152Problem.lean:227:8: Type mismatch: After simplification, term
+  h
+ has type
+===== Erdos152Problem
+error: Proofs/Erdos152Problem.lean:216:52: Application type mismatch: The argument
+  Eq.symm hab
+has type
+error: Proofs/Erdos152Problem.lean:217:29: Application type mismatch: The argument
+  rfl
+has type
+error: Proofs/Erdos152Problem.lean:217:35: No goals to be solved
+error: Proofs/Erdos152Problem.lean:227:8: Type mismatch: After simplification, term
+  h
+error: Proofs/Erdos152Problem.lean:227:8: Type mismatch: After simplification, term
+  h
+ has type
+===== Erdos159Problem
+error: Proofs/Erdos159Problem.lean:110:6: invalid {...} notation, expected type is not of the form (C ...)
+  ∀ (x y : Fin N), (if G.Adj x y then true else false) = if G.Adj y x then true else false
+warning: Proofs/Erdos159Problem.lean:159:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos159Problem.lean:224:30: Application type mismatch: The argument
+  hv
+has type
+error: Proofs/Erdos159Problem.lean:262:46: Invalid field `mp`: The environment does not contain `Function.mp`, so it is not possible to project the field `mp` from an expression
+  adj_comm G
+of type
+error: Proofs/Erdos159Problem.lean:272:8: `simp` made no progress
+error: Proofs/Erdos159Problem.lean:272:8: `simp` made no progress
+error: Proofs/Erdos159Problem.lean:272:8: `simp` made no progress
+===== Erdos166Problem
+error: Proofs/Erdos166Problem.lean:71:34: Application type mismatch: The argument
+  Sym2.mk (x, y)
+has type
+error: Proofs/Erdos166Problem.lean:73:10: Application type mismatch: The argument
+  Sym2.mk (x, y)
+has type
+error: Proofs/Erdos166Problem.lean:118:51: unexpected identifier; expected ']'
+warning: Proofs/Erdos166Problem.lean:93:43: try 'simp' instead of 'simpa'
+error: Proofs/Erdos166Problem.lean:118:33: unsolved goals
+t : ℕ
+ht : 2 ≤ t
+===== Erdos167Problem
+error: Proofs/Erdos167Problem.lean:148:51: Tactic `simp` failed with a nested error:
+(deterministic) timeout at `simp`, maximum number of heartbeats (200000) has been reached
+error: Proofs/Erdos167Problem.lean:125:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos167Problem.lean:221:56: Application type mismatch: The argument
+  s(a, b)
+has type
+error: Proofs/Erdos167Problem.lean:221:68: Type mismatch: After simplification, term
+  hab
+ has type
+===== Erdos171Problem
+error: Proofs/Erdos171Problem.lean:138:2: Type mismatch
+  ![1 / 2, √3 / 2]
+has type
+error: Proofs/Erdos171Problem.lean:139:2: Type mismatch
+  ![3 / 2, √3 / 2]
+has type
+error: Proofs/Erdos171Problem.lean:140:2: Type mismatch
+  ![5 / 6, √11 / 6]
+has type
+error: Proofs/Erdos171Problem.lean:141:2: Type mismatch
+  ![(5 - √3 * √11) / 12, (5 * √3 + √11) / 12]
+has type
+===== Erdos186Problem
+error: Proofs/Erdos186Problem.lean:173:4: Type mismatch
+  lower_bound_quarter N h1
+has type
+error: Proofs/Erdos186Problem.lean:206:26: Application type mismatch: The argument
+  Ne.symm hab
+has type
+===== Erdos1OQ03
+error: Proofs/Erdos1WIP01.lean:78:6: linarith failed to find a contradiction
+case h1
+A : Finset ℕ
+error: Proofs/Erdos1WIP01.lean:90:6: Function expected at
+  single_le_sum (fun x x_1 => Nat.zero_le (?m.284 x)) ?m.291
+but this term has type
+error: Proofs/Erdos1WIP01.lean:90:54: Application type mismatch: The argument
+  S
+has type
+error: Proofs/Erdos1WIP01.lean:102:6: Function expected at
+  single_le_sum (fun x x_1 => Nat.zero_le (?m.348 x)) ?m.355
+but this term has type
+===== Erdos1OQ03Aristotle
+error: Proofs/Erdos1OQ03Aristotle.lean:26:41: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ?n
+in the target expression
+error: Proofs/Erdos1OQ03Aristotle.lean:84:23: Type mismatch
+  sum_singleton
+has type
+error: Proofs/Erdos1OQ03Aristotle.lean:86:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≤ 0
+error: Proofs/Erdos1OQ03Aristotle.lean:95:23: Type mismatch
+  sum_singleton
+has type
+===== Erdos1OQ04
+error: Proofs/Erdos1OQ04.lean:32:28: Application type mismatch: The argument
+  mem_powerset.mp hS
+has type
+error: Proofs/Erdos1OQ04.lean:63:44: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:63:60: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:67:47: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:63:60: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:67:47: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:67:63: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:67:47: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:67:63: No goals to be solved
+error: Proofs/Erdos1OQ04.lean:71:50: No goals to be solved
+===== Erdos1Wip01
+error: Proofs/Erdos1Wip01.lean:78:6: linarith failed to find a contradiction
+case h1
+A : Finset ℕ
+error: Proofs/Erdos1Wip01.lean:90:6: Function expected at
+  single_le_sum (fun x x_1 => Nat.zero_le (?m.284 x)) ?m.291
+but this term has type
+error: Proofs/Erdos1Wip01.lean:90:54: Application type mismatch: The argument
+  S
+has type
+error: Proofs/Erdos1Wip01.lean:102:6: Function expected at
+  single_le_sum (fun x x_1 => Nat.zero_le (?m.348 x)) ?m.355
+but this term has type
+===== Erdos202Problem
+error: Proofs/Erdos202Problem.lean:193:6: This extensionality tactic only applies to equalities, not
+  c.contains ↑x✝ ↔ x✝ % c.modulus = c.natResidue % c.modulus
+warning: Proofs/Erdos202Problem.lean:214:119: try 'simp' instead of 'simpa'
+error: Proofs/Erdos202Problem.lean:248:6: Type mismatch: After simplification, term
+  h_sum
+ has type
+error: Proofs/Erdos202Problem.lean:253:14: Invalid field `not_le`: The environment does not contain `Real.lt.not_le`, so it is not possible to project the field `not_le` from an expression
+  h_sum
+of type
+error: Proofs/Erdos202Problem.lean:323:2: unsolved goals
+case e'_2
+S : DisjointSystem
+===== Erdos206Problem
+error: Proofs/Erdos206Problem.lean:170:29: Application type mismatch: The argument
+  m
+has type
+===== Erdos220Aristotle
+error: Proofs/Erdos220Aristotle.lean:57:16: Application type mismatch: The argument
+  Eq.symm hcop
+has type
+error: Proofs/Erdos220Aristotle.lean:59:21: Application type mismatch: The argument
+  Eq.symm hcop
+has type
+===== Erdos222Problem
+error: Proofs/Erdos222Problem.lean:142:22: Application type mismatch: The argument
+  h
+has type
+===== Erdos223Problem
+error: Proofs/Erdos223Problem.lean:57:6: unexpected identifier; expected ')'
+error: Proofs/Erdos223Problem.lean:93:11: Type mismatch
+  ![Real.cos (2 * Real.pi * ↑↑i / ↑n), Real.sin (2 * Real.pi * ↑↑i / ↑n)]
+error: Proofs/Erdos223Problem.lean:93:11: Type mismatch
+  ![Real.cos (2 * Real.pi * ↑↑i / ↑n), Real.sin (2 * Real.pi * ↑↑i / ↑n)]
+has type
+error: Proofs/Erdos223Problem.lean:157:4: unsolved goals
+case right
+d n : ℕ
+error: Proofs/Erdos223Problem.lean:172:48: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  1 + 1 / 10
+of type `ℝ`
+===== Erdos230LowerBound
+error: Proofs/Erdos230LowerBound.lean:83:45: Type mismatch
+  Eq.symm (ciSup_pos hz₀)
+has type
+===== Erdos234Problem
+error: Proofs/Erdos234Problem.lean:124:24: Application type mismatch: The argument
+  Finset.card_filter_le ?m.37 ?m.38
+has type
+error: Proofs/Erdos234Problem.lean:131:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+  Finset.filter ?p ?s ⊆ Finset.filter ?p ?t
+with the goal
+error: Proofs/Erdos234Problem.lean:162:79: unsolved goals
+N : ℕ
+c : ℝ
+error: Proofs/Erdos234Problem.lean:178:10: Function expected at
+  Finset.filter_card_add_filter_neg_card_eq_card ?m.18
+but this term has type
+===== Erdos242Problem
+error: Proofs/Erdos242Problem.lean:67:44: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/Erdos242Problem.lean:67:9: Tactic `rcases` failed: `x✝ : ?m.14` is not an inductive datatype
+error: Proofs/Erdos242Problem.lean:98:12: typeclass instance problem is stuck
+  LE ?m.101
+error: Proofs/Erdos242Problem.lean:98:12: typeclass instance problem is stuck
+  LE ?m.101
+error: Proofs/Erdos242Problem.lean:108:37: linarith failed to find a contradiction
+p δ b c : ℕ
+x✝¹ : 0 < δ
+===== Erdos258OQ01
+error: Proofs/Erdos258OQ01.lean:201:72: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos258OQ01.lean:217:72: Application type mismatch: The argument
+  n
+has type
+===== Erdos25LogDensity
+error: Proofs/Erdos25LogDensity.lean:549:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos25LogDensity.lean:568:78: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≤ 0
+error: Proofs/Erdos25LogDensity.lean:576:4: No goals to be solved
+error: Proofs/Erdos25LogDensity.lean:592:28: Application type mismatch: The argument
+  tendsto_const_nhds
+error: Proofs/Erdos25LogDensity.lean:592:28: Application type mismatch: The argument
+  tendsto_const_nhds
+has type
+===== Erdos25Problem
+error: Proofs/Erdos25LogDensity.lean:549:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos25LogDensity.lean:568:78: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≤ 0
+error: Proofs/Erdos25LogDensity.lean:576:4: No goals to be solved
+error: Proofs/Erdos25LogDensity.lean:592:28: Application type mismatch: The argument
+  tendsto_const_nhds
+error: Proofs/Erdos25LogDensity.lean:592:28: Application type mismatch: The argument
+  tendsto_const_nhds
+has type
+===== Erdos271Problem
+error: Proofs/Erdos271Problem.lean:174:47: Application type mismatch: The argument
+  k
+has type
+error: Proofs/Erdos271Problem.lean:175:23: Application type mismatch: The argument
+  k
+has type
+error: Proofs/Erdos271Problem.lean:184:54: Application type mismatch: The argument
+  k
+has type
+error: Proofs/Erdos271Problem.lean:185:23: Application type mismatch: The argument
+  k
+has type
+===== Erdos272Problem
+error: Proofs/Erdos272Problem.lean:34:78: Type mismatch
+  Nat.succ_injective
+has type
+error: Proofs/Erdos272Problem.lean:59:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== Erdos279OQ04
+error: Proofs/Erdos279OQ04.lean:92:11: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  hoo
+has type
+error: Proofs/Erdos279OQ04.lean:93:10: No goals to be solved
+error: Proofs/Erdos279OQ04.lean:110:34: Application type mismatch: The argument
+  mul_pos hc hN_pos
+error: Proofs/Erdos279OQ04.lean:110:34: Application type mismatch: The argument
+  mul_pos hc hN_pos
+has type
+error: Proofs/Erdos279OQ04.lean:106:2: 'calc' expression has type
+  b < c * ↑N / Real.log ↑N
+but is expected to have type
+===== Erdos294Problem
+error: Proofs/Erdos294Problem.lean:293:2: Type mismatch
+  liu_sawhney_2024
+has type
+===== Erdos314Problem
+error: Proofs/Erdos314Problem.lean:52:70: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos314Problem.lean:53:44: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos314Problem.lean:119:34: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+case inl
+n : ℕ
+===== Erdos31Problem
+error: Proofs/Erdos31Problem.lean:87:2: unsolved goals
+case pos
+hempty : filter Nat.Prime (Finset.range 1) = ∅
+error: Proofs/Erdos31Problem.lean:108:8: Function expected at
+  Real.log_prod ?m.158
+but this term has type
+error: Proofs/Erdos31Problem.lean:154:27: Type mismatch
+  lt_succ_sqrt' N
+has type
+error: Proofs/Erdos31Problem.lean:209:6: mod_cast has type
+  N.sqrt + 1 ≤ 2 * N
+but is expected to have type
+===== Erdos321Problem
+error: Proofs/Erdos321Problem.lean:146:37: Application type mismatch: The argument
+  hN
+has type
+===== Erdos333Problem
+error: Proofs/Erdos333Problem.lean:219:20: Application type mismatch: The argument
+  a
+has type
+===== Erdos340GreedyCountUpper
+error: Proofs/Erdos340GreedyRpowBound.lean:56:18: `Erdos340.greedyCount` has already been declared
+error: Proofs/Erdos340GreedyRpowBound.lean:67:29: unsolved goals
+case calc.step
+error: Proofs/Erdos340GreedyRpowBound.lean:67:29: unsolved goals
+case calc.step
+n N : ℕ
+error: Proofs/Erdos340GreedyRpowBound.lean:95:28: Application type mismatch: The argument
+  hne
+has type
+===== Erdos340GreedyRpowBound
+error: Proofs/Erdos340GreedyRpowBound.lean:56:18: `Erdos340.greedyCount` has already been declared
+error: Proofs/Erdos340GreedyRpowBound.lean:67:29: unsolved goals
+case calc.step
+error: Proofs/Erdos340GreedyRpowBound.lean:67:29: unsolved goals
+case calc.step
+n N : ℕ
+error: Proofs/Erdos340GreedyRpowBound.lean:95:28: Application type mismatch: The argument
+  hne
+has type
+===== Erdos348Problem
+error: Proofs/Erdos348Problem.lean:111:59: Type mismatch
+  n + 1
+has type
+error: Proofs/Erdos348Problem.lean:163:40: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 ^ i
+in the target expression
+error: Proofs/Erdos348Problem.lean:166:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * N + 1
+in the target expression
+error: Proofs/Erdos348Problem.lean:177:55: Application type mismatch: The argument
+  hmn
+has type
+===== Erdos350Problem
+error: Proofs/Erdos350Problem.lean:66:2: Application type mismatch: The argument
+  X.erase 1 = ∅ ∨ X.erase 1 = {2}
+has type
+error: Proofs/Erdos350Problem.lean:66:19: Application type mismatch: The argument
+  Y.erase 1 = ∅ ∨ Y.erase 1 = {2}
+has type
+error: Proofs/Erdos350Problem.lean:60:59: unsolved goals
+X Y : Finset ℕ
+hne : ¬X = Y
+error: Proofs/Erdos350Problem.lean:143:9: unsolved goals
+case zero
+⊢ 1 = 2 - 1
+===== Erdos362Problem
+error: Proofs/Erdos362Problem.lean:76:34: unexpected identifier; expected ']'
+error: Proofs/Erdos362Problem.lean:76:32: unsolved goals
+n : ℕ
+error: Proofs/Erdos362Problem.lean:76:32: unsolved goals
+n : ℕ
+hn : n ≥ 3
+error: Proofs/Erdos362Problem.lean:251:11: unsolved goals
+⊢ (algebraMap ℝ ℂ) (2 * π) = ↑(2 * π)
+error: Proofs/Erdos362Problem.lean:259:15: Type mismatch
+error: Proofs/Erdos362Problem.lean:259:15: Type mismatch
+  mul_assoc ?m.147 ?m.148 ?m.149
+has type
+===== Erdos363Problem
+error: Proofs/Erdos363Problem.lean:183:32: Application type mismatch: The argument
+  hC.left I hI
+has type
+error: Proofs/Erdos363Problem.lean:264:4: mod_cast has type
+  (fun i => I.start + ↑i) a = (fun i => I.start + ↑i) b
+but is expected to have type
+===== Erdos372Problem
+error: Proofs/Erdos372Problem.lean:43:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 1
+error: Proofs/Erdos372Problem.lean:81:24: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:87:25: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:93:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:87:25: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:93:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:165:18: Application type mismatch: The argument
+error: Proofs/Erdos372Problem.lean:93:26: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'largestPrimeFactor', which is 'noncomputable'
+error: Proofs/Erdos372Problem.lean:165:18: Application type mismatch: The argument
+  density
+===== Erdos375Problem
+error: Proofs/Erdos375Problem.lean:155:6: Type mismatch
+  hpq
+has type
+error: Proofs/Erdos375Problem.lean:156:4: No goals to be solved
+warning: Proofs/Erdos375Problem.lean:189:28: Variable name `n` is not explicitly referenced.
+===== Erdos382Problem
+error: Proofs/Erdos382Problem.lean:112:55: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos382Problem.lean:132:30: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos382Problem.lean:179:4: too many variable names provided
+error: Proofs/Erdos382Problem.lean:180:27: Application type mismatch: The argument
+  ha
+error: Proofs/Erdos382Problem.lean:180:27: Application type mismatch: The argument
+  ha
+has type
+===== Erdos391Problem
+error: Proofs/Erdos391Problem.lean:59:19: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos391Problem.lean:67:16: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+error: Proofs/Erdos391Problem.lean:67:16: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+error: Proofs/Erdos391Problem.lean:67:17: Application type mismatch: The argument
+  fun x => 1
+error: Proofs/Erdos391Problem.lean:67:17: Application type mismatch: The argument
+  fun x => 1
+has type
+===== Erdos396OQ04OQ01OQ01OQ02OQ01
+error: Proofs/Erdos396OQ04OQ01OQ01OQ02OQ01.lean:100:4: Type mismatch: After simplification, term
+  Tendsto.comp (Asymptotics.IsLittleO.tendsto_div_nhds_zero Real.isLittleO_log_id_atTop) tendsto_natCast_atTop_atTop
+ has type
+error: Proofs/Erdos396OQ04OQ01OQ01OQ02OQ01.lean:107:6: Type mismatch: After simplification, term
+  Tendsto.const_mul (Real.log 2) tendsto_one_div_atTop_nhds_zero_nat
+ has type
+===== Erdos39Problem
+error: Proofs/Erdos39Problem.lean:81:50: Application type mismatch: The argument
+  hlt
+has type
+===== Erdos402Problem
+error: Proofs/Erdos402Problem.lean:325:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ?m.162 / 2
+in the target expression
+error: Proofs/Erdos402Problem.lean:351:56: No goals to be solved
+error: Proofs/Erdos402Problem.lean:351:18: unsolved goals
+case succ
+error: Proofs/Erdos402Problem.lean:351:18: unsolved goals
+case succ
+m : ℕ
+error: Proofs/Erdos402Problem.lean:354:28: Type mismatch
+  Nat.mul_le_mul_left m h
+has type
+===== Erdos414Problem
+error: Proofs/Erdos414Problem.lean:187:41: Application type mismatch: The argument
+  hd.left
+has type
+error: Proofs/Erdos414Problem.lean:182:40: unsolved goals
+n : ℕ
+hn : 1 ≤ n
+error: Proofs/Erdos414Problem.lean:198:46: Application type mismatch: The argument
+  hd_mem
+has type
+error: Proofs/Erdos414Problem.lean:214:49: Application type mismatch: The argument
+  hd₁.left
+has type
+===== Erdos429Problem
+error: Proofs/Erdos429Problem.lean:73:36: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/Erdos429Problem.lean:100:36: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  A
+of type `List ℕ`
+error: Proofs/Erdos429Problem.lean:102:21: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos429Problem.lean:102:47: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos446Problem
+error: Proofs/Erdos446Problem.lean:93:72: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos446Problem.lean:94:20: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos446Problem.lean:132:74: Application type mismatch: The argument
+  n
+has type
+===== Erdos453OQ02
+error: Proofs/Erdos453OQ02.lean:58:2: Type mismatch
+  nth_mem_of_infinite infinite_setOf_prime (n - 1)
+has type
+error: Proofs/Erdos453OQ02.lean:94:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:96:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:98:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:96:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:98:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:100:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:98:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:100:27: No goals to be solved
+error: Lean exited with code 1
+===== Erdos453Problem
+error: Proofs/Erdos453Problem.lean:71:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:72:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:72:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:83:2: Type mismatch
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:83:2: Type mismatch
+  nth_mem_of_infinite infinite_setOf_prime (n - 1)
+===== Erdos454Aristotle
+error: Proofs/Erdos454Aristotle.lean:26:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Aristotle.lean:36:30: unsolved goals
+n : ℕ
+⊢ ¬n = 0
+error: Proofs/Erdos454Aristotle.lean:65:2: Type mismatch
+  prime_nth_prime k
+has type
+error: Proofs/Erdos454Aristotle.lean:75:28: unsolved goals
+n : ℕ
+hn : n > 0
+===== Erdos454Problem
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:47:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+warning: Proofs/Erdos454Problem.lean:46:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:50:55: Type mismatch
+===== Erdos454ProblemAristotle
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:47:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+warning: Proofs/Erdos454Problem.lean:46:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:50:55: Type mismatch
+===== Erdos459Problem
+error: Proofs/Erdos459Problem.lean:67:68: Application type mismatch: The argument
+  hm
+has type
+error: Proofs/Erdos459Problem.lean:72:50: Application type mismatch: The argument
+  hn
+has type
+error: Proofs/Erdos459Problem.lean:88:8: unsolved goals
+case pos
+u✝ u : ℕ
+error: Proofs/Erdos459Problem.lean:90:10: unsolved goals
+case pos
+u✝ u : ℕ
+===== Erdos469Problem
+error: Proofs/Erdos469Problem.lean:47:21: Application type mismatch: The argument
+  le_refl ?m.16
+has type
+error: Proofs/Erdos469Problem.lean:76:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos469Problem.lean:163:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos469Problem.lean:315:21: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== Erdos478Problem
+error: Proofs/Erdos478Problem.lean:81:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos478Problem.lean:84:42: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  Nat.succ 0 = k
+error: Proofs/Erdos478Problem.lean:91:19: Type mismatch
+  Eq.symm (ZMod.natCast_val r)
+has type
+error: Proofs/Erdos478Problem.lean:104:46: Type mismatch
+  sq m
+has type
+===== Erdos487Problem
+error: Proofs/Erdos487Problem.lean:140:56: Application type mismatch: The argument
+  heq
+has type
+error: Proofs/Erdos487Problem.lean:141:43: Type mismatch
+  h1
+has type
+error: Proofs/Erdos487Problem.lean:147:56: Application type mismatch: The argument
+  heq
+has type
+error: Proofs/Erdos487Problem.lean:173:21: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  F
+of type `Finset (Finset (Fin n))`
+===== Erdos488Problem
+error: Proofs/Erdos488Problem.lean:219:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos488Problem.lean:234:37: Type mismatch
+  Eq.symm (Nat.div_add_mod N P)
+has type
+error: Proofs/Erdos488Problem.lean:246:37: No goals to be solved
+error: Proofs/Erdos488Problem.lean:265:53: don't know how to synthesize placeholder
+context:
+error: Proofs/Erdos488Problem.lean:265:53: don't know how to synthesize placeholder
+context:
+A : Finset ℕ
+===== Erdos48Problem
+error: Proofs/Erdos48Problem.lean:80:67: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos48Problem.lean:87:32: Application type mismatch: The argument
+  single_le_sum (fun x x_1 => Nat.zero_le (?m.41 x)) this
+has type
+error: Proofs/Erdos48Problem.lean:112:59: Type mismatch
+  Nat.totient_lt ?m.7
+has type
+error: Proofs/Erdos48Problem.lean:115:60: Function expected at
+  Nat.totient_pos
+but this term has type
+===== Erdos490OQ01
+error: Proofs/Erdos490OQ01.lean:311:2: Type mismatch: After simplification, term
+  htend
+ has type
+===== Erdos491Problem
+error: Proofs/Erdos491Problem.lean:139:4: No goals to be solved
+error: Proofs/Erdos491Problem.lean:173:41: Application type mismatch: The argument
+  wirsing_constant_unique
+error: Proofs/Erdos491Problem.lean:173:41: Application type mismatch: The argument
+  wirsing_constant_unique
+has type
+===== Erdos497Problem
+error: Proofs/Erdos497Problem.lean:32:4: `IsAntichain` has already been declared
+error: Proofs/Erdos497Problem.lean:37:5: Application type mismatch: The argument
+  Finset.univ.powerset.powerset
+error: Proofs/Erdos497Problem.lean:37:5: Application type mismatch: The argument
+  Finset.univ.powerset.powerset
+has type
+error: Proofs/Erdos497Problem.lean:38:28: Application type mismatch: The argument
+  n
+has type
+===== Erdos499Problem
+error: Proofs/Erdos499Problem.lean:222:2: unsolved goals
+case refine_1
+a : ℝ
+error: Proofs/Erdos499Problem.lean:225:2: unsolved goals
+case refine_2
+a : ℝ
+error: Proofs/Erdos499Problem.lean:280:22: Application type mismatch: The argument
+  n
+has type
+===== Erdos51Problem
+error: Proofs/Erdos51Problem.lean:47:11: Application type mismatch: The argument
+  Classical.choice ?m.6
+has type
+error: Proofs/Erdos51Problem.lean:49:13: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos51Problem.lean:50:48: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos528Problem
+error: Proofs/Erdos528Problem.lean:55:33: Application type mismatch: The argument
+  i
+has type
+error: Proofs/Erdos528Problem.lean:189:26: Application type mismatch: The argument
+  k
+has type
+error: Proofs/Erdos528Problem.lean:189:32: Application type mismatch: The argument
+  k
+has type
+error: Proofs/Erdos528Problem.lean:193:30: Application type mismatch: The argument
+  k
+has type
+===== Erdos533Problem
+error: Proofs/Erdos533Problem.lean:58:37: Application type mismatch: The argument
+  hab
+has type
+error: Proofs/Erdos533Problem.lean:95:26: Type mismatch
+  hb
+has type
+error: Proofs/Erdos533Problem.lean:122:61: Type mismatch
+  hj
+has type
+error: Proofs/Erdos533Problem.lean:154:13: typeclass instance problem is stuck
+  Fintype ?m.44
+===== Erdos537Problem
+error: Proofs/Erdos537Problem.lean:46:12: expected token
+error: Proofs/Erdos537Problem.lean:136:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/Erdos537Problem.lean:136:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos537Problem.lean:137:4: Type mismatch
+  Nat.cast_lt.mpr hgt
+has type
+error: Proofs/Erdos537Problem.lean:138:24: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== Erdos549ProblemAristotle
+error: Proofs/Erdos549ProblemAristotle.lean:42:18: Type mismatch
+  hu h
+has type
+error: Proofs/Erdos549ProblemAristotle.lean:42:33: Type mismatch
+  hv h
+has type
+error: Proofs/Erdos549ProblemAristotle.lean:49:10: Invalid `⟨...⟩` notation: The expected type
+  ∀ (u v : Fin (n + 1)), (starGraph n).Reachable u v
+is not an inductive type
+error: Proofs/Erdos549ProblemAristotle.lean:50:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case right
+===== Erdos550Problem
+error: Proofs/Erdos550Problem.lean:62:14: unsolved goals
+case «1».«0»
+V : Type u_1
+error: Proofs/Erdos550Problem.lean:110:43: Application type mismatch: The argument
+  G.sorted ⟨0, ?m.20⟩ ⟨1, ?m.24⟩
+has type
+error: Proofs/Erdos550Problem.lean:140:34: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos555Problem
+error: Proofs/Erdos555Problem.lean:34:68: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos555Problem.lean:57:13: Type mismatch
+error: Proofs/Erdos555Problem.lean:57:13: Type mismatch
+  trivial
+has type
+===== Erdos556Problem
+error: Proofs/Erdos556Problem.lean:57:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:58:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:63:49: Type mismatch
+  (↑i + 1) % n
+has type
+error: Proofs/Erdos556Problem.lean:67:23: Tactic `assumption` failed
+n : ℕ
+===== Erdos557Problem
+error: Proofs/Erdos557Problem.lean:32:10: `Tree` has already been declared
+warning: Proofs/Erdos557Problem.lean:48:52: `Tree` has been deprecated: Use `BinaryTree` instead
+error: Proofs/Erdos557Problem.lean:48:57: Application type mismatch: The argument
+error: Proofs/Erdos557Problem.lean:48:57: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos557Problem.lean:49:26: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos557Problem.lean:52:30: `Tree` has been deprecated: Use `BinaryTree` instead
+error: Proofs/Erdos557Problem.lean:52:35: Application type mismatch: The argument
+  n
+has type
+===== Erdos558Problem
+error: Proofs/Erdos558Problem.lean:160:40: Application type mismatch: The argument
+  ht
+has type
+===== Erdos562Problem
+error: Proofs/Erdos562Problem.lean:49:45: Application type mismatch: The argument
+  e
+has type
+===== Erdos566Problem
+error: Proofs/Erdos566Problem.lean:53:24: Application type mismatch: The argument
+  trivial
+has type
+===== Erdos568Problem
+error: Proofs/Erdos568Problem.lean:59:4: `IsComplete` has already been declared
+error: Proofs/Erdos568Problem.lean:71:58: Application type mismatch: The argument
+  K
+error: Proofs/Erdos568Problem.lean:71:58: Application type mismatch: The argument
+  K
+has type
+===== Erdos570Problem
+error: Proofs/Erdos570Problem.lean:59:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 1
+error: Proofs/Erdos570Problem.lean:60:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos570Problem.lean:61:17: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos570Problem.lean:66:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos579Problem
+error: Proofs/Erdos579Problem.lean:53:4: `SimpleGraph.IsIndepSet` has already been declared
+error: Proofs/Erdos579Problem.lean:59:14: Application type mismatch: The argument
+  Finset.univ.powerset
+error: Proofs/Erdos579Problem.lean:59:14: Application type mismatch: The argument
+  Finset.univ.powerset
+has type
+===== Erdos57OddGirthBound
+error: Proofs/Erdos57OddGirthBound.lean:79:53: Application type mismatch: The argument
+  hzw
+has type
+===== Erdos580Problem
+error: Proofs/Erdos580Problem.lean:145:4: Function expected at
+  satisfiesLKS ?m.2
+but this term has type
+error: Proofs/Erdos580Problem.lean:146:4: Function expected at
+  ContainsAllTreesUpTo ?m.4 ?m.5
+but this term has type
+error: Proofs/Erdos580Problem.lean:155:35: Application type mismatch: The argument
+  G
+has type
+error: Proofs/Erdos580Problem.lean:156:4: Function expected at
+  ContainsAllTreesUpTo ?m.4 ?m.5
+but this term has type
+===== Erdos581Problem
+error: Proofs/Erdos581Problem.lean:258:4: Application type mismatch: The argument
+  LT.lt.le c₁_positive
+has type
+===== Erdos596Problem
+error: Proofs/Erdos596Problem.lean:39:29: Type mismatch
+  H.Adj v w
+has type
+error: Proofs/Erdos596Problem.lean:46:29: Type mismatch
+  H.Adj v w
+has type
+===== Erdos597Problem
+error: Proofs/Erdos597Problem.lean:38:23: Type mismatch
+  Ordinal.omega
+has type
+error: Proofs/Erdos597Problem.lean:98:0: declaration `Erdos597.erdos597Conjecture` contains universe level metavariables at the expression
+  partitionArrow.{u_1, ?u.18, ?u.19} omega_1_squared.{?u.18} omega_1_times_omega.{?u.19} α
+in the declaration body
+error: Proofs/Erdos597Problem.lean:110:0: declaration `Erdos597.finiteCaseConjecture` contains universe level metavariables at the expression
+  partitionArrow.{u_1, ?u.14, ?u.15} omega_1_squared.{?u.14} omega_1_times_omega.{?u.15} α
+in the declaration body
+===== Erdos606Problem
+error: Proofs/Erdos606Problem.lean:151:53: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos606Problem.lean:152:31: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos606Problem.lean:207:12: Invalid `⟨...⟩` notation: The expected type
+  k = maxLines n - 1 ∨ k = maxLines n - 3 → False
+is not an inductive type
+===== Erdos609Problem
+error: Proofs/Erdos609Problem.lean:52:3: Application type mismatch: The argument
+  G
+has type
+error: Proofs/Erdos609Problem.lean:74:32: Application type mismatch: The argument
+  coloring
+has type
+error: Proofs/Erdos609Problem.lean:185:68: Application type mismatch: The argument
+  coloring
+has type
+===== Erdos60Problem
+error: Proofs/Erdos60Problem.lean:260:43: unsolved goals
+G : SimpleGraph (Fin 4)
+e : Sym2 (Fin 4)
+error: Proofs/Erdos60Problem.lean:347:6: `exact?` could not close the goal. Try `apply?` to see partial suggestions.
+error: Proofs/Erdos60Problem.lean:355:294: Type mismatch
+  Finset.image (fun i => Sym2.mk (0, i)) (Finset.univ.erase 0)
+error: Proofs/Erdos60Problem.lean:355:294: Type mismatch
+  Finset.image (fun i => Sym2.mk (0, i)) (Finset.univ.erase 0)
+has type
+error: Proofs/Erdos60Problem.lean:355:236: tactic 'aesop' failed, failed to prove the goal after exhaustive search.
+Initial goal:
+  c : ℝ
+===== Erdos615Problem
+error: Proofs/Erdos615Problem.lean:60:33: Invalid field `IsAnticlique`: The environment does not contain `SimpleGraph.IsAnticlique`, so it is not possible to project the field `IsAnticlique` from an expression
+  G
+of type `SimpleGraph V`
+error: Proofs/Erdos615Problem.lean:77:19: Tactic `assumption` failed
+n k ℓ : ℕ
+error: Proofs/Erdos615Problem.lean:112:13: Type mismatch
+  ↑n / Nat.log n
+has type
+===== Erdos618Problem
+error: Proofs/Erdos618Problem.lean:63:18: Application type mismatch: The argument
+  G.degree
+has type
+===== Erdos620Problem
+error: Proofs/Erdos620Problem.lean:67:18: Invalid projection: Projections cannot be used on functions, and
+  hne
+has function type `a = b → False`
+error: Proofs/Erdos620Problem.lean:67:25: Invalid projection: Projections cannot be used on functions, and
+  hne
+has function type `a = b → False`
+error: Proofs/Erdos620Problem.lean:67:36: Invalid projection: Projections cannot be used on functions, and
+  hne
+has function type `a = b → False`
+error: Proofs/Erdos620Problem.lean:67:45: Application type mismatch: The argument
+  hab
+has type
+===== Erdos620ProblemAristotle
+error: Proofs/Erdos620Problem.lean:67:18: Invalid projection: Projections cannot be used on functions, and
+  hne
+has function type `a = b → False`
+error: Proofs/Erdos620Problem.lean:67:25: Invalid projection: Projections cannot be used on functions, and
+  hne
+has function type `a = b → False`
+error: Proofs/Erdos620Problem.lean:67:36: Invalid projection: Projections cannot be used on functions, and
+  hne
+has function type `a = b → False`
+error: Proofs/Erdos620Problem.lean:67:45: Application type mismatch: The argument
+  hab
+has type
+===== Erdos626Aristotle
+error: Proofs/Erdos626Problem.lean:80:2: Tactic `rfl` failed: The left-hand side
+  upperCoeff 4
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos626Problem.lean:178:30: Ambiguous term
+  girth
+Possible interpretations:
+error: Proofs/Erdos626Problem.lean:236:4: Type mismatch
+  k4_bounds n hn
+has type
+===== Erdos626Problem
+error: Proofs/Erdos626Problem.lean:80:2: Tactic `rfl` failed: The left-hand side
+  upperCoeff 4
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos626Problem.lean:178:30: Ambiguous term
+  girth
+Possible interpretations:
+error: Proofs/Erdos626Problem.lean:236:4: Type mismatch
+  k4_bounds n hn
+has type
+===== Erdos626ProblemAristotle
+error: Proofs/Erdos626Problem.lean:80:2: Tactic `rfl` failed: The left-hand side
+  upperCoeff 4
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos626Problem.lean:178:30: Ambiguous term
+  girth
+Possible interpretations:
+error: Proofs/Erdos626Problem.lean:236:4: Type mismatch
+  k4_bounds n hn
+has type
+===== Erdos627Aristotle
+error: Proofs/Erdos627Problem.lean:198:2: Type mismatch
+  erdos_asymptotic
+has type
+===== Erdos627Problem
+error: Proofs/Erdos627Problem.lean:198:2: Type mismatch
+  erdos_asymptotic
+has type
+===== Erdos629Problem
+error: Proofs/Erdos629Problem.lean:102:6: too many arguments supplied to `use`
+info: Proofs/Erdos629Problem.lean:125:8: Try this:
+  [apply] exact le_card_iff_exists_subset_card.mp hY
+error: Proofs/Erdos629Problem.lean:126:73: Application type mismatch: The argument
+  fun x => ?m.148
+has type
+error: Proofs/Erdos629Problem.lean:126:77: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+warning: Proofs/Erdos629Problem.lean:218:59: This simp argument is unused:
+  eq_comm
+error: Proofs/Erdos629Problem.lean:248:53: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  h_card
+of type
+===== Erdos631ProblemAristotle
+error: Proofs/Erdos631ProblemAristotle.lean:53:10: Application type mismatch: The argument
+  L
+has type
+===== Erdos636Problem
+error: Proofs/Erdos636Problem.lean:145:56: unsolved goals
+⊢ efs_exponent < ks_exponent
+error: Proofs/Erdos636Problem.lean:182:18: Type mismatch
+error: Proofs/Erdos636Problem.lean:182:18: Type mismatch
+  card_le_univ S
+has type
+===== Erdos640Problem
+error: Proofs/Erdos640Problem.lean:255:11: unsolved goals
+case zero
+V : Type u_1
+error: Proofs/Erdos640Problem.lean:263:66: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ g ≤ 1
+error: Proofs/Erdos640Problem.lean:272:51: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ g ≤ 1
+error: Proofs/Erdos640Problem.lean:274:43: Application type mismatch: The argument
+  heq
+has type
+===== Erdos644Problem
+error: Proofs/Erdos644Problem.lean:160:77: Type mismatch
+  h
+has type
+error: Proofs/Erdos644Problem.lean:171:77: Type mismatch
+  h
+has type
+===== Erdos644ProblemAristotle
+error: Proofs/Erdos644Problem.lean:160:77: Type mismatch
+  h
+has type
+error: Proofs/Erdos644Problem.lean:171:77: Type mismatch
+  h
+has type
+===== Erdos65OQ03
+error: Proofs/Erdos65OQ03.lean:49:52: unsolved goals
+case e_f
+m j : ℕ
+error: Proofs/Erdos65OQ03.lean:179:65: Application type mismatch: The argument
+  Decidable.byContradiction fun a => even_reciprocal_lt._proof_1_1 j hj a
+has type
+===== Erdos663Problem
+error: Proofs/Erdos663Problem.lean:132:33: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos663Problem.lean:167:22: Application type mismatch: The argument
+  Eq.symm (Finset.prod_sdiff hsub)
+has type
+error: Proofs/Erdos663Problem.lean:179:9: unknown tactic
+error: Proofs/Erdos663Problem.lean:176:36: unsolved goals
+h : ErdosProblem663
+error: Proofs/Erdos663Problem.lean:176:36: unsolved goals
+h : ErdosProblem663
+k : ℕ
+===== Erdos667Aristotle
+error: Proofs/Erdos667Aristotle.lean:64:10: Application type mismatch: The argument
+  card_singleton ?m.31
+has type
+error: Proofs/Erdos667Aristotle.lean:65:2: Type mismatch
+  Set.pairwise_singleton ?m.34 ?m.35
+has type
+error: Proofs/Erdos667Aristotle.lean:73:9: Function expected at
+  hclique
+but this term has type
+===== Erdos668Problem
+error: Proofs/Erdos668Problem.lean:75:4: Type mismatch: After simplification, term
+  hp
+ has type
+error: Proofs/Erdos668Problem.lean:215:56: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (↑?s).ncard
+in the target expression
+===== Erdos671Problem
+error: Proofs/Erdos671Problem.lean:224:28: Application type mismatch: The argument
+  hsne
+has type
+error: Proofs/Erdos671Problem.lean:223:62: unsolved goals
+n : ℕ
+pts : InterpolationPoints n
+===== Erdos671ProblemAristotle
+error: Proofs/Erdos671Problem.lean:224:28: Application type mismatch: The argument
+  hsne
+has type
+error: Proofs/Erdos671Problem.lean:223:62: unsolved goals
+n : ℕ
+pts : InterpolationPoints n
+===== Erdos673Aristotle
+error: Proofs/Erdos673Aristotle.lean:81:56: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos673Aristotle.lean:90:2: Type mismatch
+  card_product ?m.25 ?m.26
+has type
+===== Erdos675Problem
+error: Proofs/Erdos675Problem.lean:37:39: Type mismatch
+  Iff.rfl
+has type
+error: Proofs/Erdos675Problem.lean:83:13: Invalid field `pow_pow`: The environment does not contain `Eq.pow_pow`, so it is not possible to project the field `pow_pow` from an expression
+  hcop
+of type `p.gcd q = 1`
+===== Erdos677Problem
+error: Proofs/Erdos677Problem.lean:105:27: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/Erdos677Problem.lean:217:13: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.gcd ?m (?n + ?m * ?k)
+in the target expression
+error: Proofs/Erdos677Problem.lean:241:9: unsolved goals
+case zero
+n : ℕ
+===== Erdos679Aristotle
+error: Proofs/Erdos679Aristotle.lean:36:42: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/Erdos679Aristotle.lean:35:25: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos679Aristotle.lean:43:6: Function expected at
+  Coprime.primeFactors_mul hmn
+but this term has type
+error: Proofs/Erdos679Aristotle.lean:41:41: unsolved goals
+m n : ℕ
+hm : m ≠ 0
+===== Erdos682Problem
+error: Proofs/Erdos682Problem.lean:75:2: Type mismatch
+  minFac_prime (LT.lt.ne' hm)
+has type
+error: Proofs/Erdos682Problem.lean:83:2: Type mismatch
+  minFac_dvd m
+has type
+error: Proofs/Erdos682Problem.lean:104:2: unsolved goals
+case right
+m : ℕ
+error: Proofs/Erdos682Problem.lean:112:2: unsolved goals
+case right
+⊢ 7 ≤ minFac 7
+===== Erdos687Problem
+error: Proofs/Erdos687Problem.lean:46:18: `primorial` has already been declared
+warning: Proofs/Erdos687Problem.lean:96:35: `Prime.dvd_finset_prod_iff` has been deprecated: Use `Prime.dvd_finsetProd_iff` instead
+error: Proofs/Erdos687Problem.lean:96:55: Invalid field `mp`: The environment does not contain `Function.mp`, so it is not possible to project the field `mp` from an expression
+error: Proofs/Erdos687Problem.lean:96:55: Invalid field `mp`: The environment does not contain `Function.mp`, so it is not possible to project the field `mp` from an expression
+  Prime.dvd_finset_prod_iff (Nat.Prime.prime hq)
+of type
+error: Proofs/Erdos687Problem.lean:96:9: Tactic `rcases` failed: `x✝ : ?m.33` is not an inductive datatype
+error: Proofs/Erdos687Problem.lean:117:83: Application type mismatch: The argument
+  hp
+error: Proofs/Erdos687Problem.lean:117:83: Application type mismatch: The argument
+  hp
+has type
+===== Erdos691Problem
+error: Proofs/Erdos691Problem.lean:117:51: Type mismatch
+  h ?m.18
+has type
+error: Proofs/Erdos691Problem.lean:123:8: typeclass instance problem is stuck
+  DecidablePred ?m.13
+===== Erdos692Problem
+error: Proofs/Erdos692Problem.lean:271:4: Type mismatch
+  erdos_delta1_bound n m hn
+has type
+===== Erdos699Problem
+error: Proofs/Erdos699Problem.lean:177:39: Application type mismatch: The argument
+  Nat.Prime.dvd_of_dvd_pow hp h
+has type
+error: Proofs/Erdos699Problem.lean:180:41: Application type mismatch: The argument
+  Nat.Prime.dvd_of_dvd_pow hp h'
+has type
+error: Proofs/Erdos699Problem.lean:182:41: Application type mismatch: The argument
+  h'
+has type
+===== Erdos704Problem
+error: Proofs/Erdos704Problem.lean:53:37: Type mismatch
+  (UnitDistanceGraph n).chromaticNumber
+has type
+error: Proofs/Erdos704Problem.lean:65:61: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  (1 - ε) * 1.2 ^ n
+of type `ℝ`
+error: Proofs/Erdos704Problem.lean:87:55: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  (3 + ε) ^ n
+of type `ℝ`
+error: Proofs/Erdos704Problem.lean:93:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instPow', which is 'noncomputable'
+error: Proofs/Erdos704Problem.lean:127:40: Function expected at
+  Filter.atTop.limsSup
+===== Erdos705Problem
+error: Proofs/Erdos705Problem.lean:104:14: Application type mismatch: The argument
+  hkl
+has type
+error: Proofs/Erdos705Problem.lean:265:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 5
+error: Proofs/Erdos705Problem.lean:273:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos705Problem.lean:280:2: omega could not prove the goal:
+error: Proofs/Erdos705Problem.lean:280:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos710Problem
+error: Proofs/Erdos710Problem.lean:253:34: Type mismatch
+  lt_mul_div_succ n hk
+has type
+error: Proofs/Erdos710Problem.lean:309:10: No goals to be solved
+error: Lean exited with code 1
+✖ [8596/8600] Building Proofs.Erdos782Problem (7.7s)
+===== Erdos73Problem
+error: Proofs/Erdos73Problem.lean:60:2: Type mismatch
+  Std.Irrefl.irrefl w
+has type
+error: Proofs/Erdos73Problem.lean:67:72: Application type mismatch: The argument
+  I
+has type
+error: Proofs/Erdos73Problem.lean:116:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑∅ᶜ
+in the target expression
+error: Proofs/Erdos73Problem.lean:169:6: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `hS` is a proof of
+  #S ≤ 0
+warning: Proofs/Erdos73Problem.lean:215:12: Variable name `u` is not explicitly referenced.
+===== Erdos745Problem
+error: Proofs/Erdos745Problem.lean:72:6: Type mismatch
+  hn
+has type
+error: Proofs/Erdos745Problem.lean:268:10: Function expected at
+  komlos_sulyok_szemeredi
+but this term has type
+error: Proofs/Erdos745Problem.lean:270:10: Function expected at
+  critical_giant_size
+but this term has type
+===== Erdos750Problem
+error: Proofs/Erdos750Problem.lean:91:4: Function expected at
+  Finset.filter_card_add_filter_neg_card_eq_card ?m.84
+but this term has type
+error: Proofs/Erdos750Problem.lean:91:51: Application type mismatch: The argument
+  S
+has type
+===== Erdos751Problem
+error: Proofs/Erdos751Problem.lean:49:44: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos751Problem.lean:49:33: Application type mismatch: The argument
+  G.degree
+has type
+error: Proofs/Erdos751Problem.lean:56:44: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos751Problem.lean:56:33: Application type mismatch: The argument
+  G.degree
+has type
+===== Erdos782Problem
+error: Proofs/Erdos782Problem.lean:127:20: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 1
+error: Proofs/Erdos782Problem.lean:127:20: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos782Problem.lean:193:12: Application type mismatch: The argument
+  hall
+has type
+error: Proofs/Erdos782Problem.lean:240:67: Application type mismatch: The argument
+  rfl
+has type
+===== Erdos794Problem
+error: Proofs/Erdos794Problem.lean:137:10: Application type mismatch: The argument
+  V
+has type
+error: Proofs/Erdos794Problem.lean:167:49: unknown tactic
+error: Proofs/Erdos794Problem.lean:167:45: unsolved goals
+⊢ 3 ^ 3 + 1 = 28
+error: Proofs/Erdos794Problem.lean:167:45: unsolved goals
+⊢ 3 ^ 3 + 1 = 28
+error: Proofs/Erdos794Problem.lean:190:22: Application type mismatch: The argument
+error: Proofs/Erdos794Problem.lean:190:22: Application type mismatch: The argument
+  Fin 9
+has type
+===== Erdos796Problem
+error: Proofs/Erdos796Problem.lean:135:2: Type mismatch
+  this
+has type
+error: Proofs/Erdos796Problem.lean:156:37: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos796Problem.lean:157:11: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos796Problem.lean:219:37: Application type mismatch: The argument
+  n
+has type
+===== Erdos810Problem
+error: Proofs/Erdos810Problem.lean:131:26: Application type mismatch: The argument
+  h_no
+has type
+===== Erdos816Problem
+error: Proofs/Erdos816Problem.lean:171:28: Application type mismatch: The argument
+  G
+has type
+error: Proofs/Erdos816Problem.lean:204:28: Application type mismatch: The argument
+  G
+has type
+===== Erdos817Aristotle
+error: Proofs/Erdos817Aristotle.lean:95:75: Type mismatch
+  hb
+has type
+error: Proofs/Erdos817Aristotle.lean:99:13: overloaded, errors 
+  99:14 Unknown identifier `a`
+error: Proofs/Erdos817Aristotle.lean:99:40: unsolved goals
+x : ℕ
+⊢ ∑ x ∈ sorry (), x = x
+error: Proofs/Erdos817Aristotle.lean:105:36: unsolved goals
+a : ℕ
+ha : a ≠ 0
+===== Erdos820Aristotle
+error: Proofs/Erdos820Aristotle.lean:82:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos820Aristotle.lean:91:44: Variable name `hp` is not explicitly referenced.
+error: Proofs/Erdos820Aristotle.lean:115:2: Type mismatch
+  (modEq_iff_dvd' hkn).mpr hdvd
+has type
+error: Proofs/Erdos820Aristotle.lean:123:2: Type mismatch
+  (modEq_iff_dvd' hln).mpr hdvd
+has type
+===== Erdos820Problem
+error: Proofs/Erdos820Problem.lean:68:16: numerals are data in Lean, but the expected type is a proposition
+  3 ≥ 2 : Prop
+error: Proofs/Erdos820Problem.lean:68:19: Application type mismatch: The argument
+error: Proofs/Erdos820Problem.lean:68:19: Application type mismatch: The argument
+  Nat.lt_of_sub_eq_succ ?m.26
+has type
+error: Proofs/Erdos820Problem.lean:68:41: Application type mismatch: The argument
+  rfl
+has type
+error: Proofs/Erdos820Problem.lean:230:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ↑k ^ (_a - 1) = 1
+Error: Application type mismatch: The argument
+===== Erdos824ProblemProvable
+error: Proofs/Erdos824ProblemProvable.lean:74:21: unknown tactic
+error: Proofs/Erdos824ProblemProvable.lean:64:84: Ambiguous term
+  ne_of_gt
+error: Proofs/Erdos824ProblemProvable.lean:64:84: Ambiguous term
+  ne_of_gt
+Possible interpretations:
+error: Proofs/Erdos824ProblemProvable.lean:134:20: Type mismatch
+  h x
+has type
+error: Proofs/Erdos824ProblemProvable.lean:154:58: unknown tactic
+error: Proofs/Erdos824ProblemProvable.lean:144:14: don't know how to synthesize implicit argument `atTop`
+  @pollack_pomerance_2016 ?m.14 ?m.15
+===== Erdos826Problem
+error: Proofs/Erdos826Problem.lean:196:16: Application type mismatch: The argument
+  hInf
+has type
+===== Erdos842Problem
+error: Proofs/Erdos842Problem.lean:124:14: Type mismatch
+  fun v h => ?m.20
+has type
+error: Proofs/Erdos842Problem.lean:124:25: Invalid projection: Type of
+  h
+is not known; cannot resolve projection `1`
+===== Erdos844Problem
+error: Proofs/Erdos844Problem.lean:41:82: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos844Problem.lean:78:12: Invalid field `natSq_dvd_self_of_dvd`: The environment does not contain `Function.natSq_dvd_self_of_dvd`, so it is not possible to project the field `natSq_dvd_self_of_dvd` from an expression
+  hsq
+of type
+error: Proofs/Erdos844Problem.lean:86:16: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/Erdos844Problem.lean:87:8: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+a b : ℕ
+===== Erdos846Problem
+error: Proofs/Erdos846Problem.lean:80:4: Type mismatch
+  hqr ?m.16
+has type
+error: Proofs/Erdos846Problem.lean:145:6: No goals to be solved
+error: Proofs/Erdos846Problem.lean:148:17: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos846Problem.lean:148:17: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+α : Type u_1
+error: Proofs/Erdos846Problem.lean:150:4: Tactic `apply` failed: could not unify the conclusion of `@sum_lt_sum`
+  ∑ i ∈ ?s, ?f i < ∑ i ∈ ?s, ?g i
+with the goal
+===== Erdos846ProblemAPN
+error: Proofs/Erdos846ProblemAPN.lean:251:90: unsolved goals
+a : ℕ
+w✝ : ℤ
+error: Proofs/Erdos846ProblemAPN.lean:599:4: Type mismatch
+  @Ne.symm
+has type
+error: Proofs/Erdos846ProblemAPN.lean:866:83: `grind` failed
+case grind.2.1.2.2.2.1.2.2.2.1.1.2.2
+A : Set ℝ²
+===== Erdos854Problem
+error: Proofs/Erdos854Problem.lean:26:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos854Problem.lean:28:55: Type mismatch
+  prime_nth_prime k
+has type
+error: Proofs/Erdos854Problem.lean:32:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos854Problem.lean:33:8: declaration uses `sorry`
+error: Proofs/Erdos854Problem.lean:35:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos854Problem.lean:36:8: declaration uses `sorry`
+===== Erdos863Problem
+error: Proofs/Erdos863Problem.lean:169:13: Invalid `⟨...⟩` notation: The expected type
+  Quot.lift (fun l => (a, b) ∈ l) ⋯ (A.product A).val
+is not an inductive type
+error: Proofs/Erdos863Problem.lean:169:28: Application type mismatch: The argument
+  rfl
+has type
+error: Proofs/Erdos863Problem.lean:172:13: Invalid `⟨...⟩` notation: The expected type
+  Quot.lift (fun l => (c, d) ∈ l) ⋯ (A.product A).val
+is not an inductive type
+error: Proofs/Erdos863Problem.lean:172:28: Application type mismatch: The argument
+  hsum
+has type
+===== Erdos866Aristotle
+error: Proofs/Erdos866Aristotle.lean:45:26: Application type mismatch: The argument
+  ?m.31
+has type
+error: Proofs/Erdos866Aristotle.lean:45:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos866Aristotle.lean:57:62: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+===== Erdos868Problem
+error: Proofs/Erdos868Problem.lean:205:26: Type mismatch
+  hge
+has type
+===== Erdos871Problem
+error: Proofs/Erdos871Problem.lean:130:2: No goals to be solved
+warning: Proofs/Erdos871Problem.lean:147:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos871Problem.lean:148:53: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/Erdos871Problem.lean:157:50: Application type mismatch: The argument
+  hfin
+has type
+===== Erdos880Problem
+error: Proofs/Erdos880Problem.lean:42:19: Type mismatch
+  n
+has type
+error: Proofs/Erdos880Problem.lean:51:45: Type mismatch
+  n
+has type
+===== Erdos882ProblemOQ03OQ02
+error: Proofs/Erdos882ProblemOQ03OQ02.lean:80:4: Type mismatch: After simplification, term
+  hi1
+ has type
+===== Erdos88Problem
+error: Proofs/Erdos88Problem.lean:81:19: Type mismatch
+  ε * Real.log ↑n
+has type
+error: Proofs/Erdos88Problem.lean:81:59: Type mismatch
+  ε * Real.log ↑n
+has type
+error: Proofs/Erdos88Problem.lean:93:28: Function expected at
+  G.symm
+but this term has type
+error: Proofs/Erdos88Problem.lean:94:32: Function expected at
+  G.loopless
+but this term has type
+===== Erdos901Problem
+error: Proofs/Erdos901Problem.lean:149:50: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos901Problem.lean:150:9: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos901Problem.lean:163:13: unsolved goals
+e : Finset (Fin 4)
+he : e = {0, 1} ∨ e = {0, 2} ∨ e = {1, 2}
+===== Erdos901ProblemAristotle
+error: Proofs/Erdos901Problem.lean:149:50: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos901Problem.lean:150:9: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos901Problem.lean:163:13: unsolved goals
+e : Finset (Fin 4)
+he : e = {0, 1} ∨ e = {0, 2} ∨ e = {1, 2}
+===== Erdos907Problem
+error: Proofs/Erdos907Problem.lean:124:2: Type mismatch
+  Continuous.sub hf (Continuous.comp hf (continuous_add_right h))
+has type
+===== Erdos908Problem
+error: Proofs/Erdos908Problem.lean:70:69: unsolved goals
+h : ℝ → ℝ
+hAdd : IsAdditive h
+error: Proofs/Erdos908Problem.lean:109:2: Type mismatch
+  Continuous.measurable (Continuous.sub hCont hCont)
+has type
+===== Erdos909OQ01Problem
+error: Proofs/Erdos909OQ01Problem.lean:162:33: Application type mismatch: The argument
+  S
+has type
+===== Erdos920Problem
+error: Proofs/Erdos920Problem.lean:60:2: Type mismatch
+  G.chromaticNumber
+has type
+===== Erdos921Problem
+error: Proofs/Erdos921Problem.lean:120:36: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos921Problem.lean:120:45: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos921Problem.lean:123:41: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos921Problem.lean:123:51: Application type mismatch: The argument
+  n
+has type
+===== Erdos925Problem
+error: Proofs/Erdos925Problem.lean:52:45: Application type mismatch: The argument
+  hca
+has type
+error: Proofs/Erdos925Problem.lean:56:35: Invalid field `IsCliqueFree`: The environment does not contain `SimpleGraph.IsCliqueFree`, so it is not possible to project the field `IsCliqueFree` from an expression
+  G
+of type `SimpleGraph V`
+===== Erdos933Problem
+error: Proofs/Erdos933Problem.lean:192:2: Type mismatch
+  erdos_933
+has type
+===== Erdos943Problem
+error: Proofs/Erdos943Problem.lean:52:72: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 1
+error: Proofs/Erdos943Problem.lean:56:6: not a positivity goal
+error: Proofs/Erdos943Problem.lean:66:6: not a positivity goal
+error: Proofs/Erdos943Problem.lean:68:27: Application type mismatch: The argument
+error: Proofs/Erdos943Problem.lean:66:6: not a positivity goal
+error: Proofs/Erdos943Problem.lean:68:27: Application type mismatch: The argument
+  ?m.42
+error: Proofs/Erdos943Problem.lean:68:27: Application type mismatch: The argument
+  ?m.42
+has type
+===== Erdos949Problem
+error: Proofs/Erdos949Problem.lean:162:2: No goals to be solved
+error: Proofs/Erdos949Problem.lean:173:31: Application type mismatch: The argument
+  rfl
+error: Proofs/Erdos949Problem.lean:173:31: Application type mismatch: The argument
+  rfl
+has type
+===== Erdos94Problem
+error: Proofs/Erdos94Problem.lean:68:2: Type mismatch
+  {x ∈ (P ×ˢ P) ×ˢ P ×ˢ P | ?m.15}
+has type
+error: Proofs/Erdos94Problem.lean:69:4: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  p ≠ q ∧ r ≠ s ∧ dist p q = dist r s
+has type `Prop` which does not have the necessary form.
+===== Erdos950Problem
+error: Proofs/Erdos950Problem.lean:130:50: Application type mismatch: The argument
+  fun m hm => ?m.32
+has type
+error: Proofs/Erdos950Problem.lean:134:2: 'calc' expression has type
+  0 < ∑ p ∈ primesLessThan n, 1 / (n - p)
+but is expected to have type
+===== Erdos956Problem
+error: Proofs/Erdos956Problem.lean:65:43: Application type mismatch: The argument
+  rfl
+has type
+error: Proofs/Erdos956Problem.lean:130:41: Application type mismatch: The argument
+  (fun i => #{j | i < j ∧ HasUnitDistance config i j}) > 0
+has type
+===== Erdos95Problem
+error: Proofs/Erdos95Problem.lean:72:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos95Problem.lean:144:4: linarith failed to find a contradiction
+ε : ℕ
+hε : ε > 0
+error: Proofs/Erdos95Problem.lean:147:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  m ^ (?y + ?z)
+in the target expression
+error: Proofs/Erdos95Problem.lean:155:18: Application type mismatch: The argument
+  hε
+has type
+===== Erdos966Problem
+error: Proofs/Erdos966Problem.lean:207:21: unknown tactic
+error: Proofs/Erdos966Problem.lean:207:17: unsolved goals
+⊢ 2 ≥ 2
+error: Proofs/Erdos966Problem.lean:207:17: unsolved goals
+⊢ 2 ≥ 2
+error: Proofs/Erdos966Problem.lean:215:21: unknown tactic
+error: Proofs/Erdos966Problem.lean:215:21: unknown tactic
+error: Proofs/Erdos966Problem.lean:215:17: unsolved goals
+⊢ 3 ≥ 2
+error: Proofs/Erdos966Problem.lean:215:17: unsolved goals
+⊢ 3 ≥ 2
+error: Proofs/Erdos966Problem.lean:250:33: Type mismatch
+===== Erdos982Problem
+error: Proofs/Erdos982Problem.lean:97:21: Application type mismatch: The argument
+  fun x x_1 x_2 x_3 x_4 => Nat.zero_le (?m.32 x x_1 x_2 x_3 x_4)
+has type
+error: Proofs/Erdos982Problem.lean:320:4: Type mismatch
+  regular_polygon_distances n hn
+has type
+===== Erdos994Problem
+error: Proofs/Erdos994Problem.lean:55:2: Type mismatch
+  Int.sub_one_lt_floor x
+has type
+error: Proofs/Erdos994Problem.lean:70:2: Application type mismatch: The argument
+  Finset.range n
+has type
+===== Erdos998Problem
+error: Proofs/Erdos998Problem.lean:60:44: unsolved goals
+x : ℝ
+⊢ Int.fract x < 1
+error: Proofs/Erdos998Problem.lean:80:5: Application type mismatch: The argument
+  Finset.range (n + 1)
+has type
+===== Erdos99Problem
+error: Proofs/Erdos99Problem.lean:53:16: Application type mismatch: The argument
+  fun p => filter p (A.product A)
+has type
+error: Proofs/Erdos99Problem.lean:53:48: Invalid projection: Type of
+  pq
+is not known; cannot resolve projection `1`
+error: Proofs/Erdos99Problem.lean:53:55: Invalid projection: Type of
+  pq
+is not known; cannot resolve projection `2`
+error: Proofs/Erdos99Problem.lean:56:65: Application type mismatch: The argument
+  Nat.one_lt_two
+has type
+===== ETranscendentalOQ02
+error: Proofs/ETranscendentalOQ02.lean:1743:4: Type mismatch: After simplification, term
+  Tendsto.comp hlogid tendsto_natCast_atTop_atTop
+ has type
+===== ETranscendentalOQ02OQ06
+error: Proofs/ETranscendentalOQ02.lean:1743:4: Type mismatch: After simplification, term
+  Tendsto.comp hlogid tendsto_natCast_atTop_atTop
+ has type
+===== ETranscendentalOQ02Rational
+error: Proofs/ETranscendentalOQ02.lean:1743:4: Type mismatch: After simplification, term
+  Tendsto.comp hlogid tendsto_natCast_atTop_atTop
+ has type
+===== EulerTotientOQ01OQ02OQ03
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:79:2: Type mismatch: After simplification, term
+  pow_dvd_pow 2
+    (have this := Decidable.byContradiction fun a => dvd4._proof_1_1 n a;
+error: Proofs/EulerTotientOQ01OQ02OQ03.lean:162:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  carmichael (2 ^ (n + 3))
+in the target expression
+===== EulerTotientOQ02
+error: Proofs/EulerTotientOQ02.lean:75:41: Application type mismatch: The argument
+  hbc
+has type
+error: Proofs/EulerTotientOQ02.lean:74:79: unsolved goals
+a b c : ℕ
+hab : a.Coprime b
+error: Proofs/EulerTotientOQ02.lean:105:63: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+===== EulerTotientOQ06OQ02
+error: Proofs/EulerTotientOQ06OQ02.lean:99:26: Application type mismatch: The argument
+  Nat.Prime.ne_zero hp
+has type
+===== FairGamesTheorem
+error: Proofs/FairGamesTheorem.lean:142:33: Application type mismatch: The argument
+  τ
+has type
+error: Proofs/FairGamesTheorem.lean:201:41: Application type mismatch: The argument
+  τ
+has type
+error: Proofs/FairGamesTheorem.lean:202:41: Application type mismatch: The argument
+  π
+has type
+error: Proofs/FairGamesTheorem.lean:239:41: Application type mismatch: The argument
+  τ
+has type
+===== FairGamesTheoremOQ02OQ01
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+error: Proofs/FairGamesTheoremOQ03.lean:235:27: unsolved goals
+Ω : Type u_1
+m : MeasurableSpace Ω
+error: Proofs/FairGamesTheoremOQ03.lean:285:16: expected token
+error: Proofs/FairGamesTheoremOQ03.lean:277:54: unsolved goals
+Ω : Type u_1
+===== FairGamesTheoremOQ02OQ01OQ01
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+error: Proofs/FairGamesTheoremOQ03.lean:235:27: unsolved goals
+Ω : Type u_1
+m : MeasurableSpace Ω
+error: Proofs/FairGamesTheoremOQ03.lean:285:16: expected token
+error: Proofs/FairGamesTheoremOQ03.lean:277:54: unsolved goals
+Ω : Type u_1
+===== FairGamesTheoremOQ03
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+error: Proofs/FairGamesTheoremOQ03.lean:235:27: unsolved goals
+Ω : Type u_1
+m : MeasurableSpace Ω
+error: Proofs/FairGamesTheoremOQ03.lean:285:16: expected token
+error: Proofs/FairGamesTheoremOQ03.lean:277:54: unsolved goals
+Ω : Type u_1
+===== FairGamesTheoremOQ03Aristotle
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:33:70: unsolved goals
+Ω : Type u_1
+m : MeasurableSpace Ω
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:41:44: Invalid field `progMeasurable_of_discrete`: The environment does not contain `Function.progMeasurable_of_discrete`, so it is not possible to project the field `progMeasurable_of_discrete` from an expression
+  hf
+of type `∀ (i : ℕ), Measurable (f i)`
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:52:39: Application type mismatch: The argument
+  N
+has type
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:99:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+===== FermatsLastTheoremOQ03
+error: Proofs/FermatsLastTheoremOQ03.lean:45:79: unsolved goals
+K : Type u_1
+inst✝¹ : CommRing K
+error: Proofs/FermatsLastTheoremOQ03.lean:45:49: Type mismatch
+  this
+has type
+===== FermatTwoSquaresOQ04
+error: Proofs/FermatTwoSquaresOQ04.lean:150:4: Type mismatch: After simplification, term
+  prod_nonneg fun p hp => jacobiSum_prime_pow_nonneg (Nat.prime_of_mem_primeFactors hp) (n.factorization p)
+ has type
+===== FermatTwoSquaresOQ04OQ01
+error: Proofs/FermatTwoSquaresOQ04.lean:150:4: Type mismatch: After simplification, term
+  prod_nonneg fun p hp => jacobiSum_prime_pow_nonneg (Nat.prime_of_mem_primeFactors hp) (n.factorization p)
+ has type
+===== FeuerbachsTheoremDefsOQ04
+error: Proofs/FeuerbachsTheoremDefsOQ04.lean:64:58: Type mismatch
+  ![P.1, P.2]
+has type
+error: Proofs/FeuerbachsTheoremDefsOQ04.lean:73:56: unsolved goals
+P Q : Point
+⊢ (sorry - sorry).ofLp 0 ^ 2 + (sorry - sorry).ofLp 1 ^ 2 =
+error: Proofs/FeuerbachsTheoremDefsOQ04.lean:86:71: unsolved goals
+P C : Point
+r : ℝ
+===== FibonacciIdentitiesOQ02
+error: Proofs/FibonacciIdentitiesOQ02.lean:75:6: Type mismatch: After simplification, term
+  this
+ has type
+===== FibonacciIdentitiesOQ02OQ02PrimeIndex
+error: Proofs/FibonacciIdentitiesOQ02OQ02PrimeIndex.lean:72:4: Type mismatch: After simplification, term
+  this
+ has type
+===== FourierSeriesOQ04OQ01
+error: Proofs/FourierSeriesOQ04OQ01.lean:554:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑↑(UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k) x
+in the target expression
+===== FourierSeriesOQ04OQ01Incomplete01
+error: Proofs/FourierSeriesOQ04OQ01.lean:554:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑↑(UnitAddTorus.mFourierCoeff (↑↑fhat) k • UnitAddTorus.mFourierLp 2 k) x
+in the target expression
+===== FrobeniusNumberOQ01
+error: Proofs/FrobeniusNumberOQ01.lean:69:30: Application type mismatch: The argument
+  hka
+has type
+error: Proofs/FrobeniusNumberOQ01.lean:76:67: No goals to be solved
+error: Proofs/FrobeniusNumberOQ01.lean:76:25: unsolved goals
+a b : ℕ
+error: Proofs/FrobeniusNumberOQ01.lean:76:25: unsolved goals
+a b : ℕ
+hab : a.Coprime b
+error: Proofs/FrobeniusNumberOQ01.lean:88:65: linarith failed to find a contradiction
+a b : ℕ
+hab : a.Coprime b
+===== FundamentalTheoremAlgebra
+error: Proofs/FundamentalTheoremAlgebra.lean:116:41: Function expected at
+  Splits ?m.5
+but this term has type
+error: Proofs/FundamentalTheoremAlgebra.lean:116:48: Application type mismatch: The argument
+  RingHom.id ℂ
+has type
+error: Proofs/FundamentalTheoremAlgebra.lean:135:16: Function expected at
+  Splits ?m.16
+but this term has type
+error: Proofs/FundamentalTheoremAlgebra.lean:135:23: Application type mismatch: The argument
+  RingHom.id ℂ
+has type
+===== FundamentalTheoremCalculusStokes
+error: Proofs/FundamentalTheoremCalculusStokes.lean:110:8: typeclass instance problem is stuck
+  NormedSpace ℝ ?m.7
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:51: Function expected at
+  hasFDerivAt_id ℝ
+but this term has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:24: Application type mismatch: The argument
+  hasFDerivAt_const p.2 x
+has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:380:20: don't know how to synthesize implicit argument `a`
+  @poincare_1d f ?m.13 hf
+context:
+===== FurstenbergCorrespondence
+error: Proofs/FurstenbergCorrespondence.lean:168:16: failed to infer universe levels in `have` declaration type
+  DFunLike.coe.{?u.29 + 1, ?u.29 + 1, 1} (System.μ.{?u.29} sys) (System.B.{?u.29} sys) ≠ 0
+error: Proofs/FurstenbergCorrespondence.lean:232:4: Type mismatch
+error: Proofs/FurstenbergCorrespondence.lean:232:4: Type mismatch
+  hreturnk k n hk hn_pos hn_meas
+has type
+===== GCDAlgorithmOQ01OQ03OQ01
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:156:19: Type mismatch: After simplification, term
+  hb
+ has type
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:158:8: Type mismatch: After simplification, term
+  this
+ has type
+===== GCDAlgorithmOQ01OQ03OQ01OQ01
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:156:19: Type mismatch: After simplification, term
+  hb
+ has type
+error: Proofs/GCDAlgorithmOQ01OQ03OQ01.lean:158:8: Type mismatch: After simplification, term
+  this
+ has type
+===== GeneralQuarticAxiomsDischarge
+error: Proofs/GeneralQuarticAxiomsDischarge.lean:41:2: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/GeneralQuarticAxiomsDischarge.lean:109:38: Application type mismatch: The argument
+  ht
+has type
+===== GeometricSeries
+error: Proofs/GeometricSeries.lean:77:2: Type mismatch
+  geom_sum_mul_neg r n
+has type
+===== GeometricSeriesOQ02OQ03
+error: Proofs/GeometricSeriesOQ02OQ03.lean:59:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑u⁻¹ * (A - B)
+in the target expression
+error: Proofs/GeometricSeriesOQ02OQ03.lean:82:36: `ring_nf` made no progress on the goal
+warning: Proofs/GeometricSeriesOQ02OQ03.lean:135:58: Variable name `hε` is not explicitly referenced.
+error: Proofs/GeometricSeriesOQ02OQ03.lean:153:2: Type mismatch
+  right_inverse_identity (1 - B) hB
+has type
+error: Proofs/GeometricSeriesOQ02OQ03.lean:162:2: Type mismatch
+  left_inverse_identity (1 - B) hB
+has type
+===== GreensTheoremOQ03OQ04
+error: Proofs/GreensTheoremOQ03OQ04.lean:81:31: Type mismatch
+  [[a₁, b₁]] ×ˢ [[a₂, b₂]]
+has type
+error: Proofs/GreensTheoremOQ03OQ04.lean:82:31: Type mismatch
+  [[a₁, b₁]] ×ˢ [[a₂, b₂]]
+has type
+error: Proofs/GreensTheoremOQ03OQ04.lean:87:66: Type mismatch
+  [[a₁, b₁]] ×ˢ [[a₂, b₂]]
+has type
+error: Proofs/GreensTheoremOQ03OQ04.lean:83:22: Function expected at
+  Ioo
+but this term has type
+===== GreensTheoremOQ04
+error: Proofs/GreensTheoremOQ04.lean:93:41: Application type mismatch: The argument
+  List.not_mem_nil ?m.8
+has type
+error: Proofs/GreensTheoremOQ04.lean:103:28: Application type mismatch: The argument
+  Fin [].length
+has type
+error: Proofs/GreensTheoremOQ04.lean:107:45: unsolved goals
+R : TypeIRegion
+⊢ (simplyConnectedOf R).outer.toSet = R.toSet
+error: Proofs/GreensTheoremOQ04.lean:134:43: unsolved goals
+R : TypeIRegion
+⊢ (simplyConnectedOf R).outer.area = R.area
+===== GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02
+error: Proofs/GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean:118:65: Application type mismatch: The argument
+  hfree
+has type
+error: Proofs/GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02.lean:118:60: Application type mismatch: The argument
+  inst
+has type
+===== HarmonicDivergenceOQ02
+error: Proofs/HarmonicDivergenceOQ02.lean:76:69: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 1
+error: Proofs/HarmonicDivergenceOQ02.lean:102:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?m ^ ?n)
+in the target expression
+error: Proofs/HarmonicDivergenceOQ02.lean:104:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  log (2 ^ k)
+in the target expression
+error: Proofs/HarmonicDivergenceOQ02.lean:119:6: Type mismatch
+  fun k => if k = 0 then 2 ^ 0 * logHarmonic (2 ^ 0) else 1 / (k * log 2)
+has type
+===== HermiteLegendreFactorialOQ02
+error: Proofs/HermiteLegendreFactorialOQ02.lean:69:27: Type mismatch: After simplification, term
+  hp
+ has type
+===== HierholzerAlgorithm
+error: Proofs/HierholzerAlgorithm.lean:169:2: Type mismatch
+  Eq.symm (Finset.filter_card_add_filter_neg_card_eq_card fun w => s(v, w) ∈ S)
+has type
+error: Proofs/HierholzerAlgorithm.lean:189:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (List.filter ?m.48 ?m.49).length
+in the target expression
+===== Hilbert14InvariantsOQ01
+error: Proofs/Hilbert14InvariantsOQ01.lean:42:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a • (?b₁ + ?b₂)
+in the target expression
+error: Proofs/Hilbert14InvariantsOQ01.lean:50:15: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?r • ?x * ?y
+in the target expression
+error: Proofs/Hilbert14InvariantsOQ01.lean:56:11: Type mismatch
+  smul_one g
+has type
+===== Hilbert14NonReductive
+error: Proofs/Hilbert14NonReductive.lean:79:11: Type mismatch
+  smul_zero g
+has type
+error: Proofs/Hilbert14NonReductive.lean:133:42: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a • (?b₁ * ?b₂)
+in the target expression
+error: Proofs/Hilbert14NonReductive.lean:131:23: Type mismatch
+  smul_one g
+has type
+error: Proofs/Hilbert14NonReductive.lean:162:4: typeclass instance problem is stuck
+  DistribMulAction ?m.11 R
+===== Hilbert16
+error: Proofs/Hilbert16.lean:108:2: Type mismatch
+  ![(MvPolynomial.eval ![p.ofLp 0, p.ofLp 1]) F.P, (MvPolynomial.eval ![p.ofLp 0, p.ofLp 1]) F.Q]
+has type
+error: Proofs/Hilbert16.lean:241:2: Type mismatch
+  L.matrix.mulVec p.ofLp
+has type
+===== Hilbert20OQ01OQ03Aristotle
+error: Proofs/Hilbert20OQ01OQ03Aristotle.lean:44:27: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/Hilbert20OQ01OQ03Aristotle.lean:40:55: unsolved goals
+case inst
+ι : Type u_1
+error: Proofs/Hilbert20OQ01OQ03Aristotle.lean:61:58: unsolved goals
+n : ℕ
+α : Fin n → ℕ
+===== Hilbert21RiemannHilbert
+error: Proofs/Hilbert21RiemannHilbert.lean:130:46: Tactic `assumption` failed
+n : ℕ
+error: Proofs/Hilbert21RiemannHilbert.lean:284:32: Application type mismatch: The argument
+  n
+has type
+===== Hilbert22OQ01OQ03Pseudohyperbolic
+error: Proofs/Hilbert22OQ01OQ03Pseudohyperbolic.lean:155:52: Application type mismatch: The argument
+  hmaps
+has type
+===== Hilbert22OQ01OQ03Universal
+error: Proofs/Hilbert22OQ01OQ03Universal.lean:74:8: `Hilbert22OQ01OQ03.le_chainCost_of_triangle` has already been declared
+error: Proofs/Hilbert22OQ01OQ03Universal.lean:94:65: Application type mismatch: The argument
+  htri
+error: Proofs/Hilbert22OQ01OQ03Universal.lean:94:65: Application type mismatch: The argument
+  htri
+has type
+===== Hilbert6PhysicsAxioms
+error: Proofs/Hilbert6PhysicsAxioms.lean:91:51: Application type mismatch: The argument
+  Disjoint on ?m.12
+has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:151:26: Application type mismatch: The argument
+  Disjoint on ?m.14
+has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:180:24: Application type mismatch: The argument
+  ψ.vector
+has type
+===== InfinitudePrimesOQ01
+error: Proofs/InfinitudePrimesOQ01.lean:114:2: Type mismatch: After simplification, term
+  this
+ has type
+===== InverseGaloisF20OQ02
+error: Proofs/InverseGaloisF20OQ02.lean:162:46: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => σ ^ (i % _a) = σ ^ i
+Error: Application type mismatch: The argument
+===== KonigsbergOQ02OQ01
+error: Proofs/KonigsbergOQ02OQ01.lean:164:20: Application type mismatch: The argument
+  w.arcs_valid ?m.188 (List.mem_toFinset.mp ?m.191)
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:206:44: unsolved goals
+V : Type u_1
+inst✝² : Fintype V
+error: Proofs/KonigsbergOQ02OQ01.lean:228:18: Application type mismatch: The argument
+  w1.arcs_valid
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:232:10: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => (w2.arcs.head ⋯).1 = u
+Error: Application type mismatch: The argument
+===== KonigsbergOQ02OQ01OQ02OQ01Splice
+error: Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean:114:24: Application type mismatch: The argument
+  hwd
+has type
+error: Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean:115:25: Application type mismatch: The argument
+  hwd
+has type
+error: Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean:115:65: Application type mismatch: The argument
+  hwd
+has type
+error: Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean:116:43: Application type mismatch: The argument
+  hwd
+has type
+===== KonigsbergOQ04
+error: Proofs/KonigsbergOQ04.lean:223:29: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/KonigsbergOQ04.lean:232:29: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/KonigsbergOQ04.lean:252:21: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  arb.parent^[k] B
+in the target expression
+error: Proofs/KonigsbergOQ04.lean:253:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  arb.parent^[k] B
+in the target expression
+===== KummerTheoremOQ01OQ01
+error: Proofs/KummerTheoremOQ01OQ01.lean:58:29: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/KummerTheoremOQ01OQ01.lean:60:40: Application type mismatch: The argument
+  x
+has type
+error: Proofs/KummerTheoremOQ01OQ01.lean:110:82: unsolved goals
+ks : List ℕ
+p : ℕ
+error: Proofs/KummerTheoremOQ01OQ01.lean:174:54: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'multinomial', which is 'noncomputable'
+error: Proofs/KummerTheoremOQ01OQ01.lean:183:2: Tactic `decide` failed for proposition
+  (multinomial [1, 2, 3]).factorization 2 =
+===== LagrangeFourSquaresOQ05
+error: Proofs/LagrangeFourSquaresOQ05.lean:180:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Quaternion.normSq (?p * ?q)
+in the target expression
+===== LagrangeTheoremOQ01
+error: Proofs/LagrangeTheoremOQ01.lean:37:2: Type mismatch
+  card_subgroup_dvd_card H
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:42:2: Type mismatch
+  Eq.symm (card_mul_index H)
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:64:2: Type mismatch
+  Sylow.card_eq_multiplicity P
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:69:2: Type mismatch
+  card_subgroup_dvd_card ↑P
+has type
+===== LagrangeTheoremOQ01OQ03
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:6: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Unique.mk` has 2 explicit field, but only 1 was provided
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:8: Invalid `⟨...⟩` notation: The expected type `G` is not an inductive type
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:8: Invalid `⟨...⟩` notation: The expected type `G` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:91:28: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:109:59: Application type mismatch: The argument
+  hp
+error: Proofs/LagrangeTheoremOQ01OQ03.lean:109:59: Application type mismatch: The argument
+  hp
+has type
+===== LagrangeTheoremOQ03OQ02
+error: Proofs/LagrangeTheoremOQ03OQ02.lean:97:35: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => x ^ _a = 1
+Error: Application type mismatch: The argument
+===== LagrangeTheoremOQ05
+error: Proofs/LagrangeTheoremOQ05.lean:35:2: Type mismatch
+  Subgroup.card_subgroup_dvd_card H
+has type
+error: Proofs/LagrangeTheoremOQ05.lean:41:2: Type mismatch
+  Eq.symm (Subgroup.card_eq_card_quotient_mul_card_subgroup H)
+has type
+===== LawOfCosines
+error: Proofs/LawOfCosines.lean:64:52: Application type mismatch: The argument
+  v
+has type
+error: Proofs/LawOfCosines.lean:64:59: unsolved goals
+v : Vec2
+⊢ ⟪v, v⟫ = sorry
+error: Proofs/LawOfCosines.lean:76:42: Application type mismatch: The argument
+  v
+has type
+error: Proofs/LawOfCosines.lean:76:49: unsolved goals
+v w : Vec2
+⊢ ⟪v, v⟫ - ⟪w, v⟫ * 2 + ⟪w, w⟫ = ⟪v, v⟫ + ⟪w, w⟫ - sorry * 2
+===== LawOfCosinesOQ01OQ01OQ03
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:64:2: ring failed, ring expressions not equal
+A B C : Fin 3 → ℝ
+hC : IsUnit3 C
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:100:16: Application type mismatch: The argument
+  (crossProduct A) B = tripleProduct A B C • A
+has type
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:111:16: Application type mismatch: The argument
+  (crossProduct B) C = tripleProduct A B C • B
+has type
+error: Proofs/LawOfCosinesOQ01OQ01OQ03.lean:230:52: Application type mismatch: The argument
+  hBC_p
+has type
+===== LawOfCosinesOQ01OQ04
+error: Proofs/LawOfCosinesOQ01OQ04.lean:83:24: No goals to be solved
+error: Proofs/LawOfCosinesOQ01OQ04.lean:90:8: Type mismatch
+  h
+error: Proofs/LawOfCosinesOQ01OQ04.lean:90:8: Type mismatch
+  h
+has type
+error: Proofs/LawOfCosinesOQ01OQ04.lean:92:10: Type mismatch
+  mem_compl_singleton_iff.mpr (div_ne_zero (mul_ne_zero (mem_compl_singleton_iff.mp ?m.543) hx) two_ne_zero)
+has type
+error: Proofs/LawOfCosinesOQ01OQ04.lean:92:92: Application type mismatch: The argument
+  ht
+has type
+===== LawOfCosinesOQ04OQ01
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:48: unexpected identifier; expected ':=', 'where' or '|'
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:4: Type mismatch
+  ‖A - C‖ * ⟪B - A, (1 - s) • B + s • C - A⟫
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:4: Type mismatch
+  ‖A - C‖ * ⟪B - A, (1 - s) • B + s • C - A⟫
+has type
+===== LawOfCosinesOQ04OQ01Bisector
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:48: unexpected identifier; expected ':=', 'where' or '|'
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:4: Type mismatch
+  ‖A - C‖ * ⟪B - A, (1 - s) • B + s • C - A⟫
+error: Proofs/LawOfCosinesOQ04OQ01.lean:155:4: Type mismatch
+  ‖A - C‖ * ⟪B - A, (1 - s) • B + s • C - A⟫
+has type
+===== LawOfCosinesOQ07OQ01
+error: Proofs/LawOfCosinesOQ07OQ01.lean:63:2: Type mismatch
+  parallelogram_law_with_norm 𝕜 x y
+has type
+error: Proofs/LawOfCosinesOQ07OQ01.lean:85:21: Type mismatch
+  parallelogram_law_with_norm 𝕜 x y
+has type
+===== LawsOfLargeNumbersOQ01
+error: Proofs/LawsOfLargeNumbersOQ01.lean:248:12: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:297:46: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+error: Proofs/LawsOfLargeNumbersOQ01.lean:297:46: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+  slln_negated X hint hindep hident
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+  slln_negated X hint hindep hident
+has type
+error: Proofs/LawsOfLargeNumbersOQ01.lean:395:2: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+===== LawsOfLargeNumbersOQ01OQ02
+error: Proofs/LawsOfLargeNumbersOQ01.lean:248:12: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:297:46: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+error: Proofs/LawsOfLargeNumbersOQ01.lean:297:46: expected token
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+  slln_negated X hint hindep hident
+error: Proofs/LawsOfLargeNumbersOQ01.lean:357:2: Type mismatch
+  slln_negated X hint hindep hident
+has type
+error: Proofs/LawsOfLargeNumbersOQ01.lean:395:2: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+===== LawsOfLargeNumbersOQ01OQ02OQ01
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:374:11: typeclass instance problem is stuck
+  ContinuousAdd ?m.102
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:378:47: Application type mismatch: The argument
+  hadp
+has type
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:669:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:749:4: Type mismatch: After simplification, term
+  h
+ has type
+===== LawsOfLargeNumbersOQ02
+error: Proofs/LawsOfLargeNumbersOQ02.lean:130:4: Type mismatch: After simplification, term
+  IndepFun.variance_sum hLp_set hpair
+ has type
+error: Proofs/LawsOfLargeNumbersOQ02.lean:137:2: No goals to be solved
+warning: Proofs/LawsOfLargeNumbersOQ02.lean:178:2: 'push_cast' tactic does nothing
+error: Proofs/LawsOfLargeNumbersOQ02.lean:195:10: typeclass instance problem is stuck
+  IsOrderedRing ?m.39
+error: Proofs/LawsOfLargeNumbersOQ02.lean:325:50: Type mismatch
+  fun n => σ_sq / ε ^ 2 / n
+has type
+===== LebesgueMeasureOQ01OQ01
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:68:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:5: unknown tactic
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:2: unsolved goals
+case isFalse
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:2: unsolved goals
+case isFalse
+x : ℝ
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:81:27: Invalid field notation: Type of
+  Exists.choose ?m.34
+is not known; cannot resolve field `den`
+===== LebesgueMeasureOQ01OQ01OQ02
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:55:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:86:2: linarith failed to find a contradiction
+case h1
+r : ℚ
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:106:18: Invalid field `tendsto`: The environment does not contain `Function.tendsto`, so it is not possible to project the field `tendsto` from an expression
+  h
+of type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:100:78: unsolved goals
+r : ℚ
+h : Tendsto thomae (nhds ↑r) (nhds (1 / ↑r.den))
+===== LebesgueMeasureOQ01OQ01OQ02Riemann
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:55:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:86:2: linarith failed to find a contradiction
+case h1
+r : ℚ
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:106:18: Invalid field `tendsto`: The environment does not contain `Function.tendsto`, so it is not possible to project the field `tendsto` from an expression
+  h
+of type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:100:78: unsolved goals
+r : ℚ
+h : Tendsto thomae (nhds ↑r) (nhds (1 / ↑r.den))
+===== LHopitalOQ02Incomplete01
+error: Proofs/LHopitalOQ02Incomplete01.lean:95:4: Type mismatch: After simplification, term
+  Tendsto.comp tendsto_inv_atTop_zero tendsto_exp_atTop
+ has type
+===== LHopitalOQ03
+error: Proofs/LHopitalOQ03.lean:94:26: No goals to be solved
+error: Proofs/LHopitalOQ03.lean:133:49: Invalid field `deriv`: The environment does not contain `Function.deriv`, so it is not possible to project the field `deriv` from an expression
+  HasFDerivAt.comp_hasDerivAt ?m.76 ?m.79
+error: Proofs/LHopitalOQ03.lean:133:49: Invalid field `deriv`: The environment does not contain `Function.deriv`, so it is not possible to project the field `deriv` from an expression
+  HasFDerivAt.comp_hasDerivAt ?m.76 ?m.79
+of type
+error: Proofs/LHopitalOQ03.lean:133:3: Application type mismatch: The argument
+  DifferentiableAt.hasFDerivAt hf
+has type
+===== LHopitalOQ04
+error: Proofs/LHopitalOQ04.lean:93:4: Type mismatch: After simplification, term
+  HasDerivAt.sub (hasDerivAt_const 0 1) (Real.hasDerivAt_cos 0)
+ has type
+===== LHopitalOQ04OQ01
+error: Proofs/LHopitalOQ04OQ01.lean:154:4: Type mismatch: After simplification, term
+  HasDerivAt.sub (hasDerivAt_const x 1) (Real.hasDerivAt_cos x)
+ has type
+===== MathematicalInductionOQ03
+error: Proofs/MathematicalInductionOQ03.lean:55:14: Type mismatch
+  h0
+has type
+error: Proofs/MathematicalInductionOQ03.lean:56:19: Type mismatch
+  hsucc (↑m) ih
+has type
+error: Proofs/MathematicalInductionOQ03.lean:59:2: Tactic `assumption` failed
+n : ℕ
+error: Proofs/MathematicalInductionOQ03.lean:71:37: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 • ?b
+in the target expression
+===== MatrixSimilarityInvariantsOQ01
+error: Proofs/MatrixSimilarityInvariantsOQ01.lean:70:2: Type mismatch
+  charpoly_units_conj P A
+has type
+===== MeanValueTheoremOQ02OQ01OQ01
+error: Proofs/MeanValueTheoremOQ02OQ01OQ01.lean:63:4: Type mismatch: After simplification, term
+  h2
+ has type
+error: Proofs/MeanValueTheoremOQ02OQ01OQ01.lean:110:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (fun s => rexp (-s)) y
+in the target expression
+===== MeanValueTheoremOQ02OQ04OQ01
+error: Proofs/MeanValueTheoremOQ02OQ04OQ01.lean:195:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/MeanValueTheoremOQ02OQ04OQ01.lean:648:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Membership.mem ?m.234 (Set ?m.234) instMembership (Metric.eball ?m.236 ?m.238) ?m.237
+in the target expression
+===== MeanValueTheoremOQ03
+error: Proofs/MeanValueTheoremOQ03.lean:361:42: Application type mismatch: The argument
+  hC
+has type
+===== MeanValueTheoremOQ04
+error: Proofs/MeanValueTheoremOQ04.lean:48:4: Invalid field notation: Function `ContinuousAt.stronglyMeasurableAtFilter` does not have a usable parameter of type `ContinuousAt ...` for which to substitute `Continuous.continuousAt
+  hf`
+error: Proofs/MeanValueTheoremOQ04.lean:174:45: Application type mismatch: The argument
+  h1
+has type
+error: Proofs/MeanValueTheoremOQ04.lean:175:36: Application type mismatch: The argument
+  h2
+has type
+error: Proofs/MeanValueTheoremOQ04.lean:176:45: Application type mismatch: The argument
+  h2
+has type
+===== MinpolyCharpolyOQ01
+error: Proofs/MinpolyCharpolyOQ01.lean:511:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  charmatrix ?m.72 ?i ?j
+in the target expression
+error: Proofs/MinpolyCharpolyOQ01.lean:511:28: Application type mismatch: The argument
+  hne
+has type
+===== MinpolyCharpolyOQ03
+error: Proofs/RationalCanonicalFormExists.lean:75:90: unsolved goals
+case e'_1
+F : Type u_1
+error: Proofs/RationalCanonicalFormExists.lean:130:50: Application type mismatch: The argument
+  Finset.mem_univ i
+has type
+error: Proofs/RationalCanonicalFormExists.lean:148:2: unsolved goals
+case pos
+R : Type u_2
+error: Proofs/RationalCanonicalFormExists.lean:142:68: unsolved goals
+case e'_3
+R : Type u_2
+===== MinpolyCharpolyOQ03OQ01
+error: Proofs/RationalCanonicalFormExists.lean:75:90: unsolved goals
+case e'_1
+F : Type u_1
+error: Proofs/RationalCanonicalFormExists.lean:130:50: Application type mismatch: The argument
+  Finset.mem_univ i
+has type
+error: Proofs/RationalCanonicalFormExists.lean:148:2: unsolved goals
+case pos
+R : Type u_2
+error: Proofs/RationalCanonicalFormExists.lean:142:68: unsolved goals
+case e'_3
+R : Type u_2
+===== NewtonInductiveStepOQ01
+error: Proofs/NewtonInductiveStepOQ01.lean:244:12: Type mismatch
+  cast_sub hlen_ge_one
+has type
+===== NewtonInductiveStepOQ01Aristotle
+error: Proofs/NewtonInductiveStepOQ01.lean:244:12: Type mismatch
+  cast_sub hlen_ge_one
+has type
+===== NewtonInductiveStepOQ02
+error: Proofs/NewtonInductiveStepOQ01.lean:244:12: Type mismatch
+  cast_sub hlen_ge_one
+has type
+===== PascalsHexagonOQ02
+error: Proofs/PascalsHexagonOQ02.lean:79:48: Type mismatch
+  adjugate_transpose C
+has type
+===== PerfectNumbersOQ03
+error: Proofs/PerfectNumbersOQ03.lean:88:4: unsolved goals
+case zero
+hn : ¬Nat.Prime 0
+error: Proofs/PerfectNumbersOQ03.lean:133:12: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑?a = 0
+in the target expression
+error: Proofs/PerfectNumbersOQ03.lean:163:6: Type mismatch
+  ZMod.pow_card_sub_one_eq_one h2_ne
+has type
+error: Proofs/PerfectNumbersOQ03.lean:239:2: No goals to be solved
+info: Proofs/PerfectNumbersOQ03.lean:256:0: @mersenne_prime_exp_prime : ∀ {n : ℕ}, Nat.Prime (M n) → Nat.Prime n
+info: Proofs/PerfectNumbersOQ03.lean:257:0: MersennePrimeDist.LPWConjecture : Prop
+===== PicksTheoremOQ02
+error: Proofs/PicksTheoremOQ02.lean:103:4: Type mismatch
+  heq
+has type
+error: Proofs/PicksTheoremOQ02.lean:141:10: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/PicksTheoremOQ02.lean:146:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+error: Proofs/PicksTheoremOQ02.lean:146:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern in the current goal
+case inr.inl
+error: Proofs/PicksTheoremOQ02.lean:174:30: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  p * k
+in the target expression
+===== PNPBarriersLegacy
+error: Proofs/PNPBarriersLegacy.lean:5855:48: Application type mismatch: The argument
+  eb
+has type
+error: Proofs/PNPBarriersLegacy.lean:5877:51: Application type mismatch: The argument
+  eb
+has type
+===== PNPBarriersSound
+error: Proofs/PNPBarriersSound.lean:674:29: Application type mismatch: The argument
+  hs
+has type
+===== PNPBarriersUnified
+error: Proofs/ComplexityCore.lean:285:29: Application type mismatch: The argument
+  hs
+has type
+===== PoincareConjecture
+error: Proofs/PoincareConjecture.lean:2938:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @IsOpen ?m.13 (coinduced ?m.16 ?m.14) ?m.15
+in the target expression
+error: Proofs/PoincareConjecture.lean:2979:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+error: Proofs/PoincareConjecture.lean:3030:22: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ↑⟨_a, ⋯⟩
+Error: Application type mismatch: The argument
+error: Proofs/PoincareConjecture.lean:3048:31: Application type mismatch: The argument
+  rfl
+has type
+===== PrimitiveRoots
+error: Proofs/PrimitiveRoots.lean:82:56: Application type mismatch: The argument
+  Units.ext
+has type
+error: Proofs/PrimitiveRoots.lean:97:2: Tactic `assumption` failed
+case h
+error: Proofs/PrimitiveRoots.lean:177:4: Type mismatch
+  orderOf_eq_card_of_forall_mem_zpowers hgen
+has type
+===== PuiseuxTheorem
+error: Proofs/PuiseuxTheorem.lean:673:39: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/PuiseuxTheorem.lean:1016:39: Application type mismatch: The argument
+  hq
+has type
+===== PuiseuxTheoremOQ03
+error: Proofs/PuiseuxTheorem.lean:673:39: Application type mismatch: The argument
+  hq
+has type
+error: Proofs/PuiseuxTheorem.lean:1016:39: Application type mismatch: The argument
+  hq
+has type
+===== PythagoreanTheorem
+error: Proofs/PythagoreanTheorem.lean:64:52: Application type mismatch: The argument
+  v
+has type
+error: Proofs/PythagoreanTheorem.lean:64:59: unsolved goals
+v : Vec2
+⊢ ⟪v, v⟫ = sorry
+error: Proofs/PythagoreanTheorem.lean:72:47: Application type mismatch: The argument
+  v
+has type
+error: Proofs/PythagoreanTheorem.lean:104:18: Application type mismatch: The argument
+  w
+has type
+===== RamseyHypergraph
+error: Proofs/RamseyHypergraph.lean:340:35: Type mismatch
+  hSm T hT
+has type
+error: Proofs/RamseyHypergraph.lean:343:14: Type mismatch
+  hχ
+has type
+error: Proofs/RamseyHypergraph.lean:347:34: Type mismatch
+  hSm T hT
+has type
+error: Proofs/RamseyHypergraph.lean:349:15: Type mismatch
+  hχ
+has type
+===== RationalCanonicalFormExists
+error: Proofs/RationalCanonicalFormExists.lean:75:90: unsolved goals
+case e'_1
+F : Type u_1
+error: Proofs/RationalCanonicalFormExists.lean:130:50: Application type mismatch: The argument
+  Finset.mem_univ i
+has type
+error: Proofs/RationalCanonicalFormExists.lean:148:2: unsolved goals
+case pos
+R : Type u_2
+error: Proofs/RationalCanonicalFormExists.lean:142:68: unsolved goals
+case e'_3
+R : Type u_2
+===== SchroederBernsteinOQ03
+error: Proofs/SchroederBernsteinOQ03.lean:1606:2: Type mismatch: After simplification, term
+  this
+ has type
+===== ShannonChannelCodingAWGNOQ03OQ01Monotone
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:175:8: `ShannonWaterFilling.waterLevel_pos` has already been declared
+warning: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:217:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:278:4: No goals to be solved
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:280:48: Application type mismatch: The argument
+  hP2pos
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:280:48: Application type mismatch: The argument
+  hP2pos
+has type
+error: Proofs/ShannonChannelCodingAWGNOQ03OQ01Monotone.lean:280:45: Application type mismatch: The argument
+  h2
+has type
+===== ShannonEntropyAristotle
+error: Proofs/ShannonEntropyAristotle.lean:120:68: Type mismatch: After simplification, term
+  hsum
+ has type
+===== ShannonSourceCodingOQ02
+error: Proofs/ShannonSourceCodingOQ02.lean:254:54: Application type mismatch: The argument
+  fun x x_1 => mem_univ (?m.199 x x_1)
+has type
+error: Proofs/ShannonSourceCodingOQ02.lean:290:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x ∈ erase ?m.522 j, ?m.516 x
+in the target expression
+===== ShapleyFolkmanOQ01
+error: Proofs/ShapleyFolkmanOQ01.lean:68:19: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ∑ i ∈ t, f (D.point i) = f _a
+Error: Application type mismatch: The argument
+===== SpernerFreudenthalSimplex
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerNDimMathlibOQ01
+error: Proofs/SpernerNDimOQ01.lean:49:53: Function expected at
+  Pairwise.take hl
+but this term has type
+error: Proofs/SpernerNDimOQ01.lean:48:45: unsolved goals
+n : ℕ
+l : List (Fin n)
+error: Proofs/SpernerNDimOQ01.lean:59:17: Type mismatch
+  take_subset ?m.17 ?m.18 ?m.20
+has type
+error: Proofs/SpernerNDimOQ01.lean:65:54: Ambiguous term
+  mem_singleton
+Possible interpretations:
+===== SpernerNDimMathlibOQ02
+error: Proofs/SpernerNDimMathlibOQ02.lean:253:13: Type mismatch
+  hpanch (N + 1) (Nat.succ_pos N)
+has type
+error: Proofs/SpernerNDimMathlibOQ02.lean:298:8: No goals to be solved
+error: Proofs/SpernerNDimMathlibOQ02.lean:304:8: Tactic `assumption` failed
+error: Proofs/SpernerNDimMathlibOQ02.lean:304:8: Tactic `assumption` failed
+case a
+===== SpernerNDimOQ03
+error: Proofs/SpernerNDimOQ03.lean:213:4: Function expected at
+  countPerm
+but this term has type
+error: Proofs/SpernerNDimOQ03.lean:230:9: Function expected at
+  FSimplex
+but this term has type
+error: Proofs/SpernerNDimOQ03.lean:268:26: Function expected at
+  FSimplex
+but this term has type
+error: Proofs/SpernerNDimOQ03.lean:268:40: Type mismatch
+  IsFC c ?m.21
+has type
+===== SpernerNDimOQ03OQ01
+error: Proofs/SpernerNDimOQ03OQ01.lean:46:23: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:68:12: Function expected at
+  mul_lt_of_lt_one_right ?m.128 ?m.134
+but this term has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:78:41: Application type mismatch: The argument
+  x₀
+has type
+error: Proofs/SpernerNDimOQ03OQ01.lean:78:64: Application type mismatch: The argument
+  p
+has type
+===== SpernerNDimOQ06
+error: Proofs/SpernerNDimOQ06.lean:235:27: Application type mismatch: The argument
+  hp
+has type
+===== SpernerSimplicialInstance
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ01
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ04
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ05
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ05Scarf1d
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== Sqrt2MinpolyOQ01
+error: Proofs/Sqrt2MinpolyOQ01.lean:162:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑k
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01.lean:192:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/Sqrt2MinpolyOQ01.lean:203:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  C a * X + C ha
+in the target expression
+error: Proofs/Sqrt2MinpolyOQ01.lean:207:13: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+===== StirlingFormulaOQ02OQ01
+error: Proofs/StirlingFormulaOQ02OQ01.lean:222:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/StirlingFormulaOQ02OQ01.lean:256:4: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/StirlingFormulaOQ02OQ01.lean:387:6: Type mismatch: After simplification, term
+  h
+ has type
+===== SumOfKthPowersOQ04
+error: Proofs/SumOfKthPowersOQ04.lean:98:29: Application type mismatch: The argument
+  fun i hi => const_div_pow_tendsto_zero' (q.coeff i) (d - i) (Nat.sub_pos_of_lt (mem_range.mp hi))
+has type
+error: Proofs/SumOfKthPowersOQ04.lean:107:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  eval ?m.183 ?m.182
+in the target expression
+error: Proofs/SumOfKthPowersOQ04.lean:107:37: Application type mismatch: The argument
+  hdeg
+has type
+error: Proofs/SumOfKthPowersOQ04.lean:146:50: Application type mismatch: The argument
+  hcoeff
+has type
+===== SylowTheoremOQ02OQ01Nilpotent
+error: Proofs/SylowTheoremOQ02OQ01Nilpotent.lean:67:24: Application type mismatch: The argument
+  ↑P
+has type
+===== TaylorTheorem
+error: Proofs/TaylorTheorem.lean:94:63: Application type mismatch: The argument
+  hlt
+has type
+error: Proofs/TaylorTheorem.lean:96:39: Application type mismatch: The argument
+  hx
+has type
+error: Proofs/TaylorTheorem.lean:76:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/TaylorTheorem.lean:119:63: Application type mismatch: The argument
+  hlt
+has type
+===== TaylorTheoremOQ01
+error: Proofs/TaylorTheoremOQ01.lean:93:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/TaylorTheoremOQ01.lean:117:12: Application type mismatch: The argument
+  hθ
+has type
+===== TaylorTheoremOQ02
+error: Proofs/TaylorTheoremOQ02.lean:90:65: unsolved goals
+f : ℝ → ℝ
+p : FormalMultilinearSeries ℝ ℝ ℝ
+error: Proofs/TaylorTheoremOQ02.lean:132:5: Invalid field `hasSum`: The environment does not contain `Exists.hasSum`, so it is not possible to project the field `hasSum` from an expression
+  h
+of type
+error: Proofs/TaylorTheoremOQ02.lean:158:2: Type mismatch: After simplification, term
+  Tendsto.sub tendsto_const_nhds htend
+ has type
+error: Proofs/TaylorTheoremOQ02.lean:185:35: Invalid field `le_radius`: The environment does not contain `HasFPowerSeriesOnBall.le_radius`, so it is not possible to project the field `le_radius` from an expression
+  hr
+of type `HasFPowerSeriesOnBall f p x₀ r`
+===== TaylorTheoremOQ03
+error: Proofs/TaylorTheoremOQ03.lean:131:58: Application type mismatch: The argument
+  hx
+has type
+error: Proofs/TaylorTheoremOQ03.lean:113:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/TaylorTheoremOQ03.lean:182:36: Application type mismatch: The argument
+  one_pos
+has type
+error: Proofs/TaylorTheoremOQ03.lean:186:44: unsolved goals
+n j : ℕ
+hn : 1 ≤ n
+===== TaylorTheoremOQ03OQ01
+error: Proofs/TaylorTheoremOQ03OQ01.lean:107:68: Application type mismatch: The argument
+  hx
+has type
+===== TaylorTheoremOQ03OQ02
+error: Proofs/TaylorTheoremOQ03OQ02.lean:81:4: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_cos x)
+ has type
+===== TestApi689
+error: Proofs/TestApi689.lean:51:22: Application type mismatch: The argument
+  Finset.filter_subset_filter ?m.17 ?m.21
+has type
+===== TriangleAngleSumOQ02
+error: Proofs/TriangleAngleSumOQ02.lean:89:16: Type mismatch
+  π
+has type
+error: Proofs/TriangleAngleSumOQ02.lean:99:2: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  T
+has type `GeodesicTriangle` which does not have the necessary form.
+error: Proofs/TriangleAngleSumOQ02.lean:99:8: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  T
+has type `GeodesicTriangle` which does not have the necessary form.
+error: Proofs/TriangleAngleSumOQ02.lean:99:14: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  T
+has type `GeodesicTriangle` which does not have the necessary form.
+===== TriangularReciprocalsOQ04OQ01
+error: Proofs/TriangularReciprocalsOQ04OQ01.lean:178:4: Type mismatch: After simplification, term
+  h
+ has type

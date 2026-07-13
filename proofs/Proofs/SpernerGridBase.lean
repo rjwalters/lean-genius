@@ -427,7 +427,7 @@ theorem GridSimplex.incDir_const_before (s : GridSimplex d N)
         ext; simp [step, Fin.succ]
       rw [hss, hsc] at hstable
       rw [hstable, ih_val]
-  exact this m.val m.isLt (by simpa using hm)
+  exact this m.val m.isLt (by exact hm)
 
 /-- Every non-miss coordinate `j` increases by exactly 1 across
 the whole chain: it equals its base value plus 1 at the last

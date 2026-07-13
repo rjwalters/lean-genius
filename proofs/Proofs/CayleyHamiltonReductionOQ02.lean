@@ -83,7 +83,7 @@ theorem aeval_eq_aeval_mod_minpoly (A : Matrix n n K) [Nontrivial n]
     aeval A f = aeval A (f %ₘ minpoly K A) := by
   have hm := minpoly_monic A
   have hann := aeval_minpoly_eq_zero A
-  have hdiv := Polynomial.modByMonic_add_div f hm
+  have hdiv := Polynomial.modByMonic_add_div f (minpoly K A)
   have key := congr_arg (aeval A) hdiv
   simp only [map_add, map_mul] at key
   rw [hann, zero_mul, add_zero] at key

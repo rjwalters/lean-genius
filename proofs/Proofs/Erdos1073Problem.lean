@@ -124,7 +124,7 @@ theorem coprime_of_dvd_factorial_plus_one {u n : ℕ} (hu : 2 ≤ u)
   have h2 : Nat.gcd u (n !) ∣ 1 := by
     have := Nat.dvd_sub h1 hg2
     simp [Nat.add_sub_cancel] at this
-    exact this
+    exact this.dvd
   exact h (Nat.eq_one_of_dvd_one h2)
 
 /-- All prime factors of u must exceed n when u | n! + 1.
@@ -138,7 +138,9 @@ theorem prime_factors_exceed {u n p : ℕ} (hu : 2 ≤ u)
   -- p | u and Coprime u (n!)
   have : p ∣ Nat.gcd u (n !) := Nat.dvd_gcd hpu hp_dvd_fact
   rw [hcop] at this
-  exact Nat.Prime.one_lt hp |>.not_le (Nat.le_of_dvd one_pos this)
+  have hple : p ≤ 1 := Nat.le_of_dvd one_pos this
+  have hlt : 1 < p := Nat.Prime.one_lt hp
+  omega
 
 /-- 25 is not prime (concrete check for the first known composite). -/
 theorem not_prime_25 : ¬ Nat.Prime 25 := by decide

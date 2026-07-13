@@ -1209,14 +1209,14 @@ private lemma conicQF_eq_dotProduct (C : Conic) (p : Fin 3 → ℝ) :
     The `Matrix.toQuadraticMap'` definition is `LinearMap.BilinMap.toQuadraticMap (toLinearMap₂' ℝ C)`,
     which applies the bilinear map to `(p, p)`. -/
 private lemma mathlibQF_eq_dotProduct (C : Conic) (p : Fin 3 → ℝ) :
-    Matrix.toQuadraticMap' C p = p ⬝ᵥ (C *ᵥ p) := by
-  simp only [Matrix.toQuadraticMap', LinearMap.BilinMap.toQuadraticMap_apply,
+    Matrix.toQuadraticForm' C p = p ⬝ᵥ (C *ᵥ p) := by
+  simp only [Matrix.toQuadraticForm', LinearMap.BilinMap.toQuadraticMap_apply,
              Matrix.toLinearMap₂'_apply']
 
 /-- Our `conicQuadraticForm` agrees with Mathlib's `Matrix.toQuadraticMap'` pointwise.
     Key connection for the Sylvester proof path. -/
 private lemma conicQF_eq_mathlibQF (C : Conic) (p : Fin 3 → ℝ) :
-    conicQuadraticForm C p = Matrix.toQuadraticMap' C p :=
+    conicQuadraticForm C p = Matrix.toQuadraticForm' C p :=
   (conicQF_eq_dotProduct C p).trans (mathlibQF_eq_dotProduct C p).symm
 
 /-- For a non-degenerate symmetric conic C, the associated bilinear form of
@@ -1230,10 +1230,10 @@ private lemma conicQF_eq_mathlibQF (C : Conic) (p : Fin 3 → ℝ) :
     4. Therefore `(associated Q).SeparatingLeft`. -/
 private lemma mathlibQF_separatingLeft (C : Conic) (hC_sym : C.symmetric)
     (hC_nd : Conic.nondegenerate C) :
-    (QuadraticMap.associated (Matrix.toQuadraticMap' C)).SeparatingLeft := by
+    (QuadraticMap.associated (Matrix.toQuadraticForm' C)).SeparatingLeft := by
   -- Step 1: Show associated Q = Matrix.toLinearMap₂' ℝ C using symmetry of C
-  have h_assoc : QuadraticMap.associated (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
-    unfold Matrix.toQuadraticMap'
+  have h_assoc : QuadraticMap.associated (Matrix.toQuadraticForm' C) = Matrix.toLinearMap₂' ℝ C := by
+    unfold Matrix.toQuadraticForm'
     exact QuadraticMap.associated_left_inverse ℝ (fun x y => by
       -- Prove: (Matrix.toLinearMap₂' ℝ C) x y = (Matrix.toLinearMap₂' ℝ C) y x
       -- i.e., x ⬝ᵥ (C *ᵥ y) = y ⬝ᵥ (C *ᵥ x), using symmetry of C
@@ -1247,7 +1247,7 @@ private lemma mathlibQF_separatingLeft (C : Conic) (hC_sym : C.symmetric)
       rw [hC_sym l k]; ring)
   -- Step 2: Apply Matrix.Nondegenerate.toLinearMap₂'
   rw [h_assoc]
-  exact (Matrix.nondegenerate_of_det_ne_zero hC_nd).toLinearMap₂'
+  exact (Matrix.nondegenerate_of_det_ne_zero hC_nd).separatingLeft.toLinearMap₂'
 
 /-- **Invertible matrices preserve validity** (map nonzero vectors to nonzero vectors).
     If det(M) ≠ 0 and v ≠ 0, then M·v ≠ 0.
@@ -1473,7 +1473,7 @@ private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
   -- Step 1: Sylvester's law of inertia gives ±1 weights and an isometry φ.
   obtain ⟨w, hw_pm, hequiv⟩ :=
     QuadraticForm.equivalent_one_neg_one_weighted_sum_squared
-      (Matrix.toQuadraticMap' C) (mathlibQF_separatingLeft C hC_sym hC_nd)
+      (Matrix.toQuadraticForm' C) (mathlibQF_separatingLeft C hC_sym hC_nd)
   obtain ⟨φ⟩ := hequiv
   -- Reindex `Fin (finrank ℝ (Fin 3 → ℝ)) ≃ Fin 3`.
   have hrank : Module.finrank ℝ (Fin 3 → ℝ) = 3 := Module.finrank_fin_fun ℝ

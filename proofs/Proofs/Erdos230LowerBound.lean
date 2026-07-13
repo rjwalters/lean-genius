@@ -80,7 +80,8 @@ theorem supNorm_ge_of_witness {n : ℕ} (P : UnimodularPolynomial n) (z₀ : ℂ
   have hbdd := bddAbove_supNorm_family P
   calc Real.sqrt n
       ≤ ‖evaluate P z₀‖ := hge
-    _ = ⨆ (_ : ‖z₀‖ = 1), ‖evaluate P z₀‖ := (ciSup_pos hz₀).symm
+    _ = ⨆ (_ : ‖z₀‖ = 1), ‖evaluate P z₀‖ :=
+        (ciSup_pos (f := fun _ => ‖evaluate P z₀‖) hz₀).symm
     _ ≤ ⨆ (z : ℂ), ⨆ (_ : ‖z‖ = 1), ‖evaluate P z‖ := le_ciSup hbdd z₀
 
 /-- **Reduction of the lower-bound axiom to discrete Parseval.**

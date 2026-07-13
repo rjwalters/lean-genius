@@ -90,7 +90,7 @@ theorem chebyshevTheta_le (n : ℕ) : chebyshevTheta n ≤ n * Real.log 4 := by
       simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false, not_and]
       intro hx
       exact fun hp => absurd (hp.one_le) (by omega)
-    simp [hempty]
+    simp [hempty, Finset.filter_singleton, Nat.not_prime_zero]
   · have hprim_pos : 0 < primorial n := primorial_pos n
     have hprim_real : (primorial n : ℝ) ≤ ((4 : ℕ) ^ n : ℕ) := by
       exact_mod_cast primorial_le_4_pow n
@@ -105,7 +105,7 @@ theorem chebyshevTheta_le (n : ℕ) : chebyshevTheta n ≤ n * Real.log 4 := by
         (p : ℝ) ≠ 0 := by
       intro p hp
       exact_mod_cast (Finset.mem_filter.mp hp).2.ne_zero
-    rw [Real.log_prod _ _ hne_zero] at hlog
+    rw [Real.log_prod hne_zero] at hlog
     linarith
 
 /-- Upper bound on prime counting from Chebyshev:
@@ -151,7 +151,10 @@ theorem primeCounting_le_chebyshev (N : ℕ) (hN : 2 ≤ N) :
       have hp_sq_gt : N < p * p := by
         have hp_ge : sqrtN + 1 ≤ p := hpgt
         have h_succ_sq : N < (sqrtN + 1) * (sqrtN + 1) := by
-          rw [hsqrtN_def]; exact Nat.lt_succ_sqrt' N
+          rw [hsqrtN_def]
+          have h := Nat.lt_succ_sqrt' N
+          rw [pow_two] at h
+          exact h
         nlinarith [Nat.mul_le_mul hp_ge hp_ge]
       have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hpS.2.pos
       have hp_sq_real : (N : ℝ) < (p : ℝ) * (p : ℝ) := by exact_mod_cast hp_sq_gt
@@ -195,18 +198,27 @@ theorem chebyshev_bound_tendsto_zero :
     simp only [mul_zero] at this
     exact this.congr' (by filter_upwards with N; ring)
   have h2 : Tendsto (fun N : ℕ => (Nat.sqrt N + 1 : ℝ) / N) atTop (nhds 0) := by
-    apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds
-      (show Tendsto (fun N : ℕ => (2 : ℝ) / N) atTop (nhds 0) from by
-        have : Tendsto (fun N : ℕ => (N : ℝ)⁻¹) atTop (nhds 0) :=
-          tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
-        have h2 := this.const_mul 2
-        simp only [mul_zero] at h2
-        exact h2.congr' (by filter_upwards with N; rw [div_eq_mul_inv]))
+    have hsqrt_tendsto : Tendsto (fun N : ℕ => (Nat.sqrt N : ℝ)) atTop atTop :=
+      tendsto_natCast_atTop_atTop.comp
+        (Filter.tendsto_atTop_atTop.mpr fun b => ⟨b * b, fun a ha => Nat.le_sqrt.mpr ha⟩)
+    have hinv : Tendsto (fun N : ℕ => ((Nat.sqrt N : ℝ))⁻¹) atTop (nhds 0) :=
+      tendsto_inv_atTop_zero.comp hsqrt_tendsto
+    have hupper : Tendsto (fun N : ℕ => (2 : ℝ) / (Nat.sqrt N : ℝ)) atTop (nhds 0) := by
+      have h2m := hinv.const_mul (2 : ℝ)
+      simp only [mul_zero] at h2m
+      exact h2m.congr' (by filter_upwards with N; rw [div_eq_mul_inv])
+    apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hupper
     · filter_upwards with N using div_nonneg (by positivity) (Nat.cast_nonneg _)
-    · filter_upwards [eventually_ge_atTop 4] with N hN
-      apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ N)
-      have hsqrt_le : Nat.sqrt N ≤ N := Nat.sqrt_le_self N
-      exact_mod_cast show Nat.sqrt N + 1 ≤ 2 * N by omega
+    · filter_upwards [eventually_ge_atTop 1] with N hN
+      have hs1 : 1 ≤ Nat.sqrt N := Nat.le_sqrt.mpr (by omega)
+      have hsq : (Nat.sqrt N : ℝ) * (Nat.sqrt N : ℝ) ≤ (N : ℝ) := by
+        exact_mod_cast Nat.le_sqrt.mp le_rfl
+      have hsqrt_pos : (0 : ℝ) < (Nat.sqrt N : ℝ) := by
+        exact_mod_cast show 0 < Nat.sqrt N by omega
+      have hN_pos : (0 : ℝ) < (N : ℝ) := by exact_mod_cast show 0 < N by omega
+      have hs1' : (1 : ℝ) ≤ (Nat.sqrt N : ℝ) := by exact_mod_cast hs1
+      rw [div_le_div_iff₀ hN_pos hsqrt_pos]
+      nlinarith [hsq, hs1', hsqrt_pos]
   have := h1.add h2
   simp only [zero_add] at this
   exact this

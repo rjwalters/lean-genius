@@ -226,7 +226,7 @@ theorem atLeastOneAlgebraicReal_uncountable {n : ℕ} (hn : 2 ≤ n) :
   intro hc
   have h0 : 0 < n := by omega
   have h1 : 1 < n := by omega
-  have hne : (⟨0, h0⟩ : Fin n) ≠ ⟨1, h1⟩ := by decide
+  have hne : (⟨0, h0⟩ : Fin n) ≠ ⟨1, h1⟩ := Fin.ne_of_val_ne (by simp)
   -- The point with `t` in slot `1` and `0` elsewhere lies in the set: its
   -- slot-`0` coordinate is `0`, which is algebraic.
   have hmem : ∀ t : ℝ,
@@ -257,7 +257,7 @@ theorem atLeastOneAlgebraicComplex_uncountable {n : ℕ} (hn : 2 ≤ n) :
   intro hc
   have h0 : 0 < n := by omega
   have h1 : 1 < n := by omega
-  have hne : (⟨0, h0⟩ : Fin n) ≠ ⟨1, h1⟩ := by decide
+  have hne : (⟨0, h0⟩ : Fin n) ≠ ⟨1, h1⟩ := Fin.ne_of_val_ne (by simp)
   have hmem : ∀ t : ℝ,
       Function.update (fun _ : Fin n => (0 : ℂ)) ⟨1, h1⟩ (t : ℂ)
         ∈ {z : Fin n → ℂ | ∃ i, IsAlgebraic ℚ (z i)} := by

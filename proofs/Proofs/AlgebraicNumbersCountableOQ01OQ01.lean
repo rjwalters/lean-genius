@@ -48,6 +48,9 @@
 import Proofs.AlgebraicNumbersCountableOQ01
 import Mathlib.FieldTheory.AlgebraicClosure
 import Mathlib.FieldTheory.IsAlgClosed.Basic
+-- v4.31 compat (#38065): `Complex.isAlgClosed` (FTA instance) is no longer
+-- transitively imported; needed by the § 4 specialization below.
+import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Tactic
 
 open AlgebraicNumbersCountableOQ01
@@ -154,6 +157,9 @@ noncomputable abbrev algebraicNumbersField : IntermediateField ℚ ℂ :=
 /-- The field of algebraic numbers is algebraically closed: it is an algebraic closure
     of `ℚ` sitting inside `ℂ`. -/
 instance : IsAlgClosed algebraicNumbersField :=
+  -- v4.31 compat (#38065): `IsAlgClosed ℂ` fails to synthesize here although
+  -- `Complex.isAlgClosed` exists; re-supply it explicitly.
+  letI : IsAlgClosed ℂ := Complex.isAlgClosed
   isAlgClosed_algebraicIntermediateField
 
 /-- The field of algebraic numbers coincides with Mathlib's relative algebraic closure

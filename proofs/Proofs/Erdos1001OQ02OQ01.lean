@@ -364,7 +364,7 @@ theorem improvement_factor_tends_to_zero :
     tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   have hpow : Tendsto (fun N : ℕ => (Real.log N) ^ ((1:ℝ)/3)) atTop atTop :=
     (tendsto_rpow_atTop (by norm_num)).comp hlog
-  simpa [one_div] using hpow.inv_tendsto_atTop
+  simpa [one_div, Pi.inv_def] using hpow.inv_tendsto_atTop
 
 /-
 ## Historical Context

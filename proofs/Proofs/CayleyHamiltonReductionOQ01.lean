@@ -90,7 +90,7 @@ theorem upper_tri_aeval_eq_aeval_mod (M : Matrix n n R) (_h : M.BlockTriangular 
     aeval M f = aeval M (f %ₘ M.charpoly) := by
   have hm : M.charpoly.Monic := Matrix.charpoly_monic M
   have hann : aeval M M.charpoly = 0 := Matrix.aeval_self_charpoly M
-  have hdiv := Polynomial.modByMonic_add_div f hm
+  have hdiv := Polynomial.modByMonic_add_div f M.charpoly
   have key := congr_arg (aeval M) hdiv
   simp only [map_add, map_mul] at key
   rw [hann, zero_mul, add_zero] at key

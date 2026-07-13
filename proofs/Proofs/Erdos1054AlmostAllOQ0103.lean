@@ -68,7 +68,8 @@ theorem lcmUpTo_pos (n : ℕ) : 0 < lcmUpTo n := by
 /-- Every `k` with `1 ≤ k ≤ n` divides `lcmUpTo n`. -/
 theorem dvd_lcmUpTo {n k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ n) : k ∣ lcmUpTo n := by
   have hmem : k ∈ Finset.Icc 1 n := Finset.mem_Icc.mpr ⟨h1, h2⟩
-  simpa [id] using Finset.dvd_lcm (f := id) hmem
+  show k ∣ (Finset.Icc 1 n).lcm id
+  exact Finset.dvd_lcm (f := id) hmem
 
 /-- **Key identity.** Over `ℝ`, the abundancy ratio is the sum of reciprocals of
     divisors:  `σ(m)/m = ∑_{d ∣ m} 1/d`. The proof reindexes the divisor sum by

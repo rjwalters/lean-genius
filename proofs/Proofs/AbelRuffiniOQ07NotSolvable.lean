@@ -69,6 +69,19 @@ theorem gal_not_solvable_of_iso_S5 (e : f.Gal ≃* Equiv.Perm (Fin 5)) :
   have hsurj : Function.Surjective (e.toMonoidHom) := fun y => ⟨e.symm y, by simp⟩
   exact Equiv.Perm.fin_5_not_solvable (solvable_of_surjective hsurj)
 
+/-- Bridge from the (now deprecated) inductive `IsSolvableByRad` to membership in the
+`solvableByRad` intermediate field, by induction over the radical-closure constructors. -/
+private theorem mem_solvableByRad_of_isSolvableByRad
+    {E : Type*} [Field E] [Algebra ℚ E] {α : E}
+    (h : IsSolvableByRad ℚ α) : α ∈ solvableByRad ℚ E := by
+  induction h with
+  | base a => exact (solvableByRad ℚ E).algebraMap_mem a
+  | add a b _ _ iha ihb => exact add_mem iha ihb
+  | neg a _ iha => exact neg_mem iha
+  | mul a b _ _ iha ihb => exact mul_mem iha ihb
+  | inv a _ iha => exact inv_mem iha
+  | rad a n hn _ iha => exact solvableByRad.rad_mem hn iha
+
 /-- **No root of `f` is solvable by radicals, given a non-solvable Galois group.**
 If `f.Gal` is not solvable then for every root `α` of `f` in any `ℚ`-extension `E`,
 `α` is not solvable by radicals. This is the contrapositive of Mathlib's Abel–Ruffini
@@ -78,7 +91,9 @@ theorem root_not_solvableByRad_of_gal_not_solvable
     {E : Type*} [Field E] [Algebra ℚ E]
     (hns : ¬ IsSolvable f.Gal) {α : E} (hα : aeval α f = 0) :
     ¬ IsSolvableByRad ℚ α :=
-  fun h => hns (solvableByRad.isSolvable' f_irreducible hα h)
+  fun h =>
+    hns (isSolvable_gal_of_irreducible (mem_solvableByRad_of_isSolvableByRad h)
+      f_irreducible hα)
 
 /-- **Capstone — the Abel–Ruffini conclusion of OQ-07, reduced to its open input.**
 Granting the single genuinely-open fact `f.Gal ≃* S₅` (the Dedekind–Frobenius bridge),

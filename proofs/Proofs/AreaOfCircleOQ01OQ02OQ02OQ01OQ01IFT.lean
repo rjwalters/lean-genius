@@ -255,7 +255,9 @@ theorem reparamMap_hasDerivAt (hL : 0 < γ.circumference) (t : ℝ) :
       (1 / speed γ (reparamMap γ hL t) * (γ.circumference / (2 * π))) t := by
   have hσ := arcLengthInv_hasDerivAt γ hL (γ.circumference / (2 * π) * t)
   have h := hσ.comp t ((hasDerivAt_id t).const_mul (γ.circumference / (2 * π)))
-  simpa only [Function.comp_def, mul_one] using h
+  simp only [Function.comp_def, mul_one] at h
+  unfold reparamMap
+  exact h
 
 /-- `τ` is `C¹`. -/
 theorem reparamMap_contDiff (hL : 0 < γ.circumference) : ContDiff ℝ 1 (reparamMap γ hL) := by

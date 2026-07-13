@@ -1617,6 +1617,7 @@ def heightPairing (h : CanonicalHeight E) (x y : ℝ) : ℝ :=
 theorem heightPairing_symm (h : CanonicalHeight E) (x y : ℝ) :
     heightPairing h x y = heightPairing h y x := by
   unfold heightPairing
+  rw [add_comm x y]
   ring
 
 /-- The canonical height is related to the height pairing by ĥ(P) = ⟨P, P⟩.

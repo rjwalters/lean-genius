@@ -465,7 +465,10 @@ theorem brouwer_product_simplex {N : ℕ} (G : MultilinearGame N)
   have hmaps' : ∀ σ : MixedProfile N G, (∀ j, σ j ∈ MixedStrategy (G.strategies j)) →
       ∀ j, f σ j ∈ MixedStrategy (G.strategies j) := fun σ hσ j =>
     hf_maps σ hσ j
-  obtain ⟨σ, hmem, hfp⟩ := brouwer_pi_compact_convex
+  -- On the current toolchain the axiom `brouwer_pi_compact_convex` picked up the
+  -- section variables `{n : ℕ} (hn : 1 ≤ n)` of BrouwerFixedPointOQ04; discharge
+  -- the (unused) hypothesis with `1 ≤ 1`.
+  obtain ⟨σ, hmem, hfp⟩ := brouwer_pi_compact_convex (Nat.le_refl 1)
     (fun j : Fin N => MixedStrategy (G.strategies j))
     (fun j => mixed_strategy_nonempty (G.strategies_pos j))
     (fun _ => mixed_strategy_compact)

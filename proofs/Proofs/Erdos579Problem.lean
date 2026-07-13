@@ -50,13 +50,13 @@ def isDense (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (δ : ℝ) : Prop :=
   δ * (n : ℝ) ^ 2 ≤ (G.edgeFinset.card : ℝ)
 
 /-- An independent set: a set of vertices with no edges between them -/
-def SimpleGraph.IsIndepSet (G : SimpleGraph V) (S : Finset V) : Prop :=
+def SimpleGraph.IsIndepFinset (G : SimpleGraph V) (S : Finset V) : Prop :=
   ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v
 
 /-- The independence number: the size of the largest independent set -/
 noncomputable def SimpleGraph.independenceNumber (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] : ℕ :=
-  Finset.sup (Finset.univ.powerset.filter G.IsIndepSet) Finset.card
+  Finset.sup (Finset.univ.powerset.filter G.IsIndepFinset) Finset.card
 
 /- ## EHSS Result for δ > 1/8 -/
 

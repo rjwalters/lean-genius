@@ -63,7 +63,7 @@ theorem even_card_of_fpf_involution {α : Type*} [DecidableEq α]
     (hσ_ne : ∀ x ∈ S, σ x ≠ x) :
     Even S.card := by
   induction S using Finset.strongInduction with
-  | ind S ih =>
+  | H S ih =>
     by_cases hS : S = ∅
     · subst hS; exact ⟨0, by simp⟩
     · rw [Finset.nonempty_iff_ne_empty] at hS
@@ -104,7 +104,7 @@ theorem prod_involution_const {G : Type*} [CommGroup G] [DecidableEq G]
     (hσ_prod : ∀ x ∈ S, x * σ x = c) :
     ∏ x ∈ S, x = c ^ (S.card / 2) := by
   induction S using Finset.strongInduction with
-  | ind S ih =>
+  | H S ih =>
     by_cases hS : S = ∅
     · subst hS; simp
     · rw [Finset.nonempty_iff_ne_empty] at hS
@@ -157,9 +157,9 @@ private lemma neg_one_ne_one_zmod_aux {m : ℕ} (hm : m ≥ 3) : (-1 : ZMod m) �
   haveI : NeZero m := ⟨by omega⟩
   intro heq
   have : (m : ℤ) ∣ (-2 : ℤ) := by
-    rw [show (-2 : ℤ) = -1 - 1 from by ring]
-    rw [ZMod.intCast_zmod_eq_zero_iff_dvd]
-    push_cast; linarith [heq]
+    rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
+    have hcast : ((-2 : ℤ) : ZMod m) = -1 - 1 := by push_cast; ring
+    rw [hcast, heq, sub_self]
   have : m ≤ 2 := by
     have := Int.natAbs_le.mp (Int.le_of_dvd (by norm_num) (dvd_abs.mpr this))
     omega

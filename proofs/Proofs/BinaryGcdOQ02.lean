@@ -98,29 +98,31 @@ theorem binaryGcdInt_nonneg (a b : ℤ) : 0 ≤ binaryGcdInt a b := Nat.zero_le 
 theorem binaryGcdInt_dvd_left (a b : ℤ) :
     (binaryGcdInt a b : ℤ) ∣ a := by
   rw [binaryGcdInt_eq_intGcd]
-  exact Int.gcd_dvd_left
+  exact Int.gcd_dvd_left a b
 
 theorem binaryGcdInt_dvd_right (a b : ℤ) :
     (binaryGcdInt a b : ℤ) ∣ b := by
   rw [binaryGcdInt_eq_intGcd]
-  exact Int.gcd_dvd_right
+  exact Int.gcd_dvd_right a b
 
 /-- Universal property: any common divisor divides `binaryGcdInt`. -/
 theorem dvd_binaryGcdInt {a b c : ℤ} (ha : c ∣ a) (hb : c ∣ b) :
     c ∣ (binaryGcdInt a b : ℤ) := by
   rw [binaryGcdInt_eq_intGcd]
-  exact Int.dvd_gcd ha hb
+  -- v4.31 compat (#38065): `Int.dvd_gcd` signature drifted; go through ℕ.
+  exact Int.natAbs_dvd.mp (Int.natCast_dvd_natCast.mpr
+    (Nat.dvd_gcd (Int.natAbs_dvd_natAbs.mpr ha) (Int.natAbs_dvd_natAbs.mpr hb)))
 
 /-! ## Concrete sanity checks -/
 
-example : binaryGcdInt 12 18 = 6 := by decide
-example : binaryGcdInt (-12) 18 = 6 := by decide
-example : binaryGcdInt 12 (-18) = 6 := by decide
-example : binaryGcdInt (-12) (-18) = 6 := by decide
-example : binaryGcdInt 0 7 = 7 := by decide
-example : binaryGcdInt 0 (-7) = 7 := by decide
-example : binaryGcdInt 17 17 = 17 := by decide
-example : binaryGcdInt (-17) 17 = 17 := by decide
+example : binaryGcdInt 12 18 = 6 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt (-12) 18 = 6 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt 12 (-18) = 6 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt (-12) (-18) = 6 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt 0 7 = 7 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt 0 (-7) = 7 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt 17 17 = 17 := by rw [binaryGcdInt_eq_intGcd]; decide
+example : binaryGcdInt (-17) 17 = 17 := by rw [binaryGcdInt_eq_intGcd]; decide
 
 /-! ## Summary
 

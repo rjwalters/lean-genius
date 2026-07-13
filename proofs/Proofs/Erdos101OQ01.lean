@@ -982,7 +982,7 @@ theorem exists_noFiveCollinear_fourPointLineCount_pos :
         rw [hpts] at hp
         simp only [Finset.mem_insert, Finset.mem_singleton] at hp
         rcases hp with rfl | rfl | rfl | rfl <;> (unfold collinear; norm_num)
-  simpa using key
+  exact lt_of_lt_of_le (by simp) key
 
 /-! ## S19 ACT: first unconditional positive lower bound on the extremal function
 

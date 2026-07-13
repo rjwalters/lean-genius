@@ -53,8 +53,11 @@ theorem sum_pow_eq (k : ℕ) :
       let φ : Kˣ ↪ K := ⟨fun x ↦ x, Units.val_injective⟩
       have himg : univ.map φ = univ \ {0} := by
         ext x
-        simpa only [mem_map, mem_univ, Function.Embedding.coeFn_mk, true_and, mem_sdiff,
-          mem_singleton, φ] using isUnit_iff_ne_zero
+        simp only [mem_map, mem_univ, Function.Embedding.coeFn_mk, true_and, mem_sdiff,
+          mem_singleton, φ]
+        constructor
+        · rintro ⟨u, rfl⟩; exact u.ne_zero
+        · intro hx; exact ⟨Units.mk0 x hx, rfl⟩
       calc
         (∑ x : K, x ^ k) = ∑ x ∈ univ \ {(0 : K)}, x ^ k := by
             rw [← sum_sdiff ({0} : Finset K).subset_univ, sum_singleton, zero_pow hk, add_zero]

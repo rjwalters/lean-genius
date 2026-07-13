@@ -183,8 +183,10 @@ theorem cantor_no_surjection {A B : Type*} (f : B → B)
     (hf : ∀ b, f b ≠ b) :
     ¬∃ e : A → A → B, Function.Surjective e := by
   rintro ⟨e, he⟩
-  obtain ⟨b, hb⟩ := lawvere_fixpoint_of_surjection e he f
-  exact hf b hb
+  -- Lawvere-style diagonal: the map a ↦ f (e a a) is hit by some e a₀,
+  -- so e a₀ a₀ is a fixed point of f.
+  obtain ⟨a₀, ha₀⟩ := he (fun a => f (e a a))
+  exact hf (e a₀ a₀) (congr_fun ha₀ a₀).symm
 
 /-- No surjection A → (A → Prop). -/
 theorem cantor_prop (A : Type*) :
@@ -224,7 +226,8 @@ theorem yCombinator_is_fixpoint {Y : Type*} (c : CodesEndomorphisms Y)
   unfold yCombinator
   -- After unfolding, the goal involves c.decode (c.encode g) (c.encode g)
   -- which equals g (c.encode g) by the retract property
-  exact (congr_arg f (congr_fun (c.retract _) _)).symm
+  exact (congr_arg f (congr_fun (c.retract (fun y => f (c.decode y y)))
+    (c.encode (fun y => f (c.decode y y))))).symm
 
 -- ================================================================
 -- Part VIII: The Diagonal Map

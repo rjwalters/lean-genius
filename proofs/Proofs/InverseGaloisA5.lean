@@ -1,6 +1,21 @@
 import Mathlib
 import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
+/-- v4.31 compat (#38065): Mathlib's splitting-field instances
+(`Polynomial.IsSplittingField.splittingField`, `Polynomial.SplittingField.instNormal`)
+exist but do not fire during typeclass synthesis over `ℚ` (their
+universe-polymorphic base field fails synthesis-time unification), although
+explicit application succeeds; re-register `ℚ`-specialized copies. -/
+instance instIsSplittingFieldRatCompatInverseGaloisA5 (f : Polynomial ℚ) :
+    Polynomial.IsSplittingField ℚ f.SplittingField f :=
+  Polynomial.IsSplittingField.splittingField f
+
+/-- v4.31 compat (#38065): `ℚ`-specialized copy of
+`Polynomial.SplittingField.instNormal` (see above). -/
+instance instNormalRatSplittingFieldCompatInverseGaloisA5 (f : Polynomial ℚ) :
+    Normal ℚ f.SplittingField :=
+  Polynomial.SplittingField.instNormal f
+
 /-
 # A₅ is Realizable as a Galois Group over ℚ (InverseGaloisA5)
 
@@ -429,7 +444,9 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
       have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
       -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
-      convert hprod using 1
+      -- (v4.31: `convert _ using 1` leaves the associativity iff unsolved;
+      -- normalize both sides with `mul_assoc` instead)
+      simpa only [mul_assoc] using hprod
     have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
       rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
       have := hN₃.conj_mem τ hτ_mem σ

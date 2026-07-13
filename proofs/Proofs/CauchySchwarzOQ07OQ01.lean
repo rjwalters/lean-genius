@@ -52,7 +52,7 @@ theorem nonempty_innerProductSpace_iff_parallelogram :
   constructor
   · rintro ⟨i⟩ x y
     letI := i
-    exact parallelogram_law_with_norm 𝕜 x y
+    simpa only [pow_two] using parallelogram_law_with_norm 𝕜 x y
   · intro h
     exact ⟨InnerProductSpace.ofNorm 𝕜 h⟩
 

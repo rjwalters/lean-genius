@@ -135,10 +135,10 @@ some 2-colouring of the pairs of `Fin n` is monochromatic on no `k`-clique. -/
 theorem exists_good_coloring_sym2 (n k : ℕ)
     (h : 2 * n.choose k < 2 ^ (k.choose 2)) :
     ∃ c : Sym2 (Fin n) → Bool, ∀ S : Finset (Fin n), S.card = k →
-      ¬ ∃ b, ∀ e ∈ S.offDiag.image Sym2.mk, c e = b := by
+      ¬ ∃ b, ∀ e ∈ S.offDiag.image Sym2.mk.uncurry, c e = b := by
   classical
   set E := Sym2 (Fin n)
-  set edgesOf : Finset (Fin n) → Finset E := fun S => S.offDiag.image Sym2.mk with hedges
+  set edgesOf : Finset (Fin n) → Finset E := fun S => S.offDiag.image Sym2.mk.uncurry with hedges
   set bad : Finset (Finset E) := (univ.powersetCard k).image edgesOf with hbad
   -- Every W ∈ bad is the edge set of some k-clique, so has card C(k,2).
   have hWcard : ∀ W ∈ bad, W.card = k.choose 2 := by
@@ -146,7 +146,7 @@ theorem exists_good_coloring_sym2 (n k : ℕ)
     rw [hbad, Finset.mem_image] at hW
     obtain ⟨S, hS, rfl⟩ := hW
     rw [Finset.mem_powersetCard] at hS
-    show #(S.offDiag.image Sym2.mk) = k.choose 2
+    show #(S.offDiag.image Sym2.mk.uncurry) = k.choose 2
     rw [Sym2.card_image_offDiag, hS.2]
   -- The union bound.
   have hbound : (∑ W ∈ bad, 2 * 2 ^ (Fintype.card E - W.card)) < 2 ^ Fintype.card E := by
@@ -204,17 +204,17 @@ theorem erdos_ramsey_criterion (n k : ℕ)
         ¬ (∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = false)) := by
   classical
   obtain ⟨c, hc⟩ := exists_good_coloring_sym2 n k h
-  refine ⟨fun x y => if x = y then false else c (Sym2.mk (x, y)), ?_, ?_, ?_, ?_⟩
+  refine ⟨fun x y => if x = y then false else c s(x, y), ?_, ?_, ?_, ?_⟩
   · -- symmetric
     intro x y
-    show (if x = y then false else c (Sym2.mk (x, y)))
-        = (if y = x then false else c (Sym2.mk (y, x)))
+    show (if x = y then false else c s(x, y))
+        = (if y = x then false else c s(y, x))
     by_cases hxy : x = y
     · rw [hxy]
     · rw [if_neg hxy, if_neg (Ne.symm hxy), Sym2.eq_swap]
   · -- irreflexive
     intro x
-    show (if x = x then false else c (Sym2.mk (x, x))) = false
+    show (if x = x then false else c s(x, x)) = false
     rw [if_pos rfl]
   · -- no all-true k-clique
     intro s hs hmono

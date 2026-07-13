@@ -88,8 +88,8 @@ lemma centralBinom_cast (n : ℕ) :
 lemma log_gap_le_telescope (m j : ℕ) (hm : 1 ≤ m) :
     Real.log (Stirling.stirlingSeq (m + j + 1)) - Real.log (Stirling.stirlingSeq (m + j + 2))
       ≤ 1 / (4 * ((m : ℝ) + j)) - 1 / (4 * ((m : ℝ) + j + 1)) := by
-  have hstep := Stirling.log_stirlingSeq_sub_log_stirlingSeq_succ (m + j)
-  -- `hstep : log stirlingSeq((m+j)+1) - log stirlingSeq((m+j)+2) ≤ 1/(4·((m+j)+1)²)`
+  have hstep := Stirling.log_stirlingSeq_sub_log_stirlingSeq_succ (m + j + 1)
+  -- `hstep : log stirlingSeq(m+j+1) - log stirlingSeq(m+j+2) ≤ 1/(4·(m+j+1)²)`
   refine hstep.trans ?_
   have hmj : (0 : ℝ) < (m : ℝ) + j := by
     have : (1 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
@@ -133,7 +133,11 @@ lemma log_stirlingSeq_sub_sqrt_pi_le (m : ℕ) (hm : 1 ≤ m) :
             (1 / (4 * ((m : ℝ) + (j : ℝ))) - 1 / (4 * ((m : ℝ) + (j : ℝ) + 1))) := by
       apply Finset.sum_le_sum
       intro j _
-      simpa only [hg] using log_gap_le_telescope m j hm
+      simp only [hg]
+      show Real.log (Stirling.stirlingSeq (m + j + 1))
+          - Real.log (Stirling.stirlingSeq (m + j + 2))
+          ≤ 1 / (4 * ((m : ℝ) + j)) - 1 / (4 * ((m : ℝ) + j + 1))
+      exact log_gap_le_telescope m j hm
     rw [tel N] at hle
     have h0 : (0 : ℝ) ≤ 1 / (4 * ((m : ℝ) + (N : ℝ))) := by positivity
     linarith

@@ -174,12 +174,12 @@ theorem max_prime_1080_is_5 : ∀ p : ℕ, p.Prime → p ∣ 1080 → p ≤ 5 :=
   have h1080 : (1080 : ℕ) = 2 ^ 3 * (3 ^ 3 * 5) := by norm_num
   rw [h1080] at hdiv
   rcases hp.dvd_mul.mp hdiv with h | h
-  · have := hp.eq_one_or_self_of_dvd 2 (hp.dvd_of_dvd_pow h)
+  · have := Nat.le_of_dvd (by norm_num) (hp.dvd_of_dvd_pow h)
     omega
   · rcases hp.dvd_mul.mp h with h' | h'
-    · have := hp.eq_one_or_self_of_dvd 3 (hp.dvd_of_dvd_pow h')
+    · have := Nat.le_of_dvd (by norm_num) (hp.dvd_of_dvd_pow h')
       omega
-    · have := hp.eq_one_or_self_of_dvd 5 h'
+    · have := Nat.le_of_dvd (by norm_num) h'
       omega
 
 /-- For n=28, i=5, j=14: the prime 5 ≥ 5 divides the gcd, satisfying the weak version.

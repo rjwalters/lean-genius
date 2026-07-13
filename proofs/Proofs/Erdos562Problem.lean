@@ -46,7 +46,8 @@ theorem twr_two (n : ℕ) : twr 2 n = 2 ^ (2 ^ n) := rfl
 noncomputable def hypergraphRamsey (r n : ℕ) : ℕ :=
   sInf { m : ℕ | ∀ (χ : Finset.powersetCard r (Finset.range m) → Fin 2),
     ∃ S : Finset ℕ, S ⊆ Finset.range m ∧ S.card = n ∧
-      ∃ c : Fin 2, ∀ e ∈ S.powersetCard r, χ e = c }
+      ∃ c : Fin 2, ∀ e : Finset.powersetCard r (Finset.range m),
+        (e : Finset ℕ) ∈ S.powersetCard r → χ e = c }
 
 /- ## Classical Graph Ramsey (r = 2) -/
 

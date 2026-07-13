@@ -51,7 +51,7 @@ theorem tendsto_sin_mul_div (x : ℝ) :
     Tendsto (fun t => Real.sin (x * t) / t) (𝓝[≠] 0) (𝓝 x) := by
   have hd : HasDerivAt (fun t => Real.sin (x * t)) x 0 := by
     have h := (Real.hasDerivAt_sin (x * 0)).comp 0 ((hasDerivAt_id 0).const_mul x)
-    simpa using h
+    exact h.congr_deriv (by simp)
   have hslope := hasDerivAt_iff_tendsto_slope.mp hd
   rw [slope_fun_def_field] at hslope
   refine hslope.congr fun t => ?_
@@ -64,7 +64,7 @@ theorem tendsto_sinh_mul_div (x : ℝ) :
     Tendsto (fun t => Real.sinh (x * t) / t) (𝓝[≠] 0) (𝓝 x) := by
   have hd : HasDerivAt (fun t => Real.sinh (x * t)) x 0 := by
     have h := (Real.hasDerivAt_sinh (x * 0)).comp 0 ((hasDerivAt_id 0).const_mul x)
-    simpa using h
+    exact h.congr_deriv (by simp)
   have hslope := hasDerivAt_iff_tendsto_slope.mp hd
   rw [slope_fun_def_field] at hslope
   refine hslope.congr fun t => ?_

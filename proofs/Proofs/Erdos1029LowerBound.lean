@@ -22,7 +22,7 @@ def HasMonoClique (c : Coloring n) (k : ℕ) : Prop :=
 /-- The set of edges spanned by a vertex set `S`: unordered pairs of distinct
 vertices both lying in `S`. -/
 def edgesWithin (S : Finset (Fin n)) : Finset (Sym2 (Fin n)) :=
-  S.offDiag.image Sym2.mk
+  S.offDiag.image (Function.uncurry Sym2.mk)
 
 /-- The number of edges spanned by an `S` with `S.card = k` is `C(k, 2)`. -/
 lemma card_edgesWithin (S : Finset (Fin n)) :
@@ -112,6 +112,7 @@ theorem exists_good_coloring (n k : ℕ)
       rw [mem_filter] at hc ⊢
       refine ⟨hc.1, ?_⟩
       intro e he
+      unfold edgesWithin at he
       obtain ⟨p, hp, rfl⟩ := Finset.mem_image.mp he
       obtain ⟨hx, hy, hxy⟩ := Finset.mem_offDiag.mp hp
       exact hc.2 p.1 hx p.2 hy hxy

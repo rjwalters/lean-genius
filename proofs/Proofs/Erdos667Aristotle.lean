@@ -61,14 +61,15 @@ theorem cliqueFree_one_iff_empty {n : ℕ} (G : SimpleGraph (Fin n)) (hn : 1 ≤
     ¬G.CliqueFree 1 := by
   intro h
   apply h {⟨0, by omega⟩}
-  refine ⟨Finset.card_singleton _, ?_⟩
-  exact Set.pairwise_singleton _ _
+  refine ⟨?_, Finset.card_singleton _⟩
+  rw [Finset.coe_singleton]
+  exact SimpleGraph.isClique_singleton _
 
 /-- The empty graph on Fin n is 2-clique-free (no two vertices are adjacent).
     Helper for cliqueGuarantee_zero. -/
 theorem emptyGraph_cliqueFree_two (n : ℕ) :
     (⊥ : SimpleGraph (Fin n)).CliqueFree 2 := by
-  intro t ⟨hcard, hclique⟩
+  intro t ⟨hclique, hcard⟩
   obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega : 1 < t.card)
   exact (hclique (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab).elim
 

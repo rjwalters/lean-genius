@@ -73,7 +73,9 @@ The set of all pairwise sums from B.
 def sumset (B : Set ℕ) : Set ℕ :=
   {n : ℕ | ∃ b₁ b₂ : ℕ, b₁ ∈ B ∧ b₂ ∈ B ∧ n = b₁ + b₂}
 
-notation:max B "+" B => sumset B
+-- v4.31 migration: the former `notation:max B "+" B => sumset B` hijacked ordinary
+-- `a + b` under the new parser (turning Nat additions into `sumset a`). It was unused
+-- (the file always writes `sumset B` directly), so it has been removed.
 
 /--
 **Sumset covering:**

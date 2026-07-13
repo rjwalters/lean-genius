@@ -501,7 +501,7 @@ private lemma odd_ratio_tendsto :
   have hsqrt1 : Tendsto (fun m : ℕ => Real.sqrt ((2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2)))
       atTop (𝓝 1) := by
     have hc := (Real.continuous_sqrt.tendsto 1).comp hrat
-    simpa using hc
+    simpa [Function.comp_def] using hc
   have hprod : Tendsto (fun m : ℕ => (Nat.centralBinom (m + 1) : ℝ)
         / ((4 : ℝ) ^ (m + 1) / Real.sqrt (Real.pi * ((m + 1 : ℕ) : ℝ)))
       * Real.sqrt ((2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2))) atTop (𝓝 (1 * 1)) :=

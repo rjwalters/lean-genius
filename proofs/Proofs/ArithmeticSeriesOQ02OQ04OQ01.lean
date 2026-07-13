@@ -40,8 +40,7 @@ open Finset BigOperators ArithmeticSeriesOQ02 ArithmeticSeriesOQ02OQ04
     Direct from Mathlib's `Nat.descFactorial_eq_factorial_mul_choose`. -/
 theorem choose_descFactorial (n k : ℕ) :
     Nat.choose n k * k.factorial = n.descFactorial k := by
-  rw [← Nat.descFactorial_eq_factorial_mul_choose]
-  ring
+  rw [mul_comm, ← Nat.descFactorial_eq_factorial_mul_choose]
 
 -- ============================================================
 -- Part II: Explicit Product Formula
@@ -63,14 +62,14 @@ theorem choose_product (n k : ℕ) :
     Equivalently: the descending factorial times (n-k)! = n! -/
 theorem choose_full_factorial (n k : ℕ) (h : k ≤ n) :
     Nat.choose n k * k.factorial * (n - k).factorial = n.factorial := by
-  rw [choose_descFactorial]
+  rw [choose_descFactorial, mul_comm]
   exact Nat.factorial_mul_descFactorial h
 
 /-- **Factorial divides descending factorial**: k! divides descFactorial(n, k).
     This is equivalent to: C(n,k) is a natural number. -/
 theorem factorial_dvd_descFactorial (n k : ℕ) :
     k.factorial ∣ n.descFactorial k :=
-  ⟨Nat.choose n k, (choose_descFactorial n k).symm⟩
+  ⟨Nat.choose n k, ((choose_descFactorial n k).symm.trans (mul_comm _ _))⟩
 
 /-- **descFactorial self is factorial**: n.descFactorial n = n! -/
 theorem descFactorial_self_eq_factorial (n : ℕ) :
@@ -101,19 +100,19 @@ theorem ascending_descending_duality (k n : ℕ) :
 
 /-- k=1: C(n,1) * 1! = n. -/
 theorem choose_descFactorial_one (n : ℕ) :
-    Nat.choose n 1 * 1.factorial = n := by
+    Nat.choose n 1 * (1).factorial = n := by
   rw [choose_descFactorial, Nat.descFactorial_one]
 
 /-- k=2: C(n,2) * 2! = n*(n-1). -/
 theorem choose_descFactorial_two (n : ℕ) :
-    Nat.choose n 2 * 2.factorial = n * (n - 1) := by
+    Nat.choose n 2 * (2).factorial = n * (n - 1) := by
   rw [choose_descFactorial]
   simp [Nat.descFactorial, Nat.descFactorial_succ, Nat.descFactorial_one]
   ring
 
 /-- k=3: C(n,3) * 3! = n*(n-1)*(n-2). -/
 theorem choose_descFactorial_three (n : ℕ) :
-    Nat.choose n 3 * 3.factorial = n * (n - 1) * (n - 2) := by
+    Nat.choose n 3 * (3).factorial = n * (n - 1) * (n - 2) := by
   rw [choose_descFactorial]
   simp [Nat.descFactorial, Nat.descFactorial_succ, Nat.descFactorial_one]
   ring
@@ -123,10 +122,10 @@ theorem choose_descFactorial_three (n : ℕ) :
 -- ============================================================
 
 /-- C(5,2) * 2! = 5*4 = 20. C(5,2) = 10, 10 * 2 = 20. -/
-theorem check_n5_k2 : Nat.choose 5 2 * 2.factorial = 20 := by native_decide
+theorem check_n5_k2 : Nat.choose 5 2 * (2).factorial = 20 := by native_decide
 
 /-- C(6,3) * 3! = 6*5*4 = 120. C(6,3) = 20, 20 * 6 = 120. -/
-theorem check_n6_k3 : Nat.choose 6 3 * 3.factorial = 120 := by native_decide
+theorem check_n6_k3 : Nat.choose 6 3 * (3).factorial = 120 := by native_decide
 
 /-- Product formula agrees: ∏ i ∈ range 2, (5 - i) = 5*4 = 20. -/
 theorem check_product_n5_k2 : ∏ i ∈ range 2, (5 - i) = 20 := by native_decide

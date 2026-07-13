@@ -1802,6 +1802,7 @@ theorem continuant_cassini_classical (k j : ℤ) (rest : List ℤ) :
       secondCont_reverse_eq (l := j :: rest) (by simp)] at h
   -- `secondCont (k :: j :: rest) = Continuant (j :: rest) = Continuant (k::j::rest).tail`
   -- and `(k::j::rest).tail.dropLast = (j::rest).dropLast`, both definitional.
+  rw [secondCont_eq_continuant_tail (m := k :: j :: rest) (by simp)] at h
   simpa using h
 
 /-! ## §19: Coprimality of consecutive continuants (reduced Farey fractions)

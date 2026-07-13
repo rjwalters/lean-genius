@@ -70,7 +70,7 @@ lemma scoeff_succ_apply (lam : ℕ → ℂ) (k : ℕ) (t : ℝ) :
 lemma hasDerivAt_cexp_mul (μ : ℂ) (t : ℝ) :
     HasDerivAt (fun t : ℝ => Complex.exp (μ * (t : ℂ))) (μ * Complex.exp (μ * (t : ℂ))) t := by
   have hofReal : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 t := by
-    simpa using Complex.ofRealCLM.hasDerivAt
+    exact Complex.ofRealCLM.hasDerivAt
   have hlin : HasDerivAt (fun t : ℝ => μ * (t : ℂ)) μ t := by
     simpa using hofReal.const_mul μ
   have := hlin.cexp
@@ -82,9 +82,8 @@ differentiable everywhere (via `scoeff_hasDerivAt_succ`, whose derivative comput
 this continuity at the previous level). -/
 lemma scoeff_continuous (lam : ℕ → ℂ) : ∀ k, Continuous (scoeff lam k)
   | 0 => by
-      simpa [scoeff_zero_apply] using
-        (Complex.continuous_exp.comp
-          (continuous_const.mul Complex.continuous_ofReal))
+      exact Complex.continuous_exp.comp
+        (continuous_const.mul Complex.continuous_ofReal)
   | (k + 1) => by
       have hk : Continuous (scoeff lam k) := scoeff_continuous lam k
       -- integrand `s ↦ e^{-λ s} · P_k(s)` is continuous
@@ -106,7 +105,7 @@ lemma scoeff_continuous (lam : ℕ → ℂ) : ∀ k, Continuous (scoeff lam k)
 /-- Derivative relation for the leading coefficient: `Ṗ_0(t) = λ_0 · P_0(t)`. -/
 lemma scoeff_hasDerivAt_zero (lam : ℕ → ℂ) (t : ℝ) :
     HasDerivAt (scoeff lam 0) (lam 0 * scoeff lam 0 t) t := by
-  simpa [scoeff_zero_apply] using hasDerivAt_cexp_mul (lam 0) t
+  exact hasDerivAt_cexp_mul (lam 0) t
 
 /-- Derivative relation for the subordinate coefficients:
 `Ṗ_{k+1}(t) = λ_{k+1} · P_{k+1}(t) + P_k(t)`.

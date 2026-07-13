@@ -100,7 +100,10 @@ odd–odd branch, where the new operand `(A - B)/2` can even be `0`. -/
 theorem size_half_lt {m n : ℕ} (h : m < n) : (m / 2).size + 1 ≤ n.size := by
   rcases Nat.eq_zero_or_pos m with hm | hm
   · subst hm
-    simpa [Nat.size_zero] using Nat.size_pos.mpr (by omega : 0 < n)
+    -- v4.31 compat (#38065): simpa no longer bridges `0 < n.size` ↝ `1 ≤ n.size`.
+    have h1 : 0 < n.size := Nat.size_pos.mpr (by omega)
+    simp only [Nat.zero_div, Nat.size_zero]
+    omega
   · calc (m / 2).size + 1 ≤ m.size := size_div_two_succ_le hm
       _ ≤ n.size := Nat.size_le_size (le_of_lt h)
 

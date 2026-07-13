@@ -64,7 +64,8 @@ theorem deficit_pos (n : ℕ) : 0 < catalanDeficit n := by
 theorem deficit_tendsto_zero : Tendsto catalanDeficit atTop (𝓝 0) := by
   have h : Tendsto (fun n => 4 - catalanRatio n) atTop (𝓝 (4 - 4)) :=
     tendsto_const_nhds.sub ratio_tendsto_four
-  simpa [catalanDeficit, sub_self] using h
+  rw [show (4 : ℝ) - 4 = 0 by norm_num] at h
+  exact h
 
 /-- The harmonic partial sum recurrence `H (m+1) = H m + 1/(m+1)`. -/
 theorem realHarmonic_succ (m : ℕ) :

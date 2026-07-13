@@ -180,7 +180,7 @@ theorem erdosConjecture363_false : ¬erdosConjecture363 := by
       (∀ I ∈ C.intervals, I.size = 4) ∧ isPerfectSquare C.totalProduct } ⊆
       squareCollections := by
     intro C hC
-    exact ⟨fun I hI => le_of_eq (hC.1 I hI), hC.2⟩
+    exact ⟨fun I hI => le_of_eq (hC.1 I hI).symm, hC.2⟩
   -- But we have infinitely many size-4 collections
   have h_inf := infinitely_many_size4_collections
   -- A subset of a finite set cannot be infinite
@@ -261,7 +261,8 @@ theorem single_block_not_square (I : ConsecutiveInterval) (h : I.size ≥ 2)
                by have : (↑i : ℤ) < ↑I.length := Int.ofNat_lt.mpr hi; linarith⟩
     rw [h_img, Finset.prod_image]
     intro a _ b _ hab
-    exact_mod_cast hab
+    have hab' : I.start + (a : ℤ) = I.start + (b : ℤ) := hab
+    omega
   -- Apply Erdős-Selfridge: product of ≥ 2 consecutive integers is never a perfect power
   intro ⟨a, ha⟩
   have es := erdos_selfridge I.length 2 I.start h (le_refl 2) (key ▸ hne)

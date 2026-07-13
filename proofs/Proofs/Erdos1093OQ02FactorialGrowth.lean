@@ -65,7 +65,7 @@ theorem ascFactorial_le_factorial (D b : ℕ) (hb : 2 * D ≤ b) :
     (b + D + 1).ascFactorial D ≤ (b + D)! := by
   have h2 : 2 ^ D ≤ b ! := by
     rcases Nat.eq_zero_or_pos D with hD | hD
-    · subst hD; simpa using b.factorial_pos
+    · subst hD; simp only [pow_zero]; exact b.factorial_pos
     · calc 2 ^ D ≤ (D + 1)! := two_pow_le_succ_factorial D
         _ ≤ b ! := Nat.factorial_le (by omega)
   calc (b + D + 1).ascFactorial D

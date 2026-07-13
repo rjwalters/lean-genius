@@ -81,7 +81,7 @@ theorem minkowski_nnreal {ι : Type*} (s : Finset ι) (f g : ι → ℝ≥0)
     {p : ℝ} (hp : 1 ≤ p) :
     (∑ i ∈ s, (f i + g i) ^ p) ^ (1 / p) ≤
       (∑ i ∈ s, f i ^ p) ^ (1 / p) + (∑ i ∈ s, g i ^ p) ^ (1 / p) :=
-  NNReal.Lp_add_le hp f g s
+  NNReal.Lp_add_le s f g hp
 
 /-
 ## Part 3: Minkowski's Inequality for Real-Valued Functions
@@ -116,7 +116,7 @@ theorem minkowski_real {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
         intro i _
         exact nnnorm_add_le (f i) (g i)
     _ ≤ (∑ i ∈ s, (‖f i‖₊) ^ p) ^ (1 / p) + (∑ i ∈ s, (‖g i‖₊) ^ p) ^ (1 / p) :=
-        NNReal.Lp_add_le hp _ _ s
+        NNReal.Lp_add_le s _ _ hp
 
 /-
 ## Part 4: Minkowski at p = 2 — The Euclidean Triangle Inequality
@@ -221,7 +221,7 @@ theorem holder_minkowski_chain {ι : Type*} (s : Finset ι)
     (∑ i ∈ s, (f i + g i) ^ p) ^ (1 / p) ≤
       (∑ i ∈ s, f i ^ p) ^ (1 / p) + (∑ i ∈ s, g i ^ p) ^ (1 / p) :=
   ⟨NNReal.inner_le_Lp_mul_Lq s f g hpq,
-   NNReal.Lp_add_le hp f g s⟩
+   NNReal.Lp_add_le s f g hp⟩
 
 /-
 ## Summary

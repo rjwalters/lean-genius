@@ -69,8 +69,8 @@ theorem denseRange_zsmul_add_of_irrational {a : ℝ} (ha : Irrational a) (b : Ad
   have hgdense : DenseRange (fun x : AddCircle (1 : ℝ) => x + b) := hsurj.denseRange
   have hgcont : Continuous (fun x : AddCircle (1 : ℝ) => x + b) := by fun_prop
   -- Compose the dense homogeneous orbit with the translation.
-  have := hgdense.comp (denseRange_zsmul_of_irrational ha) hgcont
-  simpa [Function.comp] using this
+  have h := hgdense.comp (denseRange_zsmul_of_irrational ha) hgcont
+  exact h
 
 /-- **Inhomogeneous Kronecker / Dirichlet approximation.**  If `a` is irrational then its integer
 multiples approximate *every* real number `β` modulo `1`: for every `ε > 0` there is an integer `n`

@@ -200,8 +200,9 @@ theorem korselt_backward (n : ℕ) (hn : n > 1) (_hnp : ¬n.Prime)
       simpa using hcancel
     -- A generator `g` of `(ZMod p)ˣ` has order `p - 1`
     obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
-    have hord : orderOf g = Fintype.card (ZMod p)ˣ :=
-      orderOf_eq_card_of_forall_mem_zpowers hg
+    have hord : orderOf g = Fintype.card (ZMod p)ˣ := by
+      rw [← Nat.card_eq_fintype_card]
+      exact orderOf_eq_card_of_forall_mem_zpowers hg
     have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
       rw [ZMod.card_units_eq_totient, Nat.totient_prime hp]
     have hgdvd : orderOf g ∣ (n - 1) := orderOf_dvd_of_pow_eq_one (key g)

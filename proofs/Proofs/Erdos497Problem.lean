@@ -28,14 +28,15 @@ open scoped Classical
 /- ## Antichains in P([n]) -/
 
 /-- A family F of subsets of Fin n is an antichain if no member is a
-    proper subset of another. -/
-def IsAntichain (n : ℕ) (F : Finset (Finset (Fin n))) : Prop :=
+    proper subset of another. (Named under `Erdos497.` to avoid clashing
+    with Mathlib's `IsAntichain`.) -/
+def Erdos497.IsAntichain (n : ℕ) (F : Finset (Finset (Fin n))) : Prop :=
     ∀ A ∈ F, ∀ B ∈ F, A ⊆ B → A = B
 
 /-- The number of antichains in P([n]). -/
 noncomputable def antichainCount (n : ℕ) : ℕ :=
     ((Finset.univ : Finset (Fin n)).powerset.powerset.filter
-      (fun F => IsAntichain n F)).card
+      (fun F => Erdos497.IsAntichain n F)).card
 
 /- ## Sperner's theorem -/
 

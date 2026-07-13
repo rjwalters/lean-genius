@@ -125,11 +125,11 @@ theorem summable_norm_fourierCoeff_of_decay (f : AddCircle T → ℂ) (C_decay :
     rw [summable_int_iff_summable_nat_and_neg]
     constructor
     · -- Positive: |↑(↑n : ℤ)| = ↑n for n : ℕ
-      convert h_pnat using 1; ext n; congr 1; congr 1
-      rw [Int.cast_natCast]; exact abs_of_nonneg (Nat.cast_nonneg' n)
+      refine h_pnat.congr fun n => ?_
+      simp only [Int.cast_natCast, Nat.abs_cast]
     · -- Negative: |-(↑n : ℤ)| = ↑n for n : ℕ
-      convert h_pnat using 1; ext n; congr 1; congr 1
-      rw [Int.cast_neg, Int.cast_natCast, abs_neg]; exact abs_of_nonneg (Nat.cast_nonneg' n)
+      refine h_pnat.congr fun n => ?_
+      simp only [Int.cast_neg, Int.cast_natCast, abs_neg, Nat.abs_cast]
   -- Step 3: Comparison test — bound holds for all n ≠ 0 (cofinitely many)
   refine h_pseries.of_norm_bounded_eventually ?_
   apply Filter.eventually_cofinite.mpr

@@ -190,7 +190,7 @@ theorem f_from_chromatic : ∀ n : ℕ, (f n : ℝ) ≥ n / 7 := by
   have hχ_pos : (0 : ℝ) < (chromaticNumberPlane : ℝ) := by
     exact_mod_cast (show 0 < chromaticNumberPlane by omega)
   have hle : (↑chromaticNumberPlane : ℝ) ≤ 7 := by exact_mod_cast h2
-  have hfn_nonneg : (0 : ℝ) ≤ ↑(f n) := Nat.cast_nonneg
+  have hfn_nonneg : (0 : ℝ) ≤ ↑(f n) := Nat.cast_nonneg _
   have hχ_ne : (↑chromaticNumberPlane : ℝ) ≠ 0 := ne_of_gt hχ_pos
   -- Clear fraction in h1: n/χ ≤ f(n) → n ≤ f(n) * χ
   have h1' : (↑n : ℝ) ≤ ↑(f n) * ↑chromaticNumberPlane := by

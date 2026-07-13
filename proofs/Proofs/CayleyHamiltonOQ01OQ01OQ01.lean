@@ -73,8 +73,9 @@ theorem aeval_eq_zero_iff_mem_vecAnnIdeal (M : Matrix (Fin n) (Fin n) K) (v : Fi
     exact h
   · intro h
     have h2 := congr_arg (Module.AEval'.of M.mulVecLin).symm h
-    simpa only [LinearEquiv.map_zero, Module.AEval.of_symm_smul,
-                LinearEquiv.symm_apply_apply] using h2
+    simp only [LinearEquiv.map_zero, Module.AEval.of_symm_smul,
+               LinearEquiv.symm_apply_apply, Module.End.smul_def] at h2
+    exact h2
 
 /-! ## II. The reduction: a maximal-order vector is cyclic -/
 

@@ -64,7 +64,7 @@ theorem hasDerivAt_arcsin_affine {x : ℝ} (hx0 : 0 < x) (hx1 : x < 1) :
   have hchain : HasDerivAt (fun y => Real.arcsin (2 * y - 1))
       (1 / Real.sqrt (1 - (2 * x - 1) ^ 2) * 2) x := by
     have h := (Real.hasDerivAt_arcsin hne1 hne2).comp x hinner
-    simpa [Function.comp] using h
+    simpa [Function.comp_def] using h
   -- identify the derivative with the arcsine density
   have hpos : 0 < x * (1 - x) := mul_pos hx0 (by linarith)
   have hkey : 1 / Real.sqrt (1 - (2 * x - 1) ^ 2) * 2 = arcsineDensity x := by
@@ -81,7 +81,6 @@ theorem hasDerivAt_arcsin_affine {x : ℝ} (hx0 : 0 < x) (hx1 : x < 1) :
     rw [arcsineDensity, hsx, hs1x,
       Real.rpow_neg hx0.le, Real.rpow_neg (by linarith : (0:ℝ) ≤ 1 - x)]
     field_simp
-    ring
   rw [← hkey]; exact hchain
 
 /-! ## Integrability of the integrand -/
@@ -106,6 +105,7 @@ theorem intervalIntegrable_arcsineDensity :
     rw [show (1 : ℂ) - (x : ℂ) = ((1 - x : ℝ) : ℂ) by push_cast; ring,
       Complex.ofReal_cpow hx1']
     congr 1; push_cast; ring
+  show ‖(x : ℂ) ^ ((1/2 : ℂ) - 1) * (1 - (x : ℂ)) ^ ((1/2 : ℂ) - 1)‖ = arcsineDensity x
   rw [e1, e2, ← Complex.ofReal_mul, Complex.norm_real, arcsineDensity]
   rw [Real.norm_eq_abs,
     abs_of_nonneg (mul_nonneg (Real.rpow_nonneg hx0' _) (Real.rpow_nonneg hx1' _))]

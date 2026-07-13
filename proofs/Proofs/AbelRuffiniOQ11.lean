@@ -59,7 +59,7 @@ theorem gal_finset_prod_pow_sub_C_isSolvable {ι : Type*} (s : Finset ι)
     (n : ι → ℕ) (a : ι → F) :
     IsSolvable (∏ i ∈ s, (X ^ (n i) - C (a i)) : F[X]).Gal := by
   induction s using Finset.cons_induction with
-  | empty => simpa using (gal_one_isSolvable (F := F))
+  | empty => rw [Finset.prod_empty]; exact gal_one_isSolvable (F := F)
   | cons i s hi ih =>
       rw [Finset.prod_cons]
       exact gal_mul_isSolvable (gal_X_pow_sub_C_isSolvable (n i) (a i)) ih
