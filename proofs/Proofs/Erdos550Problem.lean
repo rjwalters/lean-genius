@@ -15,11 +15,9 @@
   Tags: graph-theory, ramsey-theory, trees
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Tactic
+import Mathlib
+
+open scoped Classical
 
 namespace Erdos550
 
@@ -104,7 +102,7 @@ example : (5 - 1) * (4 - 1) + 1 = 13 := by native_decide  -- R(T₄, K₅)
 /- ## Part V: The Conjecture -/
 
 /-- The conjectured bound for R(T, G) with multipartite G. -/
-def ConjecturedBound (T : Type*) [Fintype T] (G : CompleteMultipartite)
+noncomputable def ConjecturedBound (T : Type*) [Fintype T] (G : CompleteMultipartite)
     (hk : G.k ≥ 2) : ℕ :=
   let χ := G.chromaticNumber
   let m1 := G.partSizes ⟨0, by omega⟩

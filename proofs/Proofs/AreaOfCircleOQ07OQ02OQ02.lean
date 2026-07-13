@@ -107,7 +107,7 @@ theorem second_half_moment (b : ℝ) (hb : 0 < b) :
       (((hasDerivAt_pow 2 x).const_mul (-b)).exp)
     convert h using 1
     skip
-    field_simp
+    skip
     ring
   -- g → 0 at +∞
   have htendsto :

@@ -49,6 +49,8 @@
 import Mathlib
 import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection
 
+open scoped Classical
+
 namespace AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly
 
 open AbelRuffiniGaloisExtensionsOQ06 AbelRuffiniGaloisExtensionsOQ06GaloisDirection

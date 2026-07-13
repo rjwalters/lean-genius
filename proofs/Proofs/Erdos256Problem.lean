@@ -211,7 +211,7 @@ log f*(n) ≪ (n log n)^{1/2} log log n
 **Chowla cosine problem (Problem #510):**
 For a set A of n integers, find θ minimizing ∑_{a ∈ A} cos(aθ).
 -/
-def chowlaMinimum (A : Finset ℤ) : ℝ :=
+noncomputable def chowlaMinimum (A : Finset ℤ) : ℝ :=
   sInf {∑ a ∈ A, Real.cos (a * θ) | θ : ℝ}
 
 /- 

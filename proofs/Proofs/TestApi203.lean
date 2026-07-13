@@ -1,6 +1,8 @@
 -- Test API availability for erdos-203 covering system proof
 import Mathlib
 
+set_option maxRecDepth 40000
+
 -- Test: Nat.Prime.dvd_of_dvd_pow
 #check Nat.Prime.dvd_of_dvd_pow
 

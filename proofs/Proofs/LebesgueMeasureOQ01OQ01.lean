@@ -4,6 +4,8 @@ import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Data.Rat.Cast.Defs
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # Modified Dirichlet Function (Thomae's Function) — Lebesgue Integral
 

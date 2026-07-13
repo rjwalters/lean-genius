@@ -30,10 +30,7 @@ References:
   geometry." Proc. ICM (1984), 51-70.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Nat Real Finset
 

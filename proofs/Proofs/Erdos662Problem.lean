@@ -60,7 +60,7 @@ def triLatticeNorm (a b : ℤ) : ℤ := a ^ 2 + a * b + b ^ 2
 /-- Computable count of nonzero lattice points with norm ≤ T.
     The range [-T, T] × [-T, T] suffices since a² + ab + b² ≥ max(a², b²/2)
     for all a, b. -/
-def triLatticeCountInt (T : ℕ) : ℕ :=
+noncomputable def triLatticeCountInt (T : ℕ) : ℕ :=
   (((Finset.Icc (-(T : ℤ)) T) ×ˢ (Finset.Icc (-(T : ℤ)) T)).filter
     fun ab : ℤ × ℤ => ab ≠ (0, 0) ∧ triLatticeNorm ab.1 ab.2 ≤ T).card
 

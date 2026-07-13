@@ -155,7 +155,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       · exact hops f h
       · rw [List.mem_singleton] at h; exact Or.inl h
     · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
-      dsimp only; rw [heq]
+      skip; rw [heq]
   | step2 _ ih =>
     obtain ⟨ops, hops, heq⟩ := ih
     refine ⟨ops ++ [f₂], fun f hf => ?_, ?_⟩
@@ -163,7 +163,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       · exact hops f h
       · rw [List.mem_singleton] at h; exact Or.inr (Or.inl h)
     · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
-      dsimp only; rw [heq]
+      skip; rw [heq]
   | step3 _ ih =>
     obtain ⟨ops, hops, heq⟩ := ih
     refine ⟨ops ++ [f₃], fun f hf => ?_, ?_⟩
@@ -171,7 +171,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       · exact hops f h
       · rw [List.mem_singleton] at h; exact Or.inr (Or.inr h)
     · simp only [List.foldl_append, List.foldl_cons, List.foldl_nil]
-      dsimp only; rw [heq]
+      skip; rw [heq]
 
 /-- First few elements of A: 1, 3, 4, 7, 9, 10, 13, 15, ... -/
 example : 1 ∈ A := one_in_A
@@ -195,7 +195,7 @@ The key insight is the structure of the generating functions.
 -/
 
 /-- The characteristic equation for τ -/
-def characteristic_equation (s : ℝ) : ℝ :=
+noncomputable def characteristic_equation (s : ℝ) : ℝ :=
   (6 : ℝ) ^ (-s) + (1 - (1/2 : ℝ) ^ s)⁻¹ * (3 : ℝ) ^ (-s) - 1
 
 /-  τ is the unique positive root -/

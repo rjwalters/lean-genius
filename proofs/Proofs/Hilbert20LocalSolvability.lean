@@ -43,6 +43,8 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Hilbert20LocalSolvability
 
 open scoped NNReal

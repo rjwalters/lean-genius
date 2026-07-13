@@ -27,10 +27,10 @@ noncomputable section
 -- Definitions (duplicated from main file for self-containment)
 -- ═══════════════════════════════════════════════════════════════════════
 
-def smallestTotientDiv (n : ℕ) : ℕ :=
+noncomputable def smallestTotientDiv (n : ℕ) : ℕ :=
   sInf {m : ℕ | 0 < m ∧ n ∣ m.totient}
 
-def smallestPrimeMod1 (n : ℕ) : ℕ :=
+noncomputable def smallestPrimeMod1 (n : ℕ) : ℕ :=
   sInf {p : ℕ | p.Prime ∧ n ∣ (p - 1)}
 
 -- ═══════════════════════════════════════════════════════════════════════

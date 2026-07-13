@@ -1,6 +1,8 @@
 import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 open Nat Finset
 
 -- Check key APIs

@@ -2,6 +2,8 @@ import Mathlib.Data.Int.GCD
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /-
 # Primitive Triangulation of Lattice Triangles
 

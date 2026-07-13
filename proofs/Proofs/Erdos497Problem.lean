@@ -23,6 +23,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Antichains in P([n]) -/
 
 /-- A family F of subsets of Fin n is an antichain if no member is a

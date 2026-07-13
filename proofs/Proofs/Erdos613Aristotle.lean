@@ -11,6 +11,8 @@
 import Mathlib
 import Proofs.Erdos613Problem
 
+open scoped Classical
+
 namespace Erdos613Aristotle
 
 open Erdos613 Nat

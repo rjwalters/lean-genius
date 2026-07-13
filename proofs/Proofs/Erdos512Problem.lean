@@ -125,7 +125,7 @@ theorem L1norm_upper_bound (A : Finset ℤ) : L1norm A ≤ A.card := by
     setIntegral_mono_on hint hcint measurableSet_Icc hbdd
   -- Constant integral over [0,1] equals A.card (vol([0,1]) = 1)
   have h2 : ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) = A.card := by
-    rw [set_integral_const, smul_eq_mul]
+    rw [setIntegral_const, smul_eq_mul]
     have hv : (volume (Set.Icc (0:ℝ) 1)).toReal = 1 := by
       rw [Real.volume_Icc]
       simp [ENNReal.toReal_ofReal]

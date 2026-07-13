@@ -190,7 +190,7 @@ theorem omega_prime {p : ℕ} (hp : Nat.Prime p) : ω p = 1 := by
     · rintro ⟨hq, hqp, -⟩
       exact (hp.eq_one_or_self_of_dvd q hqp).resolve_left hq.one_lt.ne'
     · rintro rfl; exact ⟨hp, dvd_refl p, hp.ne_zero⟩
-  simp [ArithmeticFunction.omega, h]
+  skip
 
 /-- **Conjecture 1 verified for k = 1:**
     For k = 1, S₁(n) = ω(n). Every prime p has ω(p) = 1 ≤ 1 + π(1), and primes

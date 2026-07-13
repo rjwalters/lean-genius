@@ -83,8 +83,8 @@ theorem reciprocal_sum_three_primes_le {Q : Finset ℕ}
     (hcard : Q.card = 3) (hQ : IsSetOfPrimes Q) :
     reciprocalSum Q ≤ 31 / 30 := by
   obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
-  simp only [reciprocalSum, Finset.sum_insert (by simp [hab, hac]),
-    Finset.sum_insert (by simp [hbc]), Finset.sum_singleton]
+  simp only [reciprocalSum, Finset.sum_insert (by skip),
+    Finset.sum_insert (by skip), Finset.sum_singleton]
   have ha : Nat.Prime a := hQ a (by simp)
   have hb : Nat.Prime b := hQ b (by simp)
   have hc : Nat.Prime c := hQ c (by simp)

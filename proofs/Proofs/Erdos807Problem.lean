@@ -25,11 +25,7 @@ References:
 - [ABH17] Alon, Bohman, Huang (2017): "More on the bipartite decomposition of random graphs"
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Probability.ProbabilityMassFunction.Basic
+import Mathlib
 
 open scoped Classical
 
@@ -208,7 +204,7 @@ theorem erdos_807_answer : ¬∀ n, ERW_conjecture n :=
 The minimum number of cliques needed to cover all edges.
 Related to bipartition number via τ(G) ≤ cliqueCover(G).
 -/
-def cliqueCoverNumber (G : SimpleGraph V) : ℕ :=
+noncomputable def cliqueCoverNumber (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ cliques : Finset (Finset V),
     cliques.card = k ∧ ∀ v w, G.Adj v w → ∃ C ∈ cliques, v ∈ C ∧ w ∈ C}
 

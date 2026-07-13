@@ -35,6 +35,8 @@
 import Mathlib
 import Proofs.Erdos613Problem
 
+open scoped Classical
+
 namespace Erdos613.Aristotle
 
 open Erdos613

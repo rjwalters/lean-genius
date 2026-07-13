@@ -357,3 +357,28 @@ automatic in argument position); wrap when projections follow:
 - `natDegree`-of-explicit-polynomial `norm_num` sets drift — `compute_degree!`.
 - structure-field `where` defs with removed doc-comment support: `-/` inside
   docstring prose (`field-/module`) terminates the comment — spell `field/module`.
+
+### 7f. Doctor increment-2 recipes (#38065, 2026-07-12)
+| pattern | fix | notes |
+|---|---|---|
+| `G.symm h` use-site (SimpleGraph) | `G.adj_symm h` | arity-preserving; `SimpleGraph.adj_symm` Basic.lean:166 |
+| `G.loopless v` use-site | `G.loopless.irrefl v` | `Std.Irrefl.irrefl : ∀ a, ¬r a a` explicit binder |
+| `symm := fun/by …` structure field | `symm.symm := …` / `loopless.irrefl := …` | nested-field syntax; skip already-migrated `:= by constructor` lines |
+| `<tac> made no progress` (simp/dsimp/field_simp/push_neg) | replace call with `skip` | semantics-preserving on v4.31 — state was unchanged; surfaces true downstream error when the call was a finisher (`batch2/dr7_noprogress.py`) |
+| bulk `lake build` timeout in runner | chunked bulk (25 targets, `-j4`) + `pkill -9 lean` per chunk | orphaned lean children of a killed lake starve the sequential recheck (`batch2/runner4.sh`) |
+| `Finset.card_Icc` (ℕ) | `Nat.card_Icc` | Order/Interval/Finset/Nat.lean:61 |
+| `Finset.card_offDiag` | `Finset.offDiag_card` | |
+| `Finset.eq_empty_of_forall_not_mem` | `…_notMem` | notMem wave, also `Set.` |
+| `inv_le_inv_of_le` | `inv_anti₀` | same arg order (0 < b, b ≤ a) |
+| `Int.natAbs_ofNat` | `Int.natAbs_natCast` | deprecated alias removed in core |
+| `pow_lt_pow_right` | `pow_lt_pow_right₀` | ₀-family rename |
+| `Nat.nth_prime_zero` | `Nat.nth_prime_zero_eq_two` | numeral forms only in v4.31 |
+| `sigma_isMultiplicative` | `isMultiplicative_sigma` | ArithmeticFunction |
+| `Nat.le_pow_iff_clog_le hb` | `← Nat.clog_le_iff_le_pow hb` (rw) / swap `.mp`↔`.mpr` (term) | iff sides swapped |
+| `NormedSpace.exp_eq_tsum (𝔸 := _)` | add `(𝕂 := ℝ)` | 𝕂 now `variable (𝕂) in`-explicit with `[CharZero 𝕂]`; bare `NormedSpace.exp ℝ x` → `NormedSpace.exp x` |
+| bare `exact Option.noConfusion` (goal `some _ ≠ none`) | `exact (Option.some_ne_none _)` | eta-form of noConfusion no longer elaborates; APPLIED form `Option.noConfusion h` still fine |
+| `{ inferInstanceAs (CommRing R) with … }` instance literal | `where __ := inferInstanceAs (CommRing R)` | v4.31 structure-instance elaborator rejects `{ src with }` here ("expected structure" + `?m.1` metavars); ZsqrtdNegTwo EuclideanDomain pattern |
+| `simpa [id, zero_sub] using (hasDerivAt_const p 1).sub (hasDerivAt_id p)` | `exact (hasDerivAt_id p).const_sub 1` | simp-normal-form drift on HasDerivAt algebra |
+| `simpa using hdvd` after `Fintype.card_perm` rewrites | `simpa [Nat.factorial] using hdvd` | simp no longer evaluates `n !` numerals |
+| "Invalid field `X`: environment does not contain `Finset.card`/`Finset.sum`/…" | umbrella `import Mathlib` | import-loss masquerading as dot-notation-drift |
+| `xs.get! i` | `xs[i]!` | List.get! removed |

@@ -65,13 +65,13 @@ axiom erdos_557_conjecture : ∃ C : ℕ, ∀ n : ℕ, ∀ (T : Tree n), ∀ k :
 def starTree (n : ℕ) (hn : n ≥ 1) : Tree n where
   graph := {
     Adj := fun i j => (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-    symm.symm := by
+    symm := by
       constructor
       intro i j h
       cases h with
       | inl h => right; exact ⟨h.1 ▸ rfl, h.2 ▸ by omega⟩
       | inr h => left; exact ⟨h.1 ▸ rfl, h.2 ▸ by omega⟩
-    loopless.irrefl := by
+    loopless := by
       constructor
       intro i h
       cases h with

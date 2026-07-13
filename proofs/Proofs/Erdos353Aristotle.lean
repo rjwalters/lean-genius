@@ -9,10 +9,7 @@
   - Clean theorem statement with no definition sorries
   - No axioms
 -/
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Geometry.Euclidean.Basic
+import Mathlib
 
 open MeasureTheory Set Pointwise
 

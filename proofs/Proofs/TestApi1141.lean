@@ -3,6 +3,8 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 -- Approach 1: ∀ k ∈ Finset, with native_decide
 def testGood1 (n : ℕ) : Prop :=
   ∀ k ∈ Finset.range n, k ^ 2 < n → Nat.Coprime n k → (n - k ^ 2).Prime

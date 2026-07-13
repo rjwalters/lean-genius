@@ -283,11 +283,11 @@ def witnessForNegation (M : ℕ) : Prop :=
     The structure of this graph relates to symmetric prime sums. -/
 def primeNumberGraph : SimpleGraph ℕ where
   Adj n m := n ≠ m ∧ ∃ k, nthPrime n + nthPrime m = nthPrime k
-  symm.symm := by
+  symm := by
     constructor
     intro n m ⟨hne, hk⟩
     exact ⟨hne.symm, by obtain ⟨k, hk⟩ := hk; exact ⟨k, by ring_nf; exact hk⟩⟩
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro n ⟨h, _⟩
     exact h rfl

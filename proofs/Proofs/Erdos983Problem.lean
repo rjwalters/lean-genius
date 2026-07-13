@@ -28,10 +28,7 @@ References:
 Tags: number-theory, primes, smooth-numbers, prime-counting
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.PrimeCounting
+import Mathlib
 
 open scoped Classical
 

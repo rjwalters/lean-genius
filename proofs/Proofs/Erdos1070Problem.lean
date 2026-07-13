@@ -28,6 +28,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos1070
 
 /- ## Unit Distance Graphs

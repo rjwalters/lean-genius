@@ -54,13 +54,13 @@ open FadellHusseini Polynomial Ideal
 abbrev FpPoly (p : ℕ) := Polynomial (ZMod p)
 
 /-- The polynomial generator u (the indeterminate X). -/
-def genU (p : ℕ) : FpPoly p := X
+noncomputable def genU (p : ℕ) : FpPoly p := X
 
 /-- F_p[u] is a commutative ring (from Mathlib). -/
-instance (p : ℕ) : CommRing (FpPoly p) := inferInstance
+noncomputable instance (p : ℕ) : CommRing (FpPoly p) := inferInstance
 
 /-- F_p[u] is an F_p-algebra (from Mathlib). -/
-instance (p : ℕ) : Algebra (ZMod p) (FpPoly p) := inferInstance
+noncomputable instance (p : ℕ) : Algebra (ZMod p) (FpPoly p) := inferInstance
 
 /-- F_p[u] is nontrivial when p is prime. -/
 instance (p : ℕ) [Fact (Nat.Prime p)] : Nontrivial (FpPoly p) :=

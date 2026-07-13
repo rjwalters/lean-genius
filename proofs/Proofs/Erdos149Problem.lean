@@ -19,10 +19,7 @@
   Tags: graph-theory, edge-coloring, chromatic-index, combinatorics
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos149
 

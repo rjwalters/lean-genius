@@ -33,6 +33,8 @@ import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Choose.Basic
 
+open scoped Classical
+
 open SimpleGraph Finset
 
 namespace Erdos1111

@@ -16,6 +16,8 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
+set_option maxRecDepth 40000
+
 open Nat Filter
 
 /- ## Core definitions -/

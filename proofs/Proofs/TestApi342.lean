@@ -1,9 +1,7 @@
 /-
 Test API for Erdős #342 - Ulam sequence computability
 -/
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.List.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat
 

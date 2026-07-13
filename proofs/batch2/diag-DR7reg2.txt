@@ -1,0 +1,8 @@
+===== Erdos895CounterexampleFin18
+error: Proofs/Erdos895CounterexampleFin18.lean:83:4: Tactic `constructor` failed: target is not an inductive datatype
+
+⊢ ∀ (a b : Fin 18), ce895Adj a b = true ∧ a ≠ b → ce895Adj b a = true ∧ b ≠ a
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos895CounterexampleFin18
+error: build failed

@@ -20,6 +20,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## Same Prime Factors -/
 
 /-- Two positive integers share the same set of prime divisors. -/

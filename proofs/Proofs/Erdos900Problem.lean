@@ -25,6 +25,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos900
 
 open Finset Function
@@ -99,7 +101,7 @@ The phase transition at c = 1/2.
 -/
 
 /-- The critical edge density for giant component emergence. -/
-def criticalDensity : ℝ := 1 / 2
+noncomputable def criticalDensity : ℝ := 1 / 2
 
 /-- Below c = 1/2, G(n, cn) is a forest whp. -/
 axiom subcritical_forest (c : ℝ) (hc : c < 1/2) :

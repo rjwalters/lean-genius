@@ -44,7 +44,7 @@ Point sets in ℝ² and distinct distance counts.
 abbrev Point := ℝ × ℝ
 
 /-- Distance between two points -/
-def dist (p q : Point) : ℝ :=
+noncomputable def dist (p q : Point) : ℝ :=
   Real.sqrt ((p.1 - q.1)^2 + (p.2 - q.2)^2)
 
 /-- A finite point set in the plane -/

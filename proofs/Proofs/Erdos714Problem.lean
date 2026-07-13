@@ -24,10 +24,7 @@ References:
 - See Problem #768 (K_{2,2}=C_4) and Problem #147
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open scoped Classical
 

@@ -207,7 +207,7 @@ private theorem completeBipartite_adj_iff {a b : ℕ}
 theorem completeBipartite_cliqueFree (a b : ℕ) :
     (completeBipartite a b).CliqueFree 3 := by
   intro s
-  simp only [SimpleGraph.IsNClique, not_and]
+  skip
   intro hcliq hcard
   -- s has 3 elements; extract them
   rw [SimpleGraph.isClique_iff] at hcliq

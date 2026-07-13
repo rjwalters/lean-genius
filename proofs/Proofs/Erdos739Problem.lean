@@ -28,11 +28,7 @@ References:
 Tags: graph-theory, chromatic-number, set-theory, cardinals, independence
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Ordinal.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib
 
 open Cardinal
 

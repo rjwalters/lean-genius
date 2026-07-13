@@ -19,6 +19,8 @@
 import Proofs.Erdos610Problem
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos610Aristotle
 
 open Finset Function SimpleGraph

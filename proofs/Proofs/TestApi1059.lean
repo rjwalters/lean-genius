@@ -1,6 +1,4 @@
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- Test: Nat.Composite decidability
 example : (100 : ℕ).Composite := by decide

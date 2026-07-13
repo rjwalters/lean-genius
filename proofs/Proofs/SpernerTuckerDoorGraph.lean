@@ -64,11 +64,11 @@ relation `inc`.  Two simplices are adjacent when they are distinct and share a
 door (a complementary facet). -/
 def doorGraph : SimpleGraph V where
   Adj v w := v ≠ w ∧ ∃ d, inc v d ∧ inc w d
-  symm.symm := by
+  symm := by
     constructor
     rintro v w ⟨hne, d, hv, hw⟩
     exact ⟨hne.symm, d, hw, hv⟩
-  loopless.irrefl := by
+  loopless := by
     constructor
     rintro v ⟨hne, _⟩
     exact hne rfl

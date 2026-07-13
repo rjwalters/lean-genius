@@ -113,7 +113,7 @@ def TriangleHamiltonianGraph (n : ℕ) (hn : n > 0) : SimpleGraph (Fin (3 * n)) 
     v ≠ w ∧
     ((sameTriangle n v w ∧ trianglePosition n v ≠ trianglePosition n w) ∨
      isHamiltonianEdge n hn v w)
-  symm.symm := by
+  symm := by
     constructor
     intro v w ⟨hne, hdisj⟩
     constructor

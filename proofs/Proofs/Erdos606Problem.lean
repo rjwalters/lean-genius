@@ -37,6 +37,8 @@ import Mathlib.LinearAlgebra.AffineSpace.Independent
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
+open scoped Classical
+
 open Finset Real
 
 namespace Erdos606

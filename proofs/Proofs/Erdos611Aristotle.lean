@@ -19,6 +19,8 @@
 import Mathlib
 import Proofs.Erdos611Problem
 
+open scoped Classical
+
 namespace Erdos611Aristotle
 
 open Erdos611 SimpleGraph Finset Real

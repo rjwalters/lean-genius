@@ -30,13 +30,7 @@ References:
 - [MaVe23] Mattheus, Verstraete, arXiv:2306.04007 (2023)
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Data.Fintype.Basic
+import Mathlib
 
 open scoped Classical
 

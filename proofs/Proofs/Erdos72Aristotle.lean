@@ -12,12 +12,14 @@
 -/
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos72Aristotle
 
 open Filter Real Finset
 
 /-- The counting function for a set A up to n. -/
-def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
   (Finset.filter (· ∈ A) (Finset.range (n + 1))).card
 
 /-- A set A ⊂ ℕ has density 0 if |A ∩ [0,n]|/n → 0 as n → ∞. -/

@@ -24,10 +24,7 @@ The sequence A389479 in OEIS contains these threshold values.
 Tags: number-theory, binomial-coefficients, frobenius-number, representations
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 open scoped Classical
 

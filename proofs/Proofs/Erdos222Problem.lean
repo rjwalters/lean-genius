@@ -91,7 +91,7 @@ axiom nthSumTwoSquares : ℕ → ℕ
 /-  The sequence is strictly increasing. -/
 /-  Every element is a sum of two squares. -/
 /-- The gap between the k-th and (k+1)-th sums of two squares. -/
-def gap (k : ℕ) : ℕ :=
+noncomputable def gap (k : ℕ) : ℕ :=
   nthSumTwoSquares (k + 1) - nthSumTwoSquares k
 
 /- ## Part IV: Density -/

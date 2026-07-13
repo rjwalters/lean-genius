@@ -159,7 +159,7 @@ theorem conjugate_exponent_identity {p q : ℝ} (hp : 1 < p)
   have hq : q = p / (p - 1) := by
     rw [Real.HolderConjugate] at hpq
     obtain ⟨hp', hq', hpq'⟩ := hpq
-    field_simp at hpq' ⊢
+    skip
     linarith
   rw [hq]
   field_simp

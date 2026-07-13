@@ -42,7 +42,7 @@ def EdgeColoring (m k : ℕ) :=
     the graph consisting of all edges of color c -/
 def monochromaticGraph (χ : EdgeColoring m k) (c : Fin k) : SimpleGraph (Fin m) where
   Adj u v := u ≠ v ∧ χ (min u v) (max u v) = c
-  symm.symm := by
+  symm := by
     constructor
     intro u v ⟨hne, hc⟩
     exact ⟨hne.symm, by rwa [min_comm, max_comm]⟩

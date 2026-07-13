@@ -34,9 +34,7 @@ References:
 Tags: extremal-graph-theory, turan, forbidden-cycles
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open SimpleGraph
 

@@ -29,6 +29,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos902
 
 open Finset
@@ -86,7 +88,7 @@ axiom erdos_upper_bound :
 /- ## Part VII: Asymptotic Behavior -/
 
 /-- The main open question: What is f(n) / (n · 2^n) as n → ∞? -/
-def asymptoticRatio (n : ℕ) : ℝ := (f n : ℝ) / (n * 2^n)
+noncomputable def asymptoticRatio (n : ℕ) : ℝ := (f n : ℝ) / (n * 2^n)
 
 /-- Lower bound on asymptotic ratio. -/
 axiom asymptotic_lower :

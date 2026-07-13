@@ -30,6 +30,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Real Polynomial
 
 namespace Erdos114OQ01

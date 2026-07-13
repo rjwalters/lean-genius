@@ -106,7 +106,7 @@ the maximum number of edges among K_k-free graphs on n vertices. -/
 -/
 
 /-- Turán's conjecture for K_4^3: the density is 5/9 -/
-def turanConjectureK43 : ℝ := 5 / 9
+noncomputable def turanConjectureK43 : ℝ := 5 / 9
 
 /-  **Turán Hypergraph T(n,4,3):**
 The conjectured extremal 3-uniform hypergraph for K_4^3 is obtained by

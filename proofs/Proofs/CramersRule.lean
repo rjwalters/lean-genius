@@ -1,5 +1,4 @@
-import Mathlib.LinearAlgebra.Matrix.Adjugate
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Cramer's Rule (Wiedijk #97)

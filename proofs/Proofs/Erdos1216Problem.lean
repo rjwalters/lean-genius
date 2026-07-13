@@ -15,8 +15,7 @@ A tournament is a complete directed graph (one direction on each edge).
 A transitive tournament: i → j → k implies i → k.
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Log
+import Mathlib
 
 namespace Erdos1216
 

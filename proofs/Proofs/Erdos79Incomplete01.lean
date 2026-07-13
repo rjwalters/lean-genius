@@ -48,11 +48,11 @@ open Erdos79
     is the "diamond" `K₄⁻`, a maximal proper subgraph of K₄. -/
 def K4MinusEdge (p q : ℕ) : SimpleGraph ℕ where
   Adj u v := (completeGraphN 4).Adj u v ∧ ¬ ((u = p ∧ v = q) ∨ (u = q ∧ v = p))
-  symm.symm := by
+  symm := by
     constructor
     rintro u v ⟨h1, h2⟩
     exact ⟨h1.symm, fun h => h2 (by tauto)⟩
-  loopless.irrefl := by
+  loopless := by
     constructor
     rintro u ⟨h1, -⟩
     exact (completeGraphN 4).loopless u h1

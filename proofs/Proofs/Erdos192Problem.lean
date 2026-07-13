@@ -20,9 +20,7 @@ References:
 - Keränen (1992): Counterexample for d ≥ 4
 -/
 
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos192
 

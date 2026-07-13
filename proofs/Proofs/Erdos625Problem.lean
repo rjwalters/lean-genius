@@ -24,6 +24,8 @@ import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 namespace Erdos625
 
 open SimpleGraph

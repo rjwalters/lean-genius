@@ -64,11 +64,11 @@ def Gk (k : ℕ) : SimpleGraph (Gk_vertex k) where
     | Sum.inl i, Sum.inr ⟨(a, b), _⟩ => i = a ∨ i = b
     | Sum.inr ⟨(a, b), _⟩, Sum.inl i => i = a ∨ i = b
     | _, _ => False
-  symm.symm := by
+  symm := by
     constructor
     intro v w h
     rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩ <;> exact h
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro v h
     rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> exact h

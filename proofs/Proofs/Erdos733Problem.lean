@@ -65,7 +65,7 @@ def pointsOnLine (P : PointSet) (L : Set (ℝ × ℝ)) : ℕ :=
 **Lines with at least 2 points:**
 The set of lines determined by a point configuration.
 -/
-def richLines (P : PointSet) : Finset (Set (ℝ × ℝ)) :=
+noncomputable def richLines (P : PointSet) : Finset (Set (ℝ × ℝ)) :=
   (P ×ˢ P).image (fun ⟨p, q⟩ => lineThrough p q) |>.filter (fun L => pointsOnLine P L ≥ 2)
 
 /-

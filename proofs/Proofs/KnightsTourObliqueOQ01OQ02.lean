@@ -72,7 +72,7 @@ theorem neg_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
 /-- The knight graph on the m×n board -/
 def knightGraphMN (m n : ℕ) : SimpleGraph (SquareMN m n) where
   Adj := knightAdjMN m n
-  symm.symm := by
+  symm := by
     constructor
     intro s1 s2 h
     simp only [knightAdjMN] at h ⊢

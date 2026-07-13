@@ -136,7 +136,7 @@ to establish the Sperner property for certain posets.
 -/
 
 /-- The symmetric set centered at 0 -/
-def symmetricSet (N : ℕ) : Finset ℤ :=
+noncomputable def symmetricSet (N : ℕ) : Finset ℤ :=
   Finset.Icc (-(N - 1 : ℕ) / 2 : ℤ) ((N : ℕ) / 2 : ℤ)
 
 /-  Stanley (1980): Symmetric set maximizes concentration.

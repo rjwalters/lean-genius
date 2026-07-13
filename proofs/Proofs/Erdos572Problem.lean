@@ -30,11 +30,7 @@ References:
 - See also Problem #765 and the graphs collection
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Subgraph
-import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 open scoped Classical
 
@@ -128,7 +124,7 @@ where ν = 0 if k is odd, ν = 1 if k is even.
 
 This is weaker than the conjectured n^{1+1/k} but works for all k.
 -/
-def luwExponent (k : ℕ) : ℝ :=
+noncomputable def luwExponent (k : ℕ) : ℝ :=
   1 + 2 / (3 * k - 3 + if k % 2 = 0 then 1 else 0 : ℝ)
 
 axiom lazebnik_ustimenko_woldar :
@@ -194,7 +190,7 @@ The LUW exponent vs the conjectured exponent.
 /--
 The conjectured exponent is 1 + 1/k.
 -/
-def conjecturedExponent (k : ℕ) : ℝ := 1 + 1 / (k : ℝ)
+noncomputable def conjecturedExponent (k : ℕ) : ℝ := 1 + 1 / (k : ℝ)
 
 /--
 The LUW exponent is always less than or equal to the conjectured exponent.

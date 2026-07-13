@@ -22,11 +22,7 @@ References:
   conjecture of Erdős. Ramanujan J., 1023-1090.
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Order.Filter.Basic
+import Mathlib
 
 open scoped Classical
 

@@ -852,11 +852,11 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
     | Sum.inl _, Sum.inr _ => True
     | Sum.inr _, Sum.inl _ => True
     | _, _ => False
-  symm.symm := by
+  symm := by
     constructor
     intro u v h
     cases u <;> cases v <;> simp_all [h]
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro v
     cases v <;> simp

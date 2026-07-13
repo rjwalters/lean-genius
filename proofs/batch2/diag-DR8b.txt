@@ -1,0 +1,1363 @@
+===== Erdos1021OQ01
+error: Proofs/Erdos1021Aristotle.lean:53:191: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+===== Erdos1021Problem
+error: Proofs/Erdos1021Aristotle.lean:53:191: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b * ?c
+in the target expression
+===== Erdos1033Problem
+error: Proofs/Erdos1033Problem.lean:101:0: declaration `Erdos1033.h` contains universe level metavariables at the expression
+  isValidLowerBound.{?u.11} n k
+in the declaration body
+error: Proofs/Erdos1033Problem.lean:115:17: Unknown identifier `fan_lower`
+error: Proofs/Erdos1033Problem.lean:124:49: Type mismatch
+  Nat.sSup_mem h_cond.left h_cond.right
+error: Proofs/Erdos1033Problem.lean:124:49: Type mismatch
+  Nat.sSup_mem h_cond.left h_cond.right
+has type
+error: Proofs/Erdos1033Problem.lean:186:2: Type mismatch
+  c
+has type
+===== Erdos1035Problem
+error: Proofs/Erdos1035Problem.lean:341:42: failed to synthesize instance of type class
+  OfNat (Sort ?u.26) 1
+numerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is
+error: Proofs/Erdos1035Problem.lean:340:16: failed to synthesize instance of type class
+  AddCommMonoid Prop
+error: Proofs/Erdos1035Problem.lean:350:51: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  true ^^ ?x
+in the target expression
+error: Proofs/Erdos1035Problem.lean:383:6: Type mismatch
+  hypercubeBitCount_xor_pow_parity n (↑k) k.isLt ↑u
+has type
+===== Erdos1091Problem
+error: Proofs/Erdos1091Problem.lean:50:44: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 3
+error: Proofs/Erdos1091Problem.lean:50:71: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 3
+error: Proofs/Erdos1091Problem.lean:57:2: failed to synthesize instance of type class
+  Membership V (List V✝)
+error: Proofs/Erdos1091Problem.lean:57:19: failed to synthesize instance of type class
+  Membership V (List V✝)
+===== Erdos1134Problem
+error: Proofs/Erdos1134Problem.lean:71:2: failed to synthesize instance of type class
+  DecidablePred fun n => n ∈ S ∧ n ≥ 1
+error: Proofs/Erdos1134Problem.lean:103:44: Unknown identifier `crampin_hilton_tau_exists`
+error: Proofs/Erdos1134Problem.lean:150:43: Application type mismatch: The argument
+  List.not_mem_nil ?m.51
+error: Proofs/Erdos1134Problem.lean:150:43: Application type mismatch: The argument
+  List.not_mem_nil ?m.51
+has type
+error: Proofs/Erdos1134Problem.lean:245:4: Type mismatch
+  htau_lt
+has type
+===== Erdos184ProblemProvable
+error: Proofs/Erdos184ProblemProvable.lean:166:18: fail to show termination for
+  Erdos184.logStar
+with errors
+error: Proofs/Erdos184ProblemProvable.lean:189:50: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos184ProblemProvable.lean:316:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Proofs/Erdos184ProblemProvable.lean:316:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Lean exited with code 1
+error: Proofs/Erdos184ProblemProvable.lean:316:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Lean exited with code 1
+✖ [8578/8600] Building Proofs.Erdos216Problem (1.6s)
+===== Erdos188Problem
+error: Proofs/Erdos188Problem.lean:53:55: failed to synthesize instance of type class
+  HSMul (Fin S.card) ℂ ?m.8
+error: Proofs/Erdos188Problem.lean:58:24: failed to synthesize instance of type class
+  HSMul (Fin k) ℂ ?m.8
+===== Erdos223Problem
+error: Proofs/Erdos223Problem.lean:57:6: unexpected identifier; expected ')'
+error: Proofs/Erdos223Problem.lean:93:11: Type mismatch
+  ![Real.cos (2 * Real.pi * ↑↑i / ↑n), Real.sin (2 * Real.pi * ↑↑i / ↑n)]
+error: Proofs/Erdos223Problem.lean:93:11: Type mismatch
+  ![Real.cos (2 * Real.pi * ↑↑i / ↑n), Real.sin (2 * Real.pi * ↑↑i / ↑n)]
+has type
+error: Proofs/Erdos223Problem.lean:157:4: unsolved goals
+case right
+d n : ℕ
+error: Proofs/Erdos223Problem.lean:172:48: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  1 + 1 / 10
+of type `ℝ`
+===== Erdos439Problem
+error: Proofs/Erdos439Problem.lean:186:41: Unknown constant `SimpleGraph.adj_mk`
+error: Lean exited with code 1
+✖ [8585/8602] Building Proofs.Erdos1021Aristotle (10s)
+===== Erdos454Problem
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:42:18: Unknown constant `Nat.nth_prime_one`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+===== Erdos454ProblemAristotle
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:42:18: Unknown constant `Nat.nth_prime_one`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+===== Erdos470Problem
+error: Proofs/Erdos470Problem.lean:112:51: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'decidableIsWeird', which is 'noncomputable'
+error: Proofs/Erdos470Problem.lean:188:63: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+warning: Proofs/Erdos470Problem.lean:196:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos470Problem.lean:188:63: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+warning: Proofs/Erdos470Problem.lean:196:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos470Problem.lean:222:66: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+warning: Proofs/Erdos470Problem.lean:231:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos470Problem.lean:248:67: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+warning: Proofs/Erdos470Problem.lean:257:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== Erdos548Aristotle
+error: Proofs/Erdos548Problem.lean:54:4: failed to synthesize instance of type class
+  Fintype ↑T.edgeSet
+error: Proofs/Erdos548Problem.lean:79:29: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548Problem.lean:80:28: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548Problem.lean:105:55: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+===== Erdos548Problem
+error: Proofs/Erdos548Problem.lean:54:4: failed to synthesize instance of type class
+  Fintype ↑T.edgeSet
+error: Proofs/Erdos548Problem.lean:79:29: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548Problem.lean:80:28: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548Problem.lean:105:55: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+===== Erdos548ProblemAristotle
+error: Proofs/Erdos548ProblemAristotle.lean:23:55: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+error: Proofs/Erdos548ProblemAristotle.lean:33:29: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548ProblemAristotle.lean:34:28: Application type mismatch: The argument
+  h.right
+has type
+===== Erdos549Problem
+error: Proofs/Erdos549Problem.lean:49:11: Ambiguous term
+  IsTree
+Possible interpretations:
+error: Proofs/Erdos549Problem.lean:67:47: overloaded, errors 
+  failed to synthesize instance of type class
+    AddMonoid (V × V)
+error: Proofs/Erdos549Problem.lean:105:10: unsolved goals
+k : ℕ
+u v : Fin (3 * k + 2)
+error: Proofs/Erdos549Problem.lean:106:45: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos550Problem
+error: Proofs/Erdos550Problem.lean:62:14: unsolved goals
+case «1».«0»
+V : Type u_1
+error: Proofs/Erdos550Problem.lean:110:43: Application type mismatch: The argument
+  G.sorted ⟨0, ?m.20⟩ ⟨1, ?m.24⟩
+has type
+error: Proofs/Erdos550Problem.lean:140:34: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos551Problem
+error: Proofs/Erdos551Problem.lean:78:4: Invalid alternative name `inl`: Expected `refl`
+error: Proofs/Erdos551Problem.lean:79:4: Invalid alternative name `inr`: Expected `refl`
+error: Proofs/Erdos551Problem.lean:77:4: Dependent elimination failed: Failed to solve equation
+error: Proofs/Erdos551Problem.lean:79:4: Invalid alternative name `inr`: Expected `refl`
+error: Proofs/Erdos551Problem.lean:77:4: Dependent elimination failed: Failed to solve equation
+  i.1 = Decidable.rec (fun h => (fun x => (↑i).succ) h) (fun h => (fun x => (↑i).succ.modCore k) h) (k.decLe (↑i).succ)
+error: Proofs/Erdos551Problem.lean:77:4: Dependent elimination failed: Failed to solve equation
+  i.1 = Decidable.rec (fun h => (fun x => (↑i).succ) h) (fun h => (fun x => (↑i).succ.modCore k) h) (k.decLe (↑i).succ)
+error: Proofs/Erdos551Problem.lean:88:67: omega could not prove the goal:
+error: Proofs/Erdos551Problem.lean:88:67: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos551Problem.lean:103:2: failed to synthesize instance of type class
+===== Erdos552Aristotle
+error: Proofs/Erdos552Problem.lean:43:80: unexpected token ';'; expected ')', ',' or ':'
+error: Proofs/Erdos552Problem.lean:57:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:87:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:57:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:87:8: declaration uses `sorry`
+warning: Proofs/Erdos552Problem.lean:93:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:190:18: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos552Problem
+error: Proofs/Erdos552Problem.lean:43:80: unexpected token ';'; expected ')', ',' or ':'
+error: Proofs/Erdos552Problem.lean:57:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:87:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:57:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:87:8: declaration uses `sorry`
+warning: Proofs/Erdos552Problem.lean:93:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:190:18: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos553Aristotle
+error: Proofs/Erdos553Problem.lean:178:4: Ambiguous term
+  (fun n => (R_3_3_n n : ℝ)) ≍ (fun n => n ^ 3 * (Real.log n) ^ k)
+Possible interpretations:
+error: Proofs/Erdos553Problem.lean:182:18: Ambiguous term
+  (fun n => (R_3_n n : ℝ)) ≍ (fun n => n ^ 2 / Real.log n)
+Possible interpretations:
+===== Erdos553Problem
+error: Proofs/Erdos553Problem.lean:178:4: Ambiguous term
+  (fun n => (R_3_3_n n : ℝ)) ≍ (fun n => n ^ 3 * (Real.log n) ^ k)
+Possible interpretations:
+error: Proofs/Erdos553Problem.lean:182:18: Ambiguous term
+  (fun n => (R_3_n n : ℝ)) ≍ (fun n => n ^ 2 / Real.log n)
+Possible interpretations:
+===== Erdos553ProblemAristotle
+error: Proofs/Erdos553Problem.lean:178:4: Ambiguous term
+  (fun n => (R_3_3_n n : ℝ)) ≍ (fun n => n ^ 3 * (Real.log n) ^ k)
+Possible interpretations:
+error: Proofs/Erdos553Problem.lean:182:18: Ambiguous term
+  (fun n => (R_3_n n : ℝ)) ≍ (fun n => n ^ 2 / Real.log n)
+Possible interpretations:
+===== Erdos555Problem
+error: Proofs/Erdos555Problem.lean:34:68: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos555Problem.lean:57:13: Type mismatch
+error: Proofs/Erdos555Problem.lean:57:13: Type mismatch
+  trivial
+has type
+===== Erdos556Problem
+error: Proofs/Erdos556Problem.lean:57:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:58:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:63:49: Type mismatch
+  (↑i + 1) % n
+has type
+error: Proofs/Erdos556Problem.lean:67:23: Tactic `assumption` failed
+n : ℕ
+===== Erdos557Problem
+error: Proofs/Erdos557Problem.lean:32:10: `Tree` has already been declared
+warning: Proofs/Erdos557Problem.lean:48:52: `Tree` has been deprecated: Use `BinaryTree` instead
+error: Proofs/Erdos557Problem.lean:48:57: Application type mismatch: The argument
+error: Proofs/Erdos557Problem.lean:48:57: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos557Problem.lean:49:26: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos557Problem.lean:52:30: `Tree` has been deprecated: Use `BinaryTree` instead
+error: Proofs/Erdos557Problem.lean:52:35: Application type mismatch: The argument
+  n
+has type
+===== Erdos559Problem
+error: Proofs/Erdos559Problem.lean:62:35: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos559Problem.lean:92:6: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Erdos559.FiniteGraph.mk` has 4 explicit field, but only 3 were provided
+warning: Proofs/Erdos559Problem.lean:110:8: declaration uses `sorry`
+warning: Proofs/Erdos559Problem.lean:123:8: declaration uses `sorry`
+===== Erdos560Problem
+error: Proofs/Erdos560Problem.lean:88:36: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+  ↑e
+has type `Quot (Sym2.Rel W)` which is not a one-constructor inductive type.
+error: Proofs/Erdos560Problem.lean:88:46: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+  ↑e
+has type `Quot (Sym2.Rel W)` which is not a one-constructor inductive type.
+error: Proofs/Erdos560Problem.lean:89:23: Invalid `⟨...⟩` notation: The expected type `Quot (Sym2.Rel V)` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/Erdos560Problem.lean:99:51: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+  ↑e
+has type `Quot (Sym2.Rel W)` which is not a one-constructor inductive type.
+===== Erdos570Problem
+error: Proofs/Erdos570Problem.lean:59:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 1
+error: Proofs/Erdos570Problem.lean:60:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos570Problem.lean:61:17: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos570Problem.lean:66:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos572Problem
+error: Proofs/Erdos572Problem.lean:57:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos572Problem.lean:205:2: Tactic `apply` failed: could not unify the conclusion of `@add_le_add_left`
+error: Proofs/Erdos572Problem.lean:205:2: Tactic `apply` failed: could not unify the conclusion of `@add_le_add_left`
+  ?b + ?a ≤ ?c + ?a
+with the goal
+===== Erdos59Problem
+error: Proofs/Erdos59Problem.lean:74:10: Unknown constant `Set.mem_union.mp`
+error: Proofs/Erdos59Problem.lean:83:61: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/Erdos59Problem.lean:83:61: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos59Problem.lean:91:39: Unknown identifier `even_zero`
+error: Proofs/Erdos59Problem.lean:96:27: Unknown constant `Nat.even_succ`
+error: Proofs/Erdos59Problem.lean:99:43: Unknown constant `Nat.even_succ`
+error: Proofs/Erdos59Problem.lean:96:27: Unknown constant `Nat.even_succ`
+error: Proofs/Erdos59Problem.lean:99:43: Unknown constant `Nat.even_succ`
+error: Proofs/Erdos59Problem.lean:109:39: Unknown identifier `even_zero`
+===== Erdos611Problem
+error: Proofs/Erdos611Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos611Problem.lean:183:0: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+  (n : ℕ) → Even n → sorry
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+  ℕ → (r : ℕ) → r ≥ 2 → sorry
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.25
+===== Erdos611ProblemAristotle
+error: Proofs/Erdos611Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos611Problem.lean:183:0: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+  (n : ℕ) → Even n → sorry
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+  ℕ → (r : ℕ) → r ≥ 2 → sorry
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.25
+===== Erdos612Problem
+error: Proofs/Erdos612Problem.lean:42:30: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos612Problem.lean:42:51: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos612Problem.lean:207:0: type of theorem `Erdos612.path_diameter` is not a proposition
+  (n : ℕ) → n ≥ 2 → sorry
+error: Proofs/Erdos612Problem.lean:212:0: type of theorem `Erdos612.cycle_diameter` is not a proposition
+error: Proofs/Erdos612Problem.lean:212:0: type of theorem `Erdos612.cycle_diameter` is not a proposition
+  (n : ℕ) → n ≥ 3 → sorry
+warning: Proofs/Erdos612Problem.lean:218:8: declaration uses `sorry`
+===== Erdos612ProblemAristotle
+error: Proofs/Erdos612ProblemAristotle.lean:24:10: Unknown constant `Filter.Tendsto.const_mul_zero`
+error: Proofs/Erdos612ProblemAristotle.lean:25:4: No goals to be solved
+error: Lean exited with code 1
+error: Proofs/Erdos612ProblemAristotle.lean:25:4: No goals to be solved
+error: Lean exited with code 1
+✖ [8592/8601] Building Proofs.Erdos642Problem (12s)
+===== Erdos613Aristotle
+error: Proofs/Erdos613Problem.lean:55:30: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos613Problem.lean:55:51: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos613Problem.lean:78:6: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+error: Proofs/Erdos613Problem.lean:89:15: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos613ProblemAristotle
+error: Proofs/Erdos613Problem.lean:55:30: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos613Problem.lean:55:51: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos613Problem.lean:78:6: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+error: Proofs/Erdos613Problem.lean:89:15: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos616Problem
+error: Proofs/Erdos616Problem.lean:218:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  w
+in the target expression
+error: Proofs/Erdos616Problem.lean:274:43: linarith failed to find a contradiction
+r : ℕ
+hr : r ≥ 3
+===== Erdos619Problem
+error: Proofs/Erdos619Problem.lean:51:11: Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+  G
+of type `SimpleGraph V`
+error: Proofs/Erdos619Problem.lean:51:2: failed to synthesize instance of type class
+  SupSet ℕ
+error: Proofs/Erdos619Problem.lean:73:25: failed to synthesize instance of type class
+  Membership (Quotient ?m.10) (Set (Sym2 V))
+error: Proofs/Erdos619Problem.lean:84:21: Function expected at
+  G.loopless
+but this term has type
+===== Erdos625Aristotle
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos625Problem
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos625ProblemAristotle
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos629Problem
+error: Proofs/Erdos629Problem.lean:102:6: too many arguments supplied to `use`
+info: Proofs/Erdos629Problem.lean:125:8: Try this:
+  [apply] exact le_card_iff_exists_subset_card.mp hY
+error: Proofs/Erdos629Problem.lean:126:73: Application type mismatch: The argument
+  fun x => ?m.148
+has type
+error: Proofs/Erdos629Problem.lean:126:77: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+warning: Proofs/Erdos629Problem.lean:218:59: This simp argument is unused:
+  eq_comm
+error: Proofs/Erdos629Problem.lean:248:53: Invalid field `not_le`: The environment does not contain `Nat.le.not_le`, so it is not possible to project the field `not_le` from an expression
+  h_card
+of type
+===== Erdos636Problem
+error: Proofs/Erdos636Problem.lean:145:56: unsolved goals
+⊢ efs_exponent < ks_exponent
+error: Proofs/Erdos636Problem.lean:182:18: Type mismatch
+error: Proofs/Erdos636Problem.lean:182:18: Type mismatch
+  card_le_univ S
+has type
+===== Erdos642Problem
+error: Proofs/Erdos642Problem.lean:44:76: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos642Problem.lean:71:3: failed to synthesize instance of type class
+  DecidablePred fun e => IsDiagonal C e
+error: Proofs/Erdos642Problem.lean:187:50: unexpected token 'λ'; expected '_' or identifier
+error: Proofs/Erdos642Problem.lean:197:7: unexpected token 'λ'; expected '(', '_' or identifier
+error: Proofs/Erdos642Problem.lean:218:2: omega could not prove the goal:
+error: Proofs/Erdos642Problem.lean:197:7: unexpected token 'λ'; expected '(', '_' or identifier
+error: Proofs/Erdos642Problem.lean:218:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+===== Erdos648Problem
+error: Proofs/Erdos648Problem.lean:204:36: Invalid field `card_toFinset`: The environment does not contain `List.Pairwise.card_toFinset`, so it is not possible to project the field `card_toFinset` from an expression
+  hnodup
+of type
+===== Erdos652Problem
+error: Proofs/Erdos652Problem.lean:102:58: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos652Problem.lean:104:8: Unknown constant `Real.lt_top`
+error: Proofs/Erdos652Problem.lean:129:26: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos652Problem.lean:129:26: failed to synthesize instance of type class
+  Top ℝ
+error: Proofs/Erdos652Problem.lean:132:22: Unknown identifier `alpha_k_finite`
+error: Lean exited with code 1
+⚠ [8584/8601] Replayed Proofs.Erdos559Aristotle
+===== Erdos662Problem
+error: Proofs/Erdos662Problem.lean:88:64: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'triLatticeCountInt', which is 'noncomputable'
+error: Proofs/Erdos662Problem.lean:91:67: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'triLatticeCountInt', which is 'noncomputable'
+warning: Proofs/Erdos662Problem.lean:190:26: unused name: h2
+error: Proofs/Erdos662Problem.lean:91:67: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'triLatticeCountInt', which is 'noncomputable'
+warning: Proofs/Erdos662Problem.lean:190:26: unused name: h2
+error: Lean exited with code 1
+===== Erdos666Problem
+error: Proofs/Erdos666Problem.lean:443:30: unexpected token 'unseal'; expected 'lemma'
+error: Lean exited with code 1
+✖ [8591/8602] Building Proofs.Erdos803Problem (8.7s)
+===== Erdos675Problem
+error: Proofs/Erdos675Problem.lean:37:39: Type mismatch
+  Iff.rfl
+has type
+error: Proofs/Erdos675Problem.lean:83:13: Invalid field `pow_pow`: The environment does not contain `Eq.pow_pow`, so it is not possible to project the field `pow_pow` from an expression
+  hcop
+of type `p.gcd q = 1`
+===== Erdos704Problem
+error: Proofs/Erdos704Problem.lean:53:37: Type mismatch
+  (UnitDistanceGraph n).chromaticNumber
+has type
+error: Proofs/Erdos704Problem.lean:65:61: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  (1 - ε) * 1.2 ^ n
+of type `ℝ`
+error: Proofs/Erdos704Problem.lean:87:55: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  (3 + ε) ^ n
+of type `ℝ`
+error: Proofs/Erdos704Problem.lean:93:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Real.instPow', which is 'noncomputable'
+error: Proofs/Erdos704Problem.lean:127:40: Function expected at
+  Filter.atTop.limsSup
+===== Erdos705Problem
+error: Proofs/Erdos705Problem.lean:104:14: Application type mismatch: The argument
+  hkl
+has type
+error: Proofs/Erdos705Problem.lean:265:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 5
+error: Proofs/Erdos705Problem.lean:273:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos705Problem.lean:280:2: omega could not prove the goal:
+error: Proofs/Erdos705Problem.lean:280:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos712Problem
+error: Proofs/Erdos712Problem.lean:162:8: linarith failed to find a contradiction
+r k : ℕ
+hr : r > 2
+===== Erdos718Problem
+error: Proofs/Erdos718Problem.lean:66:46: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  C * ↑r ^ 2 * ↑n
+of type `ℝ`
+error: Proofs/Erdos718Problem.lean:103:31: Invalid field `toNat`: The environment does not contain `Real.toNat`, so it is not possible to project the field `toNat` from an expression
+  C_const * ↑r ^ 2 * ↑n
+of type `ℝ`
+===== Erdos733LimitBounds
+error: Proofs/Erdos733Problem.lean:62:3: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ L
+error: Proofs/Erdos733Problem.lean:86:6: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  seq
+of type `List ℕ`
+error: Proofs/Erdos733Problem.lean:218:20: Unknown constant `Nat.one_lt_of_ne_one`
+error: Proofs/Erdos733Problem.lean:231:3: unexpected token 'λ'; expected '(', '_' or identifier
+error: Proofs/Erdos733Problem.lean:241:3: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+error: Proofs/Erdos733Problem.lean:231:3: unexpected token 'λ'; expected '(', '_' or identifier
+error: Proofs/Erdos733Problem.lean:241:3: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+error: Lean exited with code 1
+===== Erdos733Problem
+error: Proofs/Erdos733Problem.lean:62:3: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ L
+error: Proofs/Erdos733Problem.lean:86:6: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  seq
+of type `List ℕ`
+error: Proofs/Erdos733Problem.lean:218:20: Unknown constant `Nat.one_lt_of_ne_one`
+error: Proofs/Erdos733Problem.lean:231:3: unexpected token 'λ'; expected '(', '_' or identifier
+error: Proofs/Erdos733Problem.lean:241:3: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+error: Proofs/Erdos733Problem.lean:231:3: unexpected token 'λ'; expected '(', '_' or identifier
+error: Proofs/Erdos733Problem.lean:241:3: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+error: Lean exited with code 1
+===== Erdos736Problem
+error: Proofs/Erdos736Problem.lean:342:10: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/Erdos736Problem.lean:362:52: Unknown identifier `colorable_of_isEmpty`
+warning: Proofs/Erdos736Problem.lean:369:6: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== Erdos739Problem
+error: Proofs/Erdos739Problem.lean:59:20: Invalid field `IsLimit`: The environment does not contain `Quot.IsLimit`, so it is not possible to project the field `IsLimit` from an expression
+  κ
+of type `Quot ⇑isEquivalent`
+error: Proofs/Erdos739Problem.lean:103:20: Invalid field `IsLimit`: The environment does not contain `Quot.IsLimit`, so it is not possible to project the field `IsLimit` from an expression
+  κ
+of type `Quot ⇑isEquivalent`
+error: Proofs/Erdos739Problem.lean:105:0: declaration `Erdos739.MainOpenProblem` contains universe level metavariables at the expression
+  GCH → ErdosGalvinQuestion.{?u.5}
+in the declaration body
+===== Erdos745Problem
+error: Proofs/Erdos745Problem.lean:72:6: Type mismatch
+  hn
+has type
+error: Proofs/Erdos745Problem.lean:268:10: Function expected at
+  komlos_sulyok_szemeredi
+but this term has type
+error: Proofs/Erdos745Problem.lean:270:10: Function expected at
+  critical_giant_size
+but this term has type
+===== Erdos749Problem
+error: Proofs/Erdos749Problem.lean:65:2: mod_cast has type
+  (?m.33 ∩ ?m.39).ncard ≤ Set.ncard ?m.43
+but is expected to have type
+error: Proofs/Erdos749Problem.lean:65:67: unsolved goals
+S : Set ℕ
+N : ℕ
+error: Proofs/Erdos749Problem.lean:71:8: Unknown identifier `le_liminf_of_le`
+error: Proofs/Erdos749Problem.lean:77:8: Function expected at
+  Filter.liminf_le_limsup ?m.12 (Exists.intro 0 (Filter.Eventually.of_forall ?m.21))
+error: Proofs/Erdos749Problem.lean:77:8: Function expected at
+  Filter.liminf_le_limsup ?m.12 (Exists.intro 0 (Filter.Eventually.of_forall ?m.21))
+but this term has type
+===== Erdos750Problem
+error: Proofs/Erdos750Problem.lean:91:4: Function expected at
+  Finset.filter_card_add_filter_neg_card_eq_card ?m.84
+but this term has type
+error: Proofs/Erdos750Problem.lean:91:51: Application type mismatch: The argument
+  S
+has type
+===== Erdos767Problem
+error: Proofs/Erdos767Problem.lean:42:2: failed to synthesize instance of type class
+  Fintype ↑(SimpleGraph.edgeSet G)
+error: Proofs/Erdos767Problem.lean:49:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos767Problem.lean:50:55: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos767Problem.lean:57:15: Invalid field `get?`: The environment does not contain `List.get?`, so it is not possible to project the field `get?` from an expression
+  cycle
+of type `List (Fin n)`
+===== Erdos772Problem
+error: Proofs/Erdos772Problem.lean:180:50: Invalid field `card`: The environment does not contain `Function.card`, so it is not possible to project the field `card` from an expression
+  fun x => ?m.16
+of type `(x : ?m.14) → ?m.17 x`
+error: Proofs/Erdos772Problem.lean:179:33: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Lean exited with code 1
+✖ [8593/8602] Building Proofs.Erdos712Problem (9.1s)
+===== Erdos780Aristotle
+error: Proofs/Erdos780Aristotle.lean:50:4: failed to synthesize instance of type class
+  Fintype (completeHypergraph n 1)
+error: Proofs/Erdos780Aristotle.lean:84:148: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/Erdos780Aristotle.lean:96:29: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  #univ
+in the target expression
+error: Proofs/Erdos780Aristotle.lean:98:12: Unknown constant `Finset.disjoint_compl_right`
+error: Proofs/Erdos780Aristotle.lean:103:29: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  #univ
+===== Erdos794Problem
+error: Proofs/Erdos794Problem.lean:137:10: Application type mismatch: The argument
+  V
+has type
+error: Proofs/Erdos794Problem.lean:167:49: unknown tactic
+error: Proofs/Erdos794Problem.lean:167:45: unsolved goals
+⊢ 3 ^ 3 + 1 = 28
+error: Proofs/Erdos794Problem.lean:167:45: unsolved goals
+⊢ 3 ^ 3 + 1 = 28
+error: Proofs/Erdos794Problem.lean:190:22: Application type mismatch: The argument
+error: Proofs/Erdos794Problem.lean:190:22: Application type mismatch: The argument
+  Fin 9
+has type
+===== Erdos79Incomplete01
+error: Proofs/Erdos79Incomplete01.lean:58:10: Function expected at
+  (completeGraphN 4).loopless
+but this term has type
+===== Erdos79Incomplete01OQ01
+error: Proofs/Erdos79Incomplete01.lean:58:10: Function expected at
+  (completeGraphN 4).loopless
+but this term has type
+===== Erdos801Problem
+error: Proofs/Erdos801Problem.lean:52:35: unexpected token ','; expected '}'
+error: Lean exited with code 1
+✖ [8581/8602] Building Proofs.Erdos675Problem (2.3s)
+===== Erdos803Problem
+error: Proofs/Erdos803Problem.lean:39:2: failed to synthesize instance of type class
+  OrderTop ℕ
+error: Proofs/Erdos803Problem.lean:53:4: Tactic `apply` failed: could not unify the conclusion of `Finset.sup_congr rfl`
+  Finset.sup ?m.40 ?m.37 = Finset.sup ?m.40 ?m.38
+with the goal
+error: Proofs/Erdos803Problem.lean:56:14: failed to synthesize instance of type class
+  OrderTop ℕ
+===== Erdos807Problem
+error: Proofs/Erdos807Problem.lean:50:51: Invalid field `card`: The environment does not contain `Function.card`, so it is not possible to project the field `card` from an expression
+  S
+of type `V → Prop`
+error: Proofs/Erdos807Problem.lean:121:2: Tactic `assumption` failed
+a✝ : ∀ (n : ℕ), ERW_conjecture n
+===== Erdos820Problem
+error: Proofs/Erdos820Problem.lean:68:16: numerals are data in Lean, but the expected type is a proposition
+  3 ≥ 2 : Prop
+error: Proofs/Erdos820Problem.lean:68:19: Application type mismatch: The argument
+error: Proofs/Erdos820Problem.lean:68:19: Application type mismatch: The argument
+  Nat.lt_of_sub_eq_succ ?m.26
+has type
+error: Proofs/Erdos820Problem.lean:68:41: Application type mismatch: The argument
+  rfl
+has type
+error: Proofs/Erdos820Problem.lean:230:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ↑k ^ (_a - 1) = 1
+Error: Application type mismatch: The argument
+===== Erdos822Problem
+error: Proofs/Erdos822Problem.lean:91:13: failed to synthesize instance of type class
+  LT ℝ
+error: Proofs/Erdos822Problem.lean:91:17: failed to synthesize instance of type class
+  OfNat ℝ 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos822Problem.lean:92:46: failed to synthesize instance of type class
+  HSub ℝ ℕ ℕ
+error: Proofs/Erdos822Problem.lean:111:14: failed to synthesize instance of type class
+  LT ℝ
+===== Erdos833Problem
+error: Proofs/Erdos833Problem.lean:125:0: declaration `Erdos833.ExponentialGrowthConjecture` contains universe level metavariables at the expression
+  f.{?u.16} r
+in the declaration body
+===== Erdos838Problem
+error: Proofs/Erdos838Problem.lean:42:9: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'decidableEq', which is 'noncomputable'
+error: Proofs/Erdos838Problem.lean:42:9: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'instDecidableEqPoint2D.decEq', which is 'noncomputable'
+error: Lean exited with code 1
+error: Proofs/Erdos838Problem.lean:42:9: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'instDecidableEqPoint2D.decEq', which is 'noncomputable'
+error: Lean exited with code 1
+✖ [8594/8600] Building Proofs.Erdos833Problem (5.2s)
+===== Erdos842Problem
+error: Proofs/Erdos842Problem.lean:124:14: Type mismatch
+  fun v h => ?m.20
+has type
+error: Proofs/Erdos842Problem.lean:124:25: Invalid projection: Type of
+  h
+is not known; cannot resolve projection `1`
+===== Erdos844Problem
+error: Proofs/Erdos844Problem.lean:41:82: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos844Problem.lean:78:12: Invalid field `natSq_dvd_self_of_dvd`: The environment does not contain `Function.natSq_dvd_self_of_dvd`, so it is not possible to project the field `natSq_dvd_self_of_dvd` from an expression
+  hsq
+of type
+error: Proofs/Erdos844Problem.lean:86:16: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/Erdos844Problem.lean:87:8: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+a b : ℕ
+===== Erdos850Problem
+error: Proofs/Erdos850Problem.lean:67:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Proofs/Erdos850Problem.lean:72:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Proofs/Erdos850Problem.lean:83:5: Function expected at
+error: Proofs/Erdos850Problem.lean:72:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Proofs/Erdos850Problem.lean:83:5: Function expected at
+  KShiftProblem
+error: Proofs/Erdos850Problem.lean:83:5: Function expected at
+  KShiftProblem
+but this term has type
+error: Proofs/Erdos850Problem.lean:96:43: Function expected at
+  KShiftProblem
+but this term has type
+===== Erdos862Problem
+error: Proofs/Erdos862Problem.lean:117:4: typeclass instance problem is stuck
+  AddCommMonoid (?m.21 multiset1 multiset2)
+===== Erdos86Problem
+error: Proofs/Erdos86Problem.lean:72:40: Invalid field `symm`: The environment does not contain `List.Mem.symm`, so it is not possible to project the field `symm` from an expression
+  h'
+of type
+error: Proofs/Erdos86Problem.lean:83:4: failed to synthesize instance of type class
+  Fintype (HypercubeVertex n)
+error: Proofs/Erdos86Problem.lean:115:56: unexpected token '//'; expected '}'
+error: Proofs/Erdos86Problem.lean:143:44: linarith failed to find a contradiction
+n : ℕ
+error: Proofs/Erdos86Problem.lean:143:44: linarith failed to find a contradiction
+n : ℕ
+hn : n ≥ 2
+===== Erdos890Problem
+error: Proofs/Erdos890Problem.lean:192:38: Unknown identifier `p`
+error: Proofs/Erdos890Problem.lean:186:60: unsolved goals
+p : ℕ
+error: Proofs/Erdos890Problem.lean:186:60: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos890Problem.lean:201:43: unexpected token 'calc'; expected '⟩'
+error: Proofs/Erdos890Problem.lean:201:16: unsolved goals
+N₀ p : ℕ
+error: Proofs/Erdos890Problem.lean:201:16: unsolved goals
+N₀ p : ℕ
+hN : N₀ ≤ p
+===== Erdos895Problem
+error: Proofs/Erdos895Problem.lean:311:59: Function expected at
+  G.symm
+but this term has type
+===== Erdos900Problem
+error: Proofs/Erdos900Problem.lean:65:25: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos900Problem.lean:65:52: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos900Problem.lean:117:32: Invalid field `IsConnected`: The environment does not contain `SimpleGraph.IsConnected`, so it is not possible to project the field `IsConnected` from an expression
+  G
+of type `SimpleGraph (Fin n)`
+error: Proofs/Erdos900Problem.lean:241:47: Invalid field `card`: The environment does not contain `Function.card`, so it is not possible to project the field `card` from an expression
+  fun x => {x ∈ SimpleGraph.neighborFinset G x | x ∉ S}
+of type `Fin n → Finset (Fin n)`
+===== Erdos902Problem
+error: Proofs/Erdos902Problem.lean:113:4: linarith failed to find a contradiction
+case refine_1
+c : ℝ
+===== Erdos916Problem
+error: Proofs/Erdos916Problem.lean:97:27: failed to prove index is valid, possible solutions:
+  - Use `have`-expressions to prove the index is valid
+  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid
+error: Proofs/Erdos916Problem.lean:110:24: failed to prove index is valid, possible solutions:
+  - Use `have`-expressions to prove the index is valid
+  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid
+error: Proofs/Erdos916Problem.lean:202:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos916Problem.lean:217:3: unknown tactic
+error: Proofs/Erdos916Problem.lean:217:3: unknown tactic
+error: Proofs/Erdos916Problem.lean:226:3: unknown tactic
+error: Proofs/Erdos916Problem.lean:235:3: unknown tactic
+===== Erdos91Problem
+error: Proofs/Erdos91Problem.lean:79:57: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+warning: Proofs/Erdos91Problem.lean:101:13: Variable name `θ` is not explicitly referenced.
+error: Proofs/Erdos91Problem.lean:236:20: Function expected at
+  log
+but this term has type
+error: Proofs/Erdos91Problem.lean:237:62: Function expected at
+  log
+but this term has type
+===== Erdos920Problem
+error: Proofs/Erdos920Problem.lean:60:2: Type mismatch
+  G.chromaticNumber
+has type
+===== Erdos922Problem
+error: Proofs/Erdos922Problem.lean:47:14: failed to synthesize instance of type class
+  DecidablePred (IsIndependentSet G)
+error: Proofs/Erdos922Problem.lean:58:4: Type mismatch
+  fun v => (Fintype.equivFin V) v
+has type
+error: Proofs/Erdos922Problem.lean:96:31: Function expected at
+  chromaticNumber'
+but this term has type
+error: Proofs/Erdos922Problem.lean:103:4: Function expected at
+  chromaticNumber'
+but this term has type
+===== Erdos925Problem
+error: Proofs/Erdos925Problem.lean:52:45: Application type mismatch: The argument
+  hca
+has type
+error: Proofs/Erdos925Problem.lean:56:35: Invalid field `IsCliqueFree`: The environment does not contain `SimpleGraph.IsCliqueFree`, so it is not possible to project the field `IsCliqueFree` from an expression
+  G
+of type `SimpleGraph V`
+===== Erdos94OQ02
+error: Proofs/Erdos94OQ02.lean:45:2: failed to synthesize instance of type class
+  Membership ?m.1 PointConfig
+error: Proofs/Erdos94OQ02.lean:67:16: failed to synthesize instance of type class
+  EmptyCollection PointConfig
+error: Proofs/Erdos94OQ02.lean:69:6: Type mismatch
+  ![cos (2 * π * k / ↑n), sin (2 * π * k / ↑n)]
+has type
+error: Proofs/Erdos94OQ02.lean:137:33: Application type mismatch: The argument
+  n
+has type
+===== Erdos965Problem
+error: Proofs/Erdos965Problem.lean:136:4: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `A`
+Note: Such a parameter must be explicit, or implicit with a unique name, to be used by field notation
+===== Erdos967Problem
+error: Proofs/Erdos967Problem.lean:207:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≤ 0
+error: Proofs/Erdos967Problem.lean:210:48: unsolved goals
+n : ℕ
+⊢ 0 < ?m.44
+error: Proofs/Erdos967Problem.lean:210:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos976Problem
+error: Proofs/Erdos976Problem.lean:63:61: failed to synthesize instance of type class
+  HAdd ℕ ℕ ℤ
+===== Erdos990Problem
+error: Proofs/Erdos990Problem.lean:65:21: Unknown constant `Complex.abs`
+error: Proofs/Erdos990Problem.lean:69:12: Unknown constant `Complex.abs`
+error: Proofs/Erdos990Problem.lean:70:12: Unknown constant `Complex.abs`
+error: Proofs/Erdos990Problem.lean:69:12: Unknown constant `Complex.abs`
+error: Proofs/Erdos990Problem.lean:70:12: Unknown constant `Complex.abs`
+warning: Proofs/Erdos990Problem.lean:112:7: Variable name `hp` is not explicitly referenced.
+error: Proofs/Erdos990Problem.lean:70:12: Unknown constant `Complex.abs`
+warning: Proofs/Erdos990Problem.lean:112:7: Variable name `hp` is not explicitly referenced.
+error: Proofs/Erdos990Problem.lean:131:8: typeclass instance problem is stuck
+  DecidablePred ?m.13
+===== FourthRoot2SplittingFieldOQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== FriendshipTheorem
+error: Proofs/FriendshipTheoremOQ01.lean:978:16: Unknown constant `Matrix.smul_mulVec_assoc`
+warning: Proofs/FriendshipTheoremOQ01.lean:984:17: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/FriendshipTheoremOQ01.lean:1861:21: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:2129:59: Function expected at
+  G.symm
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:2134:58: Function expected at
+  G.symm
+but this term has type
+===== FriendshipTheoremOQ04
+error: Proofs/FriendshipTheoremOQ01.lean:978:16: Unknown constant `Matrix.smul_mulVec_assoc`
+warning: Proofs/FriendshipTheoremOQ01.lean:984:17: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/FriendshipTheoremOQ01.lean:1861:21: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:2129:59: Function expected at
+  G.symm
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:2134:58: Function expected at
+  G.symm
+but this term has type
+===== FriendshipTheoremOQ04Universal
+error: Proofs/FriendshipTheoremOQ01.lean:978:16: Unknown constant `Matrix.smul_mulVec_assoc`
+warning: Proofs/FriendshipTheoremOQ01.lean:984:17: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/FriendshipTheoremOQ01.lean:1861:21: Function expected at
+  G.loopless
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:2129:59: Function expected at
+  G.symm
+but this term has type
+error: Proofs/FriendshipTheoremOQ01.lean:2134:58: Function expected at
+  G.symm
+but this term has type
+===== FundamentalArithmetic
+error: Proofs/FundamentalArithmetic.lean:75:23: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  n.primeFactorsList
+of type `List ℕ`
+error: Proofs/FundamentalArithmetic.lean:118:8: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  l
+of type `List ℕ`
+error: Proofs/FundamentalArithmetic.lean:167:36: Invalid field `Sorted`: The environment does not contain `List.Sorted`, so it is not possible to project the field `Sorted` from an expression
+  Nat.primeFactorsList 60
+of type `List ℕ`
+===== FurstenbergCorrespondence
+error: Proofs/FurstenbergCorrespondence.lean:168:16: failed to infer universe levels in `have` declaration type
+  DFunLike.coe.{?u.29 + 1, ?u.29 + 1, 1} (System.μ.{?u.29} sys) (System.B.{?u.29} sys) ≠ 0
+error: Proofs/FurstenbergCorrespondence.lean:232:4: Type mismatch
+error: Proofs/FurstenbergCorrespondence.lean:232:4: Type mismatch
+  hreturnk k n hk hn_pos hn_meas
+has type
+===== Hilbert20BoundaryValue
+error: Proofs/Hilbert20BoundaryValue.lean:122:31: Function expected at
+  a
+but this term has type
+error: Proofs/Hilbert20BoundaryValue.lean:126:28: Function expected at
+  a
+but this term has type
+error: Proofs/Hilbert20BoundaryValue.lean:157:10: Function expected at
+  a
+but this term has type
+===== Hilbert20LocalSolvability
+error: Proofs/Hilbert20LocalSolvability.lean:73:2: failed to synthesize instance of type class
+  Fintype (MultiIndex n)
+===== Hilbert20OQ01OQ03
+error: Proofs/Hilbert20OQ01OQ03.lean:64:2: failed to synthesize instance of type class
+  Fintype (MultiIndex n)
+error: Proofs/Hilbert20OQ01OQ03.lean:104:28: unsolved goals
+n m : ℕ
+P : LinearPDO n m
+error: Proofs/Hilbert20OQ01OQ03.lean:126:2: No applicable extensionality theorem found for type
+  LinearPDO n m
+error: Proofs/Hilbert20OQ01OQ03.lean:133:2: No applicable extensionality theorem found for type
+  LinearPDO n m
+===== InverseGaloisD4OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ01External
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03OQ01OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ03OQ01OQ01OQ01
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ02OQ04
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== InverseGaloisD4OQ03
+error: Proofs/InverseGaloisD4.lean:60:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:63:6: failed to synthesize
+  Fintype (ZMod ?n)ˣ
+error: Proofs/InverseGaloisD4.lean:70:5: failed to synthesize instance of type class
+  IsCyclotomicExtension {p} ℚ (CyclotomicField p ℚ)
+error: Proofs/InverseGaloisD4.lean:67:48: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== KnightsTourOblique
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== KnightsTourObliqueOQ02
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== KnightsTourObliqueOQ02Order16
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== KnightsTourObliqueOQ02Palindrome
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== KnightsTourObliqueOQ02Reverse
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== KnightsTourObliqueOQ02ReverseCount
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== KnightsTourObliqueOQ03
+error: Proofs/KnightsTourOblique.lean:1495:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+error: Proofs/KnightsTourOblique.lean:1751:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1746:26: This simp argument is unused:
+  SimpleGraph.Adj
+error: Proofs/KnightsTourOblique.lean:1776:4: `simp` made no progress
+warning: Proofs/KnightsTourOblique.lean:1771:26: This simp argument is unused:
+  SimpleGraph.Adj
+===== LHopitalOQ03
+error: Proofs/LHopitalOQ03.lean:94:26: No goals to be solved
+error: Proofs/LHopitalOQ03.lean:133:49: Invalid field `deriv`: The environment does not contain `Function.deriv`, so it is not possible to project the field `deriv` from an expression
+  HasFDerivAt.comp_hasDerivAt ?m.76 ?m.79
+error: Proofs/LHopitalOQ03.lean:133:49: Invalid field `deriv`: The environment does not contain `Function.deriv`, so it is not possible to project the field `deriv` from an expression
+  HasFDerivAt.comp_hasDerivAt ?m.76 ?m.79
+of type
+error: Proofs/LHopitalOQ03.lean:133:3: Application type mismatch: The argument
+  DifferentiableAt.hasFDerivAt hf
+has type
+===== LagrangeFourSquaresOQ01OQ03
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:147:35: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:157:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:157:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Proofs/LagrangeFourSquaresOQ01OQ03.lean:163:38: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r4', which is 'noncomputable'
+error: Lean exited with code 1
+===== LagrangeTheoremOQ01
+error: Proofs/LagrangeTheoremOQ01.lean:37:2: Type mismatch
+  card_subgroup_dvd_card H
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:42:2: Type mismatch
+  Eq.symm (card_mul_index H)
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:64:2: Type mismatch
+  Sylow.card_eq_multiplicity P
+has type
+error: Proofs/LagrangeTheoremOQ01.lean:69:2: Type mismatch
+  card_subgroup_dvd_card ↑P
+has type
+===== LagrangeTheoremOQ01OQ02
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:34:21: Type mismatch
+  alternatingGroup (Fin 4)
+has type
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:43:18: failed to synthesize instance of type class
+  Fintype A4
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:43:45: Tactic `native_decide` failed: Could not evaluate decidable instance. Error: cannot evaluate code because 'sorryAx' uses 'sorry' and/or contains errors
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:47:41: failed to synthesize instance of type class
+  Monoid A4
+error: Proofs/LagrangeTheoremOQ01OQ02.lean:47:41: failed to synthesize instance of type class
+  Monoid A4
+===== LebesgueMeasureOQ01OQ01
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:68:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:5: unknown tactic
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:2: unsolved goals
+case isFalse
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:75:2: unsolved goals
+case isFalse
+x : ℝ
+error: Proofs/LebesgueMeasureOQ01OQ01.lean:81:27: Invalid field notation: Type of
+  Exists.choose ?m.34
+is not known; cannot resolve field `den`
+===== LebesgueMeasureOQ01OQ01OQ02
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:55:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:86:2: linarith failed to find a contradiction
+case h1
+r : ℚ
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:106:18: Invalid field `tendsto`: The environment does not contain `Function.tendsto`, so it is not possible to project the field `tendsto` from an expression
+  h
+of type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:100:78: unsolved goals
+r : ℚ
+h : Tendsto thomae (nhds ↑r) (nhds (1 / ↑r.den))
+===== LebesgueMeasureOQ01OQ01OQ02Riemann
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:55:15: Application type mismatch: The argument
+  Eq.symm hq
+has type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:86:2: linarith failed to find a contradiction
+case h1
+r : ℚ
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:106:18: Invalid field `tendsto`: The environment does not contain `Function.tendsto`, so it is not possible to project the field `tendsto` from an expression
+  h
+of type
+error: Proofs/LebesgueMeasureOQ01OQ01OQ02.lean:100:78: unsolved goals
+r : ℚ
+h : Tendsto thomae (nhds ↑r) (nhds (1 / ↑r.den))
+===== PicksTheoremOQ01OQ01
+error: Proofs/PicksTheoremOQ01OQ01.lean:67:64: Tactic `decide` failed for proposition
+  { v1 := (0, 0), v2 := (1, 0), v3 := (0, 1) }.IsPrimitive
+because its `Decidable` instance
+error: Proofs/PicksTheoremOQ01OQ01.lean:71:64: Tactic `decide` failed for proposition
+  { v1 := (0, 0), v2 := (1, 0), v3 := (1, 1) }.IsPrimitive
+because its `Decidable` instance
+error: Proofs/PicksTheoremOQ01OQ01.lean:89:58: unsolved goals
+T : LatticeTriangle
+g : ℤ
+error: Proofs/PicksTheoremOQ01OQ01.lean:134:48: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 2
+===== PicksTheoremOQ01OQ01OQ01
+error: Proofs/PicksTheoremOQ01OQ01OQ01.lean:364:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'LatticeTriangle.realInteriorCount', which is 'noncomputable'
+error: Proofs/PicksTheoremOQ01OQ01OQ01.lean:376:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'LatticeTriangle.realInteriorCount', which is 'noncomputable'
+error: Proofs/PicksTheoremOQ01OQ01OQ01.lean:393:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'LatticeTriangle.realInteriorCount', which is 'noncomputable'
+error: Proofs/PicksTheoremOQ01OQ01OQ01.lean:376:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'LatticeTriangle.realInteriorCount', which is 'noncomputable'
+error: Proofs/PicksTheoremOQ01OQ01OQ01.lean:393:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'LatticeTriangle.realInteriorCount', which is 'noncomputable'
+warning: Proofs/PicksTheoremOQ01OQ01OQ01.lean:1013:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/PicksTheoremOQ01OQ01OQ01.lean:393:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'LatticeTriangle.realInteriorCount', which is 'noncomputable'
+warning: Proofs/PicksTheoremOQ01OQ01OQ01.lean:1013:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== PrimeGapBoundsOQ01
+error: Proofs/PrimeGapBoundsOQ01.lean:94:9: Unknown identifier `div_lt_iff`
+error: Proofs/PrimeGapBoundsOQ01.lean:100:69: Application type mismatch: The argument
+  n
+error: Proofs/PrimeGapBoundsOQ01.lean:100:69: Application type mismatch: The argument
+  n
+has type
+error: Proofs/PrimeGapBoundsOQ01.lean:127:12: Unknown constant `Real.log_le_sub_one_of_le`
+error: Proofs/PrimeGapBoundsOQ01.lean:139:4: Invalid alternative name `zero`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:140:4: Invalid alternative name `succ`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:139:4: Invalid alternative name `zero`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:140:4: Invalid alternative name `succ`: Expected `ofCauchy`
+error: Proofs/PrimeGapBoundsOQ01.lean:138:4: Alternative `ofCauchy` has not been provided
+===== SylowTheoremOQ04OQ03
+error: Proofs/SylowTheoremOQ04OQ03.lean:613:53: unexpected token 'set_option'; expected 'lemma'
+error: Proofs/SylowTheoremOQ04OQ03.lean:630:4: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+error: Proofs/SylowTheoremOQ04OQ03.lean:630:4: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SylowTheoremOQ04OQ03.lean:665:79: unexpected token 'set_option'; expected 'lemma'
+info: Proofs/SylowTheoremOQ04OQ03.lean:688:10: Try this:
+  [apply] ring_nf
+error: Proofs/SylowTheoremOQ04OQ03.lean:680:50: unsolved goals
+case «0».«1»
+p : ℕ
+===== SzemerediRegularityOQ02
+error: Proofs/SzemerediRegularityOQ02.lean:112:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:114:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:119:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:121:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+===== SzemerediRegularityOQ02OQ02
+error: Proofs/SzemerediRegularityOQ02.lean:112:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:114:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:119:50: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/SzemerediRegularityOQ02.lean:121:8: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+===== TaxicabNumberOQ01
+error: Proofs/TaxicabNumberOQ01.lean:47:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/TaxicabNumberOQ01.lean:52:8: (kernel) unknown constant 'TaxicabNumberOQ01.minimal_below_1729'
+error: Lean exited with code 1
+ℹ [8610/8610] Built Proofs.SpernerTuckerHexagonDirectedEngine (28s)
+===== TestApi1056
+error: Proofs/TestApi1056.lean:20:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TestApi1056.lean:21:35: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TestApi1056.lean:31:20: Tactic `decide` failed for proposition
+  List.Chain' (fun x1 x2 => x1 < x2) [3, 5, 8]
+because its `Decidable` instance
+error: Proofs/TestApi1056.lean:38:20: Tactic `decide` failed for proposition
+  List.Chain' (fun x1 x2 => x1 < x2) [2, 6, 12, 16]
+because its `Decidable` instance
+===== TestApi1059
+error: Proofs/TestApi1059.lean:4:20: Invalid field `Composite`: The environment does not contain `Nat.Composite`, so it is not possible to project the field `Composite` from an expression
+  100
+of type `ℕ`
+error: Proofs/TestApi1059.lean:11:58: Invalid field `Composite`: The environment does not contain `Nat.Composite`, so it is not possible to project the field `Composite` from an expression
+  101 - d
+of type `ℕ`
+===== TestApi1141
+error: Proofs/TestApi1141.lean:12:28: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Proofs/TestApi1141.lean:13:30: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Proofs/TestApi1141.lean:21:2: Invalid field notation: Function `Finset.forall` does not have a usable parameter of type `Finset ...` for which to substitute `Finset.range
+error: Proofs/TestApi1141.lean:13:30: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Proofs/TestApi1141.lean:21:2: Invalid field notation: Function `Finset.forall` does not have a usable parameter of type `Finset ...` for which to substitute `Finset.range
+  n`
+error: Proofs/TestApi1141.lean:21:2: Invalid field notation: Function `Finset.forall` does not have a usable parameter of type `Finset ...` for which to substitute `Finset.range
+  n`
+error: Proofs/TestApi1141.lean:28:28: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Lean exited with code 1
+✖ [8581/8589] Building Proofs.TestApi1059 (2.8s)
+===== TestApi203
+(no error lines captured in chunk logs)
+===== TestApi241
+error: Proofs/TestApi241.lean:19:42: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+error: Lean exited with code 1
+✖ [8580/8589] Building Proofs.TestApi1141 (1.3s)
+===== TestApi342
+error: Proofs/TestApi342.lean:10:5: Invalid field `enum`: The environment does not contain `List.enum`, so it is not possible to project the field `enum` from an expression
+  xs
+of type `List ℕ`
+error: Proofs/TestApi342.lean:47:0: Aborting evaluation since the expression depends on the 'sorry' axiom, which can lead to runtime instability and crashes.
+To attempt to evaluate anyway despite the risks, use the '#eval!' command.
+error: Proofs/TestApi342.lean:50:25: Invalid field `get?`: The environment does not contain `List.get?`, so it is not possible to project the field `get?` from an expression
+  buildUlam 12
+of type `List ℕ`
+error: Proofs/TestApi342.lean:50:47: Tactic `native_decide` failed: Could not evaluate decidable instance. Error: cannot evaluate code because 'sorryAx' uses 'sorry' and/or contains errors
+error: Proofs/TestApi342.lean:51:25: Invalid field `get?`: The environment does not contain `List.get?`, so it is not possible to project the field `get?` from an expression
+  buildUlam 12
+===== TestApi417
+error: Proofs/TestApi417.lean:27:66: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== TestApi783
+error: Proofs/TestApi783.lean:9:61: Invalid field `Pairwise`: The environment does not contain `Finset.Pairwise`, so it is not possible to project the field `Pairwise` from an expression
+  S
+of type `Finset ℕ`
+error: Proofs/TestApi783.lean:10:6: Invalid field `Pairwise`: The environment does not contain `Finset.Pairwise`, so it is not possible to project the field `Pairwise` from an expression
+  S
+of type `Finset ℕ`
+error: Proofs/TestApi783.lean:11:8: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+S : Finset ℕ
+===== UnitDistanceIndependenceOQ04
+(no error lines captured in chunk logs)
+===== UnitDistanceIndependenceOQ04Embed
+(no error lines captured in chunk logs)
+===== WaringGgLowerBoundsOQ02
+error: Proofs/WaringGgLowerBoundsOQ02.lean:68:51: Type mismatch
+  ih
+has type
+error: Proofs/WaringGgLowerBoundsOQ02.lean:69:6: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/WaringGgLowerBoundsOQ02.lean:79:74: Expected type must not contain free variables
+  x ^ 3 = 0 ∨ x ^ 3 = 1 ∨ x ^ 3 = 8
+error: Proofs/WaringGgLowerBoundsOQ02.lean:82:79: Expected type must not contain free variables
+  a ^ 3 + b ^ 3 + c ^ 3 ≠ 4

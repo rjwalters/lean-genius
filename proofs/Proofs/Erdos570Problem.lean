@@ -40,13 +40,13 @@ namespace Erdos570
 C_k is the cycle on k vertices (k ≥ 3). -/
 def CycleGraph (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
   Adj i j := (j.val = (i.val + 1) % k) ∨ (i.val = (j.val + 1) % k)
-  symm.symm := by
+  symm := by
     constructor
     intro i j h
     cases h with
     | inl h => exact Or.inr h
     | inr h => exact Or.inl h
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro i h
     cases h with

@@ -154,7 +154,7 @@ theorem threshold_grows_slowly :
 /- ## The Bollobás-Erdős Threshold -/
 
 /-- The critical threshold for τ = 1 -/
-def bollobas_erdos_threshold (n : ℕ) : ℝ :=
+noncomputable def bollobas_erdos_threshold (n : ℕ) : ℝ :=
   n + 3 - 2 * Real.sqrt n
 
 /-- Bollobás-Erdős: If all cliques have size ≥ n + 3 - 2√n, then τ(G) = 1 -/

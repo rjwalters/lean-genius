@@ -29,6 +29,8 @@
 -/
 import Mathlib
 
+set_option maxRecDepth 40000
+
 namespace WaringGgLowerBoundsOQ02
 
 open scoped BigOperators

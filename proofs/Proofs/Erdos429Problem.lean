@@ -32,10 +32,7 @@ References:
 Tags: number-theory, primes, admissible-sets, covering-systems
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Int.Basic
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
+import Mathlib
 
 open Nat Set
 

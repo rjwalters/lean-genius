@@ -113,11 +113,11 @@ The problem relates to the unit distance graph of ℝ².
 -- The unit distance graph: vertices = ℂ, edges = pairs at distance 1
 def UnitDistanceGraph : SimpleGraph ℂ where
   Adj z₁ z₂ := z₁ ≠ z₂ ∧ dist z₁ z₂ = 1
-  symm.symm := by
+  symm := by
     constructor
     intro z₁ z₂ ⟨hne, hd⟩
     exact ⟨hne.symm, by rw [dist_comm]; exact hd⟩
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro z ⟨hne, _⟩
     exact hne rfl

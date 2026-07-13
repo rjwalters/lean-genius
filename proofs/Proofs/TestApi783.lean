@@ -1,8 +1,5 @@
 -- Test API availability for Erdős #783
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Tactic
+import Mathlib
 
 -- Test 1: distinct primes are coprime
 example (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) :

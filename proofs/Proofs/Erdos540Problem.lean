@@ -73,7 +73,7 @@ axiom olson_prime_case :
       HasZeroSumSubset A
 
 /-- Olson's constant: √2 ≈ 1.414 -/
-def olsonConstant : ℝ := Real.sqrt 2
+noncomputable def olsonConstant : ℝ := Real.sqrt 2
 
 theorem olson_constant_value : olsonConstant = Real.sqrt 2 := rfl
 

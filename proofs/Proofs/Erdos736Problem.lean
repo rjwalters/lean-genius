@@ -326,7 +326,7 @@ theorem colorable_induce_insert {V : Type*} (G : SimpleGraph V) (s' : Set V) (a 
     (fun w => if h : (w : V) ∈ s' then (c ⟨w, h⟩).castSucc else Fin.last n) ?_⟩
   intro w₁ w₂ hadj
   have hG : G.Adj (w₁ : V) (w₂ : V) := hadj
-  dsimp only
+  skip
   by_cases h₁ : (w₁ : V) ∈ s' <;> by_cases h₂ : (w₂ : V) ∈ s'
   · rw [dif_pos h₁, dif_pos h₂, ne_eq, Fin.castSucc_inj]
     have hadj' : (G.induce s').Adj ⟨(w₁ : V), h₁⟩ ⟨(w₂ : V), h₂⟩ := hG

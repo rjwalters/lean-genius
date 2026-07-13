@@ -154,7 +154,7 @@ This axiom records that Chvátal's conjecture is unresolved.
 The covering number τ(F) is the minimum number of elements needed to
 intersect every set in F.
 -/
-def CoveringNumber {α : Type*} (F : Set (Set α)) : ℕ :=
+noncomputable def CoveringNumber {α : Type*} (F : Set (Set α)) : ℕ :=
   sInf {k : ℕ | ∃ C : Finset α, C.card = k ∧ ∀ A ∈ F, A.Nonempty → (↑C ∩ A).Nonempty}
 
 /- 

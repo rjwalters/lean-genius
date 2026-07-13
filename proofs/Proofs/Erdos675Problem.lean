@@ -22,6 +22,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
+open scoped Classical
+
 /- ## The Translation Property -/
 
 /-- A set A ⊆ ℕ has the translation property if for every n,

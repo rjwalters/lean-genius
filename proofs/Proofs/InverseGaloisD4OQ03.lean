@@ -9,6 +9,8 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.AlgebraMap
 import Proofs.InverseGaloisD4
 
+open scoped Classical
+
 /-
 # OQ-03 (S2 Scaffold): General Dihedral-Galois Criterion for X^n − a
 

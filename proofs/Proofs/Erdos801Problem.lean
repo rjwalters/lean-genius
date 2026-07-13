@@ -34,6 +34,8 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.Filter.Basic
 
+open scoped Classical
+
 open Finset Real
 
 namespace Erdos801

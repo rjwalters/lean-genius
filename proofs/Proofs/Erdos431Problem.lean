@@ -26,6 +26,8 @@ import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
+open scoped Classical
+
 namespace Erdos431
 
 open Real Nat Set

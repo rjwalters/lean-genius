@@ -25,10 +25,7 @@ Specific Values:
 Tags: additive-combinatorics, number-theory, bases
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open scoped Classical
 

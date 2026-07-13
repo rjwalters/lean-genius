@@ -116,7 +116,7 @@ def PentagonalWheel : SimpleGraph (Fin 6) where
     (i.val < 5 ∧ j.val < 5 ∧ (j.val = (i.val + 1) % 5 ∨ i.val = (j.val + 1) % 5)) ∨
     -- Spokes: center (5) to all outer vertices
     (i.val = 5 ∧ j.val < 5) ∨ (j.val = 5 ∧ i.val < 5)
-  symm.symm := by
+  symm := by
     constructor
     intro i j h
     rcases h with ⟨hi, hj, hAdj⟩ | ⟨hi, hj⟩ | ⟨hi, hj⟩

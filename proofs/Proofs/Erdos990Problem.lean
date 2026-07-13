@@ -47,7 +47,7 @@ noncomputable def polyDegree (d : ℕ) (p : ComplexPoly d) : ℕ :=
   d -- Simplified; actual definition would find highest nonzero term
 
 /-- Number of nonzero coefficients (sparsity) -/
-def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
+noncomputable def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
   (Finset.univ.filter (fun i => p i ≠ 0)).card
 
 /-- The argument (angle) of a complex number in [0, 2π) -/

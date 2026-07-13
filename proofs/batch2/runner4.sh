@@ -10,7 +10,7 @@ LIST=$1; OUT=$2; DIAG=$3; CT=${4:-900}
 rm -f /tmp/chunk.*
 split -l 25 "$LIST" /tmp/chunk.
 for ch in /tmp/chunk.*; do
-  timeout "$CT" lake build -j4 $(sed 's/^/Proofs./' "$ch") >/dev/null 2>&1 || true
+  timeout "$CT" lake build $(sed 's/^/Proofs./' "$ch") >/dev/null 2>&1 || true
   pkill -9 lean 2>/dev/null
   sleep 1
 done

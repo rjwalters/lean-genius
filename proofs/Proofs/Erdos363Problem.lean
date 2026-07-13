@@ -36,7 +36,7 @@ structure ConsecutiveInterval where
   length_pos : length > 0
 
 /-- The set of integers in an interval. -/
-def ConsecutiveInterval.elements (I : ConsecutiveInterval) : Finset ℤ :=
+noncomputable def ConsecutiveInterval.elements (I : ConsecutiveInterval) : Finset ℤ :=
   Finset.Icc I.start (I.start + I.length - 1)
 
 /-- The product of integers in an interval. -/

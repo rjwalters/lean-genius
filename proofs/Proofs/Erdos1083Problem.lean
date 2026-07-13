@@ -18,8 +18,7 @@ References:
 - Solymosi, Vu: Improved lower bounds for d ≥ 4
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 namespace Erdos1083
 

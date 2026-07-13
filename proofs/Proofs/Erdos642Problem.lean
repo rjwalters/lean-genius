@@ -118,7 +118,7 @@ The first non-trivial upper bound.
 /-  **Chen-Erdős-Staton (1996)**: f(n) = O(n^(3/2)). -/
 
 /-- The CES exponent is 3/2. -/
-def ces_exponent : ℝ := 3/2
+noncomputable def ces_exponent : ℝ := 3/2
 
 /-
 ## Part VI: Draganić-Methuku-Munhá Correia-Sudakov Bound (2024)

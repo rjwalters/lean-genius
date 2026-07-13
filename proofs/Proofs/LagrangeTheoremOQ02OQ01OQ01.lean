@@ -1,6 +1,8 @@
 import Mathlib
 import Proofs.LagrangeTheoremOQ02OQ01
 
+open scoped Classical
+
 /-
 # Burnside's Lemma with No Burnside Intermediate (lagrange-theorem-oq-02-oq-01-oq-01)
 

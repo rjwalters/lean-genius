@@ -42,6 +42,8 @@ import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Real.Basic
 
+open scoped Classical
+
 open Finset
 
 namespace Erdos216

@@ -137,7 +137,7 @@ def IsRudinShapiro (p : Polynomial ℂ) (n : ℕ) : Prop :=
 
 /-  Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
 /-- The constant polynomial 1 + z + z² + ... + zⁿ has minimum on the unit circle -/
-def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
+noncomputable def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
   ∑ i ∈ Finset.range (n+1), X^i
 
 /-  The minimum modulus of the all-ones polynomial -/

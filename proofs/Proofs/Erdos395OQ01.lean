@@ -25,6 +25,8 @@
 
 import Proofs.Erdos395Problem
 
+open scoped Classical
+
 open Erdos395 Complex
 
 namespace Erdos395OQ01

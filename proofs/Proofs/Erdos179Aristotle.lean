@@ -18,6 +18,8 @@
 -/
 import Mathlib
 
+open scoped Classical
+
 open Real Filter Finset
 
 namespace Erdos179Aristotle

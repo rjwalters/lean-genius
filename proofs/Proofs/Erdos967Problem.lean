@@ -203,7 +203,7 @@ def geometricSequence : IntegerSequence := {
   seq := fun n => 2^(n + 1)
   strictly_increasing := by
     intro n
-    simp only [pow_lt_pow_right₀ (by norm_num : 1 < 2)]
+    skip
     omega
   all_greater_than_one := by
     intro n

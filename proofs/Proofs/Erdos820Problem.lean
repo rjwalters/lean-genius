@@ -32,6 +32,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.FieldTheory.Finite.Basic
 
+open scoped Classical
+
 open Nat Real
 
 namespace Erdos820

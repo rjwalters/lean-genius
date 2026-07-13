@@ -63,14 +63,14 @@ def hypercubeAdj (n : ℕ) (u v : HypercubeVertex n) : Prop :=
 /-- The hypercube graph Qₙ -/
 def hypercubeGraph (n : ℕ) : SimpleGraph (HypercubeVertex n) where
   Adj := hypercubeAdj n
-  symm.symm := by
+  symm := by
     constructor
     intro u v h
     simp only [hypercubeAdj] at h ⊢
     convert h using 2
     ext i
     constructor <;> (intro h'; exact h'.symm)
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro v h
     simp only [hypercubeAdj] at h

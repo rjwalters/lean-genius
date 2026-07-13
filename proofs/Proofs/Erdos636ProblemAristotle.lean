@@ -21,6 +21,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 namespace Erdos636.Aristotle
 
 open Finset Function Nat SimpleGraph

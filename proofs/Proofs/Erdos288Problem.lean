@@ -106,7 +106,7 @@ def singletonPairs : Set (ℕ+ × ℕ+ × ℕ+) :=
 
 /-- The generalization to k intervals: each interval represented
     as a pair (start, end) of positive naturals. -/
-def kIntervalSum (k : ℕ) (I : Fin k → ℕ+ × ℕ+) : ℚ :=
+noncomputable def kIntervalSum (k : ℕ) (I : Fin k → ℕ+ × ℕ+) : ℚ :=
   ∑ j : Fin k, harmonicInterval (I j).1 (I j).2
 
 /-- The k-interval version of the conjecture. -/

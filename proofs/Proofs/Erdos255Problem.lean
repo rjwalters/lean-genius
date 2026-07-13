@@ -31,6 +31,8 @@ import Mathlib.Data.Set.Countable
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Topology.MetricSpace.Basic
 
+open scoped Classical
+
 open Set Nat Real
 
 namespace Erdos255

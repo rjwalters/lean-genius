@@ -82,12 +82,12 @@ is a fixed-point-free involution, this is a well-defined perfect matching: one e
 hemisphere pair. -/
 def equatorGraph : SimpleGraph (Facet n) where
   Adj s t := t = equatorFlip n s
-  symm.symm := by
+  symm := by
     constructor
     intro s t h
     subst h
     exact (equatorFlip_involutive n s).symm
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro s h
     exact equatorFlip_free n s h.symm

@@ -41,7 +41,7 @@ open SimpleGraph Finset
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj := fun i j => (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
   symm := by constructor; intro i j h; cases h <;> (right; assumption) <|> (left; assumption)
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro i h
     cases h with

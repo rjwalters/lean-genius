@@ -36,6 +36,8 @@
 
 import Mathlib
 
+open scoped Classical
+
 open Set Finset
 
 /-

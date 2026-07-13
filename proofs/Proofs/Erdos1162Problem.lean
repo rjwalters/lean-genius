@@ -72,7 +72,7 @@ theorem numSubgroups_pos (n : ℕ) : 0 < numSubgroups n := by
     This arises because the dominant contribution to subgroup count comes from
     elementary abelian 2-subgroups of the symmetric group on ⌊n/4⌋ points,
     and (1/4)² = 1/16 of the n² term. -/
-def asymptoticConstant : ℝ := 1/16
+noncomputable def asymptoticConstant : ℝ := 1/16
 
 /-- **Roney-Dougal-Tracey Theorem (2025):**
     log f(n) = (1/16 + o(1)) · n².

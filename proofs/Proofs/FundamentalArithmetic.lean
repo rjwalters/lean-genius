@@ -1,7 +1,4 @@
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.Factors
-import Mathlib.RingTheory.UniqueFactorizationDomain.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Fundamental Theorem of Arithmetic

@@ -54,11 +54,11 @@ bitwise XOR has exactly one set bit — equivalently, is a power of two.
 -/
 def Hypercube (n : ℕ) : SimpleGraph (Fin (2^n)) where
   Adj x y := ∃ i : ℕ, x.val ^^^ y.val = 2 ^ i
-  symm.symm := by
+  symm := by
     constructor
     rintro x y ⟨i, h⟩
     exact ⟨i, by rw [Nat.xor_comm]; exact h⟩
-  loopless.irrefl := by
+  loopless := by
     constructor
     rintro x ⟨i, h⟩
     rw [Nat.xor_self] at h

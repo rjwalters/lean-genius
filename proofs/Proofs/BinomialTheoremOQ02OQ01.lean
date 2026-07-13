@@ -232,7 +232,7 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
       simpa using ((Real.hasDerivAt_exp (0 : ℝ)).const_mul (p i)).add_const (1 - p i)
     have hpow := hbase.pow n
     convert hpow using 1
-    simp only [Real.exp_zero, mul_one]
+    skip
     rw [show p i + (1 - p i) = (1 : ℝ) by ring, one_pow, mul_one]
   -- Step 5: differentiate the right-hand side; derivative is the target sum.
   have hR : HasDerivAt

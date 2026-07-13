@@ -30,12 +30,7 @@ References:
 Tags: number-theory, combinatorics, diophantine-approximation, solved
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
+import Mathlib
 
 /-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
 noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖

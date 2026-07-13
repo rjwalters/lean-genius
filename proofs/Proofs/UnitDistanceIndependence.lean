@@ -199,11 +199,11 @@ theorem indep_card_le_univ {V : Type*} [Fintype V] (G : SimpleGraph V)
     Two points are adjacent iff their Euclidean distance is 1. -/
 noncomputable def unitDistGraph (S : Finset Plane) : SimpleGraph S where
   Adj p q := dist (p : Plane) (q : Plane) = 1 ∧ p ≠ q
-  symm.symm := by
+  symm := by
     constructor
     intro p q ⟨hd, hne⟩
     exact ⟨by rw [_root_.dist_comm]; exact hd, hne.symm⟩
-  loopless.irrefl := by
+  loopless := by
     constructor
     intro p ⟨_, hne⟩
     exact hne rfl

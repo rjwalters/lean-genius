@@ -35,6 +35,8 @@
 import Mathlib
 import Proofs.RamseysTheorem
 
+open scoped Classical
+
 open Nat Filter
 
 /-
