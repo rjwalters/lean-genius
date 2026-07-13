@@ -135,4 +135,64 @@ theorem dense_setOf_transcendental_complex : Dense {z : ℂ | Transcendental ℤ
   show {z : ℂ | IsAlgebraic ℤ z}ᶜ ∈ residual ℂ
   exact isMeagre_setOf_isAlgebraic_complex
 
+/-! ### The measure–category duality on `ℝ` (the four corners)
+
+`exists_null_comeagre` records one corner of the classical measure/category
+square: a set that is Lebesgue-null yet comeagre (the Liouville numbers).  The
+**dual corner** — a set that is *meagre* yet of *full measure* — is realised by
+the complement, the non-Liouville numbers: it is meagre (complement of the
+comeagre Liouville set) and co-null (complement of the null Liouville set).
+
+Splitting `ℝ` along `Liouville`/`¬Liouville` then gives a completely explicit,
+choice-and-`CH`-free instance of the **Sierpiński–Erdős measure–category
+duality**: the real line is the disjoint union of a meagre set and a null set.
+No single notion of "smallness" (measure vs. category) refines the other — a fact
+the parent chain's *algebraic* reals (small in *both* senses) cannot witness, but
+this Liouville splitting does. -/
+
+/-- **The non-Liouville reals are meagre.**  Their complement is the Liouville
+    set, which is comeagre (`liouville_comeagre`); by the definition of `IsMeagre`
+    (`sᶜ ∈ residual`) this is exactly meagreness.  The category counterpart of
+    `not_liouville_conull` and the dual of `liouville_comeagre`. -/
+theorem not_liouville_meagre : IsMeagre {x : ℝ | ¬ Liouville x} := by
+  show {x : ℝ | ¬ Liouville x}ᶜ ∈ residual ℝ
+  have hcompl : {x : ℝ | ¬ Liouville x}ᶜ = {x : ℝ | Liouville x} := by
+    simp [Set.compl_setOf]
+  rw [hcompl]
+  exact liouville_comeagre
+
+/-- **The non-Liouville reals have full measure** (their complement is null).  The
+    complement is the Liouville set, which is Lebesgue-null (`liouville_null`); so
+    the non-Liouville reals are co-null.  The measure counterpart of
+    `not_liouville_meagre`. -/
+theorem not_liouville_conull : volume {x : ℝ | ¬ Liouville x}ᶜ = 0 := by
+  have hcompl : {x : ℝ | ¬ Liouville x}ᶜ = {x : ℝ | Liouville x} := by
+    simp [Set.compl_setOf]
+  rw [hcompl]
+  exact liouville_null
+
+/-- **The dual corner: a meagre set of full measure exists.**  The non-Liouville
+    reals are meagre (`not_liouville_meagre`) yet co-null (`not_liouville_conull`),
+    so "meagre" does **not** imply "null".  Together with `exists_null_comeagre`
+    (null but comeagre) this fills the two off-diagonal corners of the
+    measure/category square: neither notion of smallness implies the other. -/
+theorem exists_meagre_conull : ∃ S : Set ℝ, IsMeagre S ∧ volume Sᶜ = 0 :=
+  ⟨{x : ℝ | ¬ Liouville x}, not_liouville_meagre, not_liouville_conull⟩
+
+/-- **The Sierpiński–Erdős decomposition of `ℝ`.**  The real line is the disjoint
+    union of a meagre set `A` (the non-Liouville reals) and a Lebesgue-null set `B`
+    (the Liouville reals).  An entirely explicit, `CH`-free witness that measure
+    and category are independent notions of largeness: `ℝ` itself is "small" in
+    each of the two senses on complementary pieces, so no set can be simultaneously
+    "large" in both on all of `ℝ`. -/
+theorem exists_meagre_null_decomposition :
+    ∃ A B : Set ℝ, IsMeagre A ∧ volume B = 0 ∧ A ∪ B = Set.univ ∧ Disjoint A B := by
+  refine ⟨{x : ℝ | ¬ Liouville x}, {x : ℝ | Liouville x}, not_liouville_meagre,
+    liouville_null, ?_, ?_⟩
+  · ext x
+    by_cases h : Liouville x <;> simp [h]
+  · rw [Set.disjoint_left]
+    intro x hx hx'
+    exact hx hx'
+
 end AlgebraicNumbersCountableOQ07
