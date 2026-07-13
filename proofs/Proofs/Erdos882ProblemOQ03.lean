@@ -817,4 +817,64 @@ theorem card_le_log_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
   have h := two_pow_le_of_distinct_bounded hpos hle hd
   exact (Nat.pow_le_iff_le_log (by norm_num) (by omega)).mp h
 
+/-!
+## Distinct-subset-sums: the injectivity meaning, and its heredity
+
+`DistinctSubsetSums A` was defined by the *cardinality* equation `|subsetSums A| = 2^|A| − 1`
+— the counting bound `subsetSums_card_le` met with equality. Since `subsetSums A` is the image
+of the `2^|A| − 1` non-empty subsets under the sum map (`nonemptySubsets_card`), that equation
+holds exactly when the sum map is **injective** on the non-empty subsets — i.e. distinct
+non-empty subsets have distinct sums. This section records that characterization
+(`distinctSubsetSums_iff_injOn`, `distinctSubsetSums_iff_pairwise`) and the structural
+consequence it unlocks: **`DistinctSubsetSums` is downward closed** (`DistinctSubsetSums.mono`),
+the exact analogue of `Superincreasing.mono` and `DivisibilityFree.mono`, and the WLOG
+"pass to a sub-configuration" tool for the distinct-subset-sum regime. All axiom-free. -/
+
+/-- **Non-empty subsets grow with the set.**  `B ⊆ A ⟹ nonemptySubsets B ⊆ nonemptySubsets A`:
+    a non-empty subset of `B` is a non-empty subset of `A`.  (The `nonemptySubsets` companion of
+    `subsetSums_mono`.) -/
+theorem nonemptySubsets_mono {A B : Finset ℕ} (h : B ⊆ A) :
+    nonemptySubsets B ⊆ nonemptySubsets A := by
+  intro S hS
+  unfold nonemptySubsets at hS ⊢
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  exact ⟨hS.1.trans h, hS.2⟩
+
+/-- **`DistinctSubsetSums` is injectivity of the sum map.**  `A` has distinct subset sums iff
+    the map `S ↦ ∑ S` is injective on the non-empty subsets of `A`.  The cardinality definition
+    `|subsetSums A| = 2^|A| − 1` is precisely `|image| = |domain|` (using `nonemptySubsets_card`),
+    which is equivalent to injectivity of the map generating the image. -/
+theorem distinctSubsetSums_iff_injOn {A : Finset ℕ} :
+    DistinctSubsetSums A ↔ Set.InjOn (fun S : Finset ℕ => S.sum id) ↑(nonemptySubsets A) := by
+  unfold DistinctSubsetSums subsetSums
+  rw [← nonemptySubsets_card A]
+  exact ⟨fun h => Finset.injOn_of_card_image_eq h, fun h => Finset.card_image_of_injOn h⟩
+
+/-- **`DistinctSubsetSums`, spelled out.**  `A` has distinct subset sums iff any two non-empty
+    subsets with equal sum are equal — the readable pairwise form of
+    `distinctSubsetSums_iff_injOn`. -/
+theorem distinctSubsetSums_iff_pairwise {A : Finset ℕ} :
+    DistinctSubsetSums A ↔
+      ∀ S ∈ nonemptySubsets A, ∀ T ∈ nonemptySubsets A, S.sum id = T.sum id → S = T := by
+  rw [distinctSubsetSums_iff_injOn]
+  exact ⟨fun h S hS T hT hst => h hS hT hst, fun h S hS T hT hst => h S hS T hT hst⟩
+
+/-- **`DistinctSubsetSums` is hereditary (downward closed).**  Any subset of a set with distinct
+    subset sums also has distinct subset sums: injectivity of the sum map on the non-empty
+    subsets of `A` restricts to injectivity on the (fewer) non-empty subsets of `B ⊆ A`.  This is
+    the WLOG "pass to a sub-configuration" tool for the distinct-subset-sum regime, mirroring
+    `Superincreasing.mono` and `DivisibilityFree.mono`.  Strictly more general than
+    `Superincreasing.mono`, since not every distinct-subset-sum set is superincreasing. -/
+theorem DistinctSubsetSums.mono {A B : Finset ℕ} (h : B ⊆ A)
+    (hA : DistinctSubsetSums A) : DistinctSubsetSums B := by
+  rw [distinctSubsetSums_iff_injOn] at hA ⊢
+  exact hA.mono (Finset.coe_subset.mpr (nonemptySubsets_mono h))
+
+/-- **Every subset of the powers-of-two family has distinct subset sums.**  Immediate from
+    `powersOfTwo_distinctSubsetSums` and heredity (`DistinctSubsetSums.mono`) — a large concrete
+    supply of distinct-subset-sum sets of every size `≤ k`. -/
+theorem distinctSubsetSums_of_subset_powersOfTwo {k : ℕ} {B : Finset ℕ}
+    (h : B ⊆ powersOfTwo k) : DistinctSubsetSums B :=
+  (powersOfTwo_distinctSubsetSums k).mono h
+
 end Erdos882OQ03
