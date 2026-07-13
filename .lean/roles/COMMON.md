@@ -80,6 +80,28 @@ by the backstop janitor (`scripts/clean-branches.sh`) once clean and stale;
 dirty or unpushed worktrees are
 always preserved.
 
+**NEVER delete tracked files from disk to reclaim space.** Git sees raw disk
+deletions as pending changes, and a later stage-all commit (`git add -A`) will
+faithfully stage them as deletions — this is exactly how commit `dc9fdffa30`
+mass-deleted 9,927 files from main (issue #38398). If a worktree must be slimmed
+under disk pressure, use the sparse-checkout helper, which removes files from
+disk while marking them skip-worktree so git does NOT see them as deleted:
+
+```bash
+# Slim: keep only the listed directories (cone mode)
+scripts/research/slim-worktree.sh --worktree <path> proofs research/problems/<problem>
+# Undo: restore the full checkout
+scripts/research/slim-worktree.sh --worktree <path> --restore
+```
+
+Related guards (all from #38398): researcher worktrees get a `pre-commit`
+mass-deletion tripwire (`scripts/research/check-staged-deletions.sh` — more
+than 20 staged deletions blocks the commit; `ALLOW_MASS_DELETION=1` bypasses),
+`parallel-research.sh` refuses to launch a researcher into a worktree with >5%
+of tracked files missing on disk and sparse-checkout off (`LAUNCH_ANYWAY=1`
+overrides), and the deployer skips auto-merging PRs with >100 deleted lines or
+>500 changed files (see `deployer.md`).
+
 ## Honesty Standards
 
 - Do not describe trivial results as significant.
@@ -104,8 +126,10 @@ the remaining root + engine files (root `package.json`/`vite.config.ts`/
 `scripts/lean/update-stats.sh`, `scripts/clean-branches.sh`,
 `scripts/gallery/check-meta-size.ts`, `scripts/annotations/`, `.lean/scripts/`,
 `.claude/commands/`, `.claude/skills/mathlib-contribution/`, `functions/`,
-`drizzle/`, `mcp-servers/aristotle/`, and more); #38398 PR R2 restores
-`research/problems/`.
+`drizzle/`, `mcp-servers/aristotle/`, and more); #38398 PR R2 restored
+`research/problems/`; #38398 PR R3 added the four recurrence guards (commit
+tripwire, deployer diff-stat gate, sparse-checkout slimming helper, worktree
+health check — see Worktree Hygiene above and `deployer.md`).
 
 Remaining gaps (deliberately NOT restored):
 
