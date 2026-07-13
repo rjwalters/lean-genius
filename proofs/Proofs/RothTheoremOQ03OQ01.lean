@@ -1208,6 +1208,61 @@ theorem kAPCount_indicator_dilate {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZM
       = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
   rw [kAPCount_indicator_eq_count, kAPCount_indicator_eq_count, kAPCount_count_dilate]
 
+/-! ### Affine invariance: the full `x ↦ c·x + t` symmetry in one theorem
+
+Translation (`kAPCount_*_translate`, `t`), dilation by a unit (`kAPCount_*_dilate`, `c`),
+and negation (the `c = -1` case) are the generators of the affine group `x ↦ c·x + t`
+(`c ∈ (ZMod N)ˣ`, `t ∈ ZMod N`) acting on `ZMod N`.  The `k`-AP count is invariant under
+each generator; the theorems below record the invariance under a **general** affine map in a
+single statement, obtained by factoring `A.image (·↦ c·+t)` as `dilate` followed by
+`translate` (`affine_image_eq`) and chaining the two existing invariances.  This is the
+exact symmetry group under which "`A` contains a nondegenerate `k`-AP" is invariant, so it is
+the natural home for normalising a set before an increment/density argument. -/
+
+/-- Factor the affine image `c·A + t` as the translate of the dilate: `A.image (a ↦ c·a + t)
+= (A.image (a ↦ c·a)).image (b ↦ b + t)`. -/
+theorem affine_image_eq {N : ℕ} (A : Finset (ZMod N)) (c : (ZMod N)ˣ) (t : ZMod N) :
+    A.image (fun a => (c : ZMod N) * a + t)
+      = (A.image (fun a => (c : ZMod N) * a)).image (fun b => b + t) := by
+  ext y
+  simp only [Finset.mem_image]
+  constructor
+  · rintro ⟨a, ha, rfl⟩; exact ⟨(c : ZMod N) * a, ⟨a, ha, rfl⟩, rfl⟩
+  · rintro ⟨b, ⟨a, ha, rfl⟩, rfl⟩; exact ⟨a, ha, rfl⟩
+
+/-- **Affine invariance of the `k`-AP count.**  For any unit `c` and shift `t`, the `k`-AP
+count of the affine image `c·A + t` equals that of `A`.  The common generalisation of
+`kAPCount_count_translate` (`c = 1`) and `kAPCount_count_dilate` (`t = 0`, and `c = -1`
+recovers `kAPCount_count_neg`): chain the two via `affine_image_eq`. -/
+theorem kAPCount_count_affine {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (c : (ZMod N)ˣ) (t : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        ∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => (c : ZMod N) * a + t))).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          ∀ i : Fin k, p.1 + i.val • p.2 ∈ A)).card := by
+  rw [affine_image_eq, kAPCount_count_translate, kAPCount_count_dilate]
+
+/-- **Affine invariance of the nondegenerate `k`-AP count.**  The `d ≠ 0` restriction of
+`kAPCount_count_affine`: an affine map `x ↦ c·x + t` (`c` a unit) fixes the common difference
+up to the unit `c`, preserving `d ≠ 0`, so the genuine (nondiagonal) count Roth controls is
+affine-invariant.  Chains `kAPCount_nondeg_translate` and `kAPCount_nondeg_dilate`. -/
+theorem kAPCount_nondeg_affine {N : ℕ} [NeZero N] {k : ℕ} (A : Finset (ZMod N))
+    (c : (ZMod N)ˣ) (t : ZMod N) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A.image (fun a => (c : ZMod N) * a + t)) ∧ p.2 ≠ 0)).card
+      = (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+          (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card := by
+  rw [affine_image_eq, kAPCount_nondeg_translate, kAPCount_nondeg_dilate]
+
+/-- **Analytic affine invariance.**  The normalized `k`-AP operator on an indicator is unchanged
+by any affine map of the set: `Λ_k(1_{c·A+t}) = Λ_k(1_A)`.  The common generalisation of
+`kAPCount_indicator_translate` and `kAPCount_indicator_dilate`. -/
+theorem kAPCount_indicator_affine {N : ℕ} [NeZero N] (k : ℕ) (A : Finset (ZMod N))
+    (c : (ZMod N)ˣ) (t : ZMod N) :
+    kAPCount k (fun _ : Fin k => indicatorZMod (A.image (fun a => (c : ZMod N) * a + t)))
+      = kAPCount k (fun _ : Fin k => indicatorZMod A) := by
+  rw [affine_image_eq, kAPCount_indicator_translate, kAPCount_indicator_dilate]
+
 -- ============================================================
 -- Analytic boundedness and the sup-norm generalized von Neumann bound
 --
