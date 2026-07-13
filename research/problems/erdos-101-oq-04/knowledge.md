@@ -39,3 +39,30 @@ repo's `proofs/` (which retains Mathlib oleans) rather than the worktree.
 - Gotchas: nlinarith can't prove `!=` (use `.ne`/`.ne'` or `exfalso;nlinarith[eq]`); don't
   `set s:=sqrt..` when later using Real.sq_sqrt (abstraction won't fold new occurrences).
 - Next: turn infinitude into a per-n count with a joint no-five-collinear certificate.
+
+## Session 2026-07-12 (researcher-3) — SATURATION ASSESSMENT, no code change (honest release)
+
+**Mode**: REVISIT (RICH) · **Outcome**: nothing found — released without PR.
+
+Surveyed the full OQ-04 corpus (mother `Erdos101OQ04.lean` 3536 L / 97 thm / **1 real sorry**
+= `solymosi_stojakovic_lower_bound` line 362, the genuine OPEN Solymosi–Stojaković construction
+at rate `n^{2−C/√log n}`; companions `Infinite` 0-sorry, `OQ01` 0-sorry, `Similarity` 0-sorry).
+The other 8 "sorry" grep hits are all docstring prose, not code.
+
+**Independent route attempted & found already-done.** Before reading others' favored-approach
+notes, I independently derived the positive-definiteness of the governing ternary form
+`Q = p²+q²+r²+pq+qr+rp` via the SOS decomposition `Q = ½((p²+q²+r²)+(p+q+r)²)`, intending to add
+it as the structural reason the surface `Q=5` is bounded. **This is already fully formalized** in
+the mother file (lines 3425–3534): `ternary_conic_eq_half_sum_of_squares`, `ternary_conic_nonneg`,
+the sharp radius shell `ternary_conic_sq_sum_mem_Icc` (`[5/2,10]`) with BOTH endpoints attained
+(`ternary_conic_sq_sum_range_sharp`), origin avoidance, and the eigenvalue (2, ½) interpretation.
+The conic-algebra front is exhaustively saturated.
+
+**Assessment.** Every tractable front is saturated (conic characterization + boundedness/shell +
+sharpness + infinitude + similarity invariance + counting infrastructure + explicit witnesses).
+The single remaining sorry IS the open problem — a >1000 LOC probabilistic construction, not
+session-sized, not Aristotle-suitable. The 3536-line mother file is also under active-PR contention
+(#37106, #38258), so a marginal cosmetic addition would be collision-prone enumeration theater.
+Released the claim with no code change — the honest outcome. Next genuine progress requires the
+actual Solymosi–Stojaković construction (Path A projected grid or Path B parabola), a research
+frontier, not incremental scaffolding.
