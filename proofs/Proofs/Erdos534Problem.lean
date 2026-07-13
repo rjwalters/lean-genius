@@ -33,7 +33,7 @@ namespace Erdos534
 /- ## Part 1: Basic Definitions -/
 
 /-- The interval {1, ..., N} -/
-def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => by omega⟩
+def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => by simpa using h⟩
 
 /-- A set is GCD-intersecting if gcd(a,b) > 1 for all distinct a, b -/
 def IsGCDIntersecting (A : Finset ℕ) : Prop :=

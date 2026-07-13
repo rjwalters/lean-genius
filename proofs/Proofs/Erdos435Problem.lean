@@ -124,7 +124,16 @@ For n = 6 = 2 · 3, the binomial coefficients are C(6,1)=6, C(6,2)=15, C(6,3)=20
 -/
 example : ¬IsPrimePower 6 := by
   intro ⟨p, k, hp, hk, heq⟩
-  interval_cases k <;> simp_all [Nat.Prime]
+  -- v4.31: interval_cases k needs an explicit upper bound; derive p ≤ 6 and k ≤ 2.
+  have hp2 := hp.two_le
+  have hpdvd : p ∣ 6 := heq ▸ dvd_pow_self p (by omega)
+  have hple : p ≤ 6 := Nat.le_of_dvd (by norm_num) hpdvd
+  have hk2 : k ≤ 2 := by
+    by_contra h; push_neg at h
+    have h8 : (2 : ℕ) ^ 3 ≤ p ^ k :=
+      (Nat.pow_le_pow_left hp2 3).trans (Nat.pow_le_pow_right (by omega) (by omega))
+    omega
+  interval_cases p <;> interval_cases k <;> revert heq <;> revert hp <;> decide
 
 /- 
 **Formula for n = 6:**
