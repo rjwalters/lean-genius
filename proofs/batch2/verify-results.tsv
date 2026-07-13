@@ -478,7 +478,7 @@ CramersRuleOQ03OQ03	RESIDUAL	unknown-const:Quaternion.imI
 CramersRuleOQ04OQ01	RESIDUAL	unknown-const:smul_mulVec_assoc
 CramersRuleOQ05	GREEN	
 CramersRuleOQ05OQ01	GREEN	
-CramersRuleOQ05OQ02	RESIDUAL	type-mismatch
+CramersRuleOQ05OQ02	GREEN	
 CubeRoot10Irrational	GREEN	
 CubeRoot2Irrational	GREEN	
 CubeRoot3Irrational	GREEN	
@@ -2076,7 +2076,7 @@ HermiteFloorIdentityOQ02	GREEN
 HermiteFloorIdentityOQ03	GREEN	
 HermiteLegendreFactorial	GREEN	
 HermiteLegendreFactorialOQ01	GREEN	
-HermiteLegendreFactorialOQ02	RESIDUAL	type-mismatch
+HermiteLegendreFactorialOQ02	GREEN	
 HermiteLindemann	GREEN	
 HermiteSawtoothIdentity	GREEN	
 HermiteSawtoothIdentityOQ02	GREEN	
@@ -2299,7 +2299,7 @@ PartitionTheoremOQ03	RESIDUAL	unknown-const:Nat.Partition.IsOdd.card
 PartitionTheoremOQ04	GREEN	
 PartitionTheoremOQ04Aristotle	GREEN	
 PascalsHexagon	GREEN	
-PascalsHexagonOQ02	RESIDUAL	type-mismatch
+PascalsHexagonOQ02	GREEN	
 PascalsHexagonOQ03	GREEN	
 PascalsHexagonOQ03Incomplete01Derangements	GREEN	
 PellEquationOQ01	RESIDUAL	unknown-const:Int.cast_nonneg.mpr
@@ -2506,7 +2506,7 @@ StirlingExpansionAristotle	GREEN
 StirlingFormula	RESIDUAL	parse-error
 StirlingFormulaOQ02OQ01	RESIDUAL	type-mismatch
 SubsetCount	GREEN	
-SubsetCountOQ02	RESIDUAL	proof-drift
+SubsetCountOQ02	GREEN	
 SubsetCountOQ02OQ01	RESIDUAL	unknown-const:Finset.disjoint_comm.mp
 SumOfDivisorsOQ01SpecialPrime	RESIDUAL	unknown-const:not_even_iff_odd
 SumOfKthPowers	RESIDUAL	unknown-const:Finset.sum_range_pow

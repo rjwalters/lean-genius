@@ -76,7 +76,7 @@ theorem dualConic_symmetric {C : Conic} (h : C.symmetric) :
     rw [Matrix.transpose_apply]
     exact h j i
   have hadj : C.adjugate = (C.adjugate)ᵀ := by
-    have key : (Cᵀ).adjugate = (C.adjugate)ᵀ := Matrix.adjugate_transpose C
+    have key : (Cᵀ).adjugate = (C.adjugate)ᵀ := (Matrix.adjugate_transpose C).symm
     rwa [hCt] at key
   intro i j
   show C.adjugate i j = C.adjugate j i
