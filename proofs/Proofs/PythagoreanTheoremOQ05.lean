@@ -164,7 +164,7 @@ private theorem hasDerivAt_gFun (u : ℝ) :
   have hc := hasDerivAt_cosh' u
   have hs := hasDerivAt_sinh' u
   have ht2 : HasDerivAt (fun u : ℝ => u ^ 2) (2 * u) u := by
-    convert (hasDerivAt_pow 2 u) using 1; norm_cast; ring
+    convert (hasDerivAt_pow 2 u) using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- d/dt[u²·cosh u] = 2u·cosh u + u²·sinh u
   have h1 : HasDerivAt (fun u => u ^ 2 * Real.cosh u) (2 * u * Real.cosh u + u ^ 2 * Real.sinh u) u :=
     ht2.mul hc |>.congr_deriv (by ring)
@@ -183,11 +183,11 @@ private theorem hasDerivAt_gDeriv (u : ℝ) :
   have hc := hasDerivAt_cosh' u
   have hs := hasDerivAt_sinh' u
   have ht2 : HasDerivAt (fun u : ℝ => u ^ 2) (2 * u) u := by
-    convert (hasDerivAt_pow 2 u) using 1; norm_cast; ring
+    convert (hasDerivAt_pow 2 u) using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- d/du[2u·cosh u] = 2·cosh u + 2u·sinh u
   have h1 : HasDerivAt (fun u => 2 * u * Real.cosh u) (2 * Real.cosh u + 2 * u * Real.sinh u) u := by
     have := (hasDerivAt_id u |>.const_mul 2).mul hc
-    convert this using 1; simp only [id_eq]; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- d/du[(u²-2)·sinh u] = 2u·sinh u + (u²-2)·cosh u
   have h2 : HasDerivAt (fun u => (u ^ 2 - 2) * Real.sinh u)
       (2 * u * Real.sinh u + (u ^ 2 - 2) * Real.cosh u) u := by
