@@ -256,6 +256,121 @@ theorem maxAvoidingSize_eq_of_lt (n m : ℕ) (h : n * n < m) :
     maxAvoidingSize n m = n :=
   le_antisymm (maxAvoidingSize_le n m) (le_maxAvoidingSize_of_lt n m h)
 
+/-
+## Part II.b: Completeness of the full box and the sharp avoidance threshold
+
+The crude witness `avoid_full` uses the loose threshold `n² < m`.  The **sharp**
+threshold is the actual total `∑_{a=1}^n a = n(n+1)/2`: the interval `{1,…,n}` is a
+*complete sequence* — its subset sums realise *every* value in `[1, n(n+1)/2]`.
+Consequently the full box avoids `m` exactly when `m = 0` or `m` exceeds the total,
+and `maxAvoidingSize n m = n` precisely on that boundary.  This pins down where the
+trivial ceiling `maxAvoidingSize n m ≤ n` is attained.
+-/
+
+/-- **Completeness of `{1,…,n}`.** Every `k ≤ ∑_{a=1}^n a` is realised as the sum of
+    some subset `A ⊆ {1,…,n}`.  Greedy induction on `n`: adjoining `n+1` to a subset
+    of `{1,…,n}` summing to `k-(n+1)` reaches every `k` in the new top band
+    `(∑_{a≤n} a, ∑_{a≤n+1} a]`. -/
+theorem exists_subset_sum_eq :
+    ∀ (n k : ℕ), k ≤ ∑ a ∈ Icc_n n, a → ∃ A ⊆ Icc_n n, ∑ a ∈ A, a = k := by
+  intro n
+  induction n with
+  | zero =>
+    intro k hk
+    have hz : Icc_n 0 = (∅ : Finset ℕ) := by
+      unfold Icc_n; exact Finset.Icc_eq_empty (by omega)
+    rw [hz, Finset.sum_empty] at hk
+    refine ⟨∅, Finset.empty_subset _, ?_⟩
+    rw [Finset.sum_empty]; omega
+  | succ n ih =>
+    intro k hk
+    have hins : Icc_n (n + 1) = insert (n + 1) (Icc_n n) := by
+      unfold Icc_n; ext x; simp only [Finset.mem_insert, Finset.mem_Icc]; omega
+    have hnm : (n + 1) ∉ Icc_n n := by
+      unfold Icc_n; simp only [Finset.mem_Icc]; omega
+    have htot : ∑ a ∈ Icc_n (n + 1), a = ((n + 1) + ∑ a ∈ Icc_n n, a) := by
+      rw [hins, Finset.sum_insert hnm]
+    rw [htot] at hk
+    by_cases hcase : k ≤ ∑ a ∈ Icc_n n, a
+    · obtain ⟨A, hAsub, hAsum⟩ := ih k hcase
+      exact ⟨A, hAsub.trans (by rw [hins]; exact Finset.subset_insert _ _), hAsum⟩
+    · push_neg at hcase
+      have hnle : n ≤ ∑ a ∈ Icc_n n, a := by
+        rcases Nat.eq_zero_or_pos n with h0 | hpos
+        · simp [h0]
+        · have hmem : n ∈ Icc_n n := by
+            unfold Icc_n; simp only [Finset.mem_Icc]; omega
+          exact Finset.single_le_sum (fun i _ => Nat.zero_le i) hmem
+      obtain ⟨A, hAsub, hAsum⟩ := ih (k - (n + 1)) (by omega)
+      have hnmA : (n + 1) ∉ A := fun h => hnm (hAsub h)
+      refine ⟨insert (n + 1) A, ?_, ?_⟩
+      · rw [hins]; exact Finset.insert_subset_insert _ hAsub
+      · rw [Finset.sum_insert hnmA, hAsum]; omega
+
+/-- The total of the full box in closed form: `2·∑_{a=1}^n a = n(n+1)`
+    (equivalently `∑_{a=1}^n a = n(n+1)/2`, the Gauss sum). -/
+theorem two_mul_sum_Icc_n (n : ℕ) : 2 * ∑ a ∈ Icc_n n, a = n * (n + 1) := by
+  induction n with
+  | zero => simp [Icc_n]
+  | succ n ih =>
+    have hins : Icc_n (n + 1) = insert (n + 1) (Icc_n n) := by
+      unfold Icc_n; ext x; simp only [Finset.mem_insert, Finset.mem_Icc]; omega
+    have hnm : (n + 1) ∉ Icc_n n := by
+      unfold Icc_n; simp only [Finset.mem_Icc]; omega
+    rw [hins, Finset.sum_insert hnm, Nat.mul_add, ih]; ring
+
+/-- **Subset sums of the full box.** `subsetSums {1,…,n}` is exactly the interval
+    `{1,…,∑_{a=1}^n a}`: completeness (`exists_subset_sum_eq`) supplies every value in
+    range, and no subset sum can exceed the total. -/
+theorem subsetSums_Icc_n (n : ℕ) :
+    subsetSums (Icc_n n) = Finset.Icc 1 (∑ a ∈ Icc_n n, a) := by
+  ext k
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image, Finset.mem_Icc]
+  constructor
+  · rintro ⟨⟨A, hA, hAsum⟩, hpos⟩
+    rw [Finset.mem_powerset] at hA
+    refine ⟨hpos, ?_⟩
+    rw [← hAsum]
+    exact Finset.sum_le_sum_of_subset hA
+  · rintro ⟨hk1, hk2⟩
+    obtain ⟨A, hAsub, hAsum⟩ := exists_subset_sum_eq n k hk2
+    exact ⟨⟨A, Finset.mem_powerset.mpr hAsub, hAsum⟩, by omega⟩
+
+/-- **Sharp full-box avoidance.** `{1,…,n}` avoids `m` iff `m = 0` or `m` exceeds the
+    total `∑_{a=1}^n a`.  Sharpens `avoid_full` (`n² < m`) to the exact threshold: for
+    `∑_{a=1}^n a ≥ m ≥ 1` the full box necessarily hits `m` as a subset sum. -/
+theorem avoid_full_iff (n m : ℕ) :
+    AvoidSum (Icc_n n) m ↔ m = 0 ∨ (∑ a ∈ Icc_n n, a) < m := by
+  rw [AvoidSum, subsetSums_Icc_n, Finset.mem_Icc]
+  omega
+
+/-- **The full box is optimal exactly on the avoidance boundary.**
+    `maxAvoidingSize n m = n` iff `m = 0` or `m` exceeds the total `∑_{a=1}^n a`.
+    Forward: an `m`-avoiding subset of size `n` must be all of `{1,…,n}`, so the box
+    itself avoids `m`.  Backward: on the boundary the box avoids `m` and has size `n`.
+    Sharpens `maxAvoidingSize_eq_of_lt` (`n² < m`) to the exact `n(n+1)/2` threshold. -/
+theorem maxAvoidingSize_eq_n_iff (n m : ℕ) :
+    maxAvoidingSize n m = n ↔ m = 0 ∨ (∑ a ∈ Icc_n n, a) < m := by
+  classical
+  constructor
+  · intro heq
+    by_contra hcon
+    push_neg at hcon
+    have hnotavoid : ¬ AvoidSum (Icc_n n) m := by
+      rw [avoid_full_iff]; push_neg; exact hcon
+    obtain ⟨S, hSsub, hScard, hSavoid⟩ :=
+      (maxAvoidingSize_ge_iff n m n).mpr (le_of_eq heq.symm)
+    have hcardn : (Icc_n n).card = n := by rw [Icc_n, Nat.card_Icc]; omega
+    have hSeq : S = Icc_n n :=
+      Finset.eq_of_subset_of_card_le hSsub (by rw [hcardn]; exact hScard)
+    rw [hSeq] at hSavoid
+    exact hnotavoid hSavoid
+  · intro h
+    have havoid : AvoidSum (Icc_n n) m := (avoid_full_iff n m).mpr h
+    refine le_antisymm (maxAvoidingSize_le n m) ?_
+    exact (maxAvoidingSize_ge_iff n m n).mp
+      ⟨Icc_n n, Finset.Subset.refl _, by rw [Icc_n, Nat.card_Icc]; omega, havoid⟩
+
 /-- **Avoiding the target `1` means omitting `1`.**  For `S ⊆ {1,…,n}`, `AvoidSum S 1`
     holds iff `1 ∉ S`: every element is a positive integer, so the only nonempty subset
     that can sum to `1` is the singleton `{1}`.  (`→` uses `self_mem_subsetSums`; `←` uses

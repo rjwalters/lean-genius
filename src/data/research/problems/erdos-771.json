@@ -21,7 +21,12 @@
       "Discharged prime_multiples_size and prime_multiples_avoid sorries in Erdos771Problem.lean (ported from verified Erdos771Construction.lean)",
       "maxAvoidingSize_le_succ + maxAvoidingSize_monotone (Erdos771Problem.lean): maxAvoidingSize is non-decreasing in the range n (0 axioms).",
       "Erdos771Problem.lean Part II (researcher-11, 2026-07-11, host-lean v4.26.0 verified 0-axiom; docker SIGBUS-135 write-blocked but full elaboration clean): the exact small-target values that first push maxAvoidingSize below n-1 and SHARPEN the headline f-bound. pair_mem_subsetSums (a+b∈subsetSums S for distinct a,b∈S — two-element companion of self_mem_subsetSums, detects the m=a+b obstruction); maxAvoidingSize_two (n≥2 ⟹ maxAvoidingSize n 2 = n-1: single representation {2}, witness {1..n}∖{2}); maxAvoidingSize_three (n≥3 ⟹ = n-2: target 3 has TWO distinct-positive representations {3},{1,2} so avoiding costs two deletions — upper bound via self_mem_subsetSums+pair_mem_subsetSums, lower-bound witness {1..n}∖{1,3} whose elements are 2 or ≥4 so 3 unreachable); f_le_sub_two (n≥3 ⟹ f n ≤ n-2, strictly improving f_le_pred's f n ≤ n-1, since m=3∈[1,n²] and maxAvoidingSize n 3 = n-2). #print axioms on all four = [propext, Classical.choice, Quot.sound] only (independent of the 2 deep external axioms).",
-      "maxAvoidingSize_ge_sub_ceil_half in Erdos771Problem.lean (0 new axiom/sorry; avoidance = any 2 distinct elements >= ceil(m/2) sum > m, singleton m erased)"
+      "maxAvoidingSize_ge_sub_ceil_half in Erdos771Problem.lean (0 new axiom/sorry; avoidance = any 2 distinct elements >= ceil(m/2) sum > m, singleton m erased)",
+      "exists_subset_sum_eq (Erdos771Problem.lean): completeness of {1,…,n} — every k ≤ ∑ Icc_n n is a subset sum, greedy induction adjoining n+1",
+      "two_mul_sum_Icc_n (Erdos771Problem.lean): Gauss closed form 2·∑_{a=1}^n a = n(n+1)",
+      "subsetSums_Icc_n (Erdos771Problem.lean): subsetSums {1,…,n} = Icc 1 (n(n+1)/2)",
+      "avoid_full_iff (Erdos771Problem.lean): AvoidSum {1,…,n} m ↔ m=0 ∨ n(n+1)/2 < m (sharp)",
+      "maxAvoidingSize_eq_n_iff (Erdos771Problem.lean): maxAvoidingSize n m = n ↔ m=0 ∨ n(n+1)/2 < m"
     ],
     "insights": [
       "If every element of S is a multiple of p, so is every subset sum, so S avoids any m with p ∤ m — the engine of the Erdős–Graham lower bound. Primality is not even needed for avoidance.",
@@ -29,12 +34,13 @@
       "The two deep bounds (Erdős–Graham lower, Alon–Freiman upper) are genuinely external and stay as axioms; but the o(1) asymptotic + limit form follow from them by elementary real analysis (div_le_iff₀/le_div_iff₀ squeeze), so those need not be axiomatized separately.",
       "In this Docker environment the codegen crash (exit 135/139) is nondeterministic and can MASK a real parse/elaboration error; capture full build output (not tail) to see the actual diagnostic. Here the true error was an open-Classical-in placed after a doc-comment.",
       "Sharp closed-form lower bound maxAvoidingSize n m >= n - ceil(m/2) (= n-(m+1)/2) for 1<=m<=n, via witness S = {ceil(m/2),...,n} \\ {m}: strictly beats interval_avoiding_lower (n-m) and is TIGHT — matches exact m=1..4 values (n-1,n-1,n-2,n-2). Conjecture (upper bound, follow-up): equality holds via ceil(m/2) pairwise-disjoint sum-m subsets {m},{i,m-i}.",
-      "EXACT closed form maxAvoidingSize n m = n - ceil(m/2) (= n - (m+1)/2) for 1<=m<=n, upgrading the previously one-sided lower bound to equality. Upper bound: any m-avoiding S in {1..n} keeps at most floor(m/2) elements of {1..m}, since x |-> min x (m-x) injects S cap {1..m} into {1..floor(m/2)} (a collision forces two distinct elements summing to m, a forbidden subset sum), plus at most n-m elements above m. Recovers the tabulated small-m values n-1,n-1,n-2,n-2 for m=1..4 uniformly. Axiom-free (Erdos771Problem.lean: maxAvoidingSize_le_sub_ceil_half, maxAvoidingSize_eq_sub_ceil_half)."
+      "EXACT closed form maxAvoidingSize n m = n - ceil(m/2) (= n - (m+1)/2) for 1<=m<=n, upgrading the previously one-sided lower bound to equality. Upper bound: any m-avoiding S in {1..n} keeps at most floor(m/2) elements of {1..m}, since x |-> min x (m-x) injects S cap {1..m} into {1..floor(m/2)} (a collision forces two distinct elements summing to m, a forbidden subset sum), plus at most n-m elements above m. Recovers the tabulated small-m values n-1,n-1,n-2,n-2 for m=1..4 uniformly. Axiom-free (Erdos771Problem.lean: maxAvoidingSize_le_sub_ceil_half, maxAvoidingSize_eq_sub_ceil_half).",
+      "Sharp avoidance threshold: {1,…,n} is a COMPLETE sequence — its subset sums realise EVERY value in [1, n(n+1)/2]. Hence the full box avoids m iff m=0 or m > n(n+1)/2, and maxAvoidingSize n m = n exactly on that boundary. Sharpens the crude n²<m threshold of avoid_full/maxAvoidingSize_eq_of_lt to the exact total n(n+1)/2."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Discharge f_characterization by relating the inf/sup definition of f to f_property.",
-      "Keep the deep bounds as axioms (external results); do not attempt to prove Erdős–Graham/Alon–Freiman."
+      "Keep the deep bounds as axioms (external Erdős–Graham/Alon–Freiman results); do not attempt to prove them.",
+      "Possible follow-up: determine maxAvoidingSize n m in the intermediate regime n < m ≤ n(n+1)/2 (between the sharp small-m formula n-⌈m/2⌉ and the boundary)."
     ]
   },
   "tags": [
