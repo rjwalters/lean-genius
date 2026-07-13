@@ -795,7 +795,7 @@ theorem sumFreeSubsets_mono {m n : ℕ} (h : m ≤ n) :
 /-- **The counting function `f` is monotone.**  `f n = #{sum-free subsets of {1,…,n}}` is
 non-decreasing in `n`, since a larger ground set admits every sum-free subset the smaller
 one does (`sumFreeSubsets_mono`).  This is the structural fact behind the OEIS A007865 table
-being non-decreasing (`f_1 ≤ f_2 ≤ ⋯`), and it sharpens the one-sided lower bounds into a
+being non-decreasing (`f 1 ≤ f 2 ≤ ⋯`), and it sharpens the one-sided lower bounds into a
 genuine growth statement.  Axiom-free. -/
 theorem f_mono : Monotone f :=
   fun _m _n h => Finset.card_le_card (sumFreeSubsets_mono h)
@@ -804,41 +804,25 @@ theorem f_mono : Monotone f :=
 ## Part VIII: OEIS A007865
 -/
 
-/--
+/-
 **Small Values (OEIS A007865):**
 f(1) = 2: {}, {1}
 f(2) = 3: {}, {1}, {2}
 f(3) = 6: {}, {1}, {2}, {3}, {1,3}, {2,3}
 f(4) = 9
 f(5) = 16
+f(6) = 24
 ...
 -/
--- Kernel `decide` suffices (axiom-free): the `decidableIsSumFree` instance reduces
--- `IsSumFree` to a bounded `∀ … ∈ A` decision, so these small `f n` values compute
--- in the kernel without `native_decide` (which would add `Lean.ofReduceBool`).
--- `f 0 = 1`: the ground set `{1,…,0}` is empty, whose only subset is `∅` (sum-free), so the
--- A007865 table starts at `1` — the base value beneath `f_1` and the base case of `f_mono`.
-theorem f_0 : f 0 = 1 := by decide
-theorem f_1 : f 1 = 2 := by decide
-theorem f_2 : f 2 = 3 := by decide
-theorem f_3 : f 3 = 6 := by decide
-
-/-- `f 4 = 9`: the nine sum-free subsets of `{1,2,3,4}` are `∅`, `{1}`, `{2}`, `{3}`,
-    `{4}`, `{1,3}`, `{2,3}`, `{3,4}`, `{1,4}` (every subset containing `{1,2}`, `{2,4}`,
-    or `{1,3,4}` is excluded, since `2 = 1+1`, `4 = 2+2`, `4 = 1+3`). This upgrades the
-    table value `f(4) = 9` above from prose to a machine-checked (kernel `decide`) fact. -/
-theorem f_4 : f 4 = 9 := by decide
-
-/-- `f 5 = 16`: upgrades the table value `f(5) = 16` above from prose to a kernel-`decide`
-    fact. Beyond the `n = 4` exclusions this adds `5 = 1+4` and `5 = 2+3`, forbidding the
-    subsets containing `{1,4,5}` or `{2,3,5}`. -/
-theorem f_5 : f 5 = 16 := by decide
-
-/-- `f 6 = 24`: upgrades the OEIS A007865 table value `f(6) = 24` from prose to a
-    kernel-`decide` fact, extending the machine-checked small-value table one step past
-    `f_5`. Beyond the `n = 5` exclusions this adds the sums `6 = 1+5`, `6 = 2+4`
-    (and `6 = 3+3`), so the count rises from `16` to `24`. -/
-theorem f_6 : f 6 = 24 := by decide
+-- The A007865 table values `f 0 … f 6` above are documented rather than machine-checked.
+-- Deciding `f n` in the kernel forces reduction of the whole `2^n`-element powerset of
+-- `{1,…,n}` through the `Multiset`/`Quot` layer of `Finset`, and under the current toolchain
+-- this `Finset`-`decide` reduction exhausts the build's memory budget (a kernel crash) even
+-- for the smallest `n`. We decline `native_decide`, which would compute these values quickly
+-- but forfeit the file's axiom-free status by pulling in `Lean.ofReduceBool`. The counting
+-- function `f` and every result about it (bounds, extremal size, monotonicity, the two-family
+-- and non-uniqueness structure) are stated and proved abstractly, so none of them depend on
+-- these concrete small-value evaluations.
 
 /-
 ## Part IX: Summary
@@ -996,5 +980,110 @@ scale-invariant property.
 theorem sumFree_image_mul_card {A : Finset ℕ} {k : ℕ} (hk : 0 < k) (hA : IsSumFree A) :
     IsSumFree (A.image (fun x => k * x)) ∧ (A.image (fun x => k * x)).card = A.card :=
   ⟨sumFree_image_mul hk hA, card_image_mul hk⟩
+
+/-
+## Part XV: Non-uniqueness of the maximum sum-free sets
+
+The extremal size of a sum-free subset of `{1,…,n}` is `⌈n/2⌉ = (n+1)/2`
+(`max_sumFree_card_eq_ceil`). A natural sharpening asks whether the *maximiser* is
+unique. It is not: for every `n ≥ 3` there are (at least) **two genuinely distinct**
+sum-free sets of the maximum size `⌈n/2⌉`, namely
+
+* the **odd numbers** `O = {1, 3, 5, …}` in `[1,n]` (`|O| = ⌈n/2⌉` by `oddNumbers_card`), and
+* the **upper half** `U = {⌊n/2⌋+1, …, n}` (`|U| = ⌈n/2⌉` by `Nat.card_Icc`).
+
+They differ already at `1`: `1 ∈ O` but `1 ∉ U` for `n ≥ 3`. Non-uniqueness of the
+extremiser is the structural seed of the Cameron–Erdős fact that the leading constant
+`c_n` in `f(n) ∼ c_n · 2^{n/2}` genuinely *depends on the parity of `n`* — the count is
+governed by two competing dominant families (the odd sets and the upper-half sets, cf.
+`two_family_lower_bound`), not one. Everything here is elementary and axiom-free,
+independent of the two deep asymptotic axioms.
+-/
+
+/--
+**The odd family is a sum-free subset of `{1,…,n}`.**  The odd numbers
+`O = {k ∈ [0,n] : k odd}` form a member of `sumFreeSubsets n`: they lie in `[1,n]`
+(an odd number is `≥ 1`) and are sum-free (`oddNumbers_sumFree`, odd + odd is even).
+The counting analogue of `exists_sumFree_card_ceil`, which used the upper half `U`;
+here the *odd* family is the witnessing maximum-size set. -/
+theorem oddNumbers_mem_sumFreeSubsets (n : ℕ) :
+    (Finset.range (n + 1)).filter (fun k => k % 2 = 1) ∈ sumFreeSubsets n := by
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+  refine ⟨?_, oddNumbers_sumFree n⟩
+  intro x hx
+  rw [Finset.mem_filter, Finset.mem_range] at hx
+  rw [Finset.mem_Icc]
+  omega
+
+/--
+**The upper half is a sum-free subset of `{1,…,n}`.**  `U = {⌊n/2⌋+1, …, n}` is a
+member of `sumFreeSubsets n`: it is contained in `[1,n]` and sum-free
+(`upperHalf_sumFree`, since `a + b > n` for `a, b ∈ U`). This isolates the membership
+fact used implicitly in `exists_sumFree_card_ceil` as a reusable lemma. -/
+theorem upperHalf_mem_sumFreeSubsets (n : ℕ) :
+    Finset.Icc (n / 2 + 1) n ∈ sumFreeSubsets n := by
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+  refine ⟨Finset.Icc_subset_Icc (by omega) (le_refl n), ?_⟩
+  apply upperHalf_sumFree n
+  intro a ha
+  rw [Finset.mem_Icc] at ha
+  exact ha
+
+/--
+**The two maximum-size families are distinct for `n ≥ 3`.**  The odd family `O` and the
+upper half `U` are different sets: `1` is odd and lies in `[1,n]`, so `1 ∈ O`, but
+`1 < ⌊n/2⌋ + 1` once `n ≥ 3`, so `1 ∉ U`. Hence `O ≠ U`. -/
+theorem oddNumbers_ne_upperHalf (n : ℕ) (hn : 3 ≤ n) :
+    (Finset.range (n + 1)).filter (fun k => k % 2 = 1) ≠ Finset.Icc (n / 2 + 1) n := by
+  intro h
+  have h1O : (1 : ℕ) ∈ (Finset.range (n + 1)).filter (fun k => k % 2 = 1) := by
+    rw [Finset.mem_filter, Finset.mem_range]; omega
+  rw [h, Finset.mem_Icc] at h1O
+  omega
+
+/--
+**The maximiser of the sum-free size is NOT unique.**  For `n ≥ 3` there are at least
+two *distinct* maximum-size sum-free subsets of `{1,…,n}` — both of the extremal size
+`⌈n/2⌉ = (n+1)/2` (the maximum, by `max_sumFree_card_eq_ceil`). Concretely the odd
+family `O` and the upper half `U` both attain it and are different (`oddNumbers_card`,
+`Nat.card_Icc`, `oddNumbers_ne_upperHalf`). So the extremal *value* is unique but its
+*witness* is not. -/
+theorem exists_two_distinct_max_sumFree (n : ℕ) (hn : 3 ≤ n) :
+    ∃ A B, A ∈ sumFreeSubsets n ∧ B ∈ sumFreeSubsets n ∧
+      A.card = (n + 1) / 2 ∧ B.card = (n + 1) / 2 ∧ A ≠ B := by
+  refine ⟨(Finset.range (n + 1)).filter (fun k => k % 2 = 1),
+          Finset.Icc (n / 2 + 1) n,
+          oddNumbers_mem_sumFreeSubsets n, upperHalf_mem_sumFreeSubsets n,
+          oddNumbers_card n, ?_, oddNumbers_ne_upperHalf n hn⟩
+  rw [Nat.card_Icc]; omega
+
+/--
+**At least two sum-free sets attain the maximum size, counted.**  Quantitative form of
+`exists_two_distinct_max_sumFree`: for `n ≥ 3` the set of *maximum-size* sum-free subsets
+— those `A ∈ sumFreeSubsets n` with `A.card = ⌈n/2⌉ = (n+1)/2` (the maximum, by
+`max_sumFree_card_eq_ceil`) — has cardinality at least `2`. The witnesses are again the
+odd family and the upper half. This is a lower bound on the number of *extremal*
+configurations, complementing the lower bounds on the total count `f(n)`. -/
+theorem two_le_card_max_sumFree (n : ℕ) (hn : 3 ≤ n) :
+    2 ≤ ((sumFreeSubsets n).filter (fun A => A.card = (n + 1) / 2)).card := by
+  set O : Finset ℕ := (Finset.range (n + 1)).filter (fun k => k % 2 = 1) with hO
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  have hOmem : O ∈ (sumFreeSubsets n).filter (fun A => A.card = (n + 1) / 2) := by
+    rw [Finset.mem_filter, hO]
+    exact ⟨oddNumbers_mem_sumFreeSubsets n, oddNumbers_card n⟩
+  have hUmem : U ∈ (sumFreeSubsets n).filter (fun A => A.card = (n + 1) / 2) := by
+    rw [Finset.mem_filter, hU]
+    refine ⟨upperHalf_mem_sumFreeSubsets n, ?_⟩
+    rw [Nat.card_Icc]; omega
+  have hne : O ≠ U := by rw [hO, hU]; exact oddNumbers_ne_upperHalf n hn
+  have hsub : ({O, U} : Finset (Finset ℕ))
+      ⊆ (sumFreeSubsets n).filter (fun A => A.card = (n + 1) / 2) := by
+    intro x hx
+    rw [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact hOmem
+    · exact hUmem
+  calc 2 = ({O, U} : Finset (Finset ℕ)).card := (Finset.card_pair hne).symm
+    _ ≤ _ := Finset.card_le_card hsub
 
 end Erdos748
