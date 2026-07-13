@@ -1,0 +1,142 @@
+{
+  "id": "cevas-theorem-oq-01-oq-01",
+  "title": "Ceva's Theorem: The Trigonometric Form via the Law of Sines",
+  "slug": "cevas-theorem-oq-01-oq-01",
+  "description": "Formalizes the trigonometric form of Ceva's theorem in a general inner-product-space Euclidean geometry. The centerpiece is the cevian ratio law BD/DC = (AB·sin∠BAD)/(AC·sin∠DAC), derived from the law of sines applied to the two sub-triangles and the supplementarity of the angles at the cevian foot. Multiplying over the three cevians yields the trigonometric Ceva product identity, the sine-ratio companion of the affine (side-ratio) form. 4 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem#Trigonometric_form",
+    "date": "2026-07-11",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "ceva",
+      "trigonometry",
+      "law-of-sines",
+      "euclidean-geometry",
+      "cevians",
+      "concurrency"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-12",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified over an arbitrary real inner-product space (NormedAddCommGroup + InnerProductSpace ℝ) with a NormedAddTorsor point space; depends only on Mathlib's Euclidean geometry and the standard foundational axioms (propext, Classical.choice, Quot.sound).",
+    "lineCount": 165,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "cevian_dist_ratio: the cevian ratio law BD/DC = (AB·sin∠BAD)/(AC·sin∠DAC), the trigonometric heart of Ceva's theorem, formalized directly over Mathlib's EuclideanGeometry via the law of sines",
+      "trig_ceva_product: the trigonometric Ceva product identity — the product of the three side-division ratios equals the product of the three sine ratios, with the side-length factors cancelling in pairs",
+      "not_collinear_cevian: a cevian foot strictly between two vertices keeps the sub-triangle non-degenerate (via Collinear.collinear_insert_iff_of_ne)",
+      "ncol_perm: reindexing of three-point non-collinearity across any permutation of the points, used to feed the law of sines in the vertex order it expects"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Giovanni Ceva published his concurrency theorem in *De lineis rectis se invicem secantibus statica constructio* (1678). Alongside the familiar signed side-ratio form — cevians $AD$, $BE$, $CF$ are concurrent iff $\\frac{BD}{DC}\\cdot\\frac{CE}{EA}\\cdot\\frac{AF}{FB}=1$ — there is an equivalent *trigonometric* form expressed through the sines of the angles the cevians make at the vertices: $\\frac{\\sin\\angle BAD}{\\sin\\angle DAC}\\cdot\\frac{\\sin\\angle CBE}{\\sin\\angle EBA}\\cdot\\frac{\\sin\\angle ACF}{\\sin\\angle FCB}=1$. The trigonometric form is the natural tool for concurrences defined by angles rather than lengths (isogonal conjugates, the symmedian point, the Brocard points), and it is the bridge between metric and angular descriptions of a triangle. This Lean 4 file supplies the analytic ingredient — the cevian ratio law relating a side division to a ratio of sines — and multiplies it over the three cevians to obtain the sine-ratio product identity, complementing the affine coordinate proof in `CevasTheoremOQ01.lean`.",
+    "problemStatement": "Working over an arbitrary real inner-product space, express the side-division ratio $BD/DC$ of a cevian $AD$ (with $D$ strictly between $B$ and $C$) through the sines of the angles $\\angle BAD$ and $\\angle DAC$, and combine the three such laws to obtain the trigonometric form of Ceva's product identity.",
+    "text": "For a non-degenerate triangle $ABC$ and a cevian foot $D$ strictly between $B$ and $C$, apply the law of sines in the two sub-triangles $ABD$ and $ACD$. The angles $\\angle ADB$ and $\\angle ADC$ are supplementary (their vertex sits on the straight segment $BC$), so they have equal sines; that common sine cancels when the two law-of-sines expressions are divided, leaving the cevian ratio law $BD/DC = (AB\\cdot\\sin\\angle BAD)/(AC\\cdot\\sin\\angle DAC)$. Multiplying this identity cyclically over the three cevians, each side length $AB$, $BC$, $CA$ appears once in a numerator and once in a denominator and cancels, yielding the pure sine-ratio product.",
+    "proofStrategy": "The development is short and self-contained. Two non-collinearity utilities (`ncol_perm`, `not_collinear_cevian`) keep the sub-triangles non-degenerate under the permutations the law of sines demands. `cevian_dist_ratio` proves the ratio law: it invokes Mathlib's `dist_eq_dist_mul_sin_angle_div_sin_angle` in triangles $ABD$ and $ACD$, uses `angle_add_angle_eq_pi_of_angle_eq_pi` and `Real.sin_pi_sub` for the supplementary-angle sine equality, and cancels the common positive denominator via `div_div_div_cancel_right₀`. `trig_ceva_product` applies the ratio law to all three cevians, establishes pairwise vertex distinctness so the side lengths are nonzero, and closes with `field_simp` after rewriting the symmetric distances.",
+    "keyInsights": [
+      "The cevian ratio law BD/DC = (AB·sin∠BAD)/(AC·sin∠DAC) is the single analytic fact from which the whole trigonometric form follows by multiplication.",
+      "The angles ∠ADB and ∠ADC at the cevian foot are supplementary, so sin∠ADB = sin∠ADC; this common sine is exactly what cancels between the two law-of-sines expressions.",
+      "Strict betweenness (Sbtw) is essential: it makes the angle ∠BDC equal to π (feeding the supplementarity) and guarantees the sub-triangles stay non-degenerate.",
+      "Multiplying the three ratio laws cyclically, each side length appears once up and once down, so the metric factors cancel and only the sine ratios survive.",
+      "The proof is basis-free: it lives over an arbitrary real inner-product space and torsor, not just ℝ², so it applies to any Euclidean model Mathlib supports."
+    ],
+    "prerequisites": [
+      "Mathlib Euclidean geometry: EuclideanGeometry.angle (∠), the law of sines (dist_eq_dist_mul_sin_angle_div_sin_angle), and Sbtw (strict betweenness)",
+      "Collinearity API: Collinear, collinear_insert_iff_of_ne, sin_pos_of_not_collinear",
+      "Elementary trigonometry: supplementary angles have equal sines (Real.sin_pi_sub)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The trigonometric form of Ceva's theorem is established over an arbitrary real inner-product space: the cevian ratio law BD/DC = (AB·sin∠BAD)/(AC·sin∠DAC) is proved from the law of sines and supplementary-angle sines, and multiplied over the three cevians to give the sine-ratio product identity (BD/DC)·(CE/EA)·(AF/FB) = (sin∠BAD·sin∠CBE·sin∠ACF)/(sin∠DAC·sin∠EBA·sin∠FCB). 4 theorems, 0 definitions, 165 lines, 0 axioms, 0 sorries.",
+    "implications": "This file supplies the trigonometric ingredient that, combined with the affine side-ratio form (CevasTheoremOQ01.lean, where the product of side ratios equals 1 iff concurrent), yields the classical trigonometric statement of Ceva's theorem. The sine-ratio identity is the entry point for angle-defined concurrences — isogonal conjugates, symmedians, and the Brocard configuration — that the pure length form does not reach directly.",
+    "openQuestions": [
+      "Close the loop: combine trig_ceva_product with the affine Ceva iff to state the concurrency criterion purely in terms of the sine ratios (sin∠BAD/sin∠DAC · … = 1 iff concurrent).",
+      "Apply the cevian ratio law to isogonal conjugates and the symmedian point, whose defining property is angular rather than metric.",
+      "Extend to the non-Euclidean setting, where the law of sines carries curvature corrections (see CevasTheoremNonEuclidean.lean)."
+    ]
+  },
+  "leanFile": {
+    "namespace": "TrigCeva",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CevasTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The affine coordinate proof of Ceva's theorem in ℝ² (side-ratio form); this file supplies the complementary trigonometric ingredient over general Euclidean geometry."
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "The algebraic side-ratio version of Ceva's theorem; the trigonometric form here is its sine-ratio companion."
+    },
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "related",
+      "description": "Ceva's theorem in spherical and hyperbolic geometry, where the law of sines used here acquires curvature corrections."
+    }
+  ],
+  "references": [
+    {
+      "text": "Ceva, G. (1678). De lineis rectis se invicem secantibus statica constructio. Milan.",
+      "url": "https://en.wikipedia.org/wiki/Ceva%27s_theorem"
+    },
+    {
+      "text": "Trigonometric form of Ceva's theorem.",
+      "url": "https://en.wikipedia.org/wiki/Ceva%27s_theorem#Trigonometric_form"
+    },
+    {
+      "text": "Coxeter, H. S. M. & Greitzer, S. L. (1967). Geometry Revisited. MAA. §1.4 on Ceva's theorem and the trigonometric form.",
+      "url": "https://en.wikipedia.org/wiki/Geometry_Revisited"
+    },
+    {
+      "text": "Law of sines.",
+      "url": "https://en.wikipedia.org/wiki/Law_of_sines"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 40,
+      "description": "Module docstring framing the trigonometric form of Ceva's theorem: unlike the affine file (CevasTheoremOQ01.lean, which works with signed side ratios), this file works directly with Mathlib's Euclidean angle, the law of sines, and betweenness. Sets up the ambient real inner-product space (V), the torsor of points (P), and opens the TrigCeva namespace.",
+      "mathContext": "Ambient setting: $V$ a real inner-product space, $P$ a `NormedAddTorsor` over $V$; angles are `EuclideanGeometry.angle` $\\angle$, and the cevian foot is constrained by strict betweenness $\\operatorname{Sbtw}\\,\\mathbb{R}\\,B\\,D\\,C$."
+    },
+    {
+      "id": "non-collinearity-helpers",
+      "title": "Non-Collinearity Utilities",
+      "startLine": 46,
+      "endLine": 68,
+      "description": "Two utilities keeping the sub-triangles non-degenerate. `ncol_perm` transports a three-point non-collinearity statement across any permutation of the points (collinearity depends only on the underlying set). `not_collinear_cevian` shows that if A,B,C are non-collinear and D lies strictly between B and C, then A,B,D are non-collinear, via Collinear.collinear_insert_iff_of_ne on the collinear set {B,D,C}.",
+      "mathContext": "Collinearity is a property of the point set, so it is permutation-invariant; and if $D\\in\\overline{BC}$ strictly, then $A\\notin\\operatorname{line}(B,C)=\\operatorname{line}(B,D)$, so $A,B,D$ are non-collinear."
+    },
+    {
+      "id": "cevian-ratio-law",
+      "title": "The Cevian Ratio Law",
+      "startLine": 70,
+      "endLine": 110,
+      "description": "`cevian_dist_ratio` is the analytic heart: for D strictly between B and C, dist B D / dist D C = (dist A B · sin∠BAD)/(dist A C · sin∠DAC). The proof applies Mathlib's law of sines (dist_eq_dist_mul_sin_angle_div_sin_angle) in the sub-triangles ABD and ACD, uses that ∠ADB and ∠ADC are supplementary (angle_add_angle_eq_pi_of_angle_eq_pi from ∠BDC = π) so their sines are equal (Real.sin_pi_sub), notes sin∠ADC > 0 by non-collinearity, and cancels the common denominator with div_div_div_cancel_right₀.",
+      "mathContext": "\\frac{BD}{DC}=\\frac{AB\\,\\sin\\angle BAD}{AC\\,\\sin\\angle DAC},\\qquad \\angle ADB+\\angle ADC=\\pi\\;\\Rightarrow\\;\\sin\\angle ADB=\\sin\\angle ADC>0."
+    },
+    {
+      "id": "trig-ceva-product",
+      "title": "The Trigonometric Ceva Product Identity",
+      "startLine": 112,
+      "endLine": 163,
+      "description": "`trig_ceva_product` multiplies the cevian ratio law over the three cevians. It permutes hABC to feed the law at each apex (h1 at A, h2 at B, h3 at C), establishes pairwise vertex distinctness (A≠B, A≠C, B≠C) so the side lengths dist A B, dist A C, dist B C are nonzero, then rewrites the three ratio laws and closes with field_simp: the side-length factors appear once in a numerator and once in a denominator and cancel, leaving the pure sine-ratio product.",
+      "mathContext": "\\frac{BD}{DC}\\cdot\\frac{CE}{EA}\\cdot\\frac{AF}{FB}=\\frac{\\sin\\angle BAD\\,\\sin\\angle CBE\\,\\sin\\angle ACF}{\\sin\\angle DAC\\,\\sin\\angle EBA\\,\\sin\\angle FCB}\\quad(\\text{side lengths cancel})."
+    }
+  ],
+  "sorries": 0
+}
