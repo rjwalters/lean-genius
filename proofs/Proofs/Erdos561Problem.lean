@@ -152,7 +152,7 @@ def StarUnion.isUniform (F : StarUnion) : Prop :=
 
 /-- **Uniform Star Union Constructor:** s copies of K_{1,n}. -/
 def uniformStarUnion (s n : ℕ) (hs : s ≥ 1) (hn : n ≥ 1) : StarUnion :=
-  ⟨List.replicate s n, by simp [hs]⟩
+  ⟨List.replicate s n, by simp; omega⟩
 
 /-- **BEFRS78 Theorem:**
 The conjecture holds when both F₁ and F₂ are uniform. -/

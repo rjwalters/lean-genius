@@ -152,7 +152,7 @@ theorem two_not_carmichael : ¬ isCarmichaelTotient 2 := by
   have eq3 := huniq 3 h3
   have eq4 := huniq 4 h4
   have : (3 : ℕ) = 4 := eq3.trans eq4.symm
-  norm_num at this
+  omega
 
 /- ## Summary -/
 
