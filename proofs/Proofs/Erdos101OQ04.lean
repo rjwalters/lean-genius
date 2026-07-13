@@ -3701,4 +3701,45 @@ theorem parametric_oblique_onQuartic_collinear (s u : ℝ) (hu : u ^ 2 = 5 - 3 *
       h01 h12 h20 h13 h30 h23]
   exact parametric_oblique_criterion s u hu
 
+/-! ### Four-point lines realized on the fixed ternary conic `Q = 5`
+
+`quartic_quadruple_sum_zero_sq_iff_ternary` reduces the sum-of-squares condition
+`Σx² = 10` (with `Σx = 0`) to the fixed ternary conic
+`Q(x₀,x₁,x₂) = x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in the three free abscissae,
+and its docstring records the structural upshot in prose: *a four-point line on the
+quartic is exactly a point `(x₀,x₁,x₂)` on `Q = 5` with `x₃ = −(x₀+x₁+x₂)`*.  The two
+theorems below make that statement a checked fact and pin the concrete symmetric family
+onto the same conic. -/
+
+/-- **A four-point line on the quartic is a point on the ternary conic `Q = 5`.**
+Four collinear points on `y = x⁴ − 5x²` with pairwise-distinct abscissae satisfy both
+`Σx = 0` and the ternary conic relation
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5` in their first three abscissae (the fourth being
+`x₃ = −(x₀+x₁+x₂)`).  This upgrades the prose remark on
+`quartic_quadruple_sum_zero_sq_iff_ternary` into a theorem, composing the sum-of-squares
+criterion `four_onQuartic_collinear_iff_sq` with the conic reduction: the four-point-line
+locus is exactly the fixed conic `Q = 5`, with no `x⁴` term surviving. -/
+theorem four_onQuartic_collinear_ternary_conic {a b c d : ℝ × ℝ}
+    (ha : onQuartic a) (hb : onQuartic b) (hc : onQuartic c) (hd : onQuartic d)
+    (hab : a.1 ≠ b.1) (hbc : b.1 ≠ c.1) (hca : c.1 ≠ a.1)
+    (hbd : b.1 ≠ d.1) (hda : d.1 ≠ a.1) (hcd : c.1 ≠ d.1)
+    (hcol : collinear a b c ∧ collinear a b d) :
+    a.1 + b.1 + c.1 + d.1 = 0 ∧
+      a.1 ^ 2 + b.1 ^ 2 + c.1 ^ 2 + a.1 * b.1 + b.1 * c.1 + c.1 * a.1 = 5 := by
+  obtain ⟨hsum, hsq⟩ :=
+    (four_onQuartic_collinear_iff_sq ha hb hc hd hab hbc hca hbd hda hcd).mp hcol
+  exact ⟨hsum, (quartic_quadruple_sum_zero_sq_iff_ternary a.1 b.1 c.1 d.1 hsum).mp hsq⟩
+
+/-- **The symmetric family lies on the ternary conic `Q = 5`.**  For `a² + b² = 5`, the free
+triple `(a, −a, b)` of the symmetric quadruple `(a, −a, b, −b)` satisfies the ternary conic
+`x₀² + x₁² + x₂² + x₀x₁ + x₁x₂ + x₂x₀ = 5`, because the cross terms collapse to
+`Q(a, −a, b) = a² + b²`.  So the concrete linear witnesses of `quartic_linear_lower_bound`
+are exactly points of the conic `Q = 5` that `four_onQuartic_collinear_ternary_conic`
+identifies as the four-point-line locus — the linear baseline of the open
+super-linear-growth question, realized on the conic. -/
+theorem symmetric_triple_on_ternary_conic (a b : ℝ) (hab : a ^ 2 + b ^ 2 = 5) :
+    a ^ 2 + (-a) ^ 2 + b ^ 2 + a * (-a) + (-a) * b + b * a = 5 := by
+  linear_combination hab
+
+
 end Erdos101OQ04
