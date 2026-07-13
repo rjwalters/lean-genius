@@ -96,4 +96,43 @@ theorem limInf_limSup_mem_window :
   have hle := limInf_le_limSup
   exact ⟨c₁, c₂, hc1, hc12, ⟨hlo, hle.trans hhi⟩, ⟨hlo.trans hle, hhi⟩⟩
 
+/-! ### A sufficient condition that resolves the open question: submultiplicativity
+
+The results above only *characterise* the open question (as "is the oscillation
+positive?").  This section supplies the first *sufficient condition* that answers it,
+lifting the parent's Fekete result `submultiplicative_implies_convergence` into the
+oscillation / exponential-base language of this file: if the covering number `h` is
+submultiplicative (`h(m+n) ≤ h(m)·h(n)`), the oscillation vanishes, a single exponential
+base exists, and the open question is resolved *yes*.  Contrapositively, a genuinely
+oscillating growth rate (no exponential base) forces `h` to violate submultiplicativity —
+a concrete necessary condition on any counterexample to Erdős #117 OQ-01. -/
+
+/-- **Submultiplicativity ⟹ zero oscillation.**  If `h(m+n) ≤ h(m)·h(n)` for all `m, n`,
+then the oscillation `limsup − liminf` of the growth rate is exactly `0`.  Fekete's lemma
+(`submultiplicative_implies_convergence`) gives convergence, and
+`converges_iff_oscillation_zero` turns that into vanishing oscillation. -/
+theorem submultiplicative_implies_oscillation_zero
+    (hsub : ∀ m n : ℕ, h (m + n) ≤ h m * h n) :
+    growthRateLimSup - growthRateLimInf = 0 :=
+  converges_iff_oscillation_zero.mp (submultiplicative_implies_convergence hsub)
+
+/-- **Submultiplicativity ⟹ a single exponential base exists.**  The exponential-base form
+of `submultiplicative_implies_oscillation_zero`: a submultiplicative covering number `h` has
+a well-defined exponential base, so Erdős #117 OQ-01 is answered *yes* under this hypothesis.
+Fekete convergence (`submultiplicative_implies_convergence`) transported through
+`exponentialBaseExists_iff_converges`. -/
+theorem submultiplicative_implies_exponentialBaseExists
+    (hsub : ∀ m n : ℕ, h (m + n) ≤ h m * h n) :
+    exponentialBaseExists :=
+  exponentialBaseExists_iff_converges.mpr (submultiplicative_implies_convergence hsub)
+
+/-- **A counterexample must break submultiplicativity.**  The contrapositive: if no single
+exponential base exists (the growth rate genuinely oscillates), then `h` is *not*
+submultiplicative — there exist `m, n` with `h(m+n) > h(m)·h(n)`.  A concrete necessary
+condition on any counterexample to Erdős #117 OQ-01. -/
+theorem not_exponentialBaseExists_implies_not_submultiplicative
+    (hno : ¬ exponentialBaseExists) :
+    ¬ (∀ m n : ℕ, h (m + n) ≤ h m * h n) :=
+  fun hsub => hno (submultiplicative_implies_exponentialBaseExists hsub)
+
 end Erdos117OQ01Incomplete01
