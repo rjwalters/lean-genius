@@ -259,6 +259,99 @@ theorem qBinom_X_extreme_coeffs {n k : ℕ} (h : k ≤ n) :
     (qBinom (X : ℤ[X]) n k).coeff (k * (n - k)) = 1 :=
   ⟨qBinom_X_coeff_zero n k h, qBinom_X_coeff_top h⟩
 
+/-! ### Coefficient palindromy over `ℤ[X]`
+
+The self-reciprocity `qBinom_reciprocal` lives over a *field* (it divides by `q`).  Its
+coefficient-level shadow — that the coefficient array of the Gaussian polynomial reads the same
+forwards and backwards — is an integral statement, cleanly captured by `Polynomial.reflect`:
+`reflect (k(n-k)) (qBinom X n k) = qBinom X n k`.  We prove it directly over `ℤ[X]`, with no field
+hypothesis, by induction on the `q`-Pascal recurrence.  The mechanism mirrors the field proof:
+reflecting the **first** Pascal expansion `qBinom X n k + X^{k+1}·qBinom X n (k+1)` term-by-term
+(`reflect_add`, `reflect_mul`) turns it into `X^{n-k}·qBinom X n k + qBinom X n (k+1)`, which is
+exactly the **second** Pascal expansion `qBinom_pascal'` of the same polynomial.  This is the
+rigorous "symmetric" half of Sylvester's symmetric-unimodal theorem; the unimodal half stays open. -/
+
+open Polynomial in
+/-- **Coefficient palindromy of the Gaussian polynomial.**  For `k ≤ n`, `qBinom X n k : ℤ[X]` is
+its own reflection at its degree `k(n-k)`:
+
+    reflect (k * (n - k)) (qBinom X n k) = qBinom X n k.
+
+Equivalently its coefficient sequence is a palindrome.  This is the integral, coefficient-level
+form of the field identity `qBinom_reciprocal`.  Induction on the `q`-Pascal recurrence: reflecting
+the first Pascal expansion `A + X^{k+1}·B` gives `X^{n-k}·A + B`, the second Pascal expansion
+(`qBinom_pascal'`) of the same polynomial. -/
+theorem qBinom_X_reflect :
+    ∀ (n k : ℕ), k ≤ n →
+      reflect (k * (n - k)) (qBinom (X : ℤ[X]) n k) = qBinom (X : ℤ[X]) n k
+  | n, 0, _ => by
+      simp only [Nat.zero_mul, qBinom_zero_right]
+      rw [show (1 : ℤ[X]) = C 1 * X ^ 0 by simp, reflect_C_mul_X_pow]; simp
+  | 0, k + 1, h => by omega
+  | n + 1, k + 1, h => by
+      rw [show (n + 1) - (k + 1) = n - k from by omega]
+      rcases eq_or_lt_of_le h with heq | hlt
+      · -- diagonal `k = n`: the polynomial is `1`, degree `0`
+        have hkn : k = n := by omega
+        subst hkn
+        rw [show k - k = 0 from Nat.sub_self k, Nat.mul_zero, qBinom_self]
+        rw [show (1 : ℤ[X]) = C 1 * X ^ 0 by simp, reflect_C_mul_X_pow]; simp
+      · -- interior `k < n`
+        have hk1n : k + 1 ≤ n := by omega
+        have hkn : k ≤ n := by omega
+        obtain ⟨_, dA⟩ := qBinom_X_monic_natDegree n k hkn
+        obtain ⟨_, dB⟩ := qBinom_X_monic_natDegree n (k + 1) hk1n
+        have ihA := qBinom_X_reflect n k hkn
+        have ihB := qBinom_X_reflect n (k + 1) hk1n
+        rw [show n - (k + 1) = n - k - 1 from by omega] at dB ihB
+        -- reflect of the first summand `A`: `reflect (k+1)(n-k) A = X^{n-k} · A`
+        have hPA : reflect ((k + 1) * (n - k)) (qBinom (X : ℤ[X]) n k)
+            = X ^ (n - k) * qBinom (X : ℤ[X]) n k := by
+          have hm := reflect_mul (1 : ℤ[X]) (qBinom (X : ℤ[X]) n k)
+            (show (1 : ℤ[X]).natDegree ≤ n - k by simp)
+            (show (qBinom (X : ℤ[X]) n k).natDegree ≤ k * (n - k) from le_of_eq dA)
+          rw [one_mul, ihA] at hm
+          rw [show (k + 1) * (n - k) = (n - k) + k * (n - k) from by ring, hm]
+          congr 1
+          rw [show (1 : ℤ[X]) = X ^ 0 from (pow_zero X).symm, reflect_monomial,
+            revAt_le (Nat.zero_le _), Nat.sub_zero]
+        -- reflect of the second summand `X^{k+1}·B`: `reflect (k+1)(n-k) (X^{k+1}·B) = B`
+        have hPB : reflect ((k + 1) * (n - k))
+            ((X : ℤ[X]) ^ (k + 1) * qBinom (X : ℤ[X]) n (k + 1))
+            = qBinom (X : ℤ[X]) n (k + 1) := by
+          have hm := reflect_mul ((X : ℤ[X]) ^ (k + 1)) (qBinom (X : ℤ[X]) n (k + 1))
+            (show ((X : ℤ[X]) ^ (k + 1)).natDegree ≤ k + 1 by rw [natDegree_X_pow])
+            (show (qBinom (X : ℤ[X]) n (k + 1)).natDegree ≤ (k + 1) * (n - k - 1)
+              from le_of_eq dB)
+          rw [ihB] at hm
+          rw [show (k + 1) * (n - k) = (k + 1) + (k + 1) * (n - k - 1) from by
+                obtain ⟨t, ht⟩ : ∃ t, n - k = t + 1 := ⟨n - k - 1, by omega⟩
+                rw [ht, Nat.add_sub_cancel]; ring, hm]
+          rw [reflect_monomial, revAt_le (le_refl _), Nat.sub_self, pow_zero, one_mul]
+        -- assemble: reflect (first Pascal) = second Pascal
+        conv_lhs => rw [qBinom_pascal]
+        rw [reflect_add, hPA, hPB, qBinom_pascal' (X : ℤ[X]) n k (by omega)]
+
+open Polynomial in
+/-- **Coefficient palindromy, read off coefficients.**  For `k ≤ n`,
+`(qBinom X n k).coeff j = (qBinom X n k).coeff (revAt (k(n-k)) j)` for every `j`.  Immediate from
+`qBinom_X_reflect` via `coeff_reflect`.  (`revAt (k(n-k)) j = k(n-k) − j` for `j ≤ k(n-k)`, and
+`= j` past the degree, where both sides vanish.) -/
+theorem qBinom_X_coeff_symm {n k : ℕ} (h : k ≤ n) (j : ℕ) :
+    (qBinom (X : ℤ[X]) n k).coeff j
+      = (qBinom (X : ℤ[X]) n k).coeff (revAt (k * (n - k)) j) := by
+  nth_rewrite 1 [← qBinom_X_reflect n k h]
+  rw [coeff_reflect]
+
+open Polynomial in
+/-- **Coefficient palindromy in subtraction form.**  For `k ≤ n` and `j ≤ k(n-k)`,
+`(qBinom X n k).coeff j = (qBinom X n k).coeff (k(n-k) − j)` — the symmetric coefficient array
+`a_j = a_{k(n-k)−j}` of Sylvester's theorem, made concrete over `ℤ[X]`. -/
+theorem qBinom_X_coeff_symm' {n k : ℕ} (h : k ≤ n) {j : ℕ} (hj : j ≤ k * (n - k)) :
+    (qBinom (X : ℤ[X]) n k).coeff j
+      = (qBinom (X : ℤ[X]) n k).coeff (k * (n - k) - j) := by
+  rw [qBinom_X_coeff_symm h j, revAt_le hj]
+
 /-! ### Base change: specializing the Gaussian polynomial
 
 The `q`-binomial is assembled purely from the ring operations of the `q`-Pascal recurrence,
