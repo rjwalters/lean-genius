@@ -29,6 +29,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 
+open scoped Classical
+
 namespace Erdos328
 
 /- ## Part I: Representation Function -/
@@ -38,7 +40,7 @@ namespace Erdos328
 r_A(n) = 1_A * 1_A(n) = |{(a, b) ∈ A × A : a + b = n}|.
 Counts the number of ways to write n as a sum of two elements from A.
 -/
-def representationFunction (A : Set ℕ) (n : ℕ) : ℕ :=
+noncomputable def representationFunction (A : Set ℕ) (n : ℕ) : ℕ :=
   Finset.card (Finset.filter (fun p : ℕ × ℕ => p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n)
     (Finset.product (Finset.range (n + 1)) (Finset.range (n + 1))))
 
@@ -65,7 +67,7 @@ A is a Sidon set if all pairwise sums are distinct.
 Equivalently, r_A(n) ≤ 2 for all n (counting ordered pairs).
 -/
 def isSidonSet (A : Set ℕ) : Prop :=
-  ∀ a b c d ∈ A, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
+  ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, a + b = c + d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
 
 /--
 **B_h set:**

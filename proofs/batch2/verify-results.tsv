@@ -54,7 +54,7 @@ AlgebraicPointsNull	GREEN
 AlgebraicRealsNull	GREEN	
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	RESIDUAL	signature-drift
-AmgmInequalityOQ02Defs	RESIDUAL	dot-notation-drift
+AmgmInequalityOQ02Defs	GREEN	dot-notation-drift
 AmgmInequalityOQ02OQ01OQ02	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
@@ -662,7 +662,7 @@ Erdos1018Aristotle	RESIDUAL	proof-drift
 Erdos1018OQ01	GREEN	
 Erdos1018OQ01OQ01	GREEN	
 Erdos1018OQ01OQ01OQ01	GREEN	
-Erdos1018OQ01OQ01OQ01OQ01	RESIDUAL	signature-drift
+Erdos1018OQ01OQ01OQ01OQ01	GREEN	signature-drift
 Erdos1018OQ04	GREEN	
 Erdos1018OQ04Incomplete01	RESIDUAL	unknown-const:Set.image_subset
 Erdos1018OQ04Incomplete01Aristotle	GREEN	
@@ -722,7 +722,7 @@ Erdos1042Problem	GREEN
 Erdos1043Aristotle	RESIDUAL	parse-error
 Erdos1044Problem	GREEN	
 Erdos1045Problem	RESIDUAL	unknown-const:z
-Erdos1046Problem	RESIDUAL	elab-drift
+Erdos1046Problem	GREEN	elab-drift
 Erdos1048Aristotle	RESIDUAL	unknown-const:Complex.continuous_abs.comp
 Erdos1048Problem	GREEN	
 Erdos1048ProblemAristotle	GREEN	
@@ -780,7 +780,7 @@ Erdos1083Problem	GREEN
 Erdos1084OQ01	GREEN	
 Erdos1084Problem	GREEN	
 Erdos1085Problem	GREEN	
-Erdos1086Problem	RESIDUAL	parse-error
+Erdos1086Problem	GREEN	parse-error
 Erdos1087Problem	RESIDUAL	instance-synth
 Erdos1088Problem	GREEN	
 Erdos1089Problem	RESIDUAL	unknown-const:PiLp.equiv_symm_apply
@@ -1130,15 +1130,15 @@ Erdos325Problem	GREEN
 Erdos326Problem	GREEN	
 Erdos327OQ01	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
 Erdos327OQ01OQ04	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
-Erdos328Problem	RESIDUAL	parse-error
+Erdos328Problem	GREEN	parse-error
 Erdos329Problem	GREEN	
 Erdos330Problem	GREEN	
 Erdos332Problem	GREEN	
 Erdos333Problem	GREEN	
 Erdos334Problem	RESIDUAL	unknown-const:Nat.Prime.dvd_prime_pow
 Erdos336Problem	GREEN	
-Erdos337Aristotle	RESIDUAL	elab-drift
-Erdos337Problem	RESIDUAL	elab-drift
+Erdos337Aristotle	GREEN	elab-drift
+Erdos337Problem	GREEN	elab-drift
 Erdos338Aristotle	RESIDUAL	proof-drift
 Erdos338Problem	RESIDUAL	proof-drift
 Erdos339Aristotle	RESIDUAL	instance-synth
@@ -1171,7 +1171,7 @@ Erdos353Problem	RESIDUAL	unknown-const:smul_left_cancel₀
 Erdos354Problem	GREEN	
 Erdos355Problem	RESIDUAL	proof-drift
 Erdos356Problem	RESIDUAL	unknown-const:Finset.range'
-Erdos357Problem	RESIDUAL	parse-error
+Erdos357Problem	GREEN	parse-error
 Erdos358Problem	RESIDUAL	unknown-const:two_mul_sum_Icc
 Erdos359Problem	GREEN	
 Erdos35Problem	RESIDUAL	proof-drift
@@ -1421,7 +1421,7 @@ Erdos570Problem	RESIDUAL	type-mismatch
 Erdos571Problem	RESIDUAL	instance-synth
 Erdos572Problem	RESIDUAL	proof-drift
 Erdos573Problem	GREEN	
-Erdos575Problem	RESIDUAL	elab-drift
+Erdos575Problem	GREEN	elab-drift
 Erdos576Problem	RESIDUAL	parse-error
 Erdos577Problem	GREEN	
 Erdos578Problem	RESIDUAL	proof-drift
@@ -1435,7 +1435,7 @@ Erdos581Problem	GREEN
 Erdos582Problem	RESIDUAL	dot-notation-drift
 Erdos583Problem	RESIDUAL	proof-drift
 Erdos584Problem	GREEN	
-Erdos585Problem	RESIDUAL	elab-drift
+Erdos585Problem	GREEN	elab-drift
 Erdos586Problem	GREEN	
 Erdos587Problem	GREEN	
 Erdos588Problem	GREEN	
@@ -1699,7 +1699,7 @@ Erdos791Problem	GREEN
 Erdos792Problem	GREEN	
 Erdos794Problem	RESIDUAL	type-mismatch
 Erdos795Aristotle	GREEN	
-Erdos795Problem	RESIDUAL	parse-error
+Erdos795Problem	GREEN	parse-error
 Erdos795ProblemAristotle	RESIDUAL	parse-error
 Erdos796Problem	RESIDUAL	type-mismatch
 Erdos797Problem	RESIDUAL	proof-drift
@@ -1925,7 +1925,7 @@ Erdos982Problem	GREEN
 Erdos983Problem	GREEN	
 Erdos984Problem	GREEN	
 Erdos986Problem	GREEN	
-Erdos987Problem	RESIDUAL	parse-error
+Erdos987Problem	GREEN	parse-error
 Erdos988Problem	RESIDUAL	instance-synth
 Erdos989Problem	RESIDUAL	proof-drift
 Erdos98Problem	GREEN	
@@ -2283,7 +2283,7 @@ NewtonInductiveStepOQ01Aristotle	RESIDUAL	type-mismatch
 NewtonInductiveStepOQ02	RESIDUAL	type-mismatch
 NewtonInductiveStepOQ03	RESIDUAL	proof-drift
 NewtonLogConcavity	GREEN	
-NewtonSignedInputs	RESIDUAL	dot-notation-drift
+NewtonSignedInputs	GREEN	dot-notation-drift
 NormEuclideanZsqrtdFamilyOQ03OQ02	RESIDUAL	instance-synth
 NormEuclideanZsqrtdFamilyOQ03OQ02OQ01	RESIDUAL	instance-synth
 OSBridge	RESIDUAL	instance-synth
@@ -2533,7 +2533,7 @@ SynthesisCurvaturePtolemyOQ01	RESIDUAL	unknown-const:spherical_ptolemy
 SynthesisCurvaturePtolemyOQ02	GREEN	
 SzemerediCoreOQ01	RESIDUAL	proof-drift
 SzemerediCoreOQ01Aristotle	RESIDUAL	proof-drift
-SzemerediCounting	RESIDUAL	signature-drift
+SzemerediCounting	GREEN	signature-drift
 SzemerediHypergraphCore	RESIDUAL	proof-drift
 SzemerediHypergraphGowers	RESIDUAL	proof-drift
 SzemerediRegularity	GREEN	

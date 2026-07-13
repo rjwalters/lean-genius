@@ -177,7 +177,7 @@ Follows from Pommerenke's counterexample since √3 · 2^{1/3} > 2.
 The supremum of distances between points.
 -/
 noncomputable def diameter (S : Set ℂ) : ℝ :=
-  sSup {Complex.abs (z - w) | (z, w) ∈ S ×ˢ S}
+  sSup {d | ∃ z ∈ S, ∃ w ∈ S, Complex.abs (z - w) = d}
 
 /- 
 **Sharper Diameter Bound (Pommerenke):**

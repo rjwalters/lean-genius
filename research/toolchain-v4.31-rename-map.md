@@ -755,3 +755,27 @@ one-edit fixes = the SINGLE-own-error-line rows (19 of the 178 synth rows).
 | `Finset.card_filter_le _ _` metavars stuck (`DecidablePred ?m`) | `open scoped Classical` + `le_trans (Finset.card_filter_le Finset.univ _) (by simp [Finset.card_univ])` | Erdos990 |
 | `List.get_mem seed 0 h0` — index sig changed | `List.get_mem seed ⟨0, h0⟩` (single `Fin` index arg) | Erdos472; `List.getElem_mem h` for the `seed[i]` form |
 | `OfNat (Fin k) 0` in a def using `fun _ => 0 : α → Fin k` | add `[NeZero k]` (statement repair — `α → Fin 0` doesn't exist for nonempty α) | Erdos1022OQ01 (DEFERRED: multi-site cascade), Erdos734 (`haveI : NeZero n := ⟨by omega⟩` local from `n≥2`) |
+
+### 7q. Doctor increment-16 recipes (#38065, 2026-07-13, structured classes + instance-synth tail)
+
+**Meta-finding:** the instance-synth class is a dead end for the §7o one-import
+rpow fix — a full scan of all 160 synth targets found ZERO curated-import
+`HPow ℝ ℝ`/`HPow ℕ ℝ` candidates; every synth file is an `import Mathlib`
+umbrella where the HPow failure is a genuine metavar. `open scoped Classical`
+synth-fixes are necessary-but-not-sufficient on every attempted file (surfaces
+deeper tm/pd/`//`/`SimpleGraph.mk` underneath). The reliable multiplier is
+**dep-cascade**: fix a primary dep and its dependents auto-flip once the
+sibling olean builds. +14 GREEN this increment, all from parse/elab/dot/sig
+sole-blocker rows + 2 cascade flips.
+
+| v4.31 symptom | fix | notes |
+|---|---|---|
+| Finset `.toSet` field — "environment does not contain `Finset.toSet`" | `(↑X : Set (elemType))` coercion (annotate the element type, e.g. `Set (Finset (Fin (n+1)))`) | AmgmInequalityOQ02Defs — resolves the inc-14 DEFERRED `.toSet` cascade |
+| custom `notation:65 A " + " B => …` shadows `+`, so a def's `match` arm `\| n + 1 =>` misparses as the notation ("Invalid pattern: Expected a constructor") | use `\| Nat.succ n =>` in the match arm | Erdos337 — the redefined `+` captures the numeral-successor pattern |
+| `⨆ (a b : T) (hab : P), …` multi-name binder group — "unexpected identifier; expected ')'" | split names: `⨆ (a : T) (b : T) (_ : P), …` | Erdos987; then `noncomputable` (Real.instSupSet) |
+| set-builder `{expr \| True}` (a constant expression with trivial binder) | `{k \| k = expr}` | Erdos575; the `\| True` value-set form no longer parses |
+| set-builder `{f z \| (z, w) ∈ S ×ˢ S}` (image app + pattern binder) | `{d \| ∃ z ∈ S, ∃ w ∈ S, f z = d}` explicit comprehension | Erdos1046 (confirms §7n) |
+| `Finset.OrdConnected` field ("environment does not contain `Finset.OrdConnected`") | `(↑J : Set _).OrdConnected` — `OrdConnected` is Set-only | Erdos357 |
+| `#{k \| p k}` set-cardinality notation — "unexpected token '#'; expected term" | `Nat.card {k \| p k}` | Erdos357 (×2) |
+| `∀ a b c d ∈ A, …` multi-binder-with-`∈` | `∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, …` | Erdos328/795 (confirms §7n; both also needed a 2nd fix: `open scoped Classical`+noncomputable / `Real.toNat`→`⌊·⌋₊`) |
+| SimpleGraph `symm.symm := <pf>` / `loopless.irrefl := <pf>` field (`:=` form) | `symm := ⟨<pf>⟩` / `loopless := ⟨<pf>⟩` (also multi-binder `symm.symm v w := by …` → `symm := ⟨fun v w => by …⟩`); use-sites `G.symm h`→`G.adj_symm h`, `G.loopless v h`→`G.loopless.irrefl v h` | SzemerediCounting FLIPPED; Erdos1031/1175/576/582/637Aristotle/RothTriangleRemoval have deeper own errors (edge_mem_edgeSet/degree_lt_card renames, Quot.toType, DecidableRel arg-name, RothTheorem dep) — field fix ready, did not flip (confirms §7p) |
