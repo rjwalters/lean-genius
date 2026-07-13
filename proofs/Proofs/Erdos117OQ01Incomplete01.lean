@@ -135,4 +135,126 @@ theorem not_exponentialBaseExists_implies_not_submultiplicative
     ¬ (∀ m n : ℕ, h (m + n) ≤ h m * h n) :=
   fun hsub => hno (submultiplicative_implies_exponentialBaseExists hsub)
 
+/-! ### The dual sufficient condition: supermultiplicativity
+
+The parent proves `submultiplicative_implies_convergence` via Fekete's lemma
+applied to the *subadditive* sequence `log(h n)` (Mathlib's
+`Subadditive.tendsto_lim`).  Mathlib has no `Superadditive` API, so the dual
+condition — `h(m)·h(n) ≤ h(m+n)` (**supermultiplicativity**) — is not covered.
+We supply it here by applying `Subadditive.tendsto_lim` to the *negated*
+sequence `g n = −log(h n)`, which is subadditive exactly when `log(h n)` is
+superadditive.  The boundedness hypothesis Fekete needs (`g n / n` bounded
+below) is furnished by Pyber's **upper** bound `growthRate n ≤ log c₂`
+(`growthRate_upper_bound`), the mirror of the lower bound used in the
+submultiplicative proof.
+
+Consequently *either* one-sided multiplicative inequality resolves Erdős #117
+OQ-01 in the affirmative, and — the sharpened capstone — a genuine
+counterexample (no exponential base) must violate **both** at once. -/
+
+/-- **Supermultiplicativity ⟹ convergence** (the Fekete dual).  If
+`h(m)·h(n) ≤ h(m+n)` for all `m, n`, the growth rate converges.  Proof: the
+sequence `g n = −log(h n)` is subadditive (superadditivity of `log h`), and
+`g n / n = −growthRate n ≥ −log c₂` is bounded below by Pyber's upper bound, so
+Mathlib's `Subadditive.tendsto_lim` gives `g n / n → g.lim`; negating,
+`growthRate n → −g.lim`.  The mirror image of the parent's
+`submultiplicative_implies_convergence`. -/
+theorem supermultiplicative_implies_convergence
+    (hsup : ∀ m n : ℕ, h m * h n ≤ h (m + n)) :
+    growthRateConverges := by
+  -- `g = -log h` is subadditive; Fekete gives `g n / n → g.lim`, so `growthRate → -g.lim`.
+  let g : ℕ → ℝ := fun n => - Real.log (h n : ℝ)
+  -- `h 0 ≤ 1`: from `hsup 0 0`, `h 0 * h 0 ≤ h 0`.
+  have h0_le : h 0 ≤ 1 := by
+    have hh := hsup 0 0
+    rw [Nat.add_zero] at hh
+    rcases Nat.eq_zero_or_pos (h 0) with h0z | h0p
+    · omega
+    · exact Nat.le_of_mul_le_mul_left (by rwa [Nat.mul_one]) h0p
+  -- Hence `log(h 0) = 0` (whether `h 0 = 0` or `1`).
+  have hlog0 : Real.log (h 0 : ℝ) = 0 := by
+    have : h 0 = 0 ∨ h 0 = 1 := by omega
+    rcases this with h0 | h0 <;> rw [h0] <;> simp
+  have h_pos_ge1 : ∀ n : ℕ, 1 ≤ n → (0 : ℝ) < (h n : ℝ) := fun n hn => by
+    exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one (h_pos n hn)
+  -- `log h` is superadditive (for all `m, n`, using `log(h 0) = 0` for the boundary).
+  have hlog_super : ∀ m n : ℕ,
+      Real.log (h m : ℝ) + Real.log (h n : ℝ) ≤ Real.log (h (m + n) : ℝ) := by
+    intro m n
+    rcases Nat.eq_zero_or_pos m with rfl | hm
+    · simp [hlog0]
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · simp [hlog0]
+    have hm' := h_pos_ge1 m hm
+    have hn' := h_pos_ge1 n hn
+    rw [← Real.log_mul (ne_of_gt hm') (ne_of_gt hn')]
+    exact Real.log_le_log (mul_pos hm' hn') (by exact_mod_cast hsup m n)
+  -- Therefore `g` is subadditive.
+  have hg_sub : Subadditive g := fun m n => by
+    show - Real.log (h (m + n) : ℝ) ≤ - Real.log (h m : ℝ) + - Real.log (h n : ℝ)
+    linarith [hlog_super m n]
+  -- `g n / n` is bounded below: `= -growthRate n ≥ -log c₂` for `n ≥ 1`, `= 0` for `n = 0`.
+  have hbdd : BddBelow (Set.range fun n : ℕ => g n / n) := by
+    obtain ⟨U, hU⟩ := growthRate_upper_bound
+    refine ⟨min (-U) 0, ?_⟩
+    rintro x ⟨n, rfl⟩
+    rcases Nat.eq_zero_or_pos n with rfl | hpos
+    · show min (-U) 0 ≤ g 0 / ((0 : ℕ) : ℝ)
+      simp only [Nat.cast_zero, div_zero]
+      exact min_le_right _ _
+    · have hgn : g n / n = - growthRate n := by
+        show (- Real.log (h n : ℝ)) / (n : ℝ) = - growthRate n
+        unfold growthRate
+        rw [if_neg (show n ≠ 0 from by omega), neg_div]
+      show min (-U) 0 ≤ g n / (n : ℝ)
+      rw [hgn]
+      have hgr : growthRate n ≤ U := hU n hpos
+      calc min (-U) 0 ≤ -U := min_le_left _ _
+        _ ≤ - growthRate n := by linarith
+  -- Fekete on `g`, then negate to recover `growthRate`.
+  refine ⟨- hg_sub.lim, ?_⟩
+  have hneg := (hg_sub.tendsto_lim hbdd).neg
+  apply hneg.congr'
+  apply Filter.eventually_atTop.mpr
+  refine ⟨1, fun n hn => ?_⟩
+  show -((- Real.log (h n : ℝ)) / (n : ℝ)) = growthRate n
+  unfold growthRate
+  rw [if_neg (show n ≠ 0 from by omega), neg_div, neg_neg]
+
+/-- **Supermultiplicativity ⟹ zero oscillation.**  The oscillation form of
+`supermultiplicative_implies_convergence`, dual to
+`submultiplicative_implies_oscillation_zero`. -/
+theorem supermultiplicative_implies_oscillation_zero
+    (hsup : ∀ m n : ℕ, h m * h n ≤ h (m + n)) :
+    growthRateLimSup - growthRateLimInf = 0 :=
+  converges_iff_oscillation_zero.mp (supermultiplicative_implies_convergence hsup)
+
+/-- **Supermultiplicativity ⟹ a single exponential base exists.**  The
+exponential-base form: a supermultiplicative covering number `h` answers Erdős
+#117 OQ-01 *yes*, dual to `submultiplicative_implies_exponentialBaseExists`. -/
+theorem supermultiplicative_implies_exponentialBaseExists
+    (hsup : ∀ m n : ℕ, h m * h n ≤ h (m + n)) :
+    exponentialBaseExists :=
+  exponentialBaseExists_iff_converges.mpr (supermultiplicative_implies_convergence hsup)
+
+/-- **A counterexample must break supermultiplicativity too.**  The
+contrapositive dual of `not_exponentialBaseExists_implies_not_submultiplicative`:
+if no single exponential base exists then `h` is not supermultiplicative either. -/
+theorem not_exponentialBaseExists_implies_not_supermultiplicative
+    (hno : ¬ exponentialBaseExists) :
+    ¬ (∀ m n : ℕ, h m * h n ≤ h (m + n)) :=
+  fun hsup => hno (supermultiplicative_implies_exponentialBaseExists hsup)
+
+/-- **A counterexample must break BOTH one-sided multiplicative laws.**  The
+sharpened structural constraint on any counterexample to Erdős #117 OQ-01:
+since *either* submultiplicativity (`h(m+n) ≤ h(m)·h(n)`) *or*
+supermultiplicativity (`h(m)·h(n) ≤ h(m+n)`) alone would force convergence, a
+genuinely oscillating covering number must violate **both** — its values can be
+neither globally sub- nor globally super-multiplicative. -/
+theorem not_exponentialBaseExists_implies_not_multiplicative
+    (hno : ¬ exponentialBaseExists) :
+    ¬ (∀ m n : ℕ, h (m + n) ≤ h m * h n) ∧ ¬ (∀ m n : ℕ, h m * h n ≤ h (m + n)) :=
+  ⟨not_exponentialBaseExists_implies_not_submultiplicative hno,
+   not_exponentialBaseExists_implies_not_supermultiplicative hno⟩
+
 end Erdos117OQ01Incomplete01
