@@ -95,7 +95,7 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
         hf.contDiffAt.differentiableAt <| by norm_num) using 1
   · exact Continuous.intervalIntegrable
       (by exact Complex.continuous_ofReal.comp (hf.continuous_deriv le_rfl)) _ _
-  · rw [this]; ring; norm_num [hn, Real.pi_ne_zero]; ring
+  · rw [this]; ring; norm_num [hn, Real.pi_ne_zero]
     rw [show f (Real.pi * 2) = f 0 by simpa [mul_comm] using hperiod 0]; ring
 
 end IsoperimetricOQAristotle

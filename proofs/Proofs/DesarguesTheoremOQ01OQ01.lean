@@ -110,8 +110,8 @@ private def R_pt  : ℝ × ℝ := (-6,  11)
 lemma collinear_OAA' : MoultonCollinear O_pt A_pt A'_pt := by
   right
   exact ⟨-3/2, 0,
-    onML_neg_slope (by norm_num) _ (by simp [O_pt]; ring),
-    onML_neg_slope (by norm_num) _ (by simp [A_pt]; ring),
+    onML_neg_slope (by norm_num) _ (by simp [O_pt] ),
+    onML_neg_slope (by norm_num) _ (by simp [A_pt] ),
     onML_neg_slope (by norm_num) _ (by simp [A'_pt]; ring)⟩
 
 /-- O, B, B' lie on the Moulton line with left-slope 2/3 and intercept 0.
@@ -119,9 +119,9 @@ lemma collinear_OAA' : MoultonCollinear O_pt A_pt A'_pt := by
 lemma collinear_OBB' : MoultonCollinear O_pt B_pt B'_pt := by
   right
   exact ⟨2/3, 0,
-    onML_pos_left (by norm_num) _ (by norm_num) (by simp [O_pt]; ring),
-    onML_pos_right (by norm_num) _ (by simp [B_pt]; norm_num) (by simp [B_pt]; ring),
-    onML_pos_right (by norm_num) _ (by simp [B'_pt]; norm_num) (by simp [B'_pt]; ring)⟩
+    onML_pos_left (by norm_num) _ (by norm_num) (by simp [O_pt] ),
+    onML_pos_right (by norm_num) _ (by simp [B_pt] ) (by simp [B_pt]; ring),
+    onML_pos_right (by norm_num) _ (by simp [B'_pt] ) (by simp [B'_pt]; ring)⟩
 
 /-- O, C, C' lie on the vertical Moulton line x = 0. -/
 lemma collinear_OCC' : MoultonCollinear O_pt C_pt C'_pt := by

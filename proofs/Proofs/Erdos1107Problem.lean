@@ -23,9 +23,7 @@ References:
   numbers" Séminaire de Théorie des Nombres, Paris 1986-87 (1988), 137-163.
 -/
 
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib
 
 open Nat Filter
 

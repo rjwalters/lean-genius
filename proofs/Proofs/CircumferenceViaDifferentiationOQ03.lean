@@ -86,8 +86,7 @@ theorem riemannianVolumeBall_hasDerivWithinAt_fin_two
       (2 * π * r) (Set.Ici 0) r := by
   have h_poly : HasDerivAt (fun s : ℝ => π * s ^ 2) (2 * π * r) r := by
     have h := (hasDerivAt_pow 2 r).const_mul π
-    convert h using 1
-    ring
+    convert h using 1 <;> (first | rfl | ring)
   refine h_poly.hasDerivWithinAt.congr (fun s hs => ?_) ?_
   · exact riemannianVolumeBall_fin_two p s hs
   · exact riemannianVolumeBall_fin_two p r hr
@@ -99,8 +98,7 @@ theorem riemannianVolumeBall_hasDerivWithinAt_fin_three
       (4 * π * r ^ 2) (Set.Ici 0) r := by
   have h_poly : HasDerivAt (fun s : ℝ => (4 * π / 3) * s ^ 3) (4 * π * r ^ 2) r := by
     have h := (hasDerivAt_pow 3 r).const_mul (4 * π / 3)
-    convert h using 1
-    ring
+    convert h using 1 <;> (first | rfl | ring)
   refine h_poly.hasDerivWithinAt.congr (fun s hs => ?_) ?_
   · exact riemannianVolumeBall_fin_three p s hs
   · exact riemannianVolumeBall_fin_three p r hr

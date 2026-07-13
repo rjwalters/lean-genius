@@ -114,40 +114,40 @@ theorem hasDerivAt_dalzell2Antideriv (x : ℝ) :
   unfold dalzell2Antideriv dalzell2Decomposed
   have h15 : HasDerivAt (fun x : ℝ => x ^ 15 / 15) (x ^ 14) x := by
     have := (hasDerivAt_pow 15 x).div_const (15 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h14 : HasDerivAt (fun x : ℝ => 4 * x ^ 14 / 7) (8 * x ^ 13) x := by
     have := ((hasDerivAt_pow 14 x).const_mul 4).div_const (7 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h13 : HasDerivAt (fun x : ℝ => 27 * x ^ 13 / 13) (27 * x ^ 12) x := by
     have := ((hasDerivAt_pow 13 x).const_mul 27).div_const (13 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h12 : HasDerivAt (fun x : ℝ => 4 * x ^ 12) (48 * x ^ 11) x := by
     have := (hasDerivAt_pow 12 x).const_mul (4 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h11 : HasDerivAt (fun x : ℝ => 43 * x ^ 11 / 11) (43 * x ^ 10) x := by
     have := ((hasDerivAt_pow 11 x).const_mul 43).div_const (11 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h10 : HasDerivAt (fun x : ℝ => 4 * x ^ 10 / 5) (8 * x ^ 9) x := by
     have := ((hasDerivAt_pow 10 x).const_mul 4).div_const (5 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h9 : HasDerivAt (fun x : ℝ => 5 * x ^ 9 / 3) (15 * x ^ 8) x := by
     have := ((hasDerivAt_pow 9 x).const_mul 5).div_const (3 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h7 : HasDerivAt (fun x : ℝ => 16 * x ^ 7 / 7) (16 * x ^ 6) x := by
     have := ((hasDerivAt_pow 7 x).const_mul 16).div_const (7 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h5 : HasDerivAt (fun x : ℝ => 16 * x ^ 5 / 5) (16 * x ^ 4) x := by
     have := ((hasDerivAt_pow 5 x).const_mul 16).div_const (5 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h3 : HasDerivAt (fun x : ℝ => 16 * x ^ 3 / 3) (16 * x ^ 2) x := by
     have := ((hasDerivAt_pow 3 x).const_mul 16).div_const (3 : ℝ)
-    convert this using 1; push_cast; ring
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h1 : HasDerivAt (fun x : ℝ => 16 * x) (16 : ℝ) x := by
     have := (hasDerivAt_id x).const_mul (16 : ℝ)
     convert this using 1; simp
   have ha : HasDerivAt (fun x : ℝ => 16 * arctan x) (16 / (1 + x ^ 2)) x := by
     have := (hasDerivAt_arctan x).const_mul (16 : ℝ)
-    convert this using 1; ring
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Chain all terms together (left-associative, matching the definition's parsing)
   have hcomb :=
     ((((((((((h15.sub h14).add h13).sub h12).add h11).sub h10).sub h9).add h7).sub h5).add h3).sub h1).add ha

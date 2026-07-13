@@ -79,7 +79,6 @@ lemma pnt_1c_logx_tendsto (c : ℝ) (hc : c > 0) :
   have hlog1cx_ne : Real.log ((1 + c) * x) ≠ 0 :=
     ne_of_gt (Real.log_pos (by nlinarith))
   field_simp
-  ring
 
 /-- Aristotle target: Density asymptotic for intervals of length cx from PNT.
 
@@ -117,7 +116,6 @@ lemma long_interval_density_from_pnt' (c : ℝ) (hc : c > 0) :
   have hcx_ne : c * x ≠ 0 := mul_ne_zero hc_ne hx_ne
   have h1cx_ne : (1 + c) * x ≠ 0 := mul_ne_zero (ne_of_gt h1c_pos) hx_ne
   field_simp
-  ring
 
 end
 

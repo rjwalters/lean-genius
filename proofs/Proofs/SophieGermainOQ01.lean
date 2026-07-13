@@ -4,6 +4,8 @@ import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
+set_option maxRecDepth 100000
+
 /-
 # Are There Infinitely Many Sophie Germain Primes?
 

@@ -149,7 +149,7 @@ theorem triple_8_15_17 : PythagoreanTriple 8 15 17 := by
 
 /-- Brahmagupta-Fibonacci example: (1² + 2²)(3² + 4²) = (11)² + (2)² = 125. -/
 theorem bf_example : (1 ^ 2 + 2 ^ 2) * (3 ^ 2 + 4 ^ 2) = 11 ^ 2 + 2 ^ 2 := by
-  have := brahmagupta_fibonacci 1 2 3 4; norm_num at this ⊢; linarith
+  have := brahmagupta_fibonacci 1 2 3 4; norm_num at this ⊢
 
 /-
   Summary

@@ -81,8 +81,7 @@ theorem hasSum_eta_four :
   have h := HasSum.even_add_odd
     (f := fun n : ℕ => (-1 : ℝ) ^ (n + 1) / (n : ℝ) ^ 4)
     hasSum_eta_four_even hasSum_eta_four_odd
-  convert h using 1
-  ring
+  convert h using 1 <;> (first | rfl | ring)
 
 /-- **Dirichlet eta value η(4)** in `tsum` form: `∑' n, (-1)^(n+1)/n⁴ = 7π⁴/720`. -/
 theorem tsum_eta_four :

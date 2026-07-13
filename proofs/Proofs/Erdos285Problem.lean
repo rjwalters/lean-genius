@@ -14,12 +14,7 @@
   Key paper: Martin, Greg, "Denser Egyptian fractions" (2000)
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.Asymptotics.Defs
-import Mathlib.Analysis.Asymptotics.Lemmas
-import Mathlib.Data.Fintype.BigOperators
-import Mathlib.Topology.Instances.Real.Lemmas
-import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib
 
 namespace Erdos285
 

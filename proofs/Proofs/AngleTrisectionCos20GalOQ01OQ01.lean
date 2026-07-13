@@ -69,13 +69,13 @@ noncomputable def eisensteinCubic (p : ℕ) : ℚ[X] :=
   simp [trisectionPoly]
 
 @[simp] theorem trisectionPoly_7 : trisectionPoly 7 = 8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 := by
-  simp [trisectionPoly]; norm_num
+  simp [trisectionPoly]
 
 @[simp] theorem eisensteinCubic_3 : eisensteinCubic 3 = X ^ 3 - 6 * X ^ 2 + 9 * X - C 3 := by
   simp [eisensteinCubic]
 
 @[simp] theorem eisensteinCubic_7 : eisensteinCubic 7 = X ^ 3 - 7 * X ^ 2 + 14 * X - C 7 := by
-  simp [eisensteinCubic]; norm_num
+  simp [eisensteinCubic]
 
 /-! ## The Core Unification Theorem -/
 

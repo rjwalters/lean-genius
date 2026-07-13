@@ -151,14 +151,14 @@ private lemma pow_irred_dvd_of_annihilated
       have : (aeval M (p ^ (e + 1))).mulVec ((aeval M p).mulVec v) =
              (aeval M (p ^ (e + 1 + 1))).mulVec v := by
         rw [Matrix.mulVec_mulVec, ← map_mul]
-        congr 2; ring
+        congr 2
       rw [this]; exact hzero
     -- p^e(M)u = p^e(M)*p(M)*v = p^(e+1)(M)*v ≠ 0
     have hu_ne : (aeval M (p ^ e)).mulVec ((aeval M p).mulVec v) ≠ 0 := by
       have : (aeval M (p ^ e)).mulVec ((aeval M p).mulVec v) =
              (aeval M (p ^ (e + 1))).mulVec v := by
         rw [Matrix.mulVec_mulVec, ← map_mul]
-        congr 2; ring
+        congr 2
       rw [this]; exact hne
     -- r₁(M)u = r₁(M)*p(M)*v = (r₁*p)(M)*v = r(M)*v = 0
     have hr₁u : (aeval M r₁).mulVec ((aeval M p).mulVec v) = 0 := by

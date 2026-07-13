@@ -12,15 +12,7 @@ Determined up to a multiplicative constant by Conlon-Fox-Pham (2021).
 Reference: https://erdosproblems.com/360
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Nat.Nth
+import Mathlib
 
 namespace Erdos360
 

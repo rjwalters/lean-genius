@@ -72,8 +72,7 @@ lemma integral_sin_cos_zero_half_pi :
     intro θ _
     have h := (Real.hasDerivAt_sin θ).pow 2
     have h2 := h.div_const (2 : ℝ)
-    convert h2 using 1
-    ring
+    convert h2 using 1 <;> (first | rfl | ring)
   rw [integral_eq_sub_of_hasDerivAt hderiv
     ((continuous_sin.mul continuous_cos).intervalIntegrable _ _)]
   simp only [sin_pi_div_two, sin_zero]
@@ -90,8 +89,7 @@ lemma integral_sin_neg_cos_half_pi_pi :
     intro θ _
     have h := (Real.hasDerivAt_cos θ).pow 2
     have h2 := h.div_const (2 : ℝ)
-    convert h2 using 1
-    ring
+    convert h2 using 1 <;> (first | rfl | ring)
   rw [integral_eq_sub_of_hasDerivAt hderiv
     ((continuous_sin.mul continuous_cos.neg).intervalIntegrable _ _)]
   simp only [cos_pi, cos_pi_div_two]

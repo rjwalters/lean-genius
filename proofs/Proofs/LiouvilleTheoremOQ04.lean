@@ -260,7 +260,7 @@ theorem padic_eval_int_poly_cast (f : ℤ[X]) (q : ℚ) :
   have happly : Polynomial.aeval ((q : ℚ_[p])) f =
       (Rat.castHom ℚ_[p]).toIntAlgHom (Polynomial.aeval q f) := by
     have := Polynomial.aeval_algHom_apply (R := ℤ) (Rat.castHom ℚ_[p]).toIntAlgHom q f
-    convert this using 2
+    convert this using 2 <;> (first | rfl | ring | norm_num)
   rw [happly]
   rfl
 

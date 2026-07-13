@@ -132,6 +132,6 @@ theorem zeropad_add (d d' : ℕ) (x y : Fin d → ℝ) :
 theorem zeropad_smul (d d' : ℕ) (r : ℝ) (x : Fin d → ℝ) :
     let ι : (Fin d → ℝ) → (Fin d' → ℝ) := fun a j => if h : j.val < d then a ⟨j.val, h⟩ else 0
     ι (r • x) = r • ι x := by
-  ext i; simp [Pi.smul_apply]; split_ifs <;> simp [smul_zero]
+  ext i; simp [Pi.smul_apply] <;> simp [smul_zero]
 
 end Erdos1018OQ04Incomplete01.Aristotle

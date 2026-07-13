@@ -102,7 +102,6 @@ theorem rat_classNumber_eq_one : classNumber ℚ = 1 :=
     The ring of integers ℤ = 𝒪_ℚ is a principal ideal domain.
     This is immediate from class number 1. -/
 theorem rat_integers_isPID : IsPrincipalIdealRing (RingOfIntegers ℚ) := by
-  rwa [← classNumber_one_iff_PID, rat_classNumber_eq_one]
 
 end MinkowskiClassNumberBound
 

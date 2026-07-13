@@ -116,7 +116,7 @@ theorem obliqueDistribution_zero_below_four (k : ℕ) (hk : k < 4) :
     obliqueDistribution k = 0 := by
   unfold obliqueDistribution
   rw [Finset.card_eq_zero]
-  apply Finset.eq_empty_of_forall_not_mem
+  apply Finset.eq_empty_of_forall_notMem
   intro t ht
   rw [Finset.mem_filter] at ht
   obtain ⟨_, hcount⟩ := ht
@@ -161,7 +161,7 @@ theorem obliqueDistribution_zero_above_64 (k : ℕ) (hk : 64 < k) :
     obliqueDistribution k = 0 := by
   unfold obliqueDistribution
   rw [Finset.card_eq_zero]
-  apply Finset.eq_empty_of_forall_not_mem
+  apply Finset.eq_empty_of_forall_notMem
   intro t ht
   rw [Finset.mem_filter] at ht
   obtain ⟨_, hcount⟩ := ht
@@ -504,10 +504,8 @@ theorem rotateSquareN_add (m n : Fin 4) (s : Square) :
 theorem reflect_rotateN_conjugate (k : Fin 4) (s : Square) :
     reflectSquare (rotateSquareN k s) =
     rotateSquareN ⟨(4 - k.val) % 4, by omega⟩ (reflectSquare s) := by
-  fin_cases k <;>
-    simp only [rotateSquareN, rotateSquare90, reflectSquare,
-               Fin.val_mk, Fin.isValue] <;>
-    ext <;> simp only [Fin.ext_iff] <;> omega
+  revert s
+  fin_cases k <;> decide
 
 /-- D4 multiplication encoded on `Bool × Fin 4`. Defined by pattern
     matching on the outer reflection bit to make `applyD4_mul`'s case

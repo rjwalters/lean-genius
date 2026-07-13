@@ -162,7 +162,6 @@ def erdos_1025_question : Prop :=
 theorem erdos_1025_solved : erdos_1025_question := by
   obtain ⟨c, C, hc, hC, N, hN⟩ := g_asymptotic
   use c, C, hc, hC, fun n => (n : ℝ) ^ (1/2 : ℝ), N
-  exact hN
 
 /-
 ## Related: Set Mappings

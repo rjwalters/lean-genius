@@ -165,7 +165,6 @@ For q = 2: n = 7 vertices.
 theorem fano_plane_example :
     projectivePlaneVertices 2 = 7 := by
   simp [projectivePlaneVertices]
-  ring
 
 /--
 **Example: Projective Plane PG(2,3)**
@@ -174,7 +173,6 @@ For q = 3: n = 13 vertices.
 theorem pg23_example :
     projectivePlaneVertices 3 = 13 := by
   simp [projectivePlaneVertices]
-  ring
 
 /--
 **Example: Projective Plane PG(2,4)**
@@ -184,7 +182,6 @@ Note: 4 = 2² is a prime power but not prime.
 theorem pg24_example :
     projectivePlaneVertices 4 = 21 := by
   simp [projectivePlaneVertices]
-  ring
 
 /--
 **Example: Projective Plane PG(2,5)**
@@ -193,7 +190,6 @@ For q = 5: n = 31 vertices.
 theorem pg25_example :
     projectivePlaneVertices 5 = 31 := by
   simp [projectivePlaneVertices]
-  ring
 
 /- ## Part IX: Summary
 -/
@@ -210,6 +206,6 @@ theorem erdos_765_summary :
     projectivePlaneVertices 2 = 7 := by
   constructor
   · exact asymptotic_formula
-  · simp [projectivePlaneVertices]; ring
+  · simp [projectivePlaneVertices]
 
 end Erdos765

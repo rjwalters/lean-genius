@@ -240,7 +240,7 @@ theorem lambdaRecip_sub_log_le (h : MertensInputs) :
   have hSN : |S / (N : ℝ) - (Real.log N - 1)| ≤ h.cStirling := by
     have hrw : S / (N : ℝ) - (Real.log N - 1)
         = (S - ((N : ℝ) * Real.log N - (N : ℝ))) / (N : ℝ) := by
-      field_simp; ring
+      field_simp
     rw [hrw, abs_div, abs_of_pos hNpos, div_le_iff₀ hNpos]
     calc |S - ((N : ℝ) * Real.log N - (N : ℝ))|
         ≤ h.cStirling * Real.log N := hst

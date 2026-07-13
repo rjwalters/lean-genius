@@ -117,7 +117,7 @@ theorem discrepancy_unbounded (A : PointSequence) :
     left
     linarith
   use hr_pos
-  have hr_gt_r0 : r > r₀ := by simp [r]; linarith
+  have hr_gt_r0 : r > r₀ := by simp [r]
   calc circleDiscrepancy A r hr_pos
       ≥ c * r.sqrt := hr₀ r hr_gt_r0
     _ ≥ c * ((M / c + 1)^2).sqrt := by

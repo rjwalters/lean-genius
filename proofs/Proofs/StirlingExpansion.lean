@@ -112,12 +112,12 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
     have hpoly : HasDerivAt (fun t => t - t ^ 2 / 2 + t ^ 3 / 3) (1 - t + t ^ 2) t := by
       have h2 : HasDerivAt (fun t => t ^ 2 / 2) t t := by
         have := (hasDerivAt_pow 2 t).div_const 2
-        convert this using 1; ring
+        convert this using 1 <;> (first | rfl | ring | norm_num)
       have h3 : HasDerivAt (fun t => t ^ 3 / 3) (t ^ 2) t := by
         have := (hasDerivAt_pow 3 t).div_const 3
-        convert this using 1; ring
+        convert this using 1 <;> (first | rfl | ring | norm_num)
       have h := ((hasDerivAt_id t).sub h2).add h3
-      convert h using 1
+      convert h using 1 <;> (first | rfl | ring | norm_num)
     -- Derivative of log part: 1/(1+t)
     have hlog : HasDerivAt (fun t => Real.log (1 + t)) (1 + t)⁻¹ t := by
       have h1 : HasDerivAt (fun t => 1 + t) 1 t := (hasDerivAt_id t).const_add 1
@@ -183,13 +183,13 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
     have hpoly : HasDerivAt (fun t => t - t ^ 2 / 2 + t ^ 3 / 3 - t ^ 4 / 4)
                              (1 - t + t ^ 2 - t ^ 3) t := by
       have h2 : HasDerivAt (fun t => t ^ 2 / 2) t t := by
-        have := (hasDerivAt_pow 2 t).div_const 2; convert this using 1; ring
+        have := (hasDerivAt_pow 2 t).div_const 2; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h3 : HasDerivAt (fun t => t ^ 3 / 3) (t ^ 2) t := by
-        have := (hasDerivAt_pow 3 t).div_const 3; convert this using 1; ring
+        have := (hasDerivAt_pow 3 t).div_const 3; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h4 : HasDerivAt (fun t => t ^ 4 / 4) (t ^ 3) t := by
-        have := (hasDerivAt_pow 4 t).div_const 4; convert this using 1; ring
+        have := (hasDerivAt_pow 4 t).div_const 4; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h := (((hasDerivAt_id t).sub h2).add h3).sub h4
-      convert h using 1
+      convert h using 1 <;> (first | rfl | ring | norm_num)
     have hf : HasDerivAt f ((1 + t)⁻¹ - (1 - t + t ^ 2 - t ^ 3)) t := hlog.sub hpoly
     convert hf using 1
     field_simp
@@ -249,15 +249,15 @@ theorem log_one_plus_le_quintic (x : ℝ) (hx : 0 < x) :
     have hpoly : HasDerivAt (fun t => t - t ^ 2 / 2 + t ^ 3 / 3 - t ^ 4 / 4 + t ^ 5 / 5)
                              (1 - t + t ^ 2 - t ^ 3 + t ^ 4) t := by
       have h2 : HasDerivAt (fun t => t ^ 2 / 2) t t := by
-        have := (hasDerivAt_pow 2 t).div_const 2; convert this using 1; ring
+        have := (hasDerivAt_pow 2 t).div_const 2; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h3 : HasDerivAt (fun t => t ^ 3 / 3) (t ^ 2) t := by
-        have := (hasDerivAt_pow 3 t).div_const 3; convert this using 1; ring
+        have := (hasDerivAt_pow 3 t).div_const 3; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h4 : HasDerivAt (fun t => t ^ 4 / 4) (t ^ 3) t := by
-        have := (hasDerivAt_pow 4 t).div_const 4; convert this using 1; ring
+        have := (hasDerivAt_pow 4 t).div_const 4; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h5 : HasDerivAt (fun t => t ^ 5 / 5) (t ^ 4) t := by
-        have := (hasDerivAt_pow 5 t).div_const 5; convert this using 1; ring
+        have := (hasDerivAt_pow 5 t).div_const 5; convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
       have h := ((((hasDerivAt_id t).sub h2).add h3).sub h4).add h5
-      convert h using 1
+      convert h using 1 <;> (first | rfl | ring | norm_num)
     -- Derivative of log part: 1/(1+t)
     have hlog : HasDerivAt (fun t => Real.log (1 + t)) (1 + t)⁻¹ t := by
       have h1 : HasDerivAt (fun t => 1 + t) 1 t := (hasDerivAt_id t).const_add 1

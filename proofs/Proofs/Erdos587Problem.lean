@@ -15,12 +15,7 @@ This problem was famously posed by Erdős to a young Terence Tao in 1985.
 Reference: https://erdosproblems.com/587
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
+import Mathlib
 
 namespace Erdos587
 

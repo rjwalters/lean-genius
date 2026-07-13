@@ -113,7 +113,7 @@ theorem prod_step_gt {j : ℕ} (hj : 0 < j) (n : Fin j → ℕ) (hpos : ∀ i, 0
     have hposR : ∀ i : Fin j', 0 < n i.succ := fun i => hpos i.succ
     rcases Nat.eq_zero_or_pos j' with rfl | hj'p
     · -- Base case: j' = 0, so Fin 0 products are 1
-      simp [Fin.prod_univ_zero]; omega
+      simp [Fin.prod_univ_zero]
     · -- Inductive step: apply IH to the tail
       have ih' := ih hj'p (fun i => n i.succ) hposR
       -- Let P = ∏_tail, Q = ∏_tail_steps, r = 3^j'

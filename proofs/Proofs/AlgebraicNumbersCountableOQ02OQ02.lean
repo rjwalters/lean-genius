@@ -151,7 +151,7 @@ theorem exclusion (f : ℕ → ℝ) (n : ℕ) :
   by_cases h1 : f n < a_n + d / 3
   · simp [h1]; left; linarith
   · by_cases h2 : f n > a_n + 2 * d / 3
-    · simp [h1, h2]; right; linarith
+    · simp [h1, h2] ; linarith
     · simp [h1, h2]; left; push_neg at h2; linarith
 
 /-- Left endpoints form a strictly monotone sequence. -/

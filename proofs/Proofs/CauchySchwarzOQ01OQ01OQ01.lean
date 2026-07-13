@@ -61,7 +61,7 @@ theorem orthResidual_inner_eq_zero (u v : E) (hv : v ≠ 0) :
 /-- The decomposition u = proj(v, u) + residual(v, u). -/
 theorem orthogonal_decomposition (v u : E) :
     u = orthProj v u + orthResidual v u := by
-  simp [orthProj, orthResidual]; ring
+  simp [orthProj, orthResidual]
 
 -- ============================================================
 -- PART 2: Two-Vector Gram-Schmidt

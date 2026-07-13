@@ -105,11 +105,8 @@ theorem eventually_all_folds_sufficient {d : ℕ} (hd : d > 0) :
   refine ⟨by omega, hd_pos, fun q hq hqd => ?_⟩
   have hqle : q ≤ d := Nat.le_of_dvd hd hqd
   have hbound : d + 2 ≤ foldPrimeBound k := by
-    unfold foldPrimeBound
-    have h1 : d ≤ k := hkd
     have h2 : d + 2 ≤ k + 2 := by omega
-    have h3 : k + 2 ≤ foldPrimeBound k := add_two_le_nth_prime k
-    omega
+    exact le_trans h2 (add_two_le_nth_prime k)
   omega
 
 /-- For any degree d > 0, the minimum fold level needed is finite and at most d.
