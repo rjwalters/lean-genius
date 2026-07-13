@@ -40,8 +40,13 @@ first (highest confidence), one mechanical fix per file.
   Erdos758 Fin-19 exhaustiveness catch-all.
 - **DR23l** (+2): Erdos230 Real.iSup_le twice (ℝ conditionally complete, not
   `iSup_le`!), InverseGaloisF20 pow_mod_orderOf via have+rwa (avoid Fin-5 motive).
+- **DR23m** (+2): Erdos73 explicit Finset↑→Set compl-eq rewrite (avoid convert HEq),
+  Erdos811 irrefl field `⟨0, (color v v).pos⟩` (omega had no `0 < m`).
+- **DR23n** (+5): TestApi probe cluster — 385 minFac_sq_le_self ¬Prime arg,
+  457 add_mod explicit, 689 monotone_filter_right (filter_subset_filter now
+  same-predicate), 913 Set-coe membership simp, 1148 **statement repair**.
 
-**Increment 13 running total: +55 GREEN** (1317 → 1372). Recipes in rename-map §7o.
+**Increment 13 running total: +62 GREEN** (1317 → 1379). Recipes in rename-map §7o.
 
 ### Increment 13 statement repairs (operator policy 2026-07-13: fix false → intended-true)
 
@@ -49,6 +54,8 @@ first (highest confidence), one mechanical fix per file.
 |---|---|---|
 | Erdos525OQ02 | `sqrt_cancellation_terms` | added `hd : 0 < d`: `n^d ≥ n` is false at d=0 (n^0=1 < n for n≥2). No callers. |
 | Erdos306Problem | `example_one_representation` | RHS `= 1` → `= 101/210`: the six 2-distinct-prime unit fractions 1/6+1/10+1/14+1/15+1/21+1/35 sum to 101/210, not 1 (LCD 210 gives 35+21+15+14+10+6). No callers; docstring corrected. |
+| TestApi385 | `example` (minFac_sq_le_self probe) | added `hcomp : ¬ n.Prime`: v4.31 `Nat.minFac_sq_le_self` now requires `0 < n ∧ ¬Prime n`; the bound `minFac n ^ 2 ≤ n` is false for primes (n=5). Probe file. |
+| TestApi1148 | `not_hasConstRep_23` → `hasConstRep_23` | `¬ HasConstRep 23` is FALSE (witness x=4,y=4,z=3: 16+16=32=23+9, all squares ≤23). Repaired to the true `HasConstRep 23` with the explicit witness. Probe file. |
 
 ### Highest-value new recipes (increment 13)
 
