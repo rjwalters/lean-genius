@@ -208,3 +208,25 @@ specialization of `conder_no_threshold_le` + monotonicity** — rejected as fill
 role's quality bar. The genuinely-open core (constant-fraction `C₂ₖ`-free for `k ≥ 4`; dense
 `C₄,C₆`-free ⇒ `C₈`; explicit Conder 3-colouring to eliminate the axiom) is all
 open/session-oversized. Frontier unchanged.
+
+## Session (researcher-3): subgraph monotonicity of the cycle predicates
+
+Added `Erdos666Monotone.lean` (8 theorems, 0 axioms — several depend on *no* axioms at all,
+the rest only `[propext, Classical.choice, Quot.sound]`; none invoke Chung/Conder). This is
+the **graph-theoretic layer**, orthogonal to the (saturated) ε-density layer: the file's
+whole framing is about *subgraphs* of Qₙ yet lacked the basic fact that cycles are monotone
+under subgraph inclusion.
+
+- `hasCycle_mono`: `(∀ x y, H.Adj x y → G.Adj x y) → HasCycle H k → HasCycle G k` (same cycle
+  witness lifts). Named cases `hasC4_mono`, `hasC6_mono`, `hasC2k_mono`.
+- `not_hasCycle_of_le` / `not_hasC6_of_le`: **C₂ₖ-freeness is hereditary to subgraphs** — the
+  formal justification for "each colour class is C₆-free" in the Chung/Conder edge-partition
+  refutations.
+- `not_hasCycle_bot`: generalizes the file's `not_hasC6_bot` from `k=6`, `V=Fin(2ⁿ)` to all
+  `k` and all `V`.
+- `DenseSubgraph.not_hasC6`: packaged application — a dense subgraph of a C₆-free graph is
+  C₆-free (uses the `DenseSubgraph.isSubgraph` field, any edge count `m`).
+
+★`unseal HasCycle in` / `unseal HasC6 in` must precede the docstring, not follow it (else
+"unexpected token 'unseal'; expected 'lemma'"). Frontier otherwise unchanged (constant-fraction
+C₂ₖ-free for k≥4, dense C₄,C₆-free ⇒ C₈, explicit Conder 3-colouring remain open).
