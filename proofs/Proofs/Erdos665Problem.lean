@@ -38,7 +38,7 @@ Ground set, pairwise balanced design, and block size properties.
 -/
 
 /-- The ground set {1, ..., n} -/
-def groundSet (n : ℕ) : Finset ℕ := (Finset.range n).map ⟨(· + 1), fun _ _ h => by omega⟩
+def groundSet (n : ℕ) : Finset ℕ := (Finset.range n).map ⟨(· + 1), fun _ _ h => by simpa using h⟩
 
 /-- A pairwise balanced design is a collection of blocks -/
 structure PairwiseBalancedDesign (n : ℕ) where

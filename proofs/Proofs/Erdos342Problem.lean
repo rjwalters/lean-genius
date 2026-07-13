@@ -134,6 +134,7 @@ theorem ulamSeq_ge (n : ℕ) : n + 1 ≤ ulamSeq n := by
   | zero => have := ulamSeq_initial 0 (by omega); simp [ulam_0] at this; omega
   | succ k ih =>
     have h := ulamSeq_strictMono (Nat.lt_succ_of_le (Nat.le_refl k))
+    simp only [Nat.succ_eq_add_one] at *
     omega
 
 /-- The first term is 1. -/

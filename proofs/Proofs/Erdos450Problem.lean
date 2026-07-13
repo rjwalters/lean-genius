@@ -94,8 +94,10 @@ theorem hasDivisorIn_of_dvd {m n d : ℕ} (hd : d ∣ m) (hdn : n < d)
     (hd2n : d < 2 * n) : HasDivisorIn m n :=
   ⟨d, hd, hdn, hd2n⟩
 
-/-- n+1 has a divisor in (n, 2n) when n ≥ 1: namely n+1 itself. -/
-theorem hasDivisorIn_succ {n : ℕ} (hn : 1 ≤ n) :
+/-- n+1 has a divisor in (n, 2n) when n ≥ 2: namely n+1 itself.
+    (Statement repair for v4.31: the n = 1 case is degenerate — the witness
+    d = n+1 = 2 fails d < 2n = 2, so the hypothesis must be 2 ≤ n.) -/
+theorem hasDivisorIn_succ {n : ℕ} (hn : 2 ≤ n) :
     HasDivisorIn (n + 1) n := by
   exact ⟨n + 1, dvd_refl _, by omega, by omega⟩
 

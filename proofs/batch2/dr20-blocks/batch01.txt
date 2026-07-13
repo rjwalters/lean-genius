@@ -1,0 +1,637 @@
+===== BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean:57:76: unsolved goals
+m : ℕ
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean:57:76: unsolved goals
+m : ℕ
+hderiv : ∀ θ ∈ Set.uIcc 0 (π / 2), HasDerivAt (fun x => -cos x ^ (m + 1) / (↑m + 1)) (sin θ * cos θ ^ m) θ
+
+===== BuffonsNeedleOQ01OQ02
+error: Proofs/BuffonsNeedleOQ01OQ02.lean:96:2: No goals to be solved
+error: Proofs/BuffonsNeedleOQ01OQ02.lean:118:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  √π * √π
+error: Proofs/BuffonsNeedleOQ01OQ02.lean:118:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  √π * √π
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ02.lean:145:67: Unknown identifier `pi_gt_3141592`
+error: Proofs/BuffonsNeedleOQ01OQ02.lean:151:19: Unknown identifier `buffonConstant_recurrence`
+warning: Proofs/BuffonsNeedleOQ01OQ02.lean:176:45: Variable name `hn` is not explicitly referenced.
+error: Proofs/BuffonsNeedleOQ01OQ02.lean:151:19: Unknown identifier `buffonConstant_recurrence`
+warning: Proofs/BuffonsNeedleOQ01OQ02.lean:176:45: Variable name `hn` is not explicitly referenced.
+
+===== BuffonsNeedleOQ02OQ03
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:65:15: expected token
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:68:56: Tactic `split_ifs` failed: no if-then-else conditions to split
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:68:56: Tactic `split_ifs` failed: no if-then-else conditions to split
+n : ℕ
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:71:56: Tactic `split_ifs` failed: no if-then-else conditions to split
+n : ℕ
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:143:13: `simp` made no progress
+warning: Proofs/BuffonsNeedleOQ02OQ03.lean:208:13: Possibly looping simp theorem: `show (4 : ℕ) = 0 + 4 from rfl`
+
+===== CantorDiagonalizationOQ01OQ01
+error: Proofs/CantorDiagonalizationOQ01OQ01.lean:71:2: Unknown constant `Cardinal.aleph_lt.mpr`
+error: Proofs/CantorDiagonalizationOQ01OQ01.lean:83:38: Ambiguous term
+  continuum
+error: Proofs/CantorDiagonalizationOQ01OQ01.lean:83:38: Ambiguous term
+  continuum
+Possible interpretations:
+error: Proofs/CantorDiagonalizationOQ01OQ01.lean:89:4: Ambiguous term
+  continuum
+Possible interpretations:
+error: Proofs/CantorDiagonalizationOQ01OQ01.lean:91:9: ambiguous term, use fully qualified name, possible interpretations [ContinuumHypothesis.continuum, 𝔠]
+error: Proofs/CantorDiagonalizationOQ01OQ01.lean:99:29: Ambiguous term
+  continuum
+
+===== CantorDiagonalizationOQ01OQ01OQ02
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:68:60: Invalid field `card`: The environment does not contain `Quot.card`, so it is not possible to project the field `card` from an expression
+  (2 ^ ℵ₀).ord.cof
+of type `Quot ⇑isEquivalent`
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:69:38: unsolved goals
+⊢ 1 < ?m.12
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:74:43: Invalid field `card`: The environment does not contain `Quot.card`, so it is not possible to project the field `card` from an expression
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:74:43: Invalid field `card`: The environment does not contain `Quot.card`, so it is not possible to project the field `card` from an expression
+  (κ ^ ℵ₀).ord.cof
+of type `Quot ⇑isEquivalent`
+error: Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean:90:2: Type mismatch
+  isRegular_aleph_succ 1
+has type
+
+===== CantorDiagonalizationOQ03OQ01Incomplete01
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:161:61: Application type mismatch: The argument
+  e a
+has type
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:161:71: Type mismatch
+  g x
+has type
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:167:39: Application type mismatch: The argument
+  h
+has type
+error: Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean:168:35: Application type mismatch: The argument
+  Eq.symm heq
+has type
+
+===== CauchyInterlacingOQ01OQ01OQ01
+error: Proofs/CauchyInterlacingOQ01OQ01OQ01.lean:104:10: Unknown constant `List.eq_of_perm_of_sorted`
+error: Proofs/CauchyInterlacingOQ01OQ01OQ01.lean:82:29: unsolved goals
+𝕜 : Type u_1
+error: Proofs/CauchyInterlacingOQ01OQ01OQ01.lean:82:29: unsolved goals
+𝕜 : Type u_1
+inst✝³ : RCLike 𝕜
+
+===== CauchyInterlacingPoincareCompression
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1451:8: Unknown constant `LinearMap.mul_apply`
+warning: Proofs/CauchyInterlacingPoincareCompression.lean:1452:53: `LinearMap.restrict_coe_apply` has been deprecated: Use `LinearMap.coe_restrict_apply` instead
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1449:17: unsolved goals
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1449:17: unsolved goals
+case monomial
+𝕜 : Type u_1
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1465:2: Type mismatch
+  Subtype.ext ?m.77
+has type
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1518:8: Unknown constant `LinearMap.mul_apply`
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1561:13: Unknown constant `LinearMap.mul_apply`
+error: Proofs/CauchyInterlacingPoincareCompression.lean:1571:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+
+===== CauchySchwarz
+error: Proofs/CauchySchwarz.lean:64:5: expected token
+error: Proofs/CauchySchwarz.lean:72:4: expected token
+error: Proofs/CauchySchwarz.lean:135:18: expected token
+error: Proofs/CauchySchwarz.lean:72:4: expected token
+error: Proofs/CauchySchwarz.lean:135:18: expected token
+error: Proofs/CauchySchwarz.lean:130:38: Type mismatch
+error: Proofs/CauchySchwarz.lean:135:18: expected token
+error: Proofs/CauchySchwarz.lean:130:38: Type mismatch
+  a
+error: Proofs/CauchySchwarz.lean:130:38: Type mismatch
+  a
+has type
+
+===== CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:140:48: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:2: Invalid match expression: The type of pattern variable 'h1' contains metavariables:
+  WHM ?m.96 ?m.97 a b ≤ WGM ?m.96 ?m.97 a b
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:2: Invalid match expression: The type of pattern variable 'h1' contains metavariables:
+  WHM ?m.96 ?m.97 a b ≤ WGM ?m.96 ?m.97 a b
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:50: unsolved goals
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:50: unsolved goals
+a b : ℝ
+ha : 0 < a
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:64: unsolved goals
+a b : ℝ
+ha : 0 < a
+
+===== CauchySchwarzIntegralOQ01OQ03OQ01
+error: Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean:75:24: failed to synthesize instance of type class
+  MeasurableSpace 𝕜
+error: Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean:75:48: failed to synthesize instance of type class
+  MeasurableSpace 𝕜
+error: Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean:79:6: Unknown identifier `eLpNorm_one_eq_lintegral_nnnorm`
+error: Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean:77:71: unsolved goals
+α : Type u_1
+error: Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean:77:71: unsolved goals
+α : Type u_1
+inst✝¹ : MeasurableSpace α
+
+===== CauchySchwarzIntegralOQ02OQ02
+error: Proofs/CauchySchwarzIntegralOQ02OQ02.lean:82:30: Application type mismatch: The argument
+  hpq
+has type
+error: Proofs/CauchySchwarzIntegralOQ02OQ02.lean:115:8: Unknown identifier `eLpNorm_mul_le`
+error: Proofs/CauchySchwarzIntegralOQ02OQ02.lean:163:4: linarith failed to find a contradiction
+case h1
+error: Proofs/CauchySchwarzIntegralOQ02OQ02.lean:163:4: linarith failed to find a contradiction
+case h1
+p q : ℝ
+error: Proofs/CauchySchwarzIntegralOQ02OQ02.lean:158:23: unsolved goals
+p q : ℝ
+hp : 1 < p
+
+===== CauchySchwarzIntegralOQ03
+error: Proofs/CauchySchwarzIntegralOQ03.lean:12:25: unexpected identifier; expected '[', 'add_aesop_rules', 'binder_predicate', 'builtin_cbv_simproc', 'builtin_dsimproc', 'builtin_simproc', 'cbv_simproc', 'def_eval_config_item', 'dsimproc', 'elab', 'elab_rules', 'grind_pattern', 'infix', 'infixl', 'infixr', 'instance', 'macro', 'macro_rules', 'notation', 'notation3', 'postfix', 'prefix', 'simproc', 'syntax' or 'unif_hint'
+error: Proofs/CauchySchwarzIntegralOQ03.lean:23:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:28:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:23:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:28:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:33:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:28:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:33:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:45:10: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:33:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:45:10: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:50:39: expected token
+
+===== CauchySchwarzOQ01OQ01OQ01
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:44:2: typeclass instance problem is stuck
+  InnerProductSpace ?m.8 E
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:55:35: unsolved goals
+𝕜 : Type u_1
+inst✝² : RCLike 𝕜
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:80:12: typeclass instance problem is stuck
+  InnerProductSpace ?m.15 E
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:128:35: linarith failed to find a contradiction
+𝕜 : Type u_1
+inst✝² : RCLike 𝕜
+
+===== CauchySchwarzOQ01OQ03
+error: Proofs/CauchySchwarzOQ01OQ03.lean:48:26: Application type mismatch: The argument
+  f
+has type
+error: Proofs/CauchySchwarzOQ01OQ03.lean:49:13: Unknown identifier `inner_mul_le_norm_mul_sq`
+error: Proofs/CauchySchwarzOQ01OQ03.lean:48:58: unsolved goals
+E : Type u_1
+error: Proofs/CauchySchwarzOQ01OQ03.lean:48:58: unsolved goals
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+error: Proofs/CauchySchwarzOQ01OQ03.lean:73:2: linarith failed to find a contradiction
+z : ℂ
+a✝ :
+
+===== CauchySchwarzOQ02
+error: Proofs/CauchySchwarzOQ02.lean:61:2: Type mismatch
+  Real.HolderConjugate.conjExponent
+    (Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one)
+error: Proofs/CauchySchwarzOQ02.lean:188:28: No applicable extensionality theorem found for type
+  ℝ
+error: Proofs/CauchySchwarzOQ02.lean:193:13: Unknown constant `Finset.inner_mul_le_norm_mul_sq`
+error: Proofs/CauchySchwarzOQ02.lean:225:12: Unknown constant `Finset.inner_mul_le_norm_mul_sq`
+error: Proofs/CauchySchwarzOQ02.lean:223:43: unsolved goals
+error: Proofs/CauchySchwarzOQ02.lean:225:12: Unknown constant `Finset.inner_mul_le_norm_mul_sq`
+error: Proofs/CauchySchwarzOQ02.lean:223:43: unsolved goals
+n : ℕ
+
+===== CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:62:69: unsolved goals
+case e_f
+K : Type u_1
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:72:26: Invalid argument name `b` for function `Finset.sup_lt_iff`
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:89:2: Type mismatch
+  hcoeff
+has type
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:248:9: unsolved goals
+case zero
+K : Type u_1
+
+===== CayleyHamiltonCyclicVectorAllFieldsOQ03
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean:150:42: Function expected at
+  Basis
+but this term has type
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean:179:10: Unknown identifier `Basis`
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean:243:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, c✝ i • (T ^ ↑i) v
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean:243:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, c✝ i • (T ^ ↑i) v
+in the target expression
+error: Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean:252:2: Type mismatch: After simplification, term
+  h_coeff
+ has type
+
+===== CayleyHamiltonMinpolyOQ02OQ03
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean:44:6: Unknown constant `Matrix.charpoly_conj_of_isUnit`
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean:41:31: unsolved goals
+n : Type u_1
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean:41:31: unsolved goals
+n : Type u_1
+inst✝² : DecidableEq n
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean:52:8: Unknown identifier `minpoly_conj_of_isUnit`
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean:74:3: Application type mismatch: The argument
+  charpoly_similar A B P hP hSim
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean:74:3: Application type mismatch: The argument
+  charpoly_similar A B P hP hSim
+has type
+
+===== CayleyHamiltonMinpolyOQ03OQ01
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:101:15: Unknown constant `Matrix.mul_mulVec`
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:99:29: unsolved goals
+K : Type u_1
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:99:29: unsolved goals
+K : Type u_1
+inst✝ : Field K
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:139:29: typeclass instance problem is stuck
+  Algebra.IsIntegral ?m.86 (Matrix (Fin n) (Fin n) K)
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:140:4: No goals to be solved
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:141:6: Unknown constant `Matrix.natDegree_charpoly`
+error: Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean:131:70: unsolved goals
+
+===== CayleyHamiltonMinpolyOQ04Backward
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:235:39: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:245:28: Application type mismatch: The argument
+  ha
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:248:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, ?f ↑i
+in the target expression
+error: Proofs/CayleyHamiltonMinpolyOQ04Backward.lean:275:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?g (∑ x ∈ ?s, ?f x)
+in the target expression
+
+===== CayleyHamiltonMinpolyOQ05OQ01OQ01
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:148:58: unsolved goals
+K : Type u_1
+inst✝⁶ : Field K
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:149:78: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => Set.univ.toFinset.card = _a.toFinset.card
+Error: Application type mismatch: The argument
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:259:59: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean:258:33: unsolved goals
+K : Type u_1
+inst✝² : Field K
+
+===== CayleyHamiltonMinpolyOQ05OQ01OQ02
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:180:29: Unknown identifier `dvd_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:189:26: Unknown identifier `ne_zero_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:247:27: Unknown identifier `dvd_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:189:26: Unknown identifier `ne_zero_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:247:27: Unknown identifier `dvd_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:248:26: Unknown identifier `ne_zero_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:247:27: Unknown identifier `dvd_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:248:26: Unknown identifier `ne_zero_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:253:2: 'calc' expression has type
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:248:26: Unknown identifier `ne_zero_of_mem_normalizedFactors`
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean:253:2: 'calc' expression has type
+  volume {v | ¬IsCyclicVector M v} ≤ 0
+
+===== CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:67:2: No goals to be solved
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:78:16: Tactic `contradiction` failed
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:78:16: Tactic `contradiction` failed
+case neg
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:91:2: unsolved goals
+case neg
+K : Type u_1
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:93:10: No goals to be solved
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:83:47: unsolved goals
+case neg
+
+===== CayleyHamiltonReductionOQ01OQ02
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:52:24: typeclass instance problem is stuck
+  Semiring ?m.31
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:86:52: Application type mismatch: The argument
+  hXk_monic
+has type
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:84:40: unsolved goals
+K : Type u_1
+inst✝ : Field K
+error: Proofs/CayleyHamiltonReductionOQ01OQ02.lean:110:52: Application type mismatch: The argument
+  hmonic
+has type
+
+===== CentralLimitTheorem
+error: Proofs/CentralLimitTheorem.lean:141:2: Type mismatch
+  this
+has type
+error: Proofs/CentralLimitTheorem.lean:171:2: Type mismatch
+  integral_ofReal_eq_ofReal_integral μ_meas h_int
+has type
+error: Proofs/CentralLimitTheorem.lean:218:2: Unknown identifier `tendsto_one_plus_div_pow_exp`
+warning: Proofs/CentralLimitTheorem.lean:223:5: Variable name `h_mean` is not explicitly referenced.
+
+===== ChebyshevBoundsOQ03OQ02
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:58:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:91:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x_1 ∈ ?m.164, θ (x ^ (1 / x_1))
+in the target expression
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:91:72: Application type mismatch: The argument
+  h2mem
+has type
+
+===== ChineseRemainderConstructiveOQ03
+error: Proofs/ChineseRemainderConstructiveOQ03.lean:84:33: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/ChineseRemainderConstructiveOQ03.lean:89:35: invalid `▸` notation, argument
+  le_max_right 0 m
+has type
+error: Proofs/ChineseRemainderConstructiveOQ03.lean:85:4: unsolved goals
+case h₂.calc.step
+m : ℕ
+error: Proofs/ChineseRemainderConstructiveOQ03.lean:102:63: Unknown constant `Nat.Prime.minFac`
+error: Proofs/ChineseRemainderConstructiveOQ03.lean:109:68: Unknown constant `List.pairwise_nil`
+error: Proofs/ChineseRemainderConstructiveOQ03.lean:111:37: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+
+===== ChineseRemainderNonCoprimeOQ03OQ02
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:142:2: unsolved goals
+case pos
+R : Type u_1
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:180:96: unsolved goals
+R : Type u_1
+inst✝¹ : EuclideanDomain R
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:184:96: unsolved goals
+R : Type u_1
+inst✝¹ : EuclideanDomain R
+error: Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean:216:57: Application type mismatch: The argument
+  Eq.symm hgrab'
+has type
+
+===== CombinationsFormulaOQ02Aristotle
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:47:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  m + 1 + 1
+in the target expression
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:70:14: Unknown identifier `choose_2n_succ`
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:79:35: Unknown constant `Nat.coprime_succ_self`
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:99:2: omega could not prove the goal:
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:79:35: Unknown constant `Nat.coprime_succ_self`
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:99:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/CombinationsFormulaOQ02Aristotle.lean:99:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== CombinationsFormulaOQ07OQ04OQ01OQ02OQ01
+error: Proofs/CombinationsFormulaOQ07OQ04OQ01OQ02OQ01.lean:124:11: Unknown identifier `lt_or_le`
+error: Proofs/CombinationsFormulaOQ07OQ04OQ01OQ02OQ01.lean:124:29: Tactic `rcases` failed: `x✝ : ?m.569` is not an inductive datatype
+error: Lean exited with code 1
+error: Proofs/CombinationsFormulaOQ07OQ04OQ01OQ02OQ01.lean:124:29: Tactic `rcases` failed: `x✝ : ?m.569` is not an inductive datatype
+error: Lean exited with code 1
+✖ [8599/8614] Building Proofs.CramersRuleOQ04OQ01 (11s)
+
+===== ContinuumHypothesisOQ02
+error: Proofs/ContinuumHypothesisOQ02.lean:91:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ℵ_ 0
+in the target expression
+error: Proofs/ContinuumHypothesisOQ02.lean:111:6: Unknown constant `Cardinal.cof_aleph`
+error: Proofs/ContinuumHypothesisOQ02.lean:110:68: unsolved goals
+ω : Ordinal.{0}
+error: Proofs/ContinuumHypothesisOQ02.lean:110:68: unsolved goals
+ω : Ordinal.{0}
+⊢ (ℵ_ ω).ord.cof = ℵ₀
+error: Proofs/ContinuumHypothesisOQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ℵ_ 0
+in the target expression
+
+===== CramersRuleOQ01OQ04
+error: Proofs/CramersRuleOQ01OQ04.lean:98:21: Ambiguous term
+  smul_pow
+Possible interpretations:
+error: Proofs/CramersRuleOQ01OQ04.lean:99:2: `ring_nf` made no progress on the goal
+warning: Proofs/CramersRuleOQ01OQ04.lean:98:31: This simp argument is unused:
+  Matrix.trace_smul
+error: Proofs/CramersRuleOQ01OQ04.lean:116:23: Unknown constant `Matrix.charpoly_natDegree_eq_card`
+error: Proofs/CramersRuleOQ01OQ04.lean:117:33: Unknown constant `Matrix.charpoly_monic.leadingCoeff`
+error: Proofs/CramersRuleOQ01OQ04.lean:118:6: Unknown constant `Matrix.charpoly_monic.leadingCoeff`
+error: Proofs/CramersRuleOQ01OQ04.lean:117:33: Unknown constant `Matrix.charpoly_monic.leadingCoeff`
+error: Proofs/CramersRuleOQ01OQ04.lean:118:6: Unknown constant `Matrix.charpoly_monic.leadingCoeff`
+error: Proofs/CramersRuleOQ01OQ04.lean:115:29: unsolved goals
+
+===== CramersRuleOQ03OQ03
+error: Proofs/CramersRuleOQ03OQ03.lean:36:0: type of theorem `CramersRuleOQ03OQ03.quaternion_is_division_ring` is not a proposition
+  DivisionRing ℍ
+error: Proofs/CramersRuleOQ03OQ03.lean:52:20: Unknown constant `Quaternion.imI`
+error: Proofs/CramersRuleOQ03OQ03.lean:52:20: Unknown constant `Quaternion.imI`
+error: Proofs/CramersRuleOQ03OQ03.lean:50:31: unsolved goals
+h : qi = 0
+error: Proofs/CramersRuleOQ03OQ03.lean:50:31: unsolved goals
+h : qi = 0
+⊢ False
+error: Proofs/CramersRuleOQ03OQ03.lean:58:20: Unknown constant `Quaternion.imJ`
+error: Proofs/CramersRuleOQ03OQ03.lean:56:31: unsolved goals
+h : qj = 0
+
+===== CramersRuleOQ04OQ01
+error: Proofs/CramersRuleOQ04OQ01.lean:66:35: Unknown identifier `smul_mulVec_assoc`
+error: Proofs/CramersRuleOQ04OQ01.lean:65:42: unsolved goals
+n : Type u_1
+error: Proofs/CramersRuleOQ04OQ01.lean:65:42: unsolved goals
+n : Type u_1
+R : Type u_2
+
+===== CramersRuleOQ05OQ02
+error: Proofs/CramersRuleOQ05OQ02.lean:167:2: Type mismatch
+  charpoly_units_conj U M
+has type
+
+===== DenumerabilityRationalsOQ04
+error: Proofs/DenumerabilityRationalsOQ04.lean:35:39: failed to synthesize instance of type class
+  Countable ℤ[X]
+error: Proofs/DenumerabilityRationalsOQ04.lean:41:49: Application type mismatch: The argument
+  h
+has type
+error: Proofs/DenumerabilityRationalsOQ04.lean:41:10: Application type mismatch: The argument
+  Subtype.val
+has type
+error: Proofs/DenumerabilityRationalsOQ04.lean:53:10: Unknown constant `Polynomial.setOf_isRoot_finite`
+error: Proofs/DenumerabilityRationalsOQ04.lean:52:53: unsolved goals
+p : ℤ[X]
+
+===== DerangementsConvergenceOQ03
+error: Proofs/DerangementsConvergenceOQ03.lean:42:2: No goals to be solved
+error: Proofs/DerangementsConvergenceOQ03.lean:70:63: Type mismatch
+  hrate
+error: Proofs/DerangementsConvergenceOQ03.lean:70:63: Type mismatch
+  hrate
+has type
+error: Proofs/DerangementsConvergenceOQ03.lean:76:8: Unknown constant `Nat.floor_eq_iff.mpr`
+error: Proofs/DerangementsConvergenceOQ03.lean:77:2: No goals to be solved
+error: Lean exited with code 1
+error: Proofs/DerangementsConvergenceOQ03.lean:77:2: No goals to be solved
+error: Lean exited with code 1
+✖ [8607/8614] Building Proofs.DivisibilityBy3OQ03 (12s)
+
+===== DesarguesTheoremOQ01OQ01
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:122:35: unsolved goals
+⊢ O_pt.1 ≤ 0
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:165:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:165:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:170:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:174:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:170:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:174:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:178:49: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:174:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:178:49: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:178:76: No goals to be solved
+
+===== DescartesRuleOfSignsOQ01OQ02
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:59:20: Unknown constant `Even.add_even`
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:64:25: unknown tactic
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:64:21: unsolved goals
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:64:25: unknown tactic
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:64:21: unsolved goals
+a b : ℕ
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:64:21: unsolved goals
+a b : ℕ
+ha : Even a
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:72:12: Unknown constant `Even.add_even`
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:73:12: Unknown constant `Nat.Odd.add_odd`
+error: Proofs/DescartesRuleOfSignsOQ01OQ02.lean:82:35: invalid `▸` notation, argument
+
+===== DescartesRuleOfSignsOQ02Parity
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:74:41: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:76:39: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:88:61: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 0
+
+===== DescartesRuleOfSignsOQ04
+error: Proofs/DescartesRuleOfSignsOQ04.lean:70:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?m.34 * ?m.35).leadingCoeff
+in the target expression
+error: Proofs/DescartesRuleOfSignsOQ04.lean:75:51: unsolved goals
+r : ℝ
+q : ℝ[X]
+error: Proofs/DescartesRuleOfSignsOQ04.lean:100:29: Unknown constant `Multiset.countP_singleton`
+warning: Proofs/DescartesRuleOfSignsOQ04.lean:100:8: This simp argument is unused:
+  Multiset.countP_add
+error: Proofs/DescartesRuleOfSignsOQ04.lean:105:2: Unknown constant `Polynomial.signVariations_X_mul`
+error: Proofs/DescartesRuleOfSignsOQ04.lean:134:2: Type mismatch
+  eraseLead_coeff_of_ne ?m.22
+
+===== DiamondImpliesCH
+error: Proofs/DiamondImpliesCH.lean:128:6: Ambiguous term
+  mk_Iio_ordinal
+Possible interpretations:
+error: Proofs/DiamondImpliesCH.lean:127:80: unsolved goals
+⊢ #↑(Iio ω) = Cardinal.lift.{1, 0} ℵ₀
+error: Proofs/DiamondImpliesCH.lean:132:6: Ambiguous term
+error: Proofs/DiamondImpliesCH.lean:132:6: Ambiguous term
+  mk_Iio_ordinal
+Possible interpretations:
+error: Proofs/DiamondImpliesCH.lean:131:82: unsolved goals
+⊢ #↑(Iio (ω_ 1)) = Cardinal.lift.{1, 0} (ℵ_ 1)
+error: Lean exited with code 1
+
+===== DirichletApproximationOQ02
+error: Proofs/DirichletApproximationOQ02.lean:44:27: Unknown constant `Real.fact_zero_lt_one`
+warning: Proofs/DirichletApproximationOQ02.lean:68:12: This simp argument is unused:
+  UnitAddCircle.measure_univ
+
+===== DivisibilityBy3OQ03
+error: Proofs/DivisibilityBy3OQ03.lean:38:20: Unknown constant `Nat.sum_digits_lt`
+error: Proofs/DivisibilityBy3OQ03.lean:43:25: Unknown constant `Nat.sum_digits_lt`
+error: Proofs/DivisibilityBy3OQ03.lean:55:4: Type mismatch
+error: Proofs/DivisibilityBy3OQ03.lean:43:25: Unknown constant `Nat.sum_digits_lt`
+error: Proofs/DivisibilityBy3OQ03.lean:55:4: Type mismatch
+  digitSum_lt_of_ge_ten (n + 1) (Decidable.byContradiction fun a => digitalRoot._proof_2 n h✝ h_le a)
+error: Proofs/DivisibilityBy3OQ03.lean:55:4: Type mismatch
+  digitSum_lt_of_ge_ten (n + 1) (Decidable.byContradiction fun a => digitalRoot._proof_2 n h✝ h_le a)
+has type
+error: Proofs/DivisibilityBy3OQ03.lean:73:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+
+===== DyckCatalanCountOQ01OQ01
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:85:4: Invalid pattern variable: Variable name must be atomic, but `Tree.nil` has multiple components
+warning: Proofs/DyckCatalanCountOQ01OQ01.lean:90:41: `Tree.nil` has been deprecated: Use `BinaryTree.nil` instead
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:96:0: Not a definitional equality: the left-hand side
+  Tree.decodeForest Tree.nil
+is not definitionally equal to the right-hand side
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:96:86: Type mismatch
+  rfl
+has type
+error: Proofs/DyckCatalanCountOQ01OQ01.lean:98:0: Not a definitional equality: the left-hand side
+  Tree.decodeForest (Tree.node a l r)
+is not definitionally equal to the right-hand side
+
+===== ETranscendentalOQ03OQ01
+error: Proofs/ETranscendentalOQ03OQ01.lean:47:45: Function expected at
+  of
+but this term has type
+error: Proofs/ETranscendentalOQ03OQ01.lean:48:10: Function expected at
+  of
+but this term has type
+error: Proofs/ETranscendentalOQ03OQ01.lean:48:33: Function expected at
+  of
+but this term has type
+error: Proofs/ETranscendentalOQ03OQ01.lean:49:46: Unknown identifier `n`
+error: Proofs/ETranscendentalOQ03OQ01.lean:51:25: Unknown identifier `n`
+error: Proofs/ETranscendentalOQ03OQ01.lean:51:45: Function expected at
+
+===== ElementaryQuadraticReciprocityOQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:139:35: Unknown identifier `generator_orderOf`
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:151:13: Unknown identifier `mulPerm_no_fixed_point`
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:154:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:151:13: Unknown identifier `mulPerm_no_fixed_point`
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:154:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  mulPermHom g ^ n
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:154:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  mulPermHom g ^ n
+in the target expression
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:162:8: Unknown identifier `mulPerm_no_fixed_point`
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:173:6: Unknown identifier `card_units_prime`
+error: Proofs/ElementaryQuadraticReciprocityOQ01.lean:169:34: unsolved goals
+
+===== ElementaryQuadraticReciprocityOQ02OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:107:4: No goals to be solved
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:110:4: No goals to be solved
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:114:4: Tactic `split_ifs` failed: no if-then-else conditions to split
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:110:4: No goals to be solved
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:114:4: Tactic `split_ifs` failed: no if-then-else conditions to split
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:114:4: Tactic `split_ifs` failed: no if-then-else conditions to split
+case inr.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:93:61: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+
+===== ElementaryQuadraticReciprocityOQ03OQ02OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:65:27: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case neg.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:70:27: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case pos.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:74:2: unsolved goals
+case neg
+a b : ℤ
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:94:4: Tactic `constructor` failed: no applicable constructor found
+case pos
+
+===== ElementaryQuadraticReciprocityOQ03OQ03
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean:39:8: Unknown constant `legendreSym.eq_one_iff_isSquare`
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean:52:2: Type mismatch
+  legendreSym.quadratic_reciprocity hp2 hq2 hpq
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean:52:2: Type mismatch
+  legendreSym.quadratic_reciprocity hp2 hq2 hpq
+has type
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean:57:2: Type mismatch
+  legendreSym.at_neg_one hp2
+has type
+

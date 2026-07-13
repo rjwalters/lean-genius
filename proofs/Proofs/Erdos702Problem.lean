@@ -35,7 +35,7 @@ open Finset Nat
 -/
 
 /-- The ground set {1, 2, ..., n}. -/
-def groundSet (n : ℕ) : Finset ℕ := range n |>.map ⟨(· + 1), by intro; omega⟩
+def groundSet (n : ℕ) : Finset ℕ := range n |>.map ⟨(· + 1), by intro a b h; simpa using h⟩
 
 /-- A k-uniform family: all sets have size exactly k. -/
 def IsKUniform (F : Finset (Finset ℕ)) (k : ℕ) : Prop :=

@@ -1,3 +1,53 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 10, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 10 (type-mismatch + proof-drift + mixed unknown-const, #38065)
+
+Classes: type-mismatch(223) + proof-drift(246) + the ~323 unknown-const rows
+(mostly MIXED, carrying tm/pd errors underneath). Branch `feature/issue-38065`.
+
+### Key finding: dependency backfill already ran (again)
+
+Wave **DR20a** — full zero-edit re-verify of all 792 target rows — flipped **0**.
+So these are all genuine per-file v4.31 repairs, not stale diags. Triage of the
+792 fresh context-rich diags (diag-DR20a.txt):
+- **706 own-only** (the target file is the sole Proofs error source) — the
+  high-yield bucket.
+- **86 dep-masked** (errors only in a dependency).
+- Only **13 distinct dep hubs** (BallotProblemOQ03OQ02 ×7,
+  SpernerSimplicialInstance ×5, BallotProblemOQ01OQ02OQ01 ×4, …) — fixing a hub
+  cascades several rows.
+- 119 rows have a SINGLE own-file error = highest-confidence one-edit fixes.
+
+### Waves (all in-container verified, lake exit code 0, then ledger-flipped)
+
+- **DR20a** (792): zero-edit re-verify, +0, fresh diags. Split into 14
+  agent-batch error-block files under batch2/dr20-blocks/.
+- **DR20b** (+3): Erdos232 (decimal-literal norm_num regression), Erdos336
+  (rational numeral simp+norm_num), Erdos1124 (√π² via Real.sq_sqrt).
+- **DR20c** (+3): Erdos1083 (nlinarith needs cast d≥3), Erdos28 (id-atom omega),
+  Erdos342 (Nat.succ vs +1 atom split).
+- **DR20d** (+3): Erdos239 (dead skip→omega), Erdos173 (anonymous ‹h>0› binder +
+  push_neg ∀-form), Erdos1040 (Fin.prod_univ_two via show).
+- **DR20e** (+3): Erdos534/435 (omega-beta map-injectivity + interval_cases
+  bound) + **Erdos450 statement repair** (1≤n → 2≤n).
+- **DR20f** (+3): Erdos605 (cast-variable log bound), Erdos681 (missing
+  hkd_pos have) + **Erdos542 statement repair** (2927/4620 → 4699/4620).
+- **DR20g** (+2): Erdos702/71 (map-injectivity omega-beta).
+
+**Increment 10 running total: +17 GREEN.** Recipes in rename-map §7m.
+
+### Statement repairs (operator policy 2026-07-13)
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos450Problem | `hasDivisorIn_succ` | `1 ≤ n` → `2 ≤ n`: false at n=1 (witness d=2 fails d<2n=2) |
+| Erdos542Problem | `chen_bound_value` | RHS 2927/4620 → 4699/4620 (arithmetically correct sum) |
+
+### Highest-frequency new recipe
+
+**omega no longer beta-reduces** `(· + 1) a` in map-injectivity proofs
+(`Finset.map ⟨(·+1), by omega⟩`) — replace with `by intro a b h; simpa using h`.
+Hit 3× already (Erdos534/702 + arithProg family). Sweep candidate.
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 9, #38065, 2026-07-13)
 
 ## DOCTOR INCREMENT 9 (rewrite-drift + type-mismatch + proof-drift remainder, in progress)

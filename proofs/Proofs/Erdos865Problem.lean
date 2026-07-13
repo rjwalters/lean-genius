@@ -33,7 +33,7 @@ namespace Erdos865
 /- ## Part I: Basic Definitions -/
 
 /-- **Interval Set:** {1, 2, ..., N} as a finite set. -/
-def intervalSet (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ h => by omega⟩
+def intervalSet (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ h => by simpa using h⟩
 
 /-- **Has Pairwise Sum Triple:**
 There exist distinct a, b, c ∈ A with a+b, a+c, b+c all in A. -/

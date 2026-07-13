@@ -926,8 +926,8 @@ def searchAux (w k : ℕ) :
       else
         (List.range p).any (fun r =>
           tryBranch p r candidates chosen (searchAux w k primes'))
-termination_by primes.length
-decreasing_by all_goals (simp_wf; omega)
+termination_by primes _ _ => primes.length
+decreasing_by all_goals (simp_wf; try omega)
 
 /-- Pruned-search surface for the admissibility decision problem.
 

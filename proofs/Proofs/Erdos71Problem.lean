@@ -75,7 +75,9 @@ theorem arithProg_infinite (a d : ℕ) (hd : d > 0) : Set.Infinite (ArithProg a 
   have : ArithProg a d = Set.range (fun k : ℕ => a + k * d) := by
     ext n; simp [ArithProg, Set.mem_range, eq_comm]
   rw [this]
-  exact Set.infinite_range_of_injective (fun _ _ h => by omega)
+  refine Set.infinite_range_of_injective (fun x y h => ?_)
+  simp only [add_right_inj] at h
+  exact Nat.eq_of_mul_eq_mul_right hd h
 
 /-
 ## Graph Definitions

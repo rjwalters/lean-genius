@@ -1,0 +1,422 @@
+===== SzemerediHypergraphCore
+error: Proofs/SzemerediHypergraphCore.lean:98:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:108:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:138:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/SzemerediHypergraphCore.lean:138:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== TaylorSinCosConvergenceOQ02
+error: Proofs/TaylorSinCosConvergenceOQ02.lean:119:11: Invalid field `tsum_eq`: The environment does not contain `Function.tsum_eq`, so it is not possible to project the field `tsum_eq` from an expression
+  Filter.Tendsto.congr (fun n => ?m.88) (NormedSpace.expSeries_hasSum_exp (?m.76 * I))
+of type
+error: Proofs/TaylorSinCosConvergenceOQ02.lean:117:75: unsolved goals
+x : ℝ
+n : Finset ℕ
+
+===== TaylorSinCosConvergenceOQ03Aristotle
+error: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:70:8: Unknown identifier `div_le_div`
+error: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:71:2: No goals to be solved
+error: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:82:12: Unknown constant `Real.tendsto_pow_div_factorial_atTop`
+error: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:71:2: No goals to be solved
+error: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:82:12: Unknown constant `Real.tendsto_pow_div_factorial_atTop`
+warning: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:94:8: declaration uses `sorry`
+error: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:82:12: Unknown constant `Real.tendsto_pow_div_factorial_atTop`
+warning: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:94:8: declaration uses `sorry`
+warning: Proofs/TaylorSinCosConvergenceOQ03Aristotle.lean:101:8: declaration uses `sorry`
+
+===== TaylorSinCosConvergenceOQ04
+error: Proofs/TaylorSinCosConvergenceOQ04.lean:155:10: Unknown identifier `taylorPartialSum_at_zero`
+error: Proofs/TaylorSinCosConvergenceOQ04.lean:154:2: unsolved goals
+case inr.inl
+error: Proofs/TaylorSinCosConvergenceOQ04.lean:154:2: unsolved goals
+case inr.inl
+f : ℝ → ℝ
+error: Proofs/TaylorSinCosConvergenceOQ04.lean:291:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  iteratedDeriv n ((fun y => a • sin y) + fun y => b • cos y) x
+in the target expression
+
+===== TaylorTheorem
+error: Proofs/TaylorTheorem.lean:94:63: Application type mismatch: The argument
+  hlt
+has type
+error: Proofs/TaylorTheorem.lean:96:39: Application type mismatch: The argument
+  hx
+has type
+error: Proofs/TaylorTheorem.lean:76:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/TaylorTheorem.lean:119:63: Application type mismatch: The argument
+  hlt
+has type
+
+===== TaylorTheoremOQ01
+error: Proofs/TaylorTheoremOQ01.lean:93:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/TaylorTheoremOQ01.lean:117:12: Application type mismatch: The argument
+  hθ
+has type
+
+===== TaylorTheoremOQ02
+error: Proofs/TaylorTheoremOQ02.lean:90:65: unsolved goals
+f : ℝ → ℝ
+p : FormalMultilinearSeries ℝ ℝ ℝ
+error: Proofs/TaylorTheoremOQ02.lean:132:5: Invalid field `hasSum`: The environment does not contain `Exists.hasSum`, so it is not possible to project the field `hasSum` from an expression
+  h
+of type
+error: Proofs/TaylorTheoremOQ02.lean:158:2: Type mismatch: After simplification, term
+  Tendsto.sub tendsto_const_nhds htend
+ has type
+error: Proofs/TaylorTheoremOQ02.lean:185:35: Invalid field `le_radius`: The environment does not contain `HasFPowerSeriesOnBall.le_radius`, so it is not possible to project the field `le_radius` from an expression
+  hr
+of type `HasFPowerSeriesOnBall f p x₀ r`
+
+===== TaylorTheoremOQ03
+error: Proofs/TaylorTheoremOQ03.lean:131:58: Application type mismatch: The argument
+  hx
+has type
+error: Proofs/TaylorTheoremOQ03.lean:113:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/TaylorTheoremOQ03.lean:182:36: Application type mismatch: The argument
+  one_pos
+has type
+error: Proofs/TaylorTheoremOQ03.lean:186:44: unsolved goals
+n j : ℕ
+hn : 1 ≤ n
+
+===== TaylorTheoremOQ03OQ01
+error: Proofs/TaylorTheoremOQ03OQ01.lean:107:68: Application type mismatch: The argument
+  hx
+has type
+
+===== TaylorTheoremOQ03OQ02
+error: Proofs/TaylorTheoremOQ03OQ02.lean:81:4: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_cos x)
+ has type
+
+===== TestApi1056
+error: Proofs/TestApi1056.lean:20:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TestApi1056.lean:21:35: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TestApi1056.lean:31:20: Tactic `decide` failed for proposition
+  List.Chain' (fun x1 x2 => x1 < x2) [3, 5, 8]
+because its `Decidable` instance
+error: Proofs/TestApi1056.lean:38:20: Tactic `decide` failed for proposition
+  List.Chain' (fun x1 x2 => x1 < x2) [2, 6, 12, 16]
+because its `Decidable` instance
+
+===== TestApi1061
+error: Proofs/TestApi1061.lean:10:6: Unknown constant `Nat.divisors_prime_eq`
+error: Proofs/TestApi1061.lean:8:64: unsolved goals
+p : ℕ
+error: Proofs/TestApi1061.lean:8:64: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/TestApi1061.lean:77:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+
+===== TestApi1061b
+error: Proofs/TestApi1061b.lean:16:47: Function expected at
+  σ
+but this term has type
+error: Proofs/TestApi1061b.lean:23:7: Unknown constant `Nat.divisors_prime_eq`
+error: Proofs/TestApi1061b.lean:27:5: Function expected at
+  σ
+error: Proofs/TestApi1061b.lean:27:5: Function expected at
+  σ
+but this term has type
+error: Proofs/TestApi1061b.lean:27:21: Function expected at
+  σ
+but this term has type
+
+===== TestApi1148
+error: Proofs/TestApi1148.lean:17:65: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+
+===== TestApi1159b
+error: Proofs/TestApi1159b.lean:6:8: Unknown constant `Configuration.HasLines.mkFinOrder`
+info: Proofs/TestApi1159b.lean:7:0: class Configuration.HasLines.{u_1, u_2} (P : Type u_1) (L : Type u_2) [Membership P L] : Type (max u_1 u_2)
+number of parameters: 3
+error: Proofs/TestApi1159b.lean:19:8: Unknown constant `Configuration.ProjectivePlane.mkFinOrder`
+info: Proofs/TestApi1159b.lean:22:0: class Configuration.ProjectivePlane.{u_1, u_2} (P : Type u_1) (L : Type u_2) [Membership P L] : Type (max u_1 u_2)
+number of parameters: 3
+
+===== TestApi1159c
+error: Proofs/TestApi1159c.lean:9:14: Function expected at
+  ProjectivePlane.pointCount_eq P L
+but this term has type
+error: Proofs/TestApi1159c.lean:8:36: unsolved goals
+P : Type u_1
+L : Type u_2
+error: Proofs/TestApi1159c.lean:19:14: Function expected at
+  ProjectivePlane.pointCount_eq P L
+but this term has type
+error: Proofs/TestApi1159c.lean:17:50: unsolved goals
+P : Type u_1
+L : Type u_2
+
+===== TestApi234
+error: Proofs/TestApi234.lean:12:8: Unknown constant `Continuous.if_lt`
+error: Proofs/TestApi234.lean:13:2: No goals to be solved
+error: Proofs/TestApi234.lean:31:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+error: Proofs/TestApi234.lean:13:2: No goals to be solved
+error: Proofs/TestApi234.lean:31:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+  Finset.filter ?p ?s ⊆ Finset.filter ?p ?t
+error: Proofs/TestApi234.lean:31:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+  Finset.filter ?p ?s ⊆ Finset.filter ?p ?t
+with the goal
+error: Proofs/TestApi234.lean:42:2: Tactic `apply` failed: could not unify the conclusion of `@Finset.filter_subset_filter`
+  Finset.filter ?p ?s ⊆ Finset.filter ?p ?t
+with the goal
+
+===== TestApi312
+error: Proofs/TestApi312.lean:16:7: Unknown constant `Real.exp_ge_one_add_of_nonneg`
+info: Proofs/TestApi312.lean:18:0: Asymptotics.IsLittleO.{u_18, u_19, u_20} {α : Type u_18} {E : Type u_19} {F : Type u_20} [Norm E] [Norm F]
+  (l : Filter α) (f : α → E) (g : α → F) : Prop
+error: Proofs/TestApi312.lean:25:7: Unknown constant `Real.exp_lt_one_of_neg`
+error: Proofs/TestApi312.lean:27:7: Unknown identifier `isLittleO_pow_exp_atTop`
+error: Lean exited with code 1
+error: Proofs/TestApi312.lean:27:7: Unknown identifier `isLittleO_pow_exp_atTop`
+error: Lean exited with code 1
+✖ [8597/8601] Building Proofs.TestApi688 (43s)
+
+===== TestApi385
+error: Proofs/TestApi385.lean:10:34: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+
+===== TestApi417
+error: Proofs/TestApi417.lean:27:66: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== TestApi457
+error: Proofs/TestApi457.lean:28:32: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+
+===== TestApi513
+error: Proofs/TestApi513.lean:17:37: Unknown constant `Real.pi_lt_3141593`
+error: Lean exited with code 1
+✖ [8586/8601] Building Proofs.TestApi1061 (49s)
+
+===== TestApi688
+error: Proofs/TestApi688.lean:15:47: Unknown constant `Nat.not_prime_of_le_one`
+info: Proofs/TestApi688.lean:19:0: @Finset.card_le_card_of_injOn : ∀ {α : Type u_1} {β : Type u_2} {s : Finset α} {t : Finset β} (f : α → β),
+  Set.MapsTo f ↑s ↑t → Set.InjOn f ↑s → s.card ≤ t.card
+error: Proofs/TestApi688.lean:31:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+
+===== TestApi689
+error: Proofs/TestApi689.lean:51:22: Application type mismatch: The argument
+  Finset.filter_subset_filter ?m.17 ?m.21
+has type
+
+===== TestApi913
+error: Proofs/TestApi913.lean:25:17: Tactic `rcases` failed: `[3]` is not a free variable
+error: Lean exited with code 1
+✖ [8584/8601] Building Proofs.TaylorSinCosConvergenceOQ03Aristotle (48s)
+
+===== TestApi960
+error: Proofs/TestApi960.lean:9:2: Type mismatch
+  Finset.offDiag_card s
+has type
+error: Proofs/TestApi960.lean:12:8: Unknown constant `Rat.toNat`
+error: Lean exited with code 1
+✖ [8588/8601] Building Proofs.TestApi1159b (51s)
+
+===== TestApi963
+error: Proofs/TestApi963.lean:12:7: Unknown constant `Finset.sum_pow_eq_pow_sum`
+error: Proofs/TestApi963.lean:13:7: Unknown constant `Nat.sum_range_id_eq_sum_range_succ`
+error: Lean exited with code 1
+error: Proofs/TestApi963.lean:13:7: Unknown constant `Nat.sum_range_id_eq_sum_range_succ`
+error: Lean exited with code 1
+✖ [8599/8601] Building Proofs.TestApi689 (67s)
+
+===== TestConvexHull
+error: Proofs/TestConvexHull.lean:5:8: Unknown identifier `isCompact_isClosed_isBounded`
+info: Proofs/TestConvexHull.lean:10:0: IsCompact.inter_left.{u} {X : Type u} [TopologicalSpace X] {s t : Set X} (ht : IsCompact t) (hs : IsClosed s) :
+  IsCompact (s ∩ t)
+error: Proofs/TestConvexHull.lean:37:8: failed to synthesize instance of type class
+  Field 𝕜✝
+
+===== TestErdos43Api
+error: Proofs/TestErdos43Api.lean:9:8: Unknown constant `Int.Icc_toFinset_card`
+error: Proofs/TestErdos43Api.lean:10:8: Unknown constant `Nat.card_Icc_of_le`
+info: Proofs/TestErdos43Api.lean:11:0: Int.card_Icc : ∀ (a b : ℤ), (Finset.Icc a b).card = (b + 1 - a).toNat
+error: Proofs/TestErdos43Api.lean:10:8: Unknown constant `Nat.card_Icc_of_le`
+info: Proofs/TestErdos43Api.lean:11:0: Int.card_Icc : ∀ (a b : ℤ), (Finset.Icc a b).card = (b + 1 - a).toNat
+error: Proofs/TestErdos43Api.lean:20:47: invalid coercion notation, expected type is not known
+error: Proofs/TestErdos43Api.lean:20:47: invalid coercion notation, expected type is not known
+error: Lean exited with code 1
+✖ [8591/8597] Building Proofs.WolstenholmeTheoremOQ02OQ02 (13s)
+
+===== TestHLTension
+error: Proofs/TestHLTension.lean:42:17: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/TestHLTension.lean:48:16: Unknown constant `Finset.card_sdiff_eq_card_sub_card_inter`
+error: Proofs/TestHLTension.lean:47:60: unsolved goals
+S : Finset ℕ
+error: Proofs/TestHLTension.lean:47:60: unsolved goals
+S : Finset ℕ
+a b : ℕ
+error: Proofs/TestHLTension.lean:61:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+
+===== TestHolderApi
+error: Proofs/TestHolderApi.lean:25:8: Unknown identifier `MeasureTheory.snorm`
+error: Proofs/TestHolderApi.lean:26:8: Unknown identifier `MeasureTheory.snorm_le_snorm_mul_snorm_of_nq`
+info: Proofs/TestHolderApi.lean:29:0: @inner_self_eq_norm_sq : ∀ {𝕜 : Type u_1} {E : Type u_2} [inst : RCLike 𝕜] [inst_1 : SeminormedAddCommGroup E]
+error: Proofs/TestHolderApi.lean:26:8: Unknown identifier `MeasureTheory.snorm_le_snorm_mul_snorm_of_nq`
+info: Proofs/TestHolderApi.lean:29:0: @inner_self_eq_norm_sq : ∀ {𝕜 : Type u_1} {E : Type u_2} [inst : RCLike 𝕜] [inst_1 : SeminormedAddCommGroup E]
+  [inst_2 : InnerProductSpace 𝕜 E] (x : E), RCLike.re (inner 𝕜 x x) = ‖x‖ ^ 2
+error: Proofs/TestHolderApi.lean:32:8: Unknown identifier `MeasureTheory.snorm_add_le`
+error: Proofs/TestHolderApi.lean:35:40: unsolved goals
+⊢ NNReal.HolderTriple 2 2 1
+error: Proofs/TestHolderApi.lean:35:40: unsolved goals
+⊢ NNReal.HolderTriple 2 2 1
+error: Lean exited with code 1
+
+===== TestSphereLocEuc
+error: Proofs/TestSphereLocEuc.lean:19:38: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+error: Proofs/TestSphereLocEuc.lean:17:61: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+error: Proofs/TestSphereLocEuc.lean:24:49: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+error: Proofs/TestSphereLocEuc.lean:13:60: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+
+===== TestWolstenholme
+error: Proofs/TestWolstenholme.lean:5:7: Unknown constant `ZMod.prod_univ_prime`
+info: Proofs/TestWolstenholme.lean:7:0: ZMod.pow_card_sub_one_eq_one {p : ℕ} [Fact (Nat.Prime p)] {a : ZMod p} (ha : a ≠ 0) : a ^ (p - 1) = 1
+info: Proofs/TestWolstenholme.lean:8:0: ZMod.units_pow_card_sub_one_eq_one (p : ℕ) [Fact (Nat.Prime p)] (a : (ZMod p)ˣ) : a ^ (p - 1) = 1
+error: Proofs/TestWolstenholme.lean:10:7: Unknown constant `Finset.sum_pow_eq_pow_sum`
+info: Proofs/TestWolstenholme.lean:12:0: ZMod.instField (p : ℕ) [hp : Fact (Nat.Prime p)] : Field (ZMod p)
+error: Proofs/TestWolstenholme.lean:30:58: Type mismatch
+error: Proofs/TestWolstenholme.lean:30:58: Type mismatch
+  hg x
+has type
+error: Proofs/TestWolstenholme.lean:34:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+
+===== TestZetaNonzero
+error: Proofs/TestZetaNonzero.lean:78:31: unsolved goals
+s : ℂ
+hs : riemannZeta s = 0
+
+===== ThreeSubgroupsLemmaOQ01OQ01
+error: Proofs/ThreeSubgroupsLemmaOQ01OQ01.lean:62:5: Ambiguous term
+  lowerCentralSeries
+Possible interpretations:
+error: Proofs/ThreeSubgroupsLemmaOQ01OQ01.lean:62:29: Ambiguous term
+  lowerCentralSeries
+Possible interpretations:
+error: Proofs/ThreeSubgroupsLemmaOQ01OQ01.lean:63:8: Ambiguous term
+  lowerCentralSeries
+Possible interpretations:
+error: Proofs/ThreeSubgroupsLemmaOQ01OQ01.lean:68:6: overloaded, errors 
+  68:25 Unknown identifier `G`
+
+===== TriangleAngleSumOQ02
+error: Proofs/TriangleAngleSumOQ02.lean:89:16: Type mismatch
+  π
+has type
+error: Proofs/TriangleAngleSumOQ02.lean:99:2: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  T
+has type `GeodesicTriangle` which does not have the necessary form.
+error: Proofs/TriangleAngleSumOQ02.lean:99:8: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  T
+has type `GeodesicTriangle` which does not have the necessary form.
+error: Proofs/TriangleAngleSumOQ02.lean:99:14: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  T
+has type `GeodesicTriangle` which does not have the necessary form.
+
+===== TriangleInequalityOQ01
+error: Proofs/TriangleInequalityOQ01.lean:93:26: Function expected at
+  LpAddConst
+but this term has type
+error: Proofs/TriangleInequalityOQ01.lean:99:42: Function expected at
+  LpAddConst
+but this term has type
+error: Proofs/TriangleInequalityOQ01.lean:100:2: Unknown identifier `MeasureTheory.LpAddConst_of_one_le`
+warning: Proofs/TriangleInequalityOQ01.lean:122:2: `MeasureTheory.memLp_finset_sum` has been deprecated: Use `MeasureTheory.memLp_finsetSum` instead
+error: Proofs/TriangleInequalityOQ01.lean:144:78: unexpected token 'omit'; expected 'lemma'
+error: Proofs/TriangleInequalityOQ01.lean:144:78: unexpected token 'omit'; expected 'lemma'
+error: Lean exited with code 1
+✖ [8587/8597] Building Proofs.ThreeSubgroupsLemmaOQ01OQ01 (14s)
+
+===== TriangularNumberReciprocals
+error: Proofs/TriangularNumberReciprocals.lean:192:8: Unknown constant `Finset.sum_eq_sum_diff_singleton_add`
+error: Proofs/TriangularNumberReciprocals.lean:256:98: unsolved goals
+case e'_5
+error: Proofs/TriangularNumberReciprocals.lean:256:98: unsolved goals
+case e'_5
+h : HasSum (fun n => 2 * if n = 0 then 0 else 1 / (↑n * (↑n + 1))) 2
+
+===== TriangularReciprocalsFigurate
+error: Proofs/TriangularReciprocalsFigurate.lean:88:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TriangularReciprocalsFigurate.lean:95:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/TriangularReciprocalsFigurate.lean:98:68: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/TriangularReciprocalsFigurate.lean:106:17: Unknown identifier `rpow_neg`
+error: Proofs/TriangularReciprocalsFigurate.lean:105:8: unsolved goals
+n : ℕ
+
+===== VietasFormulasOQ02
+error: Proofs/VietasFormulasOQ02.lean:125:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+
+===== VietasFormulasOQ03OQ01
+error: Proofs/VietasFormulasOQ03OQ01.lean:81:77: unsolved goals
+n : ℕ
+R : Type u_1
+error: Proofs/VietasFormulasOQ03OQ01.lean:89:58: unsolved goals
+n : ℕ
+R : Type u_1
+error: Proofs/VietasFormulasOQ03OQ01.lean:111:13: unsolved goals
+n : ℕ
+R : Type u_1
+
+===== WolstenholmeTheoremOQ02OQ02
+error: Proofs/WolstenholmeTheoremOQ02OQ02.lean:47:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  φ p
+in the target expression
+error: Proofs/WolstenholmeTheoremOQ02OQ02.lean:57:56: Unknown constant `Equiv.mulLeft_apply`
+error: Proofs/WolstenholmeTheoremOQ02OQ02.lean:52:42: unsolved goals
+p : ℕ
+error: Proofs/WolstenholmeTheoremOQ02OQ02.lean:52:42: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+error: Proofs/WolstenholmeTheoremOQ02OQ02.lean:87:22: Unknown constant `Nat.factorial_mul_choose`
+error: Proofs/WolstenholmeTheoremOQ02OQ02.lean:79:50: unsolved goals
+p : ℕ
+
+===== YangMills2DOQ01
+error: Proofs/YangMills2DOQ01.lean:152:2: Tactic `apply` failed: could not unify the type of `mul_lt_mul_of_pos_left ?m.32 hd`
+  d * ?m.29 < d * ?m.30
+with the goal
+

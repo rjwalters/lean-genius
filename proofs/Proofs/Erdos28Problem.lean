@@ -193,7 +193,7 @@ theorem total_rep_unbounded (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
   set M := hfin.toFinset.sup id
   have hM : ∀ n, M < n → n ∈ A + A := by
     intro n hn; by_contra h_not
-    exact absurd (Finset.le_sup (f := id) (hfin.mem_toFinset.mpr h_not)) (by omega)
+    exact absurd (Finset.le_sup (f := id) (hfin.mem_toFinset.mpr h_not)) (by simp only [id_eq]; omega)
   intro b
   use M + b + 1
   intro N hN

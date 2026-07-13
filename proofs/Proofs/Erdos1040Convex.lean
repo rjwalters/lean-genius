@@ -140,9 +140,8 @@ def quadPoly : PolynomialInF (segment ℝ (-1 : ℂ) 1) where
 
 /-- The quadratic evaluates to `(z - 1)(z + 1)`. -/
 theorem quad_eval (z : ℂ) : quadPoly.eval z = (z - 1) * (z + 1) := by
-  simp only [PolynomialInF.eval, quadPoly, Fin.prod_univ_two,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
-  ring
+  show ∏ i : Fin 2, (z - (![(1 : ℂ), -1]) i) = (z - 1) * (z + 1)
+  simp [Fin.prod_univ_two]
 
 /-- Both roots `±1` lie in the sublevel set (the value there is `0`). -/
 theorem one_mem_quad_sublevel : (1 : ℂ) ∈ sublevelSet quadPoly := by

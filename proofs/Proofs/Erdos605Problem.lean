@@ -128,7 +128,8 @@ noncomputable def iterLog : ℕ → ℕ
   | n + 2 => if Real.log (n + 2 : ℝ) ≤ 1 then 1
              else 1 + iterLog (Nat.floor (Real.log (n + 2 : ℝ)))
   decreasing_by
-    have hpos : (0 : ℝ) ≤ Real.log (n + 2 : ℝ) := Real.log_nonneg (by norm_num)
+    have hpos : (0 : ℝ) ≤ Real.log (n + 2 : ℝ) :=
+      Real.log_nonneg (by have := Nat.cast_nonneg (α := ℝ) n; push_cast; linarith)
     have hlt : Real.log (n + 2 : ℝ) < ((n + 2 : ℕ) : ℝ) := by
       push_cast
       have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < (n : ℝ) + 2 by positivity)

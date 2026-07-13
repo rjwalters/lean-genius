@@ -47,7 +47,7 @@ def IsPerfectSquare (n : ℕ) : Prop := ∃ m : ℕ, n = m * m
 
 /-- The interval {n+1, ..., n+t} as a Finset -/
 def interval (n t : ℕ) : Finset ℕ :=
-  (Finset.range t).map ⟨fun i => n + 1 + i, fun _ _ h => by omega⟩
+  (Finset.range t).map ⟨fun i => n + 1 + i, fun _ _ h => by simpa using h⟩
 
 /-- A subset S of the interval has the property that n · ∏S is a perfect square -/
 def HasSquareProduct (n : ℕ) (S : Finset ℕ) : Prop :=
