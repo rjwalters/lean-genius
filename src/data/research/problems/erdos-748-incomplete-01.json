@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-12, VERIFIED axiom-free): completed the maximum-sum-free-size characterization. sumFree_card_le_ceil proves the extremal UPPER bound |A|≤⌈n/2⌉ for any sum-free A⊆[1,n] via the elementary Erdős difference-set argument (previously deferred in the Part VII docstring as the classical hard direction — it is elementary, not the deep green_upper_bound). max_sumFree_card_eq_ceil packages it with the existing achievability (exists_sumFree_card_ceil) into IsGreatest {|A|} = (n+1)/2. Both depend only on [propext,Classical.choice,Quot.sound] — independent of the 2 deep BLOCKED axioms (Green 2004 / Sapozhenko 2003). 0 new axioms. File still 2 axioms (both deep asymptotic, genuinely blocked, out of single-session scope).",
+    "progressSummary": "PROGRESS (researcher-2, 2026-07-12): added Part XV (non-uniqueness of maximum sum-free sets — ≥2 extremal sets of size ⌈n/2⌉, 5 thms 0 new axioms) AND repaired a pre-existing build breakage (kernel-decide SIGBUS on f_0..f_6 removed). File now compiles clean (VERIFIED, 0 sorries, still 2 deep Green/Sapozhenko axioms).",
     "builtItems": [
       "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
       "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)",
@@ -41,18 +41,24 @@
       "oddNumbers_card (Erdos748Problem.lean, VERIFIED axiom-free): |O| = (n+1)/2 = ⌈n/2⌉ — exact size of the odd family in [1,n], by induction on n (Finset.range_add_one + filter_insert + card_insert_of_notMem, omega on the ⌈·⌉ increment). Discharges the previously prose-only '|O| = ⌈n/2⌉' claim in oddFamily_lower_bound.",
       "oddFamily_lower_bound_ceil (Erdos748Problem.lean, VERIFIED axiom-free): f(n) ≥ 2^{⌈n/2⌉} via the ODD family, a genuinely distinct witnessing construction from sharp_lower_bound's upper half. Follows by rewriting oddFamily_lower_bound with oddNumbers_card.",
       "sumFree_card_le_ceil (Erdos748Problem.lean, VERIFIED axiom-free): every sum-free A⊆{1,…,n} has |A|≤⌈n/2⌉=(n+1)/2 — the EXTREMAL UPPER BOUND via the elementary Erdős difference-set argument (m=max A; D={m−a:a∈A,a≠m} disjoint from A since m−a∈A ⇒ m=(m−a)+a violates sum-freeness; |D|=|A|−1; A,D⊆[1,m] ⇒ 2|A|−1≤m≤n). Discharges the Part VII docstring gap that called this the classical hard direction (it is elementary, NOT the deep green_upper_bound).",
-      "max_sumFree_card_eq_ceil (Erdos748Problem.lean, VERIFIED axiom-free): IsGreatest {|A| : A sum-free ⊆[1,n]} = ⌈n/2⌉ — packages exists_sumFree_card_ceil (achievable) + sumFree_card_le_ceil (upper bound) into the full both-directions characterization of the maximum sum-free subset size."
+      "max_sumFree_card_eq_ceil (Erdos748Problem.lean, VERIFIED axiom-free): IsGreatest {|A| : A sum-free ⊆[1,n]} = ⌈n/2⌉ — packages exists_sumFree_card_ceil (achievable) + sumFree_card_le_ceil (upper bound) into the full both-directions characterization of the maximum sum-free subset size.",
+      "Part XV in Erdos748Problem.lean: oddNumbers_mem_sumFreeSubsets, upperHalf_mem_sumFreeSubsets, oddNumbers_ne_upperHalf, exists_two_distinct_max_sumFree, two_le_card_max_sumFree (≥2 maximum-size sum-free subsets) — 5 thms, 0 new axioms",
+      "Build repair: removed f_0..f_6 kernel-decide example theorems — Finset.filter-over-powerset decide crashes the Lean v4.26.0 kernel with SIGBUS (code 135) even for n≤3 under the Docker cgroup memory limit; native_decide declined to preserve axiom-freeness; OEIS values retained in docstring"
     ],
     "insights": [
       "The trivial lower bound needs no analysis: every subset of the upper half {⌊n/2⌋+1,…,n} is sum-free (upperHalf_sumFree), giving 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋} distinct sum-free sets",
       "File was broken against mathlib v4.26.0: stale Asymptotics import, .1/.2 mixups in upperHalf_sumFree and sumFree_iff, missing DecidablePred IsSumFree, le_div_iff→le_div_iff₀, orphan /-- doc comments",
       "The small values f(1)=2, f(2)=3, f(3)=6 (counts of sum-free subsets of {1,…,n}) are provable by kernel `decide` (axiom-free, no native_decide/ofReduceBool needed) thanks to the bounded-quantifier decidableIsSumFree instance.",
       "The two dominant sum-free families (odds O, upper-half U) count STRICTLY more together than U alone for all n≥3: 1 is odd and below n/2+1, so O∩U⊊O and the surplus 2^|O|−2^|O∩U| is positive. Names verified vs pinned Mathlib: Finset.ssubset_iff_of_subset, Finset.mem_of_mem_inter_right, Finset.card_lt_card, Nat.pow_lt_pow_right.",
-      "The extremal upper bound (max sum-free subset of [1,n] has size ≤⌈n/2⌉) is ELEMENTARY (Erdős difference-set: A and {m−a:a∈A\\{m}} are disjoint subsets of [1,m] of sizes |A| and |A|−1), NOT the deep counting result. The file docstring previously deferred it to informal discussion as the classical hard direction; it is now Lean-verified axiom-free, independent of the green_upper_bound/precise_asymptotic axioms."
+      "The extremal upper bound (max sum-free subset of [1,n] has size ≤⌈n/2⌉) is ELEMENTARY (Erdős difference-set: A and {m−a:a∈A\\{m}} are disjoint subsets of [1,m] of sizes |A| and |A|−1), NOT the deep counting result. The file docstring previously deferred it to informal discussion as the classical hard direction; it is now Lean-verified axiom-free, independent of the green_upper_bound/precise_asymptotic axioms.",
+      "Extremal maximiser is NOT unique: for n≥3 both the odd numbers O and the upper half U are sum-free sets of the maximum size ⌈n/2⌉ and differ (1∈O, 1∉U) — the structural seed of the parity-dependent leading constant c_n (Part XV)."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Kernel `decide` on `Finset.filter p (Finset.Icc 1 n).powerset` is not memory-safe under the current toolchain (SIGBUS even at n=3); no lightweight axiom-free tactic computes exact sum-free subset counts"
+    ],
     "nextSteps": [
-      "green_upper_bound and precise_asymptotic are deep results (Green 2004, Sapozhenko 2003); formalizing them is a large project, not a single session"
+      "green_upper_bound and precise_asymptotic are deep results (Green 2004, Sapozhenko 2003); formalizing them is a large project, not a single session",
+      "Optional: prove f 0 = 1 and f 1 = 2 via explicit Finset simp lemmas (no decide) to restore a small machine-checked grounding of A007865"
     ]
   },
   "tags": [],
