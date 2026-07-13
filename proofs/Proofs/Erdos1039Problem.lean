@@ -922,4 +922,69 @@ theorem bounds_chain (c : ℝ) (hc : 1 ≤ c) (hc' : c < Real.pi / 2) (n : ℕ) 
     klrBound_lt_conjecturedBound c hcpos n hn,
     conjecturedBound_lt_benchmarkBound c hc' n (by omega)⟩
 
+/-
+## The bounds all vanish: the inscribed radius shrinks to zero
+
+The ratio blocks above pin the *relative* rates of the four estimate functions
+(all `→ ∞` against each other's reciprocals).  The qualitative backdrop underneath —
+the reason EHP is a question about *how fast* `ρ(f)` shrinks, not *whether* it does —
+is that every one of the four bound functions tends to `0` as the degree `n → ∞`:
+
+  `pommerenkeBound n → 0`, `klrBound c n → 0`, `conjecturedBound c n → 0`,
+  `benchmarkBound n → 0`.
+
+Each is a numerator `→` a constant over a denominator `→ ∞` (`Tendsto.div_atTop`),
+so all four are unconditional facts about the bound functions and use none of the deep
+axioms.  The four vanishing rates are `Θ(1/n²)`, `Θ(1/(n√log n))`, `Θ(1/n)` and `Θ(1/n)`
+respectively, ordered exactly as `bounds_chain`.
+-/
+
+/-- **The conjectured bound vanishes.** `conjecturedBound c n = c/n → 0` as `n → ∞`, for any
+constant `c`.  A constant numerator over `n → ∞` (`Tendsto.div_atTop`). -/
+theorem conjecturedBound_tendsto_zero (c : ℝ) :
+    Filter.Tendsto (fun n : ℕ => conjecturedBound c n) Filter.atTop (nhds 0) := by
+  simp only [conjecturedBound]
+  exact tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
+
+/-- **The benchmark bound vanishes.** `benchmarkBound n = π/(2n) → 0` as `n → ∞`.  The
+denominator `2n → ∞` (`Tendsto.const_mul_atTop`), over the constant numerator `π`. -/
+theorem benchmarkBound_tendsto_zero :
+    Filter.Tendsto (fun n : ℕ => benchmarkBound n) Filter.atTop (nhds 0) := by
+  simp only [benchmarkBound]
+  refine tendsto_const_nhds.div_atTop ?_
+  exact Filter.Tendsto.const_mul_atTop (by norm_num : (0 : ℝ) < 2) tendsto_natCast_atTop_atTop
+
+/-- **The KLR bound vanishes.** `klrBound c n = c/(n√log n) → 0` as `n → ∞`.  The denominator
+`n·√(log n) → ∞` — a product of two functions each `→ ∞` (`Tendsto.atTop_mul_atTop₀`, with
+`√(log n) → ∞` from `√ ∘ log ∘ (·:ℕ→ℝ)`) — over the constant numerator `c`. -/
+theorem klrBound_tendsto_zero (c : ℝ) :
+    Filter.Tendsto (fun n : ℕ => klrBound c n) Filter.atTop (nhds 0) := by
+  have hsqrt_atTop : Filter.Tendsto Real.sqrt Filter.atTop Filter.atTop := by
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    refine ⟨b ^ 2 + 1, fun x hx => ?_⟩
+    calc b ≤ |b| := le_abs_self b
+      _ = Real.sqrt (b ^ 2) := (Real.sqrt_sq_eq_abs b).symm
+      _ ≤ Real.sqrt x := Real.sqrt_le_sqrt (by nlinarith)
+  have hsl : Filter.Tendsto (fun n : ℕ => Real.sqrt (Real.log n)) Filter.atTop Filter.atTop :=
+    hsqrt_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
+  have hden : Filter.Tendsto (fun n : ℕ => (n : ℝ) * Real.sqrt (Real.log n))
+      Filter.atTop Filter.atTop :=
+    tendsto_natCast_atTop_atTop.atTop_mul_atTop₀ hsl
+  simp only [klrBound]
+  exact tendsto_const_nhds.div_atTop hden
+
+/-- **The Pommerenke bound vanishes.** `pommerenkeBound n = 1/(2en²) → 0` as `n → ∞` — the
+fastest-vanishing of the four (`Θ(1/n²)`).  The denominator `2e·n² → ∞` (`n² → ∞` via
+`tendsto_pow_atTop`, scaled by the constant `2e > 0`), over the constant numerator `1`. -/
+theorem pommerenkeBound_tendsto_zero :
+    Filter.Tendsto (fun n : ℕ => pommerenkeBound n) Filter.atTop (nhds 0) := by
+  have hnsq : Filter.Tendsto (fun n : ℕ => (n : ℝ) ^ 2) Filter.atTop Filter.atTop :=
+    (Filter.tendsto_pow_atTop (by norm_num : (2 : ℕ) ≠ 0)).comp tendsto_natCast_atTop_atTop
+  have hden : Filter.Tendsto (fun n : ℕ => 2 * Real.exp 1 * (n : ℝ) ^ 2)
+      Filter.atTop Filter.atTop :=
+    Filter.Tendsto.const_mul_atTop (by positivity : (0 : ℝ) < 2 * Real.exp 1) hnsq
+  simp only [pommerenkeBound]
+  exact tendsto_const_nhds.div_atTop hden
+
 end Erdos1039
