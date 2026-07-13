@@ -383,8 +383,26 @@ This pass does **not** apply to research-only files or gallery proofs; gallery w
 
 ## Step 5: Commit and Push
 
+**Stage explicit paths — do not blind-stage with `git add -A`.** On 2026-07-11 a
+disk-slimmed researcher worktree (tracked files deleted from disk WITHOUT
+sparse-checkout) plus a stage-everything commit silently staged **9,927 file
+deletions** alongside one new Lean file, and the merge wiped most of the
+repository (commit `dc9fdffa30`, issue #38398). Two guards now stand in this path:
+
+- Researcher worktrees carry a `pre-commit` **mass-deletion tripwire**
+  (`scripts/research/check-staged-deletions.sh`, installed by
+  `parallel-research.sh`) that **blocks any commit staging more than 20
+  deletions**. If it fires on deletions you did NOT make: unstage them
+  (`git restore --staged <paths>`), restore the files (`git checkout -- .`),
+  and if you were slimming for disk space use
+  `scripts/research/slim-worktree.sh` instead (see COMMON.md Worktree Hygiene).
+  Only a genuinely intended, operator-acknowledged mass deletion may bypass:
+  `ALLOW_MASS_DELETION=1 git commit ...`.
+- Before committing, review `git status --porcelain | grep '^D\|^ D'` — any
+  deletion you did not intentionally make is a red flag, whatever the count.
+
 ```bash
-git add -A
+git add proofs/Proofs/YourFile.lean src/data/research/problems/<problem>.json  # your actual touched paths
 git commit -m "$(cat <<'EOF'
 Research: [problem-id] - [brief description]
 
