@@ -50,7 +50,7 @@ AlgebraicNumbersCountableOQ02OQ03	GREEN
 AlgebraicNumbersCountableOQ02OQ04	RESIDUAL	dot-notation-drift
 AlgebraicNumbersCountableOQ02OQ04OQ01	RESIDUAL	dot-notation-drift
 AlgebraicNumbersCountableOQ04	RESIDUAL	type-mismatch
-AlgebraicPointsNull	RESIDUAL	proof-drift
+AlgebraicPointsNull	GREEN	
 AlgebraicRealsNull	GREEN	
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	RESIDUAL	signature-drift
@@ -75,7 +75,7 @@ AngleTrisection	GREEN
 AngleTrisectionCos20Gal	GREEN	
 AngleTrisectionCos20GalOQ01	GREEN	
 AngleTrisectionCos20GalOQ01OQ01	RESIDUAL	proof-drift
-AngleTrisectionCos20GalOQ01OQ02	RESIDUAL	proof-drift
+AngleTrisectionCos20GalOQ01OQ02	GREEN	
 AngleTrisectionCos20GalOQ01OQ02OQ02	RESIDUAL	instance-synth
 AngleTrisectionCos20GalOQ03	RESIDUAL	proof-drift
 AngleTrisectionCos20GalOQ03OQ01	RESIDUAL	type-mismatch
@@ -95,7 +95,7 @@ AngleTrisectionOQ03OQ01	RESIDUAL	instance-synth
 AngleTrisectionOQ03OQ02	RESIDUAL	instance-synth
 AngleTrisectionOQ03OQ02OQ03	RESIDUAL	instance-synth
 AngleTrisectionOQ05OQ02	GREEN	
-AngleTrisectionOQ05OQ03	RESIDUAL	proof-drift
+AngleTrisectionOQ05OQ03	RESIDUAL	unknown-const:nth_prime_constructible_at
 ArchimedesMethodOfExhaustion	RESIDUAL	instance-synth
 AreaFromCircumferenceIntegral	GREEN	
 AreaOfCircleOQ01OQ02OQ01	RESIDUAL	rewrite-drift
@@ -130,14 +130,14 @@ AreaOfCircleOQ03OQ03OQ02	RESIDUAL	proof-drift
 AreaOfCircleOQ05OQ01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
 AreaOfCircleOQ05OQ01Aristotle	RESIDUAL	proof-drift
 AreaOfCircleOQ05OQ01Incomplete01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
-AreaOfCircleOQ05OQ03OQ05	RESIDUAL	proof-drift
+AreaOfCircleOQ05OQ03OQ05	RESIDUAL	type-mismatch
 AreaOfCircleOQ05OQ04	GREEN	
 AreaOfCircleOQ07OQ02OQ02	GREEN	
 AreaOfCircleOQ07OQ03OQ02	GREEN	
 AreaOfCircleOQ07OQ04OQ01	RESIDUAL	rewrite-drift
 AreaOfCircleOQ07OQ04OQ01OQ01	RESIDUAL	rewrite-drift
-AreaOfCircleOQ07OQ05	RESIDUAL	proof-drift
-AreaOfCircleOQ07OQ05OQ01	RESIDUAL	proof-drift
+AreaOfCircleOQ07OQ05	RESIDUAL	type-mismatch
+AreaOfCircleOQ07OQ05OQ01	RESIDUAL	type-mismatch
 AreaOfCircleOQ07OQ05OQ01OQ01	RESIDUAL	type-mismatch
 AreaOfCircleOQ07OQ05OQ01OQ02	RESIDUAL	type-mismatch
 AreaOfCircleOQ07OQ05OQ02	RESIDUAL	type-mismatch
@@ -158,9 +158,9 @@ BallotProblemOQ01OQ02OQ01OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ04	RESIDUAL	proof-drift
-BallotProblemOQ01OQ04	RESIDUAL	proof-drift
+BallotProblemOQ01OQ04	RESIDUAL	type-mismatch
 BallotProblemOQ01OQ04Core	GREEN	
-BallotProblemOQ01OQ04OQ01	RESIDUAL	proof-drift
+BallotProblemOQ01OQ04OQ01	RESIDUAL	type-mismatch
 BallotProblemOQ02OQ02	RESIDUAL	signature-drift
 BallotProblemOQ02OQ02OQ05	RESIDUAL	signature-drift
 BallotProblemOQ02OQ03	RESIDUAL	rewrite-drift
@@ -202,7 +202,7 @@ BernoulliInequalityOQ01OQ02OQ01	RESIDUAL	proof-drift
 BertrandsPostulateOQ03	GREEN	
 BertrandsPostulateOQ03OQ04	GREEN	
 BertrandsPostulateOQ03OQ04Aristotle	GREEN	
-BertrandsPostulateOQ03OQ04OQ01	RESIDUAL	proof-drift
+BertrandsPostulateOQ03OQ04OQ01	RESIDUAL	type-mismatch
 BertrandsPostulateOQ03OQ04OQ03	RESIDUAL	proof-drift
 BetaCentralBinomialExplicitRate	GREEN	
 BetaCentralBinomialExplicitRateOQ02	RESIDUAL	type-mismatch
@@ -224,7 +224,7 @@ BezoutIdentityOQ03OQ02OQ01	RESIDUAL	proof-drift
 BezoutIdentityOQ03OQ03	RESIDUAL	unknown-const:Int.coe_nat_dvd.mpr
 BezoutIdentityOQ03OQ04	RESIDUAL	unknown-const:Int.Coprime.mul_dvd_of_dvd_of_dvd
 BezoutIdentityOQ04OQ01	RESIDUAL	rewrite-drift
-BezoutIdentityOQ04OQ01OQ01	RESIDUAL	proof-drift
+BezoutIdentityOQ04OQ01OQ01	RESIDUAL	type-mismatch
 BinaryGcdOQ02	GREEN	
 BinaryGcdOQ02OQ01	RESIDUAL	rewrite-drift
 BinomialTheorem	GREEN	
@@ -236,7 +236,7 @@ BinomialTheoremOQ02OQ01OQ03	GREEN
 BinomialTheoremOQ02OQ01OQ04	GREEN	
 BinomialTheoremOQ02OQ02	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ03	RESIDUAL	type-mismatch
-BinomialTheoremOQ02OQ04	RESIDUAL	proof-drift
+BinomialTheoremOQ02OQ04	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ04OQ02	RESIDUAL	type-mismatch
 BinomialTheoremOQ03OQ02OQ03	GREEN	
 BinomialTheoremOQ04	RESIDUAL	proof-drift
@@ -436,7 +436,7 @@ CevasTheoremNonEuclideanOQ02	GREEN
 CevasTheoremNonEuclideanOQ03	GREEN	
 CevasTheoremOQ01OQ03	RESIDUAL	proof-drift
 ChebyshevBoundsOQ03	GREEN	
-ChebyshevBoundsOQ03OQ02	RESIDUAL	proof-drift
+ChebyshevBoundsOQ03OQ02	RESIDUAL	type-mismatch
 ChebyshevBoundsOQ04Aristotle	RESIDUAL	proof-drift
 ChebyshevBoundsOQ0601	GREEN	
 ChebyshevPNTBridgeOQ01	RESIDUAL	partenat-removal
@@ -446,7 +446,7 @@ ChineseRemainderConstructiveOQ03OQ03	RESIDUAL	unknown-const:Nat.Prime.minFac
 ChineseRemainderConstructiveOQ04OQ03	GREEN	
 ChineseRemainderExplicitOQ04OQ03OQ01	GREEN	
 ChineseRemainderNonCoprimeList	GREEN	
-ChineseRemainderNonCoprimeOQ01	RESIDUAL	proof-drift
+ChineseRemainderNonCoprimeOQ01	RESIDUAL	type-mismatch
 ChineseRemainderNonCoprimeOQ01OQ01	RESIDUAL	type-mismatch
 ChineseRemainderNonCoprimeOQ02	RESIDUAL	parse-error
 ChineseRemainderNonCoprimeOQ02OQ01	RESIDUAL	instance-synth
@@ -455,11 +455,11 @@ CircumferenceFromArea	GREEN
 CircumferenceViaDifferentiationOQ01	GREEN	
 CircumferenceViaDifferentiationOQ02	GREEN	
 CircumferenceViaDifferentiationOQ03	GREEN	
-CollatzCyclesOQ04	RESIDUAL	proof-drift
+CollatzCyclesOQ04	RESIDUAL	type-mismatch
 CollatzStructuredOQ02OQ01	RESIDUAL	proof-drift
 CollatzStructuredOQ03	RESIDUAL	instance-synth
 CombinationsFormulaOQ01OQ04	RESIDUAL	type-mismatch
-CombinationsFormulaOQ02	RESIDUAL	proof-drift
+CombinationsFormulaOQ02	RESIDUAL	rewrite-drift
 CombinationsFormulaOQ02Aristotle	RESIDUAL	unknown-const:choose_2n_succ
 CombinationsFormulaOQ03OQ06	RESIDUAL	rewrite-drift
 CombinationsFormulaOQ07OQ04OQ01OQ02	GREEN	
@@ -505,11 +505,11 @@ CyclotomicPolynomialsOQ02OQ04	GREEN
 CyclotomicPolynomialsOQ02OQ06	RESIDUAL	type-mismatch
 DeMoivre	GREEN	
 DeMoivreOQ01OQ03	GREEN	
-DeMoivreOQ01OQ03OQ01	RESIDUAL	proof-drift
-DeMoivreOQ01OQ03OQ01OQ01	RESIDUAL	proof-drift
-DeMoivreOQ01OQ03OQ01OQ01OQ01	RESIDUAL	proof-drift
-DeMoivreOQ01OQ03OQ01OQ01OQ02	RESIDUAL	proof-drift
-DeMoivreOQ01OQ03OQ02	RESIDUAL	proof-drift
+DeMoivreOQ01OQ03OQ01	GREEN	
+DeMoivreOQ01OQ03OQ01OQ01	GREEN	
+DeMoivreOQ01OQ03OQ01OQ01OQ01	GREEN	
+DeMoivreOQ01OQ03OQ01OQ01OQ02	GREEN	
+DeMoivreOQ01OQ03OQ02	GREEN	
 DeMoivreOQ02OQ02	RESIDUAL	signature-drift
 DeMoivreOQ03OQ01	GREEN	
 DeMoivreOQ06	RESIDUAL	proof-drift
@@ -773,7 +773,7 @@ Erdos107OQ01	RESIDUAL	instance-synth
 Erdos107OQ01KleinUpperAristotle	RESIDUAL	instance-synth
 Erdos1080OQ03	RESIDUAL	type-mismatch
 Erdos1080Problem	GREEN	
-Erdos1081Problem	RESIDUAL	proof-drift
+Erdos1081Problem	RESIDUAL	instance-synth
 Erdos1082Problem	GREEN	
 Erdos1083OQ02	RESIDUAL	proof-drift
 Erdos1083Problem	GREEN	
@@ -1038,7 +1038,7 @@ Erdos241Problem	GREEN
 Erdos242Problem	RESIDUAL	type-mismatch
 Erdos246Problem	GREEN	
 Erdos247Problem	RESIDUAL	instance-synth
-Erdos249OQ01	RESIDUAL	proof-drift
+Erdos249OQ01	RESIDUAL	type-mismatch
 Erdos249Problem	GREEN	
 Erdos24Problem	GREEN	
 Erdos250Problem	RESIDUAL	unknown-const:Nat.smul_eq_mul
@@ -1074,7 +1074,7 @@ Erdos274Problem	RESIDUAL	unknown-const:ExactCovering
 Erdos275Problem	RESIDUAL	instance-synth
 Erdos276Problem	GREEN	
 Erdos278Problem	RESIDUAL	unknown-const:le_of_not_le
-Erdos279OQ04	RESIDUAL	proof-drift
+Erdos279OQ04	RESIDUAL	type-mismatch
 Erdos27Problem	RESIDUAL	rewrite-drift
 Erdos280Problem	GREEN	
 Erdos281Problem	RESIDUAL	parse-error
@@ -1176,13 +1176,13 @@ Erdos358Problem	RESIDUAL	unknown-const:two_mul_sum_Icc
 Erdos359Problem	GREEN	
 Erdos35Problem	RESIDUAL	proof-drift
 Erdos35ProblemAristotle	RESIDUAL	instance-synth
-Erdos360Aristotle	RESIDUAL	proof-drift
+Erdos360Aristotle	RESIDUAL	unknown-const:h
 Erdos360Problem	GREEN	
 Erdos361Problem	GREEN	
 Erdos362Problem	RESIDUAL	type-mismatch
 Erdos363Problem	GREEN	
 Erdos364Problem	GREEN	
-Erdos365Problem	RESIDUAL	proof-drift
+Erdos365Problem	RESIDUAL	instance-synth
 Erdos367Problem	RESIDUAL	unknown-const:twoFullPart_le
 Erdos368Problem	RESIDUAL	instance-synth
 Erdos369Problem	RESIDUAL	unknown-const:Nat.dvd_of_dvd_of_dvd
@@ -1206,7 +1206,7 @@ Erdos386Problem	RESIDUAL	unknown-const:Nat.Primes.instCountable.toEncodable.deco
 Erdos388Problem	RESIDUAL	rewrite-drift
 Erdos38Problem	GREEN	
 Erdos390Problem	RESIDUAL	unknown-const:List.Sorted
-Erdos391Problem	RESIDUAL	proof-drift
+Erdos391Problem	RESIDUAL	type-mismatch
 Erdos393Problem	RESIDUAL	unknown-const:Nat.radical
 Erdos394Problem	GREEN	
 Erdos395OQ01	RESIDUAL	instance-synth
@@ -1227,7 +1227,7 @@ Erdos402Problem	RESIDUAL	type-mismatch
 Erdos403Problem	RESIDUAL	proof-drift
 Erdos404Problem	RESIDUAL	rewrite-drift
 Erdos405Problem	RESIDUAL	unknown-const:ZMod.val_neg_one'
-Erdos407Problem	RESIDUAL	proof-drift
+Erdos407Problem	RESIDUAL	unknown-const:Nat.one_le_mul
 Erdos408Problem	GREEN	
 Erdos409Problem	PRE-EXISTING	never-compiled:p
 Erdos40Problem	RESIDUAL	proof-drift
@@ -1296,7 +1296,7 @@ Erdos464Problem	GREEN
 Erdos465Problem	RESIDUAL	proof-drift
 Erdos466Problem	GREEN	
 Erdos468Problem	GREEN	
-Erdos469Problem	RESIDUAL	proof-drift
+Erdos469Problem	RESIDUAL	type-mismatch
 Erdos46Problem	GREEN	
 Erdos470Problem	RESIDUAL	noncomputable
 Erdos471Problem	RESIDUAL	unknown-const:Set.Finite.of_finset
@@ -1306,7 +1306,7 @@ Erdos474Problem	RESIDUAL	parse-error
 Erdos475Problem	RESIDUAL	instance-synth
 Erdos476Aristotle	RESIDUAL	elab-drift
 Erdos476OQ05Aristotle	RESIDUAL	unknown-const:b₂
-Erdos476OQ05Problem	RESIDUAL	proof-drift
+Erdos476OQ05Problem	RESIDUAL	unknown-const:Nat.min_add_sub_cancel'
 Erdos476Problem	PRE-EXISTING	never-compiled:B
 Erdos477Problem	RESIDUAL	unknown-const:Set.Finite.of_not_infinite
 Erdos478Problem	RESIDUAL	type-mismatch
@@ -1402,7 +1402,7 @@ Erdos553Problem	GREEN
 Erdos553ProblemAristotle	GREEN	
 Erdos554Problem	GREEN	
 Erdos555Problem	GREEN	
-Erdos556Problem	RESIDUAL	proof-drift
+Erdos556Problem	RESIDUAL	type-mismatch
 Erdos557Problem	RESIDUAL	type-mismatch
 Erdos558Problem	GREEN	
 Erdos559Aristotle	GREEN	
@@ -1731,7 +1731,7 @@ Erdos817Problem	RESIDUAL	proof-drift
 Erdos818Aristotle	RESIDUAL	instance-synth
 Erdos819Problem	GREEN	
 Erdos81Problem	RESIDUAL	instance-synth
-Erdos820Aristotle	RESIDUAL	proof-drift
+Erdos820Aristotle	RESIDUAL	type-mismatch
 Erdos820Problem	GREEN	
 Erdos821Problem	RESIDUAL	proof-drift
 Erdos822Problem	RESIDUAL	instance-synth
@@ -1817,7 +1817,7 @@ Erdos888Problem	GREEN
 Erdos889Problem	GREEN	
 Erdos88Problem	RESIDUAL	type-mismatch
 Erdos890Problem	RESIDUAL	unknown-const:p
-Erdos893Problem	RESIDUAL	proof-drift
+Erdos893Problem	RESIDUAL	unknown-const:mul_succ
 Erdos894Problem	GREEN	
 Erdos895CounterexampleFin18	GREEN	
 Erdos895OQ01Problem	GREEN	
@@ -1832,7 +1832,7 @@ Erdos901Aristotle	GREEN
 Erdos901Problem	RESIDUAL	type-mismatch
 Erdos901ProblemAristotle	RESIDUAL	type-mismatch
 Erdos902Problem	RESIDUAL	proof-drift
-Erdos903Problem	RESIDUAL	proof-drift
+Erdos903Problem	RESIDUAL	unknown-const:p
 Erdos904Problem	GREEN	
 Erdos905Problem	RESIDUAL	instance-synth
 Erdos906Problem	GREEN	
@@ -1851,7 +1851,7 @@ Erdos915Problem	RESIDUAL	proof-drift
 Erdos916Problem	RESIDUAL	proof-drift
 Erdos917Problem	RESIDUAL	dot-notation-drift
 Erdos918Problem	RESIDUAL	proof-drift
-Erdos919Problem	RESIDUAL	proof-drift
+Erdos919Problem	RESIDUAL	type-mismatch
 Erdos91Problem	RESIDUAL	signature-drift
 Erdos920Problem	RESIDUAL	type-mismatch
 Erdos921Problem	RESIDUAL	type-mismatch
@@ -1994,7 +1994,7 @@ FourierSeriesOQ01	RESIDUAL	rewrite-drift
 FourierSeriesOQ02	RESIDUAL	unclassified
 FourierSeriesOQ02Incomplete01	GREEN	
 FourierSeriesOQ02OQ02	RESIDUAL	unclassified
-FourierSeriesOQ02OQ03	RESIDUAL	proof-drift
+FourierSeriesOQ02OQ03	RESIDUAL	elab-drift
 FourierSeriesOQ02OQ03OQ02	RESIDUAL	unknown-const:Real.exp_le_one_of_nonpos
 FourierSeriesOQ02OQ03WIP01	GREEN	
 FourierSeriesOQ02OQ04	RESIDUAL	unclassified
@@ -2441,8 +2441,8 @@ SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02	RESIDUAL	rewrite-drift
 SpectralTraceDetEigenvaluesOQ02	RESIDUAL	rewrite-drift
 SpernerFreudenthal	GREEN	
 SpernerFreudenthalSimplex	RESIDUAL	type-mismatch
-SpernerGrid	RESIDUAL	proof-drift
-SpernerGridAristotle	RESIDUAL	proof-drift
+SpernerGrid	RESIDUAL	type-mismatch
+SpernerGridAristotle	RESIDUAL	type-mismatch
 SpernerGridBase	GREEN	
 SpernerGridCell	GREEN	
 SpernerMathlib	GREEN	
