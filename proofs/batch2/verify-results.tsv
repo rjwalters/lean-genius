@@ -1391,7 +1391,7 @@ Erdos548Problem	RESIDUAL	instance-synth
 Erdos548ProblemAristotle	RESIDUAL	instance-synth
 Erdos549Problem	RESIDUAL	instance-synth
 Erdos549ProblemAristotle	RESIDUAL	type-mismatch
-Erdos54Problem	RESIDUAL	proof-drift
+Erdos54Problem	GREEN	
 Erdos550Problem	GREEN	
 Erdos551Problem	RESIDUAL	instance-synth
 Erdos551ProblemAristotle	RESIDUAL	proof-drift
@@ -1585,7 +1585,7 @@ Erdos684Problem	RESIDUAL	partenat-removal
 Erdos685Problem	GREEN	
 Erdos687Problem	RESIDUAL	type-mismatch
 Erdos688Problem	RESIDUAL	rewrite-drift
-Erdos690Problem	RESIDUAL	proof-drift
+Erdos690Problem	GREEN	
 Erdos691Problem	RESIDUAL	type-mismatch
 Erdos692Problem	GREEN	
 Erdos693Problem	RESIDUAL	unknown-const:Finset.sort_sorted
@@ -1609,7 +1609,7 @@ Erdos70OQ01Problem	RESIDUAL	unknown-const:Ordinal.mul_lt_mul_of_pos_left
 Erdos70Problem	GREEN	
 Erdos710Problem	GREEN	
 Erdos711Problem	GREEN	
-Erdos712Problem	RESIDUAL	proof-drift
+Erdos712Problem	GREEN	
 Erdos713Problem	PRE-EXISTING	never-compiled:n
 Erdos714Problem	GREEN	
 Erdos715Problem	RESIDUAL	parse-error
@@ -1661,7 +1661,7 @@ Erdos756Problem	RESIDUAL	proof-drift
 Erdos757Problem	RESIDUAL	unknown-const:Set.Finite.toFinset_card
 Erdos758Problem	RESIDUAL	proof-drift
 Erdos75Problem	GREEN	
-Erdos760Problem	RESIDUAL	proof-drift
+Erdos760Problem	GREEN	
 Erdos761Problem	GREEN	
 Erdos762Problem	GREEN	
 Erdos763Problem	GREEN	
@@ -1676,7 +1676,7 @@ Erdos770Problem	PRE-EXISTING	never-compiled:X
 Erdos771Problem	GREEN	
 Erdos772Problem	RESIDUAL	dot-notation-drift
 Erdos773Problem	RESIDUAL	unknown-const:pow_lt_pow_left
-Erdos774Problem	RESIDUAL	proof-drift
+Erdos774Problem	GREEN	
 Erdos775Problem	RESIDUAL	instance-synth
 Erdos776Problem	RESIDUAL	instance-synth
 Erdos777Problem	RESIDUAL	instance-synth
@@ -1788,7 +1788,7 @@ Erdos865Problem	GREEN
 Erdos866Aristotle	GREEN	
 Erdos867Problem	RESIDUAL	unknown-const:Finset.card_Ioc
 Erdos868Problem	GREEN	
-Erdos869Problem	RESIDUAL	proof-drift
+Erdos869Problem	GREEN	
 Erdos86Problem	RESIDUAL	parse-error
 Erdos870Aristotle	RESIDUAL	uses-sorry
 Erdos870Problem	GREEN	
@@ -1870,7 +1870,7 @@ Erdos933Problem	GREEN
 Erdos933ProblemAristotle	GREEN	
 Erdos934Problem	RESIDUAL	instance-synth
 Erdos934ProblemAristotle	RESIDUAL	proof-drift
-Erdos935Problem	RESIDUAL	proof-drift
+Erdos935Problem	GREEN	
 Erdos936Problem	RESIDUAL	unknown-const:Nat.pow_dvd_pow_of_dvd
 Erdos937Problem	RESIDUAL	proof-drift
 Erdos939Problem	GREEN	
@@ -2043,7 +2043,7 @@ GcdAlgorithmOQ02OQ01	GREEN
 GelfondSchneider	GREEN	
 GeneralQuartic	GREEN	
 GeneralQuarticAxiomsDischarge	RESIDUAL	type-mismatch
-GeometricSeries	RESIDUAL	type-mismatch
+GeometricSeries	GREEN	
 GeometricSeriesOQ01	GREEN	
 GeometricSeriesOQ01Neumann	GREEN	
 GeometricSeriesOQ01OQ02	GREEN	

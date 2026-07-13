@@ -197,7 +197,12 @@ axiom nesetril_rodl_sales_theorem : ¬SidonAnalogue
 
 /-- Maximum size of a dissociated subset of {1,...,n}. -/
 noncomputable def maxDissociatedSize (n : ℕ) : ℕ :=
-  Nat.find (⟨0, by trivial⟩ : ∃ k, ∀ D : Finset ℕ,
+  Nat.find (⟨n + 1, fun D hD _ => by
+      -- D ⊆ range (n+1) since every element is ≤ n, so #D ≤ n+1
+      have hsub : D ⊆ Finset.range (n + 1) := fun d hd =>
+        Finset.mem_range.mpr (Nat.lt_succ_of_le (hD d hd))
+      calc D.card ≤ (Finset.range (n + 1)).card := Finset.card_le_card hsub
+        _ = n + 1 := Finset.card_range _⟩ : ∃ k, ∀ D : Finset ℕ,
     (∀ d ∈ D, d ≤ n) → IsDissociated D → D.card ≤ k)
 
 /-

@@ -185,8 +185,8 @@ theorem basis_monotone {A B : Set ℕ} (hA : isAdditiveBasis2 A) (hAB : A ⊆ B)
   apply Set.Finite.subset hA
   intro n hn
   simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_exists] at hn ⊢
-  intro a ha b hb hab
-  exact hn a (hAB ha) b (hAB hb) hab
+  rintro a ⟨ha, b, hb, hab⟩
+  exact hn a ⟨hAB ha, b, hAB hb, hab⟩
 
 /- 
 **Minimal Bases are Thin:**

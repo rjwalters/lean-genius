@@ -73,16 +73,17 @@ The chromatic number χ(G) is the minimum number of colors needed.
 def IsProperColoring (G : SimpleGraph V) (c : V → Fin k) : Prop :=
   ∀ u v : V, G.Adj u v → c u ≠ c v
 
+open Classical in
 /--
 **Chromatic Number:**
 The minimum number of colors for a proper coloring.
 -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  Nat.find ⟨Fintype.card V, by
-    intro k hk
-    use fun _ => ⟨0, by omega⟩
-    intro u v _
-    simp⟩
+  Nat.find (p := fun k => ∃ c : V → Fin k, IsProperColoring G c)
+    ⟨Fintype.card V, (Fintype.equivFin V), by
+      -- an injective vertex → colour map is a proper colouring
+      intro u v huv hc
+      exact G.ne_of_adj huv ((Fintype.equivFin V).injective hc)⟩
 
 /--
 **Cochromatic Coloring:**
