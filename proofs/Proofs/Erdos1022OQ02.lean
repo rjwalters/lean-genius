@@ -912,4 +912,53 @@ theorem exists_min_size_for_sparse_bound_sharp [DecidableEq V] (hV : 0 < Fintype
     (admissibleCoeff_ge_iff hV N _).mp hcoeff
   exact propertyB_of_sparse F _ N (by omega) hmin hsparse hbound
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 9: Strict monotonicity past the positivity threshold
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  § 8 records the unconditional *non-strict* monotone envelope `c(a) ≤ c(b)`,
+  and `admissibleCoeff_lt_of_pos` records the *consecutive* strict step
+  `c(t) < c(t+1)` (given `0 < c(t)`).  Neither yet says the coefficient is
+  strictly increasing across an *arbitrary* gap `a < b`, which is the precise
+  qualitative shape OQ-02 asks about: past the positivity threshold the
+  admissible sparseness coefficient is not merely non-decreasing but *strictly*
+  increasing — it is never eventually constant.  This section supplies the
+  arbitrary-gap strict bound and packages it as the canonical `StrictMonoOn`.
+-/
+
+/-- **Strict growth over an arbitrary gap, past the positivity threshold.**
+    For `|V| ≤ a < b` the coefficient strictly increases: `c(a) < c(b)`.  Once
+    `a` is large enough that `c(a) > 0` (guaranteed by `|V| ≤ a`, via
+    `admissibleCoeff_pos_of_card_le`), the consecutive strict step
+    `admissibleCoeff_lt_of_pos` gives `c(a) < c(a+1)`, and the non-strict
+    envelope `admissibleCoeff_mono` carries `c(a+1) ≤ c(b)` across the rest of
+    the gap.  This is the multi-step strict refinement of `admissibleCoeff_mono`
+    — the coefficient is strictly increasing on `t ≥ |V|`, not merely between
+    neighbours. -/
+theorem admissibleCoeff_lt_of_card_le_of_lt (hV : 0 < Fintype.card V) {a b : ℕ}
+    (ha : Fintype.card V ≤ a) (hab : a < b) :
+    firstMomentThreshold a / Fintype.card V
+      < firstMomentThreshold b / Fintype.card V := by
+  have hpos : 0 < firstMomentThreshold a / Fintype.card V :=
+    admissibleCoeff_pos_of_card_le hV a ha
+  have hstep : firstMomentThreshold a / Fintype.card V
+      < firstMomentThreshold (a + 1) / Fintype.card V :=
+    admissibleCoeff_lt_of_pos hV a (by omega) hpos
+  exact lt_of_lt_of_le hstep (admissibleCoeff_mono (by omega))
+
+/-- **The admissible coefficient is strictly monotone on `t ≥ |V|`.**  The
+    canonical `StrictMonoOn` packaging of `admissibleCoeff_lt_of_card_le_of_lt`:
+    on the ray `Set.Ici |V|` the coefficient `c(t) = ⌊2^{t-1}/|V|⌋` is strictly
+    increasing.  This is the sharp qualitative answer to OQ-02's growth-rate
+    question at the ordinal level — beyond the exponential *rate* bounds of
+    §§ 5-7, it records that the sparseness coefficient of a bounded ground set
+    is a genuine strictly increasing sequence in the minimum set size `t`, with
+    no plateau, once past the explicit threshold `|V|`. -/
+theorem admissibleCoeff_strictMonoOn (hV : 0 < Fintype.card V) :
+    StrictMonoOn (fun t => firstMomentThreshold t / Fintype.card V)
+      (Set.Ici (Fintype.card V)) := by
+  intro a ha b _ hab
+  exact admissibleCoeff_lt_of_card_le_of_lt hV (Set.mem_Ici.mp ha) hab
+
 end Erdos1022OQ02
