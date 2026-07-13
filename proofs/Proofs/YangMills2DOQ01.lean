@@ -149,9 +149,8 @@ theorem wilsonLoop2D_area_law (d casimir g_sq A : ℝ)
     wilsonLoop2D d casimir g_sq A < wilsonLoop2D d casimir g_sq 0 := by
   unfold wilsonLoop2D
   simp only [mul_zero, zero_mul, neg_zero, zero_div, exp_zero, mul_one]
-  apply mul_lt_mul_of_pos_left _ hd
-  rw [exp_lt_one_iff]
-  apply neg_neg_of_neg
+  apply mul_lt_of_lt_one_right hd
+  rw [exp_lt_one_iff, neg_lt_zero]
   apply div_pos
   · exact mul_pos (mul_pos hg hA) hc
   · linarith

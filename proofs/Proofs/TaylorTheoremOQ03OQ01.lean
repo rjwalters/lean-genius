@@ -102,9 +102,14 @@ theorem exp_lagrange_remainder_partialSum (x : ℝ) (hx : 0 < x) (n : ℕ) :
     ∃ ξ ∈ Ioo (0 : ℝ) x,
       Real.exp x - ∑ k ∈ Finset.range (n + 1), x ^ k / (k ! : ℝ) =
         Real.exp ξ * x ^ (n + 1) / (n + 1)! := by
-  have hf : ContDiffOn ℝ (n + 1) Real.exp (Icc 0 x) :=
-    Real.contDiff_exp.contDiffOn.of_le le_top
-  obtain ⟨ξ, hξ, h⟩ := taylor_mean_remainder_lagrange_iteratedDeriv hx hf
+  have huIcc : Set.uIcc (0 : ℝ) x = Icc 0 x := Set.uIcc_of_le hx.le
+  have huIoo : Set.uIoo (0 : ℝ) x = Ioo 0 x := by
+    rw [Set.uIoo, min_eq_left hx.le, max_eq_right hx.le]
+  have hf : ContDiffOn ℝ (n + 1) Real.exp (Set.uIcc 0 x) := by
+    rw [huIcc]; exact Real.contDiff_exp.contDiffOn.of_le le_top
+  obtain ⟨ξ, hξ, h⟩ := taylor_mean_remainder_lagrange_iteratedDeriv hx.ne hf
+  rw [huIoo] at hξ
+  rw [huIcc] at h
   refine ⟨ξ, hξ, ?_⟩
   rw [taylorWithinEval_exp_eq_partialSum x hx n] at h
   rw [h, iteratedDeriv_exp, sub_zero]

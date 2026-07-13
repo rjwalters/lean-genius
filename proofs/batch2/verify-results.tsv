@@ -1978,8 +1978,8 @@ FeuerbachsTheoremOQ01Aristotle	RESIDUAL	parse-error
 FeuerbachsTheoremOQ01OQ03	RESIDUAL	unknown-const:h1
 FeuerbachsTheoremOQ04TangentLine	RESIDUAL	proof-drift
 FeuerbachsTheoremOQ05	RESIDUAL	dot-notation-drift
-FibonacciIdentitiesOQ02	RESIDUAL	type-mismatch
-FibonacciIdentitiesOQ02OQ02PrimeIndex	RESIDUAL	type-mismatch
+FibonacciIdentitiesOQ02	GREEN	
+FibonacciIdentitiesOQ02OQ02PrimeIndex	GREEN	
 FiveColorTheorem	GREEN	
 FourColorTheorem	GREEN	
 FourColorTheoremOQ01	RESIDUAL	unknown-const:Finset.ne_univ_iff_exists_notMem
@@ -2463,7 +2463,7 @@ SpernerNDimOQ02Obstruction	GREEN
 SpernerNDimOQ03	RESIDUAL	type-mismatch
 SpernerNDimOQ03OQ01	RESIDUAL	type-mismatch
 SpernerNDimOQ04	RESIDUAL	parse-error
-SpernerNDimOQ06	RESIDUAL	type-mismatch
+SpernerNDimOQ06	GREEN	
 SpernerSimplicialBridge	GREEN	
 SpernerSimplicialBridgeOQ01	GREEN	
 SpernerSimplicialBridgeOQ02	GREEN	
@@ -2519,7 +2519,7 @@ SumOfOddsStatementOnly	GREEN
 SylowTheorem	RESIDUAL	unknown-const:card_sylow_dvd_index
 SylowTheoremOQ01	RESIDUAL	rewrite-drift
 SylowTheoremOQ02	GREEN	
-SylowTheoremOQ02OQ01Nilpotent	RESIDUAL	type-mismatch
+SylowTheoremOQ02OQ01Nilpotent	GREEN	
 SylowTheoremOQ02Orbit	RESIDUAL	unknown-const:Sylow.exists_smul_eq
 SylowTheoremOQ03	GREEN	
 SylowTheoremOQ03B	GREEN	
@@ -2556,8 +2556,8 @@ TaylorTheorem	RESIDUAL	type-mismatch
 TaylorTheoremOQ01	RESIDUAL	type-mismatch
 TaylorTheoremOQ02	RESIDUAL	type-mismatch
 TaylorTheoremOQ03	RESIDUAL	type-mismatch
-TaylorTheoremOQ03OQ01	RESIDUAL	type-mismatch
-TaylorTheoremOQ03OQ02	RESIDUAL	type-mismatch
+TaylorTheoremOQ03OQ01	GREEN	
+TaylorTheoremOQ03OQ02	GREEN	
 TestApi1056	RESIDUAL	proof-drift
 TestApi1059	RESIDUAL	dot-notation-drift
 TestApi1061	RESIDUAL	unknown-const:Nat.divisors_prime_eq
@@ -2648,7 +2648,7 @@ WilsonsTheoremOQ07	GREEN
 WolstenholmeTheoremOQ01	RESIDUAL	oom-killed
 WolstenholmeTheoremOQ02OQ02	RESIDUAL	unknown-const:Equiv.mulLeft_apply
 WolstenholmeTheoremOQ03	GREEN	
-YangMills2DOQ01	RESIDUAL	proof-drift
+YangMills2DOQ01	GREEN	
 YangMills2DOQ02	GREEN	
 YangMillsMassGap	RESIDUAL	unknown-const:Real.exp_lt_exp_of_lt
 ZsqrtdNegTwo	GREEN	
