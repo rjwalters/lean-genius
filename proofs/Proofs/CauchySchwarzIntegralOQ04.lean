@@ -1039,6 +1039,48 @@ theorem robertson_uncertainty_strict (hI : (RCLike.I : 𝕜) ≠ 0) {A B : E →
   intro heq
   exact hns ((robertson_saturated_iff hI hA hB ψ a b hu hv).mp heq)
 
+/-- **Schrödinger uncertainty relation, additive (sum) form.**  The covariance-refined
+additive bound: for symmetric `A, B`, any state `ψ` and real shifts `a, b`, with
+`u = (A−a)ψ`, `v = (B−b)ψ`,
+
+  `‖⟪ψ, (AB−BA)ψ⟫‖² + 4·(Re⟪u,v⟫)² ≤ (‖u‖² + ‖v‖²)²`.
+
+This is the additive counterpart of the multiplicative `schrodinger_uncertainty`, and a
+genuine strengthening of the (squared) `robertson_sum_form`: it carries the extra
+nonnegative covariance term `4·(Re⟪u,v⟫)²` on the left, which `robertson_sum_form`
+discards.  Proof: multiply `schrodinger_uncertainty`
+(`¼‖[A,B]‖² + (Re⟪u,v⟫)² ≤ ‖u‖²‖v‖²`) by `4` and combine with the AM–GM identity
+`4‖u‖²‖v‖² ≤ (‖u‖² + ‖v‖²)²` (i.e. `(‖u‖² − ‖v‖²)² ≥ 0`).  Dropping the covariance term
+recovers the squared `robertson_sum_form`. -/
+theorem schrodinger_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + 4 * RCLike.re (inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)) ^ 2
+      ≤ (‖A ψ - (a : 𝕜) • ψ‖ ^ 2 + ‖B ψ - (b : 𝕜) • ψ‖ ^ 2) ^ 2 := by
+  have hsch := schrodinger_uncertainty hA hB ψ a b
+  nlinarith [hsch, sq_nonneg (‖A ψ - (a : 𝕜) • ψ‖ ^ 2 - ‖B ψ - (b : 𝕜) • ψ‖ ^ 2),
+    norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ)))]
+
+/-- **Schrödinger uncertainty principle, additive variance form.**  Instantiating
+`schrodinger_sum_form` at the expectation values `⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫`
+turns each squared centred norm into a variance, giving the covariance-refined additive
+Heisenberg relation
+
+  `‖⟪ψ,(AB−BA)ψ⟫‖² + 4·(Re⟪(A−⟨A⟩)ψ,(B−⟨B⟩)ψ⟫)² ≤ (Var_ψ(A) + Var_ψ(B))²`,
+
+whose covariance term is the symmetrized `½⟪ψ,{A,B}ψ⟫ − ⟨A⟩⟨B⟩` (via
+`re_inner_centred_eq_anticommutator`).  The Schrödinger member of the sum-form family,
+strengthening `heisenberg_sum_form`. -/
+theorem schrodinger_variance_sum_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+        + 4 * RCLike.re (inner 𝕜 (A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ)
+            (B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ)) ^ 2
+      ≤ (‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+          + ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2) ^ 2 :=
+  schrodinger_sum_form hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
+
 /-! ## The Maccone–Pati *stronger* sum uncertainty relation
 
 The additive relations above (`robertson_sum_form`, `heisenberg_sum_form`,
@@ -1395,3 +1437,5 @@ end CauchySchwarzIntegralOQ04
 #print axioms CauchySchwarzIntegralOQ04.maccone_pati_stronger_than_robertson_sum
 #print axioms CauchySchwarzIntegralOQ04.schrodinger_saturated_iff
 #print axioms CauchySchwarzIntegralOQ04.schrodinger_variance_saturated_iff
+#print axioms CauchySchwarzIntegralOQ04.schrodinger_sum_form
+#print axioms CauchySchwarzIntegralOQ04.schrodinger_variance_sum_form
