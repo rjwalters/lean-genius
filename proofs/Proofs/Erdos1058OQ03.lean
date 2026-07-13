@@ -198,6 +198,21 @@ theorem exists_prime_gt (n : ℕ) : ∃ p, p.Prime ∧ n < p := by
   obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd hne
   exact ⟨p, hp, prime_dvd_factorial_add_one_gt hp hpd⟩
 
+/-- **Sibling witness: the `n! - 1` construction also forces new primes.**  For
+    `n ≥ 3` (so that `n! - 1 ≥ 5 > 1`) there is a prime `p > n` dividing `n! - 1`:
+    take any prime factor and apply the sibling engine
+    `prime_dvd_factorial_sub_one_gt`.  This completes the symmetric picture — both
+    factorial expressions carry only prime factors above `n`, and both witness
+    Euclid's theorem. -/
+theorem exists_prime_gt_dvd_factorial_sub_one {n : ℕ} (hn : 3 ≤ n) :
+    ∃ p, p.Prime ∧ n < p ∧ p ∣ ((n !) - 1) := by
+  have hfac : 6 ≤ n ! := by
+    calc (6 : ℕ) = 3 ! := rfl
+      _ ≤ n ! := Nat.factorial_le hn
+  have hne : (n !) - 1 ≠ 1 := by omega
+  obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd hne
+  exact ⟨p, hp, prime_dvd_factorial_sub_one_gt hp hpd, hpd⟩
+
 /-! ## The least prime factor of `n! + 1`
 
 The engine `prime_dvd_factorial_add_one_gt` bounds *every* prime factor of `n!+1`
