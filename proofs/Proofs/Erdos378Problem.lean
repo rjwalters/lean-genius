@@ -851,4 +851,55 @@ theorem natDensity_exactlySquarefree_pair {m m' : ℕ} (h : m ≠ m') :
   natDensity_union_of_disjoint (exactlySquarefree_disjoint h)
     (natDensity_eta m) (natDensity_eta m')
 
+/-- **Finite additivity of natural density over an arbitrary finite family.**  For a
+Finset-indexed family `{Sᵢ}_{i∈I}` that is pairwise disjoint and each of which has a
+density `dᵢ`, the union `⋃_{i∈I} Sᵢ` has density `∑_{i∈I} dᵢ`.  The `n`-ary generalization
+of `natDensity_union_of_disjoint`, obtained by `Finset.induction` folding the two-set
+additivity over the union — with `natDensity_empty` as the base case, and the fresh block
+`Sₐ` disjoint from the running union `⋃_{i∈s} Sᵢ` by pairwise disjointness. -/
+theorem natDensity_biUnion_of_pairwiseDisjoint {ι : Type*} [DecidableEq ι]
+    (I : Finset ι) (S : ι → Set ℕ) (d : ι → ℝ)
+    (hdisj : (↑I : Set ι).PairwiseDisjoint S)
+    (hd : ∀ i ∈ I, NaturalDensity (S i) (d i)) :
+    NaturalDensity (⋃ i ∈ I, S i) (∑ i ∈ I, d i) := by
+  classical
+  revert hdisj hd
+  induction I using Finset.induction with
+  | empty =>
+      intro _ _
+      have hemp : (⋃ i ∈ (∅ : Finset ι), S i) = (∅ : Set ℕ) := by simp
+      rw [hemp, Finset.sum_empty]
+      exact natDensity_empty
+  | @insert a s ha ih =>
+      intro hdisj hd
+      rw [Finset.set_biUnion_insert, Finset.sum_insert ha]
+      have hsub : (↑s : Set ι).PairwiseDisjoint S :=
+        hdisj.subset (by rw [Finset.coe_insert]; exact Set.subset_insert _ _)
+      have hds : ∀ i ∈ s, NaturalDensity (S i) (d i) :=
+        fun i hi => hd i (Finset.mem_insert_of_mem hi)
+      have hdisjA : Disjoint (S a) (⋃ i ∈ s, S i) := by
+        rw [Set.disjoint_iUnion_right]
+        intro i
+        rw [Set.disjoint_iUnion_right]
+        intro hi
+        exact hdisj (Finset.mem_insert_self a s) (Finset.mem_insert_of_mem hi)
+          (by rintro rfl; exact ha hi)
+      exact natDensity_union_of_disjoint hdisjA (hd a (Finset.mem_insert_self a s))
+        (ih hsub hds)
+
+/-- **The `Σ η_m` density formula for the low-count strata.**  For every `k`, the union of
+the first `k` exact-count strata `⋃_{m<k} exactlySquarefree m` has density `∑_{m<k} η_m`.
+This is the arbitrary-length generalization of `natDensity_exactlySquarefree_pair`, and it
+realizes — directly from the single Granville–Ramaré input
+`granville_ramare_density_exists` (via `natDensity_eta`) plus finite additivity — the exact
+additive `Σ η_m` structure that the `complement_density` axiom's density value asserts. The
+residual analytic content of that axiom is only the strict inequality `d < 1` (positive mass
+in the excluded high-count tail); the additive density value itself is now derived, not
+assumed. -/
+theorem natDensity_exactlySquarefree_range (k : ℕ) :
+    NaturalDensity (⋃ m ∈ range k, exactlySquarefree m) (∑ m ∈ range k, eta m) :=
+  natDensity_biUnion_of_pairwiseDisjoint (range k) exactlySquarefree eta
+    (fun m _ m' _ h => exactlySquarefree_disjoint h) (fun m _ => natDensity_eta m)
+
 end Erdos378
+
