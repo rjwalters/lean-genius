@@ -161,7 +161,7 @@ theorem rationals_dense_in_positives :
   refine ⟨⟨p, q, hp_ge, hq_ge, rfl⟩, ?_⟩
   -- |p/q - r| = p/q - r (since p/q ≥ r) and p/q - r < 1/q < ε
   have h_nonneg : (↑p : ℝ) / ↑q - r ≥ 0 := by
-    rw [sub_nonneg, le_div_iff hq_pos]
+    rw [sub_nonneg, le_div_iff₀ hq_pos]
     exact hceil_ge
   rw [abs_of_nonneg h_nonneg]
   calc (↑p : ℝ) / ↑q - r

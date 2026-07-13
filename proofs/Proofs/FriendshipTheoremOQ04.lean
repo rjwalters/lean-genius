@@ -444,7 +444,7 @@ theorem neighborSet_equinum_of_nonadj_or_common_nonneighbor (hF : IsFriendshipGr
 vertices of a friendship graph have *exactly one* common neighbour. This upgrades
 `exists_common_neighbor` (which only gives existence) to the full unique-existence
 statement directly from `ncard = 1`, packaging the defining property in the
-reusable `∃!` form. No `(_ : Fintype V)` assumption is used. -/
+reusable `∃!` form. No `[Fintype V]` assumption is used. -/
 theorem common_neighbor_unique (hF : IsFriendshipGraph G) {a b : V} (hab : a ≠ b) :
     ∃! x, G.Adj a x ∧ G.Adj b x := by
   obtain ⟨x, hx⟩ := Set.ncard_eq_one.mp (hF a b hab)

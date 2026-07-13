@@ -223,20 +223,19 @@ noncomputable instance instLT : LT ZsqrtNegTwo :=
   ⟨fun x y => (Zsqrtd.norm x).natAbs < (Zsqrtd.norm y).natAbs⟩
 
 /-- ℤ[√-2] is a Euclidean domain. -/
-noncomputable instance instEuclideanDomain : EuclideanDomain ZsqrtNegTwo where
-  __ := inferInstanceAs (CommRing ZsqrtNegTwo)
-  __ := instNontrivial
-  quotient := (· / ·)
-  remainder := (· % ·)
-  quotient_zero := by
-    intro a
-    simp only [HDiv.hDiv, Div.div, Zsqrtd.norm_zero, Int.cast_zero, inv_zero, mul_zero]
-    ext <;> simp
-  quotient_mul_add_remainder_eq := fun x y => by simp only [mod_def]; ring
-  r := (· < ·)
-  r_wellFounded := (measure (Int.natAbs ∘ Zsqrtd.norm)).wf
-  remainder_lt := fun x y hy => natAbs_norm_mod_lt x hy
-  mul_left_not_lt := fun a b hb0 => not_lt_of_ge (norm_le_norm_mul_left a hb0)
+noncomputable instance instEuclideanDomain : EuclideanDomain ZsqrtNegTwo :=
+  { (inferInstance : CommRing ZsqrtNegTwo), (inferInstance : Nontrivial ZsqrtNegTwo) with
+    quotient := (· / ·)
+    remainder := (· % ·)
+    quotient_zero := by
+      intro a
+      simp only [HDiv.hDiv, Div.div, Zsqrtd.norm_zero, Int.cast_zero, inv_zero, mul_zero]
+      ext <;> simp
+    quotient_mul_add_remainder_eq := fun x y => by simp only [mod_def]; ring
+    r := (· < ·)
+    r_wellFounded := (measure (Int.natAbs ∘ Zsqrtd.norm)).wf
+    remainder_lt := fun x y hy => natAbs_norm_mod_lt x hy
+    mul_left_not_lt := fun a b hb0 => not_lt_of_ge (norm_le_norm_mul_left a hb0) }
 
 /-- If p is a prime that is not irreducible in ℤ[√-2], then p = a² + 2b² for some a, b. -/
 theorem sq_add_two_sq_of_nat_prime_of_not_irreducible (p : ℕ) [hp : Fact p.Prime]

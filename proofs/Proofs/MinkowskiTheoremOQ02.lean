@@ -231,7 +231,7 @@ theorem dirichlet_approximation_from_minkowski (α : ℝ) (Q : ℕ) (hQ : 0 < Q)
     · -- a > 0: |a| = a
       rw [Int.abs_of_pos hpos]; exact hab_approx
     · -- a < 0: |a| = −a, and α·(−a) − (−b) = −(α·a − b)
-      have hneg : a < 0 := lt_of_le_of_ne (le_of_not_lt hpos) ha_ne
+      have hneg : a < 0 := lt_of_le_of_ne (le_of_not_gt hpos) ha_ne
       rw [Int.abs_of_neg hneg]
       push_cast
       rw [show α * -(a : ℝ) - -(b : ℝ) = -(α * (a : ℝ) - (b : ℝ)) by ring, abs_neg]

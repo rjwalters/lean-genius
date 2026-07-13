@@ -294,7 +294,7 @@ theorem lacunarySum_factorial_split (N : ℕ) :
     conv_rhs => rw [Finset.sum_range_succ]
     rw [add_assoc]
     congr 1
-    -- tail_n = f(n+1) + tail_{n+1}, use tsum_eq_zero_add
+    -- tail_n = f(n+1) + tail_{n+1}, use Summable.tsum_eq_zero_add
     have h := (factorial_tail_summable n).tsum_eq_zero_add
     -- Normalize arithmetic in h to match goal
     simp only [show n + 1 + 0 + 1 = n + 1 + 1 from by omega] at h

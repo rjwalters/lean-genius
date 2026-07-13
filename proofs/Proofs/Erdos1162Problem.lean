@@ -108,8 +108,8 @@ theorem rdt_implies_pyber :
       have := le_antisymm hle (sq_nonneg _)
       rw [this, div_zero] at h_lo; linarith
     constructor
-    · rw [lt_div_iff hn2] at h_lo; linarith
-    · rw [div_lt_iff hn2] at h_hi; linarith⟩
+    · rw [lt_div_iff₀ hn2] at h_lo; linarith
+    · rw [div_lt_iff₀ hn2] at h_hi; linarith⟩
 
 /- ## Part IV: Pyber's Theorem (1993) -/
 

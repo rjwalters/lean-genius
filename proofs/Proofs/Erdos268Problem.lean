@@ -743,7 +743,7 @@ theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
     (harmonicPoint d A) i > 0 := by
   simp only [harmonicPoint, shiftedHarmonicSum]
   obtain ⟨n, hn⟩ := hA
-  apply tsum_pos (shifted_summable A i.val hconv)
+  apply Summable.tsum_pos (shifted_summable A i.val hconv)
     (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
   exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
 

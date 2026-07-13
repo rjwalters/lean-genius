@@ -975,7 +975,7 @@ private lemma det_eq_zero_of_kernel {M : Matrix V V ℤ} {v : V → ℤ}
   have hdetv : M.det • v = 0 := by
     calc M.det • v
       = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
-          simp [Matrix.smul_mulVec_assoc, Matrix.one_mulVec]
+          simp [Matrix.smul_mulVec, Matrix.one_mulVec]
       _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
       _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
       _ = M.adjugate.mulVec 0 := by rw [hMv]

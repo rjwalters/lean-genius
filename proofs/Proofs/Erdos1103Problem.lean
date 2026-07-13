@@ -142,9 +142,9 @@ theorem subexp_eventually_lt_exp (C : ℝ) (hC : 1 < C) :
   -- Goal: exp(5 * j / log j) < exp(log C * j)
   apply Real.exp_lt_exp.mpr
   -- From hj_log: 5 / log C < log j, i.e., 5 < log j * log C
-  rw [div_lt_iff hlogC] at hj_log
+  rw [div_lt_iff₀ hlogC] at hj_log
   -- Goal: 5 * j / log j < log C * j
-  rw [div_lt_iff hlog_j_pos]
+  rw [div_lt_iff₀ hlog_j_pos]
   -- Goal: 5 * j < log C * j * log j. From hj_log: 5 < log j * log C, so 5*j < (log j * log C)*j
   nlinarith [mul_comm (Real.log C) (Real.log (j : ℝ))]
 

@@ -287,13 +287,13 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
   -- Key bounds: 1/N < ε/(2*(d+1)) and 1/N < δ
   have h_inv_N : 1 / (N : ℝ) < ε / (2 * (↑d + 1)) := by
     have h1 : (2 * (↑d + 1)) / ε < ↑N := lt_of_le_of_lt (le_max_left _ _) hN_gt
-    rw [div_lt_iff hε] at h1
-    rw [div_lt_div_iff hN' (by positivity : (0 : ℝ) < 2 * (↑d + 1)), one_mul]
+    rw [div_lt_iff₀ hε] at h1
+    rw [div_lt_div_iff₀ hN' (by positivity : (0 : ℝ) < 2 * (↑d + 1)), one_mul]
     nlinarith [mul_comm ε (↑N : ℝ)]
   have h_inv_δ : 1 / (N : ℝ) < δ := by
     have h1 : 1 / δ < ↑N := lt_of_le_of_lt (le_max_right _ _) hN_gt
-    rw [div_lt_iff hδ_pos] at h1
-    rw [div_lt_iff hN']
+    rw [div_lt_iff₀ hδ_pos] at h1
+    rw [div_lt_iff₀ hN']
     linarith [mul_comm δ (↑N : ℝ)]
   -- Step 3: Grid fixed point case
   by_cases hgfp : ∃ v : Vertex d N, f (gridToReal v) = gridToReal v
@@ -389,7 +389,7 @@ theorem approximate_fixed_point {d : ℕ} (hd : 0 < d)
           _ = ↑d * (ε / (↑d + 1)) := by
               simp [Finset.sum_const, Fintype.card_fin, nsmul_eq_mul]
       have hd_bound : ↑d * (ε / (↑d + 1)) < ε := by
-        rw [mul_div_assoc, div_lt_iff (by linarith [Nat.cast_nonneg d] : (0:ℝ) < ↑d + 1)]
+        rw [mul_div_assoc, div_lt_iff₀ (by linarith [Nat.cast_nonneg d] : (0:ℝ) < ↑d + 1)]
         linarith
       linarith
     -- Step 8: Combine upper and lower bounds

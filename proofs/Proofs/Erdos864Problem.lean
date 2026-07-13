@@ -243,7 +243,7 @@ theorem distinct_sums_bounded (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
         obtain ⟨a, b, ha, hb, rfl⟩ := hs
         simp only [Finset.mem_Icc] at hA ⊢
         have := hA a ha; have := hA b hb; omega
-    _ = 2 * N - 1 := by rw [Finset.Nat.card_Icc]; omega
+    _ = 2 * N - 1 := by rw [Nat.card_Icc]; omega
 
 /-- **Sidon counting bound (sums)**: For a Sidon set A ⊆ {1,...,N}, the sum
     map (a,b) ↦ a+b is injective on the upper triangle {(a,b) | a ≤ b}, so
@@ -398,7 +398,7 @@ theorem sidon_diff_counting_bound (A : Finset ℕ) (N : ℕ) (hN : 0 < N)
   have h_le : L.card ≤ N - 1 := by
     rw [← h_card_img]
     calc (L.image _).card ≤ (Finset.Icc 1 (N - 1)).card := Finset.card_le_card h_range
-      _ = N - 1 := by rw [Finset.Nat.card_Icc]; omega
+      _ = N - 1 := by rw [Nat.card_Icc]; omega
   -- Step 4: 2*|L| + k = k*k (partition into lower triangle, diagonal, upper triangle)
   have h_2L : 2 * L.card + k = k * k := by
     set U := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)

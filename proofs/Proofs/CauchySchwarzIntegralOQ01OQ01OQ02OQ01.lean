@@ -761,7 +761,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             simp only [SimpleFunc.coe_add, Pi.add_apply]
             by_cases ha : (sf₁ : α → ℝ) a = 0
             · simp [ha]
-            · have : (sf₂ : α → ℝ) a = 0 := Function.nmem_support.mp
+            · have : (sf₂ : α → ℝ) a = 0 := Function.notMem_support.mp
                   (disjoint_left.mp hdisj (Function.mem_support.mpr ha))
               simp [this]
         have hsf₂_le : ∀ a, ‖(sf₂ : α → ℝ) a‖ ≤ ‖(sf₁ + sf₂ : SimpleFunc α ℝ) a‖ :=
@@ -769,7 +769,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             simp only [SimpleFunc.coe_add, Pi.add_apply]
             by_cases ha : (sf₂ : α → ℝ) a = 0
             · simp [ha]
-            · have : (sf₁ : α → ℝ) a = 0 := Function.nmem_support.mp
+            · have : (sf₁ : α → ℝ) a = 0 := Function.notMem_support.mp
                   (disjoint_left.mp hdisj.symm (Function.mem_support.mpr ha))
               rw [this, zero_add]
         have hsf₁ : MemLp ⇑sf₁ p μ := h12.mono

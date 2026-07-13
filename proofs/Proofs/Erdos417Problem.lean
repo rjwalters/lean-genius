@@ -226,7 +226,7 @@ Both problems concern understanding which integers appear as totient values.
 theorem pow_two_totient_value (k : ℕ) : IsTotientValue (2^k) := by
   use 2^(k+1)
   constructor
-  · exact Nat.pos_pow_of_pos (k+1) (by norm_num)
+  · exact pow_pos (by norm_num) (k+1)
   · rw [Nat.totient_prime_pow_succ Nat.prime_two]
     ring
 

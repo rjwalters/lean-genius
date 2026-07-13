@@ -110,7 +110,7 @@ theorem fifth_root_ratio_satisfies_cyclotomic5
 
 /-- The 5th cyclotomic polynomial Φ₅ has a root in the splitting field of X⁵-2. -/
 theorem cyclotomic_5_has_root_in_splitting_field :
-    ∃ ζ : (X ^ 5 - C (2 : ℚ) : ℚ(_ : X)).SplittingField,
+    ∃ ζ : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField,
       ζ ^ 4 + ζ ^ 3 + ζ ^ 2 + ζ + 1 = 0 := by
   set p := (X ^ 5 - C (2 : ℚ) : ℚ[X])
   have hsep := x_fifth_sub_2_separable

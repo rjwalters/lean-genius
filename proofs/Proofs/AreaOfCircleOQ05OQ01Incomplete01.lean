@@ -74,7 +74,7 @@ theorem double_integral_eq_polar_scaled (a : ℝ) :
     ∫ p : ℝ × ℝ, rexp (-(a * (p.1 ^ 2 + p.2 ^ 2))) =
     ∫ p in polarCoord.target, p.1 * rexp (-(a * p.1 ^ 2)) := by
   rw [← integral_comp_polarCoord_symm (fun p => rexp (-(a * (p.1 ^ 2 + p.2 ^ 2))))]
-  apply set_integral_congr polarCoord.open_target.measurableSet
+  apply setIntegral_congr_fun polarCoord.open_target.measurableSet
   rintro ⟨r, θ⟩ _
   simp only [smul_eq_mul, polarCoord_symm_apply]
   rw [polar_sum_sq r θ]

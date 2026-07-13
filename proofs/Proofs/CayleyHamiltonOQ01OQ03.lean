@@ -105,7 +105,7 @@ private lemma coeff_pow_X_eq_companion (m k : ℕ) (hk : k < (minpoly ℝ M).nat
     intro j hj
     have horbit := CayleyHamiltonReductionOQ02OQ01.companionMatrix_pow_basis μ j hj
     have h2 := congr_fun horbit ⟨k, hk⟩
-    simp only [Matrix.mulVec, Matrix.dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
+    simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
                Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.mk.injEq] at h2
     exact h2
   -- Collapse the sum using sum_eq_single

@@ -17,6 +17,9 @@
 -/
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open scoped ENNReal
 
 namespace Erdos1040

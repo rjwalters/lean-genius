@@ -25,7 +25,7 @@
   `maxProd_exists` is likewise
   a proved theorem: the maximum ranges over subsets of the finite set {1,...,N}, so the
   achievable-value set is a nonempty finite set of naturals and we take its `Finset.max'`.
-  (Also repaired Mathlib v4.26 API drift: div_le_iff→div_le_iff₀, le_div_iff→le_div_iff₀,
+  (Also repaired Mathlib v4.26 API drift: div_le_iff₀→div_le_iff₀, le_div_iff₀→le_div_iff₀,
   Finset.card_Icc→Nat.card_Icc, Nat.cast_nonneg now needs its explicit argument.)
 -/
 

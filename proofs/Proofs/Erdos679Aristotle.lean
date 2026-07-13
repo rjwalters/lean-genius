@@ -28,7 +28,7 @@ theorem omega_one : omega 1 = 0 := by
 
 /-- ω(p) = 1 for prime p. -/
 theorem omega_prime (p : ℕ) (hp : p.Prime) : omega p = 1 := by
-  simp [omega, Nat.primeFactors_prime hp]
+  simp [omega, Nat.Prime.primeFactors hp]
 
 /-- ω(p^k) = 1 for prime p and k ≥ 1. -/
 theorem omega_prime_pow (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) :
@@ -73,7 +73,7 @@ theorem bigOmega_prime (p : ℕ) (hp : p.Prime) : bigOmega p = 1 := by
 /-- Ω(p^k) = k for prime p. -/
 theorem bigOmega_prime_pow (p k : ℕ) (hp : p.Prime) :
     bigOmega (p ^ k) = k := by
-  simp [bigOmega, Nat.primeFactorsList_prime_pow hp]
+  simp [bigOmega, Nat.Prime.primeFactorsList_pow hp]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: Small Computations

@@ -116,7 +116,7 @@ theorem minpoly_mem_vecAnnSet (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
 /-- The annihilator set of v contains a nonzero polynomial (namely μ_M), proving
     the generalized minimal polynomial exists. -/
 theorem vecAnnSet_ne_bot [NeZero n] (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
-    ∃ p : K(_ : X), p ≠ 0 ∧ p ∈ vecAnnSet M v :=
+    ∃ p : K[X], p ≠ 0 ∧ p ∈ vecAnnSet M v :=
   ⟨minpoly K M, minpoly.ne_zero (Algebra.IsIntegral.isIntegral M),
    minpoly_mem_vecAnnSet M v⟩
 
@@ -128,7 +128,7 @@ theorem vecAnnSet_ne_bot [NeZero n] (M : Matrix (Fin n) (Fin n) K) (v : Fin n �
     Witness: μ_M itself, which has natDegree ≤ n (from dimension bound). -/
 theorem vec_ann_poly_of_deg_le_dim [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     (v : Fin n → K) :
-    ∃ p : K(_ : X), p ≠ 0 ∧ p.natDegree ≤ n ∧ (aeval M p).mulVec v = 0 := by
+    ∃ p : K[X], p ≠ 0 ∧ p.natDegree ≤ n ∧ (aeval M p).mulVec v = 0 := by
   refine ⟨minpoly K M,
     minpoly.ne_zero (Algebra.IsIntegral.isIntegral M),
     ?_, minpoly_mem_vecAnnSet M v⟩
@@ -166,7 +166,7 @@ theorem krylov_zero_combo_at_minpoly (M : Matrix (Fin n) (Fin n) K)
     Degree bound: μ | μ_M | charpoly, so deg(μ) ≤ deg(charpoly) = n. -/
 theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     (v : Fin n → K) :
-    ∃ μ : K(_ : X), Monic μ ∧ μ.natDegree ≤ n ∧
+    ∃ μ : K[X], Monic μ ∧ μ.natDegree ≤ n ∧
     (aeval M μ).mulVec v = 0 ∧
     μ ∣ minpoly K M ∧
     ∀ q : K[X], (aeval M q).mulVec v = 0 → μ ∣ q := by
@@ -225,7 +225,7 @@ theorem vec_minpoly_exists [NeZero n] (M : Matrix (Fin n) (Fin n) K)
   -- natDegree μ ≤ n: μ.natDegree = q₀.natDegree ≤ minpoly.natDegree ≤ charpoly.natDegree = n
   rw [hμdeg]
   have hq₀_le_min : q₀.degree ≤ (minpoly K M).degree :=
-    le_of_not_lt (hq₀min (minpoly K M) ⟨hminne, minpoly_mem_vecAnnSet M v⟩)
+    le_of_not_gt (hq₀min (minpoly K M) ⟨hminne, minpoly_mem_vecAnnSet M v⟩)
   have hmin_le_ch : (minpoly K M).natDegree ≤ (Matrix.charpoly M).natDegree :=
     Polynomial.natDegree_le_of_dvd
       (minpoly.dvd K M (Matrix.aeval_self_charpoly M))

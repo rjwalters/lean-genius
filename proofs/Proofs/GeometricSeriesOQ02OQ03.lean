@@ -140,7 +140,7 @@ theorem inverse_locally_bounded [NormOneClass R] (ε : ℝ) (hε : 0 < ε) (hε1
   calc ‖Ring.inverse B‖
     _ ≤ (1 - ‖1 - B‖)⁻¹ := perturbed_inverse_norm_bound B hB_lt
     _ ≤ (1 - ε)⁻¹ := by
-        apply inv_anti_of_pos (by linarith)
+        apply inv_anti₀ (by linarith)
         linarith
 
 /-- **Left inverse identity near 1**

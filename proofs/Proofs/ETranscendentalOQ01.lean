@@ -397,7 +397,7 @@ def e_pi_algebraicallyIndependent : Prop :=
 
 /-- **Theorem**: If e and π are algebraically independent over ℚ, then e + π is transcendental.
 
-    **Proof**: Assume e + π is algebraic: ∃ f ≠ 0 in ℚ(_ : T) with f(e + π) = 0.
+    **Proof**: Assume e + π is algebraic: ∃ f ≠ 0 in ℚ[T] with f(e + π) = 0.
     Lift to P(X₀, X₁) = f(X₀ + X₁) ∈ MvPolynomial (Fin 2) ℚ.
     - **P ≠ 0**: Specialize via X₀ ↦ T, X₁ ↦ 0 to recover f from P.
     - **P(e, π) = f(e + π) = 0**: Direct computation.

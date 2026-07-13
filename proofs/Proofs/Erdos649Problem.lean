@@ -61,7 +61,7 @@ notation "P(" m ")" => greatestPrimeFactor m
 /-- The primeFactorsList of n > 1 is nonempty. -/
 private lemma primeFactorsList_ne_nil' {n : ℕ} (hn : n > 1) :
     n.primeFactorsList ≠ [] := by
-  intro h; have := Nat.primeFactorsList_eq_nil.mp h; omega
+  intro h; have := (Nat.primeFactorsList_eq_nil _).mp h; omega
 
 /-- P(n) is a member of primeFactorsList when n > 1. -/
 private lemma gpf_mem_factors' {n : ℕ} (hn : n > 1) :
@@ -85,7 +85,7 @@ theorem gpf_is_prime (m : ℕ) (hm : m > 1) : (P(m)).Prime :=
 
 /-- P(p^k) = p for prime p and k ≥ 1. -/
 theorem gpf_prime_power (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) : P(p ^ k) = p := by
-  simp [greatestPrimeFactor, Nat.primeFactorsList_prime_pow hp (by omega : 0 < k)]
+  simp [greatestPrimeFactor, Nat.Prime.primeFactorsList_pow hp]
 
 /-- P(p) = p for prime p. -/
 theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by

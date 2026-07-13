@@ -42,7 +42,7 @@ theorem primSupport_one : primSupport 1 = ∅ := by simp [primSupport]
 
 /-- The support of a prime p is {p}. -/
 theorem primSupport_prime (p : ℕ) (hp : p.Prime) : primSupport p = {p} := by
-  simp [primSupport, Nat.primeFactors_prime hp]
+  simp [primSupport, Nat.Prime.primeFactors hp]
 
 /-
 ## Divisibility Structure

@@ -56,7 +56,7 @@ theorem witnessFamily_subset (N : ℕ) :
 theorem witnessFamily_card (N : ℕ) : (witnessFamily N).card = N / 6 := by
   unfold witnessFamily
   rw [Finset.card_image_of_injective _ witnessInj]
-  simp [Finset.Nat.card_Icc]
+  simp [Nat.card_Icc]
   omega
 
 /-! ## Main lower bound -/

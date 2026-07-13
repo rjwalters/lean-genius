@@ -151,7 +151,7 @@ theorem toMatrix_mulVec_repr {n : ℕ} (b : Basis (Fin n) K V)
     (f : Module.End K V) (x : V) :
     (LinearMap.toMatrix b b f).mulVec (fun i => b.repr x i) = fun i => b.repr (f x) i := by
   funext i
-  rw [Matrix.mulVec, Matrix.dotProduct]
+  rw [Matrix.mulVec, dotProduct]
   -- RHS: expand x in the basis and push the operator / coordinate map through the sum.
   conv_rhs => rw [← b.sum_repr x, map_sum]
   rw [map_sum, Finset.sum_apply']

@@ -218,7 +218,7 @@ theorem ramseyC4Kn_one : ramseyC4Kn 1 = 1 := by
   classical
   unfold ramseyC4Kn
   rw [dif_pos (le_refl 1)]
-  apply Nat.find_eq_iff.mpr
+  apply (Nat.find_eq_iff _).mpr
   refine ⟨fun G => Or.inr ⟨{0}, Finset.card_singleton _,
     fun u hu v hv huv => absurd (Finset.mem_singleton.mp hu ▸
       Finset.mem_singleton.mp hv) huv⟩, ?_⟩
@@ -236,7 +236,7 @@ theorem ramseyC4Kn_two : ramseyC4Kn 2 = 4 := by
   classical
   unfold ramseyC4Kn
   rw [dif_pos (by omega : 1 ≤ 2)]
-  apply Nat.find_eq_iff.mpr
+  apply (Nat.find_eq_iff _).mpr
   constructor
   · -- At N = 4: every graph has C₄ or K₂ in complement
     intro G

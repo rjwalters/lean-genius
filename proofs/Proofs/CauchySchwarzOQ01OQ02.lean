@@ -94,7 +94,7 @@ theorem projCoeff_norm_le (u v : E) (hv : v ≠ 0) :
   -- i.e.: ‖⟪v,u⟫‖ / (‖v‖ * ‖v‖) ≤ ‖u‖ / ‖v‖
   -- i.e.: ‖⟪v,u⟫‖ ≤ ‖u‖ * ‖v‖  (after multiplying by ‖v‖²)
   have hv_pos : (0 : ℝ) < ‖v‖ := norm_pos_iff.mpr hv
-  rw [sq, div_le_div_iff (mul_pos hv_pos hv_pos) hv_pos]
+  rw [sq, div_le_div_iff₀ (mul_pos hv_pos hv_pos) hv_pos]
   calc ‖⟪v, u⟫_𝕜‖ * ‖v‖
       ≤ (‖v‖ * ‖u‖) * ‖v‖ := by
         apply mul_le_mul_of_nonneg_right (norm_inner_le_norm v u) (le_of_lt hv_pos)

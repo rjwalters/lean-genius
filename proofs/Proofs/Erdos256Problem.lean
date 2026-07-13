@@ -27,6 +27,9 @@ Tags: analysis, harmonic-analysis, unit-circle, products
 
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Real Complex
 open scoped BigOperators
 
@@ -176,7 +179,7 @@ theorem erdos_256_answer : ¬ErdosQuestion256 := by
     exact rpow_lt_rpow (rpow_nonneg hKC_pos.le _) hN_gt_KC (by linarith)
   -- Step 6: Combine for contradiction
   have hK_lt : K < C * (↑N : ℝ) ^ (c / 2) := by
-    have := (div_lt_iff hC).mp hKC_lt; linarith
+    have := (div_lt_iff₀ hC).mp hKC_lt; linarith
   have key : K * (Real.log (↑N : ℝ)) ^ 4 < C * (↑N : ℝ) ^ c := by
     calc K * (Real.log (↑N : ℝ)) ^ 4
         ≤ K * (↑N : ℝ) ^ (c / 2) :=

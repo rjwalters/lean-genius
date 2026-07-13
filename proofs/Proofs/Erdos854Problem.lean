@@ -27,13 +27,13 @@ noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
 
 theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
 
-theorem nthPrime_mono : StrictMono nthPrime := Nat.nth_prime_strictMono
+theorem nthPrime_mono : StrictMono nthPrime := (Nat.nth_strictMono Nat.infinite_setOf_prime)
 
 theorem nthPrime_zero : nthPrime 0 = 2 := by
   simp [nthPrime, Nat.nth_prime_zero_eq_two]
 
 theorem nthPrime_one : nthPrime 1 = 3 := by
-  simp [nthPrime, Nat.nth_prime_one]
+  simp [nthPrime, Nat.nth_prime_one_eq_three]
 
 theorem nthPrime_two : nthPrime 2 = 5 := by
   simp [nthPrime]

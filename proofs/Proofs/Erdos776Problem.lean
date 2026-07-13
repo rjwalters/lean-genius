@@ -393,7 +393,7 @@ theorem distinctSizes_card_le_n_sub_two {n : ℕ} (hn : 4 ≤ n)
       calc (distinctSizes F).card
           ≤ (Finset.Icc 1 (n - 2)).card := Finset.card_le_card hsub
         _ = n - 2 := by
-            rw [Finset.Nat.card_Icc]
+            rw [Nat.card_Icc]
             omega
   · -- Size 1 absent: distinctSizes F ⊆ Icc 2 (n−1)
     have hsub : distinctSizes F ⊆ Finset.Icc 2 (n - 1) := by
@@ -406,7 +406,7 @@ theorem distinctSizes_card_le_n_sub_two {n : ℕ} (hn : 4 ≤ n)
     calc (distinctSizes F).card
         ≤ (Finset.Icc 2 (n - 1)).card := Finset.card_le_card hsub
       _ = n - 2 := by
-          rw [Finset.Nat.card_Icc]
+          rw [Nat.card_Icc]
           omega
 
 /- ## Concrete Achievability — Base Case n = 4

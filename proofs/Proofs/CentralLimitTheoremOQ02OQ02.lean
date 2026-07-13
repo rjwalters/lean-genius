@@ -110,7 +110,7 @@ theorem iid_satisfies_lindeberg
   -- √n tends to ∞, hence so does ε·√n.
   have hsqrt_top : Tendsto (fun n : ℕ => Real.sqrt (n : ℝ)) atTop atTop := by
     simp_rw [Real.sqrt_eq_rpow]
-    exact (Real.tendsto_rpow_atTop (by norm_num)).comp tendsto_natCast_atTop_atTop
+    exact (tendsto_rpow_atTop (by norm_num)).comp tendsto_natCast_atTop_atTop
   -- For each row n ≥ 1 the Lindeberg sum collapses to a single truncated moment of X₀.
   have hred : ∀ n : ℕ, 1 ≤ n →
       S.toMDA.lindebergSum n ε

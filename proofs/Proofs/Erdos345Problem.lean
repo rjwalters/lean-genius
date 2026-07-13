@@ -128,7 +128,7 @@ theorem powerSeq_1_complete : IsCompleteSeq (powerSeq 1) := by
     subset sum (every element of powerSeq 1 is ≥ 1). -/
 theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
   simp only [threshold, dif_pos powerSeq_1_complete]
-  apply Nat.find_eq_iff.mpr
+  apply (Nat.find_eq_iff _).mpr
   constructor
   · -- All n ≥ 1 are in subsetSums(powerSeq 1)
     exact fun n hn => (powerSeq_1_complete).choose_spec n hn

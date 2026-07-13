@@ -270,7 +270,7 @@ theorem crossingFactor_five_lt_four : crossingFactor 5 < crossingFactor 4 := by
   rw [crossingFactor_five, crossingFactor_four]
   rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 8) (mul_pos (by norm_num : (0:ℝ) < 3) pi_pos)]
   -- Need: 3 * (3 * π) < 4 * 8, i.e., 9π < 32. Since π < 3.15: 9 * 3.15 = 28.35 < 32.
-  nlinarith [Real.pi_lt_315]
+  nlinarith [Real.pi_lt_d2]
 
 /-- **Information bound**: For paths of the same positive length, the 2D kinematic
     measure gives strictly more expected crossings than the 3D measure. -/

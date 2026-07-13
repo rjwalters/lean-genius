@@ -153,7 +153,7 @@ theorem erdos_1936_bound (A B : Set ℕ) (k : ℕ) (hk : k ≥ 1)
   have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by linarith
   have hnum_nn : 0 ≤ d_s A * (1 - d_s A) := by nlinarith
   have hle : d_s A * (1 - d_s A) / (2 * (k : ℝ)) ≤ d_s A * (1 - d_s A) / (k : ℝ) := by
-    rw [div_le_div_iff h2k_pos hk_pos]
+    rw [div_le_div_iff₀ h2k_pos hk_pos]
     nlinarith
   linarith
 

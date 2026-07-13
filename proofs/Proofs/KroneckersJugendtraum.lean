@@ -13,6 +13,15 @@ import Mathlib.GroupTheory.Abelianization.Defs
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic
 
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatKroneckersJugendtraum (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 /-!
 # Hilbert's 12th Problem: Kronecker's Jugendtraum
 
@@ -125,7 +134,7 @@ def KroneckerWeberTheorem : Prop :=
     IsAbelianExtension ℚ L →
     ∃ n : ℕ, 0 < n ∧
       IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) ∧
-      ∃ f : L →ₐ(_ : ℚ) CyclotomicField n ℚ, Function.Injective f
+      ∃ f : L →ₐ[ℚ] CyclotomicField n ℚ, Function.Injective f
 
 /-- Cyclotomic extensions of ℚ have abelian Galois groups.
 

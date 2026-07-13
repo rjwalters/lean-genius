@@ -2054,7 +2054,7 @@ theorem mz_normaliser_mono {p : ℝ} (hp : 0 < p) :
   exact Real.rpow_le_rpow (by positivity) hij' (div_nonneg zero_le_one hp.le)
 
 /-- The MZ normaliser `aᵢ = (i+1)^{1/p} → ∞` (S5 `ha_top`).  `(i+1) → ∞` composed with
-`Real.tendsto_rpow_atTop` at the positive exponent `1/p`. -/
+`tendsto_rpow_atTop` at the positive exponent `1/p`. -/
 theorem mz_normaliser_tendsto {p : ℝ} (hp : 0 < p) :
     Tendsto (fun i : ℕ => ((i : ℝ) + 1) ^ (1 / p)) atTop atTop := by
   have hg : Tendsto (fun i : ℕ => (i : ℝ) + 1) atTop atTop :=

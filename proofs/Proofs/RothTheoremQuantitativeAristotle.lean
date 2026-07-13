@@ -179,7 +179,7 @@ theorem n_div_log_log_tendsto_atTop :
     (Real.log_le_log h_logN_pos h_logN_sqrt).trans h_logN_sqrt
   -- √N ≤ N / log(log N) since log(log N) ≤ √N and log(log N) > 0
   have h_sqrtN_le_div : Real.sqrt N ≤ N / Real.log (Real.log N) := by
-    rw [le_div_iff h_loglogN_pos]
+    rw [le_div_iff₀ h_loglogN_pos]
     calc Real.sqrt N * Real.log (Real.log N)
         ≤ Real.sqrt N * Real.sqrt N := mul_le_mul_of_nonneg_left h_loglogN_le_sqrtN
               (Real.sqrt_nonneg _)

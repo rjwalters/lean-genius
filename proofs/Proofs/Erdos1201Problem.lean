@@ -1559,7 +1559,7 @@ theorem erdos_1201_strong_iff_smooth_decay :
     have h_card : ∀ N : ℕ, 0 < N → dgc N ≤ dbad N + 1 / N := by
       intro N hN
       simp only [dgc, dbad]
-      rw [div_add_div_same]
+      rw [← add_div]
       apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
       norm_cast
       exact hcard_bound N (by omega)

@@ -77,7 +77,7 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
   -- Step 2: Bound below sum ≤ θ · sum f
   have hbelow_le : ∀ a ∈ below, f a ≤ θ * μ := by
     intro a ha
-    exact le_of_not_lt (Finset.mem_filter.mp ha).2
+    exact le_of_not_gt (Finset.mem_filter.mp ha).2
   have hbelow_sum : below.sum f ≤ ↑below.card * (θ * μ) := by
     calc below.sum f ≤ below.sum (fun _ => θ * μ) :=
             Finset.sum_le_sum (fun a ha => hbelow_le a ha)

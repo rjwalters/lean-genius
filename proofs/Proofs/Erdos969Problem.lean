@@ -98,11 +98,11 @@ theorem density_eq_zeta_inverse : squarefreeDensity = 1 / (Real.pi^2 / 6) := by
 theorem density_approx : 0.607 < squarefreeDensity ∧ squarefreeDensity < 0.609 := by
   unfold squarefreeDensity
   constructor
-  · have hpi : 3.14 < Real.pi := Real.pi_gt_314
-    have hpi2 : Real.pi < 3.15 := Real.pi_lt_315
+  · have hpi : 3.14 < Real.pi := Real.pi_gt_d2
+    have hpi2 : Real.pi < 3.15 := Real.pi_lt_d2
     nlinarith [sq_nonneg Real.pi, sq_nonneg 3.14, sq_nonneg 3.15]
-  · have hpi : 3.14 < Real.pi := Real.pi_gt_314
-    have hpi2 : Real.pi < 3.15 := Real.pi_lt_315
+  · have hpi : 3.14 < Real.pi := Real.pi_gt_d2
+    have hpi2 : Real.pi < 3.15 := Real.pi_lt_d2
     nlinarith [sq_nonneg Real.pi, sq_nonneg 3.14, sq_nonneg 3.15]
 
 /-

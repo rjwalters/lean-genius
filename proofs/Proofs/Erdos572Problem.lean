@@ -208,14 +208,14 @@ theorem luw_weaker_than_conjectured (k : ℕ) (hk : k ≥ 3) :
     have hdenom : (3 * (k : ℝ) - 3 + 1) > 0 := by
       have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
       linarith
-    rw [div_le_div_iff (by positivity) hk_pos]
+    rw [div_le_div_iff₀ (by positivity) hk_pos]
     have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
     nlinarith
   · -- k odd: ν = 0, denominator = 3k - 3
     have hdenom : (3 * (k : ℝ) - 3 + 0) > 0 := by
       have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
       linarith
-    rw [div_le_div_iff (by positivity) hk_pos]
+    rw [div_le_div_iff₀ (by positivity) hk_pos]
     have : (k : ℝ) ≥ 3 := by exact_mod_cast hk
     nlinarith
 

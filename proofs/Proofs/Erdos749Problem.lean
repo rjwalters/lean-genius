@@ -265,7 +265,7 @@ theorem sidon_set_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
         le_trans (Nat.mul_le_mul_right _ hcnt) hmul
       -- Cast to ℝ and prove the density bound
       unfold densityRatio
-      rw [div_le_iff (Nat.cast_pos.mpr hN_pos)]
+      rw [div_le_iff₀ (Nat.cast_pos.mpr hN_pos)]
       -- Need: (countingFn A N : ℝ) ≤ (upperDensity A / 2) * ↑N
       have h_cast : (countingFn A N : ℝ) * (↑K + 1) ≤ ↑N := by
         have := Nat.cast_le (α := ℝ).mpr hprod

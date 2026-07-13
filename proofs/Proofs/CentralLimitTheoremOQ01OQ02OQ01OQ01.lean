@@ -1,5 +1,8 @@
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 /-
 # Gaussian Characteristic Function exp(iμt - σ²t²/2)
 
@@ -58,7 +61,7 @@ theorem gaussianExponent_im (μ σ_sq t : ℝ) :
 theorem gaussianCharFn_abs (μ σ_sq t : ℝ) :
     Complex.abs (gaussianCharFn μ σ_sq t) =
       Real.exp (-(σ_sq * t ^ 2 / 2)) := by
-  simp only [gaussianCharFn, map_exp, Complex.abs_exp]
+  simp only [gaussianCharFn, map_exp, Complex.norm_exp]
   rw [gaussianExponent_re μ σ_sq t]
   rfl
 

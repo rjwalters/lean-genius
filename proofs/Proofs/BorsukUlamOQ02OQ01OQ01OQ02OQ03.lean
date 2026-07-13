@@ -130,7 +130,7 @@ theorem buDim_le_formula_semiprime (p q d : ℕ)
     buDim (p * q) d ≤ buDimFormula (p * q) d := by
   rw [buDimFormula]
   rw [Nat.primeFactors_mul hp.ne_zero hq.ne_zero,
-      Nat.primeFactors_prime hp, Nat.primeFactors_prime hq]
+      Nat.Prime.primeFactors hp, Nat.Prime.primeFactors hq]
   simp only [Finset.sup_insert, Finset.sup_singleton]
   exact buDim_crt_semiprime p q d hp hq hpq
 

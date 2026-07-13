@@ -102,7 +102,7 @@ theorem counterexample_always_large_proved
     (ε : Fin n → ℤ) (hε : isSignVector ε) :
     signedSumAbs (carnielli_carolino_counterexample n hn hn2) ε ≥ Real.sqrt 2 := by
   unfold signedSumAbs
-  rw [Complex.abs_apply]
+  rw [Complex.norm_def]
   apply Real.sqrt_le_sqrt
   rw [Complex.normSq_apply, cc_re n hn2 hn, cc_im n hn2 hn]
   have he0 : ((ε ⟨0, by omega⟩ : ℤ) : ℝ) ^ 2 = 1 := by

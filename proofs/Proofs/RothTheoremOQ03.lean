@@ -26,6 +26,9 @@ import Mathlib
 import Proofs.RothTheorem
 import Proofs.SzemerediTheorem
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 namespace RothTheoremOQ03
 
 open Finset BigOperators

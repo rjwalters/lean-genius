@@ -795,8 +795,8 @@ theorem carleson_ae_convergence
     refine ⟨N, hNM, ?_⟩
     -- 1/(k+1) < ε: from 1/ε < k we get ε*k > 1, hence ε*(k+1) > 1 > 0
     have h1k : 1 / ((k : ℝ) + 1) < ε := by
-      rw [div_lt_iff (by positivity : (0 : ℝ) < (k : ℝ) + 1)]
-      have h := (div_lt_iff hε).mp hk  -- h : 1 < ↑k * ε
+      rw [div_lt_iff₀ (by positivity : (0 : ℝ) < (k : ℝ) + 1)]
+      have h := (div_lt_iff₀ hε).mp hk  -- h : 1 < ↑k * ε
       nlinarith [mul_comm (↑k : ℝ) ε]
     -- hN gives ε ≤ ‖S_N f(x) - f(x)‖, and h1k gives 1/(k+1) < ε
     rw [Complex.dist_eq] at hN

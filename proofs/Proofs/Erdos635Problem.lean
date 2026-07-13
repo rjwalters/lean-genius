@@ -287,17 +287,17 @@ theorem f_t1_density :
   · -- Lower bound: 1/2 ≤ f(N,1)/N eventually
     exact Filter.eventually_atTop.mpr ⟨2, fun N hN => by
       rw [f_t1 N (by omega : N ≥ 1)]
-      rw [le_div_iff (by positivity : (0 : ℝ) < ↑N)]
+      rw [le_div_iff₀ (by positivity : (0 : ℝ) < ↑N)]
       have : N ≤ ((N + 1) / 2) * 2 := by omega
       exact_mod_cast this⟩
   · -- Upper bound: f(N,1)/N ≤ 1/2 + 1/(2N) eventually
     exact Filter.eventually_atTop.mpr ⟨2, fun N hN => by
       rw [f_t1 N (by omega : N ≥ 1)]
       have hNpos : (0 : ℝ) < ↑N := by positivity
-      rw [div_le_iff hNpos]
+      rw [div_le_iff₀ hNpos]
       have hdiv : ((N + 1) / 2 : ℕ) * 2 ≤ N + 1 := Nat.div_mul_le_self (N + 1) 2
       have : (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := by
-        rw [div_le_iff (two_pos)]
+        rw [div_le_iff₀ (two_pos)]
         exact_mod_cast hdiv
       calc (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := this
         _ = (1 / 2 + 1 / (2 * ↑N)) * ↑N := by field_simp; ring

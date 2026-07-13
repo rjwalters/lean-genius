@@ -1,0 +1,488 @@
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:434:46: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:434:46: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+===== AreaOfCircleOQ01OQ02OQ02OQ02OQ02
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ02OQ02.lean:106:13: Unknown identifier `wirtinger_inequality`
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ02OQ02.lean:70:52: unsolved goals
+x y : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ02OQ02.lean:70:52: unsolved goals
+x y : ℝ → ℝ
+hx : ContDiff ℝ 1 x
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:434:46: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+===== AreaOfCircleOQ01OQ03OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:434:46: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+===== AreaOfCircleOQ01OQ03OQ02
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:434:46: Application type mismatch: The argument
+  le_rfl
+has type
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+===== BallotProblemOQ03OQ01OQ01OQ01
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== BallotProblemOQ03OQ01OQ01OQ01Aristotle
+error: Proofs/BallotProblemOQ03OQ02.lean:2101:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(PermPathTuple.toPathTuple hσ' (gvCanonInv cfg hwf t hht).snd ci)
+in the target expression
+error: Proofs/BallotProblemOQ03OQ02.lean:2232:6: Type mismatch
+  northBeforeEast_prefix (List.take ki ↑(t.snd ci)) ?m.387 ?m.388 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_ci))
+error: Proofs/BallotProblemOQ03OQ02.lean:2242:6: Type mismatch
+  northBeforeEast_prefix (List.take kj ↑(t.snd cj)) ?m.474 ?m.475 c'
+    (Eq.mpr (id (congrArg (fun _a => _a > c') hpfx_cj))
+error: Proofs/BallotProblemOQ03OQ02.lean:2311:19: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  colEntry (↑(t'.snd ci)) c₀
+in the target expression
+===== CollatzStructuredOQ03
+error: Proofs/CollatzStructuredOQ03.lean:48:27: failed to synthesize instance of type class
+  DecidablePred (reachesOneIn n)
+error: Proofs/CollatzStructuredOQ03.lean:48:2: failed to synthesize instance of type class
+  Decidable (reachesOne n)
+error: Proofs/CollatzStructuredOQ03.lean:54:2: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+Hint: Use `set_option trace.split.failure true` to display additional diagnostic information
+error: Proofs/CollatzStructuredOQ03.lean:61:31: unsolved goals
+⊢ collatzIter 0 1 = 1
+error: Proofs/CollatzStructuredOQ03.lean:63:43: Tactic `unfold` failed to unfold `reachesOneIn` in
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:240:14: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(?a ^ ?n)
+in the target expression
+===== Erdos1012OQ03
+error: Proofs/Erdos1012OQ03.lean:163:11: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos1012OQ03.lean:165:45: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos1012OQ03.lean:176:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos1012OQ03.lean:184:33: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+===== Erdos159Problem
+error: Proofs/Erdos159Problem.lean:110:6: invalid {...} notation, expected type is not of the form (C ...)
+  ∀ (x y : Fin N), (if G.Adj x y then true else false) = if G.Adj y x then true else false
+warning: Proofs/Erdos159Problem.lean:159:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos159Problem.lean:224:30: Application type mismatch: The argument
+  hv
+has type
+error: Proofs/Erdos159Problem.lean:262:46: Invalid field `mp`: The environment does not contain `Function.mp`, so it is not possible to project the field `mp` from an expression
+  adj_comm G
+of type
+error: Proofs/Erdos159Problem.lean:272:8: `simp` made no progress
+error: Proofs/Erdos159Problem.lean:272:8: `simp` made no progress
+error: Proofs/Erdos159Problem.lean:272:8: `simp` made no progress
+===== Erdos345Problem
+error: Proofs/Erdos345Problem.lean:44:74: unexpected token 'open'; expected 'lemma'
+error: Proofs/Erdos345Problem.lean:53:8: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+error: Proofs/Erdos345Problem.lean:53:8: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+error: Proofs/Erdos345Problem.lean:62:13: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+error: Proofs/Erdos345Problem.lean:62:31: failed to synthesize instance of type class
+  DecidablePred fun n => ∀ (n_1 : ℕ), n ≤ n_1 → n_1 ∈ subsetSums A
+===== Erdos370Problem
+error: Proofs/Erdos370Problem.lean:77:2: No goals to be solved
+error: Proofs/Erdos370Problem.lean:94:87: unsolved goals
+p : ℕ
+error: Proofs/Erdos370Problem.lean:94:87: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos370Problem.lean:130:31: not a positivity goal
+info: Proofs/Erdos370Problem.lean:131:2: Try this:
+  [apply] ring_nf
+error: Proofs/Erdos370Problem.lean:128:55: unsolved goals
+m : ℕ
+hm : m ≥ 2
+===== Erdos374Problem
+error: Proofs/Erdos374Problem.lean:155:60: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 1
+error: Proofs/Erdos374Problem.lean:162:9: Unknown identifier `not_le_of_lt`
+warning: Proofs/Erdos374Problem.lean:178:9: `List.getLast?_eq_getLast` has been deprecated: Use `List.getLast?_eq_some_getLast` instead
+error: Proofs/Erdos374Problem.lean:189:77: unsolved goals
+error: Proofs/Erdos374Problem.lean:189:77: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos374Problem.lean:194:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.succ ?n
+in the target expression
+===== Erdos454Aristotle
+error: Proofs/Erdos454Aristotle.lean:26:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Aristotle.lean:36:30: unsolved goals
+n : ℕ
+⊢ ¬n = 0
+error: Proofs/Erdos454Aristotle.lean:65:2: Type mismatch
+  prime_nth_prime k
+has type
+error: Proofs/Erdos454Aristotle.lean:75:28: unsolved goals
+n : ℕ
+hn : n > 0
+===== Erdos454Problem
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:47:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+warning: Proofs/Erdos454Problem.lean:46:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:50:55: Type mismatch
+===== Erdos454ProblemAristotle
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:47:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+warning: Proofs/Erdos454Problem.lean:46:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:50:55: Type mismatch
+===== Erdos509Problem
+error: Proofs/Erdos509Problem.lean:77:25: Unknown constant `Complex.abs.map_zero`
+error: Proofs/Erdos509Problem.lean:76:25: unsolved goals
+f : ℂ[X]
+error: Proofs/Erdos509Problem.lean:76:25: unsolved goals
+f : ℂ[X]
+z : ℂ
+===== Erdos649Problem
+error: Proofs/Erdos649Problem.lean:73:15: No goals to be solved
+error: Proofs/Erdos649Problem.lean:87:80: unsolved goals
+p k : ℕ
+error: Proofs/Erdos649Problem.lean:87:80: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos649Problem.lean:147:19: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  k % 3 = 0
+===== Erdos679Aristotle
+error: Proofs/Erdos679Aristotle.lean:36:42: Application type mismatch: The argument
+  hp
+has type
+error: Proofs/Erdos679Aristotle.lean:35:25: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos679Aristotle.lean:43:6: Function expected at
+  Coprime.primeFactors_mul hmn
+but this term has type
+error: Proofs/Erdos679Aristotle.lean:41:41: unsolved goals
+m n : ℕ
+hm : m ≠ 0
+===== Erdos854Problem
+error: Proofs/Erdos854Problem.lean:26:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos854Problem.lean:28:55: Type mismatch
+  prime_nth_prime k
+has type
+error: Proofs/Erdos854Problem.lean:32:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos854Problem.lean:33:8: declaration uses `sorry`
+error: Proofs/Erdos854Problem.lean:35:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos854Problem.lean:36:8: declaration uses `sorry`
+===== KonigsbergOQ01OQ02
+error: Proofs/KonigsbergOQ01OQ02.lean:88:8: Unknown constant `Finset.card_eq_sum_ones.symm`
+error: Proofs/KonigsbergOQ01OQ02.lean:100:8: Unknown constant `Finset.card_eq_sum_ones.symm`
+error: Proofs/KonigsbergOQ01OQ02.lean:118:22: omega could not prove the goal:
+error: Proofs/KonigsbergOQ01OQ02.lean:100:8: Unknown constant `Finset.card_eq_sum_ones.symm`
+error: Proofs/KonigsbergOQ01OQ02.lean:118:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/KonigsbergOQ01OQ02.lean:118:22: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/KonigsbergOQ01OQ02.lean:118:57: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== LebesgueMeasureOQ06
+error: Proofs/LebesgueMeasureOQ06.lean:166:67: Function expected at
+  zero_le
+but this term has type
+error: Proofs/LebesgueMeasureOQ06.lean:172:70: Function expected at
+  zero_le
+but this term has type
+error: Proofs/LebesgueMeasureOQ06.lean:524:9: Unknown constant `List.chain'_append.mp`
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:555:41: unexpected token '('; expected ')'
+===== LebesgueMeasureOQ06OQ01
+error: Proofs/LebesgueMeasureOQ06.lean:166:67: Function expected at
+  zero_le
+but this term has type
+error: Proofs/LebesgueMeasureOQ06.lean:172:70: Function expected at
+  zero_le
+but this term has type
+error: Proofs/LebesgueMeasureOQ06.lean:524:9: Unknown constant `List.chain'_append.mp`
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:555:41: unexpected token '('; expected ')'
+===== PtolemysComplexProofOQ02
+error: Proofs/PtolemysComplexProofOQ02.lean:60:2: `ring_nf` made no progress on the goal
+warning: Proofs/PtolemysComplexProofOQ02.lean:59:8: This simp argument is unused:
+  Complex.cos_ofReal_re
+error: Proofs/PtolemysComplexProofOQ02.lean:74:60: unsolved goals
+α : ℝ
+hα : 0 < α
+error: Proofs/PtolemysComplexProofOQ02.lean:85:42: linarith failed to find a contradiction
+case h1
+α : ℝ
+error: Proofs/PtolemysComplexProofOQ02.lean:87:14: Unknown constant `Real.cos_eq_one_iff.mp`
+warning: Proofs/PtolemysComplexProofOQ02.lean:83:29: This simp argument is unused:
+  Complex.ofReal_re
+===== PtolemysTheoremOQ01Incomplete01
+error: Proofs/PtolemysTheoremOQ01Incomplete01.lean:57:0: invalid 'import' command, it must be used in the beginning of the file
+error: Lean exited with code 1
+⚠ [8581/8611] Replayed Proofs.ShannonChannelCodingOQ04
+===== PtolemysTheoremOQ01OQ01
+error: Proofs/PtolemysTheoremOQ01OQ01.lean:246:29: Unknown constant `Real.sqrt_eq_iff_sq_eq`
+info: Proofs/PtolemysTheoremOQ01OQ01.lean:252:0: ptolemy_equality_implies_ccw_or_cw : ∀ (z₁ z₂ z₃ z₄ : ℂ),
+  ‖z₁‖ = 1 →
+===== ShannonChannelCoding
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingBEC
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingBECOQ01
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingBECOQ02
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingBECOQ04
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingOQ02
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingOQ02OQ01
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingOQ02OQ01Aristotle
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingOQ02OQ03
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingOQ02OQ04
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== ShannonChannelCodingOQ03
+error: Proofs/ShannonChannelCodingOQ03.lean:459:68: unsolved goals
+case e'_2
+α : Type u_1
+===== SkolemNoetherMatrixAut
+error: Proofs/SkolemNoetherMatrixAut.lean:212:70: unsolved goals
+K : Type u_1
+inst✝³ : Field K
+error: Proofs/SkolemNoetherMatrixAut.lean:224:13: Type mismatch
+  sub_eq_zero.mpr (Eq.symm (hcoeff j))
+has type
+error: Proofs/SkolemNoetherMatrixAut.lean:229:9: Unknown constant `Matrix.isUnit_det_iff_isUnit_mulVecLin`
+error: Proofs/SkolemNoetherMatrixAut.lean:209:36: unsolved goals
+K : Type u_1
+error: Proofs/SkolemNoetherMatrixAut.lean:209:36: unsolved goals
+K : Type u_1
+inst✝³ : Field K
+===== SkolemNoetherMatrixAutAristotle
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:89:79: unsolved goals
+K : Type u_1
+inst✝² : Field K
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:93:11: Type mismatch
+  sub_eq_zero.mpr (Eq.symm (hcoeff j))
+has type
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:98:7: Unknown constant `Matrix.isUnit_det_iff_isUnit_mulVecLin`
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:81:16: unsolved goals
+K : Type u_1
+error: Proofs/SkolemNoetherMatrixAutAristotle.lean:81:16: unsolved goals
+K : Type u_1
+inst✝² : Field K
+===== ThreeSquares
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresGaussEureka
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresRationalBridge
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresRationalNecessity
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresSquarefreeReduction
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresSufficiency
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresSufficiencyCorrected
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+===== ThreeSquaresWitnessObstruction
+error: Proofs/ThreeSquares.lean:1750:65: unsolved goals
+p : ℤ
+hp : 0 < p
+error: Proofs/ThreeSquares.lean:1940:12: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Int.instConditionallyCompleteLinearOrder', which is 'noncomputable'
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.
+error: Proofs/ThreeSquares.lean:1950:4: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'r3_box', which is 'noncomputable'
+warning: Proofs/ThreeSquares.lean:1966:24: Variable name `n` is not explicitly referenced.

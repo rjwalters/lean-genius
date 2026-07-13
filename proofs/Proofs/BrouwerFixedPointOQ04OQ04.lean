@@ -348,7 +348,7 @@ theorem bisection_complexity (ε : ℝ) (hε : 0 < ε) :
   refine ⟨Nat.ceil (2 / ε) + 1, fun n hn => ?_⟩
   have hK : (Nat.ceil (2 / ε) : ℝ) ≥ 2 / ε := Nat.le_ceil _
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
-  rw [div_lt_iff hn_pos, ← div_lt_iff hε]
+  rw [div_lt_iff₀ hn_pos, ← div_lt_iff₀ hε]
   calc 2 / ε ≤ ↑(Nat.ceil (2 / ε)) := Nat.le_ceil _
     _ < ↑(Nat.ceil (2 / ε)) + 1 := by exact_mod_cast Nat.lt_succ_self _
     _ ≤ ↑n := by exact_mod_cast hn

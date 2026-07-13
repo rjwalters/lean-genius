@@ -1,5 +1,8 @@
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 /-
 # Buffon's Smooth Curve Theorem via Arc Length Theory (OQ-01-OQ-01)
 

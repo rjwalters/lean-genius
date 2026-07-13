@@ -3,8 +3,8 @@ import Mathlib
 /-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
 noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
-/-- v4.31 compat: restore `Complex.abs_apply`. -/
-lemma Complex.abs_apply (z : ℂ) : Complex.abs z = Real.sqrt (Complex.normSq z) :=
+/-- v4.31 compat: restore `Complex.norm_def`. -/
+lemma Complex.norm_def (z : ℂ) : Complex.abs z = Real.sqrt (Complex.normSq z) :=
   Complex.norm_def z
 
 
@@ -126,7 +126,7 @@ theorem rotationFactor_normSq : Complex.normSq rotationFactor = 1 := by
 
 /-- |rotationFactor| = 1, the absolute value form. -/
 theorem rotationFactor_abs : Complex.abs rotationFactor = 1 := by
-  rw [Complex.abs_apply, rotationFactor_normSq, Real.sqrt_one]
+  rw [Complex.norm_def, rotationFactor_normSq, Real.sqrt_one]
 
 /-- **Napoleon rotation identity**: The difference vectors between Napoleon
     centroids are related by rotation by -60°.
@@ -182,7 +182,7 @@ theorem napoleon_sides_12_eq (z₁ z₂ z₃ : ℂ) :
     = (G₂ - G₁)(ω - 1). Since |ω - 1| = 1 (as ω = e^{-iπ/3},
     ω - 1 = e^{-2iπ/3} up to sign), we get |G₃ - G₂| = |G₂ - G₁|. -/
 theorem rotationFactor_sub_one_abs : Complex.abs (rotationFactor - 1) = 1 := by
-  rw [Complex.abs_apply]
+  rw [Complex.norm_def]
   simp only [rotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
     Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
     Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
@@ -265,7 +265,7 @@ noncomputable def conjRotationFactor : ℂ :=
 
 /-- |conjRotationFactor| = 1 -/
 theorem conjRotationFactor_abs : Complex.abs conjRotationFactor = 1 := by
-  rw [Complex.abs_apply]
+  rw [Complex.norm_def]
   simp only [conjRotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
     Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
     Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
@@ -305,7 +305,7 @@ theorem inner_napoleons_theorem (z₁ z₂ z₃ : ℂ) :
   constructor
   · rw [hrot, map_mul, conjRotationFactor_abs, mul_one]
   · have h_sub : Complex.abs (conjRotationFactor - 1) = 1 := by
-      rw [Complex.abs_apply]
+      rw [Complex.norm_def]
       simp only [conjRotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
         Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
         Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,

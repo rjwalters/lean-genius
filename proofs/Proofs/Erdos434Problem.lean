@@ -140,7 +140,7 @@ theorem example_2_3 : NonRepresentable {2, 3} = {1} := by
     -- n = 2: {2}, n = 3: {3}, n ≥ 4: n - 2 ≥ 2 and is representable (IH)
     suffices ∀ m, m ≥ 2 → IsRepresentableAs m ({2, 3} : Set ℕ) from this n h2
     intro m
-    induction m using Nat.strong_rec_on with | _ m ih => ?_
+    induction m using Nat.strongRecOn with | _ m ih => ?_
     intro hm
     rcases Nat.lt_or_ge m 4 with hlt | hge
     · -- m ∈ {2, 3}

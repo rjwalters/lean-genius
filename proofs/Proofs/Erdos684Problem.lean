@@ -100,7 +100,7 @@ theorem smoothPart_pos (k m : ℕ) : 0 < smoothPart k m := by
   apply Finset.prod_pos
   intro p hp
   rw [Finset.mem_filter, Finset.mem_range] at hp
-  exact Nat.pos_pow_of_pos _ hp.2.pos
+  exact pow_pos hp.2.pos _
 
 -- Boundary cases: smoothPart of 0 or 1 is 1 (no prime factors to keep)
 theorem smoothPart_zero (k : ℕ) : smoothPart k 0 = 1 := by

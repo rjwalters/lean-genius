@@ -1,5 +1,14 @@
 import Mathlib
 
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatAbelRuffiniOQ03 (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 /-
 # The abelian Inverse Galois Problem over ℚ: the cyclotomic realization
 

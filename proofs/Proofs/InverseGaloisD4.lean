@@ -1,6 +1,15 @@
 import Mathlib
 import Proofs.NthRootIrrationalOQ01
 
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatInverseGaloisD4 (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 /-
 # Inverse Galois Problem: D₄ Realization
 
@@ -80,7 +89,7 @@ theorem cyclic_galois_realization (p : ℕ) [hp : Fact p.Prime] :
       (_ : IsGalois ℚ K),
       Nonempty ((K ≃ₐ[ℚ] K) ≃* (ZMod p)ˣ) := by
   haveI : NeZero p := ⟨hp.out.ne_zero⟩
-  haveI : Normal ℚ (Polynomial.cyclotomic p ℚ).SplittingField := inferInstance
+  haveI : Normal ℚ (Polynomial.cyclotomic p ℚ).SplittingField := Polynomial.SplittingField.instNormal _
   haveI : Algebra.IsSeparable ℚ (Polynomial.cyclotomic p ℚ).SplittingField := inferInstance
   exact ⟨(Polynomial.cyclotomic p ℚ).SplittingField,
     inferInstance, inferInstance, inferInstance, IsGalois.mk,
@@ -155,7 +164,7 @@ theorem fourth_root_of_unity_primitive
 /-- X²+1 has a root in the splitting field of X⁴-2.
     Among the 4 roots, find a pair a, b with a ≠ ±b. Then (a/b)² + 1 = 0. -/
 theorem x_sq_add_1_has_root_in_x4_sub_2_splitting_field :
-    ∃ ω : (X ^ 4 - C (2 : ℚ) : ℚ(_ : X)).SplittingField,
+    ∃ ω : (X ^ 4 - C (2 : ℚ) : ℚ[X]).SplittingField,
       ω ^ 2 + 1 = 0 := by
   set p := (X ^ 4 - C (2 : ℚ) : ℚ[X])
   have hsep := x_fourth_sub_2_separable

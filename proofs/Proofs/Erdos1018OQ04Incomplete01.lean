@@ -681,7 +681,7 @@ theorem dense_graph_not_planar (ε : ℝ) (hε : ε > 0) :
   -- n^(1+ε) = n * n^ε, and n^ε → ∞ for ε > 0, so eventually n^ε > 3
   -- hence n^(1+ε) = n * n^ε > 3n
   have htend : Filter.Tendsto (fun n : ℕ => (n : ℝ) ^ ε) Filter.atTop Filter.atTop :=
-    (Real.tendsto_rpow_atTop hε).comp tendsto_natCast_atTop_atTop
+    (tendsto_rpow_atTop hε).comp tendsto_natCast_atTop_atTop
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp (htend.eventually_ge_atTop 4)
   use max N 1
   intro n hn

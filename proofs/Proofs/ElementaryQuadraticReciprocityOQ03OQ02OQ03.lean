@@ -220,7 +220,7 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
         -(jacobiSym (D₂.natAbs : ℤ) D₁.natAbs) :=
       jacobiSym.quadratic_reciprocity_three_mod_four hm₁ hm₂
     rw [hfac₁, hfac₂, hs₁, hs₂, hqr]; ring
-  · have hD₂nonneg : 0 ≤ D₂ := le_of_not_lt hD₂neg
+  · have hD₂nonneg : 0 ≤ D₂ := le_of_not_gt hD₂neg
     simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨_, h⟩ => hD₂neg h, ite_false]
     have hD₂pos : 0 < D₂ := lt_of_le_of_ne hD₂nonneg (Ne.symm hD₂_ne)
     have hm₁ : D₁.natAbs % 4 = 3 := natAbs_mod4_of_neg h₁_mod4 hD₁neg
@@ -235,7 +235,7 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
     have hqr : jacobiSym (D₂.natAbs : ℤ) D₁.natAbs = jacobiSym (D₁.natAbs : ℤ) D₂.natAbs :=
       jacobiSym.quadratic_reciprocity_one_mod_four hm₂ (Nat.odd_iff.mpr hD₁_nat_odd)
     rw [hfac₁, hs₁, one_mul, hD₂eq, hqr]
-  · have hD₁nonneg : 0 ≤ D₁ := le_of_not_lt hD₁neg
+  · have hD₁nonneg : 0 ≤ D₁ := le_of_not_gt hD₁neg
     simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨h, _⟩ => hD₁neg h, ite_false]
     have hD₁pos : 0 < D₁ := lt_of_le_of_ne hD₁nonneg (Ne.symm hD₁_ne)
     have hm₁ : D₁.natAbs % 4 = 1 := natAbs_mod4_of_pos h₁_mod4 hD₁pos
@@ -250,8 +250,8 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
     have hqr : jacobiSym (D₁.natAbs : ℤ) D₂.natAbs = jacobiSym (D₂.natAbs : ℤ) D₁.natAbs :=
       jacobiSym.quadratic_reciprocity_one_mod_four hm₁ (Nat.odd_iff.mpr hD₂_nat_odd)
     rw [hD₁eq, hfac₂, hs₂, one_mul, ← hqr]
-  · have hD₁nonneg : 0 ≤ D₁ := le_of_not_lt hD₁neg
-    have hD₂nonneg : 0 ≤ D₂ := le_of_not_lt hD₂neg
+  · have hD₁nonneg : 0 ≤ D₁ := le_of_not_gt hD₁neg
+    have hD₂nonneg : 0 ≤ D₂ := le_of_not_gt hD₂neg
     simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨h, _⟩ => hD₁neg h, ite_false]
     have hD₁pos : 0 < D₁ := lt_of_le_of_ne hD₁nonneg (Ne.symm hD₁_ne)
     have hD₂pos : 0 < D₂ := lt_of_le_of_ne hD₂nonneg (Ne.symm hD₂_ne)

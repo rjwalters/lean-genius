@@ -581,7 +581,7 @@ private theorem tendsto_log_div_m_div_log (m : ℕ) (hm : 2 ≤ m) :
       _ ≤ Real.log (2 * m) := by
           apply Real.log_le_log (div_pos hNr_pos hNm_pos)
           -- N/(N/m) ≤ 2m: since N ≤ 2m * (N/m), dividing by N/m gives ≤ 2m
-          rw [div_le_iff hNm_pos]
+          rw [div_le_iff₀ hNm_pos]
           push_cast [Nat.cast_le]
           -- Need: ↑N ≤ 2 * ↑m * ↑(N / m) in ℝ, from ℕ inequality
           have hnat : N ≤ 2 * m * (N / m) := by

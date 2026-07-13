@@ -189,7 +189,7 @@ theorem birthdayProduct_lower_bound {k d : ℕ} (hd : 1 ≤ d) (hk : 1 ≤ k)
           apply exp_neg_sub_sq_le_one_sub
           · exact div_nonneg (Nat.cast_nonneg i) (Nat.cast_nonneg d)
           · -- i/d ≤ (k-1)/d ≤ 1/2
-            rw [div_le_div_iff (by exact_mod_cast (show 0 < d by omega) : (0:ℝ) < d)
+            rw [div_le_div_iff₀ (by exact_mod_cast (show 0 < d by omega) : (0:ℝ) < d)
                                (by norm_num : (0:ℝ) < 2)]
             push_cast
             have : (i : ℤ) ≤ k - 1 := by omega

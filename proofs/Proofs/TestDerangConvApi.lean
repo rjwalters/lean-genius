@@ -3,7 +3,7 @@ import Mathlib
 -- Test what APIs are available
 
 -- Test strong induction pattern
-#check @Nat.strong_rec_on
+#check @Nat.strongRecOn
 -- #check @Nat.strong_induction_on  -- might be renamed
 
 -- Test summability

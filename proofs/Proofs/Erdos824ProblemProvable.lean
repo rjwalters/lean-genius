@@ -149,7 +149,7 @@ theorem h_superlinear :
   have hle := hX x (by omega)
   -- hle : (C : ℚ) + 1 ≤ (h x : ℚ) / (x : ℚ)
   have hx_pos : (0 : ℚ) < (x : ℚ) := by exact_mod_cast show 0 < x by omega
-  rw [le_div_iff hx_pos] at hle
+  rw [le_div_iff₀ hx_pos] at hle
   -- hle : ((C : ℚ) + 1) * x ≤ h x
   exact_mod_cast show C * (x : ℚ) < ↑(h x) by push_cast; nlinarith
 

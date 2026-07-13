@@ -9,11 +9,11 @@ import Mathlib
 -- Test: summable_geometric_of_lt_one
 #check summable_geometric_of_lt_one
 
--- Test: tsum_le_tsum
-#check tsum_le_tsum
+-- Test: Summable.tsum_le_tsum
+#check Summable.tsum_le_tsum
 
--- Test: tsum_pos
-#check tsum_pos
+-- Test: Summable.tsum_pos
+#check Summable.tsum_pos
 
 -- Test: Nat.totient_le
 #check Nat.totient_le
@@ -52,7 +52,7 @@ import Mathlib
 
 -- Test: For tsum positivity
 -- Need: if Summable f, all terms nonneg, one term positive => tsum > 0
-#check tsum_pos
+#check Summable.tsum_pos
 
 -- Test NNReal approach
 #check NNReal.summable_of_le

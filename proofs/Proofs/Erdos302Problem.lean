@@ -260,7 +260,7 @@ theorem original_question_false : ¬original_question := by
   have h_upper : (f M : ℚ) / M < 1/2 + 1/32 := by linarith
   have h_lower : (f M : ℚ) ≥ (5/8 - 1/32) * M := h2
   have h_div : (f M : ℚ) / M ≥ 19/32 := by
-    rw [ge_iff_le, div_le_iff hM_pos] at *
+    rw [ge_iff_le, div_le_iff₀ hM_pos] at *
     linarith
   linarith
 

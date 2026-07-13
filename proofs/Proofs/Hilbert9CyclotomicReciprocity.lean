@@ -4,6 +4,15 @@ import Mathlib.Data.Nat.Totient
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.Tactic.NormNum
 
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatHilbert9CyclotomicReciprocity (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 /-!
 # Hilbert's Ninth Problem: Cyclotomic Reciprocity — the Abelian Case over ℚ
 

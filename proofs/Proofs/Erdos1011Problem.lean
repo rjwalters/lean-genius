@@ -112,7 +112,7 @@ f_r(n) = n²/4 - g(r)·n/2 + O(1)
 
 /-- g(r): vertices to remove from χ ≥ r triangle-free graph to make bipartite.
     Existential type binders are written with anonymous instance hypotheses
-    `(_ : Fintype V)` (instance brackets `[…]` are not valid inside `∃`), and the
+    `[Fintype V]` (instance brackets `[…]` are not valid inside `∃`), and the
     witness type is fixed to `Type` so `g` is universe-monomorphic — otherwise the
     free universe parameter leaks into the `Prop`-valued conjectures below. `g`
     only feeds the asymptotic axioms/conjectures; no verified theorem depends on

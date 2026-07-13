@@ -1700,7 +1700,7 @@ We state IP and the theorem as axioms since the full proof requires:
     Languages having polynomial-round interactive proofs with poly-time verifier.
 
     Formally: L ∈ IP iff there exists verifier V such that:
-    - Completeness: x ∈ L ⟹ ∃ prover P. Pr(_ : V ↔ P accepts x) ≥ 2/3
+    - Completeness: x ∈ L ⟹ ∃ prover P. Pr[V ↔ P accepts x] ≥ 2/3
     - Soundness: x ∉ L ⟹ ∀ provers P*. Pr[V ↔ P* accepts x] ≤ 1/3 -/
 def IP : Set (Nat → Bool) :=
   { problem | True }  -- Abstract placeholder
@@ -2451,7 +2451,7 @@ theorem quantum_complexity_landscape :
     PCP(r(n), q(n)) is the class of languages L where:
     - The verifier uses r(n) random bits
     - The verifier queries q(n) bits of the proof
-    - Completeness: x ∈ L ⟹ ∃ proof with Pr(_ : verify accepts) = 1
+    - Completeness: x ∈ L ⟹ ∃ proof with Pr[verify accepts] = 1
     - Soundness: x ∉ L ⟹ ∀ proofs, Pr[verify accepts] ≤ 1/2
 
     The soundness gap can be amplified to 2^{-q} by repetition. -/

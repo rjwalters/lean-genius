@@ -150,7 +150,7 @@ theorem iterated_log_sublinear (C : ℝ) (hC : C > 0) :
       filter_upwards [Filter.eventually_ge_atTop 2] with n hn
       exact Real.log_pos (by exact_mod_cast (show 1 < n by omega))
     filter_upwards [h_small, h_logn_pos] with n h_small h_pos
-    rw [Set.mem_Iio, div_lt_iff h_pos] at h_small
+    rw [Set.mem_Iio, div_lt_iff₀ h_pos] at h_small
     linarith
   -- (b) Eventually log(log(log n)) ≥ 1 (iterated log → ∞)
   have hb : ∀ᶠ n in (atTop : Filter ℕ),

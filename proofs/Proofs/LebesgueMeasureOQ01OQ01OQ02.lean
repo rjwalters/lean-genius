@@ -175,7 +175,7 @@ theorem thomae_continuous_at_irrational {x : ℝ} (hx : Irrational x) :
   have hN : (1 : ℝ) / (↑N + 1) < ε := by
     rw [div_lt_iff₀ (by linarith), one_mul]
     have h1 : (1 : ℝ) < ε * N := by
-      rwa [gt_iff_lt, lt_div_iff hε, mul_comm] at hN_raw
+      rwa [gt_iff_lt, lt_div_iff₀ hε, mul_comm] at hN_raw
     linarith
   -- Get the finite set of nearby low-denominator rationals
   have hS := finite_rat_bounded x N

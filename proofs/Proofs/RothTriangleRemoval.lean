@@ -471,7 +471,7 @@ theorem roth_via_triangle_removal (delta : ℝ) (hdelta : 0 < delta) :
     have hAN_q : (A.card : ℚ) ≤ N := by exact_mod_cast hAN
     have hAN_q : (A.card : ℚ) ≤ N := by exact_mod_cast hAN
     have h6_le : (6 : ℚ) ≤ 27 * gamma * N := by
-      have := (div_le_iff (by positivity : (0 : ℚ) < 27 * gamma)).mp hN_ge_bound
+      have := (div_le_iff₀ (by positivity : (0 : ℚ) < 27 * gamma)).mp hN_ge_bound
       linarith
     calc (triangleCount (ruzsaSzemerediGraph A) Finset.univ Finset.univ Finset.univ : ℚ)
         ≤ 6 * A.card * N := by exact_mod_cast hTC
@@ -494,9 +494,9 @@ theorem roth_via_triangle_removal (delta : ℝ) (hdelta : 0 < delta) :
   -- Step 11: 9·eps_q < delta (from n₀ > 18/delta).
   have h9eps_lt : (9 : ℝ) * (eps_q : ℝ) < delta := by
     have heps_r : (eps_q : ℝ) = 1 / n₀ := by push_cast [eps_q]; ring
-    have h18 : (18 : ℝ) < delta * n₀ := by rwa [div_lt_iff hdelta] at hn₀
+    have h18 : (18 : ℝ) < delta * n₀ := by rwa [div_lt_iff₀ hdelta] at hn₀
     rw [heps_r, show (9 : ℝ) * (1 / n₀) = 9 / n₀ from by ring,
-        div_lt_iff (by exact_mod_cast hn₀_pos : (0 : ℝ) < n₀)]
+        div_lt_iff₀ (by exact_mod_cast hn₀_pos : (0 : ℝ) < n₀)]
     linarith
   -- Step 12: Contradiction via chain of inequalities.
   -- delta·N² ≤ |A|·N ≤ |R| ≤ 9·eps_q·N² < delta·N²

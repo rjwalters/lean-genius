@@ -46,10 +46,16 @@ lemma h_hasDerivAt (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
     have hd_sub : HasDerivAt (fun x => 1 - x) (-1) p := by
       exact (hasDerivAt_id p).const_sub 1
     have h := hd_at.comp p hd_sub
-    convert h using 1; ring
+    convert h using 1
+    all_goals try rfl
+    all_goals try (funext x; simp only [Function.comp, Pi.add_apply, Pi.neg_apply]; ring)
+    all_goals ring
   -- h = -(x*log x + (1-x)*log(1-x))
   unfold h
-  convert (hd_xlogx.add hd_1xlog1x).neg using 1; ring
+  convert (hd_xlogx.add hd_1xlog1x).neg using 1
+  all_goals try rfl
+  all_goals try (funext x; simp only [Function.comp, Pi.add_apply, Pi.neg_apply]; ring)
+  all_goals ring
 
 -- ============================================================
 -- Section 2: Second Derivative of h

@@ -243,7 +243,7 @@ theorem isCyclicVector_of_linearIndependent
     | empty => simp [Matrix.zero_mulVec]
     | insert ha ih =>
       rw [Finset.sum_insert ha, Matrix.add_mulVec, ih,
-          Finset.sum_insert ha, Matrix.smul_mulVec_assoc]
+          Finset.sum_insert ha, Matrix.smul_mulVec]
   -- Step 3: Convert Fin n sum to range n sum, factor out mulVec, use hann
   rw [Fin.sum_univ_eq_sum_range, ← hdist, ← heval]
   exact hann

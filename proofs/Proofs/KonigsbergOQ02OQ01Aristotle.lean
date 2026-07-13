@@ -25,7 +25,7 @@ private theorem chain_tail_fst_eq_dropLast_snd_ari {α : Type*} :
   | [], _ => by simp
   | [_], _ => by simp
   | a :: b :: rest, hchain => by
-    have hab := List.Chain'.rel_head hchain
+    have hab := List.IsChain.rel_head hchain
     have ih := chain_tail_fst_eq_dropLast_snd_ari (b :: rest) (List.Chain'.tail hchain)
     simp only [List.tail_cons] at ih
     show (b :: rest).map Prod.fst = (a :: (b :: rest).dropLast).map Prod.snd
