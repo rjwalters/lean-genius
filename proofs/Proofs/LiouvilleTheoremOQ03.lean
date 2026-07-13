@@ -253,7 +253,7 @@ theorem dimH_wellApprox_tendsto_zero :
     simpa [div_eq_mul_inv] using tendsto_inv_atTop_zero.const_mul (2 : ℝ)
   have h1 : Tendsto (fun τ : ℝ => ENNReal.ofReal (2 / τ)) atTop (𝓝 0) := by
     have := (ENNReal.continuous_ofReal.tendsto 0).comp h0
-    simpa using this
+    simpa [Function.comp_def] using this
   -- The family agrees with those values eventually (for `τ ≥ 2`).
   refine h1.congr' ?_
   filter_upwards [eventually_ge_atTop (2 : ℝ)] with τ hτ
@@ -301,7 +301,7 @@ theorem dimH_liouville_eq_zero : dimH {x : ℝ | Liouville x} = 0 := by
     have h0 : Tendsto (fun n : ℕ => (2 : ℝ) / (n : ℝ)) atTop (𝓝 0) :=
       tendsto_const_div_atTop_nhds_zero_nat 2
     have := (ENNReal.continuous_ofReal.tendsto 0).comp h0
-    simpa using this
+    simpa [Function.comp_def] using this
   -- Squeeze: a constant below sequences converging to `0` is `≤ 0`.
   have hle : dimH {x : ℝ | Liouville x} ≤ 0 :=
     ge_of_tendsto htend (eventually_atTop.2 ⟨2, fun n hn => hbound n hn⟩)
@@ -424,7 +424,7 @@ theorem dimH_setOf_exists_liouvilleWith_gt_two_eq_one :
           (𝓝 ((2 : ℝ) / 2)) := (tendsto_const_nhds).div h0 (by norm_num)
       rw [show (2 : ℝ) / 2 = 1 by norm_num] at hquot
       have := (ENNReal.continuous_ofReal.tendsto 1).comp hquot
-      simpa using this
+      simpa [Function.comp_def] using this
     exact le_of_tendsto' htend hge
 
 /-! ## Part VIII: Cardinality — the fractals are uncountable

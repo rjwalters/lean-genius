@@ -1,10 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
-import Mathlib.Analysis.Calculus.Deriv.Comp
-import Mathlib.Analysis.Calculus.Deriv.Shift
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Reparametrization invariance of arc length and signed area

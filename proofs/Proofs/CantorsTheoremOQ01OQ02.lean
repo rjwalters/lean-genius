@@ -77,8 +77,8 @@ theorem card_powerSet_powerSet_real_eq_beth_three :
 /-- |𝒫(𝒫(ℝ))| > |𝒫(ℝ)| > |ℝ|: the hierarchy is strictly increasing. -/
 theorem powerSet_powerSet_gt_powerSet_real :
     (#(Set ℝ) : Cardinal.{0}) < #(Set (Set ℝ)) := by
-  rw [Cardinal.mk_set]
-  exact Cardinal.cantor (#(Set ℝ))
+  have h := Cardinal.cantor (#(Set ℝ))
+  rwa [← Cardinal.mk_set] at h
 
 /-- |𝒫(𝒫(ℝ))| > |ℝ|: two levels of power sets strictly exceed ℝ. -/
 theorem powerSet_powerSet_gt_real :
@@ -123,14 +123,12 @@ theorem card_iteratedPowerSet_eq_beth (n : ℕ) :
   | zero =>
     -- |ℝ| = 𝔠 = ℶ₁
     simp only [iteratedPowerSet]
-    rw [CantorsTheoremOQ01.card_real_eq_continuum,
-        CantorsTheoremOQ01.beth_one_eq_continuum]
+    rw [CantorsTheoremOQ01.card_real_eq_continuum]
+    norm_num [CantorsTheoremOQ01.beth_one_eq_continuum]
   | succ n ih =>
     -- |𝒫(iteratedPowerSet n)| = 2^|iteratedPowerSet n| = 2^ℶ_{n+1} = ℶ_{n+2}
     simp only [iteratedPowerSet]
     rw [Cardinal.mk_set, ih, ← beth_nat_succ (n + 1)]
-    push_cast
-    ring_nf
 
 -- ============================================================
 -- PART 4: Strict Tower Inequality
