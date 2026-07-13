@@ -17,7 +17,7 @@ AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly	RESIDUAL	type-mismatch
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionMainAssembly	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4	GREEN	
 AbelRuffiniGaloisExtensionsOQ10	RESIDUAL	instance-synth
-AbelRuffiniOQ03	RESIDUAL	instance-synth
+AbelRuffiniOQ03	GREEN	
 AbelRuffiniOQ04	GREEN	
 AbelRuffiniOQ04OQ01	RESIDUAL	instance-synth
 AbelRuffiniOQ04OQ01OQ03	RESIDUAL	rewrite-drift
@@ -76,24 +76,24 @@ AngleTrisectionCos20Gal	GREEN
 AngleTrisectionCos20GalOQ01	GREEN	
 AngleTrisectionCos20GalOQ01OQ01	RESIDUAL	proof-drift
 AngleTrisectionCos20GalOQ01OQ02	RESIDUAL	proof-drift
-AngleTrisectionCos20GalOQ01OQ02OQ02	RESIDUAL	instance-synth
+AngleTrisectionCos20GalOQ01OQ02OQ02	RESIDUAL	parse-error
 AngleTrisectionCos20GalOQ03	RESIDUAL	proof-drift
 AngleTrisectionCos20GalOQ03OQ01	RESIDUAL	type-mismatch
-AngleTrisectionEmbedding	RESIDUAL	instance-synth
+AngleTrisectionEmbedding	GREEN	
 AngleTrisectionOQ02	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ01OQ02	RESIDUAL	rewrite-drift
 AngleTrisectionOQ02OQ01OQ02Aristotle	RESIDUAL	proof-drift
 AngleTrisectionOQ02OQ01OQ02Incomplete01	RESIDUAL	instance-synth
-AngleTrisectionOQ02OQ03	RESIDUAL	instance-synth
+AngleTrisectionOQ02OQ03	RESIDUAL	parse-error
 AngleTrisectionOQ02OQ03Ext	RESIDUAL	rewrite-drift
-AngleTrisectionOQ02OQ03OQ01	RESIDUAL	instance-synth
+AngleTrisectionOQ02OQ03OQ01	RESIDUAL	parse-error
 AngleTrisectionOQ02OQ04	RESIDUAL	unknown-const:Group.IsSolvable
 AngleTrisectionOQ02OQ04OQ01	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ04OQ01Aristotle	RESIDUAL	instance-synth
-AngleTrisectionOQ03	RESIDUAL	instance-synth
-AngleTrisectionOQ03OQ01	RESIDUAL	instance-synth
-AngleTrisectionOQ03OQ02	RESIDUAL	instance-synth
-AngleTrisectionOQ03OQ02OQ03	RESIDUAL	instance-synth
+AngleTrisectionOQ03	RESIDUAL	parse-error
+AngleTrisectionOQ03OQ01	RESIDUAL	parse-error
+AngleTrisectionOQ03OQ02	RESIDUAL	parse-error
+AngleTrisectionOQ03OQ02OQ03	RESIDUAL	parse-error
 AngleTrisectionOQ05OQ02	RESIDUAL	proof-drift
 AngleTrisectionOQ05OQ03	RESIDUAL	proof-drift
 ArchimedesMethodOfExhaustion	RESIDUAL	instance-synth
@@ -2111,8 +2111,8 @@ Hilbert4Geodesics	RESIDUAL	instance-synth
 Hilbert5LieGroups	RESIDUAL	elab-drift
 Hilbert5OQ02	RESIDUAL	instance-synth
 Hilbert6PhysicsAxioms	RESIDUAL	type-mismatch
-Hilbert9CyclotomicReciprocity	RESIDUAL	instance-synth
-Hilbert9QuadraticSubfield	RESIDUAL	instance-synth
+Hilbert9CyclotomicReciprocity	GREEN	
+Hilbert9QuadraticSubfield	GREEN	
 Hilbert9Reciprocity	RESIDUAL	parse-error
 HodgeConjecture	RESIDUAL	proof-drift
 HurwitzTheoremOQ04	RESIDUAL	slow-timeout
@@ -2175,8 +2175,8 @@ KonigsbergOQ02OQ01Aristotle	RESIDUAL	proof-drift
 KonigsbergOQ02OQ01OQ02OQ01Splice	RESIDUAL	type-mismatch
 KonigsbergOQ03	GREEN	
 KonigsbergOQ04	RESIDUAL	type-mismatch
-KroneckersJugendtraum	RESIDUAL	instance-synth
-KroneckersJugendtraumRealQuadAbelian	RESIDUAL	instance-synth
+KroneckersJugendtraum	GREEN	
+KroneckersJugendtraumRealQuadAbelian	GREEN	
 KroneckersJugendtraumStarkRankOne	RESIDUAL	instance-synth
 KummerTheorem	GREEN	
 KummerTheoremOQ01OQ01	RESIDUAL	type-mismatch
