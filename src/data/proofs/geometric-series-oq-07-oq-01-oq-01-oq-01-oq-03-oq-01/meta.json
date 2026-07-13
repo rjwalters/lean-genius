@@ -130,6 +130,16 @@
   "sorries": 0,
   "openQuestions": [
     {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01-oq-02",
+      "question": "Prove the dual (Newton) basis identity by the same finite-difference method: nᵐ = ∑_{k≤m} k!·S(m,k)·C(n,k) with Stirling second-kind coefficients, and confirm Δᵐ at 0 selects its top coefficient m!·S(m,m) = m!. This exhibits the row sum as the top Newton coefficient in the plain binomial basis C(n,k), complementing the shifted basis C(n+j,m) Worpitzky uses.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01-oq-03",
+      "question": "Formalise the q-analogue: with Carlitz's q-Eulerian numbers ⟨m,j⟩_q, state the q-Worpitzky identity and derive the q-row-sum ∑ⱼ ⟨m,j⟩_q = [m]_q! (the q-factorial) by a q-forward-difference argument, recovering the present identity at q = 1.",
+      "significance": "low"
+    },
+    {
       "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01-oq-01",
       "question": "Generalise the finite-difference reading of Worpitzky's identity to the higher differences: show that for r ≤ m the r-th forward difference Δ_[1]^[r](nᵐ)(0) equals m!/(m−r)!·S(m,r)-type combinations, i.e. extract the full alternating-sum / Stirling-number content of Worpitzky's identity rather than only the top (r = m) row sum.",
       "significance": "low"
@@ -148,6 +158,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "preamble-and-imports",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "A module docstring stating the goal — deduce the Eulerian row sum ∑ⱼ ⟨m,j⟩ = m! from the parent's Worpitzky identity nᵐ = ∑ⱼ ⟨m,j⟩·C(n+j,m) by applying the m-th forward difference Δᵐ at 0 — and its 'Method': Δᵐ annihilates degree-<m polynomials and reads m! off the monic degree-m left side (fwdDiff_iter_eq_factorial), while on the right it distributes over the sum and each term Δᵐ C(·+j,m)(0) = 1 (fwdDiff_iter_choose), leaving m! = ∑ⱼ ⟨m,j⟩. Notes this is a genuinely different derivation from the sibling that evaluates the Eulerian polynomial at X = 1. Imports Mathlib and the parent module, opens Finset/Nat/fwdDiff and the ancestor namespaces.",
+      "mathContext": "$m! = \\Delta^m(n^m)(0) = \\sum_j \\langle m,j\\rangle\\,\\Delta^m\\tbinom{\\cdot+j}{m}(0) = \\sum_j \\langle m,j\\rangle$ — the row sum as a forward difference of Worpitzky's identity."
+    },
     {
       "id": "inputs",
       "title": "The Two Forward-Difference Inputs",
@@ -185,7 +203,9 @@
     "summary": "Deduces the Eulerian row sum ∑_{j=0}^{m} ⟨m,j⟩ = m! from the parent's Worpitzky identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m) by applying the m-th forward difference operator Δ_[1]^[m] at 0. Two ready-made Mathlib values do the work on either side of the identity: Δ_[1]^[m](n ↦ nᵐ)(0) = m! (fwdDiff_iter_eq_factorial, transported from ℤ to ℕ via Newton's shift formula in fwdDiff_iter_pow_self) and Δ_[1]^[m](n ↦ C(n+j,m))(0) = 1 (fwdDiff_iter_choose composed with a shift in fwdDiff_iter_choose_shift); linearity of the iterated difference over the finite sum and over each Eulerian coefficient connects them, giving m! = ∑_j ⟨m,j⟩·1. 133 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound; the low-order check uses kernel decide, not native_decide).",
     "implications": "The row sum being m! is the statement that the descent statistic partitions the m! permutations of {1,…,m}. Realising it through finite differences exhibits Worpitzky's identity as a polynomial change of basis whose top (m-th) difference is exactly the row sum, complementary to the analytic Eₘ(1) = m! route of the sibling oq-01: the same combinatorial fact is read off the discrete-calculus side rather than the generating-function side. Because the proof reuses Mathlib's complete forward-difference calculus, only the combinatorial Worpitzky input is gallery-specific.",
     "openQuestions": [
-      "Generalise to the higher forward differences: for r ≤ m, compute Δ_[1]^[r](nᵐ)(0) and extract the full alternating-sum / Stirling-number content of Worpitzky's identity, of which the row sum is the top (r = m) case."
+      "Generalise to the higher forward differences: for r ≤ m, compute Δ_[1]^[r](nᵐ)(0) and extract the full alternating-sum / Stirling-number content of Worpitzky's identity, of which the row sum is the top (r = m) case.",
+      "Prove the dual Newton basis identity nᵐ = ∑_{k≤m} k!·S(m,k)·C(n,k) by the same Δᵐ method, so the row sum is the top Newton coefficient m!·S(m,m) = m! in the plain binomial basis.",
+      "Formalise the q-analogue: Carlitz's q-Worpitzky identity and the q-row-sum ∑ⱼ ⟨m,j⟩_q = [m]_q!, recovering the present result at q = 1."
     ]
   }
 }
