@@ -76,7 +76,8 @@ this property but cannot fully discharge the sufficiency axiom until the split i
 made. -/
 def DirichletWitnessProperty : Prop :=
   ∀ {m : ℕ}, ¬IsExcludedForm m → ¬(4 ∣ m) → 1 < m →
-    ∃ d p : ℕ, 0 < d ∧ d ≤ 2 ∧ p = d * m - 1 ∧ Nat.Prime p ∧ legendreSym p (-d : ℤ) = 1
+    ∃ d p : ℕ, 0 < d ∧ d ≤ 2 ∧ p = d * m - 1 ∧
+      ∃ hp : Nat.Prime p, @legendreSym p ⟨hp⟩ (-d : ℤ) = 1
 
 /-- **Sufficiency from the Dirichlet witness.**
 

@@ -1,0 +1,223 @@
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:109:45: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:109:67: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:120:10: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:120:32: Function expected at
+  ContDiff
+but this term has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT.lean:258:2: Type mismatch: After simplification, term
+  h
+ has type
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== AreaOfCircleOQ01OQ03OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== AreaOfCircleOQ01OQ03OQ02
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== BuffonsNeedleOQ01
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== BuffonsNeedleOQ01OQ01OQ01
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== BuffonsNeedleOQ01OQ01OQ04OQ01
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:92:55: unsolved goals
+⊢ π ^ 2 * 2 = π ^ 2 * 2
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ (1 / 2)
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:130:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ ↑?n
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:224:33: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+===== BuffonsNeedleOQ01OQ04
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== CauchySchwarzIntegralLpDualitySynthesis
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:227:9: Function expected at
+  zero_le
+but this term has type
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:272:36: Function expected at
+  zero_le
+but this term has type
+===== CauchySchwarzIntegralOQ01OQ01OQ02
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:227:9: Function expected at
+  zero_le
+but this term has type
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:272:36: Function expected at
+  zero_le
+but this term has type
+===== CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:227:9: Function expected at
+  zero_le
+but this term has type
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:272:36: Function expected at
+  zero_le
+but this term has type
+===== CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:227:9: Function expected at
+  zero_le
+but this term has type
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:272:36: Function expected at
+  zero_le
+but this term has type
+===== CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:227:9: Function expected at
+  zero_le
+but this term has type
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc.lean:272:36: Function expected at
+  zero_le
+but this term has type
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02
+error: Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01.lean:278:71: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== FriendshipTheoremOQ04
+error: Proofs/FriendshipTheoremOQ04.lean:493:62: Ambiguous term
+  not_imp
+Possible interpretations:
+error: Proofs/FriendshipTheoremOQ04.lean:575:59: Unknown constant `Set.mapsTo'.mp`
+warning: Proofs/FriendshipTheoremOQ04.lean:619:4: `Xor'` has been deprecated: Use `Xor` instead
+error: Lean exited with code 1
+===== FriendshipTheoremOQ04Universal
+error: Proofs/FriendshipTheoremOQ04.lean:493:62: Ambiguous term
+  not_imp
+Possible interpretations:
+error: Proofs/FriendshipTheoremOQ04.lean:575:59: Unknown constant `Set.mapsTo'.mp`
+warning: Proofs/FriendshipTheoremOQ04.lean:619:4: `Xor'` has been deprecated: Use `Xor` instead
+error: Lean exited with code 1
+===== FundamentalTheoremCalculusStokes
+error: Proofs/FundamentalTheoremCalculusStokes.lean:110:8: typeclass instance problem is stuck
+  NormedSpace ℝ ?m.7
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:51: Function expected at
+  hasFDerivAt_id ℝ
+but this term has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:24: Application type mismatch: The argument
+  hasFDerivAt_const p.2 x
+has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:380:20: don't know how to synthesize implicit argument `a`
+  @poincare_1d f ?m.13 hf
+context:
+===== FundamentalTheoremCalculusStokesAristotle
+error: Proofs/FundamentalTheoremCalculusStokesAristotle.lean:68:51: Function expected at
+  hasFDerivAt_id ℝ
+but this term has type
+error: Proofs/FundamentalTheoremCalculusStokesAristotle.lean:68:24: Application type mismatch: The argument
+  hasFDerivAt_const p.2 x
+has type
+===== KonigsbergOQ02OQ01
+error: Proofs/KonigsbergOQ02OQ01.lean:164:20: Application type mismatch: The argument
+  w.arcs_valid ?m.188 (List.mem_toFinset.mp ?m.191)
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:206:44: unsolved goals
+V : Type u_1
+inst✝² : Fintype V
+error: Proofs/KonigsbergOQ02OQ01.lean:228:18: Application type mismatch: The argument
+  w1.arcs_valid
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:232:10: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => (w2.arcs.head ⋯).1 = u
+Error: Application type mismatch: The argument
+===== KonigsbergOQ02OQ01Aristotle
+error: Proofs/KonigsbergOQ02OQ01Aristotle.lean:150:8: `grind` failed
+case grind.1.1.2.2.2.1
+V : Type u_1
+===== KonigsbergOQ04
+error: Proofs/KonigsbergOQ04.lean:108:20: failed to synthesize
+  Decidable (List.Chain' (fun a b => a.2 = b.1) [(A, B), (B, C), (C, A)])
+error: Proofs/KonigsbergOQ04.lean:167:20: failed to synthesize
+  Decidable (List.Chain' (fun a b => a.2 = b.1) [(A, B), (B, A), (A, C), (C, B), (B, C), (C, A)])
+error: Proofs/KonigsbergOQ04.lean:223:29: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/KonigsbergOQ04.lean:232:29: Application type mismatch: The argument
+  hne
+has type
+===== ShannonChannelCodingBECOQ04
+error: Proofs/ShannonChannelCodingBECOQ04.lean:294:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a =>
+    -((if _a = 0 then 0 else _a * log _a) +
+===== TaylorTheoremOQ01
+error: Proofs/TaylorTheoremOQ01.lean:93:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/TaylorTheoremOQ01.lean:117:12: Application type mismatch: The argument
+  hθ
+has type
+===== ThreeSquaresWitnessObstruction
+error: Proofs/ThreeSquaresWitnessObstruction.lean:98:48: Invalid field `neg_one_pow`: The environment does not contain `Exists.neg_one_pow`, so it is not possible to project the field `neg_one_pow` from an expression
+  Exists.intro (p / 2) rfl
+of type `∃ r, p / 2 + p / 2 = r + r`
+error: Proofs/ThreeSquaresWitnessObstruction.lean:99:6: Unknown constant `legendreSym.to_jacobiSym`
+error: Proofs/ThreeSquaresWitnessObstruction.lean:62:37: unsolved goals
+m d p : ℕ
+error: Proofs/ThreeSquaresWitnessObstruction.lean:62:37: unsolved goals
+m d p : ℕ
+hm4 : m % 4 = 3

@@ -199,9 +199,9 @@ theorem buffon_smooth_of_contDiff
     (hy : ContDiff ℝ 1 (Prod.snd ∘ γ)) :
     concreteSmoothExpectedCrossings γ a b d = 2 * planarArcLength γ a b / (π * d) := by
   have hdx : ∀ t ∈ Set.uIcc a b, HasDerivAt (Prod.fst ∘ γ) (deriv (Prod.fst ∘ γ) t) t :=
-    fun t _ => (hx.differentiable le_rfl).differentiableAt.hasDerivAt
+    fun t _ => (hx.differentiable one_ne_zero).differentiableAt.hasDerivAt
   have hdy : ∀ t ∈ Set.uIcc a b, HasDerivAt (Prod.snd ∘ γ) (deriv (Prod.snd ∘ γ) t) t :=
-    fun t _ => (hy.differentiable le_rfl).differentiableAt.hasDerivAt
+    fun t _ => (hy.differentiable one_ne_zero).differentiableAt.hasDerivAt
   exact buffon_smooth_of_continuous γ a b d hd hab hdx hdy
     (hx.continuous_deriv le_rfl) (hy.continuous_deriv le_rfl)
 

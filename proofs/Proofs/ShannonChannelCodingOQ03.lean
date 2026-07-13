@@ -464,7 +464,7 @@ lemma fano_map_bound {α β : Type*} [Fintype α] [Fintype β]
       (fun y (_ : y ∈ Finset.univ) => hPy_nn y)
       (by convert hPy_sum using 1)
       (fun y _ => Set.mem_Icc.mpr ⟨hpe_nn y, hpe_le1 y⟩)
-    convert hjm using 1
+    simpa only [smul_eq_mul] using hjm
   linarith
 
 -- ============================================================

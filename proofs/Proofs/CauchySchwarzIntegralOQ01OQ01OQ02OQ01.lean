@@ -570,14 +570,13 @@ private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
         μ.toENNRealVectorMeasure := by
   -- AbsolutelyContinuous: ∀ s, μ.toENNRealVectorMeasure s = 0 → ν s = 0
   intro s hμs
-  simp only [signedMeasureOfFunctional]
   by_cases hE : MeasurableSet s
-  · skip
-    -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
+  · -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
     have hzero : μ s = 0 := by
       rwa [Measure.toENNRealVectorMeasure_apply_measurable hE] at hμs
-    exact functionalSetFn_null p hp hptop φ hE hzero
-  · simp [dif_neg hE]
+    simpa [signedMeasureOfFunctional, dif_pos hE] using
+      functionalSetFn_null p hp hptop φ hE hzero
+  · simp [signedMeasureOfFunctional, dif_neg hE]
 
 /-- **RN derivative integrability**: for a finite signed measure ν ≪ μ (σ-finite),
     the RN derivative ν.rnDeriv μ is μ-integrable.

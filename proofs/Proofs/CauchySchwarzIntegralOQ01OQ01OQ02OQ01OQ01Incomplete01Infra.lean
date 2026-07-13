@@ -245,7 +245,7 @@ theorem lp_truncation_tendsto_zero [SigmaFinite μ]
   have h4 : Tendsto (fun n => (∫⁻ a, (‖f a - f a * (spanningSets μ n).indicator (1 : α → ℝ) a‖₊
       : ℝ≥0∞) ^ p.toReal ∂μ) ^ p.toReal⁻¹) atTop (nhds ((0 : ℝ≥0∞) ^ p.toReal⁻¹)) :=
     key.ennrpow_const p.toReal⁻¹
-  simpa [ENNReal.zero_rpow_of_pos hinv] using h4
+  simpa [ENNReal.zero_rpow_of_pos hinv, enorm_eq_nnnorm] using h4
 
 -- ============================================================================
 -- § 4.5. Extension-by-zero infrastructure
