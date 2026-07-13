@@ -1290,4 +1290,96 @@ theorem avgSteps_sandwich (a N : ℕ) (ha : 1 ≤ a) (hN : 0 < N) :
       ∧ (totalSteps a N : ℚ) / (N : ℚ) ≤ 2 * (Nat.log 2 a + Nat.log 2 N) + 2 :=
   ⟨avgSteps_ge a N ha hN, avgSteps_le a N ha hN⟩
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XII: LEADING-CONSTANT-1 FLOOR  (sharpening the ½ density bound)
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- The general-`a` average floor `avgSteps_ge` currently rests on the WEAK
+-- `a = 1` density bound `avgSteps_one_ge`, whose coefficient on `log₂ N` is only
+-- ½ (it counts just the upper half `(⌊N/2⌋, N]` of the range). But the EXACT
+-- `a = 1` total `totalSteps_one_closed` has leading constant exactly `1` on the
+-- `N·log₂N` term. Feeding the exact total — instead of the ½-density count — into
+-- the general-`a` comparison `totalSteps_one_le_totalSteps_add` DOUBLES the floor
+-- coefficient from ½ to 1, uniformly in `a`. Since the `a = 1` row's average is
+-- exactly `log₂N − 1 + o(1)` (`avgSteps_one_pow_two`), leading constant `1` is the
+-- correct floor for this fixed-`a` model — Brent's `0.7050` pertains to the
+-- different fully-random `max(a,b)` model and does not apply here.
+
+/-- **Leading-constant-1 `a = 1` total lower bound.**  For every `N`,
+
+      N · ⌊log₂N⌋ ≤ totalSteps 1 N + N,   i.e.  totalSteps 1 N ≥ N·(⌊log₂N⌋ − 1).
+
+    This sharpens `totalSteps_one_ge` — whose coefficient on `N·log₂N` is only ½
+    (`(N − ⌊N/2⌋)·(log₂N − 1)`) — to the exact leading constant `1`. Immediate from
+    the exact closed form `totalSteps_one_closed` and `2^{⌊log₂N⌋+1} ≤ 2N`
+    (`Nat.pow_log_le_self`): the subtracted `2^{n+1}` term is absorbed by the `2N`
+    slack, leaving the full `N·log₂N` leading term. -/
+theorem totalSteps_one_ge_strong (N : ℕ) : N * Nat.log 2 N ≤ totalSteps 1 N + N := by
+  rcases Nat.eq_zero_or_pos N with h0 | hpos
+  · subst h0; simp [totalSteps]
+  · have hclosed := totalSteps_one_closed N hpos
+    have hple : 2 ^ Nat.log 2 N ≤ N := Nat.pow_log_le_self 2 (by omega)
+    have hpow : (2 : ℕ) ^ (Nat.log 2 N + 1) = 2 * 2 ^ Nat.log 2 N := by rw [pow_succ]; ring
+    rw [hpow] at hclosed
+    set n := Nat.log 2 N with hn
+    set P := 2 ^ n with hP
+    set M := N * n with hM
+    have hexp : (N + 1) * n = M + n := by rw [hM]; ring
+    rw [hexp] at hclosed
+    omega
+
+/-- **Leading-constant-1 general-`a` total lower bound.**  For `a ≥ 1`,
+
+      N · ⌊log₂N⌋ ≤ totalSteps a N + N · (⌊log₂ a⌋ + 2).
+
+    Chains the leading-constant-1 `a = 1` total `totalSteps_one_ge_strong` with the
+    reference comparison `totalSteps_one_le_totalSteps_add`. For fixed `a` the
+    right-hand `N·(⌊log₂ a⌋ + 2)` term is `O(N)`, so `totalSteps a N` is
+    `≥ N·log₂N − O(N)` — leading constant `1`, DOUBLE the ½ coefficient of
+    `totalSteps_ge`, and uniform in `a`. -/
+theorem totalSteps_ge_strong (a N : ℕ) (ha : 1 ≤ a) :
+    N * Nat.log 2 N ≤ totalSteps a N + N * (Nat.log 2 a + 2) := by
+  have h1 := totalSteps_one_ge_strong N
+  have h2 := totalSteps_one_le_totalSteps_add a N ha
+  have hexp : N * (Nat.log 2 a + 1) + N = N * (Nat.log 2 a + 2) := by ring
+  omega
+
+/-- **Leading-constant-1 general-`a` average-case lower bound.**  For `a ≥ 1` and
+    `N ≥ 1`,
+
+      log₂ N − (log₂ a + 2)  ≤  (∑_{b=1}^{N} binaryGcdSteps a b) / N.
+
+    Dividing `totalSteps_ge_strong` by `N`. The coefficient on `log₂ N` is now `1`,
+    twice the `½` of `avgSteps_ge`, and (for fixed `a`) the subtracted `log₂ a + 2`
+    is a constant — so the mean over `b ∈ [1, N]` is at least `log₂ N − O(1)` for
+    every left argument `a`. At `a = 1` this reads `log₂ N − 2 ≤ average`, essentially
+    matching the exact `a = 1` leading constant `1` of `avgSteps_one_pow_two`
+    (`log₂ N − 1 + o(1)`). -/
+theorem avgSteps_ge_strong (a N : ℕ) (ha : 1 ≤ a) (hN : 0 < N) :
+    (Nat.log 2 N : ℚ) - ((Nat.log 2 a : ℚ) + 2) ≤ (totalSteps a N : ℚ) / (N : ℚ) := by
+  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hN
+  have hQ : (N : ℚ) * (Nat.log 2 N : ℚ)
+      ≤ (totalSteps a N : ℚ) + (N : ℚ) * ((Nat.log 2 a : ℚ) + 2) := by
+    exact_mod_cast totalSteps_ge_strong a N ha
+  rw [le_div_iff₀ hNQ]
+  nlinarith [hQ, hNQ]
+
+/-- **Sharpened general-`a` average-case `Θ(log N)` sandwich (uniform in `a`).** For
+    `a ≥ 1` and `N ≥ 1`,
+
+      log₂ N − (log₂ a + 2)  ≤  (∑_{b=1}^{N} binaryGcdSteps a b)/N  ≤  2·(log₂ a + log₂ N) + 2.
+
+    Identical in form to `avgSteps_sandwich` but with the floor coefficient on
+    `log₂ N` doubled from `½` to `1` (`avgSteps_ge_strong`), pinning the leading
+    constant of the mean into `[1, 2]` for EVERY fixed `a` — the tightest elementary
+    window on this fixed-`a` average. Closing the residual `[1,2]` multiplicative
+    gap to a single constant would require a per-call `log₂ a + log₂ b + O(1)` upper
+    bound (the parent worst-case bound carries a factor `2`); the sharp constant for
+    the fully-random `max(a,b)` model is Brent's `0.7050`, out of reach here. -/
+theorem avgSteps_sandwich_strong (a N : ℕ) (ha : 1 ≤ a) (hN : 0 < N) :
+    (Nat.log 2 N : ℚ) - ((Nat.log 2 a : ℚ) + 2)
+        ≤ (totalSteps a N : ℚ) / (N : ℚ)
+      ∧ (totalSteps a N : ℚ) / (N : ℚ) ≤ 2 * (Nat.log 2 a + Nat.log 2 N) + 2 :=
+  ⟨avgSteps_ge_strong a N ha hN, avgSteps_le a N ha hN⟩
+
 end BinaryGcdOQ01OQ04OQ03
