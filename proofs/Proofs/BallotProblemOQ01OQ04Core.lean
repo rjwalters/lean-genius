@@ -47,7 +47,7 @@ theorem balanced_length {l : List ℤ} {n : ℕ} (h : IsBalancedPath l n) :
     l.length = 2 * n := by
   obtain ⟨h1, h2, h3⟩ := h
   have hlen := length_eq_count_add_count (k := 1) h3
-  simp only [h1, h2] at hlen
+  simp only [Nat.cast_one, h1, h2] at hlen
   omega
 
 /-- A balanced path has sum 0. -/
@@ -55,7 +55,7 @@ theorem balanced_sum_zero {l : List ℤ} {n : ℕ} (h : IsBalancedPath l n) :
     l.sum = 0 := by
   obtain ⟨h1, h2, h3⟩ := h
   have hsum := sum_eq_count_sub_mul_count (k := 1) h3
-  simp only [h1, h2] at hsum
+  simp only [Nat.cast_one, one_mul, h1, h2] at hsum
   omega
 
 /- ## Part II: Connection to the Cycle Lemma -/
@@ -129,7 +129,7 @@ def pathHeight (l : List ℤ) (i : ℕ) : ℤ := (l.take i).sum
 /-- Count of upsteps (+1 steps) that occur at non-negative height. -/
 noncomputable def upstepsAboveAxis (l : List ℤ) : ℕ :=
   ((Finset.range l.length).filter (fun i =>
-    l.get? i = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
+    l[i]? = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
 
 /-- The set of balanced paths of length 2n with exactly k upsteps above the axis. -/
 def balancedPathsOfType (n k : ℕ) : Set (List ℤ) :=
@@ -138,7 +138,7 @@ def balancedPathsOfType (n k : ℕ) : Set (List ℤ) :=
 /-- Computable version of `upstepsAboveAxis` for `native_decide` proofs. -/
 def upstepsAboveAxisC (l : List ℤ) : ℕ :=
   ((Finset.range l.length).filter (fun i =>
-    l.get? i = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
+    l[i]? = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
 
 /-- `upstepsAboveAxisC` agrees with `upstepsAboveAxis`. -/
 theorem upstepsAboveAxisC_eq (l : List ℤ) :

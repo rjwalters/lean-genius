@@ -188,7 +188,7 @@ theorem rate_equalNoise_le_wideband [Nonempty ι] {c : ℝ} (hc : 0 < c) {P : �
   calc (Fintype.card ι : ℝ) / 2 * Real.log (1 + P / (Fintype.card ι * c))
       ≤ (Fintype.card ι : ℝ) / 2 * (P / (Fintype.card ι * c)) :=
         mul_le_mul_of_nonneg_left hlog (by positivity)
-    _ = P / (2 * c) := by field_simp; ring
+    _ = P / (2 * c) := by field_simp
 
 /-! ## Strict positivity and the vanishing characterization -/
 

@@ -91,8 +91,7 @@ theorem tendsto_alternating_harmonic_log_two :
         (Real.log (1 + y)) := by
       have hm := hs.mul_left (-1)
       rw [hfun] at hm
-      convert hm using 1
-      ring
+      convert hm using 1 <;> (first | rfl | ring)
     -- Divide out the common factor `y ≠ 0`.
     have hy0' : y ≠ 0 := hy0.ne'
     have hg : HasSum (fun n : ℕ => (-1 : ℝ) ^ n / ((n : ℝ) + 1) * y ^ n)

@@ -21,10 +21,7 @@ we have t ≥ n + cp where c ≈ 1.148.
 Tags: combinatorics, block-designs, finite-geometry
 -/
 
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Set.Finite.Basic
+import Mathlib
 
 namespace Erdos903
 

@@ -493,7 +493,7 @@ theorem regularlyVarying_div_index {f g : ℝ → ℝ} {α β : ℝ}
     RegularlyVarying (fun x => f x / g x) (α - β) := by
   have := regularlyVarying_mul_index hf (regularlyVarying_inv_index hg)
   simp only [sub_eq_add_neg] at this ⊢
-  convert this using 1
+  convert this using 1 <;> (first | rfl | ring | norm_num)
 
 -- ============================================================================
 -- Part XI: Stable Characteristic Function Properties

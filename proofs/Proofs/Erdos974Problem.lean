@@ -88,7 +88,6 @@ def hasFirstElementOne {n : ℕ} (z : Configuration n) : Prop :=
 theorem standard_roots_first_is_one (n : ℕ) (hn : n > 0) :
     (standardRootsOfUnity n) ⟨0, hn⟩ = 1 := by
   simp [standardRootsOfUnity, nthRootOfUnity]
-  ring_nf
   simp [Complex.exp_zero]
 
 /- ## Part IV: The Main Theorems (Tijdeman 1966)

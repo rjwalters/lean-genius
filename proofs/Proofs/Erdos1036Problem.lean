@@ -192,7 +192,6 @@ theorem optimalConstant_eq_one_placeholder (c : ℝ) (hc : c > 0) :
   have h : (numInducedSubgraphClasses G : ℝ) = (2 : ℝ) ^ (Fintype.card V : ℕ) :=
     numISC_cast_gen V G
   rw [h, ← Real.rpow_natCast]
-  exact le_refl _
 
 /- ## Random Graph Comparison -/
 

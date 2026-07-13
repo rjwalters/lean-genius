@@ -108,8 +108,7 @@ theorem hasSum_even_zeta_six :
       = (fun k : ℕ => (1 / 64 : ℝ) * (1 / (k : ℝ) ^ 6)) := by
     funext k; push_cast; ring
   rw [hfe]
-  convert h64 using 1
-  ring
+  convert h64 using 1 <;> (first | rfl | ring)
 
 /-- Even-indexed eighth-power sum: `∑_k 1/(2k)⁸ = π⁸/2419200` (a 256-th of ζ(8)). -/
 theorem hasSum_even_zeta_eight :
@@ -119,8 +118,7 @@ theorem hasSum_even_zeta_eight :
       = (fun k : ℕ => (1 / 256 : ℝ) * (1 / (k : ℝ) ^ 8)) := by
     funext k; push_cast; ring
   rw [hfe]
-  convert h256 using 1
-  ring
+  convert h256 using 1 <;> (first | rfl | ring)
 
 /-! ## Step 4: the odd parts — the lambda values λ(6) and λ(8) -/
 

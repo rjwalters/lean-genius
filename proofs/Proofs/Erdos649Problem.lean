@@ -70,7 +70,7 @@ private lemma gpf_mem_factors' {n : ℕ} (hn : n > 1) :
   have hne := primeFactorsList_ne_nil' hn
   have : n.primeFactorsList.getLast? = some (n.primeFactorsList.getLast hne) :=
     List.getLast?_eq_getLast hne
-  simp [this]; exact List.getLast_mem hne
+  simp [this]
 
 /-- P(1) = 0 by convention. Proved by computation. -/
 theorem gpf_one : P(1) = 0 := by native_decide

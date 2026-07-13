@@ -25,12 +25,7 @@ References:
   quadratic forms." Duke Math. J. (2006), 261-302.
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Nat Real Finset
 

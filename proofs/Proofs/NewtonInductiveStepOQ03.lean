@@ -99,7 +99,6 @@ theorem gaussBinom_ratio_mul {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1)
     Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
   have hdk1 : (1 - q ^ (k + 1)) ≠ 0 := (one_sub_pow_pos hq0 hq1 (by omega)).ne'
   field_simp [hpoch.ne', hdk1]
-  ring
 
 /-!
 ## Part IV: The Key Inequality

@@ -24,10 +24,7 @@ conjecture that Q(x) could grow faster than any power.
 Related: OEIS A002182, Ramanujan's highly composite numbers
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Order.Filter.AtTopBot.Field
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib
 
 open Filter
 

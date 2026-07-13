@@ -24,10 +24,7 @@ References:
   complete subgraphs", J. Combinatorial Theory Ser. B (1976), 243-249.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fin.Basic
+import Mathlib
 
 open SimpleGraph
 

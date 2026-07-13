@@ -67,7 +67,6 @@ theorem twoD_potential_ratio_exact (sigma_R sigma_fund r : ℝ)
     linearPotential sigma_R r / linearPotential sigma_fund r = sigma_R / sigma_fund := by
   unfold linearPotential
   field_simp [ne_of_gt hr, ne_of_gt hf]
-  ring
 
 /-- The Migdal tension ratio equals the Casimir ratio (same-dimension representations). -/
 theorem migdalTension_ratio_eq_casimir_ratio (g_sq casimir_R casimir_fund : ℝ) (dim : ℕ)
@@ -81,7 +80,6 @@ theorem migdalTension_ratio_eq_casimir_ratio (g_sq casimir_R casimir_fund : ℝ)
   have hdim_ne : (dim : ℝ) ≠ 0 := ne_of_gt hdim_pos
   have h2dim_ne : (2 : ℝ) * (dim : ℝ) ≠ 0 := mul_ne_zero (by norm_num) hdim_ne
   field_simp [hg_ne, h2dim_ne, hCf_ne]
-  ring
 
 /-- **2D Exact Casimir Scaling**: For any r > 0, the potential ratio equals the Casimir ratio.
     This is the central exact result in 2D Yang-Mills. -/

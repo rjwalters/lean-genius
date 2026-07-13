@@ -44,8 +44,7 @@ theorem hasSum_even_zeta_four :
       = (fun k : ℕ => (1 / 16 : ℝ) * (1 / (k : ℝ) ^ 4)) := by
     funext k; push_cast; ring
   rw [hfe]
-  convert h16 using 1
-  ring
+  convert h16 using 1 <;> (first | rfl | ring)
 
 /-- Odd-indexed fourth-power sum: `∑_k 1/(2k+1)⁴ = π⁴/96`. Derived from
     `hasSum_zeta_four` by the even/odd split: ζ(4) = (even part π⁴/1440) + (odd part),

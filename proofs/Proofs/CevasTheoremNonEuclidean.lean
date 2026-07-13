@@ -479,7 +479,7 @@ theorem hasDerivAt_sinh (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
   have hcoshEq : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
   rw [hcoshEq]
   have := (h1.sub h2').div_const 2
-  exact this.congr_deriv (by ring)
+  convert this using 1 <;> (first | rfl | ring)
 
 /-- **Flat Limit: sinh(x)/x → 1 as x → 0**
 

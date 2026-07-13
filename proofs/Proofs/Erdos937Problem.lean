@@ -22,11 +22,7 @@ References:
 - Erdős (1976): "Problems and results on number theoretic properties of consecutive integers"
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib
 
 open Nat BigOperators Finset
 

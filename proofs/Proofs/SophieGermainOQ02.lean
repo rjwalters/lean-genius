@@ -80,15 +80,11 @@ theorem sgPrimeCount_mono {m n : ℕ} (h : m ≤ n) : sgPrimeCount m ≤ sgPrime
 
 /-- π_SG(0) = 0: no Sophie Germain primes at 0. -/
 theorem sgPrimeCount_zero : sgPrimeCount 0 = 0 := by
-  simp [sgPrimeCount, IsSophieGermainPrime]
-  intro p hp
-  interval_cases p <;> simp_all [Nat.Prime]
+  decide
 
 /-- π_SG(1) = 0: no Sophie Germain primes at 1. -/
 theorem sgPrimeCount_one : sgPrimeCount 1 = 0 := by
-  simp [sgPrimeCount, IsSophieGermainPrime]
-  intro p hp
-  interval_cases p <;> simp_all [Nat.Prime]
+  decide
 
 /-- 2 is the first Sophie Germain prime: π_SG(2) = 1. -/
 theorem sgPrimeCount_two : sgPrimeCount 2 = 1 := by
@@ -139,7 +135,7 @@ theorem sg_mod_six (p : ℕ) (hp : IsSophieGermainPrime p) (hp3 : 3 < p) :
   have h_mod3 := sg_mod_three p hp hp3
   have h_odd : p % 2 = 1 := by
     have : p ≠ 2 := by omega
-    exact Nat.Prime.odd_of_ne_two hp.1 this |>.mod_cast_eq
+    exact Nat.odd_iff.mp (Nat.Prime.odd_of_ne_two hp.1 this)
   omega
 
 /-! ## Structural Results -/
@@ -151,6 +147,6 @@ theorem safePrime_of_sg (p : ℕ) (hp : IsSophieGermainPrime p) :
 
 /-- The safe prime 2p+1 is always odd for p ≥ 1. -/
 theorem safePrime_odd (p : ℕ) (hp : 1 ≤ p) : SafePrime p % 2 = 1 := by
-  simp [SafePrime]; omega
+  simp [SafePrime]
 
 end SophieGermainOQ02

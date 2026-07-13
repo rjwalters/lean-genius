@@ -426,3 +426,30 @@ automatic in argument position); wrap when projections follow:
 | `simp [hf0] at hf; exact … hf` → "No goals to be solved" | drop the trailing `exact` — `simp at hf` now closes the goal | contradiction-closing simp |
 | `content_dvd_coeff q` (polynomial arg) | `q.content_dvd_coeff n` | index arg is `ℕ` |
 | `solvableByRad.isSolvable'` | `Polynomial.isSolvable_gal_of_irreducible` | deprecation warning names it; `IsSolvableByRad F x` → `x ∈ solvableByRad F E` |
+### 7i. Doctor increment-5B recipes (#38065, 2026-07-13, proof-drift)
+
+| pattern | fix | notes |
+|---|---|---|
+| `convert X using N` + trailing `ring`/`norm_num` | `convert X using N <;> (first \| rfl \| ring1 \| (push_cast; ring1) \| (field_simp; ring1) \| (norm_num; done))` | v4.31 convert surfaces instance-congruence goals (`instAddCommMonoid = ...`); rfl closes them. ~50 sites, Basel/Buffons/Circumference/GeometricSeries/Pythagorean families |
+| `ring` / `norm_num` inside `first` | `ring1` / `(norm_num; done)` | v4.31 `ring` falls back to ring_nf and SUCCEEDS on progress without closing — commits the alternative, strands the goal |
+| omega "counterexample may satisfy b >= 0" with beta-redex goals | `beta_reduce; omega` | v4.31 omega does not beta-reduce `(fun n => ...) i` |
+| omega after `unfold f` with `f`-mentioning hypotheses | drop unfold, `le_trans` on folded spelling | goal/hypothesis atom split |
+| "No goals to be solved" | delete the dead tactic (line or `; tail`) | 85 sites swept; single-pass bottom-up per diag only |
+| `Odd.mod_cast_eq` | `Nat.odd_iff.mp` | removed |
+| `Finset.eq_empty_of_forall_not_mem` | `..._notMem` | notMem wave (also Finset.card_insert_of_not_mem earlier) |
+| `Finset.Ico_succ_right` | REMOVED — use `Nat.card_Icc` for card goals | only `Ico_succ_right_eq_insert_Ico` survives |
+| `List.headI_mem_self`, `List.headI_take_one` | REMOVED — `cases l` + simp | |
+| `List.get?` field-projection (`l.get? i`) | `l[i]?` | core removal, batch entry confirmed for dot-notation form |
+| `set x := e` + `simp [defs]` / `cases x` | add `x` to the simp set (`simp [x, defs]`); avoid `cases` on set-vars | v4.31 set-vars are not unfolded by simp lemma sets alone (BallotProblemOQ01OQ04OQ01, partially repaired) |
+| `(k := 1)`-style numeral instantiation + `simp only [h]` misses | add `Nat.cast_one`/`one_mul` to the simp set | cast-literal mismatch `-(1:N):Z` vs `-1` |
+| `decide` on 3-digit `Nat.Prime` conjunctions | file-level `set_option maxRecDepth 100000` | SophieGermainOQ01 x15 |
+| `decide` on bounded-forall prime facts | `intro n h1 h2; interval_cases n <;> norm_num` | Erdos1059OQ03 |
+| `simp [catalan]; norm_num` numerals | `decide` | norm_num no longer evaluates `Nat.choose` residuals |
+| D4/Fin-board `ext <;> simp <;> omega` case bashes | `revert s; fin_cases k <;> cases b <;> decide` | KnightsTourOblique + OQ02 |
+| `G.symm h` (project-local SimpleGraph) | `G.adj_symm h` | confirms 7f, KnightsTourObliqueOQ02Reverse |
+| `div_lt_div_right (h : 0 < c)` iff-form | `div_lt_div_iff_of_pos_right (h : 0 < c)` | confirms 1b correction |
+
+**Infrastructure (5B):** virtiofs serves STALE (truncated) file content to running
+containers after host edits on /Volumes/Stripe worktrees — `docker restart <c>`
+before building (see STATUS.md "increment 5B verification-infrastructure notes";
+also covers the runner5 false-mtime-FAIL pitfall).

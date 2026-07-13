@@ -82,7 +82,7 @@ theorem hasDerivAt_log_div (t : ℝ) (ht : 0 < t) :
   have hlog : HasDerivAt (fun s => Real.log (1 + s)) (1 / (1 + t)) t := by
     have := (Real.hasDerivAt_log h1t_pos.ne').comp t ((hasDerivAt_id t).const_add 1)
     simp [mul_comm] at this ⊢
-    convert this using 1
+    convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Derivative of s at t is 1
   have hid : HasDerivAt (fun s => s) 1 t := hasDerivAt_id t
   -- Quotient rule: result has form (f' * g - f * g') / g², need mul_one simplification

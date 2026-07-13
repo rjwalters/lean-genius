@@ -104,7 +104,6 @@ theorem expTerm_odd (x : ℝ) (k : ℕ) :
   simp only [expTerm, oddTerm]
   rw [mul_pow, show (↑x : ℂ) ^ (2 * k + 1) * I ^ (2 * k + 1) =
     I ^ (2 * k + 1) * (↑x) ^ (2 * k + 1) from by ring, I_pow_odd]
-  ring
 
 -- ============================================================================
 -- § 3. TSUM SPLITTING

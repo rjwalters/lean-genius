@@ -58,7 +58,7 @@ def decayBound (C : ℝ≥0) (α : ℝ≥0) (n : ℤ) : ℝ :=
 
 /-- The decay constant is positive -/
 theorem decayConstant_pos : (0 : ℝ) < decayConstant := by
-  simp [decayConstant]; norm_num
+  simp [decayConstant]
 
 /-- The decay bound is nonneg for valid parameters -/
 theorem decayBound_nonneg (C : ℝ≥0) (α : ℝ≥0) (n : ℤ) (hn : n ≠ 0) :

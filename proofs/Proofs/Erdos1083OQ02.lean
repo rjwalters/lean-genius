@@ -113,7 +113,6 @@ theorem sv_fraction_of_conjecture (d : ℕ) (hd : d ≥ 4) :
   have hd_ne : (↑d : ℝ) ≠ 0 := ne_of_gt hd_pos
   have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
   field_simp
-  ring
 
 /-- The fraction (d+1)/(d+2) is strictly less than 1, confirming that
     the SV bound falls short of the conjectured exponent 2/d. -/
@@ -480,7 +479,6 @@ theorem gap_consecutive_ratio (d : ℕ) (hd : d ≥ 1) :
   have hd2_ne : (↑d : ℝ) + 2 ≠ 0 := ne_of_gt hd2_pos
   have hd4_ne : (↑d : ℝ) + 4 ≠ 0 := ne_of_gt hd4_pos
   field_simp [hd_ne, hd2_ne, hd4_ne]
-  ring
 
 /-- General coverage threshold: d/(d+2) ≥ p/(p+1) whenever d ≥ 2p.
     Proof: d ≥ 2p ↔ p(d+2) ≤ d(p+1) (cross-multiply). The threshold d=2p is sharp

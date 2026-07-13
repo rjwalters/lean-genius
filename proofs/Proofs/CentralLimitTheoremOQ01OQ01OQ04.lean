@@ -415,7 +415,7 @@ axiom meerschaert_scheffler (d : ℕ)
       Filter.Tendsto
         (fun n : ℕ =>
           (φ (fun i => (n : ℝ) * ξ i)) ^ n /
-          ν (fun i => ∑ j, NormedSpace.exp ℝ (Real.log t • E) i j * ξ j))
+          ν (fun i => ∑ j, NormedSpace.exp (Real.log t • E) i j * ξ j))
         Filter.atTop (nhds 1)
 
 -- ============================================================

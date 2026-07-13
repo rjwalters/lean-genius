@@ -135,7 +135,7 @@ private lemma b_mod_eq_pow_i {a b k i : ℕ} (hab : a + b = 2 ^ k)
   have hsum_lt : 3 * 2 ^ i + r < 2 * m := by rw [hm_eq]; omega
   -- q must be 1: only multiple of m in (0, 2m) is m
   have hq_pos : 0 < q := by
-    rcases q with _ | q'; · simp [mul_zero] at hq; omega; · exact Nat.succ_pos _
+    rcases q with _ | q'; · simp [mul_zero] at hq ; · exact Nat.succ_pos _
   have hq_le : q ≤ 1 := by nlinarith [hm_pos]
   have hq1 : q = 1 := by omega
   -- 3 * 2^i + r = m * 1 = 4 * 2^i, so r = 2^i

@@ -69,11 +69,9 @@ theorem hasDerivAt_sqrtAntideriv (t : ℝ) :
       (1 * Real.sqrt (1 + t ^ 2) + t * (2 * t / (2 * Real.sqrt (1 + t ^ 2)))) t :=
     (hasDerivAt_id t).mul hsqrt
   have hsum := (hprod.add (Real.hasDerivAt_arsinh t)).div_const 2
-  convert hsum using 1
   have hs : Real.sqrt (1 + t ^ 2) ^ 2 = 1 + t ^ 2 := sq_sqrt_one_add_sq t
   have hpos : 0 < Real.sqrt (1 + t ^ 2) := sqrt_one_add_sq_pos t
-  skip
-  nlinarith [hs, hpos]
+  convert hsum using 1 <;> (first | rfl | ring1 | (field_simp; nlinarith [hs, hpos]))
 
 /-- The integrand `t ↦ √(1 + t²)` is interval-integrable on every `[a, b]`. -/
 theorem intervalIntegrable_sqrt_integrand (a b : ℝ) :
@@ -127,9 +125,8 @@ theorem hasDerivAt_coshSqAntideriv (t : ℝ) :
       (Real.cosh t * Real.cosh t + Real.sinh t * Real.sinh t) t :=
     (Real.hasDerivAt_sinh t).mul (Real.hasDerivAt_cosh t)
   have hsum := ((hasDerivAt_id t).add hprod).div_const 2
-  convert hsum using 1
-  have := Real.cosh_sq t
-  nlinarith [this]
+  have hcsq := Real.cosh_sq t
+  convert hsum using 1 <;> (first | rfl | ring1 | nlinarith [hcsq])
 
 /-- The integrand `x ↦ cosh²x` is interval-integrable on every `[a, b]`. -/
 theorem intervalIntegrable_cosh_sq (a b : ℝ) :

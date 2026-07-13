@@ -31,15 +31,7 @@ References:
 - Konyagin [Ko04]: "Problems of the set of square-free numbers"
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Real.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Data.List.Prime
+import Mathlib
 
 open Nat Finset Real
 

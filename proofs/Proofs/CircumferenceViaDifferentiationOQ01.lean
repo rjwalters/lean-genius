@@ -187,9 +187,7 @@ theorem disk_area_matches_parent (r : ℝ) :
   have hfn : nBallVolumeFn 2 = CircumferenceViaDifferentiation.areaFn :=
     funext nBallVolumeFn_two_eq_areaFn
   rw [hfn] at h
-  have hc : CircumferenceViaDifferentiation.circumferenceFn r = 2 * π * r := rfl
-  rw [hc]
-  exact h
+  convert h using 1 <;> (first | rfl | ring | norm_num)
 
 -- ============================================================
 -- Part 6: Volume and Surface Properties

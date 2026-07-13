@@ -117,8 +117,7 @@ theorem midpoint_tendsto : Tendsto midpoint atTop (nhds (π / 4)) := by
 theorem gap_eq (k : ℕ) : S (2 * k + 1) - S (2 * k) = 1 / (4 * (k : ℝ) + 1) := by
   have h := S_step (2 * k)
   rw [neg_one_pow_even k] at h
-  convert h using 2
-  push_cast; ring
+  convert h using 2 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
 
 /-- **Midpoint error bound**: |M(k) - π/4| ≤ 1/(2·(4k+1)). -/
 theorem midpoint_error_bound (k : ℕ) :

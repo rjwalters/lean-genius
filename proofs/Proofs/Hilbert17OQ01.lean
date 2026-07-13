@@ -79,7 +79,6 @@ theorem sq_plus_one_is_two_squares :
     IsSumOfKSquares (Polynomial.X ^ 2 + 1 : Polynomial ℝ) 2 := by
   refine ⟨![Polynomial.X, 1], ?_⟩
   simp [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
-  ring
 
 /-- Sum of two PSD polynomials is PSD. -/
 theorem psd_add (p q : Polynomial ℝ) (hp : IsPSD p) (hq : IsPSD q) :
@@ -102,7 +101,6 @@ theorem sum_of_k_squares_mono (p : Polynomial ℝ) (k : ℕ)
   obtain ⟨q, hq⟩ := h
   refine ⟨Fin.cons 0 (fun i => q i), ?_⟩
   simp [Fin.sum_univ_succ, hq]
-  ring
 
 /-- A sum of k squares is a sum of any m ≥ k squares. -/
 theorem sum_of_squares_le (p : Polynomial ℝ) (k m : ℕ) (hkm : k ≤ m)
