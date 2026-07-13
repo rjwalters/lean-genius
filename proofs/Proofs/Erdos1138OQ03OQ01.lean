@@ -611,4 +611,118 @@ theorem consecutive_ratio_ge_of_bound {θ : ℝ} {p q : ℕ}
   rw [hcast, sub_div, div_self (ne_of_gt hqR)] at hgap
   linarith
 
+
+-- ============================================================================
+-- The orthogonal LOWER-bound direction: prime gaps are unbounded
+--
+-- Everything above is upper-bound driven (the BHP squeeze forces
+-- `maxPrimeGap x / x → 0`). The complementary fact is a *lower* bound with a
+-- completely different, axiom-free mechanism: consecutive-prime gaps are
+-- arbitrarily large, so `maxPrimeGap x → ∞`. The classical construction is the
+-- run of composites `(N+1)! + 2, …, (N+1)! + (N+1)`, none of which is prime.
+-- Combined with the sublinearity above, this pins the true two-sided asymptotic
+-- character of the maximal gap: it grows without bound, yet sublinearly.
+-- This direction does NOT use `baker_harman_pintz`.
+-- ============================================================================
+
+/-- **Composite run around `(N+1)!`.** For `2 ≤ k ≤ N+1` the number `(N+1)! + k`
+is composite (`k ∣ (N+1)!` by `Nat.dvd_factorial`, hence `k ∣ (N+1)! + k` with
+`1 < k < (N+1)! + k`), so it is not prime. This is the engine behind arbitrarily
+large prime gaps. -/
+theorem factorial_succ_add_not_prime {N k : ℕ} (hk2 : 2 ≤ k) (hkN : k ≤ N + 1) :
+    ¬ Nat.Prime (Nat.factorial (N + 1) + k) := by
+  intro hp
+  have hkdvd : k ∣ Nat.factorial (N + 1) := Nat.dvd_factorial (by omega) hkN
+  have hdvd : k ∣ Nat.factorial (N + 1) + k := Dvd.dvd.add hkdvd (dvd_refl k)
+  have hfac_pos : 0 < Nat.factorial (N + 1) := Nat.factorial_pos _
+  rcases hp.eq_one_or_self_of_dvd k hdvd with h1 | hself
+  · omega
+  · omega
+
+/-- **Arbitrarily large prime gaps (axiom-free).** For every `N` there exist
+consecutive primes `p < q` with gap `q - p ≥ N`.
+
+Construction: with `M = (N+1)!`, take `p` = the largest prime `≤ M+1`
+(`Nat.findGreatest`) and `q` = the least prime `> M+1` (`Nat.find`). The
+composite run `M+2, …, M+(N+1)` (`factorial_succ_add_not_prime`) forces
+`q ≥ M+N+2`, while `p ≤ M+1`, so `q - p ≥ N+1`. Consecutiveness holds because
+`p` is the greatest prime `≤ M+1` and `q` the least prime `> M+1`, leaving no
+prime strictly between them. Uses only Euclid's theorem and `Nat.dvd_factorial`
+— no BHP input. -/
+theorem exists_consecutive_prime_gap_ge (N : ℕ) :
+    ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ p < q ∧
+      (∀ r, Nat.Prime r → p < r → q ≤ r) ∧ N ≤ q - p := by
+  classical
+  have hMpos : 0 < Nat.factorial (N + 1) := Nat.factorial_pos _
+  -- p := largest prime ≤ (N+1)! + 1
+  set p := Nat.findGreatest Nat.Prime (Nat.factorial (N + 1) + 1) with hp_def
+  have hp_prime : Nat.Prime p :=
+    Nat.findGreatest_spec (m := 2) (by omega) Nat.prime_two
+  have hp_le : p ≤ Nat.factorial (N + 1) + 1 := Nat.findGreatest_le _
+  -- q := least prime > (N+1)! + 1
+  have hqex : ∃ m, Nat.factorial (N + 1) + 1 < m ∧ Nat.Prime m := by
+    obtain ⟨r, hr_ge, hr_prime⟩ := Nat.exists_infinite_primes (Nat.factorial (N + 1) + 2)
+    exact ⟨r, by omega, hr_prime⟩
+  set q := Nat.find hqex with hq_def
+  obtain ⟨hMq, hq_prime⟩ := Nat.find_spec hqex
+  -- p < q since p ≤ M+1 < q
+  have hpq : p < q := by omega
+  -- consecutiveness: no prime strictly between p and q
+  have hcons : ∀ r, Nat.Prime r → p < r → q ≤ r := by
+    intro r hr hpr
+    by_contra hlt
+    push_neg at hlt
+    have hmin := Nat.find_min hqex hlt
+    have hrle : r ≤ Nat.factorial (N + 1) + 1 := by
+      by_contra hc; push_neg at hc; exact hmin ⟨hc, hr⟩
+    exact (Nat.findGreatest_is_greatest hpr hrle) hr
+  -- gap lower bound: the composite run forces q ≥ M + N + 2
+  have hq_big : Nat.factorial (N + 1) + N + 2 ≤ q := by
+    by_contra hc
+    push_neg at hc
+    set k := q - Nat.factorial (N + 1) with hk
+    have hk2 : 2 ≤ k := by omega
+    have hkN : k ≤ N + 1 := by omega
+    have hqk : q = Nat.factorial (N + 1) + k := by omega
+    have hnp := factorial_succ_add_not_prime hk2 hkN
+    rw [← hqk] at hnp
+    exact hnp hq_prime
+  exact ⟨p, q, hp_prime, hq_prime, hpq, hcons, by omega⟩
+
+/-- **`maxPrimeGap` is unbounded (pointwise).** For every `N` there is an `x`
+with `maxPrimeGap x ≥ N`: take `x = q` from `exists_consecutive_prime_gap_ge`;
+the gap `q - p` lies in `primeGapSet q`, so it is `≤ maxPrimeGap q`. Axiom-free. -/
+theorem exists_maxPrimeGap_ge (N : ℕ) : ∃ x : ℕ, N ≤ maxPrimeGap x := by
+  obtain ⟨p, q, hp, hq, hpq, hcons, hgap⟩ := exists_consecutive_prime_gap_ge N
+  refine ⟨q, ?_⟩
+  have hmem : (q - p) ∈ primeGapSet q :=
+    ⟨p, q, hp, hq, hpq, le_refl q, hcons, rfl⟩
+  have hle : (q - p) ≤ maxPrimeGap q := le_csSup (primeGapSet_bddAbove q) hmem
+  omega
+
+/-- **The maximal prime gap tends to infinity.** `maxPrimeGap` is monotone
+(`maxPrimeGap_mono`) and unbounded (`exists_maxPrimeGap_ge`), hence
+`maxPrimeGap x → ∞`. This is the axiom-free lower-bound counterpart of the
+BHP-driven sublinearity `bhp_implies_gap_littleo`. -/
+theorem maxPrimeGap_tendsto_atTop :
+    Tendsto (fun x : ℕ => maxPrimeGap x) atTop atTop :=
+  tendsto_atTop_atTop_of_monotone (fun _ _ h => maxPrimeGap_mono h) exists_maxPrimeGap_ge
+
+/-- **Real-valued form.** `(maxPrimeGap x : ℝ) → ∞`, obtained by composing the
+`ℕ`-valued divergence with the cast `ℕ ↪ ℝ`. -/
+theorem maxPrimeGap_cast_tendsto_atTop :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ)) atTop atTop :=
+  tendsto_natCast_atTop_atTop.comp maxPrimeGap_tendsto_atTop
+
+/-- **Two-sided asymptotic character of the maximal prime gap.** Packaging the
+two orthogonal directions of this entry: the maximal prime gap grows *without
+bound* (`maxPrimeGap x → ∞`, axiom-free, via arbitrarily large gaps) yet remains
+*sublinear* (`maxPrimeGap x / x → 0`, from Baker–Harman–Pintz). Neither half
+follows from the other: unboundedness is a lower bound with an elementary
+mechanism, sublinearity an upper bound needing the deep BHP input. -/
+theorem maxPrimeGap_unbounded_and_sublinear :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ)) atTop atTop ∧
+      Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) :=
+  ⟨maxPrimeGap_cast_tendsto_atTop, bhp_implies_gap_littleo⟩
+
 end Erdos1138OQ03

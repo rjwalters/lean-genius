@@ -111,7 +111,7 @@
   ],
   "conclusion": {
     "summary": "From the single inherited Baker-Harman-Pintz axiom, this follow-up proves the unconditional sublinearity of the normalised maximal prime gap: $G(x)/x \\to 0$, together with its $\\varepsilon$-form. Three theorems, zero sorries, and no new axiom — the entry is axiomatized only through the imported BHP bound, confirmed by #print axioms.",
-    "implications": "**Unconditional counterpart**: the parent's `cramer_implies_gap_sublinear` packages the *conjectured* Cramer order $(\\log x)^2$; this entry instead extracts what is *provable* — the BHP power-saving bound already forces $G(x) = o(x)$ unconditionally. Recording both side by side clarifies which sublinearity is heuristic and which is theorem.\n\n**Envelope technique**: the proof is a template for turning any power-saving pointwise bound $f(x) \\leq x^{1 - \\delta}$ into a normalised limit $f(x)/x \\to 0$ via `tendsto_rpow_neg_atTop` and `squeeze_zero'`; the same three-line skeleton applies whenever the exponent is strictly below 1.",
+    "implications": "**Unconditional counterpart**: the parent's `cramer_implies_gap_sublinear` packages the *conjectured* Cramer order $(\\log x)^2$; this entry instead extracts what is *provable* — the BHP power-saving bound already forces $G(x) = o(x)$ unconditionally. Recording both side by side clarifies which sublinearity is heuristic and which is theorem.\n\n**Envelope technique**: the proof is a template for turning any power-saving pointwise bound $f(x) \\leq x^{1 - \\delta}$ into a normalised limit $f(x)/x \\to 0$ via `tendsto_rpow_neg_atTop` and `squeeze_zero'`; the same three-line skeleton applies whenever the exponent is strictly below 1.\n\n**Orthogonal lower bound (axiom-free)**: the complementary direction shows the maximal prime gap *diverges*, $G(x) \\to \\infty$, from the classical run of composites $(N{+}1)!+2, \\dots, (N{+}1)!+(N{+}1)$ (arbitrarily large prime gaps). This uses only Euclid's theorem and `Nat.dvd_factorial` — not `baker_harman_pintz` (`#print axioms` confirms `[propext, Classical.choice, Quot.sound]`). Combined with sublinearity, `maxPrimeGap_unbounded_and_sublinear` records the full two-sided character: the maximal gap grows without bound yet remains $o(x)$.",
     "openQuestions": [
       "Can the exponent be sharpened inside the formalization if a stronger unconditional gap bound (e.g. a future improvement below 0.525) is added as an axiom, reusing the same squeeze skeleton?",
       "Can the epsilon-form be upgraded to an explicit-rate statement, e.g. an explicit N(epsilon) from the BHP exponent?"
@@ -145,7 +145,7 @@
     "namespace": "Erdos1138OQ03",
     "lineCount": 418,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 29,
     "definitionCount": 0,
     "path": "Proofs/Erdos1138OQ03OQ01.lean",
     "sorries": 0
