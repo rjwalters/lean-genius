@@ -212,3 +212,51 @@ that the abstract framework could only assert. Over an arbitrary real normed spa
 - Planar (V = ℝ²) Lebesgue/area accounting to upgrade to a measure-theoretic tiling.
 - Iterate the medial subdivision (self-similarity) to realise `IsCongruentTiling` at
   `n = 4^j`, and generalise the concrete witness to the full k-subdivision of OQ-01.
+
+## Session (researcher-8, 2026-07-12): quantitative area accounting — each k-cell has area 1/k²
+
+New file `Erdos634MedialAreaOQ01.lean` — VERIFIED, Docker build
+`[7747/7747] Built Proofs.Erdos634MedialAreaOQ01 (6.0s)` (Mathlib 4.26),
+0 axioms / 0 sorries, 9 theorems.
+
+**The gap this closes.** Every prior oq-02 session (covering + corner/central
+interior-disjointness) explicitly left the **measure/area accounting** open:
+covering + interior-disjointness is only a *quantitative* tiling once each cell
+is known to carry the expected area fraction. `Erdos634MedialHomothetyOQ01` had
+already shown each cell = image of the whole triangle under a ratio-`±1/k`
+homothety (`Up_eq_homothety` / `Down_eq_homothety`); this file turns those into
+Lebesgue-measure statements.
+
+**Engine:** Mathlib `MeasureTheory.Measure.addHaar_image_homothety` (a ratio-`r`
+homothety scales Haar measure by `|r|^dim`), composed with translation
+invariance for the off-centre cells.
+
+- `addHaar_shifted_homothety_image` (general finite-dim helper): the image of `s`
+  under `x ↦ v + r•(x−a)` has measure `|r^(finrank)| · μ s`. Proof writes the map
+  as `(·+(v−a)) ∘ AffineMap.homothety a r`, then `Set.image_comp` +
+  `Set.image_add_right` + `measure_preimage_add_right` +
+  `Measure.addHaar_image_homothety`. ★key: `AffineMap.homothety_apply` gives
+  `r•(p−ᵥc)+ᵥc`; `simp [vsub_eq_sub, vadd_eq_add]` then `module` proves
+  `v+r•(x−a) = homothety a r x + (v−a)`.
+- `area_shifted_homothety_image` / `area_neg_shifted_homothety_image` (plane): on
+  `Plane := EuclideanSpace ℝ (Fin 2)` the exponent `dim = 2` is *computed*
+  (`finrank_euclideanSpace_fin`), so the map scales area by `r²` (the `−r`
+  variant needs `(−r)²=r²` via `ring`, matching `Down`'s subtraction form).
+- `area_Up_cell` / `area_Down_cell` (CAPSTONE, general k): every upward/downward
+  cell of the k-subdivision has area exactly `((k:ℝ)⁻¹)² · area(triHull A B C)`.
+- `area_Up_eq_area_Down`: cells are equal-area at the measure level.
+- `cell_area_count_consistent` (k≠0): `k²·(1/k)²=1` — areas consistent with an
+  exact partition into k² cells.
+- `area_medial_Up_cell` / `area_medial_Down_cell` (k=2, n=4): each of the four
+  medial pieces has area exactly `¼ · area(A B C)` — the quantitative content
+  behind `Erdos634MedialTilingOQ02.exists_congruentTiling_four`.
+
+★Build corruption: two spurious exit-135 SIGBUS + a batteries `.ir` invalid-header
+before a clean build; `docker-build.sh --repair-cache` + retry cleared it.
+
+### Still open beyond this file
+- Full partition additivity (`volume (triHull A B C) = ∑ over k² cells`) as a
+  single measure identity — the per-cell area (this file) is the missing
+  quantitative input; the additivity is bookkeeping over the k² index set via
+  `measure_biUnion` + a.e.-disjointness.
+- #634 proper: classification of achievable congruent-piece counts N (OPEN, $25).
