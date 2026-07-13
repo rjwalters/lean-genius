@@ -176,7 +176,7 @@ theorem card_symmDiff (A B : Finset α) :
       constructor
       · intro ⟨hA, hB⟩; exact ⟨hA, fun ⟨_, hB'⟩ => hB hB'⟩
       · intro ⟨hA, hAB⟩; exact ⟨hA, fun hB => hAB ⟨hA, hB⟩⟩
-    rw [heq, card_sdiff hsub]
+    rw [heq, card_sdiff_of_subset hsub]
   -- |B \ A| = |B| - |A ∩ B|
   have h2 : (B \ A).card = B.card - (A ∩ B).card := by
     have hsub : A ∩ B ⊆ B := inter_subset_right
@@ -186,7 +186,7 @@ theorem card_symmDiff (A B : Finset α) :
       constructor
       · intro ⟨hB, hA⟩; exact ⟨hB, fun ⟨hA', _⟩ => hA hA'⟩
       · intro ⟨hB, hAB⟩; exact ⟨hB, fun hA => hAB ⟨hA, hB⟩⟩
-    rw [heq, card_sdiff hsub]
+    rw [heq, card_sdiff_of_subset hsub]
   -- Use subset constraints for omega
   have s1 : (A ∩ B).card ≤ A.card := card_le_card inter_subset_left
   have s2 : (A ∩ B).card ≤ B.card := card_le_card inter_subset_right

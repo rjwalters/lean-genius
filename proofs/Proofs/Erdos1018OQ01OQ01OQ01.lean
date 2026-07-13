@@ -89,7 +89,7 @@ theorem exists_proper_coloring_on {k : ℕ} (h : IsKDegenerate G k) :
         intro h; apply hcol; rw [h]; exact hwf
       · by_cases hwv : w = v
         · -- symmetric: `w = v`, `u` is a neighbour of `v` in `T`
-          have hvu : G.Adj v u := hwv ▸ G.symm hadj
+          have hvu : G.Adj v u := hwv ▸ G.adj_symm hadj
           have huN : u ∈ N := mem_filter.mpr ⟨hu, hvu⟩
           have huf : c' u ∈ forbidden := mem_image_of_mem c' huN
           simp only [if_neg huv, if_pos hwv]

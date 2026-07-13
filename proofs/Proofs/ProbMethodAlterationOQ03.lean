@@ -102,7 +102,7 @@ theorem exists_indep_card_ge (G : SimpleGraph V) [DecidableRel G.Adj] (W : Finse
           · exact absurd rfl hab
           · exact (hmem b hbI').2.1
         · rcases hb with rfl | hbI'
-          · exact fun hadj => (hmem a haI').2.1 (G.symm hadj)
+          · exact fun hadj => (hmem a haI').2.1 (G.adj_symm hadj)
           · exact hI'indep a haI' b hbI' hab
       · -- The weight bound.
         have hcard_eq : ((insert v I').card : ℝ) = (I'.card : ℝ) + 1 := by

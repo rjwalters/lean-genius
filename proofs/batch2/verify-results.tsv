@@ -610,7 +610,7 @@ Erdos1002OQ01OQ01Aristotle	GREEN
 Erdos1003OQ02	GREEN	
 Erdos1005Problem	RESIDUAL	proof-drift
 Erdos1005ProblemOQ02	GREEN	
-Erdos1006OQ01	RESIDUAL	signature-drift
+Erdos1006OQ01	GREEN	
 Erdos1006OQ01OQ02	RESIDUAL	signature-drift
 Erdos1006OQ02	RESIDUAL	elab-drift
 Erdos1006OQ03	GREEN	
@@ -661,7 +661,7 @@ Erdos1017Problem	RESIDUAL	type-mismatch
 Erdos1018Aristotle	RESIDUAL	proof-drift
 Erdos1018OQ01	GREEN	
 Erdos1018OQ01OQ01	GREEN	
-Erdos1018OQ01OQ01OQ01	RESIDUAL	signature-drift
+Erdos1018OQ01OQ01OQ01	GREEN	
 Erdos1018OQ01OQ01OQ01OQ01	RESIDUAL	signature-drift
 Erdos1018OQ04	GREEN	
 Erdos1018OQ04Incomplete01	RESIDUAL	unknown-const:Set.image_subset
@@ -777,8 +777,8 @@ Erdos1081Problem	RESIDUAL	instance-synth
 Erdos1082Problem	GREEN	
 Erdos1083OQ02	GREEN	
 Erdos1083Problem	GREEN	
-Erdos1084OQ01	RESIDUAL	signature-drift
-Erdos1084Problem	RESIDUAL	signature-drift
+Erdos1084OQ01	GREEN	
+Erdos1084Problem	GREEN	
 Erdos1085Problem	GREEN	
 Erdos1086Problem	RESIDUAL	parse-error
 Erdos1087Problem	RESIDUAL	instance-synth
@@ -1821,7 +1821,7 @@ Erdos893Problem	RESIDUAL	unknown-const:mul_succ
 Erdos894Problem	GREEN	
 Erdos895CounterexampleFin18	GREEN	
 Erdos895OQ01Problem	GREEN	
-Erdos895Problem	RESIDUAL	signature-drift
+Erdos895Problem	GREEN	
 Erdos895ProblemAristotle	RESIDUAL	proof-drift
 Erdos896Problem	RESIDUAL	unknown-const:Finset.product_singleton_right
 Erdos89Problem	GREEN	
@@ -1893,7 +1893,7 @@ Erdos956Aristotle	RESIDUAL	proof-drift
 Erdos956Problem	GREEN	
 Erdos957Problem	RESIDUAL	proof-drift
 Erdos958Problem	RESIDUAL	instance-synth
-Erdos959Problem	RESIDUAL	signature-drift
+Erdos959Problem	GREEN	
 Erdos95Problem	RESIDUAL	type-mismatch
 Erdos960Problem	RESIDUAL	unknown-const:p
 Erdos961Problem	RESIDUAL	unknown-const:Nat.primFactors
@@ -2117,7 +2117,7 @@ Hilbert9Reciprocity	GREEN
 HodgeConjecture	RESIDUAL	proof-drift
 HurwitzTheoremOQ04	RESIDUAL	slow-timeout
 IncidenceCauchySchwarzDual	RESIDUAL	proof-drift
-InclusionExclusion	RESIDUAL	signature-drift
+InclusionExclusion	GREEN	
 InclusionExclusionSecondBonferroni	RESIDUAL	unknown-const:sieveLayer_eq_sum_choose
 InfinitudePrimes	GREEN	
 InfinitudePrimes4k1	GREEN	
@@ -2326,7 +2326,7 @@ PrimeReciprocalDivergenceOQ03	RESIDUAL	unknown-const:Nat.squarefree_iff_factoriz
 PrimitiveRoots	RESIDUAL	type-mismatch
 PrimitiveRootsOQ02	RESIDUAL	instance-synth
 PrimitiveRootsOQ03	GREEN	
-ProbMethodAlterationOQ03	RESIDUAL	signature-drift
+ProbMethodAlterationOQ03	GREEN	
 ProbMethodExpectationOQ01	GREEN	
 ProbMethodExpectationOQ04	GREEN	
 ProbMethodSecondMomentOQ01	RESIDUAL	duplicate-decl
