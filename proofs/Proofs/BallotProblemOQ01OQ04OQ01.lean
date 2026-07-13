@@ -78,30 +78,33 @@ theorem chungFellerRot_head_eq_one {l : List ℤ} {n : ℕ}
   set aug := (1 : ℤ) :: l
   set m := rightmostMinPos aug
   have haug_sum : 0 < aug.sum := by
-    simp only [List.sum_cons]
     have := balanced_sum_zero hbal
+    simp only [aug, List.sum_cons, this]
     omega
-  have haug_len : 0 < aug.length := by simp
+  have haug_len : 0 < aug.length := by simp [aug]
   have hgood := goodRotation_at_rightmostMin aug haug_len haug_sum
   -- The first prefix sum is positive → first element > 0
   have hpos : 0 < ((cyclicRotation aug m).take 1).sum :=
     good_rotation_head_pos aug m (rightmostMinPos_lt aug haug_sum) hgood
   -- First element of the rotation is in {1, -1}
-  have hpm : cyclicRotation aug m |>.headI = 1 ∨ cyclicRotation aug m |>.headI = -1 := by
+  have hpm : (cyclicRotation aug m).headI = 1 ∨ (cyclicRotation aug m).headI = -1 := by
     have hlen : 0 < (cyclicRotation aug m).length := by
       simp [cyclicRotation, List.length_drop, List.length_append, List.length_take]
       omega
+    have hne : cyclicRotation aug m ≠ [] := List.length_pos_iff_ne_nil.mp hlen
     have hmem : (cyclicRotation aug m).headI ∈ cyclicRotation aug m := by
-      exact List.headI_mem_self (List.length_pos_iff_ne_nil.mp hlen)
-    have : (cyclicRotation aug m).headI ∈ aug := by
-      exact cyclicRotation_mem_kCountedSequence.mp ⟨?_, ?_, ?_⟩ |>.2.2 _ hmem
-      all_goals exact (prepend_mem_kCountedSequence hbal).1
-    exact augmented_pm_one hbal _ (by
-      apply cyclicRotation_mem_kCountedSequence.mp
-      · exact prepend_mem_kCountedSequence hbal
-      · assumption)
+      cases hcr : cyclicRotation aug m with
+      | nil => exact absurd hcr hne
+      | cons x xs => simp
+    have hrotmem := cyclicRotation_mem_kCountedSequence
+      (prepend_mem_kCountedSequence hbal) m
+      (le_of_lt (rightmostMinPos_lt aug haug_sum))
+    have hx := hrotmem.2.2 _ hmem
+    simpa using hx
   -- Combining positivity with {1,-1} membership
-  simp only [List.headI_take_one] at hpos
+  have htake1 : ((cyclicRotation aug m).take 1).sum = (cyclicRotation aug m).headI := by
+    cases cyclicRotation aug m <;> simp
+  rw [htake1] at hpos
   rcases hpm with h | h <;> simp [h] at hpos ⊢
 
 /- ## Part III: The Tail is a Dyck Path -/
@@ -117,7 +120,7 @@ theorem chungFellerRot_tail_nonneg_prefixSum {l : List ℤ} {n : ℕ}
   set m := rightmostMinPos aug
   set rot := cyclicRotation aug m
   have haug_sum : 0 < aug.sum := by
-    simp [List.sum_cons, balanced_sum_zero hbal]
+    simp [aug, List.sum_cons, balanced_sum_zero hbal]
   have haug_len : 0 < aug.length := List.length_pos_of_ne_nil (by simp)
   have hm_lt : m < aug.length := rightmostMinPos_lt aug haug_sum
   have hgood := goodRotation_at_rightmostMin aug haug_len haug_sum

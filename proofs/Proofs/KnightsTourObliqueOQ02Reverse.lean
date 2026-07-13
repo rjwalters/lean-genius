@@ -96,7 +96,7 @@ theorem getMoveVector_swap (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
   have h12 : isKnightOffset ((s2.1 : Int) - s1.1) ((s2.2 : Int) - s1.2) = true := by
     simpa only [knightGraph, SimpleGraph.Adj, knightAdj] using h
   have h21 : isKnightOffset ((s1.1 : Int) - s2.1) ((s1.2 : Int) - s2.2) = true := by
-    simpa only [knightGraph, SimpleGraph.Adj, knightAdj] using knightGraph.symm h
+    simpa only [knightGraph, SimpleGraph.Adj, knightAdj] using knightGraph.adj_symm h
   simp only [getMoveVector]
   rw [dif_pos h12, dif_pos h21]
   simp only [MoveVector.neg]
@@ -127,7 +127,7 @@ theorem isKnightPath_reverse {l : List Square} (h : isKnightPath l) :
   -- Keeping the index as `l.length - 1 - (i + 1)` (rather than the equivalent
   -- `l.length - 2 - i`) leaves the minuend `l.length` visible to `omega`.
   rw [List.getElem_reverse, List.getElem_reverse]
-  convert knightGraph.symm key using 2 <;> · congr 1; omega
+  convert knightGraph.adj_symm key using 2 <;> · congr 1; omega
 
 /-- The reversed square list of a tour is nonempty. -/
 theorem reverseTour_nonempty (t : ClosedTour) : t.squares.reverse ≠ [] := by
@@ -139,7 +139,7 @@ theorem reverseTour_closes (t : ClosedTour) :
     knightGraph.Adj (t.squares.reverse.getLast (reverseTour_nonempty t))
                     (t.squares.reverse.head (reverseTour_nonempty t)) := by
   rw [List.getLast_reverse, List.head_reverse]
-  exact knightGraph.symm t.closes
+  exact knightGraph.adj_symm t.closes
 
 /-- **Reversal of a closed tour** (Target D infrastructure): visit the same
     squares in the opposite order. -/

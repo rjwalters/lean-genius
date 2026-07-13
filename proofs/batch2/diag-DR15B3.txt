@@ -1,0 +1,109 @@
+===== ArsinhLogFormulaOQ01OQ01OQ02
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ02.lean:76:2: linarith failed to find a contradiction
+case e'_4
+t : ℝ
+error: Proofs/ArsinhLogFormulaOQ01OQ01OQ02.lean:132:2: linarith failed to find a contradiction
+case e'_4
+t : ℝ
+===== BallotProblemOQ01OQ04
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:81:4: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:84:39: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:13: type expected, got
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:84:39: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:13: type expected, got
+  ((cyclicRotation aug m).headI : ℤ)
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:13: type expected, got
+  ((cyclicRotation aug m).headI : ℤ)
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:43: unexpected token '='; expected command
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:43: unexpected token '='; expected command
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:120:4: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:130:4: `simp` made no progress
+===== BallotProblemOQ01OQ04OQ01
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:81:4: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:84:39: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:13: type expected, got
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:84:39: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:13: type expected, got
+  ((cyclicRotation aug m).headI : ℤ)
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:13: type expected, got
+  ((cyclicRotation aug m).headI : ℤ)
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:43: unexpected token '='; expected command
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:90:43: unexpected token '='; expected command
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:120:4: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:130:4: `simp` made no progress
+===== CombinationsFormulaOQ02
+error: Proofs/CombinationsFormulaOQ02.lean:64:41: unsolved goals
+⊢ Nat.choose 10 5 - Nat.choose 10 6 = 42
+warning: Proofs/CombinationsFormulaOQ02.lean:80:15: `Nat.succ_mul_choose_eq` has been deprecated: Use `Nat.add_one_mul_choose_eq` instead
+error: Proofs/CombinationsFormulaOQ02.lean:89:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (2 * n + 1).choose (2 * n + 1 - (n + 1))
+in the target expression
+error: Proofs/CombinationsFormulaOQ02.lean:98:4: linarith failed to find a contradiction
+case succ.h1
+n : ℕ
+error: Proofs/CombinationsFormulaOQ02.lean:113:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== KnightsTourObliqueOQ02Order16
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:99:63: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:130:10: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:142:8: Function expected at
+  knightGraph.symm
+but this term has type
+===== KnightsTourObliqueOQ02Palindrome
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:99:63: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:130:10: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:142:8: Function expected at
+  knightGraph.symm
+but this term has type
+===== KnightsTourObliqueOQ02Reverse
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:99:63: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:130:10: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:142:8: Function expected at
+  knightGraph.symm
+but this term has type
+===== KnightsTourObliqueOQ02ReverseCount
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:99:63: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:130:10: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:142:8: Function expected at
+  knightGraph.symm
+but this term has type
+===== KnightsTourObliqueOQ03
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:99:63: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:130:10: Function expected at
+  knightGraph.symm
+but this term has type
+error: Proofs/KnightsTourObliqueOQ02Reverse.lean:142:8: Function expected at
+  knightGraph.symm
+but this term has type
+===== SophieGermainOQ01
+error: Proofs/SophieGermainOQ01.lean:67:64: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+error: Proofs/SophieGermainOQ01.lean:68:64: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+error: Proofs/SophieGermainOQ01.lean:69:64: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+error: Proofs/SophieGermainOQ01.lean:70:64: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information

@@ -147,9 +147,9 @@ ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
 ArithmeticSeriesOQ02OQ02OQ03OQ01	RESIDUAL	proof-drift
 ArithmeticSeriesOQ02OQ03	RESIDUAL	unknown-const:Nat.choose_two_middle
 ArithmeticSeriesOQ02OQ04OQ01	RESIDUAL	type-mismatch
-ArsinhLogFormulaOQ01OQ01OQ01	RESIDUAL	proof-drift
+ArsinhLogFormulaOQ01OQ01OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01OQ01	RESIDUAL	rewrite-drift
-ArsinhLogFormulaOQ01OQ01OQ02	RESIDUAL	proof-drift
+ArsinhLogFormulaOQ01OQ01OQ02	GREEN	
 BallVolumeSurfaceDuality	GREEN	
 BallotProblem	RESIDUAL	signature-drift
 BallotProblemOQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
@@ -159,7 +159,7 @@ BallotProblemOQ01OQ02OQ01OQ02	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ04	RESIDUAL	proof-drift
 BallotProblemOQ01OQ04	RESIDUAL	proof-drift
-BallotProblemOQ01OQ04Core	RESIDUAL	proof-drift
+BallotProblemOQ01OQ04Core	GREEN	
 BallotProblemOQ01OQ04OQ01	RESIDUAL	proof-drift
 BallotProblemOQ02OQ02	RESIDUAL	signature-drift
 BallotProblemOQ02OQ02OQ05	RESIDUAL	signature-drift
@@ -243,7 +243,7 @@ BinomialTheoremOQ04	RESIDUAL	proof-drift
 BirchSwinnertonDyer	GREEN	
 BirchSwinnertonDyerOQ01	GREEN	
 BirchSwinnertonDyerOQ06	GREEN	
-BirchSwinnertonDyerOQ06OQ02	RESIDUAL	proof-drift
+BirchSwinnertonDyerOQ06OQ02	GREEN	
 BirthdayProblem	GREEN	
 BirthdayProblemOQ01	RESIDUAL	proof-drift
 BirthdayProblemOQ01OQ01	RESIDUAL	parse-error
@@ -415,7 +415,7 @@ CayleysTheoremOQ01OQ01OQ02OQ02OQ01	GREEN
 CayleysTheoremOQ01OQ02OQ02	RESIDUAL	type-mismatch
 CentralLimitTheorem	RESIDUAL	unknown-const:tendsto_one_plus_div_pow_exp
 CentralLimitTheoremOQ01OQ01	GREEN	
-CentralLimitTheoremOQ01OQ01OQ04	RESIDUAL	proof-drift
+CentralLimitTheoremOQ01OQ01OQ04	GREEN	
 CentralLimitTheoremOQ01OQ02OQ01OQ01	RESIDUAL	instance-synth
 CentralLimitTheoremOQ01OQ02OQ01OQ03	RESIDUAL	type-mismatch
 CentralLimitTheoremOQ01OQ03	GREEN	
@@ -746,7 +746,7 @@ Erdos1056Aristotle	RESIDUAL	type-mismatch
 Erdos1056Problem	RESIDUAL	instance-synth
 Erdos1057Problem	RESIDUAL	type-mismatch
 Erdos1059OQ02OQ01	RESIDUAL	unknown-const:Nat.factorial_le_factorial
-Erdos1059OQ03	RESIDUAL	proof-drift
+Erdos1059OQ03	GREEN	
 Erdos1059OQ04	RESIDUAL	unknown-const:AllFactorialSubtractionsComposite
 Erdos1059Problem	GREEN	
 Erdos105OQ05	RESIDUAL	type-mismatch
@@ -1055,7 +1055,7 @@ Erdos25Abel	RESIDUAL	proof-drift
 Erdos25LogDensity	RESIDUAL	type-mismatch
 Erdos25Problem	RESIDUAL	type-mismatch
 Erdos260Aristotle	RESIDUAL	unknown-const:Real.tendsto_log_nat_atTop
-Erdos261Problem	RESIDUAL	proof-drift
+Erdos261Problem	GREEN	
 Erdos262Problem	GREEN	
 Erdos263Aristotle	RESIDUAL	proof-drift
 Erdos263Problem	RESIDUAL	proof-drift
@@ -2159,12 +2159,12 @@ IsoperimetricTheoremOQ02	GREEN
 KnightsTourOblique	GREEN	
 KnightsTourObliqueOQ01	GREEN	
 KnightsTourObliqueOQ01OQ02	GREEN	
-KnightsTourObliqueOQ02	RESIDUAL	proof-drift
-KnightsTourObliqueOQ02Order16	RESIDUAL	proof-drift
-KnightsTourObliqueOQ02Palindrome	RESIDUAL	proof-drift
-KnightsTourObliqueOQ02Reverse	RESIDUAL	proof-drift
-KnightsTourObliqueOQ02ReverseCount	RESIDUAL	proof-drift
-KnightsTourObliqueOQ03	RESIDUAL	proof-drift
+KnightsTourObliqueOQ02	GREEN	
+KnightsTourObliqueOQ02Order16	GREEN	
+KnightsTourObliqueOQ02Palindrome	GREEN	
+KnightsTourObliqueOQ02Reverse	GREEN	
+KnightsTourObliqueOQ02ReverseCount	GREEN	
+KnightsTourObliqueOQ03	GREEN	
 Konigsberg	RESIDUAL	unknown-const:Nat.odd_iff_not_even
 KonigsbergOQ01	GREEN	
 KonigsbergOQ01OQ02	RESIDUAL	unknown-const:Finset.card_eq_sum_ones.symm
@@ -2344,7 +2344,7 @@ PuiseuxTheoremOQ03	RESIDUAL	type-mismatch
 PythagoreanTheorem	RESIDUAL	type-mismatch
 PythagoreanTheoremOQ01	RESIDUAL	rewrite-drift
 PythagoreanTheoremOQ03	GREEN	
-PythagoreanTheoremOQ05	RESIDUAL	proof-drift
+PythagoreanTheoremOQ05	GREEN	
 PythagoreanTriplesOQ02	RESIDUAL	proof-drift
 PythagoreanTriplesOQ04OQ01OQ01	RESIDUAL	unknown-const:even_zero
 QuadraticReciprocityAlgorithmOQ03	RESIDUAL	rewrite-drift
@@ -2434,8 +2434,8 @@ SolutionOfCubicOQ03OQ03	RESIDUAL	proof-drift
 SolutionOfCubicOQ03OQ05	RESIDUAL	proof-drift
 SolutionOfCubicOQ05	GREEN	
 SophieGermain	GREEN	
-SophieGermainOQ01	RESIDUAL	proof-drift
-SophieGermainOQ02	RESIDUAL	proof-drift
+SophieGermainOQ01	GREEN	
+SophieGermainOQ02	GREEN	
 SpectralTraceDetEigenvaluesOQ01OQ01	RESIDUAL	rewrite-drift
 SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02	RESIDUAL	rewrite-drift
 SpectralTraceDetEigenvaluesOQ02	RESIDUAL	rewrite-drift
@@ -2613,7 +2613,7 @@ ThreeSquaresSufficiencyCorrected	GREEN
 ThreeSquaresWitnessObstruction	GREEN	
 ThreeSubgroupsLemmaOQ0101	RESIDUAL	elab-drift
 ThreeSubgroupsLemmaOQ01OQ01	RESIDUAL	unknown-const:G
-TractatusQuantifiers	RESIDUAL	proof-drift
+TractatusQuantifiers	GREEN	
 TriangleAngleSum	RESIDUAL	slow-timeout
 TriangleAngleSumOQ02	RESIDUAL	type-mismatch
 TriangleInequality	GREEN	

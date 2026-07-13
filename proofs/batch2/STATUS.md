@@ -1,3 +1,56 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 5B, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 5B NUMBERS (#38065, proof-drift class)
+
+Ledger `verify-results.tsv` (parallel to increment 5A's type-mismatch work;
+5B edits ONLY proof-drift rows):
+
+- Waves DR15B1 (81 targets, +36), DR15B2 (81 targets, +28 incl. 3 exit-code
+  re-verifies), DR15B3 (hub follow-ups). proof-drift 399 -> see final PR
+  numbers. All flips verified in-container (lake exit code or runner5 mtime).
+
+## Increment 5B recipes (proof-drift, NEW)
+
+| pattern | fix | notes |
+|---|---|---|
+| `convert X using N` + trailing `ring`/`norm_num` finisher errors (`ring_nf` made no progress / No goals / unsolved instance goal) | `convert X using N <;> (first \| rfl \| ring1 \| (push_cast; ring1) \| (field_simp; ring1) \| (norm_num; done))` | v4.31 convert surfaces instance-congruence goals (`instAddCommMonoid = ...toAddCommMonoid`) that `rfl` closes; ~35 sites swept |
+| `ring` inside `first`-dispatch "succeeds" but leaves goal | use `ring1` | v4.31 `ring` falls back to ring_nf and SUCCEEDS on progress without closing, committing the `first` alternative; `norm_num` same — use `(norm_num; done)` |
+| omega fails with "counterexample may satisfy b >= 0" and goal has `(fun n => ...) i` | `beta_reduce; omega` | v4.31 omega does not beta-reduce redexes (Erdos261 x6) |
+| omega fails after `unfold f` when a hypothesis still mentions `f` | drop the unfold; close by `le_trans`/`calc` on the folded spelling | unfold rewrites only the goal -> hypothesis and goal atoms diverge (AngleTrisectionOQ05OQ02) |
+| "No goals to be solved" at a tactic | delete the dead tactic (whole line or `; tail`) | v4.26-era finisher now dead because the previous tactic closes the goal; 47 lines + 38 tails swept from freshest diags; sort sites bottom-up and NEVER run the sweep twice against the same diag (positions shift) |
+| `unknown tactic` (interval_cases etc.) with narrow imports | umbrella `import Mathlib` | tactic import loss; 21 files |
+| unknown ident bound as `x : Sort u_1` in diag (e.g. `ContDiff : x`) | umbrella `import Mathlib` | autoImplicit captured a constant lost to import reorg (BuffonsNoodle) |
+| Fin-arithmetic `ext <;> simp <;> omega` D4/board case bashes | `revert s; fin_cases k <;> cases b <;> decide` | KnightsTourOblique applyD4_inv_left + OQ02 reflect_rotateN_conjugate |
+| `(k := 1)` instantiations leave `-(1:N):Z` casts that simp misses | add `Nat.cast_one` (and `one_mul`) to the `simp only` set | BallotProblemOQ01OQ04Core |
+| `interval_cases p` errors `unsupported type Nat.Prime 0` / small counting facts | `decide` (works even on `noncomputable` Finset.filter defs — kernel reduces classical instances) | SophieGermainOQ02 |
+| `decide` fails on `forall n, a < n -> n < b -> ¬n.Prime` | `intro n h1 h2; interval_cases n <;> norm_num` | norm_num prime extension (Erdos1059OQ03) |
+| `Odd.mod_cast_eq` | `Nat.odd_iff.mp` | removed |
+| `Finset.eq_empty_of_forall_not_mem` | `..._notMem` | notMem wave |
+| `Finset.Ico_succ_right` + `Finset.card_Ico` card computations | `Nat.card_Icc` directly | Ico_succ_right removed; card_Ico now Nat.card_Ico |
+| `div_lt_div_right (h).mpr` | `div_lt_div_iff_of_pos_right` | confirms batch-1 map entry |
+| `NormedSpace.exp K x` | `NormedSpace.exp x` | confirms 7d |
+| simp-closing catalan/choose numerals (`simp [catalan]; norm_num` leaves `Nat.choose 4 2 - 4 = 2`) | `decide` | norm_num no longer evaluates choose after simp |
+
+## Increment 5B verification-infrastructure notes (IMPORTANT)
+
+- **virtiofs staleness (Docker Desktop + /Volumes/Stripe worktree):** host-side
+  file edits are often served STALE (old size => truncated tail) inside a
+  running container, deterministically, for minutes. Symptoms: phantom
+  truncated-identifier parse errors (`euc`, `CircumferenceViaDifferent`,
+  "unexpected end of input" mid-file). Neither `cp+mv` (new inode) nor waiting
+  fixes it reliably. **Recipe: `docker restart <container>` after every host
+  edit batch, before building.** (Restart of a `sleep infinity` container is ~3s.)
+- **runner5 mtime-FAIL can be FALSE** if a lean file's mtime was refreshed
+  (e.g. by the cp+mv cache workaround) after its olean was built: lake 5's
+  hash check skips the rebuild, olean stays older, mtime says FAIL. Re-verify
+  such rows by `touch file && lake build` exit code before flipping/reverting.
+- **Interactive single-file iteration** is fast with a persistent container
+  (`docker run -d ... sleep infinity`, then `docker exec ... lake build
+  Proofs.X`): ~2.5s per cached single-file build. Use unique scratch file
+  names per iteration (stale-cache again).
+- extract_diags.py/dr7_noprogress.py hardcode the increment-2 worktree path —
+  run patched copies (sed the os.chdir) for other worktrees.
+
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 3, #38065, 2026-07-12)
 
 ## DOCTOR INCREMENT 3 NUMBERS (#38065)
