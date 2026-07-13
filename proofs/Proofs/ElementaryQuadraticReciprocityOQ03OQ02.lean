@@ -1210,4 +1210,45 @@ theorem kronecker_neg_one_right (a : ℤ) :
   · rw [if_pos h, kroneckerNeg1_nonneg a h]
   · rw [if_neg (not_le.mpr h), kroneckerNeg1_neg a h]
 
+-- ============================================================
+-- Section 15: The numerator character is completely multiplicative
+-- ============================================================
+
+/-- **Complete numerator multiplicativity at odd moduli.**  For odd positive `n`,
+`(ab/n) = (a/n)(b/n)` with *no* nonzero hypothesis on `a`, `b` — unlike the general
+`kronecker_mul_left`, which needs `a·b ≠ 0`.  At odd moduli the symbol is the Jacobi
+symbol, and `jacobiSym.mul_left` is completely multiplicative (it also holds when a
+factor is `0`, both sides being `0`).  This is the exact "multiplicativity axiom"
+that, with `kronecker_one_left`, exhibits `(·/n)` as a *completely* multiplicative
+character in the numerator — the object the Gauss-sum route consumes. -/
+theorem kronecker_mul_left_odd (a b : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (a * b) (n : ℤ) = kronecker a (n : ℤ) * kronecker b (n : ℤ) := by
+  rw [kronecker_eq_jacobi (a * b) n hn hno, kronecker_eq_jacobi a n hn hno,
+    kronecker_eq_jacobi b n hn hno, jacobiSym.mul_left]
+
+/-- **The numerator character `(·/n)` as a monoid homomorphism `(ℤ, ·) →* (ℤ, ·)`.**
+For odd positive `n`, bundling `kronecker_one_left` (`(1/n) = 1`) and complete
+numerator multiplicativity (`kronecker_mul_left_odd`) packages the Kronecker symbol
+`a ↦ (a/n)` as a genuine `MonoidHom`.  Together with `kronecker_periodic_numerator`
+(period `n`) and `kronecker_trichotomy` (`{−1,0,1}`-valued), this is the honest
+algebraic statement that `(·/n)` is a real (quadratic) Dirichlet character mod `n`. -/
+noncomputable def kroneckerNumeratorHom (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    ℤ →* ℤ where
+  toFun a := kronecker a (n : ℤ)
+  map_one' := kronecker_one_left (n : ℤ)
+  map_mul' a b := kronecker_mul_left_odd a b n hn hno
+
+@[simp] theorem kroneckerNumeratorHom_apply (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)
+    (a : ℤ) : kroneckerNumeratorHom n hn hno a = kronecker a (n : ℤ) := rfl
+
+/-- **Numerator power law.**  For odd positive `n`, `(aᵏ/n) = (a/n)ᵏ` — a direct
+consequence of the completely multiplicative structure (`map_pow` of
+`kroneckerNumeratorHom`).  In particular any square numerator has symbol `0` or `1`
+(a square is a square residue wherever it is coprime), recovering the quadratic
+character's order-two behaviour on the numerator. -/
+theorem kronecker_pow_left_odd (a : ℤ) (k : ℕ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (a ^ k) (n : ℤ) = (kronecker a (n : ℤ)) ^ k := by
+  simpa using map_pow (kroneckerNumeratorHom n hn hno) a k
+
+
 end KroneckerSymbol
