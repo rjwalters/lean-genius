@@ -73,7 +73,7 @@ theorem isSolvable_of_card_eq_prime_mul_prime {G : Type*} [Group G] [Finite G]
   have hidx : (↑Q : Subgroup G).index = p := by
     have hh := (↑Q : Subgroup G).index_mul_card
     rw [hQcard, hcard] at hh
-    exact Nat.eq_of_mul_eq_mul_right hq.out.pos (by rw [hh]; ring)
+    exact Nat.eq_of_mul_eq_mul_right hq.out.pos hh
   -- Sylow III: `n_q ∣ p` and `n_q ≡ 1 (mod q)` force `n_q = 1`.
   have hsylow_one : Nat.card (Sylow q G) = 1 := by
     have h_mod := card_sylow_modEq_one q G
@@ -118,6 +118,7 @@ strict added reach of the solvability result over the cyclic one. -/
 example {G : Type*} [Group G] [Finite G] (hcard : Nat.card G = 21) : IsSolvable G := by
   haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
   haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
-  exact isSolvable_of_card_eq_prime_mul_prime (by norm_num) (hcard.trans (by norm_num))
+  exact isSolvable_of_card_eq_prime_mul_prime (p := 3) (q := 7) (by norm_num)
+    (hcard.trans (by norm_num))
 
 end AbelRuffiniSylowElim
