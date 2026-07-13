@@ -971,6 +971,57 @@ theorem hasKst_two_iff_hasK2t (G : SimpleGraph V) (t : ℕ) :
     · exact (hadj v hv).1
     · exact (hadj v hv).2
 
+/-- **`HasKst` is antitone in the common-neighbour count `t`.**  Shrinking the required
+number of common neighbours cannot destroy a `K_{s,t}`: the same witness `⟨S, T⟩` serves,
+its cardinality bound merely weakened `t ↦ t'` (`le_trans`).  The `s`-general analogue of
+`hasK2t_mono`. -/
+theorem hasKst_mono_t (G : SimpleGraph V) {s t t' : ℕ} (htt' : t' ≤ t)
+    (h : HasKst G s t) : HasKst G s t' := by
+  obtain ⟨S, T, hS, hT, hadj⟩ := h
+  exact ⟨S, T, hS, le_trans htt' hT, hadj⟩
+
+/-- **`HasKst` is antitone in the part size `s`.**  Shrinking the `s`-side cannot destroy a
+`K_{s,t}`: any `s'`-subset `S' ⊆ S` (`s' ≤ s = |S|`) keeps all of `T` as common neighbours,
+since fewer vertices impose fewer adjacency constraints.  Uses `Finset.exists_subset_card_eq`
+to extract `S'`; the adjacency clause restricts along `S' ⊆ S`. -/
+theorem hasKst_mono_s (G : SimpleGraph V) {s s' t : ℕ} (hss' : s' ≤ s)
+    (h : HasKst G s t) : HasKst G s' t := by
+  obtain ⟨S, T, hS, hT, hadj⟩ := h
+  obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_eq (hss'.trans_eq hS.symm)
+  exact ⟨S', T, hS'card, hT, fun a ha v hv => hadj a (hS'sub ha) v hv⟩
+
+/-- **`HasKst` is monotone in both indices.**  `K_{s',t'} ⊆ K_{s,t}` whenever `s' ≤ s` and
+`t' ≤ t`, so a graph containing the larger complete bipartite graph contains the smaller.
+Compose `hasKst_mono_s` and `hasKst_mono_t`. -/
+theorem hasKst_mono (G : SimpleGraph V) {s s' t t' : ℕ} (hss' : s' ≤ s) (htt' : t' ≤ t)
+    (h : HasKst G s t) : HasKst G s' t' :=
+  hasKst_mono_t G htt' (hasKst_mono_s G hss' h)
+
+/-- **`K_{s,t}`-freeness nests.**  A graph free of the smaller `K_{s',t'}` (`s' ≤ s`,
+`t' ≤ t`) is automatically free of the larger `K_{s,t}` — the contrapositive of
+`hasKst_mono`.  So the `K_{s,t}`-free graph classes form a lattice-decreasing family,
+`Free(s',t') ⊆ Free(s,t)`. -/
+theorem not_hasKst_mono (G : SimpleGraph V) {s s' t t' : ℕ} (hss' : s' ≤ s) (htt' : t' ≤ t)
+    (h : ¬ HasKst G s' t') : ¬ HasKst G s t :=
+  fun hc => h (hasKst_mono G hss' htt' hc)
+
+/-- **Symmetry of `K_{s,t}` containment: `K_{s,t} ≅ K_{t,s}`.**  A graph contains `K_{s,t}`
+iff it contains `K_{t,s}`: the complete bipartite graph is symmetric under swapping its two
+parts.  Given an `s`-set `S` with `≥ t` common neighbours `T`, cut `T` down to a `t`-set
+`T'` (`Finset.exists_subset_card_eq`); then `T'` is an `t`-set whose `s` common neighbours
+include all of `S` (every `v ∈ S` is adjacent to every `a ∈ T' ⊆ T`, using `G.Adj` symmetry).
+Both directions are the same argument with `s, t` swapped.  A consequence:
+`ex(n; K_{s,t}) = ex(n; K_{t,s})`, so the KST forcing applies from either side. -/
+theorem hasKst_comm (G : SimpleGraph V) (s t : ℕ) :
+    HasKst G s t ↔ HasKst G t s := by
+  constructor
+  · rintro ⟨S, T, hS, hT, hadj⟩
+    obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hT
+    exact ⟨T', S, hT'card, hS.ge, fun a ha v hv => (hadj v hv a (hT'sub ha)).symm⟩
+  · rintro ⟨S, T, hS, hT, hadj⟩
+    obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hT
+    exact ⟨T', S, hT'card, hS.ge, fun a ha v hv => (hadj v hv a (hT'sub ha)).symm⟩
+
 /-- **Codegree bound from `K_{s,t}`-freeness.**  In a `K_{s,t}`-free graph any
 `s`-set `S` of vertices has fewer than `t` common neighbours: otherwise those
 `≥ t` common neighbours would witness a `K_{s,t}`.  The `s`-general analogue of
