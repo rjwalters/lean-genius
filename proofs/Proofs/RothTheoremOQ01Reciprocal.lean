@@ -345,6 +345,67 @@ theorem exists_threeAP_of_finite_recip_sum_gt
     · have h : c + 2 * (b - c) = a := by omega
       rw [h]; exact Finset.mem_coe.mp ha
 
+/-
+## Dilation covariance of the reciprocal bound
+
+The 3-AP-free property is preserved by the dilation `x ↦ k·x` (`k ≠ 0`): scaling every
+element by a common factor cannot create a 3-term progression, because `k·a, k·b, k·c`
+form one iff `a, b, c` do (`k` cancels).  Under the same dilation the reciprocal sum
+scales by *exactly* `1/k`, so the dilate `k·A` obeys the **sharper** bound
+`∑' 1/(k·a) ≤ recipBound/k`.  This exhibits the universal reciprocal bound as
+dilation-covariant, and shows the family of dilates `k·A` (`k ≥ 2`) satisfies strictly
+smaller reciprocal bounds than the uniform constant — structural information orthogonal
+to the (subset-)monotone universal bound, which only ever gives the single constant
+`recipBound`.
+-/
+
+/-- **Dilation preserves 3-AP-freeness.**  For `k ≠ 0` the image of a 3-AP-free set under
+`x ↦ k·x` is again 3-AP-free: `k·a + k·c = 2·k·b ⟺ a + c = 2b`, so a progression in the
+dilate forces one in the original. -/
+theorem threeAPFree_nat_mul_image {k : ℕ} (hk : k ≠ 0) {A : Set ℕ} (hA : ThreeAPFree A) :
+    ThreeAPFree ((fun a => k * a) '' A) := by
+  rw [threeAPFree_iff_eq_right]
+  rintro _ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩ _ ⟨c, hc, rfl⟩ hsum
+  have hac : a + c = b + b := by
+    have hmul : k * (a + c) = k * (b + b) := by rw [Nat.mul_add, Nat.mul_add]; exact hsum
+    exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hk) hmul
+  have hEq : a = c := threeAPFree_iff_eq_right.mp hA ha hb hc hac
+  rw [hEq]
+
+/-- `0 ∉ k·A` when `0 ∉ A` and `k ≠ 0` (the only preimage of `0` under `x ↦ k·x` is `0`). -/
+theorem zero_notMem_nat_mul_image {k : ℕ} (hk : k ≠ 0) {A : Set ℕ} (hA0 : 0 ∉ A) :
+    (0 : ℕ) ∉ (fun a => k * a) '' A := by
+  rintro ⟨a, ha, h0⟩
+  have ha0 : a = 0 := by
+    rcases Nat.mul_eq_zero.mp h0 with hk0 | ha0
+    · exact absurd hk0 hk
+    · exact ha0
+  exact hA0 (ha0 ▸ ha)
+
+/-- **Reciprocal-sum covariance under dilation.**  For `k ≠ 0` and any `A ⊆ ℕ`, the
+reciprocal sum of the dilate `k·A` is exactly `1/k` times that of `A`:
+`∑'_{x ∈ k·A} 1/x = (1/k)·∑'_{a ∈ A} 1/a`. -/
+theorem dilate_tsum_reciprocal_eq {k : ℕ} (hk : k ≠ 0) (A : Set ℕ) :
+    ∑' x : ((fun a => k * a) '' A), (1 : ℝ) / (x : ℝ)
+      = (1 / (k : ℝ)) * ∑' a : A, (1 : ℝ) / (a : ℝ) := by
+  have hinj : Function.Injective (fun a : ℕ => k * a) :=
+    fun a b h => Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hk) h
+  let e := Equiv.Set.image (fun a : ℕ => k * a) A hinj
+  rw [← Equiv.tsum_eq e (fun x : ((fun a => k * a) '' A) => (1 : ℝ) / (x : ℝ)),
+    ← tsum_mul_left]
+  refine tsum_congr (fun a => ?_)
+  have hcoe : ((e a : ((fun a => k * a) '' A)) : ℕ) = k * (a : ℕ) := rfl
+  rw [hcoe, Nat.cast_mul, div_mul_div_comm, one_mul]
+
+/-- **Sharper (dilation-covariant) reciprocal bound.**  A 3-AP-free set dilated by `k ≥ 1`
+obeys `∑'_{x ∈ k·A} 1/x ≤ recipBound / k` — strictly smaller than the uniform constant
+`recipBound` for `k ≥ 2`.  Combines dilation covariance with the universal bound on `A`. -/
+theorem dilate_tsum_reciprocal_le {k : ℕ} (hk : k ≠ 0) {A : Set ℕ}
+    (hA : ThreeAPFree A) (hA0 : 0 ∉ A) :
+    ∑' x : ((fun a => k * a) '' A), (1 : ℝ) / (x : ℝ) ≤ (1 / (k : ℝ)) * recipBound := by
+  rw [dilate_tsum_reciprocal_eq hk A]
+  exact mul_le_mul_of_nonneg_left (threeAPFree_tsum_reciprocal_le hA hA0) (by positivity)
+
 #check @threeAPFree_summable_reciprocal
 #check @finite_recip_sum_le
 #check @fiber_sum_le
@@ -359,5 +420,7 @@ theorem exists_threeAP_of_finite_recip_sum_gt
 #print axioms exists_nontrivial_threeAP_of_not_summable_reciprocal
 #print axioms threeAPFree_tsum_reciprocal_le
 #print axioms exists_universal_recip_bound
+#print axioms threeAPFree_nat_mul_image
+#print axioms dilate_tsum_reciprocal_le
 
 end RothTheoremOQ01Reciprocal
