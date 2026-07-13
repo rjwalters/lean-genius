@@ -1,7 +1,4 @@
-import Mathlib.GroupTheory.Sylow
-import Mathlib.GroupTheory.Solvable
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Hall's Theorem: Hall Subgroups in Solvable Groups
@@ -26,6 +23,8 @@ for every Hall divisor of |G|.
 | `hall_trivial_top` | G itself (d=\|G\|) always exists | Proved |
 | `hall_prime_div` | For p prime dividing \|G\|: subgroup of order p (Cauchy) | Proved |
 | `hall_cyclic` | Cyclic G: subgroup of every divisor order | Proved |
+| `isHallDivisor_prime_pow` | Hall divisors of `pⁿ` are only `1` and `pⁿ` | Proved |
+| `converse_lagrange_pgroup` | p-group G: subgroup of *every* divisor order | Proved |
 | `hall_solvable` | Solvable G: Hall subgroup for every Hall divisor | Axiom |
 | `hall_solvability_necessary` | Non-solvable A₅ lacks subgroup of order 15 | Proved |
 
@@ -79,6 +78,38 @@ theorem isHallDivisor_of_prime {p n : ℕ} (hp : p.Prime) (hdvd : p ∣ n)
   ⟨hdvd, hp.coprime_iff_not_dvd.mpr fun h =>
     hcop (Nat.mul_div_cancel' hdvd ▸ Nat.mul_dvd_mul_left p h)⟩
 
+/-- **Prime powers have only trivial Hall divisors.**  If `d` is a Hall divisor of a prime
+    power `p^n` then `d = 1` or `d = p^n` — there is *no* proper nontrivial Hall divisor.
+    Indeed `d ∣ p^n` forces `d = p^m` with `m ≤ n`, and then the complementary factor is
+    `p^(n-m)`; coprimality `gcd(p^m, p^(n-m)) = 1` fails whenever both `m > 0` and `n-m > 0`
+    (their gcd is divisible by `p`), so one of the exponents must vanish.  This is the
+    number-theoretic shadow of the group fact `converse_lagrange_pgroup`: a `p`-group's
+    subgroup lattice is *rich* (a subgroup of every divisor order) precisely where its Hall
+    structure is *trivial* — the two extremes coincide on prime-power orders. -/
+theorem isHallDivisor_prime_pow {p n d : ℕ} (hp : p.Prime)
+    (hd : IsHallDivisor d (p ^ n)) : d = 1 ∨ d = p ^ n := by
+  obtain ⟨hdvd, hcop⟩ := hd
+  obtain ⟨m, hm, rfl⟩ := (Nat.dvd_prime_pow hp).mp hdvd
+  rw [Nat.pow_div hm hp.pos] at hcop
+  have hcop' : Nat.gcd (p ^ m) (p ^ (n - m)) = 1 := hcop
+  rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+  · exact Or.inl (by rw [hm0, pow_zero])
+  · refine Or.inr ?_
+    have hnm : n - m = 0 := by
+      by_contra hne
+      have h1 : p ∣ p ^ m := dvd_pow_self p hmpos.ne'
+      have h2 : p ∣ p ^ (n - m) := dvd_pow_self p hne
+      exact hp.ne_one (Nat.dvd_one.mp (hcop' ▸ Nat.dvd_gcd h1 h2))
+    have hnm' : n = m := by omega
+    rw [hnm']
+
+/-- Concrete instance of `isHallDivisor_prime_pow`: the Hall divisors of `8 = 2³` are only
+    `1` and `8`.  In particular `2` and `4` — which *are* orders of subgroups of any group of
+    order `8` — are **not** Hall divisors, since `gcd(2,4) = 2` and `gcd(4,2) = 2`. -/
+theorem not_isHallDivisor_two_eight : ¬ IsHallDivisor 2 8 := by
+  intro h
+  rcases isHallDivisor_prime_pow (p := 2) (n := 3) (by norm_num) h with h | h <;> norm_num at h
+
 -- ============================================================
 -- Part III: Trivial Hall Subgroups
 -- ============================================================
@@ -86,11 +117,7 @@ theorem isHallDivisor_of_prime {p n : ℕ} (hp : p.Prime) (hdvd : p ∣ n)
 /-- The trivial subgroup ⊥ (order 1) is a Hall subgroup of any group. -/
 theorem hall_trivial_bot [Finite G] : IsHallSubgroup (⊥ : Subgroup G) := by
   unfold IsHallSubgroup
-  have hone : Nat.card (⊥ : Subgroup G) = 1 := by
-    haveI : Unique ↥(⊥ : Subgroup G) :=
-      ⟨⟨⟨1, one_mem ⊥⟩, fun ⟨x, hx⟩ => Subtype.ext (mem_bot.mp hx)⟩⟩
-    exact Nat.card_unique
-  rw [hone]
+  rw [Subgroup.card_bot]
   exact Nat.coprime_one_left _
 
 /-- G itself (index 1) is a Hall subgroup. -/
@@ -106,7 +133,8 @@ theorem hall_trivial_top [Finite G] : IsHallSubgroup (⊤ : Subgroup G) := by
 /-- For any prime p dividing |G|, there is a subgroup of order p (Cauchy). -/
 theorem hall_prime_div [Fintype G] (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintype.card G) :
     ∃ H : Subgroup G, Nat.card H = p := by
-  obtain ⟨x, hx⟩ := exists_prime_orderOf_dvd_card (p := p) hp hdvd
+  haveI : Fact p.Prime := ⟨hp⟩
+  obtain ⟨x, hx⟩ := exists_prime_orderOf_dvd_card p hdvd
   exact ⟨Subgroup.zpowers x, by rw [Nat.card_zpowers, hx]⟩
 
 -- ============================================================
@@ -114,11 +142,12 @@ theorem hall_prime_div [Fintype G] (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintyp
 -- ============================================================
 
 /-- In a cyclic group, the generator raised to the (n/d)-th power has order d. -/
-private lemma orderOf_pow_div_of_dvd {g : G} (d : ℕ) (hd : d ∣ orderOf g) (hd_pos : 0 < d) :
+private lemma orderOf_pow_div_of_dvd [Finite G] {g : G} (d : ℕ) (hd : d ∣ orderOf g)
+    (hd_pos : 0 < d) :
     orderOf (g ^ (orderOf g / d)) = d := by
   rw [orderOf_pow' g (Nat.div_pos (Nat.le_of_dvd (orderOf_pos g) hd) hd_pos).ne',
       Nat.gcd_eq_right (Nat.div_dvd_of_dvd hd)]
-  exact Nat.div_div_self hd (orderOf_pos g).le
+  exact Nat.div_div_self hd (orderOf_pos g).ne'
 
 /-- **Hall's Theorem for Cyclic Groups**: A cyclic group has a subgroup of every
     order dividing |G|. (Every divisor of a cyclic group order is a Hall divisor.) -/
@@ -141,6 +170,41 @@ theorem hall_cyclic_hall_divisor [Fintype G] [IsCyclic G]
   · have : (0 : ℕ) ∣ Fintype.card G := hd.1
     simp at this
   exact hall_cyclic d hd.1 hd_pos
+
+-- ============================================================
+-- Part V-B: The FULL Converse of Lagrange for p-Groups
+-- ============================================================
+
+/-- **The full converse of Lagrange holds for `p`-groups.**  If `G` is a finite `p`-group
+    then *every* divisor `d` of `|G|` — not merely the Hall divisors — is the order of some
+    subgroup.  Since `|G| = p^n` (`IsPGroup.iff_card`), each divisor is a prime power `p^m`
+    with `m ≤ n` (`Nat.dvd_prime_pow`), and Sylow's existence theorem
+    (`Sylow.exists_subgroup_card_pow_prime`) supplies a subgroup of that exact order.
+
+    This is the second classical class — alongside cyclic groups (`hall_cyclic`) — for which
+    the converse of Lagrange holds in full.  The contrast with `isHallDivisor_prime_pow` is
+    the conceptual payoff: a `p`-group has *no* nontrivial Hall divisor, so Hall's theorem
+    says nothing beyond `⊥` and `⊤`, yet the subgroup lattice is maximally rich — a subgroup
+    of every divisor order.  p-groups are thus the extreme *opposite* of the Hall phenomenon:
+    the converse of Lagrange succeeds completely exactly where the coprime-splitting
+    hypothesis is vacuous. -/
+theorem converse_lagrange_pgroup {p : ℕ} [Fact p.Prime] [Finite G]
+    (hG : IsPGroup p G) (d : ℕ) (hd : d ∣ Nat.card G) :
+    ∃ H : Subgroup G, Nat.card H = d := by
+  obtain ⟨n, hn⟩ := IsPGroup.iff_card.mp hG
+  obtain ⟨m, hm, rfl⟩ := (Nat.dvd_prime_pow (Fact.out : p.Prime)).mp (hn ▸ hd)
+  exact Sylow.exists_subgroup_card_pow_prime p (by rw [hn]; exact pow_dvd_pow p hm)
+
+/-- **Every Hall divisor of a `p`-group is realised** — the specialisation of
+    `converse_lagrange_pgroup` to Hall divisors, matching the shape of `hall_cyclic_hall_divisor`
+    and `hall_solvable`.  Vacuous beyond `d = 1` and `d = |G|` by `isHallDivisor_prime_pow`, but
+    recorded so the `p`-group case slots uniformly into the Hall-subgroup framework of this
+    file: cyclic and `p`-group cases both give Hall subgroups with `0` axioms, whereas the
+    general solvable case (`hall_solvable`) needs the deep minimal-normal-subgroup input. -/
+theorem hall_pgroup_hall_divisor {p : ℕ} [Fact p.Prime] [Finite G]
+    (hG : IsPGroup p G) (d : ℕ) (hd : IsHallDivisor d (Nat.card G)) :
+    ∃ H : Subgroup G, Nat.card H = d :=
+  converse_lagrange_pgroup hG d hd.1
 
 -- ============================================================
 -- Part VI: Hall's Theorem for Solvable Groups
@@ -168,10 +232,27 @@ axiom hall_solvable [Fintype G] [IsSolvable G]
 -- ============================================================
 
 /-- Solvability is necessary for Hall's theorem.
-    A₅ (order 60) is not solvable. -/
+    A₅ (order 60) is not solvable.
+
+    Proof: `A₅` is simple, so `IsSimpleGroup.comm_iff_isSolvable` reduces solvability to
+    commutativity.  But `A₅` is non-abelian: commutativity would force the whole group into
+    its centre, whereas `A₅` (having `4 ≤ 5` points) has trivial centre
+    (`Equiv.Perm.alternatingGroup.center_eq_bot`), and `⊥ ≠ ⊤` for the nontrivial simple
+    group `A₅`. -/
 theorem hall_solvability_necessary :
-    ¬ IsSolvable (alternatingGroup (Fin 5)) :=
-  alternatingGroup.not_solvable (Fin 5) (by norm_num)
+    ¬ IsSolvable (alternatingGroup (Fin 5)) := by
+  rw [← IsSimpleGroup.comm_iff_isSolvable]
+  intro hcomm
+  have hbot : Subgroup.center (alternatingGroup (Fin 5)) = ⊥ :=
+    alternatingGroup.center_eq_bot (by norm_num [Nat.card_fin])
+  have htop : Subgroup.center (alternatingGroup (Fin 5)) = ⊤ := by
+    rw [Subgroup.eq_top_iff']
+    intro g
+    rw [Subgroup.mem_center_iff]
+    intro h
+    exact hcomm h g
+  rw [hbot] at htop
+  exact bot_ne_top htop
 
 /-- 15 is a Hall divisor of 60 (= |A₅|): 15 | 60 and gcd(15, 4) = 1. -/
 theorem fifteen_hall_divisor_sixty : IsHallDivisor 15 60 :=
