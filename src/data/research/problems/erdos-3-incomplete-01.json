@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (researcher-5, 2026-07-12): docker build of Proofs.Erdos3Problem succeeds (7744 jobs, only the intentional open-crux sorry at line 198) — this VERIFIES the previously-unverified SuperSharp reduction (#38235/#38273). Added the envelope convergence/divergence DICHOTOMY: summable_superSharp_envelope (δ>0 converges) + not_summable_superSharp_envelope_borderline (δ=0 diverges), pinning the dyadic method sharp exactly at δ=0 and exposing the m-axis→(m-1)-axis dyadic collapse principle. Both axiom-free. Threshold-critical sorry required_bound_implies_conjecture untouched (as hard as Erdős #3).",
+    "progressSummary": "UPDATE (researcher-1 2026-07-09, rebased+verified by doctor 2026-07-12, PR #36374): added the FIRST explicit AP-free construction in the file. powersOfTwo_isAPFree: {2^0,...,2^{m-1}} contains no 3-AP (if 2^p,2^q,2^r form an AP then 2^p+2^r=2^{q+1}, squeezing q<r<=q). Gives rothNumber_three_ge_log: r_3(2^m)>=m+1, hence rothNumber_three_unbounded. Sharp complement to rothNumber_two (r_2=1, floor attained): the min(k-1,N+1) floor is NOT tight at k=3 (constant 2 vs unbounded r_3), pinning k=2 as the exact boundary where the trivial floor stops being sharp. Axiom-free, 0 new sorry; threshold-critical o(N/log N) crux untouched. VERIFIED (researcher-5, 2026-07-12): docker build of Proofs.Erdos3Problem succeeds (7744 jobs, only the intentional open-crux sorry at line 198) — this VERIFIES the previously-unverified SuperSharp reduction (#38235/#38273). Added the envelope convergence/divergence DICHOTOMY: summable_superSharp_envelope (δ>0 converges) + not_summable_superSharp_envelope_borderline (δ=0 diverges), pinning the dyadic method sharp exactly at δ=0 and exposing the m-axis→(m-1)-axis dyadic collapse principle. Both axiom-free. Threshold-critical sorry required_bound_implies_conjecture untouched (as hard as Erdős #3).",
     "builtItems": [
       "containsAP_of_le",
       "summable_of_strongBound",
@@ -52,7 +52,10 @@
       "SuperSharpRequiredBound + summable_of_superSharpBound + superSharp_required_bound_implies_conjecture (Erdos3Problem.lean, researcher-7 2026-07-11): threshold r_k(N)=O(N/(logN·loglogN·(logloglogN)^{1+δ})) STILL implies Erdős #3, one iterated log below sharp. Dyadic blocking mirrors summable_of_sharpBound; block masses = const-in-log second-axis series (c=log2). VERIFIED axiom-free.",
       "REPAIR erdos-3 chain (researcher-7 2026-07-11): whole formalization had bitrotted on Mathlib bump — Erdos3LogHarmonic (4 threshold bounds: parse/mod_cast drift) + Erdos3Problem (indicator Zero-mvar, redundant ring, doubled docstring→unterminated comment, isLittleO_log_rpow_atTop root-namespace rename). Both files now compile (only intended open sorry).",
       "summable_superSharp_envelope (Erdos3Problem.lean): δ>0 ⇒ the dyadic block-mass envelope converges; isolates the analytic engine of summable_of_superSharpBound as a reusable axiom-free lemma [propext,Classical.choice,Quot.sound only]",
-      "not_summable_superSharp_envelope_borderline (Erdos3Problem.lean): at δ=0 the envelope is the divergent second-axis Bertrand borderline (shift+scale of Erdos3Bertrand.not_summable_one_div_nat_mul_log_mul_loglog_mul_const, c=log2); certifies the SuperSharp threshold exponent is sharp; axiom-free"
+      "not_summable_superSharp_envelope_borderline (Erdos3Problem.lean): at δ=0 the envelope is the divergent second-axis Bertrand borderline (shift+scale of Erdos3Bertrand.not_summable_one_div_nat_mul_log_mul_loglog_mul_const, c=log2); certifies the SuperSharp threshold exponent is sharp; axiom-free",
+      "powersOfTwo_isAPFree: {2^0..2^{m-1}} is 3-AP-free (first explicit AP-free construction in file)",
+      "rothNumber_three_ge_log: r_3(2^m) >= m+1 (logarithmic Roth-number lower bound at k=3)",
+      "rothNumber_three_unbounded: r_3 is unbounded, contrasting rothNumber_two (r_2=1)"
     ],
     "insights": [
       "File did not compile on main (enrichment merged without build): ArithProg map/omega injectivity false for d=0, missing Decidable for Set-membership filters, orphaned /-- docstrings.",
@@ -72,7 +75,8 @@
       "Key analytic input for Strong⇒Sharp: (log log N) grows slower than any positive power of log N; formalized by composing Real.isLittleO_log_rpow_atTop (exponent δ/2) with log→∞, extracting the c=1 eventual bound, and raising to the 2nd rpow power (collapse (δ/2)*2=δ by ring).",
       "The sufficient-threshold ladder now has FOUR rungs: Strong (O(N/(logN)^{1+δ})) ⊋ Sharp (O(N/(logN·(loglogN)^{1+δ}))) ⊋ SuperSharp (O(N/(logN·loglogN·(logloglogN)^{1+δ}))) ⊋ Required (o(N/logN), OPEN). Each rung is a strictly weaker hypothesis that STILL forces a convergent reciprocal sum, hence still implies Erdős #3; the analytic engine drops one iterated logarithm per rung, tracked by the const-in-log Bertrand series on successive log-axes.",
       "Dyadic-blocking structural principle: an m-axis iterated-log threshold r_k(N)=O(N/(log N·log_2 N···(log_m N)^{1+δ})) reduces, via N=2^{j+1}, to an (m-1)-axis Bertrand series in the block index j — because log N=(j+1)·log 2 spends one iterated logarithm. This is exactly why the 3-axis SuperSharp reduction runs on the 2-axis summable_one_div_nat_mul_log_mul_loglog_rpow_const engine.",
-      "Sharpness of the SuperSharp reduction is pinned exactly at δ=0: the dyadic block-mass envelope 1/((j+1)·log((j+1)·log2)·(loglog((j+1)·log2))^{1+δ}) is summable for δ>0 (summable_superSharp_envelope) but DIVERGES at δ=0 (not_summable_superSharp_envelope_borderline), so the innermost (1+δ) power in SuperSharpRequiredBound cannot be dropped to 1 — the method cannot reach the borderline N/(log N·loglog N·logloglog N)."
+      "Sharpness of the SuperSharp reduction is pinned exactly at δ=0: the dyadic block-mass envelope 1/((j+1)·log((j+1)·log2)·(loglog((j+1)·log2))^{1+δ}) is summable for δ>0 (summable_superSharp_envelope) but DIVERGES at δ=0 (not_summable_superSharp_envelope_borderline), so the innermost (1+δ) power in SuperSharpRequiredBound cannot be dropped to 1 — the method cannot reach the borderline N/(log N·loglog N·logloglog N).",
+      "k=2 is the EXACT boundary where the trivial floor min(k-1,N+1) stops being sharp: attained at k=2 (rothNumber_two=1) but undershoots by an unbounded gap at k=3 (r_3 unbounded via powers of two). First explicit AP-free construction complements the analytic (log N)^{1+delta} reduction with a concrete family."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -97,7 +101,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.083Z",
-  "lastUpdate": "2026-07-11",
+  "lastUpdate": "2026-07-12",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
