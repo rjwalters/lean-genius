@@ -593,4 +593,98 @@ theorem AvoidSum_antitone {S T : Finset ℕ} (h : S ⊆ T) {m : ℕ} (hT : Avoid
     AvoidSum S m :=
   fun hS => hT (subsetSums_mono h hS)
 
+/-! ## General pairing bound — the optimality of the per-`m` ladder, uniformly
+
+The per-`m` optimality lemmas (`avoid_one_card_le`, `avoid_two_card_le`,
+`avoid_three_card_le`, `avoid_four_card_le`) each show that an `m`-avoiding subset of
+`{1,…,n}` has at most `n − ⌈m/2⌉` elements. That common bound is a single **general**
+fact, proved once here by a pairing argument, and it subsumes all four cases (and every
+larger `m`). Two atoms drive it: an `m`-avoiding set cannot contain `m` itself, nor both
+members of any pair `{a, b}` with `a + b = m`. Mapping each element `t ≤ m` to
+`min t (m − t)` injects the low part of the set into `{1,…,⌊m/2⌋}` (injectivity is exactly
+the no-complementary-pair property), capping it at `⌊m/2⌋`; the high part contributes at
+most `n − m`, and `⌊m/2⌋ + (n − m) = n − ⌈m/2⌉`. -/
+
+/-- **Avoidance atom I: `m ∉ S`.** An `m`-avoiding set cannot contain `m` itself, since the
+    singleton `{m}` is a nonempty subset summing to `m`. -/
+theorem avoid_not_mem_self (S : Finset ℕ) (m : ℕ) (hm : 1 ≤ m) (hav : AvoidSum S m) :
+    m ∉ S := by
+  intro hmem
+  apply hav
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  exact ⟨⟨{m}, Finset.mem_powerset.mpr (Finset.singleton_subset_iff.mpr hmem),
+    Finset.sum_singleton _ _⟩, hm⟩
+
+/-- **Avoidance atom II: no complementary pair.** An `m`-avoiding set cannot contain two
+    distinct elements `a ≠ b` with `a + b = m`, since the pair `{a, b}` is a nonempty subset
+    summing to `m`. -/
+theorem avoid_not_pair (S : Finset ℕ) (m a b : ℕ) (hav : AvoidSum S m)
+    (ha : a ∈ S) (hb : b ∈ S) (hne : a ≠ b) (hsum : a + b = m) : False := by
+  apply hav
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  refine ⟨⟨{a, b}, Finset.mem_powerset.mpr ?_, ?_⟩, by omega⟩
+  · exact Finset.insert_subset_iff.mpr ⟨ha, Finset.singleton_subset_iff.mpr hb⟩
+  · rw [Finset.sum_pair hne]; exact hsum
+
+/-- **The low part of an `m`-avoiding set has at most `⌊m/2⌋` elements.** For any
+    `m`-avoiding `S ⊆ {1,…,n}`, the elements of `S` that are `≤ m` number at most `⌊m/2⌋`.
+    The map `t ↦ min t (m − t)` sends each such element into `{1,…,⌊m/2⌋}`, and it is
+    injective on `S`: if `min t (m−t) = min t' (m−t')` with `t ≠ t'` then `{t, t'}` is a
+    complementary pair `t + t' = m`, contradicting `avoid_not_pair`. -/
+theorem avoid_low_card_le (n m : ℕ) (hm : 1 ≤ m)
+    (S : Finset ℕ) (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) :
+    (S.filter (· ≤ m)).card ≤ m / 2 := by
+  have hmS : m ∉ S := avoid_not_mem_self S m hm hav
+  have hbounds : ∀ x ∈ S.filter (· ≤ m), 1 ≤ x ∧ x < m := by
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    obtain ⟨hxS, hxm⟩ := hx
+    have hx1 : 1 ≤ x := (Finset.mem_Icc.mp (hS hxS)).1
+    have hxne : x ≠ m := fun h => hmS (h ▸ hxS)
+    exact ⟨hx1, by omega⟩
+  calc (S.filter (· ≤ m)).card
+      ≤ (Finset.Icc 1 (m / 2)).card := by
+        apply Finset.card_le_card_of_injOn (fun x => min x (m - x))
+        · intro x hx
+          rw [Finset.mem_coe] at hx
+          obtain ⟨hx1, hx2⟩ := hbounds x hx
+          rw [Finset.mem_coe, Finset.mem_Icc]
+          dsimp only
+          omega
+        · intro x hx y hy hxy
+          rw [Finset.mem_coe] at hx hy
+          dsimp only at hxy
+          obtain ⟨hbx1, hbx2⟩ := hbounds x hx
+          obtain ⟨hby1, hby2⟩ := hbounds y hy
+          have hxS := (Finset.mem_filter.mp hx).1
+          have hyS := (Finset.mem_filter.mp hy).1
+          by_contra hne
+          exact avoid_not_pair S m x y hav hxS hyS hne (by omega)
+    _ = m / 2 := by rw [Nat.card_Icc]; omega
+
+/-- **General optimality of the avoidance ladder.** For `1 ≤ m ≤ n`, every `m`-avoiding
+    subset of `{1,…,n}` has at most `n − ⌈m/2⌉` elements (`⌈m/2⌉ = (m+1)/2` in `ℕ`). This
+    single bound subsumes the individual optimality lemmas `avoid_one_card_le` (`n−1`),
+    `avoid_two_card_le` (`n−1`), `avoid_three_card_le` (`n−2`) and `avoid_four_card_le`
+    (`n−2`), and extends the ladder to all `m`. Split `S` into its part `≤ m` (at most
+    `⌊m/2⌋` by `avoid_low_card_le`) and its part `> m` (at most `n − m`, being contained in
+    `{m+1,…,n}`); the two bounds sum to `⌊m/2⌋ + (n − m) = n − ⌈m/2⌉`. -/
+theorem avoid_card_le_general (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n)
+    (S : Finset ℕ) (hS : S ⊆ Icc_n n) (hav : AvoidSum S m) :
+    S.card ≤ n - (m + 1) / 2 := by
+  have hsplit := Finset.filter_card_add_filter_neg_card_eq_card (s := S) (p := (· ≤ m))
+  have hlow : (S.filter (· ≤ m)).card ≤ m / 2 := avoid_low_card_le n m hm S hS hav
+  have hhigh : (S.filter (fun x => ¬ x ≤ m)).card ≤ n - m := by
+    have hsub : S.filter (fun x => ¬ x ≤ m) ⊆ Finset.Icc (m + 1) n := by
+      intro x hx
+      rw [Finset.mem_filter] at hx
+      obtain ⟨hxS, hxm⟩ := hx
+      have hxn := (Finset.mem_Icc.mp (hS hxS)).2
+      rw [Finset.mem_Icc]
+      omega
+    calc (S.filter (fun x => ¬ x ≤ m)).card
+        ≤ (Finset.Icc (m + 1) n).card := Finset.card_le_card hsub
+      _ = n - m := by rw [Nat.card_Icc]; omega
+  omega
+
 end Erdos771Construction
