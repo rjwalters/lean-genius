@@ -150,13 +150,13 @@ theorem holder_real {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
     |∑ i ∈ s, f i * g i| ≤
       (∑ i ∈ s, |f i| ^ p) ^ (1 / p) * (∑ i ∈ s, |g i| ^ q) ^ (1 / q) := by
   -- Apply Holder to absolute values packaged as NNReals
-  have h_nn := holder_nnreal s (fun i => (⟨|f i|, abs_nonneg _⟩ : ℝ≥0))
-    (fun i => (⟨|g i|, abs_nonneg _⟩ : ℝ≥0)) hpq
+  have h_nn := holder_nnreal s (fun i => Real.nnabs (f i))
+    (fun i => Real.nnabs (g i)) hpq
   -- Cast the NNReal inequality to ℝ
   have h_real : (∑ i ∈ s, |f i| * |g i|) ≤
       (∑ i ∈ s, |f i| ^ p) ^ (1 / p) * (∑ i ∈ s, |g i| ^ q) ^ (1 / q) := by
     have h := NNReal.coe_le_coe.mpr h_nn
-    push_cast [NNReal.coe_sum, NNReal.coe_mul, NNReal.coe_rpow] at h
+    push_cast [NNReal.coe_sum, NNReal.coe_mul, NNReal.coe_rpow, Real.coe_nnabs] at h
     simpa using h
   -- Chain: |sum f*g| <= sum |f*g| = sum |f|*|g| <= Holder RHS
   calc |∑ i ∈ s, f i * g i|

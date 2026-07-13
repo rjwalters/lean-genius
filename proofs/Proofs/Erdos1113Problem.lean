@@ -90,8 +90,11 @@ theorem problem_equivalence :
   · intro ⟨m, hs, hnc⟩ hall
     exact hnc (hall m hs)
   · intro h
-    skip
-    exact h
+    by_contra hno
+    apply h
+    intro m hs
+    by_contra hnc
+    exact hno ⟨m, hs, hnc⟩
 
 /- ## Part IV: Known Sierpinski Numbers -/
 

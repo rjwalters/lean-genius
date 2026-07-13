@@ -90,7 +90,7 @@ The exact growth rate up to multiplicative constants.
 Published in Annals of Mathematics. -/
 axiom ford_2008_main :
   ∃ c C : ℝ, 0 < c ∧ c < C ∧
-    ∀ n ≥ 10, c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n ∧
+    ∀ (n : ℕ), n ≥ 10 → c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n ∧
               delta n ≤ C / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2))
 
 /-- **Ford disproved δ₁(n) = o(δ(n)):**
@@ -129,7 +129,7 @@ theorem prime_no_divisor (p n : ℕ) (hp : Nat.Prime p) (hn : p > 2 * n) :
 This theorem combines both of Ford's 2008 results. -/
 theorem erdos_446_summary :
     (∃ c C : ℝ, 0 < c ∧ c < C ∧
-      ∀ n ≥ 10, c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n) ∧
+      ∀ (n : ℕ), n ≥ 10 → c / ((log n : ℝ) ^ alpha * (log (log n)) ^ (3/2)) ≤ delta n) ∧
     (∃ c : ℝ, c > 0 ∧ ∀ n ≥ 10, deltaR n 1 ≥ c * delta n) := by
   constructor
   · obtain ⟨c, C, hc, hcC, hbound⟩ := ford_2008_main

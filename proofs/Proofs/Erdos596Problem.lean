@@ -36,14 +36,14 @@ def GraphProperty := SimpleGraph ℕ → Prop
 def FiniteRamseyProperty (isForbiddenFree : GraphProperty) (containsTarget : GraphProperty) : Prop :=
   ∀ n : ℕ, n ≥ 1 → ∃ H : SimpleGraph ℕ,
     isForbiddenFree H ∧
-    ∀ coloring : (Σ v w : ℕ, H.Adj v w) → Fin n,
+    ∀ coloring : (Σ' v w : ℕ, H.Adj v w) → Fin n,
       ∃ c : Fin n, containsTarget (H)
 
 /-- Property (2): Every G₁-free graph H has a countable edge coloring
     with no monochromatic G₂. -/
 def CountableColoringProperty (isForbiddenFree : GraphProperty) (containsTarget : GraphProperty) : Prop :=
   ∀ H : SimpleGraph ℕ, isForbiddenFree H →
-    ∃ coloring : (Σ v w : ℕ, H.Adj v w) → ℕ,
+    ∃ coloring : (Σ' v w : ℕ, H.Adj v w) → ℕ,
       ∀ c : ℕ, ¬containsTarget (H)
 
 /-- The full dichotomy: a pair (G₁, G₂) satisfies both properties. -/

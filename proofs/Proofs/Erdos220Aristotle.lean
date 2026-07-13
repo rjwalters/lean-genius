@@ -54,9 +54,9 @@ lemma reducedResidues_eq_totient_filter (n : ℕ) (hn : n ≥ 2) :
   simp only [reducedResidues, Finset.mem_filter, Finset.mem_range, Nat.Coprime]
   constructor
   · rintro ⟨hlt, _, hcop⟩
-    exact ⟨hlt, hcop.symm⟩
+    exact ⟨hlt, Nat.Coprime.symm hcop⟩
   · rintro ⟨hlt, hcop⟩
-    refine ⟨hlt, ?_, hcop.symm⟩
+    refine ⟨hlt, ?_, Nat.Coprime.symm hcop⟩
     rcases Nat.eq_zero_or_pos m with rfl | hpos
     · simp only [Nat.Coprime, Nat.gcd_zero_right] at hcop; omega
     · exact hpos

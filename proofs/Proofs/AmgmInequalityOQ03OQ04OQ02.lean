@@ -195,7 +195,7 @@ theorem qLog_tendsto_log {x : ℝ} (hx : 0 < x) :
     simpa using (hasDerivAt_id (0 : ℝ)).const_mul c
   have hderiv : HasDerivAt (fun u : ℝ => Real.exp (c * u)) c 0 := by
     have h := (Real.hasDerivAt_exp (c * 0)).comp 0 hlin
-    simpa using h
+    simpa [Function.comp_def] using h
   have hslope := hasDerivAt_iff_tendsto_slope.mp hderiv
   -- Rewrite the slope function explicitly.
   have hG : Tendsto (fun u : ℝ => (Real.exp (c * u) - 1) / u) (𝓝[≠] 0) (𝓝 c) := by

@@ -31,7 +31,7 @@ open scoped Classical
 def HasCycleOfLength (G : SimpleGraph (Fin m)) (n : ℕ) : Prop :=
   ∃ v : Fin n → Fin m,
     Function.Injective v ∧
-    (∀ i : Fin n, G.Adj (v i) (v ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩)) ∧
+    (∀ i : Fin n, G.Adj (v i) (v ⟨(i.val + 1) % n, Nat.mod_lt _ i.pos⟩)) ∧
     2 ≤ n
 
 /-- A k-coloring of edges of Kₘ is a function from pairs to Fin k -/
@@ -53,10 +53,9 @@ def monochromaticGraph (χ : EdgeColoring m k) (c : Fin k) : SimpleGraph (Fin m)
 /-- R(C₂ₙ; k): the minimum m such that every k-coloring of Kₘ
     contains a monochromatic C₂ₙ -/
 noncomputable def ramseyEvenCycle (n k : ℕ) : ℕ :=
-  Nat.find (⟨(2 * n) * k ^ (2 * n),
-    fun _ => trivial⟩ : ∃ M : ℕ, ∀ m : ℕ, M ≤ m →
-      ∀ χ : EdgeColoring m k,
-        ∃ c : Fin k, HasCycleOfLength (monochromaticGraph χ c) (2 * n))
+  sInf {M : ℕ | ∀ m : ℕ, M ≤ m →
+    ∀ χ : EdgeColoring m k,
+      ∃ c : Fin k, HasCycleOfLength (monochromaticGraph χ c) (2 * n)}
 
 /- ## Erdős Lower Bound -/
 

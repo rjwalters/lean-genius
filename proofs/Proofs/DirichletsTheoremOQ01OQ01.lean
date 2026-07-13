@@ -168,10 +168,11 @@ theorem other_conductors_zero_free_near_one
     (h_exc : ∃ β : ℝ, β ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ_exc β = 0)
     {N₂ : ℕ} [NeZero N₂] (χ₂ : DirichletCharacter ℂ N₂)
     (hN₂ : N₂ ≤ Q) (hχ₂ : χ₂ ≠ 1) (hN₂ne : N₂ ≠ N_exc) :
-    ¬ ∃ β : ℝ, β ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ₂ β = 0 :=
-  fun h₂ => hN₂ne
-    ((at_most_one_exceptional_conductor Q hQ c hc χ₂ χ_exc
-      hN₂ hN_exc hχ₂ hχ_exc h₂ h_exc).symm)
+    ¬ ∃ β : ℝ, β ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ₂ β = 0 := by
+  intro h₂
+  have h := at_most_one_exceptional_conductor Q hQ c hc χ₂ χ_exc
+    hN₂ hN_exc hχ₂ hχ_exc h₂ h_exc
+  exact hN₂ne (by omega)
 
 /-- The exceptional character (if it exists) has the Siegel lower bound as a floor
     on L(1, χ_exc): even in World A, L(1, χ_exc) > C(ε)/N_exc^ε. -/
@@ -196,8 +197,9 @@ theorem siegel_zero_creates_repulsion_region
     ∀ ρ : ℂ, ρ.re ∈ Set.Ioo (0 : ℝ) 1 → LFunction χ₂ ρ = 0 →
     ρ.re < 1 - c₀ * (1 - β₁) / Real.log Q := by
   obtain ⟨c₀, hc₀, hrep⟩ := deuring_heilbronn_repulsion Q hQ
-  exact ⟨c₀, hc₀, fun N₂ _ χ₂ hN₂ ρ hρ hzero₂ =>
-    hrep N₁ χ₁ hN₁ hχ₁ β₁ hβ₁ hzero₁ N₂ hN₂ ρ hρ hzero₂⟩
+  refine ⟨c₀, hc₀, ?_⟩
+  intro N₂ instN₂ χ₂ hN₂ ρ hρ hzero₂
+  exact @hrep N₁ inferInstance χ₁ hN₁ hχ₁ β₁ hβ₁ hzero₁ N₂ instN₂ χ₂ hN₂ ρ hρ hzero₂
 
 /-
 ## Part IV: Structural Equivalences and Hierarchy

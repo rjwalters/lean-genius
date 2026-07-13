@@ -132,7 +132,7 @@ theorem exp_eq_of_coeffs (A : Matrix (Fin 2) (Fin 2) ℝ) (α β : ℝ → ℝ)
   have hcomm : Commute (t • A) (t • (-A)) := by
     rw [smul_neg]; exact (Commute.refl (t • A)).neg_right
   have hinv : exp (t • A) * exp (t • (-A)) = 1 := by
-    rw [← exp_add_of_commute ℝ _ _ hcomm, smul_neg, add_neg_cancel, exp_zero]
+    rw [← exp_add_of_commute _ _ hcomm, smul_neg, add_neg_cancel, exp_zero]
   calc exp (t • A)
       = exp (t • A) * 1 := (mul_one _).symm
     _ = exp (t • A) * (exp (t • (-A)) * (α t • 1 + β t • A)) := by rw [hφt]
@@ -168,7 +168,7 @@ theorem exp_two_two_distinct (A : Matrix (Fin 2) (Fin 2) ℝ) (lam1 lam2 : ℝ)
         ((Real.exp (lam1 * s) * lam1 - Real.exp (lam2 * s) * lam2) / (lam1 - lam2)) s :=
       (e1.sub e2).div_const _
     have hα' := e1.sub (hβ'.const_mul lam1)
-    convert hα' using 1
+    refine hα'.congr_deriv ?_
     rw [hδ]
     field_simp
     ring
@@ -210,7 +210,7 @@ theorem exp_two_two_repeated (A : Matrix (Fin 2) (Fin 2) ℝ) (lam : ℝ)
         (1 * Real.exp (lam * s) + s * (Real.exp (lam * s) * lam)) s :=
       (hasDerivAt_id s).mul e1
     have hα' := e1.sub (hβ'.const_mul lam)
-    convert hα' using 1
+    refine hα'.congr_deriv ?_
     rw [hδ]
     ring
   · -- β' = α + (tr A)·β

@@ -49,14 +49,14 @@ def EdgeColoring (V : Type*) (n : ℕ) := Sym2 V → Fin n
     Equivalently, there are no odd monochromatic-c cycles. -/
 def ColorIsBipartite {V : Type*} [Fintype V] [DecidableEq V] {n : ℕ}
     (G : SimpleGraph V) (coloring : EdgeColoring V n) (c : Fin n) : Prop :=
-  (G.spanningCoe (fun e => coloring e = c)).IsBipartite
+  (SimpleGraph.fromEdgeSet {e | e ∈ G.edgeSet ∧ coloring e = c}).IsBipartite
 
 /-- The **complete graph** K_N on Fin N. -/
 abbrev K (N : ℕ) : SimpleGraph (Fin N) := SimpleGraph.completeGraph (Fin N)
 
 /-- A coloring of K_{2^n+1} with n colors has a **monochromatic odd cycle of length ≤ m**
     if some color class contains an odd closed walk of length ≤ m. -/
-axiom HasMonoOddCycle {n : ℕ} (coloring : EdgeColoring (Fin (2^n + 1)) n) (m : ℕ) : Prop
+axiom HasMonoOddCycle {N n : ℕ} (coloring : EdgeColoring (Fin N) n) (m : ℕ) : Prop
 
 /- ## Part II: The Threshold Phenomenon -/
 

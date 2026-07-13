@@ -233,7 +233,7 @@ theorem folkman_upper_bound : optimalConstant ≤ 1 := by
     simp only [hone, Nat.cast_one, Real.one_rpow, mul_one] at hge
     linarith [show (H.edgeFinset.card : ℝ) ≤ 1 from by exact_mod_cast hH_card]
   · push_neg at hne
-    rw [Set.not_nonempty_iff_eq_empty.mp hne]
+    rw [hne]
     simp [Real.sSup_empty]
 
 /-

@@ -86,7 +86,7 @@ theorem umIdeal_mem_gen (p : ℕ) (m : ℕ) : (X : FpPoly p) ^ m ∈ umIdeal p m
 theorem umIdeal_anti_mono (p : ℕ) (m n : ℕ) (hmn : m ≤ n) :
     umIdeal p n ≤ umIdeal p m := by
   apply Ideal.span_singleton_le_span_singleton.mpr
-  exact ⟨X ^ (n - m), by ring_nf; congr 1; omega⟩
+  exact ⟨X ^ (n - m), by rw [← pow_add, Nat.add_sub_cancel' hmn]⟩
 
 /-- The ideal filtration: (u^m) ⊇ (u^{m+1}) for all m. -/
 theorem umIdeal_succ_le (p : ℕ) (m : ℕ) :
@@ -114,7 +114,7 @@ theorem umIdeal_strict_mono (p : ℕ) [Fact (Nat.Prime p)] (m : ℕ) :
     have hdeg_lhs : (X ^ m : FpPoly p).natDegree = m := natDegree_X_pow m
     have hdeg_rhs : (X ^ (m + 1) : FpPoly p).natDegree = m + 1 := natDegree_X_pow (m + 1)
     by_cases hf0 : f = 0
-    · simp [hf0] at hf; exact hXmne hf
+    · rw [hf0, mul_zero] at hf; exact hXmne hf
     · have := congr_arg natDegree hf
       rw [hdeg_lhs, natDegree_mul hXm1ne hf0, hdeg_rhs] at this
       omega
@@ -142,8 +142,8 @@ theorem fpPoly_quotient_finrank (p n : ℕ) [Fact (Nat.Prime p)] (hn : 0 < n) :
   --                        = AdjoinRoot (X^n : Polynomial (ZMod p))
   -- AdjoinRoot has a PowerBasis with dim = natDegree(X^n) = n
   change Module.finrank (ZMod p) (AdjoinRoot ((X : Polynomial (ZMod p)) ^ n)) = n
-  have hm : ((X : Polynomial (ZMod p)) ^ n).Monic := monic_X_pow n
-  rw [AdjoinRoot.powerBasis hm |>.finrank]
+  have hm : ((X : Polynomial (ZMod p)) ^ n) ≠ 0 := pow_ne_zero n X_ne_zero
+  rw [(AdjoinRoot.powerBasis hm).finrank]
   simp [AdjoinRoot.powerBasis_dim, Polynomial.natDegree_X_pow]
 
 /-- The quotient F_p[u]/(u^n) is nontrivial when n ≥ 1. -/
@@ -153,7 +153,7 @@ theorem fpPoly_quotient_nontrivial (p n : ℕ) [Fact (Nat.Prime p)] (hn : 0 < n)
   -- Need: umIdeal p n ≠ ⊤, i.e., span{X^n} ≠ ⊤
   intro htop
   -- If span{X^n} = ⊤, then 1 ∈ span{X^n}, so X^n ∣ 1
-  have h1 : (1 : FpPoly p) ∈ umIdeal p n := htop ▸ Ideal.mem_top
+  have h1 : (1 : FpPoly p) ∈ umIdeal p n := htop ▸ Submodule.mem_top
   rw [umIdeal, Ideal.mem_span_singleton] at h1
   -- X^n ∣ 1 implies natDegree(X^n) ≤ natDegree(1) = 0
   have hdeg := Polynomial.natDegree_le_of_dvd h1 one_ne_zero
@@ -207,13 +207,13 @@ theorem ideal_containment_iff_le_power (p : ℕ) [Fact (Nat.Prime p)] (m n : ℕ
   constructor
   · intro h
     by_contra hmn
-    push_neg at h
+    push_neg at hmn
     -- (X^n) ≤ (X^m) but m > n: impossible by degree argument
     have hmem : (X : FpPoly p) ^ n ∈ umIdeal p m := h (umIdeal_mem_gen p n)
     rw [umIdeal, Ideal.mem_span_singleton] at hmem
     obtain ⟨f, hf⟩ := hmem
     by_cases hf0 : f = 0
-    · simp [hf0] at hf; exact (pow_ne_zero n X_ne_zero) hf
+    · simp [hf0] at hf
     · have := congr_arg natDegree hf
       rw [natDegree_X_pow, natDegree_mul (pow_ne_zero _ X_ne_zero) hf0,
           natDegree_X_pow] at this

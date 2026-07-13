@@ -23,7 +23,7 @@ open Nat Filter
 /- ## Definitions (mirrored from Erdos454Problem.lean) -/
 
 /-- The k-th prime number (0-indexed: p_0 = 2, p_1 = 3, ...). -/
-noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
+noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Nat.Prime
 
 /-- f(n) = min_{i<n} (p_{n+i} + p_{n-i}). -/
 noncomputable def f (n : ℕ) : ℕ :=
@@ -32,8 +32,9 @@ noncomputable def f (n : ℕ) : ℕ :=
 
 /-- Alternative definition using Finset.inf'. -/
 noncomputable def f' (n : ℕ) : ℕ :=
-  if n = 0 then 0
-  else (Finset.range n).inf' (by simp) (fun i => nthPrime (n + i) + nthPrime (n - i))
+  if h : n = 0 then 0
+  else (Finset.range n).inf' (Finset.nonempty_range_iff.mpr h)
+    (fun i => nthPrime (n + i) + nthPrime (n - i))
 
 /-- The deviation of f(n) from 2p_n. -/
 noncomputable def deviation (n : ℕ) : ℤ :=
@@ -61,8 +62,9 @@ theorem nthPrime_strictMono : StrictMono nthPrime :=
   (Nat.nth_strictMono Nat.infinite_setOf_prime)
 
 /-- All nth primes are prime. -/
-theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
-  Nat.prime_nth_prime k
+theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := by
+  unfold nthPrime
+  exact Nat.prime_nth_prime k
 
 -- f(n) bounds
 /-- The i=0 term of the infimum equals 2*p_n. -/
@@ -76,6 +78,7 @@ theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) :
   simp only [f, if_neg (by omega : n ≠ 0)]
   refine (ciInf_le ⟨0, by rintro _ ⟨_, rfl⟩; exact Nat.zero_le _⟩ ⟨0, hn⟩).trans ?_
   simp [symmetric_sum_at_zero n hn]
+  omega
 
 /-- The two definitions of f are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by

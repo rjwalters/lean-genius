@@ -70,7 +70,7 @@ theorem gk_shortfall_factor_tendsto_zero :
     Tendsto (fun n : ℕ => 1 / Real.log n) atTop (nhds 0) := by
   have hlog : Tendsto (fun n : ℕ => Real.log n) atTop atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
-  simpa only [one_div] using hlog.inv_tendsto_atTop
+  simpa only [one_div, Pi.inv_def] using hlog.inv_tendsto_atTop
 
 
 end Erdos100OQ02

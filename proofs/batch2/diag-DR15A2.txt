@@ -1,0 +1,45 @@
+===== AbelRuffiniOQ06OQ01
+error: Proofs/AbelRuffiniOQ06OQ01.lean:69:74: Invalid field `toCommutative`: The environment does not contain `IsMulCommutative.toCommutative`, so it is not possible to project the field `toCommutative` from an expression
+  Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le
+of type
+===== AlgebraicNumbersCountableOQ02OQ03
+error: Proofs/AlgebraicNumbersCountableOQ02OQ03.lean:108:14: Application type mismatch: The argument
+  add_le_add_right h κ
+has type
+===== AreaOfCircleOQ05OQ03OQ05
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:198:8: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:295:0: gaussian_fourier_first_hermite : ∀ (t : ℝ),
+  ∫ (x : ℝ), ↑x * cexp (I * ↑t * ↑x) * cexp (-↑x ^ 2 / 2) = I * ↑t * cexp (-↑t ^ 2 / 2) * ↑√(2 * π)
+===== BinaryGcdOQ02OQ01
+error: Proofs/BinaryGcdOQ02OQ01.lean:109:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  a + 1
+in the target expression
+error: Proofs/BinaryGcdOQ02OQ01.lean:120:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  a + 1
+in the target expression
+error: Proofs/BinaryGcdOQ02OQ01.lean:131:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  b + 1
+in the target expression
+error: Proofs/BinaryGcdOQ02OQ01.lean:169:39: Tactic `decide` failed for proposition
+  binaryGcdBit 12 18 = 6
+because its `Decidable` instance
+===== BorsukUlamOQ02OQ01OQ04OQ01
+error: Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean:216:24: No goals to be solved
+error: Lean exited with code 1
+✖ [8609/8621] Building Proofs.AreaOfCircleOQ05OQ03OQ05 (11s)
+===== DerangementsOQ04OQ01OQ01
+error: Proofs/DerangementsOQ04OQ01OQ01.lean:56:2: Type mismatch: After simplification, term
+  hcomp
+ has type
+===== KnightsTourObliqueOQ02
+error: Proofs/KnightsTourObliqueOQ02.lean:510:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 7
+===== AngleTrisectionOQ02OQ03OQ01
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:568:6: No goals to be solved
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:650:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:650:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/AngleTrisectionOQ02OQ03OQ01.lean:739:8: (kernel) unknown constant 'AngleTrisectionOQ02OQ03OQ01.galAut_alphaCos_embedding'
+error: Lean exited with code 1
+Some required targets logged failures:

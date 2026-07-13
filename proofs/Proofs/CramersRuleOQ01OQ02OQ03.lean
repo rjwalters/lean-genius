@@ -93,16 +93,16 @@ theorem mul_schurInv_eq_one (A : Matrix (Fin 2) (Fin 2) D)
     A * schurInv A = 1 := by
   ext i j
   fin_cases i <;> fin_cases j
-  · simpa only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
-      using mul_schurInv_00 A hq
+  · simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
+    exact mul_schurInv_00 A hq
   · simp only [Matrix.mul_apply, Fin.sum_univ_two]
     rw [Matrix.one_apply_ne (by decide)]
     exact mul_schurInv_01 A hq
   · simp only [Matrix.mul_apply, Fin.sum_univ_two]
     rw [Matrix.one_apply_ne (by decide)]
     exact mul_schurInv_10 A hd
-  · simpa only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
-      using mul_schurInv_11 A hd
+  · simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
+    exact mul_schurInv_11 A hd
 
 -- ============================================================
 -- PART III: The Dual Left-Inverse Entries
@@ -166,16 +166,16 @@ theorem schurInv_mul_eq_one (A : Matrix (Fin 2) (Fin 2) D)
     schurInv A * A = 1 := by
   ext i j
   fin_cases i <;> fin_cases j
-  · simpa only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
-      using schurInv_mul_00 A hq
+  · simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
+    exact schurInv_mul_00 A hq
   · simp only [Matrix.mul_apply, Fin.sum_univ_two]
     rw [Matrix.one_apply_ne (by decide)]
     exact schurInv_mul_01 A hd
   · simp only [Matrix.mul_apply, Fin.sum_univ_two]
     rw [Matrix.one_apply_ne (by decide)]
     exact schurInv_mul_10 A hq
-  · simpa only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
-      using schurInv_mul_11 A hd
+  · simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply_eq]
+    exact schurInv_mul_11 A hd
 
 /-- The complete two-sided statement: under the Schur conditions
     `qdet00 A ≠ 0` and `A 1 1 ≠ 0`, `schurInv A` is a two-sided inverse of `A`. -/

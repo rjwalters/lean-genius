@@ -77,7 +77,8 @@ noncomputable def upperCoeff (k : ℕ) : ℝ :=
 
 /-- For k = 4: coefficient = 2/log(2) ≈ 2.89 -/
 theorem upper_coeff_k4 : upperCoeff 4 = 2 / Real.log 2 := by
-  rfl
+  unfold upperCoeff
+  norm_num
 
 /- ## Lower Bound (Kostochka) -/
 
@@ -175,7 +176,7 @@ theorem triangle_free_unbounded_chromatic :
 axiom erdos_1959_probabilistic_method :
   ∀ k g : ℕ, k ≥ 2 → g ≥ 3 →
     ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      chromaticNumber G ≥ k ∧ girth G > g
+      chromaticNumber G ≥ k ∧ GraphCore.girth G > g
 
 /- ## Probabilistic Lower Bound -/
 
@@ -233,7 +234,9 @@ theorem erdos_626_status :
     constructor
     · sorry -- upperCoeff k > 0
     intro n hn
-    exact k4_bounds n hn  -- This is slightly wrong, but captures the idea
+    obtain ⟨c, hc, hlow⟩ := kostochka_lower_bound k hk
+    obtain ⟨C, hC, hup⟩ := erdos_upper_bound k hk
+    exact ⟨hlow n hn, hup n hn⟩
   · exact fun k g hk hg => erdos_high_girth_high_chromatic k g hk hg
 
 #check erdos_626_status

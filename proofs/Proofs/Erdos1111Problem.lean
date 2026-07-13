@@ -39,6 +39,8 @@ open SimpleGraph Finset
 
 namespace Erdos1111
 
+universe u
+
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-
@@ -57,7 +59,7 @@ def IsAnticomplete (G : SimpleGraph V) (A B : Finset V) : Prop :=
 χ(G[S]) for a vertex subset S.
 -/
 noncomputable def inducedChromaticNumber (G : SimpleGraph V) (S : Finset V) : ℕ :=
-  (G.induce (S : Set V)).chromaticNumber
+  (G.induce (S : Set V)).chromaticNumber.toNat
 
 /--
 **Clique number:**
@@ -86,14 +88,14 @@ def HasElZaharErdosProperty (t c d : ℕ) : Prop :=
 Minimal d such that the (t, c, d) property holds.
 -/
 noncomputable def d_func (t c : ℕ) : ℕ :=
-  sInf {d | HasElZaharErdosProperty t c d}
+  sInf {d | HasElZaharErdosProperty.{u} t c d}
 
 /--
 **The conjecture:**
 d(t, c) exists (is finite) for all t, c ≥ 1.
 -/
 def ElZaharErdosConjecture : Prop :=
-  ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasElZaharErdosProperty t c d
+  ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasElZaharErdosProperty.{u} t c d
 
 /-
 ## Part III: Known Small Cases

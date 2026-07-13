@@ -125,7 +125,7 @@ theorem leibniz_error_tendsto_zero :
   have hden : Tendsto (fun k : ℕ => (2 * (k : ℝ) + 1)) atTop atTop := by
     apply Filter.tendsto_atTop_add_const_right
     exact tendsto_natCast_atTop_atTop.const_mul_atTop (by norm_num : (0 : ℝ) < 2)
-  simpa only [one_div] using tendsto_inv_atTop_zero.comp hden
+  simpa only [one_div, Function.comp_def] using tendsto_inv_atTop_zero.comp hden
 
 end BaselOQ10OQ01
 

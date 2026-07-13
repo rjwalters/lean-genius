@@ -128,12 +128,12 @@ lemma tendsto_two_mul_add_one : Tendsto (fun k : ℕ => 2 * k + 1) atTop atTop :
 lemma aeven_tendsto :
     Tendsto (fun k => altFactPartialSum (2 * k)) atTop (nhds (rexp (-1))) := by
   have h := aSeq_tendsto.comp tendsto_two_mul
-  simpa [Function.comp] using h
+  simpa [Function.comp_def] using h
 
 lemma aodd_tendsto :
     Tendsto (fun k => altFactPartialSum (2 * k + 1)) atTop (nhds (rexp (-1))) := by
   have h := aSeq_tendsto.comp tendsto_two_mul_add_one
-  simpa [Function.comp] using h
+  simpa [Function.comp_def] using h
 
 /- ## §4. Strictly monotone convergent sequences stay on one side of the limit -/
 

@@ -75,7 +75,8 @@ theorem norm_le_one_on_closedBall
     ∀ z ∈ closedBall c r, ‖f z‖ ≤ 1 := by
   have hclosed : IsClosed {w : ℂ | ‖f w‖ ≤ 1} :=
     isClosed_le (continuous_norm.comp hcont) continuous_const
-  have hball_sub : ball c r ⊆ {w : ℂ | ‖f w‖ ≤ 1} := fun w hw => le_of_lt (hsub hw)
+  have hball_sub : ball c r ⊆ {w : ℂ | ‖f w‖ ≤ 1} := fun w hw =>
+    show ‖f w‖ ≤ 1 from le_of_lt (show ‖f w‖ < 1 from hsub hw)
   have hclos : closure (ball c r) ⊆ {w : ℂ | ‖f w‖ ≤ 1} :=
     hclosed.closure_subset_iff.mpr hball_sub
   rw [closure_ball c hr.ne'] at hclos

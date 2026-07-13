@@ -53,7 +53,8 @@ theorem altFactPartialSum_tendsto_expNegOne :
   have hps : Tendsto (fun m => ∑ i ∈ range m, altFactTerm i) atTop (nhds (Real.exp (-1))) :=
     hsum.tendsto_sum_nat
   have hcomp := hps.comp (tendsto_add_atTop_nat 1)
-  simpa [altFactPartialSum, Function.comp] using hcomp
+  simp only [Function.comp_def] at hcomp
+  exact hcomp
 
 /-- **Poisson limit of the fixed-point distribution.**  For a fixed `k`, the
 probability that a uniformly random permutation of `Fin n` has exactly `k` fixed

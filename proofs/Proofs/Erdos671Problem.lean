@@ -221,7 +221,7 @@ theorem lebesgueConstant_ge_one (pts : InterpolationPoints n) (hn : 0 < n) :
     calc lebesgueFunction pts 0
         ≤ ⨆ i : ↥(Set.Icc (-1 : ℝ) 1), lebesgueFunction pts ↑i := hsub
       _ = ⨆ x ∈ Set.Icc (-1 : ℝ) 1, lebesgueFunction pts x := by
-          rw [← csSup_image hsne hrange hf', sSup_image']
+          rw [← csSup_image hrange hf', sSup_image']
   calc (1 : ℝ) ≤ lebesgueFunction pts 0 := hg1
     _ ≤ lebesgueConstant pts := hle
 

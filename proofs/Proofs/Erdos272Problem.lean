@@ -31,7 +31,7 @@ open Finset
 /- ## Part I: Basic Definitions -/
 
 /-- The set {1,...,N} -/
-def interval (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ => Nat.succ_injective⟩
+def interval (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩
 
 /-- An arithmetic progression in ℕ specified by start, common difference, and length -/
 structure ArithProg where
@@ -56,7 +56,7 @@ theorem singleton_is_ap (n : ℕ) : IsArithProg {n} := by
 theorem pair_is_ap (a b : ℕ) (hab : a < b) : IsArithProg {a, b} := by
   use ⟨a, b - a, 2⟩
   constructor
-  · omega
+  · exact one_le_two
   · ext x
     simp [ArithProg.elements]
     constructor

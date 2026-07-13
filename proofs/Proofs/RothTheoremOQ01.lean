@@ -272,8 +272,7 @@ theorem bourgain_factor_tendsto_zero :
   have hsqrt : Filter.Tendsto
       (fun N : ℕ => Real.sqrt (Real.log (Real.log N) / Real.log N))
       Filter.atTop (nhds 0) := by
-    have := (Real.continuous_sqrt.tendsto 0).comp hratio
-    simpa [Real.sqrt_zero] using this
+    exact (Real.continuous_sqrt.tendsto' 0 0 Real.sqrt_zero).comp hratio
   exact hsqrt.congr (fun N => Real.sqrt_eq_rpow _)
 
 /-- **Bourgain's explicit bound recovers the qualitative Roth theorem — derived, not
@@ -342,7 +341,7 @@ theorem loglog_cubed_div_log_tendsto_zero :
   have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   -- compose: `(log (log N))³ / log N → 0`.
-  simpa [Function.comp] using hpoly.comp hlogN
+  exact hpoly.comp hlogN
 
 /-- **Bourgain's saving is asymptotically strictly stronger than Roth's 1953 saving.**
 
@@ -370,8 +369,8 @@ theorem bourgain_factor_isLittleO_roth_factor :
     have hratio : Filter.Tendsto
         (fun N : ℕ => Real.sqrt (Real.log (Real.log N) ^ 3 / Real.log N))
         Filter.atTop (nhds 0) := by
-      have := (Real.continuous_sqrt.tendsto 0).comp loglog_cubed_div_log_tendsto_zero
-      simpa [Real.sqrt_zero] using this
+      exact (Real.continuous_sqrt.tendsto' 0 0 Real.sqrt_zero).comp
+        loglog_cubed_div_log_tendsto_zero
     refine hratio.congr' ?_
     filter_upwards [Filter.eventually_ge_atTop 3] with N hN
     have hLL : 0 < Real.log (Real.log N) := loglog_pos_of_three_le hN

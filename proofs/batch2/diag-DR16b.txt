@@ -1,0 +1,438 @@
+===== AbelRuffiniGaloisExtensionsOQ05OQ01
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== AbelRuffiniOQ04OQ09Cyclic
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== AlgebraicNumbersCountableOQ01OQ01OQ01
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:89:2: failed to synthesize instance of type class
+  Algebra.IsAlgebraic ℚ ↥algebraicNumbersField
+error: Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:94:51: failed to synthesize instance of type class
+  Algebra.IsSeparable ℚ ↥algebraicNumbersField
+===== AlgebraicNumbersCountableOQ01OQ03
+error: Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:78:17: failed to synthesize instance of type class
+  Algebra.IsAlgebraic ℚ ↥algebraicNumbersField
+error: Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:95:2: failed to synthesize instance of type class
+  IsAlgClosure ℚ (AlgebraicClosure ℚ)
+===== AngleTrisectionOQ02
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== AngleTrisectionOQ02OQ04OQ01
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== AngleTrisectionOQ02OQ04OQ01Aristotle
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:539:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ03.lean:542:72: Tactic `assumption` failed
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:4: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:539:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ03.lean:542:72: Tactic `assumption` failed
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:4: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:539:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ03.lean:542:72: Tactic `assumption` failed
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:4: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+===== AreaOfCircleOQ01OQ03OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:539:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ03.lean:542:72: Tactic `assumption` failed
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:4: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+===== AreaOfCircleOQ01OQ03OQ02
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:539:9: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  IsoperimetricOQ.realFourierCoeff ?f ?n ^ 2
+in the target expression
+error: Proofs/AreaOfCircleOQ01OQ03.lean:542:72: Tactic `assumption` failed
+f : ℝ → ℝ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:4: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+===== BinaryGcdOQ02OQ01
+error: Proofs/BinaryGcdOQ02OQ01.lean:75:17: Unknown identifier `a`
+error: Proofs/BinaryGcdOQ02OQ01.lean:94:12: unsolved goals
+case case1
+error: Proofs/BinaryGcdOQ02OQ01.lean:94:12: unsolved goals
+case case1
+b : ℕ
+error: Proofs/BinaryGcdOQ02OQ01.lean:98:11: unsolved goals
+case case2.zero
+x✝ : 0 = 0 → False
+error: Proofs/BinaryGcdOQ02OQ01.lean:99:13: unsolved goals
+case case2.succ
+a : ℕ
+===== BirthdayProblemOQ01OQ01
+error: Proofs/BirthdayProblemOQ01OQ01.lean:73:50: Unknown constant `Finset.filter_eq_empty`
+error: Proofs/BirthdayProblemOQ01OQ01.lean:79:24: Function expected at
+  h
+error: Proofs/BirthdayProblemOQ01OQ01.lean:79:24: Function expected at
+  h
+but this term has type
+error: Proofs/BirthdayProblemOQ01OQ01.lean:80:29: Function expected at
+  h
+but this term has type
+error: Proofs/BirthdayProblemOQ01OQ01.lean:81:15: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case mpr
+===== BirthdayProblemOQ01OQ01Aristotle
+error: Proofs/BirthdayProblemOQ01OQ01.lean:73:50: Unknown constant `Finset.filter_eq_empty`
+error: Proofs/BirthdayProblemOQ01OQ01.lean:79:24: Function expected at
+  h
+error: Proofs/BirthdayProblemOQ01OQ01.lean:79:24: Function expected at
+  h
+but this term has type
+error: Proofs/BirthdayProblemOQ01OQ01.lean:80:29: Function expected at
+  h
+but this term has type
+error: Proofs/BirthdayProblemOQ01OQ01.lean:81:15: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case mpr
+===== BirthdayProblemOQ01OQ01OQ03
+error: Proofs/BirthdayProblemOQ01OQ01.lean:73:50: Unknown constant `Finset.filter_eq_empty`
+error: Proofs/BirthdayProblemOQ01OQ01.lean:79:24: Function expected at
+  h
+error: Proofs/BirthdayProblemOQ01OQ01.lean:79:24: Function expected at
+  h
+but this term has type
+error: Proofs/BirthdayProblemOQ01OQ01.lean:80:29: Function expected at
+  h
+but this term has type
+error: Proofs/BirthdayProblemOQ01OQ01.lean:81:15: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case mpr
+===== CayleyHamiltonOQ01OQ01OQ01
+error: Proofs/CayleyHamiltonOQ01OQ01OQ01.lean:76:4: Type mismatch: After simplification, term
+  h2
+ has type
+===== CayleyHamiltonOQ01OQ01OQ01OQ01
+error: Proofs/CayleyHamiltonOQ01OQ01OQ01.lean:76:4: Type mismatch: After simplification, term
+  h2
+ has type
+===== ChineseRemainderExplicitOQ04OQ03OQ01
+error: Proofs/ChineseRemainderExplicitOQ04OQ03OQ01.lean:155:28: Application type mismatch: The argument
+  dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hp_dvd_L ?m.604) ?m.605
+has type
+error: Proofs/ChineseRemainderExplicitOQ04OQ03OQ01.lean:196:32: unsolved goals
+R : Type u_1
+inst✝¹ : EuclideanDomain R
+===== CircumferenceViaDifferentiationOQ03
+error: Proofs/CircumferenceViaDifferentiationOQ03.lean:90:4: `ring_nf` made no progress on the goal
+error: Proofs/CircumferenceViaDifferentiationOQ03.lean:103:4: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+error: Proofs/CircumferenceViaDifferentiationOQ03.lean:103:4: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+✖ [8583/8606] Building Proofs.InverseGaloisD4OQ03 (5.6s)
+===== FourthRoot2SplittingFieldOQ01
+error: Proofs/FourthRoot2SplittingFieldOQ01.lean:277:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  lift (adjoin ?F ?S)
+in the target expression
+===== InfinitudePrimes4k1OQ03
+error: Proofs/InfinitudePrimes4k1OQ03.lean:89:2: No goals to be solved
+warning: Proofs/InfinitudePrimes4k1OQ03.lean:396:8: declaration uses `sorry`
+warning: Proofs/InfinitudePrimes4k1OQ03.lean:434:8: declaration uses `sorry`
+===== InfinitudePrimes4k3OQ03
+error: Proofs/InfinitudePrimes4k3OQ03.lean:95:26: Application type mismatch: The argument
+  Prime.two_le hp
+has type
+error: Proofs/InfinitudePrimes4k3OQ03.lean:97:26: Application type mismatch: The argument
+  Prime.two_le hp
+has type
+===== InverseGalois
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== InverseGaloisA5
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisA5Dedekind
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisA5DedekindInstantiation
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisA5DedekindMod7
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisD4OQ01External
+error: Proofs/InverseGaloisD4OQ01External.lean:160:36: Application type mismatch: The argument
+  hx
+has type
+===== InverseGaloisD4OQ02
+error: Proofs/InverseGaloisD4OQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:160:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:309:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+===== InverseGaloisD4OQ02OQ03
+error: Proofs/InverseGaloisD4OQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:160:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:309:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+===== InverseGaloisD4OQ02OQ03OQ01
+error: Proofs/InverseGaloisD4OQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:160:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:309:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+===== InverseGaloisD4OQ02OQ03OQ01OQ01
+error: Proofs/InverseGaloisD4OQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:160:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:309:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+===== InverseGaloisD4OQ02OQ03OQ01OQ01OQ01
+error: Proofs/InverseGaloisD4OQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:160:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:309:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+===== InverseGaloisD4OQ02OQ04
+error: Proofs/InverseGaloisD4OQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:160:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+error: Proofs/InverseGaloisD4OQ02.lean:309:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((X ^ n - C ↑p).rootSet q.SplittingField)
+in the target expression
+===== InverseGaloisD4OQ03
+error: Proofs/InverseGaloisD4OQ03.lean:232:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Fintype.card ↑((xPowSub 4 2).rootSet (xPowSub 4 2).SplittingField)
+in the target expression
+===== InverseGaloisOQ01
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisOQ02
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== InverseGaloisOQ03
+error: Proofs/InverseGalois.lean:1033:27: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1084:13: failed to synthesize instance of type class
+  IsGalois ℚ (cyclotomic p ℚ).SplittingField
+error: Proofs/InverseGalois.lean:1087:28: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+error: Proofs/InverseGalois.lean:1090:27: failed to synthesize instance of type class
+  Mul (Gal((cyclotomic p ℚ).SplittingField/ℚ) ⧸ H)
+===== InverseGaloisOQ06OQ01
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisOQ06OQ02
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisOQ06OQ02GalBridge
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisOQ06OQ02GapChar
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== InverseGaloisOQ06OQ02P11
+error: Proofs/InverseGaloisA5.lean:449:6: Type mismatch: After simplification, term
+  hprod
+ has type
+===== KnightsTourObliqueOQ02
+error: Proofs/KnightsTourObliqueOQ02.lean:119:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+  Fin.isValue
+===== KnightsTourObliqueOQ02Order16
+error: Proofs/KnightsTourObliqueOQ02.lean:119:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+  Fin.isValue
+===== KnightsTourObliqueOQ02Palindrome
+error: Proofs/KnightsTourObliqueOQ02.lean:119:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+  Fin.isValue
+===== KnightsTourObliqueOQ02Reverse
+error: Proofs/KnightsTourObliqueOQ02.lean:119:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+  Fin.isValue
+===== KnightsTourObliqueOQ02ReverseCount
+error: Proofs/KnightsTourObliqueOQ02.lean:119:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+  Fin.isValue
+===== KnightsTourObliqueOQ03
+error: Proofs/KnightsTourObliqueOQ02.lean:119:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:120:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+error: Proofs/KnightsTourObliqueOQ02.lean:164:8: Unknown constant `Finset.eq_empty_of_forall_not_mem`
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+error: Proofs/KnightsTourObliqueOQ02.lean:165:8: No goals to be solved
+warning: Proofs/KnightsTourObliqueOQ02.lean:498:58: This simp argument is unused:
+  Fin.isValue
+===== SpernerFreudenthalSimplex
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstance
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ01
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ04
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ05
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type
+===== SpernerSimplicialInstanceOQ05Scarf1d
+error: Proofs/SpernerSimplicialInstance.lean:1018:33: Type mismatch
+  Option.noConfusion ?m.44
+has type

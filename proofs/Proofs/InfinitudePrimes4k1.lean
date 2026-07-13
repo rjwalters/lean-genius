@@ -29,7 +29,7 @@ but the proof here requires NO analytic number theory.
 ## Mathlib Dependencies
 - `Nat.Prime` : Definition of prime numbers
 - `Nat.exists_prime_and_dvd` : Every n ≥ 2 has a prime divisor
-- `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` : Key lemma from SumTwoSquares
+- `Nat.mod_four_ne_three_of_mem_primeFactors_of_isSquare_neg_one` : Key lemma from SumTwoSquares
 - Basic modular arithmetic
 -/
 
@@ -63,7 +63,7 @@ lemma prime_dvd_sq_add_one_mod_four {p k : ℕ} (hp : Nat.Prime p) (hp2 : p ≠ 
   haveI : Fact (Nat.Prime p) := ⟨hp⟩
   have hpmem : p ∈ Nat.primeFactors p :=
     Nat.mem_primeFactors.mpr ⟨hp, dvd_refl p, hp.pos.ne'⟩
-  have hne3 := Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one hpmem hsq
+  have hne3 := Nat.mod_four_ne_three_of_mem_primeFactors_of_isSquare_neg_one hpmem hsq
   -- p % 4 ∈ {0, 1, 2, 3}, p is odd prime, so p % 4 ∈ {1, 3}
   have hodd : Odd p := hp.odd_of_ne_two hp2
   have hmod : p % 4 = 1 ∨ p % 4 = 3 := by

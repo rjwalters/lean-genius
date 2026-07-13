@@ -170,7 +170,7 @@ theorem erdos_186_bounds :
   constructor
   · -- Lower bound from Bosznay
     have h1 : N ≥ 1 := Nat.one_le_of_lt hN
-    exact lower_bound_quarter N h1
+    linarith [lower_bound_quarter N h1]
   · -- Upper bound from Pham-Zakharov
     exact hUpper N hN
 
@@ -203,7 +203,7 @@ theorem nonAveraging_no_centered_AP {A : Finset ℕ} (hA : IsNonAveraging A)
     {a b c : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A)
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     2 * b ≠ a + c := by
-  exact hA b hb a ha c hc hab.symm hac.symm hbc.symm
+  exact hA b hb a ha c hc hab hbc.symm hac
 
 /-
 ## Part VII: Connection to Arithmetic Progressions

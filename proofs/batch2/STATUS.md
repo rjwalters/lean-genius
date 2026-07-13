@@ -322,3 +322,57 @@ Merge: `cd proofs/batch2 && python3 merge_results.py --results results-X.txt --d
 All edits are applied ONLY to files already FAIL in proofs/spike-logs-full/results-full.tsv,
 so no previously-passing file can have regressed (regression sample re-checked
 40 GREEN rows in DR5: 40/40 PASS).
+
+---
+
+# DOCTOR INCREMENT 5A (type-mismatch class, #38065, 2026-07-13)
+
+Ledger at increment close: **1048 GREEN / 1587 RESIDUAL / 24 PRE-EXISTING**
+(after merging origin/feature/issue-37508 with 5B's +81; union-resolved).
+**type-mismatch: 520 RESIDUAL at start -> 300 at close.**
+
+## Waves (all artifacts namespaced DR15A*)
+
+- **DR15A1** (520 targets): full fresh re-verify of every type-mismatch row.
+  +27 zero-edit GREEN (stale W0/D1/DR6-era diags); 493 context-rich fresh
+  diags (diag-DR15A1.txt) — the fuel for everything below.
+- **DR15A2** (33 targets): first fix wave. +25 GREEN.
+- **DR15A3** (177 targets): 22-batch parallel agent fan-out over the fresh
+  error blocks, family-coherent. 134 mtime-PASS + 3 exit-code-confirmed
+  PASS = **+137 GREEN**; 40 true FAILs re-diagnosed (diag-DR15A3.txt) and
+  reverted (except 2 foreign-WIP files left untouched).
+
+## Confirmations / new infra findings
+
+- **runner5 false mtime-FAILs are real** (5B's finding independently hit):
+  Erdos333Problem, Erdos396OQ04OQ01OQ01OQ02OQ01, Erdos446Problem showed FAIL
+  with zero error lines in any chunk log; runner4 exit-code re-check: 3/3
+  PASS. Rule: a FAIL with no own-or-dep error lines in the wave logs is
+  presumed-PASS until exit-code-checked.
+- Recipes: rename-map **section 7h** (Real.rpow_add 0<x, self_le_add_left,
+  add_le_add h le_rfl, numeral-dot parse, Function.comp_def, nth_count
+  bridge replacing native_decide on Nat.nth, IsMulCommutative drift,
+  dominated-deriv nhds arg, descFactorial orientation, convert-using for
+  proof-carrying numerals, …).
+- ℕ/ℝ binder-inference drift is a big recurring type-mismatch shape:
+  `∀ n ≥ 10, … log n …` / `∃ᶠ n in atTop` now elaborate `n : ℝ` where
+  v4.26 chose ℕ — fix by annotating the binder (`∀ (n : ℕ)`), ~10 files.
+
+## Flagged for operator decision (statements mathematically false/unprovable — NOT fixed, per no-statement-change rule)
+
+- Erdos820Aristotle `gcd_ge_two_of_ne_one` (gcd can be 0 at k=l=1).
+- Erdos469Problem `not_pseudoperfect_0` (∅ ⊆ properDivisors 0 sums to 0).
+- Erdos1155OQ01 `f_small_values_bound` middle conjunct (parent axioms only
+  give f 1 ≤ 1/4, not ≤ 0).
+- Erdos1156Problem `isKColorable_zero_iff` mpr (needs V → Fin 0 for
+  arbitrary nonempty V).
+
+## Remaining type-mismatch backlog (300)
+
+- 40 DR15A3 true FAILs have the freshest diags (diag-DR15A3.txt) — one
+  error from GREEN in many cases.
+- ~110 easy/medium rows never got a fix agent (session-limit deaths of
+  batches C1/C3 and round-1 B-batches); error blocks for ALL of them are
+  pre-extracted (fresh, context-rich) in diag-DR15A1.txt.
+- ~66 deep rows (>8 errors) triaged: Ballot LGV chain, Fourier
+  AreaOfCircleOQ01OQ03, PoincareConjecture, TaylorTheorem family.

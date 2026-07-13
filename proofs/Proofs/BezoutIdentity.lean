@@ -175,8 +175,8 @@ theorem diophantine_solvable (a b c : ℤ) :
     (∃ x y : ℤ, a * x + b * y = c) ↔ (Int.gcd a b : ℤ) ∣ c := by
   constructor
   · intro ⟨x, y, heq⟩
-    have ha : (Int.gcd a b : ℤ) ∣ a := Int.gcd_dvd_left
-    have hb : (Int.gcd a b : ℤ) ∣ b := Int.gcd_dvd_right
+    have ha : (Int.gcd a b : ℤ) ∣ a := Int.gcd_dvd_left a b
+    have hb : (Int.gcd a b : ℤ) ∣ b := Int.gcd_dvd_right a b
     rw [← heq]
     exact dvd_add (dvd_mul_of_dvd_left ha x) (dvd_mul_of_dvd_left hb y)
   · intro hdiv

@@ -66,7 +66,7 @@ private lemma contDiff_one_continuous_deriv {F : Type*} [NormedAddCommGroup F] [
     funext fun t => hdiff.differentiableAt.hasFDerivAt.hasDerivAt.deriv
   rw [hderiv_eq]
   -- fderiv ℝ f is continuous (from ContDiff ≥ 1); evaluation at 1 is then continuous
-  exact (hf.continuous_fderiv le_rfl).clm_apply continuous_const
+  exact (hf.continuous_fderiv one_ne_zero).clm_apply continuous_const
 
 /-- The x-component derivative `t ↦ deriv (Prod.fst ∘ γ) t` is continuous for a C¹ curve.
 

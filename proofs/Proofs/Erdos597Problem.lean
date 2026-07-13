@@ -31,20 +31,20 @@ namespace Erdos597
 
 /-- The first uncountable ordinal ω₁, axiomatized with the defining property
 that it is uncountable but every smaller ordinal is countable. -/
-axiom omega_1 : Ordinal
+axiom omega_1 : Ordinal.{0}
 
 /-  ω₁ is uncountable. -/
 /-- The first infinite ordinal ω (identified with ℕ). -/
-def omega : Ordinal := Ordinal.omega
+def omega : Ordinal.{0} := Ordinal.omega0
 
 /-- The ordinal product ω₁ · ω. This is an uncountable limit ordinal
 larger than ω₁ but smaller than ω₁². -/
-axiom omega_1_times_omega : Ordinal
+axiom omega_1_times_omega : Ordinal.{0}
 
 /-  ω₁ · ω is defined as the ordinal product. -/
 /-- The ordinal square ω₁² = ω₁ · ω₁. This is the "source" ordinal
 whose pairs are 2-colored in the partition relation. -/
-axiom omega_1_squared : Ordinal
+axiom omega_1_squared : Ordinal.{0}
 
 /-  ω₁² is defined as ordinal exponentiation. -/
 /- ## Graph Structures -/

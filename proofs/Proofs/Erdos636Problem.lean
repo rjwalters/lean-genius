@@ -142,7 +142,8 @@ axiom kwan_sudakov (C : ℝ) (hC : C > 0) :
 noncomputable def ks_exponent : ℝ := 5/2
 
 /-- The improvement from EFS to KS. -/
-theorem ks_improves_efs : ks_exponent > efs_exponent := by norm_num
+theorem ks_improves_efs : ks_exponent > efs_exponent := by
+  unfold ks_exponent efs_exponent; norm_num
 
 /-
 ## Part VII: Optimality
@@ -179,7 +180,7 @@ Key ideas in the Kwan-Sudakov proof.
 /-  Key lemma: Signatures are well-distributed across the (v, e) plane. -/
 /-- The vertex count v ranges from 0 to n. -/
 theorem vertex_count_range (n : ℕ) (G : SimpleGraph (Fin n)) (S : Finset (Fin n)) :
-    S.card ≤ n := Finset.card_le_univ S
+    S.card ≤ n := (Finset.card_le_univ S).trans_eq (Fintype.card_fin n)
 
 /-- The edge count e ranges from 0 to v(v-1)/2. -/
 theorem edge_count_range [DecidableEq V] [Fintype V]

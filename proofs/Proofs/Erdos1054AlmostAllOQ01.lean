@@ -93,7 +93,7 @@ private theorem getLast_scanl_add (a : ℕ) :
   induction l generalizing a with
   | nil => simp [List.scanl]
   | cons b l ih =>
-    simp only [List.scanl, List.sum_cons]
+    simp only [List.scanl_cons, List.sum_cons]
     rw [List.getLast_cons (scanl_add_ne_nil (a + b) l), ih (a + b)]
     omega
 
@@ -120,7 +120,7 @@ theorem sigma_in_partial_sums (m : ℕ) (hm : m ≥ 1) :
     | cons d ds => exact ⟨d, ds, rfl⟩
   -- partialDivisorSums m = scanl (+) d ds
   have hpds : partialDivisorSums m = List.scanl (· + ·) d ds := by
-    unfold partialDivisorSums; rw [hsd, List.scanl, List.tail_cons, Nat.zero_add]
+    unfold partialDivisorSums; rw [hsd, List.scanl_cons, List.tail_cons, Nat.zero_add]
   -- scanl (+) d ds is non-empty
   have hsc_ne : List.scanl (· + ·) d ds ≠ [] := scanl_add_ne_nil d ds
   -- Last of scanl (+) d ds = d + ds.sum = sigma m

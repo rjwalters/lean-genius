@@ -308,7 +308,7 @@ theorem productRatio_accumulation :
   -- Bolzano–Weierstrass: a bounded real sequence has a convergent subsequence.
   obtain ⟨L, hLmem, φ, hφ, htend⟩ := isCompact_Icc.tendsto_subseq hmem
   refine ⟨c, C, L, hc, hcC, hLmem.1, hLmem.2, φ, hφ, ?_⟩
-  simpa [Function.comp] using htend
+  simpa [Function.comp_def] using htend
 
 -- ============================================================================
 -- § 6. Structural Analysis

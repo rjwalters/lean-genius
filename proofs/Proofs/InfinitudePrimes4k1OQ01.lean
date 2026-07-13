@@ -26,7 +26,7 @@ pinned at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
 The backward direction (easy) is a mod-4 case analysis on `a^2 + b^2`.
 
 Together they strengthen `InfinitudePrimes4k1.lean`, which uses only the
-forward direction implicitly via `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`.
+forward direction implicitly via `Nat.mod_four_ne_three_of_mem_primeFactors_of_isSquare_neg_one`.
 
 ## Status
 

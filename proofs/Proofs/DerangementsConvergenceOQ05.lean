@@ -157,7 +157,7 @@ theorem fixedPointProb_tendsto (k : ℕ) :
     tendsto_atTop_atTop.2 (fun b => ⟨b + k, fun n hn => by omega⟩)
   have hcomp : Tendsto (fun n => (numDerangements (n - k) : ℝ) / ((n - k).factorial : ℝ)) atTop
       (𝓝 (Real.exp (-1))) := by
-    simpa [Function.comp] using numDerangements_tendsto_inv_e.comp hsub
+    simpa [Function.comp_def] using numDerangements_tendsto_inv_e.comp hsub
   have hmul := hcomp.const_mul (1 / (k.factorial : ℝ))
   have heq : (1 / (k.factorial : ℝ)) * Real.exp (-1) = Real.exp (-1) / (k.factorial : ℝ) := by
     ring

@@ -195,7 +195,8 @@ theorem f_growth_rate :
       ∀ n : ℕ, n ≥ 3 →
         c₁ * n / (Real.log n)^2 ≤ f n ∧
         f n ≤ c₂ * n / (Real.log n)^2 := by
-  exact erdos_asymptotic
+  obtain ⟨c₁, c₂, hc₁, hc₂, h⟩ := erdos_asymptotic
+  exact ⟨c₁, c₂, hc₁, hc₂, fun n hn => h n (by omega)⟩
 
 /-- The ratio f(n)/(n/(log n)²) is bounded away from 0 and ∞ -/
 theorem ratio_bounded :

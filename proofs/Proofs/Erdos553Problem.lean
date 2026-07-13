@@ -171,7 +171,9 @@ def AsymptoticEquiv (f g : ℕ → ℝ) : Prop :=
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∃ N : ℕ,
     ∀ n ≥ N, c₁ * g n ≤ f n ∧ f n ≤ c₂ * g n
 
-notation:50 f " ≍ " g => AsymptoticEquiv f g
+-- v4.31 compat (#38065): `≍` is now core `HEq` notation; give the local
+-- asymptotic-equivalence notation high priority to resolve the ambiguity.
+notation:50 (priority := high) f " ≍ " g => AsymptoticEquiv f g
 
 /-- The Alon-Rödl result in asymptotic notation -/
 theorem alon_rodl : ∃ k : ℕ,

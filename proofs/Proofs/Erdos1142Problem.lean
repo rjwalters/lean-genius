@@ -104,7 +104,9 @@ theorem erdos1142_ge_4 {n : ℕ} (hn : SatisfiesErdos1142 n) : n ≥ 4 := by
   obtain ⟨k, ⟨_, hk1, hk2⟩, _⟩ := hm
   -- k ≥ 1, 2^k < n, so n ≥ 3
   have hn3 : n ≥ 3 := by
-    have : 2 ^ k ≥ 2 := Nat.one_le_pow k 2 (by norm_num) |>.trans_lt (by omega) |>.le
+    have : 2 ^ k ≥ 2 := by
+      calc 2 = 2 ^ 1 := (pow_one 2).symm
+        _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk1
     omega
   have h2_mem := two_mem_powersOfTwoBetween hn3
   have h_ge2 := (hprime 2 h2_mem).two_le

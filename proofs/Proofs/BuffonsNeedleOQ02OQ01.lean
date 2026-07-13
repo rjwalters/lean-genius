@@ -298,6 +298,6 @@ theorem crossingFactor_tendsto_zero :
         (fun x => (Real.sqrt_eq_rpow x).symm)
     have hsqrt : Filter.Tendsto (fun n : ℕ => Real.sqrt (↑(n + 2))) Filter.atTop Filter.atTop :=
       hsqrtAT.comp (tendsto_natCast_atTop_atTop.comp (Filter.tendsto_add_atTop_nat 2))
-    simpa only [one_div, Pi.inv_apply] using hsqrt.inv_tendsto_atTop
+    simpa only [one_div, Pi.inv_def] using hsqrt.inv_tendsto_atTop
 
 end BuffonsNeedleOQ02OQ01

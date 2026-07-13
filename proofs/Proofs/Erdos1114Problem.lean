@@ -92,8 +92,8 @@ noncomputable def Midpoint (a₀ d : ℝ) (n : ℕ) : ℝ :=
 **Distance from midpoint:**
 How far each critical point is from the midpoint.
 -/
-noncomputable def DistFromMidpoint (c : Fin n → ℝ) (a₀ d : ℝ) (n : ℕ) (i : Fin n) : ℝ :=
-  |c i - Midpoint a₀ d n|
+noncomputable def DistFromMidpoint {n : ℕ} (c : Fin n → ℝ) (a₀ d : ℝ) (n' : ℕ) (i : Fin n) : ℝ :=
+  |c i - Midpoint a₀ d n'|
 
 /-
 ## Part IV: The Main Theorem

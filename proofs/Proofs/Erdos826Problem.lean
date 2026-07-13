@@ -193,7 +193,13 @@ def erdos_248_weaker : Prop :=
 /-- Problem #826 implies Problem #248 (the weaker form). -/
 theorem erdos_826_implies_248 (h : erdos_826_conjecture) : erdos_248_weaker := by
   obtain ⟨C, hC, hInf⟩ := h
-  exact ⟨C, hC, hInf⟩
+  refine ⟨C, hC, ?_⟩
+  have hset : { n : ℕ | ∀ k ≥ 1, (σ 0 (n + k) : ℝ) ≤ C * (k : ℝ) ^ (1 : ℝ) } =
+      goodStartingPoints C := by
+    ext n
+    simp [goodStartingPoints, linearBoundCondition, Real.rpow_one]
+  rw [hset]
+  exact hInf
 
 /-
 # Part 6: Small Examples and Observations

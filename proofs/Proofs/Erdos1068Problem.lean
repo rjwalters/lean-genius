@@ -122,7 +122,7 @@ def inducedSubgraph (G : SimpleGraph V) (S : Set V) :
     paths exist, some path avoids S internally. Combined with u ∉ S and v ∉ S,
     all vertices of this path avoid S. -/
 theorem inf_connected_no_finite_separator :
-    ∀ (V : Type) (G : SimpleGraph V),
+    ∀ (V : Type*) (G : SimpleGraph V),
       InfinitelyConnected G →
       ∀ (u v : V), u ≠ v → ∀ (S : Finset V),
         u ∉ (S : Set V) → v ∉ (S : Set V) →

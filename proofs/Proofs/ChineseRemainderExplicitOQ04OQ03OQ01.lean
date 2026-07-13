@@ -40,7 +40,7 @@ noncomputable def crtSolve₂ (m n a b : R) (h : gcd m n ∣ (a - b)) : R :=
 /-- crtSolve₂ satisfies the first congruence x ≡ a (mod m). -/
 theorem crtSolve₂_mod_m {m n a b : R} (h : gcd m n ∣ (a - b)) :
     m ∣ (crtSolve₂ m n a b h - a) :=
-  ⟨-(gcdA m n * Classical.choose h), by simp [crtSolve₂]; ring⟩
+  ⟨-(gcdA m n * Classical.choose h), by simp [crtSolve₂]⟩
 
 /-- **Key lemma for Bézout arithmetic**: gcd - m*gcdA = n*gcdB (from gcd = m*gcdA + n*gcdB). -/
 private theorem bez_complement' (m n : R) :
@@ -85,7 +85,7 @@ private noncomputable def crtStep (L m a y : R) (h : gcd L m ∣ (y - a)) : R :=
 
 private theorem crtStep_mod_L {L m a y : R} (h : gcd L m ∣ (y - a)) :
     L ∣ (crtStep L m a y h - y) :=
-  ⟨-(gcdA L m * Classical.choose h), by simp [crtStep]; ring⟩
+  ⟨-(gcdA L m * Classical.choose h), by simp [crtStep]⟩
 
 private theorem crtStep_mod_m {L m a y : R} (h : gcd L m ∣ (y - a)) :
     m ∣ (crtStep L m a y h - a) := by
@@ -120,7 +120,7 @@ noncomputable def crtSolveListCert :
       obtain ⟨y, hy⟩ := crtSolveListCert rest hcrest
       -- GCD compatibility between tail LCM and new modulus
       have hcompat_head : ∀ p ∈ rest, gcd p.2 pair.2 ∣ (p.1 - pair.1) := fun p hp =>
-        h p pair (List.mem_cons.mpr (.inr hp)) (List.mem_cons_self pair rest)
+        h p pair (List.mem_cons.mpr (.inr hp)) List.mem_cons_self
       -- Key divisibility: gcd(listLcm(rest moduli), pair.2) ∣ (y - pair.1)
       have hgcd : gcd (listLcm (moduli rest)) pair.2 ∣ (y - pair.1) :=
         gcd_listLcm_dvd_sub hy hcompat_head
@@ -134,15 +134,17 @@ noncomputable def crtSolveListCert :
         bez_complement' L pair.2
       refine ⟨x, fun p hp => ?_⟩
       rcases List.mem_cons.mp hp with rfl | hrest
-      · -- Head congruence: pair.2 ∣ (x - pair.1)
-        exact ⟨gcdB L pair.2 * q, by
-          show y - L * (gcdA L pair.2 * q) - pair.1 = pair.2 * (gcdB L pair.2 * q)
-          calc y - L * (gcdA L pair.2 * q) - pair.1
-              = (y - pair.1) - L * gcdA L pair.2 * q := by ring
-            _ = gcd L pair.2 * q - L * gcdA L pair.2 * q := by rw [hq_spec]
-            _ = (gcd L pair.2 - L * gcdA L pair.2) * q := by ring
-            _ = pair.2 * gcdB L pair.2 * q := by rw [hcomp]
-            _ = pair.2 * (gcdB L pair.2 * q) := by ring⟩
+      · -- Head congruence: p.2 ∣ (x - p.1)
+        -- v4.31 compat (#38065): `rcases … with rfl` now substitutes `pair := p`,
+        -- so the head branch refers to `p` rather than `pair`.
+        exact ⟨gcdB L p.2 * q, by
+          show y - L * (gcdA L p.2 * q) - p.1 = p.2 * (gcdB L p.2 * q)
+          calc y - L * (gcdA L p.2 * q) - p.1
+              = (y - p.1) - L * gcdA L p.2 * q := by ring
+            _ = gcd L p.2 * q - L * gcdA L p.2 * q := by rw [hq_spec]
+            _ = (gcd L p.2 - L * gcdA L p.2) * q := by ring
+            _ = p.2 * gcdB L p.2 * q := by rw [hcomp]
+            _ = p.2 * (gcdB L p.2 * q) := by ring⟩
       · -- Tail congruences: p.2 ∣ (x - p.1) via L
         have hp_dvd_L : p.2 ∣ L :=
           dvd_listLcm (List.mem_map.mpr ⟨p, hrest, rfl⟩)
@@ -150,7 +152,7 @@ noncomputable def crtSolveListCert :
         have hp_dvd_xy : p.2 ∣ (x - y) := by
           have heq : x - y = -(L * (gcdA L pair.2 * q)) := by rw [hx_def]; ring
           rw [heq]
-          exact dvd_neg.mpr (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left hp_dvd_L _) _)
+          exact dvd_neg.mpr (hp_dvd_L.mul_right _)
         have heq : x - p.1 = (x - y) + (y - p.1) := by ring
         rw [heq]
         exact dvd_add hp_dvd_xy hp_dvd_ya
@@ -191,7 +193,9 @@ example : ∃ x : ℤ, (6 : ℤ) ∣ (x - 2) ∧ (10 : ℤ) ∣ (x - 4) :=
 
 /-- For coprime moduli (gcd(7,5)=1), the formula gives x = 3c·7 + (-4c)·5 = c: -/
 example (c : ℤ) : ∃ x : ℤ, (7 : ℤ) ∣ (x - (3 * c)) ∧ (5 : ℤ) ∣ (x - (-4 * c)) :=
-  ⟨3 * c, ⟨0, by ring⟩, ⟨7 * c, by ring⟩⟩
+  -- v4.31 compat (#38065): corrected witnesses — x = -144c satisfies
+  -- x ≡ 3c (mod 7) and x ≡ -4c (mod 5); the old second witness was wrong.
+  ⟨-144 * c, ⟨-21 * c, by ring⟩, ⟨-28 * c, by ring⟩⟩
 
 /-- Unsolvable: gcd(6,10) = 2 does NOT divide 4-1=3. -/
 example : ¬ ∃ x : ℤ, (6 : ℤ) ∣ (x - 1) ∧ (10 : ℤ) ∣ (x - 4) := by
