@@ -3653,4 +3653,52 @@ theorem ternary_conic_sq_sum_lower_sharp :
   · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
     nlinarith [h]
 
+/-! ### A one-parameter *family* of oblique four-point-line quadruples
+
+`oblique_quadruple_onQuartic_collinear` exhibits a *single* oblique quadruple. The two
+lemmas below upgrade that isolated point to a genuine one-parameter family: for every
+`s` and every `u` with `u² = 5 − 3s²`, the abscissae `(2s, 0, −s+u, −s−u)` solve the
+arithmetic criterion `Σx = 0 ∧ Σx² = 10`, hence form a four-point line on the quartic.
+The family is parametrised by a point `(s, u)` on the ellipse `3s² + u² = 5`.  Every
+member carries the abscissa `0`, so a *symmetric* member `(a, −a, b, −b)` would have to be
+the degenerate `(0, 0, u, −u)` (the slice `s = 0`); hence every **non-degenerate** member,
+`s ≠ 0`, is genuinely oblique — the abscissa `0` is present but its would-be partner
+`2s ≠ 0` breaks the negation symmetry.  This does **not** touch the OPEN super-linear growth
+(`solymosi_stojakovic_lower_bound`), which needs super-linearly many *distinct* solution
+sets; it records that the oblique solutions the engine accepts form a continuum, not a
+lone example. -/
+
+/-- **A one-parameter family of oblique quadruples solves the arithmetic criterion.**
+For any `s u : ℝ` with `u² = 5 − 3s²` (i.e. `(s, u)` on the ellipse `3s² + u² = 5`), the
+abscissae `(2s, 0, −s+u, −s−u)` satisfy `Σx = 0` and `Σx² = 10`.  The sum vanishes
+identically; the sum of squares is `4s² + 0 + (s²−2su+u²) + (s²+2su+u²) = 6s² + 2u²`, which
+`u² = 5 − 3s²` collapses to `6s² + 2(5 − 3s²) = 10`. -/
+theorem parametric_oblique_criterion (s u : ℝ) (hu : u ^ 2 = 5 - 3 * s ^ 2) :
+    2 * s + 0 + (-s + u) + (-s - u) = 0 ∧
+      (2 * s) ^ 2 + (0 : ℝ) ^ 2 + (-s + u) ^ 2 + (-s - u) ^ 2 = 10 := by
+  refine ⟨by ring, ?_⟩
+  linear_combination 2 * hu
+
+/-- **The one-parameter family forms four-point lines on the quartic.**
+For `u² = 5 − 3s²` with the four abscissae `2s, 0, −s+u, −s−u` pairwise distinct, the four
+points above them on `y = x⁴ − 5x²` are collinear — a genuine four-point line anchored
+through the `(2s, ·)` and `(0, ·)` points.  The parametric analogue of
+`symmetric_quadruple_onQuartic_collinear` and `oblique_quadruple_onQuartic_collinear`,
+derived directly from the sum-of-squares criterion `four_onQuartic_collinear_iff_sq` via
+`parametric_oblique_criterion`; the members with `s ≠ 0` are oblique. -/
+theorem parametric_oblique_onQuartic_collinear (s u : ℝ) (hu : u ^ 2 = 5 - 3 * s ^ 2)
+    (h01 : 2 * s ≠ 0) (h12 : (0 : ℝ) ≠ -s + u) (h20 : -s + u ≠ 2 * s)
+    (h13 : (0 : ℝ) ≠ -s - u) (h30 : -s - u ≠ 2 * s) (h23 : -s + u ≠ -s - u) :
+    collinear (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2)
+        (-s + u, (-s + u) ^ 4 - 5 * (-s + u) ^ 2) ∧
+      collinear (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2)
+        (-s - u, (-s - u) ^ 4 - 5 * (-s - u) ^ 2) := by
+  rw [four_onQuartic_collinear_iff_sq
+      (show onQuartic (2 * s, (2 * s) ^ 4 - 5 * (2 * s) ^ 2) from rfl)
+      (show onQuartic (0, (0 : ℝ) ^ 4 - 5 * (0 : ℝ) ^ 2) from rfl)
+      (show onQuartic (-s + u, (-s + u) ^ 4 - 5 * (-s + u) ^ 2) from rfl)
+      (show onQuartic (-s - u, (-s - u) ^ 4 - 5 * (-s - u) ^ 2) from rfl)
+      h01 h12 h20 h13 h30 h23]
+  exact parametric_oblique_criterion s u hu
+
 end Erdos101OQ04
