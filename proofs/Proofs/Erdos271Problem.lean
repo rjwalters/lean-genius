@@ -170,7 +170,7 @@ aₖ ~ k^(log₂3) ≈ k^1.585
 -/
 def hasPolynomialGrowth (n : ℕ) : Prop :=
   ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
-  ∀ᶠ k in Filter.atTop,
+  ∀ᶠ k : ℕ in Filter.atTop,
     C₁ * (k : ℝ) ^ log2of3 ≤ stanleySequence n k ∧
     (stanleySequence n k : ℝ) ≤ C₂ * (k : ℝ) ^ log2of3
 
@@ -180,7 +180,7 @@ aₖ ~ k²/log k
 -/
 def hasQuadraticLogGrowth (n : ℕ) : Prop :=
   ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
-  ∀ᶠ k in Filter.atTop,
+  ∀ᶠ k : ℕ in Filter.atTop,
     C₁ * (k : ℝ) ^ 2 / Real.log k ≤ stanleySequence n k ∧
     (stanleySequence n k : ℝ) ≤ C₂ * (k : ℝ) ^ 2 / Real.log k
 

@@ -255,7 +255,7 @@ Combines the key results:
 theorem erdos_581_summary :
     (∃ c₁ > 0, ∀ m, (f m : ℝ) ≥ m / 2 + c₁ * (m : ℝ) ^ (4/5 : ℝ)) ∧
     (∃ c₂ > 0, ∀ m, (f m : ℝ) ≤ m / 2 + c₂ * (m : ℝ) ^ (4/5 : ℝ)) ∧
-    c₁_positive.le ∧ c₂_positive.le :=
+    (0 : ℝ) ≤ c₁ ∧ (0 : ℝ) ≤ c₂ :=
   ⟨alon_lower_bound, alon_upper_bound, c₁_positive.le, c₂_positive.le⟩
 
 end Erdos581

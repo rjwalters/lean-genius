@@ -147,7 +147,7 @@ axiom achievable_max_minus_2 (n : ℕ) (hn : n ≥ 4) :
 /-- **Erdős density result**: For some constant c > 0, all integers in
     [c·n^(3/2), C(n,2) - 4] are achievable as line counts. -/
 axiom erdos_density_result :
-    ∃ c : ℝ, c > 0 ∧ ∀ n ≥ 10, ∀ k : ℕ,
+    ∃ c : ℝ, c > 0 ∧ ∀ (n : ℕ), n ≥ 10 → ∀ k : ℕ,
       c * (n : ℝ) ^ ((3 : ℝ) / 2) ≤ k → k ≤ maxLines n - 4 →
       k ∈ AchievableLineCounts n
 
@@ -204,7 +204,7 @@ theorem erdos_606_solved : ∃ N : ℕ, ∀ n ≥ N,
     · intro k hkn hkmax hne1 hne3
       right
       simp only [Set.mem_diff, Set.mem_Icc, Set.mem_insert_iff, Set.mem_singleton_iff]
-      exact ⟨⟨hkn, hkmax⟩, hne1, hne3⟩⟩
+      exact ⟨⟨hkn, hkmax⟩, fun h => h.elim hne1 hne3⟩⟩
 
 /-- **Corollary**: The minimum line count for non-collinear n-point configs is n.
 

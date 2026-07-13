@@ -64,7 +64,7 @@ def LineD.richAndUnblocked {d : ℕ} (L : LineD d) (A B : Set (PointD d)) : Prop
     any single affine hyperplane. Equivalently, the affine span is R^d. -/
 def NonDegenerateD {d : ℕ} (A : Set (PointD d)) : Prop :=
   ∀ (v : PointD d) (c : ℝ),
-    v ≠ 0 → ∃ p ∈ A, inner v p ≠ c
+    v ≠ 0 → ∃ p ∈ A, inner ℝ v p ≠ c
 
 /-- Non-collinear in R^d: not all points on a single line. -/
 def NonCollinearD {d : ℕ} (A : Set (PointD d)) : Prop :=
@@ -81,7 +81,7 @@ theorem rich_line_exists_d {d : ℕ} (A : Finset (PointD d))
   obtain ⟨p, hp, q, hq, hpq⟩ := Finset.one_lt_card.mp (by omega : 1 < A.card)
   have hdir : q - p ≠ 0 := sub_ne_zero.mpr (Ne.symm hpq)
   refine ⟨⟨p, q - p, hdir⟩, p, q, Finset.mem_coe.mpr hp, Finset.mem_coe.mpr hq,
-    Ne.symm hpq, ?_, ?_⟩
+    hpq, ?_, ?_⟩
   · exact ⟨0, by simp [LineD.contains, zero_smul, add_zero]⟩
   · exact ⟨1, by simp [LineD.contains, one_smul, add_sub_cancel]⟩
 

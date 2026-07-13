@@ -367,8 +367,7 @@ theorem truncation_tail_sq_le
     (hXp : Integrable (fun ω => |X ω| ^ p) μ) :
     ∫ ω in {ω | T < |X ω|}, X ω ^ 2 ∂μ ≤ T ^ (2 - p) * ∫ ω, |X ω| ^ p ∂μ := by
   set S : Set Ω := {ω | T < |X ω|} with hS_def
-  have habs_meas : Measurable (fun ω => |X ω|) := by
-    simpa [Real.norm_eq_abs] using measurable_norm.comp hX
+  have habs_meas : Measurable (fun ω => |X ω|) := hX.abs
   have hSmeas : MeasurableSet S := measurableSet_lt measurable_const habs_meas
   have hT2p_nn : (0 : ℝ) ≤ T ^ (2 - p) := Real.rpow_nonneg (le_of_lt hT) _
   -- Integrable, nonnegative dominating envelope `g = T^(2-p) · |X|^p`.
@@ -1344,8 +1343,9 @@ theorem covariance_eq_double_survival_covariance
       (fun s _ => ?_) measurableSet_Ioc
     have hset : {ω | t < f ω ∧ s < g ω} = {ω | s < g ω} ∩ {ω | t < f ω} := by
       ext ω; simp only [Set.mem_setOf_eq, Set.mem_inter_iff]; exact and_comm
-    rw [hset, measureReal_def, measureReal_def,
-        Measure.restrict_apply (measurableSet_lt measurable_const hg_meas)]
+    rw [hset]
+    simp only [measureReal_def]
+    rw [Measure.restrict_apply (measurableSet_lt measurable_const hg_meas)]
   -- Assemble: rewrite both halves, then combine the two double integrals via
   -- linearity of the integral (outer once, inner pointwise).
   rw [mean_mul_eq_double_joint_survival_lt_Ioc hf_meas hg_meas hf_int hf_nn hf_bdd

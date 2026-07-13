@@ -46,7 +46,7 @@ theorem irreducible_iff_prime_in_ufd {α : Type*} [CommMonoidWithZero α]
 
 /-- Every non-zero element in a UFD has an irreducible factorization.
     The factors are given by `UniqueFactorizationMonoid.factors`. -/
-theorem factors_exist {α : Type*} [CancelCommMonoidWithZero α]
+theorem factors_exist {α : Type*} [CommMonoidWithZero α] [IsCancelMulZero α]
     [UniqueFactorizationMonoid α] (a : α) (ha : a ≠ 0) :
     (∀ p ∈ UniqueFactorizationMonoid.factors a, Irreducible p) ∧
     Associated (UniqueFactorizationMonoid.factors a).prod a :=
@@ -56,8 +56,8 @@ theorem factors_exist {α : Type*} [CancelCommMonoidWithZero α]
 /-- The Euclidean domain structure of ℤ gives a computable GCD. -/
 theorem int_gcd_exists (a b : ℤ) :
     ∃ g : ℤ, g ∣ a ∧ g ∣ b ∧ ∀ d : ℤ, d ∣ a → d ∣ b → d ∣ g :=
-  ⟨Int.gcd a b, Int.gcd_dvd_left, Int.gcd_dvd_right,
-   fun d hda hdb => Int.dvd_gcd hda hdb⟩
+  ⟨gcd a b, gcd_dvd_left a b, gcd_dvd_right a b,
+   fun _ hda hdb => dvd_gcd hda hdb⟩
 
 /-- Polynomial rings over fields are Euclidean domains, hence UFDs.
     This gives unique factorization of polynomials. -/

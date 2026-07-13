@@ -133,7 +133,7 @@ Lower bounds (infinitely many large gaps):
 Upper bound (all gaps bounded):
 - Bambah-Chowla (1947): gap ≪ n^(1/4) -/
 theorem erdos_222_summary :
-    (∃ c > 0, ∀ᶠ n in atTop, ∃ k,
+    (∃ c > 0, ∀ᶠ n : ℕ in atTop, ∃ k,
       (gap k : ℝ) ≥ c * Real.log n / Real.sqrt (Real.log (Real.log n))) ∧
     (∃ C > 0, ∀ k, (gap k : ℝ) ≤ C * (nthSumTwoSquares k : ℝ) ^ (1/4 : ℝ)) := by
   constructor

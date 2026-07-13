@@ -75,7 +75,7 @@ lemma eventually_loglog_lt {ε' : ℝ} (hε' : 0 < ε') :
     Real.isLittleO_log_id_atTop
   have h2 : (fun x : ℝ => Real.log (Real.log x)) =o[atTop] (fun x : ℝ => Real.log x) := by
     have := h1.comp_tendsto Real.tendsto_log_atTop
-    simpa [Function.comp] using this
+    simpa [Function.comp_def] using this
   -- Extract the `≤ (ε'/2)‖·‖` bound and combine with `log x > 0`.
   have hc : (0 : ℝ) < ε' / 2 := by positivity
   have hbound := (Asymptotics.isLittleO_iff.mp h2) hc

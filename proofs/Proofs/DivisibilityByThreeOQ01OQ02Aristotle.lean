@@ -35,7 +35,7 @@ the last element of Nat.digits b n is nonzero.
 lemma last_digit_pos {n : ℕ} (hn : 0 < n) :
     0 < (Nat.digits 10 n).getLast (digits_nonempty hn) := by
   have hne : n ≠ 0 := by omega
-  have h := Nat.getLast_digit_ne_zero 10 (by norm_num) hne
+  have h := Nat.getLast_digit_ne_zero 10 hne
   -- h : (Nat.digits 10 n).getLast _ ≠ 0  (proof irrelevance ensures same getLast value)
   omega
 
@@ -63,7 +63,7 @@ theorem digitSum_pos (n : ℕ) (hn : 0 < n) : 0 < digitSum n := by
     have hmem : (Nat.digits 10 n).getLast hne ∈ Nat.digits 10 n :=
       List.getLast_mem hne
     have hle : (Nat.digits 10 n).getLast hne ≤ (Nat.digits 10 n).sum :=
-      List.single_le_sum (fun x _ => Nat.zero_le x) hmem
+      List.single_le_sum (fun x _ => Nat.zero_le x) _ hmem
     omega
 
 end DivisibilityByThreeOQ01OQ02Aristotle

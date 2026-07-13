@@ -250,8 +250,8 @@ theorem smallest_multiple_bound (n k : ℕ) (hk : k > 0) :
   use (n / k + 1) * k
   constructor
   · -- n < (n/k + 1) * k
-    have : n < (n / k + 1) * k := Nat.lt_mul_div_succ n hk
-    exact this
+    have h := Nat.lt_mul_div_succ n hk
+    rwa [Nat.mul_comm] at h
   · constructor
     · -- (n/k + 1) * k ≤ n + k
       have h1 : n / k * k ≤ n := Nat.div_mul_le_self n k
@@ -305,9 +305,7 @@ theorem erdos_710_summary :
   constructor
   · intro ε hε
     obtain ⟨N, hN⟩ := erdos_pomerance_lower_bound ε hε
-    use N
-    intro n hn
-    exact le_of_lt (hN n hn)
+    exact ⟨N, hN⟩
   · constructor
     · exact erdos_pomerance_upper_bound
     · exact ⟨example_n1, example_n2, example_n3⟩

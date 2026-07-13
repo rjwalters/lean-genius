@@ -48,13 +48,11 @@ open Finset
 
 /- ## The greedy Sidon counting function -/
 
-/-- The greedy Sidon **counting function** `A(N) = #{ k : aₖ ≤ N }`.
-
-Because `aₖ ≥ k` (strict monotonicity, `greedySidonSeq_strictMono.id_le`), the search window
-`range (N+1)` already contains every index `k` with `aₖ ≤ N`, so this Finset counts *all*
-greedy terms not exceeding `N`. -/
-noncomputable def greedyCount (N : ℕ) : ℕ :=
-  ((Finset.range (N + 1)).filter (fun k => greedySidonSeq k ≤ N)).card
+/- The greedy Sidon **counting function** `A(N)` is `greedyCount` from
+`Erdos340GreedyGrowth.lean`: `A(N) = #{ x ∈ [1, N] : x ∈ greedySeqSet N }`, the number of
+greedy terms in `[1, N]`.  (An identically-named local index-based definition previously
+lived here; it now clashes with the imported declaration and has been merged into it —
+the two counts agree since `aₖ ≥ k` puts every term `≤ N` at index `≤ N`.) -/
 
 /-- `k ≤ aₖ`: a strictly increasing `ℕ → ℕ` sequence dominates the identity. -/
 theorem index_le_greedySidonSeq (k : ℕ) : k ≤ greedySidonSeq k :=
@@ -65,34 +63,23 @@ theorem index_le_greedySidonSeq (k : ℕ) : k ≤ greedySidonSeq k :=
 index-based counting function. -/
 theorem greedyCount_ge_index {n N : ℕ} (hN : 2 * (n + 1) ^ 3 ≤ N) :
     n + 1 ≤ greedyCount N := by
-  have hsub : Finset.range (n + 1)
-      ⊆ (Finset.range (N + 1)).filter (fun k => greedySidonSeq k ≤ N) := by
-    intro k hk
-    rw [Finset.mem_range] at hk
-    -- aₖ ≤ aₙ ≤ 2(n+1)³ ≤ N
-    have hak : greedySidonSeq k ≤ N := by
-      have h1 : greedySidonSeq k ≤ greedySidonSeq n :=
-        greedySidonSeq_strictMono.monotone (by omega)
-      have h2 : greedySidonSeq n ≤ 2 * (n + 1) ^ 3 := greedySidonSeq_le_two_mul_cubic n
-      omega
-    rw [Finset.mem_filter, Finset.mem_range]
-    refine ⟨?_, hak⟩
-    -- k ≤ aₖ ≤ N < N + 1
-    have := index_le_greedySidonSeq k
-    omega
-  calc n + 1 = (Finset.range (n + 1)).card := (Finset.card_range _).symm
-    _ ≤ _ := Finset.card_le_card hsub
+  have hcube : n + 1 ≤ (n + 1) ^ 3 := Nat.le_self_pow (by norm_num) _
+  have hnN : n ≤ N := by omega
+  have h1 := greedy_count_ge hN
+  unfold greedyCount
+  refine h1.trans (Finset.card_le_card ?_)
+  intro x hx
+  rw [Finset.mem_filter] at hx ⊢
+  exact ⟨hx.1, greedySeqSet_mono hnN hx.2⟩
 
 /-- For `N ≥ 1` the term `a₀ = 1` is always counted, so `A(N) ≥ 1`. -/
 theorem one_le_greedyCount {N : ℕ} (hN : 0 < N) : 1 ≤ greedyCount N := by
-  have hne : ((Finset.range (N + 1)).filter (fun k => greedySidonSeq k ≤ N)).Nonempty := by
-    refine ⟨0, ?_⟩
-    rw [Finset.mem_filter, Finset.mem_range]
-    refine ⟨Nat.succ_pos N, ?_⟩
-    have h0 : greedySidonSeq 0 = 1 := rfl
-    omega
+  have h10 : (1 : ℕ) ∈ greedySeqSet 0 := greedySidonSeq_mem 0
+  have h1mem : (1 : ℕ) ∈ (Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet N) := by
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    exact ⟨⟨le_refl 1, hN⟩, greedySeqSet_mono (Nat.zero_le N) h10⟩
   unfold greedyCount
-  exact Finset.card_pos.mpr hne
+  exact Finset.card_pos.mpr ⟨1, h1mem⟩
 
 /-- **Inversion of the cubic bound** (contrapositive of `greedyCount_ge_index`).
 

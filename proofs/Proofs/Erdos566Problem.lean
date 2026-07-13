@@ -50,7 +50,7 @@ def NoIsolated {n : ℕ} (H : Graph n) : Prop :=
     in a graph F such that every 2-coloring of E(F) contains a
     monochromatic copy of G in color 1 or H in color 2. -/
 noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
-  Nat.find (⟨p * q + 1, trivial⟩ : ∃ m : ℕ, m ≥ 1)  -- axiomatized below
+  Nat.find (⟨p * q + 1, Nat.le_add_left 1 (p * q)⟩ : ∃ m : ℕ, m ≥ 1)  -- axiomatized below
 
 /- ## Main Question -/
 

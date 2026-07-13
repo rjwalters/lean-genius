@@ -114,19 +114,22 @@ theorem stdChain_isChain (n : ℕ) : IsChain (stdChain n) := by
 
 /-- Initial segments are injective: distinct indices give distinct sets. -/
 theorem initialSeg_injective (n : ℕ) : Function.Injective (initialSeg n) := by
+  -- Key: if j < k then initialSeg j ≠ initialSeg k, since ⟨j.val, _⟩ lies in
+  -- initialSeg k but not in initialSeg j.
+  have key : ∀ j k : Fin (n + 1), j < k → initialSeg n j = initialSeg n k → False := by
+    intro j k h hjk
+    have hj_lt_n : j.val < n := by omega
+    have hmem : (⟨j.val, hj_lt_n⟩ : Fin n) ∈ initialSeg n k := by
+      simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and]
+      exact h
+    rw [← hjk] at hmem
+    simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+    omega
   intro j k hjk
   by_contra hne
-  wlog h : j < k
-  · exact this n k j hjk.symm (Ne.symm hne) (lt_of_le_of_ne (le_of_not_gt h) (Ne.symm hne))
-  -- j < k, but initialSeg j = initialSeg k
-  -- The element ⟨j.val, ...⟩ : Fin n is in initialSeg k but not initialSeg j
-  have hj_lt_n : j.val < n := by omega
-  have : (⟨j.val, hj_lt_n⟩ : Fin n) ∈ initialSeg n k := by
-    simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact h
-  rw [← hjk] at this
-  simp only [initialSeg, Finset.mem_filter, Finset.mem_univ, true_and] at this
-  omega
+  rcases lt_or_gt_of_ne hne with h | h
+  · exact key j k h hjk
+  · exact key k j h hjk.symm
 
 /-- The standard chain has exactly n+1 elements. -/
 theorem stdChain_card (n : ℕ) : (stdChain n).card = n + 1 := by
@@ -150,9 +153,12 @@ theorem exists_mono_color_class {α : Type*} [DecidableEq α]
       constructor
       · rintro (⟨hx, _⟩ | ⟨hx, _⟩) <;> exact hx
       · intro hx
-        fin_cases (χ x)
-        · left; exact ⟨hx, rfl⟩
-        · right; exact ⟨hx, rfl⟩
+        have h2 : χ x = 0 ∨ χ x = 1 := by
+          have hall : ∀ c : Fin 2, c = 0 ∨ c = 1 := by decide
+          exact hall (χ x)
+        rcases h2 with h | h
+        · left; exact ⟨hx, h⟩
+        · right; exact ⟨hx, h⟩
     · exact Finset.disjoint_filter.mpr (fun x _ h0 h1 => by simp_all)
   -- By pigeonhole one of them has ≥ half
   by_contra h
@@ -187,7 +193,7 @@ theorem erdos1183_chain_bound (n : ℕ) (χ : SubsetColoring n) :
     exact hA.2
   · -- Size bound: ⌈(n+1)/2⌉ = (n + 2) / 2
     rw [stdChain_card] at hc
-    linarith
+    omega
 
 /-- F(n) bound follows since every sublattice is union-closed. -/
 theorem erdos1183_F_chain_bound (n : ℕ) (χ : SubsetColoring n) :

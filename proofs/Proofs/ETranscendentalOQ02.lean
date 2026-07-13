@@ -1740,7 +1740,7 @@ private lemma tendsto_natLog_two_div_atTop_zero :
       (fun x hx => by simp only [id_eq] at hx; simp [hx])] at h
     simpa [id_eq] using h
   have hnat : Tendsto (fun N : ℕ => Real.log (N : ℝ) / (N : ℝ)) atTop (nhds 0) := by
-    simpa using hlogid.comp tendsto_natCast_atTop_atTop
+    exact hlogid.comp tendsto_natCast_atTop_atTop
   have hupper : Tendsto
       (fun N : ℕ => Real.log (N : ℝ) / (N : ℝ) * (Real.log 2)⁻¹) atTop (nhds 0) := by
     simpa using hnat.mul_const (Real.log 2)⁻¹

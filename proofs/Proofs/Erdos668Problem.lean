@@ -72,7 +72,7 @@ def areCongruent (S T : Finset Plane) : Prop :=
 /-- Congruence is reflexive. -/
 theorem congruent_refl (S : Finset Plane) : areCongruent S S := by
   refine ⟨IsometryEquiv.refl Plane, fun p hp => ?_, fun q hq => ⟨q, hq, ?_⟩⟩
-  · simpa using hp
+  · exact hp
   · rfl
 
 /-- Congruence is symmetric. -/
@@ -212,7 +212,7 @@ private lemma unitDistanceCount_le_card_sq (S : Finset Plane) :
         Set.ncard_le_ncard (unitDistancePairs_subset_prod S)
           (S.finite_toSet.prod S.finite_toSet)
     _ = (↑S : Set Plane).ncard * (↑S : Set Plane).ncard := Set.ncard_prod
-    _ = S.card * S.card := by rw [Set.ncard_coe_finset, Set.ncard_coe_finset]
+    _ = S.card * S.card := by simp [Set.ncard_coe_finset]
 
 /-- The set of achievable unit distance counts is bounded above. -/
 private lemma achievable_bddAbove (n : ℕ) :

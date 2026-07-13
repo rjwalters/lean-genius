@@ -62,7 +62,7 @@ noncomputable def nonUniqueSumCountInf (A : Set ℕ) (N : ℕ) : ℕ :=
 def Erdos14a : Prop :=
   ∀ (A : Set ℕ) (ε : ℝ), 0 < ε →
     ∃ C : ℝ, 0 < C ∧
-      ∃ᶠ N in (atTop : Filter ℕ),
+      ∃ᶠ N : ℕ in (atTop : Filter ℕ),
         C * (N : ℝ) ^ ((1 : ℝ) / 2 - ε) ≤ (nonUniqueSumCountInf A N : ℝ)
 
 /-- **Erdős Problem #14b** (OPEN): There exists A ⊆ ℕ such that
@@ -83,7 +83,7 @@ axiom ess_upper_lower_bound :
       (fun N : ℕ => (nonUniqueSumCountInf A N : ℝ)) =O[atTop]
         (fun N : ℕ => (N : ℝ) ^ ((1 : ℝ) / 2 + ε))) ∧
     (∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
-      ∃ᶠ N in (atTop : Filter ℕ),
+      ∃ᶠ N : ℕ in (atTop : Filter ℕ),
         C * (N : ℝ) ^ ((1 : ℝ) / 3 - ε) ≤ (nonUniqueSumCountInf A N : ℝ))
 
 /-- **Erdős–Freud**: For any finite A ⊆ ℕ, the non-unique sum count satisfies

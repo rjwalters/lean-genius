@@ -121,7 +121,7 @@ def TriangleHamiltonianGraph (n : ℕ) (hn : n > 0) : SimpleGraph (Fin (3 * n)) 
     · cases hdisj with
       | inl htri => left; exact ⟨htri.1.symm, htri.2.symm⟩
       | inr hham => right; exact Or.symm hham
-  loopless := fun v h => h.1 rfl
+  loopless := ⟨fun v h => h.1 rfl⟩
 
 /- ## The Main Result -/
 

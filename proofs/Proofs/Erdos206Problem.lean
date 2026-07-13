@@ -164,7 +164,7 @@ theorem erdos_206_summary :
     volume EventuallyGreedySet = 0 ∧
     -- But specific cases (x=1, x=1/m) are greedy
     EventuallyGreedy 1 ∧
-    (∀ m > 0, EventuallyGreedy (1 / m : ℝ)) := by
+    (∀ m : ℕ, m > 0 → EventuallyGreedy (1 / m : ℝ)) := by
   refine ⟨kovac_theorem, curtiss_theorem, ?_⟩
   intro m hm
   exact erdos_unit_fractions m hm

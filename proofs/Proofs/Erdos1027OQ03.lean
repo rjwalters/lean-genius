@@ -161,7 +161,7 @@ theorem mtExpectedSteps_nonneg (n m : ℕ) : 0 ≤ mtExpectedSteps n m := by
   unfold mtExpectedSteps
   split
   · exact le_refl 0
-  · exact div_nonneg (Nat.cast_nonneg) (Nat.cast_nonneg)
+  · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
 
 /-- The expected resampling count simplifies to 1/n for the good-set case.
     Since d = nm, we have m/d = m/(nm) = 1/n. -/

@@ -56,7 +56,7 @@ theorem bump_tendsto_zero {x : ℝ} (hx : 0 ≤ x) :
     exact tendsto_const_nhds
   · have hto : Tendsto (fun n : ℕ => (n : ℝ) * x) atTop atTop :=
       tendsto_natCast_atTop_atTop.atTop_mul_const hpos
-    simpa only [bump, Function.comp, pow_one] using
+    simpa only [bump, Function.comp_def, pow_one] using
       (Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero 1).comp hto
 
 /-- The pointwise limit `0` is continuous (the limit-continuity hypothesis of Dini holds). -/

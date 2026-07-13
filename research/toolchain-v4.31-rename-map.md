@@ -407,3 +407,22 @@ automatic in argument position); wrap when projections follow:
 | `simpa only […] using isUnit_iff_ne_zero` (Finset.map units embedding) | `simp only […]` + `constructor` + `rintro ⟨u, rfl⟩; exact u.ne_zero` / `intro hx; exact ⟨Units.mk0 x hx, rfl⟩` | IsUnit ∃-unfold no longer defeq-matched |
 | duplicate-decl fails after a hub starts compiling | check whether the "self-contained extraction" file re-declares content its (now-fixed) import provides; delete the duplicated block | SpernerGridCell vs SpernerGridBase |
 | stale-diag zero-edit flips | RESIDUAL rows whose freshest diag attributes all errors to now-GREEN files: re-verify without edits | DR15b: 12/16 PASS |
+
+### 7h. Doctor increment-5A recipes (type-mismatch class, #38065, 2026-07-13)
+
+| pattern | fix | notes |
+|---|---|---|
+| `Real.rpow_add hx.ne'` | `Real.rpow_add hx` | arg is `0 < x` again, not `x ≠ 0` |
+| `MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 1 one_ne_zero` | `… one_pos` | hypothesis is now `0 < n` |
+| element-form `le_add_left a b : a ≤ b + a` | `self_le_add_left a b` | `le_add_left` is now proof→proof |
+| `add_le_add_right h c` elaborating to `c + a ≤ c + b` | `add_le_add h le_rfl` / `add_le_add le_rfl h` | Cardinal call sites |
+| numeral dot-call `4.choose 2` | `(4).choose 2` / `Nat.choose 4 2` | "unexpected identifier after decimal point" |
+| `f ∘ g` vs `fun y => f (g y)` after simp | add `Function.comp_def` to the simp set, or `simp only [Function.comp_def] at h; exact h` | Tendsto/HasDerivAt families; goal-side bare `def` name is defeq — plain `exact` often lands where `simpa` fails |
+| `IsMulCommutative.toCommutative` missing | keep the `IsMulCommutative` value, use `.comm a b` directly | Std.Commutative middleman removed |
+| `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le hε_pos` | pass `(Metric.ball_mem_nhds _ hε_pos)`; named `(ε := …)` args are gone | first arg is now `s ∈ 𝓝 t` |
+| `Nat.choose_descFactorial` / `Nat.factorial_mul_descFactorial` | orientation/operand order changed — patch with `.symm` / `mul_comm`-rewrites per the found/expected types | ArithmeticSeries family |
+| `rw [lemma]` where pattern has `?α - 1` vs concrete `r` | `have h := lemma … (r + 1); rw [add_sub_cancel_right] at h; rw [h]` | rw unification got stricter |
+| `(2:ℝ) - 1` vs `1` inside proof-carrying dependent args | `have h := …; convert h using ‹n›; norm_num` | convert closes proof args by proof irrelevance |
+| `simp [hf0] at hf; exact … hf` → "No goals to be solved" | drop the trailing `exact` — `simp at hf` now closes the goal | contradiction-closing simp |
+| `content_dvd_coeff q` (polynomial arg) | `q.content_dvd_coeff n` | index arg is `ℕ` |
+| `solvableByRad.isSolvable'` | `Polynomial.isSolvable_gal_of_irreducible` | deprecation warning names it; `IsSolvableByRad F x` → `x ∈ solvableByRad F E` |

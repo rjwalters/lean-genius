@@ -147,6 +147,8 @@ theorem card_units_30_eq_totient_prod :
 theorem card_units_30_eq_8 : Nat.card (ZMod 30)ˣ = 8 := by
   have h : Nat.card (ZMod ([2, 3, 5].prod))ˣ = 8 := by
     rw [card_units_30_eq_totient_prod]; decide
-  simpa using h
+  have h30 : ([2, 3, 5] : List ℕ).prod = 30 := by decide
+  rw [h30] at h
+  exact h
 
 end BezoutCRTUnits

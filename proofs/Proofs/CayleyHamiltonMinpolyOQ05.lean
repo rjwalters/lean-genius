@@ -35,7 +35,7 @@ theorem minpoly_reduction (x : A) (hx : IsIntegral K x) (f : K[X]) :
     aeval x f = aeval x (f %ₘ minpoly K x) := by
   have hmonic : (minpoly K x).Monic := minpoly.monic hx
   -- f = (f /ₘ minpoly) * minpoly + (f %ₘ minpoly)
-  have hdiv := modByMonic_add_div f hmonic
+  have hdiv := modByMonic_add_div f (minpoly K x)
   -- Evaluate both sides at x
   calc aeval x f
       = aeval x ((f %ₘ minpoly K x) + (minpoly K x) * (f /ₘ minpoly K x)) := by

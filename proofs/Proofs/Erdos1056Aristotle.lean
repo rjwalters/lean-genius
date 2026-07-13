@@ -35,7 +35,7 @@ theorem ico_prod_eq_factorial (p : ℕ) (hp : p ≥ 1) :
       simp only [Finset.mem_Ico] at hx
       simp only [Finset.mem_singleton]
       omega)]
-    rw [Finset.prod_singleton, id, ih, mul_comm, ← Nat.factorial_succ]
+    rw [Finset.prod_singleton, id, ih (by omega), mul_comm, ← Nat.factorial_succ]
 
 /-- Wilson's theorem in ℕ modular arithmetic:
     (p-1)! % p = p - 1 for any prime p.
@@ -48,8 +48,10 @@ theorem wilson_nat (p : ℕ) (hp : Nat.Prime p) :
   -- h : ((p-1)! : ZMod p) = -1
   -- Bridge via ZMod.val: val maps ZMod p → ℕ as canonical representative
   have h_lhs : ZMod.val ((Nat.factorial (p - 1) : ℕ) : ZMod p) =
-      Nat.factorial (p - 1) % p := ZMod.val_natCast _
-  have h_rhs : ZMod.val (-1 : ZMod p) = p - 1 := ZMod.val_neg_one
+      Nat.factorial (p - 1) % p := ZMod.val_natCast _ _
+  have h_rhs : ZMod.val (-1 : ZMod p) = p - 1 := by
+    obtain ⟨q, rfl⟩ : ∃ q, p = q + 1 := ⟨p - 1, (Nat.succ_pred_eq_of_pos hp.pos).symm⟩
+    simpa using ZMod.val_neg_one q
   calc Nat.factorial (p - 1) % p
       = ZMod.val ((↑(Nat.factorial (p - 1)) : ZMod p)) := h_lhs.symm
     _ = ZMod.val (-1 : ZMod p) := congr_arg ZMod.val h
@@ -60,7 +62,7 @@ theorem wilson_nat (p : ℕ) (hp : Nat.Prime p) :
     This is the axiom wilson_constraint from Erdos1056Problem.lean. -/
 theorem wilson_constraint (p : ℕ) (hp : Nat.Prime p) :
     (Finset.Ico 1 p).prod id % p = p - 1 := by
-  rw [ico_prod_eq_factorial p (by omega : p ≥ 1)]
+  rw [ico_prod_eq_factorial p hp.pos]
   exact wilson_nat p hp
 
 end Erdos1056Aristotle

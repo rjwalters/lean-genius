@@ -290,7 +290,8 @@ theorem erdos_294_summary :
     erdosGrahamUpperBound ∧
     -- Liu-Sawhney lower bound
     liuSawhneyLowerBound := by
-  exact liu_sawhney_2024
+  have h : liuSawhneyLowerBound ∧ erdosGrahamUpperBound := liu_sawhney_2024
+  exact ⟨h.2, h.1⟩
 
 /-
 **Key insight:**

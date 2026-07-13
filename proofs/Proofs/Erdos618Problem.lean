@@ -60,7 +60,7 @@ def IsTriangleFree (G : SimpleGraph V) : Prop :=
 Δ(G) = max_{v ∈ V} deg(v)
 -/
 noncomputable def maxDegree (G : SimpleGraph V) : ℕ :=
-  Finset.univ.sup G.degree
+  Finset.univ.sup fun v => G.degree v
 
 /--
 **Diameter of a Graph:**

@@ -94,7 +94,7 @@ theorem cbrt3_irrational_from_degree :
   obtain ⟨q, hq⟩ := h
   -- If ∛3 = q ∈ ℚ, then minpoly ℚ ∛3 = X - C q (degree 1)
   have hmin : minpoly ℚ ((3 : ℝ) ^ ((1 : ℝ) / 3)) = X - C q := by
-    rw [← hq]; exact minpoly.eq_X_sub_C ℚ q
+    rw [← hq]; exact minpoly.eq_X_sub_C ℝ q
   -- But minpoly ℚ ∛3 has degree 3
   have hdeg3 := minpoly_cbrt3_natDeg
   rw [hmin, natDegree_X_sub_C] at hdeg3
@@ -117,7 +117,7 @@ theorem irrational_of_degree_gt_one {α : ℝ} (hα : IsIntegral ℚ α)
   obtain ⟨q, hq⟩ := h
   -- If α = q ∈ ℚ, then minpoly ℚ α = X - C q
   have hmin : minpoly ℚ α = X - C q := by
-    rw [← hq]; exact minpoly.eq_X_sub_C ℚ q
+    rw [← hq]; exact minpoly.eq_X_sub_C ℝ q
   -- This gives [ℚ(α):ℚ] = deg(X - C q) = 1
   have h1 : Module.finrank ℚ ℚ⟮α⟯ = 1 := by
     rw [IntermediateField.adjoin.finrank hα, hmin, natDegree_X_sub_C]
@@ -128,6 +128,6 @@ theorem cbrt3_irrational_via_principle :
     Irrational ((3 : ℝ) ^ ((1 : ℝ) / 3)) :=
   irrational_of_degree_gt_one
     (isIntegral_nthRoot 3 3 (by norm_num))
-    (by rw [cbrt3_fieldExtDegree])
+    (by rw [cbrt3_fieldExtDegree]; norm_num)
 
 end CubeRoot3IrrationalOQ02OQ01

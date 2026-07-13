@@ -44,11 +44,8 @@ def IsTotientValue (a : ℕ) : Prop :=
 /-- The smallest preimage of a under φ, if one exists.
     Returns 0 if a is not a totient value. -/
 noncomputable def smallestTotientPreimage (a : ℕ) : ℕ :=
-  Nat.find (Classical.choice (by
-    by_cases h : IsTotientValue a
-    · exact ⟨h⟩
-    · exact ⟨⟨0, by simp [IsTotientValue] at h; omega⟩⟩
-  ) : Nonempty {n : ℕ | n.totient = a})
+  letI := Classical.dec (IsTotientValue a)
+  if h : IsTotientValue a then Nat.find h else 0
 
 /- ## Main Conjecture -/
 

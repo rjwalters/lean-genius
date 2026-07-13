@@ -76,11 +76,13 @@ theorem exists_short_odd_cycle_aux [DecidableEq V] {G : SimpleGraph V} (n : ℕ)
         have hzw : z ∈ (Walk.cons h p).support := by
           rw [Walk.support_cons]; exact List.mem_cons_of_mem _ hzp
         -- rotate the walk so it is based at the repeated vertex `z`
-        set r : G.Walk z z := (Walk.cons h p).rotate hzw with hrdef
+        set r : G.Walk z z := (Walk.cons h p).rotate z hzw with hrdef
         have hlenr : r.length = n := by rw [hrdef, aux_length_rotate]; exact hlen
         have hcount : r.support.tail.count z = p.support.count z := by
           have hperm : r.support.tail ~r p.support := by
-            have h0 := Walk.support_rotate (Walk.cons h p) hzw
+            have h0 : ((Walk.cons h p).rotate z hzw).support.tail
+                ~r (Walk.cons h p).support.tail := by
+              apply Walk.support_rotate
             rw [← hrdef] at h0
             simpa only [Walk.support_cons, List.tail_cons] using h0
           exact hperm.perm.count_eq z

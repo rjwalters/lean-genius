@@ -47,7 +47,7 @@ theorem syndetic_infinite (S : Set ℕ) (hS : IsSyndetic S) : S.Infinite := by
   apply Set.infinite_of_not_bddAbove
   rw [not_bddAbove_iff]
   intro n
-  obtain ⟨m, hm, hnm, _⟩ := hg n
-  exact ⟨m, hm, hnm⟩
+  obtain ⟨m, hm, hnm, _⟩ := hg (n + 1)
+  exact ⟨m, hm, by omega⟩
 
 end Erdos109OQ01

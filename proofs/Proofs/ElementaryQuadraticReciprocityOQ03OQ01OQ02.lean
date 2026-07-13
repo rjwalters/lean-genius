@@ -36,7 +36,7 @@ We formalize these steps as reusable lemmas. -/
 /-- Reduction step: J(a, n) = J(a mod n, n). -/
 theorem reduce_step (a : ℤ) (n : ℕ) :
     jacobiSym a n = jacobiSym (a % n) n :=
-  (jacobiSym.mod_left a n).symm
+  jacobiSym.mod_left a n
 
 /-- Extract factor of 2: J(2a, n) = J(2, n) · J(a, n). -/
 theorem extract_two_step (a : ℤ) (n : ℕ) :
@@ -65,10 +65,11 @@ theorem base_one (n : ℕ) : jacobiSym 1 n = 1 :=
 /-- Base case: J(0, n) = 0 for n > 1. -/
 theorem base_zero (n : ℕ) (hn : 1 < n) : jacobiSym 0 n = 0 := by
   simp [jacobiSym, hn]
+  omega
 
 /-- Second supplement: J(2, n) = χ₈(n) for odd n. -/
 theorem two_supplement (n : ℕ) (hn : Odd n) :
-    jacobiSym 2 n = χ₈ n :=
+    jacobiSym 2 n = ZMod.χ₈ n :=
   jacobiSym.at_two hn
 
 /- ## Part II: Certified Computation Chains
@@ -82,14 +83,16 @@ steps CAN be assembled into certified computations. -/
            →[split] J(2,7)·J(3,7) = 1·(-1) = -1 -/
 theorem certified_J_7_13 : jacobiSym 7 13 = -1 := by
   -- Step 1: Reciprocity (7 ≡ 3 mod 4, 13 ≡ 1 mod 4, so no sign change)
-  rw [reciprocity_one_mod_four 7 13 (by norm_num) (by decide)]
+  have h1 : jacobiSym 7 13 = jacobiSym 13 7 := by
+    have h := reciprocity_one_mod_four 13 7 (by norm_num) (by decide)
+    push_cast at h
+    exact h.symm
+  rw [h1]
   -- Now: J(13, 7)
   -- Step 2: Reduce 13 mod 7 = 6
   rw [reduce_step 13 7]
-  -- Now: J(6, 7)
-  norm_num
-  -- Step 3: Split J(6, 7) = J(2·3, 7) = J(2,7)·J(3,7)
-  rw [show (6 : ℤ) = 2 * 3 from by norm_num, jacobiSym.mul_left]
+  -- Now: J(6, 7); Step 3: Split J(6, 7) = J(2·3, 7) = J(2,7)·J(3,7)
+  rw [show (13 : ℤ) % ((7 : ℕ) : ℤ) = 2 * 3 from by norm_num, jacobiSym.mul_left]
   -- Step 4: Compute J(2,7) and J(3,7) directly
   native_decide
 
@@ -163,7 +166,7 @@ strictly decreased from n to a (< n). -/
 theorem one_step_reduction (a n : ℕ) (ha : Odd a) (hn : Odd n) :
     jacobiSym (a : ℤ) n = recipSign a n * jacobiSym (↑(n % a)) a := by
   rw [recipSign, reciprocity_step a n ha hn, reduce_step (n : ℤ) a]
-  congr 1; norm_cast
+  congr 1
 
 /-- After one step, the bottom argument strictly decreases (when 0 < a < n). -/
 theorem one_step_decreasing (a n : ℕ) (ha : 0 < a) (_ : a < n) : n % a < a :=

@@ -91,7 +91,7 @@ theorem log_natCast_div_tendsto_zero :
     Tendsto (fun k : ℕ => Real.log k / k) atTop (𝓝 0) := by
   have h2 : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0) := by
     simpa using Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero
-  simpa [Function.comp] using h2.comp tendsto_natCast_atTop_atTop
+  simpa [Function.comp_def] using h2.comp tendsto_natCast_atTop_atTop
 
 /- ## Analytic engine: `log(h k)/k → 0` for polynomially bounded `h` -/
 
@@ -202,7 +202,7 @@ theorem ratio_iff_log_ratio {h : ℕ → ℝ} (hb : PolyBounded h) :
   constructor
   · intro hr
     have := (Real.continuousAt_log (one_ne_zero)).tendsto.comp hr
-    simpa [Real.log_one, Function.comp] using this
+    simpa [Real.log_one, Function.comp_def] using this
   · intro hl
     have hexp : Tendsto (fun k => Real.exp (Real.log (h (k + 1) / h k))) atTop (𝓝 (Real.exp 0)) :=
       (Real.continuous_exp.tendsto 0).comp hl
@@ -374,7 +374,7 @@ theorem log_div_log_eventually_le {h : ℕ → ℝ} (hb : PolyBounded h) {ε : �
   refine ⟨d, ?_⟩
   -- `log k → ∞`, so the additive correction `log B / log k → 0` is eventually `< ε`
   have hlogtop : Tendsto (fun k : ℕ => Real.log (k : ℝ)) atTop atTop := by
-    simpa [Function.comp] using Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+    simpa [Function.comp_def] using Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   have hBk : Tendsto (fun k : ℕ => Real.log B / Real.log (k : ℝ)) atTop (𝓝 0) :=
     tendsto_const_nhds.div_atTop hlogtop
   have hBev : ∀ᶠ k : ℕ in atTop, Real.log B / Real.log (k : ℝ) < ε := by

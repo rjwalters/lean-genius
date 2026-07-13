@@ -129,7 +129,13 @@ theorem small_prime_divides_product (n k p : ℕ)
     by_cases hr : (n + 1) % p = 0
     · simp [hr, Nat.mod_self]; exact ⟨(n + 1) / p, by omega⟩
     · rw [Nat.mod_eq_of_lt (by omega : p - (n + 1) % p < p)]
-      exact ⟨(n + 1) / p + 1, by omega⟩
+      have hlt : (n + 1) % p < p := Nat.mod_lt _ hp_pos
+      refine ⟨(n + 1) / p + 1, ?_⟩
+      have key : n + (p - (n + 1) % p) + 1
+          = p * ((n + 1) / p) + (n + 1) % p + (p - (n + 1) % p) := by
+        rw [h_div]; omega
+      rw [key, Nat.mul_add, Nat.mul_one]
+      omega
   exact dvd_trans hdvd (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr hi))
 
 /-- Lower bound: q(n,k) > k for all n, since every prime p ≤ k divides
@@ -164,7 +170,7 @@ theorem q_mono_k (n k₁ k₂ : ℕ) (hk₁ : 0 < k₁) (hle : k₁ ≤ k₂) :
   have hprod_dvd : consecutiveProduct n k₁ ∣ consecutiveProduct n k₂ := by
     unfold consecutiveProduct
     have hsub := Finset.range_mono hle
-    exact Dvd.intro _ (Finset.prod_sdiff hsub).symm
+    exact Dvd.intro _ ((mul_comm _ _).trans (Finset.prod_sdiff hsub))
   exact hq2_not_dvd (dvd_trans hq2_dvd hprod_dvd)
 
 /-- The conjecture implies the weak bound. -/
@@ -175,5 +181,9 @@ theorem main_implies_weak (h : ErdosProblem663) : WeakBound := by
   calc (smallestMissingPrime n k : ℝ) < (1 + ε) * Real.log n := hN₀ n hn
     _ ≤ (1 + ε) * k * Real.log n := by
         rw [mul_assoc]
-        apply mul_le_mul_of_nonneg_left _ (by linarith)
-        le_of_eq_of_le (by ring_nf) (by nlinarith [Nat.cast_pos.mpr hk])
+        have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+        have hlogn : (0 : ℝ) ≤ Real.log n := by
+          rcases Nat.eq_zero_or_pos n with h0 | h1
+          · simp [h0]
+          · exact Real.log_nonneg (by exact_mod_cast h1)
+        exact mul_le_mul_of_nonneg_left (le_mul_of_one_le_left hlogn hk1) (by linarith)

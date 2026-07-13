@@ -51,7 +51,7 @@ theorem evenHarmonic_eq_half_harmonic (m : ℕ) :
   rw [Finset.mul_sum]
   congr 1
   ext j
-  ring
+  simp only [one_div, mul_inv]
 
 /-- H(1) = 1. -/
 theorem partialHarmonic_one : partialHarmonic 1 = 1 := by
@@ -176,7 +176,7 @@ theorem evenCycleSum_eq_half (m : ℕ) (hm : 2 ≤ m) :
 /-- For any positive even number 2j (j ≥ 2), the reciprocal satisfies 1/(2j) < 1/j. -/
 theorem even_reciprocal_lt (j : ℕ) (hj : 2 ≤ j) :
     (1 : ℝ) / (2 * j) < 1 / j := by
-  have hpos : (j : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < j)
+  have hpos : (j : ℝ) > 0 := by exact_mod_cast (by omega : 0 < j)
   rw [div_lt_div_iff₀ (by positivity : (2 : ℝ) * j > 0) (by positivity : (j : ℝ) > 0)]
   linarith
 

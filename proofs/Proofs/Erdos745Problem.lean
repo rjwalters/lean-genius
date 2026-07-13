@@ -68,8 +68,7 @@ noncomputable def criticalRandomGraph (n : ℕ) (hn : n ≥ 1) : RandomGraphMode
   hp_le_one := by
     have : (1 : ℝ) / n ≤ 1 := by
       rw [div_le_one (by positivity : (n : ℝ) > 0)]
-      skip
-      exact hn
+      exact_mod_cast hn
     exact this
 
 /-
@@ -264,10 +263,12 @@ theorem erdos_745_summary :
     -- Giant is much larger
     (∀ n : ℕ, n ≥ 1 → ∃ c : ℝ, c > 0 ∧ True) := by
   constructor
-  · intro n hn
-    exact komlos_sulyok_szemeredi n hn
-  · intro n hn
-    exact critical_giant_size n hn
+  · intro n _
+    obtain ⟨c, hc⟩ := komlos_sulyok_szemeredi
+    exact ⟨c, hc, trivial⟩
+  · intro n _
+    obtain ⟨c₁, _, h1, _⟩ := critical_giant_size
+    exact ⟨c₁, h1, trivial⟩
 
 /--
 **The Answer:**

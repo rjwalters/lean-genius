@@ -106,11 +106,12 @@ theorem eq_zero_of_aeval_mulVec_eq_zero
   -- Express aeval M p as sum over Fin n, using natDegree < n
   have hp_expand : (aeval M p).mulVec v =
       ∑ i : Fin n, p.coeff (i : ℕ) • (M ^ (i : ℕ)).mulVec v := by
-    simp only [aeval_def,
-      eval₂_eq_sum_range' (algebraMap K _) M (show p.natDegree < n from hp_deg)]
-    skip
-    congr 1; ext i
-    simp [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]
+    rw [aeval_def,
+      eval₂_eq_sum_range' (algebraMap K _) (show p.natDegree < n from hp_deg) M,
+      Matrix.sum_mulVec,
+      ← Fin.sum_univ_eq_sum_range fun i => (algebraMap K _ (p.coeff i) * M ^ i) *ᵥ v]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mulVec]
   -- From hp_ann: the sum of coeff(i) • M^i v = 0
   have hsum : ∑ i : Fin n, p.coeff (i : ℕ) • (M ^ (i : ℕ)).mulVec v = 0 := by
     rw [← hp_expand]; exact hp_ann

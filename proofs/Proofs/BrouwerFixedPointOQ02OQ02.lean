@@ -148,7 +148,8 @@ theorem binary_search_halving (n : ℕ) :
 theorem info_theoretic_bound {n : ℕ} {ε : ℝ} (hε : 0 < ε) (hε1 : ε ≤ 1)
     (hn : (2 : ℝ) ^ n < 1 / ε) :
     1 / (2 : ℝ) ^ n > ε := by
-  rw [gt_iff_lt, ← div_lt_iff₀ (by positivity : (0:ℝ) < 2 ^ n)]
+  rw [lt_div_iff₀ hε] at hn
+  rw [gt_iff_lt, lt_div_iff₀ (by positivity : (0:ℝ) < 2 ^ n)]
   linarith
 
 /-- **Contrapositive**: To achieve ε-accuracy, need 2^n ≥ 1/ε,
@@ -220,7 +221,11 @@ theorem quadratic_to_epsilon {x : ℕ → ℝ} {x_star C : ℝ}
     (hstart : C * |x 0 - x_star| ≤ 1/2) (n : ℕ) :
     |x n - x_star| ≤ (1/C) * (1/2) ^ (2 ^ n) := by
   have h := quadratic_convergence_rate hC hquad hstart n
-  rwa [← le_div_iff₀ hC, div_eq_mul_inv, inv_eq_one_div]
+  have h2 : |x n - x_star| ≤ (1/2) ^ (2 ^ n) / C := by
+    rw [le_div_iff₀ hC, mul_comm]
+    exact h
+  calc |x n - x_star| ≤ (1/2) ^ (2 ^ n) / C := h2
+    _ = (1/C) * (1/2) ^ (2 ^ n) := by ring
 
 /-- **Quadratic convergence iteration count**: To achieve ε-accuracy
     with quadratic convergence starting from C·|e₀| ≤ 1/2, we need
@@ -230,7 +235,7 @@ theorem quadratic_iteration_count {C ε : ℝ} (hC : 0 < C) (hε : 0 < ε)
     {n : ℕ} (hn : (1/2 : ℝ) ^ (2 ^ n) ≤ C * ε) :
     (1/C) * (1/2 : ℝ) ^ (2 ^ n) ≤ ε := by
   rw [div_mul_eq_mul_div, one_mul]
-  exact div_le_of_le_mul₀ (le_of_lt hC) (le_of_lt hε) hn
+  exact div_le_of_le_mul₀ (le_of_lt hC) (le_of_lt hε) (hn.trans_eq (mul_comm C ε))
 
 -- ============================================================
 -- SECTION IX: Persistence of ε-Approximation (OQ-02 / OQ-02 / OQ-01)
