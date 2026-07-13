@@ -2563,7 +2563,7 @@ TestApi1059	RESIDUAL	dot-notation-drift
 TestApi1061	RESIDUAL	unknown-const:Nat.divisors_prime_eq
 TestApi1061b	RESIDUAL	unknown-const:Nat.divisors_prime_eq
 TestApi1141	RESIDUAL	dot-notation-drift
-TestApi1148	RESIDUAL	proof-drift
+TestApi1148	GREEN	
 TestApi1159b	RESIDUAL	unknown-const:Configuration.HasLines.mkFinOrder
 TestApi1159c	RESIDUAL	proof-drift
 TestApi203	RESIDUAL	unclassified
@@ -2575,22 +2575,22 @@ TestApi312	RESIDUAL	unknown-const:Real.exp_ge_one_add_of_nonneg
 TestApi321	GREEN	
 TestApi342	RESIDUAL	dot-notation-drift
 TestApi361	GREEN	
-TestApi385	RESIDUAL	proof-drift
+TestApi385	GREEN	
 TestApi417	RESIDUAL	proof-drift
 TestApi423	RESIDUAL	parse-error
-TestApi457	RESIDUAL	proof-drift
+TestApi457	GREEN	
 TestApi472	GREEN	
 TestApi513	RESIDUAL	unknown-const:Real.pi_lt_3141593
 TestApi635	GREEN	
 TestApi654	GREEN	
 TestApi688	RESIDUAL	unknown-const:Nat.not_prime_of_le_one
-TestApi689	RESIDUAL	type-mismatch
+TestApi689	GREEN	
 TestApi693	GREEN	
 TestApi783	RESIDUAL	dot-notation-drift
 TestApi826	RESIDUAL	signature-drift
 TestApi847	GREEN	
 TestApi889	GREEN	
-TestApi913	RESIDUAL	proof-drift
+TestApi913	GREEN	
 TestApi959	GREEN	
 TestApi960	RESIDUAL	unknown-const:Rat.toNat
 TestApi963	RESIDUAL	unknown-const:Finset.sum_pow_eq_pow_sum

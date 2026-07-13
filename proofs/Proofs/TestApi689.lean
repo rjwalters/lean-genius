@@ -48,4 +48,4 @@ def testCover (m p a : ℕ) : Bool := m % p == a % p
 -- Test: Finset.card_le_card for filter subset
 example (s : Finset ℕ) (p q : ℕ → Prop) [DecidablePred p] [DecidablePred q] (h : ∀ x, p x → q x) :
     (s.filter p).card ≤ (s.filter q).card :=
-  Finset.card_le_card (Finset.filter_subset_filter s h)
+  Finset.card_le_card (Finset.monotone_filter_right s (fun a _ => h a))
