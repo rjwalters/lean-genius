@@ -150,3 +150,45 @@ Remaining open (unchanged): abundancy ≥ 4 full range needs the greedy sorted-d
 characterization (d_{i+1} ≤ σ_i+1); asymptotic h(m)/Vose density out of elementary reach.
 The `dₖ` chain could continue (`5,6` representable ⇒ further constraints) but grows in
 subset-enumeration complexity.
+
+## Session 2026-07-12 (researcher-3) — subadditivity of `h`: h(m·n) ≤ h(m)+h(n)
+
+SOLVED-state look-outward. The file had the first bounds/exact values of the Erdős #18
+function `h` (`h_le_card_divisors`, `le_two_pow_h`, `h_two_pow`) but no *structural*
+(multiplicative) law relating `h` on a product to `h` on the factors. Added the
+subadditivity law and its power corollary — the counting refinement of the already-present
+`practical_mul` closure:
+
+- `exists_h_covering : IsPractical m → ∃ S ⊆ divisors m, |S| = h(m) ∧ (S covers [1,m))`
+  — names the `Nat.sInf_mem` extraction (the sInf set is nonempty via the full divisor
+  set, since `m` practical). Reused twice below; factors the boilerplate out of `le_two_pow_h`.
+- `h_mul_le : IsPractical m → IsPractical n → h(m·n) ≤ h(m) + h(n)` — take minimal
+  covering sets `S_m` (size h m), `S_n` (size h n); the witness `S = S_m ∪ m·S_n ⊆
+  divisors(m·n)` has `|S| ≤ h m + h n` and covers `[1,m·n)`. For `1 ≤ k < m·n` split
+  `k = m·(k/m) + k%m`; cover `k%m` inside `S_m` (elements `< m` by `single_le_sum`) and
+  `m·(k/m)` inside `m·S_n` (elements `≥ m`); the two subsets are disjoint, union sums to k.
+  `Nat.sInf_le` on the witness closes it. EXACT same divisor construction as `practical_mul`
+  (lines 493-537) but tracking `Finset.card_union_le` + `card_image_of_injOn`.
+- `h_pow_le : IsPractical m → h(m^k) ≤ k·h(m)` — induction on k via `h_mul_le` +
+  `practical_pow`; base `h_one`. TIGHT on the base-2 family: `h(2^k) = k = k·h(2)` since
+  `h(2)=1`, so subadditivity is sharp there.
+
+★Gotchas (v4.26, built first try, 7744 jobs, `⚠ Built (10s)`, 0 axioms / 0 sorries):
+- `exists_h_covering`'s conclusion `S.card = h m` typechecks against `Nat.sInf_mem hne`
+  purely by DEFEQ (`h m` unfolds to that exact `sInf {...}`); write the set literal
+  IDENTICALLY to `def h` or the `exact Nat.sInf_mem hne` fails.
+- `Finset.single_le_sum (f := id) …` typed as `a ≤ Tr.sum id` (not `id a ≤ …`) lets the
+  later `rw [hTrsum]; omega` see `a ≤ k%m` without an `id`-unfolding step (same trick as
+  `practical_mul`'s `m*d ≤ Sr.sum id`).
+- `Finset.card_union_le _ _` (needs both args), `Finset.subset_union_left/right` (no explicit
+  args in v4.26), `Finset.image_subset_image` for `Tq ⊆ A`.
+- The empty-subset branches (`k%m=0` / `k/m=0`) keep the invariant `T.sum id = k%m` (resp.
+  `= k/m`) uniform via `⟨∅, empty_subset, by simp [h0]⟩`, so disjointness/sum work in one path.
+
+Two pre-existing warnings untouched (unused `n` Erdos18Problem:47, `le_or_lt` deprecation
+Erdos18OQ01:318). theoremCount 52→55, lineCount 896→1023.
+
+Remaining open (unchanged): a matching LOWER bound on products beyond `h(m·n) ≥ log₂ m +
+log₂ n` (from `le_two_pow_h`); exact `h(2^a·3^b)` to probe tightness off the single-base
+powers; the greedy sorted-divisor full-range theorem; asymptotic h(m)/Vose density
+(analytic, out of elementary reach).

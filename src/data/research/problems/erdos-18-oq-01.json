@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: first theorems about the h(m) representation function (the actual subject of Erdős #18) — upper bound h(m) ≤ d(m), counting lower bound m ≤ 2^h(m), and the exact value h(2^k) = k; 53 theorems, 0 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added subadditivity of the Erdős #18 function h — h(m·n) ≤ h(m)+h(n) (h_mul_le) and its power corollary h(m^k) ≤ k·h(m) (h_pow_le), plus the reusable minimal-covering extractor exists_h_covering. 0 axioms / 0 sorries; theoremCount 52→55. h_pow_le is tight on 2^k (matches h_two_pow). Asymptotic h(m)/Vose density remains out of elementary reach.",
     "builtItems": [
       "Erdos18OQ01.lean: 7 theorems, 0 axioms, 0 sorries. Imports Proofs.Erdos18Problem for the definitions.",
       "zero_representable (∅), mem_divisors_representable (singleton {d}), one_representable (1∣m), self_representable ({m}).",
@@ -42,7 +42,10 @@
       "sigma_representable, representable_compl, practical_top_segment (3 theorems, 0 axioms): complement symmetry k↦σ(m)−k of the representability algebra + its consequence for the top segment of a practical number.",
       "practical_three_or_four_dvd (4<m -> IsPractical m -> 3|m or 4|m) in Erdos18OQ01.lean:680",
       "practical_four_or_six_dvd (4<m -> IsPractical m -> 4|m or 6|m, via practical_even + Nat.Coprime 2 3) in Erdos18OQ01.lean:715",
-      "h(m) representation-function bounds (researcher-9, 2026-07-12): card_le_two_pow_card_of_covers (a set S covering [0,N) as subset sums has N ≤ 2^|S|, via injection of the N values into S.powerset), h_le_card_divisors (practical m ⟹ h(m) ≤ d(m), the full divisor set covers), le_two_pow_h (practical m ⟹ m ≤ 2^h(m), i.e. h(m) ≥ log₂ m — the sInf is attained via Nat.sInf_mem then the counting bound), one_le_h, h_one=0, powers_subset_sum (binary covering of [0,2^k) by {1,2,…,2^{k-1}}), h_two_pow_le (h(2^k) ≤ k), and h_two_pow (h(2^k) = k EXACTLY — first exact value of the Erdős #18 function). 0 axioms, 0 sorries."
+      "h(m) representation-function bounds (researcher-9, 2026-07-12): card_le_two_pow_card_of_covers (a set S covering [0,N) as subset sums has N ≤ 2^|S|, via injection of the N values into S.powerset), h_le_card_divisors (practical m ⟹ h(m) ≤ d(m), the full divisor set covers), le_two_pow_h (practical m ⟹ m ≤ 2^h(m), i.e. h(m) ≥ log₂ m — the sInf is attained via Nat.sInf_mem then the counting bound), one_le_h, h_one=0, powers_subset_sum (binary covering of [0,2^k) by {1,2,…,2^{k-1}}), h_two_pow_le (h(2^k) ≤ k), and h_two_pow (h(2^k) = k EXACTLY — first exact value of the Erdős #18 function). 0 axioms, 0 sorries.",
+      "exists_h_covering (Erdos18OQ01.lean:913): for practical m, the sInf defining h(m) is attained by a covering set S ⊆ divisors m with |S| = h(m).",
+      "h_mul_le (Erdos18OQ01.lean:932): SUBADDITIVITY h(m·n) ≤ h(m)+h(n) for practical m,n — the counting refinement of practical_mul (witness S_m ∪ m·S_n, disjoint low/high split k=m·q+r).",
+      "h_pow_le (Erdos18OQ01.lean:1016): h(m^k) ≤ k·h(m), iterating h_mul_le over practical_pow."
     ],
     "insights": [
       "IsRepresentable k m = ∃ S ⊆ divisors m, S.sum id = k; the bounded form ∃ S ∈ (divisors m).powerset (via Finset.mem_powerset) is DECIDABLE, so IsPractical m reduces to a finite decidable check and small cases follow by `decide`.",
@@ -52,14 +55,15 @@
       "The representable range of m is exactly [0, σ(m)]: 0 is representable (empty set), σ(m) is the max (representable_le_sigma), and disjoint divisor subsets add (representable_union). This is the elementary closure structure underlying every practical-number argument.",
       "Complement symmetry (researcher-4, 2026-07-08): the representable set of m is symmetric under k↦σ(m)−k. sigma_representable: σ(m) itself is representable (all divisors). representable_compl: if S⊆divisors m sums to k, the unused divisors divisors m\\S sum to σ(m)−k (Finset.sum_sdiff + omega), so σ(m)−k is representable. practical_top_segment: reflecting practical_represents_le ([0,m] representable) through this symmetry gives the TOP block [σ(m)−m, σ(m)] representable — a practical number represents both width-m ends of [0,σ(m)]. All elementary, 0 axioms.",
       "Requiring 4 to be a sum of distinct divisors forces d3<=4: the only such sums are {4} and {1,3}, so a practical m>4 has 3|m or 4|m (the third-smallest-divisor constraint, next after practical_even d2=2).",
-      "The h(m) function (the actual subject of Erdős #18) is bracketed elementarily: log₂ m ≤ h(m) ≤ d(m). The lower bound is pure counting — a covering set of size s produces ≤ 2^s distinct subset sums but must hit the m values 0..m-1, so m ≤ 2^s (card_le_two_pow_card_of_covers). The upper bound is trivial (the whole divisor set covers). For m = 2^k both collapse: the lower bound gives h ≥ k and the binary digits {1,…,2^{k-1}} (a k-element covering set) give h ≤ k, so h(2^k) = k exactly — one fewer than d(2^k) = k+1 since the top divisor 2^k is never needed. This is the first exact h-value; the open questions concern how much smaller than d(m) the function h(m) can be for structured m (e.g. m = n!)."
+      "The h(m) function (the actual subject of Erdős #18) is bracketed elementarily: log₂ m ≤ h(m) ≤ d(m). The lower bound is pure counting — a covering set of size s produces ≤ 2^s distinct subset sums but must hit the m values 0..m-1, so m ≤ 2^s (card_le_two_pow_card_of_covers). The upper bound is trivial (the whole divisor set covers). For m = 2^k both collapse: the lower bound gives h ≥ k and the binary digits {1,…,2^{k-1}} (a k-element covering set) give h ≤ k, so h(2^k) = k exactly — one fewer than d(2^k) = k+1 since the top divisor 2^k is never needed. This is the first exact h-value; the open questions concern how much smaller than d(m) the function h(m) can be for structured m (e.g. m = n!).",
+      "h is subadditive along products: representation cost of m·n is at most the sum of the factors' costs. Consistent with the exact value h(2^k)=k = k·h(2) (h(2)=1), i.e. h_pow_le is TIGHT on the base-2 family.",
+      "The practical_mul divisor construction (S_m ∪ m·S_n) also controls cardinality once minimal covering sets are used; disjointness holds because low-part elements are < m and scaled high-part elements are ≥ m."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Stewart–Sierpiński characterization of practical numbers via prime factorization (the route to denser families and the deep structural theorem).",
-      "Multiplicative closure: if gcd(a,b)=1 and both practical (with a ≥ ...), conditions under which a*b is practical (a step toward Stewart–Sierpiński).",
-      "Contiguity: every representable set of consecutive integers [0,σ(m)] when m is practical — i.e. practicality ⟺ divisor sums cover an initial segment (Stewart's condition σ(d_{i+1}) ≤ 1 + Σ_{j≤i} d_j).",
-      "Continue the dk divisor chain (5,6 representable give further divisibility constraints, but subset-enumeration grows), or attempt the greedy sorted-divisor full-range [0,sigma(m)] theorem for arbitrary abundancy."
+      "Lower bounds for h on products: is h(m·n) ≥ max(h(m),h(n)) or a log-based bound? (h(m·n) ≥ log₂(m·n) = log₂ m + log₂ n already from le_two_pow_h).",
+      "Exact h for h(2^a·3^b) or other two-prime families to test tightness of subadditivity beyond powers of a single base.",
+      "Greedy sorted-divisor full-range characterization (d_{i+1} ≤ σ_i + 1) — larger project enabling abundancy ≥ 4."
     ]
   },
   "tags": [
