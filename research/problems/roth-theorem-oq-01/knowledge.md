@@ -4,6 +4,55 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-13 (researcher-9) — ACT: effective tail decay of the reciprocal bound
+
+**Mode**: REVISIT (graduated problem; orthogonal new content). **Outcome**: progress, machine-verified
+(`docker-build.sh Proofs.RothTheoremOQ01Reciprocal` → `Build succeeded`, 2511 jobs).
+
+### What I did
+Added a **tail-decay / concentration** section to `Proofs/RothTheoremOQ01Reciprocal.lean` (6 decls,
+0 sorries, **no new axiom** — inherits only the single imported `rothNumberNat_bloom_sisask`).
+
+Where researcher-8 proved the total sum is `≤ recipBound` (one constant) and researcher-6 proved
+dilation covariance (`k·A` obeys `recipBound/k`), this pins down *where* the reciprocal mass can sit:
+
+- **`recipTail m := ∑'_k recipMajorant (k + m)`** — the dyadic majorant summed over blocks of index
+  `≥ m`; `recipTail_zero : recipTail 0 = recipBound`.
+- **`finite_recip_sum_le_of_min_ge`** — finite 3-AP-free `T` (`0 ∉ T`) with every element `≥ 2^m` has
+  `Σ 1/a ≤ recipTail m`. Proof: `2^m ≤ a ⟹ ⌊log₂ a⌋ ≥ m` (`Nat.pow_le_iff_le_log`), so the fiber
+  decomposition ranges over block indices `≥ m`; reindex `k ↦ k-m` to identify the block sum with a
+  partial sum of `∑'_k recipMajorant (k+m)`.
+- **`threeAPFree_tsum_reciprocal_le_of_min_ge`** — infinite form via `tsum_le_of_sum_le`.
+- **`recipTail_tendsto_zero`** — `recipTail m → 0` (`tendsto_sum_nat_add` on summable `recipMajorant`).
+- **`exists_height_recip_small`** — for every `ε>0` a single height threshold `m` makes *every*
+  high 3-AP-free set have reciprocal sum `≤ ε` (uniform concentration).
+
+### Key findings
+- The `k=3` reciprocal mass is not just finite but *concentrates away from infinity at an explicit
+  dyadic rate*: sets forced high (min `≥ 2^m`) carry vanishing reciprocal mass, one `m` for all at once.
+- `tendsto_sum_nat_add` (the `to_additive` of `tendsto_prod_nat_add`) gives the tail→0 with **no**
+  extra summability hypothesis; `summable_nat_add_iff m` handles the shifted-series summability.
+
+### Lean gotchas (v4.26)
+- `Nat.pow_le_iff_le_log (hb : 1 < b) (hy : y ≠ 0) : b^x ≤ y ↔ x ≤ log b y` — use `.mp` on `2^m ≤ a`.
+- Tail reindex: `Finset.sum_image hinj` with `hinj` proved from `k ≥ m` (`omega`), then
+  `Summable.sum_le_tsum _ nonneg (summable_recipMajorant_add m)`.
+- **Transient SIGBUS**: the first docker build crashed with Lean exit code 135 (SIGBUS, mmap over the
+  external `/Volumes/Stripe` worktree volume) with *no* elaboration error; a bare retry succeeded.
+  Worktree was also deleted mid-session by concurrent cleanup → recreated via `git worktree add`.
+
+### Files modified
+- `proofs/Proofs/RothTheoremOQ01Reciprocal.lean` (+~130 lines, tail-decay section)
+- `src/data/research/problems/roth-theorem-oq-01.json` (knowledge)
+
+### Next steps
+- Prove `recipTail` antitone (`recipTail (m+1) = recipTail m − recipMajorant m`) and give an explicit
+  closed-form majorant for `recipTail m` (integral comparison for the `p`-series tail) — upgrading the
+  qualitative `→0` into an explicit decay rate in `m`.
+
+---
+
+
 ## Session 2026-07-08 (researcher-8) — ACT: Erdős reciprocal-sum consequence (3-AP-free ⟹ Σ1/a < ∞)
 
 **Mode**: REVISIT. The axiomatized landmark route was exhausted; the genuine remaining unit
