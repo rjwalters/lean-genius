@@ -533,4 +533,82 @@ theorem consecutive_gap_le_eps_of_bound {θ : ℝ} {x p q : ℕ} (ε : ℝ)
       show (1 : ℝ) - θ + θ = 1 by ring, Real.rpow_one] at hstep
   exact le_trans h1 h2
 
+/-! ### Multiplicative closeness: consecutive primes have ratio tending to `1`
+
+The results above are all *additive* (`q - p = o(x)`).  Their multiplicative
+shadow is that **consecutive primes are close in ratio**: applying the sup-level
+bound at `x = q` (the pair `p < q ≤ q` always qualifies) gives
+`(q - p) / q ≤ q^(-0.475)`, so
+
+    (p : ℝ) / q  =  1 - (q - p)/q  ≥  1 - q^(-0.475)  →  1,
+
+and, taking reciprocals, `q / p ≤ (1 - q^(-0.475))⁻¹ → 1`.  Thus consecutive
+primes satisfy `p / q → 1`; this is the multiplicative form of sublinearity,
+orthogonal to the additive `o(x)` layer. -/
+
+/-- **Lower ratio bound for consecutive primes.**  For consecutive primes
+`p < q` with `q ≥ 25`, the smaller prime is at least `(1 - q^(-0.475))` times the
+larger: `1 - q^(-0.475) ≤ p / q`.  Obtained by applying
+`consecutive_gap_div_le_rpow_neg` at `x = q` (so `(q - p)/q ≤ q^(-0.475)`) and
+rewriting `(q - p)/q = 1 - p/q`.  As `q → ∞` the envelope `q^(-0.475) → 0`, so
+`p / q → 1`. -/
+theorem consecutive_ratio_ge {p q : ℕ} (hq25 : 25 ≤ q)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    1 - (q : ℝ) ^ (-(0.475 : ℝ)) ≤ (p : ℝ) / q := by
+  have hqR : (0 : ℝ) < (q : ℝ) := by
+    have : (0 : ℕ) < q := lt_of_lt_of_le (by norm_num) hq25
+    exact_mod_cast this
+  have hgap : ((q - p : ℕ) : ℝ) / q ≤ (q : ℝ) ^ (-(0.475 : ℝ)) :=
+    consecutive_gap_div_le_rpow_neg hq25 hp hq hpq (le_refl q) hcons
+  have hcast : ((q - p : ℕ) : ℝ) = (q : ℝ) - (p : ℝ) := by
+    rw [Nat.cast_sub (le_of_lt hpq)]
+  rw [hcast, sub_div, div_self (ne_of_gt hqR)] at hgap
+  linarith
+
+/-- **Upper ratio bound for consecutive primes.**  Reciprocal companion of
+`consecutive_ratio_ge`: for consecutive primes `p < q` with `q ≥ 25`,
+`q / p ≤ (1 - q^(-0.475))⁻¹`.  Since `q ≥ 25 > 1` the base satisfies
+`q^(-0.475) < 1`, so `1 - q^(-0.475) > 0` and reciprocals reverse the lower
+bound `1 - q^(-0.475) ≤ p/q`.  As `q → ∞` the right-hand side `→ 1`, giving the
+matching upper half of `p/q → 1`. -/
+theorem consecutive_ratio_le {p q : ℕ} (hq25 : 25 ≤ q)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    (q : ℝ) / p ≤ (1 - (q : ℝ) ^ (-(0.475 : ℝ)))⁻¹ := by
+  have hppos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hp.pos
+  have hqR : (0 : ℝ) < (q : ℝ) := by
+    have : (0 : ℕ) < q := lt_of_lt_of_le (by norm_num) hq25
+    exact_mod_cast this
+  have hlow : 1 - (q : ℝ) ^ (-(0.475 : ℝ)) ≤ (p : ℝ) / q :=
+    consecutive_ratio_ge hq25 hp hq hpq hcons
+  have hbase : (q : ℝ) ^ (-(0.475 : ℝ)) < 1 := by
+    apply Real.rpow_lt_one_of_one_lt_of_neg
+    · have : (1 : ℕ) < q := lt_of_lt_of_le (by norm_num) hq25
+      exact_mod_cast this
+    · norm_num
+  have hpos : (0 : ℝ) < 1 - (q : ℝ) ^ (-(0.475 : ℝ)) := by linarith
+  have hinv : (q : ℝ) / p = 1 / ((p : ℝ) / q) := by rw [one_div, inv_div]
+  rw [hinv, ← one_div ((1 : ℝ) - (q : ℝ) ^ (-(0.475 : ℝ)))]
+  exact one_div_le_one_div_of_le hpos hlow
+
+/-- **θ-generic lower ratio bound.**  The exponent-parametric form of
+`consecutive_ratio_ge`: from *any* sup-level power bound `maxPrimeGap q ≤ q^θ`
+at `q > 0`, consecutive primes `p < q` satisfy `1 - q^(θ-1) ≤ p / q`.  For
+`θ < 1` the envelope `q^(θ-1) → 0`, so `p/q → 1`; the BHP instance
+`consecutive_ratio_ge` is `θ = 0.525` (with `θ - 1 = -0.475`).  Any future
+strengthening of BHP plugs straight in. -/
+theorem consecutive_ratio_ge_of_bound {θ : ℝ} {p q : ℕ}
+    (hqpos : 0 < q) (hbound : (maxPrimeGap q : ℝ) ≤ (q : ℝ) ^ θ)
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p < q)
+    (hcons : ∀ r, Nat.Prime r → p < r → q ≤ r) :
+    1 - (q : ℝ) ^ (θ - 1) ≤ (p : ℝ) / q := by
+  have hqR : (0 : ℝ) < (q : ℝ) := by exact_mod_cast hqpos
+  have hgap : ((q - p : ℕ) : ℝ) / q ≤ (q : ℝ) ^ (θ - 1) :=
+    consecutive_gap_div_le_rpow_sub_one_of_bound hqpos hbound hp hq hpq (le_refl q) hcons
+  have hcast : ((q - p : ℕ) : ℝ) = (q : ℝ) - (p : ℝ) := by
+    rw [Nat.cast_sub (le_of_lt hpq)]
+  rw [hcast, sub_div, div_self (ne_of_gt hqR)] at hgap
+  linarith
+
 end Erdos1138OQ03

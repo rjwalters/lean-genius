@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + generalized further (researcher-5 2026-07-12): the power-envelope engines are now subsumed by a FULLY GENERAL envelope engine gap_littleo_of_littleo_envelope — any eventual envelope f with f x/x→0 forces sublinearity, removing the power assumption entirely (captures both x^θ and the non-power Cramér (log x)² branch). Added =o id form and a subsumption proof re-deriving the rpow engine. 3 new theorems, 0 new axioms. Only assumption remains the deep parent axiom baker_harman_pintz (BHP theorem).",
+    "progressSummary": "PROGRESS (multiplicative-closeness section, 3 thm VERIFIED, no new axioms): added the MULTIPLICATIVE shadow of the additive sublinearity — consecutive primes p<q satisfy p/q→1 (consecutive_ratio_ge/le two-sided sandwich + θ-generic axiom-free consecutive_ratio_ge_of_bound). Orthogonal to the additive o(x) gap trilogy. Only axiom remains parent's deep baker_harman_pintz; the OQ01 sublinearity engine is otherwise 0-axiom/0-sorry.",
     "builtItems": [
       "gap_div_le_rpow_neg (Erdos1138OQ03OQ01.lean:37): maxPrimeGap x / x <= x^(-0.475) for x >= 25",
       "bhp_implies_gap_littleo (Erdos1138OQ03OQ01.lean:57): Tendsto (maxPrimeGap x / x) atTop (nhds 0)",
@@ -40,7 +40,8 @@
       "gap_div_isBigO_rpow_sub_one_of_rpow_bound (Erdos1138OQ03OQ01.lean, VERIFIED axiom-free [propext,choice,Quot.sound]): abstract normalised-decay-rate engine, any eventual envelope maxPrimeGap x≤x^θ ⟹ maxPrimeGap x/x = O(x^(θ-1)); source-parametric twin of the concrete decay-rate result.",
       "Erdos1138OQ03OQ01.lean: gap_littleo_of_littleo_envelope — fully general engine: ANY envelope maxPrimeGap x≤f x with f x/x→0 ⟹ maxPrimeGap x/x→0 (no power assumption)",
       "Erdos1138OQ03OQ01.lean: gap_isLittleO_id_of_littleo_envelope — =o[atTop] id form",
-      "Erdos1138OQ03OQ01.lean: gap_littleo_of_rpow_bound_via_envelope — re-derives the power engine as an instance (subsumption proof)"
+      "Erdos1138OQ03OQ01.lean: gap_littleo_of_rpow_bound_via_envelope — re-derives the power engine as an instance (subsumption proof)",
+      "Erdos1138OQ03OQ01.lean: multiplicative-closeness section (3 thm, VERIFIED via lake env lean, no NEW axioms beyond parent baker_harman_pintz): consecutive_ratio_ge (1−q^(−0.475)≤p/q, BHP), consecutive_ratio_le (q/p≤(1−q^(−0.475))⁻¹, BHP), consecutive_ratio_ge_of_bound (θ-generic 1−q^(θ−1)≤p/q, AXIOM-FREE — plugs any future BHP strengthening). p/q→1 as q→∞."
     ],
     "insights": [
       "BHP exponent 0.525 < 1: one division by x yields a negative power x^(-0.475) that vanishes at infinity - no finer analysis needed",
@@ -48,7 +49,8 @@
       "tendsto_rpow_neg_atTop is root-namespace (not Real.); the earlier survey mis-quoted it",
       "Abstract sublinearity engine: the specific BHP exponent 0.525 is inessential — ANY eventual power envelope maxPrimeGap x ≤ x^θ with θ<1 forces maxPrimeGap x / x → 0 (envelope x^θ/x = x^(θ-1) = x^(-(1-θ)) → 0 since 1-θ>0). gap_littleo_of_rpow_bound {θ} (hθ:θ<1) (H: ∀ᶠ x, gap ≤ x^θ). bhp_implies_gap_littleo is the θ=0.525 instance; future BHP tightenings (0.5+ε) plug in with no re-proof.",
       "Added the explicit decay RATE of the normalised gap (previously only the qualitative Tendsto→0 was recorded): concrete gap_div_isBigO_rpow_neg = O(x^(-0.475)) and abstract gap_div_isBigO_rpow_sub_one_of_rpow_bound = O(x^(θ-1)). Also cleaned two dead `gcongr <;> exact hx` linter warnings. File VERIFIED via lake env lean (built parent olean first), EXIT 0, 0 warnings; 18→20 theorems.",
-      "The power structure x^θ is genuinely irrelevant to sublinearity: only f x/x→0 matters. The general envelope engine gap_littleo_of_littleo_envelope subsumes BOTH the x^θ branch (θ<1) AND the parent conditional Cramér (log x)² branch (not a power of x) under one squeeze. gap_littleo_of_rpow_bound is now provably its f x=x^θ instance."
+      "The power structure x^θ is genuinely irrelevant to sublinearity: only f x/x→0 matters. The general envelope engine gap_littleo_of_littleo_envelope subsumes BOTH the x^θ branch (θ<1) AND the parent conditional Cramér (log x)² branch (not a power of x) under one squeeze. gap_littleo_of_rpow_bound is now provably its f x=x^θ instance.",
+      "Multiplicative shadow of additive sublinearity: consecutive primes have RATIO→1. Applying the sup-level BHP bound at x=q (pair p<q≤q always qualifies) gives (q−p)/q≤q^(−0.475), so p/q=1−(q−p)/q≥1−q^(−0.475)→1. Reciprocal (q≥25>1 ⟹ q^(−0.475)<1 ⟹ 1−q^(−0.475)>0) gives q/p≤(1−q^(−0.475))⁻¹→1. Orthogonal to the additive o(x) trilogy — this is the multiplicative form p/q→1. ★ℕ-sub cast: Nat.cast_sub (le_of_lt hpq) then sub_div + div_self to get (q−p)/q=1−p/q; reciprocal via one_div_le_one_div_of_le (inv_le_inv_of_le is GONE in current Mathlib); Real.rpow_lt_one_of_one_lt_of_neg for base<1."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
