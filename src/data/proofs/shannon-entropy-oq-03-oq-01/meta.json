@@ -21,9 +21,9 @@
     "sorries": 0,
     "dateAdded": "2026-06-20",
     "axiomCount": 0,
-    "lineCount": 603,
-    "theoremCount": 9,
-    "definitionCount": 5,
+    "lineCount": 958,
+    "theoremCount": 20,
+    "definitionCount": 7,
     "assumptions": "None mathematically (0 axioms, 0 sorries). Machine-verified via Docker (lean4 v4.26.0). Self-contained: imports only Mathlib and reproduces the Shannon entropy / three-variable marginal definitions (matching the SSA proof) plus the private pointwise KL bounds, so it does not depend on any other Proofs file.",
     "originalContributions": [
       "cmiSum: the conditional mutual information I(X;Z|Y) as a relative-entropy sum Σ p·log(p·p_Y/(p_XY·p_YZ))",
@@ -146,10 +146,10 @@
       "Finset"
     ],
     "namespace": "InformationTheory",
-    "lineCount": 863,
+    "lineCount": 958,
     "axiomCount": 0,
-    "theoremCount": 16,
-    "definitionCount": 6,
+    "theoremCount": 20,
+    "definitionCount": 7,
     "path": "Proofs/ShannonEntropySSAEq.lean",
     "sorries": 0
   },

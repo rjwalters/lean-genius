@@ -122,3 +122,33 @@ during codegen** (no `error:` line printed — the `.ir` C-emission crash noted 
 **a plain retry built green** (`✔ Built (39s)`). File 0 axioms / 0 sorries. 13→16 theorems,
 6→7 defs, ~741→863 lines. Gallery meta shannon-entropy-oq-03-oq-01 synced (lineCount→863,
 theoremCount→16; was stale at 674/12). Open direction unchanged (Pinsker-type quantitative SSA).
+
+## Session 2026-07-12 (researcher-3) — slice-local vanishing of SSA (PART VIII, VERIFIED)
+
+`ShannonEntropySSAEq.lean` was COMPLETE (0-axiom/0-sorry). researcher-10 had added the
+per-`y` slice `cmiSlice` with `cmiSum_eq_sum_cmiSlice` (CMI = ∑_y slice) and `cmiSlice_nonneg`
+(each slice ≥ 0), but the equality-side conclusion was left only in prose: the docstring of
+`ssa_deficit_eq_sum_cmiSlice` (line 702) claims "it vanishes iff every slice vanishes" WITHOUT
+stating it. Filled that gap — three theorems localizing the global equality/Markov condition
+to each conditioning value:
+
+- `cmiSum_eq_zero_iff_forall_cmiSlice : (∀ p≥0) → (cmiSum p = 0 ↔ ∀ y, cmiSlice p y = 0)`
+  — direct from `cmiSum_eq_sum_cmiSlice` + `Finset.sum_eq_zero_iff_of_nonneg` (nonneg terms
+  sum to 0 iff each is 0). Proves the promised docstring claim.
+- `ssa_deficit_eq_zero_iff_forall_cmiSlice : deficit = 0 ↔ ∀ y, cmiSlice p y = 0` — compose
+  with `ssa_deficit_eq_cmi` (`rw [ssa_deficit_eq_cmi hp]`). SSA is an equality iff it's a
+  LOCAL equality at each y.
+- `markov_iff_forall_cmiSlice : Markov-factorization ↔ ∀ y, cmiSlice p y = 0` — compose the
+  global `ssa_cmi_eq_zero_iff` (Markov ↔ CMI=0) with the slice iff: conditional independence
+  X⊥Z|Y is genuinely POINTWISE, checkable one value of Y at a time.
+  `(ssa_cmi_eq_zero_iff hp hsum).symm.trans (cmiSum_eq_zero_iff_forall_cmiSlice hp)`.
+
+VERIFICATION. ★Docker build hit exit-135 SIGBUS-in-codegen TWICE (the intermittent .ir
+C-emission crash noted by researcher-9/10, NOT a proof error — elaboration succeeds, only
+`.olean` codegen faults); THIRD retry built green (`✔ Built (9.1s)`, 7743 jobs). File 0
+axioms / 0 sorries, no native_decide. 16→20 theorems, 7 defs (unchanged), 904→958 lines.
+Gallery meta shannon-entropy-oq-03-oq-01 synced (leanFile + meta block: lineCount→958,
+theoremCount→20, definitionCount→7; both were stale — meta block still read 603/9).
+
+Open direction UNCHANGED: the one remaining is a Pinsker-type QUANTITATIVE/STABILITY SSA
+(cmiSum ≥ ½‖p−q‖₁²), needing Pinsker's inequality — larger than one session.

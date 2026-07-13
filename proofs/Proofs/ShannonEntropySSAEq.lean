@@ -901,4 +901,58 @@ theorem markov_reflectXZ_iff {α β γ : Type*}
   have hsumr : ∑ q : γ × β × α, reflectXZ pXYZ q = 1 := (reflectXZ_sum pXYZ).trans hsum
   rw [← ssa_cmi_eq_zero_iff hp hsum, ← ssa_cmi_eq_zero_iff hpr hsumr, cmiSum_reflectXZ]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIII: Slice-local vanishing — SSA equality holds iff it holds
+--            at every conditioning value separately
+-- ═══════════════════════════════════════════════════════════════
+
+/-- **CMI vanishes iff every slice vanishes.**  Because `I(X;Z|Y) = ∑_y (slice at
+    `y`)` (`cmiSum_eq_sum_cmiSlice`) is a sum of *nonnegative* terms
+    (`cmiSlice_nonneg`), it is zero exactly when each term is zero.  This is the
+    statement promised (but not proved) by the docstring of
+    `ssa_deficit_eq_sum_cmiSlice`: the aggregate conditional mutual information
+    vanishes iff it vanishes at every value `y` of the conditioning variable. -/
+theorem cmiSum_eq_zero_iff_forall_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    cmiSum pXYZ = 0 ↔ ∀ y : β, cmiSlice pXYZ y = 0 := by
+  rw [cmiSum_eq_sum_cmiSlice,
+    Finset.sum_eq_zero_iff_of_nonneg (fun y _ => cmiSlice_nonneg hp y)]
+  exact ⟨fun h y => h y (Finset.mem_univ y), fun h y _ => h y⟩
+
+/-- **The SSA deficit vanishes iff every slice vanishes.**  Combining
+    `ssa_deficit_eq_cmi` (deficit `= I(X;Z|Y)`) with
+    `cmiSum_eq_zero_iff_forall_cmiSlice`: the entropy deficit
+    `H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y)` is `0` exactly when the per-`y`
+    contribution `p_Y(y)·I(X;Z | Y=y)` is `0` for every conditioning value `y`.
+    Strong subadditivity is an equality iff it is a local equality at each `y`. -/
+theorem ssa_deficit_eq_zero_iff_forall_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)
+      - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ) = 0
+    ↔ ∀ y : β, cmiSlice pXYZ y = 0 := by
+  rw [ssa_deficit_eq_cmi hp]
+  exact cmiSum_eq_zero_iff_forall_cmiSlice hp
+
+/-- **The Markov condition localizes over the conditioning variable.**  For a
+    probability law `p`, the global conditional-independence factorization
+    `p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z)` (the `X – Y – Z` Markov property)
+    holds iff the CMI slice at every conditioning value `y` vanishes.  Combines the
+    global characterization `ssa_cmi_eq_zero_iff` (Markov iff `I(X;Z|Y) = 0`) with
+    the slice decomposition `cmiSum_eq_zero_iff_forall_cmiSlice`.  So conditional
+    independence of `X` and `Z` given `Y` is genuinely a *pointwise* condition: it
+    can be checked one value of `Y` at a time. -/
+theorem markov_iff_forall_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz)
+    (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
+    (∀ x y z, pXYZ (x, y, z) * marginalY_3 pXYZ y
+        = marginalXY pXYZ (x, y) * marginalYZ pXYZ (y, z))
+    ↔ ∀ y : β, cmiSlice pXYZ y = 0 :=
+  (ssa_cmi_eq_zero_iff hp hsum).symm.trans (cmiSum_eq_zero_iff_forall_cmiSlice hp)
+
 end InformationTheory
