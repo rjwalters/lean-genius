@@ -723,4 +723,18 @@ theorem boundedCliques_prod_iff {K : Type*} [Group K] :
   exact boundedCliques_prod_of_finiteIndex
     (neumann_full_theorem.mp hG) ((neumann_full_theorem (G := K)).mp hK)
 
+/-- **Schur's theorem gives the easy direction unconditionally (axiom-free).**  A finitely
+    generated group with only *finitely many commutators* has bounded cliques — with no appeal
+    to the deep Neumann axiom `neumann_hard_direction`.  This realizes the Mathlib endgame the
+    theory's docstrings advertise (`Subgroup.index_center_le_pow`, "gated on
+    `Finite (commutatorSet G)`"): under `[Finite (commutatorSet G)] [Group.FG G]`, Schur's
+    theorem (Mathlib `Subgroup.finiteIndex_center`) makes `Z(G)` finite-index, so
+    `(center G).index ≠ 0`, and the fully-proved easy direction `bounded_cliques_of_finite_index`
+    finishes.  This is a genuine Mathlib-checkable *sufficient* condition for `BoundedCliques`
+    that sits strictly below the axiomatized hard direction: it does not assert the equivalence,
+    only that finite-commutator (FG) groups land in the class. -/
+theorem boundedCliques_of_finite_commutatorSet
+    [Finite (commutatorSet G)] [Group.FG G] : BoundedCliques G :=
+  bounded_cliques_of_finite_index Subgroup.FiniteIndex.index_ne_zero
+
 end Erdos1098OQ01OQ03

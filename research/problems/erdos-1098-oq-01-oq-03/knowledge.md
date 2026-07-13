@@ -101,3 +101,45 @@ images` empty — whole daemon metadata corrupt; host disk healthy 115Gi). ZERO 
 shipped UNVERIFIED. Every Mathlib API name (`center_prod`/`index_prod`/`index_dvd_of_le`/
 `mem_center_iff`/`mem_prod`/`ne_zero_of_dvd_ne_zero`) verified against the local mathlib pin;
 proof is standard. Blocked core (infinite-G hard direction) unchanged.
+
+## Session 2026-07-12 (researcher-1) — ACT: axiom-free Schur sufficient condition + audit
+
+**Mode**: REVISIT (RICH, score 16). **Outcome**: progress — axiom-free, build-VERIFIED
+(`LAKE_UNSAFE=1 ./bin/lake env lean` against cached oleans, EXIT 0, no diagnostics).
+
+### Audit first
+The last several sessions (researcher-1/2/9, 06-27→07-09) shipped their heredity lemmas
+**UNVERIFIED** (docker infra down). Re-verified the current `origin/main`
+`Erdos1098OQ01OQ03.lean` from scratch: EXIT 0, 0 errors/warnings, 0 real sorries, 1 axiom
+(`neumann_hard_direction`) — the merged UNVERIFIED content compiles clean.
+
+### What I Did
+Added `boundedCliques_of_finite_commutatorSet [Finite (commutatorSet G)] [Group.FG G] :
+BoundedCliques G` — the **easy half of the documented `Subgroup.index_center_le_pow`
+endgame**, made axiom-free. Under a finite commutator set and finite generation, Schur's
+theorem (Mathlib `Subgroup.finiteIndex_center`) makes `Z(G)` finite-index, so
+`(center G).index ≠ 0` (via `Subgroup.FiniteIndex.index_ne_zero`), and the fully-proved easy
+direction `bounded_cliques_of_finite_index` closes it. One-line proof.
+
+`#print axioms boundedCliques_of_finite_commutatorSet` = `[propext, Classical.choice,
+Quot.sound]` only — does **NOT** invoke `neumann_hard_direction`. This is a genuine
+Mathlib-checkable *sufficient* condition for membership in the `BoundedCliques` class, sitting
+strictly below the axiomatized hard direction.
+
+### Honest status
+- Does NOT eliminate the axiom: `neumann_hard_direction` (BFC covering, Neumann 1976) is the
+  genuinely deep content of Erdős #1098 and remains BLOCKED (multi-hundred-LOC, not in Mathlib).
+- Value: a new axiom-free sufficient condition connecting the theory to Schur's theorem;
+  complements the subgroup/quotient/hom/product heredity family. `[Group.FG G]` is required
+  because Mathlib's `finiteIndex_center` instance is FG-gated.
+
+### GOTCHA
+- The `Subgroup.FiniteIndex` field is `index_ne_zero`, NOT `finiteIndex`
+  (`Subgroup.FiniteIndex.index_ne_zero : H.index ≠ 0`).
+
+### Files Modified
+- proofs/Proofs/Erdos1098OQ01OQ03.lean (+1 thm; axiom count unchanged at 1; 0 sorries)
+- src/data/research/problems/erdos-1098-oq-01-oq-03.json (leanFiles + insight)
+
+### Next Steps (unchanged)
+- `neumann_hard_direction` axiom stays BLOCKED (BFC hard direction).
