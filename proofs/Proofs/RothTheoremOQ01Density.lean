@@ -105,9 +105,72 @@ theorem exists_threeAP_of_not_density_zero {A : Set ℕ} [DecidablePred (· ∈ 
   intro hA
   exact hpos (threeAPFree_density_tendsto_zero hA)
 
+/-- **Sharp positive-upper-density form of Roth's theorem.**
+If the counting density `#(A ∩ [0, N)) / N` is *frequently* at least some fixed `c > 0`
+— i.e. it exceeds `c` for arbitrarily large `N`, which is exactly the statement that `A`
+has upper density `≥ c > 0` — then `A` contains a nontrivial 3-term arithmetic progression.
+
+This is the textbook Roth theorem stated with an explicit positive-density witness rather
+than the negation-of-a-limit hypothesis of `exists_threeAP_of_not_density_zero`. The proof:
+were `A` 3-AP-free, its density would tend to `0` (`threeAPFree_density_tendsto_zero`), hence
+be *eventually* `< c`; that eventual bound contradicts the frequent bound `≥ c`. -/
+theorem exists_threeAP_of_frequently_density_ge {A : Set ℕ} [DecidablePred (· ∈ A)]
+    {c : ℝ} (hc : 0 < c)
+    (hfreq : ∃ᶠ N in atTop,
+      c ≤ (((range N).filter (· ∈ A)).card : ℝ) / (N : ℝ)) :
+    ∃ a d : ℕ, 0 < d ∧ a ∈ A ∧ a + d ∈ A ∧ a + 2 * d ∈ A := by
+  apply exists_threeAP_of_not_threeAPFree
+  intro hA
+  have htends := threeAPFree_density_tendsto_zero hA
+  have heven : ∀ᶠ N in atTop,
+      (((range N).filter (· ∈ A)).card : ℝ) / (N : ℝ) < c :=
+    htends.eventually_lt_const hc
+  obtain ⟨N, hN1, hN2⟩ := (hfreq.and_eventually heven).exists
+  exact absurd hN1 (not_le.mpr hN2)
+
+/-- **Positive-lower-density form.** If the counting density is *eventually* at least a fixed
+`c > 0` (a fortiori for any set of positive lower density), then `A` contains a nontrivial
+3-term arithmetic progression.  An immediate corollary of
+`exists_threeAP_of_frequently_density_ge`, since an eventual bound over the (nontrivial)
+`atTop` filter is in particular a frequent one. -/
+theorem exists_threeAP_of_eventually_density_ge {A : Set ℕ} [DecidablePred (· ∈ A)]
+    {c : ℝ} (hc : 0 < c)
+    (heven : ∀ᶠ N in atTop,
+      c ≤ (((range N).filter (· ∈ A)).card : ℝ) / (N : ℝ)) :
+    ∃ a d : ℕ, 0 < d ∧ a ∈ A ∧ a + d ∈ A ∧ a + 2 * d ∈ A :=
+  exists_threeAP_of_frequently_density_ge hc heven.frequently
+
+/-- **Complement of a 3-AP-free set has full density.**
+For any 3-AP-free `A ⊆ ℕ`, the counting density of its complement,
+`#([0, N) \ A) / N = #{x < N : x ∉ A} / N`, tends to `1`.  A 3-AP-free set is so sparse that
+its complement fills almost all of every initial segment.  Proof: the two counts partition
+`[0, N)`, so the complement ratio equals `1 − #(A ∩ [0, N))/N`, and the subtracted term tends
+to `0` by `threeAPFree_density_tendsto_zero`. -/
+theorem threeAPFree_compl_density_tendsto_one {A : Set ℕ} [DecidablePred (· ∈ A)]
+    (hA : ThreeAPFree A) :
+    Tendsto (fun N : ℕ => (((range N).filter (· ∉ A)).card : ℝ) / (N : ℝ)) atTop (𝓝 1) := by
+  have htends := threeAPFree_density_tendsto_zero hA
+  have hkey : Tendsto
+      (fun N : ℕ => 1 - (((range N).filter (· ∈ A)).card : ℝ) / (N : ℝ)) atTop (𝓝 1) := by
+    have h := (tendsto_const_nhds (x := (1 : ℝ)) (f := atTop)).sub htends
+    simpa using h
+  refine hkey.congr' ?_
+  filter_upwards [eventually_gt_atTop 0] with N hN
+  have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hsum : ((range N).filter (· ∈ A)).card + ((range N).filter (· ∉ A)).card = N := by
+    have h := Finset.filter_card_add_filter_neg_card_eq_card (s := range N) (p := fun x => x ∈ A)
+    simpa [Finset.card_range] using h
+  have hsumR : (((range N).filter (· ∈ A)).card : ℝ)
+      + (((range N).filter (· ∉ A)).card : ℝ) = (N : ℝ) := by exact_mod_cast hsum
+  have hcompl : (((range N).filter (· ∉ A)).card : ℝ)
+      = (N : ℝ) - (((range N).filter (· ∈ A)).card : ℝ) := by linarith [hsumR]
+  rw [hcompl, sub_div, div_self hNne]
+
 -- Axiom audit: axiom-free (only `propext, Classical.choice, Quot.sound`).  Rests on
 -- Mathlib's unconditional `rothNumberNat_isLittleO_id`, NOT on the Bloom–Sisask bound.
 #print axioms threeAPFree_density_tendsto_zero
 #print axioms exists_threeAP_of_not_density_zero
+#print axioms exists_threeAP_of_frequently_density_ge
+#print axioms threeAPFree_compl_density_tendsto_one
 
 end RothTheoremOQ01Density
