@@ -7786,4 +7786,445 @@ theorem sqDiffFree_exists_major_arc {N : ℕ} [NeZero N] (hodd : Odd N)
   -- from `hbound`: `a·(N(a−k) − √N·N + √N·a) ≤ 0`, contradicting `a > 0` and `hbrkN > 0`
   nlinarith [hbound, mul_pos hApos hbrkN]
 
+
+/-! ## Part IX: The second-moment (Plancherel) identity for the quadratic Gauss sum
+
+The pointwise magnitude work (Parts VII–VIII) approximates the classical `√(2N)`
+Gauss-sum bound frequency by frequency.  Here is its exact *averaged* form: the
+total `L²` mass of the quadratic Gauss sum over all frequencies equals `N` times
+the number of "square-collision" pairs `#{(n, m) : n² = m²}`.  This is a
+Plancherel/Parseval identity for `G`, obtained by the same character-orthogonality
+bookkeeping as `triple_count_fourier`, and it is exact — no triangle inequality is
+used.  It is the correct second moment: it shows the *average* size of `G(r)` is
+`√N`, the matching lower bound to the pointwise value `‖G(r)‖ = √N` at unit
+frequencies. -/
+
+/-- **Plancherel identity for the quadratic Gauss sum (complex form).**
+`∑_r G(r)·conj(G(r)) = N · #{(n, m) : n² = m²}`.  Expanding the product of `ψ`-sums
+gives the linear phase `ψ(r·(n² − m²))`; summing over `r` collapses via character
+orthogonality to `N` exactly on the square-collision diagonal `n² = m²`. -/
+theorem sqGaussSum_second_moment_complex {N : ℕ} [NeZero N] :
+    (∑ r : ZMod N, sqGaussSum r * starRingEnd ℂ (sqGaussSum r))
+      = (N : ℂ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℂ) := by
+  -- Expand each `G·conj G` as a double `ψ`-sum with merged phase `r·(n² − m²)`.
+  have hterm : ∀ r : ZMod N, sqGaussSum r * starRingEnd ℂ (sqGaussSum r)
+      = ∑ n : ZMod N, ∑ m : ZMod N, ψ (r * (n ^ 2 - m ^ 2)) := by
+    intro r
+    rw [conj_sqGaussSum]
+    simp only [sqGaussSum]
+    rw [Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl (fun n _ => Finset.sum_congr rfl (fun m _ => ?_))
+    rw [← psi_add]
+    congr 1
+    ring
+  simp_rw [hterm]
+  -- Reorder the sums so `r` is innermost: `∑_r ∑_n ∑_m → ∑_n ∑_m ∑_r`.
+  rw [Finset.sum_comm]
+  have hreorder : (∑ n : ZMod N, ∑ r : ZMod N, ∑ m : ZMod N, ψ (r * (n ^ 2 - m ^ 2)))
+      = ∑ n : ZMod N, ∑ m : ZMod N, ∑ r : ZMod N, ψ (r * (n ^ 2 - m ^ 2)) :=
+    Finset.sum_congr rfl (fun n _ => Finset.sum_comm)
+  rw [hreorder]
+  -- Character orthogonality kills every off-diagonal `n² ≠ m²` frequency.
+  simp_rw [char_orthogonality, sub_eq_zero]
+  -- Collapse the surviving `if` over `ZMod N × ZMod N` to `N · card`.
+  rw [← Finset.sum_product', Finset.univ_product_univ, ← Finset.sum_filter,
+      Finset.sum_const, nsmul_eq_mul, mul_comm]
+
+/-- **Plancherel identity for the quadratic Gauss sum (real `‖·‖²` form).**
+`∑_r ‖G(r)‖² = N · #{(n, m) : n² = m²}`.  The exact total `L²` mass of `G` over all
+frequencies.  Since the principal term already contributes `‖G(0)‖² = N²`, this
+pins the average of `‖G(r)‖²` at `≈ N`, i.e. the average magnitude is `√N`. -/
+theorem sqGaussSum_second_moment {N : ℕ} [NeZero N] :
+    (∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℝ) := by
+  have hcast : ((∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2 : ℝ) : ℂ)
+      = (((N : ℝ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℝ)) : ℂ) := by
+    push_cast
+    rw [← sqGaussSum_second_moment_complex]
+    refine Finset.sum_congr rfl (fun r _ => ?_)
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+    push_cast
+    ring
+  exact_mod_cast hcast
+
+/-- **Nonzero-frequency `L²` mass.**  Splitting off the principal term
+`‖G(0)‖² = N²`, the total `L²` mass carried by the *nonzero* frequencies is exactly
+`N·D − N²`, where `D = #{(n, m) : n² = m²}`.  This is an exact evaluation of the
+error-frequency mass — the quantity the pointwise bounds of Parts VII–VIII estimate
+one frequency at a time. -/
+theorem sqGaussSum_second_moment_nonzero {N : ℕ} [NeZero N] :
+    (∑ r ∈ Finset.univ.erase (0 : ZMod N), ‖sqGaussSum r‖ ^ 2)
+      = (N : ℝ) * ((Finset.univ.filter
+          (fun p : ZMod N × ZMod N => p.1 ^ 2 = p.2 ^ 2)).card : ℝ) - (N : ℝ) ^ 2 := by
+  have hall := sqGaussSum_second_moment (N := N)
+  have h0 : ‖sqGaussSum (0 : ZMod N)‖ ^ 2 = (N : ℝ) ^ 2 := by
+    rw [sqGaussSum_zero, Complex.norm_natCast]
+  have hsum : (∑ r ∈ Finset.univ.erase (0 : ZMod N), ‖sqGaussSum r‖ ^ 2)
+      + ‖sqGaussSum (0 : ZMod N)‖ ^ 2 = ∑ r : ZMod N, ‖sqGaussSum r‖ ^ 2 :=
+    Finset.sum_erase_add _ _ (Finset.mem_univ 0)
+  rw [h0] at hsum
+  linarith [hsum, hall]
+
+/-! ## Part X: Exact odd-modulus magnitude — no residual cancellation
+
+Part VII bounded `‖G(r)‖² ≤ N · gcd((2r).val, N)` (`sqGaussSum_normSq_le_gcd`) via the
+triangle inequality on the residual phase sum `Σ_{h : 2rh=0} ψ(−r·h²)`, and the odd-modulus
+density corollary `sqDiffFree_density_bound_of_odd` flagged this triangle step as the source
+of its quantitative weakness (`M = N/√2`, of order `N`).  For **odd** `N` that triangle step
+loses *nothing*: `2` is a unit, so every kernel element `h` (`2rh = 0`) already satisfies
+`rh = 0`, hence `r·h² = 0` and `ψ(−r·h²) = 1`.  The residual sum has *no cancellation* — it
+equals the kernel size `gcd((2r).val, N)` — and the Weyl identity evaluates the magnitude
+**exactly**:
+
+  `‖G(r)‖² = N · gcd((2r).val, N)`   for every frequency `r`, `N` odd.
+
+At unit frequencies `gcd = 1`, recovering `‖G(r)‖² = N`; at a non-unit nonzero `r` the gcd is
+a *proper* divisor, and since `N` is odd its cofactor `N/gcd` is an odd divisor `> 1`, hence
+`≥ 3`, giving `‖G(r)‖² = N·gcd ≤ N²/3` — a genuine sharpening of the `≤ N²/2` bound
+`sqGaussSum_normSq_le_half_of_odd`. -/
+
+/-- A proper divisor of an *odd* `N` is at most a third: if `0 < m < N` then
+`3 · gcd(m, N) ≤ N`.  The gcd divides `N` and is `< N`, so its cofactor `N/gcd` is an odd
+divisor `> 1`, hence `≥ 3`. -/
+private theorem three_mul_gcd_le_of_odd {m N : ℕ} (hodd : Odd N) (hpos : 0 < m) (hlt : m < N) :
+    3 * Nat.gcd m N ≤ N := by
+  set d := Nat.gcd m N with hd
+  have hNpos : 0 < N := lt_of_le_of_lt (Nat.zero_le m) hlt
+  have hdvd : d ∣ N := Nat.gcd_dvd_right m N
+  have hdlt : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hpos) hlt
+  obtain ⟨k, hk⟩ := hdvd
+  have hk2 : 2 ≤ k := by
+    rcases Nat.lt_or_ge k 2 with h | h
+    · exfalso; interval_cases k <;> omega
+    · exact h
+  have hkodd : Odd k := by
+    rcases Nat.even_or_odd k with he | ho
+    · exfalso
+      have hNeven : Even N := by rw [hk]; exact he.mul_left d
+      rw [Nat.even_iff] at hNeven
+      rw [Nat.odd_iff] at hodd
+      omega
+    · exact ho
+  have hk3 : 3 ≤ k := by
+    rcases eq_or_lt_of_le hk2 with h | h
+    · rw [← h] at hkodd; exact absurd hkodd (by decide)
+    · omega
+  calc 3 * d ≤ k * d := Nat.mul_le_mul_right d hk3
+    _ = d * k := Nat.mul_comm k d
+    _ = N := hk.symm
+
+/-- **Sharpened sub-maximal magnitude at odd moduli.**  For odd `N` and any nonzero `r`, the
+exact value `sqGaussSum_normSq_eq_gcd_of_odd` together with the fact that a proper divisor of
+an *odd* `N` has cofactor `≥ 3` gives
+
+`‖G(r)‖² ≤ N² / 3`,
+
+improving the `≤ N²/2` of `sqGaussSum_normSq_le_half_of_odd`.  (At a unit `r` the gcd is `1`
+and `‖G(r)‖² = N`; the extremal `N²/3` is approached only when `r` lies over the largest
+proper divisor of `N`.) -/
+theorem sqGaussSum_normSq_le_third_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / 3 := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have h2r : 2 * r ≠ 0 := by
+    intro h
+    obtain ⟨u, hu⟩ := h2
+    have hz : (↑u⁻¹ : ZMod N) * (2 * r) = 0 := by rw [h, mul_zero]
+    rw [← mul_assoc, ← hu, Units.inv_mul, one_mul] at hz
+    exact hr hz
+  have hpos : 0 < (2 * r).val := ZMod.val_pos.mpr h2r
+  have hlt : (2 * r).val < N := ZMod.val_lt (2 * r)
+  have hnat : 3 * Nat.gcd (2 * r).val N ≤ N := three_mul_gcd_le_of_odd hodd hpos hlt
+  have hgle : (Nat.gcd (2 * r).val N : ℝ) ≤ (N : ℝ) / 3 := by
+    have hcast := (Nat.cast_le (α := ℝ)).mpr hnat
+    push_cast at hcast; linarith
+  have hNnn : (0 : ℝ) ≤ N := Nat.cast_nonneg N
+  rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r]
+  calc (N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)
+      ≤ (N : ℝ) * ((N : ℝ) / 3) := mul_le_mul_of_nonneg_left hgle hNnn
+    _ = (N : ℝ) ^ 2 / 3 := by ring
+
+/-- A proper divisor `d ∣ N` with `0 < d < N` is bounded by `N / minFac N`: writing
+`N = d·k` the cofactor `k = N/d` is `> 1`, hence a nontrivial divisor of `N`, so
+`minFac N ≤ k` (`Nat.minFac_le_of_dvd`) and `d·minFac N ≤ d·k = N`.  This is the exact
+arithmetic that pins the largest attainable value of `gcd((2r).val, N)` for a nonzero
+frequency to the largest proper divisor `N / minFac N`. -/
+private theorem minFac_mul_le_of_dvd_lt {d N : ℕ} (hdvd : d ∣ N) (hpos : 0 < d)
+    (hlt : d < N) : d * N.minFac ≤ N := by
+  obtain ⟨k, hk⟩ := hdvd
+  have hk2 : 2 ≤ k := by
+    rcases Nat.lt_or_ge k 2 with h | h
+    · exfalso; interval_cases k <;> omega
+    · exact h
+  have hkdvd : k ∣ N := ⟨d, by rw [hk]; ring⟩
+  have hmf : N.minFac ≤ k := Nat.minFac_le_of_dvd hk2 hkdvd
+  calc d * N.minFac ≤ d * k := Nat.mul_le_mul_left d hmf
+    _ = N := hk.symm
+
+/-- **Sharp sub-maximal magnitude at odd moduli (smallest prime factor).**  For odd `N`
+and any nonzero `r`, the exact value `sqGaussSum_normSq_eq_gcd_of_odd` combined with the
+divisor bound `minFac_mul_le_of_dvd_lt` gives
+
+`‖G(r)‖² ≤ N² / minFac N`.
+
+Since an odd `N` has `minFac N ≥ 3`, this subsumes `sqGaussSum_normSq_le_third_of_odd`
+(`≤ N²/3`) and is *strictly* stronger whenever the smallest prime factor exceeds `3`
+(e.g. `N = 25` gives `‖G(r)‖² ≤ N²/5`, `N = 49` gives `≤ N²/7`).  It is sharp: the value
+`N²/minFac N` is attained at a frequency lying over the largest proper divisor
+`N / minFac N`. -/
+theorem sqGaussSum_normSq_le_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ^ 2 ≤ (N : ℝ) ^ 2 / N.minFac := by
+  have h2 : IsUnit (2 : ZMod N) := by
+    have hcast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [← hcast, ZMod.isUnit_iff_coprime]
+    have hnd : ¬ (2 ∣ N) := by rw [Nat.dvd_iff_mod_eq_zero, Nat.odd_iff.mp hodd]; omega
+    exact (Nat.prime_two.coprime_iff_not_dvd).mpr hnd
+  have h2r : 2 * r ≠ 0 := by
+    intro h
+    obtain ⟨u, hu⟩ := h2
+    have hz : (↑u⁻¹ : ZMod N) * (2 * r) = 0 := by rw [h, mul_zero]
+    rw [← mul_assoc, ← hu, Units.inv_mul, one_mul] at hz
+    exact hr hz
+  have hNpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hpos : 0 < (2 * r).val := ZMod.val_pos.mpr h2r
+  have hlt : (2 * r).val < N := ZMod.val_lt (2 * r)
+  set d := Nat.gcd (2 * r).val N with hd
+  have hdvd : d ∣ N := Nat.gcd_dvd_right _ _
+  have hdpos : 0 < d := Nat.gcd_pos_of_pos_right _ hNpos
+  have hdlt : d < N := lt_of_le_of_lt (Nat.gcd_le_left N hpos) hlt
+  have hkey : d * N.minFac ≤ N := minFac_mul_le_of_dvd_lt hdvd hdpos hdlt
+  have hmfpos : (0 : ℝ) < (N.minFac : ℝ) := by exact_mod_cast Nat.minFac_pos N
+  rw [sqGaussSum_normSq_eq_gcd_of_odd hodd r, ← hd, le_div_iff₀ hmfpos]
+  have hcast : (d : ℝ) * (N.minFac : ℝ) ≤ (N : ℝ) := by exact_mod_cast hkey
+  have hNnn : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
+  nlinarith [hcast, hNnn]
+
+/-- **Square-root form of the smallest-prime-factor bound.**  `‖G(r)‖ ≤ N / √(minFac N)`
+for odd `N` and nonzero `r`.  This is the constant `M = N/√(minFac N)` supplied to
+`sqDiffFree_density_bound`; for odd prime `N` it recovers the sharp `√N`. -/
+theorem sqGaussSum_norm_le_minFac_of_odd {N : ℕ} [NeZero N] (hodd : Odd N) {r : ZMod N}
+    (hr : r ≠ 0) : ‖sqGaussSum r‖ ≤ (N : ℝ) / Real.sqrt (N.minFac) := by
+  have hmfpos : (0 : ℝ) < (N.minFac : ℝ) := by exact_mod_cast Nat.minFac_pos N
+  have hsqrtpos : 0 < Real.sqrt (N.minFac) := Real.sqrt_pos.mpr hmfpos
+  have hbound := sqGaussSum_normSq_le_minFac_of_odd hodd hr
+  have hnn : (0 : ℝ) ≤ ‖sqGaussSum r‖ := norm_nonneg _
+  rw [le_div_iff₀ hsqrtpos]
+  have hsq : (‖sqGaussSum r‖ * Real.sqrt (N.minFac)) ^ 2 ≤ ((N : ℝ)) ^ 2 := by
+    rw [mul_pow, Real.sq_sqrt (le_of_lt hmfpos)]
+    rw [le_div_iff₀ hmfpos] at hbound
+    linarith [hbound]
+  have hrhsnn : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
+  have hlhsnn : (0 : ℝ) ≤ ‖sqGaussSum r‖ * Real.sqrt (N.minFac) :=
+    mul_nonneg hnn (le_of_lt hsqrtpos)
+  nlinarith [hsq, hlhsnn, hrhsnn]
+
+/-! ### Even moduli at unit frequencies: the qualitatively new phenomena
+
+The odd-modulus theory above is complete: `‖G(r)‖² = N·gcd((2r).val, N)` with no
+cancellation (`sqGaussSum_normSq_eq_gcd_of_odd`).  The even case is genuinely different,
+because `2` is not a unit and the residual phase sum `Σ_{h:2rh=0} ψ(−r h²)` no longer
+collapses to the kernel count — there is real cancellation coming from the order-two
+element `N/2`.  We evaluate it exactly at *unit* frequencies, where the kernel is
+precisely the two-torsion `{0, N/2}`, and obtain two phenomena absent for odd `N`:
+
+* `4 ∣ N`  ⟹  `‖G(r)‖² = 2N`   (the magnitude *doubles* past the odd value `√N`);
+* `N ≡ 2 (mod 4)`  ⟹  `G(r) = 0`  (the Gauss sum *vanishes* identically).
+
+Both hinge on the value of `(N/2)²` in `ZMod N`: it is `0` when `4 ∣ N` and equals `N/2`
+when `N ≡ 2 (mod 4)`, which flips the sign of the single nontrivial phase `ψ(N/2) = −1`. -/
+
+/-- The additive character at the order-two element `N/2` is `−1`: since `val (N/2) = N/2`
+and `(N/2)/N = 1/2`, we get `ψ(N/2) = exp(π i) = −1`.  This single sign is the source of all
+cancellation in the even-modulus Gauss sum. -/
+private lemma psi_half {N : ℕ} [NeZero N] (hev : Even N) :
+    ψ (((N / 2 : ℕ) : ZMod N)) = -1 := by
+  have hpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hN2 : 2 ≤ N := by rcases hev with ⟨m, hm⟩; omega
+  have hlt : N / 2 < N := by omega
+  have hval : ZMod.val (((N / 2 : ℕ) : ZMod N)) = N / 2 := ZMod.val_natCast_of_lt hlt
+  have hN0 : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  have h2half : (2 : ℂ) * ((N / 2 : ℕ) : ℂ) = (N : ℂ) := by
+    have h : 2 * (N / 2) = N := by rcases hev with ⟨m, hm⟩; omega
+    exact_mod_cast h
+  simp only [ψ, hval]
+  have hexp : (2 : ℂ) * ↑Real.pi * Complex.I * (↑(N / 2) / ↑N) = ↑Real.pi * Complex.I := by
+    rw [show (2 : ℂ) * ↑Real.pi * Complex.I * (↑(N / 2) / ↑N)
+          = ↑Real.pi * Complex.I * (2 * ↑(N / 2) / ↑N) from by ring, h2half, div_self hN0, mul_one]
+  rw [hexp, Complex.exp_pi_mul_I]
+
+/-- `2 · (N/2) = 0` in `ZMod N` for even `N`: the half-element is two-torsion. -/
+private lemma two_mul_half {N : ℕ} [NeZero N] (hev : Even N) :
+    2 * (((N / 2 : ℕ) : ZMod N)) = 0 := by
+  have h : 2 * (N / 2) = N := by rcases hev with ⟨m, hm⟩; omega
+  rw [show (2 : ZMod N) * (((N / 2 : ℕ) : ZMod N)) = (((2 * (N / 2) : ℕ)) : ZMod N) from by
+        push_cast; ring, h]
+  exact ZMod.natCast_self N
+
+/-- The half-element is nonzero: `val (N/2) = N/2 ≠ 0` for `N ≥ 2`. -/
+private lemma half_ne_zero {N : ℕ} [NeZero N] (hev : Even N) :
+    (((N / 2 : ℕ) : ZMod N)) ≠ 0 := by
+  have hpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hN2 : 2 ≤ N := by rcases hev with ⟨m, hm⟩; omega
+  rw [Ne, ZMod.natCast_eq_zero_iff]
+  intro hdvd
+  have := Nat.le_of_dvd (by omega) hdvd
+  omega
+
+/-- **Two-torsion classification.**  In `ZMod N` (`N` even) the only solutions of `2h = 0`
+are `h = 0` and `h = N/2`.  Combined with a unit frequency `r`, this pins the kernel
+`{h : 2rh = 0}` to the two-element two-torsion subgroup. -/
+private lemma two_torsion_eq_zero_or_half {N : ℕ} [NeZero N] (hev : Even N) {h : ZMod N}
+    (hh : 2 * h = 0) : h = 0 ∨ h = (((N / 2 : ℕ) : ZMod N)) := by
+  have hpos : 0 < N := Nat.pos_of_ne_zero (NeZero.ne N)
+  have hval_lt : h.val < N := ZMod.val_lt h
+  have hh' : (((2 * h.val : ℕ)) : ZMod N) = 0 := by
+    rw [show (((2 * h.val : ℕ)) : ZMod N) = 2 * h from by push_cast; rw [ZMod.natCast_zmod_val], hh]
+  rw [ZMod.natCast_eq_zero_iff] at hh'
+  obtain ⟨c, hc⟩ := hh'
+  obtain ⟨m, hm⟩ := hev
+  have hm0 : 0 < m := by omega
+  have key : h.val = m * c := by nlinarith [hc, hm]
+  have hc2 : c = 0 ∨ c = 1 := by
+    by_contra hcon
+    push_neg at hcon
+    have hc2' : 2 ≤ c := by omega
+    have hge : m + m ≤ m * c := by
+      calc m + m = m * 2 := by ring
+        _ ≤ m * c := Nat.mul_le_mul_left m hc2'
+    have hlt' : m * c < m + m := by rw [← key, ← hm]; exact hval_lt
+    omega
+  rcases hc2 with rfl | rfl
+  · left
+    have : h.val = 0 := by rw [key, Nat.mul_zero]
+    exact (ZMod.val_eq_zero h).mp this
+  · right
+    have hvm : h.val = m := by rw [key, Nat.mul_one]
+    have hNm : ((N / 2 : ℕ) : ZMod N) = ((m : ℕ) : ZMod N) := by
+      have : N / 2 = m := by omega
+      rw [this]
+    rw [hNm, ← hvm, ZMod.natCast_zmod_val]
+
+/-- `(N/2)² = 0` in `ZMod N` when `4 ∣ N`. -/
+private lemma half_sq_of_four_dvd {N : ℕ} [NeZero N] (h4 : 4 ∣ N) :
+    (((N / 2 : ℕ) : ZMod N)) ^ 2 = 0 := by
+  rw [sq, ← Nat.cast_mul, ZMod.natCast_eq_zero_iff]
+  obtain ⟨k, hk⟩ := h4
+  have hh : N / 2 = 2 * k := by omega
+  rw [hh, hk]
+  exact ⟨k, by ring⟩
+
+/-- `(N/2)² = N/2` in `ZMod N` when `N ≡ 2 (mod 4)`. -/
+private lemma half_sq_of_mod_four_two {N : ℕ} [NeZero N] (h : N % 4 = 2) :
+    (((N / 2 : ℕ) : ZMod N)) ^ 2 = (((N / 2 : ℕ) : ZMod N)) := by
+  rw [sq, ← Nat.cast_mul, ZMod.natCast_eq_natCast_iff]
+  obtain ⟨k, hk⟩ : ∃ k, N = 4 * k + 2 := ⟨N / 4, by omega⟩
+  have heq : (N / 2) * (N / 2) = (N / 2) + N * k := by
+    have hh : N / 2 = 2 * k + 1 := by omega
+    rw [hh, hk]; ring
+  have hle : N / 2 ≤ (N / 2) * (N / 2) := by omega
+  have hmod : (N / 2) ≡ (N / 2) * (N / 2) [MOD N] := (Nat.modEq_iff_dvd' hle).mpr ⟨k, by omega⟩
+  exact hmod.symm
+
+/-- **Kernel at unit frequencies (even modulus) is the two-torsion `{0, N/2}`.**  For `N`
+even and `r` a unit, `2rh = 0 ⟺ 2h = 0`, whose solution set is exactly `{0, N/2}`. -/
+private lemma kernel_eq_zero_half_of_isUnit {N : ℕ} [NeZero N] (hev : Even N) {r : ZMod N}
+    (hu : IsUnit r) :
+    Finset.univ.filter (fun h : ZMod N => 2 * r * h = 0)
+      = {0, (((N / 2 : ℕ) : ZMod N))} := by
+  ext h
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert,
+    Finset.mem_singleton]
+  constructor
+  · intro hh
+    have h2h : 2 * h = 0 := by
+      obtain ⟨u, hu_eq⟩ := hu
+      have hz : (↑(u⁻¹) : ZMod N) * (2 * r * h) = 0 := by rw [hh, mul_zero]
+      rw [show (↑(u⁻¹) : ZMod N) * (2 * r * h) = 2 * h * ((↑(u⁻¹) : ZMod N) * r) from by ring,
+        ← hu_eq, Units.inv_mul, mul_one] at hz
+      exact hz
+    exact two_torsion_eq_zero_or_half hev h2h
+  · rintro (rfl | rfl)
+    · ring
+    · rw [show 2 * r * (((N / 2 : ℕ) : ZMod N)) = r * (2 * (((N / 2 : ℕ) : ZMod N))) from by ring,
+        two_mul_half hev, mul_zero]
+
+/-- **Doubling at `4 ∣ N`.**  For `4 ∣ N` and any unit frequency `r`, the kernel is `{0, N/2}`
+with `(N/2)² = 0`, so both residual phases are `1` and `‖G(r)‖² = 2N`.  This is strictly larger
+than the odd-modulus value `‖G(r)‖² = N` at unit frequencies: the quadratic Gauss sum has
+magnitude `√(2N)` when `4 ∣ N`. -/
+theorem sqGaussSum_normSq_eq_two_mul_of_four_dvd {N : ℕ} [NeZero N] (h4 : 4 ∣ N) {r : ZMod N}
+    (hu : IsUnit r) : ‖sqGaussSum r‖ ^ 2 = 2 * (N : ℝ) := by
+  have hev : Even N := by obtain ⟨k, hk⟩ := h4; exact ⟨2 * k, by omega⟩
+  have hne : (0 : ZMod N) ≠ (((N / 2 : ℕ) : ZMod N)) := (half_ne_zero hev).symm
+  have hterm0 : ψ (-(r * (0 : ZMod N) ^ 2)) = 1 := by
+    rw [show -(r * (0 : ZMod N) ^ 2) = 0 from by ring, psi_zero]
+  have hterme : ψ (-(r * (((N / 2 : ℕ) : ZMod N)) ^ 2)) = 1 := by
+    rw [half_sq_of_four_dvd h4, mul_zero, neg_zero, psi_zero]
+  have hid := sqGaussSum_mul_conj r
+  rw [kernel_eq_zero_half_of_isUnit hev hu] at hid
+  have hval : (({0, (((N / 2 : ℕ) : ZMod N))} : Finset (ZMod N)).sum
+      (fun h => ψ (-(r * h ^ 2))))
+      = ψ (-(r * (0 : ZMod N) ^ 2)) + ψ (-(r * (((N / 2 : ℕ) : ZMod N)) ^ 2)) :=
+    Finset.sum_pair hne
+  rw [hval, hterm0, hterme] at hid
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = sqGaussSum r * starRingEnd ℂ (sqGaussSum r) := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  rw [hid] at hGsq
+  have hfin : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = 2 * (N : ℂ) := by rw [hGsq]; ring
+  exact_mod_cast hfin
+
+/-- **Vanishing at `N ≡ 2 (mod 4)`.**  For `N ≡ 2 (mod 4)` and any unit frequency `r`, the
+kernel is `{0, N/2}` with `(N/2)² = N/2` and `r·(N/2) = N/2` (the unit fixes the two-torsion),
+so the two residual phases `1` and `ψ(N/2) = −1` cancel: `G(r) = 0`.  No odd modulus exhibits
+this — it is the `N ≡ 2 (mod 4)` obstruction that makes the classical quadratic Gauss sum
+vanish. -/
+theorem sqGaussSum_eq_zero_of_mod_four_two {N : ℕ} [NeZero N] (h : N % 4 = 2) {r : ZMod N}
+    (hu : IsUnit r) : sqGaussSum r = 0 := by
+  have hev : Even N := by rw [Nat.even_iff]; omega
+  have hne : (0 : ZMod N) ≠ (((N / 2 : ℕ) : ZMod N)) := (half_ne_zero hev).symm
+  -- A unit fixes the two-torsion element: `r·(N/2) = N/2`.
+  have hre : r * (((N / 2 : ℕ) : ZMod N)) = (((N / 2 : ℕ) : ZMod N)) := by
+    have h2 : 2 * (r * (((N / 2 : ℕ) : ZMod N))) = 0 := by
+      rw [show 2 * (r * (((N / 2 : ℕ) : ZMod N))) = r * (2 * (((N / 2 : ℕ) : ZMod N))) from by ring,
+        two_mul_half hev, mul_zero]
+    rcases two_torsion_eq_zero_or_half hev h2 with h0 | h0
+    · exfalso
+      obtain ⟨u, hu_eq⟩ := hu
+      have hz : (↑(u⁻¹) : ZMod N) * (r * (((N / 2 : ℕ) : ZMod N))) = 0 := by rw [h0, mul_zero]
+      rw [← mul_assoc, ← hu_eq, Units.inv_mul, one_mul] at hz
+      exact half_ne_zero hev hz
+    · exact h0
+  have hterm0 : ψ (-(r * (0 : ZMod N) ^ 2)) = 1 := by
+    rw [show -(r * (0 : ZMod N) ^ 2) = 0 from by ring, psi_zero]
+  have hterme : ψ (-(r * (((N / 2 : ℕ) : ZMod N)) ^ 2)) = -1 := by
+    rw [half_sq_of_mod_four_two h, hre,
+      show -(((N / 2 : ℕ) : ZMod N)) = (((N / 2 : ℕ) : ZMod N)) from ?_, psi_half hev]
+    have hadd : (((N / 2 : ℕ) : ZMod N)) + (((N / 2 : ℕ) : ZMod N)) = 0 := by
+      rw [← two_mul]; exact two_mul_half hev
+    exact neg_eq_of_add_eq_zero_right hadd
+  have hid := sqGaussSum_mul_conj r
+  rw [kernel_eq_zero_half_of_isUnit hev hu] at hid
+  have hval : (({0, (((N / 2 : ℕ) : ZMod N))} : Finset (ZMod N)).sum
+      (fun h => ψ (-(r * h ^ 2))))
+      = ψ (-(r * (0 : ZMod N) ^ 2)) + ψ (-(r * (((N / 2 : ℕ) : ZMod N)) ^ 2)) :=
+    Finset.sum_pair hne
+  rw [hval, hterm0, hterme] at hid
+  have hGsq : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = sqGaussSum r * starRingEnd ℂ (sqGaussSum r) := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  rw [hid] at hGsq
+  have hz2 : (↑(‖sqGaussSum r‖ ^ 2) : ℂ) = 0 := by rw [hGsq]; ring
+  have hsq0 : ‖sqGaussSum r‖ ^ 2 = 0 := by exact_mod_cast hz2
+  have hnorm0 : ‖sqGaussSum r‖ = 0 := by
+    have := pow_eq_zero_iff (n := 2) (by norm_num) |>.mp hsq0
+    exact this
+  exact norm_eq_zero.mp hnorm0
+
 end Szemeredi.Roth
+
+
