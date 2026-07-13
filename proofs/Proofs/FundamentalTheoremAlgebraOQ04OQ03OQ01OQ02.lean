@@ -93,7 +93,8 @@ theorem eq_galoisGroupEquivZMod2_symm (e : Multiplicative (ZMod 2) ≃* (ℂ ≃
     `zmodCyclicMulEquiv` along `Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2` gives an isomorphism
     `Multiplicative (ZMod 2) ≃* Gal(ℂ/ℝ)`. -/
 noncomputable def mathlibGaloisIso : Multiplicative (ZMod 2) ≃* (ℂ ≃ₐ[ℝ] ℂ) :=
-  card_galoisGroup_eq_two ▸ zmodCyclicMulEquiv galoisGroup_isCyclic
+  (congrArg (fun n => Multiplicative (ZMod n) ≃* (ℂ ≃ₐ[ℝ] ℂ)) card_galoisGroup_eq_two) ▸
+    zmodCyclicMulEquiv galoisGroup_isCyclic
 
 /-- **Identification.** Mathlib's generic iso (transported along `|Gal(ℂ/ℝ)| = 2`)
     is *exactly* the explicit hand-built isomorphism `galoisGroupEquivZMod2.symm`. The

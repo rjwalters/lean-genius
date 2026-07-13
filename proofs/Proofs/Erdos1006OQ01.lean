@@ -616,7 +616,7 @@ theorem closedWalk_girth_formulation_unsound (g : ℕ) (hg : g ≥ 3) :
   · push_neg at he
     obtain ⟨u, v, huv⟩ := he
     have hlen : (Walk.cons huv (Walk.cons (G.adj_symm huv) Walk.nil)).length = 2 := rfl
-    rcases hwalk u (Walk.cons huv (Walk.cons (G.symm huv) Walk.nil)) with h0 | hge
+    rcases hwalk u (Walk.cons huv (Walk.cons (G.adj_symm huv) Walk.nil)) with h0 | hge
     · rw [hlen] at h0; exact absurd h0 (by norm_num)
     · rw [hlen] at hge; omega
 

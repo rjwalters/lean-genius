@@ -1,0 +1,104 @@
+===== LawOfCosinesOQ03OQ02
+error: Proofs/LawOfCosinesOQ03OQ02.lean:73:21: unexpected token ';'; expected command
+error: Proofs/LawOfCosinesOQ03OQ02.lean:74:76: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:76:70: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:74:76: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:76:70: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:78:70: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:76:70: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:78:70: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:102:4: Invalid field `law_sines`: The environment does not contain `HyperbolicLawOfSines.HyperbolicSineTriangle.law_sines`, so it is not possible to project the field `law_sines` from an expression
+error: Proofs/LawOfCosinesOQ03OQ02.lean:78:70: unexpected identifier; expected 'lemma'
+error: Proofs/LawOfCosinesOQ03OQ02.lean:102:4: Invalid field `law_sines`: The environment does not contain `HyperbolicLawOfSines.HyperbolicSineTriangle.law_sines`, so it is not possible to project the field `law_sines` from an expression
+  t
+===== Erdos490Aristotle
+error: Proofs/Erdos490Aristotle.lean:53:45: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos490Aristotle.lean:64:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/Erdos490Aristotle.lean:65:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/Erdos490Aristotle.lean:74:42: Application type mismatch: The argument
+  h₂
+has type
+===== Erdos1086Problem
+error: Proofs/Erdos1086Problem.lean:102:21: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.22
+error: Proofs/Erdos1086Problem.lean:120:29: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.20
+error: Proofs/Erdos1086Problem.lean:136:24: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.54
+error: Proofs/Erdos1086Problem.lean:145:24: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.54
+===== Erdos552Problem
+error: Proofs/Erdos552Problem.lean:53:15: `simp` made no progress
+error: Proofs/Erdos552Problem.lean:54:15: `simp` made no progress
+error: Proofs/Erdos552Problem.lean:62:90: unexpected token ';'; expected ')', ',' or ':'
+error: Proofs/Erdos552Problem.lean:54:15: `simp` made no progress
+error: Proofs/Erdos552Problem.lean:62:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:92:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:62:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:92:8: declaration uses `sorry`
+warning: Proofs/Erdos552Problem.lean:98:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:195:18: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos97Problem
+error: Proofs/Erdos97Problem.lean:33:5: unknown namespace `EuclideanGeometry`
+error: Proofs/Erdos97Problem.lean:73:41: Unknown identifier `ConvexIndep`
+warning: Proofs/Erdos97Problem.lean:71:2: declaration uses `sorry`
+error: Proofs/Erdos97Problem.lean:73:41: Unknown identifier `ConvexIndep`
+warning: Proofs/Erdos97Problem.lean:71:2: declaration uses `sorry`
+error: Proofs/Erdos97Problem.lean:90:4: Function expected at
+error: Proofs/Erdos97Problem.lean:90:4: Function expected at
+  ConvexIndep
+but this term has type
+error: Proofs/Erdos97Problem.lean:98:45: Function expected at
+  ConvexIndep
+but this term has type
+===== BezoutIdentityOQ02OQ01OQ02OQ02OQ03
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:73:22: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?a * ?b) ^ ?n
+in the target expression
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:78:19: Unknown constant `Zsqrtd.lift_apply`
+warning: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:78:8: declaration uses `sorry`
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:91:57: Application type mismatch: The argument
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:91:57: Application type mismatch: The argument
+  this
+has type
+error: Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:97:51: unsolved goals
+z : Zneg2
+⊢ ↑z.im ^ 2 * 2 = ↑z.im ^ 2 * √2 ^ 2
+===== Erdos220ProblemProvable
+error: Proofs/Erdos220ProblemProvable.lean:190:48: unexpected token ':='; expected term
+error: Proofs/Erdos220ProblemProvable.lean:208:48: unexpected token ':='; expected term
+error: Lean exited with code 1
+error: Proofs/Erdos220ProblemProvable.lean:208:48: unexpected token ':='; expected term
+error: Lean exited with code 1
+⚠ [8586/8592] Built Proofs.Erdos795Aristotle (3.6s)
+===== Erdos1123Problem
+error: Proofs/Erdos1123Problem.lean:67:12: unsolved goals
+x✝ : Set ℕ
+⊢ ∀ (ε : ℕ), 0 < ε → ∃ N, ∀ (n : ℕ), N ≤ n → 0 < ε ∧ 0 < n
+error: Proofs/Erdos1123Problem.lean:68:21: Unknown constant `Set.symmDiff_comm`
+error: Proofs/Erdos1123Problem.lean:68:15: `simp` made no progress
+error: Proofs/Erdos1123Problem.lean:69:51: Tactic `assumption` failed
+error: Proofs/Erdos1123Problem.lean:68:15: `simp` made no progress
+error: Proofs/Erdos1123Problem.lean:69:51: Tactic `assumption` failed
+error: Proofs/Erdos1123Problem.lean:69:51: Tactic `assumption` failed
+x✝² y✝ z✝ : Set ℕ
+===== BrouwerFixedPointOQ04OQ04
+error: Proofs/BrouwerFixedPointOQ04OQ04.lean:317:49: Type mismatch
+  h
+has type
+error: Proofs/BrouwerFixedPointOQ04OQ04.lean:320:10: Unknown constant `Filter.tendsto_nhdsWithin_iff`
+error: Proofs/BrouwerFixedPointOQ04OQ04.lean:323:55: Application type mismatch: The argument
+  htend_within
+error: Proofs/BrouwerFixedPointOQ04OQ04.lean:323:55: Application type mismatch: The argument
+  htend_within
+has type
+error: Proofs/BrouwerFixedPointOQ04OQ04.lean:323:6: Application type mismatch: The argument
+  ContinuousOn.continuousWithinAt F.lower_cont hxstar_in
+has type

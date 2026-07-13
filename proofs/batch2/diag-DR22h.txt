@@ -1,0 +1,34 @@
+===== AmgmInequalityOQ02Defs
+error: Proofs/AmgmInequalityOQ02Defs.lean:165:9: Type mismatch
+  powersetCard 1 (map (csEmb n) univ)
+has type
+error: Proofs/AmgmInequalityOQ02Defs.lean:164:33: failed to synthesize instance of type class
+  Insert (Fin (n + 1)) (Finset (Fin n))
+error: Proofs/AmgmInequalityOQ02Defs.lean:183:25: Application type mismatch: The argument
+  insert_inj
+has type
+error: Proofs/AmgmInequalityOQ02Defs.lean:341:9: Type mismatch
+  powersetCard k (map (csEmb n) univ)
+has type
+===== Erdos483Problem
+error: Proofs/Erdos483Problem.lean:181:2: failed to synthesize
+  Decidable ¬HasMonochromaticSchurTriple sumFreeColoring13
+error: Proofs/Erdos483Problem.lean:189:46: failed to synthesize
+  Decidable (SchurProp 14 3)
+error: Proofs/Erdos483Problem.lean:231:29: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos483Problem.lean:239:68: unexpected token 'open'; expected 'lemma'
+error: Proofs/Erdos483Problem.lean:244:27: Type mismatch
+  le_refl 2
+===== Erdos483OQ02
+error: Proofs/Erdos483Problem.lean:181:2: failed to synthesize
+  Decidable ¬HasMonochromaticSchurTriple sumFreeColoring13
+error: Proofs/Erdos483Problem.lean:189:46: failed to synthesize
+  Decidable (SchurProp 14 3)
+error: Proofs/Erdos483Problem.lean:231:29: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos483Problem.lean:239:68: unexpected token 'open'; expected 'lemma'
+error: Proofs/Erdos483Problem.lean:244:27: Type mismatch
+  le_refl 2

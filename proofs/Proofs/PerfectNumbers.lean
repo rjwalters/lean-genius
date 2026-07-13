@@ -59,6 +59,7 @@ p = 2, 3, 5, 7, 13, 17, 19, 31, 61, 89, ...
 namespace PerfectNumbers
 
 open ArithmeticFunction Finset Nat
+open scoped ArithmeticFunction.sigma
 
 /-! ## Core Definition of Perfect Numbers -/
 

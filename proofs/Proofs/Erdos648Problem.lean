@@ -201,7 +201,7 @@ private lemma g_bddAbove (n : ℕ) : BddAbove {t : ℕ | ∃ seq : List ℕ, seq
   have hnodup : seq.Nodup :=
     List.Pairwise.imp (fun h => ne_of_lt h) hchain.pairwise
   calc t = seq.length := hlen.symm
-    _ = seq.toFinset.card := hnodup.card_toFinset.symm
+    _ = seq.toFinset.card := (List.toFinset_card_of_nodup hnodup).symm
     _ ≤ (Finset.range n).card := Finset.card_le_card (fun a ha =>
         Finset.mem_range.mpr ((hbounds a (List.mem_toFinset.mp ha)).2))
     _ = n := Finset.card_range n

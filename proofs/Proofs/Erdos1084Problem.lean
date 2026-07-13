@@ -35,6 +35,7 @@ n points in ℝ^d with all pairwise distances ≥ 1. Estimate f_d(n).
 -/
 
 import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic

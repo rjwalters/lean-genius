@@ -435,13 +435,13 @@ def GeneralizedConjecture : Prop :=
           (Nat.card H.edgeSet : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
           HasC2k H k
 
+unseal HasC6 in
 /-- **The `k = 3` case of the generalized conjecture is exactly the C₆ problem.**
 `HasC2k H 3` (a `2·3 = 6`-cycle) coincides with `HasC6 H`, so the generalized
 `C_{2k}` conjecture specialises at `k = 3` to Erdős's original — and refuted — C₆
 question.  (Proved by reducing the length index `2·3` to `6`; it does **not** unfold
 `HasCycle` itself, whose body is kept `irreducible` to avoid the documented
 elaborator stack overflow.) -/
-unseal HasC6 in
 theorem hasC2k_three_iff_hasC6 {V : Type*} (H : SimpleGraph V) :
     HasC2k H 3 ↔ HasC6 H := by
   show HasCycle H (2 * 3) ↔ HasCycle H 6

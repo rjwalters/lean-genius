@@ -106,7 +106,8 @@ the same `ZMod 2` on the nose. -/
 noncomputable def galCyclicEquiv (h : finrank K L = 2) :
     Multiplicative (ZMod 2) ≃* (L ≃ₐ[K] L) :=
   haveI := isCyclic_gal K L h
-  (card_gal_eq_two K L h) ▸ zmodCyclicMulEquiv (isCyclic_gal K L h)
+  (congrArg (fun n => Multiplicative (ZMod n) ≃* (L ≃ₐ[K] L)) (card_gal_eq_two K L h)) ▸
+    zmodCyclicMulEquiv (isCyclic_gal K L h)
 
 end FTAGaloisIsoGeneral
 

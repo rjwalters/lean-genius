@@ -604,3 +604,29 @@ BallotProblemOQ01OQ02OQ01 ×4).
 |---|---|---|
 | Erdos450Problem | `hasDivisorIn_succ` | hypothesis `1 ≤ n` → `2 ≤ n`: at n=1 the witness d=n+1=2 fails `d < 2n = 2`; the true statement needs n≥2 |
 | Erdos542Problem | `chen_bound_value` | RHS `2927/4620` numerically wrong → `4699/4620` (1/3+1/4+1/5+1/7+1/11 = (1540+1155+924+660+420)/4620) |
+
+### 7n. Doctor increment-12 recipes (#38065, 2026-07-13, parse-error + sig/elab/dot drift)
+
+**Meta-finding:** zero-edit re-verify of all 197 parse/signature/elab/dot rows
+flipped 1 (backfill already ran, matches inc-8/9/10). Parse fix is
+NECESSARY-BUT-NOT-SUFFICIENT on many rows — unblocking the parser surfaces a
+deeper type-mismatch / instance-synth / omega error underneath that belongs to
+another class. Only sole-blocker parse rows flip; revert the rest to keep the
+tree clean (the parse edit is correct but the row can't go GREEN yet).
+
+| v4.31 parse symptom | fix | notes |
+|---|---|---|
+| `/-- doc -/` immediately before `open/omit/unseal/set_option/variable … in <decl>` — `unexpected token '<mod>'; expected 'lemma'` | move the `<mod> … in` line ABOVE the doc-comment's opening `/--` | confirms 7e; sweep script `batch2/sweep_modifier_in.py` handles all sites per file (balance-counts the doc block, reinserts above the opener). Erdos345/Maschke/Minkowski(×2)/Feuerbach(×2)/Erdos666 |
+| `/-- doc -/` before a NON-decl (`#check`, `variable`, `/-!`) — `unexpected token 'X'; expected 'lemma'` | demote the orphan `/--` to `/-` | Hilbert9Reciprocity, StirlingFormula, DirichletsTheorem (×2 #check), Erdos577 (before `variable`) |
+| `(r λ : ℝ)` / `λ_target` / `λ'` / `x*` binder — reserved char in identifier | rename to `lam` / `lam_target` / `lamp` / `xstar` (code lines only — leave prose `λ` in `--`/`/- -/` comments) | py block-comment-aware sweep; AreaOfCircle/Erdos642/474/515/1167, Brouwer |
+| `abbrev ℝ² := …` / `abbrev ℤ√neg2 := …` — reserved char STARTING a decl name (`ℝ`, `ℤ√`) | rename the decl throughout the file (`ℝ²`→`EuclidPlane`, `ℤ√neg2`→`Zneg2`) | whole-file token sed; Erdos97 (17×), BezoutIdentity (26×) — but both had deeper own errors, did not flip |
+| set-builder `{f x \| x : T, p x}` where the image `f x` is a PROJECTION (`S.card`) | rewrite to explicit comprehension `{k \| ∃ x : T, p x ∧ f x = k}` — the `{img \| (x)(_ : p)}` binder form FAILS with "invalid binder name `S.card`, it must be atomic" | Erdos535 flipped; Erdos801/256/1115/1086 had deeper own errors |
+| set-builder subtype form `{f S \| S : T // p S}` | same explicit-comprehension rewrite | `//` no longer parses in set-builder; Erdos1086 |
+| `∀ a b c d ∈ A, …` multi-binder-with-`∈` | split: `∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, …` | confirms Batch-3; Erdos795Aristotle flipped |
+| `a : ℝ; b : ℝ; c : ℝ` — `;`-separated fields on one structure-field line | split each field to its own line (`;` no longer separates struct fields) | LawOfCosinesOQ03OQ02 (had deeper `rw … at t.proj` error, didn't flip) |
+| nested `/-` literal inside a `/- … -/` block comment | remove/reword the literal `/-` (block comments nest — an inner `/-` needs an extra `-/`) → "unterminated comment" at EOF | SumOfOddsStatementOnly flipped |
+| `theorem foo (…) : := by sorry` with the intended type on the NEXT line | move the type up: `theorem foo (…) :\n    <type> := by sorry` (statement repair — see STATUS.md) | Erdos220ProblemProvable flipped (3 sites) |
+| `symm := by constructor; intro …; cases h <;> (…) <|> (…)` SimpleGraph field | rewrite as a plain multi-line `by`: `constructor; intro i j h; rcases h with h\|h; · exact Or.inr h; · exact Or.inl h` (avoid `<;>`/`<|>` precedence in the field) | Erdos552 (loopless field then hit proof-drift `simp` no-progress, didn't flip) |
+| `∆` (symmetric difference) — `expected token` | `open scoped symmDiff` after imports (notation is now `scoped[symmDiff]`) | Erdos431 flipped; Erdos1123 hit deeper `Set.symmDiff_comm` unknown |
+| `p \| q` where `\|` means divides | `p ∣ q` (`∣` U+2223, not ASCII pipe) | Erdos490Aristotle (had deeper omega drift, didn't flip) |
+| `∂` measure-integral / `⟪_,_⟫` inner-product notation — `expected token` | `open MeasureTheory` / `open scoped RealInnerProductSpace` (notation-scope loss, §7d family) | EgorovTheorem, LebesgueMeasureOQ03 (deeper, not swept) |

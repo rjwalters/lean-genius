@@ -1,0 +1,49 @@
+===== Erdos801Problem
+error: Proofs/Erdos801Problem.lean:52:36: Invalid field `IsIndependent`: The environment does not contain `SimpleGraph.IsIndependent`, so it is not possible to project the field `IsIndependent` from an expression
+  G
+of type `SimpleGraph (Fin n)`
+===== Erdos256Problem
+error: Proofs/Erdos256Problem.lean:54:41: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos256Problem.lean:202:41: unexpected token ','; expected '}'
+error: Proofs/Erdos256Problem.lean:236:50: unsolved goals
+case e_a
+error: Proofs/Erdos256Problem.lean:236:50: unsolved goals
+case e_a
+n : ℕ
+===== Erdos1115Problem
+error: Proofs/Erdos1115Problem.lean:42:53: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos1115Problem.lean:42:67: failed to synthesize instance of type class
+  HPow ℝ ℝ ?m.33
+===== Erdos345Problem
+error: Proofs/Erdos345Problem.lean:111:53: Application type mismatch: The argument
+  pow_one m
+has type
+error: Proofs/Erdos345Problem.lean:136:58: Application type mismatch: The argument
+  hn
+has type
+error: Proofs/Erdos345Problem.lean:152:4: `simp` made no progress
+error: Proofs/Erdos345Problem.lean:179:38: Unexpected term `threshold_squares`; expected single reference to variable
+error: Proofs/Erdos345Problem.lean:185:38: Unexpected term `threshold_cubes`; expected single reference to variable
+error: Proofs/Erdos345Problem.lean:179:38: Unexpected term `threshold_squares`; expected single reference to variable
+error: Proofs/Erdos345Problem.lean:185:38: Unexpected term `threshold_cubes`; expected single reference to variable
+error: Proofs/Erdos345Problem.lean:191:38: Unexpected term `threshold_fourth`; expected single reference to variable
+===== FeuerbachsTheoremOQ01Aristotle
+error: Proofs/FeuerbachsTheoremOQ01Aristotle.lean:144:30: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * 0
+in the target expression
+===== AreaOfCircleOQ02OQ04
+error: Proofs/AreaOfCircleOQ02OQ04.lean:238:2: No goals to be solved
+warning: Proofs/AreaOfCircleOQ02OQ04.lean:267:37: Variable name `hr` is not explicitly referenced.
+===== Erdos642Problem
+error: Proofs/Erdos642Problem.lean:44:76: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos642Problem.lean:71:3: failed to synthesize instance of type class
+  DecidablePred fun e => IsDiagonal C e
+error: Proofs/Erdos642Problem.lean:189:8: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos642Problem.lean:218:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
