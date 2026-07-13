@@ -287,3 +287,40 @@ The 2 remaining axioms `kostochka_pyber` (1988) and `planar_linear_bound` (Euler
 are genuine deep results; no Mathlib planar-graph theory exists to discharge them. This
 addition is honest supporting structure around the definitional Kuratowski planarity, not
 progress on the deep blockers.
+
+## Session 2026-07-12 (researcher-2): compile-repair Erdos1018OQ04 + sub-hypergraph monotonicity [VERIFIED docker]
+
+**Mode**: ACT — genuine compile-repair (the problem's stated goal) + new structural content.
+**Outcome**: PROGRESS. Docker build `Proofs.Erdos1018OQ04Mono` = SUCCESS; all 4 new thms
+`#print axioms` = [propext, Classical.choice, Quot.sound] (0 extra axioms; none of OQ04's deep
+axioms invoked). Branch feature/researcher-2-1018.
+
+### Compile repair (Erdos1018OQ04.lean was BROKEN on origin/main)
+- `completeHypergraph_edgeCount` (line ~76) failed: `rw [h, …]` gave "motive is not type
+  correct" — the filter, after `unfold completeHypergraph`, carries a `DecidablePred` instance
+  that mismatches the freshly-stated `h`. Fix: rewrite `.edges` (not the unfolded filter) and use
+  `simp only [Hypergraph.edgeCount, h, …]` instead of `rw` (simp's congruence sidesteps the
+  motive check). File now builds (only its pre-existing `turanNumber` def-sorry warning remains).
+
+### New content — Erdos1018OQ04Mono.lean (5 thms, 0-axiom)
+Sub-hypergraph monotonicity of `isEmbeddable` (OQ04's convex-hull embeddability), which OQ04
+lacked (it only had `Hypergraph.induced` + edge-count bound):
+- `isEmbeddable_of_edges_subset`: H₁.edges ⊆ H₂.edges ∧ embeddable H₂ ⟹ embeddable H₁ (same φ).
+- `isNonEmbeddable_of_edges_subset`: contrapositive — non-embeddable subgraph obstructs whole.
+- `induced_edges_subset` + `isEmbeddable_induced`: vertex-induced special case.
+- `isNonEmbeddable_of_hasSmallNonEmbeddable`: **capstone** — closes the gap
+  `hasSmallNonEmbeddable H k → isNonEmbeddable H (criticalDim r)` (the Kostochka–Pyber reduction
+  shape: a small non-embeddable induced piece certifies the whole graph is non-embeddable).
+
+### STILL BROKEN (out of scope this session): Erdos1018OQ04Incomplete01.lean
+Massively drift-broken under v4.26 (~20 errors, NOT session-fixable quickly):
+- Parse errors: docstring `/--` after non-command at 642/701; malformed
+  `axiom kostochka_pyber_r2 : ∀ ε : ℝ, ε > 0,` (line 707 — `ε > 0,` isn't `ε > 0 → …`).
+- Unknown constants: `Real.tendsto_rpow_atTop`, `Nat.le_of_max_le_left/right` (renamed/moved).
+- Heartbeat timeouts at 194, 319 (`isDefEq` / tactic exec > 200000) — proofs need reworking.
+- Several `rw` "pattern not found" (128/182/293/303/313).
+My Mono content was re-based onto OQ04's `isEmbeddable` (identical predicate) to avoid this file.
+The lone deep sorry `planar_graphs_edge_bound` (line 676, needs Euler `3n−6`) remains blocked.
+
+### Files
+- `proofs/Proofs/Erdos1018OQ04.lean` (repaired), `proofs/Proofs/Erdos1018OQ04Mono.lean` (new).
