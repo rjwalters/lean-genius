@@ -1257,6 +1257,36 @@ theorem kst_general_edge_bound_rpow (G : SimpleGraph V) [DecidableRel G.Adj]
   · -- sparse regime `2m < (s-1)n`: bound is immediate
     linarith [hrhs, hL]
 
+/-- **General `K_{s,t}` edge-count bound (`ex` form).**  The `÷2` restatement of
+`kst_general_edge_bound_rpow`: a `K_{s,t}`-free graph (`s, t ≥ 1`) on `n` vertices has
+
+      m ≤ ½ (t-1)^{1/s} · n^{2 - 1/s} + ½ (s-1)·n,
+
+the standard `ex(n; K_{s,t}) ≤ …` form of the Kővári–Sós–Turán theorem. -/
+theorem kst_general_edge_card_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    (G.edgeFinset.card : ℝ)
+      ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) / 2
+        + ((s : ℝ) - 1) * (Fintype.card V) / 2 := by
+  have h := kst_general_edge_bound_rpow G s t hs ht hfree
+  linarith
+
+/-- **Forcing form (general `K_{s,t}`).**  The contrapositive of
+`kst_general_edge_bound_rpow`: a graph whose edge count *exceeds* the Kővári–Sós–Turán
+bound must contain a `K_{s,t}`.  Concretely, if
+
+      (t-1)^{1/s} · n^{2 - 1/s} + (s-1)·n  <  2m       (`s, t ≥ 1`),
+
+then `HasKst G s t`.  The general-`s` companion of `hasK2t_of_edge_bound_lt` (the `s = 2`
+forcing form), making the KST bound a genuine extremal threshold for every `s`. -/
+theorem hasKst_of_edge_bound_rpow_lt (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hm : ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹)
+        + ((s : ℝ) - 1) * (Fintype.card V) < 2 * (G.edgeFinset.card : ℝ)) :
+    HasKst G s t := by
+  by_contra hfree
+  exact absurd (kst_general_edge_bound_rpow G s t hs ht hfree) (not_le.2 hm)
+
 end GraphLevel
 
 end Erdos1008
