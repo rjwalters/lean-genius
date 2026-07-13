@@ -877,4 +877,138 @@ theorem distinctSubsetSums_of_subset_powersOfTwo {k : ℕ} {B : Finset ℕ}
     (h : B ⊆ powersOfTwo k) : DistinctSubsetSums B :=
   (powersOfTwo_distinctSubsetSums k).mono h
 
+/-! ### Complementation / reflection symmetry of the subset-sum set
+
+The map `s ↦ ∑ A − s` is the *complementation reflection*: a proper non-empty
+subset `S ⊊ A` and its complement `A \ S` are both non-empty subsets of `A`
+whose sums add up to the total `∑ A`.  Hence, away from its top point `∑ A`,
+the value set `subsetSums A` is symmetric about `∑ A / 2`.  This is a
+structural symmetry orthogonal to the counting / distinctness layer: it pins
+the *shape* of the subset-sum set rather than its size.  Its sharpest
+consequence is that the **largest proper subset sum is exactly `∑ A − A.min'`**
+— the reflection-dual of `min'_subsetSums_eq_min'`. -/
+
+/-- **Any non-empty subset's sum is a subset sum.**  The direct membership form:
+    if `S ⊆ A` is non-empty then `∑ S ∈ subsetSums A`.  (Generalises
+    `sum_mem_subsetSums`, which is the `S = A` case.) -/
+theorem sum_mem_subsetSums_of_subset {A S : Finset ℕ} (hSA : S ⊆ A)
+    (hS : S.Nonempty) : S.sum id ∈ subsetSums A := by
+  unfold subsetSums nonemptySubsets
+  rw [Finset.mem_image]
+  refine ⟨S, ?_, rfl⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hSA, Finset.nonempty_iff_ne_empty.mp hS⟩
+
+/-- **Complementation / reflection symmetry.**  If `s` is a non-empty subset sum
+    of `A` other than the total `∑ A`, its reflection `∑ A − s` is *also* a
+    non-empty subset sum: any witnessing subset `S` (with `∑ S = s`) is proper
+    (`∑ S ≠ ∑ A`), so its complement `A \ S` is a non-empty subset of `A` with
+    `∑ (A \ S) = ∑ A − s`.  No positivity hypothesis is needed. -/
+theorem subsetSums_reflection {A : Finset ℕ} {s : ℕ}
+    (hs : s ∈ subsetSums A) (hne : s ≠ A.sum id) :
+    A.sum id - s ∈ subsetSums A := by
+  unfold subsetSums nonemptySubsets at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSsub, hSne⟩ := hS
+  have hSneA : S ≠ A := fun h => hne (by rw [h])
+  have hcompl : (A \ S).Nonempty := by
+    rw [Finset.sdiff_nonempty]
+    exact fun hsub => hSneA (Finset.Subset.antisymm hSsub hsub)
+  have hsplit : (A \ S).sum id + S.sum id = A.sum id := Finset.sum_sdiff hSsub
+  have hval : (A \ S).sum id = A.sum id - S.sum id := by omega
+  rw [← hval]
+  exact sum_mem_subsetSums_of_subset Finset.sdiff_subset hcompl
+
+/-- **The reflection is an involution on the proper subset sums.**  For a set of
+    positive integers, a value `s` is a *proper* subset sum (a subset sum below
+    the total, i.e. `s ∈ (subsetSums A).erase (∑ A)`) **iff** its reflection
+    `∑ A − s` is.  Positivity guarantees a proper subset sum is `≥ 1`, so its
+    reflection stays strictly below `∑ A` and never coincides with the removed
+    top point.  Thus `s ↦ ∑ A − s` is a bijection of the proper subset sums. -/
+theorem subsetSums_reflection_mem_erase_iff {A : Finset ℕ}
+    (hlo : ∀ a ∈ A, 1 ≤ a) {s : ℕ} :
+    s ∈ (subsetSums A).erase (A.sum id) ↔
+      A.sum id - s ∈ (subsetSums A).erase (A.sum id) := by
+  have fwd : ∀ t, t ∈ (subsetSums A).erase (A.sum id) →
+      A.sum id - t ∈ (subsetSums A).erase (A.sum id) := by
+    intro t ht
+    rw [Finset.mem_erase] at ht ⊢
+    obtain ⟨htne, htmem⟩ := ht
+    have htpos : 1 ≤ t := subsetSums_pos hlo t htmem
+    have htle : t ≤ A.sum id := subsetSums_le_sum t htmem
+    exact ⟨by omega, subsetSums_reflection htmem htne⟩
+  refine ⟨fwd s, fun h => ?_⟩
+  have h2 := fwd _ h
+  have hpos : 1 ≤ A.sum id - s := subsetSums_pos hlo _ (Finset.mem_of_mem_erase h)
+  rwa [show A.sum id - (A.sum id - s) = s from by omega] at h2
+
+/-- **Dropping one element yields a subset sum.**  For a set with at least two
+    elements, removing any single element `a` leaves a non-empty subset, so the
+    "co-total" `∑ A − a` is itself a non-empty subset sum. -/
+theorem sum_erase_mem_subsetSums {A : Finset ℕ} {a : ℕ} (ha : a ∈ A)
+    (hcard : 1 < A.card) : A.sum id - a ∈ subsetSums A := by
+  have hne : (A.erase a).Nonempty := by
+    rw [← Finset.card_pos, Finset.card_erase_of_mem ha]; omega
+  have hval : (A.erase a).sum id = A.sum id - a := by
+    have h := Finset.add_sum_erase A id ha
+    simp only [id_eq] at h ⊢
+    omega
+  rw [← hval]
+  exact sum_mem_subsetSums_of_subset (Finset.erase_subset a A) hne
+
+/-- **The co-total `∑ A − A.min'` is a subset sum.**  Instance of
+    `sum_erase_mem_subsetSums` with `a = A.min'`: drop the smallest element. -/
+theorem sum_sub_min'_mem_subsetSums {A : Finset ℕ} (hA : A.Nonempty)
+    (hcard : 1 < A.card) : A.sum id - A.min' hA ∈ subsetSums A :=
+  sum_erase_mem_subsetSums (A.min'_mem hA) hcard
+
+/-- **Every proper subset sum is at most `∑ A − A.min'`.**  If `s` is a subset
+    sum below the total then, by reflection, `∑ A − s` is a subset sum, hence
+    `≥ A.min'` (`min'_le_subsetSums`); rearranging gives `s ≤ ∑ A − A.min'`.
+    So no proper subset sum can exceed `∑ A − A.min'`. -/
+theorem subsetSums_proper_le {A : Finset ℕ} (hA : A.Nonempty) {s : ℕ}
+    (hs : s ∈ subsetSums A) (hne : s ≠ A.sum id) :
+    s ≤ A.sum id - A.min' hA := by
+  have hrefl : A.sum id - s ∈ subsetSums A := subsetSums_reflection hs hne
+  have hge : A.min' hA ≤ A.sum id - s := min'_le_subsetSums hA _ hrefl
+  have hle : s ≤ A.sum id := subsetSums_le_sum s hs
+  omega
+
+/-- The proper subset sums `(subsetSums A).erase (∑ A)` are non-empty once
+    `|A| ≥ 2`: the co-total `∑ A − A.min'` is a proper subset sum. -/
+theorem proper_subsetSums_nonempty {A : Finset ℕ} (hA : A.Nonempty)
+    (hlo : ∀ a ∈ A, 1 ≤ a) (hcard : 1 < A.card) :
+    ((subsetSums A).erase (A.sum id)).Nonempty := by
+  refine ⟨A.sum id - A.min' hA, ?_⟩
+  rw [Finset.mem_erase]
+  have hmin : 1 ≤ A.min' hA := hlo _ (A.min'_mem hA)
+  have hsum : A.min' hA ≤ A.sum id :=
+    subsetSums_le_sum _ (subset_subsetSums A (A.min'_mem hA))
+  exact ⟨by omega, sum_sub_min'_mem_subsetSums hA hcard⟩
+
+/-- **The largest proper subset sum is exactly `∑ A − A.min'`.**  Among the
+    subset sums strictly below the total, the maximum is the total minus the
+    smallest element.  It is attained (`sum_sub_min'_mem_subsetSums`, by dropping
+    `A.min'`) and it dominates every proper subset sum (`subsetSums_proper_le`,
+    via reflection).  This is the reflection-dual of `min'_subsetSums_eq_min'`
+    (the smallest subset sum is `A.min'`) and refines `max'_subsetSums_eq_sum`
+    (the overall maximum is `∑ A`) by identifying the second-largest value. -/
+theorem max'_proper_subsetSums_eq {A : Finset ℕ} (hA : A.Nonempty)
+    (hlo : ∀ a ∈ A, 1 ≤ a) (hcard : 1 < A.card) :
+    ((subsetSums A).erase (A.sum id)).max' (proper_subsetSums_nonempty hA hlo hcard)
+      = A.sum id - A.min' hA := by
+  apply le_antisymm
+  · apply Finset.max'_le
+    intro y hy
+    rw [Finset.mem_erase] at hy
+    exact subsetSums_proper_le hA hy.2 hy.1
+  · apply Finset.le_max'
+    rw [Finset.mem_erase]
+    have hmin : 1 ≤ A.min' hA := hlo _ (A.min'_mem hA)
+    have hsum : A.min' hA ≤ A.sum id :=
+      subsetSums_le_sum _ (subset_subsetSums A (A.min'_mem hA))
+    exact ⟨by omega, sum_sub_min'_mem_subsetSums hA hcard⟩
+
 end Erdos882OQ03
