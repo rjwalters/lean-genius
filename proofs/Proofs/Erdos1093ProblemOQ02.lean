@@ -47,20 +47,25 @@ the **tractable half** and formalizes the question precisely.
 
 ## Axioms
 
-Two record facts remain discharged by `native_decide`, so they depend on
-`Lean.ofReduceBool`: the parent's `deficiency_284_28` computes the bignum
-binomial `C(284,28)` (Pascal recursion, infeasible for the kernel), and
-`smooth_indices_284_28` factors values via `Nat.primeFactors` (well-founded
-recursion, which does not reduce under kernel `decide`).  Two facts that
-previously used `native_decide` are now `ofReduceBool`-free:
+Among the record facts, only the parent's `deficiency_284_28` still needs
+`native_decide` (so still depends on `Lean.ofReduceBool`): it computes the bignum
+binomial `C(284,28)` by Pascal recursion, infeasible for the kernel.  Three facts
+that previously used `native_decide` are now `ofReduceBool`-free:
 - the numeric certificate `(28!)² < 47!` inside `deficiency_record_le_18`
   (Section XII), via kernel `decide` (`Nat.factorial` is structural recursion, so
   the kernel reduces it);
 - `noSmallPrimeFactors_284_28`, via **Kummer's theorem** — instead of the bignum
   divisibility test it reduces each prime `p ≤ 28` to a bounded base-`p` carry
-  count (`Nat.factorization_choose`) that the kernel discharges.
+  count (`Nat.factorization_choose`) that the kernel discharges;
+- `smooth_indices_284_28` (this session), by certifying each of the 28 window
+  values `284 - i` by hand — building the nine smooth values from prime factorisations
+  via `isKSmooth_mul`/`isKSmooth_pow`, and refuting the nineteen non-smooth values by
+  exhibiting a prime factor `> 28` — instead of factoring through `Nat.primeFactors`
+  (well-founded recursion, which does not reduce under kernel `decide`).
 
 The structural results (1, 5) and all of Sections IV–XI are `ofReduceBool`-free.
+The window-check ladder (Sections XVII+) still uses `native_decide` for its per-`k`
+finite window facts.
 
 ## Status: OPEN (universal upper bound); existence half machine-verified.
 -/
@@ -137,11 +142,88 @@ theorem noSmallPrimeFactors_284_28 : NoSmallPrimeFactors 284 28 := by
 
 /-- Explicit certificate: the nine smooth indices witnessing `deficiency 284 28 = 9`
 are exactly `{4, 8, 9, 11, 12, 14, 18, 20, 24}` (the `28`-smooth values
-`280, 276, 275, 273, 272, 270, 266, 264, 260`). -/
+`280, 276, 275, 273, 272, 270, 266, 264, 260`).
+
+**`ofReduceBool`-free.**  The former proof was `native_decide`, which factors each of
+the 28 window values `284 - i` via `Nat.primeFactors` (well-founded recursion, so it
+does not reduce under kernel `decide` — hence `native_decide`, hence `Lean.ofReduceBool`).
+Here we instead certify each value by hand: the nine smooth values are built up from the
+smoothness of the primes `≤ 28` through `isKSmooth_mul`/`isKSmooth_pow`
+(`280 = 2³·5·7`, `276 = 2²·3·23`, …), and each of the nineteen non-smooth values is
+refuted by exhibiting a single prime factor `> 28` (`284 = 4·71`, `279 = 9·31`,
+`261 = 9·29`, the primes `283, 281, 277, 271, 269, 263, 257`, …).  No `native_decide`,
+so this certificate no longer depends on `Lean.ofReduceBool`. -/
 theorem smooth_indices_284_28 :
     (Finset.range 28).filter (fun i => IsKSmooth 28 (284 - i))
       = ({4, 8, 9, 11, 12, 14, 18, 20, 24} : Finset ℕ) := by
-  native_decide
+  -- Smoothness of every prime `≤ 28` (the only primes any window value may carry).
+  have s2 : IsKSmooth 28 2 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s3 : IsKSmooth 28 3 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s5 : IsKSmooth 28 5 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s7 : IsKSmooth 28 7 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s11 : IsKSmooth 28 11 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s13 : IsKSmooth 28 13 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s17 : IsKSmooth 28 17 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s19 : IsKSmooth 28 19 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  have s23 : IsKSmooth 28 23 := (isKSmooth_prime_iff (by norm_num)).mpr (by norm_num)
+  -- The nine `28`-smooth window values, from their prime factorisations.
+  have v280 : IsKSmooth 28 280 := by
+    rw [show (280:ℕ) = 2^3 * 5 * 7 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul (isKSmooth_pow s2 3) s5) s7
+  have v276 : IsKSmooth 28 276 := by
+    rw [show (276:ℕ) = 2^2 * 3 * 23 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul (isKSmooth_pow s2 2) s3) s23
+  have v275 : IsKSmooth 28 275 := by
+    rw [show (275:ℕ) = 5^2 * 11 by norm_num]
+    exact isKSmooth_mul (isKSmooth_pow s5 2) s11
+  have v273 : IsKSmooth 28 273 := by
+    rw [show (273:ℕ) = 3 * 7 * 13 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul s3 s7) s13
+  have v272 : IsKSmooth 28 272 := by
+    rw [show (272:ℕ) = 2^4 * 17 by norm_num]
+    exact isKSmooth_mul (isKSmooth_pow s2 4) s17
+  have v270 : IsKSmooth 28 270 := by
+    rw [show (270:ℕ) = 2 * 3^3 * 5 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul s2 (isKSmooth_pow s3 3)) s5
+  have v266 : IsKSmooth 28 266 := by
+    rw [show (266:ℕ) = 2 * 7 * 19 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul s2 s7) s19
+  have v264 : IsKSmooth 28 264 := by
+    rw [show (264:ℕ) = 2^3 * 3 * 11 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul (isKSmooth_pow s2 3) s3) s11
+  have v260 : IsKSmooth 28 260 := by
+    rw [show (260:ℕ) = 2^2 * 5 * 13 by norm_num]
+    exact isKSmooth_mul (isKSmooth_mul (isKSmooth_pow s2 2) s5) s13
+  -- The nineteen non-smooth window values: each carries a prime `> 28`.
+  have n284 : ¬ IsKSmooth 28 284 := fun h => absurd (h 71 (by norm_num) (by norm_num)) (by norm_num)
+  have n283 : ¬ IsKSmooth 28 283 := fun h => absurd (h 283 (by norm_num) (dvd_refl _)) (by norm_num)
+  have n282 : ¬ IsKSmooth 28 282 := fun h => absurd (h 47 (by norm_num) (by norm_num)) (by norm_num)
+  have n281 : ¬ IsKSmooth 28 281 := fun h => absurd (h 281 (by norm_num) (dvd_refl _)) (by norm_num)
+  have n279 : ¬ IsKSmooth 28 279 := fun h => absurd (h 31 (by norm_num) (by norm_num)) (by norm_num)
+  have n278 : ¬ IsKSmooth 28 278 := fun h => absurd (h 139 (by norm_num) (by norm_num)) (by norm_num)
+  have n277 : ¬ IsKSmooth 28 277 := fun h => absurd (h 277 (by norm_num) (dvd_refl _)) (by norm_num)
+  have n274 : ¬ IsKSmooth 28 274 := fun h => absurd (h 137 (by norm_num) (by norm_num)) (by norm_num)
+  have n271 : ¬ IsKSmooth 28 271 := fun h => absurd (h 271 (by norm_num) (dvd_refl _)) (by norm_num)
+  have n269 : ¬ IsKSmooth 28 269 := fun h => absurd (h 269 (by norm_num) (dvd_refl _)) (by norm_num)
+  have n268 : ¬ IsKSmooth 28 268 := fun h => absurd (h 67 (by norm_num) (by norm_num)) (by norm_num)
+  have n267 : ¬ IsKSmooth 28 267 := fun h => absurd (h 89 (by norm_num) (by norm_num)) (by norm_num)
+  have n265 : ¬ IsKSmooth 28 265 := fun h => absurd (h 53 (by norm_num) (by norm_num)) (by norm_num)
+  have n263 : ¬ IsKSmooth 28 263 := fun h => absurd (h 263 (by norm_num) (dvd_refl _)) (by norm_num)
+  have n262 : ¬ IsKSmooth 28 262 := fun h => absurd (h 131 (by norm_num) (by norm_num)) (by norm_num)
+  have n261 : ¬ IsKSmooth 28 261 := fun h => absurd (h 29 (by norm_num) (by norm_num)) (by norm_num)
+  have n259 : ¬ IsKSmooth 28 259 := fun h => absurd (h 37 (by norm_num) (by norm_num)) (by norm_num)
+  have n258 : ¬ IsKSmooth 28 258 := fun h => absurd (h 43 (by norm_num) (by norm_num)) (by norm_num)
+  have n257 : ¬ IsKSmooth 28 257 := fun h => absurd (h 257 (by norm_num) (dvd_refl _)) (by norm_num)
+  ext i
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hi, hs⟩
+    interval_cases i <;>
+      first
+        | omega
+        | (norm_num at hs; exact absurd hs (by assumption))
+  · rintro (rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl) <;>
+      exact ⟨by norm_num, by norm_num; assumption⟩
 
 /-
 ## Section III: Formalizing OQ-02
