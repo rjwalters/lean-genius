@@ -24,7 +24,7 @@
     "iteration": 2,
     "focus": "Formalized the full Robertson uncertainty relation robertson_uncertainty AND its variance-form heisenberg_variance_form, THEN (researcher-1) strengthened Robertson to the SCHRÖDINGER relation schrodinger_uncertainty keeping the covariance term, with inner_normSq_le (full Gram split) and robertson_of_schrodinger. All verified, 0 axioms/sorries, 8 theorems.",
     "blockers": [],
-    "nextAction": "Optional: Maccone–Pati stronger sum uncertainty relation (state-dependent lower bound tight for pure states), or an equality/saturation characterization of the additive bound (attained iff ‖u‖=‖v‖ and the product bound saturates). Core operator content (Robertson + Schrödinger + variance + std + sum forms, saturation characterization, minimum-uncertainty witnesses) is complete.",
+    "nextAction": "Maccone-Pati sum relation now formalized (researcher-8). Remaining optional directions: (a) the SECOND Maccone-Pati relation (amplitude/perpendicular form with |⟨ψ⊥|(A+B)|ψ⟩|² over an orthonormal completion); (b) saturation/equality characterization of the MP bound (attained iff Γ=u±i·v is parallel to ψ⊥, i.e. the projection captures all of Γ). Core operator content is complete.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FOLLOW-UP (researcher-10, 2026-07-11, VERIFIED 0-axiom): resolved the last remaining nextStep — the L² specialization. Added L2_inner_eq_integral (⟪f,g⟫ = ∫ conj(f)·g on α→₂[μ]ℂ via MeasureTheory.L2.inner_def + RCLike.inner_apply') and six integral-form Cauchy–Schwarz bounds (abs_im/im_sq/abs_re/re_sq/gram/norm)_integral_inner_*_L2, instantiating the abstract core on the concrete L² inner product space. This ties the abstract operator uncertainty work back to the literal integral Cauchy–Schwarz |⟪f,g⟫|² ≤ ‖f‖²‖g‖² named in OQ-04'\\''s problem statement, split into Heisenberg (Im ∫ conj(f)·g) and Schrödinger (Re ∫ conj(f)·g) components. Host-lean verified [propext,Classical,Quot] only, 0 sorries.",
+    "progressSummary": "PROGRESS (researcher-8, 2026-07-12, VERIFIED axiom-free): added the Maccone-Pati STRONGER sum uncertainty relation (5 theorems), the direction flagged by nextAction. Unlike the pre-existing AM-GM sum forms (robertson/heisenberg_sum_form) whose lower bound vanishes when ⟪ψ,[A,B]ψ⟫=0, the MP relation adds a nonneg state-dependent projection term ‖⟪ψ⊥,(A±iB)ψ⟫‖² (ψ⊥⊥ψ) that stays informative for incompatible observables in commutator-null states. Host-lean verified [propext,Classical.choice,Quot.sound] only, 0 sorries. File 1134→~1230 lines, still 0 axioms.",
     "builtItems": [
       "CauchySchwarzIntegralOQ04.lean: 5 theorems over a general RCLike inner product space, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
       "abs_im_inner_le_norm_mul_norm: |RCLike.im (inner 𝕜 u v)| ≤ ‖u‖·‖v‖ (RCLike.abs_im_le_norm |im z| ≤ ‖z‖, then norm_inner_le_norm).",
@@ -50,7 +50,11 @@
       "commutator_smul_I_isSymmetric (CauchySchwarzIntegralOQ04.lean): (RCLike.I • (A.comp B − B.comp A)).IsSymmetric — i[A,B] Hermitian, via anti-symmetry + RCLike.conj_I",
       "inner_commutator_smul_I_isReal (CauchySchwarzIntegralOQ04.lean): Im⟪ψ,(i[A,B])ψ⟫ = 0, expectation reality from operator symmetry",
       "L2_inner_eq_integral in CauchySchwarzIntegralOQ04.lean — bridge inner ℂ f g = ∫ conj(f)·g for f,g ∈ α→₂[μ]ℂ, via MeasureTheory.L2.inner_def (definitional) + RCLike.inner_apply'",
-      "abs_im/im_sq/abs_re/re_sq/gram/norm _integral_inner_*_L2 — the L² integral-form Cauchy–Schwarz/uncertainty core: |Im/Re ∫ conj(f)·g| ≤ ‖f‖‖g‖, squared forms, the sharp Gram (Re)²+(Im)² ≤ ‖f‖²‖g‖², and modulus ‖∫ conj(f)·g‖² ≤ ‖f‖²‖g‖². Instantiate abstract core on E := α→₂[μ]ℂ. VERIFIED 0/0."
+      "abs_im/im_sq/abs_re/re_sq/gram/norm _integral_inner_*_L2 — the L² integral-form Cauchy–Schwarz/uncertainty core: |Im/Re ∫ conj(f)·g| ≤ ‖f‖‖g‖, squared forms, the sharp Gram (Re)²+(Im)² ≤ ‖f‖²‖g‖², and modulus ‖∫ conj(f)·g‖² ≤ ‖f‖²‖g‖². Instantiate abstract core on E := α→₂[μ]ℂ. VERIFIED 0/0.",
+      "normSq_add_I_smul / normSq_sub_I_smul: polarization ‖u±i·v‖²=‖u‖²+‖v‖²∓2Im⟪u,v⟫ (CauchySchwarzIntegralOQ04.lean)",
+      "maccone_pati_uncertainty + _neg: the ±i-orientation Maccone-Pati stronger sum bounds (general shifts)",
+      "maccone_pati_variance_form: MP bound at expectation values (Var(A)+Var(B) form)",
+      "maccone_pati_stronger_than_robertson_sum: ‖⟪ψ,[A,B]ψ⟫‖ + min(both projection terms) ≤ Var sum — makes the strengthening over robertson_sum_form explicit"
     ],
     "insights": [
       "The Heisenberg/Robertson uncertainty inequality's analytic core is Cauchy-Schwarz on the imaginary part: |Im⟪u,v⟫| ≤ |⟪u,v⟫| ≤ ‖u‖‖v‖. For real fields Im = 0 (trivial); the content is the ℂ case.",
@@ -61,7 +65,9 @@
       "LinearMap.IsSymmetric T := ∀x y, ⟪Tx,y⟫=⟪x,Ty⟫; the a,b-shift cancellation needs only hA ψ ψ and hB ψ ψ plus RCLike.conj_ofReal (conj of a real coercion).",
       "Robertson vs Schrödinger is exactly Cauchy-Schwarz-with-vs-without the real part: Robertson keeps only (Im⟪u,v⟫)², Schrödinger keeps ‖⟪u,v⟫‖²=(Re)²+(Im)². The extra (Re⟪u,v⟫)² term is the symmetrized covariance ½⟪ψ,{A,B}ψ⟫−⟨A⟩⟨B⟩, so Schrödinger is strictly stronger whenever A,B are correlated. The proof reuses the same ¼‖[A,B]‖²≤(Im⟪u,v⟫)² bound (from ‖I‖≤1) and just adds the real part via the full-norm split RCLike.norm_sq_eq_def: ‖z‖²=(Re z)²+(Im z)².",
       "Operator-level structure: for symmetric A,B the bare commutator A∘B−B∘A is anti-Hermitian (⟪[A,B]x,y⟫=−⟪x,[A,B]y⟫), so i[A,B] is a genuine symmetric (Hermitian) OPERATOR — the observable whose expectation lower-bounds the variance product. This is the operator-theoretic reason the expectation ⟪ψ,[A,B]ψ⟫ is purely imaginary (re_inner_commutator_eq_zero) — the latter is now a one-line corollary of operator Hermiticity via conj z = z ⟹ im z = 0.",
-      "The abstract inner-product-space uncertainty core specializes to the literal integral Cauchy–Schwarz with NO extra work: MeasureTheory.L2.inner_def makes ⟪f,g⟫ on α→₂[μ]ℂ DEFINITIONALLY ∫ a, ⟪f a, g a⟫ ∂μ, and RCLike.inner_apply' rewrites the pointwise inner to conj(f a)·g a, so a single rw [← L2_inner_eq_integral] transports every abstract bound (abs_im/im_sq/abs_re/re_sq/gram/norm) onto ∫ conj(f)·g. The operator-level Robertson/Schrödinger statements do NOT specialize cleanly — position/momentum are unbounded operators on L², needing domains — so the tractable L² payload is exactly the Cauchy–Schwarz CORE, which is what OQ-04 literally asks for."
+      "The abstract inner-product-space uncertainty core specializes to the literal integral Cauchy–Schwarz with NO extra work: MeasureTheory.L2.inner_def makes ⟪f,g⟫ on α→₂[μ]ℂ DEFINITIONALLY ∫ a, ⟪f a, g a⟫ ∂μ, and RCLike.inner_apply' rewrites the pointwise inner to conj(f a)·g a, so a single rw [← L2_inner_eq_integral] transports every abstract bound (abs_im/im_sq/abs_re/re_sq/gram/norm) onto ∫ conj(f)·g. The operator-level Robertson/Schrödinger statements do NOT specialize cleanly — position/momentum are unbounded operators on L², needing domains — so the tractable L² payload is exactly the Cauchy–Schwarz CORE, which is what OQ-04 literally asks for.",
+      "Maccone-Pati (PRL 113 260401, 2014) STRONGER sum uncertainty relation: Var(A)+Var(B) ≥ 2·Im⟪(A−a)ψ,(B−b)ψ⟫ + ‖⟪ψ⊥,(A±iB)ψ⟫‖² for any unit ψ⊥⊥ψ. The extra projection term ‖⟪ψ⊥,(A±iB)ψ⟫‖² is nonneg and can be POSITIVE even when the commutator expectation ⟪ψ,[A,B]ψ⟫=0 — removing the defect of all AM-GM sum forms (robertson_sum_form etc.) whose bound vanishes there. Genuinely stronger than robertson_sum_form.",
+      "Mechanism is one line of Hilbert-space geometry: for Γ=u±i·v the polarization identity ‖u±i·v‖²=‖u‖²+‖v‖²∓2·Im⟪u,v⟫ (normSq_add_I_smul via Mathlib norm_add_sq + RCLike.I_mul_re), and Cauchy-Schwarz ‖⟪w,Γ⟫‖²≤‖w‖²‖Γ‖²=‖Γ‖² for unit w; shifts a,b drop from the projection because ⟪w,ψ⟫=0. Im⟪u,v⟫ is shift-independent."
     ],
     "mathlibGaps": [
       "The full operator-theoretic uncertainty principle (self-adjoint operators, variance of an observable in a state, the commutator [A,B]) is not packaged in Mathlib; only the underlying Cauchy-Schwarz inequality is in reach here."
@@ -109,7 +115,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T15:38:25.652Z",
-  "lastUpdate": "2026-07-11T00:00:00.000Z",
+  "lastUpdate": "2026-07-12",
   "leanFiles": [
     {
       "path": "Proofs/CauchySchwarzIntegral.lean",
