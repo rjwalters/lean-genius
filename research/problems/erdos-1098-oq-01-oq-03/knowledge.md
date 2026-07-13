@@ -1,5 +1,48 @@
 # Knowledge: erdos-1098-oq-01-oq-03 (Neumann ω(Γ(G)) finite ⟺ [G:Z(G)] finite)
 
+## Session 2026-07-12 (researcher-2) — residual gap in canonical finite-derived-subgroup form + sharpened blocker [VERIFIED 0-axiom]
+
+**Mode:** REVISIT (RICH; base SOLVED-with-1-axiom). **Outcome:** progress — 2 theorems,
+VERIFIED 0 sorry / 0 new axiom (`lake env lean`, EXIT 0; `#print axioms` on both =
+`[propext, Classical.choice, Quot.sound]` only — neither touches the BFC axiom
+`neumann_hard_direction`).
+
+### What I did — recast the open gap into the textbook BFC form
+Prior sessions pinned the axiom's residual content to `BoundedCliques G → Finite (commutatorSet G)`
+(finite commutator **set**). I recast it into the classical Neumann statement, tied to the exact
+Mathlib object:
+- `finite_commutatorSet_iff_finite_commutator : Finite (commutatorSet G) ↔ Finite (commutator G)`.
+  `→` is Schur's theorem (Mathlib `Schreier.lean` instance `[Finite (commutatorSet G)] →
+  Finite (commutator G)`, no FG needed); `←` is the trivial subset `commutatorSet G ⊆ ↑(commutator G)`
+  via `commutator_mem_commutator (mem_top _) (mem_top _)`. Needed adding
+  `import Mathlib.GroupTheory.Schreier` (the derived-subgroup finiteness instance is NOT in the
+  already-imported `Commutator.Finite`).
+- `neumann_hard_direction_of_finite_commutator [Group.FG G] [Finite (commutator G)]
+  (_ : BoundedCliques G) : (center G).index ≠ 0` — the finite-derived-**subgroup** phrasing of the
+  existing `_of_finite_commutatorSet` reduction, via the iff. So the sole remaining content of the
+  axiom (for FG G) is `BoundedCliques G → Finite (commutator G)` = Neumann's BFC theorem in its
+  canonical "finite G'" form.
+
+### Sharpened blocker (genuine, corrects prior "circular" framing)
+The Mathlib endgame `Subgroup.finiteIndex_center` requires BOTH `[Finite (commutatorSet G)]` AND
+`[Group.FG G]`, and the FG hypothesis is **essential, not removable** — it is NOT merely a
+circularity to be broken. Counterexample: `G = ⨁ (extraspecial p-group)` has finite `commutatorSet`
+(all commutators lie in the common order-p centre) yet `[G:Z(G)]` is infinite (`G/Z(G)` is infinite
+elementary abelian). So `Finite (commutatorSet G) → FiniteIndex (center G)` is **false** for non-FG
+G; no FG-free shortcut through commutator-set finiteness exists. (Consistent with Neumann: that G
+has unbounded cliques, so `BoundedCliques` fails there.) This closes off the route the prior
+knowledge suggested ("index_center_le_pow is circular").
+
+### Still blocked (unchanged, architectural)
+`neumann_hard_direction` for infinite G = full BFC theorem `BoundedCliques G → Finite (commutator G)`
+(bounded non-commuting cliques ⟹ finite derived subgroup). Not in Mathlib (v4.26); Neumann's
+covering/counting argument, >1000 lines. Schur's converse `FiniteIndex (center G) → Finite (commutator G)`
+also absent from this Mathlib as a named lemma (only `transfer_center_eq_pow`).
+
+### Files Modified
+- `proofs/Proofs/Erdos1098OQ01OQ03.lean` (+`import Schreier`, +2 theorems)
+- `research/problems/erdos-1098-oq-01-oq-03/knowledge.md`
+
 ## Session 2026-07-08 (researcher-3) — finite-group hard direction is axiom-free
 
 File `Erdos1098OQ01OQ03.lean` is otherwise SOLVED-with-1-axiom: the forward
