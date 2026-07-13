@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-11 2026-07-12, axiom-free): settled the deriveVec MAXIMALITY next-step in cleanest general form — affValid_eq_deriveVec_self proves every valid certificate v for any class (c,d) equals deriveVec v.length c d (canonical generation; the engine run at the certs own length reproduces it), with affValid_nil_of_odd_modulus (odd modulus forces empty cert) the structural reason deriveVec halts exactly when AffValid can no longer extend. Self-contained companion CollatzStructuredOQ02OQ03CertMaximal.lean (mother at kernel ceiling). tao_2019 axiom remains deep-blocked.",
+    "progressSummary": "PROGRESS (researcher-3 2026-07-12, axiom-free, offline EXIT 0): Part XIII (ConstBound.lean) adds the first bound on the constant term of a certified affine window (D+1 <= 3^(#odd)*(d+1)) plus the uniform eventual-drop theorem: the leading criterion 3^a<2^b alone forces every class member past an explicit threshold to attain below itself, dropping the hand-checked D<r boundary condition. tao_2019 stays BLOCKED.",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -60,7 +60,10 @@
       "affValid_prefix_closed (CollatzStructuredOQ02OQ03CertUnique.lean): AffValid is downward-closed under the prefix order — every prefix of a valid certificate is valid (induction on the front-consuming AffValid derivation; NO axioms at all)",
       "affValid_deriveVec (CertUnique.lean): named validity of the canonical auto-derived vector deriveVec (2b+1) (2^b) r for its class",
       "affValid_iff_prefix_deriveVec (CertUnique.lean): EXACT characterization — a bounded-length parity list is a valid certificate for r (mod 2^b) IFF it is a prefix of deriveVec; the valid-certificate set is exactly the initial segments of one canonical vector",
-      "CollatzStructuredOQ02OQ03CertMaximal.lean (self-contained, re-declares AffValid+deriveVec exactly, import Mathlib only — mother at kernel SIGBUS ceiling): affValid_eq_deriveVec_self (CANONICAL GENERATION/MAXIMALITY: EVERY valid cert v for ANY class (c,d) is literally deriveVec v.length c d, structural induction on AffValid, each extending step has c%2=0 so deriveVec skips its c%2=1 halt and takes the d%2 branch) + affValid_nil_of_odd_modulus (odd modulus ⟹ empty cert, the structural reason deriveVec halts on c%2=1) + affValid_length_eq_deriveVec_self. Removes the residue-determined-window length side-hypothesis of affValid_iff_prefix_deriveVec in fully general form. 3 thm, axioms [propext,Quot.sound] only."
+      "CollatzStructuredOQ02OQ03CertMaximal.lean (self-contained, re-declares AffValid+deriveVec exactly, import Mathlib only — mother at kernel SIGBUS ceiling): affValid_eq_deriveVec_self (CANONICAL GENERATION/MAXIMALITY: EVERY valid cert v for ANY class (c,d) is literally deriveVec v.length c d, structural induction on AffValid, each extending step has c%2=0 so deriveVec skips its c%2=1 halt and takes the d%2 branch) + affValid_nil_of_odd_modulus (odd modulus ⟹ empty cert, the structural reason deriveVec halts on c%2=1) + affValid_length_eq_deriveVec_self. Removes the residue-determined-window length side-hypothesis of affValid_iff_prefix_deriveVec in fully general form. 3 thm, axioms [propext,Quot.sound] only.",
+      "affOrbit_snd_bound, affOrbit_snd_mono (constant fold bound + monotone in d) in CollatzStructuredOQ02OQ03ConstBound.lean",
+      "affine_value_lt / affine_value_lt_of_threshold (affine drop: raw + closed-form threshold) in ConstBound.lean",
+      "affValid_attainsBelow_of_large / affValid_attainsBelow_of_large_pow (uniform eventual-drop, no D<r condition) in ConstBound.lean"
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -78,14 +81,17 @@
       "FORCING DIRECTION (loop closed): affValid_orbit_parity proves the certificate's parity vector is the ACTUAL Collatz orbit parity sequence, not just its endpoint — collatz^[i](c*m+d)%2 = v[i].toNat for every interior step i<v.length and every m. affOrbit_realize alone only pins the window endpoint; a vector could in principle agree there while disagreeing at an interior step. Proof = induction on the AffValid derivation, replaying the same one-step collatz reduction affOrbit_realize uses (odd: 2c'm+d odd since c even, d odd; even: halve) and recursing into the tail at index j, with getElem_cons_zero/succ threading the bit. Corollary affValid_parity_indep: the parity at each step is independent of m (residue-determined). deriveVec_orbit_parity: the AUTO-derived vector deriveVec(2b+1)(2^b)r equals the true orbit parity sequence of every n≡r mod 2^b — no drop hypothesis needed (affValidB_deriveVec is unconditional), so forcing holds for ALL (b,r) whether or not the class drops.",
       "Certificate uniqueness is immediate from Part VIII forcing: because affValid_orbit_parity pins every recorded bit to the ACTUAL orbit parity of the class member (m=0 -> the member d), the parity vector is determined by the dynamics, not the certificate. So faithfulness (Part VIII) already implies uniqueness — no separate induction needed, just List.ext_getElem + Bool.toNat injectivity.",
       "OPERATIONAL: the mother file CollatzStructuredOQ02OQ03.lean is at the Lean KERNEL MEMORY CEILING — the unchanged origin/main file builds green (11s) but appending even 2 cheap (decide-free) lemmas in-file reproducibly SIGBUS (exit 135/139, crash in 1-7s during kernel checking) 3/3 times. Fix: put new lemmas in a COMPANION module importing Proofs.CollatzStructuredOQ02OQ03; builds clean. Companion import-load itself occasionally SIGBUSes transiently -> retry (green within ~2 attempts).",
-      "EXACT CHARACTERIZATION (uniqueness/completeness thread CLOSED): the valid certificates for a residue class r (mod 2^b) are EXACTLY the prefixes of the canonical deriveVec. Prior parts gave only the forward containment (valid ⟹ prefix, affValid_prefix_deriveVec); the converse is prefix-closure of AffValid, which holds structurally because AffValid consumes bits from the FRONT (each constructor pins the head parity and recurses into the tail with the class advanced one Collatz step), so truncating the tail only ends the derivation earlier at nil while every surviving head condition is unchanged. Two containments ⟹ the valid-certificate set is a single chain = initial segments of one vector, never a branching family. affValid_prefix_closed uses NO axioms whatsoever."
+      "EXACT CHARACTERIZATION (uniqueness/completeness thread CLOSED): the valid certificates for a residue class r (mod 2^b) are EXACTLY the prefixes of the canonical deriveVec. Prior parts gave only the forward containment (valid ⟹ prefix, affValid_prefix_deriveVec); the converse is prefix-closure of AffValid, which holds structurally because AffValid consumes bits from the FRONT (each constructor pins the head parity and recurses into the tail with the class advanced one Collatz step), so truncating the tail only ends the derivation earlier at nil while every surviving head condition is unchanged. Two containments ⟹ the valid-certificate set is a single chain = initial segments of one vector, never a branching family. affValid_prefix_closed uses NO axioms whatsoever.",
+      "Constant-term bound (Part XIII, ConstBound.lean): D+1 <= 3^(#odd)*(d+1) for the certified affine window. The mother module never bounded the constant D=(affOrbit v (c,d)).2. Odd fold d->3d+1 multiplies by 3 (the +1 absorbed by the (d+1) slack), even fold d->floor(d/2) shrinks; short structural induction generalized over both coordinates.",
+      "This closes the gap that forced affine_residue_attainsBelow / parityVector_attainsBelow to carry a hand-checked D<r side condition, which only forces the drop at the boundary member m=0. With the constant bound, the leading criterion A<c ALONE gives a closed-form threshold 3^(#odd)*(d+1) <= (c-A)*m past which every class member drops (affValid_attainsBelow_of_large). So 3^a<2^b implies the class drops for cofinitely many members, no boundary caveat (affValid_attainsBelow_of_large_pow, classical 3^a<2^b headline)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Fuel-sufficiency for the 2^b window: show deriveVec (2b+1) (2^b) r reaches its odd-modulus halt within 2b+1 fuel for every r, so the length side-condition in affValid_iff_prefix_deriveVec is automatically satisfied (v_2(c) drops by 1 per even-step, stays on odd-steps — needs bounding the odd-step count).",
       "Mechanize certificate GENERATION as a tactic/decision procedure now that affValid_eq_deriveVec_self identifies the generator as deriveVec v.length c d.",
       "Attempt the unconditional density→1 (Terras/Korec) milestone toward tao_2019, rather than more finite residue levels (enumeration theater).",
-      "Tao axiom genuinely blocked (deep analytic, >>1000 lines)."
+      "Tao axiom genuinely blocked (deep analytic, >>1000 lines).",
+      "Sharpen the Part XIII eventual-drop threshold: the bound D+1<=3^a(d+1) is worst-case (all triples first); a tighter constant estimate would shrink the m-threshold and could pin the exact finite set of non-dropping members per determined-drop class."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -184,6 +190,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ02OQ03ConstBound.lean",
+      "filename": "CollatzStructuredOQ02OQ03ConstBound.lean",
+      "lineCount": 286,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ03ConstBound.lean"
     }
   ]
 }
