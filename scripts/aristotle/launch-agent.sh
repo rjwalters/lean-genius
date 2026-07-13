@@ -20,7 +20,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 SESSION_NAME="aristotle-agent"
-WORKTREE_PATH="$REPO_ROOT/.loom/worktrees/aristotle"
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREE_PATH="$(loom_worktree_root "$REPO_ROOT")/aristotle"
 BRANCH_NAME="feature/aristotle-integrations"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
@@ -132,6 +136,7 @@ create_worktree() {
     git branch -D "$BRANCH_NAME" 2>/dev/null || true
 
     print_info "Creating worktree..."
+    mkdir -p "$(dirname "$WORKTREE_PATH")"
     git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
 
     # Symlink .lake for fast Lean builds
