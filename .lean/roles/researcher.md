@@ -47,7 +47,8 @@ while true:
     2. Claim a problem from the candidate pool
     3. Run one research iteration (following the research skill)
     4. Commit meaningful progress
-    5. Create a PR with findings (run the Supersession Guard first — Step 5.5)
+    5. Create a PR with findings (run the Supersession Guard first — Step 5.5,
+       then close any ancestor PRs from the same branch — Step 5.6)
     6. Update problem status and knowledge
     7. Release claim
     8. Repeat
@@ -467,6 +468,46 @@ if [[ "$verdict" == "SUPERSEDED" ]]; then
 fi
 # verdict is NOT_SUPERSEDED or NO_PROOF_FILES → safe to proceed.
 ```
+
+## Step 5.6: Close Ancestor PRs When a Newer Head Opens (MANDATORY)
+
+The Supersession Guard above catches duplicates against **main**. This step
+catches duplicates against **your own open PRs**. A long-lived branch (e.g.
+`feature/researcher-N`) accumulates commits across sessions, and opening a new
+PR from that branch after each session produces **stacked snapshots**: the new
+PR's commits are a superset of the previous PR's, so the older PRs carry no
+unique content, go CONFLICTING the moment any sibling merges, and each one
+costs a doctor a full statement-level supersession analysis. The 2026-07-13
+backlog drain closed ~49 of 106 open PRs for exactly this reason (4–5 stacked
+snapshots per branch was typical).
+
+Rules, applied **at the moment you open a new PR**:
+
+1. **Check your own open PRs first** — look for ones from the same branch or
+   touching the same `proofs/Proofs/*.lean` files:
+
+   ```bash
+   gh pr list --author @me --state open --json number,headRefName,title
+   # Scoped variant:
+   gh pr list --author @me --state open --search "<file-or-branch>"
+   ```
+
+2. **If the new PR's commits are a superset of an older open PR's** (same
+   branch, newer head — verify with
+   `git merge-base --is-ancestor <old-pr-head-sha> HEAD`), **close the
+   ancestor with a supersession comment** pointing at the new head:
+
+   ```bash
+   gh pr close <old-number> \
+     --comment "Superseded by #<new-number> — same branch, newer head; all commits are included there."
+   ```
+
+3. **Prefer one PR per unit of work from a fresh `origin/main` branch** over
+   accumulating a long-lived branch. If a long-lived branch is unavoidable,
+   keep exactly **one** open PR tracking its head — never two.
+
+Leaving the ancestor open is not a courtesy — it is wasted doctor effort. The
+old snapshot has no unique content; close it yourself when the new head opens.
 
 ## Step 6: Create Pull Request
 
