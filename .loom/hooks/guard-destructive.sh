@@ -348,11 +348,15 @@ ASK_PATTERNS=(
     'aws lambda'
 
     # Docker operations
-    'docker rm'
+    # Container lifecycle ops (rm/stop/kill/restart) are intentionally NOT
+    # listed — containers are disposable and agents routinely manage their
+    # own build containers. Images and volumes stay guarded: images are
+    # shared and volumes hold multi-hour mathlib cache builds.
     'docker rmi'
-    'docker stop'
-    'docker kill'
-    'docker restart'
+    'docker image rm'
+    'docker image prune'
+    'docker volume rm'
+    'docker volume prune'
 
     # Service management
     'systemctl restart'
@@ -376,8 +380,15 @@ ASK_PATTERNS=(
     'cat.*/\.aws/credentials'
 )
 
+# Match ask-patterns against the command with quoted strings removed, so a
+# pattern appearing only inside a string argument (grep "docker rmi" file,
+# echo 'gh pr close', a commit message mentioning a command) doesn't prompt.
+# Real invocations are unquoted at command position and still match. The
+# deny tier above intentionally keeps matching the raw text (fail-safe).
+COMMAND_UNQUOTED=$(printf '%s' "$COMMAND" | sed -E "s/'[^']*'/ /g; s/\"[^\"]*\"/ /g" 2>/dev/null) || COMMAND_UNQUOTED="$COMMAND"
+
 for pattern in "${ASK_PATTERNS[@]}"; do
-    if echo "$COMMAND" | grep -qE "$pattern"; then
+    if echo "$COMMAND_UNQUOTED" | grep -qE "$pattern"; then
         ask "Command requires confirmation: $COMMAND"
     fi
 done
