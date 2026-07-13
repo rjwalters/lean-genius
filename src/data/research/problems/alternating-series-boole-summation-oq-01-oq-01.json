@@ -37,24 +37,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: proved the order-K Boole summation limit (boole_general_tendsto) + intermediate-series convergence + unconditional antitone version; all axiom-free. Awaiting machine-verification.",
+    "progressSummary": "PROGRESS: order-K Boole limit fully machine-verified on main (boole_general_tendsto, axiom-free). Added the explicit non-recursive closed form for the higher-difference series limit T_K (iterate_altSum_limit_closed), resolving nextStep #2, plus antitone/K=1/self-consistency corollaries — all axiom-free, docker-built. Remaining open: effective tail-bound identification; missing gallery entry.",
     "builtItems": [
       "iterate_fdiff_tendsto_zero: a→0 ⟹ ∀k, Δ^k a → 0 (Proofs/AlternatingSeriesBooleSummationOQ01OQ01.lean)",
       "boole_general_tendsto: the headline order-K Boole summation limit identity (axiom-free)",
       "iterate_altSum_tendsto: existence of every higher-difference series limit T_k given base convergence",
       "boole_general_tendsto_of_antitone: unconditional order-K identity for antitone null sequences",
-      "fdiff_altSum_tendsto / sign_mul_tendsto_zero / altSum_tendsto_of_antitone restated for base-file defs so they compose with boole_general"
+      "fdiff_altSum_tendsto / sign_mul_tendsto_zero / altSum_tendsto_of_antitone restated for base-file defs so they compose with boole_general",
+      "iterate_altSum_limit_closed: EXPLICIT non-recursive closed form T_K = Σ_{k<K}(-2)^{K-1-k}(-1)^n(Δ^k a)_n + (-2)^K S (Proofs/AlternatingSeriesBooleSummationOQ01OQ01ClosedForm.lean, axiom-free)",
+      "iterate_altSum_limit_closed_of_antitone: same closed form unconditionally for antitone null sequences",
+      "boole_general_tendsto_closed: self-consistency — substituting the closed form of T_K into boole_general_tendsto collapses back to S",
+      "iterate_altSum_limit_one: K=1 sanity, T_1=(-1)^n a_n-2S matches fdiff_altSum_tendsto"
     ],
     "insights": [
       "Order-K Boole limit: passing boole_general to m→∞ for a null sequence yields S = Σ_{k<K} ((-1)^k/2^{k+1})(-1)^n(Δ^k a)_n + ((-1)^K/2^K) T_K; the sign flips to the OQ closed form since (-1)^K/2^K = -(-1)^{K-1}/2^K.",
       "The single analytic engine is that EVERY iterated forward difference Δ^k a of a null sequence is again null (proved by induction: Δ^{k+1}a_j = (Δ^k a)_{j+1} - (Δ^k a)_j, a difference of two shifted null copies). This makes every endpoint term (-1)^m(Δ^k a)_m vanish termwise across the finite order-K boundary sum.",
       "Intermediate convergence is automatic, not an extra hypothesis: if a→0 and altSum a n · → S, then altSum(Δ^k a) n · converges for every k (induction via first-order fdiff_altSum_tendsto with recurrence T_{k+1} = (-1)^n(Δ^k a)_n - 2 T_k). So T_K in the main identity always exists.",
-      "K=1 recovers the parent boole_tendsto; K=0 reads S=S. Antitone null sequences need no convergence hypothesis at all (Mathlib alternating-series test supplies it)."
+      "K=1 recovers the parent boole_tendsto; K=0 reads S=S. Antitone null sequences need no convergence hypothesis at all (Mathlib alternating-series test supplies it).",
+      "Explicit closed form (nextStep #2 resolved): unrolling the recurrence T_{k+1}=(-1)^n(Δ^k a)_n-2T_k (T_0=S) gives the non-recursive T_K = Σ_{k=0}^{K-1}(-2)^{K-1-k}(-1)^n(Δ^k a)_n + (-2)^K S. Verified consistent with boole_general_tendsto: ((-1)^K/2^K)(-2)^{K-1-k}=-(-1)^k/2^{k+1} and ((-1)^K/2^K)(-2)^K=1, so the two closed forms fit to give exactly S.",
+      "Induction bookkeeping key: the geometric weight identity (-2)^{K-k}=-2·(-2)^{K-1-k} for k<K (via K-k=(K-1-k)+1, pow_succ) lets the successor step -2·(order-K sum) reindex into the order-(K+1) sum; the top term k=K carries weight (-2)^0=1."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Identify the remainder T_K with Mathlib two-sided alternating-series tail bounds to get an unconditional effective error term at general order.",
-      "Derive an explicit closed form for T_K by unrolling the recurrence T_{k+1} = (-1)^n(Δ^k a)_n - 2 T_k, expressing T_K purely via S and boundary data (Δ^k a)_n."
+      "Identify the remainder T_K with Mathlib two-sided alternating-series tail bounds to get an unconditional effective error term at general order (the remaining open item).",
+      "Create the missing gallery entry src/data/proofs/alternating-series-boole-summation-oq-01-oq-01/ (proof is on main but has no gallery presentation)."
     ]
   },
   "tags": [
