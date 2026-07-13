@@ -1,4 +1,5 @@
 import Mathlib.SetTheory.Cardinal.Basic
+import Mathlib.Topology.Separation.GDelta
 import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Data.Real.Basic
