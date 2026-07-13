@@ -529,4 +529,131 @@ theorem fourierCoeffOn_deriv4_eq_zero_iff_deriv2 (f : ℝ → ℝ) (hf : ContDif
     deriv2_periodic_of_periodic f (2 * π) hperiod
   exact fourierCoeffOn_deriv2_eq_zero_iff (deriv (deriv f)) hddf hper2 hab n hn
 
+-- ============================================================
+-- SECTION III: General iterated-derivative eigenvalue
+-- ============================================================
+
+/-- **Iterated derivatives stay periodic.**  The `m`-fold derivative of a `T`-periodic
+    function is again `T`-periodic, for every `m`.  Induction on `m`: the base case is the
+    hypothesis, and the step is `deriv_periodic_of_periodic` applied to `deriv^[m] f`
+    (using `deriv^[m+1] f = deriv (deriv^[m] f)`).  This is the periodicity input for the
+    general eigenvalue identity below, subsuming both `deriv_periodic_of_periodic` (`m = 1`)
+    and `deriv2_periodic_of_periodic` (`m = 2`). -/
+theorem iteratedDeriv_periodic_of_periodic (f : ℝ → ℝ) (T : ℝ)
+    (hperiod : ∀ t, f (t + T) = f t) :
+    ∀ (m : ℕ) (t : ℝ), deriv^[m] f (t + T) = deriv^[m] f t := by
+  intro m
+  induction m with
+  | zero => intro t; simpa using hperiod t
+  | succ m ih =>
+      intro t
+      rw [Function.iterate_succ_apply']
+      exact deriv_periodic_of_periodic (deriv^[m] f) T ih t
+
+/-- **The full differentiation spectrum: the `(i·n)ᵐ` eigenvalue identity.**  For a `Cᵐ`
+    periodic function `f` (period `2π`) and any nonzero mode `n`, the `m`-fold derivative acts
+    on the `n`-th Fourier coefficient as the scalar `(i·n)ᵐ`:
+
+        ĉₙ(f⁽ᵐ⁾) = (i·n)ᵐ · ĉₙ(f).
+
+    This is the single structural theorem that unifies the entire derivative ladder of this
+    file: `m = 1` is the parent IBP identity `fourierCoeffOn_deriv_periodic` (`i·n`), `m = 2`
+    is `fourierCoeffOn_deriv2_periodic` (`(i·n)² = −n²`), and `m = 4` is
+    `fourierCoeffOn_deriv4_periodic_all` (`(i·n)⁴ = n⁴`) — each a special value of the same
+    eigenvalue `(i·n)ᵐ`.  Proof by induction on `m` (peeling one derivative off the *outside*,
+    `f⁽ᵐ⁺¹⁾ = (f⁽ᵐ⁾)'`): the first-order identity applied to `f⁽ᵐ⁾` supplies the extra factor
+    `i·n`, and the induction hypothesis supplies `(i·n)ᵐ`.  The `Cᵐ`-regularity of each
+    intermediate derivative is `ContDiff.iterate_deriv'`, its periodicity
+    `iteratedDeriv_periodic_of_periodic`. -/
+theorem fourierCoeffOn_iteratedDeriv_periodic (m : ℕ) (f : ℝ → ℝ)
+    (hf : ContDiff ℝ (m : ℕ) f) (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (ofReal ∘ deriv^[m] f) n
+      = (I * (n : ℂ)) ^ m * fourierCoeffOn hab (ofReal ∘ f) n := by
+  induction m generalizing f with
+  | zero => simp
+  | succ m ih =>
+      -- `f⁽ᵐ⁾` is `C¹` and periodic, so the first-order identity applies to it.
+      have hf' : ContDiff ℝ ((1 + m : ℕ)) f := by
+        have hcast : (1 + m : ℕ) = m + 1 := by omega
+        rw [hcast]; exact hf
+      have hg1 : ContDiff ℝ (1 : ℕ) (deriv^[m] f) := ContDiff.iterate_deriv' 1 m hf'
+      have hg1' : ContDiff ℝ 1 (deriv^[m] f) := by exact_mod_cast hg1
+      have hgper : ∀ t, deriv^[m] f (t + 2 * π) = deriv^[m] f t :=
+        fun t => iteratedDeriv_periodic_of_periodic f (2 * π) hperiod m t
+      -- The induction hypothesis governs `f⁽ᵐ⁾` itself.
+      have hfm : ContDiff ℝ (m : ℕ) f := hf.of_le (by exact_mod_cast Nat.le_succ m)
+      have IH := ih f hfm hperiod
+      -- `f⁽ᵐ⁺¹⁾ = (f⁽ᵐ⁾)'`; peel the outer derivative with the first-order identity.
+      rw [Function.iterate_succ_apply']
+      rw [fourierCoeffOn_deriv_periodic (deriv^[m] f) hg1' hgper hab n hn, IH]
+      ring
+
+/-- **Exact per-mode magnitude under the `m`-fold derivative.**  Taking norms in the eigenvalue
+    identity `fourierCoeffOn_iteratedDeriv_periodic` collapses the phase `iᵐ` and leaves the
+    real gain `|n|ᵐ`:
+
+        ‖ĉₙ(f⁽ᵐ⁾)‖ = |n|ᵐ · ‖ĉₙ(f)‖.
+
+    The uniform magnitude law behind the whole file: `m = 2` recovers
+    `norm_fourierCoeffOn_deriv2_eq` (`n²`) and `m = 4` recovers `norm_fourierCoeffOn_deriv4_eq`
+    (`n⁴`), since `|n|² = n²` and `|n|⁴ = n⁴`.  Each derivative multiplies a nonzero mode's
+    magnitude by `|n|`, so the mean (`n = 0`) is killed for `m ≥ 1`, the first harmonic
+    (`|n| = 1`) is fixed, and every higher mode grows geometrically in `m`. -/
+theorem norm_fourierCoeffOn_iteratedDeriv_eq (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ (m : ℕ) f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    ‖fourierCoeffOn hab (ofReal ∘ deriv^[m] f) n‖
+      = |(n : ℝ)| ^ m * ‖fourierCoeffOn hab (ofReal ∘ f) n‖ := by
+  rw [fourierCoeffOn_iteratedDeriv_periodic m f hf hperiod hab n hn, norm_mul, norm_pow]
+  have hIn : ‖I * (n : ℂ)‖ = |(n : ℝ)| := by
+    rw [norm_mul, Complex.norm_I, one_mul, Complex.norm_intCast]
+  rw [hIn]
+
+/-- **General polynomial spectral damping, `m`-th order.**  For any threshold `k ≤ |n|` the
+    `m`-fold derivative inflates the `n`-th mode's magnitude by at least `kᵐ`:
+
+        kᵐ · ‖ĉₙ(f)‖ ≤ ‖ĉₙ(f⁽ᵐ⁾)‖.
+
+    The order-`m` unification of the damping ladder (`sq_mul_norm_fourierCoeffOn_le_deriv2` is
+    the `m = 2` case).  Immediate from the magnitude law `‖ĉₙ(f⁽ᵐ⁾)‖ = |n|ᵐ·‖ĉₙ(f)‖` together
+    with `kᵐ ≤ |n|ᵐ` (from `k ≤ |n|`).  As `m → ∞` the gain `|n|ᵐ` diverges on every mode past
+    the first harmonic — the spectral separation that makes the higher-order Wirtinger /
+    isoperimetric estimates progressively sharper. -/
+theorem pow_mul_norm_fourierCoeffOn_le_iteratedDeriv (m : ℕ) (f : ℝ → ℝ)
+    (hf : ContDiff ℝ (m : ℕ) f) (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (k : ℕ) (hk : k ≤ n.natAbs) :
+    (k : ℝ) ^ m * ‖fourierCoeffOn hab (ofReal ∘ f) n‖
+      ≤ ‖fourierCoeffOn hab (ofReal ∘ deriv^[m] f) n‖ := by
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp only [Int.natAbs_zero, Nat.le_zero] at hk
+    subst hk
+    rcases Nat.eq_zero_or_pos m with hm | hm
+    · subst hm; simp
+    · simp [zero_pow hm.ne']
+  · rw [norm_fourierCoeffOn_iteratedDeriv_eq m f hf hperiod hab n hn]
+    have hkle : (k : ℝ) ≤ |(n : ℝ)| := by
+      rw [← Int.cast_abs, Int.abs_eq_natAbs]; exact_mod_cast hk
+    have hkpow : (k : ℝ) ^ m ≤ |(n : ℝ)| ^ m := by gcongr
+    nlinarith [norm_nonneg (fourierCoeffOn hab (ofReal ∘ f) n), hkpow]
+
+/-- **Iterated-derivative kernel: `f⁽ᵐ⁾` kills mode `n` iff `f` has no mode `n` (`m ≥ 1`).**
+    For any nonzero mode `n` and any order `m ≥ 1`,
+
+        ĉₙ(f⁽ᵐ⁾) = 0  ↔  ĉₙ(f) = 0.
+
+    The order-`m` unification of `fourierCoeffOn_deriv2_eq_zero_iff` and
+    `fourierCoeffOn_deriv4_eq_zero_iff`: the `m`-fold derivative scales each nonzero mode by the
+    nonzero eigenvalue `(i·n)ᵐ`, so it has the same kernel as the identity on `{n ≠ 0}`.  Hence
+    the whole tower `f, f', f'', …` shares its nonzero-mode support. -/
+theorem fourierCoeffOn_iteratedDeriv_eq_zero_iff (m : ℕ) (f : ℝ → ℝ) (hf : ContDiff ℝ (m : ℕ) f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (ofReal ∘ deriv^[m] f) n = 0 ↔
+      fourierCoeffOn hab (ofReal ∘ f) n = 0 := by
+  rw [fourierCoeffOn_iteratedDeriv_periodic m f hf hperiod hab n hn, mul_eq_zero]
+  have hIn : (I * (n : ℂ)) ^ m ≠ 0 :=
+    pow_ne_zero m (mul_ne_zero I_ne_zero (Int.cast_ne_zero.mpr hn))
+  simp [hIn]
+
 end IsoperimetricFourier
