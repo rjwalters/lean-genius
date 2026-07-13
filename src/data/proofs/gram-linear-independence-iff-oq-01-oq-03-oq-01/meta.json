@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "overview-and-setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Imports Mathlib and the parent entry Proofs.GramLinearIndependenceOQ01OQ03 (whose content factorization √(det gram v) = ∏ ‖gramSchmidt ℝ v i‖ is reused verbatim). The header docstring states the three headline results — gramSchmidt_eq_sub_starProjection (Gram–Schmidt is the projection residual), norm_gramSchmidt_eq_infDist (each height is a perpendicular distance), and content_eq_prod_infDist (the base × height volume) — and sketches the projection-uniqueness argument. The namespace/opens/variable block fixes an arbitrary real inner product space F and a finite family v : Fin n → F, with no hypothesis relating n to finrank ℝ F.",
+      "mathContext": "Ambient setting: $F$ a real inner product space, $v : \\mathrm{Fin}\\,n \\to F$ arbitrary, no relation between $n$ and $\\dim_{\\mathbb R} F$."
+    },
+    {
       "id": "earlier-span",
       "title": "The Earlier Span and its Orthogonal Projection",
       "startLine": 62,
@@ -137,6 +145,11 @@
       "id": "gram-linear-independence-iff-oq-01-oq-03-oq-01-oq-01",
       "question": "Express the base × height recursion explicitly as content(v 0, …, v i) = dist(v i, earlier span) · content(v 0, …, v (i-1)), i.e. prove the running content satisfies a one-step multiplicative recursion in the number of vectors, recovering the full product by induction.",
       "significance": "low"
+    },
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-03-oq-01-oq-02",
+      "question": "Generalize the distance identity from ℝ to an arbitrary RCLike field 𝕜 (in particular ℂ): Mathlib's gramSchmidt, Submodule.starProjection, and Metric.infDist are all available over 𝕜, so ‖gramSchmidt 𝕜 v i‖ = Metric.infDist (v i) (span 𝕜 {v j | j < i}) should hold verbatim. Identify precisely which lemmas (e.g. span_gramSchmidt_Iio, the orthogonal-decomposition step) need the RCLike generalization versus carrying over unchanged.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
@@ -172,7 +185,8 @@
     "summary": "For any finite family v : Fin n → F in a real inner product space — with no hypothesis relating n to finrank ℝ F — each Gram–Schmidt height equals the perpendicular distance to the span of the earlier vectors: ‖gramSchmidt ℝ v i‖ = Metric.infDist (v i) (earlierSpan v i) (norm_gramSchmidt_eq_infDist). This rests on gramSchmidt_eq_sub_starProjection, the fact that the Gram–Schmidt vector is exactly the orthogonal-projection residual gramSchmidt v i = v i - (earlierSpan v i).starProjection (v i), obtained from the orthogonal decomposition v i = (v i - gramSchmidt v i) + gramSchmidt v i (residual in the span, gramSchmidt v i in its orthogonal complement) via projection uniqueness, with starProjection_minimal and Metric.infDist_eq_iInf turning the residual norm into the metric distance. Combined with the parent's factorization this yields √(det gram v) = ∏ i, dist(v i, earlier span) (content_eq_prod_infDist) and det(gram v) = ∏ i, dist(v i, earlier span)² (det_gram_eq_prod_infDist_sq). 155 lines, 9 theorems, 1 definition, 0 axioms, 0 sorries.",
     "implications": "This answers the parent entry's first open question, making the base × height reading of the Gram determinant literal: the content of n vectors is the running product of perpendicular distances to the spans of their predecessors. Because the earlier span is finite-dimensional regardless of the ambient space, the distance identity needs no completeness or finrank hypothesis — it holds in every real inner product space. The intermediate gramSchmidt_eq_sub_starProjection (Gram–Schmidt = projection residual) is a reusable bridge between Mathlib's Gram–Schmidt and orthogonal-projection APIs.",
     "openQuestions": [
-      "Express the base × height recursion as a one-step multiplicative recursion content(v 0, …, v i) = dist(v i, earlier span) · content(v 0, …, v (i-1))."
+      "Express the base × height recursion as a one-step multiplicative recursion content(v 0, …, v i) = dist(v i, earlier span) · content(v 0, …, v (i-1)).",
+      "Generalize the distance identity from ℝ to an arbitrary RCLike field 𝕜 (in particular ℂ), where gramSchmidt, Submodule.starProjection and Metric.infDist all remain available."
     ]
   }
 }
