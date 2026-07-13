@@ -60,7 +60,10 @@
       "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_eq_digitSum — SHARP v_2(C(2n,n))=s_2(n) (classical Kummer specialisation, was missing)",
       "Erdos729LegendreGeneral.lean: one_le_padicValNat_centralBinom_two — 1≤v_2(C(2n,n)) for n≥1 (sharpens centralBinom_even)",
       "Erdos729LegendreGeneral.lean: digitSum_two_pow — s_2(2^k)=1",
-      "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_pow — v_2(C(2·2^k,2^k))=1 (C(2^{k+1},2^k)≡2 mod 4)"
+      "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_pow — v_2(C(2·2^k,2^k))=1 (C(2^{k+1},2^k)≡2 mod 4)",
+      "digitSum_le_length_mul, digitSum_le_log_succ_mul (sharp digit-sum upper bounds by digit count / log) in Erdos729LegendreGeneral.lean",
+      "sub_one_mul_padicValNat_factorial_ge (general-p sharp lower bound on (p-1)*v_p(n!))",
+      "padicValNat_factorial_two_ge / _two_le / _two_sandwich (two-sided quantitative Legendre bound n - log2 n - 1 <= v_2(n!) <= n - 1)"
     ],
     "insights": [
       "The 2-adic doubling recurrence v_2((2n)!)=n+v_2(n!) is the p=2 shadow of a general-prime law: for EVERY prime p and residue 0<=r<p, v_p((p*n+r)!) = n + v_p(n!), the increment n being INDEPENDENT of r. So all p consecutive arguments pn, pn+1, ..., pn+(p-1) share one valuation step. Proof: (p-1)*v_p(m!)=m-s_p(m) (Mathlib) plus s_p(p*n+r)=s_p(n)+r and (p-1)*n+n=p*n, then cancel p-1>0. Not a named Mathlib lemma.",
@@ -76,7 +79,9 @@
       "Central binomial C(2n,n)=Nat.centralBinom n is the m=n case of the Kummer digit-sum machinery: v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1) counts carries of n+n base p. digitSum_pos (n!=0 => s_p(n)>0) from getLast_digit_ne_zero (top base-p digit nonzero) + List.le_sum_of_mem.",
       "The sharp 2-adic valuation v_2(C(2n,n))=s_2(n) follows because doubling never carries in base 2 (s_2(2n)=s_2(n) via digitSum_base_mul), cancelling one of the two s_2(n) terms in the m=n Kummer identity.",
       "At n=2^k the central binomial coefficient is exactly ≡2 mod 4 (v_2=1) since s_2(2^k)=1.",
-      "Part: power-of-2 characterization — digitSum_two_eq_one_imp_two_pow (converse s_2(n)=1⟹∃k,n=2^k via strong induction on digit recurrence s_2(n)=n%2+s_2(n/2)), digitSum_two_eq_one_iff (full iff), padicValNat_centralBinom_two_eq_one_iff (v_2(C(2n,n))=1 ↔ n=2^k, sharp form of ..two_pow). 3 axiom-free thm, host-lean EXIT 0. Closes the open converse from PR#38419."
+      "Part: power-of-2 characterization — digitSum_two_eq_one_imp_two_pow (converse s_2(n)=1⟹∃k,n=2^k via strong induction on digit recurrence s_2(n)=n%2+s_2(n/2)), digitSum_two_eq_one_iff (full iff), padicValNat_centralBinom_two_eq_one_iff (v_2(C(2n,n))=1 ↔ n=2^k, sharp form of ..two_pow). 3 axiom-free thm, host-lean EXIT 0. Closes the open converse from PR#38419.",
+      "Sharp two-sided quantitative Legendre bound at p=2 (Erdos729LegendreGeneral.lean): n - (log2 n + 1) <= v_2(n!) <= n - 1. The theory had digitSum_pos (lower bound on s_p) and used s_p(n)<=n, but lacked the SHARP upper bound s_p(n) <= (p-1)*(digit count) = (p-1)*(floor(log_p n)+1). That bound makes the Legendre defect logarithmically small, so v_2(n!) = n - O(log n) and v_2(n!)/n -> 1.",
+      "Key API: each base-p digit < p (Nat.digits_lt_base), digit count = floor(log_p n)+1 (Nat.digits_len), List.sum_le_card_nsmul for sum <= length*(p-1). General multiplied lower bound sub_one_mul_padicValNat_factorial_ge: n - (log_p n + 1)*(p-1) <= (p-1)*v_p(n!), complementing the existing sub_one_mul_padicValNat_factorial_le (<= n)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -123,8 +128,8 @@
     {
       "path": "Proofs/Erdos729LegendreGeneral.lean",
       "filename": "Erdos729LegendreGeneral.lean",
-      "lineCount": 183,
-      "theoremCount": 10,
+      "lineCount": 668,
+      "theoremCount": 37,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
