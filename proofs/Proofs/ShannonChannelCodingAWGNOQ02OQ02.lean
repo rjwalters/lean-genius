@@ -997,6 +997,17 @@ theorem correlation_affine_invariant_of_pos [IsProbabilityMeasure μ] {X Y : Ω 
     correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = correlation X Y μ := by
   rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_pos (mul_pos ha hc), one_mul]
 
+/-- **Scale-and-shift invariance (orientation-reversing case).**  If one affine map is
+increasing (`a > 0`) and the other decreasing (`c < 0`), the correlation flips sign with
+unchanged magnitude: `ρ[a·X + b, c·Y + d] = −ρ[X, Y]`.  The mirror specialisation of
+`correlation_affine_invariant` at `sign(a·c) = -1`, capturing that reflecting one axis reverses the
+sign of the Pearson coefficient while preserving its magnitude. -/
+theorem correlation_affine_invariant_of_neg [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) {a c : ℝ} (ha : 0 < a) (hc : c < 0) (b d : ℝ) :
+    correlation (fun ω => a * X ω + b) (fun ω => c * Y ω + d) μ = -correlation X Y μ := by
+  rw [correlation_affine_invariant hX hY a b c d, Real.sign_of_neg (mul_neg_of_pos_of_neg ha hc),
+    neg_one_mul]
+
 /-!
 ### Sharp equality boundary of the standard-deviation triangle inequality
 
