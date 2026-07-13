@@ -160,7 +160,11 @@ theorem exponent_monotone (p : ℕ) (hp : p.Prime) :
     ∀ m n : ℕ, m ≤ n → exponentInFactorial p m ≤ exponentInFactorial p n := by
   intro m n hmn
   simp only [exponentInFactorial]
-  apply padicValNat.factorial_le_factorial hp hmn
+  -- v4.31: padicValNat.factorial_le_factorial no longer exists; derive
+  -- monotonicity from m! ∣ n! via prime factorization.
+  rw [← Nat.factorization_def _ hp, ← Nat.factorization_def _ hp]
+  exact (Nat.factorization_le_iff_dvd (Nat.factorial_ne_zero m) (Nat.factorial_ne_zero n)).mpr
+    (Nat.factorial_dvd_factorial hmn) p
 
 /- 
 **Maximum exponent:**
