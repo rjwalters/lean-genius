@@ -1,5 +1,38 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-12 (researcher-5) — Section XXXV: closed-form log ceiling + saturation is now uniformly machine-checked
+
+**Mode:** REVISIT (RICH tier, score 60). **Outcome:** one new axiom-free theorem + honest knowledge cleanup; elementary theory confirmed **saturated**, open frontier **analytically blocked**.
+
+### What I did
+- **Assessed, did NOT extend, the per-k location ladder.** The file already closes `k ≤ 33` via 18 near-identical `native_decide` sections (`deficiency_le_nine_of_k_eq_{16..33}`). This is enumeration theater — one `k` per session, can never reach all `k`. A `k = 34` rung was deliberately **not** written.
+- **Found the size-method impossibility is already UNIFORMLY machine-checked**, not merely prose: `sharp_bound_permits_deficiency_ten` proves `∀ k ≥ 16, (k+10)! ≤ (k!)²`, i.e. the sharp-factorial ceiling provably cannot exclude deficiency `10` at any `k ≥ 16`. So a divergence/impossibility lemma would be **redundant**.
+- **Added the one genuinely-new, non-redundant form the file lacked:** a *closed-form* deficiency ceiling.
+
+### New theorem (Section XXXV, `Erdos1093ProblemOQ02.lean`)
+```lean
+theorem deficiency_le_log_factorial {n k : ℕ} (hn : 2 * k ≤ n) (hk : 1 ≤ k)
+    (h : NoSmallPrimeFactors n k) :
+    deficiency n k ≤ Nat.log (k + 1) (Nat.factorial k) :=
+  Nat.le_log_of_pow_le (by omega) (deficiency_pow_succ_le_factorial hn h)
+```
+Every prior ceiling (`deficiency_le_of_sq_factorial_lt`, `deficiency_le_of_windowFloor_pow_lt`) is a *transfer principle* consuming an external numeric certificate. This is the first ceiling exposed as an **explicit computable function of `k`** — `log_{k+1}(k!)`. It is the crude power ceiling (at `k=28`: `Nat.log 29 (28!) = 20`, vs the sharp `deficiency_ascFactorial_le_factorial`'s `18`), and grows without bound in `k`, so like every size-only bound it cannot reach `9`.
+
+**Verification:** docker `Proofs.Erdos1093ProblemOQ02` exit 0 (3060 jobs); `#print axioms deficiency_le_log_factorial` = `[propext, Classical.choice, Quot.sound]` (axiom-free); 0 `sorry`; ELS-free.
+
+### Key findings / honesty
+- Elementary theory is **saturated**. Both the sharp factorial ceiling and the location bound are provably powerless for large `k`; the impossibility is uniform and machine-checked.
+- Two prior `nextSteps` (the `∀D ∃k₀` meta-theorem and its binomial form) are **already proven** in `Erdos1093OQ02FactorialGrowth.lean` (`exists_factorial_add_le_sq`, `exists_choose_mul_factorial_le`).
+- One prior `nextStep` was **malformed**: exhibiting an admissible pair of deficiency `> 9` would *disprove* the conjecture; it conflated the factorial window-shift `D` (unbounded) with the deficiency `d` (conjecturally `≤ 9`).
+- **Blocker:** the only remaining input is an unconditional short-interval `k`-smooth-count / Dickman-ρ density bound. Mathlib v4.26 lacks it; building it is `>1000` lines of deep analytic infrastructure. Truly blocked pending that.
+
+### Files modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (+~45 lines, Section XXXV)
+- `src/data/research/problems/erdos-1093-oq-02.json` (knowledge)
+
+### Next steps
+See refreshed `nextSteps` in the JSON: do not extend the ladder; do not build large-deficiency witnesses; unblock only via Mathlib smooth-number-density infrastructure.
+
 ## Session 2026-07-11 (researcher-6) — Section XXXII: window-check closes k=31 → frontier k≥32
 
 **Mode:** REVISIT (RICH tier). **Outcome:** strict advance (frontier `k ≥ 31 → k ≥ 32`),
