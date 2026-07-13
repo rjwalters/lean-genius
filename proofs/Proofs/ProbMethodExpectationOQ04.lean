@@ -542,4 +542,50 @@ theorem expectedMonoCliques_self_lt_one {k : ℕ} (hk : 3 ≤ k) :
       ≤ (2 : ℚ) ^ (-2 : ℤ) := zpow_le_zpow_right₀ (by norm_num) hexp
     _ < 1 := by norm_num
 
+/-! ## Second-moment sibling: a Cauchy–Schwarz lower bound on the support
+
+Everything above is the **first** moment method: the *mean* of a count controls
+existence — a mean below `1` forces some outcome to vanish
+(`exists_eq_zero_of_average_lt_one`).  The dual **second** moment tool controls the
+opposite tail: it lower-bounds *how many* outcomes are nonzero in terms of the first
+and second moments.  Cauchy–Schwarz over the support gives
+`(∑ g)² ≤ #{a : g a ≠ 0} · ∑ g²`, i.e. `#support ≥ (∑ g)² / ∑ g²` — the base
+inequality of the second moment method.  These are the "second-moment sibling"
+lemmas the spread section (`exists_nonneg_spread_of_average`) pointed toward. -/
+
+/-- **Second-moment support bound (Cauchy–Schwarz).**  For a nonnegative integer count
+`g : α → ℕ`, the square of the total is at most the number of nonzero outcomes times the
+sum of squares: `(∑ g)² ≤ #{a ∈ s : g a ≠ 0} · ∑ g²`.  Cauchy–Schwarz
+(`sq_sum_le_card_mul_sum_sq`) applied over the support `T = {a ∈ s : g a ≠ 0}` with the
+constant weight `1`, using that the zero terms contribute nothing to either sum. -/
+theorem sq_sum_le_card_support_mul_sum_sq (g : α → ℕ) :
+    (∑ a ∈ s, (g a : ℚ)) ^ 2
+      ≤ ((s.filter (fun a => g a ≠ 0)).card : ℚ) * ∑ a ∈ s, ((g a : ℚ)) ^ 2 := by
+  classical
+  set T := s.filter (fun a => g a ≠ 0) with hT
+  have hz : ∀ a ∈ s, a ∉ T → (g a : ℚ) = 0 := by
+    intro a ha haT
+    have : g a = 0 := by
+      by_contra hne; exact haT (Finset.mem_filter.mpr ⟨ha, hne⟩)
+    simp [this]
+  have hsum : ∑ a ∈ T, (g a : ℚ) = ∑ a ∈ s, (g a : ℚ) :=
+    Finset.sum_subset (Finset.filter_subset _ s) hz
+  have hsumsq : ∑ a ∈ T, ((g a : ℚ)) ^ 2 = ∑ a ∈ s, ((g a : ℚ)) ^ 2 :=
+    Finset.sum_subset (Finset.filter_subset _ s) (fun a ha haT => by rw [hz a ha haT]; ring)
+  have hCS := sq_sum_le_card_mul_sum_sq (s := T) (f := fun a => (g a : ℚ))
+  rw [hsum, hsumsq] at hCS
+  exact hCS
+
+/-- **Second moment method (support lower bound).**  When the sum of squares is positive,
+the number of nonzero outcomes is at least `(∑ g)² / ∑ g²`.  The classic second-moment
+existence tool, dual to the first-moment `exists_eq_zero_of_average_lt_one`: a first moment
+that is large relative to the second moment forces *many* nonzero outcomes.  Immediate from
+`sq_sum_le_card_support_mul_sum_sq` by `div_le_iff₀`. -/
+theorem sq_sum_div_sum_sq_le_card_support (g : α → ℕ)
+    (h : 0 < ∑ a ∈ s, ((g a : ℚ)) ^ 2) :
+    (∑ a ∈ s, (g a : ℚ)) ^ 2 / (∑ a ∈ s, ((g a : ℚ)) ^ 2)
+      ≤ ((s.filter (fun a => g a ≠ 0)).card : ℚ) := by
+  rw [div_le_iff₀ h]
+  exact sq_sum_le_card_support_mul_sum_sq g
+
 end ProbMethod.ExpectationOQ04
