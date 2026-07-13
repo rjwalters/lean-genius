@@ -62,6 +62,14 @@
       "endLine": 147,
       "summary": "hasSum_block: grouping by the block index n : ℕ (finite inner sums over Fin q) gives HasSum (fun n => ∑_{a:Fin q} r^(q·n+a)) (1−r)⁻¹ via HasSum.prod_fiberwise + hasSum_fintype. hasSum_residue_fiberwise: grouping by the residue a : Fin q (after Equiv.prodComm) gives HasSum (fun a => ∑_n r^(q·n+a)) (1−r)⁻¹, fibers summed by summable_geometric_residue. tsum_residues_eq_geometric_via_reindex: recovers the parent recombination ∑_{a∈range q} ∑_n r^(q·n+a) = ∑ rᵐ via HasSum.unique and Fin.sum_univ_eq_sum_range — now a corollary of the regrouping, not the closed forms.",
       "mathContext": "$\\sum_{a<q}\\sum_n r^{qn+a}=\\sum_m r^m=\\tfrac{1}{1-r}$ by fiberwise summation."
+    },
+    {
+      "id": "specialisation-and-value",
+      "title": "The q = 2 Even/Odd Split and a Concrete Value",
+      "startLine": 148,
+      "endLine": 160,
+      "summary": "hasSum_residue_prod_two instantiates the general q-fold reindexing at q = 2: the map (n, a) ↦ r^(2n+a) over ℕ × Fin 2 splits the geometric series into its even and odd blocks and still sums to (1 − r)⁻¹ — the classical even/odd bisection as the q = 2 case. A concrete r = 1/2, q = 3 sanity check then evaluates the three-fold residue series over ℕ × Fin 3 to 1/(1 − 1/2) = 2 via tsum_residue_prod and norm_num, exercising the general theorem on numbers. Closes the namespace.",
+      "mathContext": "$q=2$: $\\sum_{(n,a)\\in\\mathbb{N}\\times\\mathrm{Fin}\\,2} r^{2n+a} = (1-r)^{-1}$ (even/odd bisection); at $r=\\tfrac12,\\,q=3$ the value is $2$."
     }
   ],
   "meta": {
@@ -127,6 +135,16 @@
       "id": "geometric-series-oq-09-oq-01-oq-01-oq-01",
       "question": "Extend the reindexing viewpoint to a general absolutely convergent series ∑_m c_m: transport ∑_m c_m along Nat.divModEquiv to obtain HasSum (fun (p : ℕ × Fin q) => c_{q·p.1 + p.2}) S and characterise when the residue regrouping ∑_{a<q} ∑_n c_{q·n+a} = S holds, identifying the multisection of an arbitrary HasSum (not just the geometric one) as a Fubini consequence of summability.",
       "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01-oq-02",
+      "question": "Prove the composition/associativity law for iterated splittings: reindexing by q and then splitting each block again by p should agree with the single (p·q)-fold reindexing — the multisections form a functor on the divisibility poset (split by q₁ then q₂ = split by q₁·q₂). Formalise via the compatibility of Nat.divModEquiv at pq with its factors.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01-oq-03",
+      "question": "Generalise the ratio r beyond ℝ: state hasSum_residue_prod for a complex ratio ‖z‖ < 1 or a Banach-algebra element with ‖z‖ < 1, giving the q-fold reindexing of the Neumann series ∑ zⁿ and its even/odd (q = 2) bisection in the operator setting.",
+      "significance": "low"
     }
   ],
   "crossReferences": [
@@ -169,7 +187,9 @@
     "summary": "For ‖r‖ < 1 over any complete normed field and modulus q ≠ 0, the q-fold residue-class splitting of the geometric series is established as a genuine reindexing of the summation: transporting Mathlib's HasSum (r^·) (1−r)⁻¹ along the bijection ℕ ≃ ℕ × Fin q (Nat.divModEquiv, m ↦ (m/q, m%q)) gives hasSum_residue_prod: HasSum (fun (p : ℕ × Fin q) => r^(q·p.1 + p.2)) (1−r)⁻¹. Fiberwise summation (HasSum.prod_fiberwise) then regroups this two-dimensional series two ways — by block index n (finite inner sums over Fin q, hasSum_block) and by residue a (infinite geometric subseries over ℕ after Equiv.prodComm, hasSum_residue_fiberwise) — the latter reproving the parent recombination ∑_{a<q} ∑_n r^(q·n+a) = ∑ rᵐ = 1/(1−r) (tsum_residues_eq_geometric_via_reindex) as a Fubini corollary rather than from the closed forms. 160 lines, 9 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Answers the open question of geometric-series-oq-09-oq-01: the q-fold splitting is the relabelling ℕ ≅ ℕ × Fin q applied to the summation, with the analytic content reduced to the counting identity q·(m/q) + m%q = m and the unconditional convergence that makes fiberwise regrouping legitimate. This is the same reindex-then-regroup mechanism Mathlib uses for the even/odd parts of the cos/sin Taylor series (Nat.divModEquiv 2), here at arbitrary modulus q for the geometric series.",
     "openQuestions": [
-      "Generalise the reindexing from the geometric series to an arbitrary absolutely convergent ∑_m c_m, identifying the residue multisection ∑_{a<q} ∑_n c_{q·n+a} = ∑_m c_m as a Fubini consequence of summability via Nat.divModEquiv."
+      "Generalise the reindexing from the geometric series to an arbitrary absolutely convergent ∑_m c_m, identifying the residue multisection ∑_{a<q} ∑_n c_{q·n+a} = ∑_m c_m as a Fubini consequence of summability via Nat.divModEquiv.",
+      "Prove the associativity of iterated splittings: splitting by q then by p agrees with the single (p·q)-fold reindexing, so multisections form a functor on the divisibility poset.",
+      "Extend hasSum_residue_prod to a complex ratio ‖z‖ < 1 or a Banach-algebra element, giving the q-fold reindexing (and even/odd bisection) of the Neumann series ∑ zⁿ."
     ]
   }
 }
