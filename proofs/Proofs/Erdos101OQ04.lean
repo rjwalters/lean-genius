@@ -3623,4 +3623,34 @@ theorem pParam_range_infinite :
   have := pParam_injOn_one_le (hle a) (hle b) hab
   exact_mod_cast (by linarith : (a : ℝ) = (b : ℝ))
 
+/-- **The upper radius bound `10` is attained.**  The trace-free point `(√5, −√5, 0)` lies
+on the ternary conic `Q = 5` (its trace `p+q+r = 0` kills the `(p+q+r)²` term, so
+`Q = ½·(p²+q²+r²) = 5`) and realises `p²+q²+r² = 10`.  So the ceiling
+`ternary_conic_sq_sum_le_of_mem` is sharp: the ellipsoid `Q = 5` really reaches the outer
+sphere of radius `√10` (the long semi-axis, in the trace-free eigenplane of eigenvalue `½`). -/
+theorem ternary_conic_sq_sum_upper_sharp :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 = 10 := by
+  refine ⟨Real.sqrt 5, -Real.sqrt 5, 0, ?_, ?_⟩
+  · have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h5]
+  · have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h5]
+
+/-- **The lower radius bound `5/2` is attained.**  The diagonal point `(√(5/6), √(5/6),
+√(5/6))` lies on the ternary conic `Q = 5` (along the trace direction `(1,1,1)`,
+`Q = 6·p² = 5`) and realises `p²+q²+r² = 5/2`.  So the floor
+`ternary_conic_sq_sum_ge_of_mem` is sharp: the ellipsoid `Q = 5` really reaches the inner
+sphere of radius `√(5/2)` (the short semi-axis, in the trace eigendirection of eigenvalue
+`2`).  Together with `ternary_conic_sq_sum_upper_sharp` this certifies the interval
+`[5/2, 10]` of `ternary_conic_sq_sum_mem_Icc` as *exactly* the range of `p²+q²+r²`. -/
+theorem ternary_conic_sq_sum_lower_sharp :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2 := by
+  refine ⟨Real.sqrt (5 / 6), Real.sqrt (5 / 6), Real.sqrt (5 / 6), ?_, ?_⟩
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
 end Erdos101OQ04
