@@ -350,6 +350,62 @@ theorem gap_eventually_le_eps_of_rpow_bound {θ : ℝ} (hθ : θ < 1)
   rw [div_lt_iff₀ hx_pos] at hxlt
   exact le_of_lt hxlt
 
+/-! ### The fully general envelope engine: the power structure is genuinely irrelevant
+
+Every engine above assumes the envelope is a *power* `x^θ`, yet the docstrings repeatedly
+observe that "the exponent plays no role" in the sublinearity conclusion. This section
+removes the power assumption altogether: sublinearity `maxPrimeGap x / x → 0` follows from
+**any** eventual envelope `maxPrimeGap x ≤ f x` whose own normalisation `f x / x → 0`. The
+power engine `gap_littleo_of_rpow_bound` is the instance `f x = x^θ` (with `θ < 1`), and the
+parent's *conditional* Cramér branch — envelope `f x = C·(log x)²`, which is not a power of
+`x` — plugs into the very same engine. This is the true mathematical content: only
+sublinearity of the envelope matters, never its shape. -/
+
+/-- **Fully general sublinearity engine.** From *any* eventual envelope
+`maxPrimeGap x ≤ f x` whose normalisation `f x / x → 0`, the normalised maximal gap
+`maxPrimeGap x / x → 0`. A real-analysis squeeze between `0` and `f x / x`; the envelope
+need not be a power of `x` (subsuming both the `x^θ` and Cramér `(log x)²` branches). -/
+theorem gap_littleo_of_littleo_envelope (f : ℕ → ℝ)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ f x)
+    (hf : Tendsto (fun x : ℕ => f x / x) atTop (𝓝 0)) :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) := by
+  have h_lo : ∀ x : ℕ, 0 ≤ (maxPrimeGap x : ℝ) / x := fun x =>
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  have h_hi : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) / x ≤ f x / x := by
+    filter_upwards [H, eventually_ge_atTop 1] with x hx hx1
+    have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+    gcongr
+  exact squeeze_zero' (Eventually.of_forall h_lo) h_hi hf
+
+/-- **Fully general engine, little-o against `id`.** The `=o[atTop] id` idiom of
+`gap_littleo_of_littleo_envelope`: any envelope `maxPrimeGap x ≤ f x` with `f x / x → 0`
+gives `maxPrimeGap =o[atTop] id`. Generalises `gap_isLittleO_id_of_rpow_bound` off the
+power family. -/
+theorem gap_isLittleO_id_of_littleo_envelope (f : ℕ → ℝ)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ f x)
+    (hf : Tendsto (fun x : ℕ => f x / x) atTop (𝓝 0)) :
+    (fun x : ℕ => (maxPrimeGap x : ℝ)) =o[atTop] (fun x : ℕ => (x : ℝ)) := by
+  refine (isLittleO_iff_tendsto' ?_).mpr (gap_littleo_of_littleo_envelope f H hf)
+  filter_upwards [eventually_ge_atTop 1] with x hx h0
+  have hxpos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hx
+  rw [h0] at hxpos
+  exact absurd hxpos (lt_irrefl 0)
+
+/-- **The power engine is an instance of the general engine.**  Re-derives
+`gap_littleo_of_rpow_bound` (envelope `x^θ`, `θ < 1`) from
+`gap_littleo_of_littleo_envelope`, exhibiting the general engine as a strict generalisation:
+the normalisation `x^θ / x = x^(θ-1) → 0` supplies the `hf` hypothesis. -/
+theorem gap_littleo_of_rpow_bound_via_envelope {θ : ℝ} (hθ : θ < 1)
+    (H : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ (x : ℝ) ^ θ) :
+    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) := by
+  refine gap_littleo_of_littleo_envelope (fun x => (x : ℝ) ^ θ) H ?_
+  have h_env : Tendsto (fun x : ℕ => (x : ℝ) ^ (-(1 - θ))) atTop (𝓝 0) :=
+    (tendsto_rpow_neg_atTop (by linarith)).comp tendsto_natCast_atTop_atTop
+  refine h_env.congr' ?_
+  filter_upwards [eventually_ge_atTop 1] with x hx1
+  have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
+  rw [show (-(1 - θ)) = θ - 1 by ring, Real.rpow_sub hx_pos, Real.rpow_one]
+
 -- ============================================================================
 -- Individual-gap bridge: from the maximal gap `sSup` back to actual gaps
 -- ============================================================================
