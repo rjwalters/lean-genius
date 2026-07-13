@@ -546,7 +546,7 @@ DescartesRuleOfSignsOQ04	RESIDUAL	unknown-const:Multiset.countP_singleton
 DiamondImpliesCH	RESIDUAL	proof-drift
 DiniTheorem	GREEN	
 DiniTheoremOQ01OQ01	GREEN	
-DirichletApproximationOQ02	RESIDUAL	unknown-const:Real.fact_zero_lt_one
+DirichletApproximationOQ02	GREEN	
 DirichletApproximationOQ04OQ02	GREEN	
 DirichletsTheorem	RESIDUAL	parse-error
 DirichletsTheoremOQ01OQ01	GREEN	
@@ -2278,8 +2278,8 @@ NapoleonsTheoremOQ02	RESIDUAL	rewrite-drift
 NapoleonsTheoremOQ03	GREEN	
 NavierStokes	GREEN	
 NewtonIndStep2	RESIDUAL	proof-drift
-NewtonInductiveStepOQ01	RESIDUAL	type-mismatch
-NewtonInductiveStepOQ01Aristotle	RESIDUAL	type-mismatch
+NewtonInductiveStepOQ01	GREEN	
+NewtonInductiveStepOQ01Aristotle	GREEN	
 NewtonInductiveStepOQ02	RESIDUAL	type-mismatch
 NewtonInductiveStepOQ03	RESIDUAL	proof-drift
 NewtonLogConcavity	GREEN	
@@ -2531,7 +2531,7 @@ SylvesterSequenceOQ01OQ03	GREEN
 SynthesisCurvaturePtolemy	RESIDUAL	unknown-const:spherical_ptolemy
 SynthesisCurvaturePtolemyOQ01	RESIDUAL	unknown-const:spherical_ptolemy
 SynthesisCurvaturePtolemyOQ02	GREEN	
-SzemerediCoreOQ01	RESIDUAL	proof-drift
+SzemerediCoreOQ01	GREEN	
 SzemerediCoreOQ01Aristotle	RESIDUAL	proof-drift
 SzemerediCounting	RESIDUAL	signature-drift
 SzemerediHypergraphCore	RESIDUAL	proof-drift
