@@ -469,6 +469,85 @@ theorem rothNumber_two (N : ℕ) : rothNumber 2 N = 1 := by
     have h := @rothNumber_ge_min 2 N
     rwa [show (2 - 1 : ℕ) = 1 from rfl, Nat.min_eq_left (by omega : (1 : ℕ) ≤ N + 1)] at h
 
+/-- **A concrete unbounded `3`-AP-free family: the powers of two.**
+    The set `{2^0, 2^1, …, 2^{m-1}}` contains no `3`-term arithmetic progression.
+    Indeed, if three of its members `2^p, 2^q, 2^r` formed an AP `a, a+d, a+2d`
+    (`d > 0`, so `p < r`), then `2^p + 2^r = 2·2^q = 2^{q+1}`. Since `2^p > 0` this
+    forces `2^r < 2^{q+1}`, i.e. `r < q+1`; and since `2^p < 2^r` it forces
+    `2^{q+1} < 2^{r+1}`, i.e. `q < r` — an impossible squeeze `q < r ≤ q`.
+
+    This is the first *explicit AP-free construction* in the file (all previous Roth
+    bounds were counting arguments): a `3`-AP-free set can be arbitrarily large,
+    which is exactly what makes `k ≥ 3` nontrivial. Fully machine-checked, axiom-free,
+    `sorry`-free. -/
+theorem powersOfTwo_isAPFree (m : ℕ) :
+    IsAPFree (↑((Finset.range m).image (fun i => 2 ^ i)) : Set ℕ) 3 := by
+  intro hAP
+  obtain ⟨a, d, hd, hsub⟩ := hAP
+  -- each of the three progression terms `a + i·d` (i < 3) lies in the set
+  have mem : ∀ i : ℕ, i < 3 →
+      a + i * d ∈ (Finset.range m).image (fun i => 2 ^ i) := by
+    intro i hi
+    have hmem : a + i * d ∈ ArithProg a d 3 := by
+      rw [ArithProg, Finset.mem_image]
+      exact ⟨i, Finset.mem_range.mpr hi, rfl⟩
+    exact Finset.mem_coe.mp (hsub (Finset.mem_coe.mpr hmem))
+  obtain ⟨p, _, hp⟩ := Finset.mem_image.mp (mem 0 (by norm_num))
+  obtain ⟨q, _, hq⟩ := Finset.mem_image.mp (mem 1 (by norm_num))
+  obtain ⟨r, _, hr⟩ := Finset.mem_image.mp (mem 2 (by norm_num))
+  -- read off the three defining equalities (β-reduction is definitional)
+  have e0 : (2 : ℕ) ^ p = a + 0 * d := hp
+  have e1 : (2 : ℕ) ^ q = a + 1 * d := hq
+  have e2 : (2 : ℕ) ^ r = a + 2 * d := hr
+  have hsum : 2 ^ p + 2 ^ r = 2 * 2 ^ q := by omega
+  have hpr : 2 ^ p < 2 ^ r := by omega
+  have hpow : 2 * 2 ^ q = 2 ^ (q + 1) := by rw [pow_succ]; ring
+  have hrpow : 2 ^ (r + 1) = 2 ^ r + 2 ^ r := by rw [pow_succ]; ring
+  have hppos : 0 < 2 ^ p := pow_pos (by norm_num) p
+  have h1 : 2 ^ r < 2 ^ (q + 1) := by omega
+  have h2 : 2 ^ (q + 1) < 2 ^ (r + 1) := by omega
+  have hr_lt : r < q + 1 := (Nat.pow_lt_pow_iff_right (by norm_num)).mp h1
+  have hq_lt : q + 1 < r + 1 := (Nat.pow_lt_pow_iff_right (by norm_num)).mp h2
+  omega
+
+/-- **A logarithmic lower bound on the Roth number at `k = 3`:** `r₃(2^m) ≥ m + 1`.
+
+    The `m + 1` distinct powers `2^0, …, 2^m` all lie in the window `{0, …, 2^m}`
+    and form a `3`-AP-free set (`powersOfTwo_isAPFree`), so they enter the family
+    `r₃` maximises over. In particular `r₃(2^m) → ∞`, so the trivial floor
+    `min (k-1) (N+1)` — which for `k = 3` is the *constant* `2` once `N ≥ 2` — is
+    **not** tight for `k = 3`. This is the sharp complement to `rothNumber_two`
+    (`r₂(N) = 1`, floor exactly attained): the boundary `k = 2` is precisely where the
+    floor stops being sharp. Fully machine-checked, axiom-free, `sorry`-free. -/
+theorem rothNumber_three_ge_log (m : ℕ) : m + 1 ≤ rothNumber 3 (2 ^ m) := by
+  set S := (Finset.range (m + 1)).image (fun i => 2 ^ i) with hS
+  have hsub : S ⊆ Finset.range (2 ^ m + 1) := by
+    intro x hx
+    rw [hS, Finset.mem_image] at hx
+    obtain ⟨i, hi, rfl⟩ := hx
+    rw [Finset.mem_range] at hi ⊢
+    have : 2 ^ i ≤ 2 ^ m := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+  have hfree : IsAPFree (↑S : Set ℕ) 3 := by
+    rw [hS]; exact powersOfTwo_isAPFree (m + 1)
+  have hcard : S.card = m + 1 := by
+    rw [hS, Finset.card_image_of_injective _ (Nat.pow_right_injective (by norm_num)),
+      Finset.card_range]
+  have hmem : S ∈ ((Finset.range (2 ^ m + 1)).powerset.filter
+      (fun T : Finset ℕ => IsAPFree (↑T : Set ℕ) 3)) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨hsub, hfree⟩
+  calc m + 1 = S.card := hcard.symm
+    _ ≤ rothNumber 3 (2 ^ m) := by unfold rothNumber; exact Finset.le_sup hmem
+
+/-- **`r₃` is unbounded.** For every bound `B` there is a window `N` (namely
+    `N = 2^B`) with `r₃(N) ≥ B`. Contrast `rothNumber_two` (`r₂ ≡ 1`, bounded):
+    avoiding `3`-term progressions is genuinely weaker than avoiding `2`-term ones,
+    so no absolute constant caps `r₃`. This is the qualitative dividing line that
+    makes Erdős #3 open at `k ≥ 3` and trivial at `k ≤ 2`. Axiom-free, `sorry`-free. -/
+theorem rothNumber_three_unbounded : ∀ B : ℕ, ∃ N : ℕ, B ≤ rothNumber 3 N :=
+  fun B => ⟨2 ^ B, le_trans (by omega) (rothNumber_three_ge_log B)⟩
+
 /-- **The Roth number vanishes at length `0`:** `r₀(N) = 0`.
 
     A `0`-term progression is the *empty* progression (`ArithProg a d 0 = ∅`), which
