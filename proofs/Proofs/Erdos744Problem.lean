@@ -773,6 +773,109 @@ theorem maxCut_add_edge_sandwich {V : Type*} [Fintype V] [LinearOrder V]
     maxCut G ≤ maxCut H ∧ maxCut H ≤ maxCut G + 1 :=
   ⟨maxCut_mono G H hsub, maxCut_add_edge_le G H a b hab hnew⟩
 
+/-
+# Part 3e: Complement and the complete graph
+
+The complement `Gᶜ` and the complete graph `Kₙ` are absent from the single-graph
+cut engine above, yet they carry the natural *outer* partition of the vertex-pair
+set. For any fixed 2-coloring `c`, an edge of `Kₙ` is monochromatic exactly when
+its two (same-colored) endpoints are joined in `G` *or* in `Gᶜ` — never both, never
+neither. So the monochromatic counts of `G` and `Gᶜ` partition those of `Kₙ`,
+which specializes (at a constant coloring) to the edge-count identity
+`edgeCount G + edgeCount Gᶜ = edgeCount Kₙ`. This is a genuinely new direction:
+it relates a graph to its complement rather than adding another corner to the
+single-graph max-cut / min-uncut square. -/
+
+/-- **The complete graph on `V`.** Every pair of distinct vertices is adjacent. -/
+def completeGraph' (V : Type*) : SimpleGraph' V where
+  Adj u v := u ≠ v
+  sym _ _ h := h.symm
+  loopless _ h := h rfl
+
+instance completeGraph'.instDecidableRelAdj {V : Type*} [DecidableEq V] :
+    DecidableRel (completeGraph' V).Adj :=
+  fun u v => inferInstanceAs (Decidable (u ≠ v))
+
+/-- **The complement `Gᶜ` of `G`.** Distinct vertices are adjacent in `Gᶜ`
+exactly when they are *non*-adjacent in `G`. -/
+def complement {V : Type*} (G : SimpleGraph' V) : SimpleGraph' V where
+  Adj u v := u ≠ v ∧ ¬ G.Adj u v
+  sym _ _ h := ⟨h.1.symm, fun hadj => h.2 (G.sym _ _ hadj)⟩
+  loopless _ h := h.1 rfl
+
+instance complement.instDecidableRelAdj {V : Type*} [DecidableEq V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] : DecidableRel (complement G).Adj :=
+  fun u v => inferInstanceAs (Decidable (u ≠ v ∧ ¬ G.Adj u v))
+
+/-- **Monochromatic-edge partition through the complement.** For a fixed
+2-coloring `c`, the monochromatic edges of `G` and of `Gᶜ` together exhaust the
+monochromatic edges of the complete graph: every same-colored pair `u < v` lies
+in exactly one of `G`, `Gᶜ`.
+
+    monochromaticEdges G c + monochromaticEdges Gᶜ c = monochromaticEdges Kₙ c. -/
+theorem monochromaticEdges_add_complement {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] (c : V → Bool) :
+    monochromaticEdges G c + monochromaticEdges (complement G) c
+      = monochromaticEdges (completeGraph' V) c := by
+  -- Base set: the same-colored ordered pairs `u < v` (= `Kₙ`'s monochromatic edges).
+  set S := Finset.univ.filter (fun p : V × V => p.1 < p.2 ∧ c p.1 = c p.2) with hS
+  have hbase : monochromaticEdges (completeGraph' V) c = S.card := by
+    rw [hS, monochromaticEdges]
+    congr 1; ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, completeGraph']
+    exact ⟨fun ⟨h1, _, h3⟩ => ⟨h1, h3⟩, fun ⟨h1, h3⟩ => ⟨h1, ne_of_lt h1, h3⟩⟩
+  have hG : monochromaticEdges G c = (S.filter (fun p => G.Adj p.1 p.2)).card := by
+    rw [hS, monochromaticEdges, Finset.filter_filter]
+    congr 1; ext p; simp only [Finset.mem_filter]; tauto
+  have hGc : monochromaticEdges (complement G) c
+      = (S.filter (fun p => ¬ G.Adj p.1 p.2)).card := by
+    rw [hS, monochromaticEdges, Finset.filter_filter]
+    congr 1; ext p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, complement]
+    exact ⟨fun ⟨h1, ⟨_, h3⟩, h4⟩ => ⟨⟨h1, h4⟩, h3⟩,
+      fun ⟨⟨h1, h4⟩, h3⟩ => ⟨h1, ⟨ne_of_lt h1, h3⟩, h4⟩⟩
+  rw [hbase, hG, hGc, Finset.filter_card_add_filter_neg_card_eq_card]
+
+/-- `edgeCount` is the monochromatic count of the constant `true` coloring: every
+edge is monochromatic when all endpoints share a color. -/
+theorem monochromaticEdges_const_true {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    monochromaticEdges G (fun _ => true) = edgeCount G := by
+  unfold monochromaticEdges edgeCount
+  congr 1; ext p; simp [Finset.mem_filter]
+
+/-- **Edge-count complementarity.** A graph and its complement partition the edges
+of the complete graph: `edgeCount G + edgeCount Gᶜ = edgeCount Kₙ`. The constant-
+coloring specialization of `monochromaticEdges_add_complement`. -/
+theorem edgeCount_add_edgeCount_complement {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    edgeCount G + edgeCount (complement G) = edgeCount (completeGraph' V) := by
+  rw [← monochromaticEdges_const_true G, ← monochromaticEdges_const_true (complement G),
+      ← monochromaticEdges_const_true (completeGraph' V)]
+  exact monochromaticEdges_add_complement G (fun _ => true)
+
+/-- **The max-cuts of `G` and `Gᶜ` fit inside the complete graph.** Since each
+max-cut is bounded by its own edge count and the two edge counts partition
+`edgeCount Kₙ`, we get `maxCut G + maxCut Gᶜ ≤ edgeCount Kₙ`. -/
+theorem maxCut_add_maxCut_complement_le {V : Type*} [Fintype V] [LinearOrder V]
+    (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    maxCut G + maxCut (complement G) ≤ edgeCount (completeGraph' V) := by
+  have h1 := maxCut_le_edgeCount G
+  have h2 := maxCut_le_edgeCount (complement G)
+  have h3 := edgeCount_add_edgeCount_complement G
+  omega
+
+/-- **The bipartition numbers of `G` and `Gᶜ` fit inside the complete graph.**
+Dual of `maxCut_add_maxCut_complement_le`:
+`bipartitionNumber G + bipartitionNumber Gᶜ ≤ edgeCount Kₙ`. -/
+theorem bipartitionNumber_add_bipartitionNumber_complement_le {V : Type*} [Fintype V]
+    [LinearOrder V] (G : SimpleGraph' V) [DecidableRel G.Adj] :
+    bipartitionNumber G + bipartitionNumber (complement G) ≤ edgeCount (completeGraph' V) := by
+  have h1 := bipartitionNumber_le_edgeCount G
+  have h2 := bipartitionNumber_le_edgeCount (complement G)
+  have h3 := edgeCount_add_edgeCount_complement G
+  omega
+
 /--
 **The f_k(n) Function**
 
