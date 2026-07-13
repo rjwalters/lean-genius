@@ -39,6 +39,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees). The reaper's
+# allow-pattern must match worktrees at the override root, or leaked worktrees
+# there would never be reaped (issue #37509).
+# shellcheck source=../lib/worktree-root.sh
+source "$SCRIPT_DIR/../lib/worktree-root.sh"
+WORKTREE_ROOT_RESOLVED="$(loom_worktree_root "$REPO_ROOT")"
+
 LOG="research/infra-guardian.log"          # gitignored; persists across restarts
 STOP_SIGNAL_FILE=".loom/signals/stop-lean-daemon"
 
@@ -120,7 +128,7 @@ reap_worktrees() {
     while IFS=$'\t' read -r wt ref; do
         [[ -z "$wt" ]] && continue
         case "$wt" in
-            *"/.loom/worktrees/"*|*"/.claude/worktrees/"*|/private/tmp/*) ;;
+            *"/.loom/worktrees/"*|*"/.claude/worktrees/"*|/private/tmp/*|"$WORKTREE_ROOT_RESOLVED/"*) ;;
             *) continue ;;
         esac
         grep -qxF "$wt" <<<"$locked" && continue

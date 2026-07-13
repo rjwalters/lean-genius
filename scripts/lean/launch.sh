@@ -24,6 +24,12 @@ _LAUNCH_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=../lib/worktree-cleanup.sh
 source "$_LAUNCH_SCRIPT_DIR/../lib/worktree-cleanup.sh"
 
+# Worktree-root resolver (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $repo_root/.loom/worktrees). Respawned agent
+# worktrees must land at the same resolved base the role launchers use.
+# shellcheck source=../lib/worktree-root.sh
+source "$_LAUNCH_SCRIPT_DIR/../lib/worktree-root.sh"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -1533,15 +1539,20 @@ _do_respawn_agent() {
             # Spawn a specific enricher slot directly (parallel-enrich.sh refuses
             # to start if any enricher is already running, so we inline the logic)
             local agent_num="${session##*-}"
-            local base_dir=".loom/worktrees/enricher-$agent_num"
+            local repo_root
+            repo_root=$(pwd)
+            # Resolved worktree base (LOOM_WORKTREE_ROOT / worktree.root
+            # override; default $repo_root/.loom/worktrees).
+            local wt_base
+            wt_base="$(loom_worktree_root "$repo_root")"
+            mkdir -p "$wt_base"
+            local base_dir="$wt_base/enricher-$agent_num"
             local base_branch="feature/enricher-$agent_num"
             local worktree_dir="$base_dir"
             local branch="$base_branch"
             local enricher_id="enricher-$agent_num"
             local log_file=".loom/logs/$session.log"
             local prompt_file=".loom/logs/$session-prompt.md"
-            local repo_root
-            repo_root=$(pwd)
 
             # Reclaim any existing worktree at the primary path using the shared
             # safety guards instead of an unconditional force-delete.
@@ -1583,7 +1594,7 @@ _do_respawn_agent() {
             fi
 
             # Create tmux session and launch Claude
-            tmux new-session -d -s "$session" -c "$repo_root/$worktree_dir"
+            tmux new-session -d -s "$session" -c "$worktree_dir"
             sleep 0.3
             tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
             sleep 0.2
@@ -1612,14 +1623,19 @@ _do_respawn_agent() {
         researcher)
             # Respawn the specific researcher slot (mirrors enricher respawn pattern)
             local agent_num="${session##*-}"
-            local base_dir=".loom/worktrees/researcher-$agent_num"
+            local repo_root
+            repo_root=$(pwd)
+            # Resolved worktree base (LOOM_WORKTREE_ROOT / worktree.root
+            # override; default $repo_root/.loom/worktrees).
+            local wt_base
+            wt_base="$(loom_worktree_root "$repo_root")"
+            mkdir -p "$wt_base"
+            local base_dir="$wt_base/researcher-$agent_num"
             local base_branch="feature/researcher-$agent_num"
             local worktree_dir="$base_dir"
             local branch="$base_branch"
             local log_file=".loom/logs/$session.log"
             local prompt_file=".loom/logs/$session-prompt.md"
-            local repo_root
-            repo_root=$(pwd)
 
             # Reclaim any existing worktree at the primary path using the shared
             # safety guards instead of an unconditional force-delete.
@@ -1667,7 +1683,7 @@ _do_respawn_agent() {
             fi
 
             # Create tmux session and launch Claude
-            tmux new-session -d -s "$session" -c "$repo_root/$worktree_dir"
+            tmux new-session -d -s "$session" -c "$worktree_dir"
             sleep 0.3
             tmux send-keys -t "$session" "export ENHANCER_ID='researcher-$agent_num'" Enter
             sleep 0.2

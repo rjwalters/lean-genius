@@ -64,7 +64,17 @@ find_repo_root() {
 
 REPO_ROOT="$(find_repo_root)"
 CLAIMS_DIR="$REPO_ROOT/.lean/state/stub-claims"
-WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_DIR="$(loom_worktree_root "$REPO_ROOT")"
+# During an override transition, worktrees may exist at BOTH the resolved root
+# and the legacy default — scan both (issue #37509).
+WORKTREE_SCAN_ROOTS=("$WORKTREES_DIR")
+if [[ "$WORKTREES_DIR" != "$REPO_ROOT/.loom/worktrees" ]]; then
+    WORKTREE_SCAN_ROOTS+=("$REPO_ROOT/.loom/worktrees")
+fi
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 
@@ -244,9 +254,10 @@ if [[ "$DEEP_CLEAN" == true ]]; then
 
     worktree_count=0
 
-    if [[ -d "$WORKTREES_DIR" ]]; then
+    for wt_scan_root in "${WORKTREE_SCAN_ROOTS[@]}"; do
+    if [[ -d "$wt_scan_root" ]]; then
         # Clean erdos-{N} worktrees for merged/closed PRs
-        for worktree_dir in "$WORKTREES_DIR"/erdos-*; do
+        for worktree_dir in "$wt_scan_root"/erdos-*; do
             [[ ! -d "$worktree_dir" ]] && continue
 
             erdos_num=$(basename "$worktree_dir" | sed 's/erdos-//')
@@ -296,7 +307,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
         done
 
         # Clean enhancer-{N} worktrees
-        for worktree_dir in "$WORKTREES_DIR"/enhancer-*; do
+        for worktree_dir in "$wt_scan_root"/enhancer-*; do
             [[ ! -d "$worktree_dir" ]] && continue
 
             enhancer_num=$(basename "$worktree_dir" | sed 's/enhancer-//')
@@ -337,6 +348,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             fi
         done
     fi
+    done
 
     if [[ $worktree_count -eq 0 ]]; then
         success "No stale worktrees found"
@@ -403,9 +415,11 @@ if [[ "$DEEP_CLEAN" == true ]]; then
 
             # Check if any worktree uses this branch
             worktree_exists=false
-            if [[ -d "$WORKTREES_DIR/enhancer-$enhancer_num" ]]; then
-                worktree_exists=true
-            fi
+            for wt_scan_root in "${WORKTREE_SCAN_ROOTS[@]}"; do
+                if [[ -d "$wt_scan_root/enhancer-$enhancer_num" ]]; then
+                    worktree_exists=true
+                fi
+            done
 
             if [[ "$worktree_exists" == false ]]; then
                 ((++branch_count))

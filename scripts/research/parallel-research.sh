@@ -30,7 +30,11 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_DIR="$(loom_worktree_root "$REPO_ROOT")"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_SCRIPT="$REPO_ROOT/scripts/research/claim-problem.sh"
@@ -375,7 +379,8 @@ launch_agents() {
     print_success "All agents launched in isolated worktrees!"
     echo ""
     echo "Each agent has:"
-    echo "  - Its own worktree in .loom/worktrees/researcher-N"
+    echo "  - Its own worktree: researcher-N under the resolved worktree root"
+    echo "    (default .loom/worktrees/; override via LOOM_WORKTREE_ROOT or .loom/config.json worktree.root)"
     echo "  - Its own branch: feature/researcher-N"
     echo "  - Creates PRs for research progress"
     echo "  - Waits $wait_interval min when no work available (loops, doesn't exit)"
@@ -601,7 +606,9 @@ Environment Variables:
   RESEARCHER_WAIT_INTERVAL  Minutes to wait when no work available (default: 15)
 
 How it works:
-  1. Each agent gets its own worktree: .loom/worktrees/researcher-N
+  1. Each agent gets its own worktree: researcher-N under the resolved
+     worktree root (default .loom/worktrees/; override via LOOM_WORKTREE_ROOT
+     env var or .loom/config.json worktree.root)
   2. Each agent works on its own branch: feature/researcher-N
   3. Agents claim problems atomically (knowledge-prioritized)
   4. Each agent: claim → research → commit → push → create PR → repeat

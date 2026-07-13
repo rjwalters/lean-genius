@@ -7,7 +7,12 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 
-TEMP_WORKTREE="$REPO_ROOT/.loom/worktrees/batch-rebase-$$"
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_BASE="$(loom_worktree_root "$REPO_ROOT")"
+TEMP_WORKTREE="$WORKTREES_BASE/batch-rebase-$$"
 MERGED=0
 FAILED=0
 SKIPPED=0
@@ -46,7 +51,7 @@ git fetch origin main --quiet
 
 # Create temp worktree for rebasing
 echo "Creating temporary worktree..."
-mkdir -p "$REPO_ROOT/.loom/worktrees"
+mkdir -p "$WORKTREES_BASE"
 git worktree add "$TEMP_WORKTREE" origin/main --detach 2>/dev/null
 
 COUNT=0

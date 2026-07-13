@@ -68,6 +68,12 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
+
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_BASE="$(loom_worktree_root "$REPO_ROOT")"
 cd "$REPO_ROOT"
 
 # Pin gh to the correct repo — this repo has a mathlib-fork remote that gh
@@ -498,8 +504,9 @@ This branch has been deleted. If you believe this version carries unique content
         # If no worktree found, create a temporary one
         local temp_worktree=false
         if [[ -z "$worktree_path" ]]; then
-            worktree_path="$REPO_ROOT/.loom/worktrees/temp-rebase-$$"
+            worktree_path="$WORKTREES_BASE/temp-rebase-$$"
             print_info "Creating temporary worktree for rebase..."
+            mkdir -p "$WORKTREES_BASE"
             git fetch origin "$branch"
             git worktree add "$worktree_path" "origin/$branch" --detach 2>/dev/null || {
                 print_warning "Could not create worktree for #$pr"
