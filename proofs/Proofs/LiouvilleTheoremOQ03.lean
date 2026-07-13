@@ -685,4 +685,103 @@ theorem image_add_rat_wellApprox (τ : ℝ) (r : ℚ) :
   · intro hy
     exact ⟨y - (r : ℝ), (wellApprox_sub_rat_iff τ y r).mpr hy, by ring⟩
 
+/-! ## Borel measurability of the well-approximable sets (axiom-free)
+
+The measure results above (`volume_wellApprox_eq_zero`, `volume_liouville_eq_zero`,
+`hausdorffMeasure_one_wellApprox_eq_zero`) are all statements that an *outer* measure of
+`W τ` vanishes — they never needed `W τ` to be genuinely measurable.  Here we record that
+these sets are in fact **Borel measurable**, so "null" upgrades to an honest statement about
+the completed Lebesgue measure and `W τ` may be used freely as a measurable set downstream.
+
+`W τ = {x | ∃ C, ∃ᶠ n, ∃ m, x ≠ m/n ∧ |x - m/n| < C/nᵗ}` is a countable union (over the
+constant `C`, reduced to `ℕ` by monotonicity — a larger `C` only enlarges the condition) of
+`limsup`-type sets `⋂_a ⋃_{b≥a}` of the open balls `{x | |x - m/b| < C/bᵗ}`, hence Borel.
+This is a purely descriptive-set-theoretic fact: it does **not** use the Jarník–Besicovitch
+dimension axiom. -/
+theorem measurableSet_wellApprox (τ : ℝ) : MeasurableSet (wellApprox τ) := by
+  -- Monotonicity in the constant `C`: a real witness upgrades to the ceiling `⌈C⌉₊ : ℕ`.
+  have hstep : ∀ (C : ℝ) (x : ℝ),
+      (∃ᶠ n : ℕ in atTop, ∃ m : ℤ, x ≠ (m : ℝ) / (n : ℝ) ∧
+        |x - (m : ℝ) / (n : ℝ)| < C / (n : ℝ) ^ τ) →
+      (∃ᶠ n : ℕ in atTop, ∃ m : ℤ, x ≠ (m : ℝ) / (n : ℝ) ∧
+        |x - (m : ℝ) / (n : ℝ)| < (⌈C⌉₊ : ℝ) / (n : ℝ) ^ τ) := by
+    intro C x h
+    refine h.mono ?_
+    rintro n ⟨m, hne, hlt⟩
+    refine ⟨m, hne, lt_of_lt_of_le hlt ?_⟩
+    have hCk : C ≤ (⌈C⌉₊ : ℝ) := Nat.le_ceil C
+    have hd : (0 : ℝ) ≤ ((n : ℝ) ^ τ)⁻¹ := inv_nonneg.mpr (Real.rpow_nonneg (Nat.cast_nonneg n) τ)
+    rw [div_eq_mul_inv, div_eq_mul_inv]
+    exact mul_le_mul_of_nonneg_right hCk hd
+  -- Reduce the uncountable `∃ C : ℝ` to a countable `⋃ k : ℕ`.
+  have hset : wellApprox τ = ⋃ k : ℕ,
+      {x : ℝ | ∃ᶠ n : ℕ in atTop, ∃ m : ℤ, x ≠ (m : ℝ) / (n : ℝ) ∧
+        |x - (m : ℝ) / (n : ℝ)| < (k : ℝ) / (n : ℝ) ^ τ} := by
+    ext x
+    rw [Set.mem_iUnion]
+    constructor
+    · rintro ⟨C, hC⟩
+      exact ⟨⌈C⌉₊, hstep C x hC⟩
+    · rintro ⟨k, hk⟩
+      exact ⟨(k : ℝ), hk⟩
+  rw [hset]
+  refine MeasurableSet.iUnion fun k => ?_
+  -- Each fixed-`b` fibre is a countable union of (punctured) open balls, hence measurable.
+  have hQ : ∀ b : ℕ, MeasurableSet
+      {x : ℝ | ∃ m : ℤ, x ≠ (m : ℝ) / (b : ℝ) ∧ |x - (m : ℝ) / (b : ℝ)| < (k : ℝ) / (b : ℝ) ^ τ} := by
+    intro b
+    have he : {x : ℝ | ∃ m : ℤ, x ≠ (m : ℝ) / (b : ℝ) ∧ |x - (m : ℝ) / (b : ℝ)| < (k : ℝ) / (b : ℝ) ^ τ}
+        = ⋃ m : ℤ, ({(m : ℝ) / (b : ℝ)}ᶜ ∩ {x | |x - (m : ℝ) / (b : ℝ)| < (k : ℝ) / (b : ℝ) ^ τ}) := by
+      ext x
+      simp only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_compl_iff,
+        Set.mem_singleton_iff, ne_eq]
+    rw [he]
+    refine MeasurableSet.iUnion fun m => MeasurableSet.inter ?_ ?_
+    · exact (measurableSet_singleton _).compl
+    · exact (isOpen_lt ((continuous_id.sub continuous_const).abs) continuous_const).measurableSet
+  -- `∃ᶠ n in atTop` is the countable `limsup` `⋂_a ⋃_{b≥a}`.
+  have hfreq : {x : ℝ | ∃ᶠ n : ℕ in atTop, ∃ m : ℤ, x ≠ (m : ℝ) / (n : ℝ) ∧
+        |x - (m : ℝ) / (n : ℝ)| < (k : ℝ) / (n : ℝ) ^ τ}
+      = ⋂ a : ℕ, ⋃ b : ℕ, ⋃ _ : a ≤ b,
+          {x : ℝ | ∃ m : ℤ, x ≠ (m : ℝ) / (b : ℝ) ∧ |x - (m : ℝ) / (b : ℝ)| < (k : ℝ) / (b : ℝ) ^ τ} := by
+    ext x
+    simp only [Filter.frequently_atTop, Set.mem_iInter, Set.mem_iUnion, Set.mem_setOf_eq,
+      ge_iff_le, exists_prop]
+  rw [hfreq]
+  exact MeasurableSet.iInter fun a => MeasurableSet.iUnion fun b =>
+    MeasurableSet.iUnion fun _ => hQ b
+
+/-- **The Liouville set is Borel measurable** (`{x | Liouville x} = ⋂_τ W τ = ⋂_k W k`).
+    Immediate from `measurableSet_wellApprox` and the countable-intersection description
+    `iInter_wellApprox_eq_liouville` (restricted to integer exponents, which suffice by
+    antitonicity). -/
+theorem measurableSet_liouville : MeasurableSet {x : ℝ | Liouville x} := by
+  have h : {x : ℝ | Liouville x} = ⋂ k : ℕ, wellApprox (k : ℝ) := by
+    ext x
+    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    constructor
+    · intro hx k
+      exact liouville_subset_wellApprox _ hx
+    · intro hx
+      rw [← forall_liouvilleWith_iff]
+      intro p
+      obtain ⟨k, hk⟩ := exists_nat_ge p
+      exact wellApprox_antitone hk (hx k)
+  rw [h]
+  exact MeasurableSet.iInter fun k => measurableSet_wellApprox _
+
+/-! ## Strict nesting of the approximation hierarchy
+
+`wellApprox_antitone` gives the inclusions `W τ ⊆ W σ` for `σ ≤ τ`.  The strict
+dimension law upgrades these to *proper* inclusions on `[2, ∞)`: distinct exponents give
+genuinely different well-approximable sets, so the hierarchy `{W τ}` is a strictly
+decreasing chain of Borel sets — not merely nested. -/
+theorem wellApprox_ssubset {σ τ : ℝ} (hσ : 2 ≤ σ) (h : σ < τ) :
+    wellApprox τ ⊂ wellApprox σ := by
+  refine (wellApprox_antitone h.le).ssubset_of_ne ?_
+  intro heq
+  have hlt := dimH_wellApprox_strictAntitone hσ h
+  rw [heq] at hlt
+  exact lt_irrefl _ hlt
+
 end LiouvilleTheoremOQ03

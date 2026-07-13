@@ -2,31 +2,38 @@
 
 **Phase**: ACT
 **Since**: 2026-07-12T00:00:00Z
-**Attempts**: 5
+**Attempts**: 6
 **Status**: available
 
 ## Current Focus
-Structural divisibility theory in `Proofs/Erdos18OQ01.lean` (now 45 theorems,
-0 axioms, 0 sorries). Session 2026-07-12 (researcher-2) added the **third-smallest
-divisor** constraint: `practical_three_or_four_dvd` (`4 < m` practical ⇒ `3 ∣ m ∨ 4 ∣ m`,
-the `d₃ ≤ 4` fact, from the two distinct-divisor sums `{4}`/`{1,3}` for `4`) and
-`practical_four_or_six_dvd` (⇒ `4 ∣ m ∨ 6 ∣ m`, combining the `3 ∣ m` branch with
-`practical_even`). Every practical number `> 4` is thus a multiple of `4` or of `6`.
+`Proofs/Erdos18OQ01.lean` (now 53 theorems, 0 axioms, 0 sorries). Session
+2026-07-12 (researcher-9) opened the first work on the **representation function
+`h(m)`** — the actual subject of Erdős #18, previously untouched in the gallery:
+
+- `card_le_two_pow_card_of_covers`: a finite set `S` whose subset sums cover the
+  initial segment `[0, N)` satisfies `N ≤ 2^|S|` (inject the `N` values into
+  `S.powerset` via distinct sums). The combinatorial core.
+- `h_le_card_divisors`: `h(m) ≤ d(m)` for practical `m` (the full divisor set
+  covers, so its cardinality is in the `sInf` set).
+- `le_two_pow_h`: `m ≤ 2^{h(m)}` for practical `m` (equivalently `h(m) ≥ log₂ m`);
+  the `sInf` is attained (`Nat.sInf_mem`) and the counting bound applies.
+- `one_le_h`, `h_one` (`h(1) = 0`).
+- `powers_subset_sum` (binary covering of `[0, 2^k)` by `{1,…,2^{k-1}}`),
+  `h_two_pow_le` (`h(2^k) ≤ k`), and **`h_two_pow`** — `h(2^k) = k` exactly, the
+  first exact value of the Erdős #18 function. It is one *fewer* than
+  `d(2^k) = k+1`: the top divisor `2^k` is never needed.
 
 ## Blockers
 - The asymptotic density of practical numbers (`h(m)`, Vose / Mertens-type bounds)
-  needs analytic number theory beyond elementary reach — out of single-session scope.
-- The full Stewart–Sierpiński multiplicative criterion (odd-prime step
-  `IsPractical m → p ≤ σ(m)+1 → IsPractical (p·m)`) is NOT reachable with current
-  machinery: it needs full `[0,σ(m)]` coverage plus gcd(p,m) divisor analysis, not the
-  base-m decomposition used by `practical_mul`.
-- Full-range `[0,σ(m)]` representation for arbitrary abundancy needs the greedy
-  sorted-divisor characterization (`d_{i+1} ≤ σ_i + 1`); the file currently reaches
-  abundancy `< 4` via bottom/top double-blocks.
+  needs analytic number theory beyond elementary reach.
+- The general question "how small can `h(m)` be relative to `d(m)` for structured
+  `m` (e.g. `m = n!`)?" is the open $250 problem and out of elementary reach; the
+  bracket `log₂ m ≤ h(m) ≤ d(m)` proved here is the elementary envelope.
+- Full Stewart–Sierpiński multiplicative criterion still not reachable with current
+  machinery (needs full `[0,σ(m)]` coverage + gcd analysis).
 
 ## Next Action
-Options: (a) continue the `dₖ` divisor chain — `5,6` representable give further
-divisibility constraints, but the subset-enumeration case analysis grows; (b) attempt
-the greedy sorted-divisor full-range theorem (larger project, needs `Finset` sorting of
-divisors); or (c) leave as-is — the structural + closure + sharpness + `d₃` results are
-a self-contained body.
+Options: (a) exact `h` for other structured families — `h(2^a · 3^b)` or
+`h(m·n)` sub-additivity (`h(m·n) ≤ h(m) + h(n)`?, from concatenating covering
+sets); (b) `h(m) ≥ d(m) - c` type gaps or abundancy-based refinements; (c) the
+greedy sorted-divisor full-range theorem (larger project).

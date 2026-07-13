@@ -722,4 +722,175 @@ theorem practical_four_or_six_dvd {m : ℕ} (hm : 4 < m) (hp : IsPractical m) :
     exact h6
   · exact Or.inl h4
 
+/-! ## First bounds on the representation function `h(m)`
+
+Erdős Problem #18 is, at heart, about the function `h(m)` defined in the parent
+`Erdos18Problem`: the minimum number of divisors of `m` that already suffice to
+represent every `1 ≤ k < m` as a sum of distinct elements.  The open questions
+(`h(m) < (log log m)^{O(1)}` infinitely often; `h(n!)` bounds) are analytic, but
+`h` has had *no* theorems proved about it in the gallery so far.  This section
+supplies the two elementary bracketing bounds and the first exact computation.
+
+The **upper bound** `h(m) ≤ d(m)` is immediate: for practical `m` the full divisor
+set already witnesses the covering condition, so its cardinality `d(m)` lies in the
+`sInf` set.
+
+The **lower bound** `m ≤ 2^{h(m)}` is a counting argument: a covering set `S` of
+size `s = h(m)` must realise the `m` distinct values `0, 1, …, m-1` as distinct
+subset sums, and `S` has only `2^s` subsets, so `m ≤ 2^s`.  Equivalently
+`h(m) ≥ log₂ m`.
+
+Together these pin `h(2^k)` **exactly**: the lower bound forces `h(2^k) ≥ k`, and
+the `k` divisors `1, 2, …, 2^{k-1}` (the binary digits) cover `[1, 2^k)`, giving
+`h(2^k) ≤ k`.  So `h(2^k) = k` — the first exact value of the Erdős #18 function in
+the gallery. -/
+
+/-- **Subset-counting bound.**  If every `k < N` is a sum of distinct elements of a
+    finite set `S` (a covering of the initial segment `[0, N)`), then `N ≤ 2^{|S|}`.
+    Indeed each `k < N` picks out a subset of `S` whose sum is `k`; distinct `k` give
+    distinct subsets (they have distinct sums), so the `N` values inject into the
+    `2^{|S|}` subsets of `S`.  This is the combinatorial core of the `h(m)` lower
+    bound. -/
+theorem card_le_two_pow_card_of_covers {S : Finset ℕ} {N : ℕ}
+    (hcov : ∀ k, k < N → ∃ T ⊆ S, T.sum id = k) : N ≤ 2 ^ S.card := by
+  classical
+  -- Total choice function: for each `k` pick a subset of `S` summing to `k` (∅ otherwise).
+  set g : ℕ → Finset ℕ := fun k => if h : ∃ T, T ⊆ S ∧ T.sum id = k then h.choose else ∅
+    with hgdef
+  have hg : ∀ k, k < N → g k ⊆ S ∧ (g k).sum id = k := by
+    intro k hk
+    obtain ⟨T, hT, hsum⟩ := hcov k hk
+    have hex : ∃ T, T ⊆ S ∧ T.sum id = k := ⟨T, hT, hsum⟩
+    rw [hgdef]
+    simp only [dif_pos hex]
+    exact ⟨hex.choose_spec.1, hex.choose_spec.2⟩
+  -- `g` maps `range N` into `S.powerset` and is injective there (sums distinguish).
+  have hmaps : Set.MapsTo g (↑(Finset.range N)) (↑(S.powerset)) := by
+    intro k hk
+    exact Finset.mem_powerset.mpr (hg k (Finset.mem_range.mp hk)).1
+  have hinj : Set.InjOn g (Finset.range N) := by
+    intro a ha b hb hab
+    calc a = (g a).sum id := (hg a (Finset.mem_range.mp ha)).2.symm
+      _ = (g b).sum id := by rw [hab]
+      _ = b := (hg b (Finset.mem_range.mp hb)).2
+  have hcard := Finset.card_le_card_of_injOn g hmaps hinj
+  rwa [Finset.card_range, Finset.card_powerset] at hcard
+
+/-- **Upper bound `h(m) ≤ d(m)`.**  For a practical `m` the *entire* divisor set
+    already covers every `1 ≤ k < m` (that is exactly practicality), so its
+    cardinality `d(m) = (divisors m).card` belongs to the `sInf` set defining `h`.
+    Hence `h(m)` — the least such cardinality — is at most `d(m)`. -/
+theorem h_le_card_divisors {m : ℕ} (hp : IsPractical m) :
+    h m ≤ (divisors m).card := by
+  apply Nat.sInf_le
+  refine ⟨divisors m, Finset.Subset.refl _, rfl, ?_⟩
+  intro k hk1 hkm
+  obtain ⟨T, hT, hsum⟩ := hp.2 k hk1 hkm
+  exact ⟨T, hT, hsum⟩
+
+/-- **Lower bound `m ≤ 2^{h(m)}`.**  A practical `m` has a covering divisor set `S`
+    of size `h(m)` (the `sInf` is attained, as the set is nonempty by
+    `h_le_card_divisors`).  `S` must realise the `m` distinct values `0, …, m-1` as
+    distinct subset sums, and `S` has only `2^{h(m)}` subsets, so `m ≤ 2^{h(m)}`
+    (`card_le_two_pow_card_of_covers`).  Equivalently `h(m) ≥ log₂ m`: representing
+    all of `[1, m)` needs at least logarithmically many divisors. -/
+theorem le_two_pow_h {m : ℕ} (hp : IsPractical m) : m ≤ 2 ^ h m := by
+  -- The `sInf` set is nonempty: the full divisor set is a covering.
+  have hne : {s : ℕ | ∃ S : Finset ℕ, S ⊆ divisors m ∧ S.card = s ∧
+      ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k}.Nonempty := by
+    refine ⟨(divisors m).card, divisors m, Finset.Subset.refl _, rfl, ?_⟩
+    intro k hk1 hkm
+    obtain ⟨T, hT, hsum⟩ := hp.2 k hk1 hkm
+    exact ⟨T, hT, hsum⟩
+  -- Hence `h m` is attained by some covering set `S` of that size.
+  obtain ⟨S, _hSsub, hScard, hcov⟩ := Nat.sInf_mem hne
+  -- Extend the covering to `k = 0` (empty subset) and apply the counting bound.
+  have hcov' : ∀ k, k < m → ∃ T ⊆ S, T.sum id = k := by
+    intro k hk
+    rcases Nat.eq_zero_or_pos k with h0 | hpos
+    · exact ⟨∅, Finset.empty_subset _, by simp [h0]⟩
+    · exact hcov k hpos hk
+  have hbound := card_le_two_pow_card_of_covers hcov'
+  rwa [hScard] at hbound
+
+/-- **`h(m) ≥ 1` for practical `m ≥ 2`.**  A single divisor has only two subset sums
+    (`0` and itself), too few to cover `[1, m)` once `m ≥ 2`; formally
+    `m ≤ 2^{h(m)}` with `m ≥ 2` forces `h(m) ≥ 1`. -/
+theorem one_le_h {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) : 1 ≤ h m := by
+  by_contra hlt
+  have h0 : h m = 0 := by omega
+  have := le_two_pow_h hp
+  rw [h0] at this
+  simp at this
+  omega
+
+/-- **`h(1) = 0`.**  There is no `k` with `1 ≤ k < 1`, so the empty divisor set
+    vacuously covers, and `0` is in the `sInf` set. -/
+theorem h_one : h 1 = 0 := by
+  apply Nat.le_zero.mp
+  apply Nat.sInf_le
+  exact ⟨∅, Finset.empty_subset _, Finset.card_empty, fun k hk1 hk2 => by omega⟩
+
+/-- **Binary covering of `[0, 2^k)`.**  Every `n < 2^k` is a sum of distinct elements
+    of `{2^0, 2^1, …, 2^{k-1}}` (the low powers of two) — its binary expansion.
+    Proved by induction on `k`: for `2^k ≤ n < 2^{k+1}` peel the high bit `2^k` (fresh,
+    since the remainder `n - 2^k < 2^k` is represented by strictly smaller powers). -/
+theorem powers_subset_sum (k : ℕ) {n : ℕ} (hn : n < 2 ^ k) :
+    ∃ T ⊆ (Finset.range k).image (2 ^ ·), T.sum id = n := by
+  induction k generalizing n with
+  | zero =>
+    have hn0 : n = 0 := by simpa using hn
+    exact ⟨∅, Finset.empty_subset _, by simp [hn0]⟩
+  | succ k ih =>
+    have hrange : Finset.range k ⊆ Finset.range (k + 1) := by
+      intro x hx; simp only [Finset.mem_range] at hx ⊢; omega
+    have hmono : (Finset.range k).image (2 ^ ·) ⊆ (Finset.range (k + 1)).image (2 ^ ·) :=
+      Finset.image_subset_image hrange
+    rcases lt_or_ge n (2 ^ k) with hlt | hge
+    · obtain ⟨T, hT, hsum⟩ := ih hlt
+      exact ⟨T, hT.trans hmono, hsum⟩
+    · have hlt2 : n - 2 ^ k < 2 ^ k := by
+        have : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by ring
+        omega
+      obtain ⟨T, hT, hsum⟩ := ih hlt2
+      have hnotmem : (2 : ℕ) ^ k ∉ T := by
+        intro hmem
+        have hle : (2 : ℕ) ^ k ≤ T.sum id :=
+          Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hmem
+        rw [hsum] at hle; omega
+      refine ⟨insert (2 ^ k) T, ?_, ?_⟩
+      · rw [Finset.insert_subset_iff]
+        exact ⟨Finset.mem_image.mpr ⟨k, Finset.mem_range.mpr (Nat.lt_succ_self k), rfl⟩,
+          hT.trans hmono⟩
+      · rw [Finset.sum_insert hnotmem, hsum]
+        simp only [id_eq]; omega
+
+/-- **`h(2^k) ≤ k`.**  The `k` divisors `1, 2, …, 2^{k-1}` (`(range k).image (2^·)`)
+    already cover `[1, 2^k)` by binary expansion (`powers_subset_sum`), so this
+    `k`-element set witnesses the `sInf` bound. -/
+theorem h_two_pow_le (k : ℕ) : h (2 ^ k) ≤ k := by
+  apply Nat.sInf_le
+  refine ⟨(Finset.range k).image (2 ^ ·), ?_, ?_, ?_⟩
+  · intro x hx
+    obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hx
+    exact Nat.mem_divisors.mpr
+      ⟨pow_dvd_pow 2 (Nat.le_of_lt (Finset.mem_range.mp hi)), by positivity⟩
+  · have hInj : Set.InjOn (2 ^ ·) (Finset.range k) :=
+      fun a _ b _ hab => Nat.pow_right_injective (le_refl 2) hab
+    rw [Finset.card_image_of_injOn hInj, Finset.card_range]
+  · intro n _ hn
+    exact powers_subset_sum k hn
+
+/-- **`h(2^k) = k`** — the first *exact* value of the Erdős #18 representation
+    function in the gallery.  The lower bound `2^k ≤ 2^{h(2^k)}` (`le_two_pow_h`, using
+    `two_pow_practical`) gives `k ≤ h(2^k)`, and the binary digits give the matching
+    upper bound `h(2^k) ≤ k` (`h_two_pow_le`).  So the minimum number of divisors of
+    `2^k` needed to represent everything below it is exactly `k` — attained by the
+    `k` "digit" divisors `1, 2, …, 2^{k-1}`, which is one fewer than the `k+1` total
+    divisors `d(2^k) = k+1` (the top divisor `2^k` is never needed). -/
+theorem h_two_pow (k : ℕ) : h (2 ^ k) = k := by
+  refine le_antisymm (h_two_pow_le k) ?_
+  have hbound := le_two_pow_h (two_pow_practical k)
+  exact (Nat.pow_le_pow_iff_right (by norm_num)).mp hbound
+
 end Erdos18OQ01
