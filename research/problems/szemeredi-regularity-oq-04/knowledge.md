@@ -4,6 +4,56 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-12 (researcher-8) — m×k whole-partition energy GAIN (not just monotonicity)
+
+**Mode:** REVISIT (RICH tier). **Outcome:** progress — the documented `mxk GAIN` /
+two-sided product-refinement next step discharged at the whole-partition level.
+
+### What I did — new file `SzemerediRegularityOQ04ProductAssembly.lean` (2 thm, 0 ax, 0 sorry)
+The prior session (FamilySplit) lifted only the **non-strict monotonicity**
+(`partitionEnergy_biUnion_split_mono`) of an m-fold single-part split. `Product.lean`
+already had the **sharp** m×k *gain* but only at the `pairEnergy` level
+(`pairEnergy_prod_family_refinement_gain`). This session lifts that sharp gain to the
+whole partition — the arbitrary-family generalization of Assembly's 2×2
+`partitionEnergy_prod_refinement_gain`:
+
+- `partitionEnergy_prod_family_refinement_gain` — refining two distinct parts
+  `A = ⋃ᵢ Aᵢ`, `B = ⋃ⱼ Bⱼ` of a partition into the product grid `{Aᵢ}×{Bⱼ}` raises
+  `partitionEnergy` by the sharp `(|A_{i₀}||B_{j₀}|/n²)·d²` for any witness cell
+  `(i₀,j₀)` whose density deviates from `d(A,B)` by `≥ d`. Proof: expand the
+  ordered-pair double sum via `partitionEnergy_eq_sum_pairEnergy` into 9 blocks
+  (`hL`/`hR` by `simp only [Finset.sum_insert/sum_union, sum_add_distrib, himgA, himgB]`
+  + `ring`); the `R×R` block is identical; the A/B rows-cols vs `R` split by the m-fold
+  `pairEnergy_biUnion_split_mono`/`_right` (FamilySplit); the diagonal `A²`,`B²` and the
+  `(B,A)` cross by two-coordinate monotonicity; and the single `(A,B)` cross carries the
+  variance-atom gain via `Product.pairEnergy_prod_family_refinement_gain`; final `linarith`.
+- `partitionEnergy_prod_family_gain_eps` — the AFKS-consumable `ε⁴` floor: with the
+  irregularity thresholds `|A_{i₀}| ≥ ε|A|`, `|B_{j₀}| ≥ ε|B|`, `dev ≥ ε`, the jump is
+  `≥ ε⁴·|A||B|/n²` (flooring identical to `Product.pairEnergy_prod_family_refinement_gain_eps`).
+
+### Verification — docker-VERIFIED
+`./proofs/scripts/docker-build.sh Proofs.SzemerediRegularityOQ04ProductAssembly` →
+`Built ... (8.9s)` / `Build completed successfully (7751 jobs)` on FIRST try.
+`#print axioms` on both theorems: `[propext, Classical.choice, Quot.sound]` — axiom-free,
+0 sorries. (Docker-build oleans live in the mounted cache volume, not host `.lake/build`;
+axiom check was done by temporarily appending `#print axioms` and re-building in-container.)
+
+### Why this matters / honesty
+This is the **strict** gain half of the true AFKS product refinement (FamilySplit had only
+the `≥` monotonicity). It is genuine reusable infrastructure and the arbitrary-family
+generalization of the 2×2 whole-partition gain, but it remains at the energy-increment level:
+the standing analytic/bookkeeping blocker is unchanged. Specifically, items 2 and 3 remain
+open: the two-level AFKS *conclusion statement* (coarse ε-regular partition + refinement with
+all-but-εC(ℓ,2) pairs E(k)-regular, dependent tolerance E:ℕ→(0,1]) and the outer-loop assembly
+discharging freshness/equipartition realizability of the witnessed steps.
+
+### Files Modified
+- `proofs/Proofs/SzemerediRegularityOQ04ProductAssembly.lean` (NEW, ~250 lines, 2 theorems)
+- `src/data/research/problems/szemeredi-regularity-oq-04.json` (leanFiles entry + knowledge)
+
+---
+
+
 ## Session 2026-07-12 (researcher-8) — m-fold whole-partition refinement MONOTONICITY
 
 **Mode:** FRESH (RICH tier, claimed via lock). **Outcome:** progress — the documented
