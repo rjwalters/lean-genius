@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED (40 thm, 0 axiom, 0 sorry): added sharpness of BOTH a priori Lⁿ/(1-L) and a posteriori L/(1-L) constants — affine contraction f(t)=L·t attains both with equality; constants are optimal (estimate_constants_sharp)",
+    "progressSummary": "SOLVED + SHARPENED (Adversary file now 20 thm, 0 axiom, 0 sorry): added the MATCHING UPPER BOUND to the one-query lower bound — one_query_complexity proves the least worst-case error over all one-query algorithms against the explicit pair {f,g} is EXACTLY 1/4 (IsLeast), via adversary_minimax (exact minimax = |p-q|/2 of the abstract adversary principle, midpoint-optimal). The lower bound is now two-sided.",
     "builtItems": [
       "BrouwerFixedPointOQ02OQ02OQ01.lean: 6 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Self-contained: contraction given as ∀ x y, |f x − f y| ≤ L·|x − y| with f x* = x* and xₙ₊₁ = f xₙ.",
       "iterate_dist: |xₙ − x*| ≤ Lⁿ·|x₀ − x*| (geometric decay, induction; reproves parent's bound self-containedly).",
@@ -45,7 +45,8 @@
       "displacement_le_path_length in BrouwerFixedPointOQ02OQ02OQ01.lean",
       "apriori_estimate_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): affine witness attains Lⁿ/(1-L) with equality ∀n — a priori constant optimal",
       "aposteriori_estimate_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): affine witness attains L/(1-L) with equality ∀n — a posteriori constant optimal",
-      "estimate_constants_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): packaged existential — one map attains both constants simultaneously; suite is constant-optimal"
+      "estimate_constants_sharp (BrouwerFixedPointOQ02OQ02OQ01.lean): packaged existential — one map attains both constants simultaneously; suite is constant-optimal",
+      "BrouwerFixedPointOQ02OQ02OQ01Adversary.lean SECTION VI: matching upper bound making the one-query lower bound SHARP. adversary_midpoint_optimal (midpoint answer (p+q)/2 errs by EXACTLY |p-q|/2 — the = companion to adversary_error_bound (≥)), adversary_minimax (IsLeast: exact minimax of the abstract adversary principle is |p-q|/2), one_query_upper_bound (constant-1/2 algorithm attains error exactly 1/4 on {f,g}), one_query_complexity (IsLeast: the least worst-case error over ALL one-query algorithms against the explicit pair {f,g} is EXACTLY 1/4). Turns the one-sided lower bound into a two-sided exact characterization. 4 thm, 0 axiom, 0 sorry."
     ],
     "insights": [
       "Parent oq-02-oq-02 proves the bound |xₙ − x*| ≤ Lⁿ·|x₀ − x*| which is not directly usable (|x₀ − x*| unknown). The classical fix is the a priori estimate, expressing the bound via the computable first increment |x₁ − x₀|.",
@@ -58,7 +59,8 @@
       "Added a matching a posteriori LOWER bound |x(n+1)-xn|/(1+L) ≤ |xn-x*| (reverse triangle + one-step contraction), making the residual/increment a two-sided proxy for the error. Only 0≤L needed. Prior estimates were all upper bounds.",
       "Tail arc-length bound: ∑_{k<m}|x_{n+k+1}-x_{n+k}| ≤ Lⁿ|x₁-x₀|/(1-L) — generalizes total_path_length_bound (n=0 case); m→∞ limit bounds |xₙ-x*|",
       "Arc dominates chord (displacement_le_path_length): |x_{n+m}-xₙ| ≤ arc length, pure telescoping (Finset.sum_range_sub + abs_sum_le_sum_abs); combined with tail_path_length_bound re-derives cauchy_estimate as chord≤arc≤geometric tail",
-      "SHARPNESS: the affine contraction f(t)=L·t (extremal L-contraction, |fa-fb|=L|a-b|) with iterates xₙ=Lⁿ·x₀ about fixed point 0 attains BOTH estimate constants with equality: |xₙ-x*|=Lⁿ/(1-L)·|x₁-x₀| and |xₙ₊₁-x*|=L/(1-L)·|xₙ₊₁-xₙ| for every n. Key: |x₁-x₀|=(1-L)|x₀| and |xₙ₊₁-xₙ|=Lⁿ(1-L)|x₀|, cancelling the (1-L) denominators. Prior iterate_dist_sharp certified only the raw Lⁿ factor, not the derived /(1-L) constants."
+      "SHARPNESS: the affine contraction f(t)=L·t (extremal L-contraction, |fa-fb|=L|a-b|) with iterates xₙ=Lⁿ·x₀ about fixed point 0 attains BOTH estimate constants with equality: |xₙ-x*|=Lⁿ/(1-L)·|x₁-x₀| and |xₙ₊₁-x*|=L/(1-L)·|xₙ₊₁-xₙ| for every n. Key: |x₁-x₀|=(1-L)|x₀| and |xₙ₊₁-xₙ|=Lⁿ(1-L)|x₀|, cancelling the (1-L) denominators. Prior iterate_dist_sharp certified only the raw Lⁿ factor, not the derived /(1-L) constants.",
+      "SHARPNESS of the one-query bound: adversary_error_bound only gave max(|a-p|,|a-q|) ≥ |p-q|/2; the matching = is attained at the MIDPOINT a=(p+q)/2 (both errors equal |p-q|/2 exactly). So min over answers a of the worst-case error is EXACTLY |p-q|/2 (adversary_minimax as IsLeast). Specialized to the pair {1/4,3/4}: the constant algorithm A≡1/2 (midpoint) achieves worst-case error exactly 1/4, matching one_query_lower_bound ⟹ one-query complexity against {f,g} is EXACTLY 1/4 (one_query_complexity IsLeast). Note this 1/4 is against the specific pair; the full-class one-query minimax is 1/2 (Tightness file) — distinct quantities."
     ],
     "mathlibGaps": [],
     "nextSteps": [
