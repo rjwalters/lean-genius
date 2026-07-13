@@ -236,7 +236,7 @@ BinomialTheoremOQ02OQ01OQ03	GREEN
 BinomialTheoremOQ02OQ01OQ04	GREEN	
 BinomialTheoremOQ02OQ02	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ03	RESIDUAL	type-mismatch
-BinomialTheoremOQ02OQ04	RESIDUAL	type-mismatch
+BinomialTheoremOQ02OQ04	RESIDUAL	rewrite-drift
 BinomialTheoremOQ02OQ04OQ02	GREEN	
 BinomialTheoremOQ03OQ02OQ03	GREEN	
 BinomialTheoremOQ04	GREEN	
@@ -261,7 +261,7 @@ BorsukUlamOQ02OQ01OQ04	GREEN
 BorsukUlamOQ02OQ01OQ04OQ01	GREEN	
 BorsukUlamOQ02OQ02	RESIDUAL	instance-synth
 BorsukUlamOQ02OQ03	GREEN	
-BorsukUlamOQ03	RESIDUAL	proof-drift
+BorsukUlamOQ03	GREEN	
 BorsukUlamOQ03OQ01	RESIDUAL	rewrite-drift
 BorsukUlamOQ03OQ02	RESIDUAL	type-mismatch
 BorsukUlamOQ03OQ03	GREEN	
@@ -278,7 +278,7 @@ BoundedPrimeGapsOQ04OQ01	RESIDUAL	type-mismatch
 BoundedPrimeGapsOQ04OQ01Aristotle	RESIDUAL	rewrite-drift
 BoundedPrimeGapsOQ04OQ02	RESIDUAL	lambda-reserved-token
 BrianchonTheorem	GREEN	
-BrianchonTheoremOQ01OQ02	RESIDUAL	proof-drift
+BrianchonTheoremOQ01OQ02	GREEN	
 BrouwerFixedPointOQ01OQ02OQ03OQ01	RESIDUAL	unknown-const:Metric.mem_closedBall_zero_iff.mpr
 BrouwerFixedPointOQ01OQ03	GREEN	
 BrouwerFixedPointOQ01OQ03OQ01	GREEN	
