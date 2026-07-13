@@ -744,4 +744,12 @@ theorem cos_coprime_is_root (hn : 3 ≤ n) (k : ℕ) (hk : k < n) (hc : Nat.Copr
     exact h_root_C
   exact_mod_cast h_transfer
 
+/-- natDegree(minpoly ℚ cos(2π/n)) = φ(n)/2 — hub export used by
+`AngleTrisectionOQ02OQ03.gauss_wantzel_theorem` (v4.31: restored, the
+dependent file references it under this namespace). -/
+theorem minpoly_cos_natDegree_eq (hn : 3 ≤ n) :
+    (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
+  rw [← minpoly_alphaCos_eq_minpoly_cos n hn]
+  exact minpoly_alphaCos_natDegree n hn
+
 end AngleTrisectionOQ02OQ03OQ01
