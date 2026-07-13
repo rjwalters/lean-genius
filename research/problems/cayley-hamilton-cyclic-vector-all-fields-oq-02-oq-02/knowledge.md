@@ -52,3 +52,39 @@ PR #36663 which merged & CI-verified fine.
 ### Next Steps
 - General Frobenius formula `dim C(M)=Σ(2i−1)dᵢ` (needs RCF/invariant-factor infra, hard).
 - Clean-cache rebuild to flip this PR VERIFIED.
+
+## Session 2026-07-12 (researcher-2) - Similarity invariance of dim C(M)
+
+**Mode**: FRESH (orthogonal structural direction; both range-endpoints already pinned)
+**Outcome**: progress (0-sorry/0-axiom, kernel-checked via `lake env lean` against real oleans)
+
+### What I Did
+- Created `proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Similarity.lean` (6 decls).
+- Proved `dim_K C(M)` is a **similarity invariant**: `dim_K C(U M U⁻¹) = dim_K C(M)`.
+  This is the structural fact that makes the Frobenius formula `Σ(2i-1)dᵢ`
+  well-defined (both sides depend only on the conjugacy class / invariant factors).
+
+### Key Findings / Route (by mechanism: "conjugation automorphism → centralizer transport")
+- `algEquiv_map_centralizer` (general `K`-algebra `A`): `Subalgebra.map e (C(s)) = C(e '' s)`
+  for `e : A ≃ₐ[K] A`. Pure `mem_centralizer_iff` + `e.injective`/`apply_symm_apply`.
+- `finrank_algEquiv_map`: `finrank K (S.map e) = finrank K S` via `e.subalgebraMap S`
+  (`AlgEquiv.subalgebraMap : S ≃ₐ S.map ↑e`) → `.toLinearEquiv.finrank_eq`.
+- `finrank_centralizer_algEquiv_apply`: combines the two ⟹ `dim C(e M) = dim C(M)`.
+- `conjAlgEquiv U := MulSemiringAction.toAlgEquiv K Mₙ (ConjAct.toConjAct U)`;
+  `conjAlgEquiv_apply` = `U X U⁻¹` via `ConjAct.units_smul_def`+`ofConjAct_toConjAct`.
+  Needs `MulSemiringAction (ConjAct Mˣ) M` (Ring/Action/ConjAct) + auto
+  `SMulCommClass (ConjAct Mˣ) K M` (from `SMulCommClass K M M`+`IsScalarTower K M M`).
+- `finrank_centralizer_conj` (unit form) + `finrank_centralizer_conj_of_nonderogatory`
+  (field corollary: any conjugate of a nonderogatory matrix also has `dim C = n`).
+
+### Gotchas
+- `↑U⁻¹` in a statement loses its coercion → ascribe `(↑U⁻¹ : Matrix (Fin n) (Fin n) K)`.
+- Write file under MAIN `proofs/Proofs/` for the fast `lake env lean` check
+  (worktree is sparse; deps' oleans live in main), then relocate to worktree to commit.
+
+### Files Modified
+- `proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Similarity.lean` (new)
+
+### Next Steps
+- Block-diagonal centralizer: `C(A ⊕ B) ⊇ C(A) × C(B)` and `=` when charpolys coprime
+  → additivity `dim C = dim C(A) + dim C(B)`, the next brick toward Frobenius `Σ(2i-1)dᵢ`.
