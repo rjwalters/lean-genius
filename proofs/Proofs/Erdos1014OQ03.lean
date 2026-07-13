@@ -742,4 +742,65 @@ theorem ratio_tendsto_one_rpow (R : ℕ → ℝ) (p : ℝ)
   filter_upwards [hpos, (tendsto_add_atTop_nat 1).eventually hpos] with l hl hl1
   rw [Function.comp_apply, Real.div_rpow hl1.le hl.le]
 
+/-- **Sum closure (positive sequences).** If `R` and `S` are each eventually positive
+    and each satisfies #1014's ratio hypothesis, then so does their pointwise sum
+    `R + S`.  Unlike scaling / products / powers, addition needs positivity: the
+    consecutive ratio of `R + S` is a convex combination of the two ratios
+    (weights `R l / (R l + S l)` and `S l / (R l + S l)`), so it is squeezed toward
+    `1` by `|(R+S)(l+1)/(R+S)(l) − 1| ≤ |R(l+1)/R(l) − 1| + |S(l+1)/S(l) − 1| → 0`.
+    Together with `ratio_tendsto_one_mul`, `ratio_tendsto_one_const_mul`,
+    `ratio_tendsto_one_shift` and `ratio_tendsto_one_rpow`, this shows the class of
+    ratio-convergent sequences is a positive cone closed under sums and products —
+    the algebraic backbone behind #1014's hypothesis being preserved by the natural
+    operations on growth rates. -/
+theorem ratio_tendsto_one_add (R S : ℕ → ℝ)
+    (hRpos : ∀ᶠ l in atTop, 0 < R l) (hSpos : ∀ᶠ l in atTop, 0 < S l)
+    (hR : Tendsto (fun l => R (l + 1) / R l) atTop (𝓝 1))
+    (hS : Tendsto (fun l => S (l + 1) / S l) atTop (𝓝 1)) :
+    Tendsto (fun l => (R (l + 1) + S (l + 1)) / (R l + S l)) atTop (𝓝 1) := by
+  -- The dominating sequence `|aR − 1| + |aS − 1|` tends to 0.
+  have hg : Tendsto
+      (fun l => |R (l + 1) / R l - 1| + |S (l + 1) / S l - 1|) atTop (𝓝 0) := by
+    have hR0 : Tendsto (fun l => |R (l + 1) / R l - 1|) atTop (𝓝 0) := by
+      have h := (hR.sub_const 1).abs; simpa using h
+    have hS0 : Tendsto (fun l => |S (l + 1) / S l - 1|) atTop (𝓝 0) := by
+      have h := (hS.sub_const 1).abs; simpa using h
+    have := hR0.add hS0; simpa using this
+  -- The normalized error of the sum is dominated termwise.
+  have hbound : ∀ᶠ l in atTop,
+      ‖(R (l + 1) + S (l + 1)) / (R l + S l) - 1‖
+        ≤ |R (l + 1) / R l - 1| + |S (l + 1) / S l - 1| := by
+    filter_upwards [hRpos, hSpos] with l hRl hSl
+    have hsum : 0 < R l + S l := by linarith
+    have hfe : (R (l + 1) + S (l + 1)) / (R l + S l) - 1
+        = (R (l + 1) - R l) / (R l + S l) + (S (l + 1) - S l) / (R l + S l) := by
+      field_simp; ring
+    have t1 : |(R (l + 1) - R l) / (R l + S l)| ≤ |R (l + 1) / R l - 1| := by
+      rw [← increment_div_eq_ratio_sub_one R l hRl.ne', abs_div, abs_div,
+        abs_of_pos hRl, abs_of_pos hsum]
+      calc |R (l + 1) - R l| / (R l + S l)
+          = |R (l + 1) - R l| * (1 / (R l + S l)) := by rw [mul_one_div]
+        _ ≤ |R (l + 1) - R l| * (1 / R l) := by
+            apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
+            exact one_div_le_one_div_of_le hRl (by linarith)
+        _ = |R (l + 1) - R l| / R l := by rw [mul_one_div]
+    have t2 : |(S (l + 1) - S l) / (R l + S l)| ≤ |S (l + 1) / S l - 1| := by
+      rw [← increment_div_eq_ratio_sub_one S l hSl.ne', abs_div, abs_div,
+        abs_of_pos hSl, abs_of_pos hsum]
+      calc |S (l + 1) - S l| / (R l + S l)
+          = |S (l + 1) - S l| * (1 / (R l + S l)) := by rw [mul_one_div]
+        _ ≤ |S (l + 1) - S l| * (1 / S l) := by
+            apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
+            exact one_div_le_one_div_of_le hSl (by linarith)
+        _ = |S (l + 1) - S l| / S l := by rw [mul_one_div]
+    rw [Real.norm_eq_abs, hfe]
+    calc |(R (l + 1) - R l) / (R l + S l) + (S (l + 1) - S l) / (R l + S l)|
+        ≤ |(R (l + 1) - R l) / (R l + S l)| + |(S (l + 1) - S l) / (R l + S l)| :=
+          abs_add_le _ _
+      _ ≤ |R (l + 1) / R l - 1| + |S (l + 1) / S l - 1| := by gcongr
+  have hzero : Tendsto (fun l => (R (l + 1) + S (l + 1)) / (R l + S l) - 1) atTop (𝓝 0) :=
+    squeeze_zero_norm' hbound hg
+  have := hzero.add_const 1
+  simpa using this
+
 end Erdos1014OQ03
