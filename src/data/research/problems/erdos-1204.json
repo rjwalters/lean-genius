@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-04-16T17:08:10.942Z",
-    "iteration": 3,
-    "focus": "Bracketed A(9) into 27<=A(9)<=30 (Erdos1204A9.lean). Exact A(9)=30 and asymptotics A(k)~k log k, B(k) remain open.",
+    "iteration": 4,
+    "focus": "Exact-value frontier A(k)=min largest element of admissible k-tuple (=Hardy-Littlewood minimal diameter H(k)). Now A(2..11)=2,6,8,12,16,20,26,30,32,36, each axiom-free.",
     "blockers": [],
-    "nextAction": "Prove A(9)=30 exactly by exhaustive p=2,3,5,7 pruning over {0,..,29} (extend the Erdos1204A8 lower-bound method), or extend the slope ladder to prime 13 (Erdos1204F is prime 11).",
+    "nextAction": "A(12)=42. The +6 jump (32->36 was +4; 36->42 is +6) signals the mod-2,3,5 sieve on {0,..,41} may exceed 12 survivors — check numerically; if so p=7 becomes binding again (A(8)-style forced-set analysis).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-5, 2026-07-12): proved the EXACT value A(10)=32 (Erdos1204A10.lean), extending the exact frontier to A(2..10)=2,6,8,12,16,20,26,30,32. Like A(9), the lower bound is settled by the mod-2,3,5 sieve ALONE (p=7 not needed): the exact max over all 30 missed-class triples of the range-32 avoidance filter is exactly 9<10 (by decide), correcting an earlier next-step note that predicted p=7 would be binding. 0 sorries / 0 axioms ([propext,Classical.choice,Quot.sound], no native_decide), host-lake verified Lean v4.26.0.",
+    "progressSummary": "PROGRESS (researcher-7, 2026-07-12): proved the EXACT value A(11)=36 (Erdos1204A11.lean), extending the exact frontier to A(2..11)=2,6,8,12,16,20,26,30,32,36 (OEIS A008407 Hardy-Littlewood minimal diameters). Like A(9) and A(10), the lower bound is settled by the mod-2,3,5 sieve ALONE (neither p=7 nor p=11 needed): the exact max over all 30 missed-class triples of the range-36 filter is 10 < 11. Witness {0,2,6,8,12,18,20,26,30,32,36} = A(10) witness + 36. Axiom-free. Asymptotics A(k)~k log k and B(k) estimate remain OPEN (need sieve theory).",
     "builtItems": [
       "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
       "Erdos1204.missing_class_of_card_lt",
@@ -52,7 +52,10 @@
       "theorem A_nine_ge : 30 ≤ A 9 and updated A_nine_bounds sharp sandwich.",
       "admissible_witness_ten (Erdos1204A10.lean): {0,2,6,8,12,18,20,26,30,32} = A(9) witness + 32 is admissible (misses class 1 mod2, 1 mod3, 4 mod5, 3 mod7); gives A(10)<=32",
       "admissible_ten_sup_ge (Erdos1204A10.lean): every admissible 10-set has sup>=32, via mod-2,3,5 sieve fin_cases r2,r3,r5 <;> decide (filter card <=9 over range 32)",
-      "A_ten / A_ten_ge / A_ten_bounds (Erdos1204A10.lean): A(10)=32 exact, axiom-free [propext,Classical.choice,Quot.sound], extends frontier A(2..10)=2,6,8,12,16,20,26,30,32"
+      "A_ten / A_ten_ge / A_ten_bounds (Erdos1204A10.lean): A(10)=32 exact, axiom-free [propext,Classical.choice,Quot.sound], extends frontier A(2..10)=2,6,8,12,16,20,26,30,32",
+      "admissible_witness_eleven (Erdos1204A11.lean): {0,2,6,8,12,18,20,26,30,32,36} = A(10) witness + 36 is admissible (misses class 1 mod2, 1 mod3, 4 mod5, 3 mod7, 5 mod11 — now p=11=|a| must and does miss a class); gives A(11)<=36.",
+      "admissible_eleven_sup_ge (Erdos1204A11.lean): every admissible 11-set has sup>=36, via mod-2,3,5 sieve fin_cases r2,r3,r5 <;> decide (filter card <=10 over range 36 for all 30 triples).",
+      "A_eleven / A_eleven_ge / A_eleven_bounds (Erdos1204A11.lean): A(11)=36 exact, axiom-free [propext,Classical.choice,Quot.sound], extends frontier A(2..11)=2,6,8,12,16,20,26,30,32,36."
     ],
     "insights": [
       "Admissibility is purely local: only the residue pattern mod each prime matters.",
@@ -69,13 +72,12 @@
       "A(9) sits in 27 <= A(9) <= 30 (H(9)=30). The exact value needs the exhaustive p=2,3,5,7 pruning over {0,..,29} (as A(8)=26 required over {0,..,25}); the general slope ladder Erdos1204C..F (slopes 3, 15/4, 35/8, 77/16) gives only A(9)>=3(9-2)=21, weaker than the monotonicity bound 27, so per-value exact computation and the asymptotic ladder are complementary.",
       "A(9)=30 exact (OEIS A008407): the mod-2,3,5 sieve alone closes the lower bound because 2*3*5=30 equals the window length {0,..,29}; by CRT exactly 1*2*4=8 residues survive avoiding one class each mod 2,3,5, and 8<9. p=7 is unnecessary here, unlike A(8)=26 where the 13-per-parity window leaves 9-slot pools that only p=7 kills.",
       "Formalization pattern for these primorial-window lower bounds: bound a by (Finset.range N).filter (fun x:ℕ => (x:ZMod p1)≠r1 ∧ ...), then close all class-choices at once with fin_cases r1 <;> ... <;> decide proving the filter card ≤ target-1. Much shorter than the per-branch forced-set case bash used for A(8). GOTCHA: annotate the lambda binder `fun x : ℕ =>` — a bare `(x : ZMod 2)` ascription makes Lean infer x:ZMod 2 and the later (x:ZMod 3) mismatches.",
-      "A(10)=32 (Erdos1204A10.lean): the mod-2,3,5 sieve ALONE closes the lower bound — p=7 is NOT needed. The exact max over all 2*3*5=30 missed-class triples of |{x<32 : x avoids one class each mod 2,3,5}| is exactly 9 < 10 (checked by decide), correcting the earlier next-step prediction that averaged density 32*(1/2)(2/3)(4/5)=8.53 to guess ~10-11 survivors and expected p=7 to become binding. Window length 32 sits just above the primorial 2*3*5=30 yet density stays below target 10."
+      "A(10)=32 (Erdos1204A10.lean): the mod-2,3,5 sieve ALONE closes the lower bound — p=7 is NOT needed. The exact max over all 2*3*5=30 missed-class triples of |{x<32 : x avoids one class each mod 2,3,5}| is exactly 9 < 10 (checked by decide), correcting the earlier next-step prediction that averaged density 32*(1/2)(2/3)(4/5)=8.53 to guess ~10-11 survivors and expected p=7 to become binding. Window length 32 sits just above the primorial 2*3*5=30 yet density stays below target 10.",
+      "A(11)=36 (Erdos1204A11.lean, researcher-7 2026-07-12): the mod-2,3,5 sieve ALONE closes the lower bound — neither p=7 nor p=11 is needed, the third consecutive frontier value the small-prime sieve settles without forced-set analysis. Exact max over all 2*3*5=30 missed-class triples of |{x<36 : x avoids one class mod each of 2,3,5}| is 10 (worst combo miss 0 mod2, 0 mod3, 2 mod5), strictly below the target 11; window {0,..,35} (length 36) sits just above primorial 30 so density has not reached 11."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove A(11)=36: window {0,..,35}, target 11. Check whether the mod-2,3,5(,7) sieve density stays below 11 (decide over class-tuples) or whether a genuine forced-set case analysis is needed — A(10) showed the averaged-density heuristic is unreliable, so COMPUTE the exact per-tuple max before predicting which primes are binding.",
-      "Generalize the primorial-window observation into a reusable lemma: for the first j primes with primorial P=prod p_i, an admissible set inside {0,..,P-1} has card <= prod (p_i-1) via CRT (ZMod P ≅ prod ZMod p_i), giving A(k) >= P whenever prod(p_i-1) < k. Mathlib: ZMod.chineseRemainder. Est ~300-500 lines; moderate risk.",
-      "The headline A(k) ∼ k log k asymptotic needs sieve theory / prime distribution — remains OPEN."
+      "A(12)=42 (H(12), jump of +6 back like A(8)): window {0,..,41}, primorial 2*3*5=30 now well below 42 so the mod-2,3,5 sieve density likely EXCEEDS 12 — expect p=7 to become binding again, needing the deeper forced-set case analysis of the A(8) pattern (or a fin_cases over mod 2,3,5,7 = 210 decide combos). Check numerically which primes bind before choosing automated-vs-forced strategy."
     ],
     "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n",
     "score": 27
@@ -95,7 +97,7 @@
     "mathlib": []
   },
   "started": "2026-04-16T17:08:10.942Z",
-  "lastUpdate": "2026-07-12T09:08:15.000Z",
+  "lastUpdate": "2026-07-12",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -164,6 +166,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1204Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1204A11.lean",
+      "filename": "Erdos1204A11.lean",
+      "lineCount": 132,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1204A11.lean"
     }
   ]
 }
