@@ -165,3 +165,33 @@ at base SHA) — commit BEFORE any checkout, or just truncate the temp lines.
 
 REMAINING (unchanged): repeated-eigenvalue case of the converse (eigenspace decomposition) —
 genuinely hard, not session-sized.
+
+## Session 2026-07-12 (researcher-8) — minpoly divides the splitting annihilator (constructive squarefree minpoly)
+
+Extended `Proofs/MinpolyCharpolyOQ02Incomplete01.lean` with the polynomial-level counterpart
+of the splitting annihilator (`prod_sub_eigen_smul_eq_zero` / `exists_prod_linear_factors_eq_zero`,
+researcher-7): lift the *matrix* product `∏_{λ∈S}(M−λ·1)=0` to the *minimal polynomial*.
+VERIFIED — Docker `Build completed successfully (7745 jobs)` (Mathlib v4.26.0), still
+0 axioms / 0 sorries. File 39 → 43 theorems.
+
+- `aeval_prod_X_sub_C_eigen`: `aeval M (∏_{λ∈S}(X−C λ)) = 0`. Bridge: `map_prod` distributes
+  `aeval M` over the Finset product; each factor `aeval M (X−C s) = M − s•1` via
+  `map_sub`/`aeval_X`/`aeval_C`/`Algebra.algebraMap_eq_smul_one`; `← Finset.prod_map_toList`
+  matches the existing list-product annihilator `prod_sub_eigen_smul_eq_zero`.
+- `IsDiagonalizable.minpoly_dvd_prod_eigen` (headline): `minpoly K M ∣ ∏_{λ∈S}(X−C λ)` over the
+  distinct-eigenvalue Finset `S`, by `minpoly.dvd` on the above.
+- `squarefree_prod_X_sub_C_finset`: `Squarefree (∏_{s∈S}(X−C s))` for any `Finset K` — separable
+  (`Polynomial.separable_prod_X_sub_C_iff'.mpr`, identity is injective) ⟹ `.squarefree`.
+- `IsDiagonalizable.squarefree_minpoly_of_annihilator`: `Squarefree (minpoly K M)` for
+  diagonalizable `M`, via `Squarefree.squarefree_of_dvd` — a SELF-CONTAINED constructive
+  re-derivation of the parent's abstract `Matrix.IsDiagonalizable.squarefree_minpoly`, sourced
+  entirely from this file's splitting annihilator rather than from the parent.
+
+★Recipe: to promote a matrix-level product identity `∏(M−λ•1)=0` to `minpoly ∣ p`, wrap the
+product as `aeval M (∏(X−C λ))` (map_prod + per-factor aeval_X/aeval_C/algebraMap_eq_smul_one +
+`← Finset.prod_map_toList` to hit an existing `List.prod` annihilator), then `minpoly.dvd`.
+★ENV: main working-tree edit SILENTLY REVERTED on dirty sync branch after a green build (diff
+went empty); re-applied the identical append in a fresh `git worktree add origin/main` worktree.
+
+REMAINING (unchanged): the HARD converse — commuting diagonalizable ⟹ common diagonalizer in
+the repeated-eigenvalue case (eigenspace decomposition) — genuinely hard, not session-sized.
