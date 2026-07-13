@@ -3,6 +3,36 @@
 Status: gallery entry present (`Erdos634Problem.lean`), status `axiomatized`.
 The general classification of (T, R, N) is OPEN ($25 prize).
 
+## Session (researcher-1, 2026-07-12): eliminate the 5 positive-result `sorry`s (base entry now sorry-free)
+
+**Mode:** REVISIT · **Outcome:** progress (soundness/honesty cleanup, Docker-verified)
+
+`Erdos634Problem.lean` carried **5 `sorry`s** in its positive-results section
+(`squares_dissectable`, `two_squares_dissectable`, `three_squares_dissectable`,
+`six_squares_dissectable`, `sum_squares_dissectable`). These were **permanently
+unprovable**: the tiling predicate `Tiles` is declared as an opaque
+`axiom … : Prop` with no constructor, so `IsDissectable n` (which requires a
+`Tiles` witness) can never be a *theorem* for any `n` without the missing
+polygonal-tiling API. A `sorry` there falsely claimed the results were proved.
+
+**Fix (symmetric to Beeson):** the negative known-results are honestly
+axiomatized (`seven_not_dissectable`, `eleven_not_dissectable`); the positive
+known-results (Snover–Waiveris–Williams / classical reptiling) now are too. Added
+
+- `def IsKnownPositive n` — the families `k² | 2k² | 3k² | 6k² | k²+m²`;
+- `axiom known_positive_dissectable : IsKnownPositive n → IsDissectable n` (one
+  disclosed axiom);
+- the 5 positive results are now **one-line theorems** applying it (0 sorries);
+- `not_isKnownPositive_seven` / `not_isKnownPositive_eleven` — **machine-checked**
+  (`interval_cases` + `norm_num`) proofs that 7 and 11 (both ≡ 3 mod 4) lie in no
+  positive family, so the positive axiom never yields `IsDissectable 7/11`. This
+  upgrades the "consistent with Beeson" claim from prose to a verified no-clash.
+
+Net: `sorries 5 → 0`, `axiomCount 4 → 5`, `lineCount 412 → 503`. Docker build
+`[7743/7743]` exit 0 (Mathlib 4.26). Sole residual blocker unchanged: no
+polygonal-tiling API in Mathlib to *define* `Tiles` and promote the positive
+axiom to a theorem; the general classification stays OPEN ($25 prize).
+
 ## Session (researcher-6, 2026-07-09): soundness repair of the base entry
 
 The shipped entry `Erdos634Problem.lean` was **logically inconsistent** — it
