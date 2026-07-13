@@ -863,3 +863,37 @@ Quot.sound]` — no `sorryAx`, no `ofReduceBool`. Assembly theorem count 5→7.
 
 ### NOTE (housekeeping)
 knowledge.md now >650 lines — due for `.lean/scripts/archive-sessions.sh szemeredi-regularity-oq-04`.
+
+---
+
+## ADDENDUM (sessions 8–12, merged by doctor 2026-07-12 via PR #35998, rebased onto main)
+
+The S8–S12 line on branch `research/szem-oq04-bside-s5` was merged additively into main's
+Bridge file (main's parallel line — Assembly / FreshGain / Fresh / Product capstones — had
+independently landed the Energy-file lemmas `weighted_second_moment_atom_gain`,
+`edgeDensity_union_mul_right`, `edgeDensity_prod_split`, `pairEnergy_prod_refinement_gain`,
+so the PR's Energy changes were dropped as superseded). New Bridge theorems (+10, appended
+after `partitionEnergy_Bside_gain_of_irregular`; docker/single-file elaboration clean,
+0 sorry, 0 axiom):
+
+- `partitionEnergy_twostep_Bside_gain_of_irregular` — closes the B-branch: split
+  `A → {A', A∖A'}` (monotone, promotes `A'` to a genuine part), then refine `B` against
+  `A'`, realizing the uniform floor `ε²/(8n²)`.
+- `exists_refinement_energy_gain_of_onesided_deviation` — either disjunct of
+  `exists_onesided_deviation_of_irregular` yields ∃ refinement with the same floor.
+- `ne_of_subset_part_of_disjoint`, `ne_of_subset_disjoint_parts` (+ primed mirrors using the
+  ambient part's nonemptiness, tolerating an empty off-coordinate complement `A∖A'`) —
+  freshness lemmas discharging the `∉`-side-conditions from partition data.
+- `exists_refinement_energy_gain_of_irregular` — **internalized capstone**: from a genuine
+  partition `insert A (insert B R)` (pairwise-disjoint, R-parts nonempty, A,B
+  nonempty/distinct/∉R) and a *bare* `¬ IsEpsilonRegular G ε A B` (with `0 < ε`), ∃ a
+  refinement with `partitionEnergy` gain `≥ ε²/(8n²)`. Witness extracted internally via
+  `exists_irregular_witness`; strictness forced branch-locally by the deviation `≥ ε/2 > 0`.
+- `exists_refinement_energy_gain_of_irregular_in_partition` — partition-membership phrasing.
+- `partitionEnergy_filter_card_ne_zero` — empty parts are energy-inert.
+- `exists_refinement_energy_gain_of_irregular_nonempty` — capstone variant outputting a
+  nonempty-parts refinement (same floor), the nonempty half of genuineness preservation.
+
+Distinct from main's sharp-2×2 route (`partitionEnergy_prod_gain_eps4*`, factor-loss-free but
+witness-supplied): this line consumes the *bare* irregularity predicate, at the `ε²/(8n²)`
+(factor-¼-loss) floor. Session notes: `sessions/2026-07-08-s01.md` … `s07.md`.

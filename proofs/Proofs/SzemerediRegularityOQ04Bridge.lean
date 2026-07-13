@@ -828,4 +828,525 @@ theorem pairEnergy_prod_gain_of_irregular_eps4 (G : SimpleGraph V)
       _ = (↑A'.card : ℚ) * ↑B'.card / (Fintype.card V : ℚ) ^ 2 * eps ^ 2 := by ring
   linarith [hgain, hfloor]
 
+/-- **Two-step B-branch energy increment.**  Closes the `B`-branch of the two-sided
+    AFKS energy-increment argument, where the deviating coordinate is measured
+    against a *witness sub-part* `A' ⊆ A` rather than a genuine existing part.
+
+    `exists_onesided_deviation_of_irregular` hands back a `B`-side deviation
+    `|d(A', B') − d(A', B)| ≥ ε/2` measured against the witness sub-part `A'`, which
+    is *not* a part of the current partition `insert A (insert B R)`.  The direct
+    `partitionEnergy_Bside_gain_of_irregular` cannot consume it, since it needs the
+    deviating partner to already be a genuine part.  Resolution — a two-step
+    refinement:
+
+    1. split `A → {A', A \ A'}` via `partitionEnergy_single_split_mono`.  This step
+       is monotone (energy never drops) and, crucially, *promotes* `A'` to a genuine
+       part of the intermediate partition `insert B (insert A' (insert (A \ A') R))`;
+    2. now refine `B` against the present part `A'` via
+       `partitionEnergy_Bside_gain_of_irregular`, realizing the uniform floor
+       `(ε/2)² / (2n²) = ε² / (8n²)`.
+
+    Chaining the monotone step against the gain step (`linarith`) yields the full
+    increment on the composite `2×2`-style refinement.  Together with
+    `partitionEnergy_Aside_gain_of_irregular`, *both* disjuncts of
+    `exists_onesided_deviation_of_irregular` now produce a concrete `partitionEnergy`
+    increment `≥ ε² / (8n²)`, i.e. both drive the `hstep` hypothesis of
+    `afks_energy_iteration_count`: the two-sided AFKS increment is end-to-end. -/
+theorem partitionEnergy_twostep_Bside_gain_of_irregular (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B A' B' : Finset V)
+    (hA' : A' ⊆ A) (hB' : B' ⊆ B)
+    -- freshness of the `A`-split parts inside `insert B R`
+    (hA'R : A' ∉ insert B R) (hAcR : A \ A' ∉ insert B R) (hAne : A' ≠ A \ A')
+    (hAR : A ∉ insert B R)
+    -- freshness of the `B`-split parts against the refined family `A' :: A\A' :: R`
+    (hB'R : B' ∉ insert A' (insert (A \ A') R))
+    (hBcR : B \ B' ∉ insert A' (insert (A \ A') R))
+    (hBne : B' ≠ B \ B')
+    (hBR : B ∉ insert A' (insert (A \ A') R))
+    -- nonemptiness of the promoted part and the `B`-split pieces
+    (hnA' : 1 ≤ (A'.card : ℚ)) (hnB' : 1 ≤ (B'.card : ℚ))
+    (hnBc : 1 ≤ ((B \ B').card : ℚ))
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdev : |edgeDensity G A' B' - edgeDensity G A' B| ≥ eps / 2) :
+    partitionEnergy G (insert A (insert B R)) +
+        (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤
+      partitionEnergy G
+        (insert B' (insert (B \ B') (insert A' (insert (A \ A') R)))) := by
+  have hAunion : A' ∪ (A \ A') = A := Finset.union_sdiff_of_subset hA'
+  have hAdisj : Disjoint A' (A \ A') := disjoint_sdiff_self_right
+  -- Step 1: split `A` into `{A', A \ A'}` inside `insert B R` (monotone).
+  have hmono := partitionEnergy_single_split_mono G (insert B R) A' (A \ A')
+    hAdisj hA'R hAcR hAne (by rw [hAunion]; exact hAR)
+  rw [hAunion] at hmono
+  -- Reorder so the intermediate partition presents `B` on the outside, with `A'`
+  -- now a genuine part of the remaining family `insert A' (insert (A \ A') R)`.
+  have hreorder : insert A' (insert (A \ A') (insert B R)) =
+      insert B (insert A' (insert (A \ A') R)) := by
+    ext x; simp only [Finset.mem_insert]; tauto
+  rw [hreorder] at hmono
+  -- Step 2: B-side gain against the promoted part `A'`.
+  have hgain := partitionEnergy_Bside_gain_of_irregular G
+    (insert A' (insert (A \ A') R)) B A' B'
+    hB' hB'R hBcR hBne hBR (Finset.mem_insert_self _ _)
+    hnB' hnBc hnA' eps hε hdev
+  linarith [hmono, hgain]
+
+/-- **Unified irregular-pair energy increment (single existential interface).**
+    Collapses the two branch-specific gain lemmas
+    (`partitionEnergy_Aside_gain_of_irregular` and
+    `partitionEnergy_twostep_Bside_gain_of_irregular`) into one statement of the
+    exact shape the AFKS iteration consumes: *from a one-sided deviation of an
+    irregular pair there EXISTS a refinement of `insert A (insert B R)` whose
+    `partitionEnergy` exceeds the current one by the uniform floor
+    `(ε/2)² / (2n²) = ε² / (8n²)`.*
+
+    The hypothesis is the disjunction produced by
+    `exists_onesided_deviation_of_irregular`:
+
+    * the **A-side** branch (`|d(A', B) − d(A, B)| ≥ ε/2`, partner `B` kept whole)
+      returns the single-split refinement `A' :: A\A' :: (B :: R)` via
+      `partitionEnergy_Aside_gain_of_irregular` with the fixed partner `B` supplied
+      by `Finset.mem_insert_self`;
+    * the **B-side** branch (`|d(A', B') − d(A', B)| ≥ ε/2`, partner the witness
+      sub-part `A'`) returns the two-step refinement
+      `B' :: B\B' :: A' :: A\A' :: R` via
+      `partitionEnergy_twostep_Bside_gain_of_irregular`.
+
+    Either way the SAME floor is realized, so the two branches unify to one
+    existential.  This is the clean interface theorem: composed with
+    `exists_onesided_deviation_of_irregular`, the only remaining gap to a fully
+    hypothesis-free `¬ IsEpsilonRegular → ∃ refinement` statement is discharging
+    the freshness/nonemptiness side conditions of the *internally extracted*
+    witness (automatic under an equipartition-based refinement, but not available
+    at this level of abstraction — hence kept as hypotheses on the named
+    witness). -/
+theorem exists_refinement_energy_gain_of_onesided_deviation (G : SimpleGraph V)
+    [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B A' B' : Finset V)
+    (hA' : A' ⊆ A) (hB' : B' ⊆ B)
+    -- freshness of the `A`-split parts inside `insert B R`
+    (hA'R : A' ∉ insert B R) (hAcR : A \ A' ∉ insert B R) (hAne : A' ≠ A \ A')
+    (hAR : A ∉ insert B R)
+    -- freshness of the `B`-split parts against the refined family `A' :: A\A' :: R`
+    (hB'R : B' ∉ insert A' (insert (A \ A') R))
+    (hBcR : B \ B' ∉ insert A' (insert (A \ A') R))
+    (hBne : B' ≠ B \ B')
+    (hBR : B ∉ insert A' (insert (A \ A') R))
+    -- nonemptiness of the witness sub-parts, their complements, and partner `B`
+    (hnA' : 1 ≤ (A'.card : ℚ)) (hnAc : 1 ≤ ((A \ A').card : ℚ))
+    (hnB' : 1 ≤ (B'.card : ℚ)) (hnBc : 1 ≤ ((B \ B').card : ℚ))
+    (hnB : 1 ≤ (B.card : ℚ))
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdev : |edgeDensity G A' B - edgeDensity G A B| ≥ eps / 2 ∨
+            |edgeDensity G A' B' - edgeDensity G A' B| ≥ eps / 2) :
+    ∃ R' : Finset (Finset V),
+      partitionEnergy G (insert A (insert B R)) +
+          (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤ partitionEnergy G R' := by
+  rcases hdev with hAside | hBside
+  · -- A-side branch: refine `A` against the whole partner `B` (a genuine part).
+    refine ⟨insert A' (insert (A \ A') (insert B R)), ?_⟩
+    exact partitionEnergy_Aside_gain_of_irregular G (insert B R) A B A'
+      hA' hA'R hAcR hAne hAR (Finset.mem_insert_self B R)
+      hnA' hnAc hnB eps hε hAside
+  · -- B-side branch: two-step refinement, `B` against the promoted witness `A'`.
+    refine ⟨insert B' (insert (B \ B') (insert A' (insert (A \ A') R))), ?_⟩
+    exact partitionEnergy_twostep_Bside_gain_of_irregular G R A B A' B'
+      hA' hB' hA'R hAcR hAne hAR hB'R hBcR hBne hBR
+      hnA' hnB' hnBc eps hε hBside
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: DISCHARGING WITNESS FRESHNESS FROM A GENUINE PARTITION
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **A nonempty subset of one part differs from every other part.**  In a
+    pairwise-disjoint family `fam`, if `S ⊆ A` is nonempty and `Q ∈ fam` is a part
+    *distinct from* `A`, then `S ≠ Q`.  Reason: `Q` and `A` are disjoint, so `Q`
+    contains no point of `A`, whereas the nonempty `S ⊆ A` does.
+
+    This is the structural fact behind every "freshness" side-condition of the
+    refinement lemmas.  The energy-increment machinery insists that the newly
+    carved sub-parts (`A'`, `A \ A'`, …) are *not already present* in the family
+    being refined, because inserting a duplicate part into a `Finset` is a no-op
+    and would silently break the intended split.  In a genuine partition that can
+    never happen, and this lemma is why. -/
+theorem ne_of_subset_part_of_disjoint
+    (fam : Finset (Finset V))
+    (hdisj : ∀ P ∈ fam, ∀ Q ∈ fam, P ≠ Q → Disjoint P Q)
+    (A S Q : Finset V) (hA : A ∈ fam) (hQ : Q ∈ fam) (hQA : Q ≠ A)
+    (hSA : S ⊆ A) (hSne : S.Nonempty) : S ≠ Q := by
+  intro heq
+  obtain ⟨x, hx⟩ := hSne
+  have hxA : x ∈ A := hSA hx
+  have hxQ : x ∈ Q := heq ▸ hx
+  exact absurd hxA (Finset.disjoint_left.mp (hdisj Q hQ A hA hQA) hxQ)
+
+/-- **A nonempty subset of `A` differs from any subset of a disjoint part `B`.**
+    If `Disjoint A B`, `S ⊆ A` is nonempty and `T ⊆ B`, then `S ≠ T` — the two
+    live in disjoint parts, so a common element would sit in `A ∩ B = ∅`.  Used
+    to separate witness sub-parts of `A` (namely `A'`, `A \ A'`) from witness
+    sub-parts of the disjoint partner `B` (namely `B'`, `B \ B'`), which are
+    *not* members of the ambient family and so out of reach of
+    `ne_of_subset_part_of_disjoint`. -/
+theorem ne_of_subset_disjoint_parts
+    (A B S T : Finset V) (hAB : Disjoint A B)
+    (hSA : S ⊆ A) (hTB : T ⊆ B) (hSne : S.Nonempty) : S ≠ T := by
+  intro heq
+  obtain ⟨x, hx⟩ := hSne
+  have hxA : x ∈ A := hSA hx
+  have hxB : x ∈ B := hTB (heq ▸ hx)
+  exact absurd hxA (Finset.disjoint_right.mp hAB hxB)
+
+/-- **Irregular pair in a genuine partition ⇒ refinement with an energy jump —
+    freshness discharged.**  This is `exists_refinement_energy_gain_of_onesided_deviation`
+    with *all eight* freshness side-conditions replaced by the single, natural
+    hypothesis that the ambient family `insert A (insert B R)` is a genuine
+    partition: its parts are pairwise disjoint (`hdisj`), `A` and `B` are two
+    distinct genuine parts (`hAR`, `hBR`, `hAB` say `A, B ∉ R` and `A ≠ B`).
+
+    From disjointness alone, the two structural lemmas above discharge every
+    freshness obligation:
+
+    * each witness sub-part (`A'`, `A \ A'`) is a nonempty subset of `A`, hence —
+      by `ne_of_subset_part_of_disjoint` — distinct from every other part of the
+      family, and — by `ne_of_subset_disjoint_parts` — distinct from every
+      sub-part of the disjoint partner `B`;
+    * symmetrically for `B'`, `B \ B'`;
+    * `A ≠ B` and `A, B ∉ R` handle the whole-part obligations directly.
+
+    The card-`≥ 1` obligations collapse to plain nonemptiness of the four
+    sub-parts and of `B`.  What remains is exactly the deviation disjunction
+    produced by `exists_onesided_deviation_of_irregular`.  This is the first
+    statement in which a *bare partition + irregular witness* — with no bespoke
+    non-membership bookkeeping — yields the AFKS energy increment, closing the
+    freshness gap flagged by `exists_refinement_energy_gain_of_onesided_deviation`. -/
+theorem exists_refinement_energy_gain_of_irregular_in_partition
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B A' B' : Finset V)
+    (hdisj : ∀ P ∈ insert A (insert B R), ∀ Q ∈ insert A (insert B R),
+      P ≠ Q → Disjoint P Q)
+    (hAR : A ∉ R) (hBR : B ∉ R) (hAB : A ≠ B)
+    (hA' : A' ⊆ A) (hB' : B' ⊆ B)
+    (hA'ne : A'.Nonempty) (hAcne : (A \ A').Nonempty)
+    (hB'ne : B'.Nonempty) (hBcne : (B \ B').Nonempty)
+    (hBne : B.Nonempty)
+    (eps : ℚ) (hε : 0 ≤ eps)
+    (hdev : |edgeDensity G A' B - edgeDensity G A B| ≥ eps / 2 ∨
+            |edgeDensity G A' B' - edgeDensity G A' B| ≥ eps / 2) :
+    ∃ R' : Finset (Finset V),
+      partitionEnergy G (insert A (insert B R)) +
+          (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤ partitionEnergy G R' := by
+  -- Basic membership / disjointness facts about the genuine partition.
+  have hAfam : A ∈ insert A (insert B R) := Finset.mem_insert_self _ _
+  have hBfam : B ∈ insert A (insert B R) :=
+    Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)
+  have disjAB : Disjoint A B := hdisj A hAfam B hBfam hAB
+  have memfam_of_R : ∀ {Q : Finset V}, Q ∈ R → Q ∈ insert A (insert B R) :=
+    fun hQ => Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hQ)
+  have neA_of_R : ∀ {Q : Finset V}, Q ∈ R → Q ≠ A := fun hQ h => hAR (h ▸ hQ)
+  have neB_of_R : ∀ {Q : Finset V}, Q ∈ R → Q ≠ B := fun hQ h => hBR (h ▸ hQ)
+  -- Convenient nonempty ⇒ (1 : ℚ) ≤ card.
+  have cardQ : ∀ {S : Finset V}, S.Nonempty → (1 : ℚ) ≤ (S.card : ℚ) := by
+    intro S hS
+    have h1 : 1 ≤ S.card := Finset.card_pos.mpr hS
+    exact_mod_cast h1
+  -- A' and A \ A' are nonempty subsets of A; B' and B \ B' of B.
+  have hAc' : A \ A' ⊆ A := Finset.sdiff_subset
+  have hBc' : B \ B' ⊆ B := Finset.sdiff_subset
+  -- ─── A-side freshness ─────────────────────────────────────────────
+  have hA'R_ : A' ∉ insert B R := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts A B A' B disjAB hA' (Finset.Subset.refl B) hA'ne,
+      fun hmem => ne_of_subset_part_of_disjoint _ hdisj A A' A' hAfam
+        (memfam_of_R hmem) (neA_of_R hmem) hA' hA'ne rfl⟩
+  have hAcR_ : A \ A' ∉ insert B R := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts A B (A \ A') B disjAB hAc' (Finset.Subset.refl B) hAcne,
+      fun hmem => ne_of_subset_part_of_disjoint _ hdisj A (A \ A') (A \ A') hAfam
+        (memfam_of_R hmem) (neA_of_R hmem) hAc' hAcne rfl⟩
+  have hAne_ : A' ≠ A \ A' := by
+    intro heq
+    obtain ⟨x, hx⟩ := hA'ne
+    exact absurd hx (Finset.disjoint_right.mp disjoint_sdiff_self_right (heq ▸ hx))
+  have hAR_ : A ∉ insert B R := by
+    simp only [Finset.mem_insert, not_or]; exact ⟨hAB, hAR⟩
+  -- ─── B-side freshness (against `insert A' (insert (A \ A') R)`) ────
+  have hB'R_ : B' ∉ insert A' (insert (A \ A') R) := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts B A B' A' disjAB.symm hB' hA' hB'ne,
+      ne_of_subset_disjoint_parts B A B' (A \ A') disjAB.symm hB' hAc' hB'ne,
+      fun hmem => ne_of_subset_part_of_disjoint _ hdisj B B' B' hBfam
+        (memfam_of_R hmem) (neB_of_R hmem) hB' hB'ne rfl⟩
+  have hBcR_ : B \ B' ∉ insert A' (insert (A \ A') R) := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts B A (B \ B') A' disjAB.symm hBc' hA' hBcne,
+      ne_of_subset_disjoint_parts B A (B \ B') (A \ A') disjAB.symm hBc' hAc' hBcne,
+      fun hmem => ne_of_subset_part_of_disjoint _ hdisj B (B \ B') (B \ B') hBfam
+        (memfam_of_R hmem) (neB_of_R hmem) hBc' hBcne rfl⟩
+  have hBne_ : B' ≠ B \ B' := by
+    intro heq
+    obtain ⟨x, hx⟩ := hB'ne
+    exact absurd hx (Finset.disjoint_right.mp disjoint_sdiff_self_right (heq ▸ hx))
+  have hBR_ : B ∉ insert A' (insert (A \ A') R) := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts B A B A' disjAB.symm (Finset.Subset.refl B) hA' hBne,
+      ne_of_subset_disjoint_parts B A B (A \ A') disjAB.symm (Finset.Subset.refl B) hAc' hBne,
+      hBR⟩
+  -- Assemble via the S10 single-existential interface.
+  exact exists_refinement_energy_gain_of_onesided_deviation G R A B A' B'
+    hA' hB' hA'R_ hAcR_ hAne_ hAR_ hB'R_ hBcR_ hBne_ hBR_
+    (cardQ hA'ne) (cardQ hAcne) (cardQ hB'ne) (cardQ hBcne) (cardQ hBne)
+    eps hε hdev
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VIII: INTERNALIZING THE WITNESS — ¬IsEpsilonRegular ⇒ ∃ refinement
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Partner-nonempty part freshness.**  Mirror of `ne_of_subset_part_of_disjoint`
+    that discharges the freshness of a *possibly empty* sub-part `S ⊆ A` using the
+    nonemptiness of the *other* part `Q` rather than that of `S`.  In a
+    pairwise-disjoint family, a part `Q ≠ A` that is nonempty cannot equal any
+    subset `S ⊆ A`: were `S = Q` then `Q ⊆ A`, but `Disjoint A Q` forces
+    `Q ⊆ A ∩ Q = ∅`, contradicting `Q.Nonempty`.
+
+    This is the enabling variant for *internalizing* the irregularity witness.
+    When the extracted witness `A'` happens to equal the whole part `A`, its
+    complement `A \ A'` is empty, so the earlier `ne_of_subset_part_of_disjoint`
+    (which leans on `S.Nonempty`) no longer applies.  The ambient partition's
+    parts, however, are always nonempty, so this version discharges the same
+    obligation with no strictness assumption on the carved sub-part. -/
+theorem ne_of_subset_part_of_disjoint'
+    (fam : Finset (Finset V))
+    (hdisj : ∀ P ∈ fam, ∀ Q ∈ fam, P ≠ Q → Disjoint P Q)
+    (A S Q : Finset V) (hA : A ∈ fam) (hQ : Q ∈ fam) (hQA : Q ≠ A)
+    (hSA : S ⊆ A) (hQne : Q.Nonempty) : S ≠ Q := by
+  intro heq
+  obtain ⟨x, hx⟩ := hQne
+  have hxA : x ∈ A := hSA (heq.symm ▸ hx)
+  exact absurd hxA (Finset.disjoint_left.mp (hdisj Q hQ A hA hQA) hx)
+
+/-- **Partner-nonempty cross-part freshness.**  Mirror of
+    `ne_of_subset_disjoint_parts` using the nonemptiness of `T ⊆ B` rather than of
+    `S ⊆ A`.  If `Disjoint A B`, `S ⊆ A`, `T ⊆ B` and `T` is nonempty then
+    `S ≠ T`: else `T = S ⊆ A`, so `T ⊆ A ∩ B = ∅`, contradicting `T.Nonempty`.
+    The companion to `ne_of_subset_part_of_disjoint'` that separates a possibly
+    empty sub-part of `A` from a nonempty sub-part of the disjoint partner `B`. -/
+theorem ne_of_subset_disjoint_parts'
+    (A B S T : Finset V) (hAB : Disjoint A B)
+    (hSA : S ⊆ A) (hTB : T ⊆ B) (hTne : T.Nonempty) : S ≠ T := by
+  intro heq
+  obtain ⟨x, hx⟩ := hTne
+  have hxA : x ∈ A := hSA (heq.symm ▸ hx)
+  have hxB : x ∈ B := hTB hx
+  exact absurd hxB (Finset.disjoint_left.mp hAB hxA)
+
+/-- **Fully internalized AFKS energy increment.**  The capstone of Parts VI–VII:
+    from *nothing but* a genuine partition and the raw hypothesis that the pair
+    `(A, B)` is `¬ ε`-regular, there EXISTS a refinement of `insert A (insert B R)`
+    whose `partitionEnergy` exceeds the current one by the uniform floor
+    `(ε/2)² / (2n²) = ε² / (8n²)`.
+
+    Every prior interface still carried the *extracted witness* `A', B'` and its
+    freshness/nonemptiness as explicit hypotheses.  Here the witness is produced
+    *internally* by `exists_onesided_deviation_of_irregular`, and all of its side
+    conditions are discharged from the partition data:
+
+    * **Nonemptiness of the witness sub-parts** `A', B'` follows from their size
+      thresholds `|A'| ≥ ε|A|`, `|B'| ≥ ε|B|` together with `ε > 0` and the
+      nonemptiness of `A, B`.
+    * **Strictness** `A' ⊊ A` (A-side) resp. `B' ⊊ B` (B-side) — the source of the
+      complement nonemptiness that the energy gain needs — is forced by the
+      deviation: an equality `A' = A` would make `d(A', B) = d(A, B)`, collapsing
+      the `≥ ε/2 > 0` deviation to `0`.  Crucially this strictness is available
+      *only on the deviating coordinate*; the off-coordinate complement (`A \ A'`
+      in the B-side branch) may be empty, which is exactly why freshness is
+      discharged through the *partner-nonempty* lemmas above rather than through
+      the sub-part's own nonemptiness.
+    * **Freshness** of all carved parts against the family being refined follows
+      from pairwise disjointness plus nonemptiness of the ambient parts (`hRne`,
+      `hAne`, `hBne`), via `ne_of_subset_part_of_disjoint'` /
+      `ne_of_subset_disjoint_parts'`.
+
+    This closes the reduction `¬ IsEpsilonRegular → ∃ refinement, energy jumps`:
+    the single remaining task for a full AFKS proof is the *outer loop* — iterate
+    this increment and feed the per-step gain into `afks_energy_iteration_count`. -/
+theorem exists_refinement_energy_gain_of_irregular
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B : Finset V)
+    (hdisj : ∀ P ∈ insert A (insert B R), ∀ Q ∈ insert A (insert B R),
+      P ≠ Q → Disjoint P Q)
+    (hRne : ∀ P ∈ R, P.Nonempty)
+    (hAR : A ∉ R) (hBR : B ∉ R) (hAB : A ≠ B)
+    (hAne : A.Nonempty) (hBne : B.Nonempty)
+    (eps : ℚ) (hε : 0 < eps)
+    (hirr : ¬ IsEpsilonRegular G eps A B) :
+    ∃ R' : Finset (Finset V),
+      partitionEnergy G (insert A (insert B R)) +
+          (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤ partitionEnergy G R' := by
+  -- Internal witness extraction.
+  obtain ⟨A', B', hA', hB', hAc, hBc, hdev⟩ :=
+    exists_onesided_deviation_of_irregular G eps A B hirr
+  -- Partition bookkeeping (mirrors `exists_refinement_energy_gain_of_irregular_in_partition`).
+  have hAfam : A ∈ insert A (insert B R) := Finset.mem_insert_self _ _
+  have hBfam : B ∈ insert A (insert B R) :=
+    Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)
+  have disjAB : Disjoint A B := hdisj A hAfam B hBfam hAB
+  have memfam_of_R : ∀ {Q : Finset V}, Q ∈ R → Q ∈ insert A (insert B R) :=
+    fun hQ => Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hQ)
+  have neA_of_R : ∀ {Q : Finset V}, Q ∈ R → Q ≠ A := fun hQ h => hAR (h ▸ hQ)
+  have neB_of_R : ∀ {Q : Finset V}, Q ∈ R → Q ≠ B := fun hQ h => hBR (h ▸ hQ)
+  have cardQ : ∀ {S : Finset V}, S.Nonempty → (1 : ℚ) ≤ (S.card : ℚ) := by
+    intro S hS
+    exact_mod_cast Finset.card_pos.mpr hS
+  have hAc' : A \ A' ⊆ A := Finset.sdiff_subset
+  have hBc' : B \ B' ⊆ B := Finset.sdiff_subset
+  -- Witness sub-parts `A', B'` are nonempty (from the size thresholds and ε > 0).
+  have hA'ne : A'.Nonempty := by
+    rw [← Finset.card_pos]
+    have hApos : (0 : ℚ) < (A.card : ℚ) := by exact_mod_cast Finset.card_pos.mpr hAne
+    have h2 : (0 : ℚ) < (A'.card : ℚ) := lt_of_lt_of_le (mul_pos hε hApos) hAc
+    exact_mod_cast h2
+  have hB'ne : B'.Nonempty := by
+    rw [← Finset.card_pos]
+    have hBpos : (0 : ℚ) < (B.card : ℚ) := by exact_mod_cast Finset.card_pos.mpr hBne
+    have h2 : (0 : ℚ) < (B'.card : ℚ) := lt_of_lt_of_le (mul_pos hε hBpos) hBc
+    exact_mod_cast h2
+  -- Shared A-side freshness (A' and A\A' fresh in `insert B R`); no strictness needed.
+  have hA'R_ : A' ∉ insert B R := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts' A B A' B disjAB hA' (Finset.Subset.refl B) hBne,
+      fun hmem => ne_of_subset_part_of_disjoint' _ hdisj A A' A' hAfam
+        (memfam_of_R hmem) (neA_of_R hmem) hA' (hRne _ hmem) rfl⟩
+  have hAcR_ : A \ A' ∉ insert B R := by
+    simp only [Finset.mem_insert, not_or]
+    exact ⟨ne_of_subset_disjoint_parts' A B (A \ A') B disjAB hAc' (Finset.Subset.refl B) hBne,
+      fun hmem => ne_of_subset_part_of_disjoint' _ hdisj A (A \ A') (A \ A') hAfam
+        (memfam_of_R hmem) (neA_of_R hmem) hAc' (hRne _ hmem) rfl⟩
+  have hAne_ : A' ≠ A \ A' := by
+    intro heq
+    obtain ⟨x, hx⟩ := hA'ne
+    exact absurd hx (Finset.disjoint_right.mp disjoint_sdiff_self_right (heq ▸ hx))
+  have hAR_ : A ∉ insert B R := by
+    simp only [Finset.mem_insert, not_or]; exact ⟨hAB, hAR⟩
+  rcases hdev with hAside | hBside
+  · -- A-side branch: strictness `A' ⊊ A` yields `A \ A'` nonempty.
+    have hAcne : (A \ A').Nonempty := by
+      rw [Finset.sdiff_nonempty]
+      intro hsub
+      have heq : A' = A := Finset.Subset.antisymm hA' hsub
+      rw [heq] at hAside
+      simp only [sub_self, abs_zero] at hAside
+      linarith
+    refine ⟨insert A' (insert (A \ A') (insert B R)), ?_⟩
+    exact partitionEnergy_Aside_gain_of_irregular G (insert B R) A B A'
+      hA' hA'R_ hAcR_ hAne_ hAR_ (Finset.mem_insert_self B R)
+      (cardQ hA'ne) (cardQ hAcne) (cardQ hBne) eps hε.le hAside
+  · -- B-side branch: strictness `B' ⊊ B` yields `B \ B'` nonempty.  Note `A \ A'`
+    -- may be empty here — its freshness is carried by the partner-nonempty lemmas.
+    have hBcne : (B \ B').Nonempty := by
+      rw [Finset.sdiff_nonempty]
+      intro hsub
+      have heq : B' = B := Finset.Subset.antisymm hB' hsub
+      rw [heq] at hBside
+      simp only [sub_self, abs_zero] at hBside
+      linarith
+    have hB'R_ : B' ∉ insert A' (insert (A \ A') R) := by
+      simp only [Finset.mem_insert, not_or]
+      exact ⟨ne_of_subset_disjoint_parts' B A B' A' disjAB.symm hB' hA' hA'ne,
+        (ne_of_subset_disjoint_parts' A B (A \ A') B' disjAB hAc' hB' hB'ne).symm,
+        fun hmem => ne_of_subset_part_of_disjoint' _ hdisj B B' B' hBfam
+          (memfam_of_R hmem) (neB_of_R hmem) hB' (hRne _ hmem) rfl⟩
+    have hBcR_ : B \ B' ∉ insert A' (insert (A \ A') R) := by
+      simp only [Finset.mem_insert, not_or]
+      exact ⟨ne_of_subset_disjoint_parts' B A (B \ B') A' disjAB.symm hBc' hA' hA'ne,
+        (ne_of_subset_disjoint_parts' A B (A \ A') (B \ B') disjAB hAc' hBc' hBcne).symm,
+        fun hmem => ne_of_subset_part_of_disjoint' _ hdisj B (B \ B') (B \ B') hBfam
+          (memfam_of_R hmem) (neB_of_R hmem) hBc' (hRne _ hmem) rfl⟩
+    have hBne_ : B' ≠ B \ B' := by
+      intro heq
+      obtain ⟨x, hx⟩ := hB'ne
+      exact absurd hx (Finset.disjoint_right.mp disjoint_sdiff_self_right (heq ▸ hx))
+    have hBR_ : B ∉ insert A' (insert (A \ A') R) := by
+      simp only [Finset.mem_insert, not_or]
+      exact ⟨ne_of_subset_disjoint_parts' B A B A' disjAB.symm (Finset.Subset.refl B) hA' hA'ne,
+        (ne_of_subset_disjoint_parts' A B (A \ A') B disjAB hAc' (Finset.Subset.refl B) hBne).symm,
+        hBR⟩
+    refine ⟨insert B' (insert (B \ B') (insert A' (insert (A \ A') R))), ?_⟩
+    exact partitionEnergy_twostep_Bside_gain_of_irregular G R A B A' B'
+      hA' hB' hA'R_ hAcR_ hAne_ hAR_ hB'R_ hBcR_ hBne_ hBR_
+      (cardQ hA'ne) (cardQ hB'ne) (cardQ hBcne) eps hε.le hBside
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: EMPTY-PART CLEANUP — REPRODUCING THE NONEMPTY LOOP HYPOTHESIS
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Empty parts carry no energy.**  `partitionEnergy` is unchanged by deleting
+    the empty members of a family: every ordered pair `(P, Q)` in which `P` or `Q`
+    is empty contributes `pairEnergy G P Q = (|P|·|Q|/n²)·d(P,Q)² = 0`, because the
+    size weight `|P|·|Q|` vanishes.  Formally, filtering the family down to its
+    parts of nonzero cardinality preserves the gallery energy.
+
+    This is the bookkeeping tool that lets the AFKS outer loop *reproduce its own
+    hypothesis*.  The one-sided refinement produced by
+    `exists_refinement_energy_gain_of_irregular` inserts the complement `A \ A'`
+    even on the `B`-side branch, where strictness is unavailable and `A \ A'` may
+    be **empty** (the witness can return `A' = A`).  Such an empty part would break
+    the *nonempty-parts* precondition (`hRne`) needed to feed the refinement back
+    into the next iteration.  This lemma shows the empty part can be dropped for
+    free, at no energy cost — see
+    `exists_refinement_energy_gain_of_irregular_nonempty`. -/
+theorem partitionEnergy_filter_card_ne_zero (G : SimpleGraph V) [DecidableRel G.Adj]
+    (parts : Finset (Finset V)) :
+    partitionEnergy G (parts.filter (fun P => P.card ≠ 0)) = partitionEnergy G parts := by
+  rw [partitionEnergy_eq_sum_pairEnergy, partitionEnergy_eq_sum_pairEnergy]
+  refine (Finset.sum_subset
+    (Finset.product_subset_product (Finset.filter_subset _ _) (Finset.filter_subset _ _))
+    ?_)
+  intro pq hpq hnot
+  obtain ⟨h1, h2⟩ := Finset.mem_product.mp hpq
+  -- `pq` sits in the full ordered-pair set; not being in the filtered product
+  -- forces one of its two parts to be empty (`card = 0`).
+  have hzero : pq.1.card = 0 ∨ pq.2.card = 0 := by
+    by_contra h
+    push_neg at h
+    exact hnot (Finset.mem_product.mpr
+      ⟨Finset.mem_filter.mpr ⟨h1, h.1⟩, Finset.mem_filter.mpr ⟨h2, h.2⟩⟩)
+  rcases hzero with h | h <;> simp [pairEnergy, h]
+
+/-- **One-sided refinement with a genuinely nonempty output family.**  Strengthens
+    the capstone `exists_refinement_energy_gain_of_irregular`: from a bare
+    `¬ IsEpsilonRegular G eps A B` inside a genuine partition, it produces a
+    refinement `R'` whose parts are all nonempty *and* whose energy exceeds that of
+    `insert A (insert B R)` by the uniform floor `(ε/2)² / (2n²) = ε² / (8n²)`.
+
+    The nonemptiness is recovered by discarding the empty parts (via
+    `partitionEnergy_filter_card_ne_zero`, which leaves the energy untouched).
+    This closes the *nonempty-parts half* of genuineness preservation: the produced
+    family satisfies the `hRne`-style precondition that the outer AFKS loop needs to
+    feed the refinement back into the next iteration.  (Pairwise-disjointness of the
+    output — the remaining half of genuineness — is inherited from the concrete
+    inserts and is orthogonal to this cleanup.) -/
+theorem exists_refinement_energy_gain_of_irregular_nonempty
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (R : Finset (Finset V)) (A B : Finset V)
+    (hdisj : ∀ P ∈ insert A (insert B R), ∀ Q ∈ insert A (insert B R),
+      P ≠ Q → Disjoint P Q)
+    (hRne : ∀ P ∈ R, P.Nonempty)
+    (hAR : A ∉ R) (hBR : B ∉ R) (hAB : A ≠ B)
+    (hAne : A.Nonempty) (hBne : B.Nonempty)
+    (eps : ℚ) (hε : 0 < eps)
+    (hirr : ¬ IsEpsilonRegular G eps A B) :
+    ∃ R' : Finset (Finset V),
+      (∀ P ∈ R', P.Nonempty) ∧
+      partitionEnergy G (insert A (insert B R)) +
+          (eps / 2) ^ 2 / (2 * (Fintype.card V : ℚ) ^ 2) ≤ partitionEnergy G R' := by
+  obtain ⟨R', hR'⟩ :=
+    exists_refinement_energy_gain_of_irregular G R A B hdisj hRne hAR hBR hAB
+      hAne hBne eps hε hirr
+  refine ⟨R'.filter (fun P => P.card ≠ 0), ?_, ?_⟩
+  · intro P hP
+    exact Finset.card_pos.mp (Nat.pos_of_ne_zero (Finset.mem_filter.mp hP).2)
+  · rwa [partitionEnergy_filter_card_ne_zero]
+
+
 end Szemeredi.RegularityOQ04Bridge
