@@ -27,3 +27,27 @@ Now compiles clean (exit 0, olean written), **0 sorries, 6 axioms** (unchanged, 
 Monster, Monster_card, Monster_isSimple, Monster_realizable_over_Q + the two Monster instances;
 `#print axioms` shows no sorryAx / ofReduceBool). Gallery meta counts (361 lines / 19 theorems /
 6 axioms) remain accurate. The p-group / Monster-realizability theme is otherwise saturated.
+
+## Session 2026-07-13 (researcher-3) — perfectness as a universal property + field-side (VERIFIED)
+
+SOLVED-state look-outward on a saturated problem. The file had `Monster_commutator_eq_top`
+([𝕄,𝕄]=𝕄, perfect) but only in commutator-subgroup form. Added the two structurally
+meaningful consequences absent from the file:
+
+- `Monster_no_nontrivial_abelian_quotient {A}[CommGroup A](φ:𝕄→*A)(surj) : Subsingleton A`
+  — the universal-property form of perfectness: 𝕄 has NO nontrivial abelian quotient. Proof:
+  `map_commutator_eq Monster φ` sends [𝕄,𝕄]=⊤ (surj⟹range=⊤, map_top_of_surjective) to
+  commutator A = ⊤; but A abelian ⟹ commutator A = ⊥ (commutatorElement_eq_one_iff_mul_comm);
+  ⊤=⊥ in Subgroup A ⟹ Subsingleton A.
+- `Monster_realizing_field_gal_commutator_eq_top` — FIELD-SIDE: for Thompson's realizing K,
+  commutator (K≃ₐ[ℚ]K)=⊤ (Gal(K/ℚ) is perfect). Transports perfectness across e:𝕄≃*Gal via
+  the same map_commutator_eq mechanism. By Galois correspondence ⟹ K/ℚ has NO nontrivial
+  abelian subextension (max abelian subext = fixed field of commutator = ℚ). Field-side
+  counterpart of Monster_commutator_eq_top, mirrors Monster_realizing_field_not_solvable.
+
+★Gotcha: `map_commutator_eq` has G EXPLICIT (`variable (G)` at Commutator/Basic.lean:224) →
+call `map_commutator_eq Monster φ`, NOT `map_commutator_eq φ` (else "expected Type" mismatch).
+★Docker exit-139 SIGSEGV + exit-135 SIGBUS codegen crashes (post-elaboration, no error: line)
+— retry built green (`✔ Built (8.0s)`, 7749 jobs). 6 axioms unchanged (all deep Monster
+inputs, not eliminable), 0 real sorries, no native_decide. 40→42 theorems, 574→640 lines.
+Gallery meta synced (was stale 513/37). Theme remains saturated after this.

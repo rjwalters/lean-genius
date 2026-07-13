@@ -571,4 +571,70 @@ theorem Monster_two_le_card_primeFactors :
   calc (2 : ℕ) = ({2, 3} : Finset ℕ).card := by decide
     _ ≤ (Fintype.card Monster).primeFactors.card := Finset.card_le_card hsub
 
+-- ============================================================================
+-- Part VII: Perfectness — no abelian quotient, and its field-side consequence
+-- ============================================================================
+
+/-
+`Monster_commutator_eq_top` says `𝕄` is *perfect* (`[𝕄, 𝕄] = 𝕄`).  Its
+structural meaning is a universal property: a perfect group has **no nontrivial
+abelian quotient**.  We record that here, and then transport perfectness across
+Thompson's isomorphism `𝕄 ≃* Gal(K/ℚ)` to obtain the field-side statement that
+the Monster-realizing field's Galois group is itself perfect — so `K/ℚ` has no
+nontrivial abelian subextension over `ℚ` (its maximal abelian subextension, the
+fixed field of the commutator subgroup, is `ℚ` itself).
+-/
+
+/-- **𝕄 has no nontrivial abelian quotient.**  Any surjective homomorphism from
+    the Monster onto a *commutative* group `A` has trivial image, i.e. `A` is
+    trivial.  This is the universal-property form of perfectness
+    (`Monster_commutator_eq_top`): since `[𝕄, 𝕄] = 𝕄`, the image of `𝕄` in any
+    abelian group is `⁅⊤, ⊤⁆ = ⊥`, so a surjection forces the target to be
+    trivial.  Equivalently, the abelianization of `𝕄` is trivial. -/
+theorem Monster_no_nontrivial_abelian_quotient {A : Type*} [CommGroup A]
+    (φ : Monster →* A) (hφ : Function.Surjective φ) : Subsingleton A := by
+  -- Image of the commutator subgroup: `(commutator 𝕄).map φ = ⁅range φ, range φ⁆`.
+  have hrange : φ.range = ⊤ := MonoidHom.range_eq_top.mpr hφ
+  have hmap : (commutator Monster).map φ = ⁅φ.range, φ.range⁆ := map_commutator_eq Monster φ
+  rw [Monster_commutator_eq_top, Subgroup.map_top_of_surjective _ hφ, hrange] at hmap
+  -- So `commutator A = ⊤`.
+  have hcommA_top : commutator A = ⊤ := by rw [commutator_def]; exact hmap.symm
+  -- But `A` is abelian, so `commutator A = ⊥`.
+  have hcommA_bot : commutator A = ⊥ := by
+    rw [commutator_def, eq_bot_iff, Subgroup.commutator_le]
+    intro g₁ _ g₂ _
+    rw [Subgroup.mem_bot, commutatorElement_eq_one_iff_mul_comm]
+    exact mul_comm g₁ g₂
+  -- `⊤ = ⊥` in `Subgroup A` forces `A` to be a singleton.
+  have htb : (⊤ : Subgroup A) = ⊥ := hcommA_top ▸ hcommA_bot
+  refine ⟨fun a b => ?_⟩
+  have ha : a ∈ (⊥ : Subgroup A) := htb ▸ Subgroup.mem_top a
+  have hb : b ∈ (⊥ : Subgroup A) := htb ▸ Subgroup.mem_top b
+  rw [Subgroup.mem_bot] at ha hb
+  rw [ha, hb]
+
+/-- **The Monster-realizing field's Galois group is perfect.**  For any field `K`
+    with `Gal(K/ℚ) ≅ 𝕄` (Thompson 1984), the commutator subgroup of `Gal(K/ℚ)` is
+    the whole group: `[Gal(K/ℚ), Gal(K/ℚ)] = Gal(K/ℚ)`.  Perfectness transports
+    across the isomorphism `e : 𝕄 ≃* Gal(K/ℚ)` from `Monster_commutator_eq_top`
+    (`map_commutator_eq` sends `[𝕄, 𝕄] = ⊤` to `⁅range e, range e⁆ = ⁅⊤, ⊤⁆`).
+    The field-side counterpart of `Monster_commutator_eq_top`, in the same spirit
+    as `Monster_realizing_field_not_solvable`.  Consequently, by the Galois
+    correspondence, `K/ℚ` has **no nontrivial abelian subextension**: the maximal
+    abelian subextension — the fixed field of the commutator subgroup — is `ℚ`
+    itself. -/
+theorem Monster_realizing_field_gal_commutator_eq_top :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), commutator (K ≃ₐ[ℚ] K) = ⊤ := by
+  obtain ⟨K, fK, aK, fdK, gK, ⟨e⟩⟩ := Monster_realizable_over_Q
+  letI := fK; letI := aK; letI := fdK; letI := gK
+  refine ⟨K, fK, aK, fdK, gK, ?_⟩
+  have hsurj : Function.Surjective e.toMonoidHom := e.surjective
+  have hrange : e.toMonoidHom.range = ⊤ := MonoidHom.range_eq_top.mpr hsurj
+  have hmap : (commutator Monster).map e.toMonoidHom = ⁅e.toMonoidHom.range, e.toMonoidHom.range⁆ :=
+    map_commutator_eq Monster e.toMonoidHom
+  rw [Monster_commutator_eq_top, Subgroup.map_top_of_surjective _ hsurj, hrange] at hmap
+  rw [commutator_def]
+  exact hmap.symm
+
 end InverseGaloisOQ03
