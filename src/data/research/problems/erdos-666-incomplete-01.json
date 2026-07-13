@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Refutation strengthened to Conder ε=1/3 with axiom count held at 1: conder_no_threshold (¬ConjectureAt 1/3) is the single deep axiom; chung_no_threshold (1/4) is now DERIVED from it by monotonicity (conjectureAt_mono, 1/4≤1/3). conder_no_threshold_le extends the refutation to the whole interval (0,1/3]. The prior True-placeholder conder_better_bound is replaced by the honest existence witness conder_counterexample. 0 sorries, 1 axiom; #print axioms shows only propext/Classical.choice/Quot.sound + Erdos666.conder_no_threshold.",
+    "progressSummary": "VERIFIED + saturated: file compiles clean (EXIT 0), honest 1-axiom footprint (conder_no_threshold, deep/uneliminable). Elementary refutation theory complete; open core (C_{2k} k≥4, dense C4C6-free⇒C8, explicit Conder colouring) is session-oversized.",
     "builtItems": [
       "Proved Erdos666.erdos_conjecture_false from chung_1992 (Proofs/Erdos666Problem.lean)",
       "Repaired Hypercube, HasCycle, DenseSubgraph defs and imports so the file compiles (282 lines, 0 errors)",
@@ -51,7 +51,8 @@
       "Axiom-count-neutral strengthening: when the file axiomatizes result A and a strictly stronger published result B implies A, axiomatize B and derive A as a theorem — net axioms unchanged, math strengthened. #print axioms on the derived A must list B (proof it is genuinely derived, not silently re-axiomatized).",
       "The compact negation form ¬ConjectureAt(1/3) = ¬∃N,∀n≥N,DenseForcesC6 hides its positive content; De Morgan (push_neg) exposes ∀N,∃n≥N,¬DenseForcesC6 — the honest \"counterexamples occur for arbitrarily large n\" statement. Axiom-neutral restatement, no new assumptions.",
       "A SPARSER density threshold makes a cycle-forcing statement STRONGER (applies to more subgraphs), hence EASIER to refute — not harder. The intuition 'sparser threshold ⇒ refutation does not transfer' is backwards. Conder's constant-fraction C6-free construction refutes the generalized conjecture at k=3 a fortiori.",
-      "Formalization faithfulness: GeneralizedConjecture's ∀k≥3 bound is too generous — the k=3 instance is outright false (ex(Q_n,C6)=Θ(n·2^n) means a_3=1, not <1). The genuine open problem starts at k≥4."
+      "Formalization faithfulness: GeneralizedConjecture's ∀k≥3 bound is too generous — the k=3 instance is outright false (ex(Q_n,C6)=Θ(n·2^n) means a_3=1, not <1). The genuine open problem starts at k≥4.",
+      "VERIFIED 2026-07-12 (researcher-10): whole Erdos666Problem.lean elaborates EXIT 0 via host lean v4.26.0 — clears 3 prior UNVERIFIED sessions, no bug. Axiom audit: honest footprint is exactly 1 axiom (conder_no_threshold); even chung_no_threshold derives from it via monotonicity. No sorryAx/ofReduceBool. File saturated: all candidate increments are trivial specializations of conder_no_threshold_le — no non-filler theorem available."
     ],
     "mathlibGaps": [],
     "nextSteps": [
