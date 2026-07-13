@@ -17,8 +17,8 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 1340,
-    "theoremCount": 77,
+    "lineCount": 1427,
+    "theoremCount": 83,
     "definitionCount": 4
   },
   "openQuestion": {
@@ -392,6 +392,27 @@
       "statement": "For a hyperbolic triangle t: (t.a = t.b ∧ t.b = t.c) ↔ (t.A = t.B ∧ t.B = t.C).",
       "significance": "The full equilateral ⟺ equiangular characterization: a hyperbolic triangle has all three sides equal iff all three angles are equal. With AAA congruence and the realizability of each angle in (0,π/3), this pins down the equilateral triangles as exactly the equiangular ones — a single congruence class for each admissible common angle. The ⟸ direction is equilateral_sides_eq (Part 11); the ⟹ direction is new here.",
       "description": "Combines the two isosceles order-equivalences: side_eq_iff_angle_eq (a=b ↔ A=B) for the first pair and the new side_eq_iff_angle_eq_bc (b=c ↔ B=C) for the second. The latter is obtained by applying side_eq_iff_angle_eq to the cyclic relabeling HyperbolicTriangle.rotate, which sends (A,B,C)↦(B,C,A) and (a,b,c)↦(b,c,a) and permutes the three law-of-cosines fields (lawA↦lawB↦lawC↦lawA, up to commutativity), so it is again a valid HyperbolicTriangle carrying the (b,c)/(B,C) pair into the (a,b)/(A,B) roles. #print axioms: only propext, Classical.choice, Quot.sound."
+    },
+    {
+      "name": "sss_congruence",
+      "type": "theorem",
+      "statement": "For hyperbolic triangles t₁ t₂ with t₁.a=t₂.a, t₁.b=t₂.b, t₁.c=t₂.c: t₁.A=t₂.A ∧ t₁.B=t₂.B ∧ t₁.C=t₂.C.",
+      "significance": "Hyperbolic SSS (side-side-side) congruence — the converse of AAA (Part 4). Equal sides force equal angles, so a hyperbolic triangle is determined up to congruence by its three side lengths. Complements AAA to give both classical determinations (angles↔sides).",
+      "description": "Each angle cosine is recovered from the three sides by inverting the first law of cosines (new cos_A_eq_of_sides/cos_B_eq_of_sides/cos_C_eq_of_sides, the exact duals of cosh_a_eq/cosh_b_eq/cosh_c_eq). Equal sides give equal cosines; Real.strictAntiOn_cos.injOn on [0,π] then gives equal angles. #print axioms: only propext, Classical.choice, Quot.sound."
+    },
+    {
+      "name": "sas_congruence",
+      "type": "theorem",
+      "statement": "For hyperbolic triangles t₁ t₂ with t₁.a=t₂.a, t₁.b=t₂.b, t₁.C=t₂.C (two sides and the included angle): t₁.c=t₂.c ∧ t₁.A=t₂.A ∧ t₁.B=t₂.B.",
+      "significance": "Hyperbolic SAS (side-angle-side) congruence. Two sides and their included angle determine the triangle. The included side c is pinned by the first law of cosines at C, then SSS supplies the remaining angles.",
+      "description": "cosh c is a function of a, b, C via first_law_of_cosines_C; equal inputs give equal cosh c, and cosh injectivity on [0,∞) gives c₁=c₂. With all three sides equal, sss_congruence closes the remaining angles. #print axioms: only propext, Classical.choice, Quot.sound."
+    },
+    {
+      "name": "asa_congruence",
+      "type": "theorem",
+      "statement": "For hyperbolic triangles t₁ t₂ with t₁.A=t₂.A, t₁.B=t₂.B, t₁.c=t₂.c (two angles and the included side): t₁.C=t₂.C ∧ t₁.a=t₂.a ∧ t₁.b=t₂.b.",
+      "significance": "Hyperbolic ASA (angle-side-angle) congruence. Unlike Euclidean geometry two angles do NOT determine the third (the angle sum is not fixed), but the included side closes the gap: the second law at C makes cos C a function of A, B, c, pinning C; then AAA supplies the sides.",
+      "description": "From lawC (cos C = −cos A cos B + sin A sin B cosh c), equal A, B, c give equal cos C, and Real.strictAntiOn_cos.injOn on [0,π] gives C₁=C₂. With all three angles equal, aaa_congruence closes the remaining sides. #print axioms: only propext, Classical.choice, Quot.sound."
     }
   ],
   "references": [

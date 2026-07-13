@@ -209,3 +209,47 @@ Recipe (turn a squared trig identity into an explicit value): base>0 ⟹ base = 
 linear_combination scaling the extraction lemma. Genuine frontier still open (heavy algebra):
 FIRST law of cosines cosh c = cosh a cosh b − sinh a sinh b cos C, and SAS/ASA congruence.
 Docker healthy (mathlib cache, built clean 3063 jobs / 4.2s).
+
+## Session 2026-07-12 (researcher-7) — the three classical congruence criteria (SSS / SAS / ASA)
+
+**Mode:** REVISIT (mature completed AAA entry) | **Outcome:** progress (6 theorems, 0 new assumptions, host-verified EXIT 0)
+
+The file had AAA congruence (angles ⟹ sides) and, since a prior session, the FIRST law of
+cosines at all three vertices, but none of the other three classical congruence criteria.
+Added PART 13:
+
+- **`cos_A_eq_of_sides` / `cos_B_eq_of_sides` / `cos_C_eq_of_sides`** — the angle-from-sides
+  inversion of the first law: `cos A = (cosh b·cosh c − cosh a)/(sinh b·sinh c)`, the exact
+  dual of `cosh_a_eq` (side-from-angles). Proof: `rw [eq_div_iff (…≠0)]` then
+  `linear_combination first_law_of_cosines_A t`.
+- **`sss_congruence`** — equal three sides ⟹ equal three angles. The genuine converse of AAA.
+  Each cos is a function of the sides (above), so equal sides ⟹ equal cosines; `cos` injective
+  on `[0,π]` via `Real.strictAntiOn_cos.injOn ⟨t.hA.le, t.hA_lt.le⟩ …` closes it.
+- **`sas_congruence`** — two sides + included angle ⟹ full congruence. `cosh c` from
+  `first_law_of_cosines_C` (function of a,b,C), `cosh` injective on `[0,∞)` gives c; then SSS.
+- **`asa_congruence`** — two angles + included side ⟹ full congruence. NOTE: genuinely
+  distinct from AAA — in hyperbolic geometry two angles do NOT fix the third (angle sum free).
+  `lawC` makes `cos C` a function of A,B,c, pinning C; then `aaa_congruence` supplies the sides.
+
+### Key techniques (reusable)
+- `Real.strictAntiOn_cos : StrictAntiOn cos (Icc 0 π)`; `.injOn` gives injectivity. Membership
+  `a ∈ Icc 0 π` accepts the anonymous constructor `⟨t.hA.le, t.hA_lt.le⟩` directly (defeq to
+  `0 ≤ a ∧ a ≤ π`).
+- Angle-from-sides is a one-line `linear_combination` off the corresponding first-law lemma
+  after `eq_div_iff`.
+- **★ ENV HAZARD:** the researcher-7-2 worktree has its OWN `proofs/bin/lake` + `.lake/`. The
+  MAIN `/Users/rwalters/GitHub/lean-genius/proofs` holds a STALE copy of this file (still 1340 L),
+  so building there elaborates the pre-edit version and silently "passes". Build the worktree
+  file from the worktree's own proofs dir:
+  `cd .loom/worktrees/researcher-7-2/proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/LawOfCosinesOQ03OQ03.lean`.
+
+### Verification
+Host: `lake env lean Proofs/LawOfCosinesOQ03OQ03.lean` → EXIT 0, 0 errors/warnings/sorries.
+`#print axioms` on sss/sas/asa/cos_C_eq_of_sides = `[propext, Classical.choice, Quot.sound]`
+only. File 1340→1427 L, 77→83 theorems. Status stays **axiomatized** (6 structure-encoded
+second-law assumptions unchanged; no new assumption).
+
+### Frontier now
+With AAA + SSS + SAS + ASA the four classical congruence criteria are all formalized. Remaining
+heavier targets: hyperbolic AREA via the Gauss–Bonnet defect formula (area = π − (A+B+C)), and
+the dual angle-of-parallelism / right-triangle identities.
