@@ -1,0 +1,36 @@
+===== BuffonsNeedleOQ02OQ03
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:143:13: `simp` made no progress
+warning: Proofs/BuffonsNeedleOQ02OQ03.lean:208:13: Possibly looping simp theorem: `show (4 : ℕ) = 0 + 4 from rfl`
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:208:2: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:219:21: Type mismatch
+  div_pos two_pos pi_pos
+has type
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:220:21: No goals to be solved
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:248:24: No goals to be solved
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:251:4: Unknown identifier `div_lt_one_of_lt`
+===== BurnsideCountingOQ03OQ03
+error: Proofs/BurnsideCountingOQ03OQ03.lean:107:8: typeclass instance problem is stuck
+  NeZero ?m.50
+===== CayleyHamiltonMinpolyOQ02OQ02
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:150:33: typeclass instance problem is stuck
+  Field ?m.74
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:192:33: typeclass instance problem is stuck
+  Field ?m.74
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:227:60: typeclass instance problem is stuck
+  Field ?m.15
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:269:4: expected '*' or checkColGt
+warning: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:303:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== CevasTheoremOQ01OQ03
+error: Proofs/CevasTheoremOQ01OQ03.lean:160:2: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+===== ChebyshevBoundsOQ03OQ02
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:59:2: Type mismatch: After simplification, term
+  h
+ has type
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:125:31: failed to prove positivity/nonnegativity/nonzeroness
+error: Lean exited with code 1
+✖ [8582/8586] Building Proofs.BurnsideCountingOQ03OQ03 (3.3s)

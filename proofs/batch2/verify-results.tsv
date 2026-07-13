@@ -344,7 +344,7 @@ CauchyInterlacingMajorizationPositivity	GREEN
 CauchyInterlacingOQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
-CauchyInterlacingWeylDual	RESIDUAL	proof-drift
+CauchyInterlacingWeylDual	GREEN	
 CauchySchwarz	RESIDUAL	type-mismatch
 CauchySchwarzIntegralLpDualityGluing	GREEN	
 CauchySchwarzIntegralLpDualityIngredients	GREEN	
@@ -387,7 +387,7 @@ CayleyHamiltonCyclicVectorAllFieldsOQ03Converse	RESIDUAL	unknown-const:Basis
 CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	RESIDUAL	unknown-const:Basis
 CayleyHamiltonMinpolyOQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ02OQ01OQ02	GREEN	
-CayleyHamiltonMinpolyOQ02OQ02	RESIDUAL	proof-drift
+CayleyHamiltonMinpolyOQ02OQ02	RESIDUAL	instance-synth
 CayleyHamiltonMinpolyOQ02OQ03	RESIDUAL	unknown-const:Matrix.charpoly_conj_of_isUnit
 CayleyHamiltonMinpolyOQ03OQ01	RESIDUAL	unknown-const:Matrix.mul_mulVec
 CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
@@ -434,10 +434,10 @@ CevasTheoremNonEuclideanOQ01OQ01	GREEN
 CevasTheoremNonEuclideanOQ01OQ02	GREEN	
 CevasTheoremNonEuclideanOQ02	GREEN	
 CevasTheoremNonEuclideanOQ03	GREEN	
-CevasTheoremOQ01OQ03	RESIDUAL	proof-drift
+CevasTheoremOQ01OQ03	RESIDUAL	decide-maxrecdepth
 ChebyshevBoundsOQ03	GREEN	
 ChebyshevBoundsOQ03OQ02	RESIDUAL	type-mismatch
-ChebyshevBoundsOQ04Aristotle	RESIDUAL	proof-drift
+ChebyshevBoundsOQ04Aristotle	GREEN	
 ChebyshevBoundsOQ0601	GREEN	
 ChebyshevPNTBridgeOQ01	RESIDUAL	partenat-removal
 ChebyshevPNTBridgeOQ04	GREEN	
