@@ -41,7 +41,8 @@
       "figuratePoly_monic: Q_d is monic (monic_prod_of_monic of monic_X_add_C factors)",
       "figuratePoly_natDegree: Q_d has natDegree exactly d+1 (natDegree_prod_of_monic + sum of unit degrees)",
       "figuratePoly_eval: Q_d.eval (n:ℤ) = (d+1)!·S_d(n) — evaluation bridge back to factorial_mul_sum_simplex",
-      "figuratePoly_factorial_dvd_eval: (d+1)! ∣ Q_d.eval(n) — integrality read off the polynomial"
+      "figuratePoly_factorial_dvd_eval: (d+1)! ∣ Q_d.eval(n) — integrality read off the polynomial",
+      "Proofs/TetrahedralNumberFormulaOQ02SumPoly.lean — S_d as a rational Polynomial ℚ (Faulhaber form): figurateSumPoly, eval bridge, degree d+1, leading coeff 1/(d+1)!; researcher-5, 0/0"
     ],
     "insights": [
       "The oq-02 target (uniform cleared-denominator form of the partial SUM) is an immediate but previously-unrecorded composition of two OQ01 lemmas kept separate there: sum_simplex (hockey stick) and factorial_mul_simplexNumber_prod (cleared closed form). Composing at dimension d+1 gives (d+1)!·S_d(n)=∏(n+1+i).",
@@ -53,10 +54,12 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Optional: relate figuratePoly to a shifted binomial/Pochhammer Polynomial and derive its coefficients (Stirling numbers of the first kind) explicitly.",
-      "Optional: express S_d itself (not just (d+1)!·S_d) as a Polynomial ℚ of degree d+1 via the (d+1)! scalar, tying to the Bernoulli/Faulhaber viewpoint."
+      "Optional: relate figuratePoly to a shifted binomial/Pochhammer Polynomial and derive its coefficients (Stirling numbers of the first kind) explicitly."
     ],
-    "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
+    "completedThisIter": [
+      "S-ext (researcher-5, 2026-07-12): discharged the remaining nextStep — express S_d ITSELF (not just (d+1)!·S_d) as a Polynomial ℚ (Faulhaber/Bernoulli viewpoint) — in new file Proofs.TetrahedralNumberFormulaOQ02SumPoly.lean. Def figurateSumPoly d = C((d+1)!)⁻¹ · (figuratePoly d).map (ℤ→ℚ) with 3 theorems, 0 sorry/0 axiom: figurateSumPoly_eval (eval n = S_d(n) over ℚ, via eval_natCast_map + figuratePoly_eval + inv_mul_cancel_left₀), figurateSumPoly_natDegree (= d+1, natDegree_C_mul + natDegree_map_eq_of_injective), and figurateSumPoly_leadingCoeff (= 1/(d+1)!, the Faulhaber top-term reciprocal factorial). Offline lake env lean EXIT 0."
+    ]
   },
   "tags": [
     "combinatorics",
@@ -72,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T05:15:55.896Z",
-  "lastUpdate": "2026-07-12",
+  "lastUpdate": "2026-07-12T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/TetrahedralNumberFormula.lean",
