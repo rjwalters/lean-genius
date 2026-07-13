@@ -247,14 +247,91 @@ if echo "$COMMAND" | grep -qiE 'DELETE\s+FROM\s+' && \
 fi
 
 # =============================================================================
+# BRANCH-AWARE GIT FORCE OPS
+#
+# Force pushes and hard resets stay strict on main/master but are allowed
+# without confirmation on working branches, so autonomous/background agents
+# (which cannot answer an "ask" prompt) don't stall on routine branch resets.
+# Operator preference: merge-and-fix-conflicts on shared history; force ops
+# are only routine on single-owner working branches.
+#
+# Destination resolution, in order:
+#   1. explicit refspec on the push command (dst side of src:dst)
+#   2. the branch checked out where the command runs (cwd or `git -C <path>`)
+#   3. unresolvable (detached HEAD, not a repo) -> ask, as before
+# =============================================================================
+
+is_protected_branch() {
+    case "$1" in
+        main|master) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# First simple-command segment of COMMAND matching a pattern (splits on ;|&)
+command_segment() {
+    echo "$COMMAND" | tr ';|&' '\n' | grep -m1 -E "$1" 2>/dev/null || true
+}
+
+# Branch checked out where the command will run (honors `git -C <path>`)
+checked_out_branch() {
+    local seg="$1" path="${CWD:-.}" c_path=""
+    c_path=$(echo "$seg" | sed -nE 's/.*git[[:space:]]+-C[[:space:]]+([^[:space:]]+).*/\1/p' 2>/dev/null) || c_path=""
+    [[ -n "$c_path" ]] && path="$c_path"
+    git -C "$path" symbolic-ref --short -q HEAD 2>/dev/null || true
+}
+
+# --- git push --force / -f / --force-with-lease ---
+if echo "$COMMAND" | grep -qE 'git[[:space:]].*push[[:space:]].*(--force([[:space:]=]|$)|--force-with-lease|-[a-zA-Z]*f[a-zA-Z]*([[:space:]]|$))'; then
+    seg=$(command_segment 'git[[:space:]].*push')
+    push_dest=""
+    if [[ -n "$seg" ]]; then
+        # Non-flag tokens after 'push' are [remote] [refspec...]
+        rest="${seg#*push}"
+        pos_args=()
+        for tok in $rest; do
+            case "$tok" in
+                -*) ;;                 # skip flags (incl. --force-with-lease=ref)
+                *) pos_args+=("$tok") ;;
+            esac
+        done
+        if (( ${#pos_args[@]} >= 2 )); then
+            push_dest="${pos_args[1]##*:}"   # dst side of refspec
+            push_dest="${push_dest#refs/heads/}"
+        fi
+    fi
+    # No explicit refspec -> the push targets the checked-out branch
+    if [[ -z "$push_dest" ]]; then
+        push_dest=$(checked_out_branch "$seg")
+    fi
+    if [[ -z "$push_dest" ]]; then
+        ask "Force push with unresolvable target branch — confirm: $COMMAND"
+    elif is_protected_branch "$push_dest"; then
+        deny "BLOCKED: Force push targeting protected branch '$push_dest'"
+    fi
+    # Working branch -> allowed, fall through
+fi
+
+# --- git reset --hard ---
+if echo "$COMMAND" | grep -qE 'git[[:space:]].*reset[[:space:]]+.*--hard'; then
+    seg=$(command_segment 'git[[:space:]].*reset')
+    reset_branch=$(checked_out_branch "$seg")
+    if [[ -z "$reset_branch" ]]; then
+        ask "Hard reset with unresolvable checkout (detached HEAD or not a repo) — confirm: $COMMAND"
+    elif is_protected_branch "$reset_branch"; then
+        ask "Hard reset on protected branch '$reset_branch' — confirm: $COMMAND"
+    fi
+    # Working branch -> allowed, fall through
+fi
+
+# =============================================================================
 # REQUIRE CONFIRMATION - Potentially dangerous but sometimes legitimate
 # =============================================================================
 
 ASK_PATTERNS=(
-    # Git destructive operations (not on main/master - those are blocked above)
-    'git push --force'
-    'git push -f '
-    'git reset --hard'
+    # Git destructive operations
+    # NOTE: force pushes and hard resets are handled by the branch-aware
+    # section below (strict on main/master, allowed on working branches).
     'git clean -fd'
     'git checkout \.'
     'git restore \.'
