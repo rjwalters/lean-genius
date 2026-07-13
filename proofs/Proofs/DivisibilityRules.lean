@@ -56,11 +56,11 @@ theorem alternatingDigitSum_pair (d₀ d₁ : ℕ) :
     This mirrors the 1-step recursion of ofDigits with sign flip. -/
 theorem alternatingDigitSum_cons (a : ℕ) (rest : List ℕ) :
     alternatingDigitSum (a :: rest) = ↑a - alternatingDigitSum rest := by
-  induction rest with
+  induction rest generalizing a with
   | nil => simp [alternatingDigitSum]
   | cons b rest' ih =>
     simp only [alternatingDigitSum]
-    rw [ih]
+    rw [ih b]
     ring
 
 /-- The alternating digit sum of ofDigits: when b ≡ -1 (mod d),
@@ -74,13 +74,20 @@ theorem ofDigits_modEq_alternatingDigitSum (d : ℕ) (hd : 0 < d)
     rw [alternatingDigitSum_cons]
     simp only [Nat.ofDigits]
     have hb_neg : (b : ℤ) ≡ -1 [ZMOD ↑d] := by
-      rw [Int.ModEq]
-      skip
-      omega
-    have h_mul : (↑b * ↑(Nat.ofDigits b rest) : ℤ) ≡
+      have hle : b % d ≤ b := Nat.mod_le b d
+      have h1 : d ∣ b - b % d := Nat.dvd_sub_mod b
+      have hdvd : d ∣ b + 1 := by
+        have h2 : b + 1 = (b - b % d) + d := by omega
+        rw [h2]; exact Nat.dvd_add h1 (dvd_refl d)
+      have hz : (d : ℤ) ∣ (b : ℤ) - -1 := by
+        have hc : (d : ℤ) ∣ ((b : ℤ) + 1) := by exact_mod_cast hdvd
+        have he : (b : ℤ) - -1 = (b : ℤ) + 1 := by ring
+        rw [he]; exact hc
+      exact (Int.modEq_iff_dvd.mpr hz).symm
+    have h_mul : ((b : ℤ) * Nat.ofDigits (b : ℤ) rest) ≡
         -1 * alternatingDigitSum rest [ZMOD ↑d] :=
       Int.ModEq.mul hb_neg ih
-    have h_add : (↑a + ↑b * ↑(Nat.ofDigits b rest) : ℤ) ≡
+    have h_add : ((a : ℤ) + (b : ℤ) * Nat.ofDigits (b : ℤ) rest) ≡
         ↑a + -1 * alternatingDigitSum rest [ZMOD ↑d] :=
       Int.ModEq.add rfl h_mul
     simp only [neg_one_mul] at h_add
@@ -95,25 +102,30 @@ theorem modEq_alternating_digits_sum (d b n : ℕ) (hd : 0 < d)
     (n : ℤ) ≡ altDigitSum b n [ZMOD ↑d] := by
   unfold altDigitSum
   by_cases hb2 : b < 2
-  · simp [Nat.digits, hb2]
-    by_cases hn : n = 0
-    · subst hn; simp [alternatingDigitSum, Int.ModEq]
-    · interval_cases d
-      · omega
-      · simp [Int.ModEq]; omega
-      · have hb1 : b = 1 := by omega
-        subst hb1
-        simp [Nat.digits_one]
+  · interval_cases b
+    · -- base 0: hb forces d = 1
+      rw [Nat.zero_mod] at hb
+      have hd1 : d = 1 := by omega
+      subst hd1
+      simp [Int.ModEq]
+    · -- base 1: hb forces d ≤ 2
+      have hd2 : d ≤ 2 := by
+        rcases Nat.lt_or_ge d 2 with h | h
+        · omega
+        · rw [Nat.mod_eq_of_lt (by omega : 1 < d)] at hb
+          omega
+      interval_cases d
+      · simp [Int.ModEq]
+      · rw [Nat.digits_one]
         induction n with
-        | zero => contradiction
-        | succ n' _ =>
-          simp [List.replicate_succ, alternatingDigitSum_cons]
-          rw [Int.ModEq]; simp; omega
-      · omega
-  · push_neg at hb2
-    have key : n = Nat.ofDigits b (Nat.digits b n) := (Nat.ofDigits_digits b n).symm
-    rw [key]
-    exact ofDigits_modEq_alternatingDigitSum d hd b hb (Nat.digits b n)
+        | zero => simp [alternatingDigitSum, Int.ModEq]
+        | succ m ih =>
+          rw [List.replicate_succ, alternatingDigitSum_cons]
+          simp only [Int.ModEq] at ih ⊢
+          push_cast at ih ⊢
+          omega
+  · have h := ofDigits_modEq_alternatingDigitSum d hd b hb (Nat.digits b n)
+    rwa [← Nat.coe_ofDigits ℤ b (Nat.digits b n), Nat.ofDigits_digits b n] at h
 
 /-
 ## Part II: Last-Digit Rules

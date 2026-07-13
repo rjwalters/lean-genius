@@ -95,7 +95,6 @@ theorem f_one : f 1 = 1 := by
   refine' le_antisymm _ _;
   · refine' csInf_le _ _ <;> norm_num [ Erdos485.hasTerms ];
     use Polynomial.X; simp +decide [ Erdos485.termCount ] ;
-    norm_num [ Polynomial.support_X, Polynomial.support_X_pow ];
   · exact f_pos 1 le_rfl
 
 /-- f(2) = 3: (a + bx^n)² = a² + 2abx^n + b²x^{2n} has 3 terms. -/

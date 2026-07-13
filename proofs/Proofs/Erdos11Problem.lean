@@ -59,7 +59,7 @@ theorem five_works : IsSquarefreePlusPow2 5 :=
 
 /-- 7 = 5 + 2 (5 is squarefree) -/
 theorem seven_works : IsSquarefreePlusPow2 7 :=
-  ⟨5, 2, by decide, two_is_pow2, rfl⟩
+  ⟨5, 2, (by norm_num : Nat.Prime 5).squarefree, two_is_pow2, rfl⟩
 
 /-- 9 = 1 + 8 = 1 + 2³ -/
 theorem nine_works : IsSquarefreePlusPow2 9 :=

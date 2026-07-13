@@ -11,8 +11,7 @@ New contributions beyond DivisibilityByThreeOQ01:
 Tags: number-theory, modular-arithmetic, divisibility, extension, open-question
 -/
 
-import Mathlib.Data.Nat.Digits.Defs
-import Mathlib.Tactic
+import Mathlib
 
 open Nat
 
@@ -48,11 +47,11 @@ theorem alternatingSum_singleton (d : ℕ) : alternatingSum [d] = ↑d := rfl
 
 theorem alternatingSum_cons (a : ℕ) (rest : List ℕ) :
     alternatingSum (a :: rest) = ↑a - alternatingSum rest := by
-  induction rest with
+  induction rest generalizing a with
   | nil => simp [alternatingSum]
   | cons b rest' ih =>
     simp only [alternatingSum]
-    rw [ih]
+    rw [ih b]
     ring
 
 /-- Alternating sum of k-digit blocks of n in base b.
@@ -70,13 +69,20 @@ theorem ofDigits_modEq_alternatingSum (d : ℕ) (hd : 0 < d)
     rw [alternatingSum_cons]
     simp only [Nat.ofDigits]
     have hB_neg : (B : ℤ) ≡ -1 [ZMOD ↑d] := by
-      rw [Int.ModEq]
-      skip
-      omega
-    have h_mul : (↑B * ↑(Nat.ofDigits B rest) : ℤ) ≡
+      have hle : B % d ≤ B := Nat.mod_le B d
+      have h1 : d ∣ B - B % d := Nat.dvd_sub_mod B
+      have hdvd : d ∣ B + 1 := by
+        have h2 : B + 1 = (B - B % d) + d := by omega
+        rw [h2]; exact Nat.dvd_add h1 (dvd_refl d)
+      have hz : (d : ℤ) ∣ (B : ℤ) - -1 := by
+        have hc : (d : ℤ) ∣ ((B : ℤ) + 1) := by exact_mod_cast hdvd
+        have he : (B : ℤ) - -1 = (B : ℤ) + 1 := by ring
+        rw [he]; exact hc
+      exact (Int.modEq_iff_dvd.mpr hz).symm
+    have h_mul : ((B : ℤ) * Nat.ofDigits (B : ℤ) rest) ≡
         -1 * alternatingSum rest [ZMOD ↑d] :=
       Int.ModEq.mul hB_neg ih
-    have h_add : (↑a + ↑B * ↑(Nat.ofDigits B rest) : ℤ) ≡
+    have h_add : ((a : ℤ) + (B : ℤ) * Nat.ofDigits (B : ℤ) rest) ≡
         ↑a + -1 * alternatingSum rest [ZMOD ↑d] :=
       Int.ModEq.add rfl h_mul
     simp only [neg_one_mul] at h_add
@@ -88,25 +94,30 @@ theorem ofDigits_modEq_alternatingSum (d : ℕ) (hd : 0 < d)
 theorem modEq_alternatingSum (d B n : ℕ) (hd : 0 < d) (hB : B % d = d - 1) :
     (n : ℤ) ≡ alternatingSum (Nat.digits B n) [ZMOD ↑d] := by
   by_cases hB2 : B < 2
-  · simp [Nat.digits, hB2]
-    by_cases hn : n = 0
-    · subst hn; simp [alternatingSum, Int.ModEq]
-    · interval_cases d
-      · omega
-      · simp [Int.ModEq]; omega
-      · have hB1 : B = 1 := by omega
-        subst hB1
-        simp [Nat.digits_one]
+  · interval_cases B
+    · -- base 0: hB forces d = 1
+      rw [Nat.zero_mod] at hB
+      have hd1 : d = 1 := by omega
+      subst hd1
+      simp [Int.ModEq]
+    · -- base 1: hB forces d ≤ 2
+      have hd2 : d ≤ 2 := by
+        rcases Nat.lt_or_ge d 2 with h | h
+        · omega
+        · rw [Nat.mod_eq_of_lt (by omega : 1 < d)] at hB
+          omega
+      interval_cases d
+      · simp [Int.ModEq]
+      · rw [Nat.digits_one]
         induction n with
-        | zero => contradiction
-        | succ n' _ =>
-          simp [List.replicate_succ, alternatingSum_cons]
-          rw [Int.ModEq]; simp; omega
-      · omega
-  · push_neg at hB2
-    have key : n = Nat.ofDigits B (Nat.digits B n) := (Nat.ofDigits_digits B n).symm
-    rw [key]
-    exact ofDigits_modEq_alternatingSum d hd B hB (Nat.digits B n)
+        | zero => simp [alternatingSum, Int.ModEq]
+        | succ m ih =>
+          rw [List.replicate_succ, alternatingSum_cons]
+          simp only [Int.ModEq] at ih ⊢
+          push_cast at ih ⊢
+          omega
+  · have h := ofDigits_modEq_alternatingSum d hd B hB (Nat.digits B n)
+    rwa [← Nat.coe_ofDigits ℤ B (Nat.digits B n), Nat.ofDigits_digits B n] at h
 
 /-- **Alternating block divisibility**: d | n iff d divides the alternating
     sum of the digits of n in base B, whenever B ≡ -1 (mod d).
@@ -114,12 +125,7 @@ theorem modEq_alternatingSum (d B n : ℕ) (hd : 0 < d) (hB : B % d = d - 1) :
 theorem dvd_iff_altSum (d B n : ℕ) (hd : 0 < d) (hB : B % d = d - 1) :
     (d : ℤ) ∣ ↑n ↔ (d : ℤ) ∣ alternatingSum (Nat.digits B n) := by
   have h := modEq_alternatingSum d B n hd hB
-  constructor
-  · intro hdn
-    rwa [Int.ModEq.comm] at h
-    exact (Int.ModEq.dvd_iff h (dvd_refl ↑d)).mp hdn
-  · intro hds
-    exact (Int.ModEq.dvd_iff h (dvd_refl ↑d)).mpr hds
+  exact Int.ModEq.dvd_iff h
 
 -- ============================================================
 -- Part II: Divisibility by 7 via Alternating Three-Digit Groups
@@ -162,7 +168,7 @@ theorem seven_dvd_alt_blocks_nat (n : ℕ) :
   rw [← seven_dvd_alt_three_digit]
   constructor
   · intro ⟨k, hk⟩; exact ⟨↑k, by push_cast; omega⟩
-  · intro ⟨k, hk⟩; exact_mod_cast hk
+  · intro h7; exact_mod_cast h7
 
 -- ============================================================
 -- Part III: Divisibility by 11 and 13 via Alternating 3-Digit Groups
@@ -233,6 +239,8 @@ theorem repunit_formula (k : ℕ) : 9 * repunit k = 10 ^ k - 1 := by
   | zero => simp [repunit]
   | succ n ih =>
     simp [repunit]
+    have hpow : 0 < 10 ^ n := Nat.pow_pos (by omega)
+    try rw [pow_succ]
     omega
 
 /-- R(k+1) = 10 * R(k) + 1 (recursion) -/
@@ -251,7 +259,7 @@ theorem repunit_dvd_iff_pow_mod {d : ℕ} (hd : 0 < d) (hd9 : Nat.Coprime d 9)
   · intro ⟨q, hq⟩
     have h9R := repunit_formula k
     have h9dq : 9 * repunit k = d * q := by omega
-    exact hd9.symm.dvd_of_dvd_mul_left (repunit k) 9 d ⟨q, h9dq⟩
+    exact hd9.dvd_of_dvd_mul_left ⟨q, h9dq⟩
 
 -- Verification: R(6) = 111111 = 7 × 15873
 example : 7 ∣ repunit 6 := by native_decide
@@ -335,8 +343,8 @@ example : 11 ∣ 12344321 := by native_decide
 example : 11 ∣ 1234554321 := by native_decide
 
 -- Odd-length palindromes are NOT necessarily divisible by 11
-example : ¬(11 ∣ 121) := by native_decide
-example : 11 ∣ 252 := by native_decide  -- Some are, by coincidence
+example : ¬(11 ∣ 131) := by native_decide
+example : 11 ∣ 121 := by native_decide  -- Some are, by coincidence (121 = 11²)
 
 -- ============================================================
 -- Part VI: Digit Sum Iteration (One-Step Reduction)
@@ -363,7 +371,10 @@ theorem digitSumStep_modEq_three (n : ℕ) : digitSumStep n ≡ n [MOD 3] :=
 /-- Digit sum step is strictly decreasing for n ≥ 10 -/
 theorem digitSumStep_lt (n : ℕ) (hn : 10 ≤ n) : digitSumStep n < n := by
   unfold digitSumStep
-  exact Nat.sum_digits_lt n 10 (by omega) hn
+  rw [Nat.digits_def' (by norm_num : (1:ℕ) < 10) (by omega : 0 < n)]
+  have h := Nat.digit_sum_le 10 (n / 10)
+  simp only [List.sum_cons]
+  omega
 
 /-- Digit sum of single digit is itself -/
 theorem digitSumStep_single (n : ℕ) (hn : n < 10) : digitSumStep n = n := by
@@ -410,10 +421,10 @@ theorem seven_dvd_equivalences (n : ℕ) :
 /-- Master theorem summarizing alternating block divisibility rules. -/
 theorem alternating_block_rules :
     -- Three-digit alternating rules (1000 ≡ -1 mod d)
-    (∀ n, (7 : ℤ) ∣ ↑n ↔ (7 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
-    (∀ n, (11 : ℤ) ∣ ↑n ↔ (11 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
-    (∀ n, (13 : ℤ) ∣ ↑n ↔ (13 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
-    (∀ n, (1001 : ℤ) ∣ ↑n ↔ (1001 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
+    (∀ (n : ℕ), (7 : ℤ) ∣ ↑n ↔ (7 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
+    (∀ (n : ℕ), (11 : ℤ) ∣ ↑n ↔ (11 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
+    (∀ (n : ℕ), (13 : ℤ) ∣ ↑n ↔ (13 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
+    (∀ (n : ℕ), (1001 : ℤ) ∣ ↑n ↔ (1001 : ℤ) ∣ alternatingSum (Nat.digits 1000 n)) ∧
     -- Repunit properties
     (7 ∣ repunit 6) ∧ (11 ∣ repunit 2) ∧ (13 ∣ repunit 6) ∧ (37 ∣ repunit 3) ∧
     -- Palindrome properties

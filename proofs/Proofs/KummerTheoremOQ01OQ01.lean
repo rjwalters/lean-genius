@@ -55,9 +55,9 @@ private lemma factorization_list_prod (l : List ℕ) (hl : ∀ x ∈ l, x ≠ 0)
   induction l with
   | nil => simp
   | cons n rest ih =>
-    have hn : n ≠ 0 := hl n (List.mem_cons_self n rest)
+    have hn : n ≠ 0 := hl n List.mem_cons_self
     have hrest : rest.prod ≠ 0 :=
-      List.prod_ne_zero (fun x hx => hl x (List.mem_cons_of_mem n hx))
+      List.prod_ne_zero (fun h0 => hl 0 (List.mem_cons_of_mem n h0) rfl)
     simp only [List.prod_cons, List.map_cons, List.sum_cons]
     rw [Nat.factorization_mul hn hrest, Finsupp.add_apply]
     congr 1
@@ -117,7 +117,7 @@ theorem multinomial_factorization_is_sum_of_binomial_factorizations
     exact (Nat.choose_pos (Nat.le_add_left k acc)).ne'
   -- Rewrite multinomial as product of binomials, then distribute factorization
   rw [multinomial_eq_prod_choose, factorization_list_prod _ hl, List.map_map]
-  simp [Function.comp]
+  simp [Function.comp_def]
 
 -- ============================================================================
 -- Part IV: Kummer's Theorem for Multinomials
@@ -171,7 +171,9 @@ theorem multinomial_kummer_concrete (ks : List ℕ) (p : ℕ) (hp : p.Prime) :
     For step (3,3): 2 ≤ 3%2 + 3%2 = 1+1 = 2 ≤ 2 ✓ (i=1), and 4 ≤ 3%4 + 3%4 = 3+3=6 ✓ (i=2).
     Total: 2 carries. v_2(60) = 2. ✓ -/
 theorem multinomial_123_p2 :
-    (multinomial [1, 2, 3]).factorization 2 = 2 := by native_decide
+    (multinomial [1, 2, 3]).factorization 2 = 2 := by
+  rw [multinomial_eq_prod_choose]
+  native_decide
 
 /-- The carries formula matches for [1,2,3] at p=2. -/
 theorem multinomial_123_kummer_check :
@@ -180,15 +182,20 @@ theorem multinomial_123_kummer_check :
       (fun pair =>
         ((Finset.Ico 1 4).filter
           (fun i => 2 ^ i ≤ pair.2 % 2 ^ i + pair.1 % 2 ^ i)).card)).sum := by
-  decide
+  rw [multinomial_eq_prod_choose]
+  native_decide
 
 /-- v_3(C(6; 1,2,3)) = 1. v_3(60) = 1.
     In base 3: step (1,2): 3 ≤ 2%3 + 1%3 = 2+1 = 3 ≤ 3 ✓ (i=1). One carry. ✓ -/
 theorem multinomial_123_p3 :
-    (multinomial [1, 2, 3]).factorization 3 = 1 := by native_decide
+    (multinomial [1, 2, 3]).factorization 3 = 1 := by
+  rw [multinomial_eq_prod_choose]
+  native_decide
 
 /-- Sanity check: multinomial [1,2,3] = 60. -/
-theorem multinomial_123_value : multinomial [1, 2, 3] = 60 := by native_decide
+theorem multinomial_123_value : multinomial [1, 2, 3] = 60 := by
+  rw [multinomial_eq_prod_choose]
+  native_decide
 
 -- ============================================================================
 -- Summary Check

@@ -124,7 +124,9 @@ theorem sum_permCountByOrder (n : ℕ) :
   · simp +decide [ Finset.card_univ, Fintype.card_perm ];
   · intro σ hσ;
     simp +zetaDelta at *;
-    exact Nat.lt_succ_of_le ( orderOf_le_card_univ.trans ( by simp +decide [ Fintype.card_perm ] ) )
+    have hcard : Fintype.card (Equiv.Perm (Fin n)) ≤ n.factorial := by
+      simp [Fintype.card_perm, Fintype.card_fin]
+    exact orderOf_le_card_univ.trans hcard
 
 /-- f_k(n) = 0 when k does not divide n!. -/
 theorem permCountByOrder_eq_zero_of_not_dvd (n k : ℕ) (hk : ¬(k ∣ n.factorial)) :

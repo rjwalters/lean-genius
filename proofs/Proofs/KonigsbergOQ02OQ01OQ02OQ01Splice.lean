@@ -111,9 +111,15 @@ theorem exists_isTrail_splice_of_mem_support [DecidableEq V] {x w y : V} {c : G.
     (hdisj : c.edges.Disjoint d.edges) :
     ∃ s : G.Walk x x, s.IsTrail ∧ ∀ e, e ∈ s.edges ↔ e ∈ c.edges ∨ e ∈ d.edges := by
   -- Rotate `d` to root it at the shared vertex `w`; the edge set is unchanged.
-  have hrot : (d.rotate hwd).IsTrail := hd.rotate hwd
-  have hperm : (d.rotate hwd).edges ~r d.edges := d.rotate_edges hwd
-  have hdisj' : c.edges.Disjoint (d.rotate hwd).edges := fun e he he' =>
+  have hrot : (d.rotate w hwd).IsTrail := by
+    first
+    | exact hd.rotate w hwd
+    | exact hd.rotate hwd
+  have hperm : (d.rotate w hwd).edges ~r d.edges := by
+    first
+    | exact d.rotate_edges w hwd
+    | exact d.rotate_edges hwd
+  have hdisj' : c.edges.Disjoint (d.rotate w hwd).edges := fun e he he' =>
     hdisj he (hperm.mem_iff.mp he')
   obtain ⟨s, hs, hmem⟩ := exists_isTrail_splice hc hw hrot hdisj'
   refine ⟨s, hs, fun e => ?_⟩

@@ -60,7 +60,7 @@ theorem tau_one : tau 1 = 1 := by
 τ(p) = 2 for prime p (divisors are 1 and p).
 -/
 theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
-  simp [tau, Nat.Prime.divisors hp]
+  simp [tau, Nat.Prime.divisors hp, Finset.card_pair hp.one_lt.ne]
 
 /- 
 τ is multiplicative for coprime arguments.

@@ -1,3 +1,80 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 7, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 7 (type-mismatch + proof-drift remainder, in progress)
+
+Ledger `verify-results.tsv`: **1141 GREEN / 1494 RESIDUAL / 24 PRE-EXISTING**
+(increment start: 1048 GREEN / 1587 RESIDUAL; type-mismatch 300 -> 225,
+proof-drift 321 -> 279 so far).
+
+Waves:
+- **DR17a** (321 targets): fresh zero-edit re-verify of ALL proof-drift rows
+  (their diags were mostly stale, only 55/321 fresh). +7 GREEN, 314 fresh
+  context-rich diags (diag-DR17a.txt).
+- **DR17b** (320 targets): re-verify of all type-mismatch rows with the first
+  22 agent patches applied. +33 GREEN (20 patched incl. hub cascade
+  Erdos901ProblemAristotle, 13 zero-edit stale-diag flips).
+- **DR17c** (34 targets): +24 GREEN (Basel x4, Bernoulli, Bertrand, Erdos956/982,
+  LawOfCosines deps, etc.); 10 FAILs reverted+quarantined.
+- **DR17d** (43 targets): +29 GREEN (DivisibilityRules chain, Konigsberg deps
+  KummerTheoremOQ01OQ01/Splice/OQ04, LHopitalOQ03, CramersRuleOQ01OQ03,
+  direct-fix wave: Erdos485/118/419/1161/11/1202/420/410, CubeRoot3 x2,
+  BinomialTheoremOQ04, + all 4 operator-flagged statement repairs, + post-wave
+  exit-code fixes DivisibilityByThreeOQ02, ChineseRemainderNonCoprimeOQ01(+OQ01)).
+
+## Increment 7 STATEMENT REPAIRS (operator policy 2026-07-13: fix false statements to intended-true form)
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos820Aristotle.lean | `gcd_ge_two_of_ne_one` | added missing hypotheses `2 ≤ k`, `1 ≤ n` (gcd can be 0 at k=l=1 or n=0) |
+| Erdos469Problem.lean | `IsPseudoperfect` (def) + `isPseudoperfect_iff` | witness set now required `S.Nonempty` — excludes degenerate `0 = empty sum` which made `not_pseudoperfect_0`/`pseudoperfect_ge_six` false |
+| Erdos1155OQ01.lean | `f_small_values_bound` | middle conjunct `f 1 ≤ 0` (underivable from parent axioms) -> provable Mantel bound `f 1 ≤ 1/4` |
+| Erdos1156Problem.lean | `isKColorable_zero_iff` | RHS `∀ v w, ¬G.Adj v w` (mpr false for nonempty V) -> `IsEmpty V` |
+| Erdos1202Problem.lean | `asympThreshold_lt_m` -> `asympThreshold_gt_one` | conclusion `threshold < m` false (hgrow is a lower bound on m); repaired to intended-true `1 < threshold` |
+| Erdos419Problem.lean | `limit_set_properties` | binder-inference drift: `∀ k ≥ 1` elaborated `k : ℚ` in v4.31 (v4.26 chose ℕ); annotated `∀ k : ℕ` + parenthesized the conjunct (meaning-restoring) |
+| DivisibilityByThreeOQ02.lean (batch15 agent) | two `example`s | `¬(11∣121)` / `11∣252` were numerically wrong -> `¬(11∣131)` / `11∣121` |
+
+All statement repairs carry an explanatory docstring note in-file. Gallery
+metadata for these entries should be re-checked (per operator instruction).
+
+## Increment 7 new recipes (see also rename-map section 7j)
+
+- `Finset.single_le_sum` under a calc: v4.31 no longer unifies the sum
+  metavariable through `range r.succ` vs `range (r + 1)` — pass
+  `(f := fun j => ...)` explicitly.
+- `orderOf_le_card_univ.trans (by simp ...)`: the by-block now elaborates
+  before the trans metavars are solved ("Fintype ?m stuck", simp no-progress) —
+  restructure with a named `have hcard : ... := by simp ...` first.
+- `Nat.sum_digits_lt` REMOVED — derive via
+  `rw [Nat.digits_def' (h1: 1<b) (h0: 0<n)]; have := Nat.digit_sum_le b (n/b);
+  simp only [List.sum_cons]; omega`.
+- nlinarith can no longer cancel `g * lcm = X * g * g` style var-products —
+  use `Nat.eq_of_mul_eq_mul_left hg_pos (by rw [h]; ring)` then
+  `Nat.le_mul_of_pos_right`.
+- `Squarefree 5` by `decide` stuck (WF minSqFac) — use
+  `(by norm_num : Nat.Prime p).squarefree`.
+- `Nat.modEq_iff_dvd'.mpr` orientation flipped at some call sites — append `.symm`.
+- batch15/batch24 agent recipe hauls (modByMonic_add_div Monic arg dropped,
+  `(n !) - 1` parse regression, kabstract proof-irrelevance loss, Σ-over-Prop
+  -> Σ', cross-namespace dot-notation loss -> `_root_.` decl, Sylow renames,
+  `Nat.card_eq_fintype_card` is snake_case, Walk.rotate vertex explicit, ...)
+  — see rename-map 7j for the full table.
+
+## Increment 7 infrastructure notes
+
+- **Account-wide session limits kill agent fan-outs**: two 14-agent waves died
+  mid-flight ("session limit resets 2:40pm/2:50pm"); patches written
+  incrementally survive, end-of-run reports don't. Rule: instruct agents to
+  WRITE EACH PATCH AS SOON AS IT IS READY; the orchestrator applies whatever
+  landed and verifies centrally. Direct fixing in the main session (persistent
+  container + `docker exec lake build`, ~2-5s per cached module) is the
+  productive fallback during the dead window.
+- Quarantine verified-failed patches out of the patches tree immediately —
+  a blanket re-apply loop will otherwise happily re-apply them after revert
+  (happened with Erdos950Problem/LagrangeTheoremOQ05/LawOfCosinesOQ04OQ01).
+- Flagged-for-operator files: all 4 repaired this increment (see statement
+  repairs table). Hilbert14NonReductive (batch24 skip) is the remaining
+  statement-level case: needs `[MulSemiringAction G R]` consolidation.
+
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 5B, #38065, 2026-07-13)
 
 ## DOCTOR INCREMENT 5B NUMBERS (#38065, proof-drift class)

@@ -53,15 +53,21 @@ lemma asympThreshold_pos {m n : ℝ} (hm : 0 < m) (hn : 1 < n) :
   apply mul_pos (lt_trans zero_lt_one hn)
   exact Real.log_pos hn
 
-/-- The growth condition implies asympThreshold m n < m when n > 1. -/
-lemma asympThreshold_lt_m {m n : ℝ} (hm : 0 < m) (hn : 1 < n)
-    (hgrow : growthCondition m n) : asympThreshold m n < m := by
+/-- The growth condition implies the threshold m²/(n log n) exceeds 1 when n > 1.
+(Statement repair for the v4.31 migration: the original claim
+`asympThreshold m n < m` is false as written — `m > √(n log n)` is a lower
+bound on m, while `threshold < m` would require the upper bound
+`m < n log n`. The intended-true content of the growth condition is that
+the threshold exceeds 1.) -/
+lemma asympThreshold_gt_one {m n : ℝ} (hm : 0 < m) (hn : 1 < n)
+    (hgrow : growthCondition m n) : 1 < asympThreshold m n := by
   unfold asympThreshold growthCondition at *
   have hlogn : 0 < Real.log n := Real.log_pos hn
   have hn' : 0 < n := lt_trans zero_lt_one hn
-  rw [div_lt_iff₀ (mul_pos hn' hlogn)]
+  rw [lt_div_iff₀ (mul_pos hn' hlogn), one_mul]
   nlinarith [Real.sq_sqrt (mul_nonneg (le_of_lt hn') (le_of_lt hlogn)),
-             Real.sqrt_pos.mpr (mul_pos hn' hlogn)]
+             Real.sqrt_nonneg (n * Real.log n), hgrow,
+             sq_nonneg (m - Real.sqrt (n * Real.log n))]
 
 /-!
 ## Main Result
