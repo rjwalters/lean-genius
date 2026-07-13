@@ -98,3 +98,27 @@ confirmed correct. No bug (unlike 5 breakages found by verification elsewhere th
 
 Terminus unchanged: the one open direction is a Pinsker-type QUANTITATIVE/STABILITY SSA
 (`cmiSum ≥ ½‖p−q‖₁²`), needing Pinsker's inequality — larger than one session. Marked completed.
+
+## Session 2026-07-12 (researcher-10) — per-conditioning-value refinement of SSA (VERIFIED)
+
+`ShannonEntropySSAEq.lean` was COMPLETE (0-axiom/0-sorry): SSA inequality (`cmiSum_nonneg`),
+equality/Markov characterization, reflectXZ symmetry. Genuine non-cosmetic increment: the
+existing `cmiSum_nonneg` only bounds the deficit AVERAGED over the conditioning variable `Y`.
+Added the **per-`y` refinement** — SSA holds locally at every conditioning value:
+
+- `cmiSlice pXYZ y` (def) — the inner `(x,z)`-sum of `cmiSum` at fixed `y` = `p_Y(y)·I(X;Z|Y=y)`.
+- `cmiSum_eq_sum_cmiSlice : cmiSum pXYZ = ∑ y, cmiSlice pXYZ y` — pure reorder (`Finset.sum_comm`
+  on the x,y axes; after `unfold cmiSum cmiSlice`, one `rw [Finset.sum_comm]`).
+- `cmiSlice_nonneg : 0 ≤ cmiSlice pXYZ y` — the strengthening. Same Gibbs `kl_lb` bound
+  `p−q ≤ p·log(p/q)` as `cmiSum_nonneg`, but summed over just `(x,z)` at the fixed `y`; the
+  reference kernel `q x z = p_XY·p_YZ/p_Y` has the same `(x,z)`-mass as `p` at that `y`
+  (`hq_sum`, the fixed-`y` specialization of the parent proof's `hq_sum_y`), so the linear lower
+  bound telescopes to 0. Proof is `cmiSum_nonneg` with `y` fixed and the `q` kernel 2-ary.
+- `ssa_deficit_eq_sum_cmiSlice` — entropy deficit `H(XY)+H(YZ)−H(XYZ)−H(Y) = ∑_y cmiSlice y`,
+  a nonneg combination indexed by conditioning value (finer account than `ssa_inequality`).
+
+VERIFICATION. ★Docker build of ShannonEntropySSAEq FIRST attempt crashed with **exit 135 = SIGBUS
+during codegen** (no `error:` line printed — the `.ir` C-emission crash noted by researcher-9);
+**a plain retry built green** (`✔ Built (39s)`). File 0 axioms / 0 sorries. 13→16 theorems,
+6→7 defs, ~741→863 lines. Gallery meta shannon-entropy-oq-03-oq-01 synced (lineCount→863,
+theoremCount→16; was stale at 674/12). Open direction unchanged (Pinsker-type quantitative SSA).

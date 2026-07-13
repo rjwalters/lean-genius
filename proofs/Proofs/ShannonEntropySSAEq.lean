@@ -568,6 +568,148 @@ theorem ssa_inequality {α β γ : Type*}
   linarith
 
 -- ═══════════════════════════════════════════════════════════════
+-- PART IV′: The per-conditioning-value refinement of SSA
+--
+-- `cmiSum` aggregates the deficit over all values of `Y`.  The natural
+-- strengthening is that the contribution of **each individual** value `y` is
+-- already nonnegative: `I(X;Z | Y=y) ≥ 0`, so SSA holds "locally" at every
+-- conditioning value, not merely on average.  The averaged `cmiSum_nonneg` is
+-- then the sum of these per-slice nonnegativities.
+-- ═══════════════════════════════════════════════════════════════
+
+/-- The **per-`y` slice** of the conditional mutual information: the inner
+    `(x, z)`-sum of `cmiSum` at a fixed value `y` of the conditioning variable.
+    Equals `p_Y(y) · I(X;Z | Y = y)` (a relative entropy weighted by the mass of
+    `y`), with the same zero-probability convention as `cmiSum`. -/
+noncomputable def cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) (y : β) : ℝ :=
+  ∑ x : α, ∑ z : γ,
+    (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+     else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) *
+       (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+       ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z)))))
+
+/-- **The CMI is the sum of its per-`y` slices.**  `I(X;Z|Y) = ∑_y (slice at y)`
+    — purely a reordering of `cmiSum`'s triple sum (`Finset.sum_comm` on the
+    `x`,`y` axes). -/
+theorem cmiSum_eq_sum_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    (pXYZ : α × β × γ → ℝ) :
+    cmiSum pXYZ = ∑ y : β, cmiSlice pXYZ y := by
+  unfold cmiSum cmiSlice
+  rw [Finset.sum_comm]
+
+/-- **Local (per-conditioning-value) strong subadditivity.**  For *every* value
+    `y` of the conditioning variable, the slice `p_Y(y) · I(X;Z | Y=y)` is
+    nonnegative.  This strengthens `cmiSum_nonneg` (which only bounds the average
+    over `y`): SSA is not merely nonnegative on aggregate, it is nonnegative at
+    each conditioning value separately.  Proof: the same Gibbs bound
+    `p − q ≤ p·log(p/q)` used in `cmiSum_nonneg`, summed over just `(x, z)` at the
+    fixed `y`; the reference kernel `q` has the same `(x,z)`-mass as `p` at that
+    `y`, so the linear lower bound telescopes to `0`. -/
+theorem cmiSlice_nonneg {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) (y : β) :
+    0 ≤ cmiSlice pXYZ y := by
+  set q := fun x z => (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z)) /
+    (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) with hq_def
+  have hq_nn : ∀ x z, 0 ≤ q x z := fun x z => by
+    simp only [hq_def]
+    exact div_nonneg
+      (mul_nonneg (Finset.sum_nonneg fun z' _ => hp _) (Finset.sum_nonneg fun x' _ => hp _))
+      (Finset.sum_nonneg fun x' _ => Finset.sum_nonneg fun z' _ => hp _)
+  have hmarg_pos : ∀ x z, pXYZ (x, y, z) ≠ 0 →
+      0 < (∑ z' : γ, pXYZ (x, y, z')) ∧ 0 < (∑ x' : α, pXYZ (x', y, z)) ∧
+      0 < (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) := by
+    intro x z hne
+    have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hne)
+    have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
+      lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z))
+    have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
+      lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp (x', y, z)) (Finset.mem_univ x))
+    have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
+      lt_of_lt_of_le hpXY (Finset.single_le_sum
+        (fun x' _ => Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x))
+    exact ⟨hpXY, hpYZ, hpY⟩
+  have hq_pos_of : ∀ x z, pXYZ (x, y, z) ≠ 0 → 0 < q x z := by
+    intro x z hne
+    obtain ⟨hpXY, hpYZ, hpY⟩ := hmarg_pos x z hne
+    simp only [hq_def]; exact div_pos (mul_pos hpXY hpYZ) hpY
+  have hq_sum : ∑ x : α, ∑ z : γ, q x z = ∑ x, ∑ z, pXYZ (x, y, z) := by
+    simp only [hq_def]
+    by_cases hpy : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) = 0
+    · have hall : ∀ x z, pXYZ (x, y, z) = 0 := by
+        have h2 := (Finset.sum_eq_zero_iff_of_nonneg
+          (fun x _ => Finset.sum_nonneg fun z _ => hp (x, y, z))).mp hpy
+        intro x z
+        exact (Finset.sum_eq_zero_iff_of_nonneg
+          (fun z _ => hp (x, y, z))).mp (h2 x (Finset.mem_univ x)) z (Finset.mem_univ z)
+      simp [hall]
+    · have hD : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) ≠ 0 := hpy
+      have step1 : ∀ x : α, (∑ z : γ,
+            (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))
+              / (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')))
+          = (∑ z' : γ, pXYZ (x, y, z')) * (∑ z : γ, ∑ x' : α, pXYZ (x', y, z))
+              / (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) := by
+        intro x
+        rw [← Finset.sum_div, ← Finset.mul_sum]
+      simp_rw [step1]
+      rw [← Finset.sum_div, ← Finset.sum_mul]
+      rw [show (∑ z : γ, ∑ x' : α, pXYZ (x', y, z)) = ∑ x' : α, ∑ z : γ, pXYZ (x', y, z) from
+        Finset.sum_comm]
+      rw [mul_div_assoc, div_self hD, mul_one]
+  have hcmi_q : cmiSlice pXYZ y = ∑ x : α, ∑ z : γ,
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x z)) := by
+    unfold cmiSlice
+    refine Finset.sum_congr rfl (fun x _ => Finset.sum_congr rfl (fun z _ => ?_))
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · simp [hpxyz]
+    · rw [if_neg hpxyz, if_neg hpxyz]
+      obtain ⟨hpXY, hpYZ, hpY⟩ := hmarg_pos x z hpxyz
+      have hlog_eq : pXYZ (x, y, z) * (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+          ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))) =
+          pXYZ (x, y, z) / q x z := by
+        simp only [hq_def]
+        field_simp
+      rw [hlog_eq]
+  rw [hcmi_q]
+  have hbound : ∀ x z, pXYZ (x, y, z) - q x z ≤
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x z)) := by
+    intro x z
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · rw [if_pos hpxyz]; have := hq_nn x z; linarith
+    · rw [if_neg hpxyz]
+      have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
+      exact kl_lb hpos (hq_pos_of x z hpxyz)
+  have hsum_pq : ∑ x : α, ∑ z : γ, (pXYZ (x, y, z) - q x z) = 0 := by
+    simp only [Finset.sum_sub_distrib]
+    linarith [hq_sum]
+  calc (0 : ℝ) = ∑ x : α, ∑ z : γ, (pXYZ (x, y, z) - q x z) := hsum_pq.symm
+    _ ≤ ∑ x : α, ∑ z : γ,
+          (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+           else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) / q x z)) :=
+      Finset.sum_le_sum fun x _ => Finset.sum_le_sum fun z _ => hbound x z
+
+/-- **The SSA deficit decomposes into nonnegative per-`y` contributions.**  The
+    entropy deficit `H(X,Y) + H(Y,Z) − H(X,Y,Z) − H(Y)` equals `∑_y (slice at y)`,
+    a sum of terms each `≥ 0` by `cmiSlice_nonneg`.  This is a strictly finer
+    account of *why* SSA holds than `ssa_inequality`: the deficit is not just
+    nonnegative, it is a nonnegative combination indexed by the conditioning
+    value, and it vanishes iff every slice vanishes. -/
+theorem ssa_deficit_eq_sum_cmiSlice {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)
+      - shannonEntropy' pXYZ - shannonEntropy' (marginalY_3 pXYZ)
+    = ∑ y : β, cmiSlice pXYZ y :=
+  (ssa_deficit_eq_cmi hp).trans (cmiSum_eq_sum_cmiSlice pXYZ)
+
+-- ═══════════════════════════════════════════════════════════════
 -- PART V: Equality condition for "conditioning reduces entropy"
 -- ═══════════════════════════════════════════════════════════════
 
