@@ -38,6 +38,58 @@ Recipes in rename-map §7n.
 |---|---|---|
 | Erdos220ProblemProvable | `montgomery_vaughan_general`, `maximum_gap_bound`, `gap_concentration` | malformed `theorem foo (…) : := by sorry` with the type on the NEXT line — moved the type up to fill the empty result slot: `theorem foo (…) :\n    <type> := by sorry`. Same statement, still `sorry`-holed (formalized, not verified). |
 
+## DOCTOR INCREMENT 11 (instance-synth class, #38065)
+
+Class: `instance-synth` (224 RESIDUAL rows, Erdős-heavy: 158 Erdos*). Branch
+`feature/issue-38065`, container `dr21` (cpus 0-5, 11g, cache v431).
+
+### Key finding: instance-synth is a GRAB-BAG, not one root cause
+
+The class name hides several distinct v4.31 regressions. Dominant *first* synth
+failures: rpow import-loss (`HPow ℝ ℝ`/`HPow ℕ ℝ`), graph
+`Fintype (G.neighborSet v)`/`Fintype G.edgeSet`, classical `DecidablePred`. But
+**every file also carries downstream cascade errors** that only surface once the
+synth failure clears — so no row flips on the mechanical synth fix alone. The
+workflow per file: (1) apply synth fix (rpow import / `open scoped Classical` +
+`fix_noncomputable.py` / `[DecidableRel]` / `abbrev`), (2) rebuild, (3) repair
+the exposed cascade (type-mismatch / proof-drift / statement bug). Full recipe
+table in rename-map §7n.
+
+### Waves (all in-container verified, lake exit 0, then ledger-flipped)
+
+- **DR21-1** (+5): Erdos717 (rpow import), Erdos149 (classical Fintype graph),
+  Erdos613 (maxDegree `Finset.sup id`), Erdos800 (classical+noncomputable+unfold
+  isHighDegree), Erdos809 (Fin-mod bound + drop dead omega).
+- **DR21-2** (+4): Erdos1024/630/437/628 — rpow/classical + statement repairs.
+- **DR21-3** (+4): Erdos147 (`[NeZero k]`), Erdos565 (Sym2 `s(_,_)`), Erdos637
+  (`G.adj_symm`), Erdos548ProblemAristotle (nested-field symm/loopless).
+- **DR21-4** (+3): Erdos548 (multi: ∀k binder, girth, symm ×2), Erdos612
+  (minDegree `Finset.min.getD 0` + sorry-typed placeholders), Erdos767
+  (List.get index + `cycle[i]?` + Nat.mul_sub).
+- **DR21-5** (+2): Erdos146 (Colorable import, MaxDegreeOneSide DecidableRel),
+  Erdos777 (Finset-qualified ambiguity + Or.inl bug).
+- **DR21-6** (+2): Erdos808 (rpow coercions + SumProduct A×ˢA), Erdos584
+  (List head?/getLast? + noncomputable).
+- **DR21-7** (+2): Erdos415 (abbrev Perm + range(n+1)), Erdos368 (drop spurious
+  noncomputable → native_decide works).
+- **DR21-8** (+1): Erdos784 (H_C total via `Finset.min.getD 0`).
+
+**Increment 11 running total: +23 GREEN.** Recipes + full statement-repair
+table in rename-map §7n.
+
+### Statement repairs (operator policy 2026-07-13) — increment 11
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos1024 | `exists_independent` | +hyp `∅ ∉ H` (empty set independent iff no empty edge) |
+| Erdos437 | `erdos_437_summary` | `∀ ε > 0` → `∀ ε : ℝ, ε > 0 →` (ℕ-inferred) |
+| Erdos630 | `bipartite_iff_no_odd_cycle` | `G.IsCycle n` → `∃ v (w:G.Walk v v), w.IsCycle ∧ w.length=n` |
+| Erdos548 | `ErdosSosConjecture`/`girth` | +`∀ k` binder; `G.Walk v v` not `G.Walk V V` |
+| Erdos808 | `SumProductConjecture` | `A.image p.1/p.2` → `(A ×ˢ A).image` |
+| Erdos415 | `Question3_NaturalMostLikely` | `Finset.univ` (ℕ) → `Finset.range (n+1)` |
+| Erdos612 | path/cycle/bipartite/moore | `sorry`-typed → real ∃-graph/Moore propositions |
+| Erdos777 | `full_comparable` | `Or.inr` → `Or.inl` (wrong subset direction) |
+
 ## DOCTOR INCREMENT 10 (type-mismatch + proof-drift + mixed unknown-const, #38065)
 
 Classes: type-mismatch(223) + proof-drift(246) + the ~323 unknown-const rows
