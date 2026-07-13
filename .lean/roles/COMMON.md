@@ -87,6 +87,8 @@ always preserved.
 - If nothing worth doing/reporting exists, say "nothing found" rather than
   fabricating value. A cycle that correctly stands down is a successful cycle.
 - Judge results relative to current gallery state, not in absolute terms.
+- A lemma that filled a gap 3 months ago may be trivial now if stronger
+  results exist.
 - When uncertain about significance, default to understating rather than
   overstating.
 
@@ -116,12 +118,17 @@ recoverable verbatim from git history via `git show dc9fdffa30^:<path>`:
 | `scripts/lean/update-stats.sh` | seeker | Stats/completion signals |
 | `scripts/clean-branches.sh` | worktree janitor | |
 | `scripts/gallery/check-meta-size.ts` | enricher | Size-guardrail check |
+| `.claude/commands/lean-scout.md` | researcher (`/lean-scout` survey skill) | Structured literature/gallery survey |
+| `.claude/skills/mathlib-contribution/` (SKILL.md, STYLE-SCAN.md, GOTCHAS.md) | researcher red-team pass for Mathlib-bound files | |
 | `.lean/scripts/extract-problems.ts` | seeker | Pool extractor |
-| `.lean/scripts/research.sh` | seeker | Workspace init |
+| `.lean/scripts/research.sh` | seeker, researcher | Workspace init; `phase` subcommand tracks OBSERVE/ORIENT/ACT/COMPLETED in `research/registry.json` |
+| `.lean/scripts/knowledge-scores.sh` | researcher | Lists problems by knowledge score (`--status`, `--revisit`); `claim-problem.sh claim-random` covers the selection use case meanwhile |
+| `.lean/scripts/archive-sessions.sh` | researcher | Archives old knowledge.md sessions to `sessions/`; manual archiving works meanwhile |
 | `research/db/sync_pool.py`, `research/db/migrate.py` | seeker | DB-first pool sync (present only as untracked runtime state, currently absent from disk) |
 | Root `package.json`, `vite.config.ts`, `tsconfig*.json`, `wrangler.toml` | `pnpm build` anywhere | Site builds currently only work in worktrees created from pre-deletion branches |
 
 Do **not** reinvent these from scratch — restore from history (after a secrets
-scan) or wait for the restoration decision tracked in #38387. Where a role doc
-below references one of these paths, treat it as "the documented behavior when
-the script is available".
+scan) or wait for the restoration decision, now tracked in follow-up issue
+#38398 (#38387 covered the survey, engine check-in, role docs, and researcher-doc
+optimization). Where a role doc references one of these paths, treat it as "the
+documented behavior when the script is available".

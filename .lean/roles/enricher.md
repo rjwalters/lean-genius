@@ -215,7 +215,8 @@ leave gallery conventions in place. (See #20854.)
 `scripts/enricher/claim-target.sh`, `scripts/enricher/find-targets.ts`, and
 `scripts/gallery/check-meta-size.ts` are referenced by this workflow but missing
 from `main` (deleted by `dc9fdffa30`; recovery: COMMON.md Known-Gaps Ledger).
-Known tracker defect while unrestored: `find-targets.ts` read the audit tracker
-via a CWD-relative path while `complete` wrote to the main-repo tracker, so
+Known tracker defect while unrestored: `find-targets.ts` read the enrichment
+tracker (`src/data/proofs/enrichment-tracker.json`) via a CWD-relative path
+while `complete` wrote to the main-repo tracker, so
 completed passes did not persist and `claim-next` could re-serve the same
 at-target entry — verify an entry is genuinely under-target before enriching.

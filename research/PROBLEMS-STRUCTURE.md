@@ -155,6 +155,38 @@ repository:
 These are short lists; they exist so that an agent picking up the slug for the
 first time can find the surrounding code without grepping.
 
+## Session strategy by problem state (Solved/Unsolved Strategy)
+
+Shared convention for research sessions (referenced by
+`.lean/roles/researcher.md` and `.claude/commands/lean-research.md`, which
+previously each carried a verbatim copy). Before starting work on a problem,
+classify its state and choose strategy:
+
+**STUCK (sorries remain, no clear path forward):**
+- Do NOT generalize or broaden scope
+- Decompose into concrete subgoals or intermediate lemmas — but apply the
+  equivalent-strength check (defined in the researcher docs' "Follow-Up
+  Question Generation" section): a subgoal as strong as the target itself is a
+  blocked route, not decomposition progress
+- Try a different decomposition of the same target
+- Check if the blocking sorry can be submitted to Aristotle
+  (see [`ARISTOTLE-WORKFLOW.md`](./ARISTOTLE-WORKFLOW.md))
+- If 3+ sessions stuck on same sorry: flag as BLOCKED, move on
+
+**MAKING PROGRESS (some sorries eliminated this session):**
+- Continue current approach
+- Document which techniques worked for knowledge propagation
+
+**SOLVED (0 sorries, axiom count acceptable):**
+- Author/update the problem's adversarial checklist BEFORE claiming SOLVED
+  (element 6 above)
+- Generate 1-2 follow-up open questions (per the researcher docs' "Follow-Up
+  Question Generation" section, including its equivalent-strength check and
+  OQ-chain depth guard)
+- Look outward: generalizations, converses, sharp boundaries
+- Check if proved lemmas help other active research problems
+- Update technique index with successful approaches
+
 ## Lifecycle
 
 A `research/problems/<slug>/` entry exists exactly when:

@@ -20,12 +20,10 @@ You are a Lean theorem proving researcher. Run one research iteration on the lea
 
 ## Honesty Standards
 
-- Do not describe trivial results as significant
-- Do not inflate novelty claims -- if the result is routine, say so
-- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
-- Judge results relative to current gallery state, not in absolute terms
-- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
-- When uncertain about significance, default to understating rather than overstating
+Follow the fleet-wide Honesty Standards in
+[`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#honesty-standards)
+(no inflation, "nothing found" over fabricated value, judge relative to
+current gallery state, understate when uncertain).
 
 ### Artifact-only reporting (MANDATORY)
 
@@ -69,16 +67,23 @@ jq -r '.candidates | group_by(.status) | map({status: .[0].status, count: length
 
 ### Step 0: Check Aristotle Results
 
+```bash
+# Poll job status and update local tracking (research/aristotle-jobs.json)
+./scripts/aristotle/check-jobs.sh --update
+
+# Download completed results and integrate improvements into proofs/Proofs/
+./scripts/aristotle/retrieve-integrate.sh
 ```
-Use the aristotle_check_results MCP tool to:
-- Retrieve any completed proofs from previous sessions
-- See what's still pending
-- Avoid duplicating work Aristotle already did
-```
+
+This retrieves completed proofs from previous sessions, shows what's still
+pending, and avoids duplicating work Aristotle already did. See
+[`research/ARISTOTLE-WORKFLOW.md`](../../research/ARISTOTLE-WORKFLOW.md) for
+the full pipeline.
 
 If completed proofs are found:
 1. Read the retrieved solutions
-2. Integrate them into the proof files
+2. Integrate them into the proof files (rebuild locally — see the toolchain
+   caveat in the workflow doc)
 3. Update knowledge.json with the progress
 4. THEN proceed to problem selection
 
@@ -114,10 +119,14 @@ fi
 
 ### List Problems by Knowledge (Weakest First)
 
-```bash
-# Show all problems sorted by knowledge accumulation (ascending)
-.lean/scripts/knowledge-scores.sh
-```
+> ⚠️ `.lean/scripts/knowledge-scores.sh` (the listing helper, with `--status`
+> and `--revisit` filters) is currently **missing from `main`** — a
+> mass-deletion casualty, recoverable via `git show dc9fdffa30^:<path>`. See
+> the Known-Gaps Ledger in
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387).
+> Until restored: `scripts/research/claim-problem.sh claim-random` already
+> applies knowledge-prioritized (depth-first) selection, and the per-problem
+> jq snippet above computes an individual score.
 
 ### Selection Rule — DEPTH OVER BREADTH
 
@@ -133,20 +142,28 @@ When multiple problems are eligible:
 
 Before ANY work, answer these questions:
 
-### 1. The Value Question
+### 1. The Axiom Question (CHECK FIRST)
+
+> "How many axioms does this file have? Can any be proved from Mathlib?"
+
+Run `grep -c "^axiom " proofs/Proofs/<file>.lean`. If the axiom count is high
+(>5), prioritize proving existing axioms over adding new content. Adding
+theorems on top of unproved axioms is scaffolding, not formalization.
+
+### 2. The Value Question
 
 > "If I complete this work, will I be meaningfully closer to a complete proof?"
 
 If "no, but it's technically progress" → **STOP. That's not progress.**
 
-### 2. The Proof Strategy Question
+### 3. The Proof Strategy Question
 
 > "How will I cover infinitely many cases?"
 
 Valid: Induction, strong induction, case partition (finite), reduction, contradiction, construction.
 Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 
-### 3. The Build vs Block Question
+### 4. The Build vs Block Question
 
 > "If infrastructure is missing, can we build it ourselves?"
 
@@ -158,6 +175,19 @@ Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 | > 1000 lines | Likely truly blocked |
 
 **Before marking `blocked`:** Always check for elementary alternatives and assess buildability.
+
+### Axiom Elimination Priority
+
+**Reducing axiom counts is more valuable than adding new theorems.** A file with 100 theorems and 50 axioms is weaker than a file with 20 theorems and 2 axioms. Every axiom is an unverified assumption — the more axioms, the less Lean is actually checking.
+
+When you claim a problem with a high axiom count:
+1. List all `axiom` declarations: `grep -n "^axiom " proofs/Proofs/<file>.lean`
+2. Classify each: is it a deep result (unlikely provable) or routine (likely in Mathlib)?
+3. **Prove the routine ones** — search Mathlib, use `exact?`, `apply?`, `simp`
+4. For deep axioms that can't be proved, leave them but document why in the file
+5. Convert provable axioms to `theorem ... := by <proof>` — this is real progress
+
+**Target**: On any RICH problem, aim to eliminate at least 1 axiom per session. Don't add new Parts/theorems until you've assessed which existing axioms are provable.
 
 ### Anti-Patterns (NEVER DO)
 
@@ -198,27 +228,11 @@ from the OpenAI CDC prompt (see issue #37505 and
 
 ### Solved/Unsolved Strategy (MANDATORY)
 
-Before starting work, classify the problem state and choose strategy:
-
-**STUCK (sorries remain, no clear path forward):**
-- Do NOT generalize or broaden scope
-- Decompose into concrete subgoals or intermediate lemmas — but apply the
-  equivalent-strength check (see Follow-Up Question Generation below): a subgoal
-  as strong as the target itself is a blocked route, not decomposition progress
-- Try a different decomposition of the same target
-- Check if the blocking sorry can be submitted to Aristotle
-- If 3+ sessions stuck on same sorry: flag as BLOCKED, move on
-
-**MAKING PROGRESS (some sorries eliminated this session):**
-- Continue current approach
-- Document which techniques worked for knowledge propagation
-
-**SOLVED (0 sorries, axiom count acceptable):**
-- Author/update the problem's adversarial checklist BEFORE claiming SOLVED (see below)
-- Generate 1-2 follow-up open questions (see below)
-- Look outward: generalizations, converses, sharp boundaries
-- Check if proved lemmas help other active research problems
-- Update technique index with successful approaches
+Before starting work, classify the problem state (STUCK / MAKING PROGRESS /
+SOLVED) and choose strategy per the shared convention in
+[`research/PROBLEMS-STRUCTURE.md`](../../research/PROBLEMS-STRUCTURE.md)
+§"Session strategy by problem state". Its SOLVED branch requires the
+adversarial checklist and follow-up generation defined below.
 
 ### Adversarial Checklist Before Claiming SOLVED (MANDATORY)
 
@@ -278,7 +292,10 @@ the parent's "Must prove exactly / does not count" section (see
 # Clean stale locks
 find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
 
-# List available problems by knowledge score (lowest first)
+# List available problems by knowledge score (lowest first).
+# NOTE: knowledge-scores.sh is currently missing from main (Known-Gaps Ledger
+# in .lean/roles/COMMON.md); claim-problem.sh claim-random applies the same
+# knowledge-first prioritization automatically.
 .lean/scripts/knowledge-scores.sh --status available
 
 # Select the one with lowest knowledge score
@@ -306,6 +323,11 @@ fi
 
 Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approaches. Use this as your primary ORIENT tool.
 
+> `/lean-scout` (`.claude/commands/lean-scout.md`) is currently **missing from
+> `main`** (mass-deletion casualty; Known-Gaps Ledger in
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387)).
+> Until restored, run the manual checks below instead.
+
 **Supplement with manual checks if needed:**
 1. **Search Mathlib**: WebSearch "Mathlib4 Lean [topic] 2025 2026"
 2. **Check codebase**: Search `proofs/Proofs/` for related work
@@ -323,18 +345,20 @@ Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approach
 
 ### Step 5: Implement with Aristotle Support
 
-**During implementation, use Aristotle strategically:**
+**During implementation, use Aristotle strategically** (full pipeline:
+[`research/ARISTOTLE-WORKFLOW.md`](../../research/ARISTOTLE-WORKFLOW.md)):
 
 1. **Classify each sorry** as TRIVIAL, HARD, or OPEN
 2. **For HARD sorries:**
-   - If stuck > 10 min → `aristotle_submit` async
+   - If stuck > 10 min → package as `*StatementOnly.lean` and submit via
+     `./scripts/aristotle/submit-batch.sh`
    - Continue working on other sorries while Aristotle runs
-   - Check `aristotle_status` every 5-10 min
+   - Poll `./scripts/aristotle/check-jobs.sh --update` every ~10 min
 3. **For OPEN sorries:**
    - Work manually - Aristotle can't help with unsolved problems
 4. **For TRIVIAL sorries:**
-   - Try manually first (should be quick)
-   - Use `aristotle_prove` sync if you want instant answer
+   - Prove them yourself — `simp`/`omega`/`linarith`/`decide` is faster than
+     the submission round trip
 
 ### Step 5b: Advance Phase (MANDATORY)
 
@@ -351,6 +375,13 @@ After each session, advance the problem's phase to reflect work done:
 .lean/scripts/research.sh phase "$PROBLEM_ID" "COMPLETED"
 ```
 
+> ⚠️ `.lean/scripts/research.sh` is currently **missing from `main`**
+> (mass-deletion casualty; Known-Gaps Ledger in
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387),
+> recoverable via `git show dc9fdffa30^:.lean/scripts/research.sh`). Until
+> restored, update the phase field directly in `research/registry.json` with
+> `jq` (`.problems[] | select(.slug == $id) | .phase = $phase`).
+
 **Phase meanings:**
 - **OBSERVE**: Surveyed only — wrote knowledge.md but no proof attempt
 - **ORIENT**: Analyzed feasibility, identified approach, may have partial infrastructure
@@ -366,8 +397,9 @@ After each session, advance the problem's phase to reflect work done:
 jq '(.candidates[] | select(.id == "PROBLEM_ID")).status = "STATUS"' .lean/state/candidate-pool.json > tmp.json && mv tmp.json .lean/state/candidate-pool.json
 rm -rf "research/claims/${PROBLEM_ID}.lock"
 
-# If HARD sorries remain, submit for overnight processing
-./research/scripts/aristotle-submit.sh proofs/Proofs/File.lean problem-id "End of session"
+# If HARD sorries remain, package them as *StatementOnly.lean files and
+# submit for overnight processing
+./scripts/aristotle/submit-batch.sh --target 5
 ```
 
 ---
@@ -381,7 +413,10 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 **Prioritize by knowledge tier, then status:**
 
 ```bash
-# List revisitable problems by knowledge score (lowest first)
+# List revisitable problems by knowledge score (lowest first).
+# NOTE: knowledge-scores.sh is currently missing from main (Known-Gaps Ledger
+# in .lean/roles/COMMON.md); meanwhile use the per-problem jq snippet from
+# "Calculate Knowledge Score" above over the revisitable statuses.
 .lean/scripts/knowledge-scores.sh --revisit
 ```
 
@@ -413,7 +448,7 @@ Scout will return:
 - Literature highlights and key papers
 - Recommended approaches with evidence
 
-**Incorporate Scout's findings into your ORIENT exploration.** Scout is your research assistant - it searches the gallery and literature while you focus on mathematical insights.
+**Incorporate Scout's findings into your ORIENT exploration.** Scout is your research assistant - it searches the gallery and literature while you focus on mathematical insights. (While `/lean-scout` is missing from `main` — see the Known-Gaps Ledger note in Mode 1, Step 3 — do the manual searches below yourself.)
 
 **Manual searches (if Scout results are incomplete):**
 
@@ -431,9 +466,9 @@ If Scout's survey is incomplete or you need deeper exploration:
 1. Propose NEW approach (different from previous attempts)
 2. Apply Pre-Work Assessment
 3. **Classify sorries and delegate to Aristotle:**
-   - HARD sorries → `aristotle_submit` async, work on OPEN ones
+   - HARD sorries → `./scripts/aristotle/submit-batch.sh` async, work on OPEN ones
    - OPEN sorries → Work manually (Aristotle can't help)
-   - Check `aristotle_status` periodically
+   - Poll `./scripts/aristotle/check-jobs.sh --update` periodically
 4. Implement meaningful work
 5. Document outcome in knowledge.md
 6. Submit remaining HARD sorries for overnight if session ends
@@ -460,16 +495,17 @@ research/problems/<id>/
 1. `knowledge.md` keeps only the **last 5 sessions** + problem summary
 2. Older sessions are archived to `sessions/` subdirectory
 3. Archive when knowledge.md exceeds **500 lines** or **10 sessions**
-4. Use `.lean/scripts/archive-sessions.sh <problem-id>` to archive
 
 ### Archive Sessions
 
-```bash
-# Archive old sessions for a problem (keeps last 5)
-.lean/scripts/archive-sessions.sh pnp-barriers
+Archive manually: move each old session block to
+`research/problems/<id>/sessions/YYYY-MM-DD-sNN.md` (standalone file, same
+format), keeping the last 5 sessions in `knowledge.md`.
 
-# Manual archive: move session block to sessions/YYYY-MM-DD-sNN.md
-```
+> The helper `.lean/scripts/archive-sessions.sh <problem-id>` is currently
+> **missing from `main`** (mass-deletion casualty; Known-Gaps Ledger in
+> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387),
+> recoverable via `git show dc9fdffa30^:.lean/scripts/archive-sessions.sh`).
 
 ### Update Problem Knowledge (MANDATORY)
 
@@ -664,170 +700,37 @@ issue #37505 and
 | `research/problems/<id>/knowledge.md` | Problem history |
 | `proofs/Proofs/*.lean` | Proof files |
 | `research/aristotle-jobs.json` | Aristotle job tracking |
+| `research/ARISTOTLE-WORKFLOW.md` | Aristotle CLI pipeline (single source) |
 | `research/SORRY-CLASSIFICATION.md` | Sorry classification guide |
 
 ---
 
-## Aristotle Integration
+## Aristotle Integration (Quick Reference)
 
-Aristotle is a powerful proof search tool. Use it strategically alongside manual proof work.
-
-### Tool Roles
-
-| Tool | Strength | Best For |
-|------|----------|----------|
-| **Claude** | Strategic reasoning, creativity | OPEN problems, proof architecture, new approaches |
-| **Aristotle** | Proof search, tactic grinding | HARD problems with known proofs |
-
-**Our mission is solving OPEN problems!** But use tools appropriately:
-- Aristotle formalizes KNOWN mathematics (proof exists somewhere)
-- Claude attempts UNKNOWN mathematics (creative work needed)
-
-### Sorry Classification
-
-| Classification | Description | Send to Aristotle? |
-|----------------|-------------|-------------------|
-| **TRIVIAL** | Direct computation | Yes (fast, 1-5 min) |
-| **HARD** | Known result, needs formalization | Yes (may take hours) |
-| **OPEN** | Unsolved conjecture | **NEVER** - work on it ourselves! |
-
----
-
-## Session Start: Check Aristotle Results (MANDATORY)
-
-**Every research session MUST begin by checking for completed Aristotle jobs:**
-
-```
-Use aristotle_check_results to:
-1. Auto-retrieve any completed proofs from overnight/previous sessions
-2. See status of pending jobs
-3. Plan around what Aristotle is working on
-```
-
-This prevents duplicate work and integrates overnight progress immediately.
-
----
-
-## Real-Time Aristotle Usage
-
-### When to Submit During Active Work
-
-| Situation | Action |
-|-----------|--------|
-| Stuck on a proof goal > 10 min | Submit async, continue other work |
-| Multiple independent HARD sorries | Submit all in parallel |
-| Need a helper lemma | Let Aristotle prove it while you work on main theorem |
-| Blocked by tedious case analysis | Perfect for Aristotle |
-| Creative/novel approach needed | Work manually - Aristotle can't innovate |
-
-### Async Workflow (Recommended)
-
-```
-1. Identify HARD sorry that's blocking progress
-2. Use aristotle_submit → get project_id
-3. Continue working on other parts of the proof
-4. Check aristotle_status periodically (every 5-10 min)
-5. When COMPLETE, use aristotle_retrieve
-6. Integrate solution and continue
-```
-
-This keeps you productive while Aristotle grinds on tactical proofs.
-
-### Sync Workflow (Quick Proofs)
-
-For TRIVIAL sorries or when you need an immediate answer:
-
-```
-Use aristotle_prove directly:
-- Waits for completion (typically 1-5 minutes)
-- Returns the solved proof immediately
-- Good for simple lemmas you expect to be fast
-```
-
----
-
-## Available MCP Tools
-
-| Tool | Use Case | Blocking? |
-|------|----------|-----------|
-| `aristotle_prove` | Quick proofs, need answer now | Yes |
-| `aristotle_submit` | Long proofs, want to continue working | No |
-| `aristotle_status` | Check progress on async job | No |
-| `aristotle_retrieve` | Get completed solution | No |
-| `aristotle_check_results` | Session start, batch retrieval | No |
-| `aristotle_informal` | Natural language → Lean | Yes |
-| `aristotle_list` | See all your projects | No |
-
----
-
-## Strategic Delegation Checklist
-
-Before attempting a sorry manually, ask:
-
-1. **Is this OPEN or HARD?**
-   - OPEN → Work on it manually (Aristotle can't help)
-   - HARD → Consider Aristotle
-
-2. **How long will manual proof take?**
-   - < 5 min → Do it yourself
-   - 5-15 min → Your call
-   - > 15 min → Submit to Aristotle, work on something else
-
-3. **Is this on the critical path?**
-   - Yes → Maybe work manually for immediate progress
-   - No → Submit async, prioritize critical work
-
-4. **Do I have other productive work?**
-   - Yes → Submit async, do other work
-   - No → Try manually first, submit if stuck
-
----
-
-## Parallel Workflow Example
-
-```
-Session starts:
-1. aristotle_check_results → Found 2 completed proofs from last night!
-2. Integrate those solutions
-3. Identify 3 HARD sorries in current file
-4. Submit all 3 with aristotle_submit (get 3 project_ids)
-5. Work on the 1 OPEN sorry manually
-6. Every 10 min: check aristotle_status on the 3 jobs
-7. As jobs complete: retrieve and integrate
-8. End session: any still pending will continue overnight
-```
-
----
-
-## Overnight Submissions
-
-For complex proofs expected to take hours:
+**Single source of truth: [`research/ARISTOTLE-WORKFLOW.md`](../../research/ARISTOTLE-WORKFLOW.md)** —
+CLI pipeline, packaging format, v2 status model, rate limits/cooldown,
+result caching, the Mathlib v4.28 toolchain caveat, and anti-patterns.
+The former MCP tools (`aristotle_submit`, `aristotle_prove`,
+`aristotle_check_results`, `aristotle_retrieve`, ...) are **gone** — the MCP
+wrapper broke against the v2 API and was removed (issue #38098). Use the CLI
+pipeline:
 
 ```bash
-# Submit via script for logging
-./research/scripts/aristotle-submit.sh proofs/Proofs/File.lean problem-id "Notes"
-
-# Or via MCP tool
-Use aristotle_submit with the file path
-
-# Next morning: aristotle_check_results auto-retrieves completed work
+./scripts/aristotle/cli-smoke-test.sh          # auth/reachability check (free)
+./scripts/aristotle/submit-batch.sh --target 5 # submit *StatementOnly.lean batch
+./scripts/aristotle/check-jobs.sh --update     # poll + update research/aristotle-jobs.json
+./scripts/aristotle/retrieve-integrate.sh      # download + integrate results
 ```
 
-### Success Example: Erdős #728
+Essentials (details and rationale in the workflow doc):
 
-- **Input:** File with HARD sorries only
-- **Runtime:** 6 hours
-- **Output:** 1,416 lines of complete proof
-- **Result:** Zero sorries, builds successfully
+| Rule | Summary |
+|------|---------|
+| Session start | Run `check-jobs.sh --update` + `retrieve-integrate.sh` before any other work (Step 0) |
+| TRIVIAL sorries | Prove yourself — faster than the round trip |
+| HARD sorries | One theorem per `*StatementOnly.lean` file → `submit-batch.sh`; async, poll every ~10 min |
+| OPEN sorries | **Never submit** — work manually; that is the mission |
+| Definition sorries / axioms | Aristotle skips them — complete the def / convert `axiom` to `theorem ... := by sorry` first |
+| Toolchain | Backend vendors Mathlib v4.28 and rewrites `lean-toolchain` — rebuild retrieved proofs locally |
 
----
-
-## Anti-Patterns
-
-| Pattern | Why Wrong | Do Instead |
-|---------|-----------|------------|
-| Submit OPEN problems | Aristotle spins forever, wastes API | Work manually |
-| Wait for sync proofs > 5 min | Blocks your session | Use async submit |
-| Never check results | Miss completed work | Check at session start |
-| Submit everything | Wastes resources on easy stuff | Triage first |
-| Manual proof search for hours | Aristotle is better at this | Submit after 10-15 min stuck |
+Classification guide: [`research/SORRY-CLASSIFICATION.md`](../../research/SORRY-CLASSIFICATION.md).
