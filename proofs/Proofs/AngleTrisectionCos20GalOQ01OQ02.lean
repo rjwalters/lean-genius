@@ -57,8 +57,7 @@ private theorem pCos5_ne_zero : (pCos5 : ℚ[X]) ≠ 0 := by
 
 private theorem pCos5_natDegree : (pCos5 : ℚ[X]).natDegree = 2 := by
   show (4 * X ^ 2 - 2 * X - C (1 : ℚ)).natDegree = 2
-  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_add_eq_left_of_natDegree_lt,
-    natDegree_mul, natDegree_pow, natDegree_X, natDegree_C, natDegree_one]
+  compute_degree!
 
 private theorem pCos5_degree_ne_zero : (pCos5 : ℚ[X]).degree ≠ 0 := by
   rw [Polynomial.degree_eq_natDegree pCos5_ne_zero, pCos5_natDegree]
