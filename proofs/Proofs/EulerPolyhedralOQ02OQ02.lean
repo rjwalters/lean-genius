@@ -1080,6 +1080,92 @@ theorem prodSurface_torus_betti_two : prodSurfaceBetti 1 1 2 = 6 := by
 theorem prodSurface_torus_euler : eulerFromBetti4 (prodSurfaceBetti 1 1) = 0 := by
   rw [prodSurface_euler_poincare]; norm_num
 
+-- ============================================================================
+-- Part XIX: The Künneth convolution — commutativity and the point as unit
+-- ============================================================================
+
+/-
+  Part XVIII computes *one* Künneth convolution `kunnethBetti (genusSurfaceBetti g)
+  (genusSurfaceBetti h)` and matches it to the product-surface Betti table.  The convolution
+  `kunnethBetti` is, however, a binary operation on Betti sequences in its own right, and it
+  carries the algebraic structure behind the symmetric-monoidal product of spaces:
+
+  * it is **commutative**, `b ⋆ c = c ⋆ b` (`kunnethBetti_comm`) — the homological shadow of
+    the flip homeomorphism `M × N ≅ N × M` under which the graded tensor product of homology
+    is symmetric; and
+  * the **point** `δ = (1, 0, 0, …)` (`pointBetti`) is a two-sided **unit**,
+    `δ ⋆ c = c = c ⋆ δ` (`kunnethBetti_pointBetti_left`/`_right`) — the homological shadow of
+    `pt × M ≅ M`, mirroring `pointCGB` as the identity of the Cartesian-product manifold
+    monoid (Part XVII, `prodCGB_point_chi`).
+
+  Together with the (standard, not formalized here) associativity of the Cauchy product these
+  exhibit `(Betti sequences, ⋆, δ)` as a commutative monoid, with the Betti-number assignment
+  a monoid homomorphism from the product monoid of Part XVII.  The commutativity yields a
+  concrete geometric corollary: the product-surface Betti table is symmetric in its two
+  genera (`prodSurfaceBetti_comm`), the homological shadow of `Σ_g × Σ_h ≅ Σ_h × Σ_g`.  The
+  proofs are finite-sum reindexing over `ℕ`, hence fully verified (0-axiom); the two
+  structure-encoded CGB assumptions are not invoked.
+-/
+
+/-- **The Künneth convolution is commutative: `b ⋆ c = c ⋆ b`.**  Reindexing the convolution
+    sum `∑_{i+j=k} bᵢ·cⱼ` by `i ↦ k − i` swaps the two factors — the algebraic form of the
+    homeomorphism `M × N ≅ N × M`, under which the graded tensor product of homology is
+    symmetric (no sign, the ranks being unsigned). -/
+theorem kunnethBetti_comm (b c : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti b c k = kunnethBetti c b k := by
+  unfold kunnethBetti
+  rw [← Finset.sum_range_reflect (fun i => c i * b (k - i)) (k + 1)]
+  refine Finset.sum_congr rfl (fun i hi => ?_)
+  rw [Finset.mem_range] at hi
+  have h1 : k + 1 - 1 - i = k - i := by omega
+  have h2 : k - (k - i) = i := by omega
+  simp only [h1, h2]
+  ring
+
+/-- **Betti sequence of the point** `δ = (1, 0, 0, …)`: `b₀ = 1`, `bᵢ = 0` for `i ≥ 1`.  This
+    is the unit of the Künneth convolution, mirroring `pointCGB` as the unit of the
+    Cartesian-product manifold monoid (Part XVII). -/
+def pointBetti : ℕ → ℕ
+  | 0 => 1
+  | _ + 1 => 0
+
+/-- `b₀(pt) = 1`: the point is a single connected `0`-cell. -/
+@[simp] theorem pointBetti_zero : pointBetti 0 = 1 := rfl
+
+/-- `bᵢ(pt) = 0` for `i ≥ 1`: the point has no homology above degree `0`. -/
+@[simp] theorem pointBetti_succ (k : ℕ) : pointBetti (k + 1) = 0 := rfl
+
+/-- **The point is a left unit for the Künneth convolution: `δ ⋆ c = c`.**  Only the `i = 0`
+    term of `∑_{i} pointBettiᵢ · c_{k−i}` survives (`pointBetti` vanishes off degree `0`),
+    leaving `1 · c_k = c_k`.  Homologically, `H_*(pt × M) ≅ H_*(M)`. -/
+theorem kunnethBetti_pointBetti_left (c : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti pointBetti c k = c k := by
+  unfold kunnethBetti
+  rw [Finset.sum_eq_single 0]
+  · simp
+  · intro i _ hi0
+    cases i with
+    | zero => exact absurd rfl hi0
+    | succ j => simp
+  · intro h
+    exact absurd (Finset.mem_range.mpr (Nat.succ_pos k)) h
+
+/-- **The point is a right unit for the Künneth convolution: `c ⋆ δ = c`.**  Immediate from
+    the left-unit law and commutativity; the point is therefore a genuine two-sided identity,
+    the homological shadow of `M × pt ≅ M`. -/
+theorem kunnethBetti_pointBetti_right (b : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti b pointBetti k = b k := by
+  rw [kunnethBetti_comm, kunnethBetti_pointBetti_left]
+
+/-- **The product-surface Betti table is symmetric in its genera: `bₖ(Σ_g × Σ_h) =
+    bₖ(Σ_h × Σ_g)` for `k ≤ 4`.**  A concrete consequence of the commutativity of the Künneth
+    convolution (`kunnethBetti_comm`) applied to `prodSurfaceBetti_kunneth`: the palindrome
+    `(1, 2(g+h), 2+4gh, 2(g+h), 1)` is unchanged under `g ↔ h`, the homological shadow of the
+    flip homeomorphism `Σ_g × Σ_h ≅ Σ_h × Σ_g`. -/
+theorem prodSurfaceBetti_comm (g h : ℕ) {k : ℕ} (hk : k ≤ 4) :
+    prodSurfaceBetti g h k = prodSurfaceBetti h g k := by
+  rw [prodSurfaceBetti_kunneth g h hk, prodSurfaceBetti_kunneth h g hk, kunnethBetti_comm]
+
 end ChernGaussBonnet
 
 end
