@@ -73,11 +73,13 @@ def completeHypergraph (t r : ℕ) : Hypergraph (Fin t) r where
 /-- The complete r-uniform hypergraph on t vertices has C(t,r) edges. -/
 theorem completeHypergraph_edgeCount (t r : ℕ) :
     (completeHypergraph t r).edgeCount = t.choose r := by
-  unfold Hypergraph.edgeCount completeHypergraph
-  have h : (Finset.univ.filter (fun s : Finset (Fin t) => s.card = r)) =
+  have h : (completeHypergraph t r).edges =
       (Finset.univ : Finset (Fin t)).powersetCard r := by
-    ext s; simp [Finset.mem_powersetCard, Finset.mem_filter, Finset.subset_univ]
-  rw [h, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+    ext s
+    simp only [completeHypergraph, Finset.mem_filter, Finset.mem_univ, true_and,
+      Finset.mem_powersetCard, Finset.subset_univ]
+  simp only [Hypergraph.edgeCount, h, Finset.card_powersetCard, Finset.card_univ,
+    Fintype.card_fin]
 
 /-- When r = 2, the complete 2-uniform hypergraph on t vertices has
     C(t,2) = t*(t-1)/2 edges, matching the complete graph. -/
