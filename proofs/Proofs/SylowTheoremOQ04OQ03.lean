@@ -1693,6 +1693,115 @@ theorem unipotentSubgroup_normal_in_borel :
   (Subgroup.normal_subgroupOf_iff_le_normalizer unipotentSubgroup_le_borel).mpr
     borel_le_normalizer_unipotent
 
+/-! ### The Iwasawa structure on the Sylow-conjugation action
+
+`SL(2, p)` acts on its set `Sylow p (SL(2, p))` of Sylow `p`-subgroups by conjugation
+(`Sylow.mulAction`).  Sending each Sylow subgroup to its underlying subgroup packages the
+"abelian normal subgroups whose conjugates generate the group" half of **Iwasawa's simplicity
+criterion** into Mathlib's `MulAction.IwasawaStructure`:
+
+* each Sylow `p`-subgroup is abelian — indeed cyclic of order `p` (`isCyclic_sylowP`), so
+  `IsMulCommutative`;
+* the assignment is equivariant: `↑(g • P) = conj g • ↑P` (`Sylow.coe_subgroup_smul`, definitionally);
+* the Sylow subgroups generate `SL(2, p)` (`iSup_sylowP_eq_top`), because the join of the
+  conjugation-closed family `{↑P}` is a normal subgroup containing the unipotent Sylow, whose
+  normal closure is already everything (`unipotent_normalClosure_eq_top`).
+
+This is the concrete `IwasawaStructure` object the "Sylow-counting" route calls for.  The two
+ingredients still missing before `MulAction.IwasawaStructure.isSimpleGroup` yields simplicity are
+`[IsQuasiPreprimitive (SL(2,p)) (Sylow p (SL(2,p)))]` (primitivity of the conjugation action —
+equivalently `2`-transitivity of `PSL(2,p)` on `P¹(𝔽_p)`) and faithfulness (which forces passage
+to the central quotient `PSL(2,p)`, since the centre `{±1}` acts trivially on the Sylow set).
+With quasi-preprimitivity alone, `IwasawaStructure.commutator_le` already yields
+`eq_top_of_normal_of_acts_nontrivially` below: every normal subgroup acting nontrivially on the
+Sylow set contains `commutator (SL(2,p)) = ⊤` (`commutator_eq_top`, `p ≥ 5`).
+-/
+
+/-- **The Sylow `p`-subgroups of `SL(2, p)` generate the whole group:** their supremum is `⊤`.
+
+The join `⨆ P, ↑P` is *normal* — the family `{↑P}` is closed under conjugation
+(`↑(g • P) = conj g • ↑P`), so conjugation permutes the joined subgroups.  As a normal subgroup it
+contains the unipotent Sylow `U`, hence the normal closure `⟪U⟫ᴳ`, which is already `⊤`
+(`unipotent_normalClosure_eq_top`).  This is the generation hypothesis of Iwasawa's criterion. -/
+theorem iSup_sylowP_eq_top :
+    (⨆ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)),
+        (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) = ⊤ := by
+  set G := Matrix.SpecialLinearGroup (Fin 2) (ZMod p) with hG
+  -- The join of the conjugation-closed family `{↑P}` is a normal subgroup.
+  have hnormal : (⨆ P : Sylow p G, (P : Subgroup G)).Normal := by
+    refine ⟨fun n hn g => ?_⟩
+    -- Conjugation `g * · * g⁻¹` is the monoid hom `MulAut.conj g`.
+    have key : ∀ z : G, g * z * g⁻¹ = (MulAut.conj g) z := fun z => (MulAut.conj_apply g z).symm
+    -- Induct on membership in the join, showing conjugation stays inside it.
+    refine Subgroup.iSup_induction (fun P : Sylow p G => (P : Subgroup G))
+      (C := fun z => g * z * g⁻¹ ∈ ⨆ P : Sylow p G, (P : Subgroup G)) hn ?_ ?_ ?_
+    · -- generator: `x ∈ ↑P ⟹ g * x * g⁻¹ ∈ ↑(g • P) ≤ ⨆`
+      intro P x hx
+      refine Subgroup.mem_iSup_of_mem (g • P) ?_
+      rw [Sylow.coe_subgroup_smul, key, ← MulAut.smul_def]
+      exact Subgroup.smul_mem_pointwise_smul x (MulAut.conj g) _ hx
+    · -- identity
+      show g * (1 : G) * g⁻¹ ∈ ⨆ P : Sylow p G, (P : Subgroup G)
+      rw [key, map_one]; exact one_mem _
+    · -- multiplicativity
+      intro x y ihx ihy
+      show g * (x * y) * g⁻¹ ∈ ⨆ P : Sylow p G, (P : Subgroup G)
+      have e : g * (x * y) * g⁻¹ = (g * x * g⁻¹) * (g * y * g⁻¹) := by
+        rw [key (x * y), key x, key y, map_mul]
+      rw [e]; exact mul_mem ihx ihy
+  haveI := hnormal
+  rw [eq_top_iff, ← unipotent_normalClosure_eq_top (p := p)]
+  refine Subgroup.normalClosure_le_normal ?_
+  intro x hx
+  obtain ⟨t, rfl⟩ := hx
+  rw [SetLike.mem_coe]
+  refine Subgroup.mem_iSup_of_mem (unipotentSylow (p := p)) ?_
+  show unipotentUpper t ∈ (unipotentHom (p := p)).range
+  exact MonoidHom.mem_range.mpr ⟨Multiplicative.ofAdd t, rfl⟩
+
+/-- **The Iwasawa structure on the conjugation action of `SL(2, p)` on its Sylow `p`-subgroups.**
+
+Assigns to each Sylow `p`-subgroup `P` its underlying subgroup `↑P`.  The three axioms of
+`MulAction.IwasawaStructure` hold:
+
+* `is_comm` — every Sylow `p`-subgroup is cyclic of order `p` (`isCyclic_sylowP`), hence abelian;
+* `is_conj` — the assignment is equivariant, `↑(g • P) = conj g • ↑P` (`Sylow.coe_subgroup_smul`);
+* `is_generator` — the Sylow `p`-subgroups generate `SL(2, p)` (`iSup_sylowP_eq_top`).
+
+This packages the abelian-normal-generating half of Iwasawa's simplicity criterion for `PSL(2, p)`
+as a genuine Mathlib `IwasawaStructure` object; see `eq_top_of_normal_of_acts_nontrivially` for the
+structural payoff available from it. -/
+noncomputable def sylowIwasawaStructure :
+    MulAction.IwasawaStructure (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+      (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) where
+  T P := (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+  is_comm P := by
+    haveI := isCyclic_sylowP P
+    infer_instance
+  is_conj _ _ := Sylow.coe_subgroup_smul
+  is_generator := iSup_sylowP_eq_top
+
+/-- **Conditional structural consequence (Iwasawa's criterion, generation half supplied).**
+
+*If* the conjugation action of `SL(2, p)` on its Sylow `p`-subgroups is quasi-preprimitive, then
+every normal subgroup `N` that acts **nontrivially** on the Sylow set is the whole group.
+
+Indeed `sylowIwasawaStructure` together with `IwasawaStructure.commutator_le` gives
+`commutator (SL(2,p)) ≤ N`, and `commutator (SL(2,p)) = ⊤` by perfectness for `p ≥ 5`
+(`commutator_eq_top`).  Equivalently: any proper normal subgroup of `SL(2, p)` acts trivially,
+i.e. lies in the kernel of the action (the centre `{±1}`) — the precise quasi-simplicity statement
+modulo the still-open primitivity hypothesis `[IsQuasiPreprimitive …]`. -/
+theorem eq_top_of_normal_of_acts_nontrivially (hp : 5 ≤ p)
+    [MulAction.IsQuasiPreprimitive (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+      (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))]
+    (N : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) [N.Normal]
+    (hN : MulAction.fixedPoints N
+        (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) ≠ Set.univ) :
+    N = ⊤ := by
+  have h := (sylowIwasawaStructure (p := p)).commutator_le N hN
+  rw [commutator_eq_top hp] at h
+  exact top_le_iff.mp h
+
 
 end SylowOQ04OQ03
 
@@ -1700,3 +1809,6 @@ end SylowOQ04OQ03
 #print axioms SylowOQ04OQ03.index_unipotentSylow
 #print axioms SylowOQ04OQ03.card_sylow_eq
 #print axioms SylowOQ04OQ03.card_orderOf_eq_p
+#print axioms SylowOQ04OQ03.iSup_sylowP_eq_top
+#print axioms SylowOQ04OQ03.sylowIwasawaStructure
+#print axioms SylowOQ04OQ03.eq_top_of_normal_of_acts_nontrivially
