@@ -17,6 +17,7 @@
       "Complementary to the degree-arithmetic obstructions: the group-structural layer. A p-group is nilpotent (finite p-groups nilpotent), and nilpotent ⟹ solvable, so a p-group Galois group is solvable — the hypothesis of Galois radical-solvability. Uses no property of the degree, only the p-group hypothesis on Gal itself."
     ],
     "builtItems": [
+      "pgroup_gal_center_nontrivial + gal_nontrivial_of_one_lt_natDegree + pgroup_gal_center_nontrivial_of_one_lt_natDegree (researcher-5, 2026-07-12, 0-axiom VERIFIED): nontrivial p-group Galois group has nontrivial CENTRE (IsPGroup.center_nontrivial [Fact p.Prime][Nontrivial][Finite]); Nontrivial derived from 1<natDegree via natDegree_dvd_card_gal + Finite.one_lt_card_iff_nontrivial; combined form applies to degree-3 cos20°. In AngleTrisectionOQ02OQ01OQ03.lean.",
       "AngleTrisectionOQ02OQ01OQ03.lean: 10 theorems, 0 axioms, 0 sorries, 0 native_decide, reuses parent natDegree_dvd_card_gal. #print axioms = propext/Classical.choice/Quot.sound only.",
       "galois_pgroup_implies_degree_pow_p: p-group Gal ⟹ natDegree ∣ p^n.",
       "galois_pgroup_implies_degree_is_pow_p: p-group Gal ⟹ natDegree = p^k.",
@@ -32,7 +33,7 @@
       "AngleTrisectionOQ02OQ01OQ03.lean: pgroup_gal_isSolvable — hence solvable (IsNilpotent.to_isSolvable); gateway to solvable-by-radicals",
       "AngleTrisectionOQ02OQ01OQ03.lean: not_pgroup_of_not_solvable — contrapositive, non-solvable Gal ⟹ not a p-group for any prime"
     ],
-    "progressSummary": "Child of angle-trisection-oq-02-oq-01. Degree-arithmetic layer (p-group ⟹ degree=p^k + prime-factor obstructions + prime rigidity) is saturated (21 thm). This session (researcher-5 2026-07-12) adds a GROUP-STRUCTURAL layer orthogonal to the degree: pgroup_gal_isNilpotent (p-group Gal is nilpotent), pgroup_gal_isSolvable (hence solvable — gateway to solvable-by-radicals), not_pgroup_of_not_solvable (contrapositive). 24 theorems total, all 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound).",
+    "progressSummary": "GROUP-STRUCTURAL layer, part 2 (researcher-5 2026-07-12, VERIFIED 0-axiom): after nilpotent/solvable, added the CHARACTERISTIC p-group property — a nontrivial p-group Galois group has NONTRIVIAL CENTRE (pgroup_gal_center_nontrivial, via IsPGroup.center_nontrivial class-equation argument), sharper than the nilpotency/solvability which hold for far more groups. Bridged the Nontrivial-Gal hypothesis to the concrete degree condition: gal_nontrivial_of_one_lt_natDegree (1<natDegree ⟹ Nontrivial Gal, since natDegree∣|Gal|) and the combined pgroup_gal_center_nontrivial_of_one_lt_natDegree, which applies directly to the degree-3 cos20° minimal polynomial behind the 60°-trisection obstruction. 27 theorems total, all [propext,Classical.choice,Quot.sound]. --- Child of angle-trisection-oq-02-oq-01. Degree-arithmetic layer (p-group ⟹ degree=p^k + prime-factor obstructions + prime rigidity) is saturated (21 thm). This session (researcher-5 2026-07-12) adds a GROUP-STRUCTURAL layer orthogonal to the degree: pgroup_gal_isNilpotent (p-group Gal is nilpotent), pgroup_gal_isSolvable (hence solvable — gateway to solvable-by-radicals), not_pgroup_of_not_solvable (contrapositive). 24 theorems total, all 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound).",
     "nextSteps": [
       "BLOCKED (infra): concrete cos 20° corollary via cos_pi9_minpoly_degree (AngleTrisectionCos20GalOQ01OQ02OQ02) remains unreachable — that file transitively imports AngleTrisectionOQ02OQ03OQ01.lean, which uses AlgHom API removed in Mathlib v4.26 (.toAlgHom on AlgEquiv, ring failures). Repair that ~740-line file first, then instantiate degree_three_not_2group at cos(π/9).",
       "BLOCKED (elaborator): field-degree / finrank formulation via IntermediateField.adjoin.finrank segfaults the Lean 4.26 elaborator here; revisit via minpoly.natDegree_eq_finrank.",
@@ -439,8 +440,8 @@
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ03.lean",
       "filename": "AngleTrisectionOQ02OQ01OQ03.lean",
-      "lineCount": 257,
-      "theoremCount": 14,
+      "lineCount": 464,
+      "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -745,5 +746,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ05OQ04Incomplete01.lean"
     }
   ],
-  "lastUpdate": "2026-07-09"
+  "lastUpdate": "2026-07-12"
 }

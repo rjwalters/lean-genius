@@ -414,4 +414,51 @@ theorem not_pgroup_of_not_solvable (α : ℝ) (hα : IsIntegral ℚ α)
     ¬ IsPGroup p (minpoly ℚ α).Gal :=
   fun hGal => hns (pgroup_gal_isSolvable α hα hp hGal)
 
+/-! ### Nontrivial center — the defining structural feature of a p-group
+
+Nilpotency and solvability (above) are consequences shared by many groups.  The
+sharper, characteristic property of a nontrivial finite `p`-group is that its **centre
+is nontrivial** (`IsPGroup.center_nontrivial`) — the class-equation fixed-point
+argument.  For a Galois group this says the extension has a nontrivial "central"
+symmetry.  To make the hypothesis `Nontrivial Gal` concrete we first record that a
+minimal polynomial of degree `> 1` already forces the Galois group to be nontrivial
+(its order is a positive multiple of the degree), so the centre statement applies
+directly to the degree-`3` cos 20° obstruction. -/
+
+/-- **Degree `> 1` ⟹ nontrivial Galois group.**  For an algebraic real `α` whose minimal
+polynomial has degree `> 1`, `Gal(minpoly ℚ α)` is nontrivial: the degree divides
+`|Gal|` (`natDegree_dvd_card_gal`), so `1 < natDegree ≤ |Gal|`. -/
+theorem gal_nontrivial_of_one_lt_natDegree (α : ℝ) (hα : IsIntegral ℚ α)
+    (hdeg : 1 < (minpoly ℚ α).natDegree) : Nontrivial (minpoly ℚ α).Gal := by
+  have hirr := minpoly.irreducible hα
+  have hdvd := natDegree_dvd_card_gal hirr
+  have hcard : 1 < Nat.card (minpoly ℚ α).Gal :=
+    lt_of_lt_of_le hdeg (Nat.le_of_dvd Nat.card_pos hdvd)
+  rw [Finite.one_lt_card_iff_nontrivial] at hcard
+  exact hcard
+
+/-- **A nontrivial p-group Galois group has nontrivial centre.**  For any prime `p`, if
+`Gal(minpoly ℚ α)` is a nontrivial `p`-group then its centre `Z(Gal)` is nontrivial
+(`IsPGroup.center_nontrivial`, the class-equation argument).  This is the hallmark
+structural property of `p`-groups — sharper than the nilpotency/solvability recorded
+above, which hold for far more groups. -/
+theorem pgroup_gal_center_nontrivial (α : ℝ) (_hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) [Nontrivial (minpoly ℚ α).Gal]
+    (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    Nontrivial (Subgroup.center (minpoly ℚ α).Gal) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact hGal.center_nontrivial
+
+/-- **Degree `> 1` p-group Galois group has nontrivial centre.**  Combines
+`gal_nontrivial_of_one_lt_natDegree` with `pgroup_gal_center_nontrivial`: whenever the
+minimal polynomial has degree `> 1` (so the Galois group is nontrivial) and the group is a
+`p`-group, its centre is nontrivial.  This applies directly to the degree-`3` cos 20°
+minimal polynomial behind the `60°`-trisection obstruction. -/
+theorem pgroup_gal_center_nontrivial_of_one_lt_natDegree (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hdeg : 1 < (minpoly ℚ α).natDegree)
+    (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    Nontrivial (Subgroup.center (minpoly ℚ α).Gal) :=
+  haveI : Nontrivial (minpoly ℚ α).Gal := gal_nontrivial_of_one_lt_natDegree α hα hdeg
+  pgroup_gal_center_nontrivial α hα hp hGal
+
 end AngleTrisectionOQ02OQ01OQ03
