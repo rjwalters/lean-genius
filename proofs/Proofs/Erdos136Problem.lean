@@ -40,6 +40,7 @@ Tags: ramsey-theory, graph-coloring, complete-graphs
 -/
 
 import Mathlib
+open scoped Classical
 
 open Finset
 
@@ -77,8 +78,8 @@ def colorsInK4 {n k : ℕ} (c : EdgeColoring n k) (v : Fin 4 → Fin n)
 The required property for our coloring.
 -/
 def hasAtLeast5ColorsInEveryK4 {n k : ℕ} (c : EdgeColoring n k) : Prop :=
-  ∀ v : Fin 4 → Fin n, Function.Injective v →
-    (colorsInK4 c v ‹_›).card ≥ 5
+  ∀ v : Fin 4 → Fin n, ∀ hv : Function.Injective v,
+    (colorsInK4 c v hv).card ≥ 5
 
 /-
 ## Part II: The Erdős-Gyárfás Function
@@ -152,7 +153,7 @@ theorem why_five_sixths :
 **Edge count in K₄:**
 K₄ has C(4,2) = 6 edges.
 -/
-theorem k4_edges : Nat.choose 4 2 = 6 := by norm_num
+theorem k4_edges : Nat.choose 4 2 = 6 := by decide
 
 
 /-
