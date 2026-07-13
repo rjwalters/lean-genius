@@ -73,7 +73,7 @@ step that lets the uniform (degree-bounded) LLL budget replace the per-block pro
 theorem one_sub_pow_le_prod_of_card_le {x : ℝ≥0∞} {S₁ : Finset ℕ} {d : ℕ}
     (hcard : S₁.card ≤ d) : (1 - x) ^ d ≤ ∏ _j ∈ S₁, (1 - x) := by
   rw [prod_const_one_sub]
-  exact pow_le_pow_of_le_one (zero_le _) tsub_le_self hcard
+  exact pow_le_pow_of_le_one (zero_le) tsub_le_self hcard
 
 /-- **The uniform budget implies the per-block budget.** If `μ(Aᵢ) ≤ x · (1 − x)^d` (the
 symmetric degree-bounded hypothesis, exponent the degree bound `d`) and the true neighbour

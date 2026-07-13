@@ -298,7 +298,7 @@ theorem existsPolitician_of_degree_le_one (hd : G.IsRegularOfDegree d) (hd1 : d 
   rw [sq] at h
   have : Fintype.card V ≤ 1 := by
     cases hn : Fintype.card V with
-    | zero => exact zero_le _
+    | zero => exact zero_le
     | succ n => lia
   use Classical.arbitrary V
   intro w h; exfalso

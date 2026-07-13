@@ -126,7 +126,7 @@ theorem multivariate_taylor_first_order (f : E → ℝ) (a v : E) (hf : ContDiff
     ∃ θ ∈ Ioo (0 : ℝ) 1, f (a + v) = f a + fderiv ℝ f (a + θ • v) v := by
   obtain ⟨θ, hθ, hEq⟩ := multivariate_taylor_lagrange (n := 0) f a v (by simpa using hf)
   refine ⟨θ, hθ, ?_⟩
-  have hdiff : DifferentiableAt ℝ f (a + θ • v) := (hf.differentiable le_rfl).differentiableAt
+  have hdiff : DifferentiableAt ℝ f (a + θ • v) := (hf.differentiable one_ne_zero).differentiableAt
   rw [taylor_within_zero_eval, iteratedDeriv_one,
     restriction_deriv f a v θ hdiff, restriction_zero] at hEq
   simp only [zero_add, Nat.factorial_one, Nat.cast_one, div_one] at hEq

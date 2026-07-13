@@ -106,7 +106,7 @@ theorem degree_zero_sublevel_empty (p : PolynomialInF F) (hp : p.degree = 0) :
 /-- The uncorrected mu is always 0 (degree-0 bug: constant polynomial 1 has empty sublevel set).
     This makes mu_infimum trivially true. The meaningful version uses muPosDeg (degree ≥ 1). -/
 theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
-  apply le_antisymm _ (zero_le _)
+  apply le_antisymm _ (zero_le)
   calc mu F ≤ sublevelMeasure (⟨0, Fin.elim0, fun i => i.elim0⟩ : PolynomialInF F) :=
         iInf_le _ _
     _ = 0 := by

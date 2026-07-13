@@ -879,9 +879,9 @@ lemma ramsey_sequence (c : ℕ × ℕ → ℕ) (N : ℕ) (hc : ∀ e, c e < N) :
     (∀ i j, i < j → c (v i, v j) = C i) := by
   have R M := (Set.finite_lt_nat _).exists_lt_map_eq_of_forall_mem fun and=>hc (M, and)
   choose _ _ _ _ using(id) R
-  apply (isCompact_pi_infinite fun and=>isCompact_Icc).tendsto_subseq (fun A B=>⟨zero_le _,le_of_lt (hc (B, A))⟩) |>.elim
+  apply (isCompact_pi_infinite fun and=>isCompact_Icc).tendsto_subseq (fun A B=>⟨zero_le,le_of_lt (hc (B, A))⟩) |>.elim
   simp_all(config := {singlePass :=1}) -contextual [tendsto_pi_nhds]
-  refine fun and A B R M=> (Classical.axiomOfChoice M).elim @fun a s=>((isCompact_Icc.isSeqCompact fun and' =>⟨zero_le _,A (B (and'.recOn 0 fun and k=>a (B k)+ (k + 1)))⟩).elim) ?_
+  refine fun and A B R M=> (Classical.axiomOfChoice M).elim @fun a s=>((isCompact_Icc.isSeqCompact fun and' =>⟨zero_le,A (B (and'.recOn 0 fun and k=>a (B k)+ (k + 1)))⟩).elim) ?_
   norm_num
   use fun and K V M W E=>⟨ fun and=>B ((V (W+and)).rec 0 fun and n=>a (B n)+ (n + 1)), R.comp (strictMono_nat_of_lt_succ (by (fin_omega))|>.comp (M.comp fun and=>by valid)), fun and' =>and,?_⟩
   refine fun and R L=>E @_ ↑le_self_add▸s _ _ ((monotone_nat_of_le_succ (by (fin_omega) ) (M (by valid) )).trans' le_self_add)

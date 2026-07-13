@@ -224,7 +224,7 @@ theorem localization_existence
               measure_biUnion_finset_le _ _
           _ = 0 := Finset.sum_eq_zero fun k hk =>
                 hBk_null k (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)))
-        (zero_le _)
+        (zero_le)
     refine measure_mono_null (fun a ha => ?_) h_biUnion_null
     have hmem : idx a ∈ Finset.range (n + 1) :=
       Finset.mem_range.mpr (Nat.lt_succ_of_le (Nat.find_min' (hcover a) ha.1))
@@ -269,7 +269,7 @@ theorem localization_existence
             simp only [f_ind, Set.indicator_apply]
             by_cases hm : a ∈ spanningSets μ m
             · rw [if_pos hm, if_pos (monotone_spanningSets μ hmn hm)]
-            · rw [if_neg hm]; exact zero_le _
+            · rw [if_neg hm]; exact zero_le
         have hptwise : ∀ a, ⨆ n, f_ind n a = ‖g a‖ₑ ^ q.toReal := fun a => by
           apply le_antisymm (iSup_le fun n => Set.indicator_le_self _ _ a)
           obtain ⟨n, hn⟩ := Set.mem_iUnion.mp

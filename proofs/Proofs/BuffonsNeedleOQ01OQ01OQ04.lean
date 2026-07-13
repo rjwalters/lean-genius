@@ -95,7 +95,6 @@ theorem sphereArea_three : sphereArea 3 = 2 * π ^ 2 := by
   rw [show (3 + 1 : ℝ) / 2 = 2 from by norm_num]
   rw [show Gamma (2 : ℝ) = 1 from by
     rw [show (2 : ℝ) = 1 + 1 from by norm_num, Gamma_add_one one_ne_zero, Gamma_one, mul_one]]
-  rw [rpow_natCast]
   ring
 
 /-- σ_4 = 8π²/3 (surface area of S^4 ⊂ ℝ^5).
@@ -111,7 +110,8 @@ theorem sphereArea_four : sphereArea 4 = 8 * π ^ 2 / 3 := by
     have h12 := Gamma_add_one (show (1 / 2 : ℝ) ≠ 0 from by norm_num)
     rw [show (1 : ℝ) / 2 + 1 = 3 / 2 from by ring] at h12
     rw [h12, Gamma_one_half_eq]; ring
-  rw [h52, show (5 : ℝ) / 2 = 2 + 1 / 2 from by ring, rpow_add pi_pos, rpow_natCast,
+  rw [h52, show (5 : ℝ) / 2 = 2 + 1 / 2 from by ring, rpow_add pi_pos,
+      show (2 : ℝ) = ((2 : ℕ) : ℝ) from by norm_num, rpow_natCast,
       ← Real.sqrt_eq_rpow]
   have hpi : (0 : ℝ) < √π := Real.sqrt_pos.mpr pi_pos
   field_simp [hpi.ne']

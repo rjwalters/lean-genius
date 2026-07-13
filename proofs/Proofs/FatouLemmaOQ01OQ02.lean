@@ -87,7 +87,7 @@ theorem ici_indicator_le_of_dominates {g : ℝ → ℝ≥0∞} (hdom : ∀ n, es
   · -- `x < 0`: indicator is `0`.
     have hxni : x ∉ Set.Ici (0 : ℝ) := by simp only [Set.mem_Ici, not_le]; linarith
     rw [Set.indicator_of_notMem hxni]
-    exact zero_le _
+    exact zero_le
 
 /-- **The escaping-mass sequence has no integrable majorant.** Every `g` with
 `escaping n ≤ g` for all `n` has infinite Lebesgue integral, because it dominates

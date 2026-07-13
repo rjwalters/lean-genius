@@ -104,7 +104,7 @@ order-theoretic core of non-hyperbolicity (e.g. `d_ℂ ≡ 0` via affine maps). 
 theorem chainDist_eq_zero_of_forall (c : X → X → ℝ≥0∞) (p q : X)
     (h : ∀ ε : ℝ≥0∞, 0 < ε → ∃ mid : List X, chainCost c p mid q ≤ ε) :
     chainDist c p q = 0 := by
-  refine le_antisymm ?_ (zero_le _)
+  refine le_antisymm ?_ (zero_le)
   refine ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_
   obtain ⟨mid, hmid⟩ := h (ε : ℝ≥0∞) (by exact_mod_cast hε)
   calc chainDist c p q ≤ chainCost c p mid q := chainDist_le c p q mid
@@ -115,13 +115,13 @@ theorem chainDist_eq_zero_of_forall (c : X → X → ℝ≥0∞) (p q : X)
 pseudometric. -/
 theorem chainDist_eq_zero_of_cost_zero (c : X → X → ℝ≥0∞) (p q : X) (h : c p q = 0) :
     chainDist c p q = 0 :=
-  le_antisymm (by simpa [h] using chainDist_le_cost c p q) (zero_le _)
+  le_antisymm (by simpa [h] using chainDist_le_cost c p q) (zero_le)
 
 /-- A one-vertex bridge of zero cost forces the chain pseudometric to vanish:
 if `c p r = 0` and `c r q = 0`, then `chainDist c p q = 0`. -/
 theorem chainDist_eq_zero_of_bridge (c : X → X → ℝ≥0∞) (p r q : X)
     (h1 : c p r = 0) (h2 : c r q = 0) : chainDist c p q = 0 := by
-  refine le_antisymm ?_ (zero_le _)
+  refine le_antisymm ?_ (zero_le)
   calc chainDist c p q ≤ chainCost c p [r] q := chainDist_le c p q [r]
     _ = c p r + c r q := by simp [chainCost]
     _ = 0 := by simp [h1, h2]

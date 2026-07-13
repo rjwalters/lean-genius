@@ -123,7 +123,7 @@ theorem konig_constraint_beth (α : Ordinal.{0}) :
   calc (ℵ₀ : Cardinal.{0})
       = Cardinal.beth 0 := Cardinal.beth_zero.symm
     _ ≤ Cardinal.beth α :=
-        Cardinal.beth_strictMono.monotone (zero_le _)
+        Cardinal.beth_strictMono.monotone (zero_le)
 
 -- ============================================================
 -- PART 3: Application to |𝒫(ℝ)|

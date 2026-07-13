@@ -599,7 +599,7 @@ theorem tendsto_infinity_ae_of_monotone_variance_le_expectation
       have hM'' : Filter.Tendsto (fun n => ENNReal.ofReal (4 / (∫ ω, X n ω ∂μ))) Filter.atTop (nhds 0) := by
         simpa using ENNReal.tendsto_ofReal ( tendsto_const_nhds.div_atTop hexp_tendsto ) |> Filter.Tendsto.comp <| Filter.tendsto_id;
       exact (by
-      exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hM'' ( Filter.eventually_of_mem hM' fun n hn => zero_le _ ) ( Filter.eventually_of_mem hM' fun n hn => hn )); -- replace this with the proper infer instance proof.
+      exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hM'' ( Filter.eventually_of_mem hM' fun n hn => zero_le ) ( Filter.eventually_of_mem hM' fun n hn => hn )); -- replace this with the proper infer instance proof.
 
 /-
 The second Borel-Cantelli lemma holds for pairwise independent events: if the sum of probabilities diverges, the events occur infinitely often with probability 1.

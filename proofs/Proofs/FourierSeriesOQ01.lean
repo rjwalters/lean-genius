@@ -744,7 +744,7 @@ theorem carleson_ae_convergence
     intro k
     -- Show μ(divergenceSet f (1/(k+1))) = 0
     -- For each ε > 0, apply divergenceSet_measure_bound to get bound → 0
-    apply le_antisymm _ (zero_le _)
+    apply le_antisymm _ (zero_le)
     apply ENNReal.le_of_forall_pos_le_add
     intro r hr
     rw [zero_add]

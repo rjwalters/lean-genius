@@ -71,7 +71,7 @@ theorem first_moment_method {Ω : Type*} [MeasurableSpace Ω]
   -- so ∫ X ≥ ∫ 1 = 1, contradicting ∫ X < 1.
   by_contra h
   push_neg at h
-  have h0 : μ {ω | X ω = 0} = 0 := le_antisymm h (zero_le _)
+  have h0 : μ {ω | X ω = 0} = 0 := le_antisymm h (zero_le)
   -- X ω ≥ 1 a.e. (ℕ-valued: either 0 or ≥ 1)
   have hae : ∀ᵐ ω ∂μ, (1 : ℝ) ≤ (X ω : ℝ) := by
     rw [ae_iff]

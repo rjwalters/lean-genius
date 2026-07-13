@@ -305,7 +305,7 @@ theorem dimH_liouville_eq_zero : dimH {x : ℝ | Liouville x} = 0 := by
   -- Squeeze: a constant below sequences converging to `0` is `≤ 0`.
   have hle : dimH {x : ℝ | Liouville x} ≤ 0 :=
     ge_of_tendsto htend (eventually_atTop.2 ⟨2, fun n hn => hbound n hn⟩)
-  exact le_antisymm hle (zero_le _)
+  exact le_antisymm hle (zero_le)
 
 /-! ## Part VI: Summary -/
 

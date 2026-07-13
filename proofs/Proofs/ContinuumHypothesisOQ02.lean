@@ -318,7 +318,7 @@ theorem dominating_le_continuum :
   unfold dominatingNumber
   have hbdd : BddBelow (Set.range fun F : Set (ℕ → ℕ) =>
       if IsDominating F then Cardinal.mk F else ContinuumHypothesis.continuum) :=
-    ⟨0, fun _ ⟨_, hF⟩ => hF ▸ by split <;> exact zero_le _⟩
+    ⟨0, fun _ ⟨_, hF⟩ => hF ▸ by split <;> exact zero_le⟩
   calc ⨅ F, _ ≤ (if IsDominating (∅ : Set (ℕ → ℕ)) then Cardinal.mk (∅ : Set (ℕ → ℕ))
         else ContinuumHypothesis.continuum) := ciInf_le hbdd ∅
     _ = ContinuumHypothesis.continuum := by

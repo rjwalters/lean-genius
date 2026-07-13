@@ -1,6 +1,33 @@
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 2, #38065, 2026-07-12)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 3, #38065, 2026-07-12)
 
-## DOCTOR INCREMENT 2 NUMBERS (#38065)
+## DOCTOR INCREMENT 3 NUMBERS (#38065)
+
+Ledger `verify-results.tsv` (full 2,659-file inventory-FAIL baseline):
+
+- **719 GREEN / 1,916 RESIDUAL / 24 PRE-EXISTING** (increment start: 651 GREEN /
+  1,984 RESIDUAL). **+68 GREEN this increment**, across THREE builder sessions
+  (two died on session limits; every uncommitted GREEN claim was re-verified
+  in-container before being counted).
+- Fix waves: DR9 (181 targets, +5: token-boundary renames — div_lt_iff→₀ forms,
+  tsum_*→Summable.*, setIntegral renames, Matrix.smul_mulVec, strongRecOn),
+  DR10 (73 targets, +15: reduceDIte casing, stdBasisMatrix→single, Zsqrtd
+  projections, nth_prime numeral forms, Complex.norm_eq_abs shims),
+  I3nd (13 no-diag rows re-checked, +2, rest re-diagnosed),
+  DR11 (52 family-cluster targets, +22: ShannonChannelCoding ×12,
+  ThreeSquares ×6, EQR chain, Buffons, Friendship, Konigsberg, CauchySchwarz),
+  DR12 (39 follow-ups, +8), DR13 (47 sweep targets, +16: `zero_le _`→`zero_le`
+  arg-drop + project-local `Digraph`→`KonigsbergOQ02.Digraph` disambiguation;
+  flips incl. LovaszLocalLemma ×2, LebesgueMeasure ×2, FriendshipOQ04 ×2,
+  Erdos1038/1040Aristotle, FatouLemma, Hilbert22, TriangleInequalityOQ04).
+- **Regression gates**: I3RV re-verified all 30 session-2 uncommitted GREEN
+  claims against the final tree — 30/30 PASS with clean chunk logs ("Build
+  completed successfully", 0 error lines), covering all 14 GREEN modules that
+  import concurrently-edited files. Zero committed-GREEN files were touched
+  by any sweep this increment (checked via `comm` on modified-set vs ledger).
+- Freshest diagnostics: diag-DR13.txt (47 sweep targets), diag-DR11/DR12.txt
+  (family clusters), diag-DR9/DR10.txt (mechanical waves).
+
+## HISTORY: Doctor increment 2 numbers (superseded 2026-07-12)
 
 Ledger `verify-results.tsv` (full 2,659-file inventory-FAIL baseline):
 
@@ -39,25 +66,25 @@ Ledger `verify-results.tsv` (full 2,659-file inventory-FAIL baseline):
 - Wave sequence this increment: DR6a/b(seq, partial) → DR6mt+DR6ra/rb →
   DR7a/b → DR7reg2 (runner4, GREEN regression) → DR8a/b.
 
-## Residual classes after Doctor increment 2 (1,984 total) + dispositions
+## Residual classes after Doctor increment 3 (1,916 total) + dispositions
 
 | class | count | disposition |
 |---|---|---|
-| type-mismatch | 537 | per-file signature bridges; freshest diags diag-DR6r*/DR7*/DR8* are chunk-log based |
-| proof-drift | 421 | per-file tactic repair; `dr7_noprogress.py` neutralized the no-progress subset — remaining are real goal drift |
-| unknown-const singletons | 389 | umbrella-import already applied where useful; leftovers = true removals + project-local names (halasz_theorem, white_lower, …) — harvest §batch-5 style, else route disposition |
-| instance-synth | 266 | classical recipe applied to 107 more files (two-pass done); remainder = cyclotomic mystery (48 rows), Fintype edgeSet/neighborSet shapes, decide×classical catch-22s |
+| type-mismatch | 532 | per-file signature bridges; freshest diags diag-DR13/DR11/DR12 (chunk-log based) |
+| proof-drift | 394 | per-file tactic repair; hub-first (family clusters flip in groups — DR11 proved Shannon ×12, ThreeSquares ×6 from a handful of shared edits) |
+| unknown-const | 376 | umbrella-import already applied; leftovers = true removals + project-local names; multi-module names first (unknown-const:a ×6, :p ×6, Set.ncard_biUnion ×5 = Ballot deep-rework, List.eq_of_perm_of_sorted ×3, Basis ×3, spherical_ptolemy ×3) |
+| instance-synth | 256 | cyclotomic mystery (48 rows) needs dedicated in-container session; Fintype edgeSet/neighborSet shapes; decide×classical catch-22s |
 | rewrite-drift | 111 | per-file rw pattern updates |
 | parse-error | 77 | hand-inspect |
-| signature-drift | 55 | Function-expected/app-type-mismatch |
-| elab-drift | 49 | incl. FourierSeries `No applicable extensionality theorem for AddCommMonoid ℝ` family |
-| dot-notation-drift | 27 | mostly REAL import-loss now umbrella'd; leftover = true field renames (IsMulCommutative.comm, HasFDerivAtFilter.div, …) |
-| no-diag-captured | 13 | chunk logs lost their error lines (dep-attribution miss) — re-verify with runner4 in increment 3 |
-| noncomputable | 9 | fix_noncomputable two-pass done; these need per-file judgement |
+| signature-drift | 45 | Function-expected/app-type-mismatch |
+| elab-drift | 44 | incl. FourierSeries `No applicable extensionality theorem for AddCommMonoid ℝ` family |
+| dot-notation-drift | 27 | true field renames (IsMulCommutative.comm, HasFDerivAtFilter.div, …) |
+| unclassified | 16 | fresh diagnosis needed (mostly DR13 FAIL rows with dep-attributed errors) |
+| noncomputable | 9 | per-file judgement |
 | duplicate-decl | 8 | project-local double declarations (never-compiled tier) |
 | slow-timeout | 7 | need >300s or single-file runs |
 | partenat-removal | 5 | ℕ∞/emultiplicity rework — deep-rework |
-| decide-maxrecdepth | 5 | set_option applied; these 5 still exceed (incl. SetLike-recursion shape) |
+| decide-maxrecdepth | 4 | set_option applied; these still exceed (incl. SetLike-recursion shape) |
 | lambda-token / uses-sorry / termination-drift / oom-killed | 5 | per-file |
 
 **Known deep-rework items (unchanged dispositions):** cyclotomic-instance
@@ -66,19 +93,23 @@ synthesis mystery (InverseGalois*/AngleTrisection* — biggest single synth shap
 native_decide×noncomputable catch-22 (AbelRuffiniOQ10, Erdos968, Picks);
 24 PRE-EXISTING never-compiled rows → separate cleanup issue.
 
-## Backlog → Doctor increment 3 (routing)
+## Backlog → Doctor increment 4 (routing)
 
-1. **type-mismatch 537** — largest class; start from diag-DR8*/DR7* (freshest);
-   the `simpa using hdvd`-style shared shapes are catalogued in map §7f.
-2. **unknown-const 389** — mechanical harvest of multi-module names first
-   (Function.nmem_support.mp ×8, Complex.abs shim-downstream ×12,
-   div_add_div_same ×9 → `← add_div`, Nat.find_eq_iff/le_pow_iff_clog patterns).
-3. **proof-drift 421** — hub-first (check `import Proofs.*` fan-out before
-   per-file work; this increment's hub flips: GraphCore, ShannonChannelCodingOQ04OQ01
-   (13-module fan-out), SpernerMathlib4, DerangementsConvergence, ZsqrtdNegTwo).
-4. **instance-synth 266** — attack Fintype edgeSet/neighborSet shape;
-   cyclotomic mystery needs dedicated in-container debugging session.
-5. Re-verify the 13 no-diag-captured rows with runner4.
+1. **Family clusters first** — DR11/DR12/DR13 proved the highest yield/edit
+   ratio comes from picking a family (shared imports + shared drift), fixing
+   the hub, and bulk-verifying the whole family: Shannon ×12 and ThreeSquares
+   ×6 flipped from a handful of edits. Remaining big families with multiple
+   RESIDUAL rows: AreaOfCircle (5+), EQR OQ01OQ03 deep chain (10),
+   CauchySchwarz Incomplete01 (4), Konigsberg (3 — Digraph disambiguation
+   applied but insufficient, see diag-DR13), FTC-Stokes (2), FairGames (2).
+2. **type-mismatch 532** — largest class; start from diag-DR13/DR11/DR12
+   (freshest); `simpa using hdvd`-style shared shapes catalogued in map §7f.
+3. **unknown-const 376** — multi-module names first (see table above);
+   Set.ncard_biUnion ×5 is the known Ballot finsum deep-rework, route it.
+4. **proof-drift 394** — hub-first via `import Proofs.*` fan-out.
+5. **instance-synth 256** — cyclotomic mystery (48 rows) = dedicated
+   in-container debugging session; Fintype edgeSet/neighborSet shapes.
+6. **unclassified 16** — re-diagnose (DR13 FAILs with dep-attributed errors).
 
 ## Verification recipe (updated)
 

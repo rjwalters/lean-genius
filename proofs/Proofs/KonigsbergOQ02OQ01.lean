@@ -15,12 +15,12 @@ import Proofs.KonigsbergOQ02
   Each triangle is balanced; no single trail can span both components.
 
   This file provides:
-  1. `Digraph.isStronglyConnected`: the missing hypothesis definition
+  1. `KonigsbergOQ02.Digraph.isStronglyConnected`: the missing hypothesis definition
   2. `maximal_balanced_trail_is_circuit`: key sub-lemma (PROVED, 0 sorries)
      In a balanced digraph, any maximal Nodup trail ending at v₀ (where all
      out-arcs from v₀ are already in the trail) is a closed circuit.
   3. `Walk.splice`: concatenate two walks sharing a vertex (PROVED, 0 sorries)
-  4. `Digraph.removeArcList`: subgraph removing a list of arcs (definition)
+  4. `KonigsbergOQ02.Digraph.removeArcList`: subgraph removing a list of arcs (definition)
   5. `removeArcList_arcCount`: residual arcCount = D.arcCount - removed (PROVED)
   6. `removeArcList_balanced`: balance preserved when removing a circuit (PROVED)
   7. `directed_euler_circuit_sufficient_corrected`: corrected statement with
@@ -30,7 +30,7 @@ import Proofs.KonigsbergOQ02
   complete mathematical infrastructure for Hierholzer's algorithm. The well-founded
   induction combining them is now fully formalized — the whole file is 0 sorries.
 
-  Parent: KonigsbergOQ02.lean (Digraph, Walk, isEulerian, degree definitions)
+  Parent: KonigsbergOQ02.lean (KonigsbergOQ02.Digraph, Walk, isEulerian, degree definitions)
 -/
 
 set_option linter.unusedVariables false
@@ -54,7 +54,7 @@ private theorem chain_tail_fst_eq_dropLast_snd {α : Type*} :
   | [_], _ => by simp
   | a :: b :: rest, hchain => by
     have hab := List.IsChain.rel_head hchain
-    have ih := chain_tail_fst_eq_dropLast_snd (b :: rest) (List.Chain'.tail hchain)
+    have ih := chain_tail_fst_eq_dropLast_snd (b :: rest) (List.IsChain.tail hchain)
     simp only [List.tail_cons] at ih
     show (b :: rest).map Prod.fst = (a :: (b :: rest).dropLast).map Prod.snd
     rw [List.map_cons, List.map_cons, ← hab, ← ih]
@@ -110,7 +110,7 @@ private theorem circuit_fst_perm_snd {α : Type*} [DecidableEq α]
     digraphs satisfies `hbal` but has no Eulerian circuit spanning both
     components. -/
 def isStronglyConnected {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) : Prop :=
+    (D : KonigsbergOQ02.Digraph V) : Prop :=
   ∀ u v : V, Nonempty (D.Walk u v)
 
 -- ============================================================
@@ -121,11 +121,11 @@ def isStronglyConnected {V : Type*} [Fintype V] [DecidableEq V]
     and the trail is Nodup, then the count of arcs with source `v` equals
     `outDegree v`. -/
 private theorem fst_count_eq_outDegree_stuck {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj] {u v₀ : V}
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj] {u v₀ : V}
     (w : D.Walk u v₀) (hnodup : w.arcs.Nodup) (v : V)
     (hstuck : ∀ x : V, D.adj v x → (v, x) ∈ w.arcs) :
     (w.arcs.filter (fun a => decide (a.1 = v))).length = D.outDegree v := by
-  unfold Digraph.outDegree Digraph.outNeighbors
+  unfold KonigsbergOQ02.Digraph.outDegree KonigsbergOQ02.Digraph.outNeighbors
   rw [show (w.arcs.filter (fun a => decide (a.1 = v))).length =
       (w.arcs.toFinset.filter (fun a : V × V => a.1 = v)).card from by
     rw [← List.toFinset_card_of_nodup (hnodup.filter _)]
@@ -146,10 +146,10 @@ private theorem fst_count_eq_outDegree_stuck {V : Type*} [Fintype V] [DecidableE
 
 /-- For a Nodup trail, the count of arcs with target `v` is at most `inDegree v`. -/
 private theorem snd_count_le_inDegree {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj] {u v₀ : V}
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj] {u v₀ : V}
     (w : D.Walk u v₀) (hnodup : w.arcs.Nodup) (v : V) :
     (w.arcs.filter (fun a => decide (a.2 = v))).length ≤ D.inDegree v := by
-  unfold Digraph.inDegree Digraph.inNeighbors
+  unfold KonigsbergOQ02.Digraph.inDegree KonigsbergOQ02.Digraph.inNeighbors
   calc (w.arcs.filter (fun a => decide (a.2 = v))).length
       = (w.arcs.toFinset.filter (fun a : V × V => a.2 = v)).card := by
           rw [← List.toFinset_card_of_nodup (hnodup.filter _)]
@@ -176,7 +176,7 @@ private theorem snd_count_le_inDegree {V : Type*} [Fintype V] [DecidableEq V]
     endpoint `v₀` are already contained in the trail (`hstuck`). Balance then
     forces the trail to be closed, i.e., `u = v₀`. -/
 theorem maximal_balanced_trail_is_circuit {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj]
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj]
     {u v₀ : V}
     (w : D.Walk u v₀)
     (hnodup : w.arcs.Nodup)
@@ -220,7 +220,7 @@ theorem maximal_balanced_trail_is_circuit {V : Type*} [Fintype V] [DecidableEq V
     This is the fundamental operation needed for Hierholzer's algorithm:
     once we find a new circuit C' from a vertex u that lies on our current
     circuit C, we splice C' into C at u to get a longer circuit. -/
-def Digraph.Walk.splice {V : Type*} {D : Digraph V} {u v w : V}
+def KonigsbergOQ02.Digraph.Walk.splice {V : Type*} {D : KonigsbergOQ02.Digraph V} {u v w : V}
     (w1 : D.Walk u v) (w2 : D.Walk v w) : D.Walk u w where
   arcs := w1.arcs ++ w2.arcs
   arcs_valid a ha := by
@@ -270,12 +270,12 @@ def Digraph.Walk.splice {V : Type*} {D : Digraph V} {u v w : V}
 
 /-- The arcs of a splice are the concatenation of the component arcs. -/
 @[simp]
-theorem Digraph.Walk.splice_arcs {V : Type*} {D : Digraph V} {u v w : V}
+theorem KonigsbergOQ02.Digraph.Walk.splice_arcs {V : Type*} {D : KonigsbergOQ02.Digraph V} {u v w : V}
     (w1 : D.Walk u v) (w2 : D.Walk v w) :
     (w1.splice w2).arcs = w1.arcs ++ w2.arcs := rfl
 
 /-- Splicing a nodup-disjoint pair of circuits yields a nodup walk. -/
-theorem Digraph.Walk.splice_nodup {V : Type*} {D : Digraph V} {u v w : V}
+theorem KonigsbergOQ02.Digraph.Walk.splice_nodup {V : Type*} {D : KonigsbergOQ02.Digraph V} {u v w : V}
     (w1 : D.Walk u v) (w2 : D.Walk v w)
     (h1 : w1.arcs.Nodup) (h2 : w2.arcs.Nodup)
     (hdisj : ∀ a, a ∈ w1.arcs → a ∉ w2.arcs) :
@@ -289,23 +289,23 @@ theorem Digraph.Walk.splice_nodup {V : Type*} {D : Digraph V} {u v w : V}
 
 /-- Remove a list of arcs from a digraph, yielding the residual subgraph.
 
-    Note: defined as a standalone function (not `Digraph.removeArcList`) to
+    Note: defined as a standalone function (not `KonigsbergOQ02.Digraph.removeArcList`) to
     avoid namespace resolution issues with dot notation in theorem signatures. -/
-def removeArcList {V : Type*} (D : Digraph V) (arcs : List (V × V)) :
-    Digraph V where
+def removeArcList {V : Type*} (D : KonigsbergOQ02.Digraph V) (arcs : List (V × V)) :
+    KonigsbergOQ02.Digraph V where
   adj u v := D.adj u v ∧ (u, v) ∉ arcs
   loopless v h := D.loopless v h.1
 
-instance {V : Type*} [Fintype V] [DecidableEq V] (D : Digraph V) [DecidableRel D.adj]
+instance {V : Type*} [Fintype V] [DecidableEq V] (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (arcs : List (V × V)) : DecidableRel (removeArcList D arcs).adj :=
   fun u v => inferInstance
 
 /-- Adjacency characterization in the residual. -/
-theorem removeArcList_adj_iff {V : Type*} (D : Digraph V) (arcs : List (V × V))
+theorem removeArcList_adj_iff {V : Type*} (D : KonigsbergOQ02.Digraph V) (arcs : List (V × V))
     (u v : V) : (removeArcList D arcs).adj u v ↔ D.adj u v ∧ (u, v) ∉ arcs := Iff.rfl
 
 /-- A walk in the residual `removeArcList D arcs` lifts to a walk in D. -/
-def Digraph.Walk.ofRemoveArcList {V : Type*} {D : Digraph V}
+def KonigsbergOQ02.Digraph.Walk.ofRemoveArcList {V : Type*} {D : KonigsbergOQ02.Digraph V}
     {arcs : List (V × V)} {u v : V}
     (w : (removeArcList D arcs).Walk u v) : D.Walk u v where
   arcs := w.arcs
@@ -320,14 +320,14 @@ def Digraph.Walk.ofRemoveArcList {V : Type*} {D : Digraph V}
     More precisely: if `arcs_list` is a sublist of D's arcs with no duplicates,
     then `(removeArcList D arcs_list).arcCount = D.arcCount - arcs_list.length`. -/
 theorem removeArcList_arcCount {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj] (arcs_list : List (V × V))
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj] (arcs_list : List (V × V))
     (hvalid : ∀ a ∈ arcs_list, D.adj a.1 a.2) (hnodup : arcs_list.Nodup) :
     (removeArcList D arcs_list).arcCount =
     D.arcCount - arcs_list.length := by
   -- The arc set of the residual is the arc set of D minus arcs_list.toFinset.
   -- Since arcs_list ⊆ D's arcs and arcs_list is nodup (so |arcs_list.toFinset| = arcs_list.length),
   -- the result follows from Finset.card_sdiff.
-  unfold Digraph.arcCount
+  unfold KonigsbergOQ02.Digraph.arcCount
   -- S' = {p | D.adj p.1 p.2 ∧ p ∉ arcs_list} = S \ T where S = D's arcs, T = arcs_list.toFinset
   have hset_eq :
       Finset.univ.filter (fun p : V × V => (removeArcList D arcs_list).adj p.1 p.2) =
@@ -353,7 +353,7 @@ theorem removeArcList_arcCount {V : Type*} [Fintype V] [DecidableEq V]
     - Since D is balanced, `outDeg(D) v = inDeg(D) v`
     - Therefore `outDeg(D') v = inDeg(D') v`. -/
 theorem removeArcList_balanced {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (arcs_list : List (V × V))
     (hchain : arcs_list.Chain' (fun a b => a.2 = b.1))
     (hnodup : arcs_list.Nodup)
@@ -368,8 +368,8 @@ theorem removeArcList_balanced {V : Type*} [Fintype V] [DecidableEq V]
   -- By circuit_fst_perm_snd: these subtracted quantities are equal (count of v in fst = snd).
   -- By hbal: outDeg(D) v = inDeg(D) v.  Therefore outDeg(D') v = inDeg(D') v.
   intro v
-  unfold Digraph.isBalanced Digraph.inDegree Digraph.outDegree
-         Digraph.inNeighbors Digraph.outNeighbors
+  unfold KonigsbergOQ02.Digraph.isBalanced KonigsbergOQ02.Digraph.inDegree KonigsbergOQ02.Digraph.outDegree
+         KonigsbergOQ02.Digraph.inNeighbors KonigsbergOQ02.Digraph.outNeighbors
   -- A_src = {x | (v,x) ∈ arcs_list} as a Finset ⊆ outNeighbors D v
   -- A_tgt = {x | (x,v) ∈ arcs_list} as a Finset ⊆ inNeighbors D v
   -- Use Finset.image to avoid needing nodup of the mapped list
@@ -462,8 +462,8 @@ theorem removeArcList_balanced {V : Type*} [Fintype V] [DecidableEq V]
       hA_src_card, hA_tgt_card, hcount_eq]
   -- Goal: inDeg D v - n = outDeg D v - n, from hbal
   have hbal_v := hbal v
-  unfold Digraph.isBalanced Digraph.inDegree Digraph.outDegree
-         Digraph.inNeighbors Digraph.outNeighbors at hbal_v
+  unfold KonigsbergOQ02.Digraph.isBalanced KonigsbergOQ02.Digraph.inDegree KonigsbergOQ02.Digraph.outDegree
+         KonigsbergOQ02.Digraph.inNeighbors KonigsbergOQ02.Digraph.outNeighbors at hbal_v
   omega
 
 -- ============================================================
@@ -471,7 +471,7 @@ theorem removeArcList_balanced {V : Type*} [Fintype V] [DecidableEq V]
 -- ============================================================
 
 /-- The trivial empty circuit at any vertex v. -/
-private def emptyWalk_at {V : Type*} {D : Digraph V} (v : V) : D.Walk v v where
+private def emptyWalk_at {V : Type*} {D : KonigsbergOQ02.Digraph V} (v : V) : D.Walk v v where
   arcs := []
   arcs_valid _ h := (List.not_mem_nil _ h).elim
   starts_at h := (h rfl).elim
@@ -481,10 +481,10 @@ private def emptyWalk_at {V : Type*} {D : Digraph V} (v : V) : D.Walk v v where
 
 /-- A nodup list of D-arcs has length ≤ D.arcCount. -/
 private theorem nodup_arcs_length_le {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj] {u v : V}
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj] {u v : V}
     (w : D.Walk u v) (hnodup : w.arcs.Nodup) :
     w.arcs.length ≤ D.arcCount := by
-  unfold Digraph.arcCount
+  unfold KonigsbergOQ02.Digraph.arcCount
   calc w.arcs.length
       = w.arcs.toFinset.card := (List.toFinset_card_of_nodup hnodup).symm
     _ ≤ (Finset.univ.filter (fun p : V × V => D.adj p.1 p.2)).card := by
@@ -495,7 +495,7 @@ private theorem nodup_arcs_length_le {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- A nodup circuit whose arc count equals D.arcCount is Eulerian. -/
 private theorem isEulerian_of_length_eq {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj] {v₀ : V}
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj] {v₀ : V}
     (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)
     (hlen : D.arcCount ≤ C.arcs.length) :
     C.isEulerian := by
@@ -529,7 +529,7 @@ private theorem isEulerian_of_length_eq {V : Type*} [Fintype V] [DecidableEq V]
     - Since D.outDegree u > 0 and W is stuck at u = v, all arcs from u are in W,
       so W.arcs is nonempty. -/
 private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (u : V) (hout : 0 < D.outDegree u) :
     ∃ (C : D.Walk u u), C.arcs.Nodup ∧ C.arcs ≠ [] := by
@@ -574,7 +574,7 @@ private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [Deci
     -- W'.arcs ≠ [] because D.outDegree u > 0 and W' is stuck at u
     intro hempty
     have : D.outDegree u = 0 := by
-      unfold Digraph.outDegree Digraph.outNeighbors
+      unfold KonigsbergOQ02.Digraph.outDegree KonigsbergOQ02.Digraph.outNeighbors
       rw [Finset.card_eq_zero]; ext x
       simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]
       intro hx; exact absurd (hempty ▸ hstuck x hx) (List.not_mem_nil _)
@@ -624,7 +624,7 @@ private theorem nodup_circuit_exists_of_outDeg_pos {V : Type*} [Fintype V] [Deci
     - Therefore ∃ v ∈ V(C) with D'.outDegree v > 0.
     - But v ∈ V(C) means v = v₀ or v appears in C.arcs as a fst or snd. -/
 private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (hconn : isStronglyConnected D)
     {v₀ : V} (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)
@@ -645,7 +645,7 @@ private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
     by_contra hnot
     -- (v,x) is a D'-arc from v ∈ VC, so D'.outDegree v ≥ 1
     have hpos : 0 < (removeArcList D C.arcs).outDegree v := by
-      unfold Digraph.outDegree Digraph.outNeighbors
+      unfold KonigsbergOQ02.Digraph.outDegree KonigsbergOQ02.Digraph.outNeighbors
       apply Finset.card_pos.mpr
       exact ⟨x, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ⟨hx, hnot⟩⟩⟩
     exact absurd hpos (by rw [h_zero v hv]; exact lt_irrefl 0)
@@ -678,7 +678,7 @@ private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
       have hhd_s : hd.1 = s' := hstart (List.cons_ne_nil _ _)
       have hhd_adj : D.adj hd.1 hd.2 := hvalid hd (List.mem_cons_self _ _)
       have hhd2_vc : hd.2 ∈ VC := h_VC_closed s' hs' hd.2 (hhd_s ▸ hhd_adj)
-      apply ih hd.2 t' (List.Chain'.tail hchain)
+      apply ih hd.2 t' (List.IsChain.tail hchain)
       · intro htl_nil
         subst htl_nil
         have h := hend (List.cons_ne_nil hd [])
@@ -704,7 +704,7 @@ private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
     Finset.eq_univ_iff_forall.mpr h_all_in_VC
   -- But then all D-arcs are in C.arcs, so D.arcCount ≤ C.arcs.length
   have h_arc_bound : D.arcCount ≤ C.arcs.length := by
-    unfold Digraph.arcCount
+    unfold KonigsbergOQ02.Digraph.arcCount
     rw [← List.toFinset_card_of_nodup hnodup]
     apply Finset.card_le_card
     intro ⟨v, x⟩ hmem
@@ -723,7 +723,7 @@ private theorem vertex_with_unused_arc {V : Type*} [Fintype V] [DecidableEq V]
 
     Proof: find the first index i where C.arcs[i].snd = u.  Take C1 = take(i+1), C2 = drop(i+1).
     All Walk invariants hold: consecutive splits cleanly, starts/ends_at from arcs structure. -/
-private theorem walk_split_at {V : Type*} (D : Digraph V) {v₀ u : V}
+private theorem walk_split_at {V : Type*} (D : KonigsbergOQ02.Digraph V) {v₀ u : V}
     (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)
     (hu : u = v₀ ∨ u ∈ C.arcs.map Prod.snd) :
     ∃ (C1 : D.Walk v₀ u) (C2 : D.Walk u v₀),
@@ -836,7 +836,7 @@ private theorem walk_split_at {V : Type*} (D : Digraph V) {v₀ u : V}
       Apply IH with the longer circuit. -/
 theorem directed_euler_circuit_sufficient_corrected {V : Type*} [Fintype V] [DecidableEq V]
     [Nonempty V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (hconn : isStronglyConnected D) :
     ∃ (v₀ : V) (w : D.Walk v₀ v₀), w.isEulerian := by
@@ -891,7 +891,7 @@ theorem directed_euler_circuit_sufficient_corrected {V : Type*} [Fintype V] [Dec
       -- C'' arcs decompose (unfold the splice definition).
       -- C'' = C1.splice(C'.splice C2), so arcs = C1.arcs ++ (C'.arcs ++ C2.arcs).
       have hC''_arcs : C''.arcs = C1.arcs ++ (C'.arcs ++ C2.arcs) := by
-        simp only [C'', Digraph.Walk.splice_arcs]
+        simp only [C'', KonigsbergOQ02.Digraph.Walk.splice_arcs]
       -- C'' is nodup: C1, C', C2 are pairwise arc-disjoint.
       have hC''_nodup : C''.arcs.Nodup := by
         rw [hC''_arcs, List.nodup_append]
@@ -947,7 +947,7 @@ theorem directed_euler_circuit_sufficient_corrected {V : Type*} [Fintype V] [Dec
 
 #check @isStronglyConnected
 #check @maximal_balanced_trail_is_circuit
-#check @Digraph.Walk.splice
+#check @KonigsbergOQ02.Digraph.Walk.splice
 #check @directed_euler_circuit_sufficient_corrected
 
 end KonigsbergOQ02OQ01

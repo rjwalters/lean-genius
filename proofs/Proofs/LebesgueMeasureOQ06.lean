@@ -163,13 +163,13 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
     -- via decomposition A = (B ∪ C) ∪ (A \ (B ∪ C))
     have hMonotone : μ (B ∪ C) ≤ μ A := by
       calc μ (B ∪ C)
-          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_of_nonneg_right (zero_le _)
+          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_of_nonneg_right zero_le
         _ = μ ((B ∪ C) ∪ (A \ (B ∪ C))) :=
             (hμ_add _ _ disjoint_sdiff_self_right).symm
         _ = μ A := by rw [Set.union_diff_cancel h_bc_sub_a]
     -- Sandwich: μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
     -- gives equality μ(A) = μ(A) + μ(A)
-    exact le_antisymm (hBCunion ▸ hMonotone) (le_add_of_nonneg_right (zero_le _))
+    exact le_antisymm (hBCunion ▸ hMonotone) (le_add_of_nonneg_right zero_le)
   -- From h2: μ(A) = 0 or μ(A) = ∞
   rcases ennreal_add_self_eq_self h2 with h | h
   · exact Or.inl h
