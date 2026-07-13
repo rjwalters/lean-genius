@@ -1014,8 +1014,8 @@ def trivialTriangle : Triangulation ℕ 2 where
   vertex := fun _ k => k.val
   vertex_injective := fun _ => Fin.val_injective
   adj := fun _ _ => none
-  adj_symm := fun _ _ _ _ h => Option.noConfusion h
-  adj_vertex := fun _ _ _ _ h => Option.noConfusion h
+  adj_symm := fun _ _ _ _ h => absurd h (by simp)
+  adj_vertex := fun _ _ _ _ h => absurd h (by simp)
   adj_ne := fun _ _ _ _ h => (Option.some_ne_none _ h.symm).elim
 
 /-! ## Interval Sperner's Lemma
