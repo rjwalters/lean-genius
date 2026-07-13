@@ -55,7 +55,8 @@
       "SchnirelmannTheorem.deficiency_sumsetPow_le (iterated inequality, 0-axiom)",
       "SchnirelmannTheorem.schnirelmann_basis_of_zero_mem (0∈A case, 0-axiom)",
       "SchnirelmannTheorem.schnirelmann_basis (full Schnirelmann theorem σA>0 ⟹ additive basis, 0-axiom)",
-      "WeakGoldbach.schnirelmann_basis_theorem: axiom → theorem (axiom eliminated, 5→4)"
+      "WeakGoldbach.schnirelmann_basis_theorem: axiom → theorem (axiom eliminated, 5→4)",
+      "WeakGoldbach even-parity reduction (3 axiom-free theorems, conditional on BinaryGoldbachConjecture as a hypothesis): sumOfTwoPrimes_add_two (+2 companion of +3, the r=2 instance of sumOfTwoPrimes_add_prime), binary_implies_ternary_even (Binary Goldbach => ternary for even n>=6, adjoin prime 2 — even complement of odd-only binary_implies_weak), binary_implies_ternary_ge_six (capstone: Binary Goldbach => every n>=6 is a sum of three primes, both parities)."
     ],
     "insights": [
       "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
@@ -71,7 +72,8 @@
       "Iterated Schnirelmann inequality: 1 − σ(h·A) ≤ (1 − σA)^h, by induction from schnirelmann_inequality applied to sumsetPow A h ⊕ A ⊆ sumsetPow A (h+1). Base: σ(sumsetPow A 0)=σ{0}=0.",
       "0∉A case of Schnirelmann reduces to insert 0 A (same density, schnirelmannDensity_insert_zero), then delete zero summands (they lie in {0}) — preserves sum, shrinks multiset.",
       "WeakGoldbach.lean was bit-rotted on main (did not compile under Mathlib 4.26): exponentialSumOverPrimes needed noncomputable (Real.pi), representationCount_pos_iff broke on Finset.product mem API, vinogradov_from_circle_method positivity needed n>1 for log n>0.",
-      "Metadata reconciliation (researcher-5, 2026-07-08): WeakGoldbach.lean leanFile.axiomCount was stale at 5; the file declares exactly 4 axioms (helfgott_weak_goldbach, circle_method_asymptotic, chen_theorem, binary_goldbach_verified) — the fifth (schnirelmann_basis_theorem) was already discharged into Proofs.SchnirelmannTheorem, as the progressSummary records. Rebuilt Proofs.WeakGoldbach clean (7746 jobs, 0 sorries) to confirm. lineCount 681→706, theoremCount 30→31 after the binary_goldbach_verified_small addition."
+      "Metadata reconciliation (researcher-5, 2026-07-08): WeakGoldbach.lean leanFile.axiomCount was stale at 5; the file declares exactly 4 axioms (helfgott_weak_goldbach, circle_method_asymptotic, chen_theorem, binary_goldbach_verified) — the fifth (schnirelmann_basis_theorem) was already discharged into Proofs.SchnirelmannTheorem, as the progressSummary records. Rebuilt Proofs.WeakGoldbach clean (7746 jobs, 0 sorries) to confirm. lineCount 681→706, theoremCount 30→31 after the binary_goldbach_verified_small addition.",
+      "The file's binary=>weak reduction only covered ODD n (via +3 = sumOfTwoPrimes_add_three). The even case needs the +2 shift (adjoin prime 2): even n>=6 has n-2 even>2 = p+q so n=2+p+q. Uniting odd (binary_implies_weak) + even gives the classical all-n>=6 ternary form. All conditional on BinaryGoldbachConjecture as hypothesis, so axiom-free (independent of the deep helfgott/chen axioms)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -94,15 +96,15 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.384Z",
-  "lastUpdate": "2026-07-04",
+  "lastUpdate": "2026-07-12",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
     {
       "path": "Proofs/WeakGoldbach.lean",
       "filename": "WeakGoldbach.lean",
-      "lineCount": 707,
-      "theoremCount": 31,
+      "lineCount": 764,
+      "theoremCount": 35,
       "axiomCount": 4,
       "defCount": 14,
       "sorryCount": 0,
