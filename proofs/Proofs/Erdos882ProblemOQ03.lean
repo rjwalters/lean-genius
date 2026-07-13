@@ -1032,4 +1032,55 @@ theorem DivisibilityFree.isAntichain {S : Finset ℕ} (h : DivisibilityFree S) :
     IsAntichain (· ∣ ·) (↑S : Set ℕ) :=
   (divisibilityFree_iff_isAntichain S).mp h
 
+/-!
+### Divisibility necessary conditions for `ValidSubset`
+
+With the `IsAntichain` bridge (`divisibilityFree_iff_isAntichain`) in place, the
+Erdős #882 validity hypothesis yields concrete *necessary* conditions: the subset
+sums of a valid `A` form a divisibility antichain, no proper partial subset sum
+divides the total, and no single element of a size-`≥ 2` valid set divides `∑ A`.
+-/
+
+/-- **The subset sums of a valid set form a divisibility antichain.**  This is
+    the Erdős #882 hypothesis restated in Mathlib's `IsAntichain` language, ready
+    to feed antichain machinery. -/
+theorem validSubset_subsetSums_isAntichain {n : ℕ} {A : Finset ℕ}
+    (h : ValidSubset n A) : IsAntichain (· ∣ ·) (↑(subsetSums A) : Set ℕ) :=
+  h.2.isAntichain
+
+/-- **No proper partial sum divides the total.**  In a valid set `A`, for every
+    non-empty proper subset `S ⊊ A` the partial sum `∑ S` does *not* divide the
+    total `∑ A`.  Both are subset sums, and `∑ S < ∑ A` (a proper subset of a
+    positive set has strictly smaller sum), so they are distinct values and the
+    divisibility-free condition forbids `∑ S ∣ ∑ A`.  A concrete necessary
+    condition every #882-valid configuration must meet. -/
+theorem validSubset_subsetSum_not_dvd_total {n : ℕ} {A S : Finset ℕ}
+    (hV : ValidSubset n A) (hSA : S ⊆ A) (hS : S.Nonempty) (hne : S ≠ A) :
+    ¬ (S.sum id ∣ A.sum id) := by
+  obtain ⟨hbound, hdf⟩ := hV
+  have hpos : ∀ a ∈ A, 1 ≤ a := fun a ha => (hbound a ha).1
+  have hssub : S ⊂ A := hSA.ssubset_of_ne hne
+  obtain ⟨x, hxA, hxS⟩ := Finset.exists_of_ssubset hssub
+  have hlt : S.sum id < A.sum id :=
+    Finset.sum_lt_sum_of_subset hSA hxA hxS (by simp only [id_eq]; exact hpos x hxA)
+      (by intro j _ _; exact Nat.zero_le _)
+  have hmemS : S.sum id ∈ subsetSums A := sum_mem_subsetSums_of_subset hSA hS
+  have hmemA : A.sum id ∈ subsetSums A := sum_mem_subsetSums ⟨x, hxA⟩
+  exact (hdf (S.sum id) hmemS (A.sum id) hmemA (Nat.ne_of_lt hlt)).1
+
+/-- **No element of a size-`≥ 2` valid set divides the total.**  Specialising
+    `validSubset_subsetSum_not_dvd_total` to a singleton: in a valid `A` with
+    `|A| ≥ 2`, no member `a ∈ A` divides `∑ A`.  (When `|A| = 1` the sole element
+    *is* the total, so the size hypothesis is needed.) -/
+theorem validSubset_elem_not_dvd_total {n : ℕ} {A : Finset ℕ} {a : ℕ}
+    (hV : ValidSubset n A) (ha : a ∈ A) (hcard : 2 ≤ A.card) :
+    ¬ (a ∣ A.sum id) := by
+  have hne : ({a} : Finset ℕ) ≠ A := by
+    intro h
+    have : A.card = 1 := by rw [← h]; simp
+    omega
+  have h := validSubset_subsetSum_not_dvd_total hV
+    (Finset.singleton_subset_iff.mpr ha) (Finset.singleton_nonempty a) hne
+  simpa using h
+
 end Erdos882OQ03
