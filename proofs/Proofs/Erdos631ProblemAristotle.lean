@@ -46,10 +46,10 @@ Key Mathlib lemmas:
 
 /-- k-choosability is monotone: if G is k-choosable then G is (k+1)-choosable.
     The proof is immediate: any (k+1)-list also satisfies the k-list size requirement. -/
-theorem choosable_monotone_ari {V : Type*} [Fintype V] [DecidableEq V]
+theorem choosable_monotone_ari.{u} {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) (k : ℕ) :
-    Erdos631.IsKChoosable G k → Erdos631.IsKChoosable G (k + 1) := by
+    Erdos631.IsKChoosable.{_, u} G k → Erdos631.IsKChoosable.{_, u} G (k + 1) := by
   intro h C _ L hL
-  exact h L (fun v => Nat.le_of_succ_le (hL v))
+  exact h C L (fun v => Nat.le_of_succ_le (hL v))
 
 end Erdos631Aristotle

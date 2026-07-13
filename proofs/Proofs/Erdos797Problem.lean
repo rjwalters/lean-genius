@@ -51,8 +51,8 @@ def IsProperColoring {V : Type*} (G : SimpleGraph V) (c : V → ℕ) : Prop :=
 def HasBichromaticCycle {V : Type*} (G : SimpleGraph V) (c : V → ℕ) : Prop :=
   ∃ (cycle : List V), cycle.length ≥ 3 ∧
     (∃ col1 col2 : ℕ, col1 ≠ col2 ∧ ∀ v ∈ cycle, c v = col1 ∨ c v = col2) ∧
-    (∀ i, i + 1 < cycle.length →
-      G.Adj (cycle.get ⟨i, by omega⟩) (cycle.get ⟨i + 1, by omega⟩))
+    (∀ i, (hi : i + 1 < cycle.length) →
+      G.Adj (cycle.get ⟨i, by omega⟩) (cycle.get ⟨i + 1, hi⟩))
 
 /-- An acyclic coloring: proper and no bichromatic cycles.
     This is the key coloring concept for this problem. An ordinary proper

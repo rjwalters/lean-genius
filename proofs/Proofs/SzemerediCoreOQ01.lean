@@ -549,7 +549,8 @@ theorem energy_increment_packaging
   have hA₂B₂_ne : A₂ ≠ B₂ := by
     intro heq
     have hA₂_empty : A₂ = ∅ := by
-      ext x; skip
+      ext x
+      simp only [Finset.notMem_empty, iff_false]
       intro hxA₂
       exact absurd (Finset.sdiff_subset (heq ▸ hxA₂))
         (Finset.disjoint_left.mp hAB_disj (Finset.sdiff_subset hxA₂))

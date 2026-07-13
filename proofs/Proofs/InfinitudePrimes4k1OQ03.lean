@@ -86,9 +86,6 @@ lemma mod_four_eq_one_iff_zmodFour_eq_one {p : ℕ} :
     p % 4 = 1 ↔ (p : ZMod 4) = 1 := by
   have h1 : (1 : ZMod 4) = ((1 : ℕ) : ZMod 4) := by norm_cast
   rw [h1, ZMod.natCast_eq_natCast_iff, Nat.ModEq]
-  constructor
-  · intro h; omega
-  · intro h; omega
 
 /-! ## Mathlib bridge: infinitude form -/
 

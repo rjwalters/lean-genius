@@ -143,8 +143,11 @@ theorem classNumber_eq_one_of_minkowskiIdealBound_lt_two
   have hle := classNumber_le_card_absNorm_le K
   have hpos := NumberField.classNumber_pos (K := K)
   have hone : Nat.card {I : (Ideal (𝓞 K))⁰ //
-      Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊} ≤ 1 :=
-    Nat.card_le_one
+      Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊} ≤ 1 := by
+    rcases isEmpty_or_nonempty {I : (Ideal (𝓞 K))⁰ //
+        Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊} with h | h
+    · simp
+    · exact (Nat.card_eq_one_iff_unique.mpr ⟨⟨fun a b => Subsingleton.elim a b⟩, h⟩).le
   omega
 
 /-- The previous bound, packaged as a principal-ideal-ring criterion: a number field whose

@@ -196,6 +196,7 @@ theorem scarfWalkAux_right_succ (hm : 0 < m) (s : Fin m) (n : ℕ)
               if IsPanchromatic1d c i' then Sum.inl i' else Sum.inr (i', k''))
         = _
     rw [intervalTriangulation_adj_zero hm s hlt]
+    rfl
   rw [hst]
   by_cases hp1 : IsPanchromatic1d c (⟨s.val + 1, hlt⟩ : Fin m)
   · rw [if_pos hp1, if_pos hp1]

@@ -85,7 +85,9 @@ theorem gpf_is_prime (m : ℕ) (hm : m > 1) : (P(m)).Prime :=
 
 /-- P(p^k) = p for prime p and k ≥ 1. -/
 theorem gpf_prime_power (p k : ℕ) (hp : p.Prime) (hk : k ≥ 1) : P(p ^ k) = p := by
-  simp [greatestPrimeFactor, Nat.Prime.primeFactorsList_pow hp]
+  simp only [greatestPrimeFactor, Nat.Prime.primeFactorsList_pow hp]
+  rw [List.getLast?_replicate]
+  simp [show k ≠ 0 from by omega]
 
 /-- P(p) = p for prime p. -/
 theorem gpf_prime (p : ℕ) (hp : p.Prime) : P(p) = p := by
@@ -144,7 +146,7 @@ theorem two_power_mod_seven (k : ℕ) : (2 ^ k : ZMod 7) ≠ 6 := by
     rw [pow_add, pow_mul, h3, one_pow, one_mul]
   rw [hmod]
   have : k % 3 = 0 ∨ k % 3 = 1 ∨ k % 3 = 2 := by omega
-  rcases this with rfl | rfl | rfl <;> decide
+  rcases this with h | h | h <;> rw [h] <;> decide
 
 /-- 7 does not divide 2^k + 1 for any k. -/
 theorem seven_not_divide_two_pow_plus_one (k : ℕ) : ¬(7 ∣ (2 ^ k + 1)) := by

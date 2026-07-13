@@ -713,6 +713,38 @@ flipped on synth-fix alone; every GREEN needed 1–8 follow-up edits.
 | Erdos612Problem | `path/cycle/bipartite/moore` | `sorry`-typed statements replaced with real ∃-graph / Moore-bound propositions |
 | Erdos777Problem | `full_comparable` | `Or.inr hA` (base ⊆ A) was wrong for `hA : A ⊆ base` → `Or.inl hA` |
 
+### 7p. Doctor increment-15 recipes (#38065, 2026-07-13, tm/pd/rewrite + unknown-const-mixed)
+
+| v4.31 symptom | fix | source |
+|---|---|---|
+| `theorem foo` used at line N but *defined* at line M > N in the same file → "Unknown identifier `foo`" | move the lemma above its first use (no hoisting in v4.31); **delete the orphaned doc-comment** left where it was, else "unexpected `/-!` … expected 'lemma'" | Erdos731Problem (choose_succ_gt_central) |
+| term-mode `(by norm_num)` proving `0 < 3` in a **type-ascription argument slot** → "unknown tactic" | `by decide` | SpernerSimplicialInstanceOQ05 |
+| `Nat.cast_sub h : ↑(a-1) = ↑a - ↑1` but goal wants `↑a - 1` (literal) | chase with `Nat.cast_one`: `rw [Nat.cast_sub h, Nat.cast_one]` | NewtonInductiveStepOQ01 |
+| `ext x` on `s = ∅` (Finset/Set) leaves an `Iff`, so `intro`/`introN` fails | `simp only [Finset.notMem_empty, iff_false]` before `intro` (note `not_mem`→`notMem` rename) | SzemerediCoreOQ01 |
+| `attribute [local instance] Real.fact_zero_lt_one` — constant removed | `local instance : Fact ((0:ℝ) < 1) := ⟨one_pos⟩` | DirichletApproximationOQ02 |
+| `MeasureTheory.Measure.prod_mono h1 h2` removed | local lemma: `Measure.le_iff.mpr (fun s hs => by rw [Measure.prod_apply hs, Measure.prod_apply hs]; exact (lintegral_mono (fun x => hν (Prod.mk x ⁻¹' s))).trans (lintegral_mono' hμ le_rfl))` | GreensTheoremOQ01OQ01OQ03 |
+| `show ((i:ℕ) : Fin (m+1)) = i` for `ZMod (m+1) = Fin (m+1)` round-trip no longer elaborates | `ZMod.natCast_rightInverse (n := m+1) i` (pin the modulus) | BoundedPrimeGapsOQ04OQ01 |
+| `padicValNat.factorial_le_factorial hp hmn` removed | `rw [← Nat.factorization_def _ hp, ← Nat.factorization_def _ hp]; exact (Nat.factorization_le_iff_dvd (factorial_ne_zero _) (factorial_ne_zero _)).mpr (Nat.factorial_dvd_factorial hmn) p` | Erdos912Problem |
+| omega treats `Nat.count Nat.Prime k` and `Nat.count (fun p => Nat.Prime p) k` (from `Nat.lt_nth_iff_count_lt.mp`) as **distinct atoms** (eta) | `simp only [show (fun p => Nat.Prime p) = Nat.Prime from rfl]` before `omega` — general eta-atom bridge | Erdos853Problem |
+| `apply add_le_add_left` fails on goal `a + b ≤ a + c` — now unifies as right-mono `?b+?a ≤ ?c+?a` | `gcongr a + ?_` | Erdos572Problem |
+| `Nat.card_le_one` removed | `rcases isEmpty_or_nonempty X with h|h; · simp; · exact (Nat.card_eq_one_iff_unique.mpr ⟨⟨fun a b => Subsingleton.elim a b⟩, h⟩).le` | MinkowskiTheoremOQ03 |
+| `colorable_of_isEmpty _ 0` removed | `SimpleGraph.colorable_zero_iff.mpr ‹_›` (needs an `IsEmpty V` instance in scope) | Erdos736Problem |
+| `G.loopless a hG` "Function expected at G.loopless" (now `Std.Irrefl G.Adj`) | `G.loopless.irrefl a hG` (confirms §7f) | Erdos736Problem |
+| a `def … := ∀ (C : Type*) …` reused in a hypothesis AND a goal gives them **different universe metavars** (`@h C` universe mismatch u_2 vs u_3) | pin both uses to one explicit universe: `theorem foo.{u} … : IsKChoosable.{_, u} … → IsKChoosable.{_, u} …`; do NOT change the parent def if it is already GREEN | Erdos631ProblemAristotle |
+| no-op `dsimp only` (no lemmas) → "made no progress" | delete it | SpernerSimplicialInstanceOQ04 |
+| `Option.noConfusion h` (`h : none = some _`) as a **structure field value** motive failure | `absurd h (by simp)` (confirms §7o) | SpernerSimplicialInstance |
+| `mem_cons_self x xs` "Function expected" | `mem_cons_self` (now nullary, both args implicit) | NewtonInductiveStepOQ02 |
+| `Nat.eq_or_gt_of_le h` removed (want `a = b ∨ a < b`) | `h.eq_or_lt` (`LE.le.eq_or_lt`) | NewtonInductiveStepOQ02 |
+| `getLast?.getD 0` residual after `primeFactorsList_pow` | `rw [List.getLast?_replicate]; simp [k ≠ 0]` | Erdos649Problem |
+| `rcases (h : k%3 = 0 ∨ …) with rfl | …` "subst failed, k%3 not a variable" | `rcases … with h|h|h <;> rw [h] <;> decide` (can't subst a `%`) | Erdos649Problem |
+| `dif_pos (by omega : a*b > 1)` with `a,b ≥ 2` (nonlinear) | `by nlinarith` | Erdos932Problem |
+
+**Meta-finding:** for a single-error DR20a file whose error points at a SHARED
+root module (e.g. 6 rows all citing `SpernerSimplicialInstance.lean:1018`), the
+root fix flips only the rows with no own errors; the rest were **dep-masked** and
+surface their real per-file errors once the root compiles — build each dependent
+separately. The eta-atom omega split and the anonymous-`∀ i, (hi : …) →` binder
+naming (§7o) are the two most frequently-recurring proof-drift shapes this session.
 ### 7p. Doctor increment-14 recipes (#38065, 2026-07-13, structured classes + instance-synth tail)
 
 **Meta-finding:** the dependency backfill already ran (zero-edit re-verify of 171

@@ -24,7 +24,7 @@ example : (Finset.image Nat.totient (Finset.range 4)) ⊆
   simp only [mem_image, mem_range] at hn
   obtain ⟨m, hm, rfl⟩ := hn
   simp only [mem_filter, mem_range]
-  exact ⟨Nat.lt_of_lt_of_le hm (Nat.totient_le m) |>.trans_le (by omega), ⟨m, rfl⟩⟩
+  exact ⟨(Nat.totient_le m).trans_lt hm, ⟨m, rfl⟩⟩
 
 -- Wait, totient_le gives totient m ≤ m, not totient m < m. Let me adjust.
 -- Actually we need totient m ∈ range (x+1), i.e. totient m ≤ x

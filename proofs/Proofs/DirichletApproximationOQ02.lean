@@ -41,7 +41,7 @@ namespace DirichletApproximationOQ02
 open MeasureTheory Metric Set
 open scoped ENNReal
 
-attribute [local instance] Real.fact_zero_lt_one
+local instance : Fact ((0 : ℝ) < 1) := ⟨one_pos⟩
 
 /-- **Simultaneous Dirichlet approximation.** For real numbers `θ₀, …, θ_{d-1}` and any
 `Q ≥ 1`, there is a single denominator `q` with `1 ≤ q ≤ Q^d` and integers `pᵢ` such that

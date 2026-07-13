@@ -339,7 +339,7 @@ theorem colorable_induce_insert {V : Type*} (G : SimpleGraph V) (s' : Set V) (a 
     have e1 : (w₁ : V) = a := (Set.mem_insert_iff.mp w₁.2).resolve_right h₁
     have e2 : (w₂ : V) = a := (Set.mem_insert_iff.mp w₂.2).resolve_right h₂
     rw [e1, e2] at hG
-    exact G.loopless a hG
+    exact G.loopless.irrefl a hG
 
 theorem chiN_induce_insert_le {V : Type*} (G : SimpleGraph V) (s' : Set V) (a : V) [Finite s'] :
     chiN (G.induce (insert a s')) ≤ chiN (G.induce s') + 1 :=
@@ -359,7 +359,7 @@ theorem exists_induce_chiN_eq {V : Type*} (G : SimpleGraph V) (s : Finset V) :
     refine ⟨∅, subset_refl _, ?_⟩
     have h0 : chiN (G.induce (↑(∅ : Finset V) : Set V)) = 0 := by
       haveI : IsEmpty ↥(↑(∅ : Finset V) : Set V) := by rw [Finset.coe_empty]; infer_instance
-      exact Nat.le_zero.mp (chiN_le_of_colorable _ (colorable_of_isEmpty _ 0))
+      exact Nat.le_zero.mp (chiN_le_of_colorable _ (SimpleGraph.colorable_zero_iff.mpr ‹_›))
     rw [h0] at hm ⊢; omega
   | @insert a s' ha ih =>
     intro m hm

@@ -84,7 +84,7 @@ theorem esymm_zero_tail (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
   | nil =>
     simp [esymm_nil_succ]
   | cons x xs ih =>
-    have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self x xs)
+    have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self)
     have hxs' : ∀ y ∈ xs, (0 : ℝ) ≤ y := fun y hy => hxs y (mem_cons_of_mem x hy)
     -- Obtain j = p+1 for some p (since j ≥ 1)
     obtain ⟨p, rfl⟩ : ∃ p, j = p + 1 := ⟨j - 1, by omega⟩
@@ -120,10 +120,10 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
   induction xs generalizing k with
   | nil => simp at hkn
   | cons x xs ih =>
-    have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self x xs)
+    have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self)
     have hxs' : ∀ y ∈ xs, (0 : ℝ) ≤ y := fun y hy => hxs y (mem_cons_of_mem x hy)
     simp only [length_cons] at hkn
-    rcases Nat.eq_or_gt_of_le hk with rfl | hk2
+    rcases hk.eq_or_lt with rfl | hk2
     · -- k = 1 case
       -- F_0 = 1, F_1 = E_1 + x, F_2 = E_2 + x*E_1
       simp only [show 1 - 1 = 0 from rfl, show 1 + 1 = 2 from rfl]
@@ -267,12 +267,12 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
   induction xs generalizing k with
   | nil => simp at hkn
   | cons x xs ih =>
-    have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self x xs)
+    have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self)
     have hxs' : ∀ y ∈ xs, (0 : ℝ) ≤ y := fun y hy => hxs y (mem_cons_of_mem x hy)
     simp only [length_cons] at hkn
     -- n = xs.length
     set n := xs.length with hn_def
-    rcases Nat.eq_or_gt_of_le hk with rfl | hk2
+    rcases hk.eq_or_lt with rfl | hk2
     · -- k = 1 case
       simp only [show (1:ℕ) - 1 = 0 from rfl, show (1:ℕ) + 1 = 2 from rfl,
                  Nat.choose_zero_right, Nat.cast_one, one_mul, esymm_zero]

@@ -41,6 +41,17 @@ set_option linter.unusedTactic false
 
 namespace GreensTheoremOQ01OQ01OQ03
 
+/-- Product measures are monotone in both factors. Replaces the removed
+    `MeasureTheory.Measure.prod_mono` (v4.31). -/
+private theorem prod_mono_both {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ₁ μ₂ : Measure α} {ν₁ ν₂ : Measure β}
+    [SFinite μ₁] [SFinite μ₂] [SFinite ν₁] [SFinite ν₂]
+    (hμ : μ₁ ≤ μ₂) (hν : ν₁ ≤ ν₂) : μ₁.prod ν₁ ≤ μ₂.prod ν₂ := by
+  refine Measure.le_iff.mpr (fun s hs => ?_)
+  rw [Measure.prod_apply hs, Measure.prod_apply hs]
+  refine (lintegral_mono (fun x => hν (Prod.mk x ⁻¹' s))).trans ?_
+  exact lintegral_mono' hμ le_rfl
+
 /-! ### Part I: Null Boundary Lemmas -/
 
 /-- The left boundary point of [a,b] has Lebesgue measure zero. -/
@@ -119,7 +130,7 @@ private theorem fubini_core {f : ℝ → ℝ → ℝ}
   have hf_int' : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
       ((MeasureTheory.volume.restrict (Set.Ioc a b)).prod
        (MeasureTheory.volume.restrict (Set.Ioc c d))) :=
-    hf_int.mono_measure (Measure.prod_mono
+    hf_int.mono_measure (prod_mono_both
       (Measure.restrict_mono Set.Ioc_subset_Icc_self le_rfl)
       (Measure.restrict_mono Set.Ioc_subset_Icc_self le_rfl))
   exact (MeasureTheory.integral_integral_swap hf_int').symm
