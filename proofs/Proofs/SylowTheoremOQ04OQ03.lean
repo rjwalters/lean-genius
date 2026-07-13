@@ -1390,6 +1390,60 @@ theorem card_sylow_eq (hp : 5 ≤ p) :
   have hge := card_sylow_ge hp
   exact sylow_count_arith hp hdvd hmod hge
 
+/-! ### Every Sylow `p`-subgroup is a copy of `ℤ/p`, and distinct ones meet trivially
+
+`unipotentSylow` is one explicit Sylow `p`-subgroup, cyclic of order `p`
+(`isCyclic_unipotentSylow`).  Since all Sylow `p`-subgroups are conjugate they share these
+properties: **every** Sylow `p`-subgroup of `SL(2, p)` has order exactly `p` (`card_sylowP`)
+and is therefore cyclic `≅ ℤ/p` (`isCyclic_sylowP`).  As subgroups of prime order, two
+*distinct* Sylow `p`-subgroups intersect trivially (`sylowP_inf_eq_bot`): the `p + 1` Sylow
+`p`-subgroups (`card_sylow_eq`) overlap only in the identity.  These are the exact
+ingredients of the classical count "`SL(2, p)` has `(p+1)(p-1) = p² - 1` elements of order
+`p`". -/
+
+/-- **Every Sylow `p`-subgroup of `SL(2, p)` has order exactly `p`.**  The `p`-part of the
+group order is `p ^ 1` (`factorization_card_SL2`), and a Sylow `p`-subgroup realises the full
+`p`-part (`Sylow.card_eq_multiplicity`).  Generalises `card_unipotentHom_range` from the one
+explicit unipotent Sylow to every Sylow `p`-subgroup. -/
+theorem card_sylowP (P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :
+    Nat.card (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p := by
+  rw [P.card_eq_multiplicity, factorization_card_SL2, pow_one]
+
+/-- **Every Sylow `p`-subgroup of `SL(2, p)` is cyclic `≅ ℤ/p`.**  It has prime order `p`
+(`card_sylowP`), and any group of prime order is cyclic (`isCyclic_of_prime_card`).  This
+generalises `isCyclic_unipotentSylow` from the one explicit unipotent Sylow to *all* of them. -/
+theorem isCyclic_sylowP (P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :
+    IsCyclic (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+  isCyclic_of_prime_card (card_sylowP P)
+
+/-- **Distinct Sylow `p`-subgroups of `SL(2, p)` intersect trivially.**  Each has prime order
+`p` (`card_sylowP`), so `P ⊓ Q ≤ P` has order dividing `p`: either `1` (giving `P ⊓ Q = ⊥`)
+or `p`, in which case `P ⊓ Q = P` and, by symmetry, `= Q`, forcing `P = Q` and contradicting
+`P ≠ Q`.  Hence the `p + 1` Sylow `p`-subgroups pairwise meet only in the identity — the
+disjointness underlying the classical order-`p` element count. -/
+theorem sylowP_inf_eq_bot {P Q : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))}
+    (hPQ : P ≠ Q) :
+    (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ⊓ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = ⊥ := by
+  have hp : Nat.Prime p := Fact.out
+  set G := Matrix.SpecialLinearGroup (Fin 2) (ZMod p) with hG
+  have hle : (P : Subgroup G) ⊓ (Q : Subgroup G) ≤ (P : Subgroup G) := inf_le_left
+  -- `|P ⊓ Q|` divides `|P| = p`.
+  have hdvd : Nat.card ((P : Subgroup G) ⊓ (Q : Subgroup G) : Subgroup G) ∣ p := by
+    have h := Subgroup.card_subgroup_dvd_card
+      (((P : Subgroup G) ⊓ (Q : Subgroup G)).subgroupOf (P : Subgroup G))
+    rwa [Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, card_sylowP] at h
+  rcases (Nat.dvd_prime hp).mp hdvd with h1 | hpc
+  · -- order 1 ⟹ trivial
+    exact Subgroup.card_eq_one.mp h1
+  · -- order p ⟹ `P ⊓ Q = P` and `= Q`, so `P = Q`, contradiction
+    exfalso
+    have hPeq : (P : Subgroup G) ⊓ (Q : Subgroup G) = (P : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_ge hle (le_of_eq (by rw [card_sylowP, hpc]))
+    have hQeq : (P : Subgroup G) ⊓ (Q : Subgroup G) = (Q : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_ge inf_le_right (le_of_eq (by rw [card_sylowP, hpc]))
+    exact hPQ (Sylow.ext (hPeq.symm.trans hQeq))
+
 end SylowOQ04OQ03
 
 #print axioms SylowOQ04OQ03.sylow_count_arith
