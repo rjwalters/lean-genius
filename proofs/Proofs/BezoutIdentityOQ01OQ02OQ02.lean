@@ -696,4 +696,44 @@ theorem exists_unimodular_mulVec_neg_single_fin_one :
     fin_cases i
     simp [Matrix.mulVec, dotProduct, Pi.single_eq_same]
 
+/-! ### Unimodular completion and the classical `gcd = 1` phrasing -/
+
+/-- **Unimodular completion (`n ≥ 2`).**  Every primitive integer vector `v` is a
+*column* of some `A ∈ SLₙ(ℤ)`: for any target column index `t`, there is a unimodular
+matrix whose `t`-th column is exactly `v`.  Equivalently, a primitive vector extends
+to a `ℤ`-basis of `ℤⁿ` (Newman, *Integral Matrices*; the completability of a primitive
+vector to a unimodular matrix).  This is the *dual* face of transitivity: whereas
+`exists_sl_mulVec_basis_of_isPrimitive` carries `v` **onto** a basis vector, here we
+carry a basis vector **onto** `v` by taking the inverse matrix — its `t`-th column is
+`A⁻¹ · eₜ = v`.  The two together say the `SLₙ(ℤ)`-orbit of `eₜ` (for `n ≥ 2`) is
+simultaneously the set of primitive vectors and the set of columns realizable in
+`SLₙ(ℤ)`.  (The `mulVec`-of-`Pi.single` face of this statement is
+`isPrimitive_iff_exists_sl_column`.) -/
+theorem exists_sl_col_eq_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
+    (hv : IsPrimitive v) (t : Fin n) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, (↑ₘA).col t = v := by
+  obtain ⟨U, hU⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv t
+  refine ⟨U⁻¹, ?_⟩
+  rw [← Matrix.mulVec_single_one, ← hU, Matrix.mulVec_mulVec, ← SpecialLinearGroup.coe_mul,
+    inv_mul_cancel, SpecialLinearGroup.coe_one, Matrix.one_mulVec]
+
+/-- **The `n = 2` bridge to the parent's `IsCoprime` phrasing.**  For a pair
+`v : Fin 2 → ℤ`, the coordinate-free primitivity predicate is exactly Bézout
+coprimality of the two entries: `IsPrimitive v ↔ IsCoprime (v 0) (v 1)`.  This makes
+the connection to the parent entry `bezout-identity-oq-01-oq-02` — which works with a
+coprime pair `(a, b)` and its `bezoutSL` — completely explicit: both `IsPrimitive` and
+`IsCoprime` unfold to the *same* Bézout relation `w₀·v₀ + w₁·v₁ = 1`, so the dual
+vector `w` and the Bézout coefficients coincide. -/
+theorem isPrimitive_fin_two_iff_isCoprime (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ IsCoprime (v 0) (v 1) := by
+  constructor
+  · rintro ⟨w, hw⟩
+    have hwv : w 0 * v 0 + w 1 * v 1 = 1 := by
+      simpa [dotProduct, Fin.sum_univ_two] using hw
+    exact ⟨w 0, w 1, hwv⟩
+  · rintro ⟨a, b, hab⟩
+    refine ⟨![a, b], ?_⟩
+    simp only [dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+    linarith [hab]
+
 end BezoutPrimitive
