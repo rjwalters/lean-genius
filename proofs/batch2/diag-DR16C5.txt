@@ -1,0 +1,183 @@
+===== Erdos613Problem
+error: Proofs/Erdos613Problem.lean:55:30: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos613Problem.lean:55:51: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos613Problem.lean:78:6: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+error: Proofs/Erdos613Problem.lean:89:15: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos800Problem
+error: Proofs/Erdos800Problem.lean:57:3: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos800Problem.lean:103:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+error: Proofs/Erdos800Problem.lean:194:14: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+===== Erdos612Problem
+error: Proofs/Erdos612Problem.lean:42:30: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos612Problem.lean:42:51: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos612Problem.lean:207:0: type of theorem `Erdos612.path_diameter` is not a proposition
+  (n : ℕ) → n ≥ 2 → sorry
+error: Proofs/Erdos612Problem.lean:212:0: type of theorem `Erdos612.cycle_diameter` is not a proposition
+error: Proofs/Erdos612Problem.lean:212:0: type of theorem `Erdos612.cycle_diameter` is not a proposition
+  (n : ℕ) → n ≥ 3 → sorry
+warning: Proofs/Erdos612Problem.lean:218:8: declaration uses `sorry`
+===== Erdos573Problem
+error: Proofs/Erdos573Problem.lean:51:15: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos573Problem.lean:73:2: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+===== Erdos637Problem
+error: Proofs/Erdos637Problem.lean:35:3: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos637Problem.lean:72:28: Function expected at
+  G.symm
+but this term has type
+error: Proofs/Erdos637Problem.lean:73:30: Function expected at
+  G.loopless
+but this term has type
+===== Erdos548Problem
+error: Proofs/Erdos548Problem.lean:54:4: failed to synthesize instance of type class
+  Fintype ↑T.edgeSet
+error: Proofs/Erdos548Problem.lean:79:29: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548Problem.lean:80:28: Application type mismatch: The argument
+  h.right
+has type
+error: Proofs/Erdos548Problem.lean:105:55: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+===== Erdos767Problem
+error: Proofs/Erdos767Problem.lean:42:2: failed to synthesize instance of type class
+  Fintype ↑(SimpleGraph.edgeSet G)
+error: Proofs/Erdos767Problem.lean:49:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos767Problem.lean:50:55: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos767Problem.lean:57:15: Invalid field `get?`: The environment does not contain `List.get?`, so it is not possible to project the field `get?` from an expression
+  cycle
+of type `List (Fin n)`
+===== Erdos610Problem
+error: Proofs/Erdos610Problem.lean:40:2: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:40:42: Ambiguous term
+  IsClique
+Possible interpretations:
+error: Proofs/Erdos610Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos610Problem.lean:54:2: failed to synthesize instance of type class
+  DecidablePred fun T => IsCliqueTransversal G T
+===== Erdos611Problem
+error: Proofs/Erdos611Problem.lean:44:2: failed to synthesize instance of type class
+  DecidablePred fun S => IsMaximalClique G S
+error: Proofs/Erdos611Problem.lean:183:0: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+  (n : ℕ) → Even n → sorry
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+error: Proofs/Erdos611Problem.lean:188:0: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+  ℕ → (r : ℕ) → r ≥ 2 → sorry
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+error: Proofs/Erdos611Problem.lean:201:56: failed to synthesize instance of type class
+  HPow ℕ ℝ ?m.25
+===== Erdos625Problem
+error: Proofs/Erdos625Problem.lean:95:16: typeclass instance problem is stuck
+  LE (?m.29 ε)
+error: Proofs/Erdos625Problem.lean:198:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:204:16: failed to synthesize instance of type class
+  AddGroup ℕ
+error: Proofs/Erdos625Problem.lean:245:4: type expected, got
+  (heckel_steiner_unbounded 1 : AlmostSurely fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1)
+error: Lean exited with code 1
+===== Erdos628Problem
+error: Proofs/Erdos628Problem.lean:159:13: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)
+error: Proofs/Erdos628Problem.lean:193:0: declaration `Erdos628.TihanySymmetric` contains universe level metavariables at the expression
+  TihanyForPair.{?u.8} a a
+in the declaration body
+===== Erdos630Problem
+error: Proofs/Erdos630Problem.lean:85:30: failed to synthesize instance of type class
+  Fintype ↑G.edgeSet
+error: Proofs/Erdos630Problem.lean:101:44: Invalid field `IsCycle`: The environment does not contain `SimpleGraph.IsCycle`, so it is not possible to project the field `IsCycle` from an expression
+  G
+of type `SimpleGraph V`
+===== Erdos641Problem
+error: Proofs/Erdos641Problem.lean:54:53: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos641Problem.lean:54:80: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos641Problem.lean:55:24: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos641Problem.lean:55:45: omega could not prove the goal:
+error: Proofs/Erdos641Problem.lean:55:45: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos641Problem.lean:66:10: failed to synthesize instance of type class
+===== Erdos1091Problem
+error: Proofs/Erdos1091Problem.lean:50:44: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 3
+error: Proofs/Erdos1091Problem.lean:50:71: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 3
+error: Proofs/Erdos1091Problem.lean:57:2: failed to synthesize instance of type class
+  Membership V (List V✝)
+error: Proofs/Erdos1091Problem.lean:57:19: failed to synthesize instance of type class
+  Membership V (List V✝)
+===== Erdos922Problem
+error: Proofs/Erdos922Problem.lean:47:14: failed to synthesize instance of type class
+  DecidablePred (IsIndependentSet G)
+error: Proofs/Erdos922Problem.lean:58:4: Type mismatch
+  fun v => (Fintype.equivFin V) v
+has type
+error: Proofs/Erdos922Problem.lean:96:31: Function expected at
+  chromaticNumber'
+but this term has type
+error: Proofs/Erdos922Problem.lean:103:4: Function expected at
+  chromaticNumber'
+but this term has type
+===== Erdos546Problem
+error: Proofs/Erdos546Problem.lean:133:62: unsolved goals
+case inl
+V : Type u_1
+error: Proofs/Erdos546Problem.lean:133:41: Alternative `inr` has not been provided
+error: Proofs/Erdos546Problem.lean:146:45: failed to synthesize instance of type class
+  DecidableRel (pathGraph n).Adj
+error: Proofs/Erdos546Problem.lean:146:45: failed to synthesize instance of type class
+  DecidableRel (pathGraph n).Adj
+error: Proofs/Erdos546Problem.lean:149:46: failed to synthesize instance of type class
+  DecidableRel (cycleGraph n hn).Adj
+===== Erdos549Problem
+error: Proofs/Erdos549Problem.lean:49:11: Ambiguous term
+  IsTree
+Possible interpretations:
+error: Proofs/Erdos549Problem.lean:67:47: overloaded, errors 
+  failed to synthesize instance of type class
+    AddMonoid (V × V)
+error: Proofs/Erdos549Problem.lean:105:10: unsolved goals
+k : ℕ
+u v : Fin (3 * k + 2)
+error: Proofs/Erdos549Problem.lean:106:45: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos559Problem
+error: Proofs/Erdos559Problem.lean:62:35: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos559Problem.lean:92:6: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Erdos559.FiniteGraph.mk` has 4 explicit field, but only 3 were provided
+warning: Proofs/Erdos559Problem.lean:110:8: declaration uses `sorry`
+warning: Proofs/Erdos559Problem.lean:123:8: declaration uses `sorry`
+===== Erdos571Problem
+error: Proofs/Erdos571Problem.lean:53:35: failed to synthesize instance of type class
+  LT V
+error: Proofs/Erdos571Problem.lean:94:0: declaration `Erdos571.erdos_571_conjecture` contains universe level metavariables at the expression
+  IsTuranExponent.{?u.14} α
+in the declaration body

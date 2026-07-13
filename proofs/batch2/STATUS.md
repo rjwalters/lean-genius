@@ -75,6 +75,57 @@ metadata for these entries should be re-checked (per operator instruction).
   repairs table). Hilbert14NonReductive (batch24 skip) is the remaining
   statement-level case: needs `[MulSemiringAction G R]` consolidation.
 
+## DOCTOR INCREMENT 6 NUMBERS (#38065, instance-synth class — cyclotomic cluster)
+
+Ledger `verify-results.tsv`, instance-synth RESIDUAL **262 → 219 (+43 GREEN)**,
+all verified in-container (runner5 mtime + direct lake exit codes).
+
+Branch `feature/issue-38065-c`. Waves DR16C1 (50 cluster targets, +27),
+DR16C2 (23 re-verify, +11), DR16C3 (AngleTrisection OQ03 subtree, +4),
+DR16C4 (Galois singles, +4), plus the Cos20Gal dep (+1 support module).
+
+### ROOT CAUSE of the 48-row cyclotomic cluster (InverseGalois*/AngleTrisection*)
+
+`DivisionRing.toRatAlgebra : Algebra ℚ R` (default priority) now **wins**
+`Algebra ℚ K` synthesis over the structure-canonical instances
+(`SplittingField.instAlgebra`, `CyclotomicField.instAlgebra`,
+`IntermediateField.algebra'`, …). The instance it produces is *defeq to* the
+canonical one, **but only at default transparency** — so every downstream
+class keyed on the canonical algebra (`Normal`, `IsSplittingField`, `IsGalois`,
+`IsCyclotomicExtension`, quotient-group `Mul`/`Group`, `Module.Free`) fails to
+synthesize, while **explicit application** of the very same instance succeeds.
+That is exactly the increment-1..5 symptom "instance `[CharZero K]` exists yet
+synthesis fails, explicit application works."
+
+**Fix (one line per cluster root):**
+`attribute [instance 10] DivisionRing.toRatAlgebra` after the import block
+(demote it below the structure-canonical instances). Plus, in files touching
+`Module.Free`/big cyclotomic towers, `set_option synthInstance.maxHeartbeats 80000`.
+This alone flipped 4 of the 10 roots outright; the rest needed the additional
+per-file drift fixes catalogued in rename-map §7h.
+
+### Remaining cluster RESIDUAL (3, all deep-rework, deferred)
+
+- `DedekindFrobeniusBridge` (+ dependent `InverseGaloisA5DedekindInstantiation`):
+  `Ideal.Quotient.ker_stabilizerHom` now yields `Q.inertia (stabilizer G Q)`
+  (an `Ideal.inertia` keyed by the stabilizer *subgroup*), not
+  `Q.toAddSubgroup.inertia G`; `card_inertia_eq_ramificationIdxIn` is over `G`
+  and needs `IsGaloisGroup (stabilizer G Q) R S` (false). Needs subgroupOf
+  bridging (`AddSubgroup.subgroupOf_inertia`) that did not close cleanly.
+- `AngleTrisectionCos20GalOQ01OQ02OQ02`: cascading `Polynomial.Splits` API
+  drift (`.Splits` is now a bare `Prop`, not applied to the algebraMap).
+- `AngleTrisectionOQ02OQ01OQ02Incomplete01`: `Module ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)` /
+  compositum-tower instance rework + `le_sup_left/right` arg drift.
+
+### Next-family map (freshest, from diag-DR16C1/2/3 + a fresh non-cyclotomic sweep)
+
+Grouped by failing class (219 instance-synth RESIDUAL):
+`Fintype ↑(G.neighborSet v)` ×6, GraphCore hub `G.symm`/`G.loopless` Function-
+expected ×6, `DecidablePred (IsMaximalClique …)` ×5, `Field 𝕜` ×4,
+`Fintype ↑T.edgeSet`/`↑G.edgeSet` ×3, `IsAlgClosed ℂ` ×3,
+`Bracket`/element-commutator ×several — all amenable to §7a classical recipe
+or the §7h scoped-open / demotion recipes.
+
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 5B, #38065, 2026-07-13)
 
 ## DOCTOR INCREMENT 5B NUMBERS (#38065, proof-drift class)

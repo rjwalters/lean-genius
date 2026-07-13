@@ -242,7 +242,9 @@ theorem M23_not_solvable_barrier :
 theorem M23_index_in_S23 :
     (M23 : Subgroup (Equiv.Perm (Fin 23))).index *
     Fintype.card M23 = Fintype.card (Equiv.Perm (Fin 23)) := by
-  rw [Subgroup.index_mul_card]
+  -- v4.31: `Subgroup.index_mul_card` is stated with `Nat.card`
+  rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
+    Subgroup.index_mul_card]
 
 -- ============================================================================
 -- Part V: The Open Question

@@ -41,12 +41,15 @@ def halvings : ℕ → ℕ
     else 0
 termination_by n => n
 
-@[simp] theorem halvings_zero : halvings 0 = 0 := rfl
-@[simp] theorem halvings_one : halvings 1 = 0 := rfl
+-- v4.31: well-founded definitions are no longer `rfl`-transparent;
+-- use the equation lemmas instead.
+@[simp] theorem halvings_zero : halvings 0 = 0 := by simp [halvings]
+@[simp] theorem halvings_one : halvings 1 = 0 := by simp [halvings]
 
 /-- Equation lemma for the successor case (by definition). -/
 @[simp] theorem halvings_succ (n : ℕ) :
-    halvings (n + 1) = if (n + 1) % 2 = 0 then 1 + halvings ((n + 1) / 2) else 0 := rfl
+    halvings (n + 1) = if (n + 1) % 2 = 0 then 1 + halvings ((n + 1) / 2) else 0 := by
+  conv_lhs => rw [halvings]
 
 /-- Odd inputs have halvings = 0: an odd number is not divisible by 2. -/
 theorem halvings_odd {n : ℕ} (hn : n % 2 = 1) : halvings n = 0 := by
@@ -106,7 +109,7 @@ theorem halvings_monotone_pow2 {j k : ℕ} (h : j ≤ k) : halvings (2^j) ≤ ha
     This establishes that Ω(log d) halvings are necessary for this family. -/
 theorem halvings_complexity_tight (k : ℕ) :
     halvings (2^k) = Nat.log 2 (2^k) ∧ Nat.log 2 (2^k) = k :=
-  ⟨halvings_eq_log_pow2 k, Nat.log_pow (by norm_num : 1 < 2)⟩
+  ⟨halvings_eq_log_pow2 k, Nat.log_pow (by norm_num : 1 < 2) k⟩
 
 /-!
 ## Part IV: Separation of Powers from Non-Powers

@@ -37,6 +37,7 @@ Tags: extremal-graph-theory, turan, forbidden-cycles
 import Mathlib
 
 open SimpleGraph
+open scoped Classical
 
 namespace Erdos573
 

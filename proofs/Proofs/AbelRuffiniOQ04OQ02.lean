@@ -30,9 +30,15 @@ References:
 - Mathlib: GroupTheory.Solvable, GroupTheory.SpecificGroups.Alternating
 -/
 
-import Mathlib.GroupTheory.Solvable
-import Mathlib.GroupTheory.SpecificGroups.Alternating
-import Mathlib.Tactic
+import Mathlib
+
+/- v4.31 compat (#38065 increment 6): `DivisionRing.toRatAlgebra` (default
+priority) wins `Algebra ℚ K` synthesis over the structure-canonical instances
+(defeq only at default transparency), breaking downstream `Normal`/
+`IsSplittingField`/`IsGalois`/`IsCyclotomicExtension` synthesis. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
 
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false
@@ -58,15 +64,33 @@ theorem s2_solvable : IsSolvable (Perm (Fin 2)) := inferInstance
 -- PART 2: S₃ Is Solvable
 -- ============================================================
 
+/-- Any group of prime cardinality is solvable (cyclic, hence abelian).
+    v4.31 helper: the old `by decide` route lost its `Decidable` instances
+    (subgroup equality over `derivedSeries` no longer synthesizes). -/
+theorem solvable_of_prime_card {G : Type*} [Group G] (p : ℕ) [Fact p.Prime]
+    (h : Nat.card G = p) : IsSolvable G := by
+  haveI : IsCyclic G := isCyclic_of_prime_card h
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := G)
+  refine isSolvable_of_comm fun a b => ?_
+  obtain ⟨m, rfl⟩ := hg a
+  obtain ⟨n, rfl⟩ := hg b
+  rw [← zpow_add, ← zpow_add, add_comm]
+
 /-- S₃ is solvable (order 6).
     Derived series: S₃ ⊵ A₃ ≅ ℤ/3ℤ ⊵ {e}. Both quotients are abelian. -/
 theorem s3_solvable : IsSolvable (Perm (Fin 3)) := by
-  -- S₃ has 6 elements; we can verify solvability computationally
-  -- The derived subgroup [S₃, S₃] = A₃ (cyclic of order 3)
-  -- [A₃, A₃] = {e} (A₃ is abelian)
-  -- So derivedSeries 2 = ⊥
-  rw [isSolvable_def]
-  exact ⟨2, by decide⟩
+  -- A₃ has card 3!/2 = 3, prime → solvable; S₃/A₃ ↪ ℤˣ abelian.
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  haveI : IsSolvable ↥(alternatingGroup (Fin 3)) := by
+    apply solvable_of_prime_card 3
+    have h2 := two_mul_nat_card_alternatingGroup (α := Fin 3)
+    have hc : Nat.card (Perm (Fin 3)) = 6 := by
+      simp only [Nat.card_eq_fintype_card, Fintype.card_perm, Fintype.card_fin]
+      decide
+    omega
+  apply solvable_of_ker_le_range (alternatingGroup (Fin 3)).subtype Equiv.Perm.sign
+  intro x hx
+  exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
 
 -- ============================================================
 -- PART 3: S₄ Is Solvable
@@ -76,10 +100,33 @@ theorem s3_solvable : IsSolvable (Perm (Fin 3)) := by
     Derived series: S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}. (3 steps)
     V₄ = {e, (12)(34), (13)(24), (14)(23)} is the Klein four-group. -/
 theorem s4_solvable : IsSolvable (Perm (Fin 4)) := by
-  -- S₄ has 24 elements; computationally verify solvability
-  -- derivedSeries 3 = ⊥
-  rw [isSolvable_def]
-  exact ⟨3, by native_decide⟩
+  -- v4.31: `native_decide` route lost its `Decidable` instances; prove the
+  -- chain S₄ ⊵ A₄ ⊵ V₄ ⊵ {e} via Mathlib's `alternatingGroup.kleinFour` API.
+  have hα4 : Nat.card (Fin 4) = 4 := by simp
+  haveI : IsSolvable ↥(alternatingGroup (Fin 4)) := by
+    -- V₄ is abelian (exponent 2), hence solvable
+    haveI : IsSolvable ↥(alternatingGroup.kleinFour (Fin 4)) :=
+      isSolvable_of_comm fun a b =>
+        mul_comm_of_exponent_two
+          (alternatingGroup.exponent_kleinFour_of_card_eq_four hα4) a b
+    -- A₄/V₄ has card 12/4 = 3, prime → solvable
+    haveI hnormal : (alternatingGroup.kleinFour (Fin 4)).Normal :=
+      alternatingGroup.normal_kleinFour hα4
+    haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+    haveI : IsSolvable
+        (↥(alternatingGroup (Fin 4)) ⧸ alternatingGroup.kleinFour (Fin 4)) := by
+      apply solvable_of_prime_card 3
+      have hmul := Subgroup.card_eq_card_quotient_mul_card_subgroup
+        (alternatingGroup.kleinFour (Fin 4))
+      rw [alternatingGroup.card_of_card_eq_four hα4,
+        alternatingGroup.kleinFour_card_of_card_eq_four hα4] at hmul
+      omega
+    exact solvable_of_ker_le_range (alternatingGroup.kleinFour (Fin 4)).subtype
+      (QuotientGroup.mk' (alternatingGroup.kleinFour (Fin 4)))
+      (by rw [QuotientGroup.ker_mk', Subgroup.range_subtype])
+  apply solvable_of_ker_le_range (alternatingGroup (Fin 4)).subtype Equiv.Perm.sign
+  intro x hx
+  exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
 
 -- ============================================================
 -- PART 4: The Complete Classification

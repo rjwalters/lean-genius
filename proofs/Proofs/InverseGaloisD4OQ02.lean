@@ -55,6 +55,8 @@ Status: 0 sorries, 0 axioms, no `native_decide`.  `#print axioms` reports only
 import Mathlib
 import Proofs.InverseGaloisD4
 
+set_option synthInstance.maxHeartbeats 80000
+
 open scoped Classical
 
 namespace InverseGaloisExtensions
