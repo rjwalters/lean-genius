@@ -85,6 +85,7 @@ import Mathlib.GroupTheory.Subgroup.Center
 import Mathlib.GroupTheory.Subgroup.Centralizer
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.Commutator.Finite
+import Mathlib.GroupTheory.Schreier
 import Mathlib.GroupTheory.CosetCover
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Data.Finset.Card
@@ -619,6 +620,58 @@ theorem neumann_hard_direction_of_finite_commutatorSet
     [Group.FG G] [Finite (commutatorSet G)] (_ : BoundedCliques G) :
     (Subgroup.center G).index ≠ 0 :=
   Subgroup.FiniteIndex.index_ne_zero
+
+/-- **The residual gap in canonical (finite derived subgroup) form.**  The finiteness of
+    the *set* of commutators `{[a,b] : a,b ∈ G}` and the finiteness of the derived
+    *subgroup* `G' = commutator G = ⁅⊤, ⊤⁆` are equivalent:
+
+    > `Finite (commutatorSet G)  ↔  Finite (commutator G)`.
+
+    *Proof.* (`→`) is Schur's theorem — a group with finitely many commutators has a
+    finite commutator subgroup (`Mathlib.GroupTheory.Schreier`, the instance
+    `Finite (commutatorSet G) → Finite (commutator G)`; no finite-generation needed). (`←`)
+    is immediate: every commutator `⁅g₁, g₂⁆` lies in `commutator G`
+    (`commutator_mem_commutator` at `⊤`), so `commutatorSet G ⊆ ↑(commutator G)`, and a
+    subset of a finite set is finite.
+
+    This recasts the localization narrative of `center_finiteIndex_iff_relIndex_core` and
+    `neumann_hard_direction_of_finite_commutatorSet` into the *textbook* form of Neumann's
+    theorem: the entire remaining content of the axiom `neumann_hard_direction` is the
+    single implication `BoundedCliques G → Finite (commutator G)` — that bounded
+    non-commuting sets force a **finite derived subgroup** (the "boundedly finite-by-abelian"
+    ⟺ finite-`G'` dichotomy of B. H. Neumann, 1976). Axiom-free. -/
+theorem finite_commutatorSet_iff_finite_commutator :
+    Finite (commutatorSet G) ↔ Finite (_root_.commutator G) := by
+  constructor
+  · intro h
+    haveI := h
+    infer_instance
+  · intro h
+    haveI := h
+    have hsub : commutatorSet G ⊆ (↑(_root_.commutator G) : Set G) := by
+      rintro x ⟨g₁, g₂, rfl⟩
+      exact commutator_mem_commutator (mem_top g₁) (mem_top g₂)
+    have hfin : (↑(_root_.commutator G) : Set G).Finite := Set.toFinite _
+    exact Set.finite_coe_iff.mpr (hfin.subset hsub)
+
+/-- **The hard direction holds — axiom-free — whenever the derived subgroup is finite.**
+    If `G` is finitely generated and its commutator subgroup `G' = commutator G` is finite,
+    then the centre has finite index: `[G : Z(G)] ≠ 0`.  This is the derived-subgroup
+    (canonical BFC) phrasing of `neumann_hard_direction_of_finite_commutatorSet`, obtained
+    through the equivalence `finite_commutatorSet_iff_finite_commutator`.
+
+    As before `BoundedCliques G` is unused — retained only so the statement is a literal
+    drop-in for the axiom's signature on the finite-`G'` class.  Together with
+    `finite_commutatorSet_iff_finite_commutator` this pins the sole remaining content of
+    `neumann_hard_direction` (for finitely generated `G`) to `BoundedCliques G →
+    Finite (commutator G)`: bounded non-commuting cliques must be shown to force a finite
+    derived subgroup, exactly Neumann's BFC theorem. -/
+theorem neumann_hard_direction_of_finite_commutator
+    [Group.FG G] [Finite (_root_.commutator G)] (_ : BoundedCliques G) :
+    (Subgroup.center G).index ≠ 0 := by
+  haveI : Finite (commutatorSet G) :=
+    finite_commutatorSet_iff_finite_commutator.mpr inferInstance
+  exact Subgroup.FiniteIndex.index_ne_zero
 
 /-- **Bounded cliques are a group-isomorphism invariant.**  If `G ≃* K` then `Γ(G)` has
     finite clique number iff `Γ(K)` does: `BoundedCliques G ↔ BoundedCliques K`.  An
