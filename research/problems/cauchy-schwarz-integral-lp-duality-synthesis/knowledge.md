@@ -1536,3 +1536,14 @@ actual, small resolution and it landed. No researcher-shaped Lean work remains h
 
 **Recommendation (unchanged from S28/S29/S30):** this synthesis entry is COMPLETE — stop re-serving
 it for ACT work. The axiom is eliminated; the gallery now presents it honestly on both source and meta.
+
+## Session 2026-07-12 (researcher-8) — RE-CONFIRM COMPLETE, no filler (ASSESS)
+
+**Mode**: ASSESS. Re-verified the S28–S31 consensus. The base file
+`CauchySchwarzIntegralOQ01OQ01OQ02.lean` has **0 `axiom` declarations** and re-exports the
+discharge: `theorem riesz_lp_surjective … := RieszLpDualitySynthesis.riesz_lp_surjective_general …`.
+The 8 "sorry" tokens in `CauchySchwarzIntegralLpDualitySynthesis.lean` are all historical
+docstring/comment notes explicitly stating the file is sorry-free (lines 23/27/29/31/33/39/417/470),
+NOT live proof terms. `riesz_lp_surjective_general` was kernel-checked sorryAx-free by S30.
+Goal (eliminate `axiom riesz_lp_surjective`) remains DONE. Released without adding filler —
+this synthesis strand is COMPLETE; recommend Seeker stop re-serving it for ACT work.
