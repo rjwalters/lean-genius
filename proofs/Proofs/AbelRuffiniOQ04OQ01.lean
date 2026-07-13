@@ -1,6 +1,14 @@
 import Mathlib
 import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 
+/- v4.31 compat (#38065 increment 6): `DivisionRing.toRatAlgebra` (default
+priority) wins `Algebra ℚ K` synthesis over the structure-canonical instances
+(defeq only at default transparency), breaking downstream `Normal`/
+`IsSplittingField`/`IsGalois`/`IsCyclotomicExtension` synthesis. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
+
 /-
 # Galois Group of x⁵ - 4x + 2 is S₅ (Abel-Ruffini OQ-04 Extension)
 

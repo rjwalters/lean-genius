@@ -34,6 +34,14 @@ import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.Tactic
 
+/- v4.31 compat (#38065 increment 6): `DivisionRing.toRatAlgebra` (default
+priority) wins `Algebra ℚ K` synthesis over the structure-canonical instances
+(defeq only at default transparency), breaking downstream `Normal`/
+`IsSplittingField`/`IsGalois`/`IsCyclotomicExtension` synthesis. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
+
 set_option linter.unusedVariables false
 set_option linter.unusedTactic false
 set_option maxHeartbeats 1600000

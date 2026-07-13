@@ -1,10 +1,20 @@
 import Mathlib
 import Proofs.NthRootIrrationalOQ01
 
-/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
-does not fire during typeclass synthesis when the modulus is a variable (its
-explicit universe-polymorphic `K` fails synthesis-time unification), although
-explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+/- v4.31 compat (#38065, increment 6 ROOT CAUSE of the cyclotomic cluster):
+`DivisionRing.toRatAlgebra : Algebra ℚ R` (default priority) now wins
+`Algebra ℚ K` synthesis over the structure-canonical instances
+(`SplittingField.instAlgebra`, `CyclotomicField.instAlgebra`, ...). The
+resulting instance is defeq to the canonical one, but only at default
+transparency — so every downstream class keyed on the canonical algebra
+(`Normal`, `IsSplittingField`, `IsGalois`, `IsCyclotomicExtension`, ...)
+fails to synthesize while explicit application still succeeds. Demote it. -/
+attribute [instance 10] DivisionRing.toRatAlgebra
+
+set_option synthInstance.maxHeartbeats 80000
+
+/-- v4.31 compat (#38065): retained ℚ-specialized copy (see attribute above;
+this shim predates the root-cause fix and is harmless). -/
 instance isCyclotomicExtensionRatCompatInverseGaloisD4 (n : ℕ) :
     IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
   CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
@@ -139,12 +149,11 @@ theorem x4_sub_2_gal_card_dvd_24 :
     Subgroup.card_dvd_of_injective _ hinj
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   rw [Fintype.card_perm] at hdvd
-  have hcard : Fintype.card (p.rootSet p.SplittingField) = 4 := by
-    rw [Polynomial.card_rootSet_eq_natDegree x_fourth_sub_2_separable
-        (Polynomial.SplittingField.splits p)]
-    exact x_fourth_sub_2_natDegree
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 4 :=
+    (Polynomial.card_rootSet_eq_natDegree x_fourth_sub_2_separable
+        (Polynomial.SplittingField.splits p)).trans x_fourth_sub_2_natDegree
   rw [hcard] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 /-- In a field, if x⁴ = 1 and x ≠ 1 and x ≠ -1, then x² + 1 = 0. -/
 theorem fourth_root_of_unity_primitive
@@ -371,7 +380,7 @@ theorem x4_sub_2_gal_card_ne_four :
   obtain ⟨⟨α, hα_mem⟩⟩ := Fintype.card_pos_iff.mp (by rw [hcard_root]; omega)
   have hα : Polynomial.aeval α p = 0 := (Polynomial.mem_rootSet.mp hα_mem).2
   -- Step 3: The canonical algebra hom AdjoinRoot(p) →ₐ[ℚ] SF
-  set φ := AdjoinRoot.liftHom p α hα
+  set φ := AdjoinRoot.liftAlgHom p (Algebra.ofId ℚ _) α hα
   -- φ is injective (algebra hom from a field)
   have hinj : Function.Injective φ := RingHom.injective φ.toRingHom
   -- Step 4: AdjoinRoot has finrank 4 = [SF:ℚ], so φ is surjective
