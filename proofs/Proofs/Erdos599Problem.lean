@@ -51,8 +51,8 @@ def IsIndependent {V : Type*} (G : Graph V) (S : Set V) : Prop :=
 structure Path {V : Type*} (G : Graph V) where
   vertices : List V
   nonempty : vertices ≠ []
-  consecutive : ∀ i, i + 1 < vertices.length →
-    G.adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, by omega⟩)
+  consecutive : ∀ i, (hi : i + 1 < vertices.length) →
+    G.adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, hi⟩)
 
 /-- The first vertex of a path. -/
 def Path.first {V : Type*} {G : Graph V} (p : Path G) : V :=
