@@ -37,7 +37,10 @@
       "Erdos101OQ04.fourPointLineCount_ge_of_subset: Finset T of four-point collinear subsets -> T.card <= fourPointLineCount P (VERIFIED, 0-axiom)",
       "Erdos101OQ04.fourPointLineCount_ge_of_injOn_family: injective L : Fin k -> Finset four-point collinear subsets -> k <= fourPointLineCount P (VERIFIED, 0-axiom)",
       "conic_slice_neg_eq_circle + oblique_triple_on_ternary_conic : formalize the two explicit surface-point remarks in the quartic_quadruple_family docstring — (1) the conic Q=p²+q²+r²+pq+qr+rp collapses to the circle p²+r² on the slice q=−p (algebraic core of the symmetric-family=slice claim); (2) the oblique witness (−8/3,1/3,1) is a point of Q=5 (=45/9), the oblique twin of symmetric_triple_on_ternary_conic. [proofs machine-checked standalone, ring/norm_num, axiom-free]",
-      "Erdos101OQ04Infinite.lean (companion): quartic_four_point_lines_infinite — quartic y=x^4-5x^2 carries INFINITELY MANY distinct four-point lines. symmetricAbs p := {p,-p,sqrt(5-p^2),-sqrt(5-p^2)} (symmetric slice q=-p of surface Q=5); symmetricAbs_onQuartic_collinear certifies each a genuine 4-point line via mother quartic_quadruple_family_onQuartic_collinear; symmetricAbs_injOn injective on (0,1) via two_lt_sqrt; infinite image of Ioo 0 1. Axiom-free [propext,Classical.choice,Quot.sound]."
+      "Erdos101OQ04Infinite.lean (companion): quartic_four_point_lines_infinite — quartic y=x^4-5x^2 carries INFINITELY MANY distinct four-point lines. symmetricAbs p := {p,-p,sqrt(5-p^2),-sqrt(5-p^2)} (symmetric slice q=-p of surface Q=5); symmetricAbs_onQuartic_collinear certifies each a genuine 4-point line via mother quartic_quadruple_family_onQuartic_collinear; symmetricAbs_injOn injective on (0,1) via two_lt_sqrt; infinite image of Ioo 0 1. Axiom-free [propext,Classical.choice,Quot.sound].",
+      "card_collinear_on_polyGraph_le in Erdos101OQ04PolyDegree.lean (exact bound: collinear subset of degree-d poly graph has card <= d, all d>=2)",
+      "not_succ_natDegree_collinear_on_polyGraph (no d+1 collinear on a degree-d graph)",
+      "noFiveCollinear_of_onPolyGraph_via_card (mother five-collinear lemma re-derived as the d<=4 case)"
     ],
     "insights": [
       "The realParabolaSet arc has fourPointLineCount=0, so the file only inhabited IsLowerBoundConstruction _ 0 before this session; the four collinear x-axis points of W give the first positive four-point-line count witness (>=1) with no five collinear.",
@@ -46,7 +49,8 @@
       "The injective-family form is the natural interface for a GROWING construction: it produces one four-point line per index i : Fin k, and the only combinatorial obligation beyond per-line geometry is that distinct indices name distinct lines (Function.Injective L).",
       "The solution surface Σx=0∧Σx²=10 for four-point lines on y=x⁴−5x² is the fixed ternary conic Q=5; its named special cases are exactly (a) the q=−p slice = circle p²+r²=5 (symmetric family) and (b) surface points like (−8/3,1/3,1) (oblique). Both are pure ring/norm_num identities once the conic form is fixed — the OPEN content is purely SELECTING super-linearly many with pairwise-distinct abscissa sets, never existence.",
       "GAP FILLED: mother file proved boundedness/sharpness of FIXED surface Q=5 + 2 witnesses but never infinitude of distinct lines (only prose continuum). Formalized cleanly on symmetric circular slice; injectivity on (0,1) is 4-way Finset-mem split closed by nlinarith using 2<sqrt(5-p^2) and sqrt_nonneg.",
-      "Lean gotchas: nlinarith CANNOT prove != goal — use show A<B then .ne/.ne, or exfalso;nlinarith[eq]. Avoid set s:=sqrt.. when later using Real.sq_sqrt (abstraction wont fold new occurrences); write sqrt literally."
+      "Lean gotchas: nlinarith CANNOT prove != goal — use show A<B then .ne/.ne, or exfalso;nlinarith[eq]. Avoid set s:=sqrt.. when later using Real.sq_sqrt (abstraction wont fold new occurrences); write sqrt literally.",
+      "New companion Erdos101OQ04PolyDegree.lean removes BOTH caps in noFiveCollinear_of_onPolyGraph (fixed count five + degree<=4): card_collinear_on_polyGraph_le proves the EXACT bound — any collinear subset of a degree-d polynomial-graph point set (d>=2, non-vertical line) has card <= d. A quartic is no-five-collinear, a quintic no-six-collinear, generally a degree-d graph is no-(d+1)-collinear. Proof: line a-b meets y=Poly(x) at roots of q = C(dx)*Poly - C(dy)*X - C(const) with deg q = deg Poly (deg>=2 keeps the linear correction from cancelling the top coeff (dx)*leadingCoeff != 0); first-coordinate map injects the subset into q.roots. Includes noFiveCollinear_of_onPolyGraph_via_card re-deriving the mother lemma at d<=4, confirming subsumption."
     ],
     "mathlibGaps": [
       "No mathlib gap for the witness; the OPEN Path A (Solymosi-Stojakovic) needs a measure-zero certificate for algebraic varieties in projection-parameter space, not currently in Mathlib in usable form."
@@ -122,7 +126,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.971Z",
-  "lastUpdate": "2026-03-30T16:34:54.971Z",
+  "lastUpdate": "2026-07-13",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

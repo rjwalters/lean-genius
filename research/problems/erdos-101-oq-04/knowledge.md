@@ -66,3 +66,48 @@ session-sized, not Aristotle-suitable. The 3536-line mother file is also under a
 Released the claim with no code change — the honest outcome. Next genuine progress requires the
 actual Solymosi–Stojaković construction (Path A projected grid or Path B parabola), a research
 frontier, not incremental scaffolding.
+
+## Session 2026-07-13 (researcher-1) — exact collinearity bound for polynomial graphs
+
+**Mode**: REVISIT (RICH, active multi-researcher). **Outcome**: progress — axiom-free,
+build-verified (`LAKE_UNSAFE=1 ./bin/lake env lean`, EXIT 0, no warnings; `#print axioms`
+on all three new results = `[propext, Classical.choice, Quot.sound]`).
+
+### What I Did
+Independent route (no collision with the active Grünbaum/Solymosi–Stojaković count sorries,
+nor the Infinite/Rational/Similarity companions). The mother module's `noFiveCollinear_of_onPolyGraph`
+is capped twice — at the fixed count *five* and at degree ≤ 4, both artefacts of the quartic
+`y = x⁴ − 5x²`. New companion `Erdos101OQ04PolyDegree.lean` removes both, proving the **exact**
+fact behind the quartic construction:
+- `card_collinear_on_polyGraph_le` — for `deg Poly ≥ 2` and a non-vertical line `a–b`, any
+  `Finset` of points lying on `y = Poly.eval x` and collinear with `a, b` has `card ≤ deg Poly`.
+  Proof: the line meets the graph at the roots of `q = C(Δx)·Poly − C(Δy)·X − C(const)`;
+  `deg q = deg Poly` (the `deg ≥ 2` hypothesis keeps the degree-≤1 correction from cancelling
+  the top coefficient `(Δx)·leadingCoeff ≠ 0`), and the first-coordinate map injects the subset
+  into `q.roots`, so `card ≤ #roots ≤ deg q = deg Poly`.
+- `not_succ_natDegree_collinear_on_polyGraph` — the "no `deg+1` collinear" reading.
+- `noFiveCollinear_of_onPolyGraph_via_card` — re-derives the mother module's five-collinear
+  lemma from the exact bound at `d ≤ 4 < 5`, confirming subsumption.
+
+### Key Findings
+- The geometry has NO ceiling at five or at degree four: a quartic graph is no-five-collinear,
+  a **quintic** graph is no-six-collinear, and generally a degree-`d` graph is
+  no-`(d+1)`-collinear. This is the honest structural content — the degree-general version
+  directly relevant to the higher-degree / higher-dimensional line-count theme of Erdős #101.
+- Does NOT touch the open count sorries (`grunbaum_lower_bound_three_halves`,
+  `solymosi_stojakovic_lower_bound`); those remain the analytic frontier.
+
+### GOTCHA / process
+- `collinear_self p q : collinear p p q` (NOT `collinear p q p`); for `collinear a b a`/`a b b`
+  use `unfold collinear; ring`.
+- `rcases hp with rfl | …` on `p = a` can substitute the WRONG variable (kills `a`, not `p`,
+  when both are local); use `rcases hp with h | … <;> rw [h]` to stay direction-agnostic.
+
+### Files Modified
+- proofs/Proofs/Erdos101OQ04PolyDegree.lean (NEW, 155 lines, 3 thm, 0 axioms, 0 sorries)
+- src/data/research/problems/erdos-101-oq-04.json (insights/builtItems)
+
+### Next Steps (unchanged, hard)
+- The open growth bounds Ω(n^{3/2}) and n^{2−o(1)} remain the frontier; the no-five-collinear
+  certificate for a *growing* non-grid family is the bridge. This companion supplies the
+  degree-general no-collinear principle any higher-degree witness would rely on.
