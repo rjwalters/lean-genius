@@ -1366,6 +1366,55 @@ theorem maxAvoidingSize_eq_sub_ceil_half (n m : ℕ) (hm : 1 ≤ m) (hmn : m ≤
   le_antisymm (maxAvoidingSize_le_sub_ceil_half n m hm hmn)
     (maxAvoidingSize_ge_sub_ceil_half n m hm hmn)
 
+/-- **Antitone in the target on `[1,n]`.** On the exact-formula regime `1 ≤ m₁ ≤ m₂ ≤ n`
+    the maximum avoiding size is non-increasing in the forbidden sum: a larger target `m₂`
+    admits an avoiding set no larger than one for the smaller target `m₁`,
+    `maxAvoidingSize n m₂ ≤ maxAvoidingSize n m₁`. Immediate from
+    `maxAvoidingSize_eq_sub_ceil_half`, since `m ↦ ⌈m/2⌉ = (m+1)/2` is monotone. Note this
+    monotonicity is *specific to `[1,n]`*: it fails for very large targets, where
+    `maxAvoidingSize n m = n` again (`maxAvoidingSize_eq_of_lt`). -/
+theorem maxAvoidingSize_antitone_target (n m₁ m₂ : ℕ) (hm₁ : 1 ≤ m₁)
+    (hle : m₁ ≤ m₂) (hmn : m₂ ≤ n) :
+    maxAvoidingSize n m₂ ≤ maxAvoidingSize n m₁ := by
+  rw [maxAvoidingSize_eq_sub_ceil_half n m₁ hm₁ (le_trans hle hmn),
+      maxAvoidingSize_eq_sub_ceil_half n m₂ (le_trans hm₁ hle) hmn]
+  omega
+
+/-- **Even-target value.** For `1 ≤ t` and `2t ≤ n`, the even target `m = 2t` gives
+    `maxAvoidingSize n (2t) = n - t` (here `⌈2t/2⌉ = t`). -/
+theorem maxAvoidingSize_two_mul (n t : ℕ) (ht : 1 ≤ t) (htn : 2 * t ≤ n) :
+    maxAvoidingSize n (2 * t) = n - t := by
+  rw [maxAvoidingSize_eq_sub_ceil_half n (2 * t) (by omega) htn]
+  congr 1
+  omega
+
+/-- **Odd-target value.** For `1 ≤ t` and `2t ≤ n`, the odd target `m = 2t-1` gives the
+    same value `maxAvoidingSize n (2t-1) = n - t` (here `⌈(2t-1)/2⌉ = t`). -/
+theorem maxAvoidingSize_two_mul_sub_one (n t : ℕ) (ht : 1 ≤ t) (htn : 2 * t ≤ n) :
+    maxAvoidingSize n (2 * t - 1) = n - t := by
+  rw [maxAvoidingSize_eq_sub_ceil_half n (2 * t - 1) (by omega) (by omega)]
+  congr 1
+  omega
+
+/-- **Plateaus of width two.** Because the exact value depends on the target `m` only
+    through `⌈m/2⌉ = (m+1)/2`, the function `m ↦ maxAvoidingSize n m` is constant on each
+    consecutive pair `{2t-1, 2t}`: for `1 ≤ t` and `2t ≤ n`,
+    `maxAvoidingSize n (2t-1) = maxAvoidingSize n (2t)` (both `= n - t`). This is the step
+    structure behind the tabulated repeats `n-1, n-1, n-2, n-2, …` for `m = 1,2,3,4,…`. -/
+theorem maxAvoidingSize_plateau (n t : ℕ) (ht : 1 ≤ t) (htn : 2 * t ≤ n) :
+    maxAvoidingSize n (2 * t - 1) = maxAvoidingSize n (2 * t) := by
+  rw [maxAvoidingSize_two_mul_sub_one n t ht htn, maxAvoidingSize_two_mul n t ht htn]
+
+/-- **Diagonal value = minimum over the regime.** At the extreme target `m = n` the maximum
+    avoiding size is exactly `⌊n/2⌋`: `maxAvoidingSize n n = n / 2` for `n ≥ 1`. Since the
+    value is antitone in `m` on `[1,n]` (`maxAvoidingSize_antitone_target`), this is the
+    minimum of `m ↦ maxAvoidingSize n m` over `1 ≤ m ≤ n` — the hardest target `m = n`
+    still leaves an avoiding set of half the box. -/
+theorem maxAvoidingSize_self (n : ℕ) (hn : 1 ≤ n) :
+    maxAvoidingSize n n = n / 2 := by
+  rw [maxAvoidingSize_eq_sub_ceil_half n n hn le_rfl]
+  omega
+
 /-- Small primes give good constructions. -/
 def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
   let p := Nat.minFac (m + 1)  -- A prime not dividing m
@@ -1448,3 +1497,5 @@ theorem erdos_771_main :
 theorem erdos_771_solved : ErdosGrahamConjecture := erdos_771
 
 end Erdos771
+
+
