@@ -60,5 +60,7 @@ theorem ErdosProblem115_sharp :
         (1 / 2 - ε) * ((n : ℝ) ^ 2) ≤ maxDerivOnLemniscate p := by
   intro ε hε
   obtain ⟨N, hN⟩ := chebyshev_deriv_asymptotic ε hε
-  exact ⟨N, fun n hn => ⟨chebyshev_poly n, chebyshev_connected n (by omega),
-    (hN n hn).1⟩⟩
+  -- Return max N 1 so n ≥ threshold gives both N ≤ n (for hN) and 1 ≤ n
+  -- (needed by chebyshev_connected, which requires 1 ≤ n).
+  exact ⟨max N 1, fun n hn => ⟨chebyshev_poly n, chebyshev_connected n (by omega),
+    (hN n (by omega)).1⟩⟩

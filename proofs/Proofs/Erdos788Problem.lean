@@ -118,11 +118,7 @@ theorem interval_sum_range : ∀ n : ℕ, n ≥ 1 →
   · left; exact h
   · right
     simp only [upperInterval, openInterval, mem_filter, mem_range] at h
-    push_neg at h
-    rcases h with h | h | h
-    · right; omega
-    · left; omega
-    · right; omega
+    omega
 
 /-- Sums of distinct elements from (n, 2n) lie in (2n, 4n) -/
 theorem sums_in_upper_interval : ∀ n : ℕ, n ≥ 1 →
