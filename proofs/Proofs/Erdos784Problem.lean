@@ -29,6 +29,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.SmoothNumbers
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 namespace Erdos784
 
@@ -52,14 +53,16 @@ def sievedSet (A : Finset ℕ) (x : ℕ) : Finset ℕ :=
 def sievedCount (A : Finset ℕ) (x : ℕ) : ℕ :=
   (sievedSet A x).card
 
-/-- H_C(x) = minimum sieved count over sets A ⊆ {2,...,x} with reciprocal sum ≤ C -/
+/-- H_C(x) = minimum sieved count over sets A ⊆ {2,...,x} with reciprocal sum ≤ C.
+    (v4.31 migration: `Finset.inf'` requires a nonempty witness for *every* `C`,
+    but the `∅` witness only lies in the filtered family when `0 ≤ C`
+    (`reciprocalSum ∅ = 0 ≤ C`). Use `Finset.min … |>.getD 0` over the image so
+    the definition is total, with the convention that an empty family gives 0.) -/
 noncomputable def H_C (C : ℝ) (x : ℕ) : ℕ :=
   -- Note: We exclude 1 from A to avoid trivial cases
-  Finset.inf'
-    ((Finset.range (x + 1)).powerset.filter
-      (fun A => (∀ a ∈ A, 2 ≤ a) ∧ reciprocalSum A ≤ C))
-    ⟨∅, by simp [reciprocalSum]⟩
-    (fun A => sievedCount A x)
+  (((Finset.range (x + 1)).powerset.filter
+      (fun A => (∀ a ∈ A, 2 ≤ a) ∧ reciprocalSum A ≤ C)).image
+        (fun A => sievedCount A x)).min.getD 0
 
 /-
 ## Part 2: The Question
@@ -159,7 +162,7 @@ When 1 ∈ A, everything is divisible.
 theorem one_in_A_trivial (A : Finset ℕ) (x : ℕ) (h1 : 1 ∈ A) :
     sievedCount A x = 0 := by
   unfold sievedCount sievedSet
-  skip
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
   intro m _
   push_neg
   intro _
@@ -198,7 +201,7 @@ theorem erdos_784_complete_answer (C : ℝ) (hC : C > 0) :
       constructor
       · norm_num
       · obtain ⟨K, hK, hbound⟩ := ruzsa_1982_lower_bound
-        exact ⟨K, hK, hbound⟩
+        refine ⟨K, hK, fun x hx => ?_⟩; simpa [pow_one] using hbound x hx
     · -- 0 < C < 1 case
       have hC_lt : C < 1 := lt_of_le_of_ne hC_le hC_eq
       exact positive_answer_small_C C hC hC_lt
@@ -230,7 +233,7 @@ theorem erdos_784_statement :
   · intro C hC hC_le
     exact (erdos_784_complete_answer C hC).1 hC_le
   · intro C hC
-    exact (erdos_784_complete_answer C hC).2 hC
+    exact (erdos_784_complete_answer C (lt_trans one_pos hC)).2 hC
 
 /-- Summary of Erdős Problem #784 -/
 theorem erdos_784_summary :
@@ -245,7 +248,7 @@ theorem erdos_784_summary :
     constructor
     · norm_num
     · obtain ⟨K, hK, hbound⟩ := ruzsa_1982_lower_bound
-      exact ⟨K, hK, hbound⟩
+      refine ⟨K, hK, fun x hx => ?_⟩; simpa [pow_one] using hbound x hx
   · exact negative_answer_large_C
 
 end Erdos784
