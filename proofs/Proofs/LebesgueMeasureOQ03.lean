@@ -22,6 +22,7 @@ Tags: measure-theory, infinite-dimensional, gaussian-measure
 namespace LebesgueMeasureOQ03
 
 open MeasureTheory
+open scoped InnerProductSpace
 
 -- ============================================================
 -- Part I: The Impossibility Result
@@ -48,11 +49,11 @@ theorem orthonormal_dist {H : Type*} [NormedAddCommGroup H]
     ‖e₁ - e₂‖ = Real.sqrt 2 := by
   rw [← Real.sqrt_sq (norm_nonneg _)]
   congr 1
-  rw [sq, ← inner_self_eq_norm_mul_norm]
+  rw [sq, ← real_inner_self_eq_norm_mul_norm]
   simp only [inner_sub_left, inner_sub_right]
-  rw [inner_self_eq_norm_mul_norm, inner_self_eq_norm_mul_norm,
-      hperp, real_inner_comm e₂ e₁, hperp]
-  rw [h₁, h₂]; ring
+  rw [real_inner_self_eq_norm_mul_norm, real_inner_self_eq_norm_mul_norm,
+      hperp, real_inner_comm e₁ e₂, hperp, h₁, h₂]
+  ring
 
 /-- Consequence: balls of radius < √2/2 around orthonormal vectors
     are disjoint. Since there are infinitely many such balls (all

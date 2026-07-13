@@ -57,9 +57,7 @@ abbrev completeGraphOnFin (r : ℕ) := completeGraph (Fin r)
 The minimum degree δ(G) is the smallest degree over all vertices.
 -/
 noncomputable def minDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Finset.min' (Finset.univ.image (G.degree ·)) (by
-    simp only [Finset.image_nonempty]
-    exact Finset.univ_nonempty)
+  (Finset.univ.image (G.degree ·)).min.getD 0
 
 /- ## Part II: Cliques and Clique Covers -/
 

@@ -162,7 +162,7 @@ private lemma elemSymm_two_succ {n : ℕ} (x : Fin (n + 1) → ℝ) :
     rw [prod_map_csEmb]
     simp only [Function.comp_apply]
   · have insert_inj : Set.InjOn (insert (Fin.last n))
-        (powersetCard 1 ((univ : Finset (Fin n)).map (csEmb n))).toSet := by
+        (↑(powersetCard 1 ((univ : Finset (Fin n)).map (csEmb n))) : Set (Finset (Fin (n+1)))) := by
       intro s hs t ht hst
       rw [Finset.mem_coe] at hs ht
       rw [Finset.mem_powersetCard] at hs ht
@@ -338,7 +338,7 @@ theorem elemSymm_succ {n : ℕ} (k : ℕ) (x : Fin (n + 1) → ℝ) :
     rw [prod_map_csEmb]
     simp only [Function.comp_apply]
   · have insert_inj : Set.InjOn (insert (Fin.last n))
-        (powersetCard k ((univ : Finset (Fin n)).map (csEmb n))).toSet := by
+        (↑(powersetCard k ((univ : Finset (Fin n)).map (csEmb n))) : Set (Finset (Fin (n+1)))) := by
       intro s hs t ht hst
       rw [Finset.mem_coe] at hs ht
       rw [Finset.mem_powersetCard] at hs ht

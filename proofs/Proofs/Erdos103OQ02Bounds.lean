@@ -89,7 +89,7 @@ theorem diameter_nonneg {n : ℕ} (P : PointConfig n) : 0 ≤ diameter n P := by
     exact le_ciSup_of_le (diameter_outer_bddAbove P) i0 (hi i0)
   · -- n < 2: diameter reduces to the literal `0`, so `0 ≤ 0`.
     -- (`rw [dif_neg hn]` alone would leave the non-`rfl` goal `0 ≤ 0` open.)
-    exact (dif_neg hn).ge
+    rw [dif_neg hn]
 
 /-- The range of `diameter` over valid configurations is bounded below (by `0`). -/
 theorem diameter_range_bddBelow (n : ℕ) :

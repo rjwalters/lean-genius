@@ -6,8 +6,8 @@ example (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) :
     Nat.Coprime p q := (Nat.coprime_primes hp hq).mpr hne
 
 -- Test 2: Finset.pairwise for coprime primes
-example (S : Finset ℕ) (hS : ∀ a ∈ S, Nat.Prime a) (hinj : S.Pairwise (· ≠ ·)) :
-    S.Pairwise (fun a b => Nat.Coprime a b) := by
+example (S : Finset ℕ) (hS : ∀ a ∈ S, Nat.Prime a) (hinj : (↑S : Set ℕ).Pairwise (· ≠ ·)) :
+    (↑S : Set ℕ).Pairwise (fun a b => Nat.Coprime a b) := by
   intro a ha b hb hab
   exact (Nat.coprime_primes (hS a ha) (hS b hb)).mpr hab
 

@@ -66,6 +66,7 @@ def trivialPBD (n : ℕ) (hn : n ≥ 2) : PBD n where
     use Finset.univ
     simp [Finset.mem_singleton]
   blocks_nonempty := by
+    haveI : NeZero n := ⟨by omega⟩
     intro B hB
     simp at hB
     rw [hB]

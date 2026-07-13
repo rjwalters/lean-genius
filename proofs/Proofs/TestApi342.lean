@@ -7,8 +7,8 @@ open Nat
 
 -- Count representations of m as list[i] + list[j] with i < j
 def countReps (xs : List ℕ) (m : ℕ) : ℕ :=
-  xs.enum.foldl (fun acc ⟨i, a⟩ =>
-    acc + (xs.enum.foldl (fun acc2 ⟨j, b⟩ =>
+  xs.zipIdx.foldl (fun acc ⟨a, i⟩ =>
+    acc + (xs.zipIdx.foldl (fun acc2 ⟨b, j⟩ =>
       if i < j && a + b == m then acc2 + 1 else acc2) 0)) 0
 
 -- Check if m has exactly one representation
@@ -47,5 +47,5 @@ def buildUlam : ℕ → List ℕ
 #eval buildUlam 12
 
 -- Can we prove initial values?
-example : (buildUlam 12).get? 0 = some 1 := by native_decide
-example : (buildUlam 12).get? 1 = some 2 := by native_decide
+example : (buildUlam 12)[0]? = some 1 := by native_decide
+example : (buildUlam 12)[1]? = some 2 := by native_decide

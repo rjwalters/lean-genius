@@ -63,7 +63,7 @@ def MaderConjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧
     ∀ n r : ℕ, n ≥ r → r ≥ 2 →
       ∀ G : SimpleGraph (Fin n),
-        G.edgeFinset.card ≥ (C * r^2 * n : ℝ).toNat →
+        G.edgeFinset.card ≥ ⌊(C * r^2 * n : ℝ)⌋₊ →
           ContainsSubdivisionOfKr (Fin n) G r
 
 /-
@@ -99,8 +99,8 @@ theorem mader_conjecture_true : MaderConjecture :=
   komlos_szemeredi_1996
 
 /-- The edge bound is quadratic in r. -/
-def EdgeBoundForKrSubdivision (r : ℕ) : ℕ → ℕ :=
-  fun n => (C_const * r^2 * n).toNat
+noncomputable def EdgeBoundForKrSubdivision (r : ℕ) : ℕ → ℕ :=
+  fun n => ⌊(C_const * r^2 * n : ℝ)⌋₊
   where C_const : ℝ := 1  -- Placeholder; actual constant from proof
 
 /-

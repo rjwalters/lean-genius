@@ -214,8 +214,8 @@ The relationship between exponential sums and uniform distribution.
 **Discrepancy:**
 A measure of how far a sequence deviates from uniform distribution.
 -/
-def discrepancy (x : ℕ → ℝ) (n : ℕ) : ℝ :=
-  ⨆ (a b : ℝ) (hab : 0 ≤ a ∧ a < b ∧ b ≤ 1),
+noncomputable def discrepancy (x : ℕ → ℝ) (n : ℕ) : ℝ :=
+  ⨆ (a : ℝ) (b : ℝ) (_ : 0 ≤ a ∧ a < b ∧ b ≤ 1),
     |((Finset.range n).filter (fun j => a ≤ x (j+1) ∧ x (j+1) < b)).card / n - (b - a)|
 
 /- 

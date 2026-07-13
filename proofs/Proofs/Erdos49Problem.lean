@@ -68,7 +68,7 @@ density zero. This follows from Tao's result since `π(N) = o(N)`. -/
 /-- `φ(p) = p - 1` for primes. -/
 theorem totient_prime (p : ℕ) (hp : Nat.Prime p) :
     Nat.totient p = p - 1 :=
-  hp.totient
+  Nat.totient_prime hp
 
 /-- `φ(n) ≤ n` for all `n`. -/
 theorem totient_le (n : ℕ) : Nat.totient n ≤ n :=

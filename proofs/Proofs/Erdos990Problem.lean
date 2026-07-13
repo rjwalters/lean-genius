@@ -35,6 +35,7 @@ noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 namespace Erdos990
 
 open Complex Real Polynomial
+open scoped Classical
 
 /-
 ## Part 1: Basic Definitions
@@ -131,7 +132,8 @@ def sparseConjecture : Prop :=
 theorem sparse_improves_dense (d : ℕ) (p : ComplexPoly d) :
     nonzeroCoeffCount d p ≤ d + 1 := by
   simp only [nonzeroCoeffCount]
-  exact Finset.card_filter_le _ _
+  refine le_trans (Finset.card_filter_le Finset.univ _) ?_
+  simp [Finset.card_univ]
 
 /-
 ## Part 6: Sharp Constant

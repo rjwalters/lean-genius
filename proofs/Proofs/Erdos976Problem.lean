@@ -60,7 +60,7 @@ F_f(n) = greatest prime dividing any f(m) for 1 ≤ m ≤ n.
 Equivalently, greatest prime divisor of ∏_{m=1}^n f(m).
 -/
 def F_f (f : Polynomial ℤ) (n : ℕ) : ℕ :=
-  (List.range n).map (fun m => greatestPrimeDivisor (f.eval (m + 1)).natAbs)
+  (List.range n).map (fun m => greatestPrimeDivisor (f.eval ((m : ℤ) + 1)).natAbs)
     |>.max? |>.getD 1
 
 /-

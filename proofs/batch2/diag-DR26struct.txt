@@ -1,0 +1,505 @@
+=== FAIL BallotProblem ===
+Proofs/BallotProblem.lean:146:4: error: Function expected at
+Proofs/BallotProblem.lean:151:5: error: Function expected at
+Proofs/BallotProblem.lean:159:4: error: Function expected at
+Proofs/BallotProblem.lean:165:4: error: Function expected at
+=== FAIL AbelRuffiniOQ09 ===
+Proofs/AbelRuffiniOQ09.lean:308:9: error: Tactic `unfold` failed to unfold `rischOp` in
+=== FAIL AbelRuffiniOQ06OQ01OQ03 ===
+=== FAIL AbelRuffiniOQ06OQ01 ===
+Proofs/AbelRuffiniOQ06OQ01.lean:69:4: error: Type mismatch
+=== FAIL BallotProblemOQ02OQ02OQ05 ===
+Proofs/BallotProblemOQ02OQ02OQ05.lean:56:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/BallotProblemOQ02OQ02.olean' of module Proofs.BallotProblemOQ02OQ02 does not exist
+=== FAIL AmgmInequalityOQ02Defs ===
+=== FAIL BallotProblemOQ02OQ02 ===
+Proofs/BallotProblemOQ02OQ02.lean:41:58: error: invalid binder annotation, type is not a class instance
+Proofs/BallotProblemOQ02OQ02.lean:45:21: error: invalid binder annotation, type is not a class instance
+Proofs/BallotProblemOQ02OQ02.lean:49:41: error: Function expected at
+Proofs/BallotProblemOQ02OQ02.lean:52:19: error: Function expected at
+=== FAIL AmgmInequalityOQ02Aristotle ===
+Proofs/AmgmInequalityOQ02Aristotle.lean:53:46: error: unknown namespace `Mathlib.Tactic.GeneralizeProofs`
+Proofs/AmgmInequalityOQ02Aristotle.lean:54:61: error: Function expected at
+Proofs/AmgmInequalityOQ02Aristotle.lean:66:61: error: Function expected at
+Proofs/AmgmInequalityOQ02Aristotle.lean:70:41: error: Function expected at
+=== FAIL BirthdayProblemOQ01OQ01Aristotle ===
+Proofs/BirthdayProblemOQ01OQ01Aristotle.lean:9:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/BirthdayProblemOQ01OQ01.olean' of module Proofs.BirthdayProblemOQ01OQ01 does not exist
+=== FAIL BirthdayProblemOQ01OQ01OQ03 ===
+Proofs/BirthdayProblemOQ01OQ01OQ03.lean:31:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/BirthdayProblemOQ01OQ01.olean' of module Proofs.BirthdayProblemOQ01OQ01 does not exist
+=== FAIL BaselProblemOQ02Aristotle ===
+Proofs/BaselProblemOQ02Aristotle.lean:46:31: error: unsolved goals
+Proofs/BaselProblemOQ02Aristotle.lean:44:45: error: unsolved goals
+Proofs/BaselProblemOQ02Aristotle.lean:49:83: error: unexpected token 'at'; expected command
+PASS CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b
+=== FAIL BuffonsNeedleOQ02OQ02 ===
+Proofs/BuffonsNeedleOQ02OQ02.lean:89:5: error: typeclass instance problem is stuck
+Proofs/BuffonsNeedleOQ02OQ02.lean:157:11: error: Function expected at
+Proofs/BuffonsNeedleOQ02OQ02.lean:172:12: error: Function expected at
+Proofs/BuffonsNeedleOQ02OQ02.lean:172:37: error: Function expected at
+=== FAIL BirthdayProblemOQ01OQ01 ===
+Proofs/BirthdayProblemOQ01OQ01.lean:79:24: error: Function expected at
+Proofs/BirthdayProblemOQ01OQ01.lean:80:29: error: Function expected at
+Proofs/BirthdayProblemOQ01OQ01.lean:81:15: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+Proofs/BirthdayProblemOQ01OQ01.lean:143:2: error: Tactic `apply` failed: could not unify the conclusion of `Finset.sum_congr rfl`
+=== FAIL BezoutIdentityOQ02OQ01OQ02OQ02OQ03 ===
+=== FAIL BrouwerFixedPointOQ04OQ04 ===
+Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:36:6: error: unexpected token 'ℤ√'; expected identifier
+Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:45:2: error: linarith failed to find a contradiction
+Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:54:30: error: linarith failed to find a contradiction
+Proofs/BezoutIdentityOQ02OQ01OQ02OQ02OQ03.lean:55:30: error: linarith failed to find a contradiction
+Proofs/BrouwerFixedPointOQ04OQ04.lean:300:7: error: unexpected token '*'; expected ',' or binderPred
+Proofs/BrouwerFixedPointOQ04OQ04.lean:350:77: error: omega could not prove the goal:
+Proofs/BrouwerFixedPointOQ04OQ04.lean:351:26: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL CantorsTheoremOQ01OQ01 ===
+Proofs/CantorsTheoremOQ01OQ01.lean:134:46: error: Tactic `rfl` failed: The left-hand side
+=== FAIL CayleyHamiltonOQ01OQ03 ===
+Proofs/CayleyHamiltonOQ01OQ03.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/CayleyHamiltonOQ01.olean' of module Proofs.CayleyHamiltonOQ01 does not exist
+=== FAIL CayleyHamiltonOQ02 ===
+Proofs/CayleyHamiltonOQ02.lean:93:47: error: Application type mismatch: The argument
+=== FAIL CayleyHamiltonOQ01 ===
+Proofs/CayleyHamiltonOQ01.lean:73:47: error: Application type mismatch: The argument
+Proofs/CayleyHamiltonOQ01.lean:266:51: error: Application type mismatch: The argument
+=== FAIL DenumerabilityRationalsOQ01 ===
+Proofs/DenumerabilityRationalsOQ01.lean:130:11: error: failed to infer universe levels in `have` declaration type
+=== FAIL DeMoivreOQ02OQ02 ===
+Proofs/DeMoivreOQ02OQ02.lean:51:32: error: typeclass instance problem is stuck
+Proofs/DeMoivreOQ02OQ02.lean:53:23: error: Function expected at
+Proofs/DeMoivreOQ02OQ02.lean:54:2: error: Tactic `constructor` failed: target is not an inductive datatype
+Proofs/DeMoivreOQ02OQ02.lean:69:35: error: Function expected at
+=== FAIL DescartesRuleOfSignsOQ01OQ01 ===
+Proofs/DescartesRuleOfSignsOQ01OQ01.lean:49:2: error: Invalid alternative name `h_add`: Expected `add` or `monomial`
+Proofs/DescartesRuleOfSignsOQ01OQ01.lean:51:2: error: Invalid alternative name `h_monomial`: Expected `add` or `monomial`
+Proofs/DescartesRuleOfSignsOQ01OQ01.lean:48:2: error: Alternative `add` has not been provided
+Proofs/DescartesRuleOfSignsOQ01OQ01.lean:48:2: error: Alternative `monomial` has not been provided
+=== FAIL DerangementsOQ03OQ01 ===
+Proofs/DerangementsOQ03OQ01.lean:50:10: error: Function expected at
+Proofs/DerangementsOQ03OQ01.lean:51:4: error: Function expected at
+Proofs/DerangementsOQ03OQ01.lean:51:26: error: Function expected at
+Proofs/DerangementsOQ03OQ01.lean:52:31: error: Function expected at
+=== FAIL DirichletsTheorem ===
+Proofs/DirichletsTheorem.lean:124:38: error: Application type mismatch: The argument
+Proofs/DirichletsTheorem.lean:140:39: error: Application type mismatch: The argument
+Proofs/DirichletsTheorem.lean:148:40: error: Application type mismatch: The argument
+Proofs/DirichletsTheorem.lean:178:85: error: unexpected token '#check'; expected 'lemma'
+=== FAIL ChineseRemainderNonCoprimeOQ02 ===
+Proofs/ChineseRemainderNonCoprimeOQ02.lean:540:4: error: 'show' tactic failed, pattern
+Proofs/ChineseRemainderNonCoprimeOQ02.lean:543:31: error: linarith failed to find a contradiction
+Proofs/ChineseRemainderNonCoprimeOQ02.lean:588:4: error: Type mismatch
+Proofs/ChineseRemainderNonCoprimeOQ02.lean:608:53: error: Application type mismatch: The argument
+=== FAIL DenumerabilityRationalsOQ02OQ02 ===
+Proofs/DenumerabilityRationalsOQ02OQ02.lean:49:5: error: unknown namespace `ConditionallyCompleteLinearOrderedField.InducedMap`
+Proofs/DenumerabilityRationalsOQ02OQ02.lean:56:55: error: type class instance expected
+Proofs/DenumerabilityRationalsOQ02OQ02.lean:80:41: error: invalid binder annotation, type is not a class instance
+Proofs/DenumerabilityRationalsOQ02OQ02.lean:85:36: error: invalid binder annotation, type is not a class instance
+=== FAIL Erdos1022OQ03 ===
+Proofs/Erdos1022OQ03.lean:372:26: error: invalid `▸` notation, expected result type of cast is 
+=== FAIL Erdos1006OQ01OQ02 ===
+Proofs/Erdos1006OQ01OQ02.lean:85:2: error: No goals to be solved
+Proofs/Erdos1006OQ01OQ02.lean:147:75: error: unsolved goals
+Proofs/Erdos1006OQ01OQ02.lean:226:4: error: Type mismatch
+=== FAIL Erdos1031Problem ===
+Proofs/Erdos1031Problem.lean:483:4: error: 'calc' expression has type
+Proofs/Erdos1031Problem.lean:507:4: error: 'change' tactic failed, pattern
+=== FAIL Erdos1018OQ01OQ01OQ01OQ01 ===
+Proofs/Erdos1018OQ01OQ01OQ01OQ01.lean:124:42: error: Function expected at
+=== FAIL Erdos1006OQ02 ===
+Proofs/Erdos1006OQ02.lean:399:20: error: Expected type must not contain metavariables
+Proofs/Erdos1006OQ02.lean:399:43: error: Expected type must not contain metavariables
+Proofs/Erdos1006OQ02.lean:399:66: error: Expected type must not contain metavariables
+=== FAIL Erdos1020Problem ===
+Proofs/Erdos1020Problem.lean:48:10: error: `Hypergraph` has already been declared
+Proofs/Erdos1020Problem.lean:58:28: error: Function expected at
+Proofs/Erdos1020Problem.lean:62:46: error: Function expected at
+Proofs/Erdos1020Problem.lean:66:32: error: Function expected at
+=== FAIL Erdos1046Problem ===
+Proofs/Erdos1046Problem.lean:180:8: error: Invalid pattern: Expected a constructor or constant marked with `[match_pattern]`
+=== FAIL Erdos1086Problem ===
+Proofs/Erdos1086Problem.lean:91:56: error: unexpected token '//'; expected '}'
+=== FAIL Erdos1036OQ01OQ01 ===
+Proofs/Erdos1036OQ01OQ01.lean:56:24: error: don't know how to synthesize implicit argument `G`
+Proofs/Erdos1036OQ01OQ01.lean:56:45: error: don't know how to synthesize placeholder for argument `a`
+=== FAIL Erdos1055Problem ===
+Proofs/Erdos1055Problem.lean:169:2: error: 'change' tactic failed, pattern
+=== FAIL Erdos1043Aristotle ===
+Proofs/Erdos1043Aristotle.lean:26:39: error: expected token
+Proofs/Erdos1043Aristotle.lean:29:44: error: expected token
+Proofs/Erdos1043Aristotle.lean:35:29: error: expected token
+Proofs/Erdos1043Aristotle.lean:38:37: error: expected token
+=== FAIL Erdos1098OQ01 ===
+Proofs/Erdos1098OQ01.lean:51:2: error: Type mismatch
+Proofs/Erdos1098OQ01.lean:75:20: error: overloaded, errors 
+Proofs/Erdos1098OQ01.lean:99:21: error: Type mismatch
+Proofs/Erdos1098OQ01.lean:120:27: error: Application type mismatch: The argument
+=== FAIL Erdos1175Problem ===
+Proofs/Erdos1175Problem.lean:65:28: error: Function expected at
+Proofs/Erdos1175Problem.lean:66:30: error: Function expected at
+Proofs/Erdos1175Problem.lean:86:5: error: unexpected token 'λ'; expected '(', '_' or identifier
+Proofs/Erdos1175Problem.lean:124:29: error: Application type mismatch: The argument
+=== FAIL Erdos1167Problem ===
+Proofs/Erdos1167Problem.lean:59:8: error: failed to solve universe constraint
+Proofs/Erdos1167Problem.lean:74:24: error: unexpected token 'λ'; expected ')'
+Proofs/Erdos1167Problem.lean:88:5: error: Failed to infer universe levels in type of binder `f`
+Proofs/Erdos1167Problem.lean:102:4: error: Function expected at
+=== FAIL Erdos1123Problem ===
+Proofs/Erdos1123Problem.lean:66:40: error: expected token
+Proofs/Erdos1123Problem.lean:74:43: error: expected token
+=== FAIL Erdos1159Problem ===
+Proofs/Erdos1159Problem.lean:50:38: error: typeclass instance problem is stuck
+Proofs/Erdos1159Problem.lean:57:5: error: typeclass instance problem is stuck
+Proofs/Erdos1159Problem.lean:69:2: error: Function expected at
+Proofs/Erdos1159Problem.lean:103:6: error: typeclass instance problem is stuck
+=== FAIL Erdos133Problem ===
+Proofs/Erdos133Problem.lean:60:19: error: Tactic `assumption` failed
+Proofs/Erdos133Problem.lean:80:0: error: declaration `Erdos133.OriginalQuestion` contains universe level metavariables at the expression
+Proofs/Erdos133Problem.lean:89:0: error: declaration `Erdos133.AlonConjecture` contains universe level metavariables at the expression
+=== FAIL Erdos153Problem ===
+Proofs/Erdos153Problem.lean:113:10: error: Invalid `⟨...⟩` notation: The expected type
+Proofs/Erdos153Problem.lean:118:67: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+Proofs/Erdos153Problem.lean:118:75: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+Proofs/Erdos153Problem.lean:118:83: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+=== FAIL Erdos252Problem ===
+Proofs/Erdos252Problem.lean:151:29: error: unsolved goals
+Proofs/Erdos252Problem.lean:187:66: error: Application type mismatch: The argument
+Proofs/Erdos252Problem.lean:188:45: error: No goals to be solved
+Proofs/Erdos252Problem.lean:169:2: error: unsolved goals
+=== FAIL Erdos281Problem ===
+Proofs/Erdos281Problem.lean:92:6: error: unexpected token '≤'; expected command
+Proofs/Erdos281Problem.lean:140:51: error: omega could not prove the goal:
+Proofs/Erdos281Problem.lean:164:47: error: omega could not prove the goal:
+=== FAIL Erdos301Problem ===
+Proofs/Erdos301Problem.lean:84:93: error: unexpected token 'have'; expected ')', ',' or ':'
+Proofs/Erdos301Problem.lean:73:37: error: mod_cast has type
+Proofs/Erdos301Problem.lean:78:8: error: omega could not prove the goal:
+Proofs/Erdos301Problem.lean:81:26: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos337Aristotle ===
+Proofs/Erdos337Aristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos337Problem.olean' of module Proofs.Erdos337Problem does not exist
+=== FAIL Erdos29OQ02 ===
+Proofs/Erdos29OQ02.lean:59:2: error: omega could not prove the goal:
+Proofs/Erdos29OQ02.lean:71:47: error: unsolved goals
+Proofs/Erdos29OQ02.lean:74:6: error: unexpected token '≤'; expected command
+Proofs/Erdos29OQ02.lean:89:50: error: Application type mismatch: The argument
+=== FAIL Erdos328Problem ===
+Proofs/Erdos328Problem.lean:68:11: error: unexpected token '∈'; expected ','
+=== FAIL Erdos324Problem ===
+Proofs/Erdos324Problem.lean:187:82: error: No goals to be solved
+Proofs/Erdos324Problem.lean:189:40: error: No goals to be solved
+=== FAIL Erdos345Problem ===
+Proofs/Erdos345Problem.lean:44:74: error: unexpected token 'open'; expected 'lemma'
+Proofs/Erdos345Problem.lean:94:2: error: failed to synthesize
+Proofs/Erdos345Problem.lean:109:53: error: Application type mismatch: The argument
+Proofs/Erdos345Problem.lean:134:58: error: Application type mismatch: The argument
+=== FAIL Erdos337Problem ===
+=== FAIL Erdos3Problem ===
+Proofs/Erdos337Problem.lean:87:4: error: Invalid pattern: Expected a constructor or constant marked with `[match_pattern]`
+Proofs/Erdos3Problem.lean:27:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos3LogHarmonic.olean' of module Proofs.Erdos3LogHarmonic does not exist
+=== FAIL Erdos357Problem ===
+Proofs/Erdos357Problem.lean:141:31: error: unexpected token '#'; expected term
+Proofs/Erdos357Problem.lean:149:32: error: unexpected token '#'; expected term
+=== FAIL Erdos483OQ02 ===
+Proofs/Erdos483OQ02.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos483Problem.olean' of module Proofs.Erdos483Problem does not exist
+=== FAIL Erdos375Problem ===
+Proofs/Erdos375Problem.lean:155:6: error: Type mismatch
+Proofs/Erdos375Problem.lean:156:4: error: No goals to be solved
+=== FAIL Erdos474Problem ===
+Proofs/Erdos474Problem.lean:122:0: error: declaration `Erdos474.ContinuumHypothesis` contains universe level metavariables at the expression
+Proofs/Erdos474Problem.lean:186:6: error: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+=== FAIL Erdos421Problem ===
+Proofs/Erdos421Problem.lean:259:25: error: Application type mismatch: The argument
+Proofs/Erdos421Problem.lean:280:30: error: unexpected token ':'; expected ')'
+Proofs/Erdos421Problem.lean:269:18: error: omega could not prove the goal:
+Proofs/Erdos421Problem.lean:265:49: error: unsolved goals
+=== FAIL Erdos483Problem ===
+Proofs/Erdos483Problem.lean:64:15: error: Ambiguous term
+Proofs/Erdos483Problem.lean:65:9: error: Ambiguous term
+Proofs/Erdos483Problem.lean:66:11: error: ambiguous term, use fully qualified name, possible interpretations [_root_.schurNumber, SchursTheorem.schurNumber]
+Proofs/Erdos483Problem.lean:73:63: error: Ambiguous term
+=== FAIL Erdos476Aristotle ===
+Proofs/Erdos476Aristotle.lean:42:21: error: Tactic `rcases` failed: `left✝ : Quot.lift (fun l => (c, d) ∈ l) ⋯
+Proofs/Erdos476Aristotle.lean:49:20: error: Invalid `⟨...⟩` notation: The expected type
+Proofs/Erdos476Aristotle.lean:58:2: error: Tactic `apply` failed: could not unify the conclusion of `@card_image_of_injOn`
+=== FAIL Erdos496Problem ===
+Proofs/Erdos496Problem.lean:88:8: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+=== FAIL Erdos52Problem ===
+Proofs/Erdos52Problem.lean:113:41: error: unsolved goals
+Proofs/Erdos52Problem.lean:116:6: error: unexpected token '≤'; expected command
+Proofs/Erdos52Problem.lean:120:45: error: unsolved goals
+Proofs/Erdos52Problem.lean:123:6: error: unexpected token '≤'; expected command
+=== FAIL Erdos499Problem ===
+Proofs/Erdos499Problem.lean:222:2: error: unsolved goals
+Proofs/Erdos499Problem.lean:225:2: error: unsolved goals
+Proofs/Erdos499Problem.lean:280:22: error: Application type mismatch: The argument
+=== FAIL Erdos490Aristotle ===
+Proofs/Erdos490Aristotle.lean:49:41: error: unexpected token ':='; expected '=>'
+Proofs/Erdos490Aristotle.lean:64:41: error: omega could not prove the goal:
+Proofs/Erdos490Aristotle.lean:65:41: error: omega could not prove the goal:
+Proofs/Erdos490Aristotle.lean:74:42: error: Application type mismatch: The argument
+=== FAIL Erdos3LogHarmonic ===
+Proofs/Erdos3LogHarmonic.lean:280:39: error: mod_cast has type
+Proofs/Erdos3LogHarmonic.lean:282:33: error: mod_cast has type
+Proofs/Erdos3LogHarmonic.lean:284:33: error: mod_cast has type
+Proofs/Erdos3LogHarmonic.lean:351:79: error: unexpected token '('; expected ')', ',' or ':'
+=== FAIL Erdos515Problem ===
+Proofs/Erdos515Problem.lean:100:68: error: unexpected token 'λ'; expected '_' or identifier
+Proofs/Erdos515Problem.lean:107:46: error: unexpected token 'λ'; expected '_' or identifier
+Proofs/Erdos515Problem.lean:121:3: error: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+Proofs/Erdos515Problem.lean:132:5: error: unexpected token 'λ'; expected '(', '[', '_', '{', '⦃' or identifier
+=== FAIL Erdos552Aristotle ===
+Proofs/Erdos552Aristotle.lean:31:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos552Problem.olean' of module Proofs.Erdos552Problem does not exist
+=== FAIL Erdos560Problem ===
+Proofs/Erdos560Problem.lean:88:36: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+Proofs/Erdos560Problem.lean:88:46: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+Proofs/Erdos560Problem.lean:89:23: error: Invalid `⟨...⟩` notation: The expected type `Quot (Sym2.Rel V)` is not an inductive type
+Proofs/Erdos560Problem.lean:99:51: error: Invalid projection: Projections extract constructor fields for one-constructor inductive types. The expression
+=== FAIL Erdos575Problem ===
+Proofs/Erdos575Problem.lean:39:7: error: don't know how to synthesize implicit argument `α`
+=== FAIL Erdos552Problem ===
+=== FAIL Erdos539Problem ===
+Proofs/Erdos552Problem.lean:43:80: error: unexpected token ';'; expected ')', ',' or ':'
+Proofs/Erdos552Problem.lean:57:90: error: unexpected token ';'; expected ')', ',' or ':'
+Proofs/Erdos539Problem.lean:81:17: error: Invalid `⟨...⟩` notation: The expected type
+Proofs/Erdos539Problem.lean:94:17: error: Invalid `⟨...⟩` notation: The expected type
+=== FAIL Erdos582Problem ===
+Proofs/Erdos582Problem.lean:95:12: error: Function expected at
+Proofs/Erdos582Problem.lean:97:10: error: Function expected at
+Proofs/Erdos582Problem.lean:101:10: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+Proofs/Erdos582Problem.lean:221:7: error: unknown tactic
+=== FAIL Erdos585Problem ===
+Proofs/Erdos585Problem.lean:55:8: error: invalid binder name `G.edgeFinset.card`, it must be atomic
+=== FAIL Erdos576Problem ===
+Proofs/Erdos576Problem.lean:63:62: error: Type mismatch
+Proofs/Erdos576Problem.lean:63:62: error: Type mismatch
+Proofs/Erdos576Problem.lean:108:85: error: unexpected token '['; expected ','
+Proofs/Erdos576Problem.lean:133:34: error: Application type mismatch: The argument
+=== FAIL Erdos598Problem ===
+Proofs/Erdos598Problem.lean:63:8: error: Failed to infer universe levels in type of binder `c`
+Proofs/Erdos598Problem.lean:73:4: error: Failed to infer universe levels in type of binder `c`
+=== FAIL Erdos590Problem ===
+Proofs/Erdos590Problem.lean:51:14: error: invalid atom
+Proofs/Erdos590Problem.lean:61:13: error: expected token
+Proofs/Erdos590Problem.lean:69:15: error: expected token
+Proofs/Erdos590Problem.lean:72:47: error: expected token
+=== FAIL Erdos608Problem ===
+Proofs/Erdos608Problem.lean:120:72: error: omega could not prove the goal:
+Proofs/Erdos608Problem.lean:127:57: error: omega could not prove the goal:
+Proofs/Erdos608Problem.lean:136:51: error: unexpected token '('; expected ':=', 'where' or '|'
+=== FAIL Erdos643Problem ===
+Proofs/Erdos643Problem.lean:97:46: error: unknown namespace `Mathlib.Tactic.GeneralizeProofs`
+Proofs/Erdos643Problem.lean:98:61: error: Function expected at
+Proofs/Erdos643Problem.lean:110:61: error: Function expected at
+Proofs/Erdos643Problem.lean:114:41: error: Function expected at
+=== FAIL Erdos715ProblemAristotle ===
+Proofs/Erdos715ProblemAristotle.lean:20:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos715Problem.olean' of module Proofs.Erdos715Problem does not exist
+=== FAIL Erdos604Problem ===
+Proofs/Erdos604Problem.lean:172:11: error: type expected, got
+Proofs/Erdos604Problem.lean:172:62: error: unexpected token '<'; expected command
+Proofs/Erdos604Problem.lean:207:9: error: Tactic `rcases` failed: `hd : Quot.lift (fun l => d ∈ l) ⋯
+=== FAIL Erdos637Aristotle ===
+Proofs/Erdos637Aristotle.lean:53:22: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+Proofs/Erdos637Aristotle.lean:110:52: error: Invalid argument name `DecidableRel` for function `IsRegular`
+Proofs/Erdos637Aristotle.lean:111:8: error: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+Proofs/Erdos637Aristotle.lean:118:34: error: Invalid argument name `DecidableRel` for function `IsRegular`
+=== FAIL Erdos642Problem ===
+Proofs/Erdos642Problem.lean:44:76: error: omega could not prove the goal:
+Proofs/Erdos642Problem.lean:187:50: error: unexpected token 'λ'; expected '_' or identifier
+Proofs/Erdos642Problem.lean:197:7: error: unexpected token 'λ'; expected '(', '_' or identifier
+Proofs/Erdos642Problem.lean:218:2: error: omega could not prove the goal:
+=== FAIL Erdos751Problem ===
+Proofs/Erdos751Problem.lean:49:44: error: unsolved goals
+Proofs/Erdos751Problem.lean:49:33: error: Application type mismatch: The argument
+Proofs/Erdos751Problem.lean:56:44: error: unsolved goals
+Proofs/Erdos751Problem.lean:56:33: error: Application type mismatch: The argument
+=== FAIL Erdos766Problem ===
+Proofs/Erdos766Problem.lean:65:39: error: unexpected token '//'; expected '}'
+Proofs/Erdos766Problem.lean:75:23: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `SimpleGraph.mk` has 3 explicit field, but only 2 were provided
+Proofs/Erdos766Problem.lean:75:24: error: Application type mismatch: The argument
+=== FAIL Erdos715Problem ===
+Proofs/Erdos715Problem.lean:89:33: error: unexpected token '∃'; expected '}'
+Proofs/Erdos715Problem.lean:125:0: error: declaration `Erdos715.berge_sauer_question` contains universe level metavariables at the expression
+Proofs/Erdos715Problem.lean:137:2: error: typeclass instance problem is stuck
+Proofs/Erdos715Problem.lean:163:13: error: Tactic `constructor` failed: target is not an inductive datatype
+=== FAIL Erdos780Problem ===
+Proofs/Erdos780Problem.lean:21:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/ErdosKoRado.olean' of module Proofs.ErdosKoRado does not exist
+=== FAIL Erdos724Problem ===
+Proofs/Erdos724Problem.lean:104:66: error: Type mismatch
+Proofs/Erdos724Problem.lean:175:35: error: Type mismatch
+Proofs/Erdos724Problem.lean:196:50: error: Type mismatch
+Proofs/Erdos724Problem.lean:211:45: error: unexpected token '/--'; expected term
+=== FAIL Erdos739Problem ===
+Proofs/Erdos739Problem.lean:105:0: error: declaration `Erdos739.MainOpenProblem` contains universe level metavariables at the expression
+=== FAIL Erdos795ProblemAristotle ===
+Proofs/Erdos795ProblemAristotle.lean:15:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos795Problem.olean' of module Proofs.Erdos795Problem does not exist
+=== FAIL Erdos79Incomplete01OQ01 ===
+Proofs/Erdos79Incomplete01OQ01.lean:57:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos79Incomplete01.olean' of module Proofs.Erdos79Incomplete01 does not exist
+=== FAIL Erdos772Problem ===
+Proofs/Erdos772Problem.lean:179:33: error: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+=== FAIL Erdos813Problem ===
+Proofs/Erdos813Problem.lean:80:9: error: unexpected token '>'; expected ','
+Proofs/Erdos813Problem.lean:91:55: error: unsolved goals
+Proofs/Erdos813Problem.lean:94:56: error: unsolved goals
+Proofs/Erdos813Problem.lean:101:9: error: unexpected token '>'; expected ','
+=== FAIL Erdos795Problem ===
+Proofs/Erdos795Problem.lean:370:11: error: unexpected token '∈'; expected ','
+=== FAIL Erdos806Problem ===
+Proofs/Erdos806Problem.lean:66:47: error: unsolved goals
+Proofs/Erdos806Problem.lean:69:6: error: unexpected token '≤'; expected command
+Proofs/Erdos806Problem.lean:187:6: error: Tactic `left` failed: target is not an inductive datatype
+Proofs/Erdos806Problem.lean:189:6: error: Tactic `right` failed: target is not an inductive datatype
+=== FAIL Erdos79Incomplete01 ===
+=== FAIL Erdos84Problem ===
+Proofs/Erdos79Incomplete01.lean:58:10: error: Function expected at
+Proofs/Erdos84Problem.lean:75:27: error: Function expected at
+=== FAIL Erdos807Problem ===
+Proofs/Erdos807Problem.lean:121:2: error: Tactic `assumption` failed
+=== FAIL Erdos863Aristotle ===
+Proofs/Erdos863Aristotle.lean:45:2: error: 'calc' expression has type
+Proofs/Erdos863Aristotle.lean:46:6: error: unexpected token '≤'; expected command
+Proofs/Erdos863Aristotle.lean:54:2: error: 'calc' expression has type
+Proofs/Erdos863Aristotle.lean:55:6: error: unexpected token '≤'; expected command
+=== FAIL Erdos91Problem ===
+=== FAIL Erdos965Problem ===
+Proofs/Erdos91Problem.lean:79:57: error: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+Proofs/Erdos91Problem.lean:236:20: error: Function expected at
+Proofs/Erdos91Problem.lean:237:62: error: Function expected at
+Proofs/Erdos965Problem.lean:136:4: error: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `A`
+=== FAIL Erdos86Problem ===
+Proofs/Erdos86Problem.lean:115:56: error: unexpected token '//'; expected '}'
+Proofs/Erdos86Problem.lean:143:44: error: linarith failed to find a contradiction
+Proofs/Erdos86Problem.lean:182:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos910Problem ===
+Proofs/Erdos910Problem.lean:121:51: error: Ambiguous term
+Proofs/Erdos910Problem.lean:129:0: error: declaration `ContinuumHypothesis` contains universe level metavariables at the expression
+Proofs/Erdos910Problem.lean:141:33: error: Ambiguous term
+Proofs/Erdos910Problem.lean:166:13: error: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+=== FAIL Erdos910ProblemProvable ===
+Proofs/Erdos910ProblemProvable.lean:121:51: error: Ambiguous term
+Proofs/Erdos910ProblemProvable.lean:129:0: error: declaration `ContinuumHypothesis` contains universe level metavariables at the expression
+Proofs/Erdos910ProblemProvable.lean:141:33: error: Ambiguous term
+Proofs/Erdos910ProblemProvable.lean:162:13: error: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+=== FAIL Erdos884Problem ===
+=== FAIL Erdos97Problem ===
+Proofs/Erdos97Problem.lean:31:6: error: unexpected token 'ℝ'; expected identifier
+Proofs/Erdos97Problem.lean:33:5: error: unknown namespace `EuclideanGeometry`
+Proofs/Erdos97Problem.lean:43:49: error: unexpected token '²'; expected ')'
+Proofs/Erdos97Problem.lean:50:49: error: unexpected token '²'; expected ')'
+=== FAIL Erdos978Problem ===
+Proofs/Erdos978Problem.lean:76:4: error: omega could not prove the goal:
+Proofs/Erdos978Problem.lean:82:4: error: interval_cases failed: could not find upper bound on p
+Proofs/Erdos978Problem.lean:88:4: error: interval_cases failed: could not find upper bound on p
+Proofs/Erdos978Problem.lean:125:12: error: unexpected token '/'; expected command
+=== FAIL FeuerbachsTheoremOQ05 ===
+Proofs/FeuerbachsTheoremOQ05.lean:162:7: error: invalid 'calc' step, left-hand side is
+Proofs/FeuerbachsTheoremOQ05.lean:229:5: error: unexpected token 'λ'; expected '(', '_' or identifier
+=== FAIL FactorRemainderTheorem ===
+Proofs/FactorRemainderTheorem.lean:123:41: error: Application type mismatch: The argument
+Proofs/FactorRemainderTheorem.lean:121:55: error: unsolved goals
+=== FAIL ErdosKoRado ===
+Proofs/ErdosKoRado.lean:92:2: error: Tactic `apply` failed: could not unify the conclusion of `@Finset.card_image_of_injOn`
+Proofs/ErdosKoRado.lean:461:8: error: Function expected at
+Proofs/ErdosKoRado.lean:472:10: error: Function expected at
+Proofs/ErdosKoRado.lean:488:6: error: Tactic `constructor` failed: no applicable constructor found
+=== FAIL Erdos987Problem ===
+Proofs/Erdos987Problem.lean:218:6: error: unexpected identifier; expected ')'
+=== FAIL FourierSeriesOQ02OQ03 ===
+Proofs/FourierSeriesOQ02OQ03.lean:65:8: error: don't know how to synthesize implicit argument `T`
+Proofs/FourierSeriesOQ02OQ03.lean:67:2: error: Tactic `apply` failed: could not unify the conclusion of `@mul_nonneg`
+Proofs/FourierSeriesOQ02OQ03.lean:76:23: error: don't know how to synthesize implicit argument `T`
+Proofs/FourierSeriesOQ02OQ03.lean:76:4: error: don't know how to synthesize implicit argument `T`
+=== FAIL FundamentalTheoremCalculusLebesgueOQ04 ===
+Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean:37:0: error: invalid 'import' command, it must be used in the beginning of the file
+=== FAIL Hilbert11_QuadraticFormsAristotle ===
+Proofs/Hilbert11_QuadraticFormsAristotle.lean:288:0: error: unterminated comment
+=== FAIL InfinitudePrimes4k3OQ01 ===
+Proofs/InfinitudePrimes4k3OQ01.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/DirichletsTheorem.olean' of module Proofs.DirichletsTheorem does not exist
+=== FAIL InfinitudePrimes4k3OQ01Q12Q24 ===
+Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/DirichletsTheorem.olean' of module Proofs.DirichletsTheorem does not exist
+=== FAIL Hilbert5LieGroups ===
+Proofs/Hilbert5LieGroups.lean:98:53: error: invalid binder annotation, type is not a class instance
+Proofs/Hilbert5LieGroups.lean:145:66: error: invalid binder annotation, type is not a class instance
+Proofs/Hilbert5LieGroups.lean:162:66: error: invalid binder annotation, type is not a class instance
+Proofs/Hilbert5LieGroups.lean:195:5: error: invalid binder annotation, type is not a class instance
+=== FAIL FundamentalArithmetic ===
+=== FAIL FurstenbergCorrespondenceOQ02 ===
+Proofs/FurstenbergCorrespondenceOQ02.lean:214:23: error: unexpected token '⟨'; expected structInstFieldDecl
+Proofs/FurstenbergCorrespondenceOQ02.lean:230:14: error: Invalid projection: Projection operates on types of the form `C ...` where C is a constant. The expression
+Proofs/FurstenbergCorrespondenceOQ02.lean:323:2: error: Invalid projection: Projection operates on types of the form `C ...` where C is a constant. The expression
+Proofs/FurstenbergCorrespondenceOQ02.lean:331:9: error: Invalid `⟨...⟩` notation: The expected type
+=== FAIL Hilbert20BoundaryValue ===
+Proofs/Hilbert20BoundaryValue.lean:122:31: error: Function expected at
+Proofs/Hilbert20BoundaryValue.lean:126:28: error: Function expected at
+Proofs/Hilbert20BoundaryValue.lean:157:10: error: Function expected at
+=== FAIL LawsOfLargeNumbersOQ01OQ01 ===
+Proofs/LawsOfLargeNumbersOQ01OQ01.lean:42:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/LawsOfLargeNumbersOQ01Aristotle.olean' of module Proofs.LawsOfLargeNumbersOQ01Aristotle does not exist
+=== FAIL LawsOfLargeNumbersOQ01OQ03 ===
+Proofs/LawsOfLargeNumbersOQ01OQ03.lean:60:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/LawsOfLargeNumbersOQ01Aristotle.olean' of module Proofs.LawsOfLargeNumbersOQ01Aristotle does not exist
+=== FAIL InverseGaloisA5OQ02 ===
+Proofs/InverseGaloisA5OQ02.lean:195:8: error: synthesized type class instance is not definitionally equal to expression inferred by typing rules, synthesized
+=== FAIL FundamentalTheoremAlgebraOQ04OQ04 ===
+Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:127:38: error: omega could not prove the goal:
+Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:187:3: error: Application type mismatch: The argument
+Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean:192:29: error: typeclass instance problem is stuck
+=== FAIL NewtonSignedInputs ===
+Proofs/NewtonSignedInputs.lean:53:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/AmgmInequalityOQ02Defs.olean' of module Proofs.AmgmInequalityOQ02Defs does not exist
+=== FAIL LawOfCosinesOQ03OQ02 ===
+Proofs/LawOfCosinesOQ03OQ02.lean:61:7: error: unexpected token ';'; expected command
+Proofs/LawOfCosinesOQ03OQ02.lean:66:76: error: unexpected identifier; expected 'lemma'
+Proofs/LawOfCosinesOQ03OQ02.lean:68:70: error: unexpected identifier; expected 'lemma'
+Proofs/LawOfCosinesOQ03OQ02.lean:70:70: error: unexpected identifier; expected 'lemma'
+=== FAIL LebesgueMeasureOQ03OQ01 ===
+Proofs/LebesgueMeasureOQ03OQ01.lean:44:49: error: expected token
+Proofs/LebesgueMeasureOQ03OQ01.lean:76:22: error: Application type mismatch: The argument
+Proofs/LebesgueMeasureOQ03OQ01.lean:136:43: error: expected token
+Proofs/LebesgueMeasureOQ03OQ01.lean:141:10: error: Function expected at
+=== FAIL LittleWedderburnOQ01OQ02 ===
+Proofs/LittleWedderburnOQ01OQ02.lean:49:0: error: cannot omit referenced section variable `inst✝`
+=== FAIL PtolemysTheoremOQ01Incomplete01 ===
+Proofs/PtolemysTheoremOQ01Incomplete01.lean:57:0: error: invalid 'import' command, it must be used in the beginning of the file
+=== FAIL MaschkeTheoremOQ01 ===
+Proofs/MaschkeTheoremOQ01.lean:69:68: error: unexpected token 'omit'; expected 'lemma'
+=== FAIL RothTriangleRemoval ===
+Proofs/RothTriangleRemoval.lean:21:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/SzemerediCounting.olean' of module Proofs.SzemerediCounting does not exist
+=== FAIL SchroederBernsteinOQ01 ===
+Proofs/SchroederBernsteinOQ01.lean:334:64: error: invalid binder annotation, type is not a class instance
+=== FAIL ShannonChannelCodingOQ03Aristotle ===
+Proofs/ShannonChannelCodingOQ03Aristotle.lean:19:17: error: unknown namespace `InformationTheory.BinaryEntropy`
+Proofs/ShannonChannelCodingOQ03Aristotle.lean:54:4: error: Function expected at
+Proofs/ShannonChannelCodingOQ03Aristotle.lean:54:29: error: Function expected at
+Proofs/ShannonChannelCodingOQ03Aristotle.lean:100:6: error: Function expected at
+=== FAIL SpernerNDimOQ04 ===
+Proofs/SpernerNDimOQ04.lean:479:59: error: unexpected token '|'; expected rcasesPat
+Proofs/SpernerNDimOQ04.lean:584:34: error: unexpected token '|'; expected rcasesPat
+Proofs/SpernerNDimOQ04.lean:575:13: error: Application type mismatch: The argument
+Proofs/SpernerNDimOQ04.lean:575:34: error: Application type mismatch: The argument
+=== FAIL TestApi1059 ===
+=== FAIL TestApi1141 ===
+Proofs/TestApi1141.lean:12:28: error: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+Proofs/TestApi1141.lean:13:30: error: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+Proofs/TestApi1141.lean:21:2: error: Invalid field notation: Function `Finset.forall` does not have a usable parameter of type `Finset ...` for which to substitute `Finset.range
+Proofs/TestApi1141.lean:28:28: error: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'Classical.propDecidable', which is 'noncomputable'
+=== FAIL StirlingFormula ===
+Proofs/StirlingFormula.lean:280:38: error: unexpected token '/-!'; expected 'lemma'
+Proofs/StirlingFormula.lean:306:4: error: linarith failed to find a contradiction
+Proofs/StirlingFormula.lean:320:6: error: Type mismatch
+Proofs/StirlingFormula.lean:328:45: error: unsolved goals
+=== FAIL TestApi423 ===
+Proofs/TestApi423.lean:11:5: error: unexpected token 'mut'; expected '(', ':=', 'rec', '|' or term
+Proofs/TestApi423.lean:20:5: error: unexpected token 'mut'; expected '(', ':=', 'rec', '|' or term
+Proofs/TestApi423.lean:35:7: error: unexpected token 'mut'; expected '(', ':=', 'rec', '|' or term
+Proofs/TestApi423.lean:47:0: error: Aborting evaluation since the expression depends on the 'sorry' axiom, which can lead to runtime instability and crashes.
+=== FAIL ThreeSubgroupsLemmaOQ0101 ===
+Proofs/ThreeSubgroupsLemmaOQ0101.lean:89:4: error: Ambiguous term
+Proofs/ThreeSubgroupsLemmaOQ0101.lean:89:36: error: Ambiguous term
+Proofs/ThreeSubgroupsLemmaOQ0101.lean:105:5: error: Ambiguous term
+Proofs/ThreeSubgroupsLemmaOQ0101.lean:105:29: error: Ambiguous term
+=== FAIL ZsqrtdNegTwoOQ03OQ01 ===
+Proofs/ZsqrtdNegTwoOQ03OQ01.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/ZsqrtdNegTwoOQ03.olean' of module Proofs.ZsqrtdNegTwoOQ03 does not exist
+=== FAIL ZsqrtdNegTwoOQ03OQ06 ===
+Proofs/ZsqrtdNegTwoOQ03OQ06.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/ZsqrtdNegTwoOQ03.olean' of module Proofs.ZsqrtdNegTwoOQ03 does not exist
+=== FAIL ZsqrtdNegTwoOQ03 ===
+Proofs/ZsqrtdNegTwoOQ03.lean:436:4: error: `inferInstanceAs` failed, expected type contains metavariables
+Proofs/ZsqrtdNegTwoOQ03.lean:436:2: error: expected structure
+=== FAIL LawsOfLargeNumbersOQ01Aristotle ===
+Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:81:46: error: unknown namespace `Mathlib.Tactic.GeneralizeProofs`
+Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:82:61: error: Function expected at
+Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:94:61: error: Function expected at
+Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:98:41: error: Function expected at
+=== FAIL SzemerediCounting ===
+Proofs/SzemerediCounting.lean:467:22: error: Function expected at

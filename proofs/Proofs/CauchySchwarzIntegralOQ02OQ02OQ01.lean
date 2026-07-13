@@ -56,7 +56,7 @@ theorem ennreal_rpow_cancel {X C : ℝ≥0∞} {q : ℝ}
   rcases eq_or_ne X 0 with rfl | hX0
   · simp [ENNReal.zero_rpow_of_pos (by linarith : (0 : ℝ) < 1 - q)]
   -- Case 0 < X < ⊤
-  have hXpos : 0 < X := lt_of_le_of_ne (zero_le X) (Ne.symm hX0)
+  have hXpos : 0 < X := pos_iff_ne_zero.mpr hX0
   -- X^q is positive: using rpow_pos which needs both 0 < X and X ≠ ⊤
   have hXq_pos : 0 < X ^ q := ENNReal.rpow_pos hXpos hXfin
   -- X^q is finite: X ≠ 0, X ≠ ⊤ imply X^q ≠ ⊤ for any q

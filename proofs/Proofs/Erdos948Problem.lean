@@ -182,7 +182,7 @@ def CountableColorsVersion : Prop :=
   ∃ f : ℕ → ℕ, ∀ c : ℕ → ℕ, ∃ a : ℕ → ℕ,
     StrictlyIncreasing a ∧
     BoundedInfinitelyOften a f ∧
-    {c n | n ∈ FiniteSubsums a}.ncard < ⊤
+    {c n | n ∈ FiniteSubsums a}.Finite
 
 /-
 # Part 9: Summary

@@ -36,8 +36,8 @@ open SimpleGraph Finset
 n-vertex simple graph containing no subgraph isomorphic to H.
 We define this abstractly as a supremum. -/
 noncomputable def turanNumber (n : ℕ) (H : SimpleGraph (Fin n) → Prop) : ℕ :=
-  sSup { (Finset.univ.filter fun e : Fin n × Fin n => e.1 < e.2 ∧
-    ∃ G : SimpleGraph (Fin n), G.Adj e.1 e.2 ∧ H G).card | True }
+  sSup { k | k = (Finset.univ.filter fun e : Fin n × Fin n => e.1 < e.2 ∧
+    ∃ G : SimpleGraph (Fin n), G.Adj e.1 e.2 ∧ H G).card }
 
 /-- Simplified: ex(n; F) for a family F of "forbidden patterns."
 We use a predicate-based approach for the exclusion condition. -/
