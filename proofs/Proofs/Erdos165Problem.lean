@@ -892,4 +892,42 @@ theorem mainConjecture_iff_asymptoticUpperConstant_eq_half :
     rw [← h]
     exact hmem
 
+/-- **Under the Erdős conjecture the two asymptotic constants collapse to `1/2`.**  The
+    conjecture forces the least valid upper constant to `1/2`
+    (`mainConjecture_iff_asymptoticUpperConstant_eq_half`); since the greatest valid lower
+    constant obeys `1/2 ≤ c⁻ ≤ c⁺ = 1/2` (`asymptoticLowerConstant_mem_Icc`,
+    `asymptoticLowerConstant_le_asymptoticUpperConstant`), it too is pinned to `1/2`.  So the
+    conjecture is exactly the statement that *both* extremal first-order constants of `R(3,k)`
+    equal `1/2` — the upper and lower threads of Part XII collapse to a single value. -/
+theorem mainConjecture_imp_asymptoticConstants_eq_half (h : mainConjecture) :
+    asymptoticLowerConstant = 1/2 ∧ asymptoticUpperConstant = 1/2 := by
+  have hup : asymptoticUpperConstant = 1/2 :=
+    mainConjecture_iff_asymptoticUpperConstant_eq_half.mp h
+  have hle : asymptoticLowerConstant ≤ asymptoticUpperConstant :=
+    asymptoticLowerConstant_le_asymptoticUpperConstant
+  have hge : (1:ℝ)/2 ≤ asymptoticLowerConstant := asymptoticLowerConstant_mem_Icc.1
+  refine ⟨le_antisymm ?_ hge, hup⟩
+  rw [hup] at hle; linarith
+
+/-- **The Erdős conjecture ⟺ both extremal asymptotic constants equal `1/2`.**  The two-sided
+    (upper *and* lower) crisp scalar form of Erdős #165, upgrading the upper-only
+    `mainConjecture_iff_asymptoticUpperConstant_eq_half`.  Backward direction needs only
+    `c⁺ = 1/2` (the lower conjunct is then automatic), but the statement records the full
+    collapse. -/
+theorem mainConjecture_iff_asymptoticConstants_eq_half :
+    mainConjecture ↔ (asymptoticLowerConstant = 1/2 ∧ asymptoticUpperConstant = 1/2) := by
+  refine ⟨mainConjecture_imp_asymptoticConstants_eq_half, ?_⟩
+  rintro ⟨_, hu⟩
+  exact mainConjecture_iff_asymptoticUpperConstant_eq_half.mpr hu
+
+/-- **Under the Erdős conjecture the asymptotic constant of `R(3,k)` genuinely exists**: the
+    greatest valid lower constant and least valid upper constant coincide, `c⁻ = c⁺`.  The
+    collapse of the bracket `[c⁻, c⁺] ⊆ [1/2, 1]` to a point — the first-order asymptotic
+    `R(3,k) ~ (1/2)·k²/log k` in the pinched-constant sense.  Immediate from
+    `mainConjecture_imp_asymptoticConstants_eq_half`. -/
+theorem mainConjecture_imp_asymptoticConstants_collapse (h : mainConjecture) :
+    asymptoticLowerConstant = asymptoticUpperConstant := by
+  obtain ⟨hl, hu⟩ := mainConjecture_imp_asymptoticConstants_eq_half h
+  rw [hl, hu]
+
 end Erdos165
