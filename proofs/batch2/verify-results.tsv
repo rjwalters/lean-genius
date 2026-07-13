@@ -319,7 +319,7 @@ BurnsideCountingOQ03Aristotle	GREEN
 BurnsideCountingOQ03OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ01OQ01	RESIDUAL	unknown-const:Cardinal.aleph_lt.mpr
 CantorDiagonalizationOQ01OQ01OQ02	RESIDUAL	type-mismatch
-CantorDiagonalizationOQ01OQ01OQ02OQ01	RESIDUAL	signature-drift
+CantorDiagonalizationOQ01OQ01OQ02OQ01	GREEN	
 CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b	RESIDUAL	signature-drift
 CantorDiagonalizationOQ01OQ01OQ02OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ02OQ03	GREEN	
@@ -362,7 +362,7 @@ CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Norm	GREEN
 CauchySchwarzIntegralOQ01OQ03	RESIDUAL	instance-synth
 CauchySchwarzIntegralOQ01OQ03OQ01	RESIDUAL	unknown-const:eLpNorm_one_eq_lintegral_nnnorm
 CauchySchwarzIntegralOQ02OQ02	RESIDUAL	unknown-const:eLpNorm_mul_le
-CauchySchwarzIntegralOQ02OQ02OQ01	RESIDUAL	signature-drift
+CauchySchwarzIntegralOQ02OQ02OQ01	GREEN	
 CauchySchwarzIntegralOQ03	RESIDUAL	proof-drift
 CauchySchwarzOQ01OQ01OQ01	RESIDUAL	proof-drift
 CauchySchwarzOQ01OQ01OQ02	GREEN	
@@ -724,7 +724,7 @@ Erdos1044Problem	GREEN
 Erdos1045Problem	RESIDUAL	unknown-const:z
 Erdos1046Problem	RESIDUAL	elab-drift
 Erdos1048Aristotle	RESIDUAL	unknown-const:Complex.continuous_abs.comp
-Erdos1048Problem	RESIDUAL	signature-drift
+Erdos1048Problem	GREEN	
 Erdos1048ProblemAristotle	GREEN	
 Erdos1049Aristotle	RESIDUAL	rewrite-drift
 Erdos1049Problem	RESIDUAL	type-mismatch
@@ -1345,7 +1345,7 @@ Erdos503Problem	RESIDUAL	proof-drift
 Erdos505Problem	RESIDUAL	instance-synth
 Erdos506Problem	GREEN	
 Erdos507Problem	GREEN	
-Erdos508Problem	RESIDUAL	signature-drift
+Erdos508Problem	GREEN	
 Erdos509Problem	RESIDUAL	unknown-const:Complex.abs.map_zero
 Erdos50Problem	GREEN	
 Erdos510Problem	GREEN	
@@ -1495,7 +1495,7 @@ Erdos623ProblemAristotle	RESIDUAL	unknown-const:Cardinal.isLimit_aleph
 Erdos625Aristotle	RESIDUAL	instance-synth
 Erdos625Problem	RESIDUAL	instance-synth
 Erdos625ProblemAristotle	RESIDUAL	instance-synth
-Erdos626Aristotle	RESIDUAL	signature-drift
+Erdos626Aristotle	GREEN	
 Erdos626Problem	GREEN	
 Erdos626ProblemAristotle	GREEN	
 Erdos627Aristotle	GREEN	
@@ -1839,7 +1839,7 @@ Erdos906Problem	GREEN
 Erdos907Problem	GREEN	
 Erdos908Problem	GREEN	
 Erdos909OQ01Problem	GREEN	
-Erdos909Problem	RESIDUAL	signature-drift
+Erdos909Problem	GREEN	
 Erdos90Problem	GREEN	
 Erdos910Problem	RESIDUAL	dot-notation-drift
 Erdos910ProblemProvable	RESIDUAL	dot-notation-drift
@@ -2587,7 +2587,7 @@ TestApi688	RESIDUAL	unknown-const:Nat.not_prime_of_le_one
 TestApi689	RESIDUAL	type-mismatch
 TestApi693	GREEN	
 TestApi783	GREEN	
-TestApi826	RESIDUAL	signature-drift
+TestApi826	GREEN	
 TestApi847	GREEN	
 TestApi889	GREEN	
 TestApi913	RESIDUAL	proof-drift
