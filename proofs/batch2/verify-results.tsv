@@ -121,10 +121,10 @@ AreaOfCircleOQ01OQ03OQ02	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ02	RESIDUAL	proof-drift
 AreaOfCircleOQ02OQ01	RESIDUAL	proof-drift
 AreaOfCircleOQ02OQ04	RESIDUAL	parse-error
-AreaOfCircleOQ03OQ01	RESIDUAL	proof-drift
+AreaOfCircleOQ03OQ01	GREEN	
 AreaOfCircleOQ03OQ02OQ01	GREEN	
-AreaOfCircleOQ03OQ02OQ02	RESIDUAL	proof-drift
-AreaOfCircleOQ03OQ02OQ02OQ01	RESIDUAL	proof-drift
+AreaOfCircleOQ03OQ02OQ02	RESIDUAL	type-mismatch
+AreaOfCircleOQ03OQ02OQ02OQ01	RESIDUAL	type-mismatch
 AreaOfCircleOQ03OQ03	GREEN	
 AreaOfCircleOQ03OQ03OQ02	GREEN	
 AreaOfCircleOQ05OQ01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
@@ -308,7 +308,7 @@ BuffonsNeedleOQ02	GREEN
 BuffonsNeedleOQ02OQ01	GREEN	
 BuffonsNeedleOQ02OQ01OQ01	GREEN	
 BuffonsNeedleOQ02OQ02	RESIDUAL	signature-drift
-BuffonsNeedleOQ02OQ03	RESIDUAL	proof-drift
+BuffonsNeedleOQ02OQ03	RESIDUAL	unknown-const:div_lt_one_of_lt
 BuffonsNoodle	GREEN	
 BuffonsNoodleOQ01	GREEN	
 BuffonsNoodleOQ01OQ01	GREEN	
@@ -316,7 +316,7 @@ BuffonsNoodleOQ01OQ02	GREEN
 BuffonsNoodleOQ02	GREEN	
 BuffonsNoodleOQ03OQ01	RESIDUAL	rewrite-drift
 BurnsideCountingOQ03Aristotle	RESIDUAL	unknown-const:Nat.div_mul_cancel_of_dvd
-BurnsideCountingOQ03OQ03	RESIDUAL	proof-drift
+BurnsideCountingOQ03OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ01OQ01	RESIDUAL	unknown-const:Cardinal.aleph_lt.mpr
 CantorDiagonalizationOQ01OQ01OQ02	RESIDUAL	type-mismatch
 CantorDiagonalizationOQ01OQ01OQ02OQ01	RESIDUAL	signature-drift
@@ -340,7 +340,7 @@ CatalanNumbersOQ01OQ01OQ02OQ04	GREEN
 CatalanNumbersOQ01OQ04OQ02	RESIDUAL	rewrite-drift
 CatalanNumbersOQ05OQ02OQ01	GREEN	
 CauchyInterlacingIsometryConj	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
-CauchyInterlacingMajorizationPositivity	RESIDUAL	proof-drift
+CauchyInterlacingMajorizationPositivity	GREEN	
 CauchyInterlacingOQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
@@ -455,8 +455,8 @@ CircumferenceFromArea	GREEN
 CircumferenceViaDifferentiationOQ01	GREEN	
 CircumferenceViaDifferentiationOQ02	GREEN	
 CircumferenceViaDifferentiationOQ03	GREEN	
-CollatzCyclesOQ04	RESIDUAL	type-mismatch
-CollatzStructuredOQ02OQ01	RESIDUAL	proof-drift
+CollatzCyclesOQ04	RESIDUAL	rewrite-drift
+CollatzStructuredOQ02OQ01	GREEN	
 CollatzStructuredOQ03	RESIDUAL	instance-synth
 CombinationsFormulaOQ01OQ04	RESIDUAL	proof-drift
 CombinationsFormulaOQ02	RESIDUAL	rewrite-drift
@@ -512,7 +512,7 @@ DeMoivreOQ01OQ03OQ01OQ01OQ02	GREEN
 DeMoivreOQ01OQ03OQ02	GREEN	
 DeMoivreOQ02OQ02	RESIDUAL	signature-drift
 DeMoivreOQ03OQ01	GREEN	
-DeMoivreOQ06	RESIDUAL	proof-drift
+DeMoivreOQ06	GREEN	
 DedekindFrobeniusBridge	RESIDUAL	rewrite-drift
 DenumerabilityRationalsOQ01	RESIDUAL	elab-drift
 DenumerabilityRationalsOQ02OQ02	RESIDUAL	elab-drift
@@ -559,7 +559,7 @@ DissectionOfCubesOQ04	RESIDUAL	rewrite-drift
 DissectionOfCubesOQ04Aristotle	RESIDUAL	rewrite-drift
 DivisibilityBy3	GREEN	
 DivisibilityBy3OQ03	RESIDUAL	unknown-const:Nat.sum_digits_lt
-DivisibilityBy3OQ03OQ02	RESIDUAL	proof-drift
+DivisibilityBy3OQ03OQ02	GREEN	
 DivisibilityByThreeOQ01OQ02Aristotle	GREEN	
 DivisibilityByThreeOQ02	GREEN	
 DivisibilityRules	GREEN	
@@ -606,7 +606,7 @@ Erdos1000Problem	RESIDUAL	rewrite-drift
 Erdos1001OQ02OQ01	GREEN	
 Erdos1002OQ01	RESIDUAL	type-mismatch
 Erdos1002OQ01OQ01	RESIDUAL	type-mismatch
-Erdos1002OQ01OQ01Aristotle	RESIDUAL	proof-drift
+Erdos1002OQ01OQ01Aristotle	GREEN	
 Erdos1003OQ02	GREEN	
 Erdos1005Problem	RESIDUAL	proof-drift
 Erdos1005ProblemOQ02	GREEN	
@@ -700,11 +700,11 @@ Erdos1031Problem	RESIDUAL	elab-drift
 Erdos1032Problem	GREEN	
 Erdos1033Aristotle	RESIDUAL	unknown-const:SimpleGraph.mem_neighborFinset.mpr
 Erdos1033Problem	RESIDUAL	unknown-const:fan_lower
-Erdos1034Aristotle	RESIDUAL	proof-drift
+Erdos1034Aristotle	GREEN	
 Erdos1034OQ02	GREEN	
 Erdos1034Problem	RESIDUAL	unknown-const:maTang_counterexample
 Erdos1035Problem	RESIDUAL	instance-synth
-Erdos1036OQ01	RESIDUAL	proof-drift
+Erdos1036OQ01	GREEN	
 Erdos1036OQ01OQ01	RESIDUAL	elab-drift
 Erdos1036Problem	GREEN	
 Erdos1038Problem	GREEN	

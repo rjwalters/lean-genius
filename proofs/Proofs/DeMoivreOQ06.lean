@@ -170,11 +170,11 @@ theorem dirichlet_conjugate_bound (θ : ℝ) (hθ : Real.sin (θ / 2) ≠ 0) (n 
   rw [div_le_div_iff₀ (mul_pos two_pos hA) hA]
   have hnum : |Real.cos (θ / 2) - Real.cos (((n : ℝ) + 1 / 2) * θ)| ≤ 2 :=
     abs_le.mpr ⟨by
-      have := Real.cos_le_one (θ / 2)
-      have := Real.neg_one_le_cos (((n : ℝ) + 1 / 2) * θ)
-      linarith, by
       have := Real.neg_one_le_cos (θ / 2)
       have := Real.cos_le_one (((n : ℝ) + 1 / 2) * θ)
+      linarith, by
+      have := Real.cos_le_one (θ / 2)
+      have := Real.neg_one_le_cos (((n : ℝ) + 1 / 2) * θ)
       linarith⟩
   nlinarith [mul_le_mul_of_nonneg_right hnum (le_of_lt hA)]
 
