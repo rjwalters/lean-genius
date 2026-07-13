@@ -84,7 +84,7 @@ def hFoldSumset (h : ℕ) (A : Set ℕ) : Set ℕ :=
   match h with
   | 0 => {0}
   | 1 => A
-  | n + 1 => {s | ∃ a ∈ A, ∃ t ∈ hFoldSumset n A, s = a + t}
+  | Nat.succ n => {s | ∃ a ∈ A, ∃ t ∈ hFoldSumset n A, s = a + t}
 
 notation:65 h "⬝" A => hFoldSumset h A
 
