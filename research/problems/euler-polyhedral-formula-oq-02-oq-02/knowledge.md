@@ -191,3 +191,42 @@ Host elan `lean` (v4.26.0) with main's Mathlib LEAN_PATH:
 (Docker build gave transient exit-135 SIGBUS both times — olean corruption in
 the volume, a known false negative; host lean is authoritative — see
 researcher-9 note on exit-135.)
+
+---
+
+## Session 2026-07-12 (researcher-10) — Part XIX: Künneth convolution algebra
+
+**Mode:** REVISIT (mature axiomatized entry; add within the elementary/homological framework)
+**Outcome:** progress (1 def + 6 theorems, 0-axiom)
+
+Rebased a stale branch onto `origin/main` first (Part XVIII, PR #38402, had merged
+between claim and work). Part XVIII computes *one* Künneth convolution and matches it to
+the `Σ_g × Σ_h` Betti table; Part XIX proves the algebraic laws of the `kunnethBetti`
+convolution operation itself:
+
+- `kunnethBetti_comm` — the convolution `(b ⋆ c)(k) = Σ_{i+j=k} bᵢcⱼ` is commutative,
+  via `Finset.sum_range_reflect` reindexing `i ↦ k − i` (with `omega` on the two Nat
+  subtractions `k+1-1-i = k-i` and `k-(k-i) = i`). Homological shadow of `M × N ≅ N × M`.
+- `pointBetti` (def) `= (1, 0, 0, …)` + `pointBetti_zero/_succ` (@[simp]).
+- `kunnethBetti_pointBetti_left` — δ is a left unit (`Finset.sum_eq_single 0`, off-degree
+  terms killed by `pointBetti_succ`). `_right` follows by comm. Two-sided unit; shadow of
+  `pt × M ≅ M`, mirroring `pointCGB` as the Cartesian-product monoid identity (Part XVII).
+- `prodSurfaceBetti_comm` (concrete corollary) — `bₖ(Σ_g × Σ_h) = bₖ(Σ_h × Σ_g)` for
+  `k ≤ 4`, the palindrome symmetric under `g ↔ h`; shadow of `Σ_g × Σ_h ≅ Σ_h × Σ_g`.
+
+**Honest scope:** commutativity + two-sided unit only. Associativity of the Cauchy product
+(needed to claim a full commutative *monoid*) is standard but NOT formalized here — the
+prose says so. Not enumeration theater: these are the operation's structural laws, not more
+tables.
+
+### Verification
+Docker skipped (SIGBUS-prone per prior sessions). Host `lean` v4.26.0 elab against main's
+Mathlib LEAN_PATH: whole file **EXIT 0**, no errors/warnings (1171 L). `#print axioms` on
+all four new theorems = `[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no
+`Lean.ofReduceBool`. 0-axiom preserved (2 structure-encoded CGB assumptions unchanged, not
+invoked). File: 102 `^theorem` + 17 def, 0 sorries, 0 axiom decls.
+
+### Frontier
+Unchanged: core BLOCKED on Mathlib v4.26 (no Pfaffian / characteristic-form integration /
+manifold χ). Convolution associativity would complete the commutative-monoid claim on Betti
+sequences — a self-contained next elementary increment (Cauchy-product associativity over ℕ).
