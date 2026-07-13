@@ -3,6 +3,7 @@ import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.Algebra.Polynomial.BigOperators
 import Mathlib.Algebra.Polynomial.Degree.Operations
 import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.RingTheory.Polynomial.Pochhammer
 
 /-
 # The Figurate-Sum Cleared Form as a First-Class Monic Polynomial
@@ -93,5 +94,27 @@ theorem figuratePoly_factorial_dvd_eval (d n : ℕ) :
     ((Nat.factorial (d + 1) : ℤ)) ∣ (figuratePoly d).eval (n : ℤ) := by
   rw [figuratePoly_eval, Nat.cast_mul]
   exact Dvd.intro _ rfl
+
+/-- **Shifted-Pochhammer identity.** The figurate cleared-form polynomial is the rising
+factorial `ascPochhammer ℤ (d+1)` shifted by one: `Q_d(X) = ascPochhammer ℤ (d+1) (X + 1)`.
+Indeed `ascPochhammer ℤ (d+1) = X(X+1)⋯(X+d)`, so composing with `X + 1` sends each factor
+`X + i` to `X + (i+1)`, reproducing `Q_d(X) = (X+1)(X+2)⋯(X+d+1)`.  This realizes the
+`nextStep` of `OQ02` (relate `figuratePoly` to a shifted Pochhammer polynomial): it puts the
+figurate cleared form inside Mathlib's `ascPochhammer` API, from which the coefficient theory
+(Stirling numbers of the first kind) and the factorial-evaluation identities follow. -/
+theorem figuratePoly_eq_ascPochhammer_comp (d : ℕ) :
+    figuratePoly d = (ascPochhammer ℤ (d + 1)).comp (X + 1) := by
+  induction d with
+  | zero =>
+      rw [figuratePoly]
+      simp [ascPochhammer_succ_right, ascPochhammer_zero]
+  | succ d ih =>
+      have hfac : (X + ((d + 1 : ℕ) : Polynomial ℤ)).comp (X + 1)
+          = X + C (((d + 1 : ℕ) : ℤ) + 1) := by
+        rw [add_comp, X_comp, natCast_comp]
+        simp only [map_add, map_natCast, map_one]
+        ring
+      rw [figuratePoly, Finset.prod_range_succ, ← figuratePoly,
+          ascPochhammer_succ_right, mul_comp, hfac, ih]
 
 end TetrahedralNumberFormulaOQ02
