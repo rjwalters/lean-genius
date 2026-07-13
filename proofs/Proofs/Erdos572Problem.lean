@@ -54,7 +54,7 @@ constructing the cycle explicitly.
 -/
 def hasCycleOfLength (G : SimpleGraph V) (k : ℕ) [Fintype V] : Prop :=
   ∃ (vertices : Fin k → V), Function.Injective vertices ∧
-    (∀ i : Fin k, G.Adj (vertices i) (vertices ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega : 0 < k)⟩))
+    (∀ i : Fin k, G.Adj (vertices i) (vertices ⟨(i.val + 1) % k, Nat.mod_lt _ i.pos⟩))
 
 /--
 **C_{2k}-free graph:**
@@ -200,7 +200,7 @@ theorem luw_weaker_than_conjectured (k : ℕ) (hk : k ≥ 3) :
   -- Equivalently: 2k ≤ 3k-3+ν, which holds for k ≥ 3
   have hk_pos : (k : ℝ) > 0 := by positivity
   have hk_ne : (k : ℝ) ≠ 0 := ne_of_gt hk_pos
-  apply add_le_add_left
+  gcongr 1 + ?_
   split_ifs with heven
   · -- k even: ν = 1, denominator = 3k - 3 + 1 = 3k - 2
     have hdenom : (3 * (k : ℝ) - 3 + 1) > 0 := by
