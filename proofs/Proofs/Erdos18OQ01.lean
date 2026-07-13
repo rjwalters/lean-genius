@@ -1022,4 +1022,23 @@ theorem h_pow_le {m : ℕ} (hp : IsPractical m) (k : ℕ) : h (m ^ k) ≤ k * h 
       _ ≤ k * h m + h m := by omega
       _ = (k + 1) * h m := by ring
 
+/-! ## The multiplicative submonoid of practical numbers
+
+`practical_mul` shows the practical numbers are closed under multiplication and
+`one_practical` supplies the unit, so they form a submonoid of `(ℕ, ×)`.  Packaging
+the closure as a genuine `Submonoid` makes Mathlib's monoid API (e.g. `pow_mem`,
+`prod_mem`) available for the practical numbers; `practical_pow` above is the
+`pow_mem` instance of this structure. -/
+
+/-- **Practical numbers form a multiplicative submonoid of `ℕ`.**  Unit: `1` is
+practical (`one_practical`); closure: a product of practicals is practical
+(`practical_mul`). -/
+def practicalSubmonoid : Submonoid ℕ where
+  carrier := {m | IsPractical m}
+  one_mem' := one_practical
+  mul_mem' := fun ha hb => practical_mul ha hb
+
+@[simp] theorem mem_practicalSubmonoid {m : ℕ} :
+    m ∈ practicalSubmonoid ↔ IsPractical m := Iff.rfl
+
 end Erdos18OQ01
