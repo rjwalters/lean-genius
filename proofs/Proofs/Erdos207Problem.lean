@@ -124,7 +124,7 @@ theorem sts_triple_count_formula (n : ℕ) (hn : IsAdmissible n) :
   · -- n ≡ 3 (mod 6): 3 | n and 2 | (n - 1), so n*(n-1) = 3a * 2b = 6ab
     obtain ⟨a, ha⟩ := Nat.dvd_of_mod_eq_zero (show n % 3 = 0 by omega)
     obtain ⟨b, hb⟩ := Nat.dvd_of_mod_eq_zero (show (n - 1) % 2 = 0 by omega)
-    exact ⟨a * b, by rw [ha, hb]; ring⟩
+    exact ⟨a * b, by rw [hb, ha]; ring⟩
 
 /-
 ## Part IV: The Erdős Conjecture
@@ -256,8 +256,8 @@ theorem erdos_207_summary :
     -- The conjecture is true
     erdos207Conjecture ∧
     -- Kirkman's condition is necessary and sufficient for STS existence
-    (∀ n : ℕ, n ≥ 1 → (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
-      Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔ IsAdmissible n) := by
+    (∀ n : ℕ, n ≥ 1 → ((∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (H : Hypergraph3 V),
+      Fintype.card V = n ∧ IsSteinerTripleSystem H) ↔ IsAdmissible n)) := by
   constructor
   · exact kwan_sah_sawhney_simkin_2022
   · intro n hn

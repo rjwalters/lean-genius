@@ -127,7 +127,7 @@ theorem brahmaguptaProduct_square (a : ℝ) :
 
 theorem square_area (a : ℝ) (ha : 0 ≤ a) :
     sqrt (brahmaguptaProduct a a a a) = a ^ 2 := by
-  rw [brahmaguptaProduct_square, ← sq_abs, ← pow_mul]
+  rw [brahmaguptaProduct_square, show a ^ 4 = (a ^ 2) ^ 2 from by ring]
   rw [sqrt_sq (pow_nonneg ha 2)]
 
 -- ════════════════════════════════════════════════════════════════

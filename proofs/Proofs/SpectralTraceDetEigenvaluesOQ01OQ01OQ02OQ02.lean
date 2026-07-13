@@ -133,7 +133,9 @@ theorem trace_pow_eq_sum_pow_eigenvalues (A : Matrix n n K) (M : (Matrix n n K)�
     rw [hA, trace_pow_units_conj, trace_diagonal_pow]
   have hroots : eigenvalues A = (Finset.univ : Finset n).val.map d := by
     show A.charpoly.roots = _
-    rw [hA, charpoly_units_conj]
+    have hconj : A.charpoly = (diagonal d).charpoly := by
+      rw [hA]; simp only [Matrix.coe_units_inv, charpoly_units_conj]
+    rw [hconj]
     exact roots_charpoly_diagonal d
   rw [htrace, hroots, Multiset.map_map]
   rfl
@@ -146,7 +148,9 @@ theorem card_eigenvalues_diagonalizable (A : Matrix n n K) (M : (Matrix n n K)ˣ
     Multiset.card (eigenvalues A) = Fintype.card n := by
   have hroots : eigenvalues A = (Finset.univ : Finset n).val.map d := by
     show A.charpoly.roots = _
-    rw [hA, charpoly_units_conj]
+    have hconj : A.charpoly = (diagonal d).charpoly := by
+      rw [hA]; simp only [Matrix.coe_units_inv, charpoly_units_conj]
+    rw [hconj]
     exact roots_charpoly_diagonal d
   rw [hroots, Multiset.card_map, ← Finset.card_def, Finset.card_univ]
 

@@ -302,7 +302,7 @@ omit [LinearOrder N] in
 preserves the characteristic polynomial. -/
 theorem eigenvalues_units_conj (U : (Matrix N N K)ˣ) (A : Matrix N N K) :
     eigenvalues (U.val * A * U⁻¹.val) = eigenvalues A := by
-  unfold eigenvalues; rw [charpoly_units_conj]
+  unfold eigenvalues; rw [Matrix.coe_units_inv, charpoly_units_conj]
 
 /-- **Multiset spectral mapping for matrices similar to an upper-triangular one** (any field, all
 `k`): if `A = U T U⁻¹` with `T` upper-triangular, then
