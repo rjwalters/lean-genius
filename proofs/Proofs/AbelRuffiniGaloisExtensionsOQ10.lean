@@ -138,7 +138,11 @@ theorem altToFAut_injective :
   simp only [MonoidHom.coe_comp]
   exact (permToFAut_injective n).comp (Subgroup.subtype_injective _)
 
-instance altFaithful : FaithfulSMul (alternatingGroup (Fin n)) (F n) where
+/- v4.31: pin the `SMul` key to `altAction`'s projection chain — the bare
+header synthesizes the subgroup-restriction `SMul` (defeq but not reducibly),
+so `toAlgAutMulEquiv`/`finrank_eq_card` would not find this instance. -/
+instance altFaithful : @FaithfulSMul (alternatingGroup (Fin n)) (F n)
+    (altAction n).toDistribMulAction.toMulAction.toSMul where
   eq_of_smul_eq_smul {e₁ e₂} h := by
     apply altToFAut_injective n
     apply FaithfulSMul.eq_of_smul_eq_smul (α := F n)

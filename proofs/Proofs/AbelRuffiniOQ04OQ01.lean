@@ -236,7 +236,7 @@ theorem gal_card_dvd_120 :
     Subgroup.card_dvd_of_injective _ hinj
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   rw [Fintype.card_perm, p_rootSet_card] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 -- ============================================================================
 -- Part V: Polynomial Evaluation (toward eliminating gal_card_eq_120)
@@ -438,7 +438,10 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
       have := hN₅.conj_mem σ⁻¹ ((↑P₅ : Subgroup ↥H).inv_mem hσ_mem) τ
       have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
-      convert hprod using 1
+      -- v4.31: `convert using 1` no longer closes the associativity gap
+      have hassoc : σ * τ * σ⁻¹ * τ⁻¹ = σ * (τ * σ⁻¹ * τ⁻¹) := by group
+      rw [hassoc]
+      exact hprod
     have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
       rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
       have := hN₃.conj_mem τ hτ_mem σ

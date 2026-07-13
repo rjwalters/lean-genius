@@ -493,8 +493,22 @@ theorem solvable_iff_solvable_galois_group
     {E : Type*} [Field E] [Algebra F E]
     {α : E} {q : Polynomial F}
     (hirr : Irreducible q) (hα : Polynomial.aeval α q = 0) :
-    IsSolvableByRad F α → IsSolvable q.Gal :=
-  fun h => solvableByRad.isSolvable' hirr hα h
+    IsSolvableByRad F α → IsSolvable q.Gal := by
+  -- v4.31: `solvableByRad.isSolvable'` is now `isSolvable_gal_of_irreducible`
+  -- with membership hypothesis `α ∈ solvableByRad F E` first; bridge the
+  -- deprecated inductive `IsSolvableByRad` to membership by induction
+  -- (clearing `hα`/`hirr` first so they are not generalized into the motive).
+  intro h
+  have hmem : α ∈ solvableByRad F E := by
+    clear hα hirr
+    induction h with
+    | base a => exact IntermediateField.algebraMap_mem _ a
+    | add a b _ _ ha hb => exact add_mem ha hb
+    | neg a _ ha => exact neg_mem ha
+    | mul a b _ _ ha hb => exact mul_mem ha hb
+    | inv a _ ha => exact inv_mem ha
+    | rad a n hn _ ha => exact solvableByRad.rad_mem hn ha
+  exact isSolvable_gal_of_irreducible hmem hirr hα
 
 /-
 ## Summary and Open Questions
@@ -708,7 +722,7 @@ theorem gal_card_dvd_six :
         (Polynomial.SplittingField.splits p)]
     exact x_cube_sub_2_natDegree
   rw [hcard] at hdvd
-  simpa using hdvd
+  simpa [Nat.factorial] using hdvd
 
 -- Helper: X²+X+1 has a root in the splitting field of X³-2
 -- (the ratio of any two distinct roots satisfies X²+X+1 = 0)
@@ -1011,6 +1025,14 @@ theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
     have hab : a * x = x * a :=
       iso.injective (by rw [map_mul, map_mul, mul_comm])
     rw [hab]; group⟩
+  -- v4.31: downstream lemmas (`IsGalois.of_fixedField_normal_subgroup`,
+  -- `normalAutEquivQuotient`, quotient-group instances) key `H.Normal` on the
+  -- `E ≃ₐ[ℚ] E` spelling of the group, which no longer unifies reducibly with
+  -- `(cyclotomic p ℚ).Gal`; re-register the instance at that type.
+  haveI : @Subgroup.Normal
+      ((Polynomial.cyclotomic p ℚ).SplittingField ≃ₐ[ℚ]
+        (Polynomial.cyclotomic p ℚ).SplittingField)
+      AlgEquiv.aut H := ‹H.Normal›
   -- Step 6: Fixed field K = E^H
   set K := IntermediateField.fixedField H with hK_def
   -- Step 7: K/ℚ is Galois (Normal + Separable)
@@ -1073,7 +1095,11 @@ theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
       exact ⟨m, by
         show e g ^ m = x
         have hm' : g ^ m = e.symm x := hm
-        rw [← map_zpow e, hm', e.apply_symm_apply]⟩⟩⟩
+        -- v4.31: `rw` chains fail here because the quotient group appears in
+        -- two non-reducibly-equal spellings (`.Gal ⧸ H` vs `Gal(SF/ℚ) ⧸ H`);
+        -- close by defeq-tolerant `exact` instead.
+        have h1 : e (g ^ m) = x := by rw [hm']; exact e.apply_symm_apply x
+        exact (map_zpow e g m).symm.trans h1⟩⟩⟩
   -- Step 11: |Gal(K/ℚ)| = n
   have hK_card : Fintype.card (↥K ≃ₐ[ℚ] ↥K) = n := by
     rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank ℚ ↥K]; exact hK_degree

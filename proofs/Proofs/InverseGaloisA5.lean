@@ -437,7 +437,10 @@ theorem no_subgroup_order_15 (H : Subgroup (Equiv.Perm (Fin 5)))
       -- this : τ * σ⁻¹ * τ⁻¹ ∈ ↑P₅
       have hprod := (↑P₅ : Subgroup ↥H).mul_mem hσ_mem this
       -- hprod : σ * (τ * σ⁻¹ * τ⁻¹) ∈ ↑P₅
-      convert hprod using 1
+      -- v4.31: `convert using 1` no longer closes the associativity gap
+      have hassoc : σ * τ * σ⁻¹ * τ⁻¹ = σ * (τ * σ⁻¹ * τ⁻¹) := by group
+      rw [hassoc]
+      exact hprod
     have hc₃ : c ∈ (↑P₃ : Subgroup ↥H) := by
       rw [hc_def]; show σ * τ * σ⁻¹ * τ⁻¹ ∈ ↑P₃
       have := hN₃.conj_mem τ hτ_mem σ
