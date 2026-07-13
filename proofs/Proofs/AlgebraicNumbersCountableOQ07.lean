@@ -195,4 +195,78 @@ theorem exists_meagre_null_decomposition :
     intro x hx hx'
     exact hx hx'
 
+/-! ### Descriptive-set structure: `Gδ` vs. not-`Gδ` (the `ℚ`/irrationals pattern)
+
+Everything above is a *category* statement (meagre / comeagre / residual).  The
+finer **Borel-hierarchy** structure is that the algebraic reals sit inside `ℝ`
+exactly as `ℚ` does: being countable they are an `Fσ` set, so the transcendentals
+— their complement — form a *dense `Gδ`* (strengthening the mere comeagreness of
+`comeagre_setOf_transcendental` to the transcendentals actually *being* a dense
+`Gδ`).  Dually, the algebraic reals are **not** a `Gδ` set — the exact analogue of
+the classical "`ℚ` is `Fσ` but not `Gδ`".  If they were `Gδ`, then being dense
+they would be residual (`residual_of_dense_Gδ`); but they are meagre
+(`isMeagre_setOf_isAlgebraic`), and in the nonempty Baire space `ℝ` no set is
+simultaneously residual and meagre (`not_isMeagre_of_mem_residual`). -/
+
+/-- **Every rational real is algebraic over `ℤ`.**  `q = q.num / q.den` is a root
+    of the nonzero integer polynomial `C q.den · X − C q.num` (nonzero because its
+    degree-`1` coefficient is `q.den ≠ 0`).  Supplies a dense set of algebraic
+    reals for `dense_setOf_isAlgebraic`. -/
+theorem isAlgebraic_ratCast (q : ℚ) : IsAlgebraic ℤ ((q : ℝ)) := by
+  refine ⟨Polynomial.C (q.den : ℤ) * Polynomial.X - Polynomial.C q.num, ?_, ?_⟩
+  · intro hp
+    have h1 : (Polynomial.C (q.den : ℤ) * Polynomial.X - Polynomial.C q.num).coeff 1
+        = (q.den : ℤ) := by
+      simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,
+        mul_one, Polynomial.coeff_C, if_neg (one_ne_zero), sub_zero]
+    rw [hp, Polynomial.coeff_zero] at h1
+    exact q.den_nz (by exact_mod_cast h1.symm)
+  · have hden : (q.den : ℝ) ≠ 0 := by exact_mod_cast q.den_nz
+    have he : (Polynomial.aeval (q : ℝ))
+        (Polynomial.C (q.den : ℤ) * Polynomial.X - Polynomial.C q.num)
+        = (q.den : ℝ) * (q : ℝ) - (q.num : ℝ) := by
+      simp
+    rw [he, Rat.cast_def]
+    field_simp
+    ring
+
+/-- **The algebraic reals are dense.**  They contain every rational cast
+    (`isAlgebraic_ratCast`) and the rationals are dense in `ℝ`
+    (`Rat.denseRange_cast`). -/
+theorem dense_setOf_isAlgebraic : Dense {x : ℝ | IsAlgebraic ℤ x} :=
+  Dense.mono (Set.range_subset_iff.mpr fun q => isAlgebraic_ratCast q) Rat.denseRange_cast
+
+/-- **The algebraic reals are not a `Gδ` set** — the descriptive-set analogue of
+    "`ℚ` is not `Gδ`".  A dense `Gδ` set is residual (`residual_of_dense_Gδ`), but
+    the algebraic reals are meagre (`isMeagre_setOf_isAlgebraic`), and a nonempty
+    Baire space has no set that is both residual and meagre
+    (`not_isMeagre_of_mem_residual`).  So no matter how the algebraic reals are
+    presented, they cannot be a countable intersection of open sets. -/
+theorem not_isGδ_setOf_isAlgebraic : ¬ IsGδ {x : ℝ | IsAlgebraic ℤ x} := by
+  intro hGδ
+  have hres : {x : ℝ | IsAlgebraic ℤ x} ∈ residual ℝ :=
+    residual_of_dense_Gδ hGδ dense_setOf_isAlgebraic
+  exact not_isMeagre_of_mem_residual hres isMeagre_setOf_isAlgebraic
+
+/-- **The transcendental reals are a dense `Gδ`.**  The algebraic reals are
+    countable (`Algebraic.countable ℤ ℝ`), hence `Fσ`, so their complement — the
+    transcendentals — is `Gδ` (`Set.Countable.isGδ_compl`); density is
+    `dense_setOf_transcendental`.  This upgrades `comeagre_setOf_transcendental`
+    (comeagre means *containing* a dense `Gδ`) to the transcendentals themselves
+    *being* a dense `Gδ`. -/
+theorem isGδ_setOf_transcendental : IsGδ {x : ℝ | Transcendental ℤ x} := by
+  have hcompl : {x : ℝ | Transcendental ℤ x} = {x : ℝ | IsAlgebraic ℤ x}ᶜ := by
+    ext x; simp [Transcendental, Set.mem_compl_iff, Set.mem_setOf_eq]
+  rw [hcompl]
+  exact (Algebraic.countable ℤ ℝ).isGδ_compl
+
+/-- **Capstone.**  The algebraic/transcendental split of `ℝ` reproduces the Borel
+    structure of the `ℚ`/irrationals split: the transcendentals are a dense `Gδ`
+    while the algebraic reals, though `Fσ`, are not `Gδ`.  This is a strictly
+    sharper separation than the measure/category corners above — it distinguishes
+    the two sets at the level of the Borel hierarchy, not just Baire category. -/
+theorem transcendental_isGδ_and_algebraic_not_isGδ :
+    IsGδ {x : ℝ | Transcendental ℤ x} ∧ ¬ IsGδ {x : ℝ | IsAlgebraic ℤ x} :=
+  ⟨isGδ_setOf_transcendental, not_isGδ_setOf_isAlgebraic⟩
+
 end AlgebraicNumbersCountableOQ07
