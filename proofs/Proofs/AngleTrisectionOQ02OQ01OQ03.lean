@@ -373,4 +373,142 @@ theorem not_pgroup_any_of_two_primes_dvd (α : ℝ) (hα : IsIntegral ℚ α)
   have e₂ : q₂ = p := pgroup_prime_dvd_degree_eq α hα hp hq₂ hgt hd₂ hP
   exact hne (e₁.trans e₂.symm)
 
+/-! ### Group-structural layer: a p-group Galois group is nilpotent, hence solvable
+
+The criteria above are all about the *arithmetic of the degree* (`natDegree = p^k`
+and its prime factors).  This section records the complementary **group-theoretic
+structure**: a `p`-group is nilpotent (`IsPGroup.isNilpotent`), and every nilpotent
+group is solvable (`IsNilpotent.to_isSolvable`), so a `p`-group Galois group is
+solvable.  Solvability of the Galois group is the algebraic gateway to
+*expressibility by radicals* (Galois' criterion), which is why the constructibility
+question — a `2`-group tower of quadratic extensions — sits inside the wider
+solvable-by-radicals picture.  These use no property of the degree at all, only the
+`p`-group hypothesis on the group itself. -/
+
+/-- **A p-group Galois group is nilpotent.**  For any prime `p`, if `Gal(minpoly ℚ α)`
+is a `p`-group then it is a nilpotent group: the finite Galois group is a finite
+`p`-group, and finite `p`-groups are nilpotent (`IsPGroup.isNilpotent`). -/
+theorem pgroup_gal_isNilpotent (α : ℝ) (_hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    Group.IsNilpotent (minpoly ℚ α).Gal := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact hGal.isNilpotent
+
+/-- **A p-group Galois group is solvable.**  Nilpotent groups are solvable
+(`IsNilpotent.to_isSolvable`), so `pgroup_gal_isNilpotent` upgrades to solvability —
+the hypothesis of Galois' radical-solvability criterion.  In particular the
+constructibility-relevant `2`-group case yields a solvable Galois group. -/
+theorem pgroup_gal_isSolvable (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    IsSolvable (minpoly ℚ α).Gal := by
+  haveI : Group.IsNilpotent (minpoly ℚ α).Gal := pgroup_gal_isNilpotent α hα hp hGal
+  infer_instance
+
+/-- **Non-solvable Galois group ⟹ not a p-group (for any prime).**  The contrapositive
+of `pgroup_gal_isSolvable`: if `Gal(minpoly ℚ α)` fails to be solvable then it is not a
+`p`-group for *any* prime `p` (so, in particular, not the `2`-group required for
+constructibility).  A group-structural non-constructibility criterion complementing the
+degree-arithmetic obstructions above. -/
+theorem not_pgroup_of_not_solvable (α : ℝ) (hα : IsIntegral ℚ α)
+    (hns : ¬ IsSolvable (minpoly ℚ α).Gal) {p : ℕ} (hp : p.Prime) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal :=
+  fun hGal => hns (pgroup_gal_isSolvable α hα hp hGal)
+
+/-! ### Nontrivial center — the defining structural feature of a p-group
+
+Nilpotency and solvability (above) are consequences shared by many groups.  The
+sharper, characteristic property of a nontrivial finite `p`-group is that its **centre
+is nontrivial** (`IsPGroup.center_nontrivial`) — the class-equation fixed-point
+argument.  For a Galois group this says the extension has a nontrivial "central"
+symmetry.  To make the hypothesis `Nontrivial Gal` concrete we first record that a
+minimal polynomial of degree `> 1` already forces the Galois group to be nontrivial
+(its order is a positive multiple of the degree), so the centre statement applies
+directly to the degree-`3` cos 20° obstruction. -/
+
+/-- **Degree `> 1` ⟹ nontrivial Galois group.**  For an algebraic real `α` whose minimal
+polynomial has degree `> 1`, `Gal(minpoly ℚ α)` is nontrivial: the degree divides
+`|Gal|` (`natDegree_dvd_card_gal`), so `1 < natDegree ≤ |Gal|`. -/
+theorem gal_nontrivial_of_one_lt_natDegree (α : ℝ) (hα : IsIntegral ℚ α)
+    (hdeg : 1 < (minpoly ℚ α).natDegree) : Nontrivial (minpoly ℚ α).Gal := by
+  have hirr := minpoly.irreducible hα
+  have hdvd := natDegree_dvd_card_gal hirr
+  have hcard : 1 < Nat.card (minpoly ℚ α).Gal :=
+    lt_of_lt_of_le hdeg (Nat.le_of_dvd Nat.card_pos hdvd)
+  rw [Finite.one_lt_card_iff_nontrivial] at hcard
+  exact hcard
+
+/-- **A nontrivial p-group Galois group has nontrivial centre.**  For any prime `p`, if
+`Gal(minpoly ℚ α)` is a nontrivial `p`-group then its centre `Z(Gal)` is nontrivial
+(`IsPGroup.center_nontrivial`, the class-equation argument).  This is the hallmark
+structural property of `p`-groups — sharper than the nilpotency/solvability recorded
+above, which hold for far more groups. -/
+theorem pgroup_gal_center_nontrivial (α : ℝ) (_hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) [Nontrivial (minpoly ℚ α).Gal]
+    (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    Nontrivial (Subgroup.center (minpoly ℚ α).Gal) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact hGal.center_nontrivial
+
+/-- **Degree `> 1` p-group Galois group has nontrivial centre.**  Combines
+`gal_nontrivial_of_one_lt_natDegree` with `pgroup_gal_center_nontrivial`: whenever the
+minimal polynomial has degree `> 1` (so the Galois group is nontrivial) and the group is a
+`p`-group, its centre is nontrivial.  This applies directly to the degree-`3` cos 20°
+minimal polynomial behind the `60°`-trisection obstruction. -/
+theorem pgroup_gal_center_nontrivial_of_one_lt_natDegree (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hdeg : 1 < (minpoly ℚ α).natDegree)
+    (hGal : IsPGroup p (minpoly ℚ α).Gal) :
+    Nontrivial (Subgroup.center (minpoly ℚ α).Gal) :=
+  haveI : Nontrivial (minpoly ℚ α).Gal := gal_nontrivial_of_one_lt_natDegree α hα hdeg
+  pgroup_gal_center_nontrivial α hα hp hGal
+
+/-- **Parity dichotomy: a nontrivial `p`-group extension has even degree iff `p = 2`.**
+    Since a `p`-group Galois group forces `natDegree = p^k` with `k ≥ 1`
+    (`galois_pgroup_implies_degree_is_pow_p`), the degree is even exactly when the base prime
+    is `2`.  This is the parity core of the trisection obstruction: constructible reals live in
+    `2`-power-degree (hence even-degree, for degree `> 1`) extensions, so any odd-degree
+    algebraic real — like `cos 20°` — cannot be constructible.  It unifies the `p = 2` and
+    odd-`p` sides that the file previously handled only through the specific
+    `even_degree_not_3group`. -/
+theorem pgroup_degree_even_iff (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    Even (minpoly ℚ α).natDegree ↔ p = 2 := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  have hk0 : k ≠ 0 := by rintro rfl; rw [pow_zero] at hk; omega
+  rw [hk, Nat.even_pow]
+  constructor
+  · rintro ⟨hep, _⟩; exact hp.even_iff.mp hep
+  · rintro rfl; exact ⟨even_two, hk0⟩
+
+/-- **Odd base prime ⟹ odd degree.**  For an odd prime `p`, a nontrivial `p`-group Galois
+    extension has *odd* minimal-polynomial degree (`= p^k` with `p` odd).  The odd-prime
+    counterpart of the `2`-group even-degree fact, and a direct corollary of
+    `pgroup_degree_even_iff`. -/
+theorem pgroup_odd_degree_of_odd_prime (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hne2 : p ≠ 2) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    Odd (minpoly ℚ α).natDegree := by
+  rw [← Nat.not_even_iff_odd, pgroup_degree_even_iff α hα hp hgt hP]
+  exact hne2
+
+/-- **Even degree kills every odd-prime `p`-group.**  If `natDegree(minpoly ℚ α)` is even
+    (and `> 1`), the Galois group cannot be a `p`-group for any odd prime `p`.  The general
+    even-degree obstruction, subsuming the specific `even_degree_not_3group` (`p = 3`) and
+    covering `p = 5, 7, …` at once. -/
+theorem even_degree_not_odd_pgroup (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hne2 : p ≠ 2) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (heven : Even (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal := by
+  intro hP
+  exact hne2 ((pgroup_degree_even_iff α hα hp hgt hP).mp heven)
+
+/-- **A nontrivial `2`-group extension has even degree.**  The `p = 2` face of
+    `pgroup_degree_even_iff`: the minimal-polynomial degree of a nontrivial `2`-group Galois
+    extension is even (`= 2^k`, `k ≥ 1`).  Contrapositive of `odd_degree_gt_one_not_2group`. -/
+theorem two_group_even_degree_of_gt_one (α : ℝ) (hα : IsIntegral ℚ α)
+    (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup 2 (minpoly ℚ α).Gal) :
+    Even (minpoly ℚ α).natDegree :=
+  (pgroup_degree_even_iff α hα Nat.prime_two hgt hP).mpr rfl
+
 end AngleTrisectionOQ02OQ01OQ03

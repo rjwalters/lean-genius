@@ -166,3 +166,34 @@ Rolle machinery not in Mathlib 4.26. A tractable general-but-partial route: prov
 reversal identity eₖ(x) = (∏x)·e_{n−k}(1/x) for x with no zero, which upgrades `newton_k1` to
 `newton at k=n−1 for all n` (positive inputs) via the k↔n−k duality — a general theorem short
 of the full axiom.
+
+## Session 2026-07-12 (researcher-7) — arbitrary-gap / TP2 layer on the log-concavity library
+
+**Mode:** REVISIT (node is the `MaclaurinLogConcave` library in `AmgmInequalityOQ03OQ02OQ02.lean`,
+0-axiom/0-sorry; JSON `leanFiles` is the stale family-wide list and does not track this node —
+trust the file header + build, per r5's 07-12 note). **Outcome:** progress — 3 new axiom-free thms.
+
+The library's defining hypothesis `p m · p (m+2) ≤ (p (m+1))²` only compares indices two apart.
+Added the general **index-majorization / total-positivity-of-order-2 (TP2)** layer, all read off
+the existing ratio-antitone characterization `logConcave_iff_ratio_antitone`:
+
+- `logConcave_exchange` — single exchange step `i ≤ j → p i · p (j+1) ≤ p (i+1) · p j`
+  (defining log-concavity is the `j = i+1` case). Direct from `p (j+1)/p j ≤ p (i+1)/p i`
+  cleared of positive denominators via `div_le_div_iff₀`.
+- `logConcave_logSupermod` — the master inequality `a ≤ b → ∀ c, p a · p (b+c) ≤ p (a+c) · p b`
+  (discrete log-supermodularity / TP2: every 2×2 Hankel minor `p a·p(b+c) − p(a+c)·p b ≤ 0`).
+  Proof: induction on `c`; the successor step multiplies the IH by the antitone consecutive
+  ratio at base `a+c ≤ b+c` (two `mul_le_mul_of_nonneg_*` hints into `nlinarith`) then cancels
+  the common positive factor `p (a+c)` via `le_of_mul_le_mul_right`.
+- `logConcave_spread` — arbitrary even-gap log-concavity `p m · p (m + 2d) ≤ (p (m+d))²`
+  (the `a=m, b=m+d, c=d` instance of `logSupermod`; `d = 1` recovers the defining inequality).
+
+VERIFIED: `lake env lean` EXIT 0, no errors/sorries; `#print axioms` = [propext, Classical.choice,
+Quot.sound] for all three (no `sorryAx`, no `Lean.ofReduceBool`). File 650 → 720 lines,
+32 → 35 theorems, still 0-axiom/0-sorry.
+
+**Frontier unchanged.** The one deep family axiom is `newton_log_concavity` (Newton's
+inequalities, in the sibling `AmgmInequalityOQ02.lean`) which needs real-rootedness/Rolle
+machinery absent from Mathlib 4.26 — out of session scope, untouched. This node itself is a
+generic log-concave-sequence library and carries no axioms. OQ depth is 3 (`-oq-03-oq-02-oq-02`),
+so per the depth guard **0 follow-up questions** are generated.

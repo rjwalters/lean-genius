@@ -128,3 +128,45 @@ is complete. Only nextStep #3 (prove B1–B3 for GENERAL polynomials, making Stu
 unconditional) remains — that is the deep content behind the 5 standing axioms, not elementary.
 
 **Files Modified:** proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean (+3 thms; 1480→1512 lines).
+
+## Session 2026-07-12 (researcher-3) — general Fin n sign-change bounds (uniformizing the Fin 3 template)
+
+**Mode**: REVISIT (RICH, SOLVED-side). **Outcome**: +3 axiom-free theorems, offline EXIT 0.
+
+### What I Did
+Advanced nextStep (c) — the general `Fin n` sign-change count. The `Fin 3` family
+(`countSignChanges_three_alternating = 2`, `..._mid_ne_zero = 0`) are the n=3 instances of
+three general facts, all one-line corollaries of the existing `countSignChanges_nowhere_zero`
+(routes every count through adjacent opposite-sign pairs) + `card_adjacent` (n−1 adjacent
+pairs). Added to `DescartesRuleOfSignsOQ01OQ03.lean` (after `card_adjacent`):
+- `countSignChanges_le_of_nowhere_zero` : `V(f) ≤ n−1` — universal ceiling, the sequence-level
+  form of the Descartes degree bound `V(p) ≤ deg p` (filter ⊆ adjacent, `Finset.card_le_card`).
+- `countSignChanges_alternating_eq` : all adjacent pairs opposite-sign ⟹ `V(f) = n−1` (maximal;
+  `Finset.filter_congr` collapses {adjacent ∧ opp} to {adjacent}).
+- `countSignChanges_same_sign_eq_zero` : all adjacent pairs same-sign ⟹ `V(f) = 0` (the
+  opposite-sign filter is empty; `Finset.filter_eq_empty_iff`).
+
+### Key Findings
+- The nowhere-zero count machinery (`countSignChanges_nowhere_zero` reducing V to an adjacent-
+  pair filter, + `card_adjacent`) makes the two extremes and the ceiling of the general count
+  fall out uniformly — no case analysis, unlike the hand-written `Fin 3` fin_cases proofs.
+- `V(f) ≤ n−1` is the elementary sequence-side shadow of Descartes' degree bound; the strict
+  alternation case shows it is attained.
+
+### Honest status
+- Not new deep mathematics: the deep content (B1–B3 for GENERAL polynomials, making
+  Sturm⟹Descartes unconditional) remains the standing frontier / axiomatized elsewhere. Value:
+  completes the elementary general `Fin n` sign-change theory (extremes + ceiling) that the
+  file only had at n=2,3. Directly reuses in-file infra.
+- Verified: `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/DescartesRuleOfSignsOQ01OQ03.lean` EXIT 0;
+  the 3 warnings in the log are in pre-existing quadratic lemmas (not my code). `#print axioms`
+  on all 3 → `[propext, Classical.choice, Quot.sound]`.
+
+### Files Modified
+- proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean (+3 thm, 1510→1565 lines, 0 axioms/sorries)
+- src/data/research/problems/descartes-rule-of-signs-oq-01-oq-03.json (knowledge)
+
+### Next Steps
+- Bridge the sequence-level `countSignChanges_le_of_nowhere_zero` to the polynomial
+  `signChangesInCoeffs p ≤ p.natDegree` for gap-free p (the coefficient sequence is nowhere-zero).
+- The deep B1–B3-for-general-p direction stays axiomatized / out of elementary scope.

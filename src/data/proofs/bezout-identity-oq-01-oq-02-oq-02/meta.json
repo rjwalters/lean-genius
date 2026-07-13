@@ -33,7 +33,8 @@
       "orbit_e_isPrimitive: the necessity half of transitivity — every SLₙ(ℤ)-orbit of a basis vector consists of primitive vectors",
       "BezoutIdentityOQ01OQ02OQ02Invariant.lean — the invariance (necessity) complement to the transitivity results: the content (gcd) of an integer vector is a complete SLₙ(ℤ)-invariant. dvd_mulVec (integer matrices carry common divisors forward), common_dvd_mulVec_iff (SLₙ preserves the full set of common divisors, strengthening isPrimitive_mulVec_iff from primitivity to arbitrary content), sameOrbit_common_dvd_eq (content is an orbit invariant), IsPrimitive.common_dvd_isUnit (primitive = trivial content). Axiom-free.",
       "Sharpness of the 1<n hypothesis (n=1 obstruction): coe_sl_fin_one_eq_one (SL₁(ℤ)={(1)} at the matrix level), sl_fin_one_mulVec (SL₁ acts trivially), not_exists_sl_fin_one_single_neg (no SL₁ move carries (1) to (-1)), not_forall_sl_fin_one_orbit (transitivity fails at n=1). Proves the entry's previously prose-only claim that the 1<n hypothesis in exists_sl_mulVec_eq_of_isPrimitive is genuinely necessary — SL₁(ℤ) has two primitive-vector orbits, not one. Axiom-free.",
-      "BezoutIdentityOQ01OQ02OQ02Basis.lean — unimodular completion as an actual Module.Basis object (the parent only ever phrased extends to a ℤ-basis through the matrix datum ↑ₘA *ᵥ eₖ = v). slColumnBasis A (the ℤ-basis given by the columns of A ∈ SLₙ(ℤ), as the image of the standard basis under SpecialLinearGroup.toLin A), slColumnBasis_apply/slColumnBasis_isPrimitive; isPrimitive_of_mem_basis (converse in ALL n: any member of any ℤ-basis of ℤⁿ is primitive, via b.coord i); exists_basis_apply_eq_of_isPrimitive (n≥2: a primitive vector is the i-th member of an explicit ℤ-basis, any slot i); isPrimitive_iff_mem_basis (n≥2: primitive ⇔ member of a ℤ-basis). 1 def, 6 theorems, 0 sorries, 0 axioms."
+      "BezoutIdentityOQ01OQ02OQ02Basis.lean — unimodular completion as an actual Module.Basis object (the parent only ever phrased extends to a ℤ-basis through the matrix datum ↑ₘA *ᵥ eₖ = v). slColumnBasis A (the ℤ-basis given by the columns of A ∈ SLₙ(ℤ), as the image of the standard basis under SpecialLinearGroup.toLin A), slColumnBasis_apply/slColumnBasis_isPrimitive; isPrimitive_of_mem_basis (converse in ALL n: any member of any ℤ-basis of ℤⁿ is primitive, via b.coord i); exists_basis_apply_eq_of_isPrimitive (n≥2: a primitive vector is the i-th member of an explicit ℤ-basis, any slot i); isPrimitive_iff_mem_basis (n≥2: primitive ⇔ member of a ℤ-basis). 1 def, 6 theorems, 0 sorries, 0 axioms.",
+      "BezoutIdentityOQ01OQ02OQ02Reduction.lean — the local (finite-field) picture of primitivity, absent from the whole bezout family: primitivity is exactly the nonvanishing of the reduction v mod p in (ZMod p)ⁿ for EVERY prime p (a local-global / Hasse-flavoured reformulation of the single global obstruction gcd ≠ 1). not_isPrimitive_iff_exists_prime_forall_dvd (the sharp obstruction: v fails to be primitive ⇔ some prime p divides all entries; dimension-free, correct even at n=0 and v=0), not_isPrimitive_of_prime_dvd / IsPrimitive.exists_not_dvd_of_prime (the two one-directional corollaries), forall_dvd_iff_reduction_eq_zero (the ZMod bridge), isPrimitive_iff_forall_prime_not_forall_dvd (positive ℤ-form), isPrimitive_iff_forall_prime_reduction_ne_zero (capstone: primitive ⇔ 𝔽_p-reduction nonzero for every prime p), isPrimitive_iff_forall_reduction_ne_zero (modulus form, no primality: primitive ⇔ reduction mod m nonzero for every m ≥ 2), and prime_dvd_finsetGcd_iff_reduction_eq_zero (ties the local picture to the global content: a prime divides the Finset-gcd ⇔ the mod-p reduction vanishes). 9 theorems, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only)."
     ]
   },
   "overview": {
@@ -103,13 +104,18 @@
       "name": "isPrimitive_iff_mem_basis",
       "type": "theorem",
       "description": "Primitive ⇔ member of a ℤ-basis (n ≥ 2). Sharpens the column-completion statement isPrimitive_iff_exists_sl_column into an actual Module.Basis object: a vector is primitive iff it occurs as a member b i of some ℤ-basis b of ℤⁿ. Forward is explicit unimodular completion (exists_basis_apply_eq_of_isPrimitive places v in any prescribed slot i of slColumnBasis U⁻¹); backward is isPrimitive_of_mem_basis, which holds in every dimension via the dual functional b.coord i. Turns the parent files repeated prose claim that a primitive vector extends to a ℤ-basis into a machine-checked Basis. Axiom-free."
+    },
+    {
+      "name": "isPrimitive_iff_forall_prime_reduction_ne_zero",
+      "type": "theorem",
+      "description": "Local-global characterization of primitivity: an integer vector v is primitive iff its reduction to the finite field 𝔽_p = ZMod p is nonzero for EVERY prime p (i ↦ (v i : ZMod p) ≠ 0). Decomposes the single global condition gcd = 1 into a family of independent local nonvanishing conditions, one per prime — the Hasse/local-global view of setwise coprimality. Built on the parent's isPrimitive_iff_forall_isUnit_of_dvd via the sharp obstruction not_isPrimitive_iff_exists_prime_forall_dvd (v imprimitive ⇔ some prime divides all entries) and the ZMod bridge ZMod.intCast_zmod_eq_zero_iff_dvd. Axiom-free."
     }
   ],
   "leanFile": {
     "namespace": "BezoutPrimitive",
-    "lineCount": 646,
+    "lineCount": 699,
     "axiomCount": 0,
-    "theoremCount": 31,
+    "theoremCount": 35,
     "definitionCount": 2,
     "path": "Proofs/BezoutIdentityOQ01OQ02OQ02.lean",
     "sorries": 0

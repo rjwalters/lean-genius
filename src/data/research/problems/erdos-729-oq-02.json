@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED-CORE + OUTWARD EXTENSION (researcher-5 2026-07-11): Legendre core done earlier; this session added 5 axiom-free theorems building on sub_one_mul_padicValNat_factorial_digitSum — carry-free additive Kummer, base-p digit-sum subadditivity (Mathlib gap), and the sharp digit-sum divisibility criteria p∤C ↔ no carries / p∣C ↔ ≥1 carry (Mathlib gap). Host-lean verified 0 errors, #print axioms = [propext,Classical.choice,Quot.sound] only. Docker build hits transient SIGBUS-135 at C-codegen after clean 2.3s elaboration.",
+    "progressSummary": "PROGRESS: closed the open power-of-two converse (s_2(n)=1⟹n=2^k), completing the iff and the sharp v_2(C(2n,n))=1 ↔ n=2^k. Elementary p-adic theory saturated + axiom-free; only deep parent barreto_leeham_theorem remains.",
     "builtItems": [
       "digitSum_prime_mul_add (p n r)(hp:1<p)(hr:r<p): (Nat.digits p (p*n+r)).sum = (Nat.digits p n).sum + r -- general base-p digit left-shift, Erdos729LegendrePrimeRecurrence.lean",
       "digitSum_prime_mul (p n)(hp:1<p): s_p(p*n)=s_p(n) -- r=0 invariant",
@@ -55,7 +55,15 @@
       "Erdos729LegendreGeneral.lean: not_dvd_choose_iff_digitSum_add — p∤C(m+n,m) ↔ s_p(m+n)=s_p(m)+s_p(n) (no base-p carries); via dvd_iff_padicValNat_ne_zero; NOT in Mathlib",
       "Erdos729LegendreGeneral.lean: dvd_choose_iff_digitSum_lt — p∣C(m+n,m) ↔ s_p(m+n)<s_p(m)+s_p(n) (≥1 carry); complement via subadditivity",
       "Erdos729LegendreGeneral.lean: padicValNat_choose_eq_div — division-form Kummer in gallery digitSum shape v_p(C)=(s_p(m)+s_p(n)-s_p(m+n))/(p-1)",
-      "digitSum_base_mul + digitSum_pos + 3 central-binomial theorems (Erdos729LegendreGeneral.lean, researcher-2): digitSum_base_mul (s_p(p*n)=s_p(n), digit-sum invariance under multiplication by base, Mathlib gap, via Nat.digits_def'+mul_mod_right+mul_div_cancel_left); digitSum_pos (n!=0 => s_p(n)>0, via getLast_digit_ne_zero+List.le_sum_of_mem); padicValNat_centralBinom_eq_div (Kummer v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1)); not_dvd_centralBinom_iff (p not-dvd C(2n,n) iff s_p(2n)=2*s_p(n)); centralBinom_even (2|C(2n,n) for n>=1, classical, via base invariance at p=2). All axiom-free [propext,Classical.choice,Quot.sound]; host-lean elaboration 0 errors (docker exit-135 = known transient SIGBUS at C-codegen, NOT elaboration failure)."
+      "digitSum_base_mul + digitSum_pos + 3 central-binomial theorems (Erdos729LegendreGeneral.lean, researcher-2): digitSum_base_mul (s_p(p*n)=s_p(n), digit-sum invariance under multiplication by base, Mathlib gap, via Nat.digits_def'+mul_mod_right+mul_div_cancel_left); digitSum_pos (n!=0 => s_p(n)>0, via getLast_digit_ne_zero+List.le_sum_of_mem); padicValNat_centralBinom_eq_div (Kummer v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1)); not_dvd_centralBinom_iff (p not-dvd C(2n,n) iff s_p(2n)=2*s_p(n)); centralBinom_even (2|C(2n,n) for n>=1, classical, via base invariance at p=2). All axiom-free [propext,Classical.choice,Quot.sound]; host-lean elaboration 0 errors (docker exit-135 = known transient SIGBUS at C-codegen, NOT elaboration failure).",
+      "Erdos729LegendreGeneral.lean: sub_one_mul_padicValNat_centralBinom — general-p exact form (p-1)·v_p(C(2n,n))+s_p(2n)=2·s_p(n)",
+      "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_eq_digitSum — SHARP v_2(C(2n,n))=s_2(n) (classical Kummer specialisation, was missing)",
+      "Erdos729LegendreGeneral.lean: one_le_padicValNat_centralBinom_two — 1≤v_2(C(2n,n)) for n≥1 (sharpens centralBinom_even)",
+      "Erdos729LegendreGeneral.lean: digitSum_two_pow — s_2(2^k)=1",
+      "Erdos729LegendreGeneral.lean: padicValNat_centralBinom_two_pow — v_2(C(2·2^k,2^k))=1 (C(2^{k+1},2^k)≡2 mod 4)",
+      "digitSum_le_length_mul, digitSum_le_log_succ_mul (sharp digit-sum upper bounds by digit count / log) in Erdos729LegendreGeneral.lean",
+      "sub_one_mul_padicValNat_factorial_ge (general-p sharp lower bound on (p-1)*v_p(n!))",
+      "padicValNat_factorial_two_ge / _two_le / _two_sandwich (two-sided quantitative Legendre bound n - log2 n - 1 <= v_2(n!) <= n - 1)"
     ],
     "insights": [
       "The 2-adic doubling recurrence v_2((2n)!)=n+v_2(n!) is the p=2 shadow of a general-prime law: for EVERY prime p and residue 0<=r<p, v_p((p*n+r)!) = n + v_p(n!), the increment n being INDEPENDENT of r. So all p consecutive arguments pn, pn+1, ..., pn+(p-1) share one valuation step. Proof: (p-1)*v_p(m!)=m-s_p(m) (Mathlib) plus s_p(p*n+r)=s_p(n)+r and (p-1)*n+n=p*n, then cancel p-1>0. Not a named Mathlib lemma.",
@@ -68,7 +76,12 @@
       "Mathlib DOES carry Kummer: sub_one_mul_padicValNat_choose_eq_sub_sum_digits(_) and padicValNat_choose(_) (carries form) in NumberTheory/Padics/PadicVal/Basic.lean — but only the truncated-ℕ-subtraction shape. The subtraction-free additive rearrangement (p-1)·v_p(C)+s_p(m+n)=s_p(m)+s_p(n) is cleaner and is what yields subadditivity + the divisibility criteria as one-line omega corollaries.",
       "Genuine Mathlib GAPS confirmed (v4.26.0): (1) base-p digit-sum subadditivity s_p(m+n)≤s_p(m)+s_p(n) — only digit_sum_le (s_p(n)≤n) exists; (2) digit-sum criterion p∤C(m+n,m) ↔ s_p(m+n)=s_p(m)+s_p(n). Both now proven axiom-free in the gallery. p=2 case of the criterion = classical odd-binomial ↔ disjoint binary supports (Lucas/Kummer).",
       "digitSum_base_mul: s_p(p*n)=s_p(n) -- multiplying by base appends a trailing 0 digit ((p*n)%p=0, (p*n)/p=n via Nat.digits_def'), leaving digit sum unchanged. General reusable lemma (Mathlib gap). Its p=2 instance s_2(2n)=s_2(n) turns the no-carry criterion into classical 2|C(2n,n): at p=2, p not-dvd C(2n,n) iff s_2(2n)=2*s_2(n) forces s_2(n)=0 iff n=0.",
-      "Central binomial C(2n,n)=Nat.centralBinom n is the m=n case of the Kummer digit-sum machinery: v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1) counts carries of n+n base p. digitSum_pos (n!=0 => s_p(n)>0) from getLast_digit_ne_zero (top base-p digit nonzero) + List.le_sum_of_mem."
+      "Central binomial C(2n,n)=Nat.centralBinom n is the m=n case of the Kummer digit-sum machinery: v_p(C(2n,n))=(2*s_p(n)-s_p(2n))/(p-1) counts carries of n+n base p. digitSum_pos (n!=0 => s_p(n)>0) from getLast_digit_ne_zero (top base-p digit nonzero) + List.le_sum_of_mem.",
+      "The sharp 2-adic valuation v_2(C(2n,n))=s_2(n) follows because doubling never carries in base 2 (s_2(2n)=s_2(n) via digitSum_base_mul), cancelling one of the two s_2(n) terms in the m=n Kummer identity.",
+      "At n=2^k the central binomial coefficient is exactly ≡2 mod 4 (v_2=1) since s_2(2^k)=1.",
+      "Part: power-of-2 characterization — digitSum_two_eq_one_imp_two_pow (converse s_2(n)=1⟹∃k,n=2^k via strong induction on digit recurrence s_2(n)=n%2+s_2(n/2)), digitSum_two_eq_one_iff (full iff), padicValNat_centralBinom_two_eq_one_iff (v_2(C(2n,n))=1 ↔ n=2^k, sharp form of ..two_pow). 3 axiom-free thm, host-lean EXIT 0. Closes the open converse from PR#38419.",
+      "Sharp two-sided quantitative Legendre bound at p=2 (Erdos729LegendreGeneral.lean): n - (log2 n + 1) <= v_2(n!) <= n - 1. The theory had digitSum_pos (lower bound on s_p) and used s_p(n)<=n, but lacked the SHARP upper bound s_p(n) <= (p-1)*(digit count) = (p-1)*(floor(log_p n)+1). That bound makes the Legendre defect logarithmically small, so v_2(n!) = n - O(log n) and v_2(n!)/n -> 1.",
+      "Key API: each base-p digit < p (Nat.digits_lt_base), digit count = floor(log_p n)+1 (Nat.digits_len), List.sum_le_card_nsmul for sum <= length*(p-1). General multiplied lower bound sub_one_mul_padicValNat_factorial_ge: n - (log_p n + 1)*(p-1) <= (p-1)*v_p(n!), complementing the existing sub_one_mul_padicValNat_factorial_le (<= n)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -115,8 +128,8 @@
     {
       "path": "Proofs/Erdos729LegendreGeneral.lean",
       "filename": "Erdos729LegendreGeneral.lean",
-      "lineCount": 183,
-      "theoremCount": 10,
+      "lineCount": 668,
+      "theoremCount": 37,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

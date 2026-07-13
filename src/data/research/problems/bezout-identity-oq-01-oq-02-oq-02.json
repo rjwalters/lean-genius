@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SOLVED + capstone: unimodular completion now formalized as an actual Module.Basis object (isPrimitive_iff_mem_basis, n≥2) with an all-n converse (isPrimitive_of_mem_basis). New companion BezoutIdentityOQ01OQ02OQ02Basis.lean, axiom-free, verified via lake env lean 4.26.0.",
+    "progressSummary": "SOLVED core + sharpness: SLn(Z) transitivity on primitive vectors proved (n>=2), 1<n hypothesis machine-checked sharp (SL1 trivial, two orbits {e0},{-e0}), and the obstruction identified as exactly the determinant sign (GL1 reflection !![-1] merges the orbits: sl_one_equiv_iff_eq + exists_unimodular_mulVec_neg_single_fin_one). All axiom-free.",
     "builtItems": [
       "IsPrimitive (Fin n → ℤ) := ∃ w, w ⬝ᵥ v = 1 — BezoutIdentityOQ01OQ02OQ02.lean",
       "isPrimitive_iff_span_eq_top: IsPrimitive v ↔ Ideal.span (range v) = ⊤ (bridge to classical gcd=1 via Ideal.mem_span_range_iff_exists_fun)",
@@ -59,7 +59,22 @@
       "slColumnBasis (Proofs/BezoutIdentityOQ01OQ02OQ02Basis.lean): the ℤ-basis of ℤⁿ given by the columns of A ∈ SLₙ(ℤ), plus slColumnBasis_apply (k-th member = ↑ₘA *ᵥ e_k) and slColumnBasis_isPrimitive.",
       "isPrimitive_of_mem_basis (Basis.lean): all-n converse — every member of any ℤ-basis of ℤⁿ is primitive.",
       "exists_basis_apply_eq_of_isPrimitive (Basis.lean, n≥2): explicit unimodular completion — a primitive vector is the i-th member of slColumnBasis U⁻¹ for any prescribed slot i.",
-      "isPrimitive_iff_mem_basis (Basis.lean, n≥2): the characterization primitive ⇔ member of a ℤ-basis, turning the parent files prose extends-to-a-ℤ-basis claim into a machine-checked Module.Basis. 1 def + 6 theorems, 0 sorries, 0 axioms."
+      "isPrimitive_iff_mem_basis (Basis.lean, n≥2): the characterization primitive ⇔ member of a ℤ-basis, turning the parent files prose extends-to-a-ℤ-basis claim into a machine-checked Module.Basis. 1 def + 6 theorems, 0 sorries, 0 axioms.",
+      "slColumnBasis_det (BezoutIdentityOQ01OQ02OQ02Basis.lean): (Pi.basisFun).det ⇑(slColumnBasis A)=1 via toMatrix ⇑(slColumnBasis A)=↑ₘA + det_coe",
+      "exists_basis_apply_eq_of_isPrimitive_det_one (n≥2): primitive v is i-th member of a det-+1 (SL) ℤ-basis",
+      "isPrimitive_iff_orientation_completion (n≥2): primitive ⇔ member of some det-+1 basis (same strength as plain completion at n≥2)",
+      "basis_det_fin_one: any ℤ-basis of ℤ¹ has det = b 0 0",
+      "exists_det_one_completion_fin_one_iff: v:Fin 1→ℤ has a det-+1 completion ⇔ v 0 = 1 (sharp n=1 dichotomy)",
+      "no_det_one_completion_neg_fin_one: (−1):Fin 1→ℤ extends to a basis but to NO det-+1 basis (concrete SL-vs-GL witness, dual to not_forall_isPrimitive_sl_equiv_fin_one)",
+      "IsSaturatedLine def + IsPrimitive.isSaturatedLine (forward, all n, via dual functional f: c•(fx•v)=c•x cancel c) + isPrimitive_of_isSaturatedLine (converse v≠0, via isPrimitive_iff_forall_isUnit_of_dvd: d∣vᵢ ⟹ x=v/d, d•x=v, saturation ⟹ d·k=1 unit) + isPrimitive_iff_isSaturatedLine (BezoutIdentityOQ01OQ02OQ02Basis.lean, VERIFIED 0-axiom)",
+      "isPrimitive_iff_noZeroSMulDivisors_quotient in BezoutIdentityOQ01OQ02OQ02Basis.lean (v≠0): IsPrimitive v ↔ NoZeroSMulDivisors ℤ ((Fin n→ℤ)⧸span ℤ{v}) [VERIFIED 0-axiom]",
+      "finrank_quotient_span_singleton (BezoutIdentityOQ01OQ02OQ02Basis.lean): v≠0 ⟹ finrank ℤ (ℤⁿ/ℤ·v)=n-1, 0-axiom",
+      "IsPrimitive.free_quotient (BezoutIdentityOQ01OQ02OQ02Basis.lean): primitive v ⟹ Module.Free ℤ (ℤⁿ/ℤ·v), 0-axiom",
+      "IsPrimitive.quotientEquiv_fin (BezoutIdentityOQ01OQ02OQ02Basis.lean): primitive v ⟹ Nonempty (ℤⁿ/ℤ·v ≃ₗ[ℤ] Fin(n-1)→ℤ), 0-axiom",
+      "isPrimitive_primitivePart / content_smul_primitivePart (BezoutIdentityOQ01OQ02OQ02Basis.lean): primitive part p=(vᵢ/gcd) of nonzero v is primitive and v = gcd•p",
+      "smul_primitivePart_mem_span_iff_content_dvd (Basis.lean): SHARP — c•p ∈ ℤ·v ↔ content∣c, i.e. [p] has exact additive order = content in ℤⁿ/(ℤ·v)",
+      "primitivePart_mem_span_iff_isPrimitive + exists_torsion_of_not_isPrimitive (Basis.lean): p∈ℤ·v ↔ v primitive; for non-primitive v, [p] is the explicit nonzero content-torsion element (d•[p]=0, [p]≠0)",
+      "sl_one_equiv_iff_eq (SL1(Z)-orbits are singletons: SL1-equivalent iff equal) + exists_unimodular_mulVec_neg_single_fin_one (the reflection !![-1], det=-1 unit, carries -e0 to e0): the n=1 transitivity failure is EXACTLY the det=1 sign constraint — enlarging SL1 to GL1 merges the two orbits. BezoutIdentityOQ01OQ02OQ02.lean, axiom-free."
     ],
     "insights": [
       "Primitivity of an integer vector v is cleanly captured coordinate-free as: ∃ dual w with w ⬝ᵥ v = 1. This dot-product form is manifestly SLₙ(ℤ)-invariant, unlike the gcd-of-entries phrasing.",
@@ -75,15 +90,23 @@
       "The parent file already had two primitivity reformulations (span=⊤, every-common-divisor-is-unit) but NOT the literal Finset.gcd=1 value nor the ring-theoretic IsCoprime form; both are cheap corollaries of isPrimitive_iff_forall_isUnit_of_dvd + Finset.gcd_dvd/dvd_gcd and Fin.sum_univ_two respectively.",
       "Module.Basis is the current Mathlib name for the Basis type (moved into the Module namespace, Lean/Mathlib 4.26 module system); granular `import Mathlib.LinearAlgebra.StdBasis` does not re-export `Basis` to a non-module file — use `import Mathlib` + `open Module`.",
       "SpecialLinearGroup.toLin A : (n→R) ≃ₗ[R] n→R gives the linear equivalence of a unimodular matrix directly (no Invertible-instance juggling); its action on the standard basis vector e_k extracts the k-th column via toLin_apply + Matrix.toLin_apply + mulVec_single_one.",
-      "The converse `member of a ℤ-basis ⇒ primitive` needs NO dimension hypothesis: the dual coordinate functional b.coord i is a ℤ-linear map ℤⁿ→ℤ sending b i to 1; representing it by its values w j = b.coord i (e_j) on the standard basis gives an explicit integer dual with w · (b i) = 1 (= primitivity). This even covers n=1 where SLₙ transitivity fails."
+      "The converse `member of a ℤ-basis ⇒ primitive` needs NO dimension hypothesis: the dual coordinate functional b.coord i is a ℤ-linear map ℤⁿ→ℤ sending b i to 1; representing it by its values w j = b.coord i (e_j) on the standard basis gives an explicit integer dual with w · (b i) = 1 (= primitivity). This even covers n=1 where SLₙ transitivity fails.",
+      "Orientation refinement: the n≥2 unimodular completion is not merely GLₙ(ℤ) (det ±1) but SLₙ(ℤ) (det +1) — slColumnBasis of an SL matrix has Basis.det = det ↑ₘA = 1, so every primitive vector extends to an ORIENTATION-PRESERVING basis. The SL/GL distinction is sharp only at n=1: (−1)∈ℤ¹ completes to the basis {(−1)} (det −1) but to NO det-+1 basis; det-1 completion exists iff v 0 = 1.",
+      "Saturation/pure-line criterion completes the module-theoretic triad: primitive v ⇔ ℤ·v is SATURATED (c•x∈ℤv ∧ c≠0 ⟹ x∈ℤv, i.e. ℤⁿ/ℤv torsion-free). This is the INTERNAL member — no auxiliary basis or complement — and the textbook working definition; sits below the direct-summand form (over a PID saturated⇒summand, but that structure theorem is unnecessary: both directions elementary).",
+      "Primitive ⇔ ℤⁿ/(ℤ·v) torsion-free (NoZeroSMulDivisors ℤ quotient) for v≠0 — canonical Mathlib-typeclass form of saturation, completing the internal characterization: quotient map converts NoZeroSMulDivisors field c•x̄=0→c=0∨x̄=0 into saturation via Submodule.Quotient.mk_eq_zero",
+      "Rank form of unimodular completion: for ANY nonzero v, finrank ℤ (ℤⁿ/ℤ·v) = n-1 (finrank_quotient_span_singleton) — no primitivity needed. Uses rank-nullity Submodule.finrank_quotient_add_finrank, valid over ℤ because IsDomain ⟹ HasRankNullity; the line ℤ·v is free of rank 1 via LinearEquiv.toSpanNonzeroSingleton + finrank_self, and Module.finrank_fin_fun gives finrank(Fin n→ℤ)=n. finrank is insensitive to torsion, so this holds even for non-primitive v.",
+      "Freeness is the exact locus of primitivity: IsPrimitive.free_quotient — for PRIMITIVE v the quotient ℤⁿ/ℤ·v is Module.Free ℤ, since it is Module.Finite (quotient of finite) and torsion-free (NoZeroSMulDivisors via isPrimitive_iff_noZeroSMulDivisors_quotient), firing the PID structure instance Module.free_of_finite_type_torsion_free. Non-primitive nonzero v: same finrank n-1 but has torsion, NOT free.",
+      "Capstone IsPrimitive.quotientEquiv_fin: for primitive v, ℤⁿ/(ℤ·v) ≃ₗ[ℤ] ℤ^(n-1), built from free+finrank via Module.finBasisOfFinrankEq ℤ _ hrank |>.equivFun — the coordinate-free numerical face of unimodular completion.",
+      "Sharp boundary of isPrimitive_iff_noZeroSMulDivisors_quotient: the torsion of ℤⁿ/(ℤ·v) for non-primitive nonzero v is CYCLIC ℤ/(content), generated by the primitive-part class [v/gcd], degenerating to 0 exactly at content=1. Quantifies non-primitivity by an explicit torsion witness of exact order = content.",
+      "Proof engine: v=d•p with p primitive⟹p≠0; smul_left_injective cancels p in c•p=(k·d)•p to force c=k·d; primitivity of p via gcd criterion (d·e ∣ gcd(v)=d ⟹ e unit). No Smith-normal-form / structure theorem needed — all elementary, 0-axiom."
     ],
     "mathlibGaps": [
       "Mathlib has no packaged transitivity of SLₙ(ℤ) on primitive vectors (only n=2 pieces via bezoutSL in the parent). Foundation built here; the Euclidean-descent converse (every primitive vector reaches eᵢ) remains.",
       "No IsPrimitive predicate for integer vectors in Mathlib; defined here via the dot-product dual."
     ],
     "nextSteps": [
-      "Optional: upgrade isPrimitive_iff_mem_basis to hold at n=1 too (the (-1) singleton basis) by supplying the trivial construction there, giving an all-n characterization.",
-      "Optional: an effective/computable version of the completing basis (the whyMatters reusable reduction tool), replacing the existence quantifier by a def."
+      "Package the content-torsion as a bona-fide iso ℤⁿ/(ℤ·v) ≃ ℤ/(content) ⊕ ℤ^(n-1) for arbitrary nonzero v (splits since the free part ℤⁿ/ℤ·p is free; needs the ℤv⊆ℤp tower).",
+      "Optional: effective/computable completing basis (replace existence quantifier by a def)."
     ]
   },
   "tags": [

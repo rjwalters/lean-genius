@@ -1,0 +1,80 @@
+/-
+Proof: Irrationality of {{ROOT_SYMBOL}}{{M}}
+Generated: {{DATE}}
+Pattern: nrt-irrational
+Method: Template-based derivation
+-/
+
+import Mathlib.Data.Real.Irrational
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Tactic
+
+/-!
+# Irrationality of {{ROOT_SYMBOL}}{{M}}
+
+## Strategy
+If x^n = m (integer) and x is not an integer, then x is irrational.
+
+For {{ROOT_SYMBOL}}{{M}}: x = {{M}}^(1/{{N}}), n = {{N}}, m = {{M}}
+- ({{M}}^(1/{{N}}))^{{N}} = {{M}}
+- {{M}} is not a perfect {{N_WORD}} power ({{BOUNDS_COMMENT}})
+- Therefore {{M}}^(1/{{N}}) is not an integer
+- Therefore {{ROOT_SYMBOL}}{{M}} is irrational
+-/
+
+namespace {{NAMESPACE}}
+
+-- The {{N_WORD}} root of {{M}}
+noncomputable def {{ROOT_NAME}} : ℝ := ({{M}} : ℝ) ^ (1/{{N}} : ℝ)
+
+-- Key property: ({{M}}^(1/{{N}}))^{{N}} = {{M}}
+theorem {{ROOT_NAME}}_pow : {{ROOT_NAME}} ^ {{N}} = {{M}} := by
+  unfold {{ROOT_NAME}}
+  rw [← Real.rpow_natCast]
+  rw [← Real.rpow_mul (by norm_num : (0 : ℝ) ≤ {{M}})]
+  norm_num
+
+-- {{M}} is not a perfect {{N_WORD}} power
+theorem {{M_WORD}}_not_perfect_{{N_WORD}}_power : ¬ ∃ (n : ℤ), n ^ {{N}} = {{M}} := by
+  intro ⟨n, hn⟩
+  have h1 : 0 < n := by
+    by_contra h
+    push_neg at h
+    have hn_pow : n ^ {{N}} ≤ 0 := by
+      have : n ^ {{N}} = {{POWER_EXPANSION}} := by ring
+      rw [this]
+      nlinarith
+    omega
+  have h2 : n < {{UPPER_BOUND}} := by
+    by_contra h
+    push_neg at h
+    have hn_pow : n ^ {{N}} ≥ {{UPPER_POWER}} := by
+      have : n ^ {{N}} = {{POWER_EXPANSION}} := by ring
+      rw [this]
+      nlinarith
+    omega
+  -- Eliminate remaining candidates (n ∈ {1..{{UPPER_BOUND}}-1}, none are {{N}}-th powers of {{M}})
+  interval_cases n
+  all_goals norm_num at hn
+
+-- {{ROOT_NAME}} is not an integer
+theorem {{ROOT_NAME}}_not_int : ¬ ∃ (n : ℤ), {{ROOT_NAME}} = n := by
+  intro ⟨n, hn⟩
+  have h : n ^ {{N}} = {{M}} := by
+    have h1 : {{ROOT_NAME}} ^ {{N}} = {{M}} := {{ROOT_NAME}}_pow
+    rw [hn] at h1
+    exact_mod_cast h1
+  exact {{M_WORD}}_not_perfect_{{N_WORD}}_power ⟨n, h⟩
+
+-- Main theorem: {{ROOT_SYMBOL}}{{M}} is irrational
+theorem irrational_{{ROOT_NAME}} : Irrational {{ROOT_NAME}} := by
+  apply irrational_nrt_of_notint_nrt {{N}} {{M}}
+  · exact_mod_cast {{ROOT_NAME}}_pow
+  · exact {{ROOT_NAME}}_not_int
+  · norm_num
+
+-- Alternative form
+theorem irrational_{{M}}_pow_one_{{N_WORD}} : Irrational (({{M}} : ℝ) ^ (1/{{N}} : ℝ)) :=
+  irrational_{{ROOT_NAME}}
+
+end {{NAMESPACE}}

@@ -122,3 +122,31 @@ unsolvable) — bind `have hrr : r*r=1 := by rw[← pow_two]; exact hr` FIRST to
 
 REMAINING: Next math steps toward Iwasawa simplicity — PSL(2,p) action on P¹(𝔽_p) +
 2-transitivity + Borel point-stabilizers (the >1000-line Mathlib gap). Order formula now DONE.
+
+## Progress This Iteration (iter 6, 2026-07-12, researcher-3) — VERIFIED, 0-axiom
+
+Generalised the file's unipotent-specific Sylow facts to **all** Sylow p-subgroups, and
+added the trivial-intersection structure (all `#print axioms` = propext/Classical.choice/
+Quot.sound; whole file `lake env lean` EXIT 0, only pre-existing warnings in untouched
+Bruhat theorems):
+
+- `card_sylowP (P) : Nat.card ↑P = p` — every Sylow p-subgroup has order exactly p
+  (`Sylow.card_eq_multiplicity` + `factorization_card_SL2`, pow_one), generalising
+  `card_unipotentHom_range`.
+- `isCyclic_sylowP (P) : IsCyclic ↑P` — hence every Sylow p-subgroup is cyclic ℤ/p
+  (`isCyclic_of_prime_card`), generalising `isCyclic_unipotentSylow`.
+- `sylowP_inf_eq_bot (P ≠ Q) : ↑P ⊓ ↑Q = ⊥` — distinct Sylow p-subgroups meet trivially.
+  `|P⊓Q| ∣ |P| = p` (via `card_subgroup_dvd_card` on `(P⊓Q).subgroupOf P` +
+  `subgroupOfEquivOfLe`), so it is 1 (→ ⊥ by `Subgroup.card_eq_one`) or p, and the p-case
+  forces `P⊓Q = P = Q` (`Subgroup.eq_of_le_of_card_ge`) ⟹ `P = Q` (`Sylow.ext`), contra.
+
+These are the exact ingredients of the classical count "SL(2,p) has (p+1)(p−1)=p²−1 elements
+of order p": the p+1 (`card_sylow_eq`) cyclic-ℤ/p Sylows overlapping only in the identity.
+File 1397→1451 L, 59→62 thm. meta.json synced (leanFile 1205/51 stale → 1451/62). The deep
+PSL(2,p) simplicity (P¹ action + 2-transitivity + Iwasawa) remains BLOCKED as before.
+
+### Next Action (updated)
+The order-p element count `p²−1` itself (biUnion of the p+1 Sylows minus identity, using
+`sylowP_inf_eq_bot` for disjointness + "every order-p element generates a Sylow") is the
+natural next tractable step; the simplicity theorem stays blocked on the missing P¹-action
+infrastructure.

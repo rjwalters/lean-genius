@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Vahlen-Capelli necessity fully formalized (incl. the 4|n clause Mathlib omits) + odd-n full criterion; even-n sufficiency is the sole open sorry (build-pending).",
+    "progressSummary": "PROGRESS: Vahlen-Capelli necessity fully formalized (incl. the 4|n clause Mathlib omits) + odd-n full criterion; even-n sufficiency is the sole open sorry (build-pending). | Session (researcher, 2026-07-11, integrated 2026-07-12 post sorry-closure): PART 8 — over any field containing i=√−1 (ℂ, alg closures, ℚ(i), 𝔽_q q≡1 mod 4) condition (2) is subsumed by condition (1) (−4K⁴⊆K² via (i·2b²)²=−4b⁴), giving vahlen_capelli_of_neg_one_square: the criterion with condition (2) dropped — the imaginary-unit twin of the ordered-field vahlen_capelli_pos (PART 7).",
     "builtItems": [
       "sophie_germain (CommRing R) : u⁴+4v⁴ = (u²-2vu+2v²)(u²+2vu+2v²) — proved by ring (CubeRoot3IrrationalOQ02OQ03.lean)",
       "factor_capelli (Field K) (m b) : X^{4m}+4(C b)⁴ = ((X^m)²-2Cb·X^m+2(Cb)²)((X^m)²+2Cb·X^m+2(Cb)²) — proved by ring",
@@ -43,7 +43,11 @@
       "reducible_of_neg_four_mul_pow4: 4|n and a in -4K^4 => reducible (clause 2 necessity, the Mathlib-gap case)",
       "vahlen_capelli_necessity: Irreducible => VahlenCapelliCond, all n (fully proved)",
       "vahlen_capelli_of_odd: full criterion for odd n via Mathlib (fully proved)",
-      "vahlen_capelli: full criterion, even-n sufficiency = single sorry (open frontier)"
+      "vahlen_capelli: full criterion, even-n sufficiency = single sorry (open frontier)",
+      "neg_not_square_of_neg_one_square: i∈K ∧ a∉K² ⟹ −a∉K² (CubeRoot3IrrationalOQ02OQ03.lean PART 8)",
+      "capelli_cond_two_of_neg_one_square: i∈K ∧ a∉K² ⟹ ∀b, a≠−4b⁴ (condition 2 subsumed by condition 1)",
+      "two_power_capelli_of_neg_one_square: pure 2-power base X^(2^k)−C a irreducible over any field with i∈K when a non-square, via the norm-descent keystone alone",
+      "vahlen_capelli_of_neg_one_square: full iff with condition (2) dropped, over fields with i∈K (imaginary-unit twin of vahlen_capelli_pos)"
     ],
     "insights": [
       "Vahlen–Capelli criterion: X^n - C a irreducible over field K iff (1) a not a p-th power for every prime p|n, AND (2) if 4|n then a ∉ -4·K⁴. The two conditions are independent obstructions.",
@@ -53,7 +57,10 @@
       "The full NECESSITY direction (¬conditions ⟹ reducible) is elementary for ALL n via two explicit factorizations: obstruction (1) uses x-y ∣ xⁿ-yⁿ (sub_dvd_pow_sub_pow), obstruction (2) uses Sophie Germain. Only EVEN SUFFICIENCY is the genuine hard/open part.",
       "Mathlib KummerExtension proves the ODD-n Vahlen-Capelli criterion but explicitly leaves TODO: criteria for even n; the 4|n exceptional clause (a not in -4K^4) is a genuine Mathlib gap.",
       "The 4|n exception is powered by the Sophie Germain identity Y^4+4c^4=(Y^2-2cY+2c^2)(Y^2+2cY+2c^2); with Y=X^k, c=Cb it factors X^(4k)-Ca when a=-4b^4.",
-      "Necessity (Irreducible => VahlenCapelliCond) is fully provable for all n via sub_dvd_pow_sub_pow (prime clause) and Sophie Germain (4|n clause) + degree bookkeeping."
+      "Necessity (Irreducible => VahlenCapelliCond) is fully provable for all n via sub_dvd_pow_sub_pow (prime clause) and Sophie Germain (4|n clause) + degree bookkeeping.",
+      "When i=√−1 ∈ K, the predicates a∈K² and −a∈K² coincide (b²=−a ⟹ (ib)²=a), so the −a∈K² branch of the 2-power descent is VACUOUS under the crux hypothesis a∉K². This is the exact imaginary-unit analogue of positivity (a>0 ⟹ −a<0 non-square) used in PART 7 for ordered fields — a second field class on which condition (2) plays no role.",
+      "Condition (2) (a∉−4K⁴) is subsumed by condition (1) whenever i∈K: −4b⁴=(i·2b²)², so −4K⁴⊆K² and a non-square a is automatically ∉−4K⁴. Mirrors capelli_cond_two_of_pos over ordered fields.",
+      "The Lang VI §9 descent locus is NOT confined to non-formally-real fields: ℚ (ordered) is a genuine locus via a=−1, where X⁸+1=Φ₁₆ is irreducible, −a=1∈ℚ² and −1∉−4ℚ⁴ (no rational 4th root of ¼). Over ℝ, by contrast, a∉−4ℝ⁴ forces a>0 so the descent never fires there. The genuine descent locus = i-free fields admitting a non-square a with −a a square and a∉−4K⁴."
     ],
     "mathlibGaps": [
       "Mathlib lacks even-n binomial irreducibility (X^n - C a for 4|n): explicit TODO in FieldTheory/KummerExtension.lean referencing Lang Algebra VI §9. sub_dvd_pow_sub_pow lives in Mathlib.Algebra.Ring.GeomSum (NOT Mathlib.Algebra.GeomSum).",
@@ -65,7 +72,8 @@
       "Build-verify CubeRoot3IrrationalOQ02OQ03.lean once Docker/Aristotle return; confirm map_ofNat closes C_neg_four_mul_pow and def-unfolding of VahlenCapelliCond in the ⟨⟩/.1 uses.",
       "Formalize the 2^k-tower sufficiency: X^(2^k)-Ca irreducible when a not in K^2 and (k>=2) a not in -4K^4.",
       "Assemble general even-n sufficiency by combining Mathlib odd-prime towers with the 2-adic part.",
-      "When a build is available, verify compute_degree!/natDegree_comp/map_ofNat tactics in the shipped file."
+      "When a build is available, verify compute_degree!/natDegree_comp/map_ofNat tactics in the shipped file.",
+      "Add concrete instances of vahlen_capelli_of_neg_one_square: 𝔽_5 (−1=2²) making X^(2^k)−C 2 irreducible; ℂ; ℚ(i)."
     ],
     "markdown": "# Knowledge Base: cube-root-3-irrational-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

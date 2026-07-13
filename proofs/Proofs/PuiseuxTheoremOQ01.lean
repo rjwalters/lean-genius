@@ -43,6 +43,11 @@ unbounded-ramification phenomenon, which we isolate and verify:
   **not** a Puiseux series. Applied to the Artin–Schreier root `y` (whose support
   is exactly `{−1/pᵏ}`), this is the formal statement that `y` witnesses the
   failure of Puiseux's theorem in characteristic `p`.
+- `artinSchreierExp_range_isPWO` / `artinSchreierSeries` / `exists_hahnSeries_not_puiseux`
+  — **non-vacuity**: the exponent set is partially well-ordered, so it is a legitimate
+  Hahn-series support, and there genuinely *exists* a Hahn series over any field carrying
+  those exponents that is not Puiseux. The obstruction is realised by an actual element of
+  the Hahn field, not a hypothetical one.
 
 ## Scope / honesty
 
@@ -51,11 +56,12 @@ showing the **classical** Puiseux statement cannot hold in characteristic `p`.
 The *positive* analogue — identifying the actual algebraic closure of `𝔽_p((x))`
 inside the Hahn series (Kedlaya's theorem: the "additive" / automatic Hahn
 series, via Artin–Schreier–Witt theory) — is a deep result not formalised here
-and remains the open follow-up. We do not construct the Hahn series `y` itself
-(that needs the well-ordering of its support and a Frobenius computation in
-characteristic `p`); the theorem is stated for *any* series carrying the
-Artin–Schreier exponents, with the existence of such a series — the
-Artin–Schreier root — recorded as the classical input.
+and remains the open follow-up. We do not construct the *actual* Artin–Schreier root
+(that needs a Frobenius computation in characteristic `p`, i.e. the coefficients solving
+`yᵖ − y = x⁻¹`); but we *do* establish the well-ordering of its support and build an
+explicit Hahn series with exactly that support (`artinSchreierSeries`, all coefficients
+`1`), so the obstruction is non-vacuous — witnessed by a genuine element of the Hahn field
+rather than only stated for a hypothetical one.
 -/
 import Mathlib.RingTheory.HahnSeries.Basic
 import Mathlib.Tactic
@@ -127,5 +133,62 @@ theorem artinSchreier_support_not_puiseux {K : Type*} [Zero K]
     ¬ IsPuiseuxSeries f := by
   rintro ⟨n, hn⟩
   exact artinSchreierExp_denominators_unbounded p hp ⟨n, fun k => hn _ (hsupp k)⟩
+
+/-! ## The obstruction is not vacuous: an explicit Hahn-series witness
+
+The theorem `artinSchreier_support_not_puiseux` is stated for *any* Hahn series
+carrying the Artin–Schreier exponents. To know the obstruction is non-vacuous — that
+such a series genuinely exists as a bona-fide element of the Hahn field `K⦃⦃x⦄⦄` — one
+must exhibit one, and a Hahn series is only well-defined when its support is
+**partially well-ordered**. The Artin–Schreier exponent set `{−1/p^{k+1}}` is a strictly
+increasing sequence bounded above by `0`, hence order-isomorphic to `ℕ` and so well-ordered;
+we record this and build the witness. (Its coefficients are `1` rather than the specific
+values of the true characteristic-`p` root — we only need *a* Hahn series with this
+support, not one satisfying `yᵖ − y = x⁻¹`, which needs `char K = p`.) -/
+
+/-- The Artin–Schreier exponent set is partially well-ordered: as the strictly monotone
+image of `ℕ` (well-ordered), `{−1/p^{k+1}}` inherits `IsPWO`, so it is a legitimate
+support for a Hahn series over `ℚ`. -/
+theorem artinSchreierExp_range_isPWO (p : ℕ) (hp : 2 ≤ p) :
+    (Set.range (artinSchreierExp p)).IsPWO := by
+  rw [← Set.image_univ]
+  have huniv : (Set.univ : Set ℕ).IsPWO := Set.isPWO_of_wellQuasiOrderedLE _
+  exact huniv.image_of_monotone (artinSchreierExp_strictMono p hp).monotone
+
+/-- An explicit Hahn series over any field `K` whose support is exactly the
+Artin–Schreier exponent set `{−1/p^{k+1}}` (all coefficients `1`). Well-defined because
+`artinSchreierExp_range_isPWO` certifies the support is partially well-ordered. -/
+noncomputable def artinSchreierSeries (p : ℕ) (hp : 2 ≤ p) (K : Type*) [Field K] :
+    HahnSeries ℚ K where
+  coeff := Set.indicator (Set.range (artinSchreierExp p)) (fun _ => 1)
+  isPWO_support' := by
+    apply (artinSchreierExp_range_isPWO p hp).mono
+    intro q hq
+    simp only [Function.mem_support] at hq
+    by_contra hnot
+    exact hq (Set.indicator_of_notMem hnot _)
+
+/-- The witness series carries every Artin–Schreier exponent in its support. -/
+theorem artinSchreierSeries_carries (p : ℕ) (hp : 2 ≤ p) (K : Type*) [Field K] (k : ℕ) :
+    artinSchreierExp p k ∈ (artinSchreierSeries p hp K).support := by
+  simp only [HahnSeries.mem_support, artinSchreierSeries]
+  rw [Set.indicator_of_mem (Set.mem_range_self k)]
+  exact one_ne_zero
+
+/-- The explicit witness is not a Puiseux series — a concrete element of `K⦃⦃x⦄⦄`
+realising the Artin–Schreier obstruction. -/
+theorem artinSchreierSeries_not_puiseux (p : ℕ) (hp : 2 ≤ p) (K : Type*) [Field K] :
+    ¬ IsPuiseuxSeries (artinSchreierSeries p hp K) :=
+  artinSchreier_support_not_puiseux _ p hp (artinSchreierSeries_carries p hp K)
+
+/-- **The Artin–Schreier obstruction is non-vacuous.** Over every field `K` and every
+`p ≥ 2` there genuinely exists a Hahn series carrying the Artin–Schreier exponents that is
+not a Puiseux series. So the hypothesis of `artinSchreier_support_not_puiseux` is
+satisfiable: the failure of Puiseux's theorem is witnessed by an actual element of the
+Hahn field, not merely a hypothetical one. -/
+theorem exists_hahnSeries_not_puiseux (p : ℕ) (hp : 2 ≤ p) (K : Type*) [Field K] :
+    ∃ f : HahnSeries ℚ K, (∀ k : ℕ, artinSchreierExp p k ∈ f.support) ∧ ¬ IsPuiseuxSeries f :=
+  ⟨artinSchreierSeries p hp K, artinSchreierSeries_carries p hp K,
+    artinSchreierSeries_not_puiseux p hp K⟩
 
 end PuiseuxTheoremOQ01

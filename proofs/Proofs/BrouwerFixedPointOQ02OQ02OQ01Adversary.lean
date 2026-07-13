@@ -41,6 +41,13 @@ points perfectly consistent with the one observation the algorithm must answer.
 7. `one_query_lower_bound` — no one-query algorithm resolves the fixed point
    below 1/4 (the main explicit adversary lower bound).
 8. `no_one_query_epsilon` — for ε < 1/4 no one-query algorithm is ε-accurate.
+9. `adversary_midpoint_optimal` — the midpoint answer attains `|p-q|/2` exactly
+   (the `=` companion to `adversary_error_bound`'s `≥`).
+10. `adversary_minimax` — the exact minimax of the adversary principle is
+    `|p-q|/2` (`IsLeast`).
+11. `one_query_complexity` — the one-query complexity against the explicit pair
+    `{f, g}` is *exactly* `1/4` (`IsLeast`): the lower bound is matched by the
+    midpoint algorithm, making it two-sided.
 
 Reference: Chen–Deng (2009) query complexity for Brouwer fixed points; the
 adversary method of Aaronson / Ambainis; the parent OQ-02-OQ-02.
@@ -217,5 +224,57 @@ theorem no_one_query_epsilon (A : ℝ → ℝ) {ε : ℝ} (hε : ε < 1 / 4) :
   rcases le_max_iff.mp hmax with h | h
   · linarith
   · linarith
+
+-- ============================================================
+-- SECTION VI: The lower bound is sharp — matching upper bound
+-- and exact one-query complexity against the pair {f, g}
+-- ============================================================
+
+/-- **The adversary principle is sharp: the midpoint attains the bound.**
+    Companion to `adversary_error_bound`, which only proves the `≥` direction.
+    Answering with the midpoint `(p+q)/2` makes the error *exactly* `|p-q|/2` on
+    both instances, so the `|p-q|/2` lower bound cannot be improved. -/
+theorem adversary_midpoint_optimal (p q : ℝ) :
+    max (|(p + q) / 2 - p|) (|(p + q) / 2 - q|) = |p - q| / 2 := by
+  have e1 : (p + q) / 2 - p = -((p - q) / 2) := by ring
+  have e2 : (p + q) / 2 - q = (p - q) / 2 := by ring
+  rw [e1, e2, abs_neg, max_self, abs_div]
+  norm_num
+
+/-- **Exact minimax of the abstract adversary principle.**
+    Combining `adversary_error_bound` (any answer errs by at least `|p-q|/2`) with
+    `adversary_midpoint_optimal` (the midpoint errs by exactly `|p-q|/2`), the
+    least achievable worst-case error over all answers `a` is *exactly* `|p-q|/2`. -/
+theorem adversary_minimax (p q : ℝ) :
+    IsLeast {m : ℝ | ∃ a : ℝ, m = max (|a - p|) (|a - q|)} (|p - q| / 2) := by
+  constructor
+  · exact ⟨(p + q) / 2, (adversary_midpoint_optimal p q).symm⟩
+  · rintro m ⟨a, rfl⟩
+    exact adversary_error_bound p q a
+
+/-- **The one-query lower bound `1/4` is attained.**
+    The constant algorithm `A ≡ 1/2` (output the midpoint of the two candidate
+    fixed points regardless of the observed value) errs by *exactly* `1/4` on both
+    `f` and `g`, so no better worst-case accuracy than `1/4` is possible — but
+    `1/4` *is* possible. -/
+theorem one_query_upper_bound :
+    max (|(fun _ : ℝ => (1 / 2 : ℝ)) (f 0) - 1 / 4|)
+        (|(fun _ : ℝ => (1 / 2 : ℝ)) (g 0) - 3 / 4|) = 1 / 4 := by
+  norm_num
+
+/-- **Exact one-query complexity against the explicit pair `{f, g}`.**
+    The least worst-case error achievable by *any* one-query algorithm on the
+    adversary pair is *exactly* `1/4`: the lower bound `one_query_lower_bound`
+    is matched by the midpoint answer. This pins the one-query complexity of
+    resolving the fixed point down to the exact constant `1/4 = |1/4 - 3/4| / 2`,
+    turning the one-sided lower bound into a two-sided characterization. -/
+theorem one_query_complexity :
+    IsLeast
+      {m : ℝ | ∃ A : ℝ → ℝ, m = max (|A (f 0) - 1 / 4|) (|A (g 0) - 3 / 4|)}
+      (1 / 4) := by
+  constructor
+  · exact ⟨fun _ => 1 / 2, one_query_upper_bound.symm⟩
+  · rintro m ⟨A, rfl⟩
+    exact one_query_lower_bound A
 
 end BrouwerOQ02OQ02OQ01Adversary

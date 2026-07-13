@@ -555,4 +555,78 @@ theorem edgeThreshold_min_at_succ_even (n : ℕ) (hn : 5 ≤ n) (heven : Even n)
   rw [← edgeThreshold_min_pair_even_eq n hn heven]
   exact edgeThreshold_min_at n hn hk
 
+/-! ## The minimum value of the `k`-profile: the Turán threshold `⌊n²/4⌋ + 1`
+
+Every result above pins the *location* of the profile's minimum (`edgeThreshold_min_at`,
+the odd-`n` unique minimizer, the even-`n` band, and the reflection centre `k₀ = (n-3)/2`);
+none records the *value* attained there.  This section computes it, and the answer is
+remarkably clean: for all `n ≥ 5` the minimum over admissible clique sizes is exactly
+
+    edgeThreshold n ((n-3)/2) = ⌊n²/4⌋ + 1,
+
+one more than the Turán number `ex(n; K₃) = ⌊n²/4⌋` (Mantel's theorem).  Both binomial
+terms are balanced at the reflection centre, so the doubled threshold
+`two_mul_edgeThreshold` collapses to `2⌊n²/4⌋ + 2` independent of parity.  Combined with
+the weak global bound `edgeThreshold_min_at`, this yields a parameter-free Turán-type lower
+bound on the whole Woodall profile (`edgeThreshold_ge_turan`). -/
+
+/-- **Closed form of the minimum threshold value.**  At the reflection centre
+    `k₀ = (n-3)/2` the two binomial terms of `edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1`
+    are balanced, and the minimum works out — uniformly over parity — to the Turán
+    threshold `⌊n²/4⌋ + 1`:
+
+        edgeThreshold n ((n-3)/2) = n² / 4 + 1   (for `n ≥ 5`).
+
+    Checks against the parent's balanced boundary values: `n=5 ↦ 7`, `7 ↦ 13`, `9 ↦ 21`,
+    `11 ↦ 31` (odd), and `6 ↦ 10`, `8 ↦ 17` (even). -/
+theorem edgeThreshold_min_value (n : ℕ) (hn : 5 ≤ n) :
+    edgeThreshold n ((n - 3) / 2) = n ^ 2 / 4 + 1 := by
+  rcases Nat.even_or_odd n with ⟨m, rfl⟩ | ⟨m, rfl⟩
+  · -- even n = m + m, m ≥ 3; minimizer k₀ = m - 2, value m² + 1
+    have hk0 : (m + m - 3) / 2 = m - 2 := by omega
+    rw [hk0]
+    have hval : 2 * edgeThreshold (m + m) (m - 2) = 2 * (m ^ 2 + 1) := by
+      rw [two_mul_edgeThreshold _ _ (by omega)]
+      have a1 : m + m - (m - 2) - 1 = m + 1 := by omega
+      have a2 : m + m - (m - 2) - 2 = m := by omega
+      have a3 : (m - 2) + 2 = m := by omega
+      have a4 : (m - 2) + 1 = m - 1 := by omega
+      rw [a1, a2, a3, a4]
+      cases m with
+      | zero => omega
+      | succ p => simp only [Nat.succ_sub_one]; ring
+    have hET : edgeThreshold (m + m) (m - 2) = m ^ 2 + 1 := by omega
+    rw [hET]
+    have hsq : (m + m) ^ 2 = 4 * m ^ 2 := by ring
+    rw [hsq]; omega
+  · -- odd n = 2m + 1, m ≥ 2; minimizer k₀ = m - 1, value m² + m + 1
+    have hk0 : (2 * m + 1 - 3) / 2 = m - 1 := by omega
+    rw [hk0]
+    have hval : 2 * edgeThreshold (2 * m + 1) (m - 1) = 2 * (m ^ 2 + m + 1) := by
+      rw [two_mul_edgeThreshold _ _ (by omega)]
+      have a1 : 2 * m + 1 - (m - 1) - 1 = m + 1 := by omega
+      have a2 : 2 * m + 1 - (m - 1) - 2 = m := by omega
+      have a3 : (m - 1) + 2 = m + 1 := by omega
+      have a4 : (m - 1) + 1 = m := by omega
+      rw [a1, a2, a3, a4]; ring
+    have hET : edgeThreshold (2 * m + 1) (m - 1) = m ^ 2 + m + 1 := by omega
+    rw [hET]
+    have hsq : (2 * m + 1) ^ 2 = 4 * m ^ 2 + 4 * m + 1 := by ring
+    rw [hsq]; omega
+
+/-- **Turán-type global lower bound on the Woodall profile.**  Combining the closed-form
+    minimum `edgeThreshold_min_value` with the weak global minimizer `edgeThreshold_min_at`:
+    for `n ≥ 5`, *every* admissible clique size `k` (with `k + 2 ≤ n`) demands at least the
+    Turán threshold worth of edges,
+
+        ⌊n²/4⌋ + 1 ≤ edgeThreshold n k,
+
+    with equality exactly at the reflection centre `k₀ = (n-3)/2`.  So the least edge
+    requirement across the whole profile is `ex(n; K₃) + 1` — the Mantel/Turán bound plus
+    one, the minimum number of edges that already forces the Woodall structure. -/
+theorem edgeThreshold_ge_turan (n k : ℕ) (hn : 5 ≤ n) (hk : k + 2 ≤ n) :
+    n ^ 2 / 4 + 1 ≤ edgeThreshold n k := by
+  rw [← edgeThreshold_min_value n hn]
+  exact edgeThreshold_min_at n hn hk
+
 end Erdos1012OQ01OQ02

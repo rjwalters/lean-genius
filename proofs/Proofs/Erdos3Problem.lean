@@ -1187,6 +1187,67 @@ theorem superSharp_required_bound_implies_conjecture :
             (Real.log (Real.log (Real.log N))) ^ (1 + δ)) := hN
   exact hdiv (summable_of_superSharpBound hδ hC hcount)
 
+/- ## Sharpness of the super-sharp reduction: the innermost `1+δ` exponent is essential
+
+   The reduction `summable_of_superSharpBound` runs by *dyadic blocking*: the reciprocal
+   mass of the `j`-th block `[2ʲ, 2ʲ⁺¹)` is bounded by the second-axis Bertrand envelope
+   `1 / ((j+1)·log((j+1)·log 2)·(log log((j+1)·log 2))^{1+δ})`. The key structural fact is
+   that the *third* iterated logarithm `log log log N` at level `N = 2ʲ⁺¹` collapses to a
+   *second* iterated logarithm `log log((j+1)·log 2)` in the block index `j`, because
+   `log N = (j+1)·log 2` — one iterated logarithm is "spent" by the dyadic substitution.
+
+   The two lemmas below isolate this envelope and pin the convergence/divergence transition
+   of the whole method *exactly* at `δ = 0`:
+
+   * `summable_superSharp_envelope` (δ > 0): the envelope converges — the analytic engine
+     of `summable_of_superSharpBound`.
+   * `not_summable_superSharp_envelope_borderline` (δ = 0): dropping the innermost exponent
+     to `1` — i.e. weakening the threshold to `N/(log N·log log N·log log log N)` — makes the
+     envelope the *divergent* second-axis Bertrand borderline. So the dyadic method cannot
+     reach that borderline; the `1+δ` power in `SuperSharpRequiredBound` is sharp.
+
+   Both are axiom-free, resting only on the verified Bertrand series of `Erdos3Bertrand`. -/
+
+/-- **The dyadic block-mass envelope of the super-sharp reduction converges (`δ > 0`).**
+    The `j`-th dyadic block `[2ʲ, 2ʲ⁺¹)` contributes reciprocal mass at most
+    `1 / ((j+1)·log((j+1)·log 2)·(log log((j+1)·log 2))^{1+δ})`, the constant-in-log
+    *second-axis* Bertrand term (the level-`N` factor `(log log log N)^{1+δ}` becomes
+    `(log log((j+1)·log 2))^{1+δ}` at `N = 2ʲ⁺¹`). This envelope is summable for every
+    `δ > 0`; it is exactly the analytic input that powers `summable_of_superSharpBound`.
+    Isolated here as a reusable, axiom-free lemma. -/
+theorem summable_superSharp_envelope {δ : ℝ} (hδ : 0 < δ) :
+    Summable (fun j : ℕ =>
+      1 / (((j : ℝ) + 1) * Real.log (((j : ℝ) + 1) * Real.log 2) *
+        (Real.log (Real.log (((j : ℝ) + 1) * Real.log 2))) ^ (1 + δ))) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hbase := Erdos3Bertrand.summable_one_div_nat_mul_log_mul_loglog_rpow_const
+    (c := Real.log 2) hlog2 hδ
+  rw [← summable_nat_add_iff 1] at hbase
+  refine hbase.congr (fun j => ?_)
+  simp only [Nat.cast_add, Nat.cast_one]
+
+/-- **Sharpness: at the borderline `δ = 0` the block-mass envelope diverges.**
+    If the innermost iterated logarithm in `SuperSharpRequiredBound` carried exponent `1`
+    instead of `1+δ` — i.e. the threshold `r_k(N) = O(N/(log N·log log N·log log log N))` —
+    the dyadic block-mass envelope would be the second-axis Bertrand *borderline*
+    `1 / ((j+1)·log((j+1)·log 2)·log log((j+1)·log 2))`, which **diverges** (it is a shift
+    and constant multiple of `Erdos3Bertrand.not_summable_one_div_nat_mul_log_mul_loglog_mul_const`
+    with `c = log 2`). Consequently the dyadic-blocking reduction of `summable_of_superSharpBound`
+    is *sharp*: its innermost `1+δ` power cannot be dropped to `1`. Together with
+    `summable_superSharp_envelope` this locates the method's convergence/divergence transition
+    precisely at `δ = 0`. Axiom-free. -/
+theorem not_summable_superSharp_envelope_borderline :
+    ¬ Summable (fun j : ℕ =>
+      1 / (((j : ℝ) + 1) * Real.log (((j : ℝ) + 1) * Real.log 2) *
+        Real.log (Real.log (((j : ℝ) + 1) * Real.log 2)))) := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  intro hsum
+  apply Erdos3Bertrand.not_summable_one_div_nat_mul_log_mul_loglog_mul_const
+    (c := Real.log 2) hlog2
+  rw [← summable_nat_add_iff 1]
+  refine hsum.congr (fun j => ?_)
+  simp only [Nat.cast_add, Nat.cast_one]
+
 /-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
     The contrapositive of `summable_of_strongBound`, packaged as a positive density
     statement: if `∑_{a∈A} 1/a = ∞` then for every `C, δ > 0` the counting function

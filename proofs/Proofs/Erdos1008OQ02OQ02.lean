@@ -971,6 +971,57 @@ theorem hasKst_two_iff_hasK2t (G : SimpleGraph V) (t : ℕ) :
     · exact (hadj v hv).1
     · exact (hadj v hv).2
 
+/-- **`HasKst` is antitone in the common-neighbour count `t`.**  Shrinking the required
+number of common neighbours cannot destroy a `K_{s,t}`: the same witness `⟨S, T⟩` serves,
+its cardinality bound merely weakened `t ↦ t'` (`le_trans`).  The `s`-general analogue of
+`hasK2t_mono`. -/
+theorem hasKst_mono_t (G : SimpleGraph V) {s t t' : ℕ} (htt' : t' ≤ t)
+    (h : HasKst G s t) : HasKst G s t' := by
+  obtain ⟨S, T, hS, hT, hadj⟩ := h
+  exact ⟨S, T, hS, le_trans htt' hT, hadj⟩
+
+/-- **`HasKst` is antitone in the part size `s`.**  Shrinking the `s`-side cannot destroy a
+`K_{s,t}`: any `s'`-subset `S' ⊆ S` (`s' ≤ s = |S|`) keeps all of `T` as common neighbours,
+since fewer vertices impose fewer adjacency constraints.  Uses `Finset.exists_subset_card_eq`
+to extract `S'`; the adjacency clause restricts along `S' ⊆ S`. -/
+theorem hasKst_mono_s (G : SimpleGraph V) {s s' t : ℕ} (hss' : s' ≤ s)
+    (h : HasKst G s t) : HasKst G s' t := by
+  obtain ⟨S, T, hS, hT, hadj⟩ := h
+  obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_eq (hss'.trans_eq hS.symm)
+  exact ⟨S', T, hS'card, hT, fun a ha v hv => hadj a (hS'sub ha) v hv⟩
+
+/-- **`HasKst` is monotone in both indices.**  `K_{s',t'} ⊆ K_{s,t}` whenever `s' ≤ s` and
+`t' ≤ t`, so a graph containing the larger complete bipartite graph contains the smaller.
+Compose `hasKst_mono_s` and `hasKst_mono_t`. -/
+theorem hasKst_mono (G : SimpleGraph V) {s s' t t' : ℕ} (hss' : s' ≤ s) (htt' : t' ≤ t)
+    (h : HasKst G s t) : HasKst G s' t' :=
+  hasKst_mono_t G htt' (hasKst_mono_s G hss' h)
+
+/-- **`K_{s,t}`-freeness nests.**  A graph free of the smaller `K_{s',t'}` (`s' ≤ s`,
+`t' ≤ t`) is automatically free of the larger `K_{s,t}` — the contrapositive of
+`hasKst_mono`.  So the `K_{s,t}`-free graph classes form a lattice-decreasing family,
+`Free(s',t') ⊆ Free(s,t)`. -/
+theorem not_hasKst_mono (G : SimpleGraph V) {s s' t t' : ℕ} (hss' : s' ≤ s) (htt' : t' ≤ t)
+    (h : ¬ HasKst G s' t') : ¬ HasKst G s t :=
+  fun hc => h (hasKst_mono G hss' htt' hc)
+
+/-- **Symmetry of `K_{s,t}` containment: `K_{s,t} ≅ K_{t,s}`.**  A graph contains `K_{s,t}`
+iff it contains `K_{t,s}`: the complete bipartite graph is symmetric under swapping its two
+parts.  Given an `s`-set `S` with `≥ t` common neighbours `T`, cut `T` down to a `t`-set
+`T'` (`Finset.exists_subset_card_eq`); then `T'` is an `t`-set whose `s` common neighbours
+include all of `S` (every `v ∈ S` is adjacent to every `a ∈ T' ⊆ T`, using `G.Adj` symmetry).
+Both directions are the same argument with `s, t` swapped.  A consequence:
+`ex(n; K_{s,t}) = ex(n; K_{t,s})`, so the KST forcing applies from either side. -/
+theorem hasKst_comm (G : SimpleGraph V) (s t : ℕ) :
+    HasKst G s t ↔ HasKst G t s := by
+  constructor
+  · rintro ⟨S, T, hS, hT, hadj⟩
+    obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hT
+    exact ⟨T', S, hT'card, hS.ge, fun a ha v hv => (hadj v hv a (hT'sub ha)).symm⟩
+  · rintro ⟨S, T, hS, hT, hadj⟩
+    obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hT
+    exact ⟨T', S, hT'card, hS.ge, fun a ha v hv => (hadj v hv a (hT'sub ha)).symm⟩
+
 /-- **Codegree bound from `K_{s,t}`-freeness.**  In a `K_{s,t}`-free graph any
 `s`-set `S` of vertices has fewer than `t` common neighbours: otherwise those
 `≥ t` common neighbours would witness a `K_{s,t}`.  The `s`-general analogue of
@@ -1256,6 +1307,93 @@ theorem kst_general_edge_bound_rpow (G : SimpleGraph V) [DecidableRel G.Adj]
     linarith [hLle]
   · -- sparse regime `2m < (s-1)n`: bound is immediate
     linarith [hrhs, hL]
+
+/-- **General `K_{s,t}` edge-count bound (`ex` form).**  The `÷2` restatement of
+`kst_general_edge_bound_rpow`: a `K_{s,t}`-free graph (`s, t ≥ 1`) on `n` vertices has
+
+      m ≤ ½ (t-1)^{1/s} · n^{2 - 1/s} + ½ (s-1)·n,
+
+the standard `ex(n; K_{s,t}) ≤ …` form of the Kővári–Sós–Turán theorem. -/
+theorem kst_general_edge_card_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) (hfree : ¬ HasKst G s t) :
+    (G.edgeFinset.card : ℝ)
+      ≤ ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹) / 2
+        + ((s : ℝ) - 1) * (Fintype.card V) / 2 := by
+  have h := kst_general_edge_bound_rpow G s t hs ht hfree
+  linarith
+
+/-- **Forcing form (general `K_{s,t}`).**  The contrapositive of
+`kst_general_edge_bound_rpow`: a graph whose edge count *exceeds* the Kővári–Sós–Turán
+bound must contain a `K_{s,t}`.  Concretely, if
+
+      (t-1)^{1/s} · n^{2 - 1/s} + (s-1)·n  <  2m       (`s, t ≥ 1`),
+
+then `HasKst G s t`.  The general-`s` companion of `hasK2t_of_edge_bound_lt` (the `s = 2`
+forcing form), making the KST bound a genuine extremal threshold for every `s`. -/
+theorem hasKst_of_edge_bound_rpow_lt (G : SimpleGraph V) [DecidableRel G.Adj]
+    (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hm : ((t : ℝ) - 1) ^ ((s : ℝ)⁻¹) * (Fintype.card V : ℝ) ^ (2 - (s : ℝ)⁻¹)
+        + ((s : ℝ) - 1) * (Fintype.card V) < 2 * (G.edgeFinset.card : ℝ)) :
+    HasKst G s t := by
+  by_contra hfree
+  exact absurd (kst_general_edge_bound_rpow G s t hs ht hfree) (not_le.2 hm)
+
+/-! ### Leading-order asymptotic constant
+
+The finite-`n` closed form `kst_edge_bound_leading_order`
+(`m ≤ ½(√(t-1)·n^{3/2} + n)`) determines the *asymptotic* leading coefficient of
+`ex(n; K_{2,t})`.  We package the bound as a function of `n` and show its ratio to
+`n^{3/2}` converges to `½·√(t-1)`, discharging the analytic content of the
+textbook statement `ex(n; K_{2,t}) ≤ (½√(t-1) + o(1))·n^{3/2}`. -/
+
+/-- **Closed-form leading-order KST bound as a function of `n`.**  The right-hand
+side of `kst_edge_bound_leading_order`: `½·(√(t-1)·n^{3/2} + n)`, with `n^{3/2}`
+written `n·√n`.  Packaging it as a function of `n` lets us state the asymptotic
+leading constant (`kst_leading_order_ratio_tendsto`). -/
+noncomputable def kstLeadingBound (t : ℕ) (n : ℝ) : ℝ :=
+  (Real.sqrt ((t : ℝ) - 1) * n * Real.sqrt n + n) / 2
+
+/-- The leading-order bound restated with `kstLeadingBound`: a nonempty
+`K_{2,t}`-free graph (`t ≥ 1`) satisfies `m ≤ kstLeadingBound t n`. -/
+theorem kst_edge_bound_leading_order_def (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasK2t G t) :
+    (G.edgeFinset.card : ℝ) ≤ kstLeadingBound t (Fintype.card V) :=
+  kst_edge_bound_leading_order G t ht hfree
+
+/-- **Leading-order asymptotic constant for `ex(n; K_{2,t})`.**  The closed-form
+Kővári–Sós–Turán upper bound `kstLeadingBound t n = ½(√(t-1)·n^{3/2} + n)`,
+divided by `n^{3/2}`, tends to `½·√(t-1)` as `n → ∞`:
+
+      kstLeadingBound t n / n^{3/2}  →  ½·√(t-1).
+
+Combined with `kst_edge_bound_leading_order_def` (`m ≤ kstLeadingBound t n`), this
+makes rigorous the textbook statement `ex(n; K_{2,t}) ≤ (½√(t-1) + o(1))·n^{3/2}`:
+the `+n` correction term contributes `n / n^{3/2} = n^{-1/2} → 0`, so the leading
+coefficient of the proven upper bound is exactly `½√(t-1)`.  For `t = 2` this
+recovers Reiman's `ex(n; C₄) ≤ (½ + o(1))·n^{3/2}`.  The `√(t-1)` factor is a fixed
+constant, so no monotonicity/nonnegativity hypothesis on `t` is needed. -/
+theorem kst_leading_order_ratio_tendsto (t : ℕ) :
+    Filter.Tendsto (fun n : ℝ => kstLeadingBound t n / (n * Real.sqrt n))
+      Filter.atTop (nhds (Real.sqrt ((t : ℝ) - 1) / 2)) := by
+  -- `√n → ∞`, hence `2√n → ∞`, hence `(2√n)⁻¹ → 0`.
+  have hsqrt_atTop : Filter.Tendsto (fun n : ℝ => Real.sqrt n) Filter.atTop Filter.atTop := by
+    have h : (fun n : ℝ => Real.sqrt n) = fun n : ℝ => n ^ (1 / (2 : ℝ)) := by
+      funext x; exact Real.sqrt_eq_rpow x
+    rw [h]; exact tendsto_rpow_atTop (by norm_num)
+  have hinv : Filter.Tendsto (fun n : ℝ => (2 * Real.sqrt n)⁻¹) Filter.atTop (nhds 0) :=
+    (Filter.Tendsto.const_mul_atTop (by norm_num : (0 : ℝ) < 2) hsqrt_atTop).inv_tendsto_atTop
+  -- The target eventually equals the constant `½√(t-1)` plus the vanishing `(2√n)⁻¹`.
+  have hconst : Filter.Tendsto (fun _ : ℝ => Real.sqrt ((t : ℝ) - 1) / 2) Filter.atTop
+      (nhds (Real.sqrt ((t : ℝ) - 1) / 2)) := tendsto_const_nhds
+  have hsum := hconst.add hinv
+  rw [add_zero] at hsum
+  refine hsum.congr' ?_
+  filter_upwards [Filter.eventually_gt_atTop (0 : ℝ)] with n hn
+  have hs : (0 : ℝ) < Real.sqrt n := Real.sqrt_pos.mpr hn
+  have hnn : n ≠ 0 := hn.ne'
+  have hsn : Real.sqrt n ≠ 0 := hs.ne'
+  simp only [kstLeadingBound]
+  field_simp
 
 end GraphLevel
 

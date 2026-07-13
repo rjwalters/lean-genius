@@ -1735,4 +1735,102 @@ theorem natDegree_minpoly_le_add_compress_of_reducing {T : V →ₗ[𝕜] V} (H 
     _ = (minpoly 𝕜 (compress T H)).natDegree + (minpoly 𝕜 (compress T Hᗮ)).natDegree :=
         Polynomial.natDegree_mul hp0 hq0
 
+/-! ## Ky Fan: the compression's eigenvalue-sum (= trace) is bracketed by the
+extreme eigenvalue sums of `T`
+
+Summing the *termwise* Poincaré interlacing `λ_{k+m} ≤ μ_k ≤ λ_k` over all `k`
+gives the **Ky Fan** trace bracket for the compression.  The upper bound is the
+Ky Fan maximum principle in compression form: the sum of the eigenvalues of
+`compress T H` — equivalently, by `trace_eq_sum_eigenvalues`, its trace — never
+exceeds the sum of the `n = finrank H` *largest* eigenvalues of `T`,
+
+  `∑ₖ μ_k ≤ ∑_{k<n} λ_k`.
+
+Dually it is at least the sum of the `n` *smallest* eigenvalues of `T`,
+
+  `∑_{k<n} λ_{k+m} ≤ ∑ₖ μ_k`.
+
+Both are one-line `Finset.sum_le_sum` consequences of the two halves of
+`poincare_separation_compression`.  This is the summed (Ky Fan) shadow of the
+termwise interlacing, and the eigenvalue-list refinement of the coarse trace
+additivity `sum_eigenvalues_eq_add_of_reducing` — but where that identity needs
+`H` *reducing*, the Ky Fan bracket holds for a **completely arbitrary** subspace
+`H` (only its dimension enters).  Symmetry-free apart from `T.IsSymmetric` (real
+spectrum), which the eigenvalue lists require. -/
+
+/-- **Ky Fan maximum principle (compression form).**  The sum of the eigenvalues
+of the compression `compress T H` onto an arbitrary `n`-dimensional subspace is at
+most the sum of the `n` largest eigenvalues of `T`:
+
+  `∑ₖ μ_k ≤ ∑_{k<n} λ_k`.
+
+Termwise `μ_k ≤ λ_k` (`poincare_separation_compression`, upper half) summed over
+`k : Fin n`.  No reducing / invariance hypothesis on `H`. -/
+theorem sum_compress_eigenvalues_le_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n) :
+    ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k
+      ≤ ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ), by have := k.isLt; omega⟩ :=
+  Finset.sum_le_sum fun k _ => (poincare_separation_compression hT hVdim H hHdim k).2
+
+/-- **Ky Fan minimum principle (compression form).**  Dually to
+`sum_compress_eigenvalues_le_of_poincare`, the eigenvalue-sum of the compression
+is at least the sum of the `n` *smallest* eigenvalues of `T`:
+
+  `∑_{k<n} λ_{k+m} ≤ ∑ₖ μ_k`.
+
+Termwise `λ_{k+m} ≤ μ_k` (`poincare_separation_compression`, lower half) summed
+over `k : Fin n`. -/
+theorem sum_le_sum_compress_eigenvalues_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n) :
+    ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ) + m, by have := k.isLt; omega⟩
+      ≤ ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k :=
+  Finset.sum_le_sum fun k _ => (poincare_separation_compression hT hVdim H hHdim k).1
+
+/-- **The Ky Fan trace bracket.**  Combining the two principles, the eigenvalue-sum
+of the compression `compress T H` onto an arbitrary `n`-dimensional subspace lies
+between the sum of the `n` smallest and the sum of the `n` largest eigenvalues of
+`T`:
+
+  `∑_{k<n} λ_{k+m} ≤ ∑ₖ μ_k ≤ ∑_{k<n} λ_k`.
+
+By `trace_eq_sum_eigenvalues` the middle sum is the trace of `compress T H`, so this
+is exactly the statement that compressing a symmetric operator to an `n`-dimensional
+subspace can move its trace no further than the extreme `n`-eigenvalue sums permit —
+the summed shadow of the pointwise spectral confinement
+`compress_eigenvalue_mem_Icc_of_poincare`. -/
+theorem sum_compress_eigenvalues_mem_Icc_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (H : Submodule 𝕜 V) (hHdim : Module.finrank 𝕜 H = n) :
+    ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ) + m, by have := k.isLt; omega⟩
+        ≤ ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k
+      ∧ ∑ k, (isSymmetric_compress hT H).eigenvalues hHdim k
+          ≤ ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ), by have := k.isLt; omega⟩ :=
+  ⟨sum_le_sum_compress_eigenvalues_of_poincare hT hVdim H hHdim,
+   sum_compress_eigenvalues_le_of_poincare hT hVdim H hHdim⟩
+
+/-- **The Ky Fan trace bracket, orthonormal-frame form.**  The `_span` companion of
+`sum_compress_eigenvalues_mem_Icc_of_poincare`, specialising `H` to `span (range f)`
+for an orthonormal `f : Fin n → V` exactly as `poincare_separation_compression_span`
+does for the pointwise bound: the eigenvalue-sum of the compression onto the span of
+an orthonormal `n`-frame is bracketed by the extreme `n`-eigenvalue sums of `T`, with
+the dimension hypothesis discharged automatically from `finrank_span_eq_card`. -/
+theorem sum_compress_eigenvalues_mem_Icc_span_of_poincare
+    {T : V →ₗ[𝕜] V} (hT : T.IsSymmetric) {n m : ℕ}
+    (hVdim : Module.finrank 𝕜 V = n + m)
+    (f : Fin n → V) (hf : Orthonormal 𝕜 f) :
+    ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ) + m, by have := k.isLt; omega⟩
+        ≤ ∑ k, (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+      ∧ ∑ k, (isSymmetric_compress hT (Submodule.span 𝕜 (Set.range f))).eigenvalues
+            ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
+          ≤ ∑ k : Fin n, (hT.eigenvalues hVdim) ⟨(k : ℕ), by have := k.isLt; omega⟩ :=
+  sum_compress_eigenvalues_mem_Icc_of_poincare hT hVdim (Submodule.span 𝕜 (Set.range f))
+    ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n))
+
+
 end CauchyInterlacing.PoincareCompression

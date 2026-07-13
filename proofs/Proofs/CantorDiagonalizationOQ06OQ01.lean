@@ -479,4 +479,137 @@ theorem diagonalReal_eq_one_ninth_add (f : ℕ → ℝ) :
   rw [diagonalReal, tsum_congr hterm,
       Summable.tsum_add summable_geo_shift_one (summable_indicator_shift f), tsum_geo_shift_one]
 
+/-! ## An explicit injection `(ℕ → Bool) ↪ ℝ`
+
+The open question `cantor-diagonalization-oq-06-oq-01` asks not only for the "no surjection
+`ℕ → ℝ`" *upper* form of uncountability, but to "package the result as an explicit injection
+`{sequences} ↪ ℝ`" — the *lower* (cardinality `𝔠 ≤ #ℝ`) form, again with an explicit witness
+rather than a cardinal computation.
+
+We supply it directly from the digit machinery.  To a binary sequence `s : ℕ → Bool`
+associate the listing `n ↦ (if s n then 10^{-(n+1)} else 0)`, whose `n`-th diagonal digit is
+`1` exactly when `s n = true` (the same floor computation as
+`exists_diagonalReal_eq_two_ninths`/`exists_diagonalReal_eq_one_ninth`).  Feeding this listing
+to `diagonalReal` yields `seqReal s`, whose `n`-th digit is `2` when `s n = true` and `1`
+otherwise — so the whole sequence `s` is *read back* from the digits of the single real
+`seqReal s`, making `seqReal` injective.  The result is an explicit embedding
+`(ℕ → Bool) ↪ ℝ` whose entire range lies in the tiny interval `[1/9, 2/9]`, and the
+cardinality bound `#(ℕ → Bool) ≤ #ℝ` — all still routed through the bespoke `diagonalReal`,
+never `Cardinal.not_countable_real`. -/
+
+/-- The `n`-th digit of the indicator listing `if s n then 10^{-(n+1)} else 0` is `1` exactly
+when `s n = true`, and `0` otherwise.  Combines the two floor computations used to attain the
+endpoints of `[1/9, 2/9]`. -/
+theorem digit_indicator (s : ℕ → Bool) (n : ℕ) :
+    digit (if s n then (1 : ℝ) / 10 ^ (n + 1) else 0) n = if s n then 1 else 0 := by
+  by_cases h : s n
+  · rw [if_pos h, if_pos h]
+    have h10 : (10 : ℝ) ^ (n + 1) ≠ 0 := by positivity
+    unfold digit
+    rw [one_div, inv_mul_cancel₀ h10, Int.floor_one]
+    decide
+  · rw [if_neg h, if_neg h]
+    unfold digit
+    rw [zero_mul, Int.floor_zero]
+    decide
+
+/-- **The explicit binary-sequence real.**  To a binary sequence `s : ℕ → Bool` associate the
+real `seqReal s` whose `n`-th decimal digit is `2` when `s n = true` and `1` otherwise. -/
+noncomputable def seqReal (s : ℕ → Bool) : ℝ :=
+  diagonalReal (fun n => if s n then (1 : ℝ) / 10 ^ (n + 1) else 0)
+
+/-- The digits of `seqReal s` read back the sequence: `digit (seqReal s) n = 2` when
+`s n = true` and `= 1` otherwise. -/
+theorem digit_seqReal (s : ℕ → Bool) (n : ℕ) :
+    digit (seqReal s) n = if s n then 2 else 1 := by
+  unfold seqReal
+  rw [digit_diagonalReal]
+  unfold db
+  simp only [digit_indicator]
+  cases h : s n <;> simp
+
+/-- **The binary-sequence map is injective.**  Distinct sequences give distinct reals: if
+`seqReal s = seqReal t`, comparing `n`-th digits (`2` vs `1`) forces `s n = t n` for every
+`n`. -/
+theorem seqReal_injective : Function.Injective seqReal := by
+  intro s t h
+  funext n
+  have hd : digit (seqReal s) n = digit (seqReal t) n := by rw [h]
+  rw [digit_seqReal, digit_seqReal] at hd
+  cases hs : s n <;> cases ht : t n <;> simp_all
+
+/-- **Explicit embedding `(ℕ → Bool) ↪ ℝ`.**  The injective digit-encoding `seqReal`, packaged
+as a `Function.Embedding` — the constructive `𝔠 ≤ #ℝ` lower bound the open question asks for,
+dual to the `no surjection ℕ → ℝ` upper bound and still routed through `diagonalReal`. -/
+noncomputable def seqEmbedding : (ℕ → Bool) ↪ ℝ := ⟨seqReal, seqReal_injective⟩
+
+/-- Every value of the embedding lands in the sharp localization interval `[1/9, 2/9]`: the
+whole continuum-sized range is packed into that tiny interval. -/
+theorem seqReal_mem_Icc (s : ℕ → Bool) : seqReal s ∈ Set.Icc (1 / 9 : ℝ) (2 / 9) :=
+  diagonalReal_mem_Icc _
+
+/-- **Constructive cardinality lower bound.**  `#(ℕ → Bool) ≤ #ℝ`, witnessed by the explicit
+injection `seqReal` — the `𝔠 ≤ #ℝ` half of `#ℝ = 𝔠`, obtained with an actual embedding and no
+appeal to `Cardinal.not_countable_real` or `#ℝ = 𝔠`. -/
+theorem mk_seq_le_mk_real : Cardinal.mk (ℕ → Bool) ≤ Cardinal.mk ℝ :=
+  Cardinal.mk_le_of_injective seqReal_injective
+
+/-! ## Injectivity of the diagonal map on its digit-choices
+
+`diagonalReal_congr` shows the diagonal map is *constant* on enumerations sharing a
+diagonal digit-sequence.  The converse — that it *separates* distinct digit-sequences —
+was missing.  It falls straight out of the crux `digit_diagonalReal` (the `n`-th digit of
+`diagonalReal f` reads back exactly `db f n`), giving an exact biconditional and hence an
+order-preserving embedding of `{1,2}`-digit sequences into `[1/9, 2/9]`. -/
+
+/-- **Converse of `diagonalReal_congr` (injectivity on digit-choices).**  Equal diagonal
+reals have equal diagonal digit-choices at every position.  Reading the `n`-th digit of
+each side and applying the crux `digit_diagonalReal` collapses the hypothesis to
+`db f n = db g n`. -/
+theorem db_eq_of_diagonalReal_eq {f g : ℕ → ℝ} (h : diagonalReal f = diagonalReal g)
+    (n : ℕ) : db f n = db g n := by
+  have hd := congrArg (fun x => digit x n) h
+  simpa only [digit_diagonalReal] using hd
+
+/-- **Characterization of equal diagonal reals.**  `diagonalReal f = diagonalReal g` iff the
+diagonal digit-choices agree everywhere.  Forward is `db_eq_of_diagonalReal_eq`; reverse is a
+termwise `tsum_congr`, since `diagonalReal` depends on `f` only through the sequence `db f`.
+This sharpens `diagonalReal_congr` (whose digit-equality hypothesis is merely sufficient) to
+an exact biconditional at the level of the `{1,2}`-valued choices actually used. -/
+theorem diagonalReal_eq_iff_db {f g : ℕ → ℝ} :
+    diagonalReal f = diagonalReal g ↔ ∀ n, db f n = db g n := by
+  refine ⟨fun h n => db_eq_of_diagonalReal_eq h n, fun h => ?_⟩
+  unfold diagonalReal
+  exact tsum_congr fun n => by rw [h n]
+
+/-- **Digit-choices separate diagonal reals.**  Contrapositive of
+`db_eq_of_diagonalReal_eq`: a single position of disagreement in the digit-choices already
+forces the diagonal reals apart.  Combined with `diagonalReal_mono`, the diagonal
+construction is an order-preserving *embedding* of digit-choice sequences into the reals. -/
+theorem diagonalReal_ne_of_db_ne {f g : ℕ → ℝ} {n : ℕ} (h : db f n ≠ db g n) :
+    diagonalReal f ≠ diagonalReal g :=
+  fun heq => h (db_eq_of_diagonalReal_eq heq n)
+
+/-! ## Set-theoretic form: the witness is missing from the enumeration -/
+
+/-- **The diagonal real is missing from the enumeration** — the set-theoretic form of
+`diagonalReal_ne` and of this problem's title.  `diagonalReal f` lies outside `Set.range f`,
+so no enumeration `f : ℕ → ℝ` lists it. -/
+theorem diagonalReal_notMem_range (f : ℕ → ℝ) : diagonalReal f ∉ Set.range f := by
+  rintro ⟨n, hn⟩
+  exact diagonalReal_ne f n hn.symm
+
+/-- **The range of any enumeration is a proper subset of `ℝ`.**  `Set.range f ≠ Set.univ`,
+exhibited by the explicit missing witness `diagonalReal f`; the `Set.range` restatement of
+`not_surjective_nat_real`. -/
+theorem range_ne_univ (f : ℕ → ℝ) : Set.range f ≠ Set.univ := by
+  intro h
+  apply diagonalReal_notMem_range f
+  rw [h]
+  exact Set.mem_univ _
+
+-- Axiom audit: the new results are axiom-free (only propext/Classical.choice/Quot.sound).
+#print axioms diagonalReal_eq_iff_db
+#print axioms diagonalReal_notMem_range
+
 end CantorDiagonalizationOQ06OQ01

@@ -8,12 +8,10 @@ Make meaningful progress on open mathematical problems by proving theorems, buil
 
 ## Honesty Standards
 
-- Do not describe trivial results as significant
-- Do not inflate novelty claims -- if the result is routine, say so
-- If nothing worth doing/reporting exists, say "nothing found" rather than fabricating value
-- Judge results relative to current gallery state, not in absolute terms
-- A lemma that filled a gap 3 months ago may be trivial now if stronger results exist
-- When uncertain about significance, default to understating rather than overstating
+Follow the fleet-wide Honesty Standards in
+[`COMMON.md`](./COMMON.md#honesty-standards) (no inflation, "nothing found"
+over fabricated value, judge relative to current gallery state, understate
+when uncertain).
 
 ## Environment Setup
 
@@ -168,7 +166,7 @@ Knowledge score: 8 (MODERATE)
 cd $REPO_ROOT/.loom/worktrees/researcher-$N
 ```
 
-`.loom/worktrees/researcher-$N` is the sanctioned location — the create path preserves in-flight work, so avoid making defensive worktrees under `$HOME` or `/tmp`. The backstop janitor (`scripts/clean-branches.sh`) automatically reclaims any stray `$HOME`/`/private/tmp` worktree once it is clean and stale; dirty or unpushed worktrees are always preserved.
+`.loom/worktrees/researcher-$N` is the sanctioned location — the create path preserves in-flight work, so avoid making defensive worktrees under `$HOME` or `/tmp`. The backstop janitor (`scripts/clean-branches.sh` — currently missing from `main`, see the [Known-Gaps Ledger](./COMMON.md#known-gaps-ledger-issue-38387)) automatically reclaims any stray `$HOME`/`/private/tmp` worktree once it is clean and stale; dirty or unpushed worktrees are always preserved.
 
 If no problems are available, wait 5 minutes and retry.
 
@@ -198,24 +196,34 @@ When you claim a problem with a high axiom count:
 
 ### Solved/Unsolved Strategy (MANDATORY)
 
-Before starting work, classify the problem state and choose strategy:
+Before starting work, classify the problem state (STUCK / MAKING PROGRESS /
+SOLVED) and choose strategy per the shared convention in
+`research/PROBLEMS-STRUCTURE.md` §"Session strategy by problem state". Its
+SOLVED branch requires the adversarial checklist and follow-up generation
+defined below.
 
-**STUCK (sorries remain, no clear path forward):**
-- Do NOT generalize or broaden scope
-- Decompose into concrete subgoals or intermediate lemmas
-- Try a different decomposition of the same target
-- Check if the blocking sorry can be submitted to Aristotle
-- If 3+ sessions stuck on same sorry: flag as BLOCKED, move on
+### Adversarial Checklist Before Claiming SOLVED (MANDATORY)
 
-**MAKING PROGRESS (some sorries eliminated this session):**
-- Continue current approach
-- Document which techniques worked for knowledge propagation
+Before recording a SOLVED claim, author or update the **Adversarial checklist**
+element of the target's `research/problems/<slug>/problem.md` (element 6 in
+`research/PROBLEMS-STRUCTURE.md`). The checklist tells whoever audits the claim
+exactly how THIS claim could be wrong:
 
-**SOLVED (0 sorries, axiom count acceptable):**
-- Generate 1-2 follow-up open questions (see below)
-- Look outward: generalizations, converses, sharp boundaries
-- Check if proved lemmas help other active research problems
-- Update technique index with successful approaches
+- **Statement-mismatch variants** — each way the Lean theorem could differ from
+  the pinned target. Enumerate against the "Must prove exactly / does not
+  count" section of the same problem.md (element 5): every definitional pin and
+  named near-miss there becomes a checklist entry ("confirm the theorem does
+  not merely prove <near-miss>").
+- **Multiplicity/exactness and boundary/degenerate-case traps** specific to this
+  claim (empty/trivial instances, off-by-one in bounds, exact-vs-at-least).
+- **Circular use of equivalent statements** — any axiom, hypothesis, or imported
+  lemma as strong as the target itself.
+- **Wrong-multiplicity / restricted-subclass near-misses** the proof could be
+  silently establishing instead of the full result.
+
+Entries must name the actual definitions, hypotheses, and edge cases at risk —
+never generic boilerplate ("verify carefully"). Adopted from the OpenAI CDC
+prompt's per-problem adversarial-checklist technique (see issue #37505).
 
 ### Follow-Up Question Generation (after SOLVED)
 
@@ -226,6 +234,38 @@ Generate 1-2 strong follow-up questions. Apply quality criteria:
 - REJECT: variable renamings, trivial corollaries, shallow specializations
 
 If no strong follow-up exists, generate 0 questions. This is preferable to weak proposals.
+
+**Equivalent-strength check (MANDATORY at OQ spawn).** Every proposed child OQ
+must include an explicit note stating whether the child is **materially weaker**
+than the parent target. The test: would proving the child immediately yield the
+parent by a known argument? If yes, the child is of equivalent strength — record
+it on the parent as a **blocked route** (reopen bar: "materially new mechanism
+required"), NOT as decomposition progress. An elegant reduction that ends at a
+lemma as strong as the target earns zero progress credit. Judge strength against
+the parent's "Must prove exactly / does not count" section in
+`research/problems/<slug>/problem.md` (element 5 in `research/PROBLEMS-STRUCTURE.md`)
+— an equivalent same-strength restatement is already a named near-miss there.
+
+**Blocked-route registry (tracker JSON shape, issue #38388).** Record blocked
+routes in the problem tracker `src/data/research/problems/<id>.json` under
+`currentState.blockers`. Entries are either a legacy plain string (valid
+forever) or — REQUIRED for new blocked-route entries — a structured object:
+
+```json
+{
+  "route": "second-moment / L² averaging",
+  "reopenCriterion": "materially new mechanism required",
+  "blockedAt": "2026-07-12"
+}
+```
+
+`route` names the blocked approach by mathematical mechanism;
+`reopenCriterion` states when it may be retried (default, and the bar for
+equivalent-strength blocks: "materially new mechanism required");
+`blockedAt` is an optional ISO date. **Enforcement:** do not re-attempt a
+blocked route unless its `reopenCriterion` is met. An entry without an
+explicit criterion (including every legacy string entry) carries the implicit
+default "materially new mechanism required".
 
 **OQ-chain depth guard (MANDATORY).** Follow-up questions become child gallery
 entries via the Seeker (`<parent>-oq-NN`), which can recurse without bound. Before
@@ -245,6 +285,42 @@ OQ_DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
 - Keep chains shallow: prefer broadening back toward the original gallery entry
   (new sibling questions) over drilling deeper into an already-deep OQ descendant.
 
+### Independence Preservation (Multi-Researcher Problems)
+
+When several researchers work one problem or problem family concurrently
+(distinct OQ children of the same parent count as one family):
+
+- **Record your route by mathematical idea, not wording.** In the problem's
+  knowledge tracker (`research/problems/<id>/knowledge.md` and
+  `src/data/research/problems/<id>.json`), label your approach by its
+  underlying mechanism (e.g. "discharging via flows", "second-moment / L²
+  averaging") so two differently-worded write-ups of the same idea are
+  recognizably one route.
+- **Develop your route independently first.** On joining a problem that other
+  researchers are actively working, read the settled artifacts (proved lemmas,
+  dead-ends, the "Must prove exactly / does not count" pinning) but defer
+  reading other active researchers' favored-approach notes until you have
+  committed to your own attack. Cross-pollinate only after independent
+  development, or when stuck. This refines — it does not replace — the
+  "build on prior work" rule from Step 2: facts are shared immediately;
+  hypotheses are not.
+- **Keep incompatible routes alive.** Do not abandon your route merely because
+  another researcher's route looks favored; converge only when your route is
+  properly blocked. A route stalling at a lemma of equivalent strength to the
+  target is blocked per the equivalent-strength check above — reopen bar:
+  "materially new mechanism required". Record it as a structured
+  `currentState.blockers` entry (`{ route, reopenCriterion, blockedAt? }`) per
+  the blocked-route registry above.
+
+**Spawner-side convention (binding on the orchestrator/operator, not just
+researchers):** when dispatching multiple researchers onto one problem family,
+do not seed them all with the currently favored approach; stagger
+cross-pollination so each surviving route is developed independently before
+its author reads the others.
+
+Adopted from the OpenAI CDC prompt's independence-preservation technique (see
+issue #37505).
+
 ### Work Categories
 
 | Decision | Criteria | Action |
@@ -255,148 +331,43 @@ OQ_DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
 | **SURVEY** | Can state but not prove yet | Document findings |
 | **BLOCKED** | Needs > 1000 lines foundational work | Document blocker |
 
-### Create/Update Aristotle Companion File
-
-After writing or updating a main proof file, create a companion file with routine supporting lemmas:
-
-```bash
-# Create companion file for Erdős #N
-# Name: ErdosNAristotle.lean (alongside ErdosNProblem.lean)
-```
-
-**Template for companion files:**
-```lean
-/-
-  Aristotle targets for Erdős Problem #N
-  Routine supporting lemmas for automated proof search.
-  See ErdosNProblem.lean for the main formalization.
-
-  Criteria for inclusion:
-  - NOT the main open conjecture
-  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
-  - Clean theorem statement with no definition sorries
-  - No axioms (use theorem ... := by sorry instead)
--/
-import Mathlib
-
-namespace ErdosN
-
--- [Routine lemmas here, one per theorem]
--- GOOD: standard bounds, combinatorial identities, known estimates
-lemma helper_bound : ... := by sorry
-lemma routine_calc : ... := by sorry
-
--- DO NOT include:
--- * The main open conjecture
--- * axiom declarations (convert to theorem ... := by sorry)
--- * definition sorries
-
-end ErdosN
-```
-
-**What to include:**
-- Monotonicity lemmas, cardinality bounds, standard inequalities
-- Known results from literature that are likely in Mathlib
-- Supporting lemmas for the main proof (NOT the main conjecture itself)
-
-**What NOT to include:**
-- The main open conjecture (`erdos_N` theorem)
-- `axiom` declarations (Aristotle won't attempt these — use `theorem ... := by sorry`)
-- Definition sorries (blocks everything)
-
 ### Use Aristotle Strategically
 
-- **TRIVIAL sorries**: Try manually first — faster to write yourself than to round-trip through Aristotle
-- **HARD sorries**: **Preferred path is the CLI/shell-script pipeline** (`scripts/aristotle/*.sh`, see "Aristotle CLI pipeline" below). Package each hard supporting lemma as a `*StatementOnly.lean` file and submit it via `scripts/aristotle/submit-batch.sh`. The legacy multi-sorry `*Aristotle.lean` companion-file pattern is deprecated for new work but remains a fallback; existing companion files are not being deleted in this transition.
-- **OPEN sorries**: Work manually — Aristotle can't help with unsolved problems (it will spin on the server until it times out)
-- **Definition sorries**: Never submit — Aristotle skips `def ... := by sorry` entirely. Complete the definition first, then submit downstream theorem sorries.
+**Single source of truth: `research/ARISTOTLE-WORKFLOW.md`** — CLI pipeline
+details, `*StatementOnly.lean` packaging, v2 status model, rate limits and the
+cooldown file, result caching, the Mathlib v4.28 toolchain caveat, the
+deprecated `*Aristotle.lean` companion-file pattern, and anti-patterns. (The
+former MCP wrapper is dead — HTTP 426 against the v2 API, removed in issue
+#38098. Use the CLI pipeline only.)
 
-### Aristotle CLI pipeline (the working path)
-
-> **History (issue #38098):** an MCP wrapper (`septract/lean-aristotle-mcp`)
-> was previously registered in `.mcp.json` and documented here as the
-> "preferred" per-sorry route via `prove()` / `prove_file()`. That wrapper
-> pinned `aristotlelib ~=0.6.0` and broke when Harmonic cut over to the v1+
-> API server-side (~2026-03-18): 0.6.x clients now get **HTTP 426 Upgrade
-> Required**, surfaced as "Resource not found". There is **no official MCP
-> server** for `aristotlelib` 2.x. The MCP entry has been removed. **Use the
-> CLI, wrapped by the shell scripts in `scripts/aristotle/`.**
-
-Aristotle is driven through the `aristotle` CLI (from `aristotlelib`, invoked
-as `uvx --from aristotlelib aristotle ...`). You do not call the CLI directly
-in the common case — the shell pipeline handles submission, polling, and
-result integration:
-
-```bash
-# 1. Sanity check: confirm the CLI is reachable and authenticated (free — a
-#    read-only `aristotle list` call, no proof-search quota consumed).
-./scripts/aristotle/cli-smoke-test.sh
-
-# 2. Find candidate files and submit a batch (respects the ~3–5 concurrent cap).
-./scripts/aristotle/submit-batch.sh --target 5
-
-# 3. Poll for status and update local tracking (research/aristotle-jobs.json).
-./scripts/aristotle/check-jobs.sh --update
-
-# 4. Download completed results and integrate improvements into proofs/Proofs/.
-./scripts/aristotle/retrieve-integrate.sh
-```
-
-**How to package a hard sorry for submission.** The unit of submission is
-**one theorem per file**: a `*StatementOnly.lean` file with full imports, the
-single `theorem`/`lemma` statement, and an informal `/-` proof-sketch
-docstring. See `research/SORRY-CLASSIFICATION.md` §"Harmonic Submission Format
-(recommended)" for the template. `submit-batch.sh` picks up `*StatementOnly.lean`
-files first, then legacy `*Aristotle.lean` companion files.
-
-**v2 status model (what the scripts key off).** The v2 CLI splits status into
-two levels, which is why the shell scripts query `RUNNING`/`IDLE` and then drill
-into tasks:
-
-- **Project status** (`aristotle list --status`) is only `RUNNING` (a solve
-  task is in flight) or `IDLE` (no task running — terminal). The old v1 enums
-  (`NOT_STARTED`, `QUEUED`, `COMPLETE`, `FAILED`, …) were removed and now error.
-- **Task status** (`aristotle tasks <project-id>` / `aristotle show
-  <project-id>`) carries the fine-grained terminal outcome: `IN_PROGRESS`,
-  `COMPLETE`, `COMPLETE_WITH_ERRORS`, `FAILED`, `CANCELED`, ….
-
-**Async, don't block.** Aristotle searches take minutes to hours. Submit a
-batch, then continue other work (a different sorry, refactoring, the OPEN main
-conjecture). Poll every ~10 minutes with `check-jobs.sh`; integrate with
-`retrieve-integrate.sh` when projects go `IDLE` with a `COMPLETE` task.
-
-**Result caching.** Aristotle caches project results ~30 days server-side, so
-re-submitting the exact same file within that window returns the prior result
-quickly without burning fresh solver budget.
-
-**Concurrency cap.** At most ~3–5 concurrent projects (shared server cap).
-`submit-batch.sh` enforces this and arms a cooldown file
-(`.loom/state/aristotle-rate-limit-until`) on a 429; before submitting fresh
-work, check that file and the scale-to-zero marker
-(`.loom/state/aristotle-scaled-to-zero`).
-
-#### When to submit to Aristotle vs. prove it yourself
-
-Classify the sorry per
-[`research/SORRY-CLASSIFICATION.md`](../../research/SORRY-CLASSIFICATION.md):
+Quick reference — classify each sorry per `research/SORRY-CLASSIFICATION.md`:
 
 | Classification | Action |
 |----------------|--------|
 | **TRIVIAL** | Prove it yourself — `simp`/`omega`/`linarith`/`decide` is faster than the round trip |
-| **HARD** (known in the literature, only tactical search needed) | Package as `*StatementOnly.lean` and submit via `submit-batch.sh` |
+| **HARD** (known in the literature, only tactical search needed) | Package as a one-theorem `*StatementOnly.lean` file and submit via `submit-batch.sh` |
 | **OPEN** | Work on it yourself — that is **the mission**; Aristotle will only spin |
 | **DEF SORRY** (`def foo := by sorry`) | Complete the definition first, *then* submit downstream theorem sorries — Aristotle skips definition sorries |
 | **Sorry inside an axiom** | Convert `axiom` → `theorem ... := by sorry` if it really is provable, else leave it |
 
-#### Deprecation of hand-curated `*Aristotle.lean` companion files
+The pipeline commands:
 
-Do **not** hand-curate new multi-sorry `*Aristotle.lean` companion files. The
-MCTS proof search is conditioned on *proof state + history + informal
-statement* per sorry, so bundling many unrelated sorries into one file dilutes
-the search budget. New work uses a `*StatementOnly.lean` file (one theorem)
-submitted through the batch pipeline. Existing `*Aristotle.lean` files keep
-working — the batch pipeline still picks them up as a fallback — but they are
-no longer the recommended shape for new submissions.
+```bash
+./scripts/aristotle/cli-smoke-test.sh          # auth/reachability check (free)
+./scripts/aristotle/submit-batch.sh --target 5 # submit batch (~3–5 concurrent cap)
+./scripts/aristotle/check-jobs.sh --update     # poll + update research/aristotle-jobs.json
+./scripts/aristotle/retrieve-integrate.sh      # download + integrate results
+```
+
+**Async, don't block**: submit, keep working, poll every ~10 minutes. Before
+submitting fresh work, check the cooldown file
+(`.loom/state/aristotle-rate-limit-until`) and the scale-to-zero marker
+(`.loom/state/aristotle-scaled-to-zero`). Rebuild retrieved proofs locally —
+the backend vendors Mathlib v4.28 and rewrites `lean-toolchain`.
+
+Do **not** hand-curate new multi-sorry `*Aristotle.lean` companion files — the
+pattern is deprecated (dilutes per-sorry search budget); existing ones still
+get picked up as a fallback. Details in `research/ARISTOTLE-WORKFLOW.md`.
 
 ## Step 4: Update Knowledge
 
@@ -426,12 +397,35 @@ apply mathlib-contribution skill to proofs/Proofs/YourFile.lean
 
 The skill bundles a style/naming scan, a curated gotchas catalog, and trust-but-verify auto-edit rules adapted from Terence Tao's "AI with Lean" workflow. See `.claude/skills/mathlib-contribution/SKILL.md` for the workflow and `STYLE-SCAN.md` for the checklist. The skill is a red-team tool only -- use it after the proof compiles and the mathematics is settled. Tracking issue: #20854.
 
+> The skill files (`.claude/skills/mathlib-contribution/`) are currently
+> **missing from `main`** (mass-deletion casualty; Known-Gaps Ledger in
+> [`COMMON.md`](./COMMON.md#known-gaps-ledger-issue-38387), recoverable via
+> `git show dc9fdffa30^:.claude/skills/mathlib-contribution/SKILL.md`).
+
 This pass does **not** apply to research-only files or gallery proofs; gallery work follows looser conventions on purpose.
 
 ## Step 5: Commit and Push
 
+**Stage explicit paths — do not blind-stage with `git add -A`.** On 2026-07-11 a
+disk-slimmed researcher worktree (tracked files deleted from disk WITHOUT
+sparse-checkout) plus a stage-everything commit silently staged **9,927 file
+deletions** alongside one new Lean file, and the merge wiped most of the
+repository (commit `dc9fdffa30`, issue #38398). Two guards now stand in this path:
+
+- Researcher worktrees carry a `pre-commit` **mass-deletion tripwire**
+  (`scripts/research/check-staged-deletions.sh`, installed by
+  `parallel-research.sh`) that **blocks any commit staging more than 20
+  deletions**. If it fires on deletions you did NOT make: unstage them
+  (`git restore --staged <paths>`), restore the files (`git checkout -- .`),
+  and if you were slimming for disk space use
+  `scripts/research/slim-worktree.sh` instead (see COMMON.md Worktree Hygiene).
+  Only a genuinely intended, operator-acknowledged mass deletion may bypass:
+  `ALLOW_MASS_DELETION=1 git commit ...`.
+- Before committing, review `git status --porcelain | grep '^D\|^ D'` — any
+  deletion you did not intentionally make is a red flag, whatever the count.
+
 ```bash
-git add -A
+git add proofs/Proofs/YourFile.lean src/data/research/problems/<problem>.json  # your actual touched paths
 git commit -m "$(cat <<'EOF'
 Research: [problem-id] - [brief description]
 

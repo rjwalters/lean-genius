@@ -1,3 +1,35 @@
+## Session 2026-07-12 (researcher-6): BLOCKER SHARPENED — K5 route needs geometric Erdős–Szekeres, not Euler
+
+**Mode**: SURVEY (audit; no tractable low-risk code increment). **Outcome**: corrected the
+recorded blocker. No Lean change.
+
+Audited `Erdos1018OQ04Incomplete01.lean` (1 axiom `kostochka_pyber_r2`, 1 real sorry
+`planar_graphs_edge_bound`). The concrete `isEmbeddableConc H 2` unfolds, for 2-uniform H, to a
+**straight-line non-crossing drawing**: convexHull of a 2-edge is its segment, so the separation
+condition says disjoint edges have disjoint segments and shared-vertex edges meet only at that
+vertex.
+
+Two genuine gaps, both absent from Mathlib v4.26:
+1. `planar_graphs_edge_bound` (the sole sorry, |E| ≤ 3n) — needs the **Euler planar edge bound**
+   |E| ≤ 3n − 6. Not in Mathlib.
+2. The missing `K5_not_planar` (`¬ isEmbeddableConc K5 2`) — reduces to the **geometric
+   Erdős–Szekeres / Happy-Ending** lemma: any 5 points in general position contain a convex
+   quadrilateral, whose two diagonals are independent K5-edges with crossing segments → violates
+   separation (plus a collinear-degenerate case handled directly).
+
+**KEY (dead-end pinned):** Mathlib HAS `radon_partition` (`Analysis/Convex/Radon.lean`) but it is
+**insufficient alone** for K5. Applied to 4 points in ℝ², `radon_partition` can return a **(1,3)**
+partition — a point inside a triangle — which yields NO pair of crossing *independent* edges.
+Forcing the useful **(2,2)** crossing case is precisely the convex-quadrilateral statement, i.e.
+geometric Erdős–Szekeres, which Mathlib lacks (it has only the monotone-subsequence
+Erdős–Szekeres, not the geometric one). So the previously-recorded blocker ("needs planar
+embeddings / Euler / graph minors") is imprecise: the K5 obstruction does NOT need full planarity
+theory — it needs the geometric Erdős–Szekeres convex-quadrilateral lemma (~150–300 LOC standalone),
+and only the *sharp* 3n−6 bound needs Euler. Either is a large standalone formalization, not
+session-sized.
+
+---
+
 # erdos-1018-incomplete-01 — Erdős #1018 Non-Planar Subgraph: Sorry Completion & Compile Repair
 
 ## Session 2026-07-01 (researcher-1): close erdos_1018_solved sorry via Kuratowski axiom (6→5) [VERIFIED]

@@ -1185,6 +1185,61 @@ theorem card_adjacent (n : ℕ) :
   · intro m _
     rfl
 
+/-! ### General `Fin n` sign-change bounds (the length-3 template, uniformized)
+
+The `Fin 3` results (`countSignChanges_three_alternating = 2`,
+`countSignChanges_three_mid_ne_zero = 0`) are the `n = 3` instances of three general facts,
+all one-line corollaries of `countSignChanges_nowhere_zero` (which routes every count through
+the adjacent-opposite-sign pairs) and `card_adjacent` (there are exactly `n − 1` adjacent
+pairs).  Together they pin the two extremes and the ceiling of the count for a nowhere-zero
+sequence: the strictly alternating pattern realises the maximum `n − 1`, a constant-sign
+pattern realises `0`, and no sequence exceeds `n − 1` — the sequence-level shadow of the
+Descartes degree bound `V(p) ≤ deg p`. -/
+
+/-- **Universal sign-change ceiling.**  A nowhere-zero `f : Fin n → ℝ` has at most `n − 1`
+sign changes: every sign change is carried by an adjacent index pair, and there are only
+`n − 1` of those (`card_adjacent`).  The sequence-level form of the Descartes bound
+`V(p) ≤ deg p`, and the ceiling the `Fin 3` counts (`≤ 2`) all respect. -/
+theorem countSignChanges_le_of_nowhere_zero {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f ≤ n - 1 := by
+  classical
+  rw [countSignChanges_nowhere_zero hnz, ← card_adjacent n]
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact hp.1
+
+/-- **Maximal count: strict alternation.**  If *every* adjacent pair of a nowhere-zero
+`f : Fin n → ℝ` has opposite signs (`f i · f j < 0` whenever `j = i + 1`), then `f` attains
+the ceiling: `V(f) = n − 1`.  The general form of `countSignChanges_three_alternating` (`= 2`);
+every one of the `n − 1` adjacent gaps is a genuine sign change. -/
+theorem countSignChanges_alternating_eq {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0)
+    (halt : ∀ i j : Fin n, j.val = i.val + 1 → f i * f j < 0) :
+    DescartesRuleOfSigns.countSignChanges f = n - 1 := by
+  classical
+  rw [countSignChanges_nowhere_zero hnz]
+  have hset : (Finset.univ.filter (fun p : Fin n × Fin n =>
+        p.2.val = p.1.val + 1 ∧ f p.1 * f p.2 < 0))
+      = Finset.univ.filter (fun p : Fin n × Fin n => p.2.val = p.1.val + 1) := by
+    apply Finset.filter_congr
+    rintro ⟨i, j⟩ _
+    constructor
+    · rintro ⟨h, _⟩; exact h
+    · intro h; exact ⟨h, halt i j h⟩
+  rw [hset, card_adjacent]
+
+/-- **Zero count: constant sign.**  If *every* adjacent pair of a nowhere-zero
+`f : Fin n → ℝ` has the same sign (`0 < f i · f j` whenever `j = i + 1`), then `f` has no sign
+changes: `V(f) = 0`.  The general form of `countSignChanges_three_mid_ne_zero` (`= 0`); the
+adjacent-opposite-sign set is empty. -/
+theorem countSignChanges_same_sign_eq_zero {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0)
+    (hsame : ∀ i j : Fin n, j.val = i.val + 1 → 0 < f i * f j) :
+    DescartesRuleOfSigns.countSignChanges f = 0 := by
+  classical
+  rw [countSignChanges_nowhere_zero hnz, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  rintro ⟨i, j⟩ _ ⟨hadj, hopp⟩
+  exact absurd (hsame i j hadj) (by linarith)
+
 /-- **Reflection complementarity (sequence form).**  For a nowhere-zero sequence
 `f : Fin n → ℝ`, the sign changes of `f` and of its sign-alternated version
 `i ↦ (−1)^i · f i` together cover each of the `n − 1` adjacent gaps *exactly once*:

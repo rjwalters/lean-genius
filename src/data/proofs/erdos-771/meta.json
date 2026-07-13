@@ -78,7 +78,8 @@
       "IsSumFree, sum_free_upper_bound (unformalized): comparison with sum-free sets",
       "erdos_771, erdos_771_main, erdos_771_solved: main theorem statements",
       "subsetSums_mono / avoidSum_subset: subset sums are monotone under inclusion (T ⊆ S ⟹ subsetSums T ⊆ subsetSums S), so AvoidSum is HEREDITARY to subsets (S avoids m ⟹ every T ⊆ S avoids m) — the structural reason maxAvoidingSize is a genuine maximum. Axiom-free.",
-      "avoidSum_zero / maxAvoidingSize_zero: the degenerate small-target endpoint. Since 0 is never a positive subset sum, every set avoids 0 (avoidSum_zero), so the whole box {1,…,n} witnesses maxAvoidingSize n 0 = n. This coincides with the large-target value maxAvoidingSize_eq_of_lt (n·n < m ⟹ = n): the extremal size is n at BOTH ends of the target range and dips only in the interior. Axiom-free ([propext, Classical.choice, Quot.sound])."
+      "avoidSum_zero / maxAvoidingSize_zero: the degenerate small-target endpoint. Since 0 is never a positive subset sum, every set avoids 0 (avoidSum_zero), so the whole box {1,…,n} witnesses maxAvoidingSize n 0 = n. This coincides with the large-target value maxAvoidingSize_eq_of_lt (n·n < m ⟹ = n): the extremal size is n at BOTH ends of the target range and dips only in the interior. Axiom-free ([propext, Classical.choice, Quot.sound]).",
+      "Erdos771InitialSegment.lean — the low-element (initial-segment) construction and the exact avoiding size at the total-sum boundary, filling the intermediate band n < m ≤ n(n+1)/2 where the pairing formula n−⌈m/2⌉ (proven only for m ≤ n) genuinely fails (e.g. maxAvoidingSize 3 5 = 2 ≠ 3−⌈5/2⌉ = 0). avoid_of_sum_lt (any set whose TOTAL is below m avoids m — controls the entire subset-sum set by one inequality, complementing avoid_of_forall_lt which bounds each element from below), initial_segment_avoid + maxAvoidingSize_ge_initial (the initial-segment lower bound, valid for ALL m: j ≤ n ∧ ∑_{a≤j} a < m ⟹ j ≤ maxAvoidingSize n m), maxAvoidingSize_ge_of_triangle_lt (closed form: j(j+1) < 2m suffices), sum_Icc_n (Gauss total ∑_{a≤n} a = n(n+1)/2 in Nat-division form), and the capstone maxAvoidingSize_sum / maxAvoidingSize_triangular: maxAvoidingSize n (n(n+1)/2) = n−1 for n ≥ 1 — the exact value at the boundary, the last drop before the full-box plateau of maxAvoidingSize_eq_n_iff (drop the top element n; {1,…,n−1} totals n(n+1)/2 − n < m). 7 theorems, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only; the entry's 2 deep asymptotic axioms are not invoked)."
     ],
     "axiomCount": 2,
     "lineCount": 1335,
@@ -88,7 +89,8 @@
     "additionalFiles": [
       "Proofs/Erdos771Aristotle.lean",
       "Proofs/Erdos771ProblemAristotle.lean",
-      "Proofs/Erdos771Construction.lean"
+      "Proofs/Erdos771Construction.lean",
+      "Proofs/Erdos771InitialSegment.lean"
     ]
   },
   "overview": {

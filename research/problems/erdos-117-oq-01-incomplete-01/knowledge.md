@@ -142,3 +142,35 @@ on Synonym.ir) AND host `.lake` missing ~CategoryTheory oleans (SplitEqualizer) 
 v4.26.0 **targeted-import standalone** (import only Log.Basic + Tactic.Linarith + Tactic.Positivity,
 which are present; reconstruct growthRate/pyber_bounds/ExponentialBehaviorCorrect faithfully and
 take behavior_correct_implies_base as a hypothesis): elaboration EXIT 0. Rest of file unchanged.
+
+## Session 2026-07-12 (researcher-10) — the DUAL sufficient condition: supermultiplicativity (VERIFIED)
+
+The companion had `submultiplicative_implies_convergence`-style results (Fekete via
+Mathlib `Subadditive.tendsto_lim` on `log h`, using the Pyber **lower** bound for
+bounded-below). The dual — supermultiplicativity `h(m)·h(n) ≤ h(m+n)` — was missing,
+and Mathlib has **no `Superadditive` API**. Supplied it by the standard reduction:
+
+- `supermultiplicative_implies_convergence (hsup : ∀ m n, h m * h n ≤ h (m+n)) : growthRateConverges`.
+  Set `g n = −log(h n)`. Then `g` is **subadditive** iff `log h` is superadditive, and
+  `hlog_super : log(h m)+log(h n) ≤ log(h(m+n))` holds for ALL m,n — crucially INCLUDING
+  the zero boundary, because `hsup 0 0` forces `h 0 * h 0 ≤ h 0` ⟹ `h 0 ≤ 1` ⟹ `log(h 0)=0`
+  (`Nat.le_of_mul_le_mul_left`), so the `m=0`/`n=0` cases collapse to equalities via `simp [hlog0]`.
+  Boundedness: `g n / n = −growthRate n ≥ −log c₂` from `growthRate_upper_bound` (the **upper**
+  Pyber bound — the mirror of the submult proof's lower bound); `n=0` term is `0`, so lower
+  bound `min (−U) 0`. `Subadditive.tendsto_lim` ⟹ `g n/n → g.lim`; `.neg` + `congr'` ⟹
+  `growthRate n → −g.lim`.
+- `supermultiplicative_implies_oscillation_zero`, `supermultiplicative_implies_exponentialBaseExists`,
+  `not_exponentialBaseExists_implies_not_supermultiplicative` — the oscillation/base/contrapositive
+  corollaries, mirroring the submultiplicative ones.
+- `not_exponentialBaseExists_implies_not_multiplicative` (capstone) — since EITHER one-sided law
+  forces convergence, a genuine counterexample to #117-OQ-01 must violate **both** at once.
+
+GOTCHAs: (1) `let g` is not `simp`-unfoldable — use `show -Real.log (h (m+n)) ≤ ...` to expose the
+body, then `linarith [hlog_super m n]`. (2) After `rintro x ⟨n, rfl⟩` the range membership goal reads
+`min (-U) 0 ≤ (fun n => g n / ↑n) n` (un-beta-reduced) — a bare `rw` fails to find `g n / ↑n`; insert
+`show min (-U) 0 ≤ g n / (n:ℝ)` first. (3) `Tendsto.neg` gives `𝓝 (-a)` and negates the function, so
+`(hg_sub.tendsto_lim hbdd).neg |>.congr'` lands exactly on `growthRate`.
+
+**Verification.** Docker build `Proofs.Erdos117OQ01Incomplete01` — `✔ Built (3.6s)`. No `sorry`/`axiom`
+in the file; inherits only the parent's 3 structural axioms (h/h_pos/pyber_bounds). 8→13 theorems,
+138→260 lines. Open convergence question itself unchanged (it IS #117-OQ-01).

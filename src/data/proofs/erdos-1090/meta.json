@@ -78,9 +78,9 @@
       "ramseyNumberColored_subsingleton_eq: the EXACT one-colour Ramsey number, ramseyNumberColored C k = k for a Subsingleton nonempty palette C (k ≥ 3). Sharpens ramseyNumberColored_subsingleton_le (which only gave R_C(k) ≤ ramseyNumber k) to an equality: with a single colour the monochromaticity constraint is vacuous (hasRamseyPropertyColored_subsingleton_iff), so the property collapses to pure collinearity; shrinking the construction-supplied k-collinear subset to exactly k points gives R_C(k) ≤ k, and ramseyNumberColored_lower_bound gives k ≤ R_C(k). Unlike the genuinely open uncolored ramseyNumber k (only ≥ k), the |C|=1 number is pinned exactly. Axiom-free."
     ],
     "axiomCount": 0,
-    "lineCount": 1276,
+    "lineCount": 1452,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 46,
+    "theoremCount": 56,
     "definitionCount": 20
   },
   "overview": {
@@ -118,9 +118,9 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 1327,
+    "lineCount": 1452,
     "axiomCount": 0,
-    "theoremCount": 50,
+    "theoremCount": 56,
     "definitionCount": 20,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0

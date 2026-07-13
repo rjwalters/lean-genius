@@ -31,6 +31,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview, Docstring, and Field Setup",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports (Analysis.SpecificLimits.Normed) and the file docstring stating the goal: for ‖r‖ < 1 in a complete normed field and modulus q ≥ 1, the arithmetic-progression subseries ∑_{n≥0} r^(q·n+a) = r^a/(1−r^q), and summing over residues a = 0,…,q−1 recovers ∑ r^m = 1/(1−r). The docstring records why Mathlib lacks this (it has the plain series tsum_geometric_of_norm_lt_one but not the residue multisections) and the three-step strategy (key bound, residue subseries, recombination). The section opens namespace GeometricSeriesOQ09OQ01 and introduces the ambient variables {𝕜 : Type*} [NormedField 𝕜] [CompleteSpace 𝕜] {r : 𝕜}; CompleteSpace is only needed where series are actually summed.",
+      "mathContext": "$\\sum_{n\\ge 0} r^{qn+a} = \\dfrac{r^a}{1-r^q}$ and $\\sum_{a=0}^{q-1}\\sum_{n\\ge 0} r^{qn+a} = \\sum_{m\\ge 0} r^m = \\dfrac{1}{1-r}$, for $\\|r\\|<1$, $q\\ge 1$."
+    },
+    {
       "id": "denominators",
       "title": "Nonvanishing Denominators and the Key Bound",
       "startLine": 53,
@@ -147,7 +155,8 @@
     "summary": "For ‖r‖ < 1 over any complete normed field and any modulus q ≠ 0, the arithmetic-progression subseries with common difference q is itself geometric of ratio r^q: ∑_{n≥0} r^(q·n+a) = r^a/(1−r^q) for every residue a (hasSum_geometric_residue / tsum_geometric_residue). Summing these closed forms over a = 0,…,q−1 recombines into the full geometric series ∑_{m≥0} r^m = 1/(1−r) (tsum_residues_eq_geometric), with the closing step the factorisation 1 − r^q = (1−r)·∑_{a<q} r^a (one_sub_pow_eq, by induction). The residue subseries is summed by the reindexing r^(q·n+a) = r^a·(r^q)ⁿ together with the bound ‖r^q‖ = ‖r‖^q < 1 that lets Mathlib's hasSum_geometric_of_norm_lt_one apply at ratio r^q, scaled by HasSum.mul_left. Specialising to q=2 recovers the parent's even and odd subsums. 154 lines, 11 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This completes the open question posed by geometric-series-oq-09 (the q-fold splitting) and fills a small gap: Mathlib records the geometric series but not its residue-class multisections. The reusable move is that a subseries taken along any arithmetic progression of indices is again geometric, with ratio r^q, so summing it reduces to Mathlib's lemma at a new ratio plus the bound ‖r^q‖ < 1; the recombination is then pure algebra via 1 − r^q = (1−r)·(1+r+⋯+r^{q-1}). Working over a general complete normed field handles ℝ and ℂ uniformly.",
     "openQuestions": [
-      "Promote the recombination to a direct reindexing HasSum statement over ℕ ≃ ℕ × Fin q, establishing the splitting as a regrouping of the summation rather than via the closed forms of the parts."
+      "Promote the recombination to a direct reindexing HasSum statement over ℕ ≃ ℕ × Fin q, establishing the splitting as a regrouping of the summation rather than via the closed forms of the parts.",
+      "Extend the residue-class splitting to weighted or twisted subseries, e.g. ∑_{n≥0} χ(qn+a)·r^(qn+a) for a Dirichlet character χ or a periodic coefficient sequence, recovering the classical decomposition of an L-series / Lerch-type sum ∑ χ(m) r^m into q residue blocks; this would connect the elementary multisection here to the character-sum viewpoint on geometric and Lambert series."
     ]
   }
 }

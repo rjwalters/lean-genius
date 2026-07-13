@@ -228,5 +228,40 @@ theorem sq_moment_sum_simplex (d N : ℕ) (h : 2 ≤ N) :
     show d + 1 + 1 = d + 2 from rfl, show d + 2 + 1 = d + 3 from rfl,
     Nat.zero_mul, Nat.one_mul, Nat.zero_add]
 
+/-- **Third-moment (cubic) hockey stick.** The `m = 3` instance of `pow_moment_sum_simplex`,
+written out with the concrete Stirling values `S(3,0) = 0`, `S(3,1) = 1`, `S(3,2) = 3`,
+`S(3,3) = 1` and the falling factorials `(d+1)_1 = d+1`, `(d+2)_2 = (d+1)(d+2)`,
+`(d+3)_3 = (d+1)(d+2)(d+3)`:
+
+    ∑_{k ≤ N} k³ · P_d(k)
+      = (d+1)·P_{d+2}(N-1) + 3(d+1)(d+2)·P_{d+3}(N-2) + (d+1)(d+2)(d+3)·P_{d+4}(N-3)   (N ≥ 3).
+
+The discrete analogue of the continuous third moment `∫₀ᴺ x³·x^d dx`, completing the moment
+ladder `m = 0` (hockey stick) → `m = 1` (`weighted_sum_simplex`) → `m = 2`
+(`sq_moment_sum_simplex`) → `m = 3` over the simplex kernel. -/
+theorem cube_moment_sum_simplex (d N : ℕ) (h : 3 ≤ N) :
+    ∑ k ∈ range (N + 1), k ^ 3 * simplexNumber d k
+      = (d + 1) * simplexNumber (d + 2) (N - 1)
+        + 3 * ((d + 1) * (d + 2)) * simplexNumber (d + 3) (N - 2)
+        + (d + 1) * (d + 2) * (d + 3) * simplexNumber (d + 4) (N - 3) := by
+  rw [pow_moment_sum_simplex 3 d N h]
+  have hd2 : (d + 2).descFactorial 2 = (d + 1) * (d + 2) := by
+    show (d + 2).descFactorial (1 + 1) = (d + 1) * (d + 2)
+    rw [Nat.descFactorial_succ, Nat.descFactorial_one, show d + 2 - 1 = d + 1 from by omega]
+  have hd3 : (d + 3).descFactorial 3 = (d + 1) * (d + 2) * (d + 3) := by
+    have e2 : (d + 3).descFactorial 2 = (d + 2) * (d + 3) := by
+      show (d + 3).descFactorial (1 + 1) = (d + 2) * (d + 3)
+      rw [Nat.descFactorial_succ, Nat.descFactorial_one, show d + 3 - 1 = d + 2 from by omega]
+    show (d + 3).descFactorial (2 + 1) = (d + 1) * (d + 2) * (d + 3)
+    rw [Nat.descFactorial_succ, e2, show d + 3 - 2 = d + 1 from by omega]
+    ring
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero,
+    show stirlingSecond 3 0 = 0 from rfl, show stirlingSecond 3 1 = 1 from rfl,
+    show stirlingSecond 3 2 = 3 from rfl, show stirlingSecond 3 3 = 1 from rfl,
+    Nat.descFactorial_one, hd2, hd3,
+    show d + 1 + 1 = d + 2 from rfl, show d + 2 + 1 = d + 3 from rfl,
+    show d + 3 + 1 = d + 4 from rfl, Nat.zero_mul, Nat.one_mul, Nat.zero_add]
+  ring
+
 end TetrahedralNumberFormulaOQ01
 

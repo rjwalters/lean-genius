@@ -667,4 +667,33 @@ theorem not_forall_sl_fin_one_orbit :
     rw [Pi.single_eq_same]
   exact not_exists_sl_fin_one_single_neg (H _ _ hp1 hp2)
 
+/-- **`SL₁(ℤ)`-orbits are singletons.**  In dimension `1` two vectors are
+`SL₁(ℤ)`-equivalent iff they are *equal*: the action is trivial
+(`sl_fin_one_mulVec`), so each orbit is a single point.  Contrast
+`exists_sl_mulVec_eq_of_isPrimitive`, where for `n ≥ 2` all primitive vectors
+form one orbit. -/
+theorem sl_one_equiv_iff_eq (v w : Fin 1 → ℤ) :
+    (∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+      (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = w) ↔ v = w := by
+  constructor
+  · rintro ⟨A, hA⟩
+    rw [← hA, sl_fin_one_mulVec]
+  · rintro rfl
+    exact ⟨1, by rw [SpecialLinearGroup.coe_one, Matrix.one_mulVec]⟩
+
+/-- **The obstruction is exactly the determinant sign.**  The reflection `U = !![-1]`
+has `det U = -1` (a *unit* of `ℤ`, so `U` is unimodular / lies in `GL₁(ℤ)`) and
+carries `-e₀` to `e₀`.  Thus enlarging `SL₁(ℤ)` (`det = 1`) to `GL₁(ℤ)` (`det = ±1`)
+merges the two orbits that `not_exists_sl_fin_one_single_neg` keeps apart: the `n = 1`
+failure of transitivity is *precisely* the `det = 1` constraint, nothing deeper. -/
+theorem exists_unimodular_mulVec_neg_single_fin_one :
+    ∃ U : Matrix (Fin 1) (Fin 1) ℤ, IsUnit U.det ∧
+      U *ᵥ (Pi.single 0 (-1) : Fin 1 → ℤ) = Pi.single 0 1 := by
+  refine ⟨!![-1], ?_, ?_⟩
+  · rw [Matrix.det_fin_one_of]
+    exact Int.isUnit_iff.mpr (Or.inr rfl)
+  · funext i
+    fin_cases i
+    simp [Matrix.mulVec, dotProduct, Pi.single_eq_same]
+
 end BezoutPrimitive

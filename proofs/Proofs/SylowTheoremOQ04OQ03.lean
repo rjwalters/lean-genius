@@ -1161,6 +1161,33 @@ theorem card_PSL2 (hp : 3 ≤ p) :
   rw [hidx] at hmul
   omega
 
+/-- **`|PSL(2, p)| ≥ 60` for `p ≥ 5`.**  Evaluating `card_PSL2 = p(p²−1)/2` at `p ≥ 5`
+gives `p(p²−1) ≥ 5·24 = 120`, so `|PSL(2, p)| ≥ 60` — matching the classical fact that
+`PSL(2, 5) ≅ A₅` (order `60`) is the smallest member of the family, the smallest nonabelian
+simple group.  A concrete order floor on the target group of the simplicity theorem. -/
+theorem card_PSL2_ge_sixty (hp : 5 ≤ p) :
+    60 ≤ Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
+  rw [card_PSL2 (by omega)]
+  have hp2 : 25 ≤ p ^ 2 := by nlinarith
+  have hq : 24 ≤ p ^ 2 - 1 := by omega
+  have hpq : 120 ≤ p * (p ^ 2 - 1) := by
+    calc 120 = 5 * 24 := by norm_num
+      _ ≤ p * (p ^ 2 - 1) := Nat.mul_le_mul hp hq
+  omega
+
+/-- **`|PSL(2, p)| > 1` for `p ≥ 5`.**  The nontriviality floor, immediate from
+`card_PSL2_ge_sixty`. -/
+theorem one_lt_card_PSL2 (hp : 5 ≤ p) :
+    1 < Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) :=
+  lt_of_lt_of_le (by norm_num) (card_PSL2_ge_sixty hp)
+
+/-- **`PSL(2, p)` is nontrivial for `p ≥ 5`.**  A prerequisite of the simplicity statement
+(a simple group is by definition nontrivial): since `|PSL(2, p)| ≥ 60 > 1`, the group has more
+than one element (`Finite.one_lt_card_iff_nontrivial`). -/
+theorem nontrivial_PSL2 (hp : 5 ≤ p) :
+    Nontrivial (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) :=
+  Finite.one_lt_card_iff_nontrivial.mp (one_lt_card_PSL2 hp)
+
 /-!
 ## The unipotent Sylow `p`-subgroup is cyclic of order `p`
 
@@ -1363,8 +1390,179 @@ theorem card_sylow_eq (hp : 5 ≤ p) :
   have hge := card_sylow_ge hp
   exact sylow_count_arith hp hdvd hmod hge
 
+/-! ### Every Sylow `p`-subgroup is a copy of `ℤ/p`, and distinct ones meet trivially
+
+`unipotentSylow` is one explicit Sylow `p`-subgroup, cyclic of order `p`
+(`isCyclic_unipotentSylow`).  Since all Sylow `p`-subgroups are conjugate they share these
+properties: **every** Sylow `p`-subgroup of `SL(2, p)` has order exactly `p` (`card_sylowP`)
+and is therefore cyclic `≅ ℤ/p` (`isCyclic_sylowP`).  As subgroups of prime order, two
+*distinct* Sylow `p`-subgroups intersect trivially (`sylowP_inf_eq_bot`): the `p + 1` Sylow
+`p`-subgroups (`card_sylow_eq`) overlap only in the identity.  These are the exact
+ingredients of the classical count "`SL(2, p)` has `(p+1)(p-1) = p² - 1` elements of order
+`p`". -/
+
+/-- **Every Sylow `p`-subgroup of `SL(2, p)` has order exactly `p`.**  The `p`-part of the
+group order is `p ^ 1` (`factorization_card_SL2`), and a Sylow `p`-subgroup realises the full
+`p`-part (`Sylow.card_eq_multiplicity`).  Generalises `card_unipotentHom_range` from the one
+explicit unipotent Sylow to every Sylow `p`-subgroup. -/
+theorem card_sylowP (P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :
+    Nat.card (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p := by
+  rw [P.card_eq_multiplicity, factorization_card_SL2, pow_one]
+
+/-- **Every Sylow `p`-subgroup of `SL(2, p)` is cyclic `≅ ℤ/p`.**  It has prime order `p`
+(`card_sylowP`), and any group of prime order is cyclic (`isCyclic_of_prime_card`).  This
+generalises `isCyclic_unipotentSylow` from the one explicit unipotent Sylow to *all* of them. -/
+theorem isCyclic_sylowP (P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :
+    IsCyclic (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+  isCyclic_of_prime_card (card_sylowP P)
+
+/-- **Distinct Sylow `p`-subgroups of `SL(2, p)` intersect trivially.**  Each has prime order
+`p` (`card_sylowP`), so `P ⊓ Q ≤ P` has order dividing `p`: either `1` (giving `P ⊓ Q = ⊥`)
+or `p`, in which case `P ⊓ Q = P` and, by symmetry, `= Q`, forcing `P = Q` and contradicting
+`P ≠ Q`.  Hence the `p + 1` Sylow `p`-subgroups pairwise meet only in the identity — the
+disjointness underlying the classical order-`p` element count. -/
+theorem sylowP_inf_eq_bot {P Q : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))}
+    (hPQ : P ≠ Q) :
+    (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ⊓ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = ⊥ := by
+  have hp : Nat.Prime p := Fact.out
+  set G := Matrix.SpecialLinearGroup (Fin 2) (ZMod p) with hG
+  have hle : (P : Subgroup G) ⊓ (Q : Subgroup G) ≤ (P : Subgroup G) := inf_le_left
+  -- `|P ⊓ Q|` divides `|P| = p`.
+  have hdvd : Nat.card ((P : Subgroup G) ⊓ (Q : Subgroup G) : Subgroup G) ∣ p := by
+    have h := Subgroup.card_subgroup_dvd_card
+      (((P : Subgroup G) ⊓ (Q : Subgroup G)).subgroupOf (P : Subgroup G))
+    rwa [Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, card_sylowP] at h
+  rcases (Nat.dvd_prime hp).mp hdvd with h1 | hpc
+  · -- order 1 ⟹ trivial
+    exact Subgroup.card_eq_one.mp h1
+  · -- order p ⟹ `P ⊓ Q = P` and `= Q`, so `P = Q`, contradiction
+    exfalso
+    have hPeq : (P : Subgroup G) ⊓ (Q : Subgroup G) = (P : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_ge hle (le_of_eq (by rw [card_sylowP, hpc]))
+    have hQeq : (P : Subgroup G) ⊓ (Q : Subgroup G) = (Q : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_ge inf_le_right (le_of_eq (by rw [card_sylowP, hpc]))
+    exact hPQ (Sylow.ext (hPeq.symm.trans hQeq))
+
+/-- **A non-identity element lies in a unique Sylow `p`-subgroup.**  If `g ≠ 1` lies in two
+Sylow `p`-subgroups `P` and `Q`, then `g ∈ P ⊓ Q`, which is `⊥` unless `P = Q`
+(`sylowP_inf_eq_bot`); as `g ≠ 1` this forces `P = Q`.  This is the injectivity fact behind the
+classical order-`p` element count: the `p + 1` Sylow `p`-subgroups partition the non-identity
+`p`-elements. -/
+theorem sylowP_eq_of_mem
+    {P Q : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))}
+    {g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)} (hg : g ≠ 1)
+    (hP : g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))
+    (hQ : g ∈ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) :
+    P = Q := by
+  by_contra h
+  have hmem : g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ⊓ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+    Subgroup.mem_inf.mpr ⟨hP, hQ⟩
+  rw [sylowP_inf_eq_bot h] at hmem
+  exact hg (Subgroup.mem_bot.mp hmem)
+
+/-! ### The classical order-`p` element count: `SL(2, p)` has exactly `p² − 1` elements of order `p`
+
+The `p + 1` Sylow `p`-subgroups (`card_sylow_eq`) each have order `p` (`card_sylowP`), meet only in
+the identity (`sylowP_inf_eq_bot`), and jointly exhaust the elements of order `p` (a non-identity
+element generates a cyclic group of order `p`, a `p`-subgroup, hence sits inside some Sylow, and by
+`sylowP_eq_of_mem` inside a *unique* one).  So the elements of order `p` are partitioned into
+`p + 1` blocks of `p − 1` non-identity elements each, giving `(p + 1)(p − 1) = p² − 1`.  This is the
+classical count underlying the original Sylow-counting approach to the simplicity of `PSL(2, p)`. -/
+
+/-- **`SL(2, p)` has exactly `p² − 1` elements of order `p`** (for `p ≥ 5`).  The elements of order
+`p` are exactly the non-identity elements of the Sylow `p`-subgroups, and the `p + 1` Sylow
+`p`-subgroups (`card_sylow_eq`), each of order `p` (`card_sylowP`), partition them (distinct Sylows
+meet only in `1`, `sylowP_eq_of_mem`).  Counting: `(p + 1) · (p − 1) = p² − 1`. -/
+theorem card_orderOf_eq_p (hp : 5 ≤ p) :
+    (Finset.univ.filter
+        (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) => orderOf g = p)).card
+      = p ^ 2 - 1 := by
+  classical
+  have hp' : Nat.Prime p := Fact.out
+  -- the elementary arithmetic `(p + 1)(p − 1) = p² − 1`
+  have harith : (p + 1) * (p - 1) = p ^ 2 - 1 := by
+    obtain ⟨n, rfl⟩ : ∃ n, p = n + 1 := ⟨p - 1, by omega⟩
+    simp only [Nat.add_sub_cancel]
+    have e : (n + 1 + 1) * n + 1 = (n + 1) ^ 2 := by ring
+    omega
+  -- for each Sylow `P`, the non-identity elements of `P`
+  set f : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+      → Finset (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+    fun P => (Finset.univ.filter
+        (fun g => g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))).erase 1
+    with hf
+  -- (a) each block has `p − 1` elements
+  have hmemcard : ∀ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)),
+      (Finset.univ.filter
+        (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) =>
+          g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))).card = p := by
+    intro P
+    have hsub : (Finset.univ.filter
+        (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) =>
+          g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))).card
+        = Fintype.card {x : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)
+            // x ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))} :=
+      (Fintype.card_subtype _).symm
+    rw [hsub, ← Nat.card_eq_fintype_card]
+    exact card_sylowP P
+  have hcardf : ∀ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)),
+      (f P).card = p - 1 := by
+    intro P
+    have h1 : (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+        ∈ Finset.univ.filter
+          (fun g => g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) := by
+      simp [Subgroup.one_mem]
+    simp only [hf]
+    rw [Finset.card_erase_of_mem h1, hmemcard P]
+  -- (b) distinct Sylows give disjoint blocks
+  have hdisj : (↑(Finset.univ : Finset (Sylow p
+      (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) :
+      Set (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))).PairwiseDisjoint f := by
+    intro P _ Q _ hPQ
+    simp only [Function.onFun]
+    rw [Finset.disjoint_left]
+    intro g hgP hgQ
+    simp only [hf, Finset.mem_erase, Finset.mem_filter] at hgP hgQ
+    exact hPQ (sylowP_eq_of_mem hgP.1 hgP.2.2 hgQ.2.2)
+  -- (c) the order-`p` elements are exactly the union of the blocks
+  have hset : Finset.univ.filter
+      (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) => orderOf g = p)
+      = Finset.univ.biUnion f := by
+    ext g
+    simp only [hf, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_biUnion,
+      Finset.mem_erase]
+    constructor
+    · intro hord
+      have hg1 : g ≠ 1 := by
+        intro h; rw [h, orderOf_one] at hord; omega
+      have hpg : IsPGroup p (Subgroup.zpowers g) := by
+        apply IsPGroup.of_card (n := 1)
+        rw [Nat.card_zpowers, hord, pow_one]
+      obtain ⟨P, hP⟩ := hpg.exists_le_sylow
+      exact ⟨P, hg1, hP (Subgroup.mem_zpowers g)⟩
+    · rintro ⟨P, hg1, hgP⟩
+      have hdvd : orderOf g ∣ p := by
+        have h := orderOf_dvd_natCard
+          (⟨g, hgP⟩ : (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))
+        rw [← Subgroup.orderOf_coe, card_sylowP] at h
+        exact h
+      rcases (Nat.dvd_prime hp').mp hdvd with h1 | hpp
+      · exact absurd (orderOf_eq_one_iff.mp h1) hg1
+      · exact hpp
+  -- assemble the count
+  have hfc : Fintype.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p + 1 := by
+    rw [← Nat.card_eq_fintype_card]; exact card_sylow_eq hp
+  have hsum : ∑ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)), (f P).card
+      = ∑ _P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)), (p - 1) :=
+    Finset.sum_congr rfl (fun P _ => hcardf P)
+  rw [hset, Finset.card_biUnion hdisj, hsum, Finset.sum_const, Finset.card_univ,
+    smul_eq_mul, hfc, harith]
+
 end SylowOQ04OQ03
 
 #print axioms SylowOQ04OQ03.sylow_count_arith
 #print axioms SylowOQ04OQ03.index_unipotentSylow
 #print axioms SylowOQ04OQ03.card_sylow_eq
+#print axioms SylowOQ04OQ03.card_orderOf_eq_p

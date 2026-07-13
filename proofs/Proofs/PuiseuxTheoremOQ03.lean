@@ -1623,4 +1623,70 @@ theorem y3MinusX2_root_valuation :
 #print axioms nthRoot_xm
 #print axioms y3MinusX2_root_valuation
 
+/-! ### The exact ramification criterion for `Yⁿ − xᵐ`: unramified ⟺ `n ∣ m`
+
+`binomial_root_not_in_range_of_not_isInt` proves only *one* direction — a
+non-integer exponent forces the root outside the Laurent base `K⸨x⸩`.  For the
+natural-number binomial family `Yⁿ − xᵐ` the condition is pinned **exactly**: the
+root `x^{m/n}` is unramified (lies in `K⸨x⸩`, is a genuine Laurent series with no
+fractional exponents) *iff* `n ∣ m`, i.e. iff the reduced ramification index
+`n / gcd(n, m)` collapses to `1`.  This is the precise integrality dichotomy the
+prose of `binomial_root_not_in_range_of_not_isInt` only gestured at, and it supplies
+the first *in-range* (unramified) worked example to sit opposite the ramified
+`cubeRoot_x_not_in_range`. -/
+
+/-- **Integrality of the binomial root exponent.**  For `n ≥ 1` the exponent `m/n`
+of the root `x^{m/n}` of `Yⁿ − xᵐ` is an integer iff `n ∣ m`.  Pure `ℚ`-arithmetic
+core of the ramification criterion (no dependence on `K`). -/
+theorem ynMinusXm_exponent_isInt_iff (n m : ℕ) (hn : 0 < n) :
+    (∃ k : ℤ, (m : ℚ) / (n : ℚ) = (k : ℚ)) ↔ n ∣ m := by
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  constructor
+  · rintro ⟨k, hk⟩
+    have hmn : (m : ℚ) = (k : ℚ) * (n : ℚ) := (div_eq_iff hn').mp hk
+    have hmnZ : (m : ℤ) = k * (n : ℤ) := by exact_mod_cast hmn
+    have hdvd : (n : ℤ) ∣ (m : ℤ) := ⟨k, by rw [hmnZ]; ring⟩
+    exact_mod_cast hdvd
+  · rintro ⟨c, rfl⟩
+    refine ⟨(c : ℤ), ?_⟩
+    push_cast
+    rw [div_eq_iff hn']
+    ring
+
+/-- **The exact ramification criterion for `Yⁿ − xᵐ`.**  The root `x^{m/n}` of the
+binomial `Yⁿ − xᵐ` lies in the unramified Laurent base `K⸨x⸩` **iff** `n ∣ m`.
+
+Forward: any Laurent preimage `z` has *integer* valuation
+(`laurentToPuiseux_addVal`), which via `binomial_root_not_in_range_of_not_isInt`
+forces the exponent `m/n` to be an integer, hence `n ∣ m`.  Backward: when `n ∣ m`
+the exponent is the integer `k = m/n`, and `x^{m/n} = x^k` is the image of the
+Laurent monomial `single k 1`.  Sharpens the one-directional
+`binomial_root_not_in_range_of_not_isInt` to a biconditional. -/
+theorem ynMinusXm_root_in_range_iff (n m : ℕ) (hn : 0 < n) :
+    (∃ z : HahnSeries ℤ K,
+        laurentToPuiseux z = puiseuxMonomial (K := K) ((m : ℚ) / (n : ℚ)))
+      ↔ n ∣ m := by
+  rw [← ynMinusXm_exponent_isInt_iff n m hn]
+  constructor
+  · rintro ⟨z, hz⟩
+    by_contra hcon
+    push_neg at hcon
+    exact binomial_root_not_in_range_of_not_isInt (K := K) n (m : ℚ) hcon ⟨z, hz⟩
+  · rintro ⟨k, hk⟩
+    refine ⟨HahnSeries.single k 1, ?_⟩
+    rw [laurentToPuiseux_single, puiseuxMonomial, hk]
+
+/-- Worked **unramified** instance: the root `x²` of `Y² − x⁴` lies in the Laurent
+base `K⸨x⸩` (`2 ∣ 4`, so the exponent `4/2 = 2` is an integer) — the first in-range
+witness of the binomial family, complementing the ramified `cubeRoot_x_not_in_range`
+and `puiseuxMonomial_half_not_in_range`. -/
+theorem ysqMinusX4_root_in_range :
+    ∃ z : HahnSeries ℤ K,
+      laurentToPuiseux z = puiseuxMonomial (K := K) (((4 : ℕ) : ℚ) / ((2 : ℕ) : ℚ)) :=
+  (ynMinusXm_root_in_range_iff (K := K) 2 4 (by norm_num)).mpr (by norm_num)
+
+#print axioms ynMinusXm_exponent_isInt_iff
+#print axioms ynMinusXm_root_in_range_iff
+#print axioms ysqMinusX4_root_in_range
+
 end PuiseuxTheoremOQ03

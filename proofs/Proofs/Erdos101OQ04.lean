@@ -3533,4 +3533,124 @@ theorem ternary_conic_sq_sum_range_sharp :
         ∧ p ^ 2 + q ^ 2 + r ^ 2 = 10) :=
   ⟨exists_ternary_conic_sq_sum_eq_five_halves, exists_ternary_conic_sq_sum_eq_ten⟩
 
+/-! ### A rational parametrization of the symmetric slice, and an infinite family
+
+The prior sections locate the solution surface `Q = 5` (a bounded ellipsoidal shell) but leave
+its most consequential feature — that it carries **infinitely many** quadruples with genuinely
+different abscissae — implicit.  Here we make one infinite subfamily *explicit*.
+
+The symmetric slice `q = −p` of `Q = 5` is the circle `p² + r² = 5`
+(`conic_slice_neg_eq_circle`).  This circle has the rational point `(−1, 2)` (attained at the
+base value `t = 0` below), so sweeping the pencil of lines of slope `t` through it rationally
+parametrizes the whole circle:
+  `pParam t = (t² − 4t − 1)/(t² + 1)`,   `rParam t = (−2t² − 2t + 2)/(t² + 1)`.
+The key identity `pParam t ² + rParam t ² = 5` holds because the numerator collapses to
+`5·(t² + 1)²` (`pParam_sq_add_rParam_sq`).  Hence for every `t` the quadruple
+`(pParam t, −pParam t, rParam t, −rParam t)` lies on `Q = 5` and satisfies the arithmetic
+four-point-line criterion `Σx = 0 ∧ Σx² = 10` (`param_quadruple_criterion`).
+
+Finally the parameter map `t ↦ pParam t` is *injective on* `[1, ∞)`
+(`pParam_injOn_one_le`: `pParam t = pParam s` forces either `t = s` or the excluded relation
+`t + s + 2ts = 2`, impossible when `t, s ≥ 1`), so `t ↦ pParam (t)` restricted to
+`{1, 2, 3, …}` realizes infinitely many distinct abscissae on the surface
+(`pParam_range_infinite`).  This turns the docstrings' recurring qualitative remark — that the
+OPEN super-linear question is one of *packing distinct abscissa sets*, never of existence — into
+a concrete infinite, rational, explicitly-parametrized supply of four-point-line quadruples on
+the fixed compact conic. -/
+
+/-- The abscissa parametrization of the circle slice `p² + r² = 5` through `(−1, 2)`. -/
+noncomputable def pParam (t : ℝ) : ℝ := (t ^ 2 - 4 * t - 1) / (t ^ 2 + 1)
+
+/-- The companion abscissa of `pParam`, tracing the same circle slice. -/
+noncomputable def rParam (t : ℝ) : ℝ := (-2 * t ^ 2 - 2 * t + 2) / (t ^ 2 + 1)
+
+/-- **The parametrization lands on the circle `p² + r² = 5`.**  The numerator of
+`pParam t ² + rParam t ²` is `5·(t² + 1)²`, cancelling the squared denominator.  So every value
+of the parameter `t` yields a point of the symmetric slice of the solution surface `Q = 5`. -/
+theorem pParam_sq_add_rParam_sq (t : ℝ) : pParam t ^ 2 + rParam t ^ 2 = 5 := by
+  have hD2 : (t ^ 2 + 1) ^ 2 ≠ 0 := pow_ne_zero 2 (by positivity)
+  rw [pParam, rParam, div_pow, div_pow, ← add_div, div_eq_iff hD2]
+  ring
+
+/-- **The parametrized quadruple lies on the ternary conic `Q = 5`.**  Combining
+`conic_slice_neg_eq_circle` (which collapses `Q(p, −p, r)` to `p² + r²`) with
+`pParam_sq_add_rParam_sq`. -/
+theorem param_on_conic (t : ℝ) :
+    pParam t ^ 2 + (-pParam t) ^ 2 + rParam t ^ 2
+      + pParam t * (-pParam t) + (-pParam t) * rParam t + rParam t * pParam t = 5 :=
+  (conic_slice_neg_eq_circle (pParam t) (rParam t)).trans (pParam_sq_add_rParam_sq t)
+
+/-- **The parametrized quadruple satisfies the arithmetic four-point-line criterion.**
+For every `t`, the abscissae `(pParam t, −pParam t, rParam t, −rParam t)` satisfy the two
+Vieta/sum-of-squares relations `Σx = 0` and `Σx² = 10`, so the four points above them on the
+quartic `y = x⁴ − 5x²` form a four-point line whenever the abscissae are distinct
+(`quartic_quadruple_family_onQuartic_collinear`).  A one-parameter rational supply of
+four-point-line quadruples. -/
+theorem param_quadruple_criterion (t : ℝ) :
+    pParam t + (-pParam t) + rParam t + (-(pParam t + (-pParam t) + rParam t)) = 0 ∧
+      pParam t ^ 2 + (-pParam t) ^ 2 + rParam t ^ 2
+        + (-(pParam t + (-pParam t) + rParam t)) ^ 2 = 10 :=
+  quartic_quadruple_family_criterion (pParam t) (-pParam t) (rParam t) (param_on_conic t)
+
+/-- **The parameter map is injective on `[1, ∞)`.**  If `pParam t = pParam s` then, after
+clearing denominators, `2·(t − s)·(t + s + 2ts − 2) = 0`.  The second factor is `≥ 2` when
+`t, s ≥ 1` (indeed `t + s ≥ 2` and `2ts ≥ 2`), so it cannot vanish; hence `t = s`.  Thus the
+rational family sweeps distinct abscissae along `[1, ∞)`. -/
+theorem pParam_injOn_one_le {t s : ℝ} (ht : 1 ≤ t) (hs : 1 ≤ s)
+    (h : pParam t = pParam s) : t = s := by
+  have hdt : t ^ 2 + 1 ≠ 0 := by positivity
+  have hds : s ^ 2 + 1 ≠ 0 := by positivity
+  rw [pParam, pParam, div_eq_div_iff hdt hds] at h
+  have hpos : 0 < t + s + 2 * t * s - 2 := by
+    nlinarith [mul_nonneg (sub_nonneg.2 ht) (sub_nonneg.2 hs), ht, hs]
+  have hfac : (t - s) * (t + s + 2 * t * s - 2) = 0 := by linear_combination h / 2
+  rcases mul_eq_zero.mp hfac with h1 | h2
+  · exact sub_eq_zero.mp h1
+  · exfalso; linarith
+
+/-- **The rational family realizes infinitely many distinct abscissae on `Q = 5`.**  Restricting
+`pParam` to the integers `n + 1 ≥ 1` gives an injective `ℕ`-indexed sequence (by
+`pParam_injOn_one_le`), so its range — a set of abscissae all lying on the solution surface — is
+infinite.  This is the concrete infinite supply the surface's docstrings gesture at: the OPEN
+super-linear-growth question restricted to this slice is not existence but the packing of
+distinct abscissa sets. -/
+theorem pParam_range_infinite :
+    Set.Infinite (Set.range (fun n : ℕ => pParam ((n : ℝ) + 1))) := by
+  apply Set.infinite_range_of_injective
+  intro a b hab
+  have hle : ∀ m : ℕ, (1 : ℝ) ≤ (m : ℝ) + 1 := by
+    intro m; have : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m; linarith
+  have := pParam_injOn_one_le (hle a) (hle b) hab
+  exact_mod_cast (by linarith : (a : ℝ) = (b : ℝ))
+
+/-- **The upper radius bound `10` is attained.**  The trace-free point `(√5, −√5, 0)` lies
+on the ternary conic `Q = 5` (its trace `p+q+r = 0` kills the `(p+q+r)²` term, so
+`Q = ½·(p²+q²+r²) = 5`) and realises `p²+q²+r² = 10`.  So the ceiling
+`ternary_conic_sq_sum_le_of_mem` is sharp: the ellipsoid `Q = 5` really reaches the outer
+sphere of radius `√10` (the long semi-axis, in the trace-free eigenplane of eigenvalue `½`). -/
+theorem ternary_conic_sq_sum_upper_sharp :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 = 10 := by
+  refine ⟨Real.sqrt 5, -Real.sqrt 5, 0, ?_, ?_⟩
+  · have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h5]
+  · have h5 : Real.sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num)
+    nlinarith [h5]
+
+/-- **The lower radius bound `5/2` is attained.**  The diagonal point `(√(5/6), √(5/6),
+√(5/6))` lies on the ternary conic `Q = 5` (along the trace direction `(1,1,1)`,
+`Q = 6·p² = 5`) and realises `p²+q²+r² = 5/2`.  So the floor
+`ternary_conic_sq_sum_ge_of_mem` is sharp: the ellipsoid `Q = 5` really reaches the inner
+sphere of radius `√(5/2)` (the short semi-axis, in the trace eigendirection of eigenvalue
+`2`).  Together with `ternary_conic_sq_sum_upper_sharp` this certifies the interval
+`[5/2, 10]` of `ternary_conic_sq_sum_mem_Icc` as *exactly* the range of `p²+q²+r²`. -/
+theorem ternary_conic_sq_sum_lower_sharp :
+    ∃ p q r : ℝ, p ^ 2 + q ^ 2 + r ^ 2 + p * q + q * r + r * p = 5 ∧
+      p ^ 2 + q ^ 2 + r ^ 2 = 5 / 2 := by
+  refine ⟨Real.sqrt (5 / 6), Real.sqrt (5 / 6), Real.sqrt (5 / 6), ?_, ?_⟩
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+  · have h : Real.sqrt (5 / 6) ^ 2 = 5 / 6 := Real.sq_sqrt (by norm_num)
+    nlinarith [h]
+
 end Erdos101OQ04

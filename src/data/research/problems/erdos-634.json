@@ -21,20 +21,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized the medial reptiling — the base case k=2 of the square reptiling central to Erdős #634 — fully and unconditionally over an arbitrary real normed space. The four medial triangles of any triangle A B C are proved pairwise congruent (genuine isometry-congruence, via explicit translations and one point reflection), with side lengths exactly half the original, exhibiting 4 = 2^2 congruent half-copies. New verified entry erdos-634-medial-congruence (Proofs/Erdos634MedialCongruence.lean), 0 axioms, 0 sorries. Also identified a latent soundness issue in the pre-existing axiomatized entry.",
+    "progressSummary": "COMPLETED (base problem axiomatized on main; #634 itself OPEN $25). Session 2026-07-12 (researcher-5): added Erdos634MedialTilingOQ02.lean — a concrete, non-abstract IsCongruentTiling predicate and an axiom-free proof that every non-degenerate triangle admits it for n=4 (the medial k=2 reptiling cell). This is the honest positive-case content the base file could only assert through its opaque Tiles axiom (squares_dissectable 2 is sorry). 0 axioms, 0 sorries, verified.",
     "builtItems": [
       "Proofs/Erdos634MedialCongruence.lean: 194 lines, 11 theorems, 6 definitions, 0 axioms, 0 sorries; #print axioms reports only propext/Classical.choice/Quot.sound.",
       "TriCongruent: isometry-congruence of ordered triangles, proved an equivalence relation and distance-preserving.",
       "medial_four_congruent: the four medial triangles are pairwise congruent (main theorem).",
       "Explicit isometry witnesses: translations (corner triangles) and a point reflection pointRefl (central triangle).",
       "medial_sides_halved: each piece has half the side lengths, exhibiting the k=2 square reptiling.",
-      "Gallery entry erdos-634-medial-congruence (meta.json + annotations.json)."
+      "Gallery entry erdos-634-medial-congruence (meta.json + annotations.json).",
+      "Proofs/Erdos634MedialTilingOQ02.lean: 156 lines, IsCongruentTiling structure (3 fields) + medialPieces + medial_isCongruentTiling (capstone) + exists_congruentTiling_four; 0 axioms/0 sorries (#print axioms = propext/Classical.choice/Quot.sound). Unifies medial_four_congruent + medial_covering + medial_interiors_pairwise_disjoint into one concrete n=4 tiling witness over an arbitrary real normed space."
     ],
     "insights": [
       "The four medial pieces are congruent via genuinely elementary isometries: three translations and one point reflection (180° rotation) for the central piece.",
       "No inner-product/Euclidean machinery is needed — translations and point reflections are isometries in any real normed space, so the result holds in general normed spaces and specialises to the plane.",
       "Side lengths halve exactly via midpoint_vsub_midpoint_same_left, so the medial subdivision is the 4 = 2^2 square reptiling base case.",
-      "SOUNDNESS FLAG: the pre-existing Erdos634Problem.lean uses an area-only Dissection (no covering/disjointness); this makes IsDissectable n true for every n (n identical (1/√n)-scaled pieces), contradicting its seven_not_dissectable / eleven_not_dissectable axioms — a latent inconsistency to repair."
+      "SOUNDNESS FLAG: the pre-existing Erdos634Problem.lean uses an area-only Dissection (no covering/disjointness); this makes IsDissectable n true for every n (n identical (1/√n)-scaled pieces), contradicting its seven_not_dissectable / eleven_not_dissectable axioms — a latent inconsistency to repair.",
+      "The base entry Erdos634Problem routes positive dissectability through an OPAQUE axiom Tiles : Prop, so its positive results (squares_dissectable etc.) are unavoidably sorry — an abstract Prop has no introduction rule, so no concrete tiling can be witnessed. Erdos634MedialTilingOQ02 supplies a NON-abstract IsCongruentTiling predicate (triHull covers + triHullOpen interior-disjoint + TriCongruent) and proves the medial subdivision inhabits it for n=4, axiom-free — the first concrete positive tiling witness of the k=2 reptiling cell."
     ],
     "mathlibGaps": [
       "No tiling/dissection API in Mathlib (covering + disjoint-interiors of polygonal pieces), so the full geometric dissection of #634 cannot yet be formalized; only the congruence of the pieces is captured here."

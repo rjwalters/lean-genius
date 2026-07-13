@@ -210,3 +210,50 @@ Counts: leanFile/meta 828→948 lines, 31→37 thm, defs 13, axiomCount 1 unchan
 status stays `axiomatized`. No follow-up OQ proposed (slug already at depth 1 but
 the engine is saturated; a Lipschitz variant would be a cosmetic sibling — 0
 questions is the honest choice here).
+
+## Session 2026-07-12 (researcher-3) — complement & complete graph: outer partition layer (VERIFIED)
+
+**Mode**: REVISIT (RICH). Prior sessions declared the single-graph max-cut/min-uncut engine
+saturated (extremal square + monotonicity + single-edge Lipschitz + ceil/floor forms all present).
+Rather than add a cosmetic 5th corner to the same square, opened a genuinely NEW direction absent
+from the entire file: the **complement `Gᶜ` and complete graph `Kₙ`**, which the cut engine had
+never referenced. All axiom-free (`#print axioms` = `[propext, Classical.choice, Quot.sound]` on all
+five — the tautological `rodl_tuza_theorem` axiom is UNTOUCHED per standing integrity finding).
+
+New Part 3e in `Erdos744Problem.lean`:
+- `completeGraph' V` (def) — `Adj u v := u ≠ v`, with `DecidableRel` instance (needs `DecidableEq V`).
+- `complement G` (def, `Gᶜ`) — `Adj u v := u ≠ v ∧ ¬ G.Adj u v`, `sym`/`loopless` from `G.sym`;
+  `DecidableRel` instance from `[DecidableEq V] [DecidableRel G.Adj]`.
+- **`monochromaticEdges_add_complement`** — the headline: for a FIXED coloring `c`,
+  `monochromaticEdges G c + monochromaticEdges Gᶜ c = monochromaticEdges Kₙ c`. Every same-colored
+  pair `u < v` lies in exactly one of `G`, `Gᶜ`. Proof mirrors `monochromaticEdges_add_bichromaticEdges`:
+  set base `S = filter (p.1<p.2 ∧ c p.1=c p.2)` (= `Kₙ`'s monochromatic edges via `ne_of_lt`),
+  rewrite `G`/`Gᶜ` counts as `S.filter (G.Adj)` / `S.filter (¬G.Adj)` (`filter_filter`), close with
+  `Finset.filter_card_add_filter_neg_card_eq_card`. The `p.1≠p.2` conjunct of `Gᶜ`/`Kₙ` is discharged
+  by `ne_of_lt h1` (NOT by `tauto` — it can't derive `≠` from `<`; supply an explicit `⟨…⟩` iff).
+- `monochromaticEdges_const_true` — `monochromaticEdges G (fun _ => true) = edgeCount G` (all-same
+  colour makes every edge monochromatic); the reusable bridge specializing coloring identities to
+  `edgeCount`.
+- **`edgeCount_add_edgeCount_complement`** — `edgeCount G + edgeCount Gᶜ = edgeCount Kₙ`: constant-
+  coloring specialization of the partition identity.
+- `maxCut_add_maxCut_complement_le` / `bipartitionNumber_add_bipartitionNumber_complement_le` —
+  `maxCut G + maxCut Gᶜ ≤ edgeCount Kₙ` and the min-uncut dual, each one `omega` off
+  `edgeCount_add_edgeCount_complement` + the respective `_le_edgeCount` bound.
+
+**Why not scaffolding.** Complement and complete graph are fundamental objects the file had never
+introduced; the partition `G ⊔ Gᶜ = Kₙ` at the coloring level is standard structural graph theory and
+orthogonal to the single-graph extremal square. `Kₙ`'s exact edge count `C(n,2)` is left open (a
+`Fintype`-pair-counting lemma, not needed here).
+
+**Verification.** `lake env lean Proofs/Erdos744Problem.lean` exit 0 (docker image build still hits the
+containerd blob I/O error; single-file elab against pinned Mathlib v4.26.0 oleans is the reusable path).
+Only pre-existing `unused variable` warnings in the untouched `f_*` theorems. `#print axioms` clean on
+all five new theorems.
+
+**Counts.** `Erdos744Problem.lean` 1011→1114 lines, 42→47 thm, 15→17 def, +2 instances, axiomCount 1
+(unchanged), 0 sorry. `meta.json` leanFile synced to actual (lineCount 969→1114 [was stale], theoremCount
+39→47, definitionCount 13→17); integrity fields unchanged (axiomCount=1, status=axiomatized).
+
+**No follow-up OQ.** Slug at depth 1; the natural next step (`C(n,2)` closed form, or complement of the
+`maxCut`/`bipartitionNumber` *values*) is a routine counting lemma, not a theory-level new direction —
+0 questions is the honest choice.

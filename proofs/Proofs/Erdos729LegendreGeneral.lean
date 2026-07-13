@@ -128,6 +128,54 @@ theorem padicValNat_factorial_le_div (p n : ℕ) (hp : p.Prime) :
   rw [padicValNat_factorial_eq_div p n hp]
   exact Nat.div_le_div_right (Nat.sub_le n ((p.digits n).sum))
 
+/-! ### Sharp digit-sum upper bound and the matching lower bound on `v_p(n!)`
+
+The bounds above (`sub_one_mul_padicValNat_factorial_le`, `padicValNat_factorial_le_div`)
+control `v_p(n!)` from *above*, with the digit-sum defect `s_p(n)` measuring the shortfall
+below the heuristic `n/(p-1)`.  The complementary *lower* bound needs an **upper** bound on
+that defect: each base-`p` digit is at most `p - 1`, so `s_p(n) ≤ (p-1)·(#base-p digits)`,
+and the digit count is `⌊log_p n⌋ + 1`.  This makes `s_p(n)` logarithmically small in `n`,
+so `(p-1)·v_p(n!) = n - s_p(n)` is within `(p-1)(⌊log_p n⌋+1)` of `n` — i.e. `v_p(n!)` tracks
+`n/(p-1)` up to a `O(log n)` correction.  Below the general multiplied-form lower bound, then
+the clean two-sided sandwich at `p = 2`, where `p - 1 = 1` gives `n - ⌊log₂ n⌋ - 1 ≤ v₂(n!) ≤
+n - 1`, hence `v₂(n!)/n → 1`. -/
+
+/-- **Digit-sum bounded by the digit count.**  Every base-`p` digit is `< p`, hence `≤ p-1`,
+so the digit sum is at most `(p-1)` times the number of digits.  The elementary upper bound
+complementing `digitSum_pos`; the input to the sharp lower bound on `v_p(n!)`. -/
+theorem digitSum_le_length_mul {p : ℕ} (hp : 1 < p) (n : ℕ) :
+    digitSum p n ≤ (p.digits n).length * (p - 1) := by
+  have h := List.sum_le_card_nsmul (p.digits n) (p - 1)
+    (fun d hd => by have := Nat.digits_lt_base hp hd; omega)
+  simpa [digitSum, smul_eq_mul] using h
+
+/-- **Digit sum is logarithmically small.**  Since a positive `n` has exactly `⌊log_p n⌋ + 1`
+base-`p` digits (`Nat.digits_len`), `s_p(n) ≤ (p-1)·(⌊log_p n⌋ + 1)`.  For `p = 2` this is the
+Hamming weight bound `s_2(n) ≤ ⌊log₂ n⌋ + 1` (at most one 1-bit per bit position). -/
+theorem digitSum_le_log_succ_mul {p : ℕ} (hp : 1 < p) {n : ℕ} (hn : n ≠ 0) :
+    digitSum p n ≤ (Nat.log p n + 1) * (p - 1) := by
+  have h := digitSum_le_length_mul hp n
+  rwa [Nat.digits_len p n hp hn] at h
+
+/-- **Sharp lower bound on `v_p(n!)`, multiplied form.**  From Legendre's identity
+`(p-1)·v_p(n!) = n - s_p(n)` and the logarithmic bound on the defect,
+`n - (p-1)(⌊log_p n⌋+1) ≤ (p-1)·v_p(n!)`.  Together with
+`sub_one_mul_padicValNat_factorial_le` (`≤ n`) this pins `(p-1)·v_p(n!)` into the window
+`[n - (p-1)(⌊log_p n⌋+1), n]`: the valuation matches `n/(p-1)` up to an `O(log n)` term. -/
+theorem sub_one_mul_padicValNat_factorial_ge {p n : ℕ} (hp : p.Prime) (hn : n ≠ 0) :
+    n - (Nat.log p n + 1) * (p - 1) ≤ (p - 1) * padicValNat p n.factorial := by
+  rw [sub_one_mul_padicValNat_factorial_digitSum p n hp]
+  have h := digitSum_le_log_succ_mul hp.one_lt hn
+  omega
+
+/-- **Sharp lower bound on `v_2(n!)`.**  At `p = 2` the leading factor `p - 1 = 1` disappears:
+`n - (⌊log₂ n⌋ + 1) ≤ v_2(n!)`.  The number of factors of `2` in `n!` is within `⌊log₂ n⌋ + 1`
+of the trivial ceiling `n`. -/
+theorem padicValNat_factorial_two_ge {n : ℕ} (hn : n ≠ 0) :
+    n - (Nat.log 2 n + 1) ≤ padicValNat 2 n.factorial := by
+  have h := sub_one_mul_padicValNat_factorial_ge (p := 2) Nat.prime_two hn
+  simpa using h
+
 /-- **The exact zero-locus of `v_p(n!)`.**  For every prime `p`,
 
   `v_p(n!) = 0  ↔  n < p`.
@@ -326,6 +374,25 @@ theorem digitSum_pos {p n : ℕ} (hn : n ≠ 0) : 0 < digitSum p n := by
   show 0 < (p.digits n).sum
   omega
 
+/-- **Sharp upper bound on `v_2(n!)`.**  Since `s_2(n) ≥ 1` for `n ≥ 1` (`digitSum_pos`),
+Legendre gives `v_2(n!) = n - s_2(n) ≤ n - 1`.  The complementary half of the sandwich; its
+lower half `padicValNat_factorial_two_ge` sits with the digit-count bounds above. -/
+theorem padicValNat_factorial_two_le {n : ℕ} (hn : n ≠ 0) :
+    padicValNat 2 n.factorial ≤ n - 1 := by
+  have hid := sub_one_mul_padicValNat_factorial_digitSum 2 n Nat.prime_two
+  have hpos := digitSum_pos (p := 2) hn
+  omega
+
+/-- **Two-sided quantitative Legendre bound at `p = 2`.**
+`n - (⌊log₂ n⌋ + 1) ≤ v_2(n!) ≤ n - 1`.  The `2`-adic valuation of `n!` sits within
+`⌊log₂ n⌋ + 1` of `n`, so `v_2(n!) = n - O(log n)` and `v_2(n!)/n → 1`.  Sharpens the
+one-sided `padicValNat_factorial_le_div` (which at `p = 2` reads `v_2(n!) ≤ n`) to a matching
+pair of bounds squeezing the valuation to a logarithmic-width window. -/
+theorem padicValNat_factorial_two_sandwich {n : ℕ} (hn : n ≠ 0) :
+    n - (Nat.log 2 n + 1) ≤ padicValNat 2 n.factorial ∧
+      padicValNat 2 n.factorial ≤ n - 1 :=
+  ⟨padicValNat_factorial_two_ge hn, padicValNat_factorial_two_le hn⟩
+
 /-- **Digit-sum invariance under multiplication by the base.**  For every base
 `p > 1`, `s_p(p · n) = s_p(n)`: writing `p · n` in base `p` appends a least-significant
 digit `0` (`(p·n) % p = 0`, `(p·n) / p = n`), which does not change the digit sum.
@@ -378,6 +445,135 @@ theorem centralBinom_even (n : ℕ) (hn : 0 < n) : 2 ∣ Nat.centralBinom n := b
     digitSum_base_mul 2 n (by norm_num)] at h
   have hpos : 0 < digitSum 2 n := digitSum_pos (p := 2) (by omega)
   omega
+
+/-! ### The sharp 2-adic valuation of the central binomial coefficient
+
+Kummer's carry count, at `p = 2`, collapses to the classical closed form
+`v_2(C(2n, n)) = s_2(n)` — the number of `1`s in the binary expansion of `n`.
+The key input is that doubling adds a trailing binary `0`, so `s_2(2n) = s_2(n)`
+(`digitSum_base_mul`), which cancels one of the two `s_2(n)` terms in the `m = n`
+Kummer identity.  The general-`p` exact form is recorded first. -/
+
+/-- **Kummer for the central binomial coefficient (exact multiplied form).**
+For every prime `p`,
+
+  `(p − 1)·v_p(C(2n, n)) + s_p(2n) = 2·s_p(n)`,
+
+the subtraction-free `m = n` specialisation of
+`sub_one_mul_padicValNat_choose_add_digitSum`.  Rearranged, the base-`p` carry
+count of `n + n` is `(2·s_p(n) − s_p(2n))/(p − 1)` (cf. `padicValNat_centralBinom_eq_div`),
+but the multiplied form avoids the natural-number division. -/
+theorem sub_one_mul_padicValNat_centralBinom (p n : ℕ) (hp : p.Prime) :
+    (p - 1) * padicValNat p (Nat.centralBinom n) + digitSum p (2 * n)
+      = 2 * digitSum p n := by
+  have hadd := sub_one_mul_padicValNat_choose_add_digitSum p n n hp
+  have hc : Nat.centralBinom n = (n + n).choose n := by
+    rw [Nat.centralBinom_eq_two_mul_choose, two_mul]
+  rw [hc, two_mul n]
+  omega
+
+/-- **The sharp 2-adic valuation of the central binomial coefficient.**
+
+  `v_2(C(2n, n)) = s_2(n)`,
+
+i.e. `C(2n, n)` is divisible by exactly `2` to the power of the number of `1`s in
+the binary expansion of `n`.  This is the classical Kummer specialisation: doubling
+`n` in base 2 never carries (`s_2(2n) = s_2(n)`), so the `m = n` carry count of
+`n + n` equals `s_2(n)`.  Not a named Mathlib lemma. -/
+theorem padicValNat_centralBinom_two_eq_digitSum (n : ℕ) :
+    padicValNat 2 (Nat.centralBinom n) = digitSum 2 n := by
+  have h := sub_one_mul_padicValNat_centralBinom 2 n Nat.prime_two
+  rw [digitSum_base_mul 2 n (by norm_num : 1 < 2)] at h
+  omega
+
+/-- **The central binomial valuation is positive for `n ≥ 1`** (sharpened evenness).
+`1 ≤ v_2(C(2n, n))` because `s_2(n) ≥ 1` for `n ≠ 0` (`digitSum_pos`).  Refines
+`centralBinom_even` from "divisible by 2" to an explicit valuation lower bound. -/
+theorem one_le_padicValNat_centralBinom_two {n : ℕ} (hn : 0 < n) :
+    1 ≤ padicValNat 2 (Nat.centralBinom n) := by
+  rw [padicValNat_centralBinom_two_eq_digitSum]
+  exact digitSum_pos (by omega)
+
+/-- **The base-2 digit sum of a power of two is `1`.**  Its binary expansion is a
+single leading `1` followed by zeros.  By induction: `s_2(2^{k+1}) = s_2(2·2^k)
+= s_2(2^k)` via `digitSum_base_mul`, with base case `s_2(1) = 1`. -/
+theorem digitSum_two_pow (k : ℕ) : digitSum 2 (2 ^ k) = 1 := by
+  induction k with
+  | zero =>
+      show (Nat.digits 2 (2 ^ 0)).sum = 1
+      rw [pow_zero, Nat.digits_def' (by norm_num : 1 < 2) (by norm_num : 0 < 1)]
+      simp
+  | succ k ih =>
+      rw [pow_succ, mul_comm (2 ^ k) 2, digitSum_base_mul 2 (2 ^ k) (by norm_num : 1 < 2), ih]
+
+/-- **At a power of two the central binomial coefficient carries exactly one `2`.**
+
+  `v_2(C(2·2^k, 2^k)) = 1`,
+
+the `n = 2^k` slice of `padicValNat_centralBinom_two_eq_digitSum` (`s_2(2^k) = 1`).
+Equivalently, `C(2^{k+1}, 2^k) ≡ 2 (mod 4)` — it is even but not a multiple of 4. -/
+theorem padicValNat_centralBinom_two_pow (k : ℕ) :
+    padicValNat 2 (Nat.centralBinom (2 ^ k)) = 1 := by
+  rw [padicValNat_centralBinom_two_eq_digitSum, digitSum_two_pow]
+
+/-! ### The power-of-two characterization: `s_2(n) = 1 ↔ n` is a power of two
+
+`digitSum_two_pow` gives one direction (`s_2(2^k) = 1`); this block supplies the
+**converse** `s_2(n) = 1 → ∃ k, n = 2^k`, upgrading the one-way fact to a full
+characterization.  The converse is the honest content: a positive integer has a single
+`1`-bit in binary exactly when it is a power of two.  It sharpens
+`padicValNat_centralBinom_two_pow` from a one-directional value to the **iff**
+`v_2(C(2n, n)) = 1 ↔ n` is a power of two — the exact locus where the central binomial
+coefficient is even but not a multiple of `4`. -/
+
+/-- **A positive integer with base-2 digit sum `1` is a power of two.**  The converse of
+`digitSum_two_pow`.  By strong induction on `n` via the digit recurrence
+`s_2(n) = n % 2 + s_2(n / 2)`: if `n` is even the leading bit is `0`, so `s_2(n/2) = 1`
+and `n/2 = 2^j` by induction, whence `n = 2^{j+1}`; if `n` is odd the leading bit is `1`,
+forcing `s_2(n/2) = 0`, hence `n/2 = 0` (`digitSum_pos`) and `n = 1 = 2^0`. -/
+theorem digitSum_two_eq_one_imp_two_pow :
+    ∀ n : ℕ, 0 < n → digitSum 2 n = 1 → ∃ k, n = 2 ^ k := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn hs
+    have hrec : digitSum 2 n = n % 2 + digitSum 2 (n / 2) := by
+      show (Nat.digits 2 n).sum = n % 2 + (Nat.digits 2 (n / 2)).sum
+      rw [Nat.digits_def' (by norm_num : 1 < 2) hn]; simp
+    rcases Nat.mod_two_eq_zero_or_one n with h0 | h1
+    · -- `n` even: leading bit `0`, so `s_2(n/2) = 1` and we recurse.
+      have hd1 : digitSum 2 (n / 2) = 1 := by omega
+      have hpos : 0 < n / 2 := by omega
+      have hlt : n / 2 < n := Nat.div_lt_self hn (by norm_num)
+      obtain ⟨j, hj⟩ := ih (n / 2) hlt hpos hd1
+      have hn2 : n = 2 * (n / 2) := by omega
+      exact ⟨j + 1, by rw [hn2, hj, pow_succ, Nat.mul_comm]⟩
+    · -- `n` odd: leading bit `1` uses up the whole digit sum, so `s_2(n/2) = 0`.
+      have hd0 : digitSum 2 (n / 2) = 0 := by omega
+      have hz : n / 2 = 0 := by
+        by_contra hne
+        have := digitSum_pos (p := 2) hne
+        omega
+      exact ⟨0, by rw [pow_zero]; omega⟩
+
+/-- **The base-2 digit sum is `1` iff `n` is a power of two** (`n ≥ 1`).  Combines
+`digitSum_two_pow` (`⇐`) with `digitSum_two_eq_one_imp_two_pow` (`⇒`): among positive
+integers, `s_2(n) = 1` characterizes the powers of two exactly. -/
+theorem digitSum_two_eq_one_iff (n : ℕ) (hn : 0 < n) :
+    digitSum 2 n = 1 ↔ ∃ k, n = 2 ^ k := by
+  refine ⟨digitSum_two_eq_one_imp_two_pow n hn, ?_⟩
+  rintro ⟨k, rfl⟩
+  exact digitSum_two_pow k
+
+/-- **`v_2(C(2n, n)) = 1 ↔ n` is a power of two** (`n ≥ 1`).  The sharp form of
+`padicValNat_centralBinom_two_pow`: the central binomial coefficient `C(2n, n)` is even
+but not divisible by `4` exactly when `n` is a power of two, since
+`v_2(C(2n, n)) = s_2(n)` (`padicValNat_centralBinom_two_eq_digitSum`) and `s_2(n) = 1`
+characterizes the powers of two. -/
+theorem padicValNat_centralBinom_two_eq_one_iff (n : ℕ) (hn : 0 < n) :
+    padicValNat 2 (Nat.centralBinom n) = 1 ↔ ∃ k, n = 2 ^ k := by
+  rw [padicValNat_centralBinom_two_eq_digitSum]
+  exact digitSum_two_eq_one_iff n hn
 
 /-! ### The carry-count form: bridging `digitSum` to Mathlib's `padicValNat_choose'`
 
@@ -460,5 +656,13 @@ theorem not_dvd_choose_iff_no_carries (p m n : ℕ) {b : ℕ} (hp : p.Prime)
 #check @centralBinom_even
 #check @digitSum_defect_eq_sub_one_mul_carries
 #check @not_dvd_choose_iff_no_carries
+#check @sub_one_mul_padicValNat_centralBinom
+#check @padicValNat_centralBinom_two_eq_digitSum
+#check @one_le_padicValNat_centralBinom_two
+#check @digitSum_two_pow
+#check @padicValNat_centralBinom_two_pow
+#check @digitSum_two_eq_one_imp_two_pow
+#check @digitSum_two_eq_one_iff
+#check @padicValNat_centralBinom_two_eq_one_iff
 
 end Erdos729Legendre

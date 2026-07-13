@@ -85,4 +85,114 @@ theorem dense_setOf_transcendental : Dense {x : ℝ | Transcendental ℤ x} :=
 theorem dense_setOf_liouville : Dense {x : ℝ | Liouville x} :=
   dense_of_mem_residual liouville_comeagre
 
+/-! ### The complex algebraic numbers are meagre (Baire category in `ℂ`)
+
+The results above live in `ℝ`, where the Liouville numbers supply an explicit
+comeagre set of transcendentals.  The parent chain shows the *complex* algebraic
+numbers are small in measure (`algebraic_complex_hausdorffMeasure_zero`) and
+dimension (`algebraic_complex_dimH_zero`), but the Baire-category corner in `ℂ`
+was missing — there is no complex analogue of the Liouville construction.  It
+follows instead from pure **countability**: in a perfect `T₁` space every
+singleton is nowhere dense (`interior_singleton`), so any countable set is a
+countable union of nowhere-dense singletons, hence meagre.  Both `ℝ` and `ℂ`
+are perfect (`T₁ + connected + nontrivial`), and the algebraic numbers over the
+countable ring `ℤ` are countable (`Algebraic.countable`). -/
+
+/-- **Every countable set in a perfect `T₁` space is meagre.**  A singleton `{x}`
+    is closed (`T₁`) with empty interior (`interior_singleton`, valid because a
+    perfect space has no isolated points), hence nowhere dense; a countable set is
+    the countable union of its singletons, so it is meagre by `isMeagre_iUnion`. -/
+theorem isMeagre_of_countable {X : Type*} [TopologicalSpace X] [T1Space X]
+    [PerfectSpace X] {s : Set X} (hs : s.Countable) : IsMeagre s := by
+  have hsub : Countable ↥s := hs.to_subtype
+  have hcov : s = ⋃ x : s, {(x : X)} := by ext y; simp
+  rw [hcov]
+  refine isMeagre_iUnion (fun x => ?_)
+  rw [isMeagre_iff_countable_union_isNowhereDense]
+  refine ⟨{{(x : X)}}, ?_, Set.countable_singleton _, by simp⟩
+  intro t ht
+  rw [Set.mem_singleton_iff] at ht
+  subst ht
+  exact isClosed_singleton.isNowhereDense_iff.mpr (interior_singleton (x : X))
+
+/-- **The complex algebraic numbers are meagre.**  The Baire-category counterpart,
+    in `ℂ`, of `isMeagre_setOf_isAlgebraic` (which lived only in `ℝ` via Liouville).
+    Since `ℂ` is a perfect `T₁` space and the algebraic numbers over the countable
+    ring `ℤ` are countable (`Algebraic.countable ℤ ℂ`), meagreness follows from
+    `isMeagre_of_countable`.  Together with the parent's complex measure-zero and
+    Hausdorff-dimension-zero results, the algebraic complex numbers are small in
+    every classical sense. -/
+theorem isMeagre_setOf_isAlgebraic_complex : IsMeagre {z : ℂ | IsAlgebraic ℤ z} :=
+  isMeagre_of_countable (Algebraic.countable ℤ ℂ)
+
+/-- **The complex transcendentals are dense.**  The complement of the meagre
+    complex algebraic numbers is comeagre (residual), and `ℂ` is a Baire space, so
+    `dense_of_mem_residual` gives density: every nonempty open subset of `ℂ`
+    contains a transcendental.  The complex counterpart of
+    `dense_setOf_transcendental`. -/
+theorem dense_setOf_transcendental_complex : Dense {z : ℂ | Transcendental ℤ z} := by
+  apply dense_of_mem_residual
+  show {z : ℂ | IsAlgebraic ℤ z}ᶜ ∈ residual ℂ
+  exact isMeagre_setOf_isAlgebraic_complex
+
+/-! ### The measure–category duality on `ℝ` (the four corners)
+
+`exists_null_comeagre` records one corner of the classical measure/category
+square: a set that is Lebesgue-null yet comeagre (the Liouville numbers).  The
+**dual corner** — a set that is *meagre* yet of *full measure* — is realised by
+the complement, the non-Liouville numbers: it is meagre (complement of the
+comeagre Liouville set) and co-null (complement of the null Liouville set).
+
+Splitting `ℝ` along `Liouville`/`¬Liouville` then gives a completely explicit,
+choice-and-`CH`-free instance of the **Sierpiński–Erdős measure–category
+duality**: the real line is the disjoint union of a meagre set and a null set.
+No single notion of "smallness" (measure vs. category) refines the other — a fact
+the parent chain's *algebraic* reals (small in *both* senses) cannot witness, but
+this Liouville splitting does. -/
+
+/-- **The non-Liouville reals are meagre.**  Their complement is the Liouville
+    set, which is comeagre (`liouville_comeagre`); by the definition of `IsMeagre`
+    (`sᶜ ∈ residual`) this is exactly meagreness.  The category counterpart of
+    `not_liouville_conull` and the dual of `liouville_comeagre`. -/
+theorem not_liouville_meagre : IsMeagre {x : ℝ | ¬ Liouville x} := by
+  show {x : ℝ | ¬ Liouville x}ᶜ ∈ residual ℝ
+  have hcompl : {x : ℝ | ¬ Liouville x}ᶜ = {x : ℝ | Liouville x} := by
+    simp [Set.compl_setOf]
+  rw [hcompl]
+  exact liouville_comeagre
+
+/-- **The non-Liouville reals have full measure** (their complement is null).  The
+    complement is the Liouville set, which is Lebesgue-null (`liouville_null`); so
+    the non-Liouville reals are co-null.  The measure counterpart of
+    `not_liouville_meagre`. -/
+theorem not_liouville_conull : volume {x : ℝ | ¬ Liouville x}ᶜ = 0 := by
+  have hcompl : {x : ℝ | ¬ Liouville x}ᶜ = {x : ℝ | Liouville x} := by
+    simp [Set.compl_setOf]
+  rw [hcompl]
+  exact liouville_null
+
+/-- **The dual corner: a meagre set of full measure exists.**  The non-Liouville
+    reals are meagre (`not_liouville_meagre`) yet co-null (`not_liouville_conull`),
+    so "meagre" does **not** imply "null".  Together with `exists_null_comeagre`
+    (null but comeagre) this fills the two off-diagonal corners of the
+    measure/category square: neither notion of smallness implies the other. -/
+theorem exists_meagre_conull : ∃ S : Set ℝ, IsMeagre S ∧ volume Sᶜ = 0 :=
+  ⟨{x : ℝ | ¬ Liouville x}, not_liouville_meagre, not_liouville_conull⟩
+
+/-- **The Sierpiński–Erdős decomposition of `ℝ`.**  The real line is the disjoint
+    union of a meagre set `A` (the non-Liouville reals) and a Lebesgue-null set `B`
+    (the Liouville reals).  An entirely explicit, `CH`-free witness that measure
+    and category are independent notions of largeness: `ℝ` itself is "small" in
+    each of the two senses on complementary pieces, so no set can be simultaneously
+    "large" in both on all of `ℝ`. -/
+theorem exists_meagre_null_decomposition :
+    ∃ A B : Set ℝ, IsMeagre A ∧ volume B = 0 ∧ A ∪ B = Set.univ ∧ Disjoint A B := by
+  refine ⟨{x : ℝ | ¬ Liouville x}, {x : ℝ | Liouville x}, not_liouville_meagre,
+    liouville_null, ?_, ?_⟩
+  · ext x
+    by_cases h : Liouville x <;> simp [h]
+  · rw [Set.disjoint_left]
+    intro x hx hx'
+    exact hx hx'
+
 end AlgebraicNumbersCountableOQ07

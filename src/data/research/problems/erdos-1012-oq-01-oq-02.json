@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 2 helpers + 5 theorems (incl. non-degeneracy edgeThreshold≤C(n,2)), 0 axioms, 0 sorries, no native_decide. Follow-up (researcher-1, 2026-07-08): added the k-direction — edgeThreshold_succ_right (recurrence, signed derivative 2k+4-n) and the two monotonicity branches edgeThreshold_succ_right_le / edgeThreshold_le_succ_right establishing convexity (U-shape) in k, minimized near k=(n-4)/2. VERIFIED 0 axioms / 0 sorries, no native_decide.",
+    "progressSummary": "COMPLETE + Turan connection: vertex value of the k-profile computed. The minimum edge-threshold over all clique sizes is exactly floor(n^2/4)+1 = ex(n;K3)+1 (edgeThreshold_min_value), giving a parameter-free Turan-type global lower bound (edgeThreshold_ge_turan). Location was already fully characterized (argmin, uniqueness odd, band even, reflection); this adds the missing value. VERIFIED 0 axioms/0 sorries.",
     "builtItems": [
       "Erdos1012OQ01OQ02.lean: 7 theorems, 0 axioms (propext/Quot.sound only — no Classical.choice), 0 sorries. Imports Proofs.Erdos1012OQ01 for the edgeThreshold definition.",
       "choose_two_succ: Pascal discrete-derivative C(m+1,2) = C(m,2) + m (via Nat.choose_succ_succ + Nat.choose_one_right).",
@@ -45,7 +45,9 @@
       "edgeThreshold_lt_choose_two: strict non-degeneracy — edgeThreshold n k < C(n,2) for n ≥ 2k+3 except at the single degenerate point (k,n)=(0,3) where edgeThreshold 3 0 = C(3,2) = 3.",
       "edgeThreshold_succ_right + edgeThreshold_succ_right_le + edgeThreshold_le_succ_right (researcher-1): recurrence and convexity in k. Subtraction-free identity edgeThreshold n (k+1) + n = edgeThreshold n k + (2k+4) (signed k-derivative 2k+4-n), giving the U-shape: threshold non-increasing in k while n≥2k+4, non-decreasing once n≤2k+4, minimized near k=(n-4)/2.",
       "edgeThreshold_boundary_step + threshold_diff_eq + choose_two_diff_succ (researcher-2, PR #36084): connect the n-recurrence to the parent's threshold_diff. The Woodall-boundary jump edgeThreshold(2k+3)k - edgeThreshold(2k+2)k, which threshold_diff expresses abstractly as C(k+2,2)-C(k+1,2), is exactly k+1 = the discrete n-derivative n-k-1 at n=2k+2.",
-      "two_mul_edgeThreshold + edgeThreshold_quadratic_lower + edgeThreshold_quadratic_sandwich (researcher-2, PR #36084): Theta(n^2) growth. Doubled closed form 2*edgeThreshold n k = (n-k-1)(n-k-2)+(k+2)(k+1)+2, and the two-sided quadratic sandwich (n-k-1)(n-k-2) <= 2*edgeThreshold n k <= n(n-1)=2*C(n,2) for n>=2k+3, so the threshold grows like n^2/2 -- the same asymptotic rate as the complete-graph edge count. VERIFIED 0 axioms / 0 sorries, no native_decide."
+      "two_mul_edgeThreshold + edgeThreshold_quadratic_lower + edgeThreshold_quadratic_sandwich (researcher-2, PR #36084): Theta(n^2) growth. Doubled closed form 2*edgeThreshold n k = (n-k-1)(n-k-2)+(k+2)(k+1)+2, and the two-sided quadratic sandwich (n-k-1)(n-k-2) <= 2*edgeThreshold n k <= n(n-1)=2*C(n,2) for n>=2k+3, so the threshold grows like n^2/2 -- the same asymptotic rate as the complete-graph edge count. VERIFIED 0 axioms / 0 sorries, no native_decide.",
+      "edgeThreshold_min_value: closed form min = n^2/4+1 (Erdos1012OQ01OQ02.lean)",
+      "edgeThreshold_ge_turan: parameter-free Turan-type lower bound n^2/4+1 <= edgeThreshold n k for all admissible k"
     ],
     "insights": [
       "The threshold's discrete derivative in n is exactly n-k-1: C((n-k-1)+1,2) - C(n-k-1,2) = n-k-1. This is the structural reason the edge requirement tightens with each added vertex and f(k) is a well-defined minimum.",
@@ -55,7 +57,8 @@
       "Non-degeneracy needs no division: double both sides via 2·C(m,2)=m·(m-1), substitute n=2k+3+c to eliminate all truncated subtraction, and the gap becomes the manifestly nonnegative polynomial 2k(k+2)+2c(k+1). nlinarith closes it; omega then divides the doubled inequality back by 2.",
       "The threshold-vs-complete-graph surplus is exactly k(k+2)+(n-(2k+3))(k+1); it vanishes only at (k,n)=(0,3), so away from that corner the long-cycle edge hypothesis has strict room above the threshold (not forced to K_n). Proven by halving the parent's doubled polynomial identity and cancelling 2 via Nat.eq_of_mul_eq_mul_left.",
       "k-direction complements the n-direction: both binomials C(n-k-1,2) and C(k+2,2) move oppositely as k grows, so the discrete k-derivative 2k+4-n is signed (unlike the always-positive n-derivative n-k-1). Stating it additively (LHS+n = RHS+(2k+4)) keeps it subtraction-free in ℕ; the two monotonicity branches then follow by omega from the recurrence + the sign of 2k+4-n.",
-      "choose_two_succ(k+1) produces (k+1+1).choose 2, which omega treats as a distinct atom from (k+2).choose 2; normalize with `rw [show k+1+1 = k+2 by omega] at h` before omega. Same k-successor atom gotcha as the parent's choose_two_succ note."
+      "choose_two_succ(k+1) produces (k+1+1).choose 2, which omega treats as a distinct atom from (k+2).choose 2; normalize with `rw [show k+1+1 = k+2 by omega] at h` before omega. Same k-successor atom gotcha as the parent's choose_two_succ note.",
+      "Minimum of the Woodall edge-threshold k-profile equals the Turán number: min_k edgeThreshold n k = edgeThreshold n ((n-3)/2) = floor(n^2/4)+1 = ex(n;K3)+1, uniformly over parity (odd n=2m+1: m^2+m+1; even n=2m: m^2+1). Verified against boundary values 5->7,7->13,9->21,11->31,6->10,8->17."
     ],
     "mathlibGaps": [],
     "nextSteps": [

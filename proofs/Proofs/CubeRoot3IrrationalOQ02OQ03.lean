@@ -1176,4 +1176,118 @@ theorem cubeRootThree_irrational {x : ℝ} (hx : x ^ 3 = 3) : Irrational x := by
   rintro ⟨q, rfl⟩
   exact three_not_cube_rat q (by exact_mod_cast hx)
 
+/-! ## Concrete `ℚ` instances of the Vahlen–Capelli criterion
+
+`three_not_cube_rat` (the `p = 3` case) generalises verbatim to **every** exponent by the same
+`3`-adic valuation argument: if `bᵖ = 3` then `p · v₃(b) = v₃(3) = 1` in `ℤ`, impossible for
+`p ≥ 2` since then `p ∣ 1`.  This supplies the "clean not-a-perfect-`p`-th-power in `ℚ`" lemma,
+which — fed through `vahlen_capelli_pos` — makes `Xⁿ − 3` irreducible over `ℚ` for **all** `n`,
+generalising the namesake `X³ − 3` instance to arbitrary exponent. -/
+
+/-- **`3` is not a `p`-th power in `ℚ`, for every `p ≥ 2`.**  If `bᵖ = 3` then the `3`-adic
+valuation gives `p · v₃(b) = v₃(3) = 1`, so `p ∣ 1` in `ℤ` — impossible for `p ≥ 2`.  The
+all-exponent generalisation of `three_not_cube_rat` (which is the `p = 3` case). -/
+theorem three_not_pth_power_rat {p : ℕ} (hp : 2 ≤ p) : ∀ b : ℚ, b ^ p ≠ 3 := by
+  intro b hb
+  have hb0 : b ≠ 0 := by
+    rintro rfl; rw [zero_pow (by omega : p ≠ 0)] at hb; norm_num at hb
+  have h1 : padicValRat 3 (3 : ℚ) = 1 := by
+    have := padicValRat.self (p := 3) (by norm_num); simpa using this
+  have key : padicValRat 3 (b ^ p) = 1 := by rw [hb, h1]
+  rw [padicValRat.pow hb0] at key
+  -- `key : ↑p * padicValRat 3 b = 1`, so `↑p ∣ 1`, forcing `↑p ≤ 1` against `p ≥ 2`.
+  have hd : (p : ℤ) ∣ 1 := ⟨padicValRat 3 b, key.symm⟩
+  have hle : (p : ℤ) ≤ 1 := Int.le_of_dvd one_pos hd
+  have hge : (2 : ℤ) ≤ (p : ℤ) := by exact_mod_cast hp
+  omega
+
+/-- **`Xⁿ − 3` is irreducible over `ℚ`, for every `n ≥ 1`.**  Direct instance of the general
+positive-radicand Vahlen–Capelli criterion `vahlen_capelli_pos` (with `a = 3 > 0`): condition (1)
+is `three_not_pth_power_rat` at each prime `p ∣ n`, and condition (2) is vacuous because `3 > 0`.
+Generalises the namesake `X³ − 3` instance to arbitrary exponent — every `n`-th root of `3` is
+irrational, uniformly. -/
+theorem X_pow_sub_C_three_irreducible {n : ℕ} (hn : 1 ≤ n) :
+    Irreducible (X ^ n - C (3 : ℚ)) := by
+  rw [vahlen_capelli_pos hn (by norm_num : (0 : ℚ) < 3)]
+  intro p hp _hpn b
+  exact three_not_pth_power_rat hp.two_le b
+
+/-- **`X^(2ᵏ) − 3` is irreducible over `ℚ`, for every `k ≥ 1`** — the `2`-power-exponent instance
+(the exponents relevant to the `∛3` / quadratic-tower descent of this gallery entry).  A direct
+specialisation of `X_pow_sub_C_three_irreducible`, or of `vahlen_capelli_pos_two_pow` with the
+single square obstruction `three_not_pth_power_rat (p := 2)`. -/
+theorem X_pow_two_pow_sub_C_three_irreducible {k : ℕ} (hk : 1 ≤ k) :
+    Irreducible (X ^ 2 ^ k - C (3 : ℚ)) :=
+  (vahlen_capelli_pos_two_pow hk (by norm_num : (0 : ℚ) < 3)).mpr
+    (three_not_pth_power_rat (by norm_num))
+
+-- ============================================================
+-- PART 8: Fields in which −1 is a square
+-- (the imaginary unit `i ∈ K` collapses condition (2) into condition (1),
+--  exactly as positivity does in PART 7, but for a *different* class of fields)
+-- ============================================================
+
+/-- If `−1` is a square in `K` and `a` is **not** a square, then `−a` is not a square either.
+
+The imaginary unit `j = √−1` turns any square root of `−a` into one of `a`:
+`b² = −a ⟹ (j·b)² = j²·b² = (−1)(−a) = a`.  So over a field containing `i`, the two
+"quadratic residue" predicates for `a` and `−a` coincide — the `−a ∈ K²` branch of the
+`2`-power descent is therefore **vacuous** whenever `a` is a non-square, mirroring
+`neg_not_square_of_pos` in the ordered case. -/
+theorem neg_not_square_of_neg_one_square {K : Type*} [Field K] {a : K}
+    (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    ∀ b : K, b ^ 2 ≠ -a := by
+  obtain ⟨j, hj⟩ := hj
+  intro b hb
+  exact h1 (j * b) (by rw [mul_pow, hj, hb]; ring)
+
+/-- **Capelli condition (2) is implied by condition (1) when `−1` is a square.**
+If `−1 = j²` and `a` is not a square then `a ≠ −4b⁴` for every `b`, because
+`−4b⁴ = (−1)·(2b²)² = (j·2b²)²` would exhibit `a` as a square.
+
+So over a field containing `i` the `−4·K⁴` obstruction — the genuinely two-dimensional
+content of the criterion over general fields — collapses into "not a square": `−4·K⁴ ⊆ K²`.
+This is the exact analogue of `capelli_cond_two_of_pos`, replacing the order hypothesis by
+`i ∈ K`. -/
+theorem capelli_cond_two_of_neg_one_square {K : Type*} [Field K] {a : K}
+    (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    ∀ b : K, a ≠ -(4 * b ^ 4) := by
+  obtain ⟨j, hj⟩ := hj
+  intro b hb
+  exact h1 (j * (2 * b ^ 2)) (by rw [mul_pow, hj, hb]; ring)
+
+/-- **Pure `2`-power base when `−1` is a square, via the norm-descent keystone alone.**
+Over a field in which `−1` is a square, if `a` is not a square then `X^(2^k) − C a` is
+irreducible for every `k ≥ 1`.
+
+By `neg_not_square_of_neg_one_square`, `−a` is a non-square, so the norm-descent keystone
+`two_power_capelli_of_neg_not_square` applies directly — the `−a ∈ K²` branch of the Lang
+VI §9 descent (`two_power_capelli_neg_square`) never fires here, just as positivity
+sidesteps it in `two_power_capelli_pos`. -/
+theorem two_power_capelli_of_neg_one_square {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k)
+    {a : K} (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) :=
+  two_power_capelli_of_neg_not_square hk h1 (neg_not_square_of_neg_one_square hj h1)
+
+/-- **Vahlen–Capelli criterion when `−1` is a square (condition (2) drops out).**
+Over a field `K` containing a square root of `−1`, for `a : K` and `n ≥ 1`,
+
+  `Irreducible (X^n − C a) ↔ ∀ p prime, p ∣ n → ∀ b, b^p ≠ a`.
+
+Condition (2) (the `−4·K⁴` obstruction) is subsumed by condition (1) because
+`−4·K⁴ ⊆ K²` when `i ∈ K` (`capelli_cond_two_of_neg_one_square`), so the criterion is the
+clean condition (1) alone — the imaginary-unit twin of the ordered-field simplification
+`vahlen_capelli_pos` (PART 7).  Applies to `ℂ`, the algebraic closure of any field, `ℚ(i)`,
+and every finite field `𝔽_q` with `q ≡ 1 [MOD 4]`. -/
+theorem vahlen_capelli_of_neg_one_square {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n)
+    {a : K} (hj : ∃ j : K, j ^ 2 = -1) :
+    Irreducible (X ^ n - C a) ↔ ∀ p : ℕ, Nat.Prime p → p ∣ n → ∀ b : K, b ^ p ≠ a := by
+  rw [vahlen_capelli hn]
+  constructor
+  · exact fun h => h.1
+  · intro h1
+    exact ⟨h1, fun h4 =>
+      capelli_cond_two_of_neg_one_square hj
+        (h1 2 Nat.prime_two ((by norm_num : (2 : ℕ) ∣ 4).trans h4))⟩
+
 end CubeRoot3IrrationalOQ02OQ03

@@ -98,7 +98,7 @@ theorem reflectBallot_sub_exact (a b : ℕ) (hb : 1 ≤ b) (hab : b ≤ a) :
     rw [eb, ed] at h
     -- h : C(a+b, b) * b = C(a+b, b−1) * (a+1)
     have hstep : (a + b).choose (b - 1) * (a + 1) ≤ (a + b).choose b * (a + 1) := by
-      rw [← h]; gcongr; omega
+      rw [← h]; exact Nat.mul_le_mul (le_refl _) (by omega)
     exact Nat.le_of_mul_le_mul_right hstep (by omega)
   simp only [reflectBallot]; omega
 
@@ -129,6 +129,104 @@ paths with `n` up- and `n` down-steps is the number of Dyck paths of semilength 
 theorem reflectBallot_catalan (n : ℕ) (hn : 1 ≤ n) : reflectBallot n n = catalan n := by
   rw [reflectBallot_eq n n hn]
   exact ballotNumber_catalan n
+
+/-! ### The Catalan-triangle recurrence
+
+The non-negative ballot numbers `reflectBallot a b` are exactly the entries of the
+**Catalan triangle**, and as such obey the additive Pascal-type recurrence
+`T(a,b) = T(a−1,b) + T(a,b−1)` in the interior.  Because our `reflectBallot` uses `ℕ`
+(truncated) subtraction, the recurrence holds *verbatim* only away from the two edges
+where a term truncates to `0`; the edges are pinned by two closed forms below.  Together
+the three results generate the whole triangle from its first column. -/
+
+/-- **Exactness of the reflection subtraction on the full valid range `b ≤ a + 1`.**
+This sharpens `reflectBallot_sub_exact` (which assumed `b ≤ a`): the ratio identity
+`C(a+b, b)·b = C(a+b, b−1)·(a+1)` gives `C(a+b, b−1) ≤ C(a+b, b)` precisely when
+`b ≤ a + 1`, so the `ℕ` difference `reflectBallot a b` is untruncated there. -/
+theorem reflectBallot_add_choose (a b : ℕ) (hb : 1 ≤ b) (hab : b ≤ a + 1) :
+    reflectBallot a b + (a + b).choose (b - 1) = (a + b).choose b := by
+  have hle : (a + b).choose (b - 1) ≤ (a + b).choose b := by
+    have h := Nat.choose_succ_right_eq (a + b) (b - 1)
+    have eb : b - 1 + 1 = b := by omega
+    have ed : (a + b) - (b - 1) = a + 1 := by omega
+    rw [eb, ed] at h
+    -- h : C(a+b, b) * b = C(a+b, b−1) * (a+1)
+    have hstep : (a + b).choose (b - 1) * (a + 1) ≤ (a + b).choose b * (a + 1) := by
+      rw [← h]; gcongr
+    exact Nat.le_of_mul_le_mul_right hstep (by omega)
+  simp only [reflectBallot]; omega
+
+/-- **First column of the Catalan triangle.**  `reflectBallot a 1 = a`: there are exactly
+`a` non-negative sequences with `a` up-steps and a single down-step (the down-step may sit
+in any of the `a` gaps at or after the first up-step). -/
+theorem reflectBallot_one (a : ℕ) : reflectBallot a 1 = a := by
+  show (a + 1).choose 1 - (a + 1).choose (1 - 1) = a
+  simp [Nat.choose_one_right]
+
+/-- **Upper edge of the Catalan triangle.**  With one more down-step than up-steps a path
+cannot stay non-negative, so `reflectBallot a (a+1) = 0`.  Arithmetically the two binomials
+coincide by the symmetry `C(2a+1, a+1) = C(2a+1, a)`, and the difference truncates to `0`. -/
+theorem reflectBallot_diag_succ (a : ℕ) : reflectBallot a (a + 1) = 0 := by
+  simp only [reflectBallot]
+  have hsymm : (a + (a + 1)).choose (a + 1) = (a + (a + 1)).choose a := by
+    have h := Nat.choose_symm (show a ≤ a + (a + 1) by omega)
+    have e : a + (a + 1) - a = a + 1 := by omega
+    rw [e] at h
+    exact h
+  have e2 : a + 1 - 1 = a := by omega
+  rw [e2, hsymm]
+  omega
+
+/-- **Catalan-triangle recurrence.**  In the interior `2 ≤ b ≤ a`, the non-negative ballot
+number satisfies the additive Pascal-type recurrence of the Catalan triangle:
+
+  `reflectBallot a b = reflectBallot (a−1) b + reflectBallot a (b−1)`.
+
+All three terms are untruncated reflection differences on the range `2 ≤ b ≤ a` (via
+`reflectBallot_add_choose`), so the identity is two applications of Pascal's rule
+`C(n+1, k+1) = C(n, k) + C(n, k+1)` on the underlying binomials, discharged by `omega`.
+
+The hypotheses are sharp: at `b = 1` the recurrence fails (the `reflectBallot a 0` term is a
+truncation artifact, `reflectBallot_one` is the correct first column), and at `b = a+1` it
+fails (`reflectBallot (a−1) (a+1)` truncates below its integer value, `reflectBallot_diag_succ`
+pins the edge). -/
+theorem reflectBallot_recurrence (a b : ℕ) (hb : 2 ≤ b) (hab : b ≤ a) :
+    reflectBallot a b = reflectBallot (a - 1) b + reflectBallot a (b - 1) := by
+  -- Exactness of all three reflection differences.
+  have E0 : reflectBallot a b + (a + b).choose (b - 1) = (a + b).choose b :=
+    reflectBallot_add_choose a b (by omega) (by omega)
+  have E1 : reflectBallot (a - 1) b + (a - 1 + b).choose (b - 1) = (a - 1 + b).choose b :=
+    reflectBallot_add_choose (a - 1) b (by omega) (by omega)
+  have E2 : reflectBallot a (b - 1) + (a + (b - 1)).choose (b - 1 - 1)
+      = (a + (b - 1)).choose (b - 1) :=
+    reflectBallot_add_choose a (b - 1) (by omega) (by omega)
+  -- Normalise the two lower indices `a-1+b` and `a+(b-1)` to the common `a+b-1`.
+  have ha1 : a - 1 + b = a + b - 1 := by omega
+  have ha2 : a + (b - 1) = a + b - 1 := by omega
+  have hb3 : b - 1 - 1 = b - 2 := by omega
+  rw [ha1] at E1
+  rw [ha2, hb3] at E2
+  -- Pascal's rule on the two top-row binomials `C(a+b, ·)`.
+  have hn1 : a + b - 1 + 1 = a + b := by omega
+  have hb1 : b - 1 + 1 = b := by omega
+  have hb2 : b - 2 + 1 = b - 1 := by omega
+  have P1 : (a + b).choose b
+      = (a + b - 1).choose (b - 1) + (a + b - 1).choose b := by
+    have h := Nat.choose_succ_succ (a + b - 1) (b - 1)
+    simp only [Nat.succ_eq_add_one] at h
+    rwa [hn1, hb1] at h
+  have P2 : (a + b).choose (b - 1)
+      = (a + b - 1).choose (b - 2) + (a + b - 1).choose (b - 1) := by
+    have h := Nat.choose_succ_succ (a + b - 1) (b - 2)
+    simp only [Nat.succ_eq_add_one] at h
+    rwa [hn1, hb2] at h
+  -- All relations are linear in the (opaque) binomials; `omega` finishes.
+  omega
+
+/-- Sanity checks of `reflectBallot_recurrence` on concrete interior entries. -/
+example : reflectBallot 3 2 = reflectBallot 2 2 + reflectBallot 3 1 := by decide
+example : reflectBallot 4 3 = reflectBallot 3 3 + reflectBallot 4 2 := by decide
+example : reflectBallot 5 2 = reflectBallot 4 2 + reflectBallot 5 1 := by decide
 
 /-! ### Worked examples (checked by `decide`, hence `0`-axiom) -/
 

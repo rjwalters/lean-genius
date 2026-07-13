@@ -1,0 +1,577 @@
+[
+  {
+    "number": 4,
+    "status": "proved",
+    "prize": "$10000",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/4.lean",
+    "theorems": [
+      "erdos_4",
+      "erdos_4.variants.rankin"
+    ],
+    "oeis": [
+      "A002386"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/4"
+  },
+  {
+    "number": 6,
+    "status": "proved",
+    "prize": "$100",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/6.lean",
+    "theorems": [
+      "erdos_6",
+      "erdos_6.variants.increasing",
+      "erdos_6.variants.decreasing"
+    ],
+    "oeis": [
+      "A335277"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/6"
+  },
+  {
+    "number": 48,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/48.lean",
+    "theorems": [
+      "erdos_48"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/48"
+  },
+  {
+    "number": 67,
+    "status": "proved",
+    "prize": "$500",
+    "tags": [
+      "discrepancy"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/67.lean",
+    "theorems": [
+      "erdos_67",
+      "erdos_67.variants.complex"
+    ],
+    "oeis": [
+      "A181740",
+      "A237695"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/67"
+  },
+  {
+    "number": 69,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/69.lean",
+    "theorems": [
+      "erdos_69",
+      "erdos_69.specialisation_of_erdos_257"
+    ],
+    "oeis": [
+      "A262153"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/69"
+  },
+  {
+    "number": 109,
+    "status": "proved",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/109.lean",
+    "theorems": [
+      "erdos_109"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/109"
+  },
+  {
+    "number": 139,
+    "status": "proved",
+    "prize": "$1000",
+    "tags": [
+      "additive combinatorics",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/139.lean",
+    "theorems": [
+      "erdos_139"
+    ],
+    "oeis": [
+      "A003002",
+      "A003003",
+      "A003004",
+      "A003005"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/139"
+  },
+  {
+    "number": 219,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "additive combinatorics",
+      "primes",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/219.lean",
+    "theorems": [
+      "primeArithmeticProgression_3_5_7",
+      "not_primeArithmeticProgression_1_2",
+      "empty_not_primeArithmeticProgression",
+      "erdos_219"
+    ],
+    "oeis": [
+      "A005115",
+      "A113827",
+      "A123556"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/219"
+  },
+  {
+    "number": 228,
+    "status": "proved",
+    "tags": [
+      "analysis",
+      "polynomials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/228.lean",
+    "theorems": [
+      "erdos_228"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/228"
+  },
+  {
+    "number": 245,
+    "status": "proved",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/245.lean",
+    "theorems": [
+      "erdos_245",
+      "erdos_245.variants.exists_limit",
+      "erdos_245.variants.two"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/245"
+  },
+  {
+    "number": 248,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/248.lean",
+    "theorems": [
+      "erdos_248"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/248"
+  },
+  {
+    "number": 250,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/250.lean",
+    "theorems": [
+      "erdos_250"
+    ],
+    "oeis": [
+      "A066766"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/250"
+  },
+  {
+    "number": 253,
+    "status": "disproved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/253.lean",
+    "theorems": [
+      "erdos_253"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/253"
+  },
+  {
+    "number": 259,
+    "status": "proved",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/259.lean",
+    "theorems": [
+      "erdos_259"
+    ],
+    "oeis": [
+      "A371134"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/259"
+  },
+  {
+    "number": 266,
+    "status": "disproved",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/266.lean",
+    "theorems": [
+      "erdos_266",
+      "erdos_266.variants.all_rationals"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/266"
+  },
+  {
+    "number": 268,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/268.lean",
+    "theorems": [
+      "erdos_268"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/268"
+  },
+  {
+    "number": 285,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/285.lean",
+    "theorems": [
+      "erdos_285",
+      "erdos_285.variants.lb"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/285"
+  },
+  {
+    "number": 355,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/355.lean",
+    "theorems": [
+      "erdos_355"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/355"
+  },
+  {
+    "number": 392,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/392.lean",
+    "theorems": [
+      "erdos_392",
+      "erdos_392.variants.lower",
+      "erdos_392.variants.implication"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/392"
+  },
+  {
+    "number": 399,
+    "status": "disproved",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/399.lean",
+    "theorems": [
+      "erdos_399",
+      "erdos_399.variants.erdos_oblath",
+      "erdos_399.variants.pollack_shapiro",
+      "erdos_399.variants.cambie",
+      "erdos_399.variants.sum_two_squares"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/399"
+  },
+  {
+    "number": 402,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/402.lean",
+    "theorems": [
+      "erdos_402",
+      "erdos_402.variants.equality",
+      "erdos_402.variants.szegedy_zaharescu_weak"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/402"
+  },
+  {
+    "number": 427,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/427.lean",
+    "theorems": [
+      "erdos_427",
+      "erdos_427.shiu",
+      "erdos_427.of_shiu"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/427"
+  },
+  {
+    "number": 434,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/434.lean",
+    "theorems": [
+      "erdos_434.parts.i",
+      "erdos_434.parts.ii"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/434"
+  },
+  {
+    "number": 442,
+    "status": "disproved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/442.lean",
+    "theorems": [
+      "erdos_442",
+      "with",
+      "erdos_442.variants.tao"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/442"
+  },
+  {
+    "number": 480,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/480.lean",
+    "theorems": [
+      "erdos_480",
+      "erdos_480.variants.chung_graham"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/480"
+  },
+  {
+    "number": 494,
+    "status": "proved",
+    "tags": [
+      "analysis",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/494.lean",
+    "theorems": [
+      "erdos_494.variant.k_eq_2_card_not_pow_two",
+      "erdos_494.variant.k_eq_2_card_pow_two",
+      "erdos_494.variant.k_eq_3_card_gt_6",
+      "erdos_494.variant.k_eq_4_card_gt_12",
+      "erdos_494.variant.card_divisible_by_prime_gt_k",
+      "erdos_494.variant.k_eq_card",
+      "erdos_494.variant.card_eq_2k",
+      "erdos_494.variant.gordon_fraenkel_straus",
+      "erdos_494.variant.product"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/494"
+  },
+  {
+    "number": 516,
+    "status": "proved",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/516.lean",
+    "theorems": [
+      "for",
+      "erdos_516.limsup_ratio_eq_one_of_hasFabryGaps_ofFiniteOrder",
+      "erdos_516.limsup_ratio_eq_one",
+      "erdos_516.limsup_ratio_eq_one_of_hasFejerGaps"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/516"
+  },
+  {
+    "number": 587,
+    "status": "solved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/587.lean",
+    "theorems": [
+      "erdos_587.variants.nguyen_vu"
+    ],
+    "oeis": [
+      "A372040"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/587"
+  },
+  {
+    "number": 590,
+    "status": "proved",
+    "prize": "$250",
+    "tags": [
+      "set theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/590.lean",
+    "theorems": [
+      "for",
+      "for",
+      "erdos_590",
+      "erdos_590.variants.two",
+      "erdos_590.variants.ge_three_false",
+      "erdos_590.variants.finite_cardinal"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/590"
+  },
+  {
+    "number": 659,
+    "status": "proved",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/659.lean",
+    "theorems": [
+      "erdos_659"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/659"
+  },
+  {
+    "number": 822,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/822.lean",
+    "theorems": [
+      "erdos_822"
+    ],
+    "oeis": [
+      "A121048",
+      "A155085"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/822"
+  },
+  {
+    "number": 899,
+    "status": "proved",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/899.lean",
+    "theorems": [
+      "erdos_899"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/899"
+  },
+  {
+    "number": 946,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/946.lean",
+    "theorems": [
+      "erdos_946",
+      "erdos_946.variants.spiro_5040",
+      "erdos_946.variants.heathbrown_lower_bound",
+      "erdos_946.variants.hildebrand_lower_bound",
+      "erdos_946.variants.upper_bound"
+    ],
+    "oeis": [
+      "A005237",
+      "A284783"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/946"
+  },
+  {
+    "number": 1064,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1064.lean",
+    "theorems": [
+      "erdos_1064",
+      "erdos_1064.variants.k2",
+      "erdos_1064.variants.general_function"
+    ],
+    "oeis": [
+      "A051488",
+      "A051487"
+    ],
+    "erdosUrl": "https://www.erdosproblems.com/1064"
+  },
+  {
+    "number": 1077,
+    "status": "disproved",
+    "tags": [
+      "graph theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1077.lean",
+    "theorems": [
+      "erdos_1077"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/1077"
+  },
+  {
+    "number": 1102,
+    "status": "solved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1102.lean",
+    "theorems": [
+      "erdos_1102.density_zero_of_P",
+      "erdos_1102.exists_sequence_with_P",
+      "erdos_1102.upper_density_Q",
+      "erdos_1102.lower_density_Q_exists"
+    ],
+    "oeis": [],
+    "erdosUrl": "https://www.erdosproblems.com/1102"
+  }
+]

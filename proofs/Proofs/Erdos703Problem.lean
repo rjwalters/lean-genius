@@ -1187,6 +1187,53 @@ theorem T_L_le_pow_sub_one {n r : ℕ} {L : Finset ℕ} (hr : r ∈ L) (hrn : r 
   le_trans (T_L_le_T_of_mem hr) (T_le_pow_sub_one hrn)
 
 /--
+**Forbidding an unattainable size is vacuous.** For any family `F ⊆ 2^{[n]}`, every
+realized intersection size is `≤ n` (since `|A ∩ B| ≤ |A| ≤ n`), so a forbidden size
+`> n` is never met: `F` avoids `L` iff it avoids only the attainable part
+`L.filter (· ≤ n)`. This is the family-level windowing lemma underlying `T_L_filter_le`. -/
+theorem avoidsLIntersections_filter_le_of_mem_powerset
+    {n : ℕ} {L : Finset ℕ} {F : Finset (Finset ℕ)}
+    (hF : F ∈ (Finset.range n).powerset.powerset) :
+    avoidsLIntersections L F ↔ avoidsLIntersections (L.filter (· ≤ n)) F := by
+  have hFsub : F ⊆ (Finset.range n).powerset := Finset.mem_powerset.mp hF
+  constructor
+  · intro h A B hA hB hmem
+    exact h A B hA hB (Finset.mem_filter.mp hmem).1
+  · intro h A B hA hB hmem
+    have hAsub : A ⊆ Finset.range n := Finset.mem_powerset.mp (hFsub hA)
+    have hcard : (A ∩ B).card ≤ n :=
+      calc (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+        _ ≤ (Finset.range n).card := Finset.card_le_card hAsub
+        _ = n := Finset.card_range n
+    exact h A B hA hB (Finset.mem_filter.mpr ⟨hmem, hcard⟩)
+
+/--
+**`T_L` only sees the attainable window of forbidden sizes.** Since no two subsets of
+`[n]` can meet in a size exceeding `n`, forbidding sizes `> n` does not change the
+extremal quantity: `T_L n L = T_L n (L.filter (· ≤ n))`. This is the exact structural
+reason the hierarchy `T_L n ·` depends on `L` only through `L ∩ {0, …, n}`; it strictly
+**subsumes** `T_L_eq_pow_of_lt` (if every `r ∈ L` has `n < r` then the filter is empty
+and `T_L n L = T_L n ∅ = 2ⁿ`). -/
+theorem T_L_filter_le (n : ℕ) (L : Finset ℕ) :
+    T_L n L = T_L n (L.filter (· ≤ n)) := by
+  unfold T_L
+  refine congrArg _ (Finset.filter_congr ?_)
+  intro F hF
+  simpa using avoidsLIntersections_filter_le_of_mem_powerset hF
+
+/--
+**Only intersection sizes `0, …, n` matter.** The clean restatement of `T_L_filter_le`:
+`T_L n L = T_L n (L ∩ range (n+1))`, since `L.filter (· ≤ n) = L ∩ range (n+1)`. The
+`L`-avoiding hierarchy on ground set `[n]` factors through the intersection of the
+forbidden set with the attainable window `{0, 1, …, n}`. -/
+theorem T_L_inter_range (n : ℕ) (L : Finset ℕ) :
+    T_L n L = T_L n (L ∩ Finset.range (n + 1)) := by
+  have hfilt : L.filter (· ≤ n) = L ∩ Finset.range (n + 1) := by
+    ext r
+    simp only [Finset.mem_filter, Finset.mem_inter, Finset.mem_range, Nat.lt_succ_iff]
+  rw [T_L_filter_le, hfilt]
+
+/--
 **Fully-forbidden top endpoint `T_L n L = 0`.** If *every* attainable intersection size is
 forbidden — `range (n+1) ⊆ L`, i.e. `0, 1, …, n ∈ L` — then no nonempty family can avoid `L`:
 any set `A` in a family of subsets of `[n]` has the self-pair `A ∩ A = A` with size

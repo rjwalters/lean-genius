@@ -36,25 +36,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: reflectBallot a b = C(a+b,b) - C(a+b,b-1) formalized as the NON-NEGATIVE ballot number and reconciled to the parent strict ballotNumber(a+1,b) via the prepend-an-up-step shift; verified 0/0.",
+    "progressSummary": "PROGRESS: added the Catalan-triangle recurrence family for reflectBallot — first column (=a), upper edge (=0), and interior Pascal recurrence for 2≤b≤a — plus a sharpened exactness lemma (b≤a+1). Boundary range proven sharp numerically. All 0-axiom (propext/Classical.choice/Quot.sound only), no sorry, no native_decide.",
     "builtItems": [
       "reflectBallot (def): non-negative ballot number C(a+b,b) - C(a+b,b-1) in Proofs/BallotProblemOQ05OQ02.lean:61",
       "reflectBallot_eq: reflectBallot a b = ballotNumber (a+1) b for 1≤b (reconciliation) — BallotProblemOQ05OQ02.lean:73",
       "reflectBallot_sub_exact: C(a+b,b-1) ≤ C(a+b,b) for b≤a, subtraction exact — :91",
       "reflectBallot_mul: aggregate reflectBallot a b·(a+1+b)=(a+1-b)·C(a+1+b,a+1) — :112",
       "reflectBallot_div: probability (a+1-b)/(a+1+b) over ℚ — :120",
-      "reflectBallot_catalan: reflectBallot n n = catalan n (1≤n) — :129"
+      "reflectBallot_catalan: reflectBallot n n = catalan n (1≤n) — :129",
+      "reflectBallot_add_choose (BallotProblemOQ05OQ02.lean): exactness reflectBallot a b + C(a+b,b-1) = C(a+b,b) on sharp range 1≤b≤a+1 [0-axiom]",
+      "reflectBallot_one (BallotProblemOQ05OQ02.lean): reflectBallot a 1 = a, first column of Catalan triangle, all a≥0 [0-axiom]",
+      "reflectBallot_diag_succ (BallotProblemOQ05OQ02.lean): reflectBallot a (a+1) = 0, upper edge via C(2a+1,a+1)=C(2a+1,a) symmetry [0-axiom]",
+      "reflectBallot_recurrence (BallotProblemOQ05OQ02.lean): reflectBallot a b = reflectBallot (a-1) b + reflectBallot a (b-1) for 2≤b≤a, two Pascal applications closed by omega [0-axiom]"
     ],
     "insights": [
       "The OQ identity C(a+b,b)-C(a+b,b-1) is NOT the parent strict ballotNumber (disagree at a=2,b=1: 2 vs 1); it is the non-negative (weakly-ahead) ballot number = Catalan-triangle entries.",
       "Reconciliation is the single shift a↦a+1: reflectBallot a b = ballotNumber(a+1) b, arithmetic form of the prepend-an-up-step bijection. Proved by binomial symmetry Nat.choose_symm on each term.",
       "All consequences (aggregate/probability/Catalan diagonal) transport for free from the parents cycle-lemma arithmetic along the shift.",
-      "b=0 boundary: reflectBallot a 0 = 0 ≠ ballotNumber(a+1,0)=1 due to ℕ truncation of b-1, so reconciliation requires 1≤b; Catalan diagonal requires 1≤n (n=0 gives 0≠catalan 0=1)."
+      "b=0 boundary: reflectBallot a 0 = 0 ≠ ballotNumber(a+1,0)=1 due to ℕ truncation of b-1, so reconciliation requires 1≤b; Catalan diagonal requires 1≤n (n=0 gives 0≠catalan 0=1).",
+      "Catalan-triangle recurrence reflectBallot a b = reflectBallot (a-1) b + reflectBallot a (b-1) holds VERBATIM only on the interior 2≤b≤a; the ℕ-truncated subtraction breaks it at both edges (verified numerically): b=1 fails because reflectBallot a 0 is a truncation artifact (formula gives 0, true count 1), and b=a+1 fails because reflectBallot (a-1)(a+1) truncates below its negative integer value.",
+      "The three-lemma decomposition (first column reflectBallot a 1 = a, upper edge reflectBallot a (a+1) = 0, interior Pascal recurrence) completely generates the Catalan triangle from its first column and is the honest complete characterization given the truncated ℕ subtraction.",
+      "Exactness of C(a+b,b-1) ≤ C(a+b,b) holds on the SHARP range b ≤ a+1 (not just b≤a as in reflectBallot_sub_exact), via the ratio identity C(a+b,b)·b = C(a+b,b-1)·(a+1) from Nat.choose_succ_right_eq."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Upgrade reflectBallot_eq to an explicit Finset.card bijection (non-negative (a,b)-paths ≃ strictly-positive (a+1,b)-paths).",
-      "Prove the Catalan-triangle recurrence reflectBallot a b = reflectBallot (a-1) b + reflectBallot a (b-1) directly from the reflection form."
+      "Closed form for the Catalan-triangle column sums / row sums (e.g. Σ_b reflectBallot a b) as a single binomial."
     ]
   },
   "tags": [

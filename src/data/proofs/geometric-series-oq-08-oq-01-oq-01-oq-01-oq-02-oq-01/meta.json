@@ -89,6 +89,13 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview: Closing the Loop between infMoment and the Eulerian Closed Form",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports (Mathlib, the parent infMoment file, and the Eulerian-polynomial sibling GeometricSeriesOQ07OQ01OQ01) and the docstring. The parent defines the infinite moment infMoment m x = ∑_{k≥0} kᵐ·xᵏ (|x|<1) and proves the binomial-convolution recurrence (★∞); the sibling defines the Eulerian polynomial eulerPoly m by its differential recurrence and proves the Frobenius closed form HasSum(kᵐ·rᵏ, Eₘ(r)/(1−r)^{m+1}). This entry closes the loop: infMoment_eq_eulerPoly (infMoment m x = Eₘ(x)/(1−x)^{m+1}), eulerPoly_recurrence (the NEW polynomial identity that the Eulerian polynomials satisfy the (★∞) binomial-convolution recurrence over ℝ[X], proved by eq_of_infinite_eval_eq — equality at infinitely many r ∈ (−1,1) forces polynomial equality), and infMoment_three (∑ k³xᵏ = x(1+4x+x²)/(1−x)⁴). Honest scope: the closed form reuses the gallery's analytic Eulerian identity, not a from-scratch induction on (★∞); the genuinely new content is eulerPoly_recurrence and the third moment. 0-axiom, sorry-free. Opens namespace ...OQ02OQ01, Polynomial Finset, and the two parent namespaces."
+    },
+    {
       "id": "headline-closed-form",
       "title": "Part 1: The Headline Closed Form",
       "startLine": 65,
@@ -155,7 +162,8 @@
     "summary": "For a real ratio x with |x| < 1, the infinite m-th moment infMoment m x = ∑'_{k} kᵐ·xᵏ — characterised in the parent by the binomial-convolution recurrence (★∞) — is solved in closed form: infMoment m x = Eₘ(x)/(1 − x)^{m+1}, with Eₘ the gallery's Eulerian polynomial. This identifies the tsum-defined recurrence object with the Frobenius/Eulerian closed form of the sibling line. The recurrence (★∞) is then shown to hold for the Eulerian polynomials themselves as a polynomial identity over ℝ[X], (1 − X)·Eₘ = 0ᵐ·(1 − X)^{m+1} + X·∑_{i<m} C(m,i)·Eᵢ·(1 − X)^{m−i}, proved by evaluating both sides on the infinite set (−1,1). Specialising the closed form recovers the first and second moments and yields the new explicit third moment ∑ k³·xᵏ = (x + 4x² + x³)/(1 − x)⁴. 145 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries; every result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The entry closes the loop between the gallery's two complementary descriptions of the infinite geometric moments: the derivative-free binomial-convolution recurrence (★∞) and the differential Eulerian-polynomial recurrence. The new polynomial identity eulerPoly_recurrence records, in Mathlib-free form, that the Eulerian polynomials satisfy the Pascal-weighted convolution recursion — a relation absent from Mathlib. Honest scope: the headline closed form reuses the gallery's analytic Frobenius identity rather than re-deriving it by strong induction on (★∞); the genuinely new content is the polynomial recurrence identity and the explicit third-moment closed form.",
     "openQuestions": [
-      "Prove eulerPoly_recurrence purely algebraically by induction on m from the differential recurrence and Pascal's rule, giving an analysis-free derivation of the Eulerian closed form directly from (★∞)."
+      "Prove eulerPoly_recurrence purely algebraically by induction on m from the differential recurrence and Pascal's rule, giving an analysis-free derivation of the Eulerian closed form directly from (★∞).",
+      "Give the promised analysis-free derivation: prove eulerPoly_recurrence purely algebraically by induction on m from the differential recurrence E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ and Pascal's rule, then read the fourth moment ∑ k⁴xᵏ = x(1+11x+11x²+x³)/(1−x)⁵ off eulerPoly_four to continue the moment ladder beyond the third."
     ]
   }
 }
