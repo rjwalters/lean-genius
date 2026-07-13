@@ -1337,4 +1337,91 @@ theorem hyperbolic_abs_sub_lt_a (t : HyperbolicTriangle) : |t.b - t.c| < t.a := 
   exact ⟨by linarith [hyperbolic_triangle_inequality_c t],
     by linarith [hyperbolic_triangle_inequality_b t]⟩
 
+-- ============================================================
+-- PART 13: Angle-from-sides inversion and the SSS / SAS / ASA congruence criteria
+-- ============================================================
+
+/-- **Cosine of angle `A` from the three sides.** Solving the first law of cosines at `A`
+    (`first_law_of_cosines_A`) for the angle: `cos A = (cosh b · cosh c − cosh a)/(sinh b ·
+    sinh c)`. This is the exact dual of `cosh_a_eq` (which recovers a side from the angles):
+    here the three *sides* determine each angle. Because `sinh b, sinh c > 0` the quotient is
+    well defined, and the value lies in `(−1, 1)` for a genuine triangle. -/
+theorem cos_A_eq_of_sides (t : HyperbolicTriangle) :
+    Real.cos t.A =
+      (Real.cosh t.b * Real.cosh t.c - Real.cosh t.a) / (Real.sinh t.b * Real.sinh t.c) := by
+  have hbc : Real.sinh t.b * Real.sinh t.c ≠ 0 := (mul_pos (sinh_b_pos t) (sinh_c_pos t)).ne'
+  rw [eq_div_iff hbc]
+  linear_combination first_law_of_cosines_A t
+
+/-- **Cosine of angle `B` from the three sides.** `cos B = (cosh a · cosh c − cosh b)/(sinh a
+    · sinh c)`, the vertex-`B` inversion of `first_law_of_cosines_B`. -/
+theorem cos_B_eq_of_sides (t : HyperbolicTriangle) :
+    Real.cos t.B =
+      (Real.cosh t.a * Real.cosh t.c - Real.cosh t.b) / (Real.sinh t.a * Real.sinh t.c) := by
+  have hac : Real.sinh t.a * Real.sinh t.c ≠ 0 := (mul_pos (sinh_a_pos t) (sinh_c_pos t)).ne'
+  rw [eq_div_iff hac]
+  linear_combination first_law_of_cosines_B t
+
+/-- **Cosine of angle `C` from the three sides.** `cos C = (cosh a · cosh b − cosh c)/(sinh a
+    · sinh b)`, the vertex-`C` inversion of `first_law_of_cosines_C`. -/
+theorem cos_C_eq_of_sides (t : HyperbolicTriangle) :
+    Real.cos t.C =
+      (Real.cosh t.a * Real.cosh t.b - Real.cosh t.c) / (Real.sinh t.a * Real.sinh t.b) := by
+  have hab : Real.sinh t.a * Real.sinh t.b ≠ 0 := (mul_pos (sinh_a_pos t) (sinh_b_pos t)).ne'
+  rw [eq_div_iff hab]
+  linear_combination first_law_of_cosines_C t
+
+/-- **Hyperbolic SSS congruence.** Two hyperbolic triangles with the same three *sides* have
+    the same three angles. This is the converse direction to AAA congruence (PART 4): where
+    AAA recovers the sides from the angles via the second law, SSS recovers the angles from
+    the sides via the first law. Each angle's cosine is a function of the three sides
+    (`cos_A_eq_of_sides` etc.), so equal sides force equal cosines, and `cos` is injective on
+    `[0, π]` (`Real.strictAntiOn_cos.injOn`), giving equal angles. -/
+theorem sss_congruence (t₁ t₂ : HyperbolicTriangle)
+    (ha : t₁.a = t₂.a) (hb : t₁.b = t₂.b) (hc : t₁.c = t₂.c) :
+    t₁.A = t₂.A ∧ t₁.B = t₂.B ∧ t₁.C = t₂.C := by
+  refine ⟨?_, ?_, ?_⟩
+  · have hcos : Real.cos t₁.A = Real.cos t₂.A := by
+      rw [cos_A_eq_of_sides t₁, cos_A_eq_of_sides t₂, ha, hb, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hA.le, t₁.hA_lt.le⟩ ⟨t₂.hA.le, t₂.hA_lt.le⟩ hcos
+  · have hcos : Real.cos t₁.B = Real.cos t₂.B := by
+      rw [cos_B_eq_of_sides t₁, cos_B_eq_of_sides t₂, ha, hb, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hB.le, t₁.hB_lt.le⟩ ⟨t₂.hB.le, t₂.hB_lt.le⟩ hcos
+  · have hcos : Real.cos t₁.C = Real.cos t₂.C := by
+      rw [cos_C_eq_of_sides t₁, cos_C_eq_of_sides t₂, ha, hb, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hC.le, t₁.hC_lt.le⟩ ⟨t₂.hC.le, t₂.hC_lt.le⟩ hcos
+
+/-- **Hyperbolic SAS congruence.** Two hyperbolic triangles agreeing on two sides and the
+    *included* angle (`a`, `b`, and the angle `C` between them) are congruent: the third side
+    `c` and the remaining angles `A, B` all coincide. The included side `c` is pinned by the
+    first law of cosines at `C` (`first_law_of_cosines_C`: `cosh c` is a function of `a, b, C`),
+    and `cosh` is injective on `[0, ∞)`; once all three sides agree, `sss_congruence` supplies
+    the remaining angles. -/
+theorem sas_congruence (t₁ t₂ : HyperbolicTriangle)
+    (ha : t₁.a = t₂.a) (hb : t₁.b = t₂.b) (hC : t₁.C = t₂.C) :
+    t₁.c = t₂.c ∧ t₁.A = t₂.A ∧ t₁.B = t₂.B := by
+  have hc : t₁.c = t₂.c := by
+    have hcosh : Real.cosh t₁.c = Real.cosh t₂.c := by
+      rw [first_law_of_cosines_C t₁, first_law_of_cosines_C t₂, ha, hb, hC]
+    exact Real.cosh_strictMonoOn.injOn (mem_Ici.mpr t₁.hc.le) (mem_Ici.mpr t₂.hc.le) hcosh
+  obtain ⟨hA, hB, _⟩ := sss_congruence t₁ t₂ ha hb hc
+  exact ⟨hc, hA, hB⟩
+
+/-- **Hyperbolic ASA congruence.** Two hyperbolic triangles agreeing on two angles and the
+    *included* side (`A`, `B`, and the side `c` between them) are congruent: the third angle
+    `C` and the remaining sides `a, b` all coincide. Unlike Euclidean geometry, two angles do
+    **not** determine the third (the angle sum is not fixed) — but the included side closes the
+    gap: the second law at `C` (`lawC`: `cos C = −cos A cos B + sin A sin B · cosh c`) makes
+    `cos C` a function of `A, B, c`, so `C` is pinned by injectivity of `cos` on `[0, π]`; then
+    all three angles agree and AAA congruence (PART 4) supplies the remaining sides. -/
+theorem asa_congruence (t₁ t₂ : HyperbolicTriangle)
+    (hA : t₁.A = t₂.A) (hB : t₁.B = t₂.B) (hc : t₁.c = t₂.c) :
+    t₁.C = t₂.C ∧ t₁.a = t₂.a ∧ t₁.b = t₂.b := by
+  have hC : t₁.C = t₂.C := by
+    have hcos : Real.cos t₁.C = Real.cos t₂.C := by
+      rw [t₁.lawC, t₂.lawC, hA, hB, hc]
+    exact Real.strictAntiOn_cos.injOn ⟨t₁.hC.le, t₁.hC_lt.le⟩ ⟨t₂.hC.le, t₂.hC_lt.le⟩ hcos
+  obtain ⟨ha, hb, _⟩ := aaa_congruence t₁ t₂ hA hB hC
+  exact ⟨hC, ha, hb⟩
+
 end HyperbolicAAA
