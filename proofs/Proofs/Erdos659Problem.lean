@@ -706,4 +706,87 @@ theorem thirteen_not_representable : 13 ∉ representable_x2_2y2 :=
 theorem twentythree_not_representable : 23 ∉ representable_x2_2y2 :=
   not_representable_of_mod8 23 (Or.inr (by decide))
 
+/-! ## The metric matters: Chebyshev (`dist`) versus Euclidean
+
+Erdős #659 is a statement about **Euclidean** distances in the plane, but the
+`distinctDistances`, `isConfiguration`, and `fourPointProperty` definitions above are
+phrased through Mathlib's `dist` on `ℝ × ℝ`, which is the **sup (Chebyshev) metric**
+`dist (x₁,y₁) (x₂,y₂) = max |x₁-x₂| |y₁-y₂|` — *not* the Euclidean metric. The two
+notions of distance genuinely disagree on the distinct-distance count of concrete
+sets, so the `dist`-based layer is not a faithful model of the Euclidean problem. (On
+the Moree–Osburn lattice this is invisible because `latticeDistSq` hard-codes the
+Euclidean form `x²+2y²`; the mismatch only surfaces for the general geometric
+predicates.) The lemmas below make the discrepancy a **machine-checked fact** rather
+than a prose caveat, and introduce the correct Euclidean squared distance.
+
+The witness is the unit square `(0,0), (1,0), (1,1), (0,1)`: under the Chebyshev
+metric a *side* and a *diagonal* have equal length `1`, so the square collapses to a
+single distance; under the Euclidean metric they are `1` and `√2`, the genuine
+two-distance square configuration. -/
+
+/-- Euclidean squared distance on the coordinate plane `ℝ × ℝ`. Unlike the ambient
+    `dist` (which is the sup/Chebyshev metric), this is the metric of Erdős #659. Its
+    restriction to Moree–Osburn lattice points is exactly `latticeDistSq`. -/
+def euclSq (p q : ℝ × ℝ) : ℝ := (p.1 - q.1) ^ 2 + (p.2 - q.2) ^ 2
+
+/-- `euclSq` restricted to two Moree–Osburn lattice points reproduces `latticeDistSq`:
+    the general Euclidean squared distance agrees with the lattice's own quadratic form
+    `x² + 2y²`. This is why the `latticeDistSq_*` API is Euclidean-faithful even though
+    the ambient `dist` is not. -/
+theorem euclSq_latticePoint (a₁ b₁ a₂ b₂ : ℤ) :
+    euclSq (latticePoint a₁ b₁) (latticePoint a₂ b₂)
+      = ((latticeDistSq a₁ b₁ a₂ b₂ : ℤ) : ℝ) := by
+  have hsq : (Real.sqrt 2) ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  simp only [euclSq, latticePoint, latticeDistSq]
+  push_cast
+  have hb : ((b₁ : ℝ) * Real.sqrt 2 - (b₂ : ℝ) * Real.sqrt 2) ^ 2
+      = 2 * ((b₁ : ℝ) - (b₂ : ℝ)) ^ 2 := by
+    rw [show ((b₁ : ℝ) * Real.sqrt 2 - (b₂ : ℝ) * Real.sqrt 2)
+          = ((b₁ : ℝ) - (b₂ : ℝ)) * Real.sqrt 2 by ring, mul_pow, hsq]; ring
+  rw [hb]
+
+/-- **The four sides of the unit square have Euclidean squared length `1`.** -/
+theorem unitSquare_sides :
+    euclSq (0, 0) (1, 0) = 1 ∧ euclSq (1, 0) (1, 1) = 1 ∧
+    euclSq (1, 1) (0, 1) = 1 ∧ euclSq (0, 1) (0, 0) = 1 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> · simp only [euclSq]; norm_num
+
+/-- **The two diagonals of the unit square have Euclidean squared length `2`.** Together
+    with `unitSquare_sides`, the square realises exactly two Euclidean distances (`1` and
+    `√2`), so it is a genuine two-distance `square` configuration in the Euclidean plane. -/
+theorem unitSquare_diagonals :
+    euclSq (0, 0) (1, 1) = 2 ∧ euclSq (1, 0) (0, 1) = 2 := by
+  refine ⟨?_, ?_⟩ <;> · simp only [euclSq]; norm_num
+
+/-- **Chebyshev conflates a side and a diagonal of the unit square.** Under the ambient
+    sup metric `dist`, the diagonal `(0,0)–(1,1)` and the side `(0,0)–(1,0)` both have
+    length `1`. -/
+theorem chebyshev_conflates_square_side_and_diagonal :
+    dist ((0 : ℝ), (0 : ℝ)) (1, 1) = dist ((0 : ℝ), (0 : ℝ)) (1, 0) := by
+  rw [Prod.dist_eq, Prod.dist_eq]
+  simp only [Real.dist_eq]
+  norm_num
+
+/-- **Euclidean separates the same side and diagonal.** The two segments Chebyshev
+    identifies (`chebyshev_conflates_square_side_and_diagonal`) have *different* Euclidean
+    squared lengths (`2` versus `1`). -/
+theorem euclid_separates_square_side_and_diagonal :
+    euclSq (0, 0) (1, 1) ≠ euclSq (0, 0) (1, 0) := by
+  simp only [euclSq]; norm_num
+
+/-- **The sup metric is not the Euclidean metric on the plane** — a self-contained
+    witness that the `dist`-based `distinctDistances`/`isConfiguration`/`fourPointProperty`
+    layer does not faithfully count Euclidean distances. There are three collinear-free
+    points (two adjacent corners and the opposite corner of the unit square) at which the
+    Euclidean metric sees two distinct distances while the ambient Chebyshev `dist` sees
+    only one. Consequently a Euclidean two-distance classification cannot be read off the
+    `dist`-based predicates directly; the geometric layer must be reformulated over
+    `euclSq` (as `euclSq_latticePoint` already does for the lattice). -/
+theorem chebyshev_ne_euclidean_distinctness :
+    ∃ p q r : ℝ × ℝ, dist p q = dist p r ∧ euclSq p q ≠ euclSq p r :=
+  ⟨(0, 0), (1, 1), (1, 0),
+    chebyshev_conflates_square_side_and_diagonal,
+    euclid_separates_square_side_and_diagonal⟩
+
 end Erdos659
+
