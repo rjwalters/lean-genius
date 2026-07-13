@@ -20,6 +20,7 @@ EFRS (1993): Erdős, Faudree, Rousseau, Schelp. Ramsey size linear graphs.
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
+open scoped Classical
 
 /- ## Graph Definitions -/
 
