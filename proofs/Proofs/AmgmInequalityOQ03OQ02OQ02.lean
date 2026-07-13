@@ -593,4 +593,58 @@ theorem logConcave_mul_normalised (p q : ℕ → ℝ) (hp0 : p 0 = 1) (hq0 : q 0
     (fun k => p k * q k) 0 = 1 := by
   simp [hp0, hq0]
 
+/-- **Log-concavity is closed under nonnegative scaling.** If `p` is log-concave then so is
+`c · p` for any `c ≥ 0`: scaling multiplies both sides of the defining inequality by the
+same nonnegative factor `c²`. Together with `logConcave_smul_normalised` this rescales any
+log-concave sequence to the normalised class (`p 0 = 1`) without leaving it. -/
+theorem logConcave_smul (p : ℕ → ℝ) (c : ℝ) (hc : 0 ≤ c)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) :
+    ∀ m, (c * p m) * (c * p (m + 2)) ≤ (c * p (m + 1)) ^ 2 := by
+  intro m
+  calc (c * p m) * (c * p (m + 2)) = c ^ 2 * (p m * p (m + 2)) := by ring
+    _ ≤ c ^ 2 * (p (m + 1)) ^ 2 := by
+        apply mul_le_mul_of_nonneg_left (hlc m); positivity
+    _ = (c * p (m + 1)) ^ 2 := by ring
+
+/-- **Scaling a normalised sequence by its reciprocal-first entry renormalises it.** If
+`p 0 ≠ 0`, the sequence `(1 / p 0) · p` starts at `1`, so `logConcave_smul` keeps a
+positive log-concave sequence inside the normalised hypothesis class the root-mean engine
+`logConcave_root_antitone_seq` consumes. -/
+theorem logConcave_smul_normalised (p : ℕ → ℝ) (h0 : p 0 ≠ 0) :
+    (fun k => (1 / p 0) * p k) 0 = 1 := by
+  simp [one_div, inv_mul_cancel₀ h0]
+
+/-- **Log-concavity is closed under pointwise natural powers.** If `p` is a nonnegative
+log-concave sequence then so is `k ↦ p k ^ t` for every `t : ℕ`: raising the defining
+inequality `p m · p (m+2) ≤ (p (m+1))²` to the `t`-th power (monotone on nonnegatives)
+gives `(p m ^ t)·(p (m+2) ^ t) ≤ (p (m+1) ^ t)²`. In particular every power of a
+log-concave sequence is again log-concave. -/
+theorem logConcave_pow_const (p : ℕ → ℝ) (t : ℕ) (hp : ∀ j, 0 ≤ p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) :
+    ∀ m, (p m ^ t) * (p (m + 2) ^ t) ≤ (p (m + 1) ^ t) ^ 2 := by
+  intro m
+  calc (p m ^ t) * (p (m + 2) ^ t)
+        = (p m * p (m + 2)) ^ t := by rw [mul_pow]
+    _ ≤ ((p (m + 1)) ^ 2) ^ t :=
+        pow_le_pow_left₀ (mul_nonneg (hp m) (hp (m + 2))) (hlc m) t
+    _ = (p (m + 1) ^ t) ^ 2 := by rw [← pow_mul, ← pow_mul, Nat.mul_comm]
+
+/-- **Log-concavity is invariant under geometric tilt.** For `r > 0` the pointwise product
+`k ↦ p k · r^k` of a positive log-concave sequence `p` with the geometric sequence `r^k` is
+again log-concave. The geometric sequence is log-concave with equality
+(`geometric_logConcave_eq`), so this is the `q k = r^k` case of `logConcave_mul`. Tilting by a
+geometric factor therefore preserves the entire root-mean antitone structure. -/
+theorem logConcave_mul_geometric (p : ℕ → ℝ) (r : ℝ) (hr : 0 < r) (hp : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) :
+    ∀ m, (p m * r ^ m) * (p (m + 2) * r ^ (m + 2)) ≤ (p (m + 1) * r ^ (m + 1)) ^ 2 :=
+  logConcave_mul p (fun j => r ^ j) hp (fun j => pow_pos hr j) hlc
+    (fun m => (geometric_logConcave_eq r m).le)
+
+/-- **Geometric tilt preserves normalisation.** If `p 0 = 1` then the geometric tilt
+`k ↦ p k · r^k` also starts at `1` (`r^0 = 1`), so `logConcave_mul_geometric` keeps the
+sequence inside the normalised hypothesis class. -/
+theorem logConcave_mul_geometric_normalised (p : ℕ → ℝ) (r : ℝ) (hp0 : p 0 = 1) :
+    (fun k => p k * r ^ k) 0 = 1 := by
+  simp [hp0]
+
 end MaclaurinLogConcave
