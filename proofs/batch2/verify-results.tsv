@@ -1,4 +1,4 @@
-AMGMInequality	RESIDUAL	unknown-const:pow_eq_zero
+AMGMInequality	GREEN	
 AMGMOperatorMeans	GREEN	
 AbelRuffini	GREEN	
 AbelRuffiniGaloisExtensions	GREEN	
@@ -2045,7 +2045,7 @@ GeneralQuartic	GREEN
 GeneralQuarticAxiomsDischarge	RESIDUAL	type-mismatch
 GeometricSeries	RESIDUAL	type-mismatch
 GeometricSeriesOQ01	GREEN	
-GeometricSeriesOQ01Neumann	RESIDUAL	unknown-const:NormedRing.summable_geometric_of_norm_lt_one
+GeometricSeriesOQ01Neumann	GREEN	
 GeometricSeriesOQ01OQ02	GREEN	
 GeometricSeriesOQ02OQ03	RESIDUAL	type-mismatch
 GeometricSeriesOQ02OQ05	RESIDUAL	rewrite-drift
@@ -2596,7 +2596,7 @@ TestApi960	RESIDUAL	unknown-const:Rat.toNat
 TestApi963	RESIDUAL	unknown-const:Finset.sum_pow_eq_pow_sum
 TestConvexHull	RESIDUAL	unknown-const:isCompact_isClosed_isBounded
 TestCovByApi	GREEN	
-TestDerangConvApi	RESIDUAL	unknown-const:summable_pow_div_factorial
+TestDerangConvApi	GREEN	
 TestErdos43Api	RESIDUAL	unknown-const:Int.Icc_toFinset_card
 TestHLTension	RESIDUAL	unknown-const:Finset.card_sdiff_eq_card_sub_card_inter
 TestHolderApi	RESIDUAL	unknown-const:MeasureTheory.snorm

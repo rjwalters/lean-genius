@@ -8,11 +8,11 @@ import Mathlib
 
 -- Test summability
 #check @Summable.of_norm_bounded_eventually
-#check @summable_pow_div_factorial
+#check @Real.summable_pow_div_factorial
 #check @NormedSpace.exp_eq_tsum
 
 -- Test tsum ops
-#check @hasSum_compl_iff
+#check @hasSum_iff_hasSum_compl
 -- #check @Finset.hasSum_compl_iff
 
 -- Test filter
