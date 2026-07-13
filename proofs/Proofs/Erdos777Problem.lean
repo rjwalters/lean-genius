@@ -38,6 +38,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.Lattice
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset Set
 
@@ -58,7 +59,7 @@ def Comparable (A B : Finset α) : Prop := A ⊆ B ∨ B ⊆ A
 /--
 Comparability is a reflexive relation.
 -/
-theorem comparable_refl (A : Finset α) : Comparable A A := Or.inl Subset.rfl
+theorem comparable_refl (A : Finset α) : Comparable A A := Or.inl Finset.Subset.rfl
 
 /--
 Comparability is a symmetric relation.
@@ -241,12 +242,12 @@ theorem singleton_comparable (a b : α) (ha : a ≠ b) :
   intro h
   cases h with
   | inl h1 =>
-    have : a ∈ ({b} : Finset α) := h1 (mem_singleton.mpr rfl)
-    skip
+    have : a ∈ ({b} : Finset α) := h1 (Finset.mem_singleton.mpr rfl)
+    simp only [Finset.mem_singleton] at this
     exact ha this
   | inr h2 =>
-    have : b ∈ ({a} : Finset α) := h2 (mem_singleton.mpr rfl)
-    simp only [mem_singleton] at this
+    have : b ∈ ({a} : Finset α) := h2 (Finset.mem_singleton.mpr rfl)
+    simp only [Finset.mem_singleton] at this
     exact ha this.symm
 
 /--
@@ -259,7 +260,7 @@ theorem empty_comparable (A : Finset α) : Comparable ∅ A :=
 **Example:** Full set is comparable to everything in its power set.
 -/
 theorem full_comparable (base A : Finset α) (hA : A ⊆ base) : Comparable A base :=
-  Or.inr hA
+  Or.inl hA
 
 /-
 ## Part IX: Alon-Das-Glebov-Sudakov Result (2015)

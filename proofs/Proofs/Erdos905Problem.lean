@@ -29,6 +29,7 @@ Tags: graph-theory, extremal-graph-theory, triangles, turan
 -/
 
 import Mathlib
+open scoped Classical
 
 open Nat Finset
 

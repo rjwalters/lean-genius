@@ -31,6 +31,7 @@ References:
 -/
 
 import Mathlib
+open scoped Classical
 
 open BigOperators Finset
 

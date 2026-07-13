@@ -20,12 +20,13 @@ import Mathlib
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+open scoped Classical
 
 /- ## Definitions -/
 
 /-- The set of unit fractions 1/n for n ∈ {1, ..., N}. -/
 def unitFractions (N : ℕ) : Finset ℚ :=
-  Finset.image (fun n => (1 : ℚ) / n) (Finset.Icc 1 N)
+  Finset.image (fun n : ℕ => (1 : ℚ) / n) (Finset.Icc 1 N)
 
 /-- A subset A ⊆ {1,...,N} has distinct subset sums of reciprocals:
     for any two distinct subsets S, T ⊆ A, Σ_{n∈S} 1/n ≠ Σ_{n∈T} 1/n. -/

@@ -36,6 +36,7 @@ import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
+open scoped Classical
 
 namespace Erdos548
 
@@ -72,14 +73,12 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
 /-- The star graph K_{1,k} with k leaves. -/
 def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
   Adj i j := (i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)
-  symm := by
-    constructor
+  symm.symm := by
     intro i j h
     cases h with
-    | inl h => right; exact ⟨h.2, h.1⟩
-    | inr h => left; exact ⟨h.2, h.1⟩
-  loopless := by
-    constructor
+    | inl h => right; exact ⟨h.1, h.2⟩
+    | inr h => left; exact ⟨h.1, h.2⟩
+  loopless.irrefl := by
     intro i h
     cases h with
     | inl h => exact h.2 h.1
@@ -127,8 +126,9 @@ theorem avg_degree_iff_edges (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) 
     every tree on k+1 vertices as a subgraph.
 -/
 def ErdosSosConjecture : Prop :=
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
-  ∀ (W : Type*) [Fintype W] [DecidableEq W] (T : SimpleGraph W),
+  ∀ (k : ℕ),
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+  ∀ (W : Type) [Fintype W] [DecidableEq W] (T : SimpleGraph W),
   IsTree T →
   Fintype.card W = k + 1 →
   Fintype.card V ≥ k + 1 →
@@ -157,9 +157,11 @@ axiom trivial_tree_bound (n k : ℕ) (hn : n ≥ k + 1)
     (T : SimpleGraph (Fin (k + 1))) (hT : IsTree T) :
     ContainsSubgraph G T
 
-/-- **Girth of a graph**: length of shortest cycle, or ∞ if acyclic. -/
+/-- **Girth of a graph**: length of shortest cycle, or ∞ if acyclic.
+    (v4.31 migration: `G.Walk` is indexed by vertices, not the carrier type;
+    quantify over a base vertex `v` and closed walks at `v`.) -/
 noncomputable def girth (G : SimpleGraph V) : ℕ∞ :=
-  ⨅ (c : G.Walk V V) (_ : c.IsCycle), c.length
+  ⨅ (v : V) (c : G.Walk v v) (_ : c.IsCycle), c.length
 
 /-- G has girth ≥ g means no cycles shorter than g. -/
 def hasGirthAtLeast (G : SimpleGraph V) (g : ℕ) : Prop :=
@@ -194,12 +196,10 @@ axiom sacle_wozniak (n k : ℕ) (hn : n ≥ k + 1)
 /-- The complement of a graph. -/
 def complement (G : SimpleGraph V) : SimpleGraph V where
   Adj v w := v ≠ w ∧ ¬G.Adj v w
-  symm := by
-    constructor
+  symm.symm := by
     intro v w ⟨hne, hnadj⟩
-    exact ⟨hne.symm, fun h => hnadj (G.symm h)⟩
-  loopless := by
-    constructor
+    exact ⟨hne.symm, fun h => hnadj (G.adj_symm h)⟩
+  loopless.irrefl := by
     intro v ⟨hne, _⟩
     exact hne rfl
 

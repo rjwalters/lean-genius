@@ -26,6 +26,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
+open scoped Classical
 
 namespace Erdos546
 
@@ -130,7 +131,10 @@ def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
 def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val % n) ∨ (j.val + 1 = i.val % n)
   symm := by constructor; intro i j h; cases h with | inl h => right; exact h | inr h => left; exact h
-  loopless := by constructor; intro i h; cases h with | inl h => skip
+  loopless := by
+    constructor; intro i h
+    have hmod : i.val % n = i.val := Nat.mod_eq_of_lt i.isLt
+    rcases h with h | h <;> omega
 
 /-- Complete bipartite graph K_{a,b}: left part Fin a, right part Fin b,
     all cross-edges present. -/

@@ -23,6 +23,7 @@ Tags: number-theory, combinatorics, subset-sums, divisibility
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos882
 

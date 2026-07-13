@@ -32,6 +32,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Nat Real
 
@@ -67,14 +68,16 @@ def IsSubgraph {n : ℕ} (H G : Graph n) : Prop :=
 /-- A path in the graph. -/
 structure Path {n : ℕ} (G : Graph n) where
   vertices : List (Fin n)
-  consecutive : ∀ i, i + 1 < vertices.length →
-    (vertices.get ⟨i, by omega⟩, vertices.get ⟨i + 1, by omega⟩) ∈ G.edges
+  consecutive : ∀ i, (hi : i + 1 < vertices.length) →
+    (vertices.get ⟨i, by omega⟩, vertices.get ⟨i + 1, hi⟩) ∈ G.edges
 
 /-- A cycle of length k. -/
 def IsCycle {n : ℕ} {G : Graph n} (p : Path G) (k : ℕ) : Prop :=
   p.vertices.length = k ∧
   p.vertices.Nodup ∧
-  (p.vertices.head!, p.vertices.getLast!) ∈ G.edges
+  -- (v4.31 migration: `List.head!`/`getLast!` need `Inhabited (Fin n)`, which
+  -- fails for `n = 0`; use the `Option`-valued `head?`/`getLast?` instead.)
+  ∃ a ∈ p.vertices.head?, ∃ b ∈ p.vertices.getLast?, (a, b) ∈ G.edges
 
 /-- Two edges are on a common cycle of length ≤ k. -/
 def OnCommonCycle {n : ℕ} (G : Graph n) (e1 e2 : Fin n × Fin n) (k : ℕ) : Prop :=
@@ -178,10 +181,11 @@ def bestKnownExponentH1 : ℝ := 5
 def targetExponentH1 : ℝ := 3
 
 /-- The gap between known and conjectured exponents is significant. -/
-example : targetExponentH1 < bestKnownExponentH1 := by norm_num
+example : targetExponentH1 < bestKnownExponentH1 := by
+  unfold targetExponentH1 bestKnownExponentH1; norm_num
 
 /-- Best known density threshold for H₂: δ > n^{-1/5} (Fox-Sudakov). -/
-def bestKnownThresholdH2 : ℝ := 1/5
+noncomputable def bestKnownThresholdH2 : ℝ := 1/5
 
 /- ## Part VIII: Summary -/
 

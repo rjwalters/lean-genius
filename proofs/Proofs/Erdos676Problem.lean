@@ -23,6 +23,7 @@ Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
 import Mathlib
+open scoped Classical
 
 open Nat Filter Set
 
@@ -70,7 +71,7 @@ theorem conjecture_equiv : ErdosConjecture676 ↔ ErdosConjecture676' := by
       intro n hn
       simp only [ExceptionSet, Set.mem_setOf_eq] at hn
       by_contra h
-      skip
+      simp only [Finset.coe_range, Set.mem_Iio, not_lt] at h
       exact hn (hN n h)
     exact Set.Finite.subset (Finset.finite_toSet _) this
   · intro hfin
@@ -79,9 +80,10 @@ theorem conjecture_equiv : ErdosConjecture676 ↔ ErdosConjecture676' := by
     intro n hn
     by_contra h
     have : n ∈ ExceptionSet := h
-    rw [hs] at this
+    rw [← hs] at this
     simp only [Finset.mem_coe] at this
-    have := Finset.le_sup this
+    have := Finset.le_sup (f := id) this
+    simp only [id_eq] at this
     omega
 
 /-

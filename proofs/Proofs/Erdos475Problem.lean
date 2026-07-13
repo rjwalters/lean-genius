@@ -32,6 +32,7 @@ Tags: additive-combinatorics, finite-fields, sequencing, partial-sums
 -/
 
 import Mathlib
+open scoped Classical
 
 namespace Erdos475
 
@@ -132,7 +133,14 @@ def AlspachConjecture (G : Type*) [AddCommGroup G] [Fintype G] : Prop :=
 /-- Graham's conjecture is Alspach's conjecture for 𝔽ₚ. -/
 theorem graham_is_alspach_for_prime_field (p : ℕ) [Fact (Nat.Prime p)] :
     GrahamConjecture p ↔ AlspachConjecture (ZMod p) := by
-  constructor <;> intro h A hA <;> exact h A hA
+  -- (v4.31 migration: `GrahamConjecture` uses `ZMod.decidableEq` while
+  -- `AlspachConjecture (ZMod p)` picks up the classical `DecidableEq` from
+  -- `open scoped Classical`; the two `toFinset` instances are propositionally
+  -- but not definitionally equal, so bridge with `Subsingleton.elim`.)
+  unfold GrahamConjecture AlspachConjecture IsValidOrdering
+  constructor <;> intro h A hA <;>
+    (obtain ⟨o, h1, h2, h3⟩ := h A hA; refine ⟨o, ?_, h2, h3⟩;
+     convert h1 using 2 <;> exact Subsingleton.elim _ _)
 
 /- ## Part VII: Constructive vs Existential
 

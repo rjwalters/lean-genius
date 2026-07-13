@@ -630,3 +630,52 @@ tree clean (the parse edit is correct but the row can't go GREEN yet).
 | `∆` (symmetric difference) — `expected token` | `open scoped symmDiff` after imports (notation is now `scoped[symmDiff]`) | Erdos431 flipped; Erdos1123 hit deeper `Set.symmDiff_comm` unknown |
 | `p \| q` where `\|` means divides | `p ∣ q` (`∣` U+2223, not ASCII pipe) | Erdos490Aristotle (had deeper omega drift, didn't flip) |
 | `∂` measure-integral / `⟪_,_⟫` inner-product notation — `expected token` | `open MeasureTheory` / `open scoped RealInnerProductSpace` (notation-scope loss, §7d family) | EgorovTheorem, LebesgueMeasureOQ03 (deeper, not swept) |
+
+### 7o. Doctor increment-11 recipes (#38065, 2026-07-13, instance-synth: rpow/graph/list/totality)
+
+**Meta-finding:** the `instance-synth` class is NOT one root cause — it is a
+grab-bag. The dominant *first* synth failure buckets across the Erdős rows:
+rpow import-loss (`HPow ℝ ℝ`/`HPow ℕ ℝ`), graph `Fintype (G.neighborSet v)`/
+`Fintype G.edgeSet`, and classical `DecidablePred`. But most files carry
+**downstream cascade errors** revealed only once the synth failure is cleared,
+so the true fix per file is: apply the mechanical synth fix FIRST, then repair
+the exposed cascade (type-mismatch / proof-drift / statement bug). Zero rows
+flipped on synth-fix alone; every GREEN needed 1–8 follow-up edits.
+
+| pattern | fix | notes |
+|---|---|---|
+| `(n:ℝ)^(1/2:ℝ)` etc `failed to synthesize HPow ℝ ℝ ?m` in curated-import file | `import Mathlib.Analysis.SpecialFunctions.Pow.Real` | rpow import-loss; ONLY helps curated-import files — an `import Mathlib` umbrella file failing `HPow ℝ ℝ` is a genuine metavar, not this |
+| `n^(1+c)` with bare `n:ℕ`, exponent `ℝ` → `HPow ℕ ℝ ?m` | coerce base `(n:ℝ)^(1+c)`; ascribe negative/fractional literal exponents `(-7/4 : ℝ)` (`Neg ℕ` synth failure otherwise) | Erdos808 |
+| `Fintype ↑(G.neighborSet v)` / `Fintype ↑G.edgeSet` / `G.degree`/`edgeFinset` synth | `open scoped Classical` after imports; then two-pass `fix_noncomputable.py` for the flagged `def`s (§7a) | works only for FINITE carriers (`SimpleGraph (Fin n)`/`[Fintype V]`); over `SimpleGraph ℕ` the count is genuinely ill-typed (statement bug) |
+| `H.degree v` still `Fintype ↑(H.neighborSet v)` after classical | add `[DecidableRel H.Adj]` to the def's binders | classical `propDecidable` is not registered as `DecidableRel`; explicit instance arg pins it (Erdos146 MaxDegreeOneSide) |
+| `def OrderingPattern k := Equiv.Perm (Fin k)` then `pattern i` "Function expected"/`Fintype` synth fail | `abbrev` instead of `def` | a `def` wrapper hides the `Perm` FunLike/`Fintype` instances; `abbrev` keeps them transparent (Erdos415) |
+| `⟨k - 1 - i.val, by omega⟩ : Fin k` / `(i+1)%m` bound `by omega` "counterexample" | `by have := i.isLt; omega` / `Nat.mod_lt _ (by omega)` | v4.31 omega does not pull `Fin` bounds from `i` automatically |
+| anonymous `∀ i, i < len → … .get ⟨i, by omega⟩` inner `by omega` can't see the `→` hyp | name it: `∀ i, (hi : i < len) → … .get ⟨i, hi⟩` and use `hi` (+ `Nat.mod_lt _ (by omega)` for the `%`) | the anonymous hypothesis is not in the metavariable context of the index proof (Erdos767/584) |
+| `List.head!` / `List.getLast!` "failed to synthesize Inhabited (Fin n)" | rewrite to `Option`-valued `head?`/`getLast?`: `∃ a ∈ l.head?, ∃ b ∈ l.getLast?, …` | `Fin n` is not `Inhabited` for `n=0`; the bang-forms need it (Erdos584 IsCycle) |
+| `cycle.get? i` field | `cycle[i]?` | confirms core `List.get?` removal (Erdos767) |
+| `⟦(a, b)⟧ : Sym2 W` quotient-mk notation | `s(a, b)` | v4.31 Sym2 element spelling (Erdos565) |
+| `Subset.rfl` / `mem_singleton` "Ambiguous term" (Set vs Finset) | qualify `Finset.Subset.rfl` / `Finset.mem_singleton` | `open scoped Classical` (or Set+Finset opens) surfaces both interpretations (Erdos777) |
+| `G.IsBipartite` / `G.IsCycle n` "environment does not contain SimpleGraph.IsBipartite/IsCycle" | `G.Colorable 2` (needs `import …SimpleGraph.Coloring`); a length-`n` cycle → `∃ v (w : G.Walk v v), w.IsCycle ∧ w.length = n` | not Mathlib API; project-local pseudo-fields (Erdos146/630) |
+| `G.Walk V V` (carrier type as vertex args) | `⨅ (v : V) (c : G.Walk v v) …` | `Walk` is vertex-indexed; girth quantifies base vertex (Erdos548) |
+| `def Foo : Prop := … Type* …` then reused in another def "universe level metavariables …{?u}" | pin the internal quantifier to `Type` (or `Type 0`) | a `Type*` quantifier inside a `Prop` def leaves an uninferable universe when applied in a *second* def body; self-contained uses are fine (Erdos628 TihanyForPair/548 ErdosSosConjecture) |
+| `def foo : Prop := … k …` "Unknown identifier k" | add the missing binder `∀ (k : ℕ), …` at the front | v4.31 will not autobound an implicit inside a `def : Prop` body (Erdos548 ErdosSosConjecture) |
+| `theorem foo : sorry := by sorry` "type … is not a proposition" | give the statement a real proposition (∃-witness form of the illustrated claim, or the intended inequality) — never `True` (vacuous) | v4.31 rejects a `sorry` in *type* position; v4.26 defaulted it to `Prop` (Erdos612 path/cycle/bipartite/moore) |
+| `Finset.inf'`/`min'`/`max'` "failed to synthesize `univ.Nonempty`"/`Nonempty V` | make total: `max'`→`(Finset.univ.image f).sup id`; `min'`→`(…).min.getD 0`; or `inf'` over a family with a conditional witness → `(family.image f).min.getD 0` | v4.31 needs the nonempty witness for *every* parameter; an `∅`-witness that only lies in the family for some hypothesis (`0 ≤ C`) is not universally valid — switch to a total `min/sup`-based def with the empty→0 convention (Erdos613/612/784) |
+| `0 : Fin k` "failed to synthesize OfNat (Fin k) 0" | add `[NeZero k]` to the def | the numeral needs a nonempty carrier (Erdos147 minDegree) |
+| `native_decide` "depends on 'F'/'largestPrimeFactor', which is 'noncomputable'" | DROP a *spurious* `noncomputable` — `Finset.max'`/`primeFactors` ARE computable | defensively-added `noncomputable` breaks the compiler-eval path native_decide needs; if the body is genuinely computable, remove the keyword (Erdos368) |
+| `x |>.card ≥ k` "has type ℕ but expected Prop" | parenthesise: `(x).card ≥ k` | the `|>.card ≥ k` pipe mis-associates on v4.31 (Erdos415 phi_collisions) |
+| `⟨X, L_little_o_x, X⟩` third slot "has type NamedProp but expected ∀ε>0,…" (defeq fold) | annotate the target `∀ ε > 0` binder as `∀ ε : ℝ, ε > 0 →` to match the named def | ℕ/ℝ binder-inference drift makes the unfolded target's `ε` a different type than the named lemma's `ε:ℝ` (Erdos437) |
+| `struct SimpleGraph … where symm := by constructor; …` | nested-field `symm.symm := by …` / `loopless.irrefl := by …` (drop `constructor`); watch And-component order (`⟨h.1, h.2⟩` not `⟨h.2, h.1⟩` after the intro flips) | confirms §7c; Erdos548/548Aristotle/146/637 |
+| `G.symm h` / `G.loopless v` use-site (project SimpleGraph) | `G.adj_symm h` / `G.loopless.irrefl v` | confirms §7f (Erdos637/548) |
+
+**Statement repairs (operator policy):**
+| file | declaration | repair |
+|---|---|---|
+| Erdos1024Problem | `exists_independent` | added hypothesis `(hne : ∅ ∉ H)` — the empty set is independent iff H has no empty edge (else `∅ ⊆ ∅` is a contained edge) |
+| Erdos437Problem | `erdos_437_summary` | `∀ ε > 0` binders annotated `∀ ε : ℝ, ε > 0 →` (were ℕ-inferred) to match `erdos437Conjecture` |
+| Erdos630Problem | `bipartite_iff_no_odd_cycle` | `G.IsCycle n` (not API) → `∃ v (w : G.Walk v v), w.IsCycle ∧ w.length = n` |
+| Erdos548Problem | `ErdosSosConjecture` | added missing `∀ (k : ℕ)` binder; `girth` over `G.Walk v v` not `G.Walk V V` |
+| Erdos808Problem | `SumProductConjecture` | `A.image (fun p => p.1 + p.2)` over `A : Finset ℕ` (elements aren't pairs) → `(A ×ˢ A).image …` |
+| Erdos415Problem | `Question3_NaturalMostLikely` | `Finset.univ.filter` over `m : ℕ` (needs `Fintype ℕ`) → `(Finset.range (n+1)).filter` |
+| Erdos612Problem | `path/cycle/bipartite/moore` | `sorry`-typed statements replaced with real ∃-graph / Moore-bound propositions |
+| Erdos777Problem | `full_comparable` | `Or.inr hA` (base ⊆ A) was wrong for `hA : A ⊆ base` → `Or.inl hA` |

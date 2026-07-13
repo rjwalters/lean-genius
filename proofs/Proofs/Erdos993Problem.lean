@@ -23,6 +23,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
 import Mathlib.Algebra.Polynomial.Basic
+open scoped Classical
 
 namespace Erdos993
 
@@ -37,13 +38,13 @@ def IsIndependentSet (S : Finset V) : Prop :=
   ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v
 
 /-- The number of independent sets of size k in G. -/
-def indepCount (k : ℕ) : ℕ :=
+noncomputable def indepCount (k : ℕ) : ℕ :=
   (Finset.univ.powerset.filter (fun S => S.card = k ∧ IsIndependentSet G S)).card
 
 /-- The independence polynomial: I(G, x) = Σ_k i_k(G) · x^k. -/
 noncomputable def independencePolynomial : Polynomial ℤ :=
   ∑ k ∈ Finset.range (Fintype.card V + 1),
-    (indepCount G k : ℤ) * Polynomial.X ^ k
+    Polynomial.C (indepCount G k : ℤ) * Polynomial.X ^ k
 
 /- ## Unimodality -/
 
@@ -53,7 +54,7 @@ def IsUnimodal (f : ℕ → ℕ) (n : ℕ) : Prop :=
            (∀ i, m ≤ i → i ≤ n → ∀ j, i ≤ j → j ≤ n → f j ≤ f i)
 
 /-- The independent set sequence of G. -/
-def indepSequence : ℕ → ℕ := indepCount G
+noncomputable def indepSequence : ℕ → ℕ := indepCount G
 
 /-- A graph has unimodal independent set sequence. -/
 def HasUnimodalIndepSequence : Prop :=
@@ -117,8 +118,8 @@ def IsMatching (M : Finset (Sym2 V)) : Prop :=
     ∀ v : V, ¬(v ∈ e₁ ∧ v ∈ e₂)
 
 /-- The number of matchings of size k. -/
-def matchingCount (k : ℕ) : ℕ :=
-  (G.edgeFinset.powerset.filter (fun M => M.card = k ∧ IsMatching G M)).card
+noncomputable def matchingCount (k : ℕ) : ℕ :=
+  (G.edgeFinset.powerset.filter (fun M => M.card = k ∧ IsMatching M)).card
 
 /-  Schwenk (1981): The matching sequence is unimodal for ANY graph.
 This contrasts with independent sets, which are only unimodal for trees. -/

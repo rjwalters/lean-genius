@@ -30,8 +30,10 @@ Tags: extremal-graph-theory, Turán-numbers, bipartite-graphs, degeneracy
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Nat Real
 
@@ -57,7 +59,7 @@ def IsRDegenerate (G : SimpleGraph V) (r : ℕ) : Prop :=
 **Bipartite Graph:**
 A graph is bipartite if its vertices can be 2-colored.
 -/
-def IsBipartite (G : SimpleGraph V) : Prop := G.IsBipartite
+def IsBipartite (G : SimpleGraph V) : Prop := G.Colorable 2
 
 /--
 **Turán Number ex(n; H):**
@@ -104,7 +106,7 @@ This is weaker than the conjecture (1/4r instead of 1/r).
 When the maximum degree in one side of the bipartition equals r,
 the full n^{2-1/r} bound holds.
 -/
-def MaxDegreeOneSide (H : SimpleGraph V) (r : ℕ) : Prop :=
+def MaxDegreeOneSide (H : SimpleGraph V) [DecidableRel H.Adj] (r : ℕ) : Prop :=
   ∃ (A B : Set V), A ∪ B = Set.univ ∧ A ∩ B = ∅ ∧
     (∀ u v : V, H.Adj u v → (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)) ∧
     (∀ v ∈ A, H.degree v ≤ r)
@@ -130,7 +132,7 @@ The AKS exponent 2-1/4r is always larger than the conjectured 2-1/r.
 -/
 theorem aks_weaker_than_conjecture (r : ℕ) (hr : r ≥ 1) :
     (2 : ℝ) - 1/r < 2 - 1/(4*r) := by
-  have hr' : (r : ℝ) > 0 := by exact_mod_cast Nat.one_le_iff_ne_zero.mp hr
+  have hr' : (r : ℝ) > 0 := by exact_mod_cast Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hr)
   have hr4 : (4 * r : ℝ) > 0 := by positivity
   field_simp
   linarith
@@ -146,7 +148,7 @@ This is r-degenerate (minimum of r and s).
 def completeBipartiteGraph (r s : ℕ) : SimpleGraph (Fin (r + s)) where
   Adj := fun i j =>
     (i.val < r ∧ j.val ≥ r) ∨ (j.val < r ∧ i.val ≥ r)
-  symm.symm := fun i j h => h.symm.imp And.symm And.symm
+  symm.symm := fun i j h => h.symm
   loopless.irrefl := fun i h => by rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> omega
 
 /- 
