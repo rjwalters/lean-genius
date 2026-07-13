@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3 2026-07-12, axiom-free, offline EXIT 0): Part XIII (ConstBound.lean) adds the first bound on the constant term of a certified affine window (D+1 <= 3^(#odd)*(d+1)) plus the uniform eventual-drop theorem: the leading criterion 3^a<2^b alone forces every class member past an explicit threshold to attain below itself, dropping the hand-checked D<r boundary condition. tao_2019 stays BLOCKED.",
+    "progressSummary": "PROGRESS (researcher-1 2026-07-13, axiom-free, offline EXIT 0 [propext/Classical.choice/Quot.sound only]): Part XII (cont.) in CertUnique.lean quantifies the no-two-consecutive-odd shape law into a sharp count bound 2*(count true) <= length+1, i.e. triplings <= halvings+1 over every certified window (affValid_count_true_le_count_false_succ). This is the exact combinatorial content of odd/even adjacency but stays strictly weaker than the drop criterion 3^a<2^b. tao_2019 stays BLOCKED.",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -69,7 +69,11 @@
       "affValid_length_le_deriveVec (CertUnique.lean): length maximality v.length <= (deriveVec fuel c d).length, axiom-free",
       "deriveVec_prefix_mono (CertUnique.lean): fuel <= fuel2 implies deriveVec fuel c d prefix of deriveVec fuel2 c d, axiom-free",
       "affValid_prefix_deriveVec_pow (CertUnique.lean): dyadic prefix maximality with intrinsic bound v.length <= 2b+1 (drops self-referential hypothesis of affValid_prefix_deriveVec), axiom-free",
-      "CollatzStructuredOQ02OQ03ExceptionalSet.lean (imports ConstBound, VERIFIED): affValid_attainsBelow_of_ge (division-free threshold m≥3^a(d+1)⟹drop, choice-free), affValid_not_attainsBelow_lt (¬drop⟹m<B), affValid_exceptional_subset_range (exceptional set ⊆ range B), affValid_exceptional_card_le (|exceptional ∩ range N| ≤ 3^(#odd)·(d+1) uniformly in N). 4 thm, only foundational axioms."
+      "CollatzStructuredOQ02OQ03ExceptionalSet.lean (imports ConstBound, VERIFIED): affValid_attainsBelow_of_ge (division-free threshold m≥3^a(d+1)⟹drop, choice-free), affValid_not_attainsBelow_lt (¬drop⟹m<B), affValid_exceptional_subset_range (exceptional set ⊆ range B), affValid_exceptional_card_le (|exceptional ∩ range N| ≤ 3^(#odd)·(d+1) uniformly in N). 4 thm, only foundational axioms.",
+      "count_true_le_of_noTwoTrue / two_mul_count_true_le_of_isChain in CollatzStructuredOQ02OQ03CertUnique.lean (general: IsChain no-true-true => 2*count true <= length+1)",
+      "count_true_add_count_false (Bool partition identity count true + count false = length)",
+      "affValid_two_mul_count_true_le : AffValid v c d => 2*(v.count true) <= v.length+1",
+      "affValid_count_true_le_count_false_succ : AffValid v c d => v.count true <= v.count false + 1"
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -90,17 +94,8 @@
       "EXACT CHARACTERIZATION (uniqueness/completeness thread CLOSED): the valid certificates for a residue class r (mod 2^b) are EXACTLY the prefixes of the canonical deriveVec. Prior parts gave only the forward containment (valid ⟹ prefix, affValid_prefix_deriveVec); the converse is prefix-closure of AffValid, which holds structurally because AffValid consumes bits from the FRONT (each constructor pins the head parity and recurses into the tail with the class advanced one Collatz step), so truncating the tail only ends the derivation earlier at nil while every surviving head condition is unchanged. Two containments ⟹ the valid-certificate set is a single chain = initial segments of one vector, never a branching family. affValid_prefix_closed uses NO axioms whatsoever.",
       "Constant-term bound (Part XIII, ConstBound.lean): D+1 <= 3^(#odd)*(d+1) for the certified affine window. The mother module never bounded the constant D=(affOrbit v (c,d)).2. Odd fold d->3d+1 multiplies by 3 (the +1 absorbed by the (d+1) slack), even fold d->floor(d/2) shrinks; short structural induction generalized over both coordinates.",
       "This closes the gap that forced affine_residue_attainsBelow / parityVector_attainsBelow to carry a hand-checked D<r side condition, which only forces the drop at the boundary member m=0. With the constant bound, the leading criterion A<c ALONE gives a closed-form threshold 3^(#odd)*(d+1) <= (c-A)*m past which every class member drops (affValid_attainsBelow_of_large). So 3^a<2^b implies the class drops for cofinitely many members, no boundary caveat (affValid_attainsBelow_of_large_pow, classical 3^a<2^b headline).",
-      "Part XIV (ExceptionalSet.lean): the non-dropping set of a determined-drop class (A<c) is EXPLICITLY FINITE, bounded by B=3^(#odd)·(d+1). Packaged Part XIII's division threshold B≤(c−A)·m into division-free m≥B (since A<c ⟹ c−A≥1 ⟹ (c−A)m≥m), then contrapositive: ¬AttainsBelow(c·m+d) ⟹ m<B, so the exceptional set ⊆ range B, card ≤ B uniformly in N. Answers the standing nextStep 'pin the exact finite set of non-dropping members per class' — it's a subset of [0,3^a(d+1)) of size ≤3^a(d+1). ★Built by IMPORTING the light companion ConstBound (NOT re-declaring): its olean builds green via targeted `LAKE_UNSAFE=1 ./bin/lake build Proofs.CollatzStructuredOQ02OQ03ConstBound` (64s, Mathlib cached) — the mother module is the only one at the SIGBUS ceiling. ★Finset.filter over a Prop pred needs `open scoped Classical`."
-    ],
-    "mathlibGaps": [],
-    "nextSteps": [
-      "Fuel-sufficiency for the 2^b window: show deriveVec (2b+1) (2^b) r reaches its odd-modulus halt within 2b+1 fuel for every r, so the length side-condition in affValid_iff_prefix_deriveVec is automatically satisfied (v_2(c) drops by 1 per even-step, stays on odd-steps — needs bounding the odd-step count).",
-      "Mechanize certificate GENERATION as a tactic/decision procedure now that affValid_eq_deriveVec_self identifies the generator as deriveVec v.length c d.",
-      "Attempt the unconditional density→1 (Terras/Korec) milestone toward tao_2019, rather than more finite residue levels (enumeration theater).",
-      "Tao axiom genuinely blocked (deep analytic, >>1000 lines).",
-      "Sharpen the Part XIII eventual-drop threshold: the bound D+1<=3^a(d+1) is worst-case (all triples first); a tighter constant estimate would shrink the m-threshold and could pin the exact finite set of non-dropping members per determined-drop class.",
-      "Part XI maximality (researcher-11 2026-07-12, VERIFIED axiom-free): deriveVec produces the MAXIMAL valid certificate. Both AffValid constructors (odd/even) require c%2=0 -- exactly the branch deriveVec takes before emitting a bit -- so the certificate recursion and the engine recursion stay in lockstep. affValid_prefix_deriveVec_of_length: AffValid v c d and v.length <= fuel imply v is a prefix of deriveVec fuel c d, by induction on the AffValid derivation. This DISCHARGES the self-referential hypothesis v.length <= (deriveVec ...).length that affValid_prefix_deriveVec assumed, replacing it with the intrinsic fuel budget v.length <= fuel (met by fuel = v.length).",
-      "deriveVec_length_le: (deriveVec fuel c d).length <= fuel unconditionally (induction on fuel; each recorded bit consumes one fuel). Gives affValid_length_le_deriveVec: v.length <= (deriveVec fuel c d).length -- the length-maximality capstone: no valid certificate is strictly longer than the window the fuel reaches. Also deriveVec_prefix_mono: fuel <= fuel2 implies deriveVec fuel c d is a prefix of deriveVec fuel2 c d (the shorter derived window is itself AffValid with length <= fuel <= fuel2, so the prefix lemma applies) -- the derived certificates for a fixed class form a CHAIN under prefix, converging to the maximal transcript once the window closes."
+      "Part XIV (ExceptionalSet.lean): the non-dropping set of a determined-drop class (A<c) is EXPLICITLY FINITE, bounded by B=3^(#odd)·(d+1). Packaged Part XIII's division threshold B≤(c−A)·m into division-free m≥B (since A<c ⟹ c−A≥1 ⟹ (c−A)m≥m), then contrapositive: ¬AttainsBelow(c·m+d) ⟹ m<B, so the exceptional set ⊆ range B, card ≤ B uniformly in N. Answers the standing nextStep 'pin the exact finite set of non-dropping members per class' — it's a subset of [0,3^a(d+1)) of size ≤3^a(d+1). ★Built by IMPORTING the light companion ConstBound (NOT re-declaring): its olean builds green via targeted `LAKE_UNSAFE=1 ./bin/lake build Proofs.CollatzStructuredOQ02OQ03ConstBound` (64s, Mathlib cached) — the mother module is the only one at the SIGBUS ceiling. ★Finset.filter over a Prop pred needs `open scoped Classical`.",
+      "Part XII (cont.): the \"no two consecutive odd steps\" shape constraint quantifies to a sharp count bound 2*(v.count true) <= v.length + 1 for any valid certificate (general list lemma: any IsChain for \"true forces next false\" has at most ceil(len/2) trues, two-step budget induction). Corollary affValid_count_true_le_count_false_succ: #odd(triplings) <= #even(halvings) + 1 over every certified window. HONEST REACH: a <= b+1 is strictly weaker than the drop criterion 3^a < 2^b, so adjacency alone does NOT force a drop; this is the exact combinatorial content of odd/even adjacency, no more."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -128,7 +123,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-13",
   "leanFiles": [
     {
       "path": "Proofs/CollatzStructured.lean",
