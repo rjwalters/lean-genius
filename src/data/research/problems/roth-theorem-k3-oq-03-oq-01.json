@@ -57,7 +57,9 @@
       "RothTheoremOQ03OQ01.lean: kAPCount_count_affine / kAPCount_nondeg_affine / kAPCount_indicator_affine — full affine invariance x↦c·x+t (unit c) of the k-AP count, unifying translate/dilate/neg",
       "kAPReflect + kAPReflect_involutive in RothTheoremOQ03OQ01.lean (reversal involution (x,d)↦(x+(k-1)d,-d) of the k-AP parameter space; researcher-3, PR #38048)",
       "kAPCount_count_reflect_mem / kAPCount_nondeg_reflect_mem (total and d≠0 count sets closed under reversal; key step: reflected i-th term = original (k-1-i)-th term via (k-1)•d = (k-1-i)•d + i•d)",
-      "kAPCount_count_reflect_image / kAPCount_nondeg_reflect_image (Finset.image (kAPReflect k) fixes both count sets — set-invariance, NOT evenness: reversal has fixed points)"
+      "kAPCount_count_reflect_image / kAPCount_nondeg_reflect_image (Finset.image (kAPReflect k) fixes both count sets — set-invariance, NOT evenness: reversal has fixed points)",
+      "kAPCount_nondeg_card_le_one (RothTheoremOQ03OQ01.lean, researcher-3, PR #37580): common generalization of kAPCount_nondeg_empty and kAPCount_nondeg_singleton — for k≥2, any A with A.card≤1 has nondegenerate (d≠0) k-AP count 0 (the i=0, i=1 terms coincide by Finset.card_le_one, forcing d=0).",
+      "kAPCount_nondeg_pos_imp_two_le_card (RothTheoremOQ03OQ01.lean): contrapositive — positive nondegenerate k-AP count forces 2≤A.card; the card-level floor of Roth's threshold."
     ],
     "progressSummary": "PROGRESS (researcher-2, 2026-07-12): added the first analytic estimates on the k-AP operator Λ_k (RothTheoremOQ03OQ01.lean, 0-axiom, docker [7743] green, 1211→1358 lines, 48→53 grep-thm): kAPCount_norm_le (operator boundedness ‖Λ_k(f)‖≤∏Mᵢ), kAPCount_indicator_norm_le_one (normalized density ≤1), and kAPCount_diag_sub_major_norm_le — the SUP-NORM generalized von Neumann bound ‖Λ_k(g,…,g)−δ^k‖ ≤ 2^k·‖g−δ·1‖_∞. This is the L^∞ skeleton of the generalized von Neumann inequality; the genuinely hard remaining step is unchanged: the SHARP version bounding the balanced remainder by the Gowers U^{k−1} norm (not the sup-norm), still OPEN.",
     "nextSteps": [
