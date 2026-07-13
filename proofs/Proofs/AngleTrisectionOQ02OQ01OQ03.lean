@@ -461,4 +461,54 @@ theorem pgroup_gal_center_nontrivial_of_one_lt_natDegree (α : ℝ) (hα : IsInt
   haveI : Nontrivial (minpoly ℚ α).Gal := gal_nontrivial_of_one_lt_natDegree α hα hdeg
   pgroup_gal_center_nontrivial α hα hp hGal
 
+/-- **Parity dichotomy: a nontrivial `p`-group extension has even degree iff `p = 2`.**
+    Since a `p`-group Galois group forces `natDegree = p^k` with `k ≥ 1`
+    (`galois_pgroup_implies_degree_is_pow_p`), the degree is even exactly when the base prime
+    is `2`.  This is the parity core of the trisection obstruction: constructible reals live in
+    `2`-power-degree (hence even-degree, for degree `> 1`) extensions, so any odd-degree
+    algebraic real — like `cos 20°` — cannot be constructible.  It unifies the `p = 2` and
+    odd-`p` sides that the file previously handled only through the specific
+    `even_degree_not_3group`. -/
+theorem pgroup_degree_even_iff (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    Even (minpoly ℚ α).natDegree ↔ p = 2 := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  have hk0 : k ≠ 0 := by rintro rfl; rw [pow_zero] at hk; omega
+  rw [hk, Nat.even_pow]
+  constructor
+  · rintro ⟨hep, _⟩; exact hp.even_iff.mp hep
+  · rintro rfl; exact ⟨even_two, hk0⟩
+
+/-- **Odd base prime ⟹ odd degree.**  For an odd prime `p`, a nontrivial `p`-group Galois
+    extension has *odd* minimal-polynomial degree (`= p^k` with `p` odd).  The odd-prime
+    counterpart of the `2`-group even-degree fact, and a direct corollary of
+    `pgroup_degree_even_iff`. -/
+theorem pgroup_odd_degree_of_odd_prime (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hne2 : p ≠ 2) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal) :
+    Odd (minpoly ℚ α).natDegree := by
+  rw [← Nat.not_even_iff_odd, pgroup_degree_even_iff α hα hp hgt hP]
+  exact hne2
+
+/-- **Even degree kills every odd-prime `p`-group.**  If `natDegree(minpoly ℚ α)` is even
+    (and `> 1`), the Galois group cannot be a `p`-group for any odd prime `p`.  The general
+    even-degree obstruction, subsuming the specific `even_degree_not_3group` (`p = 3`) and
+    covering `p = 5, 7, …` at once. -/
+theorem even_degree_not_odd_pgroup (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime) (hne2 : p ≠ 2) (hgt : 1 < (minpoly ℚ α).natDegree)
+    (heven : Even (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal := by
+  intro hP
+  exact hne2 ((pgroup_degree_even_iff α hα hp hgt hP).mp heven)
+
+/-- **A nontrivial `2`-group extension has even degree.**  The `p = 2` face of
+    `pgroup_degree_even_iff`: the minimal-polynomial degree of a nontrivial `2`-group Galois
+    extension is even (`= 2^k`, `k ≥ 1`).  Contrapositive of `odd_degree_gt_one_not_2group`. -/
+theorem two_group_even_degree_of_gt_one (α : ℝ) (hα : IsIntegral ℚ α)
+    (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup 2 (minpoly ℚ α).Gal) :
+    Even (minpoly ℚ α).natDegree :=
+  (pgroup_degree_even_iff α hα Nat.prime_two hgt hP).mpr rfl
+
 end AngleTrisectionOQ02OQ01OQ03
