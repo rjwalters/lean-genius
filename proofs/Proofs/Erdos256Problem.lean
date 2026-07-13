@@ -51,7 +51,7 @@ noncomputable def productPoly (a : Fin n → ℕ) (z : ℂ) : ℂ :=
 M(a₁,...,aₙ) = max_{|z|=1} |P(z; a₁,...,aₙ)|
 -/
 noncomputable def maxOnUnitCircle (a : Fin n → ℕ) : ℝ :=
-  sSup {|productPoly a z| | z : ℂ, Complex.abs z = 1}
+  sSup {y | ∃ z : ℂ, Complex.abs z = 1 ∧ Complex.abs (productPoly a z) = y}
 
 /--
 **The function f(n):**
@@ -199,7 +199,7 @@ theorem erdos_256_answer : ¬ErdosQuestion256 := by
 When we require a₁ < a₂ < ... < aₙ instead of ≤.
 -/
 noncomputable def fDistinct (n : ℕ) : ℝ :=
-  sInf {maxOnUnitCircle a | a : Fin n → ℕ, Function.Injective a}
+  sInf {y | ∃ a : Fin n → ℕ, Function.Injective a ∧ maxOnUnitCircle a = y}
 
 /- 
 **Bourgain-Chang (2018):**
@@ -239,8 +239,8 @@ theorem product_at_root_of_unity (a : Fin n → ℕ) (k : ℕ) (hk : k ≥ 1)
   intro i _
   congr 1
   -- z^(a i) = z^(a i % k) since z^k = 1
-  rw [show a i = k * (a i / k) + a i % k from (Nat.div_add_mod (a i) k).symm,
-      pow_add, pow_mul, hz, one_pow, one_mul]
+  conv_lhs => rw [show a i = k * (a i / k) + a i % k from (Nat.div_add_mod (a i) k).symm]
+  rw [pow_add, pow_mul, hz, one_pow, one_mul]
 
 /- 
 **Lower bound at primitive root:**

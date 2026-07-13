@@ -303,15 +303,15 @@ lemma Clique4.edges_card {G : SimpleGraph V} (K : Clique4 G) : K.edges.card = 6 
   -- Build not-mem witnesses bottom-up
   have nm5 : s(K.b, K.d) ∉ ({s(K.c, K.d)} : Finset (Sym2 V)) := by
     simp [Finset.mem_singleton, ne56]
-  have nm4 : s(K.b, K.c) ∉ insert s(K.b, K.d) {s(K.c, K.d)} := by
+  have nm4 : s(K.b, K.c) ∉ insert s(K.b, K.d) ({s(K.c, K.d)} : Finset (Sym2 V)) := by
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne45, ne46⟩
-  have nm3 : s(K.a, K.d) ∉ insert s(K.b, K.c) (insert s(K.b, K.d) {s(K.c, K.d)}) := by
+  have nm3 : s(K.a, K.d) ∉ insert s(K.b, K.c) (insert s(K.b, K.d) ({s(K.c, K.d)} : Finset (Sym2 V))) := by
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne34, ne35, ne36⟩
   have nm2 : s(K.a, K.c) ∉ insert s(K.a, K.d) (insert s(K.b, K.c)
-      (insert s(K.b, K.d) {s(K.c, K.d)})) := by
+      (insert s(K.b, K.d) ({s(K.c, K.d)} : Finset (Sym2 V)))) := by
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne23, ne24, ne25, ne26⟩
   have nm1 : s(K.a, K.b) ∉ insert s(K.a, K.c) (insert s(K.a, K.d) (insert s(K.b, K.c)
-      (insert s(K.b, K.d) {s(K.c, K.d)}))) := by
+      (insert s(K.b, K.d) ({s(K.c, K.d)} : Finset (Sym2 V))))) := by
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
     exact ⟨ne12, ne13, ne14, ne15, ne16⟩
   simp only [Clique4.edges,

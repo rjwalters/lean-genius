@@ -41,8 +41,8 @@ def IsProperColoring {V : Type*} (H : Hypergraph3 V) (C : Type*)
 
 /-- The chromatic number is at most κ if there is a proper coloring
 with κ colors. -/
-def ChromaticNumberLE {V : Type*} (H : Hypergraph3 V) (κ : Cardinal) : Prop :=
-  ∃ (C : Type*) (_ : #C ≤ κ) (f : V → C), IsProperColoring H C f
+def ChromaticNumberLE {V : Type*} (H : Hypergraph3 V) (κ : Cardinal.{0}) : Prop :=
+  ∃ (C : Type) (_ : #C ≤ κ) (f : V → C), IsProperColoring H C f
 
 /-
 ## Section II: Subhypergraph Embedding
@@ -65,7 +65,7 @@ chromatic number > ℵ₀.
 A finite 3-uniform hypergraph F is "unavoidable" if every 3-uniform
 hypergraph with uncountable chromatic number contains F. -/
 def IsUnavoidable (F : Hypergraph3 (Fin n)) : Prop :=
-  ∀ (V : Type*) (H : Hypergraph3 V),
+  ∀ (V : Type) (H : Hypergraph3 V),
     ¬ ChromaticNumberLE H Cardinal.aleph0 →
     IsSubhypergraph F H
 

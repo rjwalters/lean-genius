@@ -88,7 +88,7 @@ def containsCycleIn (G : SimpleGraph V) (A : Set ℕ) : Prop :=
 /-- A set A ⊂ ℕ is unavoidable with threshold c if every sufficiently large graph
     with average degree ≥ c contains a cycle whose length is in A. -/
 def isUnavoidable (A : Set ℕ) (c : ℝ) : Prop :=
-  ∃ n₀ : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
+  ∃ n₀ : ℕ, ∀ (V : Type) [Fintype V] [DecidableEq V],
     Fintype.card V ≥ n₀ →
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       hasAverageDegreeAtLeast G c → containsCycleIn G A

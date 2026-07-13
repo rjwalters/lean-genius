@@ -18,6 +18,7 @@ Tags: topology, dimension-theory, product-spaces
 
 import Mathlib.Topology.Basic
 import Mathlib.Topology.Separation.Basic
+import Mathlib.Topology.Metrizable.Basic
 import Mathlib.Data.Nat.Basic
 
 open TopologicalSpace
@@ -83,7 +84,7 @@ have 'pathological' properties that cause the product dimension
 to be strictly less than the sum.
 -/
 axiom anderson_keisler_theorem :
-    ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S) (_ : MetrizableSpace S),
+    ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S) (_ : TopologicalSpace.MetrizableSpace S),
       hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n
 
 /--

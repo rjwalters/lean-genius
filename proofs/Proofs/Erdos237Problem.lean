@@ -48,7 +48,7 @@ A set A has logarithmic lower density if |A ∩ [1,N]| ≥ c·log(N) for large N
 -/
 def HasLogDensity (A : Set ℕ) : Prop :=
   ∃ (c : ℝ) (N₀ : ℕ), c > 0 ∧ ∀ N ≥ N₀,
-    (Nat.card (A ∩ Set.Icc 1 N) : ℝ) ≥ c * Real.log N
+    (Nat.card ↑(A ∩ Set.Icc 1 N) : ℝ) ≥ c * Real.log N
 
 /--
 **Unbounded Limsup:**

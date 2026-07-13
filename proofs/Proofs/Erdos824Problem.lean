@@ -57,9 +57,9 @@ def sigma (n : ℕ) : ℕ := (n.divisors).sum id
 -/
 theorem sigma_ge_n_plus_one (n : ℕ) (hn : n > 1) : sigma n ≥ n + 1 := by
   unfold sigma
-  have h1 : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr (Nat.one_le_iff_ne_zero.mpr (ne_of_gt hn))
-  have hn_div : n ∈ n.divisors := Nat.mem_divisors_self n (ne_of_gt hn)
-  have hne : (1 : ℕ) ≠ n := ne_of_lt hn
+  have h1 : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr (by omega)
+  have hn_div : n ∈ n.divisors := Nat.mem_divisors_self n (by omega)
+  have hne : (1 : ℕ) ≠ n := by omega
   calc (n.divisors).sum id
       ≥ ({1, n} : Finset ℕ).sum id := by
         apply Finset.sum_le_sum_of_subset

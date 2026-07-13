@@ -20,6 +20,7 @@ References:
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Basic
 
 /-- v4.31 migration compat: `Complex.abs` was removed from Mathlib in favor of `‖·‖`. -/
@@ -39,7 +40,7 @@ where M(r) = max_{|z|=r} |f(z)|.
 -/
 def IsFiniteOrder (f : ℂ → ℂ) (ρ : ℝ) : Prop :=
   ρ ≥ 0 ∧ ∀ ε : ℝ, ε > 0 → ∃ R : ℝ, R > 0 ∧ ∀ r : ℝ, r ≥ R →
-    Real.log (sSup {|f z| | z : ℂ, Complex.abs z = r}) ≤ r ^ (ρ + ε)
+    Real.log (sSup {y | ∃ z : ℂ, Complex.abs z = r ∧ Complex.abs (f z) = y}) ≤ r ^ (ρ + ε)
 
 /--
 A rectifiable path on which f → ∞: a continuous curve γ : [0,∞) → ℂ

@@ -75,7 +75,7 @@ theorem lemniscate_isOpen (f : ℂ[X]) (c : ℝ) (hc : c > 0) :
 
 /-- Lemniscates are bounded for monic polynomials. -/
 theorem lemniscate_bounded (f : BoundedMonicPoly r) (c : ℝ) (hc : c > 0) :
-    IsBounded (L(f.poly, c)) := by
+    Bornology.IsBounded (L(f.poly, c)) := by
   sorry
 
 /-
@@ -182,7 +182,7 @@ Relationship between degree and lemniscate structure.
 
 /-- The exterior component is unbounded for c > |leading coeff|. -/
 theorem exterior_unbounded (f : ℂ[X]) (hf : f ≠ 0) (c : ℝ) (hc : c > Complex.abs f.leadingCoeff) :
-    ¬ IsBounded ({ z : ℂ | Complex.abs (f.eval z) ≥ c }) := by
+    ¬ Bornology.IsBounded ({ z : ℂ | Complex.abs (f.eval z) ≥ c }) := by
   sorry
 
 /-

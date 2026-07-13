@@ -712,3 +712,46 @@ flipped on synth-fix alone; every GREEN needed 1–8 follow-up edits.
 | Erdos415Problem | `Question3_NaturalMostLikely` | `Finset.univ.filter` over `m : ℕ` (needs `Fintype ℕ`) → `(Finset.range (n+1)).filter` |
 | Erdos612Problem | `path/cycle/bipartite/moore` | `sorry`-typed statements replaced with real ∃-graph / Moore-bound propositions |
 | Erdos777Problem | `full_comparable` | `Or.inr hA` (base ⊆ A) was wrong for `hA : A ⊆ base` → `Or.inl hA` |
+
+### 7p. Doctor increment-14 recipes (#38065, 2026-07-13, structured classes + instance-synth tail)
+
+**Meta-finding:** the dependency backfill already ran (zero-edit re-verify of 171
+structured rows flipped 0; of 178 synth rows flipped 5 stale dep-flips). Parse /
+synth fix is NECESSARY-BUT-NOT-SUFFICIENT on the majority — unblocking surfaces a
+deeper tm/pd class underneath; only sole-blocker rows flip. High-confidence
+one-edit fixes = the SINGLE-own-error-line rows (19 of the 178 synth rows).
+
+| v4.31 symptom | fix | notes |
+|---|---|---|
+| set-builder `{f x \| x : T, p x}` with image `f x` a PROJECTION/app | `{k \| ∃ x : T, p x ∧ f x = k}` (also `//` subtype form) | confirms §7n; Erdos256/801/1086/1115 |
+| `\|f z\|` where `f z : ℂ` — `failed to synthesize Lattice ℂ` | `Complex.abs (f z)` (the file's compat shim), NOT the lattice `\|·\|` | Erdos256/1115 (both carry a `def Complex.abs := ‖·‖` shim) |
+| `⟪e₁, e₂⟫_ℝ` (with `_𝕜` suffix) `expected token` | `open scoped InnerProductSpace` (NOT `RealInnerProductSpace` — that gives the *un-suffixed* `⟪x,y⟫`) | scoped[InnerProductSpace] for `⟪·,·⟫_𝕜`; LebesgueMeasureOQ03 |
+| `inner_self_eq_norm_mul_norm` "stuck InnerProductSpace ?m H" over ℝ | `real_inner_self_eq_norm_mul_norm` (𝕜 pinned) | the general form leaves 𝕜 metavar |
+| `∫ x, f x ∂μ` notation `expected token` | `import Mathlib.MeasureTheory.Integral.Bochner.Basic` | top-level `notation3`, not scoped — curated-import files miss it despite `open MeasureTheory`. `Integral.SetIntegral`→`Integral.Bochner.Set` |
+| `ℝ≥0∞` `expected token` in curated-import file | `open scoped ENNReal` | notation-scope loss |
+| `Finset.min'`/`max'` "Nonempty univ" over a possibly-empty carrier | `(image f).min.getD 0` totality (empty→0 convention) | §7o; Erdos577/914; the old `⟨(image).choose …, choose_mem⟩` nonempty-witness construction is also broken (`Finset.Nonempty.image` sig drift) |
+| `Nat.totient_prime hp` (was `hp.totient`) | root `Nat.totient_prime hp : φ p = p-1` | `Irreducible.totient`/`Nat.Prime.totient` gone |
+| `(x : ℝ).toNat` — `Real.toNat` gone | `⌊(x : ℝ)⌋₊` (Nat.floor) + mark the def `noncomputable` | Erdos718/718 |
+| project `G.edist`/`G.dist` (SimpleGraph) `Invalid field dist` | `import Mathlib.Combinatorics.SimpleGraph.Metric`; `G.dist : ℕ`, `G.edist : ℕ∞` — coerce `(G.dist u v : ℕ∞)` for a `⊤`-fallback def | Erdos742 |
+| SimpleGraph structure fields `symm x y h :=` / `symm.symm :=` / `loopless.irrefl :=` | `symm := ⟨fun _ _ h => …⟩` / `loopless := ⟨fun _ h => …⟩` (fields are now `Std.Symm Adj` / `Std.Irrefl Adj`, take explicit binders inside `⟨⟩`); use-sites `G.adj_symm` / `G.loopless.irrefl` | Erdos508/582/742 |
+| `Nat.find (G.colorable_of_fintype)` (Colorable, not ∃) | `Nat.find (⟨_, G.colorable_of_fintype⟩ : ∃ n, G.Colorable n)`; `Colorable_of_fintype`→lowercase `colorable_of_fintype` | Erdos917 |
+| `Finset.Pairwise` field removed | `(↑S : Set α).Pairwise` | TestApi783 |
+| `List.enum` removed | `List.zipIdx` — **swaps tuple order** `(idx, elem)`→`(elem, idx)`, so `⟨i, a⟩`→`⟨a, i⟩` | TestApi342 |
+| `σ` (ArithmeticFunction.sigma) `Function expected` | `open scoped ArithmeticFunction.sigma` (scope split off `ArithmeticFunction`) | TestApi826 |
+| `MetrizableSpace X` `Function expected` | `TopologicalSpace.MetrizableSpace X` (+ `import …Topology.Metrizable.Basic`) | Erdos909 |
+| `IsBounded s` `Function expected` (umbrella file) | `Bornology.IsBounded s` | Erdos1048 |
+| `EuclideanSpace`/`chromaticNumber` etc `Function expected` (curated imports) | the metavar name is an unimported constant — add the import (`…InnerProductSpace.EuclideanDist`, `…SimpleGraph.Coloring.Vertex`) | Erdos508/626; `chromaticNumber` is now `G.chromaticNumber : ℕ∞`, coerce comparands `(k:ℕ∞)` |
+| `zero_le α` (Ordinal) / `zero_le X` (ENNReal) `Function expected at zero_le` | `bot_le` (Ordinal) / `pos_iff_ne_zero.mpr h` (ENNReal `0 < X` from `X ≠ 0`) — the ambient `zero_le` became nullary `0 ≤ ?m` | Cantor…/CauchySchwarz… |
+| `/-!` module-docstring BEFORE the `import` block — `invalid 'import' command` | change the leading `/-!`→`/-` (module docstrings are commands, cannot precede imports) | Erdos287/FundamentalTheoremCalculusLebesgueOQ04/PtolemysTheoremOQ01Incomplete01 |
+| `List.Sorted r` (general relation) | `l.SortedLT` / `l.SortedLE` (split by relation; the polymorphic `Sorted` is gone) | Erdos287/FundamentalArithmetic |
+| `def foo : Prop := … ∀ (V : Type*) …` "contains universe level metavariables" | pin the internal quantifier `Type*`→`Type`; also pin an internal `∃ (C : Type*)` and any `Cardinal`/axiom return type to `Cardinal.{0}` | §7o; Erdos72/593/737/833 |
+| ambiguous `foo` (`_root_.foo` vs `Ns.foo`) after v4.31 added a namespaced sibling | qualify to the intended one; when both typecheck-fail, the ambiguity often masks a real bug — replace with a direct proof (`ne_of_gt hn` on `n>1` → `by omega`) | Erdos824; `lowerCentralSeries` group→subgroup rework DEFERRED (39 sites) |
+| `isCyclic_of_prime_card rfl` "Fact (Nat.Prime (Fintype.card G))" | lemma is now `Nat.card`-stated: `haveI : Fact (Nat.Prime (Fintype.card G)) := ⟨hp⟩; isCyclic_of_prime_card (p := Fintype.card G) (Nat.card_eq_fintype_card (α := G))` | LagrangeTheorem |
+| `f.eval (m + 1)` with `m : ℕ`, `f : Polynomial ℤ` — `HAdd ℕ ℕ ℤ` | cast the arg `((m : ℤ) + 1)` | Erdos976 |
+| `Nat.card (A ∩ B)` (A B : Set) — `Inter Type` | coerce to Type: `Nat.card ↑(A ∩ B)` | Erdos237 |
+| `{s(a,b)}` Sym2 singleton in an `insert … {…}` chain — `Singleton (Sym2 V) ?m` (Set vs Finset) | annotate the innermost singleton `({s(a,b)} : Finset (Sym2 V))` — pins the whole chain | Erdos1009 |
+| `(dif_neg h).ge` — `typeclass instance problem is stuck Preorder ?m` | `rw [dif_neg h]` (reduces `0 ≤ 0` and closes by rfl) | Erdos103 |
+| `s.sum` (`s : Finset`) without the function — `AddCommMonoid ?m` stuck | `s.sum id` | Erdos862 |
+| `Finset.card_filter_le _ _` metavars stuck (`DecidablePred ?m`) | `open scoped Classical` + `le_trans (Finset.card_filter_le Finset.univ _) (by simp [Finset.card_univ])` | Erdos990 |
+| `List.get_mem seed 0 h0` — index sig changed | `List.get_mem seed ⟨0, h0⟩` (single `Fin` index arg) | Erdos472; `List.getElem_mem h` for the `seed[i]` form |
+| `OfNat (Fin k) 0` in a def using `fun _ => 0 : α → Fin k` | add `[NeZero k]` (statement repair — `α → Fin 0` doesn't exist for nonempty α) | Erdos1022OQ01 (DEFERRED: multi-site cascade), Erdos734 (`haveI : NeZero n := ⟨by omega⟩` local from `n≥2`) |

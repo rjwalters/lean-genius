@@ -123,7 +123,7 @@ theorem aleph_succ_permitted (α : Ordinal.{0}) :
   rw [Cardinal.aleph_succ]
   refine lt_of_le_of_lt ?_ (Order.lt_succ _)
   rw [← Cardinal.aleph_zero]
-  exact Cardinal.aleph_le_aleph.mpr (zero_le α)
+  exact Cardinal.aleph_le_aleph.mpr bot_le
 
 /-- The permitted values form a proper class: for every ordinal α, there
     is a permitted value strictly above ℵ_α (namely ℵ_{α+1}).

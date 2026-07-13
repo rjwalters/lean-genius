@@ -2,7 +2,7 @@ import Mathlib
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
-open scoped ArithmeticFunction
+open scoped ArithmeticFunction.sigma
 open Nat
 
 -- Check: σ 0 for specific values
