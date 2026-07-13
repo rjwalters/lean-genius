@@ -1410,4 +1410,125 @@ theorem kAPCount_diag_sub_major_norm_le {N : ℕ} [NeZero N] (k : ℕ)
         push_cast
         ring
 
+-- ============================================================
+-- Reversal (reflection) symmetry of the k-AP count
+--
+-- A length-`k` progression `x, x+d, …, x+(k-1)d` reversed reads
+-- `x+(k-1)d, x+(k-2)d, …, x` — the *same* `k` points listed backwards,
+-- i.e. the progression starting at `x+(k-1)d` with common difference `-d`.
+-- For `k = 3` this is the classical `(x, d) ↦ (x+2d, -d)` reversal that
+-- underlies the "reflection" symmetry of 3-AP counts. Below we make this
+-- precise: reversal `kAPReflect` is an involution of `ZMod N × ZMod N`, it
+-- preserves the (total and nondegenerate) `k`-AP count conditions, and hence
+-- fixes the count set as a set (`image (kAPReflect k) = id` on it).
+--
+-- NOTE (why this does *not* prove the count is even): the involution has fixed
+-- points — any pair with `(k-1)d = 0` and `2d = 0` (e.g. `d = 0`, or `d` of
+-- additive order `2` when `k` is odd) is its own reversal — so the orbit-count
+-- argument that would force an even cardinality does not apply. The symmetry is
+-- genuine but weaker than fixed-point-freeness.
+-- ============================================================
+
+/-- **Reversal (reflection) of an arithmetic progression.**  Sends the pair `(x, d)` — the
+    length-`k` progression `x, x+d, …, x+(k-1)d` — to `(x + (k-1)·d, -d)`, whose progression
+    `x+(k-1)d, x+(k-2)d, …, x` runs through the *same* `k` points in reverse.  For `k = 3`
+    this is the classical `(x, d) ↦ (x+2d, -d)` reversal of a 3-term progression. -/
+def kAPReflect {N : ℕ} (k : ℕ) (p : ZMod N × ZMod N) : ZMod N × ZMod N :=
+  (p.1 + (k - 1) • p.2, -p.2)
+
+/-- **Reversal is an involution.**  Reversing twice returns the original pair:
+    `(x, d) ↦ (x+(k-1)d, -d) ↦ ((x+(k-1)d) + (k-1)(-d), -(-d)) = (x, d)`.  In particular
+    `kAPReflect k` is a bijection of `ZMod N × ZMod N`. -/
+theorem kAPReflect_involutive {N : ℕ} (k : ℕ) :
+    Function.Involutive (kAPReflect (N := N) k) := by
+  intro p
+  obtain ⟨x, d⟩ := p
+  simp only [kAPReflect, smul_neg, neg_neg, add_neg_cancel_right]
+
+/-- **The `k`-AP count set is closed under reversal.**  For `k ≥ 1`, if the length-`k`
+    progression of `(x, d)` lies entirely in `A`, so does that of its reversal
+    `kAPReflect k (x, d)`: the reversed progression runs through the same points
+    `x + j·d` with `j = k-1-i` (a reindexing of `Fin k`). -/
+theorem kAPCount_count_reflect_mem {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    {A : Finset (ZMod N)} {p : ZMod N × ZMod N}
+    (hp : p ∈ Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        ∀ i : Fin k, q.1 + i.val • q.2 ∈ A)) :
+    kAPReflect k p ∈ Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        ∀ i : Fin k, q.1 + i.val • q.2 ∈ A) := by
+  classical
+  rw [Finset.mem_filter] at hp ⊢
+  obtain ⟨x, d⟩ := p
+  obtain ⟨-, hall⟩ := hp
+  refine ⟨Finset.mem_univ _, ?_⟩
+  intro i
+  have hi : i.val < k := i.isLt
+  -- Split `(k-1)•d = (k-1-i)•d + i•d` (valid since `i ≤ k-1`).
+  have hsub : (k - 1) • d = (k - 1 - i.val) • d + i.val • d := by
+    rw [← add_nsmul]; congr 1; omega
+  -- The reflected `i`-th term equals the original `(k-1-i)`-th term.
+  have hterm : (kAPReflect k (x, d)).1 + i.val • (kAPReflect k (x, d)).2
+      = x + (k - 1 - i.val) • d := by
+    simp only [kAPReflect, smul_neg]
+    rw [hsub]; abel
+  rw [hterm]
+  simpa using hall ⟨k - 1 - i.val, by omega⟩
+
+/-- **The nondegenerate `k`-AP count set is closed under reversal.**  Reversal preserves the
+    nondegeneracy condition `d ≠ 0` (it maps `d ↦ -d`), so on top of the term-membership
+    closure `kAPCount_count_reflect_mem` it also fixes the `d ≠ 0` count set. -/
+theorem kAPCount_nondeg_reflect_mem {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    {A : Finset (ZMod N)} {p : ZMod N × ZMod N}
+    (hp : p ∈ Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        (∀ i : Fin k, q.1 + i.val • q.2 ∈ A) ∧ q.2 ≠ 0)) :
+    kAPReflect k p ∈ Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        (∀ i : Fin k, q.1 + i.val • q.2 ∈ A) ∧ q.2 ≠ 0) := by
+  classical
+  rw [Finset.mem_filter] at hp ⊢
+  obtain ⟨-, hall, hd⟩ := hp
+  refine ⟨Finset.mem_univ _, ?_, ?_⟩
+  · -- term membership: reuse the total-count reflection lemma
+    have hmem : kAPReflect k p ∈ Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        ∀ i : Fin k, q.1 + i.val • q.2 ∈ A) :=
+      kAPCount_count_reflect_mem hk (by rw [Finset.mem_filter]; exact ⟨Finset.mem_univ _, hall⟩)
+    rw [Finset.mem_filter] at hmem
+    exact hmem.2
+  · -- nondegeneracy: the reflected difference is `-d ≠ 0`
+    simp only [kAPReflect, ne_eq, neg_eq_zero]
+    exact hd
+
+/-- **Reflection symmetry of the total `k`-AP count.**  For `k ≥ 1` the set of pairs whose
+    length-`k` progression lies in `A` is invariant under reversal — `kAPReflect k` maps it
+    bijectively onto itself, so `image (kAPReflect k) = id` there.  Combined with
+    `kAPReflect_involutive`, reversal is an involutive symmetry of the count set.  (It is *not*
+    fixed-point-free — pairs with `(k-1)d = 0` and `2d = 0` are self-reversing — so this does
+    **not** force the count to be even.) -/
+theorem kAPCount_count_reflect_image {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    Finset.image (kAPReflect k) (Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        ∀ i : Fin k, q.1 + i.val • q.2 ∈ A))
+      = Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        ∀ i : Fin k, q.1 + i.val • q.2 ∈ A) := by
+  apply Finset.Subset.antisymm
+  · exact Finset.image_subset_iff.mpr (fun p hp => kAPCount_count_reflect_mem hk hp)
+  · intro q hq
+    exact Finset.mem_image.mpr ⟨kAPReflect k q, kAPCount_count_reflect_mem hk hq,
+      kAPReflect_involutive k q⟩
+
+/-- **Reflection symmetry of the nondegenerate `k`-AP count.**  The `d ≠ 0` count set is
+    likewise invariant under reversal.  This is the `d ≠ 0` companion of
+    `kAPCount_count_reflect_image`, and the general-`k` form of the "reversal involution on
+    nondegenerate 3-AP pairs" — a genuine symmetry of the count Roth's theorem controls, though
+    (having fixed points) not one that yields an evenness/parity conclusion. -/
+theorem kAPCount_nondeg_reflect_image {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k)
+    (A : Finset (ZMod N)) :
+    Finset.image (kAPReflect k) (Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        (∀ i : Fin k, q.1 + i.val • q.2 ∈ A) ∧ q.2 ≠ 0))
+      = Finset.univ.filter (fun q : ZMod N × ZMod N =>
+        (∀ i : Fin k, q.1 + i.val • q.2 ∈ A) ∧ q.2 ≠ 0) := by
+  apply Finset.Subset.antisymm
+  · exact Finset.image_subset_iff.mpr (fun p hp => kAPCount_nondeg_reflect_mem hk hp)
+  · intro q hq
+    exact Finset.mem_image.mpr ⟨kAPReflect k q, kAPCount_nondeg_reflect_mem hk hq,
+      kAPReflect_involutive k q⟩
+
 end RothTheoremOQ03OQ01
