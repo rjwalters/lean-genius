@@ -3,33 +3,33 @@ AMGMOperatorMeans	GREEN
 AbelRuffini	GREEN	
 AbelRuffiniGaloisExtensions	GREEN	
 AbelRuffiniGaloisExtensionsOQ01	GREEN	
-AbelRuffiniGaloisExtensionsOQ02	RESIDUAL	instance-synth
-AbelRuffiniGaloisExtensionsOQ02OQ01	RESIDUAL	instance-synth
+AbelRuffiniGaloisExtensionsOQ02	GREEN	
+AbelRuffiniGaloisExtensionsOQ02OQ01	GREEN	
 AbelRuffiniGaloisExtensionsOQ03	GREEN	
 AbelRuffiniGaloisExtensionsOQ03OQ01	GREEN	
 AbelRuffiniGaloisExtensionsOQ04	RESIDUAL	type-mismatch
 AbelRuffiniGaloisExtensionsOQ04OQ03	RESIDUAL	rewrite-drift
 AbelRuffiniGaloisExtensionsOQ05	GREEN	
-AbelRuffiniGaloisExtensionsOQ05OQ01	RESIDUAL	instance-synth
+AbelRuffiniGaloisExtensionsOQ05OQ01	GREEN	
 AbelRuffiniGaloisExtensionsOQ06	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirection	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly	RESIDUAL	type-mismatch
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionMainAssembly	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4	GREEN	
-AbelRuffiniGaloisExtensionsOQ10	RESIDUAL	instance-synth
-AbelRuffiniOQ03	RESIDUAL	instance-synth
+AbelRuffiniGaloisExtensionsOQ10	GREEN	
+AbelRuffiniOQ03	GREEN	
 AbelRuffiniOQ04	GREEN	
-AbelRuffiniOQ04OQ01	RESIDUAL	instance-synth
+AbelRuffiniOQ04OQ01	GREEN	
 AbelRuffiniOQ04OQ01OQ03	RESIDUAL	rewrite-drift
 AbelRuffiniOQ04OQ01OQ03Sharp	RESIDUAL	rewrite-drift
 AbelRuffiniOQ04OQ01OQ03Sharpness	GREEN	
-AbelRuffiniOQ04OQ02	RESIDUAL	instance-synth
-AbelRuffiniOQ04OQ02OQ01	RESIDUAL	instance-synth
-AbelRuffiniOQ04OQ02OQ02OQ06	RESIDUAL	instance-synth
+AbelRuffiniOQ04OQ02	GREEN	
+AbelRuffiniOQ04OQ02OQ01	GREEN	
+AbelRuffiniOQ04OQ02OQ02OQ06	GREEN	
 AbelRuffiniOQ04OQ03	GREEN	
 AbelRuffiniOQ04OQ04	RESIDUAL	unknown-const:cyclotomic_5_has_root_in_splitting_field
 AbelRuffiniOQ04OQ07OQ02	GREEN	
-AbelRuffiniOQ04OQ09Cyclic	RESIDUAL	instance-synth
+AbelRuffiniOQ04OQ09Cyclic	GREEN	
 AbelRuffiniOQ06	GREEN	
 AbelRuffiniOQ06OQ01	RESIDUAL	type-mismatch
 AbelRuffiniOQ06OQ01OQ03	RESIDUAL	dot-notation-drift
@@ -79,17 +79,17 @@ AngleTrisectionCos20GalOQ01OQ02	RESIDUAL	proof-drift
 AngleTrisectionCos20GalOQ01OQ02OQ02	RESIDUAL	instance-synth
 AngleTrisectionCos20GalOQ03	RESIDUAL	proof-drift
 AngleTrisectionCos20GalOQ03OQ01	RESIDUAL	type-mismatch
-AngleTrisectionEmbedding	RESIDUAL	instance-synth
-AngleTrisectionOQ02	RESIDUAL	instance-synth
+AngleTrisectionEmbedding	GREEN	
+AngleTrisectionOQ02	GREEN	
 AngleTrisectionOQ02OQ01OQ02	RESIDUAL	rewrite-drift
 AngleTrisectionOQ02OQ01OQ02Aristotle	RESIDUAL	proof-drift
 AngleTrisectionOQ02OQ01OQ02Incomplete01	RESIDUAL	instance-synth
-AngleTrisectionOQ02OQ03	RESIDUAL	instance-synth
+AngleTrisectionOQ02OQ03	GREEN	
 AngleTrisectionOQ02OQ03Ext	RESIDUAL	rewrite-drift
-AngleTrisectionOQ02OQ03OQ01	RESIDUAL	instance-synth
+AngleTrisectionOQ02OQ03OQ01	GREEN	
 AngleTrisectionOQ02OQ04	RESIDUAL	unknown-const:Group.IsSolvable
-AngleTrisectionOQ02OQ04OQ01	RESIDUAL	instance-synth
-AngleTrisectionOQ02OQ04OQ01Aristotle	RESIDUAL	instance-synth
+AngleTrisectionOQ02OQ04OQ01	GREEN	
+AngleTrisectionOQ02OQ04OQ01Aristotle	GREEN	
 AngleTrisectionOQ03	RESIDUAL	instance-synth
 AngleTrisectionOQ03OQ01	RESIDUAL	instance-synth
 AngleTrisectionOQ03OQ02	RESIDUAL	instance-synth
@@ -2111,8 +2111,8 @@ Hilbert4Geodesics	RESIDUAL	instance-synth
 Hilbert5LieGroups	RESIDUAL	elab-drift
 Hilbert5OQ02	RESIDUAL	instance-synth
 Hilbert6PhysicsAxioms	RESIDUAL	type-mismatch
-Hilbert9CyclotomicReciprocity	RESIDUAL	instance-synth
-Hilbert9QuadraticSubfield	RESIDUAL	instance-synth
+Hilbert9CyclotomicReciprocity	GREEN	
+Hilbert9QuadraticSubfield	GREEN	
 Hilbert9Reciprocity	RESIDUAL	parse-error
 HodgeConjecture	RESIDUAL	proof-drift
 HurwitzTheoremOQ04	RESIDUAL	slow-timeout
@@ -2127,32 +2127,32 @@ InfinitudePrimes4k3OQ01Q12Q24	RESIDUAL	parse-error
 InfinitudePrimes4k3OQ03	RESIDUAL	unknown-const:Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one
 InfinitudePrimesOQ01	RESIDUAL	type-mismatch
 IntermediateValueTheoremOQ03	RESIDUAL	unknown-const:intermediate_value_zero_of_le
-InverseGalois	RESIDUAL	instance-synth
-InverseGaloisA5	RESIDUAL	instance-synth
-InverseGaloisA5Dedekind	RESIDUAL	instance-synth
+InverseGalois	GREEN	
+InverseGaloisA5	GREEN	
+InverseGaloisA5Dedekind	GREEN	
 InverseGaloisA5DedekindInstantiation	RESIDUAL	instance-synth
-InverseGaloisA5DedekindMod7	RESIDUAL	instance-synth
+InverseGaloisA5DedekindMod7	GREEN	
 InverseGaloisA5OQ02	RESIDUAL	elab-drift
-InverseGaloisD4	RESIDUAL	instance-synth
-InverseGaloisD4OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ01External	RESIDUAL	instance-synth
-InverseGaloisD4OQ02	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03OQ01OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03OQ01OQ01OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ04	RESIDUAL	instance-synth
-InverseGaloisD4OQ03	RESIDUAL	instance-synth
+InverseGaloisD4	GREEN	
+InverseGaloisD4OQ01	GREEN	
+InverseGaloisD4OQ01External	GREEN	
+InverseGaloisD4OQ02	GREEN	
+InverseGaloisD4OQ02OQ03	GREEN	
+InverseGaloisD4OQ02OQ03OQ01	GREEN	
+InverseGaloisD4OQ02OQ03OQ01OQ01	GREEN	
+InverseGaloisD4OQ02OQ03OQ01OQ01OQ01	GREEN	
+InverseGaloisD4OQ02OQ04	GREEN	
+InverseGaloisD4OQ03	GREEN	
 InverseGaloisF20	RESIDUAL	unknown-const:cyclotomic_5_has_root_in_splitting_field
 InverseGaloisF20OQ02	RESIDUAL	type-mismatch
-InverseGaloisOQ01	RESIDUAL	instance-synth
-InverseGaloisOQ02	RESIDUAL	instance-synth
-InverseGaloisOQ03	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ01	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02GalBridge	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02GapChar	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02P11	RESIDUAL	instance-synth
+InverseGaloisOQ01	GREEN	
+InverseGaloisOQ02	GREEN	
+InverseGaloisOQ03	GREEN	
+InverseGaloisOQ06OQ01	GREEN	
+InverseGaloisOQ06OQ02	GREEN	
+InverseGaloisOQ06OQ02GalBridge	GREEN	
+InverseGaloisOQ06OQ02GapChar	GREEN	
+InverseGaloisOQ06OQ02P11	GREEN	
 IsoperimetricTheorem	RESIDUAL	unknown-const:IsoperimetricTheorem.equality_iff_circle
 IsoperimetricTheoremOQ01	RESIDUAL	unknown-const:cos_lt_one_of_ne_zero
 IsoperimetricTheoremOQ02	GREEN	
@@ -2175,9 +2175,9 @@ KonigsbergOQ02OQ01Aristotle	RESIDUAL	proof-drift
 KonigsbergOQ02OQ01OQ02OQ01Splice	RESIDUAL	type-mismatch
 KonigsbergOQ03	GREEN	
 KonigsbergOQ04	RESIDUAL	type-mismatch
-KroneckersJugendtraum	RESIDUAL	instance-synth
-KroneckersJugendtraumRealQuadAbelian	RESIDUAL	instance-synth
-KroneckersJugendtraumStarkRankOne	RESIDUAL	instance-synth
+KroneckersJugendtraum	GREEN	
+KroneckersJugendtraumRealQuadAbelian	GREEN	
+KroneckersJugendtraumStarkRankOne	GREEN	
 KummerTheorem	GREEN	
 KummerTheoremOQ01OQ01	RESIDUAL	type-mismatch
 KummerTheoremOQ02	PRE-EXISTING	never-compiled:n
