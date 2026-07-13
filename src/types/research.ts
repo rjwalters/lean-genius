@@ -229,9 +229,12 @@ export const DEFAULT_REOPEN_CRITERION = 'materially new mechanism required'
  * - Pre-schema "wildcat" objects (ad-hoc keys already in the data) fall back
  *   through `description`/`summary` before JSON.stringify, so nothing ever
  *   renders as "[object Object]".
+ * - Off-schema non-objects (null/undefined/number/…) render via JSON.stringify
+ *   so malformed data stays visible instead of throwing or vanishing.
  */
 export function blockerText(b: Blocker): string {
   if (typeof b === 'string') return b
+  if (b === null || typeof b !== 'object') return JSON.stringify(b) ?? String(b)
   const entry = b as Partial<BlockerEntry> & { description?: unknown; summary?: unknown }
   const label =
     (typeof entry.route === 'string' && entry.route) ||
