@@ -1082,7 +1082,7 @@ Erdos283Problem	GREEN
 Erdos284Problem	GREEN	
 Erdos285Problem	GREEN	
 Erdos286Problem	GREEN	
-Erdos287Problem	RESIDUAL	elab-drift
+Erdos287Problem	GREEN	
 Erdos288Problem	RESIDUAL	rewrite-drift
 Erdos289Problem	RESIDUAL	unknown-const:div_le_div_of_le_left
 Erdos28AdditiveBases	GREEN	
@@ -1443,7 +1443,7 @@ Erdos58Problem	GREEN
 Erdos590Problem	RESIDUAL	parse-error
 Erdos591Problem	GREEN	
 Erdos592Problem	RESIDUAL	instance-synth
-Erdos593Problem	RESIDUAL	elab-drift
+Erdos593Problem	GREEN	
 Erdos594Problem	RESIDUAL	proof-drift
 Erdos595Problem	GREEN	
 Erdos596Problem	GREEN	
@@ -1629,7 +1629,7 @@ Erdos726Problem	RESIDUAL	unknown-const:Nat.Prime.not_dvd_of_lt
 Erdos727Problem	GREEN	
 Erdos728Problem	RESIDUAL	proof-drift
 Erdos72Aristotle	GREEN	
-Erdos72Problem	RESIDUAL	elab-drift
+Erdos72Problem	GREEN	
 Erdos730Problem	RESIDUAL	rewrite-drift
 Erdos731Problem	RESIDUAL	unknown-const:choose_succ_gt_central
 Erdos732Problem	RESIDUAL	instance-synth
@@ -1637,7 +1637,7 @@ Erdos733LimitBounds	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
 Erdos733Problem	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
 Erdos734Problem	RESIDUAL	instance-synth
 Erdos736Problem	RESIDUAL	unknown-const:colorable_of_isEmpty
-Erdos737Problem	RESIDUAL	elab-drift
+Erdos737Problem	GREEN	
 Erdos738Problem	RESIDUAL	unclassified
 Erdos739Problem	RESIDUAL	dot-notation-drift
 Erdos73Aristotle	RESIDUAL	proof-drift
@@ -1736,7 +1736,7 @@ Erdos820Problem	GREEN
 Erdos821Problem	RESIDUAL	proof-drift
 Erdos822Problem	RESIDUAL	instance-synth
 Erdos823Problem	RESIDUAL	unknown-const:ArithmeticFunction.totient
-Erdos824Problem	RESIDUAL	elab-drift
+Erdos824Problem	GREEN	
 Erdos824ProblemProvable	RESIDUAL	type-mismatch
 Erdos825Problem	GREEN	
 Erdos826Problem	GREEN	
@@ -1746,7 +1746,7 @@ Erdos82Problem	GREEN
 Erdos830Problem	GREEN	
 Erdos831Problem	PRE-EXISTING	never-compiled:p_e1
 Erdos832Problem	PRE-EXISTING	never-compiled:V
-Erdos833Problem	RESIDUAL	elab-drift
+Erdos833Problem	GREEN	
 Erdos834Problem	GREEN	
 Erdos835Problem	GREEN	
 Erdos836Problem	RESIDUAL	instance-synth

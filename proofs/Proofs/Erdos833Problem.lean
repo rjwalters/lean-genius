@@ -110,7 +110,7 @@ of the maximum vertex degree in H.
 /-- f(r) = minimum over all r-uniform 3-chromatic hypergraphs of the
     maximum vertex degree. Every such H has a vertex in ≥ f(r) edges. -/
 noncomputable def f (r : ℕ) : ℕ :=
-  sInf { d : ℕ | ∀ (V : Type*) [Fintype V] [DecidableEq V],
+  sInf { d : ℕ | ∀ (V : Type) [Fintype V] [DecidableEq V],
     ∀ H : UniformHypergraph V, H.r = r → HasChromaticNumber3 H →
       ∃ v : V, vertexDegree H v ≥ d }
 
