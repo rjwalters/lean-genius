@@ -57,14 +57,15 @@
       "diagonalReal_pos / diagonalReal_lt_one / diagonalReal_mem_Ioo: the digit-{1,2} diagonal is squeezed between ∑1/10^(n+1)=1/9 and ∑2/10^(n+1)=2/9, so diagonalReal f ∈ (0,1) for every f (via the geometric majorant tsum_geo_shift = 2/9)",
       "not_surjective_nat_Ioo / uncountable_Ioo: the open unit interval (0,1) is uncountable — the diagonal of any listing lands in (0,1) yet differs from every listed real — strengthening uncountable_real to an arbitrarily small subinterval, still with NO appeal to Cardinal.not_countable_real",
       "diagonalReal_ge_one_ninth / diagonalReal_le_two_ninths / diagonalReal_mem_Icc: the SHARP two-sided localization diagonalReal f ∈ [1/9, 2/9]. The docstring claimed the diagonal is squeezed between ∑1/10^(n+1)=1/9 and ∑2/10^(n+1)=2/9, but only the upper end (≤2/9) had been formalized; the matching lower bound 1/9 ≤ diagonalReal f is proved here from the geometric minorant tsum_geo_shift_one = 1/9 (every digit db f n ≥ 1 via term_ge'), tightening diagonalReal_mem_Ioo (0,1) to the exact interval [1/9,2/9]. Axiom-free ([propext, Classical.choice, Quot.sound]).",
-      "diagonalReal_congr / diagonalReal_mono / diagonalReal_eq_one_ninth_add: the STRUCTURAL behavior of the diagonal map f ↦ diagonalReal f. (1) Locality (diagonalReal_congr): diagonalReal f depends only on the diagonal digits digit (f n) n — two enumerations agreeing there have equal diagonal reals regardless of off-diagonal values, the mechanical content of the word 'diagonal'. (2) Monotonicity (diagonalReal_mono): the map is monotone in the disagreeing-digit sequence db (∀ n, db f n ≤ db g n → diagonalReal f ≤ diagonalReal g), via Summable.tsum_le_tsum on the defining series. (3) Binary decomposition (diagonalReal_eq_one_ninth_add): db f n = 1 + [digit (f n) n = 1] splits diagonalReal f = 1/9 + ∑' n, [digit (f n) n = 1]/10^(n+1), exhibiting the diagonal as the minorant 1/9 plus a {0,1}-digit indicator tail (bounded by ∑1/10^(n+1)=1/9), making the localization [1/9,2/9] transparent. Axiom-free ([propext, Classical.choice, Quot.sound])."
+      "diagonalReal_congr / diagonalReal_mono / diagonalReal_eq_one_ninth_add: the STRUCTURAL behavior of the diagonal map f ↦ diagonalReal f. (1) Locality (diagonalReal_congr): diagonalReal f depends only on the diagonal digits digit (f n) n — two enumerations agreeing there have equal diagonal reals regardless of off-diagonal values, the mechanical content of the word 'diagonal'. (2) Monotonicity (diagonalReal_mono): the map is monotone in the disagreeing-digit sequence db (∀ n, db f n ≤ db g n → diagonalReal f ≤ diagonalReal g), via Summable.tsum_le_tsum on the defining series. (3) Binary decomposition (diagonalReal_eq_one_ninth_add): db f n = 1 + [digit (f n) n = 1] splits diagonalReal f = 1/9 + ∑' n, [digit (f n) n = 1]/10^(n+1), exhibiting the diagonal as the minorant 1/9 plus a {0,1}-digit indicator tail (bounded by ∑1/10^(n+1)=1/9), making the localization [1/9,2/9] transparent. Axiom-free ([propext, Classical.choice, Quot.sound]).",
+      "seqReal / seqEmbedding / seqReal_injective / mk_seq_le_mk_real: the EXPLICIT INJECTION (ℕ → Bool) ↪ ℝ — the constructive cardinality LOWER bound 𝔠 ≤ #ℝ, answering the entry's own open question 'package the result as an explicit injection {sequences} ↪ ℝ' and dual to the no-surjection UPPER form. To a binary sequence s : ℕ → Bool associate the listing n ↦ (if s n then 10^{-(n+1)} else 0), whose n-th diagonal digit is 1 exactly when s n = true (digit_indicator, the same floor computation attaining the endpoints of [1/9,2/9]); feeding it to diagonalReal gives seqReal s, whose n-th digit is 2 when s n = true and 1 otherwise (digit_seqReal). The whole sequence s is thus READ BACK from the digits of the single real seqReal s, so seqReal is injective (seqReal_injective) — packaged as a Function.Embedding seqEmbedding : (ℕ → Bool) ↪ ℝ. The image lies entirely in the tiny interval [1/9,2/9] (seqReal_mem_Icc): a continuum-sized set embedded in an interval of length 1/9. The cardinality corollary #(ℕ → Bool) ≤ #ℝ (mk_seq_le_mk_real) is obtained via Cardinal.mk_le_of_injective from the explicit witness — NO appeal to Cardinal.not_countable_real or #ℝ = 𝔠. Axiom-free ([propext, Classical.choice, Quot.sound])."
     ],
     "dateAdded": "2026-07-11",
-    "lineCount": 482,
+    "lineCount": 557,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; #print axioms reports only [propext, Classical.choice, Quot.sound]. No use of Cardinal.not_countable_real.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 36,
-    "definitionCount": 4
+    "theoremCount": 41,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Cantor's 1874 proof that the reals are uncountable was recast in 1891 as the diagonal argument: given any list r₀, r₁, r₂, … of reals, build a new real x whose n-th digit differs from the n-th digit of rₙ, so x cannot equal any rₙ and the list is incomplete. This constructive form — an actual witness x, defined explicitly from the list — is strictly stronger than the non-constructive cardinal inequality ℵ₀ < #ℝ, and it is the version taught in every first course. The parent gallery entry cantor-diagonalization-oq-06 proves ¬ Countable ℝ through Mathlib's Cardinal.not_countable_real; its stated open question asks precisely for the self-contained diagonal construction supplied here. The same diagonal mechanism underlies Cantor's theorem #A < #𝒫(A), Turing's halting problem, Gödel's incompleteness, and Russell's paradox.",
@@ -155,8 +156,8 @@
     "summary": "A complete, fully verified (0 sorries, 0 axioms) constructive form of Cantor's diagonal argument: an explicit definable real diagonalReal f whose n-th decimal digit differs from that of f n, giving diagonalReal f ≠ f n directly and hence that no f : ℕ → ℝ is surjective — without invoking Cardinal.not_countable_real or #ℝ = 𝔠. The Mathlib-vocabulary corollaries Uncountable ℝ and not_surjective_of_countable are then derived from this bespoke witness, and the construction is sharpened to show the diagonal always lands in the open unit interval (0,1) — squeezed between ∑1/10^(n+1)=1/9 and ∑2/10^(n+1)=2/9 — yielding Uncountable (0,1): uncountability is already carried by an arbitrarily small subinterval.",
     "implications": "Turns the parent entry's cardinality-based uncountability of ℝ into an explicit witness, matching how the diagonal argument is taught and providing a reusable digit-level template for downstream diagonalizations. The floor/head-tail computation is a self-contained way to force a real to disagree with a prescribed sequence.",
     "openQuestions": [
-      "Show diagonalReal f ∈ [0,1] and package the result as an explicit injection {sequences} ↪ ℝ.",
-      "Prove the constructive form implies ¬ Countable ℝ directly, connecting back to cantor-diagonalization-oq-06 without Mathlib's cardinality lemmas."
+      "RESOLVED: the explicit injection {sequences} ↪ ℝ is now supplied as seqEmbedding : (ℕ → Bool) ↪ ℝ (seqReal_injective), giving the constructive lower bound #(ℕ → Bool) ≤ #ℝ (mk_seq_le_mk_real) with its whole image inside [1/9, 2/9]. Next: pin the cardinality equality #(ℕ → Bool) = 𝔠 to read off Cardinal.continuum ≤ #ℝ explicitly, and show seqReal is surjective onto a Cantor-set-like subset to obtain an explicit bijection with the continuum.",
+      "Prove the constructive form implies ¬ Countable ℝ directly, connecting back to cantor-diagonalization-oq-06 without Mathlib's cardinality lemmas (already achieved for the surjection form via uncountable_real / uncountable_Ioo)."
     ]
   },
   "leanFile": {
@@ -165,10 +166,10 @@
     ],
     "opens": [],
     "namespace": "CantorDiagonalizationOQ06OQ01",
-    "lineCount": 482,
+    "lineCount": 557,
     "axiomCount": 0,
-    "theoremCount": 36,
-    "definitionCount": 4,
+    "theoremCount": 41,
+    "definitionCount": 6,
     "path": "Proofs/CantorDiagonalizationOQ06OQ01.lean",
     "sorries": 0
   },
