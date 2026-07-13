@@ -150,6 +150,11 @@
       "id": "gram-linear-independence-iff-oq-01-oq-03-oq-01-oq-02",
       "question": "Generalize the distance identity from ℝ to an arbitrary RCLike field 𝕜 (in particular ℂ): Mathlib's gramSchmidt, Submodule.starProjection, and Metric.infDist are all available over 𝕜, so ‖gramSchmidt 𝕜 v i‖ = Metric.infDist (v i) (span 𝕜 {v j | j < i}) should hold verbatim. Identify precisely which lemmas (e.g. span_gramSchmidt_Iio, the orthogonal-decomposition step) need the RCLike generalization versus carrying over unchanged.",
       "significance": "medium"
+    },
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-03-oq-01-oq-03",
+      "question": "Derive Hadamard's inequality as an immediate corollary of the distance identity. Since orthogonal projection is norm-nonincreasing, Metric.infDist (v i) Kᵢ = ‖gramSchmidt ℝ v i‖ ≤ ‖v i‖ for every i; multiplying over i and using √(det gram v) = ∏ Metric.infDist (v i) Kᵢ gives √(det gram v) ≤ ∏ ‖v i‖, with equality iff each vᵢ is orthogonal to the earlier span (the family is orthogonal). Formalise this bound and its equality characterization directly from the base × height factorization.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
@@ -186,7 +191,8 @@
     "implications": "This answers the parent entry's first open question, making the base × height reading of the Gram determinant literal: the content of n vectors is the running product of perpendicular distances to the spans of their predecessors. Because the earlier span is finite-dimensional regardless of the ambient space, the distance identity needs no completeness or finrank hypothesis — it holds in every real inner product space. The intermediate gramSchmidt_eq_sub_starProjection (Gram–Schmidt = projection residual) is a reusable bridge between Mathlib's Gram–Schmidt and orthogonal-projection APIs.",
     "openQuestions": [
       "Express the base × height recursion as a one-step multiplicative recursion content(v 0, …, v i) = dist(v i, earlier span) · content(v 0, …, v (i-1)).",
-      "Generalize the distance identity from ℝ to an arbitrary RCLike field 𝕜 (in particular ℂ), where gramSchmidt, Submodule.starProjection and Metric.infDist all remain available."
+      "Generalize the distance identity from ℝ to an arbitrary RCLike field 𝕜 (in particular ℂ), where gramSchmidt, Submodule.starProjection and Metric.infDist all remain available.",
+      "Derive Hadamard's inequality √(det gram v) ≤ ∏ ‖v i‖ from the distance identity: each height dist(v i, earlier span) ≤ ‖v i‖ because projection is norm-nonincreasing, with equality iff the family is orthogonal."
     ]
   }
 }
