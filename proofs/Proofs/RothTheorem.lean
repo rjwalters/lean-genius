@@ -7636,4 +7636,154 @@ theorem maxSqDiffFreeCard_two_mul_prime_le {p : ℕ} [NeZero p] (hp : p.Prime) (
   rw [(Nat.prime_def_minFac.mp hp).2] at hb
   rwa [Real.div_sqrt] at hb
 
+/-! ### Part LXII — the deficit lives on major arcs: the structured-frequency extraction
+
+Part LX extracted a *single* large Fourier coefficient from the exact deficit, but bounding the
+Gauss sum by the *uniform* constant `M = √N` throws away the arithmetic information carried by each
+frequency.  This part keeps the exact per-frequency magnitude `‖G(r)‖ = √(N · gcd((2r).val, N))`
+(`sqGaussSum_normSq_eq_gcd_of_odd`, odd `N`) inside the pigeonhole, exposing that the deficit cannot
+be carried by *minor arcs* (frequencies with `gcd((2r).val, N) = 1`, where `‖G(r)‖ = √N` is smallest)
+alone.
+
+* `sqDiffFree_deficit_le_gcd_weighted` — the sharp form of the density-increment input:
+
+      N·|A|·(|A| − κ)  ≤  Σ_{r ≠ 0} ‖Â(r)‖² · √(N · gcd((2r).val, N)),      κ = #{n : n² = 0}.
+
+  It is the triangle inequality `‖Σ ‖Â(r)‖²·G(r)‖ ≤ Σ ‖Â(r)‖²·‖G(r)‖` applied to the *exact* deficit
+  `sqDiffFree_badMass_norm` (Part LVIII), with `‖G(r)‖` replaced by its exact value.  Every density
+  bound in Parts VI–LII pulled `‖G(r)‖ ≤ M` out uniformly; this keeps it inside the sum.
+
+* `sqDiffFree_exists_major_arc` — the structural consequence.  If every nonzero frequency were a
+  minor arc (`gcd((2r).val, N) = 1`), the weighted bound would collapse to
+  `√N · Σ_{r≠0} ‖Â(r)‖² = √N · |A|·(N − |A|)` by **Parseval**, forcing `|A| < κ + √N`.  Hence a
+  square-difference-free set with `|A| > κ + √N` must have a **major-arc frequency**: some `r ≠ 0`
+  with `2 ≤ gcd((2r).val, N)` — a frequency whose double shares a nontrivial common factor with `N`,
+  i.e. `2r` lies in a proper cyclic subgroup of `ZMod N`.  This is exactly the structured frequency
+  the coset-density increment of Parts LVI–LVII consumes: it upgrades Part LX's "a large coefficient
+  *somewhere*" to "a large coefficient at an *arithmetically structured* frequency".
+
+Honest scope.  For an odd *prime* `p`, every `r ≠ 0` has `(2r).val ∈ {1,…,p−1}` coprime to `p`, so
+*no* major arc exists and the bound reduces to the `√p` prime bound (Part XVIII) — consistent, nothing
+new there.  The content is for *composite* odd `N`, where it locates the increment on a proper
+divisor's subgroup.  It does **not** close `o(N)`: the coset descent still faces the Part LVII
+obstruction (square-difference-freeness does not descend along `g·ZMod N` cosets), and no fixed
+single-scale threshold reaches `o(N)` (Part XLVII).  Everything is 0-axiom, built on
+`sqDiffFree_badMass_norm` (Part LVIII), `sqGaussSum_normSq_eq_gcd_of_odd` (Part X) and
+`parseval_nonzero`. -/
+
+/-- **gcd-weighted deficit bound (odd modulus).**  Keeping the exact per-frequency Gauss magnitude
+`‖G(r)‖ = √(N · gcd((2r).val, N))` inside the triangle inequality on the exact deficit
+`sqDiffFree_badMass_norm`:
+
+    N·|A|·(|A| − κ)  ≤  Σ_{r ≠ 0} ‖Â(r)‖² · √(N · gcd((2r).val, N)),      κ = #{n : n² = 0}.
+
+The sharp form of the Part LX single-scale extraction: the right side weights each frequency by its
+*own* Gauss magnitude, so minor arcs (`gcd = 1`, `‖G‖ = √N`) contribute least. -/
+theorem sqDiffFree_deficit_le_gcd_weighted {N : ℕ} [NeZero N] (hodd : Odd N)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+    (hκle : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card ≤ A.card) :
+    (N : ℝ) * A.card
+        * ((A.card : ℝ) - ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ))
+      ≤ (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2
+            * Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ))) := by
+  classical
+  set κ := (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card with hκ
+  set T := Finset.univ \ {(0 : ZMod N)} with hT
+  set S := T.sum (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) with hS
+  have hκR : (κ : ℝ) ≤ (A.card : ℝ) := by exact_mod_cast hκle
+  have hnormS : ‖S‖ = (N : ℝ) * ((A.card : ℝ) * |(A.card : ℝ) - (κ : ℝ)|) :=
+    sqDiffFree_badMass_norm A hfree
+  have habs : |(A.card : ℝ) - (κ : ℝ)| = (A.card : ℝ) - (κ : ℝ) :=
+    abs_of_nonneg (by linarith)
+  have hGnorm : ∀ r : ZMod N,
+      ‖sqGaussSum r‖ = Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)) := by
+    intro r
+    rw [← sqGaussSum_normSq_eq_gcd_of_odd hodd r, Real.sqrt_sq (norm_nonneg _)]
+  calc (N : ℝ) * A.card * ((A.card : ℝ) - (κ : ℝ))
+      = ‖S‖ := by rw [hnormS, habs]; ring
+    _ ≤ T.sum (fun r : ZMod N => ‖(↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r‖) := by
+          rw [hS]; exact norm_sum_le T _
+    _ = T.sum (fun r : ZMod N =>
+          ‖fourierCoeff A r‖ ^ 2 * Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ))) := by
+          apply Finset.sum_congr rfl
+          intro r _
+          rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+            abs_of_nonneg (by positivity : (0 : ℝ) ≤ ‖fourierCoeff A r‖ ^ 2), hGnorm r]
+
+/-- **Major-arc necessity (odd modulus).**  A square-difference-free set larger than `κ + √N` must
+have a Fourier coefficient supported at an *arithmetically structured* frequency:
+
+    |A| > κ + √N   ⟹   ∃ r ≠ 0,   2 ≤ gcd((2r).val, N).
+
+If every nonzero frequency were a minor arc (`gcd = 1`), the gcd-weighted deficit bound
+`sqDiffFree_deficit_le_gcd_weighted` would collapse via `‖G(r)‖ = √N` and **Parseval**
+(`Σ_{r≠0} ‖Â(r)‖² = |A|·N − |A|²`) to `N·|A|·(|A| − κ) ≤ √N·|A|·(N − |A|)`, forcing `|A| < κ + √N`, a
+contradiction.  So the density increment lives on a proper divisor's subgroup — the structured
+frequency the Part LVI–LVII coset descent consumes. -/
+theorem sqDiffFree_exists_major_arc {N : ℕ} [NeZero N] (hodd : Odd N)
+    (A : Finset (ZMod N))
+    (hfree : ∀ x ∈ A, ∀ n : ZMod N, n ^ 2 ≠ 0 → x + n ^ 2 ∉ A)
+    (hbig : ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ)
+        + Real.sqrt N < A.card) :
+    ∃ r : ZMod N, r ≠ 0 ∧ 2 ≤ Nat.gcd (2 * r).val N := by
+  classical
+  by_contra hcon
+  push_neg at hcon
+  have hmem0 : ∀ r ∈ Finset.univ \ {(0 : ZMod N)}, r ≠ 0 := by
+    intro r hr
+    rw [Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2
+  -- under the contradiction hypothesis, every nonzero frequency is a minor arc
+  have hg1 : ∀ r ∈ Finset.univ \ {(0 : ZMod N)}, Nat.gcd (2 * r).val N = 1 := by
+    intro r hr
+    have hpos : 0 < Nat.gcd (2 * r).val N :=
+      Nat.gcd_pos_of_pos_right _ (Nat.pos_of_ne_zero (NeZero.ne N))
+    have hlt := hcon r (hmem0 r hr)
+    omega
+  have hsN : (0 : ℝ) ≤ Real.sqrt N := Real.sqrt_nonneg _
+  have hκle : (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card ≤ A.card := by
+    have hlt : ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) < (A.card : ℝ) := by
+      linarith
+    exact_mod_cast hlt.le
+  have hbound := sqDiffFree_deficit_le_gcd_weighted hodd A hfree hκle
+  -- minor-arc simplification of the weighted sum, via Parseval
+  have hRHS : (Finset.univ \ {(0 : ZMod N)}).sum
+        (fun r : ZMod N => ‖fourierCoeff A r‖ ^ 2
+          * Real.sqrt ((N : ℝ) * (Nat.gcd (2 * r).val N : ℝ)))
+      = Real.sqrt N * ((A.card : ℝ) * N - (A.card : ℝ) ^ 2) := by
+    rw [← parseval_nonzero A, Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro r hr
+    rw [hg1 r hr]
+    push_cast
+    rw [mul_one]
+    ring
+  rw [hRHS] at hbound
+  -- basic positivity, then the contradiction
+  have hspos : (0 : ℝ) < Real.sqrt N :=
+    Real.sqrt_pos.mpr (by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N))
+  have hApos : (0 : ℝ) < A.card := by
+    have hκ1 : 1 ≤ (Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card :=
+      Finset.card_pos.mpr ⟨0, by simp⟩
+    have : (1 : ℝ) ≤ ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) := by
+      exact_mod_cast hκ1
+    linarith
+  have hs2 : Real.sqrt N ^ 2 = N := Real.sq_sqrt (Nat.cast_nonneg N)
+  have hgap : Real.sqrt N < (A.card : ℝ)
+      - ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ) := by linarith
+  -- `s·((a−k) − s) > 0` (with `s = √N`), the seed of the bracket positivity
+  have hprod : (0 : ℝ) < Real.sqrt N
+      * (((A.card : ℝ) - ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ))
+          - Real.sqrt N) :=
+    mul_pos hspos (sub_pos.mpr hgap)
+  have hsa : (0 : ℝ) < Real.sqrt N * A.card := mul_pos hspos hApos
+  -- the bracket `N·(a−k) − √N·N + √N·a > 0` (i.e. `√N·(a−k) + a > N` after `÷√N`)
+  have hbrkN : (0 : ℝ) < (N : ℝ)
+      * ((A.card : ℝ) - ((Finset.univ.filter (fun n : ZMod N => n ^ 2 = 0)).card : ℝ))
+      - Real.sqrt N * N + Real.sqrt N * A.card := by
+    nlinarith [mul_pos hspos hprod, hsa, hs2]
+  -- from `hbound`: `a·(N(a−k) − √N·N + √N·a) ≤ 0`, contradicting `a > 0` and `hbrkN > 0`
+  nlinarith [hbound, mul_pos hApos hbrkN]
+
 end Szemeredi.Roth
