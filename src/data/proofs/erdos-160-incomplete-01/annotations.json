@@ -9,6 +9,19 @@
     "type": "concept",
     "title": "Overview: The Exact Small-N Floor of the 4-AP 3-Diverse Colouring Number",
     "content": "h(N) is the least number of colours needed to colour {1,…,N} so that every four-term arithmetic progression receives at least three distinct colours. Erdős #160 (OPEN) asks for the growth of h(N); the known bounds are deep (h(N) ≪ N^{2/3}, sharpened by Hunter, and h(N) ≫ exp(c(log N)^{1/9})) and appear in the parent file Erdos160Problem.lean only as axioms. This file proves, with no axioms and no sorry, the elementary but exact base of the function — the part the asymptotics build on but never state: not_achievable_le_two (two colours can never be 3-diverse once a 4-AP exists, since a 4-term progression has only 4 elements, so ≤ 2 colours give ≤ 2 distinct values < 3); h_ge_three (hence h(N) ≥ 3 for every N ≥ 4, a certain lower bound sitting below all the axiomatised asymptotics); and h_four (h(4) = 3 exactly, the first nontrivial value, attained by the colouring 1,2,3,1). Together with the parent file's h(N) ≤ 1 for N ≤ 3, this pins the function completely up to the first 4-AP: h = 0,1,1,1 on N = 0,1,2,3 and h(4) = 3. Status: 0 sorries, 0 axioms, no native_decide.",
+    "mathContext": "The floor is a pigeonhole bound. A four-term AP has exactly four elements; a palette of $k \\le 2$ colours realises at most $2 < 3$ distinct values on them, so $N \\ge 4 \\Rightarrow \\neg\\,\\mathrm{Achievable}(N,k)$, i.e. $h(N) \\ge 3$. The matching cap $h(4) = 3$ is witnessed by $c = (1,2,3,1)$, whose unique 4-AP $\\{1,2,3,4\\}$ carries $|\\{0,1,2\\}| = 3$ colours. This exactly determines the first five values $h = 0,1,1,1,3$ on $N = 0,\\dots,4$, the base case beneath the axiomatised envelope $\\exp(c(\\log N)^{1/9}) \\ll h(N) \\ll N^{2/3}$.",
+    "prerequisites": [
+      "The definition of h(N) as an sInf over 3-diverse colourings (from the parent Erdos160Problem.lean)",
+      "The pigeonhole principle in the form Finset.card_le_univ",
+      "Nat.sInf_le and le_antisymm for pinning an exact extremal value"
+    ],
+    "relatedConcepts": [
+      "arithmetic progressions",
+      "diverse / rainbow colourings",
+      "anti-Ramsey theory",
+      "pigeonhole principle",
+      "Erdős problems"
+    ],
     "significance": "critical"
   },
   {
