@@ -110,6 +110,7 @@ theorem asymptotic_gap :
     push_neg at hC_neg
     have h1 := hc_bound 1 (by omega)
     have h2 := hC_bound 1 (by omega)
+    simp only [Nat.cast_one, mul_one] at h2
     linarith
   · intro n hn
     exact ⟨hc_bound n hn, hC_bound n hn⟩

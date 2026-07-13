@@ -110,8 +110,11 @@ theorem isOpenAP_residue (a : ℤ) {d : ℤ} (hd : 0 < d) : IsOpenAP (R a d) := 
   intro x hx
   refine ⟨d, hd, fun y hy => ?_⟩
   -- `d ∣ (y − x)` and `d ∣ (x − a)` give `d ∣ (y − a)`.
-  have : d ∣ ((y - x) + (x - a)) := dvd_add hy hx
-  simpa using this
+  have hthis : d ∣ ((y - x) + (x - a)) := dvd_add hy hx
+  show y ∈ R a d
+  simp only [R, Set.mem_setOf_eq]
+  have heq : (y - x) + (x - a) = y - a := by ring
+  rwa [heq] at hthis
 
 /-- For `d > 0` the residue class `R a d` is closed: its complement is open,
 because *not* being congruent to `a` mod `d` is also stable under shifting by

@@ -1831,7 +1831,7 @@ Erdos900Problem	RESIDUAL	proof-drift
 Erdos901Aristotle	GREEN	
 Erdos901Problem	GREEN	
 Erdos901ProblemAristotle	GREEN	
-Erdos902Problem	RESIDUAL	proof-drift
+Erdos902Problem	GREEN	
 Erdos903Problem	RESIDUAL	unknown-const:p
 Erdos904Problem	GREEN	
 Erdos905Problem	RESIDUAL	instance-synth
@@ -2067,7 +2067,7 @@ GreensTheoremOQ01OQ01OQ03	RESIDUAL	unknown-const:MeasureTheory.Measure.prod_mono
 GreensTheoremOQ03OQ04	RESIDUAL	type-mismatch
 GreensTheoremOQ04	RESIDUAL	type-mismatch
 GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02	RESIDUAL	type-mismatch
-HarmonicDivergence	RESIDUAL	proof-drift
+HarmonicDivergence	GREEN	
 HarmonicDivergenceOQ02	RESIDUAL	type-mismatch
 HarmonicDivergenceOQ04	RESIDUAL	unknown-const:not_summable_const_of_ne_zero
 HermiteFloorIdentity	GREEN	
@@ -2125,7 +2125,7 @@ InfinitudePrimes4k1OQ03	RESIDUAL	unknown-const:Nat.Prime.mod_four_ne_three_of_dv
 InfinitudePrimes4k3OQ01	RESIDUAL	parse-error
 InfinitudePrimes4k3OQ01Q12Q24	RESIDUAL	parse-error
 InfinitudePrimes4k3OQ03	GREEN	
-InfinitudePrimesOQ01	RESIDUAL	type-mismatch
+InfinitudePrimesOQ01	GREEN	
 IntermediateValueTheoremOQ03	RESIDUAL	unknown-const:intermediate_value_zero_of_le
 InverseGalois	GREEN	
 InverseGaloisA5	GREEN	
@@ -2414,7 +2414,7 @@ ShannonChannelCodingOQ03	GREEN
 ShannonChannelCodingOQ03Aristotle	RESIDUAL	signature-drift
 ShannonChannelCodingOQ04OQ01	GREEN	
 ShannonChannelCodingOQ04OQ01OQ01	GREEN	
-ShannonEntropyAristotle	RESIDUAL	type-mismatch
+ShannonEntropyAristotle	GREEN	
 ShannonEntropyOQ01	GREEN	
 ShannonEntropyOQ01OQ01	GREEN	
 ShannonEntropyOQ02	RESIDUAL	rewrite-drift
