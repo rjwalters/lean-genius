@@ -53,7 +53,8 @@
       "iUnion_ramification_valueGroup in proofs/Proofs/PuiseuxTheorem.lean (Part XIV): ⋃_n level-n value groups = {v ≠ ⊤} = ℚ; each rational realized at its own denominator level via exists_ramification_orderTop_eq (q.num/q.den); valuation shadow of iSup_puiseuxRamificationSubfield [VERIFIED 0/0]",
       "PuiseuxTheoremOQ03.lean: ynMinusXm_exponent_isInt_iff — (∃k:ℤ, m/n=k) ↔ n∣m (ℚ-arithmetic core)",
       "PuiseuxTheoremOQ03.lean: ynMinusXm_root_in_range_iff — SHARP iff: root x^{m/n} of Yⁿ−xᵐ unramified (in Laurent base K⸨x⸩) ↔ n∣m (sharpens one-directional binomial_root_not_in_range_of_not_isInt)",
-      "PuiseuxTheoremOQ03.lean: ysqMinusX4_root_in_range — first in-range (unramified) worked example, root x² of Y²−x⁴"
+      "PuiseuxTheoremOQ03.lean: ysqMinusX4_root_in_range — first in-range (unramified) worked example, root x² of Y²−x⁴",
+      "PuiseuxTheoremOQ01.lean: +artinSchreierExp_range_isPWO, +artinSchreierSeries (def), +artinSchreierSeries_carries, +artinSchreierSeries_not_puiseux, +exists_hahnSeries_not_puiseux. 0-sorry/0-axiom, docker [3059/3059]. 131→194 lines."
     ],
     "insights": [
       "The binomial/single-Newton-edge case is the entire algebraic content available without convergence machinery: y=single(m/n)a with aⁿ=c gives yⁿ=single m c via HahnSeries.single_pow; IsAlgClosed only supplies the n-th root a of c (char 0 NOT needed for this fragment).",
@@ -65,7 +66,8 @@
       "Union backward direction: for q:ℚ realize at level ⟨q.den,q.pos⟩:ℕ+ with k=q.num; the inner ℚ-equality (q.num:ℚ)/((⟨q.den,q.pos⟩:ℕ+):ℚ)=q is exactly Rat.num_div_den q (PNat cast defeq to Nat cast), lifted to WithTop via exact_mod_cast.",
       "STRUCTURE (researcher-5, 2026-07-11): the level-n value group, previously only a raw Set (WithTop ℚ) of attained orderTop values, is literally the cyclic AddSubgroup.zmultiples ((n:ℚ)⁻¹) of ℚ. mem via AddSubgroup.mem_zmultiples_iff + zsmul_eq_mul (k • n⁻¹ = k/n); mono reuses the k/n=(k·d)/n' cast juggling (push_cast + div_eq_div_iff) from IsPuiseuxOfRamification.mono; iSup=⊤ realizes each q at level q.den via Rat.num_div_den. Gives the AddSubgroup-tower analogue of the subring tower iSup_puiseuxRamificationSubring.",
       "Session 2026-07-12 (researcher-8): the value-subgroup side had mono/directed/iSup but only a ONE-DIRECTIONAL inclusion. Added the order-embedding characterization ramificationValueSubgroup_le_iff ((1/n)ℤ ≤ (1/n′)ℤ ↔ n∣n′, converse of mono) + ramificationValueSubgroup_injective (distinct levels ⟹ distinct subgroups). So n↦(1/n)ℤ is an order embedding of (ℕ⁺,∣) into AddSubgroup ℚ and the iSup=⊤ filtration is faithful. 0-axiom, docker-verified [3070]. Forward proof: generator 1/n∈level n′ ⟹ 1/n=k/n′ ⟹ n′=k·n ⟹ n∣n′ (div_eq_div_iff + linear_combination + PNat.dvd_iff).",
-      "The binomial root x^{m/n} of Yⁿ−xᵐ is unramified (integer valuation, lies in K⸨x⸩) exactly when n∣m, i.e. reduced ramification index n/gcd(n,m)=1. Prior file had only the one-directional not-isInt⟹ramified; the biconditional pins the exact ramification criterion."
+      "The binomial root x^{m/n} of Yⁿ−xᵐ is unramified (integer valuation, lies in K⸨x⸩) exactly when n∣m, i.e. reduced ramification index n/gcd(n,m)=1. Prior file had only the one-directional not-isInt⟹ramified; the biconditional pins the exact ramification criterion.",
+      "OQ-01 (Artin–Schreier obstruction, gallery entry puiseux-theorem-oq-01): the obstruction is now NON-VACUOUS. artinSchreierExp_range_isPWO proves the exponent set {−1/p^{k+1}} is IsPWO (strictly monotone image of ℕ via Set.isPWO_of_wellQuasiOrderedLE + image_of_monotone), so artinSchreierSeries builds an explicit HahnSeries over any field with that support, and exists_hahnSeries_not_puiseux realises the obstruction by a genuine Hahn-field element."
     ],
     "mathlibGaps": [],
     "nextSteps": [
