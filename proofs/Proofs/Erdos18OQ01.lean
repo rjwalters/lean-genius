@@ -893,4 +893,133 @@ theorem h_two_pow (k : ℕ) : h (2 ^ k) = k := by
   have hbound := le_two_pow_h (two_pow_practical k)
   exact (Nat.pow_le_pow_iff_right (by norm_num)).mp hbound
 
+/-! ## Subadditivity of the representation function `h`
+
+The function `h(m)` counts the *fewest* divisors of `m` needed to represent every
+`1 ≤ k < m`.  This section proves it is **subadditive along products**:
+`h(m·n) ≤ h(m) + h(n)` for practical `m, n`.  The witness is the concatenation of a
+minimal covering set `S_m` of `m` with the `m`-scaled copy `m·S_n` of a minimal
+covering set of `n` — exactly the divisor construction of `practical_mul`, but now
+tracking cardinalities.  Writing `k = m·q + r` (`0 ≤ r < m`, `0 ≤ q < n`), the low
+part `r` is covered inside `S_m` (elements `< m`) and the high part `m·q` inside
+`m·S_n` (elements `≥ m`); the two are disjoint, so the union covers `[1, m·n)` using
+`|S_m| + |S_n| = h(m) + h(n)` divisors.  Iterating gives `h(m^k) ≤ k·h(m)`. -/
+
+/-- **A minimal covering set is attained.**  For practical `m` the `sInf` defining
+    `h(m)` is over a nonempty set (the full divisor set `divisors m` covers `[1, m)`),
+    so it is attained: there is a set `S ⊆ divisors m` of cardinality exactly `h(m)`
+    that still represents every `1 ≤ k < m`.  This is the `Nat.sInf_mem` extraction
+    inlined in `le_two_pow_h`, named here for reuse. -/
+theorem exists_h_covering {m : ℕ} (hp : IsPractical m) :
+    ∃ S : Finset ℕ, S ⊆ divisors m ∧ S.card = h m ∧
+      ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k := by
+  have hne : {s : ℕ | ∃ S : Finset ℕ, S ⊆ divisors m ∧ S.card = s ∧
+      ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k}.Nonempty := by
+    refine ⟨(divisors m).card, divisors m, Finset.Subset.refl _, rfl, ?_⟩
+    intro k hk1 hkm
+    exact hp.2 k hk1 hkm
+  exact Nat.sInf_mem hne
+
+/-- **Subadditivity `h(m·n) ≤ h(m) + h(n)`.**  Take minimal covering sets `S_m` of
+    `m` (size `h(m)`) and `S_n` of `n` (size `h(n)`), guaranteed by
+    `exists_h_covering`.  The set `S = S_m ∪ m·S_n ⊆ divisors (m·n)` has at most
+    `h(m) + h(n)` elements and still covers `[1, m·n)`: for `1 ≤ k < m·n`, split
+    `k = m·(k/m) + k%m`; represent the remainder `k%m` inside `S_m` (all such
+    elements are `< m`) and the scaled quotient `m·(k/m)` inside `m·S_n` (all such
+    elements are `≥ m`), disjointly.  Hence `h(m·n) ≤ |S| ≤ h(m) + h(n)`.  This is the
+    counting refinement of `practical_mul`: not only is `m·n` practical, its
+    representation cost is at most the sum of the factors' costs. -/
+theorem h_mul_le {m n : ℕ} (hpm : IsPractical m) (hpn : IsPractical n) :
+    h (m * n) ≤ h m + h n := by
+  have hm1 : 1 ≤ m := hpm.1
+  have hn1 : 1 ≤ n := hpn.1
+  have hmn0 : m * n ≠ 0 := Nat.mul_ne_zero (by omega) (by omega)
+  obtain ⟨Sm, hSmsub, hSmcard, hSmcov⟩ := exists_h_covering hpm
+  obtain ⟨Sn, hSnsub, hSncard, hSncov⟩ := exists_h_covering hpn
+  -- Scaled copy `A = m · Sn ⊆ divisors (m·n)`, elements `≥ m`, injective image.
+  have hminj : ∀ a ∈ Sn, ∀ b ∈ Sn, m * a = m * b → a = b :=
+    fun a _ b _ hab => Nat.eq_of_mul_eq_mul_left (by omega) hab
+  set A := Sn.image (m * ·) with hAdef
+  have hAsub : A ⊆ divisors (m * n) := by
+    intro x hx
+    rw [hAdef, Finset.mem_image] at hx
+    obtain ⟨d, hdSn, rfl⟩ := hx
+    have hdvd : d ∣ n := Nat.dvd_of_mem_divisors (hSnsub hdSn)
+    exact Nat.mem_divisors.mpr ⟨Nat.mul_dvd_mul_left m hdvd, hmn0⟩
+  have hAcard : A.card = Sn.card := by
+    rw [hAdef]
+    exact Finset.card_image_of_injOn
+      (fun a _ b _ hab => Nat.eq_of_mul_eq_mul_left (by omega) hab)
+  -- `Sm` embeds into `divisors (m·n)` since `m ∣ m·n`.
+  have hSmsub' : Sm ⊆ divisors (m * n) :=
+    hSmsub.trans (Nat.divisors_subset_of_dvd hmn0 ⟨n, rfl⟩)
+  set S := Sm ∪ A with hSdef
+  have hSsub : S ⊆ divisors (m * n) := Finset.union_subset hSmsub' hAsub
+  have hScard : S.card ≤ h m + h n := by
+    calc S.card ≤ Sm.card + A.card := Finset.card_union_le _ _
+      _ = h m + h n := by rw [hSmcard, hAcard, hSncard]
+  -- `S` covers `[1, m·n)`.
+  have hcov : ∀ k, 1 ≤ k → k < m * n → ∃ T ⊆ S, T.sum id = k := by
+    intro k _hk1 hkmn
+    have hrm : k % m < m := Nat.mod_lt k (by omega)
+    have hqn : k / m < n :=
+      (Nat.div_lt_iff_lt_mul (by omega)).mpr (by rw [Nat.mul_comm]; exact hkmn)
+    have hdecomp : m * (k / m) + k % m = k := Nat.div_add_mod k m
+    -- Represent remainder `r = k % m` inside `Sm` (empty subset if `r = 0`).
+    obtain ⟨Tr, hTrsub, hTrsum⟩ : ∃ Tr ⊆ Sm, Tr.sum id = k % m := by
+      rcases Nat.eq_zero_or_pos (k % m) with h0 | hpos
+      · exact ⟨∅, Finset.empty_subset _, by simp [h0]⟩
+      · exact hSmcov (k % m) hpos hrm
+    -- Represent quotient `q = k / m` inside `Sn` (empty subset if `q = 0`).
+    obtain ⟨Tq', hTq'sub, hTq'sum⟩ : ∃ Tq' ⊆ Sn, Tq'.sum id = k / m := by
+      rcases Nat.eq_zero_or_pos (k / m) with h0 | hpos
+      · exact ⟨∅, Finset.empty_subset _, by simp [h0]⟩
+      · exact hSncov (k / m) hpos hqn
+    -- Scale the quotient representation by `m`.
+    have hTqinj : ∀ a ∈ Tq', ∀ b ∈ Tq', m * a = m * b → a = b :=
+      fun a _ b _ hab => Nat.eq_of_mul_eq_mul_left (by omega) hab
+    set Tq := Tq'.image (m * ·) with hTqdef
+    have hTqsub : Tq ⊆ A := by
+      rw [hTqdef, hAdef]
+      exact Finset.image_subset_image hTq'sub
+    have hTqsum : Tq.sum id = m * (k / m) := by
+      rw [hTqdef, Finset.sum_image hTqinj]
+      calc ∑ d ∈ Tq', id (m * d) = m * ∑ d ∈ Tq', d := by
+            simp only [id_eq]; rw [Finset.mul_sum]
+        _ = m * Tq'.sum id := rfl
+        _ = m * (k / m) := by rw [hTq'sum]
+    -- Low part `< m`, high part `≥ m`, hence disjoint.
+    have hdisj : Disjoint Tr Tq := by
+      rw [Finset.disjoint_left]
+      intro a haTr haTq
+      have hle : a ≤ Tr.sum id :=
+        Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) haTr
+      rw [hTrsum] at hle
+      rw [hTqdef, Finset.mem_image] at haTq
+      obtain ⟨d, hdTq', rfl⟩ := haTq
+      have hd1 : 1 ≤ d := Nat.pos_of_mem_divisors (hSnsub (hTq'sub hdTq'))
+      have hage : m ≤ m * d := le_mul_of_one_le_right (by omega) hd1
+      omega
+    refine ⟨Tr ∪ Tq, ?_, ?_⟩
+    · rw [hSdef]
+      exact Finset.union_subset (hTrsub.trans Finset.subset_union_left)
+        (hTqsub.trans Finset.subset_union_right)
+    · rw [Finset.sum_union hdisj, hTrsum, hTqsum]; omega
+  calc h (m * n) ≤ S.card := Nat.sInf_le ⟨S, hSsub, rfl, hcov⟩
+    _ ≤ h m + h n := hScard
+
+/-- **`h(m^k) ≤ k · h(m)`.**  Iterating subadditivity `h_mul_le` over the practical
+    powers `m^0, m^1, …` (each practical by `practical_pow`): `h(m^{k+1}) = h(m·m^k)
+    ≤ h(m) + h(m^k) ≤ h(m) + k·h(m) = (k+1)·h(m)`.  So the representation cost of a
+    number in the multiplicative family generated by a single practical base grows at
+    most linearly in the exponent — a concrete upper envelope for `h` on `{m^k}`. -/
+theorem h_pow_le {m : ℕ} (hp : IsPractical m) (k : ℕ) : h (m ^ k) ≤ k * h m := by
+  induction k with
+  | zero => simpa using le_of_eq h_one
+  | succ k ih =>
+    calc h (m ^ (k + 1)) = h (m ^ k * m) := by rw [pow_succ]
+      _ ≤ h (m ^ k) + h m := h_mul_le (practical_pow hp k) hp
+      _ ≤ k * h m + h m := by omega
+      _ = (k + 1) * h m := by ring
+
 end Erdos18OQ01

@@ -2,13 +2,19 @@
 
 **Phase**: ACT
 **Since**: 2026-07-12T00:00:00Z
-**Attempts**: 6
+**Attempts**: 7
 **Status**: available
 
 ## Current Focus
-`Proofs/Erdos18OQ01.lean` (now 53 theorems, 0 axioms, 0 sorries). Session
-2026-07-12 (researcher-9) opened the first work on the **representation function
-`h(m)`** — the actual subject of Erdős #18, previously untouched in the gallery:
+`Proofs/Erdos18OQ01.lean` (now 55 theorems, 0 axioms, 0 sorries). Session
+2026-07-12 (researcher-3) added the first **multiplicative structural law** for
+the representation function `h`: subadditivity `h(m·n) ≤ h(m) + h(n)` (`h_mul_le`,
+the counting refinement of `practical_mul`) and its power corollary `h(m^k) ≤
+k·h(m)` (`h_pow_le`), via the reusable minimal-covering extractor
+`exists_h_covering`. Tight on the base-2 family (`h(2^k)=k=k·h(2)`).
+
+Session 2026-07-12 (researcher-9) opened the first work on the **representation
+function `h(m)`** — the actual subject of Erdős #18, previously untouched:
 
 - `card_le_two_pow_card_of_covers`: a finite set `S` whose subset sums cover the
   initial segment `[0, N)` satisfies `N ≤ 2^|S|` (inject the `N` values into
@@ -33,7 +39,9 @@
   machinery (needs full `[0,σ(m)]` coverage + gcd analysis).
 
 ## Next Action
-Options: (a) exact `h` for other structured families — `h(2^a · 3^b)` or
-`h(m·n)` sub-additivity (`h(m·n) ≤ h(m) + h(n)`?, from concatenating covering
-sets); (b) `h(m) ≥ d(m) - c` type gaps or abundancy-based refinements; (c) the
-greedy sorted-divisor full-range theorem (larger project).
+Subadditivity `h(m·n) ≤ h(m)+h(n)` is now DONE (researcher-3, `h_mul_le`).
+Options: (a) a matching LOWER bound on products beyond `h(m·n) ≥ log₂ m + log₂ n`
+(already implied by `le_two_pow_h`); (b) exact `h(2^a·3^b)` to probe tightness of
+subadditivity off the single-base powers; (c) `h(m) ≥ d(m) - c` gaps or
+abundancy-based refinements; (d) the greedy sorted-divisor full-range theorem
+(larger project).
