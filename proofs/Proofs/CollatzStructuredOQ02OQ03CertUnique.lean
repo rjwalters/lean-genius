@@ -165,4 +165,88 @@ theorem affValid_iff_prefix_deriveVec {b r : ℕ} {v : List Bool} :
   · intro hpre
     exact ⟨affValid_prefix_closed (affValid_deriveVec b r) hpre, hpre.length_le⟩
 
+/-! ## Part XII — no two consecutive odd steps
+
+Every prior part treats the *values* recorded by a certificate (`affValid_orbit_parity`,
+the prefix chain).  This part records a purely **combinatorial** constraint on which parity
+lists can be valid at all: the classical Collatz fact that an odd step is *never* immediately
+followed by another odd step.  The reason is elementary — the odd branch sends
+`d ↦ 3d + 1`, and `3d + 1` is *even* whenever `d` is odd (`3·odd + 1 = even`), so the very
+next step is forced to be a halving.  In certificate terms, the `AffValid.odd` constructor
+recurses into the class `(3c, 3d + 1)` whose constant term is even, and the head bit of any
+valid certificate is pinned to the parity of that constant term.  Hence no valid transcript
+contains `true :: true`, and the certificates satisfy `List.Chain'` for the relation
+"if this bit is odd then the next is even".
+-/
+
+/-- **Head bit = parity of the constant term.**  The leading bit of a valid certificate for
+the affine class `(c, d)` is `true` (an odd step) exactly when the class constant `d` is odd.
+Both constructors of `AffValid` pin the head bit to `d % 2`: `odd` needs `d % 2 = 1` and emits
+`true`; `even` needs `d % 2 = 0` and emits `false`. -/
+theorem affValid_head_parity {b : Bool} {v : List Bool} {c d : ℕ}
+    (h : AffValid (b :: v) c d) : b = true ↔ d % 2 = 1 := by
+  cases h with
+  | odd hc hd _ => simp [hd]
+  | even hc hd _ => simp [hd]
+
+/-- **No `odd :: odd` at the head.**  A valid certificate can never begin `true :: true`: the
+first odd step advances the class constant to `3d + 1`, which is even (`d` was odd), so the
+second bit is forced to be a halving.  Attempting two consecutive odd steps contradicts the
+parity requirement of the inner `AffValid.odd` constructor. -/
+theorem not_affValid_true_true {v : List Bool} {c d : ℕ} :
+    ¬ AffValid (true :: true :: v) c d := by
+  intro h
+  cases h with
+  | odd hc hd htail =>
+      cases htail with
+      | odd hc' hd' _ => omega
+
+/-- **No two consecutive odd steps.**  Any valid parity certificate `v` for an affine class
+`(c, d)` satisfies `List.IsChain` for the relation "an odd bit is followed by an even bit":
+`true` is never immediately followed by `true`.  This is the certificate-level statement of
+the classical Collatz fact that `3n + 1` is always even, so odd steps in the accelerated map
+cannot be adjacent.  Proof by induction on the certificate: after an odd step the class
+constant becomes even, so `affValid_head_parity` forces the next recorded bit to be `false`;
+after an even step the guard is vacuous. -/
+theorem affValid_no_two_consecutive_odd :
+    ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+      List.IsChain (fun a b => a = true → b = false) v := by
+  intro v c d hv
+  induction hv with
+  | nil => exact List.IsChain.nil
+  | @odd v c d hc hd htail ih =>
+      -- `htail : AffValid v (3c) (3d+1)` with `3d+1` even, so the head of `v` is `false`.
+      cases v with
+      | nil => exact List.IsChain.singleton _
+      | cons b w =>
+          refine List.IsChain.cons_cons ?_ ih
+          intro _
+          have hpar := affValid_head_parity htail
+          rcases Bool.dichotomy b with hb | hb
+          · exact hb
+          · exact absurd (hpar.mp hb) (by omega)
+  | @even v c d hc hd htail ih =>
+      cases v with
+      | nil => exact List.IsChain.singleton _
+      | cons b w =>
+          exact List.IsChain.cons_cons (fun h => by simp at h) ih
+
+/-- **Adjacent-position form.**  Restatement of `affValid_no_two_consecutive_odd` at explicit
+indices: if the certificate records an odd step at position `i`, the step at `i + 1` is a
+halving.  Derived from the suffix-validity law `affValid_drop` — the tail `v.drop i` is itself
+a valid certificate that would begin `true :: true` — together with `not_affValid_true_true`. -/
+theorem affValid_true_succ_false {v : List Bool} {c d : ℕ} (hv : AffValid v c d)
+    {i : ℕ} (h : i + 1 < v.length) (hi : v[i] = true) : v[i + 1] = false := by
+  by_contra hne
+  have hi2 : v[i + 1] = true := by
+    rcases Bool.dichotomy (v[i + 1]) with h0 | h1
+    · exact absurd h0 hne
+    · exact h1
+  have hdrop := affValid_drop hv i
+  have e1 : v.drop i = v[i] :: v.drop (i + 1) := List.drop_eq_getElem_cons (by omega)
+  have e2 : v.drop (i + 1) = v[i + 1] :: v.drop (i + 2) := List.drop_eq_getElem_cons (by omega)
+  rw [e1, e2] at hdrop
+  simp only [hi, hi2] at hdrop
+  exact not_affValid_true_true hdrop
+
 end CollatzStructuredOQ02OQ03

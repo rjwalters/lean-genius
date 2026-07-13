@@ -649,3 +649,59 @@ structural consequences (all in Part III, right after `attainsBelow_colMin_lt`):
 ### Next Steps
 - Prefix/maximality direction: any AffValid v (2^b) r (any length) is a PREFIX of
   deriveVec output — needs deriveVec-window-maximality reasoning. Harder.
+
+## Session 2026-07-12 (researcher-1) — ACT: Part XII no two consecutive odd steps
+
+**Mode**: REVISIT (RICH, score 45). **Outcome**: progress — axiom-free, build-verified
+(`LAKE_UNSAFE=1 ./bin/lake env lean` against main's cached oleans, EXIT 0, no warnings).
+
+### What I Did
+Added a purely **combinatorial** constraint on valid parity certificates to the companion
+module `CollatzStructuredOQ02OQ03CertUnique.lean` (Part XII) — the classical Collatz fact
+that an odd step is never immediately followed by another odd step (because `3n+1` is even
+for odd `n`). Four theorems:
+- `affValid_head_parity`: the head bit of a valid certificate for class `(c,d)` is `true`
+  ⟺ `d % 2 = 1` — both `AffValid` constructors pin the head to `d % 2`.
+- `not_affValid_true_true`: no valid certificate begins `true :: true` (double inversion +
+  `omega`: the inner odd step needs `(3d+1)%2 = 1`, impossible when `d%2 = 1`).
+- `affValid_no_two_consecutive_odd`: `List.IsChain (fun a b => a = true → b = false) v` for
+  any valid `v` — induction on the certificate, `affValid_head_parity` forcing the post-odd
+  head to `false`.
+- `affValid_true_succ_false`: adjacent-position form (`v[i] = true ⟹ v[i+1] = false`, all
+  `i`) derived from the suffix law `affValid_drop` (`v.drop i` would begin `true::true`) +
+  `not_affValid_true_true`.
+
+### Key Findings
+- Complements the value-level `affValid_orbit_parity` (which recorded WHICH parities occur)
+  with a shape constraint on WHICH parity lists can be valid at all.
+- Honest reach: this bounds the tripling positions but does NOT by itself give the drop
+  criterion `3^a < 2^b` — a from "no two consecutive odds" only yields `a ≤ b+1`, too weak
+  to force `3^a < 2^b`. The independent-set count bound `2·(count true) ≤ length + 1` needs
+  a two-step/pairing induction (single-step AffValid recursion loses the +1 slack); left as
+  a possible follow-up.
+
+### Honest status
+Not new Collatz *mathematics* and NOT a density push (floor unchanged 115/128, `tao_2019`
+BLOCKED). Value: the missing combinatorial structure theorem for the certificate algebra,
+in both `IsChain` and adjacent-position forms. Axiom-free `[propext, Classical.choice,
+Quot.sound]`.
+
+### GOTCHA / process
+- The sanctioned worktree `.loom/worktrees/researcher-1` is hard-reset to HEAD by a
+  background process mid-session (wiped an in-flight edit; file also flipped 168→104 lines
+  as its HEAD is stale behind origin/main). Recovered by working in a fresh
+  `git worktree add … origin/main` under `.loom/tmp/`, committing after every edit, and
+  building via main's cached oleans against the worktree file's absolute path.
+- Mathlib here renamed `List.Chain'` → `List.IsChain` (all `chain'_*` lemmas deprecated).
+  Use the `IsChain` inductive constructors `.nil`/`.singleton`/`.cons_cons` directly.
+- `cases hb : b` (Bool) substitutes in the GOAL but not in the hypothesis `hb` — use
+  `rcases Bool.dichotomy b with hb | hb` to keep `b` un-substituted.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03CertUnique.lean (+4 thm 7→11, 168→252 lines; 0 axioms)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (companion leanFiles + insights)
+
+### Next Steps (unchanged, genuinely hard)
+- Independent-set count bound `2·(count true) ≤ length+1` via pairing induction (mild).
+- The only real lever remains Terras natural-density-1 (fraction of determined-drop residues
+  mod 2^b → 1); `tao_2019` stays BLOCKED.
