@@ -1336,4 +1336,40 @@ The main theorem: Erdős #1090 is solved affirmatively.
 -/
 theorem erdos_1090 : ∀ k ≥ 3, Erdos1090Question k := erdos_1090_affirmative
 
+/-- **The colored Ramsey property is antitone in the run length `k`.**  If a set `A` forces a
+monochromatic `k`-collinear subset under every `C`-coloring, it also forces a `k'`-collinear one
+for every `k' ≤ k`: the witnessing `S` has `|S| ≥ k ≥ k'`, so it is already `k'`-collinear (the
+same line, the weaker cardinality bound).  No subset extraction is needed because
+`IsKCollinear S k` only lower-bounds `|S|`. -/
+theorem hasRamseyPropertyColored_mono_k (C : Type*) (A : Finset Point) {k k' : ℕ}
+    (hk' : k' ≤ k) (h : HasRamseyPropertyColored C A k) :
+    HasRamseyPropertyColored C A k' := by
+  intro c
+  obtain ⟨S, hSA, ⟨hSk, l, hl⟩, hmono⟩ := h c
+  exact ⟨S, hSA, ⟨le_trans hk' hSk, l, hl⟩, hmono⟩
+
+/-- **The colored Ramsey number is monotone in the run length `k`.**  For a finite palette `C`
+and `3 ≤ k' ≤ k`, `ramseyNumberColored C k' ≤ ramseyNumberColored C k`: demanding a longer
+monochromatic collinear run can only require more points.  This is the run-length companion of
+the palette-monotonicity `ramseyNumberColored_mono_colors`; together they make
+`ramseyNumberColored` monotone in both of its arguments.
+
+Proof: the extremal `k`-witness `B` (`Nat.sInf_mem`, using the construction to see the defining
+set is nonempty) has `|B| = R_C(k)` and, by `hasRamseyPropertyColored_mono_k`, also witnesses the
+`k'`-property, so `R_C(k') ≤ |B| = R_C(k)` by `Nat.sInf_le`. -/
+theorem ramseyNumberColored_mono_k (C : Type*) [Finite C] {k k' : ℕ}
+    (hk' : 3 ≤ k') (hkk : k' ≤ k) :
+    ramseyNumberColored C k' ≤ ramseyNumberColored C k := by
+  have hk3 : 3 ≤ k := le_trans hk' hkk
+  obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C k hk3
+  have hne : {n : ℕ | ∃ B : Finset Point, B.card = n ∧ HasRamseyPropertyColored C B k}.Nonempty :=
+    ⟨A.card, A, rfl, hA⟩
+  obtain ⟨B, hBcard, hB⟩ := Nat.sInf_mem hne
+  have hBk' : HasRamseyPropertyColored C B k' := hasRamseyPropertyColored_mono_k C B hkk hB
+  have h1 : ramseyNumberColored C k' ≤ B.card := by
+    unfold ramseyNumberColored
+    exact Nat.sInf_le ⟨B, rfl, hBk'⟩
+  have h2 : B.card = ramseyNumberColored C k := hBcard
+  omega
+
 end Erdos1090
