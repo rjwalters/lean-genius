@@ -128,6 +128,54 @@ theorem padicValNat_factorial_le_div (p n : ℕ) (hp : p.Prime) :
   rw [padicValNat_factorial_eq_div p n hp]
   exact Nat.div_le_div_right (Nat.sub_le n ((p.digits n).sum))
 
+/-! ### Sharp digit-sum upper bound and the matching lower bound on `v_p(n!)`
+
+The bounds above (`sub_one_mul_padicValNat_factorial_le`, `padicValNat_factorial_le_div`)
+control `v_p(n!)` from *above*, with the digit-sum defect `s_p(n)` measuring the shortfall
+below the heuristic `n/(p-1)`.  The complementary *lower* bound needs an **upper** bound on
+that defect: each base-`p` digit is at most `p - 1`, so `s_p(n) ≤ (p-1)·(#base-p digits)`,
+and the digit count is `⌊log_p n⌋ + 1`.  This makes `s_p(n)` logarithmically small in `n`,
+so `(p-1)·v_p(n!) = n - s_p(n)` is within `(p-1)(⌊log_p n⌋+1)` of `n` — i.e. `v_p(n!)` tracks
+`n/(p-1)` up to a `O(log n)` correction.  Below the general multiplied-form lower bound, then
+the clean two-sided sandwich at `p = 2`, where `p - 1 = 1` gives `n - ⌊log₂ n⌋ - 1 ≤ v₂(n!) ≤
+n - 1`, hence `v₂(n!)/n → 1`. -/
+
+/-- **Digit-sum bounded by the digit count.**  Every base-`p` digit is `< p`, hence `≤ p-1`,
+so the digit sum is at most `(p-1)` times the number of digits.  The elementary upper bound
+complementing `digitSum_pos`; the input to the sharp lower bound on `v_p(n!)`. -/
+theorem digitSum_le_length_mul {p : ℕ} (hp : 1 < p) (n : ℕ) :
+    digitSum p n ≤ (p.digits n).length * (p - 1) := by
+  have h := List.sum_le_card_nsmul (p.digits n) (p - 1)
+    (fun d hd => by have := Nat.digits_lt_base hp hd; omega)
+  simpa [digitSum, smul_eq_mul] using h
+
+/-- **Digit sum is logarithmically small.**  Since a positive `n` has exactly `⌊log_p n⌋ + 1`
+base-`p` digits (`Nat.digits_len`), `s_p(n) ≤ (p-1)·(⌊log_p n⌋ + 1)`.  For `p = 2` this is the
+Hamming weight bound `s_2(n) ≤ ⌊log₂ n⌋ + 1` (at most one 1-bit per bit position). -/
+theorem digitSum_le_log_succ_mul {p : ℕ} (hp : 1 < p) {n : ℕ} (hn : n ≠ 0) :
+    digitSum p n ≤ (Nat.log p n + 1) * (p - 1) := by
+  have h := digitSum_le_length_mul hp n
+  rwa [Nat.digits_len p n hp hn] at h
+
+/-- **Sharp lower bound on `v_p(n!)`, multiplied form.**  From Legendre's identity
+`(p-1)·v_p(n!) = n - s_p(n)` and the logarithmic bound on the defect,
+`n - (p-1)(⌊log_p n⌋+1) ≤ (p-1)·v_p(n!)`.  Together with
+`sub_one_mul_padicValNat_factorial_le` (`≤ n`) this pins `(p-1)·v_p(n!)` into the window
+`[n - (p-1)(⌊log_p n⌋+1), n]`: the valuation matches `n/(p-1)` up to an `O(log n)` term. -/
+theorem sub_one_mul_padicValNat_factorial_ge {p n : ℕ} (hp : p.Prime) (hn : n ≠ 0) :
+    n - (Nat.log p n + 1) * (p - 1) ≤ (p - 1) * padicValNat p n.factorial := by
+  rw [sub_one_mul_padicValNat_factorial_digitSum p n hp]
+  have h := digitSum_le_log_succ_mul hp.one_lt hn
+  omega
+
+/-- **Sharp lower bound on `v_2(n!)`.**  At `p = 2` the leading factor `p - 1 = 1` disappears:
+`n - (⌊log₂ n⌋ + 1) ≤ v_2(n!)`.  The number of factors of `2` in `n!` is within `⌊log₂ n⌋ + 1`
+of the trivial ceiling `n`. -/
+theorem padicValNat_factorial_two_ge {n : ℕ} (hn : n ≠ 0) :
+    n - (Nat.log 2 n + 1) ≤ padicValNat 2 n.factorial := by
+  have h := sub_one_mul_padicValNat_factorial_ge (p := 2) Nat.prime_two hn
+  simpa using h
+
 /-- **The exact zero-locus of `v_p(n!)`.**  For every prime `p`,
 
   `v_p(n!) = 0  ↔  n < p`.
@@ -325,6 +373,25 @@ theorem digitSum_pos {p n : ℕ} (hn : n ≠ 0) : 0 < digitSum p n := by
   have hle : (p.digits n).getLast hne ≤ (p.digits n).sum := List.le_sum_of_mem hmem
   show 0 < (p.digits n).sum
   omega
+
+/-- **Sharp upper bound on `v_2(n!)`.**  Since `s_2(n) ≥ 1` for `n ≥ 1` (`digitSum_pos`),
+Legendre gives `v_2(n!) = n - s_2(n) ≤ n - 1`.  The complementary half of the sandwich; its
+lower half `padicValNat_factorial_two_ge` sits with the digit-count bounds above. -/
+theorem padicValNat_factorial_two_le {n : ℕ} (hn : n ≠ 0) :
+    padicValNat 2 n.factorial ≤ n - 1 := by
+  have hid := sub_one_mul_padicValNat_factorial_digitSum 2 n Nat.prime_two
+  have hpos := digitSum_pos (p := 2) hn
+  omega
+
+/-- **Two-sided quantitative Legendre bound at `p = 2`.**
+`n - (⌊log₂ n⌋ + 1) ≤ v_2(n!) ≤ n - 1`.  The `2`-adic valuation of `n!` sits within
+`⌊log₂ n⌋ + 1` of `n`, so `v_2(n!) = n - O(log n)` and `v_2(n!)/n → 1`.  Sharpens the
+one-sided `padicValNat_factorial_le_div` (which at `p = 2` reads `v_2(n!) ≤ n`) to a matching
+pair of bounds squeezing the valuation to a logarithmic-width window. -/
+theorem padicValNat_factorial_two_sandwich {n : ℕ} (hn : n ≠ 0) :
+    n - (Nat.log 2 n + 1) ≤ padicValNat 2 n.factorial ∧
+      padicValNat 2 n.factorial ≤ n - 1 :=
+  ⟨padicValNat_factorial_two_ge hn, padicValNat_factorial_two_le hn⟩
 
 /-- **Digit-sum invariance under multiplication by the base.**  For every base
 `p > 1`, `s_p(p · n) = s_p(n)`: writing `p · n` in base `p` appends a least-significant

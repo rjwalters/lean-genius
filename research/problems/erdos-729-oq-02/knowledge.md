@@ -276,3 +276,46 @@ sorryAx, no ofReduceBool). File 539 → ~600 L. Parent axiom `barreto_leeham_the
 The elementary base-2/base-p p-adic theory (Legendre, Kummer additive/carry-count defect,
 central binomial `v_2 = s_2`, and now the power-of-two locus of `v_2(C(2n,n))=1`) is
 complete and axiom-free. Only the deep parent `barreto_leeham_theorem` remains.
+
+## Session 2026-07-12 (researcher-3) — sharp two-sided quantitative Legendre bound at p=2
+
+**Mode**: REVISIT (RICH, core solved / DONE). **Outcome**: progress — 6 axiom-free theorems,
+full-file offline EXIT 0.
+
+### What I Did
+The theory had `digitSum_pos` (s_p ≥ 1) and the upper bounds `sub_one_mul_padicValNat_factorial_le`
+(`(p-1)v_p(n!) ≤ n`), `padicValNat_factorial_le_div`. Missing: the SHARP upper bound on the
+digit-sum defect — `s_p(n) ≤ (p-1)·(#digits) = (p-1)·(⌊log_p n⌋+1)` — and the resulting lower
+bound on the valuation. Added to `Erdos729LegendreGeneral.lean`:
+- `digitSum_le_length_mul` : `s_p(n) ≤ (#base-p digits)·(p-1)` (each digit < p via
+  `Nat.digits_lt_base`; `List.sum_le_card_nsmul`).
+- `digitSum_le_log_succ_mul` : `s_p(n) ≤ (⌊log_p n⌋+1)·(p-1)` (`Nat.digits_len`).
+- `sub_one_mul_padicValNat_factorial_ge` : `n − (⌊log_p n⌋+1)·(p-1) ≤ (p-1)·v_p(n!)` (general-p
+  lower bound; complements the existing `_le`).
+- `padicValNat_factorial_two_ge` / `_two_le` / `_two_sandwich` : the clean p=2 sandwich
+  `n − (⌊log₂ n⌋+1) ≤ v_2(n!) ≤ n − 1`.
+
+### Key Findings
+- The defect `s_2(n)` is the Hamming weight, ≤ bit length ≤ ⌊log₂ n⌋+1. So Legendre's
+  `v_2(n!) = n − s_2(n)` puts v_2(n!) within ⌊log₂ n⌋+1 of the trivial ceiling n:
+  `v_2(n!) = n − O(log n)`, hence `v_2(n!)/n → 1`. This is the two-sided sharpening of the
+  file's one-sided `≤ n/(p-1)` bounds — the valuation squeezed to a logarithmic-width window.
+- `padicValNat_factorial_two_le` and `_two_sandwich` must be placed AFTER `digitSum_pos`
+  (forward-reference); the digit-count bounds + `_two_ge` live with the upper-bound family.
+
+### Honest status
+- Not new mathematics about the deep OQ (parent `barreto_leeham_theorem` untouched, out of
+  scope). Value: the sharp digit-count upper bound on `s_p(n)` (general-purpose, Mathlib-gap-
+  adjacent) and the two-sided quantitative Legendre bound the file was missing — the natural
+  complement of its one-sided upper bounds.
+- Verified: `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/Erdos729LegendreGeneral.lean` EXIT 0,
+  0 errors/warnings. `#print axioms` on all 6 → `[propext, Classical.choice, Quot.sound]` only.
+
+### Files Modified
+- proofs/Proofs/Erdos729LegendreGeneral.lean (+6 thm, ~600→668 lines, 0 axioms, 0 sorries)
+- src/data/research/problems/erdos-729-oq-02.json (leanFiles counts synced 183L/10thm →
+  668L/37thm [prior r5/r10 additions were never synced]; +2 insights, +3 builtItems)
+
+### Next Steps
+- General-p division-form lower bound `n/(p-1) − (⌊log_p n⌋+1) ≤ v_p(n!)` (from the multiplied
+  form, minor). The deep parent `barreto_leeham_theorem` remains BLOCKED / out of scope.
