@@ -102,9 +102,10 @@ theorem integral_recurrence (m n : ℕ) :
     intro x _
     have h := (hasDerivAt_pow (m + 1) x).div_const ((m : ℝ) + 1)
     simp only [Nat.add_sub_cancel] at h
-    convert h using 1
-    push_cast
-    skip
+    have hval : (↑(m + 1) : ℝ) * x ^ m / ((m : ℝ) + 1) = x ^ m := by
+      push_cast
+      exact mul_div_cancel_left₀ _ (by positivity)
+    rwa [hval] at h
   have hu' : IntervalIntegrable (fun x => ((n : ℝ) + 1) * (1 - x) ^ n * (-1)) volume 0 1 := by
     apply Continuous.intervalIntegrable; fun_prop
   have hv' : IntervalIntegrable (fun x : ℝ => x ^ m) volume 0 1 := by

@@ -264,7 +264,7 @@ theorem conjecture_implies_rivoal :
     {k : ℕ | 1 ≤ k ∧ Irrational (zetaValue (2 * k + 1))}.Infinite := by
   intro h
   apply Set.infinite_of_injective_forall_mem (f := fun n => n + 1)
-    (fun a b hab => by omega)
+    (fun a b hab => by simpa using hab)
   intro n
   exact ⟨by omega, h (n + 1) (by omega)⟩
 

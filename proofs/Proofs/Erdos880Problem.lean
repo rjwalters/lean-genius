@@ -39,7 +39,7 @@ def isAdditiveBasis (A : Set ℕ) (k : ℕ) : Prop :=
   ∃ N : ℕ, ∀ n ≥ N, ∃ (multiset : Finset ℕ),
     multiset.card ≤ k ∧
     (∀ a ∈ multiset, a ∈ A) ∧
-    multiset.sum = n
+    multiset.sum id = n
 
 /--
 **The k-fold sumset kA:**
@@ -48,7 +48,7 @@ All numbers expressible as sums of k or fewer elements of A
 -/
 def kFoldSumset (A : Set ℕ) (k : ℕ) : Set ℕ :=
   {n | ∃ (multiset : Finset ℕ), multiset.card ≤ k ∧
-    (∀ a ∈ multiset, a ∈ A) ∧ multiset.sum = n}
+    (∀ a ∈ multiset, a ∈ A) ∧ multiset.sum id = n}
 
 /-
 ## Part II: Restricted Sumsets

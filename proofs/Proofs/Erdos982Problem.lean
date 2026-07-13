@@ -94,7 +94,7 @@ with at least k distinct distances to other vertices.
 -/
 noncomputable def guaranteedDistinctDistances (n : ℕ) : ℕ :=
   if h : n < 3 then 0
-  else Nat.find (⟨0, fun _ _ _ _ _ => Nat.zero_le _⟩ :
+  else Nat.find (⟨0, fun _ _ _ => Nat.zero_le _⟩ :
     ∃ k, ∀ (S : Finset Plane), S.card = n → InConvexPosition S →
       maxDistinctDistances S ≥ k)
 
@@ -317,7 +317,8 @@ theorem erdos_982_status :
     intro n hn S hcard hconv
     exact (nppz_bound).choose_spec n hn S hcard hconv
   · intro n hn
-    exact regular_polygon_distances n hn
+    obtain ⟨S, hcard, hconv, heq⟩ := regular_polygon_distances n hn
+    exact ⟨S, hcard, hconv, le_of_eq heq⟩
 
 /--
 **Summary:**

@@ -175,7 +175,7 @@ theorem gAnti_tendsto : Tendsto (fun N : ℕ => gAnti k N) atTop (𝓝 0) := by
   have hlim : Tendsto (fun N : ℕ => C / ((N : ℝ) + 1)) atTop (𝓝 0) := by
     have h := hg0.const_mul C
     rw [mul_zero] at h
-    simpa [mul_one_div] using h
+    simpa only [mul_one_div] using h
   apply squeeze_zero (g := fun N : ℕ => C / ((N : ℝ) + 1))
   · intro N
     unfold gAnti

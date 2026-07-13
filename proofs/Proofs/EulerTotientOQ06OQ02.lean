@@ -96,11 +96,9 @@ theorem v2_tot_odd_prime_pow {p k : ℕ} (hp : p.Prime) (hodd : p ≠ 2) (hk : 1
   rw [Nat.totient_prime_pow hp hk,
     padicValNat.mul (pow_ne_zero _ hp.ne_zero) hp1]
   have hz : padicValNat 2 (p ^ (k - 1)) = 0 := by
-    rw [padicValNat.pow _ hp.ne_zero]
-    have : padicValNat 2 p = 0 :=
-      padicValNat.eq_zero_of_not_dvd (fun h =>
-        hodd ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hp).mp h).symm)
-    rw [this, mul_zero]
+    refine padicValNat.eq_zero_of_not_dvd fun h => ?_
+    have h2p : (2 : ℕ) ∣ p := Nat.Prime.dvd_of_dvd_pow Nat.prime_two h
+    exact hodd ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hp).mp h2p).symm
   rw [hz, zero_add]
 
 /-- For an odd prime `p`, `v₂(p - 1) = 1 ⟺ p ≡ 3 (mod 4)`. -/

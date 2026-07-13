@@ -202,7 +202,7 @@ theorem nat_not_minimal : ¬IsMinimalBasis2 (Set.univ : Set ℕ) := by
   -- n is not representable as a + b with a, b ≥ 1, so n ≤ 1
   by_contra hge
   push_neg at hge
-  have : n ≠ 0 ∧ n ≠ 1 := hge
+  have : n ≠ 0 ∧ n ≠ 1 := ⟨hge.2, hge.1⟩
   have hn2 : n ≥ 2 := by omega
   apply hn (fun i => if i = (0 : Fin 2) then 1 else n - 1)
   constructor

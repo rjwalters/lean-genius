@@ -127,7 +127,6 @@ theorem pnt_at_scaled_point (c : ℝ) (hc : c > 0) :
   -- Algebraic identity: [π·log(y)/y] × [log(x)/log(y)] = π·log(x)/y
   -- holds when log(y) ≠ 0 and y ≠ 0
   field_simp
-  ring
 
 -- ============================================================
 -- PART 3: PNT Density for Long Intervals
@@ -179,7 +178,6 @@ theorem pnt_density_long_interval (c : ℝ) (hc : c > 0) :
   have h1cx_ne : (1 + c) * x ≠ 0 := mul_ne_zero (ne_of_gt h1c_pos) hx_ne
   -- Algebraic identity: (1+c)/c·[A·B/((1+c)·x)] - 1/c·[C·B/x] = (A-C)·B/(c·x)
   field_simp
-  ring
 
 -- ============================================================
 -- PART 4: Connection to Open Problem and Summary

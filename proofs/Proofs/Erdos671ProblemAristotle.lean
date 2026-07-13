@@ -49,7 +49,7 @@ The Lagrange interpolant L^n f recovers the function values exactly at the nodes
 Follows from the cardinal property: the basis sum collapses to a single term. -/
 theorem lagrangeInterp_at_node_ari {n : ℕ} (pts : InterpolationPoints n)
     (f : ℝ → ℝ) (i : Fin n) :
-    lagrangeInterp pts f (pts.points i) = f (pts.points i) := by
+    lagrangeInterp pts (fun x => f x) (pts.points i) = f (pts.points i) := by
   sorry
 
 /-
