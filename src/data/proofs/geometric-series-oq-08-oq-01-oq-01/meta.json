@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "preamble-and-imports",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Imports Mathlib's normed SpecificLimits and Tactic, then a module docstring stating the entry: the finite second-order arithmetico-geometric sum ∑_{k<n} k²·xᵏ and its division-free closed form over (1 − x)³. The docstring's parts — 'What This Proves' (the ring and field closed forms), 'Why This Is Not Already in Mathlib' (Mathlib has the infinite linear and choose-weighted series and the plain finite geometric sum, but not this finite second moment), and 'Proof Strategy' (induction on n for the ring identity, eq_div_iff for the field form, numeric witnesses) — frame the m = 2 member of the weight family ∑ kᵐ·xᵏ. Opens the GeometricSeriesOQ08OQ01OQ01 namespace over Finset.",
+      "mathContext": "(1-x)^3\\sum_{k<n}k^2x^k = x + x^2 - n^2x^n + (2n^2-2n-1)x^{n+1} - (n-1)^2x^{n+2},\\text{ over any commutative ring.}"
+    },
+    {
       "id": "ring-identity",
       "title": "The Division-Free Ring Identity",
       "startLine": 62,
@@ -111,6 +119,16 @@
     {
       "id": "geometric-series-oq-08-oq-01-oq-01-oq-01",
       "question": "Unify the family: give a single division-free closed form for the m-th moment finite sum ∑_{k<n} kᵐ·xᵏ over any commutative ring, with denominator (1 − x)^{m+1} and Eulerian-polynomial numerator, specialising to the m = 0, 1, 2 cases recorded here.",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-01-oq-01-oq-02",
+      "question": "Replace the per-m induction by a uniform operator derivation: formalise the Euler operator θ = x·(d/dx) and prove ∑_{k<n} kᵐ·xᵏ = θᵐ applied to the finite geometric sum (1 − xⁿ)/(1 − x), so that each moment formula is θ applied to the previous one (a recurrence in m) rather than a fresh induction on n. This would derive the m = 0, 1, 2 closed forms from a single identity.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-01-oq-01-oq-03",
+      "question": "Instantiate the finite second moment probabilistically: use ∑_{k<n} k²·xᵏ (with x = 1 − p) to give a machine-checked closed form for the variance of the truncated geometric distribution, and confirm it converges to the standard (1 − p)/p² as n → ∞ via the oq-07 infinite value.",
       "significance": "low"
     }
   ],
@@ -152,7 +170,9 @@
     "summary": "The finite second-order arithmetico-geometric sum ∑_{k<n} k²·xᵏ — each geometric term xᵏ weighted by the square k² — has the division-free closed form (1 − x)³·∑_{k<n} k²·xᵏ = x + x² − n²·xⁿ + (2n² − 2n − 1)·x^{n+1} − (n−1)²·x^{n+2} over any commutative ring, equivalently ∑_{k<n} k²·xᵏ = (…)/(1 − x)³ for x ≠ 1. It specialises to ∑_{k<n} k²·2ᵏ (numerically 90 at n = 4) and, as n → ∞ with ‖x‖ < 1, recovers the gallery's infinite second moment x(1 + x)/(1 − x)³ (geometric-series-oq-07). 137 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This completes the m = 0, 1, 2 row of the weighted-geometric family ∑_{k<n} kᵐ·xᵏ in finite form: m = 0 is geometric-series-oq-08 (denominator 1 − x), m = 1 is the parent geometric-series-oq-08-oq-01 (denominator (1 − x)²), and m = 2 is supplied here (denominator (1 − x)³). The ring-level identity holds with no analysis and over every commutative ring; the field form and the infinite-limit connection follow as specialisations. Such finite second-moment sums arise in computing variances of geometric/negative-binomial distributions and in coefficient extraction for rational generating functions.",
     "openQuestions": [
-      "Unify into a single closed form for ∑_{k<n} kᵐ·xᵏ over (1 − x)^{m+1} with an Eulerian-polynomial numerator, specialising to m = 0, 1, 2."
+      "Unify into a single closed form for ∑_{k<n} kᵐ·xᵏ over (1 − x)^{m+1} with an Eulerian-polynomial numerator, specialising to m = 0, 1, 2.",
+      "Derive the whole family by the Euler operator θ = x·(d/dx): ∑_{k<n} kᵐ·xᵏ = θᵐ[(1 − xⁿ)/(1 − x)], a recurrence in m replacing the per-m induction on n.",
+      "Instantiate ∑_{k<n} k²·xᵏ at x = 1 − p as the variance of the truncated geometric distribution, recovering (1 − p)/p² in the n → ∞ limit."
     ]
   }
 }

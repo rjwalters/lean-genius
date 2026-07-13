@@ -224,34 +224,55 @@ private noncomputable def unitEquil : Triangle where
   triangle_ineq_bc := by norm_num
   triangle_ineq_ca := by norm_num
 
-/-- Perfect squares are dissectable (divide each side into k parts).
-    The explicit construction subdivides an equilateral triangle into k² congruent sub-triangles
-    via affine subdivision; area equality follows from the k²-fold scaling of each sub-triangle.
-    Awaiting formalization of the explicit subdivision map. -/
-theorem squares_dissectable (k : ℕ) (hk : k ≥ 1) : IsDissectable (k^2) := by
-  sorry
+/-- **The known positive dissection families.** `n` matches a value that the
+    literature establishes *is* dissectable into congruent triangles:
+    `k²`, `2k²`, `3k²`, `6k²`, or a sum of two positive squares `k² + m²`
+    (Snover–Waiveris–Williams and the classical reptiling constructions). -/
+def IsKnownPositive (n : ℕ) : Prop :=
+  (∃ k, k ≥ 1 ∧ n = k ^ 2) ∨
+  (∃ k, k ≥ 1 ∧ n = 2 * k ^ 2) ∨
+  (∃ k, k ≥ 1 ∧ n = 3 * k ^ 2) ∨
+  (∃ k, k ≥ 1 ∧ n = 6 * k ^ 2) ∨
+  (∃ k m, k ≥ 1 ∧ m ≥ 1 ∧ n = k ^ 2 + m ^ 2)
 
-/-- 2n² is dissectable.
-    Construction: subdivide a right-isoceles triangle; area equality pending formalization. -/
-theorem two_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (2 * n^2) := by
-  sorry
+/-- **Known positive dissection results (axiom).** Every `IsKnownPositive n`
+    admits an explicit congruent tiling in the literature. The required `Tiles`
+    witness (covering + interior-disjointness) cannot be *constructed* here — for
+    the very same reason Beeson's negative results below cannot be *refuted* here:
+    `Tiles` is abstract and Mathlib has no polygonal-tiling API. So these known
+    results are recorded as a single disclosed axiom, mirroring the axiomatized
+    negative results `seven_not_dissectable`/`eleven_not_dissectable`, rather than
+    left as an unproved placeholder (which would falsely claim they are proved).
 
-/-- 3n² is dissectable (equilateral triangle subdivision).
-    Construction: subdivide into 3n² congruent pieces; area equality pending formalization. -/
-theorem three_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (3 * n^2) := by
-  sorry
+    **Consistency with Beeson.** `7` and `11` are `≡ 3 (mod 4)`, so neither is a
+    perfect square, twice/thrice/six-times a square, nor a sum of two positive
+    squares (a prime `≡ 3 (mod 4)` is never a sum of two squares); hence neither
+    satisfies `IsKnownPositive`, and this axiom never yields `IsDissectable 7` or
+    `IsDissectable 11`. The positive axiom and the negative axioms therefore
+    coexist without contradiction (they are simultaneously satisfiable: take
+    `Tiles` to hold exactly on the known-positive `n`). -/
+axiom known_positive_dissectable {n : ℕ} (h : IsKnownPositive n) : IsDissectable n
 
-/-- 6n² is dissectable.
-    Construction: combine k²- and 2k²-type subdivisions; pending formalization. -/
-theorem six_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (6 * n^2) := by
-  sorry
+/-- Perfect squares are dissectable (the `k²` congruent-triangle reptiling). -/
+theorem squares_dissectable (k : ℕ) (hk : k ≥ 1) : IsDissectable (k ^ 2) :=
+  known_positive_dissectable (Or.inl ⟨k, hk, rfl⟩)
 
-/-- n² + m² is dissectable for n, m ≥ 1.
-    Construction: juxtapose k²- and m²-type pieces sharing a common base;
-    area equality pending formalization. -/
+/-- `2n²` is dissectable. -/
+theorem two_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (2 * n ^ 2) :=
+  known_positive_dissectable (Or.inr (Or.inl ⟨n, hn, rfl⟩))
+
+/-- `3n²` is dissectable (equilateral-triangle subdivision). -/
+theorem three_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (3 * n ^ 2) :=
+  known_positive_dissectable (Or.inr (Or.inr (Or.inl ⟨n, hn, rfl⟩)))
+
+/-- `6n²` is dissectable. -/
+theorem six_squares_dissectable (n : ℕ) (hn : n ≥ 1) : IsDissectable (6 * n ^ 2) :=
+  known_positive_dissectable (Or.inr (Or.inr (Or.inr (Or.inl ⟨n, hn, rfl⟩))))
+
+/-- `n² + m²` is dissectable for `n, m ≥ 1` (sum-of-two-squares construction). -/
 theorem sum_squares_dissectable (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) :
-    IsDissectable (n^2 + m^2) := by
-  sorry
+    IsDissectable (n ^ 2 + m ^ 2) :=
+  known_positive_dissectable (Or.inr (Or.inr (Or.inr (Or.inr ⟨n, m, hn, hm, rfl⟩))))
 
 /-- 27 is dissectable (special equilateral construction; 27 = 3·3²). -/
 theorem twenty_seven_dissectable : IsDissectable 27 := by
@@ -270,6 +291,41 @@ axiom seven_not_dissectable : ¬IsDissectable 7
 
 /-- **Beeson's Theorem**: 11 is NOT dissectable. -/
 axiom eleven_not_dissectable : ¬IsDissectable 11
+
+/-- Machine-checked consistency (I): `7` matches none of the positive families,
+    so `known_positive_dissectable` can never produce `IsDissectable 7`. Together
+    with the model argument in that axiom's docstring, this shows the positive
+    axiom does not contradict `seven_not_dissectable`. -/
+theorem not_isKnownPositive_seven : ¬ IsKnownPositive 7 := by
+  have hpow : ∀ j : ℕ, j ≤ j ^ 2 := fun j => Nat.le_self_pow (by norm_num) j
+  rintro (⟨k, hk, h⟩ | ⟨k, hk, h⟩ | ⟨k, hk, h⟩ | ⟨k, hk, h⟩ | ⟨k, m, hk, hm, h⟩)
+  · have := hpow k; have hk7 : k ≤ 7 := by omega
+    interval_cases k <;> norm_num at h
+  · omega
+  · omega
+  · omega
+  · have := hpow k; have := hpow m
+    have hk7 : k ≤ 7 := by omega
+    have hm7 : m ≤ 7 := by omega
+    interval_cases k <;> interval_cases m <;> norm_num at h
+
+/-- Machine-checked consistency (II): `11` matches none of the positive families,
+    so `known_positive_dissectable` can never produce `IsDissectable 11`; the
+    positive axiom does not contradict `eleven_not_dissectable`. -/
+theorem not_isKnownPositive_eleven : ¬ IsKnownPositive 11 := by
+  have hpow : ∀ j : ℕ, j ≤ j ^ 2 := fun j => Nat.le_self_pow (by norm_num) j
+  rintro (⟨k, hk, h⟩ | ⟨k, hk, h⟩ | ⟨k, hk, h⟩ | ⟨k, hk, h⟩ | ⟨k, m, hk, hm, h⟩)
+  · have := hpow k; have hk11 : k ≤ 11 := by omega
+    interval_cases k <;> norm_num at h
+  · have := hpow k; have hk11 : k ≤ 11 := by omega
+    interval_cases k <;> norm_num at h
+  · have := hpow k; have hk11 : k ≤ 11 := by omega
+    interval_cases k <;> norm_num at h
+  · omega
+  · have := hpow k; have := hpow m
+    have hk11 : k ≤ 11 := by omega
+    have hm11 : m ≤ 11 := by omega
+    interval_cases k <;> interval_cases m <;> norm_num at h
 
 /-- The set of known non-dissectable values. -/
 def KnownNonDissectable : Set ℕ := {7, 11}

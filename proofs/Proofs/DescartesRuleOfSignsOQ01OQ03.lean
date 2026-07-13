@@ -1185,6 +1185,61 @@ theorem card_adjacent (n : ℕ) :
   · intro m _
     rfl
 
+/-! ### General `Fin n` sign-change bounds (the length-3 template, uniformized)
+
+The `Fin 3` results (`countSignChanges_three_alternating = 2`,
+`countSignChanges_three_mid_ne_zero = 0`) are the `n = 3` instances of three general facts,
+all one-line corollaries of `countSignChanges_nowhere_zero` (which routes every count through
+the adjacent-opposite-sign pairs) and `card_adjacent` (there are exactly `n − 1` adjacent
+pairs).  Together they pin the two extremes and the ceiling of the count for a nowhere-zero
+sequence: the strictly alternating pattern realises the maximum `n − 1`, a constant-sign
+pattern realises `0`, and no sequence exceeds `n − 1` — the sequence-level shadow of the
+Descartes degree bound `V(p) ≤ deg p`. -/
+
+/-- **Universal sign-change ceiling.**  A nowhere-zero `f : Fin n → ℝ` has at most `n − 1`
+sign changes: every sign change is carried by an adjacent index pair, and there are only
+`n − 1` of those (`card_adjacent`).  The sequence-level form of the Descartes bound
+`V(p) ≤ deg p`, and the ceiling the `Fin 3` counts (`≤ 2`) all respect. -/
+theorem countSignChanges_le_of_nowhere_zero {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0) :
+    DescartesRuleOfSigns.countSignChanges f ≤ n - 1 := by
+  classical
+  rw [countSignChanges_nowhere_zero hnz, ← card_adjacent n]
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
+  exact hp.1
+
+/-- **Maximal count: strict alternation.**  If *every* adjacent pair of a nowhere-zero
+`f : Fin n → ℝ` has opposite signs (`f i · f j < 0` whenever `j = i + 1`), then `f` attains
+the ceiling: `V(f) = n − 1`.  The general form of `countSignChanges_three_alternating` (`= 2`);
+every one of the `n − 1` adjacent gaps is a genuine sign change. -/
+theorem countSignChanges_alternating_eq {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0)
+    (halt : ∀ i j : Fin n, j.val = i.val + 1 → f i * f j < 0) :
+    DescartesRuleOfSigns.countSignChanges f = n - 1 := by
+  classical
+  rw [countSignChanges_nowhere_zero hnz]
+  have hset : (Finset.univ.filter (fun p : Fin n × Fin n =>
+        p.2.val = p.1.val + 1 ∧ f p.1 * f p.2 < 0))
+      = Finset.univ.filter (fun p : Fin n × Fin n => p.2.val = p.1.val + 1) := by
+    apply Finset.filter_congr
+    rintro ⟨i, j⟩ _
+    constructor
+    · rintro ⟨h, _⟩; exact h
+    · intro h; exact ⟨h, halt i j h⟩
+  rw [hset, card_adjacent]
+
+/-- **Zero count: constant sign.**  If *every* adjacent pair of a nowhere-zero
+`f : Fin n → ℝ` has the same sign (`0 < f i · f j` whenever `j = i + 1`), then `f` has no sign
+changes: `V(f) = 0`.  The general form of `countSignChanges_three_mid_ne_zero` (`= 0`); the
+adjacent-opposite-sign set is empty. -/
+theorem countSignChanges_same_sign_eq_zero {n : ℕ} {f : Fin n → ℝ} (hnz : ∀ i, f i ≠ 0)
+    (hsame : ∀ i j : Fin n, j.val = i.val + 1 → 0 < f i * f j) :
+    DescartesRuleOfSigns.countSignChanges f = 0 := by
+  classical
+  rw [countSignChanges_nowhere_zero hnz, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  rintro ⟨i, j⟩ _ ⟨hadj, hopp⟩
+  exact absurd (hsame i j hadj) (by linarith)
+
 /-- **Reflection complementarity (sequence form).**  For a nowhere-zero sequence
 `f : Fin n → ℝ`, the sign changes of `f` and of its sign-alternated version
 `i ↦ (−1)^i · f i` together cover each of the `n − 1` adjacent gaps *exactly once*:
@@ -1474,6 +1529,36 @@ theorem signChangesInCoeffs_quadratic_no_change {a b c : ℝ} (ha : a ≠ 0)
   rw [signChangesInCoeffs_quadratic ha]
   exact countSignChanges_three_mid_ne_zero (by simpa using hb)
     (by simpa using h01) (by simpa using h12)
+
+/-- **One sign change — zero middle, opposite outer signs.**  If `b = 0` and `a·c < 0`
+(sign pattern `+ 0 −` or `− 0 +`) then `a·X² + c` has exactly one coefficient sign change,
+jumping over the vanishing middle term.  This is the *general* form of the base file's
+`X² − 1` example, and — being the `b = 0` complement of `signChangesInCoeffs_quadratic_one_left`
+/ `_one_right` — completes the sign-change classification to **every** real quadratic. -/
+theorem signChangesInCoeffs_quadratic_mid_zero_one {a b c : ℝ} (ha : a ≠ 0)
+    (hb : b = 0) (hac : a * c < 0) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 1 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_zero_pos (by simpa using hb) (by simpa using hac)
+
+/-- **No sign change — zero middle, non-opposite outer signs.**  If `b = 0` and `0 ≤ a·c`
+then `a·X² + c` has no coefficient sign change: the general form of `X² + 1`.  With
+`signChangesInCoeffs_quadratic_mid_zero_one` and the four nonzero-middle corollaries, the
+coefficient sign-change count of an arbitrary real quadratic is now determined in **all**
+sign configurations of `(a, b, c)`. -/
+theorem signChangesInCoeffs_quadratic_mid_zero_no_change {a b c : ℝ} (ha : a ≠ 0)
+    (hb : b = 0) (hac : 0 ≤ a * c) :
+    signChangesInCoeffs (C a * X ^ 2 + C b * X + C c) = 0 := by
+  rw [signChangesInCoeffs_quadratic ha]
+  exact countSignChanges_three_mid_zero_zero (by simpa using hb) (by simpa using hac)
+
+/-- **Concrete tight witness `X² − 3X + 2 = (X − 1)(X − 2)`.**  Coefficient sequence
+`[1, −3, 2]` (`+ − +`), so exactly two coefficient sign changes — matching its two positive
+roots `1, 2`.  A degree-`2` polynomial *attaining* Descartes' upper bound with distinct
+positive roots (the base file's examples `X² ± 1` only realise `V = 1` and `V = 0`). -/
+theorem signChanges_x2_sub_3x_add_2 :
+    signChangesInCoeffs (C 1 * X ^ 2 + C (-3) * X + C 2 : ℝ[X]) = 2 :=
+  signChangesInCoeffs_quadratic_alternating (by norm_num) (by norm_num) (by norm_num)
 
 end QuadraticFamily
 

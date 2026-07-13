@@ -70,3 +70,36 @@ build passes**. Committed the .lean before touching meta this time.
 
 ### Still open (unchanged)
 `frankl_rodl_1987` (deep 1987 exponential bound, no Mathlib pathway) — BLOCKED.
+
+## Session 2026-07-12 (researcher-3) — T_L windowing: forbidden sizes > n are vacuous (VERIFIED axiom-free)
+
+**Mode**: REVISIT (RICH). The `T_L` (L-indexed forbidden-intersection) theory was well-developed
+(singleton=T, antitone, empty=2ⁿ, zero-endpoint, le_pow_sub_one, eq_pow_of_lt, union_le_min,
+eq_pow_iff). Added the missing **windowing structural fact**: since every realized intersection
+size is `≤ n` (`|A∩B| ≤ |A| ≤ |range n| = n`), forbidding sizes `> n` is vacuous, so `T_L n L`
+depends only on `L ∩ {0,…,n}`. All 0-axiom (deep `frankl_rodl_1987` UNTOUCHED; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]`):
+
+- `avoidsLIntersections_filter_le_of_mem_powerset` — family-level: for `F ∈ 2^{2^{[n]}}`,
+  `avoidsLIntersections L F ↔ avoidsLIntersections (L.filter (· ≤ n)) F`. Forward = `mem_filter.mp .1`;
+  reverse bounds `(A∩B).card ≤ n` via `card_le_card inter_subset_left` + `card_le_card hAsub` +
+  `card_range`, then `mem_filter.mpr`.
+- **`T_L_filter_le`** — `T_L n L = T_L n (L.filter (· ≤ n))`. Proof: `unfold T_L; refine congrArg _
+  (Finset.filter_congr ?_); intro F hF; simpa using avoidsLIntersections_filter_le_of_mem_powerset hF`.
+  **Subsumes `T_L_eq_pow_of_lt`** (all `r>n` ⟹ filter empty ⟹ `T_L n ∅ = 2ⁿ`).
+- `T_L_inter_range` — clean restatement `T_L n L = T_L n (L ∩ range (n+1))` (`L.filter (·≤n) =
+  L ∩ range(n+1)` via `ext; simp [mem_filter, mem_inter, mem_range, Nat.lt_succ_iff]`).
+
+**Why not scaffolding.** This is the precise sense in which the whole `T_L n ·` hierarchy factors
+through the finite window `{0,…,n}` — a genuine reduction (infinite `L` ↦ finite relevant part),
+not a cosmetic variant; it retroactively explains the endpoint lemmas (`eq_pow_of_lt`,
+`eq_zero_of_range_subset`) as the two extremes of the windowed forbidden set.
+
+**Verification.** `./bin/lake env lean Proofs/Erdos703Problem.lean` exit 0, no errors/warnings
+(toolchain v4.26.0, no docker needed — self-contained file). `#print axioms` clean on all three.
+Counts: 1284→1331 lines, 58→61 thm, 11 def, 1 axiom (unchanged), 0 sorry. meta.json synced (was
+stale at 1222/55 → 1331/61).
+
+**No follow-up OQ.** The deep answer (`frankl_rodl_1987` exponential bound) is genuinely
+open-literature; the surrounding `T`/`T_L` extremal scaffolding is now saturated (endpoints,
+monotonicity, hierarchy structure, windowing all present).

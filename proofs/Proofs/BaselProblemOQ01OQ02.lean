@@ -253,6 +253,48 @@ theorem zeta_even_product_transcendental (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
   rw [hprod]
   exact transcendental_ratCast_mul (pi_transcendental_over_rationals.pow (by omega)) hq
 
+/-- **Cross-power ratio of even zeta values is rational — axiom-free.**  The plain ratio
+    `ζ(2n)/ζ(2m)` always carries a leftover nonzero even power of π
+    (`zeta_even_ratio_eq_rat_mul_pi_pow`), so distinct even zeta values are π-power
+    *incommensurable*.  Raising to the *crossed* exponents cancels π exactly, though:
+    `ζ(2n)^m / ζ(2m)^n = qₙ^m / qₘ^n ∈ ℚ`, because `ζ(2n)^m = qₙ^m·π^(2nm)` and
+    `ζ(2m)^n = qₘ^n·π^(2nm)` share the *identical* power `π^(2nm)`.  This exhibits the
+    algebraic *dependence* of the even zeta values: any two become commensurable once raised
+    to the crossed exponents, reflecting that they all live in the transcendence-degree-1
+    field `ℚ(π)`.  Uses only Euler's closed form, **no** `hermite_lindemann`. -/
+theorem zeta_even_cross_pow_ratio_rational (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) ^ m / (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ^ n
+        = (q : ℝ) := by
+  obtain ⟨qn, hqn, hqn_eq⟩ := zeta_even_eq_rat_mul_pi_pow n hn
+  obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+  have hπ : (π : ℝ) ≠ 0 := Real.pi_ne_zero
+  refine ⟨qn ^ m / qm ^ n, div_ne_zero (pow_ne_zero _ hqn) (pow_ne_zero _ hqm), ?_⟩
+  rw [hqn_eq, hqm_eq, mul_pow, mul_pow, ← pow_mul, ← pow_mul,
+    show 2 * n * m = 2 * m * n by ring, mul_div_mul_comm,
+    div_self (pow_ne_zero _ hπ), mul_one]
+  push_cast; ring
+
+/-- **Proportionality form of the cross-power dependence — axiom-free.**  Equivalent
+    multiplicative statement of `zeta_even_cross_pow_ratio_rational`: for `n, m ≥ 1` there is a
+    nonzero rational `q` with `ζ(2n)^m = q · ζ(2m)^n`.  So any two even zeta values are
+    *rationally proportional after crossing exponents* — the concrete witness of their algebraic
+    dependence, avoiding the division hypotheses of the ratio form.  Derived from the ratio form
+    by clearing the (nonzero) denominator `ζ(2m)^n`.  **No** `hermite_lindemann`. -/
+theorem zeta_even_cross_pow_proportional (n m : ℕ) (hn : 0 < n) (hm : 0 < m) :
+    ∃ q : ℚ, q ≠ 0 ∧
+      (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * n)) ^ m
+        = (q : ℝ) * (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ^ n := by
+  obtain ⟨q, hq, hratio⟩ := zeta_even_cross_pow_ratio_rational n m hn hm
+  refine ⟨q, hq, ?_⟩
+  have hden : (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ^ n ≠ 0 := by
+    obtain ⟨qm, hqm, hqm_eq⟩ := zeta_even_eq_rat_mul_pi_pow m hm
+    have hqmR : (qm : ℝ) ≠ 0 := by exact_mod_cast hqm
+    have hz : (∑' k : ℕ, 1 / (k : ℝ) ^ (2 * m)) ≠ 0 := by
+      rw [hqm_eq]; exact mul_ne_zero hqmR (pow_ne_zero _ Real.pi_ne_zero)
+    exact pow_ne_zero _ hz
+  exact (div_eq_iff hden).mp hratio
+
 /-- **Normalization returns to ℚ — the sharp axiom-free contrast.**  Dividing `ζ(2n)` by the
     *matching* power `π^(2n)` lands back in the rationals: `ζ(2n)/π^(2n) = qₙ ∈ ℚ`.  This pins
     down exactly which factor carries the transcendence — it is precisely the `π^(2n)` and

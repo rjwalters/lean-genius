@@ -649,6 +649,39 @@ theorem median_apollonius (A B C : F) :
     rw [norm_smul, Real.norm_eq_abs, abs_of_pos (by norm_num : (0 : ℝ) < 2⁻¹)]; ring
   rw [hAC, hBC, e1, e2, hy]; ring
 
+/-- **Stewart's theorem (the cevian-length formula).**  Generalizes `median_apollonius` from
+the *median* to an *arbitrary* cevian.  For any triangle `A B C` and any `t : ℝ`, let
+`D = A + t·(B − A)` be the point dividing `AB` in ratio `t : (1 − t)` and drop the cevian `C D`.
+Then
+`(1 − t)·|CA|² + t·|CB|² = t(1 − t)·|AB|² + |CD|².`
+
+Writing `A − C = (D − C) + t·(A − B)` and `B − C = (D − C) − (1 − t)·(A − B)`, weighting the two
+`norm_add/sub_sq_real` expansions by `(1 − t)` and `t` makes the cross terms
+`±2t(1 − t)⟪D − C, A − B⟫` cancel — exactly the mechanism behind Apollonius — and the leg-square
+coefficients collapse to `t(1 − t)|AB|²`.
+
+Multiplying through by `c = |AB|` and writing the signed sub-lengths `m = |AD| = t·c`,
+`n = |DB| = (1 − t)·c` recovers the classical school-geometry form
+`b²·n + a²·m = c·(d² + m·n)` (with `a = |CB|`, `b = |CA|`, `d = |CD|`).  The median case `t = ½`
+reproduces `median_apollonius` (`|CA|² + |CB|² = 2|CM|² + ½|AB|²`); the endpoint cases `t = 0, 1`
+degenerate to `D = A` / `D = B` (`|CD| = |CA|` / `|CB|`). -/
+theorem stewart_cevian (A B C : F) (t : ℝ) :
+    (1 - t) * ‖A - C‖ ^ 2 + t * ‖B - C‖ ^ 2
+      = t * (1 - t) * ‖A - B‖ ^ 2 + ‖(A + t • (B - A)) - C‖ ^ 2 := by
+  set D : F := A + t • (B - A) with hD
+  have hAC : A - C = (D - C) + t • (A - B) := by rw [hD]; module
+  have hBC : B - C = (D - C) - (1 - t) • (A - B) := by rw [hD]; module
+  have e1 := norm_add_sq_real (D - C) (t • (A - B))
+  have e2 := norm_sub_sq_real (D - C) ((1 - t) • (A - B))
+  have hn1 : ‖t • (A - B)‖ ^ 2 = t ^ 2 * ‖A - B‖ ^ 2 := by
+    rw [norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]
+  have hn2 : ‖(1 - t) • (A - B)‖ ^ 2 = (1 - t) ^ 2 * ‖A - B‖ ^ 2 := by
+    rw [norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]
+  have hi1 : ⟪D - C, t • (A - B)⟫ = t * ⟪D - C, A - B⟫ := real_inner_smul_right _ _ _
+  have hi2 : ⟪D - C, (1 - t) • (A - B)⟫ = (1 - t) * ⟪D - C, A - B⟫ :=
+    real_inner_smul_right _ _ _
+  rw [hAC, hBC, e1, e2, hn1, hn2, hi1, hi2]; ring
+
 /-- **Acute angle ⇔ sub-Pythagorean.**  Generalizing `pythagorean_core_iff` to the acute case:
 the angle at `C` is acute (`⟪A − C, B − C⟫ > 0`) iff the side opposite `C` is *shorter* than the
 Pythagorean value, i.e. `‖A − B‖² < ‖A − C‖² + ‖B − C‖²`.  Immediate from `law_of_cosines`. -/
@@ -704,3 +737,4 @@ theorem thales_iff (A B C : F) :
 #check @triArea_scale
 
 end PythagoreanEinstein
+

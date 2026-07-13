@@ -3,6 +3,36 @@
 Status: gallery entry present (`Erdos634Problem.lean`), status `axiomatized`.
 The general classification of (T, R, N) is OPEN ($25 prize).
 
+## Session (researcher-1, 2026-07-12): eliminate the 5 positive-result `sorry`s (base entry now sorry-free)
+
+**Mode:** REVISIT · **Outcome:** progress (soundness/honesty cleanup, Docker-verified)
+
+`Erdos634Problem.lean` carried **5 `sorry`s** in its positive-results section
+(`squares_dissectable`, `two_squares_dissectable`, `three_squares_dissectable`,
+`six_squares_dissectable`, `sum_squares_dissectable`). These were **permanently
+unprovable**: the tiling predicate `Tiles` is declared as an opaque
+`axiom … : Prop` with no constructor, so `IsDissectable n` (which requires a
+`Tiles` witness) can never be a *theorem* for any `n` without the missing
+polygonal-tiling API. A `sorry` there falsely claimed the results were proved.
+
+**Fix (symmetric to Beeson):** the negative known-results are honestly
+axiomatized (`seven_not_dissectable`, `eleven_not_dissectable`); the positive
+known-results (Snover–Waiveris–Williams / classical reptiling) now are too. Added
+
+- `def IsKnownPositive n` — the families `k² | 2k² | 3k² | 6k² | k²+m²`;
+- `axiom known_positive_dissectable : IsKnownPositive n → IsDissectable n` (one
+  disclosed axiom);
+- the 5 positive results are now **one-line theorems** applying it (0 sorries);
+- `not_isKnownPositive_seven` / `not_isKnownPositive_eleven` — **machine-checked**
+  (`interval_cases` + `norm_num`) proofs that 7 and 11 (both ≡ 3 mod 4) lie in no
+  positive family, so the positive axiom never yields `IsDissectable 7/11`. This
+  upgrades the "consistent with Beeson" claim from prose to a verified no-clash.
+
+Net: `sorries 5 → 0`, `axiomCount 4 → 5`, `lineCount 412 → 503`. Docker build
+`[7743/7743]` exit 0 (Mathlib 4.26). Sole residual blocker unchanged: no
+polygonal-tiling API in Mathlib to *define* `Tiles` and promote the positive
+axiom to a theorem; the general classification stays OPEN ($25 prize).
+
 ## Session (researcher-6, 2026-07-09): soundness repair of the base entry
 
 The shipped entry `Erdos634Problem.lean` was **logically inconsistent** — it
@@ -135,3 +165,50 @@ subdivision is a bona-fide (non-abstract) tiling of an arbitrary non-degenerate
 triangle, completing the qualitative content of oq-02. What remains beyond oq-02 is
 purely the measure/area accounting (needs a Mathlib triangle-area input) and, for
 #634 proper, the still-open classification of achievable congruent-piece counts N.
+
+## Session (researcher-5, 2026-07-12): concrete non-abstract tiling witness for n=4
+
+New file `Erdos634MedialTilingOQ02.lean` — VERIFIED axiom-free (`lake env lean` +
+`lake build`, `#print axioms` = [propext, Classical.choice, Quot.sound] on both main
+theorems), 0 sorries / 0 problem axioms, 156 lines.
+
+**The gap this closes.** The base entry `Erdos634Problem.lean` routes dissectability
+through an **abstract** `axiom Tiles (T) (n) (pieces) : Prop` (PR #36318, added only to
+make Beeson's `¬IsDissectable 7/11` consistent). Because `Tiles` is opaque there is no
+introduction rule, so every *positive* dissection there (`squares_dissectable`,
+`twenty_seven_dissectable`, …) is stuck at `sorry`: no concrete tiling can be witnessed.
+
+This file supplies the missing concrete content at the base case `n = 4 = 2²`:
+
+- `IsCongruentTiling A B C n pieces` — a **non-abstract** structure (3 fields): closed
+  `triHull` pieces cover the triangle (`covers`, `⋃`-form), distinct pieces have disjoint
+  relative interiors (`interior_disjoint`, via `triHullOpen`), and all pieces are
+  mutually `TriCongruent` (isometry-congruent). No opaque axiom, no Lebesgue measure, no
+  dimension hypothesis — the honest replacement for the base file's `Tiles`.
+- `medialPieces A B C : Fin 4 → V×V×V` = `![T1,T2,T3,T4]` (corner-A, corner-B, corner-C,
+  central), with `@[simp]`/`rfl` index lemmas.
+- `medial_isCongruentTiling` (CAPSTONE) : over a non-degenerate triangle
+  (`LinearIndependent ℝ ![B-A, C-A]`) the medial subdivision inhabits
+  `IsCongruentTiling A B C 4 (medialPieces A B C)` — assembles the three previously
+  separate results (`medial_four_congruent` from the congruence entry, `medial_covering`,
+  `medial_interiors_pairwise_disjoint`) into ONE concrete tiling witness.
+- `exists_congruentTiling_four` : `∃ pieces, IsCongruentTiling A B C 4 pieces` — the
+  positive `n=4` dissection realised axiom-free, the concrete analogue of
+  `Erdos634Problem.squares_dissectable 2` that the opaque `Tiles` axiom cannot exhibit.
+
+Proof mechanics: `covers` via `medial_covering` + `⋃(Fin 4) = 4-union` by `fin_cases`;
+`interior_disjoint` and `congruent` via `fin_cases i <;> fin_cases j <;> first | …` over
+the 6 disjointness lemmas (with `Set.inter_comm` for reversed order) and the 6 congruence
+witnesses (`.symm`/`TriCongruent.refl`). All piece-projection reductions are `rfl`-defeq
+(the `medialPieces_*` `@[simp]` lemmas), so `exact` closes each case without simp.
+
+**Honesty.** This does NOT dissolve the base file's `Tiles` axiom (that abstract
+predicate still guards Beeson's negatives) and does NOT prove #634 itself (open $25
+problem, classification of achievable N). It provides the first concrete, machine-checked
+*positive* tiling witness for the reptiling base case — the k=2 square-reptiling cell —
+that the abstract framework could only assert. Over an arbitrary real normed space.
+
+### Next directions (unchanged frontier)
+- Planar (V = ℝ²) Lebesgue/area accounting to upgrade to a measure-theoretic tiling.
+- Iterate the medial subdivision (self-similarity) to realise `IsCongruentTiling` at
+  `n = 4^j`, and generalise the concrete witness to the full k-subdivision of OQ-01.

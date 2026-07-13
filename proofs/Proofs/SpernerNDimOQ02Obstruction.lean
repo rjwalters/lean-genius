@@ -221,4 +221,54 @@ theorem sBad3_no_canon_rep :
   · rintro w ⟨k, rfl⟩; fin_cases k <;> decide
   · intro j; fin_cases j <;> decide
 
+/-! ## A third witness in dimension `d = 3` — the obstruction is not a `d = 2` artefact
+
+The witnesses `sBad` and `sBad3` both live in dimension `d = 2`.  The natural *infinite*
+family of obstructed cells, however, runs along the **dimension** `d`, not the grid size `N`:
+for each `d ≥ 2` the barycentric point `(1, 1, …, 1)` (all `d + 1` coordinates equal to `1`)
+has every coordinate `1 < d`, and it sums to `d + 1`, so it lives in `BaryPoint d (d+1)` and is
+the lex-minimum of the Freudenthal cell based at `(d+1, 0, …, 0)`.  (For *fixed* `d = 2`, by
+contrast, only `N = 2, 3` admit an all-`< 2` vertex, since three coordinates each `≤ 1` sum to
+at most `3`.)  Here is the next member of that dimensional family, `d = 3` at `N = 4`, with
+lex-minimum `(1,1,1,1)`.  As with `sBad3`, it is discharged by feeding the witness to the
+general `no_canon_rep_of_lexMin_small`, confirming the obstruction genuinely recurs in higher
+dimension. -/
+
+/-- The four barycentric points of the `d = 3` witness cell (each summing to `4`). -/
+def r4 : BaryPoint 3 4 := ⟨![4, 0, 0, 0], by decide⟩
+def r3 : BaryPoint 3 4 := ⟨![3, 1, 0, 0], by decide⟩
+def r2 : BaryPoint 3 4 := ⟨![2, 1, 1, 0], by decide⟩
+def r1 : BaryPoint 3 4 := ⟨![1, 1, 1, 1], by decide⟩
+
+/-- The `d = 3` witness Freudenthal cell: base `(4,0,0,0)`, `miss = 0`, increments `1, 2, 3`.
+Its lex-minimum is `(1,1,1,1)`, all of whose coordinates are `1 < 3 = d`. -/
+def sBadD3 : GridSimplex 3 4 where
+  verts := ![r4, r3, r2, r1]
+  incDir := ![1, 2, 3]
+  miss := 0
+  miss_ne_inc := by decide
+  step_inc := by decide
+  step_dec := by decide
+  step_same := by decide
+  inc_injective := by decide
+
+/-- The witness cell `sBadD3` is not canonical: its base `(4,0,0,0)` is the lex-maximum. -/
+theorem sBadD3_not_canon : ¬ IsCanon sBadD3 := by
+  intro h
+  have hbad : (sBadD3.verts 0).lexLE (sBadD3.verts 3) := h 3
+  revert hbad
+  decide
+
+/-- **The existence direction fails in dimension `d = 3` too.**  No canonical grid simplex
+shares the vertex set of `sBadD3`.  Proved by applying the general
+`no_canon_rep_of_lexMin_small` to the lex-minimum `(1,1,1,1)`: it is a vertex of the cell, is
+`lexLE` every vertex of the cell, and has every coordinate `< 3`.  So the `IsCanon` carrier omits
+cells in dimension `3` exactly as it does in dimension `2` — the obstruction is dimensional, and
+recurs for every `d ≥ 2` via the all-ones lex-minimum at `N = d + 1`. -/
+theorem sBadD3_no_canon_rep :
+    ¬ ∃ t : GridSimplex 3 4, IsCanon t ∧ Set.range t.verts = Set.range sBadD3.verts := by
+  refine no_canon_rep_of_lexMin_small sBadD3 r1 ⟨3, rfl⟩ ?_ ?_
+  · rintro w ⟨k, rfl⟩; fin_cases k <;> decide
+  · intro j; fin_cases j <;> decide
+
 end SpernerNDimOQ02Obstruction

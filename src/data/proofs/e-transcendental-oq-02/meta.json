@@ -22,7 +22,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "theoremCount": 90,
+    "theoremCount": 92,
     "mathlibDependencies": [
       {
         "theorem": "Real.exp_one_gt_d9",
@@ -78,11 +78,13 @@
       "Theorem sum_match_count_eq (conservation law): since every base-b digit lies in [0,b), each starting position carries a unique k-block, so the b^k tuple-match filters partition Finset.range N and their counts sum to exactly N. A pure combinatorial identity of the digit expansion, assuming no normality.",
       "Definition matchFreq and theorem sum_matchFreq_eq_one: the empirical tuple frequencies form a genuine probability distribution on Fin k -> Fin b, summing to 1 at every window N >= 1.",
       "Theorem matchFreq_tendsto_of_others (conservation-closure of normality): if every k-tuple except one has matching frequency converging to b^{-k}, then the omitted tuple does too, since the frequencies sum to 1; equidistribution of one block is forced by that of all the others.",
-      "Theorem isNormalInBase_of_all_but_one: a normality test needs only all-but-one block per length; the omitted block's equidistribution is supplied automatically by the conservation law."
+      "Theorem isNormalInBase_of_all_but_one: a normality test needs only all-but-one block per length; the omitted block's equidistribution is supplied automatically by the conservation law.",
+      "Theorem exists_match_ge_of_count_gt (pure-Finset core, no normality hypothesis): if the count of tuple-s matches over range N exceeds a threshold P (with P ≤ N), then a match exists at a position n with P ≤ n < N — an occurrence beyond the first P starting positions. Proof: matches below P number at most P, so once the total exceeds P the set-difference (matches in [0,N) minus matches in [0,P)) is nonempty.",
+      "Theorem next_occurrence_lt_of_modulus (effective recurrence / bounded-gap occurrences): given a modulus of normality M, every k-tuple s recurs after any threshold P at a position below the explicit bound max(max(M k (b^{-k}/2)) 1)(2·b^k·P+1). Upgrades first_occurrence_lt_of_modulus (its P=0 content) to an effective recurrence statement at an arbitrary starting point, and makes normal_ktuple_infinitely_often quantitative with an explicit inter-occurrence gap. Proof: the effective density bound match_count_ge_linear_of_modulus gives ≥ (b^{-k}/2)·N₀ matches below N₀; the choice N₀ > 2·b^k·P makes this exceed P, so exists_match_ge_of_count_gt extracts a match at position ≥ P."
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
-    "lineCount": 2062,
+    "lineCount": 2160,
     "assumptions": "1 axiom (the main open conjecture): e_absolutely_normal — e is absolutely normal (open as of 2026). Session 13 discharged the normal_imp_irrational axiom: composing rational_has_missing_ktuple_intCast (the ℤ-valued lift of S12's Layer 4a missing-tuple), rational_match_count_le (the matching-position count is bounded by N₀ via Finset.card_le_card), and tendsto_bounded_count_div_atTop_zero (squeeze: 0 ≤ count_N/N ≤ N₀/N → 0). For rational q, normality forces frequency → b^(-k) > 0, but the bound forces it → 0; tendsto_nhds_unique closes the contradiction. Earlier history: rational-digits-periodic was discharged in Session 11 via the 3-layer recipe (Layer 1 eventually_periodic_iterate S8, Layer 2 ratResidue_eventually_periodic S9, Layer 3 floor_pow_mul_div S10 + nthDigit_succ_via_residue S11), then Session 12 added Layer 4a (Fin b cast bridge) and rational_has_missing_ktuple. 33 public theorems including first 9 decimal digits of e proved from exp_one bounds and now normal_imp_irrational fully axiom-free.",
     "mathlib_version": "4.26.0",
     "definitionCount": 7
@@ -105,7 +107,9 @@
       "Real analysis (limits, sequences)",
       "Number theory (rational approximation)",
       "Digit expansions and continued fractions"
-    ]
+    ],
+    "lineCount": 2160,
+    "theoremCount": 92
   },
   "sections": [
     {
@@ -215,9 +219,9 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 2062,
+    "lineCount": 2160,
     "axiomCount": 1,
-    "theoremCount": 90,
+    "theoremCount": 92,
     "definitionCount": 7,
     "path": "Proofs/ETranscendentalOQ02.lean",
     "sorries": 0

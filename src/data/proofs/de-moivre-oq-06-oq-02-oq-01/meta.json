@@ -1,0 +1,203 @@
+{
+  "id": "de-moivre-oq-06-oq-02-oq-01",
+  "title": "De Moivre OQ-06-OQ-02-OQ-01: The Fejér Kernel as the Cesàro Average of the Dirichlet Kernels",
+  "slug": "de-moivre-oq-06-oq-02-oq-01",
+  "description": "Constructs the Fejér kernel F_N(θ) as the Cesàro (arithmetic) mean of the first N+1 Dirichlet kernels D_n(θ) = sin((n+1/2)θ)/sin(θ/2), and establishes its three defining properties. A product-to-sum telescoping 2 sin(θ/2) ∑ sin((m+1/2)θ) = 1 − cos((N+1)θ) collapses the average into the celebrated closed form F_N(θ) = sin²((N+1)θ/2)/((N+1) sin²(θ/2)). Being a perfect square over a positive quantity, the Fejér kernel is nonnegative — the property that fails for the sign-changing Dirichlet kernel and makes {F_N} a genuine approximate identity — and on the arc θ ∈ [δ, 2π−δ] it satisfies the uniform bound F_N(θ) ≤ 1/((N+1) sin²(δ/2)), exhibiting the concentration of its mass at the origin as N → ∞ that underlies Fejér's theorem on Cesàro summability of Fourier series.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ06OQ02OQ01.lean",
+    "tags": [
+      "complex-analysis",
+      "trigonometry",
+      "fejer-kernel",
+      "dirichlet-kernel",
+      "fourier-analysis",
+      "cesaro-summability",
+      "approximate-identity",
+      "de-moivre"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.cos_two_mul",
+        "description": "cos(2x) = 2 cos²x − 1, the double-angle identity that converts 1 − cos((N+1)θ) into 2 sin²((N+1)θ/2), producing the squared numerator of the Fejér closed form",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_sq_add_cos_sq",
+        "description": "sin²x + cos²x = 1, used to pass from 2 − 2 cos²x to 2 sin²x in the half-angle collapse",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.cos_sub / Real.cos_add",
+        "description": "cos(X∓Y) expansions giving the product-to-sum step 2 sin(θ/2) sin((m+1/2)θ) = cos(mθ) − cos((m+1)θ) that makes the sine sum telescope",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "peels the top term of ∑_{m∈range(N+1)}, driving the telescoping induction for sum_sin_half_odd",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "div_le_div_iff_of_pos_right",
+        "description": "a/c ≤ b/c ↔ a ≤ b for c > 0, reducing the Fejér bound to the numerator estimate sin²((N+1)θ/2) ≤ 1",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "one_div_le_one_div_of_le",
+        "description": "0 < a, a ≤ b ⇒ 1/b ≤ 1/a, replacing the θ-dependent denominator sin²(θ/2) by the uniform sin²(δ/2) via the parent's sin(θ/2) ≥ sin(δ/2)",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sum_sin_half_odd: the telescoping identity 2 sin(θ/2) · ∑_{m=0}^{N} sin((m+1/2)θ) = 1 − cos((N+1)θ), proved by distributing sin(θ/2) across the sum and applying the product-to-sum step 2 sin(θ/2) sin((m+1/2)θ) = cos(mθ) − cos((m+1)θ) term-by-term so consecutive cosines cancel",
+      "dirichletKernel and dirichletKernel_closed_form: the symmetric Dirichlet kernel D_n(θ) = 2·(∑_{k=0}^{n} cos(kθ)) − 1 with its closed form sin((n+1/2)θ)/sin(θ/2), derived from the grandparent's Lagrange cosine identity",
+      "fejerKernel and sum_dirichletKernel: the Cesàro average F_N = (1/(N+1)) ∑_{n=0}^{N} D_n, with the summed-kernel identity ∑_{n=0}^{N} D_n(θ) = sin²((N+1)θ/2)/sin²(θ/2)",
+      "fejerKernel_closed_form: the celebrated closed form F_N(θ) = sin²((N+1)θ/2)/((N+1) sin²(θ/2))",
+      "fejerKernel_nonneg: 0 ≤ F_N(θ) — a perfect square over the positive quantity (N+1) sin²(θ/2); the nonnegativity that fails for the Dirichlet kernel and makes {F_N} an approximate identity",
+      "fejerKernel_uniform_bound: on the arc θ ∈ [δ, 2π−δ] with 0 < δ ≤ π, F_N(θ) ≤ 1/((N+1) sin²(δ/2)), so the Fejér mass concentrates at the origin as N → ∞"
+    ],
+    "dateAdded": "2026-07-12",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 186,
+    "assumptions": "0 axioms, 0 sorries. Builds on the parent de-moivre-oq-06-oq-02 (sin_half_ge_of_mem_arc) and the grandparent de-moivre-oq-06 (lagrange_cos_sum). The closed form, nonnegativity, and pointwise identities require sin(θ/2) ≠ 0; the uniform Fejér bound additionally requires 0 < δ ≤ π and θ ∈ [δ, 2π−δ]. Mathlib supplies the double-angle and Pythagorean identities, the product-to-sum expansions, and reciprocal monotonicity.",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Dirichlet kernel $D_n(\\theta)=\\sin((n+\\tfrac12)\\theta)/\\sin(\\theta/2)$ represents the partial sums of a Fourier series, but it changes sign and its $L^1$ norm grows like $\\log n$, so partial sums need not converge for every continuous function. Fejér's 1900 discovery was that the *Cesàro averages* of the partial sums behave far better: their kernel, the Fejér kernel $F_N=\\frac{1}{N+1}\\sum_{n=0}^{N}D_n$, is **nonnegative** and concentrates at the origin, making $\\{F_N\\}$ an approximate identity. Consequently the Cesàro means of the Fourier series of any continuous $2\\pi$-periodic function converge uniformly to that function — Fejér's theorem. This file constructs $F_N$ from the parent's Dirichlet kernels and proves the three properties (closed form, nonnegativity, uniform decay away from the origin) that drive that theorem.",
+    "problemStatement": "**Open Question (de-moivre-oq-06-oq-02-oq-01)**: Realize the Fejér kernel as the Cesàro average of the Dirichlet kernels and establish its uniform nonnegative bound.\n\n**Result**: With $D_n(\\theta)=2\\big(\\sum_{k=0}^{n}\\cos(k\\theta)\\big)-1$ and $F_N(\\theta)=\\frac{1}{N+1}\\sum_{n=0}^{N}D_n(\\theta)$, one has the closed form $F_N(\\theta)=\\dfrac{\\sin^2((N+1)\\theta/2)}{(N+1)\\sin^2(\\theta/2)}$, hence $F_N(\\theta)\\ge 0$ for all $\\theta$ with $\\sin(\\theta/2)\\ne 0$, and on the arc $\\theta\\in[\\delta,2\\pi-\\delta]$ the uniform bound $F_N(\\theta)\\le\\dfrac{1}{(N+1)\\sin^2(\\delta/2)}\\xrightarrow[N\\to\\infty]{}0$.",
+    "text": "The Fejér kernel as the Cesàro average of the Dirichlet kernels: closed form sin²((N+1)θ/2)/((N+1)sin²(θ/2)), nonnegativity, and a uniform O(1/N) bound away from the singularities.",
+    "proofStrategy": "Each Dirichlet kernel is put in closed form $D_n(\\theta)=\\sin((n+\\tfrac12)\\theta)/\\sin(\\theta/2)$ using the grandparent's Lagrange cosine identity. Summing, $\\sum_{n=0}^{N}D_n=\\frac{1}{\\sin(\\theta/2)}\\sum_{n=0}^{N}\\sin((n+\\tfrac12)\\theta)$, and the inner sum telescopes: the product-to-sum step $2\\sin(\\theta/2)\\sin((m+\\tfrac12)\\theta)=\\cos(m\\theta)-\\cos((m+1)\\theta)$ makes consecutive cosines cancel, leaving $2\\sin(\\theta/2)\\sum_{m=0}^{N}\\sin((m+\\tfrac12)\\theta)=1-\\cos((N+1)\\theta)$. The double-angle identity $1-\\cos((N+1)\\theta)=2\\sin^2((N+1)\\theta/2)$ then gives $\\sum_{n=0}^{N}D_n=\\sin^2((N+1)\\theta/2)/\\sin^2(\\theta/2)$; dividing by $N+1$ yields the closed form. Nonnegativity is immediate (a square over a positive denominator). The uniform bound follows from $\\sin^2((N+1)\\theta/2)\\le 1$ and the parent's endpoint estimate $\\sin(\\theta/2)\\ge\\sin(\\delta/2)>0$, via reciprocal monotonicity.",
+    "keyInsights": [
+      "Averaging repairs the Dirichlet kernel: the sign-changing D_n has no useful uniform lower bound, but its Cesàro mean F_N is a perfect square sin²((N+1)θ/2)/((N+1)sin²(θ/2)) and hence nonnegative — the single structural fact that turns Fourier partial sums (which can diverge) into Cesàro means that always converge",
+      "The closed form comes from one telescoping: 2 sin(θ/2) sin((m+1/2)θ) = cos(mθ) − cos((m+1)θ) collapses ∑ sin((m+1/2)θ) to the endpoints, and 1 − cos((N+1)θ) = 2 sin²((N+1)θ/2) supplies the square",
+      "Nonnegativity is the property Dirichlet lacks and Fejér has; it is exactly what makes {F_N} an approximate identity, so that Cesàro means of Fourier series converge where the raw partial sums may not (Fejér's theorem)",
+      "The uniform bound F_N(θ) ≤ 1/((N+1) sin²(δ/2)) is an O(1/N) decay away from the origin: the Fejér mass concentrates in a shrinking neighbourhood of θ ∈ 2πℤ, the analytic mechanism of the approximate identity",
+      "The construction reuses the family's machinery end-to-end: the grandparent's Lagrange closed form for each D_n, the same product-to-sum telescoping now applied to half-integer sines, and the parent's arc lower bound sin(θ/2) ≥ sin(δ/2) for the uniform estimate"
+    ],
+    "prerequisites": [
+      "Parent formalization de-moivre-oq-06-oq-02 (endpoint lower bound sin(θ/2) ≥ sin(δ/2) on the arc)",
+      "Grandparent de-moivre-oq-06 (Lagrange cosine identity / Dirichlet kernel closed form)",
+      "Product-to-sum and double-angle trigonometric identities",
+      "Telescoping finite sums via induction",
+      "Reciprocal monotonicity of x ↦ 1/x on the positive reals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the Dirichlet kernel, its Cesàro average the Fejér kernel, and the closed form / nonnegativity / uniform bound to be proved",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": "**Goal**: build F_N = (1/(N+1)) ∑_{n≤N} D_n and prove F_N(θ) = sin²((N+1)θ/2)/((N+1)sin²(θ/2)) ≥ 0 with a uniform bound on the arc."
+    },
+    {
+      "id": "telescoping",
+      "title": "Part I: Product-to-Sum Telescoping of the Half-Integer Sines",
+      "summary": "two_sin_half_mul_sin_odd (2 sin(θ/2) sin((m+1/2)θ) = cos(mθ) − cos((m+1)θ)) and sum_sin_half_odd (2 sin(θ/2) ∑_{m≤N} sin((m+1/2)θ) = 1 − cos((N+1)θ)), the telescoping engine of the closed form",
+      "startLine": 44,
+      "endLine": 78,
+      "mathContext": "$\\sum_{m=0}^{N}(\\cos(m\\theta)-\\cos((m+1)\\theta))=1-\\cos((N+1)\\theta)$."
+    },
+    {
+      "id": "dirichlet-kernel",
+      "title": "Part II: The Dirichlet Kernel and its Closed Form",
+      "summary": "dirichletKernel (D_n = 2·∑_{k≤n} cos(kθ) − 1) and dirichletKernel_closed_form (D_n(θ) = sin((n+1/2)θ)/sin(θ/2)), from the grandparent's Lagrange cosine identity",
+      "startLine": 80,
+      "endLine": 92,
+      "mathContext": "$D_n(\\theta)=2\\big(\\tfrac12+\\tfrac{\\sin((n+1/2)\\theta)}{2\\sin(\\theta/2)}\\big)-1=\\tfrac{\\sin((n+1/2)\\theta)}{\\sin(\\theta/2)}$."
+    },
+    {
+      "id": "fejer-closed-form",
+      "title": "Part III: The Fejér Kernel and its Closed Form",
+      "summary": "fejerKernel (Cesàro average), sum_dirichletKernel (∑_{n≤N} D_n = sin²((N+1)θ/2)/sin²(θ/2)) via the telescoping and the double-angle 1 − cos = 2 sin², and fejerKernel_closed_form (F_N = sin²((N+1)θ/2)/((N+1)sin²(θ/2)))",
+      "startLine": 94,
+      "endLine": 139,
+      "mathContext": "$\\sum_{n=0}^{N}D_n=\\tfrac{1}{\\sin(\\theta/2)}\\cdot\\tfrac{\\sin^2((N+1)\\theta/2)}{\\sin(\\theta/2)}=\\tfrac{\\sin^2((N+1)\\theta/2)}{\\sin^2(\\theta/2)}$."
+    },
+    {
+      "id": "nonneg-and-bound",
+      "title": "Part IV: Nonnegativity and Uniform Bound",
+      "summary": "fejerKernel_nonneg (0 ≤ F_N, a square over a positive denominator — the approximate-identity property) and fejerKernel_uniform_bound (F_N(θ) ≤ 1/((N+1)sin²(δ/2)) on the arc, from sin²((N+1)θ/2) ≤ 1 and sin(θ/2) ≥ sin(δ/2))",
+      "startLine": 141,
+      "endLine": 186,
+      "mathContext": "$F_N(\\theta)=\\tfrac{\\sin^2((N+1)\\theta/2)}{(N+1)\\sin^2(\\theta/2)}\\le\\tfrac{1}{(N+1)\\sin^2(\\delta/2)}\\to 0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization realizes the Fejér kernel as the Cesàro average of the parent family's Dirichlet kernels and proves its three defining properties with zero sorries and zero axioms: the closed form F_N(θ) = sin²((N+1)θ/2)/((N+1) sin²(θ/2)), the nonnegativity 0 ≤ F_N(θ), and the uniform bound F_N(θ) ≤ 1/((N+1) sin²(δ/2)) on the arc θ ∈ [δ, 2π−δ]. The proof reuses the same product-to-sum telescoping that produced the Dirichlet closed forms and the parent's endpoint lower bound sin(θ/2) ≥ sin(δ/2).",
+    "implications": "Nonnegativity and the O(1/N) uniform decay away from the origin are exactly the two hypotheses of an approximate identity, and they are the analytic heart of Fejér's theorem: the Cesàro means of the Fourier series of a continuous 2π-periodic function converge uniformly to it, even though the raw partial sums (governed by the sign-changing, logarithmically-growing Dirichlet kernel) may diverge. The explicit constant 1/((N+1) sin²(δ/2)) makes the concentration rate quantitative.",
+    "openQuestions": [
+      "Derive Fejér's theorem itself: for continuous 2π-periodic f, the Cesàro means σ_N f = f ∗ F_N converge uniformly to f, using nonnegativity, ∫ F_N = 1, and the uniform decay proved here",
+      "The total-mass normalization (1/2π) ∫_{−π}^{π} F_N(θ) dθ = 1, complementing the pointwise bound to complete the approximate-identity package",
+      "Weierstrass approximation as a corollary: trigonometric (hence, via Taylor truncation, polynomial) density in C(𝕋) from uniform Cesàro convergence"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-06-oq-02",
+      "relationship": "Parent: supplies the arc endpoint lower bound sin(θ/2) ≥ sin(δ/2) used for the uniform Fejér bound, and the uniform Dirichlet-kernel estimates this file's Cesàro average complements"
+    },
+    {
+      "id": "de-moivre-oq-06",
+      "relationship": "Grandparent: supplies the Lagrange cosine identity (Dirichlet kernel closed form) used to put each D_n in the form sin((n+1/2)θ)/sin(θ/2)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.DeMoivreOQ06OQ02",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "DeMoivreOQ06OQ02OQ01",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/DeMoivreOQ06OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Lipót Fejér",
+      "title": "Sur les fonctions bornées et intégrables (nonnegativity of the Fejér kernel and Cesàro summability of Fourier series)",
+      "year": "1900",
+      "venue": "Comptes Rendus de l'Académie des Sciences"
+    },
+    {
+      "authors": "Elias M. Stein and Rami Shakarchi",
+      "title": "Fourier Analysis: An Introduction",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "note": "Ch. 2–3 develop the Fejér kernel, its closed form and nonnegativity, and Fejér's theorem on Cesàro summability — the exact application these three properties are designed to feed."
+    },
+    {
+      "authors": "Antoni Zygmund",
+      "title": "Trigonometric Series",
+      "year": "2002",
+      "venue": "Cambridge University Press",
+      "note": "Ch. III: Fejér kernel as an approximate identity, the concentration bound away from the origin, and (C,1) summability."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-06-oq-02",
+      "relationship": "extends",
+      "description": "Parent formalization; reuses its arc endpoint lower bound sin(θ/2) ≥ sin(δ/2) for the uniform Fejér bound and forms the Cesàro average of the Dirichlet kernels it bounds uniformly."
+    },
+    {
+      "targetId": "de-moivre-oq-06",
+      "relationship": "extends",
+      "description": "Grandparent formalization; reuses its Lagrange cosine identity to put each Dirichlet kernel in closed form."
+    }
+  ],
+  "sorries": 0
+}

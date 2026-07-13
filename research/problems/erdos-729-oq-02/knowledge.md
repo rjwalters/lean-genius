@@ -211,3 +211,111 @@ proved `(p-1)·v_p(n!) = n-1 ⟺ s_p(n)=1` but **explicitly delegated** the equi
 Only the deep `barreto_leeham_theorem` axiom in the parent remains. The elementary
 p-adic theory (Legendre, Kummer/multinomial carries, digit-sum recurrences, and now
 the digit-sum-one ↔ prime-power characterization) is complete and axiom-free.
+
+## Session 2026-07-11 (researcher-5) - Kummer digit-sum form + subadditivity + divisibility criteria
+
+**Mode**: REVISIT (RICH problem, core already solved)
+**Outcome**: progress (outward extension, 5 new axiom-free theorems)
+
+### What I Did
+- Confirmed the main-file axiom fix (nextStep #1) was already landed: Erdos729Problem.lean is down to 1 axiom (barreto_leeham_theorem only).
+- Checked Mathlib v4.26.0: Kummer's theorem IS present (`sub_one_mul_padicValNat_choose_eq_sub_sum_digits`, carries form `padicValNat_choose'`) — so re-proving Kummer would be duplication. Instead extended in directions Mathlib does NOT cover.
+- Added 5 axiom-free theorems to `Erdos729LegendreGeneral.lean`, all building on the existing `sub_one_mul_padicValNat_factorial_digitSum`:
+  - `sub_one_mul_padicValNat_choose_add_digitSum`: carry-free additive Kummer.
+  - `digitSum_add_le`: base-p digit-sum subadditivity (Mathlib gap).
+  - `padicValNat_choose_eq_div`: division-form Kummer in gallery digitSum shape.
+  - `not_dvd_choose_iff_digitSum_add`: p∤C(m+n,m) ↔ no base-p carries (Mathlib gap).
+  - `dvd_choose_iff_digitSum_lt`: p∣C(m+n,m) ↔ ≥1 carry.
+
+### Key Findings
+- The subtraction-free additive rearrangement of Kummer is the right engine: subadditivity and both divisibility criteria drop out as one-line `omega` corollaries once digit sums are bounded by their arguments.
+- Mathlib genuinely lacks digit-sum subadditivity and the prime-non-divisibility digit-sum criterion; both are general-purpose and upstreamable.
+
+### Verification
+- Host `lean` (v4.26.0) elaboration: exit 0, no errors/warnings.
+- `#print axioms` on all 5: `[propext, Classical.choice, Quot.sound]` only — axiom-free.
+- Docker build: transient SIGBUS-135 at C-codegen phase after a clean 2.3s elaboration (host-lean fallback used to verify).
+
+### Files Modified
+- proofs/Proofs/Erdos729LegendreGeneral.lean (+~130 lines, 5 theorems)
+- src/data/research/problems/erdos-729-oq-02.json (knowledge)
+
+### Next Steps
+- Consider upstreaming `digitSum_add_le` and `not_dvd_choose_iff_digitSum_add` to Mathlib.
+- Equality/sharp-boundary case connects to Mathlib's carries-Finset form of Kummer.
+
+## Session 2026-07-12 (researcher-10) — power-of-two characterization (converse of digitSum_two_pow)
+
+**Mode:** REVISIT (RICH, core solved). **Outcome:** progress (3 axiom-free theorems).
+
+Closed the standing open converse flagged after the central-binomial 2-adic session
+(PR #38419 had `digitSum_two_pow : s_2(2^k)=1` one-directional; the converse was left open
+"for iff"). Added to `Erdos729LegendreGeneral.lean` (after `padicValNat_centralBinom_two_pow`):
+
+- `digitSum_two_eq_one_imp_two_pow : ∀ n, 0 < n → digitSum 2 n = 1 → ∃ k, n = 2^k` — the
+  converse. Strong induction on `n` via the digit recurrence `s_2(n) = n%2 + s_2(n/2)`
+  (from `Nat.digits_def'`): even ⇒ `s_2(n/2)=1`, recurse, `n=2^{j+1}`; odd ⇒ `s_2(n/2)=0`,
+  so `n/2=0` (`digitSum_pos` contrapositive), `n=1=2^0`. omega handles the div/mod and the
+  atom-level `0 < digitSum ∧ digitSum = 0` contradiction.
+- `digitSum_two_eq_one_iff : 0 < n → (s_2(n) = 1 ↔ ∃ k, n = 2^k)` — full characterization.
+- `padicValNat_centralBinom_two_eq_one_iff : 0 < n → (v_2(C(2n,n)) = 1 ↔ ∃ k, n = 2^k)` —
+  sharp form of `padicValNat_centralBinom_two_pow`: `C(2n,n)` is even-but-not-div-by-4 iff
+  `n` is a power of two (via `padicValNat_centralBinom_two_eq_digitSum`).
+
+**Genuinely new (not filler):** upgrades a one-directional value fact to a full iff /
+characterization. The forward `⇐` was known; the `⇒` (single-1-bit ⟹ power of two) was the
+missing half and is the content.
+
+### Verification
+Host `lean` v4.26.0 elab (Docker SIGBUS-prone): whole file **EXIT 0**, no errors/warnings.
+`#print axioms` on all three = `[propext, Classical.choice, Quot.sound]` — axiom-free (no
+sorryAx, no ofReduceBool). File 539 → ~600 L. Parent axiom `barreto_leeham_theorem`
+(in `Erdos729Problem.lean`) untouched; this general file stays 0-axiom.
+
+### Frontier
+The elementary base-2/base-p p-adic theory (Legendre, Kummer additive/carry-count defect,
+central binomial `v_2 = s_2`, and now the power-of-two locus of `v_2(C(2n,n))=1`) is
+complete and axiom-free. Only the deep parent `barreto_leeham_theorem` remains.
+
+## Session 2026-07-12 (researcher-3) — sharp two-sided quantitative Legendre bound at p=2
+
+**Mode**: REVISIT (RICH, core solved / DONE). **Outcome**: progress — 6 axiom-free theorems,
+full-file offline EXIT 0.
+
+### What I Did
+The theory had `digitSum_pos` (s_p ≥ 1) and the upper bounds `sub_one_mul_padicValNat_factorial_le`
+(`(p-1)v_p(n!) ≤ n`), `padicValNat_factorial_le_div`. Missing: the SHARP upper bound on the
+digit-sum defect — `s_p(n) ≤ (p-1)·(#digits) = (p-1)·(⌊log_p n⌋+1)` — and the resulting lower
+bound on the valuation. Added to `Erdos729LegendreGeneral.lean`:
+- `digitSum_le_length_mul` : `s_p(n) ≤ (#base-p digits)·(p-1)` (each digit < p via
+  `Nat.digits_lt_base`; `List.sum_le_card_nsmul`).
+- `digitSum_le_log_succ_mul` : `s_p(n) ≤ (⌊log_p n⌋+1)·(p-1)` (`Nat.digits_len`).
+- `sub_one_mul_padicValNat_factorial_ge` : `n − (⌊log_p n⌋+1)·(p-1) ≤ (p-1)·v_p(n!)` (general-p
+  lower bound; complements the existing `_le`).
+- `padicValNat_factorial_two_ge` / `_two_le` / `_two_sandwich` : the clean p=2 sandwich
+  `n − (⌊log₂ n⌋+1) ≤ v_2(n!) ≤ n − 1`.
+
+### Key Findings
+- The defect `s_2(n)` is the Hamming weight, ≤ bit length ≤ ⌊log₂ n⌋+1. So Legendre's
+  `v_2(n!) = n − s_2(n)` puts v_2(n!) within ⌊log₂ n⌋+1 of the trivial ceiling n:
+  `v_2(n!) = n − O(log n)`, hence `v_2(n!)/n → 1`. This is the two-sided sharpening of the
+  file's one-sided `≤ n/(p-1)` bounds — the valuation squeezed to a logarithmic-width window.
+- `padicValNat_factorial_two_le` and `_two_sandwich` must be placed AFTER `digitSum_pos`
+  (forward-reference); the digit-count bounds + `_two_ge` live with the upper-bound family.
+
+### Honest status
+- Not new mathematics about the deep OQ (parent `barreto_leeham_theorem` untouched, out of
+  scope). Value: the sharp digit-count upper bound on `s_p(n)` (general-purpose, Mathlib-gap-
+  adjacent) and the two-sided quantitative Legendre bound the file was missing — the natural
+  complement of its one-sided upper bounds.
+- Verified: `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/Erdos729LegendreGeneral.lean` EXIT 0,
+  0 errors/warnings. `#print axioms` on all 6 → `[propext, Classical.choice, Quot.sound]` only.
+
+### Files Modified
+- proofs/Proofs/Erdos729LegendreGeneral.lean (+6 thm, ~600→668 lines, 0 axioms, 0 sorries)
+- src/data/research/problems/erdos-729-oq-02.json (leanFiles counts synced 183L/10thm →
+  668L/37thm [prior r5/r10 additions were never synced]; +2 insights, +3 builtItems)
+
+### Next Steps
+- General-p division-form lower bound `n/(p-1) − (⌊log_p n⌋+1) ≤ v_p(n!)` (from the multiplied
+  form, minor). The deep parent `barreto_leeham_theorem` remains BLOCKED / out of scope.

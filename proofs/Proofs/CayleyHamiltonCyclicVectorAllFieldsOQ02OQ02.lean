@@ -298,6 +298,60 @@ theorem finrank_centralizer_dichotomy
   ⟨fun h => (finrank_centralizer_eq_natDegree_minpoly_iff_nonderogatory M).mpr h,
    natDegree_minpoly_lt_finrank_centralizer_of_derogatory M⟩
 
+/-! ### The ambient-dimension (`= n`) reading of the converse -/
+
+/-- **Nonderogatory ⟺ the minimal polynomial has full degree `n`.**  A matrix is
+    nonderogatory (`minpoly K M = charpoly M`) **iff** its minimal polynomial already attains
+    the maximal possible degree `n = Fintype.card (Fin n)`.  Since `minpoly K M ∣ charpoly M`
+    are monic with `deg (charpoly M) = n` (`Matrix.charpoly_natDegree_eq_dim`), equality of the
+    two polynomials is equivalent to equality of their degrees
+    (`Polynomial.eq_of_monic_of_dvd_of_natDegree_le`).  This is the scalar (degree-level)
+    characterization of nonderogatoriness, complementing the centralizer-dimension criteria:
+    it is the hypothesis that the headline `finrank_centralizer_eq_of_nonderogatory`
+    (`dim_K C(M) = n`) consumes. -/
+theorem nonderogatory_iff_natDegree_minpoly_eq_dim
+    (M : Matrix (Fin n) (Fin n) K) :
+    minpoly K M = M.charpoly ↔ (minpoly K M).natDegree = Fintype.card (Fin n) := by
+  constructor
+  · intro h; rw [h, M.charpoly_natDegree_eq_dim]
+  · intro hdeg
+    have hM : IsIntegral K M := IsIntegral.of_finite K M
+    have hdvd : minpoly K M ∣ M.charpoly := minpoly.dvd K M (Matrix.aeval_self_charpoly M)
+    have hmin_monic : (minpoly K M).Monic := minpoly.monic hM
+    have hdeg' : M.charpoly.natDegree ≤ (minpoly K M).natDegree := by
+      rw [M.charpoly_natDegree_eq_dim, hdeg]
+    exact (Polynomial.eq_of_monic_of_dvd_of_natDegree_le hmin_monic M.charpoly_monic hdvd
+      hdeg').symm
+
+/-- **The `= n` converse is exactly the sharp Frobenius bound.**  The headline
+    `finrank_centralizer_eq_of_nonderogatory` proves the forward implication
+    `nonderogatory M → dim_K C(M) = n`.  Its converse `dim_K C(M) = n → nonderogatory M`
+    is *not* derivable from the elementary bounds in this file: `finrank_centralizer_ge`
+    (`n ≤ dim_K C(M)`) together with the strict derogatory bound
+    `natDegree_minpoly_lt_finrank_centralizer_of_derogatory` (`deg(minpoly) < dim_K C(M)`)
+    only give `n ≤ dim_K C(M)` — never a *strict* `n < dim_K C(M)` for derogatory `M`, since
+    `deg(minpoly) < n` there.  The precise missing input is the **sharp Frobenius strictness**:
+    every derogatory matrix has `n < dim_K C(M)` (the invariant-factor content of Frobenius'
+    formula `dim_K C(M) = Σ (2i-1) deg dᵢ`, with `≥ 2` invariant factors forcing a strict
+    excess), which is not yet formalized in this chain.
+
+    This lemma records that reduction honestly: **assuming** the sharp strictness hypothesis,
+    `dim_K C(M) = n` forces `M` nonderogatory.  Discharging `hsharp` unconditionally is the
+    sole remaining gap between the forward headline and a full `dim_K C(M) = n ⟺ nonderogatory`
+    biconditional at the ambient dimension. -/
+theorem nonderogatory_of_finrank_centralizer_eq_dim
+    (hsharp : ∀ M : Matrix (Fin n) (Fin n) K, minpoly K M ≠ M.charpoly →
+        Fintype.card (Fin n) < Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))))
+    (M : Matrix (Fin n) (Fin n) K)
+    (h : Module.finrank K
+        ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+        = Fintype.card (Fin n)) :
+    minpoly K M = M.charpoly := by
+  by_contra hderog
+  have hlt := hsharp M hderog
+  omega
+
 /-! ### Elementwise (matrix-level) forms -/
 
 /-- **Elementwise commutant characterization for nonderogatory `M`.**  All the results
@@ -386,6 +440,44 @@ theorem cayley_hamilton_oq02_oq02_summary
           ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) = n) :=
   ⟨centralizer_eq_adjoin_iff_nonderogatory M,
    finrank_centralizer_eq_of_nonderogatory M⟩
+
+/-! ### The commutant of a nonderogatory matrix is abelian
+
+For a nonderogatory `M` the centralizer is `C(M) = K[M]` (`centralizer_eq_adjoin_of_nonderogatory`),
+and polynomials in a single matrix commute with one another.  So *any two* matrices that each
+commute with `M` automatically commute with *each other*: the commutant is a commutative algebra.
+This is a distinctive feature of the nonderogatory case — for a derogatory `M` the commutant is
+strictly larger than `K[M]` and generally non-abelian. -/
+
+/-- **Commuting matrices with a nonderogatory `M` pairwise commute.**  If `M` is nonderogatory
+    (`minpoly K M = charpoly M`) and both `N₁` and `N₂` commute with `M`, then `N₁` and `N₂`
+    commute with each other: `N₁ N₂ = N₂ N₁`.  Since each `Nᵢ` is a polynomial in `M`
+    (`commute_iff_mem_range_aeval_of_nonderogatory`), write `Nᵢ = p_i(M)`; then
+    `p_1(M) p_2(M) = (p_1 p_2)(M) = (p_2 p_1)(M) = p_2(M) p_1(M)` by `map_mul` and the
+    commutativity of `K[X]`. -/
+theorem commute_of_commute_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M = M.charpoly)
+    (N₁ N₂ : Matrix (Fin n) (Fin n) K)
+    (h₁ : N₁ * M = M * N₁) (h₂ : N₂ * M = M * N₂) :
+    N₁ * N₂ = N₂ * N₁ := by
+  obtain ⟨p, rfl⟩ := (commute_iff_mem_range_aeval_of_nonderogatory M hM N₁).mp h₁
+  obtain ⟨q, rfl⟩ := (commute_iff_mem_range_aeval_of_nonderogatory M hM N₂).mp h₂
+  rw [← map_mul, ← map_mul, mul_comm p q]
+
+/-- **The commutant of a nonderogatory matrix is abelian (subalgebra form).**  Any two elements
+    `A, B` of the centralizer `C(M)` of a nonderogatory `M` commute: `A B = B A`.  This is the
+    subalgebra-level reading of `commute_of_commute_nonderogatory` — `C(M) = K[M]` is a
+    commutative algebra — obtained by unfolding centralizer membership to the commuting relations
+    with `M`.  (No `CommRing` instance on the subalgebra is needed.) -/
+theorem centralizer_mul_comm_of_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K) (hM : minpoly K M = M.charpoly)
+    (A B : Matrix (Fin n) (Fin n) K)
+    (hA : A ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+    (hB : B ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) :
+    A * B = B * A := by
+  rw [Subalgebra.mem_centralizer_iff] at hA hB
+  exact commute_of_commute_nonderogatory M hM A B
+    (hA M (Set.mem_singleton M)).symm (hB M (Set.mem_singleton M)).symm
 
 end CyclicCommutantDimension
 

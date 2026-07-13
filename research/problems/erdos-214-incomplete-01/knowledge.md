@@ -1,5 +1,28 @@
 # Knowledge: erdos-214-incomplete-01
 
+## Session 2026-07-12 (researcher-1) — isometry/translation invariance of the hypothesis class
+
+**Mode:** INFRASTRUCTURE (core still BLOCKED on `juhasz_stronger`; added verified,
+axiom-free structural content). VERIFIED, 0 sorry / axiom count unchanged (1). Docker
+build green (2364 jobs, 5.4s).
+
+### Added (2 theorems, axiom-free)
+- `IsUnitDistanceFree.image_of_isometry` — if `f` preserves `dist` then `f '' S` is
+  unit-distance-free when `S` is. Hypothesis-side companion of the existing
+  `isUnitSquare_of_isometry` (which pushes a unit *square* forward). No injectivity
+  needed: distance preservation forces `f a ≠ f b` from `a ≠ b`. Proof:
+  `rintro _ _ ⟨a,ha,rfl⟩ ⟨b,hb,rfl⟩ hne; rw [hf]; refine hS a b ha hb ?_; rintro rfl; exact hne rfl`.
+- `IsUnitDistanceFree.translate` — translation by any `v` preserves unit-distance-freeness;
+  concrete instance via `add_sub_add_right_eq_sub` ((p+v)-(q+v)=p-q).
+
+### Why this matters (non-cosmetic)
+Problem #214 is stated up to congruence (Juhász's theorem is about congruent copies), so
+the admissible-configuration class is closed under the plane's isometry group. These make
+that closure explicit and reusable for future WLOG-style arguments. Still peripheral to the
+BLOCKED analytic core.
+
+---
+
 ## Overview
 
 Gallery entry `erdos-214` (Erdős #214: unit-distance-free sets & unit squares).
@@ -294,3 +317,46 @@ every `r≡3 mod4` — the last elementary sufficient-avoidance mechanism before
 sum-of-two-squares characterization (`n/2` a SoS ⟺ every prime ≡3 mod4 in `n/2` to even
 power). Formalizing that biconditional (Mathlib has `Nat.Prime.sq_add_sq` and
 `SumTwoSquares.lean`) is the remaining substantial axiom-free target.
+
+## Session 2026-07-12 (researcher-1) — CAPSTONE: complete Fermat characterization [VERIFIED axiom-free]
+
+**Mode:** REVISIT — closed the "open frontier" of the OQ01 companion file. Extended
+`Erdos214Incomplete01OQ01.lean` (757→834, Mathlib-only, 0 ax / 0 sorry). VERIFIED via
+`lake env lean` against the main-repo Mathlib oleans: EXIT 0, zero errors/warnings;
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` only (no `sorryAx`/`ofReduceBool`)
+for all 3 new theorems.
+
+### The capstone (subsumes every prior avoidance/realizability lemma in the file)
+- `scaledLattice_realizes_sqrt_two_mul_iff_factorization (m : ℕ)`: `√(2m)` is a distance
+  of `√2·ℤ²` **iff** `∀ r ∈ m.primeFactors, r%4=3 → Even (padicValNat r m)`. This is the
+  complete Fermat characterization: realizable half-values are exactly the sums of two
+  squares (Gaussian-integer norms). Every earlier result is a special case — `√6/√14/√22`
+  (r=3,7,11 to odd power), `√12=√(2·6)` (padicValNat 3 6=1), `√56=√(2·28)` (padicValNat 7
+  28=1) avoided; `√10/√26/√34` and `√8=√(2·4)` realized.
+- `exists_sq_add_sq_int_iff_nat (m : ℕ)`: the `ℤ↔ℕ` sum-of-two-squares bridge. `←` cast;
+  `→` via `u.natAbs`/`v.natAbs` + `sq_abs`.
+- `scaledLattice_dist_ne_sqrt_two_mul_of_odd_padicValNat`: odd-power prime `r≡3 mod4` ⟹
+  `√(2m)` avoided — reproves every ad-hoc avoidance lemma directly from the capstone.
+
+### Proof architecture (3-step Iff chain)
+`scaledLattice_achievable_iff (2m)` (realizable ⟺ `2m = 2(u²+v²)`, i.e. `m = u²+v²` over ℤ)
+→ `exists_sq_add_sq_int_iff_nat` (ℤ→ℕ) → Mathlib `Nat.eq_sq_add_sq_iff` (ℕ sum-of-two-squares
+⟺ prime-factorization condition). Assembled by `rw [hcast, scaledLattice_achievable_iff,
+← Nat.eq_sq_add_sq_iff, ← exists_sq_add_sq_int_iff_nat]` leaving only the `2·` cancellation
+(closed by `push_cast; linarith`).
+
+### Gotchas (reusable)
+- `push_cast` rewrites `(↑n.natAbs : ℤ)` to `|n|` (via `Int.cast_natAbs`) BEFORE `Int.natAbs_sq`
+  can fire, leaving `|u|²`. Fix: `push_cast; rw [sq_abs, sq_abs]` (not `push_cast [Int.natAbs_sq]`).
+- Mathlib key lemma: `Nat.eq_sq_add_sq_iff {n} : (∃ x y, n = x²+y²) ↔ ∀ q ∈ n.primeFactors,
+  q%4=3 → Even (padicValNat q n)` (in `Mathlib.NumberTheory.SumTwoSquares`).
+
+### Frontier
+The realizable distance set of `√2·ℤ²` is now COMPLETELY characterized (this file is
+essentially done). Core #214 unchanged: BLOCKED on `juhasz_stronger` (deep incidence
+geometry, not in Mathlib).
+
+### Verification note
+Worktree `.lake` has 0 mathlib oleans; verified a scratch copy (`import Mathlib`, self-contained)
+against the main-repo Mathlib oleans via `lake env lean` — the main repo auto-reverts uncommitted
+edits so edits live only in the researcher-1-2 worktree / feature branch.

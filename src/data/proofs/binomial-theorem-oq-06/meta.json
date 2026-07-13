@@ -71,7 +71,8 @@
       "**Mathlib has only the antidiagonal form.** Nat.add_choose_eq states Vandermonde as a sum over antidiagonal k; the textbook single-index form over range (r+1) — the way the identity is actually used — required a reindexing step (sum_antidiagonal_eq_sum_range_succ) and was not available.",
       "**The diagonal corollaries are absent from Mathlib.** Neither ∑ C(m,k)C(n,k) = C(m+n,n) nor the famous ∑ C(n,k)² = C(2n,n) appears in Mathlib; both fall out of the range form once one factor is flipped by the symmetry C(n,n−k)=C(n,k) on the summation range.",
       "**Sum of squares of a Pascal row is the central binomial coefficient.** ∑_{k=0}^{n} C(n,k)² = C(2n,n) is the m=n diagonal case: counting n-subsets of a 2n-set by how many come from each half. The Lean proof is a two-line specialization once the symmetric product form is available.",
-      "**Symmetry does the combinatorial work.** The single lemma Nat.choose_symm (C(n,n−k)=C(n,k) for k≤n), applied inside Finset.sum_congr on the range where k≤n holds, is what turns the convolution r−k index into the diagonal k index."
+      "**Symmetry does the combinatorial work.** The single lemma Nat.choose_symm (C(n,n−k)=C(n,k) for k≤n), applied inside Finset.sum_congr on the range where k≤n holds, is what turns the convolution r−k index into the diagonal k index.",
+      "**The exact identity heads a well-studied asymptotic and enumerative circle.** The value it lands on, C(2n,n) = centralBinom n, grows like 4ⁿ/√(πn) (Wallis/Stirling) and, divided by n+1, is the n-th Catalan number — so this elementary sum of squares of a Pascal row sits at the entrance to the central-binomial / Catalan / lattice-path family of results, connecting an exact finite identity to its analytic size and its combinatorial meaning."
     ],
     "exampleSections": [
       {
@@ -105,6 +106,21 @@
       "targetId": "binomial-theorem",
       "relationship": "extends",
       "description": "The parent entry proves the binomial theorem; this entry answers its open question on Vandermonde's convolution identity, adding the classical range form and the diagonal corollaries missing from Mathlib."
+    },
+    {
+      "targetId": "beta-central-binomial-asymptotic",
+      "relationship": "related",
+      "description": "The sum-of-squares identity proved here pins ∑_{k=0}^{n} C(n,k)² to the central binomial coefficient C(2n,n) = centralBinom n exactly; that entry supplies its asymptotic size, C(2n,n) ~ 4ⁿ/√(πn) (Wallis/Stirling via Mathlib's centralBinom_isEquivalent). Together they give the exact closed form and its growth rate for the same quantity."
+    },
+    {
+      "targetId": "catalan-numbers-oq-01",
+      "relationship": "thematic",
+      "description": "The central binomial coefficient C(2n,n) computed here is, up to the factor 1/(n+1), the n-th Catalan number Cₙ = C(2n,n)/(n+1). The lattice-path / Catalan reading of ∑ C(n,k)² = C(2n,n) is exactly the combinatorial interpretation flagged in this entry's open questions, and the Catalan cluster develops that enumerative side."
+    },
+    {
+      "targetId": "binomial-theorem-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Sibling in the binomial-theorem thread. Vandermonde's convolution here counts r objects drawn from a set split into two blocks of sizes m and n; that entry carries the same 'partition into blocks and count' idea to arbitrarily many categories, deriving the multinomial distribution's aggregation (lumping) property from the multinomial theorem."
     }
   ],
   "conclusion": {

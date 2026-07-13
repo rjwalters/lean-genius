@@ -660,6 +660,125 @@ theorem IsDiagonalizable.sum_of_commute_distinct {ι : Type*} (s : Finset ι)
   exact IsDiagonalizable.sum_of_commonDiagonalizer s N hP
     (fun i hi => commonDiagonalizer_of_commute_distinct hPdet hMdiag hdist (hcomm i hi))
 
+/-! ### The splitting annihilator — a diagonalizable matrix satisfies a product of
+distinct linear factors
+
+The parent proves abstractly that a diagonalizable matrix has a *squarefree* minimal
+polynomial (`Matrix.IsDiagonalizable.squarefree_minpoly`).  That structural fact has an
+entirely **constructive** shadow, recorded here: if `P` diagonalizes `M`, then `M` is
+annihilated by the explicit product `∏_{λ} (M − λ·1)` ranging over the **distinct**
+diagonal entries `λ` of `D = P⁻¹MP` — i.e. `M`'s eigenvalues.  This polynomial splits
+into *distinct* linear factors, so it is radical/squarefree; the annihilation exhibits a
+concrete squarefree annihilator without invoking any minimal-polynomial machinery.
+
+Because the factors `M − λ·1` all lie in the commutative subalgebra `K[M]`, the order of
+the product is immaterial; the statement takes it over the ordered list `S.toList` of the
+eigenvalue finset `S`, matching the `List.prod` idiom of `isDiag_listProd` / `conj_listProd`
+used above.
+-/
+
+/-- **An ordered product of diagonal matrices collapses to a single diagonal.**  For any
+    list `L : List ι` and scalar vectors `g : ι → n → K`, the product of the diagonal
+    matrices `diagonal (g s)` is diagonal, with `i`-th diagonal entry the (scalar) product
+    of the `i`-th entries `g s i`.  A direct consequence of `diagonalRingHom` being a ring
+    homomorphism (so it commutes with the list product, `map_list_prod`) together with the
+    pointwise evaluation of a `Pi`-type list product (`Pi.list_prod_apply`).  This is the
+    multiplicative, diagonal-valued companion of `isDiag_sum`, keeping the *values* of the
+    diagonal rather than merely certifying diagonality. -/
+theorem listProd_diagonal {ι : Type*} (L : List ι) (g : ι → n → K) :
+    (L.map (fun s => (diagonal (g s) : Matrix n n K))).prod
+      = diagonal (fun i => (L.map (fun s => g s i)).prod) := by
+  have hhom : (L.map (fun s => (diagonal (g s) : Matrix n n K))).prod
+      = diagonal ((L.map g).prod) := by
+    rw [show (L.map (fun s => (diagonal (g s) : Matrix n n K)))
+          = (L.map g).map (diagonalRingHom n K) by rw [List.map_map]; rfl]
+    exact (map_list_prod (diagonalRingHom n K) (L.map g)).symm
+  rw [hhom]
+  congr 1
+  funext i
+  rw [Pi.list_prod_apply, List.map_map, Function.comp_def]
+
+/-- **The splitting annihilator of a diagonalizable matrix.**  If `P` diagonalizes `M`
+    (so `D = P⁻¹MP` is diagonal), then `M` is annihilated by the ordered product
+    `∏_{λ ∈ S} (M − λ·1)` over the finite set `S` of *distinct* diagonal entries
+    (eigenvalues) of `D`.  Conjugating the product by `P` turns each factor `M − λ·1` into
+    the diagonal `D − λ·1` (`conj_listProd` plus the interior `P⁻¹P = 1` cancellation); the
+    conjugated product is therefore diagonal with `i`-th entry `∏_{λ ∈ S} (D i i − λ)`
+    (`listProd_diagonal`), and that scalar product vanishes because `D i i` is itself one of
+    the values `λ ∈ S`, so one factor is `D i i − D i i = 0` (`List.prod_eq_zero`).  Hence
+    the conjugate is `0`, and undoing the conjugation gives the original product `= 0`.
+
+    The factors range over the *image* of the diagonal, i.e. the **distinct** eigenvalues,
+    so `∏_{λ ∈ S}(X − λ)` is a squarefree polynomial: this is the concrete content behind
+    the parent's `Matrix.IsDiagonalizable.squarefree_minpoly`. -/
+theorem prod_sub_eigen_smul_eq_zero [DecidableEq K] {M P : Matrix n n K} (hP : IsUnit P.det)
+    (hD : (P⁻¹ * M * P).IsDiag) :
+    (((Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ).toList).map
+        (fun s => M - s • (1 : Matrix n n K))).prod = 0 := by
+  set D := P⁻¹ * M * P with hDdef
+  set S := Finset.image (fun i => D i i) Finset.univ with hSdef
+  -- conjugating a single factor `M - s•1` by `P` gives `D - s•1`
+  have hfactor : ∀ s : K, P⁻¹ * (M - s • (1 : Matrix n n K)) * P = D - s • (1 : Matrix n n K) := by
+    intro s
+    rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+        Matrix.nonsing_inv_mul P hP, ← hDdef]
+  -- and `D - s•1` is the diagonal matrix with entries `D i i - s`
+  have hdiagfactor : ∀ s : K,
+      (D - s • (1 : Matrix n n K)) = diagonal (fun i => D i i - s) := by
+    intro s; ext i j
+    by_cases hij : i = j
+    · subst hij
+      simp [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply_eq, diagonal_apply_eq]
+    · simp [Matrix.sub_apply, Matrix.smul_apply, hD hij, Matrix.one_apply_ne hij,
+            diagonal_apply_ne _ hij]
+  -- conjugate the whole ordered product; it becomes diagonal
+  have hconj : P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P
+      = (S.toList.map (fun s => diagonal (fun i => D i i - s))).prod := by
+    rw [conj_listProd hP, List.map_map]
+    apply congrArg List.prod
+    apply List.map_congr_left
+    intro s _
+    show P⁻¹ * (M - s • (1 : Matrix n n K)) * P = diagonal (fun i => D i i - s)
+    rw [hfactor s, hdiagfactor s]
+  have hconj2 : P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P
+      = diagonal (fun i => (S.toList.map (fun s => D i i - s)).prod) := by
+    rw [hconj]; exact listProd_diagonal S.toList (fun s i => D i i - s)
+  -- every diagonal entry of the conjugated product vanishes (`D i i` is one of the roots)
+  have hzero : (fun i => (S.toList.map (fun s => D i i - s)).prod) = fun _ : n => (0 : K) := by
+    funext i
+    apply List.prod_eq_zero
+    rw [List.mem_map]
+    exact ⟨D i i, Finset.mem_toList.mpr (Finset.mem_image.mpr ⟨i, Finset.mem_univ i, rfl⟩),
+      sub_self _⟩
+  rw [hzero] at hconj2
+  -- undo the conjugation: from `P⁻¹ · prod · P = 0` conclude `prod = 0`
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
+  have hcancel : ∀ X : Matrix n n K, P * (P⁻¹ * X * P) * P⁻¹ = X := by
+    intro X
+    rw [show P * (P⁻¹ * X * P) * P⁻¹ = (P * P⁻¹) * X * (P * P⁻¹) by simp only [mul_assoc]]
+    rw [hPP]; simp only [one_mul, mul_one]
+  calc (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod
+      = P * (P⁻¹ * ((S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod) * P) * P⁻¹ :=
+        (hcancel _).symm
+    _ = P * diagonal (fun _ : n => (0 : K)) * P⁻¹ := by rw [hconj2]
+    _ = 0 := by rw [Matrix.diagonal_zero, Matrix.mul_zero, Matrix.zero_mul]
+
+/-- **A diagonalizable matrix is annihilated by a product of distinct linear factors.**
+    The existential, diagonalizer-free form of `prod_sub_eigen_smul_eq_zero`: every
+    diagonalizable `M` admits a finite set `S` of scalars (its eigenvalues) with
+    `∏_{λ ∈ S} (M − λ·1) = 0`.  Since `S` is a `Finset`, the factors `X − λ` are pairwise
+    distinct, so `∏_{λ ∈ S}(X − λ)` is squarefree — a concrete, constructively-exhibited
+    squarefree annihilator, complementing the parent's abstract
+    `Matrix.IsDiagonalizable.squarefree_minpoly`. -/
+theorem IsDiagonalizable.exists_prod_linear_factors_eq_zero {M : Matrix n n K}
+    (hM : M.IsDiagonalizable) :
+    ∃ S : Finset K, (S.toList.map (fun s => M - s • (1 : Matrix n n K))).prod = 0 := by
+  classical
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  exact ⟨Finset.image (fun i => (P⁻¹ * M * P) i i) Finset.univ,
+    prod_sub_eigen_smul_eq_zero hPdet hD⟩
+
 /-! ### Necessity of the common-diagonalizer hypothesis
 
 `mul_of_commonDiagonalizer` requires `M` and `N` to share a single diagonalizer `P`;

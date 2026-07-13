@@ -1,8 +1,8 @@
 {
   "slug": "cube-root-3-irrational-oq-02-oq-03-incomplete-01",
   "title": "Complete proof of Vahlen–Capelli Criterion for Binomial Irreducibility (1 sorries)",
-  "phase": "ACT",
-  "status": "available",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,26 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (open sorry unchanged): added 5 sorry-free theorems (PR #38109) showing the even-case obstruction is vacuous over ordered fields; full positive-radicand criterion vahlen_capelli_pos is machine-checked. Remaining sorry = Lang VI section 9 descent (Mathlib open TODO).",
+    "progressSummary": "COMPLETE (0-sorry/0-axiom Vahlen–Capelli criterion incl. even case). This session added the concrete ℚ instances (nextStep #2): three_not_pth_power_rat (3 is not a p-th power in ℚ for every p≥2, all-exponent generalization of three_not_cube_rat via 3-adic valuation) ⟹ X_pow_sub_C_three_irreducible: Xⁿ−3 is irreducible over ℚ for EVERY n≥1, generalizing the namesake X³−3 instance to arbitrary exponent. Plus the 2-power instance X^(2ᵏ)−3.",
     "builtItems": [
       "neg_not_square_of_pos: a>0 => forall b, b^2 != -a (CubeRoot3IrrationalOQ02OQ03.lean)",
       "capelli_cond_two_of_pos: a>0 => forall b, a != -(4*b^4) (condition 2 vacuous)",
       "two_power_capelli_pos: ordered field, a>0 non-square => Irreducible(X^(2^k)-C a) for k>=1, SORRY-FREE",
       "vahlen_capelli_pos: full iff criterion for a>0: Irreducible(X^n-C a) <-> forall p prime p|n, forall b, b^p != a, SORRY-FREE",
-      "vahlen_capelli_pos_two_pow: prime-power exponent 2^k corollary, Irreducible(X^(2^k)-C a) <-> forall b, b^2 != a"
+      "vahlen_capelli_pos_two_pow: prime-power exponent 2^k corollary, Irreducible(X^(2^k)-C a) <-> forall b, b^2 != a",
+      "three_not_cube_rat: forall b:ℚ, b^3 ≠ 3, via 3-adic valuation (padicValRat.pow + padicValRat.self: 3·v₃(b)=1 impossible), SORRY-FREE axiom-free (CubeRoot3IrrationalOQ02OQ03.lean)",
+      "cubeRootThree_irreducible: Irreducible(X^3 - C 3 : ℚ[X]) as instance of vahlen_capelli_pos_prime (p=3,a=3) — the namesake ∛3 instance, SORRY-FREE axiom-free",
+      "cubeRootThree_irrational: x^3=3 (x:ℝ) => Irrational x, transport of three_not_cube_rat along ℚ↪ℝ, SORRY-FREE axiom-free",
+      "StatementOnly_CubeRoot3...TwoPowerCapelliNegSquare: self-contained Mathlib-only isolation of the sole open sorry (two_power_capelli_neg_square: k≥3, a∉K², a∉−4K⁴, −a∈K² => Irreducible X^(2^k)−C a) submitted to Aristotle project 958405df-8534-4c33-9d40-21529cfa14fa",
+      "two_power_capelli_neg_square + helpers (quad_repr, quad_indep, descent, two_power_irred) inlined into CubeRoot3IrrationalOQ02OQ03.lean §VahlenCapelliDescent — CLOSES the sole open sorry@707 (residual even-case Vahlen–Capelli, 8∣n with −a∈K², an explicit Mathlib KummerExtension.lean TODO). Proved by Aristotle (project 958405df) via Lang VI§9 quadratic descent across K(√a); repaired 2 v4.28→v4.31 grind drifts (Fin-cardinality vacuous goal + linear_combination field identity). File now 0-sorry/0-axiom; vahlen_capelli & cubeRootThree_irreducible depend only on [propext,Classical.choice,Quot.sound]. Removed the now-redundant StatementOnly companion.",
+      "CubeRoot3IrrationalOQ02OQ03.lean concrete ℚ instances (nextStep #2): three_not_pth_power_rat (∀p≥2, ∀b:ℚ, b^p≠3 — all-exponent generalization of three_not_cube_rat via the SAME 3-adic valuation: p·v₃(b)=v₃(3)=1⟹p∣1⟹p≤1 vs p≥2, padicValRat.pow+Int.le_of_dvd+omega) + X_pow_sub_C_three_irreducible (Xⁿ−3 irreducible over ℚ for ALL n≥1 via vahlen_capelli_pos, generalizing the namesake X³−3 to arbitrary exponent) + X_pow_two_pow_sub_C_three_irreducible (X^(2ᵏ)−3, the quadratic-tower exponents). 3 thm, axioms [propext,Classical.choice,Quot.sound]."
     ],
     "insights": [
       "The sole remaining sorry (line 707, two_power_capelli) is the -a in K^2 branch of the pure 2-power base X^(2^k)-C a, k>=3 (8|n): the classical Lang VI section 9 Galois descent over L=K(i). It is EXACTLY Mathlibs open TODO (X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2). Not one-session closeable manually.",
       "STRUCTURAL/SHARP-BOUNDARY RESULT: over any ordered field ([Field]+[LinearOrder]+[IsStrictOrderedRing]) the -4K^4 obstruction (condition 2) is VACUOUS for a>0, since -a<0 is never a square and -(4b^4)<=0<a. Hence the entire even-case difficulty (the open sorry) is a purely non-formally-real phenomenon; for positive radicands the criterion is unconditional (condition 1 alone).",
-      "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos."
+      "The full vahlen_capelli proof invokes the sorry at exactly ONE line (the 8|n branch, via two_power_capelli); every other branch is already sorry-free. Swapping in the positive base two_power_capelli_pos yields a fully sorry-free criterion vahlen_capelli_pos.",
+      "COROLLARY (researcher-5, 2026-07-11): for a PRIME-POWER exponent n=p^k the general Vahlen–Capelli condition (1) collapses to the single 'a not a p-th power' (only prime divisor is p, via Nat.prime_dvd_prime_iff_eq + Nat.Prime.dvd_of_dvd_pow), and for a>0 condition (2) is vacuous — so vahlen_capelli_pos_prime_pow is a clean sorry-free iff covering X^{p^k}−C a for ALL primes, unifying the pre-existing p=2 tower (vahlen_capelli_pos_two_pow). The p=3,a=3 instance is exactly X³−3 irreducible = the entry's ∛3-irrationality headline.",
+      "The abstract Vahlen–Capelli criterion had no concrete instantiation despite the entry being named for ∛3; cubeRootThree_irreducible now derives X³−3 irreducible over ℚ straight from vahlen_capelli_pos_prime, with the only arithmetic input being three_not_cube_rat (3 is not a rational cube), proved by a clean 3-adic valuation contradiction rather than Eisenstein — showing the general criterion subsumes the entry headline.",
+      "The residual even-case Vahlen–Capelli sub-case (8∣n, −a∈K²) — an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean (X_pow_sub_C_irreducible_of_prime_pow is odd-primes-only) — is provable: Lang VI§9 quadratic descent (induct on k via X_pow_mul_sub_C_irreducible peeling one quadratic layer; over F=K(√a) show √a is neither a square nor of form −4b⁴, both reducing to a∈−4K⁴ contradicting condition (2)). Aristotle solved it; the crux descent lemma uses the c₀+c₁√a basis representation + quad_indep linear independence."
     ],
     "mathlibGaps": [
       "Mathlib FieldTheory/KummerExtension.lean: even-n Vahlen-Capelli is an open TODO (Lang Algebra VI section 9); X_pow_sub_C_irreducible_of_prime_pow restricted to p != 2. The -a in K^2, 8|n descent over K(i) remains unformalized.",
       "LinearOrderedField was REMOVED from this Mathlib (v4.26.0 era); use [Field K] [LinearOrder K] [IsStrictOrderedRing K]."
     ],
     "nextSteps": [
-      "To close the last sorry: formalize the Lang VI section 9 descent. Via X_pow_mul_sub_C_irreducible reduce to: base root x (x^(2^(k-1))=a) is not a square in K(x); when -a in K^2 the norm argument is inconclusive, and condition (2) forbids x=y^2. Uses L=K(i) (-1 not a square here, already proved as neg_one_not_square_of_not_square_of_neg_square) + Galois/conjugate-factor descent (~150-300 lines). Best delegated to Aristotle when the MCP server is healthy (returned Resource not found all session).",
-      "Optionally add a concrete Q instance of vahlen_capelli_pos (needs a clean not-a-perfect-p-th-power in Q lemma)."
+      "Optional: generalize three_not_pth_power_rat to an arbitrary prime radicand q (∀b:ℚ, b^p≠q via q-adic valuation), giving X^n−q irreducible over ℚ for every prime q — the fully general concrete family.",
+      "Optional: a squarefree-radicand version (q-adic valuation at any prime dividing q with exponent 1)."
     ]
   },
   "tags": [
@@ -70,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-07-09T00:00:00.000Z",
-  "lastUpdate": "2026-07-11T00:00:00.000Z",
+  "lastUpdate": "2026-07-11",
   "significance": 7,
   "tractability": 7
 }

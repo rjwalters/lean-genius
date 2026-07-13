@@ -3006,6 +3006,215 @@ theorem reversal_seed_composite_landing :
     (∀ k, 165 * 2 ^ (k + 1) ∈ ReversalSet) :=
   ⟨classifySeed_165, seedE_165_not_prime, mem_ReversalSet_165⟩
 
+-- ----------------------------------------------------------------------------
+-- PRIME-POWER-landing engine (`seedS a = 1`, `seedE a = p^m`)
+-- ----------------------------------------------------------------------------
+-- The prime-landing engine `classifySeed_eq_compare_of_seedS_one_seedE_prime`
+-- collapses the classifier to a linear criterion when the landing odd-part is a
+-- *prime* (`seedE a` prime).  The seed `165` shows composite landings occur —
+-- but its landing `115 = 5·23` is a general semiprime, with no closed form for
+-- `φ`.  The next tier where `φ(seedE a)` *does* have a closed form is a **prime
+-- power** `seedE a = p^m`, via `φ(p^m) = p^{m-1}·(p−1)`.  This block builds the
+-- corresponding engine; it strictly generalises the prime engine (the case
+-- `m = 1`, where `p^{m-1} = 1` recovers the exact prior criterion) and, unlike
+-- it, certifies genuine composite-landing reversal seeds such as `561` (landing
+-- `19² = 361`), `1225` (landing `31²`), `1595` (landing `11³`).
+
+/-- **Prime-power-landing trichotomy (the full classifier value).**  For a
+    transport-admissible seed (`seedS a = 1`) whose landing odd-part is a *prime
+    power* `seedE a = p^m` (`p` prime, `m ≥ 1`), the classifier collapses to a
+    single linear comparison:
+    `classifySeed a = compare (φ(seedB a) + p^{m-1}·2^{seedT a}) (2·(a − φ(a)))`.
+
+    This is the common generalisation of `classifySeed_eq_compare_of_seedS_one_
+    seedE_prime`: taking `m = 1` gives `p^{m-1} = 1` and recovers the exact prime
+    criterion `φ(seedB a) + 2^{seedT a} ⋛ 2·(a − φ(a))`.
+
+    Mechanism (`s = 1`): `2a − φ(a) = 2·seedB a` and `2a − φ(seedB a) = seedE a·
+    2^{seedT a}`.  With `e := seedE a = p^m`, `φ(e) = p^{m-1}·(p−1) = e − p^{m-1}`,
+    so `φ(e)·2^{t−1} = e·2^{t−1} − p^{m-1}·2^{t−1} = (a − φ(seedB a)/2) −
+    p^{m-1}·2^{t−1}`.  Doubling the comparison `φ(a) ⋛ φ(e)·2^{t−1}` clears the
+    halves into the stated `(φ(seedB a) + p^{m-1}·2^{seedT a}) ⋛ 2·(a − φ(a))`. -/
+theorem classifySeed_eq_compare_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a
+      = compare (Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a)
+          (2 * (a - Nat.totient a)) := by
+  obtain ⟨hob, hoe, _, ht1, hstep, hCeq⟩ := seed_spec ha3
+  have hφa_lt : Nat.totient a < a := Nat.totient_lt a (by omega)
+  rw [hs1, pow_one] at hstep
+  have hb2 : 2 ≤ seedB a := by omega
+  have hb3 : 3 ≤ seedB a := by rcases hob with ⟨i, hi⟩; omega
+  obtain ⟨jb, hjb⟩ := Nat.totient_even (show 2 < seedB a by omega)
+  rw [hs1] at hCeq
+  simp only [Nat.sub_self, pow_zero, mul_one] at hCeq
+  -- prime-power landing: `φ(e) = e − p^{m-1}`, a LINEAR identity.  (Keeping the
+  -- nonlinear `φ(e) = p^{m-1}·(p−1)` in context would make `omega` substitute it,
+  -- turning the product atoms `seedE a·2^{…}` nonlinear and dropping `hCeq`.)
+  have hEfac : seedE a = p ^ (m - 1) * p := by rw [hepp, ← pow_succ]; congr 1; omega
+  have hPle : p ^ (m - 1) ≤ seedE a := by
+    rw [hEfac]; exact Nat.le_mul_of_pos_right _ hp.pos
+  have hkey : Nat.totient (seedE a) + p ^ (m - 1) = seedE a := by
+    rw [show Nat.totient (seedE a) = p ^ (m - 1) * (p - 1) from by
+          rw [hepp, Nat.totient_prime_pow hp (by omega)], hEfac]
+    calc p ^ (m - 1) * (p - 1) + p ^ (m - 1)
+          = p ^ (m - 1) * (p - 1) + p ^ (m - 1) * 1 := by ring
+      _ = p ^ (m - 1) * (p - 1 + 1) := by rw [← mul_add]
+      _ = p ^ (m - 1) * p := by have := hp.pos; congr 1; omega
+  -- LINEAR totient identity — the crux for `omega` (the nonlinear
+  -- `φ(e) = p^{m-1}·(p−1)` would be substituted and break the product atoms).
+  have hφe : Nat.totient (seedE a) = seedE a - p ^ (m - 1) := by omega
+  have hepos : 0 < seedE a := by rw [hepp]; exact pow_pos hp.pos m
+  -- drop the two NONLINEAR `seedE a = p^{m-1}·p` / `= p^m` facts: otherwise `omega`
+  -- substitutes them into the product atoms `seedE a·2^{…}` and drops the bridges.
+  clear hEfac hepp
+  have hne : 0 < seedE a * 2 ^ seedT a := mul_pos hepos (pow_pos (by norm_num) _)
+  have hφa_le : Nat.totient a ≤ a := Nat.totient_le a
+  have hp2 : 1 ≤ (2 : ℕ) ^ (seedT a - 1) := Nat.one_le_two_pow
+  have hP : (2 : ℕ) ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have hEPt : seedE a * 2 ^ seedT a = 2 * (seedE a * 2 ^ (seedT a - 1)) := by
+    rw [hP]; ring
+  have hPt : p ^ (m - 1) * 2 ^ seedT a = 2 * (p ^ (m - 1) * 2 ^ (seedT a - 1)) := by
+    rw [hP]; ring
+  have hsub : Nat.totient (seedE a) * 2 ^ (seedT a - 1)
+      = seedE a * 2 ^ (seedT a - 1) - p ^ (m - 1) * 2 ^ (seedT a - 1) := by
+    rw [hφe, Nat.sub_mul]
+  have hEPge : p ^ (m - 1) * 2 ^ (seedT a - 1) ≤ seedE a * 2 ^ (seedT a - 1) := by
+    gcongr
+  simp only [classifySeed]
+  rw [hsub]
+  rcases lt_trichotomy (Nat.totient a)
+      (seedE a * 2 ^ (seedT a - 1) - p ^ (m - 1) * 2 ^ (seedT a - 1)) with h | h | h
+  · rw [compare_lt_iff_lt.mpr h,
+        compare_lt_iff_lt.mpr (show Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a
+          < 2 * (a - Nat.totient a) by omega)]
+  · rw [compare_eq_iff_eq.mpr h,
+        compare_eq_iff_eq.mpr (show Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a
+          = 2 * (a - Nat.totient a) by omega)]
+  · rw [compare_gt_iff_gt.mpr h,
+        compare_gt_iff_gt.mpr (show 2 * (a - Nat.totient a)
+          < Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a by omega)]
+
+/-- **Prime-power-landing reversal criterion** (`.lt` case).  A transport-
+    admissible seed with a prime-power landing `seedE a = p^m` reverses its whole
+    family (`classifySeed a = .lt`) iff
+    `φ(seedB a) + p^{m-1}·2^{seedT a} < 2·(a − φ(a))`. -/
+theorem classifySeed_lt_iff_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a = Ordering.lt ↔
+      Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a < 2 * (a - Nat.totient a) := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp,
+    compare_lt_iff_lt]
+
+/-- **Prime-power-landing equality criterion** (`.eq` case). -/
+theorem classifySeed_eq_iff_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a = Ordering.eq ↔
+      Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a = 2 * (a - Nat.totient a) := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp,
+    compare_eq_iff_eq]
+
+/-- **Prime-power-landing forward criterion** (`.gt` case). -/
+theorem classifySeed_gt_iff_of_seedS_one_seedE_primePow
+    {a p m : ℕ} (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime) (hm : 1 ≤ m)
+    (hepp : seedE a = p ^ m) :
+    classifySeed a = Ordering.gt ↔
+      2 * (a - Nat.totient a) < Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a := by
+  rw [classifySeed_eq_compare_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp,
+    compare_gt_iff_gt]
+
+/-- **Prime-power-landing reversal family.**  Under the criterion inequality, the
+    *entire* family `n = a·2^(k+1)` lies in `ReversalSet` (`φ(n) < φ(D(n))` for
+    every `k`).  Packages the prime-power reversal criterion into an
+    infinitely-often statement per qualifying seed (e.g. `a = 561`, landing
+    `19²`, gives `1122, 2244, …`). -/
+theorem primePow_landing_family_reversal
+    {a p m : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (hs1 : seedS a = 1) (hp : p.Prime)
+    (hm : 1 ≤ m) (hepp : seedE a = p ^ m)
+    (hcrit : Nat.totient (seedB a) + p ^ (m - 1) * 2 ^ seedT a < 2 * (a - Nat.totient a))
+    (k : ℕ) : a * 2 ^ (k + 1) ∈ ReversalSet := by
+  rw [classifySeed_lt_iff ha ha3 k]
+  exact (classifySeed_lt_iff_of_seedS_one_seedE_primePow ha3 hs1 hp hm hepp).2 hcrit
+
+-- ----------------------------------------------------------------------------
+-- Concrete prime-power-landing reversal witness:  `a = 561 = 3·11·17`
+-- ----------------------------------------------------------------------------
+-- `561` (the smallest Carmichael number) is a reversal seed whose landing
+-- odd-part is a *prime square* `19² = 361` — composite, so outside the
+-- prime-landing engine `..._seedE_prime`, yet inside the prime-*power* engine.
+--   `φ(561) = 320`,  `2·561 − 320 = 802 = 401·2¹`  (`s = 1`, `b = 401` prime);
+--   `C = 2·561 − φ(401) = 1122 − 400 = 722 = 361·2¹`  (`t = 1`, `e = 361 = 19²`);
+--   classifier compares `φ(561) = 320` against `φ(361)·2^0 = 342`; `320 < 342`, `lt`.
+
+/-- `φ(401) = 400`  (`401` is prime). -/
+theorem totient_401 : Nat.totient 401 = 400 := Nat.totient_prime (by norm_num)
+
+/-- `φ(361) = 342`  (`361 = 19²`, so `φ = 19·(19−1) = 342`). -/
+theorem totient_361 : Nat.totient 361 = 342 := by
+  rw [show (361 : ℕ) = 19 ^ 2 from rfl,
+      Nat.totient_prime_pow (by norm_num : Nat.Prime 19) (by norm_num : 0 < 2)]
+  norm_num
+
+/-- `φ(561) = 320`  (`561 = 33·17`, coprime, `φ(33) = 20`). -/
+theorem totient_561 : Nat.totient 561 = 320 := by
+  rw [show (561 : ℕ) = 33 * 17 from rfl, Nat.totient_mul (by norm_num),
+      show (33 : ℕ) = 3 * 11 from rfl, Nat.totient_mul (by norm_num),
+      totient_3, totient_11, Nat.totient_prime (by norm_num)]
+
+/-- **Classifier value on the seed `561 = 3·11·17`.**  Transport data
+    `b = 401` prime (`2·561 − 320 = 802 = 401·2¹`, `s = 1`), landing
+    `C = 2·561 − φ(401) = 722 = 361·2¹` (`t = 1`, `e = 361 = 19²`), and the
+    classifier compares `φ(561) = 320` against `φ(361)·2^0 = 342`; `320 < 342`,
+    so `561` classifies `lt` — a reversal seed with a *prime-square* landing. -/
+theorem classifySeed_561 : classifySeed 561 = Ordering.lt := by
+  rw [classifySeed_val (s := 1) (b := 401) (t := 1) (e := 361) (by decide) (by decide)
+      (by norm_num [totient_561]) (by norm_num [totient_401])]
+  rw [totient_561, totient_361]; decide
+
+set_option maxRecDepth 4000 in
+/-- **The landing odd-part of the reversal seed `561` is the prime square `19²`.**
+    Extracting the transport data by two 2-adic splits, `seedE 561 = 361 = 19²`,
+    which is a prime power (`m = 2`) but *not* prime — outside the prime-landing
+    engine, inside the prime-power engine. -/
+theorem seedE_561 : seedE 561 = 361 := by
+  have hstep : 2 * 561 - Nat.totient 561 = 401 * 2 ^ 1 := by rw [totient_561]; norm_num
+  have hodd401 : Odd (401 : ℕ) := Nat.odd_iff.mpr (by norm_num)
+  have hS : seedS 561 = 1 := (factor_two_split hodd401 hstep).1
+  have hB : seedB 561 = 401 := (factor_two_split hodd401 hstep).2
+  have hSC : seedC 561 = 361 * 2 ^ 1 := by
+    show 2 * 561 - Nat.totient (seedB 561) * 2 ^ (seedS 561 - 1) = 361 * 2 ^ 1
+    rw [hB, hS, totient_401]; norm_num
+  exact (factor_two_split (Nat.odd_iff.mpr (by norm_num)) hSC).2
+
+/-- `seedE 561 = 361 = 19²` is not prime (it is a proper prime power). -/
+theorem seedE_561_not_prime : ¬ (seedE 561).Prime := by
+  rw [seedE_561]; norm_num
+
+/-- **Reversal family `561·2^(k+1)` with a prime-square landing.**  Since
+    `classifySeed 561 = lt`, the whole family lies in `ReversalSet`
+    (`φ(n) < φ(D(n))` for every `k`), with landing odd-part `seedE 561 = 361 =
+    19²` a proper prime power. -/
+theorem mem_ReversalSet_561 (k : ℕ) : 561 * 2 ^ (k + 1) ∈ ReversalSet :=
+  (classifySeed_lt_iff (by decide) (by norm_num) k).mpr classifySeed_561
+
+/-- **A prime-power-landing reversal seed the prime engine cannot certify.**  The
+    seed `561` reverses its whole family `561·2^(k+1)` (`φ(n) < φ(D(n))`), its
+    landing odd-part `seedE 561 = 361 = 19²` is a proper prime power (composite,
+    so outside `classifySeed_lt_iff_of_seedS_one_seedE_prime`), yet the
+    prime-*power* engine `classifySeed_lt_iff_of_seedS_one_seedE_primePow`
+    certifies it via `φ(401) + 19·2 = 438 < 482 = 2·(561 − 320)`.  This exhibits a
+    reversal regime strictly between the prime-landing seeds and the general
+    composite seed `165`. -/
+theorem reversal_seed_primePow_landing :
+    classifySeed 561 = Ordering.lt ∧ seedE 561 = 19 ^ 2 ∧ ¬ (seedE 561).Prime ∧
+    (∀ k, 561 * 2 ^ (k + 1) ∈ ReversalSet) :=
+  ⟨classifySeed_561, by rw [seedE_561]; norm_num, seedE_561_not_prime, mem_ReversalSet_561⟩
+
 /-- **The necessary condition `4 ∣ φ(a)` is not sufficient for reversal.**
 `reversal_seed_four_dvd_totient` proves every reversing seed `a` (`classifySeed a = lt`)
 satisfies `4 ∣ φ(a)`.  The converse *fails*: the Sophie–Germain equality seed `a = 15 = 3·5`
@@ -3688,5 +3897,59 @@ theorem shared_landing_triple_verdict_917 (k : ℕ) :
   · show Nat.totient (dblIter (1097 * 2 ^ (k + 1))) < Nat.totient (1097 * 2 ^ (k + 1))
     rw [hD1097, hφ1097, hφ917]
     exact mul_lt_mul_of_pos_right (by norm_num) pos
+
+/-! ## The three regimes partition ℕ
+
+`ReversalSet`, `EqualitySet`, and `ForwardSet` are defined by the three cases of the
+comparison `φ(n)` vs `φ(D(n))` (with `D = dblIter`).  Being the `<`, `=`, `>` slices of a
+single `Nat` comparison, they are automatically **pairwise disjoint** and **cover ℕ** — every
+`n` lands in *exactly one* regime.  This is the global well-definedness of the whole
+classification (of which `classifySeed_classifies` is the seed-family decision procedure):
+no `n` is both a reversal and a forward point, and none escapes classification.  These hold
+for *all* `n`, needing none of the seed/transport machinery — only the trichotomy of `φ(n)`
+against `φ(D(n))`. -/
+
+/-- Reversal and equality are disjoint: `φ(n) < φ(D(n))` and `φ(n) = φ(D(n))` cannot both hold. -/
+theorem reversalSet_disjoint_equalitySet : Disjoint ReversalSet EqualitySet := by
+  rw [Set.disjoint_left]
+  intro n hR hE
+  rw [ReversalSet, Set.mem_setOf_eq] at hR
+  rw [EqualitySet, Set.mem_setOf_eq] at hE
+  omega
+
+/-- Reversal and forward are disjoint: `φ(n) < φ(D(n))` and `φ(D(n)) < φ(n)` cannot both hold. -/
+theorem reversalSet_disjoint_forwardSet : Disjoint ReversalSet ForwardSet := by
+  rw [Set.disjoint_left]
+  intro n hR hF
+  rw [ReversalSet, Set.mem_setOf_eq] at hR
+  rw [ForwardSet, Set.mem_setOf_eq] at hF
+  omega
+
+/-- Equality and forward are disjoint: `φ(n) = φ(D(n))` and `φ(D(n)) < φ(n)` cannot both hold. -/
+theorem equalitySet_disjoint_forwardSet : Disjoint EqualitySet ForwardSet := by
+  rw [Set.disjoint_left]
+  intro n hE hF
+  rw [EqualitySet, Set.mem_setOf_eq] at hE
+  rw [ForwardSet, Set.mem_setOf_eq] at hF
+  omega
+
+/-- **The three regimes cover ℕ.**  Every `n` is a reversal, equality, or forward point,
+by the trichotomy of `φ(n)` against `φ(D(n))`. -/
+theorem reversalSet_union_equalitySet_union_forwardSet :
+    ReversalSet ∪ EqualitySet ∪ ForwardSet = Set.univ := by
+  ext n
+  simp only [Set.mem_union, ReversalSet, EqualitySet, ForwardSet, Set.mem_setOf_eq,
+    Set.mem_univ, iff_true]
+  omega
+
+/-- **Exactly one regime per `n`.**  The three sets partition ℕ: every `n` lies in one of
+`ReversalSet`, `EqualitySet`, `ForwardSet` and in neither of the other two.  The global
+trichotomy behind the classifier. -/
+theorem regime_trichotomy (n : ℕ) :
+    (n ∈ ReversalSet ∧ n ∉ EqualitySet ∧ n ∉ ForwardSet) ∨
+      (n ∉ ReversalSet ∧ n ∈ EqualitySet ∧ n ∉ ForwardSet) ∨
+      (n ∉ ReversalSet ∧ n ∉ EqualitySet ∧ n ∈ ForwardSet) := by
+  simp only [ReversalSet, EqualitySet, ForwardSet, Set.mem_setOf_eq]
+  omega
 
 end Erdos1064OQ03

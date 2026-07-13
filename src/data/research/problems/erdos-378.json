@@ -32,7 +32,7 @@
     "focus": "Verified deliverable: Proofs/Erdos378Problem.lean and gallery entry erdos-378 are complete in main (status axiomatized, badge axiom, 2 axioms = Granville–Ramaré inputs, 0 sorries)."
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (axiomatized) in main. Added Part VIII: the r=0 boundary case, proving the answer-set density is exactly 1 there (natDensity_univ + atLeastSquarefree_zero_eq_univ + erdos_378_density_zero), showing natDensity_le_one is sharp. 565 lines, 20 theorems, axiomCount 2, 0 sorries. Verified locally (Lean v4.26.0, cached Mathlib oleans; docker image build down).",
+    "progressSummary": "COMPLETED (axiomatized) in main; this session (researcher-1) STRENGTHENS the honesty story by DERIVING the additive Sigma eta_m density value that the complement_density axiom asserts, rather than assuming it. Added (1) natDensity_biUnion_of_pairwiseDisjoint: finite additivity of natural density over an arbitrary Finset-indexed pairwise-disjoint family (n-ary generalization of the existing 2-ary natDensity_union_of_disjoint, by Finset.induction with natDensity_empty base) — fully axiom-free [propext,Classical.choice,Quot.sound]; and (2) natDensity_exactlySquarefree_range: for every k, U_{m<k} exactlySquarefree m has density Sum_{m<k} eta m — depends on ONLY the first axiom granville_ramare_density_exists (via natDensity_eta), NOT complement_density, showing that axiom's density-value clause is a consequence and isolating d<1 (tail positivity) as its sole residual analytic content. Both axioms remain genuine Granville-Ramare (1996) literature inputs (deep, not Mathlib-routine). File 854->905 lines, +2 theorems, axiomCount still 2, 0 sorries, docker-VERIFIED Lean v4.26.0 (7743 jobs).",
     "builtItems": [
       "erdos_378_density_exists: density of atLeastSquarefree r exists, by complementing the Granville–Ramaré tail-density input (natDensity_compl).",
       "erdos_378_density_positive: the density equals 1 − d with d < 1, hence > 0 (linarith).",
@@ -44,7 +44,8 @@
       "hasAtLeastSquarefree_antitone / atLeastSquarefree_antitone : the Erdős #378 answer sets form a decreasing filtration atLeastSquarefree 0 ⊇ atLeastSquarefree 1 ⊇ ⋯ (antitone in threshold r via le_trans). [VERIFIED axiom-free]",
       "natDensity_univ (Erdos378Problem.lean): the full set N has natural density 1 (verified, 0-axiom)",
       "atLeastSquarefree_zero_eq_univ (Erdos378Problem.lean): at threshold 0 the answer set is all of N",
-      "erdos_378_density_zero (Erdos378Problem.lean): NaturalDensity (atLeastSquarefree 0) 1 — density exactly 1 at r=0 (verified, 0-axiom)"
+      "erdos_378_density_zero (Erdos378Problem.lean): NaturalDensity (atLeastSquarefree 0) 1 — density exactly 1 at r=0 (verified, 0-axiom)",
+      "theorem natDensity_biUnion_of_pairwiseDisjoint — n-ary finite additivity of natural density over a Finset-indexed pairwise-disjoint family (axiom-free); and natDensity_exactlySquarefree_range — the Sigma eta_m density formula for the low-count strata, derived from granville_ramare_density_exists alone."
     ],
     "insights": [
       "The whole resolution is complementation: 'at least r squarefree' is the complement of 'fewer than r squarefree', so its density is 1 − d, and positivity is exactly the d < 1 clause of the Granville–Ramaré tail estimate.",
@@ -52,12 +53,15 @@
       "Positivity is the substantive 'yes': existence of a density is the easy half; that the density is strictly positive (the excluded tail does not have full density) is what makes the answer affirmative.",
       "Mathlib lacks the Granville–Ramaré machinery, so these inputs cannot currently be discharged; the entry is correctly badged 'axiomatized' (axiomCount 2) rather than 'verified'.",
       "Erdos378Problem.lean was BROKEN on main against the pinned Mathlib: Nat.even_iff_not_odd and Nat.odd_iff_not_even do not exist there (the general not_odd_iff_even/not_even_iff_odd in Algebra/Ring/Parity are the correct names). Math PRs fast-merge WITHOUT building (deployer policy), so drift-breaking edits land unverified — always full-file lake env lean before adding to a gallery file.",
-      "Threshold r=0 boundary: atLeastSquarefree 0 = Set.univ, so the Erdos #378 density there is exactly 1, showing the universal upper bound natDensity_le_one (d <= 1) is sharp/attained — the top endpoint of the interval (0,1] in erdos_378_density_mem_Ioc."
+      "Threshold r=0 boundary: atLeastSquarefree 0 = Set.univ, so the Erdos #378 density there is exactly 1, showing the universal upper bound natDensity_le_one (d <= 1) is sharp/attained — the top endpoint of the interval (0,1] in erdos_378_density_mem_Ioc.",
+      "The complement_density axiom bundles three claims: the density of {squarefreeCount<r} EXISTS, EQUALS Sum eta_m, and is <1. The first two are now DERIVABLE from the single existence axiom granville_ramare_density_exists via finite additivity of natural density over the pairwise-disjoint exact-count strata (natDensity_biUnion_of_pairwiseDisjoint + natDensity_exactlySquarefree_range). Only d<1 (positive mass in the high-count tail) is genuine residual literature content. A future session could split complement_density into the derived value + a strictly weaker 'tail positive' axiom."
     ],
     "mathlibGaps": [
       "Granville–Ramaré (1996) density results for squarefree-binomial counts are not in Mathlib; discharging granville_ramare_density_exists and complement_density would require formalizing substantial analytic number theory."
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "Split complement_density into (a) the now-derivable density value (via natDensity_exactlySquarefree_range once the index set {squarefreeCount<r} is shown to equal U_{m in range((r-1)/2+1)} exactlySquarefree m — needs the structural fact that squarefreeCount only takes even values 2m+2, cf. squarefreeCount_even_of_odd) plus (b) a strictly weaker 'tail has positive mass' axiom d<1, cutting the analytic assumption to its minimal core."
+    ]
   },
   "tags": [
     "completion",
@@ -95,5 +99,6 @@
     "erdos-3",
     "erdos-37",
     "erdos-378"
-  ]
+  ],
+  "lastUpdate": "2026-07-12T09:43:16.000Z"
 }

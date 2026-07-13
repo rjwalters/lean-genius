@@ -815,7 +815,357 @@ theorem genusSurfaceCGB_chi_even' (g : ℕ) : Even (genusSurfaceCGB g).chi := by
   exact ⟨1 - (k : ℤ), by rw [hk]; push_cast; ring⟩
 
 -- ============================================================================
--- Part XVII: The Poincaré polynomial of `Σ_g` — functional equation and the
+-- Part XVII: The Cartesian-product monoid — (CGBManifolds, ×) with the point as
+--            identity, and χ a monoid homomorphism to (ℤ, ·)
+-- ============================================================================
+
+/-
+  Part X exhibits the *connected-sum* monoid `(2n`-manifolds, `#)`, with the sphere
+  `S^{2n}` as identity and `χ − 2` the induced additive homomorphism to `(ℤ, +)`.
+  The Cartesian product `×` (`prodCGB`) carries the complementary monoid structure:
+  it is commutative and associative on `χ`, its identity is the single **point**
+  (the `0`-dimensional manifold with `χ = 1`), and `χ` is *multiplicative*
+  (`prodCGB_chi`).  So `χ` is a monoid homomorphism `((CGBManifolds, ×) → (ℤ, ·))`,
+  exactly as `χ − 2` is one `((·, #) → (ℤ, +))`.  Everything reduces to the
+  commutative-ring structure of `ℤ`, hence is fully verified (the two
+  structure-encoded CGB assumptions are not invoked).
+-/
+
+/-- **The point manifold** — the `0`-dimensional closed manifold consisting of a single
+    point: `halfDim = 0`, `χ = 1`, `∫Pf = 1` (the empty Pfaffian integrates to the point
+    count).  It is the identity for the Cartesian product `prodCGB`. -/
+def pointCGB : CGBManifold where
+  halfDim := 0
+  chi := 1
+  totalPfaffian := 1
+  chern_gauss_bonnet := by rw [cgbConst_zero]; norm_num
+
+/-- `χ(pt) = 1`: the point has Euler characteristic one. -/
+@[simp] theorem pointCGB_chi : pointCGB.chi = 1 := rfl
+
+/-- `dim(pt) = 0`: the point is `0`-dimensional. -/
+@[simp] theorem pointCGB_dim : pointCGB.dim = 0 := rfl
+
+/-- `∫Pf(pt) = 1`: the point's total Pfaffian is its point count. -/
+@[simp] theorem pointCGB_totalPfaffian : pointCGB.totalPfaffian = 1 := rfl
+
+/-- **Left identity for `×` (Euler characteristic): `χ(pt × M) = χ(M)`.**  Since
+    `χ(pt) = 1` and `χ` is multiplicative, the point is a left identity for the
+    Cartesian-product monoid — the multiplicative analogue of the sphere's role as
+    connected-sum identity (`connectedSum_sphere_chi`). -/
+theorem prodCGB_point_chi (M : CGBManifold) : (prodCGB pointCGB M).chi = M.chi := by
+  rw [prodCGB_chi]; show (1 : ℤ) * M.chi = M.chi; rw [one_mul]
+
+/-- **Right identity for `×` (Euler characteristic): `χ(M × pt) = χ(M)`.**  The mirror of
+    `prodCGB_point_chi`; together they make the point a genuine *two-sided* identity for
+    the product monoid on `χ`. -/
+theorem prodCGB_chi_point (M : CGBManifold) : (prodCGB M pointCGB).chi = M.chi := by
+  rw [prodCGB_chi]; show M.chi * (1 : ℤ) = M.chi; rw [mul_one]
+
+/-- **Commutativity on Euler characteristics: `χ(M × N) = χ(N × M)`.**  `χ` is multiplicative
+    and `ℤ` is commutative, so the Cartesian product is commutative on `χ` — the commutativity
+    axiom of the product monoid, paralleling `connectedSumCGB_chi_comm`. -/
+theorem prodCGB_chi_comm (M N : CGBManifold) :
+    (prodCGB M N).chi = (prodCGB N M).chi := by
+  rw [prodCGB_chi, prodCGB_chi]; ring
+
+/-- **Associativity on Euler characteristics: `χ((M × N) × P) = χ(M × (N × P))`.**  Both sides
+    equal `χ(M)·χ(N)·χ(P)`, so the Cartesian product is associative on `χ` — the associativity
+    axiom of the product monoid, paralleling `connectedSumCGB_chi_assoc`. -/
+theorem prodCGB_chi_assoc (M N P : CGBManifold) :
+    (prodCGB (prodCGB M N) P).chi = (prodCGB M (prodCGB N P)).chi := by
+  rw [prodCGB_chi, prodCGB_chi, prodCGB_chi, prodCGB_chi]; ring
+
+/-- **Left identity for `×` (total curvature): `∫Pf(pt × M) = ∫Pf(M)`.**  The total Pfaffian
+    multiplies under products (`prodCGB_totalPfaffian`) and `∫Pf(pt) = 1`, so the point is
+    also neutral for the Gauss-Bonnet total curvature — the product monoid is realised on
+    `∫Pf`, not merely on `χ`. -/
+theorem prodCGB_point_totalPfaffian (M : CGBManifold) :
+    (prodCGB pointCGB M).totalPfaffian = M.totalPfaffian := by
+  rw [prodCGB_totalPfaffian]; show (1 : ℝ) * M.totalPfaffian = M.totalPfaffian; rw [one_mul]
+
+/-- **Commutativity on the total curvature: `∫Pf(M × N) = ∫Pf(N × M)`.**  The Gauss-Bonnet
+    companion of `prodCGB_chi_comm`: the product total Pfaffian `M.totalPfaffian ·
+    N.totalPfaffian` is symmetric in `M, N`, so the Cartesian product is commutative as a
+    Chern-Gauss-Bonnet operation. -/
+theorem prodCGB_totalPfaffian_comm (M N : CGBManifold) :
+    (prodCGB M N).totalPfaffian = (prodCGB N M).totalPfaffian := by
+  rw [prodCGB_totalPfaffian, prodCGB_totalPfaffian]; ring
+
+/-- **The point is `0`-dimensional identity: `dim(pt × M) = dim M`.**  Cartesian product adds
+    dimensions (`prodCGB_dim`) and `dim(pt) = 0`, so multiplying by the point preserves
+    dimension — confirming the point is the product identity on the full invariant triple
+    `(dim, χ, ∫Pf)`, just as the sphere `S^{2n}` is the connected-sum identity in each
+    fixed dimension. -/
+theorem prodCGB_point_dim (M : CGBManifold) : (prodCGB pointCGB M).dim = M.dim := by
+  rw [prodCGB_dim]; show pointCGB.dim + M.dim = M.dim; rw [pointCGB_dim, zero_add]
+
+-- ============================================================================
+-- Part XVIII: The Künneth formula for Betti numbers — a homological
+--             re-derivation of the multiplicativity of χ for `Σ_g × Σ_h`
+-- ============================================================================
+
+/-
+  Part VII proves `χ(M × N) = χ(M)·χ(N)` from the structure field `prodCGB_chi`, and
+  Part XVI records the Betti numbers `(b₀,b₁,b₂) = (1, 2g, 1)` of the surface `Σ_g`.
+  The two meet through the **Künneth theorem**: for spaces with free integral homology
+  (surfaces are such), the homology of a product is the graded tensor product, so the
+  Betti numbers *convolve*,
+
+      bₖ(M × N) = Σ_{i+j=k} bᵢ(M)·bⱼ(N).
+
+  Applying this to the two surfaces gives the Betti numbers of the closed oriented
+  `4`-manifold `Σ_g × Σ_h`:
+
+      (b₀,b₁,b₂,b₃,b₄) = (1, 2(g+h), 2 + 4gh, 2(g+h), 1),
+
+  a palindromic sequence (Poincaré duality on the `4`-manifold, `bᵢ = b_{4−i}`).  Its
+  Euler–Poincaré alternating sum is `χ = Σ(−1)ⁱbᵢ = (2−2g)(2−2h)`, so **Künneth on Betti
+  numbers reproduces `prodCGB_genusSurface_chi` homologically** — the multiplicativity of
+  the Euler characteristic is the value at `t = −1` of the multiplicativity of the Poincaré
+  polynomial.  Two familiar `4`-manifolds fall out as `g = h = 0` and `g = h = 1`:
+  `S² × S²` with Betti `(1,0,2,0,1)` and `χ = 4`, and the `4`-torus `T⁴ = T² × T²` with
+  Betti `(1,4,6,4,1) = (C(4,k))ₖ` and `χ = 0`.  Everything is finite convolution and
+  integer arithmetic, hence fully verified (0-axiom); the two structure-encoded CGB
+  assumptions are not invoked.
+-/
+
+/-- `b₃(Σ_g) = 0` at the literal degree `3` (a `2`-manifold has no homology in degree `3`).
+    The literal-degree companion of `genusSurfaceBetti_vanish`, needed to evaluate the
+    Künneth convolution in degrees `3` and `4`. -/
+@[simp] theorem genusSurfaceBetti_three (g : ℕ) : genusSurfaceBetti g 3 = 0 := rfl
+
+/-- `b₄(Σ_g) = 0` at the literal degree `4`. -/
+@[simp] theorem genusSurfaceBetti_four (g : ℕ) : genusSurfaceBetti g 4 = 0 := rfl
+
+/-- **Künneth convolution of two Betti sequences.**  `(b ⋆ c)(k) = Σ_{i+j=k} bᵢ·cⱼ`, the
+    graded-tensor-product rank in degree `k`.  Over `ℤ` with free homology this is exactly
+    the Betti number of a product space (no `Tor` correction). -/
+def kunnethBetti (b c : ℕ → ℕ) (k : ℕ) : ℕ :=
+  ∑ i ∈ Finset.range (k + 1), b i * c (k - i)
+
+/-- **Betti numbers of the product surface `Σ_g × Σ_h`**, the closed oriented `4`-manifold.
+    Given here as explicit data `(1, 2(g+h), 2+4gh, 2(g+h), 1)`; `prodSurfaceBetti_kunneth`
+    verifies that this sequence is exactly the Künneth convolution of the factor Betti
+    numbers `genusSurfaceBetti g` and `genusSurfaceBetti h`. -/
+def prodSurfaceBetti (g h : ℕ) : ℕ → ℕ
+  | 0 => 1
+  | 1 => 2 * (g + h)
+  | 2 => 2 + 4 * g * h
+  | 3 => 2 * (g + h)
+  | 4 => 1
+  | _ + 5 => 0
+
+/-- `b₀(Σ_g × Σ_h) = 1`: the product of two connected surfaces is connected. -/
+@[simp] theorem prodSurfaceBetti_zero (g h : ℕ) : prodSurfaceBetti g h 0 = 1 := rfl
+
+/-- `b₁(Σ_g × Σ_h) = 2(g + h)`: the `H₁` of a product splits as `H₁(Σ_g) ⊕ H₁(Σ_h)`. -/
+@[simp] theorem prodSurfaceBetti_one (g h : ℕ) : prodSurfaceBetti g h 1 = 2 * (g + h) := rfl
+
+/-- `b₂(Σ_g × Σ_h) = 2 + 4gh`: the middle Betti number.  The `2` comes from the two
+    fundamental classes `[Σ_g] ⊗ 1` and `1 ⊗ [Σ_h]`; the `4gh = (2g)(2h)` from the tensor
+    product `H₁(Σ_g) ⊗ H₁(Σ_h)`. -/
+@[simp] theorem prodSurfaceBetti_two (g h : ℕ) : prodSurfaceBetti g h 2 = 2 + 4 * g * h := rfl
+
+/-- `b₃(Σ_g × Σ_h) = 2(g + h)`: equal to `b₁` by Poincaré duality on the `4`-manifold. -/
+@[simp] theorem prodSurfaceBetti_three (g h : ℕ) : prodSurfaceBetti g h 3 = 2 * (g + h) := rfl
+
+/-- `b₄(Σ_g × Σ_h) = 1`: the top Betti number of the closed oriented `4`-manifold
+    `Σ_g × Σ_h`, generated by the product fundamental class `[Σ_g] ⊗ [Σ_h]`. -/
+@[simp] theorem prodSurfaceBetti_four (g h : ℕ) : prodSurfaceBetti g h 4 = 1 := rfl
+
+/-- **The explicit Betti numbers satisfy the Künneth formula.**  For every degree `k ≤ 4`,
+    `bₖ(Σ_g × Σ_h) = Σ_{i≤k} bᵢ(Σ_g)·b_{k−i}(Σ_h)` — the palindrome `(1, 2(g+h), 2+4gh,
+    2(g+h), 1)` really is the convolution of the two factor sequences `(1, 2g, 1)`, so
+    `prodSurfaceBetti` carries genuine Künneth content rather than an ad hoc table. -/
+theorem prodSurfaceBetti_kunneth (g h : ℕ) {k : ℕ} (hk : k ≤ 4) :
+    prodSurfaceBetti g h k
+      = kunnethBetti (genusSurfaceBetti g) (genusSurfaceBetti h) k := by
+  interval_cases k <;>
+    simp only [kunnethBetti, prodSurfaceBetti, Finset.sum_range_succ, Finset.sum_range_zero,
+      Nat.reduceSub, genusSurfaceBetti_zero, genusSurfaceBetti_one, genusSurfaceBetti_two,
+      genusSurfaceBetti_three, genusSurfaceBetti_four] <;> ring
+
+/-- **Poincaré duality for the product `4`-manifold: `bᵢ = b_{4−i}`.**  The Betti sequence
+    `(1, 2(g+h), 2+4gh, 2(g+h), 1)` is palindromic — the manifestation of
+    `Hᵢ ≅ H_{4−i}` for the closed orientable `4`-manifold `Σ_g × Σ_h`. -/
+theorem prodSurfaceBetti_poincare_duality (g h : ℕ) {i : ℕ} (hi : i ≤ 4) :
+    prodSurfaceBetti g h i = prodSurfaceBetti g h (4 - i) := by
+  interval_cases i <;>
+    simp only [Nat.reduceSub, prodSurfaceBetti_zero, prodSurfaceBetti_one,
+      prodSurfaceBetti_two, prodSurfaceBetti_three, prodSurfaceBetti_four]
+
+/-- **The middle Betti number `b₂ = 2 + 4gh` is even.**  It is the rank of the (here
+    even-dimensional) intersection form on `H₂(Σ_g × Σ_h)`; evenness is forced by the two
+    dual fundamental classes plus the symplectic `H₁ ⊗ H₁` block. -/
+theorem prodSurface_second_betti_even (g h : ℕ) : Even (prodSurfaceBetti g h 2) :=
+  ⟨1 + 2 * g * h, by rw [prodSurfaceBetti_two]; ring⟩
+
+/-- **Euler characteristic of a `4`-manifold from its Betti numbers**:
+    `χ = b₀ − b₁ + b₂ − b₃ + b₄`, the Euler–Poincaré alternating sum truncated at
+    dimension `4`. -/
+def eulerFromBetti4 (b : ℕ → ℕ) : ℤ := (b 0 : ℤ) - b 1 + b 2 - b 3 + b 4
+
+/-- **Total Betti number of a `4`-manifold**: `b₀ + b₁ + b₂ + b₃ + b₄`, the rank of the
+    full homology `H_*( · ; ℤ)` (the value of the Poincaré polynomial at `t = 1`). -/
+def totalBetti4 (b : ℕ → ℕ) : ℕ := b 0 + b 1 + b 2 + b 3 + b 4
+
+/-- **Künneth ⟹ multiplicativity of χ (homological).**  The Euler–Poincaré sum of the
+    Künneth Betti numbers of `Σ_g × Σ_h` equals `(2 − 2g)(2 − 2h)` — the product of the two
+    surface Euler characteristics.  This is `χ(M × N) = χ(M)·χ(N)` derived from the graded
+    tensor product of homology, independently of the structure field `prodCGB_chi`. -/
+theorem prodSurface_euler_poincare (g h : ℕ) :
+    eulerFromBetti4 (prodSurfaceBetti g h) = (2 - 2 * (g : ℤ)) * (2 - 2 * (h : ℤ)) := by
+  unfold eulerFromBetti4
+  rw [prodSurfaceBetti_zero, prodSurfaceBetti_one, prodSurfaceBetti_two,
+    prodSurfaceBetti_three, prodSurfaceBetti_four]
+  push_cast; ring
+
+/-- **The homological χ agrees with the geometric `prodCGB` χ.**  The Künneth Euler–Poincaré
+    value equals `(prodCGB (genusSurfaceCGB g) (genusSurfaceCGB h)).chi`, so Part XVIII
+    re-proves `prodCGB_genusSurface_chi` from singular-homology data rather than from the
+    Chern-Gauss-Bonnet structure assumption. -/
+theorem prodSurface_euler_eq_prodCGB_chi (g h : ℕ) :
+    eulerFromBetti4 (prodSurfaceBetti g h)
+      = (prodCGB (genusSurfaceCGB g) (genusSurfaceCGB h)).chi := by
+  rw [prodCGB_genusSurface_chi, prodSurface_euler_poincare]
+
+/-- **χ factors through the two surface Euler characteristics.**  Restates
+    `prodSurface_euler_poincare` as `χ = χ(Σ_g)·χ(Σ_h)` using `genusSurfaceCGB_chi`. -/
+theorem prodSurface_euler_factor (g h : ℕ) :
+    eulerFromBetti4 (prodSurfaceBetti g h)
+      = (genusSurfaceCGB g).chi * (genusSurfaceCGB h).chi := by
+  rw [prodSurface_euler_poincare, genusSurfaceCGB_chi, genusSurfaceCGB_chi]
+
+/-- **Total Betti number of `Σ_g × Σ_h` is `(2 + 2g)(2 + 2h)`.**  The total rank multiplies
+    under products (Poincaré polynomial at `t = 1`), the counterpart of the alternating sum
+    multiplying (`prodSurface_euler_poincare`). -/
+theorem prodSurface_betti_total (g h : ℕ) :
+    totalBetti4 (prodSurfaceBetti g h) = (2 + 2 * g) * (2 + 2 * h) := by
+  unfold totalBetti4
+  rw [prodSurfaceBetti_zero, prodSurfaceBetti_one, prodSurfaceBetti_two,
+    prodSurfaceBetti_three, prodSurfaceBetti_four]
+  ring
+
+/-- **Total Betti multiplies: `Σbₖ(M×N) = (Σbᵢ(M))·(Σbⱼ(N))`.**  Writes the product's total
+    Betti number as the product of the factors' total Betti numbers `2 + 2g` and `2 + 2h`
+    (`genusSurface_betti_total`). -/
+theorem prodSurface_betti_total_eq_prod (g h : ℕ) :
+    totalBetti4 (prodSurfaceBetti g h)
+      = (genusSurfaceBetti g 0 + genusSurfaceBetti g 1 + genusSurfaceBetti g 2)
+        * (genusSurfaceBetti h 0 + genusSurfaceBetti h 1 + genusSurfaceBetti h 2) := by
+  rw [prodSurface_betti_total]
+  simp only [genusSurfaceBetti_zero, genusSurfaceBetti_one, genusSurfaceBetti_two]
+  ring
+
+/-- **`S² × S²`** (`g = h = 0`): Betti numbers `(1, 0, 2, 0, 1)` and `χ = 4`.  The middle
+    `b₂ = 2` are the classes `[S²] ⊗ 1` and `1 ⊗ [S²]`; `χ = 4 = χ(S²)²` agrees with
+    `sphere_prod_sphere_chi`. -/
+theorem prodSurface_sphere_betti_two : prodSurfaceBetti 0 0 2 = 2 := by
+  rw [prodSurfaceBetti_two]
+
+/-- Euler characteristic of `S² × S²` from its Betti numbers: `χ = 1 − 0 + 2 − 0 + 1 = 4`. -/
+theorem prodSurface_sphere_euler : eulerFromBetti4 (prodSurfaceBetti 0 0) = 4 := by
+  rw [prodSurface_euler_poincare]; norm_num
+
+/-- **The `4`-torus `T⁴ = T² × T²`** (`g = h = 1`): middle Betti number `b₂ = 6`.  The full
+    Betti sequence is `(1, 4, 6, 4, 1) = (C(4,k))ₖ`, the binomial coefficients — reflecting
+    `H_*(T⁴) ≅ Λ*(ℤ⁴)`. -/
+theorem prodSurface_torus_betti_two : prodSurfaceBetti 1 1 2 = 6 := by
+  rw [prodSurfaceBetti_two]
+
+/-- Euler characteristic of `T⁴` from its Betti numbers: `χ = 1 − 4 + 6 − 4 + 1 = 0` — the
+    vanishing Euler characteristic of the flat `4`-torus (`torusCGB`), recovered from the
+    binomial Betti sequence `(C(4,k))ₖ`. -/
+theorem prodSurface_torus_euler : eulerFromBetti4 (prodSurfaceBetti 1 1) = 0 := by
+  rw [prodSurface_euler_poincare]; norm_num
+
+-- ============================================================================
+-- Part XIX: The Künneth convolution — commutativity and the point as unit
+-- ============================================================================
+
+/-
+  Part XVIII computes *one* Künneth convolution `kunnethBetti (genusSurfaceBetti g)
+  (genusSurfaceBetti h)` and matches it to the product-surface Betti table.  The convolution
+  `kunnethBetti` is, however, a binary operation on Betti sequences in its own right, and it
+  carries the algebraic structure behind the symmetric-monoidal product of spaces:
+
+  * it is **commutative**, `b ⋆ c = c ⋆ b` (`kunnethBetti_comm`) — the homological shadow of
+    the flip homeomorphism `M × N ≅ N × M` under which the graded tensor product of homology
+    is symmetric; and
+  * the **point** `δ = (1, 0, 0, …)` (`pointBetti`) is a two-sided **unit**,
+    `δ ⋆ c = c = c ⋆ δ` (`kunnethBetti_pointBetti_left`/`_right`) — the homological shadow of
+    `pt × M ≅ M`, mirroring `pointCGB` as the identity of the Cartesian-product manifold
+    monoid (Part XVII, `prodCGB_point_chi`).
+
+  Together with the (standard, not formalized here) associativity of the Cauchy product these
+  exhibit `(Betti sequences, ⋆, δ)` as a commutative monoid, with the Betti-number assignment
+  a monoid homomorphism from the product monoid of Part XVII.  The commutativity yields a
+  concrete geometric corollary: the product-surface Betti table is symmetric in its two
+  genera (`prodSurfaceBetti_comm`), the homological shadow of `Σ_g × Σ_h ≅ Σ_h × Σ_g`.  The
+  proofs are finite-sum reindexing over `ℕ`, hence fully verified (0-axiom); the two
+  structure-encoded CGB assumptions are not invoked.
+-/
+
+/-- **The Künneth convolution is commutative: `b ⋆ c = c ⋆ b`.**  Reindexing the convolution
+    sum `∑_{i+j=k} bᵢ·cⱼ` by `i ↦ k − i` swaps the two factors — the algebraic form of the
+    homeomorphism `M × N ≅ N × M`, under which the graded tensor product of homology is
+    symmetric (no sign, the ranks being unsigned). -/
+theorem kunnethBetti_comm (b c : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti b c k = kunnethBetti c b k := by
+  unfold kunnethBetti
+  rw [← Finset.sum_range_reflect (fun i => c i * b (k - i)) (k + 1)]
+  refine Finset.sum_congr rfl (fun i hi => ?_)
+  rw [Finset.mem_range] at hi
+  have h1 : k + 1 - 1 - i = k - i := by omega
+  have h2 : k - (k - i) = i := by omega
+  simp only [h1, h2]
+  ring
+
+/-- **Betti sequence of the point** `δ = (1, 0, 0, …)`: `b₀ = 1`, `bᵢ = 0` for `i ≥ 1`.  This
+    is the unit of the Künneth convolution, mirroring `pointCGB` as the unit of the
+    Cartesian-product manifold monoid (Part XVII). -/
+def pointBetti : ℕ → ℕ
+  | 0 => 1
+  | _ + 1 => 0
+
+/-- `b₀(pt) = 1`: the point is a single connected `0`-cell. -/
+@[simp] theorem pointBetti_zero : pointBetti 0 = 1 := rfl
+
+/-- `bᵢ(pt) = 0` for `i ≥ 1`: the point has no homology above degree `0`. -/
+@[simp] theorem pointBetti_succ (k : ℕ) : pointBetti (k + 1) = 0 := rfl
+
+/-- **The point is a left unit for the Künneth convolution: `δ ⋆ c = c`.**  Only the `i = 0`
+    term of `∑_{i} pointBettiᵢ · c_{k−i}` survives (`pointBetti` vanishes off degree `0`),
+    leaving `1 · c_k = c_k`.  Homologically, `H_*(pt × M) ≅ H_*(M)`. -/
+theorem kunnethBetti_pointBetti_left (c : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti pointBetti c k = c k := by
+  unfold kunnethBetti
+  rw [Finset.sum_eq_single 0]
+  · simp
+  · intro i _ hi0
+    cases i with
+    | zero => exact absurd rfl hi0
+    | succ j => simp
+  · intro h
+    exact absurd (Finset.mem_range.mpr (Nat.succ_pos k)) h
+
+/-- **The point is a right unit for the Künneth convolution: `c ⋆ δ = c`.**  Immediate from
+    the left-unit law and commutativity; the point is therefore a genuine two-sided identity,
+    the homological shadow of `M × pt ≅ M`. -/
+theorem kunnethBetti_pointBetti_right (b : ℕ → ℕ) (k : ℕ) :
+    kunnethBetti b pointBetti k = b k := by
+  rw [kunnethBetti_comm, kunnethBetti_pointBetti_left]
+
+/-- **The product-surface Betti table is symmetric in its genera: `bₖ(Σ_g × Σ_h) =
+    bₖ(Σ_h × Σ_g)` for `k ≤ 4`.**  A concrete consequence of the commutativity of the Künneth
+    convolution (`kunnethBetti_comm`) applied to `prodSurfaceBetti_kunneth`: the palindrome
+    `(1, 2(g+h), 2+4gh, 2(g+h), 1)` is unchanged under `g ↔ h`, the homological shadow of the
+    flip homeomorphism `Σ_g × Σ_h ≅ Σ_h × Σ_g`. -/
+theorem prodSurfaceBetti_comm (g h : ℕ) {k : ℕ} (hk : k ≤ 4) :
+    prodSurfaceBetti g h k = prodSurfaceBetti h g k := by
+  rw [prodSurfaceBetti_kunneth g h hk, prodSurfaceBetti_kunneth h g hk, kunnethBetti_comm]
+-- Part XX: The Poincaré polynomial of `Σ_g` — functional equation and the
 --            connected-sum law with the sphere correction
 -- ============================================================================
 

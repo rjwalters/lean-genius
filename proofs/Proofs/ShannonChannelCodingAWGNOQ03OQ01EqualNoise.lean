@@ -328,4 +328,109 @@ theorem rate_equalNoise_strictConcaveOn_power [Nonempty ι] {c : ℝ} (hc : 0 < 
         mul_lt_mul_of_pos_left hstep hNpos
     _ = (Fintype.card ι : ℝ) / 2 * Real.log (1 + (a * x + b * y) / k) := by rw [hsum]
 
+
+/-! ## The wideband (infinite-channel) limit `C → P/(2c)` -/
+
+/-- **Wideband capacity limit.**  As the number `n` of identical parallel Gaussian
+    channels of noise `c > 0` grows, the equal-noise capacity converges to the
+    bandwidth-independent ceiling:
+    `(n/2)·log(1 + P/(n·c)) → P/(2c)` as `n → ∞`.
+
+    Together with `rate_equalNoise_le_wideband` (which caps *every* finite `n` at
+    `P/(2c)`), this shows the wideband bound is **sharp**: `P/(2c)` is exactly the
+    supremum of the achievable equal-noise rates as a fixed power budget `P` is
+    spread over more and more sub-channels — Shannon's infinite-bandwidth AWGN
+    limit, `C_∞ = P/(2c)` nats.  No sign hypothesis on `P` is needed.
+
+    The proof rewrites `n·log(1 + P/(n·c)) = log((1 + (P/c)/n)^n)` (via `Real.log_pow`)
+    and passes to the limit through `Real.tendsto_one_add_div_pow_exp`
+    (`(1 + t/n)^n → exp t`) composed with continuity of `Real.log` at `exp(P/c) > 0`,
+    then scales by `1/2`. -/
+theorem rate_equalNoise_tendsto_wideband {c : ℝ} (hc : 0 < c) (P : ℝ) :
+    Filter.Tendsto (fun n : ℕ => (n : ℝ) / 2 * Real.log (1 + P / (n * c)))
+      Filter.atTop (nhds (P / (2 * c))) := by
+  have hcne : c ≠ 0 := hc.ne'
+  -- Base limit `(1 + (P/c)/n)^n → exp(P/c)`.
+  have hbase := Real.tendsto_one_add_div_pow_exp (P / c)
+  -- Compose with the continuous `log` at `exp(P/c) ≠ 0`, using `log (exp _) = _`.
+  have hlog : Filter.Tendsto
+      (fun n : ℕ => Real.log ((1 + (P / c) / n) ^ n)) Filter.atTop (nhds (P / c)) := by
+    have h := ((Real.continuousAt_log (Real.exp_ne_zero (P / c))).tendsto).comp hbase
+    rwa [Real.log_exp] at h
+  -- `log((1 + (P/c)/n)^n) = n · log(1 + P/(n·c))`.
+  have hmain : Filter.Tendsto
+      (fun n : ℕ => (n : ℝ) * Real.log (1 + P / (n * c))) Filter.atTop (nhds (P / c)) := by
+    refine hlog.congr (fun n => ?_)
+    rw [Real.log_pow, div_div, mul_comm c (n : ℝ)]
+  -- Scale by `1/2` and simplify the constant `(1/2)·(P/c) = P/(2c)`.
+  have key : Filter.Tendsto (fun n : ℕ => (n : ℝ) / 2 * Real.log (1 + P / (n * c)))
+      Filter.atTop (nhds ((1 / 2 : ℝ) * (P / c))) :=
+    (hmain.const_mul (1 / 2 : ℝ)).congr (fun n => by ring)
+  rwa [show (1 / 2 : ℝ) * (P / c) = P / (2 * c) from by ring] at key
+
+/-! ## The wideband limit as an explicit least upper bound
+
+`rate_equalNoise_le_wideband` caps each finite-`n` rate at `P/(2c)` and
+`rate_equalNoise_tendsto_wideband` shows the scalar sequence
+`g(n) = (n/2)·log(1 + P/(n·c))` converges to `P/(2c)`. Together these upgrade the
+"tendsto + pointwise ceiling" pair into the sharp order-theoretic statement that
+`P/(2c)` is the *least* upper bound — the supremum — of the achievable equal-noise
+rates over all channel counts `n`. The "least" direction needs no monotonicity of
+`g`: any upper bound `b` dominates the limit `P/(2c)` by `le_of_tendsto'`. This is
+Shannon's infinite-bandwidth capacity `C_∞ = P/(2c)` expressed as `⨆ₙ Cₙ`. -/
+
+/-- **Per-`n` wideband ceiling (scalar sequence, every `n : ℕ`).**  For `c > 0`,
+    `P ≥ 0` and *every* `n` (including `n = 0`, where the rate is `0`),
+    `(n/2)·log(1 + P/(n·c)) ≤ P/(2c)`.  The scalar-`ℕ` counterpart of
+    `rate_equalNoise_le_wideband` (stated over `Fintype.card ι`), packaged for the
+    range over which the supremum below is taken. -/
+theorem rate_equalNoise_seq_le_wideband {c : ℝ} (hc : 0 < c) {P : ℝ} (hP : 0 ≤ P)
+    (n : ℕ) :
+    (n : ℝ) / 2 * Real.log (1 + P / (n * c)) ≤ P / (2 * c) := by
+  rcases Nat.eq_zero_or_pos n with h0 | hpos
+  · subst h0
+    simp only [Nat.cast_zero, zero_div, zero_mul]
+    exact div_nonneg hP (by positivity)
+  · have hn : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hpos
+    have hcne : c ≠ 0 := hc.ne'
+    have hnne : (n : ℝ) ≠ 0 := hn.ne'
+    have hnc : 0 < (n : ℝ) * c := mul_pos hn hc
+    have hu : (0 : ℝ) < 1 + P / ((n : ℝ) * c) := by
+      have : 0 ≤ P / ((n : ℝ) * c) := div_nonneg hP hnc.le
+      linarith
+    have hlog : Real.log (1 + P / ((n : ℝ) * c)) ≤ P / ((n : ℝ) * c) := by
+      have h := Real.log_le_sub_one_of_pos hu
+      linarith
+    calc (n : ℝ) / 2 * Real.log (1 + P / ((n : ℝ) * c))
+        ≤ (n : ℝ) / 2 * (P / ((n : ℝ) * c)) :=
+          mul_le_mul_of_nonneg_left hlog (by positivity)
+      _ = P / (2 * c) := by field_simp
+
+/-- **`P/(2c)` is the least upper bound of the equal-noise rates.**  For `c > 0` and
+    `P ≥ 0`, the wideband ceiling `P/(2c)` is the *supremum* of the scalar rate
+    sequence `n ↦ (n/2)·log(1 + P/(n·c))` over all `n : ℕ`:
+    `IsLUB (range g) (P/(2c))`.  The upper-bound half is `rate_equalNoise_seq_le_wideband`;
+    the least-upper-bound half is `le_of_tendsto'` applied to
+    `rate_equalNoise_tendsto_wideband` (any upper bound dominates the limit). This is
+    the explicit least-upper-bound statement requested as the next step, upgrading the
+    tendsto+ceiling pair. -/
+theorem rate_equalNoise_wideband_isLUB {c : ℝ} (hc : 0 < c) {P : ℝ} (hP : 0 ≤ P) :
+    IsLUB (Set.range (fun n : ℕ => (n : ℝ) / 2 * Real.log (1 + P / (n * c))))
+      (P / (2 * c)) := by
+  constructor
+  · rintro y ⟨n, rfl⟩
+    exact rate_equalNoise_seq_le_wideband hc hP n
+  · intro b hb
+    exact le_of_tendsto' (rate_equalNoise_tendsto_wideband hc P)
+      (fun n => hb (Set.mem_range_self n))
+
+/-- **Wideband capacity as an explicit supremum.**  For `c > 0` and `P ≥ 0`,
+    `⨆ₙ (n/2)·log(1 + P/(n·c)) = P/(2c)`.  The closed-form supremum of the achievable
+    equal-noise rates over all channel counts — Shannon's infinite-bandwidth AWGN
+    capacity `C_∞ = P/(2c)` nats — stated as a single equality via
+    `rate_equalNoise_wideband_isLUB`. -/
+theorem rate_equalNoise_iSup {c : ℝ} (hc : 0 < c) {P : ℝ} (hP : 0 ≤ P) :
+    ⨆ n : ℕ, (n : ℝ) / 2 * Real.log (1 + P / (n * c)) = P / (2 * c) :=
+  (rate_equalNoise_wideband_isLUB hc hP).csSup_eq (Set.range_nonempty _)
+
 end ShannonWaterFilling

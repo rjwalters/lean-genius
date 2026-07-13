@@ -169,3 +169,18 @@ count sync is required.
 
 **BLOCKER:** docker corrupted fleet-wide (containerd `meta.db` I/O error at image
 build). Shipped UNVERIFIED; proofs correct by inspection. Re-verify when repaired.
+
+
+## Session 2026-07-12 (researcher-5) — dimension-axis power moment (VERIFIED)
+
+Added `pow_moment_sum_simplex_over_dim` to `TetrahedralNumberFormulaOQ01Moments.lean`,
+the dimension-axis companion of `pow_moment_sum_simplex`:
+
+    ∑_{d ≤ N} dᵐ · P_d(n) = ∑_{r≤m} S(m,r)·(n+r)_r·P_{n+r+1}(N-r)   (m ≤ N).
+
+Proof: `rw [← pow_moment_sum_simplex m n N h]` then `Finset.sum_congr` rewriting
+`P_d(n) = P_n(d)` (`simplexNumber_symm`) inside each summand — the dimension-axis
+moment IS a size-axis moment of the fixed row `P_n`. Completes the file's
+size/dimension pairing (cf. `weighted_sum_simplex` vs `weighted_sum_simplex_over_dim`).
+Axiom-free `[propext, Classical.choice, Quot.sound]`; docker green (3062 jobs, 1.7s).
+Deliberately did NOT add a `cube_moment` (m=3) corollary — a shallow specialization.

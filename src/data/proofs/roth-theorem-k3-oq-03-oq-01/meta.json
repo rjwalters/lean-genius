@@ -63,12 +63,15 @@
       "Positivity/vanishing characterizations (kAPCount_count_pos, kAPCount_count_pos_iff, kAPCount_count_eq_zero_iff): count(A) > 0 ⟺ A ≠ ∅",
       "Extreme sets and singletons (kAPCount_count_univ = N², the empty-set vanishing family, kAPCount_nondeg_univ, kAPCount_{nondeg,count,indicator}_singleton): exact values at univ, ∅, and singletons",
       "Global quadratic bounds (kAPCount_count_le_sq, kAPCount_nondeg_le_sq): count ≤ N², the crude ceiling for density arguments",
-      "Translation invariance (kAPCount_count_translate, kAPCount_nondeg_translate, kAPCount_indicator_translate): the affine symmetry Λ_k(1_{A+t}) = Λ_k(1_A) underlying the density-increment method"
+      "Translation invariance (kAPCount_count_translate, kAPCount_nondeg_translate, kAPCount_indicator_translate): the affine symmetry Λ_k(1_{A+t}) = Λ_k(1_A) underlying the density-increment method",
+      "kAPCount_count_dilate: scaling A by a unit c ∈ (ℤ/N)ˣ preserves the k-AP count — the bijection (x,d)↦(c·x,c·d); completes the affine-invariance suite (translation ⋊ dilation = AGL(1,ℤ/N)) and subsumes kAPCount_count_neg (c=−1)",
+      "kAPCount_nondeg_dilate: dilation invariance of the nondegenerate (d≠0) k-AP count Roth controls (a unit sends nonzero to nonzero)",
+      "kAPCount_indicator_dilate: analytic form Λ_k(1_{c·A}) = Λ_k(1_A), the multiplicative half of the affine invariance of the density-k-AP-count functional"
     ],
     "axiomCount": 0,
-    "lineCount": 929,
+    "lineCount": 1211,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide, no sorryAx, no Lean.ofReduceBool. The operators are re-declared self-containedly in this file's namespace; the file imports Mathlib.",
-    "theoremCount": 40,
+    "theoremCount": 45,
     "definitionCount": 5
   },
   "overview": {
@@ -222,9 +225,9 @@
       "BigOperators"
     ],
     "namespace": "RothTheoremOQ03OQ01",
-    "lineCount": 1008,
+    "lineCount": 1358,
     "axiomCount": 0,
-    "theoremCount": 41,
+    "theoremCount": 53,
     "definitionCount": 5,
     "path": "Proofs/RothTheoremOQ03OQ01.lean",
     "sorries": 0

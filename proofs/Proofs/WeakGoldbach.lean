@@ -278,6 +278,39 @@ theorem isSumOfThreePrimes_iff_prime_add_sumOfTwoPrimes {n : ℕ} :
   · rintro ⟨r, hr, hrn, p, q, hp, hq, hpq⟩
     exact ⟨r, p, q, hr, hp, hq, by omega⟩
 
+/-- If `m` is a sum of two primes, then `2 + m` is a sum of three primes (adjoin the
+    prime `2`).  The `+2` companion of `sumOfTwoPrimes_add_three` (`+3`) — the `r = 2`
+    instance of `sumOfTwoPrimes_add_prime`: together the two shifts realize the two
+    parity-shifting reductions of ternary Goldbach to binary Goldbach. -/
+theorem sumOfTwoPrimes_add_two {m : ℕ} (hm : IsSumOfTwoPrimes m) :
+    IsSumOfThreePrimes (2 + m) :=
+  sumOfTwoPrimes_add_prime hm Nat.prime_two
+
+/-- **Binary Goldbach ⟹ ternary Goldbach for even numbers.**  Assuming binary
+    Goldbach, every even `n ≥ 6` is a sum of three primes: `n − 2` is even and `> 2`,
+    so `n − 2 = p + q`, whence `n = 2 + p + q`.  This is the *even*-parity complement
+    of `binary_implies_weak` (which covers odd `n`), built on `sumOfTwoPrimes_add_two`
+    in place of `sumOfTwoPrimes_add_three`. -/
+theorem binary_implies_ternary_even (h : BinaryGoldbachConjecture) {n : ℕ}
+    (hn : 6 ≤ n) (hEven : Even n) : IsSumOfThreePrimes n := by
+  have hm : IsSumOfTwoPrimes (n - 2) := by
+    refine h (n - 2) (by omega) ?_
+    obtain ⟨k, hk⟩ := hEven
+    exact ⟨k - 1, by omega⟩
+  have h3 := sumOfTwoPrimes_add_two hm
+  rwa [show 2 + (n - 2) = n from by omega] at h3
+
+/-- **Binary Goldbach ⟹ every integer `n ≥ 6` is a sum of three primes.**  Uniting
+    the odd case (`binary_implies_weak`, valid for odd `n > 5`) with the even case
+    (`binary_implies_ternary_even`, valid for even `n ≥ 6`) covers *all* `n ≥ 6`
+    regardless of parity — the classical equivalent form of ternary Goldbach as a
+    statement about all sufficiently large integers, not only the odd ones. -/
+theorem binary_implies_ternary_ge_six (h : BinaryGoldbachConjecture) {n : ℕ}
+    (hn : 6 ≤ n) : IsSumOfThreePrimes n := by
+  rcases Nat.even_or_odd n with hEven | hOdd
+  · exact binary_implies_ternary_even h hn hEven
+  · exact binary_implies_weak h n (by omega) hOdd
+
 /-! ## Axiomatized Results -/
 
 /-- Helfgott (2013): the weak Goldbach conjecture is true.

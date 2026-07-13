@@ -131,6 +131,14 @@
       "endLine": 107,
       "summary": "The refinements at (3,4,5) directly and at the non-base triple (15, 8, 17) by applying the general theorems.",
       "mathContext": "Concrete witnesses: 4 ∣ 4, 4 ∣ 8, 5 ≡ 17 ≡ 1 (mod 4)."
+    },
+    {
+      "id": "summary",
+      "title": "Closing summary table",
+      "startLine": 109,
+      "endLine": 128,
+      "summary": "Closes the PythTriplesParity namespace and tabulates the six results, flagging that only the bare dichotomy comes from Mathlib (even_odd_of_coprime) while the three mod-4 sharpenings — hyp_odd, even_leg_div_four, hyp_one_mod_four — are new content resting on coprime_classification' (the sharpened Euclid parametrization). Restates the 0-sorry, 0-axiom status.",
+      "mathContext": "Recap: bare parity dichotomy (Mathlib) $+$ three new mod-4 refinements ($z$ odd, $4\\mid$ even leg, $z\\equiv 1\\ (\\mathrm{mod}\\ 4)$)."
     }
   ],
   "conclusion": {
@@ -141,6 +149,16 @@
         "id": "pythagorean-triples-oq-06-oq-01-oq-01",
         "question": "Strengthen the even-leg result: show the even leg of a primitive triple is divisible by 4 and, refining further, that exactly one of the legs is divisible by 3 and exactly one of the three sides is divisible by 5 — so 60 always divides the product xyz.",
         "significance": "low"
+      },
+      {
+        "id": "pythagorean-triples-oq-06-oq-01-oq-02",
+        "question": "Pin down the exact 2-adic valuation of the even leg. From y = 2mn with exactly one of m, n even, v₂(y) = 1 + v₂(mn) ≥ 2, but v₂(y) is otherwise unconstrained. Prove that every value k ≥ 2 is realized by some primitive triple (e.g. take the even Euclid variable to be 2^{k-1}), giving a full characterization of {v₂(even leg) : primitive triple} = {2, 3, 4, …} rather than the single divisibility fact 4 ∣ y.",
+        "significance": "medium"
+      },
+      {
+        "id": "pythagorean-triples-oq-06-oq-01-oq-03",
+        "question": "Formalize the Gaussian-integer refinement behind z ≡ 1 (mod 4). Since z = m² + n² is the norm N(m + ni), every primitive hypotenuse factors in ℤ[i]; strengthen z ≡ 1 (mod 4) to the sharper statement that every prime factor of a primitive hypotenuse is itself ≡ 1 (mod 4) (equivalently, splits in ℤ[i]), connecting this entry to Fermat's sum-of-two-squares theorem and the classification of Gaussian primes.",
+        "significance": "medium"
       }
     ]
   },
@@ -177,6 +195,16 @@
       "id": "pythagorean-triples-oq-06-oq-01-oq-01",
       "question": "Strengthen to the divisibility package: the even leg is divisible by 4, exactly one leg is divisible by 3, one side by 5, hence 60 ∣ xyz for every primitive triple.",
       "significance": "low"
+    },
+    {
+      "id": "pythagorean-triples-oq-06-oq-01-oq-02",
+      "question": "Characterize the exact 2-adic valuation of the even leg: v₂(2mn) ≥ 2 always, and every value k ≥ 2 is realized, so {v₂(even leg)} = {2, 3, 4, …} rather than just 4 ∣ y.",
+      "significance": "medium"
+    },
+    {
+      "id": "pythagorean-triples-oq-06-oq-01-oq-03",
+      "question": "Refine z ≡ 1 (mod 4) via ℤ[i]: since z = m² + n² = N(m + ni), show every prime factor of a primitive hypotenuse is ≡ 1 (mod 4), tying this to Fermat's sum-of-two-squares theorem.",
+      "significance": "medium"
     }
   ],
   "sorries": 0

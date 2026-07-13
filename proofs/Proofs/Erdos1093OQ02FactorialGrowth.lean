@@ -27,6 +27,12 @@ Main results:
 * `ascFactorial_le_factorial`     : for `2 * D ≤ b`, `(b + D + 1).ascFactorial D ≤ (b + D)!`
 * `factorial_add_le_sq_factorial` : for `2 * D ≤ b`, `(b + D + D)! ≤ ((b + D)!) ^ 2`
 * `exists_factorial_add_le_sq`    : `∀ D, ∃ k₀, ∀ k ≥ k₀, (k + D)! ≤ (k !) ^ 2`
+
+The final block recasts the size obstruction in terms of the *binomial coefficient*
+`C(k+D, D)` — the actual object of Erdős #1093 — via the identity `(k+D)! = C(k+D,D)·D!·k!`:
+* `factorial_add_eq_choose_mul`          : `(k + D)! = C(k+D, D) · D! · k!`
+* `factorial_add_le_sq_iff_choose_mul_le`: `(k + D)! ≤ (k!)² ↔ C(k+D, D) · D! ≤ k!`
+* `exists_choose_mul_factorial_le`       : `∀ D, ∃ k₀, ∀ k ≥ k₀, C(k+D, D) · D! ≤ k!`
 -/
 
 open Nat Finset
@@ -113,5 +119,40 @@ another quantitative reason the size bound alone cannot pin Erdős #1093 OQ-02's
 theorem sq_factorial_le_factorial_two_mul (k : ℕ) : (k !) ^ 2 ≤ (2 * k)! := by
   rw [pow_two, two_mul]
   exact factorial_mul_factorial_le_factorial_add k k
+
+/-- **Binomial split of the shifted factorial.**  `(k + D)! = C(k+D, D) · D! · k!`.
+The exact statement `Nat.choose_mul_factorial_mul_factorial` read with `n = k + D`,
+`k = D` (so `n - k = k`).  This exhibits the shifted factorial `(k+D)!` as the binomial
+coefficient `C(k+D, D)` — the central object of Erdős #1093 — scaled by `D!·k!`, the
+bridge that recasts the *factorial* growth bounds of this file as statements about the
+*binomial coefficient* itself. -/
+theorem factorial_add_eq_choose_mul (k D : ℕ) :
+    (k + D)! = (k + D).choose D * D ! * k ! := by
+  have h := Nat.choose_mul_factorial_mul_factorial (Nat.le_add_left D k)
+  rw [Nat.add_sub_cancel] at h
+  exact h.symm
+
+/-- **The sharp factorial bound is a binomial bound.**  `(k + D)! ≤ (k!)²` is *equivalent*
+to `C(k+D, D) · D! ≤ k!`.  Dividing the identity `(k+D)! = C(k+D,D)·D!·k!` by the positive
+factor `k!` turns the "sharp" factorial-square inequality into the clean binomial statement
+that the number of `D`-subsets, weighted by `D!`, is dominated by `k!`.  This is the honest
+binomial reading of the size obstruction: the `(k!)²` ceiling constrains `C(k+D,D)` only up
+to the `k!/D!` slack. -/
+theorem factorial_add_le_sq_iff_choose_mul_le (k D : ℕ) :
+    (k + D)! ≤ (k !) ^ 2 ↔ (k + D).choose D * D ! ≤ k ! := by
+  rw [factorial_add_eq_choose_mul, pow_two]
+  exact Nat.mul_le_mul_right_iff (Nat.factorial_pos k)
+
+/-- **Binomial form of the factorial growth meta-theorem.**  For every fixed shift `D`,
+`C(k+D, D) · D! ≤ k!` holds for all sufficiently large `k` (any `k ≥ 3·D`).  This is the
+binomial-coefficient reading of `exists_factorial_add_le_sq`, obtained by transporting it
+through `factorial_add_le_sq_iff_choose_mul_le`.  Since `D` is arbitrary, the shifted
+binomial coefficient `C(k+D, D)` is *eventually* absorbed by `k!/D!` no matter how wide the
+window `D`; hence the pure size bound cannot, on its own, pin any finite maximal deficiency
+for Erdős #1093 OQ-02 — it tolerates unboundedly large windows. -/
+theorem exists_choose_mul_factorial_le (D : ℕ) :
+    ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k → (k + D).choose D * D ! ≤ k ! := by
+  obtain ⟨k₀, hk₀⟩ := exists_factorial_add_le_sq D
+  exact ⟨k₀, fun k hk => (factorial_add_le_sq_iff_choose_mul_le k D).mp (hk₀ k hk)⟩
 
 end Erdos1093OQ02

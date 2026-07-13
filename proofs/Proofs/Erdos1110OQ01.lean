@@ -460,4 +460,281 @@ theorem powerForm_totient {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠
   have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
   rw [Nat.totient_mul hcop, Nat.totient_prime_pow hp hk, Nat.totient_prime_pow hq hl]
 
+/-- **Sum-of-divisors `σ(p^k q^l) = (Σᵢ₌₀ᵏ pⁱ)·(Σⱼ₌₀ˡ qʲ)`.** For distinct primes `p ≠ q`,
+the divisor sum `σ₁` of the power form `p^k q^l` factors through the coprime split
+`p^k ⊥ q^l` (`Nat.Coprime.sum_divisors_mul`, `σ` multiplicative), and each prime-power
+divisor sum reindexes over its exponent range (`Nat.sum_divisors_prime_pow`). Collapsing
+the two geometric series gives the textbook closed form
+`σ(p^k q^l) = ((p^{k+1}−1)/(p−1))·((q^{l+1}−1)/(q−1))`; we keep the pre-collapse product of
+range-sums to avoid `ℕ`-division. This is the `σ` companion of the divisor-count `τ`
+(`powerForm_card_divisors`, `(k+1)(l+1)`) and totient `φ` (`powerForm_totient`), completing
+the standard multiplicative-invariant readouts (`τ, φ, ω, Ω, σ, radical`) of a two-prime
+power form off the single coprime split. -/
+theorem powerForm_sigma {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (k l : ℕ) :
+    ∑ d ∈ (p ^ k * q ^ l).divisors, d
+      = (∑ i ∈ Finset.range (k + 1), p ^ i) * (∑ j ∈ Finset.range (l + 1), q ^ j) := by
+  have hcop : Nat.Coprime (p ^ k) (q ^ l) := Nat.coprime_pow_primes k l hp hq hpq
+  rw [hcop.sum_divisors_mul, Nat.sum_divisors_prime_pow hp, Nat.sum_divisors_prime_pow hq]
+
+/-! ### The remaining classical multiplicative invariants: `ω`, radical, `Ω`, squarefree
+
+The divisor-count `τ(p^k q^l) = (k+1)(l+1)` (`powerForm_card_divisors`) and totient
+`φ` (`powerForm_totient`) read the two exponents through the coprime split
+`p^k ⊥ q^l`. The same split pins the rest of the standard arithmetic-function
+readouts of a two-prime power form, completing the multiplicative-invariant
+picture on top of the divisor grid. -/
+
+/-- **Number of distinct prime factors `ω(p^k q^l) = 2`.** For distinct primes `p ≠ q`
+and positive exponents, a two-prime power form has exactly two distinct prime factors.
+Immediate from `powerForm_primeFactors` (the prime-factor set is `{p, q}`) and
+`Finset.card_pair`. The `ω` companion of the divisor-count `τ` and totient `φ`. -/
+theorem powerForm_card_primeFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).primeFactors.card = 2 := by
+  rw [powerForm_primeFactors hp hq hpq hk hl, Finset.card_pair hpq]
+
+/-- **Radical of a power form `rad(p^k q^l) = p·q`.** For distinct primes `p ≠ q` and
+positive exponents, the product of the distinct prime factors of `p^k q^l` is `p·q` —
+the squarefree kernel is independent of the exponents. Immediate from
+`powerForm_primeFactors` and `Finset.prod_pair`. -/
+theorem powerForm_prod_primeFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : 0 < k) (hl : 0 < l) :
+    (p ^ k * q ^ l).primeFactors.prod id = p * q := by
+  rw [powerForm_primeFactors hp hq hpq hk hl, Finset.prod_pair hpq, id_eq, id_eq]
+
+open ArithmeticFunction in
+/-- **Number of prime factors with multiplicity `Ω(p^k q^l) = k + l`.** For prime bases
+`p, q` (distinctness not needed), the total count of prime factors of a power form,
+counted with multiplicity, is the sum of the exponents. Since `Ω` is completely additive
+(`cardFactors_mul`) and `Ω(pᵏ) = k` on prime powers (`cardFactors_apply_prime_pow`), this
+is the additive companion of the multiplicative `ω`, `τ`, `φ` readouts. -/
+theorem powerForm_cardFactors {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (k l : ℕ) :
+    cardFactors (p ^ k * q ^ l) = k + l := by
+  rw [cardFactors_mul (pow_ne_zero k hp.pos.ne') (pow_ne_zero l hq.pos.ne'),
+    cardFactors_apply_prime_pow hp, cardFactors_apply_prime_pow hq]
+
+/-- **Squarefree power forms are exactly the small-exponent ones.** For distinct primes
+`p ≠ q`, `p^k q^l` is squarefree iff both exponents are `≤ 1`:
+
+    Squarefree (p^k q^l) ↔ k ≤ 1 ∧ l ≤ 1.
+
+Through `Nat.squarefree_iff_factorization_le_one`, squarefreeness is `∀ r, factorization r ≤ 1`;
+the `p`- and `q`-exponents are `k` and `l` (`factorization_powerForm_left`/`_right`) and every
+other prime contributes `0`. So the four squarefree two-prime forms are `1, p, q, pq` — the
+`gcd`/`lcm` lattice grid capped at exponent `1`, i.e. the divisors of the radical `p·q`
+(`powerForm_prod_primeFactors`). -/
+theorem powerForm_squarefree_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) : Squarefree (p ^ k * q ^ l) ↔ k ≤ 1 ∧ l ≤ 1 := by
+  have hp0 : p ^ k ≠ 0 := pow_ne_zero k hp.pos.ne'
+  have hq0 : q ^ l ≠ 0 := pow_ne_zero l hq.pos.ne'
+  rw [Nat.squarefree_iff_factorization_le_one (mul_ne_zero hp0 hq0)]
+  constructor
+  · intro h
+    refine ⟨?_, ?_⟩
+    · have := h p; rwa [factorization_powerForm_left hp hq hpq] at this
+    · have := h q; rwa [factorization_powerForm_right hp hq hpq] at this
+  · rintro ⟨hk, hl⟩ r
+    rw [Nat.factorization_mul hp0 hq0, Finsupp.add_apply, hp.factorization_pow,
+      hq.factorization_pow, Finsupp.single_apply, Finsupp.single_apply]
+    split_ifs <;> omega
+
+/-! ### The Möbius function of a power form
+
+The multiplicative-invariant readouts above (`τ, φ, ω, Ω, σ, radical, squarefree`) all
+follow from the coprime split `p^k ⊥ q^l`. The remaining classical multiplicative
+function is the **Möbius function `μ`**, which is supported exactly on the squarefree
+forms: since `p^k q^l` is squarefree iff `k ≤ 1 ∧ l ≤ 1` (`powerForm_squarefree_iff`),
+`μ` vanishes off the four small forms `1, p, q, pq` and equals `(-1)^{k+l}` on them
+(`Ω(p^k q^l) = k + l`, `powerForm_cardFactors`). This is the sign-carrying companion of
+the (unsigned) squarefree indicator, completing the standard multiplicative-invariant
+suite. -/
+
+open ArithmeticFunction in
+open scoped ArithmeticFunction.Moebius in
+/-- **Möbius of a squarefree power form `μ(p^k q^l) = (-1)^{k+l}`.** For distinct primes
+`p ≠ q` with both exponents `≤ 1` (so `p^k q^l ∈ {1, p, q, pq}` is squarefree), the Möbius
+value is `(-1)^{k+l}`: `μ n = (-1)^{Ω n}` on squarefree `n` (`moebius_apply_of_squarefree`)
+and `Ω(p^k q^l) = k + l` (`powerForm_cardFactors`). -/
+theorem powerForm_moebius_of_squarefree {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : k ≤ 1) (hl : l ≤ 1) :
+    μ (p ^ k * q ^ l) = (-1) ^ (k + l) := by
+  have hsf : Squarefree (p ^ k * q ^ l) := (powerForm_squarefree_iff hp hq hpq k l).mpr ⟨hk, hl⟩
+  rw [moebius_apply_of_squarefree hsf, powerForm_cardFactors hp hq]
+
+open ArithmeticFunction in
+open scoped ArithmeticFunction.Moebius in
+/-- **Möbius vanishes on non-squarefree power forms.** For distinct primes `p ≠ q`, if some
+exponent exceeds `1` then `p^k q^l` is not squarefree (`powerForm_squarefree_iff`), so
+`μ(p^k q^l) = 0` (`moebius_eq_zero_of_not_squarefree`). -/
+theorem powerForm_moebius_eq_zero {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (h : ¬ (k ≤ 1 ∧ l ≤ 1)) :
+    μ (p ^ k * q ^ l) = 0 :=
+  moebius_eq_zero_of_not_squarefree (by rwa [powerForm_squarefree_iff hp hq hpq])
+
+open ArithmeticFunction in
+open scoped ArithmeticFunction.Moebius in
+/-- **Closed form for the Möbius function of a power form.** For distinct primes `p ≠ q`,
+
+    `μ(p^k q^l) = if k ≤ 1 ∧ l ≤ 1 then (-1)^{k+l} else 0`.
+
+Combines `powerForm_moebius_of_squarefree` (the squarefree branch) and
+`powerForm_moebius_eq_zero` (everything else). This is the Möbius companion of the
+divisor-count `τ` (`powerForm_card_divisors`), totient `φ` (`powerForm_totient`), divisor
+sum `σ` (`powerForm_sigma`) and squarefree indicator (`powerForm_squarefree_iff`) — the
+signed characteristic function of the four squarefree two-prime forms `1, p, q, pq`. -/
+theorem powerForm_moebius {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (k l : ℕ) :
+    μ (p ^ k * q ^ l) = if k ≤ 1 ∧ l ≤ 1 then (-1) ^ (k + l) else 0 := by
+  split_ifs with h
+  · exact powerForm_moebius_of_squarefree hp hq hpq h.1 h.2
+  · exact powerForm_moebius_eq_zero hp hq hpq h
+
+/-! ### Non-coprime bases: the power-form monoid avoids the class `1 mod d`
+
+The submonoid identification `IsPowerForm p q n ↔ n ∈ Submonoid.closure {p, q}`
+(`isPowerForm_iff_mem_closure`) has a sharp arithmetic consequence when the two bases
+share a common factor `d ≥ 2`: since `d ∣ p` and `d ∣ q`, every generator (hence every
+non-identity element) of the monoid is divisible by `d`, so
+
+    ⟨p, q⟩ ⊆ {1} ∪ d·ℕ.
+
+This lets us settle the **entire non-coprime regime** of Erdős–Lewin unconditionally.
+In any admissible representation `n = ∑ S` (an antichain of power forms), the identity `1`
+can occur only as the *sole* summand — otherwise it would divide another summand — so a
+representation of length `> 1` has all summands `> 1`, hence all divisible by `d`, forcing
+`d ∣ n`. Consequently a number that is **neither a power form nor divisible by `d`** is
+non-representable, and the residue class `n ≡ 1 (mod d)` supplies infinitely many such
+numbers.
+
+This generalises the parent file's base-power family `infinite_nonRepresentable_base_pow`
+(the case `p = q^k`, `d = q`) to *all* non-coprime pairs — including ones where neither
+base is a power of the other, e.g. `(p, q) = (6, 4)` with `d = 2` — and is exactly the
+complement of the coprimality hypothesis of the deep axiom `erdos_lewin_infinite`. -/
+
+/-- **A common divisor of the bases divides every non-trivial power form.** If `d ∣ p` and
+`d ∣ q` then any power form `p^k q^l` is either `1` (the case `k = l = 0`) or divisible by
+`d`. Monoid-theoretically: the generators `p, q` of `powerFormSubmonoid p q` both lie in
+`d·ℕ`, so the whole submonoid sits inside `{1} ∪ d·ℕ`. -/
+theorem isPowerForm_one_or_common_dvd {p q d n : ℕ} (hdp : d ∣ p) (hdq : d ∣ q)
+    (h : IsPowerForm p q n) : n = 1 ∨ d ∣ n := by
+  obtain ⟨k, l, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · subst hk
+    rcases Nat.eq_zero_or_pos l with hl | hl
+    · subst hl; left; simp
+    · right; simpa using dvd_pow hdq hl.ne'
+  · right; exact (dvd_pow hdp hk.ne').mul_right _
+
+/-- **A representation of a non-`d`-divisible number is a single power form.** With `d ∣ p`
+and `d ∣ q`, every representable `n` is either itself a power form (a length-one antichain)
+or divisible by `d`. Indeed, if the identity `1` appears in the representing antichain `S`
+it must be the only member (it divides everything), giving `n = 1`; otherwise every summand
+exceeds `1`, so `d` divides each summand (`isPowerForm_one_or_common_dvd`) and hence their
+sum `n`. -/
+theorem isPowerForm_or_common_dvd_of_representable {p q d n : ℕ}
+    (hdp : d ∣ p) (hdq : d ∣ q) (hrep : IsRepresentable p q n) :
+    IsPowerForm p q n ∨ d ∣ n := by
+  obtain ⟨S, hSne, hSpf, hSanti, hSsum⟩ := hrep
+  by_cases h1 : (1 : ℕ) ∈ S
+  · -- `1 ∈ S` forces `S = {1}` (it divides everything), so `n = 1` is a power form.
+    left
+    have hsub : S = {1} := by
+      refine Finset.eq_singleton_iff_unique_mem.mpr ⟨h1, ?_⟩
+      intro x hx
+      by_contra hx1
+      exact hSanti 1 h1 x hx (Ne.symm hx1) (one_dvd x)
+    rw [hsub] at hSsum
+    simp only [Finset.sum_singleton, id_eq] at hSsum
+    rw [← hSsum]
+    exact ⟨0, 0, by simp⟩
+  · -- `1 ∉ S`: every summand exceeds `1`, hence is divisible by `d`, hence so is the sum.
+    right
+    rw [← hSsum]
+    apply Finset.dvd_sum
+    intro s hs
+    have hs1 : s ≠ 1 := fun h => h1 (h ▸ hs)
+    rcases isPowerForm_one_or_common_dvd hdp hdq (hSpf s hs) with h | h
+    · exact absurd h hs1
+    · simpa using h
+
+/-- **Non-representability test for non-coprime bases.** If `d ∣ p`, `d ∣ q`, and `n` is
+neither a power form nor divisible by `d`, then `n` is non-representable — no admissible
+antichain of `p^k q^l` sums to it (`isPowerForm_or_common_dvd_of_representable`). -/
+theorem not_isRepresentable_of_not_common_dvd {p q d n : ℕ}
+    (hdp : d ∣ p) (hdq : d ∣ q) (hpf : ¬ IsPowerForm p q n) (hn : ¬ d ∣ n) :
+    ¬ IsRepresentable p q n := fun hrep =>
+  (isPowerForm_or_common_dvd_of_representable hdp hdq hrep).elim hpf hn
+
+/-- **Infinitely many non-representables for every non-coprime pair — elementary, 0-axiom.**
+If the bases share a common divisor `d ≥ 2` (`d ∣ p`, `d ∣ q`), the arithmetic progression
+`n = d(m+1)+1` (i.e. `n ≡ 1 (mod d)`, `n > 1`) consists entirely of non-representables:
+each such `n` is not divisible by `d`, and — being `> 1` and not a multiple of `d` — is not
+a power form (`isPowerForm_one_or_common_dvd`), so it is non-representable
+(`not_isRepresentable_of_not_common_dvd`). The injection `m ↦ d(m+1)+1` embeds `ℕ` into
+`NonRepresentable p q`. This is the full non-coprime regime of the Erdős–Lewin phenomenon,
+subsuming the base-power family `infinite_nonRepresentable_base_pow`. -/
+theorem infinite_nonRepresentable_of_common_dvd {p q d : ℕ}
+    (hdp : d ∣ p) (hdq : d ∣ q) (hd : 2 ≤ d) :
+    Set.Infinite (NonRepresentable p q) := by
+  refine Set.infinite_of_injective_forall_mem
+    (f := fun m : ℕ => d * (m + 1) + 1) ?_ ?_
+  · intro a b hab
+    change d * (a + 1) + 1 = d * (b + 1) + 1 at hab
+    have h1 : d * (a + 1) = d * (b + 1) := by omega
+    have := Nat.eq_of_mul_eq_mul_left (by omega : 0 < d) h1
+    omega
+  · intro m
+    show (d * (m + 1) + 1) ∈ NonRepresentable p q
+    rw [NonRepresentable, Set.mem_setOf_eq]
+    have hnd : ¬ d ∣ (d * (m + 1) + 1) := by
+      intro hdvd
+      have h1 : d ∣ 1 := (Nat.dvd_add_right (dvd_mul_right d (m + 1))).mp hdvd
+      have := Nat.le_of_dvd one_pos h1
+      omega
+    have hnpf : ¬ IsPowerForm p q (d * (m + 1) + 1) := by
+      intro h
+      rcases isPowerForm_one_or_common_dvd hdp hdq h with h1 | h2
+      · have : 0 < d * (m + 1) := Nat.mul_pos (by omega) (by omega)
+        omega
+      · exact hnd h2
+    exact not_isRepresentable_of_not_common_dvd hdp hdq hnpf hnd
+
+/-- **Non-coprimality alone gives infinitely many non-representables.** For `p ≥ 1` with
+`p, q` not coprime, `d := gcd p q ≥ 2` is a common divisor, so
+`infinite_nonRepresentable_of_common_dvd` applies. The full complement of the coprime
+hypothesis of `erdos_lewin_infinite`, proved with no axiom. -/
+theorem infinite_nonRepresentable_of_not_coprime {p q : ℕ}
+    (hp : 1 ≤ p) (hcop : ¬ Nat.Coprime p q) :
+    Set.Infinite (NonRepresentable p q) := by
+  have hdp : Nat.gcd p q ∣ p := Nat.gcd_dvd_left p q
+  have hdq : Nat.gcd p q ∣ q := Nat.gcd_dvd_right p q
+  have hne1 : Nat.gcd p q ≠ 1 := hcop
+  have hne0 : Nat.gcd p q ≠ 0 := by
+    intro h; rw [Nat.gcd_eq_zero_iff] at h; omega
+  exact infinite_nonRepresentable_of_common_dvd hdp hdq (by omega)
+
+/-- **The base-power family, re-derived.** `infinite_nonRepresentable_base_pow` (the parent
+file's `p = q^k` result) is the special case `d = q` of
+`infinite_nonRepresentable_of_common_dvd`: `q ∣ q^k` and `q ∣ q`. -/
+theorem infinite_nonRepresentable_base_pow' {q k : ℕ} (hq : 2 ≤ q) (hk : 1 ≤ k) :
+    Set.Infinite (NonRepresentable (q ^ k) q) :=
+  infinite_nonRepresentable_of_common_dvd (dvd_pow_self q (by omega : k ≠ 0)) dvd_rfl hq
+
+/-- **A genuinely new non-coprime pair.** `(p, q) = (6, 4)` has `gcd 6 4 = 2 ≥ 2`, yet
+neither base is a power of the other — so it lies outside the base-power family
+`infinite_nonRepresentable_base_pow` but is covered by
+`infinite_nonRepresentable_of_common_dvd` (`d = 2`). -/
+example : Set.Infinite (NonRepresentable 6 4) :=
+  infinite_nonRepresentable_of_common_dvd (d := 2) (by norm_num) (by norm_num) (by norm_num)
+
+/-- **The identity is the unique unit exponent pair.** For distinct primes `p ≠ q`,
+`p^k q^l = 1` iff both exponents vanish — the exponent-uniqueness readout at the monoid
+identity `1 = p^0 q^0`. So `(0, 0)` is the only exponent vector representing the unit of
+the power-form submonoid. -/
+theorem powerForm_eq_one_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (k l : ℕ) : p ^ k * q ^ l = 1 ↔ k = 0 ∧ l = 0 := by
+  constructor
+  · intro h
+    exact powerForm_exponents_unique hp hq hpq (by simpa using h)
+  · rintro ⟨rfl, rfl⟩; simp
+
 end Erdos1110

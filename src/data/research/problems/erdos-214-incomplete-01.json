@@ -33,14 +33,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED/BLOCKED on juhasz_stronger. Axiom-free scaffolding now includes: full metric axioms for Erdos214.dist, isometry-invariance + vertex-distinctness of unit squares, and infinitude of the √2·ℤ² witness. 0 sorries, 1 intended axiom.",
+    "progressSummary": "PROGRESS: companion OQ01 file COMPLETE — full Fermat characterization of √2·ℤ² realizable distances proved axiom-free; core #214 remains BLOCKED on juhasz_stronger",
     "builtItems": [
       "Erdos214Problem.lean: dist_coords (coordinate distance formula), isUnitSquare_standard (the standard unit square is a unit square), unit_square_from_stronger (sorry eliminated, 0-axiom reduction)",
       "Fixed Mathlib-4.26 build break: UnitDistanceGraph tuple set-builder → setOf on Prod",
       "dist_nonneg, dist_triangle in Erdos214Problem.lean: the two metric axioms missing from dist_self/dist_comm (via norm_nonneg, norm_add_le + sub_add_sub_cancel) — Erdos214.dist certified a genuine metric",
       "scaledLattice_horiz_mem + scaledLattice_infinite: √2·ℤ² is infinite (horizontal axis n↦(√2·n,0) embeds ℤ via Set.infinite_of_injective_forall_mem), sharpening scaledLattice_unitDistanceFree from non-empty to infinite",
       "scaledLatticeGen_unitDistanceFree: c·ℤ² is unit-distance-free for every real c with c²>1 (generalizes the √2 case; squared distance c²·m never hits 1 since m∈ℕ, m=0→0, m≥1→c²·m≥c²>1). scaledLattice_eq_gen (rfl) exhibits ScaledLattice as the c=√2 instance. [elaboration-clean [2364/2364]; olean-write blocked by fleet SIGBUS-135/139]",
-      "Erdos214Incomplete01OQ01.lean §Fermat (researcher-2): scaledLattice_realizes_sqrt_two_mul_prime, scaledLattice_dist_ne_sqrt_two_mul_of_mod_four, scaledLattice_realizes_sqrt_two_mul_prime_iff (SHARP prime iff √(2p)⇔p≢3 mod4), scaledLattice_realizes_sqrt_ten (p=5 witness), scaledLattice_realizes_two_mul_sq_add_sq_mul (Brahmagupta closure). Uses Mathlib Nat.Prime.sq_add_sq. [elaboration-clean via `lake env lean` (no -c); codegen olean-write still SIGBUS-135 on fleet — a known infra crash AFTER successful elaboration, not a proof error]"
+      "Erdos214Incomplete01OQ01.lean §Fermat (researcher-2): scaledLattice_realizes_sqrt_two_mul_prime, scaledLattice_dist_ne_sqrt_two_mul_of_mod_four, scaledLattice_realizes_sqrt_two_mul_prime_iff (SHARP prime iff √(2p)⇔p≢3 mod4), scaledLattice_realizes_sqrt_ten (p=5 witness), scaledLattice_realizes_two_mul_sq_add_sq_mul (Brahmagupta closure). Uses Mathlib Nat.Prime.sq_add_sq. [elaboration-clean via `lake env lean` (no -c); codegen olean-write still SIGBUS-135 on fleet — a known infra crash AFTER successful elaboration, not a proof error]",
+      "exists_sq_add_sq_int_iff_nat (Erdos214Incomplete01OQ01.lean): ℤ↔ℕ sum-of-two-squares bridge (natAbs + sq_abs)",
+      "scaledLattice_realizes_sqrt_two_mul_iff_factorization: capstone iff via scaledLattice_achievable_iff + bridge + Nat.eq_sq_add_sq_iff",
+      "scaledLattice_dist_ne_sqrt_two_mul_of_odd_padicValNat: odd-power prime≡3mod4 ⟹ √(2m) avoided, reproving every ad-hoc avoidance lemma from the capstone"
     ],
     "insights": [
       "erdos-214 (Juhász 1979, unit-distance-free sets): the 1 sorry was in unit_square_from_stronger (JuhaszStrongerTheorem → Erdos214Statement) — a pure logical reduction, NOT one of the 2 deep Juhász axioms.",
@@ -52,13 +55,15 @@
       "The √2 lattice is not special: any scaling c with |c|>1 yields a unit-distance-free copy of ℤ². The sharp condition is arithmetic (no sum-of-two-squares integer m with c²·m=1), so c²>1 is sufficient but not necessary (e.g. c=1/√3 also works since 3 is not a sum of two squares).",
       "The realizable distances of √2·ℤ² are exactly √n with n=2·(sum of two squares) — i.e. dist²=2·(u²+v²). This makes the whole 'distance spectrum' a sum-of-two-squares question. For a PRIME p the family √(2p) is now sharp: realized ⇔ p≢3 mod4 (Fermat). Forward (avoidance) is the u²+v²≢3 mod4 residue obstruction; converse is Fermat's Nat.Prime.sq_add_sq. Note every 2p with p≡3 mod4 is ≡6 mod8, so the avoidance overlaps scaledLattice_dist_ne_sqrt_six_mod_eight — but the realizability converse is genuinely new.",
       "Brahmagupta–Fibonacci identity (a²+b²)(c²+d²)=(ac−bd)²+(ad+bc)² proved by pure `ring` after push_cast — realizes √(2·(a²+b²)(c²+d²)) at latticePoint (ac−bd) (ad+bc). Exhibits the realizable squared-half distances as the multiplicative monoid of Gaussian-integer norms, the structural reason primes ≡3 mod4 govern the avoidance families.",
-      "VERIFICATION WORKAROUND for `import Mathlib` files when fleet codegen SIGBUS-135s: `docker run … lake env lean <file>.lean` (plain `lean`, no -o/-c) elaborates + runs `#print axioms` WITHOUT triggering the crashing C-codegen/olean-write phase. A type error would print `error: <file>:<line>` and exit 1 BEFORE any crash; exit 135 = SIGBUS = infra, post-elaboration. Confirms both type-correctness and axiom set."
+      "VERIFICATION WORKAROUND for `import Mathlib` files when fleet codegen SIGBUS-135s: `docker run … lake env lean <file>.lean` (plain `lean`, no -o/-c) elaborates + runs `#print axioms` WITHOUT triggering the crashing C-codegen/olean-write phase. A type error would print `error: <file>:<line>` and exit 1 BEFORE any crash; exit 135 = SIGBUS = infra, post-elaboration. Confirms both type-correctness and axiom set.",
+      "CAPSTONE: scaledLattice_realizes_sqrt_two_mul_iff_factorization — √(2m) is a lattice distance IFF every prime r≡3 mod4 divides m to an even power (Nat.eq_sq_add_sq_iff). Complete Fermat characterization of the realizable distance set; subsumes ALL prior avoidance families (mod-4/8/16, r=3, r=7, general r≡3 mod4) and realizability results as special cases."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Distance-spectrum thread: prime family √(2p) now sharp both directions (Fermat). Next: full sum-of-two-squares characterization of ALL realizable √n via Nat.eq_sq_add_sq_iff (n realized ⇔ n even ∧ n/2 has no prime ≡3 mod4 to an odd power) — moderate, would subsume every one-off avoidance theorem in the file.",
       "Realizability of √(2·p·q) product distances follows quickly from scaledLattice_realizes_two_mul_sq_add_sq_mul + the prime realizability lemma.",
-      "Core BLOCKED on juhasz_stronger (deep 1979 4-point theorem, not in Mathlib). Only substantial work left on the CORE = formalizing that axiom."
+      "Core BLOCKED on juhasz_stronger (deep 1979 4-point theorem, not in Mathlib). Only substantial work left on the CORE = formalizing that axiom.",
+      "Realizable half-values now fully characterized; remaining OQ01 work is optional cosmetic corollaries. Core #214 still BLOCKED on juhasz_stronger (deep incidence geometry not in Mathlib)."
     ],
     "markdown": "# Knowledge: erdos-214-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
   },
@@ -75,15 +80,15 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.206Z",
-  "lastUpdate": "2026-07-11",
+  "lastUpdate": "2026-07-12",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos214Incomplete01OQ01.lean",
       "filename": "Erdos214Incomplete01OQ01.lean",
-      "lineCount": 757,
-      "theoremCount": 38,
+      "lineCount": 834,
+      "theoremCount": 41,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,

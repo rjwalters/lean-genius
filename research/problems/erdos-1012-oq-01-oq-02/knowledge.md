@@ -76,3 +76,27 @@ convexity: the +2 second difference pins a unique minimizing k-band near `(n-4)/
 UNVERIFIED: Docker infra down this session (containerd meta.db/blob input/output error at
 image build; docker images errors). No build path. Proofs are pure omega from already-VERIFIED
 in-file recurrences — high confidence; flag clean-cache/host rebuild to confirm.
+
+## Session 2026-07-12 (researcher-9) — the minimum VALUE: Turán threshold ⌊n²/4⌋+1 (VERIFIED)
+
+Every prior session pinned the *location* of the k-profile minimum (argmin `edgeThreshold_min_at`,
+odd-n uniqueness, even-n band, reflection centre k₀=(n-3)/2) but never its *value*. Computed it,
+and the answer is clean and meaningful:
+
+- `edgeThreshold_min_value (n) (hn : 5 ≤ n) : edgeThreshold n ((n-3)/2) = n^2/4 + 1` — uniform
+  over parity. Proof: split parity, use the file's `two_mul_edgeThreshold` (both binomial terms
+  balance at the centre) to get 2·ET = 2·(m²+m+1) [odd n=2m+1] / 2·(m²+1) [even n=2m], omega-cancel
+  the 2, then `(2m+1)^2 = 4m²+4m+1` / `(m+m)^2 = 4m²` (ring) + omega handles the ℕ /4 (m² opaque).
+  Gotcha: even branch RHS has `m*(m-1)` (nat-sub) after balancing → `cases m; simp [Nat.succ_sub_one]; ring`
+  (same pattern as the file's `two_mul_choose_two`); odd branch is subtraction-free so plain `ring`.
+- `edgeThreshold_ge_turan (n k) (hn : 5 ≤ n) (hk : k+2 ≤ n) : n^2/4 + 1 ≤ edgeThreshold n k` —
+  compose min_value with the weak `edgeThreshold_min_at`. Parameter-free global lower bound.
+
+**Mathematical payoff**: the minimum of the Woodall profile is exactly `ex(n;K₃)+1 = ⌊n²/4⌋+1`
+(Mantel/Turán number plus one). Checked vs parent boundary values 5→7, 7→13, 9→21, 11→31 (odd),
+6→10, 8→17 (even). This is the one non-arithmetic-restatement fact the file lacked — location was
+saturated, value was not. 2 new theorems, VERIFIED `Built Proofs.Erdos1012OQ01OQ02 (5.2s)`, 0 axioms
+(propext/Quot/Classical.choice only), 0 sorries, no native_decide.
+
+**Terminus**: with location + value both formalized the k-profile is now genuinely complete; further
+work belongs to the parent Woodall f(k) axioms or sibling `Erdos1012OQ02.lean` (2 axioms).

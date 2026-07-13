@@ -771,4 +771,168 @@ theorem increment_tendsto_zero (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 
     simpa using h0.mul_const |x 1 - x 0|
   exact squeeze_zero (fun _ => abs_nonneg _) hbound hg
 
+/-! ### Tail arc length and the arc-dominates-chord bridge
+
+`total_path_length_bound` bounds the *full* orbit arc length `∑_{k<m}|x_{k+1}−x_k|` by
+`|x₁−x₀|/(1−L)`; it is the `n = 0` case of a windowed estimate.  The two results below
+close the arc-length picture:
+
+  * `tail_path_length_bound` — the arc length of the window `[n, n+m)` decays like `Lⁿ`:
+    `∑_{k<m}|x_{n+k+1}−x_{n+k}| ≤ Lⁿ·|x₁−x₀|/(1−L)`.  Its `n = 0` case is
+    `total_path_length_bound`; its `m → ∞` limit bounds the distance from `xₙ` to the
+    fixed point (the arc from `xₙ` onward dominates `|xₙ − x*|`).
+
+  * `displacement_le_path_length` — a purely telescoping fact (no contraction needed):
+    the chord `|x_{n+m}−xₙ|` never exceeds the arc `∑_{k<m}|x_{n+k+1}−x_{n+k}|`.
+
+Composed, they re-derive `cauchy_estimate` (`|x_{n+m}−xₙ| ≤ Lⁿ/(1−L)·|x₁−x₀|`) with the
+arc length as the intermediate quantity, exhibiting the Cauchy bound as "chord ≤ arc ≤
+geometric tail". -/
+
+/-- **Tail arc-length bound.**  For a contraction with `0 ≤ L < 1` and iteration
+    `xₙ₊₁ = f xₙ`, the arc length of the window `[n, n+m)` decays geometrically in the
+    window start:
+    `∑_{k<m} |x_{n+k+1} − x_{n+k}| ≤ Lⁿ · |x₁ − x₀| / (1 − L)`.
+    The `n = 0` case is `total_path_length_bound`; each increment obeys `step_dist`
+    (`|x_{n+k+1} − x_{n+k}| ≤ L^{n+k}·|x₁ − x₀|`) and the partial geometric sum
+    `∑_{k<m} L^{n+k} = Lⁿ(1 − Lᵐ)/(1 − L) ≤ Lⁿ/(1 − L)`. -/
+theorem tail_path_length_bound (f : ℝ → ℝ) (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1)
+    (hf : ∀ x y, |f x - f y| ≤ L * |x - y|)
+    (x : ℕ → ℝ) (hx : ∀ n, x (n + 1) = f (x n)) (n m : ℕ) :
+    ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)| ≤ L ^ n * |x 1 - x 0| / (1 - L) := by
+  have hc : (0 : ℝ) < 1 - L := by linarith
+  -- exact partial geometric sum, cleared of the division
+  have hgs : ∀ j, (∑ k ∈ Finset.range j, L ^ k) * (1 - L) = 1 - L ^ j := by
+    intro j
+    induction j with
+    | zero => simp
+    | succ j ih => rw [Finset.sum_range_succ, add_mul, ih, pow_succ]; ring
+  have hgeom : (∑ k ∈ Finset.range m, L ^ k) ≤ 1 / (1 - L) := by
+    rw [le_div_iff₀ hc, hgs m]
+    linarith [pow_nonneg hL0 m]
+  have hstep : ∀ k, |x (n + k + 1) - x (n + k)| ≤ L ^ n * L ^ k * |x 1 - x 0| := by
+    intro k
+    have h := step_dist f L hL0 hf x hx (n + k)
+    rwa [pow_add] at h
+  calc ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)|
+      ≤ ∑ k ∈ Finset.range m, L ^ n * L ^ k * |x 1 - x 0| :=
+        Finset.sum_le_sum (fun k _ => hstep k)
+    _ = L ^ n * |x 1 - x 0| * ∑ k ∈ Finset.range m, L ^ k := by
+        rw [Finset.mul_sum]; apply Finset.sum_congr rfl; intro k _; ring
+    _ ≤ L ^ n * |x 1 - x 0| * (1 / (1 - L)) :=
+        mul_le_mul_of_nonneg_left hgeom (mul_nonneg (pow_nonneg hL0 n) (abs_nonneg _))
+    _ = L ^ n * |x 1 - x 0| / (1 - L) := by ring
+
+/-- **Arc dominates chord (telescoping).**  With no contraction hypothesis, the straight-line
+    displacement `|x_{n+m} − xₙ|` never exceeds the arc length `∑_{k<m}|x_{n+k+1} − x_{n+k}|`
+    of the intervening steps.  Pure telescoping: `x_{n+m} − xₙ = ∑_{k<m}(x_{n+k+1} − x_{n+k})`
+    (`Finset.sum_range_sub`), then `|∑| ≤ ∑|·|`.  Combined with `tail_path_length_bound`, this
+    re-derives `cauchy_estimate` via `chord ≤ arc ≤ Lⁿ/(1−L)·|x₁−x₀|`. -/
+theorem displacement_le_path_length (x : ℕ → ℝ) (n m : ℕ) :
+    |x (n + m) - x n| ≤ ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)| := by
+  have htel : x (n + m) - x n = ∑ k ∈ Finset.range m, (x (n + k + 1) - x (n + k)) := by
+    have h := Finset.sum_range_sub (fun k => x (n + k)) m
+    simpa [Nat.add_assoc] using h.symm
+  calc |x (n + m) - x n|
+      = |∑ k ∈ Finset.range m, (x (n + k + 1) - x (n + k))| := by rw [htel]
+    _ ≤ ∑ k ∈ Finset.range m, |x (n + k + 1) - x (n + k)| := Finset.abs_sum_le_sum_abs _ _
+
+/-! ### Sharpness of the estimate constants (the affine contraction is extremal)
+
+The upper bounds `apriori_estimate` (`|xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀|`) and
+`aposteriori_estimate` (`|xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ|`) carry the derived
+constants `Lⁿ/(1−L)` and `L/(1−L)`.  `iterate_dist_sharp` certifies only the *raw*
+geometric factor `Lⁿ` of `iterate_dist`; it says nothing about these two constants.
+The affine contraction `f t = L·t` — the extremal `L`-contraction, meeting
+`|f a − f b| = L·|a − b|` with equality — attains **both** estimate constants at
+once: its iterates `xₙ = Lⁿ·x₀` about the fixed point `0` satisfy the a priori and
+a posteriori bounds with *equality* at every step.  Indeed `|xₙ − 0| = Lⁿ|x₀|`,
+while `|x₁ − x₀| = (1−L)|x₀|` and `|xₙ₊₁ − xₙ| = Lⁿ(1−L)|x₀|`, so both right-hand
+sides collapse to `Lⁿ|x₀|` and `Lⁿ⁺¹|x₀|` respectively.  Hence neither
+`Lⁿ/(1−L)` nor `L/(1−L)` can be lowered: the estimate suite is constant-optimal. -/
+
+/-- **Sharpness of the a priori constant.**  The affine contraction `f t = L·t`
+    (an `L`-contraction with fixed point `0`) and its iterates `xₙ = Lⁿ·x₀` meet
+    the a priori estimate `|xₙ − x*| ≤ Lⁿ/(1−L)·|x₁ − x₀|` with **equality** for
+    every `n`, so the constant `Lⁿ/(1−L)` in `apriori_estimate` is optimal. -/
+theorem apriori_estimate_sharp (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1) (x0 : ℝ)
+    (f : ℝ → ℝ) (hf : f = fun t => L * t)
+    (x : ℕ → ℝ) (hxdef : x = fun n => L ^ n * x0) :
+    (∀ a b, |f a - f b| ≤ L * |a - b|) ∧
+      (∀ n, x (n + 1) = f (x n)) ∧
+      f 0 = 0 ∧
+      ∀ n, |x n - (0 : ℝ)| = L ^ n / (1 - L) * |x 1 - x 0| := by
+  have h1L : (0 : ℝ) < 1 - L := by linarith
+  have h1Lne : (1 - L) ≠ 0 := ne_of_gt h1L
+  subst hf hxdef
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro a b
+    show |L * a - L * b| ≤ L * |a - b|
+    rw [← mul_sub, abs_mul, abs_of_nonneg hL0]
+  · intro n
+    show L ^ (n + 1) * x0 = L * (L ^ n * x0)
+    rw [pow_succ]; ring
+  · show L * 0 = 0
+    ring
+  · intro n
+    show |L ^ n * x0 - 0| = L ^ n / (1 - L) * |L ^ 1 * x0 - L ^ 0 * x0|
+    rw [sub_zero, abs_mul, abs_of_nonneg (pow_nonneg hL0 n)]
+    have hchord : |L ^ 1 * x0 - L ^ 0 * x0| = (1 - L) * |x0| := by
+      rw [pow_one, pow_zero, one_mul,
+        show L * x0 - x0 = -((1 - L) * x0) by ring, abs_neg, abs_mul,
+        abs_of_nonneg (le_of_lt h1L)]
+    rw [hchord]
+    field_simp
+
+/-- **Sharpness of the a posteriori constant.**  The same affine contraction
+    `f t = L·t` and its iterates `xₙ = Lⁿ·x₀` meet the a posteriori estimate
+    `|xₙ₊₁ − x*| ≤ L/(1−L)·|xₙ₊₁ − xₙ|` with **equality** for every `n`, so the
+    constant `L/(1−L)` in `aposteriori_estimate` is optimal. -/
+theorem aposteriori_estimate_sharp (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1) (x0 : ℝ)
+    (f : ℝ → ℝ) (hf : f = fun t => L * t)
+    (x : ℕ → ℝ) (hxdef : x = fun n => L ^ n * x0) :
+    (∀ a b, |f a - f b| ≤ L * |a - b|) ∧
+      (∀ n, x (n + 1) = f (x n)) ∧
+      f 0 = 0 ∧
+      ∀ n, |x (n + 1) - (0 : ℝ)| = L / (1 - L) * |x (n + 1) - x n| := by
+  have h1L : (0 : ℝ) < 1 - L := by linarith
+  have h1Lne : (1 - L) ≠ 0 := ne_of_gt h1L
+  subst hf hxdef
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro a b
+    show |L * a - L * b| ≤ L * |a - b|
+    rw [← mul_sub, abs_mul, abs_of_nonneg hL0]
+  · intro n
+    show L ^ (n + 1) * x0 = L * (L ^ n * x0)
+    rw [pow_succ]; ring
+  · show L * 0 = 0
+    ring
+  · intro n
+    show |L ^ (n + 1) * x0 - 0| = L / (1 - L) * |L ^ (n + 1) * x0 - L ^ n * x0|
+    rw [sub_zero, abs_mul, abs_of_nonneg (pow_nonneg hL0 (n + 1))]
+    have hincr : |L ^ (n + 1) * x0 - L ^ n * x0| = L ^ n * (1 - L) * |x0| := by
+      rw [show L ^ (n + 1) * x0 - L ^ n * x0 = -(L ^ n * (1 - L) * x0) by rw [pow_succ]; ring,
+        abs_neg, abs_mul, abs_mul, abs_of_nonneg (pow_nonneg hL0 n),
+        abs_of_nonneg (le_of_lt h1L)]
+    rw [hincr]
+    field_simp; ring
+
+/-- **Both estimate constants are attained by one map.**  Consequence of
+    `apriori_estimate_sharp` and `aposteriori_estimate_sharp`: the single affine
+    contraction `f t = L·t` (iterates `Lⁿ·x₀`, fixed point `0`) attains the a
+    priori constant `Lⁿ/(1−L)` and the a posteriori constant `L/(1−L)`
+    simultaneously — so the estimate suite's constants are jointly optimal. -/
+theorem estimate_constants_sharp (L : ℝ) (hL0 : 0 ≤ L) (hL1 : L < 1) (x0 : ℝ) :
+    ∃ (f : ℝ → ℝ) (x : ℕ → ℝ),
+      (∀ a b, |f a - f b| ≤ L * |a - b|) ∧ f 0 = 0 ∧
+      (∀ n, x (n + 1) = f (x n)) ∧
+      (∀ n, |x n - (0 : ℝ)| = L ^ n / (1 - L) * |x 1 - x 0|) ∧
+      (∀ n, |x (n + 1) - (0 : ℝ)| = L / (1 - L) * |x (n + 1) - x n|) := by
+  refine ⟨fun t => L * t, fun n => L ^ n * x0, ?_, ?_, ?_, ?_, ?_⟩
+  · exact (apriori_estimate_sharp L hL0 hL1 x0 _ rfl _ rfl).1
+  · exact (apriori_estimate_sharp L hL0 hL1 x0 _ rfl _ rfl).2.2.1
+  · exact (apriori_estimate_sharp L hL0 hL1 x0 _ rfl _ rfl).2.1
+  · exact (apriori_estimate_sharp L hL0 hL1 x0 _ rfl _ rfl).2.2.2
+  · exact (aposteriori_estimate_sharp L hL0 hL1 x0 _ rfl _ rfl).2.2.2
+
 end BrouwerOQ02OQ02OQ01

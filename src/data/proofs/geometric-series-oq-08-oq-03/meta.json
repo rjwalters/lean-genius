@@ -93,6 +93,14 @@
   },
   "sections": [
     {
+      "id": "preamble-and-imports",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Imports Mathlib's field and ordered-field GeomSum lemmas plus SpecificLimits, then a module docstring framing the entry: it upgrades the parent's one-sided truncation defect rⁿ/(1 − r) to the two-sided slice bound rᵐ/(1 − r) that convergence proofs actually invoke. The docstring's three parts — 'What This Proves' (the seven results), 'Why This Matters' (the endpoint-free tail-block estimate is the Cauchy criterion), and 'Mathlib Relationship' (geom_sum_Ico' and geom_sum_Ico_le_of_lt_one are wrapped; the difference-of-tails identity, self-similar factorisation, and ε–N criterion are the assembled content). Opens the GeometricSeriesOQ08OQ03 namespace over a real ratio r.",
+      "mathContext": "$\\sum_{k \\in [m,n)} r^k \\le \\dfrac{r^m}{1-r}$, a bound independent of the right endpoint $n$ — the Cauchy-criterion form of the geometric tail."
+    },
+    {
       "id": "slice-closed-and-tails",
       "title": "Slice Closed Form and Difference of Tails",
       "startLine": 62,
@@ -133,6 +141,16 @@
       "id": "geometric-series-oq-08-oq-03-oq-01",
       "question": "Promote the elementary ε–N criterion to the abstract metric Cauchy predicate: show the finite partial sums n ↦ ∑_{k<n} rᵏ form a CauchySeq (or that the series satisfies Mathlib's cauchySeq_finset_iff) directly from geometric_slice_cauchy, recovering summability without invoking hasSum_geometric.",
       "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-03-oq-02",
+      "question": "Turn the slice bound into the ratio-test remainder estimate the docstring advertises: for a sequence (a_k) with |a_{k+1}| ≤ r·|a_k| eventually (0 ≤ r < 1), dominate its tail blocks |∑_{k ∈ Ico m n} a_k| by a geometric envelope C·rᵐ/(1 − r) derived from geometric_slice_abs_le, giving an endpoint-free Cauchy criterion for every ratio-test-convergent series — the concrete 'comparison/ratio template' this entry is meant to power.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-08-oq-03-oq-03",
+      "question": "Extend the slice estimate beyond ℝ: prove the same |∑_{k ∈ Ico m n} zᵏ| ≤ ‖z‖ᵐ/(1 − ‖z‖) bound for a complex ratio |z| < 1 (or an element of a Banach algebra with ‖z‖ < 1), yielding the Cauchy criterion for the Neumann series ∑ zⁿ and its operator-norm generalisation.",
+      "significance": "medium"
     }
   ],
   "crossReferences": [
@@ -168,7 +186,9 @@
     "summary": "For 0 ≤ r < 1 an arbitrary middle block of a geometric series is controlled by an endpoint-free envelope: ∑_{k ∈ Ico m n} rᵏ = rᵐ/(1 − r) − rⁿ/(1 − r) ≤ rᵐ/(1 − r), and |∑_{k ∈ Ico m n} rᵏ| ≤ rᵐ/(1 − r) with rᵐ/(1 − r) → 0. Packaged as the ε–N Cauchy criterion: for every ε > 0 there is an N past which every slice with left endpoint m ≥ N satisfies |∑_{k ∈ Ico m n} rᵏ| ≤ ε, uniformly in n. 141 lines, 7 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Where the parent geometric-series-oq-08 measures how far a head ∑_{k<n} rᵏ sits below the limit, this entry measures how large a discarded tail block between steps m and n can be — and the bound rᵐ/(1 − r) does not depend on n. That endpoint-free control is exactly the Cauchy criterion, the reusable engine behind the comparison test, the ratio-test remainder, and dominated convergence by a geometric majorant. The closed form (geom_sum_Ico') and the raw slice bound (geom_sum_Ico_le_of_lt_one) are Mathlib; the difference-of-tails identity, the self-similar factorisation, the absolute-value packaging, and the explicit ε–N criterion are assembled here.",
     "openQuestions": [
-      "Derive Mathlib's abstract CauchySeq / cauchySeq_finset predicate for the geometric partial sums directly from the ε–N criterion, recovering summability without hasSum_geometric."
+      "Derive Mathlib's abstract CauchySeq / cauchySeq_finset predicate for the geometric partial sums directly from the ε–N criterion, recovering summability without hasSum_geometric.",
+      "Instantiate the slice bound as the ratio-test remainder estimate: for |a_{k+1}| ≤ r·|a_k| eventually, dominate ∑_{k ∈ Ico m n} a_k by C·rᵐ/(1 − r) via geometric_slice_abs_le — the concrete comparison/ratio template.",
+      "Extend the estimate to a complex ratio |z| < 1 or a Banach-algebra element with ‖z‖ < 1, giving the Cauchy criterion for the Neumann series ∑ zⁿ."
     ]
   }
 }

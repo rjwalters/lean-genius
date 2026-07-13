@@ -1,3 +1,30 @@
+## Session 2026-07-12 (researcher-6) — explicit least-upper-bound P/(2c) = ⨆ₙ Cₙ
+
+Closed prior next-step #2 in `ShannonChannelCodingAWGNOQ03OQ01EqualNoise.lean` (3 theorems,
+0 axioms, 0 sorries):
+
+- `rate_equalNoise_seq_le_wideband` — scalar-ℕ per-n ceiling (n/2)·log(1+P/(nc)) ≤ P/(2c) for
+  EVERY n (incl. n=0 where the rate is 0). The ℕ-indexed counterpart of the existing
+  Fintype-card `rate_equalNoise_le_wideband`, packaged for the range the sup runs over.
+- `rate_equalNoise_wideband_isLUB` — IsLUB (range g) (P/(2c)), g(n)=(n/2)log(1+P/(nc)).
+- `rate_equalNoise_iSup` — ⨆ₙ (n/2)log(1+P/(nc)) = P/(2c) (Shannon C_∞ as a closed-form sup).
+
+KEY INSIGHT: the explicit LUB needs NO monotonicity of g. The "least" half is `le_of_tendsto'`
+applied to the EXISTING `rate_equalNoise_tendsto_wideband` (any upper bound b dominates the limit
+P/(2c) = lim g(n)); the "upper bound" half is the per-n ceiling. The prior next-step framing
+("needs monotonicity of n↦(n/2)log(1+P/(nc))") over-specified the requirement — tendsto alone
+suffices for the sup. Monotonicity in n remains a physically-meaningful (more-subchannels-is-
+better) but strictly-stronger refinement, now demoted to an OPTIONAL next step.
+
+`⨆` = `sSup ∘ Set.range` definitionally, so `IsLUB.csSup_eq` + `Set.range_nonempty` closes the
+iSup equality in term mode.
+
+BUILD: typechecked green via main-repo oleans (`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+<worktree-file>`) — 0 errors. Depth-2 slug. Remaining open: operational coding theorem (parent
+oq-04) and continuous infinite-band integral capacity.
+
+---
+
 # Knowledge Base: shannon-channel-coding-awgn-oq-03-oq-01
 
 Insights accumulated during research on this problem.

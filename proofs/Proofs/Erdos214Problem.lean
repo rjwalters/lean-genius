@@ -457,4 +457,32 @@ theorem no_maximum_unitDistanceFree_card :
   rw [hcard] at h
   omega
 
+/-- **Unit-distance-freeness is preserved by isometries.** If `f : Plane → Plane`
+preserves the coordinate distance (`dist (f p) (f q) = dist p q` for all `p, q`),
+then the image `f '' S` of a unit-distance-free set `S` is again unit-distance-free.
+
+This is the hypothesis-side companion of `isUnitSquare_of_isometry` (which pushes a
+unit *square* forward): Problem #214 is stated up to congruence, so the entire class of
+admissible configurations is closed under the isometry group of the plane.  Note no
+injectivity hypothesis is needed — distance preservation already forces `f a ≠ f b`
+whenever `a ≠ b`. -/
+theorem IsUnitDistanceFree.image_of_isometry {f : Plane → Plane}
+    (hf : ∀ p q, dist (f p) (f q) = dist p q) {S : Set Plane}
+    (hS : IsUnitDistanceFree S) : IsUnitDistanceFree (f '' S) := by
+  rintro _ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩ hne
+  rw [hf]
+  refine hS a b ha hb ?_
+  rintro rfl
+  exact hne rfl
+
+/-- **Unit-distance-freeness is translation invariant.** Translating a unit-distance-free
+set by any vector `v` yields a unit-distance-free set — the concrete instance of
+`IsUnitDistanceFree.image_of_isometry` for the translation isometry `p ↦ p + v`
+(translations preserve distance because `(p + v) - (q + v) = p - q`). -/
+theorem IsUnitDistanceFree.translate {S : Set Plane} (v : Plane)
+    (hS : IsUnitDistanceFree S) : IsUnitDistanceFree ((fun p => p + v) '' S) :=
+  hS.image_of_isometry (fun p q => by
+    unfold dist
+    rw [add_sub_add_right_eq_sub])
+
 end Erdos214

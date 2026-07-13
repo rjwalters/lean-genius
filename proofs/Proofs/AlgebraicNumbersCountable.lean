@@ -251,4 +251,104 @@ theorem algebraic_reals_eq_iUnion_bounded :
   · rintro ⟨d, hx, -⟩
     exact hx
 
+-- ============================================================================
+-- § 8. The Transcendental Reals (set-theoretic dual)
+-- ============================================================================
+
+/-- **The transcendental reals are uncountable.**  Since `ℝ = algebraic ∪ transcendental`
+and the algebraic reals are countable while `ℝ` is not, the transcendentals cannot be
+countable.  The set-theoretic dual of `algebraic_reals_countable`, and the cardinality
+counterpart of the measure-zero / Hausdorff-dimension-zero results for the algebraics. -/
+theorem transcendental_reals_uncountable :
+    ¬ {x : ℝ | Transcendental ℚ x}.Countable := by
+  intro hc
+  apply Cardinal.not_countable_real
+  have huniv : (Set.univ : Set ℝ)
+      = {x : ℝ | IsAlgebraic ℚ x} ∪ {x : ℝ | Transcendental ℚ x} := by
+    ext x
+    simp only [Set.mem_univ, Set.mem_union, Set.mem_setOf_eq, true_iff]
+    exact em (IsAlgebraic ℚ x)
+  rw [huniv]
+  exact algebraic_reals_countable.union hc
+
+/-- **The transcendental reals have cardinality continuum.**  Removing the countable set of
+algebraic reals from `ℝ` (which has cardinality `𝔠`) leaves a set still of cardinality `𝔠`:
+`#{x | Transcendental ℚ x} = 𝔠`.  So "almost every" real is transcendental in the
+cardinality sense, sharpening `transcendental_reals_uncountable`. -/
+theorem card_transcendental_reals_eq_continuum :
+    Cardinal.mk {x : ℝ | Transcendental ℚ x} = Cardinal.continuum := by
+  have hTeq : {x : ℝ | Transcendental ℚ x}
+      = (Set.univ : Set ℝ) \ {x : ℝ | IsAlgebraic ℚ x} := by
+    ext x; simp only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_univ, true_and]; rfl
+  have hle : Cardinal.mk {x : ℝ | Transcendental ℚ x} ≤ Cardinal.continuum :=
+    calc Cardinal.mk {x : ℝ | Transcendental ℚ x}
+        ≤ Cardinal.mk (Set.univ : Set ℝ) := Cardinal.mk_le_mk_of_subset (Set.subset_univ _)
+      _ = Cardinal.continuum := Cardinal.mk_univ_real
+  have halg : Cardinal.mk {x : ℝ | IsAlgebraic ℚ x} = Cardinal.aleph0 :=
+    card_algebraic_reals_eq_aleph0
+  have hkey : Cardinal.continuum
+      ≤ Cardinal.mk {x : ℝ | Transcendental ℚ x} + Cardinal.aleph0 := by
+    have h := Cardinal.le_mk_diff_add_mk (Set.univ : Set ℝ) {x : ℝ | IsAlgebraic ℚ x}
+    rw [Cardinal.mk_univ_real, halg, ← hTeq] at h
+    exact h
+  have hTinf : Cardinal.aleph0 ≤ Cardinal.mk {x : ℝ | Transcendental ℚ x} := by
+    by_contra h
+    push_neg at h
+    have hcontra : Cardinal.continuum ≤ Cardinal.aleph0 :=
+      calc Cardinal.continuum
+          ≤ Cardinal.mk {x : ℝ | Transcendental ℚ x} + Cardinal.aleph0 := hkey
+        _ ≤ Cardinal.aleph0 + Cardinal.aleph0 := add_le_add h.le (le_refl _)
+        _ = Cardinal.aleph0 := Cardinal.aleph0_add_aleph0
+    exact absurd hcontra (not_le.2 Cardinal.aleph0_lt_continuum)
+  refine le_antisymm hle ?_
+  calc Cardinal.continuum
+      ≤ Cardinal.mk {x : ℝ | Transcendental ℚ x} + Cardinal.aleph0 := hkey
+    _ = Cardinal.mk {x : ℝ | Transcendental ℚ x} := Cardinal.add_eq_left hTinf hTinf
+
+/-- **The transcendental complex numbers are uncountable.**  The `ℂ` counterpart of
+`transcendental_reals_uncountable`. -/
+theorem transcendental_complex_uncountable :
+    ¬ {x : ℂ | Transcendental ℚ x}.Countable := by
+  intro hc
+  apply not_countable_complex
+  have huniv : (Set.univ : Set ℂ)
+      = {x : ℂ | IsAlgebraic ℚ x} ∪ {x : ℂ | Transcendental ℚ x} := by
+    ext x
+    simp only [Set.mem_univ, Set.mem_union, Set.mem_setOf_eq, true_iff]
+    exact em (IsAlgebraic ℚ x)
+  rw [huniv]
+  exact algebraic_complex_countable.union hc
+
+/-- **The transcendental complex numbers have cardinality continuum.**  The `ℂ`
+counterpart of `card_transcendental_reals_eq_continuum`. -/
+theorem card_transcendental_complex_eq_continuum :
+    Cardinal.mk {x : ℂ | Transcendental ℚ x} = Cardinal.continuum := by
+  have hTeq : {x : ℂ | Transcendental ℚ x}
+      = (Set.univ : Set ℂ) \ {x : ℂ | IsAlgebraic ℚ x} := by
+    ext x; simp only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_univ, true_and]; rfl
+  have hle : Cardinal.mk {x : ℂ | Transcendental ℚ x} ≤ Cardinal.continuum :=
+    calc Cardinal.mk {x : ℂ | Transcendental ℚ x}
+        ≤ Cardinal.mk (Set.univ : Set ℂ) := Cardinal.mk_le_mk_of_subset (Set.subset_univ _)
+      _ = Cardinal.continuum := Cardinal.mk_univ_complex
+  have halg : Cardinal.mk {x : ℂ | IsAlgebraic ℚ x} = Cardinal.aleph0 :=
+    card_algebraic_complex_eq_aleph0
+  have hkey : Cardinal.continuum
+      ≤ Cardinal.mk {x : ℂ | Transcendental ℚ x} + Cardinal.aleph0 := by
+    have h := Cardinal.le_mk_diff_add_mk (Set.univ : Set ℂ) {x : ℂ | IsAlgebraic ℚ x}
+    rw [Cardinal.mk_univ_complex, halg, ← hTeq] at h
+    exact h
+  have hTinf : Cardinal.aleph0 ≤ Cardinal.mk {x : ℂ | Transcendental ℚ x} := by
+    by_contra h
+    push_neg at h
+    have hcontra : Cardinal.continuum ≤ Cardinal.aleph0 :=
+      calc Cardinal.continuum
+          ≤ Cardinal.mk {x : ℂ | Transcendental ℚ x} + Cardinal.aleph0 := hkey
+        _ ≤ Cardinal.aleph0 + Cardinal.aleph0 := add_le_add h.le (le_refl _)
+        _ = Cardinal.aleph0 := Cardinal.aleph0_add_aleph0
+    exact absurd hcontra (not_le.2 Cardinal.aleph0_lt_continuum)
+  refine le_antisymm hle ?_
+  calc Cardinal.continuum
+      ≤ Cardinal.mk {x : ℂ | Transcendental ℚ x} + Cardinal.aleph0 := hkey
+    _ = Cardinal.mk {x : ℂ | Transcendental ℚ x} := Cardinal.add_eq_left hTinf hTinf
+
 end AlgebraicNumbersCountable

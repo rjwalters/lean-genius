@@ -34,6 +34,10 @@ mass collapses at the Wallis rate governed by the central binomial coefficient.
 literally the (real) value of the complex Euler Beta integral on the diagonal, so
 the asymptotic is a statement about `Complex.betaIntegral` itself.
 
+The same central-binomial engine also yields the **Catalan number asymptotic**
+`catalan_isEquivalent` : `Cₙ ~ 4ⁿ / ((n+1)·√(πn))`, transferred through the exact
+identity `Cₙ = C(2n,n)/(n+1)` (`succ_mul_catalan_eq_centralBinom`).
+
 ## Relation to Mathlib
 
 Mathlib has `Stirling.factorial_isEquivalent_stirling`
@@ -177,4 +181,53 @@ theorem centralBinom_div_stirling_tendsto_one :
     have hden : (0 : ℝ) < Real.sqrt (π * n) := Real.sqrt_pos.2 (by positivity)
     exact (div_pos (by positivity) hden).ne'
   exact (isEquivalent_iff_tendsto_one hz).1 centralBinom_isEquivalent
+
+/-- The Catalan number as a real quotient of the central binomial coefficient:
+`Cₙ = C(2n,n)/(n+1)`.  The real cast of Mathlib's
+`succ_mul_catalan_eq_centralBinom`. -/
+lemma catalan_cast (n : ℕ) :
+    (catalan n : ℝ) = (Nat.centralBinom n : ℝ) / ((n : ℝ) + 1) := by
+  have h : ((n : ℝ) + 1) * (catalan n : ℝ) = (Nat.centralBinom n : ℝ) := by
+    exact_mod_cast succ_mul_catalan_eq_centralBinom n
+  rw [eq_div_iff (by positivity)]
+  linear_combination h
+
+/-- **Catalan number asymptotic (new).**  `Cₙ ~ 4ⁿ / ((n+1)·√(πn))` as `n → ∞`.
+
+Transferred from the central-binomial equivalence `centralBinom_isEquivalent`
+through the exact identity `Cₙ = C(2n,n)/(n+1)`.  Equivalently `Cₙ ~ 4ⁿ / (√π · n^{3/2})`,
+the classical Catalan asymptotic. -/
+theorem catalan_isEquivalent :
+    (fun n : ℕ => (catalan n : ℝ)) ~[atTop]
+      (fun n : ℕ => (4 : ℝ) ^ n / (((n : ℝ) + 1) * Real.sqrt (π * n))) := by
+  have hcb := centralBinom_isEquivalent
+  have hconst : (fun n : ℕ => ((n : ℝ) + 1)⁻¹) ~[atTop] (fun n : ℕ => ((n : ℝ) + 1)⁻¹) :=
+    IsEquivalent.refl
+  have hmul := hconst.mul hcb
+  have hL : (fun n : ℕ => (catalan n : ℝ)) =ᶠ[atTop]
+      (fun n : ℕ => ((n : ℝ) + 1)⁻¹ * (Nat.centralBinom n : ℝ)) := by
+    apply Filter.Eventually.of_forall; intro n
+    dsimp only
+    rw [catalan_cast, inv_mul_eq_div]
+  have hR : (fun n : ℕ => ((n : ℝ) + 1)⁻¹ * ((4 : ℝ) ^ n / Real.sqrt (π * n))) =ᶠ[atTop]
+      (fun n : ℕ => (4 : ℝ) ^ n / (((n : ℝ) + 1) * Real.sqrt (π * n))) := by
+    apply Filter.Eventually.of_forall; intro n
+    dsimp only
+    rw [inv_mul_eq_div, div_div, mul_comm (Real.sqrt (π * (n : ℝ))) ((n : ℝ) + 1)]
+  exact (hL.isEquivalent.trans hmul).trans hR.isEquivalent
+
+/-- **Catalan Wallis-ratio limit (new).**  `Cₙ / (4ⁿ/((n+1)√(πn))) → 1` as `n → ∞`.
+The `Tendsto`-to-one restatement of `catalan_isEquivalent`. -/
+theorem catalan_div_stirling_tendsto_one :
+    Tendsto (fun n : ℕ =>
+        (catalan n : ℝ) / ((4 : ℝ) ^ n / (((n : ℝ) + 1) * Real.sqrt (π * n))))
+      atTop (𝓝 1) := by
+  have hz : ∀ᶠ n : ℕ in atTop,
+      ((4 : ℝ) ^ n / (((n : ℝ) + 1) * Real.sqrt (π * n))) ≠ 0 := by
+    filter_upwards [eventually_gt_atTop 0] with n hn
+    have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+    have hden : (0 : ℝ) < ((n : ℝ) + 1) * Real.sqrt (π * n) :=
+      mul_pos (by positivity) (Real.sqrt_pos.2 (by positivity))
+    exact (div_pos (by positivity) hden).ne'
+  exact (isEquivalent_iff_tendsto_one hz).1 catalan_isEquivalent
 end BetaDiagAsymptotic

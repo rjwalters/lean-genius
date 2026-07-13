@@ -21,16 +21,18 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "No axioms (#print axioms reports only propext, Classical.choice, Quot.sound). The theorem artinSchreier_support_not_puiseux is stated for ANY Hahn series whose support contains the Artin–Schreier exponents {−1/pᵏ}; the existence of such a series — the Artin–Schreier root of yᵖ − y = x⁻¹, a separable degree-p algebraic element over the Laurent series — is the classical input, documented but not constructed here (its construction needs the well-ordering of the support and a Frobenius computation in characteristic p). The IsPuiseuxSeries predicate is reproduced verbatim from the gallery puiseux-theorem entry, whose own source is a work-in-progress that does not compile against current Mathlib, so this file is kept self-contained.",
+    "assumptions": "No axioms (#print axioms reports only propext, Classical.choice, Quot.sound). The obstruction theorem artinSchreier_support_not_puiseux is stated for ANY Hahn series whose support contains the Artin–Schreier exponents {−1/pᵏ}; artinSchreierExp_range_isPWO now proves that exponent set is partially well-ordered, and artinSchreierSeries builds an explicit Hahn series over any field with exactly that support, so exists_hahnSeries_not_puiseux shows the obstruction is non-vacuous (realised by a genuine element of the Hahn field). We do NOT construct the actual characteristic-p root of yᵖ − y = x⁻¹ (that needs a Frobenius coefficient computation in characteristic p); the witness here uses coefficients 1. The IsPuiseuxSeries predicate is reproduced verbatim from the gallery puiseux-theorem entry, whose own source is a work-in-progress that does not compile against current Mathlib, so this file is kept self-contained.",
     "dateAdded": "2026-06-24",
-    "lineCount": 131,
-    "theoremCount": 4,
-    "definitionCount": 2,
+    "lineCount": 194,
+    "theoremCount": 8,
+    "definitionCount": 3,
     "originalContributions": [
       "artinSchreier_support_not_puiseux: any Hahn series whose support contains the Artin–Schreier exponents {−1/p^{k+1}} is NOT a Puiseux series — the formal obstruction to Puiseux's theorem in characteristic p",
       "artinSchreierExp_denominators_unbounded: the Artin–Schreier exponent set lies in no (1/n)·ℤ (for every n some −1/p^{k+1} has denominator p^{k+1} > n) — the unbounded-ramification core",
       "artinSchreierExp_strictMono / artinSchreierExp_injective: the exponents −1/p^{k+1} are distinct and strictly increasing toward 0, so there are infinitely many ramification levels",
-      "artinSchreierExp: the explicit Artin–Schreier exponent sequence, and a self-contained copy of the gallery IsPuiseuxSeries predicate"
+      "artinSchreierExp: the explicit Artin–Schreier exponent sequence, and a self-contained copy of the gallery IsPuiseuxSeries predicate",
+      "artinSchreierExp_range_isPWO: the Artin–Schreier exponent set {−1/p^{k+1}} is partially well-ordered (strictly monotone image of ℕ), hence a legitimate Hahn-series support",
+      "artinSchreierSeries + exists_hahnSeries_not_puiseux: an explicit Hahn series over any field carrying exactly the Artin–Schreier exponents, proving the obstruction is non-vacuous — witnessed by an actual element of the Hahn field, not a hypothetical one"
     ],
     "mathlibDependencies": [
       {
@@ -165,12 +167,12 @@
     ],
     "opens": [],
     "namespace": "PuiseuxTheoremOQ01",
-    "lineCount": 131,
+    "lineCount": 194,
     "axiomCount": 0,
-    "theoremCount": 4,
-    "substantiveTheoremCount": 2,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 4,
     "duplicateTheorems": 0,
-    "definitionCount": 2,
+    "definitionCount": 3,
     "path": "Proofs/PuiseuxTheoremOQ01.lean",
     "sorries": 0
   },

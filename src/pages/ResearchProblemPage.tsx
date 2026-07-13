@@ -6,6 +6,7 @@ import { MarkdownMath } from '@/components/ui/markdown-math'
 // PHASE_INFO available if needed for phase styling
 // import { PHASE_INFO } from '@/types/research'
 import type { ResearchProblem } from '@/types/research'
+import { blockerText } from '@/types/research'
 import {
   ArrowLeft,
   FlaskConical,
@@ -303,12 +304,14 @@ export function ResearchProblemPage() {
                         <p className="text-sm text-muted-foreground">{problem.currentState.focus}</p>
                       </div>
                     )}
-                    {problem.currentState.blockers.length > 0 && (
+                    {/* Tolerant guard: a few tracker JSONs carry a non-array
+                        `blockers` (or a string `currentState`) — never crash on them */}
+                    {Array.isArray(problem.currentState.blockers) && problem.currentState.blockers.length > 0 && (
                       <div className="p-3 bg-red-500/10 border border-red-500/30 rounded">
                         <p className="text-sm font-medium text-red-400 mb-1">Blockers</p>
                         <ul className="list-disc list-inside text-sm text-red-400/80">
                           {problem.currentState.blockers.map((blocker, i) => (
-                            <li key={i}>{blocker}</li>
+                            <li key={i}>{blockerText(blocker)}</li>
                           ))}
                         </ul>
                       </div>

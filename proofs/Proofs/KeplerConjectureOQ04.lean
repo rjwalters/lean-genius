@@ -1316,4 +1316,62 @@ theorem range_packingDensity_eq_Icc :
   rintro x ⟨hx0, hx1⟩
   exact ⟨⟨x, hx0, hx1⟩, rfl⟩
 
+/-!
+## S25 — topology and order-structure of the density spectrum
+
+S24 identifies the achievable-density range *exactly*: `range PackingDensity.density = Icc 0 1`
+(`range_packingDensity_eq_Icc`). Transporting the standard interval facts across that equality
+reveals the qualitative *shape* of the packing-density spectrum: it is **compact**,
+**connected**, **order-connected** (no gaps), and **infinite**. Two consequences of substance:
+
+* the five named benchmarks of `grand_density_hierarchy`
+  (`π/(3√2) < 0.7707 < 4000/4671 < 18/19 < 1`) are a *finite sample of a continuum* — the
+  spectrum has infinitely many achievable densities;
+* between any two achievable densities every intermediate density is achievable, so the entire
+  band above the FCC sphere floor up to the space-filling ceiling `δ = 1` is realized, with no
+  forbidden density gap (`exists_packingDensity_eq_of_mem_fcc_one`).
+
+All facts transport from `Set.Icc` lemmas across `range_packingDensity_eq_Icc`; no new axioms.
+-/
+
+/-- **The density spectrum is compact.** `IsCompact (range PackingDensity.density)`: the set of
+achievable convex-body packing densities is a compact subset of `ℝ`, being the closed bounded
+interval `[0, 1]`. Transported from `isCompact_Icc`. No axioms. -/
+theorem isCompact_packingDensity_range :
+    IsCompact (Set.range (PackingDensity.density)) := by
+  rw [range_packingDensity_eq_Icc]; exact isCompact_Icc
+
+/-- **The density spectrum is connected.** `IsConnected (range PackingDensity.density)`: the
+achievable densities form a single connected continuum `[0, 1]`, not a union of separated
+density regimes. Transported from `isConnected_Icc`. No axioms. -/
+theorem isConnected_packingDensity_range :
+    IsConnected (Set.range (PackingDensity.density)) := by
+  rw [range_packingDensity_eq_Icc]; exact isConnected_Icc (by norm_num)
+
+/-- **The density spectrum has no gaps (order-connected).** `(range density).OrdConnected`:
+whenever two densities `x ≤ y` are achievable, every intermediate density `z ∈ [x, y]` is
+achievable too. The packing landscape contains no forbidden density band between the sphere
+floor and the space-filling ceiling. Transported from `Set.ordConnected_Icc`. No axioms. -/
+theorem ordConnected_packingDensity_range :
+    (Set.range (PackingDensity.density)).OrdConnected := by
+  rw [range_packingDensity_eq_Icc]; exact Set.ordConnected_Icc
+
+/-- **The density spectrum is infinite.** `(range density).Infinite`: there are infinitely many
+achievable convex-body packing densities. The five named benchmarks of `grand_density_hierarchy`
+form a finite sample of a continuum — a qualitative complement to the extremal
+(`isLeast`/`isGreatest`) and exact-range (`range_packingDensity_eq_Icc`) results. Transported
+from `Set.Icc_infinite`. No axioms. -/
+theorem infinite_packingDensity_range :
+    (Set.range (PackingDensity.density)).Infinite := by
+  rw [range_packingDensity_eq_Icc]; exact Set.Icc_infinite (by norm_num)
+
+/-- **Every density in the band `[fccDensity, 1]` is realized by a packing.** For any target
+`t` with `fccDensity ≤ t ≤ 1` there is a convex-body packing of *exactly* density `t`: the whole
+band from the FCC sphere floor up to the space-filling ceiling `δ = 1` is filled, not merely the
+five named benchmarks. Immediate from `range_packingDensity_eq_Icc` and `fccDensity_pos`
+(so `0 ≤ t`). No axioms. -/
+theorem exists_packingDensity_eq_of_mem_fcc_one {t : ℝ}
+    (ht : fccDensity ≤ t) (ht1 : t ≤ 1) : ∃ p : PackingDensity, p.density = t :=
+  ⟨⟨t, le_trans fccDensity_pos.le ht, ht1⟩, rfl⟩
+
 end KeplerConjectureOQ04

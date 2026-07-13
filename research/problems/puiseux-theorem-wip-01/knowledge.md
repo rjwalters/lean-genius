@@ -1,6 +1,46 @@
 # Knowledge Base: puiseux-theorem-wip-01
 
-Insights accumulated during research on this problem.
+## Session 2026-07-12 (researcher-5) — Part XV: PROPERNESS of the Puiseux predicate (subfield is proper)
+
+**Mode:** REVISIT (RICH). **Outcome:** strict advance — a genuinely NEW structural sharpness
+result making the Parts VIII–X subring/subalgebra/subfield edifice non-vacuous. File built
+clean (`proofs/bin/lake env lean`, exit 0), all new decls **axiom-free**
+`[propext, Classical.choice, Quot.sound]`, 0 sorry.
+
+### Context correction
+The JSON/knowledge were STALE: the stated "open next step" (inverse-closure
+`IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹`) was ALREADY DONE in the file
+(`isPuiseux_inv`, `puiseuxSubfield`, the ramification-tower subfields, and the value-group
+subgroup filtration are all present and verified; file is 1553→1648 lines, builds clean).
+The remaining deep goal (full algebraic closure `IsAlgClosed (PuiseuxField K)`) is BLOCKED
+(needs Newton–Puiseux convergence machinery absent from Mathlib, >1000 lines). So instead of
+churning the blocked goal I added the missing *properness* fact.
+
+### What I added — Part XV (2 defs + 5 theorems, 0 sorry / 0 axiom)
+- `nonPuiseuxExp (n) := (-1)/(n+1)` — increasing ω-chain of negative rationals with UNBOUNDED
+  denominators (`-1/(n+1)` in lowest terms has denominator `n+1`).
+- `nonPuiseuxExp_monotone` (via `neg_div`+`neg_le_neg_iff`+`one_div_le_one_div_of_le`).
+- `isPWO_range_nonPuiseuxExp` — the support `{-1/(n+1)}` is PWO, as the monotone image of the
+  well-ordered `(univ : Set ℕ)`: `(Set.isWF_univ_iff.mpr inferInstance).isPWO.image_of_monotone`.
+- `nonPuiseuxSeries K` (noncomputable, `[Field K]`) — the indicator Hahn series on that support;
+  `isPWO_support'` by `isPWO_range_nonPuiseuxExp.mono` (support ⊆ range).
+- `not_isPuiseuxSeries_nonPuiseuxSeries` — for any candidate ramification `N`, the exponent
+  `-1/(N+1)` is in the support but `-1/(N+1) = k/N` forces `(N+1) ∣ N` (via `div_eq_div_iff` +
+  cast to ℤ + `Int.le_of_dvd`), impossible. **The key content.**
+- `exists_not_isPuiseuxSeries`, `puiseuxSubfield_ne_top` — `puiseuxSubfield K` is a PROPER
+  subfield of `HahnSeries ℚ K`.
+
+### Gotchas logged (reusable)
+- Indicator `if q ∈ S then 1 else 0` inside a struct field: put `open scoped Classical in`
+  on the `def`, AND add `classical` in any downstream tactic proof that re-states the `if`
+  (else "failed to synthesize Decidable (... ∈ ...)" on the `show`).
+- `(N : ℚ)` for `N : ℕ+` is defeq to `((N:ℕ):ℚ)`, so `have hcast : (N:ℚ) = (m:ℚ) := by rw [hm]`
+  closes by rfl — do NOT append `norm_cast`/`ring` (→ "no goals to be solved").
+- divisibility witness `(m+1) ∣ m` from `-1*m = k*(m+1)`: `⟨-k, by linear_combination -hint⟩`
+  (ring_nf+linarith flaky on the product term).
+
+### Files Modified
+- `proofs/Proofs/PuiseuxTheorem.lean` (Part XV, +~95 lines, +2 def / +5 theorem)
 
 ---
 
@@ -373,3 +413,38 @@ Both proofs are pure reuse of `ramification_valueGroup_mono`; no new API needed.
 
 **Deferred (unchanged):** full Newton–Puiseux for arbitrary polynomials (Newton polygon +
 char-0 convergence, >1000L, absent from Mathlib) remains the genuine open remainder.
+
+## Session (researcher-2, 2026-07-12): OQ-01 — non-vacuity of the Artin–Schreier obstruction
+
+**Mode**: REVISIT (RICH, family SOLVED). **Outcome**: progress (4 thms + 1 def, VERIFIED
+0-sorry/0-axiom `[propext, Classical.choice, Quot.sound]`; docker `✔ [3059/3059]`). Branch
+`feature/researcher-2-puiseux-oq01-witness`. **Non-overlapping with researcher-5's active OQ03
+work** (ramification value-subgroup lattice) — chose the smallest, independent OQ file.
+
+**Gap filled.** `PuiseuxTheoremOQ01.lean` (gallery entry `puiseux-theorem-oq-01`) proved the
+Artin–Schreier *obstruction* — any Hahn series carrying the exponents `{−1/p^{k+1}}` is not
+Puiseux — but its own Scope/honesty note said "we do not construct the Hahn series y itself
+(that needs the well-ordering of its support)". I supplied exactly that missing piece:
+- `artinSchreierExp_range_isPWO` — the exponent set is `IsPWO` (strictly monotone image of ℕ):
+  `rw [← Set.image_univ]; exact (Set.isPWO_of_wellQuasiOrderedLE univ).image_of_monotone
+  (strictMono).monotone`. So it is a legitimate Hahn support.
+- `artinSchreierSeries` — explicit `HahnSeries ℚ K` (any `Field K`) with support = that set,
+  via `Set.indicator (range ...) (fun _ => 1)`; `isPWO_support'` by `.mono` onto the IsPWO range.
+- `artinSchreierSeries_carries` / `artinSchreierSeries_not_puiseux` / `exists_hahnSeries_not_puiseux`
+  — the obstruction is **non-vacuous**: over every field and every `p≥2` a genuine element of the
+  Hahn field realises it (the prior theorem's hypothesis is satisfiable, not hypothetical).
+
+**Reusable technique.** To build a Hahn series with a *prescribed* support S (over a field):
+`coeff := Set.indicator S (fun _ => 1)`, and `isPWO_support' := hS_isPWO.mono (by intro q hq;
+simp [Function.mem_support] at hq; by_contra hnot; exact hq (Set.indicator_of_notMem hnot _))`.
+For IsPWO of a strictMono ℕ-indexed set: `(Set.univ:Set ℕ).IsPWO` via
+`Set.isPWO_of_wellQuasiOrderedLE`, then `.image_of_monotone` over `range = f '' univ`.
+Gotcha: `Set.indicator_of_not_mem` is deprecated → use `Set.indicator_of_notMem`.
+
+**Files Modified**: proofs/Proofs/PuiseuxTheoremOQ01.lean (131→194 lines, 4→8 thms, 2→3 defs;
+header Scope/honesty + What-this-proves updated), src/data/proofs/puiseux-theorem-oq-01/meta.json
+(counts + assumptions + originalContributions).
+
+**Frontier (unchanged)**: the *positive* char-p analogue (Kedlaya's automatic-Hahn algebraic
+closure) and the actual Frobenius root of yᵖ−y=x⁻¹ remain out of scope; the main-file Newton–Puiseux
+algebraic closure (>1000L) is still the deep open remainder.

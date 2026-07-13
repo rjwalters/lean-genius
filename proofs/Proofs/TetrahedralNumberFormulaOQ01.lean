@@ -555,6 +555,46 @@ theorem forwardDiff_simplexNumber (d n : ℕ) :
   simp only [forwardDiff]
   rw [simplexNumber_succ_succ, Nat.add_sub_cancel_left]
 
+/-- **Iterated differencing peels figurate dimensions with a shift.** Applying the forward
+difference `k` times to the `(d+k)`-dimensional ladder strips exactly `k` dimensions,
+leaving the `d`-dimensional ladder shifted by `k`:
+
+`Δ^k P_{d+k}(n) = P_d(n + k)`.
+
+The `k`-fold iterate of the one-step `forwardDiff_simplexNumber` (`Δ P_{d+1} = P_d(·+1)`);
+each application both lowers the dimension by one and advances the argument by one, so the
+shift accumulates to `k`. Proved by induction on `k` (the shift bookkeeping is why the
+argument advances rather than staying at `n`). -/
+theorem iterate_forwardDiff_simplexNumber (k : ℕ) : ∀ d n : ℕ,
+    (forwardDiff^[k] (simplexNumber (d + k))) n = simplexNumber d (n + k) := by
+  induction k with
+  | zero => intro d n; simp
+  | succ k ih =>
+    intro d n
+    rw [show d + (k + 1) = (d + 1) + k from by ring, Function.iterate_succ_apply']
+    -- expand only the OUTER `forwardDiff` (by defeq), leaving `forwardDiff^[k]` intact
+    show (forwardDiff^[k] (simplexNumber ((d + 1) + k))) (n + 1)
+        - (forwardDiff^[k] (simplexNumber ((d + 1) + k))) n = simplexNumber d (n + (k + 1))
+    rw [ih (d + 1) (n + 1), ih (d + 1) n,
+      show (n + 1) + k = (n + k) + 1 from by ring, show n + (k + 1) = (n + k) + 1 from by ring]
+    have h := forwardDiff_simplexNumber d (n + k)
+    unfold forwardDiff at h
+    exact h
+
+/-- **The `d`-th finite difference of the `d`-dimensional simplex number is `1`.**
+`Δ^d P_d ≡ 1`: iterating the forward difference `d` times on the `d`-dimensional figurate
+ladder collapses it to the constant sequence `1`. This is the exact discrete analogue of
+the calculus fact that the `d`-th derivative of `xᵈ/d!` is the constant `1` — `P_d(n) =
+C(n+d, d)` is a degree-`d` "polynomial" in `n` with leading coefficient `1/d!`, and `d`
+differences annihilate all lower-order terms. The `d = k`, base-dimension-`0` case of
+`iterate_forwardDiff_simplexNumber` (`Δ^d P_d = P_0(·+d) = 1`, since `P_0 ≡ 1`); it is the
+capstone of the summation↔difference duality, dual to the hockey-stick `sum_simplex`
+building the ladder up by `d`-fold summation. -/
+theorem iterate_forwardDiff_simplexNumber_self (d n : ℕ) :
+    (forwardDiff^[d] (simplexNumber d)) n = 1 := by
+  have h := iterate_forwardDiff_simplexNumber d 0 n
+  simpa using h
+
 /-- **Reverse discrete Fundamental Theorem of Calculus (summing a difference telescopes).**
 The running total of the forward differences of a *monotone* sequence recovers the
 sequence, up to the boundary value `f 0`:
@@ -1026,6 +1066,89 @@ theorem descFactorial_moment_sum_simplex (r d n : ℕ) :
     rw [Nat.descFactorial_succ]
     congr 1
     omega
+
+/-! ### Coordinate absorption recurrences and the discrete Euler relation
+
+The moment machinery above is powered by the *diagonal* absorption identity
+`succ_mul_simplexNumber` (`(j+1)·P_d(j+1) = (d+1)·P_{d+1}(j)`), which moves the index
+weight simultaneously along both axes of Pascal's simplex. That single step is the
+composite of the two *coordinate* absorptions — one raising the dimension, one raising
+the size — each of which is more primitive and interesting in its own right. Both share
+the common middle term `(n+d+1)·P_d(n)`:
+
+* `simplexNumber_dim_absorption` : `(d+1)·P_{d+1}(n) = (n+d+1)·P_d(n)` — the
+  dimension-raising step, straight from Mathlib's `Nat.add_one_mul_choose_eq`;
+* `simplexNumber_size_absorption` : `(n+1)·P_d(n+1) = (n+d+1)·P_d(n)` — the
+  size-raising step.
+
+Because both equal `(n+d+1)·P_d(n)`, chaining them recovers the diagonal identity
+`succ_mul_simplexNumber` — the two coordinate recurrences *factor* the diagonal one
+through that middle term.
+
+The size recurrence has an immediate payoff for the finite-difference side of the
+theory: rewriting `P_d(n+1) = P_d(n) + Δ P_d(n)` turns `(n+1)·P_d(n+1) = (n+d+1)·P_d(n)`
+into the **discrete Euler / homogeneity relation** `(n+1)·Δ P_d(n) = d·P_d(n)`
+(`forwardDiff_simplexNumber_euler`), the exact discrete analogue of the Euler identity
+`x · (x^d)' = d · x^d` for the monomial `x^d`. It expresses the forward difference of a
+figurate number as a rational multiple of the number itself, and (like all the
+`forwardDiff` results) the `ℕ`-subtraction is exact because `P_d` is monotone in the
+size (`simplexNumber_mono_size`). -/
+
+/-- **Dimension-raising absorption.** Raising the dimension by one, weighted by `d+1`,
+equals the number weighted by the top index `n+d+1`:
+
+`(d+1)·P_{d+1}(n) = (n+d+1)·P_d(n)`.
+
+This is the figurate face of Mathlib's `Nat.add_one_mul_choose_eq`
+(`(m+1)·C(m,k) = C(m+1,k+1)·(k+1)`): with `m = n+d`, `k = d` the successor factor `m+1`
+is exactly the top index `n+d+1` and `C(m+1,d+1) = P_{d+1}(n)`. Together with
+`simplexNumber_size_absorption` it factors the diagonal absorption
+`succ_mul_simplexNumber` through the common term `(n+d+1)·P_d(n)`. -/
+theorem simplexNumber_dim_absorption (d n : ℕ) :
+    (d + 1) * simplexNumber (d + 1) n = (n + d + 1) * simplexNumber d n := by
+  unfold simplexNumber
+  rw [show n + (d + 1) = n + d + 1 from by ring, Nat.mul_comm (d + 1)]
+  exact (Nat.add_one_mul_choose_eq (n + d) d).symm
+
+/-- **Size-raising absorption.** Raising the size by one, weighted by `n+1`, equals the
+number weighted by the top index `n+d+1`:
+
+`(n+1)·P_d(n+1) = (n+d+1)·P_d(n)`.
+
+The size-axis companion of `simplexNumber_dim_absorption`, sharing the same middle term
+`(n+d+1)·P_d(n)`. Proof: the diagonal absorption `succ_mul_simplexNumber` rewrites the
+left side to `(d+1)·P_{d+1}(n)`, which the dimension recurrence collapses to the right
+side — so the two coordinate steps are two factorizations of the same product. -/
+theorem simplexNumber_size_absorption (d n : ℕ) :
+    (n + 1) * simplexNumber d (n + 1) = (n + d + 1) * simplexNumber d n := by
+  rw [succ_mul_simplexNumber d n]
+  exact simplexNumber_dim_absorption d n
+
+/-- **Discrete Euler / homogeneity relation for figurate numbers.** The forward
+difference of a simplex number, weighted by `n+1`, is `d` times the number itself:
+
+`(n+1)·Δ P_d(n) = d·P_d(n)`,
+
+the exact discrete analogue of the Euler homogeneity identity `x·(x^d)' = d·x^d` for the
+monomial `x^d` (the falling-factorial powers `(x)_d` being the discrete monomials). It
+shows the forward difference is a rational multiple `d/(n+1)` of the value, and specializes
+the size-raising absorption `simplexNumber_size_absorption` to the finite-difference
+operator: writing `P_d(n+1) = P_d(n) + Δ P_d(n)` (exact `ℕ`-subtraction, since `P_d` is
+monotone in the size by `simplexNumber_mono_size`) turns `(n+1)·P_d(n+1) = (n+d+1)·P_d(n)`
+into `(n+1)·Δ P_d(n) = d·P_d(n)`. -/
+theorem forwardDiff_simplexNumber_euler (d n : ℕ) :
+    (n + 1) * forwardDiff (simplexNumber d) n = d * simplexNumber d n := by
+  have hmono : simplexNumber d n ≤ simplexNumber d (n + 1) :=
+    simplexNumber_mono_size d (Nat.le_succ n)
+  have hsucc : simplexNumber d (n + 1)
+      = simplexNumber d n + forwardDiff (simplexNumber d) n := by
+    unfold forwardDiff; omega
+  have h2 := simplexNumber_size_absorption d n
+  rw [hsucc, Nat.mul_add] at h2
+  have hexp : (n + d + 1) * simplexNumber d n
+      = (n + 1) * simplexNumber d n + d * simplexNumber d n := by ring
+  rw [hexp] at h2
+  omega
 
 end TetrahedralNumberFormulaOQ01
 

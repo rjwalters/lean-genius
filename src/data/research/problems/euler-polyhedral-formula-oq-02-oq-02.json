@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part XVII — the Poincaré polynomial P_{Σ_g}(t)=1+2g·t+t² of the genus-g surface (+10 axiom-free theorems, +1 def, theoremCount 84→94). Packages the Betti numbers (1,2g,1) of Part XVI: P(−1)=χ=2−2g (Euler–Poincaré), P(1)=2+2g (total Betti), the functional equation t²·P(1/t)=P(t) (Poincaré-duality self-reciprocity), and the connected-sum law P_{Σ_g#Σ_h}=P_{Σ_g}+P_{Σ_h}−(1+t²) whose t=−1 shadow is χ-additivity. Structure-encoded CGB identity unchanged (still axiomatized, 2 assumptions).",
+    "progressSummary": "PROGRESS: Part XIX abstracts Part XVIII's one Künneth table into the algebraic laws of the kunnethBetti convolution — commutativity + point-as-unit (two-sided), yielding prodSurfaceBetti symmetry. Core still BLOCKED on Mathlib v4.26 (no Pfaffian). Elementary/homological calculus now includes the convolution monoid structure. 0-axiom, host-lean elab EXIT 0.",
     "builtItems": [
       "CGBManifold structure encoding the Chern-Gauss-Bonnet identity ∫_M Pf(Ω)=(2π)^n·χ(M) with derived even-dimensionality, normalized integral, χ=0⇒∫Pf=0, sign matching, and Euler-number integrality.",
       "Verified sphere Euler characteristics (sphereEulerChar), (2π)^n normalization lemmas (cgbConst), and the 2×2 Pfaffian/determinant identity (pf2_sq_eq_det2).",
@@ -37,7 +37,8 @@
       "connectedSumCGB (Part X) — connected-sum monoid on CGB manifolds: χ additive minus sphere (χ(M#N)=χM+χN−2), sphere = identity, T²#T² genus-2 surface has χ=−2 / ∫Pf=−4π (all 0-axiom-declaration, structure-encoded framework unchanged).",
       "genusSurfaceBetti + genusSurface_euler_poincare (χ=b₀−b₁+b₂) in EulerPolyhedralOQ02OQ02.lean Part XVI",
       "genusSurfaceBetti_poincare_duality (bᵢ=b_{2−i}), genusSurface_first_betti_even, genusSurface_chi_eq_two_sub_first_betti, genusSurfaceCGB_chi_even (homological), genusSurface_betti_total (Σbᵢ=2+2g) — 11 new theorems, all axiom-free [propext,Classical.choice,Quot.sound]",
-      "Part XVII (EulerPolyhedralOQ02OQ02.lean): poincarePoly g t = 1+2g·t+t² with poincarePoly_neg_one (=χ), poincarePoly_one/_eq_total_betti (=2+2g), poincarePoly_functional_eq (t²·P(1/t)=P(t), Poincaré duality), poincarePoly_genus_zero (S²=1+t²), poincarePoly_connectedSum (−(1+t²) sphere correction), poincarePoly_connectedSum_chi (t=−1 recovers χ-additivity), genusSurfaceBetti_one_connectedSum (b₁ additive) — 10 thm+1 def, all 0-axiom [propext,Classical.choice,Quot.sound]"
+      "kunnethBetti_comm, pointBetti (def), pointBetti_zero/_succ, kunnethBetti_pointBetti_left/_right, prodSurfaceBetti_comm in EulerPolyhedralOQ02OQ02.lean Part XIX",
+      "Part XX (EulerPolyhedralOQ02OQ02.lean): poincarePoly g t = 1+2g·t+t² with poincarePoly_neg_one (=χ), poincarePoly_one/_eq_total_betti (=2+2g), poincarePoly_functional_eq (t²·P(1/t)=P(t), Poincaré duality), poincarePoly_genus_zero (S²=1+t²), poincarePoly_connectedSum (−(1+t²) sphere correction), poincarePoly_connectedSum_chi (t=−1 recovers χ-additivity), genusSurfaceBetti_one_connectedSum (b₁ additive) — 10 thm+1 def, all 0-axiom [propext,Classical.choice,Quot.sound]"
     ],
     "insights": [
       "χ(S^m)=1+(-1)^m gives 2 in even and 0 in odd dimension — the parity that makes the Pfaffian (an even-dimensional invariant) the correct curvature integrand for Chern-Gauss-Bonnet.",
@@ -46,7 +47,8 @@
       "Closed odd-dimensional manifolds have χ=0 (Poincaré duality), so the even-dimensional Pfaffian carries no topological information there — encoded as ClosedOddManifold and realized by odd spheres S^{2k+1}.",
       "Part XVI: χ(Σ_g)=2−2g has a purely homological origin via the Euler–Poincaré formula χ=Σ(−1)ⁱbᵢ with Betti numbers (b₀,b₁,b₂)=(1,2g,1); this is independent of the connected-sum/CGB geometric route in Parts XI–XV.",
       "Poincaré duality bᵢ=b_{2−i} makes the Betti sequence palindromic and forces the middle Betti number b₁=2g even (rank of the symplectic intersection form on H₁), giving a homological re-derivation of genusSurfaceCGB_chi_even.",
-      "Part XVII: the Poincaré polynomial P_{Σ_g}(t)=1+2g·t+t² is the single object unifying the homological invariants — its evaluations at t=±1 give χ and the total Betti number, its self-reciprocal functional equation t²·P(1/t)=P(t) IS Poincaré duality bᵢ=b_{2−i}, and its additivity-minus-sphere-polynomial under connected sum refines χ-additivity (the sphere polynomial 1+t² is subtracted, evaluating to χ(S²)=2 at t=−1)."
+      "Part XIX: kunnethBetti convolution is COMMUTATIVE (kunnethBetti_comm, via Finset.sum_range_reflect i↦k-i) with the point Betti sequence δ=(1,0,0,…) as two-sided UNIT (kunnethBetti_pointBetti_left/right) — the symmetric-monoidal structure of homology under products, mirroring pointCGB as the Cartesian-product monoid identity (Part XVII). Concrete corollary prodSurfaceBetti_comm: Σ_g×Σ_h Betti table symmetric in g↔h (homological shadow of Σ_g×Σ_h≅Σ_h×Σ_g). 0-axiom.",
+      "Part XX: the Poincaré polynomial P_{Σ_g}(t)=1+2g·t+t² is the single object unifying the homological invariants — its evaluations at t=±1 give χ and the total Betti number, its self-reciprocal functional equation t²·P(1/t)=P(t) IS Poincaré duality bᵢ=b_{2−i}, and its additivity-minus-sphere-polynomial under connected sum refines χ-additivity (the sphere polynomial 1+t² is subtracted, evaluating to χ(S²)=2 at t=−1)."
     ],
     "mathlibGaps": [
       "No Pfaffian of a matrix/curvature form",

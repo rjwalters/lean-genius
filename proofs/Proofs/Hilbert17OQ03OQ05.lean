@@ -456,6 +456,33 @@ theorem motzkinFun_even_left (c x y : ℝ) : motzkinFun c (-x) y = motzkinFun c 
 theorem motzkinFun_even_right (c x y : ℝ) : motzkinFun c x (-y) = motzkinFun c x y := by
   unfold motzkinFun; ring
 
+/-- **Full sign symmetry.** `Mₐ(-x, -y) = Mₐ(x, y)`: combining evenness in each argument
+    (`motzkinFun_even_left`, `motzkinFun_even_right`) gives invariance under the full
+    Klein-four sign group acting on `(x, y)`. -/
+theorem motzkinFun_even_both (c x y : ℝ) : motzkinFun c (-x) (-y) = motzkinFun c x y := by
+  rw [motzkinFun_even_left, motzkinFun_even_right]
+
+/-- **Value on the `y`-axis is the constant `1`.** `Mₐ(0, y) = 1` for every `c` and `y`:
+    setting `x = 0` annihilates all three `x`-bearing monomials, leaving the constant term.
+    So the whole family agrees with the trivial PSD polynomial `1` along the `y`-axis. -/
+theorem motzkinFun_on_axis_left (c y : ℝ) : motzkinFun c 0 y = 1 := by
+  unfold motzkinFun; ring
+
+/-- **Value on the `x`-axis is the constant `1`.** `Mₐ(x, 0) = 1` for every `c` and `x`,
+    the `motzkinFun_symm` mirror of `motzkinFun_on_axis_left`. -/
+theorem motzkinFun_on_axis_right (c x : ℝ) : motzkinFun c x 0 = 1 := by
+  unfold motzkinFun; ring
+
+/-- **The real variety of `Mₐ` avoids both coordinate axes.** If `Mₐ(x, y) = 0` then
+    `x ≠ 0` and `y ≠ 0`, since `Mₐ` takes the value `1 ≠ 0` on each axis
+    (`motzkinFun_on_axis_left` / `_right`).  In particular every real zero of the family
+    (e.g. the `(±1, ±1)` zeros of the boundary member) lies strictly off the axes. -/
+theorem motzkinFun_ne_zero_on_axes {c x y : ℝ} (h : motzkinFun c x y = 0) :
+    x ≠ 0 ∧ y ≠ 0 := by
+  refine ⟨?_, ?_⟩
+  · rintro rfl; rw [motzkinFun_on_axis_left] at h; exact one_ne_zero h
+  · rintro rfl; rw [motzkinFun_on_axis_right] at h; exact one_ne_zero h
+
 /-- **The boundary member vanishes at all four sign-variants of `(1,1)`.**  Because
     `motzkinFun 3` is even in each argument (`motzkinFun_even_left`/`_even_right`) and
     vanishes at `(1,1)` (`motzkinFun_three_zero_at_one_one`), it vanishes at every

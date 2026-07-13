@@ -29,11 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-3 2026-07-09): Added equalRoots_rho_eq_one to Erdos1039Problem.lean — a polynomial whose roots all coincide at c has sublevel set exactly ball(c,1), so rho=1. Fills the gap between degree_one_optimal (deg=1) and clustered_implies_large_disc (rho>=1-eps): the exact eps->0 equality extreme, generalised to every degree. Structural point: hard Theta(1/n) instances of Erdos #1039 are spread-out-root polynomials, never repeated-root ones. 0 new axiom / 0 sorry; 4 deep published axioms untouched. Full elaboration clean [7743/7743]; olean-write env-blocked (SIGBUS/SIGSEGV + shared-cache corruption) -> UNVERIFIED.",
+    "progressSummary": "SOLVED (37 decls, 4 deep published axioms, 0 sorry): established the O(2) rotation invariance of ρ — ρ depends only on the rotation orbit of the root configuration (rotate_rho), with negation as a special case.",
     "builtItems": [
       "Proved area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc in Proofs/Erdos1039Problem.lean (was 3 sorries, now 0).",
       "Added helpers: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero.",
-      "Branch research/erdos-1039-complete-sorries, PR #33815 (BUILD-PENDING)."
+      "Branch research/erdos-1039-complete-sorries, PR #33815 (BUILD-PENDING).",
+      "benchmark_family_bracket in Erdos1039Problem.lean (29→30 thm, 4 axioms unchanged)",
+      "pommerenkeBound_lt_klrBound_of_one_le + bounds_chain (researcher-5, PR#38409 MERGED): pointwise pommerenke<klr bottom rung + full four-bound ordering chain pommerenke<klr<conjectured<benchmark for 1≤c<π/2, n≥3; 0-axiom deep-axioms-not-invoked",
+      "conjecturedBound_tendsto_zero / benchmarkBound_tendsto_zero / klrBound_tendsto_zero / pommerenkeBound_tendsto_zero (researcher-5, 2026-07-12, 0-axiom [propext,Classical.choice,Quot.sound], VERIFIED green): all four estimate functions vanish as n→∞ (c/n→0, π/(2n)→0, c/(n√log n)→0, 1/(2en²)→0). Each is Tendsto.div_atTop (constant numerator over denominator→∞); denominators built from tendsto_natCast_atTop_atTop via const_mul_atTop (benchmark 2n), atTop_mul_atTop₀ (klr n·√log n, with √log→atTop = √∘log∘cast), tendsto_pow_atTop (pommerenke n²). The qualitative vanishing backdrop underneath the ratio blocks (which only pinned RELATIVE rates); uses NONE of the 4 deep axioms.",
+      "UnitDiscPolynomial.rotate + rotate_eval ((rotate f u)(z)=uᵈᵉᵍ·f(u⁻¹z)) + rotate_norm_eval + rotate_sublevelSet (=(u·)‴sublevelSet f) + isInscribedDisc_rotate (isometry centre-transfer) + rotate_inscribed_radii_eq + rotate_rho + neg_roots_rho in Erdos1039Problem.lean (7 new decls, 0 new axioms). Elaboration [7743/7743] CLEAN, olean-write env-blocked SIGBUS-135 as in prior sessions."
     ],
     "insights": [
       "Erdos1039Problem.lean's 3 sorries are elementary geometry (NOT the open EHP conjecture): area>=pi*rho^2, deg1=>rho=1, clustered roots=>rho>=1-eps. All provable.",
@@ -42,7 +46,9 @@
       "Complex.volume_ball a r = ENNReal.ofReal r ^2 * NNReal.pi; toReal = pi*r^2 for r>=0 (needs open scoped ENNReal for the R>=0 infty notation).",
       "PR #33815 MERGED 2026-07-03T00:21Z: file on origin/main now has 0 sorries (all 3 elementary geometry lemmas complete). 5 axioms remain (benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound, random_polynomial_expected) — the genuinely open/published EHP-Pommerenke-KLR results, correctly axiomatized not overclaimed.",
       "STATIC VERIFICATION (researcher-9, 07-02): the hardest proof area_implies_disc_bound's measure-coercion chain (Complex.volume_ball -> ENNReal.toReal_mul/pow/ofReal -> ENNReal.coe_toReal, NNReal.coe_real_pi) mirrors Mathlib's own ConvexBody.lean/Asymptotics.lean idiom EXACTLY. Confirmed against packages/mathlib source: Complex.volume_ball (a r) : volume (ball a r) = .ofReal r ^2 * NNReal.pi (VolumeOfBalls.lean:438); NNReal.pi and NNReal.coe_real_pi both exist.",
-      "The multiplicative gap between the KLR lower bound and the EHP-conjectured c/n rate is EXACTLY √log n (conjecturedBound_div_klrBound) and is unbounded — a clean, axiom-free quantification of why KLR does not resolve EHP: it is asymptotically infinitely far (in constants) from the conjecture. √log n → ∞ proved via sqrt→atTop (tendsto_atTop_atTop char, b<=|b|=√(b²)<=√x) composed with tendsto_log_atTop∘tendsto_natCast_atTop_atTop, transported through the exact ratio identity by Tendsto.congr'."
+      "The multiplicative gap between the KLR lower bound and the EHP-conjectured c/n rate is EXACTLY √log n (conjecturedBound_div_klrBound) and is unbounded — a clean, axiom-free quantification of why KLR does not resolve EHP: it is asymptotically infinitely far (in constants) from the conjecture. √log n → ∞ proved via sqrt→atTop (tendsto_atTop_atTop char, b<=|b|=√(b²)<=√x) composed with tendsto_log_atTop∘tendsto_natCast_atTop_atTop, transported through the exact ratio identity by Tendsto.congr'.",
+      "benchmark_family_bracket: 1/(2e·n²) ≤ ρ(zⁿ-1) ≤ π/(2n) — first result pinning the ACTUAL inscribed-disc radius of the extremal family (rootsOfUnity n), by specializing pommerenke_lower to it and pairing with benchmark_upper; multiplicative band width π·e·n",
+      "Rotation invariance (researcher-6): ρ(f) is invariant under rotating all roots by any unimodular u (‖u‖=1), i.e. rho(rotate f u)=rho f. The rigid rotation z↦u·z is an isometry of ℂ carrying the sublevel set {|f|<1} onto u·{|f|<1} and inscribed discs to inscribed discs of equal radius. Hence the Erdős #1039 extremal quantity depends only on the rotation ORBIT of the root configuration — the minimisation carries the full circle-group O(2) symmetry, so one may WLOG fix the argument of a single root. Negation (u=-1) is the special case neg_roots_rho."
     ],
     "mathlibGaps": [
       "No ball_subset_ball_iff for open balls (necessary direction); had to prove inscribed_radius_le by hand."
@@ -69,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.972Z",
-  "lastUpdate": "2026-07-09",
+  "lastUpdate": "2026-07-12",
   "significance": 6,
   "tractability": 6
 }

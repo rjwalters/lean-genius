@@ -833,6 +833,180 @@ theorem isCoverGraph_completeBipartiteGraph (V W : Type*) [Fintype (V ⊕ W)] :
     isCoverGraph (completeBipartiteGraph V W) :=
   cover_graph_characterization.mp (completeBipartiteGraph_admits_robust V W)
 
+/-- **The cover-graph property transports along a graph isomorphism (no axiom).**
+    The poset-level companion of `admitsRobust_of_iso`: if `f : G ≃g H` and `G` is a
+    cover graph, then so is `H`. Pull `isCoverGraph G` back to `admitsRobustAcyclic G`
+    (reverse of `cover_graph_characterization`), transport the robust orientation along
+    `f` (`admitsRobust_of_iso`), and read the result back as `isCoverGraph H` (forward
+    of `cover_graph_characterization`, now at `H`). This realizes at the Hasse-diagram
+    level the closure `admitsRobust_of_iso` proves at the orientation level. -/
+theorem isCoverGraph_of_iso {W : Type*} {H : SimpleGraph W} [Fintype V] [Fintype W]
+    (f : G ≃g H) (hG : isCoverGraph G) : isCoverGraph H :=
+  cover_graph_characterization.mp
+    (admitsRobust_of_iso f (cover_graph_characterization.mpr hG))
+
+/-- **The cover-graph property is a graph-isomorphism invariant (no axiom).** The
+    two-sided form of `isCoverGraph_of_iso`: isomorphic graphs are simultaneously
+    cover graphs or not (`isCoverGraph G ↔ isCoverGraph H` for `f : G ≃g H`). This is
+    the poset-level statement that `admitsRobust_iso_iff`'s docstring promises but only
+    states at the orientation level — *"the class of cover graphs is closed under
+    isomorphism"* — now recorded directly on the `isCoverGraph` predicate. -/
+theorem isCoverGraph_iso_iff {W : Type*} {H : SimpleGraph W} [Fintype V] [Fintype W]
+    (f : G ≃g H) : isCoverGraph G ↔ isCoverGraph H :=
+  ⟨isCoverGraph_of_iso f, isCoverGraph_of_iso f.symm⟩
+
+/-- **The empty graph `⊥` is a cover graph (no axiom).** The named base case of the
+    positive cover-graph catalogue: `⊥` has no edges, so it is the Hasse diagram of
+    the discrete (antichain) order on `V`. The specialization of
+    `isCoverGraph_of_edgeless` to the canonical edgeless graph `⊥` (whose adjacency is
+    `False`), and the `≤`-bottom of the subgraph closure `isCoverGraph_mono`. -/
+theorem isCoverGraph_bot [Fintype V] : isCoverGraph (⊥ : SimpleGraph V) :=
+  isCoverGraph_of_edgeless (fun u v => by simp)
+
+/-- **`Kₙ` with `n ≥ 3` is not a cover graph (no axiom).** The standalone negative
+    corollary: no complete graph on at least three vertices is the Hasse diagram of a
+    poset, because it contains a triangle. The poset-level form of `top_not_robust`,
+    obtained by pulling a hypothetical cover-graph structure back through
+    `cover_graph_characterization` to a robust orientation of `⊤` and contradicting
+    `top_not_robust`. (The `n ≤ 2` converse is `isCoverGraph_top_iff`.) -/
+theorem not_isCoverGraph_top [Fintype V] (h : 3 ≤ Fintype.card V) :
+    ¬ isCoverGraph (⊤ : SimpleGraph V) :=
+  fun hcov => top_not_robust h (cover_graph_characterization.mpr hcov)
+
+/-- A `TransGen` path of a relation `s` on a sum `α ⊕ β` that starts at a
+    left-injected vertex `Sum.inl u₀` and never takes a left→right step stays
+    entirely on the left, and projects (via `hs`) to a `TransGen` path of the
+    restricted relation `r` on `α`. Used to push a dependent-arc path of a
+    disjoint-sum orientation down into its left summand. -/
+private theorem transGen_sum_left {α β : Type*}
+    {r : α → α → Prop} {s : (α ⊕ β) → (α ⊕ β) → Prop} {u₀ : α}
+    (hs : ∀ a b, s (Sum.inl a) (Sum.inl b) → r a b)
+    (hno : ∀ (a : α) (b : β), ¬ s (Sum.inl a) (Sum.inr b))
+    {z : α ⊕ β} (h : Relation.TransGen s (Sum.inl u₀) z) :
+    ∃ w : α, z = Sum.inl w ∧ Relation.TransGen r u₀ w := by
+  induction h with
+  | @single b hr =>
+      cases b with
+      | inl w => exact ⟨w, rfl, Relation.TransGen.single (hs u₀ w hr)⟩
+      | inr w => exact absurd hr (hno u₀ w)
+  | @tail b c _ hstep ih =>
+      obtain ⟨w, rfl, hpw⟩ := ih
+      cases c with
+      | inl w' => exact ⟨w', rfl, Relation.TransGen.tail hpw (hs w w' hstep)⟩
+      | inr w' => exact absurd hstep (hno w w')
+
+/-- Right-summand mirror of `transGen_sum_left`: a `TransGen` path starting at
+    `Sum.inr u₀` that never takes a right→left step projects to a `TransGen` path
+    of the restricted relation on `β`. -/
+private theorem transGen_sum_right {α β : Type*}
+    {r : β → β → Prop} {s : (α ⊕ β) → (α ⊕ β) → Prop} {u₀ : β}
+    (hs : ∀ a b, s (Sum.inr a) (Sum.inr b) → r a b)
+    (hno : ∀ (a : β) (b : α), ¬ s (Sum.inr a) (Sum.inl b))
+    {z : α ⊕ β} (h : Relation.TransGen s (Sum.inr u₀) z) :
+    ∃ w : β, z = Sum.inr w ∧ Relation.TransGen r u₀ w := by
+  induction h with
+  | @single b hr =>
+      cases b with
+      | inr w => exact ⟨w, rfl, Relation.TransGen.single (hs u₀ w hr)⟩
+      | inl w => exact absurd hr (hno u₀ w)
+  | @tail b c _ hstep ih =>
+      obtain ⟨w, rfl, hpw⟩ := ih
+      cases c with
+      | inr w' => exact ⟨w', rfl, Relation.TransGen.tail hpw (hs w w' hstep)⟩
+      | inl w' => exact absurd hstep (hno w w')
+
+/-- **Robust orientability is closed under disjoint union (no axiom).** If `G`
+    and `H` each admit a robustly acyclic orientation, then so does their disjoint
+    sum `G ⊕g H` (Mathlib's `SimpleGraph.sum` on `α ⊕ β`): orient each summand by
+    its own orientation and place no arcs between the two parts.
+
+    Acyclicity needs no rank offset — with no cross arcs, the side-local ranks
+    `Sum.elim rankG rankH` already send every arc upward. A dependent arc would be
+    an alternate directed path between its endpoints; since arcs never cross
+    between the summands, that path stays inside one part and projects
+    (`transGen_sum_left` / `transGen_sum_right`) to a dependent arc of `G` or of
+    `H`, contradicting robustness there.
+
+    Together with `admitsRobust_mono` (subgraph closure) and `admitsRobust_of_iso`
+    (isomorphism invariance) this rounds out the closure properties of the
+    robustly-orientable class; the poset-facing form is `isCoverGraph_sum`. -/
+theorem admitsRobust_sum {α β : Type*} {G : SimpleGraph α} {H : SimpleGraph β}
+    (hG : admitsRobustAcyclicOrientation G) (hH : admitsRobustAcyclicOrientation H) :
+    admitsRobustAcyclicOrientation (G ⊕g H) := by
+  obtain ⟨OG, ⟨rankG, hrankG⟩, hNoDepG⟩ := hG
+  obtain ⟨OH, ⟨rankH, hrankH⟩, hNoDepH⟩ := hH
+  -- Reuse each summand's arcs; no arcs cross between the two parts.
+  let arc : α ⊕ β → α ⊕ β → Prop := fun x y =>
+    match x, y with
+    | Sum.inl u, Sum.inl v => OG.arc u v
+    | Sum.inr u, Sum.inr v => OH.arc u v
+    | _, _ => False
+  refine ⟨⟨arc, ?_, ?_, ?_⟩, ⟨Sum.elim rankG rankH, ?_⟩, ?_⟩
+  · -- covers: an edge lies within one summand, oriented by that summand.
+    rintro (u | u) (v | v) hadj
+    · rcases OG.covers u v hadj with h | h
+      · exact Or.inl h
+      · exact Or.inr h
+    · simp at hadj
+    · simp at hadj
+    · rcases OH.covers u v hadj with h | h
+      · exact Or.inl h
+      · exact Or.inr h
+  · -- exclusive: inherited within each summand; cross arcs are `False`.
+    rintro (u | u) (v | v) h
+    · exact OG.exclusive u v h
+    · exact h.1.elim
+    · exact h.1.elim
+    · exact OH.exclusive u v h
+  · -- respects: an arc lies within one summand, hence is an edge of `G ⊕g H`.
+    rintro (u | u) (v | v) h
+    · exact OG.respects u v h
+    · exact h.elim
+    · exact h.elim
+    · exact OH.respects u v h
+  · -- acyclic: side-local ranks suffice since arcs never cross.
+    rintro (u | u) (v | v) h
+    · exact hrankG u v h
+    · exact h.elim
+    · exact h.elim
+    · exact hrankH u v h
+  · -- no dependent arc: a dependent path stays in one part and projects down.
+    rintro ⟨x, y, harc, hpath⟩
+    rcases x with u₀ | u₀ <;> rcases y with v₀ | v₀
+    · -- left summand
+      obtain ⟨w, hw, hpw⟩ := transGen_sum_left
+        (r := fun a b => OG.arc a b ∧ (a, b) ≠ (u₀, v₀))
+        (fun a b h => ⟨h.1, fun hc => h.2 (by
+          rw [Prod.mk.injEq] at hc
+          exact Prod.ext (congrArg Sum.inl hc.1) (congrArg Sum.inl hc.2))⟩)
+        (fun a b h => h.1.elim) hpath
+      injection hw with hw'; subst w
+      exact hNoDepG ⟨u₀, v₀, harc, hpw⟩
+    · exact harc.elim
+    · exact harc.elim
+    · -- right summand
+      obtain ⟨w, hw, hpw⟩ := transGen_sum_right
+        (r := fun a b => OH.arc a b ∧ (a, b) ≠ (u₀, v₀))
+        (fun a b h => ⟨h.1, fun hc => h.2 (by
+          rw [Prod.mk.injEq] at hc
+          exact Prod.ext (congrArg Sum.inr hc.1) (congrArg Sum.inr hc.2))⟩)
+        (fun a b h => h.1.elim) hpath
+      injection hw with hw'; subst w
+      exact hNoDepH ⟨u₀, v₀, harc, hpw⟩
+
+/-- **Cover graphs are closed under disjoint union (no axiom).** The poset-facing
+    form of `admitsRobust_sum` via `cover_graph_characterization`: if `G` and `H`
+    are cover graphs (Hasse diagrams of finite posets), then so is their disjoint
+    sum `G ⊕g H` — realised by the ordinal-sum-free side-by-side order that keeps
+    the two posets incomparable. This is the union-side companion to the
+    intersection-side `isCoverGraph_mono`. -/
+theorem isCoverGraph_sum {α β : Type*} {G : SimpleGraph α} {H : SimpleGraph β}
+    [Fintype α] [Fintype β] (hG : isCoverGraph G) (hH : isCoverGraph H) :
+    isCoverGraph (G ⊕g H) :=
+  cover_graph_characterization.mp
+    (admitsRobust_sum (cover_graph_characterization.mpr hG)
+      (cover_graph_characterization.mpr hH))
+
 /-- Fisher-Fraughnaugh-Langley-West (1997): if the chromatic number of `G` is
     less than its girth, then `G` admits a robustly acyclic orientation. Girth
     is measured by `SimpleGraph.egirth` (shortest *cycle*, `⊤` if acyclic); the

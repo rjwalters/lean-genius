@@ -953,7 +953,7 @@ theorem card_unipotentHom_range :
     Nat.card (unipotentHom (p := p)).range = p := by
   haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
   have e : Multiplicative (ZMod p) ≃* (unipotentHom (p := p)).range :=
-    MulEquiv.ofInjective unipotentHom_injective
+    MonoidHom.ofInjective unipotentHom_injective
   rw [← Nat.card_congr e.toEquiv]
   show Nat.card (ZMod p) = p
   rw [Nat.card_eq_fintype_card, ZMod.card]
@@ -966,7 +966,7 @@ theorem not_dvd_sq_sub_one : ¬ (p ∣ p ^ 2 - 1) := by
   intro hdvd
   have hp_sq : p ∣ p ^ 2 := dvd_pow_self p (by norm_num)
   have h1 : p ∣ 1 := by
-    have hd := Nat.dvd_sub' hp_sq hdvd
+    have hd := Nat.dvd_sub hp_sq hdvd
     rwa [Nat.sub_sub_self hsq] at hd
   have := Nat.le_of_dvd one_pos h1
   omega
@@ -981,7 +981,7 @@ theorem factorization_card_SL2 :
     have : 4 ≤ p ^ 2 := by nlinarith [hp.two_le]
     omega
   rw [card_SL2, Nat.factorization_mul hp0 hq0, Finsupp.add_apply,
-    hp.prime.factorization_self, Nat.factorization_eq_zero_of_not_dvd not_dvd_sq_sub_one,
+    hp.factorization_self, Nat.factorization_eq_zero_of_not_dvd not_dvd_sq_sub_one,
     add_zero]
 
 /-- **The unipotent subgroup `U` is a Sylow `p`-subgroup of `SL(2, p)`.**  Its order is
@@ -1161,6 +1161,33 @@ theorem card_PSL2 (hp : 3 ≤ p) :
   rw [hidx] at hmul
   omega
 
+/-- **`|PSL(2, p)| ≥ 60` for `p ≥ 5`.**  Evaluating `card_PSL2 = p(p²−1)/2` at `p ≥ 5`
+gives `p(p²−1) ≥ 5·24 = 120`, so `|PSL(2, p)| ≥ 60` — matching the classical fact that
+`PSL(2, 5) ≅ A₅` (order `60`) is the smallest member of the family, the smallest nonabelian
+simple group.  A concrete order floor on the target group of the simplicity theorem. -/
+theorem card_PSL2_ge_sixty (hp : 5 ≤ p) :
+    60 ≤ Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
+  rw [card_PSL2 (by omega)]
+  have hp2 : 25 ≤ p ^ 2 := by nlinarith
+  have hq : 24 ≤ p ^ 2 - 1 := by omega
+  have hpq : 120 ≤ p * (p ^ 2 - 1) := by
+    calc 120 = 5 * 24 := by norm_num
+      _ ≤ p * (p ^ 2 - 1) := Nat.mul_le_mul hp hq
+  omega
+
+/-- **`|PSL(2, p)| > 1` for `p ≥ 5`.**  The nontriviality floor, immediate from
+`card_PSL2_ge_sixty`. -/
+theorem one_lt_card_PSL2 (hp : 5 ≤ p) :
+    1 < Nat.card (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) :=
+  lt_of_lt_of_le (by norm_num) (card_PSL2_ge_sixty hp)
+
+/-- **`PSL(2, p)` is nontrivial for `p ≥ 5`.**  A prerequisite of the simplicity statement
+(a simple group is by definition nontrivial): since `|PSL(2, p)| ≥ 60 > 1`, the group has more
+than one element (`Finite.one_lt_card_iff_nontrivial`). -/
+theorem nontrivial_PSL2 (hp : 5 ≤ p) :
+    Nontrivial (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) :=
+  Finite.one_lt_card_iff_nontrivial.mp (one_lt_card_PSL2 hp)
+
 /-!
 ## The unipotent Sylow `p`-subgroup is cyclic of order `p`
 
@@ -1202,4 +1229,474 @@ theorem isCyclic_unipotentSylow :
       Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
   isCyclic_unipotentHom_range
 
+/-!
+## Sylow counting: at least `p + 1` Sylow `p`-subgroups of `SL(2, p)`
+
+The unipotent subgroup `U = range unipotentHom` is a Sylow `p`-subgroup
+(`unipotentSylow`), but it is **not normal**: its normal closure is all of
+`SL(2, p)` (`unipotent_normalClosure_eq_top`), whereas `|U| = p < |SL(2, p)|`.
+A group with a *unique* Sylow `p`-subgroup would have it normal
+(`Sylow.normal_of_subsingleton`), so `SL(2, p)` has more than one Sylow
+`p`-subgroup.  Sylow's third theorem forces the number `n_p` to be `≡ 1 (mod p)`
+(`card_sylow_modEq_one`); together with `n_p ≠ 1` this jumps the count straight
+to `n_p ≥ p + 1` — the classical value `n_p = p + 1 = |P¹(𝔽_p)|`, obtained here as
+a lower bound *purely by Sylow counting*, the very route named in the problem
+statement.  (The Sylow `p`-subgroups of `SL(2, p)` are exactly the conjugates of
+`U`, i.e. the unipotent radicals of the `p + 1` Borel subgroups / points of the
+projective line, so this bound is in fact sharp.)
+-/
+
+/-- **The unipotent Sylow subgroup `U` is not normal in `SL(2, p)` for `p ≥ 5`.**
+If `U = range unipotentHom` were normal, the normal closure of its underlying set
+would be contained in `U`; but `unipotent_normalClosure_eq_top` shows that closure
+is the whole group, forcing `U = ⊤` and hence the absurdity
+`p = |U| = |SL(2, p)| = p·(p² − 1)` (impossible since `p² − 1 ≥ 24 > 1`).  This is
+the non-normality that makes the Sylow count `n_p > 1`. -/
+theorem unipotent_range_not_normal (hp : 5 ≤ p) :
+    ¬ ((unipotentHom (p := p)).range).Normal := by
+  intro hN
+  -- The carrier of `U` sits inside the normal subgroup, so its normal closure does too.
+  have hsub : Set.range (unipotentUpper (p := p)) ⊆
+      ((unipotentHom (p := p)).range : Set _) := by
+    rintro _ ⟨t, rfl⟩
+    rw [MonoidHom.coe_range]
+    exact ⟨Multiplicative.ofAdd t, rfl⟩
+  have hle := Subgroup.normalClosure_le_normal hsub
+  rw [unipotent_normalClosure_eq_top] at hle
+  have htop : (unipotentHom (p := p)).range = ⊤ := top_le_iff.mp hle
+  -- Cardinalities collide: `|U| = p` but `|⊤| = |SL(2, p)| = p·(p² − 1)`.
+  have hcard : Nat.card ((unipotentHom (p := p)).range) = p := card_unipotentHom_range
+  rw [htop, Nat.card_congr (Subgroup.topEquiv).toEquiv, card_SL2] at hcard
+  have hp0 : 0 < p := (Fact.out : p.Prime).pos
+  have h1 : p * (p ^ 2 - 1) = p * 1 := by rw [mul_one]; exact hcard
+  have h2 : p ^ 2 - 1 = 1 := Nat.eq_of_mul_eq_mul_left hp0 h1
+  have hsq : 4 ≤ p ^ 2 := by nlinarith [(Fact.out : p.Prime).two_le]
+  omega
+
+/-- **Sylow counting bound: `SL(2, p)` has at least `p + 1` Sylow `p`-subgroups for
+`p ≥ 5`.**  The unipotent Sylow `U` is not normal (`unipotent_range_not_normal`), so
+the number `n_p` of Sylow `p`-subgroups is not `1` (a unique Sylow would be normal,
+`Sylow.normal_of_subsingleton`).  Sylow's third theorem gives `n_p ≡ 1 (mod p)`
+(`card_sylow_modEq_one`), and `n_p ≠ 1` then forces `n_p ≥ p + 1`.  This realises the
+"Sylow counting argument" of the problem statement: the lower bound matches the
+`p + 1` points of the projective line `P¹(𝔽_p)` on which `PSL(2, p)` acts. -/
+theorem card_sylow_ge (hp : 5 ≤ p) :
+    p + 1 ≤ Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  set n := Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) with hn
+  -- Sylow III congruence: `n_p ≡ 1 (mod p)`.
+  have hmod : n ≡ 1 [MOD p] :=
+    card_sylow_modEq_one p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+  -- `n_p ≠ 1`: a single Sylow subgroup would be normal, but `U` is not.
+  have hne : n ≠ 1 := by
+    intro h1
+    haveI : Subsingleton (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+      (Nat.card_eq_one_iff_unique.mp h1).1
+    have hnorm : ((unipotentHom (p := p)).range).Normal :=
+      Sylow.normal_of_subsingleton (unipotentSylow (p := p))
+    exact unipotent_range_not_normal hp hnorm
+  -- Sylow subgroups exist, so `n_p ≥ 1`.
+  have hpos : 1 ≤ n := Nat.card_pos
+  -- `p ∣ n_p − 1` from the congruence; with `n_p − 1 ≥ 1` this gives `p ≤ n_p − 1`.
+  have hdvd : p ∣ n - 1 := (Nat.modEq_iff_dvd' hpos).mp hmod.symm
+  have hle : p ≤ n - 1 := Nat.le_of_dvd (by omega) hdvd
+  omega
+
+omit [Fact (Nat.Prime p)] in
+/-- **Arithmetic core of the exact Sylow count.**  A divisor `n` of `p² − 1` that is
+`≡ 1 (mod p)` and `≥ p + 1` equals `p + 1` exactly (for `p ≥ 5`).  This is the purely
+number-theoretic step that turns the Sylow *lower* bound `card_sylow_ge` into an
+*equality*, avoiding the explicit normalizer/Borel matrix computation.
+
+Proof sketch: write `n = p·a + 1` (from `n ≡ 1`) and `p² − 1 = n·m`.  The equation
+`p² = p·(a·m) + (m + 1)` forces `p ∣ m + 1`, hence `m + 1 ≥ p`.  If `a ≥ 2` then
+`n ≥ 2p + 1`, so `(2p + 1)·p ≤ n·(m + 1) = (p² − 1) + n ≤ 2(p² − 1)`, i.e.
+`2p² + p + 1 ≤ 2p²`, impossible.  Thus `a = 1` and `n = p + 1`. -/
+theorem sylow_count_arith (hp : 5 ≤ p) {n : ℕ}
+    (hdvd : n ∣ p ^ 2 - 1) (hmod : n ≡ 1 [MOD p]) (hge : p + 1 ≤ n) :
+    n = p + 1 := by
+  have hpsq : 25 ≤ p ^ 2 := by nlinarith
+  obtain ⟨m, hm⟩ := hdvd
+  have hn1 : 1 ≤ n := by omega
+  have hdvd1 : p ∣ n - 1 := (Nat.modEq_iff_dvd' hn1).mp hmod.symm
+  obtain ⟨a, ha⟩ := hdvd1
+  have hn : n = p * a + 1 := by omega
+  have hm1 : 1 ≤ m := by
+    rcases Nat.eq_zero_or_pos m with h | h
+    · subst h; simp at hm; omega
+    · exact h
+  have hpm : p ^ 2 = n * m + 1 := by omega
+  have hkey : p ^ 2 = p * (a * m) + (m + 1) := by rw [hpm, hn]; ring
+  have hdvdm : p ∣ m + 1 := by
+    have h1 : p ∣ p ^ 2 := ⟨p, by ring⟩
+    have h2 : p ∣ p * (a * m) := ⟨a * m, rfl⟩
+    have h3 : m + 1 = p ^ 2 - p * (a * m) := by omega
+    rw [h3]; exact Nat.dvd_sub h1 h2
+  have hmp : p ≤ m + 1 := Nat.le_of_dvd (by omega) hdvdm
+  by_contra hne
+  have ha1 : 1 ≤ a := by
+    rcases Nat.eq_zero_or_pos a with h | h
+    · subst h; simp only [Nat.mul_zero, Nat.zero_add] at hn; omega
+    · exact h
+  have ha2 : 2 ≤ a := by
+    rcases lt_or_ge a 2 with h | h
+    · have hai : a = 1 := by omega
+      exact absurd (show n = p + 1 by rw [hn, hai]; ring) hne
+    · exact h
+  have hn2p : 2 * p + 1 ≤ n := by rw [hn]; nlinarith [ha2, hp]
+  have hnle : n ≤ p ^ 2 - 1 := Nat.le_of_dvd (by omega) ⟨m, hm⟩
+  have hlow : (2 * p + 1) * p ≤ n * (m + 1) := Nat.mul_le_mul hn2p hmp
+  have heq : n * (m + 1) = (p ^ 2 - 1) + n := by rw [mul_add_one, ← hm]
+  rw [heq] at hlow
+  have hexp : (2 * p + 1) * p = 2 * p ^ 2 + p := by ring
+  rw [hexp] at hlow
+  omega
+
+/-- **The index of the unipotent Sylow subgroup is `p² − 1`.**  From
+`|U|·[SL : U] = |SL|` (`Subgroup.card_mul_index`) with `|U| = p`
+(`card_unipotentHom_range`) and `|SL(2, p)| = p·(p² − 1)` (`card_SL2`). -/
+theorem index_unipotentSylow :
+    (↑(unipotentSylow (p := p)) :
+        Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))).index = p ^ 2 - 1 := by
+  have hp0 : 0 < p := (Fact.out : p.Prime).pos
+  have hcard : Nat.card (↑(unipotentSylow (p := p)) :
+      Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p :=
+    card_unipotentHom_range
+  have hmul := Subgroup.card_mul_index
+    (↑(unipotentSylow (p := p)) :
+      Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+  rw [hcard, card_SL2] at hmul
+  exact Nat.eq_of_mul_eq_mul_left hp0 hmul
+
+/-- **Exact Sylow count: `SL(2, p)` has exactly `p + 1` Sylow `p`-subgroups for
+`p ≥ 5`.**  Sharpens the lower bound `card_sylow_ge` to an equality.  Sylow's theorem
+gives `n_p ∣ [SL : U] = p² − 1` (`Sylow.card_dvd_index` + `index_unipotentSylow`) and
+`n_p ≡ 1 (mod p)` (`card_sylow_modEq_one`); together with `n_p ≥ p + 1`
+(`card_sylow_ge`) the arithmetic lemma `sylow_count_arith` forces `n_p = p + 1`.
+This matches the classical `n_p = |P¹(𝔽_p)| = p + 1` — the number of Borel subgroups /
+points of the projective line on which `PSL(2, p)` acts — obtained here without the
+explicit normalizer-is-Borel matrix computation. -/
+theorem card_sylow_eq (hp : 5 ≤ p) :
+    Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p + 1 := by
+  haveI : NeZero p := ⟨(Fact.out : p.Prime).pos.ne'⟩
+  haveI : Finite (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := Finite.of_fintype _
+  have hdvd : Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ∣ p ^ 2 - 1 := by
+    have h := Sylow.card_dvd_index (unipotentSylow (p := p))
+    rwa [index_unipotentSylow] at h
+  have hmod : Nat.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) ≡ 1 [MOD p] :=
+    card_sylow_modEq_one p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+  have hge := card_sylow_ge hp
+  exact sylow_count_arith hp hdvd hmod hge
+
+/-! ### Every Sylow `p`-subgroup is a copy of `ℤ/p`, and distinct ones meet trivially
+
+`unipotentSylow` is one explicit Sylow `p`-subgroup, cyclic of order `p`
+(`isCyclic_unipotentSylow`).  Since all Sylow `p`-subgroups are conjugate they share these
+properties: **every** Sylow `p`-subgroup of `SL(2, p)` has order exactly `p` (`card_sylowP`)
+and is therefore cyclic `≅ ℤ/p` (`isCyclic_sylowP`).  As subgroups of prime order, two
+*distinct* Sylow `p`-subgroups intersect trivially (`sylowP_inf_eq_bot`): the `p + 1` Sylow
+`p`-subgroups (`card_sylow_eq`) overlap only in the identity.  These are the exact
+ingredients of the classical count "`SL(2, p)` has `(p+1)(p-1) = p² - 1` elements of order
+`p`". -/
+
+/-- **Every Sylow `p`-subgroup of `SL(2, p)` has order exactly `p`.**  The `p`-part of the
+group order is `p ^ 1` (`factorization_card_SL2`), and a Sylow `p`-subgroup realises the full
+`p`-part (`Sylow.card_eq_multiplicity`).  Generalises `card_unipotentHom_range` from the one
+explicit unipotent Sylow to every Sylow `p`-subgroup. -/
+theorem card_sylowP (P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :
+    Nat.card (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p := by
+  rw [P.card_eq_multiplicity, factorization_card_SL2, pow_one]
+
+/-- **Every Sylow `p`-subgroup of `SL(2, p)` is cyclic `≅ ℤ/p`.**  It has prime order `p`
+(`card_sylowP`), and any group of prime order is cyclic (`isCyclic_of_prime_card`).  This
+generalises `isCyclic_unipotentSylow` from the one explicit unipotent Sylow to *all* of them. -/
+theorem isCyclic_sylowP (P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :
+    IsCyclic (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+  isCyclic_of_prime_card (card_sylowP P)
+
+/-- **Distinct Sylow `p`-subgroups of `SL(2, p)` intersect trivially.**  Each has prime order
+`p` (`card_sylowP`), so `P ⊓ Q ≤ P` has order dividing `p`: either `1` (giving `P ⊓ Q = ⊥`)
+or `p`, in which case `P ⊓ Q = P` and, by symmetry, `= Q`, forcing `P = Q` and contradicting
+`P ≠ Q`.  Hence the `p + 1` Sylow `p`-subgroups pairwise meet only in the identity — the
+disjointness underlying the classical order-`p` element count. -/
+theorem sylowP_inf_eq_bot {P Q : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))}
+    (hPQ : P ≠ Q) :
+    (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ⊓ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = ⊥ := by
+  have hp : Nat.Prime p := Fact.out
+  set G := Matrix.SpecialLinearGroup (Fin 2) (ZMod p) with hG
+  have hle : (P : Subgroup G) ⊓ (Q : Subgroup G) ≤ (P : Subgroup G) := inf_le_left
+  -- `|P ⊓ Q|` divides `|P| = p`.
+  have hdvd : Nat.card ((P : Subgroup G) ⊓ (Q : Subgroup G) : Subgroup G) ∣ p := by
+    have h := Subgroup.card_subgroup_dvd_card
+      (((P : Subgroup G) ⊓ (Q : Subgroup G)).subgroupOf (P : Subgroup G))
+    rwa [Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, card_sylowP] at h
+  rcases (Nat.dvd_prime hp).mp hdvd with h1 | hpc
+  · -- order 1 ⟹ trivial
+    exact Subgroup.card_eq_one.mp h1
+  · -- order p ⟹ `P ⊓ Q = P` and `= Q`, so `P = Q`, contradiction
+    exfalso
+    have hPeq : (P : Subgroup G) ⊓ (Q : Subgroup G) = (P : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_ge hle (le_of_eq (by rw [card_sylowP, hpc]))
+    have hQeq : (P : Subgroup G) ⊓ (Q : Subgroup G) = (Q : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_ge inf_le_right (le_of_eq (by rw [card_sylowP, hpc]))
+    exact hPQ (Sylow.ext (hPeq.symm.trans hQeq))
+
+/-- **A non-identity element lies in a unique Sylow `p`-subgroup.**  If `g ≠ 1` lies in two
+Sylow `p`-subgroups `P` and `Q`, then `g ∈ P ⊓ Q`, which is `⊥` unless `P = Q`
+(`sylowP_inf_eq_bot`); as `g ≠ 1` this forces `P = Q`.  This is the injectivity fact behind the
+classical order-`p` element count: the `p + 1` Sylow `p`-subgroups partition the non-identity
+`p`-elements. -/
+theorem sylowP_eq_of_mem
+    {P Q : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))}
+    {g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)} (hg : g ≠ 1)
+    (hP : g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))
+    (hQ : g ∈ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) :
+    P = Q := by
+  by_contra h
+  have hmem : g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))
+      ⊓ (Q : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+    Subgroup.mem_inf.mpr ⟨hP, hQ⟩
+  rw [sylowP_inf_eq_bot h] at hmem
+  exact hg (Subgroup.mem_bot.mp hmem)
+
+/-! ### The classical order-`p` element count: `SL(2, p)` has exactly `p² − 1` elements of order `p`
+
+The `p + 1` Sylow `p`-subgroups (`card_sylow_eq`) each have order `p` (`card_sylowP`), meet only in
+the identity (`sylowP_inf_eq_bot`), and jointly exhaust the elements of order `p` (a non-identity
+element generates a cyclic group of order `p`, a `p`-subgroup, hence sits inside some Sylow, and by
+`sylowP_eq_of_mem` inside a *unique* one).  So the elements of order `p` are partitioned into
+`p + 1` blocks of `p − 1` non-identity elements each, giving `(p + 1)(p − 1) = p² − 1`.  This is the
+classical count underlying the original Sylow-counting approach to the simplicity of `PSL(2, p)`. -/
+
+/-- **`SL(2, p)` has exactly `p² − 1` elements of order `p`** (for `p ≥ 5`).  The elements of order
+`p` are exactly the non-identity elements of the Sylow `p`-subgroups, and the `p + 1` Sylow
+`p`-subgroups (`card_sylow_eq`), each of order `p` (`card_sylowP`), partition them (distinct Sylows
+meet only in `1`, `sylowP_eq_of_mem`).  Counting: `(p + 1) · (p − 1) = p² − 1`. -/
+theorem card_orderOf_eq_p (hp : 5 ≤ p) :
+    (Finset.univ.filter
+        (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) => orderOf g = p)).card
+      = p ^ 2 - 1 := by
+  classical
+  have hp' : Nat.Prime p := Fact.out
+  -- the elementary arithmetic `(p + 1)(p − 1) = p² − 1`
+  have harith : (p + 1) * (p - 1) = p ^ 2 - 1 := by
+    obtain ⟨n, rfl⟩ : ∃ n, p = n + 1 := ⟨p - 1, by omega⟩
+    simp only [Nat.add_sub_cancel]
+    have e : (n + 1 + 1) * n + 1 = (n + 1) ^ 2 := by ring
+    omega
+  -- for each Sylow `P`, the non-identity elements of `P`
+  set f : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+      → Finset (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+    fun P => (Finset.univ.filter
+        (fun g => g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))).erase 1
+    with hf
+  -- (a) each block has `p − 1` elements
+  have hmemcard : ∀ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)),
+      (Finset.univ.filter
+        (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) =>
+          g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))).card = p := by
+    intro P
+    have hsub : (Finset.univ.filter
+        (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) =>
+          g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))).card
+        = Fintype.card {x : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)
+            // x ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))} :=
+      (Fintype.card_subtype _).symm
+    rw [hsub, ← Nat.card_eq_fintype_card]
+    exact card_sylowP P
+  have hcardf : ∀ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)),
+      (f P).card = p - 1 := by
+    intro P
+    have h1 : (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
+        ∈ Finset.univ.filter
+          (fun g => g ∈ (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) := by
+      simp [Subgroup.one_mem]
+    simp only [hf]
+    rw [Finset.card_erase_of_mem h1, hmemcard P]
+  -- (b) distinct Sylows give disjoint blocks
+  have hdisj : (↑(Finset.univ : Finset (Sylow p
+      (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))) :
+      Set (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)))).PairwiseDisjoint f := by
+    intro P _ Q _ hPQ
+    simp only [Function.onFun]
+    rw [Finset.disjoint_left]
+    intro g hgP hgQ
+    simp only [hf, Finset.mem_erase, Finset.mem_filter] at hgP hgQ
+    exact hPQ (sylowP_eq_of_mem hgP.1 hgP.2.2 hgQ.2.2)
+  -- (c) the order-`p` elements are exactly the union of the blocks
+  have hset : Finset.univ.filter
+      (fun g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) => orderOf g = p)
+      = Finset.univ.biUnion f := by
+    ext g
+    simp only [hf, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_biUnion,
+      Finset.mem_erase]
+    constructor
+    · intro hord
+      have hg1 : g ≠ 1 := by
+        intro h; rw [h, orderOf_one] at hord; omega
+      have hpg : IsPGroup p (Subgroup.zpowers g) := by
+        apply IsPGroup.of_card (n := 1)
+        rw [Nat.card_zpowers, hord, pow_one]
+      obtain ⟨P, hP⟩ := hpg.exists_le_sylow
+      exact ⟨P, hg1, hP (Subgroup.mem_zpowers g)⟩
+    · rintro ⟨P, hg1, hgP⟩
+      have hdvd : orderOf g ∣ p := by
+        have h := orderOf_dvd_natCard
+          (⟨g, hgP⟩ : (P : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))))
+        rw [← Subgroup.orderOf_coe, card_sylowP] at h
+        exact h
+      rcases (Nat.dvd_prime hp').mp hdvd with h1 | hpp
+      · exact absurd (orderOf_eq_one_iff.mp h1) hg1
+      · exact hpp
+  -- assemble the count
+  have hfc : Fintype.card (Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) = p + 1 := by
+    rw [← Nat.card_eq_fintype_card]; exact card_sylow_eq hp
+  have hsum : ∑ P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)), (f P).card
+      = ∑ _P : Sylow p (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)), (p - 1) :=
+    Finset.sum_congr rfl (fun P _ => hcardf P)
+  rw [hset, Finset.card_biUnion hdisj, hsum, Finset.sum_const, Finset.card_univ,
+    smul_eq_mul, hfc, harith]
+/-!
+## The Borel subgroup `B = U ⋊ T` and the normality `U ⊴ B`
+
+The Iwasawa criterion takes as its point stabiliser the **Borel subgroup**
+`B = ⟨U, T⟩`, and requires its unipotent radical `U` to be an *abelian normal*
+subgroup of `B`.  So far `U` has appeared only as the `Set.range` of the embedding
+`unipotentUpper`, and `torus_normalizes_unipotent` recorded the normalising action
+only pointwise.  We now package `U` as an honest `Subgroup`, exhibit `B` as the
+subgroup generated by `U` and `T`, and upgrade the pointwise conjugation law into
+the genuine subgroup-level statements Iwasawa needs:
+
+* `unipotentSubgroup` — `U` as a `Subgroup` of `SL(2, p)` (the range of `unipotentHom`);
+* `unipotentSubgroup_mul_comm` — `U` is **abelian**;
+* `torusDiag_mem_normalizer_unipotent` — every torus element normalises `U`
+  (both directions of the biconditional, via the `a` and `a⁻¹` conjugation laws);
+* `borel_le_normalizer_unipotent` — the whole Borel `B` lies in the normaliser of `U`;
+* `unipotentSubgroup_normal_in_borel` — hence **`U ⊴ B`** in the precise Mathlib
+  sense (`(U.subgroupOf B).Normal`).
+
+Together with `card_unipotent_range` (`|U| = p`), `card_torus_range` (`|T| = p − 1`)
+and `unipotent_inter_torus_trivial` (`U ∩ T = 1`), this is exactly the abelian
+normal point-stabiliser radical required by Iwasawa's simplicity criterion for
+`PSL(2, p)`; only the action on the projective line `P¹(𝔽_p)` remains to be built.
+-/
+
+/-- The **unipotent subgroup** `U`, packaged as a `Subgroup` of `SL(2, ZMod p)`:
+the range of the one-parameter homomorphism `unipotentHom`.  Its elements are exactly
+the upper unipotent matrices `[[1, t], [0, 1]]`. -/
+def unipotentSubgroup : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+  (unipotentHom (p := p)).range
+
+/-- Membership in `unipotentSubgroup` is exactly being an upper unipotent matrix. -/
+theorem mem_unipotentSubgroup {g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)} :
+    g ∈ unipotentSubgroup (p := p) ↔ ∃ t : ZMod p, unipotentUpper t = g := by
+  constructor
+  · intro hg
+    obtain ⟨x, hx⟩ := MonoidHom.mem_range.mp hg
+    exact ⟨Multiplicative.toAdd x, hx⟩
+  · rintro ⟨t, rfl⟩
+    exact MonoidHom.mem_range.mpr ⟨Multiplicative.ofAdd t, rfl⟩
+
+/-- **`U` is abelian.**  Any two elements of the unipotent subgroup commute, since
+they are images under `unipotentUpper` of the additive group `(ZMod p, +)`. -/
+theorem unipotentSubgroup_mul_comm
+    {x y : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)}
+    (hx : x ∈ unipotentSubgroup (p := p)) (hy : y ∈ unipotentSubgroup (p := p)) :
+    x * y = y * x := by
+  rw [mem_unipotentSubgroup] at hx hy
+  obtain ⟨s, rfl⟩ := hx
+  obtain ⟨t, rfl⟩ := hy
+  exact unipotentUpper_comm s t
+
+/-- The group inverse of a diagonal torus element is again diagonal:
+`[[a, 0], [0, a⁻¹]]⁻¹ = [[a⁻¹, 0], [0, a]]`.  (`torusHom` is a homomorphism.) -/
+theorem torusDiag_inv (a : (ZMod p)ˣ) : (torusDiag a)⁻¹ = torusDiag a⁻¹ := by
+  rw [← torusHom_apply, ← map_inv torusHom, torusHom_apply]
+
+/-- The torus-conjugation law stated directly in terms of `torusDiag` (no `torusHom`
+wrapper): `diag(a) · u(t) · diag(a)⁻¹ = u(a²·t)`. -/
+theorem torusDiag_conj_unipotentUpper (a : (ZMod p)ˣ) (t : ZMod p) :
+    torusDiag a * unipotentUpper t * (torusDiag a)⁻¹
+      = unipotentUpper ((a : ZMod p) ^ 2 * t) := by
+  have h := torusHom_conj_unipotent a t
+  rwa [torusHom_apply] at h
+
+/-- The reverse torus-conjugation law: conjugation by `diag(a)⁻¹` scales the unipotent
+parameter by `(a⁻¹)²`, `diag(a)⁻¹ · u(t) · diag(a) = u((a⁻¹)²·t)`.  This is
+`torusDiag_conj_unipotentUpper` applied to `a⁻¹`, using `diag(a)⁻¹ = diag(a⁻¹)`. -/
+theorem torusDiag_inv_conj_unipotentUpper (a : (ZMod p)ˣ) (t : ZMod p) :
+    (torusDiag a)⁻¹ * unipotentUpper t * torusDiag a
+      = unipotentUpper (((a⁻¹ : (ZMod p)ˣ) : ZMod p) ^ 2 * t) := by
+  have h := torusDiag_conj_unipotentUpper a⁻¹ t
+  rw [torusDiag_inv, inv_inv] at h
+  rw [torusDiag_inv]
+  exact h
+
+/-- **Every torus element normalises `U`.**  Conjugation by `diag(a)` maps the
+unipotent subgroup onto itself (both directions), so `diag(a) ∈ N(U)`.  This is the
+subgroup-level form of `torus_normalizes_unipotent`. -/
+theorem torusDiag_mem_normalizer_unipotent (a : (ZMod p)ˣ) :
+    torusDiag a ∈ (unipotentSubgroup (p := p)).normalizer := by
+  rw [Subgroup.mem_normalizer_iff]
+  intro n
+  constructor
+  · intro hn
+    rw [mem_unipotentSubgroup] at hn ⊢
+    obtain ⟨t, rfl⟩ := hn
+    exact ⟨(a : ZMod p) ^ 2 * t, (torusDiag_conj_unipotentUpper a t).symm⟩
+  · intro hn
+    rw [mem_unipotentSubgroup] at hn ⊢
+    obtain ⟨s, hs⟩ := hn
+    refine ⟨((a⁻¹ : (ZMod p)ˣ) : ZMod p) ^ 2 * s, ?_⟩
+    have hconj : (torusDiag a)⁻¹ * unipotentUpper s * torusDiag a = n := by
+      rw [hs]; group
+    rwa [torusDiag_inv_conj_unipotentUpper] at hconj
+
+/-- The **Borel subgroup** `B = ⟨U, T⟩`, generated by the upper unipotent subgroup
+`U` and the split torus `T`.  It is the stabiliser of `∞ ∈ P¹(𝔽_p)` and the point
+stabiliser required by Iwasawa's criterion. -/
+def borel : Subgroup (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
+  Subgroup.closure
+    (Set.range (unipotentUpper (p := p)) ∪ Set.range (torusDiag (p := p)))
+
+/-- `U ≤ B`: the unipotent subgroup is contained in the Borel it generates. -/
+theorem unipotentSubgroup_le_borel : unipotentSubgroup (p := p) ≤ borel := by
+  intro g hg
+  rw [mem_unipotentSubgroup] at hg
+  obtain ⟨t, rfl⟩ := hg
+  exact Subgroup.subset_closure (Set.mem_union_left _ ⟨t, rfl⟩)
+
+/-- **The whole Borel `B` normalises `U`.**  Both generating families lie in the
+normaliser of `U`: `U` normalises itself, and every torus element normalises `U`
+(`torusDiag_mem_normalizer_unipotent`).  Since the normaliser is a subgroup, the
+generated subgroup `B` is contained in it. -/
+theorem borel_le_normalizer_unipotent :
+    borel (p := p) ≤ (unipotentSubgroup (p := p)).normalizer := by
+  have hb : borel (p := p) = Subgroup.closure
+      (Set.range (unipotentUpper (p := p)) ∪ Set.range (torusDiag (p := p))) := rfl
+  rw [hb, Subgroup.closure_le]
+  rintro g (⟨t, rfl⟩ | ⟨a, rfl⟩)
+  · exact unipotentSubgroup.le_normalizer (mem_unipotentSubgroup.mpr ⟨t, rfl⟩)
+  · exact torusDiag_mem_normalizer_unipotent a
+
+/-- **`U ⊴ B`.**  The unipotent radical is a normal subgroup of the Borel, in the
+precise Mathlib sense that `U.subgroupOf B` is normal.  This is the abelian normal
+point-stabiliser radical demanded by Iwasawa's simplicity criterion for `PSL(2, p)`;
+combined with `unipotentSubgroup_mul_comm` (`U` abelian), `card_unipotent_range`,
+`card_torus_range` and `unipotent_inter_torus_trivial`, it completes the internal
+structure `B = U ⋊ T` with `|B| = p(p − 1)`. -/
+theorem unipotentSubgroup_normal_in_borel :
+    ((unipotentSubgroup (p := p)).subgroupOf borel).Normal :=
+  (Subgroup.normal_subgroupOf_iff_le_normalizer unipotentSubgroup_le_borel).mpr
+    borel_le_normalizer_unipotent
+
+
 end SylowOQ04OQ03
+
+#print axioms SylowOQ04OQ03.sylow_count_arith
+#print axioms SylowOQ04OQ03.index_unipotentSylow
+#print axioms SylowOQ04OQ03.card_sylow_eq
+#print axioms SylowOQ04OQ03.card_orderOf_eq_p

@@ -859,3 +859,39 @@ ALREADY EXIST:
 safe build window). Next backend-up session: implement the squeeze (steps 1–4
 above) and build-verify, OR submit `normalizer_iso_AGL1Z` to Aristotle once the
 404 clears. Moving on per the 3+-sessions-stuck rule.
+
+## Session 2026-07-12 (researcher-1) — AUDIT: completeness re-verified (VERIFIED 0-sorry / 0-axiom)
+
+**Mode**: REVISIT / audit (RICH, score 25; JSON status already `completed`).
+**Outcome**: no Lean change — confirmed the file is genuinely complete; recorded a follow-up.
+
+### What I Did
+Re-verified `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` (834 LOC)
+against the pinned target after the recent mass-deletion/restore churn (#38398 series):
+- Offline `LAKE_UNSAFE=1 ./bin/lake env lean …` → **EXIT 0**, no errors, only a benign
+  `unused section variable` warning on the helper `padicValNat_factorial_self`.
+- **0 real `sorry` tokens** (all 11 "sorry" occurrences are prose in docstrings, e.g.
+  "no remaining `sorry`"). The lone Step-4 sorry (`normalizer_iso_AGL1Z`, open ~19 sessions)
+  has been discharged — the file's own docstrings mark Step 4 `sorry`-free.
+- `#print axioms primitive_solvable_subgroup_embeds_AGL1Z` = `[propext, Classical.choice,
+  Quot.sound]` only — **no `sorryAx`, no `Lean.ofReduceBool`**. Genuinely axiom-free.
+- **Statement match**: the main theorem signature is verbatim the pinned formal target
+  (`H : Subgroup (Equiv.Perm (ZMod p))`, `IsPreprimitive`, `IsSolvable ⟹ ∃ φ : H →* AGL1Z p,
+  Injective φ`). Corollary `primitive_solvable_subgroup_card_dvd` (`Nat.card H ∣ p*(p-1)`)
+  is also axiom-free.
+
+### Adversarial checks passed
+- Not a near-miss: the theorem is the full embedding, not merely `Nat.card H ∣ p*(p-1)`
+  (that is derived FROM it) nor a restricted subclass.
+- No circular hypothesis: proof delegates to `sylow_p_normal` / `sylow_p_is_pcycle` /
+  `H_le_normalizer` / `normalizer_iso_AGL1Z`, none of which assumes the embedding.
+
+### Follow-up generated (recorded in JSON nextSteps)
+"Every primitive solvable subgroup of S_p is **metabelian** (derived length ≤ 2)" — a
+materially weaker structural consequence of the embedding (AGL(1,p) is metabelian, inherited
+by subgroups); distinct from the parent and not equivalent-strength (proving it does not
+recover the embedding).
+
+### Status
+`completed` (unchanged, now re-verified). No PR of Lean content — a session that only audits
+a complete file must not fabricate progress. This PR carries the audit note + follow-up only.

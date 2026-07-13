@@ -703,6 +703,85 @@ theorem exists_sumFree_card_ceil (n : ℕ) :
   · -- `|U| = n − ⌊n/2⌋ = ⌈n/2⌉ = (n+1)/2`.
     rw [hU, Nat.card_Icc]; omega
 
+/-- **No sum-free subset exceeds `⌈n/2⌉` (the extremal upper bound).**  Every sum-free
+`A ⊆ {1,…,n}` has `|A| ≤ ⌈n/2⌉ = (n+1)/2`.  This is the matching upper bound for
+`exists_sumFree_card_ceil`, and it is *elementary* — the classical Erdős difference-set
+argument, not the deep counting of `green_upper_bound`.  Let `m = max A`.  The difference
+set `D = {m − a : a ∈ A, a ≠ m}` is disjoint from `A` (if `m − a ∈ A` then `m = (m−a) + a`
+with all three terms in `A`, contradicting sum-freeness) and has `|D| = |A| − 1` (subtraction
+is injective on `[1,m]`), and both `A, D ⊆ {1,…,m}`.  Hence `|A| + (|A| − 1) ≤ m ≤ n`, i.e.
+`2|A| − 1 ≤ n`, giving `|A| ≤ (n+1)/2`.  Axiom-free; complements the "achievable" direction and
+discharges the Part VII claim that the maximum sum-free size is `⌈n/2⌉`. -/
+theorem sumFree_card_le_ceil {n : ℕ} {A : Finset ℕ}
+    (hsub : A ⊆ Finset.Icc 1 n) (hsf : IsSumFree A) :
+    A.card ≤ (n + 1) / 2 := by
+  rcases A.eq_empty_or_nonempty with rfl | hne
+  · simp
+  set m := A.max' hne with hm
+  have hmA : m ∈ A := A.max'_mem hne
+  have hmle : m ≤ n := by
+    have := hsub hmA; rw [Finset.mem_Icc] at this; exact this.2
+  have hle_m : ∀ a ∈ A, a ≤ m := fun a ha => A.le_max' a ha
+  have hpos : ∀ a ∈ A, 1 ≤ a := by
+    intro a ha; have := hsub ha; rw [Finset.mem_Icc] at this; exact this.1
+  -- the difference set `D = {m − a : a ∈ A.erase m}`
+  set D : Finset ℕ := (A.erase m).image (fun a => m - a) with hD
+  -- subtraction is injective on `A.erase m` (all elements are `≤ m`)
+  have hinj : Set.InjOn (fun a => m - a) (A.erase m : Set ℕ) := by
+    intro a ha b hb hab
+    rw [Finset.mem_coe] at ha hb
+    have ha' : a ≤ m := hle_m a (Finset.mem_of_mem_erase ha)
+    have hb' : b ≤ m := hle_m b (Finset.mem_of_mem_erase hb)
+    simp only at hab
+    omega
+  -- `A` and `D` are disjoint: `m − a ∈ A` would give `m = (m−a) + a` inside `A`
+  have hdisj : Disjoint A D := by
+    rw [Finset.disjoint_left]
+    intro x hxA hxD
+    rw [hD, Finset.mem_image] at hxD
+    obtain ⟨a, ha, rfl⟩ := hxD
+    have ha' : a ∈ A := Finset.mem_of_mem_erase ha
+    have halt : a < m := lt_of_le_of_ne (hle_m a ha') (Finset.ne_of_mem_erase ha)
+    have hsum : m = (m - a) + a := by omega
+    exact hsf m (m - a) a hmA hxA ha' hsum
+  -- `|D| = |A| − 1`
+  have hcardD : D.card = A.card - 1 := by
+    rw [hD, Finset.card_image_of_injOn hinj, Finset.card_erase_of_mem hmA]
+  -- both `A` and `D` lie in `{1,…,m}`
+  have hDsub : D ⊆ Finset.Icc 1 m := by
+    intro x hx
+    rw [hD, Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    have ha' : a ∈ A := Finset.mem_of_mem_erase ha
+    have halt : a < m := lt_of_le_of_ne (hle_m a ha') (Finset.ne_of_mem_erase ha)
+    have hpa : 1 ≤ a := hpos a ha'
+    rw [Finset.mem_Icc]; omega
+  have hAsub : A ⊆ Finset.Icc 1 m := fun a ha => by
+    rw [Finset.mem_Icc]; exact ⟨hpos a ha, hle_m a ha⟩
+  -- disjoint union of `A` and `D` fits in `{1,…,m}`, so `2|A| − 1 ≤ m ≤ n`
+  have hunion : A.card + (A.card - 1) ≤ m := by
+    have h1 : A ∪ D ⊆ Finset.Icc 1 m := Finset.union_subset hAsub hDsub
+    have h2 : (A ∪ D).card = A.card + (A.card - 1) := by
+      rw [Finset.card_union_of_disjoint hdisj, hcardD]
+    calc A.card + (A.card - 1) = (A ∪ D).card := h2.symm
+      _ ≤ (Finset.Icc 1 m).card := Finset.card_le_card h1
+      _ = m := by rw [Nat.card_Icc]; omega
+  have hApos : 1 ≤ A.card := Finset.card_pos.mpr hne
+  omega
+
+/-- **The maximum sum-free subset size is exactly `⌈n/2⌉`.**  Packaging
+`exists_sumFree_card_ceil` (achievability) with `sumFree_card_le_ceil` (the extremal upper
+bound), the greatest cardinality attained by a sum-free subset of `{1,…,n}` is precisely
+`⌈n/2⌉ = (n+1)/2`.  This formalizes the Part VII prose claim — "the maximum size of a
+sum-free subset of `[1,n]` is `⌈n/2⌉`" — in full, both directions, axiom-free. -/
+theorem max_sumFree_card_eq_ceil (n : ℕ) :
+    IsGreatest {k | ∃ A ∈ sumFreeSubsets n, A.card = k} ((n + 1) / 2) := by
+  constructor
+  · exact exists_sumFree_card_ceil n
+  · rintro k ⟨A, hA, rfl⟩
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset] at hA
+    exact sumFree_card_le_ceil hA.1 hA.2
+
 /-- **Enlarging the ground set only adds sum-free subsets.**  For `m ≤ n`, every sum-free
 subset of `{1,…,m}` is a sum-free subset of `{1,…,n}`: sum-freeness (`IsSumFree`) is a
 property of the set itself, independent of the ambient range, and `{1,…,m} ⊆ {1,…,n}`.
@@ -848,5 +927,74 @@ theorem cameronErdos_lower_unconditional {ε : ℝ} (hε : 0 < ε) (n : ℕ) :
 **Erdős Problem #748: PROVED**
 -/
 theorem erdos_748 : cameronErdosConjecture := cameron_erdos_proved
+
+/-
+## Part XIV: Structural closure properties of sum-free sets
+
+The counting results above rest on two concrete families of sum-free sets — the *odd
+numbers* (`oddNumbers_sumFree`) and the *upper half* `{⌈n/2⌉,…,n}` (`upperHalf_sumFree`).
+This section records the two structural principles that explain and generalize them:
+
+* **Parity.** A set consisting *entirely of odd numbers* is automatically sum-free, because
+  the sum of two odd numbers is even and hence cannot lie in an all-odd set. This is the
+  conceptual reason `oddNumbers_sumFree` holds — it is a property of *any* set of odd
+  numbers, not just the canonical interval family.
+* **Dilation.** Sum-freeness is invariant under the multiplicative dilation `x ↦ k·x`
+  (`k ≥ 1`): `a = b + c` scales to `ka = kb + kc`, so `k·A` has a forbidden sum exactly
+  when `A` does. Dilation is injective for `k ≥ 1`, so `|k·A| = |A|`; hence dilation
+  transports a sum-free set of any size into a sparser range verbatim.
+
+Both are elementary and fully verified (0 new axioms, independent of the two deep
+Green/Sapozhenko asymptotic axioms).
+-/
+
+/--
+**All-odd sets are sum-free.** If every element of `A` is odd then `A` is sum-free: for
+`b, c ∈ A` the sum `b + c` is even, so it cannot equal any (odd) element `a ∈ A`. This is
+the parity mechanism behind `oddNumbers_sumFree`, isolated as a property of an arbitrary
+set of odd numbers.
+-/
+theorem sumFree_of_forall_odd {A : Finset ℕ} (h : ∀ x ∈ A, Odd x) : IsSumFree A := by
+  intro a b c ha hb hc heq
+  obtain ⟨i, hi⟩ := h a ha
+  obtain ⟨j, hj⟩ := h b hb
+  obtain ⟨k, hk⟩ := h c hc
+  omega
+
+/--
+**Dilation invariance.** For `k ≥ 1`, if `A` is sum-free then so is its dilation
+`k · A = A.image (k * ·)`. A forbidden identity `ka = kb + kc = k(b + c)` in the image
+cancels `k` (using `0 < k`) to a forbidden identity `a = b + c` in `A`, contradicting
+sum-freeness of `A`.
+-/
+theorem sumFree_image_mul {A : Finset ℕ} {k : ℕ} (hk : 0 < k) (hA : IsSumFree A) :
+    IsSumFree (A.image (fun x => k * x)) := by
+  intro a b c ha hb hc heq
+  simp only [Finset.mem_image] at ha hb hc
+  obtain ⟨x, hx, rfl⟩ := ha
+  obtain ⟨y, hy, rfl⟩ := hb
+  obtain ⟨z, hz, rfl⟩ := hc
+  have hxyz : x = y + z :=
+    Nat.eq_of_mul_eq_mul_left hk (by rw [mul_add]; exact heq)
+  exact hA x y z hx hy hz hxyz
+
+/--
+**Dilation preserves size.** For `k ≥ 1` the dilation map `x ↦ k·x` is injective on `ℕ`,
+so `|k · A| = |A|`.
+-/
+theorem card_image_mul {A : Finset ℕ} {k : ℕ} (hk : 0 < k) :
+    (A.image (fun x => k * x)).card = A.card :=
+  Finset.card_image_of_injective A (fun _ _ h => Nat.eq_of_mul_eq_mul_left hk h)
+
+/--
+**Dilation transports a sum-free set of the same cardinality.** Combining the two previous
+results: for `k ≥ 1`, `k · A` is a sum-free set with exactly `|A|` elements. So any lower
+bound on the maximum sum-free size (e.g. the extremal `⌈n/2⌉` of `max_sumFree_card_eq_ceil`)
+is realized verbatim inside the dilated, sparser range `k · {1,…,n}` — sum-freeness is a
+scale-invariant property.
+-/
+theorem sumFree_image_mul_card {A : Finset ℕ} {k : ℕ} (hk : 0 < k) (hA : IsSumFree A) :
+    IsSumFree (A.image (fun x => k * x)) ∧ (A.image (fun x => k * x)).card = A.card :=
+  ⟨sumFree_image_mul hk hA, card_image_mul hk⟩
 
 end Erdos748

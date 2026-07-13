@@ -86,7 +86,7 @@ theorem DivisibilityFree.mono {S T : Finset ℕ} (h : S ⊆ T)
 
 /-- The empty set is divisibility-free (vacuously). -/
 theorem divisibilityFree_empty : DivisibilityFree (∅ : Finset ℕ) :=
-  fun a ha => absurd ha (Finset.not_mem_empty a)
+  fun a ha => absurd ha (Finset.notMem_empty a)
 
 /-- Every singleton is divisibility-free (vacuously — there are no two *distinct*
     elements to divide one another). -/
@@ -326,7 +326,7 @@ theorem subsetSums_insert {a : ℕ} {A : Finset ℕ} (ha : a ∉ A) :
     by_cases haS : a ∈ S
     · -- `S` contains `a`; write `S = insert a S'` with `S' = S.erase a ⊆ A`.
       have hSeq : S = insert a (S.erase a) := (Finset.insert_erase haS).symm
-      have haS' : a ∉ S.erase a := Finset.not_mem_erase a S
+      have haS' : a ∉ S.erase a := Finset.notMem_erase a S
       have hS'A : S.erase a ⊆ A := by
         intro x hx
         have hxS : x ∈ S := Finset.mem_of_mem_erase hx
@@ -424,7 +424,7 @@ theorem subsetSums_card_insert_superincreasing
     obtain ⟨s, hs, hEq⟩ := hmem
     have hs1 : 1 ≤ s := subsetSums_pos hlo s hs
     omega
-  rw [subsetSums_insert ha, Finset.card_insert_of_not_mem h_a_notin_union,
+  rw [subsetSums_insert ha, Finset.card_insert_of_notMem h_a_notin_union,
     Finset.card_union_of_disjoint h_disj, h_img_card]
   ring
 
@@ -499,7 +499,7 @@ theorem subsetSums_card_superincreasing :
     · set m := A.max' hne with hm
       have hmem : m ∈ A := A.max'_mem hne
       have hEq : A = insert m (A.erase m) := (Finset.insert_erase hmem).symm
-      have hnotmem : m ∉ A.erase m := Finset.not_mem_erase m A
+      have hnotmem : m ∉ A.erase m := Finset.notMem_erase m A
       have hsub : A.erase m ⊂ A := Finset.erase_ssubset hmem
       have hAe : Superincreasing (A.erase m) := hA.mono (Finset.erase_subset m A)
       have hgt : (A.erase m).sum id < m := sum_erase_max_lt hA hne
@@ -571,7 +571,7 @@ theorem exists_superincreasing_extremal (k : ℕ) :
           · rintro ⟨hxA, hlt⟩; exact ⟨Or.inr hxA, hlt⟩
         rw [hfil]; exact hSI a haA
     refine ⟨insert m A, ?_, hSI', ?_⟩
-    · rw [Finset.card_insert_of_not_mem hmnot, hcard]
+    · rw [Finset.card_insert_of_notMem hmnot, hcard]
     · have hdouble := subsetSums_card_insert_superincreasing hmnot hSI.pos hgt
       have hk1 : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_two_pow
       have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
@@ -728,5 +728,392 @@ theorem exists_superincreasing_not_divisibilityFree {k : ℕ} (hk : 2 ≤ k) :
       ¬ DivisibilityFree (subsetSums A) :=
   ⟨powersOfTwo k, superincreasing_powersOfTwo k, powersOfTwo_card k,
     not_divisibilityFree_subsetSums_powersOfTwo hk⟩
+
+/-!
+### The distinct-subset-sum total lower bound (`∑ A ≥ 2^{|A|} − 1`)
+
+The counting bound `subsetSums_card_le` caps the number of distinct non-empty
+subset sums at `2^{|A|} − 1`.  When that maximum is *attained* — i.e. all
+non-empty subset sums are pairwise distinct, the counting-extremal regime — the
+`2^{|A|} − 1` distinct values are forced to fit inside the attained interval
+`[1, ∑ A]` (`subsetSums_subset_Icc_sum`).  Cardinality then pins the total from
+below: `∑ A ≥ 2^{|A|} − 1`.  This is the classical distinct-subset-sum
+phenomenon (the Erdős distinct-subset-sum / Conway–Guy circle): a set with
+distinct subset sums must have exponentially large total, so with all elements
+`≤ n` its size is `O(log₂ n)` — the quantitative face of the `(1+o(1))log₂ n`
+growth.  The bound is *sharp*: the powers-of-two witness has `∑ = 2^k − 1`
+exactly.
+-/
+
+/-- **Distinct subset sums.**  `A` realises the maximum possible number of
+    distinct non-empty subset sums, `2^{|A|} − 1` — i.e. the counting bound
+    `subsetSums_card_le` is met with equality.  Superincreasing sets (in
+    particular the powers-of-two family) satisfy this; it is the exact opposite
+    of the "collapse" regime where many subsets share a sum. -/
+def DistinctSubsetSums (A : Finset ℕ) : Prop :=
+  (subsetSums A).card = 2 ^ A.card - 1
+
+/-- Superincreasing sets have distinct subset sums — a restatement of
+    `subsetSums_card_superincreasing` in the named predicate. -/
+theorem Superincreasing.distinctSubsetSums {A : Finset ℕ}
+    (hA : Superincreasing A) : DistinctSubsetSums A :=
+  subsetSums_card_superincreasing hA
+
+/-- The powers-of-two family `{2^0,…,2^{k-1}}` has distinct subset sums. -/
+theorem powersOfTwo_distinctSubsetSums (k : ℕ) :
+    DistinctSubsetSums (powersOfTwo k) :=
+  (superincreasing_powersOfTwo k).distinctSubsetSums
+
+/-- **Distinct-subset-sum total lower bound.**  If the non-empty subset sums of a
+    set of positive integers are all distinct (`DistinctSubsetSums`), then the
+    total is at least `2^{|A|} − 1`.  The `2^{|A|} − 1` distinct sums all live in
+    `[1, ∑ A]` (`subsetSums_subset_Icc_sum`), an interval of exactly `∑ A`
+    integers, so `2^{|A|} − 1 = |subsetSums A| ≤ ∑ A`.  Sharp: the powers-of-two
+    witness attains equality (`sum_powersOfTwo_eq_bound`). -/
+theorem two_pow_sub_one_le_sum_of_distinct {A : Finset ℕ}
+    (hpos : ∀ a ∈ A, 1 ≤ a) (hd : DistinctSubsetSums A) :
+    2 ^ A.card - 1 ≤ A.sum id := by
+  have hsub : subsetSums A ⊆ Finset.Icc 1 (A.sum id) :=
+    subsetSums_subset_Icc_sum hpos
+  have hcard : (subsetSums A).card ≤ (Finset.Icc 1 (A.sum id)).card :=
+    Finset.card_le_card hsub
+  rw [Nat.card_Icc, hd] at hcard
+  omega
+
+/-- **The powers-of-two witness attains the total lower bound.**  For the
+    canonical distinct-subset-sum set `{2^0,…,2^{k-1}}` the total is *exactly*
+    `2^{|A|} − 1`, so `two_pow_sub_one_le_sum_of_distinct` cannot be improved. -/
+theorem sum_powersOfTwo_eq_bound (k : ℕ) :
+    (powersOfTwo k).sum id = 2 ^ (powersOfTwo k).card - 1 := by
+  rw [sum_powersOfTwo, powersOfTwo_card]
+
+/-- **Quantitative `O(log₂ n)` size bound for distinct-subset-sum sets.**  If the
+    non-empty subset sums of `A ⊆ {1,…,n}` are all distinct, then
+    `2^{|A|} ≤ n·|A| + 1`.  Combining the total lower bound
+    `2^{|A|} − 1 ≤ ∑ A` (`two_pow_sub_one_le_sum_of_distinct`) with the trivial
+    `∑ A ≤ n·|A|` forces `|A|` to be logarithmic in `n`: this is the quantitative
+    heart of the `(1+o(1))log₂ n` growth in the counting-extremal regime. -/
+theorem two_pow_le_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
+    (hpos : ∀ a ∈ A, 1 ≤ a) (hle : ∀ a ∈ A, a ≤ n) (hd : DistinctSubsetSums A) :
+    2 ^ A.card ≤ n * A.card + 1 := by
+  have h1 : 2 ^ A.card - 1 ≤ A.sum id := two_pow_sub_one_le_sum_of_distinct hpos hd
+  have h2 : A.sum id ≤ n * A.card := by
+    calc A.sum id ≤ ∑ _a ∈ A, n := Finset.sum_le_sum (fun i hi => hle i hi)
+      _ = n * A.card := by rw [Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+  have hp : 1 ≤ 2 ^ A.card := Nat.one_le_two_pow
+  omega
+
+/-- **Explicit `log₂` cardinality bound for distinct-subset-sum sets.**  Rewriting the
+    quantitative bound `two_pow_le_of_distinct_bounded` (`2^{|A|} ≤ n·|A|+1`) through
+    `Nat.pow_le_iff_le_log` turns it into a statement on the cardinality itself:
+    `|A| ≤ log₂(n·|A|+1)`.  This is the closed logarithmic form of the `O(log₂ n)` growth —
+    the right-hand side still mentions `|A|`, but since `log₂(n·|A|+1) = log₂|A| + log₂ n +
+    O(1)` grows only logarithmically in `|A|`, the inequality already pins `|A|` to
+    `(1+o(1))·log₂ n`.  Discharging the `Nat.log` step was the standing next task after
+    `two_pow_le_of_distinct_bounded`. -/
+theorem card_le_log_of_distinct_bounded {A : Finset ℕ} {n : ℕ}
+    (hpos : ∀ a ∈ A, 1 ≤ a) (hle : ∀ a ∈ A, a ≤ n) (hd : DistinctSubsetSums A) :
+    A.card ≤ Nat.log 2 (n * A.card + 1) := by
+  have h := two_pow_le_of_distinct_bounded hpos hle hd
+  exact (Nat.pow_le_iff_le_log (by norm_num) (by omega)).mp h
+
+/-!
+## Distinct-subset-sums: the injectivity meaning, and its heredity
+
+`DistinctSubsetSums A` was defined by the *cardinality* equation `|subsetSums A| = 2^|A| − 1`
+— the counting bound `subsetSums_card_le` met with equality. Since `subsetSums A` is the image
+of the `2^|A| − 1` non-empty subsets under the sum map (`nonemptySubsets_card`), that equation
+holds exactly when the sum map is **injective** on the non-empty subsets — i.e. distinct
+non-empty subsets have distinct sums. This section records that characterization
+(`distinctSubsetSums_iff_injOn`, `distinctSubsetSums_iff_pairwise`) and the structural
+consequence it unlocks: **`DistinctSubsetSums` is downward closed** (`DistinctSubsetSums.mono`),
+the exact analogue of `Superincreasing.mono` and `DivisibilityFree.mono`, and the WLOG
+"pass to a sub-configuration" tool for the distinct-subset-sum regime. All axiom-free. -/
+
+/-- **Non-empty subsets grow with the set.**  `B ⊆ A ⟹ nonemptySubsets B ⊆ nonemptySubsets A`:
+    a non-empty subset of `B` is a non-empty subset of `A`.  (The `nonemptySubsets` companion of
+    `subsetSums_mono`.) -/
+theorem nonemptySubsets_mono {A B : Finset ℕ} (h : B ⊆ A) :
+    nonemptySubsets B ⊆ nonemptySubsets A := by
+  intro S hS
+  unfold nonemptySubsets at hS ⊢
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  exact ⟨hS.1.trans h, hS.2⟩
+
+/-- **`DistinctSubsetSums` is injectivity of the sum map.**  `A` has distinct subset sums iff
+    the map `S ↦ ∑ S` is injective on the non-empty subsets of `A`.  The cardinality definition
+    `|subsetSums A| = 2^|A| − 1` is precisely `|image| = |domain|` (using `nonemptySubsets_card`),
+    which is equivalent to injectivity of the map generating the image. -/
+theorem distinctSubsetSums_iff_injOn {A : Finset ℕ} :
+    DistinctSubsetSums A ↔ Set.InjOn (fun S : Finset ℕ => S.sum id) ↑(nonemptySubsets A) := by
+  unfold DistinctSubsetSums subsetSums
+  rw [← nonemptySubsets_card A]
+  exact ⟨fun h => Finset.injOn_of_card_image_eq h, fun h => Finset.card_image_of_injOn h⟩
+
+/-- **`DistinctSubsetSums`, spelled out.**  `A` has distinct subset sums iff any two non-empty
+    subsets with equal sum are equal — the readable pairwise form of
+    `distinctSubsetSums_iff_injOn`. -/
+theorem distinctSubsetSums_iff_pairwise {A : Finset ℕ} :
+    DistinctSubsetSums A ↔
+      ∀ S ∈ nonemptySubsets A, ∀ T ∈ nonemptySubsets A, S.sum id = T.sum id → S = T := by
+  rw [distinctSubsetSums_iff_injOn]
+  exact ⟨fun h S hS T hT hst => h hS hT hst, fun h S hS T hT hst => h S hS T hT hst⟩
+
+/-- **`DistinctSubsetSums` is hereditary (downward closed).**  Any subset of a set with distinct
+    subset sums also has distinct subset sums: injectivity of the sum map on the non-empty
+    subsets of `A` restricts to injectivity on the (fewer) non-empty subsets of `B ⊆ A`.  This is
+    the WLOG "pass to a sub-configuration" tool for the distinct-subset-sum regime, mirroring
+    `Superincreasing.mono` and `DivisibilityFree.mono`.  Strictly more general than
+    `Superincreasing.mono`, since not every distinct-subset-sum set is superincreasing. -/
+theorem DistinctSubsetSums.mono {A B : Finset ℕ} (h : B ⊆ A)
+    (hA : DistinctSubsetSums A) : DistinctSubsetSums B := by
+  rw [distinctSubsetSums_iff_injOn] at hA ⊢
+  exact hA.mono (Finset.coe_subset.mpr (nonemptySubsets_mono h))
+
+/-- **Every subset of the powers-of-two family has distinct subset sums.**  Immediate from
+    `powersOfTwo_distinctSubsetSums` and heredity (`DistinctSubsetSums.mono`) — a large concrete
+    supply of distinct-subset-sum sets of every size `≤ k`. -/
+theorem distinctSubsetSums_of_subset_powersOfTwo {k : ℕ} {B : Finset ℕ}
+    (h : B ⊆ powersOfTwo k) : DistinctSubsetSums B :=
+  (powersOfTwo_distinctSubsetSums k).mono h
+
+/-! ### Complementation / reflection symmetry of the subset-sum set
+
+The map `s ↦ ∑ A − s` is the *complementation reflection*: a proper non-empty
+subset `S ⊊ A` and its complement `A \ S` are both non-empty subsets of `A`
+whose sums add up to the total `∑ A`.  Hence, away from its top point `∑ A`,
+the value set `subsetSums A` is symmetric about `∑ A / 2`.  This is a
+structural symmetry orthogonal to the counting / distinctness layer: it pins
+the *shape* of the subset-sum set rather than its size.  Its sharpest
+consequence is that the **largest proper subset sum is exactly `∑ A − A.min'`**
+— the reflection-dual of `min'_subsetSums_eq_min'`. -/
+
+/-- **Any non-empty subset's sum is a subset sum.**  The direct membership form:
+    if `S ⊆ A` is non-empty then `∑ S ∈ subsetSums A`.  (Generalises
+    `sum_mem_subsetSums`, which is the `S = A` case.) -/
+theorem sum_mem_subsetSums_of_subset {A S : Finset ℕ} (hSA : S ⊆ A)
+    (hS : S.Nonempty) : S.sum id ∈ subsetSums A := by
+  unfold subsetSums nonemptySubsets
+  rw [Finset.mem_image]
+  refine ⟨S, ?_, rfl⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hSA, Finset.nonempty_iff_ne_empty.mp hS⟩
+
+/-- **Complementation / reflection symmetry.**  If `s` is a non-empty subset sum
+    of `A` other than the total `∑ A`, its reflection `∑ A − s` is *also* a
+    non-empty subset sum: any witnessing subset `S` (with `∑ S = s`) is proper
+    (`∑ S ≠ ∑ A`), so its complement `A \ S` is a non-empty subset of `A` with
+    `∑ (A \ S) = ∑ A − s`.  No positivity hypothesis is needed. -/
+theorem subsetSums_reflection {A : Finset ℕ} {s : ℕ}
+    (hs : s ∈ subsetSums A) (hne : s ≠ A.sum id) :
+    A.sum id - s ∈ subsetSums A := by
+  unfold subsetSums nonemptySubsets at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSsub, hSne⟩ := hS
+  have hSneA : S ≠ A := fun h => hne (by rw [h])
+  have hcompl : (A \ S).Nonempty := by
+    rw [Finset.sdiff_nonempty]
+    exact fun hsub => hSneA (Finset.Subset.antisymm hSsub hsub)
+  have hsplit : (A \ S).sum id + S.sum id = A.sum id := Finset.sum_sdiff hSsub
+  have hval : (A \ S).sum id = A.sum id - S.sum id := by omega
+  rw [← hval]
+  exact sum_mem_subsetSums_of_subset Finset.sdiff_subset hcompl
+
+/-- **The reflection is an involution on the proper subset sums.**  For a set of
+    positive integers, a value `s` is a *proper* subset sum (a subset sum below
+    the total, i.e. `s ∈ (subsetSums A).erase (∑ A)`) **iff** its reflection
+    `∑ A − s` is.  Positivity guarantees a proper subset sum is `≥ 1`, so its
+    reflection stays strictly below `∑ A` and never coincides with the removed
+    top point.  Thus `s ↦ ∑ A − s` is a bijection of the proper subset sums. -/
+theorem subsetSums_reflection_mem_erase_iff {A : Finset ℕ}
+    (hlo : ∀ a ∈ A, 1 ≤ a) {s : ℕ} :
+    s ∈ (subsetSums A).erase (A.sum id) ↔
+      A.sum id - s ∈ (subsetSums A).erase (A.sum id) := by
+  have fwd : ∀ t, t ∈ (subsetSums A).erase (A.sum id) →
+      A.sum id - t ∈ (subsetSums A).erase (A.sum id) := by
+    intro t ht
+    rw [Finset.mem_erase] at ht ⊢
+    obtain ⟨htne, htmem⟩ := ht
+    have htpos : 1 ≤ t := subsetSums_pos hlo t htmem
+    have htle : t ≤ A.sum id := subsetSums_le_sum t htmem
+    exact ⟨by omega, subsetSums_reflection htmem htne⟩
+  refine ⟨fwd s, fun h => ?_⟩
+  have h2 := fwd _ h
+  have hpos : 1 ≤ A.sum id - s := subsetSums_pos hlo _ (Finset.mem_of_mem_erase h)
+  rwa [show A.sum id - (A.sum id - s) = s from by omega] at h2
+
+/-- **Dropping one element yields a subset sum.**  For a set with at least two
+    elements, removing any single element `a` leaves a non-empty subset, so the
+    "co-total" `∑ A − a` is itself a non-empty subset sum. -/
+theorem sum_erase_mem_subsetSums {A : Finset ℕ} {a : ℕ} (ha : a ∈ A)
+    (hcard : 1 < A.card) : A.sum id - a ∈ subsetSums A := by
+  have hne : (A.erase a).Nonempty := by
+    rw [← Finset.card_pos, Finset.card_erase_of_mem ha]; omega
+  have hval : (A.erase a).sum id = A.sum id - a := by
+    have h := Finset.add_sum_erase A id ha
+    simp only [id_eq] at h ⊢
+    omega
+  rw [← hval]
+  exact sum_mem_subsetSums_of_subset (Finset.erase_subset a A) hne
+
+/-- **The co-total `∑ A − A.min'` is a subset sum.**  Instance of
+    `sum_erase_mem_subsetSums` with `a = A.min'`: drop the smallest element. -/
+theorem sum_sub_min'_mem_subsetSums {A : Finset ℕ} (hA : A.Nonempty)
+    (hcard : 1 < A.card) : A.sum id - A.min' hA ∈ subsetSums A :=
+  sum_erase_mem_subsetSums (A.min'_mem hA) hcard
+
+/-- **Every proper subset sum is at most `∑ A − A.min'`.**  If `s` is a subset
+    sum below the total then, by reflection, `∑ A − s` is a subset sum, hence
+    `≥ A.min'` (`min'_le_subsetSums`); rearranging gives `s ≤ ∑ A − A.min'`.
+    So no proper subset sum can exceed `∑ A − A.min'`. -/
+theorem subsetSums_proper_le {A : Finset ℕ} (hA : A.Nonempty) {s : ℕ}
+    (hs : s ∈ subsetSums A) (hne : s ≠ A.sum id) :
+    s ≤ A.sum id - A.min' hA := by
+  have hrefl : A.sum id - s ∈ subsetSums A := subsetSums_reflection hs hne
+  have hge : A.min' hA ≤ A.sum id - s := min'_le_subsetSums hA _ hrefl
+  have hle : s ≤ A.sum id := subsetSums_le_sum s hs
+  omega
+
+/-- The proper subset sums `(subsetSums A).erase (∑ A)` are non-empty once
+    `|A| ≥ 2`: the co-total `∑ A − A.min'` is a proper subset sum. -/
+theorem proper_subsetSums_nonempty {A : Finset ℕ} (hA : A.Nonempty)
+    (hlo : ∀ a ∈ A, 1 ≤ a) (hcard : 1 < A.card) :
+    ((subsetSums A).erase (A.sum id)).Nonempty := by
+  refine ⟨A.sum id - A.min' hA, ?_⟩
+  rw [Finset.mem_erase]
+  have hmin : 1 ≤ A.min' hA := hlo _ (A.min'_mem hA)
+  have hsum : A.min' hA ≤ A.sum id :=
+    subsetSums_le_sum _ (subset_subsetSums A (A.min'_mem hA))
+  exact ⟨by omega, sum_sub_min'_mem_subsetSums hA hcard⟩
+
+/-- **The largest proper subset sum is exactly `∑ A − A.min'`.**  Among the
+    subset sums strictly below the total, the maximum is the total minus the
+    smallest element.  It is attained (`sum_sub_min'_mem_subsetSums`, by dropping
+    `A.min'`) and it dominates every proper subset sum (`subsetSums_proper_le`,
+    via reflection).  This is the reflection-dual of `min'_subsetSums_eq_min'`
+    (the smallest subset sum is `A.min'`) and refines `max'_subsetSums_eq_sum`
+    (the overall maximum is `∑ A`) by identifying the second-largest value. -/
+theorem max'_proper_subsetSums_eq {A : Finset ℕ} (hA : A.Nonempty)
+    (hlo : ∀ a ∈ A, 1 ≤ a) (hcard : 1 < A.card) :
+    ((subsetSums A).erase (A.sum id)).max' (proper_subsetSums_nonempty hA hlo hcard)
+      = A.sum id - A.min' hA := by
+  apply le_antisymm
+  · apply Finset.max'_le
+    intro y hy
+    rw [Finset.mem_erase] at hy
+    exact subsetSums_proper_le hA hy.2 hy.1
+  · apply Finset.le_max'
+    rw [Finset.mem_erase]
+    have hmin : 1 ≤ A.min' hA := hlo _ (A.min'_mem hA)
+    have hsum : A.min' hA ≤ A.sum id :=
+      subsetSums_le_sum _ (subset_subsetSums A (A.min'_mem hA))
+    exact ⟨by omega, sum_sub_min'_mem_subsetSums hA hcard⟩
+
+/-- **`DivisibilityFree` is exactly a divisibility antichain.**
+    Bridges the file's ad-hoc predicate to Mathlib's `IsAntichain (· ∣ ·)`,
+    unlocking the general antichain API for reuse.  The two definitions coincide
+    because `IsAntichain` already quantifies over *both* orders of every pair, so
+    a single `¬(a ∣ b)` for all `a ≠ b` is equivalent to the symmetric
+    `¬(a ∣ b) ∧ ¬(b ∣ a)`. -/
+theorem divisibilityFree_iff_isAntichain (S : Finset ℕ) :
+    DivisibilityFree S ↔ IsAntichain (· ∣ ·) (↑S : Set ℕ) := by
+  constructor
+  · intro h a ha b hb hab
+    exact (h a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb) hab).1
+  · intro h a ha b hb hab
+    exact ⟨h (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) hab,
+           h (Finset.mem_coe.mpr hb) (Finset.mem_coe.mpr ha) (Ne.symm hab)⟩
+
+/-- Forward direction packaged for direct use: a divisibility-free set *is* a
+    Mathlib divisibility antichain. -/
+theorem DivisibilityFree.isAntichain {S : Finset ℕ} (h : DivisibilityFree S) :
+    IsAntichain (· ∣ ·) (↑S : Set ℕ) :=
+  (divisibilityFree_iff_isAntichain S).mp h
+
+/-!
+### Divisibility necessary conditions for `ValidSubset`
+
+With the `IsAntichain` bridge (`divisibilityFree_iff_isAntichain`) in place, the
+Erdős #882 validity hypothesis yields concrete *necessary* conditions: the subset
+sums of a valid `A` form a divisibility antichain, no proper partial subset sum
+divides the total, and no single element of a size-`≥ 2` valid set divides `∑ A`.
+-/
+
+/-- **The subset sums of a valid set form a divisibility antichain.**  This is
+    the Erdős #882 hypothesis restated in Mathlib's `IsAntichain` language, ready
+    to feed antichain machinery. -/
+theorem validSubset_subsetSums_isAntichain {n : ℕ} {A : Finset ℕ}
+    (h : ValidSubset n A) : IsAntichain (· ∣ ·) (↑(subsetSums A) : Set ℕ) :=
+  h.2.isAntichain
+
+/-- **No proper partial sum divides the total.**  In a valid set `A`, for every
+    non-empty proper subset `S ⊊ A` the partial sum `∑ S` does *not* divide the
+    total `∑ A`.  Both are subset sums, and `∑ S < ∑ A` (a proper subset of a
+    positive set has strictly smaller sum), so they are distinct values and the
+    divisibility-free condition forbids `∑ S ∣ ∑ A`.  A concrete necessary
+    condition every #882-valid configuration must meet. -/
+theorem validSubset_subsetSum_not_dvd_total {n : ℕ} {A S : Finset ℕ}
+    (hV : ValidSubset n A) (hSA : S ⊆ A) (hS : S.Nonempty) (hne : S ≠ A) :
+    ¬ (S.sum id ∣ A.sum id) := by
+  obtain ⟨hbound, hdf⟩ := hV
+  have hpos : ∀ a ∈ A, 1 ≤ a := fun a ha => (hbound a ha).1
+  have hssub : S ⊂ A := hSA.ssubset_of_ne hne
+  obtain ⟨x, hxA, hxS⟩ := Finset.exists_of_ssubset hssub
+  have hlt : S.sum id < A.sum id :=
+    Finset.sum_lt_sum_of_subset hSA hxA hxS (by simp only [id_eq]; exact hpos x hxA)
+      (by intro j _ _; exact Nat.zero_le _)
+  have hmemS : S.sum id ∈ subsetSums A := sum_mem_subsetSums_of_subset hSA hS
+  have hmemA : A.sum id ∈ subsetSums A := sum_mem_subsetSums ⟨x, hxA⟩
+  exact (hdf (S.sum id) hmemS (A.sum id) hmemA (Nat.ne_of_lt hlt)).1
+
+/-- **No element of a size-`≥ 2` valid set divides the total.**  Specialising
+    `validSubset_subsetSum_not_dvd_total` to a singleton: in a valid `A` with
+    `|A| ≥ 2`, no member `a ∈ A` divides `∑ A`.  (When `|A| = 1` the sole element
+    *is* the total, so the size hypothesis is needed.) -/
+theorem validSubset_elem_not_dvd_total {n : ℕ} {A : Finset ℕ} {a : ℕ}
+    (hV : ValidSubset n A) (ha : a ∈ A) (hcard : 2 ≤ A.card) :
+    ¬ (a ∣ A.sum id) := by
+  have hne : ({a} : Finset ℕ) ≠ A := by
+    intro h
+    have : A.card = 1 := by rw [← h]; simp
+    omega
+  have h := validSubset_subsetSum_not_dvd_total hV
+    (Finset.singleton_subset_iff.mpr ha) (Finset.singleton_nonempty a) hne
+  simpa using h
+
+/-- **Validity forces divisibility-freeness of the generators themselves.**  Every
+    element of `A` is one of its own singleton subset sums (`subset_subsetSums`), so
+    the divisibility-free condition on `subsetSums A` restricts to `A`: a valid set is
+    in particular a *primitive* (divisibility-free) set.  This is a necessary
+    condition that the full subset-sum constraint of Erdős #882 strictly strengthens
+    — it is far from sufficient, as `extremal_distinct_not_valid` shows. -/
+theorem ValidSubset.divisibilityFree_base {n : ℕ} {A : Finset ℕ}
+    (h : ValidSubset n A) : DivisibilityFree A :=
+  h.2.mono (subset_subsetSums A)
+
+/-- **Distinct subset sums do NOT imply validity: the counting extremum is strictly
+    weaker than Erdős #882 validity.**  The superincreasing set `{1,2}` attains the
+    full `2² − 1 = 3` distinct subset sums — it meets the counting ceiling
+    `subsetSums_card_le` with equality — yet it is *not* a valid subset for any `n`:
+    its subset sums are `{1,2,3}` and `1 ∣ 2`.  So realising the maximum possible
+    number of distinct subset sums (the superincreasing / powers-of-two regime) does
+    not certify divisibility-freeness of those sums.  This is exactly why the true
+    Erdős #882 answer `(1+o(1)) log₂ n` sits far below the naive counting ceiling of
+    `2^{|A|} − 1` distinct sums: the validity constraint bites long before the
+    counting one does. -/
+theorem extremal_distinct_not_valid :
+    ∃ A : Finset ℕ, Superincreasing A ∧
+      (subsetSums A).card = 2 ^ A.card - 1 ∧ (∀ n, ¬ ValidSubset n A) := by
+  have hSI : Superincreasing ({1, 2} : Finset ℕ) := by
+    intro a ha; fin_cases ha <;> decide
+  refine ⟨{1, 2}, hSI, subsetSums_card_superincreasing hSI, ?_⟩
+  intro _ hvalid
+  have h1 : (1 : ℕ) ∈ subsetSums ({1, 2} : Finset ℕ) :=
+    subset_subsetSums _ (by decide)
+  have h2 : (2 : ℕ) ∈ subsetSums ({1, 2} : Finset ℕ) :=
+    subset_subsetSums _ (by decide)
+  exact (hvalid.2 1 h1 2 h2 (by decide)).1 (by decide)
 
 end Erdos882OQ03

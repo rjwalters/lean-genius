@@ -60,11 +60,14 @@ proved** (`vahlen_capelli_four_suff`, the full Sophie-Germain quartic factor ana
 `two_power_capelli` (via the verified odd-multiplicativity transfer
 `vahlen_capelli_even_mul_odd`). Within that base, the norm-descent keystone
 `two_power_capelli_of_neg_not_square` discharges — for **every** `k` — the branch where
-`−a` is *not* a square, needing only condition (1). The **sole remaining `sorry`** is thus
-confined to the pure `2`-power regime `8 ∣ n` (`k ≥ 3`) **and** `−a ∈ K²` (equivalently
-`a = −c²`): the one place where the `−4·K⁴` obstruction (condition (2)) is genuinely
-required and where Mathlib's prime-power criterion `X_pow_sub_C_irreducible_of_prime_pow`
-(restricted to *odd* primes) has no analogue.
+`−a` is *not* a square, needing only condition (1). The last branch — the pure `2`-power
+regime `8 ∣ n` (`k ≥ 3`) **and** `−a ∈ K²` (equivalently `a = −c²`), the one place where
+the `−4·K⁴` obstruction (condition (2)) is genuinely required and where Mathlib's
+prime-power criterion `X_pow_sub_C_irreducible_of_prime_pow` (restricted to *odd* primes)
+has no analogue — is **now also closed** by `two_power_capelli_neg_square` (the Lang VI §9
+quadratic descent across `K(√a)`, produced by the Aristotle prover and inlined below). **The
+file is therefore fully `sorry`-free**, and `two_power_capelli` / `vahlen_capelli` and the
+`∛3` corollaries all depend only on `[propext, Classical.choice, Quot.sound]`.
 
 ## Roadmap for the base case `n = 4` (the smallest `4 ∣ n` instance)
 
@@ -94,8 +97,9 @@ both `≥ 1`. Two regimes:
 Thus `n = 4` sufficiency holds over *every* field — **now fully formalised** as
 `vahlen_capelli_four_suff` (PART 5b) and wired into the `n = 4` branch of `vahlen_capelli`.
 The general even case then follows by `2`-power induction (`n = 2^k`) plus multiplicativity
-across coprime exponent factors — both currently absent from Mathlib, and the content of the
-remaining `n ≥ 6` `sorry`.
+across coprime exponent factors — both absent from Mathlib and now supplied here (the
+`2`-power induction is `two_power_irred`, the residual `−a ∈ K²` base is
+`two_power_capelli_neg_square`).
 
 ## Mathematical heart: the Sophie Germain identity
 
@@ -107,11 +111,13 @@ Substituting `a ↦ X^m` shows that whenever `a = −4b⁴` and `4 ∣ n = 4m`, 
 `X^n − C a = (X^m)⁴ + 4(C b)⁴` splits into two degree-`2m` factors — so condition (2) is
 *necessary*. Capelli's theorem is that (1)+(2) are also *sufficient*.
 
-## Status: sole `sorry` = even-sufficiency in the pure `2`-power regime `8 ∣ n` **with
-`−a ∈ K²`** (Mathlib TODO, Lang VI §9). The `−a ∉ K²` branch of that regime is now fully
-discharged by the verified norm-descent keystone `two_power_capelli_of_neg_not_square`
-(condition (2) unused). Docker-verified this session: `3061` jobs, exactly one `sorry`
-warning (the `−a ∈ K²` sub-case), `0` new axioms.
+## Status: COMPLETE — `0` sorries, `0` axioms (foundational `[propext, Classical.choice,
+Quot.sound]` only). The even-sufficiency gap in the pure `2`-power regime `8 ∣ n` **with
+`−a ∈ K²`** (Mathlib TODO, Lang VI §9) — the last open sub-case — was closed by the
+Aristotle prover (project `958405df`) and inlined as `two_power_capelli_neg_square` (with two
+toolchain-drift `grind` steps reproved by hand). The complementary `−a ∉ K²` branch remains
+discharged by the norm-descent keystone `two_power_capelli_of_neg_not_square`. Host-verified
+via `lake env lean`: no errors, no `sorry`, axiom-clean.
 -/
 
 import Mathlib.FieldTheory.KummerExtension
@@ -680,6 +686,167 @@ theorem neg_one_not_square_of_not_square_of_neg_square {K : Type*} [Field K] {a 
     ∀ i : K, i ^ 2 ≠ -1 :=
   fun i hi => h1 (i * c) (by rw [mul_pow, hi, hc]; ring)
 
+/-! ### Vahlen–Capelli residual even case (`−a ∈ K²`) — Lang VI §9 quadratic descent
+
+The sole open sub-case of `two_power_capelli` below (`k ≥ 3` with `−a` a square) is the
+even-`n` gap that Mathlib itself records as an open `TODO` in `KummerExtension.lean`
+(`X_pow_sub_C_irreducible_of_prime_pow` is stated only for odd primes). It was closed by
+the Aristotle prover (project `958405df`) via the classical Lang VI §9 descent across the
+quadratic extension `K(√a)`, and is inlined here (repaired for the current Mathlib
+toolchain: two `grind` steps that broke under toolchain drift were reproved by an explicit
+`Fin`-cardinality argument and a `linear_combination`). Verified axiom-free. -/
+section VahlenCapelliDescent
+open IntermediateField AdjoinRoot
+open scoped Classical
+universe u
+set_option maxHeartbeats 1000000
+
+/-
+Every element of a quadratic extension is `c₀ + c₁·g` for scalars `c₀ c₁` in the base.
+-/
+private lemma quad_repr {K F : Type u} [Field K] [Field F] [Algebra K F]
+    (pb : PowerBasis K F) (hdim : pb.dim = 2) (b : F) :
+    ∃ c0 c1 : K, b = algebraMap K F c0 + algebraMap K F c1 * pb.gen := by
+  have := pb.basis.sum_repr b;
+  rw [ ← this, Finset.sum_eq_add ( ⟨ 0, by linarith ⟩ : Fin pb.dim ) ( ⟨ 1, by linarith ⟩ : Fin pb.dim ) ] <;> simp +decide [ pow_succ, Algebra.smul_def ];
+  · exact ⟨ _, _, rfl ⟩;
+  · intro c hc0 hc1
+    exfalso
+    have hlt : (c : ℕ) < 2 := by have h := c.isLt; omega
+    have hc0' : (c : ℕ) ≠ 0 := fun hh => hc0 (Fin.ext hh)
+    have hc1' : (c : ℕ) ≠ 1 := fun hh => hc1 (Fin.ext hh)
+    omega
+
+/-
+`1` and `g` are linearly independent over the base in a quadratic extension.
+-/
+private lemma quad_indep {K F : Type u} [Field K] [Field F] [Algebra K F]
+    (pb : PowerBasis K F) (hdim : pb.dim = 2) {c0 c1 : K}
+    (h : algebraMap K F c0 + algebraMap K F c1 * pb.gen = 0) : c0 = 0 ∧ c1 = 0 := by
+  -- By the linear independence of the basis vectors, if $c0 + c1 \cdot pb.gen = 0$, then $c0 = 0$ and $c1 = 0$.
+  have h_lin_ind : LinearIndependent K (fun i : Fin 2 => pb.gen ^ (i : ℕ)) := by
+    convert pb.basis.linearIndependent;
+    · exact hdim.symm;
+    · rw [ pb.basis_eq_pow ];
+      grind +qlia;
+  rw [ Fintype.linearIndependent_iff ] at h_lin_ind;
+  exact ⟨ h_lin_ind ( fun i => if i = 0 then c0 else c1 ) ( by simpa [ Fin.sum_univ_two ] using by simpa [ Algebra.smul_def ] using h ) 0, h_lin_ind ( fun i => if i = 0 then c0 else c1 ) ( by simpa [ Fin.sum_univ_two ] using by simpa [ Algebra.smul_def ] using h ) 1 ⟩
+
+/-
+**Descent lemma across a quadratic extension.**
+Let `F = K(g)` be a quadratic extension of `K` with `g ^ 2 = a` (`a : K`).
+If `a` is not a square in `K` and `a ∉ -4·K⁴`, then `g` is neither a square in `F`
+nor of the form `-4·b⁴` in `F`.  Both statements reduce, via the explicit description
+of squares in a quadratic extension, to `a ∈ -4·K⁴`, contradicting `h2`.
+-/
+private lemma descent {K F : Type u} [Field K] [Field F] [Algebra K F]
+    (pb : PowerBasis K F) (hdim : pb.dim = 2) {a : K} (hchar : (2 : K) ≠ 0)
+    (hg : pb.gen ^ 2 = algebraMap K F a)
+    (h1 : ∀ b : K, b ^ 2 ≠ a) (h2 : ∀ b : K, a ≠ -(4 * b ^ 4)) :
+    (∀ b : F, b ^ 2 ≠ pb.gen) ∧ (∀ b : F, pb.gen ≠ -(4 * b ^ 4)) := by
+  constructor;
+  · intro b hb
+    obtain ⟨c0, c1, hc⟩ : ∃ c0 c1 : K, b = algebraMap K F c0 + algebraMap K F c1 * pb.gen :=
+      quad_repr pb hdim b
+    have h_eq : algebraMap K F (c0^2 + a * c1^2) + algebraMap K F (2 * c0 * c1 - 1) * pb.gen = 0 := by
+      simp_all +decide [ mul_assoc, mul_comm, mul_left_comm, add_mul, mul_add, sq ];
+      rw [ ← hg ] ; ring_nf at *;
+      erw [ map_ofNat ] ; linear_combination' hb;
+    have h_coeff : c0^2 + a * c1^2 = 0 ∧ 2 * c0 * c1 - 1 = 0 :=
+      quad_indep pb hdim h_eq
+    have h_contra : a = -(4 * (1 / (2 * c1))^4) := by
+      grind +qlia
+    exact h2 (1 / (2 * c1)) h_contra;
+  · intro b hb
+    obtain ⟨c0, c1, hc⟩ : ∃ c0 c1 : K, b = algebraMap K F c0 + algebraMap K F c1 * pb.gen :=
+      quad_repr pb hdim b
+    set p := c0^2 + a * c1^2
+    set q := 2 * c0 * c1
+    have h_eq : algebraMap K F (-(4 * (p^2 + a * q^2))) + algebraMap K F (-(8 * p * q)) * pb.gen = pb.gen := by
+      convert hb.symm using 1 ; rw [ hc ] ; ring;
+      rw [ show pb.gen ^ 4 = ( pb.gen ^ 2 ) ^ 2 by ring, show pb.gen ^ 3 = pb.gen * pb.gen ^ 2 by ring, hg ] ; ring;
+      simp +zetaDelta at *;
+      erw [ map_ofNat, map_ofNat, map_ofNat ] ; ring;
+    have h_coeff : -(4 * (p^2 + a * q^2)) = 0 ∧ -(8 * p * q) = 1 := by
+      convert quad_indep pb hdim ( show algebraMap K F ( - ( 4 * ( p ^ 2 + a * q ^ 2 ) ) ) + algebraMap K F ( - ( 8 * p * q ) - 1 ) * pb.gen = 0 from ?_ ) using 1;
+      · rw [ sub_eq_zero ];
+      · convert sub_eq_zero.mpr h_eq using 1 ; simp +decide [ sub_mul ] ; ring!;
+    have h_a : a = -(4 * (1 / (4 * q))^4) := by
+      by_cases hq : q = 0 <;> simp +decide [ hq, mul_assoc, mul_left_comm ] at h_coeff ⊢
+      generalize_proofs at *;
+      by_cases h4 : ( 4 : K ) = 0 <;> simp +decide [ h4 ] at h_coeff ⊢
+      generalize_proofs at *; (
+      exact False.elim ( hchar ( by rw [ show ( 4 : K ) = 2 * 2 by norm_num, mul_eq_zero ] at h4; tauto ) ));
+      obtain ⟨hp1, hp2⟩ := h_coeff
+      have hsq : 64 * p ^ 2 * q ^ 2 = 1 := by linear_combination (1 - 8 * p * q) * hp2
+      have key : a * 64 * q ^ 4 = -1 := by
+        linear_combination (64 * q ^ 2) * hp1 + (-1 : K) * hsq
+      have h4' : (4 : K) ≠ 0 := h4
+      field_simp
+      linear_combination key
+    exact h2 (1 / (4 * q)) h_a
+
+/-- The pure 2-power irreducibility, by induction on `k ≥ 1`, carrying the two
+Vahlen–Capelli conditions (`a` not a square, `a ∉ -4·K⁴`) and `2 ≠ 0`.
+The step uses `X_pow_mul_sub_C_irreducible` with `m = 2`, reducing to the descent
+lemma on the quadratic extension `K(√a)`. -/
+private lemma two_power_irred : ∀ (k : ℕ), 1 ≤ k → ∀ {K : Type u} [Field K] {a : K},
+    (2 : K) ≠ 0 → (∀ b : K, b ^ 2 ≠ a) → (∀ b : K, a ≠ -(4 * b ^ 4)) →
+    Irreducible (X ^ 2 ^ k - C a : K[X]) := by
+  intro k
+  induction k with
+  | zero => intro h; omega
+  | succ n IH =>
+    intro _ K _ a hchar h1 h2
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · -- base case `k = 1`: `X ^ 2 - C a` irreducible since `a` is not a square
+      subst hn
+      simpa using X_pow_sub_C_irreducible_of_prime Nat.prime_two h1
+    · -- step: `2 ^ (n+1) = 2 ^ n * 2`, apply `X_pow_mul_sub_C_irreducible`
+      have hkey : Irreducible (X ^ (2 ^ n * 2) - C a : K[X]) := by
+        apply X_pow_mul_sub_C_irreducible
+            (X_pow_sub_C_irreducible_of_prime Nat.prime_two h1)
+        intro E _ _ x hx
+        -- `x` is integral with `minpoly = X ^ 2 - C a`
+        have hxint : IsIntegral K x := by
+          by_contra h
+          simp only [minpoly.eq_zero h] at hx
+          have := congrArg Polynomial.natDegree hx
+          simp at this
+        set pb := adjoin.powerBasis hxint with hpb
+        have hdim : pb.dim = 2 := by
+          rw [hpb, adjoin.powerBasis_dim, hx, natDegree_X_pow_sub_C]
+        have hgen : pb.gen ^ 2 = algebraMap K K⟮x⟯ a := by
+          have h0 := minpoly.aeval K pb.gen
+          rw [hpb, adjoin.powerBasis_gen, minpoly_gen, hx] at h0
+          simpa [sub_eq_zero] using h0
+        have hchar' : (2 : K⟮x⟯) ≠ 0 := by
+          rw [← map_ofNat (algebraMap K K⟮x⟯) 2]
+          exact (_root_.map_ne_zero _).mpr hchar
+        obtain ⟨hs1, hs2⟩ := descent pb hdim hchar hgen h1 h2
+        have := IH hn hchar' hs1 hs2
+        rwa [hpb, adjoin.powerBasis_gen] at this
+      rw [pow_succ]; exact hkey
+
+/-- **Pure 2-power Vahlen–Capelli base, residual `−a ∈ K²` branch.**
+For a field `K` and `a : K` with `a` not a square, `a ∉ −4·K⁴`, and `−a` a square,
+the binomial `X^(2^k) − a` is irreducible over `K` for every `k ≥ 3`.
+
+This was the last open sub-case of the full Vahlen–Capelli formalization and matches
+Mathlib's open even-case `TODO` (`X_pow_sub_C_irreducible_of_prime_pow` is stated only for
+`p ≠ 2`). It is now proved (Aristotle project `958405df`, Lang VI §9 quadratic descent). -/
+theorem two_power_capelli_neg_square {K : Type*} [Field K] {k : ℕ} (hk : 3 ≤ k) {a : K}
+    (h1 : ∀ b : K, b ^ 2 ≠ a) (h2 : ∀ b : K, a ≠ -(4 * b ^ 4))
+    (hna : ∃ c : K, c ^ 2 = -a) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) := by
+  -- `2 ≠ 0`: otherwise `char K = 2`, so `-a = a` and `hna` would make `a` a square.
+  have hchar : (2 : K) ≠ 0 := by
+    intro h2z
+    obtain ⟨c, hc⟩ := hna
+    exact h1 c (by rw [hc]; linear_combination -a * h2z)
+  exact two_power_irred k (by omega) hchar h1 h2
+end VahlenCapelliDescent
+
 /-- **Pure `2`-power base `X^(2^k) − C a`.** If `a` is not a square and `a ∉ −4·K⁴`, then
 `X^(2^k) − C a` is irreducible over the field `K`, for every `k ≥ 1`.
 
@@ -697,9 +864,9 @@ The two low base cases are discharged here:
 For `k ≥ 3` the tower is split on whether `−a` is a square:
 * `−a ∉ K²` — discharged **unconditionally** by the norm-descent keystone
   `two_power_capelli_of_neg_not_square` (condition (2) is not needed here).
-* `−a ∈ K²` (equivalently `a = −c²`) — the sole remaining `sorry`: the genuine open content,
-  where the `−4b⁴` factorisation (`sophie_germain`) ruled out by condition (2) is
-  indispensable. Concretely, `X^(2^(k+1)) − C a = (X²)^(2^k) − C a`, so
+* `−a ∈ K²` (equivalently `a = −c²`) — the genuinely open sub-case, now closed by
+  `two_power_capelli_neg_square`: the place where the `−4b⁴` factorisation (`sophie_germain`)
+  ruled out by condition (2) is indispensable. Concretely, `X^(2^(k+1)) − C a = (X²)^(2^k) − C a`, so
   `X_pow_mul_sub_C_irreducible` reduces the step to showing a root `x` of the base
   (`x^(2^k) = a`) is **not a square** in `K(x)`; when `−a` is itself a square the norm
   descent is inconclusive and condition (2) is exactly what forbids the `x = −4y⁴`-type
@@ -721,8 +888,8 @@ theorem two_power_capelli {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k) {a : K}
       -- factorisation (condition (2)) is indispensable.  Mathlib TODO (Lang VI §9).
       -- First reduction (verified): `neg_one_not_square_of_not_square_of_neg_square h1 hc`
       -- gives `−1 ∉ K²` here, so `a = (i·c)²` becomes a square only in `L = K(i)`; the
-      -- residual descent over `L` (Lang VI §9) is the remaining content of this `sorry`.
-      sorry
+      -- residual descent over `L` (Lang VI §9), closed by `two_power_capelli_neg_square`.
+      exact two_power_capelli_neg_square (by omega) h1 h2 hna
     · -- `−a ∉ K²`: discharged unconditionally by the norm-descent keystone.
       push_neg at hna
       refine two_power_capelli_of_neg_not_square ?_ h1 hna
@@ -740,21 +907,20 @@ theorem two_power_capelli {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k) {a : K}
 * **Necessity** (`⟹`) is fully proved for all `n` as `vahlen_capelli_necessity`.
 * **Sufficiency** for **odd** `n` is `vahlen_capelli_odd` (complete, via Mathlib).
 * **Sufficiency** for **even** `n` — conditions (1),(2) ⟹ irreducible — is the hard Capelli
-  theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib. Writing
-  `n = 2^k · t` with `t` odd, the odd part `t` is handled by the norm-transfer reduction
-  `vahlen_capelli_even_mul_odd`, leaving only the pure `2`-power base `X^(2^k) − C a`. The
-  base cases `k = 1` (`n = 2`, prime) and `k = 2` (`n = 4`, `vahlen_capelli_four_suff`) are
-  proved, so **every even `n` with `8 ∤ n` is fully discharged**. In the higher `2`-power
-  regime **`8 ∣ n`** (`k ≥ 3`) the norm-descent keystone
-  `two_power_capelli_of_neg_not_square` further discharges the `−a ∉ K²` branch, so the
-  **sole remaining `sorry`** is `8 ∣ n` **with `−a ∈ K²`** (`a = −c²`). Both directions of the
-  odd case and the necessity of the even case are fully machine-checked.
+  theorem (Lang, *Algebra*, VI §9), an open `TODO` in Mathlib, and is **now fully proved
+  here**. Writing `n = 2^k · t` with `t` odd, the odd part `t` is handled by the norm-transfer
+  reduction `vahlen_capelli_even_mul_odd`, leaving only the pure `2`-power base `X^(2^k) − C a`.
+  The base cases `k = 1` (`n = 2`, prime) and `k = 2` (`n = 4`, `vahlen_capelli_four_suff`) are
+  proved; in the higher `2`-power regime **`8 ∣ n`** (`k ≥ 3`) the norm-descent keystone
+  `two_power_capelli_of_neg_not_square` discharges the `−a ∉ K²` branch, and the residual
+  `−a ∈ K²` branch is closed by `two_power_capelli_neg_square` (Lang VI §9 quadratic descent).
+  All directions are machine-checked; the whole `iff` is `sorry`-free.
 
-Proof sketch for the remaining step (`8 ∣ n`, cf. Lang VI §9): for the pure `2`-power base
-`X^(2^k) − C a` one argues by induction on `k`; the inductive obstruction is precisely the
-`−4b⁴` factorisation captured by `sophie_germain`, and condition (2) rules it out. Once that
-base is available for all `k`, `vahlen_capelli_even_mul_odd` already assembles the general
-even case. -/
+Proof of the residual step (`8 ∣ n`, `−a ∈ K²`, cf. Lang VI §9): for the pure `2`-power base
+`X^(2^k) − C a` one argues by induction on `k` (`two_power_irred`); the inductive obstruction
+is precisely the `−4b⁴` factorisation captured by `sophie_germain`, and condition (2) rules it
+out via the quadratic-extension `descent` lemma. `vahlen_capelli_even_mul_odd` then assembles
+the general even case. -/
 theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
     Irreducible (X ^ n - C a) ↔ VahlenCapelliCond K n a := by
   constructor
@@ -765,9 +931,9 @@ theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
       by_cases h8 : 8 ∣ n
       · -- `8 ∣ n`: peel off the odd part `n = 2^k · t` (`t` odd, `k = v₂(n) ≥ 3`) and reduce
         -- to the pure `2`-power base `X^(2^k) − C a` via the verified odd-multiplicativity
-        -- lemma `vahlen_capelli_even_mul_odd`.  This confines the sole remaining `sorry` to
-        -- the prime-power base `two_power_capelli` — exactly Mathlib's open TODO
-        -- (`X_pow_sub_C_irreducible_of_prime_pow`, currently restricted to `p ≠ 2`).
+        -- lemma `vahlen_capelli_even_mul_odd`.  This reduces to the prime-power base
+        -- `two_power_capelli` — exactly Mathlib's open TODO
+        -- (`X_pow_sub_C_irreducible_of_prime_pow`, restricted to `p ≠ 2`), now fully proved.
         have hn0 : n ≠ 0 := by omega
         obtain ⟨k, t, ht_odd, ht_eq⟩ := Nat.exists_eq_two_pow_mul_odd hn0
         have h2t : ¬ 2 ∣ t := by rcases ht_odd with ⟨j, rfl⟩; omega
@@ -819,15 +985,16 @@ theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
 -- ============================================================
 -- PART 7: Positive radicands over ordered fields
 -- (the −4·K⁴ obstruction is vacuous ⇒ the criterion is unconditional,
---  and the sole open even-case `sorry` is bypassed entirely)
+--  and the delicate `−a ∈ K²` even-case branch is bypassed entirely)
 -- ============================================================
 
 /-- Over a `LinearOrderedField`, a **positive** element is never the negative of a square:
 squares are `≥ 0`, so `b² = −a` would force `−a ≥ 0`, i.e. `a ≤ 0`.
 
 This is the field-order input that makes the entire even-case difficulty disappear for
-`a > 0`: the residual `−a ∈ K²` branch of `two_power_capelli` (the open Lang VI §9 descent,
-the file's sole `sorry`) is exactly the case ruled out here. -/
+`a > 0`: the residual `−a ∈ K²` branch of `two_power_capelli` (the Lang VI §9 descent, now
+proved in general as `two_power_capelli_neg_square`) is exactly the case ruled out here for
+ordered fields, giving the criterion unconditionally. -/
 theorem neg_not_square_of_pos {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {a : K} (ha : 0 < a) :
     ∀ b : K, b ^ 2 ≠ -a := by
   intro b hb
@@ -865,10 +1032,10 @@ Over a `LinearOrderedField`, for `a > 0` and `n ≥ 1`,
   `Irreducible (X^n − C a) ↔ ∀ p prime, p ∣ n → ∀ b, b^p ≠ a`.
 
 Condition (2) (the `−4·K⁴` obstruction) drops out entirely because `a > 0`, so the criterion
-is the clean "not a prime power" condition (1) alone. Unlike the general `vahlen_capelli`,
-this is **fully machine-checked with no `sorry`**: the only place the general proof invokes
-the open even-case lemma `two_power_capelli` is the `8 ∣ n` branch, and there the pure
-`2`-power base is discharged unconditionally by `two_power_capelli_pos`. -/
+is the clean "not a prime power" condition (1) alone. Like the general `vahlen_capelli` (now
+also `sorry`-free), this is **fully machine-checked with no `sorry`**; here the `8 ∣ n` branch
+that invokes `two_power_capelli` has its pure `2`-power base discharged unconditionally by
+`two_power_capelli_pos`, sidestepping the `−a ∈ K²` descent altogether. -/
 theorem vahlen_capelli_pos {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {n : ℕ} (hn : 1 ≤ n)
     {a : K} (ha : 0 < a) :
     Irreducible (X ^ n - C a) ↔ ∀ p : ℕ, Nat.Prime p → p ∣ n → ∀ b : K, b ^ p ≠ a := by
@@ -936,5 +1103,191 @@ theorem vahlen_capelli_pos_two_pow {K : Type*} [Field K] [LinearOrder K] [IsStri
     exact (vahlen_capelli_pos (Nat.one_le_pow k 2 (by norm_num)) ha).mp h 2 Nat.prime_two
       (dvd_pow_self 2 (by omega)) b
   · exact two_power_capelli_pos hk ha
+
+/-- **Prime-power exponent, positive radicand (any prime `p`).** For `n = p^k` the only
+prime divisor is `p`, so condition (1) collapses to "not a `p`-th power": over a
+`LinearOrderedField` with `a > 0`,
+
+  `Irreducible (X^(p^k) − C a) ↔ ∀ b, bᵖ ≠ a`.
+
+This is the odd-prime companion of `vahlen_capelli_pos_two_pow` (its `p = 2` instance) and
+the `k`-fold tower version of `vahlen_capelli_pos_prime`.  E.g. over `ℚ`, for the non-cube
+`a = 3` it makes `X³ − 3`, `X⁹ − 3`, `X²⁷ − 3`, … simultaneously irreducible. -/
+theorem vahlen_capelli_pos_prime_pow {K : Type*} [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] {p k : ℕ} (hp : p.Prime) (hk : 1 ≤ k) {a : K} (ha : 0 < a) :
+    Irreducible (X ^ p ^ k - C a) ↔ ∀ b : K, b ^ p ≠ a := by
+  rw [vahlen_capelli_pos (Nat.one_le_pow k p hp.pos) ha]
+  constructor
+  · intro h b
+    exact h p hp (dvd_pow_self p (by omega)) b
+  · intro h q hq hqpk b
+    obtain rfl := (Nat.prime_dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow hqpk)
+    exact h b
+
+/-- **Prime exponent, positive radicand.** The `k = 1` case of
+`vahlen_capelli_pos_prime_pow`: over a `LinearOrderedField` with `a > 0` and `p` prime,
+
+  `Irreducible (X^p − C a) ↔ ∀ b, bᵖ ≠ a`.
+
+The cleanest form of the criterion — for a prime exponent condition (1) is exactly "not a
+`p`-th power", and for positive `a` condition (2) is vacuous.  Over `ℚ` with `a = 3` (`p = 3`)
+this is the irreducibility of `X³ − 3`, the polynomial witnessing that `∛3` is irrational. -/
+theorem vahlen_capelli_pos_prime {K : Type*} [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] {p : ℕ} (hp : p.Prime) {a : K} (ha : 0 < a) :
+    Irreducible (X ^ p - C a) ↔ ∀ b : K, b ^ p ≠ a := by
+  have h := vahlen_capelli_pos_prime_pow hp (le_refl 1) ha (a := a)
+  rwa [pow_one] at h
+
+-- ============================================================
+-- PART 8: The concrete namesake instance — `X³ − 3` over `ℚ`
+-- ============================================================
+
+/-- **`3` is not a cube in `ℚ`.** No rational number cubes to `3`.
+
+This is the concrete arithmetic input that the general criterion needs to conclude that
+`X³ − 3` is irreducible (see `cubeRootThree_irreducible`). The proof is a one-prime
+valuation argument: if `b³ = 3` with `b ≠ 0`, then applying the `3`-adic valuation gives
+`3 · v₃(b) = v₃(3) = 1`, which is impossible in `ℤ` (`1` is not a multiple of `3`). This
+is exactly the ∛3-irrationality fact at the head of this gallery entry, phrased over `ℚ`. -/
+theorem three_not_cube_rat : ∀ b : ℚ, b ^ 3 ≠ 3 := by
+  intro b hb
+  have hb0 : b ≠ 0 := by rintro rfl; norm_num at hb
+  have h1 : padicValRat 3 (3 : ℚ) = 1 := by
+    have := padicValRat.self (p := 3) (by norm_num); simpa using this
+  have key : padicValRat 3 (b ^ 3) = 1 := by rw [hb, h1]
+  rw [padicValRat.pow hb0] at key
+  omega
+
+/-- **`X³ − 3` is irreducible over `ℚ` — the namesake instance (`sorry`-free, axiom-free).**
+
+This is the polynomial witnessing that `∛3` is irrational, recovered here as a direct
+instance of the general Vahlen–Capelli criterion `vahlen_capelli_pos_prime` (prime exponent
+`p = 3`, positive radicand `a = 3`): condition (1) is precisely `three_not_cube_rat`
+(`3` is not a cube) and condition (2) is vacuous because `3 > 0`. Closing the loop from the
+abstract criterion back to the concrete cube-root-of-3 headline of this entry. -/
+theorem cubeRootThree_irreducible : Irreducible (X ^ 3 - C 3 : ℚ[X]) :=
+  (vahlen_capelli_pos_prime (by norm_num : Nat.Prime 3) (by norm_num : (0 : ℚ) < 3)).mpr
+    three_not_cube_rat
+
+/-- **`∛3` is irrational.** There is no real number whose cube is `3` lying in the image of
+`ℚ`; equivalently the real cube root of `3` is irrational. Follows from `three_not_cube_rat`
+by transporting a hypothetical rational cube root along the `ℚ ↪ ℝ` ring embedding. -/
+theorem cubeRootThree_irrational {x : ℝ} (hx : x ^ 3 = 3) : Irrational x := by
+  rintro ⟨q, rfl⟩
+  exact three_not_cube_rat q (by exact_mod_cast hx)
+
+/-! ## Concrete `ℚ` instances of the Vahlen–Capelli criterion
+
+`three_not_cube_rat` (the `p = 3` case) generalises verbatim to **every** exponent by the same
+`3`-adic valuation argument: if `bᵖ = 3` then `p · v₃(b) = v₃(3) = 1` in `ℤ`, impossible for
+`p ≥ 2` since then `p ∣ 1`.  This supplies the "clean not-a-perfect-`p`-th-power in `ℚ`" lemma,
+which — fed through `vahlen_capelli_pos` — makes `Xⁿ − 3` irreducible over `ℚ` for **all** `n`,
+generalising the namesake `X³ − 3` instance to arbitrary exponent. -/
+
+/-- **`3` is not a `p`-th power in `ℚ`, for every `p ≥ 2`.**  If `bᵖ = 3` then the `3`-adic
+valuation gives `p · v₃(b) = v₃(3) = 1`, so `p ∣ 1` in `ℤ` — impossible for `p ≥ 2`.  The
+all-exponent generalisation of `three_not_cube_rat` (which is the `p = 3` case). -/
+theorem three_not_pth_power_rat {p : ℕ} (hp : 2 ≤ p) : ∀ b : ℚ, b ^ p ≠ 3 := by
+  intro b hb
+  have hb0 : b ≠ 0 := by
+    rintro rfl; rw [zero_pow (by omega : p ≠ 0)] at hb; norm_num at hb
+  have h1 : padicValRat 3 (3 : ℚ) = 1 := by
+    have := padicValRat.self (p := 3) (by norm_num); simpa using this
+  have key : padicValRat 3 (b ^ p) = 1 := by rw [hb, h1]
+  rw [padicValRat.pow hb0] at key
+  -- `key : ↑p * padicValRat 3 b = 1`, so `↑p ∣ 1`, forcing `↑p ≤ 1` against `p ≥ 2`.
+  have hd : (p : ℤ) ∣ 1 := ⟨padicValRat 3 b, key.symm⟩
+  have hle : (p : ℤ) ≤ 1 := Int.le_of_dvd one_pos hd
+  have hge : (2 : ℤ) ≤ (p : ℤ) := by exact_mod_cast hp
+  omega
+
+/-- **`Xⁿ − 3` is irreducible over `ℚ`, for every `n ≥ 1`.**  Direct instance of the general
+positive-radicand Vahlen–Capelli criterion `vahlen_capelli_pos` (with `a = 3 > 0`): condition (1)
+is `three_not_pth_power_rat` at each prime `p ∣ n`, and condition (2) is vacuous because `3 > 0`.
+Generalises the namesake `X³ − 3` instance to arbitrary exponent — every `n`-th root of `3` is
+irrational, uniformly. -/
+theorem X_pow_sub_C_three_irreducible {n : ℕ} (hn : 1 ≤ n) :
+    Irreducible (X ^ n - C (3 : ℚ)) := by
+  rw [vahlen_capelli_pos hn (by norm_num : (0 : ℚ) < 3)]
+  intro p hp _hpn b
+  exact three_not_pth_power_rat hp.two_le b
+
+/-- **`X^(2ᵏ) − 3` is irreducible over `ℚ`, for every `k ≥ 1`** — the `2`-power-exponent instance
+(the exponents relevant to the `∛3` / quadratic-tower descent of this gallery entry).  A direct
+specialisation of `X_pow_sub_C_three_irreducible`, or of `vahlen_capelli_pos_two_pow` with the
+single square obstruction `three_not_pth_power_rat (p := 2)`. -/
+theorem X_pow_two_pow_sub_C_three_irreducible {k : ℕ} (hk : 1 ≤ k) :
+    Irreducible (X ^ 2 ^ k - C (3 : ℚ)) :=
+  (vahlen_capelli_pos_two_pow hk (by norm_num : (0 : ℚ) < 3)).mpr
+    (three_not_pth_power_rat (by norm_num))
+
+-- ============================================================
+-- PART 8: Fields in which −1 is a square
+-- (the imaginary unit `i ∈ K` collapses condition (2) into condition (1),
+--  exactly as positivity does in PART 7, but for a *different* class of fields)
+-- ============================================================
+
+/-- If `−1` is a square in `K` and `a` is **not** a square, then `−a` is not a square either.
+
+The imaginary unit `j = √−1` turns any square root of `−a` into one of `a`:
+`b² = −a ⟹ (j·b)² = j²·b² = (−1)(−a) = a`.  So over a field containing `i`, the two
+"quadratic residue" predicates for `a` and `−a` coincide — the `−a ∈ K²` branch of the
+`2`-power descent is therefore **vacuous** whenever `a` is a non-square, mirroring
+`neg_not_square_of_pos` in the ordered case. -/
+theorem neg_not_square_of_neg_one_square {K : Type*} [Field K] {a : K}
+    (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    ∀ b : K, b ^ 2 ≠ -a := by
+  obtain ⟨j, hj⟩ := hj
+  intro b hb
+  exact h1 (j * b) (by rw [mul_pow, hj, hb]; ring)
+
+/-- **Capelli condition (2) is implied by condition (1) when `−1` is a square.**
+If `−1 = j²` and `a` is not a square then `a ≠ −4b⁴` for every `b`, because
+`−4b⁴ = (−1)·(2b²)² = (j·2b²)²` would exhibit `a` as a square.
+
+So over a field containing `i` the `−4·K⁴` obstruction — the genuinely two-dimensional
+content of the criterion over general fields — collapses into "not a square": `−4·K⁴ ⊆ K²`.
+This is the exact analogue of `capelli_cond_two_of_pos`, replacing the order hypothesis by
+`i ∈ K`. -/
+theorem capelli_cond_two_of_neg_one_square {K : Type*} [Field K] {a : K}
+    (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    ∀ b : K, a ≠ -(4 * b ^ 4) := by
+  obtain ⟨j, hj⟩ := hj
+  intro b hb
+  exact h1 (j * (2 * b ^ 2)) (by rw [mul_pow, hj, hb]; ring)
+
+/-- **Pure `2`-power base when `−1` is a square, via the norm-descent keystone alone.**
+Over a field in which `−1` is a square, if `a` is not a square then `X^(2^k) − C a` is
+irreducible for every `k ≥ 1`.
+
+By `neg_not_square_of_neg_one_square`, `−a` is a non-square, so the norm-descent keystone
+`two_power_capelli_of_neg_not_square` applies directly — the `−a ∈ K²` branch of the Lang
+VI §9 descent (`two_power_capelli_neg_square`) never fires here, just as positivity
+sidesteps it in `two_power_capelli_pos`. -/
+theorem two_power_capelli_of_neg_one_square {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k)
+    {a : K} (hj : ∃ j : K, j ^ 2 = -1) (h1 : ∀ b : K, b ^ 2 ≠ a) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) :=
+  two_power_capelli_of_neg_not_square hk h1 (neg_not_square_of_neg_one_square hj h1)
+
+/-- **Vahlen–Capelli criterion when `−1` is a square (condition (2) drops out).**
+Over a field `K` containing a square root of `−1`, for `a : K` and `n ≥ 1`,
+
+  `Irreducible (X^n − C a) ↔ ∀ p prime, p ∣ n → ∀ b, b^p ≠ a`.
+
+Condition (2) (the `−4·K⁴` obstruction) is subsumed by condition (1) because
+`−4·K⁴ ⊆ K²` when `i ∈ K` (`capelli_cond_two_of_neg_one_square`), so the criterion is the
+clean condition (1) alone — the imaginary-unit twin of the ordered-field simplification
+`vahlen_capelli_pos` (PART 7).  Applies to `ℂ`, the algebraic closure of any field, `ℚ(i)`,
+and every finite field `𝔽_q` with `q ≡ 1 [MOD 4]`. -/
+theorem vahlen_capelli_of_neg_one_square {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n)
+    {a : K} (hj : ∃ j : K, j ^ 2 = -1) :
+    Irreducible (X ^ n - C a) ↔ ∀ p : ℕ, Nat.Prime p → p ∣ n → ∀ b : K, b ^ p ≠ a := by
+  rw [vahlen_capelli hn]
+  constructor
+  · exact fun h => h.1
+  · intro h1
+    exact ⟨h1, fun h4 =>
+      capelli_cond_two_of_neg_one_square hj
+        (h1 2 Nat.prime_two ((by norm_num : (2 : ℕ) ∣ 4).trans h4))⟩
 
 end CubeRoot3IrrationalOQ02OQ03

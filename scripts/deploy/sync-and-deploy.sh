@@ -32,6 +32,13 @@
 #   BUILD_NODE_OPTIONS=...  Extra Node options for the build. Defaults to
 #                           "--max-old-space-size=8192" so vite does not OOM on
 #                           the current bundle.
+#   DEPLOY_GATE_MAX_DELETIONS=100
+#                           Diff-stat merge gate (issue #38398, dc9fdffa30
+#                           incident): skip auto-merging any PR whose
+#                           GitHub-reported deleted LINES exceed this; the PR
+#                           is flagged with a comment for operator review.
+#   DEPLOY_GATE_MAX_CHANGED_FILES=500
+#                           Same gate, limit on the PR's changedFiles count.
 #   SKIP_NOOP_BUILD_DETECTION=1
 #                           Disable Strategy F (issue #22149): skipping the
 #                           whole `pnpm build` invocation when no app-relevant
@@ -61,6 +68,12 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
+
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_BASE="$(loom_worktree_root "$REPO_ROOT")"
 cd "$REPO_ROOT"
 
 # Pin gh to the correct repo — this repo has a mathlib-fork remote that gh
@@ -251,6 +264,82 @@ pr_branch_safe() {
     return 0
 }
 
+# ----------------------------------------------------------------------------
+# Diff-stat merge gate (issue #38398 — the dc9fdffa30 mass deletion)
+# ----------------------------------------------------------------------------
+# On 2026-07-11 a single-file research PR (#37576) silently carried 9,927 file
+# deletions (a disk-slimmed worktree without sparse-checkout + `git add -A`)
+# through this auto-merge path: research PRs are outside the loom judge
+# lifecycle and nothing anywhere checked the diff stat, so +103/-1,201,128
+# merged on mergeability alone. This gate refuses to AUTO-merge any PR whose
+# reported deletions (lines, per GitHub) exceed DEPLOY_GATE_MAX_DELETIONS
+# (default 100) or whose changedFiles exceed DEPLOY_GATE_MAX_CHANGED_FILES
+# (default 500). Gated PRs are skipped and flagged with an idempotent PR
+# comment for operator review — the deploy script must never silently label
+# or close a PR. Intentional large PRs: an operator merges manually or raises
+# the limits via env for one cycle.
+#
+# Complementary to pr_branch_safe above: pr_branch_safe catches corrupted/
+# ancient branch TIPS (which GitHub's stats miss); this gate catches honest
+# diff stats that are simply too destructive/wide to merge unreviewed.
+DEPLOY_GATE_MAX_DELETIONS="${DEPLOY_GATE_MAX_DELETIONS:-100}"
+DEPLOY_GATE_MAX_CHANGED_FILES="${DEPLOY_GATE_MAX_CHANGED_FILES:-500}"
+DEPLOY_GATE_MARKER="<!-- deploy-diffstat-gate:38398 -->"
+
+post_diffstat_gate_comment() {
+    local pr="$1" additions="$2" deletions="$3" changed="$4"
+
+    if $DRY_RUN; then
+        echo "  Would post diff-stat gate comment on #$pr"
+        return 0
+    fi
+
+    # Idempotent: post at most once per PR (marker survives edits/rebases).
+    if gh pr view "$pr" --json comments --jq '.comments[].body' 2>/dev/null \
+        | grep -qF "$DEPLOY_GATE_MARKER"; then
+        return 0
+    fi
+
+    # Body goes via a temp file: a heredoc inside "$(...)" breaks under the
+    # host's bash 3.2 parser, and --body-file also sidesteps quoting issues.
+    local body_file
+    body_file=$(mktemp)
+    cat > "$body_file" <<EOF
+$DEPLOY_GATE_MARKER
+**Deployer diff-stat gate: auto-merge skipped.**
+
+This PR reports **+$additions / -$deletions lines across $changed files**, exceeding the deployer auto-merge limits (deletions > $DEPLOY_GATE_MAX_DELETIONS or changedFiles > $DEPLOY_GATE_MAX_CHANGED_FILES).
+
+Context: on 2026-07-11, a single-file research PR silently carried **9,927 file deletions** (a disk-slimmed worktree plus \`git add -A\`) through the auto-merge path and wiped most of the repository (commit dc9fdffa30 — see issue #38398). The deployer therefore no longer auto-merges deletion-heavy or very wide PRs.
+
+- **If this diff is intentional**: an operator can merge manually (\`gh pr merge $pr --squash\`) or raise the limits for one cycle via \`DEPLOY_GATE_MAX_DELETIONS\` / \`DEPLOY_GATE_MAX_CHANGED_FILES\`.
+- **If it is not**: check the branch for phantom deletions: \`git diff --name-status --diff-filter=D origin/main...HEAD\`.
+EOF
+    gh pr comment "$pr" --body-file "$body_file" >/dev/null 2>&1 \
+        || print_warning "  Could not post gate comment on #$pr"
+    rm -f "$body_file"
+}
+
+# Returns 0 when the PR's diff stat is within auto-merge limits; 1 when the
+# gate trips (skip the merge). Fails OPEN on inspection errors — the tree-level
+# pr_branch_safe and assert_main_intact guards still stand behind it.
+pr_diffstat_safe() {
+    local pr="$1"
+    local stats additions deletions changed
+    stats=$(gh pr view "$pr" --json additions,deletions,changedFiles 2>/dev/null) || return 0
+    additions=$(echo "$stats" | jq -r '.additions // 0' 2>/dev/null) || return 0
+    deletions=$(echo "$stats" | jq -r '.deletions // 0' 2>/dev/null) || return 0
+    changed=$(echo "$stats" | jq -r '.changedFiles // 0' 2>/dev/null) || return 0
+    [[ "$deletions" =~ ^[0-9]+$ && "$changed" =~ ^[0-9]+$ ]] || return 0
+
+    if (( deletions > DEPLOY_GATE_MAX_DELETIONS || changed > DEPLOY_GATE_MAX_CHANGED_FILES )); then
+        print_warning "  #$pr: DIFF-STAT GATE — +$additions/-$deletions across $changed files exceeds auto-merge limits (deletions <= $DEPLOY_GATE_MAX_DELETIONS, changedFiles <= $DEPLOY_GATE_MAX_CHANGED_FILES); skipping, operator review required (dc9fdffa30 guard, #38398)"
+        post_diffstat_gate_comment "$pr" "$additions" "$deletions" "$changed"
+        return 1
+    fi
+    return 0
+}
+
 # Assert origin/main still holds a full tree. Call after the merge loop; if main
 # has collapsed, something merged a destructive branch — abort before deploying.
 assert_main_intact() {
@@ -306,12 +395,19 @@ merge_prs() {
     # Try to merge each PR
     for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "MERGEABLE") | .number'); do
         if $DRY_RUN; then
-            echo "  Would merge PR #$pr"
-            ((++merged))
+            if ! pr_diffstat_safe "$pr"; then
+                echo "  Would skip PR #$pr (diff-stat gate)"
+            else
+                echo "  Would merge PR #$pr"
+                ((++merged))
+            fi
         else
             echo -n "  #$pr: "
             if ! pr_branch_safe "$pr"; then
                 echo "skipped (unsafe tree)"
+                ((++failed))
+            elif ! pr_diffstat_safe "$pr"; then
+                echo "skipped (diff-stat gate — operator review required)"
                 ((++failed))
             elif gh pr merge "$pr" --squash 2>/dev/null; then
                 echo "merged"
@@ -335,6 +431,8 @@ merge_prs() {
                 echo -n "  #$pr: "
                 if ! pr_branch_safe "$pr"; then
                     echo "skipped (unsafe tree)"
+                elif ! pr_diffstat_safe "$pr"; then
+                    echo "skipped (diff-stat gate — operator review required)"
                 elif gh pr merge "$pr" --squash 2>/dev/null; then
                     echo "merged"
                     ((++merged))
@@ -406,8 +504,9 @@ This branch has been deleted. If you believe this version carries unique content
         # If no worktree found, create a temporary one
         local temp_worktree=false
         if [[ -z "$worktree_path" ]]; then
-            worktree_path="$REPO_ROOT/.loom/worktrees/temp-rebase-$$"
+            worktree_path="$WORKTREES_BASE/temp-rebase-$$"
             print_info "Creating temporary worktree for rebase..."
+            mkdir -p "$WORKTREES_BASE"
             git fetch origin "$branch"
             git worktree add "$worktree_path" "origin/$branch" --detach 2>/dev/null || {
                 print_warning "Could not create worktree for #$pr"
@@ -551,7 +650,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
         sleep 3
         local new_status=$(gh pr view "$pr" --json mergeable --jq '.mergeable' 2>/dev/null || echo "UNKNOWN")
         echo -n "  #$pr (after rebase): "
-        if [[ "$new_status" == "MERGEABLE" ]] && pr_branch_safe "$pr" && gh pr merge "$pr" --squash 2>/dev/null; then
+        if [[ "$new_status" == "MERGEABLE" ]] && pr_branch_safe "$pr" && pr_diffstat_safe "$pr" && gh pr merge "$pr" --squash 2>/dev/null; then
             echo "merged"
             ((++merged))
         else

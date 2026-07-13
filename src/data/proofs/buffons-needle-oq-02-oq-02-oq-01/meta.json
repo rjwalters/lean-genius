@@ -46,12 +46,20 @@
   },
   "sections": [
     {
-      "id": "recurrence",
-      "title": "The Crossing Factor Recurrence (re-declared)",
-      "summary": "crossingFactor by the recurrence alpha_{n+2} = (n/(n+1)) alpha_n with base values, plus positivity for n >= 2.",
+      "id": "overview",
+      "title": "Overview: the monotonicity open question",
+      "summary": "Import (Mathlib) and the module docstring. It frames the open question — the n-dimensional Buffon noodle formula E[crossings] = αₙ·L/d is governed by the crossing factor αₙ = E_{Sⁿ⁻¹}[|u₁|] with recurrence α_{n+2} = (n/(n+1))·αₙ (bases α₂ = 2/π, α₃ = 1/2); the companion records individual values but leaves the global monotone behaviour open — and previews the four results (strict two-step decrease, maximum 2/π, sub-one bound, the concrete α₃ < α₂), noting the file is self-contained because the companion fails to build on the pinned Mathlib.",
       "startLine": 1,
+      "endLine": 45,
+      "mathContext": "$E[\\text{crossings}] = \\alpha_n\\,L/d$ with $\\alpha_{n+2} = \\tfrac{n}{n+1}\\alpha_n$, $\\alpha_2 = 2/\\pi$, $\\alpha_3 = 1/2$: what is the global monotone behaviour of $\\alpha_n$?"
+    },
+    {
+      "id": "recurrence",
+      "title": "The Crossing Factor Recurrence and Positivity (re-declared)",
+      "summary": "crossingFactor defined by the recurrence α_{n+4} = ((n+2)/(n+3))·α_{n+2} with base values α₂ = 2/π, α₃ = 1/2; the base and step simp lemmas (crossingFactor_two/three/succ_succ); and crossingFactor_pos, positivity for n ≥ 2 by two-step strong induction.",
+      "startLine": 46,
       "endLine": 78,
-      "mathContext": "Re-declared verbatim because the companion file fails to build on the pinned Mathlib; positivity by two-step strong induction."
+      "mathContext": "Re-declared verbatim because the companion file fails to build on the pinned Mathlib; positivity by two-step strong induction over the recurrence."
     },
     {
       "id": "two-step-monotone",
@@ -62,12 +70,20 @@
       "mathContext": "The recurrence multiplies the positive alpha_n by n/(n+1) < 1; the concrete 1/2 < 2/pi from pi < 4."
     },
     {
-      "id": "maximum-and-bound",
-      "title": "The Maximum is 2/pi, hence alpha_n < 1",
-      "summary": "crossingFactor_le_two_div_pi (alpha_n <= 2/pi for n >= 2) and crossingFactor_lt_one (alpha_n < 1).",
+      "id": "maximum",
+      "title": "The Maximum is 2/π",
+      "summary": "crossingFactor_le_two_div_pi: αₙ ≤ 2/π for all n ≥ 2, by two-step strong-induction descent from the base values α₂ = 2/π and α₃ = 1/2 ≤ 2/π (the recurrence ratio (m+2)/(m+3) ≤ 1 keeps each step below the bound). Both the even and odd subsequences start at their largest value and decrease.",
       "startLine": 99,
+      "endLine": 122,
+      "mathContext": "$\\alpha_n \\le 2/\\pi$ for $n \\ge 2$, by two-step descent from the base values (ratio $(m+2)/(m+3) \\le 1$)."
+    },
+    {
+      "id": "sub-one-and-significance",
+      "title": "Below One in Every Dimension, and Significance",
+      "summary": "crossingFactor_lt_one: αₙ < 1 for all n ≥ 2, immediate from αₙ ≤ 2/π < 1 (since 2 < π) — the expected crossings per unit L/d never reach one. Closes with the significance docstring: αₙ measures how expected crossings thin as dimension grows (αₙ → 0), the two-step structure reflecting the even/odd interleaving with the odd subsequence starting below the even one.",
+      "startLine": 123,
       "endLine": 151,
-      "mathContext": "Two-step descent from base values; 2/pi < 1 because 2 < pi."
+      "mathContext": "$\\alpha_n < 1$ because $\\alpha_n \\le 2/\\pi < 1$ ($2 < \\pi$); the crossing factor thins with dimension, $\\alpha_n \\to 0$."
     }
   ],
   "mainTheorems": [

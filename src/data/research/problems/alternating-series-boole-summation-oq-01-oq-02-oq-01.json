@@ -1,0 +1,97 @@
+{
+  "slug": "alternating-series-boole-summation-oq-01-oq-02-oq-01",
+  "title": "Strict localization of the Boole-summation limit for a strictly antitone sequence",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a strictly antitone null sequence a : ℕ → ℝ with alternating sum L, |L − Sₘ| < aₘ for every m and L ∈ (0, a₀), where Sₘ = ∑_{j<m} (-1)ʲ aⱼ.",
+    "plain": "Sharpen the parent's closed-interval localization L ∈ [0, a₀] and non-strict remainder bound |L − Sₘ| ≤ aₘ to strict interior versions when a is strictly antitone.",
+    "whyMatters": [
+      "Pins down exactly when the classical alternating-series bracketing is tight: the ≤/closed bounds are attained only at the degenerate (eventually-constant) boundary, never in the strictly monotone interior."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "|L − Sₘ| < aₘ (strict remainder bound)",
+      "L ∈ (0, a₀) (open-interval localization)"
+    ],
+    "open": [],
+    "goal": "Strict-interior sharpening of the sharp two-sided Boole-summation estimates."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-07-12",
+    "iteration": 1,
+    "focus": "Strict bracketing from one extra same-parity monotone step.",
+    "blockers": [],
+    "nextAction": "None — node solved axiom-free.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: strict-interior sharpening proved axiom-free (7 theorems, 0 sorries, 0 axioms) in Proofs/AlternatingSeriesBooleSummationOQ01OQ02OQ01.lean.",
+    "builtItems": [
+      "even_step_lt / odd_step_lt: strict same-parity monotonicity of partial sums from StrictAnti a (Proofs/AlternatingSeriesBooleSummationOQ01OQ02OQ01.lean)",
+      "even_partial_lt / lt_odd_partial: strict one-sided bracketing S_{2k} < L < S_{2k+1}, upgrading the parent's non-strict even_partial_le / le_odd_partial",
+      "remainder_bound_strict: |L − Sₘ| < aₘ, the strict form of the parent remainder_bound (no null hypothesis needed)",
+      "partial_bracket_strict: (Sₘ − L)(S_{m+1} − L) < 0, strict form of parent partial_bracket",
+      "sum_mem_Ioo: L ∈ (0, a₀), open-interval sharpening of the parent sum_mem_Icc (L ∈ [0, a₀])"
+    ],
+    "insights": [
+      "Strictness is a one-step-of-the-same-parity phenomenon: S_{2k} < S_{2(k+1)} ≤ L squeezes the strict even bound, dually for odd, so no new analytic input beyond Mathlib's non-strict alternating-series test is required.",
+      "The strict remainder bound needs no null hypothesis on a: convergence of the partial sums already forces aₘ > 0 inside the strict two-sided brackets.",
+      "The closed-interval / ≤ bounds of the parent are attained only at the degenerate eventually-constant boundary (e.g. a ≡ 0 gives L = 0 = a₀); strict antitonicity removes every boundary case."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "series",
+    "alternating-series",
+    "boole-summation",
+    "remainder-bound",
+    "error-estimate",
+    "convergence",
+    "leibniz-criterion",
+    "limits"
+  ],
+  "relatedProofs": [
+    "alternating-series-boole-summation",
+    "alternating-series-boole-summation-oq-01",
+    "alternating-series-boole-summation-oq-01-oq-02",
+    "alternating-series-boole-summation-oq-01-oq-02-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Antitone.alternating_series_le_tendsto",
+      "Antitone.tendsto_le_alternating_series"
+    ]
+  },
+  "started": "2026-07-12",
+  "lastUpdate": "2026-07-12",
+  "completed": "2026-07-12",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AlternatingSeriesBooleSummationOQ01OQ02OQ01.lean",
+      "filename": "AlternatingSeriesBooleSummationOQ01OQ02OQ01.lean",
+      "lineCount": 200,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlternatingSeriesBooleSummationOQ01OQ02OQ01.lean"
+    }
+  ]
+}

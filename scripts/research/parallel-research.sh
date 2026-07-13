@@ -30,7 +30,11 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
+# Resolved worktree base (LOOM_WORKTREE_ROOT env var / .loom/config.json
+# worktree.root override; default $REPO_ROOT/.loom/worktrees).
+# shellcheck source=../lib/worktree-root.sh
+source "$REPO_ROOT/scripts/lib/worktree-root.sh"
+WORKTREES_DIR="$(loom_worktree_root "$REPO_ROOT")"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_SCRIPT="$REPO_ROOT/scripts/research/claim-problem.sh"
@@ -110,6 +114,81 @@ create_worktree() {
         rm -rf "$worktree_path/proofs/.lake" 2>/dev/null || true
         ln -s "$REPO_ROOT/proofs/.lake" "$worktree_path/proofs/.lake"
     fi
+}
+
+# Install the mass-deletion pre-commit tripwire into a worktree (guard 1 of
+# issue #38398 — the dc9fdffa30 incident: a disk-slimmed worktree + `git add -A`
+# staged 9,927 phantom deletions).
+#
+# Hook resolution in worktrees: linked worktrees share the main repo's
+# .git/hooks (and any core.hooksPath from the SHARED .git/config) unless
+# core.hooksPath is set in the WORKTREE-SCOPED config, which requires
+# extensions.worktreeConfig=true. We point each researcher worktree at its own
+# hooks dir under .git/worktrees/<name>/hooks so (a) nothing untracked appears
+# inside the worktree (a stage-all commit would pick it up), and (b) the main
+# checkout and sibling worktrees are unaffected.
+install_deletion_tripwire() {
+    local worktree_path="$1"
+    local tripwire="$REPO_ROOT/scripts/research/check-staged-deletions.sh"
+
+    if [[ ! -f "$tripwire" ]]; then
+        print_warning "Deletion tripwire missing: $tripwire — hook NOT installed"
+        return 0
+    fi
+
+    local wt_git_dir hooks_dir
+    wt_git_dir=$(git -C "$worktree_path" rev-parse --absolute-git-dir 2>/dev/null) || {
+        print_warning "Could not resolve git dir for $worktree_path — hook NOT installed"
+        return 0
+    }
+    hooks_dir="$wt_git_dir/hooks"
+    mkdir -p "$hooks_dir"
+    cp "$tripwire" "$hooks_dir/pre-commit"
+    chmod +x "$hooks_dir/pre-commit"
+    git -C "$worktree_path" config extensions.worktreeConfig true 2>/dev/null || true
+    if git -C "$worktree_path" config --worktree core.hooksPath "$hooks_dir" 2>/dev/null; then
+        print_info "Installed mass-deletion pre-commit tripwire: $hooks_dir/pre-commit"
+    else
+        print_warning "Could not set per-worktree core.hooksPath for $worktree_path — hook NOT active"
+    fi
+}
+
+# Worktree health check (guard 4 of issue #38398). A worktree that was
+# disk-slimmed WITHOUT sparse-checkout shows thousands of tracked files as
+# locally deleted; any stage-all commit would stage those deletions (that is
+# how dc9fdffa30 wiped 9,927 files). Refuse to launch a researcher into such a
+# worktree: missing-on-disk tracked files > 5% of tracked total AND
+# sparse-checkout not enabled. Override with LAUNCH_ANYWAY=1.
+worktree_health_check() {
+    local worktree_path="$1"
+
+    local tracked missing
+    tracked=$(git -C "$worktree_path" ls-files 2>/dev/null | wc -l | tr -d ' ')
+    missing=$(git -C "$worktree_path" status --porcelain 2>/dev/null | grep -c '^ D\|^D ' || true)
+    missing=${missing:-0}
+
+    # Empty/unreadable index — nothing to assess (fail open on inspection error).
+    [[ -z "$tracked" || "$tracked" -eq 0 ]] && return 0
+
+    local sparse
+    sparse=$(git -C "$worktree_path" config --get core.sparseCheckout 2>/dev/null || echo "false")
+
+    if (( missing * 20 > tracked )) && [[ "$sparse" != "true" ]]; then
+        print_error "WORKTREE HEALTH CHECK FAILED: $worktree_path"
+        print_error "  $missing of $tracked tracked files are deleted on disk (>5%) and sparse-checkout is OFF."
+        print_error "  This is the exact state that caused the dc9fdffa30 mass deletion (9,927 files"
+        print_error "  staged by 'git add -A'; issue #38398). A researcher launched here could commit"
+        print_error "  those deletions."
+        print_error "  Fix:      git -C $worktree_path checkout -- ."
+        print_error "  Slim safely instead: scripts/research/slim-worktree.sh (sparse-checkout)"
+        print_error "  Override: LAUNCH_ANYWAY=1"
+        if [[ "${LAUNCH_ANYWAY:-}" == "1" ]]; then
+            print_warning "LAUNCH_ANYWAY=1 set — launching despite failed health check"
+            return 0
+        fi
+        return 1
+    fi
+    return 0
 }
 
 # Create prompt file for agent
@@ -226,6 +305,16 @@ launch_agent() {
     print_info "Creating worktree for agent $agent_num..."
     create_worktree "$agent_num"
 
+    # Guard 4 (#38398): refuse to launch into a disk-slimmed worktree whose
+    # tracked files are missing without sparse-checkout protection.
+    if ! worktree_health_check "$worktree_path"; then
+        print_error "Refusing to launch researcher-$agent_num (worktree failed health check)"
+        return 1
+    fi
+
+    # Guard 1 (#38398): mass-deletion pre-commit tripwire for this worktree.
+    install_deletion_tripwire "$worktree_path"
+
     # Create prompt file
     local prompt_file
     prompt_file=$(create_prompt_file "$agent_num")
@@ -275,15 +364,23 @@ launch_agents() {
     print_info "Wait interval when no work: $wait_interval minutes"
     echo ""
 
+    local launch_failures=0
     for i in $(seq 1 "$count"); do
-        launch_agent "$i"
+        # A failed health check (guard 4, #38398) skips that slot without
+        # aborting the remaining launches under `set -e`.
+        launch_agent "$i" || { print_warning "researcher-$i NOT launched (see above)"; ((++launch_failures)); }
     done
+
+    if [[ $launch_failures -gt 0 ]]; then
+        print_warning "$launch_failures agent(s) failed to launch"
+    fi
 
     echo ""
     print_success "All agents launched in isolated worktrees!"
     echo ""
     echo "Each agent has:"
-    echo "  - Its own worktree in .loom/worktrees/researcher-N"
+    echo "  - Its own worktree: researcher-N under the resolved worktree root"
+    echo "    (default .loom/worktrees/; override via LOOM_WORKTREE_ROOT or .loom/config.json worktree.root)"
     echo "  - Its own branch: feature/researcher-N"
     echo "  - Creates PRs for research progress"
     echo "  - Waits $wait_interval min when no work available (loops, doesn't exit)"
@@ -509,7 +606,9 @@ Environment Variables:
   RESEARCHER_WAIT_INTERVAL  Minutes to wait when no work available (default: 15)
 
 How it works:
-  1. Each agent gets its own worktree: .loom/worktrees/researcher-N
+  1. Each agent gets its own worktree: researcher-N under the resolved
+     worktree root (default .loom/worktrees/; override via LOOM_WORKTREE_ROOT
+     env var or .loom/config.json worktree.root)
   2. Each agent works on its own branch: feature/researcher-N
   3. Agents claim problems atomically (knowledge-prioritized)
   4. Each agent: claim → research → commit → push → create PR → repeat

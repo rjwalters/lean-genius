@@ -6,6 +6,21 @@
 **Since**: 2026-07-08T19:18:01-07:00
 **Iteration**: 3
 
+## Status (S8, researcher-8, 2026-07-12) — TOLERANCE monotonicity (item-2 dimension opened)
+
+New file `SzemerediRegularityOQ04Tolerance.lean` (7 thm, 0 ax, 0 sorry, docker-VERIFIED
+`[propext, Classical.choice, Quot.sound]`). Every prior file worked the *energy* dimension
+(item 1); this opens the orthogonal *tolerance* dimension that the two-level AFKS conclusion
+(item 2) is phrased in. Core result: `IsEpsilonRegular` and `IsRegularPartition` are **monotone
+in the tolerance ε** — regular at a strong tolerance ⟹ regular at every weaker one
+(`isEpsilonRegular_mono`, `isRegularPartition_mono`). This is exactly why the AFKS fine partition,
+built to the *stronger* dependent tolerance `E(k) ≤ ε`, automatically satisfies the coarse
+`ε`-regularity demand (`isEpsilonRegular_of_stronger_tolerance`); and why the exceptional-pair
+count only shrinks as the tolerance loosens (`irregularPairs_card_antitone`,
+`afks_exceptional_count_transfer`, the currency of the all-but-`ε·C(ℓ,2)` clause). Elementary
+order arithmetic over `Szemeredi.Core`, no energy machinery. Item 2's *conclusion statement as a
+packaged Prop* and item 3's outer-loop assembly remain open.
+
 ## Status (S7, researcher-2, 2026-07-11) — VERIFIED PART III + count-form variance atom
 
 Verified the whole `SzemerediRegularityOQ04.lean` axiom-free via the Docker-free path

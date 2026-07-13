@@ -32,6 +32,22 @@ git worktree remove .claude/worktrees/my-fix
 
 Or use the Claude Code `isolation: "worktree"` agent option for automatic worktree management.
 
+### Worktree location
+
+Fleet and Loom worktrees honor a configurable worktree root (resolved by
+`scripts/lib/worktree-root.sh`, precedence: `LOOM_WORKTREE_ROOT` env var >
+`.loom/config.json` → `worktree.root` > default `$REPO_ROOT/.loom/worktrees`).
+On this fleet's host the operator sets `worktree.root = "/Volumes/Stripe"`
+in `.loom/config.json` (runtime state — gitignored, NOT tracked), so agent
+worktrees (`enricher-N`, `researcher-N`, `erdos-N`, `aristotle`, …) resolve
+to `/Volumes/Stripe/lean-genius/<name>` on the dedicated 3.6 TiB volume
+instead of the boot disk. Overrides are namespaced by repo basename; an
+override must be an absolute path (a relative value warns and falls back to
+the default).
+Cleanup/GC (`scripts/clean-branches.sh`, `scripts/lean/infra-guardian.sh`)
+services worktrees at both the resolved root and the legacy
+`.loom/worktrees/` location during the transition.
+
 ---
 
 ## DANGER: Never Run `lake build` Directly

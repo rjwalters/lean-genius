@@ -70,7 +70,8 @@
       "The reflection must act as x ↦ -i - x, not the geometrically tempting x ↦ i - x: only the former makes the position assignment a homomorphism for Mathlib's dihedral multiplication convention sr i * sr j = r (j - i)",
       "Burnside lets one avoid enumerating the orbit quotient (the expensive step the parent did with native_decide): only the fixed-point sum needs evaluation, and that is light enough for kernel decide (8 × 16 checks over Fin-based data)",
       "The single fixed-point sum 48 subsumes both hypotheses the parent assumed — the necklace contribution (16+2+4+2 = 24 from the rotations) and the reflection total (8+8+4+4 = 24 from the reflections) — so the count becomes unconditional",
-      "Representing positions as ZMod 4 and colours as Fin 2 keeps every object Fin-based, so kernel reduction of the action and the decidable-equality of colourings stays cheap"
+      "Representing positions as ZMod 4 and colours as Fin 2 keeps every object Fin-based, so kernel reduction of the action and the decidable-equality of colourings stays cheap",
+      "The fixed-point sum is discharged by kernel decide, not native_decide, and this is the point of the entry's honesty claim: native_decide trusts the compiler and injects the Lean.ofReduceBool axiom, whereas kernel decide reduces inside the trusted kernel and adds nothing — the closing #print axioms confirms only propext / Classical.choice / Quot.sound. So this count is genuinely axiom-free/verified, where the parent's native_decide route would carry Lean.ofReduceBool; the Fin-based encoding is exactly what keeps the 8×16 reduction light enough for the kernel to do it without native compilation."
     ],
     "prerequisites": [
       "Group actions, orbits, and the orbit-counting (Burnside/Cauchy–Frobenius) lemma",
@@ -99,9 +100,17 @@
       "id": "action",
       "title": "The Induced Action on Colourings",
       "startLine": 108,
-      "endLine": 130,
-      "summary": "(g • c) p = c ((ρ g)⁻¹ p) is a genuine MulAction of D₄ on Coloring = ZMod 4 → Fin 2 because ρ is a homomorphism; Fintype/DecidablePred instances for the fixed-point sets follow.",
+      "endLine": 122,
+      "summary": "(g • c) p = c ((ρ g)⁻¹ p) is a genuine MulAction of D₄ on Coloring = ZMod 4 → Fin 2 because ρ is a homomorphism (one_smul from ρ.map_one, mul_smul from ρ.map_mul); smul_apply unfolds the action pointwise for the fixed-point computations.",
       "mathContext": "$(g \\cdot c)(p) = c\\big((\\rho g)^{-1} p\\big).$"
+    },
+    {
+      "id": "fintype-instances",
+      "title": "Fintype and Decidability Instances for Burnside",
+      "startLine": 124,
+      "endLine": 151,
+      "summary": "Part III supplies the instances that make Burnside's lemma applicable and the bracelet count well-defined: decFixed (each fixed-point predicate g • c = c is decidable via decEq) and fintypeFixedBy (each Fix(g) is a Fintype), plus decidability of the orbit relation (two colourings are related iff ∃ g, g • b = a — decidable because D₄ is a Fintype and colourings have decidable equality) and the resulting Fintype instance on the orbit quotient orbitRel.Quotient (DihedralGroup 4) Coloring, so its cardinality — the bracelet count — is well-defined.",
+      "mathContext": "$\\mathrm{Fix}(g) = \\{c : g\\cdot c = c\\}$ decidable and finite; $a \\sim b \\iff \\exists g,\\, g\\cdot b = a$ decidable $\\Rightarrow$ the orbit quotient is a $\\mathrm{Fintype}$."
     },
     {
       "id": "count",

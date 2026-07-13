@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "overview-and-setup",
+      "title": "Overview: The Small-N Floor Beneath the Axiomatised Asymptotics",
+      "startLine": 1,
+      "endLine": 31,
+      "mathContext": "$h = 0,1,1,1$ on $N = 0,1,2,3$ and $h(4) = 3$, beneath the deep envelope $\\exp(c(\\log N)^{1/9}) \\ll h(N) \\ll N^{2/3}$.",
+      "summary": "The module docstring fixes the problem: h(N) is the least number of colours on {1,…,N} making every four-term AP 3-diverse (≥ 3 distinct colours), and Erdős #160 (open) asks for the growth of h(N). The deep asymptotic bounds — h(N) ≪ N^{2/3} (Hunter) and h(N) ≫ exp(c(log N)^{1/9}) — live in the parent Erdos160Problem.lean only as axioms. This file instead proves, axiom- and sorry-free, the exact base of the function that the asymptotics silently build on: not_achievable_le_two, h_ge_three, and h_four, pinning h completely up to the first 4-AP (h = 0,1,1,1 on N ≤ 3, h(4) = 3). The file imports Mathlib and the parent, and opens the Erdos160 namespace to reuse Achievable, Is4AP, colorCount4 and h."
+    },
+    {
       "id": "two-colours",
       "title": "Two Colours Never Suffice",
       "startLine": 32,

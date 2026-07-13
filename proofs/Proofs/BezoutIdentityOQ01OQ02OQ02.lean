@@ -667,4 +667,73 @@ theorem not_forall_sl_fin_one_orbit :
     rw [Pi.single_eq_same]
   exact not_exists_sl_fin_one_single_neg (H _ _ hp1 hp2)
 
+/-- **`SL₁(ℤ)`-orbits are singletons.**  In dimension `1` two vectors are
+`SL₁(ℤ)`-equivalent iff they are *equal*: the action is trivial
+(`sl_fin_one_mulVec`), so each orbit is a single point.  Contrast
+`exists_sl_mulVec_eq_of_isPrimitive`, where for `n ≥ 2` all primitive vectors
+form one orbit. -/
+theorem sl_one_equiv_iff_eq (v w : Fin 1 → ℤ) :
+    (∃ A : Matrix.SpecialLinearGroup (Fin 1) ℤ,
+      (A : Matrix (Fin 1) (Fin 1) ℤ) *ᵥ v = w) ↔ v = w := by
+  constructor
+  · rintro ⟨A, hA⟩
+    rw [← hA, sl_fin_one_mulVec]
+  · rintro rfl
+    exact ⟨1, by rw [SpecialLinearGroup.coe_one, Matrix.one_mulVec]⟩
+
+/-- **The obstruction is exactly the determinant sign.**  The reflection `U = !![-1]`
+has `det U = -1` (a *unit* of `ℤ`, so `U` is unimodular / lies in `GL₁(ℤ)`) and
+carries `-e₀` to `e₀`.  Thus enlarging `SL₁(ℤ)` (`det = 1`) to `GL₁(ℤ)` (`det = ±1`)
+merges the two orbits that `not_exists_sl_fin_one_single_neg` keeps apart: the `n = 1`
+failure of transitivity is *precisely* the `det = 1` constraint, nothing deeper. -/
+theorem exists_unimodular_mulVec_neg_single_fin_one :
+    ∃ U : Matrix (Fin 1) (Fin 1) ℤ, IsUnit U.det ∧
+      U *ᵥ (Pi.single 0 (-1) : Fin 1 → ℤ) = Pi.single 0 1 := by
+  refine ⟨!![-1], ?_, ?_⟩
+  · rw [Matrix.det_fin_one_of]
+    exact Int.isUnit_iff.mpr (Or.inr rfl)
+  · funext i
+    fin_cases i
+    simp [Matrix.mulVec, dotProduct, Pi.single_eq_same]
+
+/-! ### Unimodular completion and the classical `gcd = 1` phrasing -/
+
+/-- **Unimodular completion (`n ≥ 2`).**  Every primitive integer vector `v` is a
+*column* of some `A ∈ SLₙ(ℤ)`: for any target column index `t`, there is a unimodular
+matrix whose `t`-th column is exactly `v`.  Equivalently, a primitive vector extends
+to a `ℤ`-basis of `ℤⁿ` (Newman, *Integral Matrices*; the completability of a primitive
+vector to a unimodular matrix).  This is the *dual* face of transitivity: whereas
+`exists_sl_mulVec_basis_of_isPrimitive` carries `v` **onto** a basis vector, here we
+carry a basis vector **onto** `v` by taking the inverse matrix — its `t`-th column is
+`A⁻¹ · eₜ = v`.  The two together say the `SLₙ(ℤ)`-orbit of `eₜ` (for `n ≥ 2`) is
+simultaneously the set of primitive vectors and the set of columns realizable in
+`SLₙ(ℤ)`.  (The `mulVec`-of-`Pi.single` face of this statement is
+`isPrimitive_iff_exists_sl_column`.) -/
+theorem exists_sl_col_eq_of_isPrimitive (hn : 1 < n) {v : Fin n → ℤ}
+    (hv : IsPrimitive v) (t : Fin n) :
+    ∃ A : Matrix.SpecialLinearGroup (Fin n) ℤ, (↑ₘA).col t = v := by
+  obtain ⟨U, hU⟩ := exists_sl_mulVec_basis_of_isPrimitive hn hv t
+  refine ⟨U⁻¹, ?_⟩
+  rw [← Matrix.mulVec_single_one, ← hU, Matrix.mulVec_mulVec, ← SpecialLinearGroup.coe_mul,
+    inv_mul_cancel, SpecialLinearGroup.coe_one, Matrix.one_mulVec]
+
+/-- **The `n = 2` bridge to the parent's `IsCoprime` phrasing.**  For a pair
+`v : Fin 2 → ℤ`, the coordinate-free primitivity predicate is exactly Bézout
+coprimality of the two entries: `IsPrimitive v ↔ IsCoprime (v 0) (v 1)`.  This makes
+the connection to the parent entry `bezout-identity-oq-01-oq-02` — which works with a
+coprime pair `(a, b)` and its `bezoutSL` — completely explicit: both `IsPrimitive` and
+`IsCoprime` unfold to the *same* Bézout relation `w₀·v₀ + w₁·v₁ = 1`, so the dual
+vector `w` and the Bézout coefficients coincide. -/
+theorem isPrimitive_fin_two_iff_isCoprime (v : Fin 2 → ℤ) :
+    IsPrimitive v ↔ IsCoprime (v 0) (v 1) := by
+  constructor
+  · rintro ⟨w, hw⟩
+    have hwv : w 0 * v 0 + w 1 * v 1 = 1 := by
+      simpa [dotProduct, Fin.sum_univ_two] using hw
+    exact ⟨w 0, w 1, hwv⟩
+  · rintro ⟨a, b, hab⟩
+    refine ⟨![a, b], ?_⟩
+    simp only [dotProduct, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+    linarith [hab]
+
 end BezoutPrimitive

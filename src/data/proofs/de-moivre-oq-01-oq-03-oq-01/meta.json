@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Integer-Index Closure of the De Moivre–Chebyshev Identity",
+      "summary": "The header docstring states the open question inherited from the parent — does the algebraic identity (C R n).eval(z + w) = zⁿ + wⁿ (valid for natural n on the locus z·w = 1) close up under negation? — and answers YES, forced by the constraint: on z·w = 1 the two-sided power map m ↦ zᵐ sends -m to wᵐ, and combined with the Chebyshev symmetry C_{-n} = C_n the negative-index case reduces to the positive one with z and w swapped. It packages the result two ways: a division-free units form over an arbitrary CommRing (zⁿ taken in the unit group Rˣ) and a field form covering ZMod p, ℚ_p, ℝ and ℂ.",
+      "startLine": 1,
+      "endLine": 48,
+      "mathContext": "Goal: extend $(C_R\\,n)(z+z^{-1}) = z^n + z^{-n}$ from $n \\in \\mathbb{N}$ to all $n \\in \\mathbb{Z}$, using $C_{-n} = C_n$ (`Chebyshev.C_neg`) and $z^{-m} = (z^{-1})^m$."
+    },
+    {
       "id": "imports",
       "title": "Imports",
       "summary": "Imports Mathlib's Chebyshev polynomial library, the p-adic numbers, and the parent file providing the natural-index engine.",
@@ -116,7 +124,8 @@
     "summary": "The parent's first open question is answered affirmatively: the algebraic De Moivre–Chebyshev identity extends from natural exponents to ALL integers n ∈ ℤ. The negative-index case is forced by the unit-circle constraint and the Chebyshev symmetry C_{-n} = C_n, reducing to the positive case with z and w swapped. Stated in a division-free units form over any commutative ring and a field form covering ZMod p, ℚ_p, ℝ and ℂ. 4 theorems, 0 sorries, 0 axioms, no native_decide.",
     "implications": "**Significance**\n\n1. **The orbit is complete.** The power map z ↦ zⁿ is conjugate to evaluation of the fixed integer-indexed polynomial C for every n ∈ ℤ — the two-sided closure of the parent's one-sided result.\n\n2. **Division-free generality.** The units form holds over any commutative ring with the ℤ-power taken in the unit group, so the integer extension needs neither a field nor division; the field statement is its Units.val image.\n\n3. **Cryptographic two-sidedness.** In the finite-field Lucas/Chebyshev setting, negative exponents correspond to inverse 'exponentiation', and the identity now covers them uniformly — relevant to decryption / inversion in Chebyshev-map schemes.",
     "openQuestions": [
-      "Does the integer-index identity assemble into the full semigroup/group law C_{mn} = C_m ∘ C_n over ℤ, exhibiting n ↦ C_n as a monoid homomorphism (ℤ, ·) → (End, ∘) restricted to the unit-circle locus?"
+      "Does the integer-index identity assemble into the full semigroup/group law C_{mn} = C_m ∘ C_n over ℤ, exhibiting n ↦ C_n as a monoid homomorphism (ℤ, ·) → (End, ∘) restricted to the unit-circle locus?",
+      "Specialize the integer-index identity to the classical trigonometric De Moivre statement over ℝ/ℂ: taking z = e^{iθ} (so |z| = 1 and z⁻¹ = conj z), (C n).eval(2 cos θ) = 2 cos(nθ) should hold for all n ∈ ℤ, making the algebraic closure's geometric content — the even symmetry cos(-nθ) = cos(nθ) — explicit as the analytic shadow of C_{-n} = C_n."
     ]
   },
   "relatedProblems": [

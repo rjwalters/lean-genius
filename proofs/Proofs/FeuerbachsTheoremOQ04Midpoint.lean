@@ -289,6 +289,36 @@ theorem scos_sMidpoint_pos (A B : E) (hA : OnSphere A) (hB : OnSphere B)
   rw [scos_sMidpoint_left A B hA hB]
   exact mul_pos (inv_pos.mpr hnormpos) (by linarith)
 
+/-- **Explicit spherical cosine from the far endpoint to the midpoint.**
+`scos B (sMidpoint A B) = ‖A+B‖⁻¹ (1 + ⟪A,B⟫)` — the same closed form as `scos_sMidpoint_left`,
+confirming the midpoint is equidistant from both endpoints (`scos_sMidpoint_eq`) at this explicit
+value.  The `B`-side companion of `scos_sMidpoint_left`, by the symmetry `sMidpoint_comm` together
+with `‖B+A‖ = ‖A+B‖` and `⟪B,A⟫ = ⟪A,B⟫`. -/
+theorem scos_sMidpoint_right (A B : E) (hA : OnSphere A) (hB : OnSphere B) :
+    scos B (sMidpoint A B) = (‖A + B‖)⁻¹ * (1 + ⟪A, B⟫) := by
+  rw [sMidpoint_comm, scos_sMidpoint_left B A hB hA, add_comm B A, real_inner_comm B A]
+
+/-- **The spherical midpoint is at positive inner product with the far endpoint.**
+`0 < scos B (sMidpoint A B)`.  The `B`-side companion of `scos_sMidpoint_pos`, by the symmetry
+`sMidpoint_comm`.  Together with `scos_sMidpoint_pos` this places the midpoint strictly inside the
+open near hemisphere of *each* endpoint (`scos_sMidpoint_pos_both`). -/
+theorem scos_sMidpoint_pos_right (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    0 < scos B (sMidpoint A B) := by
+  rw [sMidpoint_comm]
+  exact scos_sMidpoint_pos B A hB hA (by rwa [add_comm])
+
+/-- **The spherical midpoint lies strictly in the near hemisphere of *both* endpoints.**
+`0 < scos A (sMidpoint A B) ∧ 0 < scos B (sMidpoint A B)`.  Combining `scos_sMidpoint_pos` and its
+far-endpoint companion `scos_sMidpoint_pos_right`, the midpoint of a non-degenerate side sits at
+positive inner product with each vertex — i.e. within a quarter-turn of both.  This is exactly the
+positional bound a spherical Feuerbach tangency argument uses to place the contact points on the
+*minor* arc and rule out their antipodes. -/
+theorem scos_sMidpoint_pos_both (A B : E) (hA : OnSphere A) (hB : OnSphere B)
+    (hAB : A + B ≠ 0) :
+    0 < scos A (sMidpoint A B) ∧ 0 < scos B (sMidpoint A B) :=
+  ⟨scos_sMidpoint_pos A B hA hB hAB, scos_sMidpoint_pos_right A B hA hB hAB⟩
+
 /-- **The spherical midpoint lies strictly in the near hemisphere of its endpoint:**
 `sdist A (sMidpoint A B) < π/2`. Equivalent to the positive-inner-product bound
 `scos_sMidpoint_pos` via `arccos x < π/2 ↔ 0 < x`; geometrically the midpoint of a

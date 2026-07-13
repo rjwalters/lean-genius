@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: core hockey-stick theory + moment theory (plain, first-moment, and general falling-factorial-order-r moment); 0 sorries, 0 axioms",
+    "progressSummary": "COMPLETE (VERIFIED 0-axiom). Both change-of-basis directions now formalized: powers→falling-factorials via Stirling SECOND kind (Moments file) AND rising-factorials→powers via Stirling FIRST kind (new FirstKind file). The first-kind file adds the dual ascFactorial_eq_sum_stirlingFirst_pow (missing Mathlib lemma), the row-sum ∑stirlingFirst n k=n!, and the payoff factorial_mul_simplexNumber_eq_sum_stirlingFirst_pow exhibiting d!·P_d(n) as an explicit Stirling-first polynomial in (n+1).",
     "builtItems": [
       "simplexNumber d n := (n+d).choose d - the d-dimensional hyper-tetrahedral number (TetrahedralNumberFormulaOQ01.lean)",
       "sum_simplex: sum_{k<=n} simplexNumber d k = simplexNumber (d+1) n - general hockey stick, any dimension d (via Nat.sum_range_add_choose)",
@@ -55,7 +55,18 @@
       "succ_mul_simplexNumber: figurate absorption (j+1)P_d(j+1)=(d+1)P_{d+1}(j) via Nat.choose_succ_right_eq (TetrahedralNumberFormulaOQ01.lean)",
       "weighted_sum_simplex: first-moment hockey stick sum_{k<=n+1} k*P_d(k) = (d+1)*P_{d+2}(n)",
       "weighted_sum_simplex_over_dim: dimension-axis dual via simplexNumber_symm",
-      "descFactorial_moment_sum_simplex in TetrahedralNumberFormulaOQ01.lean: ∑_{k≤n+r} (k)_r·P_d(k) = (d+r)_r·P_{d+r+1}(n), the general falling-factorial moment hockey stick unifying sum_simplex (r=0) and weighted_sum_simplex (r=1); induction on r via succ_descFactorial_succ + absorption succ_mul_simplexNumber + descFactorial_succ (PR #38213)"
+      "descFactorial_moment_sum_simplex in TetrahedralNumberFormulaOQ01.lean: ∑_{k≤n+r} (k)_r·P_d(k) = (d+r)_r·P_{d+r+1}(n), the general falling-factorial moment hockey stick unifying sum_simplex (r=0) and weighted_sum_simplex (r=1); induction on r via succ_descFactorial_succ + absorption succ_mul_simplexNumber + descFactorial_succ (PR #38213)",
+      "mul_descFactorial_absorb (TetrahedralNumberFormulaOQ01Moments.lean): x·(x)_r = (x)_{r+1} + r·(x)_r, unconditional over ℕ",
+      "pow_eq_sum_stirlingSecond_descFactorial (TetrahedralNumberFormulaOQ01Moments.lean): x^m = ∑_{r≤m} S(m,r)·(x)_r — the missing Mathlib power↔falling-factorial change of basis, by induction on m",
+      "descFactorial_moment_fixed_range (TetrahedralNumberFormulaOQ01Moments.lean): fixed-top-index form ∑_{k≤N}(k)_r·P_d(k) = (d+r)_r·P_{d+r+1}(N-r) for r≤N",
+      "pow_moment_sum_simplex (TetrahedralNumberFormulaOQ01Moments.lean): ∑_{k≤N} k^m·P_d(k) = ∑_{r≤m} S(m,r)·(d+r)_r·P_{d+r+1}(N-r), m≤N — ordinary power-moment hockey stick",
+      "sq_moment_sum_simplex (TetrahedralNumberFormulaOQ01Moments.lean): ∑_{k≤N} k²·P_d(k) = (d+1)·P_{d+2}(N-1) + (d+1)(d+2)·P_{d+3}(N-2), N≥2 — explicit second-moment closed form",
+      "ascFactorial_eq_sum_stirlingFirst_pow (TetrahedralNumberFormulaOQ01FirstKind.lean): x.ascFactorial n = ∑_{k≤n} stirlingFirst n k · x^k — the DUAL change of basis (rising factorial in the power basis via unsigned Stirling numbers of the FIRST kind), the missing-from-Mathlib companion of pow_eq_sum_stirlingSecond_descFactorial; induction on n mirroring the second-kind proof. VERIFIED 0-axiom.",
+      "sum_stirlingFirst_eq_factorial (TetrahedralNumberFormulaOQ01FirstKind.lean): ∑_{k≤n} stirlingFirst n k = n! — row-sum of first-kind Stirling numbers (permutations by cycle count), x=1 specialization via Nat.one_ascFactorial. VERIFIED 0-axiom.",
+      "factorial_mul_simplexNumber_eq_sum_stirlingFirst_pow (TetrahedralNumberFormulaOQ01FirstKind.lean): d!·P_d(n) = ∑_{k≤d} stirlingFirst d k · (n+1)^k — the figurate number as an EXPLICIT degree-d Stirling-first polynomial in (n+1), composing factorial_mul_simplexNumber with the dual change of basis. On-theme quantitative form of \"the d-dim simplex number is a degree-d polynomial\". VERIFIED 0-axiom.",
+      "cube_moment_sum_simplex (TetrahedralNumberFormulaOQ01Moments.lean): explicit third-moment hockey stick ∑_{k≤N} k³·P_d(k) = (d+1)·P_{d+2}(N-1) + 3(d+1)(d+2)·P_{d+3}(N-2) + (d+1)(d+2)(d+3)·P_{d+4}(N-3), N≥3; m=3 instance of pow_moment_sum_simplex with Stirling values S(3,·)=(0,1,3,1), completing the small-order ladder (m=0 hockey stick, 1 weighted, 2 sq, 3 cube). VERIFIED 0/0.",
+      "sum_pow_eq_stirlingSecond_choose (TetrahedralNumberFormulaOQ01Moments.lean): the classical Stirling-number power-sum formula ∑_{k=0}^N k^m = ∑_{r=0}^m S(m,r)·r!·C(N+1,r+1) (Worpitzky/Faulhaber), obtained for free as the point-dimension d=0 slice of pow_moment_sum_simplex — P_0(k)=1 (simplexNumber_zero_dim), (0+r)_r=r! (Nat.descFactorial_self), P_{r+1}(N-r)=C(N+1,r+1). VERIFIED 0/0.",
+      "sum_sq_eq_choose (TetrahedralNumberFormulaOQ01Moments.lean): division-free sum of squares ∑_{k=0}^N k² = C(N+1,2)+2·C(N+1,3) (N≥2), the m=2 concrete instance of the power-sum formula, integer form of N(N+1)(2N+1)/6. VERIFIED 0/0."
     ],
     "insights": [
       "The hyper-tetrahedral / d-simplex number is exactly Mathlib Nat.multichoose (n+1) d = C(n+d,d); Mathlib gives the one-step hockey stick Nat.sum_range_add_choose : sum i in range(n+1),(i+d).choose d = (n+d+1).choose(d+1)",
@@ -67,16 +78,19 @@
       "The figurate calculus is ℕ-linear: both iterated summation (iterSum) and simplex convolution (simplexConv) are additive and ℕ-homogeneous in the summand — the summand-side companion to the dimension-side semigroup laws iterSum_add / simplexConv_comp.",
       "The summation↔difference duality closes at the ITERATED level: iterSum a (raise a dims) and iterForwardDiff a = Δ^a (lower a dims) are two-sided inverses up to the intrinsic shift Δ^a∘∑^a = shift^a; the shift is forced because each Δ reads a running total one index ahead.",
       "Index-weighted figurate row sum (first moment) collapses to a single higher-dim simplex number, discrete analogue of int x*x^d = n^{d+2}/(d+2); engine is pointwise binomial absorption",
-      "Falling factorials (k)_r are the natural discrete moment basis for the figurate ladder: weighting a figurate row by (k)_r and summing collapses to a single higher-dimensional simplex number, discrete analogue of ∫ x^r·x^d = n^{d+r+1}/(d+r+1). The order r is absorbed one at a time by the pointwise absorption identity."
+      "Falling factorials (k)_r are the natural discrete moment basis for the figurate ladder: weighting a figurate row by (k)_r and summing collapses to a single higher-dimensional simplex number, discrete analogue of ∫ x^r·x^d = n^{d+r+1}/(d+r+1). The order r is absorbed one at a time by the pointwise absorption identity.",
+      "The Stirling numbers of the second kind are exactly the change-of-basis coefficients converting ordinary power moments into falling-factorial moments; Mathlib provides Nat.stirlingSecond and its recurrence but NOT the defining identity x^m = ∑_r S(m,r)·(x)_r, so it had to be built.",
+      "Absorption x·(x)_r = (x)_{r+1} + r·(x)_r holds unconditionally over ℕ (both sides vanish when x<r via Nat.descFactorial_eq_zero_iff_lt), avoiding any k≤x side hypothesis in the change-of-basis induction.",
+      "The order-dependent range (n+r+1) of the parent descFactorial_moment_sum_simplex must be converted to a fixed top index N (moment over range(N+1) = (d+r)_r·P_{d+r+1}(N-r), r≤N) before a single range can serve all orders r≤m in the power-moment sum.",
+      "The Stirling-collapse power moment works along EITHER axis of the figurate array P_d(n)=C(n+d,d): summing d^m*P_d(n) over the dimension d (size n fixed) gives the same closed form as summing k^m*P_d(k) over the size k, with the roles of size and dimension exchanged — because P_d(n)=P_n(d) turns the dimension-axis moment into a size-axis moment of the fixed row P_n.",
+      "The whole figurate moment machinery specialises at the point dimension d=0 (P_0(k)=1) to the classical power sum ∑ k^m: pow_moment_sum_simplex collapses to the Stirling-number/Worpitzky form ∑_r S(m,r)·r!·C(N+1,r+1), because (0+r)_r = r! and P_{r+1}(N-r) = C(N+1,r+1). The figurate weight P_d is thus a one-parameter deformation of the plain power sum, recovered at d=0."
     ],
     "mathlibGaps": [
       "Mathlib has the one-step hockey stick and multichoose but no dimension-indexed figurate theory: no iterated-partial-sum characterization of simplex numbers, no figurate recurrence/closed form stated uniformly in the dimension d."
     ],
     "nextSteps": [
-      "Optional: Norlund/finite-difference expansion of iterSum on a polynomial base sequence now follows by combining iterSum_eq_simplexConv with a binomial expansion of P_d(n-k).",
-      "Optional: express card_sym as an explicit nested multi-index Finset sum over {0<=i1<=...<=id<=n} to make the weakly-increasing-tuple face literal.",
-      "Convolution of arithmetic-progression / polynomial sequences against the simplex kernel, now reducible via the linearity package to simplexConv of id and constants.",
-      "Follow-up (distinct): ordinary power moments ∑ k^m·P_d(k) via Stirling numbers of the second kind, expressing k^m as a sum of falling factorials (k)_r and applying descFactorial_moment_sum_simplex termwise — connects the figurate moment theory to Stirling/Bell number combinatorics."
+      "Both Stirling change-of-basis directions now closed for the figurate moment theory. Optional: the signed descFactorial↔power first-kind identity over ℤ (requires signed Stirling first kind, not in Mathlib as ℕ).",
+      "Optional: the analogous second-kind row-sum ∑_k stirlingSecond n k = Bell(n) (Bell number), the second-kind companion of sum_stirlingFirst_eq_factorial."
     ],
     "markdown": "# Knowledge Base: tetrahedral-number-formula-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -97,7 +111,7 @@
     "mathlib": []
   },
   "started": "2026-07-09T22:13:38.918Z",
-  "lastUpdate": "2026-07-11",
+  "lastUpdate": "2026-07-12",
   "leanFiles": [
     {
       "path": "Proofs/TetrahedralNumberFormula.lean",
@@ -131,6 +145,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01Absorption.lean"
+    },
+    {
+      "path": "Proofs/TetrahedralNumberFormulaOQ01Moments.lean",
+      "filename": "TetrahedralNumberFormulaOQ01Moments.lean",
+      "lineCount": 329,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TetrahedralNumberFormulaOQ01Moments.lean"
     }
   ]
 }

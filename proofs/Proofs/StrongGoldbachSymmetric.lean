@@ -1151,4 +1151,117 @@ example : symmetricPairCount 5 ≤ (5 - 1) / 6 + 2 :=
 example : symmetricPairCount 25 ≤ (25 - 1) / 6 + 2 :=
   symmetricPairCount_le_div_six (by decide) (by decide)
 
+/-! ## Period-30 Sieve: Adding the Prime `5` to the Hexagonal Banding
+
+The hexagonal ceiling `symmetricPairCount_le_div_six` sieves the comet offsets by the
+primes `2` and `3` (the offset must be a multiple of `6` at midpoints coprime to `6`).
+The *next* small prime, `5`, contributes an additional constraint whenever both summands
+exceed `5`: a prime summand `> 5` is never divisible by `5`, so the offset must keep both
+`m - k` and `m + k` out of the multiples of `5`.  This removes the two residues `k ≡ m`
+and `k ≡ -m (mod 5)`, leaving `3` of every `5` multiples of `6` — a period-`30` banding
+of density `≈ 1/10`, sharper than the hexagonal `≈ 1/6` for midpoints coprime to `30`
+once `m` is large enough to absorb the extra additive constant.
+
+The engine is a *general single-prime* summand-exclusion lemma: for **any** prime `p`, a
+contributing offset whose two prime summands both exceed `p` keeps both summands off the
+multiples of `p`.  With `p = 2` this recovers the parity constraint
+(`symmetric_pair_offset_parity`) and with `p = 3` the mod-`3` constraint
+(`symmetric_pair_offset_mod3`); here we instantiate it at `p = 5`.
+
+**Honesty.** Like every ceiling in this file, this is an *upper* bound on the comet
+height — a structural refinement, not a step toward the (open) lower bound that is
+Goldbach's conjecture itself. -/
+
+/-- **General single-prime summand exclusion.**  For any prime `p`, if the two summands
+`m - k` and `m + k` of a symmetric prime pair both *exceed* `p`, then neither is divisible
+by `p`: a prime `> p` has no divisor equal to `p`.  This is the prime-independent core
+behind the parity (`p = 2`), mod-`3`, and mod-`5` offset constraints. -/
+theorem symmetric_pair_summand_not_dvd_of_lt {m k p : ℕ} (hp : Nat.Prime p)
+    (hlt1 : p < m - k) (hlt2 : p < m + k)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    ¬ p ∣ (m - k) ∧ ¬ p ∣ (m + k) := by
+  have hp2le := hp.two_le
+  refine ⟨fun hd => ?_, fun hd => ?_⟩
+  · rcases hp1.eq_one_or_self_of_dvd p hd with h | h <;> omega
+  · rcases hp2.eq_one_or_self_of_dvd p hd with h | h <;> omega
+
+-- `m = 49`, offset `k = 12`: the pair `(37, 61)` are both prime and `> 5`, so neither
+-- `37` nor `61` is a multiple of `5`.
+example : ¬ (5 : ℕ) ∣ (49 - 12) ∧ ¬ (5 : ℕ) ∣ (49 + 12) :=
+  symmetric_pair_summand_not_dvd_of_lt (p := 5) (by decide) (by norm_num) (by norm_num)
+    (by decide) (by decide)
+
+/-- **Period-30 ceiling on the comet height.**  For odd `m` coprime to `3`, every
+contributing offset `k` is one of the two exceptional small offsets `k = m - 3` (summand
+`3`) or `k = m - 5` (summand `5`), or else has both summands `> 5`.  In the latter case
+the offset is a multiple of `6` (hexagonal banding, `symmetric_pair_offset_dvd_six`) whose
+two summands avoid the multiples of `5` (`symmetric_pair_summand_not_dvd_of_lt` at `p = 5`).
+Hence the comet height is at most the number of such period-`30` offsets plus `2`.
+
+At midpoints coprime to `30` this survivor set has density `≈ 1/10` (three of every five
+multiples of `6`), sharpening the hexagonal `≈ 1/6` count `symmetricPairCount_le_div_six`
+once `m` is large enough that the `1/10` vs `1/6` gain beats the extra `+1`.  The two
+exceptional offsets are the only ones whose smaller summand is a prime `≤ 5`: the summand
+cannot be `2` (both summands are odd for odd `m`, `symmetric_pair_odd`), so it is `3` or
+`5`, the offsets `m - 3` and `m - 5`. -/
+theorem symmetricPairCount_le_card_dvd_six_notDvd_five_succ {m : ℕ}
+    (hm : Odd m) (hm3 : ¬ 3 ∣ m) :
+    symmetricPairCount m
+      ≤ ((Finset.range m).filter
+          (fun k => 6 ∣ k ∧ ¬ 5 ∣ (m - k) ∧ ¬ 5 ∣ (m + k))).card + 2 := by
+  rcases le_or_gt m 2 with hle | hgt
+  · -- Odd `m ≤ 2` forces `m = 1`, where the comet height is `0`.
+    have hm1 : m = 1 := by obtain ⟨j, hj⟩ := hm; omega
+    subst hm1; decide
+  · rw [symmetricPairCount]
+    set S := (Finset.range m).filter
+      (fun k => 6 ∣ k ∧ ¬ 5 ∣ (m - k) ∧ ¬ 5 ∣ (m + k)) with hS
+    have hsub :
+        (Finset.range m).filter (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k))
+          ⊆ insert (m - 5) (insert (m - 3) S) := by
+      intro k hk
+      simp only [Finset.mem_filter, Finset.mem_range] at hk
+      obtain ⟨hkm, hp1, hp2⟩ := hk
+      by_cases hk3 : k = m - 3
+      · refine Finset.mem_insert_of_mem ?_
+        rw [hk3]; exact Finset.mem_insert_self _ _
+      · by_cases hk5 : k = m - 5
+        · rw [hk5]; exact Finset.mem_insert_self _ _
+        · -- Genuine offset: smaller summand is an odd prime `∉ {3, 5}`, hence `> 5`.
+          have hodd := symmetric_pair_odd hgt hkm hp1 hp2
+          have h1 : m - k ≠ 3 := by intro h; exact hk3 (by omega)
+          have h2 : m - k ≠ 5 := by intro h; exact hk5 (by omega)
+          have hge : 5 < m - k := by
+            obtain ⟨j, hj⟩ := hodd
+            have := hp1.two_le
+            omega
+          have hlt2 : 5 < m + k := by omega
+          have h6 : 6 ∣ k :=
+            symmetric_pair_offset_dvd_six hm hgt hm3 hkm (by omega) hp1 hp2
+          have hnd := symmetric_pair_summand_not_dvd_of_lt (p := 5) (by norm_num)
+            hge hlt2 hp1 hp2
+          refine Finset.mem_insert_of_mem (Finset.mem_insert_of_mem ?_)
+          rw [hS]
+          simp only [Finset.mem_filter, Finset.mem_range]
+          exact ⟨hkm, h6, hnd.1, hnd.2⟩
+    calc ((Finset.range m).filter
+            (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k))).card
+        ≤ (insert (m - 5) (insert (m - 3) S)).card := Finset.card_le_card hsub
+      _ ≤ S.card + 2 := by
+            have hc1 := Finset.card_insert_le (m - 5) (insert (m - 3) S)
+            have hc2 := Finset.card_insert_le (m - 3) S
+            omega
+
+-- `m = 49` (coprime to 30): the period-30 survivor set is `{0, 12, 18, 30, 42, 48}` (six
+-- offsets; the multiples of `6` at `k = 6, 24, 36` are dropped because a summand lands on a
+-- multiple of `5`), so the ceiling is `6 + 2 = 8`, sharper than the hexagonal
+-- `(49 - 1) / 6 + 2 = 10` and bounding the actual height `symmetricPairCount 49 = 3`
+-- (`98 = 19+79 = 31+67 = 37+61`).
+example : symmetricPairCount 49
+    ≤ ((Finset.range 49).filter
+        (fun k => 6 ∣ k ∧ ¬ 5 ∣ (49 - k) ∧ ¬ 5 ∣ (49 + k))).card + 2 :=
+  symmetricPairCount_le_card_dvd_six_notDvd_five_succ (by decide) (by decide)
+example : ((Finset.range 49).filter
+    (fun k => 6 ∣ k ∧ ¬ 5 ∣ (49 - k) ∧ ¬ 5 ∣ (49 + k))).card = 6 := by decide
+
 end StrongGoldbach

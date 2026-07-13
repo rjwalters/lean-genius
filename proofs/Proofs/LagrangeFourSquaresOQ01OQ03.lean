@@ -399,4 +399,57 @@ theorem r4_anchor_values :
     r4 1 = 8 ∧ r4 2 = 24 ∧ r4 3 = 32 ∧ r4 4 = 24 ∧ r4 5 = 48 ∧ r4 7 = 64 := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
 
+/-! ## Part 4: A general (all-`n`) property of the *true* count `r4`
+
+Everything above about the brute-force count `r4` is either a single decidable value
+(`r4 0 = 1`, `r4_anchor_values`) or the finite-range oracle `jacobi_oracle`
+(`native_decide`, `1 ≤ n ≤ 24`).  Here is the first **general, 0-axiom** statement about
+`r4` itself, valid for *every* `n` and proved without `native_decide`: the count is
+always positive.  This is exactly the *counting* form of Lagrange's four-square theorem
+— "every `n` admits a four-square representation" — pulled from Mathlib's existence
+theorem `Nat.sum_four_squares` and packaged inside our finite box.  It is the `r4`
+(left-hand) mirror of the `jacobiCount` (right-hand) positivity `jacobiCount_pos`, and it
+shows the oracle's equality `r4 n = jacobiCount n` is at least sign-consistent for **all**
+`n`, not merely the checked range: both sides are positive throughout. -/
+
+/-- **Every four-square lattice representation lives in the box.**  If `x : ℕ` satisfies
+`x² ≤ n` then its signed integer image `±x` lies in `box n = [-√n, √n] ∩ ℤ`: nonnegativity
+gives `-√n ≤ 0 ≤ x`, and `x² ≤ n` gives `x ≤ √n` by `Nat.le_sqrt'`. -/
+theorem natCast_mem_box {x n : ℕ} (hx : x ^ 2 ≤ n) : (x : ℤ) ∈ box n := by
+  simp only [box, Finset.mem_Icc]
+  have hxs : x ≤ Nat.sqrt n := Nat.le_sqrt'.mpr hx
+  have h1 : (0 : ℤ) ≤ (x : ℤ) := by positivity
+  have h2 : (0 : ℤ) ≤ (Nat.sqrt n : ℤ) := by positivity
+  refine ⟨by omega, ?_⟩
+  exact_mod_cast hxs
+
+/-- **The true count is positive for every `n` (0-axiom, general).**  `0 < r4 n` for all
+`n`: Mathlib's `Nat.sum_four_squares` supplies naturals `a,b,c,d` with
+`a²+b²+c²+d² = n`; each square is `≤ n`, so `(a,b,c,d)` (as a signed integer quadruple)
+lies in `box n ^ 4` and satisfies the defining equation, making the filtered finset
+nonempty.  This is the counting-side statement of Lagrange's four-square theorem and the
+`r4` mirror of `jacobiCount_pos`; unlike `jacobi_oracle` it needs no `native_decide` and
+holds for **all** `n` (including `n = 0`, where `r4 0 = 1`). -/
+theorem r4_pos (n : ℕ) : 0 < r4 n := by
+  obtain ⟨a, b, c, d, habcd⟩ := Nat.sum_four_squares n
+  have ha : a ^ 2 ≤ n := by omega
+  have hb : b ^ 2 ≤ n := by omega
+  have hc : c ^ 2 ≤ n := by omega
+  have hd : d ^ 2 ≤ n := by omega
+  unfold r4
+  rw [Finset.card_pos]
+  refine ⟨((a : ℤ), (b : ℤ), (c : ℤ), (d : ℤ)), ?_⟩
+  rw [Finset.mem_filter]
+  refine ⟨?_, ?_⟩
+  · simp only [Finset.mem_product]
+    exact ⟨natCast_mem_box ha, natCast_mem_box hb, natCast_mem_box hc, natCast_mem_box hd⟩
+  · push_cast
+    exact_mod_cast habcd
+
+/-- **The true count never vanishes (0-axiom, general).**  Restatement of `r4_pos`:
+`r4 n ≠ 0` for every `n`.  The `r4` companion of `jacobiCount_eq_zero_iff`'s nontrivial
+direction — where `jacobiCount` vanishes precisely at `0`, the honest lattice count `r4`
+never does, since even `r4 0 = 1` counts the empty representation. -/
+theorem r4_ne_zero (n : ℕ) : r4 n ≠ 0 := (r4_pos n).ne'
+
 end LagrangeFourSquaresOQ01OQ03

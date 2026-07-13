@@ -28,11 +28,7 @@
   Tags: number-theory, combinatorics, frobenius-problem
 -/
 
-import Mathlib.Data.Multiset.Basic
-import Mathlib.Data.Set.Card
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Order.BoundedOrder.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos434
 
@@ -113,7 +109,7 @@ def topK (n k : ℕ) : Set ℕ :=
 theorem topK_card (n k : ℕ) (hk : k ≤ n) (hk_pos : k > 0) :
     (topK n k).ncard = k := by
   simp only [topK]
-  rw [Set.ncard_Icc]
+  rw [← Finset.coe_Icc, Set.ncard_coe_Finset, Nat.card_Icc]
   omega
 
 /-- The extremal Frobenius question: does topK maximize non-representables? -/
@@ -121,7 +117,34 @@ def ExtremalFrobeniusQuestion (n k : ℕ) : Prop :=
   ∀ A : Set ℕ, A ⊆ Set.Icc 1 n → A.ncard = k →
     nCardNonRepresentable A ≤ nCardNonRepresentable (topK n k)
 
-/- ## Part V: Small Examples -/
+/- ## Part V: Sylvester–Frobenius input (Chicken McNugget count)
+
+    The classical Sylvester–Frobenius count for a coprime pair is used by the
+    examples below; it is axiomatized (the "half" count `(a-1)(b-1)/2` is a
+    genuine combinatorial theorem beyond the scope of this file). The finiteness
+    that makes these counts well-defined is proved unconditionally in Part X. -/
+
+/-- The Sylvester-Frobenius theorem: For coprime a, b, the Frobenius number
+    is ab - a - b, and the count of non-representables is (a-1)(b-1)/2. -/
+axiom sylvester_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
+    frobeniusNumber {a, b} = a * b - a - b
+
+/-- The number of non-representables for coprime a, b. -/
+axiom sylvester_count (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
+    nCardNonRepresentable {a, b} = (a - 1) * (b - 1) / 2
+
+/-- For consecutive integers n-1, n (always coprime), the count is
+    (n-2)(n-1)/2. This grows quadratically with n. -/
+theorem consecutive_count (n : ℕ) (hn : n ≥ 2) :
+    nCardNonRepresentable ({n - 1, n} : Set ℕ) = (n - 2) * (n - 1) / 2 := by
+  have h1 : n - 1 > 0 := by omega
+  have h2 : n > 0 := by omega
+  have hcop : Nat.Coprime (n - 1) n := by
+    rw [Nat.coprime_self_sub_left (by omega : (1 : ℕ) ≤ n)]
+    exact Nat.coprime_one_left n
+  exact sylvester_count (n - 1) n h1 h2 hcop
+
+/- ## Part VI: Small Examples -/
 
 /-- Example: With A = {2, 3}, non-representables are {1}.
     - 0 = empty sum, 1 is NOT representable (all elements ≥ 2),
@@ -134,8 +157,6 @@ theorem example_2_3 : NonRepresentable {2, 3} = {1} := by
     intro hnr
     -- n ≠ 0 (0 is representable by empty multiset)
     have h0 : n ≠ 0 := fun h => hnr (h ▸ zero_representable _)
-    -- n < 2 (any representable n ≥ 2 by Sylvester: only 1 is non-rep)
-    -- Use Sylvester: NR({2,3}) has (2-1)(3-1)/2 = 1 element, so n=1
     by_contra hne
     apply hnr
     -- n ≥ 2 → representable
@@ -144,7 +165,7 @@ theorem example_2_3 : NonRepresentable {2, 3} = {1} := by
     -- n = 2: {2}, n = 3: {3}, n ≥ 4: n - 2 ≥ 2 and is representable (IH)
     suffices ∀ m, m ≥ 2 → IsRepresentableAs m ({2, 3} : Set ℕ) from this n h2
     intro m
-    induction m using Nat.strong_rec_on with | _ m ih => ?_
+    induction m using Nat.strong_induction_on with | _ m ih => ?_
     intro hm
     rcases Nat.lt_or_ge m 4 with hlt | hge
     · -- m ∈ {2, 3}
@@ -152,6 +173,8 @@ theorem example_2_3 : NonRepresentable {2, 3} = {1} := by
       · exact mem_representable (by simp : (2 : ℕ) ∈ ({2, 3} : Set ℕ))
       · exact mem_representable (by simp : (3 : ℕ) ∈ ({2, 3} : Set ℕ))
     · -- m ≥ 4: m = 2 + (m - 2), and m - 2 ≥ 2
+      have : m = 2 + (m - 2) := by omega
+      rw [this]
       exact add_representable
         (mem_representable (by simp : (2 : ℕ) ∈ ({2, 3} : Set ℕ)))
         (ih (m - 2) (by omega) (by omega))
@@ -191,7 +214,7 @@ theorem topK_5_2 : topK 5 2 = {4, 5} := by
   simp [topK, Set.Icc]
   omega
 
-/- ## Part VI: Kiss's Theorem (2002) -/
+/- ## Part VII: Kiss's Theorem (2002) -/
 
 /-- **Kiss (2002)**: The topK set maximizes the count of non-representables.
 
@@ -210,9 +233,9 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
       nCardNonRepresentable A ≤ nCardNonRepresentable (topK n k) :=
   kiss_2002 n k hn hk hkn
 
-/- ## Part VII: Why topK is Optimal -/
+/- ## Part VIII: Why topK is Optimal
 
-/-- Intuition: Using larger numbers means fewer representations.
+    Intuition: Using larger numbers means fewer representations.
 
     If A contains small numbers, more integers can be built from them.
     Using only large numbers {n-k+1, ..., n} creates "gaps" in what's
@@ -221,6 +244,7 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
     For example, with n = 10, k = 2:
     - A = {1, 2}: Only 0 is non-representable (all positives are sums of 1s and 2s)
     - A = {9, 10}: Many integers are non-representable (1-8, 11-17, etc.) -/
+
 /-- Using larger numbers creates more non-representable integers.
     Requires n ≥ 3 since at n = 2, both sides equal 0.
     By Sylvester: |NR{n-1,n}| = (n-2)(n-1)/2, |NR{1,2}| = 0. -/
@@ -236,30 +260,12 @@ theorem larger_numbers_fewer_reps (n : ℕ) (hn : n ≥ 3) :
   -- LHS: nCardNonRepresentable {n-1, n} = (n-2)*(n-1)/2 > 0
   rw [consecutive_count n (by omega)]
   -- (n - 2) * (n - 1) / 2 > 0 for n ≥ 3
-  have h1 : (n - 2) * (n - 1) ≥ 2 := by nlinarith
+  have ha : 1 ≤ n - 2 := by omega
+  have hb : 2 ≤ n - 1 := by omega
+  have h1 : (n - 2) * (n - 1) ≥ 2 :=
+    calc (2 : ℕ) = 1 * 2 := by norm_num
+      _ ≤ (n - 2) * (n - 1) := Nat.mul_le_mul ha hb
   omega
-
-/- ## Part VIII: Connection to Sylvester-Frobenius -/
-
-/-- The Sylvester-Frobenius theorem: For coprime a, b, the Frobenius number
-    is ab - a - b, and the count of non-representables is (a-1)(b-1)/2. -/
-axiom sylvester_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
-    frobeniusNumber {a, b} = a * b - a - b
-
-/-- The number of non-representables for coprime a, b. -/
-axiom sylvester_count (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
-    nCardNonRepresentable {a, b} = (a - 1) * (b - 1) / 2
-
-/-- For consecutive integers n-1, n (always coprime), the count is
-    (n-2)(n-1)/2. This grows quadratically with n. -/
-theorem consecutive_count (n : ℕ) (hn : n ≥ 2) :
-    nCardNonRepresentable ({n - 1, n} : Set ℕ) = (n - 2) * (n - 1) / 2 := by
-  have h1 : n - 1 > 0 := by omega
-  have h2 : n > 0 := by omega
-  have hcop : Nat.Coprime (n - 1) n := by
-    rw [Nat.coprime_comm]
-    exact Nat.coprime_succ_self_right (n - 1)
-  exact sylvester_count (n - 1) n h1 h2 hcop
 
 /- ## Part IX: The Greedy Construction -/
 
@@ -275,20 +281,108 @@ def greedyConstruct (n k : ℕ) : Set ℕ :=
 /-- The greedy construction equals topK. -/
 theorem greedy_eq_topK (n k : ℕ) : greedyConstruct n k = topK n k := rfl
 
-/- ## Part X: Bounds on Non-Representables -/
+/- ## Part X: Finiteness of the Non-Representable Set (Chicken McNugget)
 
-/-- Upper bound: With gcd(A) = 1, non-representables are finite.
-    The count is bounded by the Frobenius number. -/
-theorem nonrep_finite {A : Set ℕ} (hA : A.Nonempty)
-    (hcop : ∃ a b ∈ A, Nat.Coprime a b) :
+    When `A` contains a coprime pair `a, b`, every integer `≥ a·b` is a
+    non-negative combination `x·a + y·b` (the Chicken McNugget theorem), so the
+    non-representable integers all lie in `Set.Iio (a·b)`, a finite set. Mathlib
+    has no numerical-semigroup API, so the combination is built directly from
+    `ZMod` unit arithmetic. -/
+
+/-- If `1 ∈ A` then every natural number is representable (as a sum of `n`
+    copies of `1`). -/
+theorem representable_of_one_mem {A : Set ℕ} (h1 : 1 ∈ A) (n : ℕ) :
+    IsRepresentableAs n A :=
+  ⟨Multiset.replicate n 1,
+    fun a ha => by rw [Multiset.eq_of_mem_replicate ha]; exact h1,
+    by rw [Multiset.sum_replicate, smul_eq_mul, mul_one]⟩
+
+/-- **Chicken McNugget theorem (existence form).** For coprime positive `a, b`,
+    every `n ≥ a * b` can be written as a non-negative integer combination
+    `x * a + y * b`. -/
+theorem exists_nat_combo_of_ge {a b : ℕ} (hapos : 0 < a) (hbpos : 0 < b)
+    (hcop : Nat.Coprime a b) {n : ℕ} (hn : a * b ≤ n) :
+    ∃ x y : ℕ, n = x * a + y * b := by
+  haveI : NeZero b := ⟨hbpos.ne'⟩
+  -- `a` is a unit mod `b`, so `a * x ≡ n (mod b)` is solvable with `x < b`.
+  obtain ⟨u, hu⟩ := (ZMod.isUnit_iff_coprime a b).mpr hcop
+  set x : ℕ := (((u⁻¹ : (ZMod b)ˣ) : ZMod b) * (n : ZMod b)).val with hxdef
+  have hxlt : x < b := by rw [hxdef]; exact ZMod.val_lt _
+  have hcast : (a : ZMod b) * (x : ZMod b) = (n : ZMod b) := by
+    rw [hxdef, ZMod.natCast_zmod_val, ← hu, ← mul_assoc, Units.mul_inv, one_mul]
+  -- `x * a ≤ n`, so `n - x * a` is a genuine natural number.
+  have hxa : x * a ≤ n := by
+    calc x * a ≤ (b - 1) * a := by gcongr <;> omega
+      _ ≤ b * a := by gcongr <;> omega
+      _ = a * b := by ring
+      _ ≤ n := hn
+  -- `b ∣ (n - x * a)` from the congruence `a * x ≡ n (mod b)`.
+  have hdvd : b ∣ (n - x * a) := by
+    rw [← ZMod.natCast_eq_zero_iff, Nat.cast_sub hxa]
+    push_cast
+    rw [mul_comm (x : ZMod b) (a : ZMod b), hcast, sub_self]
+  obtain ⟨y, hy⟩ := hdvd
+  rw [Nat.mul_comm b y] at hy
+  exact ⟨x, y, by omega⟩
+
+/-- Any `n ≥ a * b` is representable by `A`, provided `A` contains a coprime
+    positive pair `a, b`. -/
+theorem representable_of_ge_of_mem {A : Set ℕ} {a b : ℕ}
+    (ha : a ∈ A) (hb : b ∈ A) (hapos : 0 < a) (hbpos : 0 < b)
+    (hcop : Nat.Coprime a b) {n : ℕ} (hn : a * b ≤ n) :
+    IsRepresentableAs n A := by
+  obtain ⟨x, y, hxy⟩ := exists_nat_combo_of_ge hapos hbpos hcop hn
+  refine ⟨Multiset.replicate x a + Multiset.replicate y b, ?_, ?_⟩
+  · intro z hz
+    rcases Multiset.mem_add.mp hz with h | h
+    · rw [Multiset.eq_of_mem_replicate h]; exact ha
+    · rw [Multiset.eq_of_mem_replicate h]; exact hb
+  · rw [Multiset.sum_add, Multiset.sum_replicate, Multiset.sum_replicate,
+        smul_eq_mul, smul_eq_mul]
+    omega
+
+/-- If `1 ∈ A`, the non-representable set is empty, hence finite. -/
+theorem nonrep_finite_of_one_mem {A : Set ℕ} (h1 : 1 ∈ A) :
     (NonRepresentable A).Finite := by
-  sorry
+  have hempty : NonRepresentable A = ∅ := by
+    ext m
+    simp only [NonRepresentable, Set.mem_setOf_eq, Set.mem_empty_iff_false,
+      iff_false, not_not]
+    exact representable_of_one_mem h1 m
+  rw [hempty]; exact Set.finite_empty
+
+/-- Upper bound: With a coprime pair in A, non-representables are finite.
+    Every integer `≥ a * b` is representable, so the non-representable set is
+    contained in `Set.Iio (a * b)`. A coprime pair involving `0` forces
+    `1 ∈ A`, the degenerate case. -/
+theorem nonrep_finite {A : Set ℕ} (hA : A.Nonempty)
+    (hcop : ∃ a ∈ A, ∃ b ∈ A, Nat.Coprime a b) :
+    (NonRepresentable A).Finite := by
+  obtain ⟨a, ha, b, hb, hcop⟩ := hcop
+  rcases Nat.eq_zero_or_pos a with rfl | hapos
+  · rw [(Nat.coprime_zero_left b).mp hcop] at hb
+    exact nonrep_finite_of_one_mem hb
+  rcases Nat.eq_zero_or_pos b with rfl | hbpos
+  · rw [(Nat.coprime_zero_right a).mp hcop] at ha
+    exact nonrep_finite_of_one_mem ha
+  refine Set.Finite.subset (Set.finite_Iio (a * b)) ?_
+  intro m hm
+  simp only [Set.mem_Iio]
+  by_contra h
+  push_neg at h
+  exact hm (representable_of_ge_of_mem ha hb hapos hbpos hcop h)
 
 /-- For topK(n, k) with k ≥ 2, the non-representable count is finite
-    since gcd(n-k+1, n) = gcd(n-k+1, k-1) which is 1 for many choices. -/
+    since the block `{n-k+1, …, n}` contains the coprime consecutive pair
+    `n-1, n`. -/
 theorem topK_finite (n k : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
     (NonRepresentable (topK n k)).Finite := by
-  sorry
+  refine nonrep_finite ⟨n, by simp only [topK, Set.mem_Icc]; omega⟩
+    ⟨n - 1, ?_, n, ?_, ?_⟩
+  · simp only [topK, Set.mem_Icc]; omega
+  · simp only [topK, Set.mem_Icc]; omega
+  · rw [Nat.coprime_self_sub_left (by omega : (1 : ℕ) ≤ n)]
+    exact Nat.coprime_one_left n
 
 /- ## Part XI: Comparison with Problem #433 -/
 
@@ -324,16 +418,15 @@ theorem erdos_434_complete :
 /-- Corollary: topK achieves the maximum. -/
 theorem topK_is_maximum (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ n) :
     IsGreatest
-      {nCardNonRepresentable A | A : Set ℕ // A ⊆ Set.Icc 1 n ∧ A.ncard = k}
+      {m | ∃ A : Set ℕ, (A ⊆ Set.Icc 1 n ∧ A.ncard = k) ∧ nCardNonRepresentable A = m}
       (nCardNonRepresentable (topK n k)) := by
   constructor
   · -- topK n k is in the set
-    exact ⟨⟨topK n k, by
-      constructor
-      · intro x hx; simp only [topK, Set.mem_Icc] at hx ⊢; omega
-      · exact topK_card n k hkn (by omega)⟩, rfl⟩
+    refine ⟨topK n k, ⟨?_, ?_⟩, rfl⟩
+    · intro x hx; simp only [topK, Set.mem_Icc] at hx ⊢; omega
+    · exact topK_card n k hkn (by omega)
   · -- Upper bound from Kiss's theorem
-    rintro _ ⟨⟨A, hAsub, hAcard⟩, rfl⟩
+    rintro m ⟨A, ⟨hAsub, hAcard⟩, rfl⟩
     exact erdos_434_complete n k hn hk hkn A hAsub hAcard
 
 end Erdos434
@@ -358,7 +451,7 @@ of integers not representable as sums of its elements (with repetition)?
 5. Small examples ({2,3}, {3,5})
 6. Kiss's theorem (axiomatized)
 7. Connection to Sylvester-Frobenius
-8. Bounds on non-representables
+8. Finiteness of the non-representable set (Chicken McNugget, proved)
 9. Relation to Problem #433
 
 **Key insight**: Using larger numbers creates more gaps in representations.

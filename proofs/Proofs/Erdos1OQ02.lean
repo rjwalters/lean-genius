@@ -681,6 +681,226 @@ theorem hasDistinctSubsetSums_iff_card (A : Finset ℕ) :
   · intro h S T hS hT heq
     exact h (Finset.mem_powerset.mpr hS) (Finset.mem_powerset.mpr hT) heq
 
+/-! ## Structural properties of `hasDistinctSubsetSums`
+
+The small-case witnesses `f_zero`…`f_four` above certify the property by brute
+force, which the note on `hasDistinctSubsetSums_iff_card` explains cannot scale
+past `|A| = 4` axiom-free.  The lemmas below are the *structural* counterpart:
+elementary, brute-force-free facts that hold for **all** finite sets and are
+reusable engines for building and analysing witnesses of any size (including the
+Conway–Guy sets `f(5)=13`, `f(6)=24` the brute-force route cannot reach).
+
+* **Hereditary**: every subset of a distinct-subset-sums set again has distinct
+  subset sums (`hasDistinctSubsetSums_subset`, `hasDistinctSubsetSums_erase`).
+* **Base cases**: `∅` and any nonzero singleton qualify.
+* **No zero / positivity**: a distinct-subset-sums set never contains `0`, so all
+  its elements are positive — matching the `0 < a` hypothesis in
+  `erdos_1_conjecture`.
+* **Scale invariance**: multiplying every element by a positive constant preserves
+  the property (`hasDistinctSubsetSums_image_mul`), the algebraic engine behind
+  rescaling a witness.
+-/
+
+/-- **Hereditary**: any subset of a distinct-subset-sums set again has distinct
+subset sums.  Subsets of `B ⊆ A` are subsets of `A`, so the distinctness
+hypothesis on `A` applies verbatim.  This is the reusable downward-closure engine:
+distinct subset sums is a hereditary (monotone-decreasing) property. -/
+theorem hasDistinctSubsetSums_subset {A B : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) (hBA : B ⊆ A) : hasDistinctSubsetSums B :=
+  fun S T hS hT hsum => hA S T (hS.trans hBA) (hT.trans hBA) hsum
+
+/-- Removing an element preserves distinct subset sums — the `erase` special case
+of `hasDistinctSubsetSums_subset`. -/
+theorem hasDistinctSubsetSums_erase {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) (a : ℕ) : hasDistinctSubsetSums (A.erase a) :=
+  hasDistinctSubsetSums_subset hA (Finset.erase_subset a A)
+
+/-- The empty set trivially has distinct subset sums: its only subset is `∅`. -/
+theorem hasDistinctSubsetSums_empty : hasDistinctSubsetSums (∅ : Finset ℕ) := by
+  intro S T hS hT _
+  rw [Finset.subset_empty] at hS hT
+  rw [hS, hT]
+
+/-- A nonzero singleton `{a}` has distinct subset sums: its subsets are `∅` (sum
+`0`) and `{a}` (sum `a`), which differ exactly when `a ≠ 0`.  (The singleton
+`{0}` fails, since `∅` and `{0}` then share the sum `0` — consistent with
+`hasDistinctSubsetSums_zero_not_mem`.) -/
+theorem hasDistinctSubsetSums_singleton {a : ℕ} (ha : a ≠ 0) :
+    hasDistinctSubsetSums ({a} : Finset ℕ) := by
+  intro S T hS hT hsum
+  rw [Finset.subset_singleton_iff] at hS hT
+  rcases hS with hS | hS <;> rcases hT with hT | hT <;>
+    subst hS <;> subst hT <;> simp_all
+
+/-- **A distinct-subset-sums set never contains `0`.**  If `0 ∈ A` then the
+distinct subsets `{0}` and `∅` would share the sum `0`, contradicting
+distinctness. -/
+theorem hasDistinctSubsetSums_zero_not_mem {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) : 0 ∉ A := fun h0 =>
+  Finset.singleton_ne_empty 0 <|
+    hA {0} ∅ (Finset.singleton_subset_iff.mpr h0) (Finset.empty_subset _) (by simp)
+
+/-- **Every element of a distinct-subset-sums set is positive.**  Immediate from
+`hasDistinctSubsetSums_zero_not_mem`; this matches the `0 < a` positivity
+hypothesis in the statement of `erdos_1_conjecture`, so the conjecture's
+constraint is automatic given distinctness. -/
+theorem hasDistinctSubsetSums_pos_of_mem {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) {a : ℕ} (ha : a ∈ A) : 0 < a :=
+  Nat.pos_of_ne_zero fun h => hasDistinctSubsetSums_zero_not_mem hA (h ▸ ha)
+
+/-- **Scale invariance**: multiplying every element by a positive constant `c`
+preserves distinct subset sums.  Each subset of `A.image (c * ·)` is `S.image
+(c * ·)` for a unique `S ⊆ A` (as `c * ·` is injective), and its sum is `c` times
+the sum of `S`; since `c > 0` is cancellable, equal scaled sums force equal
+sums, hence equal subsets.  The algebraic engine behind rescaling a witness
+(e.g. clearing denominators, or interleaving two witnesses on disjoint scales). -/
+theorem hasDistinctSubsetSums_image_mul {A : Finset ℕ}
+    (hA : hasDistinctSubsetSums A) {c : ℕ} (hc : 0 < c) :
+    hasDistinctSubsetSums (A.image (fun x => c * x)) := by
+  have hinj : Function.Injective (fun x : ℕ => c * x) :=
+    fun x y h => Nat.eq_of_mul_eq_mul_left hc h
+  intro S' T' hS' hT' hsum
+  rw [Finset.subset_image_iff] at hS' hT'
+  obtain ⟨S, hSA, rfl⟩ := hS'
+  obtain ⟨T, hTA, rfl⟩ := hT'
+  have hsumS : (S.image (fun x => c * x)).sum id = c * S.sum id := by
+    rw [Finset.sum_image (fun x _ y _ h => hinj h)]
+    simp [id, Finset.mul_sum]
+  have hsumT : (T.image (fun x => c * x)).sum id = c * T.sum id := by
+    rw [Finset.sum_image (fun x _ y _ h => hinj h)]
+    simp [id, Finset.mul_sum]
+  rw [hsumS, hsumT] at hsum
+  rw [hA S T hSA hTA (Nat.eq_of_mul_eq_mul_left hc hsum)]
+
+/-! ## Part V: Intrinsic (parameter-free) counting bounds
+
+The counting bound `erdos_1_counting_bound` in `Erdos1Problem` is stated relative to an
+*externally supplied* upper bound `N ≥ a` for every `a ∈ A`, giving `2^|A| ≤ |A|·N + 1`.
+The sharpest and most intrinsic form of the same pigeonhole argument bounds the `2^|A|`
+distinct subset sums by the total sum `∑A` alone — no ambient `N` needed — since every
+subset sum lies in `[0, ∑A]`. This `2^|A| ≤ (∑A) + 1` bound is strictly sharper than the
+`N`-form (because `∑A ≤ |A|·N`) and depends only on `A` itself, making it the natural
+building block from which the ambient-`N` and largest-element walls both follow.
+-/
+
+/-- **Intrinsic sum counting wall (0 axioms).**  A set with distinct subset sums satisfies
+`2^|A| ≤ (∑ a ∈ A, a) + 1`: the `2^|A|` subsets have distinct sums, each lying in the
+`(∑A + 1)`-element range `[0, ∑A]`, so pigeonhole forces `2^|A| ≤ ∑A + 1`.  Unlike
+`erdos_1_counting_bound` (which needs an externally supplied `N ≥ a`), this bound is
+parameter-free — it depends on `A` alone — and is strictly sharper, since `∑A ≤ |A|·N`.
+It is the intrinsic origin of the whole Erdős #1 counting bound. -/
+theorem two_pow_card_le_sum_succ {A : Finset ℕ}
+    (hDSS : hasDistinctSubsetSums A) :
+    2 ^ A.card ≤ A.sum id + 1 := by
+  -- The subset-sum map is injective on the powerset (distinctness), so its image has
+  -- cardinality `2^|A|`.
+  have hinj : Set.InjOn (fun (S : Finset ℕ) => S.sum id) (↑A.powerset : Set (Finset ℕ)) := by
+    intro S hS T hT heq
+    rw [Finset.mem_coe, Finset.mem_powerset] at hS hT
+    exact hDSS S T hS hT heq
+  have himg_card : (A.powerset.image (fun S => S.sum id)).card = 2 ^ A.card := by
+    rw [Finset.card_image_of_injOn hinj, Finset.card_powerset]
+  -- Every subset sum lies in `[0, ∑A]`, so the image sits inside `range (∑A + 1)`.
+  have himg_sub : A.powerset.image (fun S => S.sum id) ⊆ Finset.range (A.sum id + 1) := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨S, hSmem, rfl⟩ := hx
+    rw [Finset.mem_powerset] at hSmem
+    rw [Finset.mem_range]
+    have hle : S.sum id ≤ A.sum id := Finset.sum_le_sum_of_subset hSmem
+    omega
+  calc 2 ^ A.card
+      = (A.powerset.image (fun S => S.sum id)).card := himg_card.symm
+    _ ≤ (Finset.range (A.sum id + 1)).card := Finset.card_le_card himg_sub
+    _ = A.sum id + 1 := Finset.card_range _
+
+/-- **Intrinsic largest-element counting wall (0 axioms).**  Specialising the sum wall
+`two_pow_card_le_sum_succ` to `A`'s own maximum gives `2^|A| ≤ |A|·(sup A) + 1`, using
+`∑A ≤ |A|·(sup A)` (`sum_le_card_mul_max`).  This is the sharpest `N`-form counting bound
+for `A`: it uses the *exact* largest element `A.sup id` rather than an arbitrary ambient
+`N ≥ a`, so it refines `erdos_1_counting_bound` whenever the supplied `N` overshoots the
+true maximum.  It is exactly the wall exploited by the exhaustive small-case lower bound
+`f_four_lower`. -/
+theorem two_pow_card_le_card_mul_sup_succ {A : Finset ℕ}
+    (hDSS : hasDistinctSubsetSums A) :
+    2 ^ A.card ≤ A.card * A.sup id + 1 := by
+  have h1 := two_pow_card_le_sum_succ hDSS
+  have h2 : A.sum id ≤ A.card * A.sup id :=
+    sum_le_card_mul_max A (A.sup id) (fun a ha => Finset.le_sup (f := id) ha)
+  omega
+/-! ## Part VI: The general powers-of-two upper bound `f(n) ≤ 2ⁿ⁻¹`
+
+The per-case witnesses `f_zero`…`f_four` above certify individual values of the
+extremal function `f`.  They are subsumed, in the *upper-bound* direction, by a
+single uniform construction: the greedy binary set `{2⁰, 2¹, …, 2ⁿ⁻¹}` has
+distinct subset sums for **every** `n`, because a subset sum of distinct powers
+of two is just the number whose binary expansion is that subset (uniqueness of
+binary representation).  This gives `f(n) ≤ 2ⁿ⁻¹` for all `n`, the classical
+upper bound that the Conway–Guy construction (and the exact values in
+OEIS A005318, `f(4) = 7 < 8 = 2³`) improve upon, and the complement of the DFX
+lower bound `f(n) = Ω(2ⁿ/√n)` formalized in `dfx_lower_bound`.
+-/
+
+/-- The greedy powers-of-two witness `{2⁰, 2¹, …, 2ⁿ⁻¹}` for the Erdős
+    distinct-subset-sums problem: an `n`-element set of positive integers whose
+    `2ⁿ` subset sums are exactly the numbers `0, 1, …, 2ⁿ − 1` (binary
+    representations). -/
+def powersOfTwo (n : ℕ) : Finset ℕ := (Finset.range n).image (fun i => 2 ^ i)
+
+/-- `powersOfTwo n` has exactly `n` elements: `i ↦ 2ⁱ` is injective, so the image
+    of `range n` has the same cardinality. -/
+theorem powersOfTwo_card (n : ℕ) : (powersOfTwo n).card = n := by
+  rw [powersOfTwo,
+    Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+    Finset.card_range]
+
+/-- Every element of `powersOfTwo n` is a positive power of two. -/
+theorem powersOfTwo_pos (n : ℕ) : ∀ a ∈ powersOfTwo n, 0 < a := by
+  intro a ha
+  rw [powersOfTwo, Finset.mem_image] at ha
+  obtain ⟨i, _, rfl⟩ := ha
+  positivity
+
+/-- The largest element of `powersOfTwo n` is at most `2ⁿ⁻¹`: each element is
+    `2ⁱ` with `i < n`, hence `i ≤ n − 1`. -/
+theorem powersOfTwo_sup_le (n : ℕ) : (powersOfTwo n).sup id ≤ 2 ^ (n - 1) := by
+  apply Finset.sup_le
+  intro a ha
+  rw [powersOfTwo, Finset.mem_image] at ha
+  obtain ⟨i, hi, rfl⟩ := ha
+  rw [Finset.mem_range] at hi
+  simp only [id_eq]
+  exact Nat.pow_le_pow_right (by norm_num) (by omega)
+
+/-- **Key fact.** `powersOfTwo n` has distinct subset sums for every `n`.  A
+    subset `S ⊆ {2⁰, …, 2ⁿ⁻¹}` is the image of a set `s ⊆ range n` of exponents,
+    and `∑_{a ∈ S} a = ∑_{i ∈ s} 2ⁱ`; the map `s ↦ ∑_{i ∈ s} 2ⁱ` is injective on
+    `Finset ℕ` (uniqueness of binary expansion, `Finset.geomSum_injective`), so
+    equal subset sums force equal exponent sets and hence equal subsets. -/
+theorem powersOfTwo_distinctSubsetSums (n : ℕ) :
+    hasDistinctSubsetSums (powersOfTwo n) := by
+  intro S T hS hT heq
+  rw [powersOfTwo, Finset.subset_image_iff] at hS hT
+  obtain ⟨s, _, rfl⟩ := hS
+  obtain ⟨t, _, rfl⟩ := hT
+  rw [Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h),
+      Finset.sum_image (fun x _ y _ h => Nat.pow_right_injective (le_refl 2) h)] at heq
+  simp only [id_eq] at heq
+  rw [Finset.geomSum_injective (le_refl 2) heq]
+
+/-- **Powers-of-two upper bound**: for every `n` there is an `n`-element set of
+    positive integers with distinct subset sums whose maximum element is at most
+    `2ⁿ⁻¹`.  Equivalently `f(n) ≤ 2ⁿ⁻¹` for all `n` — the classical greedy binary
+    bound, complementing the DFX lower bound `f(n) = Ω(2ⁿ/√n)` and the exact
+    small values `f_zero`…`f_four`.  This is the uniform statement behind the
+    per-case witnesses `{}`, `{1}`, `{1,2}`, `{1,2,4}`, … (each a `powersOfTwo`
+    set, except where a smaller extremal set exists, as at `n = 4`). -/
+theorem f_le_two_pow (n : ℕ) :
+    ∃ (A : Finset ℕ), A.card = n ∧ (∀ a ∈ A, 0 < a) ∧
+      hasDistinctSubsetSums A ∧ A.sup id ≤ 2 ^ (n - 1) :=
+  ⟨powersOfTwo n, powersOfTwo_card n, powersOfTwo_pos n,
+    powersOfTwo_distinctSubsetSums n, powersOfTwo_sup_le n⟩
+
 /-! ## Conclusion
 
 The DFX framework is formalized with:

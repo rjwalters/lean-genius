@@ -51,15 +51,20 @@
       "Subring structure (puiseuxSubring): the IsPuiseuxSeries predicate is closed under 0, 1, +, - and * (isPuiseux_zero/one/add/neg/mul), so the Puiseux series form an honest Subring of HahnSeries ℚ K — the structural backbone the prose claimed, proved by denominator arithmetic on exponent supports (common denominator n·m for both sum and product)",
       "Galois group Gal(Puiseux/Laurent) ≅ Ẑ noted as an informal String descriptor (galois_group_is_profinite_integers), not formalized",
       "Characteristic-zero requirement noted as an informal String descriptor (char_zero_required, Artin-Schreier obstruction), not formalized",
-      "Binomial root lifted to an honest Polynomial.IsRoot (puiseux_binomial_isRoot): the Puiseux series c^(1/n)·x^(m/n) is a genuine root of the polynomial Xⁿ - C(single m c) over the Hahn/Puiseux field, the polynomial-level form of a single Newton-polygon edge"
+      "Binomial root lifted to an honest Polynomial.IsRoot (puiseux_binomial_isRoot): the Puiseux series c^(1/n)·x^(m/n) is a genuine root of the polynomial Xⁿ - C(single m c) over the Hahn/Puiseux field, the polynomial-level form of a single Newton-polygon edge",
+      "ramificationValueSubgroup_le_iff: (1/n)ℤ ≤ (1/n′)ℤ ↔ n ∣ n′ — the value-subgroup tower is an ORDER EMBEDDING of the divisibility poset (ℕ⁺,∣) into AddSubgroup ℚ (converse of ramificationValueSubgroup_mono)",
+      "ramificationValueSubgroup_injective: distinct ramification levels give distinct value subgroups, so the exhausting filtration iSup=⊤ is faithful (every level genuinely new)",
+      "puiseuxAddVal (Part XVI): the order valuation on the Puiseux field packaged as Mathlib's genuine HahnSeries.addVal ℚ K : AddValuation (HahnSeries ℚ K) (WithTop ℚ) — upgrading the ad-hoc orderTop value-group computations of Parts XIII–XV to the first-class AddValuation object, with the valuation axioms puiseuxAddVal_mul (v(fg)=v f+v g) and puiseuxAddVal_add (ultrametric min(v f,v g)≤v(f+g)) that the orderTop-only work never stated",
+      "puiseuxAddVal_inv/div/eq_top_iff (Part XVI): the field laws v(f⁻¹)=−v f, v(f/g)=v f−v g and nondegeneracy v(f)=⊤ ↔ f=0, available because HahnSeries ℚ K is itself a field (HahnSeries.instField)",
+      "puiseuxAddVal_surjective / puiseux_puiseuxAddVal_range / ramification_puiseuxAddVal_range (Part XVI): the value group of the genuine AddValuation is all of WithTop ℚ (every value, ⊤ included, attained), with the level-n Laurent subfield value group exactly (1/n)ℤ — the AddValuation-object form of puiseux_orderTop_range and ramification_orderTop_range"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
-    "lineCount": 1315,
+    "lineCount": 1786,
     "assumptions": "No axiom declarations, no sorries, no native_decide (all theorems depend only on propext/Classical.choice/Quot.sound). The two headline placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were replaced by genuine, fully computed Hahn-series theorems puiseux_binomial_root and puiseux_binomial_ramification, which establish the binomial base case of Puiseux's theorem (every binomial Yⁿ = c·xᵐ has a Puiseux root of ramification n over an algebraically closed field). Four narrative theorems remain as String-literal descriptors carrying no formal content (curve_branches_are_puiseux, newton_polygon_tropicalization, galois_group_is_profinite_integers, char_zero_required); each merely asserts ∃ desc : String, desc = \"…\" and marks an informal application/connection rather than a machine-checked result. This is a rigorously verified FRAGMENT: the full Newton–Puiseux theorem for arbitrary polynomials over the Puiseux field (assembling binomial roots term by term, with its char-0 convergence argument) is not formalized here — the required infrastructure is absent from Mathlib. Badge remains 'wip' to reflect that the headline algebraic-closure theorem is not fully proven.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 44,
-    "definitionCount": 8
+    "theoremCount": 63,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Newton discovered the algorithm for computing fractional power series roots of polynomials in 1676. Puiseux gave the first rigorous proof in 1850 that these series provide the algebraic closure of the Laurent series field, establishing that allowing fractional exponents suffices to solve all polynomial equations over formal power series (in characteristic 0). The study of algebraic curves via local parametrization goes back to Newton who introduced the Newton polygon method to compute the branches of an algebraic curve at a singular point. The formal algebraic closure result was refined in the 20th century by Hironaka and others in connection with resolution of singularities, and the characteristic-0 hypothesis is essential: in characteristic p, the Artin-Schreier phenomenon means p-th power extensions cannot be captured by Puiseux series.",
@@ -164,6 +169,7 @@
   "leanFile": {
     "imports": [
       "Mathlib.RingTheory.HahnSeries.Basic",
+      "Mathlib.RingTheory.HahnSeries.Valuation",
       "Mathlib.RingTheory.PowerSeries.Basic",
       "Mathlib.FieldTheory.IsAlgClosed.Basic",
       "Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure",
@@ -173,10 +179,10 @@
       "Polynomial"
     ],
     "namespace": "PuiseuxTheorem",
-    "lineCount": 1440,
+    "lineCount": 1786,
     "axiomCount": 0,
-    "theoremCount": 48,
-    "definitionCount": 8,
+    "theoremCount": 68,
+    "definitionCount": 10,
     "path": "Proofs/PuiseuxTheorem.lean",
     "sorries": 0
   },

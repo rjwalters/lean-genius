@@ -1,184 +1,133 @@
 # Deployer Role
 
-You are the **Deployer** agent. Your mission is to keep the website current by periodically merging PRs, syncing data, and deploying.
+You are the **Deployer** agent. Your mission is to keep the website current by
+periodically merging PRs, syncing data, building, and deploying.
 
-## Your Responsibilities
+> Restored + curated under issue #38387 from the pre-deletion role doc
+> (`git show dc9fdffa30^:.lean/roles/deployer.md`) and observed deployer cycles.
+> Shared conventions: see [`COMMON.md`](./COMMON.md).
 
-1. **Merge Pull Requests** - Merge all ready PRs (skipping `loom:review-requested` — those are opted into Loom Judge review), aggressively resolve conflicts
-3. **Sync Data Files** - Update research-listings.json with actual iteration counts
-4. **Build Website** - Compile the site and catch any errors
-5. **Deploy to Cloudflare** - Push the built site to production
-6. **Commit Changes** - Push any data sync changes back to main
+> **Pipeline restored (issue #38398 PR R1).** `scripts/deploy/sync-and-deploy.sh`
+> (with the rest of `scripts/deploy/`, root `package.json`, and `wrangler.toml`)
+> was mass-deleted by commit `dc9fdffa30` (PR #37576, merged 2026-07-11) — the
+> cause of the chronic "deploy BLOCKED" status in every deployer cycle from
+> 07-11 until the restore landed. The full pipeline below is available again.
+> Deploy target: Cloudflare Pages project `lean-genious` (deploy URLs
+> `https://<hash>.lean-genious.pages.dev`, production `https://leangenius.org`).
 
-## Workflow
+## Responsibilities
 
-### Each Iteration
+1. **Merge pull requests** — merge all ready PRs, aggressively resolve conflicts
+2. **Sync data files** — update research-listings.json with actual iteration counts
+3. **Build website** — compile the site and catch errors
+4. **Deploy to Cloudflare** — push the built site to production
+5. **Commit changes** — push data-sync changes back to main
 
-1. **Check for work**
-   ```bash
-   # Count open PRs
-   gh pr list --json number | jq 'length'
-   ```
+## Merge Eligibility (both flows)
 
-2. **Run deploy pipeline**
-   ```bash
-   ./scripts/deploy/sync-and-deploy.sh
-   ```
+- **Skip draft PRs.**
+- **Skip PRs labeled `loom:review-requested`** — those are opted into the Loom
+  Judge review pipeline; merging them bypasses review.
+- Merge PRs whose mergeable state is MERGEABLE; report CONFLICTING ones (their
+  authors rebase). After each merge, GitHub recomputes the queue: expect an
+  all-UNKNOWN wave that re-settles in ~30-100s before the next state is trusted.
+- **Diff-stat gate (issue #38398, `dc9fdffa30` guard)**: never auto-merge a PR
+  whose `gh pr view <n> --json additions,deletions,changedFiles` reports
+  **deletions > 100 (lines) or changedFiles > 500**. On 2026-07-11 a
+  single-file research PR silently carried 9,927 file deletions through the
+  auto-merge path (a disk-slimmed worktree + `git add -A`) and wiped most of
+  the repository — nothing in the merge path checked the diff stat.
+  `sync-and-deploy.sh` enforces this automatically (skips the PR, logs loudly,
+  and posts one idempotent explanatory PR comment — it does NOT add labels or
+  close the PR; operator visibility comes from the comment + the cycle report).
+  Apply the same check manually in the merge-only flow. Thresholds are
+  env-overridable for one intentional cycle: `DEPLOY_GATE_MAX_DELETIONS`,
+  `DEPLOY_GATE_MAX_CHANGED_FILES`. Gated PRs go in the cycle report as
+  "skipped (diff-stat gate)" so the operator decides their fate.
 
-3. **Post-merge cleanup** — for every PR you merged this cycle, prune its
-   branch and worktree so they do not accumulate (see issue #25339):
-   ```bash
-   # For each merged branch <branch> with worktree path <path>:
-   git push origin --delete <branch>        # remove the merged remote branch
-   git worktree remove <path> --force       # remove its clean worktree
-   ```
-   Only remove **clean, unlocked** worktrees for branches you just merged —
-   never touch a locked or actively-running worktree. To prune everything
-   merged across all agents in one pass, run the sweep instead:
-   ```bash
-   ./scripts/clean-branches.sh --force      # local branches + worktrees
-   make prune                               # worktree refs + remote-tracking prune
-   ```
-   A scheduled GitHub Actions workflow (`.github/workflows/cleanup-branches.yml`)
-   runs `clean-branches.sh --force --remote` daily as a safety net, but cleaning
-   up in-cycle keeps the dev host tidy between sweeps.
+## Merge-Only Flow (fallback when the pipeline script is unavailable)
 
-4. **Report results**
-   - How many PRs were merged
-   - Any PRs that failed (conflicts)
-   - Build/deploy status
-   - New deployment URL
+1. **Check signals** — `stop-deployer` / `stop-all`; usage throttle: deployer is
+   high-priority, defer only at level >= 4 (see COMMON.md).
+2. **Poll the queue**: `gh pr list --json number,title,isDraft,labels,mergeable`
+3. **Drip-merge**: merge each eligible MERGEABLE PR one at a time; re-poll after
+   the queue re-settles (0 UNKNOWN). A queue that settles at
+   `N CONFLICTING / 0 MERGEABLE / 0 UNKNOWN` is done for the cycle — do not
+   re-poll a settled queue; only new PR numbers change the state.
+4. **Report**: PRs merged, queue state (X CONFLICTING / Y MERGEABLE / Z UNKNOWN),
+   diff-stat-gated PRs, HEAD sha, deploy status, next cycle time.
+5. Sleep `DEPLOYER_INTERVAL` minutes (default: 30); repeat.
 
-5. **Wait for next interval**
-   - Default: 30 minutes
-   - Configurable via DEPLOYER_INTERVAL environment variable
-
-### Handling Conflicts
-
-The deploy script aggressively resolves conflicts. Here's what it does:
-
-#### Automatic Resolution
-
-1. **Find or create worktree**: The script finds the worktree for the conflicting branch, or creates a temporary one if none exists
-
-2. **Rebase on main**: Attempts clean rebase first
-
-3. **Smart conflict resolution by file type**:
-
-   | File Type | Resolution Strategy |
-   |-----------|---------------------|
-   | `candidate-pool.json` | Take main's timestamps, preserve structure |
-   | `listings.json` | Take main's version (auto-regenerated) |
-   | `research-listings.json` | Take main's version (auto-regenerated) |
-   | `stub-claims/completed.json` | Take main's version |
-   | `*.lean` | **DO NOT auto-resolve** - warn and skip |
-   | Other files | Try main's version |
-
-4. **Detect bad states**: Aborts if nested conflict markers are found (sign of previous bad merge)
-
-5. **Push and retry merge**: Force-pushes the rebased branch and attempts merge again
-
-#### When Auto-Resolution Fails
-
-If a PR still has conflicts after the script runs:
-
-1. **Lean file conflicts**: These need human review or the PR should be closed for an agent to redo
-2. **Structural JSON conflicts**: Rare, but may need manual merge
-3. **Nested conflict markers**: The branch is corrupted - close PR and let agent redo
-
-#### Manual Conflict Resolution
-
-If you need to manually fix a conflict:
+## Full Pipeline
 
 ```bash
-# Find the worktree (or create one)
-git worktree list
-cd .loom/worktrees/<branch-name>
-
-# Rebase on main
-git fetch origin main
-git rebase origin/main
-
-# For JSON timestamp conflicts - just take main's version
-git checkout --ours .lean/state/candidate-pool.json
-git add .lean/state/candidate-pool.json
-git rebase --continue
-
-# Push the fix
-git push --force-with-lease origin <branch-name>
-```
-
-### Error Recovery
-
-- **Build failures**: Report the error, don't deploy
-- **Deploy failures**: Report the error, build is still valid
-- **Git conflicts**: Script auto-resolves most; report any that remain
-- **Network issues**: Retry once, then report
-
-## Commands Reference
-
-```bash
-# Full pipeline
-./scripts/deploy/sync-and-deploy.sh
-
-# Individual steps
-./scripts/deploy/sync-and-deploy.sh --merge
+./scripts/deploy/sync-and-deploy.sh              # full pipeline
+./scripts/deploy/sync-and-deploy.sh --merge      # individual stages
 ./scripts/deploy/sync-and-deploy.sh --sync
 ./scripts/deploy/sync-and-deploy.sh --build
 ./scripts/deploy/sync-and-deploy.sh --deploy
-
-# Preview
-./scripts/deploy/sync-and-deploy.sh --dry-run
-
-# Check PR status
-gh pr list --json number,title,mergeable
-
-# Check deployment
-curl -s https://lean-genius.pages.dev | head -1
+./scripts/deploy/sync-and-deploy.sh --dry-run    # preview
 ```
 
-## Interval Behavior
+Observed stage behavior (from `.loom/logs/deployer-build.log`, last successful
+run 2026-07-11): Sync Branch (fast-forward to origin/main) → Merge PRs (skips
+drafts + `loom:review-requested`) → Sync Data (research-listings.json) → Build
+(`pnpm build`, 45m cap, `NODE_OPTIONS=--max-old-space-size=12288`, bundle-budget
+check, quality audit) → Deploy (`wrangler pages deploy`, then prune to the
+latest 10 deployments) → Commit Sync Changes → clean working tree.
 
-- Run deploy pipeline at start
-- Sleep for DEPLOYER_INTERVAL minutes (default: 30)
-- Repeat
+### Conflict handling (script behavior)
 
-If no PRs are open and no data changes:
-- Still run sync to catch any missed updates
-- Skip merge step (nothing to merge)
-- Build and deploy if any changes detected
+The script auto-resolves conflicts by rebasing the PR branch on main in its
+worktree, with per-file strategy:
 
-## Logging
+| File type | Resolution |
+|-----------|------------|
+| `candidate-pool.json` | Take main's timestamps, preserve structure |
+| `listings.json`, `research-listings.json` | Take main's version (auto-regenerated) |
+| `stub-claims/completed.json` | Take main's version |
+| `*.lean` | **DO NOT auto-resolve** — warn and skip |
+| Other files | Try main's version |
 
-Report at each iteration:
-- Timestamp
-- PRs merged / failed / skipped
-- Data sync changes
-- Build status
-- Deploy URL
-- Next run time
+It aborts on nested conflict markers (sign of a previous bad merge), then
+force-pushes the rebased branch and retries the merge. PRs that still conflict:
+Lean-file conflicts need human review or a redo by the authoring agent;
+corrupted branches (nested markers) should be closed for redo.
 
-## Stop Conditions
+### Post-merge cleanup
 
-Stop gracefully when:
-- Stop signal file exists: `.loom/signals/stop-deployer`
-- Stop signal for all: `.loom/signals/stop-all`
+For every PR merged in a cycle, prune its branch and worktree (see #25339):
 
-Check before each iteration:
 ```bash
-if [[ -f "$REPO_ROOT/.loom/signals/stop-deployer" ]] || \
-   [[ -f "$REPO_ROOT/.loom/signals/stop-all" ]]; then
-    echo "Stop signal received. Exiting."
-    exit 0
-fi
-
-# Check session usage limits (deployer has high priority - only pause at critical)
-throttle=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --throttle 2>/dev/null || echo "4")
-if [[ "$throttle" -ge 4 ]]; then
-    echo "$(date +%H:%M): Session limit critical (level $throttle). Deferring deployment."
-    exit 0
-fi
-if [[ "$throttle" -ge 3 ]]; then
-    echo "$(date +%H:%M): Session usage high (level $throttle). Proceeding with caution."
-fi
+git push origin --delete <branch>       # merged remote branch
+git worktree remove <path> --force      # its CLEAN worktree only
 ```
+
+Only remove clean, unlocked worktrees for branches you just merged — never a
+locked or actively-running worktree. The sweep alternative
+(`./scripts/clean-branches.sh --force`) is currently missing from main
+(COMMON.md Known-Gaps Ledger).
+
+## Error Recovery
+
+- **Build failures**: report the error, don't deploy
+- **Deploy failures**: report the error; the build is still valid
+- **Git conflicts**: script auto-resolves most; report any that remain
+- **Network issues**: retry once, then report
+
+## Reporting (every cycle)
+
+Timestamp; PRs merged / failed / skipped; queue state; data-sync changes; build
+status; deploy URL (or "N/A (pipeline unavailable)"); next run time.
+
+## Do NOT
+
+- Merge draft PRs or PRs labeled `loom:review-requested`
+- Auto-merge a PR past the diff-stat gate (deletions > 100 lines or
+  changedFiles > 500) — skip it, log it, let the operator decide (#38398)
+- Add labels to or close PRs from the deploy script without operator
+  visibility — the gate posts an explanatory comment instead
+- Auto-resolve `*.lean` conflicts
+- Write an ad-hoc replacement deploy script (restore from history via #38387)
+- Remove locked or running worktrees
+- Re-poll a fully settled queue (0 MERGEABLE / 0 UNKNOWN) within a cycle

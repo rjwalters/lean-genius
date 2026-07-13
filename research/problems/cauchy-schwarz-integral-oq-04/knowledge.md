@@ -1,3 +1,39 @@
+## Session 2026-07-12 (researcher-8) — Maccone–Pati STRONGER sum uncertainty relation (VERIFIED axiom-free)
+
+The file was flagged TERMINUS by several prior sessions, but the tracker `nextAction`
+still named one genuine theory-level direction untouched: the **Maccone–Pati stronger
+uncertainty relation** (PRL 113, 260401, 2014). The existing additive forms
+(`robertson_sum_form`, `heisenberg_sum_form`, `robertson_weighted_sum_form`) are all
+AM–GM consequences of the product bound and share a defect: their lower bound is
+proportional to `‖⟪ψ,[A,B]ψ⟫‖` and so **vanishes** whenever the commutator expectation
+does — uninformative even for genuinely incompatible observables in such a state. MP
+fixes this. Added 5 theorems (1134→~1230 lines, still 0 axioms / 0 sorries):
+
+- `normSq_add_I_smul` / `normSq_sub_I_smul` — polarization identity
+  `‖u ± i·v‖² = ‖u‖² + ‖v‖² ∓ 2·Im⟪u,v⟫`. Proof: Mathlib `norm_add_sq` (giving
+  `2·Re⟪u,I·v⟫`) then `inner_smul_right` + `RCLike.I_mul_re` (`Re(I·z) = −Im z`) and
+  `RCLike.norm_I_of_ne_zero`. The `−i` version reuses the `+i` one at `(u,−v)`.
+- `maccone_pati_uncertainty` (`+i`) / `maccone_pati_uncertainty_neg` (`−i`) — for a
+  UNIT `w ⊥ ψ` (abstract `ψ⊥`), `±2·Im⟪(A−a)ψ,(B−b)ψ⟫ + ‖⟪w,(A±iB)ψ⟫‖² ≤ Var-sum`.
+  Proof: `Γ = u ± i·v` obeys `‖⟪w,Γ⟫‖² ≤ ‖w‖²‖Γ‖² = ‖Γ‖²` (Cauchy–Schwarz, `‖w‖=1`),
+  rewrite `‖Γ‖²` by the polarization identity, and `⟪w,Γ⟫ = ⟪w,(A±iB)ψ⟫` because the
+  real shifts drop out under `⟪w,ψ⟫ = 0` (`inner_smul_right` + `mul_zero`). The extra
+  projection term is the genuine strengthening — positive even when the commutator
+  term is zero.
+- `maccone_pati_variance_form` — specialize at `a=⟨A⟩=Re⟪ψ,Aψ⟫`, `b=⟨B⟩`.
+- `maccone_pati_stronger_than_robertson_sum` — combining both orientations and taking
+  the sign with `2·Im⟪u,v⟫ ≥ 0` gives `‖⟪ψ,[A,B]ψ⟫‖ + min(both projection terms) ≤
+  Var-sum`, i.e. `robertson_sum_form` PLUS a nonnegative Maccone–Pati term.
+
+BUILD: **VERIFIED axiom-free** via the Docker-free host path
+`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean <abs-worktree-file>` (v4.26 oleans);
+all 5 theorems `#print axioms` = `[propext, Classical.choice, Quot.sound]`, 0 sorries,
+no `native_decide`. ★ENV gotcha: `cd .../lean-genius/proofs` is the MAIN checkout, whose
+copy of the file lacks worktree edits — must pass the WORKTREE absolute file path to
+`lake env lean` while using MAIN `.lake`.
+
+---
+
 ## Session 2026-07-11 (researcher-2) — VERIFIED axiom-free + literal Δx·Δp ≥ ℏ/2 (standard-deviation form)
 
 Two developments this session on `CauchySchwarzIntegralOQ04.lean`:

@@ -46,37 +46,51 @@
       "The integrand (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ| is jointly continuous when A and B are continuous, and the interval of integration [0, π] is fixed and compact — so continuous_parametric_intervalIntegral_of_continuous' applies directly with no dominated-convergence bookkeeping.",
       "Continuity is enough: the proof never uses the closed form 2‖γ'(t)‖ of the inner integral, only joint continuity of the integrand and the fixed compact interval. This keeps the result robust and self-contained on Mathlib's parametric-integral API.",
       "Continuity on a compact parameter interval [a, b] immediately gives interval-integrability (Continuous.intervalIntegrable), turning the analytic side condition into a one-line consequence of regularity.",
-      "Honest scope: this discharges exactly the Buffon-specific integrability residue (hInnerInt), not the general co-area / Cauchy–Crofton formula, which remains absent from Mathlib."
+      "Honest scope: this discharges exactly the Buffon-specific integrability residue (hInnerInt), not the general co-area / Cauchy–Crofton formula, which remains absent from Mathlib.",
+      "The upgraded capstone buffon_smooth_C1 is hypothesis-minimal for the smooth case: once hInnerInt is discharged, the only surviving hypotheses of buffon_smooth_full are the differentiability of the two coordinate functions — which is exactly what it means for the curve to be C¹. Buffon–Barbier is therefore shown to hold for every C¹ planar curve with no analytic side condition beyond C¹ regularity itself. The genuine next frontier is not another side condition but weakening the differentiability class (rectifiable/Lipschitz arcs), a qualitatively different problem where the velocity need not be continuous and the parametric-integral argument no longer applies."
     ]
   },
   "sections": [
+    {
+      "id": "overview-hypothesis-discharge",
+      "title": "Overview: discharging the integrability hypothesis",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports (Mathlib and the parent Proofs.BuffonsNeedleOQ01OQ01) and the module docstring. It frames the goal: the parent's buffon_smooth_full carries the C¹ differentiability hypotheses (hdx, hdy) and an interval-integrability hypothesis (hInnerInt) on the inner angular integral t ↦ ∫₀^π |γ'₁(t)·sin θ + γ'₂(t)·cos θ| dθ; the parent's fifth open question asks to remove the Fubini/co-area condition. The docstring states what is achieved (hInnerInt discharged from continuity of the velocity, giving buffon_smooth_C1) and the honest scope (this is the Buffon-specific residue, not the general co-area formula, which stays open in Mathlib).",
+      "content": "The header orients the reader before any Lean code: the two imports (Mathlib and the parent entry Proofs.BuffonsNeedleOQ01OQ01, whose buffon_smooth_full is upgraded here) and the module docstring. The docstring identifies the exact residue of the parent's open question that this file closes — the interval-integrability hypothesis hInnerInt — records that continuity of the velocity field suffices to discharge it, and delimits the scope: the general co-area / Cauchy–Crofton formula remains an open Mathlib target, so only the one Buffon-specific analytic side condition is eliminated.",
+      "mathContext": "Discharge $\\mathtt{hInnerInt}$: interval-integrability of $t \\mapsto \\int_0^\\pi |\\gamma_1'(t)\\sin\\theta + \\gamma_2'(t)\\cos\\theta|\\,d\\theta$ from continuity of $\\gamma'$."
+    },
     {
       "id": "inner-angular",
       "title": "The Inner Angular Integral",
       "startLine": 48,
       "endLine": 52,
-      "summary": "innerAngular A B t := ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ — the integrand of the outer integral in concreteSmoothExpectedCrossings, with A = γ'₁, B = γ'₂."
+      "summary": "innerAngular A B t := ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ — the integrand of the outer integral in concreteSmoothExpectedCrossings, with A = γ'₁, B = γ'₂.",
+      "mathContext": "$\\mathrm{innerAngular}\\,A\\,B\\,t = \\int_0^\\pi |A(t)\\sin\\theta + B(t)\\cos\\theta|\\,d\\theta$, evaluated at $A = \\gamma_1'$, $B = \\gamma_2'$."
     },
     {
       "id": "continuity",
       "title": "Continuity of the Parametric Integral",
       "startLine": 54,
       "endLine": 73,
-      "summary": "innerAngular_continuous: from continuity of A, B and joint continuity of (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ|, continuous_parametric_intervalIntegral_of_continuous' gives continuity of the inner angular integral in t."
+      "summary": "innerAngular_continuous: from continuity of A, B and joint continuity of (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ|, continuous_parametric_intervalIntegral_of_continuous' gives continuity of the inner angular integral in t.",
+      "mathContext": "$(t,\\theta) \\mapsto |A(t)\\sin\\theta + B(t)\\cos\\theta|$ jointly continuous $\\Rightarrow t \\mapsto \\int_0^\\pi |A(t)\\sin\\theta + B(t)\\cos\\theta|\\,d\\theta$ continuous (parametric interval integral over the fixed compact $[0,\\pi]$)."
     },
     {
       "id": "integrability",
       "title": "Interval-Integrability",
       "startLine": 75,
       "endLine": 95,
-      "summary": "innerAngular_intervalIntegrable and hInnerInt_of_continuous_deriv: continuity on the compact interval [a, b] yields interval-integrability — exactly the hInnerInt hypothesis required by the parent's buffon_smooth_full."
+      "summary": "innerAngular_intervalIntegrable and hInnerInt_of_continuous_deriv: continuity on the compact interval [a, b] yields interval-integrability — exactly the hInnerInt hypothesis required by the parent's buffon_smooth_full.",
+      "mathContext": "Continuity of $t \\mapsto \\mathrm{innerAngular}\\,A\\,B\\,t$ on the compact $[a,b]$ $\\Rightarrow$ interval-integrability on $[a,b]$ — the hInnerInt hypothesis of buffon_smooth_full, now derived rather than assumed."
     },
     {
       "id": "capstone",
       "title": "Buffon–Barbier with the Integrability Hypothesis Removed",
       "startLine": 97,
       "endLine": 114,
-      "summary": "buffon_smooth_C1: applies buffon_smooth_full with hInnerInt derived from continuity of the velocity, giving the Buffon–Barbier identity for an arbitrary C¹ curve with no integrability assumption."
+      "summary": "buffon_smooth_C1: applies buffon_smooth_full with hInnerInt derived from continuity of the velocity, giving the Buffon–Barbier identity for an arbitrary C¹ curve with no integrability assumption.",
+      "mathContext": "buffon_smooth_C1: for any C¹ curve γ (velocity γ' continuous), the parent's Buffon–Barbier crossing identity holds with the integrability side-condition discharged — the expected number of line crossings depends only on the curve's arc length (the 2/π Barbier constant)."
     }
   ],
   "conclusion": {

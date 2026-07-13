@@ -25,6 +25,16 @@ classical fact that `K₅` (10 edges, bound 9) is the smallest complete graph
 that cannot be planar, while `K₃` (3 = 3) and `K₄` (6 = 6) sit right on the
 boundary and are planar.
 
+Two further results quantify and generalize the obstruction:
+
+* `excess_eq` — for `n ≥ 3`, `C(n, 2) = (3n − 6) + C(n − 3, 2)`: the overshoot of
+  the planar bound is *itself* a complete-graph edge count `(n − 3)(n − 4)/2`,
+  sharpening the `Kn_exceeds_planar_bound` inequality to an exact identity.
+* `completeEdges_superlinear` — for every `C` there is `N` with `C(n, 2) > C·n` for
+  `n ≥ N`: `Kₙ` eventually beats *any* linear edge bound, so the obstruction does
+  not depend on Euler's specific `3n − 6` coefficient (the discrete companion of the
+  parent's real-analytic `dense_graph_not_planar`).
+
 This is the elementary first-moment core of the density argument, isolated and
 machine-checked. All results are fully verified: **0 axioms, 0 sorries.**
 
@@ -98,5 +108,62 @@ theorem K4_meets_bound : completeEdges 4 = planarBound 4 := by decide
 /-- `K₅` is the first complete graph to exceed Euler's bound:
     `C(5, 2) = 10 > 9 = 3·5 − 6`. -/
 theorem K5_exceeds_bound : planarBound 5 < completeEdges 5 := by decide
+
+/-! ### The exact excess over Euler's bound, and superlinearity
+
+The threshold results above answer *when* `Kₙ` overshoots Euler's planar bound.
+Here we quantify *by how much*, and show the overshoot grows without limit relative
+to *any* linear bound — not merely the specific `3n − 6`.
+
+The key identity is exact and division-free:
+`completeEdges n = planarBound n + completeEdges (n − 3)` for `n ≥ 3`, i.e. the
+excess `C(n,2) − (3n − 6)` is itself a smaller complete-graph edge count,
+`C(n − 3, 2) = (n − 3)(n − 4)/2`.  It re-proves the threshold (`excess > 0 ⇔
+n − 3 ≥ 2 ⇔ n ≥ 5`) and makes precise that the obstruction deepens quadratically. -/
+
+/-- `2·C(n, 2) = n(n − 1)` — the standard closed form for the complete-graph edge
+    count, cleared of division (proved by induction via `completeEdges_succ`). -/
+lemma two_mul_completeEdges (n : ℕ) : 2 * completeEdges n = n * (n - 1) := by
+  induction n with
+  | zero => decide
+  | succ n ih =>
+    rw [completeEdges_succ, Nat.mul_add, ih]
+    cases n with
+    | zero => decide
+    | succ m => simp only [Nat.succ_sub_one]; ring
+
+/-- **Exact excess over Euler's bound.**  For `n ≥ 3`,
+    `C(n, 2) = (3n − 6) + C(n − 3, 2)`: the amount by which `Kₙ` overshoots the
+    planar edge bound is itself the edge count of the complete graph on `n − 3`
+    vertices, i.e. `(n − 3)(n − 4)/2`.  In particular the overshoot is `0` for
+    `n ∈ {3, 4}` (where `n − 3 ∈ {0, 1}` and `C(·, 2) = 0`) and strictly positive,
+    growing quadratically, for `n ≥ 5`.  A sharpening of `Kn_exceeds_planar_bound`
+    from an inequality to an exact identity. -/
+theorem excess_eq (n : ℕ) (hn : 3 ≤ n) :
+    completeEdges n = planarBound n + completeEdges (n - 3) := by
+  induction n, hn using Nat.le_induction with
+  | base => decide
+  | succ n hn ih =>
+    rw [completeEdges_succ, ih]
+    have h1 : n + 1 - 3 = (n - 3) + 1 := by omega
+    rw [h1, completeEdges_succ]
+    simp only [planarBound]
+    omega
+
+/-- **The complete-graph edge count is superlinear.**  For every constant `C` there
+    is an `N` beyond which `C(n, 2) > C · n`.  So `Kₙ` eventually exceeds *any*
+    linear edge bound `C · n`, not just Euler's `3n − 6`: the counting obstruction
+    behind Erdős #1018 OQ-04 is robust to the exact linear coefficient.  Concretely
+    `N = 2C + 2` works, since `2·C(n,2) = n(n−1) ≥ n(2C+1) > 2Cn` once `n ≥ 2C + 2`.
+    This is the discrete companion of the real-analytic `dense_graph_not_planar`
+    (`n^{1+ε} > 3n` eventually) in the parent file. -/
+theorem completeEdges_superlinear (C : ℕ) :
+    ∃ N : ℕ, ∀ n : ℕ, N ≤ n → C * n < completeEdges n := by
+  refine ⟨2 * C + 2, fun n hn => ?_⟩
+  have h2 : 2 * completeEdges n = n * (n - 1) := two_mul_completeEdges n
+  have hn1 : 2 * C + 1 ≤ n - 1 := by omega
+  have hmul : n * (2 * C + 1) ≤ n * (n - 1) := Nat.mul_le_mul (le_refl n) hn1
+  have he : n * (2 * C + 1) = 2 * (C * n) + n := by ring
+  omega
 
 end Erdos1018OQ04Incomplete01OQ01
