@@ -1,9 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Topology.Algebra.Order.LiminfLimsup
-import Mathlib.Tactic
+import Mathlib
 
 /-!
 # Buffon's Noodle Theorem
