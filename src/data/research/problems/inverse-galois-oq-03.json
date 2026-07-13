@@ -26,16 +26,19 @@
     "focus": "Verified deliverable already complete in main: proofs/Proofs/InverseGaloisOQ03.lean and gallery entry inverse-galois-oq-03 (status axiomatized)."
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (axiomatized) in main (261 lines, 14 theorems, 0 sorries, axiomCount 6, badge 'axiom'); the stated assumptions are isolated as named axioms per the axiom-integrity policy. Formalizes the structural group theory of the Monster 𝕄, the largest sporadic simple group, and records Thompson's theorem (1984) that 𝕄 is realizable as a Galois group over ℚ. Proves 𝕄 is non-commutative, perfect ([𝕄,𝕄] = 𝕄), and non-solvable — hence beyond Shafarevich's theorem — yet realized over ℚ via the rigidity method. Includes the order |𝕄| = 2⁴⁶·3²⁰·5⁹·7⁶·11²·13³·17·19·23·29·31·41·47·59·71 and divisibility results. The affirmative counterpart to the open M₂₃ case (OQ-02).",
+    "progressSummary": "PROGRESS: Added the universal-property reading of Monster perfectness (Monster_no_nontrivial_abelian_quotient) and its field-side counterpart (Monster_realizing_field_gal_commutator_eq_top: Gal(K/ℚ) perfect ⟹ K/ℚ has no nontrivial abelian subextension). 6 axioms unchanged, 0 sorries; 40→42 theorems. Theme saturated.",
     "builtItems": [
-      "Gallery entry src/data/proofs/inverse-galois-oq-03 (meta.json + annotations.json); Lean source proofs/Proofs/InverseGaloisOQ03.lean."
+      "Gallery entry src/data/proofs/inverse-galois-oq-03 (meta.json + annotations.json); Lean source proofs/Proofs/InverseGaloisOQ03.lean.",
+      "Monster_no_nontrivial_abelian_quotient (InverseGaloisOQ03.lean:594): universal-property form of perfectness — 𝕄 has no nontrivial abelian quotient (any surjection onto a CommGroup A forces Subsingleton A).",
+      "Monster_realizing_field_gal_commutator_eq_top (:626): field-side perfectness — Gal(K/ℚ) of Thompson's Monster-realizing field is perfect (commutator = ⊤), so K/ℚ has no nontrivial abelian subextension."
     ],
     "insights": [
       "**Size is not difficulty**: The Monster ($\\approx 8\\times10^{53}$ elements) is realized over $\\mathbb{Q}$, while $M_{23}$ ($\\approx 10^7$ elements) is the sole open sporadic case. Realizability is governed by the existence of rigid rational triples of conjugacy classes, not by group order.",
       "**Same skeleton, opposite verdict**: The non-abelian → perfect → non-solvable chain is identical to the M₂₃ analysis of OQ-02; the two entries differ only in the final realizability bit — open for M₂₃, an axiom citing Thompson for 𝕄.",
       "**Beyond Shafarevich, yet realized**: Shafarevich's theorem covers only solvable groups. 𝕄 is non-solvable, so its realization is genuine evidence that the rigidity method reaches deep into the non-solvable frontier.",
       "**No small permutation carrier**: Unlike the Mathieu groups, the Monster has no faithful permutation representation of small degree (the minimum is on the order of $10^{19}$ points), so it is formalized as an abstract finite group rather than a subgroup of some $S_n$.",
-      "**A landmark cited, not re-proved**: Thompson's 1984 realization of the Monster is recorded as an axiom, in the same spirit that the parent entry axiomatizes Shafarevich's theorem. The verified content here is the structural group theory that situates 𝕄 in the program."
+      "**A landmark cited, not re-proved**: Thompson's 1984 realization of the Monster is recorded as an axiom, in the same spirit that the parent entry axiomatizes Shafarevich's theorem. The verified content here is the structural group theory that situates 𝕄 in the program.",
+      "Perfectness [𝕄,𝕄]=𝕄 transports across the Thompson iso 𝕄≃*Gal(K/ℚ) via map_commutator_eq (G explicit) + map_top_of_surjective, giving the Galois group of the realizing field is perfect — the field-side reading is 'no nontrivial abelian subextension of K/ℚ'."
     ],
     "mathlibGaps": [],
     "nextSteps": []
