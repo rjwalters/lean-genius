@@ -36,7 +36,7 @@
     "iteration": 2,
     "focus": "Structural rounding-out: upgraded the Puiseux Subring (researcher-3) to a K-Subalgebra (puiseuxSubalgebra, algebraMap/C c = single 0 c is Puiseux) and proved the base case of inverse-closure (isPuiseux_inv_single). Full field/subfield inverse-closure remains open (needs subgroup-supported HahnSeries reconstruction absent from Mathlib).",
     "blockers": [],
-    "nextAction": "Full inverse-closure IsPuiseuxSeries f -> IsPuiseuxSeries f-inverse via HahnSeries.embDomainRingHom (Z -> Q, k/n): series supported on (1/n)Z form a subfield. Needs a preimage-reconstruction lemma (support subset range(emb) => in range of embDomain) not yet in Mathlib.",
+    "nextAction": "Part XV (researcher-5, 2026-07-12): added PROPERNESS of the Puiseux predicate — nonPuiseuxSeries K is a Hahn series over Q that is NOT Puiseux (support {-1/(n+1)} has unbounded denominators), giving exists_not_isPuiseuxSeries and puiseuxSubfield_ne_top. This makes the Parts VIII-X subring/subalgebra/subfield edifice non-vacuous. 0 sorry / 0 axiom, verified. NOTE: the previously-listed 'inverse-closure' next step was already done (isPuiseux_inv/puiseuxSubfield present). Remaining deep goal = full algebraic closure IsAlgClosed(PuiseuxField K), BLOCKED (needs Newton-Puiseux convergence machinery, >1000 lines, absent from Mathlib).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -54,7 +54,8 @@
       "PuiseuxTheoremOQ03.lean: ynMinusXm_exponent_isInt_iff — (∃k:ℤ, m/n=k) ↔ n∣m (ℚ-arithmetic core)",
       "PuiseuxTheoremOQ03.lean: ynMinusXm_root_in_range_iff — SHARP iff: root x^{m/n} of Yⁿ−xᵐ unramified (in Laurent base K⸨x⸩) ↔ n∣m (sharpens one-directional binomial_root_not_in_range_of_not_isInt)",
       "PuiseuxTheoremOQ03.lean: ysqMinusX4_root_in_range — first in-range (unramified) worked example, root x² of Y²−x⁴",
-      "PuiseuxTheoremOQ01.lean: +artinSchreierExp_range_isPWO, +artinSchreierSeries (def), +artinSchreierSeries_carries, +artinSchreierSeries_not_puiseux, +exists_hahnSeries_not_puiseux. 0-sorry/0-axiom, docker [3059/3059]. 131→194 lines."
+      "PuiseuxTheoremOQ01.lean: +artinSchreierExp_range_isPWO, +artinSchreierSeries (def), +artinSchreierSeries_carries, +artinSchreierSeries_not_puiseux, +exists_hahnSeries_not_puiseux. 0-sorry/0-axiom, docker [3059/3059]. 131→194 lines.",
+      "Part XV (researcher-5): properness of IsPuiseuxSeries — nonPuiseuxExp/nonPuiseuxExp_monotone/isPWO_range_nonPuiseuxExp, nonPuiseuxSeries (indicator Hahn series with unbounded-denominator support {-1/(n+1)}), not_isPuiseuxSeries_nonPuiseuxSeries, exists_not_isPuiseuxSeries, puiseuxSubfield_ne_top (proper subfield). 0 sorry / 0 axiom, VERIFIED lake env lean exit 0"
     ],
     "insights": [
       "The binomial/single-Newton-edge case is the entire algebraic content available without convergence machinery: y=single(m/n)a with aⁿ=c gives yⁿ=single m c via HahnSeries.single_pow; IsAlgClosed only supplies the n-th root a of c (char 0 NOT needed for this fragment).",
@@ -94,5 +95,16 @@
     "mathlib": []
   },
   "started": "2026-04-21T16:44:08+02:00",
-  "lastUpdate": "2026-07-11"
+  "lastUpdate": "2026-07-12",
+  "leanFiles": [
+    {
+      "path": "Proofs/PuiseuxTheorem.lean",
+      "filename": "PuiseuxTheorem.lean",
+      "lineCount": 1648,
+      "axiomCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheorem.lean"
+    }
+  ]
 }

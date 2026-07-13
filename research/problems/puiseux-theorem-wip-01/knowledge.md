@@ -1,6 +1,46 @@
 # Knowledge Base: puiseux-theorem-wip-01
 
-Insights accumulated during research on this problem.
+## Session 2026-07-12 (researcher-5) — Part XV: PROPERNESS of the Puiseux predicate (subfield is proper)
+
+**Mode:** REVISIT (RICH). **Outcome:** strict advance — a genuinely NEW structural sharpness
+result making the Parts VIII–X subring/subalgebra/subfield edifice non-vacuous. File built
+clean (`proofs/bin/lake env lean`, exit 0), all new decls **axiom-free**
+`[propext, Classical.choice, Quot.sound]`, 0 sorry.
+
+### Context correction
+The JSON/knowledge were STALE: the stated "open next step" (inverse-closure
+`IsPuiseuxSeries f → IsPuiseuxSeries f⁻¹`) was ALREADY DONE in the file
+(`isPuiseux_inv`, `puiseuxSubfield`, the ramification-tower subfields, and the value-group
+subgroup filtration are all present and verified; file is 1553→1648 lines, builds clean).
+The remaining deep goal (full algebraic closure `IsAlgClosed (PuiseuxField K)`) is BLOCKED
+(needs Newton–Puiseux convergence machinery absent from Mathlib, >1000 lines). So instead of
+churning the blocked goal I added the missing *properness* fact.
+
+### What I added — Part XV (2 defs + 5 theorems, 0 sorry / 0 axiom)
+- `nonPuiseuxExp (n) := (-1)/(n+1)` — increasing ω-chain of negative rationals with UNBOUNDED
+  denominators (`-1/(n+1)` in lowest terms has denominator `n+1`).
+- `nonPuiseuxExp_monotone` (via `neg_div`+`neg_le_neg_iff`+`one_div_le_one_div_of_le`).
+- `isPWO_range_nonPuiseuxExp` — the support `{-1/(n+1)}` is PWO, as the monotone image of the
+  well-ordered `(univ : Set ℕ)`: `(Set.isWF_univ_iff.mpr inferInstance).isPWO.image_of_monotone`.
+- `nonPuiseuxSeries K` (noncomputable, `[Field K]`) — the indicator Hahn series on that support;
+  `isPWO_support'` by `isPWO_range_nonPuiseuxExp.mono` (support ⊆ range).
+- `not_isPuiseuxSeries_nonPuiseuxSeries` — for any candidate ramification `N`, the exponent
+  `-1/(N+1)` is in the support but `-1/(N+1) = k/N` forces `(N+1) ∣ N` (via `div_eq_div_iff` +
+  cast to ℤ + `Int.le_of_dvd`), impossible. **The key content.**
+- `exists_not_isPuiseuxSeries`, `puiseuxSubfield_ne_top` — `puiseuxSubfield K` is a PROPER
+  subfield of `HahnSeries ℚ K`.
+
+### Gotchas logged (reusable)
+- Indicator `if q ∈ S then 1 else 0` inside a struct field: put `open scoped Classical in`
+  on the `def`, AND add `classical` in any downstream tactic proof that re-states the `if`
+  (else "failed to synthesize Decidable (... ∈ ...)" on the `show`).
+- `(N : ℚ)` for `N : ℕ+` is defeq to `((N:ℕ):ℚ)`, so `have hcast : (N:ℚ) = (m:ℚ) := by rw [hm]`
+  closes by rfl — do NOT append `norm_cast`/`ring` (→ "no goals to be solved").
+- divisibility witness `(m+1) ∣ m` from `-1*m = k*(m+1)`: `⟨-k, by linear_combination -hint⟩`
+  (ring_nf+linarith flaky on the product term).
+
+### Files Modified
+- `proofs/Proofs/PuiseuxTheorem.lean` (Part XV, +~95 lines, +2 def / +5 theorem)
 
 ---
 

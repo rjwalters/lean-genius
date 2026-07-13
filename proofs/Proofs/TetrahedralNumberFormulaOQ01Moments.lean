@@ -263,5 +263,27 @@ theorem cube_moment_sum_simplex (d N : ℕ) (h : 3 ≤ N) :
     show d + 3 + 1 = d + 4 from rfl, Nat.zero_mul, Nat.one_mul, Nat.zero_add]
   ring
 
+/-! ### Dimension-axis power moments -/
+
+/-- **Ordinary power-moment hockey stick along the dimension axis.** The companion of
+`pow_moment_sum_simplex` in which the *dimension* `d` — not the size — is the running index,
+weighted by `dᵐ`, while the figurate size `n` is held fixed:
+
+    ∑_{d ≤ N} dᵐ · P_d(n) = ∑_{r=0}^{m} S(m,r) · (n+r)_r · P_{n+r+1}(N-r),      (m ≤ N).
+
+Because `P_d(n) = P_n(d)` (`simplexNumber_symm`), summing `dᵐ·P_d(n)` over the dimension axis is
+the *same* sum as `∑_{d ≤ N} dᵐ·P_n(d)` over the size axis of the fixed-dimension row `P_n`, so
+the Stirling collapse of `pow_moment_sum_simplex` (at dimension `n`) applies verbatim. This
+completes the file's size-axis / dimension-axis pairing (cf. `weighted_sum_simplex` vs
+`weighted_sum_simplex_over_dim`) for the higher power moments: the moment of a figurate array
+in either of its two arguments collapses to the same Stirling-weighted sum of higher figurate
+numbers, with the roles of size and dimension exchanged. -/
+theorem pow_moment_sum_simplex_over_dim (m n N : ℕ) (h : m ≤ N) :
+    ∑ d ∈ range (N + 1), d ^ m * simplexNumber d n
+      = ∑ r ∈ range (m + 1),
+          stirlingSecond m r * ((n + r).descFactorial r * simplexNumber (n + r + 1) (N - r)) := by
+  rw [← pow_moment_sum_simplex m n N h]
+  exact Finset.sum_congr rfl fun d _ => by rw [simplexNumber_symm d n]
+
 end TetrahedralNumberFormulaOQ01
 

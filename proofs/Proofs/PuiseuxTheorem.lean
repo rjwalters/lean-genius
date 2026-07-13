@@ -1637,4 +1637,100 @@ Puiseux's theorem bridges:
 It's a foundational result for understanding algebraic curves locally.
 -/
 
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+### Part XV: Properness of the Puiseux predicate
+
+The subring/subalgebra/subfield structure built in Parts VIII–X would be vacuous if
+`IsPuiseuxSeries` held for *every* Hahn series.  It does not.  A Hahn series whose
+support has **unbounded denominators** — here the increasing ω-chain
+`{-1/(n+1) : n ∈ ℕ} = {-1, -1/2, -1/3, …}` of negative rationals — is a well-defined
+element of `HahnSeries ℚ K` (its support is partially well-ordered, being the monotone
+image of the well-ordered set `ℕ`) that is **not** Puiseux: no single common
+denominator `N` clears every exponent, because `-1/(N+1)` already has denominator
+`N+1 > N`.  Hence `puiseuxSubfield K` is a *proper* subfield of `HahnSeries ℚ K` —
+the Puiseux predicate carries genuine content.
+═══════════════════════════════════════════════════════════════════════════════ -/
+section Properness
+
+/-- The exponent sequence `n ↦ -1/(n+1)`: an increasing ω-chain of negative rationals
+whose denominators (`n+1`, in lowest terms) are unbounded. -/
+def nonPuiseuxExp (n : ℕ) : ℚ := (-1 : ℚ) / ((n : ℚ) + 1)
+
+/-- `nonPuiseuxExp` is monotone: `-1/(a+1) ≤ -1/(b+1)` whenever `a ≤ b`. -/
+theorem nonPuiseuxExp_monotone : Monotone nonPuiseuxExp := by
+  intro a b hab
+  have h1 : ((a : ℚ) + 1) ≤ ((b : ℚ) + 1) := by exact_mod_cast Nat.add_le_add_right hab 1
+  have h2 : (0 : ℚ) < (a : ℚ) + 1 := by positivity
+  show (-1 : ℚ) / ((a : ℚ) + 1) ≤ (-1) / ((b : ℚ) + 1)
+  rw [neg_div, neg_div, neg_le_neg_iff]
+  exact one_div_le_one_div_of_le h2 h1
+
+/-- The support set `{-1/(n+1) : n ∈ ℕ}` is partially well-ordered: it is the monotone
+image of the well-ordered set `ℕ` (via `IsPWO.image_of_monotone`). -/
+theorem isPWO_range_nonPuiseuxExp : (Set.range nonPuiseuxExp).IsPWO := by
+  rw [← Set.image_univ]
+  exact (Set.isWF_univ_iff.mpr inferInstance).isPWO.image_of_monotone nonPuiseuxExp_monotone
+
+open scoped Classical in
+/-- A concrete Hahn series over `ℚ` with coefficients in a field `K` that is **not** a
+Puiseux series: the indicator of the unbounded-denominator support `{-1/(n+1) : n}`. -/
+noncomputable def nonPuiseuxSeries (K : Type*) [Field K] : HahnSeries ℚ K where
+  coeff q := if q ∈ Set.range nonPuiseuxExp then (1 : K) else 0
+  isPWO_support' := by
+    apply isPWO_range_nonPuiseuxExp.mono
+    intro q hq
+    by_contra hqn
+    simp only [Function.mem_support, ne_eq] at hq
+    exact hq (by simp [hqn])
+
+/-- **The Puiseux predicate is proper.**  `nonPuiseuxSeries K` is a genuine Hahn series
+that is not a Puiseux series: for any candidate ramification `N`, the exponent
+`-1/(N+1)` lies in its support but has denominator `N+1 ∤ N`, so it cannot be written as
+`k/N`. -/
+theorem not_isPuiseuxSeries_nonPuiseuxSeries (K : Type*) [Field K] :
+    ¬ IsPuiseuxSeries (nonPuiseuxSeries K) := by
+  classical
+  rintro ⟨N, hN⟩
+  set m : ℕ := (N : ℕ) with hm
+  have hcast : (N : ℚ) = (m : ℚ) := by rw [hm]
+  -- the exponent `-1/(m+1)` is in the support
+  have hmem : nonPuiseuxExp m ∈ (nonPuiseuxSeries K).support := by
+    rw [HahnSeries.mem_support]
+    show (if nonPuiseuxExp m ∈ Set.range nonPuiseuxExp then (1 : K) else 0) ≠ 0
+    rw [if_pos ⟨m, rfl⟩]
+    exact one_ne_zero
+  obtain ⟨k, hk⟩ := hN _ hmem
+  rw [nonPuiseuxExp, hcast] at hk
+  have hm0 : ((m : ℚ) + 1) ≠ 0 := by positivity
+  have hN0 : (m : ℚ) ≠ 0 := by
+    have : 0 < m := N.pos
+    exact_mod_cast this.ne'
+  rw [div_eq_div_iff hm0 hN0] at hk
+  -- hk : (-1) * (m : ℚ) = (k : ℚ) * ((m : ℚ) + 1)
+  have hint : (-1 : ℤ) * (m : ℤ) = (k : ℤ) * ((m : ℤ) + 1) := by exact_mod_cast hk
+  have hdvd : ((m : ℤ) + 1) ∣ (m : ℤ) := ⟨-k, by linear_combination -hint⟩
+  have hpos : (0 : ℤ) < (m : ℤ) := by exact_mod_cast N.pos
+  have := Int.le_of_dvd hpos hdvd
+  omega
+
+/-- **There exists a non-Puiseux Hahn series over `ℚ`.**  Witnessed by
+`nonPuiseuxSeries K`. -/
+theorem exists_not_isPuiseuxSeries (K : Type*) [Field K] :
+    ∃ f : HahnSeries ℚ K, ¬ IsPuiseuxSeries f :=
+  ⟨nonPuiseuxSeries K, not_isPuiseuxSeries_nonPuiseuxSeries K⟩
+
+/-- **`puiseuxSubfield K` is a proper subfield of `HahnSeries ℚ K`.**  The Puiseux
+series are not all of the Hahn-series field: the properness witness
+`nonPuiseuxSeries K` shows `IsPuiseuxSeries` cuts out a strict substructure. -/
+theorem puiseuxSubfield_ne_top (K : Type*) [Field K] :
+    puiseuxSubfield K ≠ ⊤ := by
+  intro h
+  obtain ⟨f, hf⟩ := exists_not_isPuiseuxSeries K
+  have : f ∈ puiseuxSubfield K := by rw [h]; exact Subfield.mem_top f
+  exact hf ((mem_puiseuxSubfield f).mp this)
+
+end Properness
+
+
 end PuiseuxTheorem

@@ -511,4 +511,59 @@ theorem two_group_even_degree_of_gt_one (α : ℝ) (hα : IsIntegral ℚ α)
     Even (minpoly ℚ α).natDegree :=
   (pgroup_degree_even_iff α hα Nat.prime_two hgt hP).mpr rfl
 
+/-- **Conditional converse: a Galois `p^k`-degree extension IS a `p`-group.**
+    Every theorem above runs one way — `p`-group Galois `⟹ natDegree = p^k` — and
+    that implication is genuinely *not* reversible: `natDegree = p^k` does **not**
+    force `Gal` to be a `p`-group.  The reason is precise.  `natDegree(minpoly ℚ α)`
+    is `[ℚ(α) : ℚ]`, while `Nat.card Gal` is the degree of the *splitting field*
+    `[ℚ(roots) : ℚ]`, and `ℚ(α) ⊆ ℚ(roots)` gives only `natDegree ∣ Nat.card Gal`
+    (`natDegree_dvd_card_gal`).  The card can strictly exceed the degree — e.g. an
+    `S₄` quartic has `natDegree = 4 = 2²` yet `Nat.card Gal = 24`, which is *not* a
+    `2`-group — so a power-of-`p` degree alone says nothing about `Gal`.
+
+    The entire obstruction is that gap.  When it closes, `Nat.card Gal = natDegree`
+    — equivalently `ℚ(α)/ℚ` is itself Galois (`α` generates its own splitting
+    field) — the converse holds: `natDegree = p^k` makes `Nat.card Gal = p^k`, so
+    `IsPGroup.iff_card` returns a `p`-group.  This is the exact hypothesis missing
+    from the reverse direction.  Notably this direction needs *no* integrality
+    hypothesis on `α`: it is pure group theory (a group of prime-power order is a
+    `p`-group), the whole content sitting in the two degree equations. -/
+theorem pgroup_of_degree_pow_of_card_eq (α : ℝ)
+    {p k : ℕ} (hp : p.Prime)
+    (hdeg : (minpoly ℚ α).natDegree = p ^ k)
+    (hcard : Nat.card (minpoly ℚ α).Gal = (minpoly ℚ α).natDegree) :
+    IsPGroup p (minpoly ℚ α).Gal := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact IsPGroup.iff_card.mpr ⟨k, by rw [hcard, hdeg]⟩
+
+/-- **Characterization under the Galois hypothesis (the completed biconditional).**
+    Fusing the forward criterion `galois_pgroup_implies_degree_is_pow_p` with the
+    conditional converse `pgroup_of_degree_pow_of_card_eq`: once
+    `Nat.card Gal = natDegree` (the extension `ℚ(α)/ℚ` is Galois), `Gal` is a
+    `p`-group **iff** the degree is a power of `p`.  This upgrades the whole file's
+    one-directional necessary condition into an equivalence and isolates
+    `Nat.card Gal = natDegree` as exactly the hypothesis that makes the
+    degree-shape criterion both necessary and sufficient. -/
+theorem pgroup_iff_degree_pow_of_card_eq (α : ℝ) (hα : IsIntegral ℚ α)
+    {p : ℕ} (hp : p.Prime)
+    (hcard : Nat.card (minpoly ℚ α).Gal = (minpoly ℚ α).natDegree) :
+    IsPGroup p (minpoly ℚ α).Gal ↔ ∃ k : ℕ, (minpoly ℚ α).natDegree = p ^ k := by
+  refine ⟨galois_pgroup_implies_degree_is_pow_p α hα hp, ?_⟩
+  rintro ⟨k, hk⟩
+  exact pgroup_of_degree_pow_of_card_eq α hp hk hcard
+
+/-- **Concrete converse instance: a Galois cubic is a `3`-group.**
+    Positive companion to `degree_three_not_2group`, framing the
+    necessary-vs-sufficient boundary on a single example.  A degree-`3` minimal
+    polynomial can *never* have a `2`-group Galois group (`degree_three_not_2group`,
+    unconditional); but the very same cubic *does* have a `3`-group Galois group as
+    soon as the extension is Galois (`Nat.card Gal = 3`), since then `|Gal| = 3`.
+    So degree `3` forbids `p = 2` outright yet forces `p = 3` exactly under the
+    Galois hypothesis — the two directions meeting on one degree. -/
+theorem degree_three_card_eq_is_3group (α : ℝ) (hα : IsIntegral ℚ α)
+    (h3 : (minpoly ℚ α).natDegree = 3)
+    (hcard : Nat.card (minpoly ℚ α).Gal = (minpoly ℚ α).natDegree) :
+    IsPGroup 3 (minpoly ℚ α).Gal :=
+  (pgroup_iff_degree_pow_of_card_eq α hα (by norm_num) hcard).mpr ⟨1, by rw [h3, pow_one]⟩
+
 end AngleTrisectionOQ02OQ01OQ03
