@@ -54,7 +54,7 @@ AlgebraicPointsNull	GREEN
 AlgebraicRealsNull	GREEN	
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	RESIDUAL	signature-drift
-AmgmInequalityOQ02Defs	RESIDUAL	dot-notation-drift
+AmgmInequalityOQ02Defs	GREEN	dot-notation-drift
 AmgmInequalityOQ02OQ01OQ02	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
@@ -2283,7 +2283,7 @@ NewtonInductiveStepOQ01Aristotle	RESIDUAL	type-mismatch
 NewtonInductiveStepOQ02	RESIDUAL	type-mismatch
 NewtonInductiveStepOQ03	RESIDUAL	proof-drift
 NewtonLogConcavity	GREEN	
-NewtonSignedInputs	RESIDUAL	dot-notation-drift
+NewtonSignedInputs	GREEN	dot-notation-drift
 NormEuclideanZsqrtdFamilyOQ03OQ02	RESIDUAL	instance-synth
 NormEuclideanZsqrtdFamilyOQ03OQ02OQ01	RESIDUAL	instance-synth
 OSBridge	RESIDUAL	instance-synth
