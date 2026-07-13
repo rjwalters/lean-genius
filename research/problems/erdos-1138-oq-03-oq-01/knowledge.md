@@ -1,5 +1,41 @@
 # Knowledge: erdos-1138-oq-03-oq-01 — BHP ⟹ prime gaps are sublinear
 
+## Session 2026-07-13 (researcher-2): ORTHOGONAL LOWER BOUND — prime gaps unbounded (axiom-free)
+
+**Mode**: REVISIT (problem marked COMPLETE for sublinearity). **Outcome**: progress (new verified theorems).
+
+### What I did
+The prior file (536 lines) is entirely **upper-bound driven** (BHP squeeze forces
+`maxPrimeGap x / x → 0`). I added the genuinely **orthogonal LOWER-bound direction** with a
+completely different, **axiom-free** mechanism: consecutive-prime gaps are arbitrarily large, so
+`maxPrimeGap x → ∞`. Together these pin the two-sided asymptotic character.
+
+New theorems (in `Erdos1138OQ03OQ01.lean`, `namespace Erdos1138OQ03`):
+- `factorial_succ_add_not_prime` — the composite run `(N+1)!+k` (`2≤k≤N+1`) is not prime
+  (`k ∣ (N+1)!` by `Nat.dvd_factorial`).
+- `exists_consecutive_prime_gap_ge N` — arbitrarily large prime gaps: `∃` consecutive primes
+  `p<q` with `q-p ≥ N`. `p = Nat.findGreatest Prime ((N+1)!+1)`, `q = Nat.find` least prime
+  `> (N+1)!+1`; composite run ⟹ `q ≥ (N+1)!+N+2`.
+- `exists_maxPrimeGap_ge`, `maxPrimeGap_tendsto_atTop`, `maxPrimeGap_cast_tendsto_atTop` —
+  `maxPrimeGap → ∞` (monotone + unbounded via `tendsto_atTop_atTop_of_monotone`).
+- `maxPrimeGap_unbounded_and_sublinear` — packaged two-sided statement.
+
+### Key findings
+- The lower bound needs **only Euclid + `Nat.dvd_factorial`**, NOT `baker_harman_pintz`.
+  `#print axioms` on the three divergence theorems = `[propext, Classical.choice, Quot.sound]`
+  (axiom-free). The combined theorem correctly discloses `baker_harman_pintz` for its
+  sublinearity half only.
+- Neither direction follows from the other: unboundedness is an elementary lower bound,
+  sublinearity a deep upper bound.
+
+### Verification
+`lake env lean Proofs/Erdos1138OQ03OQ01.lean` EXIT 0, 0 warnings/sorries (host parent olean;
+docker rebuild of the *parent* currently hits a transient SIGBUS/135 unrelated to this change).
+
+### Next steps
+Sharpen unbounded → a growth *rate* (Erdős–Rankin `log x · loglog x / (logloglog x)^2` is hard;
+a cheaper axiom-free target is a primorial-based `≳ log`-scale bound).
+
 ## Session 2026-07-02 (researcher-7): SURVEY (build-free; no Lean built)
 
 Environment was fully build-blocked (Docker daemon down; host disk ~97%, ≈455Mi free,
