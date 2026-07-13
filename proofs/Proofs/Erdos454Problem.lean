@@ -39,7 +39,7 @@ theorem nthPrime_zero : nthPrime 0 = 2 := by
 
 /-- The second prime is 3. -/
 theorem nthPrime_one : nthPrime 1 = 3 := by
-  simp [nthPrime, Nat.nth_prime_one]
+  simp [nthPrime, Nat.nth_prime_one_eq_three]
 
 /-- The third prime is 5. -/
 theorem nthPrime_two : nthPrime 2 = 5 := by
@@ -50,7 +50,7 @@ theorem nthPrime_two : nthPrime 2 = 5 := by
 theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
 
 /-- The nth prime sequence is strictly increasing. -/
-theorem nthPrime_strictMono : StrictMono nthPrime := Nat.nth_prime_strictMono
+theorem nthPrime_strictMono : StrictMono nthPrime := (Nat.nth_strictMono Nat.infinite_setOf_prime)
 
 /- ## Part II: The Function f(n) -/
 

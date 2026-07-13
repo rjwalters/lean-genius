@@ -60,6 +60,12 @@ import Proofs.PtolemysComplexProof
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
+/-- v4.31 compat: `Complex.norm_eq_abs` removed with `Complex.abs`. -/
+theorem Complex.norm_eq_abs (z : ℂ) : ‖z‖ = Complex.abs z := rfl
+
 open Complex Real
 
 namespace PtolemysTheoremOQ01Incomplete01

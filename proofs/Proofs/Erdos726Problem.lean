@@ -95,7 +95,7 @@ theorem upper_half_count (p : ℕ) (hp : p.Prime) (hp3 : 3 ≤ p) :
   have h_eq : (Finset.Icc 1 (p - 1)).filter (fun r => p / 2 < r) =
       Finset.Icc (p / 2 + 1) (p - 1) := by
     ext r; simp only [Finset.mem_filter, Finset.mem_Icc]; omega
-  rw [h_eq, Finset.Nat.card_Icc]
+  rw [h_eq, Nat.card_Icc]
   omega
 
 /-- For p = 2, no integer is in the upper half: n % 2 ∈ {0, 1} and

@@ -1,0 +1,105 @@
+===== Erdos1006OQ04Decidability
+error: Proofs/Erdos1006OQ04Decidability.lean:124:0: type of theorem `Erdos1006OQ04Decidability.admitsRobustAcyclicOrientation_decidablePred` is not a proposition
+  {V : Type u_1} → [Fintype V] → DecidablePred admitsRobustAcyclicOrientation
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos1006OQ04Decidability
+error: build failed
+===== Erdos1113Problem
+error: Proofs/Erdos1113Problem.lean:94:4: Type mismatch
+  h
+has type
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos1113Problem
+error: build failed
+===== Erdos1171Problem
+error: Proofs/Erdos1171Problem.lean:47:48: failed to synthesize instance of type class
+  HMul Ordinal.{?u.6} (Ordinal.{?u.7} ↪o Ordinal.{?u.7}) ?m.3
+
+error: Proofs/Erdos1171Problem.lean:89:42: Type mismatch
+  omega1
+has type
+error: Proofs/Erdos1171Problem.lean:104:9: Unknown constant `Ordinal.mul_lt_mul_iff_left`
+error: Proofs/Erdos1171Problem.lean:107:25: Unknown constant `Ordinal.IsLimit`
+error: Proofs/Erdos1171Problem.lean:114:35: Unknown constant `Ordinal.IsLimit`
+error: Proofs/Erdos1171Problem.lean:122:0: declaration `Erdos1171.erdos_1171_statement` contains universe level metavariables at the expression
+===== Erdos1208Problem
+error: Proofs/Erdos1208Problem.lean:81:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finset.card ?s * Finset.card ?s - Finset.card ?s
+in the target expression
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos1208Problem
+error: build failed
+===== Erdos14UniqueSums
+error: Proofs/Erdos14UniqueSums.lean:168:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos14UniqueSums.lean:186:11: Invalid field `ncard_eq_toFinset_card'`: The environment does not contain `Finite.ncard_eq_toFinset_card'`, so it is not possible to project the field `ncard_eq_toFinset_card'` from an expression
+  hfin
+of type `Finite ↑(A ∩ Icc 1 N)`
+error: Proofs/Erdos14UniqueSums.lean:177:54: unsolved goals
+case inr
+A : Set ℕ
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos14UniqueSums
+===== Erdos339Aristotle
+error: Proofs/Erdos339Problem.lean:61:2: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ A
+
+error: Proofs/Erdos339Problem.lean:123:0: Not a definitional equality: the left-hand side
+  rSums A 2
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos339Problem.lean:126:2: Type mismatch
+  rfl
+has type
+error: Proofs/Erdos339Problem.lean:136:38: unsolved goals
+A : Set ℕ
+n : ℕ
+===== Erdos339Problem
+error: Proofs/Erdos339Problem.lean:61:2: failed to synthesize instance of type class
+  DecidablePred fun x => x ∈ A
+
+error: Proofs/Erdos339Problem.lean:123:0: Not a definitional equality: the left-hand side
+  rSums A 2
+is not definitionally equal to the right-hand side
+error: Proofs/Erdos339Problem.lean:126:2: Type mismatch
+  rfl
+has type
+error: Proofs/Erdos339Problem.lean:136:38: unsolved goals
+A : Set ℕ
+n : ℕ
+===== Erdos352Problem
+error: Proofs/Erdos352Problem.lean:118:14: Unknown constant `Real.pi_gt_314`
+error: Proofs/Erdos352Problem.lean:120:14: Unknown constant `Real.pi_lt_315`
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos352Problem
+error: build failed
+===== Erdos353Problem
+error: Proofs/Erdos353Problem.lean:292:25: expected token
+error: Proofs/Erdos353Problem.lean:292:22: failed to synthesize instance of type class
+  LE Type
+
+error: Proofs/Erdos353Problem.lean:292:24: failed to synthesize instance of type class
+  OfNat Type 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos353Problem.lean:316:2: `simp` made no progress
+error: Proofs/Erdos353Problem.lean:352:24: Unknown identifier `smul_left_cancel₀`
+error: Proofs/Erdos353Problem.lean:353:24: Unknown identifier `smul_left_cancel₀`
+===== Erdos367Problem
+error: Proofs/Erdos367Problem.lean:140:63: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:154:71: No goals to be solved
+error: Proofs/Erdos367Problem.lean:157:63: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:158:73: Unknown identifier `twoFullPart_le`
+error: Proofs/Erdos367Problem.lean:179:71: Application type mismatch: The argument
+  LT.lt.le hε
+===== Erdos738Problem
+error: Proofs/Erdos738Problem.lean:119:2: `isConnected` is not a field of structure `IsTree`
+error: Proofs/Erdos738Problem.lean:128:2: `IsAcyclic` is not a field of structure `IsTree`
+error: Proofs/Erdos738Problem.lean:118:56: Fields missing: `preconnected`, `isAcyclic`
+error: Proofs/Erdos738Problem.lean:230:2: `isConnected` is not a field of structure `IsTree`
+error: Proofs/Erdos738Problem.lean:233:2: `IsAcyclic` is not a field of structure `IsTree`
+error: Proofs/Erdos738Problem.lean:229:62: Fields missing: `preconnected`, `isAcyclic`

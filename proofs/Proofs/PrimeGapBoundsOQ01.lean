@@ -91,7 +91,7 @@ theorem nth_prime_eventually_lt_mul (ε : ℝ) (hε : 0 < ε) :
   have hlog_pos : 0 < Real.log (↑n : ℝ) := Real.log_pos (by linarith)
   have hn_pos : (0 : ℝ) < ↑n := by linarith
   have hnlog_pos : 0 < ↑n * Real.log ↑n := mul_pos hn_pos hlog_pos
-  exact (div_lt_iff hnlog_pos).mp hn
+  exact (div_lt_iff₀ hnlog_pos).mp hn
 
 /-- **From PNT: eventually p_n > (1-ε)·n·ln(n)**
 
@@ -106,7 +106,7 @@ theorem nth_prime_eventually_gt_mul (ε : ℝ) (hε : 0 < ε) :
   have hlog_pos : 0 < Real.log (↑n : ℝ) := Real.log_pos (by linarith)
   have hn_pos : (0 : ℝ) < ↑n := by linarith
   have hnlog_pos : 0 < ↑n * Real.log ↑n := mul_pos hn_pos hlog_pos
-  exact (lt_div_iff hnlog_pos).mp hn
+  exact (lt_div_iff₀ hnlog_pos).mp hn
 
 /-- **The PNT asymptotic is a genuine improvement over the Bertrand bound**
 

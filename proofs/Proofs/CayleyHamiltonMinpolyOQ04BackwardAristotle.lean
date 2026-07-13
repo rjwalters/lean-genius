@@ -110,7 +110,7 @@ theorem eq_zero_of_aeval_mulVec_eq_zero
       eval₂_eq_sum_range' (algebraMap K _) M (show p.natDegree < n from hp_deg)]
     skip
     congr 1; ext i
-    simp [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec_assoc]
+    simp [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]
   -- From hp_ann: the sum of coeff(i) • M^i v = 0
   have hsum : ∑ i : Fin n, p.coeff (i : ℕ) • (M ^ (i : ℕ)).mulVec v = 0 := by
     rw [← hp_expand]; exact hp_ann

@@ -108,7 +108,7 @@ theorem contDiff_periodic_lipschitz {f : ℝ → ℝ} (hf : ContDiff ℝ 1 f)
     hdcont.continuousOn
   have hC0 : (0 : ℝ) ≤ C := le_trans (norm_nonneg _) (hC 0 ⟨le_refl 0, by positivity⟩)
   -- A bounded derivative gives a Lipschitz bound.
-  refine ⟨⟨C, hC0⟩, lipschitzWith_of_nnnorm_deriv_le (hf.differentiable le_rfl) (fun x => ?_)⟩
+  refine ⟨⟨C, hC0⟩, lipschitzWith_of_nnnorm_deriv_le (hf.differentiable one_ne_zero) (fun x => ?_)⟩
   -- Reduce the global bound at x to a point of the period via periodicity.
   obtain ⟨y, hy, hxy⟩ := (show Function.Periodic (deriv f) (2 * π) from hdper).exists_mem_Ico₀
     (by positivity) x

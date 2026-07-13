@@ -135,7 +135,7 @@ theorem turanDensity_tendsto_zero :
   -- Upper bound follows from BFL: f(n) ≤ n^{7/4} and f(n)*n^{1/4} ≤ n^{7/4}*n^{1/4} = n²
   -- Squeeze with 4/n^{1/4} which tends to 0 since n^{1/4} → ∞.
   have hn14_atTop : Filter.Tendsto (fun n : ℕ => (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
-    (Real.tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
+    (tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
   apply tendsto_of_tendsto_of_tendsto_of_le_of_le
     (tendsto_const_nhds (b := (0:ℝ)))
     ((tendsto_const_nhds (b := (4:ℝ))).div_atTop hn14_atTop)
@@ -147,7 +147,7 @@ theorem turanDensity_tendsto_zero :
     have hfn' : triangleRemovalEdges n ≤ (n : ℝ)^(7/4 : ℝ) := by
       have h : (3/2 + 1/4 : ℝ) = 7/4 := by norm_num
       rwa [h] at hfn
-    rw [div_le_div_iff (by positivity) (Real.rpow_pos_of_pos hn' _)]
+    rw [div_le_div_iff₀ (by positivity) (Real.rpow_pos_of_pos hn' _)]
     -- Goal: f(n) * n^{1/4} ≤ 4 * (n²/4) = n²
     calc triangleRemovalEdges n * (n : ℝ)^(1/4 : ℝ)
         ≤ (n : ℝ)^(7/4 : ℝ) * (n : ℝ)^(1/4 : ℝ) :=
@@ -213,7 +213,7 @@ theorem turan_gap_diverges :
   -- For n ≥ 1: n^{7/4} ≥ 1, so f(n)+1 ≤ n^{7/4}+1 ≤ 2*n^{7/4}
   -- Hence n²/4/(f(n)+1) ≥ n²/(8*n^{7/4}) = n^{1/4}/8 → ∞.
   have hn14_atTop : Filter.Tendsto (fun n : ℕ => (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
-    (Real.tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
+    (tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
   -- (1/8) * n^{1/4} → ∞
   have h_lb_atTop : Filter.Tendsto (fun n : ℕ => (1/8 : ℝ) * (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
     Tendsto.const_mul_atTop (by norm_num : (0:ℝ) < 1/8) hn14_atTop
@@ -241,7 +241,7 @@ theorem turan_gap_diverges :
     ring
   rw [← key]
   have h1 : 0 < triangleRemovalEdges n + 1 := by linarith [triangleRemovalEdges_nonneg n]
-  rw [div_le_div_iff (by positivity : (0 : ℝ) < 2 * (n : ℝ)^(7/4 : ℝ)) h1]
+  rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < 2 * (n : ℝ)^(7/4 : ℝ)) h1]
   exact mul_le_mul_of_nonneg_left hfp1 (by positivity)
 
 -- ============================================================
@@ -277,13 +277,13 @@ theorem turan_bfl_exponent_gap :
   have hε2 : 0 < ε / 2 := by linarith
   filter_upwards [bfl_upper_bound (ε/2) hε2, bfl_lower_bound ε hε,
                   eventually_gt_atTop 0,
-                  ((Real.tendsto_rpow_atTop hε2).comp
+                  ((tendsto_rpow_atTop hε2).comp
                     tendsto_natCast_atTop_atTop).eventually_gt_atTop 4]
       with n hup hlo hn hn4
   have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   have hf_pos : 0 < triangleRemovalEdges n :=
     lt_of_lt_of_le (Real.rpow_pos_of_pos hn' _) hlo
-  rw [gt_iff_lt, lt_div_iff hf_pos]
+  rw [gt_iff_lt, lt_div_iff₀ hf_pos]
   -- Goal: n^{1/2-ε} * f(n) < n²/4
   -- Step 1: n^{1/2-ε} * f(n) ≤ n^{1/2-ε} * n^{3/2+ε/2} = n^{2-ε/2}
   have step1 : (n : ℝ)^(1/2 - ε) * triangleRemovalEdges n ≤ (n : ℝ)^(2 - ε/2) :=
@@ -299,7 +299,7 @@ theorem turan_bfl_exponent_gap :
       rw [← Real.rpow_add hn', show (2 - ε/2 + ε/2 : ℝ) = 2 from by ring]
       exact Real.rpow_natCast (n : ℝ) 2
     have hpos : (0 : ℝ) < (n : ℝ)^(2 - ε/2) := Real.rpow_pos_of_pos hn' _
-    rw [lt_div_iff (by norm_num : (0:ℝ) < 4)]
+    rw [lt_div_iff₀ (by norm_num : (0:ℝ) < 4)]
     -- Goal: n^{2-ε/2} * 4 < n²
     -- From hn4: 4 < n^{ε/2}, and hpos: 0 < n^{2-ε/2}:
     -- n^{2-ε/2} * 4 < n^{2-ε/2} * n^{ε/2} = n²

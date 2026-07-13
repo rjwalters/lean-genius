@@ -168,7 +168,7 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
                  show (0 : Fin 2).val = 0 from rfl, if_true,
                  show (1 : Fin 2).val = 1 from rfl,
                  show ¬(1 : Nat) = 0 from by omega, if_false]
-      rw [div_add_div_same, div_self hNr]; push_cast; omega
+      rw [← add_div, div_self hNr]; push_cast; omega
   have hfg : ∀ k : Fin (N + 1), InSimplex (f (g k)) := fun k => hf_map _ (hg k)
   let c : Fin (N + 1) → Fin 2 := fun k =>
     spernerColor (g k) (f (g k)) (hg k) (hfg k)

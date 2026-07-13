@@ -27,6 +27,9 @@ References:
 
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Set Nat Real
 
 namespace Erdos1096
@@ -240,7 +243,7 @@ theorem smallestPisot_is_pisot : IsPisot smallestPisot := by
       simp only [← map_pow, ← map_one (algebraMap ℝ ℂ), ← map_sub] at h
       exact_mod_cast h
     -- Complex.abs z < 1
-    rw [Complex.abs_apply, hnorm]
+    rw [Complex.norm_def, hnorm]
     have hpos : 0 ≤ smallestPisot ^ 2 - 1 := by nlinarith [hgt1]
     have hlt : smallestPisot ^ 2 - 1 < 1 := by nlinarith [hcubic, hgt1]
     calc Real.sqrt (smallestPisot ^ 2 - 1)
@@ -322,7 +325,7 @@ theorem goldenRatio_is_pisot : IsPisot goldenRatio := by
     rw [show (1 : ℂ) - algebraMap ℝ ℂ goldenRatio =
         algebraMap ℝ ℂ (1 - goldenRatio) from by push_cast; ring]
     -- Complex.abs of a real number = |·|
-    rw [Complex.abs_apply]
+    rw [Complex.norm_def]
     rw [show Complex.normSq (algebraMap ℝ ℂ (1 - goldenRatio)) =
         (1 - goldenRatio) ^ 2 from by
       simp [Complex.normSq_apply, Complex.ofReal_re, Complex.ofReal_im]]

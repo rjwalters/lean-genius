@@ -132,7 +132,7 @@ theorem factorialSeq_not_vanishing :
       have h := factorialSeq_densityRatio_ge k (by omega)
       have : 1 - 2 / (↑k + 1) ≥ 1/2 := by
         have : (2 : ℝ) / (↑k + 1) ≤ 1/2 := by
-          rw [div_le_div_iff (by positivity : (0:ℝ) < ↑k + 1) (by norm_num : (0:ℝ) < 2)]
+          rw [div_le_div_iff₀ (by positivity : (0:ℝ) < ↑k + 1) (by norm_num : (0:ℝ) < 2)]
           push_cast; linarith
         linarith
       linarith⟩ |>.frequently)
@@ -177,12 +177,12 @@ theorem haight_density_one_low (A : IncreasingSeq) (hV : VanishingAverage A)
   -- Sum = N * C_A(N) < N * δε/2
   have hsum_lt : ∑ k ∈ range N, densityRatio A k < N * (δ * ε / 2) := by
     have := hC; unfold cesaroAvg at this
-    rwa [div_lt_iff hNr] at this
+    rwa [div_lt_iff₀ hNr] at this
   -- So |S| * ε < N * δε/2, hence |S|/N < δ/2 < δ
   rw [Real.dist_eq, sub_zero, abs_of_nonneg (div_nonneg (Nat.cast_nonneg _) hNr.le)]
   calc (S.card : ℝ) / N
       ≤ N * (δ * ε / 2) / (N * ε) := by
-        rw [div_le_div_iff hNr (by positivity : (0:ℝ) < N * ε)]
+        rw [div_le_div_iff₀ hNr (by positivity : (0:ℝ) < N * ε)]
         nlinarith
     _ = δ / 2 := by field_simp; ring
     _ < δ := by linarith
@@ -198,7 +198,7 @@ theorem haight_polynomial_growth (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
     (A.seq (k + 1) : ℝ) < 2 * (k + 1 : ℝ) * A.seq k := by
   have h := consecutive_low_density_ratio A k hk (1/2) (by norm_num) (by norm_num) hρ
   have hn_pos : (0 : ℝ) < A.seq k := Nat.cast_pos.mpr (A.pos k)
-  rw [div_lt_div_iff hn_pos (by norm_num : (0:ℝ) < 1 - 1/2)] at h
+  rw [div_lt_div_iff₀ hn_pos (by norm_num : (0:ℝ) < 1 - 1/2)] at h
   linarith
 
 /-! ## Part IV: Divisibility Density -/

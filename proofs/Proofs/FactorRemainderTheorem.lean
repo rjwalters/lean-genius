@@ -155,7 +155,7 @@ These theorems have immediate practical uses in finding and verifying roots. -/
 
 /-- Checking a root is easy: if p.eval a = 0, we have found a factor -/
 theorem verify_root {R : Type*} [CommRing R] (p : R[X]) (a : R) :
-    p.eval a = 0 → ∃ q : R(_ : X), p = (X - C a) * q := fun h =>
+    p.eval a = 0 → ∃ q : R[X], p = (X - C a) * q := fun h =>
   ⟨p /ₘ (X - C a), exact_division p a h⟩
 
 /-- A nonzero evaluation means (X - C a) is not a factor -/

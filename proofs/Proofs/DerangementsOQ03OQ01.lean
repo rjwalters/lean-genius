@@ -64,7 +64,7 @@ theorem tsum_tail_split (m : ℕ) :
     have h0eq : ∑' k, altFactTerm (m + k) =
         altFactTerm m + ∑' k, altFactTerm (m + (k + 1)) := by
       have := hs.hasSum
-      rw [tsum_eq_zero_add hs]
+      rw [Summable.tsum_eq_zero_add hs]
       simp only [Nat.zero_add]
     rw [h0eq]
     ring_nf

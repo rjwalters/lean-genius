@@ -30,6 +30,9 @@ References:
 
 import Mathlib
 
+/-- v4.31 compat shim: `Complex.abs` was removed from Mathlib (use `‖·‖`). -/
+noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
+
 open Complex Set Filter
 
 namespace Erdos1116
@@ -118,7 +121,7 @@ theorem countingFunction_nonpos (f : ℂ → ℂ) (a : ℂ) {r : ℝ} (hr : r �
   ext z
   simp only [aPoints, mem_inter_iff, mem_setOf_eq, mem_empty_iff_false, iff_false, not_and]
   intro _
-  exact not_lt_of_le (le_trans hr (Complex.abs.nonneg z))
+  exact not_lt_of_le (le_trans hr (norm_nonneg z))
 
 /-
 ## Part III: The Problem Statement

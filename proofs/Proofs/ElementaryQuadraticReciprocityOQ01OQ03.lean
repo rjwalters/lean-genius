@@ -122,7 +122,8 @@ theorem sign_prodCongr {α β : Type*} [DecidableEq α] [Fintype α]
     simp [Equiv.Perm.mul_apply,
       prodCongrLeft_apply, prodCongrRight_apply, Equiv.prodCongr_apply, Prod.map_apply']
   rw [hdecomp, map_mul, sign_prodCongrLeft, sign_prodCongrRight]
-  simp [Finset.prod_const, Finset.card_univ]
+  simp only [Finset.prod_const, Finset.card_univ]
+  norm_cast
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

@@ -275,7 +275,7 @@ theorem normed_ac_implies_bv {f : ℝ → E} {a b : ℝ} (hab : a ≤ b)
   set step : ℝ := (b - a) / n
   have hstep_pos : 0 < step := div_pos hba hn_pos
   have hstep_lt : step < δ := by
-    rw [div_lt_iff hn_pos]
+    rw [div_lt_iff₀ hn_pos]
     have h_ceil : (b - a) / δ ≤ (⌈(b - a) / δ⌉₊ : ℝ) := Nat.le_ceil _
     have hn_eq : (n : ℝ) = ⌈(b - a) / δ⌉₊ + 1 := by push_cast; ring
     rw [hn_eq]

@@ -214,7 +214,7 @@ private lemma gapProportion_markov (N : ℕ) (hN : 0 < N) (c : ℝ) (hc : c > 0)
   -- hmark : c * (↑N - ↑count) ≤ sum
   -- Goal: 0 ≤ ↑count / ↑N - 1 + sum / (↑N * c)
   rw [div_add_div _ _ (ne_of_gt hNr) (ne_of_gt hNc)]
-  rw [sub_nonneg, div_le_div_iff (by positivity) (mul_pos hNr hNc)]
+  rw [sub_nonneg, div_le_div_iff₀ (by positivity) (mul_pos hNr hNc)]
   -- After simplification: 1 * (↑N * (↑N * c)) ≤ ↑count * (↑N * c) + sum * ↑N
   -- From hmark: c * ↑N - c * ↑count ≤ sum
   -- So sum * ↑N ≥ (c * ↑N - c * ↑count) * ↑N = c * ↑N² - c * ↑count * ↑N
@@ -253,7 +253,7 @@ theorem density_at_infinity :
     exact (div_lt_div_right hc_pos).mpr hN_avg
   -- (1 + ε/2)/c ≤ ε/2 since c ≥ 2/ε + 1
   have h_bound2 : (1 + ε / 2) / c ≤ ε / 2 := by
-    rw [div_le_div_iff hc_pos (by positivity : (0 : ℝ) < 2)]
+    rw [div_le_div_iff₀ hc_pos (by positivity : (0 : ℝ) < 2)]
     -- Goal: (1 + ε/2) * 2 ≤ ε * c, i.e., 2 + ε ≤ ε * c
     have h_key : ε * (2 / ε + 1) = 2 + ε := by field_simp
     have h_prod : ε * (2 / ε + 1) ≤ ε * c := mul_le_mul_of_nonneg_left hc hε.le
@@ -388,7 +388,7 @@ private lemma infinite_normalizedGap_lt (c : ℝ) (hc : c > 1) :
   have hN_pos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
   have hS := h_sum N hNM
   have h_avg_lt : (∑ n ∈ Finset.range N, normalizedGap n) < (c + 1) / 2 * ↑N :=
-    (div_lt_iff hN_pos).mp hN_avg
+    (div_lt_iff₀ hN_pos).mp hN_avg
   -- (N-(M+1))*c ≤ ∑ < (c+1)/2 * N, so (N-(M+1))*c < (c+1)/2 * N
   have hNM_cast : (↑(N - (M + 1)) : ℝ) = ↑N - ↑(M + 1) := Nat.cast_sub (by omega)
   rw [hNM_cast] at hS
@@ -396,7 +396,7 @@ private lemma infinite_normalizedGap_lt (c : ℝ) (hc : c > 1) :
   have hN_ge_K : (↑N : ℝ) ≥ ↑K := Nat.cast_le.mpr hNK
   have hN_real : (↑N : ℝ) > 2 * c * (↑M + 1) / (c - 1) := lt_of_lt_of_le hK hN_ge_K
   have hN_cleared : 2 * c * (↑M + 1) < ↑N * (c - 1) := by
-    rwa [div_lt_iff (by linarith : (c : ℝ) - 1 > 0)] at hN_real
+    rwa [div_lt_iff₀ (by linarith : (c : ℝ) - 1 > 0)] at hN_real
   -- (↑N - ↑(M+1))*c ≤ ∑ < (c+1)/2*↑N, but ↑N*(c-1) > 2c*(↑M+1) makes this impossible
   nlinarith
 
@@ -411,7 +411,7 @@ private lemma primeGap_lt_of_normalizedGap_lt (n : ℕ) (c : ℝ) (hn : n ≥ 2)
     Real.log_le_log (by positivity) (Nat.cast_le.mpr (nthPrime_ge n))
   unfold normalizedGap at h
   simp only [show ¬(n ≤ 1) by omega, ↓reduceIte] at h
-  rw [div_lt_iff hlog_n_pos] at h
+  rw [div_lt_iff₀ hlog_n_pos] at h
   linarith [mul_le_mul_of_nonneg_left hlog_ge hc.le]
 
 /-- **small_gaps_exist** (previously axiom, now theorem):

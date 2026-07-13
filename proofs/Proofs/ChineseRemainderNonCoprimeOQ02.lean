@@ -143,7 +143,7 @@ theorem linear_factors_coprime {a b : k} (hab : a ≠ b) :
 /-- 2-point polynomial CRT (Lagrange interpolation): given distinct points,
     there exists an interpolating polynomial. -/
 theorem polynomial_crt_two_points {a b c d : k} (hab : a ≠ b) :
-    ∃ p : k(_ : X), p.eval a = c ∧ p.eval b = d := by
+    ∃ p : k[X], p.eval a = c ∧ p.eval b = d := by
   have hab' : a - b ≠ 0 := sub_ne_zero.mpr hab
   have hba' : b - a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
   refine ⟨C c * (C (a - b)⁻¹ * (X - C b)) + C d * (C (b - a)⁻¹ * (X - C a)), ?_, ?_⟩
@@ -154,7 +154,7 @@ theorem polynomial_crt_two_points {a b c d : k} (hab : a ≠ b) :
 
 /-- Same-point CRT: solvable iff targets agree. -/
 theorem polynomial_crt_same_point {a c d : k} :
-    (∃ p : k(_ : X), p.eval a = c ∧ p.eval a = d) ↔ c = d := by
+    (∃ p : k[X], p.eval a = c ∧ p.eval a = d) ↔ c = d := by
   constructor
   · rintro ⟨p, hc, hd⟩; exact hc.symm.trans hd
   · rintro rfl; exact ⟨C c, by simp, by simp⟩
@@ -186,7 +186,7 @@ section PolynomialInduction
 variable {k : Type*} [Field k]
 
 /-- Base case: for any single point, the constant polynomial interpolates. -/
-theorem poly_crt_one_point (a b : k) : ∃ p : k(_ : X), p.eval a = b :=
+theorem poly_crt_one_point (a b : k) : ∃ p : k[X], p.eval a = b :=
   ⟨C b, by simp⟩
 
 /-- If m and (X - a) are coprime, then m(a) ≠ 0. -/
@@ -203,7 +203,7 @@ theorem eval_ne_zero_of_coprime {m : k[X]} {a : k}
     Given p₀ satisfying congruences mod m, adjust to also hit value b at a. -/
 theorem poly_crt_extend {a b : k} {m : k[X]}
     (hcop : IsCoprime m (X - C a)) (p₀ : k[X]) :
-    ∃ q : k(_ : X), m ∣ (q - p₀) ∧ q.eval a = b := by
+    ∃ q : k[X], m ∣ (q - p₀) ∧ q.eval a = b := by
   have hma : m.eval a ≠ 0 := eval_ne_zero_of_coprime hcop
   refine ⟨p₀ + m * C ((b - p₀.eval a) * (m.eval a)⁻¹), ?_, ?_⟩
   · exact ⟨C ((b - p₀.eval a) * (m.eval a)⁻¹), by ring⟩
@@ -352,7 +352,7 @@ variable {k : Type*} [Field k]
 /-- The interpolating polynomial for 2 points can be chosen with degree ≤ 1.
     This is the Lagrange interpolation bound. -/
 theorem polynomial_crt_two_degree_bound {a b c d : k} (hab : a ≠ b) :
-    ∃ p : k(_ : X), p.eval a = c ∧ p.eval b = d ∧ p.natDegree ≤ 1 := by
+    ∃ p : k[X], p.eval a = c ∧ p.eval b = d ∧ p.natDegree ≤ 1 := by
   have hab' : a - b ≠ 0 := sub_ne_zero.mpr hab
   have hba' : b - a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
   -- Construct the linear interpolating polynomial explicitly
@@ -371,7 +371,7 @@ theorem polynomial_crt_two_degree_bound {a b c d : k} (hab : a ≠ b) :
 
 /-- Constant interpolation: single-point CRT yields degree 0 polynomials. -/
 theorem polynomial_crt_one_degree_bound (a b : k) :
-    ∃ p : k(_ : X), p.eval a = b ∧ p.natDegree = 0 :=
+    ∃ p : k[X], p.eval a = b ∧ p.natDegree = 0 :=
   ⟨C b, by simp, Polynomial.natDegree_C b⟩
 
 end DegBounds

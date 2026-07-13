@@ -126,7 +126,7 @@ theorem S_eq_head_add_renormTail_zero (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
     turns into `τ(N+2)`; every `k ≥ 1` summand loses its `a_{N+1}` factor and,
     after the shift `k ↦ k-1`, becomes the corresponding summand of `T_{N+1}`.
     This is the single algebraic fact behind the whole argument.
-    STATUS: sorry — `tsum` constant-factor-out + reindex (`tsum_eq_zero_add`,
+    STATUS: sorry — `tsum` constant-factor-out + reindex (`Summable.tsum_eq_zero_add`,
     summability of the tail). NOT build-verified (Docker outage). -/
 theorem renormTail_recursion (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
     (hconv : Summable (generalTerm a)) (N : ℕ) :

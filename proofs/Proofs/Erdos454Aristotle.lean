@@ -58,7 +58,7 @@ def Erdos454Negation : Prop :=
 -- nth prime basics
 /-- The nth prime sequence is strictly increasing. -/
 theorem nthPrime_strictMono : StrictMono nthPrime :=
-  Nat.nth_prime_strictMono
+  (Nat.nth_strictMono Nat.infinite_setOf_prime)
 
 /-- All nth primes are prime. -/
 theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=

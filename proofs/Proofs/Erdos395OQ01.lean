@@ -162,7 +162,7 @@ theorem erdos_original_is_false_proved :
     have hz : isUnitVector z := by
       intro i
       simp only [carnielli_carolino_counterexample]
-      fin_cases i <;> simp [Complex.abs_apply, Complex.normSq]
+      fin_cases i <;> simp [Complex.norm_def, Complex.normSq]
       · simp [Complex.normSq]; ring_nf; simp
       · simp [Complex.normSq, Complex.I]; ring_nf; simp
     -- All sign vectors give |sum| > 1 (from counterexample_exceeds_one)

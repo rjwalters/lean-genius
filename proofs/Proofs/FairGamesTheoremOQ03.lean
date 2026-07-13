@@ -150,10 +150,10 @@ theorem any_bounded_strategy_preserves_expectation
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
   -- Submartingale direction: E[f₀] ≤ E[stoppedValue f τ]
   have h₁ := hf.submartingale.expected_stoppedValue_mono
-    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
   -- Supermartingale direction via negation: E[stoppedValue f τ] ≤ E[f₀]
   have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono
-    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+    (isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
   simp only [stoppedValue_const, stoppedValue, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
   linarith
 

@@ -235,7 +235,7 @@ theorem oscillation_thomae_rat (r : ℚ) :
 Equivalently, Thomae's function is continuous at the irrationals. -/
 theorem oscillation_thomae_irrational {x : ℝ} (hx : Irrational x) :
     oscillation thomae x = 0 := by
-  refine le_antisymm ?_ (zero_le _)
+  refine le_antisymm ?_ (zero_le)
   refine ENNReal.le_of_forall_pos_le_add fun ε hε _ => ?_
   rw [zero_add]
   obtain ⟨δ, hδ, hball⟩ :=

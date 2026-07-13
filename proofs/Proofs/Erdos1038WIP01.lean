@@ -234,7 +234,7 @@ theorem sublevelInf_eq_zero : sublevelInf = 0 :=
   le_antisymm
     (iInf_le_of_le (X ^ 2 + C 1)
       (iInf_le_of_le sq_add_one_admissible sublevelMeasure_sq_add_one.le))
-    (zero_le _)
+    (zero_le)
 
 /-! ### The faithful predicate (complete real splitting)
 

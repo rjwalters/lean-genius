@@ -76,7 +76,7 @@ theorem buDim_crt_semiprime_proved (p q d : ℕ)
   have hle := buDim_le_formula (p * q) d h2
   have heq : buDimFormula (p * q) d = buDim p d ⊔ buDim q d := by
     rw [buDimFormula, Nat.primeFactors_mul hp.ne_zero hq.ne_zero,
-        Nat.primeFactors_prime hp, Nat.primeFactors_prime hq]
+        Nat.Prime.primeFactors hp, Nat.Prime.primeFactors hq]
     simp only [Finset.sup_insert, Finset.sup_singleton]
   exact hle.trans heq.le
 

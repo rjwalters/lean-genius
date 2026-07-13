@@ -774,7 +774,7 @@ theorem padic_liouville_bridge_algebraic_case
     have hxH : ‖((r : ℚ_[p]) / s)‖ ≤ H := padic_norm_int_div_le_height p r s hs
     exact padic_polynomial_eval_norm_bound p g ((r : ℚ_[p]) / s) H hH_one hxH
   -- Step 8: Combine to get ‖α - r/s‖ ≥ 1/(L·M·H^(d + g.natDegree))
-  -- (Lean 4.26: avoid `div_le_div_iff` — use `div_le_iff₀` instead.)
+  -- (Lean 4.26: avoid `div_le_div_iff₀` — use `div_le_iff₀` instead.)
   have h_M_pos_dg : 0 < M * H ^ g.natDegree := mul_pos hM_pos hHpow_dg_pos
   have h_α_nn : 0 ≤ ‖α - (r : ℚ_[p]) / s‖ := norm_nonneg _
   -- Identity from Step 5: ‖α - r/s‖ · ‖g(r/s)‖ = ‖f(r/s)‖

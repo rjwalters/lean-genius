@@ -170,7 +170,7 @@ theorem naturalDensity_vanishes :
   rw [naturalDensity_eq_inv (max 2 N) (le_max_left 2 N)]
   have hmax_pos : (0 : ℝ) < (max 2 N : ℝ) :=
     by exact_mod_cast Nat.lt_of_lt_of_le (by norm_num) (le_max_left 2 N)
-  rw [div_lt_iff hmax_pos, one_mul]
+  rw [div_lt_iff₀ hmax_pos, one_mul]
   calc (1 : ℝ) < 1 / ε * ε := by rw [div_mul_cancel₀ 1 (ne_of_gt hε)]
     _ = ε * (1 / ε) := by ring
     _ ≤ ε * N := by

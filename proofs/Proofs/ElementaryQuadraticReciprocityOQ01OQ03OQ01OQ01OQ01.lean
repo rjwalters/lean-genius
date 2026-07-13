@@ -176,10 +176,14 @@ theorem sign_mulLeft_eq_quadraticChar {p n : ℕ} [hp : Fact p.Prime] (hp2 : p �
   have hsign : ((Equiv.Perm.sign (Equiv.mulLeft u) : ℤ)) = (-1) ^ k := by
     have hpow : Equiv.Perm.sign (Equiv.mulLeft u) = (Equiv.Perm.sign (Equiv.mulLeft g)) ^ k := by
       rw [← hk]; exact sign_mulLeft_pow g k
-    rw [hpow, Units.val_pow_eq_pow_val, hsg]
+    rw [hpow]
+    show ((Equiv.Perm.sign (Equiv.mulLeft g) : ℤ)) ^ k = (-1 : ℤ) ^ k
+    rw [hsg]
   have hchar : quadraticChar (ZMod p) ((ρ u : ZMod p)) = (-1) ^ k := by
     have hgu : ρ u = (ρ g) ^ k := by rw [← hk, map_pow]
-    rw [hgu, Units.val_pow_eq_pow_val, map_pow, hqg]
+    rw [hgu]
+    show quadraticChar (ZMod p) (((ρ g : ZMod p)) ^ k) = (-1) ^ k
+    rw [map_pow, hqg]
   rw [hsign, hchar]
 
 /-- **Prime-power Zolotarev (units, Legendre form).**  The sign of left

@@ -126,7 +126,7 @@ theorem alternating_naturals_not_summable : ¬ Summable alternatingNaturals := b
 theorem shift_requires_convergence {f : ℕ → ℝ} (hf : Summable f) :
     (∑' n, f n) + (∑' n, f (n + 1)) = f 0 + 2 * (∑' n, f (n + 1)) := by
   -- This is only valid BECAUSE we have Summable f
-  rw [tsum_eq_zero_add hf]
+  rw [Summable.tsum_eq_zero_add hf]
   ring
 
 /-- IRONY: This equation IS true, but trivially so!

@@ -14,7 +14,7 @@
   From `DerangementsConvergence.derangements_convergence_rate`:
     |D(n)/n! - rexp(-1)| ≤ 1/(n+1)!
 
-  Multiplying by n! (using abs_div + div_le_iff):
+  Multiplying by n! (using abs_div + div_le_iff₀):
     |D(n) - n!·rexp(-1)| ≤ n!/(n+1)! = 1/(n+1)
 
   For n ≥ 2: n+1 ≥ 3 > 2, so 1/(n+1) < 1/2.
@@ -61,7 +61,7 @@ theorem derangements_eq_round (n : ℕ) (hn : 2 ≤ n) :
         simp only [hx_def]; field_simp]
       rw [abs_div, abs_of_pos hfact_pos]
     -- So |D - x|/n! ≤ 1/(n+1)!, multiply both sides by n!
-    rw [hmul, div_le_iff hfact_pos] at hrate
+    rw [hmul, div_le_iff₀ hfact_pos] at hrate
     -- Now hrate : |D - x| ≤ n! * (1/(n+1)!) = 1/(n+1)
     -- For n ≥ 2: 1/(n+1) < 1/2 since n+1 ≥ 3 > 2
     have hn3 : (2 : ℝ) < n + 1 := by exact_mod_cast (show 2 < n + 1 by omega)

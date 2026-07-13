@@ -1712,7 +1712,7 @@ theorem radial_proj_on_circle (x : ℝ × ℝ) (hx : euclidNormSq x > 0) :
     rw [euclidNorm]; exact Real.sqrt_pos_of_pos hx
   have hr2 : euclidNorm x ^ 2 = euclidNormSq x := by
     rw [euclidNorm, Real.sq_sqrt (euclidNormSq_nonneg x)]
-  rw [div_pow, div_pow, div_add_div_same, hr2]
+  rw [div_pow, div_pow, ← add_div, hr2]
   exact div_self (ne_of_gt hx)
 
 /-- Boundary vertices of [-1,1]² have Euclidean norm squared ≥ 1.

@@ -62,7 +62,7 @@ private lemma normSq_one_sub_exp (θ : ℝ) :
 /-- ‖1 - exp(θi)‖² = 2 - 2 cos θ -/
 private lemma norm_sq_one_sub_exp (θ : ℝ) :
     ‖(1 : ℂ) - Complex.exp (↑θ * Complex.I)‖ ^ 2 = 2 - 2 * Real.cos θ := by
-  rw [Complex.norm_eq_abs, Complex.sq_abs]
+  rw [Complex.sq_norm]
   exact_mod_cast normSq_one_sub_exp θ
 
 /-- For α ∈ (0, π/2): ‖1 - exp(2α·i)‖ = 2 sin α -/
@@ -107,7 +107,7 @@ lemma norm_exp_two_alpha_sub_neg_one (α : ℝ) (hα : 0 < α) (hα' : α < Real
         2 + 2 * Real.cos (2 * α) := by
       have h := norm_sq_one_sub_exp (2 * α)
       -- ‖1 - e‖² = 2 - 2cos = ‖-(e-1)‖² = ‖e-1‖² = ‖e+1-2‖²... let's do it directly
-      rw [Complex.norm_eq_abs, Complex.sq_abs]
+      rw [Complex.sq_norm]
       simp only [Complex.normSq_apply, Complex.add_re, Complex.one_re, Complex.add_im,
                  Complex.one_im, Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
                  Complex.ofReal_im, Complex.exp_re, Complex.exp_im]
@@ -140,7 +140,7 @@ lemma norm_neg_one_sub_exp_neg_two_beta (β : ℝ) (hβ : 0 < β) (hβ' : β < R
   have hcosβ : 0 < Real.cos β :=
     Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩
   have h_sq : ‖Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)‖ ^ 2 = (2 * Real.cos β) ^ 2 := by
-    rw [Complex.norm_eq_abs, Complex.sq_abs]
+    rw [Complex.sq_norm]
     simp only [Complex.normSq_apply, Complex.add_re, Complex.one_re, Complex.add_im,
                Complex.one_im, Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
                Complex.ofReal_im, Complex.exp_re, Complex.exp_im]
@@ -187,7 +187,7 @@ lemma norm_exp_diff (α β : ℝ) (hα : 0 < α) (hβ : 0 < β) (hab : α + β <
     -- conj(exp(-2βI)) = exp(2βI), so z₁ · conj z₂ = exp(2αI) · exp(2βI) = exp((2α+2β)I)
     -- Re(exp((2α+2β)I)) = cos(2α+2β)
     -- So ‖z₁ - z₂‖² = 1 + 1 - 2cos(2(α+β)) = 2 - 2cos(2(α+β)) = 4sin²(α+β)
-    rw [Complex.norm_eq_abs, Complex.sq_abs]
+    rw [Complex.sq_norm]
     simp only [Complex.normSq_apply, Complex.sub_re, Complex.sub_im,
                Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
                Complex.ofReal_im, Complex.exp_re, Complex.exp_im]

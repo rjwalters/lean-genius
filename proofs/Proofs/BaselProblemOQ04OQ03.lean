@@ -82,7 +82,7 @@ private lemma nat_div_div_tendsto (d : ℕ) :
     have heq : (N / d : ℕ) / (N : ℝ) - 1 / d = -((N % d : ℕ) : ℝ) / ((d : ℝ) * N) := by
       field_simp; push_cast; linarith
     rw [Real.dist_eq, heq, abs_neg, abs_of_nonneg (by positivity)]
-    rw [div_lt_iff (by positivity)]
+    rw [div_lt_iff₀ (by positivity)]
     have hmod : (N % d : ℝ) < d := by exact_mod_cast Nat.mod_lt N hd
     -- N ≥ ⌈d/ε⌉ ≥ d/ε, so d ≤ ε*N
     have hN_ge : (d : ℝ) ≤ ε * N := by
@@ -404,7 +404,7 @@ theorem coprime_pair_density_limit :
         have hmu : |(moebius d : ℝ)| ≤ 1 := by exact_mod_cast abs_moebius_le_one
         -- |(N/d)/N| ≤ 1/d (since (N/d)*d ≤ N)
         have hdiv : |(N / d : ℕ) / (N : ℝ)| ≤ 1 / (d : ℝ) := by
-          rw [abs_of_nonneg (by positivity), div_le_div_iff hN' (Nat.cast_pos.mpr hd)]
+          rw [abs_of_nonneg (by positivity), div_le_div_iff₀ hN' (Nat.cast_pos.mpr hd)]
           simp only [one_mul]
           push_cast
           exact_mod_cast Nat.div_mul_le_self N d
@@ -454,13 +454,13 @@ theorem density_eq_inv_zeta2 : 6 / Real.pi ^ 2 = 1 / (Real.pi ^ 2 / 6) := by rin
 /-- A lower bound: 6/π² > 3/8. Since π < 4, π² < 16, we have 6/π² > 6/16 = 3/8. -/
 theorem density_gt_three_eighths : 3 / 8 < 6 / Real.pi ^ 2 := by
   have hpi : Real.pi < 4 := Real.pi_lt_four
-  rw [gt_iff_lt, div_lt_div_iff (by norm_num : (0:ℝ) < 8) (sq_pos_of_pos Real.pi_pos)]
+  rw [gt_iff_lt, div_lt_div_iff₀ (by norm_num : (0:ℝ) < 8) (sq_pos_of_pos Real.pi_pos)]
   nlinarith [Real.pi_pos]
 
 /-- An upper bound: 6/π² < 2/3. Since π² > 9, we have 6/π² < 6/9 = 2/3. -/
 theorem density_lt_two_thirds : 6 / Real.pi ^ 2 < 2 / 3 := by
   have hpi : (3 : ℝ) < Real.pi := Real.pi_gt_three
-  rw [div_lt_div_iff (sq_pos_of_pos Real.pi_pos) (by norm_num : (0:ℝ) < 3)]
+  rw [div_lt_div_iff₀ (sq_pos_of_pos Real.pi_pos) (by norm_num : (0:ℝ) < 3)]
   nlinarith [sq_nonneg Real.pi]
 
 -- ============================================================

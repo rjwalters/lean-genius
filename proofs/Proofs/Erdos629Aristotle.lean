@@ -50,7 +50,7 @@ lemma pow_pred_lt (k : ℕ) (hk : k ≥ 1) : 2 ^ (k - 1) < 2 ^ k :=
 
 /-- 2^k < k^2 * 2^(k+2) for k ≥ 1 -/
 lemma pow_lt_sq_pow (k : ℕ) (hk : k ≥ 1) : 2 ^ k < k ^ 2 * 2 ^ (k + 2) := by
-  have hpow : 0 < 2 ^ k := Nat.pos_pow_of_pos k (by norm_num)
+  have hpow : 0 < 2 ^ k := pow_pos (by norm_num) k
   have hk2 : 2 ^ (k + 2) = 4 * 2 ^ k := by ring
   have hksq : 1 ≤ k ^ 2 := Nat.one_le_pow 2 k hk
   nlinarith [hk2, hpow, hksq]
@@ -66,7 +66,7 @@ lemma pow_factor (k : ℕ) : 2 ^ k + k * 2 ^ k = (k + 1) * 2 ^ k := by ring
 
 /-- (k+1) * 2^k ≤ k^2 * 2^(k+2) for k ≥ 2 -/
 lemma k_plus_one_pow_le (k : ℕ) (hk : k ≥ 2) : (k + 1) * 2 ^ k ≤ k ^ 2 * 2 ^ (k + 2) := by
-  have hpow : 0 < 2 ^ k := Nat.pos_pow_of_pos k (by norm_num)
+  have hpow : 0 < 2 ^ k := pow_pos (by norm_num) k
   have hk2 : 2 ^ (k + 2) = 4 * 2 ^ k := by ring
   nlinarith [hk2, hpow, hk]
 

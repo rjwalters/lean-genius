@@ -13,6 +13,15 @@ import Mathlib.RingTheory.Polynomial.GaussLemma
 import Mathlib.NumberTheory.LSeries.PrimesInAP
 import Proofs.NthRootIrrationalOQ01
 
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatInverseGalois (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 /-
 # The Inverse Galois Problem
 
@@ -696,7 +705,7 @@ theorem gal_card_dvd_six :
 -- Helper: X²+X+1 has a root in the splitting field of X³-2
 -- (the ratio of any two distinct roots satisfies X²+X+1 = 0)
 theorem x_sq_add_x_add_1_has_root_in_splitting_field :
-    ∃ ω : (X ^ 3 - C (2 : ℚ) : ℚ(_ : X)).SplittingField,
+    ∃ ω : (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField,
       ω ^ 2 + ω + 1 = 0 := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X]) with hp_def
   set E := p.SplittingField
@@ -1323,7 +1332,7 @@ theorem c2_times_c4_realized :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Fintype.card (K ≃ₐ[ℚ] K) = 8 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
-      ∃ (g : K ≃ₐ(_ : ℚ) K), g ^ 2 ≠ 1 := by
+      ∃ (g : K ≃ₐ[ℚ] K), g ^ 2 ≠ 1 := by
   haveI : NeZero (15 : ℕ) := ⟨by omega⟩
   obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 15
   refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
@@ -1425,7 +1434,7 @@ theorem c2_times_c6_realized :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Fintype.card (K ≃ₐ[ℚ] K) = 12 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
-      ∃ (g : K ≃ₐ(_ : ℚ) K), g ^ 3 ≠ 1 := by
+      ∃ (g : K ≃ₐ[ℚ] K), g ^ 3 ≠ 1 := by
   haveI : NeZero (21 : ℕ) := ⟨by omega⟩
   obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 21
   refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
@@ -1587,7 +1596,7 @@ theorem c2_times_c8_realized :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Fintype.card (K ≃ₐ[ℚ] K) = 16 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
-      ∃ (g : K ≃ₐ(_ : ℚ) K), g ^ 4 ≠ 1 := by
+      ∃ (g : K ≃ₐ[ℚ] K), g ^ 4 ≠ 1 := by
   haveI : NeZero (32 : ℕ) := ⟨by omega⟩
   obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 32
   refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
@@ -1797,7 +1806,7 @@ theorem c2_times_c10_realized :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Fintype.card (K ≃ₐ[ℚ] K) = 20 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
-      ∃ (g : K ≃ₐ(_ : ℚ) K), g ^ 5 ≠ 1 := by
+      ∃ (g : K ≃ₐ[ℚ] K), g ^ 5 ≠ 1 := by
   haveI : NeZero (33 : ℕ) := ⟨by omega⟩
   obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 33
   refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_⟩
@@ -1852,7 +1861,7 @@ theorem c2_c2_c6_realized :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Fintype.card (K ≃ₐ[ℚ] K) = 24 ∧ ¬ IsCyclic (K ≃ₐ[ℚ] K) ∧
-      (∀ g : K ≃ₐ[ℚ] K, g ^ 6 = 1) ∧ ∃ (g : K ≃ₐ(_ : ℚ) K), g ^ 3 ≠ 1 := by
+      (∀ g : K ≃ₐ[ℚ] K, g ^ 6 = 1) ∧ ∃ (g : K ≃ₐ[ℚ] K), g ^ 3 ≠ 1 := by
   haveI : NeZero (84 : ℕ) := ⟨by omega⟩
   obtain ⟨K, _, _, _, hgal, ⟨iso⟩⟩ := units_zmod_realizable 84
   refine ⟨K, inferInstance, inferInstance, inferInstance, hgal, ?_, ?_, ?_, ?_⟩

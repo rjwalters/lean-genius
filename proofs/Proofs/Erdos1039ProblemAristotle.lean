@@ -97,7 +97,7 @@ theorem prod_abs_lt_one_of_each {n : ℕ} (hn : n > 0) (v : Fin n → ℂ)
     Complex.abs (∏ i : Fin n, v i) < 1 := by
   rw [map_prod]
   apply Finset.prod_lt_one
-  · intro i _; exact Complex.abs.nonneg _
+  · intro i _; exact norm_nonneg _
   · intro i _; exact le_of_lt (hv i)
   · exact ⟨⟨0, hn⟩, Finset.mem_univ _, hv _⟩
 

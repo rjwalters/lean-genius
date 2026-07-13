@@ -163,13 +163,13 @@ theorem paradoxical_no_finite_measure (G : Type*) [Group G] [MulAction G α]
     -- via decomposition A = (B ∪ C) ∪ (A \ (B ∪ C))
     have hMonotone : μ (B ∪ C) ≤ μ A := by
       calc μ (B ∪ C)
-          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_of_nonneg_right (zero_le _)
+          ≤ μ (B ∪ C) + μ (A \ (B ∪ C)) := le_add_of_nonneg_right zero_le
         _ = μ ((B ∪ C) ∪ (A \ (B ∪ C))) :=
             (hμ_add _ _ disjoint_sdiff_self_right).symm
         _ = μ A := by rw [Set.union_diff_cancel h_bc_sub_a]
     -- Sandwich: μ(B ∪ C) ≤ μ(A) ≤ μ(A) + μ(A) = μ(B ∪ C)
     -- gives equality μ(A) = μ(A) + μ(A)
-    exact le_antisymm (hBCunion ▸ hMonotone) (le_add_of_nonneg_right (zero_le _))
+    exact le_antisymm (hBCunion ▸ hMonotone) (le_add_of_nonneg_right zero_le)
   -- From h2: μ(A) = 0 or μ(A) = ∞
   rcases ennreal_add_self_eq_self h2 with h | h
   · exact Or.inl h
@@ -310,7 +310,7 @@ private lemma e2Int_no_inv : ¬ anyInv e2Int := by
 
 -- Shared simp set for all transition lemma proofs
 macro "zsqrtd_simp" : tactic =>
-  `(tactic| simp only [Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im,
+  `(tactic| simp only [Zsqrtd.re_mul, Zsqrtd.im_mul, Zsqrtd.re_add, Zsqrtd.im_add,
               scaledActPhi_0, scaledActPhi_1, scaledActPhi_2,
               scaledActPhiInv_0, scaledActPhiInv_1, scaledActPhiInv_2,
               scaledActPsi_0, scaledActPsi_1, scaledActPsi_2,
@@ -395,14 +395,14 @@ private lemma base_phi_inv : inv_phi_inv (scaledActPhiInv e2Int) := by
 
 private lemma base_psi : inv_psi (scaledActPsi e2Int) := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
-    simp [inv_psi, scaledActPsi, e2Int, Zsqrtd.mul_re, Zsqrtd.mul_im,
-          Zsqrtd.add_re, Zsqrtd.add_im] <;>
+    simp [inv_psi, scaledActPsi, e2Int, Zsqrtd.re_mul, Zsqrtd.im_mul,
+          Zsqrtd.re_add, Zsqrtd.im_add] <;>
     norm_num
 
 private lemma base_psi_inv : inv_psi_inv (scaledActPsiInv e2Int) := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
-    simp [inv_psi_inv, scaledActPsiInv, e2Int, Zsqrtd.mul_re, Zsqrtd.mul_im,
-          Zsqrtd.add_re, Zsqrtd.add_im] <;>
+    simp [inv_psi_inv, scaledActPsiInv, e2Int, Zsqrtd.re_mul, Zsqrtd.im_mul,
+          Zsqrtd.re_add, Zsqrtd.im_add] <;>
     norm_num
 
 -- The orbit induction for proving orbit_ne uses these 12 valid transitions.
@@ -552,7 +552,7 @@ private lemma evalWord_nonempty_anyInv (l : List (Bool × Bool))
 -- PARTIAL PROOF: Rotation matrices defined and shown orthogonal.
 -- LinearIsometryEquivs constructed. orbit_ne proved via inductive encoding in ℤ[√2].
 theorem hausdorff_free_subgroup :
-    ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ(_ : ℝ) EuclideanSpace ℝ (Fin 3)),
+    ∃ (φ ψ : EuclideanSpace ℝ (Fin 3) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin 3)),
     Function.Injective
       (FreeGroup.lift (fun b : Bool => if b then φ.toLinearEquiv else ψ.toLinearEquiv)) := by
   -- Trig identity: cos θ = 1/3, sin θ = 2√2/3, where θ = arccos(1/3)
@@ -653,13 +653,13 @@ theorem hausdorff_free_subgroup :
     show ⟪Matrix.toEuclideanLin Mφ x, Matrix.toEuclideanLin Mφ y⟫_ℝ = ⟪x, y⟫_ℝ
     simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.ofLp_toEuclideanLin_apply,
                star_trivial]
-    rw [Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, hφ_orth, Matrix.vecMul_one]
+    rw [dotProduct_mulVec, Matrix.vecMul_mulVec, hφ_orth, Matrix.vecMul_one]
   have hψ_inner : ∀ (x y : EuclideanSpace ℝ (Fin 3)), ⟪ψ_lin x, ψ_lin y⟫_ℝ = ⟪x, y⟫_ℝ := by
     intro x y
     show ⟪Matrix.toEuclideanLin Mψ x, Matrix.toEuclideanLin Mψ y⟫_ℝ = ⟪x, y⟫_ℝ
     simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.ofLp_toEuclideanLin_apply,
                star_trivial]
-    rw [Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, hψ_orth, Matrix.vecMul_one]
+    rw [dotProduct_mulVec, Matrix.vecMul_mulVec, hψ_orth, Matrix.vecMul_one]
   -- Build the linear isometric equivalences via isometryOfInner
   let φ := LinearEquiv.isometryOfInner φ_lin hφ_inner
   let ψ := LinearEquiv.isometryOfInner ψ_lin hψ_inner
@@ -760,10 +760,10 @@ theorem hausdorff_free_subgroup :
                    scaledActPhiInv_0, scaledActPhiInv_1, scaledActPhiInv_2,
                    scaledActPsi_0, scaledActPsi_1, scaledActPsi_2,
                    scaledActPsiInv_0, scaledActPsiInv_1, scaledActPsiInv_2,
-                   Zsqrtd.mul_re, Zsqrtd.mul_im, Zsqrtd.add_re, Zsqrtd.add_im,
+                   Zsqrtd.re_mul, Zsqrtd.im_mul, Zsqrtd.re_add, Zsqrtd.im_add,
                    φ_lin, ψ_lin, LinearEquiv.ofLinear_apply, LinearEquiv.ofLinear_symm_apply,
                    Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp,
-                   Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_three] <;>
+                   Matrix.mulVec, dotProduct, Fin.sum_univ_three] <;>
         simp only [hMφ_def, hMψ_def] <;>
         simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
                    Matrix.head_fin_const, Matrix.cons_val_fin_one,

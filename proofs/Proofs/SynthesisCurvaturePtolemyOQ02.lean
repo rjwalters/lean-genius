@@ -167,7 +167,7 @@ theorem hyperbolic_ptolemy_inequality (z₁ z₂ z₃ z₄ : ℂ)
     rw [poincareChord_eq_div_mul h2 h3, poincareChord_eq_div_mul h1 h4]
     field_simp
     ring
-  rw [e13_24, e12_34, e23_14, div_add_div_same]
+  rw [e13_24, e12_34, e23_14, ← add_div]
   gcongr
   exact ptolemy_inequality z₁ z₂ z₃ z₄
 
@@ -221,7 +221,7 @@ theorem hyperbolic_ptolemy_equality (z₁ z₂ z₃ z₄ : ℂ)
     rw [poincareChord_eq_div_mul h2 h3, poincareChord_eq_div_mul h1 h4]
     field_simp
     ring
-  rw [e13_24, e12_34, e23_14, div_add_div_same,
+  rw [e13_24, e12_34, e23_14, ← add_div,
       ptolemy_equality_of_proportional z₁ z₂ z₃ z₄ t ht hprop]
 
 -- ============================================================

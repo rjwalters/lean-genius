@@ -1,0 +1,312 @@
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:109:45: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:109:67: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:120:10: Function expected at
+  ContDiff
+but this term has type
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01.lean:120:32: Function expected at
+  ContDiff
+but this term has type
+===== AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT
+error: Proofs/AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT.lean:258:2: Type mismatch: After simplification, term
+  h
+ has type
+===== AreaOfCircleOQ01OQ03
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== AreaOfCircleOQ01OQ03OQ01
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== AreaOfCircleOQ01OQ03OQ02
+error: Proofs/AreaOfCircleOQ01OQ03.lean:367:6: No applicable extensionality theorem found for type
+  ℂ
+error: Proofs/AreaOfCircleOQ01OQ03.lean:470:105: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+error: Proofs/AreaOfCircleOQ01OQ03.lean:538:54: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+error: Proofs/AreaOfCircleOQ01OQ03.lean:541:56: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ01OQ03.lean:546:10: Try this:
+  [apply] exact fun t => Eq.symm (deriv_comp_add_const f (2 * π) t)
+===== BuffonsNeedleOQ01
+error: Proofs/BuffonsNeedleOQ01.lean:69:30: Application type mismatch: The argument
+  le_rfl
+has type
+===== BuffonsNeedleOQ01OQ01OQ04
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:92:55: unsolved goals
+⊢ π ^ 2 * 2 = π ^ 2 * 2
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:115:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ (1 / 2)
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:130:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?x ^ ↑?n
+in the target expression
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04.lean:224:33: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+===== CantorsTheoremOQ01OQ02
+error: Proofs/CantorsTheoremOQ01OQ02.lean:81:2: Type mismatch
+  cantor #(Set ℝ)
+has type
+error: Proofs/CantorsTheoremOQ01OQ02.lean:127:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ℶ_ 1
+in the target expression
+error: Proofs/CantorsTheoremOQ01OQ02.lean:132:4: No goals to be solved
+warning: Proofs/CantorsTheoremOQ01OQ02.lean:207:8: `Cardinal.lt_cof_power` has been deprecated: Use `Cardinal.lt_cof_ord_power` instead
+warning: Proofs/CantorsTheoremOQ01OQ02.lean:214:8: `Cardinal.lt_cof_power` has been deprecated: Use `Cardinal.lt_cof_ord_power` instead
+===== CantorsTheoremOQ01OQ03
+error: Proofs/CantorsTheoremOQ01OQ02.lean:81:2: Type mismatch
+  cantor #(Set ℝ)
+has type
+error: Proofs/CantorsTheoremOQ01OQ02.lean:127:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ℶ_ 1
+in the target expression
+error: Proofs/CantorsTheoremOQ01OQ02.lean:132:4: No goals to be solved
+warning: Proofs/CantorsTheoremOQ01OQ02.lean:207:8: `Cardinal.lt_cof_power` has been deprecated: Use `Cardinal.lt_cof_ord_power` instead
+warning: Proofs/CantorsTheoremOQ01OQ02.lean:214:8: `Cardinal.lt_cof_power` has been deprecated: Use `Cardinal.lt_cof_ord_power` instead
+===== ContinuumHypothesisOQ02
+error: Proofs/ContinuumHypothesisOQ02.lean:91:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ℵ_ 0
+in the target expression
+error: Proofs/ContinuumHypothesisOQ02.lean:111:6: Unknown constant `Cardinal.cof_aleph`
+error: Proofs/ContinuumHypothesisOQ02.lean:110:68: unsolved goals
+ω : Ordinal.{0}
+error: Proofs/ContinuumHypothesisOQ02.lean:110:68: unsolved goals
+ω : Ordinal.{0}
+⊢ (ℵ_ ω).ord.cof = ℵ₀
+error: Proofs/ContinuumHypothesisOQ02.lean:125:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ℵ_ 0
+in the target expression
+===== Erdos1040Problem
+error: Proofs/Erdos1040Problem.lean:281:10: Application type mismatch: The argument
+  nthDiameter F n
+has type
+error: Proofs/Erdos1040Problem.lean:281:9: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/Erdos1040Problem.lean:283:2: No goals to be solved
+warning: Proofs/Erdos1040Problem.lean:384:22: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos1040Problem.lean:283:2: No goals to be solved
+warning: Proofs/Erdos1040Problem.lean:384:22: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos1040Problem.lean:394:20: Invalid field `lt_or_lt`: The environment does not contain `Function.lt_or_lt`, so it is not possible to project the field `lt_or_lt` from an expression
+  hne_ij
+of type `i = j → False`
+===== Erdos110Problem
+error: Proofs/Erdos110Problem.lean:88:57: Invalid field `succ`: The environment does not contain `Quot.succ`, so it is not possible to project the field `succ` from an expression
+  ℵ₀
+of type `Quot ⇑isEquivalent`
+error: Proofs/Erdos110Problem.lean:124:0: declaration `Erdos110.ErdosHajnalSzemerediConjecture` contains universe level metavariables at the expression
+  HasChromaticNumber.{u_1, ?u.9} G aleph1.{?u.9}
+in the declaration body
+error: Proofs/Erdos110Problem.lean:143:29: Unknown identifier `lambie_hanson_counterexample`
+error: Proofs/Erdos110Problem.lean:143:9: Tactic `rcases` failed: `x✝ : ?m.11` is not an inductive datatype
+error: Proofs/Erdos110Problem.lean:165:29: Unknown identifier `lambie_hanson_counterexample`
+error: Proofs/Erdos110Problem.lean:143:9: Tactic `rcases` failed: `x✝ : ?m.11` is not an inductive datatype
+error: Proofs/Erdos110Problem.lean:165:29: Unknown identifier `lambie_hanson_counterexample`
+error: Proofs/Erdos110Problem.lean:165:9: Tactic `rcases` failed: `x✝ : ?m.11` is not an inductive datatype
+===== Erdos846ProblemAPN
+error: Proofs/Erdos846ProblemAPN.lean:251:90: unsolved goals
+a : ℕ
+w✝ : ℤ
+error: Proofs/Erdos846ProblemAPN.lean:599:4: Type mismatch
+  @Ne.symm
+has type
+error: Proofs/Erdos846ProblemAPN.lean:866:83: `grind` failed
+case grind.2.1.2.2.2.1.2.2.2.1.1.2.2
+A : Set ℝ²
+===== FairGamesTheoremOQ03
+error: Proofs/FairGamesTheoremOQ03.lean:158:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+error: Proofs/FairGamesTheoremOQ03.lean:236:51: Application type mismatch: The argument
+  hadapt
+has type
+error: Proofs/FairGamesTheoremOQ03.lean:235:27: unsolved goals
+Ω : Type u_1
+m : MeasurableSpace Ω
+error: Proofs/FairGamesTheoremOQ03.lean:285:16: expected token
+error: Proofs/FairGamesTheoremOQ03.lean:277:54: unsolved goals
+Ω : Type u_1
+===== FairGamesTheoremOQ03Aristotle
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:33:70: unsolved goals
+Ω : Type u_1
+m : MeasurableSpace Ω
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:41:44: Invalid field `progMeasurable_of_discrete`: The environment does not contain `Function.progMeasurable_of_discrete`, so it is not possible to project the field `progMeasurable_of_discrete` from an expression
+  hf
+of type `∀ (i : ℕ), Measurable (f i)`
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:52:39: Application type mismatch: The argument
+  N
+has type
+error: Proofs/FairGamesTheoremOQ03Aristotle.lean:99:2: linarith failed to find a contradiction
+case h1
+Ω : Type u_1
+===== FourierSeriesOQ01
+error: Proofs/FourierSeriesOQ01.lean:214:30: unsolved goals
+T : ℝ
+hT : Fact (0 < T)
+error: Proofs/FourierSeriesOQ01.lean:245:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.251 Set.univ
+in the target expression
+error: Proofs/FourierSeriesOQ01.lean:270:6: Tactic `apply` failed: could not unify the conclusion of `hc_zero`
+  c ?n = 0
+with the goal
+error: Proofs/FourierSeriesOQ01.lean:281:25: invalid 'ext' conv tactic, function or arrow expected
+  Icc (-↑N) ↑N : Finset ℤ
+warning: Proofs/FourierSeriesOQ01.lean:314:10: `continuous_finset_sum` has been deprecated: Use `continuous_finsetSum` instead
+===== FriendshipTheoremOQ01OQ02
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:97:50: unsolved goals
+V : Type u
+R : Type v
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:189:43: Function expected at
+  G.symm
+but this term has type
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:164:38: unsolved goals
+case pos
+V : Type u
+===== FundamentalTheoremCalculusStokes
+error: Proofs/FundamentalTheoremCalculusStokes.lean:110:8: typeclass instance problem is stuck
+  NormedSpace ℝ ?m.7
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:51: Function expected at
+  hasFDerivAt_id ℝ
+but this term has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:217:24: Application type mismatch: The argument
+  hasFDerivAt_const p.2 x
+has type
+error: Proofs/FundamentalTheoremCalculusStokes.lean:380:20: don't know how to synthesize implicit argument `a`
+  @poincare_1d f ?m.13 hf
+context:
+===== FundamentalTheoremCalculusStokesAristotle
+(no error lines captured in chunk logs)
+===== Hilbert22OQ01OQ03Universal
+error: Proofs/Hilbert22OQ01OQ03Universal.lean:74:8: `Hilbert22OQ01OQ03.le_chainCost_of_triangle` has already been declared
+error: Proofs/Hilbert22OQ01OQ03Universal.lean:94:65: Application type mismatch: The argument
+  htri
+error: Proofs/Hilbert22OQ01OQ03Universal.lean:94:65: Application type mismatch: The argument
+  htri
+has type
+===== Hilbert6PhysicsAxioms
+error: Proofs/Hilbert6PhysicsAxioms.lean:91:51: Application type mismatch: The argument
+  Disjoint on ?m.12
+has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:151:26: Application type mismatch: The argument
+  Disjoint on ?m.14
+has type
+error: Proofs/Hilbert6PhysicsAxioms.lean:180:24: Application type mismatch: The argument
+  ψ.vector
+has type
+===== KonigsbergOQ02OQ01
+error: Proofs/KonigsbergOQ02OQ01.lean:164:20: Application type mismatch: The argument
+  w.arcs_valid ?m.188 (List.mem_toFinset.mp ?m.191)
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:206:44: unsolved goals
+V : Type u_1
+inst✝² : Fintype V
+error: Proofs/KonigsbergOQ02OQ01.lean:228:18: Application type mismatch: The argument
+  w1.arcs_valid
+has type
+error: Proofs/KonigsbergOQ02OQ01.lean:232:10: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => (w2.arcs.head ⋯).1 = u
+Error: Application type mismatch: The argument
+===== KonigsbergOQ02OQ01Aristotle
+error: Proofs/KonigsbergOQ02OQ01Aristotle.lean:150:8: `grind` failed
+case grind.1.1.2.2.2.1
+V : Type u_1
+===== KonigsbergOQ04
+error: Proofs/KonigsbergOQ04.lean:223:29: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/KonigsbergOQ04.lean:232:29: Application type mismatch: The argument
+  hne
+has type
+error: Proofs/KonigsbergOQ04.lean:252:21: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  arb.parent^[k] B
+in the target expression
+error: Proofs/KonigsbergOQ04.lean:253:20: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  arb.parent^[k] B
+in the target expression
+===== LawsOfLargeNumbersOQ01Aristotle
+error: Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:81:46: unknown namespace `Mathlib.Tactic.GeneralizeProofs`
+error: Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:82:61: Function expected at
+  MetaM
+error: Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:82:61: Function expected at
+  MetaM
+but this term has type
+error: Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:94:61: Function expected at
+  MAbs
+but this term has type
+error: Proofs/LawsOfLargeNumbersOQ01Aristotle.lean:98:41: Function expected at
+  MAbs
+but this term has type
+===== LebesgueMeasureOQ04
+error: Proofs/LebesgueMeasureOQ04.lean:106:4: Type mismatch: After simplification, term
+  this
+ has type
+===== LebesgueMeasureOQ06
+error: Proofs/LebesgueMeasureOQ06.lean:524:9: Unknown constant `List.chain'_append.mp`
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:530:23: Unknown constant `List.chain'_append.mp`
+warning: Proofs/LebesgueMeasureOQ06.lean:540:14: `List.Chain'` has been deprecated: Use `List.IsChain` instead
+error: Proofs/LebesgueMeasureOQ06.lean:650:71: expected token
+error: Proofs/LebesgueMeasureOQ06.lean:650:71: expected token
+error: Proofs/LebesgueMeasureOQ06.lean:583:6: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+error: Proofs/LebesgueMeasureOQ06.lean:583:6: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+(deterministic) timeout at `simp`, maximum number of heartbeats (200000) has been reached
+===== LiouvilleTheoremOQ03
+error: Proofs/LiouvilleTheoremOQ03.lean:256:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/LiouvilleTheoremOQ03.lean:304:4: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/LiouvilleTheoremOQ03.lean:427:6: Type mismatch: After simplification, term
+  this
+ has type
+===== ProbMethodExpectationOQ01
+error: Proofs/ProbMethodExpectationOQ01.lean:37:23: expected token
+warning: Proofs/ProbMethodExpectationOQ01.lean:50:13: declaration uses `sorry`
+warning: Proofs/ProbMethodExpectationOQ01.lean:45:8: declaration uses `sorry`
+error: Proofs/ProbMethodExpectationOQ01.lean:79:4: No applicable extensionality theorem found for type
+  ENNReal
+error: Proofs/ProbMethodExpectationOQ01.lean:89:25: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?m.189 Set.univ
+in the target expression
+error: Proofs/ProbMethodExpectationOQ01.lean:116:46: unsolved goals
+Ω : Type u_1
+inst✝¹ : MeasurableSpace Ω
+===== ShannonChannelCodingBECOQ04
+error: Proofs/ShannonChannelCodingBECOQ04.lean:294:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a =>
+    -((if _a = 0 then 0 else _a * log _a) +
+===== TaylorTheoremOQ01
+error: Proofs/TaylorTheoremOQ01.lean:93:2: Type mismatch: After simplification, term
+  this
+ has type
+error: Proofs/TaylorTheoremOQ01.lean:117:12: Application type mismatch: The argument
+  hθ
+has type

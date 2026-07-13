@@ -260,14 +260,13 @@ noncomputable def gaussianPDF (μ σ : ℝ) (x : ℝ) : ℝ :=
 private lemma gaussianPDF_eq_gaussianPDFReal (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) (x : ℝ) :
     gaussianPDF μ σ x = ProbabilityTheory.gaussianPDFReal μ ⟨σ ^ 2, sq_nonneg σ⟩ x := by
   unfold gaussianPDF ProbabilityTheory.gaussianPDFReal
-  skip
+  rfl
 
 private lemma gaussianPDF_integral_eq_one (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
     ∫ x : ℝ, gaussianPDF μ σ x = 1 := by
   simp_rw [gaussianPDF_eq_gaussianPDFReal μ hσ]
   apply ProbabilityTheory.integral_gaussianPDFReal_eq_one
   apply NNReal.coe_ne_zero.mp
-  skip
   exact (pow_pos hσ 2).ne'
 
 private lemma gaussianPDF_integrable (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
@@ -370,7 +369,10 @@ private lemma gaussian_second_moment (μ : ℝ) {σ : ℝ} (hσ : 0 < σ) :
       simp only [Nat.cast_ofNat] at h
       convert h using 1; ring
     have h3 := h1.mul h2
-    convert h3 using 1; skip; ring
+    convert h3 using 1
+    all_goals try rfl
+    field_simp
+    ring
   have hG_int : MeasureTheory.IntegrableOn
       (fun x => x ^ 2 * Real.exp (-b * x ^ 2) - (1 / (2 * b)) * Real.exp (-b * x ^ 2))
       (Set.Ioi 0) := by

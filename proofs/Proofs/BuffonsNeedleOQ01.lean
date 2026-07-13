@@ -60,7 +60,7 @@ The scalar derivative `deriv f t = fderiv ℝ f t 1`, and evaluation at 1 is con
 private lemma contDiff_one_continuous_deriv {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {f : ℝ → F} (hf : ContDiff ℝ 1 f) : Continuous (deriv f) := by
   -- f is differentiable everywhere (ContDiff ≥ 1 → Differentiable)
-  have hdiff : Differentiable ℝ f := hf.differentiable le_rfl
+  have hdiff : Differentiable ℝ f := hf.differentiable one_ne_zero
   -- For differentiable f : ℝ → F, deriv f t = fderiv ℝ f t 1 everywhere
   have hderiv_eq : deriv f = fun t => fderiv ℝ f t 1 :=
     funext fun t => hdiff.differentiableAt.hasFDerivAt.hasDerivAt.deriv
@@ -148,9 +148,9 @@ theorem buffon_smooth_of_contDiff
     concreteSmoothExpectedCrossings γ a b d = 2 * planarArcLength γ a b / (π * d) :=
   buffon_smooth_full γ a b d hd hab
     -- x-derivative exists (ContDiff 1 → Differentiable → HasDerivAt)
-    (fun t _ => (ContDiff.comp contDiff_fst hC1).differentiable le_rfl t |>.hasDerivAt)
+    (fun t _ => (ContDiff.comp contDiff_fst hC1).differentiable one_ne_zero t |>.hasDerivAt)
     -- y-derivative exists (ContDiff 1 → Differentiable → HasDerivAt)
-    (fun t _ => (ContDiff.comp contDiff_snd hC1).differentiable le_rfl t |>.hasDerivAt)
+    (fun t _ => (ContDiff.comp contDiff_snd hC1).differentiable one_ne_zero t |>.hasDerivAt)
     -- inner integral is integrable (from C¹ smoothness via continuity)
     (inner_integral_integrable γ hC1 a b)
 

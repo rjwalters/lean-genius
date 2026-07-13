@@ -95,8 +95,8 @@ theorem witness_obstruction_residue3
     rw [← hmp]; exact key
   have hc2 : χ₄ (p : ZMod 4) * χ₄ (p : ZMod 4) = 1 := by
     rw [χ₄_eq_neg_one_pow hp_odd', ← pow_add]
-    exact (⟨p / 2, rfl⟩ : Even (p / 2 + p / 2)).neg_one_pow
-  rw [legendreSym.to_jacobiSym]
+    exact Even.neg_one_pow ⟨p / 2, rfl⟩
+  rw [jacobiSym.legendreSym.to_jacobiSym]
   calc jacobiSym (-(d : ℤ)) p
       = jacobiSym (-(d : ℤ)) p * (χ₄ (p : ZMod 4) * χ₄ (p : ZMod 4)) := by rw [hc2, mul_one]
     _ = (jacobiSym (-(d : ℤ)) p * (-(χ₄ (p : ZMod 4)))) * (-(χ₄ (p : ZMod 4))) := by ring

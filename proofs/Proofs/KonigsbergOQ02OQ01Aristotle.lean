@@ -25,8 +25,8 @@ private theorem chain_tail_fst_eq_dropLast_snd_ari {α : Type*} :
   | [], _ => by simp
   | [_], _ => by simp
   | a :: b :: rest, hchain => by
-    have hab := List.Chain'.rel_head hchain
-    have ih := chain_tail_fst_eq_dropLast_snd_ari (b :: rest) (List.Chain'.tail hchain)
+    have hab := List.IsChain.rel_head hchain
+    have ih := chain_tail_fst_eq_dropLast_snd_ari (b :: rest) (List.IsChain.tail hchain)
     simp only [List.tail_cons] at ih
     show (b :: rest).map Prod.fst = (a :: (b :: rest).dropLast).map Prod.snd
     rw [List.map_cons, List.map_cons, ← hab, ← ih]
@@ -53,22 +53,22 @@ private theorem path_fst_snd_eq_ari {α : Type*} [DecidableEq α]
 -- ============================================================
 
 def isStronglyConnected {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) : Prop :=
+    (D : KonigsbergOQ02.Digraph V) : Prop :=
   ∀ u v : V, Nonempty (D.Walk u v)
 
-def removeArcList {V : Type*} (D : Digraph V) (arcs : List (V × V)) :
-    Digraph V where
+def removeArcList {V : Type*} (D : KonigsbergOQ02.Digraph V) (arcs : List (V × V)) :
+    KonigsbergOQ02.Digraph V where
   adj u v := D.adj u v ∧ (u, v) ∉ arcs
   loopless v h := D.loopless v h.1
 
-instance {V : Type*} [Fintype V] [DecidableEq V] (D : Digraph V) [DecidableRel D.adj]
+instance {V : Type*} [Fintype V] [DecidableEq V] (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (arcs : List (V × V)) : DecidableRel (removeArcList D arcs).adj :=
   fun u v => by unfold removeArcList; simp only; exact instDecidableAnd
 
-theorem removeArcList_adj_iff {V : Type*} (D : Digraph V) (arcs : List (V × V))
+theorem removeArcList_adj_iff {V : Type*} (D : KonigsbergOQ02.Digraph V) (arcs : List (V × V))
     (u v : V) : (removeArcList D arcs).adj u v ↔ D.adj u v ∧ (u, v) ∉ arcs := Iff.rfl
 
-private def emptyWalk_at {V : Type*} {D : Digraph V} (v : V) : D.Walk v v where
+private def emptyWalk_at {V : Type*} {D : KonigsbergOQ02.Digraph V} (v : V) : D.Walk v v where
   arcs := []
   arcs_valid _ h := absurd h List.not_mem_nil
   starts_at h := (h rfl).elim
@@ -77,7 +77,7 @@ private def emptyWalk_at {V : Type*} {D : Digraph V} (v : V) : D.Walk v v where
   empty_at _ := rfl
 
 private theorem maximal_balanced_trail_is_circuit_copy {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj]
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj]
     {u v₀ : V}
     (w : D.Walk u v₀)
     (hnodup : w.arcs.Nodup)
@@ -109,7 +109,7 @@ private theorem maximal_balanced_trail_is_circuit_copy {V : Type*} [Fintype V] [
       rwa [ Finset.card_image_of_injOn ] at this;
       intro x hx y hy; aesop;
     exact le_trans ‹_› ( by rw [ List.toFinset_card_of_nodup ( List.Nodup.filter _ hnodup ) ] at h_count_snd; exact h_count_snd );
-  by_cases h : w.arcs = [] <;> simp_all +decide [ Digraph.isBalanced ];
+  by_cases h : w.arcs = [] <;> simp_all +decide [ KonigsbergOQ02.Digraph.isBalanced ];
   · exact w.empty_at h;
   · have h_count_eq : ([(w.arcs.head h).1] ++ w.arcs.map Prod.snd).count v₀ = (w.arcs.map Prod.fst ++ [(w.arcs.getLast h).2]).count v₀ := by
       rw [ path_fst_snd_eq_ari _ w.consecutive h ];
@@ -122,7 +122,7 @@ TARGET 1: nodup_circuit_exists_Aristotle
 ============================================================
 -/
 theorem nodup_circuit_exists_Aristotle {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (u : V) (hout : 0 < D.outDegree u) :
     ∃ (C : D.Walk u u), C.arcs.Nodup ∧ C.arcs ≠ [] := by
@@ -159,7 +159,7 @@ theorem nodup_circuit_exists_Aristotle {V : Type*} [Fintype V] [DecidableEq V]
   have hw_circuit : u = v := by
     apply maximal_balanced_trail_is_circuit_copy w hw_nodup hw_stuck hbal;
   by_cases hw_empty : w.arcs = [] <;> simp_all +decide;
-  · exact absurd hout ( by rw [ show D.outDegree v = 0 from by rw [ Digraph.outDegree ] ; exact Finset.card_eq_zero.mpr <| Finset.eq_empty_of_forall_notMem fun x hx => hw_stuck x <| Finset.mem_filter.mp hx |>.2 ] ; linarith );
+  · exact absurd hout ( by rw [ show D.outDegree v = 0 from by rw [ KonigsbergOQ02.Digraph.outDegree ] ; exact Finset.card_eq_zero.mpr <| Finset.eq_empty_of_forall_notMem fun x hx => hw_stuck x <| Finset.mem_filter.mp hx |>.2 ] ; linarith );
   · bound
 
 /-
@@ -170,7 +170,7 @@ TARGET 2: vertex_with_unused_arc_Aristotle
 If a walk goes from a vertex in S to a vertex outside S, some arc exits S.
 -/
 private lemma walk_exits_set {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} {u v : V}
+    {D : KonigsbergOQ02.Digraph V} {u v : V}
     (w : D.Walk u v) (S : Finset V)
     (hu : u ∈ S) (hv : v ∉ S) :
     ∃ a ∈ w.arcs, a.1 ∈ S ∧ a.2 ∉ S := by
@@ -188,7 +188,7 @@ If all D-outDeg from V(C) are zero in the residual graph,
     then every D-arc from V(C) is in C.arcs.
 -/
 private lemma all_arcs_covered {V : Type*} [Fintype V] [DecidableEq V]
-    {D : Digraph V} [DecidableRel D.adj]
+    {D : KonigsbergOQ02.Digraph V} [DecidableRel D.adj]
     (carcs : List (V × V)) (S : Finset V)
     (h : ∀ u ∈ S, (removeArcList D carcs).outDegree u = 0) :
     ∀ u v : V, u ∈ S → D.adj u v → (u, v) ∈ carcs := by
@@ -207,7 +207,7 @@ private lemma arc_snd_in_VC {V : Type*} [DecidableEq V]
   aesop
 
 theorem vertex_with_unused_arc_Aristotle {V : Type*} [Fintype V] [DecidableEq V]
-    (D : Digraph V) [DecidableRel D.adj]
+    (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj]
     (hbal : ∀ v : V, D.isBalanced v)
     (hconn : isStronglyConnected D)
     {v₀ : V} (C : D.Walk v₀ v₀) (hnodup : C.arcs.Nodup)

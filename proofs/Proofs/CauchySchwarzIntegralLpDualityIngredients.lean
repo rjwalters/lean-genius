@@ -384,10 +384,10 @@ theorem lpDualNorm_eq_of_lintegral_ne_top {p q : ℝ} (hpq : p.HolderConjugate q
   rcases eq_or_ne (∫⁻ x, (g x) ^ q ∂μ) 0 with hI0 | hI0
   · -- ‖g‖_q = 0
     rw [hI0, ENNReal.zero_rpow_of_pos (one_div_pos.2 hq)]
-    exact zero_le _
+    exact zero_le
   · -- 0 < ‖g‖_q < ∞ : the normalized extremizer attains the supremum
     set I := ∫⁻ x, (g x) ^ q ∂μ with hIdef
-    have hIpos : (0 : ℝ≥0∞) < I := lt_of_le_of_ne (zero_le _) (Ne.symm hI0)
+    have hIpos : (0 : ℝ≥0∞) < I := lt_of_le_of_ne (zero_le) (Ne.symm hI0)
     have hIp0 : I ^ (1 / p) ≠ 0 := (ENNReal.rpow_pos hIpos hItop).ne'
     have hIptop : I ^ (1 / p) ≠ ∞ := ENNReal.rpow_ne_top_of_nonneg (one_div_nonneg.2 hp.le) hItop
     have hc_ne_top : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ≠ ∞ := ENNReal.inv_ne_top.2 hIp0
@@ -477,7 +477,7 @@ theorem lqTruncation_le [SigmaFinite μ] (n : ℕ) (x : α) :
     lqTruncation μ g n x ≤ g x := by
   by_cases hx : x ∈ spanningSets μ n
   · simp only [lqTruncation, Set.indicator_of_mem hx]; exact min_le_left _ _
-  · simp only [lqTruncation, Set.indicator_of_notMem hx]; exact zero_le _
+  · simp only [lqTruncation, Set.indicator_of_notMem hx]; exact zero_le
 
 /-- The truncations increase pointwise in `n`. -/
 theorem lqTruncation_mono [SigmaFinite μ] {m n : ℕ} (hmn : m ≤ n) (x : α) :
@@ -486,7 +486,7 @@ theorem lqTruncation_mono [SigmaFinite μ] {m n : ℕ} (hmn : m ≤ n) (x : α) 
   · have hxn : x ∈ spanningSets μ n := monotone_spanningSets μ hmn hxm
     simp only [lqTruncation, Set.indicator_of_mem hxm, Set.indicator_of_mem hxn]
     exact min_le_min le_rfl (by exact_mod_cast hmn)
-  · simp only [lqTruncation, Set.indicator_of_notMem hxm]; exact zero_le _
+  · simp only [lqTruncation, Set.indicator_of_notMem hxm]; exact zero_le
 
 /-- The truncations increase to `g`: `⨆ₙ tₙ = g` pointwise. The `≤` is dominance;
     the `≥` finds a spanning set `Aₖ ∋ x` and exhausts the cap (`g x = ∞`: the cap
@@ -665,7 +665,7 @@ theorem exists_lpDualNorm_eq {p q : ℝ} (hpq : p.HolderConjugate q)
       simp
   · -- 0 < ‖g‖_q < ∞: the normalized extremizer lies on the unit sphere and
     -- pairs to exactly `I^{1/q}`, realizing the supremum
-    have hIpos : (0 : ℝ≥0∞) < I := lt_of_le_of_ne (zero_le _) (Ne.symm hI0)
+    have hIpos : (0 : ℝ≥0∞) < I := lt_of_le_of_ne (zero_le) (Ne.symm hI0)
     have hIp0 : I ^ (1 / p) ≠ 0 := (ENNReal.rpow_pos hIpos hItop).ne'
     have hc_ne_top : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ≠ ∞ := ENNReal.inv_ne_top.2 hIp0
     have hcp : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ^ p = I⁻¹ := by

@@ -83,7 +83,7 @@ theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A)
   exact (hfreq.and_eventually (Filter.eventually_atTop.mpr ⟨1, fun _ h => h⟩)).mono
     fun N ⟨hN, hN1⟩ => by
       have hNpos : (N : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
-      rwa [div_lt_iff (Real.sqrt_pos_of_pos hNpos)] at hN
+      rwa [div_lt_iff₀ (Real.sqrt_pos_of_pos hNpos)] at hN
 
 /- ## Known Lower Bounds (Constructions) -/
 

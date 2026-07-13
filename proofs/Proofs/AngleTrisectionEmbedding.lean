@@ -16,6 +16,15 @@
 
 import Mathlib
 
+/-- v4.31 compat (#38065): Mathlib's `[CharZero K]` cyclotomic-field instance
+does not fire during typeclass synthesis when the modulus is a variable (its
+explicit universe-polymorphic `K` fails synthesis-time unification), although
+explicit application succeeds; re-register a `ℚ`-specialized copy. -/
+instance isCyclotomicExtensionRatCompatAngleTrisectionEmbedding (n : ℕ) :
+    IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
+  CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
+
+
 open Polynomial
 
 namespace AngleTrisectionEmbedding
@@ -44,7 +53,7 @@ noncomputable def alpha : CyclotomicField n ℚ :=
     This is the core construction: ω is a root of cyclotomic n ℚ, ζ generates
     CyclotomicField with minpoly = cyclotomic n ℚ, so PowerBasis.lift gives the map. -/
 theorem exists_embedding_zeta_to_exp (hn : 3 ≤ n) :
-    ∃ φ : CyclotomicField n ℚ →ₐ(_ : ℚ) ℂ,
+    ∃ φ : CyclotomicField n ℚ →ₐ[ℚ] ℂ,
     φ (abstractZeta n) = Complex.exp (2 * ↑Real.pi * Complex.I / ↑(n : ℤ)) := by
   have hn_pos : 0 < n := by omega
   set ω : ℂ := Complex.exp (2 * ↑Real.pi * Complex.I / ↑(n : ℤ))
@@ -149,7 +158,7 @@ theorem exp_add_inv_eq_two_cos :
 /-- Main theorem: there exists a ℚ-algebra embedding of CyclotomicField into ℂ
     that sends α = ζ + ζ⁻¹ to 2cos(2π/n). -/
 theorem exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
-    ∃ φ : CyclotomicField n ℚ →ₐ(_ : ℚ) ℂ,
+    ∃ φ : CyclotomicField n ℚ →ₐ[ℚ] ℂ,
     φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n)) := by
   obtain ⟨φ, hφ⟩ := exists_embedding_zeta_to_exp n hn
   use φ

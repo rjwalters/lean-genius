@@ -27,7 +27,7 @@ with all properties proved from the definition. -/
     Defined as the maximum of the prime factor set.
     Previously an axiom; now concrete via Mathlib. -/
 noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
-  if h : n > 1 then n.primeFactors.max' (Nat.primeFactors_nonempty h) else 0
+  if h : n > 1 then n.primeFactors.max' (Nat.nonempty_primeFactors.mpr h) else 0
 
 /-- `greatestPrimeFactor n` is prime for `n ≥ 2`.
     Previously axiomatized; now proved from the definition. -/
@@ -35,7 +35,7 @@ theorem gpf_prime (n : ℕ) (hn : 2 ≤ n) :
     (greatestPrimeFactor n).Prime := by
   unfold greatestPrimeFactor
   rw [dif_pos (by omega : n > 1)]
-  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  have hmem := Finset.max'_mem n.primeFactors (Nat.nonempty_primeFactors.mpr (by omega : n > 1))
   exact (Nat.mem_primeFactors.mp hmem).1
 
 /-- `greatestPrimeFactor n` divides `n`.
@@ -44,7 +44,7 @@ theorem gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
     greatestPrimeFactor n ∣ n := by
   unfold greatestPrimeFactor
   rw [dif_pos (by omega : n > 1)]
-  have hmem := Finset.max'_mem n.primeFactors (Nat.primeFactors_nonempty (by omega : n > 1))
+  have hmem := Finset.max'_mem n.primeFactors (Nat.nonempty_primeFactors.mpr (by omega : n > 1))
   exact (Nat.mem_primeFactors.mp hmem).2.1
 
 /-- `greatestPrimeFactor n` is the largest prime dividing `n`.

@@ -20,7 +20,7 @@ This file makes every step of the polar-coordinate proof explicit as a named the
 
 **Sorry count**: 0. All steps fully proved:
 - angular_integral: setIntegral_const + Real.volume_Ioo
-- double_integral_eq_polar: integral_comp_polarCoord_symm + set_integral_congr
+- double_integral_eq_polar: integral_comp_polarCoord_symm + setIntegral_congr_fun
 - gaussian_sq_eq_double_integral: integral_prod + Integrable.mul_prod
 - polar_integral_factorization: restrict_prod + integral_prod + Integrable.comp_fst
 -/
@@ -88,13 +88,13 @@ private theorem polar_sum_sq (r θ : ℝ) :
   ∫ exp(-(x²+y²)) dx dy = ∫_{r>0, θ∈(-π,π)} r · exp(-r²) dr dθ
 
 Proof: apply `integral_comp_polarCoord_symm` (change of variables — rewrites LHS to polar form),
-then show the integrands are equal pointwise via `set_integral_congr`:
+then show the integrands are equal pointwise via `setIntegral_congr_fun`:
   r • exp(-((r·cosθ)²+(r·sinθ)²)) = r * exp(-r²)  [by polarCoord_symm_apply + polar_sum_sq]. -/
 theorem double_integral_eq_polar :
     ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) =
     ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) := by
   rw [← integral_comp_polarCoord_symm (fun p => rexp (-(p.1 ^ 2 + p.2 ^ 2)))]
-  apply set_integral_congr polarCoord.open_target.measurableSet
+  apply setIntegral_congr_fun polarCoord.open_target.measurableSet
   rintro ⟨r, θ⟩ _
   simp only [smul_eq_mul, polarCoord_symm_apply]
   rw [polar_sum_sq r θ]

@@ -48,7 +48,7 @@ theorem doubleExp_tail_pos (N : ℕ) :
           ≤ 1 / (2 : ℝ) ^ k :=
               one_div_le_one_div_of_le (pow_pos (by norm_num) k) h_pow_le
         _ = (1 / 2) ^ k := by simp [div_pow, one_div]
-  exact tsum_pos hsum (fun k => by positivity) 0 (by positivity)
+  exact Summable.tsum_pos hsum (fun k => by positivity) 0 (by positivity)
 
 -- Tail bound: 2^{2^N} * Σ_{k≥0} 1/2^{2^(k+N+1)} < 1 / (2^{2^N} - 1).
 -- Geometric bound: each term 1/D^{2^{k+1}} ≤ (1/D²)^{k+1} via 2*(k+1) ≤ 2^{k+1}.
@@ -114,7 +114,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
   rw [show (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) =
           (fun k => 1 / D ^ (2 ^ (k + 1))) from funext hterm]
   have hT_le : ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1)) ≤ 1 / (D ^ 2 - 1) := by
-    rw [← hgeo]; exact tsum_le_tsum hterm_bound hTsumm' hTsumm
+    rw [← hgeo]; exact Summable.tsum_le_tsum hterm_bound hTsumm' hTsumm
   calc D * ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1))
       ≤ D * (1 / (D ^ 2 - 1)) := mul_le_mul_of_nonneg_left hT_le hD_pos.le
     _ = D / (D ^ 2 - 1) := by ring
@@ -122,12 +122,12 @@ theorem doubleExp_tail_bound (N : ℕ) :
           rw [div_lt_div_iff₀ hD2_pos hD1_pos]; nlinarith
 
 -- Sum splitting: ∑' n, f n = (∑ n ∈ range N, f n) + f N + ∑' n, f (n + N + 1).
--- This is a standard Mathlib result (tsum_eq_zero_add, sum_add_tsum_compl, etc.).
+-- This is a standard Mathlib result (Summable.tsum_eq_zero_add, sum_add_tsum_compl, etc.).
 theorem tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     ∑' n, f n = (∑ n ∈ Finset.range N, f n) + f N + ∑' n, f (n + N + 1) := by
   -- hshift: ∑' n, f (n + k) = f k + ∑' n, f (n + k + 1)
   have hshift : ∀ k, ∑' n, f (n + k) = f k + ∑' n, f (n + k + 1) := fun k => by
-    have h := tsum_eq_zero_add ((summable_nat_add_iff k).mpr hf)
+    have h := Summable.tsum_eq_zero_add ((summable_nat_add_iff k).mpr hf)
     simp only [zero_add] at h
     rw [h]
     congr 1

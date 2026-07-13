@@ -226,7 +226,7 @@ private theorem uncountable_cofinal (S : Set omega1.ToType)
   have hle : Cardinal.mk S ≤ Cardinal.mk {x : omega1.ToType | x ≤ a} := by
     apply Cardinal.mk_subtype_mono
     intro x hx
-    exact le_of_not_lt (hall x hx)
+    exact le_of_not_gt (hall x hx)
   -- #{x | x ≤ a} ≤ #{x | x < a} + 1 ≤ ℵ₀ + 1 = ℵ₀
   have hiio : Cardinal.mk {x : omega1.ToType | x < a} ≤ ℵ₀ := mk_Iio_omega1_le_aleph0 a
   have hiic : Cardinal.mk {x : omega1.ToType | x ≤ a} ≤ ℵ₀ := by
@@ -483,7 +483,7 @@ private theorem large_cofinal (S : Set omega2.ToType)
   have hle : Cardinal.mk S ≤ Cardinal.mk {x : omega2.ToType | x ≤ a} := by
     apply Cardinal.mk_subtype_mono
     intro x hx
-    exact le_of_not_lt (hall x hx)
+    exact le_of_not_gt (hall x hx)
   have hiio : Cardinal.mk {x : omega2.ToType | x < a} ≤ ℵ₁ := mk_Iio_omega2_le_aleph1 a
   have hiic : Cardinal.mk {x : omega2.ToType | x ≤ a} ≤ ℵ₁ := by
     have : {x : omega2.ToType | x ≤ a} ⊆ {x | x < a} ∪ {a} := by

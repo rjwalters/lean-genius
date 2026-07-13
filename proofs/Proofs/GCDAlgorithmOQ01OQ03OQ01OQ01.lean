@@ -153,7 +153,7 @@ theorem two_log_two_lt_three_log_phi :
     step count grows like `log₂(b)/log₂(φ)` with `1/log₂(φ) ≈ 1.4404 < 3/2`. -/
 theorem logb_two_phi_gt : (2 : ℝ) / 3 < Real.logb 2 goldenPhi := by
   unfold Real.logb
-  rw [lt_div_iff (Real.log_pos (by norm_num))]
+  rw [lt_div_iff₀ (Real.log_pos (by norm_num))]
   have := two_log_two_lt_three_log_phi
   linarith
 
@@ -176,7 +176,7 @@ theorem euclidSteps_le_log2 (a b n : ℕ) (hb : 0 < b) (hba : b < a) (hn : 1 ≤
     unfold Real.logb
     have hrhs : (3 / 2 : ℝ) * (Real.log b / Real.log 2)
         = (3 * Real.log b) / (2 * Real.log 2) := by field_simp; ring
-    rw [hrhs, div_le_div_iff hlogphi (by positivity)]
+    rw [hrhs, div_le_div_iff₀ hlogphi (by positivity)]
     nlinarith [mul_nonneg hlogb_nonneg hsub]
   linarith
 

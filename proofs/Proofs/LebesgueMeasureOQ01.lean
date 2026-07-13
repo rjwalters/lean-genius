@@ -53,7 +53,7 @@ theorem rationals_measure_zero :
 theorem subset_of_null_has_measure_zero {s t : Set ℝ}
     (hst : s ⊆ t) (ht : volume t = 0) :
     volume s = 0 :=
-  le_antisymm (le_trans (measure_mono hst) (le_of_eq ht)) (zero_le _)
+  le_antisymm (le_trans (measure_mono hst) (le_of_eq ht)) (zero_le)
 
 /-
 ## Part II: The Dirichlet Function

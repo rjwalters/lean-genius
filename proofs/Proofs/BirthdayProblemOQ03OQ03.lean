@@ -232,7 +232,7 @@ theorem exponent_approaches_one (ε : ℝ) (hε : 0 < ε) :
   linarith [show (1 : ℝ) / k ≤ 1 / (⌈1 / ε⌉₊ + 1 : ℝ) from by
     apply div_le_div_of_nonneg_left one_pos (by positivity) (by exact_mod_cast hk),
     show (1 : ℝ) / (⌈1 / ε⌉₊ + 1 : ℝ) < ε from by
-    rw [div_lt_iff (by positivity : (⌈1 / ε⌉₊ + 1 : ℝ) > 0)]
+    rw [div_lt_iff₀ (by positivity : (⌈1 / ε⌉₊ + 1 : ℝ) > 0)]
     calc ε * (⌈1 / ε⌉₊ + 1 : ℝ) > ε * (1 / ε) := by
           apply mul_lt_mul_of_pos_left _ hε
           exact_mod_cast Nat.lt_add_one_iff.mpr (Nat.le_ceil _)

@@ -90,7 +90,7 @@ theorem halfInterval_egyptFree (N : ℕ) :
         _ ≤ _ := hsum_lower
     -- 1/a < 2/N
     have h1a_lt : (1 : ℚ) / a < 2 / N := by
-      rw [div_lt_div_iff ha_pos hN_pos]; push_cast
+      rw [div_lt_div_iff₀ ha_pos hN_pos]; push_cast
       exact_mod_cast show 1 * N < 2 * a by omega
     linarith
 

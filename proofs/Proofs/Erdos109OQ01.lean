@@ -245,7 +245,7 @@ theorem sumset_density_constraint (A B C : Set ℕ)
       have hNge : (⌈2 * (b₀ : ℝ) / ε⌉₊ : ℕ) ≤ N := le_trans (le_max_right 1 _) hN
       have hceil : 2 * (b₀ : ℝ) / ε ≤ ↑⌈2 * (b₀ : ℝ) / ε⌉₊ := Nat.le_ceil _
       have hN_large : 2 * (b₀ : ℝ) / ε ≤ N := hceil.trans (by exact_mod_cast hNge)
-      have h2b₀ : 2 * (b₀ : ℝ) ≤ (N : ℝ) * ε := (div_le_iff hε).mp hN_large
+      have h2b₀ : 2 * (b₀ : ℝ) ≤ (N : ℝ) * ε := (div_le_iff₀ hε).mp hN_large
       linarith
   -- Combine: eventually fC(N) ≤ sInf S_A + ε
   filter_upwards [Filter.eventually_atTop.mpr ⟨1, fun N hN => hpointwise N (by omega)⟩,

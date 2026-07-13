@@ -92,9 +92,9 @@ lemma martingale_stopped_eq_initial {Ω : Type*} {m : MeasurableSpace Ω}
     (τ : Ω → ℕ∞) (hτ : IsStoppingTime ℱ τ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
   have h₁ := hf.submartingale.expected_stoppedValue_mono
-    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
   have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono
-    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le _) hτN
+    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
   simp only [stoppedValue_const, stoppedValue, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
   linarith
 

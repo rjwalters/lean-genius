@@ -56,7 +56,6 @@ private theorem mi_eq_HY_sub_HYgivenX
   have hsum' := transposeJoint_sum hsum
   rw [chain_rule hp' hsum']
   congr 1
-  ext y; simp [transposeJoint]
 
 /-! ## Uniform input distribution on a general Fintype -/
 
@@ -115,7 +114,7 @@ theorem sym_conditional_output_entropy
          Real.log (inp.p x * ch.W x y / (∑ y' : β, inp.p x * ch.W x y'))) =
       inp.p x * (ch.W x y * Real.log (ch.W x y)) := by
     intro y x
-    rcases (inp.nonneg x).eq_or_gt with ha | ha
+    rcases eq_or_lt_of_le (inp.nonneg x) with ha | ha
     · simp [ha.symm]
     · have hne : inp.p x * ch.W x y ≠ 0 := (mul_pos ha (hW x y)).ne'
       rw [if_neg hne, hden x, mul_div_cancel_left₀ _ ha.ne']

@@ -87,7 +87,7 @@ theorem isUnit_of_linearIndependent_cols
       rw [map_sub, sub_eq_zero]; exact huv
     -- P.mulVec (u - v) = ∑ j, (u - v) j • (column j of P)
     have hmulvec : P.mulVec (u - v) = ∑ j : n, (u - v) j • (fun i => P i j) := by
-      ext i; simp [Matrix.mulVec, Matrix.dotProduct, Finset.sum_apply, smul_eq_mul]
+      ext i; simp [Matrix.mulVec, dotProduct, Finset.sum_apply, smul_eq_mul]
     rw [hmulvec] at h0
     have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
     ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
@@ -103,10 +103,10 @@ theorem isUnit_of_linearIndependent_cols
   Every matrix A can be written as A = ∑ᵢ ∑ⱼ A(i,j) • E_ij.
   This is the standard basis decomposition for matrices.
 -/
-theorem matrix_eq_sum_stdBasisMatrix (A : Matrix n n K) :
-    A = ∑ i : n, ∑ j : n, A i j • Matrix.stdBasisMatrix i j 1 := by
+theorem matrix_eq_sum_single (A : Matrix n n K) :
+    A = ∑ i : n, ∑ j : n, A i j • Matrix.single i j 1 := by
   ext a b
-  simp [Matrix.stdBasisMatrix, Finset.sum_apply, smul_apply, smul_eq_mul]
+  simp [Matrix.single, Finset.sum_apply, smul_apply, smul_eq_mul]
   rw [Finset.sum_eq_single a (fun i _ hi => by simp [hi]) (by simp)]
   rw [Finset.sum_eq_single b (fun j _ hj => by simp [hj]) (by simp)]
   simp

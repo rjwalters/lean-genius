@@ -70,7 +70,7 @@ theorem density_univ_one : HasNaturalDensity Set.univ 1 := by
   have hsub : (↑n + 1 : ℝ) / ↑n - 1 = 1 / ↑n := by
     have : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
     field_simp; ring
-  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff hn_pos, one_mul]
+  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff₀ hn_pos, one_mul]
   -- Goal: 1 < ε * ↑n (since ε⁻¹ < ↑n)
   calc (1 : ℝ) = ε * ε⁻¹ := (mul_inv_cancel₀ (ne_of_gt hε)).symm
     _ < ε * ↑n := by

@@ -975,7 +975,7 @@ private lemma det_eq_zero_of_kernel {M : Matrix V V ℤ} {v : V → ℤ}
   have hdetv : M.det • v = 0 := by
     calc M.det • v
       = (M.det • (1 : Matrix V V ℤ)).mulVec v := by
-          simp [Matrix.smul_mulVec_assoc, Matrix.one_mulVec]
+          simp [Matrix.smul_mulVec, Matrix.one_mulVec]
       _ = (M.adjugate * M).mulVec v := by rw [Matrix.adjugate_mul]
       _ = M.adjugate.mulVec (M.mulVec v) := by rw [Matrix.mulVec_mulVec]
       _ = M.adjugate.mulVec 0 := by rw [hMv]
@@ -1858,7 +1858,7 @@ theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
     simp only [Finset.mem_erase, Finset.mem_univ, and_true]
     intro heq
     rw [SimpleGraph.mem_neighborFinset, heq] at hx
-    exact absurd hx (G.loopless u)
+    exact absurd hx (G.loopless.irrefl u)
   have heq : G.neighborFinset u = Finset.univ.erase u :=
     Finset.eq_of_subset_of_card_le hsub (by
       rw [Finset.card_erase_of_mem (Finset.mem_univ u), Finset.card_univ]; omega)
@@ -2126,12 +2126,12 @@ theorem friendship_regular_of_no_universal (hF : IsFriendshipGraph G)
   obtain ⟨w₁, hw1ne, hw1nadj⟩ := hnu u₀
   -- deg(w₁) = deg(u₀) since they're non-adjacent
   have hdeg_w1 : G.degree w₁ = G.degree u₀ :=
-    nonadj_same_degree G hF w₁ u₀ hw1ne (fun h => hw1nadj (G.symm h))
+    nonadj_same_degree G hF w₁ u₀ hw1ne (fun h => hw1nadj h.symm)
   -- v is not universal, so it has a non-neighbor w₂
   obtain ⟨w₂, hw2ne, hw2nadj⟩ := hnu v
   -- deg(w₂) = deg(v) since they're non-adjacent
   have hdeg_w2 : G.degree w₂ = G.degree v :=
-    nonadj_same_degree G hF w₂ v hw2ne (fun h => hw2nadj (G.symm h))
+    nonadj_same_degree G hF w₂ v hw2ne (fun h => hw2nadj h.symm)
   -- Key question: is there a vertex non-adjacent to BOTH u₀ and v?
   -- If w₁ is non-adj to v: deg(w₁) = deg(v) = deg(u₀), contradiction
   by_cases hw1v : G.Adj w₁ v
@@ -2166,7 +2166,7 @@ theorem friendship_regular_of_no_universal (hF : IsFriendshipGraph G)
       have hcn : ∀ a ∈ S₁, a ∈ G.commonNeighbors v w₂ := by
         intro a ha
         rw [SimpleGraph.mem_commonNeighbors]
-        exact ⟨G.symm (hbip a ha v hv_S2), G.symm (hbip a ha w₂ hw2_S2)⟩
+        exact ⟨SimpleGraph.Adj.symm (hbip a ha v hv_S2), SimpleGraph.Adj.symm (hbip a ha w₂ hw2_S2)⟩
       -- |commonNeighbors(v, w₂)| ≥ |S₁| ≥ 1 (since u₀ ∈ S₁)
       -- Also w₁ ∈ S₁ since deg(w₁) = deg(u₀)
       have hw1_S1 : w₁ ∈ S₁ := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdeg_w1⟩
@@ -2189,7 +2189,7 @@ theorem friendship_regular_of_no_universal (hF : IsFriendshipGraph G)
       exact absurd (h_u0.trans h_w1.symm) hu0w1
     · -- w₂ is non-adj to u₀: deg(w₂) = deg(u₀), but deg(w₂) = deg(v), contradiction
       have hw2u0 : w₂ ≠ u₀ := by
-        intro heq; subst heq; exact hw2nadj (G.symm hadj_uv)
+        intro heq; subst heq; exact hw2nadj hadj_uv.symm
       have := nonadj_same_degree G hF w₂ u₀ hw2u0 hw2u
       -- this : deg(w₂) = deg(u₀), hdeg_w2 : deg(w₂) = deg(v)
       -- So deg(v) = deg(u₀)
@@ -2244,7 +2244,7 @@ theorem friendship_regular_implies_universal_proved (hF : IsFriendshipGraph G)
         rw [SimpleGraph.mem_commonNeighbors] at hw
         have : G.degree w = 0 := hreg w
         rw [SimpleGraph.degree] at this
-        have := Finset.card_pos.mpr ⟨a, (G.mem_neighborFinset w a).mpr (G.symm hw.1)⟩
+        have := Finset.card_pos.mpr ⟨a, (G.mem_neighborFinset w a).mpr hw.1.symm⟩
         omega
       omega
     · -- k = 1: each vertex has 1 neighbor, common neighbor adj to both gives deg ≥ 2
@@ -2258,8 +2258,8 @@ theorem friendship_regular_implies_universal_proved (hF : IsFriendshipGraph G)
       obtain ⟨w, hw⟩ := hcn
       have hw_mem : w ∈ G.commonNeighbors a b := hw ▸ Set.mem_singleton w
       rw [SimpleGraph.mem_commonNeighbors] at hw_mem
-      have hwa : a ∈ G.neighborFinset w := (G.mem_neighborFinset w a).mpr (G.symm hw_mem.1)
-      have hwb : b ∈ G.neighborFinset w := (G.mem_neighborFinset w b).mpr (G.symm hw_mem.2)
+      have hwa : a ∈ G.neighborFinset w := (G.mem_neighborFinset w a).mpr hw_mem.1.symm
+      have hwb : b ∈ G.neighborFinset w := (G.mem_neighborFinset w b).mpr hw_mem.2.symm
       have : G.degree w ≥ 2 := by
         rw [SimpleGraph.degree]
         have hsub : {a, b} ⊆ G.neighborFinset w := by

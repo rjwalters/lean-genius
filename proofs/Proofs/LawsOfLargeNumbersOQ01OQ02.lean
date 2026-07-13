@@ -94,7 +94,7 @@ theorem lr_implies_integrable {X : Ω → ℝ} {r : ℝ} (hr : 1 ≤ r) (hX : Is
 theorem mz_exponent_bounds {r : ℝ} (hr1 : 1 < r) (hr2 : r < 2) :
     1/2 < 1/r ∧ 1/r < 1 := by
   constructor
-  · rw [div_lt_div_iff (by norm_num : (0:ℝ) < 2) (by linarith : (0:ℝ) < r)]
+  · rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) (by linarith : (0:ℝ) < r)]
     linarith
   · rw [div_lt_one (by linarith : (0:ℝ) < r)]
     linarith

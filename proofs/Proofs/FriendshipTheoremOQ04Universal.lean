@@ -64,8 +64,8 @@ theorem two_universal_cover (hF : IsFriendshipGraph G)
     rw [hx]; exact Set.mem_singleton_iff.mpr rfl
   rw [SimpleGraph.mem_commonNeighbors] at hxmem
   -- `x` is distinct from both centres (no loops).
-  have hxc : x ≠ c := fun h => G.loopless c (h ▸ hxmem.1)
-  have hxc' : x ≠ c' := fun h => G.loopless c' (h ▸ hxmem.2)
+  have hxc : x ≠ c := fun h => G.loopless.irrefl c (h ▸ hxmem.1)
+  have hxc' : x ≠ c' := fun h => G.loopless.irrefl c' (h ▸ hxmem.2)
   refine ⟨x, hxc, hxc', ?_⟩
   ext y
   simp only [Set.mem_univ, true_iff, Set.mem_insert_iff, Set.mem_singleton_iff]

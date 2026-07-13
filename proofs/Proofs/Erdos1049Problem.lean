@@ -145,7 +145,7 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
       · exact le_refl _
     · exact hgeom
   -- Split off the m=0 term: ∑ f(m) = f(0) + ∑ f(m+1)
-  rw [tsum_eq_zero_add hsum, if_pos rfl]
+  rw [Summable.tsum_eq_zero_add hsum, if_pos rfl]
   simp only [Nat.succ_ne_zero, ite_false, zero_add]
   -- Now have: ∑' m, r^(m+1) = 1/(t^d - 1)
   -- r^(m+1) = r * r^m

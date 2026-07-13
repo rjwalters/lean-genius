@@ -126,7 +126,7 @@ theorem mu_eq_zero (F : Set ℂ) : mu F = 0 := by
     let p0 : PolynomialInF F := ⟨0, Fin.elim0, fun i => i.elim0⟩
     calc mu F ≤ sublevelMeasure p0 := iInf_le _ p0
       _ = 0 := degree_zero_sublevel_measure p0 rfl
-  · exact zero_le _
+  · exact zero_le
 
 /-- **Corrected μ(F)**: infimum over polynomials of degree ≥ 1.
     This matches the standard mathematical definition (EHP 1958). -/

@@ -141,8 +141,8 @@ lemma friendship_noncentral_degree (hF : IsFriendshipGraph G)
   have hw_mem : w ∈ G.commonNeighbors u c := hw ▸ Set.mem_singleton w
   -- mem_commonNeighbors: w ∈ commonNeighbors u c ↔ G.Adj u w ∧ G.Adj c w
   rw [SimpleGraph.mem_commonNeighbors] at hw_mem
-  have hwu : w ≠ u := fun heq => G.loopless u (heq ▸ hw_mem.1)
-  have hwc : w ≠ c := fun heq => G.loopless c (heq ▸ hw_mem.2)
+  have hwu : w ≠ u := fun heq => G.loopless.irrefl u (heq ▸ hw_mem.1)
+  have hwc : w ≠ c := fun heq => G.loopless.irrefl c (heq ▸ hw_mem.2)
   have hneighbors : G.neighborFinset u = {c, w} := by
     ext v
     simp only [SimpleGraph.mem_neighborFinset, Finset.mem_insert, Finset.mem_singleton]
@@ -158,7 +158,7 @@ lemma friendship_noncentral_degree (hF : IsFriendshipGraph G)
         exact Set.mem_singleton_iff.mp (hw ▸ this)
     · intro hv
       rcases hv with rfl | rfl
-      · exact G.symm (hc u hu)
+      · exact SimpleGraph.Adj.symm (hc u hu)
       · exact hw_mem.1
   rw [SimpleGraph.degree, hneighbors, Finset.card_pair (Ne.symm hwc)]
 
@@ -169,7 +169,7 @@ lemma universal_degree (c : V) (hc : IsUniversalVertex G c) :
   have hneigh : G.neighborFinset c = Finset.univ.erase c := by
     ext v
     simp only [SimpleGraph.mem_neighborFinset, Finset.mem_erase, Finset.mem_univ, and_true]
-    exact ⟨fun hadj hvc => G.loopless c (hvc ▸ hadj), fun hne => hc v hne⟩
+    exact ⟨fun hadj hvc => G.loopless.irrefl c (hvc ▸ hadj), fun hne => hc v hne⟩
   rw [hneigh, Finset.card_erase_of_mem (Finset.mem_univ c), Finset.card_univ]
 
 /-- **A friendship graph either has a universal vertex or is regular.**
@@ -261,7 +261,7 @@ theorem friendship_graph_is_windmill (hF : IsFriendshipGraph G) (h : Fintype.car
   have hcv : G.Adj c v := hc v hvc
   -- c ∈ commonNeighbors u v ↔ G.Adj u c ∧ G.Adj v c
   have hc_mem : c ∈ G.commonNeighbors u v :=
-    (SimpleGraph.mem_commonNeighbors G).mpr ⟨G.symm hcu, G.symm hcv⟩
+    (SimpleGraph.mem_commonNeighbors G).mpr ⟨hcu.symm, hcv.symm⟩
   -- By the friendship property, there's exactly one common neighbor
   have h1 := hF u v huv
   rw [Set.ncard_eq_one] at h1

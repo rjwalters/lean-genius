@@ -207,7 +207,7 @@ theorem euler_approx_error (n : ℕ) (hn : 1 ≤ n) :
     Summable.mul_left _ (summable_geometric_of_lt_one (by positivity) (by norm_num))
   calc ∑' j, (1 : ℝ) / (↑((j + n) !) : ℝ)
       ≤ ∑' j, (1 / (↑(n !) : ℝ)) * ((1 : ℝ) / 2) ^ j := by
-        apply tsum_le_tsum (fun j => tail_term_le_geometric n j hn)
+        apply Summable.tsum_le_tsum (fun j => tail_term_le_geometric n j hn)
           htail.summable hgeom_summ
     _ = (1 / (↑(n !) : ℝ)) * ∑' j, ((1 : ℝ) / 2) ^ j := tsum_mul_left _ _
     _ = (1 / (↑(n !) : ℝ)) * 2 := by

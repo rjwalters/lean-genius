@@ -1273,7 +1273,7 @@ private lemma conicQF_projTransform (S M : Conic) (p : ProjPoint) :
   -- (M *ᵥ p) ⬝ᵥ (S *ᵥ (M *ᵥ p)) = p ⬝ᵥ ((Mᵀ * S * M) *ᵥ p); rewrite the RHS to the LHS
   -- (mulVec_mulVec : M *ᵥ N *ᵥ v = (M * N) *ᵥ v)
   rw [mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
-      Matrix.dotProduct_mulVec p Mᵀ (S *ᵥ (M *ᵥ p)), Matrix.vecMul_transpose]
+      dotProduct_mulVec p Mᵀ (S *ᵥ (M *ᵥ p)), Matrix.vecMul_transpose]
 
 /-- **Congruence reduction for projective equivalence of conics.**
     If `M` is invertible and `Mᵀ * stdConic * M = c • C` with `c ≠ 0`, then `M` realises the

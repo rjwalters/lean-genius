@@ -60,7 +60,7 @@ theorem stoppingTime_two : stoppingTime 2 = 1 := by
   unfold stoppingTime
   have h : reachesOne 2 := ⟨1, by unfold reachesOneIn collatzIter collatz; norm_num⟩
   simp [h]
-  exact Nat.find_eq_iff.mpr ⟨by unfold reachesOneIn collatzIter collatz; norm_num,
+  exact (Nat.find_eq_iff _).mpr ⟨by unfold reachesOneIn collatzIter collatz; norm_num,
     fun k hk => by interval_cases k; unfold reachesOneIn collatzIter; norm_num⟩
 
 /-

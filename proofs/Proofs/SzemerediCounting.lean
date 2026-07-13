@@ -1060,7 +1060,7 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
           fun Pa hPa Pb hPb hne hu hv => by_contra fun h =>
             hnR (Finset.mem_filter.mpr
               ⟨huv_univ, Or.inr (Or.inl ⟨Pa, hPa, Pb, hPb, hne, hu, hv, h⟩)⟩),
-          fun Pa hPa Pb hPb hne hu hv => le_of_not_lt fun h =>
+          fun Pa hPa Pb hPb hne hu hv => le_of_not_gt fun h =>
             hnR (Finset.mem_filter.mpr
               ⟨huv_univ, Or.inr (Or.inr ⟨hadj, Pa, hPa, Pb, hPb, hne, hu, hv, h⟩)⟩)⟩
       -- Extract properties for each edge

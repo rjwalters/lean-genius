@@ -210,7 +210,7 @@ noncomputable def intrinsicDist (x y : X) : ℝ≥0∞ :=
 
 @[simp]
 theorem intrinsicDist_self (x : X) : intrinsicDist x x = 0 :=
-  le_antisymm (iInf_le_of_le (Path.refl x) (pathLength_refl x).le) (zero_le _)
+  le_antisymm (iInf_le_of_le (Path.refl x) (pathLength_refl x).le) (zero_le)
 
 /-- **Main Theorem: Triangle Inequality for Geodesic/Path Distance**
 

@@ -531,14 +531,14 @@ private lemma doubleExp_sum_summable :
   doubleExp_convergent.congr (fun n => doubleExp_term_eq n)
 
 /-- The tail ∑' k, 1/2^{2^(k+N+1)} is positive.
-    Note: each term is positive; Aristotle candidate (tsum_pos API varies by Mathlib version). -/
+    Note: each term is positive; Aristotle candidate (Summable.tsum_pos API varies by Mathlib version). -/
 private lemma doubleExp_tail_pos (N : ℕ) :
     0 < ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) := by
   have hsum : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) := by
     have h : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + (N + 1)))) :=
       (summable_nat_add_iff (N + 1)).mpr doubleExp_sum_summable
     exact h.congr (fun k => by congr 1; congr 1; omega)
-  exact tsum_pos hsum (fun k => by positivity) 0 (by positivity)
+  exact Summable.tsum_pos hsum (fun k => by positivity) 0 (by positivity)
 
 /-- D * (finite sum) is a natural number: 2^{2^N} * Σ_{k<N} 1/2^{2^k} ∈ ℕ.
     Each term: 2^{2^N} * (1/2^{2^k}) = 2^{2^N - 2^k} ∈ ℕ (since 2^k ≤ 2^N for k ≤ N). -/
@@ -620,7 +620,7 @@ private lemma doubleExp_tail_bound (N : ℕ) :
   rw [show (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) =
           (fun k => 1 / D ^ (2 ^ (k + 1))) from funext hterm]
   have hT_le : ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1)) ≤ 1 / (D ^ 2 - 1) := by
-    rw [← hgeo]; exact tsum_le_tsum hterm_bound hTsumm' hTsumm
+    rw [← hgeo]; exact Summable.tsum_le_tsum hterm_bound hTsumm' hTsumm
   calc D * ∑' k : ℕ, (1 : ℝ) / D ^ (2 ^ (k + 1))
       ≤ D * (1 / (D ^ 2 - 1)) := mul_le_mul_of_nonneg_left hT_le hD_pos.le
     _ = D / (D ^ 2 - 1) := by ring
@@ -771,7 +771,7 @@ end Erdos263
   - `factorial_has_kovac_tao_condition`: (n+2)!/((n+1)!)² → 0 (satisfies KT condition)
   - `connection_262_proved`: Every irrationality sequence has irrational reciprocal sum
   - `doubleExp_fin_mul_nat`: D * (finite sum) ∈ ℕ via pow_sub₀
-  - `doubleExp_tail_pos`: tail ∑ 1/2^{2^{k+N+1}} > 0 via tsum_pos
+  - `doubleExp_tail_pos`: tail ∑ 1/2^{2^{k+N+1}} > 0 via Summable.tsum_pos
   - `doubleExp_tail_bound`: D * tail < 1/(D-1) via geometric comparison
   - `tsum_split_at`: ∑ f = (range sum) + f N + (shifted tail) via sum_add_tsum_nat_add
 

@@ -126,13 +126,13 @@ theorem mediant_between {n : ℕ} (f g : FareyFraction n)
   · -- f.p/f.q < (f.p+g.p)/(f.q+g.q)
     -- Equivalent to: f.p * (f.q+g.q) < (f.p+g.p) * f.q
     -- i.e., f.p * g.q < g.p * f.q, i.e., f.p/f.q < g.p/g.q
-    rw [div_lt_div_iff hfq hsum]
+    rw [div_lt_div_iff₀ hfq hsum]
     push_cast
-    nlinarith [hlt, (div_lt_div_iff hfq hgq).mp hlt]
+    nlinarith [hlt, (div_lt_div_iff₀ hfq hgq).mp hlt]
   · -- (f.p+g.p)/(f.q+g.q) < g.p/g.q
-    rw [div_lt_div_iff hsum hgq]
+    rw [div_lt_div_iff₀ hsum hgq]
     push_cast
-    nlinarith [hlt, (div_lt_div_iff hfq hgq).mp hlt]
+    nlinarith [hlt, (div_lt_div_iff₀ hfq hgq).mp hlt]
 
 /- The number of Farey fractions of order n is approximately 3n²/π² + O(n log n). -/
 -- This is a deep result (Möbius inversion); we don't formalize it here.

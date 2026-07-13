@@ -71,7 +71,7 @@ lemma converse_from_combined_bound {n : ℕ} (hn : 0 < n) {M : ℕ} (hM : 1 < M)
   · -- Standard case: (1 - P_e) ≥ 0, multiply n·R ≤ log M
     have h2 : (1 - P_e) * ((n : ℝ) * R) ≤ (n : ℝ) * C + 1 :=
       le_trans (mul_le_mul_of_nonneg_left hlog_rate (by linarith)) h1
-    linarith [(le_div_iff hnR_pos).mpr h2]
+    linarith [(le_div_iff₀ hnR_pos).mpr h2]
   · -- Trivial case: P_e > 1, so 1 - (n·C+1)/(n·R) < 1 < P_e
     have hPe_gt : 1 < P_e := not_le.mp hpe1
     have hnn : 0 ≤ ((n : ℝ) * C + 1) / ((n : ℝ) * R) :=
@@ -114,7 +114,7 @@ lemma rate_ge_implies_log {α : Type*} {n : ℕ} (hn : 0 < n)
     (hrate : R ≤ rate_of_code hn code) :
     (n : ℝ) * R ≤ Real.log code.M := by
   unfold rate_of_code at hrate
-  rwa [le_div_iff (Nat.cast_pos.mpr hn), mul_comm] at hrate
+  rwa [le_div_iff₀ (Nat.cast_pos.mpr hn), mul_comm] at hrate
 
 end ChannelCodingConverse
 
@@ -149,7 +149,7 @@ theorem channel_coding_converse_asymptotic
   have hn2RC : 2 ≤ (n : ℝ) * (R - C) := by
     have hN : 2 / (R - C) ≤ (n : ℝ) :=
       (Nat.le_ceil _).trans (by exact_mod_cast hn_thresh)
-    exact (div_le_iff hRC_pos).mp hN
+    exact (div_le_iff₀ hRC_pos).mp hN
   -- Rate condition: log(M) ≥ n * R
   have hlog_rate : (n : ℝ) * R ≤ Real.log code.M :=
     ChannelCodingConverse.rate_ge_implies_log hn code hrate

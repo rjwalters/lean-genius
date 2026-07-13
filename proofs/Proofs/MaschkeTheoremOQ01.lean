@@ -77,19 +77,19 @@ An injective `k[G]`-linear map `f : V → W` admits a `k[G]`-linear left inverse
 averaging it over `G`, which is `k[G]`-equivariant precisely because `(Fintype.card G : k)`
 is invertible. -/
 theorem splitting (f : V →ₗ[k[G]] W) (hf : LinearMap.ker f = ⊥) :
-    ∃ g : W →ₗ[k(_ : G)] V, g.comp f = LinearMap.id :=
+    ∃ g : W →ₗ[k[G]] V, g.comp f = LinearMap.id :=
   MonoidAlgebra.exists_leftInverse_of_injective f hf
 
 /-- **Maschke's theorem (classical statement).** Every `k[G]`-submodule of a representation
 `V` is a direct summand: it has a complementary subrepresentation. -/
-theorem exists_isCompl (p : Submodule k[G] V) : ∃ q : Submodule k(_ : G) V, IsCompl p q :=
+theorem exists_isCompl (p : Submodule k[G] V) : ∃ q : Submodule k[G] V, IsCompl p q :=
   MonoidAlgebra.Submodule.exists_isCompl p
 
 /-- Maschke's theorem unpacked: every subrepresentation `p` has a complement `q` meeting it
 trivially (`p ⊓ q = ⊥`) and spanning everything together (`p ⊔ q = ⊤`).  This is the explicit
 "`V = p ⊕ q` as representations" statement. -/
 theorem exists_complement (p : Submodule k[G] V) :
-    ∃ q : Submodule k(_ : G) V, p ⊓ q = ⊥ ∧ p ⊔ q = ⊤ := by
+    ∃ q : Submodule k[G] V, p ⊓ q = ⊥ ∧ p ⊔ q = ⊤ := by
   obtain ⟨q, hq⟩ := exists_isCompl p
   exact ⟨q, hq.inf_eq_bot, hq.sup_eq_top⟩
 
@@ -106,7 +106,7 @@ theorem isSemisimpleRing : IsSemisimpleRing k[G] := inferInstance
 `f : V → W` admits a `k[G]`-linear section `s` with `f ∘ s = id`.  Equivalently, every
 `k[G]`-module is projective: complete reducibility lets us lift along quotients. -/
 theorem surjection_splits (f : V →ₗ[k[G]] W) (hf : Function.Surjective f) :
-    ∃ s : W →ₗ[k(_ : G)] V, f.comp s = LinearMap.id :=
+    ∃ s : W →ₗ[k[G]] V, f.comp s = LinearMap.id :=
   IsSemisimpleModule.lifting_property f hf LinearMap.id
 
 /-- **Every short exact sequence splits (extension form).** Any injective `k[G]`-linear map
@@ -114,14 +114,14 @@ theorem surjection_splits (f : V →ₗ[k[G]] W) (hf : Function.Surjective f) :
 extension counterpart of `surjection_splits` and re-proves `splitting` through the
 semisimplicity API. -/
 theorem injection_splits (f : V →ₗ[k[G]] W) (hf : Function.Injective f) :
-    ∃ r : W →ₗ[k(_ : G)] V, r.comp f = LinearMap.id :=
+    ∃ r : W →ₗ[k[G]] V, r.comp f = LinearMap.id :=
   IsSemisimpleModule.extension_property f hf LinearMap.id
 
 /-- **Quotients are subrepresentations.** For every subrepresentation `N`, the quotient
 `V ⧸ N` is `k[G]`-linearly isomorphic to some subrepresentation of `V`.  In a completely
 reducible module quotients never produce anything new — they are realized inside `V` itself. -/
 theorem quotient_iso_submodule (N : Submodule k[G] V) :
-    ∃ P : Submodule k(_ : G) V, Nonempty (P ≃ₗ[k[G]] V ⧸ N) :=
+    ∃ P : Submodule k[G] V, Nonempty (P ≃ₗ[k[G]] V ⧸ N) :=
   IsSemisimpleModule.exists_submodule_linearEquiv_quotient N
 
 end MaschkeTheorem

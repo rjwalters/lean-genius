@@ -82,7 +82,7 @@ private lemma companionMat_mulVec_basis (p : K[X]) (j : Fin n) (hj : j.val + 1 <
     (companionMat p).mulVec (Pi.single j 1) =
       Pi.single (⟨j.val + 1, hj⟩ : Fin n) 1 := by
   ext ⟨i, hi⟩
-  simp only [Matrix.mulVec, Matrix.dotProduct, Finset.sum_apply]
+  simp only [Matrix.mulVec, dotProduct, Finset.sum_apply]
   rw [Fintype.sum_eq_single j (fun k hk => by simp [Pi.single_apply, hk])]
   simp only [Pi.single_apply, if_true, eq_self_iff_true, mul_one]
   simp only [companionMat]

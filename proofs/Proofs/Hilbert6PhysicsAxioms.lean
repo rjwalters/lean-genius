@@ -94,7 +94,7 @@ theorem kolmogorov_axiom_3 {ι : Type*} [Countable ι] {f : ι → Set Ω}
 
 /-- Probability is non-negative (derived property) -/
 theorem probability_nonneg (A : Set Ω) : 0 ≤ P A :=
-  zero_le _
+  zero_le
 
 /-- Probability is at most 1 (derived property) -/
 theorem probability_le_one (A : Set Ω) : P A ≤ 1 := by

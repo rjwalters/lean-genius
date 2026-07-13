@@ -63,7 +63,7 @@ theorem gpf_le_one (n : ℕ) (hn : n ≤ 1) : gpf n = 0 := by
 private lemma primeFactorsList_ne_nil {n : ℕ} (hn : n > 1) :
     n.primeFactorsList ≠ [] := by
   intro h
-  have := Nat.primeFactorsList_eq_nil.mp h
+  have := (Nat.primeFactorsList_eq_nil _).mp h
   omega
 
 /-- gpf n is a member of primeFactorsList n when n > 1. -/
@@ -92,7 +92,7 @@ theorem gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p := by
 
 /-- gpf of a prime power is the prime. -/
 theorem gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p ^ k) = p := by
-  simp [gpf, Nat.primeFactorsList_prime_pow hp (by omega : 0 < k)]
+  simp [gpf, Nat.Prime.primeFactorsList_pow hp]
 
 /-- gpf of a product is at most the max of the gpfs. -/
 axiom gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :

@@ -216,8 +216,8 @@ theorem universal_noncentral_neighborSet (hF : IsFriendshipGraph G)
   have hw_mem : w ∈ G.commonNeighbors u c := by
     rw [hw]; exact Set.mem_singleton_iff.mpr rfl
   rw [SimpleGraph.mem_commonNeighbors] at hw_mem
-  have hwu : w ≠ u := fun heq => G.loopless u (heq ▸ hw_mem.1)
-  have hwc : w ≠ c := fun heq => G.loopless c (heq ▸ hw_mem.2)
+  have hwu : w ≠ u := fun heq => G.loopless.irrefl u (heq ▸ hw_mem.1)
+  have hwc : w ≠ c := fun heq => G.loopless.irrefl c (heq ▸ hw_mem.2)
   refine ⟨w, hwc, hwu, hw_mem.1, ?_⟩
   ext x
   simp only [SimpleGraph.mem_neighborSet, Set.mem_insert_iff, Set.mem_singleton_iff]
@@ -231,7 +231,7 @@ theorem universal_noncentral_neighborSet (hF : IsFriendshipGraph G)
         (SimpleGraph.mem_commonNeighbors G).mpr ⟨hadj, hcx⟩
       exact Set.mem_singleton_iff.mp (hw ▸ hxmem)
   · rintro (rfl | rfl)
-    · exact G.symm (hc u hu)
+    · exact SimpleGraph.Adj.symm (hc u hu)
     · exact hw_mem.1
 
 /-- Every non-centre vertex of a friendship graph with a universal vertex has
@@ -444,7 +444,7 @@ theorem neighborSet_equinum_of_nonadj_or_common_nonneighbor (hF : IsFriendshipGr
 vertices of a friendship graph have *exactly one* common neighbour. This upgrades
 `exists_common_neighbor` (which only gives existence) to the full unique-existence
 statement directly from `ncard = 1`, packaging the defining property in the
-reusable `∃!` form. No `(_ : Fintype V)` assumption is used. -/
+reusable `∃!` form. No `[Fintype V]` assumption is used. -/
 theorem common_neighbor_unique (hF : IsFriendshipGraph G) {a b : V} (hab : a ≠ b) :
     ∃! x, G.Adj a x ∧ G.Adj b x := by
   obtain ⟨x, hx⟩ := Set.ncard_eq_one.mp (hF a b hab)
@@ -490,7 +490,7 @@ theorem adjacent_dominating_implies_universal (hF : IsFriendshipGraph G)
   by_contra hcon
   push_neg at hcon
   obtain ⟨hnu, hnv⟩ := hcon
-  simp only [FriendshipTheorem.IsUniversalVertex, not_forall, not_imp] at hnu hnv
+  simp only [FriendshipTheorem.IsUniversalVertex, not_forall, _root_.not_imp] at hnu hnv
   obtain ⟨p, hpu, hup⟩ := hnu   -- `p ≠ u`, `¬ G.Adj u p`
   obtain ⟨q, hqv, hvq⟩ := hnv   -- `q ≠ v`, `¬ G.Adj v q`
   -- Domination forces `p ∈ N(v)` and `q ∈ N(u)`.
@@ -572,7 +572,7 @@ theorem no_universal_infinite_aleph0_regular (hF : IsFriendshipGraph G) [Infinit
   obtain ⟨w₀, hw₀⟩ := infinite_friendship_has_infinite_degree hF
   obtain ⟨f, hf⟩ := no_universal_regular hF hnouniv w₀ w
   -- `f` maps `N(w₀)` into `N(w)`, injectively; the image is infinite and `⊆ N(w)`.
-  have hsub : f '' (G.neighborSet w₀) ⊆ G.neighborSet w := Set.mapsTo'.mp hf.mapsTo
+  have hsub : f '' (G.neighborSet w₀) ⊆ G.neighborSet w := Set.mapsTo_iff_image_subset.mp hf.mapsTo
   have himg : (f '' (G.neighborSet w₀)).Infinite :=
     fun hfin => hw₀ (Set.Finite.of_finite_image hfin hf.injOn)
   intro hwfin

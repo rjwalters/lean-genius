@@ -570,14 +570,13 @@ private theorem signedMeasureOfFunctional_ac [IsFiniteMeasure μ]
         μ.toENNRealVectorMeasure := by
   -- AbsolutelyContinuous: ∀ s, μ.toENNRealVectorMeasure s = 0 → ν s = 0
   intro s hμs
-  simp only [signedMeasureOfFunctional]
   by_cases hE : MeasurableSet s
-  · skip
-    -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
+  · -- μ.toENNRealVectorMeasure s = 0 → μ s = 0 (for measurable s)
     have hzero : μ s = 0 := by
       rwa [Measure.toENNRealVectorMeasure_apply_measurable hE] at hμs
-    exact functionalSetFn_null p hp hptop φ hE hzero
-  · simp [dif_neg hE]
+    simpa [signedMeasureOfFunctional, dif_pos hE] using
+      functionalSetFn_null p hp hptop φ hE hzero
+  · simp [signedMeasureOfFunctional, dif_neg hE]
 
 /-- **RN derivative integrability**: for a finite signed measure ν ≪ μ (σ-finite),
     the RN derivative ν.rnDeriv μ is μ-integrable.
@@ -761,7 +760,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             simp only [SimpleFunc.coe_add, Pi.add_apply]
             by_cases ha : (sf₁ : α → ℝ) a = 0
             · simp [ha]
-            · have : (sf₂ : α → ℝ) a = 0 := Function.nmem_support.mp
+            · have : (sf₂ : α → ℝ) a = 0 := Function.notMem_support.mp
                   (disjoint_left.mp hdisj (Function.mem_support.mpr ha))
               simp [this]
         have hsf₂_le : ∀ a, ‖(sf₂ : α → ℝ) a‖ ≤ ‖(sf₁ + sf₂ : SimpleFunc α ℝ) a‖ :=
@@ -769,7 +768,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             simp only [SimpleFunc.coe_add, Pi.add_apply]
             by_cases ha : (sf₂ : α → ℝ) a = 0
             · simp [ha]
-            · have : (sf₁ : α → ℝ) a = 0 := Function.nmem_support.mp
+            · have : (sf₁ : α → ℝ) a = 0 := Function.notMem_support.mp
                   (disjoint_left.mp hdisj.symm (Function.mem_support.mpr ha))
               rw [this, zero_add]
         have hsf₁ : MemLp ⇑sf₁ p μ := h12.mono

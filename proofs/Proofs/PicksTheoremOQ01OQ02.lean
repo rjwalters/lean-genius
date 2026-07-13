@@ -98,7 +98,7 @@ lemma gauss_sum_succ (n : ℕ) :
 theorem triangle_ehrhart_double (n t : ℕ) :
     2 * (triangleScaled n t).card = (t * n + 1) * (t * n + 2) := by
   rw [triangleScaled_eq_biUnion, Finset.card_biUnion (antidiagonals_pairwise_disjoint _)]
-  simp only [Finset.Nat.card_antidiagonal]
+  simp only [Nat.card_antidiagonal]
   exact gauss_sum_succ (t * n)
 
 /-- Special case n=1: 2·L(unit simplex, t) = (t+1)(t+2). -/

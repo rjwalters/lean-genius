@@ -158,7 +158,7 @@ theorem cauchyCrofton_product_decreasing (n : ℕ) (hn : 2 ≤ n) :
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
   have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
   push_cast
-  rw [gt_iff_lt, div_lt_div_iff (mul_pos hn1_pos pi_pos) (mul_pos hn_pos pi_pos)]
+  rw [gt_iff_lt, div_lt_div_iff₀ (mul_pos hn1_pos pi_pos) (mul_pos hn_pos pi_pos)]
   nlinarith
 
 -- ============================================================

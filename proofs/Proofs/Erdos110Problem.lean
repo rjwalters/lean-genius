@@ -144,7 +144,7 @@ theorem conjecture_fails_aleph0 :
   refine ⟨V, G, fun k hk => hχ.1 k (hk.trans_le ?_), fun ⟨F, N₀, hF⟩ => ?_⟩
   · -- aleph0 ≤ aleph1 since ℵ₀ = ℵ_0 ≤ ℵ_1
     simp only [aleph0, aleph1, ← Cardinal.aleph_zero]
-    exact Cardinal.aleph_le_aleph.mpr (Ordinal.zero_le _)
+    exact Cardinal.aleph_le_aleph.mpr (zero_le)
   · obtain ⟨n, hn, h⟩ := hBad F N₀; exact h (hF n hn)
 
 /- ## Part VI: Shelah's Consistency Result (2005)

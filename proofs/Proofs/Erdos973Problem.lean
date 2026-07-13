@@ -142,7 +142,7 @@ theorem roots_on_circle (n : ℕ) :
     AllOnUnitCircle (rootsOfUnitySequence n) := by
   intro i
   simp only [rootsOfUnitySequence]
-  rw [Complex.abs_exp]
+  rw [Complex.norm_exp]
   simp
 
 /-  For n-th roots of unity, the k-th power sum is 0 when n ∤ k and n when n ∣ k. -/

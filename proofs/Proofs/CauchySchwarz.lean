@@ -133,13 +133,13 @@ theorem cauchy_schwarz_sum {n : ℕ} (a b : Fin n → ℝ) :
   have h := cauchy_schwarz_inner_sq u v
   -- The inner product is the dot product for EuclideanSpace
   have inner_eq : ⟪u, v⟫_ℝ = ∑ i, a i * b i := by
-    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.dotProduct]
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
     simp [u, v]
   have norm_u_sq : ⟪u, u⟫_ℝ = ∑ i, a i ^ 2 := by
-    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.dotProduct]
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
     simp [u, sq]
   have norm_v_sq : ⟪v, v⟫_ℝ = ∑ i, b i ^ 2 := by
-    simp only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.dotProduct]
+    simp only [EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
     simp [v, sq]
   rw [inner_eq, norm_u_sq, norm_v_sq] at h
   exact h

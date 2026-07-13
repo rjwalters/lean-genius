@@ -2415,7 +2415,7 @@ private lemma ssytFin_two_row_eq_sum_colstrict (n : ℕ) (sh : Fin 2 → ℕ) :
             have hj_min : j1.val < min a b :=
               Nat.lt_min.mpr ⟨j1.isLt, hval ▸ hj2b⟩
             -- The dite evaluates: i1.val = 0 → P branch, i2.val ≠ 0 → Q branch
-            simp only [Nat.zero_eq, ↓reduceDite, show i2.val ≠ 0 from by omega, ↓reduceDite]
+            simp only [Nat.zero_eq, ↓reduceDIte, show i2.val ≠ 0 from by omega, ↓reduceDIte]
             rw [← hval]
             exact hPQ ⟨j1.val, hj_min⟩⟩⟩
       left_inv := fun T => by

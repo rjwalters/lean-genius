@@ -51,7 +51,7 @@ AlgebraicNumbersCountableOQ02OQ04	RESIDUAL	dot-notation-drift
 AlgebraicNumbersCountableOQ02OQ04OQ01	RESIDUAL	dot-notation-drift
 AlgebraicNumbersCountableOQ04	RESIDUAL	type-mismatch
 AlgebraicPointsNull	RESIDUAL	proof-drift
-AlgebraicRealsNull	RESIDUAL	proof-drift
+AlgebraicRealsNull	GREEN	
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	RESIDUAL	signature-drift
 AmgmInequalityOQ02Defs	RESIDUAL	dot-notation-drift
@@ -109,9 +109,9 @@ AreaOfCircleOQ01OQ02OQ02OQ01OQ01IFT	RESIDUAL	type-mismatch
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso	RESIDUAL	type-mismatch
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01	RESIDUAL	proof-drift
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ02	RESIDUAL	type-mismatch
-AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam	RESIDUAL	type-mismatch
-AreaOfCircleOQ01OQ02OQ02OQ02	RESIDUAL	proof-drift
-AreaOfCircleOQ01OQ02OQ02OQ02OQ01	RESIDUAL	proof-drift
+AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam	GREEN	
+AreaOfCircleOQ01OQ02OQ02OQ02	GREEN	
+AreaOfCircleOQ01OQ02OQ02OQ02OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ02OQ02	RESIDUAL	proof-drift
 AreaOfCircleOQ01OQ02OQ03OQ03	RESIDUAL	unknown-const:Filter.eventually_nhdsWithin_of_forall
 AreaOfCircleOQ01OQ03	RESIDUAL	proof-drift
@@ -264,7 +264,7 @@ BorsukUlamOQ02OQ03	RESIDUAL	type-mismatch
 BorsukUlamOQ03	RESIDUAL	proof-drift
 BorsukUlamOQ03OQ01	RESIDUAL	rewrite-drift
 BorsukUlamOQ03OQ02	RESIDUAL	type-mismatch
-BorsukUlamOQ03OQ03	RESIDUAL	unknown-const:div_add_div_same
+BorsukUlamOQ03OQ03	GREEN	
 BorsukUlamOQ04OQ03	RESIDUAL	instance-synth
 BoundedPrimeGapsOQ01OQ02	GREEN	
 BoundedPrimeGapsOQ03OQ01	GREEN	
@@ -294,14 +294,14 @@ BrouwerFixedPointOQ04OQ03	RESIDUAL	type-mismatch
 BrouwerFixedPointOQ04OQ04	RESIDUAL	type-mismatch
 BuffonConstantAsymptotic	RESIDUAL	type-mismatch
 BuffonsNeedleOQ01	RESIDUAL	type-mismatch
-BuffonsNeedleOQ01OQ01	RESIDUAL	type-mismatch
+BuffonsNeedleOQ01OQ01	GREEN	
 BuffonsNeedleOQ01OQ01OQ01	RESIDUAL	type-mismatch
-BuffonsNeedleOQ01OQ01OQ02	RESIDUAL	type-mismatch
+BuffonsNeedleOQ01OQ01OQ02	GREEN	
 BuffonsNeedleOQ01OQ01OQ04	RESIDUAL	rewrite-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01	RESIDUAL	type-mismatch
 BuffonsNeedleOQ01OQ01OQ04OQ01Beta	RESIDUAL	proof-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01	RESIDUAL	proof-drift
-BuffonsNeedleOQ01OQ01OQ05	RESIDUAL	type-mismatch
+BuffonsNeedleOQ01OQ01OQ05	GREEN	
 BuffonsNeedleOQ01OQ02	RESIDUAL	unknown-const:pi_gt_3141592
 BuffonsNeedleOQ01OQ04	RESIDUAL	type-mismatch
 BuffonsNeedleOQ02	RESIDUAL	proof-drift
@@ -347,18 +347,18 @@ CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
 CauchyInterlacingWeylDual	RESIDUAL	proof-drift
 CauchySchwarz	RESIDUAL	type-mismatch
 CauchySchwarzIntegralLpDualityGluing	RESIDUAL	signature-drift
-CauchySchwarzIntegralLpDualityIngredients	RESIDUAL	signature-drift
+CauchySchwarzIntegralLpDualityIngredients	GREEN	
 CauchySchwarzIntegralLpDualityMaximal	RESIDUAL	signature-drift
 CauchySchwarzIntegralLpDualitySynthesis	RESIDUAL	unknown-const:Function.nmem_support.mp
 CauchySchwarzIntegralOQ01OQ01OQ01OQ02	RESIDUAL	rewrite-drift
 CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03	RESIDUAL	proof-drift
 CauchySchwarzIntegralOQ01OQ01OQ02	RESIDUAL	unknown-const:Function.nmem_support.mp
-CauchySchwarzIntegralOQ01OQ01OQ02OQ01	RESIDUAL	unknown-const:Function.nmem_support.mp
+CauchySchwarzIntegralOQ01OQ01OQ02OQ01	GREEN	
 CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01	RESIDUAL	unknown-const:Function.nmem_support.mp
 CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01	RESIDUAL	unknown-const:Function.nmem_support.mp
-CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Infra	RESIDUAL	unknown-const:Function.nmem_support.mp
-CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc	RESIDUAL	unknown-const:Function.nmem_support.mp
-CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Norm	RESIDUAL	unknown-const:Function.nmem_support.mp
+CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Infra	GREEN	
+CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc	GREEN	
+CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Norm	GREEN	
 CauchySchwarzIntegralOQ01OQ03	RESIDUAL	instance-synth
 CauchySchwarzIntegralOQ01OQ03OQ01	RESIDUAL	unknown-const:eLpNorm_one_eq_lintegral_nnnorm
 CauchySchwarzIntegralOQ02OQ02	RESIDUAL	unknown-const:eLpNorm_mul_le
@@ -575,7 +575,7 @@ ETranscendentalOQ02OQ06	RESIDUAL	type-mismatch
 ETranscendentalOQ02Rational	RESIDUAL	type-mismatch
 ETranscendentalOQ03	GREEN	
 ETranscendentalOQ03OQ01	RESIDUAL	unknown-const:n
-ETranscendentalOQ03Reduction	RESIDUAL	unknown-const:Real.tendsto_rpow_atTop
+ETranscendentalOQ03Reduction	GREEN	
 EgorovTheorem	GREEN	
 EgorovTheoremOQ01OQ02	GREEN	
 EgorovTheoremOQ01OQ03	RESIDUAL	parse-error
@@ -583,11 +583,11 @@ EhrhartCrossPolytope	GREEN
 EisensteinCriterionOQ01OQ03OQ02OQ01	RESIDUAL	unknown-const:Nat.pos_pow_of_pos
 ElementaryQuadraticReciprocityOQ01	RESIDUAL	unknown-const:generator_orderOf
 ElementaryQuadraticReciprocityOQ01OQ01OQ03	RESIDUAL	instance-synth
-ElementaryQuadraticReciprocityOQ01OQ03	RESIDUAL	proof-drift
-ElementaryQuadraticReciprocityOQ01OQ03OQ01	RESIDUAL	proof-drift
-ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01	RESIDUAL	proof-drift
-ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01	RESIDUAL	proof-drift
-ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01	RESIDUAL	proof-drift
+ElementaryQuadraticReciprocityOQ01OQ03	GREEN	
+ElementaryQuadraticReciprocityOQ01OQ03OQ01	GREEN	
+ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01	GREEN	
+ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01	GREEN	
+ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02	RESIDUAL	proof-drift
@@ -615,7 +615,7 @@ Erdos1006OQ01OQ02	RESIDUAL	signature-drift
 Erdos1006OQ02	RESIDUAL	elab-drift
 Erdos1006OQ03	GREEN	
 Erdos1006OQ04	RESIDUAL	unknown-const:v
-Erdos1006OQ04Decidability	RESIDUAL	no-diag-captured
+Erdos1006OQ04Decidability	RESIDUAL	unclassified
 Erdos1006Problem	RESIDUAL	instance-synth
 Erdos1007OQ01	RESIDUAL	proof-drift
 Erdos1007OQ01OQ01	RESIDUAL	proof-drift
@@ -708,12 +708,12 @@ Erdos1036OQ01	RESIDUAL	proof-drift
 Erdos1036OQ01OQ01	RESIDUAL	elab-drift
 Erdos1036Problem	RESIDUAL	proof-drift
 Erdos1038Problem	GREEN	
-Erdos1038WIP01	RESIDUAL	signature-drift
+Erdos1038WIP01	GREEN	
 Erdos1039Aristotle	RESIDUAL	unknown-const:Erdos1039.Complex.abs
 Erdos1039Conformal	RESIDUAL	type-mismatch
 Erdos1039ProblemAristotle	RESIDUAL	type-mismatch
 Erdos103OQ02Bounds	RESIDUAL	instance-synth
-Erdos1040Aristotle	RESIDUAL	signature-drift
+Erdos1040Aristotle	GREEN	
 Erdos1040Convex	RESIDUAL	proof-drift
 Erdos1040OQ03	RESIDUAL	unknown-const:isBounded_iUnion.mpr
 Erdos1040Problem	RESIDUAL	type-mismatch
@@ -819,7 +819,7 @@ Erdos110Problem	RESIDUAL	unknown-const:lambie_hanson_counterexample
 Erdos1110OQ01	RESIDUAL	rewrite-drift
 Erdos1111Problem	RESIDUAL	type-mismatch
 Erdos1112Problem	RESIDUAL	proof-drift
-Erdos1113Problem	RESIDUAL	no-diag-captured
+Erdos1113Problem	RESIDUAL	unclassified
 Erdos1114Problem	RESIDUAL	type-mismatch
 Erdos1115Problem	RESIDUAL	parse-error
 Erdos1116Problem	RESIDUAL	unknown-const:Complex.abs
@@ -878,7 +878,7 @@ Erdos1168Problem	RESIDUAL	unknown-const:Cardinal.cof_aleph
 Erdos1169Problem	RESIDUAL	proof-drift
 Erdos116Problem	GREEN	
 Erdos1170Problem	RESIDUAL	proof-drift
-Erdos1171Problem	RESIDUAL	no-diag-captured
+Erdos1171Problem	RESIDUAL	unclassified
 Erdos1172Problem	RESIDUAL	unknown-const:Ordinal.lt_add_of_limit_left
 Erdos1173Problem	RESIDUAL	instance-synth
 Erdos1174Problem	GREEN	
@@ -904,7 +904,7 @@ Erdos11Problem	RESIDUAL	proof-drift
 Erdos1201Problem	RESIDUAL	type-mismatch
 Erdos1202Problem	RESIDUAL	proof-drift
 Erdos1206Problem	RESIDUAL	proof-drift
-Erdos1208Problem	RESIDUAL	no-diag-captured
+Erdos1208Problem	RESIDUAL	unclassified
 Erdos120Problem	RESIDUAL	unknown-const:pow_lt_pow_of_lt_one
 Erdos1211Problem	GREEN	
 Erdos1212Problem	GREEN	
@@ -938,7 +938,7 @@ Erdos147Problem	RESIDUAL	instance-synth
 Erdos148Problem	GREEN	
 Erdos149Problem	RESIDUAL	instance-synth
 Erdos14Problem	RESIDUAL	type-mismatch
-Erdos14UniqueSums	RESIDUAL	no-diag-captured
+Erdos14UniqueSums	RESIDUAL	unclassified
 Erdos150Problem	GREEN	
 Erdos152OQ01	RESIDUAL	type-mismatch
 Erdos152Problem	RESIDUAL	type-mismatch
@@ -1141,8 +1141,8 @@ Erdos337Aristotle	RESIDUAL	elab-drift
 Erdos337Problem	RESIDUAL	elab-drift
 Erdos338Aristotle	RESIDUAL	proof-drift
 Erdos338Problem	RESIDUAL	proof-drift
-Erdos339Aristotle	RESIDUAL	no-diag-captured
-Erdos339Problem	RESIDUAL	no-diag-captured
+Erdos339Aristotle	RESIDUAL	unclassified
+Erdos339Problem	RESIDUAL	unclassified
 Erdos33Problem	RESIDUAL	rewrite-drift
 Erdos340BhUpperBound	GREEN	
 Erdos340GreedyCountUpper	RESIDUAL	type-mismatch
@@ -1165,9 +1165,9 @@ Erdos348Problem	RESIDUAL	type-mismatch
 Erdos349Problem	GREEN	
 Erdos350Problem	RESIDUAL	type-mismatch
 Erdos351Problem	GREEN	
-Erdos352Problem	RESIDUAL	no-diag-captured
+Erdos352Problem	GREEN	
 Erdos353Aristotle	RESIDUAL	instance-synth
-Erdos353Problem	RESIDUAL	no-diag-captured
+Erdos353Problem	RESIDUAL	unclassified
 Erdos354Problem	GREEN	
 Erdos355Problem	RESIDUAL	proof-drift
 Erdos356Problem	RESIDUAL	unknown-const:Finset.range'
@@ -1183,7 +1183,7 @@ Erdos362Problem	RESIDUAL	type-mismatch
 Erdos363Problem	RESIDUAL	type-mismatch
 Erdos364Problem	GREEN	
 Erdos365Problem	RESIDUAL	proof-drift
-Erdos367Problem	RESIDUAL	no-diag-captured
+Erdos367Problem	RESIDUAL	unclassified
 Erdos368Problem	RESIDUAL	instance-synth
 Erdos369Problem	RESIDUAL	unknown-const:Nat.dvd_of_dvd_of_dvd
 Erdos36Problem	RESIDUAL	unknown-const:white_lower
@@ -1638,7 +1638,7 @@ Erdos733Problem	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
 Erdos734Problem	RESIDUAL	instance-synth
 Erdos736Problem	RESIDUAL	unknown-const:colorable_of_isEmpty
 Erdos737Problem	RESIDUAL	elab-drift
-Erdos738Problem	RESIDUAL	no-diag-captured
+Erdos738Problem	RESIDUAL	unclassified
 Erdos739Problem	RESIDUAL	dot-notation-drift
 Erdos73Aristotle	RESIDUAL	proof-drift
 Erdos73Problem	RESIDUAL	type-mismatch
@@ -1924,7 +1924,7 @@ Erdos981Problem	RESIDUAL	signature-drift
 Erdos982Problem	RESIDUAL	type-mismatch
 Erdos983Problem	GREEN	
 Erdos984Problem	GREEN	
-Erdos986Problem	RESIDUAL	type-mismatch
+Erdos986Problem	GREEN	
 Erdos987Problem	RESIDUAL	parse-error
 Erdos988Problem	RESIDUAL	instance-synth
 Erdos989Problem	RESIDUAL	proof-drift
@@ -1969,7 +1969,7 @@ FairGamesTheoremOQ02OQ01	RESIDUAL	type-mismatch
 FairGamesTheoremOQ02OQ01OQ01	RESIDUAL	type-mismatch
 FairGamesTheoremOQ03	RESIDUAL	type-mismatch
 FairGamesTheoremOQ03Aristotle	RESIDUAL	type-mismatch
-FatouLemmaOQ01OQ02	RESIDUAL	signature-drift
+FatouLemmaOQ01OQ02	GREEN	
 FermatTwoSquaresOQ04	RESIDUAL	type-mismatch
 FermatTwoSquaresOQ04OQ01	RESIDUAL	type-mismatch
 FermatsLastTheoremOQ03	RESIDUAL	type-mismatch
@@ -1991,13 +1991,13 @@ FourSquareDistributionOQ04Bridge	GREEN
 FourSquareDistributionOQ04Decomp	GREEN	
 FourSquareDistributionOQ04Keystone	GREEN	
 FourierSeriesOQ01	RESIDUAL	rewrite-drift
-FourierSeriesOQ02	RESIDUAL	elab-drift
-FourierSeriesOQ02Incomplete01	RESIDUAL	elab-drift
-FourierSeriesOQ02OQ02	RESIDUAL	elab-drift
+FourierSeriesOQ02	RESIDUAL	unclassified
+FourierSeriesOQ02Incomplete01	RESIDUAL	unclassified
+FourierSeriesOQ02OQ02	RESIDUAL	unclassified
 FourierSeriesOQ02OQ03	RESIDUAL	proof-drift
 FourierSeriesOQ02OQ03OQ02	RESIDUAL	unknown-const:Real.exp_le_one_of_nonpos
-FourierSeriesOQ02OQ03WIP01	RESIDUAL	elab-drift
-FourierSeriesOQ02OQ04	RESIDUAL	elab-drift
+FourierSeriesOQ02OQ03WIP01	RESIDUAL	unclassified
+FourierSeriesOQ02OQ04	RESIDUAL	unclassified
 FourierSeriesOQ04	GREEN	
 FourierSeriesOQ04OQ01	RESIDUAL	type-mismatch
 FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	type-mismatch
@@ -2005,13 +2005,13 @@ FourthRoot2Degree4OQ02	RESIDUAL	unknown-const:FourthRoot2Degree4OQ02.finrank_adj
 FourthRoot2GaloisClosure	GREEN	
 FourthRoot2GaloisClosureOQ03	GREEN	
 FourthRoot2SplittingFieldOQ01	RESIDUAL	instance-synth
-FriendshipTheorem	RESIDUAL	unknown-const:Matrix.smul_mulVec_assoc
-FriendshipTheoremOQ01	RESIDUAL	unknown-const:Matrix.smul_mulVec_assoc
+FriendshipTheorem	GREEN	
+FriendshipTheoremOQ01	GREEN	
 FriendshipTheoremOQ01OQ02	RESIDUAL	proof-drift
 FriendshipTheoremOQ03	RESIDUAL	proof-drift
-FriendshipTheoremOQ04	RESIDUAL	unknown-const:Matrix.smul_mulVec_assoc
+FriendshipTheoremOQ04	GREEN	
 FriendshipTheoremOQ04Amalgam	GREEN	
-FriendshipTheoremOQ04Universal	RESIDUAL	unknown-const:Matrix.smul_mulVec_assoc
+FriendshipTheoremOQ04Universal	GREEN	
 FrobeniusNumber	GREEN	
 FrobeniusNumberOQ01	RESIDUAL	type-mismatch
 FrobeniusNumberOQ01OQ03	GREEN	
@@ -2100,7 +2100,7 @@ Hilbert20OQ01OQ03	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03Aristotle	RESIDUAL	type-mismatch
 Hilbert21RiemannHilbert	RESIDUAL	type-mismatch
 Hilbert22OQ01	GREEN	
-Hilbert22OQ01OQ03	RESIDUAL	signature-drift
+Hilbert22OQ01OQ03	GREEN	
 Hilbert22OQ01OQ03Pseudohyperbolic	RESIDUAL	type-mismatch
 Hilbert22OQ01OQ03Universal	RESIDUAL	signature-drift
 Hilbert22Uniformization	GREEN	
@@ -2169,7 +2169,7 @@ Konigsberg	RESIDUAL	unknown-const:Nat.odd_iff_not_even
 KonigsbergOQ01	GREEN	
 KonigsbergOQ01OQ02	RESIDUAL	unknown-const:Finset.card_eq_sum_ones.symm
 KonigsbergOQ01OQ02Recipe	GREEN	
-KonigsbergOQ02	RESIDUAL	unknown-const:List.Chain'.rel_head
+KonigsbergOQ02	GREEN	
 KonigsbergOQ02OQ01	RESIDUAL	unknown-const:List.Chain'.rel_head
 KonigsbergOQ02OQ01Aristotle	RESIDUAL	unknown-const:List.Chain'.rel_head
 KonigsbergOQ02OQ01OQ02OQ01Splice	RESIDUAL	type-mismatch
@@ -2225,9 +2225,9 @@ LawsOfLargeNumbersOQ02	RESIDUAL	type-mismatch
 LawsOfLargeNumbersOQ03	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
 LawsOfLargeNumbersOQ03Aristotle	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
 LebesgueMeasure	RESIDUAL	unknown-const:integral_mul_left
-LebesgueMeasureOQ01	RESIDUAL	signature-drift
+LebesgueMeasureOQ01	GREEN	
 LebesgueMeasureOQ01OQ01	RESIDUAL	type-mismatch
-LebesgueMeasureOQ01OQ01OQ01OQ02	RESIDUAL	signature-drift
+LebesgueMeasureOQ01OQ01OQ01OQ02	GREEN	
 LebesgueMeasureOQ01OQ01OQ02	RESIDUAL	type-mismatch
 LebesgueMeasureOQ01OQ01OQ02Riemann	RESIDUAL	type-mismatch
 LebesgueMeasureOQ03	RESIDUAL	parse-error
@@ -2244,8 +2244,8 @@ LiouvilleTheoremOQ03	RESIDUAL	type-mismatch
 LiouvilleTheoremOQ04	RESIDUAL	proof-drift
 LittleWedderburnOQ01OQ02	RESIDUAL	elab-drift
 LovaszLocalLemmaOQ01	RESIDUAL	unknown-const:measurableSet_generateFrom
-LovaszLocalLemmaOQ01StrongInduction	RESIDUAL	signature-drift
-LovaszLocalLemmaOQ01SymmetricStep	RESIDUAL	signature-drift
+LovaszLocalLemmaOQ01StrongInduction	GREEN	
+LovaszLocalLemmaOQ01SymmetricStep	GREEN	
 MaschkeAugmentationNoSplitOQ010101	RESIDUAL	instance-synth
 MaschkeLocalRingOQ010102	RESIDUAL	instance-synth
 MaschkeModularCounterexampleOQ01	RESIDUAL	rewrite-drift
@@ -2331,7 +2331,7 @@ ProbMethodExpectationOQ01	RESIDUAL	rewrite-drift
 ProbMethodExpectationOQ04	GREEN	
 ProbMethodSecondMomentOQ01	RESIDUAL	duplicate-decl
 ProbMethodSecondMomentOQ04OQ03	GREEN	
-ProductOfSegmentsOfChordsConverse	RESIDUAL	unknown-const:div_add_div_same
+ProductOfSegmentsOfChordsConverse	GREEN	
 ProductOfSegmentsOfChordsOQ01	RESIDUAL	unknown-const:chord_quadratic_sphere
 PropertyBFirstMomentRecoloring	RESIDUAL	unknown-const:Finset.exists_ne_of_one_lt_card
 PtolemysComplexProofOQ02	RESIDUAL	unknown-const:Complex.norm_eq_abs
@@ -2355,7 +2355,7 @@ QuadraticReciprocityAlgorithmOQ03Zolotarev	RESIDUAL	rewrite-drift
 QuadraticReciprocityOQ03	RESIDUAL	instance-synth
 QuadraticReciprocityOQ03OQ01	RESIDUAL	instance-synth
 QuadraticReciprocityOQ03OQ01Exp	RESIDUAL	instance-synth
-RamanujanSumFallacy	RESIDUAL	unknown-const:tsum_eq_zero_add
+RamanujanSumFallacy	GREEN	
 RamseyHypergraph	RESIDUAL	type-mismatch
 RamseyR4kExtensions	RESIDUAL	type-mismatch
 RamseyR4kExtensionsOQ03	RESIDUAL	type-mismatch
@@ -2393,30 +2393,30 @@ SchroederBernsteinOQ02	RESIDUAL	unknown-const:Set.image_subset
 SchroederBernsteinOQ03	RESIDUAL	type-mismatch
 SchursTheorem	GREEN	
 SearchMathlib	RESIDUAL	unknown-const:IsCompact.of_isClosed_isBounded
-ShannonChannelCoding	RESIDUAL	proof-drift
-ShannonChannelCodingAWGN	RESIDUAL	proof-drift
-ShannonChannelCodingAWGNOQ01	RESIDUAL	proof-drift
-ShannonChannelCodingAWGNOQ03	RESIDUAL	proof-drift
+ShannonChannelCoding	GREEN	
+ShannonChannelCodingAWGN	GREEN	
+ShannonChannelCodingAWGNOQ01	GREEN	
+ShannonChannelCodingAWGNOQ03	GREEN	
 ShannonChannelCodingAWGNOQ03OQ01EqualNoise	RESIDUAL	proof-drift
 ShannonChannelCodingAWGNOQ03OQ01Monotone	RESIDUAL	type-mismatch
-ShannonChannelCodingBEC	RESIDUAL	proof-drift
-ShannonChannelCodingBECOQ01	RESIDUAL	proof-drift
-ShannonChannelCodingBECOQ02	RESIDUAL	proof-drift
+ShannonChannelCodingBEC	GREEN	
+ShannonChannelCodingBECOQ01	GREEN	
+ShannonChannelCodingBECOQ02	GREEN	
 ShannonChannelCodingBECOQ04	RESIDUAL	proof-drift
-ShannonChannelCodingOQ01	RESIDUAL	proof-drift
-ShannonChannelCodingOQ01OQ01	RESIDUAL	proof-drift
-ShannonChannelCodingOQ02	RESIDUAL	proof-drift
-ShannonChannelCodingOQ02OQ01	RESIDUAL	proof-drift
-ShannonChannelCodingOQ02OQ01Aristotle	RESIDUAL	proof-drift
-ShannonChannelCodingOQ02OQ03	RESIDUAL	proof-drift
-ShannonChannelCodingOQ02OQ04	RESIDUAL	proof-drift
-ShannonChannelCodingOQ03	RESIDUAL	proof-drift
+ShannonChannelCodingOQ01	GREEN	
+ShannonChannelCodingOQ01OQ01	GREEN	
+ShannonChannelCodingOQ02	GREEN	
+ShannonChannelCodingOQ02OQ01	GREEN	
+ShannonChannelCodingOQ02OQ01Aristotle	GREEN	
+ShannonChannelCodingOQ02OQ03	GREEN	
+ShannonChannelCodingOQ02OQ04	GREEN	
+ShannonChannelCodingOQ03	GREEN	
 ShannonChannelCodingOQ03Aristotle	RESIDUAL	signature-drift
-ShannonChannelCodingOQ04OQ01	RESIDUAL	proof-drift
-ShannonChannelCodingOQ04OQ01OQ01	RESIDUAL	proof-drift
+ShannonChannelCodingOQ04OQ01	GREEN	
+ShannonChannelCodingOQ04OQ01OQ01	GREEN	
 ShannonEntropyAristotle	RESIDUAL	type-mismatch
-ShannonEntropyOQ01	RESIDUAL	proof-drift
-ShannonEntropyOQ01OQ01	RESIDUAL	proof-drift
+ShannonEntropyOQ01	GREEN	
+ShannonEntropyOQ01OQ01	GREEN	
 ShannonEntropyOQ02	RESIDUAL	rewrite-drift
 ShannonSourceCodingOQ01	RESIDUAL	unknown-const:InformationTheory.mutualInformation
 ShannonSourceCodingOQ02	RESIDUAL	type-mismatch
@@ -2566,7 +2566,7 @@ TestApi1141	RESIDUAL	dot-notation-drift
 TestApi1148	RESIDUAL	proof-drift
 TestApi1159b	RESIDUAL	unknown-const:Configuration.HasLines.mkFinOrder
 TestApi1159c	RESIDUAL	proof-drift
-TestApi203	RESIDUAL	decide-maxrecdepth
+TestApi203	RESIDUAL	unclassified
 TestApi234	RESIDUAL	unknown-const:Continuous.if_lt
 TestApi241	RESIDUAL	noncomputable
 TestApi249	RESIDUAL	unknown-const:tsum_le_tsum
@@ -2603,14 +2603,14 @@ TestHolderApi	RESIDUAL	unknown-const:MeasureTheory.snorm
 TestSphereLocEuc	RESIDUAL	proof-drift
 TestWolstenholme	RESIDUAL	unknown-const:ZMod.prod_univ_prime
 TestZetaNonzero	RESIDUAL	proof-drift
-ThreeSquares	RESIDUAL	instance-synth
-ThreeSquaresGaussEureka	RESIDUAL	instance-synth
-ThreeSquaresRationalBridge	RESIDUAL	instance-synth
-ThreeSquaresRationalNecessity	RESIDUAL	instance-synth
-ThreeSquaresSquarefreeReduction	RESIDUAL	instance-synth
-ThreeSquaresSufficiency	RESIDUAL	instance-synth
-ThreeSquaresSufficiencyCorrected	RESIDUAL	instance-synth
-ThreeSquaresWitnessObstruction	RESIDUAL	instance-synth
+ThreeSquares	GREEN	
+ThreeSquaresGaussEureka	GREEN	
+ThreeSquaresRationalBridge	GREEN	
+ThreeSquaresRationalNecessity	GREEN	
+ThreeSquaresSquarefreeReduction	GREEN	
+ThreeSquaresSufficiency	GREEN	
+ThreeSquaresSufficiencyCorrected	GREEN	
+ThreeSquaresWitnessObstruction	GREEN	
 ThreeSubgroupsLemmaOQ0101	RESIDUAL	elab-drift
 ThreeSubgroupsLemmaOQ01OQ01	RESIDUAL	unknown-const:G
 TractatusQuantifiers	RESIDUAL	proof-drift
@@ -2618,7 +2618,7 @@ TriangleAngleSum	RESIDUAL	slow-timeout
 TriangleAngleSumOQ02	RESIDUAL	type-mismatch
 TriangleInequality	GREEN	
 TriangleInequalityOQ01	RESIDUAL	unknown-const:MeasureTheory.LpAddConst_of_one_le
-TriangleInequalityOQ04	RESIDUAL	signature-drift
+TriangleInequalityOQ04	GREEN	
 TriangleInequalityOQ06	RESIDUAL	instance-synth
 TriangularNumberReciprocals	RESIDUAL	unknown-const:Finset.sum_eq_sum_diff_singleton_add
 TriangularReciprocalGeneralized	RESIDUAL	instance-synth
@@ -2626,8 +2626,8 @@ TriangularReciprocalsFigurate	RESIDUAL	unknown-const:rpow_neg
 TriangularReciprocalsOQ04OQ01	RESIDUAL	type-mismatch
 TwinPrimesSpecialOQ01	GREEN	
 UnitDistanceIndependence	GREEN	
-UnitDistanceIndependenceOQ04	RESIDUAL	no-diag-captured
-UnitDistanceIndependenceOQ04Embed	RESIDUAL	no-diag-captured
+UnitDistanceIndependenceOQ04	GREEN	
+UnitDistanceIndependenceOQ04Embed	GREEN	
 UrysohnsLemmaOQ01OQ01OQ01	RESIDUAL	type-mismatch
 UrysohnsLemmaOQ01OQ01OQ01OQ01	RESIDUAL	type-mismatch
 UrysohnsLemmaOQ01OQ01OQ02	RESIDUAL	type-mismatch
@@ -2651,8 +2651,8 @@ WolstenholmeTheoremOQ03	GREEN
 YangMills2DOQ01	RESIDUAL	proof-drift
 YangMills2DOQ02	RESIDUAL	proof-drift
 YangMillsMassGap	RESIDUAL	unknown-const:Real.exp_lt_exp_of_lt
-ZsqrtdNegTwo	RESIDUAL	instance-synth
-ZsqrtdNegTwoOQ01	RESIDUAL	instance-synth
+ZsqrtdNegTwo	GREEN	
+ZsqrtdNegTwoOQ01	GREEN	
 ZsqrtdNegTwoOQ03	RESIDUAL	elab-drift
 ZsqrtdNegTwoOQ03OQ01	RESIDUAL	elab-drift
 ZsqrtdNegTwoOQ03OQ06	RESIDUAL	elab-drift

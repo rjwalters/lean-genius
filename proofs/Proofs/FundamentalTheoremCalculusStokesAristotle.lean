@@ -60,7 +60,7 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
   have hDiff : Differentiable ℝ f := by apply hf.differentiable; norm_num
   have hFDiff : Differentiable ℝ (fderiv ℝ f) := by
     have h : ContDiff ℝ 1 (fderiv ℝ f) := by apply hf.fderiv_right; norm_num
-    exact h.differentiable le_rfl
+    exact h.differentiable one_ne_zero
   -- HasDerivAt for embeddings: HasFDerivAt.prod (standalone, not dot notation) + .hasDerivAt
   -- HasDerivAt.prod / HasFDerivAtFilter.prod do NOT exist in Lean 4 Mathlib
   have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>

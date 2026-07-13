@@ -134,7 +134,7 @@ theorem series_positive (a : ℕ → ℤ) (h_mono : StrictMono a)
     erdosSeries a > 0 := by
   unfold erdosSeries
   have h_summable := series_converges a h_mono h_pos h_growth
-  apply tsum_pos h_summable
+  apply Summable.tsum_pos h_summable
   · intro n
     apply le_of_lt
     apply div_pos one_pos

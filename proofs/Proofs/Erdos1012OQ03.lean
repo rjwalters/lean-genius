@@ -1054,7 +1054,7 @@ can be extended. This is the key step for Moon-Moser.
 
 **Proof sketch** (longest cycle argument):
 Given cycle C of length k < n, pick any u ∉ C.
-• If ∃ i with arc(C(_ : i),u) ∧ arc(u,C(_ : (i+1)%k)): insert u → cycle of length k+1.
+• If ∃ i with arc(C[i],u) ∧ arc(u,C(_ : (i+1)%k)): insert u → cycle of length k+1.
 • Otherwise, by `tournament_cycle_non_insertable`: either all of C beats u
   or u beats all of C.
   – Partition non-cycle vertices into S⁺ (beats all of C) and S⁻ (beaten by all).
@@ -1072,7 +1072,7 @@ private lemma insertIdx_getElem_eq {α : Type*} (l : List α) (a : α) (i : ℕ)
       else l[j - 1]'(by simp [List.length_insertIdx hi] at hj; omega) := by
   induction i generalizing l j with
   | zero =>
-    simp only [List.insertIdx_zero, Nat.not_lt_zero, ↓reduceDite, Nat.zero_le, le_refl]
+    simp only [List.insertIdx_zero, Nat.not_lt_zero, ↓reduceDIte, Nat.zero_le, le_refl]
     rcases j with _ | j <;> simp
   | succ i ih =>
     rcases l with _ | ⟨a', t⟩
@@ -1311,7 +1311,7 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
             have hinext_eq : inext = i + 1 := by
               simp [hinext_def]; exact Nat.mod_eq_of_lt (by omega)
             rw [hinext_eq]
-            simp only [show i < k from by omega, show i + 1 < k from by omega, ↓reduceDite]
+            simp only [show i < k from by omega, show i + 1 < k from by omega, ↓reduceDIte]
             convert harcs i (by omega) using 2
             exact (Nat.mod_eq_of_lt (show i + 1 < k from by omega)).symm
           · -- i = k-1: arc(l[k-1], a)
@@ -1319,14 +1319,14 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
               simp [hinext_def, show k - 1 + 1 = k from by omega]
               exact Nat.mod_eq_of_lt (by omega)
             rw [hinext_eq]
-            simp only [show k - 1 < k from by omega, ↓reduceDite,
+            simp only [show k - 1 < k from by omega, ↓reduceDIte,
                        show k = k from rfl, if_true]
             exact ha_sm (k - 1) (by omega)
           · -- i = k: arc(a, b)
             have hinext_eq : inext = k + 1 := by
               simp [hinext_def]; exact Nat.mod_eq_of_lt (by omega)
             rw [hinext_eq]
-            simp only [show ¬(k < k) from lt_irrefl k, ↓reduceDite,
+            simp only [show ¬(k < k) from lt_irrefl k, ↓reduceDIte,
                        show k = k from rfl, if_true,
                        show ¬(k + 1 < k) from by omega, show k + 1 ≠ k from by omega, if_false]
             exact harc_ab
@@ -1335,7 +1335,7 @@ private lemma tournament_cycle_extendable (D : Digraph V) (hT : D.IsTournament)
               simp [hinext_def, show k + 1 + 1 = k + 2 from by omega, Nat.mod_self]
             rw [hinext_eq]
             simp only [show ¬(k + 1 < k) from by omega, show k + 1 ≠ k from by omega, if_false,
-                       show (0 : ℕ) < k from by omega, ↓reduceDite]
+                       show (0 : ℕ) < k from by omega, ↓reduceDIte]
             exact hb_sp 0 (by omega)
         · -- l.length < (l ++ [a, b]).length
           simp [hlen2]; omega
@@ -1759,7 +1759,7 @@ Proof structure (grow-cycle approach):
 
 **Future work** (path surgery to eliminate the axiom):
 1. Cross condition (PROVED via `gh_cross_gives_longer_cycle`):
-   If ∃ i with arc(l_max(_ : i), v) AND arc(w, l_max(_ : (i+1)%k)), then
+   If ∃ i with arc(l_max[i], v) AND arc(w, l_max(_ : (i+1)%k)), then
    l_max.rotate(i+1) ++ [v, w] is a cycle of length k+2. Contradicts maximality.
 2. No-cross case: needs SC path surgery (Menger's theorem), ~150-200 lines.
 

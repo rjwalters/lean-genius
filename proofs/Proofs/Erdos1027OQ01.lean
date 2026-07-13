@@ -172,7 +172,7 @@ theorem property_b_from_union_bound (F : SetFamily α) (n : ℕ) (hn : 0 < n)
   have hbound := good_set_lower_bound F n hn huniform hsubset
   -- Show |goodSets F| > 0
   have hpos : 0 < (goodSets F).card := by
-    nlinarith [Nat.pos_pow_of_pos (n - 1) (by norm_num : 0 < 2),
+    nlinarith [pow_pos (by norm_num : 0 < 2) (n - 1),
               Nat.pos_pow_of_pos (familyUnion F).card (by norm_num : 0 < 2),
               Nat.sub_add_cancel hXbig,
               pow_add (2 : ℕ) ((familyUnion F).card - n) n]

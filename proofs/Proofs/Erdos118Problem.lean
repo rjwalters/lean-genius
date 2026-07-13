@@ -96,7 +96,7 @@ theorem partition_transition_exists (α : Ordinal.{0}) (k m : ℕ)
     (hk : IsPartitionOrd α k) (hm : ¬ IsPartitionOrd α m) (hkm : k < m) :
     ∃ t, k ≤ t ∧ t < m ∧ IsPartitionOrd α t ∧ ¬ IsPartitionOrd α (t + 1) := by
   revert k
-  induction m using Nat.strong_rec_on with
+  induction m using Nat.strongRecOn with
   | _ m ih =>
     intro k hk hm hkm
     by_cases hm1 : IsPartitionOrd α (m - 1)

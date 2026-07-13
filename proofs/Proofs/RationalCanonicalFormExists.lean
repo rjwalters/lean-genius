@@ -337,9 +337,9 @@ Existence of elementary divisors: monic prime powers whose product is the charpo
 and whose lcm (characterized by the universal divisibility property) is the minpoly.
 -/
 lemma exists_elementary_divisors {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n F) :
-    ∃ (m : ℕ) (q : Fin m → F(_ : X)),
+    ∃ (m : ℕ) (q : Fin m → F[X]),
       (∀ i, (q i).Monic) ∧ (∀ i, 0 < (q i).natDegree) ∧
-      (∀ i, ∃ π : F(_ : X), Irreducible π ∧ ∃ k : ℕ, 0 < k ∧ q i = π ^ k) ∧
+      (∀ i, ∃ π : F[X], Irreducible π ∧ ∃ k : ℕ, 0 < k ∧ q i = π ^ k) ∧
       M.charpoly = ∏ i, q i ∧
       (∀ c : F[X], minpoly F M ∣ c ↔ ∀ i, q i ∣ c) := by
   obtain ⟨ι', _instι', p, hp, ev, ⟨e⟩⟩ := Module.equiv_directSum_of_isTorsion (Module.AEval.isTorsion_of_finiteDimensional F (n → F) (Matrix.toLin' M));
@@ -394,14 +394,14 @@ lemma exists_chain_aux {ι : Type*} [DecidableEq ι]
     (π : ι → F[X]) (k : ι → ℕ)
     (hmonπ : ∀ i, (π i).Monic) (hirr : ∀ i, Irreducible (π i)) (hk : ∀ i, 0 < k i)
     (s : Finset ι) :
-    ∃ L : List F(_ : X),
+    ∃ L : List F[X],
       (∀ p ∈ L, p.Monic) ∧ (∀ p ∈ L, 0 < p.natDegree) ∧
       (∀ a b : Fin L.length, (a : ℕ) ≤ b → L[a] ∣ L[b]) ∧
       L.prod = ∏ i ∈ s, π i ^ k i ∧
       (∀ c : F[X], (L.getLast?.getD 1 ∣ c) ↔ ∀ i ∈ s, π i ^ k i ∣ c) := by
   by_cases hs : s.Nonempty;
   · induction' s using Finset.strongInduction with s ih;
-    obtain ⟨R, d, hR, hd⟩ : ∃ R : Finset ι, ∃ d : F(_ : X), R ⊆ s ∧ R.Nonempty ∧ d = ∏ i ∈ R, (π i) ^ (k i) ∧ (∀ i ∈ s, (π i) ^ (k i) ∣ d) ∧ (∀ c : F[X], d ∣ c ↔ ∀ i ∈ R, (π i) ^ (k i) ∣ c) := by
+    obtain ⟨R, d, hR, hd⟩ : ∃ R : Finset ι, ∃ d : F[X], R ⊆ s ∧ R.Nonempty ∧ d = ∏ i ∈ R, (π i) ^ (k i) ∧ (∀ i ∈ s, (π i) ^ (k i) ∣ d) ∧ (∀ c : F[X], d ∣ c ↔ ∀ i ∈ R, (π i) ^ (k i) ∣ c) := by
       obtain ⟨R, hR⟩ : ∃ R : Finset ι, R ⊆ s ∧ R.Nonempty ∧ (∀ i ∈ s, ∃ j ∈ R, π i = π j ∧ k i ≤ k j) ∧ (∀ i ∈ R, ∀ j ∈ R, π i = π j → i = j) := by
         have hR : ∃ R : Finset ι, R ⊆ s ∧ (∀ i ∈ s, ∃ j ∈ R, π i = π j ∧ k i ≤ k j) ∧ (∀ i ∈ R, ∀ j ∈ R, π i = π j → i = j) := by
           have hR : ∀ t : Finset ι, t ⊆ s → ∃ R : Finset ι, R ⊆ t ∧ (∀ i ∈ t, ∃ j ∈ R, π i = π j ∧ k i ≤ k j) ∧ (∀ i ∈ R, ∀ j ∈ R, π i = π j → i = j) := by
@@ -429,7 +429,7 @@ lemma exists_chain_aux {ι : Type*} [DecidableEq ι]
           · intro i hi j hj hij;
             exact IsCoprime.pow ( by exact ( hirr i |> Irreducible.coprime_iff_not_dvd ) |>.2 fun h => hij <| hR.2.2.2 i hi j hj <| Polynomial.eq_of_monic_of_associated ( hmonπ i ) ( hmonπ j ) <| associated_of_dvd_dvd h <| (hirr i).dvd_symm (hirr j) h );
           · exact h;
-    obtain ⟨L', hL'mon, hL'pos, hL'chain, hL'prod, hL'last⟩ : ∃ L' : List F(_ : X), (∀ p ∈ L', p.Monic) ∧ (∀ p ∈ L', 0 < p.natDegree) ∧ (∀ a b : Fin L'.length, a.val ≤ b.val → L'[a] ∣ L'[b]) ∧ L'.prod = ∏ i ∈ s \ R, (π i) ^ (k i) ∧ (∀ c : F[X], L'.getLast?.getD 1 ∣ c ↔ ∀ i ∈ s \ R, (π i) ^ (k i) ∣ c) := by
+    obtain ⟨L', hL'mon, hL'pos, hL'chain, hL'prod, hL'last⟩ : ∃ L' : List F[X], (∀ p ∈ L', p.Monic) ∧ (∀ p ∈ L', 0 < p.natDegree) ∧ (∀ a b : Fin L'.length, a.val ≤ b.val → L'[a] ∣ L'[b]) ∧ L'.prod = ∏ i ∈ s \ R, (π i) ^ (k i) ∧ (∀ c : F[X], L'.getLast?.getD 1 ∣ c ↔ ∀ i ∈ s \ R, (π i) ^ (k i) ∣ c) := by
       by_cases hR' : (s \ R).Nonempty;
       · grind +extAll;
       · use [] ; simp_all +decide [ Finset.Nonempty ] ;
@@ -464,8 +464,8 @@ Regrouping prime powers into an invariant-factor chain (pure polynomial combinat
 -/
 lemma exists_chain_of_prime_powers {ι : Type*} [Fintype ι]
     (q : ι → F[X]) (hmon : ∀ i, (q i).Monic)
-    (hpp : ∀ i, ∃ π : F(_ : X), Irreducible π ∧ ∃ k : ℕ, 0 < k ∧ q i = π ^ k) :
-    ∃ L : List F(_ : X),
+    (hpp : ∀ i, ∃ π : F[X], Irreducible π ∧ ∃ k : ℕ, 0 < k ∧ q i = π ^ k) :
+    ∃ L : List F[X],
       (∀ p ∈ L, p.Monic) ∧ (∀ p ∈ L, 0 < p.natDegree) ∧
       (∀ s t : Fin L.length, (s : ℕ) ≤ t → L[s] ∣ L[t]) ∧
       L.prod = ∏ i, q i ∧

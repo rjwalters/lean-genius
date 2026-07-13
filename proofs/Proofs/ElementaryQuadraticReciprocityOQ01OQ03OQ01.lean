@@ -237,9 +237,13 @@ theorem sign_mulPerm_eq_quadraticChar (hp2 : p ≠ 2) (a : (ZMod p)ˣ) :
     have hpow : Equiv.Perm.sign (mulPerm a) = (Equiv.Perm.sign (mulPerm g)) ^ n := by
       rw [← hn]
       exact map_pow ((Equiv.Perm.sign : Perm (ZMod p)ˣ →* ℤˣ).comp mulPermHom) g n
-    rw [hpow, Units.val_pow_eq_pow_val, hsg]
+    rw [hpow]
+    show ((Equiv.Perm.sign (mulPerm g) : ℤ)) ^ n = (-1 : ℤ) ^ n
+    rw [hsg]
   have hchar : quadraticChar (ZMod p) (a : ZMod p) = (-1) ^ n := by
-    rw [← hn, Units.val_pow_eq_pow_val, map_pow, hqg]
+    rw [← hn]
+    show quadraticChar (ZMod p) ((g : ZMod p) ^ n) = (-1) ^ n
+    rw [map_pow, hqg]
   rw [hsign, hchar]
 
 /-- Bridge to the Legendre symbol: `legendreSym p` of the integer lift of a unit

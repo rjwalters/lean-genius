@@ -110,7 +110,7 @@ theorem cond_failure_le_x_all
     · -- null history: the conditional is `0`
       rw [cond_apply (measurableSet_survival hA S),
         measure_mono_null Set.inter_subset_left hnull, mul_zero]
-      exact zero_le _
+      exact zero_le
     · -- positive history: apply the single induction step over the neighbour / non-neighbour split
       set S₁ := S.filter (dep i) with hS1def
       set S₂ := S.filter (fun j => ¬ dep i j) with hS2def

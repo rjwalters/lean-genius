@@ -160,7 +160,7 @@ theorem resolvent_norm_bound (a : A) {lam : 𝕜} (hlam : lam ≠ 0) (ha : ‖a�
     _ = ‖lam‖⁻¹ * (1 - ‖T‖)⁻¹ := by rw [norm_inv]
     _ ≤ ‖lam‖⁻¹ * (1 - ‖lam‖⁻¹ * ‖a‖)⁻¹ := by {
         apply mul_le_mul_of_nonneg_left _ (inv_nonneg.mpr (norm_nonneg _))
-        apply inv_anti_of_pos
+        apply inv_anti₀
         · linarith [norm_inv_smul_lt_one a hlam ha]
         · calc 1 - ‖lam‖⁻¹ * ‖a‖
             _ ≤ 1 - ‖T‖ := by {

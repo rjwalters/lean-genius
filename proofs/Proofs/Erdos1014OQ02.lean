@@ -121,7 +121,7 @@ theorem log_over_l_faster_than_inv_log :
   have hl_gt1 : (1 : ℝ) < (l : ℝ) := by exact_mod_cast (show 1 < l by omega)
   have hlog_pos : 0 < Real.log (l : ℝ) := Real.log_pos hl_gt1
   -- Suffices to show (log l)² < l
-  rw [div_lt_div_iff hl_pos hlog_pos]
+  rw [div_lt_div_iff₀ hl_pos hlog_pos]
   -- (log l)² < l, i.e., log l · log l < 1 · l
   rw [one_mul]
   -- From little-o: ‖log l‖ ≤ 1 · ‖l^(1/2)‖, i.e., log l ≤ l^(1/2)

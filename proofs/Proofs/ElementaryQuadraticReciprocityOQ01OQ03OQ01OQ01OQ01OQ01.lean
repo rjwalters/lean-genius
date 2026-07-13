@@ -279,7 +279,7 @@ theorem sign_ringMulPerm_eq_legendre_pow {p : ℕ} [hp : Fact p.Prime] (hp2 : p 
       haveI : Subsingleton (ZMod (p ^ 0)) := ZMod.subsingleton_iff.mpr (pow_zero p)
       have h1 : ringMulPerm (ZMod.unitsMap (pow_dvd_pow p (Nat.le_succ 0)) a) = 1 := by
         ext x; exact Subsingleton.elim _ _
-      rw [h1]; simp
+      rw [h1, map_one, Units.val_one]
     rw [htriv, mul_one]
     exact (pow_one _).symm
   | succ k ih =>

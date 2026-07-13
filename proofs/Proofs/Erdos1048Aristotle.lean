@@ -38,7 +38,7 @@ theorem xpow_sub_const_degree (a : ℂ) (n : ℕ) (hn : n ≥ 1) :
 -- Routine: |r * exp(iθ)| = |r| for r : ℝ
 theorem abs_mul_exp (r : ℝ) (θ : ℝ) :
     Complex.abs (r * Complex.exp (θ * Complex.I)) = |r| := by
-  rw [map_mul, Complex.abs_exp_ofReal_mul_I, mul_one, Complex.abs_ofReal]
+  rw [map_mul, Complex.norm_exp_ofReal_mul_I, mul_one, Complex.abs_ofReal]
 
 -- Routine: If z^n = r^n for r > 0, then |z| = r
 theorem abs_root_of_pow_eq (z : ℂ) (r : ℝ) (n : ℕ) (hr : r > 0) (hn : n ≥ 1)
@@ -47,7 +47,7 @@ theorem abs_root_of_pow_eq (z : ℂ) (r : ℝ) (n : ℕ) (hr : r > 0) (hn : n �
     rw [← map_pow, h, map_pow, Complex.abs_ofReal, abs_of_pos hr]
   by_contra h_ne
   rcases Ne.lt_or_lt h_ne with h_lt | h_gt
-  · exact absurd h_abs (ne_of_lt (pow_lt_pow_left h_lt (Complex.abs.nonneg z) (by omega)))
+  · exact absurd h_abs (ne_of_lt (pow_lt_pow_left h_lt (norm_nonneg z) (by omega)))
   · exact absurd h_abs (ne_of_gt (pow_lt_pow_left h_gt (le_of_lt hr) (by omega)))
 
 -- Routine: Polynomial evaluation is continuous

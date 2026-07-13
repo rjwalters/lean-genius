@@ -176,7 +176,7 @@ When k is a power of 2, N(k, 1) = k(k-1) + 1 = k² - k + 1.
 -/
 theorem spencer_power_of_two (t : ℕ) :
     Nkl (2^t) 1 = 2^t * (2^t - 1) + 1 := by
-  have hk : 2^t > 0 := Nat.pos_pow_of_pos t (by norm_num)
+  have hk : 2^t > 0 := pow_pos (by norm_num) t
   have := spencer_1973 (2^t) hk
   simp only at this
   -- The 2-adic valuation of 2^t is t
