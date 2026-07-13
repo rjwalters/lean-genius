@@ -76,7 +76,7 @@ theorem scalingExponent_lt_one (k : ℕ) (hk : 1 ≤ k) : scalingExponent k < 1 
   unfold scalingExponent
   simp only [show k ≠ 0 from by omega, ite_false]
   rw [div_lt_one (by positivity : (k : ℝ) > 0)]
-  simp; omega
+  simp
 
 /-- The scaling exponent is strictly increasing in k for k ≥ 1. -/
 theorem scalingExponent_mono {k₁ k₂ : ℕ} (hk₁ : 1 ≤ k₁) (h : k₁ ≤ k₂) :

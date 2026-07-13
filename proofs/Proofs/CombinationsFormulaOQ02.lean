@@ -50,7 +50,6 @@ theorem catalan_zero : catalan 0 = 1 := by
 /-- C₁ = 1. -/
 theorem catalan_one : catalan 1 = 1 := by
   simp [catalan]
-  norm_num
 
 /-- C₂ = 2. -/
 theorem catalan_two : catalan 2 = 2 := by

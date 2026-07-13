@@ -74,7 +74,6 @@ private lemma gpf_mem_primeFactorsList {n : ℕ} (hn : n > 1) :
   have hls : n.primeFactorsList.getLast? = some (n.primeFactorsList.getLast hne) :=
     List.getLast?_eq_getLast hne
   simp [hls]
-  exact List.getLast_mem hne
 
 /-- gpf of n > 1 divides n. Proved from Mathlib's primeFactorsList API. -/
 theorem gpf_dvd (n : ℕ) (hn : n > 1) : gpf n ∣ n := by

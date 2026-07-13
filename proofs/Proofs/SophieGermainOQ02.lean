@@ -151,6 +151,6 @@ theorem safePrime_of_sg (p : ℕ) (hp : IsSophieGermainPrime p) :
 
 /-- The safe prime 2p+1 is always odd for p ≥ 1. -/
 theorem safePrime_odd (p : ℕ) (hp : 1 ≤ p) : SafePrime p % 2 = 1 := by
-  simp [SafePrime]; omega
+  simp [SafePrime]
 
 end SophieGermainOQ02

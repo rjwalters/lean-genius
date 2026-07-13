@@ -145,7 +145,7 @@ theorem f_pos {n : ℕ} (hn : 1 ≤ n) : 0 < f n := by
 /-- f(n) ≥ n for all n: each term τ(2^k - 1) ≥ 1. -/
 theorem f_ge (n : ℕ) : n ≤ f n := by
   unfold f
-  calc n = (Finset.Icc 1 n).card := by simp [Nat.card_Icc]; omega
+  calc n = (Finset.Icc 1 n).card := by simp [Nat.card_Icc]
     _ = ∑ _ ∈ Finset.Icc 1 n, 1 := by rw [Finset.sum_const]; simp
     _ ≤ ∑ k ∈ Finset.Icc 1 n, tau (2 ^ k - 1) := by
         apply Finset.sum_le_sum; intro k hk

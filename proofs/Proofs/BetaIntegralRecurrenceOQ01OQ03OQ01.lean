@@ -95,7 +95,7 @@ theorem integral_recurrence (m n : ℕ) :
       simpa using (hasDerivAt_id x).const_sub (1 : ℝ)
     have h2 := h1.pow (n + 1)
     simp only [Nat.add_sub_cancel] at h2
-    convert h2 using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+    convert h2 using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   -- derivative of v = x^(m+1)/(m+1)
   have hv : ∀ x ∈ Set.uIcc (0:ℝ) 1,
       HasDerivAt (fun y : ℝ => y ^ (m + 1) / ((m : ℝ) + 1)) (x ^ m) x := by

@@ -776,7 +776,7 @@ theorem vosper (A B : Finset (ZMod p)) (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
           | zero => simpa using ha₀A
           | succ n ih =>
             have := hclosed _ ih
-            convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+            convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
         have horbit : ∀ k : Fin p, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A :=
           fun k => horbit_nat k.val
         have himg_card : (Finset.univ.image (fun k : Fin p =>

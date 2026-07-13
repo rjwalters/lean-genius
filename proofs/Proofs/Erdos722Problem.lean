@@ -225,10 +225,8 @@ theorem fano_plane_divisibility : DivisibilityConditions 2 3 7 := by
   interval_cases i
   · -- i = 0: 3 | 21 ✓
     simp [Nat.choose]
-    decide
   · -- i = 1: 2 | 6 ✓
     simp [Nat.choose]
-    decide
 
 /--
 **Example: S(2,3,9)**
@@ -237,8 +235,8 @@ theorem fano_plane_divisibility : DivisibilityConditions 2 3 7 := by
 theorem s239_divisibility : DivisibilityConditions 2 3 9 := by
   intro i hi
   interval_cases i
-  · simp [Nat.choose]; decide
-  · simp [Nat.choose]; decide
+  · simp [Nat.choose]
+  · simp [Nat.choose]
 
 /-
 ## Part VIII: Related Concepts

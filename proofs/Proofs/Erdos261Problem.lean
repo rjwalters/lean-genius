@@ -114,7 +114,7 @@ theorem partial_sum_formula (n : ℕ) :
     (Finset.range n).sum (fun k => recipPow2Weight (k + 1)) =
     2 - ((n : ℚ) + 2) / 2 ^ n := by
   induction n with
-  | zero => simp [recipPow2Weight]; ring
+  | zero => simp [recipPow2Weight]
   | succ n ih =>
     rw [Finset.sum_range_succ, ih]
     unfold recipPow2Weight
@@ -129,7 +129,7 @@ theorem partial_sum_formula (n : ℕ) :
 theorem representable_one : IsRepresentable 1 := by
   refine ⟨{4, 5, 6}, ?_, ?_, ?_⟩
   · -- card ≥ 2
-    simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
+    simp [Finset.card_insert_of_notMem, Finset.card_singleton]
   · -- all ≥ 1
     intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl <;> omega
@@ -157,7 +157,7 @@ theorem representable_two : IsRepresentable 2 :=
 theorem representable_three : IsRepresentable 3 := by
   refine ⟨{4, 6, 8}, ?_, ?_, ?_⟩
   · -- card ≥ 2
-    simp [Finset.card_insert_of_notMem, Finset.card_singleton]; omega
+    simp [Finset.card_insert_of_notMem, Finset.card_singleton]
   · -- all ≥ 1
     intro k hk; simp [Finset.mem_insert, Finset.mem_singleton] at hk
     rcases hk with rfl | rfl | rfl <;> omega

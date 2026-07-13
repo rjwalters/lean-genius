@@ -71,7 +71,6 @@ theorem edgeBoundary_card_ge_two {S : Finset ℤ} (h : 2 ≤ S.card) :
     · intro hcontra
       have := S.min'_le _ hcontra
       simp [← hm_def] at this
-      linarith
   have h_hi : M + 1 ∈ edgeBoundary S := by
     rw [mem_edgeBoundary]
     refine ⟨Or.inr ?_, ?_⟩
@@ -79,7 +78,6 @@ theorem edgeBoundary_card_ge_two {S : Finset ℤ} (h : 2 ≤ S.card) :
     · intro hcontra
       have := S.le_max' _ hcontra
       simp [← hM_def] at this
-      linarith
   have h_ne : m - 1 ≠ M + 1 := by linarith
   have h_sub : ({m - 1, M + 1} : Finset ℤ) ⊆ edgeBoundary S := by
     intro x hx

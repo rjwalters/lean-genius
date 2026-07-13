@@ -152,21 +152,18 @@ theorem hyperbolic_ptolemy_inequality (z₁ z₂ z₃ z₄ : ℂ)
          Real.sqrt (1 - ‖z₃‖ ^ 2) * Real.sqrt (1 - ‖z₄‖ ^ 2)) := by
     rw [poincareChord_eq_div_mul h1 h3, poincareChord_eq_div_mul h2 h4]
     field_simp
-    ring
   have e12_34 : poincareChord z₁ z₂ * poincareChord z₃ z₄ =
       ‖z₁ - z₂‖ * ‖z₃ - z₄‖ /
         (Real.sqrt (1 - ‖z₁‖ ^ 2) * Real.sqrt (1 - ‖z₂‖ ^ 2) *
          Real.sqrt (1 - ‖z₃‖ ^ 2) * Real.sqrt (1 - ‖z₄‖ ^ 2)) := by
     rw [poincareChord_eq_div_mul h1 h2, poincareChord_eq_div_mul h3 h4]
     field_simp
-    ring
   have e23_14 : poincareChord z₂ z₃ * poincareChord z₁ z₄ =
       ‖z₂ - z₃‖ * ‖z₁ - z₄‖ /
         (Real.sqrt (1 - ‖z₁‖ ^ 2) * Real.sqrt (1 - ‖z₂‖ ^ 2) *
          Real.sqrt (1 - ‖z₃‖ ^ 2) * Real.sqrt (1 - ‖z₄‖ ^ 2)) := by
     rw [poincareChord_eq_div_mul h2 h3, poincareChord_eq_div_mul h1 h4]
     field_simp
-    ring
   rw [e13_24, e12_34, e23_14, ← add_div]
   gcongr
   exact ptolemy_inequality z₁ z₂ z₃ z₄
@@ -206,21 +203,18 @@ theorem hyperbolic_ptolemy_equality (z₁ z₂ z₃ z₄ : ℂ)
          Real.sqrt (1 - ‖z₃‖ ^ 2) * Real.sqrt (1 - ‖z₄‖ ^ 2)) := by
     rw [poincareChord_eq_div_mul h1 h3, poincareChord_eq_div_mul h2 h4]
     field_simp
-    ring
   have e12_34 : poincareChord z₁ z₂ * poincareChord z₃ z₄ =
       ‖z₁ - z₂‖ * ‖z₃ - z₄‖ /
         (Real.sqrt (1 - ‖z₁‖ ^ 2) * Real.sqrt (1 - ‖z₂‖ ^ 2) *
          Real.sqrt (1 - ‖z₃‖ ^ 2) * Real.sqrt (1 - ‖z₄‖ ^ 2)) := by
     rw [poincareChord_eq_div_mul h1 h2, poincareChord_eq_div_mul h3 h4]
     field_simp
-    ring
   have e23_14 : poincareChord z₂ z₃ * poincareChord z₁ z₄ =
       ‖z₂ - z₃‖ * ‖z₁ - z₄‖ /
         (Real.sqrt (1 - ‖z₁‖ ^ 2) * Real.sqrt (1 - ‖z₂‖ ^ 2) *
          Real.sqrt (1 - ‖z₃‖ ^ 2) * Real.sqrt (1 - ‖z₄‖ ^ 2)) := by
     rw [poincareChord_eq_div_mul h2 h3, poincareChord_eq_div_mul h1 h4]
     field_simp
-    ring
   rw [e13_24, e12_34, e23_14, ← add_div,
       ptolemy_equality_of_proportional z₁ z₂ z₃ z₄ t ht hprop]
 

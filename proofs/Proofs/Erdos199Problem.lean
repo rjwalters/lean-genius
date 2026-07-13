@@ -123,8 +123,8 @@ example : has3AP {n : ℝ | ∃ k : ℕ, n = k} := by
   · constructor
     · use 1; ring
     · constructor
-      · use 2; ring
-      · use 3; ring
+      · use 2
+      · use 3
 
 /-- The rationals contain infinite APs (e.g., 0, 1, 2, 3, ...) -/
 example : containsInfiniteAP {q : ℝ | ∃ r : ℚ, q = r} := by

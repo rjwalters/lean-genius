@@ -87,19 +87,19 @@ theorem hasDerivAt_dalzellAntideriv (x : ℝ) :
   -- Individual term derivatives
   have h7 : HasDerivAt (fun x : ℝ => x ^ 7 / 7) (x ^ 6) x := by
     have := (hasDerivAt_pow 7 x).div_const (7 : ℝ)
-    convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h6 : HasDerivAt (fun x : ℝ => 2 * x ^ 6 / 3) (4 * x ^ 5) x := by
     have := ((hasDerivAt_pow 6 x).const_mul 2).div_const (3 : ℝ)
-    convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h5 : HasDerivAt (fun x : ℝ => x ^ 5) (5 * x ^ 4) x := by
     have := hasDerivAt_pow 5 x
-    convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h3 : HasDerivAt (fun x : ℝ => 4 * x ^ 3 / 3) (4 * x ^ 2) x := by
     have := ((hasDerivAt_pow 3 x).const_mul 4).div_const (3 : ℝ)
-    convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h1 : HasDerivAt (fun x : ℝ => 4 * x) (4 : ℝ) x := by
     have := (hasDerivAt_id x).const_mul (4 : ℝ)
-    convert this using 1 <;> (first | rfl | ring | (push_cast; ring) | norm_num)
+    convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have ha : HasDerivAt (fun x : ℝ => 4 * arctan x) (4 / (1 + x ^ 2)) x := by
     have := (hasDerivAt_arctan x).const_mul (4 : ℝ)
     convert this using 1 <;> (first | rfl | ring | norm_num)

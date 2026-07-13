@@ -1067,7 +1067,7 @@ noncomputable def GridSimplex.boundaryFlipLast
               simp only [show (j_step.castSucc.val = 0) = True from eq_true hcs_zero,
                          show (j_step.succ.val = 0) = False from eq_false hss_nz,
                          ite_true, ite_false]
-              have h_eq : s.verts ⟨j_step.succ.val - 1, by simp [Fin.succ]; omega⟩ = v0 := by
+              have h_eq : s.verts ⟨j_step.succ.val - 1, by simp [Fin.succ] ⟩ = v0 := by
                 congr 1; ext; simp [Fin.succ]; omega
               rw [h_eq]
               symm

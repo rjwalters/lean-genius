@@ -37,7 +37,7 @@ theorem prime_199 : Nat.Prime 199 := by decide
 /-- 223 fails the Erdős 1059 property: 223 - 4! = 223 - 24 = 199 is prime. -/
 theorem counterexample_223 : ¬AllFactorialSubtractionsComposite 223 := by
   intro h
-  have h4 := h 4 (by simp [Nat.factorial]; omega)
+  have h4 := h 4 (by simp [Nat.factorial] )
   simp [Nat.factorial] at h4
   exact h4 (by decide)
 

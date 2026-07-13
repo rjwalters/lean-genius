@@ -857,7 +857,7 @@ Certain cases of the congruent number problem have been known for centuries.
 theorem curveMinusX_eq_congruent_one :
     curveMinusX = congruentNumberCurve 1 (by norm_num) := by
   apply EllipticCurveQ.ext
-  · simp [curveMinusX, congruentNumberCurve]; norm_num
+  · simp [curveMinusX, congruentNumberCurve]
   · simp [curveMinusX, congruentNumberCurve]
 
 /-- 1 is NOT a congruent number (proved by Fermat using infinite descent).

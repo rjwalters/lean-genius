@@ -112,7 +112,7 @@ def ringCommutator (x y : R) : R := x * y - y * x
 /-- The commutator is antisymmetric: [y, x] = -[x, y]. -/
 theorem ringCommutator_antisymm (x y : R) :
     ringCommutator y x = -ringCommutator x y := by
-  simp [ringCommutator]; ring
+  simp [ringCommutator]
 
 /-- The commutator with self is zero: [x, x] = 0. -/
 theorem ringCommutator_self (x : R) : ringCommutator x x = 0 := by

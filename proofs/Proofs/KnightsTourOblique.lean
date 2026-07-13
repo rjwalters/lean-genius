@@ -1488,11 +1488,9 @@ theorem rotate_reflect_conjugate (s : Square) :
 /-- applyD4 with inverse gives identity -/
 theorem applyD4_inv_left (g : Bool × Fin 4) (s : Square) :
     applyD4 (d4Inv g) (applyD4 g s) = s := by
+  revert s
   obtain ⟨b, k⟩ := g
-  fin_cases k <;> cases b <;>
-    simp only [applyD4, d4Inv, rotateSquareN, reflectSquare, rotateSquare90,
-               Bool.false_eq_true, if_false, if_true, ite_false, ite_true, Fin.isValue] <;>
-    (ext <;> skip <;> omega)
+  fin_cases k <;> cases b <;> decide
 
 /-- Rotation by 90° is injective -/
 theorem rotateSquare90_injective : Function.Injective rotateSquare90 := by

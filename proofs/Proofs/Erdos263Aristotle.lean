@@ -109,7 +109,6 @@ theorem doubleExp_tail_bound (N : ℕ) :
     have h1r_pos : (0 : ℝ) < 1 - 1 / D ^ 2 := by
       rw [sub_pos, div_lt_one (by positivity)]; nlinarith
     field_simp [hD2_ne, h1r_pos.ne']
-    ring
   -- Rewrite tsum in goal using hterm, then bound
   rw [show (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) =
           (fun k => 1 / D ^ (2 ^ (k + 1))) from funext hterm]
@@ -140,7 +139,6 @@ theorem tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     | succ k ih =>
       rw [ih, Finset.sum_range_succ, hshift k, ← add_assoc]
       congr 1
-      apply tsum_congr
       intro n; ring
   linarith [hsplit N, hshift N]
 

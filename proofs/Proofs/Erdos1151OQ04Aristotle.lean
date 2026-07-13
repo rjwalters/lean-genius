@@ -39,7 +39,6 @@ theorem n_mul_chebyshevAngle (n : ℕ) (hn : 0 < n) (k : Fin n) :
     (2 * k.val + 1 : ℝ) * Real.pi / 2 := by
   have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
   field_simp
-  ring
 
 /-- The Chebyshev node angles are positive. -/
 theorem chebyshevAngle_pos (n : ℕ) (k : Fin n) :

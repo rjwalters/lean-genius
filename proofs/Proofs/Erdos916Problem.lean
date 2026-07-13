@@ -212,7 +212,6 @@ any 3 vertices form a cycle, the 4th is adjacent to all 3.
 theorem case_n_eq_4 :
     edgeThreshold 4 = 6 := by
   simp only [edgeThreshold]
-  norm_num
 
 /--
 **Case n = 5:**
@@ -221,7 +220,6 @@ theorem case_n_eq_4 :
 theorem case_n_eq_5 :
     edgeThreshold 5 = 8 := by
   simp only [edgeThreshold]
-  norm_num
 
 /--
 **Case n = 6:**
@@ -230,7 +228,6 @@ theorem case_n_eq_5 :
 theorem case_n_eq_6 :
     edgeThreshold 6 = 10 := by
   simp only [edgeThreshold]
-  norm_num
 
 /-
 ## Part VIII: Average Degree Analysis
