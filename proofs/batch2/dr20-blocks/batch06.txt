@@ -1,0 +1,546 @@
+===== Erdos44Problem
+error: Proofs/Erdos44Problem.lean:226:79: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/Erdos44Problem.lean:251:79: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/Erdos44Problem.lean:264:26: invalid `▸` notation, expected result type of cast is 
+  2 ∣ 1 + 2 ^ d
+however, the equality 
+
+===== Erdos450Problem
+error: Proofs/Erdos450Problem.lean:100:41: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+
+===== Erdos453OQ02
+error: Proofs/Erdos453OQ02.lean:58:2: Type mismatch
+  nth_mem_of_infinite infinite_setOf_prime (n - 1)
+has type
+error: Proofs/Erdos453OQ02.lean:94:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:96:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:98:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:96:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:98:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:100:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:98:27: No goals to be solved
+error: Proofs/Erdos453OQ02.lean:100:27: No goals to be solved
+error: Lean exited with code 1
+
+===== Erdos453Problem
+error: Proofs/Erdos453Problem.lean:71:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:72:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:72:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:73:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:83:2: Type mismatch
+error: Proofs/Erdos453Problem.lean:74:27: No goals to be solved
+error: Proofs/Erdos453Problem.lean:83:2: Type mismatch
+  nth_mem_of_infinite infinite_setOf_prime (n - 1)
+
+===== Erdos454Problem
+error: Proofs/Erdos454Problem.lean:34:48: Ambiguous term
+  Prime
+Possible interpretations:
+error: Proofs/Erdos454Problem.lean:37:42: unsolved goals
+⊢ nth (sorry ()) 0 = 2
+warning: Proofs/Erdos454Problem.lean:38:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:41:41: unsolved goals
+⊢ nth (sorry ()) 1 = 3
+warning: Proofs/Erdos454Problem.lean:42:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:47:2: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'nth', which is 'noncomputable'
+warning: Proofs/Erdos454Problem.lean:46:8: declaration uses `sorry`
+error: Proofs/Erdos454Problem.lean:50:55: Type mismatch
+
+===== Erdos456Aristotle
+error: Proofs/Erdos456Aristotle.lean:77:6: Unknown constant `Finset.card_Ico`
+error: Proofs/Erdos456Aristotle.lean:68:32: unsolved goals
+P : ℕ → Prop
+error: Proofs/Erdos456Aristotle.lean:68:32: unsolved goals
+P : ℕ → Prop
+N M : ℕ
+
+===== Erdos456Problem
+error: Proofs/Erdos456Problem.lean:99:15: Function expected at
+  csInf_mem (primes_mod1_nonempty n hn)
+but this term has type
+error: Proofs/Erdos456Problem.lean:98:35: unsolved goals
+n : ℕ
+hn : 1 ≤ n
+error: Proofs/Erdos456Problem.lean:105:15: Function expected at
+  csInf_mem (primes_mod1_nonempty n hn)
+but this term has type
+error: Proofs/Erdos456Problem.lean:104:37: unsolved goals
+n : ℕ
+hn : 1 ≤ n
+
+===== Erdos459Problem
+error: Proofs/Erdos459Problem.lean:67:68: Application type mismatch: The argument
+  hm
+has type
+error: Proofs/Erdos459Problem.lean:72:50: Application type mismatch: The argument
+  hn
+has type
+error: Proofs/Erdos459Problem.lean:88:8: unsolved goals
+case pos
+u✝ u : ℕ
+error: Proofs/Erdos459Problem.lean:90:10: unsolved goals
+case pos
+u✝ u : ℕ
+
+===== Erdos45Problem
+error: Proofs/Erdos45Problem.lean:83:29: Unknown identifier `sawhney_upper_bound`
+error: Proofs/Erdos45Problem.lean:83:9: Tactic `rcases` failed: `x✝ : ?m.7` is not an inductive datatype
+warning: Proofs/Erdos45Problem.lean:109:38: Variable name `hn` is not explicitly referenced.
+error: Proofs/Erdos45Problem.lean:83:9: Tactic `rcases` failed: `x✝ : ?m.7` is not an inductive datatype
+warning: Proofs/Erdos45Problem.lean:109:38: Variable name `hn` is not explicitly referenced.
+
+===== Erdos461Problem
+error: Proofs/Erdos461Problem.lean:46:24: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos461Problem.lean:50:29: Function expected at
+error: Proofs/Erdos461Problem.lean:50:29: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos461Problem.lean:55:14: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos461Problem.lean:65:7: Unknown constant `Nat.prod_factors`
+error: Proofs/Erdos461Problem.lean:62:80: unsolved goals
+t n : ℕ
+
+===== Erdos465Problem
+error: Proofs/Erdos465Problem.lean:157:47: unsolved goals
+δ : ℝ
+hδ_pos : 0 < δ
+
+===== Erdos471Problem
+error: Proofs/Erdos471Problem.lean:127:8: Unknown constant `Set.Finite.of_finset`
+error: Proofs/Erdos471Problem.lean:128:2: No goals to be solved
+error: Proofs/Erdos471Problem.lean:177:10: Unknown constant `Nat.prime_def_lt''.mpr`
+error: Proofs/Erdos471Problem.lean:128:2: No goals to be solved
+error: Proofs/Erdos471Problem.lean:177:10: Unknown constant `Nat.prime_def_lt''.mpr`
+error: Proofs/Erdos471Problem.lean:180:19: Type mismatch
+error: Proofs/Erdos471Problem.lean:177:10: Unknown constant `Nat.prime_def_lt''.mpr`
+error: Proofs/Erdos471Problem.lean:180:19: Type mismatch
+  Nat.prime_three
+error: Proofs/Erdos471Problem.lean:180:19: Type mismatch
+  Nat.prime_three
+has type
+
+===== Erdos476OQ05Aristotle
+error: Proofs/Erdos476OQ05Aristotle.lean:161:47: invalid `▸` notation, argument
+  Ne.symm (hall a haA)
+has type
+error: Proofs/Erdos476OQ05Aristotle.lean:179:60: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos476OQ05Aristotle.lean:202:38: Unknown identifier `b₂`
+error: Proofs/Erdos476OQ05Aristotle.lean:202:48: ring failed, ring expressions not equal
+p : ℕ
+error: Proofs/Erdos476OQ05Aristotle.lean:202:48: ring failed, ring expressions not equal
+p : ℕ
+hp : Fact (Nat.Prime p)
+
+===== Erdos476OQ05Problem
+error: Proofs/Erdos476OQ05Problem.lean:148:29: Unknown constant `Nat.min_add_sub_cancel'`
+error: Proofs/Erdos476OQ05Problem.lean:202:17: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:202:46: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:202:17: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:202:46: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:259:4: omega could not prove the goal:
+error: Proofs/Erdos476OQ05Problem.lean:202:46: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:259:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/Erdos476OQ05Problem.lean:259:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== Erdos477Problem
+error: Proofs/Erdos477Problem.lean:104:8: Application type mismatch: The argument
+  And.symm (huniq a' ha' b' hb' this)
+has type
+error: Proofs/Erdos477Problem.lean:172:63: Application type mismatch: The argument
+  heq
+has type
+error: Proofs/Erdos477Problem.lean:184:14: Unknown constant `Set.Finite.of_not_infinite`
+error: Proofs/Erdos477Problem.lean:180:50: unsolved goals
+A B : Set ℤ
+error: Proofs/Erdos477Problem.lean:180:50: unsolved goals
+A B : Set ℤ
+hfin : B.Finite
+
+===== Erdos478Problem
+error: Proofs/Erdos478Problem.lean:81:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos478Problem.lean:84:42: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  Nat.succ 0 = k
+error: Proofs/Erdos478Problem.lean:91:19: Type mismatch
+  Eq.symm (ZMod.natCast_val r)
+has type
+error: Proofs/Erdos478Problem.lean:104:46: Type mismatch
+  sq m
+has type
+
+===== Erdos479Problem
+error: Proofs/Erdos479Problem.lean:107:11: Unknown identifier `fermat_little`
+error: Proofs/Erdos479Problem.lean:140:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => 2 ^ _a = 2
+error: Proofs/Erdos479Problem.lean:140:8: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => 2 ^ _a = 2
+Error: Application type mismatch: The argument
+
+===== Erdos487Problem
+error: Proofs/Erdos487Problem.lean:140:56: Application type mismatch: The argument
+  heq
+has type
+error: Proofs/Erdos487Problem.lean:141:43: Type mismatch
+  h1
+has type
+error: Proofs/Erdos487Problem.lean:147:56: Application type mismatch: The argument
+  heq
+has type
+error: Proofs/Erdos487Problem.lean:173:21: Invalid field `toSet`: The environment does not contain `Finset.toSet`, so it is not possible to project the field `toSet` from an expression
+  F
+of type `Finset (Finset (Fin n))`
+
+===== Erdos488Problem
+error: Proofs/Erdos488Problem.lean:219:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos488Problem.lean:234:37: Type mismatch
+  Eq.symm (Nat.div_add_mod N P)
+has type
+error: Proofs/Erdos488Problem.lean:246:37: No goals to be solved
+error: Proofs/Erdos488Problem.lean:265:53: don't know how to synthesize placeholder
+context:
+error: Proofs/Erdos488Problem.lean:265:53: don't know how to synthesize placeholder
+context:
+A : Finset ℕ
+
+===== Erdos490ProblemAristotle
+error: Proofs/Erdos490ProblemAristotle.lean:100:57: Unknown constant `Nat.eq_zero_of_mul_eq_zero_left`
+error: Proofs/Erdos490ProblemAristotle.lean:103:32: Invalid field `eq_of_dvd_of_prime`: The environment does not contain `Irreducible.eq_of_dvd_of_prime`, so it is not possible to project the field `eq_of_dvd_of_prime` from an expression
+  hp₁
+error: Proofs/Erdos490ProblemAristotle.lean:103:32: Invalid field `eq_of_dvd_of_prime`: The environment does not contain `Irreducible.eq_of_dvd_of_prime`, so it is not possible to project the field `eq_of_dvd_of_prime` from an expression
+  hp₁
+of type `Irreducible p₁`
+
+===== Erdos491Problem
+error: Proofs/Erdos491Problem.lean:139:4: No goals to be solved
+error: Proofs/Erdos491Problem.lean:173:41: Application type mismatch: The argument
+  wirsing_constant_unique
+error: Proofs/Erdos491Problem.lean:173:41: Application type mismatch: The argument
+  wirsing_constant_unique
+has type
+
+===== Erdos492Problem
+error: Proofs/Erdos492Problem.lean:94:8: unexpected token '₊'; expected ':=' or '|'
+error: Proofs/Erdos492Problem.lean:102:36: Unknown constant `Int.frac`
+warning: Proofs/Erdos492Problem.lean:109:8: declaration uses `sorry`
+error: Proofs/Erdos492Problem.lean:102:36: Unknown constant `Int.frac`
+warning: Proofs/Erdos492Problem.lean:109:8: declaration uses `sorry`
+error: Proofs/Erdos492Problem.lean:126:26: Type mismatch
+error: Proofs/Erdos492Problem.lean:126:26: Type mismatch
+  b - a
+has type
+error: Proofs/Erdos492Problem.lean:148:22: Invalid field `ae`: The environment does not contain `MeasureTheory.Measure.ae`, so it is not possible to project the field `ae` from an expression
+  volume
+of type `Measure ?m.2`
+
+===== Erdos501Problem
+error: Proofs/Erdos501Problem.lean:52:48: expected token
+error: Proofs/Erdos501Problem.lean:52:45: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos501Problem.lean:52:45: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos501Problem.lean:52:47: failed to synthesize instance of type class
+  OfNat Type 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos501Problem.lean:149:0: declaration `Erdos501.continuum_hypothesis` contains universe level metavariables at the expression
+  Eq.{?u.6 + 2} (DFunLike.coe.{?u.6 + 2, ?u.6 + 2, ?u.6 + 2} Cardinal.aleph.{?u.6} (OfNat.ofNat.{?u.6 + 1} 1))
+    Cardinal.continuum.{?u.6}
+
+===== Erdos501ProblemProvable
+error: Proofs/Erdos501ProblemProvable.lean:52:48: expected token
+error: Proofs/Erdos501ProblemProvable.lean:52:45: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos501ProblemProvable.lean:52:45: failed to synthesize instance of type class
+  LE Type
+error: Proofs/Erdos501ProblemProvable.lean:52:47: failed to synthesize instance of type class
+  OfNat Type 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+error: Proofs/Erdos501ProblemProvable.lean:118:0: declaration `Erdos501Provable.continuum_hypothesis` contains universe level metavariables at the expression
+  Eq.{?u.6 + 2} (DFunLike.coe.{?u.6 + 2, ?u.6 + 2, ?u.6 + 2} Cardinal.aleph.{?u.6} (OfNat.ofNat.{?u.6 + 1} 1))
+    Cardinal.continuum.{?u.6}
+
+===== Erdos503Problem
+error: Proofs/Erdos503Problem.lean:107:57: unsolved goals
+⊢ 6 ≤ Nat.choose 4 2
+error: Proofs/Erdos503Problem.lean:113:57: unsolved goals
+error: Proofs/Erdos503Problem.lean:113:57: unsolved goals
+⊢ Nat.choose 4 2 < 8 ∧ 8 ≤ Nat.choose 5 2
+error: Lean exited with code 1
+
+===== Erdos509Problem
+error: Proofs/Erdos509Problem.lean:77:25: Unknown constant `Complex.abs.map_zero`
+error: Proofs/Erdos509Problem.lean:76:25: unsolved goals
+f : ℂ[X]
+error: Proofs/Erdos509Problem.lean:76:25: unsolved goals
+f : ℂ[X]
+z : ℂ
+
+===== Erdos512Problem
+error: Proofs/Erdos512Problem.lean:49:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ↑π * (↑x + 1) * I
+in the target expression
+error: Proofs/Erdos512Problem.lean:54:66: unsolved goals
+x : ℝ
+⊢ (cexp (2 * ↑π * ↑x * I)).abs = 1
+error: Proofs/Erdos512Problem.lean:60:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ↑π * (↑x + ↑y) * I
+in the target expression
+error: Proofs/Erdos512Problem.lean:119:4: Unknown constant `MeasureTheory.integrableOn_const.mpr`
+error: Proofs/Erdos512Problem.lean:124:49: failed to synthesize instance of type class
+  MeasureSpace ℕ
+
+===== Erdos519Problem
+error: Proofs/Erdos519Problem.lean:179:75: unsolved goals
+k m : ℕ
+hn : 0 < m + 1
+
+===== Erdos523Problem
+error: Proofs/Erdos523Problem.lean:55:17: Application type mismatch: The argument
+  randomPolynomial s (cexp (I * ↑θ))
+has type
+error: Proofs/Erdos523Problem.lean:146:5: failed to synthesize instance of type class
+  Lattice ℂ
+error: Proofs/Erdos523Problem.lean:200:18: Application type mismatch: The argument
+  evalOnCircle s θ
+has type
+error: Proofs/Erdos523Problem.lean:233:2: Unknown identifier `halasz_theorem`
+error: Lean exited with code 1
+✖ [8599/8602] Building Proofs.Erdos533Problem (8.3s)
+
+===== Erdos525OQ02
+error: Proofs/Erdos525OQ02.lean:103:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+
+===== Erdos530Problem
+error: Proofs/Erdos530Problem.lean:90:26: Unknown identifier `komlos_sulyok_szemeredi`
+error: Proofs/Erdos530Problem.lean:90:9: Tactic `rcases` failed: `x✝ : ?m.27` is not an inductive datatype
+warning: Proofs/Erdos530Problem.lean:207:8: `Finset.filter_card_add_filter_neg_card_eq_card` has been deprecated: Use `Finset.card_filter_add_card_filter_not` instead
+error: Proofs/Erdos530Problem.lean:90:9: Tactic `rcases` failed: `x✝ : ?m.27` is not an inductive datatype
+warning: Proofs/Erdos530Problem.lean:207:8: `Finset.filter_card_add_filter_neg_card_eq_card` has been deprecated: Use `Finset.card_filter_add_card_filter_not` instead
+warning: Proofs/Erdos530Problem.lean:325:10: This simp argument is unused:
+error: Proofs/Erdos530Problem.lean:416:23: No goals to be solved
+warning: Proofs/Erdos530Problem.lean:416:8: This simp argument is unused:
+  Nat.card_Icc
+
+===== Erdos532Problem
+error: Proofs/Erdos532Problem.lean:255:45: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+
+===== Erdos533Problem
+error: Proofs/Erdos533Problem.lean:58:37: Application type mismatch: The argument
+  hab
+has type
+error: Proofs/Erdos533Problem.lean:95:26: Type mismatch
+  hb
+has type
+error: Proofs/Erdos533Problem.lean:122:61: Type mismatch
+  hj
+has type
+error: Proofs/Erdos533Problem.lean:154:13: typeclass instance problem is stuck
+  Fintype ?m.44
+
+===== Erdos534Problem
+error: Proofs/Erdos534Problem.lean:36:82: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+
+===== Erdos537Problem
+error: Proofs/Erdos537Problem.lean:46:12: expected token
+error: Proofs/Erdos537Problem.lean:136:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/Erdos537Problem.lean:136:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos537Problem.lean:137:4: Type mismatch
+  Nat.cast_lt.mpr hgt
+has type
+error: Proofs/Erdos537Problem.lean:138:24: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+
+===== Erdos540Problem
+error: Proofs/Erdos540Problem.lean:126:2: unsolved goals
+case h.right.right
+A : Finset (ZMod 1)
+
+===== Erdos542Problem
+error: Proofs/Erdos542Problem.lean:58:54: unsolved goals
+⊢ False
+warning: Proofs/Erdos542Problem.lean:93:42: Variable name `ha` is not explicitly referenced.
+
+===== Erdos543Problem
+error: Proofs/Erdos543Problem.lean:122:10: Invalid `⟨...⟩` notation: The expected type `Quot ⇑CauSeq.equiv` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/Erdos543Problem.lean:123:4: No goals to be solved
+warning: Proofs/Erdos543Problem.lean:128:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos543Problem.lean:129:10: Function expected at
+  h ε hε
+but this term has type
+
+===== Erdos549ProblemAristotle
+error: Proofs/Erdos549ProblemAristotle.lean:42:18: Type mismatch
+  hu h
+has type
+error: Proofs/Erdos549ProblemAristotle.lean:42:33: Type mismatch
+  hv h
+has type
+error: Proofs/Erdos549ProblemAristotle.lean:49:10: Invalid `⟨...⟩` notation: The expected type
+  ∀ (u v : Fin (n + 1)), (starGraph n).Reachable u v
+is not an inductive type
+error: Proofs/Erdos549ProblemAristotle.lean:50:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case right
+
+===== Erdos54Problem
+error: Proofs/Erdos54Problem.lean:35:30: Tactic `assumption` failed
+A : Set ℕ
+
+===== Erdos551ProblemAristotle
+error: Proofs/Erdos551ProblemAristotle.lean:45:87: linarith failed to find a contradiction
+k₁ k₂ n : ℕ
+hk : k₁ ≤ k₂
+error: Proofs/Erdos551ProblemAristotle.lean:49:87: linarith failed to find a contradiction
+k n₁ n₂ : ℕ
+hk : k ≥ 1
+error: Proofs/Erdos551ProblemAristotle.lean:53:87: linarith failed to find a contradiction
+k₁ k₂ n : ℕ
+hk : k₁ < k₂
+error: Proofs/Erdos551ProblemAristotle.lean:57:87: linarith failed to find a contradiction
+k n₁ n₂ : ℕ
+hk : k ≥ 2
+
+===== Erdos556Problem
+error: Proofs/Erdos556Problem.lean:57:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:58:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:63:49: Type mismatch
+  (↑i + 1) % n
+has type
+error: Proofs/Erdos556Problem.lean:67:23: Tactic `assumption` failed
+n : ℕ
+
+===== Erdos557Problem
+error: Proofs/Erdos557Problem.lean:32:10: `Tree` has already been declared
+warning: Proofs/Erdos557Problem.lean:48:52: `Tree` has been deprecated: Use `BinaryTree` instead
+error: Proofs/Erdos557Problem.lean:48:57: Application type mismatch: The argument
+error: Proofs/Erdos557Problem.lean:48:57: Application type mismatch: The argument
+  n
+has type
+error: Proofs/Erdos557Problem.lean:49:26: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos557Problem.lean:52:30: `Tree` has been deprecated: Use `BinaryTree` instead
+error: Proofs/Erdos557Problem.lean:52:35: Application type mismatch: The argument
+  n
+has type
+
+===== Erdos561Problem
+error: Proofs/Erdos561Problem.lean:155:23: unsolved goals
+s n : ℕ
+hs : s ≥ 1
+
+===== Erdos570Problem
+error: Proofs/Erdos570Problem.lean:59:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 1
+error: Proofs/Erdos570Problem.lean:60:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos570Problem.lean:61:17: Application type mismatch: The argument
+  h
+has type
+error: Proofs/Erdos570Problem.lean:66:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+
+===== Erdos572Problem
+error: Proofs/Erdos572Problem.lean:57:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos572Problem.lean:169:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+error: Proofs/Erdos572Problem.lean:203:2: Tactic `apply` failed: could not unify the conclusion of `@add_le_add_left`
+  ?b + ?a ≤ ?c + ?a
+with the goal
+
+===== Erdos578Problem
+error: Proofs/Erdos578Problem.lean:116:56: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+error: Proofs/Erdos578Problem.lean:116:70: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+error: Proofs/Erdos578Problem.lean:148:56: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+error: Proofs/Erdos578Problem.lean:148:70: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+
+===== Erdos580Problem
+error: Proofs/Erdos580Problem.lean:145:4: Function expected at
+  satisfiesLKS ?m.2
+but this term has type
+error: Proofs/Erdos580Problem.lean:146:4: Function expected at
+  ContainsAllTreesUpTo ?m.4 ?m.5
+but this term has type
+error: Proofs/Erdos580Problem.lean:155:35: Application type mismatch: The argument
+  G
+has type
+error: Proofs/Erdos580Problem.lean:156:4: Function expected at
+  ContainsAllTreesUpTo ?m.4 ?m.5
+but this term has type
+
+===== Erdos583Problem
+error: Proofs/Erdos583Problem.lean:46:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos583Problem.lean:46:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos583Problem.lean:55:22: Tactic `assumption` failed
+V : Type u_1
+error: Proofs/Erdos583Problem.lean:56:22: Tactic `assumption` failed
+V : Type u_1
+
+===== Erdos594Problem
+error: Proofs/Erdos594Problem.lean:98:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos594Problem.lean:194:79: omega could not prove the goal:
+error: Proofs/Erdos594Problem.lean:194:79: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos594Problem.lean:195:82: omega could not prove the goal:
+error: Proofs/Erdos594Problem.lean:195:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+
+===== Erdos599Problem
+error: Proofs/Erdos599Problem.lean:55:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos599Problem.lean:55:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+

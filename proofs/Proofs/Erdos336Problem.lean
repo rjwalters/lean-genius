@@ -92,7 +92,7 @@ axiom h_3 : h 3 = 7
 /-  10 ≤ h(4) ≤ 11 (Plagne 2004). -/
 /-- Check: h(2)/2² = 4/4 = 1. -/
 example : (h 2 : ℚ) / (2^2 : ℚ) = 1 := by
-  simp [h_2]
+  simp [h_2]; norm_num
 
 /-- Check: h(3)/3² = 7/9 ≈ 0.778. -/
 example : (h 3 : ℚ) / (3^2 : ℚ) = 7/9 := by

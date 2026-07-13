@@ -240,7 +240,10 @@ theorem current_bounds :
 /--
 The gap between bounds.
 -/
-theorem bounds_gap : 0.247 - 0.22936 = 0.01764 := by norm_num
+theorem bounds_gap : (0.247 - 0.22936 : ℝ) = 0.01764 := by
+  norm_num [show (0.247 : ℝ) = 247 / 1000 from by norm_num,
+    show (0.22936 : ℝ) = 22936 / 100000 from by norm_num,
+    show (0.01764 : ℝ) = 1764 / 100000 from by norm_num]
 
 /-
 ## Part X: Examples

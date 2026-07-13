@@ -832,7 +832,7 @@ Erdos1120Problem	RESIDUAL	instance-synth
 Erdos1121Problem	RESIDUAL	instance-synth
 Erdos1122Problem	RESIDUAL	rewrite-drift
 Erdos1123Problem	RESIDUAL	parse-error
-Erdos1124Problem	RESIDUAL	proof-drift
+Erdos1124Problem	GREEN	
 Erdos1125Problem	RESIDUAL	proof-drift
 Erdos1126Problem	RESIDUAL	unknown-const:measurable_additive_is_linear
 Erdos1127Problem	RESIDUAL	instance-synth
@@ -1026,7 +1026,7 @@ Erdos229Problem	GREEN
 Erdos230LowerBound	GREEN	
 Erdos230ProblemAristotle	RESIDUAL	proof-drift
 Erdos231Problem	GREEN	
-Erdos232Problem	RESIDUAL	proof-drift
+Erdos232Problem	GREEN	
 Erdos233Problem	GREEN	
 Erdos234Problem	RESIDUAL	type-mismatch
 Erdos235Problem	RESIDUAL	proof-drift
@@ -1136,7 +1136,7 @@ Erdos330Problem	GREEN
 Erdos332Problem	GREEN	
 Erdos333Problem	GREEN	
 Erdos334Problem	RESIDUAL	unknown-const:Nat.Prime.dvd_prime_pow
-Erdos336Problem	RESIDUAL	proof-drift
+Erdos336Problem	GREEN	
 Erdos337Aristotle	RESIDUAL	elab-drift
 Erdos337Problem	RESIDUAL	elab-drift
 Erdos338Aristotle	RESIDUAL	proof-drift

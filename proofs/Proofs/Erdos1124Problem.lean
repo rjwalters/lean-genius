@@ -115,7 +115,7 @@ noncomputable def equalAreaSquare : Set Point := unitSquare
 theorem equal_areas : SameArea equalAreaRadius 1 := by
   unfold SameArea equalAreaRadius
   field_simp
-  ring
+  rw [Real.sq_sqrt Real.pi_pos.le]
 
 /-
 ## Part IV: Tarski's Original Question
