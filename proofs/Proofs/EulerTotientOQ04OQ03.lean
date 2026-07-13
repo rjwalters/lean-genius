@@ -3325,6 +3325,140 @@ theorem reversal_gap_primeTriple_ge {m : ℕ} (hm : 1 ≤ m)
     _ ≤ (2 * m + 2) * 2 ^ k := by gcongr; omega
 
 -- ----------------------------------------------------------------------------
+-- Master (symbolic-landing) form of the prime-triple reversal family
+-- ----------------------------------------------------------------------------
+-- `reversal_gap_primeTriple` computes the exact reversal gap `(2m+2)·2^k` but *requires*
+-- the landing `14m+3` to be prime (it evaluates `φ(14m+3) = 14m+2`).  The forward family
+-- already has a symbolic-landing master form `forward_gap_fiveTimes_eq_totient`, with the
+-- totient of its landing left symbolic; the reversal family lacked the mirror.  Here we
+-- supply it: the two totients along `n = (18m+3)·2^(k+1)` are `φ(n) = 12m·2^k` and
+-- `φ(D(n)) = φ(14m+3)·2^k`, needing only `4m+1`, `6m+1` prime (NOT the landing).  From
+-- these one line each: the signed gap `(φ(14m+3) − 12m)·2^k`, its unconditional `2^k`
+-- divisibility, the exact reversal criterion `12m < φ(14m+3)`, and — specialising the
+-- landing to a prime — a re-derivation of `reversal_gap_primeTriple`.
+-- ----------------------------------------------------------------------------
+
+/-- **Master totient values of the prime-triple reversal family (symbolic landing).**
+    For a seed `a = 18m+3 = 3·(6m+1)` with only the *family* primes `4m+1`, `6m+1` prime
+    (`m ≥ 1`) — and **no** assumption on the landing `14m+3` — both totients along
+    `n = (18m+3)·2^(k+1)` have closed forms `φ(n) = 12m·2^k` and `φ(D(n)) = φ(14m+3)·2^k`,
+    with the landing's totient left *symbolic*.  This is the reversal-side analogue of the
+    computation underneath `forward_gap_fiveTimes_eq_totient`; every quantitative statement
+    about the family below is a one-line consequence. -/
+theorem primeTriple_totient_values {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = 12 * m * 2 ^ k ∧
+      Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        = Nat.totient (14 * m + 3) * 2 ^ k := by
+  have hcopa : Nat.Coprime 3 (6 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hq).mpr (by omega)
+  have hcopb : Nat.Coprime 3 (4 * m + 1) :=
+    (Nat.coprime_primes (by norm_num) hp).mpr (by omega)
+  have hφa : Nat.totient (18 * m + 3) = 12 * m := by
+    rw [show 18 * m + 3 = 3 * (6 * m + 1) from by ring, Nat.totient_mul hcopa,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hq]; omega
+  have hφb : Nat.totient (12 * m + 3) = 8 * m := by
+    rw [show 12 * m + 3 = 3 * (4 * m + 1) from by ring, Nat.totient_mul hcopb,
+        show Nat.totient 3 = 2 from by decide, Nat.totient_prime hp]; omega
+  have ha_odd : Odd (18 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hb_odd : Odd (12 * m + 3) := Nat.odd_iff.mpr (by omega)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  -- φ(n) = φ(18m+3)·2^k = 12m·2^k
+  have copa : Nat.Coprime (18 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφn : Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = 12 * m * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2, hφa]
+  -- transport: D(n) = (2a − φ(b))·2^k = (14m+3)·2^(k+1)
+  have hstep : 2 * (18 * m + 3) - Nat.totient (18 * m + 3) = 2 * (12 * m + 3) := by
+    rw [hφa]; omega
+  have hD : dblIter ((18 * m + 3) * 2 ^ (k + 1)) = (14 * m + 3) * 2 ^ (k + 1) := by
+    rw [dblIter_transport ha_odd hb_odd hstep k, hφb,
+        show 2 * (18 * m + 3) - 8 * m = (14 * m + 3) * 2 from by omega]
+    ring
+  -- φ(D(n)) = φ(14m+3)·2^k, keeping φ(14m+3) SYMBOLIC (no primality of the landing)
+  have cope : Nat.Coprime (14 * m + 3) (2 ^ (k + 1)) :=
+    ((Nat.prime_two.coprime_iff_not_dvd).mpr (by omega)).symm.pow_right (k + 1)
+  have hφD : Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+      = Nat.totient (14 * m + 3) * 2 ^ k := by
+    rw [hD, Nat.totient_mul cope, hp2]
+  exact ⟨hφn, hφD⟩
+
+/-- **Master exact reversal gap (symbolic landing) — the reversal mirror of
+    `forward_gap_fiveTimes_eq_totient`.**  For a seed `a = 18m+3` with only `4m+1`, `6m+1`
+    prime (`m ≥ 1`) and **no** assumption on the landing `14m+3`, the signed reversal gap
+    along `n = (18m+3)·2^(k+1)` is exactly `φ(D(n)) − φ(n) = (φ(14m+3) − 12m)·2^k`.  The ℕ
+    subtraction distributes over `2^k` (`Nat.sub_mul`) regardless of sign, so no primality
+    of the landing is needed; specialising `φ(14m+3) = 14m+2` when the landing is prime
+    recovers `reversal_gap_primeTriple`'s exact `(2m+2)·2^k` (see
+    `reversal_gap_primeTriple_of_prime_landing`). -/
+theorem reversal_gap_primeTriple_eq_totient {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        - Nat.totient ((18 * m + 3) * 2 ^ (k + 1))
+      = (Nat.totient (14 * m + 3) - 12 * m) * 2 ^ k := by
+  obtain ⟨hφn, hφD⟩ := primeTriple_totient_values hm hp hq k
+  rw [hφD, hφn, ← Nat.sub_mul]
+
+/-- **Unconditional 2-adic structure of the prime-triple reversal gap.**  Immediate from
+    `reversal_gap_primeTriple_eq_totient`: the whole family gap scales by `2^k`, so
+    `2^k ∣ (φ(D(n)) − φ(n))` for every `k` with **no** condition on the landing `14m+3`.
+    The reversal mirror of `forward_gap_fiveTimes_pow_dvd`. -/
+theorem reversal_gap_primeTriple_pow_dvd {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    2 ^ k ∣ (Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+        - Nat.totient ((18 * m + 3) * 2 ^ (k + 1))) := by
+  rw [reversal_gap_primeTriple_eq_totient hm hp hq k]
+  exact ⟨Nat.totient (14 * m + 3) - 12 * m, by ring⟩
+
+/-- **Reversal criterion for the prime-triple family (symbolic landing).**  For a seed
+    `a = 18m+3` with `4m+1`, `6m+1` prime (`m ≥ 1`), the entire family `(18m+3)·2^(k+1)`
+    lies in the reversal regime `φ(n) < φ(D(n))` **iff** the landing's totient exceeds
+    `12m`: `(18m+3)·2^(k+1) ∈ ReversalSet ↔ 12m < φ(14m+3)`.  This pins reversal of the
+    family entirely on the single arithmetic quantity `φ(14m+3)`, `k`-freely: a prime
+    landing (`φ(14m+3) = 14m+2 > 12m`) forces reversal — recovering the hypothesis of
+    `reversal_gap_primeTriple` — while a composite landing with `φ(14m+3) ≤ 12m` (e.g.
+    `m = 3`, landing `45`, `φ(45) = 24 < 36`, see `primeTriple_shape_not_reversal_57`) puts
+    the *same* seed shape outside the reversal regime. -/
+theorem reversal_primeTriple_iff_totient_landing {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (k : ℕ) :
+    (18 * m + 3) * 2 ^ (k + 1) ∈ ReversalSet ↔ 12 * m < Nat.totient (14 * m + 3) := by
+  obtain ⟨hφn, hφD⟩ := primeTriple_totient_values hm hp hq k
+  have h2k : 0 < 2 ^ k := pow_pos (by norm_num) k
+  rw [ReversalSet, Set.mem_setOf_eq, hφn, hφD]
+  exact Nat.mul_lt_mul_right h2k
+
+/-- **Consistency: the master form re-derives `reversal_gap_primeTriple`.**  Specialising
+    the symbolic-landing gap `reversal_gap_primeTriple_eq_totient` to a *prime* landing
+    (`φ(14m+3) = 14m+2`) recovers the exact reversal gap `(2m+2)·2^k`, confirming the
+    master form subsumes the prime-landing computation. -/
+theorem reversal_gap_primeTriple_of_prime_landing {m : ℕ} (hm : 1 ≤ m)
+    (hp : (4 * m + 1).Prime) (hq : (6 * m + 1).Prime) (he : (14 * m + 3).Prime) (k : ℕ) :
+    Nat.totient (dblIter ((18 * m + 3) * 2 ^ (k + 1)))
+      - Nat.totient ((18 * m + 3) * 2 ^ (k + 1)) = (2 * m + 2) * 2 ^ k := by
+  rw [reversal_gap_primeTriple_eq_totient hm hp hq k, Nat.totient_prime he,
+      show 14 * m + 3 - 1 = 14 * m + 2 from by omega,
+      show 14 * m + 2 - 12 * m = 2 * m + 2 from by omega]
+
+/-- **A prime-triple *shape* need not reverse — landing primality in
+    `reversal_gap_primeTriple` is essential.**  At `m = 3` the family primes `4m+1 = 13`
+    and `6m+1 = 19` are prime, so the seed `18·3+3 = 57` has the prime-triple shape, yet
+    the landing `14·3+3 = 45 = 3²·5` is composite with `φ(45) = 24 ≤ 36 = 12m`.  By
+    `reversal_primeTriple_iff_totient_landing` the whole family `57·2^(k+1)` therefore does
+    **not** reverse — the identical seed shape that reverses at `m = 1` (`a = 21`) fails to
+    reverse at `m = 3`. -/
+theorem primeTriple_shape_not_reversal_57 (k : ℕ) :
+    57 * 2 ^ (k + 1) ∉ ReversalSet := by
+  have h := reversal_primeTriple_iff_totient_landing (m := 3) (by norm_num)
+    (by norm_num) (by norm_num) k
+  have h45 : Nat.totient (14 * 3 + 3) = 24 := by
+    rw [show 14 * 3 + 3 = 9 * 5 from by norm_num, Nat.totient_mul (by norm_num),
+        totient_9, totient_5]
+  rw [show (18 * 3 + 3) = 57 from by norm_num] at h
+  rw [h, h45]
+  omega
+
+-- ----------------------------------------------------------------------------
 -- Quantitative sharpening: a divergent FORWARD margin of the fiveTimes family
 -- ----------------------------------------------------------------------------
 -- `mem_ForwardSet_fiveTimes` shows the family `n = 5·(4m+1)·2^(k+1)` is forward
