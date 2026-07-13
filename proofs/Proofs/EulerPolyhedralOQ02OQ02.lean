@@ -1165,6 +1165,107 @@ theorem kunnethBetti_pointBetti_right (b : ℕ → ℕ) (k : ℕ) :
 theorem prodSurfaceBetti_comm (g h : ℕ) {k : ℕ} (hk : k ≤ 4) :
     prodSurfaceBetti g h k = prodSurfaceBetti h g k := by
   rw [prodSurfaceBetti_kunneth g h hk, prodSurfaceBetti_kunneth h g hk, kunnethBetti_comm]
+-- Part XX: The Poincaré polynomial of `Σ_g` — functional equation and the
+--            connected-sum law with the sphere correction
+-- ============================================================================
+
+/-
+  The Betti numbers `(b₀, b₁, b₂) = (1, 2g, 1)` of Part XVI are packaged by the
+  **Poincaré polynomial**
+
+      P_{Σ_g}(t) = Σᵢ bᵢ tⁱ = 1 + 2g·t + t².
+
+  Two evaluations recover invariants already computed: `P(−1) = 1 − 2g + 1 = 2 − 2g = χ`
+  (the Euler–Poincaré formula, `genusSurface_euler_poincare`) and `P(1) = 2 + 2g`, the
+  total Betti number (`genusSurface_betti_total`).  The **palindromic** coefficient
+  sequence `(1, 2g, 1)` — Poincaré duality `bᵢ = b_{2−i}` — is equivalent to the
+  self-reciprocal *functional equation* `t²·P(1/t) = P(t)`.  Finally, connected sum acts
+  on Poincaré polynomials by addition minus the sphere polynomial `P_{S²}(t) = 1 + t²`,
+  the polynomial refinement of the Euler-characteristic correction `χ(M#N) = χM + χN − 2`
+  (`connectedSumCGB_chi`); evaluating that law at `t = −1` returns the χ-law exactly.
+  Everything is polynomial arithmetic over `ℝ`, hence 0-axiom.
+-/
+
+/-- **The Poincaré polynomial of `Σ_g`**, `P_{Σ_g}(t) = Σᵢ bᵢ tⁱ = 1 + 2g·t + t²`,
+    the generating polynomial of the Betti numbers `(b₀, b₁, b₂) = (1, 2g, 1)`. -/
+def poincarePoly (g : ℕ) (t : ℝ) : ℝ := 1 + 2 * g * t + t ^ 2
+
+/-- The Poincaré polynomial is the Betti generating function: `P(t) = Σᵢ bᵢ tⁱ`,
+    written out over the recorded Betti numbers `genusSurfaceBetti`. -/
+theorem poincarePoly_eq_betti_sum (g : ℕ) (t : ℝ) :
+    poincarePoly g t
+      = (genusSurfaceBetti g 0 : ℝ) + (genusSurfaceBetti g 1 : ℝ) * t
+        + (genusSurfaceBetti g 2 : ℝ) * t ^ 2 := by
+  simp only [poincarePoly, genusSurfaceBetti_zero, genusSurfaceBetti_one, genusSurfaceBetti_two]
+  push_cast; ring
+
+/-- **`P(0) = b₀ = 1`.**  The constant term is the zeroth Betti number: the surface is
+    connected. -/
+theorem poincarePoly_zero (g : ℕ) : poincarePoly g 0 = 1 := by
+  simp [poincarePoly]
+
+/-- **`P(1) = 2 + 2g`, the total Betti number.**  Evaluating the generating polynomial at
+    `t = 1` sums the Betti numbers `Σ bᵢ = b₀ + b₁ + b₂` (`genusSurface_betti_total`). -/
+theorem poincarePoly_one (g : ℕ) : poincarePoly g 1 = 2 + 2 * g := by
+  simp only [poincarePoly]; ring
+
+/-- **`P(1)` equals the total Betti number `b₀ + b₁ + b₂`.**  The bridge from the
+    Poincaré-polynomial evaluation to the combinatorial total of `genusSurface_betti_total`. -/
+theorem poincarePoly_one_eq_total_betti (g : ℕ) :
+    poincarePoly g 1
+      = ((genusSurfaceBetti g 0 + genusSurfaceBetti g 1 + genusSurfaceBetti g 2 : ℕ) : ℝ) := by
+  rw [poincarePoly_one, genusSurface_betti_total]; push_cast; ring
+
+/-- **`P(−1) = χ(Σ_g)`, the Euler–Poincaré formula.**  Evaluating the Poincaré polynomial
+    at `t = −1` forms the alternating sum `Σ (−1)ⁱ bᵢ = 1 − 2g + 1 = 2 − 2g`, the Euler
+    characteristic `genusSurfaceCGB_chi`. -/
+theorem poincarePoly_neg_one (g : ℕ) :
+    poincarePoly g (-1) = ((genusSurfaceCGB g).chi : ℝ) := by
+  rw [genusSurfaceCGB_chi]; simp only [poincarePoly]; push_cast; ring
+
+/-- **Functional equation (Poincaré duality): `t²·P(1/t) = P(t)` for `t ≠ 0`.**  The
+    palindromic coefficient sequence `(1, 2g, 1)` — the manifestation of `bᵢ = b_{2−i}`
+    (`genusSurfaceBetti_poincare_duality`) — makes the Poincaré polynomial self-reciprocal:
+    reversing the coefficients (the `t ↦ 1/t`, rescale-by-`t²` operation) returns the same
+    polynomial. -/
+theorem poincarePoly_functional_eq (g : ℕ) {t : ℝ} (ht : t ≠ 0) :
+    t ^ 2 * poincarePoly g (1 / t) = poincarePoly g t := by
+  simp only [poincarePoly]
+  field_simp
+  ring
+
+/-- **Poincaré polynomial of the sphere `S² = Σ_0`: `P_{S²}(t) = 1 + t²`.**  The Betti
+    numbers of `S²` are `(1, 0, 1)`, so its Poincaré polynomial has no linear term. -/
+theorem poincarePoly_genus_zero (t : ℝ) : poincarePoly 0 t = 1 + t ^ 2 := by
+  simp only [poincarePoly]; push_cast; ring
+
+/-- **Connected-sum law for Poincaré polynomials:**
+    `P_{Σ_g # Σ_h}(t) = P_{Σ_g}(t) + P_{Σ_h}(t) − (1 + t²)`.
+    Because `Σ_g # Σ_h = Σ_{g+h}` (genus additivity, `connectedSum_genusSurface_chi`), the
+    left side is `P_{Σ_{g+h}}`.  The subtracted `1 + t² = P_{S²}` is the sphere polynomial:
+    a connected sum removes a `2`-disk from each summand and glues along a boundary sphere,
+    the polynomial refinement of the Euler-characteristic correction `− χ(S²) = −2`
+    (`connectedSumCGB_chi`). -/
+theorem poincarePoly_connectedSum (g h : ℕ) (t : ℝ) :
+    poincarePoly (g + h) t = poincarePoly g t + poincarePoly h t - (1 + t ^ 2) := by
+  simp only [poincarePoly]; push_cast; ring
+
+/-- **The connected-sum polynomial law at `t = −1` is the Euler-characteristic law.**
+    Evaluating `poincarePoly_connectedSum` at `t = −1` collapses the sphere polynomial
+    `1 + t²` to `2 = χ(S²)`, recovering `χ(Σ_g # Σ_h) = χ(Σ_g) + χ(Σ_h) − 2`
+    (`connectedSum_genusSurface_chi`) — so the χ-additivity of connected sum is exactly the
+    `t = −1` shadow of the finer Poincaré-polynomial additivity. -/
+theorem poincarePoly_connectedSum_chi (g h : ℕ) :
+    poincarePoly (g + h) (-1) = poincarePoly g (-1) + poincarePoly h (-1) - 2 := by
+  rw [poincarePoly_connectedSum]; norm_num
+
+/-- **First Betti number is additive under connected sum:** `b₁(Σ_g # Σ_h) = b₁(Σ_g) + b₁(Σ_h)`.
+    Since `Σ_g # Σ_h = Σ_{g+h}`, this reads `2(g+h) = 2g + 2h` — the homological form of genus
+    additivity (`connectedSum_genusSurface_chi`), and the reason the middle coefficient of the
+    Poincaré polynomial adds under connected sum while `b₀, b₂` stay pinned at `1`. -/
+theorem genusSurfaceBetti_one_connectedSum (g h : ℕ) :
+    genusSurfaceBetti (g + h) 1 = genusSurfaceBetti g 1 + genusSurfaceBetti h 1 := by
+  simp only [genusSurfaceBetti_one]; ring
 
 end ChernGaussBonnet
 
