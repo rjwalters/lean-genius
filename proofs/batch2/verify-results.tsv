@@ -180,7 +180,7 @@ BallotProblemOQ04OQ02OQ01	GREEN
 BaselProblemOQ01OQ01	RESIDUAL	instance-synth
 BaselProblemOQ01OQ01OQ02	GREEN	
 BaselProblemOQ01OQ01OQ02Aristotle	GREEN	
-BaselProblemOQ01OQ01OQ02OQ03	RESIDUAL	unknown-const:Finsupp.not_mem_support_iff.mp
+BaselProblemOQ01OQ01OQ02OQ03	GREEN	
 BaselProblemOQ01OQ02	GREEN	
 BaselProblemOQ02	GREEN	
 BaselProblemOQ02Aristotle	RESIDUAL	parse-error
@@ -315,7 +315,7 @@ BuffonsNoodleOQ01OQ01	GREEN
 BuffonsNoodleOQ01OQ02	GREEN	
 BuffonsNoodleOQ02	GREEN	
 BuffonsNoodleOQ03OQ01	RESIDUAL	rewrite-drift
-BurnsideCountingOQ03Aristotle	RESIDUAL	unknown-const:Nat.div_mul_cancel_of_dvd
+BurnsideCountingOQ03Aristotle	GREEN	
 BurnsideCountingOQ03OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ01OQ01	RESIDUAL	unknown-const:Cardinal.aleph_lt.mpr
 CantorDiagonalizationOQ01OQ01OQ02	RESIDUAL	type-mismatch
@@ -698,7 +698,7 @@ Erdos1029Problem	RESIDUAL	rewrite-drift
 Erdos102Problem	GREEN	
 Erdos1031Problem	RESIDUAL	elab-drift
 Erdos1032Problem	GREEN	
-Erdos1033Aristotle	RESIDUAL	unknown-const:SimpleGraph.mem_neighborFinset.mpr
+Erdos1033Aristotle	GREEN	
 Erdos1033Problem	RESIDUAL	unknown-const:fan_lower
 Erdos1034Aristotle	GREEN	
 Erdos1034OQ02	GREEN	
@@ -945,7 +945,7 @@ Erdos152Problem	RESIDUAL	type-mismatch
 Erdos152ProblemAPN	RESIDUAL	proof-drift
 Erdos153Problem	RESIDUAL	elab-drift
 Erdos154Problem	GREEN	
-Erdos155Problem	RESIDUAL	unknown-const:Finset.erase_eq_of_not_mem
+Erdos155Problem	GREEN	
 Erdos156Aristotle	RESIDUAL	instance-synth
 Erdos156OQ02	RESIDUAL	unknown-const:x
 Erdos156ProblemAristotle	RESIDUAL	duplicate-decl
@@ -1073,7 +1073,7 @@ Erdos272Problem	GREEN
 Erdos274Problem	RESIDUAL	unknown-const:ExactCovering
 Erdos275Problem	RESIDUAL	instance-synth
 Erdos276Problem	GREEN	
-Erdos278Problem	RESIDUAL	unknown-const:le_of_not_le
+Erdos278Problem	GREEN	
 Erdos279OQ04	RESIDUAL	type-mismatch
 Erdos27Problem	RESIDUAL	rewrite-drift
 Erdos280Problem	GREEN	
@@ -1112,7 +1112,7 @@ Erdos308Problem	RESIDUAL	instance-synth
 Erdos309Problem	RESIDUAL	proof-drift
 Erdos30Problem	GREEN	
 Erdos310Problem	RESIDUAL	proof-drift
-Erdos312Problem	RESIDUAL	unknown-const:Finset.insert_subset.mpr
+Erdos312Problem	GREEN	
 Erdos313Problem	GREEN	
 Erdos314Problem	RESIDUAL	proof-drift
 Erdos315Problem	RESIDUAL	proof-drift
@@ -1265,7 +1265,7 @@ Erdos436Problem	GREEN
 Erdos437Aristotle	RESIDUAL	unknown-const:div_le_one_of_le
 Erdos437Problem	RESIDUAL	instance-synth
 Erdos438Problem	GREEN	
-Erdos439Problem	RESIDUAL	unknown-const:SimpleGraph.adj_mk
+Erdos439Problem	GREEN	
 Erdos43Problem	RESIDUAL	rewrite-drift
 Erdos440Problem	GREEN	
 Erdos441Aristotle	RESIDUAL	proof-drift
@@ -1512,7 +1512,7 @@ Erdos630ProblemAristotle	GREEN
 Erdos631Aristotle	GREEN	
 Erdos631Problem	GREEN	
 Erdos631ProblemAristotle	RESIDUAL	type-mismatch
-Erdos632Aristotle	RESIDUAL	unknown-const:SimpleGraph.not_adj_bot
+Erdos632Aristotle	GREEN	
 Erdos634Aristotle	GREEN	
 Erdos634Problem	GREEN	
 Erdos635Problem	RESIDUAL	unknown-const:f_set_nonempty
@@ -1799,7 +1799,7 @@ Erdos873ProblemProvable	RESIDUAL	proof-drift
 Erdos874Problem	RESIDUAL	proof-drift
 Erdos875Problem	RESIDUAL	unknown-const:Ne.lt_or_lt
 Erdos876Problem	GREEN	
-Erdos876ProblemAristotle	RESIDUAL	unknown-const:Nat.pow_lt_pow_left_iff
+Erdos876ProblemAristotle	GREEN	
 Erdos877ProblemAristotle	GREEN	
 Erdos878Problem	RESIDUAL	instance-synth
 Erdos879Problem	RESIDUAL	proof-drift
@@ -1867,7 +1867,7 @@ Erdos92Problem	GREEN
 Erdos930Problem	GREEN	
 Erdos932Problem	RESIDUAL	proof-drift
 Erdos933Problem	GREEN	
-Erdos933ProblemAristotle	RESIDUAL	unknown-const:Nat.coprime_self_add_one
+Erdos933ProblemAristotle	GREEN	
 Erdos934Problem	RESIDUAL	instance-synth
 Erdos934ProblemAristotle	RESIDUAL	proof-drift
 Erdos935Problem	RESIDUAL	proof-drift
@@ -1913,7 +1913,7 @@ Erdos973Problem	RESIDUAL	instance-synth
 Erdos974Problem	RESIDUAL	proof-drift
 Erdos975Problem	GREEN	
 Erdos976Problem	RESIDUAL	instance-synth
-Erdos977Aristotle	RESIDUAL	unknown-const:Nat.one_lt_iff_ne_one.mpr
+Erdos977Aristotle	GREEN	
 Erdos977Problem	GREEN	
 Erdos977ProblemAristotle	RESIDUAL	rewrite-drift
 Erdos978Problem	RESIDUAL	parse-error
@@ -2569,7 +2569,7 @@ TestApi1159c	RESIDUAL	proof-drift
 TestApi203	RESIDUAL	unclassified
 TestApi234	RESIDUAL	unknown-const:Continuous.if_lt
 TestApi241	RESIDUAL	noncomputable
-TestApi249	RESIDUAL	unknown-const:summable_of_summable_norm
+TestApi249	GREEN	
 TestApi301	GREEN	
 TestApi312	RESIDUAL	unknown-const:Real.exp_ge_one_add_of_nonneg
 TestApi321	GREEN	
@@ -2582,13 +2582,13 @@ TestApi457	RESIDUAL	proof-drift
 TestApi472	RESIDUAL	unknown-const:Nat.Even
 TestApi513	RESIDUAL	unknown-const:Real.pi_lt_3141593
 TestApi635	GREEN	
-TestApi654	RESIDUAL	unknown-const:Finset.sum_card_fiberwise_eq_card
+TestApi654	GREEN	
 TestApi688	RESIDUAL	unknown-const:Nat.not_prime_of_le_one
 TestApi689	RESIDUAL	type-mismatch
 TestApi693	GREEN	
 TestApi783	RESIDUAL	dot-notation-drift
 TestApi826	RESIDUAL	signature-drift
-TestApi847	RESIDUAL	unknown-const:Finset.exists_lt_card_fiber_of_nsmul_lt_card
+TestApi847	GREEN	
 TestApi889	RESIDUAL	unknown-const:Nat.factorization_pos
 TestApi913	RESIDUAL	proof-drift
 TestApi959	GREEN	

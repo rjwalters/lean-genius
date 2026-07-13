@@ -259,7 +259,7 @@ theorem lcmRange_dvd_prod_prime_powers (n : ℕ) :
     intro p _ hp_not
     have h_zero : m.factorization p = 0 := by
       rw [← Nat.support_factorization] at hp_not
-      exact Finsupp.not_mem_support_iff.mp hp_not
+      exact Finsupp.notMem_support_iff.mp hp_not
     rw [h_zero, pow_zero]
   rw [hm_eq]
   -- Pointwise divisibility of factors over `P`.
