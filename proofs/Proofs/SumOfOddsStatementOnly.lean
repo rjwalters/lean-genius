@@ -46,7 +46,7 @@ This is a classic identity (Pythagoras' gnomon argument):
 
 Included here as a documented example of the Harmonic
 `StatementOnly_*.lean` file format used for Aristotle submissions:
-- single informal `/-` block at the top of the file,
+- single informal block comment at the top of the file,
 - standard `set_option` block (verbatim from Harmonic),
 - `noncomputable section` wrapper,
 - exactly one theorem statement (proof body left as a hole),

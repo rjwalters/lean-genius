@@ -1015,7 +1015,7 @@ Erdos217Problem	GREEN
 Erdos21Problem	GREEN	
 Erdos220Aristotle	GREEN	
 Erdos220Problem	GREEN	
-Erdos220ProblemProvable	RESIDUAL	parse-error
+Erdos220ProblemProvable	GREEN	
 Erdos221Problem	GREEN	
 Erdos222Problem	GREEN	
 Erdos223Problem	RESIDUAL	type-mismatch
@@ -1253,7 +1253,7 @@ Erdos427Problem	GREEN
 Erdos428Problem	RESIDUAL	unknown-const:primeDensityRatio_nonneg
 Erdos429Problem	RESIDUAL	type-mismatch
 Erdos42Problem	GREEN	
-Erdos431Problem	RESIDUAL	parse-error
+Erdos431Problem	GREEN	
 Erdos432Problem	RESIDUAL	unknown-const:Finset.card_filter_le_card_filter
 Erdos433Aristotle	GREEN	
 Erdos433Problem	GREEN	
@@ -1698,7 +1698,7 @@ Erdos790Problem	GREEN
 Erdos791Problem	GREEN	
 Erdos792Problem	GREEN	
 Erdos794Problem	RESIDUAL	type-mismatch
-Erdos795Aristotle	RESIDUAL	parse-error
+Erdos795Aristotle	GREEN	
 Erdos795Problem	RESIDUAL	parse-error
 Erdos795ProblemAristotle	RESIDUAL	parse-error
 Erdos796Problem	RESIDUAL	type-mismatch
@@ -2515,7 +2515,7 @@ SumOfKthPowersOQ04	RESIDUAL	type-mismatch
 SumOfKthPowersOQ05	GREEN	
 SumOfKthPowersOQ05OQ01	GREEN	
 SumOfKthPowersOQ05OQ01OQ01	GREEN	
-SumOfOddsStatementOnly	RESIDUAL	parse-error
+SumOfOddsStatementOnly	GREEN	
 SylowTheorem	RESIDUAL	unknown-const:card_sylow_dvd_index
 SylowTheoremOQ01	RESIDUAL	rewrite-drift
 SylowTheoremOQ02	GREEN	

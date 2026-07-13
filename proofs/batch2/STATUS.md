@@ -1,4 +1,42 @@
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 10, #38065, 2026-07-13)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 12, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 12 (parse-error + signature/elab/dot-notation drift, #38065)
+
+Classes: parse-error(79) + signature-drift(44) + elab-drift(44) +
+dot-notation-drift(30) = 197 rows. Branch `feature/issue-38065-c`, worktree
+doctor-b, container dr22, cache volume lean-mathlib-cache-v431-b.
+
+### Key finding: dependency backfill already ran (matches inc-8/9/10)
+
+Wave **DR22a** — zero-edit re-verify of all 197 rows — flipped **1**
+(VandermondeInterpolationOQ01OQ02, exit-code confirmed). So these are genuine
+per-file v4.31 repairs. Extracted fresh context-rich diags (diag-DR22a.txt).
+
+**Triage of the parse-error class:** only ~29 of the 79 parse-error rows have a
+TRUE own-file parse error as their first error; the other ~50 were classified
+on stale diags — their first fresh error is now type-mismatch / instance-synth /
+omega (the parse issue was already fixed in an earlier increment, or the row is
+dep-masked). Parse fix is frequently NECESSARY-BUT-NOT-SUFFICIENT: unblocking
+the parser surfaces a deeper non-parse error underneath, which belongs to
+another class's pass. Only files whose parse error was the SOLE blocker flip.
+
+### Waves (all in-container verified, lake exit 0, then ledger-flipped)
+
+- **DR22a** (197): zero-edit re-verify, +1 (Vandermonde).
+- **DR22b/c/d** (+5): orphan-doc / modifier-in-reorder / λ-binder / set-builder
+  / dead-tactic — Erdos666, Hilbert9Reciprocity, Erdos535, Minkowski, AreaOfCircle.
+- **DR22e/f** (+4): ∀-multi-binder split, `;`-separated struct fields split,
+  nested-`/-`-in-comment, broken `: := by sorry` statement reorder — Erdos431,
+  Erdos795Aristotle, SumOfOddsStatementOnly, Erdos220ProblemProvable.
+
+**Increment 12 running total (this session): +10 GREEN** (1291 → 1301).
+Recipes in rename-map §7n.
+
+### Increment 12 statement repairs (operator policy 2026-07-13)
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos220ProblemProvable | `montgomery_vaughan_general`, `maximum_gap_bound`, `gap_concentration` | malformed `theorem foo (…) : := by sorry` with the type on the NEXT line — moved the type up to fill the empty result slot: `theorem foo (…) :\n    <type> := by sorry`. Same statement, still `sorry`-holed (formalized, not verified). |
 
 ## DOCTOR INCREMENT 10 (type-mismatch + proof-drift + mixed unknown-const, #38065)
 

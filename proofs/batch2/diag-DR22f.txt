@@ -1,0 +1,25 @@
+===== LawOfCosinesOQ03OQ02
+error: Proofs/LawOfCosinesOQ03OQ02.lean:121:82: Unexpected term `t.law_sines`; expected single reference to variable
+error: Proofs/LawOfCosinesOQ03OQ02.lean:126:82: Unexpected term `t.law_sines_bc`; expected single reference to variable
+error: Proofs/LawOfCosinesOQ03OQ02.lean:134:2: linarith failed to find a contradiction
+error: Proofs/LawOfCosinesOQ03OQ02.lean:126:82: Unexpected term `t.law_sines_bc`; expected single reference to variable
+error: Proofs/LawOfCosinesOQ03OQ02.lean:134:2: linarith failed to find a contradiction
+case h1
+error: Proofs/LawOfCosinesOQ03OQ02.lean:134:2: linarith failed to find a contradiction
+case h1
+t : HyperbolicSineTriangle
+error: Proofs/LawOfCosinesOQ03OQ02.lean:201:8: `simp` made no progress
+error: Proofs/LawOfCosinesOQ03OQ02.lean:208:13: Unknown constant `Real.cos_injOn_Icc`
+error: Proofs/LawOfCosinesOQ03OQ02.lean:231:12: Unknown constant `div_left_inj'.mp`
+===== Erdos552Problem
+error: Proofs/Erdos552Problem.lean:53:15: `simp` made no progress
+error: Proofs/Erdos552Problem.lean:54:15: `simp` made no progress
+error: Proofs/Erdos552Problem.lean:62:90: unexpected token ';'; expected ')', ',' or ':'
+error: Proofs/Erdos552Problem.lean:54:15: `simp` made no progress
+error: Proofs/Erdos552Problem.lean:62:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:92:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:62:90: unexpected token ';'; expected ')', ',' or ':'
+warning: Proofs/Erdos552Problem.lean:92:8: declaration uses `sorry`
+warning: Proofs/Erdos552Problem.lean:98:8: declaration uses `sorry`
+error: Proofs/Erdos552Problem.lean:195:18: failed to synthesize instance of type class
+  Fintype ↑(G.neighborSet v)

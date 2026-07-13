@@ -26,7 +26,7 @@ import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
-open scoped Classical
+open scoped Classical symmDiff
 
 namespace Erdos431
 
