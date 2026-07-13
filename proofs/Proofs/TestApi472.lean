@@ -12,9 +12,9 @@ example : (3 : ℕ) ∈ [3, 5] := by decide
 example : ∀ p ∈ [3, 5], (p : ℕ).Prime := by decide
 
 -- Test Even/Odd
-#check Nat.Even
+#check @Even (α := ℕ)
 #check Nat.even_add
-#check Nat.Odd
+#check @Odd (α := ℕ)
 #check Nat.Prime.eq_two_or_odd
 
 -- Test natural number subtraction behavior

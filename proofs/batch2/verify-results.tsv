@@ -898,7 +898,7 @@ Erdos1181Problem	RESIDUAL	unknown-const:Real.tendsto_log_div_rpow_atTop
 Erdos1182Problem	RESIDUAL	unknown-const:Fin.one_ne_zero
 Erdos1183Problem	GREEN	
 Erdos118Problem	GREEN	
-Erdos1196Problem	RESIDUAL	unknown-const:Dvd.dvd.symm
+Erdos1196Problem	GREEN	
 Erdos119Problem	GREEN	
 Erdos11Problem	GREEN	
 Erdos1201Problem	RESIDUAL	type-mismatch
@@ -1626,7 +1626,7 @@ Erdos723Problem	RESIDUAL	proof-drift
 Erdos724Problem	RESIDUAL	parse-error
 Erdos725Problem	GREEN	
 Erdos726Problem	RESIDUAL	unknown-const:Nat.Prime.not_dvd_of_lt
-Erdos727Problem	RESIDUAL	unknown-const:Nat.catalan
+Erdos727Problem	GREEN	
 Erdos728Problem	RESIDUAL	proof-drift
 Erdos72Aristotle	GREEN	
 Erdos72Problem	RESIDUAL	elab-drift
@@ -2243,7 +2243,7 @@ LiouvilleTheorem	RESIDUAL	instance-synth
 LiouvilleTheoremOQ03	GREEN	
 LiouvilleTheoremOQ04	GREEN	
 LittleWedderburnOQ01OQ02	RESIDUAL	elab-drift
-LovaszLocalLemmaOQ01	RESIDUAL	unknown-const:measurableSet_generateFrom
+LovaszLocalLemmaOQ01	GREEN	
 LovaszLocalLemmaOQ01StrongInduction	GREEN	
 LovaszLocalLemmaOQ01SymmetricStep	GREEN	
 MaschkeAugmentationNoSplitOQ010101	RESIDUAL	instance-synth
@@ -2301,7 +2301,7 @@ PartitionTheoremOQ04Aristotle	GREEN
 PascalsHexagon	GREEN	
 PascalsHexagonOQ02	RESIDUAL	type-mismatch
 PascalsHexagonOQ03	GREEN	
-PascalsHexagonOQ03Incomplete01Derangements	RESIDUAL	unknown-const:Nat.numDerangements
+PascalsHexagonOQ03Incomplete01Derangements	GREEN	
 PellEquationOQ01	RESIDUAL	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	RESIDUAL	rewrite-drift
 PentagonalNumberTheoremOQ01OQ01	RESIDUAL	rewrite-drift
@@ -2336,7 +2336,7 @@ ProductOfSegmentsOfChordsOQ01	RESIDUAL	unknown-const:chord_quadratic_sphere
 PropertyBFirstMomentRecoloring	RESIDUAL	unknown-const:Finset.exists_ne_of_one_lt_card
 PtolemysComplexProofOQ02	RESIDUAL	unknown-const:Real.cos_eq_one_iff.mp
 PtolemysTheoremOQ01Incomplete01	RESIDUAL	elab-drift
-PtolemysTheoremOQ01OQ01	RESIDUAL	unknown-const:Real.sqrt_eq_iff_sq_eq
+PtolemysTheoremOQ01OQ01	GREEN	
 PtolemysTheoremOQ01OQ02	RESIDUAL	unknown-const:spherical_ptolemy
 PuiseuxTheorem	RESIDUAL	type-mismatch
 PuiseuxTheoremOQ02	RESIDUAL	instance-synth
@@ -2579,7 +2579,7 @@ TestApi385	RESIDUAL	proof-drift
 TestApi417	RESIDUAL	proof-drift
 TestApi423	RESIDUAL	parse-error
 TestApi457	RESIDUAL	proof-drift
-TestApi472	RESIDUAL	unknown-const:Nat.Even
+TestApi472	GREEN	
 TestApi513	RESIDUAL	unknown-const:Real.pi_lt_3141593
 TestApi635	GREEN	
 TestApi654	GREEN	
