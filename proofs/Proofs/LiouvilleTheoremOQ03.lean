@@ -623,4 +623,66 @@ theorem dense_compl_liouville : Dense {x : ℝ | Liouville x}ᶜ :=
   (interior_eq_empty_iff_dense_compl).mp
     (MeasureTheory.Measure.interior_eq_empty_of_null volume_liouville_eq_zero)
 
+/-! ### ℚ-affine invariance of the well-approximable set
+
+The irrationality-measure exponent `τ` of a real number is unchanged by adding a rational,
+by negation, and by multiplying by a nonzero rational — this is exactly the content of
+Mathlib's `LiouvilleWith.add_rat_iff`, `LiouvilleWith.neg_iff`, `LiouvilleWith.mul_rat_iff`.
+Lifted to the level sets, the well-approximable set `wellApprox τ = {x | LiouvilleWith τ x}`
+is therefore invariant under the whole rational-affine group `x ↦ a·x + b` (`a, b ∈ ℚ`,
+`a ≠ 0`).  This is the structural reason `wellApprox τ` is a *dense* set of the same
+Hausdorff dimension everywhere — the rich self-similarity underneath the Jarník–Besicovitch
+dimension formula — and complements the measure/category/density facts above.  All results
+are elementary consequences of the Mathlib `LiouvilleWith` invariance API; none touches the
+`dimH_wellApprox` axiom. -/
+
+/-- **Translation by a rational fixes membership.** `x + r ∈ wellApprox τ ↔ x ∈ wellApprox τ`
+for `r : ℚ` (`LiouvilleWith.add_rat_iff`). -/
+theorem wellApprox_add_rat_iff (τ : ℝ) (x : ℝ) (r : ℚ) :
+    x + (r : ℝ) ∈ wellApprox τ ↔ x ∈ wellApprox τ := by
+  simp only [wellApprox, Set.mem_setOf_eq]
+  exact LiouvilleWith.add_rat_iff
+
+/-- **Translation by an integer fixes membership.** `x + m ∈ wellApprox τ ↔ x ∈ wellApprox τ`
+for `m : ℤ` (`LiouvilleWith.add_int_iff`). -/
+theorem wellApprox_add_int_iff (τ : ℝ) (x : ℝ) (m : ℤ) :
+    x + (m : ℝ) ∈ wellApprox τ ↔ x ∈ wellApprox τ := by
+  simp only [wellApprox, Set.mem_setOf_eq]
+  exact LiouvilleWith.add_int_iff
+
+/-- **Subtraction of a rational fixes membership.** `x - r ∈ wellApprox τ ↔ x ∈ wellApprox τ`
+(`LiouvilleWith.sub_rat_iff`). -/
+theorem wellApprox_sub_rat_iff (τ : ℝ) (x : ℝ) (r : ℚ) :
+    x - (r : ℝ) ∈ wellApprox τ ↔ x ∈ wellApprox τ := by
+  simp only [wellApprox, Set.mem_setOf_eq]
+  exact LiouvilleWith.sub_rat_iff
+
+/-- **Negation fixes membership.** `-x ∈ wellApprox τ ↔ x ∈ wellApprox τ`
+(`LiouvilleWith.neg_iff`); `wellApprox τ` is symmetric about the origin. -/
+theorem wellApprox_neg_iff (τ : ℝ) (x : ℝ) :
+    -x ∈ wellApprox τ ↔ x ∈ wellApprox τ := by
+  simp only [wellApprox, Set.mem_setOf_eq]
+  exact LiouvilleWith.neg_iff
+
+/-- **Dilation by a nonzero rational fixes membership.** `x · r ∈ wellApprox τ ↔ x ∈ wellApprox τ`
+for `r : ℚ`, `r ≠ 0` (`LiouvilleWith.mul_rat_iff`). -/
+theorem wellApprox_mul_rat_iff (τ : ℝ) (x : ℝ) {r : ℚ} (hr : r ≠ 0) :
+    x * (r : ℝ) ∈ wellApprox τ ↔ x ∈ wellApprox τ := by
+  simp only [wellApprox, Set.mem_setOf_eq]
+  exact LiouvilleWith.mul_rat_iff hr
+
+/-- **Rational-translation invariance as a set equality.** The image of `wellApprox τ` under
+`x ↦ x + r` (`r : ℚ`) is `wellApprox τ` itself — the level set is a genuine union of its own
+rational translates.  Forward from `wellApprox_add_rat_iff`, backward via the preimage point
+`y - r` (`wellApprox_sub_rat_iff`). -/
+theorem image_add_rat_wellApprox (τ : ℝ) (r : ℚ) :
+    (fun x => x + (r : ℝ)) '' wellApprox τ = wellApprox τ := by
+  ext y
+  simp only [Set.mem_image]
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact (wellApprox_add_rat_iff τ x r).mpr hx
+  · intro hy
+    exact ⟨y - (r : ℝ), (wellApprox_sub_rat_iff τ y r).mpr hy, by ring⟩
+
 end LiouvilleTheoremOQ03
