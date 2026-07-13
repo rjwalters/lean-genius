@@ -379,6 +379,76 @@ theorem centralBinom_even (n : ℕ) (hn : 0 < n) : 2 ∣ Nat.centralBinom n := b
   have hpos : 0 < digitSum 2 n := digitSum_pos (p := 2) (by omega)
   omega
 
+/-! ### The sharp 2-adic valuation of the central binomial coefficient
+
+Kummer's carry count, at `p = 2`, collapses to the classical closed form
+`v_2(C(2n, n)) = s_2(n)` — the number of `1`s in the binary expansion of `n`.
+The key input is that doubling adds a trailing binary `0`, so `s_2(2n) = s_2(n)`
+(`digitSum_base_mul`), which cancels one of the two `s_2(n)` terms in the `m = n`
+Kummer identity.  The general-`p` exact form is recorded first. -/
+
+/-- **Kummer for the central binomial coefficient (exact multiplied form).**
+For every prime `p`,
+
+  `(p − 1)·v_p(C(2n, n)) + s_p(2n) = 2·s_p(n)`,
+
+the subtraction-free `m = n` specialisation of
+`sub_one_mul_padicValNat_choose_add_digitSum`.  Rearranged, the base-`p` carry
+count of `n + n` is `(2·s_p(n) − s_p(2n))/(p − 1)` (cf. `padicValNat_centralBinom_eq_div`),
+but the multiplied form avoids the natural-number division. -/
+theorem sub_one_mul_padicValNat_centralBinom (p n : ℕ) (hp : p.Prime) :
+    (p - 1) * padicValNat p (Nat.centralBinom n) + digitSum p (2 * n)
+      = 2 * digitSum p n := by
+  have hadd := sub_one_mul_padicValNat_choose_add_digitSum p n n hp
+  have hc : Nat.centralBinom n = (n + n).choose n := by
+    rw [Nat.centralBinom_eq_two_mul_choose, two_mul]
+  rw [hc, two_mul n]
+  omega
+
+/-- **The sharp 2-adic valuation of the central binomial coefficient.**
+
+  `v_2(C(2n, n)) = s_2(n)`,
+
+i.e. `C(2n, n)` is divisible by exactly `2` to the power of the number of `1`s in
+the binary expansion of `n`.  This is the classical Kummer specialisation: doubling
+`n` in base 2 never carries (`s_2(2n) = s_2(n)`), so the `m = n` carry count of
+`n + n` equals `s_2(n)`.  Not a named Mathlib lemma. -/
+theorem padicValNat_centralBinom_two_eq_digitSum (n : ℕ) :
+    padicValNat 2 (Nat.centralBinom n) = digitSum 2 n := by
+  have h := sub_one_mul_padicValNat_centralBinom 2 n Nat.prime_two
+  rw [digitSum_base_mul 2 n (by norm_num : 1 < 2)] at h
+  omega
+
+/-- **The central binomial valuation is positive for `n ≥ 1`** (sharpened evenness).
+`1 ≤ v_2(C(2n, n))` because `s_2(n) ≥ 1` for `n ≠ 0` (`digitSum_pos`).  Refines
+`centralBinom_even` from "divisible by 2" to an explicit valuation lower bound. -/
+theorem one_le_padicValNat_centralBinom_two {n : ℕ} (hn : 0 < n) :
+    1 ≤ padicValNat 2 (Nat.centralBinom n) := by
+  rw [padicValNat_centralBinom_two_eq_digitSum]
+  exact digitSum_pos (by omega)
+
+/-- **The base-2 digit sum of a power of two is `1`.**  Its binary expansion is a
+single leading `1` followed by zeros.  By induction: `s_2(2^{k+1}) = s_2(2·2^k)
+= s_2(2^k)` via `digitSum_base_mul`, with base case `s_2(1) = 1`. -/
+theorem digitSum_two_pow (k : ℕ) : digitSum 2 (2 ^ k) = 1 := by
+  induction k with
+  | zero =>
+      show (Nat.digits 2 (2 ^ 0)).sum = 1
+      rw [pow_zero, Nat.digits_def' (by norm_num : 1 < 2) (by norm_num : 0 < 1)]
+      simp
+  | succ k ih =>
+      rw [pow_succ, mul_comm (2 ^ k) 2, digitSum_base_mul 2 (2 ^ k) (by norm_num : 1 < 2), ih]
+
+/-- **At a power of two the central binomial coefficient carries exactly one `2`.**
+
+  `v_2(C(2·2^k, 2^k)) = 1`,
+
+the `n = 2^k` slice of `padicValNat_centralBinom_two_eq_digitSum` (`s_2(2^k) = 1`).
+Equivalently, `C(2^{k+1}, 2^k) ≡ 2 (mod 4)` — it is even but not a multiple of 4. -/
+theorem padicValNat_centralBinom_two_pow (k : ℕ) :
+    padicValNat 2 (Nat.centralBinom (2 ^ k)) = 1 := by
+  rw [padicValNat_centralBinom_two_eq_digitSum, digitSum_two_pow]
+
 /-! ### The carry-count form: bridging `digitSum` to Mathlib's `padicValNat_choose'`
 
 The Kummer identities above are phrased through the base-`p` **digit sum**.  Mathlib's
@@ -460,5 +530,10 @@ theorem not_dvd_choose_iff_no_carries (p m n : ℕ) {b : ℕ} (hp : p.Prime)
 #check @centralBinom_even
 #check @digitSum_defect_eq_sub_one_mul_carries
 #check @not_dvd_choose_iff_no_carries
+#check @sub_one_mul_padicValNat_centralBinom
+#check @padicValNat_centralBinom_two_eq_digitSum
+#check @one_le_padicValNat_centralBinom_two
+#check @digitSum_two_pow
+#check @padicValNat_centralBinom_two_pow
 
 end Erdos729Legendre
