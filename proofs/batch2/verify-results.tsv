@@ -274,7 +274,7 @@ BoundedPrimeGapsOQ03OQ01OQ04	GREEN
 BoundedPrimeGapsOQ03OQ02	GREEN	
 BoundedPrimeGapsOQ03OQ03	GREEN	
 BoundedPrimeGapsOQ04	RESIDUAL	lambda-reserved-token
-BoundedPrimeGapsOQ04OQ01	RESIDUAL	type-mismatch
+BoundedPrimeGapsOQ04OQ01	GREEN	
 BoundedPrimeGapsOQ04OQ01Aristotle	RESIDUAL	rewrite-drift
 BoundedPrimeGapsOQ04OQ02	RESIDUAL	lambda-reserved-token
 BrianchonTheorem	GREEN	
@@ -1631,7 +1631,7 @@ Erdos728Problem	RESIDUAL	proof-drift
 Erdos72Aristotle	GREEN	
 Erdos72Problem	RESIDUAL	elab-drift
 Erdos730Problem	RESIDUAL	rewrite-drift
-Erdos731Problem	RESIDUAL	unknown-const:choose_succ_gt_central
+Erdos731Problem	GREEN	
 Erdos732Problem	RESIDUAL	instance-synth
 Erdos733LimitBounds	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
 Erdos733Problem	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
@@ -2063,7 +2063,7 @@ GreensTheoremOQ01OQ01OQ02	GREEN
 GreensTheoremOQ01OQ01OQ02OQ01	GREEN	
 GreensTheoremOQ01OQ01OQ02OQ02	GREEN	
 GreensTheoremOQ01OQ01OQ02OQ03	RESIDUAL	unknown-const:MeasureTheory.Measure.prod_mono
-GreensTheoremOQ01OQ01OQ03	RESIDUAL	unknown-const:MeasureTheory.Measure.prod_mono
+GreensTheoremOQ01OQ01OQ03	GREEN	
 GreensTheoremOQ03OQ04	RESIDUAL	type-mismatch
 GreensTheoremOQ04	RESIDUAL	type-mismatch
 GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02	RESIDUAL	type-mismatch

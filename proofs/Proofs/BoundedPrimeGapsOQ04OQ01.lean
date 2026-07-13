@@ -208,8 +208,7 @@ theorem complete_character_sum_zero (q : ℕ) (hq : 1 ≤ q) (χ : DirichletChar
   -- Since ZMod (m+1) = Fin (m+1), the natCast ℕ → Fin (m+1) sends i.val ↦ i
   have : (fun i : Fin (m + 1) => (χ ((↑i : ℕ) : ZMod (m + 1)) : ℂ)) = fun i => χ i := by
     ext i; congr 1
-    show ((i : ℕ) : Fin (m + 1)) = i
-    ext; simp [Fin.val_natCast, Nat.mod_eq_of_lt i.isLt]
+    exact ZMod.natCast_rightInverse (n := m + 1) i
   rw [this]
   exact MulChar.sum_eq_zero_of_ne_one hχ
 
