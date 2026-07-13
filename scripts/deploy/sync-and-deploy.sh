@@ -141,6 +141,42 @@ if $ONLY_DEPLOY; then run_sync_branch=false; run_merge=false; run_sync=false; ru
 [[ "${SKIP_BUILD:-}" == "1" ]] && run_build=false
 [[ "${SKIP_DEPLOY:-}" == "1" ]] && run_deploy=false
 
+# The deployer's long-lived worktree lives on this branch, never on `main`
+# (launch-agent.sh BRANCH_NAME must match).
+DEPLOYER_BRANCH="${DEPLOYER_BRANCH:-feature/deployer}"
+
+# True when this checkout is the deployer's long-lived worktree (a linked
+# worktree whose directory is named "deployer").
+in_deployer_worktree() {
+    [[ "$(basename "$(pwd -P)")" == "deployer" ]] &&
+        [[ "$(git rev-parse --git-dir 2>/dev/null)" != "$(git rev-parse --git-common-dir 2>/dev/null)" ]]
+}
+
+# Bring the working tree to origin/main WITHOUT stealing the `main` ref from
+# another worktree. On 2026-07-11 the old `git checkout main` here ran inside
+# the deployer worktree, moved it off feature/deployer, and squatted on `main`
+# for two days — blocking every other checkout of main, after which the
+# orphaned feature/deployer branch was swept by clean-branches.sh. It also had
+# a latent footgun: when `checkout main` failed (main held elsewhere), the
+# follow-up `reset --hard origin/main` nuked whatever branch was checked out.
+sync_tree_to_main() {
+    local cur
+    cur=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "HEAD")
+    if in_deployer_worktree; then
+        if [[ "$cur" != "$DEPLOYER_BRANCH" ]]; then
+            print_warning "Deployer worktree is on '$cur' — self-healing to $DEPLOYER_BRANCH"
+        fi
+        git checkout -B "$DEPLOYER_BRANCH" origin/main
+    elif [[ "$cur" == "main" || "$cur" == "$DEPLOYER_BRANCH" ]]; then
+        git reset --hard origin/main
+    elif git checkout main 2>/dev/null; then
+        git reset --hard origin/main
+    else
+        print_warning "'main' is checked out in another worktree — using detached origin/main instead"
+        git checkout --detach origin/main
+    fi
+}
+
 # ============================================================================
 # Step 0a: Sync current branch to origin/main (fast-forward only)
 # ============================================================================
@@ -168,6 +204,14 @@ sync_branch() {
     fi
 
     if [[ "$current_branch" == "main" ]]; then
+        if in_deployer_worktree; then
+            # Drifted state (see sync_tree_to_main): the deployer worktree
+            # must never occupy the `main` ref. Heal it now, before merge.
+            print_warning "Deployer worktree has 'main' checked out — self-healing to $DEPLOYER_BRANCH"
+            git fetch origin main --quiet || print_warning "git fetch origin main failed"
+            git checkout -B "$DEPLOYER_BRANCH" origin/main
+            return 0
+        fi
         # merge_prs already handles main directly via reset --hard; nothing
         # to do here. We still fetch so subsequent steps see fresh refs.
         print_info "On main — fetching only (merge step will reset to origin/main)"
@@ -370,8 +414,7 @@ merge_prs() {
     git fetch origin main --quiet || git fetch origin main --quiet || true
     # Stash before checkout — dirty files block branch switch
     git stash 2>/dev/null || true
-    git checkout main 2>/dev/null || git checkout -b main origin/main 2>/dev/null || true
-    git reset --hard origin/main
+    sync_tree_to_main
 
     local merged=0
     local failed=0
@@ -1129,9 +1172,8 @@ EOF
         else
             print_warning "Could not push sync branch"
         fi
-        # Return to main
-        git checkout main 2>/dev/null || true
-        git reset --hard origin/main 2>/dev/null || true
+        # Return to the pipeline branch (never steal `main` from another worktree)
+        sync_tree_to_main
         git branch -D "$sync_branch" 2>/dev/null || true
     else
         print_info "No staged changes to commit"
@@ -1158,6 +1200,16 @@ main() {
     echo "  Build:       $run_build"
     echo "  Deploy:      $run_deploy"
     echo "  Dry Run:     $DRY_RUN"
+
+    # The primary checkout is shared by every concurrently-running agent:
+    # cycles run here dirty the tree others read, and past cycles left it
+    # stuck on chore/sync-data branches when `checkout main` failed. The
+    # deployer agent must run from its worktree (.loom/worktrees/deployer).
+    if [[ "$(git rev-parse --git-dir 2>/dev/null)" == "$(git rev-parse --git-common-dir 2>/dev/null)" ]]; then
+        print_warning "Running in the PRIMARY checkout, not a worktree."
+        print_warning "  Deployer agents: cd to your worktree (.loom/worktrees/deployer) first."
+        print_warning "  Ad-hoc/manual runs: this is allowed but concurrent agents share this tree."
+    fi
 
     $run_sync_branch && sync_branch
     $run_merge && merge_prs
