@@ -1176,4 +1176,49 @@ theorem cubeRootThree_irrational {x : ℝ} (hx : x ^ 3 = 3) : Irrational x := by
   rintro ⟨q, rfl⟩
   exact three_not_cube_rat q (by exact_mod_cast hx)
 
+/-! ## Concrete `ℚ` instances of the Vahlen–Capelli criterion
+
+`three_not_cube_rat` (the `p = 3` case) generalises verbatim to **every** exponent by the same
+`3`-adic valuation argument: if `bᵖ = 3` then `p · v₃(b) = v₃(3) = 1` in `ℤ`, impossible for
+`p ≥ 2` since then `p ∣ 1`.  This supplies the "clean not-a-perfect-`p`-th-power in `ℚ`" lemma,
+which — fed through `vahlen_capelli_pos` — makes `Xⁿ − 3` irreducible over `ℚ` for **all** `n`,
+generalising the namesake `X³ − 3` instance to arbitrary exponent. -/
+
+/-- **`3` is not a `p`-th power in `ℚ`, for every `p ≥ 2`.**  If `bᵖ = 3` then the `3`-adic
+valuation gives `p · v₃(b) = v₃(3) = 1`, so `p ∣ 1` in `ℤ` — impossible for `p ≥ 2`.  The
+all-exponent generalisation of `three_not_cube_rat` (which is the `p = 3` case). -/
+theorem three_not_pth_power_rat {p : ℕ} (hp : 2 ≤ p) : ∀ b : ℚ, b ^ p ≠ 3 := by
+  intro b hb
+  have hb0 : b ≠ 0 := by
+    rintro rfl; rw [zero_pow (by omega : p ≠ 0)] at hb; norm_num at hb
+  have h1 : padicValRat 3 (3 : ℚ) = 1 := by
+    have := padicValRat.self (p := 3) (by norm_num); simpa using this
+  have key : padicValRat 3 (b ^ p) = 1 := by rw [hb, h1]
+  rw [padicValRat.pow hb0] at key
+  -- `key : ↑p * padicValRat 3 b = 1`, so `↑p ∣ 1`, forcing `↑p ≤ 1` against `p ≥ 2`.
+  have hd : (p : ℤ) ∣ 1 := ⟨padicValRat 3 b, key.symm⟩
+  have hle : (p : ℤ) ≤ 1 := Int.le_of_dvd one_pos hd
+  have hge : (2 : ℤ) ≤ (p : ℤ) := by exact_mod_cast hp
+  omega
+
+/-- **`Xⁿ − 3` is irreducible over `ℚ`, for every `n ≥ 1`.**  Direct instance of the general
+positive-radicand Vahlen–Capelli criterion `vahlen_capelli_pos` (with `a = 3 > 0`): condition (1)
+is `three_not_pth_power_rat` at each prime `p ∣ n`, and condition (2) is vacuous because `3 > 0`.
+Generalises the namesake `X³ − 3` instance to arbitrary exponent — every `n`-th root of `3` is
+irrational, uniformly. -/
+theorem X_pow_sub_C_three_irreducible {n : ℕ} (hn : 1 ≤ n) :
+    Irreducible (X ^ n - C (3 : ℚ)) := by
+  rw [vahlen_capelli_pos hn (by norm_num : (0 : ℚ) < 3)]
+  intro p hp _hpn b
+  exact three_not_pth_power_rat hp.two_le b
+
+/-- **`X^(2ᵏ) − 3` is irreducible over `ℚ`, for every `k ≥ 1`** — the `2`-power-exponent instance
+(the exponents relevant to the `∛3` / quadratic-tower descent of this gallery entry).  A direct
+specialisation of `X_pow_sub_C_three_irreducible`, or of `vahlen_capelli_pos_two_pow` with the
+single square obstruction `three_not_pth_power_rat (p := 2)`. -/
+theorem X_pow_two_pow_sub_C_three_irreducible {k : ℕ} (hk : 1 ≤ k) :
+    Irreducible (X ^ 2 ^ k - C (3 : ℚ)) :=
+  (vahlen_capelli_pos_two_pow hk (by norm_num : (0 : ℚ) < 3)).mpr
+    (three_not_pth_power_rat (by norm_num))
+
 end CubeRoot3IrrationalOQ02OQ03
