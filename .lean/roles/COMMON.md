@@ -76,8 +76,8 @@ Worktree-based agents (researcher, enricher, seeker) work in the **sanctioned
 location** `$REPO_ROOT/.loom/worktrees/<agent-id>` on branch `feature/<agent-id>`.
 Do not create defensive worktrees under `$HOME` or `/tmp` — the create path
 preserves in-flight work. Stray worktrees outside `.loom/worktrees/` are reclaimed
-by the backstop janitor (`scripts/clean-branches.sh` — currently missing from main,
-see Known-Gaps Ledger) once clean and stale; dirty or unpushed worktrees are
+by the backstop janitor (`scripts/clean-branches.sh`) once clean and stale;
+dirty or unpushed worktrees are
 always preserved.
 
 ## Honesty Standards
@@ -92,43 +92,30 @@ always preserved.
 - When uncertain about significance, default to understating rather than
   overstating.
 
-## Known-Gaps Ledger (issue #38387)
+## Known-Gaps Ledger (issue #38387 / #38398)
 
-Commit `dc9fdffa30` (PR #37576, merged 2026-07-11) accidentally deleted a large
-portion of the engine from version control, including several helper scripts the
-role prompts still reference. PR #38390 restored `scripts/research/`,
-`scripts/auditor/`, `.loom/roles/`, and `.claude/agents/loom-*.md`. The following
-are still referenced by role docs/prompts but **absent from `main`** — each is
-recoverable verbatim from git history via `git show dc9fdffa30^:<path>`:
+Commit `dc9fdffa30` (PR #37576, merged 2026-07-11) accidentally deleted ~9,900
+files from version control. Restoration history: PR #38390 restored
+`scripts/research/`, `scripts/auditor/`, `.loom/roles/`, and
+`.claude/agents/loom-*.md`; PR #38392 the six role docs; #38398 PR R1 restored
+the remaining root + engine files (root `package.json`/`vite.config.ts`/
+`tsconfig*`/`wrangler.toml`/`Makefile`/`CLAUDE.md`/`README.md`, `scripts/deploy/`,
+`scripts/herald/`, `scripts/enricher/`, `scripts/agents/claude-wrapper.sh`,
+`scripts/lean/update-stats.sh`, `scripts/clean-branches.sh`,
+`scripts/gallery/check-meta-size.ts`, `scripts/annotations/`, `.lean/scripts/`,
+`.claude/commands/`, `.claude/skills/mathlib-contribution/`, `functions/`,
+`drizzle/`, `mcp-servers/aristotle/`, and more); #38398 PR R2 restores
+`research/problems/`.
+
+Remaining gaps (deliberately NOT restored):
 
 | Missing path | Referenced by | Notes |
 |---|---|---|
-| `scripts/deploy/sync-and-deploy.sh` | deployer | The chronic "deploy BLOCKED" cause |
-| `scripts/deploy/launch-agent.sh` | deployer launch surface | |
-| `scripts/herald/post-mathstodon.sh` | herald | Posting gate (rate limit, dedup, URL verify) |
-| `scripts/herald/mastodon-client.ts` | herald | Replies/boosts/favourites |
-| `scripts/herald/scan-engagement.ts` | herald | Hashtag engagement scan |
-| `scripts/herald/launch-agent.sh` | herald launch surface | |
-| `scripts/enricher/claim-target.sh` | enricher | Claim/complete tracker |
-| `scripts/enricher/find-targets.ts` | enricher | Priority queue (passes/quality) |
-| `scripts/enricher/parallel-enrich.sh` | enricher launch surface | |
-| `scripts/auditor/launch-agent.sh` | auditor launch surface | |
-| `scripts/mechanic/launch-agent.sh` | mechanic launch surface | |
-| `scripts/agents/claude-wrapper.sh` | all launchers (incl. tracked `launch-seeker.sh`) | Daemon wrapper |
-| `scripts/lean/update-stats.sh` | seeker | Stats/completion signals |
-| `scripts/clean-branches.sh` | worktree janitor | |
-| `scripts/gallery/check-meta-size.ts` | enricher | Size-guardrail check |
-| `.claude/commands/lean-scout.md` | researcher (`/lean-scout` survey skill) | Structured literature/gallery survey |
-| `.claude/skills/mathlib-contribution/` (SKILL.md, STYLE-SCAN.md, GOTCHAS.md) | researcher red-team pass for Mathlib-bound files | |
-| `.lean/scripts/extract-problems.ts` | seeker | Pool extractor |
-| `.lean/scripts/research.sh` | seeker, researcher | Workspace init; `phase` subcommand tracks OBSERVE/ORIENT/ACT/COMPLETED in `research/registry.json` |
-| `.lean/scripts/knowledge-scores.sh` | researcher | Lists problems by knowledge score (`--status`, `--revisit`); `claim-problem.sh claim-random` covers the selection use case meanwhile |
-| `.lean/scripts/archive-sessions.sh` | researcher | Archives old knowledge.md sessions to `sessions/`; manual archiving works meanwhile |
-| `research/db/sync_pool.py`, `research/db/migrate.py` | seeker | DB-first pool sync (present only as untracked runtime state, currently absent from disk) |
-| Root `package.json`, `vite.config.ts`, `tsconfig*.json`, `wrangler.toml` | `pnpm build` anywhere | Site builds currently only work in worktrees created from pre-deletion branches |
+| `research/db/sync_pool.py`, `research/db/migrate.py` | seeker | `research/db/` is gitignored (runtime state); currently absent from disk too — restoration/tracking decision deferred to the operator (#38398 item 3) |
+| `research/registry.json` tracking decision | researcher, seeker | Fleet-mutated: conflict risk; deferred by the operator in #38387 |
+| `research/db/knowledge.db` dump strategy | researcher | Binary SQLite — not git-friendly; deferred |
 
-Do **not** reinvent these from scratch — restore from history (after a secrets
-scan) or wait for the restoration decision, now tracked in follow-up issue
-#38398 (#38387 covered the survey, engine check-in, role docs, and researcher-doc
-optimization). Where a role doc references one of these paths, treat it as "the
-documented behavior when the script is available".
+Do **not** reinvent missing paths from scratch — restore from history (after a
+secrets scan; everything is recoverable verbatim via `git show
+dc9fdffa30^:<path>`). Where a role doc references a still-missing path, treat it
+as "the documented behavior when the script is available".
