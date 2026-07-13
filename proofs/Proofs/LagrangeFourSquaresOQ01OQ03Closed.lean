@@ -109,6 +109,32 @@ theorem jacobiCount_even_ordCompl {n : ℕ} (hn : n ≠ 0) (h2 : 2 ∣ n) :
   have key := jacobiCount_two_pow_mul_odd ha hodd
   rwa [Nat.ordProj_mul_ordCompl_eq_self n 2] at key
 
+/-- **Even-side doubling law: doubling an even number leaves the Jacobi count unchanged.**
+For every even `n ≠ 0`, `jacobiCount (2·n) = jacobiCount n`.  This is the even-`n`
+companion of `jacobiCount_two_mul` (odd `n` ⟹ the count *triples*): once the `2`-adic
+valuation is `≥ 1`, the count is `24·σ(oddPart n)`, which is unchanged by another factor of
+`2` (`oddPart (2n) = oddPart n`).  So along the chain `m, 2m, 4m, 8m, …` (`m` odd) the count
+jumps once — `8σ(m) → 24σ(m)` at the first doubling — and is then constant.  Proof:
+`jacobiCount_even_ordCompl` on both sides, with `ordCompl[2] (2n) = ordCompl[2] n` from
+`Nat.ordCompl_mul` and `ordCompl[2] 2 = 1`. -/
+theorem jacobiCount_two_mul_of_even {n : ℕ} (hn : n ≠ 0) (h2 : 2 ∣ n) :
+    jacobiCount (2 * n) = jacobiCount n := by
+  have h2n : 2 * n ≠ 0 := Nat.mul_ne_zero (by norm_num) hn
+  have h2dvd : 2 ∣ 2 * n := Dvd.intro n rfl
+  have h22 : ordCompl[2] 2 = 1 := by
+    rw [Nat.Prime.factorization_self Nat.prime_two, pow_one, Nat.div_self (by norm_num)]
+  have hoc : ordCompl[2] (2 * n) = ordCompl[2] n := by
+    rw [Nat.ordCompl_mul, h22, one_mul]
+  rw [jacobiCount_even_ordCompl h2n h2dvd, jacobiCount_even_ordCompl hn h2, hoc]
+
+/-- **The even closed form is independent of the power of two (`a ≥ 1`).** For odd `m` and
+any `a, b ≥ 1`, `jacobiCount (2^a · m) = jacobiCount (2^b · m)` — both equal `24·σ(m)`.
+This generalizes `jacobiCount_two_pow_const` (the `m = 1` case) from the pure powers of two
+to an arbitrary odd part: the Jacobi count sees only whether `v₂ ≥ 1`, not its exact value. -/
+theorem jacobiCount_two_pow_mul_odd_const {a b m : ℕ} (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hm : Odd m) : jacobiCount (2 ^ a * m) = jacobiCount (2 ^ b * m) := by
+  rw [jacobiCount_two_pow_mul_odd ha hm, jacobiCount_two_pow_mul_odd hb hm]
+
 /-! ## Multiplicativity of the Jacobi RHS as an arithmetic function
 
 Jacobi's four-square count is *not* multiplicative on the nose (there is a fixed
