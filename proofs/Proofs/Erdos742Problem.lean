@@ -27,6 +27,7 @@ Tags: graph-theory, extremal-graph-theory, diameter, edge-critical
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Card
 
@@ -44,11 +45,11 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- The distance between two vertices in a graph (shortest path length). -/
 noncomputable def dist (G : SimpleGraph V) [DecidableRel G.Adj] (u v : V) : ℕ∞ :=
-  if h : G.Reachable u v then G.dist u v else ⊤
+  if h : G.Reachable u v then (G.dist u v : ℕ∞) else ⊤
 
 /-- The diameter of a graph: maximum distance between any two vertices. -/
 noncomputable def diameter (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ∞ :=
-  ⨆ (u v : V), dist G u v
+  ⨆ u : V, ⨆ v : V, dist G u v
 
 /-- G has diameter exactly d. -/
 def HasDiameter (G : SimpleGraph V) (d : ℕ) : Prop :=
@@ -65,10 +66,10 @@ def HasDiameter2 (G : SimpleGraph V) : Prop := HasDiameter G 2
 /-- The graph G with edge (u,v) deleted. -/
 def deleteEdge (G : SimpleGraph V) (u v : V) : SimpleGraph V where
   Adj := fun x y => G.Adj x y ∧ ¬(({x, y} : Set V) = {u, v})
-  symm.symm := fun x y ⟨hadj, hne⟩ => ⟨G.symm hadj, by
+  symm := ⟨fun _ _ ⟨hadj, hne⟩ => ⟨G.adj_symm hadj, by
     simp only [Set.pair_comm] at hne ⊢
-    exact hne⟩
-  loopless.irrefl := fun x ⟨hadj, _⟩ => G.loopless x hadj
+    exact hne⟩⟩
+  loopless := ⟨fun _ ⟨hadj, _⟩ => G.loopless.irrefl _ hadj⟩
 
 /-- An edge (u,v) is critical for diameter if deleting it increases the diameter. -/
 def IsCriticalEdge (G : SimpleGraph V) (u v : V) : Prop :=

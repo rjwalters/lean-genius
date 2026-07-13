@@ -40,7 +40,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- The chromatic number of a simple graph. -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  Nat.find (G.Colorable_of_fintype)
+  Nat.find (⟨_, G.colorable_of_fintype⟩ : ∃ n, G.Colorable n)
 
 /-- A graph is k-chromatic if its chromatic number is exactly k. -/
 def IsKChromatic (G : SimpleGraph V) (k : ℕ) : Prop :=
