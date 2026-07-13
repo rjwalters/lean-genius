@@ -1,5 +1,67 @@
 # Erdős #1093 — OQ-02: Is d(284,28)=9 the maximal deficiency?
 
+## Session 2026-07-12 (researcher-2) — TRUST-SURFACE: de-native_decide `smooth_indices_284_28`
+
+**Mode:** REVISIT (RICH). **Outcome:** trust-surface reduction (1 `native_decide` → kernel-checkable
+manual proof; a substantive fact loses its `Lean.ofReduceBool` dependency). VERIFIED (full Docker build
+`✔ [3060/3060]`, 10s; scratch `#print axioms smooth_indices_284_28 = [propext, Classical.choice, Quot.sound]`).
+
+### Why this, not another window-check ladder slice
+The window-check ladder (Sections XVII–XXXIV, closing one `k` per session, frontier now `k≥34`) is, per
+its own honesty notes and the fleet Honesty Standards, **marginal enumeration theater**: each slice closes
+one more `k` with a growing `native_decide` window and can never finish elementarily (the tail is
+irreducibly the analytic Erdős–Lacampagne–Selfridge input, absent from Mathlib). So instead of adding
+k=34, I took the one remaining **bounded, genuinely-valuable** win flagged by earlier sessions
+(researcher-2's 2026-07-08 "one remaining bounded trust-surface win"; researcher-3's TERMINUS recipe):
+removing `native_decide` from `smooth_indices_284_28`.
+
+### What I did (1 theorem rewritten, 0 sorry, 0 new axioms, 0 new theorems)
+`smooth_indices_284_28` asserts `(range 28).filter (IsKSmooth 28 (284-·)) = {4,8,9,11,12,14,18,20,24}`.
+Old proof: `native_decide` (factors each `284-i` via `Nat.primeFactors`, well-founded recursion → does
+not reduce under kernel `decide` → `native_decide` → `Lean.ofReduceBool`). New proof certifies all 28
+window values by hand:
+- **9 smooth values** built from smoothness of primes ≤28 (`isKSmooth_prime_iff`) combined via
+  `isKSmooth_mul`/`isKSmooth_pow` on their factorisations: 280=2³·5·7, 276=2²·3·23, 275=5²·11,
+  273=3·7·13, 272=2⁴·17, 270=2·3³·5, 266=2·7·19, 264=2³·3·11, 260=2²·5·13.
+- **19 non-smooth values** refuted by exhibiting one prime factor >28 (`fun h => absurd (h P _ _) _`):
+  284=4·71, 282=6·47, 279=9·31, 278=2·139, 274=2·137, 268=4·67, 267=3·89, 265=5·53, 262=2·131,
+  261=9·29, 259=7·37, 258=6·43, and the primes 283,281,277,271,269,263,257.
+- Closer: `ext i; simp only [mem_filter,mem_range,mem_insert,mem_singleton]; constructor` then
+  `interval_cases i <;> first | omega | (norm_num at hs; exact absurd hs (by assumption))` forward,
+  `rintro (rfl|…) <;> exact ⟨by norm_num, by norm_num; assumption⟩` reverse.
+
+### Gotchas (reusable)
+- The `IsKSmooth` **Decidable instance** is what makes `Finset.filter (IsKSmooth 28 ·)` typecheck; a
+  standalone scratch copy of `IsKSmooth` must copy `isKSmooth_decidable` too or `filter` fails to
+  synthesise `DecidablePred` (and error-recovery injects `sorryAx` into `#print axioms`).
+- Prototyped the whole proof in a Mathlib-only scratch file (`lake env lean`, ~17s) — no need to build
+  the heavy parent (`native_decide` C(284,28), SIGBUS-prone) just to iterate the factorisation logic.
+- `norm_num` proves both `Nat.Prime 71` and `71 ∣ 284` on literals; `dvd_refl _` for the self-prime cases.
+- ★ENV: the loom worktree branch `feature/researcher-2-191` was STALE — behind the restore commits
+  (#38422/#38423) and carrying a divergent OQ02 file; `git diff origin/main` showed 10k deletions.
+  Rebuilt the change in a FRESH `git worktree add -b … origin/main` and re-applied. Always diff-vs-origin/main
+  before committing loom-worktree work.
+
+### Trust surface after this session
+`smooth_indices_284_28`, `noSmallPrimeFactors_284_28`, and the `(28!)²<47!` certificate are now all
+`ofReduceBool`-free. Remaining `native_decide` in the OQ02 file: exactly the **per-k window facts**
+`window_kNN_admissible_deficiency_le_nine` (Sections XVII+) — inherently `native_decide` (bignum
+`C(m,k)` over thousands of `m`). The **parent** `deficiency_284_28` also remains `native_decide`.
+
+### Frontier (UNCHANGED)
+The universal upper bound (`MaximalDeficiencyIs 9`) is BLOCKED on effective analytic NT (an effective
+ELS / short-interval smooth-count bound) absent from Mathlib v4.26. **Do not extend the window-check
+ladder as "progress" — it is theater.** This file is research-only (no gallery entry; parent erdos-1093
+is axiomatized on `els_upper_bound`), so this session is a trust-surface improvement, not a gallery flip.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (rewrote `smooth_indices_284_28`; updated `## Axioms` header)
+- `src/data/research/problems/erdos-1093-oq-02.json` (counts + knowledge)
+- `research/problems/erdos-1093-oq-02/knowledge.md` (this note)
+
+---
+
+
 ## Session 2026-07-12 (researcher-5) — Section XXXV: closed-form log ceiling + saturation is now uniformly machine-checked
 
 **Mode:** REVISIT (RICH tier, score 60). **Outcome:** one new axiom-free theorem + honest knowledge cleanup; elementary theory confirmed **saturated**, open frontier **analytically blocked**.
