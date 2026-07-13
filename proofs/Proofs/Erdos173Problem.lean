@@ -164,10 +164,10 @@ For the strip coloring with strip width h, an equilateral triangle of height h
 cannot be placed monochromatically.
 -/
 axiom equilateral_not_monochromatic_strip :
-    ∀ h : ℝ, h > 0 →
+    ∀ h : ℝ, ∀ hh : h > 0,
     ∃ T : Triangle, IsEquilateral T ∧
     sideLengths T 0 = 2 * h / Real.sqrt 3 ∧
-    ¬∃ T' : Triangle, Congruent T T' ∧ IsMonochromatic T' (stripColoring h ‹h > 0›)
+    ¬∃ T' : Triangle, Congruent T T' ∧ IsMonochromatic T' (stripColoring h hh)
 
 /--
 This shows that if one equilateral triangle is not Ramsey, the problem's
@@ -179,7 +179,7 @@ theorem at_most_one_is_tight :
   refine ⟨T, hEquilateral, ?_⟩
   unfold IsRamseyTriangle
   push_neg
-  exact ⟨stripColoring 1 one_pos, hNotMono⟩
+  exact ⟨stripColoring 1 one_pos, fun T' hc hm => hNotMono ⟨T', hc, hm⟩⟩
 
 /- ## Part VI: The Conjecture -/
 
