@@ -90,10 +90,10 @@ AngleTrisectionOQ02OQ03OQ01	GREEN
 AngleTrisectionOQ02OQ04	RESIDUAL	unknown-const:Group.IsSolvable
 AngleTrisectionOQ02OQ04OQ01	GREEN	
 AngleTrisectionOQ02OQ04OQ01Aristotle	GREEN	
-AngleTrisectionOQ03	RESIDUAL	instance-synth
-AngleTrisectionOQ03OQ01	RESIDUAL	instance-synth
-AngleTrisectionOQ03OQ02	RESIDUAL	instance-synth
-AngleTrisectionOQ03OQ02OQ03	RESIDUAL	instance-synth
+AngleTrisectionOQ03	GREEN	
+AngleTrisectionOQ03OQ01	GREEN	
+AngleTrisectionOQ03OQ02	GREEN	
+AngleTrisectionOQ03OQ02OQ03	GREEN	
 AngleTrisectionOQ05OQ02	GREEN	
 AngleTrisectionOQ05OQ03	RESIDUAL	unknown-const:nth_prime_constructible_at
 ArchimedesMethodOfExhaustion	RESIDUAL	instance-synth
@@ -578,7 +578,7 @@ ETranscendentalOQ03OQ01	RESIDUAL	unknown-const:n
 ETranscendentalOQ03Reduction	GREEN	
 EgorovTheorem	GREEN	
 EgorovTheoremOQ01OQ02	GREEN	
-EgorovTheoremOQ01OQ03	RESIDUAL	parse-error
+EgorovTheoremOQ01OQ03	GREEN	
 EhrhartCrossPolytope	GREEN	
 EisensteinCriterionOQ01OQ03OQ02OQ01	RESIDUAL	unclassified
 ElementaryQuadraticReciprocityOQ01	RESIDUAL	unknown-const:generator_orderOf
@@ -821,7 +821,7 @@ Erdos1111Problem	GREEN
 Erdos1112Problem	RESIDUAL	proof-drift
 Erdos1113Problem	GREEN	
 Erdos1114Problem	GREEN	
-Erdos1115Problem	RESIDUAL	parse-error
+Erdos1115Problem	GREEN	
 Erdos1116Problem	RESIDUAL	unknown-const:not_lt_of_le
 Erdos1117Problem	GREEN	
 Erdos1118OQ02	GREEN	
@@ -1046,7 +1046,7 @@ Erdos251Problem	GREEN
 Erdos252Problem	RESIDUAL	parse-error
 Erdos254Problem	RESIDUAL	instance-synth
 Erdos255Problem	GREEN	
-Erdos256Problem	RESIDUAL	parse-error
+Erdos256Problem	GREEN	
 Erdos257Problem	GREEN	
 Erdos258OQ01	GREEN	
 Erdos258Problem	GREEN	
@@ -1423,7 +1423,7 @@ Erdos572Problem	RESIDUAL	proof-drift
 Erdos573Problem	GREEN	
 Erdos575Problem	RESIDUAL	elab-drift
 Erdos576Problem	RESIDUAL	parse-error
-Erdos577Problem	RESIDUAL	parse-error
+Erdos577Problem	GREEN	
 Erdos578Problem	RESIDUAL	proof-drift
 Erdos579Problem	GREEN	
 Erdos57OddClosedWalk	GREEN	
@@ -1710,7 +1710,7 @@ Erdos79Incomplete01OQ01	RESIDUAL	signature-drift
 Erdos79Problem	GREEN	
 Erdos79ProblemAristotle	GREEN	
 Erdos800Problem	GREEN	
-Erdos801Problem	RESIDUAL	parse-error
+Erdos801Problem	GREEN	
 Erdos802Problem	GREEN	
 Erdos803Problem	RESIDUAL	instance-synth
 Erdos804Problem	RESIDUAL	instance-synth
@@ -1974,7 +1974,7 @@ FermatTwoSquaresOQ04	GREEN
 FermatTwoSquaresOQ04OQ01	GREEN	
 FermatsLastTheoremOQ03	RESIDUAL	type-mismatch
 FeuerbachsTheoremDefsOQ04	RESIDUAL	type-mismatch
-FeuerbachsTheoremOQ01Aristotle	RESIDUAL	parse-error
+FeuerbachsTheoremOQ01Aristotle	GREEN	
 FeuerbachsTheoremOQ01OQ03	RESIDUAL	unknown-const:h1
 FeuerbachsTheoremOQ04TangentLine	RESIDUAL	proof-drift
 FeuerbachsTheoremOQ05	RESIDUAL	dot-notation-drift
@@ -2004,7 +2004,7 @@ FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	rewrite-drift
 FourthRoot2Degree4OQ02	RESIDUAL	unknown-const:FourthRoot2Degree4OQ02.finrank_adjoin_eq
 FourthRoot2GaloisClosure	GREEN	
 FourthRoot2GaloisClosureOQ03	GREEN	
-FourthRoot2SplittingFieldOQ01	RESIDUAL	instance-synth
+FourthRoot2SplittingFieldOQ01	GREEN	
 FriendshipTheorem	GREEN	
 FriendshipTheoremOQ01	GREEN	
 FriendshipTheoremOQ01OQ02	RESIDUAL	proof-drift
@@ -2230,7 +2230,7 @@ LebesgueMeasureOQ01OQ01	RESIDUAL	type-mismatch
 LebesgueMeasureOQ01OQ01OQ01OQ02	GREEN	
 LebesgueMeasureOQ01OQ01OQ02	RESIDUAL	type-mismatch
 LebesgueMeasureOQ01OQ01OQ02Riemann	RESIDUAL	type-mismatch
-LebesgueMeasureOQ03	RESIDUAL	parse-error
+LebesgueMeasureOQ03	GREEN	
 LebesgueMeasureOQ03OQ01	RESIDUAL	parse-error
 LebesgueMeasureOQ04	GREEN	
 LebesgueMeasureOQ06	RESIDUAL	unknown-const:List.chain'_append.mp

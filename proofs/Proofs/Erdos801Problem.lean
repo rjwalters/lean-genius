@@ -49,7 +49,8 @@ def FiniteGraph (n : ℕ) := SimpleGraph (Fin n)
 
 /-- The independence number α(G): max size of an independent set -/
 noncomputable def independenceNumber {n : ℕ} (G : FiniteGraph n) : ℕ :=
-  sSup {S.card | S : Finset (Fin n), G.IsIndependent S}
+  sSup {k | ∃ S : Finset (Fin n),
+    (↑S : Set (Fin n)).Pairwise (fun v w => ¬ (G : SimpleGraph (Fin n)).Adj v w) ∧ S.card = k}
 
 /-- A graph has bounded independence number ≤ k -/
 def HasBoundedIndependence {n : ℕ} (G : FiniteGraph n) (k : ℕ) : Prop :=
