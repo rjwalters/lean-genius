@@ -8,11 +8,11 @@ import Mathlib.Tactic
 
 ## What This Proves
 
-For the lower central series `γₖ = lowerCentralSeries G k` of an arbitrary group `G`,
+For the lower central series `γₖ = Subgroup.lowerCentralSeries (⊤ : Subgroup G) k` of an arbitrary group `G`,
 the iterated commutator of two terms drops at least as far as the *sum* of their
 indices:
 
-  `⁅lowerCentralSeries G i, lowerCentralSeries G j⁆ ≤ lowerCentralSeries G (i + j + 1)`.
+  `⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) i, Subgroup.lowerCentralSeries (⊤ : Subgroup G) j⁆ ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (i + j + 1)`.
 
 This is the classical bilinearity estimate for the lower central series.  It is the
 multiplicative engine behind nilpotency arithmetic: it controls how commutators of
@@ -30,9 +30,9 @@ so the file is self-contained.
 ## What Mathlib has — and what this adds
 
 Mathlib develops the lower central series (`Mathlib/GroupTheory/Nilpotent.lean`)
-with `lowerCentralSeries_succ`, `lowerCentralSeries_antitone`, the normality
+with `lowerCentralSeries_succ`, `Subgroup.lowerCentralSeries_antitone`, the normality
 instance `lowerCentralSeries_normal`, and the *linear* bound
-`derived_le_lower_central : derivedSeries G n ≤ lowerCentralSeries G n`.  It does
+`derived_le_lower_central : derivedSeries G n ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) n`.  It does
 **not** record the *bilinear* estimate `⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎`.  A search of the
 group-theory commutator and nilpotency files turns up only the one-sided
 `lowerCentralSeries_succ = ⁅γₙ, ⊤⁆` recursion, never the two-index product bound.
@@ -40,7 +40,7 @@ group-theory commutator and nilpotency files turns up only the one-sided
 As a headline consequence we obtain the **exponentially sharp** derived-series
 estimate
 
-  `derivedSeries G n ≤ lowerCentralSeries G (2 ^ n - 1)`,
+  `derivedSeries G n ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 ^ n - 1)`,
 
 which strictly strengthens Mathlib's `derived_le_lower_central` (index `n`) to
 index `2ⁿ − 1`.  The proof is a clean two-line induction once the bilinear bound is
@@ -81,12 +81,12 @@ private theorem commutator_le_of_rotate₂ {H K L N : Subgroup G} [N.Normal]
 
 /-! ## The successor recursion of the lower central series
 
-`lowerCentralSeries G (n + 1) = ⁅lowerCentralSeries G n, ⊤⁆` holds definitionally;
+`Subgroup.lowerCentralSeries (⊤ : Subgroup G) (n + 1) = ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) n, ⊤⁆` holds definitionally;
 we name it for readable rewriting. -/
 
 /-- The defining recursion `γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆`. -/
 theorem lowerCentralSeries_succ_def (n : ℕ) :
-    lowerCentralSeries G (n + 1) = ⁅lowerCentralSeries G n, (⊤ : Subgroup G)⁆ := rfl
+    Subgroup.lowerCentralSeries (⊤ : Subgroup G) (n + 1) = ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) n, (⊤ : Subgroup G)⁆ := rfl
 
 /-! ## The bilinear bound -/
 
@@ -102,31 +102,31 @@ hypotheses `⁅γ₍ᵢ₊₁₎, γⱼ⁆ ≤ N` and `⁅⁅γᵢ, γⱼ⁆, �
 hypothesis (at `i + 1` and at `i`, respectively), and the lemma delivers the
 conclusion `⁅⁅γⱼ, ⊤⁆, γᵢ⁆ = ⁅γᵢ, γ₍ⱼ₊₁₎⁆ ≤ N`. -/
 theorem commutator_lowerCentralSeries_le (i j : ℕ) :
-    ⁅lowerCentralSeries G i, lowerCentralSeries G j⁆ ≤ lowerCentralSeries G (i + j + 1) := by
+    ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) i, Subgroup.lowerCentralSeries (⊤ : Subgroup G) j⁆ ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (i + j + 1) := by
   induction j generalizing i with
   | zero =>
-    rw [lowerCentralSeries_zero, Nat.add_zero]
+    rw [Subgroup.lowerCentralSeries_zero, Nat.add_zero]
     exact (lowerCentralSeries_succ_def i).ge
   | succ j ih =>
     -- `⁅⊤, γᵢ⁆ = γ₍ᵢ₊₁₎`.
-    have e1 : ⁅(⊤ : Subgroup G), lowerCentralSeries G i⁆ = lowerCentralSeries G (i + 1) := by
+    have e1 : ⁅(⊤ : Subgroup G), Subgroup.lowerCentralSeries (⊤ : Subgroup G) i⁆ = Subgroup.lowerCentralSeries (⊤ : Subgroup G) (i + 1) := by
       rw [commutator_comm]; exact (lowerCentralSeries_succ_def i).symm
     -- Rewrite the target commutator into the textbook `⁅⁅γⱼ, ⊤⁆, γᵢ⁆` orientation.
-    have e2 : ⁅lowerCentralSeries G i, lowerCentralSeries G (j + 1)⁆
-        = ⁅⁅lowerCentralSeries G j, (⊤ : Subgroup G)⁆, lowerCentralSeries G i⁆ := by
+    have e2 : ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) i, Subgroup.lowerCentralSeries (⊤ : Subgroup G) (j + 1)⁆
+        = ⁅⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) j, (⊤ : Subgroup G)⁆, Subgroup.lowerCentralSeries (⊤ : Subgroup G) i⁆ := by
       rw [lowerCentralSeries_succ_def j, commutator_comm]
-    have key : ⁅lowerCentralSeries G i, lowerCentralSeries G (j + 1)⁆
-        ≤ lowerCentralSeries G (i + j + 2) := by
+    have key : ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) i, Subgroup.lowerCentralSeries (⊤ : Subgroup G) (j + 1)⁆
+        ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (i + j + 2) := by
       rw [e2]
       refine commutator_le_of_rotate₂ ?_ ?_
       · -- `⁅⁅⊤, γᵢ⁆, γⱼ⁆ = ⁅γ₍ᵢ₊₁₎, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₂₎`  via the IH at `i + 1`.
         rw [e1, show i + j + 2 = (i + 1) + j + 1 by omega]
         exact ih (i + 1)
       · -- `⁅⁅γᵢ, γⱼ⁆, ⊤⁆ ≤ ⁅γ₍ᵢ₊ⱼ₊₁₎, ⊤⁆ = γ₍ᵢ₊ⱼ₊₂₎`  via the IH at `i`.
-        calc ⁅⁅lowerCentralSeries G i, lowerCentralSeries G j⁆, (⊤ : Subgroup G)⁆
-            ≤ ⁅lowerCentralSeries G (i + j + 1), (⊤ : Subgroup G)⁆ :=
+        calc ⁅⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) i, Subgroup.lowerCentralSeries (⊤ : Subgroup G) j⁆, (⊤ : Subgroup G)⁆
+            ≤ ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) (i + j + 1), (⊤ : Subgroup G)⁆ :=
               commutator_mono (ih i) le_rfl
-          _ = lowerCentralSeries G (i + j + 2) := (lowerCentralSeries_succ_def (i + j + 1)).symm
+          _ = Subgroup.lowerCentralSeries (⊤ : Subgroup G) (i + j + 2) := (lowerCentralSeries_succ_def (i + j + 1)).symm
     rw [show i + (j + 1) + 1 = i + j + 2 by omega]
     exact key
 
@@ -134,22 +134,22 @@ theorem commutator_lowerCentralSeries_le (i j : ℕ) :
 
 /-- The self-commutator special case `⁅γᵢ, γᵢ⁆ ≤ γ₍₂ᵢ₊₁₎`. -/
 theorem sq_commutator_lowerCentralSeries_le (i : ℕ) :
-    ⁅lowerCentralSeries G i, lowerCentralSeries G i⁆ ≤ lowerCentralSeries G (2 * i + 1) := by
+    ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) i, Subgroup.lowerCentralSeries (⊤ : Subgroup G) i⁆ ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 * i + 1) := by
   have h := commutator_lowerCentralSeries_le (G := G) i i
   rwa [show i + i + 1 = 2 * i + 1 by ring] at h
 
 /-- **Exponentially sharp derived-series bound.**  Each term of the derived series
 sits inside an *exponentially* deep term of the lower central series:
 
-  `derivedSeries G n ≤ lowerCentralSeries G (2 ^ n - 1)`.
+  `derivedSeries G n ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 ^ n - 1)`.
 
 This strictly strengthens Mathlib's linear `derived_le_lower_central`
-(`derivedSeries G n ≤ lowerCentralSeries G n`).  Proof: induction on `n`.  The step
+(`derivedSeries G n ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) n`).  Proof: induction on `n`.  The step
 uses `derivedSeries G (n+1) = ⁅derivedSeries G n, derivedSeries G n⁆`, monotonicity of
 the bracket against the inductive hypothesis, and then the bilinear bound, which
 sends index `(2ⁿ−1) + (2ⁿ−1) + 1 = 2ⁿ⁺¹ − 1`. -/
 theorem derivedSeries_le_lowerCentralSeries_two_pow (n : ℕ) :
-    derivedSeries G n ≤ lowerCentralSeries G (2 ^ n - 1) := by
+    derivedSeries G n ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 ^ n - 1) := by
   induction n with
   | zero => simp [derivedSeries_zero]
   | succ n ih =>
@@ -159,11 +159,11 @@ theorem derivedSeries_le_lowerCentralSeries_two_pow (n : ℕ) :
       omega
     calc derivedSeries G (n + 1)
         = ⁅derivedSeries G n, derivedSeries G n⁆ := by rw [derivedSeries_succ]
-      _ ≤ ⁅lowerCentralSeries G (2 ^ n - 1), lowerCentralSeries G (2 ^ n - 1)⁆ :=
+      _ ≤ ⁅Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 ^ n - 1), Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 ^ n - 1)⁆ :=
             commutator_mono ih ih
-      _ ≤ lowerCentralSeries G ((2 ^ n - 1) + (2 ^ n - 1) + 1) :=
+      _ ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) ((2 ^ n - 1) + (2 ^ n - 1) + 1) :=
             commutator_lowerCentralSeries_le _ _
-      _ = lowerCentralSeries G (2 ^ (n + 1) - 1) := by rw [hidx]
+      _ = Subgroup.lowerCentralSeries (⊤ : Subgroup G) (2 ^ (n + 1) - 1) := by rw [hidx]
 
 /-! ## Consistency: recovering Mathlib's linear bound
 
@@ -172,9 +172,9 @@ recovers `derived_le_lower_central`. -/
 
 /-- Cross-check: the sharp bound recovers Mathlib's `derivedSeries G n ≤ γₙ`. -/
 theorem derivedSeries_le_lowerCentralSeries (n : ℕ) :
-    derivedSeries G n ≤ lowerCentralSeries G n :=
+    derivedSeries G n ≤ Subgroup.lowerCentralSeries (⊤ : Subgroup G) n :=
   (derivedSeries_le_lowerCentralSeries_two_pow n).trans
-    (lowerCentralSeries_antitone (by
+    (Subgroup.lowerCentralSeries_antitone (⊤ : Subgroup G) (by
       have hpos : 0 < 2 ^ n := pow_pos (by norm_num) n
       have hn : n < 2 ^ n := Nat.lt_two_pow_self
       omega))
