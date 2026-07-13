@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-1, 2026-07-10, UNVERIFIED docker-corrupted+ENOSPC): added powerForm_gcd/powerForm_lcm to Erdos1110OQ01.lean giving the EXPLICIT exponent formulas gcd=p^(min)q^(min), lcm=p^(max)q^(max) for distinct prime bases. Upgrades the prior qualitative sublattice closure (isPowerForm_gcd/lcm) to a checked lattice isomorphism {p^k q^l}=(N^2,min/max). File now 21 decls, 0 sorry, 0 axiom (pending green docker build). The parent density/infinitude open questions (erdos_lewin_infinite) remain OPEN and untouched.",
+    "progressSummary": "PROGRESS (researcher-5, 2026-07-12, VERIFIED 0-axiom green via lake env lean): added the MOEBIUS function readout of a two-prime power form — powerForm_moebius mu(p^k q^l) = if k<=1 && l<=1 then (-1)^(k+l) else 0, plus the two branch lemmas powerForm_moebius_of_squarefree/_eq_zero. Moebius was the one classical multiplicative invariant conspicuously missing from the tau/phi/omega/Omega/sigma/radical/squarefree suite; it is the signed characteristic function of the four squarefree forms {1,p,q,pq}. Three theorems in Erdos1110OQ01.lean, all [propext,Classical.choice,Quot.sound]. The deep infinitude direction erdos_lewin_infinite (coprime, non-{2,3}) remains BLOCKED (7+ sessions, not session-sized) and untouched.",
     "builtItems": [
       "isPowerForm_of_dvd / isPowerForm_gcd / isPowerForm_lcm (S8, researcher-5, 0-axiom, UNVERIFIED-docker-down): the power forms are a SUBLATTICE of (ℕ,∣), not just a submonoid. isPowerForm_of_dvd: every divisor of a power form is a power form (prime bases; d∣p^k q^l splits via exists_dvd_and_dvd_of_dvd_mul since ℕ is a DecompositionMonoid, each factor a prime power by Nat.dvd_prime_pow; no distinctness needed). Corollaries: isPowerForm_gcd (gcd m n∣m = meet) and isPowerForm_lcm (lcm m n∣m*n = join). Complements powerForm_dvd_iff (product order) + powerForm_incomparable_iff (antichain).",
       "minSummandBound_powerForm (S7, researcher-3, 0-axiom): minSummandBound (3^k·2^l) = 3^k·2^l. Generalizes minSummandBound_one (k=l=0) to the entire power-form monoid. Witness set is exactly Iio N (N=3^k·2^l): singleton {N} represents N so any f<N admissible; any rep summing to N has summand s≤N so f<s≤N; sSup=N via csSup_Iio. On power forms the maximal min-summand threshold is N itself (antichain forced to trivial singleton).",
@@ -69,7 +69,8 @@
       "isPowerForm_pow — closed under powers.",
       "isPowerForm_prod — closed under finite products (Finset.prod_induction).",
       "powerForm_gcd / powerForm_lcm (researcher-1, 2026-07-10, UNVERIFIED-docker-corrupted+ENOSPC): explicit exponent formulas for meet/join on power forms. For distinct primes p!=q, gcd(p^k q^l)(p^k q^l)=p^(min k k) q^(min l l) and lcm=p^(max)q^(max). Upgrades qualitative isPowerForm_gcd/lcm closure to the explicit lattice-iso {p^k q^l}=(N^2,min/max); (k,l)|->p^k q^l is a lattice isomorphism, not just an order embedding. Both proofs read the (already-power-form) gcd/lcm exponents off both sides via the file own powerForm_dvd_iff and pin them by dvd-antisymmetry (Nat.dvd_gcd/gcd_dvd_*, Nat.lcm_dvd/dvd_lcm_*, le_min/max_le).",
-      "powerForm_sigma : sigma(p^k q^l) = (Sum range(k+1) p^i)(Sum range(l+1) q^j) for distinct primes — sigma companion of tau/phi, completing the multiplicative-invariant suite; 0 axioms [VERIFIED]"
+      "powerForm_sigma : sigma(p^k q^l) = (Sum range(k+1) p^i)(Sum range(l+1) q^j) for distinct primes — sigma companion of tau/phi, completing the multiplicative-invariant suite; 0 axioms [VERIFIED]",
+      "powerForm_moebius (researcher-5, 2026-07-12, 0-axiom [propext,Classical.choice,Quot.sound], VERIFIED green lake env lean): closed form mu(p^k q^l) = if k<=1 && l<=1 then (-1)^(k+l) else 0 for distinct primes p!=q. The Moebius function was the one classical multiplicative invariant MISSING from the tau/phi/omega/Omega/sigma/radical/squarefree suite. Supported exactly on the four squarefree forms {1,p,q,pq}; off them mu=0 (powerForm_moebius_eq_zero, from powerForm_squarefree_iff via moebius_eq_zero_of_not_squarefree); on them mu=(-1)^(k+l) (powerForm_moebius_of_squarefree, from moebius_apply_of_squarefree mu n=(-1)^Omega(n) + powerForm_cardFactors Omega=k+l). Signed characteristic function companion of the unsigned squarefree indicator. Three theorems added to Erdos1110OQ01.lean."
     ],
     "insights": [
       "The deep infinitude axiom has an elementary EXISTENCE shadow: every non-{2,3} coprime pair has a SMALL universal non-representable witness — 2 when q>=3, 3 when q=2. The witness is forced purely by which power forms lie below it: below 2 only 1 exists (both bases>=3), below 3 only {1,2} (q=2, p>=4), and neither lets an antichain hit the target. The (3,2) pair is exactly the exception because there 3=3^1 IS a power form.",
@@ -119,8 +120,8 @@
     {
       "path": "Proofs/Erdos1110OQ01.lean",
       "filename": "Erdos1110OQ01.lean",
-      "lineCount": 441,
-      "theoremCount": 26,
+      "lineCount": 591,
+      "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,

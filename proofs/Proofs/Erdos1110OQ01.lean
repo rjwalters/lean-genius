@@ -538,4 +538,54 @@ theorem powerForm_squarefree_iff {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq 
       hq.factorization_pow, Finsupp.single_apply, Finsupp.single_apply]
     split_ifs <;> omega
 
+/-! ### The Möbius function of a power form
+
+The multiplicative-invariant readouts above (`τ, φ, ω, Ω, σ, radical, squarefree`) all
+follow from the coprime split `p^k ⊥ q^l`. The remaining classical multiplicative
+function is the **Möbius function `μ`**, which is supported exactly on the squarefree
+forms: since `p^k q^l` is squarefree iff `k ≤ 1 ∧ l ≤ 1` (`powerForm_squarefree_iff`),
+`μ` vanishes off the four small forms `1, p, q, pq` and equals `(-1)^{k+l}` on them
+(`Ω(p^k q^l) = k + l`, `powerForm_cardFactors`). This is the sign-carrying companion of
+the (unsigned) squarefree indicator, completing the standard multiplicative-invariant
+suite. -/
+
+open ArithmeticFunction in
+open scoped ArithmeticFunction.Moebius in
+/-- **Möbius of a squarefree power form `μ(p^k q^l) = (-1)^{k+l}`.** For distinct primes
+`p ≠ q` with both exponents `≤ 1` (so `p^k q^l ∈ {1, p, q, pq}` is squarefree), the Möbius
+value is `(-1)^{k+l}`: `μ n = (-1)^{Ω n}` on squarefree `n` (`moebius_apply_of_squarefree`)
+and `Ω(p^k q^l) = k + l` (`powerForm_cardFactors`). -/
+theorem powerForm_moebius_of_squarefree {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (hk : k ≤ 1) (hl : l ≤ 1) :
+    μ (p ^ k * q ^ l) = (-1) ^ (k + l) := by
+  have hsf : Squarefree (p ^ k * q ^ l) := (powerForm_squarefree_iff hp hq hpq k l).mpr ⟨hk, hl⟩
+  rw [moebius_apply_of_squarefree hsf, powerForm_cardFactors hp hq]
+
+open ArithmeticFunction in
+open scoped ArithmeticFunction.Moebius in
+/-- **Möbius vanishes on non-squarefree power forms.** For distinct primes `p ≠ q`, if some
+exponent exceeds `1` then `p^k q^l` is not squarefree (`powerForm_squarefree_iff`), so
+`μ(p^k q^l) = 0` (`moebius_eq_zero_of_not_squarefree`). -/
+theorem powerForm_moebius_eq_zero {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    {k l : ℕ} (h : ¬ (k ≤ 1 ∧ l ≤ 1)) :
+    μ (p ^ k * q ^ l) = 0 :=
+  moebius_eq_zero_of_not_squarefree (by rwa [powerForm_squarefree_iff hp hq hpq])
+
+open ArithmeticFunction in
+open scoped ArithmeticFunction.Moebius in
+/-- **Closed form for the Möbius function of a power form.** For distinct primes `p ≠ q`,
+
+    `μ(p^k q^l) = if k ≤ 1 ∧ l ≤ 1 then (-1)^{k+l} else 0`.
+
+Combines `powerForm_moebius_of_squarefree` (the squarefree branch) and
+`powerForm_moebius_eq_zero` (everything else). This is the Möbius companion of the
+divisor-count `τ` (`powerForm_card_divisors`), totient `φ` (`powerForm_totient`), divisor
+sum `σ` (`powerForm_sigma`) and squarefree indicator (`powerForm_squarefree_iff`) — the
+signed characteristic function of the four squarefree two-prime forms `1, p, q, pq`. -/
+theorem powerForm_moebius {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (k l : ℕ) :
+    μ (p ^ k * q ^ l) = if k ≤ 1 ∧ l ≤ 1 then (-1) ^ (k + l) else 0 := by
+  split_ifs with h
+  · exact powerForm_moebius_of_squarefree hp hq hpq h.1 h.2
+  · exact powerForm_moebius_eq_zero hp hq hpq h
+
 end Erdos1110
