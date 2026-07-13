@@ -130,7 +130,8 @@ theorem gap_exceeds_reciprocal_sq (d : ℕ) (hd : d ≥ 3) :
   have hd_pos : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr (by omega)
   have hd2_pos : (0 : ℝ) < (↑d : ℝ) + 2 := by linarith
   rw [div_lt_div_iff₀ (pow_pos hd_pos 2) (mul_pos hd_pos hd2_pos)]
-  nlinarith [Nat.cast_nonneg (α := ℝ) d, sq_nonneg (↑d : ℝ)]
+  have h3 : (3 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd
+  nlinarith [Nat.cast_nonneg (α := ℝ) d, sq_nonneg (↑d : ℝ), h3]
 
 /-- The gap 2/(d(d+2)) is always less than 2/d².
     Combined with gap_exceeds_reciprocal_sq: 1/d² < gap < 2/d² for d ≥ 3. -/
