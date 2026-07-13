@@ -9,6 +9,20 @@ instance isCyclotomicExtensionRatCompatInverseGaloisD4 (n : ℕ) :
     IsCyclotomicExtension {n} ℚ (CyclotomicField n ℚ) :=
   CyclotomicField.instIsCyclotomicExtensionSingletonNatSetOfCharZero n ℚ
 
+/-- v4.31 compat (#38065): Mathlib's splitting-field instances
+(`Polynomial.IsSplittingField.splittingField`, `Polynomial.SplittingField.instNormal`)
+exist but do not fire during typeclass synthesis over `ℚ` (same regression);
+re-register `ℚ`-specialized copies. -/
+instance instIsSplittingFieldRatCompatInverseGaloisD4 (f : Polynomial ℚ) :
+    Polynomial.IsSplittingField ℚ f.SplittingField f :=
+  Polynomial.IsSplittingField.splittingField f
+
+/-- v4.31 compat (#38065): `ℚ`-specialized copy of
+`Polynomial.SplittingField.instNormal` (see above). -/
+instance instNormalRatSplittingFieldCompatInverseGaloisD4 (f : Polynomial ℚ) :
+    Normal ℚ f.SplittingField :=
+  Polynomial.SplittingField.instNormal f
+
 
 /-
 # Inverse Galois Problem: D₄ Realization
@@ -139,12 +153,14 @@ theorem x4_sub_2_gal_card_dvd_24 :
     Subgroup.card_dvd_of_injective _ hinj
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   rw [Fintype.card_perm] at hdvd
-  have hcard : Fintype.card (p.rootSet p.SplittingField) = 4 := by
-    rw [Polynomial.card_rootSet_eq_natDegree x_fourth_sub_2_separable
-        (Polynomial.SplittingField.splits p)]
-    exact x_fourth_sub_2_natDegree
-  rw [hcard] at hdvd
-  simpa using hdvd
+  -- v4.31: `rw` no longer matches the `set`-bound `p` against the literal
+  -- polynomial inside the lemma statement; use term-mode `.trans` (defeq) and
+  -- close the factorial arithmetic explicitly.
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 4 :=
+    (Polynomial.card_rootSet_eq_natDegree x_fourth_sub_2_separable
+        (Polynomial.SplittingField.splits p)).trans x_fourth_sub_2_natDegree
+  rw [hcard, show Nat.factorial 4 = 24 from rfl] at hdvd
+  exact hdvd
 
 /-- In a field, if x⁴ = 1 and x ≠ 1 and x ≠ -1, then x² + 1 = 0. -/
 theorem fourth_root_of_unity_primitive
@@ -371,7 +387,10 @@ theorem x4_sub_2_gal_card_ne_four :
   obtain ⟨⟨α, hα_mem⟩⟩ := Fintype.card_pos_iff.mp (by rw [hcard_root]; omega)
   have hα : Polynomial.aeval α p = 0 := (Polynomial.mem_rootSet.mp hα_mem).2
   -- Step 3: The canonical algebra hom AdjoinRoot(p) →ₐ[ℚ] SF
-  set φ := AdjoinRoot.liftHom p α hα
+  -- (v4.31: `AdjoinRoot.liftHom` was replaced by `AdjoinRoot.liftAlgHom`)
+  set φ : AdjoinRoot p →ₐ[ℚ] p.SplittingField :=
+    AdjoinRoot.liftAlgHom p (Algebra.ofId ℚ p.SplittingField) α
+      (by simpa [Polynomial.aeval_def] using hα)
   -- φ is injective (algebra hom from a field)
   have hinj : Function.Injective φ := RingHom.injective φ.toRingHom
   -- Step 4: AdjoinRoot has finrank 4 = [SF:ℚ], so φ is surjective

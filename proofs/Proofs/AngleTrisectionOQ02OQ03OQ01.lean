@@ -313,7 +313,9 @@ theorem finrank_over_alphaField (hn : 3 ≤ n) :
       one_mul, map_one, map_neg]
     -- algebraMap ↥F → K sends αF to α (via the subtype inclusion)
     have hv : (algebraMap (↥F) (CyclotomicField n ℚ)) αF = α := rfl
-    rw [hv]; linarith
+    -- The goal is `h` up to ring rearrangement; `linarith` has no order on
+    -- `CyclotomicField n ℚ` to work with, so use `linear_combination`.
+    rw [hv]; linear_combination h
   -- natDegree p = 2
   have h_deg_p : p.natDegree = 2 :=
     Polynomial.natDegree_quadratic (one_ne_zero (α := ↥F))
@@ -555,6 +557,9 @@ theorem chebyshev_T_eval_half_sum_inv (K : Type*) [Field K] [Algebra ℚ K]
     (x : K) (hx : x ≠ 0) (k : ℕ) :
     Polynomial.aeval ((x + x⁻¹) / 2) (Chebyshev.T ℚ (k : ℤ)) =
     (x ^ (k : ℤ) + (x ^ (k : ℤ))⁻¹) / 2 := by
+  -- `CharZero K` is not an instance-search consequence of `[Algebra ℚ K]`;
+  -- without it `norm_num`/`field_simp` cannot show `(2 : K) ≠ 0`.
+  haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ K).injective
   induction k using Nat.strongRecOn with
   | _ k ih =>
     match k with
@@ -572,8 +577,14 @@ theorem chebyshev_T_eval_half_sum_inv (K : Type*) [Field K] [Algebra ℚ K]
       rw [Chebyshev.T_add_two]
       simp only [map_sub, map_mul, map_ofNat, Polynomial.aeval_X]
       rw [ih1, ih0]
-      have hxk1 : x ^ ((k : ℤ) + 1) ≠ 0 := zpow_ne_zero _ hx
       have hxk : x ^ (k : ℤ) ≠ 0 := zpow_ne_zero _ hx
+      -- `ring` cannot relate the zpow atoms `x ^ (↑k + 1)` / `x ^ (↑k + 2)` /
+      -- `x ^ ↑k`, so decompose them explicitly first.
+      have hz1 : x ^ ((k : ℤ) + 1) = x ^ (k : ℤ) * x := zpow_add_one₀ hx _
+      have hz2 : x ^ ((k : ℤ) + 2) = x ^ (k : ℤ) * x * x := by
+        rw [show ((k : ℤ) + 2) = (k : ℤ) + 1 + 1 from by omega,
+          zpow_add_one₀ hx, hz1]
+      rw [hz1, hz2]
       field_simp
       ring
 
@@ -635,6 +646,7 @@ theorem galAut_alphaCos_is_root (hn : 3 ≤ n) (k : ℕ) (hc : Nat.Coprime k n) 
 -- § 13. Embedding Transfer
 -- ============================================================================
 
+set_option maxHeartbeats 800000 in
 /-- Under the embedding φ, τ_k(alphaCos) maps to cos(2kπ/n).
     Key steps:
     1. τ_k(alphaCos) = (ζ^k + ζ^{-k})/2 (from galAutOfCoprime_spec)

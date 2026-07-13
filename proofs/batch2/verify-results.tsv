@@ -40,9 +40,9 @@ AbelRuffiniOQ10	RESIDUAL	noncomputable
 AbelRuffiniOQ11	RESIDUAL	type-mismatch
 AbelRuffiniObstructionOQ06	GREEN	
 AbundantNumberOQ0102	GREEN	
-AlgebraicNumbersCountableOQ01OQ01	RESIDUAL	unknown-const:Complex.isAlgClosed
-AlgebraicNumbersCountableOQ01OQ01OQ01	RESIDUAL	unknown-const:Complex.isAlgClosed
-AlgebraicNumbersCountableOQ01OQ03	RESIDUAL	unknown-const:Complex.isAlgClosed
+AlgebraicNumbersCountableOQ01OQ01	GREEN	
+AlgebraicNumbersCountableOQ01OQ01OQ01	RESIDUAL	instance-synth
+AlgebraicNumbersCountableOQ01OQ03	RESIDUAL	instance-synth
 AlgebraicNumbersCountableOQ02	GREEN	
 AlgebraicNumbersCountableOQ02OQ02	RESIDUAL	proof-drift
 AlgebraicNumbersCountableOQ02OQ02OQ01	RESIDUAL	proof-drift
@@ -150,7 +150,7 @@ ArithmeticSeriesOQ02OQ04OQ01	RESIDUAL	type-mismatch
 ArsinhLogFormulaOQ01OQ01OQ01	RESIDUAL	proof-drift
 ArsinhLogFormulaOQ01OQ01OQ01OQ01	RESIDUAL	rewrite-drift
 ArsinhLogFormulaOQ01OQ01OQ02	RESIDUAL	proof-drift
-BallVolumeSurfaceDuality	RESIDUAL	proof-drift
+BallVolumeSurfaceDuality	GREEN	
 BallotProblem	RESIDUAL	signature-drift
 BallotProblemOQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01Aristotle	RESIDUAL	unknown-const:Set.ncard_biUnion
@@ -225,7 +225,7 @@ BezoutIdentityOQ03OQ03	RESIDUAL	unknown-const:Int.coe_nat_dvd.mpr
 BezoutIdentityOQ03OQ04	RESIDUAL	unknown-const:Int.Coprime.mul_dvd_of_dvd_of_dvd
 BezoutIdentityOQ04OQ01	RESIDUAL	rewrite-drift
 BezoutIdentityOQ04OQ01OQ01	RESIDUAL	type-mismatch
-BinaryGcdOQ02	RESIDUAL	type-mismatch
+BinaryGcdOQ02	GREEN	
 BinaryGcdOQ02OQ01	RESIDUAL	unknown-const:a
 BinomialTheorem	GREEN	
 BinomialTheoremOQ01	RESIDUAL	unknown-const:Polynomial.descPochhammer
@@ -245,10 +245,10 @@ BirchSwinnertonDyerOQ01	RESIDUAL	proof-drift
 BirchSwinnertonDyerOQ06	RESIDUAL	proof-drift
 BirchSwinnertonDyerOQ06OQ02	RESIDUAL	proof-drift
 BirthdayProblem	GREEN	
-BirthdayProblemOQ01	RESIDUAL	proof-drift
-BirthdayProblemOQ01OQ01	RESIDUAL	parse-error
-BirthdayProblemOQ01OQ01Aristotle	RESIDUAL	parse-error
-BirthdayProblemOQ01OQ01OQ03	RESIDUAL	parse-error
+BirthdayProblemOQ01	GREEN	
+BirthdayProblemOQ01OQ01	RESIDUAL	unknown-const:Finset.filter_eq_empty
+BirthdayProblemOQ01OQ01Aristotle	RESIDUAL	unknown-const:Finset.filter_eq_empty
+BirthdayProblemOQ01OQ01OQ03	RESIDUAL	unknown-const:Finset.filter_eq_empty
 BirthdayProblemOQ02OQ01	RESIDUAL	unknown-const:Finset.sum_range_id_eq_sum_range_succ_div_two
 BirthdayProblemOQ03OQ01	RESIDUAL	proof-drift
 BirthdayProblemOQ03OQ01OQ02	RESIDUAL	type-mismatch
@@ -400,10 +400,10 @@ CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	RESIDUAL	proof-drift
 CayleyHamiltonMinpolyOQ05OQ02	RESIDUAL	instance-synth
 CayleyHamiltonMinpolyOQ05OQ02OQ03	RESIDUAL	instance-synth
 CayleyHamiltonOQ01	RESIDUAL	parse-error
-CayleyHamiltonOQ01OQ01	RESIDUAL	type-mismatch
+CayleyHamiltonOQ01OQ01	GREEN	
 CayleyHamiltonOQ01OQ01OQ01	RESIDUAL	type-mismatch
 CayleyHamiltonOQ01OQ01OQ01OQ01	RESIDUAL	type-mismatch
-CayleyHamiltonOQ01OQ02	RESIDUAL	type-mismatch
+CayleyHamiltonOQ01OQ02	GREEN	
 CayleyHamiltonOQ01OQ03	RESIDUAL	parse-error
 CayleyHamiltonOQ02	RESIDUAL	parse-error
 CayleyHamiltonOQ02OQ01Analytic	RESIDUAL	type-mismatch
@@ -444,7 +444,7 @@ ChebyshevPNTBridgeOQ04	RESIDUAL	proof-drift
 ChineseRemainderConstructiveOQ03	RESIDUAL	unknown-const:Nat.Prime.minFac
 ChineseRemainderConstructiveOQ03OQ03	RESIDUAL	unknown-const:Nat.Prime.minFac
 ChineseRemainderConstructiveOQ04OQ03	GREEN	
-ChineseRemainderExplicitOQ04OQ03OQ01	RESIDUAL	unknown-const:pair
+ChineseRemainderExplicitOQ04OQ03OQ01	RESIDUAL	type-mismatch
 ChineseRemainderNonCoprimeList	GREEN	
 ChineseRemainderNonCoprimeOQ01	RESIDUAL	type-mismatch
 ChineseRemainderNonCoprimeOQ01OQ01	RESIDUAL	type-mismatch
@@ -452,8 +452,8 @@ ChineseRemainderNonCoprimeOQ02	RESIDUAL	parse-error
 ChineseRemainderNonCoprimeOQ02OQ01	RESIDUAL	instance-synth
 ChineseRemainderNonCoprimeOQ03OQ02	RESIDUAL	type-mismatch
 CircumferenceFromArea	GREEN	
-CircumferenceViaDifferentiationOQ01	RESIDUAL	proof-drift
-CircumferenceViaDifferentiationOQ02	RESIDUAL	proof-drift
+CircumferenceViaDifferentiationOQ01	GREEN	
+CircumferenceViaDifferentiationOQ02	GREEN	
 CircumferenceViaDifferentiationOQ03	RESIDUAL	proof-drift
 CollatzCyclesOQ04	RESIDUAL	proof-drift
 CollatzStructuredOQ02OQ01	RESIDUAL	proof-drift
@@ -2004,7 +2004,7 @@ FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	type-mismatch
 FourthRoot2Degree4OQ02	RESIDUAL	unknown-const:FourthRoot2Degree4OQ02.finrank_adjoin_eq
 FourthRoot2GaloisClosure	GREEN	
 FourthRoot2GaloisClosureOQ03	GREEN	
-FourthRoot2SplittingFieldOQ01	RESIDUAL	instance-synth
+FourthRoot2SplittingFieldOQ01	RESIDUAL	rewrite-drift
 FriendshipTheorem	GREEN	
 FriendshipTheoremOQ01	GREEN	
 FriendshipTheoremOQ01OQ02	RESIDUAL	proof-drift
@@ -2039,7 +2039,7 @@ FurstenbergCorrespondenceOQ02	RESIDUAL	parse-error
 GCDAlgorithmOQ01OQ03OQ01	RESIDUAL	type-mismatch
 GCDAlgorithmOQ01OQ03OQ01OQ01	RESIDUAL	type-mismatch
 GcdAlgorithmOQ02	GREEN	
-GcdAlgorithmOQ02OQ01	RESIDUAL	type-mismatch
+GcdAlgorithmOQ02OQ01	GREEN	
 GelfondSchneider	GREEN	
 GeneralQuartic	GREEN	
 GeneralQuarticAxiomsDischarge	RESIDUAL	type-mismatch
@@ -2120,39 +2120,39 @@ IncidenceCauchySchwarzDual	RESIDUAL	proof-drift
 InclusionExclusion	RESIDUAL	signature-drift
 InclusionExclusionSecondBonferroni	RESIDUAL	unknown-const:sieveLayer_eq_sum_choose
 InfinitudePrimes	GREEN	
-InfinitudePrimes4k1	RESIDUAL	unknown-const:Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one
-InfinitudePrimes4k1OQ03	RESIDUAL	unknown-const:Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one
+InfinitudePrimes4k1	GREEN	
+InfinitudePrimes4k1OQ03	RESIDUAL	proof-drift
 InfinitudePrimes4k3OQ01	RESIDUAL	parse-error
 InfinitudePrimes4k3OQ01Q12Q24	RESIDUAL	parse-error
-InfinitudePrimes4k3OQ03	RESIDUAL	unknown-const:Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one
+InfinitudePrimes4k3OQ03	RESIDUAL	type-mismatch
 InfinitudePrimesOQ01	RESIDUAL	type-mismatch
 IntermediateValueTheoremOQ03	RESIDUAL	unknown-const:intermediate_value_zero_of_le
 InverseGalois	RESIDUAL	instance-synth
-InverseGaloisA5	RESIDUAL	instance-synth
-InverseGaloisA5Dedekind	RESIDUAL	instance-synth
-InverseGaloisA5DedekindInstantiation	RESIDUAL	instance-synth
-InverseGaloisA5DedekindMod7	RESIDUAL	instance-synth
+InverseGaloisA5	RESIDUAL	type-mismatch
+InverseGaloisA5Dedekind	RESIDUAL	type-mismatch
+InverseGaloisA5DedekindInstantiation	RESIDUAL	type-mismatch
+InverseGaloisA5DedekindMod7	RESIDUAL	type-mismatch
 InverseGaloisA5OQ02	RESIDUAL	elab-drift
-InverseGaloisD4	RESIDUAL	instance-synth
-InverseGaloisD4OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ01External	RESIDUAL	instance-synth
-InverseGaloisD4OQ02	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03OQ01OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ03OQ01OQ01OQ01	RESIDUAL	instance-synth
-InverseGaloisD4OQ02OQ04	RESIDUAL	instance-synth
-InverseGaloisD4OQ03	RESIDUAL	instance-synth
+InverseGaloisD4	GREEN	
+InverseGaloisD4OQ01	GREEN	
+InverseGaloisD4OQ01External	RESIDUAL	type-mismatch
+InverseGaloisD4OQ02	RESIDUAL	rewrite-drift
+InverseGaloisD4OQ02OQ03	RESIDUAL	rewrite-drift
+InverseGaloisD4OQ02OQ03OQ01	RESIDUAL	rewrite-drift
+InverseGaloisD4OQ02OQ03OQ01OQ01	RESIDUAL	rewrite-drift
+InverseGaloisD4OQ02OQ03OQ01OQ01OQ01	RESIDUAL	rewrite-drift
+InverseGaloisD4OQ02OQ04	RESIDUAL	rewrite-drift
+InverseGaloisD4OQ03	RESIDUAL	rewrite-drift
 InverseGaloisF20	RESIDUAL	unknown-const:cyclotomic_5_has_root_in_splitting_field
 InverseGaloisF20OQ02	RESIDUAL	type-mismatch
-InverseGaloisOQ01	RESIDUAL	instance-synth
+InverseGaloisOQ01	RESIDUAL	type-mismatch
 InverseGaloisOQ02	RESIDUAL	instance-synth
 InverseGaloisOQ03	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ01	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02GalBridge	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02GapChar	RESIDUAL	instance-synth
-InverseGaloisOQ06OQ02P11	RESIDUAL	instance-synth
+InverseGaloisOQ06OQ01	RESIDUAL	type-mismatch
+InverseGaloisOQ06OQ02	RESIDUAL	type-mismatch
+InverseGaloisOQ06OQ02GalBridge	RESIDUAL	type-mismatch
+InverseGaloisOQ06OQ02GapChar	RESIDUAL	type-mismatch
+InverseGaloisOQ06OQ02P11	RESIDUAL	type-mismatch
 IsoperimetricTheorem	RESIDUAL	unknown-const:IsoperimetricTheorem.equality_iff_circle
 IsoperimetricTheoremOQ01	RESIDUAL	unknown-const:cos_lt_one_of_ne_zero
 IsoperimetricTheoremOQ02	RESIDUAL	proof-drift
@@ -2444,7 +2444,7 @@ SpernerFreudenthalSimplex	RESIDUAL	type-mismatch
 SpernerGrid	RESIDUAL	proof-drift
 SpernerGridAristotle	RESIDUAL	proof-drift
 SpernerGridBase	GREEN	
-SpernerGridCell	RESIDUAL	duplicate-decl
+SpernerGridCell	GREEN	
 SpernerMathlib	GREEN	
 SpernerMathlib4	GREEN	
 SpernerMathlib4OQ03	GREEN	
@@ -2458,7 +2458,7 @@ SpernerNDimMathlibOQ01OQ04	GREEN
 SpernerNDimMathlibOQ02	RESIDUAL	type-mismatch
 SpernerNDimOQ01	RESIDUAL	unknown-const:List.get?_eq_get
 SpernerNDimOQ02	GREEN	
-SpernerNDimOQ02Cell	RESIDUAL	duplicate-decl
+SpernerNDimOQ02Cell	GREEN	
 SpernerNDimOQ02Obstruction	GREEN	
 SpernerNDimOQ03	RESIDUAL	type-mismatch
 SpernerNDimOQ03OQ01	RESIDUAL	type-mismatch

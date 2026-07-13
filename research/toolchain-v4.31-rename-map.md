@@ -382,3 +382,28 @@ automatic in argument position); wrap when projections follow:
 | `simpa using hdvd` after `Fintype.card_perm` rewrites | `simpa [Nat.factorial] using hdvd` | simp no longer evaluates `n !` numerals |
 | "Invalid field `X`: environment does not contain `Finset.card`/`Finset.sum`/…" | umbrella `import Mathlib` | import-loss masquerading as dot-notation-drift |
 | `xs.get! i` | `xs[i]!` | List.get! removed |
+
+### 7g. Doctor increment-5 recipes (#38065, 2026-07-13)
+| pattern | fix | notes |
+|---|---|---|
+| `IsSplittingField ℚ f.SplittingField f` / `Normal ℚ f.SplittingField` fail to synthesize | re-register ℚ-specialized local instances: `instance (f : ℚ[X]) : IsSplittingField ℚ f.SplittingField f := Polynomial.IsSplittingField.splittingField f` (and `Polynomial.SplittingField.instNormal f`) | same family as the cyclotomic `[CharZero K]` synthesis regression; explicit application works, synthesis does not |
+| `IsAlgClosed ℂ` fails to synthesize | `import Mathlib.Analysis.Complex.Polynomial.Basic` (the FTA instance `Complex.isAlgClosed` is no longer transitively imported in curated-import files) | check the file's import list before adding compat instances |
+| `AdjoinRoot.liftHom` unknown | `AdjoinRoot.liftAlgHom p (Algebra.ofId _ _) x h` | RingTheory/AdjoinRoot.lean:307 |
+| `IsSolvableByRad F α` / `solvableByRad.isSolvable'` | `α ∈ solvableByRad F E` / `isSolvable_gal_of_irreducible` | FieldTheory/AbelRuffini.lean:332 |
+| `List.mem_cons_self a l` applied | bare `List.mem_cons_self` | args now implicit |
+| `Nat.coprime_two_left.mpr h` with `h : n % 2 = 1` | `Nat.coprime_two_left.mpr (Nat.odd_iff.mpr h)` | RHS is now `Odd n` |
+| `(hcop.gcd_mul_left_cancel m).symm` type mismatch | drop `.symm` | v4.31 gives `gcd (k*m) n = gcd m n` directly |
+| `termination_by a + b` on point-free `def f : ℕ → ℕ → ℕ \| a, b => …` | `termination_by a b => a + b` | match-arm names no longer in scope |
+| cross-module use of `private theorem` | de-privatize in the defining file | v4.31 enforces module-scoped privacy (e.g. `ed_crt_sufficient`) |
+| `rcases List.mem_cons.mp hp with rfl \| h` head-branch names | substitution direction flipped: the *cons-binder* name (`pair`) is eliminated, keep the element name (`p`) | "Unknown identifier" in head branch only |
+| local `notation … " ≍ " …` ambiguous | add `(priority := high)` | `≍` is core `HEq` notation now |
+| `Finset.eq_empty_of_forall_not_mem` | `Finset.eq_empty_of_forall_notMem` | notMem wave |
+| `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` | `Nat.mod_four_ne_three_of_mem_primeFactors_of_isSquare_neg_one` | NumberTheory/SumTwoSquares.lean:95; takes `p ∈ n.primeFactors` |
+| `Int.gcd_dvd_left`/`right` (bare `exact`) | apply explicitly: `Int.gcd_dvd_left a b` | implicits became explicit |
+| `Int.dvd_gcd ha hb` (c : ℤ) | `Int.natAbs_dvd.mp (Int.natCast_dvd_natCast.mpr (Nat.dvd_gcd (Int.natAbs_dvd_natAbs.mpr ha) (Int.natAbs_dvd_natAbs.mpr hb)))` | signature drifted to NatCast'd divisor |
+| `decide` on WF-recursive `def` value (e.g. `binaryGcdInt 12 18 = 6`) | rewrite to a kernel-reducible form first (`rw [binaryGcdInt_eq_intGcd]; decide`) | WF defs never kernel-reduce |
+| `rw [h]` where `h : a = (a-b)+b` rewrites ALL `a` occurrences (incl. inside `a-b`) | `have h3 : … ∣ (a-b)+b := dvd_add h1 h2; rwa [Nat.sub_add_cancel hle] at h3` | v4.26 goals displayed `a+1`/`succ` uniformly, masking this |
+| `simpa using Nat.size_pos.mpr h` expecting `1 ≤ n.size` | `have h1 : 0 < n.size := …; simp only [Nat.zero_div, Nat.size_zero]; omega` | simpa no longer bridges `0 <` ↝ `1 ≤` |
+| `simpa only […] using isUnit_iff_ne_zero` (Finset.map units embedding) | `simp only […]` + `constructor` + `rintro ⟨u, rfl⟩; exact u.ne_zero` / `intro hx; exact ⟨Units.mk0 x hx, rfl⟩` | IsUnit ∃-unfold no longer defeq-matched |
+| duplicate-decl fails after a hub starts compiling | check whether the "self-contained extraction" file re-declares content its (now-fixed) import provides; delete the duplicated block | SpernerGridCell vs SpernerGridBase |
+| stale-diag zero-edit flips | RESIDUAL rows whose freshest diag attributes all errors to now-GREEN files: re-verify without edits | DR15b: 12/16 PASS |

@@ -48,6 +48,9 @@
 import Proofs.AlgebraicNumbersCountableOQ01
 import Mathlib.FieldTheory.AlgebraicClosure
 import Mathlib.FieldTheory.IsAlgClosed.Basic
+-- v4.31 compat (#38065): `Complex.isAlgClosed` (FTA instance) is no longer
+-- transitively imported; needed by the § 4 specialization below.
+import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Tactic
 
 open AlgebraicNumbersCountableOQ01
