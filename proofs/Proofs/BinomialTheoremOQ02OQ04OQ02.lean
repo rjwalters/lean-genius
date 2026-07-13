@@ -77,7 +77,7 @@ by their content multiset yields the collected expansion indexed by `s.sym n`, t
 `add_pow` induction on `s` that never constructs `Finset.piAntidiag`. -/
 theorem multinomial_via_sym (s : Finset α) (f : α → R) (n : ℕ) :
     (∑ i ∈ s, f i) ^ n
-      = ∑ M ∈ s.sym n, (M.val.multinomial : R) * (M.val.map f).prod :=
+      = ∑ M ∈ s.sym n, (M.val.countPerms : R) * (M.val.map f).prod :=
   Finset.sum_pow f n
 
 /-! ## Content correspondence — how a multiset summand becomes the parent's exponent-vector summand
@@ -119,12 +119,12 @@ theorem sym_prod_eq_piAntidiag_prod {s : Finset α} {n : ℕ} (f : α → R) {M 
 correspondence.**  `M.multinomial = Nat.multinomial s (i ↦ M.count i)`. -/
 theorem sym_multinomial_eq_piAntidiag_multinomial {s : Finset α} {n : ℕ} {M : Sym α n}
     (hM : M ∈ s.sym n) :
-    M.val.multinomial = Nat.multinomial s (fun i => M.val.count i) := by
+    M.val.countPerms = Nat.multinomial s (fun i => M.val.count i) := by
   have hsupp : (M.val.toFinsupp).support ⊆ s := by
     intro a ha
     rw [Finsupp.mem_support_iff, Multiset.toFinsupp_apply, Multiset.count_ne_zero] at ha
     exact (Finset.mem_sym_iff.1 hM) a ha
-  rw [Multiset.multinomial, Finsupp.multinomial_eq_of_support_subset hsupp]
+  rw [Multiset.countPerms, Finsupp.multinomial_eq_of_support_subset hsupp]
   exact Nat.multinomial_congr (fun i _ => Multiset.toFinsupp_apply _ i)
 
 /-! ## Route equivalence -/
@@ -135,7 +135,7 @@ Both compute `(∑ᵢ f i)^n`: the left side by the `piAntidiag`-free multiset r
 `piAntidiag`-indexed route (`Finset.sum_pow_eq_sum_piAntidiag`).  The content lemmas above
 identify the two families of summands term by term. -/
 theorem sym_sum_eq_piAntidiag_sum (s : Finset α) (f : α → R) (n : ℕ) :
-    ∑ M ∈ s.sym n, (M.val.multinomial : R) * (M.val.map f).prod
+    ∑ M ∈ s.sym n, (M.val.countPerms : R) * (M.val.map f).prod
       = ∑ k ∈ s.piAntidiag n, (Nat.multinomial s k : R) * ∏ i ∈ s, f i ^ k i := by
   rw [← Finset.sum_pow, ← Finset.sum_pow_eq_sum_piAntidiag]
 

@@ -45,11 +45,11 @@ theorem alternatingDigitSum_singleton (d : ℕ) : alternatingDigitSum [d] = ↑d
 /-- Key recursion: alternatingDigitSum (a :: rest) = a - alternatingDigitSum rest -/
 theorem alternatingDigitSum_cons (a : ℕ) (rest : List ℕ) :
     alternatingDigitSum (a :: rest) = ↑a - alternatingDigitSum rest := by
-  induction rest with
+  induction rest generalizing a with
   | nil => simp [alternatingDigitSum]
   | cons b rest' ih =>
     show ↑a - ↑b + alternatingDigitSum rest' = ↑a - alternatingDigitSum (b :: rest')
-    rw [ih]
+    rw [ih b]
     ring
 
 /-- When b ≡ -1 (mod d), ofDigits b l ≡ alternatingDigitSum l (mod d). -/
@@ -62,12 +62,20 @@ theorem ofDigits_modEq_alternatingDigitSum (d : ℕ) (hd : 0 < d)
     rw [alternatingDigitSum_cons]
     simp only [Nat.ofDigits]
     have hb_neg : (b : ℤ) ≡ -1 [ZMOD ↑d] := by
-      rw [Int.ModEq]
-      omega
-    have h_mul : (↑b * Nat.ofDigits b rest : ℤ) ≡
+      have hle : b % d ≤ b := Nat.mod_le b d
+      have h1 : d ∣ b - b % d := Nat.dvd_sub_mod b
+      have hdvd : d ∣ b + 1 := by
+        have h2 : b + 1 = (b - b % d) + d := by omega
+        rw [h2]; exact Nat.dvd_add h1 (dvd_refl d)
+      have hz : (d : ℤ) ∣ (b : ℤ) - -1 := by
+        have hc : (d : ℤ) ∣ ((b : ℤ) + 1) := by exact_mod_cast hdvd
+        have he : (b : ℤ) - -1 = (b : ℤ) + 1 := by ring
+        rw [he]; exact hc
+      exact (Int.modEq_iff_dvd.mpr hz).symm
+    have h_mul : ((b : ℤ) * Nat.ofDigits (b : ℤ) rest) ≡
         -1 * alternatingDigitSum rest [ZMOD ↑d] :=
       Int.ModEq.mul hb_neg ih
-    have h_add : (↑a + ↑b * Nat.ofDigits b rest : ℤ) ≡
+    have h_add : ((a : ℤ) + (b : ℤ) * Nat.ofDigits (b : ℤ) rest) ≡
         ↑a + -1 * alternatingDigitSum rest [ZMOD ↑d] :=
       Int.ModEq.add rfl h_mul
     simp only [neg_one_mul] at h_add
@@ -79,9 +87,8 @@ theorem modEq_alternating_digits_sum (d b n : ℕ) (hd : 0 < d)
     (hb : b % d = d - 1) (hb2 : 2 ≤ b) :
     (n : ℤ) ≡ altDigitSum b n [ZMOD ↑d] := by
   unfold altDigitSum
-  have key : n = Nat.ofDigits b (Nat.digits b n) := (Nat.ofDigits_digits b n).symm
-  conv_lhs => rw [key]
-  exact ofDigits_modEq_alternatingDigitSum d hd b hb (Nat.digits b n)
+  have h := ofDigits_modEq_alternatingDigitSum d hd b hb (Nat.digits b n)
+  rwa [← Nat.coe_ofDigits ℤ b (Nat.digits b n), Nat.ofDigits_digits b n] at h
 
 /-
 ## Part II: Divisibility by 11 (Alternating Digit Sum, iff form)
@@ -94,7 +101,7 @@ theorem modEq_alternating_digits_sum (d b n : ℕ) (hd : 0 < d)
 theorem eleven_dvd_iff (n : ℕ) :
     (11 : ℤ) ∣ (↑n - altDigitSum 10 n) := by
   have h := modEq_alternating_digits_sum 11 10 n (by omega) (by native_decide) (by omega)
-  exact h
+  exact_mod_cast Int.ModEq.dvd h.symm
 
 /-- Example: 11 divides 121 (1 - 2 + 1 = 0, and 11 | 0) -/
 example : 11 ∣ 121 := by native_decide
@@ -257,10 +264,14 @@ theorem dvd_iff_dvd_mod (d m : ℕ) (hdiv : d ∣ m) (n : ℕ) :
   obtain ⟨c, rfl⟩ := hdiv
   constructor
   · intro ⟨k, hk⟩
-    exact ⟨k % c, by omega⟩
+    exact ⟨k % c, by rw [hk, Nat.mul_mod_mul_left]⟩
   · intro hmod
     obtain ⟨j, hj⟩ := hmod
-    exact ⟨c * (n / (d * c)) + j, by omega⟩
+    refine ⟨c * (n / (d * c)) + j, ?_⟩
+    have h := Nat.div_add_mod n (d * c)
+    rw [hj] at h
+    conv_lhs => rw [← h]
+    ring
 
 /-- **Divisibility by 2**: last digit rule -/
 theorem two_dvd_iff (n : ℕ) : 2 ∣ n ↔ 2 ∣ (n % 10) :=

@@ -127,8 +127,10 @@ theorem reduced_product_le_lcm (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
   have hlcm : Nat.gcd m n * Nat.lcm m n = m / Nat.gcd m n * Nat.gcd m n *
       (n / Nat.gcd m n * Nat.gcd m n) := by
     rw [← hm_eq, ← hn_eq]; exact Nat.gcd_mul_lcm m n
-  nlinarith [Nat.mul_pos (m / Nat.gcd m n) (n / Nat.gcd m n),
-             lcm_pos_of_pos hm hn]
+  have h1 : Nat.lcm m n = m / Nat.gcd m n * (n / Nat.gcd m n) * Nat.gcd m n :=
+    Nat.eq_of_mul_eq_mul_left hg_pos (by rw [hlcm]; ring)
+  rw [h1]
+  exact Nat.le_mul_of_pos_right _ hg_pos
 
 /-
 ## Part IV: Garner's Mixed-Radix Decomposition
@@ -143,7 +145,7 @@ theorem reduced_product_le_lcm (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
 theorem garner_mixed_radix (m n : ℕ) (x : ℕ) (hm : 0 < m) (hx : x < m * n) :
     ∃ c₁ c₂ : ℕ, x = c₁ + c₂ * m ∧ c₁ < m ∧ c₂ < n := by
   refine ⟨x % m, x / m, ?_, Nat.mod_lt x hm, ?_⟩
-  · omega
+  · exact (Nat.mod_add_div' x m).symm
   · have h1 : x / m * m ≤ x := Nat.div_mul_le_self x m
     nlinarith [Nat.mul_comm (x / m) m]
 
@@ -153,10 +155,13 @@ theorem garner_mixed_radix_unique (m n : ℕ) (c₁ c₂ d₁ d₂ : ℕ)
     (hc₁ : c₁ < m) (hc₂ : c₂ < n) (hd₁ : d₁ < m) (hd₂ : d₂ < n)
     (heq : c₁ + c₂ * m = d₁ + d₂ * m) :
     c₁ = d₁ ∧ c₂ = d₂ := by
-  constructor
-  · omega
-  · have h := heq
-    omega
+  have h₁ : c₁ = d₁ := by
+    have h := congrArg (fun z => z % m) heq
+    simp only [Nat.add_mul_mod_self_right] at h
+    rwa [Nat.mod_eq_of_lt hc₁, Nat.mod_eq_of_lt hd₁] at h
+  refine ⟨h₁, ?_⟩
+  have h₂ : c₂ * m = d₂ * m := by omega
+  exact Nat.eq_of_mul_eq_mul_right hm h₂
 
 /-- Garner coefficients for CRT: c₁ is the residue mod m,
     c₂ is (r₂ - c₁) * m⁻¹ mod n.

@@ -406,7 +406,7 @@ theorem zeta_even_weighted_prod_eq_rat_mul_pi_pow {ι : Type*} (f g : ι → ℕ
       obtain ⟨qa, hqa, hqaeq⟩ :=
         zeta_even_pow_eq_rat_mul_pi_pow (f a) (g a)
           (hf a (Finset.mem_insert_self a s)) (hg a (Finset.mem_insert_self a s))
-      refine ⟨qa ^ g a * q, mul_ne_zero (pow_ne_zero _ hqa) hq, ?_⟩
+      refine ⟨qa * q, mul_ne_zero hqa hq, ?_⟩
       rw [Finset.prod_insert ha, Finset.sum_insert ha, hqeq, hqaeq, mul_add, pow_add]
       push_cast; ring
 

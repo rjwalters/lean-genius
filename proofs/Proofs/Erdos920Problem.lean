@@ -57,7 +57,7 @@ The minimum number of colors needed to properly color the vertices
 so that no two adjacent vertices share the same color.
 -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
-  G.chromaticNumber
+  G.chromaticNumber.toNat
 
 /- 
 **Maximum Chromatic Number g_k(n):**

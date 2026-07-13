@@ -91,7 +91,7 @@ as "the" multivariate L'Hôpital limit.
     of a 0/0 ratio depends on the direction of approach. -/
 theorem path_dependent_ratio (m : ℝ) (hm : m ≠ 0) :
     ∀ t : ℝ, t ≠ 0 → t / (m * t) = 1 / m := by
-  intro t ht; field_simp; ring
+  intro t ht; field_simp
 
 /-- Two different slopes (m=1 and m=2) give different limiting ratios,
     concretely witnessing that a universal multivariate L'Hôpital
@@ -130,6 +130,6 @@ theorem chain_rule_lhopital_form
     (hf : DifferentiableAt ℝ f (γ t))
     (hγ : DifferentiableAt ℝ γ t) :
     deriv (f ∘ γ) t = fderiv ℝ f (γ t) (deriv γ t) :=
-  (hf.hasFDerivAt.comp_hasDerivAt hγ.hasDerivAt).deriv
+  (hf.hasFDerivAt.comp_hasDerivAt t hγ.hasDerivAt).deriv
 
 end LHopitalOQ03

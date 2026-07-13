@@ -77,7 +77,7 @@ theorem subsetSum_lt_of_ssubset {n : ℕ} {A : Finset ℕ} (hA : ValidSubset n A
   obtain ⟨i, hiT, hiS⟩ := Finset.exists_of_ssubset hST
   have hipos : 0 < id i := by
     have hi1 : 1 ≤ i := (hA.1 i (hTA hiT)).1
-    simpa using hi1
+    exact hi1
   exact Finset.sum_lt_sum_of_subset hST.subset hiT hiS hipos
     (fun j _ _ => Nat.zero_le _)
 

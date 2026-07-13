@@ -318,6 +318,8 @@ theorem zero_conic_concurrent (A B C' D E F : ProjPoint) :
   unfold concurrent
   have hsym : (0 : Conic).symmetric := by intro i j; simp
   rw [brianchon_concurrency_det_eq hsym]
-  simp
+  have h0 : (0 : Conic).det = 0 := Matrix.det_zero ⟨0⟩
+  rw [h0]
+  ring
 
 end BrianchonConverse

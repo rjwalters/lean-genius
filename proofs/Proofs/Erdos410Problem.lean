@@ -96,7 +96,7 @@ theorem sigma_lower_bound (n : ℕ) (hn : n > 1) : sigma 1 n ≥ n + 1 := by
 
 /-- σ(p) = p + 1 for prime p -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) : sigma 1 p = p + 1 := by
-  simp [sigma_apply, hp.divisors, Finset.sum_pair hp.one_lt.ne']
+  simp [sigma_apply, hp.divisors, Finset.sum_pair hp.one_lt.ne]
   ring
 
 /-- σ is multiplicative -/

@@ -67,6 +67,7 @@ theorem Similar.trace_eq {A B : Matrix n n R} (h : Similar A B) : B.trace = A.tr
 theorem Similar.charpoly_eq {A B : Matrix n n R} (h : Similar A B) :
     B.charpoly = A.charpoly := by
   obtain ⟨P, rfl⟩ := h
+  rw [Matrix.coe_units_inv]
   exact Matrix.charpoly_units_conj P A
 
 /-- **Similar matrices have the same eigenvalues**, i.e. the same multiset of

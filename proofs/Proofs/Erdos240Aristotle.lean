@@ -62,7 +62,7 @@ theorem two_prime_large_gaps_ari (p q : ℕ) (hp : p.Prime) (hq : q.Prime) :
 theorem isPSmooth_prime_pow_ari (p k : ℕ) (hp : p.Prime) :
     isPSmooth ({p} : Set ℕ) (p ^ k) := by
   constructor
-  · positivity
+  · exact pow_pos hp.pos k
   · intro q hq hdvd
     have : q ∣ p := hq.dvd_of_dvd_pow hdvd
     have := hp.eq_one_or_self_of_dvd q this

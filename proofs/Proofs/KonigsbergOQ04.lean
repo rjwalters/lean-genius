@@ -218,18 +218,18 @@ theorem k3_arb_complete (arb : Arborescence k3Digraph A) :
   have hB : arb.parent B = A ∨ arb.parent B = C := by
     have hv := arb.parent_valid B (by decide)
     have hne : arb.parent B ≠ B := fun h => by rw [h] at hv; exact k3Digraph.loopless B hv
-    match arb.parent B with
+    match hpb : arb.parent B with
     | .A => left; rfl
-    | .B => exact absurd rfl hne
+    | .B => exact absurd hpb hne
     | .C => right; rfl
   -- parent(C) in {A, B}: C->C violates loopless
   have hC : arb.parent C = A ∨ arb.parent C = B := by
     have hv := arb.parent_valid C (by decide)
     have hne : arb.parent C ≠ C := fun h => by rw [h] at hv; exact k3Digraph.loopless C hv
-    match arb.parent C with
+    match hpc : arb.parent C with
     | .A => left; rfl
     | .B => right; rfl
-    | .C => exact absurd rfl hne
+    | .C => exact absurd hpc hne
   -- Four cases: three valid, one invalid (B<->C cycle)
   rcases hB with hBp | hBp <;> rcases hC with hCp | hCp
   · -- B->A, C->A: arb1
@@ -247,7 +247,7 @@ theorem k3_arb_complete (arb : Arborescence k3Digraph A) :
       intro m; induction m with
       | zero => left; rfl
       | succ k ih =>
-        simp only [Function.iterate_succ']
+        simp only [Function.iterate_succ', Function.comp_apply]
         rcases ih with hk | hk
         · right; rw [hk]; exact hBp
         · left; rw [hk]; exact hCp
@@ -288,15 +288,17 @@ the Eulerian circuit space) has no undirected analogue.
 -/
 
 /-- The decision problem is trivially decidable: just check balance at each vertex. -/
-theorem euler_circuit_decidable {V : Type*} [Fintype V] [DecidableEq V]
+def euler_circuit_decidable {V : Type*} [Fintype V] [DecidableEq V]
     (D : KonigsbergOQ02.Digraph V) [DecidableRel D.adj] :
     Decidable (∀ v : V, D.isBalanced v) :=
+  haveI : DecidablePred D.isBalanced :=
+    fun v => inferInstanceAs (Decidable (D.inDegree v = D.outDegree v))
   Fintype.decidableForallFintype
 
 /-- For K3, the decision is easy: all vertices are balanced. -/
 example : ∀ v : TriVerts, k3Digraph.isBalanced v := k3_balanced
 
-/-- But the counting problem asks: how many circuits exist?
+/- But the counting problem asks: how many circuits exist?
     For K3, the BEST theorem gives 6 (verified above). -/
 
 -- ============================================================

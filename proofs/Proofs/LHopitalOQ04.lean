@@ -90,7 +90,7 @@ example : Tendsto (fun x => Real.sin x / x) (𝓝[≠] (0 : ℝ)) (𝓝 1) := by
 `0 / 1 = 0`. -/
 example : Tendsto (fun x => (1 - Real.cos x) / x) (𝓝[≠] (0 : ℝ)) (𝓝 0) := by
   have hf : HasDerivAt (fun x => 1 - Real.cos x) (Real.sin 0) 0 := by
-    simpa using (hasDerivAt_const (0 : ℝ) (1 : ℝ)).sub (Real.hasDerivAt_cos 0)
+    simpa using (Real.hasDerivAt_cos 0).const_sub 1
   have h := lhopital_zero_taylor hf (hasDerivAt_id (0 : ℝ))
     (by simp) rfl (by norm_num)
   simpa using h

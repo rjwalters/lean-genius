@@ -1971,6 +1971,7 @@ theorem sperner_1d (n : ℕ) (L : Fin (n + 2) → Bool)
     have := hk_min (k - 1) (by omega)
     simp only [L', dif_pos (show k - 1 < n + 2 by omega)] at this
     convert this
+    simp
   · -- L(succ (k-1)) = L(k) = true
     simp only [L', dif_pos hk_bound] at hk_true
     convert hk_true using 1

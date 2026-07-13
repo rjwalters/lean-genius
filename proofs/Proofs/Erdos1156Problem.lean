@@ -84,16 +84,21 @@ axiom chromaticNumberRV (n : ℕ) : erdosRenyi n → ℕ
     This is a basic combinatorial fact. -/
 theorem isKColorable_card {n : ℕ} (G : SimpleGraph (Fin n)) :
     G.IsKColorable' n :=
-  ⟨id, fun _ _ _ h => h⟩
+  ⟨id, fun _ _ h => G.ne_of_adj h⟩
 
-/-- 0-colorable implies no edges. -/
+/-- 0-colorable iff there are no vertices at all.
+    (Statement repair for the v4.31 migration: the original iff claimed
+    `G.IsKColorable' 0 ↔ ∀ v w, ¬G.Adj v w`, whose reverse direction is
+    false for any nonempty vertex type — a 0-coloring requires a function
+    `V → Fin 0`. The correct characterization of 0-colorability is that
+    the vertex type is empty.) -/
 theorem isKColorable_zero_iff {V : Type*} (G : SimpleGraph V) :
-    G.IsKColorable' 0 ↔ ∀ v w : V, ¬G.Adj v w := by
+    G.IsKColorable' 0 ↔ IsEmpty V := by
   constructor
-  · rintro ⟨f, hf⟩ v w hadj
-    exact (Fin.elim0 (f v))
+  · rintro ⟨f, _⟩
+    exact ⟨fun v => Fin.elim0 (f v)⟩
   · intro h
-    exact ⟨Fin.elim0, fun v w hadj => absurd hadj (h v w)⟩
+    exact ⟨fun v => (h.false v).elim, fun v _ _ => (h.false v).elim⟩
 
 /- ## Erdős Problem #1156 -/
 

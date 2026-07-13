@@ -57,7 +57,7 @@ theorem adjCount_eq_card_of_all_adj (G : SimpleGraph V) [DecidableRel G.Adj]
     (S : Finset V) (y : V)
     (h : ∀ v ∈ S, G.Adj y v) : adjCount G S y = S.card := by
   simp only [adjCount]
-  congr 1; ext v; simp [h v]
+  rw [Finset.filter_true_of_mem h]
 
 /-- adjCount is at most |S|. -/
 theorem adjCount_le_card (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -107,7 +107,7 @@ theorem maTangConstant_lt_half : maTangConstant < 1/2 := by
   unfold maTangConstant
   -- Need sqrt(5/2) > 3/2, i.e., 5/2 > 9/4
   have hsq : Real.sqrt (5/2) ^ 2 = 5/2 := Real.sq_sqrt (by positivity)
-  nlinarith [sq_nonneg (Real.sqrt (5/2) - 3/2)]
+  nlinarith [sq_nonneg (Real.sqrt (5/2) - 3/2), Real.sqrt_nonneg (5/2 : ℝ)]
 
 /-- The gap between 1/6 and the Ma-Tang constant. -/
 theorem gap_bounds : maTangConstant - 1/6 > 1/4 ∧ maTangConstant - 1/6 < 3/10 := by
@@ -117,6 +117,6 @@ theorem gap_bounds : maTangConstant - 1/6 > 1/4 ∧ maTangConstant - 1/6 < 3/10 
   · -- 2 - sqrt(5/2) - 1/6 > 1/4, i.e., sqrt(5/2) < 2 - 1/6 - 1/4 = 19/12
     nlinarith [sq_nonneg (Real.sqrt (5/2) - 19/12)]
   · -- 2 - sqrt(5/2) - 1/6 < 3/10, i.e., sqrt(5/2) > 2 - 1/6 - 3/10 = 46/30 = 23/15
-    nlinarith [sq_nonneg (Real.sqrt (5/2) - 23/15)]
+    nlinarith [sq_nonneg (Real.sqrt (5/2) - 23/15), Real.sqrt_nonneg (5/2 : ℝ)]
 
 end Erdos1034Aristotle

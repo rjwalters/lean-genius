@@ -120,7 +120,7 @@ section FixedPointCounts
 
 /-- Total colorings of ZMod 4 with 2 colors: 2^4 = 16. -/
 theorem zcoloring_4_2_card : Fintype.card (ZColoring 4 2) = 16 := by
-  simp [ZColoring, ZMod, Fintype.card_fun, Fintype.card_fin]
+  decide
 
 /-- Fixed by 0 (identity): all colorings, count = 16. -/
 theorem fix_0_card : Fintype.card { c : ZColoring 4 2 // IsRotFixed 4 2 0 c } = 16 := by

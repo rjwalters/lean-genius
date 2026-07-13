@@ -60,6 +60,7 @@ theorem frac_nonneg (x : ℝ) : 0 ≤ frac x := by
 theorem frac_lt_one (x : ℝ) : frac x < 1 := by
   unfold frac
   simp [sub_lt_iff_lt_add, Int.lt_floor_add_one]
+  exact Int.fract_lt_one x
 
 /--
 **Irrational number:**
@@ -76,7 +77,7 @@ def Irrational (α : ℝ) : Prop := ¬∃ (p q : ℤ), q ≠ 0 ∧ α = p / q
 The number of m ∈ {1, ..., n} such that {αm} ∈ [u, v).
 -/
 noncomputable def countingFunction (α : ℝ) (u v : ℝ) (n : ℕ) : ℕ :=
-  Finset.card (Finset.filter (fun m => u ≤ frac (α * m) ∧ frac (α * m) < v)
+  Finset.card (Finset.filter (fun (m : ℕ) => u ≤ frac (α * m) ∧ frac (α * m) < v)
     (Finset.range (n + 1) \ {0}))
 
 /--

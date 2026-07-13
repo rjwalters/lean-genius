@@ -102,8 +102,8 @@ theorem hasDerivAt_sin_sub_cube (x : ℝ) :
   have h2 : HasDerivAt (fun t => t) (1 : ℝ) x := hasDerivAt_id x
   have h3 : HasDerivAt (fun t => t ^ 3 / 6) (x ^ 2 / 2) x := by
     have h := (hasDerivAt_pow 3 x).div_const (6 : ℝ)
-    convert h using 1
-    skip; ring
+    convert h using 1 <;>
+      (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   exact (h1.sub h2).add h3
 
 /-- For x ≥ 0, sin(x) ≥ x - x³/6. The third-order Taylor lower bound for sin. -/

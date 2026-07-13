@@ -56,6 +56,11 @@ theorem regular_7gon_impossible_degree :
     ¬ DegreePowerOfTwo (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]) := by
   intro ⟨k, hk⟩
   rw [regular_7gon_poly_degree] at hk
+  have hlt : k < 2 := by
+    by_contra h
+    push_neg at h
+    have h4 : 2 ^ 2 ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) h
+    omega
   interval_cases k <;> simp_all
 
 end AngleTrisectionOQ02OQ01OQ02Aristotle

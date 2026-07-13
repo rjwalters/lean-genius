@@ -42,7 +42,7 @@ noncomputable def upperExponent (k : ℕ) : ℝ :=
 theorem upperExponent_increasing (k : ℕ) (hk : k ≥ 1) :
     upperExponent k < upperExponent (k + 1) := by
   simp only [upperExponent, sub_lt_sub_iff_left]
-  exact pow_lt_pow_right₀ (by norm_num : (2:ℝ)⁻¹ < 1) (by omega)
+  exact pow_lt_pow_right_of_lt_one₀ (by norm_num) (by norm_num) (by omega)
 
 -- Routine lemma: the odd numbers in {1,...,2N} have cardinality N
 theorem oddNumbers_card (N : ℕ) : (oddNumbers N).card = N := by
@@ -54,7 +54,8 @@ theorem oddNumbers_card (N : ℕ) : (oddNumbers N).card = N := by
       exact ⟨n / 2, by omega, by omega⟩
     · rintro ⟨k, hk, rfl⟩
       exact ⟨⟨by omega, by omega⟩, by omega⟩
-  rw [this, Finset.card_image_of_injective _ (by intro a b h; omega), Finset.card_range]
+  rw [this, Finset.card_image_of_injective _ (by intro a b h; beta_reduce at h; omega),
+    Finset.card_range]
 
 -- Routine lemma: parity pigeonhole — among any 3 integers,
 -- two share parity, so their sum is even and not in oddNumbers

@@ -454,7 +454,7 @@ containers after host edits on /Volumes/Stripe worktrees — `docker restart <c>
 before building (see STATUS.md "increment 5B verification-infrastructure notes";
 also covers the runner5 false-mtime-FAIL pitfall).
 
-### 7h. Doctor increment-6 recipes (#38065, 2026-07-13, instance-synth: cyclotomic cluster)
+### 7k. Doctor increment-6 recipes (#38065, 2026-07-13, instance-synth: cyclotomic cluster)
 
 **ROOT CAUSE of the 48-row InverseGalois*/AngleTrisection* cyclotomic mystery**
 (finally solved): `DivisionRing.toRatAlgebra : Algebra ℚ R` at default priority
@@ -494,3 +494,26 @@ application works" symptom flagged unresolved since increment 1.
 **All ℚ-field-extension gallery files** (Galois theory, cyclotomic, splitting
 fields, number fields) should carry `attribute [instance 10] DivisionRing.toRatAlgebra`
 after imports on v4.31 — this is the single highest-yield instance-synth fix.
+
+### 7j. Doctor increment-7 recipes (#38065, 2026-07-13, tm+pd remainder)
+
+| pattern | fix | notes |
+|---|---|---|
+| `Finset.single_le_sum` + `mem_range.mpr` proof via `Nat.lt_succ_of_le` | pass `(f := fun j => ...)` explicitly | `range r.succ` vs `range (r+1)` unification no longer resolves the sum metavar (BinomialTheoremOQ04) |
+| `X.trans (by simp ...)` where X's implicits come from the trans result | `have h : <explicit type> := by simp ...; exact X.trans h` | by-blocks now elaborate before trans metavars are solved — "Fintype ?m stuck" / "simp made no progress" (Erdos1161) |
+| `Nat.sum_digits_lt` | REMOVED — `rw [Nat.digits_def' hb hn]; have := Nat.digit_sum_le b (n/b); simp only [List.sum_cons]; omega` | strict digit-sum bound gone; only `Nat.digit_sum_le` survives |
+| nlinarith on `g * lcm = X * g * g` cancellations | `Nat.eq_of_mul_eq_mul_left hpos (by rw [h]; ring)` + `Nat.le_mul_of_pos_right` | var-product cancellation loss (ChineseRemainderNonCoprimeOQ01) |
+| `decide` on `Squarefree <numeral>` | `(by norm_num : Nat.Prime p).squarefree` (or factor via primes) | instDecidablePredSquarefree runs WF `minSqFac` — never kernel-reduces |
+| `(Nat.modEq_iff_dvd' h).mpr hdvd` expected `a ≡ 1` | append `.symm` | orientation now `1 ≡ a [MOD p]` (Erdos820Aristotle) |
+| `∀ k ≥ 1, (1:ℚ) + 1/k ∈ S` binder | annotate `∀ k : ℕ, k ≥ 1 → ...` | ℕ/ℚ binder-inference drift, ∃/∀-bounded form (Erdos419; same family as 5A's ℕ/ℝ finding) |
+| `simp [h1]` with `h1 : x ∈ ({a} : Set α)` | `simp only [Set.mem_singleton_iff] at h1; simp [h1]` | membership hypotheses no longer usable directly as simp rewrites |
+| `modByMonic_add_div p hq` | `modByMonic_add_div p q` | Monic hypothesis dropped, pass the divisor polynomial (batch15) |
+| `n ! - 1` | `(n !) - 1` | `! -` juxtaposition now parses as `n (!-1)` (batch15, CramersRule) |
+| `theorem foo : Decidable P := ...` | `def foo ...` | theorems may not return non-Prop data (batch24, KonigsbergOQ04) |
+| `Σ x, P x` with P : Prop | `Σ' x, P x` | Sigma over Prop rejected (batch24) |
+| dot-notation `X.baz` for cross-namespace `def Foo.Bar.baz` | declare as `_root_.Foo.Bar.baz` or qualify | v4.31 dot-notation no longer resolves cross-namespace defs (batch24, Konigsberg) |
+| `Nat.card_eq_fintypeCard` | `Nat.card_eq_fintype_card` | snake_case — batch08's Lagrange patch failed on the camelCase guess |
+| `SimpleGraph.Walk.rotate w` | `d.rotate w hwd` (vertex-membership arg now explicit) | batch24 Splice |
+| `List.prod_ne_zero h` | now takes `0 ∉ l` | batch24 Kummer |
+| kabstract/rw proof-irrelevance loss (patterns with proof args / set-vars) | refold via `rw [show lhs = rhs from rfl]`, defeq-recast `have h' : <folded> := h`; never `simp at h` when other hyps depend on h — copy first | batch15 Ballot family |
+| statement repairs (operator policy 2026-07-13) | fix false statements to intended-true form; never vacuous, never sorry | see STATUS.md increment-7 statement-repairs table (7 files) |

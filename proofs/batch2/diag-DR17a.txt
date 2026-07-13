@@ -1,0 +1,2609 @@
+===== AlgebraicNumbersCountableOQ02OQ02
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:154:22: No goals to be solved
+warning: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:155:27: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:211:17: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:20: Function expected at
+  exists_surjective_nat ℝ
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:20: Function expected at
+  exists_surjective_nat ℝ
+but this term has type
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:9: Tactic `rcases` failed: `x✝ : ?m.15` is not an inductive datatype
+error: Lean exited with code 1
+✔ [7892/8213] Built Proofs.AlgebraicPointsNull (1.7s)
+===== AlgebraicNumbersCountableOQ02OQ02OQ01
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:154:22: No goals to be solved
+warning: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:155:27: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:211:17: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:20: Function expected at
+  exists_surjective_nat ℝ
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:20: Function expected at
+  exists_surjective_nat ℝ
+but this term has type
+error: Proofs/AlgebraicNumbersCountableOQ02OQ02.lean:256:9: Tactic `rcases` failed: `x✝ : ?m.15` is not an inductive datatype
+error: Lean exited with code 1
+✔ [7892/8213] Built Proofs.AlgebraicPointsNull (1.7s)
+===== AmgmInequalityOQ02OQ01OQ02
+error: Proofs/AmgmInequalityOQ02OQ01OQ02.lean:112:83: unsolved goals
+R : Type u_1
+inst✝² : CommRing R
+===== AngleTrisectionCos20GalOQ01OQ01
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:146:2: unsolved goals
+case inl
+⊢ False
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:148:2: unsolved goals
+case inr
+⊢ False
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:158:2: unsolved goals
+case inl
+⊢ 4 - X ^ 2 * 12 + X ^ 3 * 8 - C 3 = -1 - X * 6 + X ^ 3 * 8
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:160:2: unsolved goals
+case inr
+⊢ X * 28 - X * C 2 * 28 + X * C 2 ^ 2 * 6 - X ^ 2 * 28 + X ^ 2 * C 2 * 12 + X ^ 3 * 8 + C 2 * 14 - C 2 ^ 2 * 7 +
+===== AngleTrisectionCos20GalOQ03
+error: Proofs/AngleTrisectionCos20GalOQ03.lean:152:19: Tactic `unfold` failed to unfold `p` in
+  eval (2 * x - 2) (X ^ 3 + C 6 * X ^ 2 + C 9 * X + C 3) = eval x 8 * eval x (X ^ 3) - eval x 6 * x + 1
+warning: Proofs/AngleTrisectionCos20GalOQ03.lean:181:50: This simp argument is unused:
+===== AngleTrisectionOQ02OQ01OQ02Aristotle
+error: Proofs/AngleTrisectionOQ02OQ01OQ02Aristotle.lean:59:2: interval_cases failed: could not find upper bound on k
+error: Lean exited with code 1
+✔ [8602/8613] Built Proofs.BallotProblemOQ01OQ04Core (9.4s)
+===== AngleTrisectionOQ05OQ03
+error: Proofs/AngleTrisectionOQ05OQ03.lean:106:37: Function expected at
+  nth_prime_is_prime
+but this term has type
+error: Proofs/AngleTrisectionOQ05OQ03.lean:108:51: Unknown identifier `nth_prime_constructible_at`
+error: Proofs/AngleTrisectionOQ05OQ03.lean:110:10: Unknown identifier `nth_prime_not_constructible_below`
+error: Proofs/AngleTrisectionOQ05OQ03.lean:244:35: Unknown identifier `nth_prime_is_prime`
+error: Proofs/AngleTrisectionOQ05OQ03.lean:110:10: Unknown identifier `nth_prime_not_constructible_below`
+error: Proofs/AngleTrisectionOQ05OQ03.lean:244:35: Unknown identifier `nth_prime_is_prime`
+warning: Proofs/AngleTrisectionOQ05OQ03.lean:246:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/AngleTrisectionOQ05OQ03.lean:244:35: Unknown identifier `nth_prime_is_prime`
+warning: Proofs/AngleTrisectionOQ05OQ03.lean:246:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== AreaOfCircleOQ01OQ03Aristotle
+error: Proofs/AreaOfCircleOQ01OQ03Aristotle.lean:93:2: unsolved goals
+f : ℝ → ℝ
+hf : ContDiff ℝ 1 f
+error: Proofs/AreaOfCircleOQ01OQ03Aristotle.lean:99:8: No goals to be solved
+error: Lean exited with code 1
+✖ [8610/8613] Building Proofs.AreaOfCircleOQ03OQ01 (10s)
+===== AreaOfCircleOQ02
+error: Proofs/AreaOfCircleOQ02.lean:120:63: unsolved goals
+n : ℕ
+hn : 2 ≤ n
+error: Proofs/AreaOfCircleOQ02.lean:167:26: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+error: Proofs/AreaOfCircleOQ02.lean:167:62: Invalid field `le`: The environment does not contain `Real.le.le`, so it is not possible to project the field `le` from an expression
+  hr
+of type `Real.le✝ 0 r`
+error: Proofs/AreaOfCircleOQ02.lean:163:72: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+===== AreaOfCircleOQ02OQ01
+error: Proofs/AreaOfCircleOQ02.lean:120:63: unsolved goals
+n : ℕ
+hn : 2 ≤ n
+error: Proofs/AreaOfCircleOQ02.lean:167:26: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+error: Proofs/AreaOfCircleOQ02.lean:167:62: Invalid field `le`: The environment does not contain `Real.le.le`, so it is not possible to project the field `le` from an expression
+  hr
+of type `Real.le✝ 0 r`
+error: Proofs/AreaOfCircleOQ02.lean:163:72: unsolved goals
+r : ℝ
+hr : 0 ≤ r
+===== AreaOfCircleOQ03OQ01
+error: Proofs/AreaOfCircleOQ03OQ01.lean:106:10: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+✖ [8611/8613] Building Proofs.AngleTrisectionCos20GalOQ01OQ01 (9.1s)
+===== AreaOfCircleOQ03OQ02OQ02
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:112:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:85:59: unsolved goals
+case e'_8
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:85:59: unsolved goals
+case e'_8
+x : ℝ
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:117:2: `fun_prop` was unable to prove `Continuous fun x => x ^ 6 - 4 * x ^ 5 + 5 * x ^ 4 - 4 * x ^ 2 + 4 - 4 / (1 + x ^ 2)`
+Issues:
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:152:2: Tactic `apply` failed: could not unify the conclusion of `@Continuous.div`
+  Continuous (?f / ?g)
+with the goal
+===== AreaOfCircleOQ03OQ02OQ02OQ01
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:112:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:85:59: unsolved goals
+case e'_8
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:85:59: unsolved goals
+case e'_8
+x : ℝ
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:117:2: `fun_prop` was unable to prove `Continuous fun x => x ^ 6 - 4 * x ^ 5 + 5 * x ^ 4 - 4 * x ^ 2 + 4 - 4 / (1 + x ^ 2)`
+Issues:
+error: Proofs/AreaOfCircleOQ03OQ02OQ02.lean:152:2: Tactic `apply` failed: could not unify the conclusion of `@Continuous.div`
+  Continuous (?f / ?g)
+with the goal
+===== AreaOfCircleOQ03OQ03OQ02
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:75:65: unsolved goals
+a b : ℝ
+⊢ b * a ^ 2 * (-3 / 8) + b ^ 2 * a * (3 / 8) + b ^ 3 * (-1 / 8) + a ^ 3 * (1 / 8) =
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:95:24: unsolved goals
+a b : ℝ
+⊢ a * b ^ 2 * (3 / 64) + a ^ 2 * b * (-3 / 64) + a ^ 3 * (1 / 64) + b ^ 3 * (-1 / 64) =
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:103:24: unsolved goals
+a b : ℝ
+⊢ b * a ^ 2 * (-3 / 64) + b ^ 2 * a * (3 / 64) + b ^ 3 * (-1 / 64) + a ^ 3 * (1 / 64) =
+error: Proofs/AreaOfCircleOQ03OQ03OQ02.lean:189:0: Unexpected name `AreaOfCircleOQ03OQ03OQ02` after `end`: The current section is unnamed
+Hint: Delete the name `AreaOfCircleOQ03OQ03OQ02` to end the current unnamed scope; outer named scopes can then be closed using additional `end` command(s):
+===== AreaOfCircleOQ05OQ01Aristotle
+error: Proofs/AreaOfCircleOQ05OQ01Aristotle.lean:45:13: `simp` made no progress
+warning: Proofs/AreaOfCircleOQ05OQ01Aristotle.lean:62:8: declaration uses `sorry`
+error: Lean exited with code 1
+===== AreaOfCircleOQ05OQ03OQ05
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:156:4: Invalid argument name `ε` for function `hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+Hint: Perhaps you meant one of the following parameter names:
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:162:4: Application type mismatch: The argument
+  one_pos
+has type
+===== AreaOfCircleOQ07OQ05
+error: Proofs/AreaOfCircleOQ07OQ05.lean:61:4: Type mismatch: After simplification, term
+  hasDerivAt_id x
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:67:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05.lean:101:4: Application type mismatch: The argument
+  hu
+has type
+===== AreaOfCircleOQ07OQ05OQ01
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:90:6: Type mismatch: After simplification, term
+  HasDerivAt.neg (hasDerivAt_pow 2 x)
+ has type
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:94:4: `ring_nf` made no progress on the goal
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+error: Proofs/AreaOfCircleOQ07OQ05OQ01.lean:128:4: Application type mismatch: The argument
+  hu
+has type
+===== ArithmeticSeriesOQ00OQ02
+error: Proofs/ArithmeticSeriesOQ00OQ02.lean:112:60: unsolved goals
+case e_f
+n k : ℕ
+===== ArithmeticSeriesOQ02OQ02OQ03OQ01
+error: Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean:122:66: unsolved goals
+⊢ Fintype.card (Fin 4 → Fin 2) = 16
+warning: Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean:123:25: This simp argument is unused:
+===== BallotProblemOQ01OQ02OQ04
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:105:54: unsolved goals
+w₁ w₂ : ℚ
+⊢ (∀ (q : ℚ), (q = w₁ → 0 < q) ∧ (q = w₁ + w₂ → 0 < q)) ↔ 0 < w₁ ∧ 0 < w₁ + w₂
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:132:57: Tactic `decide` failed for proposition
+  isGoodWeighted [2, 1, -2]
+because its `Decidable` instance
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:135:57: Tactic `decide` failed for proposition
+  isGoodWeighted [1, 2, -2]
+because its `Decidable` instance
+error: Proofs/BallotProblemOQ01OQ02OQ04.lean:138:62: Tactic `decide` failed for proposition
+  ¬isGoodWeighted [2, -2, 1]
+because its `Decidable` instance
+===== BallotProblemOQ01OQ04
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:133:4: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:137:13: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:140:6: No goals to be solved
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:137:13: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:140:6: No goals to be solved
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:147:42: Application type mismatch: The argument
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:140:6: No goals to be solved
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:147:42: Application type mismatch: The argument
+  hj
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:147:42: Application type mismatch: The argument
+  hj
+has type
+===== BallotProblemOQ01OQ04OQ01
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:133:4: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:137:13: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:140:6: No goals to be solved
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:137:13: `simp` made no progress
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:140:6: No goals to be solved
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:147:42: Application type mismatch: The argument
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:140:6: No goals to be solved
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:147:42: Application type mismatch: The argument
+  hj
+error: Proofs/BallotProblemOQ01OQ04OQ01.lean:147:42: Application type mismatch: The argument
+  hj
+has type
+===== BallotProblemOQ03OQ02OQ01
+error: Proofs/BallotProblemOQ03OQ02OQ03.lean:103:84: unsolved goals
+case e_a
+R : Type u_1
+===== BallotProblemOQ03OQ02OQ03
+error: Proofs/BallotProblemOQ03OQ02OQ03.lean:103:84: unsolved goals
+case e_a
+R : Type u_1
+===== BaselProblemOQ01OQ01OQ02Aristotle
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:192:52: unsolved goals
+m : ℕ
+ih : ∀ m_1 < 2 * m, lcmUpTo m_1 ≤ 4 ^ m_1
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:202:154: Ambiguous term
+  pow_succ'
+Possible interpretations:
+error: Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean:204:6: unsolved goals
+case e'_4
+m : ℕ
+===== BaselProblemOQ01OQ02
+error: Proofs/BaselProblemOQ01OQ02.lean:402:22: unsolved goals
+case insert
+ι : Type u_1
+===== BaselProblemOQ02
+error: Proofs/BaselProblemOQ02.lean:267:23: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+===== BaselProblemOQ05
+error: Proofs/BaselProblemOQ05.lean:90:76: unsolved goals
+N : ℕ
+hN : 0 < N
+error: Proofs/BaselProblemOQ05.lean:172:31: linarith failed to find a contradiction
+x : ℝ
+hx : |x| < 1
+error: Proofs/BaselProblemOQ05.lean:175:4: linarith failed to find a contradiction
+x : ℝ
+hx : |x| < 1
+===== BernoulliInequalityOQ01OQ02
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:76:6: linarith failed to find a contradiction
+case succ
+a : ℝ
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:101:6: linarith failed to find a contradiction
+case succ
+a : ℝ
+error: Proofs/BernoulliInequalityOQ01OQ02.lean:144:4: unsolved goals
+case inr
+a : ℝ
+===== BernoulliInequalityOQ01OQ02OQ01
+error: Proofs/BernoulliInequalityOQ01OQ02OQ01.lean:79:23: Tactic `simp` failed with a nested error:
+(deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+error: Proofs/BernoulliInequalityOQ01OQ02OQ01.lean:75:63: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/BernoulliInequalityOQ01OQ02OQ01.lean:63:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/BernoulliInequalityOQ01OQ02OQ01.lean:134:25: Tactic `simp` failed with a nested error:
+(deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+===== BertrandsPostulateOQ03OQ04OQ01
+error: Proofs/BertrandsPostulateOQ03OQ04OQ01.lean:104:40: unsolved goals
+C : ℝ
+hC : C > 0
+error: Proofs/BertrandsPostulateOQ03OQ04OQ01.lean:131:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/BertrandsPostulateOQ03OQ04OQ01.lean:203:37: Application type mismatch: The argument
+  x
+has type
+error: Proofs/BertrandsPostulateOQ03OQ04OQ01.lean:213:55: Application type mismatch: The argument
+  hx1
+has type
+===== BertrandsPostulateOQ03OQ04OQ03
+error: Proofs/BertrandsPostulateOQ03OQ04OQ03.lean:130:2: No goals to be solved
+error: Proofs/BertrandsPostulateOQ03OQ04OQ03.lean:182:2: No goals to be solved
+warning: Proofs/BertrandsPostulateOQ03OQ04OQ03.lean:208:7: Variable name `θ` is not explicitly referenced.
+error: Proofs/BertrandsPostulateOQ03OQ04OQ03.lean:182:2: No goals to be solved
+warning: Proofs/BertrandsPostulateOQ03OQ04OQ03.lean:208:7: Variable name `θ` is not explicitly referenced.
+===== BetaIntegralRecurrenceOQ01OQ03OQ01
+error: Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean:101:73: unsolved goals
+case e'_4
+m n : ℕ
+===== BetaIntegralRecurrenceOQ01OQ03OQ01OQ02
+error: Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean:101:73: unsolved goals
+case e'_4
+m n : ℕ
+===== BezoutIdentityOQ03OQ02OQ01
+error: Proofs/BezoutIdentityOQ03OQ02OQ01.lean:153:2: Tactic `assumption` failed
+h23 : ∀ (i : Fin 3), 23 ≡ a357 i [ZMOD m357 i]
+===== BezoutIdentityOQ04OQ01OQ01
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:49:40: Type mismatch
+  mul hM hN
+has type
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:117:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:124:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  snf.D ⟨0, ⋯⟩ ⟨1, ⋯⟩
+in the target expression
+===== BinomialTheoremOQ02OQ04
+error: Proofs/BinomialTheoremOQ02OQ04.lean:132:39: invalid `▸` notation, argument
+  h
+has type
+error: Proofs/BinomialTheoremOQ02OQ04.lean:149:23: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i ∈ s, (g i + if i = a then j else 0)
+in the target expression
+error: Proofs/BinomialTheoremOQ02OQ04.lean:175:2: Type mismatch
+  multinomial_by_induction univ ![1, 1, 1] n
+has type
+===== BinomialTheoremOQ04
+error: Proofs/BinomialTheoremOQ04.lean:157:36: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== BirthdayProblemOQ03OQ01
+error: Proofs/BirthdayProblemOQ03OQ01.lean:211:2: Tactic `apply` failed: could not unify the conclusion of `@card_le_card`
+  #?s ≤ #?t
+with the goal
+===== BirthdayProblemOQ03OQ03
+error: Proofs/BirthdayProblemOQ03OQ03.lean:50:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/BirthdayProblemOQ03OQ03.lean:54:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/BirthdayProblemOQ03OQ03.lean:88:57: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/BirthdayProblemOQ03OQ03.lean:90:2: linarith failed to find a contradiction
+k₁ k₂ : ℕ
+error: Proofs/BirthdayProblemOQ03OQ03.lean:90:2: linarith failed to find a contradiction
+k₁ k₂ : ℕ
+hk₁ : 1 ≤ k₁
+===== BorsukUlamOQ03
+error: Proofs/BorsukUlamOQ03.lean:1970:2: unsolved goals
+case e'_2
+n : ℕ
+===== BrianchonTheoremOQ01OQ02
+error: Proofs/BrianchonTheoremOQ01OQ02.lean:317:82: unsolved goals
+A B C' D E F : ProjPoint
+hsym : Conic.symmetric 0
+===== BuffonsNeedleOQ01OQ01OQ04OQ01Beta
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01Beta.lean:43:43: unsolved goals
+case e'_4
+m : ℕ
+===== BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean:71:4: `ring_nf` made no progress on the goal
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean:57:76: unsolved goals
+m : ℕ
+error: Proofs/BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01.lean:57:76: unsolved goals
+m : ℕ
+hderiv : ∀ θ ∈ Set.uIcc 0 (π / 2), HasDerivAt (fun x => -cos x ^ (m + 1) / (↑m + 1)) (sin θ * cos θ ^ m) θ
+===== BuffonsNeedleOQ02OQ03
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:65:15: expected token
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:68:56: Tactic `split_ifs` failed: no if-then-else conditions to split
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:68:56: Tactic `split_ifs` failed: no if-then-else conditions to split
+n : ℕ
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:71:56: Tactic `split_ifs` failed: no if-then-else conditions to split
+n : ℕ
+error: Proofs/BuffonsNeedleOQ02OQ03.lean:143:13: `simp` made no progress
+warning: Proofs/BuffonsNeedleOQ02OQ03.lean:208:13: Possibly looping simp theorem: `show (4 : ℕ) = 0 + 4 from rfl`
+===== BurnsideCountingOQ03OQ03
+error: Proofs/BurnsideCountingOQ03OQ03.lean:50:29: unsolved goals
+n k : ℕ
+inst✝ : NeZero n
+error: Proofs/BurnsideCountingOQ03OQ03.lean:106:8: typeclass instance problem is stuck
+  NeZero ?m.50
+===== CantorDiagonalizationOQ04OQ01
+error: Proofs/CantorDiagonalizationOQ04OQ01.lean:158:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== CauchyInterlacingMajorizationPositivity
+error: Proofs/CauchyInterlacingMajorizationPositivity.lean:116:23: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/CauchyInterlacingMajorizationPositivity.lean:120:23: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+===== CauchyInterlacingWeylDual
+error: Proofs/CauchyInterlacingWeylDual.lean:104:44: unsolved goals
+𝕜 : Type u_1
+E : Type u_2
+===== CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:140:48: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:2: Invalid match expression: The type of pattern variable 'h1' contains metavariables:
+  WHM ?m.96 ?m.97 a b ≤ WGM ?m.96 ?m.97 a b
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:2: Invalid match expression: The type of pattern variable 'h1' contains metavariables:
+  WHM ?m.96 ?m.97 a b ≤ WGM ?m.96 ?m.97 a b
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:50: unsolved goals
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:50: unsolved goals
+a b : ℝ
+ha : 0 < a
+error: Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean:206:64: unsolved goals
+a b : ℝ
+ha : 0 < a
+===== CauchySchwarzIntegralOQ03
+error: Proofs/CauchySchwarzIntegralOQ03.lean:12:25: unexpected identifier; expected '[', 'add_aesop_rules', 'binder_predicate', 'builtin_cbv_simproc', 'builtin_dsimproc', 'builtin_simproc', 'cbv_simproc', 'def_eval_config_item', 'dsimproc', 'elab', 'elab_rules', 'grind_pattern', 'infix', 'infixl', 'infixr', 'instance', 'macro', 'macro_rules', 'notation', 'notation3', 'postfix', 'prefix', 'simproc', 'syntax' or 'unif_hint'
+error: Proofs/CauchySchwarzIntegralOQ03.lean:23:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:28:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:23:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:28:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:33:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:28:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:33:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:45:10: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:33:9: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:45:10: expected token
+error: Proofs/CauchySchwarzIntegralOQ03.lean:50:39: expected token
+===== CauchySchwarzOQ01OQ01OQ01
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:44:2: typeclass instance problem is stuck
+  InnerProductSpace ?m.8 E
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:55:35: unsolved goals
+𝕜 : Type u_1
+inst✝² : RCLike 𝕜
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:80:12: typeclass instance problem is stuck
+  InnerProductSpace ?m.15 E
+error: Proofs/CauchySchwarzOQ01OQ01OQ01.lean:128:35: linarith failed to find a contradiction
+𝕜 : Type u_1
+inst✝² : RCLike 𝕜
+===== CayleyHamiltonMinpolyOQ02OQ02
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:117:56: typeclass instance problem is stuck
+  Semiring ?m.13
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:122:56: typeclass instance problem is stuck
+  Semiring ?m.13
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:127:55: typeclass instance problem is stuck
+  Semiring ?m.13
+error: Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:132:55: typeclass instance problem is stuck
+  Semiring ?m.13
+===== CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:67:2: No goals to be solved
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:78:16: Tactic `contradiction` failed
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:78:16: Tactic `contradiction` failed
+case neg
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:91:2: unsolved goals
+case neg
+K : Type u_1
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:93:10: No goals to be solved
+error: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:83:47: unsolved goals
+case neg
+===== CevasTheoremOQ01OQ03
+error: Proofs/CevasTheoremOQ01OQ03.lean:145:52: unsolved goals
+d e f : ℝ
+hd0 : 0 < d
+error: Proofs/CevasTheoremOQ01OQ03.lean:217:45: unsolved goals
+⊢ False
+error: Lean exited with code 1
+===== ChebyshevBoundsOQ03OQ02
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:58:26: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 * ?a
+in the target expression
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:91:8: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ x_1 ∈ ?m.164, θ (x ^ (1 / x_1))
+in the target expression
+error: Proofs/ChebyshevBoundsOQ03OQ02.lean:91:72: Application type mismatch: The argument
+  h2mem
+has type
+===== ChebyshevBoundsOQ04Aristotle
+error: Proofs/ChebyshevBoundsOQ04Aristotle.lean:198:25: unsolved goals
+m : ℕ
+h1 : chebyshevPsi (2 * m + 1) - chebyshevPsi (m + 1) ≤ Real.log ↑((2 * m + 1).choose m)
+===== ChineseRemainderNonCoprimeOQ01
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:130:26: Type mismatch
+  m / m.gcd n
+has type
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:146:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:157:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/ChineseRemainderNonCoprimeOQ01.lean:159:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== CollatzCyclesOQ04
+error: Proofs/CollatzCyclesOQ04.lean:58:49: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/CollatzCyclesOQ04.lean:59:49: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/CollatzCyclesOQ04.lean:93:43: unsolved goals
+j : ℕ
+hj : 0 < j
+error: Proofs/CollatzCyclesOQ04.lean:168:36: Application type mismatch: The argument
+  hj
+has type
+===== CollatzStructuredOQ02OQ01
+error: Proofs/CollatzStructuredOQ02OQ01.lean:53:39: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 4
+error: Proofs/CollatzStructuredOQ02OQ01.lean:59:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 5
+===== CombinationsFormulaOQ02
+error: Proofs/CombinationsFormulaOQ02.lean:64:41: unsolved goals
+⊢ Nat.choose 10 5 - Nat.choose 10 6 = 42
+warning: Proofs/CombinationsFormulaOQ02.lean:80:15: `Nat.succ_mul_choose_eq` has been deprecated: Use `Nat.add_one_mul_choose_eq` instead
+error: Proofs/CombinationsFormulaOQ02.lean:89:10: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (2 * n + 1).choose (2 * n + 1 - (n + 1))
+in the target expression
+error: Proofs/CombinationsFormulaOQ02.lean:98:4: linarith failed to find a contradiction
+case succ.h1
+n : ℕ
+error: Proofs/CombinationsFormulaOQ02.lean:113:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== CubeRoot3IrrationalOQ02
+error: Proofs/CubeRoot3IrrationalOQ02.lean:83:52: unsolved goals
+q : ℚ
+hroot : eval q (X ^ 3 - C 3) = 0
+===== CubeRoot3IrrationalOQ02OQ02
+error: Proofs/CubeRoot3IrrationalOQ02OQ02.lean:64:72: unsolved goals
+c : Fin 3 → ℚ
+hc : ∑ i, c i • α ^ ↑i = 0
+===== DeMoivreOQ06
+error: Proofs/DeMoivreOQ06.lean:175:6: linarith failed to find a contradiction
+θ : ℝ
+hθ : Real.sin (θ / 2) ≠ 0
+error: Proofs/DeMoivreOQ06.lean:178:6: linarith failed to find a contradiction
+θ : ℝ
+hθ : Real.sin (θ / 2) ≠ 0
+===== DesarguesTheoremOQ01OQ01
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:122:35: unsolved goals
+⊢ O_pt.1 ≤ 0
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:165:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:165:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:170:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:174:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:170:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:174:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:178:49: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:174:50: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:178:49: No goals to be solved
+error: Proofs/DesarguesTheoremOQ01OQ01.lean:178:76: No goals to be solved
+===== DescartesRuleOfSignsOQ02Parity
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:74:41: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:76:39: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/DescartesRuleOfSignsOQ02Parity.lean:88:61: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 0
+===== DiamondImpliesCH
+error: Proofs/DiamondImpliesCH.lean:128:6: Ambiguous term
+  mk_Iio_ordinal
+Possible interpretations:
+error: Proofs/DiamondImpliesCH.lean:127:80: unsolved goals
+⊢ #↑(Iio ω) = Cardinal.lift.{1, 0} ℵ₀
+error: Proofs/DiamondImpliesCH.lean:132:6: Ambiguous term
+error: Proofs/DiamondImpliesCH.lean:132:6: Ambiguous term
+  mk_Iio_ordinal
+Possible interpretations:
+error: Proofs/DiamondImpliesCH.lean:131:82: unsolved goals
+⊢ #↑(Iio (ω_ 1)) = Cardinal.lift.{1, 0} (ℵ_ 1)
+error: Lean exited with code 1
+===== DivisibilityBy3OQ03OQ02
+error: Proofs/DivisibilityBy3OQ03OQ02.lean:128:57: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/DivisibilityBy3OQ03OQ02.lean:119:2: unsolved goals
+case mp
+b n : ℕ
+===== ElementaryQuadraticReciprocityOQ02OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:107:4: No goals to be solved
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:110:4: No goals to be solved
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:114:4: Tactic `split_ifs` failed: no if-then-else conditions to split
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:110:4: No goals to be solved
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:114:4: Tactic `split_ifs` failed: no if-then-else conditions to split
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:114:4: Tactic `split_ifs` failed: no if-then-else conditions to split
+case inr.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean:93:61: unsolved goals
+p : ℕ
+hp : Fact (Nat.Prime p)
+===== ElementaryQuadraticReciprocityOQ03OQ02OQ01
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:65:27: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case neg.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:70:27: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case pos.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:74:2: unsolved goals
+case neg
+a b : ℤ
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:94:4: Tactic `constructor` failed: no applicable constructor found
+case pos
+===== ElementaryQuadraticReciprocityOQ03OQ02OQ03
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:65:27: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case neg.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:70:27: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case pos.inr
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:74:2: unsolved goals
+case neg
+a b : ℤ
+error: Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean:94:4: Tactic `constructor` failed: no applicable constructor found
+case pos
+===== Erdos1002OQ01OQ01Aristotle
+error: Proofs/Erdos1002OQ01OQ01Aristotle.lean:76:4: type class instance expected
+  instLE = instDistribLatticeOfLinearOrder.toSemilatticeInf.toLE
+error: Proofs/Erdos1002OQ01OQ01Aristotle.lean:77:123: linarith failed to find a contradiction
+error: Proofs/Erdos1002OQ01OQ01Aristotle.lean:77:123: linarith failed to find a contradiction
+α : ℝ
+n : ℕ
+error: Proofs/Erdos1002OQ01OQ01Aristotle.lean:74:69: unsolved goals
+case convert_2
+α : ℝ
+===== Erdos1005Problem
+error: Proofs/Erdos1005Problem.lean:84:55: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos1005Problem.lean:85:55: omega could not prove the goal:
+error: Proofs/Erdos1005Problem.lean:85:55: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos1005Problem.lean:89:4: linarith failed to find a contradiction
+error: Proofs/Erdos1005Problem.lean:89:4: linarith failed to find a contradiction
+case h1
+n : ℕ
+error: Proofs/Erdos1005Problem.lean:90:2: No goals to be solved
+error: Proofs/Erdos1005Problem.lean:122:51: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+===== Erdos1007OQ01
+error: Proofs/Erdos1007OQ01.lean:643:78: unsolved goals
+case «0».«1»
+hd1 : (√3 / 2 - √3 / 6) ^ 2 = 3⁻¹
+error: Proofs/Erdos1007OQ01.lean:714:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos1007OQ01.lean:729:8: (kernel) unknown constant 'K5_unit_embedding'
+warning: Proofs/Erdos1007OQ01.lean:921:25: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos1007OQ01.lean:1025:4: Tactic `apply` failed: could not unify the conclusion of `sum_nbij fun j => j`
+  ∑ x ∈ ?m.1482, ?m.1484 x = ∑ x ∈ ?m.1483, ?m.1485 x
+with the goal
+===== Erdos1007OQ01OQ01
+error: Proofs/Erdos1007OQ01OQ01.lean:98:15: unknown tactic
+error: Proofs/Erdos1007OQ01OQ01.lean:98:11: unsolved goals
+case mpr.refl
+error: Proofs/Erdos1007OQ01OQ01.lean:98:11: unsolved goals
+case mpr.refl
+f : ℕ → ℕ
+error: Proofs/Erdos1007OQ01OQ01.lean:97:4: Alternative `step` has not been provided
+error: Proofs/Erdos1007OQ01OQ01.lean:141:61: unsolved goals
+d : ℕ
+error: Proofs/Erdos1007OQ01OQ01.lean:141:61: unsolved goals
+d : ℕ
+⊢ d + 1 + (d + 1).choose 2 = (d + 1).choose 2 + (d + 1)
+===== Erdos1009Problem
+error: Proofs/Erdos1009Problem.lean:167:10: unsolved goals
+case inl.inl
+V : Type u_1
+error: Proofs/Erdos1009Problem.lean:207:81: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/Erdos1009Problem.lean:207:81: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 1
+error: Proofs/Erdos1009Problem.lean:224:25: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos100OQ01
+error: Proofs/Erdos100OQ01WIP01.lean:86:74: No goals to be solved
+error: Proofs/Erdos100OQ01WIP01.lean:86:25: unsolved goals
+case inr
+error: Proofs/Erdos100OQ01WIP01.lean:86:25: unsolved goals
+case inr
+c₁ c₂ : ℝ × ℝ
+error: Proofs/Erdos100OQ01WIP01.lean:107:27: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos100OQ01WIP01.lean:110:4: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+===== Erdos100OQ01WIP01
+error: Proofs/Erdos100OQ01WIP01.lean:86:74: No goals to be solved
+error: Proofs/Erdos100OQ01WIP01.lean:86:25: unsolved goals
+case inr
+error: Proofs/Erdos100OQ01WIP01.lean:86:25: unsolved goals
+case inr
+c₁ c₂ : ℝ × ℝ
+error: Proofs/Erdos100OQ01WIP01.lean:107:27: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos100OQ01WIP01.lean:110:4: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+===== Erdos1012OQ03
+error: Proofs/Erdos1012OQ03.lean:163:11: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos1012OQ03.lean:165:45: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos1012OQ03.lean:176:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos1012OQ03.lean:184:33: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+===== Erdos1015OQ05
+error: Proofs/Erdos1015OQ05.lean:122:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+error: Proofs/Erdos1015OQ05.lean:123:66: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 2
+===== Erdos1018Aristotle
+error: Proofs/Erdos1018Aristotle.lean:108:2: failed to prove positivity/nonnegativity/nonzeroness
+error: Proofs/Erdos1018Aristotle.lean:112:2: failed to prove positivity/nonnegativity/nonzeroness
+warning: Proofs/Erdos1018Aristotle.lean:115:8: declaration uses `sorry`
+error: Proofs/Erdos1018Aristotle.lean:112:2: failed to prove positivity/nonnegativity/nonzeroness
+warning: Proofs/Erdos1018Aristotle.lean:115:8: declaration uses `sorry`
+warning: Proofs/Erdos1018Aristotle.lean:119:8: declaration uses `sorry`
+error: Proofs/Erdos1018Aristotle.lean:138:47: expected token
+error: Proofs/Erdos1018Aristotle.lean:142:48: expected token
+error: Proofs/Erdos1018Aristotle.lean:146:40: expected token
+error: Proofs/Erdos1018Aristotle.lean:142:48: expected token
+error: Proofs/Erdos1018Aristotle.lean:146:40: expected token
+error: Lean exited with code 1
+===== Erdos1026OQ05Extremal
+error: Proofs/Erdos1026OQ05Extremal.lean:84:2: linarith failed to find a contradiction
+k : ℕ
+i j : Fin (k * k)
+error: Proofs/Erdos1026OQ05Extremal.lean:101:2: linarith failed to find a contradiction
+k : ℕ
+i j : Fin (k * k)
+error: Proofs/Erdos1026OQ05Extremal.lean:149:17: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Proofs/Erdos1026OQ05Extremal.lean:221:17: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Lean exited with code 1
+error: Proofs/Erdos1026OQ05Extremal.lean:221:17: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+error: Lean exited with code 1
+✖ [8602/8605] Building Proofs.Erdos1012OQ03 (18s)
+===== Erdos1034Aristotle
+error: Proofs/Erdos1034Aristotle.lean:58:58: unsolved goals
+V : Type u_1
+inst✝² : DecidableEq V
+error: Proofs/Erdos1034Aristotle.lean:110:2: linarith failed to find a contradiction
+hsq : √(5 / 2) ^ 2 = 5 / 2
+a✝ : 1 / 2 ≤ 2 - √(5 / 2)
+error: Proofs/Erdos1034Aristotle.lean:120:4: linarith failed to find a contradiction
+case right
+hsq : √(5 / 2) ^ 2 = 5 / 2
+===== Erdos1036OQ01
+error: Proofs/Erdos1036OQ01.lean:56:4: Invalid field `cliqueFree`: The environment does not contain `SimpleGraph.cliqueFree`, so it is not possible to project the field `cliqueFree` from an expression
+  G
+of type `SimpleGraph V`
+error: Proofs/Erdos1036OQ01.lean:57:5: Invalid field `cliqueFree`: The environment does not contain `SimpleGraph.cliqueFree`, so it is not possible to project the field `cliqueFree` from an expression
+  Gᶜ
+of type `SimpleGraph V`
+error: Proofs/Erdos1036OQ01.lean:110:2: linarith failed to find a contradiction
+c : ℝ
+hc : c > 0
+===== Erdos1040Convex
+error: Proofs/Erdos1040Convex.lean:142:67: unsolved goals
+z : ℂ
+⊢ ∏ x, (z - ![1, -1] x) = -1 + z ^ 2
+===== Erdos1060Problem
+error: Proofs/Erdos1060Problem.lean:385:14: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos1061Problem
+error: Proofs/Erdos1061Problem.lean:65:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos1061Problem.lean:144:16: don't know how to synthesize implicit argument `f`
+  @IsMultiplicative.map_mul_of_coprime ℕ instMonoidWithZero (sigma ?m.39) isMultiplicative_sigma 2 a hcop2
+context:
+error: Proofs/Erdos1061Problem.lean:145:4: don't know how to synthesize implicit argument `k`
+  @isMultiplicative_sigma ?m.39
+context:
+error: Proofs/Erdos1061Problem.lean:144:7: failed to infer `have` declaration type
+error: Proofs/Erdos1061Problem.lean:143:53: unsolved goals
+a : ℕ
+===== Erdos1066OQ04
+error: Proofs/Erdos1066OQ04.lean:119:38: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ c ≤ 1
+===== Erdos1081Problem
+error: Proofs/Erdos1081Problem.lean:69:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+error: Proofs/Erdos1081Problem.lean:120:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:126:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:132:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:126:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:132:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:168:2: failed to synthesize instance of type class
+error: Proofs/Erdos1081Problem.lean:132:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos1081Problem.lean:168:2: failed to synthesize instance of type class
+  DecidablePred fun n => IsSumOfTwoSquarefull n
+===== Erdos1083OQ02
+error: Proofs/Erdos1083OQ02.lean:133:2: linarith failed to find a contradiction
+d : ℕ
+hd : d ≥ 3
+===== Erdos1098OQ03
+error: Proofs/Erdos1098OQ03.lean:129:43: `ring_nf` made no progress on the goal
+error: Proofs/Erdos1098OQ03.lean:134:43: `ring_nf` made no progress on the goal
+error: Proofs/Erdos1098OQ03.lean:142:25: `ring_nf` made no progress on the goal
+error: Proofs/Erdos1098OQ03.lean:134:43: `ring_nf` made no progress on the goal
+error: Proofs/Erdos1098OQ03.lean:142:25: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+error: Proofs/Erdos1098OQ03.lean:142:25: `ring_nf` made no progress on the goal
+error: Lean exited with code 1
+✖ [8587/8605] Building Proofs.Erdos1060Problem (7.3s)
+===== Erdos10OQ01
+error: Proofs/Erdos10OQ01.lean:189:2: unsolved goals
+case h.left.calc.step
+ε : ℝ
+===== Erdos1109Problem
+error: Proofs/Erdos1109Problem.lean:1457:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  13 ≤ d ≤ 24
+error: Proofs/Erdos1109Problem.lean:1461:30: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  13 ≤ d ≤ 24
+error: Proofs/Erdos1109Problem.lean:1469:30: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  13 ≤ d ≤ 24
+error: Proofs/Erdos1109Problem.lean:1477:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  1 ≤ d ≤ 12
+===== Erdos1112Problem
+error: Proofs/Erdos1112Problem.lean:131:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos1112Problem.lean:131:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos1112Problem.lean:131:84: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos1112Problem.lean:131:92: unsolved goals
+case mp
+B : ℕ → ℕ
+===== Erdos1124Problem
+error: Proofs/Erdos1124Problem.lean:115:52: unsolved goals
+⊢ Real.pi = √Real.pi ^ 2
+error: Lean exited with code 1
+===== Erdos1125Problem
+error: Proofs/Erdos1125Problem.lean:57:63: linarith failed to find a contradiction
+case mp
+f : ℝ → ℝ
+error: Proofs/Erdos1125Problem.lean:57:63: linarith failed to find a contradiction
+case mpr
+f : ℝ → ℝ
+error: Proofs/Erdos1125Problem.lean:118:2: linarith failed to find a contradiction
+f : ℝ → ℝ
+hf : satisfiesKemperman f
+error: Proofs/Erdos1125Problem.lean:123:72: unsolved goals
+c x h : ℝ
+a✝ : h > 0
+===== Erdos1128Problem
+error: Proofs/Erdos1128Problem.lean:89:31: Failed to infer universe levels in type of binder `C₁`
+  Set.{?u.21} C.{?u.21}
+error: Proofs/Erdos1128Problem.lean:89:18: Failed to infer universe levels in type of binder `B₁`
+error: Proofs/Erdos1128Problem.lean:89:18: Failed to infer universe levels in type of binder `B₁`
+  Set.{?u.17} B.{?u.17}
+error: Proofs/Erdos1128Problem.lean:89:5: Failed to infer universe levels in type of binder `A₁`
+error: Proofs/Erdos1128Problem.lean:89:5: Failed to infer universe levels in type of binder `A₁`
+  Set.{?u.13} A.{?u.13}
+error: Proofs/Erdos1128Problem.lean:88:4: Failed to infer universe levels in type of binder `χ`
+error: Proofs/Erdos1128Problem.lean:88:4: Failed to infer universe levels in type of binder `χ`
+  TwoColoring.{?u.13, ?u.17, ?u.21} A.{?u.13} B.{?u.17} C.{?u.21}
+warning: Proofs/Erdos1128Problem.lean:117:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+===== Erdos1136Problem
+error: Proofs/Erdos1136Problem.lean:94:2: No goals to be solved
+error: Proofs/Erdos1136Problem.lean:138:52: No goals to be solved
+error: Proofs/Erdos1136Problem.lean:137:25: unsolved goals
+error: Proofs/Erdos1136Problem.lean:138:52: No goals to be solved
+error: Proofs/Erdos1136Problem.lean:137:25: unsolved goals
+case succ
+error: Proofs/Erdos1136Problem.lean:137:25: unsolved goals
+case succ
+a b k i : ℕ
+error: Proofs/Erdos1136Problem.lean:191:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  n ≥ 0
+===== Erdos114OQ01Problem
+error: Proofs/Erdos114OQ01Problem.lean:136:15: don't know how to synthesize implicit argument `m`
+  @Nat.find_min (fun n => ∀ n_1 ≥ n, UniqueMaximizer n_1)
+    (fun a => Classical.propDecidable (∀ n ≥ a, UniqueMaximizer n)) tao_asymptotic ?m.15
+error: Proofs/Erdos114OQ01Problem.lean:136:7: failed to infer `have` declaration type
+error: Proofs/Erdos114OQ01Problem.lean:135:62: unsolved goals
+h : taoThreshold ≠ 0
+error: Proofs/Erdos114OQ01Problem.lean:135:62: unsolved goals
+h : taoThreshold ≠ 0
+⊢ ∃ n < taoThreshold, ¬∀ m ≥ n, UniqueMaximizer m
+===== Erdos1151OQ04Aristotle
+error: Proofs/Erdos1151OQ04Aristotle.lean:46:52: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos1151OQ04Aristotle.lean:54:2: linarith failed to find a contradiction
+n : ℕ
+error: Proofs/Erdos1151OQ04Aristotle.lean:54:2: linarith failed to find a contradiction
+n : ℕ
+hn : 0 < n
+error: Proofs/Erdos1151OQ04Aristotle.lean:71:32: linarith failed to find a contradiction
+case h1
+n : ℕ
+error: Proofs/Erdos1151OQ04Aristotle.lean:74:20: linarith failed to find a contradiction
+case h1
+n : ℕ
+===== Erdos1151Problem
+error: Proofs/Erdos1151Problem.lean:68:31: linarith failed to find a contradiction
+case right
+n : ℕ
+error: Proofs/Erdos1151Problem.lean:72:31: linarith failed to find a contradiction
+case right
+n : ℕ
+error: Proofs/Erdos1151Problem.lean:80:4: linarith failed to find a contradiction
+case h1
+n : ℕ
+===== Erdos115Problem
+error: Proofs/Erdos115Problem.lean:63:69: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos1161Problem
+error: Proofs/Erdos1161Problem.lean:127:62: `simp` made no progress
+warning: Proofs/Erdos1161Problem.lean:254:17: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+===== Erdos1169Problem
+error: Proofs/Erdos1169Problem.lean:73:0: declaration `omega1_uncountable_prop` contains universe level metavariables at the expression
+  LT.lt.{?u.5 + 1} aleph0.{?u.5} (card.{?u.5} omega1.{?u.5})
+in the declaration body
+error: Proofs/Erdos1169Problem.lean:77:0: declaration `omega1Sq_card_prop` contains universe level metavariables at the expression
+  Eq.{?u.5 + 2} (card.{?u.5} omega1Sq.{?u.5})
+    (DFunLike.coe.{?u.5 + 2, ?u.5 + 2, ?u.5 + 2} aleph.{?u.5} (OfNat.ofNat.{?u.5 + 1} 1))
+error: Proofs/Erdos1169Problem.lean:85:0: declaration `erdos_1169_statement` contains universe level metavariables at the expression
+  ordinalPartitionRel.{?u.4, ?u.5} omega1Sq.{?u.4} omega1Sq.{?u.5} 3
+in the declaration body
+error: Proofs/Erdos1169Problem.lean:97:0: declaration `CH` contains universe level metavariables at the expression
+  Eq.{?u.10 + 2} (HPow.hPow.{?u.10 + 1, ?u.10 + 1, ?u.10 + 1} (OfNat.ofNat.{?u.10 + 1} 2) aleph0.{?u.10})
+    (DFunLike.coe.{?u.10 + 2, ?u.10 + 2, ?u.10 + 2} aleph.{?u.10} (OfNat.ofNat.{?u.10 + 1} 1))
+===== Erdos1170Problem
+error: Proofs/Erdos1170Problem.lean:169:38: Function expected at
+  aleph0_lt_aleph
+but this term has type
+error: Proofs/Erdos1170Problem.lean:165:50: unsolved goals
+⊢ ℵ_ 1 * ℵ_ 1 < ℵ_ 2
+error: Lean exited with code 1
+===== Erdos118Problem
+error: Proofs/Erdos118Problem.lean:101:18: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case ind
+===== Erdos11Problem
+error: Proofs/Erdos11Problem.lean:62:12: Tactic `decide` failed for proposition
+  IsSquarefree 5
+because its `Decidable` instance
+===== Erdos1202Problem
+error: Proofs/Erdos1202Problem.lean:63:2: linarith failed to find a contradiction
+m n : ℝ
+hm : 0 < m
+===== Erdos1206Problem
+error: Proofs/Erdos1206Problem.lean:89:31: unsolved goals
+c : ℝ
+hc : c > 0
+error: Proofs/Erdos1206Problem.lean:90:21: unsolved goals
+c : ℝ
+hc : c > 0
+error: Proofs/Erdos1206Problem.lean:91:58: unsolved goals
+c : ℝ
+hc : c > 0
+===== Erdos1214Problem
+error: Proofs/Erdos1214Problem.lean:92:65: unsolved goals
+⊢ Nat.primeFactors 15 = {3, 5}
+error: Proofs/Erdos1214Problem.lean:98:62: unsolved goals
+error: Proofs/Erdos1214Problem.lean:98:62: unsolved goals
+⊢ Nat.primeFactors 8 = {2}
+error: Proofs/Erdos1214Problem.lean:101:66: unsolved goals
+error: Proofs/Erdos1214Problem.lean:101:66: unsolved goals
+⊢ Nat.primeFactors 26 = {2, 13}
+error: Proofs/Erdos1214Problem.lean:104:65: unsolved goals
+error: Proofs/Erdos1214Problem.lean:104:65: unsolved goals
+⊢ Nat.primeFactors 63 = {3, 7}
+error: Proofs/Erdos1214Problem.lean:108:67: unsolved goals
+===== Erdos129Problem
+error: Proofs/Erdos129Problem.lean:81:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos129Problem.lean:111:41: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 1
+error: Proofs/Erdos129Problem.lean:132:80: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  m ≥ 0
+error: Proofs/Erdos129Problem.lean:135:40: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== Erdos130WIP01
+error: Proofs/Erdos130WIP01.lean:199:42: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos14UniqueSums
+error: Proofs/Erdos14UniqueSums.lean:168:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos14UniqueSums.lean:186:11: Invalid field `ncard_eq_toFinset_card'`: The environment does not contain `Finite.ncard_eq_toFinset_card'`, so it is not possible to project the field `ncard_eq_toFinset_card'` from an expression
+  hfin
+of type `Finite ↑(A ∩ Icc 1 N)`
+error: Proofs/Erdos14UniqueSums.lean:177:54: unsolved goals
+case inr
+A : Set ℕ
+===== Erdos152ProblemAPN
+error: Proofs/Erdos152ProblemAPN.lean:255:171: `grind` failed
+case grind.1.2.1.2.2.2.1.1.1.1.2.2.2.2.2
+A_1 : Set ℕ
+===== Erdos173Problem
+error: Proofs/Erdos173Problem.lean:170:75: Tactic `assumption` failed
+h : ℝ
+===== Erdos179Aristotle
+error: Proofs/Erdos179Aristotle.lean:41:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ c ≤ 1
+error: Proofs/Erdos179Aristotle.lean:45:77: unsolved goals
+a d : ℕ
+⊢ (∃ a ≤ 1, a = 0 ∨ d = 0) ∧ ∃ a ≤ 1, a * d = d
+error: Proofs/Erdos179Aristotle.lean:52:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos179Aristotle.lean:76:80: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== Erdos179ProblemAristotle
+error: Proofs/Erdos179ProblemAristotle.lean:41:68: unsolved goals
+a d k x : ℕ
+⊢ (∃ a_1 < k, a + a_1 * d = x) ↔ ∃ i < k, x = a + i * d
+error: Proofs/Erdos179ProblemAristotle.lean:71:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+error: Proofs/Erdos179ProblemAristotle.lean:90:25: numerals are data in Lean, but the expected type is a proposition
+  ∃ x, x < k : Prop
+error: Proofs/Erdos179ProblemAristotle.lean:90:24: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/Erdos179ProblemAristotle.lean:90:24: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+warning: Proofs/Erdos179ProblemAristotle.lean:172:43: Variable name `hk` is not explicitly referenced.
+===== Erdos183Problem
+error: Proofs/Erdos183Problem.lean:334:60: Tactic `decide` failed for proposition
+  AvoidsMonochromaticTriangles fun p => if ↑p.1 = 0 ∧ ↑p.2 = 1 ∨ ↑p.1 = 1 ∧ ↑p.2 = 0 then 0 else 1
+because its `Decidable` instance
+error: Proofs/Erdos183Problem.lean:339:40: Tactic `decide` failed for proposition
+  IsSymmetric fun p =>
+    if ↑p.1 = 0 ∧ ↑p.2 = 1 ∨ ↑p.1 = 1 ∧ ↑p.2 = 0 ∨ ↑p.1 = 2 ∧ ↑p.2 = 3 ∨ ↑p.1 = 3 ∧ ↑p.2 = 2 then 0 else 1
+error: Proofs/Erdos183Problem.lean:340:60: Tactic `decide` failed for proposition
+  AvoidsMonochromaticTriangles fun p =>
+    if ↑p.1 = 0 ∧ ↑p.2 = 1 ∨ ↑p.1 = 1 ∧ ↑p.2 = 0 ∨ ↑p.1 = 2 ∧ ↑p.2 = 3 ∨ ↑p.1 = 3 ∧ ↑p.2 = 2 then 0 else 1
+error: Proofs/Erdos183Problem.lean:344:40: Tactic `decide` failed for proposition
+  IsSymmetric fun p => if (↑p.1 + 5 - ↑p.2) % 5 = 1 ∨ (↑p.1 + 5 - ↑p.2) % 5 = 4 then 0 else 1
+because its `Decidable` instance
+===== Erdos184Problem
+error: Proofs/Erdos184Problem.lean:157:18: fail to show termination for
+  Erdos184.logStar
+with errors
+error: Proofs/Erdos184Problem.lean:179:50: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos184Problem.lean:242:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Proofs/Erdos184Problem.lean:242:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Lean exited with code 1
+error: Proofs/Erdos184Problem.lean:242:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Lean exited with code 1
+✖ [8581/8603] Building Proofs.Erdos184ProblemProvable (2.6s)
+===== Erdos184ProblemProvable
+error: Proofs/Erdos184ProblemProvable.lean:166:18: fail to show termination for
+  Erdos184.logStar
+with errors
+error: Proofs/Erdos184ProblemProvable.lean:189:50: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+error: Proofs/Erdos184ProblemProvable.lean:316:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Proofs/Erdos184ProblemProvable.lean:316:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Lean exited with code 1
+error: Proofs/Erdos184ProblemProvable.lean:316:18: Tactic `native_decide` failed. Error: failed to compile definition, consider marking it as 'noncomputable' because it depends on 'logStar', which is 'noncomputable'
+error: Lean exited with code 1
+✖ [8582/8603] Building Proofs.Erdos235Problem (3.3s)
+===== Erdos194Problem
+error: Proofs/Erdos194Problem.lean:227:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+error: Proofs/Erdos194Problem.lean:279:66: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+===== Erdos199Problem
+error: Proofs/Erdos199Problem.lean:122:2: unsolved goals
+case h.left
+⊢ ∃ k, 1 = ↑k
+error: Proofs/Erdos199Problem.lean:124:4: unsolved goals
+case h
+⊢ 2 = 1
+error: Proofs/Erdos199Problem.lean:126:12: numerals are data in Lean, but the expected type is a proposition
+  1 + 2 = ↑?h.right.right.w : Prop
+warning: Proofs/Erdos199Problem.lean:120:8: This simp argument is unused:
+===== Erdos225Problem
+error: Proofs/Erdos225Problem.lean:271:6: unsolved goals
+n : ℕ
+p : TrigPoly n
+error: Proofs/Erdos225Problem.lean:275:12: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 1 was provided
+error: Proofs/Erdos225Problem.lean:276:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos225Problem.lean:276:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+case a.convert_2
+error: Proofs/Erdos225Problem.lean:274:2: unsolved goals
+case a.convert_4
+n : ℕ
+===== Erdos230ProblemAristotle
+error: Proofs/Erdos230ProblemAristotle.lean:46:2: Tactic `apply` failed: could not unify the conclusion of `@iSup_le`
+  @iSup ?α ?ι CompleteLattice.toCompleteSemilatticeSup.toSupSet ?f ≤ ?a
+with the goal
+===== Erdos231Problem
+error: Proofs/Erdos231Problem.lean:171:2: unsolved goals
+case h.right.right.mk
+α : Type u_1
+===== Erdos232Problem
+error: Proofs/Erdos232Problem.lean:243:50: unsolved goals
+⊢ 0.247 - 0.22936 = 1764e-5
+error: Lean exited with code 1
+===== Erdos235Problem
+error: Proofs/Erdos235Problem.lean:229:10: don't know how to synthesize implicit argument `a`
+  @Tendsto.sub ℝ ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace instSub IsTopologicalAddGroup.to_continuousSub
+    (fun x => ?m.93) (fun c => rexp (-c)) atTop ?m.93 0 tendsto_const_nhds h_exp
+error: Proofs/Erdos235Problem.lean:229:10: don't know how to synthesize implicit argument `f`
+  @Tendsto.sub ℝ ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace instSub IsTopologicalAddGroup.to_continuousSub
+    (fun x => ?m.93) (fun c => rexp (-c)) atTop ?m.93 0 tendsto_const_nhds h_exp
+error: Proofs/Erdos235Problem.lean:229:29: don't know how to synthesize placeholder
+context:
+h_eq : exponentialCDF =ᶠ[atTop] fun c => 1 - rexp (-c)
+error: Proofs/Erdos235Problem.lean:229:7: failed to infer `have` declaration type
+error: Proofs/Erdos235Problem.lean:221:45: unsolved goals
+h_eq : exponentialCDF =ᶠ[atTop] fun c => 1 - rexp (-c)
+===== Erdos239Problem
+error: Proofs/Erdos239Problem.lean:208:73: unsolved goals
+N : ℕ
+hN : N ≥ 1
+===== Erdos240Aristotle
+error: Proofs/Erdos240Aristotle.lean:65:4: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+warning: Proofs/Erdos240Aristotle.lean:83:47: Variable name `hp` is not explicitly referenced.
+===== Erdos249OQ01
+error: Proofs/Erdos249OQ01.lean:90:53: unsolved goals
+case e'_3
+⊢ Real.instAddCommMonoid = DivisionRing.toDivisionSemiring.toAddCommMonoid
+error: Proofs/Erdos249OQ01.lean:117:42: Application type mismatch: The argument
+  termFn_le_comp
+has type
+error: Proofs/Erdos249OQ01.lean:117:27: Application type mismatch: The argument
+  termFn_four_lt
+has type
+error: Proofs/Erdos249OQ01.lean:129:21: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≤ 0
+===== Erdos25Abel
+error: Proofs/Erdos25Abel.lean:106:6: unsolved goals
+case pos
+A : Set ℕ
+error: Proofs/Erdos25Abel.lean:109:6: unsolved goals
+case neg
+A : Set ℕ
+===== Erdos263Aristotle
+error: Proofs/Erdos263Aristotle.lean:96:25: unsolved goals
+N : ℕ
+D : ℝ := 2 ^ 2 ^ N
+error: Proofs/Erdos263Aristotle.lean:142:12: No goals to be solved
+error: Lean exited with code 1
+✖ [8596/8603] Building Proofs.Erdos249OQ01 (3.1s)
+===== Erdos263Problem
+error: Proofs/Erdos263Problem.lean:539:6: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos263Problem.lean:533:0: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/Erdos263Problem.lean:602:25: unsolved goals
+N : ℕ
+D : ℝ := 2 ^ 2 ^ N
+error: Proofs/Erdos263Problem.lean:682:18: mod_cast has type
+  2 ^ N ≤ 2 ^ 2 ^ N
+but is expected to have type
+===== Erdos268Problem
+error: Proofs/Erdos268Problem.lean:87:8: unsolved goals
+case pos
+A : Set ℕ
+error: Proofs/Erdos268Problem.lean:90:16: mod_cast has type
+  @OfNat.ofNat ℕ 0 (instOfNatNat 0) < n
+but is expected to have type
+error: Proofs/Erdos268Problem.lean:91:13: unsolved goals
+A : Set ℕ
+k : ℕ
+error: Proofs/Erdos268Problem.lean:114:48: unsolved goals
+d : ℕ
+x : Fin d → ℝ
+===== Erdos279OQ04
+error: Proofs/Erdos279OQ04.lean:92:11: Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  hoo
+has type
+error: Proofs/Erdos279OQ04.lean:93:10: No goals to be solved
+error: Proofs/Erdos279OQ04.lean:110:34: Application type mismatch: The argument
+  mul_pos hc hN_pos
+error: Proofs/Erdos279OQ04.lean:110:34: Application type mismatch: The argument
+  mul_pos hc hN_pos
+has type
+error: Proofs/Erdos279OQ04.lean:106:2: 'calc' expression has type
+  b < c * ↑N / Real.log ↑N
+but is expected to have type
+===== Erdos28Problem
+error: Proofs/Erdos28Problem.lean:196:77: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos291Problem
+error: Proofs/Erdos291Problem.lean:818:61: Tactic `decide` failed for proposition
+  ∑ i ∈ range 2, (↑(i + 1))⁻¹ = 0
+because its `Decidable` instance
+error: Proofs/Erdos291Problem.lean:821:61: Tactic `decide` failed for proposition
+  ∑ i ∈ range 4, (↑(i + 1))⁻¹ = 0
+because its `Decidable` instance
+error: Proofs/Erdos291Problem.lean:824:61: Tactic `decide` failed for proposition
+  ∑ i ∈ range 6, (↑(i + 1))⁻¹ = 0
+because its `Decidable` instance
+error: Proofs/Erdos291Problem.lean:827:63: Tactic `decide` failed for proposition
+  ∑ i ∈ range 10, (↑(i + 1))⁻¹ = 0
+because its `Decidable` instance
+===== Erdos2OQ01Aristotle
+error: Proofs/Erdos2OQ01Aristotle.lean:32:31: Function expected at
+  List.mem_cons_self
+but this term has type
+error: Proofs/Erdos2OQ01Aristotle.lean:36:30: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos2OQ01Aristotle.lean:37:17: linarith failed to find a contradiction
+m : ℕ
+error: Proofs/Erdos2OQ01Aristotle.lean:37:17: linarith failed to find a contradiction
+m : ℕ
+hm : m ≥ 1
+error: Proofs/Erdos2OQ01Aristotle.lean:30:17: unsolved goals
+case cons.calc.step
+m : ℕ
+===== Erdos302Aristotle
+error: Proofs/Erdos302Aristotle.lean:26:30: linarith failed to find a contradiction
+case mp.h1
+a b c : ℕ
+error: Proofs/Erdos302Aristotle.lean:26:30: linarith failed to find a contradiction
+case mpr.h1
+a b c : ℕ
+error: Proofs/Erdos302Aristotle.lean:32:41: linarith failed to find a contradiction
+case mp.h1
+a b c : ℕ
+error: Proofs/Erdos302Aristotle.lean:32:41: linarith failed to find a contradiction
+case mpr.h1
+a b c : ℕ
+===== Erdos302Problem
+error: Proofs/Erdos302Problem.lean:54:23: linarith failed to find a contradiction
+case h1
+a b c : ℕ
+error: Proofs/Erdos302Problem.lean:58:16: linarith failed to find a contradiction
+case mpr.h1
+a b c : ℕ
+error: Proofs/Erdos302Problem.lean:85:10: Function expected at
+  Finset.card_sdiff
+but this term has type
+error: Proofs/Erdos302Problem.lean:111:39: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+===== Erdos306Problem
+error: Proofs/Erdos306Problem.lean:157:68: unsolved goals
+⊢ False
+error: Lean exited with code 1
+===== Erdos307OQ02
+error: Proofs/Erdos307OQ02.lean:59:55: linarith failed to find a contradiction
+a b : ℕ
+hab : a ≠ b
+error: Proofs/Erdos307OQ02.lean:60:55: linarith failed to find a contradiction
+a b : ℕ
+hab : a ≠ b
+error: Proofs/Erdos307OQ02.lean:86:47: unsolved goals
+a b c : ℕ
+hab : a ≠ b
+error: Proofs/Erdos307OQ02.lean:87:23: unsolved goals
+a b c : ℕ
+hab : a ≠ b
+===== Erdos309Problem
+error: Proofs/Erdos309Problem.lean:60:70: unsolved goals
+n : ℕ
+hn : n ≥ 1
+error: Proofs/Erdos309Problem.lean:108:6: Function expected at
+  card_sdiff
+but this term has type
+error: Proofs/Erdos309Problem.lean:106:37: unsolved goals
+N : ℕ
+hN : N ≥ 1
+error: Proofs/Erdos309Problem.lean:138:2: unsolved goals
+case h.left
+N : ℕ
+===== Erdos310Problem
+error: Proofs/Erdos310Problem.lean:264:8: 'calc' expression has type
+  ↑(#A) > 1 / 2 * ↑N
+but is expected to have type
+error: Proofs/Erdos310Problem.lean:265:30: linarith failed to find a contradiction
+α : ℚ
+hα : α > 0
+error: Proofs/Erdos310Problem.lean:301:6: unsolved goals
+case neg
+α : ℚ
+===== Erdos314Problem
+error: Proofs/Erdos314Problem.lean:52:70: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos314Problem.lean:53:44: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos314Problem.lean:119:34: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+error: Proofs/Erdos314Problem.lean:118:2: unsolved goals
+case inl
+n : ℕ
+===== Erdos315Problem
+error: Proofs/Erdos315Problem.lean:82:46: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos315Problem.lean:83:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+error: Proofs/Erdos315Problem.lean:90:42: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos315Problem.lean:91:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos319Problem
+error: Proofs/Erdos319Problem.lean:126:23: No goals to be solved
+error: Proofs/Erdos319Problem.lean:123:21: unsolved goals
+case inr.inl
+error: Proofs/Erdos319Problem.lean:123:21: unsolved goals
+case inr.inl
+A' : Finset ℕ
+error: Proofs/Erdos319Problem.lean:139:23: No goals to be solved
+error: Proofs/Erdos319Problem.lean:136:21: unsolved goals
+case inr.inl
+error: Proofs/Erdos319Problem.lean:136:21: unsolved goals
+case inr.inl
+A' : Finset ℕ
+===== Erdos336Problem
+error: Proofs/Erdos336Problem.lean:94:39: unsolved goals
+⊢ 4 / 2 ^ 2 = 1
+error: Lean exited with code 1
+===== Erdos338Aristotle
+error: Proofs/Erdos338Problem.lean:291:44: unsolved goals
+A : Set ℕ
+t N : ℕ
+error: Proofs/Erdos338Problem.lean:294:2: unsolved goals
+case h.right.right
+A : Set ℕ
+===== Erdos338Problem
+error: Proofs/Erdos338Problem.lean:291:44: unsolved goals
+A : Set ℕ
+t N : ℕ
+error: Proofs/Erdos338Problem.lean:294:2: unsolved goals
+case h.right.right
+A : Set ℕ
+===== Erdos342Problem
+error: Proofs/Erdos342Problem.lean:137:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== Erdos355Problem
+error: Proofs/Erdos355Problem.lean:154:70: unsolved goals
+n : ℕ
+⊢ 2⁻¹ ^ n * (1 / 2) = (1 / 2) ^ n * (1 / 2)
+error: Proofs/Erdos355Problem.lean:156:59: failed to prove positivity/nonnegativity/nonzeroness
+error: Proofs/Erdos355Problem.lean:156:72: unsolved goals
+h1 : ∀ (n : ℕ), 1 / 2 ^ (n + 1) = 1 / 2 * (1 / 2) ^ n
+error: Proofs/Erdos355Problem.lean:156:72: unsolved goals
+h1 : ∀ (n : ℕ), 1 / 2 ^ (n + 1) = 1 / 2 * (1 / 2) ^ n
+⊢ ?m.110 < 1
+error: Proofs/Erdos355Problem.lean:156:30: `simp` made no progress
+info: Proofs/Erdos355Problem.lean:174:103: Try this:
+  [apply] ring_nf
+===== Erdos35Problem
+error: Proofs/Erdos35Problem.lean:98:23: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Exists.intro` has 2 explicit field, but only 1 was provided
+error: Proofs/Erdos35Problem.lean:98:24: Invalid `⟨...⟩` notation: The expected type `Quot ⇑CauSeq.equiv` is not an inductive type
+error: Proofs/Erdos35Problem.lean:98:24: Invalid `⟨...⟩` notation: The expected type `Quot ⇑CauSeq.equiv` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/Erdos35Problem.lean:102:43: mod_cast has type
+  countingFunction A 1 ≤ 1
+but is expected to have type
+error: Proofs/Erdos35Problem.lean:96:62: unsolved goals
+case c
+A : Set ℕ
+===== Erdos360Aristotle
+error: Proofs/Erdos360Aristotle.lean:44:12: Unknown identifier `h`
+error: Proofs/Erdos360Aristotle.lean:44:14: unexpected token ':'; expected command
+error: Proofs/Erdos360Aristotle.lean:73:12: Invalid projection: Projections cannot be used on functions, and
+error: Proofs/Erdos360Aristotle.lean:44:14: unexpected token ':'; expected command
+error: Proofs/Erdos360Aristotle.lean:73:12: Invalid projection: Projections cannot be used on functions, and
+  hval.right.right
+error: Proofs/Erdos360Aristotle.lean:73:12: Invalid projection: Projections cannot be used on functions, and
+  hval.right.right
+has function type `∀ P ∈ w✝, IsNSumFree 2 P`
+error: Proofs/Erdos360Aristotle.lean:77:2: unsolved goals
+case inr
+h✝ : f 2 = 0
+===== Erdos365Problem
+error: Proofs/Erdos365Problem.lean:52:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:54:23: numerals are data in Lean, but the expected type is a proposition
+  ?m.34 ≠ 0 : Prop
+error: Proofs/Erdos365Problem.lean:54:23: numerals are data in Lean, but the expected type is a proposition
+  ?m.34 ≠ 0 : Prop
+error: Proofs/Erdos365Problem.lean:58:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:58:13: not a positivity goal
+error: Proofs/Erdos365Problem.lean:77:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:81:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:77:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:81:6: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos365Problem.lean:142:15: failed to synthesize instance of type class
+===== Erdos370Problem
+error: Proofs/Erdos370Problem.lean:93:87: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos370Problem.lean:129:31: not a positivity goal
+info: Proofs/Erdos370Problem.lean:130:2: Try this:
+  [apply] ring_nf
+error: Proofs/Erdos370Problem.lean:127:55: unsolved goals
+m : ℕ
+hm : m ≥ 2
+===== Erdos383Problem
+error: Proofs/Erdos383Problem.lean:119:58: unsolved goals
+p : ℕ
+⊢ ∏ x ∈ Icc 0 1, (p ^ 2 + x) = p ^ 2 + p ^ 4
+error: Proofs/Erdos383Problem.lean:143:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos383Problem.lean:154:55: numerals are data in Lean, but the expected type is a proposition
+  2 ≠ 0 : Prop
+error: Proofs/Erdos383Problem.lean:154:61: failed to prove nonzeroness, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos383Problem.lean:154:61: failed to prove nonzeroness, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos383Problem.lean:174:2: This extensionality tactic only applies to equalities, not
+  {p | isKGood p k}.Infinite ↔ {p | Nat.Prime p ∧ maxPrimeFac (consecutiveSquareProduct p k) = p}.Infinite
+===== Erdos391Problem
+error: Proofs/Erdos391Problem.lean:59:19: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos391Problem.lean:67:16: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+error: Proofs/Erdos391Problem.lean:67:16: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 3 were provided
+error: Proofs/Erdos391Problem.lean:67:17: Application type mismatch: The argument
+  fun x => 1
+error: Proofs/Erdos391Problem.lean:67:17: Application type mismatch: The argument
+  fun x => 1
+has type
+===== Erdos397Problem
+error: Proofs/Erdos397Problem.lean:78:39: Tactic `subst` failed: 'x' occurs at
+  x + 1
+error: Proofs/Erdos397Problem.lean:78:39: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  2 * a + 2 = a + 1
+error: Proofs/Erdos397Problem.lean:78:39: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  somaniC a = a + 1
+error: Proofs/Erdos397Problem.lean:82:66: unsolved goals
+a : ℕ
+ha : a ≥ 2
+===== Erdos403Problem
+error: Proofs/Erdos403Problem.lean:333:27: unsolved goals
+⊢ False
+error: Proofs/Erdos403Problem.lean:333:27: unsolved goals
+error: Proofs/Erdos403Problem.lean:333:27: unsolved goals
+⊢ False
+error: Lean exited with code 1
+===== Erdos407Problem
+error: Proofs/Erdos407Problem.lean:87:14: failed to synthesize instance of type class
+  Fintype ↑{x | x.1 ≤ n ∧ x.2.1 ≤ n ∧ x.2.2.1 ≤ n ∧ x.2.2.2 ≤ n ∧ IsValidRep n x.1 x.2.1 x.2.2.1 x.2.2.2}
+error: Proofs/Erdos407Problem.lean:117:10: Unknown constant `Nat.one_le_mul`
+warning: Proofs/Erdos407Problem.lean:178:29: Variable name `ha` is not explicitly referenced.
+===== Erdos40Problem
+error: Proofs/Erdos40Problem.lean:77:20: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos40Problem.lean:107:37: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos40Problem.lean:149:4: Tactic `tauto` failed
+error: Proofs/Erdos40Problem.lean:149:4: Tactic `tauto` failed
+A : Set ℕ
+error: Proofs/Erdos40Problem.lean:224:31: unsolved goals
+A : Set ℕ
+g N : ℕ
+===== Erdos410Problem
+error: Proofs/Erdos410Problem.lean:98:66: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+===== Erdos416Problem
+error: Proofs/Erdos416Problem.lean:140:2: unsolved goals
+case pos.«2»
+m : ℕ
+===== Erdos419Problem
+error: Proofs/Erdos419Problem.lean:141:2: Tactic `constructor` failed: target is not an inductive datatype
+case right
+===== Erdos420Problem
+error: Proofs/Erdos420Problem.lean:62:56: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+===== Erdos434Aristotle
+error: Proofs/Erdos434Aristotle.lean:50:97: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos435Problem
+error: Proofs/Erdos435Problem.lean:127:2: interval_cases failed: could not find upper bound on k
+error: Lean exited with code 1
+✖ [8600/8603] Building Proofs.Erdos44Problem (9.4s)
+===== Erdos441Aristotle
+error: Proofs/Erdos441Aristotle.lean:101:49: unsolved goals
+a : ℕ
+⊢ a * a / a = a
+error: Proofs/Erdos441Aristotle.lean:121:4: Tactic `apply` failed: could not unify the conclusion of `sqrt_le_self`
+  Nat.sqrt ?n ≤ ?n
+with the goal
+===== Erdos44Problem
+error: Proofs/Erdos44Problem.lean:226:79: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/Erdos44Problem.lean:251:79: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/Erdos44Problem.lean:264:26: invalid `▸` notation, expected result type of cast is 
+  2 ∣ 1 + 2 ^ d
+however, the equality 
+===== Erdos450Problem
+error: Proofs/Erdos450Problem.lean:100:41: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos456Problem
+error: Proofs/Erdos456Problem.lean:99:15: Function expected at
+  csInf_mem (primes_mod1_nonempty n hn)
+but this term has type
+error: Proofs/Erdos456Problem.lean:98:35: unsolved goals
+n : ℕ
+hn : 1 ≤ n
+error: Proofs/Erdos456Problem.lean:105:15: Function expected at
+  csInf_mem (primes_mod1_nonempty n hn)
+but this term has type
+error: Proofs/Erdos456Problem.lean:104:37: unsolved goals
+n : ℕ
+hn : 1 ≤ n
+===== Erdos465Problem
+error: Proofs/Erdos465Problem.lean:157:47: unsolved goals
+δ : ℝ
+hδ_pos : 0 < δ
+===== Erdos469Problem
+error: Proofs/Erdos469Problem.lean:47:21: Application type mismatch: The argument
+  le_refl ?m.16
+has type
+error: Proofs/Erdos469Problem.lean:76:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos469Problem.lean:163:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+error: Proofs/Erdos469Problem.lean:315:21: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== Erdos476OQ05Problem
+error: Proofs/Erdos476OQ05Problem.lean:148:29: Unknown constant `Nat.min_add_sub_cancel'`
+error: Proofs/Erdos476OQ05Problem.lean:202:17: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:202:46: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:202:17: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:202:46: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:259:4: omega could not prove the goal:
+error: Proofs/Erdos476OQ05Problem.lean:202:46: Unknown identifier `a`
+error: Proofs/Erdos476OQ05Problem.lean:259:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/Erdos476OQ05Problem.lean:259:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos485Problem
+error: Proofs/Erdos485Problem.lean:98:4: No goals to be solved
+info: Proofs/Erdos485Problem.lean:127:22: Try this:
+  [apply] ring_nf
+===== Erdos503Problem
+error: Proofs/Erdos503Problem.lean:107:57: unsolved goals
+⊢ 6 ≤ Nat.choose 4 2
+error: Proofs/Erdos503Problem.lean:113:57: unsolved goals
+error: Proofs/Erdos503Problem.lean:113:57: unsolved goals
+⊢ Nat.choose 4 2 < 8 ∧ 8 ≤ Nat.choose 5 2
+error: Lean exited with code 1
+===== Erdos519Problem
+error: Proofs/Erdos519Problem.lean:179:75: unsolved goals
+k m : ℕ
+hn : 0 < m + 1
+===== Erdos525OQ02
+error: Proofs/Erdos525OQ02.lean:103:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+===== Erdos532Problem
+error: Proofs/Erdos532Problem.lean:255:45: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+===== Erdos534Problem
+error: Proofs/Erdos534Problem.lean:36:82: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos540Problem
+error: Proofs/Erdos540Problem.lean:126:2: unsolved goals
+case h.right.right
+A : Finset (ZMod 1)
+===== Erdos542Problem
+error: Proofs/Erdos542Problem.lean:58:54: unsolved goals
+⊢ False
+warning: Proofs/Erdos542Problem.lean:93:42: Variable name `ha` is not explicitly referenced.
+===== Erdos543Problem
+error: Proofs/Erdos543Problem.lean:122:10: Invalid `⟨...⟩` notation: The expected type `Quot ⇑CauSeq.equiv` is not an inductive type
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+error: Proofs/Erdos543Problem.lean:123:4: No goals to be solved
+warning: Proofs/Erdos543Problem.lean:128:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos543Problem.lean:129:10: Function expected at
+  h ε hε
+but this term has type
+===== Erdos54Problem
+error: Proofs/Erdos54Problem.lean:35:30: Tactic `assumption` failed
+A : Set ℕ
+===== Erdos551ProblemAristotle
+error: Proofs/Erdos551ProblemAristotle.lean:45:87: linarith failed to find a contradiction
+k₁ k₂ n : ℕ
+hk : k₁ ≤ k₂
+error: Proofs/Erdos551ProblemAristotle.lean:49:87: linarith failed to find a contradiction
+k n₁ n₂ : ℕ
+hk : k ≥ 1
+error: Proofs/Erdos551ProblemAristotle.lean:53:87: linarith failed to find a contradiction
+k₁ k₂ n : ℕ
+hk : k₁ < k₂
+error: Proofs/Erdos551ProblemAristotle.lean:57:87: linarith failed to find a contradiction
+k n₁ n₂ : ℕ
+hk : k ≥ 2
+===== Erdos556Problem
+error: Proofs/Erdos556Problem.lean:57:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:58:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos556Problem.lean:63:49: Type mismatch
+  (↑i + 1) % n
+has type
+error: Proofs/Erdos556Problem.lean:67:23: Tactic `assumption` failed
+n : ℕ
+===== Erdos561Problem
+error: Proofs/Erdos561Problem.lean:155:23: unsolved goals
+s n : ℕ
+hs : s ≥ 1
+===== Erdos572Problem
+error: Proofs/Erdos572Problem.lean:57:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos572Problem.lean:169:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+error: Proofs/Erdos572Problem.lean:203:2: Tactic `apply` failed: could not unify the conclusion of `@add_le_add_left`
+  ?b + ?a ≤ ?c + ?a
+with the goal
+===== Erdos578Problem
+error: Proofs/Erdos578Problem.lean:116:56: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+error: Proofs/Erdos578Problem.lean:116:70: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+error: Proofs/Erdos578Problem.lean:148:56: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+error: Proofs/Erdos578Problem.lean:148:70: linarith failed to find a contradiction
+p₀ p : ℝ
+d : ℕ
+===== Erdos583Problem
+error: Proofs/Erdos583Problem.lean:46:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos583Problem.lean:46:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos583Problem.lean:55:22: Tactic `assumption` failed
+V : Type u_1
+error: Proofs/Erdos583Problem.lean:56:22: Tactic `assumption` failed
+V : Type u_1
+===== Erdos594Problem
+error: Proofs/Erdos594Problem.lean:98:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos594Problem.lean:194:79: omega could not prove the goal:
+error: Proofs/Erdos594Problem.lean:194:79: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos594Problem.lean:195:82: omega could not prove the goal:
+error: Proofs/Erdos594Problem.lean:195:82: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos599Problem
+error: Proofs/Erdos599Problem.lean:55:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos599Problem.lean:55:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos605Problem
+error: Proofs/Erdos605Problem.lean:131:67: unsolved goals
+n : ℕ
+h✝ : ¬log (↑n + 2) ≤ 1
+===== Erdos638Problem
+error: Proofs/Erdos638Problem.lean:101:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos649Problem
+error: Proofs/Erdos649Problem.lean:87:80: unsolved goals
+p k : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos649Problem.lean:147:19: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  k % 3 = 0
+===== Erdos660Aristotle
+error: Proofs/Erdos660Aristotle.lean:55:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 1
+error: Proofs/Erdos660Aristotle.lean:61:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 1
+error: Proofs/Erdos660Aristotle.lean:79:17: Invalid `⟨...⟩` notation: The expected type
+  Quot.lift (fun l => (p, p) ∈ l) ⋯ (S.product S).val
+is not an inductive type
+error: Proofs/Erdos660Aristotle.lean:85:17: Invalid `⟨...⟩` notation: The expected type
+  Quot.lift (fun l => (p, q) ∈ l) ⋯ (S.product S).val
+is not an inductive type
+===== Erdos665Problem
+error: Proofs/Erdos665Problem.lean:41:83: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos674ProblemAristotle
+error: Proofs/Erdos674ProblemAristotle.lean:88:8: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+===== Erdos679ProblemAristotle
+error: Proofs/Erdos679ProblemAristotle.lean:30:29: Ambiguous term
+  primorial
+Possible interpretations:
+error: Proofs/Erdos679ProblemAristotle.lean:31:8: Ambiguous term
+  primorial
+Possible interpretations:
+error: Proofs/Erdos679ProblemAristotle.lean:30:48: unsolved goals
+⊢ sorry () = 1
+error: Proofs/Erdos679ProblemAristotle.lean:35:4: Ambiguous term
+error: Proofs/Erdos679ProblemAristotle.lean:35:4: Ambiguous term
+  primorial
+Possible interpretations:
+===== Erdos690Problem
+error: Proofs/Erdos690Problem.lean:95:2: unsolved goals
+case refine_1
+p : ℕ
+===== Erdos694Problem
+error: Proofs/Erdos694Problem.lean:148:56: unsolved goals
+m : ℕ
+left✝ : φ m = 2
+===== Erdos69Problem
+error: Proofs/Erdos69Problem.lean:127:8: unsolved goals
+case refine'_1.refine'_2
+n : ℕ
+error: Proofs/Erdos69Problem.lean:134:10: unsolved goals
+case refine'_2.refine'_1
+n a : ℕ
+error: Proofs/Erdos69Problem.lean:135:10: unsolved goals
+case refine'_2
+n : ℕ
+error: Proofs/Erdos69Problem.lean:141:6: unsolved goals
+case refine'_1
+n a : ℕ
+===== Erdos702Problem
+error: Proofs/Erdos702Problem.lean:38:71: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos712Problem
+error: Proofs/Erdos712Problem.lean:162:8: linarith failed to find a contradiction
+r k : ℕ
+hr : r > 2
+===== Erdos71Problem
+error: Proofs/Erdos71Problem.lean:78:57: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+===== Erdos720Problem
+error: Proofs/Erdos720Problem.lean:121:43: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+error: Proofs/Erdos720Problem.lean:139:27: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+error: Proofs/Erdos720Problem.lean:157:27: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+error: Proofs/Erdos720Problem.lean:167:36: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ a ≤ 2
+===== Erdos723Problem
+error: Proofs/Erdos723Problem.lean:131:52: Tactic `decide` proved that the proposition
+  IsPrimePow 1
+is false
+error: Proofs/Erdos723Problem.lean:137:52: Tactic `decide` failed for proposition
+  IsPrimePow 3
+because its `Decidable` instance
+error: Proofs/Erdos723Problem.lean:145:52: Tactic `decide` failed for proposition
+  IsPrimePow 5
+because its `Decidable` instance
+error: Proofs/Erdos723Problem.lean:164:2: interval_cases failed: could not find upper bound on a
+error: Lean exited with code 1
+✖ [8587/8601] Building Proofs.Erdos760Problem (6.8s)
+===== Erdos728Problem
+error: Proofs/Erdos728Problem.lean:180:4: linarith failed to find a contradiction
+n : ℕ
+hn : n ≥ 4
+error: Proofs/Erdos728Problem.lean:243:57: Ambiguous term
+  log
+Possible interpretations:
+===== Erdos73Aristotle
+error: Proofs/Erdos73Aristotle.lean:96:64: unsolved goals
+case e'_2
+e_1✝ : ↑↑{0}ᶜ = ↑{0}ᶜ
+===== Erdos756Problem
+error: Proofs/Erdos756Problem.lean:141:28: linarith failed to find a contradiction
+n : ℕ
+hn : n ≥ 4
+error: Proofs/Erdos756Problem.lean:194:52: mod_cast has type
+  numRichDistances A ≥ n / 4
+but is expected to have type
+error: Proofs/Erdos756Problem.lean:268:22: mod_cast has type
+  numRichDistances A ≥ n / 4
+but is expected to have type
+===== Erdos758Problem
+error: Proofs/Erdos758Problem.lean:88:2: Missing cases:
+(Fin.mk (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ (Nat.succ _))))))))))))))))))) _)
+error: Lean exited with code 1
+===== Erdos760Problem
+error: Proofs/Erdos760Problem.lean:82:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+V : Type u_1
+===== Erdos769Problem
+error: Proofs/Erdos769Problem.lean:66:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+error: Proofs/Erdos769Problem.lean:78:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+===== Erdos774Problem
+error: Proofs/Erdos774Problem.lean:200:19: Tactic `assumption` failed
+n : ℕ
+===== Erdos781Problem
+error: Proofs/Erdos781Problem.lean:47:63: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos781Problem.lean:55:23: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos781Problem.lean:104:13: Tactic `cases` failed with a nested error:
+Dependent elimination failed: Failed to solve equation
+  w.1 i = ((↑j).add 0).succ
+error: Proofs/Erdos781Problem.lean:184:70: unsolved goals
+k : ℕ
+⊢ 1 + (k ^ 2 - k) = 1 + k * (k - 1)
+===== Erdos788Problem
+error: Proofs/Erdos788Problem.lean:122:18: Tactic `rcases` failed: `h : c₁ + c₂ < 4 * n → 2 * n < c₁ + c₂ → 4 * n ≤ c₁ + c₂` is not an inductive datatype
+error: Lean exited with code 1
+✖ [8582/8601] Building Proofs.Erdos769Problem (2.9s)
+===== Erdos797Problem
+error: Proofs/Erdos797Problem.lean:55:30: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos797Problem.lean:55:60: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos798Aristotle
+error: Proofs/Erdos798Aristotle.lean:54:32: expected token
+error: Proofs/Erdos798Aristotle.lean:50:77: unsolved goals
+n : ℕ
+error: Proofs/Erdos798Aristotle.lean:50:77: unsolved goals
+n : ℕ
+hn : n ≥ 1
+error: Proofs/Erdos798Aristotle.lean:52:11: Function expected at
+  ncard_prod
+but this term has type
+error: Proofs/Erdos798Aristotle.lean:49:37: unsolved goals
+n : ℕ
+hn : n ≥ 1
+===== Erdos80Problem
+error: Proofs/Erdos80Problem.lean:97:5: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+===== Erdos811Problem
+error: Proofs/Erdos811Problem.lean:47:35: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos812Problem
+error: Proofs/Erdos812Problem.lean:112:29: unsolved goals
+⊢ 6 / 2 = 3
+error: Proofs/Erdos812Problem.lean:113:30: unsolved goals
+error: Proofs/Erdos812Problem.lean:113:30: unsolved goals
+⊢ 18 / 6 = 3
+error: Lean exited with code 1
+===== Erdos817Problem
+error: Proofs/Erdos817Problem.lean:171:87: unsolved goals
+S : Finset ℕ
+⊢ ∑ x ∈ if 0 ∈ S then {0} else ∅, 3 ^ x = if 0 ∈ S then 1 else 0
+error: Proofs/Erdos817Problem.lean:188:46: unsolved goals
+S : Finset ℕ
+hS : ∀ j ∈ S, 1 ≤ j
+error: Proofs/Erdos817Problem.lean:231:89: unsolved goals
+case e_a
+n : ℕ
+error: Proofs/Erdos817Problem.lean:244:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  k ≥ 0
+===== Erdos820Aristotle
+error: Proofs/Erdos820Aristotle.lean:82:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos820Aristotle.lean:91:44: Variable name `hp` is not explicitly referenced.
+error: Proofs/Erdos820Aristotle.lean:115:2: Type mismatch
+  (modEq_iff_dvd' hkn).mpr hdvd
+has type
+error: Proofs/Erdos820Aristotle.lean:123:2: Type mismatch
+  (modEq_iff_dvd' hln).mpr hdvd
+has type
+===== Erdos821Problem
+error: Proofs/Erdos821Problem.lean:116:49: unsolved goals
+⊢ {x ∈ Finset.range 2 | Odd x}.card = 1
+error: Lean exited with code 1
+===== Erdos841Problem
+error: Proofs/Erdos841Problem.lean:50:60: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos847Problem
+error: Proofs/Erdos847Problem.lean:137:26: Unexpected term `enr_conjecture_false`; expected single reference to variable
+warning: Proofs/Erdos847Problem.lean:185:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+error: Proofs/Erdos847Problem.lean:189:6: No goals to be solved
+error: Proofs/Erdos847Problem.lean:192:17: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+error: Proofs/Erdos847Problem.lean:192:17: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+α : Type u_1
+error: Proofs/Erdos847Problem.lean:194:4: Tactic `apply` failed: could not unify the conclusion of `@sum_lt_sum`
+  ∑ i ∈ ?s, ?f i < ∑ i ∈ ?s, ?g i
+with the goal
+===== Erdos853Problem
+error: Proofs/Erdos853Problem.lean:80:62: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ b ≤ 2
+error: Proofs/Erdos853Problem.lean:257:62: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+===== Erdos859Problem
+error: Proofs/Erdos859Problem.lean:106:11: `simp` made no progress
+error: Proofs/Erdos859Problem.lean:144:14: don't know how to synthesize implicit argument `f`
+  @single_le_sum ℕ ℕ Nat.instAddCommMonoid Nat.instPreorder ?m.66 s IsOrderedAddMonoid.toAddLeftMono
+error: Proofs/Erdos859Problem.lean:144:14: don't know how to synthesize implicit argument `f`
+  @single_le_sum ℕ ℕ Nat.instAddCommMonoid Nat.instPreorder ?m.66 s IsOrderedAddMonoid.toAddLeftMono
+    (fun x x_1 => Nat.zero_le (?m.66 x)) x hx
+error: Proofs/Erdos859Problem.lean:144:59: don't know how to synthesize placeholder for argument `n`
+context:
+n : ℕ
+error: Proofs/Erdos859Problem.lean:144:11: failed to infer `have` declaration type
+error: Proofs/Erdos859Problem.lean:143:45: unsolved goals
+n : ℕ
+===== Erdos859ProblemAristotle
+error: Proofs/Erdos859Problem.lean:106:11: `simp` made no progress
+error: Proofs/Erdos859Problem.lean:144:14: don't know how to synthesize implicit argument `f`
+  @single_le_sum ℕ ℕ Nat.instAddCommMonoid Nat.instPreorder ?m.66 s IsOrderedAddMonoid.toAddLeftMono
+error: Proofs/Erdos859Problem.lean:144:14: don't know how to synthesize implicit argument `f`
+  @single_le_sum ℕ ℕ Nat.instAddCommMonoid Nat.instPreorder ?m.66 s IsOrderedAddMonoid.toAddLeftMono
+    (fun x x_1 => Nat.zero_le (?m.66 x)) x hx
+error: Proofs/Erdos859Problem.lean:144:59: don't know how to synthesize placeholder for argument `n`
+context:
+n : ℕ
+error: Proofs/Erdos859Problem.lean:144:11: failed to infer `have` declaration type
+error: Proofs/Erdos859Problem.lean:143:45: unsolved goals
+n : ℕ
+===== Erdos865Problem
+error: Proofs/Erdos865Problem.lean:36:86: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== Erdos869Problem
+error: Proofs/Erdos869Problem.lean:188:13: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+A B : Set ℕ
+===== Erdos873ProblemProvable
+error: Proofs/Erdos873ProblemProvable.lean:144:6: Function expected at
+  Finset.lcm_insert
+but this term has type
+error: Proofs/Erdos873ProblemProvable.lean:140:51: unsolved goals
+i : ℕ
+⊢ ({1, 0}.lcm fun m => (fun j => 2 ^ j) (i + m)) = 2 ^ (i + 1)
+===== Erdos874Problem
+error: Proofs/Erdos874Problem.lean:226:4: linarith failed to find a contradiction
+case h.left
+ε : ℝ
+error: Proofs/Erdos874Problem.lean:226:4: linarith failed to find a contradiction
+case h.right
+ε : ℝ
+===== Erdos879Problem
+error: Proofs/Erdos879Problem.lean:174:70: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 2
+===== Erdos883Problem
+error: Proofs/Erdos883Problem.lean:83:96: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos893Problem
+error: Proofs/Erdos893Problem.lean:65:67: unsolved goals
+p : ℕ
+hp : Nat.Prime p
+error: Proofs/Erdos893Problem.lean:164:29: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos893Problem.lean:172:6: omega could not prove the goal:
+error: Proofs/Erdos893Problem.lean:172:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 2
+error: Proofs/Erdos893Problem.lean:217:8: Unknown identifier `mul_succ`
+warning: Proofs/Erdos893Problem.lean:229:46: Variable name `ha` is not explicitly referenced.
+===== Erdos895ProblemAristotle
+error: Proofs/Erdos895ProblemAristotle.lean:131:11: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos895ProblemAristotle.lean:131:21: omega could not prove the goal:
+error: Proofs/Erdos895ProblemAristotle.lean:131:21: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos895ProblemAristotle.lean:136:11: omega could not prove the goal:
+error: Proofs/Erdos895ProblemAristotle.lean:136:11: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos895ProblemAristotle.lean:136:21: omega could not prove the goal:
+error: Proofs/Erdos895ProblemAristotle.lean:136:21: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos895ProblemAristotle.lean:140:2: omega could not prove the goal:
+===== Erdos8OQ02
+error: Proofs/Erdos8OQ02.lean:110:2: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+===== Erdos900Problem
+error: Proofs/Erdos900Problem.lean:65:25: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos900Problem.lean:65:52: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos900Problem.lean:117:32: Invalid field `IsConnected`: The environment does not contain `SimpleGraph.IsConnected`, so it is not possible to project the field `IsConnected` from an expression
+  G
+of type `SimpleGraph (Fin n)`
+error: Proofs/Erdos900Problem.lean:241:47: Invalid field `card`: The environment does not contain `Function.card`, so it is not possible to project the field `card` from an expression
+  fun x => {x ∈ SimpleGraph.neighborFinset G x | x ∉ S}
+of type `Fin n → Finset (Fin n)`
+===== Erdos902Problem
+error: Proofs/Erdos902Problem.lean:113:4: linarith failed to find a contradiction
+case refine_1
+c : ℝ
+===== Erdos903Problem
+error: Proofs/Erdos903Problem.lean:195:11: Unknown identifier `p`
+error: Proofs/Erdos903Problem.lean:195:17: Unknown identifier `p`
+error: Proofs/Erdos903Problem.lean:195:46: unsolved goals
+error: Proofs/Erdos903Problem.lean:195:17: Unknown identifier `p`
+error: Proofs/Erdos903Problem.lean:195:46: unsolved goals
+q k : ℕ
+error: Proofs/Erdos903Problem.lean:195:46: unsolved goals
+q k : ℕ
+hq : Nat.Prime q
+error: Proofs/Erdos903Problem.lean:198:12: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+===== Erdos911Problem
+error: Proofs/Erdos911Problem.lean:159:30: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos911Problem.lean:164:34: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/Erdos911Problem.lean:189:28: linarith failed to find a contradiction
+f : ℕ → ℕ
+a : ℕ
+===== Erdos913Problem
+error: Proofs/Erdos913Problem.lean:294:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≤ 0
+error: Proofs/Erdos913Problem.lean:296:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≤ 0
+error: Proofs/Erdos913Problem.lean:310:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  2 ≤ c ≤ 3
+error: Proofs/Erdos913Problem.lean:319:83: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 1
+===== Erdos915Problem
+error: Proofs/Erdos915Problem.lean:49:31: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos915Problem.lean:49:64: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos915Problem.lean:64:38: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/Erdos915Problem.lean:64:73: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos916Problem
+error: Proofs/Erdos916Problem.lean:95:27: failed to prove index is valid, possible solutions:
+  - Use `have`-expressions to prove the index is valid
+  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid
+error: Proofs/Erdos916Problem.lean:108:24: failed to prove index is valid, possible solutions:
+  - Use `have`-expressions to prove the index is valid
+  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid
+error: Proofs/Erdos916Problem.lean:200:2: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+warning: Proofs/Erdos916Problem.lean:241:28: Variable name `n` is not explicitly referenced.
+===== Erdos918Problem
+error: Proofs/Erdos918Problem.lean:111:25: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos918Problem.lean:113:25: omega could not prove the goal:
+error: Proofs/Erdos918Problem.lean:113:25: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== Erdos919Problem
+error: Proofs/Erdos919Problem.lean:170:2: 'show' tactic failed, pattern
+  ℵ_ 1 = Order.succ (ℵ_ 0)
+is not definitionally equal to target
+error: Proofs/Erdos919Problem.lean:200:4: Type mismatch
+  typein_lt_type ?m.17 a
+has type
+error: Proofs/Erdos919Problem.lean:224:23: Application type mismatch: The argument
+  hall x hx
+has type
+error: Proofs/Erdos919Problem.lean:231:28: Application type mismatch: The argument
+  hx
+has type
+===== Erdos932Problem
+error: Proofs/Erdos932Problem.lean:138:16: unsolved goals
+case cons
+l₁ l₂ : List ℕ
+error: Proofs/Erdos932Problem.lean:145:18: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  0 ≤ e ≤ 1
+===== Erdos934ProblemAristotle
+error: Proofs/Erdos934ProblemAristotle.lean:88:48: unsolved goals
+⊢ 5 * 2 ^ 2 / 4 + 1 = 6
+error: Proofs/Erdos934ProblemAristotle.lean:90:49: unsolved goals
+error: Proofs/Erdos934ProblemAristotle.lean:90:49: unsolved goals
+⊢ 5 * 3 ^ 2 / 4 + 1 = 12
+error: Proofs/Erdos934ProblemAristotle.lean:92:49: unsolved goals
+error: Proofs/Erdos934ProblemAristotle.lean:92:49: unsolved goals
+⊢ 5 * 4 ^ 2 / 4 + 1 = 21
+error: Proofs/Erdos934ProblemAristotle.lean:94:49: unsolved goals
+error: Proofs/Erdos934ProblemAristotle.lean:94:49: unsolved goals
+⊢ 5 * 5 ^ 2 / 4 + 1 = 32
+error: Proofs/Erdos934ProblemAristotle.lean:96:52: unsolved goals
+===== Erdos935Problem
+error: Proofs/Erdos935Problem.lean:61:2: unsolved goals
+case inl
+p : ℕ
+===== Erdos937Problem
+error: Proofs/Erdos937Problem.lean:78:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 1
+error: Proofs/Erdos937Problem.lean:83:4: not a positivity goal
+error: Proofs/Erdos937Problem.lean:88:24: unsolved goals
+n : ℕ
+error: Proofs/Erdos937Problem.lean:88:24: unsolved goals
+n : ℕ
+hn : n ≥ 1
+error: Proofs/Erdos937Problem.lean:101:4: interval_cases failed: could not find upper bound on p
+error: Proofs/Erdos937Problem.lean:121:4: interval_cases failed: could not find upper bound on p
+error: Lean exited with code 1
+===== Erdos956Aristotle
+error: Proofs/Erdos956Aristotle.lean:74:54: unsolved goals
+case convert_4
+C : Set (EuclideanSpace ℝ (Fin 2))
+===== Erdos957Problem
+error: Proofs/Erdos957Problem.lean:153:34: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/Erdos957Problem.lean:155:57: linarith failed to find a contradiction
+ε : ℝ
+error: Proofs/Erdos957Problem.lean:155:57: linarith failed to find a contradiction
+ε : ℝ
+hε : ε > 0
+error: Proofs/Erdos957Problem.lean:185:2: linarith failed to find a contradiction
+c : ℝ
+hc : c < 9 / 8
+error: Proofs/Erdos957Problem.lean:304:11: typeclass instance problem is stuck
+  Membership (Finset Point) (?m.62 c)
+===== Erdos967Problem
+error: Proofs/Erdos967Problem.lean:207:4: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≤ 0
+error: Proofs/Erdos967Problem.lean:210:48: unsolved goals
+n : ℕ
+⊢ 0 < ?m.44
+error: Proofs/Erdos967Problem.lean:210:65: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+===== Erdos974Problem
+error: Proofs/Erdos974Problem.lean:85:19: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/Erdos974Problem.lean:91:2: No goals to be solved
+error: Proofs/Erdos974Problem.lean:91:2: No goals to be solved
+error: Lean exited with code 1
+✖ [8593/8602] Building Proofs.Erdos967Problem (9.9s)
+===== Erdos989Problem
+error: Proofs/Erdos989Problem.lean:103:44: linarith failed to find a contradiction
+c : ℝ
+A : PointSequence
+error: Proofs/Erdos989Problem.lean:117:4: Tactic `left` failed: target is not an inductive datatype
+A : PointSequence
+error: Proofs/Erdos989Problem.lean:128:44: linarith failed to find a contradiction
+A : PointSequence
+M c : ℝ
+error: Proofs/Erdos989Problem.lean:129:17: unsolved goals
+A : PointSequence
+M c : ℝ
+===== ErdosMordellChordIdentity
+error: Proofs/ErdosMordellChordIdentity.lean:552:4: `grind` failed
+case grind.1.1.1.1.2.1.1.2.1.1.1.1.1.2.1
+X Y Z P : EuclideanSpace ℝ (Fin 2)
+===== ErdosMordellInequalityOQ01
+error: Proofs/ErdosMordellChordIdentity.lean:552:4: `grind` failed
+case grind.1.1.1.1.2.1.1.2.1.1.1.1.1.2.1
+X Y Z P : EuclideanSpace ℝ (Fin 2)
+===== EulerIdentityOQ01
+error: Proofs/EulerIdentityOQ01.lean:87:53: unsolved goals
+z : ℂ
+n : ℕ
+error: Proofs/EulerIdentityOQ01.lean:130:7: Ambiguous term
+  cos
+Possible interpretations:
+error: Proofs/EulerIdentityOQ01.lean:138:7: Ambiguous term
+  sin
+Possible interpretations:
+error: Proofs/EulerIdentityOQ01.lean:150:25: unsolved goals
+z : ℂ
+h : Summable fun n => (NormedSpace.expSeries ℂ ℂ n) fun x => z
+===== EulerPolyhedralFormula
+error: Proofs/EulerPolyhedralFormula.lean:979:4: linarith failed to find a contradiction
+case h1
+R : RegularPolyhedron
+error: Proofs/EulerPolyhedralFormula.lean:980:43: failed to prove strict positivity, but it would be possible to prove nonnegativity if desired
+error: Proofs/EulerPolyhedralFormula.lean:991:2: linarith failed to find a contradiction
+case h1
+error: Proofs/EulerPolyhedralFormula.lean:991:2: linarith failed to find a contradiction
+case h1
+R : RegularPolyhedron
+error: Proofs/EulerPolyhedralFormula.lean:1038:4: Tactic `subst` failed: invalid equality proof, it is not of the form (x = t) or (t = x)
+  R.p = 3
+===== FactorRemainderTheoremOQ01OQ01OQ02
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:92:84: `simp` made no progress
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:152:51: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:152:51: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean:159:51: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== FactorRemainderTheoremOQ02
+error: Proofs/FactorRemainderTheoremOQ02.lean:58:27: Function expected at
+  IsInteger
+but this term has type
+error: Proofs/FactorRemainderTheoremOQ02.lean:71:44: unsolved goals
+f : ℤ[X]
+r : ℚ
+===== FairGamesTheoremOQ02
+error: Proofs/FairGamesTheoremOQ02.lean:19:5: unknown namespace `FairGamesOQ01`
+error: Proofs/FairGamesTheoremOQ02.lean:29:29: invalid {...} notation, expected type is not of the form (C ...)
+  GamblersRuin
+error: Proofs/FairGamesTheoremOQ02.lean:29:29: invalid {...} notation, expected type is not of the form (C ...)
+  GamblersRuin
+error: Proofs/FairGamesTheoremOQ02.lean:37:29: Function expected at
+error: Proofs/FairGamesTheoremOQ02.lean:37:29: Function expected at
+  ruinProbWin
+but this term has type
+error: Proofs/FairGamesTheoremOQ02.lean:38:8: Invalid argument: Variable `ruinProbWin` is not a proposition or let-declaration
+error: Proofs/FairGamesTheoremOQ02.lean:37:62: unsolved goals
+x✝ : Sort u_1
+===== FeuerbachsTheoremOQ04TangentLine
+error: Proofs/FeuerbachsTheoremOQ04TangentLine.lean:166:62: unsolved goals
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+===== FourierSeriesOQ02OQ03
+error: Proofs/FourierSeriesOQ02OQ03.lean:65:8: don't know how to synthesize implicit argument `T`
+  @decayBound (?m.13 C α n hn) C α n
+context:
+error: Proofs/FourierSeriesOQ02OQ03.lean:67:2: Tactic `apply` failed: could not unify the conclusion of `@mul_nonneg`
+  0 ≤ ?a * ?b
+with the goal
+error: Proofs/FourierSeriesOQ02OQ03.lean:76:23: don't know how to synthesize implicit argument `T`
+  @decayBound (?m.30 C α hα n m hn hm h) C α n
+context:
+error: Proofs/FourierSeriesOQ02OQ03.lean:76:4: don't know how to synthesize implicit argument `T`
+  @decayBound (?m.29 C α hα n m hn hm h) C α m
+context:
+===== FourSquareDistributionOQ01
+error: Proofs/FourSquareDistributionOQ01.lean:2661:48: unsolved goals
+v : Fin 4 → ℤ
+i : Fin 4
+===== FriendshipTheoremOQ01OQ02
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:97:50: unsolved goals
+V : Type u
+R : Type v
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:189:43: Function expected at
+  G.symm
+but this term has type
+error: Proofs/FriendshipTheoremOQ01OQ02.lean:164:38: unsolved goals
+case pos
+V : Type u
+===== FriendshipTheoremOQ03
+error: Proofs/FriendshipTheoremOQ03.lean:271:18: Tactic `rcases` failed: `List.insert {1, 2, 4}
+  (List.insert {2, 3, 5}
+    (List.insert {3, 4, 6} (List.insert {4, 5, 0} (List.insert {5, 6, 1} [{6, 0, 2}]))))` is not a free variable
+===== GreensTheoremOQ01OQ01OQ01OQ01
+error: Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean:466:10: unsolved goals
+case succ.one
+n : ℕ
+===== HarmonicDivergence
+error: Proofs/HarmonicDivergence.lean:142:4: linarith failed to find a contradiction
+case h1
+k : ℕ
+===== Hilbert17RobinsonRationalSOS
+error: Proofs/Hilbert17RobinsonRationalSOS.lean:142:47: unsolved goals
+h : multiplier = 0
+this : (4 + if 2 = 0 then 4 else 0) = 0
+===== HodgeConjecture
+error: Proofs/HodgeConjecture.lean:1446:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+error: Proofs/HodgeConjecture.lean:1459:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+error: Proofs/HodgeConjecture.lean:1475:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+error: Proofs/HodgeConjecture.lean:1488:25: unsolved goals
+k : ℕ
+H₁ : PureHodgeStructure k
+===== IncidenceCauchySchwarzDual
+error: Proofs/IncidenceCauchySchwarzDual.lean:60:68: unsolved goals
+P : Type u_1
+L : Type u_2
+===== KonigsbergOQ02OQ01Aristotle
+error: Proofs/KonigsbergOQ02OQ01Aristotle.lean:150:8: `grind` failed
+case grind.1.1.2.2.2.1
+V : Type u_1
+===== LagrangeFourSquaresOQ02
+error: Proofs/LagrangeFourSquaresOQ02.lean:193:40: unsolved goals
+case e_a
+k : ℕ
+error: Proofs/LagrangeFourSquaresOQ02.lean:363:42: unsolved goals
+case e_a
+k : ℕ
+error: Proofs/LagrangeFourSquaresOQ02.lean:400:44: unsolved goals
+case e_a
+k : ℕ
+error: Proofs/LagrangeFourSquaresOQ02.lean:437:76: Expected type must not contain free variables
+  (twoPairType 1 2 ⋯ ⋯).contribution = 96
+===== LagrangeFourSquaresOQ04
+error: Proofs/LagrangeFourSquaresOQ04.lean:129:69: linarith failed to find a contradiction
+case h1
+b a : ℕ
+error: Proofs/LagrangeFourSquaresOQ04.lean:175:37: unsolved goals
+n : ℕ
+hn : n % 8 ≠ 7
+===== LeibnizPiOQ03
+error: Proofs/LeibnizPiOQ03.lean:215:19: failed to prove positivity/nonnegativity/nonzeroness
+error: Lean exited with code 1
+✖ [8592/8606] Building Proofs.ShapleyFolkmanAristotle (11s)
+===== MinkowskiFundamentalTheoremOQ02
+error: Proofs/MinkowskiFundamentalTheoremOQ02.lean:61:0: type of theorem `MinkowskiClassNumberBound.classGroup_finite` is not a proposition
+  (K : Type u_1) → [inst : Field K] → [NumberField K] → Fintype (ClassGroup (𝓞 K))
+error: Proofs/MinkowskiFundamentalTheoremOQ02.lean:104:72: unsolved goals
+error: Proofs/MinkowskiFundamentalTheoremOQ02.lean:104:72: unsolved goals
+⊢ IsPrincipalIdealRing (𝓞 ℚ)
+error: Lean exited with code 1
+===== NewtonIndStep2
+error: Proofs/NewtonIndStep2.lean:62:4: linarith failed to find a contradiction
+case hα
+m k : ℕ
+error: Proofs/NewtonIndStep2.lean:77:4: (deterministic) timeout at `«Mathlib.Tactic.Linarith.SimplexAlgorithm.Gauss.getTableauImp»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+error: Proofs/NewtonIndStep2.lean:42:57: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+===== NewtonInductiveStepOQ03
+error: Proofs/NewtonInductiveStepOQ03.lean:74:2: Function expected at
+  prod_pos ?m.22
+but this term has type
+error: Proofs/NewtonInductiveStepOQ03.lean:78:2: Function expected at
+  prod_pos ?m.44
+but this term has type
+error: Proofs/NewtonInductiveStepOQ03.lean:99:4: Function expected at
+  prod_pos ?m.142
+but this term has type
+error: Proofs/NewtonInductiveStepOQ03.lean:138:40: unsolved goals
+n k : ℕ
+q : ℝ
+===== PappusTheoremOQ02
+error: Proofs/PappusTheoremOQ02.lean:404:64: unsolved goals
+K : Type u_1
+inst✝ : CommRing K
+error: Proofs/PappusTheoremOQ02.lean:425:64: unsolved goals
+K : Type u_1
+inst✝ : CommRing K
+===== PicksTheoremOQ01OQ01
+error: Proofs/PicksTheoremOQ01OQ01.lean:67:64: Tactic `decide` failed for proposition
+  { v1 := (0, 0), v2 := (1, 0), v3 := (0, 1) }.IsPrimitive
+because its `Decidable` instance
+error: Proofs/PicksTheoremOQ01OQ01.lean:71:64: Tactic `decide` failed for proposition
+  { v1 := (0, 0), v2 := (1, 0), v3 := (1, 1) }.IsPrimitive
+because its `Decidable` instance
+error: Proofs/PicksTheoremOQ01OQ01.lean:89:58: unsolved goals
+T : LatticeTriangle
+g : ℤ
+error: Proofs/PicksTheoremOQ01OQ01.lean:134:48: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 2
+===== PicksTheoremOQ01OQ02
+error: Proofs/PicksTheoremOQ01OQ02.lean:236:47: mod_cast has type
+  ↑(m - 1) = ↑(m - 1)
+but is expected to have type
+error: Proofs/PicksTheoremOQ01OQ02.lean:237:47: mod_cast has type
+  ↑(n - 1) = ↑(n - 1)
+but is expected to have type
+error: Proofs/PicksTheoremOQ01OQ02.lean:247:45: mod_cast has type
+  ↑(m - 1) = ↑(m - 1)
+but is expected to have type
+error: Proofs/PicksTheoremOQ01OQ02.lean:248:45: mod_cast has type
+  ↑(n - 1) = ↑(n - 1)
+but is expected to have type
+===== PlatonicSolidsOQ02
+error: Proofs/PlatonicSolidsOQ02.lean:109:8: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Eq.refl` does not have explicit fields, but 2 were provided
+error: Proofs/PlatonicSolidsOQ02.lean:130:53: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:130:53: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:132:49: omega could not prove the goal:
+error: Proofs/PlatonicSolidsOQ02.lean:132:49: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:134:47: omega could not prove the goal:
+error: Proofs/PlatonicSolidsOQ02.lean:134:47: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Proofs/PlatonicSolidsOQ02.lean:136:53: omega could not prove the goal:
+===== PowerMeanLimitOQ
+error: Proofs/PowerMeanLimitOQ.lean:88:9: typeclass instance problem is stuck
+  NormedSpace ?m.50 ?m.52
+error: Proofs/PowerMeanLimitOQ.lean:169:33: unsolved goals
+ι : Type u_1
+s : Finset ι
+error: Proofs/PowerMeanLimitOQ.lean:245:11: `simp` made no progress
+error: Lean exited with code 1
+✖ [8588/8606] Building Proofs.HarmonicDivergence (7.1s)
+===== PythagoreanTriplesOQ02
+error: Proofs/PythagoreanTriplesOQ02.lean:56:33: Tactic `constructor` failed: no applicable constructor found
+a b : ℤ
+error: Proofs/PythagoreanTriplesOQ02.lean:61:35: Tactic `constructor` failed: no applicable constructor found
+a b : ℤ
+===== ShapleyFolkmanAristotle
+error: Proofs/ShapleyFolkmanAristotle.lean:57:20: Invalid field `fintype_card_le_finrank_succ`: The environment does not contain `Function.fintype_card_le_finrank_succ`, so it is not possible to project the field `fintype_card_le_finrank_succ` from an expression
+  haf
+of type
+error: Proofs/ShapleyFolkmanAristotle.lean:55:30: unsolved goals
+E : Type u_1
+inst✝² : AddCommGroup E
+===== SolutionOfCubicOQ03OQ02
+error: Proofs/SolutionOfCubicOQ03OQ02.lean:74:2: linarith failed to find a contradiction
+p q : ℝ
+h : -4 * p ^ 3 - 27 * q ^ 2 > 0
+===== SolutionOfCubicOQ03OQ03
+error: Proofs/SolutionOfCubicOQ03OQ03.lean:57:2: ring failed, ring expressions not equal
+p q r m : ℂ
+h : 8 * m ^ 3 + 20 * p * m ^ 2 + (16 * p ^ 2 - 8 * r) * m + (4 * p ^ 3 - 4 * p * r - q ^ 2) = 0
+===== SolutionOfCubicOQ03OQ05
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:34:35: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:52:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:65:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+error: Proofs/SolutionOfCubicOQ03OQ05.lean:78:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+===== SpernerGrid
+error: Proofs/SpernerGrid.lean:679:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/SpernerGrid.lean:1204:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/SpernerGrid.lean:1222:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/SpernerGrid.lean:1224:53: Application type mismatch: The argument
+  Eq.symm h
+has type
+===== SpernerGridAristotle
+error: Proofs/SpernerGrid.lean:679:10: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+error: Proofs/SpernerGrid.lean:1204:29: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 0
+error: Proofs/SpernerGrid.lean:1222:6: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+error: Proofs/SpernerGrid.lean:1224:53: Application type mismatch: The argument
+  Eq.symm h
+has type
+===== SpernerTuckerEndpointTransport
+error: Proofs/SpernerTuckerEndpointTransport.lean:147:49: unsolved goals
+n : ℕ
+B : Facet n → Prop
+===== SubsetCountOQ02
+error: Proofs/SubsetCountOQ02.lean:58:49: unsolved goals
+α : Type u_1
+a : α
+===== SylvesterSequenceOQ01OQ03
+error: Proofs/SylvesterSequenceOQ01OQ03.lean:128:15: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== SzemerediCoreOQ01
+error: Proofs/SzemerediCoreOQ01.lean:553:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+V : Type u_1
+===== SzemerediCoreOQ01Aristotle
+error: Proofs/SzemerediCoreOQ01.lean:553:12: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+V : Type u_1
+===== SzemerediHypergraphCore
+error: Proofs/SzemerediHypergraphCore.lean:98:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:108:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:138:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/SzemerediHypergraphCore.lean:138:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== SzemerediHypergraphGowers
+error: Proofs/SzemerediHypergraphCore.lean:98:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:108:2: Tactic `split_ifs` failed: no if-then-else conditions to split
+V : Type u_1
+error: Proofs/SzemerediHypergraphCore.lean:138:28: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/SzemerediHypergraphCore.lean:138:58: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== TaylorSinCosConvergenceOQ02
+error: Proofs/TaylorSinCosConvergenceOQ02.lean:119:11: Invalid field `tsum_eq`: The environment does not contain `Function.tsum_eq`, so it is not possible to project the field `tsum_eq` from an expression
+  Filter.Tendsto.congr (fun n => ?m.88) (NormedSpace.expSeries_hasSum_exp (?m.76 * I))
+of type
+error: Proofs/TaylorSinCosConvergenceOQ02.lean:117:75: unsolved goals
+x : ℝ
+n : Finset ℕ
+===== TestApi1056
+error: Proofs/TestApi1056.lean:20:56: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TestApi1056.lean:21:35: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+error: Proofs/TestApi1056.lean:31:20: Tactic `decide` failed for proposition
+  List.Chain' (fun x1 x2 => x1 < x2) [3, 5, 8]
+because its `Decidable` instance
+error: Proofs/TestApi1056.lean:38:20: Tactic `decide` failed for proposition
+  List.Chain' (fun x1 x2 => x1 < x2) [2, 6, 12, 16]
+because its `Decidable` instance
+===== TestApi1148
+error: Proofs/TestApi1148.lean:17:65: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+error: Lean exited with code 1
+===== TestApi1159c
+error: Proofs/TestApi1159c.lean:9:14: Function expected at
+  ProjectivePlane.pointCount_eq P L
+but this term has type
+error: Proofs/TestApi1159c.lean:8:36: unsolved goals
+P : Type u_1
+L : Type u_2
+error: Proofs/TestApi1159c.lean:19:14: Function expected at
+  ProjectivePlane.pointCount_eq P L
+but this term has type
+error: Proofs/TestApi1159c.lean:17:50: unsolved goals
+P : Type u_1
+L : Type u_2
+===== TestApi385
+error: Proofs/TestApi385.lean:10:34: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  a ≥ 2
+===== TestApi417
+error: Proofs/TestApi417.lean:27:66: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  c ≥ 0
+===== TestApi457
+error: Proofs/TestApi457.lean:28:32: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  b ≥ 1
+===== TestApi913
+error: Proofs/TestApi913.lean:25:17: Tactic `rcases` failed: `[3]` is not a free variable
+error: Lean exited with code 1
+✖ [8592/8607] Building Proofs.TestApi457 (3.4s)
+===== TestSphereLocEuc
+error: Proofs/TestSphereLocEuc.lean:19:38: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+error: Proofs/TestSphereLocEuc.lean:17:61: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+error: Proofs/TestSphereLocEuc.lean:24:49: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+error: Proofs/TestSphereLocEuc.lean:13:60: unsolved goals
+v : EuclideanSpace ℝ (Fin 4)
+hv : ‖v‖ = 1
+===== TestZetaNonzero
+error: Proofs/TestZetaNonzero.lean:78:31: unsolved goals
+s : ℂ
+hs : riemannZeta s = 0
+===== VietasFormulasOQ02
+error: Proofs/VietasFormulasOQ02.lean:125:2: linarith failed to find a contradiction
+R : Type u_1
+inst✝ : CommRing R
+===== VietasFormulasOQ03OQ01
+error: Proofs/VietasFormulasOQ03OQ01.lean:81:77: unsolved goals
+n : ℕ
+R : Type u_1
+error: Proofs/VietasFormulasOQ03OQ01.lean:89:58: unsolved goals
+n : ℕ
+R : Type u_1
+error: Proofs/VietasFormulasOQ03OQ01.lean:111:13: unsolved goals
+n : ℕ
+R : Type u_1
+===== YangMills2DOQ01
+error: Proofs/YangMills2DOQ01.lean:152:2: Tactic `apply` failed: could not unify the type of `mul_lt_mul_of_pos_left ?m.32 hd`
+  d * ?m.29 < d * ?m.30
+with the goal

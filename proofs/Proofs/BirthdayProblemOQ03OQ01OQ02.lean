@@ -2125,7 +2125,7 @@ lemma card_overlapPattern_le_one (n : ℕ) :
     (overlapPattern n 1).card ≤ Nat.choose n 5 * 100 := by
   have h := card_overlapPattern_le_generic n 1 (by norm_num)
   -- 6 - 1 = 5, Nat.choose 5 3 = 10, 10² = 100.
-  simpa using h
+  simpa [show Nat.choose 5 3 = 10 by decide] using h
 
 /-- **Layer 3f main bound (k = 2).** `|overlapPattern n 2| ≤ Nat.choose n 4 · 16`.
     Derived from `card_overlapPattern_le_generic` via `Nat.choose 4 3 = 4`. -/

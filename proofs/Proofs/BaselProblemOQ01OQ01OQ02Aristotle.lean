@@ -191,6 +191,7 @@ theorem nair_lcm_bound (n : ℕ) : lcmUpTo n ≤ 4 ^ n := by
     -- By the lemma centralBinom_le_four_pow, we have Nat.choose (2 * m) m ≤ 4 ^ m.
     have h_choose : Nat.choose (2 * m) m ≤ 4 ^ m := by
       convert centralBinom_le_four_pow m using 1;
+      rfl
     rcases m with ( _ | m ) <;> simp_all +decide [ pow_mul' ];
     exact le_trans ( Nat.le_of_dvd ( Nat.mul_pos ( lcmUpTo_pos _ ) ( Nat.choose_pos ( by linarith ) ) ) h_div ) ( by rw [ sq ] ; exact Nat.mul_le_mul ( ih _ ( by linarith ) ) h_choose );
   · -- Using the lemma lcmUpTo_odd_dvd, we have lcmUpTo (2 * m + 1) ∣ lcmUpTo (m + 1) * (2 * m + 1).choose m.
@@ -199,8 +200,8 @@ theorem nair_lcm_bound (n : ℕ) : lcmUpTo n ≤ 4 ^ n := by
     refine' le_trans ( Nat.le_of_dvd _ h_div ) _;
     · exact mul_pos ( lcmUpTo_pos _ ) ( Nat.choose_pos ( by linarith ) );
     · rcases m with ( _ | m ) <;> simp_all +decide [ Nat.pow_succ', Nat.pow_mul' ];
-      refine' le_trans ( Nat.mul_le_mul ( ih _ _ ) ( show Nat.choose ( 2 * ( m + 1 ) + 1 ) ( m + 1 ) ≤ 4 ^ ( m + 1 ) from _ ) ) _ <;> ring <;> norm_num [ pow_succ' ];
+      refine' le_trans ( Nat.mul_le_mul ( ih _ _ ) ( show Nat.choose ( 2 * ( m + 1 ) + 1 ) ( m + 1 ) ≤ 4 ^ ( m + 1 ) from _ ) ) _ <;> ring <;> norm_num [ Nat.pow_succ' ];
       · linarith;
-      · convert choose_two_mul_add_one_le ( m + 1 ) using 1 ; ring
+      · convert choose_two_mul_add_one_le ( m + 1 ) using 1 <;> (first | rfl | ring1 | omega | (congr 1 <;> omega) | (norm_num; done))
 
 end AperyZetaThreeAristotle

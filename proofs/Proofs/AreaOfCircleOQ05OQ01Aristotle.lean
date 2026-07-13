@@ -41,8 +41,7 @@ theorem gaussian_product_integrable :
     Integrable (fun p : ℝ × ℝ => rexp (-(p.1 ^ 2)) * rexp (-(p.2 ^ 2)))
       (volume.prod volume) := by
   have hf : Integrable (fun x : ℝ => rexp (-(x ^ 2))) := by
-    have h := integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
-    simp_rw [one_mul] at h; exact h
+    simpa using integrable_exp_neg_mul_sq (by norm_num : (0 : ℝ) < 1)
   sorry
 
 /-

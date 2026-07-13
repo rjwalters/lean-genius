@@ -138,27 +138,32 @@ theorem trisection_cyclic_cubic_data (p : ℕ) (hp : p = 3 ∨ p = 7) :
 
 /-! ## The Eisenstein Connection -/
 
-/-- The Eisenstein cubics each have a degree-3 constant term divisible by p but not p². -/
+/-- The Eisenstein cubics each have constant term exactly -p: divisible by p but not p²
+    as integers.
+    (Statement repair for the v4.31 migration: the original statement asserted
+    `(p : ℚ) ∣ coeff 0 ∧ ¬ ((p : ℚ) ^ 2 ∣ coeff 0)` in ℚ, where divisibility is
+    trivial — every nonzero rational divides every rational — so the negative
+    conjunct was false as written. The intended Eisenstein content is captured by
+    the exact value `coeff 0 = -p`.) -/
 theorem eisensteinCubic_coeff_pattern (p : ℕ) (hp : p = 3 ∨ p = 7) :
-    (p : ℚ) ∣ (eisensteinCubic p).coeff 0 ∧
-    ¬ ((p : ℚ) ^ 2 ∣ (eisensteinCubic p).coeff 0) := by
+    (eisensteinCubic p).coeff 0 = -(p : ℚ) := by
   rcases hp with rfl | rfl
-  · simp [eisensteinCubic_3, coeff_sub, coeff_C, coeff_X_pow, coeff_C_mul]
-    norm_num
-  · simp [eisensteinCubic_7, coeff_sub, coeff_C, coeff_X_pow, coeff_C_mul]
-    norm_num
+  · simp [eisensteinCubic_3, coeff_sub, coeff_C, coeff_X_pow]
+  · simp [eisensteinCubic_7, coeff_sub, coeff_C, coeff_X_pow]
 
 /-- The substitution connecting the Eisenstein cubic to the trisection polynomial.
-    - For p = 3: r₃(2X + 1) = trisectionPoly 3 = 8X³ - 6X - 1
-    - For p = 7: r₇(2X + 2) = trisectionPoly 7 = 8X³ - 4X² - 4X + 1 -/
+    - For p = 3: r₃(2X + 2) = trisectionPoly 3 = 8X³ - 6X - 1
+    - For p = 7: r₇(2X + 2) = trisectionPoly 7 = 8X³ - 4X² - 4X + 1
+    (Statement repair for the v4.31 migration: the shift for p = 3 was wrongly 1;
+    r₃(2X + 1) = 8X³ - 12X² + 1 ≠ 8X³ - 6X - 1. The correct substitution is
+    Y = 2X + 2 for both primes.) -/
 theorem eisenstein_cubic_to_trisection (p : ℕ) (hp : p = 3 ∨ p = 7) :
-    let shift : ℕ := if p = 3 then 1 else 2
-    (eisensteinCubic p).comp (2 * X + C (shift : ℚ)) = trisectionPoly p := by
+    (eisensteinCubic p).comp (2 * X + C (2 : ℚ)) = trisectionPoly p := by
   rcases hp with rfl | rfl
-  · simp [eisensteinCubic_3, trisectionPoly_3]
-    ring
-  · simp [eisensteinCubic_7, trisectionPoly_7]
-    ring
+  · simp [eisensteinCubic_3, trisectionPoly_3, map_ofNat, map_one]
+    ring1
+  · simp [eisensteinCubic_7, trisectionPoly_7, map_ofNat, map_one]
+    ring1
 
 /-! ## Joint Summary Theorem -/
 

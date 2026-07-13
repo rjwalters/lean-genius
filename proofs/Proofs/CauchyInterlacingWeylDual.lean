@@ -102,7 +102,7 @@ theorem weyl_add_ge
       = ((-ρ (Fin.rev t) : ℝ) : 𝕜) • (d.reindex Fin.revPerm) t := by
     intro t
     have hsum : ((-T) + (-U)) = -(T + U) := by
-      ext x; simp [LinearMap.add_apply, LinearMap.neg_apply]
+      ext x; simp [LinearMap.add_apply, LinearMap.neg_apply]; abel
     rw [hsum]
     exact neg_reindex_eigen (T + U) d ρ hdW t
   -- Antitone enumerations for the negated operators.

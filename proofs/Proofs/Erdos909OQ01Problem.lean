@@ -153,13 +153,15 @@ axiom anderson_keisler_existence :
     ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S),
       IsDimensionStable S n
 
+universe u
+
 /-- The characterization question: what is the necessary and sufficient condition
     for a space to be dimension-stable? -/
 def CharacterizationQuestion : Prop :=
-  ∃ (P : (S : Type*) → (_ : TopologicalSpace S) → Prop),
-    ∀ (S : Type*) [TopologicalSpace S] (n : ℕ),
+  ∃ (P : (S : Type u) → (_ : TopologicalSpace S) → Prop),
+    ∀ (S : Type u) [inst : TopologicalSpace S] (n : ℕ),
       hasDimensionExactly S n →
-      (IsDimensionStable S n ↔ P S)
+      (IsDimensionStable S n ↔ P S inst)
 
 /-
 ## Part VI: Structural Properties

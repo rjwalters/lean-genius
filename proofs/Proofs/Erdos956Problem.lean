@@ -62,7 +62,9 @@ theorem setDistance_nonneg {X : Type*} [PseudoMetricSpace X] (C D : Set X) :
   set S := { dist c d | (c : X) (d : X) (_ : c ∈ C) (_ : d ∈ D) }
   rcases S.eq_empty_or_nonempty with he | hne
   · rw [he]; simp
-  · exact le_csInf hne (fun _ ⟨c, d, _, _, rfl⟩ => dist_nonneg)
+  · refine le_csInf hne ?_
+    rintro _ ⟨c, d, _, _, rfl⟩
+    exact dist_nonneg
 
 /-- δ(C, D) = 0 iff C and D touch or overlap. -/
 theorem setDistance_eq_zero_iff {X : Type*} [PseudoMetricSpace X] (C D : Set X)
@@ -128,8 +130,8 @@ def HasUnitDistance (config : DisjointTranslates n) (i j : Fin n) : Prop :=
 /-- Count of unit distance pairs in a configuration. -/
 noncomputable def unitDistanceCount (config : DisjointTranslates n) : ℕ :=
   ((Finset.univ : Finset (Fin n)).filter (fun i =>
-    (Finset.univ : Finset (Fin n)).filter (fun j => i < j ∧ HasUnitDistance config i j)
-    |>.card > 0)).card
+    ((Finset.univ : Finset (Fin n)).filter
+      (fun j => i < j ∧ HasUnitDistance config i j)).card > 0)).card
 
 /-
 ## Part IV: The Function h(n)

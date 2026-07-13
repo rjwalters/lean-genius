@@ -137,7 +137,7 @@ def Erdos416Conjecture : Prop := Erdos416_Part_i ∧ Erdos416_Part_ii
 theorem three_not_totient : ¬∃ m : ℕ, m.totient = 3 := by
   intro ⟨m, hm⟩
   by_cases hm2 : m ≤ 2
-  · interval_cases m <;> simp_all [Nat.totient]
+  · interval_cases m <;> exact absurd hm (by decide)
   · push_neg at hm2
     have heven := Nat.totient_even (show 2 < m by omega)
     rw [hm] at heven

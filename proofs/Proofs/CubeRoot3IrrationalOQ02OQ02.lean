@@ -63,7 +63,8 @@ theorem cbrt3_powers_linearIndependent :
   have haeval : Polynomial.aeval α p = 0 := by
     have heq : Polynomial.aeval α p = ∑ i : Fin 3, c i • α ^ (i : ℕ) := by
       simp only [hp_def, map_add, map_mul, map_pow, aeval_C, aeval_X,
-                 Fin.sum_univ_three, Algebra.smul_def, pow_zero, pow_one]
+                 Fin.sum_univ_three, Algebra.smul_def, pow_zero, pow_one,
+                 Fin.val_zero, Fin.val_one, Fin.val_two]
       ring
     rw [heq, hc]
   -- minpoly ℚ α divides p (the key divisibility step)

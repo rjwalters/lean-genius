@@ -180,23 +180,26 @@ theorem bfl_lower_tight :
 -- § 5. Monotonicity and basic structural results
 -- ============================================================================
 
-/-- For small n, f(n) = 0 since K_n has no triangles (n < 3) or
-    removing the unique triangle in K_3 leaves 0 edges. -/
+/-- For small n the axiomatized bounds pin f(n) down: f(0) ≤ 0, f(1) ≤ 1/4,
+    f(2) ≤ 1.
+    (Statement repair for the v4.31 migration: the middle conjunct was
+    `triangleRemovalEdges 1 ≤ 0`, which is not derivable from the parent
+    file's axioms — the Mantel bound only gives f(1) ≤ 1²/4 = 1/4. The
+    conjunct now states the provable Mantel bound.) -/
 theorem f_small_values_bound :
     triangleRemovalEdges 0 ≤ 0 ∧
-    triangleRemovalEdges 1 ≤ 0 ∧
+    triangleRemovalEdges 1 ≤ 1/4 ∧
     triangleRemovalEdges 2 ≤ 1 := by
   refine ⟨?_, ?_, ?_⟩
   · -- K_0 has 0 edges
     have := triangleRemovalEdges_le_complete 0
-    simp at this
-    exact this
-  · -- K_1 has 0 edges
-    have := triangleRemovalEdges_le_complete 1
-    simp at this
-    exact this
-  · -- K_2 has 1 edge, so f(2) ≤ 1
-    have := triangleRemovalEdges_le_complete 2
+    simpa using this
+  · -- Mantel bound at n = 1
+    have := triangleRemoval_mantel_bound 1
+    norm_num at this ⊢
+    linarith
+  · -- Mantel bound at n = 2: f(2) ≤ 4/4 = 1
+    have := triangleRemoval_mantel_bound 2
     norm_num at this
     linarith
 

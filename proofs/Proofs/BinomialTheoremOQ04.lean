@@ -153,8 +153,8 @@ theorem vandermonde_summand_le (m n r k : ℕ) (hk : k ≤ r) :
     Nat.choose m k * Nat.choose n (r - k) ≤ Nat.choose (m + n) r :=
   calc Nat.choose m k * Nat.choose n (r - k)
       ≤ ∑ j ∈ Finset.range (r + 1), Nat.choose m j * Nat.choose n (r - j) :=
-        Finset.single_le_sum (fun j _ => Nat.zero_le _)
-          (Finset.mem_range.mpr (by omega))
+        Finset.single_le_sum (f := fun j => Nat.choose m j * Nat.choose n (r - j)) (fun j _ => Nat.zero_le _)
+          (Finset.mem_range.mpr (Nat.lt_add_one_of_le hk))
     _ = Nat.choose (m + n) r := (vandermonde_identity m n r).symm
 
 /-

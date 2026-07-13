@@ -1,0 +1,18 @@
+===== AngleTrisectionCos20GalOQ01OQ01
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:152:4: No goals to be solved
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:154:4: No goals to be solved
+error: Lean exited with code 1
+error: Proofs/AngleTrisectionCos20GalOQ01OQ01.lean:154:4: No goals to be solved
+error: Lean exited with code 1
+⚠ [8602/8602] Built Proofs.AngleTrisectionCos20GalOQ03 (5.0s)
+===== AreaOfCircleOQ05OQ03OQ05
+error: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:198:8: `ring_nf` made no progress on the goal
+info: Proofs/AreaOfCircleOQ05OQ03OQ05.lean:295:0: gaussian_fourier_first_hermite : ∀ (t : ℝ),
+  ∫ (x : ℝ), ↑x * cexp (I * ↑t * ↑x) * cexp (-↑x ^ 2 / 2) = I * ↑t * cexp (-↑t ^ 2 / 2) * ↑√(2 * π)
+===== BezoutIdentityOQ04OQ01OQ01
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:118:4: ring failed, ring expressions not equal
+R : Type u_1
+inst✝² : CommRing R
+error: Proofs/BezoutIdentityOQ04OQ01OQ01.lean:125:4: ring failed, ring expressions not equal
+R : Type u_1
+inst✝² : CommRing R
