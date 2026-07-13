@@ -85,4 +85,54 @@ theorem dense_setOf_transcendental : Dense {x : ℝ | Transcendental ℤ x} :=
 theorem dense_setOf_liouville : Dense {x : ℝ | Liouville x} :=
   dense_of_mem_residual liouville_comeagre
 
+/-! ### The complex algebraic numbers are meagre (Baire category in `ℂ`)
+
+The results above live in `ℝ`, where the Liouville numbers supply an explicit
+comeagre set of transcendentals.  The parent chain shows the *complex* algebraic
+numbers are small in measure (`algebraic_complex_hausdorffMeasure_zero`) and
+dimension (`algebraic_complex_dimH_zero`), but the Baire-category corner in `ℂ`
+was missing — there is no complex analogue of the Liouville construction.  It
+follows instead from pure **countability**: in a perfect `T₁` space every
+singleton is nowhere dense (`interior_singleton`), so any countable set is a
+countable union of nowhere-dense singletons, hence meagre.  Both `ℝ` and `ℂ`
+are perfect (`T₁ + connected + nontrivial`), and the algebraic numbers over the
+countable ring `ℤ` are countable (`Algebraic.countable`). -/
+
+/-- **Every countable set in a perfect `T₁` space is meagre.**  A singleton `{x}`
+    is closed (`T₁`) with empty interior (`interior_singleton`, valid because a
+    perfect space has no isolated points), hence nowhere dense; a countable set is
+    the countable union of its singletons, so it is meagre by `isMeagre_iUnion`. -/
+theorem isMeagre_of_countable {X : Type*} [TopologicalSpace X] [T1Space X]
+    [PerfectSpace X] {s : Set X} (hs : s.Countable) : IsMeagre s := by
+  have hsub : Countable ↥s := hs.to_subtype
+  have hcov : s = ⋃ x : s, {(x : X)} := by ext y; simp
+  rw [hcov]
+  refine isMeagre_iUnion (fun x => ?_)
+  rw [isMeagre_iff_countable_union_isNowhereDense]
+  refine ⟨{{(x : X)}}, ?_, Set.countable_singleton _, by simp⟩
+  intro t ht
+  rw [Set.mem_singleton_iff] at ht
+  subst ht
+  exact isClosed_singleton.isNowhereDense_iff.mpr (interior_singleton (x : X))
+
+/-- **The complex algebraic numbers are meagre.**  The Baire-category counterpart,
+    in `ℂ`, of `isMeagre_setOf_isAlgebraic` (which lived only in `ℝ` via Liouville).
+    Since `ℂ` is a perfect `T₁` space and the algebraic numbers over the countable
+    ring `ℤ` are countable (`Algebraic.countable ℤ ℂ`), meagreness follows from
+    `isMeagre_of_countable`.  Together with the parent's complex measure-zero and
+    Hausdorff-dimension-zero results, the algebraic complex numbers are small in
+    every classical sense. -/
+theorem isMeagre_setOf_isAlgebraic_complex : IsMeagre {z : ℂ | IsAlgebraic ℤ z} :=
+  isMeagre_of_countable (Algebraic.countable ℤ ℂ)
+
+/-- **The complex transcendentals are dense.**  The complement of the meagre
+    complex algebraic numbers is comeagre (residual), and `ℂ` is a Baire space, so
+    `dense_of_mem_residual` gives density: every nonempty open subset of `ℂ`
+    contains a transcendental.  The complex counterpart of
+    `dense_setOf_transcendental`. -/
+theorem dense_setOf_transcendental_complex : Dense {z : ℂ | Transcendental ℤ z} := by
+  apply dense_of_mem_residual
+  show {z : ℂ | IsAlgebraic ℤ z}ᶜ ∈ residual ℂ
+  exact isMeagre_setOf_isAlgebraic_complex
+
 end AlgebraicNumbersCountableOQ07
