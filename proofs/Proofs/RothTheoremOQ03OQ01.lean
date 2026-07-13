@@ -1531,4 +1531,42 @@ theorem kAPCount_nondeg_reflect_image {N : ℕ} [NeZero N] {k : ℕ} (hk : 0 < k
     exact Finset.mem_image.mpr ⟨kAPReflect k q, kAPCount_nondeg_reflect_mem hk hq,
       kAPReflect_involutive k q⟩
 
+/-- **No nondegenerate progression in a set of size `≤ 1`.**  For `k ≥ 2`, any set `A` with
+    `A.card ≤ 1` has nondegenerate (`d ≠ 0`) `k`-AP count `0`.  This is the common generalization
+    of `kAPCount_nondeg_empty` (`A = ∅`) and `kAPCount_nondeg_singleton` (`A = {a}`): the `i = 0`
+    and `i = 1` terms of any counted progression both lie in `A`, and a set with at most one element
+    forces them equal (`Finset.card_le_one`), hence `d = 0`, contradicting `d ≠ 0`. -/
+theorem kAPCount_nondeg_card_le_one {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k)
+    {A : Finset (ZMod N)} (hA : A.card ≤ 1) :
+    (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card = 0 := by
+  classical
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  rintro p -
+  rintro ⟨hall, hd⟩
+  -- `i = 0` and `i = 1` terms both lie in `A`
+  have h0 : p.1 ∈ A := by simpa using hall ⟨0, by omega⟩
+  have h1 : p.1 + p.2 ∈ A := by simpa using hall ⟨1, by omega⟩
+  -- `A.card ≤ 1` forces the two members to coincide, so `d = 0`
+  have heq : p.1 + p.2 = p.1 := Finset.card_le_one.mp hA _ h1 _ h0
+  refine hd (add_left_cancel (a := p.1) ?_)
+  rw [add_zero]
+  exact heq
+
+/-- **A nondegenerate progression forces at least two points.**  For `k ≥ 2`, if the
+    nondegenerate (`d ≠ 0`) `k`-AP count of `A` is positive then `2 ≤ A.card`.  The contrapositive
+    of `kAPCount_nondeg_card_le_one`, and the trivial necessary condition underlying Roth's
+    theorem: a set carrying *any* genuine (non-constant) progression must have at least two
+    elements.  Roth's theorem sharpens "`≥ 2`" to the density threshold that forces nondegenerate
+    mass; this lemma is its `card`-level floor. -/
+theorem kAPCount_nondeg_pos_imp_two_le_card {N : ℕ} [NeZero N] {k : ℕ} (hk : 2 ≤ k)
+    {A : Finset (ZMod N)}
+    (hpos : 0 < (Finset.univ.filter (fun p : ZMod N × ZMod N =>
+        (∀ i : Fin k, p.1 + i.val • p.2 ∈ A) ∧ p.2 ≠ 0)).card) :
+    2 ≤ A.card := by
+  by_contra h
+  have hle : A.card ≤ 1 := by omega
+  rw [kAPCount_nondeg_card_le_one hk hle] at hpos
+  exact lt_irrefl 0 hpos
+
 end RothTheoremOQ03OQ01
