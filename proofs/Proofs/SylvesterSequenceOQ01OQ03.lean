@@ -125,6 +125,8 @@ theorem syl_odd {n : ℕ} (hn : 1 ≤ n) : Odd (syl n) := by
   have hsub : syl (m + 1) - 1 = syl m * (syl m - 1) := syl_succ_sub_one m
   have hge : 1 ≤ syl (m + 1) := le_trans (by norm_num) (two_le_syl (m + 1))
   rcases heven with ⟨t, ht⟩
+  rw [ht] at hsub
+  simp only [Nat.succ_eq_add_one]
   exact ⟨t, by omega⟩
 
 /-- The `mod 6` invariant propagates: `6 ∣ aₙ - 1` for `n ≥ 2`. -/

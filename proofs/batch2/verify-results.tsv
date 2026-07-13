@@ -2390,7 +2390,7 @@ SchauderFixedPointOQ03	RESIDUAL	instance-synth
 SchauderFixedPointOQ03OQ01	GREEN	
 SchroederBernsteinOQ01	RESIDUAL	elab-drift
 SchroederBernsteinOQ02	RESIDUAL	unknown-const:Set.image_subset
-SchroederBernsteinOQ03	RESIDUAL	type-mismatch
+SchroederBernsteinOQ03	GREEN	
 SchursTheorem	GREEN	
 SearchMathlib	RESIDUAL	unknown-const:IsCompact.of_isClosed_isBounded
 ShannonChannelCoding	GREEN	
@@ -2527,7 +2527,7 @@ SylowTheoremOQ04	RESIDUAL	unknown-const:card_sylow_dvd_index
 SylowTheoremOQ04OQ03	RESIDUAL	decide-maxrecdepth
 SylowTheoremOQ05	GREEN	
 SylowTheoremsOQ05	RESIDUAL	slow-timeout
-SylvesterSequenceOQ01OQ03	RESIDUAL	proof-drift
+SylvesterSequenceOQ01OQ03	GREEN	
 SynthesisCurvaturePtolemy	RESIDUAL	unknown-const:spherical_ptolemy
 SynthesisCurvaturePtolemyOQ01	RESIDUAL	unknown-const:spherical_ptolemy
 SynthesisCurvaturePtolemyOQ02	GREEN	

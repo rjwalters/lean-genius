@@ -1602,8 +1602,9 @@ theorem fwdOrbit_add_mul_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a
 /-- A pure multiple of the period returns the orbit to the anchor. -/
 theorem fwdOrbit_mul_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) (t : ℕ) :
     fwdOrbit f g a (orbitPeriod f g h * t) = a := by
-  have := fwdOrbit_add_mul_period h 0 t
-  simpa using this
+  have hz := fwdOrbit_add_mul_period h 0 t
+  rw [Nat.zero_add] at hz
+  rw [hz]; rfl
 
 /-- Reducing the step count modulo the period leaves the forward orbit unchanged. -/
 theorem fwdOrbit_mod_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) (m : ℕ) :
