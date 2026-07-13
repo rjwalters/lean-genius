@@ -780,7 +780,7 @@ Erdos1083Problem	GREEN
 Erdos1084OQ01	GREEN	
 Erdos1084Problem	GREEN	
 Erdos1085Problem	GREEN	
-Erdos1086Problem	RESIDUAL	parse-error
+Erdos1086Problem	GREEN	parse-error
 Erdos1087Problem	RESIDUAL	instance-synth
 Erdos1088Problem	GREEN	
 Erdos1089Problem	RESIDUAL	unknown-const:PiLp.equiv_symm_apply
@@ -1130,7 +1130,7 @@ Erdos325Problem	GREEN
 Erdos326Problem	GREEN	
 Erdos327OQ01	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
 Erdos327OQ01OQ04	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
-Erdos328Problem	RESIDUAL	parse-error
+Erdos328Problem	GREEN	parse-error
 Erdos329Problem	GREEN	
 Erdos330Problem	GREEN	
 Erdos332Problem	GREEN	
@@ -1171,7 +1171,7 @@ Erdos353Problem	RESIDUAL	unknown-const:smul_left_cancel₀
 Erdos354Problem	GREEN	
 Erdos355Problem	RESIDUAL	proof-drift
 Erdos356Problem	RESIDUAL	unknown-const:Finset.range'
-Erdos357Problem	RESIDUAL	parse-error
+Erdos357Problem	GREEN	parse-error
 Erdos358Problem	RESIDUAL	unknown-const:two_mul_sum_Icc
 Erdos359Problem	GREEN	
 Erdos35Problem	RESIDUAL	proof-drift
@@ -1435,7 +1435,7 @@ Erdos581Problem	GREEN
 Erdos582Problem	RESIDUAL	dot-notation-drift
 Erdos583Problem	RESIDUAL	proof-drift
 Erdos584Problem	GREEN	
-Erdos585Problem	RESIDUAL	elab-drift
+Erdos585Problem	GREEN	elab-drift
 Erdos586Problem	GREEN	
 Erdos587Problem	GREEN	
 Erdos588Problem	GREEN	
@@ -1699,7 +1699,7 @@ Erdos791Problem	GREEN
 Erdos792Problem	GREEN	
 Erdos794Problem	RESIDUAL	type-mismatch
 Erdos795Aristotle	GREEN	
-Erdos795Problem	RESIDUAL	parse-error
+Erdos795Problem	GREEN	parse-error
 Erdos795ProblemAristotle	RESIDUAL	parse-error
 Erdos796Problem	RESIDUAL	type-mismatch
 Erdos797Problem	RESIDUAL	proof-drift

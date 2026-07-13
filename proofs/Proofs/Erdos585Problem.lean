@@ -52,9 +52,8 @@ def HasTwoEdgeDisjointCyclesOnSameVertexSet (G : SimpleGraph (Fin m)) : Prop :=
 /-- f(n): the maximum number of edges in an n-vertex graph with no two
     edge-disjoint cycles on the same vertex set -/
 noncomputable def maxEdgesNoEdgeDisjointCycles (n : ℕ) : ℕ :=
-  sSup {G.edgeFinset.card |
-    (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj)
-    (_ : ¬HasTwoEdgeDisjointCyclesOnSameVertexSet G)}
+  sSup {k | ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+    ¬HasTwoEdgeDisjointCyclesOnSameVertexSet G ∧ G.edgeFinset.card = k}
 
 /- ## Pyber–Rödl–Szemerédi Lower Bound -/
 

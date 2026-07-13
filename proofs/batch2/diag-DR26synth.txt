@@ -1,0 +1,959 @@
+=== FAIL Erdos1127Problem ===
+Proofs/Erdos1127Problem.lean:150:45: error: Type mismatch
+Proofs/Erdos1127Problem.lean:154:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1127Problem.lean:160:25: error: Type mismatch
+=== FAIL Erdos1173Problem ===
+Proofs/Erdos1173Problem.lean:54:20: error: Failed to infer universe levels in type of binder `α`
+Proofs/Erdos1173Problem.lean:104:5: error: Failed to infer universe levels in type of binder `f`
+Proofs/Erdos1173Problem.lean:128:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos1121Problem ===
+Proofs/Erdos1121Problem.lean:109:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1121Problem.lean:110:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos174Problem ===
+Proofs/Erdos174Problem.lean:84:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos174Problem.lean:108:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos174Problem.lean:131:16: error: type expected, got
+=== FAIL Erdos180Problem ===
+Proofs/Erdos180Problem.lean:37:48: error: Application type mismatch: The argument
+Proofs/Erdos180Problem.lean:63:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos180Problem.lean:63:43: error: Tactic `assumption` failed
+=== FAIL ArithmeticSeriesOQ00OQ02OQ01 ===
+Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:98:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:111:2: error: omega could not prove the goal:
+Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean:121:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL AlgebraicNumbersCountableOQ01OQ01OQ01 ===
+Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:89:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/AlgebraicNumbersCountableOQ01OQ01OQ01.lean:94:51: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos156Aristotle ===
+Proofs/Erdos156Aristotle.lean:29:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos156Aristotle.lean:59:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos156Aristotle.lean:59:52: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos191Problem ===
+Proofs/Erdos191Problem.lean:217:2: error: 'calc' expression has type
+Proofs/Erdos191Problem.lean:283:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos191Problem.lean:284:15: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL BaselProblemOQ01OQ01 ===
+=== FAIL Erdos188Problem ===
+Proofs/Erdos188Problem.lean:53:55: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos188Problem.lean:58:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/BaselProblemOQ01OQ01.lean:46:2: error: failed to synthesize
+Proofs/BaselProblemOQ01OQ01.lean:74:34: error: Application type mismatch: The argument
+Proofs/BaselProblemOQ01OQ01.lean:85:2: error: Type mismatch
+=== FAIL BezoutIdentityOQ02OQ04 ===
+Proofs/BezoutIdentityOQ02OQ04.lean:62:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/BezoutIdentityOQ02OQ04.lean:69:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/BezoutIdentityOQ02OQ04.lean:69:37: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL ArchimedesMethodOfExhaustion ===
+Proofs/ArchimedesMethodOfExhaustion.lean:99:4: error: Type mismatch
+Proofs/ArchimedesMethodOfExhaustion.lean:101:23: error: failed to synthesize
+Proofs/ArchimedesMethodOfExhaustion.lean:101:61: error: omega could not prove the goal:
+=== FAIL Erdos209Problem ===
+Proofs/Erdos209Problem.lean:100:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos209Problem.lean:100:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos209Problem.lean:127:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL AngleTrisectionOQ02OQ01OQ02Incomplete01 ===
+Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:168:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:174:8: error: Function expected at
+Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:178:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos20Problem ===
+Proofs/Erdos20Problem.lean:42:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos20Problem.lean:100:57: error: not a positivity goal
+=== FAIL Erdos216Problem ===
+Proofs/Erdos216Problem.lean:138:27: error: Application type mismatch: The argument
+Proofs/Erdos216Problem.lean:139:2: error: Type mismatch
+Proofs/Erdos216Problem.lean:159:29: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos247Problem ===
+Proofs/Erdos247Problem.lean:27:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/LiouvilleTheorem.olean' of module Proofs.LiouvilleTheorem does not exist
+=== FAIL Erdos210Problem ===
+Proofs/Erdos210Problem.lean:56:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos210Problem.lean:56:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos210Problem.lean:56:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL BorsukUlamOQ02OQ02 ===
+Proofs/BorsukUlamOQ02OQ02.lean:57:52: error: typeclass instance problem is stuck
+Proofs/BorsukUlamOQ02OQ02.lean:63:35: error: typeclass instance problem is stuck
+Proofs/BorsukUlamOQ02OQ02.lean:70:14: error: typeclass instance problem is stuck
+=== FAIL AngleTrisectionCos20GalOQ01OQ02OQ02 ===
+Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:154:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:171:46: error: Application type mismatch: The argument
+Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean:184:34: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL AlgebraicNumbersCountableOQ01OQ03 ===
+Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:78:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/AlgebraicNumbersCountableOQ01OQ03.lean:95:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos275Problem ===
+Proofs/Erdos275Problem.lean:108:29: error: unknown tactic
+Proofs/Erdos275Problem.lean:108:25: error: unsolved goals
+Proofs/Erdos275Problem.lean:140:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL BorsukUlamOQ04OQ03 ===
+=== FAIL Erdos211Problem ===
+Proofs/BorsukUlamOQ04OQ03.lean:181:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos211Problem.lean:170:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos339Aristotle ===
+Proofs/Erdos339Aristotle.lean:16:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos339Problem.olean' of module Proofs.Erdos339Problem does not exist
+=== FAIL CantorDiagonalizationOQ01OQ01OQ02OQ03 ===
+Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:52:2: error: Tactic `apply` failed: could not unify the conclusion of `@power_le_power_right`
+Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:62:9: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean:62:8: error(lean.invalidField): Invalid field notation: Type of
+=== FAIL BurnsideCountingOQ03OQ03 ===
+Proofs/BurnsideCountingOQ03OQ03.lean:50:29: error: unsolved goals
+Proofs/BurnsideCountingOQ03OQ03.lean:106:8: error: typeclass instance problem is stuck
+=== FAIL CantorDiagonalizationOQ04OQ01OQ01OQ01 ===
+Proofs/CantorDiagonalizationOQ04OQ01OQ01OQ01.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/CantorDiagonalizationOQ04OQ01OQ01.olean' of module Proofs.CantorDiagonalizationOQ04OQ01OQ01 does not exist
+=== FAIL Erdos254Problem ===
+Proofs/Erdos254Problem.lean:83:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos254Problem.lean:128:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CantorDiagonalizationOQ04OQ01OQ01 ===
+Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:62:70: error: invalid binder annotation, type is not a class instance
+Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean:67:23: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos107OQ01KleinUpperAristotle ===
+Proofs/Erdos107OQ01KleinUpperAristotle.lean:72:2: error: `grind` failed
+Proofs/Erdos107OQ01KleinUpperAristotle.lean:85:42: error: Application type mismatch: The argument
+Proofs/Erdos107OQ01KleinUpperAristotle.lean:95:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CantorDiagonalizationOQ04OQ03Aristotle ===
+Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean:24:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/CantorDiagonalizationOQ04OQ03.olean' of module Proofs.CantorDiagonalizationOQ04OQ03 does not exist
+=== FAIL CauchySchwarzOQ01OQ02 ===
+Proofs/CauchySchwarzOQ01OQ02.lean:62:9: error: typeclass instance problem is stuck
+Proofs/CauchySchwarzOQ01OQ02.lean:70:12: error: typeclass instance problem is stuck
+Proofs/CauchySchwarzOQ01OQ02.lean:85:5: error: typeclass instance problem is stuck
+=== FAIL Erdos353Aristotle ===
+Proofs/Erdos353Aristotle.lean:33:23: error: expected token
+Proofs/Erdos353Aristotle.lean:33:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos353Aristotle.lean:33:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CauchySchwarzIntegralOQ01OQ03 ===
+Proofs/CauchySchwarzIntegralOQ01OQ03.lean:51:45: error: unexpected identifier; expected '[', 'add_aesop_rules', 'binder_predicate', 'builtin_cbv_simproc', 'builtin_dsimproc', 'builtin_simproc', 'cbv_simproc', 'def_eval_config_item', 'dsimproc', 'elab', 'elab_rules', 'grind_pattern', 'infix', 'infixl', 'infixr', 'instance', 'macro', 'macro_rules', 'notation', 'notation3', 'postfix', 'prefix', 'simproc', 'syntax' or 'unif_hint'
+Proofs/CauchySchwarzIntegralOQ01OQ03.lean:87:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CauchySchwarzIntegralOQ01OQ03.lean:87:48: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos395OQ01 ===
+Proofs/Erdos395OQ01.lean:26:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos395Problem.olean' of module Proofs.Erdos395Problem does not exist
+=== FAIL Erdos339Problem ===
+Proofs/Erdos339Problem.lean:61:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos339Problem.lean:123:0: error: Not a definitional equality: the left-hand side
+Proofs/Erdos339Problem.lean:126:2: error: Type mismatch
+=== FAIL CauchySchwarzOQ01OQ04 ===
+Proofs/CauchySchwarzOQ01OQ04.lean:88:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CauchySchwarzOQ01OQ04.lean:142:19: error: typeclass instance problem is stuck, it is often due to metavariables
+Proofs/CauchySchwarzOQ01OQ04.lean:146:2: error: linarith failed to find a contradiction
+=== FAIL Erdos35ProblemAristotle ===
+Proofs/Erdos35ProblemAristotle.lean:72:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CantorDiagonalizationOQ04OQ03 ===
+Proofs/CantorDiagonalizationOQ04OQ03.lean:57:48: error: unsolved goals
+Proofs/CantorDiagonalizationOQ04OQ03.lean:74:18: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/CantorDiagonalizationOQ04OQ03.lean:86:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL BrouwerFixedPointOQ02OQ01 ===
+Proofs/BrouwerFixedPointOQ02OQ01.lean:107:80: error: unsolved goals
+Proofs/BrouwerFixedPointOQ02OQ01.lean:142:2: error: Type mismatch: After simplification, term
+Proofs/BrouwerFixedPointOQ02OQ01.lean:284:13: error(lean.invalidField): Invalid field `lt_or_lt`: The environment does not contain `Function.lt_or_lt`, so it is not possible to project the field `lt_or_lt` from an expression
+=== FAIL Erdos395OQ01Incomplete01 ===
+Proofs/Erdos395OQ01Incomplete01.lean:21:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos395Problem.olean' of module Proofs.Erdos395Problem does not exist
+=== FAIL CayleyHamiltonMinpolyOQ02OQ02 ===
+Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:117:56: error: typeclass instance problem is stuck
+Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:122:56: error: typeclass instance problem is stuck
+Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean:127:55: error: typeclass instance problem is stuck
+=== FAIL Erdos365Problem ===
+Proofs/Erdos365Problem.lean:52:13: error: not a positivity goal
+Proofs/Erdos365Problem.lean:54:23: error: numerals are data in Lean, but the expected type is a proposition
+Proofs/Erdos365Problem.lean:58:13: error: not a positivity goal
+=== FAIL Erdos380Problem ===
+Proofs/Erdos380Problem.lean:65:13: error: Function expected at
+Proofs/Erdos380Problem.lean:65:33: error: Application type mismatch: The argument
+Proofs/Erdos380Problem.lean:77:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos447Problem ===
+Proofs/Erdos447Problem.lean:44:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos447Problem.lean:64:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos447Problem.lean:81:3: error: Application type mismatch: The argument
+=== FAIL CayleyHamiltonMinpolyOQ05OQ02 ===
+Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean:76:2: error: Type mismatch
+Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean:178:15: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos500Problem ===
+Proofs/Erdos500Problem.lean:33:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos500Problem.lean:33:11: error(lean.invalidField): Invalid field notation: Type of
+Proofs/Erdos500Problem.lean:39:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CentralLimitTheoremOQ02OQ02 ===
+Proofs/CentralLimitTheoremOQ02OQ02.lean:124:9: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CentralLimitTheoremOQ02OQ02.lean:126:13: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CentralLimitTheoremOQ02OQ02.lean:124:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CayleyHamiltonMinpolyOQ05OQ02OQ03 ===
+Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:93:58: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:108:59: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean:126:8: error: typeclass instance problem is stuck
+=== FAIL Erdos395Problem ===
+Proofs/Erdos395Problem.lean:81:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos395Problem.lean:96:15: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL CentralLimitTheoremOQ01OQ02OQ01OQ01 ===
+Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:32:40: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:36:35: error: unsolved goals
+Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean:41:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos445Problem ===
+Proofs/Erdos445Problem.lean:45:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos445Problem.lean:46:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos445Problem.lean:115:6: error: 'calc' expression has type
+=== FAIL CollatzStructuredOQ03 ===
+Proofs/CollatzStructuredOQ03.lean:48:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CollatzStructuredOQ03.lean:48:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/CollatzStructuredOQ03.lean:54:2: error: Tactic `split` failed: Could not split an `if` or `match` expression in the goal
+=== FAIL ChineseRemainderNonCoprimeOQ02OQ01 ===
+Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:80:22: error: invalid binder annotation, type is not a class instance
+Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:85:54: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean:85:54: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos308Problem ===
+Proofs/Erdos308Problem.lean:107:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos308Problem.lean:107:6: error: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Proofs/Erdos308Problem.lean:100:55: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+=== FAIL ContinuumHypothesisOQ02OQ01 ===
+Proofs/ContinuumHypothesisOQ02OQ01.lean:112:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/ContinuumHypothesisOQ02OQ01.lean:112:26: error(lean.invalidField): Invalid field notation: Type of
+Proofs/ContinuumHypothesisOQ02OQ01.lean:130:68: error: Type mismatch
+=== FAIL DerangementsConvergenceOQ05OQ01 ===
+Proofs/DerangementsConvergenceOQ05OQ01.lean:61:39: error: Application type mismatch: The argument
+Proofs/DerangementsConvergenceOQ05OQ01.lean:61:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/DerangementsConvergenceOQ05OQ01.lean:60:59: error: unsolved goals
+=== FAIL Erdos505Problem ===
+Proofs/Erdos505Problem.lean:33:56: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos505Problem.lean:33:68: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos505Problem.lean:38:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos501Aristotle ===
+Proofs/Erdos501Aristotle.lean:39:48: error: expected token
+Proofs/Erdos501Aristotle.lean:39:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos501Aristotle.lean:39:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1007OQ05 ===
+Proofs/Erdos1007OQ05.lean:40:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos1007Problem.olean' of module Proofs.Erdos1007Problem does not exist
+=== FAIL ElementaryQuadraticReciprocityOQ01OQ01OQ03 ===
+Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:82:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:88:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean:89:56: error: Application type mismatch: The argument
+=== FAIL Erdos1022OQ01 ===
+Proofs/Erdos1022OQ01.lean:46:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1022OQ01.lean:67:33: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1022OQ01.lean:69:23: error: unsolved goals
+=== FAIL Erdos1006Problem ===
+Proofs/Erdos1006Problem.lean:58:44: error(lean.invalidField): Invalid field `IsCycle`: The environment does not contain `SimpleGraph.IsCycle`, so it is not possible to project the field `IsCycle` from an expression
+Proofs/Erdos1006Problem.lean:62:65: error(lean.invalidField): Invalid field `IsCycle`: The environment does not contain `SimpleGraph.IsCycle`, so it is not possible to project the field `IsCycle` from an expression
+Proofs/Erdos1006Problem.lean:72:10: error: `Orientation` has already been declared
+=== FAIL Erdos525Problem ===
+Proofs/Erdos525Problem.lean:57:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos525Problem.lean:61:32: error: Application type mismatch: The argument
+Proofs/Erdos525Problem.lean:69:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1035Problem ===
+Proofs/Erdos1035Problem.lean:341:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1035Problem.lean:340:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1035Problem.lean:350:51: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos1007Problem ===
+Proofs/Erdos1007Problem.lean:103:56: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1007Problem.lean:112:56: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1007Problem.lean:124:56: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1079Problem ===
+Proofs/Erdos1079Problem.lean:49:38: error: Function expected at
+Proofs/Erdos1079Problem.lean:50:35: error: Function expected at
+Proofs/Erdos1079Problem.lean:126:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1008ProblemProvable ===
+Proofs/Erdos1008ProblemProvable.lean:141:51: error(lean.invalidField): Invalid field `toNat`: The environment does not contain `Subtype.toNat`, so it is not possible to project the field `toNat` from an expression
+Proofs/Erdos1008ProblemProvable.lean:148:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos548Aristotle ===
+Proofs/Erdos548Aristotle.lean:30:5: error: Ambiguous term
+Proofs/Erdos548Aristotle.lean:30:29: error: Ambiguous term
+Proofs/Erdos548Aristotle.lean:35:24: error: Ambiguous term
+=== FAIL Erdos1056Problem ===
+Proofs/Erdos1056Problem.lean:48:55: error: omega could not prove the goal:
+Proofs/Erdos1056Problem.lean:49:35: error: omega could not prove the goal:
+Proofs/Erdos1056Problem.lean:94:23: error: unsolved goals
+=== FAIL Erdos559Problem ===
+Proofs/Erdos559Problem.lean:62:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos559Problem.lean:92:6: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Erdos559.FiniteGraph.mk` has 4 explicit field, but only 3 were provided
+=== FAIL Erdos549Problem ===
+Proofs/Erdos549Problem.lean:49:11: error: Ambiguous term
+Proofs/Erdos549Problem.lean:67:47: error: overloaded, errors 
+Proofs/Erdos549Problem.lean:105:10: error: unsolved goals
+=== FAIL Erdos551Problem ===
+Proofs/Erdos551Problem.lean:78:4: error: Invalid alternative name `inl`: Expected `refl`
+Proofs/Erdos551Problem.lean:79:4: error: Invalid alternative name `inr`: Expected `refl`
+Proofs/Erdos551Problem.lean:77:4: error: Dependent elimination failed: Failed to solve equation
+=== FAIL Erdos610Aristotle ===
+Proofs/Erdos610Aristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos610Problem.olean' of module Proofs.Erdos610Problem does not exist
+=== FAIL Erdos107OQ01 ===
+Proofs/Erdos107OQ01.lean:36:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos107OQ01KleinUpperAristotle.olean' of module Proofs.Erdos107OQ01KleinUpperAristotle does not exist
+=== FAIL Erdos1078Problem ===
+Proofs/Erdos1078Problem.lean:49:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1078Problem.lean:144:2: error: No goals to be solved
+Proofs/Erdos1078Problem.lean:153:2: error: No goals to be solved
+=== FAIL Erdos571Problem ===
+Proofs/Erdos571Problem.lean:53:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos571Problem.lean:94:0: error: declaration `Erdos571.erdos_571_conjecture` contains universe level metavariables at the expression
+=== FAIL Erdos1087Problem ===
+Proofs/Erdos1087Problem.lean:125:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1087Problem.lean:128:19: error: unsolved goals
+Proofs/Erdos1087Problem.lean:129:19: error: unsolved goals
+=== FAIL Erdos592Problem ===
+Proofs/Erdos592Problem.lean:44:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos592Problem.lean:55:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos601Problem ===
+Proofs/Erdos601Problem.lean:49:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos601Problem.lean:79:40: error: Application type mismatch: The argument
+Proofs/Erdos601Problem.lean:79:44: error: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+=== FAIL Erdos610ProblemAristotle ===
+Proofs/Erdos610ProblemAristotle.lean:20:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos610Problem.olean' of module Proofs.Erdos610Problem does not exist
+=== FAIL Erdos611Aristotle ===
+Proofs/Erdos611Aristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos611Problem.olean' of module Proofs.Erdos611Problem does not exist
+=== FAIL Erdos1097OQ01 ===
+Proofs/Erdos1097OQ01.lean:45:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1097OQ01.lean:104:20: error: expected token
+Proofs/Erdos1097OQ01.lean:104:9: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Exists.intro` has 2 explicit field, but only 1 was provided
+=== FAIL Erdos1091Problem ===
+Proofs/Erdos1091Problem.lean:50:44: error: omega could not prove the goal:
+Proofs/Erdos1091Problem.lean:50:71: error: omega could not prove the goal:
+Proofs/Erdos1091Problem.lean:57:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1081Problem ===
+Proofs/Erdos1081Problem.lean:69:4: error: omega could not prove the goal:
+Proofs/Erdos1081Problem.lean:120:4: error: interval_cases failed: could not find upper bound on p
+Proofs/Erdos1081Problem.lean:126:4: error: interval_cases failed: could not find upper bound on p
+=== FAIL Erdos611ProblemAristotle ===
+Proofs/Erdos611ProblemAristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos611Problem.olean' of module Proofs.Erdos611Problem does not exist
+=== FAIL Erdos1097Problem ===
+Proofs/Erdos1097Problem.lean:52:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1097Problem.lean:62:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1097Problem.lean:69:9: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos610Problem ===
+Proofs/Erdos610Problem.lean:40:2: error: Ambiguous term
+Proofs/Erdos610Problem.lean:40:42: error: Ambiguous term
+Proofs/Erdos610Problem.lean:44:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1098OQ01OQ01 ===
+Proofs/Erdos1098OQ01OQ01.lean:75:58: error: Type mismatch
+Proofs/Erdos1098OQ01OQ01.lean:88:38: error: Type mismatch
+Proofs/Erdos1098OQ01OQ01.lean:172:15: error: overloaded, errors 
+=== FAIL Erdos1103Problem ===
+Proofs/Erdos1103Problem.lean:50:23: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1103Problem.lean:50:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1103Problem.lean:96:41: error: Tactic `decide` failed for proposition
+=== FAIL Erdos619Problem ===
+Proofs/Erdos619Problem.lean:51:11: error(lean.invalidField): Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+Proofs/Erdos619Problem.lean:51:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos619Problem.lean:73:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos613ProblemAristotle ===
+Proofs/Erdos613ProblemAristotle.lean:71:2: error: omega could not prove the goal:
+=== FAIL Erdos611Problem ===
+Proofs/Erdos611Problem.lean:44:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos611Problem.lean:183:0: error: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+Proofs/Erdos611Problem.lean:188:0: error: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+=== FAIL Erdos613Aristotle ===
+Proofs/Erdos613Aristotle.lean:25:2: error: omega could not prove the goal:
+Proofs/Erdos613Aristotle.lean:31:2: error: omega could not prove the goal:
+Proofs/Erdos613Aristotle.lean:37:2: error: omega could not prove the goal:
+=== FAIL Erdos622OQ04 ===
+Proofs/Erdos622OQ04.lean:23:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos622Problem.olean' of module Proofs.Erdos622Problem does not exist
+=== FAIL Erdos1118Problem ===
+Proofs/Erdos1118Problem.lean:47:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1118Problem.lean:55:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1118Problem.lean:55:33: error: Application type mismatch: The argument
+=== FAIL Erdos1098Problem ===
+Proofs/Erdos1098Problem.lean:77:54: error: unsolved goals
+Proofs/Erdos1098Problem.lean:91:48: error: Type mismatch
+Proofs/Erdos1098Problem.lean:92:37: error: unsolved goals
+=== FAIL Erdos625Aristotle ===
+Proofs/Erdos625Aristotle.lean:29:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos625Problem.olean' of module Proofs.Erdos625Problem does not exist
+=== FAIL Erdos1127Problem ===
+Proofs/Erdos1127Problem.lean:150:45: error: Type mismatch
+Proofs/Erdos1127Problem.lean:154:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1127Problem.lean:160:25: error: Type mismatch
+=== FAIL Erdos1120Problem ===
+Proofs/Erdos1120Problem.lean:34:23: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1120Problem.lean:42:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1120Problem.lean:49:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos625ProblemAristotle ===
+Proofs/Erdos625ProblemAristotle.lean:14:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos625Problem.olean' of module Proofs.Erdos625Problem does not exist
+=== FAIL Erdos625Problem ===
+Proofs/Erdos625Problem.lean:95:16: error: typeclass instance problem is stuck
+Proofs/Erdos625Problem.lean:198:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos625Problem.lean:204:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos1121Problem ===
+Proofs/Erdos1121Problem.lean:109:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos1121Problem.lean:110:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos614Problem ===
+Proofs/Erdos614Problem.lean:53:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos614Problem.lean:86:40: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos614Problem.lean:126:50: error: unsolved goals
+=== FAIL Erdos174Problem ===
+Proofs/Erdos174Problem.lean:84:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos174Problem.lean:108:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos174Problem.lean:131:16: error: type expected, got
+=== FAIL Erdos1173Problem ===
+Proofs/Erdos1173Problem.lean:54:20: error: Failed to infer universe levels in type of binder `α`
+Proofs/Erdos1173Problem.lean:104:5: error: Failed to infer universe levels in type of binder `f`
+Proofs/Erdos1173Problem.lean:128:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos622Problem ===
+Proofs/Erdos622Problem.lean:52:68: error: Type mismatch
+Proofs/Erdos622Problem.lean:111:34: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos622Problem.lean:111:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos669Problem ===
+Proofs/Erdos669Problem.lean:80:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos669Problem.lean:81:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos669Problem.lean:109:2: error: Type mismatch
+=== FAIL Erdos180Problem ===
+Proofs/Erdos180Problem.lean:37:48: error: Application type mismatch: The argument
+Proofs/Erdos180Problem.lean:63:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos180Problem.lean:63:43: error: Tactic `assumption` failed
+=== FAIL Erdos628Aristotle ===
+Proofs/Erdos628Aristotle.lean:25:20: error: Ambiguous term
+Proofs/Erdos628Aristotle.lean:31:18: error: Ambiguous term
+Proofs/Erdos628Aristotle.lean:37:4: error: Ambiguous term
+=== FAIL Erdos670Problem ===
+Proofs/Erdos670Problem.lean:48:29: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos670Problem.lean:48:38: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos670Problem.lean:48:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos156Aristotle ===
+Proofs/Erdos156Aristotle.lean:29:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos156Aristotle.lean:59:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos156Aristotle.lean:59:52: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos740Problem ===
+Proofs/Erdos740Problem.lean:68:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos740Problem.lean:68:33: error: Application type mismatch: The argument
+Proofs/Erdos740Problem.lean:69:45: error: Application type mismatch: The argument
+=== FAIL Erdos667Problem ===
+Proofs/Erdos667Problem.lean:94:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/Erdos667Problem.lean:99:8: error: Tactic `apply` failed: could not unify the conclusion of `@filter_congr`
+Proofs/Erdos667Problem.lean:116:46: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos740ProblemProvable ===
+Proofs/Erdos740ProblemProvable.lean:68:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos740ProblemProvable.lean:68:33: error: Application type mismatch: The argument
+Proofs/Erdos740ProblemProvable.lean:69:45: error: Application type mismatch: The argument
+=== FAIL Erdos188Problem ===
+Proofs/Erdos188Problem.lean:53:55: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos188Problem.lean:58:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos191Problem ===
+Proofs/Erdos191Problem.lean:217:2: error: 'calc' expression has type
+Proofs/Erdos191Problem.lean:283:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos191Problem.lean:284:15: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos775Problem ===
+Proofs/Erdos775Problem.lean:91:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos775Problem.lean:208:49: error: unknown tactic
+Proofs/Erdos775Problem.lean:208:45: error: unsolved goals
+=== FAIL Erdos209Problem ===
+Proofs/Erdos209Problem.lean:100:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos209Problem.lean:100:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos209Problem.lean:127:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos20Problem ===
+Proofs/Erdos20Problem.lean:42:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos20Problem.lean:100:57: error: not a positivity goal
+=== FAIL Erdos732Problem ===
+Proofs/Erdos732Problem.lean:159:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos732Problem.lean:200:8: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos732Problem.lean:240:2: error: No goals to be solved
+=== FAIL Erdos210Problem ===
+Proofs/Erdos210Problem.lean:56:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos210Problem.lean:56:27: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos210Problem.lean:56:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos776Problem ===
+Proofs/Erdos776Problem.lean:36:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos776Problem.lean:36:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos776Problem.lean:53:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos752Problem ===
+Proofs/Erdos752Problem.lean:41:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos752Problem.lean:45:37: error: Application type mismatch: The argument
+Proofs/Erdos752Problem.lean:91:84: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos247Problem ===
+Proofs/Erdos247Problem.lean:27:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/LiouvilleTheorem.olean' of module Proofs.LiouvilleTheorem does not exist
+=== FAIL Erdos216Problem ===
+Proofs/Erdos216Problem.lean:138:27: error: Application type mismatch: The argument
+Proofs/Erdos216Problem.lean:139:2: error: Type mismatch
+Proofs/Erdos216Problem.lean:159:29: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos275Problem ===
+Proofs/Erdos275Problem.lean:108:29: error: unknown tactic
+Proofs/Erdos275Problem.lean:108:25: error: unsolved goals
+Proofs/Erdos275Problem.lean:140:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos814Problem ===
+Proofs/Erdos814Problem.lean:65:20: error: unsolved goals
+Proofs/Erdos814Problem.lean:72:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos814Problem.lean:79:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos211Problem ===
+Proofs/Erdos211Problem.lean:170:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos783Problem ===
+Proofs/Erdos783Problem.lean:165:76: error: failed to synthesize
+Proofs/Erdos783Problem.lean:147:80: error: unsolved goals
+Proofs/Erdos783Problem.lean:175:72: error: Application type mismatch: The argument
+=== FAIL Erdos803Problem ===
+Proofs/Erdos803Problem.lean:39:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos803Problem.lean:53:4: error: Tactic `apply` failed: could not unify the conclusion of `Finset.sup_congr rfl`
+Proofs/Erdos803Problem.lean:56:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos339Aristotle ===
+Proofs/Erdos339Aristotle.lean:16:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos339Problem.olean' of module Proofs.Erdos339Problem does not exist
+=== FAIL Erdos107OQ01KleinUpperAristotle ===
+Proofs/Erdos107OQ01KleinUpperAristotle.lean:72:2: error: `grind` failed
+Proofs/Erdos107OQ01KleinUpperAristotle.lean:85:42: error: Application type mismatch: The argument
+Proofs/Erdos107OQ01KleinUpperAristotle.lean:95:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos81Problem ===
+Proofs/Erdos81Problem.lean:59:38: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos81Problem.lean:94:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos81Problem.lean:94:46: error: unsolved goals
+=== FAIL Erdos254Problem ===
+Proofs/Erdos254Problem.lean:83:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos254Problem.lean:128:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos804Problem ===
+Proofs/Erdos804Problem.lean:106:32: error: Type mismatch
+Proofs/Erdos804Problem.lean:121:32: error: Type mismatch
+Proofs/Erdos804Problem.lean:141:34: error: Type mismatch
+=== FAIL Erdos818Aristotle ===
+Proofs/Erdos818Aristotle.lean:56:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos818Aristotle.lean:62:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos818Aristotle.lean:65:9: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos822Problem ===
+Proofs/Erdos822Problem.lean:91:13: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos822Problem.lean:91:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos822Problem.lean:92:46: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos353Aristotle ===
+Proofs/Erdos353Aristotle.lean:33:23: error: expected token
+Proofs/Erdos353Aristotle.lean:33:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos353Aristotle.lean:33:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos339Problem ===
+Proofs/Erdos339Problem.lean:61:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos339Problem.lean:123:0: error: Not a definitional equality: the left-hand side
+Proofs/Erdos339Problem.lean:126:2: error: Type mismatch
+=== FAIL Erdos861Problem ===
+Proofs/Erdos861Problem.lean:187:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos861Problem.lean:197:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos861Problem.lean:205:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos395OQ01 ===
+Proofs/Erdos395OQ01.lean:26:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos395Problem.olean' of module Proofs.Erdos395Problem does not exist
+=== FAIL Erdos395OQ01Incomplete01 ===
+Proofs/Erdos395OQ01Incomplete01.lean:21:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos395Problem.olean' of module Proofs.Erdos395Problem does not exist
+=== FAIL Erdos365Problem ===
+Proofs/Erdos365Problem.lean:52:13: error: not a positivity goal
+Proofs/Erdos365Problem.lean:54:23: error: numerals are data in Lean, but the expected type is a proposition
+Proofs/Erdos365Problem.lean:58:13: error: not a positivity goal
+=== FAIL Erdos380Problem ===
+Proofs/Erdos380Problem.lean:65:13: error: Function expected at
+Proofs/Erdos380Problem.lean:65:33: error: Application type mismatch: The argument
+Proofs/Erdos380Problem.lean:77:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos878Problem ===
+Proofs/Erdos878Problem.lean:144:50: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos878Problem.lean:148:67: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos878Problem.lean:152:53: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos35ProblemAristotle ===
+Proofs/Erdos35ProblemAristotle.lean:72:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos922Problem ===
+Proofs/Erdos922Problem.lean:47:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos922Problem.lean:58:4: error: Type mismatch
+Proofs/Erdos922Problem.lean:96:31: error: Function expected at
+=== FAIL Erdos859Aristotle ===
+Proofs/Erdos859Aristotle.lean:36:37: error: Type mismatch
+Proofs/Erdos859Aristotle.lean:36:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos859Aristotle.lean:44:2: error: Type mismatch
+=== FAIL Erdos447Problem ===
+Proofs/Erdos447Problem.lean:44:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos447Problem.lean:64:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos447Problem.lean:81:3: error: Application type mismatch: The argument
+=== FAIL Erdos94OQ02 ===
+Proofs/Erdos94OQ02.lean:45:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos94OQ02.lean:67:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos94OQ02.lean:69:6: error: Type mismatch
+=== FAIL Erdos973Problem ===
+Proofs/Erdos973Problem.lean:47:19: error: omega could not prove the goal:
+Proofs/Erdos973Problem.lean:51:7: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos973Problem.lean:55:7: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos445Problem ===
+Proofs/Erdos445Problem.lean:45:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos445Problem.lean:46:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos445Problem.lean:115:6: error: 'calc' expression has type
+=== FAIL Erdos395Problem ===
+Proofs/Erdos395Problem.lean:81:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos395Problem.lean:96:15: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos500Problem ===
+Proofs/Erdos500Problem.lean:33:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos500Problem.lean:33:11: error(lean.invalidField): Invalid field notation: Type of
+Proofs/Erdos500Problem.lean:39:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL EulerIdentityOQ01OQ02OQ01 ===
+Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:40: error: Type mismatch
+Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/EulerIdentityOQ01OQ02OQ01.lean:81:31: error: unsolved goals
+=== FAIL Erdos308Problem ===
+Proofs/Erdos308Problem.lean:107:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos308Problem.lean:107:6: error: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+Proofs/Erdos308Problem.lean:100:55: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+=== FAIL FactorRemainderNullstellensatzOQ01 ===
+=== FAIL Erdos505Problem ===
+Proofs/Erdos505Problem.lean:33:56: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos505Problem.lean:33:68: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos505Problem.lean:38:3: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FactorRemainderNullstellensatzOQ01.lean:35:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FactorRemainderNullstellensatzOQ01.lean:36:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FactorRemainderNullstellensatzOQ01.lean:46:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Hilbert20LocalSolvability ===
+Proofs/Hilbert20LocalSolvability.lean:73:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos485OQ02 ===
+Proofs/Erdos485OQ02.lean:98:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos485OQ02.lean:121:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos485OQ02.lean:135:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+=== FAIL Erdos988Problem ===
+Proofs/Erdos988Problem.lean:64:29: error: Application type mismatch: The argument
+Proofs/Erdos988Problem.lean:80:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos988Problem.lean:84:28: error: Application type mismatch: The argument
+=== FAIL Erdos501Aristotle ===
+Proofs/Erdos501Aristotle.lean:39:48: error: expected token
+Proofs/Erdos501Aristotle.lean:39:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos501Aristotle.lean:39:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Hilbert20OQ01OQ03 ===
+Proofs/Hilbert20OQ01OQ03.lean:64:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Hilbert20OQ01OQ03.lean:104:28: error: unsolved goals
+Proofs/Hilbert20OQ01OQ03.lean:126:2: error: No applicable extensionality theorem found for type
+=== FAIL Erdos525Problem ===
+Proofs/Erdos525Problem.lean:57:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos525Problem.lean:61:32: error: Application type mismatch: The argument
+Proofs/Erdos525Problem.lean:69:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL FurstenbergCorrespondenceOQ01 ===
+Proofs/FurstenbergCorrespondenceOQ01.lean:101:10: error: Application type mismatch: The argument
+Proofs/FurstenbergCorrespondenceOQ01.lean:139:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FurstenbergCorrespondenceOQ01.lean:146:2: error: Tactic `split_ifs` failed: no if-then-else conditions to split
+=== FAIL InverseGaloisA5DedekindInstantiation ===
+Proofs/InverseGaloisA5DedekindInstantiation.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/DedekindFrobeniusBridge.olean' of module Proofs.DedekindFrobeniusBridge does not exist
+=== FAIL Hilbert4Geodesics ===
+Proofs/Hilbert4Geodesics.lean:157:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Hilbert4Geodesics.lean:158:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Hilbert4Geodesics.lean:158:33: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos548Aristotle ===
+Proofs/Erdos548Aristotle.lean:30:5: error: Ambiguous term
+Proofs/Erdos548Aristotle.lean:30:29: error: Ambiguous term
+Proofs/Erdos548Aristotle.lean:35:24: error: Ambiguous term
+=== FAIL Hilbert5OQ02 ===
+Proofs/Hilbert5OQ02.lean:86:18: error: Function expected at
+Proofs/Hilbert5OQ02.lean:86:28: error: Function expected at
+Proofs/Hilbert5OQ02.lean:87:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL LagrangeTheoremOQ01OQ03OQ01 ===
+Proofs/LagrangeTheoremOQ01OQ03OQ01.lean:185:2: error: Type mismatch: After simplification, term
+Proofs/LagrangeTheoremOQ01OQ03OQ01.lean:255:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL LagrangeTheoremOQ01 ===
+Proofs/LagrangeTheoremOQ01.lean:37:2: error: Type mismatch
+Proofs/LagrangeTheoremOQ01.lean:42:2: error: Type mismatch
+Proofs/LagrangeTheoremOQ01.lean:64:2: error: Type mismatch
+=== FAIL Erdos549Problem ===
+Proofs/Erdos549Problem.lean:49:11: error: Ambiguous term
+Proofs/Erdos549Problem.lean:67:47: error: overloaded, errors 
+Proofs/Erdos549Problem.lean:105:10: error: unsolved goals
+=== FAIL Erdos559Problem ===
+Proofs/Erdos559Problem.lean:62:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos559Problem.lean:92:6: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Erdos559.FiniteGraph.mk` has 4 explicit field, but only 3 were provided
+=== FAIL Erdos551Problem ===
+Proofs/Erdos551Problem.lean:78:4: error: Invalid alternative name `inl`: Expected `refl`
+Proofs/Erdos551Problem.lean:79:4: error: Invalid alternative name `inr`: Expected `refl`
+Proofs/Erdos551Problem.lean:77:4: error: Dependent elimination failed: Failed to solve equation
+=== FAIL Erdos592Problem ===
+Proofs/Erdos592Problem.lean:44:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos592Problem.lean:55:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL LagrangeTheoremOQ01OQ01OQ01ApproachB ===
+Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:148:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:163:66: error: Invalid argument name `q` for function `unitToAddAut`
+Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:165:2: error: Tactic `apply` failed: could not unify the conclusion of `@Units.ext`
+=== FAIL Erdos571Problem ===
+Proofs/Erdos571Problem.lean:53:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos571Problem.lean:94:0: error: declaration `Erdos571.erdos_571_conjecture` contains universe level metavariables at the expression
+=== FAIL LagrangeTheoremOQ01OQ02 ===
+Proofs/LagrangeTheoremOQ01OQ02.lean:34:21: error: Type mismatch
+Proofs/LagrangeTheoremOQ01OQ02.lean:43:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/LagrangeTheoremOQ01OQ02.lean:43:45: error: Tactic `native_decide` failed: Could not evaluate decidable instance. Error: cannot evaluate code because 'sorryAx' uses 'sorry' and/or contains errors
+=== FAIL Erdos610Aristotle ===
+Proofs/Erdos610Aristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos610Problem.olean' of module Proofs.Erdos610Problem does not exist
+=== FAIL NormEuclideanZsqrtdFamilyOQ03OQ02OQ01 ===
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02OQ01.lean:38:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.olean' of module Proofs.NormEuclideanZsqrtdFamilyOQ03OQ02 does not exist
+=== FAIL Erdos601Problem ===
+Proofs/Erdos601Problem.lean:49:24: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos601Problem.lean:79:40: error: Application type mismatch: The argument
+Proofs/Erdos601Problem.lean:79:44: error: Invalid field notation: Function `Function.nontrivial` does not have a usable parameter of type `Function` for which to substitute `S`
+=== FAIL Erdos610ProblemAristotle ===
+Proofs/Erdos610ProblemAristotle.lean:20:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos610Problem.olean' of module Proofs.Erdos610Problem does not exist
+=== FAIL MaschkeAugmentationNoSplitOQ010101 ===
+Proofs/MaschkeAugmentationNoSplitOQ010101.lean:69:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/MaschkeAugmentationNoSplitOQ010101.lean:72:88: error: unsolved goals
+=== FAIL LiouvilleTheorem ===
+Proofs/LiouvilleTheorem.lean:183:19: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/LiouvilleTheorem.lean:222:32: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/LiouvilleTheorem.lean:222:60: error: linarith failed to find a contradiction
+=== FAIL Erdos611Aristotle ===
+Proofs/Erdos611Aristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos611Problem.olean' of module Proofs.Erdos611Problem does not exist
+=== FAIL NormEuclideanZsqrtdFamilyOQ03OQ02 ===
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:55:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:63:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:76:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos611ProblemAristotle ===
+Proofs/Erdos611ProblemAristotle.lean:19:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos611Problem.olean' of module Proofs.Erdos611Problem does not exist
+=== FAIL MaschkeLocalRingOQ010102 ===
+Proofs/MaschkeLocalRingOQ010102.lean:67:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/MaschkeLocalRingOQ010102.lean:69:80: error: unsolved goals
+=== FAIL PuiseuxTheoremOQ02 ===
+Proofs/PuiseuxTheoremOQ02.lean:81:2: error: Type mismatch
+Proofs/PuiseuxTheoremOQ02.lean:82:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/PuiseuxTheoremOQ02.lean:84:0: error: Not a definitional equality: the left-hand side
+=== FAIL OSBridge ===
+Proofs/OSBridge.lean:99:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/OSBridge.lean:103:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/OSBridge.lean:586:19: error: Application type mismatch: The argument
+=== FAIL Erdos611Problem ===
+Proofs/Erdos611Problem.lean:44:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos611Problem.lean:183:0: error: type of theorem `Erdos611.complete_bipartite_tau` is not a proposition
+Proofs/Erdos611Problem.lean:188:0: error: type of theorem `Erdos611.turan_graph_tau` is not a proposition
+=== FAIL QuadraticReciprocityOQ03OQ01 ===
+Proofs/QuadraticReciprocityOQ03OQ01.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/QuadraticReciprocityOQ03.olean' of module Proofs.QuadraticReciprocityOQ03 does not exist
+=== FAIL PicardIterationExplicitOQ0102 ===
+Proofs/PicardIterationExplicitOQ0102.lean:106:49: error: Application type mismatch: The argument
+Proofs/PicardIterationExplicitOQ0102.lean:106:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/PicardIterationExplicitOQ0102.lean:108:2: error: Type mismatch: After simplification, term
+=== FAIL Erdos610Problem ===
+Proofs/Erdos610Problem.lean:40:2: error: Ambiguous term
+Proofs/Erdos610Problem.lean:40:42: error: Ambiguous term
+Proofs/Erdos610Problem.lean:44:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL QuadraticReciprocityOQ03 ===
+Proofs/QuadraticReciprocityOQ03.lean:51:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/QuadraticReciprocityOQ03.lean:56:2: error: Type mismatch
+Proofs/QuadraticReciprocityOQ03.lean:74:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL PrimitiveRootsOQ02 ===
+Proofs/PrimitiveRootsOQ02.lean:161:56: error: Application type mismatch: The argument
+Proofs/PrimitiveRootsOQ02.lean:171:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/PrimitiveRootsOQ02.lean:177:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos613ProblemAristotle ===
+Proofs/Erdos613ProblemAristotle.lean:71:2: error: omega could not prove the goal:
+=== FAIL SchauderFixedPoint ===
+Proofs/SchauderFixedPoint.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/SchauderFixedPointOQ01.olean' of module Proofs.SchauderFixedPointOQ01 does not exist
+=== FAIL Erdos613Aristotle ===
+Proofs/Erdos613Aristotle.lean:25:2: error: omega could not prove the goal:
+Proofs/Erdos613Aristotle.lean:31:2: error: omega could not prove the goal:
+Proofs/Erdos613Aristotle.lean:37:2: error: omega could not prove the goal:
+=== FAIL Erdos619Problem ===
+Proofs/Erdos619Problem.lean:51:11: error(lean.invalidField): Invalid field `dist`: The environment does not contain `SimpleGraph.dist`, so it is not possible to project the field `dist` from an expression
+Proofs/Erdos619Problem.lean:51:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos619Problem.lean:73:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL QuadraticReciprocityOQ03OQ01Exp ===
+Proofs/QuadraticReciprocityOQ03OQ01Exp.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/QuadraticReciprocityOQ03OQ01.olean' of module Proofs.QuadraticReciprocityOQ03OQ01 does not exist
+=== FAIL Erdos622OQ04 ===
+Proofs/Erdos622OQ04.lean:23:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos622Problem.olean' of module Proofs.Erdos622Problem does not exist
+=== FAIL Erdos625ProblemAristotle ===
+Proofs/Erdos625ProblemAristotle.lean:14:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos625Problem.olean' of module Proofs.Erdos625Problem does not exist
+=== FAIL SchauderFixedPointOQ01 ===
+Proofs/SchauderFixedPointOQ01.lean:54:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/SchauderFixedPointOQ01.lean:60:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/SchauderFixedPointOQ01.lean:307:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos625Aristotle ===
+Proofs/Erdos625Aristotle.lean:29:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos625Problem.olean' of module Proofs.Erdos625Problem does not exist
+=== FAIL Erdos614Problem ===
+Proofs/Erdos614Problem.lean:53:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos614Problem.lean:86:40: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos614Problem.lean:126:50: error: unsolved goals
+=== FAIL Erdos625Problem ===
+Proofs/Erdos625Problem.lean:95:16: error: typeclass instance problem is stuck
+Proofs/Erdos625Problem.lean:198:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos625Problem.lean:204:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL SumOfKthPowersOQ03 ===
+Proofs/SumOfKthPowersOQ03.lean:110:10: error: typeclass instance problem is stuck
+Proofs/SumOfKthPowersOQ03.lean:128:10: error: typeclass instance problem is stuck
+=== FAIL SchauderFixedPointOQ03 ===
+Proofs/SchauderFixedPointOQ03.lean:86:49: error: unsolved goals
+Proofs/SchauderFixedPointOQ03.lean:111:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/SchauderFixedPointOQ03.lean:130:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL TriangleInequalityOQ06 ===
+Proofs/TriangleInequalityOQ06.lean:84:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/TriangleInequalityOQ06.lean:89:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos628Aristotle ===
+Proofs/Erdos628Aristotle.lean:25:20: error: Ambiguous term
+Proofs/Erdos628Aristotle.lean:31:18: error: Ambiguous term
+Proofs/Erdos628Aristotle.lean:37:4: error: Ambiguous term
+=== FAIL Erdos622Problem ===
+Proofs/Erdos622Problem.lean:52:68: error: Type mismatch
+Proofs/Erdos622Problem.lean:111:34: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos622Problem.lean:111:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos669Problem ===
+Proofs/Erdos669Problem.lean:80:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos669Problem.lean:81:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos669Problem.lean:109:2: error: Type mismatch
+=== FAIL Erdos670Problem ===
+Proofs/Erdos670Problem.lean:48:29: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos670Problem.lean:48:38: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos670Problem.lean:48:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos740Problem ===
+Proofs/Erdos740Problem.lean:68:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos740Problem.lean:68:33: error: Application type mismatch: The argument
+Proofs/Erdos740Problem.lean:69:45: error: Application type mismatch: The argument
+=== FAIL Erdos667Problem ===
+Proofs/Erdos667Problem.lean:94:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/Erdos667Problem.lean:99:8: error: Tactic `apply` failed: could not unify the conclusion of `@filter_congr`
+Proofs/Erdos667Problem.lean:116:46: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+=== FAIL Erdos740ProblemProvable ===
+Proofs/Erdos740ProblemProvable.lean:68:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos740ProblemProvable.lean:68:33: error: Application type mismatch: The argument
+Proofs/Erdos740ProblemProvable.lean:69:45: error: Application type mismatch: The argument
+=== FAIL TriangularReciprocalGeneralized ===
+Proofs/TriangularReciprocalGeneralized.lean:50:2: error: No goals to be solved
+Proofs/TriangularReciprocalGeneralized.lean:62:2: error: No applicable extensionality theorem found for type
+Proofs/TriangularReciprocalGeneralized.lean:85:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos775Problem ===
+Proofs/Erdos775Problem.lean:91:47: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos775Problem.lean:208:49: error: unknown tactic
+Proofs/Erdos775Problem.lean:208:45: error: unsolved goals
+=== FAIL Erdos732Problem ===
+Proofs/Erdos732Problem.lean:159:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos732Problem.lean:200:8: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos732Problem.lean:240:2: error: No goals to be solved
+=== FAIL Erdos776Problem ===
+Proofs/Erdos776Problem.lean:36:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos776Problem.lean:36:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos776Problem.lean:53:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos752Problem ===
+Proofs/Erdos752Problem.lean:41:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos752Problem.lean:45:37: error: Application type mismatch: The argument
+Proofs/Erdos752Problem.lean:91:84: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos814Problem ===
+Proofs/Erdos814Problem.lean:65:20: error: unsolved goals
+Proofs/Erdos814Problem.lean:72:44: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos814Problem.lean:79:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos783Problem ===
+Proofs/Erdos783Problem.lean:165:76: error: failed to synthesize
+Proofs/Erdos783Problem.lean:147:80: error: unsolved goals
+Proofs/Erdos783Problem.lean:175:72: error: Application type mismatch: The argument
+=== FAIL Erdos803Problem ===
+Proofs/Erdos803Problem.lean:39:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos803Problem.lean:53:4: error: Tactic `apply` failed: could not unify the conclusion of `Finset.sup_congr rfl`
+Proofs/Erdos803Problem.lean:56:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos81Problem ===
+Proofs/Erdos81Problem.lean:59:38: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos81Problem.lean:94:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos81Problem.lean:94:46: error: unsolved goals
+=== FAIL Erdos822Problem ===
+Proofs/Erdos822Problem.lean:91:13: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos822Problem.lean:91:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos822Problem.lean:92:46: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos804Problem ===
+Proofs/Erdos804Problem.lean:106:32: error: Type mismatch
+Proofs/Erdos804Problem.lean:121:32: error: Type mismatch
+Proofs/Erdos804Problem.lean:141:34: error: Type mismatch
+=== FAIL Erdos818Aristotle ===
+Proofs/Erdos818Aristotle.lean:56:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos818Aristotle.lean:62:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos818Aristotle.lean:65:9: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos861Problem ===
+Proofs/Erdos861Problem.lean:187:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos861Problem.lean:197:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos861Problem.lean:205:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos878Problem ===
+Proofs/Erdos878Problem.lean:144:50: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos878Problem.lean:148:67: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos878Problem.lean:152:53: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos859Aristotle ===
+Proofs/Erdos859Aristotle.lean:36:37: error: Type mismatch
+Proofs/Erdos859Aristotle.lean:36:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos859Aristotle.lean:44:2: error: Type mismatch
+=== FAIL Erdos922Problem ===
+Proofs/Erdos922Problem.lean:47:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos922Problem.lean:58:4: error: Type mismatch
+Proofs/Erdos922Problem.lean:96:31: error: Function expected at
+=== FAIL Erdos94OQ02 ===
+Proofs/Erdos94OQ02.lean:45:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos94OQ02.lean:67:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos94OQ02.lean:69:6: error: Type mismatch
+=== FAIL EulerIdentityOQ01OQ02OQ01 ===
+Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:40: error: Type mismatch
+Proofs/EulerIdentityOQ01OQ02OQ01.lean:83:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/EulerIdentityOQ01OQ02OQ01.lean:81:31: error: unsolved goals
+=== FAIL Erdos485OQ02 ===
+Proofs/Erdos485OQ02.lean:98:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos485OQ02.lean:121:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos485OQ02.lean:135:0: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (800000) has been reached
+=== FAIL Erdos973Problem ===
+Proofs/Erdos973Problem.lean:47:19: error: omega could not prove the goal:
+Proofs/Erdos973Problem.lean:51:7: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos973Problem.lean:55:7: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Erdos988Problem ===
+Proofs/Erdos988Problem.lean:64:29: error: Application type mismatch: The argument
+Proofs/Erdos988Problem.lean:80:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Erdos988Problem.lean:84:28: error: Application type mismatch: The argument
+=== FAIL FactorRemainderNullstellensatzOQ01 ===
+Proofs/FactorRemainderNullstellensatzOQ01.lean:35:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FactorRemainderNullstellensatzOQ01.lean:36:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FactorRemainderNullstellensatzOQ01.lean:46:5: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Hilbert20LocalSolvability ===
+Proofs/Hilbert20LocalSolvability.lean:73:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL Hilbert20OQ01OQ03 ===
+Proofs/Hilbert20OQ01OQ03.lean:64:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Hilbert20OQ01OQ03.lean:104:28: error: unsolved goals
+Proofs/Hilbert20OQ01OQ03.lean:126:2: error: No applicable extensionality theorem found for type
+=== FAIL FurstenbergCorrespondenceOQ01 ===
+Proofs/FurstenbergCorrespondenceOQ01.lean:101:10: error: Application type mismatch: The argument
+Proofs/FurstenbergCorrespondenceOQ01.lean:139:11: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/FurstenbergCorrespondenceOQ01.lean:146:2: error: Tactic `split_ifs` failed: no if-then-else conditions to split
+=== FAIL Hilbert4Geodesics ===
+Proofs/Hilbert4Geodesics.lean:157:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Hilbert4Geodesics.lean:158:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/Hilbert4Geodesics.lean:158:33: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL InverseGaloisA5DedekindInstantiation ===
+Proofs/InverseGaloisA5DedekindInstantiation.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/DedekindFrobeniusBridge.olean' of module Proofs.DedekindFrobeniusBridge does not exist
+=== FAIL Hilbert5OQ02 ===
+Proofs/Hilbert5OQ02.lean:86:18: error: Function expected at
+Proofs/Hilbert5OQ02.lean:86:28: error: Function expected at
+Proofs/Hilbert5OQ02.lean:87:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL LagrangeTheoremOQ01OQ03OQ01 ===
+Proofs/LagrangeTheoremOQ01OQ03OQ01.lean:185:2: error: Type mismatch: After simplification, term
+Proofs/LagrangeTheoremOQ01OQ03OQ01.lean:255:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL LagrangeTheoremOQ01 ===
+Proofs/LagrangeTheoremOQ01.lean:37:2: error: Type mismatch
+Proofs/LagrangeTheoremOQ01.lean:42:2: error: Type mismatch
+Proofs/LagrangeTheoremOQ01.lean:64:2: error: Type mismatch
+=== FAIL LagrangeTheoremOQ01OQ01OQ01ApproachB ===
+Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:148:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:163:66: error: Invalid argument name `q` for function `unitToAddAut`
+Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean:165:2: error: Tactic `apply` failed: could not unify the conclusion of `@Units.ext`
+=== FAIL LagrangeTheoremOQ01OQ02 ===
+Proofs/LagrangeTheoremOQ01OQ02.lean:34:21: error: Type mismatch
+Proofs/LagrangeTheoremOQ01OQ02.lean:43:18: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/LagrangeTheoremOQ01OQ02.lean:43:45: error: Tactic `native_decide` failed: Could not evaluate decidable instance. Error: cannot evaluate code because 'sorryAx' uses 'sorry' and/or contains errors
+=== FAIL NormEuclideanZsqrtdFamilyOQ03OQ02OQ01 ===
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02OQ01.lean:38:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.olean' of module Proofs.NormEuclideanZsqrtdFamilyOQ03OQ02 does not exist
+=== FAIL LiouvilleTheorem ===
+Proofs/LiouvilleTheorem.lean:183:19: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/LiouvilleTheorem.lean:222:32: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/LiouvilleTheorem.lean:222:60: error: linarith failed to find a contradiction
+=== FAIL MaschkeAugmentationNoSplitOQ010101 ===
+Proofs/MaschkeAugmentationNoSplitOQ010101.lean:69:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/MaschkeAugmentationNoSplitOQ010101.lean:72:88: error: unsolved goals
+=== FAIL MaschkeLocalRingOQ010102 ===
+Proofs/MaschkeLocalRingOQ010102.lean:67:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/MaschkeLocalRingOQ010102.lean:69:80: error: unsolved goals
+=== FAIL NormEuclideanZsqrtdFamilyOQ03OQ02 ===
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:55:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:63:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02.lean:76:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL QuadraticReciprocityOQ03OQ01 ===
+Proofs/QuadraticReciprocityOQ03OQ01.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/QuadraticReciprocityOQ03.olean' of module Proofs.QuadraticReciprocityOQ03 does not exist
+=== FAIL PuiseuxTheoremOQ02 ===
+Proofs/PuiseuxTheoremOQ02.lean:81:2: error: Type mismatch
+Proofs/PuiseuxTheoremOQ02.lean:82:16: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/PuiseuxTheoremOQ02.lean:84:0: error: Not a definitional equality: the left-hand side
+=== FAIL PicardIterationExplicitOQ0102 ===
+=== FAIL OSBridge ===
+Proofs/PicardIterationExplicitOQ0102.lean:106:49: error: Application type mismatch: The argument
+Proofs/PicardIterationExplicitOQ0102.lean:106:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/PicardIterationExplicitOQ0102.lean:108:2: error: Type mismatch: After simplification, term
+Proofs/OSBridge.lean:99:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/OSBridge.lean:103:25: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/OSBridge.lean:586:19: error: Application type mismatch: The argument
+=== FAIL SchauderFixedPoint ===
+Proofs/SchauderFixedPoint.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/SchauderFixedPointOQ01.olean' of module Proofs.SchauderFixedPointOQ01 does not exist
+=== FAIL QuadraticReciprocityOQ03 ===
+Proofs/QuadraticReciprocityOQ03.lean:51:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/QuadraticReciprocityOQ03.lean:56:2: error: Type mismatch
+Proofs/QuadraticReciprocityOQ03.lean:74:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL PrimitiveRootsOQ02 ===
+Proofs/PrimitiveRootsOQ02.lean:161:56: error: Application type mismatch: The argument
+Proofs/PrimitiveRootsOQ02.lean:171:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+Proofs/PrimitiveRootsOQ02.lean:177:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL QuadraticReciprocityOQ03OQ01Exp ===
+Proofs/QuadraticReciprocityOQ03OQ01Exp.lean:1:0: error: object file '/workspace/proofs/.lake/build/lib/lean/Proofs/QuadraticReciprocityOQ03OQ01.olean' of module Proofs.QuadraticReciprocityOQ03OQ01 does not exist
+=== FAIL SchauderFixedPointOQ01 ===
+Proofs/SchauderFixedPointOQ01.lean:54:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/SchauderFixedPointOQ01.lean:60:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/SchauderFixedPointOQ01.lean:307:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL SchauderFixedPointOQ03 ===
+Proofs/SchauderFixedPointOQ03.lean:86:49: error: unsolved goals
+Proofs/SchauderFixedPointOQ03.lean:111:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/SchauderFixedPointOQ03.lean:130:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL SumOfKthPowersOQ03 ===
+Proofs/SumOfKthPowersOQ03.lean:110:10: error: typeclass instance problem is stuck
+Proofs/SumOfKthPowersOQ03.lean:128:10: error: typeclass instance problem is stuck
+=== FAIL TriangleInequalityOQ06 ===
+Proofs/TriangleInequalityOQ06.lean:84:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+Proofs/TriangleInequalityOQ06.lean:89:2: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+=== FAIL TriangularReciprocalGeneralized ===
+Proofs/TriangularReciprocalGeneralized.lean:50:2: error: No goals to be solved
+Proofs/TriangularReciprocalGeneralized.lean:62:2: error: No applicable extensionality theorem found for type
+Proofs/TriangularReciprocalGeneralized.lean:85:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
