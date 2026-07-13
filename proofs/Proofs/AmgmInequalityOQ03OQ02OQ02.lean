@@ -647,4 +647,74 @@ theorem logConcave_mul_geometric_normalised (p : ℕ → ℝ) (r : ℝ) (hp0 : p
     (fun k => p k * r ^ k) 0 = 1 := by
   simp [hp0]
 
+/-! ## Arbitrary-gap log-concavity: the exchange inequality and discrete TP2
+
+The defining hypothesis `p m · p (m+2) ≤ (p (m+1))²` compares indices that are exactly
+two apart. It is the tip of a much stronger structural property: log-concavity of a
+positive sequence is equivalent to the **total positivity of order 2** (`TP2`) of the
+`2 × 2` minors `p a · p b`, i.e. *concentrating* two indices (moving them closer together
+while preserving their sum) can only increase the product. The three results below extract
+that general "index-majorization" content directly from the ratio-antitone form
+`logConcave_iff_ratio_antitone`, each recovering the defining inequality as a special case:
+
+* `logConcave_exchange` — the single-step exchange `p i · p (j+1) ≤ p (i+1) · p j` for `i ≤ j`
+  (defining case `j = i+1`);
+* `logConcave_logSupermod` — the general master inequality `p a · p (b+c) ≤ p (a+c) · p b`
+  for `a ≤ b` and arbitrary shift `c` (discrete log-supermodularity / TP2);
+* `logConcave_spread` — arbitrary-gap log-concavity `p m · p (m+2d) ≤ (p (m+d))²`
+  (defining case `d = 1`).
+-/
+
+/-- **Exchange inequality.** For a positive log-concave sequence and `i ≤ j`, moving the two
+indices `i, j+1` one step *closer together* (to `i+1, j`) does not decrease the product:
+`p i · p (j+1) ≤ p (i+1) · p j`. This is the fundamental single exchange step of discrete
+log-supermodularity; the defining log-concavity `p i · p (i+2) ≤ (p (i+1))²` is the case
+`j = i+1`. Read straight off the ratio-antitone form: `p (j+1)/p j ≤ p (i+1)/p i`, cleared
+of positive denominators. -/
+theorem logConcave_exchange (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) {i j : ℕ} (hij : i ≤ j) :
+    p i * p (j + 1) ≤ p (i + 1) * p j := by
+  have hanti := (logConcave_iff_ratio_antitone p hpos).mp hlc
+  have h : p (j + 1) / p j ≤ p (i + 1) / p i := hanti hij
+  rw [div_le_div_iff₀ (hpos j) (hpos i)] at h
+  nlinarith [h]
+
+/-- **Discrete log-supermodularity (TP2).** For a positive log-concave sequence, `a ≤ b`,
+and any shift `c`, one has `p a · p (b+c) ≤ p (a+c) · p b`: pushing the smaller index up by
+`c` (to `a+c`) while pulling the larger index down by `c` (from `b+c` to `b`) — a move that
+concentrates the pair while keeping the total `(a) + (b+c) = (a+c) + b` fixed — can only
+increase the product. Equivalently, every `2 × 2` minor `p a · p (b+c) - p (a+c) · p b` of
+the Hankel-type matrix is `≤ 0`, i.e. the sequence is totally positive of order 2. Proved by
+induction on `c`: the successor step multiplies the induction hypothesis by the antitone
+consecutive ratio at the base index `a+c ≤ b+c` and cancels the common positive factor
+`p (a+c)`. The defining inequality and `logConcave_exchange` are the cases `c = 1`. -/
+theorem logConcave_logSupermod (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) {a b : ℕ} (hab : a ≤ b) (c : ℕ) :
+    p a * p (b + c) ≤ p (a + c) * p b := by
+  have hanti := (logConcave_iff_ratio_antitone p hpos).mp hlc
+  induction c with
+  | zero => simp
+  | succ c ih =>
+    have hr : p (b + c + 1) / p (b + c) ≤ p (a + c + 1) / p (a + c) :=
+      hanti (by omega : a + c ≤ b + c)
+    rw [div_le_div_iff₀ (hpos (b + c)) (hpos (a + c))] at hr
+    have key : (p a * p (b + c + 1)) * p (a + c) ≤ (p (a + c + 1) * p b) * p (a + c) := by
+      nlinarith [mul_le_mul_of_nonneg_left hr (hpos a).le,
+        mul_le_mul_of_nonneg_right ih (hpos (a + c + 1)).le]
+    exact le_of_mul_le_mul_right key (hpos (a + c))
+
+/-- **Arbitrary-gap log-concavity.** For a positive log-concave sequence, the log-concavity
+inequality holds across *any* even gap `2d`, not just the defining gap `2`:
+`p m · p (m + 2d) ≤ (p (m+d))²`. The endpoints `m` and `m+2d` are the extreme pair with
+midpoint `m+d`, so this is the `a := m`, `b := m+d`, `c := d` instance of
+`logConcave_logSupermod`. Taking `d = 1` recovers the defining `p m · p (m+2) ≤ (p (m+1))²`. -/
+theorem logConcave_spread (p : ℕ → ℝ) (hpos : ∀ j, 0 < p j)
+    (hlc : ∀ m, p m * p (m + 2) ≤ (p (m + 1)) ^ 2) (m d : ℕ) :
+    p m * p (m + 2 * d) ≤ (p (m + d)) ^ 2 := by
+  have h := logConcave_logSupermod p hpos hlc (Nat.le_add_right m d) d
+  have e : m + d + d = m + 2 * d := by ring
+  rw [e] at h
+  rw [pow_two]
+  exact h
+
 end MaclaurinLogConcave
