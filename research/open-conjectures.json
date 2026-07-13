@@ -1,0 +1,29 @@
+{
+  "$schema": "./open-conjectures.schema.json",
+  "version": "1.0",
+  "description": "Registry of Tier-3 open-conjecture targets for the Aristotle pipeline. Each entry marks a specific theorem in a Lean file as an actively-attempted open conjecture: rate-limited submissions, longer per-job budgets, failures do NOT block further attempts. See research/SORRY-CLASSIFICATION.md (Tier 3 section) for the policy.",
+  "defaults": {
+    "cadence": "7d",
+    "budget": "4h",
+    "minHoursBetweenAttempts": 168
+  },
+  "targets": [
+    {
+      "slug": "fermat-defect-one",
+      "file": "proofs/Proofs/FermatDefectOne.lean",
+      "theorem": "fermat_defect_one_exists",
+      "kind": "headline",
+      "attackVectors": [
+        "witness-search",
+        "modular-obstruction",
+        "parameterization",
+        "reduction",
+        "structural-lemma"
+      ],
+      "cadence": "7d",
+      "budget": "4h",
+      "problemDir": "research/problems/fermat-defect-one",
+      "notes": "Headline open conjecture: for every n >= 3, a primitive nontrivial |a^n + b^n - c^n| = 1 witness exists. Stays as `sorry` (NOT axiomatized) — explicitly attempted by the system. n=3 already verified for both signs in the same file."
+    }
+  ]
+}

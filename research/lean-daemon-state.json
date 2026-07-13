@@ -1,0 +1,29 @@
+{
+  "started_at": "2026-01-25T12:48:00Z",
+  "stopped_at": "2026-01-26T19:15:00Z",
+  "running": false,
+  "config": {
+    "erdos": 5,
+    "aristotle": 1,
+    "researcher": 0,
+    "deployer": 1
+  },
+  "agents": {
+    "erdos-enhancer-1": { "status": "stopped", "started": "2026-01-25T22:25:00Z" },
+    "erdos-enhancer-2": { "status": "stopped", "started": "2026-01-25T22:25:00Z" },
+    "erdos-enhancer-3": { "status": "stopped", "started": "2026-01-25T22:25:00Z" },
+    "erdos-enhancer-4": { "status": "stopped", "started": "2026-01-25T22:25:00Z" },
+    "erdos-enhancer-5": { "status": "stopped", "started": "2026-01-25T22:25:00Z" },
+    "aristotle-agent": { "status": "stopped", "started": "2026-01-24T20:11:29Z" },
+    "deployer": { "status": "stopped", "started": "2026-01-26T10:21:20Z" }
+  },
+  "session_stats": {
+    "stubs_enhanced": 1146,
+    "proofs_submitted": 1,
+    "proofs_integrated": 0,
+    "deployments": 0,
+    "gallery_total": 1195,
+    "gallery_quality_pct": 95.9,
+    "stubs_remaining": 49
+  }
+}
