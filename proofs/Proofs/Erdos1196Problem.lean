@@ -234,7 +234,7 @@ primitivity (since a ≠ b as the walk moved strictly downward).
 -/
 theorem primitive_hits_at_most_once (A : Set ℕ) (hA : IsPrimitive A)
     (a b : ℕ) (ha : a ∈ A) (hb : b ∈ A) (hdvd : b ∣ a) : a = b :=
-  hA a ha b hb (Dvd.dvd.symm hdvd) |>.symm
+  (hA b hb a ha hdvd).symm
 
 /-
 ## Part VI: Known Estimates (Lemmas 2 and 3)

@@ -30,8 +30,7 @@ open Finset Nat Real Filter
 /-- The greatest prime factor of n, or 0 if n ≤ 1. -/
 noncomputable def greatestPrimeFactor (n : ℕ) : ℕ :=
   if h : n ≤ 1 then 0
-  else (n.primeFactors).max' (Nat.nonempty_primeFactors.mpr (Nat.one_lt_iff_ne_one.mpr
-    (fun hn => h (le_of_eq hn))))
+  else (n.primeFactors).max' (Nat.nonempty_primeFactors.mpr (not_le.mp h))
 
 /-- Notation: P(n) for greatest prime factor. -/
 notation "P" => greatestPrimeFactor

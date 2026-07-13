@@ -28,7 +28,7 @@ import Mathlib
 #check Summable.of_norm
 
 -- Test for norm summable
-#check summable_of_summable_norm
+#check Summable.of_norm
 
 -- Test: summable_of_nonneg_of_le (alternative name)
 #check Summable.of_nonneg_of_le

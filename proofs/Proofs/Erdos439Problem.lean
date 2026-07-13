@@ -183,7 +183,7 @@ def kthPowerGraph (k : ℕ) : SimpleGraph ℕ where
 -/
 theorem square_is_second_power : squareGraph = kthPowerGraph 2 := by
   ext m n
-  simp only [squareGraph, kthPowerGraph, SimpleGraph.adj_mk]
+  simp only [squareGraph, kthPowerGraph]
   constructor <;> intro ⟨hne, h⟩
   · exact ⟨hne, by obtain ⟨s, hs⟩ := h; exact ⟨s, by simp [pow_two]; exact hs⟩⟩
   · exact ⟨hne, by obtain ⟨s, hs⟩ := h; exact ⟨s, by simp [pow_two] at hs; exact hs⟩⟩

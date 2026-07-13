@@ -243,7 +243,7 @@ example :
     ‖(1 : ℂ) - (-Complex.I)‖ * ‖(-1 : ℂ) - Complex.I‖ +
     ‖(-Complex.I) - (-1 : ℂ)‖ * ‖(1 : ℂ) - Complex.I‖ := by
   norm_num [Complex.norm_def, Complex.normSq_apply,
-            Complex.ext_iff, Real.sqrt_eq_iff_sq_eq]
+            Complex.ext_iff]
 
 -- ============================================================
 -- PART 7: Summary

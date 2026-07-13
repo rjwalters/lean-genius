@@ -2,7 +2,7 @@
 import Mathlib
 
 -- Check pigeonhole
-#check @Finset.exists_lt_card_fiber_of_nsmul_lt_card
+#check @Fintype.exists_lt_card_fiber_of_nsmul_lt_card
 
 -- Check Finset filtering
 #check Finset.filter_subset

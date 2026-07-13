@@ -109,7 +109,7 @@ theorem maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1 :=
   have h2 : S.card ≤ (S.erase (N + 1)).card + 1 := by
     by_cases hmem : N + 1 ∈ S
     · rw [Finset.card_erase_of_mem hmem]; omega
-    · rw [Finset.erase_eq_of_not_mem hmem]; omega
+    · rw [Finset.erase_eq_of_notMem hmem]; omega
   omega
 
 /- ## Asymptotic Bounds -/
