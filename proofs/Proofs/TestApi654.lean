@@ -3,7 +3,7 @@ import Mathlib
 -- Check what APIs are available for fiber-based cardinality bounds
 #check @Finset.card_le_card_of_injOn
 #check @Finset.card_image_le
-#check @Finset.sum_card_fiberwise_eq_card
+#check @Finset.card_eq_sum_card_fiberwise
 #check @Finset.card_biUnion_le
 #check @Finset.card_le_card
 -- Check: does sum_card_fiberwise_eq_card exist?

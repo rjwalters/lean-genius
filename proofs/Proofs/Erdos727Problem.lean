@@ -126,7 +126,7 @@ Classical fact: (n+1) | C(2n, n) for all n.
 theorem catalan_divisibility (n : ℕ) : (n + 1) ∣ centralBinom n := by
   unfold centralBinom
   change (n + 1) ∣ Nat.centralBinom n
-  exact ⟨Nat.catalan n, (Nat.succ_mul_catalan_eq n).symm⟩
+  exact ⟨catalan n, (succ_mul_catalan_eq_centralBinom n).symm⟩
 
 /--
 Catalan identity: C(2n,n) = (n+1) * C_n

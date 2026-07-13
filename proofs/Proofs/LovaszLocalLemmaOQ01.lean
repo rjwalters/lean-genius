@@ -41,7 +41,7 @@ This is the bridge that lets `iIndep.meas_iInter` (which is stated for arbitrary
 measurable sets of the independent σ-algebras) apply to the complements `(A i)ᶜ`. -/
 theorem compl_measurable_generateFrom (i : ι) :
     MeasurableSet[MeasurableSpace.generateFrom {A i}] (A i)ᶜ :=
-  (measurableSet_generateFrom (Set.mem_singleton _)).compl
+  (MeasurableSpace.measurableSet_generateFrom (Set.mem_singleton _)).compl
 
 /-- **Exact avoidance factorization (base case of the LLL).**
 For a mutually independent family of measurable events, the probability that *none*

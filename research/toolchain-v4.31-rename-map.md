@@ -531,3 +531,45 @@ after imports on v4.31 — this is the single highest-yield instance-synth fix.
 | `nth_rewrite 1 [← Nat.mod_add_div …]` picks wrong occurrence | `conv_lhs => rw [← …]` | QuadraticReciprocityAlgorithmOQ03M2 |
 | `theorem` whose conclusion is a **function type** (data, not Prop) rejected | change keyword to `def` | Erdos688 sieve_duality |
 | `→` now binds tighter than `↔` in a mixed `∀ n, P → Q ↔ R` statement | parenthesize the intended grouping `∀ n, P → (Q ↔ R)` | Erdos207 |
+### 7l. Doctor increment-8 recipes (#38065, 2026-07-13, unknown-const class)
+
+**Meta-finding:** the umbrella `import Mathlib` backfill from earlier increments
+already ran — a zero-edit re-verify of all 347 unknown-const rows flipped only 1.
+The rest are TRUE removals/renames (Mathlib) or project-local name drift.
+
+| unknown-const | v4.31 replacement | notes |
+|---|---|---|
+| `le_of_not_le` | `le_of_not_ge` | identical sig `¬a≤b → b≤a` (Order/Defs/LinearOrder) |
+| `summable_of_summable_norm` | `Summable.of_norm` | |
+| `NormedRing.summable_geometric_of_norm_lt_one T h` | `summable_geometric_of_norm_lt_one h` (ROOT ns, but `x` explicit) | moved to root + `HasSummableGeomSeries` |
+| `NormedRing.tsum_geometric_of_norm_lt_one T h` | `tsum_geometric_of_norm_lt_one h` | ROOT ns, `ξ` IMPLICIT — DROP the explicit arg |
+| `Nat.catalan` | `catalan` | moved to root (Combinatorics/Enumerative/Catalan/Basic) |
+| `Nat.succ_mul_catalan_eq n` | `succ_mul_catalan_eq_centralBinom n` | renamed w/ `_centralBinom` suffix; `(n+1)*catalan n = centralBinom n` |
+| `Nat.numDerangements` | `numDerangements` | moved to root (Combinatorics/Derangements/Finite) |
+| `Nat.Even` / `Nat.Odd` | `Even` / `Odd` (root typeclass, `@Even (α:=ℕ)` for #check) | |
+| `finrank` (bare) | `Module.finrank` | bare finrank moved into Module ns; ×9 rows (most also have other errors) |
+| `Function.id` | `id` | (bare `id`) |
+| `HasSubset.Subset.rfl` | `subset_rfl` | `HasSubset.Subset.trans` → `subset_trans`/`Subset.trans` |
+| `Finsupp.not_mem_support_iff` | `Finsupp.notMem_support_iff` | notMem wave (also `DFinsupp.`) |
+| `Finset.erase_eq_of_not_mem` | `Finset.erase_eq_of_notMem` | notMem wave |
+| `Finset.insert_subset.mpr` | `Finset.insert_subset_iff.mpr` | bare `Finset.insert_subset` (direct-application form) still exists — only the iff `.mpr` moved |
+| `Finset.sum_card_fiberwise_eq_card` | `Finset.card_eq_sum_card_fiberwise` | name reversed |
+| `Finset.exists_lt_card_fiber_of_nsmul_lt_card` | `Fintype.exists_lt_card_fiber_of_nsmul_lt_card` | in `namespace Fintype`, not `Finset` |
+| `Nat.div_mul_cancel_of_dvd h` | `Nat.mul_div_cancel' h` | `gcd * (n/gcd) = n` shape (`a * (b/a) = b`) |
+| `Nat.pow_lt_pow_left_iff h` | `Nat.pow_lt_pow_iff_right h` | `a^m < a^n ↔ m<n` given `1<a` |
+| `Nat.one_lt_iff_ne_one` (on ℕ) | fails synth as generic `one_lt_iff_ne_one` (IsBotOne) — use ℕ-direct: `not_le.mp h` for `1<n` from `¬n≤1` | |
+| `SimpleGraph.not_adj_bot u v` | `(SimpleGraph.bot_adj u v).mp` (`Adj → False` = `¬Adj`) | `bot_adj v w : (⊥).Adj v w ↔ False` |
+| `SimpleGraph.mem_neighborFinset.mpr h` | `by rw [SimpleGraph.mem_neighborFinset]; exact h` (dot-form `G.mem_neighborFinset a` mis-resolves `G` as explicit `w` arg → Function.mpr error) | `mem_neighborFinset (w:V)` — only `w` explicit |
+| `SimpleGraph.adj_mk` (in `simp only [graphDef, adj_mk]`) | drop it — `simp only [graphDef]` already unfolds the `where`-built `.Adj` field | |
+| `measurableSet_generateFrom` | `MeasurableSpace.measurableSet_generateFrom` | in `namespace MeasurableSpace` |
+| `pow_eq_zero h` (`a^2=0 → a=0`) | `(pow_eq_zero_iff two_ne_zero).mp h` | bare `pow_eq_zero` gone |
+| `Real.sqrt_eq_iff_sq_eq` (as norm_num/simp lemma) | drop it (norm_num closes without); or `Real.sqrt_sq`/`Real.sqrt_eq_iff_eq_sq` for the direct spelling | orientation changed |
+| `summable_pow_div_factorial` | `Real.summable_pow_div_factorial` | namespace |
+| `hasSum_compl_iff` | `hasSum_iff_hasSum_compl` | renamed |
+| `Dvd.dvd.symm` (REMOVED bogus alias) | STATEMENT REPAIR — dvd isn't symmetric; the proof was wrong. Fix the term, don't rename | Erdos1196 (see STATUS.md inc-8 repair) |
+
+**Triage rule that worked:** classify each unknown-const row by whether its OWN
+file has errors OTHER than the unknown-const. Pure-uc rows (0 other own errors)
+flip from the rename alone; MIXED rows (uc + rewrite/omega/simp drift) need the
+full per-file repair and belong to the type-mismatch/proof-drift passes — a
+speculative rename there won't flip the row, so revert it (keep the tree clean).

@@ -51,8 +51,8 @@ noncomputable def triangleDegreeSum (G : SimpleGraph V) [DecidableRel G.Adj]
 private theorem degree_ge_two_of_adj_pair (G : SimpleGraph V) [DecidableRel G.Adj]
     (v a b : V) (hab : a ≠ b) (ha : G.Adj v a) (hb : G.Adj v b) :
     G.degree v ≥ 2 := by
-  have ha' : a ∈ G.neighborFinset v := SimpleGraph.mem_neighborFinset.mpr ha
-  have hb' : b ∈ G.neighborFinset v := SimpleGraph.mem_neighborFinset.mpr hb
+  have ha' : a ∈ G.neighborFinset v := by rw [SimpleGraph.mem_neighborFinset]; exact ha
+  have hb' : b ∈ G.neighborFinset v := by rw [SimpleGraph.mem_neighborFinset]; exact hb
   have hsub : ({a, b} : Finset V) ⊆ G.neighborFinset v := by
     intro x hx; simp at hx; rcases hx with rfl | rfl <;> assumption
   calc G.degree v = (G.neighborFinset v).card := rfl

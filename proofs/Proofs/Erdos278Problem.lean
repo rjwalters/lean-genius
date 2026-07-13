@@ -205,7 +205,7 @@ private lemma coprime_shift_injective {n L : ℕ} (hn : 0 < n) (hcop : Nat.Copri
     (heq : (j + k₁ * L) % n = (j + k₂ * L) % n) : k₁ = k₂ := by
   by_contra hne
   wlog hle : k₁ ≤ k₂ with H
-  · exact H hn hcop hk₂ hk₁ heq.symm (Ne.symm hne) (le_of_not_le hle)
+  · exact H hn hcop hk₂ hk₁ heq.symm (Ne.symm hne) (le_of_not_ge hle)
   have hlt : k₁ < k₂ := lt_of_le_of_ne hle hne
   have h1 : j + k₁ * L ≤ j + k₂ * L :=
     Nat.add_le_add_left (Nat.mul_le_mul_right L hle) j

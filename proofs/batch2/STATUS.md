@@ -67,6 +67,61 @@ cpus 6-11, container dr19, cache volume lean-mathlib-cache-v431-b.
   `error:.*Proofs/<file>.lean` to see the single real remaining error.
 
 
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 8, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 8 (unknown-const class, #38065)
+
+unknown-const RESIDUAL **347 → 321 (+26 GREEN)**. All flips verified
+in-container (lake exit code 0). Branch `feature/issue-38065`.
+
+### Key finding: the umbrella-import backfill already ran — leftovers are TRUE removals/renames
+
+Zero-edit re-verify of ALL 347 unknown-const rows (wave DR18a) flipped only
+**1** (Erdos933ProblemAristotle) — the other 346 have fresh, real errors.
+So unknown-const is now genuine renames + project-local names, not stale diags.
+
+### Waves
+
+- **DR18a** (347 targets): full zero-edit re-verify → +1 GREEN, 346 fresh
+  context-rich diags (diag-DR18a.txt). Classifier split: 43 pure-uc (own file,
+  only unknown-const errors), 235 mixed (uc + other own errors — dep-masked),
+  25 dep-only, 25 no-own-error.
+- **DR18b** (+14): mechanical Mathlib renames (see rename-map §7l).
+- **DR18c/d** (+9): Dvd.dvd.symm statement repair (Erdos1196), measurableSet_
+  generateFrom namespace, sqrt_eq_iff drop, catalan/numDerangements de-Nat,
+  Nat.Even/Odd → @Even/@Odd.
+- **DR18e** (+3): NormedRing geometric de-namespace, pow_eq_zero → pow_eq_zero_iff,
+  summable/hasSum de-namespace (test files).
+
+### Statement repair (operator policy)
+
+| file | declaration | repair |
+|---|---|---|
+| Erdos1196Problem.lean | `primitive_hits_at_most_once` | old proof used the **removed bogus alias** `Dvd.dvd.symm` (dvd is NOT symmetric) on `hdvd : b ∣ a` to feed `IsPrimitive`'s `a ∣ b` slot. Repaired to the correct term `(hA b hb a ha hdvd).symm` (apply primitivity with a,b swapped, then `.symm`) — same true statement, honest proof |
+
+### High-value renames found (see rename-map §7l for the full table)
+
+- `le_of_not_le` → `le_of_not_ge` (identical sig)
+- `summable_of_summable_norm` → `Summable.of_norm`
+- `NormedRing.summable_geometric_of_norm_lt_one` / `.tsum_…` → **root** namespace,
+  `ξ` now IMPLICIT (drop the explicit arg)
+- `Nat.catalan`/`Nat.numDerangements`/`Nat.Even`/`Nat.Odd` → **root** namespace
+- `succ_mul_catalan_eq` → `succ_mul_catalan_eq_centralBinom`
+- `finrank` → `Module.finrank` (bare finrank moved; ×9 rows, mostly MIXED)
+- `Function.id` → `id`, `HasSubset.Subset.rfl` → `subset_rfl`
+- Confirmed notMem wave extends: `Finsupp.not_mem_support_iff`,
+  `Finset.erase_eq_of_not_mem`; `Finset.insert_subset.mpr` →
+  `Finset.insert_subset_iff.mpr`
+
+### Remaining unknown-const disposition (321)
+
+- ~230 MIXED rows: the unknown-const is accompanied by other own-file v4.31
+  errors (rewrite/omega/simp drift) — these need the FULL per-file repair, not
+  just the rename; route to the type-mismatch/proof-drift passes.
+- Project-local lowercase names (`p`,`x`,`n`,`hkd_pos`,`i_1`,`choose_succ_gt_
+  central`,`sequence_monotone`,…): a companion lemma/binder renamed or dropped
+  by autoImplicit drift during migration — find in same-file history.
+- Set.ncard_biUnion ×5 (Ballot) = finsum deep-rework, unchanged disposition.
 
 ## DOCTOR INCREMENT 7 (type-mismatch + proof-drift remainder, in progress)
 

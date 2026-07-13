@@ -54,7 +54,7 @@ theorem polya_sum_identity (n k : ℕ) (hn : 0 < n) :
     This is `addOrderOf_rotation` from the main file. -/
 theorem orbit_size_eq_order (n : ℕ) [NeZero n] (r : Fin n) :
     Nat.gcd r.val n * (n / Nat.gcd r.val n) = n := by
-  exact Nat.div_mul_cancel_of_dvd (Nat.gcd_dvd_right r.val n)
+  exact Nat.mul_div_cancel' (Nat.gcd_dvd_right r.val n)
 
 /-- Helper: iterating rotation r from position i reaches position
     (i.val + m * r.val) % n after m steps.

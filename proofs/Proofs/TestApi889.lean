@@ -3,7 +3,7 @@ import Mathlib
 
 -- Check how to get factorization positivity from primeFactors membership
 #check @Nat.mem_primeFactors
-#check @Nat.factorization_pos
+#check @Nat.Prime.factorization_pos_of_dvd
 
 -- Test vShifted_zero proof approach
 noncomputable def newPrimeFactorCount' (n k : ℕ) : ℕ :=
@@ -21,7 +21,8 @@ theorem test_vShifted_zero (n : ℕ) : vShifted' 0 n = v₀' n := by
 
 -- Test factorization pos
 example (p m : ℕ) (h : p ∈ m.primeFactors) : 0 < m.factorization p := by
-  exact Nat.factorization_pos.mpr (Nat.mem_primeFactors.mp h).1
+  obtain ⟨hp, hpm, hm⟩ := Nat.mem_primeFactors.mp h
+  exact Nat.Prime.factorization_pos_of_dvd hp hm hpm
 
 -- Test dvd_pow_self
 example (p : ℕ) (n : ℕ) (hn : n ≠ 0) : p ∣ p ^ n := dvd_pow_self p hn

@@ -39,7 +39,7 @@ This is an instance of `NormedRing.summable_geometric_of_norm_lt_one`
 applied to the normed algebra E →L[𝕜] E. -/
 theorem operator_geometric_summable (T : E →L[𝕜] E) (hT : ‖T‖ < 1) :
     Summable (fun n : ℕ => T ^ n) :=
-  NormedRing.summable_geometric_of_norm_lt_one T hT
+  summable_geometric_of_norm_lt_one hT
 
 /-- The Neumann series identity: (∑ Tⁿ) * (1 - T) = 1.
 Here 1 is the identity operator and multiplication is composition. -/
@@ -73,7 +73,7 @@ theorem isUnit_oneSub (T : E →L[𝕜] E) (hT : ‖T‖ < 1) :
 This uses the general normed ring bound from Mathlib. -/
 theorem neumann_series_norm_bound (T : E →L[𝕜] E) (hT : ‖T‖ < 1) :
     ‖∑' n : ℕ, T ^ n‖ ≤ ‖(1 : E →L[𝕜] E)‖ - 1 + (1 - ‖T‖)⁻¹ :=
-  NormedRing.tsum_geometric_of_norm_lt_one T hT
+  tsum_geometric_le_of_norm_lt_one T hT
 
 /-- The first few terms of the Neumann series: partial sum formula.
 This is `geom_sum_mul_neg` from Mathlib applied to the operator ring. -/
