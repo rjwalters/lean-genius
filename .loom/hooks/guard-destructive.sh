@@ -125,9 +125,12 @@ ALWAYS_BLOCK_PATTERNS=(
     'git push --force-with-lease origin main'
     'git push --force-with-lease origin master'
 
-    # Filesystem destruction
-    'rm -rf /'
-    'rm -rf /\*'
+    # Filesystem destruction — root only. Anchor the target to exactly `/`
+    # (end / whitespace / glob) so legitimate absolute paths like
+    # `rm -rf /Volumes/Stripe/...` fall through to the scope check below
+    # instead of being caught by a bare `/` substring. Flag order tolerant.
+    'rm\s+-[a-zA-Z]*[rf][a-zA-Z]*\s+/(\s|$|\*)'
+    'rm\s+-[a-zA-Z]*[rf][a-zA-Z]*\s+/\*'
     'rm -rf ~'
     'rm -rf \$HOME'
 
@@ -176,40 +179,48 @@ done
 
 # =============================================================================
 # rm -rf SCOPE CHECK - Block rm with recursive/force flags outside repo
+#
+# Only inspects command SEGMENTS whose command word is a bare filesystem `rm`.
+# `docker rm` / `git rm` / `podman rm` are container/index ops, not filesystem
+# path removals, and are exempt. Target paths are extracted from the rm segment
+# ONLY (split on ; && || | newline), so a path mentioned in an unrelated
+# segment of a compound command (e.g. `docker rm c ; git -C /Volumes/... ...`)
+# is not misread as an rm target. Agent worktree roots (default .loom/worktrees
+# and any configured worktree.root such as /Volumes/Stripe) are in-scope.
 # =============================================================================
 
-# Match rm commands with -r or -f flags (in any combination: -rf, -r -f, -fr, etc.)
-if echo "$COMMAND" | grep -qE 'rm\s+(-[a-zA-Z]*[rf][a-zA-Z]*\s+)+' || \
-   echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*r[a-zA-Z]*\s' || \
-   echo "$COMMAND" | grep -qE 'rm\s+-[a-zA-Z]*f[a-zA-Z]*\s+-[a-zA-Z]*r[a-zA-Z]*\s'; then
+# Configured worktree root (best-effort; runtime .loom/config.json is gitignored)
+WORKTREE_ROOT=""
+if [[ -n "$REPO_ROOT" ]] && [[ -f "$REPO_ROOT/.loom/config.json" ]] && command -v jq &>/dev/null; then
+    WORKTREE_ROOT=$(jq -r '.worktree.root // empty' "$REPO_ROOT/.loom/config.json" 2>/dev/null) || WORKTREE_ROOT=""
+fi
 
-    # Extract target paths from the rm command (skip flags)
-    TARGETS=$(echo "$COMMAND" | sed 's/rm\s\+//' | tr ' ' '\n' | grep -v '^-' | head -20)
+# Split the compound command into segments and inspect each that is a bare `rm`.
+while IFS= read -r segment; do
+    # Trim leading whitespace
+    segment="${segment#"${segment%%[![:space:]]*}"}"
+    # Command word must be exactly `rm` (exempts docker/git/podman rm, and words
+    # like `confirm`, `rmdir`).
+    [[ "$segment" =~ ^rm[[:space:]] ]] || continue
+    # Only care about recursive/force removals
+    echo "$segment" | grep -qE 'rm\s+(-[a-zA-Z]*[rf][a-zA-Z]*\s+)+' || continue
+
+    TARGETS=$(echo "$segment" | sed 's/rm\s\+//' | tr ' ' '\n' | grep -v '^-' | head -20)
 
     for target in $TARGETS; do
-        # Skip empty targets
         [[ -z "$target" ]] && continue
 
         # Skip known-safe patterns (allowlist)
         case "$target" in
-            node_modules|./node_modules|*/node_modules)
-                continue ;;
-            target|./target|*/target)
-                continue ;;
-            dist|./dist|*/dist)
-                continue ;;
-            build|./build|*/build)
-                continue ;;
-            .loom/worktrees/*|*/.loom/worktrees/*)
-                continue ;;
-            .next|./.next|*/.next)
-                continue ;;
-            __pycache__|./__pycache__|*/__pycache__)
-                continue ;;
-            .pytest_cache|./.pytest_cache|*/.pytest_cache)
-                continue ;;
-            *.pyc)
-                continue ;;
+            node_modules|./node_modules|*/node_modules) continue ;;
+            target|./target|*/target) continue ;;
+            dist|./dist|*/dist) continue ;;
+            build|./build|*/build) continue ;;
+            .loom/worktrees/*|*/.loom/worktrees/*) continue ;;
+            .next|./.next|*/.next) continue ;;
+            __pycache__|./__pycache__|*/__pycache__) continue ;;
+            .pytest_cache|./.pytest_cache|*/.pytest_cache) continue ;;
+            *.pyc) continue ;;
         esac
 
         # Resolve path to absolute
@@ -228,14 +239,22 @@ if echo "$COMMAND" | grep -qE 'rm\s+(-[a-zA-Z]*[rf][a-zA-Z]*\s+)+' || \
             deny "BLOCKED: rm on protected system path: $ABS_PATH"
         fi
 
-        # Block if outside repo root (when we know the repo root)
-        if [[ -n "$REPO_ROOT" ]] && [[ -n "$ABS_PATH" ]]; then
-            if [[ "$ABS_PATH" != "$REPO_ROOT"* ]]; then
-                deny "BLOCKED: rm target outside repository: $ABS_PATH (repo: $REPO_ROOT)"
+        # In-scope roots: repo root, configured worktree root, and the default
+        # worktree area. rm inside any of these is fine.
+        if [[ -n "$ABS_PATH" ]]; then
+            in_scope=0
+            [[ -n "$REPO_ROOT" ]] && [[ "$ABS_PATH" == "$REPO_ROOT"* ]] && in_scope=1
+            [[ -n "$WORKTREE_ROOT" ]] && [[ "$ABS_PATH" == "$WORKTREE_ROOT"* ]] && in_scope=1
+            # Agent worktrees for this repo (basename match) under any root
+            case "$ABS_PATH" in
+                */lean-genius/*) in_scope=1 ;;
+            esac
+            if [[ -n "$REPO_ROOT" ]] && [[ "$in_scope" -eq 0 ]]; then
+                deny "BLOCKED: rm target outside repository/worktree roots: $ABS_PATH (repo: $REPO_ROOT)"
             fi
         fi
     done
-fi
+done < <(echo "$COMMAND" | tr ';|&' '\n')
 
 # =============================================================================
 # DELETE without WHERE - Database safety
