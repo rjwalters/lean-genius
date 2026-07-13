@@ -2,7 +2,7 @@
   "id": "lagrange-theorem-oq-01",
   "title": "Lagrange's Theorem OQ-01: The Sylow Theorems as Partial Converse",
   "slug": "lagrange-theorem-oq-01",
-  "description": "Formal proof of all three Sylow theorems (existence, conjugacy, counting) as a partial converse to Lagrange's theorem, plus Cauchy's theorem, all from Mathlib.",
+  "description": "Formal proof of all three Sylow theorems (existence, conjugacy, counting) as a partial converse to Lagrange's theorem, plus Cauchy's theorem, the order-p·q classification (cyclic vs. metacyclic dichotomy), and the order-p² classification (every group of order p² is abelian) — all from Mathlib.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -20,8 +20,8 @@
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 379,
-    "theoremCount": 27,
+    "lineCount": 670,
+    "theoremCount": 30,
     "definitionCount": 0,
     "assumptions": "None.",
     "originalContributions": [
@@ -29,7 +29,8 @@
       "Explicit statement that n_p ≡ 1 mod p using Sylow.card_sylow_modEq_one",
       "Partial converse to Lagrange: p^k | |G| implies subgroup of order p^k via Sylow.exists_subgroup_card_pow_prime",
       "Cauchy's theorem as corollary of Sylow existence",
-      "REPAIR + capstone: the file had bit-rotted against a Mathlib bump (Fintype.card/[Fintype G] → Nat.card/[Finite G], and Sylow API renames conj_eq→MulAction.exists_smul_eq, card_sylow_dvd_index→Sylow.card_dvd_index, Sylow.card_sylow_modEq_one→card_sylow_modEq_one, exists_prime_orderOf_dvd_card→_card') — migrated all 22 theorems back to a clean compile, then added exists_normal_subgroup_card_eq_pq (a normal subgroup of order q always exists) and not_isSimpleGroup_of_card_eq_pq (¬ IsSimpleGroup G for |G|=pq), the headline non-simplicity capstone. Axiom-free."
+      "REPAIR + capstone: the file had bit-rotted against a Mathlib bump (Fintype.card/[Fintype G] → Nat.card/[Finite G], and Sylow API renames conj_eq→MulAction.exists_smul_eq, card_sylow_dvd_index→Sylow.card_dvd_index, Sylow.card_sylow_modEq_one→card_sylow_modEq_one, exists_prime_orderOf_dvd_card→_card') — migrated all 22 theorems back to a clean compile, then added exists_normal_subgroup_card_eq_pq (a normal subgroup of order q always exists) and not_isSimpleGroup_of_card_eq_pq (¬ IsSimpleGroup G for |G|=pq), the headline non-simplicity capstone. Axiom-free.",
+      "Order-p² classification (Part IX): every group of order p² is abelian (mul_comm_of_card_eq_prime_sq) via IsPGroup.commutative_of_card_eq_prime_sq, with corollaries that every subgroup is normal and there is a normal subgroup of order p — the sharp contrast with the order-p·q case, which requires q ≢ 1 (mod p) for commutativity"
     ]
   },
   "overview": {
@@ -92,6 +93,13 @@
       "startLine": 111,
       "endLine": 125,
       "summary": "Proves partial_converse_lagrange: p^k | |G| implies ∃ H : Subgroup G with |H| = p^k, via Sylow.exists_subgroup_card_pow_prime. Proves cauchy_theorem: p prime, p | |G| implies ∃ g with orderOf g = p, via exists_prime_orderOf_dvd_card. Both are one-line delegations to Mathlib"
+    },
+    {
+      "id": "order-p-squared-abelian",
+      "title": "Part IX: Groups of Order p² Are Abelian",
+      "startLine": 576,
+      "endLine": 629,
+      "summary": "Proves mul_comm_of_card_eq_prime_sq: every group of order p² is commutative, via Mathlib's IsPGroup.commutative_of_card_eq_prime_sq (class equation for p-groups: nontrivial centre forces a cyclic central quotient, hence abelian). Corollaries: normal_of_card_eq_prime_sq (in an abelian group every subgroup is normal since g·h·g⁻¹ = h) and exists_normal_subgroup_card_eq_p_of_card_eq_prime_sq (a normal subgroup of order p from Cauchy's subgroup form, giving the normal series 1 ◁ H ◁ G with cyclic factors). Contrasts with order p·q, which needs q ≢ 1 (mod p) to be abelian"
     }
   ],
   "references": [
@@ -152,9 +160,9 @@
   ],
   "leanFile": {
     "namespace": "LagrangeOQ01",
-    "lineCount": 607,
+    "lineCount": 670,
     "axiomCount": 0,
-    "theoremCount": 35,
+    "theoremCount": 38,
     "definitionCount": 0,
     "path": "Proofs/LagrangeTheoremOQ01.lean",
     "sorries": 0

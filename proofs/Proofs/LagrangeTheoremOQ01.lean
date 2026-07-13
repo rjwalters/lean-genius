@@ -571,6 +571,63 @@ theorem mul_comm_of_card_eq_pq (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
   letI := IsCyclic.commGroup (α := G)
   exact mul_comm a b
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART IX: GROUPS OF ORDER p² ARE ABELIAN
+═══════════════════════════════════════════════════════════════════════════════
+
+Part VIII settled the two-distinct-prime case (order `p·q`).  The remaining
+two-prime-factor order is the prime *square* `p²`.  The contrast with order `p·q`
+is the whole point: order `p·q` admits a nonabelian group exactly when
+`q ≡ 1 (mod p)` (e.g. `S₃` at `2·3`), whereas **every** group of order `p²` is
+abelian — no arithmetic side condition is needed.
+
+The mechanism is the class equation for `p`-groups: a nontrivial finite `p`-group
+has nontrivial centre, so for `|G| = p²` the centre `Z(G)` has order `p` or `p²`.
+Either way the quotient `G ⧸ Z(G)` is cyclic (order `1` or `p`, both cyclic), and
+a group whose central quotient is cyclic is abelian.  Mathlib packages the core
+step as `IsPGroup.commutative_of_card_eq_prime_sq`; here we connect it to the
+Sylow / Lagrange narrative and record the structural corollary at the proper
+divisor `p`.
+-/
+
+/-- **Groups of order `p²` are abelian** (`p` prime).  In sharp contrast with the
+    order-`p·q` case (Part VIII), which needs the arithmetic hypothesis `q ≢ 1 (mod p)`
+    to force commutativity, *every* group whose order is the square of a prime is
+    commutative — via `IsPGroup.commutative_of_card_eq_prime_sq`, itself powered by the
+    class equation for `p`-groups (nontrivial centre ⟹ cyclic central quotient ⟹
+    abelian). -/
+theorem mul_comm_of_card_eq_prime_sq (p : ℕ) (hp : p.Prime)
+    (hG : Nat.card G = p ^ 2) (a b : G) : a * b = b * a := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact IsPGroup.commutative_of_card_eq_prime_sq hG a b
+
+/-- **Every subgroup of a group of order `p²` is normal.**  Immediate from
+    `mul_comm_of_card_eq_prime_sq`: in an abelian group conjugation is trivial
+    (`g * h * g⁻¹ = h`), so every subgroup is stable under conjugation.  This is the
+    normality that Part VII had to *earn* arithmetically in the `p·q` case; here it comes
+    for free from commutativity. -/
+theorem normal_of_card_eq_prime_sq (p : ℕ) (hp : p.Prime)
+    (hG : Nat.card G = p ^ 2) (H : Subgroup G) : H.Normal := by
+  refine ⟨fun a ha g => ?_⟩
+  have hconj : g * a * g⁻¹ = a := by
+    rw [mul_comm_of_card_eq_prime_sq p hp hG g a, mul_assoc, mul_inv_cancel, mul_one]
+  rw [hconj]; exact ha
+
+/-- **A group of order `p²` has a normal subgroup of order `p`** (`p` prime): the partial
+    converse of Lagrange at the proper divisor `p`, with normality supplied for free by
+    commutativity.  Cauchy's subgroup form (`exists_subgroup_card_prime`, the `k = 1` case
+    of the Sylow partial converse) yields a subgroup of order `p` since `p ∣ p²`, and
+    `normal_of_card_eq_prime_sq` makes it normal.  Consequently `1 ◁ H ◁ G` is a normal
+    series with cyclic (prime-order) factors, exhibiting order-`p²` groups as abelian —
+    hence solvable — with an explicit invariant subgroup at every divisor of `p²`. -/
+theorem exists_normal_subgroup_card_eq_p_of_card_eq_prime_sq (p : ℕ) (hp : p.Prime)
+    (hG : Nat.card G = p ^ 2) : ∃ H : Subgroup G, H.Normal ∧ Nat.card H = p := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hdvd : p ∣ Nat.card G := by rw [hG, sq]; exact dvd_mul_right p p
+  obtain ⟨H, hHcard⟩ := exists_subgroup_card_prime p hdvd
+  exact ⟨H, normal_of_card_eq_prime_sq p hp hG H, hHcard⟩
+
 end LagrangeOQ01
 
 /-
@@ -602,6 +659,12 @@ end LagrangeOQ01
     generators of coprime orders p, q, so their product has order p·q = |G|; hence the
     full dichotomy cyclic_or_q_mod_p_of_card_eq_pq (either q ≡ 1 mod p or G cyclic) and
     the abelian corollary mul_comm_of_card_eq_pq. Closes the order-p·q classification.
+  - Order-p² classification (Part IX): EVERY group of order p² is abelian
+    (mul_comm_of_card_eq_prime_sq) — no arithmetic side condition, in sharp contrast with
+    order p·q. Corollaries: every subgroup is normal (normal_of_card_eq_prime_sq), and
+    there is a normal subgroup of order p (exists_normal_subgroup_card_eq_p_of_card_eq_prime_sq),
+    giving the normal series 1 ◁ H ◁ G with cyclic factors. Uses Mathlib's
+    IsPGroup.commutative_of_card_eq_prime_sq (class equation for p-groups).
 
   **Status**: Verified, 0 sorries, 0 axioms
 -/
