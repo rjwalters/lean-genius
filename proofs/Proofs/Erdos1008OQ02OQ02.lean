@@ -1338,6 +1338,63 @@ theorem hasKst_of_edge_bound_rpow_lt (G : SimpleGraph V) [DecidableRel G.Adj]
   by_contra hfree
   exact absurd (kst_general_edge_bound_rpow G s t hs ht hfree) (not_le.2 hm)
 
+/-! ### Leading-order asymptotic constant
+
+The finite-`n` closed form `kst_edge_bound_leading_order`
+(`m ≤ ½(√(t-1)·n^{3/2} + n)`) determines the *asymptotic* leading coefficient of
+`ex(n; K_{2,t})`.  We package the bound as a function of `n` and show its ratio to
+`n^{3/2}` converges to `½·√(t-1)`, discharging the analytic content of the
+textbook statement `ex(n; K_{2,t}) ≤ (½√(t-1) + o(1))·n^{3/2}`. -/
+
+/-- **Closed-form leading-order KST bound as a function of `n`.**  The right-hand
+side of `kst_edge_bound_leading_order`: `½·(√(t-1)·n^{3/2} + n)`, with `n^{3/2}`
+written `n·√n`.  Packaging it as a function of `n` lets us state the asymptotic
+leading constant (`kst_leading_order_ratio_tendsto`). -/
+noncomputable def kstLeadingBound (t : ℕ) (n : ℝ) : ℝ :=
+  (Real.sqrt ((t : ℝ) - 1) * n * Real.sqrt n + n) / 2
+
+/-- The leading-order bound restated with `kstLeadingBound`: a nonempty
+`K_{2,t}`-free graph (`t ≥ 1`) satisfies `m ≤ kstLeadingBound t n`. -/
+theorem kst_edge_bound_leading_order_def (G : SimpleGraph V) [DecidableRel G.Adj]
+    [Nonempty V] (t : ℕ) (ht : 1 ≤ t) (hfree : ¬ HasK2t G t) :
+    (G.edgeFinset.card : ℝ) ≤ kstLeadingBound t (Fintype.card V) :=
+  kst_edge_bound_leading_order G t ht hfree
+
+/-- **Leading-order asymptotic constant for `ex(n; K_{2,t})`.**  The closed-form
+Kővári–Sós–Turán upper bound `kstLeadingBound t n = ½(√(t-1)·n^{3/2} + n)`,
+divided by `n^{3/2}`, tends to `½·√(t-1)` as `n → ∞`:
+
+      kstLeadingBound t n / n^{3/2}  →  ½·√(t-1).
+
+Combined with `kst_edge_bound_leading_order_def` (`m ≤ kstLeadingBound t n`), this
+makes rigorous the textbook statement `ex(n; K_{2,t}) ≤ (½√(t-1) + o(1))·n^{3/2}`:
+the `+n` correction term contributes `n / n^{3/2} = n^{-1/2} → 0`, so the leading
+coefficient of the proven upper bound is exactly `½√(t-1)`.  For `t = 2` this
+recovers Reiman's `ex(n; C₄) ≤ (½ + o(1))·n^{3/2}`.  The `√(t-1)` factor is a fixed
+constant, so no monotonicity/nonnegativity hypothesis on `t` is needed. -/
+theorem kst_leading_order_ratio_tendsto (t : ℕ) :
+    Filter.Tendsto (fun n : ℝ => kstLeadingBound t n / (n * Real.sqrt n))
+      Filter.atTop (nhds (Real.sqrt ((t : ℝ) - 1) / 2)) := by
+  -- `√n → ∞`, hence `2√n → ∞`, hence `(2√n)⁻¹ → 0`.
+  have hsqrt_atTop : Filter.Tendsto (fun n : ℝ => Real.sqrt n) Filter.atTop Filter.atTop := by
+    have h : (fun n : ℝ => Real.sqrt n) = fun n : ℝ => n ^ (1 / (2 : ℝ)) := by
+      funext x; exact Real.sqrt_eq_rpow x
+    rw [h]; exact tendsto_rpow_atTop (by norm_num)
+  have hinv : Filter.Tendsto (fun n : ℝ => (2 * Real.sqrt n)⁻¹) Filter.atTop (nhds 0) :=
+    (Filter.Tendsto.const_mul_atTop (by norm_num : (0 : ℝ) < 2) hsqrt_atTop).inv_tendsto_atTop
+  -- The target eventually equals the constant `½√(t-1)` plus the vanishing `(2√n)⁻¹`.
+  have hconst : Filter.Tendsto (fun _ : ℝ => Real.sqrt ((t : ℝ) - 1) / 2) Filter.atTop
+      (nhds (Real.sqrt ((t : ℝ) - 1) / 2)) := tendsto_const_nhds
+  have hsum := hconst.add hinv
+  rw [add_zero] at hsum
+  refine hsum.congr' ?_
+  filter_upwards [Filter.eventually_gt_atTop (0 : ℝ)] with n hn
+  have hs : (0 : ℝ) < Real.sqrt n := Real.sqrt_pos.mpr hn
+  have hnn : n ≠ 0 := hn.ne'
+  have hsn : Real.sqrt n ≠ 0 := hs.ne'
+  simp only [kstLeadingBound]
+  field_simp
+
 end GraphLevel
 
 end Erdos1008
