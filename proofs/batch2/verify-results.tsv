@@ -2025,8 +2025,8 @@ FundamentalArithmetic	RESIDUAL	dot-notation-drift
 FundamentalArithmeticOQ01	RESIDUAL	unknown-const:Nat.coprime_iff_disjoint.mp
 FundamentalArithmeticOQ02	RESIDUAL	unknown-const:Zsqrtd.mul_def
 FundamentalTheoremAlgebra	RESIDUAL	type-mismatch
-FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01	RESIDUAL	elab-drift
-FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02	RESIDUAL	elab-drift
+FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01	GREEN	
+FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02	GREEN	
 FundamentalTheoremAlgebraOQ04OQ04	RESIDUAL	parse-error
 FundamentalTheoremCalculus	GREEN	
 FundamentalTheoremCalculusLebesgueOQ04	RESIDUAL	elab-drift
