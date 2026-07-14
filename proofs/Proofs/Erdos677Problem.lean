@@ -101,9 +101,9 @@ theorem lcmInterval_dvd_product (n k : ℕ) :
   intro s
   induction s using Finset.induction_on with
   | empty => simp
-  | insert ha ih =>
+  | @insert a s ha ih =>
     rw [Finset.fold_insert ha, Finset.prod_insert ha]
-    exact Nat.lcm_dvd (dvd_mul_right _ _) (dvd_mul_of_dvd_left ih _)
+    exact Nat.lcm_dvd (dvd_mul_right _ _) (dvd_mul_of_dvd_right ih _)
 
 /-- `lcmInterval` is positive when `k > 0`.
 Proof: the product of positive numbers is positive, and the LCM divides it. -/
@@ -213,7 +213,7 @@ theorem lcmInterval_two (n : ℕ) : lcmInterval n 2 = (n + 1) * (n + 2) := by
   rw [show (2 : ℕ) = 1 + 1 from rfl, lcmInterval_succ, lcmInterval_one, Nat.lcm_comm]
   have h : Nat.Coprime (n + 1) (n + 2) := by
     show Nat.gcd (n + 1) (n + 2) = 1
-    have hrw : (n + 2) = 1 * (n + 1) + 1 := by ring
+    have hrw : (n + 2) = 1 + (n + 1) * 1 := by ring
     rw [hrw, Nat.gcd_add_mul_left_right, Nat.gcd_one_right]
   exact h.lcm_eq_mul
 
@@ -238,7 +238,9 @@ theorem factorization_lcmInterval (n k : ℕ) :
     (lcmInterval n k).factorization =
     (Finset.range k).sup (fun i => (n + i + 1).factorization) := by
   induction k with
-  | zero => simp [lcmInterval_zero, Finset.range_zero, Finset.sup_empty]
+  | zero =>
+    simp only [lcmInterval_zero, Nat.factorization_one, Finset.range_zero,
+      Finset.sup_empty, bot_eq_zero]
   | succ k ih =>
     rw [lcmInterval_succ,
         Nat.factorization_lcm (by omega) (lcmInterval_ne_zero n k),

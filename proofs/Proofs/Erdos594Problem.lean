@@ -95,7 +95,7 @@ An odd cycle of length 2k+1 is a cycle with an odd number of vertices.
 def hasCycleOfLength (G : SimpleGraph V) (n : ℕ) : Prop :=
   n ≥ 3 ∧ ∃ (vertices : Fin n → V),
     Function.Injective vertices ∧
-    (∀ i : Fin n, G.Adj (vertices i) (vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩))
+    (∀ i : Fin n, G.Adj (vertices i) (vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by have := i.isLt; omega)⟩))
 
 /-- A graph contains an odd cycle of length n if n is odd and ≥ 3. -/
 def hasOddCycleOfLength (G : SimpleGraph V) (n : ℕ) : Prop :=
@@ -191,8 +191,8 @@ Thomassen proved this affirmatively.
 def hasCycleThroughEdge (G : SimpleGraph V) (v w : V) (n : ℕ) : Prop :=
   G.Adj v w ∧ n ≥ 3 ∧ ∃ (vertices : Fin n → V),
     Function.Injective vertices ∧
-    (∃ i : Fin n, vertices i = v ∧ vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩ = w) ∧
-    (∀ i : Fin n, G.Adj (vertices i) (vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by omega)⟩))
+    (∃ i : Fin n, vertices i = v ∧ vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by have := i.isLt; omega)⟩ = w) ∧
+    (∀ i : Fin n, G.Adj (vertices i) (vertices ⟨(i.val + 1) % n, Nat.mod_lt _ (by have := i.isLt; omega)⟩))
 
 /- 
 **Thomassen's Theorem (1983):**

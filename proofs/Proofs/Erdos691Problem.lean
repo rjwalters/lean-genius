@@ -113,14 +113,19 @@ theorem multiplesOf_union (A B : Set ℕ) :
 /-- Counting function is monotone for subsets. -/
 theorem countingFunction_mono {A B : Set ℕ} (h : A ⊆ B) (n : ℕ) :
     countingFunction A n ≤ countingFunction B n := by
+  unfold countingFunction
   apply Finset.card_le_card
-  exact Finset.filter_subset_filter _ (fun x hx => h hx)
+  intro x hx
+  rw [Finset.mem_filter] at hx ⊢
+  exact ⟨hx.1, h hx.2⟩
 
 /-- Counting function is bounded by n + 1 (at most n+1 elements in [0..n]). -/
 theorem countingFunction_le (S : Set ℕ) (n : ℕ) :
     countingFunction S n ≤ n + 1 := by
   unfold countingFunction
-  exact Finset.card_filter_le _ _
+  calc ((Finset.range (n + 1)).filter (· ∈ S)).card
+      ≤ (Finset.range (n + 1)).card := Finset.card_filter_le _ _
+    _ = n + 1 := Finset.card_range _
 
 /- ## Part IV: Pairwise Coprime Characterization -/
 

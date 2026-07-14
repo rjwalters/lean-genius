@@ -111,9 +111,9 @@ axiom erdos_bollobas_proved : erdos_bollobas_conjecture
     for p > 1/4, Q_d appears almost surely; for p < 1/4, it does not. -/
 axiom threshold_at_quarter :
     ∃ p₀ : ℝ, p₀ = 1/4 ∧
-      (∀ p : ℝ, p > p₀ → p ≤ 1 →
+      (∀ p : ℝ, (hp₀ : p > 1/4) → (hp₁ : p ≤ 1) →
         AlmostSurely (fun d =>
-          ContainsHypercube (riordanRandomGraph d p (by linarith) (by linarith)) d))
+          ContainsHypercube (riordanRandomGraph d p hp₀ hp₁) d))
 
 /- Riordan also showed the number of Q_d copies in G(2^d, p) is asymptotically
     normally distributed (not just that at least one exists). -/
@@ -143,9 +143,9 @@ example : hypercubeAutomorphisms 3 = 48 := by
 theorem erdos_578_summary :
     erdos_bollobas_conjecture ∧
     (∃ p₀ : ℝ, p₀ = 1/4 ∧
-      (∀ p : ℝ, p > p₀ → p ≤ 1 →
+      (∀ p : ℝ, (hp₀ : p > 1/4) → (hp₁ : p ≤ 1) →
         AlmostSurely (fun d =>
-          ContainsHypercube (riordanRandomGraph d p (by linarith) (by linarith)) d))) := by
+          ContainsHypercube (riordanRandomGraph d p hp₀ hp₁) d))) := by
   exact ⟨erdos_bollobas_proved, threshold_at_quarter⟩
 
 end Erdos578

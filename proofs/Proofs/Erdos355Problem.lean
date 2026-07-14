@@ -152,8 +152,9 @@ Powers of 2 (λ = 2) cannot represent all rationals in any interval.
     ∑_{n=1}^∞ 1/2^n = 1 (geometric series). -/
 theorem geometric_series_sum : ∑' n, (1 : ℝ) / 2^(n+1) = 1 := by
   have h1 : ∀ n : ℕ, (1 : ℝ) / 2 ^ (n + 1) = (1 / 2) * (1 / 2) ^ n := by
-    intro n; rw [pow_succ]; ring
-  simp_rw [h1, tsum_mul_left, tsum_geometric_of_lt_one (by positivity) (by norm_num)]
+    intro n; rw [div_pow, one_pow, pow_succ]; ring
+  simp_rw [h1, tsum_mul_left]
+  rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]
   norm_num
 
 /- For λ = 2 (powers of 2), the achievable sums are exactly the dyadic rationals

@@ -123,7 +123,7 @@ theorem max_distance_not_rich (A : PointSet) (hA : A.card ≥ 2) :
 /-  Bhowmick's construction: n points with many rich distances. -/
 /-- Bhowmick's main result: At least ⌊n/4⌋ rich distances exist. -/
 axiom bhowmick_main (n : ℕ) (hn : n ≥ 4) :
-  ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4
+  ∃ A : PointSet, A.card = n ∧ (numRichDistances A : ℝ) ≥ (n : ℝ) / 4
 
 /-  Bhowmick's general result for higher multiplicities. -/
 /-
@@ -142,7 +142,7 @@ theorem erdos_756_answer : ErdosPachQuestion := by
 
 /-- The rich distances question has a positive answer. -/
 theorem rich_distances_exist :
-    ∀ n : ℕ, n ≥ 4 → ∃ A : PointSet, A.card = n ∧ numRichDistances A ≥ n / 4 :=
+    ∀ n : ℕ, n ≥ 4 → ∃ A : PointSet, A.card = n ∧ (numRichDistances A : ℝ) ≥ (n : ℝ) / 4 :=
   bhowmick_main
 
 /-
@@ -191,8 +191,12 @@ theorem bhowmick_ratio (n : ℕ) (hn : n ≥ 4) :
   · exact hcard
   · unfold richDistanceRatio
     simp only [hcard]
-    have h : (numRichDistances A : ℝ) ≥ n / 4 := by exact_mod_cast hrich
-    linarith [Nat.cast_pos.mpr (by linarith : n > 0)]
+    have h : (numRichDistances A : ℝ) ≥ (n : ℝ) / 4 := hrich
+    have hnpos : (0 : ℝ) < (n : ℝ) := by
+      have : (0 : ℕ) < n := by linarith
+      exact_mod_cast this
+    rw [ge_iff_le, le_div_iff₀ hnpos]
+    nlinarith [h, hnpos]
 
 /-- What is the supremum of richDistanceRatio as n → ∞? OPEN -/
 def SupremumRatioQuestion : Prop :=

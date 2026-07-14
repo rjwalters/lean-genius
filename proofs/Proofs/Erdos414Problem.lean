@@ -182,9 +182,9 @@ theorem divisors_card_le_two_sqrt (n : ℕ) (hn : 1 ≤ n) :
         ≤ (Finset.Icc 1 n.sqrt).card := by
           apply Finset.card_le_card
           intro d hd
-          simp [small_def] at hd
+          simp only [small_def, Finset.mem_filter, Nat.mem_divisors] at hd
           simp only [Finset.mem_Icc]
-          exact ⟨Nat.pos_of_mem_divisors hd.1, hd.2⟩
+          exact ⟨Nat.pos_of_dvd_of_pos hd.1.1 (by omega), hd.2⟩
       _ = n.sqrt := by simp [Nat.card_Icc]
   -- |large| ≤ √n: injection d ↦ n/d into {1, ..., √n}
   have h_large : large.card ≤ n.sqrt := by
@@ -195,24 +195,26 @@ theorem divisors_card_le_two_sqrt (n : ℕ) (hn : 1 ≤ n) :
             intro d hd
             simp [large_def] at hd
             obtain ⟨hd_mem, hd_gt⟩ := hd
-            have hdvd := (Nat.mem_divisors.mp hd_mem).1
-            simp only [Finset.mem_Icc]
+            have hdvd := hd_mem.1
+            simp only [Finset.coe_Icc, Set.mem_Icc]
             constructor
             · exact Nat.div_pos (Nat.le_of_dvd (by omega) hdvd) (by omega)
             · -- n / d ≤ √n because d > √n implies n / d < d and n/d · d = n
               -- Since d ≥ √n + 1 and (√n + 1)² > n, we get n / d < √n + 1
-              have hlt : n < (n.sqrt + 1) * (n.sqrt + 1) := Nat.lt_succ_sqrt' n
+              have hlt : n < (n.sqrt + 1) * (n.sqrt + 1) := by
+                have := Nat.lt_succ_sqrt' n; rwa [Nat.succ_eq_add_one, sq] at this
               have hd_pos : 0 < d := by omega
               have : n / d < n.sqrt + 1 := by
                 rw [Nat.div_lt_iff_lt_mul hd_pos]
                 calc n < (n.sqrt + 1) * (n.sqrt + 1) := hlt
-                  _ ≤ d * (n.sqrt + 1) := Nat.mul_le_mul_right _ (by omega)
+                  _ ≤ (n.sqrt + 1) * d := Nat.mul_le_mul_left _ (by omega)
               omega
           · -- Injectivity: if d₁, d₂ | n and n/d₁ = n/d₂, then d₁ = d₂
             intro d₁ hd₁ d₂ hd₂ heq
             simp [large_def] at hd₁ hd₂
-            have hd1_dvd := (Nat.mem_divisors.mp hd₁.1).1
-            have hd2_dvd := (Nat.mem_divisors.mp hd₂.1).1
+            have hd1_dvd := hd₁.1.1
+            have hd2_dvd := hd₂.1.1
+            simp only [] at heq  -- beta-reduce (fun d => n/d) dᵢ
             have h1 := Nat.div_mul_cancel hd1_dvd  -- n / d₁ * d₁ = n
             have h2 := Nat.div_mul_cancel hd2_dvd  -- n / d₂ * d₂ = n
             rw [heq] at h1
