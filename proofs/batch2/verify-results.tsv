@@ -2286,7 +2286,7 @@ NewtonLogConcavity	GREEN
 NewtonSignedInputs	GREEN	
 NormEuclideanZsqrtdFamilyOQ03OQ02	RESIDUAL	instance-synth
 NormEuclideanZsqrtdFamilyOQ03OQ02OQ01	RESIDUAL	instance-synth
-OSBridge	RESIDUAL	instance-synth
+OSBridge	GREEN	instance-synth
 PACLearning	GREEN	
 PNPBarriersLegacy	RESIDUAL	type-mismatch
 PNPBarriersSound	GREEN	
@@ -2314,7 +2314,7 @@ PicardLindelofOQ01OQ01OQ01	GREEN
 PicksTheoremOQ01	GREEN	
 PicksTheoremOQ01OQ01	GREEN	
 PicksTheoremOQ01OQ01OQ01	RESIDUAL	noncomputable
-PicksTheoremOQ01OQ02	RESIDUAL	proof-drift
+PicksTheoremOQ01OQ02	GREEN	proof-drift
 PicksTheoremOQ02	GREEN	
 PicksTheoremOQ03	GREEN	
 PlatonicSolidsOQ02	RESIDUAL	proof-drift
@@ -2340,7 +2340,7 @@ PtolemysTheoremOQ01OQ01	GREEN
 PtolemysTheoremOQ01OQ02	RESIDUAL	unknown-const:spherical_ptolemy
 PuiseuxTheorem	GREEN	
 PuiseuxTheoremOQ02	RESIDUAL	instance-synth
-PuiseuxTheoremOQ03	RESIDUAL	type-mismatch
+PuiseuxTheoremOQ03	GREEN	type-mismatch
 PythagoreanTheorem	GREEN	
 PythagoreanTheoremOQ01	GREEN	
 PythagoreanTheoremOQ03	GREEN	
@@ -2351,7 +2351,7 @@ QuadraticReciprocityAlgorithmOQ03	RESIDUAL	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03FieldBridge	RESIDUAL	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03M2	GREEN	
 QuadraticReciprocityAlgorithmOQ03M2Capstone	GREEN	rewrite-drift
-QuadraticReciprocityAlgorithmOQ03Zolotarev	RESIDUAL	rewrite-drift
+QuadraticReciprocityAlgorithmOQ03Zolotarev	GREEN	rewrite-drift
 QuadraticReciprocityOQ03	RESIDUAL	instance-synth
 QuadraticReciprocityOQ03OQ01	RESIDUAL	instance-synth
 QuadraticReciprocityOQ03OQ01Exp	RESIDUAL	instance-synth
@@ -2385,7 +2385,7 @@ RothTheoremQuantitative	GREEN
 RothTheoremQuantitativeAristotle	RESIDUAL	unknown-const:div_le_div_of_le_left
 RothTriangleRemoval	RESIDUAL	signature-drift
 SchauderFixedPoint	RESIDUAL	instance-synth
-SchauderFixedPointOQ01	RESIDUAL	instance-synth
+SchauderFixedPointOQ01	GREEN	instance-synth
 SchauderFixedPointOQ03	RESIDUAL	instance-synth
 SchauderFixedPointOQ03OQ01	GREEN	
 SchroederBernsteinOQ01	RESIDUAL	elab-drift
@@ -2419,7 +2419,7 @@ ShannonEntropyOQ01	GREEN
 ShannonEntropyOQ01OQ01	GREEN	
 ShannonEntropyOQ02	RESIDUAL	rewrite-drift
 ShannonSourceCodingOQ01	RESIDUAL	unknown-const:InformationTheory.mutualInformation
-ShannonSourceCodingOQ02	RESIDUAL	type-mismatch
+ShannonSourceCodingOQ02	GREEN	type-mismatch
 ShannonSourceCodingOQ03	RESIDUAL	unknown-const:Fintype.sum_piFinset_succ
 ShapleyFolkman	GREEN	
 ShapleyFolkmanAristotle	GREEN	
@@ -2496,7 +2496,7 @@ SpernerTuckerSimplexBoundaryPseudomanifold	GREEN
 SpernerTuckerSimplexFacetPair	GREEN	
 Sqrt2Irrational	GREEN	
 Sqrt2MinpolyOQ01	GREEN	
-Sqrt2MinpolyOQ01OQ02	RESIDUAL	rewrite-drift
+Sqrt2MinpolyOQ01OQ02	GREEN	rewrite-drift
 Sqrt2OQ01	RESIDUAL	unknown-const:square_nonneg_general
 Sqrt2PlusSqrt3Irrational	GREEN	
 Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01	GREEN	
@@ -2504,12 +2504,12 @@ Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02	GREEN
 StirlingExpansion	GREEN	
 StirlingExpansionAristotle	GREEN	
 StirlingFormula	RESIDUAL	parse-error
-StirlingFormulaOQ02OQ01	RESIDUAL	type-mismatch
+StirlingFormulaOQ02OQ01	GREEN	type-mismatch
 SubsetCount	GREEN	
 SubsetCountOQ02	GREEN	
 SubsetCountOQ02OQ01	GREEN	unknown-const:Finset.disjoint_comm.mp
 SumOfDivisorsOQ01SpecialPrime	GREEN	unknown-const:not_even_iff_odd
-SumOfKthPowers	RESIDUAL	unknown-const:Finset.sum_range_pow
+SumOfKthPowers	GREEN	unknown-const:Finset.sum_range_pow
 SumOfKthPowersOQ03	GREEN	
 SumOfKthPowersOQ04	RESIDUAL	type-mismatch
 SumOfKthPowersOQ05	GREEN	
