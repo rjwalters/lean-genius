@@ -1337,3 +1337,20 @@ exactly one file in this partition.
 | `Nat.find_min h` used as a function (`h (proof)`) → `don't know how to synthesize implicit argument m` | `Nat.find_min` now needs the tested value explicit: `Nat.find_min h (hlt : m < Nat.find h)` — supply it (`refine ⟨val, …, ?_⟩; exact Nat.find_min h (show val < Nat.find h by omega)`) | Erdos114OQ01Problem |
 | `Set.Finite.ncard_eq_toFinset_card'` (method, primed) "environment does not contain" | `Set.ncard_eq_toFinset_card s hs` (takes the set + `s.Finite`, gives `s.ncard = hs.toFinset.card`) | Erdos14UniqueSums (partial) |
 | `Finset.offDiag_card` gives `#s*#s - #s`; goal `#s*(#s-1)`; `omega` can't equate (nonlinear) | supply the bridge `have : #s * (#s - 1) = #s * #s - #s := Nat.mul_pred _ _` then `omega` | Erdos14UniqueSums (partial) |
+
+### §7z Increment 36 recipes (Doctor A–M)
+
+| Symptom | Fix | Files |
+|---------|-----|-------|
+| `isNilpotent_of_ker_le_center f hf inferInstance` "Function expected"/extra arg | `IsNilpotent H` now instance-implicit — drop trailing `inferInstance`: `isNilpotent_of_ker_le_center f ?_` | AbelRuffiniOQ04OQ01OQ03 |
+| `index_comap_of_surjective _ hf` rw "not type-correct under instances transparency" | pass `f` explicitly `(f := ConjAct.toConjAct.toMonoidHom)` and close by `.symm` (exact, not rw) | AbelRuffiniOQ04OQ01OQ03 |
+| `Even.neg_one_pow` rw fails to match `(-1:ℤˣ)^n` (units power-instance diamond) | avoid it — `interval_cases` the bounded exponent var + `decide` the sign contradiction | AbelRuffiniOQ07Order6 |
+| Multiset `{a, b}` literal not defeq-closed by trailing `rw` | append explicit `rfl` | AbelRuffiniOQ07Order6 |
+| `Int.Coprime` / `Int.Coprime.mul_dvd_of_dvd_of_dvd` / `Int.dvd_gcd` unknown | `Int.isCoprime_iff_gcd_eq_one` (iff) + `IsCoprime.mul_dvd`/`IsCoprime.mul_left`; `Int.dvd_gcd`(Nat)→`Int.dvd_coe_gcd`(↑gcd) | BezoutIdentityOQ03OQ04, OQ04OQ01 |
+| `Int.coe_nat_dvd` unknown | `Int.natCast_dvd_natCast` | BezoutIdentityOQ03OQ03 |
+| `Int.gcd_eq_gcd_ab` gives `m*gcdA + n*gcdB` but goal wants `s*m + t*n` | `mul_comm` both terms before `.symm` | BezoutIdentityOQ03OQ04 |
+| `Fintype (Fin (n+?m))` stuck — size param not inferable from a smaller-typed arg | supply the size implicit explicitly `(m := m)` at each application | BezoutIdentityOQ01OQ02OQ02Descent |
+| `Fin.sum_univ_two` now emits `M 0 1` (OfNat literals) — old `rw [hEntry]` with `⟨0,_⟩` indices misses; matrix-literal entry `![…] ⟨0,_⟩` won't reduce | state helper hyps + `congr_fun` indices with LITERAL `(0:Fin k)`; add `Matrix.cons_val_fin_one`; when atoms are then defeq-literal, `linarith`→`exact h` | BezoutIdentityOQ04OQ01 |
+| `simpa`/`convert` type-mismatch on a ℕ index expr (`m+j+2` vs `m+(j+1)+1`) + instLE/instPreorder diamond | add `have : m+j+2 = m+(j+1)+1 := by omega`, rw at hyp before simpa | BetaCentralBinomialExplicitRateOQ02 |
+| `Matrix.charpoly_conj_of_isUnit` removed | `Matrix.charpoly_units_conj' hP.unit N` then `rw [hP.unit_spec]` (its `M.val⁻¹` is already the matrix inverse) | CayleyHamiltonMinpolyOQ02OQ03 |
+| `minpoly_conj_of_isUnit` removed (similar-matrix minpoly invariance) | build conjugation AlgEquiv `MulSemiringAction.toAlgEquiv F _ (ConjAct.toConjAct hP.unit⁻¹)`, prove `e A = P⁻¹AP` via `ConjAct.units_smul_def`+`Matrix.coe_units_inv`, then `minpoly.algEquiv_eq` | CayleyHamiltonMinpolyOQ02OQ03 |

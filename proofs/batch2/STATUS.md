@@ -1921,3 +1921,48 @@ a₂=0 subcase logic is genuinely incomplete beyond a rename), Hilbert20LocalSol
 Erdos152ProblemAPN/KonigsbergOQ02OQ01Aristotle (dense AlphaProof `grind` timeouts),
 GreensTheorem/FourierSeriesOQ04OQ01/MeanValueTheorem (deep analysis rewrite/induction cascades),
 Erdos20Problem (`Finset.inf id` needs `OrderTop (Finset α)` which doesn't exist — def-level restructure).
+
+## Increment 36 (Doctor, A–M / Erdos<600 partition) — +10 GREEN
+
+Base origin/feature/issue-37508 (d82aac62da, ledger 1798). Classes: type-mismatch,
+proof-drift, rewrite-drift, unknown-const-mixed, instance-synth-cascades. Per-file triage
+(one lake build each, warm cache) then fix single/low-error files. Container dr46.
+
+Files (all in-container `lake build` exit 0):
+- AbelRuffiniOQ04OQ04 (built green as-is once dependency resolved — no edit)
+- AbelRuffiniOQ04OQ01OQ03 (+Sharp descendant): isNilpotent_of_ker_le_center now has
+  IsNilpotent H instance-implicit → drop trailing `inferInstance`; index_comap_of_surjective
+  instance-transparency rw failure → pass f explicitly + close by `.symm`
+- AbelRuffiniOQ07Order6: Multiset {3,2} literal no longer defeq-closes rw (add `rfl`);
+  sign_of_cycleType `.card`/`k` fold needs `congr 1`; **(-1:ℤˣ) power-instance diamond
+  blocks Even.neg_one_pow rw** → replace parity arg with `interval_cases k` (k≤2), k=2
+  case sign contradiction `by decide`
+- BezoutIdentityOQ03OQ04: `Int.Coprime.mul_dvd_of_dvd_of_dvd`→`Int.isCoprime_iff_gcd_eq_one.mpr`
+  + `IsCoprime.mul_dvd`; `Int.Coprime` (unfold) removed → `← Int.isCoprime_iff_gcd_eq_one` +
+  `IsCoprime.mul_left`; gcd_eq_gcd_ab gives m*gcdA+n*gcdB (swapped) → mul_comm before .symm
+- BezoutIdentityOQ03OQ03: `Int.coe_nat_dvd`→`Int.natCast_dvd_natCast`; `(-|x|).natAbs`
+  mod_cast → `simp only [Int.natAbs_neg, Int.natAbs_abs]`; `Function.comp_apply` needed before
+  ring for a∘castSucc sum. **STATEMENT REPAIR**: example `4x+6y+9z=1` had wrong witness
+  (1,-1,1)=7; corrected to (-2,0,1)=1
+- BezoutIdentityOQ01OQ02OQ02Descent: `Fintype (Fin (2+?m))` stuck — m no longer inferable
+  from N:Fin 2 matrix → supply `(m := m)` explicitly at headBlockN applications (unblocks
+  det_headBlockN elaboration → fixes downstream Unknown-identifier at headBlockNSL)
+- BetaCentralBinomialExplicitRateOQ02: 3× simpa-type-mismatch stirlingSeq index m+j+2 vs goal
+  m+(j+1)+1 (+ instLE/instPreorder diamond) → add `hidx:m+j+2=m+(j+1)+1 by omega`, rw before simpa
+- BezoutIdentityOQ04OQ01: SNF `snf.D` row index is Fin 1 not Fin 2 (hD01 literal indices);
+  congr_fun indices `⟨0,_⟩`→literal `(0:Fin 1)/(k:Fin 2)` so Matrix.cons_val fires + add
+  `Matrix.cons_val_fin_one`; linarith→`exact h` (atoms now defeq-literal); `Int.dvd_gcd`
+  (Nat conclusion) → `Int.dvd_coe_gcd` (↑gcd conclusion); neg/one_mul simp missed
+  mul_one/mul_neg → add to close dvd_neg cases
+- CayleyHamiltonMinpolyOQ02OQ03: `Matrix.charpoly_conj_of_isUnit` removed →
+  `Matrix.charpoly_units_conj' hP.unit` + hP.unit_spec; **`minpoly_conj_of_isUnit` removed
+  with no drop-in** → rebuild via conjugation F-AlgEquiv
+  `MulSemiringAction.toAlgEquiv F _ (ConjAct.toConjAct hP.unit⁻¹)` + `minpoly.algEquiv_eq`;
+  `he` uses `ConjAct.units_smul_def` + `Matrix.coe_units_inv` to reduce to P⁻¹AP
+
+Statement repairs: BezoutIdentityOQ03OQ03 example witness (1,-1,1)→(-2,0,1).
+
+Notes/anomalies: the combined-build "silent file = green" heuristic is UNRELIABLE — files
+whose dependency errors are skipped by Lean show 0 own-errors but fail individually
+(dep-skipped). Verify every candidate by its own `lake build` exit code. Virtiofs truncation
+(`unexpected end of input` / `Invalid name after end`) recurs after edits → `docker restart dr46`.
