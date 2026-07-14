@@ -72,7 +72,7 @@ theorem prime_factors_are_prime (n : ℕ) :
 
 /-- The prime factorization list is always sorted. -/
 theorem prime_factors_sorted (n : ℕ) :
-    n.primeFactorsList.Sorted (· ≤ ·) :=
+    n.primeFactorsList.SortedLE :=
   Nat.primeFactorsList_sorted n
 
 /-! ## Uniqueness of Prime Factorization -/
@@ -115,7 +115,7 @@ theorem numbers_with_same_factors_equal {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0
 theorem fundamental_theorem_of_arithmetic (n : ℕ) (hn : 2 ≤ n) :
     ∃ l : List ℕ,
       (∀ p ∈ l, Nat.Prime p) ∧
-      l.Sorted (· ≤ ·) ∧
+      l.SortedLE ∧
       l.prod = n ∧
       (∀ l' : List ℕ, (∀ p ∈ l', Nat.Prime p) → l'.prod = n → l'.Perm l) := by
   use n.primeFactorsList
@@ -164,7 +164,7 @@ example : (17 : ℕ).primeFactorsList = [17] := by native_decide
 example : [2, 2, 3].prod = 12 := by native_decide
 
 /-- Example: The factorization list is sorted. -/
-example : (60 : ℕ).primeFactorsList.Sorted (· ≤ ·) :=
+example : (60 : ℕ).primeFactorsList.SortedLE :=
   Nat.primeFactorsList_sorted 60
 
 /-! ## Corollaries and Applications -/

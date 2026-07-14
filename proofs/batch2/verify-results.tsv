@@ -32,7 +32,7 @@ AbelRuffiniOQ04OQ07OQ02	GREEN
 AbelRuffiniOQ04OQ09Cyclic	GREEN	
 AbelRuffiniOQ06	GREEN	
 AbelRuffiniOQ06OQ01	RESIDUAL	dot-notation-drift
-AbelRuffiniOQ06OQ01OQ03	RESIDUAL	dot-notation-drift
+AbelRuffiniOQ06OQ01OQ03	GREEN	
 AbelRuffiniOQ07NotSolvable	GREEN	
 AbelRuffiniOQ07Order6	RESIDUAL	rewrite-drift
 AbelRuffiniOQ09	RESIDUAL	dot-notation-drift
@@ -54,7 +54,7 @@ AlgebraicPointsNull	GREEN
 AlgebraicRealsNull	GREEN	
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	GREEN	
-AmgmInequalityOQ02Defs	GREEN	dot-notation-drift
+AmgmInequalityOQ02Defs	GREEN	
 AmgmInequalityOQ02OQ01OQ02	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
@@ -2021,7 +2021,7 @@ FrobeniusNumberOQ02	GREEN
 FrobeniusNumberOQ02OQ01	GREEN	
 FrobeniusNumberOQ02OQ02	GREEN	
 FrobeniusNumberOQ03	GREEN	
-FundamentalArithmetic	RESIDUAL	dot-notation-drift
+FundamentalArithmetic	GREEN	
 FundamentalArithmeticOQ01	RESIDUAL	unknown-const:Nat.coprime_iff_disjoint.mp
 FundamentalArithmeticOQ02	RESIDUAL	unknown-const:Zsqrtd.mul_def
 FundamentalTheoremAlgebra	RESIDUAL	type-mismatch
@@ -2283,7 +2283,7 @@ NewtonInductiveStepOQ01Aristotle	GREEN
 NewtonInductiveStepOQ02	RESIDUAL	type-mismatch
 NewtonInductiveStepOQ03	RESIDUAL	proof-drift
 NewtonLogConcavity	GREEN	
-NewtonSignedInputs	GREEN	dot-notation-drift
+NewtonSignedInputs	GREEN	
 NormEuclideanZsqrtdFamilyOQ03OQ02	RESIDUAL	instance-synth
 NormEuclideanZsqrtdFamilyOQ03OQ02OQ01	RESIDUAL	instance-synth
 OSBridge	RESIDUAL	instance-synth
@@ -2559,10 +2559,10 @@ TaylorTheoremOQ03	RESIDUAL	type-mismatch
 TaylorTheoremOQ03OQ01	GREEN	
 TaylorTheoremOQ03OQ02	GREEN	
 TestApi1056	RESIDUAL	proof-drift
-TestApi1059	RESIDUAL	dot-notation-drift
+TestApi1059	GREEN	
 TestApi1061	RESIDUAL	unknown-const:Nat.divisors_prime_eq
 TestApi1061b	RESIDUAL	unknown-const:Nat.divisors_prime_eq
-TestApi1141	RESIDUAL	dot-notation-drift
+TestApi1141	GREEN	
 TestApi1148	GREEN	
 TestApi1159b	RESIDUAL	unknown-const:Configuration.HasLines.mkFinOrder
 TestApi1159c	RESIDUAL	proof-drift
