@@ -189,8 +189,8 @@ theorem sum_reciprocals_triangular :
       2 - 2 / n := by
     intro n hn
     have h0mem : (0 : ℕ) ∈ Finset.range n := Finset.mem_range.mpr (Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hn))
-    rw [Finset.sum_eq_sum_diff_singleton_add h0mem]
-    simp only [ite_true, add_zero]
+    have hf0 : (if (0:ℕ) = 0 then (0:ℝ) else (2:ℝ) / (((0:ℕ):ℝ) * (((0:ℕ):ℝ) + 1))) = 0 := by simp
+    rw [← Finset.sum_erase (a := (0:ℕ)) (Finset.range n) hf0, Finset.erase_eq]
     have h_eq : Finset.range n \ {0} = Finset.Icc 1 (n - 1) := by
       ext x
       simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton, Finset.mem_Icc]
@@ -255,10 +255,10 @@ theorem sum_reciprocals_one :
   rw [h_scale] at h
   have h2 : HasSum (fun n : ℕ => (if n = 0 then 0 else (1 : ℝ) / ((n : ℝ) * (n + 1)))) (2 / 2) := by
     have hdiv := h.div_const 2
-    simp only [mul_div_assoc] at hdiv
-    convert hdiv using 1
-    ext n
-    ring
+    have hfun : (fun n : ℕ => 2 * (if n = 0 then 0 else (1 : ℝ) / ((n : ℝ) * (n + 1))) / 2) =
+        (fun n : ℕ => if n = 0 then 0 else (1 : ℝ) / ((n : ℝ) * (n + 1))) := by
+      funext n; split_ifs <;> ring
+    rwa [hfun] at hdiv
   simp only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, div_self] at h2
   exact h2
 

@@ -74,7 +74,8 @@ def sublevelSet (f : Polynomial ℂ) : Set ℂ :=
 /-- The sublevel set contains all roots of f. -/
 theorem roots_in_sublevel (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
     z ∈ sublevelSet f := by
-  simp [sublevelSet, hz, Complex.abs.map_zero]
+  simp only [sublevelSet, Set.mem_setOf_eq, hz, Complex.abs, norm_zero]
+  norm_num
 
 /-- The sublevel set is nonempty for non-constant f (by FTA, f has a root). -/
 theorem sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
