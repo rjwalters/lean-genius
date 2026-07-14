@@ -514,7 +514,7 @@ DeMoivreOQ02OQ02	RESIDUAL	signature-drift
 DeMoivreOQ03OQ01	GREEN	
 DeMoivreOQ06	GREEN	
 DedekindFrobeniusBridge	RESIDUAL	rewrite-drift
-DenumerabilityRationalsOQ01	RESIDUAL	elab-drift
+DenumerabilityRationalsOQ01	GREEN	elab-drift
 DenumerabilityRationalsOQ02OQ02	RESIDUAL	elab-drift
 DenumerabilityRationalsOQ04	RESIDUAL	unknown-const:Polynomial.setOf_isRoot_finite
 DerangementsConvergence	GREEN	
@@ -2132,7 +2132,7 @@ InverseGaloisA5	GREEN
 InverseGaloisA5Dedekind	GREEN	
 InverseGaloisA5DedekindInstantiation	RESIDUAL	instance-synth
 InverseGaloisA5DedekindMod7	GREEN	
-InverseGaloisA5OQ02	RESIDUAL	elab-drift
+InverseGaloisA5OQ02	GREEN	elab-drift
 InverseGaloisD4	GREEN	
 InverseGaloisD4OQ01	GREEN	
 InverseGaloisD4OQ01External	GREEN	
@@ -2242,7 +2242,7 @@ LeibnizPiOQ03	GREEN
 LiouvilleTheorem	RESIDUAL	instance-synth
 LiouvilleTheoremOQ03	GREEN	
 LiouvilleTheoremOQ04	GREEN	
-LittleWedderburnOQ01OQ02	RESIDUAL	elab-drift
+LittleWedderburnOQ01OQ02	GREEN	elab-drift
 LovaszLocalLemmaOQ01	GREEN	
 LovaszLocalLemmaOQ01StrongInduction	GREEN	
 LovaszLocalLemmaOQ01SymmetricStep	GREEN	

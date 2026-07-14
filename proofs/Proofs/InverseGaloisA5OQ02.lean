@@ -190,8 +190,7 @@ input `trinks_gal_embeds_simple168` and the cycle-type divisibility
 eliminated: an index-2 subgroup of a simple group cannot exist. -/
 theorem trinks_gal_card : Nat.card trinks.Gal = 168 := by
   obtain ⟨P, instGP, instFP, hsimple, hPcard, φ, hφ⟩ := trinks_gal_embeds_simple168
-  haveI := instGP
-  haveI := instFP
-  exact card_eq_168_of_embeds_in_simple168 hsimple hPcard φ hφ trinks_gal_84_dvd
+  exact @card_eq_168_of_embeds_in_simple168 _ P _ _ instGP instFP hsimple hPcard φ hφ
+    trinks_gal_84_dvd
 
 end InverseGaloisA5OQ02

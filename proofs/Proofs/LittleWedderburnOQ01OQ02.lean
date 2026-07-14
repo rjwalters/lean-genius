@@ -45,7 +45,6 @@ variable (D : Type*) [DivisionRing D] [Finite D]
 
 /-! ## The center is a field -/
 
-omit [Finite D] in
 /-- **The center of a finite division ring is a field.** Mathlib equips the
 center of *any* division ring with a `Field` structure (`Subring.instField`); we
 expose it as the structural predicate `IsField`, which is the input the class
