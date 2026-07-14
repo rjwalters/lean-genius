@@ -965,3 +965,29 @@ that file's residual is a separate LT/Preorder instance-diamond — deferred.)
 Expected X, but found X-truncated` or `Unknown identifier <name>-truncated` at EOF → the mount
 truncated the file mid-read. `docker restart dr31`, rebuild, verify by exit code (hit 4× this
 increment: ZsqrtdNegTwoOQ03, DenumerabilityRationalsOQ01, Erdos79Incomplete01, FactorRemainderTheorem).
+
+## §7u Doctor increment 23 recipes (tm/pd/rewrite + mixed, #38065, +N GREEN)
+
+Gaussian-integral / area-of-circle cluster (integration-by-parts + rpow + ENNReal):
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `integral_mul_deriv_eq_deriv_mul` rejects `∀ x, HasDerivAt …` hyps ("expected `∀ x ∈ tsupport …`") | wrap: `(fun x _ => hu x) (fun x _ => hv x)` — the two deriv hyps are now tsupport-restricted | AreaOfCircleOQ07OQ05OQ01, OQ07OQ05 |
+| `simpa using (hasDerivAt_pow n x).neg` fails: `.neg` prints `-fun x => x^n` (fn-negation), won't unify with goal `HasDerivAt (fun y => -y^n) …` | typed intermediate: `have h : HasDerivAt (fun y => -y^n) (-(↑n * x^(n-1))) x := (hasDerivAt_pow n x).neg; simpa using h` (defeq forced at the `have`) | OQ07OQ05OQ01, OQ07OQ05 |
+| `simpa using hasDerivAt_id x` → AddCommGroup-instance mismatch | `fun x => hasDerivAt_id x` (direct term; `id ≡ fun y => y`) | OQ07OQ05 |
+| `hasDerivAt_integral_of_dominated_loc_of_deriv_le (ε := r) … (h : 0<ε)` — signature lost `ε`; now `s ∈ nhds x₀` (a `Set`) | replace `(ε := 1) … one_pos` with `(Metric.ball_mem_nhds x₀ one_pos)`; `∀ x s _` ∀-hyps line up with `∀ x ∈ s` | AreaOfCircleOQ05OQ03OQ05 |
+| `hr.le` where `hr : 0 ≤ r` → `Real.le.le` unknown-field | use `hr` directly; derived nonneg (`0 ≤ r^2`) → `by positivity` | AreaOfCircleOQ02, OQ02OQ01 |
+| `Real.rpow_mul pi_nonneg.le` → same `.le`-projection error | `Real.rpow_mul pi_nonneg` (takes `0 ≤ x` directly) | AreaOfCircleOQ02OQ01 |
+| `Gamma_add_one` leaves an un-normalized cast arg inside `Gamma (…)`, so `field_simp` can't unify the two Gamma calls | `rw [show ((n-2:ℕ):ℝ)/2 + 1 = (n:ℝ)/2 from by push_cast [Nat.cast_sub hn]; ring]` first | AreaOfCircleOQ02 |
+| combine `ENNReal.ofReal((2r)^2 * π)` with a leading numeral | `rw [show (2*r)^2*π = 4*(r^2*π) by ring, ENNReal.ofReal_mul (by norm_num : (0:ℝ)≤4), ENNReal.ofReal_ofNat]` | AreaOfCircleOQ02 |
+
+General proof-drift (Cantor nested-interval / countability cluster):
+
+| symptom | fix | files |
+|---|---|---|
+| `exists_surjective_nat α ⟨0⟩` — "Function expected" | `exists_surjective_nat α` (Nonempty/Countable are instances now) | AlgebraicNumbersCountableOQ02OQ02 |
+| `simp [h1, h2]; linarith` → "No goals to be solved" (simp self-closed) | drop trailing `linarith` | AlgNumbers OQ02OQ02 |
+| `apply csSup_le ⟨…⟩` → anon-ctor "expected type could not be determined" | `refine csSup_le ⟨…⟩ ?_` + `rintro x ⟨m, hm⟩` | AlgNumbers OQ02OQ02 |
+| `abs_of_nonneg` on `dist (a n) (a (n+1))` fails (a strictly incr → inner is negative): `Real.dist_eq x y = |x - y|` in that order | `rw [Real.dist_eq, abs_sub_comm, abs_of_nonneg (…)]` | AlgNumbers OQ02OQ02OQ01 |
+| no-op `dsimp only` → "made no progress" | delete the line | AreaOfCircleOQ07OQ05OQ02 |
+| `convert x using 1; ring` "made no progress" (metavar stall, confirms §7s) | `have hval : lhs = rhs := by ring; rw [hval]; exact x` | OQ07OQ05OQ01, OQ07OQ05, OQ05OQ03OQ05 |
