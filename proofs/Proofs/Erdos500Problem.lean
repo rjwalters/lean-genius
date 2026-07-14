@@ -26,7 +26,7 @@ import Mathlib.Tactic
 /- ## Core Definitions -/
 
 /-- A 3-uniform hypergraph on vertex set Fin n: a collection of 3-element subsets. -/
-def Hypergraph3 (n : ℕ) := Finset (Finset (Fin n))
+abbrev Hypergraph3 (n : ℕ) := Finset (Finset (Fin n))
 
 /-- A hypergraph is 3-uniform if every edge has exactly 3 vertices. -/
 def IsThreeUniform (n : ℕ) (H : Hypergraph3 n) : Prop :=

@@ -41,7 +41,7 @@ def IsPartitionOrdinal (α : Ordinal) : Prop :=
 
 /-- β has the partition property if ω^β → (ω^β, 3)². -/
 def HasPartitionProperty (β : Ordinal) : Prop :=
-  IsPartitionOrdinal (Ordinal.omega ^ β)
+  IsPartitionOrdinal (Ordinal.omega0 ^ β)
 
 /- ## Specker's Results (1957) -/
 
@@ -52,7 +52,7 @@ def HasPartitionProperty (β : Ordinal) : Prop :=
 /-- An ordinal is additively indecomposable if it equals ω^γ for some ordinal γ.
     Equivalently, for all δ₁ δ₂ < β, δ₁ + δ₂ < β. -/
 def IsAdditivelyIndecomposable (β : Ordinal) : Prop :=
-  ∃ γ : Ordinal, β = Ordinal.omega ^ γ
+  ∃ γ : Ordinal, β = Ordinal.omega0 ^ γ
 
 /- ## Schipperus Classification (2010) -/
 
