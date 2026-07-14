@@ -48,6 +48,7 @@ For r ∈ (1,2): n^{1/r} is strictly between n^{1/2} and n¹, so:
 namespace LawsOfLargeNumbersOQ01OQ02
 
 open MeasureTheory ProbabilityTheory Filter Real Finset
+open scoped ENNReal Topology
 
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
 
