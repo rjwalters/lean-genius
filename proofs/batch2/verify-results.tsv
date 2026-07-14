@@ -1961,7 +1961,7 @@ FactorRemainderNullstellensatzOQ01	RESIDUAL	instance-synth
 FactorRemainderNullstellensatzOQ02	RESIDUAL	unknown-const:card_roots_le_degree
 FactorRemainderTheorem	RESIDUAL	parse-error
 FactorRemainderTheoremOQ01OQ01OQ02	RESIDUAL	proof-drift
-FactorRemainderTheoremOQ02	RESIDUAL	proof-drift
+FactorRemainderTheoremOQ02	GREEN	
 FactorRemainderTheoremOQ03	RESIDUAL	unknown-const:Polynomial.card_roots_le_degree
 FairGamesTheorem	RESIDUAL	type-mismatch
 FairGamesTheoremOQ02	RESIDUAL	proof-drift
@@ -2036,7 +2036,7 @@ FundamentalTheoremCalculusStokesAristotle	RESIDUAL	unclassified
 FurstenbergCorrespondence	RESIDUAL	type-mismatch
 FurstenbergCorrespondenceOQ01	RESIDUAL	instance-synth
 FurstenbergCorrespondenceOQ02	RESIDUAL	parse-error
-GCDAlgorithmOQ01OQ03OQ01	RESIDUAL	type-mismatch
+GCDAlgorithmOQ01OQ03OQ01	GREEN	
 GCDAlgorithmOQ01OQ03OQ01OQ01	RESIDUAL	type-mismatch
 GcdAlgorithmOQ02	GREEN	
 GcdAlgorithmOQ02OQ01	GREEN	
@@ -2204,7 +2204,7 @@ LagrangeTheoremOQ02OQ02	RESIDUAL	unknown-const:ConjClasses.mem_carrier_iff_isCon
 LagrangeTheoremOQ02OQ02OQ01	RESIDUAL	unknown-const:ConjClasses.mem_carrier_iff_isConj
 LagrangeTheoremOQ03	GREEN	
 LagrangeTheoremOQ03OQ02	GREEN	
-LagrangeTheoremOQ05	RESIDUAL	type-mismatch
+LagrangeTheoremOQ05	GREEN	
 LawOfCosines	GREEN	
 LawOfCosinesOQ01OQ01OQ01	GREEN	
 LawOfCosinesOQ01OQ01OQ03	RESIDUAL	type-mismatch

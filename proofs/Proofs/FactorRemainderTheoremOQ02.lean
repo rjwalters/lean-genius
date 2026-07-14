@@ -55,7 +55,7 @@ If p ∈ ℤ[X] is monic and r ∈ ℚ is a root of p, then r ∈ ℤ.
 This is a direct consequence of the Rational Root Theorem: since the leading
 coefficient is 1, the denominator must divide 1, so r is an integer. -/
 theorem monic_rational_root_is_integer {p : ℤ[X]} (hp : p.Monic) {r : ℚ}
-    (hr : aeval r p = 0) : IsInteger ℤ r :=
+    (hr : aeval r p = 0) : IsLocalization.IsInteger ℤ r :=
   isInteger_of_is_root_of_monic hp hr
 
 /-- For monic polynomials, rational roots are integers that divide the constant term. -/
@@ -69,8 +69,8 @@ theorem monic_root_dvd_constant {p : ℤ[X]} (hp : p.Monic) {r : ℚ}
 f(x) = (x - r) · g(x) over ℚ[X]. -/
 theorem factor_of_rational_root {f : ℤ[X]} {r : ℚ} (hr : aeval r f = 0) :
     (X - C r) ∣ (f.map (algebraMap ℤ ℚ)) := by
-  rw [dvd_iff_isRoot]
-  simp [IsRoot, eval_map, ← aeval_def, hr]
+  rw [dvd_iff_isRoot, IsRoot, eval_map, ← aeval_def]
+  exact hr
 
 /-! ## Contrapositive: Proving Irrationality
 
