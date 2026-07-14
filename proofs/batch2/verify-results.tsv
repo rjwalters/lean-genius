@@ -222,7 +222,7 @@ BezoutIdentityOQ02OQ04	RESIDUAL	instance-synth
 BezoutIdentityOQ03OQ01OQ01OQ02OQ02	GREEN	
 BezoutIdentityOQ03OQ02OQ01	GREEN	
 BezoutIdentityOQ03OQ03	RESIDUAL	unknown-const:Int.coe_nat_dvd.mpr
-BezoutIdentityOQ03OQ04	RESIDUAL	unknown-const:Int.Coprime.mul_dvd_of_dvd_of_dvd
+BezoutIdentityOQ03OQ04	GREEN	
 BezoutIdentityOQ04OQ01	RESIDUAL	rewrite-drift
 BezoutIdentityOQ04OQ01OQ01	GREEN	
 BinaryGcdOQ02	GREEN	
