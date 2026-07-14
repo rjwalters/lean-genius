@@ -145,7 +145,7 @@ ArithmeticSeriesOQ00OQ02	GREEN
 ArithmeticSeriesOQ00OQ02OQ01	RESIDUAL	instance-synth
 ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
 ArithmeticSeriesOQ02OQ02OQ03OQ01	GREEN	
-ArithmeticSeriesOQ02OQ03	RESIDUAL	unknown-const:Nat.choose_two_middle
+ArithmeticSeriesOQ02OQ03	GREEN	
 ArithmeticSeriesOQ02OQ04OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01OQ01	GREEN	
@@ -948,7 +948,7 @@ Erdos154Problem	GREEN
 Erdos155Problem	GREEN	
 Erdos156Aristotle	RESIDUAL	instance-synth
 Erdos156OQ02	RESIDUAL	unknown-const:x
-Erdos156ProblemAristotle	RESIDUAL	duplicate-decl
+Erdos156ProblemAristotle	GREEN	
 Erdos158Problem	GREEN	
 Erdos159Problem	RESIDUAL	type-mismatch
 Erdos15Problem	GREEN	
@@ -1191,7 +1191,7 @@ Erdos370Problem	RESIDUAL	proof-drift
 Erdos371Problem	GREEN	
 Erdos372Problem	GREEN	
 Erdos374Problem	RESIDUAL	unknown-const:not_le_of_lt
-Erdos375Aristotle	RESIDUAL	unknown-const:Nat.coprime_succ_self
+Erdos375Aristotle	GREEN	
 Erdos375Problem	GREEN	
 Erdos377Problem	GREEN	
 Erdos379Problem	GREEN	
