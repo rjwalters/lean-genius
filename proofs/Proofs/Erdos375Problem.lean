@@ -151,9 +151,7 @@ theorem grimm_k_eq_2 (n : ℕ) (h : isCompositeBlock n 2) :
     · simpa using hqdvd  -- f(1) = q | n+1+1 = n+2
   · -- Assigned primes are distinct
     intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all
-    · exact hpq
-    · exact hpq.symm
+    fin_cases i <;> fin_cases j <;> simp_all [hpq, hpq.symm, Ne.symm]
 
 /-
 ## Part IV: Known Partial Results
