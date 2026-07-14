@@ -20,8 +20,8 @@ AbelRuffiniGaloisExtensionsOQ10	GREEN
 AbelRuffiniOQ03	GREEN	
 AbelRuffiniOQ04	GREEN	
 AbelRuffiniOQ04OQ01	GREEN	
-AbelRuffiniOQ04OQ01OQ03	RESIDUAL	rewrite-drift
-AbelRuffiniOQ04OQ01OQ03Sharp	RESIDUAL	rewrite-drift
+AbelRuffiniOQ04OQ01OQ03	GREEN	
+AbelRuffiniOQ04OQ01OQ03Sharp	GREEN	
 AbelRuffiniOQ04OQ01OQ03Sharpness	GREEN	
 AbelRuffiniOQ04OQ02	GREEN	
 AbelRuffiniOQ04OQ02OQ01	GREEN	
@@ -34,7 +34,7 @@ AbelRuffiniOQ06	GREEN
 AbelRuffiniOQ06OQ01	GREEN	
 AbelRuffiniOQ06OQ01OQ03	GREEN	
 AbelRuffiniOQ07NotSolvable	GREEN	
-AbelRuffiniOQ07Order6	RESIDUAL	rewrite-drift
+AbelRuffiniOQ07Order6	GREEN	
 AbelRuffiniOQ09	GREEN	
 AbelRuffiniOQ10	RESIDUAL	noncomputable
 AbelRuffiniOQ11	GREEN	
@@ -205,12 +205,12 @@ BertrandsPostulateOQ03OQ04Aristotle	GREEN
 BertrandsPostulateOQ03OQ04OQ01	RESIDUAL	proof-drift
 BertrandsPostulateOQ03OQ04OQ03	GREEN	
 BetaCentralBinomialExplicitRate	GREEN	
-BetaCentralBinomialExplicitRateOQ02	RESIDUAL	type-mismatch
+BetaCentralBinomialExplicitRateOQ02	GREEN	
 BetaCentralBinomialOGF	GREEN	
 BetaIntegralRecurrenceOQ01OQ03OQ01	GREEN	
 BetaIntegralRecurrenceOQ01OQ03OQ01OQ02	GREEN	
 BezoutIdentity	GREEN	
-BezoutIdentityOQ01OQ02OQ02Descent	RESIDUAL	unknown-const:det_headBlockN
+BezoutIdentityOQ01OQ02OQ02Descent	GREEN	
 BezoutIdentityOQ01OQ02OQ02Transitive	RESIDUAL	unknown-const:det_headBlockN
 BezoutIdentityOQ02OQ01OQ01OQ01OQ01	RESIDUAL	type-mismatch
 BezoutIdentityOQ02OQ01OQ02	GREEN	
@@ -221,9 +221,9 @@ BezoutIdentityOQ02OQ02OQ01OQ03	GREEN
 BezoutIdentityOQ02OQ04	RESIDUAL	instance-synth
 BezoutIdentityOQ03OQ01OQ01OQ02OQ02	GREEN	
 BezoutIdentityOQ03OQ02OQ01	GREEN	
-BezoutIdentityOQ03OQ03	RESIDUAL	unknown-const:Int.coe_nat_dvd.mpr
-BezoutIdentityOQ03OQ04	RESIDUAL	unknown-const:Int.Coprime.mul_dvd_of_dvd_of_dvd
-BezoutIdentityOQ04OQ01	RESIDUAL	rewrite-drift
+BezoutIdentityOQ03OQ03	GREEN	
+BezoutIdentityOQ03OQ04	GREEN	
+BezoutIdentityOQ04OQ01	GREEN	
 BezoutIdentityOQ04OQ01OQ01	GREEN	
 BinaryGcdOQ02	GREEN	
 BinaryGcdOQ02OQ01	RESIDUAL	unknown-const:a
@@ -284,7 +284,7 @@ BrouwerFixedPointOQ01OQ03	GREEN
 BrouwerFixedPointOQ01OQ03OQ01	GREEN	
 BrouwerFixedPointOQ01OQ03OQ01OQ01	GREEN	
 BrouwerFixedPointOQ02	RESIDUAL	type-mismatch
-BrouwerFixedPointOQ02OQ01	RESIDUAL	type-mismatch
+BrouwerFixedPointOQ02OQ01	GREEN	
 BrouwerFixedPointOQ02OQ02	GREEN	
 BrouwerFixedPointOQ02OQ02OQ01	GREEN	
 BrouwerFixedPointOQ02OQ02OQ01Iteration	GREEN	
@@ -343,7 +343,7 @@ CauchyInterlacingIsometryConj	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingMajorizationPositivity	GREEN	
 CauchyInterlacingOQ01OQ01OQ01	GREEN	
 CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
-CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
+CauchyInterlacingPoincareCompression	GREEN	
 CauchyInterlacingWeylDual	GREEN	
 CauchySchwarz	GREEN	type-mismatch
 CauchySchwarzIntegralLpDualityGluing	GREEN	
@@ -388,8 +388,8 @@ CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	RESIDUAL	unknown-const:Basis
 CayleyHamiltonMinpolyOQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ02OQ01OQ02	GREEN	
 CayleyHamiltonMinpolyOQ02OQ02	RESIDUAL	proof-drift
-CayleyHamiltonMinpolyOQ02OQ03	RESIDUAL	unknown-const:Matrix.charpoly_conj_of_isUnit
-CayleyHamiltonMinpolyOQ03OQ01	RESIDUAL	unknown-const:Matrix.mul_mulVec
+CayleyHamiltonMinpolyOQ02OQ03	GREEN	
+CayleyHamiltonMinpolyOQ03OQ01	GREEN	
 CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
 CayleyHamiltonMinpolyOQ04BackwardAristotle	GREEN	
 CayleyHamiltonMinpolyOQ05	GREEN	

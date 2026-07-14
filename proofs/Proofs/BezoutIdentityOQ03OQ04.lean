@@ -71,7 +71,7 @@ modulo m * n (when m, n are coprime).
 If x ≡ y (mod m) and x ≡ y (mod n) with gcd(m,n) = 1, then x ≡ y (mod m*n). -/
 theorem crt_unique (x y m n : ℤ) (hm : m ∣ (x - y)) (hn : n ∣ (x - y))
     (hcop : Int.gcd m n = 1) : m * n ∣ (x - y) := by
-  exact Int.Coprime.mul_dvd_of_dvd_of_dvd (by exact_mod_cast hcop) hm hn
+  exact (Int.isCoprime_iff_gcd_eq_one.mpr hcop).mul_dvd hm hn
 
 /-! ## Part 3: Efficiency Analysis -/
 
@@ -90,7 +90,9 @@ This avoids:
 The total cost is: 1 extended GCD + 4 multiplications + 1 addition. -/
 theorem extended_gcd_gives_bezout (m n : ℤ) :
     ∃ s t : ℤ, s * m + t * n = Int.gcd m n := by
-  exact ⟨Int.gcdA m n, Int.gcdB m n, Int.gcd_eq_gcd_ab m n |>.symm⟩
+  refine ⟨Int.gcdA m n, Int.gcdB m n, ?_⟩
+  rw [mul_comm (Int.gcdA m n) m, mul_comm (Int.gcdB m n) n]
+  exact (Int.gcd_eq_gcd_ab m n).symm
 
 /-- When gcd(m,n) = 1, Bézout coefficients directly solve CRT. -/
 theorem bezout_solves_crt (m n : ℤ) (hcop : Int.gcd m n = 1) :
@@ -111,8 +113,8 @@ This is optimal since we need at least k-1 GCD computations. -/
 theorem iterated_crt_product (m₁ m₂ m₃ : ℤ)
     (h12 : Int.gcd m₁ m₂ = 1) (h13 : Int.gcd m₁ m₃ = 1) (h23 : Int.gcd m₂ m₃ = 1) :
     Int.gcd (m₁ * m₂) m₃ = 1 := by
-  rw [Int.Coprime] at h13 h23 ⊢
-  exact Int.Coprime.mul_left (by exact_mod_cast h13) (by exact_mod_cast h23)
+  rw [← Int.isCoprime_iff_gcd_eq_one] at h13 h23 ⊢
+  exact IsCoprime.mul_left h13 h23
 
 /-! ## Summary
 

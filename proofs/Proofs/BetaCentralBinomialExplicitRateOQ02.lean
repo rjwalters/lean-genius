@@ -258,7 +258,8 @@ lemma stirlingLogDev_upper (m : ℕ) :
       have h := diff_upper (m + j)
       have hc1 : ((m + j : ℕ) : ℝ) + 1 = (m : ℝ) + j + 1 := by push_cast; ring
       have hc2 : ((m + j : ℕ) : ℝ) + 2 = (m : ℝ) + j + 2 := by push_cast; ring
-      rw [hc1, hc2] at h
+      have hidx : m + j + 2 = m + (j + 1) + 1 := by omega
+      rw [hc1, hc2, hidx] at h
       simpa only [hg] using h
     rw [tel_upper m N] at hle
     have h0 : (0 : ℝ) ≤ 1 / (12 * ((m : ℝ) + N + 1)) := by positivity
@@ -301,7 +302,8 @@ lemma stirlingLogDev_lower (m : ℕ) :
       have h := diff_lower (m + j)
       have hc1 : ((m + j : ℕ) : ℝ) + 1 = (m : ℝ) + j + 1 := by push_cast; ring
       have hc2 : ((m + j : ℕ) : ℝ) + 2 = (m : ℝ) + j + 2 := by push_cast; ring
-      rw [hc1, hc2] at h
+      have hidx : m + j + 2 = m + (j + 1) + 1 := by omega
+      rw [hc1, hc2, hidx] at h
       simpa only [hg] using h
     rw [Finset.sum_sub_distrib, tel_upper m N, tel_corr m N] at hle
     have hmono : (1 / 12) * (1 / ((m : ℝ) + 1) ^ 2 - 1 / ((m : ℝ) + N + 1) ^ 2)
@@ -486,7 +488,8 @@ lemma stirlingLogDev_lower_cubic (m : ℕ) :
       have h := diff_lower_cubic (m + j)
       have hc1 : ((m + j : ℕ) : ℝ) + 1 = (m : ℝ) + j + 1 := by push_cast; ring
       have hc2 : ((m + j : ℕ) : ℝ) + 2 = (m : ℝ) + j + 2 := by push_cast; ring
-      rw [hc1, hc2] at h
+      have hidx : m + j + 2 = m + (j + 1) + 1 := by omega
+      rw [hc1, hc2, hidx] at h
       simpa only [hg] using h
     rw [Finset.sum_sub_distrib, tel_upper m N, tel_cubic m N] at hle
     have hmono : (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3 - 1 / ((m : ℝ) + N + 1) ^ 3)

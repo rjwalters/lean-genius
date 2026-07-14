@@ -217,8 +217,8 @@ theorem snf_1x2_invariant_factor (a b : ℤ) (snf : SmithNormalForm 1 2)
   have hd_eq : snf.invariantFactor 0 = snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ := by
     simp [SmithNormalForm.invariantFactor]
   -- D is diagonal: the (0,1) entry is 0 (indices 0 ≠ 1)
-  have hD01 : snf.D ⟨0, by omega⟩ ⟨1, by omega⟩ = 0 :=
-    snf.hD_diag ⟨0, by omega⟩ ⟨1, by omega⟩ (by simp)
+  have hD01 : snf.D (0 : Fin 1) (1 : Fin 2) = 0 :=
+    snf.hD_diag (0 : Fin 1) (1 : Fin 2) (by simp)
   -- U is 1×1 unimodular: det(U) = U₀₀ = ±1
   have hU : snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 ∨
             snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ = -1 := by
@@ -239,22 +239,22 @@ theorem snf_1x2_invariant_factor (a b : ℤ) (snf : SmithNormalForm 1 2)
   -- (The D₀₁ term vanishes by hD01)
   have ha : a = snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ * snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ *
                 snf.V ⟨0, by omega⟩ ⟨0, by omega⟩ := by
-    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) ⟨0, by omega⟩
+    have h := congr_fun (congr_fun hsnf (0 : Fin 1)) (0 : Fin 2)
     simp only [SmithNormalForm.isDecompOf, Matrix.of_apply, Matrix.mul_apply,
-               Fin.sum_univ_one, Fin.sum_univ_two,
+               Fin.sum_univ_one, Fin.sum_univ_two, Matrix.cons_val_fin_one,
                Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
     rw [hD01] at h
     simp only [mul_zero, zero_mul, add_zero] at h
-    linarith
+    exact h
   have hb : b = snf.U ⟨0, by omega⟩ ⟨0, by omega⟩ * snf.D ⟨0, by omega⟩ ⟨0, by omega⟩ *
                 snf.V ⟨0, by omega⟩ ⟨1, by omega⟩ := by
-    have h := congr_fun (congr_fun hsnf ⟨0, by omega⟩) ⟨1, by omega⟩
+    have h := congr_fun (congr_fun hsnf (0 : Fin 1)) (1 : Fin 2)
     simp only [SmithNormalForm.isDecompOf, Matrix.of_apply, Matrix.mul_apply,
-               Fin.sum_univ_one, Fin.sum_univ_two,
+               Fin.sum_univ_one, Fin.sum_univ_two, Matrix.cons_val_fin_one,
                Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
     rw [hD01] at h
     simp only [mul_zero, zero_mul, add_zero] at h
-    linarith
+    exact h
   -- Abbreviate for readability
   set u := snf.U ⟨0, by omega⟩ ⟨0, by omega⟩
   set d := snf.D ⟨0, by omega⟩ ⟨0, by omega⟩
@@ -265,7 +265,7 @@ theorem snf_1x2_invariant_factor (a b : ℤ) (snf : SmithNormalForm 1 2)
   rw [hd_eq]
   constructor
   · -- d ∣ gcd(a, b): use d | a and d | b
-    apply Int.dvd_gcd
+    apply Int.dvd_coe_gcd
     · exact ⟨u * v00, by rw [ha]; ring⟩
     · exact ⟨u * v01, by rw [hb]; ring⟩
   · -- gcd(a, b) ∣ d: use that a·v₁₁ - b·v₁₀ = u·d·(det V) = ±d
@@ -279,10 +279,10 @@ theorem snf_1x2_invariant_factor (a b : ℤ) (snf : SmithNormalForm 1 2)
     · -- det V = 1, u = 1: u·d·det V = d
       convert hdvd using 1; rw [hU1, hV1]; ring
     · -- det V = 1, u = -1: u·d·det V = -d
-      rw [hU1, hV1] at hdvd; simp only [neg_mul, one_mul] at hdvd
+      rw [hU1, hV1] at hdvd; simp only [neg_mul, one_mul, mul_one] at hdvd
       exact (dvd_neg.mp hdvd)
     · -- det V = -1, u = 1: u·d·det V = -d
-      rw [hU1, hV1] at hdvd; simp only [one_mul] at hdvd
+      rw [hU1, hV1] at hdvd; simp only [one_mul, mul_neg, mul_one] at hdvd
       exact (dvd_neg.mp hdvd)
     · -- det V = -1, u = -1: u·d·det V = d
       convert hdvd using 1; rw [hU1, hV1]; ring

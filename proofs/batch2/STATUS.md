@@ -1922,6 +1922,68 @@ Erdos152ProblemAPN/KonigsbergOQ02OQ01Aristotle (dense AlphaProof `grind` timeout
 GreensTheorem/FourierSeriesOQ04OQ01/MeanValueTheorem (deep analysis rewrite/induction cascades),
 Erdos20Problem (`Finset.inf id` needs `OrderTop (Finset α)` which doesn't exist — def-level restructure).
 
+## Increment 36 (Doctor, A–M / Erdos<600 partition) — +10 GREEN
+
+Base origin/feature/issue-37508 (d82aac62da, ledger 1798). Classes: type-mismatch,
+proof-drift, rewrite-drift, unknown-const-mixed, instance-synth-cascades. Per-file triage
+(one lake build each, warm cache) then fix single/low-error files. Container dr46.
+
+Files (all in-container `lake build` exit 0):
+- AbelRuffiniOQ04OQ04 (built green as-is once dependency resolved — no edit)
+- AbelRuffiniOQ04OQ01OQ03 (+Sharp descendant): isNilpotent_of_ker_le_center now has
+  IsNilpotent H instance-implicit → drop trailing `inferInstance`; index_comap_of_surjective
+  instance-transparency rw failure → pass f explicitly + close by `.symm`
+- AbelRuffiniOQ07Order6: Multiset {3,2} literal no longer defeq-closes rw (add `rfl`);
+  sign_of_cycleType `.card`/`k` fold needs `congr 1`; **(-1:ℤˣ) power-instance diamond
+  blocks Even.neg_one_pow rw** → replace parity arg with `interval_cases k` (k≤2), k=2
+  case sign contradiction `by decide`
+- BezoutIdentityOQ03OQ04: `Int.Coprime.mul_dvd_of_dvd_of_dvd`→`Int.isCoprime_iff_gcd_eq_one.mpr`
+  + `IsCoprime.mul_dvd`; `Int.Coprime` (unfold) removed → `← Int.isCoprime_iff_gcd_eq_one` +
+  `IsCoprime.mul_left`; gcd_eq_gcd_ab gives m*gcdA+n*gcdB (swapped) → mul_comm before .symm
+- BezoutIdentityOQ03OQ03: `Int.coe_nat_dvd`→`Int.natCast_dvd_natCast`; `(-|x|).natAbs`
+  mod_cast → `simp only [Int.natAbs_neg, Int.natAbs_abs]`; `Function.comp_apply` needed before
+  ring for a∘castSucc sum. **STATEMENT REPAIR**: example `4x+6y+9z=1` had wrong witness
+  (1,-1,1)=7; corrected to (-2,0,1)=1
+- BezoutIdentityOQ01OQ02OQ02Descent: `Fintype (Fin (2+?m))` stuck — m no longer inferable
+  from N:Fin 2 matrix → supply `(m := m)` explicitly at headBlockN applications (unblocks
+  det_headBlockN elaboration → fixes downstream Unknown-identifier at headBlockNSL)
+- BetaCentralBinomialExplicitRateOQ02: 3× simpa-type-mismatch stirlingSeq index m+j+2 vs goal
+  m+(j+1)+1 (+ instLE/instPreorder diamond) → add `hidx:m+j+2=m+(j+1)+1 by omega`, rw before simpa
+- BezoutIdentityOQ04OQ01: SNF `snf.D` row index is Fin 1 not Fin 2 (hD01 literal indices);
+  congr_fun indices `⟨0,_⟩`→literal `(0:Fin 1)/(k:Fin 2)` so Matrix.cons_val fires + add
+  `Matrix.cons_val_fin_one`; linarith→`exact h` (atoms now defeq-literal); `Int.dvd_gcd`
+  (Nat conclusion) → `Int.dvd_coe_gcd` (↑gcd conclusion); neg/one_mul simp missed
+  mul_one/mul_neg → add to close dvd_neg cases
+- CayleyHamiltonMinpolyOQ02OQ03: `Matrix.charpoly_conj_of_isUnit` removed →
+  `Matrix.charpoly_units_conj' hP.unit` + hP.unit_spec; **`minpoly_conj_of_isUnit` removed
+  with no drop-in** → rebuild via conjugation F-AlgEquiv
+  `MulSemiringAction.toAlgEquiv F _ (ConjAct.toConjAct hP.unit⁻¹)` + `minpoly.algEquiv_eq`;
+  `he` uses `ConjAct.units_smul_def` + `Matrix.coe_units_inv` to reduce to P⁻¹AP
+
+Statement repairs: BezoutIdentityOQ03OQ03 example witness (1,-1,1)→(-2,0,1).
+
+Notes/anomalies: the combined-build "silent file = green" heuristic is UNRELIABLE — files
+whose dependency errors are skipped by Lean show 0 own-errors but fail individually
+(dep-skipped). Verify every candidate by its own `lake build` exit code. Virtiofs truncation
+(`unexpected end of input` / `Invalid name after end`) recurs after edits → `docker restart dr46`.
+
+### Increment 36 continued — +3 more (total +13 GREEN)
+- CauchyInterlacingPoincareCompression: `LinearMap.mul_apply`→`Module.End.mul_apply` (3×);
+  monomial-case `Module.End.pow_restrict`/`LinearMap.restrict_coe_apply` no longer fire under
+  simp only → explicit rw; `ext y` already yields ↑_=↑_ → drop redundant `Subtype.ext`
+- CayleyHamiltonMinpolyOQ03OQ01: `Matrix.mul_mulVec`→`← Matrix.mulVec_mulVec`;
+  `Matrix.natDegree_charpoly`→`Matrix.charpoly_natDegree_eq_dim`+`Fintype.card_fin`;
+  `natDegree_le_natDegree` now degree≤degree → `Polynomial.natDegree_le_of_dvd` +
+  `(Matrix.charpoly_monic M).ne_zero`; `WellFounded.not_lt_min` dropped nonempty arg;
+  `modByMonic_add_div q hμmonic`→`q μ` (divisor poly, catalog §862); degree/smul simp
+  fragility → explicit rw (Units.smul_def kept for aeval map_smul)
+- BrouwerFixedPointOQ02OQ01: `fin_cases+simp_all` no longer closes ZMod 2 arith → `revert a b; decide`;
+  `ZMod.val 1`→`rw [ZMod.val_one]`; `hne.lt_or_lt` dot-notation on `(=→False)` fails →
+  `lt_or_gt_of_ne hne`
+
+Deferred (not clean v4.31 drift): CauchySchwarzOQ01OQ04 (lp.norm_rpow_eq_tsum rpow-vs-npow
+bridge with unresolved lp instance metavars — substantial), CayleyHamiltonMinpolyOQ02OQ03
+NOTE it WAS fixed (minpoly conj rebuilt), BallotProblem (condCount removed = known-hard cluster).
 ## Increment 37 (N-Z + Erdos≥600; tm/pd/rewrite/unknown-const/instance-synth) — +10 GREEN
 
 Files greened:
