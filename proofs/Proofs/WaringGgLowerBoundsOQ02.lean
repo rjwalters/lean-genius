@@ -65,8 +65,10 @@ theorem isSumOfKthPowers_mono {s t k n : ℕ} (hk : k ≠ 0) (hst : s ≤ t)
   induction d with
   | zero => simpa using h
   | succ d ih =>
-      have hstep : IsSumOfKthPowers (s + d) k n := ih
-      simpa [Nat.add_succ] using isSumOfKthPowers_succ hk hstep
+      have hstep : IsSumOfKthPowers (s + d) k n := ih (Nat.le_add_right s d)
+      have := isSumOfKthPowers_succ hk hstep
+      rw [Nat.add_succ]
+      exact this
 
 /-- Congruence transport: `a ≡ b (mod n)` gives equal images in `ZMod n`. -/
 theorem natCast_zmod_of_modEq {a b n : ℕ} (h : a ≡ b [MOD n]) :
@@ -76,10 +78,10 @@ theorem natCast_zmod_of_modEq {a b n : ℕ} (h : a ≡ b [MOD n]) :
 /-! ### `G(3) ≥ 4` via cubes modulo `9` -/
 
 /-- Every cube is `≡ 0, 1` or `8 (mod 9)` (i.e. `0` or `±1`). -/
-theorem cube_zmod9 (x : ZMod 9) : x ^ 3 = 0 ∨ x ^ 3 = 1 ∨ x ^ 3 = 8 := by decide
+theorem cube_zmod9 (x : ZMod 9) : x ^ 3 = 0 ∨ x ^ 3 = 1 ∨ x ^ 3 = 8 := by decide +revert
 
 /-- A sum of three cubes is never `≡ 4 (mod 9)`. -/
-theorem three_cubes_ne_four (a b c : ZMod 9) : a ^ 3 + b ^ 3 + c ^ 3 ≠ 4 := by decide
+theorem three_cubes_ne_four (a b c : ZMod 9) : a ^ 3 + b ^ 3 + c ^ 3 ≠ 4 := by decide +revert
 
 /-- Bridge to `ℕ`: any `n ≡ 4 (mod 9)` is not a sum of three cubes. -/
 theorem not_sum_three_cubes_of_mod9 {n : ℕ} (hn : (n : ZMod 9) = 4) :
@@ -121,7 +123,7 @@ which never reaches `15`.  Since `15 (mod 16)` is an infinite residue class, no
 bound `s ≤ 14` is universal, i.e. `G(4) ≥ 15`. -/
 
 /-- Every fourth power is `≡ 0` or `1 (mod 16)`. -/
-theorem fourth_pow_zmod16 (x : ZMod 16) : x ^ 4 = 0 ∨ x ^ 4 = 1 := by decide
+theorem fourth_pow_zmod16 (x : ZMod 16) : x ^ 4 = 0 ∨ x ^ 4 = 1 := by decide +revert
 
 /-- The fourth power of a natural number reduces mod `16` to its parity:
     `a ^ 4 % 16 = a % 2` (`0` for even `a`, `1` for odd `a`). -/
