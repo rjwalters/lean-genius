@@ -56,6 +56,8 @@ This is fundamental for:
 
 namespace LawsOfLargeNumbersOQ01
 
+open scoped ENNReal
+
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : MeasureTheory.Measure Ω}
 variable [MeasureTheory.IsProbabilityMeasure μ]
 
@@ -353,7 +355,7 @@ theorem slln_negated_integral_eq
       (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, -X i ω)
       Filter.atTop
       (nhds (-(∫ x, X 0 x ∂μ))) := by
-  skip
+  rw [← MeasureTheory.integral_neg]
   exact slln_negated X hint hindep hident
 
 /-- **SLLN for affinely transformed distributions**.
@@ -374,6 +376,7 @@ theorem slln_affine_transform
   slln_for_composed X (fun x => a * x + b) (by fun_prop)
     ((hint.const_mul a).add (MeasureTheory.integrable_const b)) hindep hident
 
+set_option maxHeartbeats 800000 in
 /-- **SLLN for bounded measurable functions** of i.i.d. variables.
 
     If X₀, X₁, ... are i.i.d. and f : ℝ → ℝ is measurable with |f| ≤ M everywhere,
@@ -392,9 +395,9 @@ theorem slln_for_bounded_measurable
       (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, f (X i ω))
       Filter.atTop
       (nhds (∫ x, f (X 0 x) ∂μ)) := by
-  apply slln_for_composed hf
+  apply slln_for_composed X f hf
   · apply MeasureTheory.Integrable.mono' (MeasureTheory.integrable_const M)
-    · exact hf.comp_aemeasurable hmeas0.aemeasurable
+    · exact (hf.comp_aemeasurable hmeas0.aemeasurable).aestronglyMeasurable
     · filter_upwards with ω
       exact hbound (X 0 ω)
   · exact hindep

@@ -2197,3 +2197,36 @@ HONEST N-Z tail assessment (inc 44): confirms inc43 — easy 1-2-error N-Z files
 Of ~30 residuals sampled, only ~1 in 6 is catalog-fixable; the rest are ≥5-error mixed clusters,
 genuine deep-rework, or (notably) files whose ORIGINAL statements are unsound/incomplete and merely
 compiled by luck pre-4.31. Remaining N-Z GREEN yield is low and increasingly requires math judgment.
+## Increment 42 (Doctor-b, A-M + Erdos<600) — +6 GREEN
+
+Recipes (new/reinforced):
+- **Mixed `open X scoped Y` is a hard PARSE error in v4.31** — split into `open X` + `open scoped Y`
+  (was the whole failure for CauchySchwarzIntegralOQ03 / OQ01OQ03; also lurks under many
+  `expected token` first-errors).
+- **`ℝ≥0∞` and `𝓝` need explicit scoped opens even under full `import Mathlib`**:
+  `open scoped ENNReal Topology`. Symptom: `expected token` at the notation site + cascade of
+  `Function expected` / instance-synth errors. Often the WHOLE file greens from this one line
+  (LawsOfLargeNumbersOQ01OQ02: 4 errors → 0).
+- **`IsProbabilityMeasure` / prob-measure typeclasses moved** to
+  `Mathlib.MeasureTheory.Measure.Typeclasses.Probability`. Narrow-import files show
+  `invalid binder annotation, type is not a class instance ?m.N` at `[IsProbabilityMeasure μ]`.
+  Add the import (fixed BallotProblemOQ02OQ02 22→2 errors; child OQ02OQ02OQ05 greened transitively).
+- `Complex.inner_apply z w` → `RCLike.inner_apply' z w` (⟪z,w⟫ = conj z * w).
+- `Complex.abs_re_le_abs` / `abs_im_le_abs` → `Complex.abs_re_le_norm` / `abs_im_le_norm`.
+- `Complex.norm_ofReal` gone; for the generic `↑` from `inner_self_eq_norm_sq_to_K (𝕜:=ℂ)` the
+  coercion is `RCLike.ofReal` (NOT `Complex.ofReal`) → use `RCLike.norm_ofReal` + `abs_norm`;
+  `Complex.norm_real` only matches genuine `Complex.ofReal` coercions.
+- `le.eq_or_gt` removed → `eq_or_lt_of_le h` (yields `a = b ∨ a < b`).
+- `AEMeasurable` over a generic `NormedField 𝕜` now needs `[MeasurableSpace 𝕜] [OpensMeasurableSpace 𝕜]`
+  as extra binders (for `nnnorm`/`comp_aemeasurable` measurability).
+- `AEMeasurable f μ → AEStronglyMeasurable f μ` (real-valued) via `.aestronglyMeasurable`;
+  `Integrable.mono'` wants the strongly-measurable form.
+
+Statement repairs: none (all fixes preserve intended-true statements).
+
+Deferred (>5 genuine fixes after scoped-open/import fixes): Erdos353Problem (Module.finrank rename +
+inv_ne_zero/smul_left_cancel₀ + simp drift, 8 errors post-ENNReal-fix), FairGamesTheorem/OQ02
+(10+ Application type mismatch), LawsOfLargeNumbersOQ01OQ01/OQ01OQ03 (depend on broken
+LawsOfLargeNumbersOQ01Aristotle metaprogramming file: `Mathlib.Tactic.GeneralizeProofs` namespace +
+`Expr`/`Function expected` — Aristotle meta file needs its own repair), LawsOfLargeNumbersOQ02
+(mixed type-mismatch/instance-stuck), BinomialTheoremOQ01 (Polynomial.descPochhammer unknown).
