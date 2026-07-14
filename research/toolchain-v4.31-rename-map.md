@@ -1451,3 +1451,27 @@ subtraction made the original statement false; geometric gluing bound). No calle
 | after `ring_nf`, `rw [mul_div_mul_left …]` "did not find pattern a*?/(a*?)" (ring_nf turned `/` into `⁻¹`) | avoid ring_nf; pre-rewrite numerator & denominator into `a*(…)` form via `show … from by ring`, then `mul_div_mul_left` | Erdos120Problem |
 | `push_neg at h` where `h : ¬ (someDef …)` → "push Not made no progress" | `unfold someDef at h` (or `simp only [someDef] at h`) before `push_neg` | Erdos120Problem |
 | `not_not (avoidable A)` "Function expected" (not_not is now an `Iff`) | `rw [← not_not (a := avoidable A)]` (named implicit) or bare `rw [← not_not]` | Erdos120Problem |
+
+### §7ad Doctor increment 45 recipes (Doctor-b A–M / Erdos<600, #38065, +7 GREEN)
+
+| Symptom | Fix | Files |
+|---------|-----|-------|
+| `Λ` (capital lambda) as a user abbrev name → `unexpected token 'Λ'; expected identifier` | `Λ` is now a RESERVED token like `λ`; rename the abbrev (e.g. `abbrev vonM := ArithmeticFunction.vonMangoldt`) and every code use-site (leave comments) | BoundedPrimeGapsOQ04 |
+| `Nat.totient_pos hq` "Function expected" | `Nat.totient_pos` is now an `Iff` (`0 < φ n ↔ 0 < n`); use `Nat.totient_pos.mpr hq` | BoundedPrimeGapsOQ04, BoundedPrimeGapsOQ04OQ02 |
+| `div_pos` "ambiguous [_root_.div_pos, Nat.div_pos]" on ℝ goal | `_root_.div_pos` | BoundedPrimeGapsOQ04OQ02 |
+| `Nat.cast_nonneg` (no arg) type-mismatch `∀ n, 0 ≤ ↑n` vs `0 ≤ ↑x` | supply the arg: `Nat.cast_nonneg _` | BoundedPrimeGapsOQ04OQ02 |
+| `Polynomial.descPochhammer` / `Polynomial.descPochhammer_succ_right` "Unknown constant" | `descPochhammer` moved OUT of the `Polynomial` namespace to top-level; drop the prefix (`descPochhammer`, `descPochhammer_succ_right`) | BinomialTheoremOQ01 |
+| `EMetric.ball` / `EMetric.mem_ball` deprecated; `rw [EMetric.mem_ball]` "did not find pattern Metric.eball" | rename to `Metric.eball` and `Metric.mem_eball` (both `eball`/`mem_eball` live in the `Metric` namespace, NOT `EMetric`) | BinomialTheoremOQ01 |
+| `rw [edist_zero_right]` then old NNReal-coe proof fails; goal is now `‖x‖ₑ < ↑1` | `edist_zero_right` now yields `‖·‖ₑ` (enorm); close with `simpa [enorm_eq_nnnorm, ← ENNReal.coe_one, ENNReal.coe_lt_coe, ← NNReal.coe_lt_coe] using hx` | BinomialTheoremOQ01 |
+| `apply h1.congr; intro k` where `HasSum.congr` now gives a Finset-partial-sum goal (`k : Finset ℕ`, `∑ x_1 ∈ k, …`) | avoid `.congr`; prove the two summand functions equal via `have hfun : (fun n => …) = (fun k => …) := by funext k; …` then `rwa [hfun] at h1` | BinomialTheoremOQ01 |
+| `floor_eq_iff.mpr` "Unknown constant" for ℤ floor (`round_eq` → `⌊x + 1/2⌋`) | `Int.floor_eq_iff.mpr` (no side condition; the ℤ version is `⌊a⌋ = z ↔ ↑z ≤ a ∧ a < z+1`) | DerangementsConvergenceOQ03 |
+| `div_le_iff₀` rewrite produces `≤ 1/b * a` but calc/target wants `≤ a * (1/b)` | insert `by rw [mul_comm]; exact hrate` at the calc step | DerangementsConvergenceOQ03 |
+| local `theorem foo` used BEFORE its definition in the same file → "Unknown identifier `foo`" | reorder: move the definition above its first use-site (forward refs are hard errors) | CombinationsFormulaOQ02Aristotle (moved `choose_2n_succ`) |
+| `Nat.coprime_succ_self` removed | consecutive coprimality: `rw [show m+2=(m+1)+1 from rfl, Nat.coprime_self_add_right]; exact Nat.coprime_one_right _` | CombinationsFormulaOQ02Aristotle |
+| `omega` fails on a `Nat.choose (2m+2) …` Pascal identity: `@Nat.choose_succ_succ` produces `succ`-form atoms omega can't unify with `2*m+2` | state each Pascal step as an explicit `have` using `Nat.choose_succ_succ'` (the `+1` form), normalize `m-1+1=m` via `rw`, then `omega` | CombinationsFormulaOQ02Aristotle |
+| `Nat.mul_le_mul_left _ (Nat.le_succ n)` produces a `sorry` metavar (arg-shape drift) | for `a*(n+1) - a*n = a`: `rw [Nat.mul_succ]; omega` | CombinationsFormulaOQ02Aristotle |
+| `hev.comp_tendsto htends` "Invalid field notation" (`Filter.Eventually.comp_tendsto` REMOVED; type shows as `atTop.1 {x | …}`) | pull back along the tendsto: `have htends : Tendsto (fun x => t*x) atTop atTop; filter_upwards [hev, htends.eventually hev] with …` | CentralLimitTheoremOQ03OQ01 |
+| `tendsto_const_mul_atTop_of_pos ht tendsto_id` "Function expected" | now an `Iff`; `(tendsto_const_mul_atTop_of_pos ht).mpr tendsto_id` | CentralLimitTheoremOQ03OQ01 |
+| `this.symm` on a `=ᶠ[l]` (EventuallyEq) value "Invalid field notation" (shows as `atTop.1 {…}`) | dot-notation can't find the `EventuallyEq` namespace through the reduced `Eventually`; use `Filter.EventuallyEq.symm this` explicitly | CentralLimitTheoremOQ03OQ01 |
+| after `convert … using 1` closes fully, trailing `ext x; ring` → "No goals to be solved" | drop the trailing tactic (convert now discharges) | CentralLimitTheoremOQ03OQ01, DerangementsConvergenceOQ03 (drop `ring`), BinomialTheoremOQ01 |
+| FREE-GREEN: sibling `*Aristotle` companion RESIDUAL but builds EXIT 0 (transitive dep already fixed) | flip ledger with no edit | CentralLimitTheoremOQ03OQ01Aristotle |

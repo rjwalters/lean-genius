@@ -65,19 +65,19 @@ open Nat Finset BoundedPrimeGaps ArithmeticFunction Filter
 -/
 
 /-- The von Mangoldt function Λ(n): equals log p when n = p^k for prime p, else 0. -/
-noncomputable abbrev Λ := ArithmeticFunction.vonMangoldt
+noncomputable abbrev vonM := ArithmeticFunction.vonMangoldt
 
 /-- The Chebyshev ψ function: ψ(x) = Σ_{n ≤ x} Λ(n).
     By the prime number theorem, ψ(x) ~ x. -/
 noncomputable def chebyshevPsi (x : ℕ) : ℝ :=
-  ∑ n ∈ Finset.range (x + 1), (Λ n : ℝ)
+  ∑ n ∈ Finset.range (x + 1), (vonM n : ℝ)
 
 /-- The Chebyshev function restricted to an arithmetic progression:
     ψ(x; q, a) = Σ_{n ≤ x, n ≡ a mod q} Λ(n).
     Counts prime powers in the progression a, a+q, a+2q, ... up to x,
     weighted by log p. -/
 noncomputable def chebyshevPsiAP (x q a : ℕ) : ℝ :=
-  ∑ n ∈ (Finset.range (x + 1)).filter (fun n => n % q = a % q), (Λ n : ℝ)
+  ∑ n ∈ (Finset.range (x + 1)).filter (fun n => n % q = a % q), (vonM n : ℝ)
 
 /-- π(x; q, a) counts primes p ≤ x with p ≡ a mod q. -/
 noncomputable def primeCountAP (x q a : ℕ) : ℕ :=
@@ -94,7 +94,6 @@ noncomputable def expectedMainTerm (x q : ℕ) : ℝ :=
 /-- ψ(0) = 0. -/
 theorem chebyshevPsi_zero : chebyshevPsi 0 = 0 := by
   simp [chebyshevPsi, Finset.sum_range_one]
-  exact ArithmeticFunction.vonMangoldt_apply_one
 
 /-- ψ(x; q, a) is nonneg since Λ(n) ≥ 0 for all n. -/
 theorem chebyshevPsiAP_nonneg (x q a : ℕ) : 0 ≤ chebyshevPsiAP x q a := by
@@ -105,7 +104,7 @@ theorem chebyshevPsiAP_nonneg (x q a : ℕ) : 0 ≤ chebyshevPsiAP x q a := by
 /-- For coprime a,q: the full sum ψ(x) = Σ_{a coprime to q} ψ(x;q,a) + error from non-coprime.
     When q = 1, ψ(x;1,0) = ψ(x). -/
 theorem chebyshevPsiAP_q_one (x : ℕ) : chebyshevPsiAP x 1 0 = chebyshevPsi x := by
-  simp [chebyshevPsiAP, chebyshevPsi]
+  simp [chebyshevPsiAP, chebyshevPsi, Nat.mod_one]
 
 /-- π(x;q,a) counts at most x primes. -/
 theorem primeCountAP_le (x q a : ℕ) : primeCountAP x q a ≤ x + 1 := by
@@ -123,7 +122,7 @@ theorem totient_prime' (p : ℕ) (hp : p.Prime) : Nat.totient p = p - 1 :=
 
 /-- φ(q) > 0 for q ≥ 1. -/
 theorem totient_pos' (q : ℕ) (hq : 0 < q) : 0 < Nat.totient q :=
-  Nat.totient_pos hq
+  Nat.totient_pos.mpr hq
 
 /-
 ## Part II: The Bombieri-Vinogradov Theorem
