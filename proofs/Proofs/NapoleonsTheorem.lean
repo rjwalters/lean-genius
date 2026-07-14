@@ -4,8 +4,12 @@ import Mathlib
 noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
 /-- v4.31 compat: restore `Complex.norm_def`. -/
-lemma Complex.norm_def (z : ℂ) : Complex.abs z = Real.sqrt (Complex.normSq z) :=
+lemma Complex.abs_def (z : ℂ) : Complex.abs z = Real.sqrt (Complex.normSq z) :=
   Complex.norm_def z
+
+/-- v4.31 compat: multiplicativity of `Complex.abs` (was `map_mul` on the `AbsoluteValue`). -/
+lemma Complex.abs_mul (w z : ℂ) : Complex.abs (w * z) = Complex.abs w * Complex.abs z :=
+  norm_mul w z
 
 
 /-
@@ -126,7 +130,7 @@ theorem rotationFactor_normSq : Complex.normSq rotationFactor = 1 := by
 
 /-- |rotationFactor| = 1, the absolute value form. -/
 theorem rotationFactor_abs : Complex.abs rotationFactor = 1 := by
-  rw [Complex.norm_def, rotationFactor_normSq, Real.sqrt_one]
+  rw [Complex.abs_def, rotationFactor_normSq, Real.sqrt_one]
 
 /-- **Napoleon rotation identity**: The difference vectors between Napoleon
     centroids are related by rotation by -60°.
@@ -148,17 +152,17 @@ theorem napoleon_rotation (z₁ z₂ z₃ : ℂ) :
   apply Complex.ext
   · -- Real parts
     simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.div_ofNat,
-      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_re]
+      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_re,
+      Complex.mul_im, Complex.add_im, Complex.sub_im, Complex.one_im]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-    -- After simp, goal is a real polynomial identity with √3·√3 = 3
-    nlinarith [z₁.re, z₂.re, z₃.re, z₁.im, z₂.im, z₃.im,
-               sq_nonneg (z₁.re - z₂.re), sq_nonneg (z₁.im - z₂.im)]
+    -- v4.31: simp reduces to an exact real polynomial identity modulo √3·√3=3
+    linear_combination ((2*z₃.re - z₁.re - z₂.re)/12) * h3
   · -- Imaginary parts
     simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.div_ofNat,
-      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_im]
+      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_im,
+      Complex.mul_re, Complex.add_re, Complex.sub_re, Complex.one_re]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-    nlinarith [z₁.re, z₂.re, z₃.re, z₁.im, z₂.im, z₃.im,
-               sq_nonneg (z₁.re - z₂.re), sq_nonneg (z₁.im - z₂.im)]
+    linear_combination ((2*z₃.im - z₁.im - z₂.im)/12) * h3
 
 -- ============================================================
 -- PART 4: Napoleon's Theorem — Equilateral Property
@@ -173,7 +177,7 @@ theorem napoleon_sides_12_eq (z₁ z₂ z₃ : ℂ) :
     Complex.abs (G₃ z₁ z₂ z₃ - G₁ z₁ z₂ z₃) =
     Complex.abs (G₂ z₁ z₂ z₃ - G₁ z₁ z₂ z₃) := by
   rw [napoleon_rotation]
-  rw [map_mul, rotationFactor_abs, mul_one]
+  rw [Complex.abs_mul, rotationFactor_abs, mul_one]
 
 /-- **Napoleon's Theorem (sides 2 and 3 equal)**:
     |G₃ - G₂| = |G₂ - G₁|.
@@ -182,17 +186,15 @@ theorem napoleon_sides_12_eq (z₁ z₂ z₃ : ℂ) :
     = (G₂ - G₁)(ω - 1). Since |ω - 1| = 1 (as ω = e^{-iπ/3},
     ω - 1 = e^{-2iπ/3} up to sign), we get |G₃ - G₂| = |G₂ - G₁|. -/
 theorem rotationFactor_sub_one_abs : Complex.abs (rotationFactor - 1) = 1 := by
-  rw [Complex.norm_def]
-  simp only [rotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
-    Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-    Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
-    Complex.add_im, Complex.sub_im, Complex.mul_im]
+  rw [Complex.abs_def]
   have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-  have : (1 / 2 - 0 * (Real.sqrt 3 / 2) - 1) ^ 2 +
-         (0 / 2 - 1 * (Real.sqrt 3 / 2)) ^ 2 = 1 := by nlinarith
-  rw [show Real.sqrt (((1 / 2 - 0 * (Real.sqrt 3 / 2) - 1) ^ 2 +
-    (0 / 2 - 1 * (Real.sqrt 3 / 2)) ^ 2) : ℝ) = Real.sqrt 1 from by congr 1; nlinarith]
-  exact Real.sqrt_one
+  have hns : Complex.normSq (rotationFactor - 1) = 1 := by
+    simp only [rotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
+      Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
+      Complex.add_im, Complex.sub_im, Complex.mul_im]
+    nlinarith [h3]
+  rw [hns, Real.sqrt_one]
 
 theorem napoleon_sides_23_eq (z₁ z₂ z₃ : ℂ) :
     Complex.abs (G₃ z₁ z₂ z₃ - G₂ z₁ z₂ z₃) =
@@ -202,7 +204,7 @@ theorem napoleon_sides_23_eq (z₁ z₂ z₃ : ℂ) :
   have h : G₃ z₁ z₂ z₃ - G₂ z₁ z₂ z₃ =
       (G₂ z₁ z₂ z₃ - G₁ z₁ z₂ z₃) * (rotationFactor - 1) := by
     rw [mul_sub, mul_one, ← hrot]; ring
-  rw [h, map_mul, rotationFactor_sub_one_abs, mul_one]
+  rw [h, Complex.abs_mul, rotationFactor_sub_one_abs, mul_one]
 
 /-- **Napoleon's Theorem — Full Equilateral Property**:
     The outer Napoleon triangle is equilateral.
@@ -214,7 +216,7 @@ theorem napoleons_theorem (z₁ z₂ z₃ : ℂ) :
     Complex.abs (G₃ z₁ z₂ z₃ - G₂ z₁ z₂ z₃) := by
   constructor
   · exact (napoleon_sides_12_eq z₁ z₂ z₃).symm
-  · exact (napoleon_sides_23_eq z₁ z₂ z₃).symm
+  · exact (napoleon_sides_12_eq z₁ z₂ z₃).trans (napoleon_sides_23_eq z₁ z₂ z₃).symm
 
 -- ============================================================
 -- PART 5: Side Length Formula
@@ -231,18 +233,19 @@ theorem napoleons_theorem (z₁ z₂ z₃ : ℂ) :
 theorem napoleon_side_sq (z₁ z₂ z₃ : ℂ) :
     Complex.normSq (G₂ z₁ z₂ z₃ - G₁ z₁ z₂ z₃) =
     Complex.normSq (z₁ - z₂) / 4 +
-    Complex.normSq (z₁ + z₂ - 2 * z₃) / 12 +
+    Complex.normSq (z₁ + z₂ - 2 * z₃) / 12 -
     (Real.sqrt 3 / 6) * ((z₁ - z₂).re * (z₁ + z₂ - 2 * z₃).im -
                           (z₁ - z₂).im * (z₁ + z₂ - 2 * z₃).re) := by
   simp only [G₁, G₂, napoleonCenter, Complex.normSq_apply]
   simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.div_ofNat,
     Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
-    Complex.add_im, Complex.sub_im, Complex.mul_im]
+    Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.re_ofNat, Complex.im_ofNat]
   have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-  nlinarith [sq_nonneg (z₁.re - z₂.re), sq_nonneg (z₁.im - z₂.im),
-             sq_nonneg (z₁.re + z₂.re - 2 * z₃.re),
-             sq_nonneg (z₁.im + z₂.im - 2 * z₃.im),
-             sq_nonneg (Real.sqrt 3)]
+  -- v4.31 statement repair: the cross-term sign was `+`, but the true identity needs `−√3/6·(…)`
+  linear_combination (z₃.re*z₁.re*(-1/9) + z₃.re*z₂.re*(-1/9) + z₃.re^2*(1/9)
+    + z₁.re*z₂.re*(1/18) + z₁.re^2*(1/36) + z₁.im*z₃.im*(-1/9)
+    + z₁.im*z₂.im*(1/18) + z₁.im^2*(1/36) + z₃.im*z₂.im*(-1/9)
+    + z₃.im^2*(1/9) + z₂.re^2*(1/36) + z₂.im^2*(1/36)) * h3
 
 -- ============================================================
 -- PART 6: Inner Napoleon Triangle
@@ -265,17 +268,15 @@ noncomputable def conjRotationFactor : ℂ :=
 
 /-- |conjRotationFactor| = 1 -/
 theorem conjRotationFactor_abs : Complex.abs conjRotationFactor = 1 := by
-  rw [Complex.norm_def]
-  simp only [conjRotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
-    Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-    Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
-    Complex.add_im, Complex.sub_im, Complex.mul_im]
+  rw [Complex.abs_def]
   have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-  have : (1 / 2 + 0 * (Real.sqrt 3 / 2)) ^ 2 +
-         (0 / 2 + 1 * (Real.sqrt 3 / 2)) ^ 2 = 1 := by nlinarith
-  rw [show Real.sqrt (((1 / 2 + 0 * (Real.sqrt 3 / 2)) ^ 2 +
-    (0 / 2 + 1 * (Real.sqrt 3 / 2)) ^ 2) : ℝ) = Real.sqrt 1 from by congr 1; nlinarith]
-  exact Real.sqrt_one
+  have hns : Complex.normSq conjRotationFactor = 1 := by
+    simp only [conjRotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
+      Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
+      Complex.add_im, Complex.sub_im, Complex.mul_im]
+    nlinarith [h3]
+  rw [hns, Real.sqrt_one]
 
 /-- Inner Napoleon rotation: G₃' - G₁' = (G₂' - G₁') · conjRotationFactor.
     The inner triangle has the opposite rotation direction. -/
@@ -285,15 +286,16 @@ theorem inner_napoleon_rotation (z₁ z₂ z₃ : ℂ) :
   simp only [G₁', G₂', G₃', innerNapoleonCenter, conjRotationFactor]
   apply Complex.ext
   · simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.div_ofNat,
-      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_re]
+      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.one_re,
+      Complex.mul_im, Complex.add_im, Complex.sub_im, Complex.one_im]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-    nlinarith [z₁.re, z₂.re, z₃.re, z₁.im, z₂.im, z₃.im,
-               sq_nonneg (z₁.re - z₂.re), sq_nonneg (z₁.im - z₂.im)]
+    linear_combination ((2*z₃.re - z₁.re - z₂.re)/12) * h3
   · simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.add_re, Complex.sub_re,
       Complex.mul_re, Complex.div_ofNat,
       Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
       Complex.one_im, Complex.one_re]
-    ring
+    have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
+    linear_combination ((2*z₃.im - z₁.im - z₂.im)/12) * h3
 
 /-- The inner Napoleon triangle is also equilateral. -/
 theorem inner_napoleons_theorem (z₁ z₂ z₃ : ℂ) :
@@ -303,23 +305,21 @@ theorem inner_napoleons_theorem (z₁ z₂ z₃ : ℂ) :
     Complex.abs (G₃' z₁ z₂ z₃ - G₂' z₁ z₂ z₃) := by
   have hrot := inner_napoleon_rotation z₁ z₂ z₃
   constructor
-  · rw [hrot, map_mul, conjRotationFactor_abs, mul_one]
+  · rw [hrot, Complex.abs_mul, conjRotationFactor_abs, mul_one]
   · have h_sub : Complex.abs (conjRotationFactor - 1) = 1 := by
-      rw [Complex.norm_def]
-      simp only [conjRotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
-        Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-        Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
-        Complex.add_im, Complex.sub_im, Complex.mul_im]
+      rw [Complex.abs_def]
       have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num : (3:ℝ) ≥ 0)
-      have : (1 / 2 + 0 * (Real.sqrt 3 / 2) - 1) ^ 2 +
-             (0 / 2 + 1 * (Real.sqrt 3 / 2)) ^ 2 = 1 := by nlinarith
-      rw [show Real.sqrt (((1 / 2 + 0 * (Real.sqrt 3 / 2) - 1) ^ 2 +
-        (0 / 2 + 1 * (Real.sqrt 3 / 2)) ^ 2) : ℝ) = Real.sqrt 1 from by congr 1; nlinarith]
-      exact Real.sqrt_one
+      have hns : Complex.normSq (conjRotationFactor - 1) = 1 := by
+        simp only [conjRotationFactor, Complex.normSq_apply, Complex.add_re, Complex.sub_re,
+          Complex.mul_re, Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
+          Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im,
+          Complex.add_im, Complex.sub_im, Complex.mul_im]
+        nlinarith [h3]
+      rw [hns, Real.sqrt_one]
     have h : G₃' z₁ z₂ z₃ - G₂' z₁ z₂ z₃ =
         (G₂' z₁ z₂ z₃ - G₁' z₁ z₂ z₃) * (conjRotationFactor - 1) := by
       rw [mul_sub, mul_one, ← hrot]; ring
-    rw [hrot, h, map_mul, map_mul, conjRotationFactor_abs, h_sub]
+    rw [hrot, h, Complex.abs_mul, Complex.abs_mul, conjRotationFactor_abs, h_sub]
 
 -- ============================================================
 -- PART 7: Area Relationship
