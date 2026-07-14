@@ -1448,8 +1448,9 @@ theorem coe_aeval_compress_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule �
       simp only [map_add, LinearMap.add_apply, Submodule.coe_add, hp, hq]
   | monomial n a =>
       simp only [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
-        LinearMap.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
-        Submodule.coe_smul, Module.End.pow_restrict, LinearMap.restrict_coe_apply]
+        Module.End.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
+        Submodule.coe_smul]
+      rw [Module.End.pow_restrict, LinearMap.restrict_coe_apply]
 
 /-- **Annihilation transports to the invariant-block compression.**
 
@@ -1462,7 +1463,6 @@ theorem aeval_compress_eq_zero_of_aeval_eq_zero_of_invariant {T : V →ₗ[𝕜]
     (hp : Polynomial.aeval T p = 0) :
     Polynomial.aeval (compress T H) p = 0 := by
   ext y
-  refine Subtype.ext ?_
   rw [coe_aeval_compress_of_invariant H hinv, hp]
   simp
 
@@ -1515,7 +1515,7 @@ theorem aeval_mem_of_invariant {T : V →ₗ[𝕜] V} {H : Submodule 𝕜 V}
   | add p q hp hq => rw [map_add, LinearMap.add_apply]; exact H.add_mem hp hq
   | monomial n a =>
       rw [Polynomial.aeval_monomial, Module.algebraMap_end_eq_smul_id,
-        LinearMap.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq]
+        Module.End.mul_apply, LinearMap.smul_apply, LinearMap.id_coe, id_eq]
       exact H.smul_mem a (Module.End.pow_apply_mem_of_forall_mem n hinv y hy)
 
 /-- **The ambient minpoly divides the product of the block minpolys (reducing
@@ -1558,7 +1558,7 @@ theorem minpoly_dvd_mul_compress_of_reducing {T : V →ₗ[𝕜] V} (H : Submodu
   apply minpoly.dvd
   rw [map_mul]
   ext v
-  simp only [LinearMap.mul_apply, LinearMap.zero_apply]
+  simp only [Module.End.mul_apply, LinearMap.zero_apply]
   -- Orthogonal split `v = P_H v + (v - P_H v)`, `P_H v ∈ H`, `v - P_H v ∈ Hᗮ`.
   have haH : H.starProjection v ∈ H := H.starProjection_apply_mem v
   have hbHp : v - H.starProjection v ∈ Hᗮ := H.sub_starProjection_mem_orthogonal v
