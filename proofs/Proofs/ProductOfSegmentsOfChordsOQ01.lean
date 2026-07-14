@@ -32,7 +32,7 @@ in ℝⁿ, and more generally in any real inner product space.
 - [x] Explicit 3D corollary
 -/
 
-open scoped RealInnerProductSpace
+open scoped InnerProductSpace
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
@@ -48,7 +48,7 @@ theorem chord_quadratic_sphere (r : ℝ) (P dir : E) (t : ℝ)
     (hdir : ‖dir‖ = 1)
     (hOnSphere : ‖P + t • dir‖ = r) :
     t^2 + 2 * t * ⟪P, dir⟫_ℝ + (‖P‖^2 - r^2) = 0 := by
-  have h1 : ‖P + t • dir‖^2 = r^2 := by rw [hOnSphere]; ring
+  have h1 : ‖P + t • dir‖^2 = r^2 := by rw [hOnSphere]
   simp only [sq] at h1
   rw [← real_inner_self_eq_norm_mul_norm] at h1
   have expand : ⟪P + t • dir, P + t • dir⟫_ℝ =
@@ -56,6 +56,7 @@ theorem chord_quadratic_sphere (r : ℝ) (P dir : E) (t : ℝ)
     rw [inner_add_left, inner_add_right, inner_add_right]
     rw [inner_smul_left, inner_smul_right, inner_smul_left, inner_smul_right]
     rw [real_inner_comm dir P]
+    simp only [starRingEnd_apply, star_trivial]
     ring
   rw [expand] at h1
   have hdir2 : ⟪dir, dir⟫_ℝ = 1 := by
@@ -188,16 +189,16 @@ theorem sphere3d_chord_products_equal (S : Sphere3D) (P : EuclideanSpace ℝ (Fi
   -- Convert onSphere to the parametric form
   have hs₁_circ : ‖(P - S.center) + s₁ • d₁‖ = S.radius := by
     have : A₁ - S.center = (P - S.center) + s₁ • d₁ := by rw [hA₁_eq]; abel
-    rwa [← this, ← hA₁]
+    rw [← this]; exact hA₁
   have hs₂_circ : ‖(P - S.center) + s₂ • d₁‖ = S.radius := by
     have : A₂ - S.center = (P - S.center) + s₂ • d₁ := by rw [hA₂_eq]; abel
-    rwa [← this, ← hA₂]
+    rw [← this]; exact hA₂
   have ht₁_circ : ‖(P - S.center) + t₁ • d₂‖ = S.radius := by
     have : B₁ - S.center = (P - S.center) + t₁ • d₂ := by rw [hB₁_eq]; abel
-    rwa [← this, ← hB₁]
+    rw [← this]; exact hB₁
   have ht₂_circ : ‖(P - S.center) + t₂ • d₂‖ = S.radius := by
     have : B₂ - S.center = (P - S.center) + t₂ • d₂ := by rw [hB₂_eq]; abel
-    rwa [← this, ← hB₂]
+    rw [← this]; exact hB₂
   exact sphere_chord_products_equal S.center P S.radius S.radius_pos hP
     d₁ d₂ hd₁ hd₂ s₁ s₂ t₁ t₂ hs ht hs₁_circ hs₂_circ ht₁_circ ht₂_circ
 
