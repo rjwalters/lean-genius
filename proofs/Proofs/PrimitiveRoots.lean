@@ -79,7 +79,7 @@ theorem isPrimitiveRoot_iff (g : (ZMod p)ˣ) :
     (ZMod p is a field for prime p), hence cyclic by a general theorem about
     finite multiplicative subgroups in integral domains. -/
 instance isCyclic_units_prime : IsCyclic (ZMod p)ˣ :=
-  isCyclic_of_subgroup_isDomain (Units.coeHom (ZMod p)) Units.ext
+  isCyclic_of_subgroup_isDomain (Units.coeHom (ZMod p)) Units.val_injective
 
 /-- The order of (ℤ/pℤ)* equals p-1. -/
 theorem card_units_eq_pred_prime : Fintype.card (ZMod p)ˣ = p - 1 := by
@@ -94,7 +94,7 @@ theorem exists_primitiveRoot : ∃ g : (ZMod p)ˣ, IsPrimitiveRoot g := by
   use g
   unfold IsPrimitiveRoot
   -- A generator has order equal to the group order
-  rwa [orderOf_eq_card_of_forall_mem_zpowers]
+  rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card]
 
 /-! ## The Main Theorem: Counting Primitive Roots -/
 
@@ -174,7 +174,7 @@ theorem isPrimitiveRoot_iff_generates (g : (ZMod p)ˣ) :
     rw [hfull]
     exact Subgroup.mem_top a
   · intro hgen
-    exact orderOf_eq_card_of_forall_mem_zpowers hgen
+    rw [orderOf_eq_card_of_forall_mem_zpowers hgen, Nat.card_eq_fintype_card]
 
 /-! ## Why This Matters
 

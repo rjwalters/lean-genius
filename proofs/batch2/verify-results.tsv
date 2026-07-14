@@ -2323,8 +2323,8 @@ PowerMeanLimitOQ	RESIDUAL	proof-drift
 PrimeGapBoundsOQ01	RESIDUAL	unknown-const:Real.log_le_sub_one_of_le
 PrimeNumberTheoremOQ01OQ01	GREEN	
 PrimeReciprocalDivergenceOQ03	RESIDUAL	unknown-const:Nat.squarefree_iff_factorization_le_one.mp
-PrimitiveRoots	RESIDUAL	type-mismatch
-PrimitiveRootsOQ02	RESIDUAL	instance-synth
+PrimitiveRoots	GREEN	type-mismatch
+PrimitiveRootsOQ02	GREEN	instance-synth
 PrimitiveRootsOQ03	GREEN	
 ProbMethodAlterationOQ03	GREEN	
 ProbMethodExpectationOQ01	GREEN	
