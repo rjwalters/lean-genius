@@ -1145,3 +1145,40 @@ native-evaluates to FALSE once Classical is dropped (bad pre-existing test, not 
 | NormedRing (possibly noncommutative) `ring` fails on a purely-additive identity (`B-1 = -(1-B)`, `B = A-(A-B)`) or a `↑u*(↑u⁻¹*x)` unit-cancel | use `neg_sub`/`abel` for additive goals; a reusable `hcancel : ∀ x, ↑u*(↑u⁻¹*x) = x` via `← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul` | GeometricSeriesOQ02OQ03 |
 | `edgeCount` def with `p.1 < p.2` on a bare `V` → "failed to synthesize `LT V`" | add `[LinearOrder V]` to the def; an internal `∃ (V : Type*)` in a `Prop def` also needs `Type`-pinning to kill the derived-thm universe-metavar (§7o) | Erdos571Problem |
 | nlinarith fails on a ℕ descent `(2x)²+(2y)²+(2z)² = 4^(a+1)(8b+7) ⊢ x²+y²+z² = 4^a(8b+7)` | `have hpow : 4^(a+1)=4*4^a := by rw [pow_succ]; ring`, then `have : 4*(sum)=4*(target) := by rw [hpow] at heq; nlinarith [heq]`, then `omega` | LagrangeFourSquaresOQ04 |
+
+## §7x Doctor increment 26 recipes (tm/pd/rewrite + instance-synth, A–M / Erdos<600 partition, #38065, +21 GREEN)
+
+| symptom | fix | files |
+|---|---|---|
+| `Ordinal.omega` in `ω^β` → `HPow (Ordinal ↪o Ordinal) ...` synth failure | `Ordinal.omega0` — plain ω₀; `Ordinal.omega` is now the ↪o normal-function embedding | Erdos592 |
+| `2 ^ ℵ₀` / `2 ^ κ` → `HPow ℕ Cardinal` synth failure (the `2` elaborates as ℕ) | annotate the base: `(2 : Cardinal) ^ ℵ₀` | ContinuumHypothesisOQ02OQ01 |
+| `p ^ c` with `p:ℕ`, `c:ℝ` → `HPow ℕ ℝ` failure | `(p : ℝ) ^ c` | Erdos445 |
+| `def X := Finset …` (or any type alias) → `∈`/`.card`/`∅` can't find Membership/EmptyCollection | make it `abbrev` so the alias is reducible for instance search | Erdos500, Erdos94OQ02 |
+| `IsAlgClosure ℚ (AlgebraicClosure ℚ)` no longer auto-synthesizes (the `Algebra.IsAlgebraic` half isn't an instance) | reassemble: `where isAlgClosed := inferInstance; isAlgebraic := AlgebraicClosure.isAlgebraic ℚ` | AlgebraicNumbersCountableOQ01OQ03 |
+| parent `Algebra.IsAlgebraic K (algebraicIntermediateField K L)` instance won't unify through a downstream `abbrev` in instance search | re-expose a local specialized instance `Algebra.IsAlgebraic ℚ algebraicNumbersField := parent_lemma (K:=ℚ)(L:=ℂ)` | AlgebraicNumbersCountableOQ01OQ01OQ01/OQ03 |
+| after `push_neg`, `∀ε>0,∃…` and `¬∃ε>0,∀…` become **definitionally equal** | drop the brittle `constructor <;> intro`/destructure machinery — just `rfl` | Erdos543 |
+| `Finset.sum_le_sum_of_subset` → `failed to synthesize CanonicallyOrderedAdd ℝ` | on non-canonically-ordered types use `Finset.sum_le_sum_of_subset_of_nonneg h (fun i _ _ => …nonneg…)` | BaselProblemOQ01OQ01 |
+| `Finset.le_sup h` type-mismatch (wrong `f` inferred) | pass the function explicitly: `Finset.le_sup (f := fun i => …) h` | ContinuumHypothesisOQ02OQ01 |
+| `Irreducible.separable` → `failed to synthesize CharZero K` (base field not assumed perfect) | obtain the splitting-field root separability-free: `(SplittingField.splits p).exists_eval_eq_zero hdeg` with `hdeg : (p.map …).degree ≠ 0` via `degree_map` + `degree_pos_of_irreducible` | CayleyHamiltonMinpolyOQ05OQ02 |
+| `finrank_mul_finrank K M L : … = finrank K L` but goal wants the reverse | append `.symm` | CayleyHamiltonMinpolyOQ05OQ02 |
+| `Real.log_le_rpow_div` output is `x^p / p` shaped; a `rw [div_div_eq_mul_div, one_mul]` no longer matches | close with a `calc … ≤ x^p/p := h; _ = c*x^p := by ring` | ChebyshevBoundsOQ03OQ02 |
+| `Finset.add_sum_erase _ (fun n => …explicit…) h` fails (summand lambda won't match goal after an earlier rw) | let the summand infer: `Finset.add_sum_erase _ _ h` | ChebyshevBoundsOQ03OQ02 |
+| `Nat.floor_le (by positivity)` — positivity can't prove `0 ≤ log x / log 2` | supply explicitly: `div_nonneg (Real.log_nonneg h1≤x) (Real.log_nonneg …)` | ChebyshevBoundsOQ03OQ02 |
+| `zify [show 1 ≤ m^2 from by positivity]` — positivity proves `0<`/`0≤` not `1≤` | use `by nlinarith` (or `by omega`) for the `1 ≤ …` side conditions | Erdos370 |
+| a bound-var `n` gets typed ℝ in a multi-conjunct ∀ where later use needs `n!` | pin `∀ (n : ℕ) …`; if that then breaks a dependent `M : Matrix (Fin n)…` binder, make M's type explicit too | Erdos499 |
+| `simp only [matrix cons lemmas]` leaves `!![…] i j` unreduced | plain `simp [diagonalProduct, Fin.prod_univ_two, perm-lemmas]` finishes the entry reduction | Erdos499 |
+| `simpa … using c.map_zsmul …` over-reduces `c(n•1)=n•c 1` to `True` | pin the goal first: `conv_lhs => rw [show n = n•(1:ℤ) by simp]; rw [map_zsmul]; simp` | BorsukUlamOQ03OQ02 |
+| `map_zsmul g n` prints/orders as `f(g*n)=g*f n` — pick arg order to match the goal's factor order | call `ψ.map_zsmul d a` (not `a d`) for `ψ(d*a)=d*ψ a` | BorsukUlamOQ03OQ02 |
+| `Nat.primeFactors_mul` now yields `{p} ∪ {q}` (was `insert p {q}`) | `Finset.sup_union` + `Finset.sup_singleton ×2` instead of `sup_insert` | BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01 |
+| `intro ⟨h⟩` on a Prop that is actually a `<` (or any multi-ctor inductive) → "expected type … has more than one constructor" | `intro h` then use it (`not_le.mpr h`, etc.) | BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01 |
+| a `def f n := if n=0 then 0 else …` — after `unfold`, tactics see the `if` | `rw [if_neg (by omega : n ≠ 0)]` under the positivity hypothesis, then proceed | Erdos453OQ02 |
+| `simp; exact lemma` → "No goals" because `simp` now fully closes it (e.g. `Nat.nth_prime_*` are simp lemmas) | drop the stale `exact` | Erdos453OQ02 |
+| `Nat.sqrt_le_self` only gives `sqrt n ≤ n`, not `sqrt (n/2) ≤ n` | `calc sqrt (n/2) ≤ n/2 := Nat.sqrt_le_self _; _ ≤ n := Nat.div_le_self _ _` | Erdos441Aristotle |
+| `simp [Nat.lcm]` leaves `a*a/a=a` | use `Nat.lcm_self a` directly | Erdos441Aristotle |
+| `ArithmeticFunction.Carmichael` (capital) is a **deprecated alias** with a distinct head symbol → Mathlib rw-lemmas (`carmichael_pow_of_prime_ne_two`, `carmichael_factorization`) whose LHS is lowercase `carmichael` won't `rw`-match | replace applied `Carmichael` → `carmichael` (keep prose) | EulerTotientOQ01OQ01OQ01 |
+| `mem_primeFactors` third field now wants `m ≠ 0` (was `0 < m`) | pass `hm.ne'` | Erdos459 (partial) |
+| `⟪a, b⟫_ℝ` — the `_ℝ` suffix notation was removed | with `open scoped RealInnerProductSpace`, plain `⟪a, b⟫` is the ℝ-inner product; fix the atom name in any `linear_combination`/`ring` that referenced the old term | LawOfCosinesOQ04OQ01(+Bisector transitively) |
+| local support-lemma gained a hypothesis / arg reorder (`… (hn : 1 ≤ n) (hsteps …)`) → "expected 1 ≤ … got euclidSteps … =" | supply args in the new order (`… hb hba (by omega) hsteps`) | GCDAlgorithmOQ01OQ03OQ01OQ01 |
+| `field_simp; ring` → "No goals to be solved" | `field_simp` self-closes on ℝ div goals — drop the trailing `ring` (confirms earlier §7 recipe) | GCDAlgorithmOQ01OQ03OQ01OQ01 |
+| `List.mem_cons_self a l` → "Function expected … a::l" | `List.mem_cons_self ..` (explicit args dropped) | (Erdos382 partial) |
+| `![…] : EuclideanSpace ℝ (Fin 2)` type mismatch (matrix literal no longer coerces to PiLp) | `!₂[…]` (or `(EuclideanSpace.equiv _ _).symm ![…]`) | (Erdos94OQ02 partial) |
