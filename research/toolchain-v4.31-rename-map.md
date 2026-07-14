@@ -1394,3 +1394,33 @@ mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
 | `simpa`/`convert` type-mismatch on a ℕ index expr (`m+j+2` vs `m+(j+1)+1`) + instLE/instPreorder diamond | add `have : m+j+2 = m+(j+1)+1 := by omega`, rw at hyp before simpa | BetaCentralBinomialExplicitRateOQ02 |
 | `Matrix.charpoly_conj_of_isUnit` removed | `Matrix.charpoly_units_conj' hP.unit N` then `rw [hP.unit_spec]` (its `M.val⁻¹` is already the matrix inverse) | CayleyHamiltonMinpolyOQ02OQ03 |
 | `minpoly_conj_of_isUnit` removed (similar-matrix minpoly invariance) | build conjugation AlgEquiv `MulSemiringAction.toAlgEquiv F _ (ConjAct.toConjAct hP.unit⁻¹)`, prove `e A = P⁻¹AP` via `ConjAct.units_smul_def`+`Matrix.coe_units_inv`, then `minpoly.algEquiv_eq` | CayleyHamiltonMinpolyOQ02OQ03 |
+
+### §7ab Increment 39 recipes (Doctor-b A–M / Erdos<600)
+
+| Symptom | Fix | Files |
+|---------|-----|-------|
+| `pi_gt_3141592` / `pi_lt_3141593` unknown identifier | renamed to digit-count form: `pi_gt_d6` (`3.141592 < π`) / `pi_lt_d6` (`π < 3.141593`); also `pi_gt_d2`/`pi_lt_d2` (3.14/3.15), `pi_gt_d4`/`pi_lt_d4`, `pi_gt_d20`/`pi_lt_d20`, `pi_gt_three`/`pi_lt_four`. In `Mathlib.Analysis.Real.Pi.Bounds` | AreaOfCircleOQ01OQ02OQ01OQ03, BuffonsNeedleOQ01OQ02 (blocked by other errs) |
+| `rw [← integral_ofReal]` fails on a SET integral (`∫ x in s, …`) "did not find pattern" | two `integral_ofReal` now exist: Bochner `_root_.integral_ofReal : ∫ ↑f = ↑(∫ f)` and `intervalIntegral.integral_ofReal` (only `a..b`); a bare name resolves to the interval one. Use `_root_.integral_ofReal (f := …)` for set integrals; note orientation is now `∫ ↑f = ↑(∫ f)` | AreaOfCircleOQ07OQ04OQ01 |
+| `setIntegral_prod_mul` "did not find pattern … ∂Measure.prod ?m ?m" (target has `∂volume`) | measure must be literally `μ.prod ν`; prefix `rw [Measure.volume_eq_prod ℝ ℝ, setIntegral_prod_mul …]` (also `integral_prod_mul` needs `volume_eq_prod`) | AreaOfCircleOQ07OQ04OQ01 |
+| def `Foo {G α …} [SMul G α] …` where `G` doesn't appear in an arg type → every use "typeclass instance problem is stuck: SMul ?m α" | pin the phantom type param at every occurrence (conclusion + hypotheses) with named arg `Foo (G := G) …` | BorsukUlamOQ02OQ02 |
+| `push_neg at h` where `h : ¬ Nonempty α` → now yields `h : IsEmpty α` (not `α → False`); old `h (Classical.arbitrary α)` breaks ("Function expected") | if the statement is genuinely false on the empty case (const-map ⟹ fixed-point needs a point), add `[Nonempty α]` and use `Classical.arbitrary α` directly | BorsukUlamOQ02OQ02 |
+| FREE-GREEN detection: ledger row RESIDUAL but source already fixed by a prior commit | grep the flagged `unknown-const:X` leaf in the source file; if absent, `lake build` it — often EXIT 0 already; flip with no edit. Worth a full-partition sweep | CauchyInterlacing*, Erdos265Problem |
+| `omega` can't prove a `Nat.choose _ 2` identity (`choose_two_right = n*(n-1)/2` is nonlinear+division) | expand `Nat.add_choose_eq` over `antidiagonal 2` via `Finset.Nat.sum_antidiagonal_succ` (twice) + `Finset.Nat.antidiagonal_zero`, then `Nat.choose_one_right`/`ring` | BinomialTheoremOQ02OQ02 |
+| `pascal_from_vandermonde : C(m+1,r)=C(m,r)+C(m,r-1)` FALSE at r=0 (ℕ truncation `0-1=0`) | restate unconditionally shifted: `C(m+1,r+1)=C(m,r+1)+C(m,r)`, prove `rw [Nat.choose_succ_succ, Nat.add_comm]` | BinomialTheoremOQ02OQ02 |
+
+### §7ac Increment 39 recipes (batch 2)
+
+| Symptom | Fix | Files |
+|---------|-----|-------|
+| `Sym2.mk (x, y)` "Application type mismatch … has type α×α → Sym2 (α×α)" | `Sym2.mk` is now CURRIED `(a b : α)`; use notation `s(x, y)` (or `Sym2.mk x y`) | Erdos166Problem |
+| `linarith [show P by <tactic block spanning lines>]` "unexpected identifier; expected ']'" | hoist the `show … by …` term to a preceding `have h : P := …` and pass `linarith [h]` | Erdos166Problem |
+| statement uses real exponent `x ^ (A:ℝ)`/`x ^ (β:ℝ)` (rpow) but a hyp/axiom states `x ^ (4:ℕ)` (npow) → "Type mismatch ^(4:ℝ) vs ^(4:ℕ)" | bridge with `Real.rpow_natCast`: `have : x^(4:ℝ)=x^(4:ℕ) := by rw [← Real.rpow_natCast]; norm_num` then `rw` before applying | Erdos166Problem |
+| broken anon-ctor field `symm.symm :=` (a mangled auto-edit) "invalid {...} notation" | the field is just `symm` — drop the extra `.symm` | Erdos159Problem |
+| `G.adj_comm.mp` / `from G.adj_comm` — "Function.mp does not exist" / iff expected | `SimpleGraph.adj_comm` is now fully `∀ u v` → supply args: `G.adj_comm x y`, `(G.adj_comm _ _).mp` | Erdos159Problem |
+| `Finset.mem_singleton.mp hu ▸ Finset.mem_singleton.mp hv` ▸-chain breaks | build the eq directly: `(Finset.mem_singleton.mp hu).trans (Finset.mem_singleton.mp hv).symm` | Erdos159Problem |
+| `interval_cases k <;> simp only [Fin.ext_iff] at … <;> omega` → "simp made no progress" on the vacuous (too-few-vertices) cases | guard: `<;> first | (simp only [Fin.ext_iff] at …; omega) | omega` | Erdos159Problem |
+| `pow_lt_pow_of_lt_one` unknown identifier | `pow_lt_pow_right_of_lt_one₀ (h₀ : 0<a) (h₁ : a<1) (hmn : m<n) : a^n < a^m` (in `Algebra.Order.GroupWithZero.Basic`) | Erdos120Problem |
+| `isBounded_Icc (a := …) (b := …)` unknown / named-arg | now `Metric.isBounded_Icc (a b : α)` with EXPLICIT positional args: `Metric.isBounded_Icc 0 1` | Erdos120Problem |
+| after `ring_nf`, `rw [mul_div_mul_left …]` "did not find pattern a*?/(a*?)" (ring_nf turned `/` into `⁻¹`) | avoid ring_nf; pre-rewrite numerator & denominator into `a*(…)` form via `show … from by ring`, then `mul_div_mul_left` | Erdos120Problem |
+| `push_neg at h` where `h : ¬ (someDef …)` → "push Not made no progress" | `unfold someDef at h` (or `simp only [someDef] at h`) before `push_neg` | Erdos120Problem |
+| `not_not (avoidable A)` "Function expected" (not_not is now an `Iff`) | `rw [← not_not (a := avoidable A)]` (named implicit) or bare `rw [← not_not]` | Erdos120Problem |
