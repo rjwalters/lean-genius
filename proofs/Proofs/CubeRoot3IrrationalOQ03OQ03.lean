@@ -105,7 +105,8 @@ theorem not_normal_adjoin_cbrt3 : ¬ Normal ℚ ℚ⟮cbrt3⟯ := by
   intro hnormal
   have hsplitK : ((minpoly ℚ (AdjoinSimple.gen ℚ cbrt3)).map
       (algebraMap ℚ ℚ⟮cbrt3⟯)).Splits := hnormal.splits (AdjoinSimple.gen ℚ cbrt3)
-  rw [minpoly_gen, minpoly_cbrt3] at hsplitK
+  rw [show minpoly ℚ (AdjoinSimple.gen ℚ cbrt3) = minpoly ℚ cbrt3 from minpoly_gen ℚ cbrt3,
+      minpoly_cbrt3] at hsplitK
   exact minpoly_not_splits_adjoin hsplitK
 
 /-- **ℚ(∛3)/ℚ is not a Galois extension**, since Galois extensions are normal. -/
