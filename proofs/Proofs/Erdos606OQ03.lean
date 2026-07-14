@@ -67,7 +67,7 @@ theorem choose_nonneg (n d : ℕ) : n.choose d ≥ 0 := Nat.zero_le _
     There are gaps: some counts are not achievable for any
     configuration of n points. -/
 theorem line_count_range (n : ℕ) (hn : n ≥ 3) :
-    n.choose 2 = n * (n - 1) / 2 := by omega
+    n.choose 2 = n * (n - 1) / 2 := Nat.choose_two_right n
 
 /-- For d ≥ 3, the achievable hyperplane counts are even
     less understood. The extremal cases are:
@@ -76,8 +76,23 @@ theorem line_count_range (n : ℕ) (hn : n ≥ 3) :
 
     Characterizing the full achievable set is open. -/
 theorem hyperplane_extremes (n d : ℕ) (hn : n > d) (hd : d ≥ 2) :
-    n < n.choose d := by
-  exact Nat.lt_choose_self hn hd
+    n ≤ n.choose d := by
+  have h1 : 1 ≤ d := by omega
+  have hmono : ∀ k, 1 ≤ k → k ≤ n / 2 → n ≤ n.choose k := by
+    intro k hk1 hk2
+    have hchain : ∀ j, 1 ≤ j → j ≤ n / 2 → n.choose 1 ≤ n.choose j := by
+      intro j hj1 hj2
+      induction j, hj1 using Nat.le_induction with
+      | base => exact le_refl _
+      | succ m hm ih =>
+        have hm2 : m ≤ n / 2 := by omega
+        exact (ih hm2).trans (Nat.choose_le_succ_of_lt_half_left (by omega))
+    have := hchain k hk1 hk2
+    simpa [Nat.choose_one_right] using this
+  rcases lt_or_ge (n / 2) d with h | h
+  · rw [← Nat.choose_symm (le_of_lt hn)]
+    exact hmono (n - d) (by omega) (by omega)
+  · exact hmono d h1 h
 
 /-
   Summary
