@@ -112,14 +112,14 @@ theorem productset_card_ge (A : Finset ℤ)
 theorem sumset_card_le (A : Finset ℤ) :
     (sumset A).card ≤ A.card * A.card := by
   unfold sumset
-  calc (A ×ˢ A).image (fun p => p.1 + p.2) |>.card
+  calc ((A ×ˢ A).image (fun p => p.1 + p.2)).card
       ≤ (A ×ˢ A).card := Finset.card_image_le
     _ = A.card * A.card := Finset.card_product A A
 
 theorem productset_card_le (A : Finset ℤ) :
     (productset A).card ≤ A.card * A.card := by
   unfold productset
-  calc (A ×ˢ A).image (fun p => p.1 * p.2) |>.card
+  calc ((A ×ˢ A).image (fun p => p.1 * p.2)).card
       ≤ (A ×ˢ A).card := Finset.card_image_le
     _ = A.card * A.card := Finset.card_product A A
 
