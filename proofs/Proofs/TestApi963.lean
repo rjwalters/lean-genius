@@ -9,5 +9,5 @@ example (n : ℕ) (hn : n ≥ 2) : Nat.log 3 n ≤ Nat.log 2 n :=
 
 -- Test: powers of 2 sum uniqueness via Finset
 -- We need to check what's available for this
-#check Finset.sum_pow_eq_pow_sum
-#check Nat.sum_range_id_eq_sum_range_succ
+#check @Finset.sum_range_succ
+#check @Finset.sum_range_id_mul_two

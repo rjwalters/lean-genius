@@ -12,7 +12,7 @@ example (n : ℕ) (ε₁ ε₂ : ℝ) (h1 : 1 ≤ (n : ℝ)) (h2 : ε₁ ≤ ε�
 #check @Nat.cast_div_le
 
 -- Test: push_neg on Nat.Prime
-example (p : ℕ) (hn : p ≤ 1) : ¬Nat.Prime p := Nat.not_prime_of_le_one hn
+example (p : ℕ) (hn : p ≤ 1) : ¬Nat.Prime p := fun h => absurd h.one_lt (by omega)
 
 -- Test the card_le_card for injective function approach
 -- Map elements with (m+1) % p = a to m / p, which lands in range (n/p + 1)
@@ -26,8 +26,10 @@ example (n p a : ℕ) (hp : p ≠ 0) (ha : a < p) :
     (m₁ + 1) % p = a → (m₂ + 1) % p = a →
     (m₁ + 1) / p = (m₂ + 1) / p → m₁ = m₂ := by
   intro m₁ m₂ _ _ h1 h2 hdiv
-  have := Nat.div_add_mod (m₁ + 1) p
-  have := Nat.div_add_mod (m₂ + 1) p
+  have e1 := Nat.div_add_mod (m₁ + 1) p
+  have e2 := Nat.div_add_mod (m₂ + 1) p
+  rw [hdiv, h1] at e1
+  rw [h2] at e2
   omega
 
 -- Test: elements m with (m+1) % p = a have (m+1)/p in range (n/p + 1)
