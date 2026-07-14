@@ -50,12 +50,12 @@ def RedUnitDistanceFree (c : PlaneColoring) : Prop :=
 
 -- An arithmetic progression in ℂ with common difference d
 def IsAPInPlane (S : Finset ℂ) (d : ℂ) : Prop :=
-  ∃ a : ℂ, S = Finset.image (fun i : Fin S.card => a + i • d) Finset.univ
+  ∃ a : ℂ, S = Finset.image (fun i : Fin S.card => a + (i : ℕ) • d) Finset.univ
 
 -- A k-term arithmetic progression of blue points with unit distance steps
 def HasBlueAPWithUnitStep (c : PlaneColoring) (k : ℕ) : Prop :=
   ∃ a : ℂ, ∃ d : ℂ, Complex.abs d = 1 ∧
-    ∀ i : Fin k, c (a + i • d) = true
+    ∀ i : Fin k, c (a + (i : ℕ) • d) = true
 
 -- Alternative: blue points contain a k-AP with step of length 1
 def BlueContainsUnitAP (c : PlaneColoring) (k : ℕ) : Prop :=
