@@ -94,7 +94,7 @@ theorem doubleExp_tail_bound (N : ℕ) :
         ≤ 1 / D ^ (2 * (k + 1)) :=
             one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ hD_ge1 (key_arith k))
       _ = r ^ (k + 1) := by
-            simp only [hr_def]; rw [div_pow, one_pow, ← pow_mul]
+            rw [hr_def, div_pow, one_pow, hD_def, ← pow_mul, ← pow_mul, ← pow_mul]
   -- Summability
   have hTsumm : Summable (fun k : ℕ => r ^ (k + 1)) :=
     (summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one hr_nn hr_lt1)
@@ -139,7 +139,6 @@ theorem tsum_split_at (f : ℕ → ℝ) (hf : Summable f) (N : ℕ) :
     | succ k ih =>
       rw [ih, Finset.sum_range_succ, hshift k, ← add_assoc]
       congr 1
-      intro n; ring
   linarith [hsplit N, hshift N]
 
 end Erdos263Aristotle

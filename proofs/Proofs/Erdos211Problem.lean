@@ -53,6 +53,11 @@ structure Line where
   direction : Point  -- Nonzero direction vector
   direction_ne_zero : direction ≠ (0, 0)
 
+/-- A point `p` lies on the line `L` when it is a real translate of the base
+    point along the direction vector: `p = L.point + t • L.direction`. -/
+instance : Membership Point Line where
+  mem L p := ∃ t : ℝ, p = (L.point.1 + t * L.direction.1, L.point.2 + t * L.direction.2)
+
 /--
 **Collinearity:**
 Three points are collinear if they lie on a common line.

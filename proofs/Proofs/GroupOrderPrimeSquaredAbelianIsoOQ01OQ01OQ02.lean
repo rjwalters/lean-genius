@@ -115,7 +115,7 @@ noncomputable def elemAbelianMulEquiv {p : ℕ} (hp : p.Prime) (hG : Nat.card G 
     (Nat.pow_right_injective hp.two_le hcard).symm
   -- Basis of size `2` ⇒ linear equivalence to `(ZMod p)²`.
   let b : Basis (Fin 2) (ZMod p) (Additive G) :=
-    @Module.finBasisOfFinrankEq (ZMod p) (Additive G) _ _ _ inst hfree hmf 2 hrank
+    @Module.finBasisOfFinrankEq (ZMod p) (Additive G) _ _ inst hfree _ hmf 2 hrank
   let eLin : Additive G ≃ₗ[ZMod p] ZMod p × ZMod p :=
     b.equivFun.trans (LinearEquiv.finTwoArrow (ZMod p) (ZMod p))
   -- Transport across `Additive ⊣ Multiplicative` and split the product.

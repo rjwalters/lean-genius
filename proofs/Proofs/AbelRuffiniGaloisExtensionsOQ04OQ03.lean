@@ -168,8 +168,9 @@ theorem half_diamond_iso
     sorry
   haveI : (ψ.ker).Normal := by rw [hker]; infer_instance
   have e := QuotientGroup.quotientKerEquivOfSurjective ψ hφ_surj
-  rw [hker] at e
-  exact ⟨e.symm⟩
+  -- Bridge `Z.mid ⧸ ψ.ker` and `Z.mid ⧸ D` via the equality of subgroups
+  -- (a direct `rw [hker] at e` fails: the quotient's group instance depends on ψ.ker).
+  refine ⟨(QuotientGroup.quotientMulEquivOfEq hker).symm.trans e⟩
 
 -- ============================================================
 -- PART IV: The Zassenhaus butterfly lemma

@@ -44,7 +44,7 @@ def consecutiveSubsum (seq : List ℕ) (u v : ℕ) : ℕ :=
 The set of all possible consecutive subsums of a sequence, collected into a Finset.
 -/
 def consecutiveSums (seq : List ℕ) : Finset ℕ :=
-  (List.range seq.length).bind (fun u =>
+  (List.range seq.length).flatMap (fun u =>
     (List.range (seq.length - u)).map (fun d =>
       consecutiveSubsum seq u (u + d))) |>.toFinset
 
@@ -132,7 +132,7 @@ axiom beker_theorem : erdosGrahamConjecture
 A rearrangement of {1, 2, ..., n} — the list contains exactly these elements.
 -/
 def isPermutation (seq : List ℕ) (n : ℕ) : Prop :=
-  seq.toFinset = Finset.range' 1 n
+  seq.toFinset = Finset.Icc 1 n
 
 /--
 **Permutation Conjecture:**

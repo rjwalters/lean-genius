@@ -178,6 +178,9 @@ def universalZ2Bundle : SectionProblem where
     impossible since `ℤ/2 ≠ 0`. This is the covering-space obstruction at the
     foundation of the Borsuk-Ulam theorem. -/
 theorem universalZ2Bundle_no_section : ¬ universalZ2Bundle.HasSection :=
+  have : Subsingleton universalZ2Bundle.Total := (inferInstance : Subsingleton PUnit)
+  have : Nontrivial universalZ2Bundle.Base :=
+    (inferInstance : Nontrivial (Multiplicative (ZMod 2)))
   universalZ2Bundle.no_section
 
 /-- The same obstruction read quantitatively: any putative section of the

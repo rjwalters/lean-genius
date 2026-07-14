@@ -34,7 +34,7 @@ open Nat
 
 /-- The `i`-th prime number (0-indexed). -/
 noncomputable def nthPrime (i : ℕ) : ℕ :=
-  (Nat.Primes.instCountable.toEncodable.decode i).getD 2
+  Nat.nth Nat.Prime i
 
 /-
 ## Section 2: Product of consecutive primes
@@ -126,8 +126,8 @@ theorem choose_largest_prime_le (n k : ℕ) (hk : 2 ≤ k) (hn : k + 2 ≤ n)
     rw [hp.dvd_factorial]; omega
   -- C(n,k) | n! since n! = C(n,k) · k! · (n-k)!
   have hchoose_dvd : Nat.choose n k ∣ n.factorial :=
-    ⟨k.factorial * (n - k).factorial,
-      (Nat.choose_mul_factorial_mul_factorial (by omega : k ≤ n)).symm⟩
+    ⟨k.factorial * (n - k).factorial, by
+      rw [← mul_assoc, Nat.choose_mul_factorial_mul_factorial (by omega : k ≤ n)]⟩
   -- p | C(n,k) and C(n,k) | n! implies p | n!, contradiction
   exact hndvd (dvd_trans hd hchoose_dvd)
 

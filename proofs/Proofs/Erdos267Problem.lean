@@ -86,12 +86,12 @@ noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
 theorem goldenRatio_gt_one : goldenRatio > 1 := by
   unfold goldenRatio
   have h : Real.sqrt 5 > 1 := by
-    rw [Real.one_lt_sqrt (by norm_num : (0 : ℝ) ≤ 5)]
+    rw [gt_iff_lt, Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1)]
     norm_num
   linarith
 
 /-- Fibonacci numbers are positive for n ≥ 1 -/
-theorem fib_pos (n : ℕ) (hn : n ≥ 1) : Nat.fib n > 0 := Nat.fib_pos hn
+theorem fib_pos (n : ℕ) (hn : n ≥ 1) : Nat.fib n > 0 := Nat.fib_pos.mpr hn
 
 /-
 ## Series Convergence

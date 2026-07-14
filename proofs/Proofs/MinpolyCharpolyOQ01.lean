@@ -508,7 +508,8 @@ theorem charpoly_jordanBlock (R : Type*) [CommRing R] (lam : R) (d : Nat) :
     have hji : (j : ℕ) < (i : ℕ) := hlt
     have hne : i ≠ j := by
       intro h; subst h; exact lt_irrefl _ hji
-    rw [charmatrix_apply_ne hne,
+    rw [show (jordanBlock R lam d).charmatrix i j = -C ((jordanBlock R lam d) i j) from
+          Matrix.charmatrix_apply_ne _ _ _ hne,
         jordanBlock_off_diag_eq R lam d i j hne (by omega),
         map_zero, neg_zero]
   unfold Matrix.charpoly
