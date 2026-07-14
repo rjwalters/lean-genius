@@ -84,8 +84,7 @@ theorem dense_implies_approx_zero
 theorem irrational_not_rational (α : ℝ) (hirr : Irrational α) :
     ¬∃ (p : ℤ) (q : ℕ), q > 0 ∧ α = (p : ℝ) / (q : ℝ) := by
   intro ⟨p, q, hq, heq⟩
-  apply hirr
-  exact ⟨p, q, hq, heq⟩
+  exact hirr ⟨(p : ℚ) / (q : ℚ), by push_cast [heq]; ring⟩
 
 /- ## Quantitative Refinements -/
 
