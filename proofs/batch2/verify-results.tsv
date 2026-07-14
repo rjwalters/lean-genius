@@ -2509,7 +2509,7 @@ SubsetCount	GREEN
 SubsetCountOQ02	GREEN	
 SubsetCountOQ02OQ01	GREEN	unknown-const:Finset.disjoint_comm.mp
 SumOfDivisorsOQ01SpecialPrime	GREEN	unknown-const:not_even_iff_odd
-SumOfKthPowers	RESIDUAL	unknown-const:Finset.sum_range_pow
+SumOfKthPowers	GREEN	unknown-const:Finset.sum_range_pow
 SumOfKthPowersOQ03	GREEN	
 SumOfKthPowersOQ04	RESIDUAL	type-mismatch
 SumOfKthPowersOQ05	GREEN	
