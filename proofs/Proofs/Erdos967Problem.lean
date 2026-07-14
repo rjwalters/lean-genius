@@ -203,14 +203,10 @@ def geometricSequence : IntegerSequence := {
   seq := fun n => 2^(n + 1)
   strictly_increasing := by
     intro n
-    show 2 ^ (n + 1) < 2 ^ (n + 1 + 1)
-    gcongr
-    · norm_num
-    · omega
+    exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   all_greater_than_one := by
     intro n
-    have h2 : (2:ℕ)^1 ≤ 2^(n+1) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    simp only [pow_one] at h2
+    have : 2^(n+1) ≥ 2 := Nat.pow_le_pow_right (by norm_num) (by omega)
     omega
 }
 

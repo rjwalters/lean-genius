@@ -40,7 +40,7 @@ noncomputable def minPrimeDivisor (n : ℕ) : ℕ :=
 theorem minPrimeDivisor_prime (n : ℕ) (hn : n > 1) :
     (minPrimeDivisor n).Prime := by
   simp only [minPrimeDivisor, hn, dite_true]
-  exact minFac_prime (Nat.one_lt_iff_ne_one.mp hn)
+  exact minFac_prime (hn.ne')
 
 /-- minPrimeDivisor divides n for n > 1 -/
 theorem minPrimeDivisor_dvd (n : ℕ) (hn : n > 1) :
@@ -143,14 +143,13 @@ theorem choose_n_1_prime_divisor (n : ℕ) (hn : n > 1) :
     ∃ p : ℕ, p.Prime ∧ p ∣ Nat.choose n 1 := by
   use n.minFac
   constructor
-  · exact minFac_prime (Nat.one_lt_iff_ne_one.mp hn)
+  · exact minFac_prime (hn.ne')
   · rw [choose_n_1 n hn]
     exact minFac_dvd n
 
 /-- C(n, n-1) = n by symmetry -/
 theorem choose_n_nminus1 (n : ℕ) (hn : n > 0) : Nat.choose n (n-1) = n := by
-  rw [Nat.choose_symm_diff]
-  simp [Nat.choose_one_right]
+  rw [Nat.choose_symm (by omega : 1 ≤ n), Nat.choose_one_right]
 
 /-
 ## Part 7: Small Cases Verification

@@ -1,3 +1,82 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 25, #38065, 2026-07-13)
+
+# DOCTOR INCREMENT 25 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, #38065, 2026-07-13)
+
+Container `dr35` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-c`, rebased clean onto origin/feature/issue-37508 after
+#38624 merge (all inc-23 follow-up patches already upstream; ledger baseline 1640).
+Partition: A–M basenames + Erdos < 600 (sibling inc-24 = N–Z + Erdos ≥ 600).
+Fresh in-container error probes off warm cache (per-file `lake build Proofs.X`),
+low-error-count candidates worked first.
+
+## Waves (all in-container `lake build` exit-0 confirmed, then ledger-flipped)
+- **DR35a (+3)**: Erdos375Aristotle (`Nat.coprime_succ_self` removed →
+  `coprime_self_add_right`+`coprime_one_right`; `.not_le` proj on ≤ → `absurd`+`not_le.mpr`),
+  Erdos156ProblemAristotle (all 3 lemmas now in imported parent → reduced companion to
+  import shim; v4.31 errors on same-namespace re-declaration across import),
+  ArithmeticSeriesOQ02OQ03 (`Nat.choose_two_middle`→`Nat.choose_two_right`+`add_sub_cancel`;
+  `show`-form for `.choose 2`; align `range (k+1+1)` to `sum_range_choose` for omega;
+  drop self-closing `ring_nf`).
+- **DR35b (+2)**: CentralLimitTheorem (coercion elaboration: goal RHS `(∫ x, x : ℂ)`
+  now pushes cast inside integral → force `Complex.ofReal (∫ …)`;
+  `tendsto_one_plus_div_pow_exp`→`Real.tendsto_one_add_div_pow_exp`),
+  GeometricSeriesOQ02OQ03 (NormedRing `↑u*(↑u⁻¹*x)=x` cancel lemma + `abel` for
+  additive-group goal instead of `ring`; `left/right_inverse_identity` arg
+  `(1-B)` global-rewrite hazard → `rwa [sub_sub_cancel] at h`; `neg_sub` not `ring`).
+- **DR35c (+2)**: Hilbert20OQ01OQ03Aristotle (`Finset.induction` `| insert ha ih`→
+  `| @insert a t ha ih` + `[DecidableEq ι]` for `prod_insert`; `skip`→
+  `← Complex.ofReal_pow, Complex.ofReal_im`), InverseGaloisF20 (`set p` folds
+  `X^5-C 2` so `card_rootSet_eq_natDegree` output doesn't `rw`-match → `.trans`;
+  `IsSplittingField.adjoin_rootSet'` class-field needs instance →
+  `Polynomial.SplittingField.adjoin_rootSet _`; `Normal ℚ …SplittingField` synth
+  through `set` → explicit `Polynomial.SplittingField.instNormal p`).
+- **DR35d (+1)**: Erdos189Problem (**`inner x y`→`inner ℝ x y`** field-first; the
+  `det` and 2nd inner errors were cascades of the first inner mismatch; `det`→`Matrix.det`).
+- **DR35e (+1)**: Erdos571Problem (`edgeCount` `p.1 < p.2` needs `[LinearOrder V]`;
+  `∃ (V : Type*)` in a `Prop def`→`Type` pin fixes universe-metavar in derived thm).
+- **DR35f (+1)**: LagrangeFourSquaresOQ04 (nlinarith for `4^(a+1)(8b+7)` descent:
+  `hpow : 4^(a+1)=4*4^a` + `4*(…)=4*(…)` then `omega`; `⟨…, by ring⟩` divisibility
+  witness needs `rw [hab]; ring` to consume the `4^(a+1)` hypothesis).
+- **DR35g (+2)**: Erdos250Problem (`Nat.smul_eq_mul`→bare `smul_eq_mul`; drop
+  self-closing `omega`), Erdos384Problem (`Nat.one_lt_iff_ne_one.mp hn`→`hn.ne'`;
+  `Nat.choose_symm_diff`→`Nat.choose_symm (1≤n)`+`choose_one_right`).
+- **DR35h (+1)**: Erdos530Problem (**forward-reference to an axiom/lemma declared
+  LATER in the same file now errors in v4.31** — moved `komlos_sulyok_szemeredi`
+  axiom + `maxSidonSize_pos`/`_le_card` lemmas before `erdos_lower_bound`; 2-axiom
+  count unchanged, pure reorder; drop self-closing `omega`).
+- **DR35i (+1)**: Erdos548Aristotle (Mathlib added `SimpleGraph.pathGraph`, making
+  the imported `Erdos548.pathGraph`/`starGraph` **ambiguous** → qualify local refs
+  with `Erdos548.` namespace; theorem-body sorries stay GREEN as warnings).
+- **DR35j (+1)**: Erdos476Aristotle (`Finset.mem_product` alone no longer reduces
+  `A.product A` membership → add `Finset.product_eq_sprod` to the simp set;
+  `rcases … <;> rcases …` with `rfl` eliminates the wrong var → replace 4 explicit
+  branches with `<;> first | exact absurd rfl hne | rfl | exact add_comm _ _`;
+  `apply Finset.card_image_of_injOn` can't unify `#?s`=`n` → `rw [card_image_of_injOn,
+  card_range]`).
+
+Ledger: 1640 → 1656 GREEN (+16). PR pending (base feature/issue-37508).
+Recipes catalogued in rename-map §7v.
+
+## Statement repairs
+- (none this increment — all fixes were faithful migration repairs; the Erdos530
+  reorder and Erdos156 companion-shim preserve axiom/assumption counts.)
+
+## Flagged deep (fix attempted or triaged, did NOT flip, reverted / skipped)
+- FactorRemainderTheoremOQ01OQ01OQ02: `Finset.sum_subset (range_subset.mpr (by omega))`
+  omega now faces `Ring.choose (n:ℚ)` ℚ-cast atoms + `shift_eq_sum_fwdDiff_iter`
+  drift — multi-error, reverted.
+- EulerIdentityOQ01OQ02OQ01: `expSeries_div_hasSum_exp ℂ`→`NormedSpace.expSeries_div_hasSum_exp`
+  (drop field arg) clears :83 and two no-op simp/dsimp deletions clear :86/:88,
+  but `convert hasSum_fintype … using 1` now surfaces an `AddCommMonoid=instAddCommMonoid`
+  instance-congruence goal FIRST (§7s) intertwined with the `Nat.divModEquiv 2` fiber
+  reduction — the fiber `HasSum.prod_fiberwise` value goal needs a genuine
+  divMod-normal-form rewrite. Reverted; deep.
+- Erdos162Problem: `congr 1` on `card X = Nat.choose |S| 2` over-reduces so `ext p`
+  sees `ℕ`; `Bool.true_ne_false` removed — moderate rework, skipped.
+- Erdos40Problem/Erdos104Problem/MathematicalInductionOQ03: 5+ diverse errors each,
+  skipped for velocity.
+
+---
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 23, #38065, 2026-07-13)
 
 # DOCTOR INCREMENT 23 (type-mismatch + proof-drift + rewrite-drift + mixed, #38065, 2026-07-13)

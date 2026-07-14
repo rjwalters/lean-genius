@@ -126,7 +126,11 @@ theorem obstructed_not_three_squares (n : ℕ) (h : IsObstructed n) :
       rw [heq]; exact ⟨4 ^ a * (8 * b + 7), by ring⟩
     have ⟨⟨x', hx⟩, ⟨y', hy⟩, ⟨z', hz⟩⟩ := four_dvd_three_sq h4
     rw [hx, hy, hz] at heq
-    have heq' : x' ^ 2 + y' ^ 2 + z' ^ 2 = 4 ^ a * (8 * b + 7) := by nlinarith
+    have heq' : x' ^ 2 + y' ^ 2 + z' ^ 2 = 4 ^ a * (8 * b + 7) := by
+      have hpow : (4 : ℕ) ^ (a + 1) = 4 * 4 ^ a := by rw [pow_succ]; ring
+      have h4eq : 4 * (x' ^ 2 + y' ^ 2 + z' ^ 2) = 4 * (4 ^ a * (8 * b + 7)) := by
+        rw [hpow] at heq; nlinarith [heq]
+      omega
     exact ih ⟨x', y', z', heq'⟩
 
 -- ═══════════════════════════════════════════════════════════════
@@ -172,7 +176,7 @@ theorem three_sq_of_not_7_mod_8 {n : ℕ} (hn : n % 8 ≠ 7) (h4 : ¬(4 ∣ n) �
   | zero => simp at hab; omega
   | succ a =>
     rcases h4 with h4 | rfl
-    · exact h4 ⟨4 ^ a * (8 * b + 7), by ring⟩
+    · exact h4 ⟨4 ^ a * (8 * b + 7), by rw [hab]; ring⟩
     · simp at hab
 
 /-- Numbers ≡ 1 (mod 8) are always three-square (not obstructed since 1 ≠ 7 mod 8). -/

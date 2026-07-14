@@ -36,15 +36,15 @@ theorem card_two_case (A : Finset (ZMod p)) (h : A.card = 2) :
   have hRS : restrictedSumset p {a, b} = {a + b} := by
     ext x
     unfold restrictedSumset
-    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product,
+    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product, Finset.product_eq_sprod,
                Finset.mem_singleton, Prod.exists, Finset.mem_insert, Finset.mem_singleton]
     constructor
     · rintro ⟨c, d, ⟨⟨hc, hd⟩, hne⟩, rfl⟩
-      rcases hc with rfl | rfl <;> rcases hd with rfl | rfl
-      · exact absurd rfl hne
-      · rfl
-      · exact add_comm b a
-      · exact absurd rfl hne
+      rcases hc with rfl | rfl <;> rcases hd with rfl | rfl <;>
+        first
+          | exact absurd rfl hne
+          | rfl
+          | exact add_comm _ _
     · rintro rfl
       exact ⟨a, b, ⟨⟨Or.inl rfl, Or.inr rfl⟩, hab⟩, rfl⟩
   rw [hRS, Finset.card_singleton]
@@ -55,7 +55,7 @@ theorem card_two_case (A : Finset (ZMod p)) (h : A.card = 2) :
 theorem ap_card_eq_n (a d : ZMod p) (n : ℕ) (hd : d ≠ 0) (hn : n ≤ p) :
     (arithmeticProgression p a d n).card = n := by
   unfold arithmeticProgression
-  apply Finset.card_image_of_injOn
+  rw [Finset.card_image_of_injOn, Finset.card_range]
   intro i hi j hj hij
   simp only [Finset.mem_coe, Finset.mem_range] at hi hj
   have hip : i < p := hi.trans_le hn
