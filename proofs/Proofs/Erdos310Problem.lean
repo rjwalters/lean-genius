@@ -261,9 +261,8 @@ theorem erdos_310 : erdosGrahamConjecture := by
     have hA' : isDense A N (1/2) := by
       constructor
       · exact hA.1
-      · calc (A.card : ℚ) ≥ α * N := hA.2
-          _ > (1/2) * N := by nlinarith
-          _ ≥ (1/2) * N := le_refl _
+      · have h2 : α * (N : ℚ) ≥ (1/2) * N := by nlinarith [Nat.cast_nonneg (α := ℚ) N]
+        linarith [hA.2]
     obtain ⟨S, hSA, _, hBound⟩ := hMain N hN A ⟨hA'.1, by linarith [hA'.2]⟩
     exact ⟨S, hSA, hBound⟩
 
@@ -293,7 +292,7 @@ theorem erdos_310_summary :
       ∃ C : ℕ, ∀ N A, isDense A N α →
         ∃ S ⊆ A, hasBoundedDenom (unitFractionSum S) C) :=
   ⟨erdos_310, fun α hα hle => by
-    obtain ⟨C, _, hMain⟩ := liu_sawhney_theorem α hα hle
+    obtain ⟨C, hC, hMain⟩ := liu_sawhney_theorem α hα hle
     exact ⟨C, fun N A hA => by
       by_cases hN : N > 0
       · obtain ⟨S, hS, _, hB⟩ := hMain N hN A hA
@@ -302,6 +301,8 @@ theorem erdos_310_summary :
         simp only [Nat.le_zero] at hN
         subst hN
         refine ⟨∅, empty_subset _, ?_⟩
-        simp [hasBoundedDenom, unitFractionSum]⟩⟩
+        have hz : unitFractionSum ∅ = 0 := by simp [unitFractionSum]
+        rw [hasBoundedDenom, hz]
+        refine ⟨?_, ?_⟩ <;> simp <;> omega⟩⟩
 
 end Erdos310

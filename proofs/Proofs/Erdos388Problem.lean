@@ -101,8 +101,9 @@ theorem consecutiveProduct_eq_factorial_ratio (m k : ℕ) :
       ext x; simp only [Finset.mem_Icc, Finset.mem_insert]; omega]
     rw [Finset.prod_insert (by simp only [Finset.mem_Icc]; omega)]
     rw [show m + (n + 1) = m + n + 1 from by omega]
-    rw [mul_comm (m + n + 1), mul_assoc, ih]
-    rw [show m + (n + 1) = (m + n) + 1 from by omega, Nat.factorial_succ]
+    rw [show ((m + n + 1) * ∏ x ∈ Finset.Icc 1 n, (m + x)) * m.factorial
+        = ((∏ x ∈ Finset.Icc 1 n, (m + x)) * m.factorial) * (m + n + 1) from by ring,
+      ih, Nat.factorial_succ]
     ring
 
 /-- **Trivial family.** If k₁ = k₂ and m₁ = m₂ then the products are

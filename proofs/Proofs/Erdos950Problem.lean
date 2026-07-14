@@ -127,13 +127,15 @@ theorem f_pos (n : ℕ) (hn : n ≥ 3) : f n > 0 := by
   unfold f
   have h2 : 2 ∈ primesLessThan n := by
     simp only [primesLessThan, Finset.mem_filter, Finset.mem_range]
-    exact ⟨by omega, Nat.prime_iff.mpr ⟨by omega, fun m hm => by omega⟩⟩
+    exact ⟨by omega, Nat.prime_two⟩
   have hterm : (0 : ℝ) < 1 / ↑(n - 2) := by
     apply div_pos one_pos
     exact_mod_cast (show 0 < n - 2 by omega)
-  calc 0 < 1 / ↑(n - 2) := hterm
-    _ ≤ ∑ p ∈ primesLessThan n, 1 / ↑(n - p) := by
-        apply Finset.single_le_sum (fun q _ => div_nonneg one_pos.le (Nat.cast_nonneg _)) h2
+  rw [gt_iff_lt]
+  calc 0 < (1 : ℝ) / (n - 2 : ℕ) := hterm
+    _ ≤ ∑ p ∈ primesLessThan n, (1 : ℝ) / (n - p : ℕ) := by
+        apply Finset.single_le_sum (f := fun p => (1 : ℝ) / (n - p : ℕ))
+          (fun q _ => div_nonneg one_pos.le (Nat.cast_nonneg _)) h2
 
 /-- f(2) = 0 since there are no primes < 2. -/
 lemma f_two : f 2 = 0 := by

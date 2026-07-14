@@ -116,15 +116,7 @@ but Baumgartner shows this fails for infinite APs in ℝ.
 /-- Example: ℕ is 3-AP-free → False (since 0,1,2 is an AP if we include 0)
     Actually ℕ has many APs: 1,2,3 or 2,4,6 etc. -/
 example : has3AP {n : ℝ | ∃ k : ℕ, n = k} := by
-  use 1, 1
-  simp [has3AP]
-  constructor
-  · norm_num
-  · constructor
-    · use 1; ring
-    · constructor
-      · use 2
-      · use 3
+  refine ⟨1, 1, one_ne_zero, ⟨1, by norm_num⟩, ⟨2, by norm_num⟩, ⟨3, by norm_num⟩⟩
 
 /-- The rationals contain infinite APs (e.g., 0, 1, 2, 3, ...) -/
 example : containsInfiniteAP {q : ℝ | ∃ r : ℚ, q = r} := by

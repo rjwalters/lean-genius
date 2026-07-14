@@ -329,11 +329,11 @@ The equation 3^m = Σ aᵢ! has exactly 5 solutions: m ∈ {0, 1, 2, 3, 6}.
 theorem related_powers_of_three :
     ∀ m ∈ threeExponentSolutions, IsPrimePowerFactorialSum 3 m := by
   intro m hm
-  fin_cases hm <;> first
-    | exact ⟨{1}, by simp, by simp [sumFactorials, factorial]⟩
-    | exact ⟨{1, 2}, by simp, three_solution_m1⟩
-    | exact ⟨{1, 2, 3}, by simp, three_solution_m2⟩
-    | exact ⟨{1, 2, 4}, by simp, three_solution_m3⟩
-    | exact ⟨{1, 2, 3, 6}, by simp, three_solution_m6⟩
+  fin_cases hm
+  · exact ⟨{1}, by simp, by simp [sumFactorials, factorial]⟩
+  · exact ⟨{1, 2}, by simp, three_solution_m1⟩
+  · exact ⟨{1, 2, 3}, by simp, three_solution_m2⟩
+  · exact ⟨{1, 2, 4}, by simp, three_solution_m3⟩
+  · exact ⟨{1, 2, 3, 6}, by simp, three_solution_m6⟩
 
 end Erdos403

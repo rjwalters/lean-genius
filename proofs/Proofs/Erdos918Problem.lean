@@ -108,9 +108,9 @@ example : Cardinal.mk ℕ = ℵ₀ := mk_nat
 
 /-- The aleph cardinals are strictly increasing. -/
 theorem aleph_0_lt_1 : aleph 0 < aleph 1 :=
-  aleph_lt_aleph.mpr (by omega)
+  aleph_lt_aleph.mpr zero_lt_one
 theorem aleph_1_lt_2 : aleph 1 < aleph 2 :=
-  aleph_lt_aleph.mpr (by omega)
+  aleph_lt_aleph.mpr one_lt_two
 
 /-  ℵ_ω is the supremum of ℵ_n for finite n (axiomatized). -/
 /- ## Why This Problem is Difficult

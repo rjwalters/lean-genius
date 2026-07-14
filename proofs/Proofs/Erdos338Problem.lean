@@ -288,10 +288,10 @@ theorem restricted_implies_regular (A : Set ℕ) (t : ℕ) :
   use s.val
   constructor
   · intro x hx
-    exact hmem x (Multiset.mem_toFinset.mp (by simp [hx]))
+    exact hmem x (by simpa using hx)
   constructor
   · simp [hcard]
-  · simp [hsum]
+  · simpa [id] using hsum
 
 /--
 **Order at most restricted order:**

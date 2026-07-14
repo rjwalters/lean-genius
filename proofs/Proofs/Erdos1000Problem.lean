@@ -168,6 +168,7 @@ theorem naturalSeq_phiA_eq_totient (k : ℕ) :
       · -- Backward: if gcd = 1, then n/gcd = n = k+2 > j+1 for all j < k+1
         intro hg j hj
         rw [hg, Nat.div_one]; omega
+    simp only [show k + 1 + 1 = k + 2 from rfl]
     rw [filter_congr hfilt]
     -- Step 2: Bridge (Icc 1 n).filter (gcd · n = 1) to (range n).filter (gcd n · = 1)
     -- For n ≥ 2: gcd(n,n) = n ≠ 1 and gcd(n,0) = n ≠ 1, so 0 and n are excluded

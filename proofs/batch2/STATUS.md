@@ -1089,3 +1089,44 @@ Classes worked: parse-error, signature-drift, elab-drift, dot-notation-drift, in
 - Erdos807: `S.card` where `S : V → Prop` (statement/def bug — S should be a Finset).
 - 6 SimpleGraph-field files above: field fix ready but each needs 2-6 more per-file v4.31 repairs (mixed tm/rename/tactic).
 - Erdos97 (`abbrev ℝ² :=` reserved-char decl) + Erdos552Problem/552Aristotle (SimpleGraph loopless + proof-drift): deeper own errors, did not flip (confirms inc-12).
+
+---
+
+# DOCTOR INCREMENT 18 (tm/pd/rewrite + mixed, #38065, 2026-07-13)
+
+Classes: type-mismatch, proof-drift, rewrite-drift, unknown-const-mixed, instance-synth.
+Ledger: **1513 GREEN at start → 1530+ GREEN** (net +17 verified this increment).
+
+## Method
+Full-shard runner3 re-verify (190-file bulk build) confirmed too slow on `import
+Mathlib` umbrellas; pivoted to a tight per-file `lake build Proofs.X` fix-verify
+loop off fresh in-container errors (DR20a diags are stale). Pre-filter each
+candidate with `grep -c sorry` (sorry ⇒ formalized, NOT GREEN-able) and an error
+count; target 1–2 fresh-error files first.
+
+## Waves (all in-container lake exit-0 confirmed)
+- **DR28a (+3)**: AreaOfCircleOQ01OQ02OQ01 (drop dead ring ×2, mul_pow+ring scaling,
+  HasDerivAt value-rewrite, r^n=r^(n-1)*r surface/volume ratio), OQ01OQ01
+  (push_cast+single hcast+Gamma_add_one), OQ01OQ01OQ01 (div_le_div_of_le_left→gcongr,
+  Even k+k≠2k, push_cast 2k+1+2).
+- **DR28b (+1)**: CatalanNumbersOQ01OQ04OQ02 (div_mul_div_comm chain → field_simp).
+- **DR28c (+2)**: Erdos1170 (aleph0_lt_aleph now Iff), Erdos199 (has3AP refine).
+- **DR28d (+2)**: Erdos338 (mem_toFinset/sum id), Erdos310 (calc >/≥, den bound).
+- **DR28e (+1)**: Erdos44 (2^k≥2 monotonicity, heq ▸ cast).
+- **DR28f (+2)**: Erdos503 (choose→decide), Erdos1000 (k+1+1 vs k+2 align).
+- **DR28g (+1)**: Erdos33 (lt_div_iff₀ + pi_lt_d4 tighter bound).
+- **DR28h (+2)**: Erdos403 (fin_cases <;> first no-backtrack → bullets), Erdos355
+  (tsum_geometric metavar split out of simp_rw).
+- **DR28i (+2)**: Erdos388 (prod_insert order + explicit ring regroup), Erdos375
+  (fin_cases simp_all symmetry fold).
+- **DR28j (+1)**: Erdos414 (mem_divisors over-unfold depth, coe_Icc, succ^2 sqrt, eta).
+
+Recipes catalogued in rename-map §7r.
+
+## Deferred (deeper / genuine gaps / sorry / sibling-class)
+- BuffonsNeedleOQ01OQ01OQ04: 15+ errors incl a `λ` reserved-token (sibling parse class).
+- Erdos1112: `mp` branch needs "B avoids evens" — genuine math gap (odd-witness
+  sumset = evens ∩ B ≠ ∅ in general); flagged, NOT weakened.
+- Erdos370/391/402: contain `sorry` (formalized, not GREEN-able).
+- Erdos27: 3 interlocking (liminf_eq, map-injectivity cascade, cast-max).
+- Erdos225/288/391: deep convert/structure/Fin-NeZero rework.

@@ -66,11 +66,14 @@ theorem omega_odd_le_two_even : ∀ k : ℕ, ω (2 * k + 1) ≤ 2 * ω (2 * k)
     have hrec_even : ω (2 * k + 2) = 2 * π / (↑(2 * k) + 2) * ω (2 * k) :=
       omega_recurrence (2 * k)
     rw [hrec_odd, hrec_even]
-    -- After push_cast: denominators become 2k+3 and 2k+2
+    -- After push_cast: denominators become 2k+1+2 and 2k+2; normalise to 2k+3.
     push_cast
+    rw [show (2 : ℝ) * ↑k + 1 + 2 = 2 * ↑k + 3 from by ring]
     -- Fraction inequality: 2π/(2k+3) ≤ 2π/(2k+2) since 2k+2 ≤ 2k+3
-    have hfrac : 2 * π / (2 * (↑k : ℝ) + 3) ≤ 2 * π / (2 * ↑k + 2) :=
-      div_le_div_of_le_left (by linarith [pi_pos]) (by positivity) (by linarith)
+    have hfrac : 2 * π / (2 * (↑k : ℝ) + 3) ≤ 2 * π / (2 * ↑k + 2) := by
+      have h2 : (0 : ℝ) < 2 * ↑k + 2 := by positivity
+      gcongr
+      linarith
     -- Chain: 2π/(2k+3)·ω(2k+1) ≤ 2π/(2k+2)·ω(2k+1) ≤ 2π/(2k+2)·2·ω(2k)
     have hIH := omega_odd_le_two_even k
     have hω_pos : 0 < ω (2 * k + 1) := omega_pos _
@@ -90,8 +93,8 @@ theorem omega_odd_le_two_even : ∀ k : ℕ, ω (2 * k + 1) ≤ 2 * ω (2 * k)
 theorem omega_le_two_even_half (n : ℕ) : ω n ≤ 2 * ω (2 * (n / 2)) := by
   rcases Nat.even_or_odd n with ⟨k, rfl⟩ | ⟨k, rfl⟩
   · -- n = 2k: need ω(2k) ≤ 2*ω(2k), i.e., 0 ≤ ω(2k)
-    have hdiv : 2 * k / 2 = k := by omega
-    rw [hdiv]
+    have hdiv : (k + k) / 2 = k := by omega
+    rw [hdiv, show k + k = 2 * k from by ring]
     linarith [omega_pos (2 * k)]
   · -- n = 2k+1: ω(2k+1) ≤ 2*ω(2k) from omega_odd_le_two_even
     have hdiv : (2 * k + 1) / 2 = k := by omega
