@@ -25,6 +25,8 @@ import Mathlib.Tactic
 
 namespace Erdos345
 
+open scoped Classical
+
 /- ## Subset sums and completeness -/
 
 /-- The set of finite nonempty subset sums of `A ⊆ ℕ`.
@@ -42,7 +44,6 @@ def IsCompleteSeq (A : Set ℕ) : Prop :=
 
 /-- The threshold of completeness `T(A)`: the least `m` such that all
     `n ≥ m` are in `P(A)`. Defined via `Nat.find` when `A` is complete. -/
-open Classical in
 noncomputable def threshold (A : Set ℕ) : ℕ :=
     if h : IsCompleteSeq A then Nat.find h else 0
 
@@ -106,7 +107,7 @@ def powerSeq (k : ℕ) : Set ℕ :=
 theorem powerSeq_subset_powerSeq_1 (k : ℕ) (hk : 1 ≤ k) :
     powerSeq k ⊆ powerSeq 1 := by
   intro m ⟨n, hn, hm⟩
-  exact ⟨m, by rw [hm]; exact Nat.one_le_pow k n hn, pow_one m⟩
+  exact ⟨m, by rw [hm]; exact Nat.one_le_pow k n hn, (pow_one m).symm⟩
 
 /-- Combining monotonicity with powerSeq_1_complete: every powerSeq k
     (k ≥ 1) is complete, assuming powerSeq 1 completeness. -/
@@ -131,7 +132,11 @@ theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
   apply (Nat.find_eq_iff _).mpr
   constructor
   · -- All n ≥ 1 are in subsetSums(powerSeq 1)
-    exact fun n hn => (powerSeq_1_complete).choose_spec n hn
+    intro n hn
+    refine ⟨{n}, Finset.singleton_nonempty n, ?_, ?_⟩
+    · simp only [Finset.coe_singleton, Set.singleton_subset_iff]
+      exact ⟨n, hn, (pow_one n).symm⟩
+    · simp
   · -- For m = 0: not all n ≥ 0 are in subsetSums(powerSeq 1)
     intro m hm
     interval_cases m
@@ -146,8 +151,11 @@ theorem threshold_powerSeq_1 : threshold (powerSeq 1) = 1 := by
     have hx_in : x ∈ (↑S : Set ℕ) := Finset.mem_coe.mpr hx_mem
     have ⟨n, hn_pos, hn_eq⟩ := hS_sub hx_in
     have hx_pos : 1 ≤ x := by rw [hn_eq, pow_one]; exact hn_pos
-    have := Finset.single_le_sum (fun a _ => Nat.zero_le a) hx_mem
-    simp [id] at this
+    have hle := Finset.single_le_sum (fun a _ => Nat.zero_le a) hx_mem
+    have hx_le : x ≤ 0 := by
+      calc x = id x := rfl
+        _ ≤ S.sum id := hle
+        _ = 0 := hS_sum
     omega
 
 /- ## Known threshold values -/
@@ -174,26 +182,30 @@ axiom threshold_fifth : threshold (powerSeq 5) = 67898772
     by definition, contradicting `threshold_squares = 129`. -/
 theorem powerSeq_2_complete : IsCompleteSeq (powerSeq 2) := by
   by_contra h
-  simp only [threshold, dif_neg h] at threshold_squares
-  norm_num at threshold_squares
+  have hts := threshold_squares
+  simp only [threshold, dif_neg h] at hts
+  norm_num at hts
 
 /-- `powerSeq 3` is complete: derived from `threshold_cubes = 12759`. -/
 theorem powerSeq_3_complete : IsCompleteSeq (powerSeq 3) := by
   by_contra h
-  simp only [threshold, dif_neg h] at threshold_cubes
-  norm_num at threshold_cubes
+  have htc := threshold_cubes
+  simp only [threshold, dif_neg h] at htc
+  norm_num at htc
 
 /-- `powerSeq 4` is complete: derived from `threshold_fourth = 5134241`. -/
 theorem powerSeq_4_complete : IsCompleteSeq (powerSeq 4) := by
   by_contra h
-  simp only [threshold, dif_neg h] at threshold_fourth
-  norm_num at threshold_fourth
+  have htf := threshold_fourth
+  simp only [threshold, dif_neg h] at htf
+  norm_num at htf
 
 /-- `powerSeq 5` is complete: derived from `threshold_fifth = 67898772`. -/
 theorem powerSeq_5_complete : IsCompleteSeq (powerSeq 5) := by
   by_contra h
-  simp only [threshold, dif_neg h] at threshold_fifth
-  norm_num at threshold_fifth
+  have htf := threshold_fifth
+  simp only [threshold, dif_neg h] at htf
+  norm_num at htf
 
 /- ## Completeness of power sequences (general) -/
 
