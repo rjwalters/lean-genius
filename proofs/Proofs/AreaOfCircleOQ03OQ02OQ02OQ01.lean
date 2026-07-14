@@ -144,21 +144,22 @@ theorem hasDerivAt_dalzell2Antideriv (x : ℝ) :
     convert this using 1 <;> (first | rfl | ring1 | (push_cast; ring1) | (field_simp; ring1) | (norm_num; done))
   have h1 : HasDerivAt (fun x : ℝ => 16 * x) (16 : ℝ) x := by
     have := (hasDerivAt_id x).const_mul (16 : ℝ)
-    convert this using 1; simp
+    convert this using 1 <;> (first | rfl | ring1 | simp)
   have ha : HasDerivAt (fun x : ℝ => 16 * arctan x) (16 / (1 + x ^ 2)) x := by
     have := (hasDerivAt_arctan x).const_mul (16 : ℝ)
     convert this using 1 <;> (first | rfl | ring | norm_num)
   -- Chain all terms together (left-associative, matching the definition's parsing)
   have hcomb :=
     ((((((((((h15.sub h14).add h13).sub h12).add h11).sub h10).sub h9).add h7).sub h5).add h3).sub h1).add ha
-  convert hcomb using 1
-  · rfl
-  · ring
+  refine hcomb.congr_of_eventuallyEq ?_
+  filter_upwards with y
+  simp only [Pi.sub_apply, Pi.add_apply]
 
 /-- The decomposed integrand is continuous -/
 theorem continuous_dalzell2Decomposed : Continuous dalzell2Decomposed := by
   unfold dalzell2Decomposed
-  fun_prop
+  have hden : ∀ x : ℝ, (1 : ℝ) + x ^ 2 ≠ 0 := fun x => by positivity
+  fun_prop (disch := intro x; exact hden x)
 
 /-- F₂(0) = 0 -/
 theorem dalzell2Antideriv_zero : dalzell2Antideriv 0 = 0 := by
@@ -187,11 +188,9 @@ theorem dalzell2_decomposed_integral :
 
 /-- The n=2 integrand is continuous -/
 theorem continuous_dalzell2_integrand :
-    Continuous (fun x => x ^ 8 * (1 - x) ^ 8 / (1 + x ^ 2)) := by
-  apply Continuous.div
-  · exact (continuous_pow 8).mul ((continuous_const.sub continuous_id').pow 8)
-  · exact continuous_const.add (continuous_pow 2)
-  · intro x; positivity
+    Continuous (fun x : ℝ => x ^ 8 * (1 - x) ^ 8 / (1 + x ^ 2)) := by
+  have hden : ∀ x : ℝ, (1 : ℝ) + x ^ 2 ≠ 0 := fun x => by positivity
+  fun_prop (disch := intro x; exact hden x)
 
 /-- The original integrand equals the decomposed form -/
 theorem dalzell2_integrand_eq_decomposed :
