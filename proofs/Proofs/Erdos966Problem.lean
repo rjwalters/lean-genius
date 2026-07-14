@@ -32,6 +32,7 @@ import Mathlib.Combinatorics.Additive.AP.Three.Defs
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Tactic
 
 open Set Finset
 
@@ -247,8 +248,8 @@ Any singleton is trivially AP-free.
 theorem singleton_AP_free (n : ℕ) (k : ℕ) (hk : k ≥ 2) :
     APFreeOfLength {n} k := by
   intro ⟨a, d, hd, h⟩
-  have h0 : a ∈ ({n} : Set ℕ) := h 0 (by omega)
-  have h1 : a + d ∈ ({n} : Set ℕ) := h 1 (by omega)
+  have h0 : a + 0 * d ∈ ({n} : Set ℕ) := h 0 (by omega)
+  have h1 : a + 1 * d ∈ ({n} : Set ℕ) := h 1 (by omega)
   simp at h0 h1
   omega
 

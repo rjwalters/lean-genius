@@ -138,14 +138,14 @@ The optimal exponent is 2/3.
 axiom erdos_1008_c4free_subgraph (G : SimpleGraph V) [DecidableRel G.Adj] :
   ∃ (H : SimpleGraph V) (_ : DecidableRel H.Adj),
     IsSubgraphOf H G ∧ isC4Free H ∧
-    edgeCount H ≥ (edgeCount G)^(2/3 : ℝ).toNNReal.toNat
+    (edgeCount H : ℝ) ≥ (edgeCount G : ℝ)^(2/3 : ℝ)
 
 /-- The exponent 2/3 is optimal (follows from Folkman) -/
 axiom exponent_two_thirds_optimal :
   ∀ ε > 0, ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
       IsSubgraphOf H G → isC4Free H →
-      edgeCount H < (edgeCount G)^((2/3 : ℝ) + ε)
+      (edgeCount H : ℝ) < (edgeCount G : ℝ)^((2/3 : ℝ) + ε)
 
 /-
 ## Generalization to K_{s,t}-free Subgraphs

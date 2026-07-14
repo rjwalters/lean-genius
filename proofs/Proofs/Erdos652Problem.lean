@@ -98,10 +98,10 @@ Trivial cases and fundamental bounds.
 Erdős conjectured R(x₃)/√n → ∞, but Elekes showed this is FALSE.
 -/
 
-/-- Consequence: αₖ is finite for all k -/
-theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
-  -- Follows from Elekes
-  exact Real.lt_top (alpha_k k)
+/-- Consequence: αₖ is finite for all k (it is a real number, hence bounded above). -/
+theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : ∃ B : ℝ, alpha_k k ≤ B := by
+  -- Follows from Elekes: αₖ is a genuine (finite) real number.
+  exact ⟨alpha_k k, le_refl _⟩
 
 /-
 ## Part VI: Mathialagan's Breakthrough (2021)
@@ -126,7 +126,7 @@ theorem erdos_652_solved :
     -- αₖ → ∞ as k → ∞
     (∀ M : ℝ, ∃ K : ℕ, ∀ k ≥ K, alpha_k k > M) ∧
     -- But Elekes showed αₖ is finite for each k
-    (∀ k ≥ 1, alpha_k k < ⊤) := by
+    (∀ k ≥ 1, ∃ B : ℝ, alpha_k k ≤ B) := by
   constructor
   · exact alpha_k_unbounded
   · intro k hk; exact alpha_k_finite k hk

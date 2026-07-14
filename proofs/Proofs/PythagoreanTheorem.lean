@@ -61,7 +61,7 @@ abbrev Vec2 := EuclideanSpace ℝ (Fin 2)
 -- norm : Vec2 → ℝ
 
 -- Key property: ‖v‖² = ⟨v, v⟩
-theorem norm_sq_eq_inner (v : Vec2) : ‖v‖^2 = inner v v := by
+theorem norm_sq_eq_inner (v : Vec2) : ‖v‖^2 = inner ℝ v v := by
   rw [sq, ← real_inner_self_eq_norm_mul_norm]
 
 -- ============================================================
@@ -69,7 +69,7 @@ theorem norm_sq_eq_inner (v : Vec2) : ‖v‖^2 = inner v v := by
 -- ============================================================
 
 /-- Two vectors are perpendicular if their inner product is zero -/
-def perpendicular (v w : Vec2) : Prop := inner v w = (0 : ℝ)
+def perpendicular (v w : Vec2) : Prop := inner ℝ v w = (0 : ℝ)
 
 notation v " ⊥ " w => perpendicular v w
 
@@ -101,7 +101,7 @@ theorem pythagorean_theorem (v w : Vec2) (h : v ⊥ w) :
   rw [inner_add_left, inner_add_right, inner_add_right]
   -- Use perpendicularity: ⟨v, w⟩ = 0
   unfold perpendicular at h
-  have hw : inner w v = (0 : ℝ) := by rw [real_inner_comm]; exact h
+  have hw : inner ℝ w v = (0 : ℝ) := by rw [real_inner_comm]; exact h
   rw [h, hw]
   -- Simplify
   ring
@@ -170,19 +170,18 @@ when all pairs of vectors are perpendicular.
 
 /-- Generalized Pythagorean theorem for mutually perpendicular vectors -/
 theorem pythagorean_sum {ι : Type*} [DecidableEq ι] {s : Finset ι} {v : ι → Vec2}
-    (h : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → inner (v i) (v j) = (0 : ℝ)) :
+    (h : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → inner ℝ (v i) (v j) = (0 : ℝ)) :
     ‖∑ i ∈ s, v i‖^2 = ∑ i ∈ s, ‖v i‖^2 := by
   -- Induction on the finite set
   induction s using Finset.induction_on with
   | empty =>
     -- Base case: empty sum
     simp
-  | insert ha ih =>
-    -- Induction step: add one element (a is the new element, s✝ is the smaller set)
-    rename_i a s'
+  | @insert a s' ha ih =>
+    -- Induction step: add one element (a is the new element, s' is the smaller set)
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     -- The key: v a ⊥ (∑ i ∈ s', v i) because v a ⊥ v i for all i ∈ s'
-    have perp : inner (v a) (∑ i ∈ s', v i) = (0 : ℝ) := by
+    have perp : inner ℝ (v a) (∑ i ∈ s', v i) = (0 : ℝ) := by
       rw [inner_sum]
       apply Finset.sum_eq_zero
       intro i hi
@@ -196,7 +195,7 @@ theorem pythagorean_sum {ι : Type*} [DecidableEq ι] {s : Finset ι} {v : ι �
       rw [← real_inner_self_eq_norm_mul_norm, ← real_inner_self_eq_norm_mul_norm,
           ← real_inner_self_eq_norm_mul_norm]
       rw [inner_add_left, inner_add_right, inner_add_right]
-      have perp_symm : inner (∑ i ∈ s', v i) (v a) = (0 : ℝ) := by
+      have perp_symm : inner ℝ (∑ i ∈ s', v i) (v a) = (0 : ℝ) := by
         rw [real_inner_comm]; exact perp
       rw [perp, perp_symm]
       ring

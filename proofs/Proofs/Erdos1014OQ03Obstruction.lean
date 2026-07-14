@@ -157,7 +157,7 @@ theorem v_normalizedIncrement_tendsto_zero :
   -- Dominating sequence `6/l → 0`.
   have hg : Tendsto (fun l : ℕ => 6 / (l : ℝ)) atTop (𝓝 0) := by
     have h := (tendsto_one_div_atTop_nhds_zero_nat).const_mul (6 : ℝ)
-    simpa [mul_one_div] using h
+    simpa [mul_one_div, div_eq_mul_inv] using h
   refine squeeze_zero_norm' ?_ hg
   filter_upwards [eventually_ge_atTop 2] with l hl
   set a : ℝ := (-1 : ℝ) ^ l with ha_def
