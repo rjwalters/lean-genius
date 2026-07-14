@@ -176,8 +176,9 @@ The number of solutions to a + b = c + d in A is ≪ |A|² when
 ‖1_A ∗ 1_A‖_∞ ≤ k.
 -/
 def additiveQuadrupleCount (A : Finset ℕ) : ℕ :=
-  (A ×ˢ A ×ˢ A ×ˢ A).filter (fun ⟨a, b, c, d⟩ =>
-    a + b = c + d ∧ ({a, b} : Finset ℕ) ≠ {c, d}).card
+  ((A ×ˢ A ×ˢ A ×ˢ A).filter (fun x =>
+    x.1 + x.2.1 = x.2.2.1 + x.2.2.2 ∧
+      ({x.1, x.2.1} : Finset ℕ) ≠ {x.2.2.1, x.2.2.2})).card
 
 /- 
 **Quadruple bound:**
