@@ -21,17 +21,17 @@ import Mathlib
 #check @MeasureTheory.Lp
 #check @MeasureTheory.MemLp
 
--- snorm (Lp norm for general p)
-#check @MeasureTheory.snorm
-#check @MeasureTheory.snorm_le_snorm_mul_snorm_of_nq
+-- eLpNorm (Lp norm for general p)
+#check @MeasureTheory.eLpNorm
+#check @MeasureTheory.eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
 
 -- Complex inner product
 #check @inner_self_eq_norm_sq
 
 -- Minkowski/triangle inequality on Lp
-#check @MeasureTheory.snorm_add_le
+#check @MeasureTheory.eLpNorm_add_le
 
 -- Check NNReal Hölder conjugate for p=q=2
 example : NNReal.HolderConjugate 2 2 := by
-  rw [NNReal.HolderConjugate]
+  rw [NNReal.holderConjugate_iff]
   norm_num

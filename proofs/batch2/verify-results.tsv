@@ -2571,7 +2571,7 @@ TestApi234	RESIDUAL	unknown-const:Continuous.if_lt
 TestApi241	RESIDUAL	noncomputable
 TestApi249	GREEN	
 TestApi301	GREEN	
-TestApi312	RESIDUAL	unknown-const:Real.exp_ge_one_add_of_nonneg
+TestApi312	GREEN	
 TestApi321	GREEN	
 TestApi342	GREEN	
 TestApi361	GREEN	
@@ -2599,7 +2599,7 @@ TestCovByApi	GREEN
 TestDerangConvApi	GREEN	
 TestErdos43Api	GREEN	
 TestHLTension	RESIDUAL	unknown-const:Finset.card_sdiff_eq_card_sub_card_inter
-TestHolderApi	RESIDUAL	unknown-const:MeasureTheory.snorm
+TestHolderApi	GREEN	
 TestSphereLocEuc	RESIDUAL	proof-drift
 TestWolstenholme	RESIDUAL	unknown-const:ZMod.prod_univ_prime
 TestZetaNonzero	GREEN	
