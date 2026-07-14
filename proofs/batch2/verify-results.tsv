@@ -2379,9 +2379,9 @@ RothTheoremOQ01Reciprocal	GREEN
 RothTheoremOQ01Weighted	GREEN	
 RothTheoremOQ03	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
 RothTheoremOQ03OQ01OQ01	GREEN	duplicate-decl
-RothTheoremOQ03OQ01OQ01OQ01	RESIDUAL	duplicate-decl
-RothTheoremOQ03OQ01OQ01OQ01OQ01	RESIDUAL	duplicate-decl
-RothTheoremQuantitative	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
+RothTheoremOQ03OQ01OQ01OQ01	GREEN	
+RothTheoremOQ03OQ01OQ01OQ01OQ01	GREEN	
+RothTheoremQuantitative	GREEN	
 RothTheoremQuantitativeAristotle	RESIDUAL	unknown-const:div_le_div_of_le_left
 RothTriangleRemoval	RESIDUAL	signature-drift
 SchauderFixedPoint	RESIDUAL	instance-synth
@@ -2389,7 +2389,7 @@ SchauderFixedPointOQ01	RESIDUAL	instance-synth
 SchauderFixedPointOQ03	RESIDUAL	instance-synth
 SchauderFixedPointOQ03OQ01	GREEN	
 SchroederBernsteinOQ01	RESIDUAL	elab-drift
-SchroederBernsteinOQ02	RESIDUAL	unknown-const:Set.image_subset
+SchroederBernsteinOQ02	GREEN	
 SchroederBernsteinOQ03	GREEN	
 SchursTheorem	GREEN	
 SearchMathlib	RESIDUAL	unknown-const:IsCompact.of_isClosed_isBounded

@@ -58,7 +58,7 @@ def cbsOp (f : α → β) (g : β → α) (S : Set α) : Set α :=
 /-- T is monotone: S ⊆ S' implies T(S) ⊆ T(S'). -/
 theorem cbsOp_mono (f : α → β) (g : β → α) : Monotone (cbsOp f g) := by
   intro S₁ S₂ h
-  exact Set.union_subset_union_right _ (Set.image_subset g (Set.image_subset f h))
+  exact Set.union_subset_union_right _ (Set.image_mono (Set.image_mono h))
 
 /-- T bundled as an order homomorphism, enabling Knaster-Tarski. -/
 def cbsHom (f : α → β) (g : β → α) : Set α →o Set α where
@@ -114,7 +114,7 @@ theorem gf_mem (f : α → β) (g : β → α) {a : α} (ha : a ∈ fixedSet f g
 /-- If g(b) ∈ S*, then b ∈ f '' S*. (Requires injectivity of g.) -/
 theorem gb_mem_implies (f : α → β) (g : β → α) (hg : Function.Injective g)
     {b : β} (hgb : g b ∈ fixedSet f g) : b ∈ f '' fixedSet f g := by
-  have h : g b ∈ cbsOp f g (fixedSet f g) := by rwa [← fixedSet_eq]
+  have h : g b ∈ cbsOp f g (fixedSet f g) := by rw [fixedSet_eq]; exact hgb
   change g b ∈ (Set.range g)ᶜ ∨ g b ∈ g '' (f '' fixedSet f g) at h
   rcases h with h' | ⟨x, hx, hgx⟩
   · exact absurd (Set.mem_range.mpr ⟨b, rfl⟩) h'
