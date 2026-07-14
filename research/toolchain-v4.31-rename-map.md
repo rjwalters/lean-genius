@@ -1044,3 +1044,30 @@ companions and duplicate-decl / nested-comment / calc-pipe single-issue files.
 | `rw [zpow_neg, …, zpow_natCast, …]` chain after a `ring_nf` that already normalized the exponent → "did not find pattern" | drop `ring_nf`; normalize the exponent first `rw [show -(↑(n+1)) = -↑n - 1 by push_cast; ring]` then `zpow_sub₀ (‹2≠0›), zpow_neg, field_simp, ring` | Erdos350Problem |
 | `rintro (rfl | …)` on disjunction equalities that are not `x = t` (e.g. `2*a+2 = a+1`) fails "subst" | `rintro (h | …)` named + `omega` (unfold nonlinear def on the GOAL first: `simp only [somaniC]` before rintro) | Erdos397Problem |
 | `Finset.prod_insert`/`prod_singleton` builds a RIGHT-associated product; goal is LEFT-associated | append `mul_assoc` (or `ring`) after the rw chain | Erdos397Problem |
+
+## §7v Doctor increment 25 recipes (tm/pd/rewrite + unknown-const + instance-synth, A–M partition, #38065, +16 GREEN)
+
+| Symptom | Fix | Files |
+|---|---|---|
+| `inner x y` (real/complex inner product) "Type mismatch: `a-b` has type Plane but expected Type" — `inner` now takes the **scalar field explicitly first** | `inner ℝ x y` (or `⟪x, y⟫_ℝ`); a `det`/2nd-`inner` error on the same decl is a CASCADE of the first — fix the first and rebuild | Erdos189Problem |
+| `Nat.coprime_succ_self` removed | `(Nat.coprime_self_add_right (n:=1)).mpr (Nat.coprime_one_right _)` (`simpa`) | Erdos375Aristotle |
+| `h.not_le` / `.le` projection on a `≤`-value → "environment does not contain `Nat.le.not_le`" | `absurd (le_proof) (Nat.not_le.mpr h)` (confirms §7u: ≤-values have no `.le`/`.not_le` field) | Erdos375Aristotle |
+| `Nat.choose_two_middle` removed (goal `(k+1).choose 2 = (k+1)*k/2`) | `rw [Nat.choose_two_right, Nat.add_sub_cancel]` (behind a `show (k+1).choose 2 = …` so the `1+1` reduces to `2`) | ArithmeticSeriesOQ02OQ03 |
+| `Nat.smul_eq_mul` removed (after `Finset.sum_const` gives `card • n`) | bare `smul_eq_mul` | Erdos250Problem |
+| `Nat.one_lt_iff_ne_one.mp hn` removed (need `n ≠ 1` from `hn : 1 < n`) | `hn.ne'` | Erdos384Problem |
+| `Nat.choose_symm_diff` removed (goal `C(n, n-1) = n`) | `rw [Nat.choose_symm (by omega : 1 ≤ n), Nat.choose_one_right]` | Erdos384Problem |
+| **Forward reference to an `axiom` (or theorem) declared LATER in the same file now hard-errors** (`Unknown identifier` + `rcases … is not an inductive datatype`) | REORDER: move the axiom/lemma block above its first use (preserves axiom/assumption count — pure reorder, not a repair) | Erdos530Problem |
+| Mathlib **added `SimpleGraph.pathGraph`** → an imported same-named local `Foo.pathGraph`/`starGraph` becomes **"Ambiguous term"** at every bare use | qualify the local refs with the owning namespace, `Foo.pathGraph n` | Erdos548Aristotle |
+| Same-namespace **re-declaration** of a lemma the imported parent now also proves ("has already been declared") AND the companion adds nothing new | reduce the Aristotle companion to an import shim (`import parent` + comment) — all targets live in the parent | Erdos156ProblemAristotle |
+| `Finset.induction … | insert ha ih` case pattern | `| @insert a t ha ih` (name the element+set); `Finset.prod_insert`/`sum_insert` inside also needs `[DecidableEq ι]` on the enclosing decl | Hilbert20OQ01OQ03Aristotle |
+| `Finset.mem_product` alone no longer rewrites membership in `A.product A` (`simp` reports it unused; leaves a raw `Quot.lift` term, breaking a following `rcases`/`⟨⟩`) | add `Finset.product_eq_sprod` to the simp set alongside `Finset.mem_product` | Erdos476Aristotle |
+| `apply Finset.card_image_of_injOn` fails to unify `#?s` with the literal `n` in `#(image f (range n)) = n` | `rw [Finset.card_image_of_injOn, Finset.card_range]` (then discharge the injOn goal) | Erdos476Aristotle |
+| `rcases h with rfl | rfl <;> rcases h' with rfl | rfl` — the `rfl` substitutes the WRONG side, deleting the theorem's bound vars (`a`/`b` → "Unknown identifier") in a later branch | replace the explicit per-branch tactics with `<;> first | exact absurd rfl hne | rfl | exact add_comm _ _` (var-name-agnostic) | Erdos476Aristotle |
+| coercion elaboration: a goal written `(∫ x, x ∂μ : ℂ)` now elaborates by pushing the cast **inside** the integral (`∫ x, ↑x`), so a lemma proving `↑(∫ x, x)` won't `exact` | write the outer cast explicitly: `Complex.ofReal (∫ x, x ∂μ)` | CentralLimitTheorem |
+| `tendsto_one_plus_div_pow_exp` (the `(1+x/n)^n → eˣ` limit) unknown | `Real.tendsto_one_add_div_pow_exp` | CentralLimitTheorem |
+| `expSeries_div_hasSum_exp ℂ x` — the leading algebra arg was dropped (now `(x)` only), and it's namespaced | `NormedSpace.expSeries_div_hasSum_exp x` (confirms DR33m) | EulerIdentity* (partial) |
+| `IsSplittingField.adjoin_rootSet'` is a class FIELD requiring an `IsSplittingField` instance that won't synth through a `set p :=` | use the canonical `Polynomial.SplittingField.adjoin_rootSet _`; likewise `Normal ℚ p.SplittingField` synth → explicit `Polynomial.SplittingField.instNormal p` | InverseGaloisF20 |
+| a `set p := (X^5 - C 2)` folds the polynomial, so a lemma output mentioning `(X^5-C 2).rootSet` won't `rw`-match the folded `p.rootSet` | avoid `rw`; chain with `.trans` (`(lemma …).trans …`) | InverseGaloisF20 |
+| NormedRing (possibly noncommutative) `ring` fails on a purely-additive identity (`B-1 = -(1-B)`, `B = A-(A-B)`) or a `↑u*(↑u⁻¹*x)` unit-cancel | use `neg_sub`/`abel` for additive goals; a reusable `hcancel : ∀ x, ↑u*(↑u⁻¹*x) = x` via `← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul` | GeometricSeriesOQ02OQ03 |
+| `edgeCount` def with `p.1 < p.2` on a bare `V` → "failed to synthesize `LT V`" | add `[LinearOrder V]` to the def; an internal `∃ (V : Type*)` in a `Prop def` also needs `Type`-pinning to kill the derived-thm universe-metavar (§7o) | Erdos571Problem |
+| nlinarith fails on a ℕ descent `(2x)²+(2y)²+(2z)² = 4^(a+1)(8b+7) ⊢ x²+y²+z² = 4^a(8b+7)` | `have hpow : 4^(a+1)=4*4^a := by rw [pow_succ]; ring`, then `have : 4*(sum)=4*(target) := by rw [hpow] at heq; nlinarith [heq]`, then `omega` | LagrangeFourSquaresOQ04 |
