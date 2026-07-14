@@ -120,7 +120,7 @@ theorem remainder_divides {R : Type*} [CommRing R] (p : R[X]) (a : R) :
 theorem division_algorithm {R : Type*} [CommRing R] (p : R[X]) (a : R) :
     p = (X - C a) * (p /ₘ (X - C a)) + C (p.eval a) := by
   have h : (X - C a).Monic := monic_X_sub_C a
-  conv_lhs => rw [← modByMonic_add_div p h]
+  conv_lhs => rw [← modByMonic_add_div p (X - C a)]
   rw [remainder_theorem, add_comm]
 
 /-! ## Connection Between the Two Theorems

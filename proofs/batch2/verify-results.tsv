@@ -1959,7 +1959,7 @@ EulerTotientOQ02OQ02OQ01	RESIDUAL	rewrite-drift
 EulerTotientOQ06OQ02	GREEN	
 FactorRemainderNullstellensatzOQ01	RESIDUAL	instance-synth
 FactorRemainderNullstellensatzOQ02	RESIDUAL	unknown-const:card_roots_le_degree
-FactorRemainderTheorem	RESIDUAL	parse-error
+FactorRemainderTheorem	GREEN	parse-error
 FactorRemainderTheoremOQ01OQ01OQ02	RESIDUAL	proof-drift
 FactorRemainderTheoremOQ02	RESIDUAL	proof-drift
 FactorRemainderTheoremOQ03	RESIDUAL	unknown-const:Polynomial.card_roots_le_degree
