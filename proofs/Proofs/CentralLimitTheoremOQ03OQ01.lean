@@ -74,7 +74,7 @@ theorem isSlowlyVarying_inv {L : ℝ → ℝ} (hL : IsSlowlyVarying L) :
     IsSlowlyVarying (fun x => (L x)⁻¹) := by
   intro t ht
   have : (fun x => (L (t * x))⁻¹ / (L x)⁻¹) = (fun x => L x / L (t * x)) := by
-    ext x; simp [div_eq_mul_inv, inv_inv]
+    ext x; rw [div_eq_mul_inv, inv_inv, div_eq_mul_inv, mul_comm]
   rw [this]
   -- L(x)/L(tx) → 1/1 = 1 since L(tx)/L(x) → 1
   have h := hL t ht
@@ -83,7 +83,6 @@ theorem isSlowlyVarying_inv {L : ℝ → ℝ} (hL : IsSlowlyVarying L) :
   simp [inv_one] at this
   -- Need to show L(x)/L(tx) → 1, which is the reciprocal of L(tx)/L(x) → 1
   convert this using 1
-  ext x; ring
 
 -- ============================================================================
 -- § 2. Regular Variation — Properties
@@ -103,12 +102,13 @@ theorem isRegularlyVarying_zero_iff_slowlyVarying {f : ℝ → ℝ}
   · rintro ⟨L, hL, hev⟩
     intro t ht
     -- f(tx)/f(x) = (tx)^0 · L(tx) / (x^0 · L(x)) = L(tx)/L(x) → 1
+    have htends : Filter.Tendsto (fun x => t * x) Filter.atTop Filter.atTop :=
+      (tendsto_const_mul_atTop_of_pos ht).mpr tendsto_id
     have : ∀ᶠ x in Filter.atTop, f (t * x) / f x = L (t * x) / L x := by
-      filter_upwards [hev, hev.comp_tendsto (tendsto_const_mul_atTop_of_pos ht tendsto_id)]
-        with x hfx hftx
+      filter_upwards [hev, htends.eventually hev] with x hfx hftx
       rw [hfx, hftx]
       simp [rpow_zero]
-    exact (Filter.Tendsto.congr' this.symm (hL t ht))
+    exact (Filter.Tendsto.congr' (Filter.EventuallyEq.symm this) (hL t ht))
   · intro hf
     exact ⟨f, hf, by filter_upwards with x; simp [rpow_zero]⟩
 

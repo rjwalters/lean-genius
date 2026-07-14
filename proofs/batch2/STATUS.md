@@ -2230,3 +2230,24 @@ inv_ne_zero/smul_left_cancel₀ + simp drift, 8 errors post-ENNReal-fix), FairGa
 LawsOfLargeNumbersOQ01Aristotle metaprogramming file: `Mathlib.Tactic.GeneralizeProofs` namespace +
 `Expr`/`Function expected` — Aristotle meta file needs its own repair), LawsOfLargeNumbersOQ02
 (mixed type-mismatch/instance-stuck), BinomialTheoremOQ01 (Polynomial.descPochhammer unknown).
+
+## Increment 45 (Doctor-b, A–M / Erdos<600) — +7 GREEN
+
+Recipes catalogued in rename-map §7ad. TAIL phase: worked whole ≥3-error clusters of catalogued renames mixed with genuine proof-drift.
+
+GREEN this increment:
+- **BoundedPrimeGapsOQ04** (4 err): `Λ` reserved-token → rename abbrev to `vonM`; `Nat.totient_pos` Iff; `Nat.mod_one` trivial filter; drop redundant `exact`.
+- **BoundedPrimeGapsOQ04OQ02** (2 err): `_root_.div_pos` disambig; `totient_pos` Iff; `Nat.cast_nonneg _`.
+- **BinomialTheoremOQ01** (7 err): `descPochhammer` out of `Polynomial` ns; `open scoped ENNReal`; `Metric.eball`/`Metric.mem_eball`; `edist_zero_right`→enorm; `HasSum.congr` finset-form → funext+`rwa`.
+- **DerangementsConvergenceOQ03** (4 err): `Int.floor_eq_iff`; `div_le_iff₀` mul-order; drop `ring`.
+- **CombinationsFormulaOQ02Aristotle** (6 err): forward-ref reorder of `choose_2n_succ`; `coprime_self_add_right` for consecutive coprime; `choose_succ_succ'` Pascal omega; `Nat.mul_succ`.
+- **CentralLimitTheoremOQ03OQ01** (7 err): `Filter.Eventually.comp_tendsto` REMOVED → `htends.eventually hev`; `tendsto_const_mul_atTop_of_pos` Iff; `Filter.EventuallyEq.symm` dot-fix; `inv_inv`+`mul_comm`; drop `ring`.
+- **CentralLimitTheoremOQ03OQ01Aristotle**: FREE-GREEN (builds EXIT 0, no edit).
+
+**Statement repairs**: none (all fixes preserved the mathematical statements; no weakening/sorry/axiomatize).
+
+**Reverted (deep-rework, NOT mechanical)**:
+- **AbelRuffiniOQ10** (3 err): `native_decide` on `orderOf` (now noncomputable) — `decide` too deep; needs an `Equiv.Perm.lcm_cycleType` bridge to the already-proven `cycleType`-based counts. Genuine math, not migration.
+- **BertrandsPostulateOQ03OQ04OQ01** (started 6, fixed 4 mechanically): remaining 2 are a broken ℝ↔ℕ bridge — `PrimeGapConjecture` quantifies over `x:ℝ` but `cramer_implies_primeGapConjecture_eventually` is over `x:ℕ` (`hN x` type-mismatch), AND the small-x branch asserts `x^0.525 ≤ x^ε` which is false for `x>1, ε<0.525` (`rpow_le_rpow_of_exponent_ge` now needs `0<x ∧ x≤1`). Needs genuine reconstruction; reverted whole file.
+
+**Honest remaining A–M / Erdos<600 assessment**: 443 residuals at session start; ~7 now GREEN. Easy 1–2-error files exhausted. Sampled ~18 files: the large majority are 10–24-error genuine rewrites (BaselProblemOQ04OQ03=24, BinaryGcdOQ02OQ01=20, CantorDiagonalizationOQ01OQ01=19, DescartesRuleOfSignsOQ02=18, CayleyHamiltonMinpolyOQ02OQ02=18, DesarguesTheoremOQ01OQ01=16, CombinationsFormulaOQ01OQ04=16, BirthdayProblemOQ01OQ01OQ03=16, DescartesRuleOfSignsOQ01OQ02=14, AlgebraicNumbersCountableOQ04=14, ChineseRemainderConstructiveOQ03=18). A thin seam of ~6-error mixed-rename files remains fixable per this increment (CauchySchwarzOQ01OQ01OQ01=8 next candidate). Estimate: <10% of remaining A–M residuals are mechanical-cluster fixable; the rest are deep-rework or OOM.
