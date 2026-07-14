@@ -127,14 +127,15 @@ theorem plane_lines (P L : Type*) [Membership P L] [Fintype P] [Fintype L]
 
 /- ## Examples of Small Orders -/
 
-/-- Order 1 plane exists (trivial: 3 points, 3 lines) -/
-theorem order_1_is_prime_power : IsPrimePow 1 := by decide
+/-- Order 1 is NOT a prime power (1 = p^0 is excluded; the order-1 "plane" is
+    the degenerate triangle). -/
+theorem order_1_not_prime_power : ¬IsPrimePow 1 := by decide
 
 /-- Order 2 exists (Fano plane: 7 points, 7 lines) -/
 theorem order_2_is_prime_power : IsPrimePow 2 := by decide
 
 /-- Order 3 exists (13 points, 13 lines) -/
-theorem order_3_is_prime_power : IsPrimePow 3 := by decide
+theorem order_3_is_prime_power : IsPrimePow 3 := Nat.prime_three.isPrimePow
 
 /-- Order 4 exists (2²: 21 points, 21 lines) -/
 theorem order_4_is_prime_power : IsPrimePow 4 := by
@@ -142,7 +143,7 @@ theorem order_4_is_prime_power : IsPrimePow 4 := by
   exact IsPrimePow.pow (Nat.prime_two.isPrimePow) (by norm_num)
 
 /-- Order 5 exists (31 points, 31 lines) -/
-theorem order_5_is_prime_power : IsPrimePow 5 := by decide
+theorem order_5_is_prime_power : IsPrimePow 5 := (by norm_num : Nat.Prime 5).isPrimePow
 
 /-- 6 is not a prime power -/
 theorem order_6_not_prime_power : ¬IsPrimePow 6 := by decide
@@ -161,7 +162,9 @@ theorem six_mod_4 : 6 % 4 = 2 := by decide
 /-- 6 is not a sum of two squares -/
 theorem six_not_sum_squares : ¬∃ a b : ℕ, 6 = a^2 + b^2 := by
   intro ⟨a, b, h⟩
-  interval_cases a <;> interval_cases b <;> simp_all
+  have ha : a ≤ 2 := by nlinarith [Nat.zero_le (b ^ 2)]
+  have hb : b ≤ 2 := by nlinarith [Nat.zero_le (a ^ 2)]
+  interval_cases a <;> interval_cases b <;> omega
 
 /-- Therefore no projective plane of order 6 exists (by Bruck-Ryser) -/
 theorem no_plane_order_6 :
