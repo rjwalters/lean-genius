@@ -72,8 +72,8 @@ theorem squaresUpTo_card (N : ℕ) : (squaresUpTo N).card = N := by
     intro a b h
     by_contra hab
     rcases lt_or_gt_of_ne hab with hab | hab
-    · exact absurd h (ne_of_lt (pow_lt_pow_left (by omega) (Nat.zero_le _) two_pos))
-    · exact absurd h.symm (ne_of_lt (pow_lt_pow_left (by omega) (Nat.zero_le _) two_pos))
+    · exact absurd h (_root_.ne_of_lt (Nat.pow_lt_pow_left (by omega) two_ne_zero))
+    · exact absurd h.symm (_root_.ne_of_lt (Nat.pow_lt_pow_left (by omega) two_ne_zero))
   rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
 
 /-
@@ -197,7 +197,7 @@ For Sidon: m² ≤ N² / (log N)^{1/2}, so m ≤ N / (log N)^{1/4}.
 -/
 def trueOrder : Prop :=
   ∃ α : ℝ, 2/3 ≤ α ∧ α < 1 ∧
-    ∀ ε > 0, ∀ᶠ N in Filter.atTop,
+    ∀ ε > 0, ∀ᶠ (N : ℕ) in Filter.atTop,
       (N : ℝ)^(α - ε) ≤ (f N : ℝ) ∧ (f N : ℝ) ≤ (N : ℝ)^(α + ε)
 
 /-

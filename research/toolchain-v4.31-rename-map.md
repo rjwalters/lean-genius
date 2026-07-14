@@ -1096,6 +1096,29 @@ native-evaluates to FALSE once Classical is dropped (bad pre-existing test, not 
 | `rintro (rfl | …)` on disjunction equalities that are not `x = t` (e.g. `2*a+2 = a+1`) fails "subst" | `rintro (h | …)` named + `omega` (unfold nonlinear def on the GOAL first: `simp only [somaniC]` before rintro) | Erdos397Problem |
 | `Finset.prod_insert`/`prod_singleton` builds a RIGHT-associated product; goal is LEFT-associated | append `mul_assoc` (or `ring`) after the rw chain | Erdos397Problem |
 
+### §7w addendum — Doctor increment 24 continued (post-PR#38625, +8 more GREEN)
+
+| Symptom (v4.31) | Fix | Files |
+|---|---|---|
+| `Finset.card_Ioc` "Unknown constant" | `Nat.card_Ioc` | Erdos867Problem |
+| `List.get? i` "environment does not contain `List.get?`" | `l[i]?` (GetElem? notation) | Erdos867Problem |
+| `simp [Finset.subset_iff]` now self-closes a concrete `⊆` goal → trailing `omega` "No goals" | replace the block with `decide` (concrete Finset) | Erdos867Problem |
+| `l[(i.val+1) % l.length]` / any `l[expr]` with a computed index → "failed to prove index is valid" | supply the bound: `l[expr]'(Nat.mod_lt _ i.pos)` (for `Fin`-derived `i`, `i.pos : 0 < l.length`) or `Nat.mod_lt _ (by omega)` | Erdos916Problem, Erdos608Problem (partial) |
+| `.get ⟨i, by omega⟩` where the bound hyp is the `∀`'s anonymous arrow antecedent → omega "No usable constraints" | NAME the antecedent (`∀ i, (hi : i+1 < len) → …`) so it enters the local context, and switch to `l[i]'(by omega)` | Erdos900Problem (partial) |
+| `isOrdinaryLine_symm P p q h` / `distSq_self q` → "Unknown identifier p/q" after `rcases … with rfl`/`rintro rfl` substituted the binder away (v4.31 subst direction eliminates the named binder) | pass `_` for the substituted point args and let the expected type drive inference | Erdos960Problem, Erdos661Problem |
+| `pow_lt_pow_left h (0≤a) (0<n)` → "Unknown identifier" (general lemma gone; now 2-arg `Nat.pow_lt_pow_left : a<b → n≠0 → a^n<b^n`) | `Nat.pow_lt_pow_left (by omega) n_ne_zero` | Erdos773Problem |
+| `ne_of_lt` / `le_or_lt` / `Nat.le_or_lt` ambiguous or removed | `_root_.ne_of_lt`; `le_or_gt a b : a≤b ∨ b<a` | Erdos773Problem, Erdos922Aristotle |
+| `∀ᶠ N in Filter.atTop, … (f N) … (N:ℝ)^…` where `f N` needs `N:ℕ` but binder infers `N:ℝ` → "argument N has type ℝ expected ℕ" | pin the binder `∀ᶠ (N : ℕ) in Filter.atTop` | Erdos773Problem |
+| bare `log n` ambiguous (`Nat.log` vs `Real.log`) in a `K * log n` real statement | qualify `Real.log` | Erdos728Problem |
+| `nlinarith`/`linarith` can't multiply a hypothesis `ε < 1/2` by a variable `n` | add the product term explicitly: `nlinarith [mul_lt_mul_of_pos_right hε hn0]` | Erdos728Problem |
+| `|(f n : ℕ) - g n|` "failed to synthesize `AddGroup ℕ`" (abs needs a group; ℕ subtraction truncates) | cast the whole difference to ℝ: `|((f n : ℝ) - (g n : ℝ))|` (intended-true form for an "…- O(n)" statement) | Erdos669Problem |
+| `theorem foo : myDef k …` where `myDef` unfolds to `nhds (1/(k*(k-1)))` not defeq the axiom's `nhds (1/6)` | `unfold myDef; norm_num; exact axiom` (compute the numeral before matching) | Erdos669Problem |
+| `omega` on `n*(n-1)/2 ≥ n` (nonlinear ℕ product + division) | `rw [ge_iff_le, Nat.le_div_iff_mul_le (by norm_num)]` then `Nat.mul_le_mul_left`/`omega` on the cleared form | Erdos911Problem |
+| `linarith` on a goal whose LHS is an un-beta-reduced `(fun x => …) x` | `refine ⟨…, fun x hx => ?_⟩; simp only; have := …; omega` (beta-reduce first) | Erdos911Problem |
+| `divisors_prime` / `simp [Nat.divisors]` residual `#{1,p}=2` / `#({x∈{1}|x=1})=1` | `Nat.divisors_one`; `Nat.Prime.divisors hp` + `Finset.card_pair hp.one_lt.ne` (same as §7v Erdos673) | Erdos964Aristotle |
+| `omega` on a ℕ goal whose only constraint is a Real hypothesis (`hq_pos : (0:ℝ) < ↑q`) | bridge with `Nat.cast_pos.mp hq_pos` (omega can't read Real casts) | Erdos964Aristotle |
+| structure-field `Nat.pow_le/lt_pow_right (by norm_num) (by omega)` where the base metavar can't be pinned (RHS `2^(n+1)≥2` not syntactically `2^1`) | `gcongr` (for `<`) or `show 2^1 ≤ …` + `pow_one` bridge (for `≥`) | Erdos967Problem |
+| `Filter.Tendsto.const_mul_zero` removed; div_pos ambiguous (`_root_` vs `Nat`) | `(h.inv_tendsto_atTop).const_mul c` + `simpa`; `_root_.div_pos` | Erdos977ProblemAristotle |
 ## §7v Doctor increment 25 recipes (tm/pd/rewrite + unknown-const + instance-synth, A–M partition, #38065, +16 GREEN)
 
 | Symptom | Fix | Files |

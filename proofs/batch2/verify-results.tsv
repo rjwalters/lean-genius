@@ -1548,7 +1548,7 @@ Erdos658Problem	GREEN
 Erdos65OQ03	GREEN	
 Erdos65Problem	GREEN	
 Erdos660Aristotle	RESIDUAL	proof-drift
-Erdos661Problem	RESIDUAL	unknown-const:q
+Erdos661Problem	GREEN	unknown-const:q
 Erdos662Problem	RESIDUAL	noncomputable
 Erdos663Problem	GREEN	
 Erdos664Problem	GREEN	
@@ -1557,7 +1557,7 @@ Erdos666Problem	GREEN
 Erdos667Aristotle	GREEN	
 Erdos667Problem	RESIDUAL	instance-synth
 Erdos668Problem	GREEN	
-Erdos669Problem	RESIDUAL	instance-synth
+Erdos669Problem	GREEN	instance-synth
 Erdos66Problem	GREEN	
 Erdos670Problem	RESIDUAL	instance-synth
 Erdos671Problem	GREEN	
@@ -1627,7 +1627,7 @@ Erdos724Problem	RESIDUAL	parse-error
 Erdos725Problem	GREEN	
 Erdos726Problem	RESIDUAL	unknown-const:Nat.Prime.not_dvd_of_lt
 Erdos727Problem	GREEN	
-Erdos728Problem	RESIDUAL	proof-drift
+Erdos728Problem	GREEN	proof-drift
 Erdos72Aristotle	GREEN	
 Erdos72Problem	GREEN	
 Erdos730Problem	RESIDUAL	rewrite-drift
@@ -1675,7 +1675,7 @@ Erdos76OQ02	GREEN
 Erdos770Problem	PRE-EXISTING	never-compiled:X
 Erdos771Problem	GREEN	
 Erdos772Problem	GREEN	
-Erdos773Problem	RESIDUAL	unknown-const:pow_lt_pow_left
+Erdos773Problem	GREEN	unknown-const:pow_lt_pow_left
 Erdos774Problem	GREEN	
 Erdos775Problem	RESIDUAL	instance-synth
 Erdos776Problem	RESIDUAL	instance-synth
@@ -1843,7 +1843,7 @@ Erdos909Problem	GREEN
 Erdos90Problem	GREEN	
 Erdos910Problem	RESIDUAL	dot-notation-drift
 Erdos910ProblemProvable	RESIDUAL	dot-notation-drift
-Erdos911Problem	RESIDUAL	proof-drift
+Erdos911Problem	GREEN	proof-drift
 Erdos912Problem	GREEN	
 Erdos913Problem	RESIDUAL	proof-drift
 Erdos914Problem	GREEN	
@@ -1855,7 +1855,7 @@ Erdos919Problem	RESIDUAL	proof-drift
 Erdos91Problem	GREEN	
 Erdos920Problem	GREEN	
 Erdos921Problem	RESIDUAL	type-mismatch
-Erdos922Aristotle	RESIDUAL	unknown-const:Nat.le_or_lt
+Erdos922Aristotle	GREEN	unknown-const:Nat.le_or_lt
 Erdos922Problem	RESIDUAL	instance-synth
 Erdos923Problem	GREEN	
 Erdos924Problem	GREEN	
@@ -1899,11 +1899,11 @@ Erdos960Problem	GREEN	unknown-const:p
 Erdos961Problem	RESIDUAL	unknown-const:Nat.primFactors
 Erdos962Problem	GREEN	
 Erdos963Problem	RESIDUAL	unknown-const:greedy_dissociated
-Erdos964Aristotle	RESIDUAL	unknown-const:Nat.divisors_prime
+Erdos964Aristotle	GREEN	unknown-const:Nat.divisors_prime
 Erdos964Problem	RESIDUAL	rewrite-drift
 Erdos965Problem	GREEN	
 Erdos966Problem	RESIDUAL	type-mismatch
-Erdos967Problem	RESIDUAL	proof-drift
+Erdos967Problem	GREEN	proof-drift
 Erdos968Problem	RESIDUAL	noncomputable
 Erdos969Problem	RESIDUAL	unknown-const:Nat.Prime.squarefree
 Erdos96Problem	GREEN	
