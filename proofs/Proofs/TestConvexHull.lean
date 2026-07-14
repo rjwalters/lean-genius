@@ -2,7 +2,6 @@ import Mathlib
 
 -- Check for proper space compactness
 #check @ProperSpace.isCompact_closedBall
-#check @isCompact_isClosed_isBounded
 -- #check @Metric.isCompact_of_isClosed_isBounded
 -- #check @isCompact_iff_isClosed_isBounded
 
@@ -34,4 +33,4 @@ import Mathlib
 example {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {m : ℕ} (pts : Fin m → E) :
     IsClosed (convexHull ℝ (Set.range pts)) := by
-  exact (Set.finite_range pts).isCompact_convexHull.isClosed
+  exact ((Set.finite_range pts).isCompact_convexHull (𝕜 := ℝ)).isClosed

@@ -3,7 +3,6 @@ import Mathlib
 open Configuration
 
 -- Check HasLines fields
-#check @HasLines.mkFinOrder
 #print HasLines
 
 -- Check HasPoints fields
@@ -14,9 +13,6 @@ open Configuration
 
 -- Check if there's a mkPoint
 #check @HasPoints.mkPoint
-
--- Check for line intersection results (two lines in a projective plane meet)
-#check @ProjectivePlane.mkFinOrder
 
 -- Print the ProjectivePlane class
 #print ProjectivePlane
