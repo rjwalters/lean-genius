@@ -320,7 +320,7 @@ BurnsideCountingOQ03OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ01OQ01	RESIDUAL	unknown-const:Cardinal.aleph_lt.mpr
 CantorDiagonalizationOQ01OQ01OQ02	RESIDUAL	type-mismatch
 CantorDiagonalizationOQ01OQ01OQ02OQ01	GREEN	
-CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b	RESIDUAL	signature-drift
+CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b	GREEN	
 CantorDiagonalizationOQ01OQ01OQ02OQ03	RESIDUAL	instance-synth
 CantorDiagonalizationOQ02OQ03	GREEN	
 CantorDiagonalizationOQ03	GREEN	
@@ -662,7 +662,7 @@ Erdos1018Aristotle	RESIDUAL	proof-drift
 Erdos1018OQ01	GREEN	
 Erdos1018OQ01OQ01	GREEN	
 Erdos1018OQ01OQ01OQ01	GREEN	
-Erdos1018OQ01OQ01OQ01OQ01	GREEN	signature-drift
+Erdos1018OQ01OQ01OQ01OQ01	GREEN	
 Erdos1018OQ04	GREEN	
 Erdos1018OQ04Incomplete01	RESIDUAL	unknown-const:Set.image_subset
 Erdos1018OQ04Incomplete01Aristotle	GREEN	
@@ -2533,7 +2533,7 @@ SynthesisCurvaturePtolemyOQ01	RESIDUAL	unknown-const:spherical_ptolemy
 SynthesisCurvaturePtolemyOQ02	GREEN	
 SzemerediCoreOQ01	GREEN	
 SzemerediCoreOQ01Aristotle	RESIDUAL	proof-drift
-SzemerediCounting	GREEN	signature-drift
+SzemerediCounting	GREEN	
 SzemerediHypergraphCore	RESIDUAL	proof-drift
 SzemerediHypergraphGowers	RESIDUAL	proof-drift
 SzemerediRegularity	GREEN	
