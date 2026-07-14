@@ -54,7 +54,7 @@ gives that elements of Nat.nth over an infinite set satisfy the predicate.
 -/
 theorem nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime := by
   unfold nthPrime
-  skip
+  rw [if_neg (by omega : n ≠ 0)]
   exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n - 1)
 
 /--
@@ -91,13 +91,13 @@ theorem nthPrime_values :
     nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5 ∧ nthPrime 4 = 7 := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · -- nthPrime 1 = Nat.nth Nat.Prime 0 = 2
-    unfold nthPrime; simp; exact Nat.nth_prime_zero_eq_two
+    unfold nthPrime; simp
   · -- nthPrime 2 = Nat.nth Nat.Prime 1 = 3
-    unfold nthPrime; simp; exact Nat.nth_prime_one_eq_three
+    unfold nthPrime; simp
   · -- nthPrime 3 = Nat.nth Nat.Prime 2 = 5
-    unfold nthPrime; simp; exact Nat.nth_prime_two_eq_five
+    unfold nthPrime; simp
   · -- nthPrime 4 = Nat.nth Nat.Prime 3 = 7
-    unfold nthPrime; simp; exact nth_prime_three_eq_seven
+    unfold nthPrime; simp
 
 /-
 ## Part II: Remaining Axioms (Deep Results)

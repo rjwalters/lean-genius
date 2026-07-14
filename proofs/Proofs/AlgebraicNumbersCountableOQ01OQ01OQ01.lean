@@ -47,6 +47,14 @@ open AlgebraicNumbersCountableOQ01OQ01
 
 namespace AlgebraicNumbersCountableOQ01OQ01OQ01
 
+/-- v4.31 compat (#38065): the parent's `Algebra.IsAlgebraic K (algebraicIntermediateField K L)`
+instance no longer unifies through the `algebraicNumbersField` abbreviation during
+instance search. Re-expose it directly at the specialized `ℚ ⊆ ℂ` so downstream
+`inferInstance`/`perfectField` calls resolve. -/
+instance instAlgebraicNumbersFieldIsAlgebraic :
+    Algebra.IsAlgebraic ℚ algebraicNumbersField :=
+  AlgebraicNumbersCountableOQ01OQ01.algebraicIntermediateField_isAlgebraic (K := ℚ) (L := ℂ)
+
 /- ============================================================
    § 1 : ℚ is perfect; its algebraic extensions are separable
    ============================================================ -/
