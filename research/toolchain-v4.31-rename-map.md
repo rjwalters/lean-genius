@@ -1032,3 +1032,15 @@ instance-synth / tm / removed-const / latent statement bug). Those files were re
 the tree clean; see STATUS.md inc-22 "Flagged deep" for the full list and the exact residual
 per file. The reliably-flippable shapes this increment were small self-contained Aristotle
 companions and duplicate-decl / nested-comment / calc-pipe single-issue files.
+
+### §7u continued — increment 23 waves DR33n-p (follow-up)
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `simp at h` loses `id`-reduction; `omega` then can't see the ineq | `simp only [id_eq] at h` | Erdos341Problem |
+| `rw [Finset.mem_product] at hp` "did not find pattern" on `S.product S` (SetLike-membership elab) | `(Finset.mem_product.mp hp).1/.2` term-mode | Erdos341Problem |
+| `simp only [h0, Prod.fst, Prod.snd]` — `Prod.fst`/`Prod.snd` are projection FUNCTIONS not simp lemmas → no reduction, `omega` sees nothing | plain `rw [h0]` (the `.1`/`.2` then reduce definitionally) | Erdos341Problem |
+| `fin_cases h` on a hypothesis that is a **Prop-disjunction of equations** (e.g. from `simp [subset_insert_iff]` on `X ⊆ {1,2}`) fails "expected Type" | recover the enumerable form: `X ∈ ({1,2}).powerset` (via `Finset.mem_powerset.mpr hX`), then `fin_cases` on that | Erdos350Problem |
+| `rw [zpow_neg, …, zpow_natCast, …]` chain after a `ring_nf` that already normalized the exponent → "did not find pattern" | drop `ring_nf`; normalize the exponent first `rw [show -(↑(n+1)) = -↑n - 1 by push_cast; ring]` then `zpow_sub₀ (‹2≠0›), zpow_neg, field_simp, ring` | Erdos350Problem |
+| `rintro (rfl | …)` on disjunction equalities that are not `x = t` (e.g. `2*a+2 = a+1`) fails "subst" | `rintro (h | …)` named + `omega` (unfold nonlinear def on the GOAL first: `simp only [somaniC]` before rintro) | Erdos397Problem |
+| `Finset.prod_insert`/`prod_singleton` builds a RIGHT-associated product; goal is LEFT-associated | append `mul_assoc` (or `ring`) after the rw chain | Erdos397Problem |
