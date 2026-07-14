@@ -811,3 +811,39 @@ sole-blocker rows + 2 cascade flips.
 | `#{k \| p k}` set-cardinality notation — "unexpected token '#'; expected term" | `Nat.card {k \| p k}` | Erdos357 (×2) |
 | `∀ a b c d ∈ A, …` multi-binder-with-`∈` | `∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A, …` | Erdos328/795 (confirms §7n; both also needed a 2nd fix: `open scoped Classical`+noncomputable / `Real.toNat`→`⌊·⌋₊`) |
 | SimpleGraph `symm.symm := <pf>` / `loopless.irrefl := <pf>` field (`:=` form) | `symm := ⟨<pf>⟩` / `loopless := ⟨<pf>⟩` (also multi-binder `symm.symm v w := by …` → `symm := ⟨fun v w => by …⟩`); use-sites `G.symm h`→`G.adj_symm h`, `G.loopless v h`→`G.loopless.irrefl v h` | SzemerediCounting FLIPPED; Erdos1031/1175/576/582/637Aristotle/RothTriangleRemoval have deeper own errors (edge_mem_edgeSet/degree_lt_card renames, Quot.toType, DecidableRel arg-name, RothTheorem dep) — field fix ready, did not flip (confirms §7p) |
+
+### 7r. Doctor increment-18 recipes (#38065, 2026-07-13, tm/pd/rewrite + mixed)
+
+**Meta-finding:** the DR20a single-error diag is STALE — most of its 792 blocks
+were re-shuffled or already dep-flipped by inc-13/15/16; re-verify fresh before
+editing. The RESIDUAL rows are genuine multi-error files (typically 3–8 interlocking
+errors each). Pre-filter with `grep -c sorry <file>` and error count: a file with
+`sorry` is `formalized` and CANNOT go GREEN (Erdos370/391/402). Highest-yield
+targets = 1–2 fresh-error files. +17 GREEN this increment.
+
+| v4.31 symptom | fix | source |
+|---|---|---|
+| `field_simp` now CLOSES the goal, leaving a trailing `ring`/`ring_nf` as "No goals to be solved" | delete the trailing tactic (recurs ~everywhere: AreaOfCircle, Erdos310/355) | AreaOfCircleOQ01OQ02OQ01 (×3) |
+| `convert h using 1; ring` where h is a `HasDerivAt … .const_mul` — ring_nf "made no progress" (convert unified the function, left a commuted deriv-value goal it won't touch) | supply the value explicitly: `have hval : <goal-value> = <h-value> := by ring; rw [hval]; exact h` | AreaOfCircleOQ01OQ02OQ01 |
+| `(↑(n+2))/2` cast does NOT auto-simplify to `↑n/2+1` under `push_cast`; a `have hcast : (↑n+2)/2 = ↑n/2+1` rewrites BOTH the exponent and the inner `Γ((↑n+2)/2+1)` occurrence, leaving `Γ(↑n/2+1+1)` | one `rw [hcast]` then `Gamma_add_one` on the `+1+1` (do NOT also write a `hcast2` for `(↑n+2)/2+1` — hcast1 already consumed it) | AreaOfCircleOQ01OQ02OQ01OQ01 |
+| `div_le_div_of_le_left` REMOVED (`a/b ≤ a/c` given `c ≤ b`, both pos) | `gcongr` (leaves ONE side-goal `denom ≤ denom` or `0 < denom`; check count before adding bullets — `gcongr <;> [tac]` guesses wrong) | AreaOfCircleOQ01OQ02OQ01OQ01OQ01 |
+| `Even`/`Odd` destructure `⟨k, rfl⟩` yields `k + k` NOT `2 * k` (omega/rw pattern `2*k` fails) | `rw [show k + k = 2 * k from by ring]` after the destructure, or state helper facts over `k+k` | AreaOfCircleOQ01OQ02OQ01OQ01OQ01, Erdos44 (heq atoms) |
+| `Cardinal.aleph0_lt_aleph` is now an **Iff** `ℵ₀ < ℵ_ o ↔ 0 < o`, not a function-of-`o` — "Function expected" when applied to an arg | `(Cardinal.aleph0_lt_aleph (o := 1)).mpr (by norm_num)` | Erdos1170Problem |
+| `simp [has3AP]`/`use a, d` reshuffles an existential-witness goal so the trailing constructor chain misaligns | replace the whole tactic block with a single `refine ⟨a, d, proof₁, ⟨k, by norm_num⟩, …⟩` anonymous constructor | Erdos199Problem |
+| `Multiset.mem_toFinset.mp (by simp [hx])` — the simp path to `x ∈ s.val.toFinset` from `x ∈ s.val` broke | `by simpa using hx` (Finset.mem_val); `s.sum id = ∑ x∈s, x` bridged by `simpa [id] using hsum` | Erdos338Problem |
+| calc with a `>` step then a redundant `≥` step yields `>` overall but the field/target expects `≥` ("'calc' expression has type _ > _ but is expected _ ≥ _") | drop the calc, use `nlinarith`/`linarith` with an explicit `α*N ≥ (1/2)*N` bridge; a `(0:ℚ).den`/`Rat.den 0` residual after `Finset.sum_empty` needs an explicit `unitFractionSum ∅ = 0` rewrite (omega treats `Rat.den` as an atom) | Erdos310Problem |
+| `norm_num` no longer evaluates `Nat.choose` literals (`⊢ 6 ≤ Nat.choose 4 2`) | `decide` (confirms §7k) | Erdos503Problem |
+| after `Nat.succ`/`induction k`, the goal carries `k + 1 + 1` but a lemma/hyp is stated with `k + 2` → `rw [filter_congr h]` "pattern not found" | `simp only [show k + 1 + 1 = k + 2 from rfl]` to align the goal before the rw | Erdos1000Problem |
+| goal `1.27 < 4/π` — `div_lt_iff₀` "pattern `?/π < ?` not found" (the division is on the RHS) | `lt_div_iff₀` (RHS division); then `1.27*π<4` needs a TIGHTER π bound than `pi_lt_d2` (3.15 gives 1.27·3.15=4.0005 > 4) — use `Real.pi_lt_d4` (π<3.1416) | Erdos33Problem |
+| `fin_cases hm <;> first \| exact ⟨…, by simp, …⟩ \| …` — an inner `by simp` now leaves `⊢ False` (partial progress) instead of failing, so `first` does NOT backtrack → phantom "unsolved goals ⊢ False" ×(cases−1) all on ONE line | replace with positional bullets `·` per `fin_cases` goal | Erdos403Problem |
+| `tsum_geometric_of_lt_one h1 h2` passed inside `simp_rw [...]` leaves the ratio `r` a metavar ("⊢ 0 ≤ ?m") | split it out to a standalone `rw [tsum_geometric_of_lt_one (by norm_num) (by norm_num)]` AFTER `simp_rw [h1, tsum_mul_left]`; `1/2^(n+1)=(1/2)*(1/2)^n` via `div_pow, one_pow, pow_succ` | Erdos355Problem |
+| `fin_cases i <;> fin_cases j <;> simp_all` then positional bullets — simp_all collapses to fewer goals (order flipped, `¬p=q` → `¬q=p`) → "No goals"/type-mismatch on the bullets | fold the symmetry into the simp set: `simp_all [hpq, hpq.symm, Ne.symm]`, drop the bullets | Erdos375Problem |
+| `Finset.prod_insert` places the NEW element FIRST (`(m+n+1) * ∏…`), so an `ih` keyed on `∏… * m!` no longer matches after `mul_comm`/`mul_assoc` | explicit `rw [show ((m+n+1)*∏…)*m! = (∏…*m!)*(m+n+1) from by ring, ih, …]` | Erdos388Problem |
+| `Nat.mem_divisors` over-unfolds under `simp` to `(d∣n ∧ ¬n=0) ∧ …` — `(Nat.mem_divisors.mp h).1` then fails (h is already the conjunction) | access by nesting depth: `h.1` / `h.1.1`; `card_le_card_of_injOn` maps into `↑(Icc …)` (Set coe) so use `Finset.coe_Icc, Set.mem_Icc` not `Finset.mem_Icc`; `Nat.lt_succ_sqrt'` is now `n < n.sqrt.succ ^ 2` (`rwa [Nat.succ_eq_add_one, sq]`); `(fun d => n/d) dᵢ` eta → `simp only [] at heq` | Erdos414Problem |
+| malformed `Nat.one_le_pow k 2 _ \|>.trans_lt (by omega) \|>.le` proving `2^k ≥ 2` where k may be 0 (unprovable) | prove via monotonicity on the genuinely-≥1 exponent: `calc 2 = 2^1 := by norm_num; _ ≤ 2^d := Nat.pow_le_pow_right (by norm_num) hd'`; `heq.symm ▸` cast failures → explicit `rw [heq, …] at h` | Erdos44Problem |
+
+**Verification note:** the earlier full bulk re-verify (runner3, 190-file shards)
+is too slow on `import Mathlib` umbrellas (~15-20s each even warm). Once the base
+cache is built, a per-file `lake build Proofs.X` is the fast fix-verify loop.
+`docker restart dr28` before each rebuild to dodge virtiofs staleness on
+/Volumes/Stripe worktrees (confirms 5B).
