@@ -433,7 +433,8 @@ noncomputable instance instLT : LT Eisenstein :=
 /-- `Eisenstein = ℤ[ω]` is a Euclidean domain, with Euclidean function
 `(norm ·).natAbs` and division by rounding. -/
 noncomputable instance instEuclideanDomain : EuclideanDomain Eisenstein :=
-  { inferInstanceAs (CommRing Eisenstein) with
+  let _cr : CommRing Eisenstein := inferInstanceAs (CommRing Eisenstein)
+  { _cr with
     quotient := (· / ·)
     remainder := (· % ·)
     quotient_zero := by
