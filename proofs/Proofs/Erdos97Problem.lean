@@ -28,11 +28,16 @@ import Mathlib.Analysis.Convex.Independent
 import Mathlib.Tactic
 
 /-- Abbreviation for the Euclidean plane. -/
-abbrev ℝ² := EuclideanSpace ℝ (Fin 2)
-
-open EuclideanGeometry
+abbrev RealPlane := EuclideanSpace ℝ (Fin 2)
 
 namespace Erdos97
+
+/-- A finite point set is in convex position (convex-independent).
+    (v4.31: `ConvexIndep id` was replaced by `ConvexIndependent 𝕜 p`, which
+    takes an explicit scalar field and an indexing map; here the index is the
+    set of points itself.) -/
+def ConvexIndepSet (A : Finset RealPlane) : Prop :=
+  ConvexIndependent ℝ (fun x : (A : Set RealPlane) => (x : RealPlane))
 
 /- ## Core Definitions -/
 
@@ -40,21 +45,21 @@ namespace Erdos97
 A set of points A has **n equidistant points at p** if there exist at least
 n other points in A that are equidistant from p (at some positive radius r).
 -/
-def HasNEquidistantPointsAt (n : ℕ) (A : Finset ℝ²) (p : ℝ²) : Prop :=
+def HasNEquidistantPointsAt (n : ℕ) (A : Finset RealPlane) (p : RealPlane) : Prop :=
   ∃ r : ℝ, r > 0 ∧ (A.filter fun q ↦ dist p q = r).card ≥ n
 
 /--
 A set A has the **n-equidistant property** if every point in A has at least
 n other points equidistant from it (at some, possibly vertex-dependent, radius).
 -/
-def HasNEquidistantProperty (n : ℕ) (A : Finset ℝ²) : Prop :=
+def HasNEquidistantProperty (n : ℕ) (A : Finset RealPlane) : Prop :=
   ∀ p ∈ A, HasNEquidistantPointsAt n A p
 
 /--
 A set A has the **n-unit-distance property** if every point in A has at least
 n other points at unit distance from it.
 -/
-def HasNUnitDistanceProperty (n : ℕ) (A : Finset ℝ²) : Prop :=
+def HasNUnitDistanceProperty (n : ℕ) (A : Finset RealPlane) : Prop :=
   ∀ p ∈ A, n ≤ (A.filter fun q ↦ dist p q = 1).card
 
 /- ## Main Conjecture -/
@@ -70,7 +75,7 @@ vertices equidistant from it?
 -/
 @[simp]
 def Erdos97Conjecture : Prop :=
-  ∀ A : Finset ℝ², A.Nonempty → ConvexIndep id (A : Finset ℝ²) →
+  ∀ A : Finset RealPlane, A.Nonempty → ConvexIndepSet A →
     ¬HasNEquidistantProperty 4 A
 
 /- ## Solved Variants -/
@@ -86,8 +91,8 @@ sense of "same distance from that specific vertex", not a single global distance
 The formal-conjectures project gives explicit coordinates involving multiples of √3.
 -/
 axiom danzer_counterexample :
-  ∃ A : Finset ℝ², A.card = 9 ∧
-    ConvexIndep id (A : Finset ℝ²) ∧
+  ∃ A : Finset RealPlane, A.card = 9 ∧
+    ConvexIndepSet A ∧
     HasNEquidistantProperty 3 A
 
 /--
@@ -95,7 +100,7 @@ The k = 3 case of the original Erdős conjecture is FALSE.
 Witnessed by Danzer's 9-point construction.
 -/
 theorem erdos_97_k3_false :
-    ¬(∀ A : Finset ℝ², A.Nonempty → ConvexIndep id (A : Finset ℝ²) →
+    ¬(∀ A : Finset RealPlane, A.Nonempty → ConvexIndepSet A →
         ¬HasNEquidistantProperty 3 A) := by
   obtain ⟨A, hcard, hconv, hequi⟩ := danzer_counterexample
   intro h
@@ -113,8 +118,8 @@ vertices at unit distance from it. This strengthens Danzer: the common
 distance is fixed (= 1) rather than vertex-dependent.
 -/
 axiom fishburn_reeds_example :
-  ∃ A : Finset ℝ², A.card = 20 ∧
-    ConvexIndep id (A : Finset ℝ²) ∧
+  ∃ A : Finset RealPlane, A.card = 20 ∧
+    ConvexIndepSet A ∧
     HasNUnitDistanceProperty 3 A
 
 /--
@@ -124,11 +129,11 @@ axiom fishburn_reeds_example :
 neighbors at every vertex.
 -/
 axiom fishburn_reeds_minimal :
-  (∀ A : Finset ℝ², A.card < 20 →
-    ConvexIndep id (A : Finset ℝ²) →
+  (∀ A : Finset RealPlane, A.card < 20 →
+    ConvexIndepSet A →
     ¬HasNUnitDistanceProperty 3 A) ∧
-  (∃ A : Finset ℝ², A.card = 20 ∧
-    ConvexIndep id (A : Finset ℝ²) ∧
+  (∃ A : Finset RealPlane, A.card = 20 ∧
+    ConvexIndepSet A ∧
     HasNUnitDistanceProperty 3 A)
 
 /- ## Stronger Conjecture -/
@@ -141,8 +146,8 @@ no k equidistant neighbors? If true, this would give a universal bound on
 the equidistance number of convex polygons.
 -/
 def GeneralKConjecture : Prop :=
-  ∃ k : ℕ, ∀ A : Finset ℝ², A.Nonempty →
-    ConvexIndep id (A : Finset ℝ²) →
+  ∃ k : ℕ, ∀ A : Finset RealPlane, A.Nonempty →
+    ConvexIndepSet A →
     ¬HasNEquidistantProperty k A
 
 /--
@@ -158,6 +163,6 @@ Without convexity, there is no universal bound: for any k, there exist
 k-regular configurations. This is witnessed by hypercube-like constructions.
 -/
 axiom no_bound_without_convexity :
-  ∀ k : ℕ, ∃ A : Finset ℝ², HasNEquidistantProperty k A
+  ∀ k : ℕ, ∃ A : Finset RealPlane, HasNEquidistantProperty k A
 
 end Erdos97

@@ -114,7 +114,7 @@ section WeakFormulation
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteSpace V]
 
 /-- A bilinear form on a Hilbert space -/
-def BilinearForm (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V] :=
+abbrev BilinearForm (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V] :=
   V →ₗ[ℝ] V →ₗ[ℝ] ℝ
 
 /-- A bilinear form is bounded (continuous) if |a(u,v)| ≤ M‖u‖‖v‖ -/

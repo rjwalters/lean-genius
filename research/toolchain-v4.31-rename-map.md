@@ -901,3 +901,67 @@ CLEARED; GeneralizeProofs vendored-block 1/3; SimpleGraph-field cluster 3/6 + Ro
 | `field_simp` matches denominators up to SYNTACTIC order only | supply commuted `1-e+e*d ≠ 0` haves via `rw [mul_comm]; exact …` | CevasTheoremOQ01OQ03 (denominators fixed; ring identity deferred) |
 
 **Meta**: single/two-own-error triage off the warm cache is the fast finder — build all sorry-free my-class candidates in ONE `lake build`, `grep -oE '^error: Proofs/…\.lean' | uniq -c | sort -n`; single-error rows are highest-confidence. Files with `grep -w sorry` are formalized and CANNOT go GREEN (pre-filter them: 100 of 469 my-class rows). Statement-repair a genuinely false numeric claim to the intended-true value (Cevas `1/10`→`25/252`), never weaken.
+### 7s. Doctor increment-19 recipes (#38065, 2026-07-13, structured remainder: parse/sig/elab/dot)
+
+**+28 GREEN.** Classes worked: parse-error, elab-drift, dot-notation-drift, plus mixed
+free-flips. Per-class residual: parse-error 52→49, signature-drift 21→20, elab-drift
+26→23, dot-notation-drift 12→5.
+
+| symptom (v4.31) | fix | notes / files |
+|---|---|---|
+| `IsMulCommutative.comm a b` "environment does not contain `IsMulCommutative.comm`" | `.is_comm.comm a b` (`IsMulCommutative` is now a Prop-class wrapping `Std.Commutative`; the equation is `.is_comm.comm`). If a `have : Std.Commutative …` was annotated from `.quotient_commutative_iff_commutator_le.mpr`, change the annotation to `IsMulCommutative _` (the `.mpr` now returns `IsMulCommutative`, not `Std.Commutative`) | AbelRuffiniOQ06OQ01/OQ06OQ01OQ03 |
+| `List.Sorted` "environment does not contain `List.Sorted`" (as a field `l.Sorted (· ≤ ·)`) | `l.SortedLE` — `Nat.primeFactorsList_sorted` etc. now return `.SortedLE`; `List.Sorted` removed (was `Pairwise`) | FundamentalArithmetic |
+| `Nat.Composite` "environment does not contain" | removed upstream; express faithfully as `¬ Nat.Prime n ∧ 2 ≤ n` (decidable, `by decide`) | TestApi1059 |
+| `native_decide` "failed to synthesize `Decidable (myDef …)`" when the Prop is a bounded `∀ … ∈ Finset …` behind a `def` | `by unfold myDef; native_decide` — v4.31 native_decide no longer auto-unfolds the `def` to reach the concrete `DecidablePred`; also DROP any `open scoped Classical` (its noncomputable `propDecidable` breaks native_decide) | TestApi1141 / Erdos483 (partial) |
+| `HasDerivAt.div`/`.div` "Invalid field `div` … `HasFDerivAtFilter.div`" OR "Unknown constant `HasDerivAt.div`" | it EXISTS but lives in `Mathlib.Analysis.Calculus.Deriv.Inv` — a narrow-import file must ADD that import; then call `_root_.HasDerivAt.div` (dot-notation picks the wrong `HasFDerivAtFilter` namespace) | AbelRuffiniOQ09 |
+| `unfold myDef` "failed to unfold" after `convert … using n` | use `simp only [myDef, …]`; if `convert` spawns spurious instance-equality goals (`instAddCommGroup = …`), avoid `convert` entirely — prove the value equation `rw`-ready with an explicit `have hveq : lhs = rhs := by …; ring` then `rw [hveq]; exact h` | AbelRuffiniOQ09 |
+| `notation:_ α " →ₒ (" β … ` "invalid atom" | a `(` (or other bracket) embedded inside a notation token string is now rejected — SPLIT into separate quoted atoms: `" →ₒ " "(" β ", " …` | Erdos590 |
+| `Ordinal.IsLimit` field `(ω^ω).IsLimit` "Invalid field `IsLimit`/`Quot.IsLimit`" | `Order.IsSuccLimit (ω^ω)` (prefix form) | Erdos590 |
+| `Ordinal.isLimit_opow_left h hpos` "Unknown constant" | `Ordinal.isSuccLimit_opow_left (h : IsSuccLimit a) (hb : b ≠ 0)` — note 2nd arg is `b ≠ 0` (`omega0_pos.ne'`), not `0 < b`; `Ordinal.omega0_isLimit` → `Ordinal.isSuccLimit_omega0` | Erdos590 |
+| `Ordinal.opow_lt_opow_right h1 hlt` "Unknown constant" | `Ordinal.opow_lt_opow_iff_right (h : 1 < a)` — now an IFF `a^b < a^c ↔ b < c`; use as `rw […]` or `.mpr`. For a nat exponent first `rw [show ω^n = ω^(n:Ordinal) from (Ordinal.opow_natCast ω n).symm]` | Erdos590 |
+| `Ordinal.one_lt_opow` "could not unify" | now an IFF `1 < a^b ↔ 1 < a ∧ b ≠ 0` → `.mpr ⟨one_lt_a, b_ne_zero⟩` | Erdos590 |
+| identifier containing `²` (superscript two), e.g. `abbrev ℝ²` "unexpected token 'ℝ'/'²'; expected identifier" | `²` is no longer a valid identifier character — RENAME to a plain ASCII/greek identifier (`RealPlane`) and replace all usages | Erdos97 |
+| `ConvexIndep id (↑A)` "Unknown identifier `ConvexIndep`" | `ConvexIndependent 𝕜 (p : ι → E)` — now takes an EXPLICIT scalar field + an indexing map; wrap as a local `def ConvexIndepSet (A : Finset E) : Prop := ConvexIndependent ℝ (fun x : (A : Set E) => (x : E))` and replace call-sites | Erdos97 |
+| `induction p using Polynomial.induction_on' with \| h_add … \| h_monomial …` "Invalid alternative name `h_add`: Expected `add` or `monomial`" | rename alternatives `h_add`→`add`, `h_monomial`→`monomial` (case tags lost their `h_` prefix); a trailing `congr 1; simp` may now over-solve → fold into one `simp only [… , Complex.conj_ofReal]` | DescartesRuleOfSignsOQ01OQ01 |
+| `ext` "No applicable extensionality theorem found" on a `ℂ` equality goal | `apply Complex.ext` (generic `ext` no longer fires on `ℂ`) | DescartesRuleOfSignsOQ01OQ01 |
+| `push_neg; rfl` "rfl failed: `p → ¬q` not defeq `¬p ∨ ¬q`" | `push_neg` now yields the `→` form, not `∨` → replace `rfl` with `tauto` | CantorsTheoremOQ01OQ01 |
+| `simp_all` in a `fin_cases i <;> fin_cases j <;> simp_all` closes MORE cases → remaining bullet count changes; a leftover goal is `¬q = p` but `hpq : ¬p = q` and `hpq.symm` fails (`Function.symm`) | drop the now-empty bullets; prove `¬q = p` via `fun h => hpq h.symm` (`hpq` is `p = q → False`) | Erdos375 |
+| `SimpleGraph.Iso.refl _` "don't know how to synthesize implicit `G`" / "Function expected" | `SimpleGraph.Iso.refl` (NO explicit arg — it now takes only the implicit `{G}`, driven by the expected type) | Erdos1036OQ01OQ01 |
+| `def f … := let mut … / for … in … do …` "unexpected token 'mut'" (imperative body outside a `do`) | wrap the body: `:= Id.run do  let mut …  … return result`; convert bare `if … then x` tails to `return x` | TestApi423 |
+
+**Skipped as deep/multi-class (documented for later pass):** Erdos807 (placeholder `True` conjecture makes the "refutation" vacuously false — pre-existing modeling defect, not a v4.31 drift); Erdos910/910Provable (ambiguous `aleph` + universe metavars + `Continuous.prod_mk` removed); Erdos483 (namespace-wrap CLEARS the `schurNumber` `[_root_.schurNumber, SchursTheorem.schurNumber]` ambiguity — via `import Proofs.SchursTheorem` + `open SchursTheorem` + own root `schurNumber` — but 6+ residual native_decide-synth/tm/omega errors remain); FTCLebesgueOQ04 & PtolemysTheoremOQ01Incomplete01 (imports-after-docstring is a 1-line move, but each has 10+ residual removed-const/rewrite/linarith errors); SchroederBernsteinOQ01 & many category files (`HasForget` removed → `ConcreteCategory C FC` overhaul, 21 sites); Ballot cluster (`condCount`/`Probability.CondCount.lean` removed entirely → conditional-probability reconstruction, #38612 item 1); Derangements/BuffonsNeedle (removed helper lemmas `derangements_div_factorial`, `factorial_cast_pos`); Erdos766 (SimpleGraph.mk now 3-field + `{ f x | x : T // p x }` set-builder-with-predicate parse change + odd `⟨G, hG⟩`-as-Graph constructs).
+
+**Namespace-wrap recipe (reusable):** for a file whose OWN root-level `def foo` now collides (`[_root_.foo, OtherNS.foo]`) because it `open OtherNS` (a `Proofs.*` import that also defines `foo`) — insert `namespace ThisFile` right after the `open` and `end ThisFile` at EOF. Unqualified references then resolve to the current-namespace `foo` (current namespace wins over `open`ed), clearing all the ambiguity errors at once.
+
+---
+
+## §7t Doctor increment 21 recipes (parse/sig/elab/dot structured remainder, #38065, +12 GREEN)
+
+| Symptom | Fix | Examples |
+|---|---|---|
+| binder/type `x : … | y` "unexpected token ':='/'|'" | ASCII `|` is no longer `∣` (divides) in these positions → use `∣` | Erdos490Aristotle |
+| `G.loopless u h` "Function expected at G.loopless (has type Std.Irrefl …Adj)" | `.loopless` is a bundled `Std.Irrefl` now → `G.loopless.irrefl u h` | Erdos79Incomplete01 |
+| `[TopologicalGroup G]` "invalid binder annotation, type is not a class instance" | class renamed → `[IsTopologicalGroup G]` | Hilbert5LieGroups |
+| `{ inferInstanceAs (P X) with … }` "inferInstanceAs failed, expected type contains metavariables" | bind first: `let _i : P X := inferInstanceAs (P X)` then `{ _i with … }` | ZsqrtdNegTwoOQ03 |
+| `omit [Cls X] in` before decl "cannot omit referenced section variable inst✝" | body actually uses the instance → delete the `omit … in` line | LittleWedderburnOQ01OQ02 |
+| `haveI := hInst` after `obtain` "synthesized instance not defeq to inferred (this✝ vs hInst)" | apply the lemma with explicit `@lemma _ … hInst₁ hInst₂ …` (don't re-`haveI`) | InverseGaloisA5OQ02 |
+| docstring `/-- … -/` before `open … in` / `omit … in` "unexpected token open/omit; expected lemma" | put `open/omit … in` FIRST, then docstring, then decl | Erdos345Problem, MaschkeTheoremOQ01 |
+| orphan `/-- … -/` (no following declaration) "unexpected token '/-!'/…; expected lemma" | change `/--` → `/-` (plain comment) | StirlingFormula |
+| structure fields `a : ℝ; b : ℝ; c : ℝ` on one line "unexpected token ';'" | one field per line | LawOfCosinesOQ03OQ02 |
+| `simp/rw/rwa […] at <axiom | t.field | proj>` "Unexpected term …; expected single reference to variable" | materialize first: `have h := <term>; simp […] at h` | Erdos345Problem (axioms), LawOfCosinesOQ03OQ02 (`t.law_sines`) |
+| `def Foo := V →ₗ[R] W` then `f x` "Function expected at f" | v4.31 won't unfold plain `def` in app position → `abbrev Foo := …` | Hilbert20BoundaryValue |
+| `Nat.find`/DecidablePred synthesis fails in theorems using a `Prop`-body predicate | add `open scoped Classical` at namespace top | Erdos345Problem |
+| `Cardinal.aleph 0 < Cardinal.aleph 1` "failed to infer universe levels" | pin `(Cardinal.aleph 0 : Cardinal.{0})` | DenumerabilityRationalsOQ01 |
+| `Polynomial.modByMonic_add_div p hMonic` "Application type mismatch" | now `(p q : R[X])` — pass the DIVISOR poly, not the Monic proof: `modByMonic_add_div p (X - C a)` | FactorRemainderTheorem (same as inc-17 CayleyHamilton) |
+| `pow_one m` where `m = m^1` expected | `(pow_one m).symm` | Erdos345Problem |
+
+**A namespaced `def _root_.T.method` recipe (dot-notation across imports):** when a child file
+inside `namespace Child` defines `def T.method` for a type `T` imported from a parent, dot-notation
+`x.method` (x : T, T at root) now FAILS to find `Child.T.method` — declare it as
+`def _root_.T.method` so it lands in T's own namespace. (Cleared 4 errors in Erdos1006OQ01OQ02;
+that file's residual is a separate LT/Preorder instance-diamond — deferred.)
+
+**Virtiofs truncation FALSE-POSITIVES (re-confirmed):** apparent `Invalid name after 'end':
+Expected X, but found X-truncated` or `Unknown identifier <name>-truncated` at EOF → the mount
+truncated the file mid-read. `docker restart dr31`, rebuild, verify by exit code (hit 4× this
+increment: ZsqrtdNegTwoOQ03, DenumerabilityRationalsOQ01, Erdos79Incomplete01, FactorRemainderTheorem).
