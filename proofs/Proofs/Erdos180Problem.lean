@@ -33,16 +33,16 @@ namespace Erdos180
 
 /-- The Turán number ex(n; H): maximum edges in an n-vertex H-free graph.
     Represented abstractly as a function from graph properties to ℕ. -/
-noncomputable def turanNumber (H : SimpleGraph (Fin n) → Prop) (n : ℕ) : ℕ :=
+noncomputable def turanNumber (n : ℕ) (H : SimpleGraph (Fin n) → Prop) : ℕ :=
   sSup { m : ℕ | ∃ (G : SimpleGraph (Fin n)), H G ∧
     (Finset.univ.filter fun e : Fin n × Fin n => e.1 < e.2 ∧ G.Adj e.1 e.2).card = m }
 
 /-- ex(n; H): the Turán number for a single forbidden graph H,
     abstractly represented as a function ℕ → ℕ. -/
-def ExSingle := ℕ → ℕ
+abbrev ExSingle := ℕ → ℕ
 
 /-- ex(n; F): the Turán number for a family F of forbidden graphs. -/
-def ExFamily := ℕ → ℕ
+abbrev ExFamily := ℕ → ℕ
 
 /- ## Part II: The Domination Property -/
 
@@ -58,9 +58,8 @@ def HasDomination (familyEx : ExFamily) (memberExs : Finset ExSingle) : Prop :=
     the domination property? That is, is there always some G ∈ F with
     ex(n; G) = O(ex(n; F))? -/
 def ErdosConjecture180 : Prop :=
-  ∀ (familyEx : ExFamily) (memberExs : Finset ExSingle),
-    memberExs.Nonempty →
-    (∀ n, familyEx n ≤ (memberExs.inf' (by assumption) id) n) →
+  ∀ (familyEx : ExFamily) (memberExs : Finset ExSingle) (hne : memberExs.Nonempty),
+    (∀ n, familyEx n ≤ (memberExs.inf' hne id) n) →
     HasDomination familyEx memberExs
 
 /- ## Part IV: Non-Bipartite Case (Erdős-Stone) -/
@@ -97,9 +96,9 @@ axiom folklore_counterexample_infinite :
 
 /-- ex(n; F) ≤ min_{G ∈ F} ex(n; G) by definition:
     forbidding more graphs can only reduce the maximum edge count. -/
-axiom family_le_members (familyEx : ExFamily) (memberExs : Finset ExSingle) :
-  memberExs.Nonempty →
-  ∀ n, familyEx n ≤ (memberExs.inf' (by assumption) id) n
+axiom family_le_members (familyEx : ExFamily) (memberExs : Finset ExSingle)
+  (hne : memberExs.Nonempty) :
+  ∀ n, familyEx n ≤ (memberExs.inf' hne id) n
 
 /- ## Part VII: Summary -/
 

@@ -972,7 +972,7 @@ Erdos179Aristotle	RESIDUAL	proof-drift
 Erdos179Problem	GREEN	
 Erdos179ProblemAristotle	RESIDUAL	proof-drift
 Erdos17Problem	GREEN	
-Erdos180Problem	RESIDUAL	instance-synth
+Erdos180Problem	GREEN	instance-synth
 Erdos181OQ01	RESIDUAL	unknown-const:Function.id
 Erdos181Problem	GREEN	unknown-const:rpow_le_rpow_of_exponent_le
 Erdos182Problem	GREEN	
@@ -1010,7 +1010,7 @@ Erdos20Problem	RESIDUAL	instance-synth
 Erdos210Problem	RESIDUAL	instance-synth
 Erdos211Problem	GREEN	
 Erdos215Problem	GREEN	
-Erdos216Problem	RESIDUAL	instance-synth
+Erdos216Problem	GREEN	instance-synth
 Erdos217Problem	GREEN	
 Erdos21Problem	GREEN	
 Erdos220Aristotle	GREEN	
@@ -2085,7 +2085,7 @@ HierholzerAlgorithm	RESIDUAL	type-mismatch
 Hilbert11OQ01Aristotle	GREEN	
 Hilbert11_QuadraticFormsAristotle	GREEN	
 Hilbert14Invariants	GREEN	
-Hilbert14InvariantsOQ01	RESIDUAL	type-mismatch
+Hilbert14InvariantsOQ01	GREEN	type-mismatch
 Hilbert14NonReductive	RESIDUAL	type-mismatch
 Hilbert15OQ02OQ03OQ01	RESIDUAL	rewrite-drift
 Hilbert15SchubertCalculus	RESIDUAL	unknown-const:finrank
@@ -2098,7 +2098,7 @@ Hilbert20BoundaryValue	GREEN	signature-drift
 Hilbert20LocalSolvability	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03Aristotle	GREEN	
-Hilbert21RiemannHilbert	RESIDUAL	type-mismatch
+Hilbert21RiemannHilbert	GREEN	type-mismatch
 Hilbert22OQ01	GREEN	
 Hilbert22OQ01OQ03	GREEN	
 Hilbert22OQ01OQ03Pseudohyperbolic	GREEN	
@@ -2110,7 +2110,7 @@ Hilbert3ScissorsCongruence	GREEN
 Hilbert4Geodesics	RESIDUAL	instance-synth
 Hilbert5LieGroups	GREEN	elab-drift
 Hilbert5OQ02	RESIDUAL	instance-synth
-Hilbert6PhysicsAxioms	RESIDUAL	type-mismatch
+Hilbert6PhysicsAxioms	GREEN	type-mismatch
 Hilbert9CyclotomicReciprocity	GREEN	
 Hilbert9QuadraticSubfield	GREEN	
 Hilbert9Reciprocity	GREEN	

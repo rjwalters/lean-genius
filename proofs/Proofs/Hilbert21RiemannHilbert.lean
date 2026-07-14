@@ -127,7 +127,7 @@ structure MonodromyRep (S : SingularPoints) where
 def MonodromyRep.isIrreducible (S : SingularPoints) (ρ : MonodromyRep n S) : Prop :=
   -- A representation is irreducible if every invariant subspace is {0} or ℂⁿ
   ∀ (W : Submodule ℂ (Fin n → ℂ)),
-    (∀ p ∈ S.points, ∀ v ∈ W, (ρ.matrices ⟨p, ‹_›⟩).1.mulVec v ∈ W) →
+    (∀ p, ∀ hp : p ∈ S.points, ∀ v ∈ W, (ρ.matrices ⟨p, hp⟩).1.mulVec v ∈ W) →
     W = ⊥ ∨ W = ⊤
 
 -- ============================================================
@@ -281,7 +281,7 @@ structure RegularSingularSystem (S : SingularPoints) where
     constraint, not about regular singularities in general. -/
 theorem birkhoff_theorem
     (S : SingularPoints) (ρ : MonodromyRep n S) :
-    ∃ R : RegularSingularSystem n S, True :=  -- R realizes ρ
+    ∃ R : RegularSingularSystem S, True :=  -- R realizes ρ
   ⟨⟨(), trivial⟩, trivial⟩
 
 -- ============================================================

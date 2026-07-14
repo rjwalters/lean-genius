@@ -36,22 +36,21 @@ namespace Hilbert14OQ01
 /-- The fixed points of a group action on a ring form a subring.
     This is the foundational property of invariant theory. -/
 theorem invariant_add_closed {G R : Type*} [Group G] [CommRing R]
-    [MulAction G R] [MulDistribMulAction G R]
+    [MulSemiringAction G R]
     {r s : R} (hr : ∀ g : G, g • r = r) (hs : ∀ g : G, g • s = s) :
     ∀ g : G, g • (r + s) = r + s := by
   intro g; rw [smul_add, hr g, hs g]
 
 /-- The invariant subring is closed under multiplication. -/
 theorem invariant_mul_closed {G R : Type*} [Group G] [CommRing R]
-    [MulAction G R] [MulDistribMulAction G R] [IsScalarTower G R R]
-    [SMulCommClass G R R]
+    [MulSemiringAction G R]
     {r s : R} (hr : ∀ g : G, g • r = r) (hs : ∀ g : G, g • s = s) :
     ∀ g : G, g • (r * s) = r * s := by
-  intro g; rw [smul_mul_assoc, hr g, smul_mul_smul_comm, hr g, hs g]
+  intro g; rw [smul_mul', hr g, hs g]
 
 /-- Constants (from the base ring) are always invariant. -/
 theorem invariant_one {G R : Type*} [Group G] [CommRing R]
-    [MulAction G R] [MulDistribMulAction G R] :
+    [MulSemiringAction G R] :
     ∀ g : G, g • (1 : R) = 1 :=
   fun g => smul_one g
 
