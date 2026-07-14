@@ -1062,7 +1062,7 @@ Erdos263Problem	RESIDUAL	proof-drift
 Erdos264Problem	GREEN	
 Erdos265Problem	RESIDUAL	unknown-const:Finset.sum_eq_sum_diff_singleton_add
 Erdos266Problem	RESIDUAL	unknown-const:Real.not_summable_nat_of_tendsto_nat
-Erdos267Problem	RESIDUAL	unknown-const:Real.one_lt_sqrt
+Erdos267Problem	GREEN	
 Erdos268Aristotle	RESIDUAL	unknown-const:summable_of_finite
 Erdos268Problem	RESIDUAL	proof-drift
 Erdos268ProblemAristotle	RESIDUAL	unknown-const:one_nonneg
@@ -1286,7 +1286,7 @@ Erdos453Problem	RESIDUAL	type-mismatch
 Erdos454Aristotle	GREEN	
 Erdos454Problem	RESIDUAL	type-mismatch
 Erdos454ProblemAristotle	RESIDUAL	type-mismatch
-Erdos456Aristotle	RESIDUAL	unknown-const:Finset.card_Ico
+Erdos456Aristotle	GREEN	
 Erdos456Problem	RESIDUAL	proof-drift
 Erdos457Problem	GREEN	
 Erdos459Problem	RESIDUAL	type-mismatch
@@ -2126,7 +2126,7 @@ InfinitudePrimes4k3OQ01	RESIDUAL	parse-error
 InfinitudePrimes4k3OQ01Q12Q24	RESIDUAL	parse-error
 InfinitudePrimes4k3OQ03	GREEN	
 InfinitudePrimesOQ01	GREEN	
-IntermediateValueTheoremOQ03	RESIDUAL	unknown-const:intermediate_value_zero_of_le
+IntermediateValueTheoremOQ03	GREEN	
 InverseGalois	GREEN	
 InverseGaloisA5	GREEN	
 InverseGaloisA5Dedekind	GREEN	
