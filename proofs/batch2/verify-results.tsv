@@ -177,7 +177,7 @@ BallotProblemOQ03OQ02OQ03	RESIDUAL	proof-drift
 BallotProblemOQ03OQ03	RESIDUAL	unknown-const:Nat.one_le_succ
 BallotProblemOQ04OQ02	GREEN	
 BallotProblemOQ04OQ02OQ01	GREEN	
-BaselProblemOQ01OQ01	RESIDUAL	instance-synth
+BaselProblemOQ01OQ01	GREEN	
 BaselProblemOQ01OQ01OQ02	GREEN	
 BaselProblemOQ01OQ01OQ02Aristotle	GREEN	
 BaselProblemOQ01OQ01OQ02OQ03	GREEN	
@@ -468,7 +468,7 @@ ComplexityCore	GREEN
 ConjugacyClassEquationOQ01	GREEN	
 ConjugacyClassEquationOQ0102	GREEN	
 ContinuumHypothesisOQ02	RESIDUAL	unknown-const:Cardinal.cof_aleph
-ContinuumHypothesisOQ02OQ01	RESIDUAL	instance-synth
+ContinuumHypothesisOQ02OQ01	GREEN	
 CoprimeKTupleDensity	GREEN	
 CramersRule	GREEN	
 CramersRuleOQ01OQ02OQ03	GREEN	
