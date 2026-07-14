@@ -61,9 +61,9 @@ For any three points p₁, p₂, p₃ in a Euclidean space (with p₂ ≠ p₁ a
   angle(p₁, p₂, p₃) + angle(p₂, p₃, p₁) + angle(p₃, p₁, p₂) = π
 
 This is the fundamental theorem about triangle angles: their sum is always 180°. -/
-theorem triangle_angle_sum {p₁ p₂ p₃ : P} (h₂ : p₂ ≠ p₁) (h₃ : p₃ ≠ p₁) :
+theorem triangle_angle_sum {p₁ p₂ p₃ : P} (h₂ : p₂ ≠ p₁) (_h₃ : p₃ ≠ p₁) :
     ∠ p₁ p₂ p₃ + ∠ p₂ p₃ p₁ + ∠ p₃ p₁ p₂ = Real.pi :=
-  EuclideanGeometry.angle_add_angle_add_angle_eq_pi h₂ h₃
+  EuclideanGeometry.angle_add_angle_add_angle_eq_pi p₃ h₂
 
 /-! ## Non-Degenerate Triangle Version
 
