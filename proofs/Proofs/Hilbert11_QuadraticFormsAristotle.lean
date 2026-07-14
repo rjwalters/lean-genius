@@ -11,7 +11,7 @@
   - Definitional unfolding of `IsIsotropic` / `IsAnisotropic` style predicates
   - Concrete `IsSquare` / parity / signature witnesses
   - No axioms, no definition sorries, no open conjectures
-  - Block comments only (no `/-!` module docstrings -- Aristotle parser limitation)
+  - Block comments only (no module docstrings -- Aristotle parser limitation)
 -/
 import Mathlib
 
@@ -209,11 +209,11 @@ theorem Signature.hyperbolic_isIndefinite : Signature.hyperbolic.IsIndefinite :=
 
 theorem Signature.posDef_not_isIndefinite (n : ℕ) :
     ¬ (Signature.posDef n).IsIndefinite := by
-  rintro ⟨_, h⟩; exact absurd h (by decide)
+  rintro ⟨_, h⟩; simp [Signature.posDef] at h
 
 theorem Signature.negDef_not_isIndefinite (n : ℕ) :
     ¬ (Signature.negDef n).IsIndefinite := by
-  rintro ⟨h, _⟩; exact absurd h (by decide)
+  rintro ⟨h, _⟩; simp [Signature.negDef] at h
 
 /-
 ## Section 5: Hilbert symbol arithmetic on the placeholder definition

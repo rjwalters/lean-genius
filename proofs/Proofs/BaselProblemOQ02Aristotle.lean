@@ -43,14 +43,9 @@ theorem zetaValue_four : zetaValue 4 = π ^ 4 / 90 := by
 private lemma comp_ne_zero_of_pos_natDegree {p g : ℚ[X]} (hp : p ≠ 0)
     (hg : 0 < g.natDegree) : p.comp g ≠ 0 := by
   intro h
-  have hd : 0 < p.natDegree := by
-    by_contra h_le
-    push_neg at h_le
-    interval_cases p.natDegree <;> simp_all [natDegree_eq_zero_iff_degree_le_zero] at *
-  have hpos : 0 < (p.comp g).natDegree := by
-    rw [natDegree_comp]
-    exact Nat.mul_pos hd hg
-  simp [h] at hpos
+  rcases Polynomial.comp_eq_zero_iff.mp h with h1 | ⟨h1, h2⟩
+  · exact hp h1
+  · rw [h2, natDegree_C] at hg; exact absurd hg (lt_irrefl 0)
 
 -- Key lemma: transcendental → power is transcendental
 theorem transcendental_pow_of_transcendental {x : ℝ} (hx : Transcendental ℚ x)

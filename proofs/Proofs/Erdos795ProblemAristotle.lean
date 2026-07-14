@@ -67,8 +67,8 @@ theorem not_distinct_236 : ¬HasDistinctSubsetProducts {2, 3, 6} := by
 
 -- Routine: {2, 6, 18} has distinct subset products but is not multiplicative Sidon.
 -- Witness: 6 * 6 = 2 * 18 = 36, but {6} ≠ {2, 18}.
-theorem distinct_products_not_sidon :
-    ∃ A : Finset ℕ, HasDistinctSubsetProducts A ∧ ¬IsMultiplicativeSidon A := by
-  sorry
+-- (The statement `distinct_products_not_sidon` is declared in the parent
+-- `Proofs.Erdos795Problem`; the duplicate stub here was removed in the v4.31
+-- migration because same-namespace re-declaration across an import now errors.)
 
 end Erdos795

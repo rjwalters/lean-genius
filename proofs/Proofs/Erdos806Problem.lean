@@ -65,7 +65,7 @@ def IsBasisFor (B : Finset ℤ) (A : Finset ℤ) : Prop :=
 theorem sumset_card_bound (B : Finset ℤ) :
     (finsetSumset B).card ≤ B.card * B.card := by
   unfold finsetSumset
-  calc (B ×ˢ B).image (fun p => p.1 + p.2) |>.card
+  calc ((B ×ˢ B).image (fun p => p.1 + p.2)).card
       ≤ (B ×ˢ B).card := Finset.card_image_le
     _ = B.card * B.card := Finset.card_product B B
 
@@ -184,10 +184,8 @@ theorem trivial_basis (A : Finset ℤ) :
   use (a, 0)
   constructor
   · constructor
-    · left
-      exact ha
-    · right
-      simp
+    · exact Finset.mem_union.mpr (Or.inl ha)
+    · exact Finset.mem_union.mpr (Or.inr (by simp))
   · ring
 
 /-

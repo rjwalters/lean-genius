@@ -183,7 +183,7 @@ BaselProblemOQ01OQ01OQ02Aristotle	GREEN
 BaselProblemOQ01OQ01OQ02OQ03	GREEN	
 BaselProblemOQ01OQ02	GREEN	
 BaselProblemOQ02	GREEN	
-BaselProblemOQ02Aristotle	RESIDUAL	parse-error
+BaselProblemOQ02Aristotle	GREEN	
 BaselProblemOQ03OQ01	GREEN	
 BaselProblemOQ04OQ03	RESIDUAL	type-mismatch
 BaselProblemOQ05	GREEN	
@@ -719,7 +719,7 @@ Erdos1040OQ03	RESIDUAL	unknown-const:isBounded_iUnion.mpr
 Erdos1040Problem	RESIDUAL	type-mismatch
 Erdos1041Problem	GREEN	
 Erdos1042Problem	GREEN	
-Erdos1043Aristotle	RESIDUAL	parse-error
+Erdos1043Aristotle	GREEN	
 Erdos1044Problem	GREEN	
 Erdos1045Problem	RESIDUAL	unknown-const:z
 Erdos1046Problem	GREEN	
@@ -1154,7 +1154,7 @@ Erdos340GreedySidonExtension	GREEN
 Erdos340GreedySidonOQ02	GREEN	
 Erdos340GreedySidonOQ05	GREEN	
 Erdos340SidonErdosTuran	GREEN	
-Erdos341Problem	RESIDUAL	rewrite-drift
+Erdos341Problem	GREEN	
 Erdos342Problem	GREEN	
 Erdos343Problem	GREEN	
 Erdos344Problem	GREEN	
@@ -1367,7 +1367,7 @@ Erdos526Problem	GREEN
 Erdos527Problem	GREEN	
 Erdos528Problem	GREEN	
 Erdos529Problem	PRE-EXISTING	never-compiled:d_2
-Erdos52Problem	RESIDUAL	parse-error
+Erdos52Problem	GREEN	
 Erdos530Problem	RESIDUAL	unknown-const:komlos_sulyok_szemeredi
 Erdos531Problem	GREEN	
 Erdos532Problem	GREEN	
@@ -1700,13 +1700,13 @@ Erdos792Problem	GREEN
 Erdos794Problem	RESIDUAL	type-mismatch
 Erdos795Aristotle	GREEN	
 Erdos795Problem	GREEN	
-Erdos795ProblemAristotle	RESIDUAL	parse-error
+Erdos795ProblemAristotle	GREEN	
 Erdos796Problem	RESIDUAL	type-mismatch
 Erdos797Problem	GREEN	
 Erdos798Aristotle	RESIDUAL	proof-drift
 Erdos799Problem	GREEN	
 Erdos79Incomplete01	GREEN	signature-drift
-Erdos79Incomplete01OQ01	RESIDUAL	signature-drift
+Erdos79Incomplete01OQ01	GREEN	
 Erdos79Problem	GREEN	
 Erdos79ProblemAristotle	GREEN	
 Erdos800Problem	GREEN	
@@ -1715,7 +1715,7 @@ Erdos802Problem	GREEN
 Erdos803Problem	RESIDUAL	instance-synth
 Erdos804Problem	RESIDUAL	instance-synth
 Erdos805Problem	GREEN	
-Erdos806Problem	RESIDUAL	parse-error
+Erdos806Problem	GREEN	
 Erdos807Problem	RESIDUAL	dot-notation-drift
 Erdos808Problem	GREEN	
 Erdos809Problem	GREEN	
@@ -2083,7 +2083,7 @@ HermiteSawtoothIdentityOQ02	GREEN
 HeronsFormulaOQ01	GREEN	
 HierholzerAlgorithm	RESIDUAL	type-mismatch
 Hilbert11OQ01Aristotle	GREEN	
-Hilbert11_QuadraticFormsAristotle	RESIDUAL	parse-error
+Hilbert11_QuadraticFormsAristotle	GREEN	
 Hilbert14Invariants	GREEN	
 Hilbert14InvariantsOQ01	RESIDUAL	type-mismatch
 Hilbert14NonReductive	RESIDUAL	type-mismatch

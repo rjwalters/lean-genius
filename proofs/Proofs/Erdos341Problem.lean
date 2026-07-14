@@ -48,7 +48,7 @@ private lemma dickson_next_exists (S : Finset ℕ) (bound : ℕ) :
   intro hmem
   have h_le : id (bound + (pairwiseSums S).sup id + 1) ≤ (pairwiseSums S).sup id :=
     Finset.le_sup hmem
-  simp at h_le
+  simp only [id_eq] at h_le
   omega
 
 /- ## Dickson Sequence Definition -/
@@ -167,9 +167,8 @@ private lemma odd_not_in_pairwiseSums_odd {S : Finset ℕ}
   unfold pairwiseSums at hmem
   rw [Finset.mem_image] at hmem
   obtain ⟨⟨a, b⟩, hp, hf⟩ := hmem
-  rw [Finset.mem_product] at hp
-  obtain ⟨ka, rfl⟩ := hS a hp.1
-  obtain ⟨kb, rfl⟩ := hS b hp.2
+  obtain ⟨ka, rfl⟩ := hS a (Finset.mem_product.mp hp).1
+  obtain ⟨kb, rfl⟩ := hS b (Finset.mem_product.mp hp).2
   obtain ⟨km, hkm⟩ := hm
   simp at hf
   omega
@@ -186,7 +185,7 @@ private lemma dicksonStep_singleton_props (n : ℕ) :
   | zero =>
     have h0 : dicksonStep ({1} : Finset ℕ) 0 = (1, ({1} : Finset ℕ)) := by
       simp [dicksonStep, dif_pos (Finset.singleton_nonempty 1), Finset.max'_singleton]
-    simp only [h0, Prod.fst, Prod.snd]
+    rw [h0]
     exact ⟨by omega,
            fun x hx => ⟨0, by rwa [Finset.mem_singleton] at hx⟩,
            Finset.mem_singleton.mpr rfl,
