@@ -134,7 +134,7 @@ AreaOfCircleOQ05OQ03OQ05	GREEN
 AreaOfCircleOQ05OQ04	GREEN	
 AreaOfCircleOQ07OQ02OQ02	GREEN	
 AreaOfCircleOQ07OQ03OQ02	GREEN	
-AreaOfCircleOQ07OQ04OQ01	RESIDUAL	rewrite-drift
+AreaOfCircleOQ07OQ04OQ01	GREEN
 AreaOfCircleOQ07OQ04OQ01OQ01	GREEN	
 AreaOfCircleOQ07OQ05	GREEN	
 AreaOfCircleOQ07OQ05OQ01	GREEN	
@@ -234,7 +234,7 @@ BinomialTheoremOQ02OQ01OQ01OQ02	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ01OQ02OQ03	GREEN	
 BinomialTheoremOQ02OQ01OQ03	GREEN	
 BinomialTheoremOQ02OQ01OQ04	GREEN	
-BinomialTheoremOQ02OQ02	RESIDUAL	type-mismatch
+BinomialTheoremOQ02OQ02	GREEN
 BinomialTheoremOQ02OQ03	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ04	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ04OQ02	GREEN	
@@ -259,7 +259,7 @@ BorsukUlamOQ02OQ01OQ01OQ02OQ03	GREEN
 BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01	GREEN	
 BorsukUlamOQ02OQ01OQ04	GREEN	
 BorsukUlamOQ02OQ01OQ04OQ01	GREEN	
-BorsukUlamOQ02OQ02	RESIDUAL	instance-synth
+BorsukUlamOQ02OQ02	GREEN
 BorsukUlamOQ02OQ03	GREEN	
 BorsukUlamOQ03	GREEN	
 BorsukUlamOQ03OQ01	RESIDUAL	rewrite-drift
@@ -339,10 +339,10 @@ CantorsTheoremOQ01OQ03OQ04	GREEN
 CatalanNumbersOQ01OQ01OQ02OQ04	GREEN	
 CatalanNumbersOQ01OQ04OQ02	GREEN	
 CatalanNumbersOQ05OQ02OQ01	GREEN	
-CauchyInterlacingIsometryConj	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
+CauchyInterlacingIsometryConj	GREEN
 CauchyInterlacingMajorizationPositivity	GREEN	
 CauchyInterlacingOQ01OQ01OQ01	GREEN	
-CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
+CauchyInterlacingOQ01OQ01OQ01OQ01	GREEN
 CauchyInterlacingPoincareCompression	GREEN	
 CauchyInterlacingWeylDual	GREEN	
 CauchySchwarz	GREEN	type-mismatch
@@ -905,7 +905,7 @@ Erdos1201Problem	RESIDUAL	type-mismatch
 Erdos1202Problem	GREEN	
 Erdos1206Problem	RESIDUAL	proof-drift
 Erdos1208Problem	RESIDUAL	rewrite-drift
-Erdos120Problem	RESIDUAL	unknown-const:pow_lt_pow_of_lt_one
+Erdos120Problem	GREEN
 Erdos1211Problem	GREEN	
 Erdos1212Problem	GREEN	
 Erdos1213Problem	GREEN	
@@ -950,13 +950,13 @@ Erdos156Aristotle	GREEN	instance-synth
 Erdos156OQ02	RESIDUAL	unknown-const:x
 Erdos156ProblemAristotle	GREEN	
 Erdos158Problem	GREEN	
-Erdos159Problem	RESIDUAL	type-mismatch
+Erdos159Problem	GREEN
 Erdos15Problem	GREEN	
 Erdos161Problem	GREEN	
 Erdos162Problem	RESIDUAL	unknown-const:Bool.true_ne_false
 Erdos163Problem	GREEN	
 Erdos164Problem	GREEN	
-Erdos166Problem	RESIDUAL	type-mismatch
+Erdos166Problem	GREEN
 Erdos167Problem	RESIDUAL	type-mismatch
 Erdos168Problem	GREEN	
 Erdos169Problem	GREEN	
@@ -1060,7 +1060,7 @@ Erdos262Problem	GREEN
 Erdos263Aristotle	GREEN	
 Erdos263Problem	RESIDUAL	proof-drift
 Erdos264Problem	GREEN	
-Erdos265Problem	RESIDUAL	unknown-const:Finset.sum_eq_sum_diff_singleton_add
+Erdos265Problem	GREEN
 Erdos266Problem	RESIDUAL	unknown-const:Real.not_summable_nat_of_tendsto_nat
 Erdos267Problem	GREEN	
 Erdos268Aristotle	RESIDUAL	unknown-const:summable_of_finite

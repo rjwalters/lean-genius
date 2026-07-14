@@ -54,28 +54,24 @@ def IsEquivariant {G α β : Type*} [SMul G α] [SMul G β] (f : α → β) : Pr
   ∀ g : G, ∀ x : α, f (g • x) = g • f x
 
 /-- The identity map is equivariant. -/
-theorem isEquivariant_id {G α : Type*} [SMul G α] : IsEquivariant (id : α → α) := by
+theorem isEquivariant_id {G α : Type*} [SMul G α] : IsEquivariant (G := G) (id : α → α) := by
   intro g x
   rfl
 
 /-- Composition of equivariant maps is equivariant. -/
 theorem isEquivariant_comp {G α β γ : Type*} [SMul G α] [SMul G β] [SMul G γ]
-    {f : α → β} {g' : β → γ} (hf : IsEquivariant f) (hg : IsEquivariant g') :
-    IsEquivariant (g' ∘ f) := by
+    {f : α → β} {g' : β → γ} (hf : IsEquivariant (G := G) f) (hg : IsEquivariant (G := G) g') :
+    IsEquivariant (G := G) (g' ∘ f) := by
   intro g x
   simp [Function.comp, hf g x, hg g (f x)]
 
 /-- A constant equivariant map sends everything to a fixed point. -/
-theorem isEquivariant_const_iff {G α β : Type*} [SMul G α] [SMul G β]
-    (b : β) : IsEquivariant (fun _ : α => b) ↔ ∀ g : G, g • b = b := by
+theorem isEquivariant_const_iff {G α β : Type*} [SMul G α] [SMul G β] [Nonempty α]
+    (b : β) : IsEquivariant (G := G) (fun _ : α => b) ↔ ∀ g : G, g • b = b := by
   constructor
   · intro h g
-    by_cases hα : Nonempty α
-    · obtain ⟨a⟩ := hα
-      exact h g a
-    · push_neg at hα
-      exact (hα (Classical.arbitrary α)).elim
-  · intro h g x
+    exact (h g (Classical.arbitrary α)).symm
+  · intro h g _
     exact (h g).symm
 
 /-! ## Part 2: Fixed-Point Subspaces -/
@@ -91,7 +87,7 @@ theorem fixedPoints_smul_eq {G α : Type*} [SMul G α] {x : α} (hx : x ∈ fixe
 
 /-- An equivariant map sends fixed points to fixed points. -/
 theorem isEquivariant_maps_fixed {G α β : Type*} [SMul G α] [SMul G β]
-    {f : α → β} (hf : IsEquivariant f) {x : α} (hx : x ∈ fixedPoints G α) :
+    {f : α → β} (hf : IsEquivariant (G := G) f) {x : α} (hx : x ∈ fixedPoints G α) :
     f x ∈ fixedPoints G β := by
   intro g
   rw [← hf g x, hx g]

@@ -87,6 +87,7 @@ theorem vandermonde_index_swap (m n r : ℕ) :
     ∑ ij ∈ Finset.antidiagonal r, m.choose ij.1 * n.choose ij.2 =
     ∑ ij ∈ Finset.antidiagonal r, m.choose ij.2 * n.choose ij.1 := by
   rw [← Nat.add_choose_eq, Nat.add_comm, Nat.add_choose_eq]
+  exact Finset.sum_congr rfl (fun _ _ => Nat.mul_comm _ _)
 
 /-
 ## Part 4: Special Cases
@@ -103,20 +104,24 @@ theorem vandermonde_one (m n : ℕ) :
   simp [Nat.choose_one_right]
 
 /-- Pascal's rule as a special case of Vandermonde with n = 1:
-    C(m+1, r) = C(m,r) + C(m,r-1).
-    This is C(m+1,r) = Σ_{k} C(m,k)·C(1,r-k) with C(1,0)=1, C(1,1)=1. -/
+    C(m+1, r+1) = C(m,r+1) + C(m,r).
+    This is C(m+1,r+1) = Σ_{k} C(m,k)·C(1,r+1-k) with C(1,0)=1, C(1,1)=1.
+    (Stated in the shifted form `r+1` so the identity holds unconditionally; the
+    naive `C(m+1,r) = C(m,r) + C(m,r-1)` fails at `r = 0` because `0 - 1 = 0` in ℕ.) -/
 theorem pascal_from_vandermonde (m r : ℕ) :
-    (m + 1).choose r = m.choose r + m.choose (r - 1) := by
-  cases r with
-  | zero => simp [Nat.choose_zero_right]
-  | succ r => exact Nat.choose_succ_succ m r
+    (m + 1).choose (r + 1) = m.choose (r + 1) + m.choose r := by
+  rw [Nat.choose_succ_succ, Nat.add_comm]
 
 /-- Vandermonde at r = 2: C(m+n, 2) = C(m,2) + m·n + C(n,2).
     This is the "square of sum" decomposition for binomial coefficients. -/
 theorem vandermonde_two (m n : ℕ) :
     (m + n).choose 2 = m.choose 2 + m * n + n.choose 2 := by
-  simp only [Nat.choose_two_right]
-  omega
+  rw [Nat.add_choose_eq]
+  rw [show (2 : ℕ) = 1 + 1 from rfl, Finset.Nat.sum_antidiagonal_succ]
+  simp only [Finset.Nat.sum_antidiagonal_succ, Finset.Nat.antidiagonal_zero,
+    Finset.sum_singleton, Nat.choose_zero_right, one_mul, mul_one]
+  rw [Nat.choose_one_right, Nat.choose_one_right]
+  ring
 
 /-- The sum of all binomial coefficients: Σ C(n,k) = 2^n. -/
 theorem sum_choose_eq_pow (n : ℕ) :
@@ -151,10 +156,9 @@ theorem triple_vandermonde (a b c r : ℕ) :
     ∑ ij ∈ Finset.antidiagonal r,
       (∑ kl ∈ Finset.antidiagonal ij.1, a.choose kl.1 * b.choose kl.2) *
       c.choose ij.2 := by
-  rw [← Nat.add_choose_eq]
-  congr 1
-  ext ⟨s, t⟩
-  simp only [Nat.add_choose_eq]
+  rw [Nat.add_choose_eq]
+  refine Finset.sum_congr rfl (fun ij _ => ?_)
+  rw [Nat.add_choose_eq]
 
 /-
 ## Summary
