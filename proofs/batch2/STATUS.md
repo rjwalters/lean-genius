@@ -1966,3 +1966,21 @@ Notes/anomalies: the combined-build "silent file = green" heuristic is UNRELIABL
 whose dependency errors are skipped by Lean show 0 own-errors but fail individually
 (dep-skipped). Verify every candidate by its own `lake build` exit code. Virtiofs truncation
 (`unexpected end of input` / `Invalid name after end`) recurs after edits → `docker restart dr46`.
+
+### Increment 36 continued — +3 more (total +13 GREEN)
+- CauchyInterlacingPoincareCompression: `LinearMap.mul_apply`→`Module.End.mul_apply` (3×);
+  monomial-case `Module.End.pow_restrict`/`LinearMap.restrict_coe_apply` no longer fire under
+  simp only → explicit rw; `ext y` already yields ↑_=↑_ → drop redundant `Subtype.ext`
+- CayleyHamiltonMinpolyOQ03OQ01: `Matrix.mul_mulVec`→`← Matrix.mulVec_mulVec`;
+  `Matrix.natDegree_charpoly`→`Matrix.charpoly_natDegree_eq_dim`+`Fintype.card_fin`;
+  `natDegree_le_natDegree` now degree≤degree → `Polynomial.natDegree_le_of_dvd` +
+  `(Matrix.charpoly_monic M).ne_zero`; `WellFounded.not_lt_min` dropped nonempty arg;
+  `modByMonic_add_div q hμmonic`→`q μ` (divisor poly, catalog §862); degree/smul simp
+  fragility → explicit rw (Units.smul_def kept for aeval map_smul)
+- BrouwerFixedPointOQ02OQ01: `fin_cases+simp_all` no longer closes ZMod 2 arith → `revert a b; decide`;
+  `ZMod.val 1`→`rw [ZMod.val_one]`; `hne.lt_or_lt` dot-notation on `(=→False)` fails →
+  `lt_or_gt_of_ne hne`
+
+Deferred (not clean v4.31 drift): CauchySchwarzOQ01OQ04 (lp.norm_rpow_eq_tsum rpow-vs-npow
+bridge with unresolved lp instance metavars — substantial), CayleyHamiltonMinpolyOQ02OQ03
+NOTE it WAS fixed (minpoly conj rebuilt), BallotProblem (condCount removed = known-hard cluster).
