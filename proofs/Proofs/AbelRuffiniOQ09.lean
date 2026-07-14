@@ -4,6 +4,7 @@ import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
+import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Tactic
 
 /-!
@@ -304,10 +305,17 @@ private lemma hasDerivAt_mul_gauss (h : Polynomial ℝ) (x : ℝ) :
       (Real.exp (-(x ^ 2)) * (-2 * x)) x :=
     (Real.hasDerivAt_exp _).comp x hg
   have h3 := h1.mul h2
-  convert h3 using 1
-  unfold rischOp
-  simp only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
-  ring
+  have hval : (rischOp h).eval x = h.derivative.eval x - 2 * x * h.eval x := by
+    simp only [rischOp, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C,
+      Polynomial.eval_X]; ring
+  have hfun : (fun t => h.eval t * Real.exp (-(t ^ 2)))
+      = ((fun t => eval t h) * fun t => rexp (-t ^ 2)) := rfl
+  have hveq : (rischOp h).eval x * rexp (-(x ^ 2))
+      = eval x (derivative h) * rexp (-x ^ 2)
+        + eval x h * (rexp (-x ^ 2) * (-2 * x)) := by
+    rw [hval]; ring
+  rw [hfun, hveq]
+  exact h3
 
 /-- The n-th real derivative of (f.eval) equals (L^n g).eval · exp(-·²)
     whenever f.eval = g.eval · exp(-·²) pointwise. -/
@@ -356,7 +364,7 @@ theorem gaussian_not_elementary :
     have hdiv : HasDerivAt (fun t => p.eval t / q.eval t)
         (((Polynomial.derivative p).eval x * q.eval x -
           p.eval x * (Polynomial.derivative q).eval x) / q.eval x ^ 2) x :=
-      (p.hasDerivAt x).div (q.hasDerivAt x) (hq x)
+      _root_.HasDerivAt.div (p.hasDerivAt x) (q.hasDerivAt x) (hq x)
     have heq := HasDerivAt.unique hdiv (hderiv x)
     have hqne : q.eval x ^ 2 ≠ 0 := pow_ne_zero _ (hq x)
     rw [div_eq_iff hqne] at heq
