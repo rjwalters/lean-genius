@@ -1407,3 +1407,20 @@ mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
 | FREE-GREEN detection: ledger row RESIDUAL but source already fixed by a prior commit | grep the flagged `unknown-const:X` leaf in the source file; if absent, `lake build` it — often EXIT 0 already; flip with no edit. Worth a full-partition sweep | CauchyInterlacing*, Erdos265Problem |
 | `omega` can't prove a `Nat.choose _ 2` identity (`choose_two_right = n*(n-1)/2` is nonlinear+division) | expand `Nat.add_choose_eq` over `antidiagonal 2` via `Finset.Nat.sum_antidiagonal_succ` (twice) + `Finset.Nat.antidiagonal_zero`, then `Nat.choose_one_right`/`ring` | BinomialTheoremOQ02OQ02 |
 | `pascal_from_vandermonde : C(m+1,r)=C(m,r)+C(m,r-1)` FALSE at r=0 (ℕ truncation `0-1=0`) | restate unconditionally shifted: `C(m+1,r+1)=C(m,r+1)+C(m,r)`, prove `rw [Nat.choose_succ_succ, Nat.add_comm]` | BinomialTheoremOQ02OQ02 |
+
+### §7ac Increment 39 recipes (batch 2)
+
+| Symptom | Fix | Files |
+|---------|-----|-------|
+| `Sym2.mk (x, y)` "Application type mismatch … has type α×α → Sym2 (α×α)" | `Sym2.mk` is now CURRIED `(a b : α)`; use notation `s(x, y)` (or `Sym2.mk x y`) | Erdos166Problem |
+| `linarith [show P by <tactic block spanning lines>]` "unexpected identifier; expected ']'" | hoist the `show … by …` term to a preceding `have h : P := …` and pass `linarith [h]` | Erdos166Problem |
+| statement uses real exponent `x ^ (A:ℝ)`/`x ^ (β:ℝ)` (rpow) but a hyp/axiom states `x ^ (4:ℕ)` (npow) → "Type mismatch ^(4:ℝ) vs ^(4:ℕ)" | bridge with `Real.rpow_natCast`: `have : x^(4:ℝ)=x^(4:ℕ) := by rw [← Real.rpow_natCast]; norm_num` then `rw` before applying | Erdos166Problem |
+| broken anon-ctor field `symm.symm :=` (a mangled auto-edit) "invalid {...} notation" | the field is just `symm` — drop the extra `.symm` | Erdos159Problem |
+| `G.adj_comm.mp` / `from G.adj_comm` — "Function.mp does not exist" / iff expected | `SimpleGraph.adj_comm` is now fully `∀ u v` → supply args: `G.adj_comm x y`, `(G.adj_comm _ _).mp` | Erdos159Problem |
+| `Finset.mem_singleton.mp hu ▸ Finset.mem_singleton.mp hv` ▸-chain breaks | build the eq directly: `(Finset.mem_singleton.mp hu).trans (Finset.mem_singleton.mp hv).symm` | Erdos159Problem |
+| `interval_cases k <;> simp only [Fin.ext_iff] at … <;> omega` → "simp made no progress" on the vacuous (too-few-vertices) cases | guard: `<;> first | (simp only [Fin.ext_iff] at …; omega) | omega` | Erdos159Problem |
+| `pow_lt_pow_of_lt_one` unknown identifier | `pow_lt_pow_right_of_lt_one₀ (h₀ : 0<a) (h₁ : a<1) (hmn : m<n) : a^n < a^m` (in `Algebra.Order.GroupWithZero.Basic`) | Erdos120Problem |
+| `isBounded_Icc (a := …) (b := …)` unknown / named-arg | now `Metric.isBounded_Icc (a b : α)` with EXPLICIT positional args: `Metric.isBounded_Icc 0 1` | Erdos120Problem |
+| after `ring_nf`, `rw [mul_div_mul_left …]` "did not find pattern a*?/(a*?)" (ring_nf turned `/` into `⁻¹`) | avoid ring_nf; pre-rewrite numerator & denominator into `a*(…)` form via `show … from by ring`, then `mul_div_mul_left` | Erdos120Problem |
+| `push_neg at h` where `h : ¬ (someDef …)` → "push Not made no progress" | `unfold someDef at h` (or `simp only [someDef] at h`) before `push_neg` | Erdos120Problem |
+| `not_not (avoidable A)` "Function expected" (not_not is now an `Iff`) | `rw [← not_not (a := avoidable A)]` (named implicit) or bare `rw [← not_not]` | Erdos120Problem |

@@ -2070,3 +2070,25 @@ Erdos732Problem (`Fintype (List ℕ)` ill-defined def), Erdos611Problem (sorry i
   `rw [← add_choose_eq]; congr` fails — outer summand is a sum, not a `choose`). Statement repair:
   `pascal_from_vandermonde` was FALSE at r=0 (`C(m+1,0)=1` vs `C(m,0)+C(m,0-1)=2` since `0-1=0` in ℕ)
   → restated unconditionally as `C(m+1,r+1)=C(m,r+1)+C(m,r)`.
+
+## Increment 39 (continued) — +3 more GREEN (total +9 this increment)
+
+- 39-7 Erdos166Problem — `Sym2.mk` now curried `(a b : α)` (was `α × α`): `Sym2.mk (x,y)` → `s(x, y)`.
+  `linarith [show _ by <multiline block>]` no longer parses inside `[...]` → hoist to a `have`.
+  rpow/npow bridge: statement uses `(Real.log k)^A` with `A/β : ℝ` (⟹ rpow at A=4) but the
+  `mattheus_verstraete` axiom states `^4` (npow) → `Real.rpow_natCast` bridge before applying.
+- 39-8 Erdos159Problem — broken anon-ctor field `symm.symm :=` → `symm :=`. `SimpleGraph.adj_comm`
+  now fully `∀ u v` → needs explicit args `G.adj_comm x y`, `(G.adj_comm _ _).mp`.
+  `Finset.mem_singleton ▸`-chain broke → `(mem_singleton.mp hu).trans (mem_singleton.mp hv).symm`.
+  `interval_cases k <;> simp only [Fin.ext_iff] at … <;> omega` failed with "simp no progress" on
+  empty-vertex cases → guard with `first | (simp …; omega) | omega`.
+- 39-9 Erdos120Problem — `pow_lt_pow_of_lt_one`→`pow_lt_pow_right_of_lt_one₀`; `isBounded_Icc` now
+  takes explicit `(a b)` and lives in `Metric` → `Metric.isBounded_Icc 0 1`; `ring_nf` then
+  `mul_div_mul_left` pattern gone → pre-rewrite num/den as `a*(…)`; `push_neg at h` where
+  `h : ¬(def)` makes no progress → `unfold <def> at h` first; `not_not` is an `Iff` not a fn →
+  `rw [← not_not (a := …)]`.
+
+Deferred (multi-error, >5 genuine fixes): BezoutIdentityOQ01OQ02OQ02Transitive (Fin.append/castAdd/
+natAdd API churn + headBlockNSL SpecialLinearGroup→Matrix .val coercion), CauchySchwarzOQ01OQ02
+(inner needs `inner 𝕜` annots at 8+ sites + `residual_orthogonal`/`gs_pythagoras` unknown-ident
+forward-refs), Erdos106OQ02/Erdos109OQ01/Erdos140Problem/Erdos171Problem (8-36 errors each).
