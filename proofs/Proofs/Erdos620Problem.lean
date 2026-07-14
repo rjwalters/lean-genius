@@ -62,17 +62,18 @@ def K4Free (G : SimpleGraph V) : Prop := ¬HasK4 G
 /-- Triangle-free graphs are K₄-free. -/
 theorem triangleFree_implies_K4Free (G : SimpleGraph V) (h : TriangleFree G) :
     K4Free G := by
-  intro ⟨a, b, c, d, hne, hab, hac, had, hbc, hbd, hcd⟩
+  intro ⟨a, b, c, _d, hab, hac, _had, hbc, _hbd, _hcd,
+    hAab, hAac, _hAad, hAbc, _hAbd, _hAcd⟩
   apply h
-  exact ⟨a, b, c, hne.1, hne.2.2.1, hne.2.1, hab, hbc, hac⟩
+  exact ⟨a, b, c, hab, hbc, hac, hAab, hAbc, hAac⟩
 
 /- ## Part II: Induced Subgraphs -/
 
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj := fun x y => G.Adj x.val y.val
-  symm.symm := fun x y h => G.symm h
-  loopless.irrefl := fun x => G.loopless x.val
+  symm.symm := fun x y h => G.adj_symm h
+  loopless.irrefl := fun _x => G.irrefl
 
 /-- The size of a vertex set. -/
 def vertexCount (S : Finset V) : ℕ := S.card
@@ -239,7 +240,7 @@ theorem original_is_f43 (n : ℕ) :
 -/
 def erdos_620_open : Prop :=
   ¬∃ (α : ℝ), α > 0 ∧
-    (∀ ε > 0, ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n ≥ 2,
+    (∀ ε > 0, ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       c * (n : ℝ) ^ α ≤ erdosRogers n ∧
       (erdosRogers n : ℝ) ≤ C * (n : ℝ) ^ α)
 

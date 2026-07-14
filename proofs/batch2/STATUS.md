@@ -1984,3 +1984,61 @@ whose dependency errors are skipped by Lean show 0 own-errors but fail individua
 Deferred (not clean v4.31 drift): CauchySchwarzOQ01OQ04 (lp.norm_rpow_eq_tsum rpow-vs-npow
 bridge with unresolved lp instance metavars — substantial), CayleyHamiltonMinpolyOQ02OQ03
 NOTE it WAS fixed (minpoly conj rebuilt), BallotProblem (condCount removed = known-hard cluster).
+## Increment 37 (N-Z + Erdos≥600; tm/pd/rewrite/unknown-const/instance-synth) — +10 GREEN
+
+Files greened:
+- 37-01 Erdos1008ProblemProvable — `(edgeCount G)^(realpow)` on ℕ base: cast both sides to ℝ
+  (`(edgeCount H : ℝ) ≥ (edgeCount G : ℝ)^(2/3 : ℝ)`); `.toNNReal.toNat` chain removed (NNReal
+  `{r // 0 ≤ r}` has no `.toNat` field).
+- 37-02 Erdos1007Problem — `p.1 < p.2` edge-count in axioms needs `[LinearOrder V]`; added to 3 axioms.
+- 37-03 Erdos1014OQ03 / 37-04 …LogIncrement / …Obstruction — RECIPE: `Real.exp ∘ f`/`Real.log ∘ f`
+  Tendsto goals no longer auto-unfold `∘` under `simpa` → `simpa [Function.comp_def] using this`.
+  Obstruction also `6 * x⁻¹` vs `6 / x` → `simpa [mul_one_div, div_eq_mul_inv]`.
+- 37-05 Erdos1029Problem — `List.Mem.elim` gone: `hx.elim` (x ∈ []) → `absurd hx (by simp)`;
+  `rw [Tendsto, Filter.map_atTop_atTop]` fails (def, no eq-lemmas) → `unfold …; rw [Filter.tendsto_atTop_atTop]`
+  then bridge `>` vs `≤` via `h (M+1)` / `.le`.
+- 37-06 Erdos1049Problem — `Finset.card_product _ _` type-mismatch → `simp [Finset.card_product]`;
+  `inv_pow` fired on wrong side → reorder to forward `inv_pow`; `summable/tsum_geometric_of_lt_one`
+  2nd arg now strict `r < 1` (drop `.le`); trailing `ring` after `field_simp` self-closes → remove.
+- 37-07 PythagoreanTheorem — RECIPE: bare `inner x y` → `inner ℝ x y` (explicit scalar field);
+  `Finset.induction_on` insert case binders `| insert ha ih` → `| @insert a s' ha ih` (element+hyp).
+- 37-08 ProductOfSegmentsOfChordsOQ01 — RECIPE: `open scoped RealInnerProductSpace` →
+  `open scoped InnerProductSpace` (the `⟪·,·⟫_ℝ` notation moved scopes; old one no longer parses,
+  errors `unexpected identifier` at `_ℝ`). Also `inner_smul_left/right` leave `(starRingEnd ℝ) t`
+  → `simp only [starRingEnd_apply, star_trivial]` before `ring`; `rw`-that-self-closes drops trailing tac.
+- 37-09 Erdos620Problem — RECIPE: `G.symm h` → `G.adj_symm h`; `G.loopless x` → `G.irrefl` (x now
+  implicit; field `loopless.irrefl := fun _x => G.irrefl`). `∀ n ≥ 2` defaulted `n:ℝ` breaking
+  `erdosRogers n` (ℕ) → `∀ n : ℕ, n ≥ 2 →`. Statement repair: `triangleFree_implies_K4Free` intro
+  pattern didn't match HasK4's 6-neq/6-adj conjunction → rewrote destructuring + triangle witness.
+
+Confirmed-deferred this increment:
+Erdos1035Problem (bit-parity omega leaves two distinct erase-sum vars unequal after `if 1:ℕ` annot —
+deeper than rename), Erdos611Problem (placeholder `sorry` in THEOREM TYPES lines 184/189 + def-sorry —
+incomplete formalization, not drift), Erdos1078Problem (`minDegree` `Classical.arbitrary V` needs
+[Nonempty V] which cascades to `Fin (r*n)` (can be empty) + `G.degree` fintype — def restructure),
+Erdos1040Problem (`csInf_le_csInf` signature + anon-ctor Eq.refl), Erdos1048Aristotle (12 errors,
+Complex.abs family + multiple renames).
+
+## Increment 37 (continued) — +5 more GREEN (total +18)
+
+- 37-15 Erdos652Problem — `alpha_k k < ⊤` ill-typed (ℝ has no Top) → statement repair `∃ B, alpha_k k ≤ B`.
+- 37-16 Erdos640Problem — Fin-index equalities: build explicit `hidx : (⟨…⟩:Fin _) = ⟨…⟩ := Fin.ext hmod`
+  then `rw [hidx]` (can't `congr 1; Fin.ext` — goes to wrong level); `(S.card-1+1)%S.card=0` via
+  `Nat.sub_add_cancel + Nat.mod_self` (omega can't do variable modulus); final omega needs
+  `.isLt` bounds + `obtain ⟨m,hm⟩ := hodd`.
+- 37-17 Erdos775Problem — RECIPE: file imported only narrow modules → `norm_num`/`omega`/`push_neg`
+  report "unknown tactic" → add `import Mathlib.Tactic`. Also `insert` needs `[DecidableEq V]`.
+  Statement repairs: `erdos775Question`/`graphs_vs_hypergraphs` had disconnected free `∃ numSizes`
+  (trivially SAT ⟹ `¬Question` unprovable) → bind to `numCliqueSizes H`; fixed `n≥k`/`n>C` witness
+  gaps (`max` over N,k,C+1).
+- 37-18 Erdos966Problem — same `import Mathlib.Tactic` recipe; `h 0 _ : a + 0*d ∈ {n}` — annotate the
+  `have` with the literal `a + 0*d` form (not pre-simplified `a`) then `simp`.
+- 37-19 Erdos757Problem — RECIPE: `Set.ncard` API renames: `Set.ncard_insert_of_not_mem`→`_notMem`,
+  `Set.ncard_coe_Finset`→`Set.ncard_coe_finset` (lowercase f), `Set.Finite.toFinset_card`→
+  `Set.ncard_eq_toFinset_card B hBfin` (different toFinset than the `[Fintype]` one); `insert 0 ↑F`
+  needs explicit `(↑F : Set ℝ)` coercion or it's read as `Finset`.
+
+Deferred this batch: Erdos794Problem (genuine universe-polymorphism mismatch — `Erdos794Simplified`
+and `…Conjecture` fix DIFFERENT `Type u` levels, `@h V` rejects `V : Type u₂`; plus `Fin 9 : Type`
+arg + `erdos_794_origina` typo), Erdos814Problem (HSub ℕ ℚ / LT ℚ instance gaps),
+Erdos732Problem (`Fintype (List ℕ)` ill-defined def), Erdos611Problem (sorry in theorem TYPES).

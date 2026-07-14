@@ -148,7 +148,8 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
   have hBBfin : (B - B).Finite := Set.Finite.sub hBfin hBfin
   -- Convert B to Finset F
   set F := hBfin.toFinset with hF_def
-  have hF_card : F.card = 4 := by rw [Set.Finite.toFinset_card]; exact hcard
+  have hF_card : F.card = 4 := by
+    rw [hF_def, ← Set.ncard_eq_toFinset_card B hBfin]; exact hcard
   have hF_mem : ∀ x, x ∈ F ↔ x ∈ B := fun x => Set.Finite.mem_toFinset hBfin
   -- The difference map on off-diagonal pairs is injective (Sidon property)
   have hDiffInj : Set.InjOn (fun p : ℝ × ℝ => p.1 - p.2) ↑F.offDiag := by
@@ -166,7 +167,7 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
     · exact absurd rfl h₁.2.2
   -- The off-diagonal has 12 pairs, so its image has 12 elements
   have hOD_card : F.offDiag.card = 12 := by
-    rw [Finset.offDiag_card, hF_card]; norm_num
+    rw [Finset.offDiag_card, hF_card]
   have hImg_card : (F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)).card = 12 := by
     rw [Finset.card_image_of_injOn hDiffInj, hOD_card]
   -- The image consists of nonzero elements in B - B
@@ -187,11 +188,11 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
   have hImgFin : (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ).Finite :=
     Finset.finite_toSet _
   calc (B - B).ncard
-      ≥ (insert (0 : ℝ) ↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2))).ncard :=
+      ≥ (insert (0 : ℝ) (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ)).ncard :=
         Set.ncard_le_ncard (Set.insert_subset h0_mem hImg_sub) hBBfin
     _ = (↑(F.offDiag.image (fun p : ℝ × ℝ => p.1 - p.2)) : Set ℝ).ncard + 1 :=
-        Set.ncard_insert_of_not_mem h0_notin_img hImgFin
-    _ = 12 + 1 := by rw [Set.ncard_coe_Finset, hImg_card]
+        Set.ncard_insert_of_notMem h0_notin_img hImgFin
+    _ = 12 + 1 := by rw [Set.ncard_coe_finset, hImg_card]
     _ = 13 := by norm_num
     _ ≥ 11 := by norm_num
 
