@@ -92,17 +92,17 @@ theorem minpoly_sqrt_of_not_isSquare_rat (r : ℚ) (hr : 0 ≤ r) (hns : ¬ IsSq
     push_neg at hlt
     have hdeg1 : (minpoly ℚ (Real.sqrt (r : ℝ))).natDegree = 1 := by
       have hge1 := minpoly.natDegree_pos hintegral; omega
-    obtain ⟨a, b, ha, hfab⟩ := Polynomial.natDegree_eq_one.mp hdeg1
+    obtain ⟨a, ha, b, hfab⟩ := Polynomial.natDegree_eq_one.mp hdeg1
     have hmonic := minpoly.monic hintegral
     have ha1 : a = 1 := by
       have hlc := hmonic.leadingCoeff
-      rw [hfab] at hlc
+      rw [← hfab] at hlc
       simp [Polynomial.leadingCoeff_add_of_degree_lt, Polynomial.degree_C_mul_X ha,
             Polynomial.degree_C, ha] at hlc
       exact hlc
-    rw [ha1, one_mul] at hfab
+    rw [ha1, map_one, one_mul] at hfab
     have heval := minpoly.aeval ℚ (Real.sqrt (r : ℝ))
-    rw [hfab] at heval
+    rw [← hfab] at heval
     simp only [map_add, aeval_X, aeval_C] at heval
     rw [eq_ratCast (algebraMap ℚ ℝ) b] at heval
     exact hirr ⟨-b, by push_cast; linarith⟩
@@ -138,6 +138,8 @@ theorem irrational_sqrt_iff_not_isSquare_rat (r : ℚ) (hr : 0 ≤ r) :
       have : (r : ℝ) = (s : ℝ) * (s : ℝ) := by rw [hs]; push_cast; ring
       rw [this]; push_cast; rw [sq_abs]; ring
     rw [hrs, Real.sqrt_sq (by positivity)]
+    push_cast
+    rfl
   · exact irrational_sqrt_of_not_isSquare_rat r hr
 
 /-! ## Part IV: Degree and Field-Extension Consequences -/
@@ -153,8 +155,7 @@ theorem sqrt_isIntegral (r : ℚ) (hr : 0 ≤ r) : IsIntegral ℚ (Real.sqrt (r 
   refine ⟨X ^ 2 - C r, monic_X_pow_sub_C _ (by norm_num), ?_⟩
   have hAM : (algebraMap ℚ ℝ) r = (r : ℝ) := eq_ratCast (algebraMap ℚ ℝ) r
   have hsq : Real.sqrt (r : ℝ) ^ 2 = (r : ℝ) := Real.sq_sqrt hr'
-  skip
-  rw [hAM, hsq, sub_self]
+  simp only [eval₂_sub, eval₂_X_pow, eval₂_C, hAM, hsq, sub_self]
 
 /-- **Field Extension Degree**: `[ℚ(√r) : ℚ] = 2` for `r ≥ 0` not a rational square. -/
 theorem adjoin_sqrt_finrank (r : ℚ) (hr : 0 ≤ r) (hns : ¬ IsSquare r) :
