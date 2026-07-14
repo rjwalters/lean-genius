@@ -48,7 +48,7 @@ open Ordinal
 axiom OrdinalRamseyProperty (α β : Ordinal.{0}) (n : ℕ) : Prop
 
 /-- Notation for the arrow relation α → (β, n)². -/
-notation:50 α " →ₒ (" β ", " n ")²" => OrdinalRamseyProperty α β n
+notation:50 α " →ₒ " "(" β ", " n ")²" => OrdinalRamseyProperty α β n
 
 /- ## Part II: Specker's Results (1957) -/
 
@@ -130,16 +130,15 @@ theorem omega_omega_positive : 0 < ω ^ ω := by
   exact Ordinal.omega0_pos
 
 /-- ω^ω is a limit ordinal (not a successor). -/
-theorem omega_omega_is_limit : (ω ^ ω).IsLimit := by
-  apply Ordinal.isLimit_opow_left
-  · exact Ordinal.omega0_isLimit
-  · exact Ordinal.omega0_pos
+theorem omega_omega_is_limit : Order.IsSuccLimit (ω ^ ω) := by
+  apply Ordinal.isSuccLimit_opow_left Ordinal.isSuccLimit_omega0
+  exact Ordinal.omega0_pos.ne'
 
 /-- The sequence ω < ω² < ω³ < ... < ω^ω. -/
 theorem omega_power_chain (n : ℕ) (hn : n ≥ 1) : ω ^ n < ω ^ ω := by
-  apply Ordinal.opow_lt_opow_right
-  · exact Ordinal.one_lt_omega0
-  · exact Ordinal.nat_lt_omega0 n
+  rw [show ω ^ n = ω ^ (n : Ordinal) from (Ordinal.opow_natCast ω n).symm,
+    Ordinal.opow_lt_opow_iff_right Ordinal.one_lt_omega0]
+  exact Ordinal.nat_lt_omega0 n
 
 /- ## Part VI: The Pattern -/
 
@@ -177,7 +176,7 @@ def problem_591_conjecture : Prop :=
 /-- Problem #592 asks about even larger ordinals.
     The pattern continues to be investigated. -/
 def problem_592_related : Prop :=
-  ∀ α : Ordinal, α.IsLimit → (ω ^ α) →ₒ (ω ^ α, 3)²
+  ∀ α : Ordinal, Order.IsSuccLimit α → (ω ^ α) →ₒ (ω ^ α, 3)²
 
 /- ## Part VIII: Ordinal Arithmetic Identities -/
 
@@ -186,9 +185,7 @@ theorem omega_omega_dominates (n : ℕ) : ω ^ n < ω ^ ω := by
   cases n with
   | zero =>
     simp only [pow_zero]
-    apply Ordinal.one_lt_opow
-    · exact Ordinal.one_lt_omega0
-    · exact Ordinal.omega0_pos
+    exact Ordinal.one_lt_opow.mpr ⟨Ordinal.one_lt_omega0, Ordinal.omega0_pos.ne'⟩
   | succ m =>
     apply omega_power_chain (m + 1) (Nat.succ_pos m)
 
