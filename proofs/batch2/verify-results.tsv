@@ -2097,7 +2097,7 @@ Hilbert19Regularity	GREEN
 Hilbert20BoundaryValue	GREEN	signature-drift
 Hilbert20LocalSolvability	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03	RESIDUAL	instance-synth
-Hilbert20OQ01OQ03Aristotle	RESIDUAL	type-mismatch
+Hilbert20OQ01OQ03Aristotle	GREEN	
 Hilbert21RiemannHilbert	RESIDUAL	type-mismatch
 Hilbert22OQ01	GREEN	
 Hilbert22OQ01OQ03	GREEN	
@@ -2143,7 +2143,7 @@ InverseGaloisD4OQ02OQ03OQ01OQ01	GREEN
 InverseGaloisD4OQ02OQ03OQ01OQ01OQ01	GREEN	
 InverseGaloisD4OQ02OQ04	GREEN	
 InverseGaloisD4OQ03	GREEN	
-InverseGaloisF20	RESIDUAL	unknown-const:cyclotomic_5_has_root_in_splitting_field
+InverseGaloisF20	GREEN	
 InverseGaloisF20OQ02	GREEN	
 InverseGaloisOQ01	GREEN	
 InverseGaloisOQ02	GREEN	

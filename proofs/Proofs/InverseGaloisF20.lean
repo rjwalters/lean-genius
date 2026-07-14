@@ -80,10 +80,9 @@ theorem gal_card_dvd_120 :
     Subgroup.card_dvd_of_injective _ hinj
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
   rw [Fintype.card_perm] at hdvd
-  have hcard : Fintype.card (p.rootSet p.SplittingField) = 5 := by
-    rw [Polynomial.card_rootSet_eq_natDegree x_fifth_sub_2_separable
-        (Polynomial.SplittingField.splits p)]
-    exact x_fifth_sub_2_natDegree
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 5 :=
+    (Polynomial.card_rootSet_eq_natDegree x_fifth_sub_2_separable
+        (Polynomial.SplittingField.splits p)).trans x_fifth_sub_2_natDegree
   rw [hcard] at hdvd
   simpa [Nat.factorial] using hdvd
 
@@ -382,7 +381,7 @@ theorem adjoin_alpha_zeta_eq_top_f20
     Algebra.adjoin_le (fun x hx => h_roots hx)
   have h_top : Algebra.adjoin ℚ (↑((X ^ 5 - C (2 : ℚ) : ℚ[X]).rootSet
     (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)) = ⊤ :=
-    IsSplittingField.adjoin_rootSet'
+    Polynomial.SplittingField.adjoin_rootSet _
   have h_K_top : K.toSubalgebra = ⊤ := le_antisymm le_top (h_top ▸ h_sub)
   rw [← IntermediateField.top_toSubalgebra] at h_K_top
   exact (IntermediateField.toSubalgebra_injective h_K_top)
@@ -520,8 +519,8 @@ theorem f20_realizable :
       (_ : IsGalois ℚ K),
       Fintype.card (K ≃ₐ[ℚ] K) = 20 := by
   set p := (X : ℚ[X]) ^ 5 - C 2
-  haveI : Normal ℚ p.SplittingField := inferInstance
-  haveI : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
+  haveI : Normal ℚ p.SplittingField := Polynomial.SplittingField.instNormal p
+  haveI : Algebra.IsSeparable ℚ p.SplittingField := Algebra.IsSeparable.of_integral ℚ _
   exact ⟨p.SplittingField,
     inferInstance, inferInstance, inferInstance, IsGalois.mk,
     x5_sub_2_gal_card⟩
