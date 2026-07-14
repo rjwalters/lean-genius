@@ -127,8 +127,9 @@ theorem unitBallVolume_recurrence (n : ℕ) (hn : 2 ≤ n) :
   rw [show ((n - 2 : ℕ) : ℝ) / 2 + 1 + 1 = (n : ℝ) / 2 + 1 from by
     push_cast [Nat.cast_sub hn]; ring]
   rw [Gamma_add_one (by positivity)]
+  rw [show ((n - 2 : ℕ) : ℝ) / 2 + 1 = (n : ℝ) / 2 from by
+    push_cast [Nat.cast_sub hn]; ring]
   field_simp
-  ring
 
 /-- For n=3, the unit ball has volume 4π/3.
     Derived via recurrence: Vol(B³) = Vol(B¹) · 2π/3 = 2 · 2π/3 = 4π/3. -/
@@ -163,10 +164,8 @@ theorem area_scaling_2d (r : ℝ) (hr : 0 ≤ r) :
     4 * MeasureTheory.volume (ball (0 : EuclideanSpace ℝ (Fin 2)) r) := by
   rw [nball_volume_scaling 2 (2 * r) (by linarith), nball_volume_scaling 2 r hr]
   simp [unitBallVolume_two]
-  rw [show (2 * r) ^ 2 = 4 * r ^ 2 by ring]
-  rw [ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul hr.le]
-  simp [ENNReal.ofReal_ofNat]
-  ring
+  rw [show (2 * r) ^ 2 * π = 4 * (r ^ 2 * π) by ring]
+  rw [ENNReal.ofReal_mul (by norm_num : (0:ℝ) ≤ 4), ENNReal.ofReal_ofNat]
 
 /-- The volume is 0 for r = 0. -/
 theorem nball_volume_zero (n : ℕ) :

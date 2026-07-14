@@ -57,18 +57,20 @@ theorem gaussian_second_moment :
     ∫ x : ℝ, x ^ 2 * Real.exp (-x ^ 2) = Real.sqrt Real.pi / 2 := by
   -- Integration by parts with `u = x`, `v = -½ e^{-x²}`.
   -- `u' = 1`, `v' = x e^{-x²}`, so `u · v' = x²e^{-x²}` and `u' · v = -½ e^{-x²}`.
-  have hu : ∀ x : ℝ, HasDerivAt (fun y : ℝ => y) (1 : ℝ) x := fun x => by
-    simpa using hasDerivAt_id x
+  have hu : ∀ x : ℝ, HasDerivAt (fun y : ℝ => y) (1 : ℝ) x := fun x => hasDerivAt_id x
   have hv : ∀ x : ℝ,
       HasDerivAt (fun y : ℝ => -(2 : ℝ)⁻¹ * Real.exp (-y ^ 2))
         (x * Real.exp (-x ^ 2)) x := by
     intro x
     have hsq : HasDerivAt (fun y : ℝ => -y ^ 2) (-(2 * x)) x := by
-      simpa using (hasDerivAt_pow 2 x).neg
+      have h : HasDerivAt (fun y : ℝ => -y ^ 2) (-((2 : ℕ) * x ^ (2 - 1))) x :=
+        (hasDerivAt_pow 2 x).neg
+      simpa using h
     have hexp := hsq.exp
     have hfin := hexp.const_mul (-(2 : ℝ)⁻¹)
-    convert hfin using 1
-    ring
+    have : x * Real.exp (-x ^ 2) = -(2 : ℝ)⁻¹ * (Real.exp (-x ^ 2) * -(2 * x)) := by ring
+    rw [this]
+    exact hfin
   -- Integrability of the two integrands.
   have huv' : Integrable (fun x : ℝ => x * (x * Real.exp (-x ^ 2))) := by
     have h := integrable_rpow_mul_exp_neg_mul_sq (b := 1) one_pos (s := (2 : ℝ))
@@ -98,7 +100,7 @@ theorem gaussian_second_moment :
     ring
   -- Apply integration by parts on (-∞, ∞).
   have key := integral_mul_deriv_eq_deriv_mul (a' := (0 : ℝ)) (b' := (0 : ℝ))
-    hu hv huv' hu'v hbot htop
+    (fun x _ => hu x) (fun x _ => hv x) huv' hu'v hbot htop
   -- Evaluate the remaining integral `∫ 1 · (-½ e^{-x²}) = -½ √π`.
   have hint : ∫ x : ℝ, (1 : ℝ) * (-(2 : ℝ)⁻¹ * Real.exp (-x ^ 2))
       = -(2 : ℝ)⁻¹ * Real.sqrt Real.pi := by

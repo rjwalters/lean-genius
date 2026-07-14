@@ -61,9 +61,10 @@ theorem one_two_dissociated : DistinctSubsetSums {1, 2} := by
   intro X hX Y hY hne
   -- X, Y ⊆ {1, 2}, so each is one of: ∅, {1}, {2}, {1,2}
   -- Their sums are 0, 1, 2, 3 respectively — all distinct
-  simp only [Finset.subset_insert_iff, Finset.subset_singleton_iff] at hX hY
-  -- Use decide or native_decide for the finite exhaustion
-  fin_cases hX <;> fin_cases hY <;> simp_all [Finset.sum_empty, Finset.sum_singleton, Finset.sum_pair]
+  -- X, Y ⊆ {1, 2}; exhaust the four subsets and their distinct sums 0,1,2,3.
+  have hXsub : X ∈ ({1, 2} : Finset ℕ).powerset := Finset.mem_powerset.mpr hX
+  have hYsub : Y ∈ ({1, 2} : Finset ℕ).powerset := Finset.mem_powerset.mpr hY
+  fin_cases hXsub <;> fin_cases hYsub <;> simp_all [Finset.sum_pair]
 
 /-  The powers of 2: {1, 2, 4, ..., 2^k} form a dissociated set.
 This is the extremal example achieving equality in Ryavec's bound. -/
@@ -140,12 +141,11 @@ This shows powers of 2 achieve Ryavec's bound asymptotically. -/
 theorem geometric_series_bound (k : ℕ) :
     ∑ i ∈ Finset.range (k + 1), (2 : ℝ)^(-(i : ℤ)) = 2 - 2^(-(k : ℤ)) := by
   induction k with
-  | zero => simp
+  | zero => norm_num
   | succ n ih =>
     rw [Finset.sum_range_succ, ih]
-    push_cast
-    ring_nf
-    rw [zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, zpow_natCast]
+    rw [show (-(((n : ℕ) + 1 : ℕ) : ℤ)) = -(n : ℤ) - 1 by push_cast; ring]
+    rw [zpow_sub₀ (by norm_num : (2:ℝ) ≠ 0), zpow_neg]
     field_simp
     ring
 
