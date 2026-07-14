@@ -1422,7 +1422,7 @@ Erdos571Problem	RESIDUAL	instance-synth
 Erdos572Problem	RESIDUAL	proof-drift
 Erdos573Problem	GREEN	
 Erdos575Problem	GREEN	elab-drift
-Erdos576Problem	RESIDUAL	parse-error
+Erdos576Problem	GREEN	
 Erdos577Problem	GREEN	
 Erdos578Problem	RESIDUAL	proof-drift
 Erdos579Problem	GREEN	
@@ -2371,7 +2371,7 @@ RandomizedMaxcutOQ04	RESIDUAL	unknown-const:Finset.disjoint_compl_right
 RationalCanonicalFormExists	RESIDUAL	type-mismatch
 RiemannHypothesis	GREEN	
 RiemannHypothesisConsequences	GREEN	
-RothTheorem	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
+RothTheorem	GREEN	
 RothTheoremOQ01	GREEN	
 RothTheoremOQ01Primes	GREEN	
 RothTheoremOQ01RecipSufficient	GREEN	
