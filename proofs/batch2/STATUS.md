@@ -2231,6 +2231,64 @@ LawsOfLargeNumbersOQ01Aristotle metaprogramming file: `Mathlib.Tactic.Generalize
 `Expr`/`Function expected` — Aristotle meta file needs its own repair), LawsOfLargeNumbersOQ02
 (mixed type-mismatch/instance-stuck), BinomialTheoremOQ01 (Polynomial.descPochhammer unknown).
 
+## Increment 46 (N-Z deep-cluster + Erdos≥600) — +3 GREEN, +1 file-only fix
+
+TAIL PHASE confirmed: ~1-in-6 residuals are catalog-fixable; rest are ≥5-error
+deep-rework, dep-blocked, or unsound originals. Verified fixes:
+
+- **TriangleInequalityOQ06** (instance-synth → GREEN): `abs_norm_sub_norm_le` /
+  `norm_sub_norm_le` moved to the `SeminormedCommGroup` section in Mathlib (their
+  `to_additive` lemmas need commutativity), so `SeminormedAddGroup E` →
+  `SeminormedAddCommGroup E`.
+- **Erdos1078Problem** (instance-synth → GREEN): `Classical.arbitrary V` needed
+  `Nonempty V` (absent) and `G.degree` now carries a `Fintype (neighborSet)` arg.
+  Rewrote `minDegree` as a total function (`if h : univ.Nonempty then inf' … else 0`,
+  eta-expanded `G.degree` under `open Classical in`) — avoids propagating
+  `[DecidableRel G.Adj]` to every call site over `Fin (r*n)`. Also two self-closing
+  `simp`s: dropped trailing `ring`.
+- **TaylorSinCosConvergenceOQ04** (unknown-const → GREEN): forward-reference —
+  `taylorPartialSum_at_zero` was defined AFTER its use in
+  `general_taylor_remainder_bound`; moved it earlier. `linear_combo_bound`: rewrote
+  `show` to a `Pi.add` of two lambdas and switched
+  `iteratedDeriv_const_smul` → `iteratedDeriv_fun_const_smul` so the rewrite patterns
+  match the lambda form (keep plain `iteratedDeriv_add` for the `+`-of-lambdas).
+- **Erdos1071Problem** (PRE-EXISTING never-compiled:s — file compiles green now but
+  NOT flipped per rule): `packing_singleton` Eq.trans chain was reversed
+  (`(mp ha).symm.trans (mp hb)` doesn't chain) → `(mp ha).trans (mp hb).symm`.
+  `exists_maximal_packing` insert-packing: `rcases … with rfl | ha` reused the lambda
+  binder names, leaving membership un-narrowed after the rfl subst → renamed to
+  ham/hbm.
+
+Statement repairs: none (all preserve intended-true statements).
+
+Rename/recipe additions:
+- `SeminormedAddGroup` → `SeminormedAddCommGroup` when using
+  `abs_norm_sub_norm_le` / `norm_sub_norm_le` (moved to CommGroup section).
+- `iteratedDeriv_const_smul` (LHS `c • f`, HSMul form) vs
+  `iteratedDeriv_fun_const_smul` (LHS `fun y => c • f y`, lambda form): pick by goal
+  shape after simp. `iteratedDeriv_add` matches `f + g` (Pi.add of two lambdas);
+  `iteratedDeriv_fun_add` matches a single merged lambda `fun i => f i + g i`.
+- `SimpleGraph.degree v` now needs `[Fintype (G.neighborSet v)]`; over a generic
+  `[Fintype V]` vertex type with no decidability, wrap the def in `open Classical in`.
+
+Skipped/deep (own-file errors ≥5 or unsound):
+- TestApi241 (`{1,2,4,8}` is genuinely NOT a B3/Sidon set — `decide` proves the goal
+  FALSE; unsound original, not force-greened).
+- PtolemysTheoremOQ01Incomplete01 (import-order was the only *blocking* error; once
+  fixed, 10+ deep errors surface: `Complex.abs_mul_exp_arg_mul_I`,
+  `Real.sin_nonpos_of_nonneg_of_nonpos` unknown, etc.).
+- SchroederBernsteinOQ01 (concrete-category API fully refactored: `HasForget` removed,
+  `forget` now needs `{FC}{CC}[FunLike…][ConcreteCategory C FC]` — deep API migration).
+- YangMillsMassGap / SpernerNDimMathlibOQ01 (dep-blocked: `Proofs.YangMills.Exploration`
+  and sibling deps fail, not own file).
+- NewtonIndStep2 (linarith/heartbeat-timeout), TestApi1056 (def-level `by omega` index
+  proofs lack the length hypothesis), Erdos1066Problem (structure auto-bound `n` term-level
+  scoping + downstream), Erdos1005/1040/1061/1005/1035/1050/1051/1052 (≥10 mixed).
+
+HONEST remaining-N-Z fixable count: of ~80 N-Z non-Erdos + ~200 Erdos≥600 residuals
+tested by sampling, roughly 1-in-6 to 1-in-8 remain catalog-fixable; most sampled
+low-error files (≤5) turned out to be either dep-blocked, unsound, or deceptively deep
+(a single blocking error masking many). Estimate ~10-15 more genuinely fixable N-Z/Erdos≥600.
 ## Increment 45 (Doctor-b, A–M / Erdos<600) — +7 GREEN
 
 Recipes catalogued in rename-map §7ad. TAIL phase: worked whole ≥3-error clusters of catalogued renames mixed with genuine proof-drift.

@@ -41,12 +41,15 @@ structure RPartiteGraph (r n : ℕ) where
   edges_between_parts : ∀ u v : Fin (r * n),
     edges.Adj u v → ∃ i j : Fin r, i ≠ j ∧ u ∈ parts i ∧ v ∈ parts j
 
+open Classical in
 /--
 **Minimum Degree:**
 The minimum degree of a graph.
 -/
 noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
-  Finset.inf' Finset.univ ⟨Classical.arbitrary V, Finset.mem_univ _⟩ G.degree
+  if h : (Finset.univ : Finset V).Nonempty then
+    Finset.inf' Finset.univ h (fun v => G.degree v)
+  else 0
 
 /--
 **Contains K_r:**
@@ -141,7 +144,6 @@ Any edge gives K_2, so threshold is trivial.
 theorem r2_trivial :
     sharpThreshold 2 n = n - n := by
   simp [sharpThreshold]
-  ring
 
 /--
 **Case r = 3 (Tripartite):**
@@ -150,7 +152,6 @@ For r=3, s = 1, threshold = 2n - ⌈n/1⌉ = 2n - n = n.
 theorem r3_threshold (n : ℕ) (hn : n ≥ 1) :
     sharpThreshold 3 n = 2 * n - n := by
   simp [sharpThreshold]
-  ring
 
 /--
 **Case r = 4 (4-partite):**

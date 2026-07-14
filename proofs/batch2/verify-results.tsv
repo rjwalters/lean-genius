@@ -767,7 +767,7 @@ Erdos1071Problem	PRE-EXISTING	never-compiled:s
 Erdos1073Problem	GREEN	
 Erdos1075Problem	GREEN	
 Erdos1076Problem	GREEN	
-Erdos1078Problem	RESIDUAL	instance-synth
+Erdos1078Problem	GREEN
 Erdos1079Problem	RESIDUAL	instance-synth
 Erdos107OQ01	RESIDUAL	instance-synth
 Erdos107OQ01KleinUpperAristotle	RESIDUAL	instance-synth
@@ -2551,7 +2551,7 @@ SzemerediRegularityOQ04Witness	GREEN
 TaxicabNumberOQ01	GREEN	
 TaylorSinCosConvergenceOQ02	RESIDUAL	proof-drift
 TaylorSinCosConvergenceOQ03Aristotle	GREEN	
-TaylorSinCosConvergenceOQ04	RESIDUAL	unknown-const:taylorPartialSum_at_zero
+TaylorSinCosConvergenceOQ04	GREEN
 TaylorTheorem	GREEN	
 TaylorTheoremOQ01	RESIDUAL	type-mismatch
 TaylorTheoremOQ02	RESIDUAL	type-mismatch
@@ -2619,7 +2619,7 @@ TriangleAngleSumOQ02	RESIDUAL	type-mismatch
 TriangleInequality	GREEN	
 TriangleInequalityOQ01	RESIDUAL	unknown-const:MeasureTheory.LpAddConst_of_one_le
 TriangleInequalityOQ04	GREEN	
-TriangleInequalityOQ06	RESIDUAL	instance-synth
+TriangleInequalityOQ06	GREEN
 TriangularNumberReciprocals	GREEN	
 TriangularReciprocalGeneralized	RESIDUAL	instance-synth
 TriangularReciprocalsFigurate	GREEN	

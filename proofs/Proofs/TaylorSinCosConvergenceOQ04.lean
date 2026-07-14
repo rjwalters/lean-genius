@@ -116,6 +116,15 @@ theorem remainder_bound_pos (f : ℝ → ℝ) (C : ℝ)
             exact hbound _ _)
     _ = C * x ^ (n + 1) / ↑n ! := by ring
 
+/-- T_n(0) = f(0) for all n: higher-order terms vanish since 0^k = 0 for k ≥ 1. -/
+theorem taylorPartialSum_at_zero (f : ℝ → ℝ) (n : ℕ) :
+    taylorPartialSum f n 0 = f 0 := by
+  simp only [taylorPartialSum]
+  rw [Finset.sum_eq_single 0
+    (fun k _ hk => by simp [zero_pow hk])
+    (fun h => absurd (Finset.mem_range.mpr n.succ_pos) h)]
+  simp [iteratedDeriv_zero]
+
 /-- **General Taylor Remainder Bound** (fully proved):
     ‖f(x) - T_n(x)‖ ≤ C · |x|^{n+1} / n!
 
@@ -210,14 +219,8 @@ theorem taylorPartialSum_tendsto (f : ℝ → ℝ) (C : ℝ) (hC : 0 ≤ C)
 -- SECTION V: Values at Zero
 -- ═══════════════════════════════════════════════════════════════
 
-/-- T_n(0) = f(0) for all n: higher-order terms vanish since 0^k = 0 for k ≥ 1. -/
-theorem taylorPartialSum_at_zero (f : ℝ → ℝ) (n : ℕ) :
-    taylorPartialSum f n 0 = f 0 := by
-  simp only [taylorPartialSum]
-  rw [Finset.sum_eq_single 0
-    (fun k _ hk => by simp [zero_pow hk])
-    (fun h => absurd (Finset.mem_range.mpr n.succ_pos) h)]
-  simp [iteratedDeriv_zero]
+-- (`taylorPartialSum_at_zero` moved earlier — it is used by
+-- `general_taylor_remainder_bound`.)
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION VI: Instantiation — Sin and Cos
@@ -286,10 +289,11 @@ theorem linear_combo_bound (a b : ℝ) (n : ℕ) (x : ℝ) :
     (Real.contDiff_sin.of_le le_top).contDiffAt
   have hcos : ContDiffAt ℝ (n : ℕ∞) Real.cos x :=
     (Real.contDiff_cos.of_le le_top).contDiffAt
-  rw [show (fun x => a * Real.sin x + b * Real.cos x) = a • Real.sin + b • Real.cos from by
+  rw [show (fun x => a * Real.sin x + b * Real.cos x)
+        = (fun y => a • Real.sin y) + (fun y => b • Real.cos y) from by
       funext z; simp [smul_eq_mul]]
   rw [iteratedDeriv_add (hsin.const_smul a) (hcos.const_smul b)]
-  rw [iteratedDeriv_const_smul hsin a, iteratedDeriv_const_smul hcos b]
+  rw [iteratedDeriv_fun_const_smul hsin a, iteratedDeriv_fun_const_smul hcos b]
   simp only [smul_eq_mul]
   calc ‖a * iteratedDeriv n Real.sin x + b * iteratedDeriv n Real.cos x‖
       ≤ ‖a * iteratedDeriv n Real.sin x‖ + ‖b * iteratedDeriv n Real.cos x‖ :=
