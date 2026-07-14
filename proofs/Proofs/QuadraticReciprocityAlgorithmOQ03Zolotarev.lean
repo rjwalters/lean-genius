@@ -113,6 +113,7 @@ theorem sign_mulLeft₀_neg_one (h : (-1 : ZMod p) ≠ 0) (hp : p ≠ 2) :
     sign (Equiv.mulLeft₀ (-1 : ZMod p) h) = (-1 : ℤˣ) ^ ((p - 1) / 2) := by
   rw [sign_of_pow_two_eq_one (mulLeft₀_neg_one_sq h), fixedPoints_neg_eq h hp,
       ZMod.card]
+  rfl
 
 /-- **Zolotarev's lemma at `a = -1` (first supplementary law as a permutation
 sign).**  For an odd prime `p`,
@@ -129,7 +130,7 @@ theorem legendreSym_neg_one_eq_sign_mulLeft₀ (h : (-1 : ZMod p) ≠ 0) (hp : p
   have hdiv : p / 2 = (p - 1) / 2 := by
     obtain ⟨k, hk⟩ := hodd; omega
   rw [legendreSym.at_neg_one hp, ZMod.χ₄_eq_neg_one_pow hp2, hdiv,
-      sign_mulLeft₀_neg_one h hp, Units.val_pow_eq_pow_val]
-  norm_num
+      sign_mulLeft₀_neg_one h hp]
+  rfl
 
 end QuadraticReciprocityAlgorithmOQ03Zolotarev
