@@ -240,8 +240,8 @@ theorem newton_inequality_binomial_k_one (xs : List ℝ)
           simpa using key
         have heq := congr_arg (Nat.cast : ℕ → ℝ) hnat_m
         push_cast at heq
-        rw [show ((ys.length - 1 : ℕ) : ℝ) = (ys.length : ℝ) - 1 from
-            Nat.cast_sub hlen_ge_one] at heq
+        rw [show ((ys.length - 1 : ℕ) : ℝ) = (ys.length : ℝ) - 1 by
+            rw [Nat.cast_sub hlen_ge_one, Nat.cast_one]] at heq
         linarith
       have hm_real : (2 : ℝ) ≤ (ys.length : ℝ) := by exact_mod_cast hm
       have hm_pos : (0 : ℝ) < (ys.length : ℝ) := by linarith

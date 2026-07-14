@@ -183,7 +183,6 @@ theorem exists_root_of_continuous (f : ℝ → ℝ) (hf : Continuous f)
     (fun n => meshPt (n + 1) ((i n).val + 1)) ?_ ?_ ?_
   · -- left endpoints lie in `[0,1]`
     intro n
-    dsimp only
     rw [Set.mem_Icc]
     simp only [meshPt]
     refine ⟨by positivity, ?_⟩
@@ -191,7 +190,6 @@ theorem exists_root_of_continuous (f : ℝ → ℝ) (hf : Continuous f)
     exact_mod_cast (i n).isLt.le
   · -- bracket width is exactly `1/(n+1)`
     intro n
-    dsimp only
     have hne : ((n : ℝ) + 1) ≠ 0 := by positivity
     have hab : meshPt (n + 1) (i n).val - meshPt (n + 1) ((i n).val + 1)
         = -(1 / ((n : ℝ) + 1)) := by

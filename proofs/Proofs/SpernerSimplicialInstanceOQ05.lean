@@ -83,7 +83,7 @@ The choice of "first" panchromatic cell is in the order of
 `T.cellFintype.elems.toList`, which is implementation-specific. Downstream
 consumers should use the membership characterisation
 `findPanchromaticBrute_isSome_iff` rather than relying on a specific order. -/
-def findPanchromaticBrute
+noncomputable def findPanchromaticBrute
     (T : Triangulation V n) (c : V → Fin (n + 1)) :
     Option T.Cell :=
   (Finset.univ.filter
@@ -180,6 +180,6 @@ than `#eval`, since `decide` provides a kernel-level proof object while
 
 example : ∃ s : Fin 3, CellComplex.IsPanchromatic
     (fun n : ℕ => if n ≤ 1 then (0 : Fin 2) else 1)
-    (Triangulation.intervalTriangulation 3 (by norm_num)).toCellComplex s := by
+    (Triangulation.intervalTriangulation 3 (by decide)).toCellComplex s := by
   refine ⟨1, ?_⟩
   decide

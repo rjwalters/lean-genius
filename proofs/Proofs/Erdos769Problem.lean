@@ -63,6 +63,8 @@ axiom hadwiger_lower_bound :
 theorem hadwiger_explicit (n : ℕ) (hn : n ≥ 2) :
     cubeDissectionNumber n ≥ 3 * 2^(n-1) := by
   have h := hadwiger_lower_bound n hn
+  have hp : 2 ^ n = 2 * 2 ^ (n - 1) := by
+    rw [← pow_succ']; congr 1; omega
   omega
 
 /- ## Connor-Marmorino Improved Lower Bound (2018) -/
@@ -75,6 +77,11 @@ axiom connor_marmorino_lower (n : ℕ) (hn : n ≥ 3) :
 /-- Connor-Marmorino is strictly stronger than Hadwiger for n ≥ 3. -/
 theorem connor_vs_hadwiger (n : ℕ) (hn : n ≥ 3) :
     2^(n+1) - 1 > 2^n + 2^(n-1) := by
+  have h1 : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ']
+  have h2 : 2 ^ n = 2 * 2 ^ (n - 1) := by rw [← pow_succ']; congr 1; omega
+  have h3 : 2 ^ (n - 1) ≥ 2 := by
+    calc 2 ^ (n - 1) ≥ 2 ^ 1 := Nat.pow_le_pow_right (by norm_num) (by omega)
+      _ = 2 := by norm_num
   omega
 
 /- ## Upper Bounds -/

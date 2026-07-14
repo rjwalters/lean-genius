@@ -177,7 +177,7 @@ theorem why_first_one_matters :
         exact Nat.sub_add_cancel j.property))
     }
     have heq : ∀ i : Fin m, (z i.succ) ^ k = (z (e i).val) ^ k := fun i => by
-      simp [e, Fin.succ]
+      rfl
     simp_rw [heq]
     exact Equiv.sum_comp e (fun j => (z j.val) ^ k)
 

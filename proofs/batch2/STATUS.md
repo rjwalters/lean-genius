@@ -70,6 +70,79 @@ the parse/sig/elab/dot structured remainder.
 - RothTriangleRemoval (5 own tm/pd/synth/rcases + 2 sorries), Erdos643Problem (sorry + heartbeat timeouts), LawsOfLargeNumbersOQ01Aristotle (multi-class), Erdos1020 (10+ omega/rw/linarith/tm after namespace fix), Erdos598/Erdos1055 (genuine universe-subtype / defeq drift), Erdos1123 (∆ parse fixes but Setoid transitivity is a real theorem).
 
 ---
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 15, #38065, 2026-07-13)
+
+## DOCTOR INCREMENT 15 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed, #38065)
+
+Classes at start: type-mismatch(204) + proof-drift(179) + rewrite-drift(101) +
+unknown-const-mixed(~320). Branch `feature/issue-38065-c`, worktree doctor-b,
+container dr25, cache volume lean-mathlib-cache-v431-b. Worked from diag-DR20a.txt
+single-own-error files first, then the 2-own-error tier. **+30 GREEN** this
+session (proof-drift 14, type-mismatch 9, unknown-const 7).
+
+### Waves (all in-container verified, lake exit 0, then ledger-flipped)
+- DR25a Sperner cluster (+5): SpernerSimplicialInstance + OQ01/OQ04/OQ05/OQ05Scarf1d.
+  Root fix (Option.noConfusion → absurd h (by simp)) flipped OQ01 alone; the
+  others were dep-masked and needed their own fixes.
+- DR25b Newton/Szemeredi/Dirichlet roots (+4): NewtonInductiveStepOQ01 (+Aristotle),
+  SzemerediCoreOQ01, DirichletApproximationOQ02.
+- DR25c Erdos519/InfinitudePrimes4k1OQ03 (+2).
+- DR25d BoundedPrimeGapsOQ04OQ01/Erdos731/GreensOQ01OQ01OQ03 (+3).
+- DR25e FriendshipTheoremOQ03 (+1). DR25f Erdos434/1066/TestApi417 (+3).
+- DR25g Erdos631ProblemAristotle (+1, universe pin). DR25h Erdos797/853 (+2).
+- DR25i Erdos769/194 (+2). DR25j Erdos912 (+1). DR25k Erdos572/932 (+2).
+- DR25l Erdos649/736 (+2). DR25m Erdos599/Minkowski (+2).
+
+### Highest-value new recipes (increment 15)
+- **Forward theorem reference now rejected**: a `theorem` used before its own
+  later definition in the same file → "Unknown identifier". Move the lemma
+  above first use (Erdos731 choose_succ_gt_central). Watch for an ORPHANED
+  doc-comment left behind after moving — delete it or "expected 'lemma'".
+- **term-mode `(by norm_num)` proving `0 < 3` in a type-ascription slot** can
+  report "unknown tactic" in v4.31 → `by decide` (SpernerSimplicialInstanceOQ05).
+- **`Nat.cast_sub h` gives `↑a - ↑1` not `↑a - 1`** → chase with `Nat.cast_one`
+  (NewtonInductiveStepOQ01).
+- **`ext x` on `s = ∅` yields an `Iff`, `intro` then fails** → `simp only
+  [Finset.notMem_empty, iff_false]` first (mem→notMem rename) (SzemerediCoreOQ01).
+- **`Real.fact_zero_lt_one` removed** → `local instance : Fact ((0:ℝ)<1) := ⟨one_pos⟩`.
+- **`MeasureTheory.Measure.prod_mono` removed** → local lemma via `Measure.le_iff
+  + Measure.prod_apply + lintegral_mono (per-fibre) + lintegral_mono' hμ le_rfl`
+  (GreensTheoremOQ01OQ01OQ03).
+- **`ZMod (m+1) = Fin (m+1)` natCast round-trip** `((i:ℕ):Fin(m+1)) = i` no
+  longer elaborates via `show`/`ext` → `ZMod.natCast_rightInverse (n := m+1) i`.
+- **`padicValNat.factorial_le_factorial` removed** → `Nat.factorization_def` +
+  `Nat.factorization_le_iff_dvd` on `m! ∣ n!` (Erdos912).
+- **eta atom split under omega**: `count Nat.Prime` vs `count (fun p => Nat.Prime p)`
+  → `simp only [show (fun p => Nat.Prime p) = Nat.Prime from rfl]` before omega
+  (Erdos853). Reusable for any eta-expanded predicate omega treats as a fresh atom.
+- **`add_le_add_left` now unifies as right-mono** (`b+a ≤ c+a`) on a `a+b ≤ a+c`
+  goal → use `gcongr a + ?_` (Erdos572).
+- **`Nat.card_le_one` removed** → case-split isEmpty/nonempty; nonempty via
+  `(Nat.card_eq_one_iff_unique.mpr ⟨⟨Subsingleton.elim⟩, h⟩).le` (Minkowski).
+- **`colorable_of_isEmpty` removed** → `SimpleGraph.colorable_zero_iff.mpr ‹_›`;
+  **`G.loopless a`** now `G.loopless.irrefl a` (Std.Irrefl) (Erdos736, §7f).
+- **`IsKChoosable`'s internal `∀ (C : Type*)`** gives hypothesis & goal distinct
+  universe vars → pin both to a shared explicit universe `.{u}` /
+  `IsKChoosable.{_, u}` (Erdos631ProblemAristotle) — do NOT edit the parent def
+  if it is already GREEN.
+- **v4.31 rejects no-op `dsimp only`** ("made no progress") → delete it (SpernerOQ04).
+- Confirmed §7o anonymous-binder recipe on 5 more files (Erdos797/194/599: name
+  the `∀ i, (hi : i+1<len) →` hyp; def-level `Nat.mod_lt _ i.pos` for `Fin`-bound).
+
+### Anomalies / not fixed (deep or wrong class)
+- Erdos10OQ01: a genuine DecidablePred-instance divergence — the goal's
+  `Finset.filter (· ∈ S)` (Classical instance) won't unify with a re-typed
+  filter; `convert`/`rw`/`filter_congr` all stall on the instance. Deferred.
+- Erdos39Problem: `frequently_lt_of_liminf_lt` now needs `IsCoboundedUnder (·≥·)`
+  (bounded ABOVE, an autoParam) where the file supplies bounded-below — genuinely
+  needs the Sidon upper bound. Deferred.
+- Erdos407Problem: PRIMARY error is instance-synth (Fintype on a ℕ⁴ set-builder)
+  → left for the instance-synth sibling.
+- NewtonInductiveStepOQ02 (19 residual after mem_cons_self/eq_or_lt fixes kept),
+  SpernerFreudenthalSimplex (103), SzemerediCoreOQ01Aristotle,
+  GreensTheoremOQ01OQ01OQ01OQ01 (Fubini swap-induction), ErdosMordell/Erdos152/
+  Konigsberg (grind), Erdos340 (card-bijection gap): deep, deferred.
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 14, #38065, 2026-07-13)
 
 ## DOCTOR INCREMENT 14 (structured classes + instance-synth tail, #38065)
 

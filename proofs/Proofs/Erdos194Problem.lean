@@ -224,7 +224,7 @@ axiom chaotic_ordering_k_term (k : ℕ) (hk : k ≥ 3) :
     ∃ ordering : ℚ → ℕ, Function.Bijective ordering ∧
     ∀ (seq : Fin k → ℚ),
       (∀ i j : Fin k, i < j → seq i < seq j) →  -- Increasing in value
-      (∃ d : ℚ, ∀ i : Fin k, i.val < k - 1 → seq ⟨i.val + 1, by omega⟩ - seq i = d) → -- AP condition
+      (∃ d : ℚ, ∀ i : Fin k, (hi : i.val < k - 1) → seq ⟨i.val + 1, by omega⟩ - seq i = d) → -- AP condition
       ¬(∀ i j : Fin k, i < j → ordering (seq i) < ordering (seq j))  -- Not monotone in ordering
 
 /--
@@ -276,7 +276,7 @@ theorem erdos_194_summary :
     (∀ k ≥ 3, ∃ ordering : ℚ → ℕ, Function.Bijective ordering ∧
       ∀ (seq : Fin k → ℚ),
         (∀ i j : Fin k, i < j → seq i < seq j) →
-        (∃ d : ℚ, ∀ i : Fin k, i.val < k - 1 → seq ⟨i.val + 1, by omega⟩ - seq i = d) →
+        (∃ d : ℚ, ∀ i : Fin k, (hi : i.val < k - 1) → seq ⟨i.val + 1, by omega⟩ - seq i = d) →
         ¬(∀ i j : Fin k, i < j → ordering (seq i) < ordering (seq j))) := by
   constructor
   · exact erdos_194

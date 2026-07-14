@@ -77,7 +77,8 @@ theorem nthPrime_two : nthPrime 2 = 5 := by
   have hc6 : Nat.count Nat.Prime 6 = Nat.count Nat.Prime 5 + 1 :=
     by rw [Nat.count_succ, if_pos (by decide : Nat.Prime 5)]
   have h_upper : Nat.nth Nat.Prime 2 < 6 :=
-    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp (by omega)
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp
+      (by simp only [show (fun p => Nat.Prime p) = Nat.Prime from rfl]; omega)
   -- Lower bound: > 3 and 4 is not prime
   have h_gt3 : 3 < Nat.nth Nat.Prime 2 :=
     Nat.nth_prime_one_eq_three ▸ Nat.nth_strictMono Nat.infinite_setOf_prime (by omega : 1 < 2)
@@ -254,7 +255,8 @@ theorem gap_lt_prime (k : ℕ) (hk : k ≥ 1) : primeGap k < nthPrime k := by
   have h_count_succ : Nat.count Nat.Prime (q + 1) = Nat.count Nat.Prime q + 1 := by
     rw [Nat.count_succ, if_pos hq_prime]
   have h_next : nthPrime (k + 1) < q + 1 :=
-    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp (by omega)
+    (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp
+      (by simp only [show (fun p => Nat.Prime p) = Nat.Prime from rfl]; omega)
   -- 2 * nthPrime k is even > 2, hence not prime
   have h_not_prime : ¬ Nat.Prime (2 * nthPrime k) := by
     intro hp

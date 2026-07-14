@@ -47,7 +47,9 @@ Unfold topK to get Set.Icc (n - k + 1) n. Use Set.Icc_toFinset and Set.ncard for
 -/
 theorem topK_card (n k : ℕ) (hk : k ≤ n) (hk_pos : k > 0) :
     (topK n k).ncard = k := by
-      convert Set.ncard_eq_toFinset_card ( Set.Icc ( n - k + 1 ) n ) using 1 ; norm_num [ hk ] ; omega;
+      unfold topK
+      rw [Set.ncard_eq_toFinset_card', Set.toFinset_Icc, Nat.card_Icc]
+      omega
 
 -- Representability basics
 /-- Zero is always representable (by the empty multiset). -/
