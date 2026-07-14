@@ -71,9 +71,9 @@ theorem countAdjacentDiffs_parity :
       have hz_mem : z ∈ b :: rest := by
         rw [← hz_eq]; exact List.getLast_mem _
       -- membership ⇒ each of a, b, z is ±1
-      have ha : a = 1 ∨ a = -1 := hpm a (List.mem_cons_self _ _)
+      have ha : a = 1 ∨ a = -1 := hpm a (List.mem_cons_self ..)
       have hb : b = 1 ∨ b = -1 :=
-        hpm b (List.mem_cons_of_mem a (List.mem_cons_self _ _))
+        hpm b (List.mem_cons_of_mem a (List.mem_cons_self ..))
       have hzpm : z = 1 ∨ z = -1 := hpm z (List.mem_cons_of_mem a hz_mem)
       -- induction hypothesis on the tail
       have ih := countAdjacentDiffs_parity b rest
@@ -84,7 +84,8 @@ theorem countAdjacentDiffs_parity :
       rw [hlast, hz_eq]
       -- `countAdjacentDiffs (b :: rest)` is an opaque atom shared by `ih` and the
       -- goal; `omega` pins its parity from `ih`. Case-bash the ±1 endpoints.
+      have hpar := Nat.mod_two_eq_zero_or_one (countAdjacentDiffs (b :: rest))
       rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;>
-        rcases hzpm with rfl | rfl <;> split_ifs at ih ⊢ <;> omega
+        rcases hzpm with rfl | rfl <;> norm_num at ih ⊢ <;> omega
 
 end BudanParityEngine

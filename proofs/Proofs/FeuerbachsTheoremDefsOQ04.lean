@@ -61,7 +61,7 @@ open FeuerbachsTheorem Real EuclideanGeometry
 
 /-- Embed a `Point` (= ℝ × ℝ) into `EuclideanSpace ℝ (Fin 2)`.
     Maps `(x, y)` to the vector `![x, y]`. -/
-def toEuclidean (P : Point) : EuclideanSpace ℝ (Fin 2) := ![P.1, P.2]
+def toEuclidean (P : Point) : EuclideanSpace ℝ (Fin 2) := !₂[P.1, P.2]
 
 /-- **Bridge Lemma**: the Mathlib `dist` on `EuclideanSpace ℝ (Fin 2)` agrees
     with the custom `dist2` distance function.
@@ -71,12 +71,12 @@ def toEuclidean (P : Point) : EuclideanSpace ℝ (Fin 2) := ![P.1, P.2]
     `(P.i - Q.i)² = (Q.i - P.i)²`. -/
 theorem toEuclidean_dist (P Q : Point) :
     dist (toEuclidean P) (toEuclidean Q) = dist2 P Q := by
-  rw [dist_eq_norm, EuclideanSpace.norm_eq, dist2]
+  rw [EuclideanSpace.dist_eq, dist2]
   congr 1
   rw [Fin.sum_univ_two]
-  simp only [toEuclidean, Pi.sub_apply, Real.norm_eq_abs, sq_abs,
-             Matrix.cons_val_zero, Matrix.head_cons, Matrix.cons_val_one,
-             Matrix.head_fin_const]
+  simp only [toEuclidean, Real.dist_eq, WithLp.toLp_sub, WithLp.ofLp_toLp,
+             Pi.sub_apply, Matrix.cons_val_zero, Matrix.head_cons,
+             Matrix.cons_val_one, Matrix.head_fin_const, sq_abs, abs_sub_comm]
   ring
 
 /-- Corollary: `toEuclidean P` lies in `Metric.sphere center r` iff
@@ -84,7 +84,7 @@ theorem toEuclidean_dist (P Q : Point) :
     condition is preserved by the embedding). -/
 theorem mem_sphere_iff_dist2 (P C : Point) (r : ℝ) :
     toEuclidean P ∈ Metric.sphere (toEuclidean C) r ↔ dist2 C P = r := by
-  simp [Metric.mem_sphere, dist_comm, toEuclidean_dist]
+  rw [Metric.mem_sphere, dist_comm, toEuclidean_dist]
 
 -- ============================================================
 -- PART II: Nine-Point Circle Membership (Mathlib Sphere)
