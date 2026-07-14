@@ -64,7 +64,7 @@ theorem logIncrement_tendsto_zero_iff_ratio_tendsto_one (R : ℕ → ℝ)
     intro h
     have hexp : Tendsto (fun l => Real.exp (Real.log (R (l + 1) / R l))) atTop (𝓝 1) := by
       have := (Real.continuous_exp.tendsto 0).comp h
-      simpa using this
+      simpa [Function.comp_def] using this
     have hEq : (fun l => Real.exp (Real.log (R (l + 1) / R l)))
         =ᶠ[atTop] (fun l => R (l + 1) / R l) := by
       obtain ⟨N, hN⟩ := eventually_atTop.mp hpos
@@ -78,7 +78,7 @@ theorem logIncrement_tendsto_zero_iff_ratio_tendsto_one (R : ℕ → ℝ)
     have hlog : Tendsto Real.log (𝓝 1) (𝓝 (Real.log 1)) :=
       (Real.continuousAt_log (by norm_num)).tendsto
     have := hlog.comp h
-    simpa using this
+    simpa [Function.comp_def] using this
 
 /-- **Three-way equivalence.** The log-increment tends to `0` iff the normalized
 increment tends to `0` (both being equivalent to the ratio tending to `1`). Thus
@@ -133,6 +133,6 @@ theorem logIncrement_gap_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
   have hlog : Tendsto Real.log (𝓝 1) (𝓝 (Real.log 1)) :=
     (Real.continuousAt_log (by norm_num)).tendsto
   have := hlog.comp hgap
-  simpa using this
+  simpa [Function.comp_def] using this
 
 end Erdos1014OQ03Log
