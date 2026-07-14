@@ -78,8 +78,9 @@ theorem degreeOfEnd_conj (e : G ≃+ ℤ) (f : G →+ G) (n : ℤ) :
   have hcn : c n = e (f (e.symm n)) := rfl
   have hc1 : c 1 = degreeOfEnd e f := rfl
   have key : c n = c 1 * n := by
-    have := c.map_zsmul 1 n
-    simpa [mul_comm] using this
+    conv_lhs => rw [show n = n • (1:ℤ) by simp]
+    rw [c.map_zsmul]
+    simp [mul_comm]
   rw [hcn, hc1] at key
   simpa using key
 
@@ -96,7 +97,7 @@ theorem degreeOfEnd_comp (e : G ≃+ ℤ) (g f : G →+ G) :
   rw [hf]
   -- now `e (g (e⁻¹ (deg f))) = deg g * deg f` is exactly the conjugation identity at `n = deg f`
   have := degreeOfEnd_conj e g (degreeOfEnd e f)
-  simpa using this
+  simpa [degreeOfEnd] using this
 
 /-- The degree does **not** depend on the chosen identification `e : G ≃+ ℤ`.  This is the
 well-definedness of the Brouwer degree: any two identifications of `Hₙ` with `ℤ` give the same
@@ -120,7 +121,7 @@ theorem degreeOfEnd_indep (e₁ e₂ : G ≃+ ℤ) (f : G →+ G) :
     simp only [hψ, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, ha,
       e₁.symm_apply_apply, e₂.apply_symm_apply]
   have hlin : ψ (d * a) = d * ψ a := by
-    have := ψ.map_zsmul a d
+    have := ψ.map_zsmul d a
     simpa [smul_eq_mul] using this
   -- Conclude `degreeOfEnd e₂ f = d`.
   have : degreeOfEnd e₂ f = ψ (d * a) := by
