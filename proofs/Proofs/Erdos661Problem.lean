@@ -65,7 +65,7 @@ theorem distSq_eq_zero_iff (p q : Point2) : distSq p q = 0 ↔ p = q := by
     have h2 : (p.2 - q.2) ^ 2 = 0 := by nlinarith [sq_nonneg (p.1 - q.1)]
     exact Prod.ext (sub_eq_zero.mp (sq_eq_zero_iff.mp h1))
                    (sub_eq_zero.mp (sq_eq_zero_iff.mp h2))
-  · rintro rfl; exact distSq_self q
+  · rintro rfl; exact distSq_self _
 
 /-- Distinct points have positive squared distance. -/
 theorem distSq_pos_of_ne {p q : Point2} (h : p ≠ q) : 0 < distSq p q := by
@@ -90,7 +90,7 @@ theorem distSq_pos_of_ne {p q : Point2} (h : p ≠ q) : 0 < distSq p q := by
 theorem bipartiteDistSet_card_le (X Y : Finset Point2) :
     (bipartiteDistSet X Y).card ≤ X.card * Y.card := by
   unfold bipartiteDistSet
-  calc (X ×ˢ Y).image (fun p => distSq p.1 p.2) |>.card
+  calc ((X ×ˢ Y).image (fun p => distSq p.1 p.2)).card
       ≤ (X ×ˢ Y).card := Finset.card_image_le
     _ = X.card * Y.card := Finset.card_product X Y
 
