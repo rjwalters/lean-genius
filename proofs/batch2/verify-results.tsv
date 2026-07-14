@@ -721,7 +721,7 @@ Erdos1041Problem	GREEN
 Erdos1042Problem	GREEN	
 Erdos1043Aristotle	GREEN	
 Erdos1044Problem	GREEN	
-Erdos1045Problem	RESIDUAL	unknown-const:z
+Erdos1045Problem	GREEN	
 Erdos1046Problem	GREEN	
 Erdos1048Aristotle	RESIDUAL	unknown-const:Complex.continuous_abs.comp
 Erdos1048Problem	GREEN	
@@ -741,7 +741,7 @@ Erdos1054ConstructionD	RESIDUAL	unknown-const:p
 Erdos1054OQ01	RESIDUAL	unknown-const:p
 Erdos1054OQ02	PRE-EXISTING	never-compiled:q
 Erdos1054Problem	GREEN	
-Erdos1055Problem	RESIDUAL	elab-drift
+Erdos1055Problem	GREEN	
 Erdos1056Aristotle	GREEN	
 Erdos1056Problem	RESIDUAL	instance-synth
 Erdos1057Problem	GREEN	
@@ -1625,7 +1625,7 @@ Erdos722Problem	GREEN
 Erdos723Problem	GREEN	
 Erdos724Problem	RESIDUAL	parse-error
 Erdos725Problem	GREEN	
-Erdos726Problem	RESIDUAL	unknown-const:Nat.Prime.not_dvd_of_lt
+Erdos726Problem	GREEN	
 Erdos727Problem	GREEN	
 Erdos728Problem	GREEN	proof-drift
 Erdos72Aristotle	GREEN	
@@ -2550,7 +2550,7 @@ SzemerediRegularityOQ04Product	GREEN
 SzemerediRegularityOQ04Witness	GREEN	
 TaxicabNumberOQ01	GREEN	
 TaylorSinCosConvergenceOQ02	RESIDUAL	proof-drift
-TaylorSinCosConvergenceOQ03Aristotle	RESIDUAL	unknown-const:div_le_div
+TaylorSinCosConvergenceOQ03Aristotle	GREEN	
 TaylorSinCosConvergenceOQ04	RESIDUAL	unknown-const:taylorPartialSum_at_zero
 TaylorTheorem	GREEN	
 TaylorTheoremOQ01	RESIDUAL	type-mismatch

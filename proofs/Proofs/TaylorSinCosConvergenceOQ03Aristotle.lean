@@ -67,11 +67,11 @@ theorem sinTermAbs_antitone (x : ℝ) (hx : |x| ≤ 1) :
     Antitone (sinTermAbs x) := by
   intro m n hmn
   unfold sinTermAbs
-  apply div_le_div
+  apply div_le_div₀
   · exact pow_nonneg (abs_nonneg x) _
   · exact pow_le_pow_of_le_one (abs_nonneg x) hx (by omega)
   · exact Nat.cast_pos.mpr (Nat.factorial_pos _)
-  · exact Nat.cast_le.mpr (Nat.factorial_mono (by omega))
+  · exact Nat.cast_le.mpr (Nat.factorial_le (by omega))
 
 /-- Sin series terms tend to 0 for any fixed x.
     PROVED in main file via composition with tendsto_pow_div_factorial_atTop. -/
@@ -79,8 +79,7 @@ theorem sinTermAbs_tendsto (x : ℝ) :
     Filter.Tendsto (sinTermAbs x) Filter.atTop (nhds 0) := by
   have hg : Filter.Tendsto (fun n => |x| ^ n / (Nat.factorial n : ℝ))
       Filter.atTop (nhds 0) := by
-    have := Real.tendsto_pow_div_factorial_atTop |x|
-    simp only [Nat.cast_ofNat] at this ⊢
+    have := FloorSemiring.tendsto_pow_div_factorial_atTop |x|
     exact this
   have hf : Filter.Tendsto (fun k => 2 * k + 1) Filter.atTop Filter.atTop :=
     Filter.tendsto_atTop_atTop.mpr fun n => ⟨n, by omega⟩
