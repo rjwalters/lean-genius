@@ -2337,7 +2337,7 @@ PropertyBFirstMomentRecoloring	GREEN	unknown-const:Finset.exists_ne_of_one_lt_ca
 PtolemysComplexProofOQ02	RESIDUAL	unknown-const:Real.cos_eq_one_iff.mp
 PtolemysTheoremOQ01Incomplete01	RESIDUAL	elab-drift
 PtolemysTheoremOQ01OQ01	GREEN	
-PtolemysTheoremOQ01OQ02	RESIDUAL	unknown-const:spherical_ptolemy
+PtolemysTheoremOQ01OQ02	GREEN	v4.31-migrated
 PuiseuxTheorem	GREEN	
 PuiseuxTheoremOQ02	RESIDUAL	instance-synth
 PuiseuxTheoremOQ03	GREEN	type-mismatch
@@ -2497,7 +2497,7 @@ SpernerTuckerSimplexFacetPair	GREEN
 Sqrt2Irrational	GREEN	
 Sqrt2MinpolyOQ01	GREEN	
 Sqrt2MinpolyOQ01OQ02	GREEN	rewrite-drift
-Sqrt2OQ01	RESIDUAL	unknown-const:square_nonneg_general
+Sqrt2OQ01	GREEN	v4.31-migrated
 Sqrt2PlusSqrt3Irrational	GREEN	
 Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01	GREEN	
 Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02	GREEN	
@@ -2528,8 +2528,8 @@ SylowTheoremOQ04OQ03	RESIDUAL	decide-maxrecdepth
 SylowTheoremOQ05	GREEN	
 SylowTheoremsOQ05	RESIDUAL	slow-timeout
 SylvesterSequenceOQ01OQ03	GREEN	
-SynthesisCurvaturePtolemy	RESIDUAL	unknown-const:spherical_ptolemy
-SynthesisCurvaturePtolemyOQ01	RESIDUAL	unknown-const:spherical_ptolemy
+SynthesisCurvaturePtolemy	GREEN	v4.31-migrated
+SynthesisCurvaturePtolemyOQ01	GREEN	v4.31-migrated
 SynthesisCurvaturePtolemyOQ02	GREEN	
 SzemerediCoreOQ01	GREEN	
 SzemerediCoreOQ01Aristotle	RESIDUAL	proof-drift

@@ -68,6 +68,7 @@ See PtolemysTheoremOQ01OQ02.lean (Hyperbolic Case Survey) for details.
 set_option linter.unusedVariables false
 
 open Real EuclideanGeometry
+open scoped InnerProductSpace
 
 -- ============================================================
 -- PART 1: The curvatureSin Function
@@ -145,17 +146,6 @@ lemma curvatureSin_odd (K t : ℝ) : curvatureSin K (-t) = -curvatureSin K t := 
   · rw [mul_neg, Real.sin_neg, neg_div]
   · rw [mul_neg, Real.sinh_neg, neg_div]
 
-/-- Auxiliary: HasDerivAt for Real.sinh. The derivative of sinh is cosh. -/
-private theorem hasDerivAt_sinh (x : ℝ) : HasDerivAt Real.sinh (Real.cosh x) x := by
-  have h1 := Real.hasDerivAt_exp x
-  have h2 := (Real.hasDerivAt_exp (-x)).comp x (hasDerivAt_neg x)
-  have hsinhDef : Real.sinh = fun y => (Real.exp y - Real.exp (-y)) / 2 := by
-    ext y; exact Real.sinh_eq y
-  rw [hsinhDef]
-  have hcoshEq : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
-  rw [hcoshEq]
-  convert (h1.sub h2).div_const 2 using 1
-  ring
 
 /-- **Normalization**: The derivative of curvatureSin K at t = 0 is 1 for all K.
 
@@ -179,8 +169,8 @@ theorem curvatureSin_hasDerivAt_zero (K : ℝ) : HasDerivAt (curvatureSin K) 1 0
       have hfun : curvatureSin K = fun t => Real.sin (Real.sqrt K * t) / Real.sqrt K := by
         ext t; simp [curvatureSin, if_neg hK0, if_pos hKpos]
       rw [hfun]
-      have h1 : HasDerivAt (fun t => Real.sqrt K * t) (Real.sqrt K) 0 :=
-        (hasDerivAt_id 0).const_mul (Real.sqrt K)
+      have h1 : HasDerivAt (fun t => Real.sqrt K * t) (Real.sqrt K) 0 := by
+        simpa using (hasDerivAt_id 0).const_mul (Real.sqrt K)
       have h2 : HasDerivAt Real.sin (Real.cos (Real.sqrt K * 0)) (Real.sqrt K * 0) :=
         Real.hasDerivAt_sin (Real.sqrt K * 0)
       have h3 : HasDerivAt (fun t => Real.sin (Real.sqrt K * t))
@@ -198,10 +188,10 @@ theorem curvatureSin_hasDerivAt_zero (K : ℝ) : HasDerivAt (curvatureSin K) 1 0
       have hfun : curvatureSin K = fun t => Real.sinh (Real.sqrt (-K) * t) / Real.sqrt (-K) := by
         ext t; simp [curvatureSin, if_neg hK0, if_neg (not_lt.mpr (le_of_lt hKneg))]
       rw [hfun]
-      have h1 : HasDerivAt (fun t => Real.sqrt (-K) * t) (Real.sqrt (-K)) 0 :=
-        (hasDerivAt_id 0).const_mul (Real.sqrt (-K))
+      have h1 : HasDerivAt (fun t => Real.sqrt (-K) * t) (Real.sqrt (-K)) 0 := by
+        simpa using (hasDerivAt_id 0).const_mul (Real.sqrt (-K))
       have h2 : HasDerivAt Real.sinh (Real.cosh (Real.sqrt (-K) * 0)) (Real.sqrt (-K) * 0) :=
-        hasDerivAt_sinh (Real.sqrt (-K) * 0)
+        Real.hasDerivAt_sinh (Real.sqrt (-K) * 0)
       have h3 : HasDerivAt (fun t => Real.sinh (Real.sqrt (-K) * t))
           (Real.cosh (Real.sqrt (-K) * 0) * Real.sqrt (-K)) 0 :=
         h2.comp 0 h1

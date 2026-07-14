@@ -23,11 +23,13 @@ namespace Sqrt2OQ01
 /-- Non-negativity of squares in any linearly ordered semiring.
     This generalizes the parent's `square_nonneg` from ℤ to any
     type with a compatible ordering and multiplication. -/
-theorem square_nonneg_general {α : Type*} [LinearOrderedSemiring α] (x : α) :
+theorem square_nonneg_general {α : Type*} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α]
+    [ExistsAddOfLE α] (x : α) :
     0 ≤ x * x := mul_self_nonneg x
 
 /-- Same result using the `^2` notation. -/
-theorem sq_nonneg_general {α : Type*} [LinearOrderedSemiring α] (x : α) :
+theorem sq_nonneg_general {α : Type*} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α]
+    [ExistsAddOfLE α] (x : α) :
     0 ≤ x ^ 2 := sq_nonneg x
 
 -- ============================================================
@@ -53,14 +55,14 @@ theorem square_nonneg_nat (n : ℕ) : 0 ≤ n * n := square_nonneg_general n
 /-- An independent proof by case analysis on sign, generalizing
     the parent file's proof technique from ℤ to any LinearOrderedRing.
     This shows the parent's proof strategy itself generalizes. -/
-theorem square_nonneg_by_cases {α : Type*} [LinearOrderedRing α] (x : α) :
+theorem square_nonneg_by_cases {α : Type*} [Ring α] [LinearOrder α] [IsStrictOrderedRing α] (x : α) :
     0 ≤ x * x := by
   by_cases h : 0 ≤ x
   · exact mul_nonneg h h
   · push_neg at h
     have h1 : x ≤ 0 := le_of_lt h
     have h2 : 0 ≤ -x := neg_nonneg.mpr h1
-    calc x * x = (-x) * (-x) := by ring
+    calc x * x = (-x) * (-x) := by rw [neg_mul_neg]
              _ ≥ 0 := mul_nonneg h2 h2
 
 -- ============================================================
@@ -68,16 +70,17 @@ theorem square_nonneg_by_cases {α : Type*} [LinearOrderedRing α] (x : α) :
 -- ============================================================
 
 /-- The sum of two squares is non-negative. -/
-theorem sum_sq_nonneg {α : Type*} [LinearOrderedSemiring α] (x y : α) :
+theorem sum_sq_nonneg {α : Type*} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α]
+    [ExistsAddOfLE α] (x y : α) :
     0 ≤ x * x + y * y :=
   add_nonneg (square_nonneg_general x) (square_nonneg_general y)
 
 /-- For linearly ordered rings, |x|² = x². -/
-theorem abs_sq {α : Type*} [LinearOrderedCommRing α] (x : α) :
-    |x| * |x| = x * x := abs_mul_self x
+theorem abs_sq {α : Type*} [CommRing α] [LinearOrder α] [IsStrictOrderedRing α] (x : α) :
+    |x| * |x| = x * x := abs_mul_abs_self x
 
 /-- The Cauchy-Schwarz trick: 0 ≤ (ax - by)² gives ab ≤ (a²+b²)/2. -/
-theorem am_gm_sq {α : Type*} [LinearOrderedField α] (a b : α) :
+theorem am_gm_sq {α : Type*} [Field α] [LinearOrder α] [IsStrictOrderedRing α] (a b : α) :
     a * b ≤ (a * a + b * b) / 2 := by
   have h : 0 ≤ (a - b) * (a - b) := square_nonneg_general (a - b)
   nlinarith
