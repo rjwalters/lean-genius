@@ -2264,7 +2264,7 @@ MeanValueTheoremOQ02OQ04OQ01	RESIDUAL	type-mismatch
 MeanValueTheoremOQ03	GREEN	
 MeanValueTheoremOQ04	RESIDUAL	type-mismatch
 MeanValueTheoremOQ04OQ03	GREEN	
-MinkowskiFundamentalTheoremOQ02	RESIDUAL	proof-drift
+MinkowskiFundamentalTheoremOQ02	GREEN	
 MinkowskiTheoremOQ02	RESIDUAL	unknown-const:ENNReal.ofReal_lt_ofReal_of_nonneg
 MinkowskiTheoremOQ03	GREEN	
 MinkowskiTheoremOQ04OQ03	GREEN	
@@ -2291,7 +2291,7 @@ PACLearning	GREEN
 PNPBarriersLegacy	RESIDUAL	type-mismatch
 PNPBarriersSound	GREEN	
 PNPBarriersUnified	GREEN	
-PappusTheoremOQ02	RESIDUAL	proof-drift
+PappusTheoremOQ02	GREEN	
 PartitionTheorem	RESIDUAL	unknown-const:Theorems100.partition_theorem
 PartitionTheoremOQ01	RESIDUAL	unknown-const:Finset.mem_empty
 PartitionTheoremOQ01OQ01	RESIDUAL	unknown-const:Finset.mem_empty

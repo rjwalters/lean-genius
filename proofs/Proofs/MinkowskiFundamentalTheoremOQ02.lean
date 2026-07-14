@@ -63,7 +63,7 @@ open NumberField
     This is the main consequence of the Minkowski bound argument:
     since every class contains a representative of norm ≤ M(K), and there are
     only finitely many ideals of bounded norm, Cl(K) is finite. -/
-theorem classGroup_finite (K : Type*) [Field K] [NumberField K] :
+noncomputable def classGroup_finite (K : Type*) [Field K] [NumberField K] :
     Fintype (ClassGroup (RingOfIntegers K)) :=
   inferInstance
 
@@ -101,7 +101,9 @@ theorem rat_classNumber_eq_one : classNumber ℚ = 1 :=
 /-- **ℤ is a PID** (corollary):
     The ring of integers ℤ = 𝒪_ℚ is a principal ideal domain.
     This is immediate from class number 1. -/
-theorem rat_integers_isPID : IsPrincipalIdealRing (RingOfIntegers ℚ) := by
+theorem rat_integers_isPID : IsPrincipalIdealRing (RingOfIntegers ℚ) :=
+  IsPrincipalIdealRing.of_surjective (Rat.ringOfIntegersEquiv).symm.toRingHom
+    (Rat.ringOfIntegersEquiv).symm.surjective
 
 end MinkowskiClassNumberBound
 
