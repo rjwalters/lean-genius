@@ -1395,6 +1395,33 @@ mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
 | `Matrix.charpoly_conj_of_isUnit` removed | `Matrix.charpoly_units_conj' hP.unit N` then `rw [hP.unit_spec]` (its `M.val⁻¹` is already the matrix inverse) | CayleyHamiltonMinpolyOQ02OQ03 |
 | `minpoly_conj_of_isUnit` removed (similar-matrix minpoly invariance) | build conjugation AlgEquiv `MulSemiringAction.toAlgEquiv F _ (ConjAct.toConjAct hP.unit⁻¹)`, prove `e A = P⁻¹AP` via `ConjAct.units_smul_def`+`Matrix.coe_units_inv`, then `minpoly.algEquiv_eq` | CayleyHamiltonMinpolyOQ02OQ03 |
 
+## §7ab Doctor increment 38 recipes (tm/pd/rewrite/unknown-const/instance-synth, N–Z + Erdos≥600, #38065, +10 GREEN)
+
+| Symptom | Fix | File |
+|---|---|---|
+| `by decide` errors "Expected type must not contain free variables" | `by decide +revert` (auto-reverts free vars) | WaringGgLowerBoundsOQ02 |
+| `have h : !χ T = false` type-mismatch → expected `!decide(χ T = false) = true` (`!` parsed as `Not` over the eq, not `Bool.not`) | write `Bool.not (χ T) = false` explicitly | RamseyHypergraph |
+| `cases hc : χ T with \| true =>` leaves goal `true = true`, `exact hc` fails | close with `rfl` (scrutinee substituted) | RamseyHypergraph |
+| `omega` can't close nonlinear-product Nat goals (`n*(n+1)/2 ≥ n`, `n*(n+1) > 0`) — was OK in v4.26 | `Nat.le_div_iff_mul_le` + `Nat.mul_le_mul_left k h` (k explicit) / `Nat.mul_pos` / `Nat.mul_div_cancel` | TriangularReciprocalsFigurate |
+| `rpow_neg` / `rpow_natCast` unknown identifier | `Real.rpow_neg` / `Real.rpow_natCast` (not root-exported) | TriangularReciprocalsFigurate |
+| `Finset.sum_Ico_consecutive _ …` → `AddCommMonoid ?m` stuck | function arg now explicit; pass the lambda `(fun j => …)` | SumOfKthPowersOQ03 |
+| `EuclideanGeometry.angle_add_angle_add_angle_eq_pi h₂ h₃` arg-mismatch | now `(p₃ : P) (h : p₂ ≠ p₁)`: pass `p₃ h₂` | TriangleAngleSum |
+| `taylor_mean_remainder_lagrange`/`_cauchy` type-mismatch (ℕ∞ vs WithTop ℕ∞; Icc vs uIcc; < vs ≠) | now `uIcc`/`uIoo` + `x₀ ≠ x`; `differentiableOn_iteratedDerivWithin` cast is `WithTop ℕ∞`; bridge `uIcc_of_le hx.le`/`uIoo_of_lt hx`/`hx.ne` | TaylorTheorem |
+| `Polynomial.natDegree_eq_one` destructure `⟨a,b,ha,hfab⟩` fails | now `∃ a, a≠0 ∧ ∃ b, C a*X+C b = p` → `⟨a,ha,b,hfab⟩`; hfab RHS is `= p` (use `rw [← hfab]`); after `rw [ha1]` add `map_one` before `one_mul` | Sqrt2MinpolyOQ01 |
+| `simp [aeval_esymm_eq]` unsolved — simp normalizes `MvPolynomial.aeval x`→`eval x` first | add `eval`-form bridge lemmas (`rw [← MvPolynomial.aeval_eq_eval, aeval_…]`) to simp set; `map_natCast` for aeval of natCast | VietasFormulasOQ03OQ01 |
+| `(\|intExpr\| : ℚ)` — abs now elaborates IN ℚ (each var cast), `rw [h]` (h over ℤ) fails | bridge via `Int.cast_abs` + `push_cast` | PicksTheoremOQ01 |
+| `decide` slow whnf-timeout on bounded-Nat ∀ | `set_option maxHeartbeats 4000000 in` (axiom-free; must precede the docstring) | TaxicabNumberOQ01 |
+
+Statement repair: PicksTheoremOQ01 `picks_additivity` — added `hglue : 2*k+2 ≤ b₁+b₂` (ℕ truncated
+subtraction made the original statement false; geometric gluing bound). No callers.
+
+### §7ab Increment 38 (continued)
+
+| Symptom | Fix | File |
+|---|---|---|
+| `HahnSeries.support_add_subset hq` app-type-mismatch (hq is Prop, expects HahnSeries) | now `(x y)` explicit + returns `⊆`: `support_add_subset _ _ hq` | PuiseuxTheorem |
+| `by decide` "did not reduce to isTrue/isFalse", instance = `Classical.propDecidable`, file has `open scoped Classical` | replace with `rfl` / `refine ⟨rfl,…⟩` on concrete goals (Classical shadows the computable instance) | PicksTheoremOQ01OQ01 |
+| old `zify [h]; Int.natAbs_of_nonneg (by omega)` breaks (omega sees metavar) | modern `omega` closes `((n:ℤ)-1).natAbs = n-1` directly | PicksTheoremOQ01OQ01 |
 ### §7ab Increment 39 recipes (Doctor-b A–M / Erdos<600)
 
 | Symptom | Fix | Files |

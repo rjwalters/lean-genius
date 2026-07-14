@@ -2043,6 +2043,69 @@ and `…Conjecture` fix DIFFERENT `Type u` levels, `@h V` rejects `V : Type u₂
 arg + `erdos_794_origina` typo), Erdos814Problem (HSub ℕ ℚ / LT ℚ instance gaps),
 Erdos732Problem (`Fintype (List ℕ)` ill-defined def), Erdos611Problem (sorry in theorem TYPES).
 
+## Increment 38 (Doctor, N-Z basenames + Erdos≥600, tm/pd/rewrite/unknown-const/instance-synth)
+
++10 GREEN, all own-`lake`-verified in dr48 (11g). Files: TriangleAngleSum, TaylorTheorem,
+TaxicabNumberOQ01, VietasFormulasOQ03OQ01, Sqrt2MinpolyOQ01, PicksTheoremOQ01, SumOfKthPowersOQ03,
+WaringGgLowerBoundsOQ02, RamseyHypergraph, TriangularReciprocalsFigurate.
+
+Recipes:
+- 38-1 TriangleAngleSum — `EuclideanGeometry.angle_add_angle_add_angle_eq_pi` now takes explicit
+  `(p₃ : P)` + single hyp `h : p₂ ≠ p₁` (was two hyps `h₂ h₃`). Pass `p₃ h₂`.
+- 38-2 TaylorTheorem — `taylor_mean_remainder_lagrange`/`_cauchy` API drift: now `uIcc`/`uIoo` +
+  `x₀ ≠ x` (was Icc/Ioo + x₀<x); `ContDiffOn.differentiableOn_iteratedDerivWithin` cast is now
+  `WithTop ℕ∞` (was ℕ∞). Bridge with `uIcc_of_le hx.le`, `uIoo_of_lt hx`, `hx.ne`.
+- 38-3 TaxicabNumberOQ01 — `decide` slow whnf-timeout on ∀ m<1729 bounded-Nat: fix with
+  `set_option maxHeartbeats 4000000 in` (stays axiom-free, no native_decide). ★`set_option … in`
+  must go BEFORE the `/-- … -/` docstring, not between it and the theorem (else "unexpected token").
+- 38-4 VietasFormulasOQ03OQ01 — simp now normalizes `MvPolynomial.aeval x` → `eval x` before
+  `aeval`-stated bridge lemmas fire → unsolved goals. Add `eval`-form companions
+  (`rw [← MvPolynomial.aeval_eq_eval, aeval_…]`) to the simp set. Also `map_natCast` for
+  `aeval` of a natCast constant.
+- 38-5 Sqrt2MinpolyOQ01 — `Polynomial.natDegree_eq_one` now `∃ a, a ≠ 0 ∧ ∃ b, C a*X + C b = p`
+  (destructure `⟨a, ha, b, hfab⟩`, hfab RHS `= p` so use `rw [← hfab]`). After `rw [ha1]` need
+  `map_one` to turn `C 1` into `1` before `one_mul`. `algebraMap ℚ ℝ b` folds to `↑b` via
+  `rw [show (algebraMap ℚ ℝ) b = (b:ℝ) from by simp]`. Also `rw [← hk]` direction bug (→ `rw [hk]`).
+- 38-6 PicksTheoremOQ01 — `(|intExpr| : ℚ)` now elaborates the abs IN ℚ (each var cast) rather than
+  casting an ℤ-abs → `rw [h]` (h over ℤ) fails; bridge via `Int.cast_abs` + `push_cast`.
+  STATEMENT REPAIR: `picks_additivity` was false w/o a bound (ℕ truncated subtraction
+  `b₁+b₂-2k-2`); added `hglue : 2*k+2 ≤ b₁+b₂` (the geometric gluing bound). No callers.
+- 38-7 SumOfKthPowersOQ03 — `Finset.sum_Ico_consecutive` function arg `f` is now EXPLICIT; passing
+  `_` leaves `AddCommMonoid ?m` stuck. Supply the lambda `(fun j => 2*j+1)`. Then use
+  `simp only [Finset.range_eq_Ico]` (rewrite ALL, not first) so the RHS range also converts.
+- 38-8 WaringGgLowerBoundsOQ02 — ★`by decide` over a goal with FREE VARIABLES now errors
+  "Expected type must not contain free variables" → use `by decide +revert`. Also `induction d`
+  where a `≤`-hyp was `obtain`-destructured gives `ih` an EXTRA hypothesis (`s ≤ s+d → …`) — apply
+  `ih (Nat.le_add_right s d)`. `simpa [Nat.add_succ]` recursion-loops → `rw [Nat.add_succ]; exact`.
+- 38-9 RamseyHypergraph — ★in a type ascription `have h : !χ T = false`, `!` now parses as `Not`
+  over the equality Prop (→ `!decide(χ T = false) = true`), NOT `Bool.not` over `χ T`. Write
+  `Bool.not (χ T) = false` explicitly. Also `cases hc : χ T with | true =>` substitutes the
+  scrutinee, so goal becomes `true = true` → close with `rfl` not `exact hc`. (Pre-existing S5
+  `sorry` in `ramsey_existence` body is intentional deferral, compiles green.)
+- 38-10 TriangularReciprocalsFigurate — `rpow_neg`/`rpow_natCast` need `Real.` prefix (no longer
+  root-exported). ★`omega` no longer closes goals with nonlinear products (`n*(n+1)/2 ≥ n`,
+  `n*(2n-1) = …/2`, `n*(n+1) > 0`) → use `Nat.le_div_iff_mul_le` + `Nat.mul_le_mul_left k h`
+  (k explicit!) / `Nat.mul_pos` / `Nat.mul_div_cancel`.
+
+Anomaly: WolstenholmeTheoremOQ01 shows 0 errors in combined build but OOMs (exit 137) on its OWN
+`lake build` at 11g — genuinely memory-intensive to compile; could NOT verify PASS under my limits,
+left RESIDUAL (do not flip). Deferred (multi-error/deep): Sylow cluster (SylowTheoremOQ01/OQ02Orbit/
+OQ04/OQ04OQ03 — 9-16 errors each, MulEquiv.ofInjective/MonoidHom.index_ker unknown, index/ker API),
+ProbMethodSecondMomentOQ01 (dup-decl + ext-on-nonequality), WilsonsTheoremOQ01 (dep OQ02Ext broken,
+37 errors), TriangleAngleSumOQ02 (103 errors).
+
+### Increment 38 (continued) — 2 more GREEN (+12 total)
+
+- 38-11 PuiseuxTheorem — `HahnSeries.support_add_subset` now takes `(x y : HahnSeries Γ R)` explicit
+  and RETURNS the `⊆` (was: applied to a membership). Change `support_add_subset hq` →
+  `support_add_subset _ _ hq`. (Note: `support_mul_subset_add_support` deprecated → `support_mul_subset`.)
+- 38-12 PicksTheoremOQ01OQ01 — ★with `open scoped Classical` in the file, `decide` now resolves the
+  `Decidable` instance to `Classical.propDecidable` (noncomputable) → "did not reduce to isTrue/isFalse"
+  even for computable props (`.det.natAbs = 1`). Replace `by decide` with `by rfl` (single concrete
+  eq) / `by refine ⟨rfl, rfl, …⟩` (concrete conjunctions). Also: `edge_split_det_add` `ring` needs the
+  divisibility witnesses — `simp [hM1,hM2]` (folds M-divisions to k) THEN `rw [hv21,hv22]; ring` (feeds
+  v2 = v1 + g·k into det T). And modern `omega` closes `((n:ℤ)-1).natAbs = n-1` DIRECTLY — the old
+  `zify [h1]; Int.natAbs_of_nonneg (by omega)` broke (omega saw a metavar).
 ## Increment 39 (Doctor-b, A-M partition + Erdos<600) — tm/pd/rewrite/unknown-const/instance-synth
 
 - 39-1 AreaOfCircleOQ07OQ04OQ01 — `integral_ofReal` now oriented `∫ ↑f = ↑(∫ f)` (was reverse) AND

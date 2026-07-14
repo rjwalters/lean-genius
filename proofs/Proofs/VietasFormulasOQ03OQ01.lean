@@ -60,6 +60,16 @@ theorem aeval_esymm_eq (k : ℕ) (x : Fin n → R) :
     MvPolynomial.aeval x (MvPolynomial.esymm (Fin n) R k) = elemSymm k x := by
   simp only [MvPolynomial.esymm, elemSymm, map_sum, map_prod, MvPolynomial.aeval_X]
 
+/-- `eval`-form bridge for the power sum (simp normalizes `aeval` to `eval` here). -/
+theorem eval_psum_eq (k : ℕ) (x : Fin n → R) :
+    MvPolynomial.eval x (MvPolynomial.psum (Fin n) R k) = powerSum k x := by
+  rw [← MvPolynomial.aeval_eq_eval, aeval_psum_eq]
+
+/-- `eval`-form bridge for the elementary symmetric polynomial. -/
+theorem eval_esymm_eq (k : ℕ) (x : Fin n → R) :
+    MvPolynomial.eval x (MvPolynomial.esymm (Fin n) R k) = elemSymm k x := by
+  rw [← MvPolynomial.aeval_eq_eval, aeval_esymm_eq]
+
 /-
 ## General Newton's Identities
 -/
@@ -79,7 +89,7 @@ theorem newton_identity (k : ℕ) (x : Fin n → R) :
   calc (k : R) * elemSymm k x
       = MvPolynomial.aeval x
           ((k : MvPolynomial (Fin n) R) * MvPolynomial.esymm (Fin n) R k) := by
-        simp [aeval_esymm_eq]
+        rw [map_mul, aeval_esymm_eq, map_natCast]
     _ = MvPolynomial.aeval x ((-1) ^ (k + 1) *
           ∑ a ∈ (Finset.antidiagonal k).filter (fun a => a.1 < k),
             (-1) ^ a.1 * MvPolynomial.esymm (Fin n) R a.1 *
@@ -87,7 +97,7 @@ theorem newton_identity (k : ℕ) (x : Fin n → R) :
         rw [hmv]
     _ = (-1) ^ (k + 1) * ∑ a ∈ (Finset.antidiagonal k).filter (fun a => a.1 < k),
           (-1) ^ a.1 * elemSymm a.1 x * powerSum a.2 x := by
-        simp [aeval_esymm_eq, aeval_psum_eq]
+        simp [aeval_esymm_eq, aeval_psum_eq, eval_esymm_eq, eval_psum_eq]
 
 /-- **Newton's identity (power sum form)** for Fin n → R, k ≥ 1.
 
@@ -108,7 +118,7 @@ theorem newton_identity_psum (k : ℕ) (hk : 0 < k) (x : Fin n → R) :
             (-1) ^ a.1 * MvPolynomial.esymm (Fin n) R a.1 *
             MvPolynomial.psum (Fin n) R a.2) := by
         rw [hmv]
-    _ = _ := by simp [aeval_esymm_eq, aeval_psum_eq]
+    _ = _ := by simp [aeval_esymm_eq, aeval_psum_eq, eval_esymm_eq, eval_psum_eq]
 
 /-
 ## Basic Properties
