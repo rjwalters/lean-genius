@@ -25,7 +25,8 @@ Erdos < 600; sibling increment 24 = N–Z + Erdos ≥ 600.
 - **DR33l (+1)**: DiamondImpliesCH (Ordinal.mk_Iio_ordinal qualify).
 - **DR33m (+1)**: DerangementsConvergenceOQ05OQ01 (NormedSpace.expSeries_div_hasSum_exp).
 
-Ledger: 1612 → 1630 GREEN (+18). Recipes catalogued in rename-map §7u (+continued).
+Ledger: 1612 → 1630 GREEN (+18). PR #38623 (base feature/issue-37508).
+Recipes catalogued in rename-map §7u (+continued).
 Deferred deep this increment: BorsukUlamOQ03OQ02 (ℤ→+ℤ map_zsmul arg-order +
 defeq-unfold cascade), DissectionOfCubesOQ02OQ02/OQ04 (ℝ⧸zmultiples quotient
 rewrites), ElementaryQuadraticReciprocityOQ02OQ01 (10 scattered), ChineseRemainder,
