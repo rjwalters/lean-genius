@@ -2560,7 +2560,7 @@ TaylorTheoremOQ03OQ01	GREEN
 TaylorTheoremOQ03OQ02	GREEN	
 TestApi1056	RESIDUAL	proof-drift
 TestApi1059	GREEN	
-TestApi1061	RESIDUAL	unknown-const:Nat.divisors_prime_eq
+TestApi1061	GREEN	
 TestApi1061b	RESIDUAL	unknown-const:Nat.divisors_prime_eq
 TestApi1141	GREEN	
 TestApi1148	GREEN	
@@ -2592,7 +2592,7 @@ TestApi847	GREEN
 TestApi889	GREEN	
 TestApi913	GREEN	
 TestApi959	GREEN	
-TestApi960	RESIDUAL	unknown-const:Rat.toNat
+TestApi960	GREEN	
 TestApi963	GREEN	unknown-const:Finset.sum_pow_eq_pow_sum
 TestConvexHull	RESIDUAL	unknown-const:isCompact_isClosed_isBounded
 TestCovByApi	GREEN	
