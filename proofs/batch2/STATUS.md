@@ -1,5 +1,53 @@
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 17, #38065, 2026-07-13)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 19, #38065, 2026-07-13)
 
+# DOCTOR INCREMENT 19 (structured remainder: parse/sig/elab/dot, #38065, 2026-07-13)
+
+Container `dr29` (cpus 0-5, 11g, cache v431). Worked the parse-error / elab-drift /
+dot-notation remainder + free-flip harvest. **+28 GREEN** (git-diff-confirmed vs
+5a3af4fbe3). All flips in-container `lake build` exit-0; final 15-file joint rebuild
+exit 0.
+
+## Per-class before → after (RESIDUAL)
+- parse-error: 52 → 49 (−3)
+- signature-drift: 21 → 20 (−1)
+- elab-drift: 26 → 23 (−3)
+- dot-notation-drift: 12 → 5 (−7)
+- (remaining +14 GREEN were dep-masked free-flips across all classes — prior increments' fixes unblocked them)
+
+## Waves (all in-container lake exit-0, then ledger-flipped)
+- **DR29a (+6)**: AbelRuffiniOQ06OQ01OQ03 (`IsMulCommutative.comm`→`.is_comm.comm`), FundamentalArithmetic (`.Sorted (· ≤ ·)`→`.SortedLE`), TestApi1059 (`Nat.Composite`→`¬Prime∧2≤`), TestApi1141 (native_decide `unfold` + drop `open Classical`), + AmgmInequalityOQ02Defs/NewtonSignedInputs free-flip.
+- **DR29b (+2)**: AbelRuffiniOQ06OQ01 (`IsMulCommutative` have-annotation + `.is_comm.comm`), AbelRuffiniOQ09 (`_root_.HasDerivAt.div` + import `Deriv.Inv`; rischOp value-rewrite replacing fragile `convert`).
+- **DR29c (+4)**: Erdos590 (notation `(`-in-atom split + Ordinal `IsLimit`→`Order.IsSuccLimit`/`isSuccLimit_opow_left`/`opow_lt_opow_iff_right`/`one_lt_opow` iff), + Erdos1086/328/357 free-flip.
+- **DR29d (+3)**: Erdos97 (`²` no longer valid ident → `ℝ²`→`RealPlane`; `ConvexIndep id`→`ConvexIndependent ℝ` wrapper), + Erdos795/987 free-flip.
+- **DR29e (+4)**: Erdos1046/337/575/585 free-flip.
+- **DR29f (+1)**: DescartesRuleOfSignsOQ01OQ01 (`induction_on'` alt names `h_add`/`h_monomial`→`add`/`monomial`; `ext`→`Complex.ext`).
+- **DR29g (+2)**: CantorsTheoremOQ01OQ01 (`push_neg; rfl`→`tauto`), Erdos337Aristotle free-flip.
+- **DR29h (+3)**: CantorDiagonalization…Phase3b / Erdos1018… / SzemerediCounting free-flip.
+- **DR29i (+1)**: TestApi423 (`let mut`/`for` outside `do` → `Id.run do` + `return`).
+- **DR29j (+2)**: Erdos375 (simp_all case-swap `¬q=p` via `fun h => hpq h.symm`), Erdos1036OQ01OQ01 (`SimpleGraph.Iso.refl _`→`SimpleGraph.Iso.refl`).
+
+## Statement repairs
+- **TestApi1059**: `(100:ℕ).Composite` / `(101-d).Composite` (removed predicate `Nat.Composite`) → faithful `¬ Nat.Prime n ∧ 2 ≤ n` (intended-true, `by decide`).
+
+## #38612 cluster status
+- Item 1 (Ballot `ncard_biUnion`): NOT cleared — the deeper blocker is that `condCount` /
+  `Mathlib.Probability.CondCount` was removed entirely; needs conditional-probability
+  reconstruction (deep pass).
+- Item 4 (GeneralizeProofs vendored-block): unchanged 1/3 — Erdos643/LawsOfLargeNumbers
+  still deep (own errors), not retried.
+- SimpleGraph-field cluster: Erdos766 examined — SimpleGraph.mk now 3-field + set-builder
+  `{ f x | x : T // p x }` parse change; deferred (multi-issue).
+
+## Flagged deep/multi-class (left for sibling / dedicated pass)
+Erdos807 (placeholder-`True` vacuous refutation, modeling defect), Erdos910/910Provable
+(aleph ambiguity + universe metavars + `Continuous.prod_mk` removed), Erdos483 (namespace-wrap
+clears schurNumber ambiguity but 6+ residual native_decide/tm/omega), FTCLebesgueOQ04 &
+PtolemysTheoremOQ01Incomplete01 (import-move clears parse but 10+ residual removed-const drift),
+SchroederBernsteinOQ01 + category files (`HasForget`→`ConcreteCategory` overhaul, 21 sites),
+Derangements/BuffonsNeedle (removed helper lemmas), Erdos1098/1159/766, Erdos252/281/29OQ02
+(parse fixed but residual tm/synth/omega).
+
+---
 # DOCTOR INCREMENT 17 (structured remainder + deep-rework clusters, #38065, 2026-07-13)
 
 Ledger at increment close: **1505 GREEN** (was 1483 at inc-16 close; **+22**).
