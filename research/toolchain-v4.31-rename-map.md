@@ -907,3 +907,36 @@ free-flips. Per-class residual: parse-error 52→49, signature-drift 21→20, el
 **Skipped as deep/multi-class (documented for later pass):** Erdos807 (placeholder `True` conjecture makes the "refutation" vacuously false — pre-existing modeling defect, not a v4.31 drift); Erdos910/910Provable (ambiguous `aleph` + universe metavars + `Continuous.prod_mk` removed); Erdos483 (namespace-wrap CLEARS the `schurNumber` `[_root_.schurNumber, SchursTheorem.schurNumber]` ambiguity — via `import Proofs.SchursTheorem` + `open SchursTheorem` + own root `schurNumber` — but 6+ residual native_decide-synth/tm/omega errors remain); FTCLebesgueOQ04 & PtolemysTheoremOQ01Incomplete01 (imports-after-docstring is a 1-line move, but each has 10+ residual removed-const/rewrite/linarith errors); SchroederBernsteinOQ01 & many category files (`HasForget` removed → `ConcreteCategory C FC` overhaul, 21 sites); Ballot cluster (`condCount`/`Probability.CondCount.lean` removed entirely → conditional-probability reconstruction, #38612 item 1); Derangements/BuffonsNeedle (removed helper lemmas `derangements_div_factorial`, `factorial_cast_pos`); Erdos766 (SimpleGraph.mk now 3-field + `{ f x | x : T // p x }` set-builder-with-predicate parse change + odd `⟨G, hG⟩`-as-Graph constructs).
 
 **Namespace-wrap recipe (reusable):** for a file whose OWN root-level `def foo` now collides (`[_root_.foo, OtherNS.foo]`) because it `open OtherNS` (a `Proofs.*` import that also defines `foo`) — insert `namespace ThisFile` right after the `open` and `end ThisFile` at EOF. Unqualified references then resolve to the current-namespace `foo` (current namespace wins over `open`ed), clearing all the ambiguity errors at once.
+
+---
+
+## §7t Doctor increment 21 recipes (parse/sig/elab/dot structured remainder, #38065, +12 GREEN)
+
+| Symptom | Fix | Examples |
+|---|---|---|
+| binder/type `x : … | y` "unexpected token ':='/'|'" | ASCII `|` is no longer `∣` (divides) in these positions → use `∣` | Erdos490Aristotle |
+| `G.loopless u h` "Function expected at G.loopless (has type Std.Irrefl …Adj)" | `.loopless` is a bundled `Std.Irrefl` now → `G.loopless.irrefl u h` | Erdos79Incomplete01 |
+| `[TopologicalGroup G]` "invalid binder annotation, type is not a class instance" | class renamed → `[IsTopologicalGroup G]` | Hilbert5LieGroups |
+| `{ inferInstanceAs (P X) with … }` "inferInstanceAs failed, expected type contains metavariables" | bind first: `let _i : P X := inferInstanceAs (P X)` then `{ _i with … }` | ZsqrtdNegTwoOQ03 |
+| `omit [Cls X] in` before decl "cannot omit referenced section variable inst✝" | body actually uses the instance → delete the `omit … in` line | LittleWedderburnOQ01OQ02 |
+| `haveI := hInst` after `obtain` "synthesized instance not defeq to inferred (this✝ vs hInst)" | apply the lemma with explicit `@lemma _ … hInst₁ hInst₂ …` (don't re-`haveI`) | InverseGaloisA5OQ02 |
+| docstring `/-- … -/` before `open … in` / `omit … in` "unexpected token open/omit; expected lemma" | put `open/omit … in` FIRST, then docstring, then decl | Erdos345Problem, MaschkeTheoremOQ01 |
+| orphan `/-- … -/` (no following declaration) "unexpected token '/-!'/…; expected lemma" | change `/--` → `/-` (plain comment) | StirlingFormula |
+| structure fields `a : ℝ; b : ℝ; c : ℝ` on one line "unexpected token ';'" | one field per line | LawOfCosinesOQ03OQ02 |
+| `simp/rw/rwa […] at <axiom | t.field | proj>` "Unexpected term …; expected single reference to variable" | materialize first: `have h := <term>; simp […] at h` | Erdos345Problem (axioms), LawOfCosinesOQ03OQ02 (`t.law_sines`) |
+| `def Foo := V →ₗ[R] W` then `f x` "Function expected at f" | v4.31 won't unfold plain `def` in app position → `abbrev Foo := …` | Hilbert20BoundaryValue |
+| `Nat.find`/DecidablePred synthesis fails in theorems using a `Prop`-body predicate | add `open scoped Classical` at namespace top | Erdos345Problem |
+| `Cardinal.aleph 0 < Cardinal.aleph 1` "failed to infer universe levels" | pin `(Cardinal.aleph 0 : Cardinal.{0})` | DenumerabilityRationalsOQ01 |
+| `Polynomial.modByMonic_add_div p hMonic` "Application type mismatch" | now `(p q : R[X])` — pass the DIVISOR poly, not the Monic proof: `modByMonic_add_div p (X - C a)` | FactorRemainderTheorem (same as inc-17 CayleyHamilton) |
+| `pow_one m` where `m = m^1` expected | `(pow_one m).symm` | Erdos345Problem |
+
+**A namespaced `def _root_.T.method` recipe (dot-notation across imports):** when a child file
+inside `namespace Child` defines `def T.method` for a type `T` imported from a parent, dot-notation
+`x.method` (x : T, T at root) now FAILS to find `Child.T.method` — declare it as
+`def _root_.T.method` so it lands in T's own namespace. (Cleared 4 errors in Erdos1006OQ01OQ02;
+that file's residual is a separate LT/Preorder instance-diamond — deferred.)
+
+**Virtiofs truncation FALSE-POSITIVES (re-confirmed):** apparent `Invalid name after 'end':
+Expected X, but found X-truncated` or `Unknown identifier <name>-truncated` at EOF → the mount
+truncated the file mid-read. `docker restart dr31`, rebuild, verify by exit code (hit 4× this
+increment: ZsqrtdNegTwoOQ03, DenumerabilityRationalsOQ01, Erdos79Incomplete01, FactorRemainderTheorem).

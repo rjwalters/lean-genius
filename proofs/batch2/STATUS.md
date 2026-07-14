@@ -1,5 +1,80 @@
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 19, #38065, 2026-07-13)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 21, #38065, 2026-07-13)
 
+# DOCTOR INCREMENT 21 (structured remainder: parse/sig/elab/dot + deep-rework, #38065, 2026-07-13)
+
+Container `dr31` (cpus 0-5, 11g, cache v431). Worked the parse/sig/elab/dot structured
+remainder. **+12 GREEN** (all in-container `lake build` exit-0). Ledger at close: 1587.
+
+## Per-class before → after (RESIDUAL)
+- parse-error: 48 → 46 (−2: Erdos490Aristotle, Erdos345Problem, FactorRemainderTheorem — but FRT was mis-classified parse; net parse rows −2)
+- signature-drift: 20 → 19 (−1: Hilbert20BoundaryValue)
+- elab-drift: 20 → 14 (−6: ZsqrtdNegTwoOQ03 ×3, LittleWedderburnOQ01OQ02, InverseGaloisA5OQ02, DenumerabilityRationalsOQ01, Hilbert5LieGroups, Erdos79Incomplete01)
+- dot-notation-drift: 5 → 5 (0 — Erdos807/910 are modeling defects / instance-diamonds, deferred)
+
+## Waves (all in-container `lake build` exit-0, then ledger-flipped)
+- **DR31a (+2)**: Erdos490Aristotle (`p | q` ASCII-pipe divides → `p ∣ q`; added `0 < a`
+  hyp to `prime_dvd_of_dvd_mul_lt` (FALSE for a=0); divisibility witnesses `by omega`→
+  `rw+ring`; `eq_one_or_self_of_dvd` direction), Erdos345Problem (docstring before
+  `open Classical in`→reorder; `open scoped Classical` for `Nat.find` DecidablePred;
+  `pow_one m`→`.symm`; `simp … at <axiom>`→materialize via `have h := axiom`).
+- **DR31b (+3)**: ZsqrtdNegTwoOQ03 (+2 dependents OQ03OQ01/OQ03OQ06 share root):
+  `{ inferInstanceAs (CommRing …) with … }`→`let _cr : CommRing … := inferInstanceAs …; { _cr with … }`.
+- **DR31c (+3)**: LittleWedderburnOQ01OQ02 (drop `omit [Finite D] in` — body references it),
+  InverseGaloisA5OQ02 (`haveI := instGP` not defeq to obtained → `@lemma _ P _ _ instGP instFP …`),
+  DenumerabilityRationalsOQ01 (pin `(Cardinal.aleph 0 : Cardinal.{0})`).
+- **DR31d (+2)**: Erdos79Incomplete01 (`G.loopless u h`→`G.loopless.irrefl u h` — loopless is
+  now `Std.Irrefl`), Hilbert20BoundaryValue (`def BilinearForm := …`→`abbrev` for `a u v` app).
+- **DR31e (+1)**: FactorRemainderTheorem (`modByMonic_add_div p h`→`… p (X - C a)` — takes divisor).
+- **DR31f (+1)**: Hilbert5LieGroups (`TopologicalGroup`→`IsTopologicalGroup`, all 11 sites).
+
+## Statement repairs
+- **Erdos490Aristotle.prime_dvd_of_dvd_mul_lt**: added `(ha : 0 < a)` — theorem was FALSE
+  for a=0 (`p ∣ 0*q = p∣0` always holds but `p ∣ q` need not). Faithful Euclid form.
+
+## Key recipes (new for rename-map §7t)
+- ASCII `|` for divides is now a parse error in binders/types: `a : … | b`→`a : … ∣ b`.
+- SimpleGraph `.loopless` is a bundled `Std.Irrefl` (not a fn): `G.loopless u h`→`G.loopless.irrefl u h`.
+- Mathlib class rename `TopologicalGroup`→`IsTopologicalGroup` ('invalid binder annotation,
+  type is not a class instance' on every `[TopologicalGroup G]`).
+- `{ inferInstanceAs (P X) with … }` → 'inferInstanceAs failed, expected type contains
+  metavariables': bind `let _i : P X := inferInstanceAs (P X)` first, then `{ _i with … }`.
+- `omit [Cls X] in` before a decl whose body *uses* that instance now errors ('cannot omit
+  referenced section variable'): drop the `omit` line.
+- `haveI := hInst` (from an `obtain`) can create an anonymous instance NOT defeq to the one
+  used to type earlier hyps → apply the lemma with explicit `@lemma … hInst …` instead.
+- docstring `/-- … -/` immediately before `open … in` / `omit … in` now parse-errors
+  ('unexpected token open/omit; expected lemma') — put the `open/omit … in` line FIRST,
+  then the docstring, then the decl. An ORPHAN `/-- … -/` (no following decl) → use `/- … -/`.
+- structure fields separated by `;` on one line no longer parse: one field per line.
+- `simp/rw/rwa … at <axiom-or-projection-term>` no longer allowed ('Unexpected term …;
+  expected single reference to variable') — materialize with `have h := <term>` first.
+- `def Foo := V →ₗ[R] W` used in application position (`f x`) fails ('Function expected')
+  because v4.31 won't unfold a plain `def`; use `abbrev`.
+- `open scoped Classical` at namespace top restores `DecidablePred`/`Nat.find` synthesis
+  when a `Prop`-body predicate lost its decidability instance.
+- Virtiofs truncation FALSE-POSITIVES: apparent `end <NamespaceTruncated>` /
+  `Unknown identifier <name-truncated>` — `docker restart dr31`, re-verify by exit code.
+
+## Flagged deep (left for sibling / dedicated pass)
+- Erdos1006OQ01OQ02: `_root_.GraphOrientation.hasShortcut/isHasse` fix clears the dot-notation
+  cluster (4 errors) BUT residual `k3_not_cover_graph` is a full LT/Preorder instance-DIAMOND
+  (the existential `PartialOrder (Fin 3)` vs default `instLTFin`) threaded through no_chain/cov
+  + 8 rcases branches — reverted. (DecidableEq add on `cover_search_space_bound` was valid.)
+- DeMoivreOQ02OQ02: pervasive v4.31 variable-inclusion cascade — `def P/Q : Prop` reference
+  section `variable {R}[CommRing R](n)` only in their BODY, so R is an unconstrained metavar at
+  every use site (`Q n 0`, …). 12 errors; needs file-wide R-threading rework.
+- CayleyHamiltonOQ01OQ03: `(M ^ m) ⟨i⟩ ⟨j⟩` matrix-power-application precedence (`^ m ⟨…⟩`
+  parses `m ⟨…⟩`) fixed with parens at one site, but 22 residual (9 more `^ m ⟨` + tm/synth).
+- Erdos301Problem: parse (`by … show 0<b by\n have…` line-break) fixed but 4 residual
+  mod_cast/field/omega/rewrite (proof-drift). LawOfCosinesOQ03OQ02: `;`-fields + `rwa … at
+  <projection>` fixed but 7 residual linarith/unknown-const (`Real.cos_injOn_Icc`,
+  `div_left_inj'`). MaschkeTheoremOQ01: docstring/omit fixed but instance-synth cascade.
+  StirlingFormula: orphan `/--`→`/-` fixed but tm/linarith residual.
+- Erdos133 (malformed `[DecidableEq V] →`-in-Prop predicate + trivial), Derangements/DeMoivre
+  removed-helper `altFactTerm`/`derangements_div_factorial`, Erdos153/560 (Sym2.Rel/Quot
+  projection restructure), ErdosKoRado (10+ diverse), Erdos807 (`Finset.univ.sup` modeling defect).
+
+---
 # DOCTOR INCREMENT 19 (structured remainder: parse/sig/elab/dot, #38065, 2026-07-13)
 
 Container `dr29` (cpus 0-5, 11g, cache v431). Worked the parse-error / elab-drift /
