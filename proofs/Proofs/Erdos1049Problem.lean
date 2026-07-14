@@ -54,7 +54,7 @@ theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     τ (m * n) = τ m * τ n := by
   simp only [tau]
   rw [hmn.divisors_mul]
-  exact Finset.card_product _ _
+  simp [Finset.card_product]
 
 /-- τ(n) ≥ 1 for n ≥ 1. -/
 theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ n ≥ 1 := by
@@ -131,11 +131,11 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
       if m = 0 then (0 : ℝ) else r ^ m := by
     intro m; split_ifs with h
     · rfl
-    · rw [one_div, hr_def, ← inv_pow, ← pow_mul]
+    · rw [one_div, hr_def, inv_pow, ← pow_mul]
   simp_rw [hterm]
   -- Summability of the geometric series
   have hgeom : Summable (fun n : ℕ => r ^ n) :=
-    summable_geometric_of_lt_one hr_pos.le hr_lt.le
+    summable_geometric_of_lt_one hr_pos.le hr_lt
   -- Summability of the if-then-else version
   have hsum : Summable (fun m : ℕ => if m = 0 then (0 : ℝ) else r ^ m) := by
     apply Summable.of_nonneg_of_le
@@ -150,11 +150,10 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
   -- Now have: ∑' m, r^(m+1) = 1/(t^d - 1)
   -- r^(m+1) = r * r^m
   simp_rw [pow_succ]
-  rw [tsum_mul_right, tsum_geometric_of_lt_one hr_pos.le hr_lt.le]
+  rw [tsum_mul_right, tsum_geometric_of_lt_one hr_pos.le hr_lt]
   -- (1 - r)⁻¹ * r = 1/(t^d - 1)
   rw [hr_def]
   field_simp
-  ring
 
 /-
 ## Part IV: Erdős's Result for Integers
