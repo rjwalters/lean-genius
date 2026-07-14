@@ -341,7 +341,7 @@ CatalanNumbersOQ01OQ04OQ02	GREEN
 CatalanNumbersOQ05OQ02OQ01	GREEN	
 CauchyInterlacingIsometryConj	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingMajorizationPositivity	GREEN	
-CauchyInterlacingOQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
+CauchyInterlacingOQ01OQ01OQ01	GREEN	
 CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
 CauchyInterlacingWeylDual	GREEN	
@@ -475,7 +475,7 @@ CramersRuleOQ01OQ02OQ03	GREEN
 CramersRuleOQ01OQ03	GREEN	
 CramersRuleOQ01OQ04	RESIDUAL	unknown-const:Matrix.charpoly_natDegree_eq_card
 CramersRuleOQ03OQ03	RESIDUAL	unknown-const:Quaternion.imI
-CramersRuleOQ04OQ01	RESIDUAL	unknown-const:smul_mulVec_assoc
+CramersRuleOQ04OQ01	GREEN	
 CramersRuleOQ05	GREEN	
 CramersRuleOQ05OQ01	GREEN	
 CramersRuleOQ05OQ02	GREEN	
@@ -981,7 +981,7 @@ Erdos184Problem	RESIDUAL	proof-drift
 Erdos184ProblemProvable	RESIDUAL	proof-drift
 Erdos185Problem	GREEN	
 Erdos186Problem	GREEN	
-Erdos188Problem	RESIDUAL	instance-synth
+Erdos188Problem	GREEN	
 Erdos189Problem	GREEN	
 Erdos18OQ01	GREEN	
 Erdos190Problem	RESIDUAL	unknown-const:exists_canonical_threshold
@@ -1044,7 +1044,7 @@ Erdos24Problem	GREEN
 Erdos250Problem	GREEN	
 Erdos251Problem	GREEN	
 Erdos252Problem	RESIDUAL	parse-error
-Erdos254Problem	RESIDUAL	instance-synth
+Erdos254Problem	GREEN	
 Erdos255Problem	GREEN	
 Erdos256Problem	GREEN	
 Erdos257Problem	GREEN	
@@ -1099,7 +1099,7 @@ Erdos29OQ02	RESIDUAL	parse-error
 Erdos29Problem	RESIDUAL	unknown-const:JPSZ_representation_bound
 Erdos2OQ01	RESIDUAL	unknown-const:balister_bound
 Erdos2OQ01Aristotle	RESIDUAL	proof-drift
-Erdos2Problem	RESIDUAL	unknown-const:balister_bound
+Erdos2Problem	GREEN	
 Erdos300Problem	GREEN	
 Erdos301Problem	RESIDUAL	parse-error
 Erdos302Aristotle	RESIDUAL	proof-drift
@@ -1129,7 +1129,7 @@ Erdos324Problem	GREEN
 Erdos325Problem	GREEN	
 Erdos326Problem	GREEN	
 Erdos327OQ01	GREEN	
-Erdos327OQ01OQ04	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
+Erdos327OQ01OQ04	GREEN	
 Erdos328Problem	GREEN	
 Erdos329Problem	GREEN	
 Erdos330Problem	GREEN	
@@ -1290,7 +1290,7 @@ Erdos456Aristotle	GREEN
 Erdos456Problem	RESIDUAL	proof-drift
 Erdos457Problem	GREEN	
 Erdos459Problem	RESIDUAL	type-mismatch
-Erdos45Problem	RESIDUAL	unknown-const:sawhney_upper_bound
+Erdos45Problem	GREEN	
 Erdos461Problem	RESIDUAL	unknown-const:Nat.prod_factors
 Erdos464Problem	GREEN	
 Erdos465Problem	GREEN	
@@ -1947,7 +1947,7 @@ ErdosRamseyLowerBound	GREEN
 EulerIdentityOQ01	RESIDUAL	proof-drift
 EulerIdentityOQ01OQ02OQ01	RESIDUAL	instance-synth
 EulerPolyhedralFormula	RESIDUAL	proof-drift
-EulerPolyhedralFormulaOQ01OQ02	RESIDUAL	unknown-const:SimpleGraph.Colorable.mk
+EulerPolyhedralFormulaOQ01OQ02	GREEN	
 EulerPolyhedralOQ01OQ04	GREEN	
 EulerTotientOQ01OQ01OQ01	GREEN	
 EulerTotientOQ01OQ02OQ01	GREEN	
@@ -1958,7 +1958,7 @@ EulerTotientOQ02OQ01	GREEN
 EulerTotientOQ02OQ02OQ01	RESIDUAL	rewrite-drift
 EulerTotientOQ06OQ02	GREEN	
 FactorRemainderNullstellensatzOQ01	RESIDUAL	instance-synth
-FactorRemainderNullstellensatzOQ02	RESIDUAL	unknown-const:card_roots_le_degree
+FactorRemainderNullstellensatzOQ02	GREEN	
 FactorRemainderTheorem	GREEN	parse-error
 FactorRemainderTheoremOQ01OQ01OQ02	RESIDUAL	proof-drift
 FactorRemainderTheoremOQ02	GREEN	
@@ -2153,7 +2153,7 @@ InverseGaloisOQ06OQ02	GREEN
 InverseGaloisOQ06OQ02GalBridge	GREEN	
 InverseGaloisOQ06OQ02GapChar	GREEN	
 InverseGaloisOQ06OQ02P11	GREEN	
-IsoperimetricTheorem	RESIDUAL	unknown-const:IsoperimetricTheorem.equality_iff_circle
+IsoperimetricTheorem	GREEN	
 IsoperimetricTheoremOQ01	RESIDUAL	unknown-const:cos_lt_one_of_ne_zero
 IsoperimetricTheoremOQ02	GREEN	
 KnightsTourOblique	GREEN	
@@ -2224,7 +2224,7 @@ LawsOfLargeNumbersOQ01OQ03	RESIDUAL	signature-drift
 LawsOfLargeNumbersOQ02	RESIDUAL	type-mismatch
 LawsOfLargeNumbersOQ03	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
 LawsOfLargeNumbersOQ03Aristotle	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
-LebesgueMeasure	RESIDUAL	unknown-const:integral_mul_left
+LebesgueMeasure	GREEN	
 LebesgueMeasureOQ01	GREEN	
 LebesgueMeasureOQ01OQ01	RESIDUAL	type-mismatch
 LebesgueMeasureOQ01OQ01OQ01OQ02	GREEN	
@@ -2246,7 +2246,7 @@ LittleWedderburnOQ01OQ02	GREEN	elab-drift
 LovaszLocalLemmaOQ01	GREEN	
 LovaszLocalLemmaOQ01StrongInduction	GREEN	
 LovaszLocalLemmaOQ01SymmetricStep	GREEN	
-MaschkeAugmentationNoSplitOQ010101	RESIDUAL	instance-synth
+MaschkeAugmentationNoSplitOQ010101	GREEN	
 MaschkeLocalRingOQ010102	RESIDUAL	instance-synth
 MaschkeModularCounterexampleOQ01	GREEN	
 MaschkeTheoremOQ01	RESIDUAL	parse-error

@@ -42,7 +42,9 @@ theorem witnessFamily_subset (N : ℕ) :
     witnessFamily N ⊆ sumDvdProdPairs N := by
   intro ⟨a, b⟩ h
   simp only [witnessFamily, mem_image, mem_Icc] at h
-  obtain ⟨k, ⟨hk1, hkN⟩, rfl⟩ := h
+  obtain ⟨k, ⟨hk1, hkN⟩, heq⟩ := h
+  simp only [Prod.mk.injEq] at heq
+  obtain ⟨rfl, rfl⟩ := heq
   have hkpos : 0 < k := by omega
   -- 6k ≤ N: since k ≤ N/6, we have 6k ≤ 6·(N/6) ≤ N
   have h6kN : 6 * k ≤ N := by
@@ -57,7 +59,6 @@ theorem witnessFamily_card (N : ℕ) : (witnessFamily N).card = N / 6 := by
   unfold witnessFamily
   rw [Finset.card_image_of_injective _ witnessInj]
   simp [Nat.card_Icc]
-  omega
 
 /-! ## Main lower bound -/
 

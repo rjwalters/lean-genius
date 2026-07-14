@@ -72,7 +72,7 @@ theorem exists_eval_ne_zero [DecidableEq F]
   have h1 : S.card ≤ f.roots.toFinset.card := card_le_card hroot
   have h2 : f.roots.toFinset.card ≤ Multiset.card f.roots :=
     Multiset.toFinset_card_le f.roots
-  have h3 : Multiset.card f.roots ≤ f.natDegree := card_roots_le_degree f
+  have h3 : Multiset.card f.roots ≤ f.natDegree := Polynomial.card_roots' f
   omega
 
 /-
@@ -155,6 +155,7 @@ theorem combinatorial_nullstellensatz'
     ∃ a : σ → F, (∀ i, a i ∈ S i) ∧ MvPolynomial.eval a f ≠ 0 := by
   apply combinatorial_nullstellensatz f t S hdeg hcoeff
   intro i
+  have := hS i
   omega
 
 open MvPolynomial in

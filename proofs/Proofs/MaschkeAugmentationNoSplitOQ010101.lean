@@ -66,7 +66,7 @@ noncomputable def g : A p :=
 /-- The **augmentation map** `ε : 𝔽_p[ℤ/p] → 𝔽_p`, `∑ a_h h ↦ ∑ a_h`, realised as the
 algebra hom sending every group element to `1`. -/
 noncomputable def ε : A p →ₐ[ZMod p] ZMod p :=
-  MonoidAlgebra.lift (ZMod p) (G p) (ZMod p) 1
+  MonoidAlgebra.lift (ZMod p) (ZMod p) (G p) 1
 
 /-- `ε` sends a basis element `single a b` to its coefficient `b`. -/
 @[simp] theorem ε_single (a : G p) (b : ZMod p) : ε p (MonoidAlgebra.single a b) = b := by

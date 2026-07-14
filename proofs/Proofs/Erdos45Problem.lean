@@ -73,16 +73,6 @@ def HasKEgyptianProperty (n k : ℕ) : Prop :=
 
 /- ## Croot's Theorem (SOLVED) -/
 
-/- Aristotle failed to find a proof. -/
-/--
-**Croot's Theorem**:
-For every k ≥ 2, there exists n_k such that n_k has the k-Egyptian property.
--/
-theorem croot_existence (k : ℕ) (hk : k ≥ 2) :
-    ∃ n : ℕ, HasKEgyptianProperty n k := by
-  obtain ⟨_, _, n, hn, _⟩ := sawhney_upper_bound k hk
-  exact ⟨n, hn⟩
-
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Unexpected axioms were added during verification: ['Erdos45.sawhney_upper_bound', 'harmonicSorry403513']-/
@@ -92,6 +82,16 @@ The minimal n_k is at most doubly exponential in k.
 -/
 axiom sawhney_upper_bound (k : ℕ) (hk : k ≥ 2) :
     ∃ C : ℝ, C > 0 ∧ ∃ n : ℕ, HasKEgyptianProperty n k ∧ (n : ℝ) ≤ Real.exp (C^k)
+
+/- Aristotle failed to find a proof. -/
+/--
+**Croot's Theorem**:
+For every k ≥ 2, there exists n_k such that n_k has the k-Egyptian property.
+-/
+theorem croot_existence (k : ℕ) (hk : k ≥ 2) :
+    ∃ n : ℕ, HasKEgyptianProperty n k := by
+  obtain ⟨_, _, n, hn, _⟩ := sawhney_upper_bound k hk
+  exact ⟨n, hn⟩
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 

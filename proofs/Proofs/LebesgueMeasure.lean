@@ -156,7 +156,7 @@ theorem integral_add_of_integrable {f g : ℝ → ℝ}
 /-- Scalar multiplication: ∫(cf) = c∫f -/
 theorem integral_smul_const (c : ℝ) (f : ℝ → ℝ) :
     ∫ x, c * f x ∂volume = c * ∫ x, f x ∂volume :=
-  integral_mul_left c f
+  integral_const_mul c f
 
 end LebesgueIntegral
 
@@ -361,7 +361,9 @@ theorem dirichlet_function_integral :
   -- Almost every real is irrational (ℚ has measure zero)
   have h_ae : ∀ᵐ x ∂volume, x ∉ Set.range (Rat.cast : ℚ → ℝ) := by
     rw [ae_iff]
-    simpa using rationals_measure_zero
+    simp only [not_not]
+    convert rationals_measure_zero using 2
+    ext a; exact Iff.rfl
   -- Restrict to [0,1] and conclude: indicator of ℚ is zero at irrational points
   exact (ae_restrict_of_ae h_ae).mono fun x hx => Set.indicator_of_notMem hx _
 
