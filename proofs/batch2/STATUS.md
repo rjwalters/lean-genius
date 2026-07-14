@@ -2093,3 +2093,16 @@ left RESIDUAL (do not flip). Deferred (multi-error/deep): Sylow cluster (SylowTh
 OQ04/OQ04OQ03 — 9-16 errors each, MulEquiv.ofInjective/MonoidHom.index_ker unknown, index/ker API),
 ProbMethodSecondMomentOQ01 (dup-decl + ext-on-nonequality), WilsonsTheoremOQ01 (dep OQ02Ext broken,
 37 errors), TriangleAngleSumOQ02 (103 errors).
+
+### Increment 38 (continued) — 2 more GREEN (+12 total)
+
+- 38-11 PuiseuxTheorem — `HahnSeries.support_add_subset` now takes `(x y : HahnSeries Γ R)` explicit
+  and RETURNS the `⊆` (was: applied to a membership). Change `support_add_subset hq` →
+  `support_add_subset _ _ hq`. (Note: `support_mul_subset_add_support` deprecated → `support_mul_subset`.)
+- 38-12 PicksTheoremOQ01OQ01 — ★with `open scoped Classical` in the file, `decide` now resolves the
+  `Decidable` instance to `Classical.propDecidable` (noncomputable) → "did not reduce to isTrue/isFalse"
+  even for computable props (`.det.natAbs = 1`). Replace `by decide` with `by rfl` (single concrete
+  eq) / `by refine ⟨rfl, rfl, …⟩` (concrete conjunctions). Also: `edge_split_det_add` `ring` needs the
+  divisibility witnesses — `simp [hM1,hM2]` (folds M-divisions to k) THEN `rw [hv21,hv22]; ring` (feeds
+  v2 = v1 + g·k into det T). And modern `omega` closes `((n:ℤ)-1).natAbs = n-1` DIRECTLY — the old
+  `zify [h1]; Int.natAbs_of_nonneg (by omega)` broke (omega saw a metavar).

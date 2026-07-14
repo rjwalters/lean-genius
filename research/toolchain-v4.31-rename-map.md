@@ -1414,3 +1414,11 @@ mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
 
 Statement repair: PicksTheoremOQ01 `picks_additivity` — added `hglue : 2*k+2 ≤ b₁+b₂` (ℕ truncated
 subtraction made the original statement false; geometric gluing bound). No callers.
+
+### §7ab Increment 38 (continued)
+
+| Symptom | Fix | File |
+|---|---|---|
+| `HahnSeries.support_add_subset hq` app-type-mismatch (hq is Prop, expects HahnSeries) | now `(x y)` explicit + returns `⊆`: `support_add_subset _ _ hq` | PuiseuxTheorem |
+| `by decide` "did not reduce to isTrue/isFalse", instance = `Classical.propDecidable`, file has `open scoped Classical` | replace with `rfl` / `refine ⟨rfl,…⟩` on concrete goals (Classical shadows the computable instance) | PicksTheoremOQ01OQ01 |
+| old `zify [h]; Int.natAbs_of_nonneg (by omega)` breaks (omega sees metavar) | modern `omega` closes `((n:ℤ)-1).natAbs = n-1` directly | PicksTheoremOQ01OQ01 |
