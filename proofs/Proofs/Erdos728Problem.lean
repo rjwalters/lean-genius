@@ -176,8 +176,9 @@ The construction works: b = n/2 is large enough for the size condition.
 theorem construction_size (n : ℕ) (hn : n ≥ 4) (ε : ℝ) (hε : 0 < ε) (hε' : ε < 1/3) :
     ε * n < n / 2 := by
   have h1 : (n : ℝ) / 2 > ε * n := by
-    have : ε < 1/2 := by linarith
-    nlinarith
+    have hε2 : ε < 1/2 := by linarith
+    have hn0 : (0:ℝ) < n := by exact_mod_cast (by omega : 0 < n)
+    nlinarith [mul_lt_mul_of_pos_right hε2 hn0]
   exact_mod_cast h1
 
 /-
@@ -240,7 +241,7 @@ divisibility while landing in the logarithmic gap.
 -/
 theorem erdos_728_summary :
     ∃ K : ℝ, K > 0 ∧
-    ∀ a b n : ℕ, a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * log n :=
+    ∀ a b n : ℕ, a ! * b ! ∣ n ! → (a + b : ℝ) ≤ n + K * Real.log n :=
   erdos_1968_bound
 
 end Erdos728
