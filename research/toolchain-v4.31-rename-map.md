@@ -1226,3 +1226,16 @@ migration, not a one-line compat (NapoleonsTheorem family deferred).
 | `Finset.mem_image`/`mem_range` membership no longer **auto-splits a `Prod` equality**: a merged goal `(k*p, k*q) = (x,y)` wants ONE `⟨…⟩` proof field, not two ("Constructor `Eq.refl` does not have explicit fields, but 2 were provided") | provide the pair eq as a single term: `⟨k, by omega, by rw […]⟩` (fold the two r[/simp closers into one) | PicksTheoremOQ02 |
 
 **Meta (partition N-Z + Erdos≥600)**: the Complex.abs cluster (NapoleonsTheorem family) IS clearable but is a genuine whole-file migration, not a one-line compat — the payoff recipe is *full-symmetric-simp + linear_combination(√3²-coeff)* for every ℂ-`ext` algebraic core. Two S-files (SubsetCountOQ02OQ01, SumOfDivisorsOQ01SpecialPrime) were stale-clean off the 37508 base but already flipped by the sibling — always re-check `origin/feature/issue-38065-c` GREEN set before claiming.
+
+### §7y addendum — increment 31 continued (+4 more GREEN: SpectralTrace, SolutionOfCubic, PowerMean, Search, TestApi960/1061)
+
+| Symptom (v4.31) | Fix | Files |
+|---|---|---|
+| `Matrix.charpoly_units_conj P A` is now `(↑P·A·(↑P)⁻¹).charpoly = A.charpoly` (P first; the `↑P⁻¹·A·↑P` order was the *primed* variant pre-v4.31) | for the `↑P⁻¹·A·↑P` goal apply `charpoly_units_conj P⁻¹ A` then `simpa` (folds `(↑P⁻¹)⁻¹ = ↑P`); needs `set_option maxHeartbeats 1000000 in` (abbrev-`charpoly` defeq is heavy) — put the `set_option … in` ABOVE the docstring | SpectralTraceDetEigenvaluesOQ02 |
+| `ring` no longer distributes `Polynomial.C` over `+`/`*` | `simp only [Polynomial.C_add, Polynomial.C_mul]; ring` | SolutionOfCubicOQ03OQ05 |
+| coeff-matching `simp [Polynomial.coeff_mul]` leaves an un-reduced `∑ x ∈ Finset.antidiagonal n, if …` | use `simp only [coeff_add, coeff_sub, coeff_X_pow, coeff_C_mul, coeff_C, coeff_X]; norm_num`; over a general `CommRing` close with `linear_combination this` (NOT linarith — R unordered) | SolutionOfCubicOQ03OQ05 |
+| **STATEMENT REPAIR**: a `Filter.Tendsto (fun r => …) (nhdsWithin 0 {0}ᶜ) …` whose binder `r` **defaulted to ℕ** (broken: ℕ-division `1/r`, ℕ-`nhds 0`) — the intended real limit collapses | annotate `fun r : ℝ => …`; then the whole rpow/exp/log chain elaborates. (`HasDerivAt.sum` also needs the goal as `∑ i, (fun r => …)` via `Finset.sum_apply`, not `fun r => ∑`; `.const_mul` already gives `c*f` order — drop stale `mul_comm`; `slope` unfolds via `vsub_eq_sub`) | PowerMeanLimitOQ |
+| `IsCompact.of_isClosed_isBounded` / `isCompact_of_isClosed_of_isBounded` unknown | `Metric.isCompact_of_isClosed_isBounded` | SearchMathlib, TestApi1056 (partial) |
+| `Submodule.isClosed` unknown (finite-dim submodule is closed) | `Submodule.closed_of_finiteDimensional` | SearchMathlib |
+| `Finset.offDiag_card` is now `#s.offDiag = #s * #s - #s` (was `#s * (#s - 1)`) | update the RHS; `Rat.toNat` removed (drop) | TestApi960 |
+| `Finset.sum_pair h` — for a `{1, p}` (ascending) literal wants `h : 1 ≠ p` (use `hp.one_lt.ne`, NOT `.ne'` which gives `p ≠ 1` for `{p,1}`); a `.sum id` needs `rw [show id = fun x => x from rfl]` first | as noted | TestApi1061 |
