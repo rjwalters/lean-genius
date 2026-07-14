@@ -940,3 +940,26 @@ that file's residual is a separate LT/Preorder instance-diamond — deferred.)
 Expected X, but found X-truncated` or `Unknown identifier <name>-truncated` at EOF → the mount
 truncated the file mid-read. `docker restart dr31`, rebuild, verify by exit code (hit 4× this
 increment: ZsqrtdNegTwoOQ03, DenumerabilityRationalsOQ01, Erdos79Incomplete01, FactorRemainderTheorem).
+
+## §7u Doctor increment 22 recipes (parse/sig/elab/dot structured remainder, #38065, +7 GREEN)
+
+| Symptom | Fix | Examples |
+|---|---|---|
+| `expected token` at every `ℝ≥0∞` occurrence in a file | `ℝ≥0∞` notation is now SCOPED → add `open scoped ENNReal` | Erdos1043Aristotle, LebesgueMeasureOQ03OQ01 |
+| `norm_num` "unsolved goals" on an ENNReal scientific literal (`2.386`, `3.3`) comparison | bridge `(d : ℝ≥0∞) = ((d : NNReal) : ℝ≥0∞)` (by `rfl`), `rw [ENNReal.coe_lt_coe/coe_le_coe]`, then `rw [← NNReal.coe_lt_coe/coe_le_coe]; push_cast; norm_num` | Erdos1043Aristotle |
+| calc first-term/step `EXPR \|>.card` → `unsolved goals` + next line `unexpected token '≤'; expected command` | parenthesize: `calc (EXPR).card ≤ …` (pipe-projection no longer parses as a calc atom; def-body / non-calc uses are fine) | Erdos52Problem, Erdos806Problem, Erdos863Aristotle |
+| `unterminated comment` at EOF, unclosed `/-` traces to line 1 | a literal `/-!`/`/-` token sits as PROSE inside the `/- … -/` header; v4.31 NESTS block comments so it opened a nested comment that ate the header's `-/` → remove/reword the token | Hilbert11_QuadraticFormsAristotle |
+| `X has already been declared` where X is in a `namespace` the file's imported parent also opens | remove the child's duplicate stub (parent already declares it; same-namespace re-decl across an import now errors) | Erdos795ProblemAristotle |
+| `interval_cases <term>` (non-variable, e.g. `p.natDegree`) / `simp_all […] at *` (simp_all takes no `at`) | replace the block with a direct lemma-driven proof (e.g. `Polynomial.comp_eq_zero_iff` case split) | BaselProblemOQ02Aristotle |
+| `left`/`right` "target is not an inductive datatype" after a `simp only […]` that used to unfold `∈ … ∪ …` | `simp only [Finset.mem_product]` no longer unfolds `Finset.mem_union` → `exact Finset.mem_union.mpr (Or.inl/inr …)` | Erdos806Problem |
+| `absurd h (by decide)` / `by decide` "Expected type must not contain free variables" | goal carries a free var (e.g. `n`) `decide` can't reduce → `simp [structFields] at h` (reduce the projection to a literal first) | Hilbert11_QuadraticFormsAristotle |
+
+**Meta-finding (confirms inc-17/19/21):** the parse/sig/elab/dot remainder is now dominated by
+files whose structural first-error is NECESSARY-BUT-NOT-SUFFICIENT — the mechanical fix
+(reserved-token rename, namespace-wrap, docstring/omit reorder, `/-!`→`/-`, Std.Symm/Irrefl
+`⟨⟩` field, universe pin, `open scoped ENNReal`, calc-pipe parenthesization) clears the first
+error but exposes a multi-error cascade in another class (unknown-const / rewrite-drift /
+instance-synth / tm / removed-const / latent statement bug). Those files were reverted to keep
+the tree clean; see STATUS.md inc-22 "Flagged deep" for the full list and the exact residual
+per file. The reliably-flippable shapes this increment were small self-contained Aristotle
+companions and duplicate-decl / nested-comment / calc-pipe single-issue files.
