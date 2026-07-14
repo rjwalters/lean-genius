@@ -2378,7 +2378,7 @@ RothTheoremOQ01RecipSufficient	GREEN
 RothTheoremOQ01Reciprocal	GREEN	
 RothTheoremOQ01Weighted	GREEN	
 RothTheoremOQ03	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
-RothTheoremOQ03OQ01OQ01	RESIDUAL	duplicate-decl
+RothTheoremOQ03OQ01OQ01	GREEN	duplicate-decl
 RothTheoremOQ03OQ01OQ01OQ01	RESIDUAL	duplicate-decl
 RothTheoremOQ03OQ01OQ01OQ01OQ01	RESIDUAL	duplicate-decl
 RothTheoremQuantitative	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
@@ -2508,7 +2508,7 @@ StirlingFormulaOQ02OQ01	RESIDUAL	type-mismatch
 SubsetCount	GREEN	
 SubsetCountOQ02	GREEN	
 SubsetCountOQ02OQ01	RESIDUAL	unknown-const:Finset.disjoint_comm.mp
-SumOfDivisorsOQ01SpecialPrime	RESIDUAL	unknown-const:not_even_iff_odd
+SumOfDivisorsOQ01SpecialPrime	GREEN	unknown-const:not_even_iff_odd
 SumOfKthPowers	RESIDUAL	unknown-const:Finset.sum_range_pow
 SumOfKthPowersOQ03	RESIDUAL	instance-synth
 SumOfKthPowersOQ04	RESIDUAL	type-mismatch

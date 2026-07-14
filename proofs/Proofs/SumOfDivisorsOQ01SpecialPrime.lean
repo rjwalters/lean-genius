@@ -72,7 +72,7 @@ theorem odd_perfect_exists_special_prime
   have hns : ¬ IsSquare N := odd_perfect_not_isSquare hodd hperf
   rw [isSquare_iff_even_factorization hN, not_forall] at hns
   obtain ⟨p, hp⟩ := hns
-  rw [not_even_iff_odd] at hp
+  rw [Nat.not_even_iff_odd] at hp
   have hfne : N.factorization p ≠ 0 := by
     have := Nat.odd_iff.mp hp; omega
   refine ⟨p, ?_, hp⟩
