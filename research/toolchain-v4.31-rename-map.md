@@ -1276,3 +1276,34 @@ migration, not a one-line compat (NapoleonsTheorem family deferred).
 cache; the combined `lake build` stderr tags every error with its file (`error: Proofs/File.lean:L:C:`),
 so `grep -oE '^error: Proofs/[^:]+' | sort | uniq -c` finds single-/two-error files (highest-confidence
 fixes) across the whole partition in one pass, without per-file rebuilds.
+
+## §7z Doctor increment 35 recipes (tm/pd/rewrite/unknown-const/instance-synth, N-Z + Erdos≥600, #38065, +9 GREEN)
+
+Test*/TestApi* API-probe files are the reliable seam once single-error math rows are harvested:
+they are small and their errors are usually `#check @<removed-const>` (delete/rename the line) plus
+one example needing a rename.
+
+| v4.31 breakage | fix | file(s) |
+|---|---|---|
+| `card_sylow_dvd_index P` "Unknown constant" | `P.card_dvd_index` (`Sylow.card_dvd_index`, returns `Nat.card (Sylow p G) ∣ P.index`) | SylowTheorem |
+| `Sylow.exists_smul_eq G P Q` "Unknown constant" | `MulAction.exists_smul_eq G P Q` (pretransitivity method) | SylowTheorem, (OQ02Orbit) |
+| `rw [← normalizer_eq_top]` did not find pattern | `rw [← normalizer_eq_top_iff]` (now the `↔ H.Normal` iff) | SylowTheorem |
+| `isCyclic_of_prime_card rfl` instance-synth fail | it now takes `Nat.card α = p` (was `Fintype.card`): supply `Fact (Nat.card G).Prime` via `⟨by rwa [Nat.card_eq_fintype_card]⟩` | SylowTheorem |
+| `rw [mem_normalizer_iff] at this` did not find pattern (after `smul_eq_iff_mem_normalizer`) | term-mode `(mem_normalizer_iff.mp this) x` avoids the coercion-shape mismatch | SylowTheorem |
+| `fin_cases i` on `Fin 3` yields `⟨0,_⟩/⟨1,_⟩/⟨2,_⟩` so `rw [show (i:Fin 3).val = k from rfl, {zero,one,two}_nsmul]` no longer matches | replace the rw chain with `simpa [two_nsmul, ← two_mul] using …` (both `∀ i` and `.mp` directions) | RothTheoremOQ03 |
+| `Set.Finite.isCompact_convexHull` "failed to synthesize `𝕜`" | `𝕜` is now an explicit leading arg: `(hFinite).isCompact_convexHull (𝕜 := ℝ)` | TestConvexHull |
+| `MeasureTheory.snorm` / `snorm_add_le` / `snorm_le_snorm_mul_snorm_of_nq` "Unknown constant" | `eLpNorm` / `eLpNorm_add_le` / `eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm` | TestHolderApi |
+| `rw [NNReal.HolderConjugate]` fails (now a predicate, not a def to unfold) | `rw [NNReal.holderConjugate_iff]` (`↔ 1 < p ∧ p⁻¹ + q⁻¹ = 1`) | TestHolderApi |
+| `σ 1` (opened `ArithmeticFunction`) "Function expected at σ" in application position | qualify: `ArithmeticFunction.sigma 1` | TestApi1061b |
+| `Continuous.if_lt` "Unknown constant" (only `if_le`/`if_ge` remain) | restate the `if p < q` as `if q ≤ p` (swap then/else) and use `Continuous.if_le hf' hg' hf hg hfg`; discharge frontier `hfg : ∀ x, f x = g x → f' x = g' x` by `subst` | TestApi234 |
+| `Finset.filter_subset_filter` "could not unify" — it now means SAME predicate, subset SETS (`s ⊆ t → s.filter p ⊆ t.filter p`) | for a monotone PREDICATE use `Finset.monotone_filter_right` (`s ⦃p q⦄ (h : ∀ a ∈ s, p a → q a)`) | TestApi234 |
+| `Int.Icc_toFinset_card`/`Nat.card_Icc_of_le`/`Real.exp_ge_one_add_of_nonneg`/`Real.exp_lt_one_of_neg`/`isLittleO_pow_exp_atTop`/`Nat.divisors_prime_eq`/`HasLines.mkFinOrder`/`ProjectivePlane.mkFinOrder`/`isCompact_isClosed_isBounded` "Unknown const/ident" as `#check` | removed constants — delete the exploratory `#check` line (API-probe files) | TestErdos43Api, TestApi312, TestApi1061b, TestApi1159b, TestConvexHull |
+| `(Finset.Icc (1:ℤ) (N-1)).card` no longer `rfl`/`decide` | `rw [Int.card_Icc]; omega` | TestErdos43Api |
+
+**Meta (reconfirms inc-14/17/32):** in the N–Z + Erdos≥600 partition the residual math rows
+(proof-drift, type-mismatch, instance-synth) now cluster **3–18 errors each** — a single rename is
+necessary-but-not-sufficient and the file must be reverted if any error remains. `Nat.one_lt_of_ne_one`
+→ `one_lt_of_ne_one` (dropped `Nat.` prefix; now the general ordered-monoid alias) is correct but
+Erdos733 still fails on removed `List.Sorted` in a `def`. No reusable cluster found for the
+`fin_cases nsmul`, `isCompact_convexHull (𝕜:=)`, or `if_le`/`monotone_filter_right` renames — each hit
+exactly one file in this partition.
