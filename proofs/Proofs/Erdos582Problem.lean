@@ -34,6 +34,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
+import Mathlib.Tactic.NormNum
 
 open SimpleGraph Finset
 
@@ -88,18 +89,18 @@ Given a coloring, the subgraph of edges with a specific color.
 -/
 def monochromaticSubgraph (G : SimpleGraph V) (c : EdgeColoring G) (color : Bool) :
     SimpleGraph V where
-  Adj v w := G.Adj v w ∧ ∃ h : G.Adj v w, c ⟨s(v, w), G.edge_mem_edgeSet.mpr h⟩ = color
-  symm.symm v w := by
+  Adj v w := G.Adj v w ∧ ∃ h : G.Adj v w, c ⟨s(v, w), G.mem_edgeSet.mpr h⟩ = color
+  symm := ⟨fun v w => by
     intro ⟨hadj, hcolor⟩
     constructor
-    · exact G.symm hadj
+    · exact G.adj_symm hadj
     · obtain ⟨h, hc⟩ := hcolor
-      use G.symm h
+      use G.adj_symm h
       simp only [Sym2.eq_swap] at hc ⊢
-      convert hc using 1
-  loopless v := by
+      convert hc using 1⟩
+  loopless := ⟨fun v => by
     intro ⟨hadj, _⟩
-    exact G.loopless v hadj
+    exact G.loopless.irrefl v hadj⟩
 
 /--
 **Ramsey Property:**

@@ -133,7 +133,7 @@ axiom hindman_leader_strauss_ch (k : ℕ) (hk : k ≥ 1) :
   -- Under CH
   continuum = aleph_one →
   ∃ c : TwoColoring, ∀ A : Set ℝ,
-    A.nontrivial → #A > ℵ₀ → ¬ IsMonochromatic c (KSums A k)
+    A.Nontrivial → #A > ℵ₀ → ¬ IsMonochromatic c (KSums A k)
 
 /--
 **Komjáth (2016) without CH:**

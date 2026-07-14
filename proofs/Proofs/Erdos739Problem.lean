@@ -36,7 +36,7 @@ namespace Erdos739
 
 /- ## Part I: Basic Definitions for Infinite Graphs -/
 
-variable {V : Type*}
+variable {V : Type}
 
 /-- The chromatic number of a graph: the minimum cardinal of colors
     needed for a proper coloring. For infinite graphs, this is a cardinal. -/
@@ -56,23 +56,23 @@ def HasSubgraphWithChromaticNumber (G : SimpleGraph V) (κ : Cardinal) : Prop :=
 /-- Galvin's Property: if G has chromatic number 𝔪, then for every
     infinite cardinal 𝔫 < 𝔪, G has a subgraph with chromatic number 𝔫 -/
 def GalvinProperty (G : SimpleGraph V) : Prop :=
-  ∀ κ : Cardinal, κ.IsLimit → κ < chromaticNumber G →
+  ∀ κ : Cardinal.{0}, Order.IsSuccLimit κ → κ < chromaticNumber G →
     HasSubgraphWithChromaticNumber G κ
 
 /-- The Erdős-Galvin Question: is GalvinProperty true for all graphs? -/
 def ErdosGalvinQuestion : Prop :=
-  ∀ V : Type*, ∀ G : SimpleGraph V, Infinite V → GalvinProperty G
+  ∀ V : Type, ∀ G : SimpleGraph V, Infinite V → GalvinProperty G
 
 /- ## Part III: Galvin's Theorem (1973) — The Countable Case -/
 
 /-- Galvin (1973): If χ(G) = ℵ₀, then G has subgraphs of all
     finite chromatic numbers. This is the only case provable in ZFC. -/
-axiom galvin_countable_theorem (V : Type*) (G : SimpleGraph V) :
+axiom galvin_countable_theorem (V : Type) (G : SimpleGraph V) :
     chromaticNumber G = ℵ₀ →
       ∀ n : ℕ, n > 0 → HasSubgraphWithChromaticNumber G n
 
 /-- Direct corollary: finite chromatic subgraphs from countable chromatic number -/
-theorem finite_chromatic_subgraphs (V : Type*) (G : SimpleGraph V)
+theorem finite_chromatic_subgraphs (V : Type) (G : SimpleGraph V)
     (h : chromaticNumber G = ℵ₀) (n : ℕ) (hn : n > 0) :
     HasSubgraphWithChromaticNumber G n :=
   galvin_countable_theorem V G h n hn
@@ -88,7 +88,7 @@ theorem finite_chromatic_subgraphs (V : Type*) (G : SimpleGraph V)
     χ = ℵ₂ has no subgraph with χ = ℵ₁. The model has
     2^ℵ₀ = 2^ℵ₁ = 2^ℵ₂ = ℵ₃ (continuum function collapses). -/
 axiom komjath_consistency :
-    ∃ V : Type*, ∃ G : SimpleGraph V,
+    ∃ V : Type, ∃ G : SimpleGraph V,
       chromaticNumber G = aleph 2 ∧
       ¬HasSubgraphWithChromaticNumber G (aleph 1)
 
@@ -100,7 +100,7 @@ axiom komjath_consistency :
 
 /-- The Generalized Continuum Hypothesis: for all infinite κ, 2^κ = κ⁺ -/
 def GCH : Prop :=
-  ∀ κ : Cardinal, κ.IsLimit → (2 : Cardinal) ^ κ = Order.succ κ
+  ∀ κ : Cardinal.{0}, Order.IsSuccLimit κ → (2 : Cardinal) ^ κ = Order.succ κ
 
 /-- The main remaining open problem: does GCH imply the Galvin property? -/
 def MainOpenProblem : Prop :=
@@ -113,11 +113,11 @@ def MainOpenProblem : Prop :=
     Shelah showed success under V=L. The GCH case remains open. -/
 theorem erdos_739_summary :
     -- Galvin's countable case is provable
-    (∀ V : Type*, ∀ G : SimpleGraph V,
+    (∀ V : Type, ∀ G : SimpleGraph V,
       chromaticNumber G = ℵ₀ →
         ∀ n : ℕ, n > 0 → HasSubgraphWithChromaticNumber G n) ∧
     -- Komjáth's consistency of failure
-    (∃ V : Type*, ∃ G : SimpleGraph V,
+    (∃ V : Type, ∃ G : SimpleGraph V,
       chromaticNumber G = aleph 2 ∧
       ¬HasSubgraphWithChromaticNumber G (aleph 1)) := by
   exact ⟨galvin_countable_theorem, komjath_consistency⟩

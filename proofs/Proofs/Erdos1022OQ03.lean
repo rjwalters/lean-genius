@@ -367,9 +367,10 @@ theorem propertyB_of_disjoint [Fintype α] (F : Finset (Finset α))
         simp only [intNeighbors, mem_filter, mem_erase]
         refine ⟨⟨fun h => hna (h ▸ hg), mem_insert_of_mem hg⟩, ?_⟩
         exact Nat.pos_of_ne_zero (fun h => hint (card_eq_zero.mp h))
+      have hthis := this
       have : 1 ≤ intDegree (insert f₀ F') f₀ :=
         Nat.one_le_iff_ne_zero.mpr (fun h =>
-          notMem_empty g (h ▸ this : g ∈ intNeighbors (insert f₀ F') f₀))
+          notMem_empty g (card_eq_zero.mp h ▸ hthis))
       linarith [hdisj f₀ (mem_insert_self f₀ F')]
     -- Since f₀ is disjoint from F', elements of f₀ don't appear in F' sets
     -- So modifying S' on f₀ doesn't affect F' coloring

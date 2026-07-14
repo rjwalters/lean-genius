@@ -216,9 +216,9 @@ theorem divisors_prime (p : ℕ) (hp : p.Prime) :
     exact hnodup
   -- Sorted: a ≤ b
   have _hle : a ≤ b := by
-    have hs := (({1, p} : Finset ℕ).sort_sorted (· ≤ ·))
+    have hs := (({1, p} : Finset ℕ).pairwise_sort (· ≤ ·))
     rw [hab] at hs
-    simp [List.Sorted, List.Pairwise] at hs
+    simp [List.pairwise_cons] at hs
     exact hs
   rw [hab]
   rcases ha with rfl | rfl <;> rcases hb with rfl | rfl

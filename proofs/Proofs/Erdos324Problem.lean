@@ -184,9 +184,9 @@ theorem monic_neg_linear_quad_not_distinct (n : ℕ) (c : ℤ) :
     ¬HasDistinctPairSums (X ^ 2 - C ((n : ℤ) + 2) * X + C c) := by
   intro h
   have hp1 : ((0 : ℕ), (1 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
-  have hp2 : ((n + 1 : ℕ), (n + 2 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]; omega
+  have hp2 : ((n + 1 : ℕ), (n + 2 : ℕ)) ∈ orderedPairs := by simp [orderedPairs]
   have hne : ((0 : ℕ), (1 : ℕ)) ≠ ((n + 1 : ℕ), (n + 2 : ℕ)) := by
-    intro h; simp [Prod.mk.injEq] at h; omega
+    intro h; simp [Prod.mk.injEq] at h
   have heq : pairSumFn (X ^ 2 - C ((n : ℤ) + 2) * X + C c) (0, 1) =
              pairSumFn (X ^ 2 - C ((n : ℤ) + 2) * X + C c) (n + 1, n + 2) := by
     simp [pairSumFn, eval_sub, eval_add, eval_mul, eval_pow, eval_X, eval_C]
