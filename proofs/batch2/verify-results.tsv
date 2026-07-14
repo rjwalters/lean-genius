@@ -2419,7 +2419,7 @@ ShannonEntropyOQ01	GREEN
 ShannonEntropyOQ01OQ01	GREEN	
 ShannonEntropyOQ02	RESIDUAL	rewrite-drift
 ShannonSourceCodingOQ01	RESIDUAL	unknown-const:InformationTheory.mutualInformation
-ShannonSourceCodingOQ02	RESIDUAL	type-mismatch
+ShannonSourceCodingOQ02	GREEN	type-mismatch
 ShannonSourceCodingOQ03	RESIDUAL	unknown-const:Fintype.sum_piFinset_succ
 ShapleyFolkman	GREEN	
 ShapleyFolkmanAristotle	GREEN	
