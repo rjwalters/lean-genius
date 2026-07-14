@@ -670,7 +670,7 @@ theorem isPuiseux_add {K : Type*} [AddCommMonoid K] {f g : HahnSeries ℚ K}
   have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
   have hm0 : ((m : ℕ) : ℚ) ≠ 0 := by exact_mod_cast m.pos.ne'
   refine ⟨n * m, fun q hq => ?_⟩
-  rcases HahnSeries.support_add_subset hq with h | h
+  rcases HahnSeries.support_add_subset _ _ hq with h | h
   · obtain ⟨k, hk⟩ := hn q h
     refine ⟨k * (m : ℤ), ?_⟩
     rw [hk]; push_cast
@@ -1013,7 +1013,7 @@ theorem isPuiseuxOfRamification_add {K : Type*} [AddCommMonoid K] {n : ℕ+}
     {f g : HahnSeries ℚ K} (hf : IsPuiseuxOfRamification n f)
     (hg : IsPuiseuxOfRamification n g) : IsPuiseuxOfRamification n (f + g) := by
   intro q hq
-  rcases HahnSeries.support_add_subset hq with h | h
+  rcases HahnSeries.support_add_subset _ _ hq with h | h
   · exact hf q h
   · exact hg q h
 
