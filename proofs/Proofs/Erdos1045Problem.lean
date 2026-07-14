@@ -79,7 +79,7 @@ axiom cambie_even_not_optimal (n : ℕ) (hn : n ≥ 4) (heven : Even n) :
 
 /-- The maximum Δ over all valid configurations -/
 noncomputable def MaxDelta (n : ℕ) : ℝ :=
-  sSup { Delta z | z : Configuration n ∧ DiameterAtMost2 z }
+  sSup { x : ℝ | ∃ z : Configuration n, DiameterAtMost2 z ∧ Delta z = x }
 
 /-- Cambie-Dong-Tang: C ≈ 1.269 for all even n -/
 axiom cambie_dong_tang_even :
@@ -90,7 +90,7 @@ axiom cambie_dong_tang_even :
 
 /-- Conjecture: Regular polygon is optimal for odd n (OPEN) -/
 def RegularPolygonOptimalOdd : Prop :=
-  ∀ n : ℕ, n ≥ 3 → Odd n → ∀ z : Configuration n, DiameterAtMost2 z →
+  ∀ n : ℕ, (hn3 : n ≥ 3) → Odd n → ∀ z : Configuration n, DiameterAtMost2 z →
     Delta z ≤ Delta (RegularPolygon n (by omega))
 
 /- ## Part VIII: Summary -/
@@ -104,7 +104,7 @@ For odd n, the regular polygon may still be optimal (open).
 -/
 theorem erdos_1045_summary :
     -- For even n: regular polygon is NOT optimal
-    (∀ n : ℕ, n ≥ 4 → Even n →
+    (∀ n : ℕ, (hn4 : n ≥ 4) → Even n →
       ∃ z : Configuration n, DiameterAtMost2 z ∧
         Delta z > Delta (RegularPolygon n (by omega))) ∧
     -- Lower bound: max Δ / n^n ≥ 1.269 for even n
