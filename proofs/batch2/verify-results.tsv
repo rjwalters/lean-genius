@@ -31,7 +31,7 @@ AbelRuffiniOQ04OQ04	RESIDUAL	unknown-const:cyclotomic_5_has_root_in_splitting_fi
 AbelRuffiniOQ04OQ07OQ02	GREEN	
 AbelRuffiniOQ04OQ09Cyclic	GREEN	
 AbelRuffiniOQ06	GREEN	
-AbelRuffiniOQ06OQ01	RESIDUAL	type-mismatch
+AbelRuffiniOQ06OQ01	GREEN	
 AbelRuffiniOQ06OQ01OQ03	RESIDUAL	dot-notation-drift
 AbelRuffiniOQ07NotSolvable	GREEN	
 AbelRuffiniOQ07Order6	RESIDUAL	rewrite-drift
@@ -148,7 +148,7 @@ ArithmeticSeriesOQ02OQ02OQ03OQ01	GREEN
 ArithmeticSeriesOQ02OQ03	RESIDUAL	unknown-const:Nat.choose_two_middle
 ArithmeticSeriesOQ02OQ04OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01	GREEN	
-ArsinhLogFormulaOQ01OQ01OQ01OQ01	RESIDUAL	rewrite-drift
+ArsinhLogFormulaOQ01OQ01OQ01OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ02	GREEN	
 BallVolumeSurfaceDuality	GREEN	
 BallotProblem	RESIDUAL	signature-drift
@@ -163,7 +163,7 @@ BallotProblemOQ01OQ04Core	GREEN
 BallotProblemOQ01OQ04OQ01	RESIDUAL	proof-drift
 BallotProblemOQ02OQ02	RESIDUAL	signature-drift
 BallotProblemOQ02OQ02OQ05	RESIDUAL	signature-drift
-BallotProblemOQ02OQ03	RESIDUAL	rewrite-drift
+BallotProblemOQ02OQ03	GREEN	
 BallotProblemOQ03	GREEN	
 BallotProblemOQ03OQ01OQ01	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ01OQ01OQ01	RESIDUAL	type-mismatch
@@ -299,7 +299,7 @@ BuffonsNeedleOQ01OQ01OQ01	GREEN
 BuffonsNeedleOQ01OQ01OQ02	GREEN	
 BuffonsNeedleOQ01OQ01OQ04	RESIDUAL	rewrite-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01	RESIDUAL	rewrite-drift
-BuffonsNeedleOQ01OQ01OQ04OQ01Beta	RESIDUAL	proof-drift
+BuffonsNeedleOQ01OQ01OQ04OQ01Beta	GREEN	
 BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01	RESIDUAL	proof-drift
 BuffonsNeedleOQ01OQ01OQ05	GREEN	
 BuffonsNeedleOQ01OQ02	RESIDUAL	unknown-const:pi_gt_3141592
@@ -382,7 +382,7 @@ CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Masa	GREEN
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Range	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Scalar	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03	RESIDUAL	unknown-const:Basis
-CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge	RESIDUAL	rewrite-drift
+CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Converse	RESIDUAL	unknown-const:Basis
 CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	RESIDUAL	unknown-const:Basis
 CayleyHamiltonMinpolyOQ01OQ01	GREEN	
@@ -688,7 +688,7 @@ Erdos1023Problem	GREEN
 Erdos1024Problem	GREEN	
 Erdos1025Problem	GREEN	
 Erdos1026OQ05Extremal	RESIDUAL	proof-drift
-Erdos1026OQ05KMonotonic	RESIDUAL	rewrite-drift
+Erdos1026OQ05KMonotonic	GREEN	
 Erdos1026Problem	RESIDUAL	unknown-const:Finset.exists_smaller_set
 Erdos1027OQ01	RESIDUAL	unclassified
 Erdos1027OQ03	GREEN	
@@ -2190,7 +2190,7 @@ LagrangeFourSquaresOQ01OQ03	RESIDUAL	noncomputable
 LagrangeFourSquaresOQ02	RESIDUAL	proof-drift
 LagrangeFourSquaresOQ02OQ02	GREEN	
 LagrangeFourSquaresOQ04	RESIDUAL	proof-drift
-LagrangeFourSquaresOQ05	RESIDUAL	type-mismatch
+LagrangeFourSquaresOQ05	GREEN	
 LagrangeTheorem	GREEN	
 LagrangeTheoremOQ01	RESIDUAL	type-mismatch
 LagrangeTheoremOQ01OQ01	RESIDUAL	rewrite-drift
@@ -2248,7 +2248,7 @@ LovaszLocalLemmaOQ01StrongInduction	GREEN
 LovaszLocalLemmaOQ01SymmetricStep	GREEN	
 MaschkeAugmentationNoSplitOQ010101	RESIDUAL	instance-synth
 MaschkeLocalRingOQ010102	RESIDUAL	instance-synth
-MaschkeModularCounterexampleOQ01	RESIDUAL	rewrite-drift
+MaschkeModularCounterexampleOQ01	GREEN	
 MaschkeTheoremOQ01	RESIDUAL	parse-error
 MathematicalInductionOQ01	RESIDUAL	unknown-const:Ordinal.IsLimit
 MathematicalInductionOQ03	RESIDUAL	type-mismatch
@@ -2303,7 +2303,7 @@ PascalsHexagonOQ02	GREEN
 PascalsHexagonOQ03	GREEN	
 PascalsHexagonOQ03Incomplete01Derangements	GREEN	
 PellEquationOQ01	RESIDUAL	unknown-const:Int.cast_nonneg.mpr
-PentagonalNumberTheoremOQ01	RESIDUAL	rewrite-drift
+PentagonalNumberTheoremOQ01	GREEN	
 PentagonalNumberTheoremOQ01OQ01	RESIDUAL	rewrite-drift
 PentagonalNumberTheoremOQ01OQ02	RESIDUAL	rewrite-drift
 PerfectNumbers	GREEN	
@@ -2428,7 +2428,7 @@ ShapleyFolkmanOQ03	GREEN
 ShapleyFolkmanOQ04	GREEN	
 SkolemNoetherMatrixAut	RESIDUAL	unknown-const:Matrix.isUnit_det_iff_isUnit_mulVecLin
 SkolemNoetherMatrixAutAristotle	RESIDUAL	unknown-const:Matrix.isUnit_det_iff_isUnit_mulVecLin
-SolutionOfCubicOQ03OQ01	RESIDUAL	rewrite-drift
+SolutionOfCubicOQ03OQ01	GREEN	
 SolutionOfCubicOQ03OQ02	GREEN	
 SolutionOfCubicOQ03OQ03	GREEN	
 SolutionOfCubicOQ03OQ05	RESIDUAL	proof-drift
