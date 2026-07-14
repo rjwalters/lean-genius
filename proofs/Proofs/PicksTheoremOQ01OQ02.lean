@@ -233,8 +233,8 @@ noncomputable def rectanglePolygon (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
   area_pos       := by positivity
   boundary_ge_three := by omega
   pick_relation  := by
-    have hcm : ((m - 1 : ℕ) : ℚ) = m - 1 := by exact_mod_cast Nat.cast_sub hm
-    have hcn : ((n - 1 : ℕ) : ℚ) = n - 1 := by exact_mod_cast Nat.cast_sub hn
+    have hcm : ((m - 1 : ℕ) : ℚ) = m - 1 := by rw [Nat.cast_sub hm, Nat.cast_one]
+    have hcn : ((n - 1 : ℕ) : ℚ) = n - 1 := by rw [Nat.cast_sub hn, Nat.cast_one]
     push_cast [hcm, hcn]
     ring
 
@@ -244,8 +244,8 @@ theorem rectangle_picks_check (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
     (rectanglePolygon m n hm hn).interior_count +
     (rectanglePolygon m n hm hn).boundary_count / 2 - 1 := by
   simp only [rectanglePolygon]
-  have hcm : ((m - 1 : ℕ) : ℚ) = m - 1 := by exact_mod_cast Nat.cast_sub hm
-  have hcn : ((n - 1 : ℕ) : ℚ) = n - 1 := by exact_mod_cast Nat.cast_sub hn
+  have hcm : ((m - 1 : ℕ) : ℚ) = m - 1 := by rw [Nat.cast_sub hm, Nat.cast_one]
+  have hcn : ((n - 1 : ℕ) : ℚ) = n - 1 := by rw [Nat.cast_sub hn, Nat.cast_one]
   push_cast [hcm, hcn]
   ring
 
@@ -255,7 +255,7 @@ theorem rectangle_ehrhart_abstract (m n t : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) (
     (latticeCount (rectanglePolygon m n hm hn) t : ℚ) =
     (m : ℚ) * n * t ^ 2 + (m + n) * t + 1 := by
   rw [ehrhart_formula]
-  · simp [rectanglePolygon]; push_cast; ring
+  · simp only [rectanglePolygon]; push_cast; ring
   · exact ht
 
 /-- Consistency: the abstract Ehrhart formula for R_{m,n} matches the Finset count.
@@ -306,7 +306,7 @@ theorem hstar_one_nonneg (P : SimpleLatticePolygon) : 0 ≤ hstar P ⟨1, by ome
 
 /-- h*₂ ≥ 0: i(P) ≥ 0 trivially. -/
 theorem hstar_two_nonneg (P : SimpleLatticePolygon) : 0 ≤ hstar P ⟨2, by omega⟩ := by
-  simp [hstar]; exact Nat.cast_nonneg _
+  simp only [hstar]; positivity
 
 /-- The Ehrhart polynomial recovers from the h*-vector:
     L(P,t) = h*₀ · C(t+2,2) + h*₁ · C(t+1,2) + h*₂ · C(t,2). -/
