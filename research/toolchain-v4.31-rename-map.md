@@ -1348,3 +1348,32 @@ mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
 
 **Deferred:** universe-polymorphism mismatch between two `Prop` defs that each fix a different
 `Type u` (`@h V` rejects `V : Type u₂`) is NOT a rename — needs `Type _`/level unification (Erdos794).
+## §7z Doctor increment 34 recipes (tm/pd/rewrite/unknown-const/instance-synth, A–M partition, #38065, +15 GREEN)
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `x*` / `hx*_in` as a **code identifier** → `unexpected token '*'; expected ',' or binderPred` (v4.31 tokenizes `*` after an ident in binder position) | rename the identifier (`x*`→`xs`, `hx*_in`→`hxs_in`); leave `x*` in `--`/`/- -/` prose | BrouwerFixedPointOQ04OQ04 |
+| `rw [div_lt_iff₀ hn_pos]` yields `2 < ε * ↑n` (factor order flipped) so `← div_lt_iff₀ hε` won't match | insert `mul_comm` between: `rw [div_lt_iff₀ hn_pos, mul_comm, ← div_lt_iff₀ hε]` | BrouwerFixedPointOQ04OQ04 |
+| `Nat.lt_of_lt_pred` "Unknown constant" (was used to get `0 < n` from `k+1 ≤ n`) | `have : 0 < n := by omega; exact_mod_cast this` | BrouwerFixedPointOQ04OQ04 |
+| `![a, b] : EuclideanSpace ℝ (Fin 2)` "Type mismatch" (matrix literal is plain `Fin 2 → ℝ`, not the `WithLp`/`PiLp` alias) | `!₂[a, b]` (= `WithLp.toLp 2 ![a,b]`); the singleton `{![0,0]} : Finset (EuclideanSpace …)` likewise → `{!₂[0,0]}` | FeuerbachsTheoremDefsOQ04, Erdos216Problem |
+| a `dist`/`norm` proof over `EuclideanSpace` now shows `(x - y).ofLp i` component atoms that `Matrix.cons_val_*` won't reduce | `rw [EuclideanSpace.dist_eq]` then `simp [WithLp.toLp_sub, WithLp.ofLp_toLp, Pi.sub_apply, Matrix.cons_val_zero, Matrix.head_cons, Matrix.cons_val_one, Matrix.head_fin_const]` | FeuerbachsTheoremDefsOQ04 |
+| `have h : ⟨struct⟩.field ≠ 0 := …` "failed to infer universe levels in `have`" when the struct's carrier field is `X : Type*` (existential leaves the universe a metavar) | either drop the explicit `have` type (`have h := …` infers from the term, which carries the universe) OR **monomorphize the struct's carrier `X : Type*`→`Type`** if it is never constructed with a specific higher-universe carrier | FurstenbergCorrespondence |
+| `open scoped ENNReal` missing → `expected token` at every `ℝ≥0∞` | add `open scoped ENNReal` (confirms §7u inc-22) | Erdos353Aristotle |
+| `FiniteDimensional.finrank` "Unknown constant" | `Module.finrank` | Erdos353Aristotle |
+| `inv_ne_zero.mpr h` "Unknown constant" (now a bare implication) | `inv_ne_zero h`; `ENNReal.ofReal_ne_zero` → `ENNReal.ofReal_ne_zero_iff`; `ENNReal.mul_top` takes the `a ≠ 0` proof directly (`ENNReal.mul_top h`) | Erdos353Aristotle |
+| `-(1 / k)` with `k : ℕ` in an rpow-exponent slot → `failed to synthesize Neg ℕ` (`1/k` elaborated ℕ) | cast: `-(1 / (k : ℝ))` | Erdos35ProblemAristotle |
+| `List.mem_cons_self a l` / `List.mem_cons_self _ _` "Function expected" | `List.mem_cons_self ..` (explicit args dropped) | DescartesRuleOfSignsOQ02Parity |
+| a `% 2` case-bash `omega` fails (`↑(…)/2` unconstrained atom) after `split_ifs at ih ⊢` didn't resolve the `if` | materialize the parity fact `have := Nat.mod_two_eq_zero_or_one (countF …)` before the bash; `norm_num at ih ⊢` (not `split_ifs`) to reduce concrete `if` conditions, then `omega` | DescartesRuleOfSignsOQ02Parity |
+| an auto-bound implicit `{n✝}` for the FIRST use of a name (`def f (H : G (Fin n) → Prop) (n : ℕ)`) collides with the later explicit `(n : ℕ)` → `Fin n✝` vs `Fin n` mismatch | reorder so the explicit `(n : ℕ)` binder comes FIRST | Erdos180Problem |
+| `def Foo := ℕ → ℕ` / `Finset X` used where a class instance (`SemilatticeInf`/`Singleton`/`HasSubset`) is needed → synth fails through the `def` alias | `abbrev Foo := …` (reducible for instance search) | Erdos180Problem, Erdos216Problem |
+| `Finset.inf' (by assumption) id` inside a `∀ … → (… ) → …` where the `Nonempty` proof is an earlier arrow (not in scope for `assumption`) | name the hypothesis: `∀ … (hne : s.Nonempty), … s.inf' hne id …` | Erdos180Problem |
+| `RegularSingularSystem n S` "Application type mismatch: n has type ℕ but expected SingularPoints" (struct takes only `(S)`, `n` is a section var) | drop the stray leading arg: `RegularSingularSystem S` | Hilbert21RiemannHilbert |
+| `⟨p, ‹_›⟩` anonymous-membership-proof in a `∀ p ∈ S, …` def → `assumption failed` (v4.31 doesn't name the `∈` binder for `‹_›`) | spell it out: `∀ p, ∀ hp : p ∈ S, … ⟨p, hp⟩ …` | Hilbert21RiemannHilbert |
+| `Pairwise (Disjoint on f)` → `Disjoint on ?m has type Prop but expected a function` (`on` combinator elaboration) | `Pairwise (Function.onFun Disjoint f)` | Hilbert6PhysicsAxioms |
+| `inner ψ φ` (Complex inner product) type-mismatch — `inner` takes the **scalar field first** | `inner ℂ ψ φ` (confirms §7v Erdos189) | Hilbert6PhysicsAxioms |
+| `[MulAction G R] [MulDistribMulAction G R]` **redundant-instance diamond** → `smul_add`/`smul_mul_assoc`/`smul_one` "rewrite did not find pattern" (two `SMul G R` instances don't unify) | drop the redundant `[MulAction G R]`; for a group acting by ring automorphisms use `[MulSemiringAction G R]` (gives `smul_add`, `smul_mul'`, `smul_one` — faithful); `smul_mul_assoc`→`smul_mul'` | Hilbert14InvariantsOQ01 |
+| `exp ℝ X` (`NormedSpace.exp`) → `exp ℝ has type Type` (Function expected) — the leading field arg was DROPPED | `exp X` (field inferred); `exp_add_of_commute` now additionally requires `[NormedAlgebra ℚ 𝔸]` — add it to the variable block (every ℝ-Banach-algebra is a ℚ-algebra, faithful) | Hilbert5OQ02 |
+| `A + A` / `A - A` on `Set ℕ` → `failed to synthesize HAdd (Set ℕ) (Set ℕ) ?` | `open scoped Pointwise`; if the intended set is over ℤ (`(A - A : Set ℤ)` with `A : Set ℕ`), cast first via image: `(((↑) : ℕ → ℤ) '' A) - (((↑) : ℕ → ℤ) '' A)` | Erdos156Aristotle |
+| `Nat.find_min h` used as a function (`h (proof)`) → `don't know how to synthesize implicit argument m` | `Nat.find_min` now needs the tested value explicit: `Nat.find_min h (hlt : m < Nat.find h)` — supply it (`refine ⟨val, …, ?_⟩; exact Nat.find_min h (show val < Nat.find h by omega)`) | Erdos114OQ01Problem |
+| `Set.Finite.ncard_eq_toFinset_card'` (method, primed) "environment does not contain" | `Set.ncard_eq_toFinset_card s hs` (takes the set + `s.Finite`, gives `s.ncard = hs.toFinset.card`) | Erdos14UniqueSums (partial) |
+| `Finset.offDiag_card` gives `#s*#s - #s`; goal `#s*(#s-1)`; `omega` can't equate (nonlinear) | supply the bridge `have : #s * (#s - 1) = #s * #s - #s := Nat.mul_pred _ _` then `omega` | Erdos14UniqueSums (partial) |

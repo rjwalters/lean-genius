@@ -1,3 +1,53 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 34, #38065, 2026-07-14)
+
+# DOCTOR INCREMENT 34 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, A–M partition, #38065, 2026-07-14)
+
+Container `dr44` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-c`. Partition A–M basenames + Erdos < 600. Whole-partition
+triage: ~232 sorry-free my-class candidates built in ~5 batches of 45-90; combined
+stderr tagged each error with its file; single/low-error files worked first.
+**+15 GREEN this increment** (waves DR44a-d; DR44a-c = +12 merged via #38636, DR44d = +3).
+
+## Waves (all in-container `lake build` exit-0 confirmed, then ledger-flipped)
+- **DR44a (+7)**: BrouwerFixedPointOQ04OQ04 (x* identifier binder token → rename
+  x*→xs; div_lt_iff₀ produces ε*n order → mul_comm before ←div_lt_iff₀; Nat.lt_of_lt_pred
+  removed → omega for 0<n), FeuerbachsTheoremDefsOQ04 (![…]:EuclideanSpace→!₂[…];
+  toEuclidean_dist via EuclideanSpace.dist_eq + WithLp.ofLp_toLp), FurstenbergCorrespondence
+  (+OQ03OQ01 dep: System.X Type*→Type to pin existential universe metavar; hreturnk
+  packages n>0), DescartesRuleOfSignsOQ02Parity (List.mem_cons_self _ _→..; parity omega
+  + Nat.mod_two_eq_zero_or_one hint + norm_num at ih ⊢), Erdos35ProblemAristotle
+  (-(1/k) Neg ℕ synth → -(1/(k:ℝ)) rpow exponent), Erdos353Aristotle (open scoped ENNReal;
+  FiniteDimensional.finrank→Module.finrank; inv_ne_zero.mpr→inv_ne_zero; ENNReal.mul_top +
+  ofReal_ne_zero_iff), HarmonicDivergenceOQ04 (inherited: not_summable_const_of_ne_zero→
+  Finite.of_summable_const; convert using 1→2).
+- **DR44b (+5)**: Erdos180Problem (turanNumber auto-bound n✝ vs param n → reorder (n:ℕ) first;
+  ExSingle/ExFamily def→abbrev; by assumption→named hne for inf'), Erdos216Problem
+  (PointSet def→abbrev; ![0,0]→!₂[0,0]; hS_card.symm; .elim on False), Hilbert21RiemannHilbert
+  (RegularSingularSystem n S→S; ‹_› anon membership→named ∀ hp), Hilbert6PhysicsAxioms
+  (Disjoint on f→Function.onFun Disjoint f; inner ψ φ→inner ℂ ψ φ), Hilbert14InvariantsOQ01
+  (MulAction+MulDistribMulAction diamond→MulSemiringAction, faithful; smul_mul_assoc→smul_mul').
+- **DR44c (+1) / DR44d (+3)**: Hilbert5OQ02 (NormedSpace.exp dropped field arg exp ℝ X→exp X;
+  exp_add_of_commute needs [NormedAlgebra ℚ 𝔸]), Erdos156Aristotle (A+A Minkowski needs
+  open scoped Pointwise; diffShadow_finite (A-A:Set ℤ) type-mismatch → image-cast ((↑)''A)),
+  Erdos114OQ01Problem (Nat.find_min now needs tested value explicit → find_min h (m<find h)).
+
+## Statement repairs
+- (none — all faithful migration repairs; Hilbert14 MulSemiringAction strengthening and
+  Hilbert5 NormedAlgebra ℚ addition are faithful, every ℝ-Banach-alg / ring-automorphism
+  action already satisfies them.)
+
+## Flagged deep (fix attempted or triaged, did NOT flip, reverted)
+- Erdos14UniqueSums: ncard_eq_toFinset_card' + offDiag_card nonlinear omega fixes clear
+  the first 3 errors but expose a cascade (set-bound rcases rfl subst, Nat.one_le_sqrt
+  removed, 8 Invalid-projection on the InjOn proof) — deep, reverted.
+- Erdos291Problem: 5 `decide` on ZMod-inverse sums no longer kernel-reduce; only
+  native_decide works = axiom-status change (out of scope for clean flip), reverted.
+- DedekindFrobeniusBridge (inertia/arithFrob API drift), Erdos129 (5 omega ↑r-atom),
+  Erdos167 (whnf timeout), Erdos184 (termination + native_decide/noncomputable),
+  Erdos223 (parse + Real.toNat), Erdos556 (def+proof mixed), LawOfCosinesOQ01OQ04
+  (nhdsWithin lemma restructure), LawsOfLargeNumbers/Hilbert20/CauchySchwarz/BrouwerOQ02OQ03
+  (4-6 diverse errors each), FriendshipTheoremOQ01OQ02 (case-pos simp drift) — deferred.
+
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 35, #38065, 2026-07-14)
 
 # DOCTOR INCREMENT 35 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, #38065, 2026-07-14)
