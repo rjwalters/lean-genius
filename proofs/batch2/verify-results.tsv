@@ -514,7 +514,7 @@ DeMoivreOQ02OQ02	RESIDUAL	signature-drift
 DeMoivreOQ03OQ01	GREEN	
 DeMoivreOQ06	GREEN	
 DedekindFrobeniusBridge	RESIDUAL	rewrite-drift
-DenumerabilityRationalsOQ01	RESIDUAL	elab-drift
+DenumerabilityRationalsOQ01	GREEN	elab-drift
 DenumerabilityRationalsOQ02OQ02	RESIDUAL	elab-drift
 DenumerabilityRationalsOQ04	RESIDUAL	unknown-const:Polynomial.setOf_isRoot_finite
 DerangementsConvergence	GREEN	
@@ -1158,7 +1158,7 @@ Erdos341Problem	RESIDUAL	rewrite-drift
 Erdos342Problem	GREEN	
 Erdos343Problem	GREEN	
 Erdos344Problem	GREEN	
-Erdos345Problem	RESIDUAL	parse-error
+Erdos345Problem	GREEN	parse-error
 Erdos346Problem	RESIDUAL	duplicate-decl
 Erdos347Problem	RESIDUAL	unknown-const:Finset.card_Icc
 Erdos348Problem	RESIDUAL	type-mismatch
@@ -1324,7 +1324,7 @@ Erdos487Problem	RESIDUAL	type-mismatch
 Erdos488Problem	RESIDUAL	type-mismatch
 Erdos489Problem	GREEN	
 Erdos48Problem	GREEN	
-Erdos490Aristotle	RESIDUAL	parse-error
+Erdos490Aristotle	GREEN	parse-error
 Erdos490OQ01	GREEN	
 Erdos490ProblemAristotle	RESIDUAL	unknown-const:Nat.eq_zero_of_mul_eq_zero_left
 Erdos491Problem	RESIDUAL	type-mismatch
@@ -1705,7 +1705,7 @@ Erdos796Problem	RESIDUAL	type-mismatch
 Erdos797Problem	GREEN	
 Erdos798Aristotle	RESIDUAL	proof-drift
 Erdos799Problem	GREEN	
-Erdos79Incomplete01	RESIDUAL	signature-drift
+Erdos79Incomplete01	GREEN	signature-drift
 Erdos79Incomplete01OQ01	RESIDUAL	signature-drift
 Erdos79Problem	GREEN	
 Erdos79ProblemAristotle	GREEN	
@@ -1959,7 +1959,7 @@ EulerTotientOQ02OQ02OQ01	RESIDUAL	rewrite-drift
 EulerTotientOQ06OQ02	GREEN	
 FactorRemainderNullstellensatzOQ01	RESIDUAL	instance-synth
 FactorRemainderNullstellensatzOQ02	RESIDUAL	unknown-const:card_roots_le_degree
-FactorRemainderTheorem	RESIDUAL	parse-error
+FactorRemainderTheorem	GREEN	parse-error
 FactorRemainderTheoremOQ01OQ01OQ02	RESIDUAL	proof-drift
 FactorRemainderTheoremOQ02	RESIDUAL	proof-drift
 FactorRemainderTheoremOQ03	RESIDUAL	unknown-const:Polynomial.card_roots_le_degree
@@ -2094,7 +2094,7 @@ Hilbert16	RESIDUAL	type-mismatch
 Hilbert17OQ01	GREEN	
 Hilbert17RobinsonRationalSOS	GREEN	
 Hilbert19Regularity	GREEN	
-Hilbert20BoundaryValue	RESIDUAL	signature-drift
+Hilbert20BoundaryValue	GREEN	signature-drift
 Hilbert20LocalSolvability	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03Aristotle	RESIDUAL	type-mismatch
@@ -2108,7 +2108,7 @@ Hilbert23CalculusVariations	GREEN
 Hilbert23CalculusVariationsOQ01	RESIDUAL	unknown-const:Ici_diff_left
 Hilbert3ScissorsCongruence	GREEN	
 Hilbert4Geodesics	RESIDUAL	instance-synth
-Hilbert5LieGroups	RESIDUAL	elab-drift
+Hilbert5LieGroups	GREEN	elab-drift
 Hilbert5OQ02	RESIDUAL	instance-synth
 Hilbert6PhysicsAxioms	RESIDUAL	type-mismatch
 Hilbert9CyclotomicReciprocity	GREEN	
@@ -2132,7 +2132,7 @@ InverseGaloisA5	GREEN
 InverseGaloisA5Dedekind	GREEN	
 InverseGaloisA5DedekindInstantiation	RESIDUAL	instance-synth
 InverseGaloisA5DedekindMod7	GREEN	
-InverseGaloisA5OQ02	RESIDUAL	elab-drift
+InverseGaloisA5OQ02	GREEN	elab-drift
 InverseGaloisD4	GREEN	
 InverseGaloisD4OQ01	GREEN	
 InverseGaloisD4OQ01External	GREEN	
@@ -2242,7 +2242,7 @@ LeibnizPiOQ03	GREEN
 LiouvilleTheorem	RESIDUAL	instance-synth
 LiouvilleTheoremOQ03	GREEN	
 LiouvilleTheoremOQ04	GREEN	
-LittleWedderburnOQ01OQ02	RESIDUAL	elab-drift
+LittleWedderburnOQ01OQ02	GREEN	elab-drift
 LovaszLocalLemmaOQ01	GREEN	
 LovaszLocalLemmaOQ01StrongInduction	GREEN	
 LovaszLocalLemmaOQ01SymmetricStep	GREEN	
@@ -2653,7 +2653,7 @@ YangMills2DOQ02	GREEN
 YangMillsMassGap	RESIDUAL	unknown-const:Real.exp_lt_exp_of_lt
 ZsqrtdNegTwo	GREEN	
 ZsqrtdNegTwoOQ01	GREEN	
-ZsqrtdNegTwoOQ03	RESIDUAL	elab-drift
-ZsqrtdNegTwoOQ03OQ01	RESIDUAL	elab-drift
-ZsqrtdNegTwoOQ03OQ06	RESIDUAL	elab-drift
+ZsqrtdNegTwoOQ03	GREEN	elab-drift
+ZsqrtdNegTwoOQ03OQ01	GREEN	elab-drift
+ZsqrtdNegTwoOQ03OQ06	GREEN	elab-drift
 eTranscendental	GREEN	

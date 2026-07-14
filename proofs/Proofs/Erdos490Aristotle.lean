@@ -44,14 +44,11 @@ theorem trivial_product_bound (A B : Finset ℕ) (N : ℕ)
 -- Section 2: Prime Divisibility for Distinct Products
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- If p is prime, p > a, and p | a * q, then p | q. -/
+/-- If p is prime, 0 < a < p, and p | a * q, then p | q. -/
 theorem prime_dvd_of_dvd_mul_lt (p a q : ℕ) (hp : Nat.Prime p)
-    (hpa : a < p) (h : p ∣ a * q) : p | q := by
-  have hna : ¬(p ∣ a) := by
-    intro hdvd
-    rcases Nat.eq_zero_or_pos a with rfl | hpos
-    · simp at h; rcases h with rfl | rfl <;> omega
-    · exact Nat.not_lt.mpr (Nat.le_of_dvd hpos hdvd) hpa
+    (ha : 0 < a) (hpa : a < p) (h : p ∣ a * q) : p ∣ q := by
+  have hna : ¬(p ∣ a) := fun hdvd =>
+    Nat.not_lt.mpr (Nat.le_of_dvd ha hdvd) hpa
   exact (hp.dvd_mul.mp h).resolve_left hna
 
 /-- If a₁ * p₁ = a₂ * p₂ with p₁, p₂ prime and p₁ > a₂, p₂ > a₁,
@@ -61,8 +58,8 @@ theorem unique_product_large_primes (a₁ a₂ p₁ p₂ : ℕ)
     (hlt₁ : a₁ < p₁) (hlt₂ : a₂ < p₂)
     (ha₁ : a₁ > 0) (ha₂ : a₂ > 0)
     (heq : a₁ * p₁ = a₂ * p₂) : a₁ = a₂ ∧ p₁ = p₂ := by
-  have hp₁_dvd : p₁ ∣ a₂ * p₂ := ⟨a₁, by omega⟩
-  have hp₂_dvd : p₂ ∣ a₁ * p₁ := ⟨a₂, by omega⟩
+  have hp₁_dvd : p₁ ∣ a₂ * p₂ := ⟨a₁, by rw [← heq]; ring⟩
+  have hp₂_dvd : p₂ ∣ a₁ * p₁ := ⟨a₂, by rw [heq]; ring⟩
   rcases hp₁.dvd_mul.mp hp₁_dvd with h₁ | h₁
   · -- p₁ | a₂
     rcases hp₂.dvd_mul.mp hp₂_dvd with h₂ | h₂
@@ -71,13 +68,21 @@ theorem unique_product_large_primes (a₁ a₂ p₁ p₂ : ℕ)
       have : p₂ ≤ a₁ := Nat.le_of_dvd (by omega) h₂
       omega
     · -- p₂ | p₁: both prime, so p₁ = p₂
-      rcases hp₂.eq_one_or_self_of_dvd p₁ h₂ with h | h
-      · omega
-      · subst h; exact ⟨by nlinarith, rfl⟩
+      rcases hp₁.eq_one_or_self_of_dvd p₂ h₂ with h | h
+      · have := hp₂.two_le; omega
+      · have hpp : p₁ = p₂ := h.symm
+        subst hpp
+        refine ⟨?_, rfl⟩
+        have hp₁_pos : 0 < p₁ := hp₁.pos
+        exact Nat.eq_of_mul_eq_mul_right hp₁_pos heq
   · -- p₁ | p₂: both prime, so p₁ = p₂
-    rcases hp₁.eq_one_or_self_of_dvd p₂ h₁ with h | h
-    · omega
-    · subst h; exact ⟨by nlinarith, rfl⟩
+    rcases hp₂.eq_one_or_self_of_dvd p₁ h₁ with h | h
+    · have := hp₁.two_le; omega
+    · have hpp : p₁ = p₂ := h
+      subst hpp
+      refine ⟨?_, rfl⟩
+      have hp₁_pos : 0 < p₁ := hp₁.pos
+      exact Nat.eq_of_mul_eq_mul_right hp₁_pos heq
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: Product Set Properties
@@ -108,15 +113,21 @@ theorem prime_product_unique (p₁ p₂ q₁ q₂ : ℕ)
     (hq₁ : Nat.Prime q₁) (hq₂ : Nat.Prime q₂)
     (h : p₁ * q₁ = p₂ * q₂) :
     (p₁ = p₂ ∧ q₁ = q₂) ∨ (p₁ = q₂ ∧ q₁ = p₂) := by
-  have hp₁_dvd : p₁ ∣ p₂ * q₂ := ⟨q₁, by linarith⟩
+  have hp₁_dvd : p₁ ∣ p₂ * q₂ := ⟨q₁, by rw [← h]⟩
   rcases hp₁.dvd_mul.mp hp₁_dvd with h₁ | h₁
   · -- p₁ | p₂: both prime, so p₁ = p₂
     rcases hp₂.eq_one_or_self_of_dvd p₁ h₁ with heq | heq
-    · omega
-    · left; subst heq; exact ⟨rfl, by nlinarith⟩
+    · have := hp₁.two_le; omega
+    · left; refine ⟨heq, ?_⟩
+      subst heq
+      exact Nat.eq_of_mul_eq_mul_left hp₁.pos h
   · -- p₁ | q₂: both prime, so p₁ = q₂
     rcases hq₂.eq_one_or_self_of_dvd p₁ h₁ with heq | heq
-    · omega
-    · right; subst heq; exact ⟨rfl, by nlinarith⟩
+    · have := hp₁.two_le; omega
+    · right; refine ⟨heq, ?_⟩
+      subst heq
+      -- h : p₁ * q₁ = p₂ * p₁, so q₁ = p₂
+      have h' : p₁ * q₁ = p₁ * p₂ := by rw [h]; ring
+      exact Nat.eq_of_mul_eq_mul_left hp₁.pos h'
 
 end Erdos490Aristotle

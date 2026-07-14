@@ -55,7 +55,7 @@ def K4MinusEdge (p q : ℕ) : SimpleGraph ℕ where
   loopless := by
     constructor
     rintro u ⟨h1, -⟩
-    exact (completeGraphN 4).loopless u h1
+    exact (completeGraphN 4).loopless.irrefl u h1
 
 @[simp] theorem K4MinusEdge_adj (p q u v : ℕ) :
     (K4MinusEdge p q).Adj u v ↔
