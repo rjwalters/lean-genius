@@ -140,7 +140,7 @@ theorem sylow_count_mod_p (G : Type*) [Group G] (p : ℕ) [Fact p.Prime]
 /-- The number of Sylow p-subgroups divides the index of any Sylow p-subgroup. -/
 theorem sylow_count_dvd_index (G : Type*) [Group G] (p : ℕ) [Fact p.Prime]
     [Finite (Sylow p G)] (P : Sylow p G) : Nat.card (Sylow p G) ∣ (↑P : Subgroup G).index :=
-  card_sylow_dvd_index P
+  P.card_dvd_index
 
 /-! ## Uniqueness of Sylow Subgroups
 
@@ -151,15 +151,14 @@ When there is exactly one Sylow p-subgroup, it must be normal
 /-- If g • P = P for all g, then P is normal. -/
 theorem sylow_normal_of_eq (G : Type*) [Group G] (p : ℕ) [Fact p.Prime]
     (P : Sylow p G) (h : ∀ g : G, g • P = P) : (↑P : Subgroup G).Normal := by
-  rw [← normalizer_eq_top]
+  rw [← normalizer_eq_top_iff]
   ext g
   simp only [mem_top, iff_true]
   rw [mem_normalizer_iff]
   intro x
   have := h g
   rw [Sylow.smul_eq_iff_mem_normalizer] at this
-  rw [mem_normalizer_iff] at this
-  exact this x
+  exact (mem_normalizer_iff.mp this) x
 
 /-- If there is exactly one Sylow p-subgroup (Subsingleton), it is normal. -/
 theorem sylow_normal_of_unique (G : Type*) [Group G] (p : ℕ) [Fact p.Prime]
@@ -194,7 +193,7 @@ theorem cauchy_from_sylow (G : Type*) [Group G] [Fintype G] (p : ℕ) [Fact p.Pr
 /-- For a prime p, a group of order p is cyclic (immediate from Lagrange). -/
 theorem group_of_prime_order_cyclic (G : Type*) [Group G] [Fintype G]
     (hp : (Fintype.card G).Prime) : IsCyclic G := by
-  haveI : Fact (Fintype.card G).Prime := ⟨hp⟩
+  haveI : Fact (Nat.card G).Prime := ⟨by rwa [Nat.card_eq_fintype_card]⟩
   exact isCyclic_of_prime_card rfl
 
 /-! ## Summary of Key Results
