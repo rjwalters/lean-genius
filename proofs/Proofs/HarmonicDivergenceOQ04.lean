@@ -65,19 +65,19 @@ theorem one_div_antitone : ∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → 1 / (n : �
 
 /-- The constant sequence 1 is not summable (Σ 1 = ∞). -/
 theorem not_summable_one : ¬Summable (fun _ : ℕ => (1 : ℝ)) :=
-  not_summable_const_of_ne_zero one_ne_zero
+  fun hf => (Finite.of_summable_const one_pos hf).false
 
 /-- The condensed harmonic series Σ 2^k/2^k = Σ 1 diverges. -/
 theorem condensed_harmonic_diverges :
     ¬Summable (fun k : ℕ => (2 : ℝ) ^ k * (1 / (2 : ℝ) ^ k)) := by
-  convert not_summable_one using 1
+  convert not_summable_one using 2
   ext k; field_simp
 
 /-- Oresme's result via condensation: the harmonic series Σ 1/n diverges.
     This shows Oresme's grouping argument is a special case of Cauchy condensation. -/
 theorem oresme_via_condensation : ¬Summable (fun n : ℕ => 1 / (n : ℝ)) := by
   rw [cauchy_condensation_diverges one_div_nonneg_nat one_div_antitone]
-  convert condensed_harmonic_diverges using 1
+  convert condensed_harmonic_diverges using 2
   ext k; push_cast; ring
 
 /-- Concordance: our result matches Mathlib's direct proof. -/

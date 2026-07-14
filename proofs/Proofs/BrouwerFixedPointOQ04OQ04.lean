@@ -297,10 +297,10 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
     (hε_zero : Filter.Tendsto ε Filter.atTop (nhds 0))
     (hx_approx : ∀ n, ∃ y ∈ Set.Icc (F.lower (x n)) (F.upper (x n)),
                        |x n - y| < ε n) :
-    ∃ x* ∈ Set.Icc (0:ℝ) 1, F.lower x* ≤ x* ∧ x* ≤ F.upper x* := by
-  obtain ⟨x*, hx*_in, φ, hφ_strict, hφ_conv⟩ := seq_compact_Icc hx_in
-  refine ⟨x*, hx*_in, ?_, ?_⟩
-  · -- Goal 1: F.lower x* ≤ x*
+    ∃ xs ∈ Set.Icc (0:ℝ) 1, F.lower xs ≤ xs ∧ xs ≤ F.upper xs := by
+  obtain ⟨xs, hxs_in, φ, hφ_strict, hφ_conv⟩ := seq_compact_Icc hx_in
+  refine ⟨xs, hxs_in, ?_, ?_⟩
+  · -- Goal 1: F.lower xs ≤ xs
     -- Extract witnesses y(φ n) ∈ [F.lower(x(φ n)), F.upper(x(φ n))] with |x(φ n) - y(φ n)| < ε(φ n)
     have hy : ∀ n, ∃ yn : ℝ, F.lower (x (φ n)) ≤ yn ∧ |x (φ n) - yn| < ε (φ n) := fun n => by
       obtain ⟨yn, ⟨hl, _⟩, hd⟩ := hx_approx (φ n); exact ⟨yn, hl, hd⟩
@@ -311,19 +311,19 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
     -- x(φ n) - y n → 0: squeeze between 0 and ε(φ n) → 0
     have h_diff : Filter.Tendsto (fun n => x (φ n) - y n) Filter.atTop (nhds 0) :=
       squeeze_zero_norm (fun n => by rw [Real.norm_eq_abs]; exact (hy_dist n).le) hεφ
-    -- y n → x*: y n = x(φ n) - (x(φ n) - y n)
-    have hy_lim : Filter.Tendsto y Filter.atTop (nhds x*) := by
+    -- y n → xs: y n = x(φ n) - (x(φ n) - y n)
+    have hy_lim : Filter.Tendsto y Filter.atTop (nhds xs) := by
       have h := hφ_conv.sub h_diff
       simp only [sub_sub_cancel, sub_zero] at h; exact h
-    -- F.lower(x(φ n)) → F.lower(x*): ContinuousOn + convergence in Icc
-    have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc (0:ℝ) 1)) := by
+    -- F.lower(x(φ n)) → F.lower(xs): ContinuousOn + convergence in Icc
+    have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin xs (Set.Icc (0:ℝ) 1)) := by
       rw [Filter.tendsto_nhdsWithin_iff]
       exact ⟨hφ_conv, Filter.Eventually.of_forall (fun n => hx_in (φ n))⟩
-    have hlower_lim : Filter.Tendsto (fun n => F.lower (x (φ n))) Filter.atTop (nhds (F.lower x*)) :=
-      (F.lower_cont.continuousWithinAt hx*_in).comp htend_within
+    have hlower_lim : Filter.Tendsto (fun n => F.lower (x (φ n))) Filter.atTop (nhds (F.lower xs)) :=
+      (F.lower_cont.continuousWithinAt hxs_in).comp htend_within
     -- Conclude by limit comparison: F.lower(x(φ n)) ≤ y n, both converge
     exact le_of_tendsto_of_tendsto hlower_lim hy_lim hy_lb
-  · -- Goal 2: x* ≤ F.upper x* (symmetric argument)
+  · -- Goal 2: xs ≤ F.upper xs (symmetric argument)
     have hy : ∀ n, ∃ yn : ℝ, yn ≤ F.upper (x (φ n)) ∧ |x (φ n) - yn| < ε (φ n) := fun n => by
       obtain ⟨yn, ⟨_, hu⟩, hd⟩ := hx_approx (φ n); exact ⟨yn, hu, hd⟩
     choose y hy_ub hy_dist using hy
@@ -331,14 +331,14 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
       hε_zero.comp hφ_strict.tendsto_atTop
     have h_diff : Filter.Tendsto (fun n => x (φ n) - y n) Filter.atTop (nhds 0) :=
       squeeze_zero_norm (fun n => by rw [Real.norm_eq_abs]; exact (hy_dist n).le) hεφ
-    have hy_lim : Filter.Tendsto y Filter.atTop (nhds x*) := by
+    have hy_lim : Filter.Tendsto y Filter.atTop (nhds xs) := by
       have h := hφ_conv.sub h_diff
       simp only [sub_sub_cancel, sub_zero] at h; exact h
-    have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin x* (Set.Icc (0:ℝ) 1)) := by
+    have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin xs (Set.Icc (0:ℝ) 1)) := by
       rw [Filter.tendsto_nhdsWithin_iff]
       exact ⟨hφ_conv, Filter.Eventually.of_forall (fun n => hx_in (φ n))⟩
-    have hupper_lim : Filter.Tendsto (fun n => F.upper (x (φ n))) Filter.atTop (nhds (F.upper x*)) :=
-      (F.upper_cont.continuousWithinAt hx*_in).comp htend_within
+    have hupper_lim : Filter.Tendsto (fun n => F.upper (x (φ n))) Filter.atTop (nhds (F.upper xs)) :=
+      (F.upper_cont.continuousWithinAt hxs_in).comp htend_within
     exact le_of_tendsto_of_tendsto hy_lim hupper_lim hy_ub
 
 /-- **Bisection complexity**: The grid search error 2/n goes to 0,
@@ -347,8 +347,10 @@ theorem bisection_complexity (ε : ℝ) (hε : 0 < ε) :
     ∃ K : ℕ, ∀ n : ℕ, K ≤ n → (2 : ℝ) / (n : ℝ) < ε := by
   refine ⟨Nat.ceil (2 / ε) + 1, fun n hn => ?_⟩
   have hK : (Nat.ceil (2 / ε) : ℝ) ≥ 2 / ε := Nat.le_ceil _
-  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
-  rw [div_lt_iff₀ hn_pos, ← div_lt_iff₀ hε]
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by
+    have : 0 < n := by omega
+    exact_mod_cast this
+  rw [div_lt_iff₀ hn_pos, mul_comm, ← div_lt_iff₀ hε]
   calc 2 / ε ≤ ↑(Nat.ceil (2 / ε)) := Nat.le_ceil _
     _ < ↑(Nat.ceil (2 / ε)) + 1 := by exact_mod_cast Nat.lt_succ_self _
     _ ≤ ↑n := by exact_mod_cast hn

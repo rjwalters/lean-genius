@@ -291,7 +291,7 @@ BrouwerFixedPointOQ02OQ02OQ01Iteration	GREEN
 BrouwerFixedPointOQ02OQ03	RESIDUAL	type-mismatch
 BrouwerFixedPointOQ04OQ02	GREEN	
 BrouwerFixedPointOQ04OQ03	GREEN	
-BrouwerFixedPointOQ04OQ04	RESIDUAL	type-mismatch
+BrouwerFixedPointOQ04OQ04	GREEN	type-mismatch
 BuffonConstantAsymptotic	GREEN	
 BuffonsNeedleOQ01	GREEN	
 BuffonsNeedleOQ01OQ01	GREEN	
@@ -541,7 +541,7 @@ DescartesRuleOfSignsOQ01OQ01	GREEN
 DescartesRuleOfSignsOQ01OQ02	RESIDUAL	unknown-const:Even.add_even
 DescartesRuleOfSignsOQ02	RESIDUAL	rewrite-drift
 DescartesRuleOfSignsOQ02OQ01	RESIDUAL	rewrite-drift
-DescartesRuleOfSignsOQ02Parity	RESIDUAL	proof-drift
+DescartesRuleOfSignsOQ02Parity	GREEN	proof-drift
 DescartesRuleOfSignsOQ04	RESIDUAL	unknown-const:Multiset.countP_singleton
 DiamondImpliesCH	GREEN	
 DiniTheorem	GREEN	
@@ -1166,7 +1166,7 @@ Erdos349Problem	GREEN
 Erdos350Problem	GREEN	
 Erdos351Problem	GREEN	
 Erdos352Problem	GREEN	
-Erdos353Aristotle	RESIDUAL	instance-synth
+Erdos353Aristotle	GREEN	instance-synth
 Erdos353Problem	RESIDUAL	unknown-const:smul_left_cancel₀
 Erdos354Problem	GREEN	
 Erdos355Problem	GREEN	
@@ -1175,7 +1175,7 @@ Erdos357Problem	GREEN
 Erdos358Problem	RESIDUAL	unknown-const:two_mul_sum_Icc
 Erdos359Problem	GREEN	
 Erdos35Problem	RESIDUAL	proof-drift
-Erdos35ProblemAristotle	RESIDUAL	instance-synth
+Erdos35ProblemAristotle	GREEN	instance-synth
 Erdos360Aristotle	RESIDUAL	proof-drift
 Erdos360Problem	GREEN	
 Erdos361Problem	GREEN	
@@ -1973,7 +1973,7 @@ FatouLemmaOQ01OQ02	GREEN
 FermatTwoSquaresOQ04	GREEN	
 FermatTwoSquaresOQ04OQ01	GREEN	
 FermatsLastTheoremOQ03	RESIDUAL	type-mismatch
-FeuerbachsTheoremDefsOQ04	RESIDUAL	type-mismatch
+FeuerbachsTheoremDefsOQ04	GREEN	type-mismatch
 FeuerbachsTheoremOQ01Aristotle	GREEN	
 FeuerbachsTheoremOQ01OQ03	RESIDUAL	unknown-const:h1
 FeuerbachsTheoremOQ04TangentLine	GREEN	
@@ -2033,7 +2033,7 @@ FundamentalTheoremCalculusLebesgueOQ04	RESIDUAL	elab-drift
 FundamentalTheoremCalculusOQ04	GREEN	
 FundamentalTheoremCalculusStokes	RESIDUAL	type-mismatch
 FundamentalTheoremCalculusStokesAristotle	RESIDUAL	unclassified
-FurstenbergCorrespondence	RESIDUAL	type-mismatch
+FurstenbergCorrespondence	GREEN	type-mismatch
 FurstenbergCorrespondenceOQ01	RESIDUAL	instance-synth
 FurstenbergCorrespondenceOQ02	RESIDUAL	parse-error
 GCDAlgorithmOQ01OQ03OQ01	GREEN	
@@ -2069,7 +2069,7 @@ GreensTheoremOQ04	RESIDUAL	type-mismatch
 GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02	GREEN	
 HarmonicDivergence	GREEN	
 HarmonicDivergenceOQ02	RESIDUAL	type-mismatch
-HarmonicDivergenceOQ04	RESIDUAL	unknown-const:not_summable_const_of_ne_zero
+HarmonicDivergenceOQ04	GREEN	unknown-const:not_summable_const_of_ne_zero
 HermiteFloorIdentity	GREEN	
 HermiteFloorIdentityOQ01	GREEN	
 HermiteFloorIdentityOQ02	GREEN	

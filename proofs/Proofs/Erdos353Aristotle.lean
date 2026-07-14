@@ -12,6 +12,7 @@
 import Mathlib
 
 open MeasureTheory Set Pointwise
+open scoped ENNReal
 
 namespace Erdos353Aristotle
 
@@ -30,8 +31,7 @@ theorem volume_preimage_smul_eq_top (c : ℝ) (hc : c ≠ 0)
     · intro h; exact ⟨c • x, h, inv_smul_smul₀ hc x⟩
     · rintro ⟨a, ha, rfl⟩; rwa [smul_inv_smul₀ hc]
   rw [h_eq, MeasureTheory.Measure.addHaar_smul volume c⁻¹ A, hvol]
-  have h_pos : (0 : ℝ≥0∞) < ENNReal.ofReal |c⁻¹| ^ FiniteDimensional.finrank ℝ (EuclideanSpace ℝ (Fin 2)) :=
-    pow_pos (ENNReal.ofReal_pos.mpr (abs_pos.mpr (inv_ne_zero.mpr hc))) _
-  simp [ENNReal.mul_top, h_pos.ne']
+  exact ENNReal.mul_top (ENNReal.ofReal_ne_zero_iff.mpr
+    (abs_pos.mpr (pow_ne_zero _ (inv_ne_zero hc))))
 
 end Erdos353Aristotle

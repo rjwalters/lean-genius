@@ -50,7 +50,7 @@ theorem power_bound_implies_erdos_ari (α : ℝ) (k : ℕ) (hk : k ≥ 1)
   have ht0 : 0 ≤ t := by linarith
   have ht1 : t < 1 := by linarith
   have h1t_pos : 0 < 1 - t := by linarith
-  have hexp_split : (1 : ℝ) - 1 / k = 1 + -(1 / k) := by ring
+  have hexp_split : (1 : ℝ) - 1 / k = 1 + -(1 / (k : ℝ)) := by ring
   rw [ge_iff_le, hexp_split, Real.rpow_add hα_pos, Real.rpow_one]
   have hrhs_eq : α + α * (1 - α) / k = α * (1 + t / k) := by rw [ht_def]; ring
   rw [hrhs_eq]
@@ -63,16 +63,16 @@ theorem power_bound_implies_erdos_ari (α : ℝ) (k : ℕ) (hk : k ≥ 1)
           have := Real.add_one_le_exp (-t)
           linarith
       _ = -t := Real.log_exp _
-  have harg : t / k ≤ (-(1 / k)) * Real.log (1 - t) := by
+  have harg : t / k ≤ (-(1 / (k : ℝ))) * Real.log (1 - t) := by
     have h_neg_log : t ≤ -Real.log (1 - t) := by linarith [hlog_bound]
     calc t / k = t * (1 / k) := by ring
         _ ≤ (-Real.log (1 - t)) * (1 / k) :=
             mul_le_mul_of_nonneg_right h_neg_log (by positivity)
-        _ = (-(1 / k)) * Real.log (1 - t) := by ring
-  have hdef : (1 - t) ^ (-(1 / k)) = Real.exp (Real.log (1 - t) * -(1 / k)) :=
+        _ = (-(1 / (k : ℝ))) * Real.log (1 - t) := by ring
+  have hdef : (1 - t) ^ (-(1 / (k : ℝ))) = Real.exp (Real.log (1 - t) * -(1 / (k : ℝ))) :=
     Real.rpow_def_of_pos h1t_pos _
   rw [hdef, mul_comm]
-  have h_exp := Real.add_one_le_exp (-(1 / k) * Real.log (1 - t))
+  have h_exp := Real.add_one_le_exp (-(1 / (k : ℝ)) * Real.log (1 - t))
   linarith
 
 end Erdos35.Aristotle
