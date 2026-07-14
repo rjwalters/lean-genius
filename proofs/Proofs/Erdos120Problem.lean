@@ -184,12 +184,12 @@ theorem geometricSeq_infinite : geometricSeq.Infinite := by
   intro n₁ n₂ h
   by_contra hne
   rcases Nat.lt_or_gt_of_ne hne with h12 | h12
-  · exact absurd h (ne_of_gt (pow_lt_pow_of_lt_one (by norm_num) (by norm_num) h12))
-  · exact absurd h (ne_of_lt (pow_lt_pow_of_lt_one (by norm_num) (by norm_num) h12))
+  · exact absurd h (ne_of_gt (pow_lt_pow_right_of_lt_one₀ (by norm_num) (by norm_num) h12))
+  · exact absurd h (ne_of_lt (pow_lt_pow_right_of_lt_one₀ (by norm_num) (by norm_num) h12))
 
 /-- The geometric sequence is bounded. -/
 theorem geometricSeq_bounded : Bornology.IsBounded geometricSeq := by
-  apply (isBounded_Icc (a := (0 : ℝ)) (b := 1)).subset
+  apply (Metric.isBounded_Icc (0 : ℝ) 1).subset
   intro x ⟨n, hx⟩
   simp only [Set.mem_Icc]
   subst hx
@@ -226,8 +226,9 @@ theorem ratio_preserved (A : Set ℝ) (a b : ℝ) (ha : a ≠ 0)
     (h₃ : a₃ ∈ A) (h₄ : a₄ ∈ A) (h₃₄ : a₃ ≠ a₄) :
     (a * a₁ + b - (a * a₂ + b)) / (a * a₃ + b - (a * a₄ + b)) =
     (a₁ - a₂) / (a₃ - a₄) := by
-  ring_nf
-  rw [mul_div_mul_left _ _ ha]
+  have h : a * a₃ + b - (a * a₄ + b) = a * (a₃ - a₄) := by ring
+  rw [show a * a₁ + b - (a * a₂ + b) = a * (a₁ - a₂) from by ring, h,
+    mul_div_mul_left _ _ ha]
 
 /-
 # Part 8: Measure-Theoretic Tools
@@ -266,6 +267,7 @@ theorem universal_iff_not_avoidable (A : Set ℝ) :
     exact hAvoid (hUniv E hMeas hPos)
   · intro hNotAvoid
     by_contra hNotUniv
+    unfold universalSimilaritySet at hNotUniv
     push_neg at hNotUniv
     obtain ⟨E, hMeas, hPos, hNot⟩ := hNotUniv
     exact hNotAvoid ⟨E, hMeas, hPos, hNot⟩
@@ -284,7 +286,7 @@ theorem conjecture_equiv :
     rw [universal_iff_not_avoidable] at hUniv
     exact hUniv this
   · intro h A hInf
-    rw [← not_not (avoidable A)]
+    rw [← not_not (a := avoidable A)]
     rw [← universal_iff_not_avoidable]
     exact fun hUniv => h A hInf hUniv
 
