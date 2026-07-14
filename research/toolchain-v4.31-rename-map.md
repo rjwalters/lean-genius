@@ -1208,7 +1208,7 @@ migration, not a one-line compat (NapoleonsTheorem family deferred).
 | `List.mem_cons_self a l` → "Function expected … a::l" | `List.mem_cons_self ..` (explicit args dropped) | (Erdos382 partial) |
 | `![…] : EuclideanSpace ℝ (Fin 2)` type mismatch (matrix literal no longer coerces to PiLp) | `!₂[…]` (or `(EuclideanSpace.equiv _ _).symm ![…]`) | (Erdos94OQ02 partial) |
 
-## §7y Doctor increment 30 recipes (tm/pd/rewrite/unknown-const/instance-synth, A–M partition, +28 GREEN)
+## §7y Doctor increment 30 recipes (tm/pd/rewrite/unknown-const/instance-synth, A–M partition, +23 GREEN)
 
 | symptom (v4.31) | fix | files |
 |---|---|---|
