@@ -8,7 +8,7 @@ AbelRuffiniGaloisExtensionsOQ02OQ01	GREEN
 AbelRuffiniGaloisExtensionsOQ03	GREEN	
 AbelRuffiniGaloisExtensionsOQ03OQ01	GREEN	
 AbelRuffiniGaloisExtensionsOQ04	RESIDUAL	type-mismatch
-AbelRuffiniGaloisExtensionsOQ04OQ03	RESIDUAL	rewrite-drift
+AbelRuffiniGaloisExtensionsOQ04OQ03	GREEN	
 AbelRuffiniGaloisExtensionsOQ05	GREEN	
 AbelRuffiniGaloisExtensionsOQ05OQ01	GREEN	
 AbelRuffiniGaloisExtensionsOQ06	GREEN	
@@ -173,7 +173,7 @@ BallotProblemOQ03OQ01OQ02Aristotle	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ01OQ02Helpers	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ02	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ02OQ01	RESIDUAL	proof-drift
-BallotProblemOQ03OQ02OQ03	RESIDUAL	proof-drift
+BallotProblemOQ03OQ02OQ03	GREEN	
 BallotProblemOQ03OQ03	RESIDUAL	unknown-const:Nat.one_le_succ
 BallotProblemOQ04OQ02	GREEN	
 BallotProblemOQ04OQ02OQ01	GREEN	
@@ -265,7 +265,7 @@ BorsukUlamOQ03	GREEN
 BorsukUlamOQ03OQ01	RESIDUAL	rewrite-drift
 BorsukUlamOQ03OQ02	GREEN	
 BorsukUlamOQ03OQ03	GREEN	
-BorsukUlamOQ04OQ03	RESIDUAL	instance-synth
+BorsukUlamOQ04OQ03	GREEN	
 BoundedPrimeGapsOQ01OQ02	GREEN	
 BoundedPrimeGapsOQ03OQ01	GREEN	
 BoundedPrimeGapsOQ03OQ01OQ01	GREEN	
