@@ -121,7 +121,7 @@ theorem sum_descFactorial_cross (r m n : ℕ) (hr : r ≤ n) :
     rw [Nat.descFactorial_eq_zero_iff_lt.mpr hm, Nat.zero_mul]
     refine Finset.sum_eq_zero (fun k hk => ?_)
     rw [Finset.mem_range, Nat.lt_succ_iff] at hk
-    rcases lt_or_le k r with hk2 | hk2
+    rcases lt_or_ge k r with hk2 | hk2
     · rw [Nat.descFactorial_eq_zero_iff_lt.mpr hk2]; ring
     · rw [Nat.choose_eq_zero_of_lt (show m < k by omega)]; ring
 

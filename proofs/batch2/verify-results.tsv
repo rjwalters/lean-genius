@@ -463,7 +463,7 @@ CombinationsFormulaOQ02	RESIDUAL	proof-drift
 CombinationsFormulaOQ02Aristotle	RESIDUAL	unknown-const:choose_2n_succ
 CombinationsFormulaOQ03OQ06	GREEN	
 CombinationsFormulaOQ07OQ04OQ01OQ02	GREEN	
-CombinationsFormulaOQ07OQ04OQ01OQ02OQ01	RESIDUAL	unknown-const:lt_or_le
+CombinationsFormulaOQ07OQ04OQ01OQ02OQ01	GREEN	
 ComplexityCore	GREEN	
 ConjugacyClassEquationOQ01	GREEN	
 ConjugacyClassEquationOQ0102	GREEN	
@@ -1128,7 +1128,7 @@ Erdos323Problem	RESIDUAL	unknown-const:IsSumOfPowers_one_iff.mpr
 Erdos324Problem	GREEN	
 Erdos325Problem	GREEN	
 Erdos326Problem	GREEN	
-Erdos327OQ01	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
+Erdos327OQ01	GREEN	
 Erdos327OQ01OQ04	RESIDUAL	unknown-const:Nat.eq_of_mul_eq_left
 Erdos328Problem	GREEN	
 Erdos329Problem	GREEN	
@@ -1185,7 +1185,7 @@ Erdos364Problem	GREEN
 Erdos365Problem	RESIDUAL	proof-drift
 Erdos367Problem	RESIDUAL	unknown-const:twoFullPart_le
 Erdos368Problem	GREEN	
-Erdos369Problem	RESIDUAL	unknown-const:Nat.dvd_of_dvd_of_dvd
+Erdos369Problem	GREEN	
 Erdos36Problem	RESIDUAL	unknown-const:white_lower
 Erdos370Problem	GREEN	
 Erdos371Problem	GREEN	
@@ -2049,7 +2049,7 @@ GeometricSeriesOQ01Neumann	GREEN
 GeometricSeriesOQ01OQ02	GREEN	
 GeometricSeriesOQ02OQ03	GREEN	
 GeometricSeriesOQ02OQ05	RESIDUAL	rewrite-drift
-GeometricSeriesOQ03	RESIDUAL	unknown-const:inv_ne_zero.mpr
+GeometricSeriesOQ03	GREEN	
 GeometricSeriesOQ07	GREEN	
 GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01	GREEN	
 GeometricSeriesOQ07OQ02	GREEN	

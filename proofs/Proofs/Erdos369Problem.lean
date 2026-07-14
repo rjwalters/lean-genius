@@ -55,10 +55,7 @@ theorem isSmooth_mono_B {m B B' : ℕ} (h : B ≤ B') (hs : IsSmooth m B) : IsSm
 
 /-- Any prime p is p-smooth. -/
 theorem isSmooth_prime_self {p : ℕ} (hp : p.Prime) : IsSmooth p p :=
-  ⟨hp.pos, fun q hq hdvd => by
-    rcases hq.eq_one_or_self_of_dvd p (Nat.dvd_of_dvd_of_dvd hdvd (dvd_refl p)) with h | h
-    · exact absurd h hq.ne_one
-    · rw [← (hp.eq_one_or_self_of_dvd q hdvd).resolve_left hq.ne_one]⟩
+  ⟨hp.pos, fun q _hq hdvd => Nat.le_of_dvd hp.pos hdvd⟩
 
 /-- Products of B-smooth numbers are B-smooth. -/
 theorem isSmooth_mul {m n B : ℕ} (hm : IsSmooth m B) (hn : IsSmooth n B) :
