@@ -118,15 +118,7 @@ def ErdosCounterConjecture : Prop :=
 theorem conjectures_complementary : LittleOConjecture ↔ ¬ErdosCounterConjecture := by
   unfold LittleOConjecture ErdosCounterConjecture
   push_neg
-  constructor <;> intro h
-  · intro ⟨ε, hε, hN⟩
-    obtain ⟨N₀, hN₀⟩ := h ε hε
-    obtain ⟨N, hNge, hNgt⟩ := hN N₀
-    exact (hNgt.trans_le (hN₀ N hNge)).false
-  · intro ε hε
-    by_contra hc
-    push_neg at hc
-    exact h ε hε (fun N₀ => ⟨N₀, le_refl _, hc N₀⟩)
+  rfl
 
 /-- **ChatGPT-Tang Theorem:** The little-o conjecture is FALSE.
 
