@@ -60,9 +60,9 @@ theorem pellNorm_pos_of_pos {d : ℤ} (hd : 0 < d) (x y : ℤ)
     (hx : 1 ≤ x) (hy : 0 ≤ y) :
     1 ≤ pellNorm d x y := by
   unfold pellNorm
-  have hd_real : (0 : ℝ) ≤ (d : ℝ) := Int.cast_nonneg.mpr hd.le
+  have hd_real : (0 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hd.le
   have hsqrt : 0 ≤ Real.sqrt (d : ℝ) := Real.sqrt_nonneg _
-  have hy_real : (0 : ℝ) ≤ (y : ℝ) := Int.cast_nonneg.mpr hy
+  have hy_real : (0 : ℝ) ≤ (y : ℝ) := by exact_mod_cast hy
   calc (1 : ℝ) ≤ (x : ℝ) := by exact_mod_cast hx
     _ ≤ (x : ℝ) + (y : ℝ) * Real.sqrt (d : ℝ) := le_add_of_nonneg_right (mul_nonneg hy_real hsqrt)
 

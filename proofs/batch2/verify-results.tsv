@@ -2302,7 +2302,7 @@ PascalsHexagon	GREEN
 PascalsHexagonOQ02	GREEN	
 PascalsHexagonOQ03	GREEN	
 PascalsHexagonOQ03Incomplete01Derangements	GREEN	
-PellEquationOQ01	RESIDUAL	unknown-const:Int.cast_nonneg.mpr
+PellEquationOQ01	GREEN	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	GREEN	
 PentagonalNumberTheoremOQ01OQ01	RESIDUAL	rewrite-drift
 PentagonalNumberTheoremOQ01OQ02	RESIDUAL	rewrite-drift
@@ -2333,7 +2333,7 @@ ProbMethodSecondMomentOQ01	RESIDUAL	duplicate-decl
 ProbMethodSecondMomentOQ04OQ03	GREEN	
 ProductOfSegmentsOfChordsConverse	GREEN	
 ProductOfSegmentsOfChordsOQ01	RESIDUAL	unknown-const:chord_quadratic_sphere
-PropertyBFirstMomentRecoloring	RESIDUAL	unknown-const:Finset.exists_ne_of_one_lt_card
+PropertyBFirstMomentRecoloring	GREEN	unknown-const:Finset.exists_ne_of_one_lt_card
 PtolemysComplexProofOQ02	RESIDUAL	unknown-const:Real.cos_eq_one_iff.mp
 PtolemysTheoremOQ01Incomplete01	RESIDUAL	elab-drift
 PtolemysTheoremOQ01OQ01	GREEN	
