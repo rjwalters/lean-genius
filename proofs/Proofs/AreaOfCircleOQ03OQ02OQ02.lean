@@ -107,14 +107,20 @@ theorem hasDerivAt_dalzellAntideriv (x : ℝ) :
   have hcomb := ((((h7.sub h6).add h5).sub h3).add h1).sub ha
   -- The chained function matches dalzellAntideriv (left-associative +/-)
   -- The derivative needs ring normalization
+  have hfun : (fun x : ℝ => x ^ 7 / 7 - 2 * x ^ 6 / 3 + x ^ 5 - 4 * x ^ 3 / 3 + 4 * x
+      - 4 * arctan x) =
+      (((((fun x : ℝ => x ^ 7 / 7) - fun x => 2 * x ^ 6 / 3) + fun x => x ^ 5)
+        - fun x => 4 * x ^ 3 / 3) + fun x => 4 * x) - fun x => 4 * arctan x := by
+    funext y; simp only [Pi.sub_apply, Pi.add_apply]
+  rw [hfun]
   convert hcomb using 1
-  · rfl
-  · ring
+  try ring
 
 /-- The decomposed integrand is continuous -/
 theorem continuous_dalzellDecomposed : Continuous dalzellDecomposed := by
   unfold dalzellDecomposed
-  fun_prop
+  have hden : ∀ x : ℝ, (1 : ℝ) + x ^ 2 ≠ 0 := fun x => by positivity
+  fun_prop (disch := intro x; exact hden x)
 
 /-- F(0) = 0 -/
 theorem dalzellAntideriv_zero : dalzellAntideriv 0 = 0 := by
@@ -148,11 +154,9 @@ theorem dalzell_integrand_eq_decomposed (x : ℝ) :
 
 /-- The original integrand is continuous -/
 theorem continuous_dalzell_integrand :
-    Continuous (fun x => x ^ 4 * (1 - x) ^ 4 / (1 + x ^ 2)) := by
-  apply Continuous.div
-  · exact (continuous_pow 4).mul ((continuous_const.sub continuous_id').pow 4)
-  · exact continuous_const.add (continuous_pow 2)
-  · intro x; positivity
+    Continuous (fun x : ℝ => x ^ 4 * (1 - x) ^ 4 / (1 + x ^ 2)) := by
+  have hden : ∀ x : ℝ, (1 : ℝ) + x ^ 2 ≠ 0 := fun x => by positivity
+  fun_prop (disch := intro x; exact hden x)
 
 /-- **Dalzell-Niven Integral Identity**:
     ∫₀¹ x⁴(1-x)⁴/(1+x²) dx = 22/7 - π -/
@@ -199,6 +203,6 @@ theorem dalzell_integrand_le_numerator {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1)
       = x ^ 4 * (1 - x) ^ 4 * 1 := (mul_one _).symm
     _ ≤ x ^ 4 * (1 - x) ^ 4 * (1 + x ^ 2) := by
         apply mul_le_mul_of_nonneg_left h1
-        apply mul_nonneg <;> [positivity; apply pow_nonneg; linarith]
+        positivity
 
 end AreaOfCircleOQ03OQ02OQ02
