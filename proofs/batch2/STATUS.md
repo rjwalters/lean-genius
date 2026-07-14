@@ -1871,3 +1871,38 @@ a₂=0 subcase logic is genuinely incomplete beyond a rename), Hilbert20LocalSol
 Erdos152ProblemAPN/KonigsbergOQ02OQ01Aristotle (dense AlphaProof `grind` timeouts),
 GreensTheorem/FourierSeriesOQ04OQ01/MeanValueTheorem (deep analysis rewrite/induction cascades),
 Erdos20Problem (`Finset.inf id` needs `OrderTop (Finset α)` which doesn't exist — def-level restructure).
+
+## Increment 37 (N-Z + Erdos≥600; tm/pd/rewrite/unknown-const/instance-synth) — +10 GREEN
+
+Files greened:
+- 37-01 Erdos1008ProblemProvable — `(edgeCount G)^(realpow)` on ℕ base: cast both sides to ℝ
+  (`(edgeCount H : ℝ) ≥ (edgeCount G : ℝ)^(2/3 : ℝ)`); `.toNNReal.toNat` chain removed (NNReal
+  `{r // 0 ≤ r}` has no `.toNat` field).
+- 37-02 Erdos1007Problem — `p.1 < p.2` edge-count in axioms needs `[LinearOrder V]`; added to 3 axioms.
+- 37-03 Erdos1014OQ03 / 37-04 …LogIncrement / …Obstruction — RECIPE: `Real.exp ∘ f`/`Real.log ∘ f`
+  Tendsto goals no longer auto-unfold `∘` under `simpa` → `simpa [Function.comp_def] using this`.
+  Obstruction also `6 * x⁻¹` vs `6 / x` → `simpa [mul_one_div, div_eq_mul_inv]`.
+- 37-05 Erdos1029Problem — `List.Mem.elim` gone: `hx.elim` (x ∈ []) → `absurd hx (by simp)`;
+  `rw [Tendsto, Filter.map_atTop_atTop]` fails (def, no eq-lemmas) → `unfold …; rw [Filter.tendsto_atTop_atTop]`
+  then bridge `>` vs `≤` via `h (M+1)` / `.le`.
+- 37-06 Erdos1049Problem — `Finset.card_product _ _` type-mismatch → `simp [Finset.card_product]`;
+  `inv_pow` fired on wrong side → reorder to forward `inv_pow`; `summable/tsum_geometric_of_lt_one`
+  2nd arg now strict `r < 1` (drop `.le`); trailing `ring` after `field_simp` self-closes → remove.
+- 37-07 PythagoreanTheorem — RECIPE: bare `inner x y` → `inner ℝ x y` (explicit scalar field);
+  `Finset.induction_on` insert case binders `| insert ha ih` → `| @insert a s' ha ih` (element+hyp).
+- 37-08 ProductOfSegmentsOfChordsOQ01 — RECIPE: `open scoped RealInnerProductSpace` →
+  `open scoped InnerProductSpace` (the `⟪·,·⟫_ℝ` notation moved scopes; old one no longer parses,
+  errors `unexpected identifier` at `_ℝ`). Also `inner_smul_left/right` leave `(starRingEnd ℝ) t`
+  → `simp only [starRingEnd_apply, star_trivial]` before `ring`; `rw`-that-self-closes drops trailing tac.
+- 37-09 Erdos620Problem — RECIPE: `G.symm h` → `G.adj_symm h`; `G.loopless x` → `G.irrefl` (x now
+  implicit; field `loopless.irrefl := fun _x => G.irrefl`). `∀ n ≥ 2` defaulted `n:ℝ` breaking
+  `erdosRogers n` (ℕ) → `∀ n : ℕ, n ≥ 2 →`. Statement repair: `triangleFree_implies_K4Free` intro
+  pattern didn't match HasK4's 6-neq/6-adj conjunction → rewrote destructuring + triangle witness.
+
+Confirmed-deferred this increment:
+Erdos1035Problem (bit-parity omega leaves two distinct erase-sum vars unequal after `if 1:ℕ` annot —
+deeper than rename), Erdos611Problem (placeholder `sorry` in THEOREM TYPES lines 184/189 + def-sorry —
+incomplete formalization, not drift), Erdos1078Problem (`minDegree` `Classical.arbitrary V` needs
+[Nonempty V] which cascades to `Fin (r*n)` (can be empty) + `G.degree` fintype — def restructure),
+Erdos1040Problem (`csInf_le_csInf` signature + anon-ctor Eq.refl), Erdos1048Aristotle (12 errors,
+Complex.abs family + multiple renames).
