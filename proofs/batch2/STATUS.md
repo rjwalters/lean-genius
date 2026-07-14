@@ -1485,3 +1485,25 @@ the assertion is false, a pre-existing bad test. Not weakened.
 ## Deferred (see rename-map §7v deferred list)
 Erdos1055/1206/680/662/838, SchroederBernsteinOQ01, SylowTheoremsOQ05,
 PtolemysTheoremOQ01Incomplete01, Erdos870Aristotle (sorry-in-def).
+
+## Increment 24 continued (post-PR #38625, waves DR34n–DR34u, +8 more GREEN)
+
+After PR #38625 merged (base 1668 GREEN), continued the same N-Z + Erdos≥600 partition.
+Ledger now **1676 GREEN** on the branch (base + 8).
+
+Waves: DR34n Erdos867/916 (card_Ioc/get?/GetElem-bound; STMT REPAIR tree_edge_count n≥1→n≥2);
+DR34o Erdos960/977Aristotle (subst-name infer, div_pos qualify); DR34p Erdos964Aristotle/967
+(tau-divisors, pow-mono struct fields); DR34q Erdos728/773 (log-qualify, pow_lt_pow_left, ℕ-binder);
+DR34r Erdos922Aristotle (le_or_gt); DR34s Erdos911 (nonlinear-div; STMT REPAIR complete_edge_count
+n≥2→n≥3); DR34t Erdos669 (abs-over-ℕ cast, nhds-defeq bridge); DR34u Erdos661 (rintro-rfl subst,
+calc-pipe). Recipes: rename-map §7v addendum.
+
+Statement repairs (2, both false-boundary → intended-true, never weakened): Erdos916 tree_edge_count
+hypothesis n≥1→n≥2 (n-1 < 2n-2 is 0<0 false at n=1); Erdos911 complete_edge_count hypothesis
+n≥2→n≥3 (n*(n-1)/2 ≥ n is 1≥2 false at n=2).
+
+Confirmed-deferred (deep/sorry-in-def/known-hard): Erdos751 (sorry-in-def minCycleLengthGap),
+Erdos900 (sorry-in-def pathLengthFunction/probHasProperty), Erdos807 (S.card statement bug),
+Erdos608 (known-hard, parse cascade under mod-index fix), Erdos613ProblemAristotle (nonlinear
+ℕ-division choose identity), Erdos874 (k/√N division-nonlinearity needs field rework), Erdos720
+(sizeRamseyCycle proof-arg n≥3 undischarged in ∀n lambda).
