@@ -853,7 +853,7 @@ Erdos1142Problem	GREEN
 Erdos1145Problem	RESIDUAL	type-mismatch
 Erdos1149Aristotle	RESIDUAL	type-mismatch
 Erdos1149Problem	RESIDUAL	type-mismatch
-Erdos114OQ01Problem	RESIDUAL	proof-drift
+Erdos114OQ01Problem	GREEN	proof-drift
 Erdos1150Problem	GREEN	unknown-const:parseval_ratio_ge_one
 Erdos1151OQ04Aristotle	RESIDUAL	proof-drift
 Erdos1151Problem	RESIDUAL	proof-drift
@@ -946,7 +946,7 @@ Erdos152ProblemAPN	RESIDUAL	proof-drift
 Erdos153Problem	RESIDUAL	elab-drift
 Erdos154Problem	GREEN	
 Erdos155Problem	GREEN	
-Erdos156Aristotle	RESIDUAL	instance-synth
+Erdos156Aristotle	GREEN	instance-synth
 Erdos156OQ02	RESIDUAL	unknown-const:x
 Erdos156ProblemAristotle	GREEN	
 Erdos158Problem	GREEN	
@@ -2109,7 +2109,7 @@ Hilbert23CalculusVariationsOQ01	RESIDUAL	unknown-const:Ici_diff_left
 Hilbert3ScissorsCongruence	GREEN	
 Hilbert4Geodesics	RESIDUAL	instance-synth
 Hilbert5LieGroups	GREEN	elab-drift
-Hilbert5OQ02	RESIDUAL	instance-synth
+Hilbert5OQ02	GREEN	instance-synth
 Hilbert6PhysicsAxioms	GREEN	type-mismatch
 Hilbert9CyclotomicReciprocity	GREEN	
 Hilbert9QuadraticSubfield	GREEN	

@@ -133,8 +133,8 @@ theorem unique_max_above_threshold :
 /-- The threshold is minimal: no smaller value works universally. -/
 theorem threshold_is_minimal (h : taoThreshold ≠ 0) :
     ∃ n, n < taoThreshold ∧ ¬ (∀ m ≥ n, UniqueMaximizer m) := by
-  have hmin := Nat.find_min tao_asymptotic
-  exact ⟨taoThreshold - 1, by omega, hmin (by omega)⟩
+  refine ⟨taoThreshold - 1, by omega, ?_⟩
+  exact Nat.find_min tao_asymptotic (show taoThreshold - 1 < taoThreshold by omega)
 
 /-- If unique maximizer holds for all n >= m, the threshold is at most m. -/
 theorem threshold_le_of_holds_from (m : ℕ) (h : ∀ n ≥ m, UniqueMaximizer n) :
