@@ -85,6 +85,10 @@ theorem hasDerivAt_sum_weighted_rpow_zero
     (hw : ∀ i ∈ s, 0 ≤ w i) :
     HasDerivAt (fun (r : ℝ) => ∑ i ∈ s, w i * z i ^ r)
                (∑ i ∈ s, w i * Real.log (z i)) 0 := by
+  have hfun : (fun (r : ℝ) => ∑ i ∈ s, w i * z i ^ r)
+      = ∑ i ∈ s, (fun (r : ℝ) => w i * z i ^ r) := by
+    ext r; rw [Finset.sum_apply]
+  rw [hfun]
   refine HasDerivAt.sum (fun i hi => ?_)
   have hzi : (0 : ℝ) < z i := hz i hi
   -- d/dr[zᵢ^r]|_{r=0} = zᵢ^0 · log(zᵢ) = log(zᵢ)
@@ -94,7 +98,6 @@ theorem hasDerivAt_sum_weighted_rpow_zero
     exact h
   -- d/dr[wᵢ · zᵢ^r]|_{r=0} = wᵢ · log(zᵢ)
   have hmul := hderiv.const_mul (w i)
-  simp only [mul_comm (w i)] at hmul
   exact hmul
 
 /-
@@ -167,7 +170,7 @@ theorem tendsto_log_sum_div_rpow
   -- slope g 0 r = (g r - g 0) / (r - 0) = g r / r  (since g 0 = 0)
   -- equality holds for all r (including r = 0 where both sides = 0)
   exact hg_deriv.congr (fun r => by
-    simp only [slope, sub_zero, hg_zero, smul_eq_mul]
+    simp only [slope, vsub_eq_sub, sub_zero, hg_zero, smul_eq_mul]
     ring)
 
 /-
@@ -230,7 +233,7 @@ theorem tendsto_powerMean_zero
     (hw' : ∑ i ∈ s, w i = 1)
     (hz : ∀ i ∈ s, 0 < z i) :
     Filter.Tendsto
-      (fun r => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r))
+      (fun r : ℝ => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r))
       (nhdsWithin 0 ({0}ᶜ))
       (nhds (∏ i ∈ s, z i ^ w i)) := by
   -- Step 1: f(r)/r → ∑ wᵢ log zᵢ
@@ -242,8 +245,9 @@ theorem tendsto_powerMean_zero
       Real.exp (Real.log (∑ i ∈ s, w i * z i ^ r) / r) := fun r => by
     rw [Real.rpow_def_of_pos (sum_weighted_rpow_pos s w z hz hw hw' r)]
     congr 1; ring
-  simp_rw [h_eq]
   -- Step 4: exp ∘ (f(r)/r) → exp(∑ wᵢ log zᵢ) by continuity of exp
+  rw [show (fun r : ℝ => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r))
+        = (fun r : ℝ => Real.exp (Real.log (∑ i ∈ s, w i * z i ^ r) / r)) from funext h_eq]
   exact Real.continuous_exp.continuousAt.tendsto.comp hL
 
 /-
