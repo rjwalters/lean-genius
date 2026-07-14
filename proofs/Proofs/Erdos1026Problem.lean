@@ -102,7 +102,7 @@ theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
   · -- Increasing case: t has > (r-1) elements, so ≥ r
     left
     have hr : r ≤ t.card := by omega
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t r hr
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq hr
     -- Build Subsequence from the Finset via orderEmbOfFin
     let emb := u.orderEmbOfFin hu_card
     refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
@@ -114,7 +114,7 @@ theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
   · -- Decreasing case: t has > (s-1) elements, so ≥ s
     right
     have hs : s ≤ t.card := by omega
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t s hs
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq hs
     let emb := u.orderEmbOfFin hu_card
     refine ⟨⟨emb, emb.strictMono⟩, fun i j hij => ?_⟩
     -- IsDecreasing: seq (emb j) < seq (emb i) for i < j
@@ -129,7 +129,8 @@ theorem erdos_szekeres (r s : ℕ) (n : ℕ) (hn : n = (r - 1) * (s - 1) + 1)
 theorem erdos_szekeres_square (k : ℕ) (n : ℕ) (hn : n = k^2 + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
     ∃ (m : ℕ) (sub : Subsequence n m), m ≥ k + 1 ∧ IsMonotonic seq sub := by
-  have hneq : n = (k + 1 - 1) * (k + 1 - 1) + 1 := by omega
+  have hneq : n = (k + 1 - 1) * (k + 1 - 1) + 1 := by
+    rw [Nat.add_sub_cancel, hn, pow_two]
   rcases erdos_szekeres (k + 1) (k + 1) n hneq seq hDistinct with ⟨sub, hInc⟩ | ⟨sub, hDec⟩
   · exact ⟨k + 1, sub, le_refl _, Or.inl hInc⟩
   · exact ⟨k + 1, sub, le_refl _, Or.inr hDec⟩
@@ -268,7 +269,7 @@ theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
   rcases Theorems100.erdos_szekeres hcard hDistinct with
     ⟨t, ht_card, ht_mono⟩ | ⟨t, ht_card, ht_anti⟩
   · -- Increasing Finset of size ≥ LIS seq + 1 contradicts LIS definition
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t (LIS seq + 1) ht_card
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq ht_card
     let emb := u.orderEmbOfFin hu_card
     have hmono_u : StrictMonoOn seq ↑u := ht_mono.mono (Finset.coe_subset.mpr hu_sub)
     have hmem : LIS seq + 1 ∈ {m | ∃ (sub : Subsequence n m), IsIncreasing seq sub} :=
@@ -278,7 +279,7 @@ theorem lis_lds_bound (n : ℕ) (seq : RealSeq n)
     have : LIS seq + 1 ≤ LIS seq := le_csSup (lis_bddAbove seq) hmem
     omega
   · -- Anti-monotone Finset of size ≥ LDS seq + 1 contradicts LDS definition
-    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_smaller_set t (LDS seq + 1) ht_card
+    obtain ⟨u, hu_sub, hu_card⟩ := Finset.exists_subset_card_eq ht_card
     let emb := u.orderEmbOfFin hu_card
     have hanti_u : StrictAntiOn seq ↑u := ht_anti.mono (Finset.coe_subset.mpr hu_sub)
     have hmem : LDS seq + 1 ∈ {m | ∃ (sub : Subsequence n m), IsDecreasing seq sub} :=
