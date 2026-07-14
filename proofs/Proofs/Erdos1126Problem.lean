@@ -48,6 +48,13 @@ theorem scalar_is_additive (c : ℝ) : IsAdditive (fun x => c * x) := by
   intro x y
   ring
 
+/-- **Measurable additive functions are linear:**
+If f is additive and Lebesgue measurable, then f(x) = cx.
+Non-linear additive functions are necessarily non-measurable. -/
+axiom measurable_additive_is_linear :
+    ∀ f : ℝ → ℝ, IsAdditive f → Measurable f →
+      ∃ c : ℝ, ∀ x : ℝ, f x = c * x
+
 /-- **Continuous Additive Functions:**
 If f is additive and continuous, then f(x) = cx for some c.
 PROVED from measurable_additive_is_linear: continuous → measurable.
@@ -126,13 +133,6 @@ Using the Axiom of Choice, there exist additive functions that
 are discontinuous everywhere and unbounded on every interval. -/
 axiom wild_additive_exist :
     ∃ f : ℝ → ℝ, IsAdditive f ∧ ¬Continuous f
-
-/-- **Measurable additive functions are linear:**
-If f is additive and Lebesgue measurable, then f(x) = cx.
-Non-linear additive functions are necessarily non-measurable. -/
-axiom measurable_additive_is_linear :
-    ∀ f : ℝ → ℝ, IsAdditive f → Measurable f →
-      ∃ c : ℝ, ∀ x : ℝ, f x = c * x
 
 /- ## Part VI: Summary -/
 
