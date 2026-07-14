@@ -1714,3 +1714,32 @@ Erdos391 (`⟨0, by omega⟩:Fin n` needs 0<n, def ill-defined for n=0),
 Erdos478 (subst succ 0=k + non-linear ZMod omega), Erdos395/407 (Fintype of {ε:Fin n→ℤ|..}.toFinset —
 infinite domain, no clean instance), ErdosMordell*/Konigsberg (grind timeouts on geometry/graph goals),
 MaschkeLocalRing (sorry-in-def).
+
+---
+
+## Increment 31 (Doctor, tm/pd/rewrite/unknown-const/instance-synth, N-Z + Erdos≥600 partition)
+
+**+5 GREEN**: NapoleonsTheorem, NapoleonsTheoremOQ02, NewtonInductiveStepOQ03,
+PerfectNumbersOQ03, PicksTheoremOQ02. Recipes in rename-map §7y.
+
+**Complex.abs cluster CLEARED** for the Napoleon family: the removal of `Complex.abs`
+(now a plain `def = ‖·‖`, no `AbsoluteValue`/`map_mul` API) is a genuine whole-file
+migration. Reusable recipe: compat `Complex.abs_def`/`Complex.abs_mul` (rename any
+colliding `Complex.norm_def` shim), and for every ℂ-`ext` algebraic core replace the
+flaky `simp only`+`ring_nf`/`nlinarith` with a FULL-SYMMETRIC simp set (all re AND im
+projection lemmas in BOTH bullets) + `linear_combination (√3²-coeff)*h3` (coeffs
+computed symbolically or by reading a `linear_combination 0*h3` residual).
+
+**Statement repairs**: NapoleonsTheorem `napoleon_side_sq` — cross-term sign was `+√3/6·(area)`,
+the true Napoleon side-length identity needs `−√3/6·(area)` (verified symbolically, k=−1/6).
+Repaired to intended-true form, not weakened.
+
+**Deferred / deep**: NewtonInductiveStepOQ02 (IH-arg-reorder + `simp [pow_succ]` fixed, but
+~8 residual nlinarith/positivity/rewrite drifts across its 4 induction theorems — real proof
+rework); big multi-error files (PoincareConjecture 2938L, PNPBarriersLegacy 5855L, SpernerGrid
+28 errs, PartitionTheoremOQ01 23 errs, PlatonicSolidsOQ02 16 errs, QuadraticReciprocityOQ03
+instance-synth 11 errs) left for focused passes.
+
+**Partition note**: SubsetCountOQ02OQ01 + SumOfDivisorsOQ01SpecialPrime are stale-clean off the
+37508 base but were already flipped by the sibling (increment 30, branch -c) — skipped per
+partition rules. Always diff `origin/feature/issue-38065-c` GREEN before claiming a row.
