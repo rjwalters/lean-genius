@@ -77,20 +77,19 @@ theorem gamma_half_pos (n : ℕ) : 0 < Gamma ((n : ℝ) / 2 + 1) :=
 theorem omega_recurrence (n : ℕ) :
     ω (n + 2) = 2 * π / (↑n + 2) * ω n := by
   unfold ω
-  -- Cast arithmetic: (n+2)/2 = n/2 + 1 and (n+2)/2 + 1 = n/2 + 2
-  have hcast1 : (↑(n + 2) : ℝ) / 2 = ↑n / 2 + 1 := by push_cast; ring
-  have hcast2 : (↑(n + 2) : ℝ) / 2 + 1 = ↑n / 2 + 2 := by push_cast; ring
-  rw [hcast1, hcast2]
+  push_cast
+  -- Cast arithmetic: (n+2)/2 = n/2 + 1. This rewrites BOTH the exponent and the
+  -- inner Gamma argument, leaving Γ(↑n/2 + 1 + 1).
+  have hcast1 : ((↑n : ℝ) + 2) / 2 = ↑n / 2 + 1 := by ring
+  rw [hcast1]
   -- Split exponent: π^(n/2 + 1) = π^(n/2) · π
   rw [rpow_add pi_pos, rpow_one]
-  -- Split Gamma: Γ(n/2 + 2) = (n/2 + 1) · Γ(n/2 + 1)
+  -- Split Gamma: Γ(n/2 + 1 + 1) = (n/2 + 1) · Γ(n/2 + 1)  [Gamma recurrence]
   have hpos : (0 : ℝ) < ↑n / 2 + 1 := by positivity
-  rw [show (↑n : ℝ) / 2 + 2 = (↑n / 2 + 1) + 1 from by ring,
-      Gamma_add_one hpos.ne']
+  rw [Gamma_add_one hpos.ne']
   -- Now: π^(n/2) · π / ((n/2 + 1) · Γ(n/2 + 1)) = 2π/(n+2) · (π^(n/2) / Γ(n/2 + 1))
   have hΓ : 0 < Gamma (↑n / 2 + 1) := gamma_half_pos n
   field_simp [hpos.ne', hΓ.ne']
-  ring
 
 /- ## Part IV: Computability Corollaries -/
 
