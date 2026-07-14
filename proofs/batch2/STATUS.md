@@ -1641,3 +1641,35 @@ Total: +6 GREEN.
 its first error. Fixing the first error (rename/reorder/notation) typically exposes 2-6 more. The
 reliable wins are (a) single-symptom rename files and (b) stale-RESIDUAL rows that already build clean
 off the 37508 base. Per-file isolated verify is mandatory before flipping.
+
+### Increment 27 additional waves (post-doc-commit, +6 more GREEN → 12 total)
+- DR37-5 SchroederBernsteinOQ02: `Set.image_subset`→`Set.image_mono` (2 nested uses); +
+  `rw [← fixedSet_eq]`→`rw [fixedSet_eq]` (the `←` pattern `fixedSet f g` also matched inside
+  `cbsOp f g (fixedSet f g)` → wrong rewrite; forward direction rewrites only the outer). ALSO
+  flipped 3 already-clean stale-RESIDUAL rows: RothTheoremOQ03OQ01OQ01OQ01,
+  RothTheoremOQ03OQ01OQ01OQ01OQ01, RothTheoremQuantitative (+4 total this wave).
+- DR37-6 SzemerediRegularityOQ01Trivial: all 3 threshold theorems now in imported parent
+  SzemerediRegularityOQ01 (same namespace) → reduced companion to import shim (§7v recipe).
+- DR37-7 ShannonChannelCodingAWGNOQ03OQ01Monotone: `waterLevel_pos` now in imported parent (same
+  statement, different arg order `hP`/`hμ` vs `hbudget`/`hP`) → renamed child's to
+  `waterLevel_pos_mono` + updated its one use (can't delete: arg order differs from parent's);
+  dropped redundant `exact le_refl 0` (rw closed the goal → No-goals).
+
+Grand total increment 27: **+12 GREEN** across waves DR37-1..7.
+
+Full triage of the entire partition (403 files: 200 Erdos≥600 in erdos2, 200 in erdos-partial, 137
+non-Erdos) completed. Beyond the 12 flipped, the residual is uniformly multi-error cascade behind
+the first symptom — no further single-fix candidates found. Notable recurring deep blockers:
+`Complex.abs` removal (now a local `def`, breaks `map_mul`/`AbsoluteValue` API — NapoleonsTheorem
+family), Sylow-API renames (`Sylow.exists_smul_eq`/`card_eq_index_normalizer` cascade), and
+`decide`/`native_decide`-noncomputable failures (Erdos1162 SetLike.instFintype).
+
+New v4.31 renames catalogued (rename-map §7x extended): `Set.image_subset`→`Set.image_mono`,
+`even_zero`→`Even.zero`, `Nat.even_iff_not_odd.mp`→`Nat.not_odd_iff_even.mpr`,
+`Finset.exists_smaller_set`→`Finset.exists_subset_card_eq`, `Finset.filter_eq_empty`→
+`Finset.filter_eq_empty_iff`, `Nat.card_pos_of_nonempty`→`Nat.card_pos_iff.mpr ⟨‹Nonempty›,inferInstance⟩`,
+`lt_of_le_not_le`→`lt_of_le_not_ge`, `Nat.divisors_prime_eq`→`Nat.Prime.divisors`,
+`Continuous.if_lt`→(only `Continuous.if_le` survives), `Sylow.exists_smul_eq`→bare `exists_smul_eq`,
+`Finset.sum_range_pow`→bare `sum_range_pow` (root-level in Bernoulli.lean section Faulhaber),
+`∆` symmetric-difference now `scoped[symmDiff]` (needs `open scoped symmDiff`), `/--` dangling
+doc-comment before a section now hard-errors (use `/-`).
