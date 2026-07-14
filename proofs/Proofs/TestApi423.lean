@@ -7,15 +7,15 @@ import Mathlib.Tactic
 open Nat
 
 -- Compute sum of elements arr[i..j] inclusive
-def arrRangeSum (arr : Array ℕ) (i j : ℕ) : ℕ :=
+def arrRangeSum (arr : Array ℕ) (i j : ℕ) : ℕ := Id.run do
   let mut s := 0
   for k in [i:j+1] do
     s := s + arr.getD k 0
-  s
+  return s
 
 -- Find the smallest consecutive sum > threshold from an array of terms
 -- Consecutive sum = sum of arr[i..j] where j > i (at least 2 terms)
-def nextTerm (arr : Array ℕ) (threshold : ℕ) : ℕ :=
+def nextTerm (arr : Array ℕ) (threshold : ℕ) : ℕ := Id.run do
   let n := arr.size
   let mut best := 0  -- 0 means not found
   for i in [:n] do
@@ -25,12 +25,12 @@ def nextTerm (arr : Array ℕ) (threshold : ℕ) : ℕ :=
       if s > threshold then
         if best == 0 || s < best then
           best := s
-  best
+  return best
 
 -- Build the sequence up to n terms
-def buildSeq (n : ℕ) : Array ℕ :=
-  if n == 0 then #[]
-  else if n == 1 then #[1]
+def buildSeq (n : ℕ) : Array ℕ := Id.run do
+  if n == 0 then return #[]
+  else if n == 1 then return #[1]
   else
     let mut arr := #[1, 2]
     for _ in [2:n] do
@@ -40,7 +40,7 @@ def buildSeq (n : ℕ) : Array ℕ :=
         arr := arr.push next
       else
         arr := arr.push (last + 1)
-    arr
+    return arr
 
 -- Test: first 15 terms
 -- Expected: 1, 2, 3, 5, 6, 8, 10, 11, 14, 16, 17, 18, 19, 21, 22

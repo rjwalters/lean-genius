@@ -65,10 +65,10 @@ theorem alternatingFinFour_isSolvable : IsSolvable (alternatingGroup (Fin 4)) :=
   -- A₄ / V₄ is abelian because V₄ is the commutator subgroup of A₄.
   have hcomm_le : commutator (alternatingGroup (Fin 4)) ≤ N :=
     le_of_eq (alternatingGroup.kleinFour_eq_commutator hα4).symm
-  have hQcomm : Std.Commutative (· * · : (alternatingGroup (Fin 4) ⧸ N) → _ → _) :=
+  have hQcomm : IsMulCommutative (alternatingGroup (Fin 4) ⧸ N) :=
     Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr hcomm_le
   haveI hQsolv : IsSolvable (alternatingGroup (Fin 4) ⧸ N) :=
-    isSolvable_of_comm (fun a b => hQcomm.comm a b)
+    isSolvable_of_comm (fun a b => hQcomm.is_comm.comm a b)
   -- The short exact sequence  1 → V₄ → A₄ → A₄/V₄ → 1.
   exact solvable_of_ker_le_range N.subtype (QuotientGroup.mk' N)
     (le_of_eq (by rw [QuotientGroup.ker_mk', Subgroup.range_subtype]))
