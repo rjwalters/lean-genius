@@ -70,17 +70,13 @@ theorem chainDist_le_cost (c : X → X → ℝ≥0∞) (p q : X) : chainDist c p
   simpa using chainDist_le c p q []
 
 /-- **Telescoping.** Any `d` satisfying the triangle law is bounded by the
-`d`-cost of every chain: summing the triangle inequalities along the chain. -/
-theorem le_chainCost_of_triangle (d : X → X → ℝ≥0∞)
+`d`-cost of every chain: summing the triangle inequalities along the chain.
+(A specialisation of the parent file's `le_chainCost_of_triangle` at `c := d`.) -/
+theorem le_chainCost_of_triangle_self (d : X → X → ℝ≥0∞)
     (htri : ∀ a b e, d a b ≤ d a e + d e b) (q : X) (mid : List X) :
-    ∀ p, d p q ≤ chainCost d p mid q := by
-  induction mid with
-  | nil => intro p; simp
-  | cons x xs ih =>
-      intro p
-      calc d p q ≤ d p x + d x q := htri p q x
-        _ ≤ d p x + chainCost d x xs q := add_le_add (le_refl (d p x)) (ih x)
-        _ = chainCost d p (x :: xs) q := by rw [chainCost_cons]
+    ∀ p, d p q ≤ chainCost d p mid q :=
+  le_chainCost_of_triangle d d (fun _ _ => le_refl _)
+    (fun a b r => htri a r b) q mid
 
 /-- **Universal property (maximality).** `chainDist c` is the *greatest* triangle-law
 cost dominated by `c`: any `d` that satisfies the triangle inequality and is
@@ -91,7 +87,7 @@ theorem le_chainDist (c d : X → X → ℝ≥0∞)
     (hdom : ∀ a b, d a b ≤ c a b) (p q : X) :
     d p q ≤ chainDist c p q := by
   refine le_iInf fun mid => ?_
-  calc d p q ≤ chainCost d p mid q := le_chainCost_of_triangle d htri q mid p
+  calc d p q ≤ chainCost d p mid q := le_chainCost_of_triangle_self d htri q mid p
     _ ≤ chainCost c p mid q := chainCost_mono_cost d c hdom q mid p
 
 -- ============================================================
