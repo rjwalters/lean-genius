@@ -132,7 +132,7 @@ the bundled predicate form, which is the exact deliverable of that sub-question.
     rank-based construction `every_finite_graph_has_robust`: it certifies the
     predicate is universally true on finite graphs, so the recognizer is the
     constant `isTrue`, decidable in `O(1)` without enumerating orientations. -/
-theorem admitsRobustAcyclicOrientation_decidablePred [Fintype V] :
+noncomputable def admitsRobustAcyclicOrientation_decidablePred [Fintype V] :
     DecidablePred (admitsRobustAcyclicOrientation (V := V)) :=
   fun G => instDecidableAdmitsRobustAcyclic G
 

@@ -601,7 +601,7 @@ ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ03	RESIDUAL	unknown-const:legendreSym.eq_one_iff_isSquare
 Erdos1000OQ01	RESIDUAL	rewrite-drift
-Erdos1000OQ02	RESIDUAL	type-mismatch
+Erdos1000OQ02	GREEN	type-mismatch
 Erdos1000Problem	GREEN	
 Erdos1001OQ02OQ01	GREEN	
 Erdos1002OQ01	RESIDUAL	type-mismatch
@@ -615,7 +615,7 @@ Erdos1006OQ01OQ02	RESIDUAL	signature-drift
 Erdos1006OQ02	RESIDUAL	elab-drift
 Erdos1006OQ03	GREEN	
 Erdos1006OQ04	GREEN	
-Erdos1006OQ04Decidability	RESIDUAL	unclassified
+Erdos1006OQ04Decidability	GREEN	unclassified
 Erdos1006Problem	RESIDUAL	instance-synth
 Erdos1007OQ01	RESIDUAL	proof-drift
 Erdos1007OQ01OQ01	RESIDUAL	proof-drift
@@ -638,7 +638,7 @@ Erdos1010OQ02Problem	GREEN
 Erdos1010Problem	GREEN	
 Erdos1011OQ03	GREEN	
 Erdos1011Problem	GREEN	
-Erdos1012OQ01OQ02	RESIDUAL	unknown-const:n
+Erdos1012OQ01OQ02	GREEN	unknown-const:n
 Erdos1012OQ03	RESIDUAL	proof-drift
 Erdos1012OQ05	RESIDUAL	unknown-const:woodall_pancyclic
 Erdos1012Problem	RESIDUAL	unknown-const:woodall_pancyclic
