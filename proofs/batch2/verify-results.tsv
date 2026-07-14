@@ -1139,7 +1139,7 @@ Erdos334Problem	RESIDUAL	unknown-const:Nat.Prime.dvd_prime_pow
 Erdos336Problem	GREEN	
 Erdos337Aristotle	GREEN	elab-drift
 Erdos337Problem	GREEN	elab-drift
-Erdos338Aristotle	RESIDUAL	proof-drift
+Erdos338Aristotle	GREEN	
 Erdos338Problem	GREEN	
 Erdos339Aristotle	RESIDUAL	instance-synth
 Erdos339Problem	RESIDUAL	instance-synth
@@ -1910,7 +1910,7 @@ Erdos96Problem	GREEN
 Erdos970Problem	GREEN	
 Erdos971Problem	GREEN	
 Erdos973Problem	RESIDUAL	instance-synth
-Erdos974Problem	RESIDUAL	proof-drift
+Erdos974Problem	GREEN	
 Erdos975Problem	GREEN	
 Erdos976Problem	GREEN	
 Erdos977Aristotle	GREEN	
@@ -2206,7 +2206,7 @@ LagrangeTheoremOQ03	GREEN
 LagrangeTheoremOQ03OQ02	GREEN	
 LagrangeTheoremOQ05	RESIDUAL	type-mismatch
 LawOfCosines	GREEN	
-LawOfCosinesOQ01OQ01OQ01	RESIDUAL	rewrite-drift
+LawOfCosinesOQ01OQ01OQ01	GREEN	
 LawOfCosinesOQ01OQ01OQ03	RESIDUAL	type-mismatch
 LawOfCosinesOQ01OQ04	RESIDUAL	type-mismatch
 LawOfCosinesOQ03OQ02	RESIDUAL	parse-error
@@ -2345,7 +2345,7 @@ PythagoreanTheorem	RESIDUAL	type-mismatch
 PythagoreanTheoremOQ01	GREEN	
 PythagoreanTheoremOQ03	GREEN	
 PythagoreanTheoremOQ05	GREEN	
-PythagoreanTriplesOQ02	RESIDUAL	proof-drift
+PythagoreanTriplesOQ02	GREEN	
 PythagoreanTriplesOQ04OQ01OQ01	RESIDUAL	unknown-const:even_zero
 QuadraticReciprocityAlgorithmOQ03	RESIDUAL	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03FieldBridge	RESIDUAL	rewrite-drift
@@ -2422,7 +2422,7 @@ ShannonSourceCodingOQ01	RESIDUAL	unknown-const:InformationTheory.mutualInformati
 ShannonSourceCodingOQ02	RESIDUAL	type-mismatch
 ShannonSourceCodingOQ03	RESIDUAL	unknown-const:Fintype.sum_piFinset_succ
 ShapleyFolkman	GREEN	
-ShapleyFolkmanAristotle	RESIDUAL	proof-drift
+ShapleyFolkmanAristotle	GREEN	
 ShapleyFolkmanOQ01	GREEN	
 ShapleyFolkmanOQ03	GREEN	
 ShapleyFolkmanOQ04	GREEN	

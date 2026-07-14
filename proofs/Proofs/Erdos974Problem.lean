@@ -82,13 +82,12 @@ def hasInfinitelyManyZeroTuples {n : ℕ} (z : Configuration n) : Prop :=
 
 /-- A configuration has z₁ = 1. -/
 def hasFirstElementOne {n : ℕ} (z : Configuration n) : Prop :=
-  n > 0 → z ⟨0, by omega⟩ = 1
+  ∀ (h : n > 0), z ⟨0, h⟩ = 1
 
 /-- For the standard roots of unity, z₀ = e(0/n) = 1. -/
 theorem standard_roots_first_is_one (n : ℕ) (hn : n > 0) :
     (standardRootsOfUnity n) ⟨0, hn⟩ = 1 := by
   simp [standardRootsOfUnity, nthRootOfUnity]
-  simp [Complex.exp_zero]
 
 /- ## Part IV: The Main Theorems (Tijdeman 1966)
 -/
