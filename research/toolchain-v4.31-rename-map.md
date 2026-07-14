@@ -1145,3 +1145,29 @@ native-evaluates to FALSE once Classical is dropped (bad pre-existing test, not 
 | NormedRing (possibly noncommutative) `ring` fails on a purely-additive identity (`B-1 = -(1-B)`, `B = A-(A-B)`) or a `↑u*(↑u⁻¹*x)` unit-cancel | use `neg_sub`/`abel` for additive goals; a reusable `hcancel : ∀ x, ↑u*(↑u⁻¹*x) = x` via `← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul` | GeometricSeriesOQ02OQ03 |
 | `edgeCount` def with `p.1 < p.2` on a bare `V` → "failed to synthesize `LT V`" | add `[LinearOrder V]` to the def; an internal `∃ (V : Type*)` in a `Prop def` also needs `Type`-pinning to kill the derived-thm universe-metavar (§7o) | Erdos571Problem |
 | nlinarith fails on a ℕ descent `(2x)²+(2y)²+(2z)² = 4^(a+1)(8b+7) ⊢ x²+y²+z² = 4^a(8b+7)` | `have hpow : 4^(a+1)=4*4^a := by rw [pow_succ]; ring`, then `have : 4*(sum)=4*(target) := by rw [hpow] at heq; nlinarith [heq]`, then `omega` | LagrangeFourSquaresOQ04 |
+
+## §7x Doctor increment 27 recipes (tm/pd/rewrite/unknown-const, N-Z + Erdos≥600, #38065, +6 GREEN)
+
+| Symptom (v4.31) | Fix | Files |
+|---|---|---|
+| `Finset.exists_smaller_set s n (h : n ≤ s.card)` "Unknown constant" | `Finset.exists_subset_card_eq (h : n ≤ #s)` — same `∃ t ⊆ s, #t = n`, drop the explicit `s`/`n` positional args, pass only the `≤` proof | Erdos1026Problem (4 uses) |
+| `omega` fails on `n = (k+1-1)*(k+1-1)+1` given `hn : n = k^2+1` (omega can't equate `k^2` with `k*k`) | `rw [Nat.add_sub_cancel, hn, pow_two]` | Erdos1026Problem |
+| `even_zero` "Unknown identifier" (removed) | `Even.zero` | PythagoreanTriplesOQ04OQ01OQ01 (3 uses) |
+| `Nat.even_iff_not_odd.mp he` "Unknown constant" (goal `False` from `Even`/`Odd`) | `Nat.not_odd_iff_even.mpr he` (returns `¬Odd`, apply to the `Odd` hyp) | PythagoreanTriplesOQ04OQ01OQ01 |
+| symmetric-difference `∆` "expected token" (notation now `scoped[symmDiff]`) | add `open scoped symmDiff` to the file header | Erdos1123Problem (parse fixed; Setoid-proof cascade deferred) |
+| `Set.image_subset f (h : s⊆t)` "Unknown constant" | `Set.image_mono (h : s⊆t)` (f now implicit) | Erdos1018OQ04Incomplete01 (first-error only; deeper cascade) |
+| `lt_of_le_not_le` "Unknown identifier" | `lt_of_le_not_ge` | Erdos1059OQ04 (first-error only) |
+| child re-declares a lemma the imported parent now also declares (same namespace) BUT the two have
+  DIFFERENT statements | RENAME the child's decl (e.g. `foo`→`foo_mul`) + update its internal uses —
+  do NOT delete (they are genuinely distinct theorems that only collide by name) | ProbMethodSecondMomentOQ01 (`paley_zygmund_quantitative`→`_mul`; first-error only) |
+| top-level local `structure Hypergraph`/`def Foo` clashes with a NEW Mathlib top-level decl of the
+  same name ("has already been declared") | wrap the file's decls in `namespace X … end X` OR rename
+  the local — but CAUTION: namespace-wrapping can expose latent universe-metavariable / defeq errors
+  that the global elaboration had masked | Erdos1020Problem (deferred — universe metavars surfaced) |
+
+**Meta (partition N-Z + Erdos≥600)**: heavily multi-error. First-error rename/reorder/notation fixes
+usually expose 2-6 downstream errors (cascade). Reliable wins: single-symptom rename files, and
+stale-RESIDUAL rows already clean off the 37508 base (PentagonalNumberTheoremOQ01OQ01/OQ01OQ02 flipped
+with zero edits). `Complex.abs` removal (now a local compat `def`, not an `AbsoluteValue` hom) is a
+recurring deep blocker: `map_mul`/`map_add`/`AbsoluteValue`-API on it all fail — needs whole-file
+migration, not a one-line compat (NapoleonsTheorem family deferred).

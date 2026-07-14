@@ -1586,3 +1586,58 @@ Erdos900 (sorry-in-def pathLengthFunction/probHasProperty), Erdos807 (S.card sta
 Erdos608 (known-hard, parse cascade under mod-index fix), Erdos613ProblemAristotle (nonlinear
 ℕ-division choose identity), Erdos874 (k/√N division-nonlinearity needs field rework), Erdos720
 (sizeRamseyCycle proof-arg n≥3 undischarged in ∀n lambda).
+
+---
+
+## Increment 27 (Doctor, tm/pd/rewrite/unknown-const/instance-synth, N-Z + Erdos≥600)
+
+Base: origin/feature/issue-37508 @ 6a3fc43ea0 (ledger 1691 GREEN on branch). Sibling branch
+feature/issue-38065-c did NOT exist on origin during this increment (no overlap risk).
+
+Waves (branch feature/issue-38065):
+- DR37-1 Erdos1012Problem: forward-ref reorder — moved `woodall_pancyclic` axiom above its first
+  consumer `woodall_theorem` (v4.31 forbids forward reference). Flipped Erdos1012Problem +
+  dependent Erdos1012OQ05 (+2).
+- DR37-2 Erdos1026Problem: `Finset.exists_smaller_set s n h` (removed) → `Finset.exists_subset_card_eq h`
+  (4 uses); + omega-on-k^2 fix via `rw [Nat.add_sub_cancel, hn, pow_two]` (+1).
+- DR37-3 PentagonalNumberTheoremOQ01OQ01 + OQ01OQ02: already build clean off v4.31 base (stale
+  RESIDUAL rewrite-drift rows), verified in-container, flipped (+2).
+- DR37-4 PythagoreanTriplesOQ04OQ01OQ01: `even_zero` (removed) → `Even.zero` (3 uses);
+  `Nat.even_iff_not_odd.mp` → `Nat.not_odd_iff_even.mpr` (+1).
+
+Total: +6 GREEN.
+
+### Increment 27 recipes (rename-map §7x)
+| Symptom (v4.31) | Fix |
+|---|---|
+| `Finset.exists_smaller_set s n (h : n ≤ s.card)` "Unknown constant" | `Finset.exists_subset_card_eq (h : n ≤ #s)` (same `∃ t ⊆ s, #t = n`; drop the explicit `s`,`n` args) |
+| `even_zero` "Unknown identifier" | `Even.zero` |
+| `Nat.even_iff_not_odd.mp he` (: ¬Odd) "Unknown constant" | `Nat.not_odd_iff_even.mpr he` |
+| `intermediate_value_zero_of_neg_of_pos` removed | (deferred — needs IVT restructure via `intermediate_value_Icc`) |
+| symmetric-difference `∆` "expected token" | add `open scoped symmDiff` |
+
+### Increment 27 confirmed-deferred (first-error fixed but deeper cascade / genuine gap, reverted)
+- Erdos1002OQ01 (gcongr closes goal → No-goals at L44, but L66/77 `skip` + tendsto errors deeper)
+- Erdos1018OQ04Incomplete01 (`Set.image_subset`→`Set.image_mono` OK, but L161 synth + L178 simp deeper)
+- Erdos1020Problem (`Hypergraph` clashes w/ new Mathlib top-level `Hypergraph`; namespace-wrap exposes
+  universe metavars in `erdosMatchingConjecture` + choose_two_right omega failures)
+- Erdos1039Aristotle (`Erdos1039.Complex.abs`→`Complex.abs` OK, but L77/106/128 unsolved + L131/168 type mismatch)
+- Erdos1054OQ01 (`subst h`→`rw [h]` keeps `p`, but L79 bogus `constructor` on list-eq + native_decide→FALSE L125-130)
+- Erdos1059OQ04 (`open Erdos1059OQ01` + `lt_of_le_not_le`→`lt_of_le_not_ge` OK, but L116
+  `density_one_conjecture` is an AXIOM used as a TYPE — needs hypothesis-restructure, genuine)
+- Erdos1065Problem (forward-ref reorder of erdos_1065b OK, but L197+ `intro ⟨⟩`/decide type mismatches deeper)
+- Erdos1096Problem (`intermediate_value_zero_of_neg_of_pos` removed — IVT restructure)
+- Erdos1123Problem (`open scoped symmDiff` fixes parse, but L67/68/69/75 Setoid-proof errors +
+  `Set.symmDiff_comm` unknown)
+- Erdos1136Problem (No-goals L94 fixable via `simp only [Nat.zero_mod]`, but L137/191/197 deeper)
+- Erdos1145Problem (No-goals L220 `; rfl` drop OK, but L224+ App-type-mismatch cascade)
+- NapoleonsTheorem / NapoleonsTheoremOQ02 (`Complex.norm_def` dup-decl fixable via rename to
+  `Complex.abs_def`, but `map_mul` on the now-plain-def `Complex.abs` fails L177 + nlinarith L155/161 —
+  needs full Complex.abs-is-a-def migration)
+- ProbMethodSecondMomentOQ01 (dup `paley_zygmund_quantitative` — parent+child have DIFFERENT
+  statements; renamed child→`paley_zygmund_quantitative_mul` OK, but L92/116 linarith + L144 No-goals deeper)
+
+**Meta**: this partition is heavily multi-error — nearly every RESIDUAL Erdos file has a cascade behind
+its first error. Fixing the first error (rename/reorder/notation) typically exposes 2-6 more. The
+reliable wins are (a) single-symptom rename files and (b) stale-RESIDUAL rows that already build clean
+off the 37508 base. Per-file isolated verify is mandatory before flipping.
