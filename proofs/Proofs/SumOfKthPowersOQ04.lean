@@ -95,7 +95,7 @@ private lemma low_degree_poly_ratio_tendsto_zero (q : Polynomial ℚ) (d : ℕ)
   have h_sum : Tendsto (fun n : ℕ => ∑ i ∈ Finset.range d,
         (q.coeff i : ℚ) / (↑n : ℚ) ^ (d - i)) atTop (nhds 0) := by
     rw [show (0 : ℚ) = ∑ _i ∈ Finset.range d, (0 : ℚ) from Finset.sum_const_zero.symm]
-    exact tendsto_finset_sum fun i hi => const_div_pow_tendsto_zero' (q.coeff i) (d - i)
+    exact tendsto_finsetSum _ fun i hi => const_div_pow_tendsto_zero' (q.coeff i) (d - i)
         (Nat.sub_pos_of_lt (Finset.mem_range.mp hi))
   -- Step 2: q(n)/n^d equals the sum for large n
   apply h_sum.congr'
@@ -104,12 +104,12 @@ private lemma low_degree_poly_ratio_tendsto_zero (q : Polynomial ℚ) (d : ℕ)
   have hnd : (↑n : ℚ) ^ d ≠ 0 := pow_ne_zero _ hn'
   -- q.eval ↑n = ∑ i ∈ range d, q.coeff i * ↑n^i (since natDegree q < d)
   have heval : q.eval (↑n : ℚ) = ∑ i ∈ Finset.range d, q.coeff i * (↑n : ℚ)^i := by
-    rw [Polynomial.eval_eq_sum_range hdeg]
+    rw [Polynomial.eval_eq_sum_range' hdeg]
   rw [heval, Finset.sum_div]
   apply Finset.sum_congr rfl
   intro i hi
   simp only [Finset.mem_range] at hi
-  rw [div_eq_div_iff hnd (pow_ne_zero _ hn'), mul_assoc, ← pow_add,
+  rw [div_eq_div_iff (pow_ne_zero _ hn') hnd, mul_assoc, ← pow_add,
       Nat.add_sub_cancel' (Nat.le_of_lt hi)]
 
 /-- For any monic polynomial p of degree d, p(n)/n^d → 1 as n → ∞ over ℚ.
@@ -142,8 +142,8 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     · simp [h, hd]
     · refine Nat.lt_of_le_of_ne hle ?_
       intro heq
-      rw [← heq] at hcoeff
-      exact Polynomial.leadingCoeff_ne_zero.mpr h hcoeff
+      apply h
+      rw [← Polynomial.leadingCoeff_eq_zero, Polynomial.leadingCoeff, heq, hcoeff]
   -- Reduce to: Tendsto (fun n => q(n)/n^d + 1) atTop (nhds 1)
   suffices h : Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d + 1)
       atTop (nhds 1) by
@@ -154,10 +154,9 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     rw [hq_def, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X,
         sub_div, div_self hnd, sub_add_cancel]
   -- q(n)/n^d → 0, so q(n)/n^d + 1 → 0 + 1 = 1
-  rw [show (1 : ℚ) = 0 + 1 from (zero_add 1).symm]
-  apply Filter.Tendsto.add
-  · exact low_degree_poly_ratio_tendsto_zero q d hd hq_deg
-  · exact tendsto_const_nhds
+  have := (low_degree_poly_ratio_tendsto_zero q d hd hq_deg).add
+    (tendsto_const_nhds (x := (1 : ℚ)) (f := atTop))
+  simpa using this
 
 /- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
 
