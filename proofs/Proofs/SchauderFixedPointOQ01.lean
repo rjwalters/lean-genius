@@ -51,13 +51,13 @@ namespace SchauderProjection
 theorem isClosed_convexHull_finite {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {s : Finset E} :
     IsClosed (convexHull ℝ (↑s : Set E)) :=
-  s.finite_toSet.isClosed_convexHull
+  s.finite_toSet.isClosed_convexHull ℝ
 
 /-- The convex hull of a finite range is compact. -/
 theorem isCompact_convexHull_of_finite_range {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {n : ℕ} (pts : Fin n → E) :
     IsCompact (convexHull ℝ (range pts)) :=
-  (Set.finite_range pts).isCompact_convexHull
+  (Set.finite_range pts).isCompact_convexHull ℝ
 
 -- ============================================================
 -- PART 2: Bump Function Infrastructure
@@ -304,7 +304,7 @@ theorem schauder_projection_lemma
 theorem isCompact_convexHull_range {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {n : ℕ} (pts : Fin n → E) :
     IsCompact (convexHull ℝ (range pts)) :=
-  (Set.finite_range pts).isCompact_convexHull
+  (Set.finite_range pts).isCompact_convexHull ℝ
 
 /-- The convex hull of the range of pts is closed. -/
 theorem isClosed_convexHull_range {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
