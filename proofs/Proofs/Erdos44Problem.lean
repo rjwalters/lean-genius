@@ -221,10 +221,12 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
         -- LHS = 1 + 2^b
         simp only [pow_zero] at heq
         by_cases hb : b = 0
-        · -- LHS = 2, RHS ≥ 2^1 + 2^1 = 4
+        · -- LHS = 2, RHS ≥ 2^0 + 2^1 = 3 > 2 (d ≥ 1)
           subst hb; simp only [pow_zero] at heq
-          have : 2 ^ c ≥ 2 := Nat.one_le_pow c 2 (by norm_num) |>.trans_lt (by omega) |>.le
-          have : 2 ^ d ≥ 2 := Nat.one_le_pow d 2 (by norm_num) |>.trans_lt (by omega) |>.le
+          have hc1 : 1 ≤ 2 ^ c := Nat.one_le_pow c 2 (by norm_num)
+          have hd2 : 2 ≤ 2 ^ d := by
+            calc 2 = 2 ^ 1 := by norm_num
+              _ ≤ 2 ^ d := Nat.pow_le_pow_right (by norm_num) hd'
           omega
         · -- LHS = 1 + 2^b is odd, RHS is even
           have hb' : 1 ≤ b := by omega
@@ -247,9 +249,13 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
         have hb' : 1 ≤ b := by omega
         skip
         by_cases hd : d = 0
-        · subst hd; simp only [pow_zero] at heq
-          have : 2 ^ a ≥ 2 := Nat.one_le_pow a 2 (by norm_num) |>.trans_lt (by omega) |>.le
-          have : 2 ^ b ≥ 2 := Nat.one_le_pow b 2 (by norm_num) |>.trans_lt (by omega) |>.le
+        · subst hd; simp only [hc, pow_zero] at heq
+          have ha2 : 2 ≤ 2 ^ a := by
+            calc 2 = 2 ^ 1 := by norm_num
+              _ ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) ha'
+          have hb2 : 2 ≤ 2 ^ b := by
+            calc 2 = 2 ^ 1 := by norm_num
+              _ ≤ 2 ^ b := Nat.pow_le_pow_right (by norm_num) hb'
           omega
         · have hd' : 1 ≤ d := by omega
           have hlhs_even : 2 ∣ (2 ^ a + 2 ^ b) := by
@@ -261,7 +267,8 @@ private lemma pow2_sum_inj : ∀ (n : ℕ) (a b c d : ℕ),
             intro ⟨m, hm⟩
             have : 2 ∣ (1 + 2 ^ d - 2 ^ d) := Nat.dvd_sub ⟨m, hm⟩ h2d
             simp at this
-          exact hrhs_odd (heq.symm ▸ hlhs_even)
+          rw [heq, hc, pow_zero] at hlhs_even
+          exact hrhs_odd hlhs_even
       · -- a ≥ 1, c ≥ 1: divide by 2 and recurse
         have ha' : 1 ≤ a := by omega
         have hc' : 1 ≤ c := by omega
