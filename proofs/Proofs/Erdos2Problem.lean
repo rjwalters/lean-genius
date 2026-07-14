@@ -102,6 +102,14 @@ theorem solution_implies_not_conjecture :
   have : N + 1 ≤ c.modulus := hcs c hc
   omega
 
+/--
+**Balister-Bollobás-Morris-Sahasrabudhe-Tiba Theorem** (2022):
+Every covering system has a modulus at most 616,000.
+
+This is a significant improvement over Hough's bound, with a simpler proof.
+-/
+axiom balister_bound : ∀ cs : CoveringSystem, ∃ c ∈ cs.classes, c.modulus ≤ 616000
+
 /- ## Hough's Theorem (2015) -/
 
 /--
@@ -124,14 +132,6 @@ theorem hough_implies_solution : erdos_2_solution :=
   ⟨hough_N, hough_bound⟩
 
 /- ## Balister et al. Improvement (2022) -/
-
-/--
-**Balister-Bollobás-Morris-Sahasrabudhe-Tiba Theorem** (2022):
-Every covering system has a modulus at most 616,000.
-
-This is a significant improvement over Hough's bound, with a simpler proof.
--/
-axiom balister_bound : ∀ cs : CoveringSystem, ∃ c ∈ cs.classes, c.modulus ≤ 616000
 
 /-- The improved bound from Balister et al. -/
 def balister_N : ℕ := 616000
