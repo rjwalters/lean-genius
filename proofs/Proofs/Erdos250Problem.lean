@@ -93,7 +93,7 @@ theorem sigma_le_sq (n : ℕ) (hn : n ≠ 0) : divisorSum 1 n ≤ n ^ 2 := by
       ≤ ∑ _d ∈ n.divisors, n := by
         apply Finset.sum_le_sum; intro d hd
         simp; exact Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.dvd_of_mem_divisors hd)
-    _ = n.divisors.card * n := by rw [Finset.sum_const, Nat.smul_eq_mul]
+    _ = n.divisors.card * n := by rw [Finset.sum_const, smul_eq_mul]
     _ ≤ n * n := by
         apply Nat.mul_le_mul_right
         have hsub : n.divisors ⊆ Finset.Icc 1 n := by
@@ -101,7 +101,7 @@ theorem sigma_le_sq (n : ℕ) (hn : n ≠ 0) : divisorSum 1 n ≤ n ^ 2 := by
           exact ⟨Nat.pos_of_dvd_of_pos (Nat.dvd_of_mem_divisors hd) (Nat.pos_of_ne_zero hn),
                  Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.dvd_of_mem_divisors hd)⟩
         calc n.divisors.card ≤ (Finset.Icc 1 n).card := Finset.card_le_card hsub
-          _ = n := by simp [Nat.card_Icc]; omega
+          _ = n := by simp [Nat.card_Icc]
     _ = n ^ 2 := by ring
 
 /-
