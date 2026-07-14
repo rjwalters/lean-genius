@@ -1589,6 +1589,90 @@ Erdos608 (known-hard, parse cascade under mod-index fix), Erdos613ProblemAristot
 
 ---
 
+## Increment 27 (Doctor, tm/pd/rewrite/unknown-const/instance-synth, N-Z + Erdos≥600)
+
+Base: origin/feature/issue-37508 @ 6a3fc43ea0 (ledger 1691 GREEN on branch). Sibling branch
+feature/issue-38065-c did NOT exist on origin during this increment (no overlap risk).
+
+Waves (branch feature/issue-38065):
+- DR37-1 Erdos1012Problem: forward-ref reorder — moved `woodall_pancyclic` axiom above its first
+  consumer `woodall_theorem` (v4.31 forbids forward reference). Flipped Erdos1012Problem +
+  dependent Erdos1012OQ05 (+2).
+- DR37-2 Erdos1026Problem: `Finset.exists_smaller_set s n h` (removed) → `Finset.exists_subset_card_eq h`
+  (4 uses); + omega-on-k^2 fix via `rw [Nat.add_sub_cancel, hn, pow_two]` (+1).
+- DR37-3 PentagonalNumberTheoremOQ01OQ01 + OQ01OQ02: already build clean off v4.31 base (stale
+  RESIDUAL rewrite-drift rows), verified in-container, flipped (+2).
+- DR37-4 PythagoreanTriplesOQ04OQ01OQ01: `even_zero` (removed) → `Even.zero` (3 uses);
+  `Nat.even_iff_not_odd.mp` → `Nat.not_odd_iff_even.mpr` (+1).
+
+Total: +6 GREEN.
+
+### Increment 27 recipes (rename-map §7x)
+| Symptom (v4.31) | Fix |
+|---|---|
+| `Finset.exists_smaller_set s n (h : n ≤ s.card)` "Unknown constant" | `Finset.exists_subset_card_eq (h : n ≤ #s)` (same `∃ t ⊆ s, #t = n`; drop the explicit `s`,`n` args) |
+| `even_zero` "Unknown identifier" | `Even.zero` |
+| `Nat.even_iff_not_odd.mp he` (: ¬Odd) "Unknown constant" | `Nat.not_odd_iff_even.mpr he` |
+| `intermediate_value_zero_of_neg_of_pos` removed | (deferred — needs IVT restructure via `intermediate_value_Icc`) |
+| symmetric-difference `∆` "expected token" | add `open scoped symmDiff` |
+
+### Increment 27 confirmed-deferred (first-error fixed but deeper cascade / genuine gap, reverted)
+- Erdos1002OQ01 (gcongr closes goal → No-goals at L44, but L66/77 `skip` + tendsto errors deeper)
+- Erdos1018OQ04Incomplete01 (`Set.image_subset`→`Set.image_mono` OK, but L161 synth + L178 simp deeper)
+- Erdos1020Problem (`Hypergraph` clashes w/ new Mathlib top-level `Hypergraph`; namespace-wrap exposes
+  universe metavars in `erdosMatchingConjecture` + choose_two_right omega failures)
+- Erdos1039Aristotle (`Erdos1039.Complex.abs`→`Complex.abs` OK, but L77/106/128 unsolved + L131/168 type mismatch)
+- Erdos1054OQ01 (`subst h`→`rw [h]` keeps `p`, but L79 bogus `constructor` on list-eq + native_decide→FALSE L125-130)
+- Erdos1059OQ04 (`open Erdos1059OQ01` + `lt_of_le_not_le`→`lt_of_le_not_ge` OK, but L116
+  `density_one_conjecture` is an AXIOM used as a TYPE — needs hypothesis-restructure, genuine)
+- Erdos1065Problem (forward-ref reorder of erdos_1065b OK, but L197+ `intro ⟨⟩`/decide type mismatches deeper)
+- Erdos1096Problem (`intermediate_value_zero_of_neg_of_pos` removed — IVT restructure)
+- Erdos1123Problem (`open scoped symmDiff` fixes parse, but L67/68/69/75 Setoid-proof errors +
+  `Set.symmDiff_comm` unknown)
+- Erdos1136Problem (No-goals L94 fixable via `simp only [Nat.zero_mod]`, but L137/191/197 deeper)
+- Erdos1145Problem (No-goals L220 `; rfl` drop OK, but L224+ App-type-mismatch cascade)
+- NapoleonsTheorem / NapoleonsTheoremOQ02 (`Complex.norm_def` dup-decl fixable via rename to
+  `Complex.abs_def`, but `map_mul` on the now-plain-def `Complex.abs` fails L177 + nlinarith L155/161 —
+  needs full Complex.abs-is-a-def migration)
+- ProbMethodSecondMomentOQ01 (dup `paley_zygmund_quantitative` — parent+child have DIFFERENT
+  statements; renamed child→`paley_zygmund_quantitative_mul` OK, but L92/116 linarith + L144 No-goals deeper)
+
+**Meta**: this partition is heavily multi-error — nearly every RESIDUAL Erdos file has a cascade behind
+its first error. Fixing the first error (rename/reorder/notation) typically exposes 2-6 more. The
+reliable wins are (a) single-symptom rename files and (b) stale-RESIDUAL rows that already build clean
+off the 37508 base. Per-file isolated verify is mandatory before flipping.
+
+### Increment 27 additional waves (post-doc-commit, +6 more GREEN → 12 total)
+- DR37-5 SchroederBernsteinOQ02: `Set.image_subset`→`Set.image_mono` (2 nested uses); +
+  `rw [← fixedSet_eq]`→`rw [fixedSet_eq]` (the `←` pattern `fixedSet f g` also matched inside
+  `cbsOp f g (fixedSet f g)` → wrong rewrite; forward direction rewrites only the outer). ALSO
+  flipped 3 already-clean stale-RESIDUAL rows: RothTheoremOQ03OQ01OQ01OQ01,
+  RothTheoremOQ03OQ01OQ01OQ01OQ01, RothTheoremQuantitative (+4 total this wave).
+- DR37-6 SzemerediRegularityOQ01Trivial: all 3 threshold theorems now in imported parent
+  SzemerediRegularityOQ01 (same namespace) → reduced companion to import shim (§7v recipe).
+- DR37-7 ShannonChannelCodingAWGNOQ03OQ01Monotone: `waterLevel_pos` now in imported parent (same
+  statement, different arg order `hP`/`hμ` vs `hbudget`/`hP`) → renamed child's to
+  `waterLevel_pos_mono` + updated its one use (can't delete: arg order differs from parent's);
+  dropped redundant `exact le_refl 0` (rw closed the goal → No-goals).
+
+Grand total increment 27: **+12 GREEN** across waves DR37-1..7.
+
+Full triage of the entire partition (403 files: 200 Erdos≥600 in erdos2, 200 in erdos-partial, 137
+non-Erdos) completed. Beyond the 12 flipped, the residual is uniformly multi-error cascade behind
+the first symptom — no further single-fix candidates found. Notable recurring deep blockers:
+`Complex.abs` removal (now a local `def`, breaks `map_mul`/`AbsoluteValue` API — NapoleonsTheorem
+family), Sylow-API renames (`Sylow.exists_smul_eq`/`card_eq_index_normalizer` cascade), and
+`decide`/`native_decide`-noncomputable failures (Erdos1162 SetLike.instFintype).
+
+New v4.31 renames catalogued (rename-map §7x extended): `Set.image_subset`→`Set.image_mono`,
+`even_zero`→`Even.zero`, `Nat.even_iff_not_odd.mp`→`Nat.not_odd_iff_even.mpr`,
+`Finset.exists_smaller_set`→`Finset.exists_subset_card_eq`, `Finset.filter_eq_empty`→
+`Finset.filter_eq_empty_iff`, `Nat.card_pos_of_nonempty`→`Nat.card_pos_iff.mpr ⟨‹Nonempty›,inferInstance⟩`,
+`lt_of_le_not_le`→`lt_of_le_not_ge`, `Nat.divisors_prime_eq`→`Nat.Prime.divisors`,
+`Continuous.if_lt`→(only `Continuous.if_le` survives), `Sylow.exists_smul_eq`→bare `exists_smul_eq`,
+`Finset.sum_range_pow`→bare `sum_range_pow` (root-level in Bernoulli.lean section Faulhaber),
+`∆` symmetric-difference now `scoped[symmDiff]` (needs `open scoped symmDiff`), `/--` dangling
+doc-comment before a section now hard-errors (use `/-`).
 ## Increment 26 (Doctor, A–M / Erdos<600 partition) — +21 GREEN
 
 Classes: type-mismatch, proof-drift, rewrite-drift, unknown-const-mixed, instance-synth-cascades.

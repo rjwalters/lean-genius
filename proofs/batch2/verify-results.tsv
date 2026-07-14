@@ -640,8 +640,8 @@ Erdos1011OQ03	GREEN
 Erdos1011Problem	GREEN	
 Erdos1012OQ01OQ02	GREEN	unknown-const:n
 Erdos1012OQ03	RESIDUAL	proof-drift
-Erdos1012OQ05	RESIDUAL	unknown-const:woodall_pancyclic
-Erdos1012Problem	RESIDUAL	unknown-const:woodall_pancyclic
+Erdos1012OQ05	GREEN	
+Erdos1012Problem	GREEN	
 Erdos1013ConstantRatio	GREEN	
 Erdos1013Problem	GREEN	
 Erdos1013UnconditionalRatio	GREEN	
@@ -689,7 +689,7 @@ Erdos1024Problem	GREEN
 Erdos1025Problem	GREEN	
 Erdos1026OQ05Extremal	RESIDUAL	proof-drift
 Erdos1026OQ05KMonotonic	GREEN	
-Erdos1026Problem	RESIDUAL	unknown-const:Finset.exists_smaller_set
+Erdos1026Problem	GREEN	
 Erdos1027OQ01	RESIDUAL	unclassified
 Erdos1027OQ03	GREEN	
 Erdos1028Problem	GREEN	unknown-const:rpow_one
@@ -2304,8 +2304,8 @@ PascalsHexagonOQ03	GREEN
 PascalsHexagonOQ03Incomplete01Derangements	GREEN	
 PellEquationOQ01	GREEN	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	GREEN	
-PentagonalNumberTheoremOQ01OQ01	RESIDUAL	rewrite-drift
-PentagonalNumberTheoremOQ01OQ02	RESIDUAL	rewrite-drift
+PentagonalNumberTheoremOQ01OQ01	GREEN	
+PentagonalNumberTheoremOQ01OQ02	GREEN	
 PerfectNumbers	GREEN	
 PerfectNumbersOQ03	RESIDUAL	type-mismatch
 PiTranscendental	GREEN	
@@ -2346,7 +2346,7 @@ PythagoreanTheoremOQ01	GREEN
 PythagoreanTheoremOQ03	GREEN	
 PythagoreanTheoremOQ05	GREEN	
 PythagoreanTriplesOQ02	GREEN	
-PythagoreanTriplesOQ04OQ01OQ01	RESIDUAL	unknown-const:even_zero
+PythagoreanTriplesOQ04OQ01OQ01	GREEN	
 QuadraticReciprocityAlgorithmOQ03	RESIDUAL	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03FieldBridge	RESIDUAL	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03M2	GREEN	
@@ -2379,9 +2379,9 @@ RothTheoremOQ01Reciprocal	GREEN
 RothTheoremOQ01Weighted	GREEN	
 RothTheoremOQ03	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
 RothTheoremOQ03OQ01OQ01	GREEN	duplicate-decl
-RothTheoremOQ03OQ01OQ01OQ01	RESIDUAL	duplicate-decl
-RothTheoremOQ03OQ01OQ01OQ01OQ01	RESIDUAL	duplicate-decl
-RothTheoremQuantitative	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
+RothTheoremOQ03OQ01OQ01OQ01	GREEN	
+RothTheoremOQ03OQ01OQ01OQ01OQ01	GREEN	
+RothTheoremQuantitative	GREEN	
 RothTheoremQuantitativeAristotle	RESIDUAL	unknown-const:div_le_div_of_le_left
 RothTriangleRemoval	RESIDUAL	signature-drift
 SchauderFixedPoint	RESIDUAL	instance-synth
@@ -2389,7 +2389,7 @@ SchauderFixedPointOQ01	RESIDUAL	instance-synth
 SchauderFixedPointOQ03	RESIDUAL	instance-synth
 SchauderFixedPointOQ03OQ01	GREEN	
 SchroederBernsteinOQ01	RESIDUAL	elab-drift
-SchroederBernsteinOQ02	RESIDUAL	unknown-const:Set.image_subset
+SchroederBernsteinOQ02	GREEN	
 SchroederBernsteinOQ03	GREEN	
 SchursTheorem	GREEN	
 SearchMathlib	RESIDUAL	unknown-const:IsCompact.of_isClosed_isBounded
@@ -2398,7 +2398,7 @@ ShannonChannelCodingAWGN	GREEN
 ShannonChannelCodingAWGNOQ01	GREEN	
 ShannonChannelCodingAWGNOQ03	GREEN	
 ShannonChannelCodingAWGNOQ03OQ01EqualNoise	GREEN	
-ShannonChannelCodingAWGNOQ03OQ01Monotone	RESIDUAL	type-mismatch
+ShannonChannelCodingAWGNOQ03OQ01Monotone	GREEN	
 ShannonChannelCodingBEC	GREEN	
 ShannonChannelCodingBECOQ01	GREEN	
 ShannonChannelCodingBECOQ02	GREEN	
@@ -2538,7 +2538,7 @@ SzemerediHypergraphCore	RESIDUAL	proof-drift
 SzemerediHypergraphGowers	RESIDUAL	proof-drift
 SzemerediRegularity	GREEN	
 SzemerediRegularityOQ01	GREEN	
-SzemerediRegularityOQ01Trivial	RESIDUAL	duplicate-decl
+SzemerediRegularityOQ01Trivial	GREEN	
 SzemerediRegularityOQ02	RESIDUAL	decide-maxrecdepth
 SzemerediRegularityOQ02OQ02	RESIDUAL	decide-maxrecdepth
 SzemerediRegularityOQ03	GREEN	

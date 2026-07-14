@@ -172,7 +172,7 @@ theorem waterBudget_nonneg (N : ι → ℝ) (μ : ℝ) : 0 ≤ waterBudget N μ 
 /-- **A positive budget forces a positive water level.**  If the water level `μ`
 realises a strictly positive budget `P > 0` (with positive noise floors) then
 `μ > 0`: at `μ ≤ 0` every channel is dry (`μ − Nᵢ < 0`) and the budget vanishes. -/
-theorem waterLevel_pos (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P : ℝ}
+theorem waterLevel_pos_mono (N : ι → ℝ) (hN : ∀ i, 0 < N i) {μ P : ℝ}
     (hbudget : waterBudget N μ = P) (hP : 0 < P) : 0 < μ := by
   by_contra hcon
   push_neg at hcon
@@ -274,10 +274,8 @@ theorem capacity_mono_budget (N : ι → ℝ) (hN : ∀ i, 0 < N i)
     have hP1 : P₁ = 0 := le_antisymm (hP2 ▸ hP) hP1nonneg
     rw [rate_waterAlloc_eq_zero_of_budget_zero N (h1.trans hP1),
         rate_waterAlloc_eq_zero_of_budget_zero N (h2.trans hP2)]
-    -- both capacities are 0
-    exact le_refl 0
   · -- generic: P₂ > 0, so μ₂ > 0 and optimality at P₂ dominates the P₁ allocation
-    have hμ₂ : 0 < μ₂ := waterLevel_pos N hN h2 hP2pos
+    have hμ₂ : 0 < μ₂ := waterLevel_pos_mono N hN h2 hP2pos
     have hxsum : ∑ i, waterAlloc μ₁ N i ≤ P₂ := by
       have hb : (∑ i, waterAlloc μ₁ N i) = P₁ := h1
       rw [hb]; exact hP

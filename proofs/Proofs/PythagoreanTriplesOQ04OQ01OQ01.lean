@@ -63,12 +63,12 @@ theorem sum_two_squares_iff (n : ℕ) :
   constructor
   · intro h p hp hp4
     rcases eq_or_ne n 0 with rfl | hn
-    · exact padicValNat.zero.symm ▸ even_zero
+    · exact padicValNat.zero.symm ▸ Even.zero
     · by_cases hmem : p ∈ n.primeFactors
       · exact h p hmem hp4
       · have hnd : ¬ p ∣ n := fun hd => hmem (Nat.mem_primeFactors.mpr ⟨hp, hd, hn⟩)
         rw [padicValNat.eq_zero_of_not_dvd hnd]
-        exact even_zero
+        exact Even.zero
   · intro h q hq hq4
     exact h q (Nat.prime_of_mem_primeFactors hq) hq4
 
@@ -82,7 +82,7 @@ theorem not_sum_two_squares_of_odd_padicValNat {n p : ℕ} (hp : p.Prime)
     ¬ ∃ x y : ℕ, n = x ^ 2 + y ^ 2 := by
   intro h
   have he : Even (padicValNat p n) := (sum_two_squares_iff n).mp h p hp hp4
-  exact (Nat.even_iff_not_odd.mp he) hodd
+  exact (Nat.not_odd_iff_even.mpr he) hodd
 
 /-- **Sufficiency.** If every prime `p ≡ 3 (mod 4)` divides `n` to an even power,
 then `n` is a sum of two squares. -/
@@ -112,7 +112,7 @@ theorem prime_sum_two_squares_iff {p : ℕ} (hp : p.Prime) :
     have hqp : q ≠ p := by rintro rfl; exact hp4 hq4
     have hnd : ¬ q ∣ p := by rw [Nat.prime_dvd_prime_iff_eq hq hp]; exact hqp
     rw [padicValNat.eq_zero_of_not_dvd hnd]
-    exact even_zero
+    exact Even.zero
 
 /-- The prime obstruction: a prime `≡ 3 (mod 4)` is not a sum of two squares. -/
 theorem prime_not_sum_two_squares {p : ℕ} (hp : p.Prime) (hp4 : p % 4 = 3) :
