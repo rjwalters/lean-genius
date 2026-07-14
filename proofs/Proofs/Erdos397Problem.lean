@@ -75,7 +75,8 @@ axiom somani_identity (a : ℕ) (ha : a ≥ 2) :
 theorem somani_disjoint (a : ℕ) (ha : a ≥ 2) : Disjoint (somaniLHS a) (somaniRHS a) := by
   simp only [Finset.disjoint_left, somaniLHS, somaniRHS, Finset.mem_insert, Finset.mem_singleton]
   intro x
-  rintro (rfl | rfl | rfl) <;> rintro (rfl | rfl | rfl) <;> simp_all [somaniC] <;> omega
+  simp only [somaniC]
+  rintro (h | h | h) <;> rintro (h' | h' | h') <;> omega
 
 /-- Each (somaniLHS a, somaniRHS a) for a ≥ 2 is a valid solution -/
 private lemma somani_prod_lhs (a : ℕ) (ha : a ≥ 2) :
@@ -85,7 +86,7 @@ private lemma somani_prod_lhs (a : ℕ) (ha : a ≥ 2) :
     simp only [Finset.mem_insert, Finset.mem_singleton, somaniC]; omega
   have h2 : (2 * a + 2) ∉ ({somaniC a} : Finset ℕ) := by
     simp only [Finset.mem_singleton, somaniC]; omega
-  rw [Finset.prod_insert h1, Finset.prod_insert h2, Finset.prod_singleton]
+  rw [Finset.prod_insert h1, Finset.prod_insert h2, Finset.prod_singleton, mul_assoc]
 
 private lemma somani_prod_rhs (a : ℕ) (ha : a ≥ 2) :
     ∏ n ∈ somaniRHS a, C n = C (a + 1) * C (2*a) * C (somaniC a + 1) := by
@@ -94,7 +95,7 @@ private lemma somani_prod_rhs (a : ℕ) (ha : a ≥ 2) :
     simp only [Finset.mem_insert, Finset.mem_singleton, somaniC]; omega
   have h2 : 2 * a ∉ ({somaniC a + 1} : Finset ℕ) := by
     simp only [Finset.mem_singleton, somaniC]; omega
-  rw [Finset.prod_insert h1, Finset.prod_insert h2, Finset.prod_singleton]
+  rw [Finset.prod_insert h1, Finset.prod_insert h2, Finset.prod_singleton, mul_assoc]
 
 theorem somani_is_solution (a : ℕ) (ha : a ≥ 2) :
     (somaniLHS a, somaniRHS a) ∈ CentralBinomSolutions := by
