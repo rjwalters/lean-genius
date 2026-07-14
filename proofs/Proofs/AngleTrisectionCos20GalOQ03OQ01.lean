@@ -53,7 +53,7 @@ theorem factored_form {R : Type*} [CommRing R] (α a : R)
     (4 * α ^ 2 + 2 * α - 1) * (-2 * a + 2 * α + 1) := by ring
   have hrhs : (4 * α ^ 2 + 2 * α - 1) * (-2 * a + 2 * α + 1) = 0 := by
     rw [hα, zero_mul]
-  linarith [key.trans hrhs]
+  exact sub_eq_zero.mp (key.trans hrhs)
 
 /-
 ## Part II: Polynomial Properties
@@ -132,12 +132,12 @@ private theorem q_eis_int_irreducible : Irreducible q_eis_int := by
     intro r hr
     -- r divides the content, which divides each coefficient
     have hc2 : r ∣ (4 : ℤ) := by
-      have h := dvd_trans hr (Polynomial.content_dvd_coeff q_eis_int 2)
+      have h := (Polynomial.C_dvd_iff_dvd_coeff r q_eis_int).mp hr 2
       unfold q_eis_int at h
       simp only [coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X] at h
       simpa using h
     have hc0 : r ∣ (5 : ℤ) := by
-      have h := dvd_trans hr (Polynomial.content_dvd_coeff q_eis_int 0)
+      have h := (Polynomial.C_dvd_iff_dvd_coeff r q_eis_int).mp hr 0
       unfold q_eis_int at h
       simp only [coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X] at h
       simpa using h
@@ -156,12 +156,12 @@ private theorem q_eis_rat_irreducible : Irreducible q_eis_rat := by
   have hprim : q_eis_int.IsPrimitive := by
     intro r hr
     have hc2 : r ∣ (4 : ℤ) := by
-      have h := dvd_trans hr (Polynomial.content_dvd_coeff q_eis_int 2)
+      have h := (Polynomial.C_dvd_iff_dvd_coeff r q_eis_int).mp hr 2
       unfold q_eis_int at h
       simp only [coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X] at h
       simpa using h
     have hc0 : r ∣ (5 : ℤ) := by
-      have h := dvd_trans hr (Polynomial.content_dvd_coeff q_eis_int 0)
+      have h := (Polynomial.C_dvd_iff_dvd_coeff r q_eis_int).mp hr 0
       unfold q_eis_int at h
       simp only [coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X] at h
       simpa using h
@@ -183,8 +183,8 @@ private theorem q_comp_eq_p :
   apply Polynomial.funext; intro x
   simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_sub,
     Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X, Polynomial.eval_pow]
-  unfold q_eis_rat p
-  simp only [Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_mul,
+  unfold q_eis_rat
+  simp only [p, Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_mul,
     Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one,
     Polynomial.eval_ofNat]
   ring

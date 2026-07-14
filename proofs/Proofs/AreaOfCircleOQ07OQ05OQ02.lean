@@ -109,7 +109,6 @@ theorem gaussian_second_moment_Ioi :
     rw [← Real.rpow_mul hx0.le, show (2 : ℝ) * ((3 / 2 : ℝ) - 1) = 1 by norm_num,
       Real.rpow_one]
   rw [smul_eq_mul, hexp1]
-  dsimp only
   rw [hhalf, hpow2]
   ring
 

@@ -44,8 +44,8 @@ AlgebraicNumbersCountableOQ01OQ01	GREEN
 AlgebraicNumbersCountableOQ01OQ01OQ01	RESIDUAL	instance-synth
 AlgebraicNumbersCountableOQ01OQ03	RESIDUAL	instance-synth
 AlgebraicNumbersCountableOQ02	GREEN	
-AlgebraicNumbersCountableOQ02OQ02	RESIDUAL	proof-drift
-AlgebraicNumbersCountableOQ02OQ02OQ01	RESIDUAL	proof-drift
+AlgebraicNumbersCountableOQ02OQ02	GREEN	
+AlgebraicNumbersCountableOQ02OQ02OQ01	GREEN	
 AlgebraicNumbersCountableOQ02OQ03	GREEN	
 AlgebraicNumbersCountableOQ02OQ04	GREEN	
 AlgebraicNumbersCountableOQ02OQ04OQ01	GREEN	
@@ -78,7 +78,7 @@ AngleTrisectionCos20GalOQ01OQ01	GREEN
 AngleTrisectionCos20GalOQ01OQ02	GREEN	
 AngleTrisectionCos20GalOQ01OQ02OQ02	RESIDUAL	instance-synth
 AngleTrisectionCos20GalOQ03	GREEN	
-AngleTrisectionCos20GalOQ03OQ01	RESIDUAL	type-mismatch
+AngleTrisectionCos20GalOQ03OQ01	GREEN	
 AngleTrisectionEmbedding	GREEN	
 AngleTrisectionOQ02	GREEN	
 AngleTrisectionOQ02OQ01OQ02	RESIDUAL	rewrite-drift
@@ -118,8 +118,8 @@ AreaOfCircleOQ01OQ03	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ03Aristotle	GREEN	
 AreaOfCircleOQ01OQ03OQ01	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ03OQ02	RESIDUAL	decide-maxrecdepth
-AreaOfCircleOQ02	RESIDUAL	proof-drift
-AreaOfCircleOQ02OQ01	RESIDUAL	proof-drift
+AreaOfCircleOQ02	GREEN	
+AreaOfCircleOQ02OQ01	GREEN	
 AreaOfCircleOQ02OQ04	GREEN	
 AreaOfCircleOQ03OQ01	GREEN	
 AreaOfCircleOQ03OQ02OQ01	GREEN	
@@ -130,17 +130,17 @@ AreaOfCircleOQ03OQ03OQ02	GREEN
 AreaOfCircleOQ05OQ01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
 AreaOfCircleOQ05OQ01Aristotle	GREEN	
 AreaOfCircleOQ05OQ01Incomplete01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
-AreaOfCircleOQ05OQ03OQ05	RESIDUAL	type-mismatch
+AreaOfCircleOQ05OQ03OQ05	GREEN	
 AreaOfCircleOQ05OQ04	GREEN	
 AreaOfCircleOQ07OQ02OQ02	GREEN	
 AreaOfCircleOQ07OQ03OQ02	GREEN	
 AreaOfCircleOQ07OQ04OQ01	RESIDUAL	rewrite-drift
 AreaOfCircleOQ07OQ04OQ01OQ01	GREEN	
-AreaOfCircleOQ07OQ05	RESIDUAL	type-mismatch
-AreaOfCircleOQ07OQ05OQ01	RESIDUAL	type-mismatch
-AreaOfCircleOQ07OQ05OQ01OQ01	RESIDUAL	type-mismatch
-AreaOfCircleOQ07OQ05OQ01OQ02	RESIDUAL	type-mismatch
-AreaOfCircleOQ07OQ05OQ02	RESIDUAL	type-mismatch
+AreaOfCircleOQ07OQ05	GREEN	
+AreaOfCircleOQ07OQ05OQ01	GREEN	
+AreaOfCircleOQ07OQ05OQ01OQ01	GREEN	
+AreaOfCircleOQ07OQ05OQ01OQ02	GREEN	
+AreaOfCircleOQ07OQ05OQ02	GREEN	
 ArithmeticSeriesOQ00OQ02	GREEN	
 ArithmeticSeriesOQ00OQ02OQ01	RESIDUAL	instance-synth
 ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
@@ -197,7 +197,7 @@ BaselProblemOQ13	GREEN
 BaselProblemOQ13OQ01	GREEN	
 BaselProblemOQ13OQ02	GREEN	
 BaselProblemOQ14	GREEN	
-BernoulliInequalityOQ01OQ02	RESIDUAL	proof-drift
+BernoulliInequalityOQ01OQ02	GREEN	
 BernoulliInequalityOQ01OQ02OQ01	GREEN	
 BertrandsPostulateOQ03	GREEN	
 BertrandsPostulateOQ03OQ04	GREEN	
@@ -224,7 +224,7 @@ BezoutIdentityOQ03OQ02OQ01	GREEN
 BezoutIdentityOQ03OQ03	RESIDUAL	unknown-const:Int.coe_nat_dvd.mpr
 BezoutIdentityOQ03OQ04	RESIDUAL	unknown-const:Int.Coprime.mul_dvd_of_dvd_of_dvd
 BezoutIdentityOQ04OQ01	RESIDUAL	rewrite-drift
-BezoutIdentityOQ04OQ01OQ01	RESIDUAL	type-mismatch
+BezoutIdentityOQ04OQ01OQ01	GREEN	
 BinaryGcdOQ02	GREEN	
 BinaryGcdOQ02OQ01	RESIDUAL	unknown-const:a
 BinomialTheorem	GREEN	
@@ -255,7 +255,7 @@ BirthdayProblemOQ03OQ01OQ02	GREEN
 BirthdayProblemOQ03OQ03	RESIDUAL	proof-drift
 BorsukUlamOQ02	RESIDUAL	unknown-const:EuclideanSpace.equiv_symm_pi_lp_apply
 BorsukUlamOQ02OQ01OQ01OQ02	GREEN	
-BorsukUlamOQ02OQ01OQ01OQ02OQ03	RESIDUAL	type-mismatch
+BorsukUlamOQ02OQ01OQ01OQ02OQ03	GREEN	
 BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01	RESIDUAL	type-mismatch
 BorsukUlamOQ02OQ01OQ04	GREEN	
 BorsukUlamOQ02OQ01OQ04OQ01	GREEN	
@@ -300,7 +300,7 @@ BuffonsNeedleOQ01OQ01OQ02	GREEN
 BuffonsNeedleOQ01OQ01OQ04	RESIDUAL	rewrite-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01	RESIDUAL	rewrite-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01Beta	GREEN	
-BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01	RESIDUAL	proof-drift
+BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01	GREEN	
 BuffonsNeedleOQ01OQ01OQ05	GREEN	
 BuffonsNeedleOQ01OQ02	RESIDUAL	unknown-const:pi_gt_3141592
 BuffonsNeedleOQ01OQ04	GREEN	
@@ -488,7 +488,7 @@ CubeRoot3IrrationalOQ02OQ02	GREEN
 CubeRoot3IrrationalOQ03	GREEN	
 CubeRoot3IrrationalOQ03OQ01	GREEN	
 CubeRoot3IrrationalOQ03OQ02	GREEN	
-CubeRoot3IrrationalOQ03OQ03	RESIDUAL	rewrite-drift
+CubeRoot3IrrationalOQ03OQ03	GREEN	
 CubeRoot3IrrationalOQ04	GREEN	
 CubeRoot3IrrationalOQ04A12	GREEN	
 CubeRoot3IrrationalOQ04Degree	GREEN	
@@ -527,7 +527,7 @@ DerangementsConvergenceOQ03OQ01	GREEN
 DerangementsConvergenceOQ03OQ01OQ02	GREEN	
 DerangementsConvergenceOQ03OQ03	GREEN	
 DerangementsConvergenceOQ05	GREEN	
-DerangementsConvergenceOQ05OQ01	RESIDUAL	type-mismatch
+DerangementsConvergenceOQ05OQ01	GREEN	
 DerangementsConvergenceOQ06	GREEN	
 DerangementsConvergenceOQ06OQ01	GREEN	
 DerangementsOQ03	GREEN	
@@ -543,7 +543,7 @@ DescartesRuleOfSignsOQ02	RESIDUAL	rewrite-drift
 DescartesRuleOfSignsOQ02OQ01	RESIDUAL	rewrite-drift
 DescartesRuleOfSignsOQ02Parity	RESIDUAL	proof-drift
 DescartesRuleOfSignsOQ04	RESIDUAL	unknown-const:Multiset.countP_singleton
-DiamondImpliesCH	RESIDUAL	proof-drift
+DiamondImpliesCH	GREEN	
 DiniTheorem	GREEN	
 DiniTheoremOQ01OQ01	GREEN	
 DirichletApproximationOQ02	GREEN	
@@ -1154,7 +1154,7 @@ Erdos340GreedySidonExtension	GREEN
 Erdos340GreedySidonOQ02	GREEN	
 Erdos340GreedySidonOQ05	GREEN	
 Erdos340SidonErdosTuran	GREEN	
-Erdos341Problem	RESIDUAL	rewrite-drift
+Erdos341Problem	GREEN	
 Erdos342Problem	GREEN	
 Erdos343Problem	GREEN	
 Erdos344Problem	GREEN	

@@ -58,7 +58,7 @@ theorem one_div_factorial_antitone :
 /-- `∑_j 1/j!` is summable: it is the `x = 1` exponential series. -/
 theorem one_div_factorial_summable :
     Summable (fun j : ℕ => (1 : ℝ) / (j.factorial : ℝ)) := by
-  have h := expSeries_div_hasSum_exp ℝ (1 : ℝ)
+  have h := NormedSpace.expSeries_div_hasSum_exp (1 : ℝ)
   simp only [one_pow] at h
   exact h.summable
 
@@ -66,7 +66,7 @@ theorem one_div_factorial_summable :
 theorem hasSum_expNegOne :
     HasSum (fun j : ℕ => (-1 : ℝ) ^ j / (j.factorial : ℝ)) (Real.exp (-1)) := by
   rw [Real.exp_eq_exp_ℝ]
-  exact expSeries_div_hasSum_exp ℝ (-1 : ℝ)
+  exact NormedSpace.expSeries_div_hasSum_exp (-1 : ℝ)
 
 /-- **The derangement ratio is a partial sum of `e⁻¹`.**
 `numDerangements m / m! = ∑_{j=0}^{m} (-1)ʲ / j!`.  This identity is the arithmetic

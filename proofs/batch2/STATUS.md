@@ -1,3 +1,87 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 23, #38065, 2026-07-13)
+
+# DOCTOR INCREMENT 23 (type-mismatch + proof-drift + rewrite-drift + mixed, #38065, 2026-07-13)
+
+Container `dr33` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-c`, based on increment 20 (87cc6941c0). 344 sorry-free
+candidates from 443 my-class RESIDUAL rows (99 sorry-holed). Tight per-file
+`lake build Proofs.X` fix-verify loop off warm cache; diags read in-container.
+
+Partitioned (per orchestrator, mid-increment): this agent = A–M basenames +
+Erdos < 600; sibling increment 24 = N–Z + Erdos ≥ 600.
+
+## Waves (all in-container `lake build` exit-0 confirmed, then ledger-flipped)
+- **DR33a (+3)**: AreaOfCircleOQ07OQ05OQ01 + 2 dependents (OQ01OQ01/OQ01OQ02).
+- **DR33b (+2)**: AreaOfCircleOQ07OQ05 + OQ07OQ05OQ02 (same gaussian-moment IBP).
+- **DR33c (+2)**: AreaOfCircleOQ02 + OQ02OQ01.
+- **DR33d (+1)**: AreaOfCircleOQ05OQ03OQ05 (dominated-deriv ε→nhds).
+- **DR33e (+2)**: AlgebraicNumbersCountableOQ02OQ02 + OQ02OQ02OQ01.
+- **DR33f (+1)**: AngleTrisectionCos20GalOQ03OQ01 (content_dvd_coeff, C_dvd_iff_dvd_coeff, abbrev unfold).
+- **DR33g (+1)**: BernoulliInequalityOQ01OQ02 (pow_succ nlinarith hint, Nat.cast_choose_two).
+- **DR33h (+1)**: BorsukUlamOQ02OQ01OQ01OQ02OQ03 (sup_union, not_le.mpr, intro ⟨⟩ on <).
+- **DR33i (+1)**: BezoutIdentityOQ04OQ01OQ01 (IsUnimodularPID/IsUnit.mul shadow, Fin OfNat index align).
+- **DR33j (+1)**: CubeRoot3IrrationalOQ03OQ03 (minpoly_gen explicit + show-form instance force).
+- **DR33k (+1)**: BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01 (convert instance-congruence → value-first).
+- **DR33l (+1)**: DiamondImpliesCH (Ordinal.mk_Iio_ordinal qualify).
+- **DR33m (+1)**: DerangementsConvergenceOQ05OQ01 (NormedSpace.expSeries_div_hasSum_exp).
+
+Ledger: 1612 → 1630 GREEN (+18). PR #38623 (base feature/issue-37508).
+Recipes catalogued in rename-map §7u (+continued).
+Deferred deep this increment: BorsukUlamOQ03OQ02 (ℤ→+ℤ map_zsmul arg-order +
+defeq-unfold cascade), DissectionOfCubesOQ02OQ02/OQ04 (ℝ⧸zmultiples quotient
+rewrites), ElementaryQuadraticReciprocityOQ02OQ01 (10 scattered), ChineseRemainder,
+Chebyshev/CauchySchwarz clusters.
+
+## Highest-value new recipes (see rename-map §7u)
+- **`integral_mul_deriv_eq_deriv_mul` now takes tsupport-restricted deriv hyps**:
+  the two `HasDerivAt` hypotheses are `∀ x ∈ tsupport v, …` / `∀ x ∈ tsupport u, …`
+  (was `∀ x, …`). Wrap existing everywhere-hyps: `(fun x _ => hu x) (fun x _ => hv x)`.
+- **`hasDerivAt_pow n x |>.neg` prints as `-fun x => x^n` (function negation)** and
+  won't `simpa`-unify with a goal `HasDerivAt (fun y => -y^n) …`. Fix: state a typed
+  `have h : HasDerivAt (fun y => -y^n) (-(↑n * x^(n-1))) x := (hasDerivAt_pow n x).neg`
+  (defeq check happens at the `have`), then `simpa using h`.
+- **`hasDerivAt_id x` direct term** works for goal `HasDerivAt (fun y => y) 1 x`
+  (id ≡ fun y => y); the old `simpa using hasDerivAt_id x` now hits an
+  AddCommGroup-instance mismatch.
+- **`hasDerivAt_integral_of_dominated_loc_of_deriv_le` dropped the `ε`-ball arg**:
+  it now takes `s ∈ nhds x₀` (a `Set`) instead of `(ε := r) … (0 < ε)`. Replace
+  `(ε := 1) … one_pos` with `(Metric.ball_mem_nhds x₀ one_pos)` (and the ∀-hyps'
+  `∀ x s _` binders line up with `∀ x ∈ s`).
+- **`h.le` on a hypothesis `h : 0 ≤ r` is now `Real.le.le` unknown-field error** —
+  the `≤`-value has no `.le` projection. Use `h` directly (it already IS `0 ≤ r`),
+  or `by positivity` for a derived nonneg like `0 ≤ r^2`.
+- **`Real.rpow_mul` takes `0 ≤ x` directly** — `pi_nonneg` not `pi_nonneg.le`.
+- **`exists_surjective_nat (α : Sort) [Nonempty α] [Countable α]`** — Nonempty is an
+  instance now, drop the explicit `⟨0⟩` witness: `exists_surjective_nat ℝ`.
+- **`Real.dist_eq x y = |x - y|`** in that argument order — a `dist (a n) (a (n+1))`
+  with `a` strictly increasing needs `abs_sub_comm` before `abs_of_nonneg`.
+- **convert+ring metavar stall** (recurring §7s): `convert x using 1; ring` "made no
+  progress" → prove the value equation `have : lhs = rhs := by ring; rw [this]; exact x`.
+- **`Gamma_add_one` leaves an un-normalized cast argument** inside `Gamma (…)`;
+  `rw [show ((n-2:ℕ):ℝ)/2 + 1 = (n:ℝ)/2 from by push_cast [Nat.cast_sub hn]; ring]`
+  before `field_simp` so the two `Gamma` calls unify.
+- **`ENNReal.ofReal_mul` first-factor nonneg**; combine `ofReal((2r)^2·π)` by first
+  `rw [show (2*r)^2*π = 4*(r^2*π) by ring]` then `ENNReal.ofReal_mul (0≤4)`,
+  `ENNReal.ofReal_ofNat`.
+- **`dsimp only` / `simp [h1,h2]` that now self-closes** → drop the trailing
+  `linarith`/`ring` (else "No goals to be solved"); a no-op `dsimp only` errors
+  "made no progress" → delete the line.
+
+## Statement repairs
+- (none this increment — all fixes were faithful migration repairs.)
+
+## Flagged deep-rework (deferred this increment)
+- AreaOfCircleOQ07OQ04OQ01: `integral_ofReal` coercion (`↑(∫…)` RCLike-vs-Complex.ofReal
+  defeq) + `Measure.prod ?m ?m` vs `volume` on the plane integral — genuine
+  measure-theory rewrites, 4 errors.
+- AreaOfCircleOQ01OQ03 (Fourier/isoperimetric): maxRecDepth simp + instance-congruence
+  rewrite + assumption failure — confirms prior triage.
+- AreaOfCircleOQ03OQ02OQ02: fun_prop `Continuous.div₀` nonzero-denominator side
+  goals + `Continuous.div` unification + ℕ-vs-ℝ integrand type mismatch, 8 errors.
+- AbelRuffiniGaloisExtensionsOQ04 (10 err), AlgebraicNumbersCountableOQ04 (14 err),
+  BallotProblem family (11-79 err) — deep.
+
+---
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 22, #38065, 2026-07-13)
 
 # DOCTOR INCREMENT 22 (structured remainder: parse/sig/elab/dot, #38065, 2026-07-13)

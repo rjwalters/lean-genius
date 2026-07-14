@@ -71,9 +71,8 @@ theorem sq_bernoulli (ha : 0 ≤ a) (n : ℕ) :
       have ha3 : 0 ≤ a ^ 3 := by positivity
       -- Multiply the inductive bound by the nonnegative factor `1 + a`.
       have hstep := mul_le_mul_of_nonneg_right ih h1a
-      rw [pow_succ]
       push_cast
-      nlinarith [hstep, mul_nonneg hm2 ha3]
+      nlinarith [hstep, mul_nonneg hm2 ha3, pow_succ (1 + a) m]
 
 /-- **Strict second-order Bernoulli.** For `a > 0` and `n ≥ 3`, the quadratic
 truncation is a *strict* lower bound: `1 + n·a + (n(n-1)/2)·a² < (1 + a)ⁿ`.
@@ -96,9 +95,8 @@ theorem sq_bernoulli_strict (ha : 0 < a) :
         nlinarith
       have ha3 : 0 ≤ a ^ 3 := by positivity
       have hstep := mul_lt_mul_of_pos_right ih h1a
-      rw [pow_succ]
       push_cast
-      nlinarith [hstep, mul_nonneg hm2 ha3]
+      nlinarith [hstep, mul_nonneg hm2 ha3, pow_succ (1 + a) m]
 
 /-- **Equality characterization for second-order Bernoulli.** For `a ≥ 0`,
 equality `1 + n·a + (n(n-1)/2)·a² = (1 + a)ⁿ` holds **iff** `a = 0 ∨ n ≤ 2`.
@@ -138,12 +136,7 @@ theorem sq_bernoulli_strict_iff (ha : 0 ≤ a) {n : ℕ} :
 theorem sq_bernoulli_choose (ha : 0 ≤ a) (n : ℕ) :
     1 + n * a + (n.choose 2 : ℝ) * a ^ 2 ≤ (1 + a) ^ n := by
   have hcast : (n.choose 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) / 2 := by
-    rw [Nat.choose_two_right]
-    rcases Nat.eq_zero_or_pos n with h | h
-    · subst h; simp
-    · have : 1 ≤ n := h
-      push_cast [Nat.cast_sub this]
-      ring
+    rw [Nat.cast_choose_two]
   rw [hcast]; exact sq_bernoulli ha n
 
 /-- **First-order equality characterization on `a ≥ -1`** (the slug's literal

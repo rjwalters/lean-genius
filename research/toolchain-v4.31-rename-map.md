@@ -966,6 +966,50 @@ Expected X, but found X-truncated` or `Unknown identifier <name>-truncated` at E
 truncated the file mid-read. `docker restart dr31`, rebuild, verify by exit code (hit 4× this
 increment: ZsqrtdNegTwoOQ03, DenumerabilityRationalsOQ01, Erdos79Incomplete01, FactorRemainderTheorem).
 
+## §7u Doctor increment 23 recipes (tm/pd/rewrite + mixed, #38065, +N GREEN)
+
+Gaussian-integral / area-of-circle cluster (integration-by-parts + rpow + ENNReal):
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `integral_mul_deriv_eq_deriv_mul` rejects `∀ x, HasDerivAt …` hyps ("expected `∀ x ∈ tsupport …`") | wrap: `(fun x _ => hu x) (fun x _ => hv x)` — the two deriv hyps are now tsupport-restricted | AreaOfCircleOQ07OQ05OQ01, OQ07OQ05 |
+| `simpa using (hasDerivAt_pow n x).neg` fails: `.neg` prints `-fun x => x^n` (fn-negation), won't unify with goal `HasDerivAt (fun y => -y^n) …` | typed intermediate: `have h : HasDerivAt (fun y => -y^n) (-(↑n * x^(n-1))) x := (hasDerivAt_pow n x).neg; simpa using h` (defeq forced at the `have`) | OQ07OQ05OQ01, OQ07OQ05 |
+| `simpa using hasDerivAt_id x` → AddCommGroup-instance mismatch | `fun x => hasDerivAt_id x` (direct term; `id ≡ fun y => y`) | OQ07OQ05 |
+| `hasDerivAt_integral_of_dominated_loc_of_deriv_le (ε := r) … (h : 0<ε)` — signature lost `ε`; now `s ∈ nhds x₀` (a `Set`) | replace `(ε := 1) … one_pos` with `(Metric.ball_mem_nhds x₀ one_pos)`; `∀ x s _` ∀-hyps line up with `∀ x ∈ s` | AreaOfCircleOQ05OQ03OQ05 |
+| `hr.le` where `hr : 0 ≤ r` → `Real.le.le` unknown-field | use `hr` directly; derived nonneg (`0 ≤ r^2`) → `by positivity` | AreaOfCircleOQ02, OQ02OQ01 |
+| `Real.rpow_mul pi_nonneg.le` → same `.le`-projection error | `Real.rpow_mul pi_nonneg` (takes `0 ≤ x` directly) | AreaOfCircleOQ02OQ01 |
+| `Gamma_add_one` leaves an un-normalized cast arg inside `Gamma (…)`, so `field_simp` can't unify the two Gamma calls | `rw [show ((n-2:ℕ):ℝ)/2 + 1 = (n:ℝ)/2 from by push_cast [Nat.cast_sub hn]; ring]` first | AreaOfCircleOQ02 |
+| combine `ENNReal.ofReal((2r)^2 * π)` with a leading numeral | `rw [show (2*r)^2*π = 4*(r^2*π) by ring, ENNReal.ofReal_mul (by norm_num : (0:ℝ)≤4), ENNReal.ofReal_ofNat]` | AreaOfCircleOQ02 |
+
+General proof-drift (Cantor nested-interval / countability cluster):
+
+| symptom | fix | files |
+|---|---|---|
+| `exists_surjective_nat α ⟨0⟩` — "Function expected" | `exists_surjective_nat α` (Nonempty/Countable are instances now) | AlgebraicNumbersCountableOQ02OQ02 |
+| `simp [h1, h2]; linarith` → "No goals to be solved" (simp self-closed) | drop trailing `linarith` | AlgNumbers OQ02OQ02 |
+| `apply csSup_le ⟨…⟩` → anon-ctor "expected type could not be determined" | `refine csSup_le ⟨…⟩ ?_` + `rintro x ⟨m, hm⟩` | AlgNumbers OQ02OQ02 |
+| `abs_of_nonneg` on `dist (a n) (a (n+1))` fails (a strictly incr → inner is negative): `Real.dist_eq x y = |x - y|` in that order | `rw [Real.dist_eq, abs_sub_comm, abs_of_nonneg (…)]` | AlgNumbers OQ02OQ02OQ01 |
+| no-op `dsimp only` → "made no progress" | delete the line | AreaOfCircleOQ07OQ05OQ02 |
+| `convert x using 1; ring` "made no progress" (metavar stall, confirms §7s) | `have hval : lhs = rhs := by ring; rw [hval]; exact x` | OQ07OQ05OQ01, OQ07OQ05, OQ05OQ03OQ05 |
+
+### §7u continued — increment 23 waves DR33f-m
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `Polynomial.content_dvd_coeff q n` "type mismatch: q : ℤ[X] expected ℕ" — polynomial arg is now `{p}`-implicit, only `(n)` explicit | `content_dvd_coeff (p := q) n`; but for `IsPrimitive`'s `hr : C r ∣ p` use `(C_dvd_iff_dvd_coeff r p).mp hr n` for `r ∣ p.coeff n` | AngleTrisectionCos20GalOQ03OQ01 |
+| `unfold abbrevName` "failed to unfold" (abbrev, not def) | `simp only [abbrevName]` | AngleTrisectionCos20GalOQ03OQ01 |
+| `linarith` over a bare `CommRing` (no order) | `sub_eq_zero.mp (key.trans hrhs)` for `a = b` from `a - b = 0` | AngleTrisectionCos20GalOQ03OQ01 |
+| `rw [pow_succ]` no longer rewrites `(1+a)^(m+1)` inside a subsequent `nlinarith` goal | drop the `rw`, pass `pow_succ (1+a) m` as an `nlinarith` hint | BernoulliInequalityOQ01OQ02 |
+| casting `↑(n*(n-1)/2)` (Nat division) — `push_cast` can't split the `/2` | `Nat.cast_choose_two` (`↑(a.choose 2) = ↑a*(↑a-1)/2`) | BernoulliInequalityOQ01OQ02 |
+| `Nat.primeFactors_mul` yields `∪` (not `insert`) | `Finset.sup_union` (not `sup_insert`) | BorsukUlamOQ02OQ01OQ01OQ02OQ03 |
+| `not_le_of_lt` removed | `not_le.mpr h` | BorsukUlamOQ02OQ01OQ01OQ02OQ03 |
+| `intro ⟨h⟩` / `rintro ⟨h⟩` on a hyp that is a `<` (= `Nat.le (succ ..)`, multi-ctor) fails "more than one constructor" | `intro h` (it's a plain `<`, not a 1-field structure) | BorsukUlamOQ02OQ01OQ01OQ02OQ03 |
+| a 1-field `abbrev`/`def P := IsUnit …` shadows `IsUnit.mul` — `hM.mul hN` resolves to `P.mul` (recursion) | `simp only [P, …] at *` to expose the underlying `IsUnit` before `.mul` | BezoutIdentityOQ04OQ01OQ01 |
+| matrix `snf.D ⟨0, by omega⟩ ⟨1, _⟩` accesses fail to fold with `set`-vars after a `simp` normalizes indices `⟨0,_⟩ → (0 : Fin n)` (OfNat) | restate ALL index accesses (haves, `set`, `congr_fun`) with `(0 : Fin n)` OfNat literals — mixing `⟨0,_⟩` and OfNat breaks `linear_combination` folding | BezoutIdentityOQ04OQ01OQ01 |
+| `minpoly_gen`/`minpoly_cbrt3` `rw` "did not find pattern" though visibly present — instance mismatch on the `AdjoinSimple`/`Algebra` instance; `minpoly_gen` also needs `F α` explicit now | `rw [show minpoly ℚ (AdjoinSimple.gen ℚ α) = minpoly ℚ α from minpoly_gen ℚ α, …]` forces the instance to unify | CubeRoot3IrrationalOQ03OQ03 |
+| `convert hd using 1` surfaces an instance-congruence goal FIRST (`instAddCommGroup = NormedDivisionRing…toAddCommGroup`) — §7s (recurred) | value-first: `have hval : <goal-value> = <hd-value> := by …; rw [hval]; exact hd` | BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01 |
+| `mk_Iio_ordinal` now ambiguous | qualify `Ordinal.mk_Iio_ordinal` | DiamondImpliesCH |
+| `expSeries_div_hasSum_exp 𝕂 x` — moved to `NormedSpace` namespace, field now implicit (only `(x)` explicit); result is `NormedSpace.exp x` | `NormedSpace.expSeries_div_hasSum_exp x`; `Real.exp_eq_exp_ℝ : Real.exp = NormedSpace.exp` bridges | DerangementsConvergenceOQ05OQ01 |
 ## §7u Doctor increment 22 recipes (parse/sig/elab/dot structured remainder, #38065, +7 GREEN)
 
 | Symptom | Fix | Examples |
