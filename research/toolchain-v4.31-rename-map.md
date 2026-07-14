@@ -1307,3 +1307,28 @@ necessary-but-not-sufficient and the file must be reverted if any error remains.
 Erdos733 still fails on removed `List.Sorted` in a `def`. No reusable cluster found for the
 `fin_cases nsmul`, `isCompact_convexHull (𝕜:=)`, or `if_le`/`monotone_filter_right` renames — each hit
 exactly one file in this partition.
+
+## §7z Increment 37 recipes (N–Z + Erdos≥600) — HIGH-VALUE reusable
+
+| Symptom | Fix | Files |
+|---|---|---|
+| `simpa using this` fails: goal `Real.exp ∘ f`/`Real.log ∘ f` Tendsto no longer auto-unfolds `∘` | `simpa [Function.comp_def] using this` | Erdos1014OQ03 (+LogIncrement) |
+| bare `inner x y` "Application type mismatch: x has type V of sort Type but expected Type ?u" | `inner ℝ x y` (scalar field now EXPLICIT first arg) | PythagoreanTheorem |
+| `open scoped RealInnerProductSpace` → `⟪·,·⟫_ℝ` errors `unexpected identifier` at `_ℝ` | `open scoped InnerProductSpace` (notation moved scopes) | ProductOfSegmentsOfChordsOQ01 |
+| `inner_smul_left/right` leave `(starRingEnd ℝ) t` blocking `ring` | `simp only [starRingEnd_apply, star_trivial]` before `ring` | ProductOfSegmentsOfChordsOQ01 |
+| `G.symm h` "Function expected at G.symm (has type Std.Symm G.Adj)" | `G.adj_symm h` | Erdos620Problem, Erdos1018Problem |
+| `G.loopless x`/`G.loopless _ h` "Function expected at G.loopless (Std.Irrefl)" | `G.irrefl` (vertex now IMPLICIT): field `loopless.irrefl := fun _ => G.irrefl` / `fun _ h => G.irrefl h` | Erdos620Problem, Erdos1018Problem |
+| `Finset.induction_on` insert case `\| insert ha ih` binds ELEMENT not hyp (ha : ι) | `\| @insert a s' ha ih =>` (element, set, `a∉s`, IH) | PythagoreanTheorem |
+| `(realExpr).toNat` "Invalid field toNat: no Real.toNat" | `⌊realExpr⌋₊` (Nat.floor) | Erdos704Problem |
+| `G.chromaticNumber` (now `ℕ∞`) used where ℕ expected | `.toNat` | Erdos704Problem |
+| `Filter.limsSup atTop (fun n => …)` "Function expected" | `Filter.limsup (fun n => …) atTop` (function-first) | Erdos704Problem |
+| `List.Mem.elim` gone: `hx.elim` for `x ∈ ([] : List _)` | `absurd hx (by simp)` | Erdos1029Problem |
+| `rw [Tendsto, Filter.map_atTop_atTop]` "Failed to rewrite equation theorems for Tendsto" | `rw [Filter.tendsto_atTop_atTop]` (bridge `<`/`≤` with `h (M+1)`/`.le`) | Erdos1029Problem |
+| `IsPrimePow p` by `decide` fails (instance won't reduce) for odd primes | `(prime_proof).isPrimePow` e.g. `Nat.prime_three.isPrimePow`, `(by norm_num : Nat.Prime 5).isPrimePow` | Erdos723Problem |
+| `(realExpr on ℕ base)^(realpow)` "HPow ℕ ℝ" | cast base to ℝ: `(x : ℝ)^(r : ℝ)`; drop `.toNNReal.toNat` (NNReal `{r//0≤r}` has no `.toNat`) | Erdos1008ProblemProvable |
+| `summable/tsum_geometric_of_lt_one` 2nd arg now STRICT `r < 1` | drop `.le` on the `<1` arg (keep `.le` on `0≤r`) | Erdos1049Problem |
+| `∀ n ≥ 2, …` defaults `n:ℝ` breaking a ℕ-indexed fn | `∀ n : ℕ, n ≥ 2 → …` | Erdos620Problem |
+
+**Statement repairs (inc-37):** Erdos723 `order_1_is_prime_power : IsPrimePow 1` was FALSE (1∉PrimePow)
+→ `order_1_not_prime_power : ¬IsPrimePow 1`. Erdos620 `triangleFree_implies_K4Free` intro pattern
+mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
