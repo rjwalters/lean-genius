@@ -95,7 +95,7 @@ A topological group is a group with a topology making multiplication and
 inversion continuous. These are the "continuous symmetries" Hilbert asked about.
 -/
 
-variable {G : Type*} [Group G] [TopologicalSpace G] [TopologicalGroup G]
+variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /-- A topological group has **no small subgroups** if there exists a neighborhood
     of the identity containing no nontrivial subgroups. This is a key property
@@ -142,7 +142,7 @@ locally compact groups.
     - Deep structure theory of locally compact groups
 
     Proven by Gleason in 1952. -/
-axiom gleason_lemma_1 (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
+axiom gleason_lemma_1 (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] (h : HasNoSmallSubgroups G) :
     ∃ U : Set G, IsOpen U ∧ (1 : G) ∈ U ∧
       ∃ (n : ℕ) (φ : U → Fin n → ℝ), Continuous φ ∧ Function.Injective φ
@@ -159,7 +159,7 @@ axiom gleason_lemma_1 (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGro
     careful handling of totally disconnected components.
 
     Proven by Gleason in 1952. -/
-axiom gleason_lemma_2 (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
+axiom gleason_lemma_2 (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [LocallyConnectedSpace G] :
     ∀ U : Set G, IsOpen U → (1 : G) ∈ U →
       ∃ V : Subgroup G, IsOpen (V : Set G) ∧ (V : Set G) ⊆ U
@@ -192,7 +192,7 @@ local diffeomorphism to the Lie algebra (a vector space).
 
     This is a standard result in Lie theory. -/
 theorem lie_group_no_small_subgroups (G : Type*) [Group G] [TopologicalSpace G]
-    [TopologicalGroup G] [LocallyCompactSpace G] :
+    [IsTopologicalGroup G] [LocallyCompactSpace G] :
     -- Placeholder: in a proper formalization, we'd require G to be a Lie group
     -- For now, we state this as a property that Lie groups satisfy
     HasNoSmallSubgroups G → True := fun _ => trivial
@@ -207,7 +207,7 @@ theorem lie_group_no_small_subgroups (G : Type*) [Group G] [TopologicalSpace G]
 
     Proven by Gleason, Montgomery, and Zippin in 1952. -/
 axiom no_small_subgroups_suggests_lie_structure
-    (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
+    (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] (h : HasNoSmallSubgroups G) :
     IsLocallyEuclidean G
 
@@ -243,7 +243,7 @@ that locally Euclidean topological groups are exactly the Lie groups.
     - Careful topological arguments
 
     The proof spans over 100 pages in Montgomery-Zippin's book. -/
-axiom montgomery_zippin_theorem (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
+axiom montgomery_zippin_theorem (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [LocallyConnectedSpace G] :
     HasNoSmallSubgroups G ↔ IsLocallyEuclidean G
 
@@ -273,7 +273,7 @@ Before the full solution, von Neumann proved the special case for compact groups
 
     Proven by von Neumann in 1933. -/
 axiom von_neumann_compact_groups (G : Type*) [Group G] [TopologicalSpace G]
-    [TopologicalGroup G] [CompactSpace G] :
+    [IsTopologicalGroup G] [CompactSpace G] :
     -- G admits a Lie group structure compatible with its topology
     ∃ (n : ℕ) (φ : G → Matrix (Fin n) (Fin n) ℝ),
       Continuous φ ∧ Function.Injective φ
@@ -357,7 +357,7 @@ abbrev LieAlgebraOf (G : Type*) [Group G] [TopologicalSpace G] :=
     This connects the infinitesimal structure (Lie algebra) to the
     global structure (Lie group). -/
 theorem one_parameter_subgroups_are_exponentials
-    (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G] :
+    (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     -- In a Lie group, one-parameter subgroups come from exponentials
     True := by trivial
 
@@ -376,7 +376,7 @@ The resolution of Hilbert's 5th problem has profound implications.
     For Lie groups, smooth and real analytic are equivalent. This is
     because the group structure forces analyticity. -/
 theorem lie_group_analytic
-    (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G] :
+    (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     -- Smooth Lie groups are automatically real analytic
     True := by trivial
 
@@ -387,7 +387,7 @@ theorem lie_group_analytic
 theorem automatic_smoothness
     (G H : Type*) [Group G] [Group H]
     [TopologicalSpace G] [TopologicalSpace H]
-    [TopologicalGroup G] [TopologicalGroup H] :
+    [IsTopologicalGroup G] [IsTopologicalGroup H] :
     -- Measurable homomorphisms G → H are smooth
     True := by trivial
 
@@ -398,7 +398,7 @@ theorem automatic_smoothness
 
     This extends Montgomery-Zippin to groups that aren't quite Lie groups. -/
 theorem yamabe_approximation
-    (G : Type*) [Group G] [TopologicalSpace G] [TopologicalGroup G]
+    (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [ConnectedSpace G] [LocallyConnectedSpace G] :
     -- G is a projective limit of Lie groups
     True := by trivial
