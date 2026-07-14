@@ -60,7 +60,10 @@ theorem recip_sq_gt_of_sq_lt {K : Type*} [Field K] [LinearOrder K] [IsStrictOrde
   have hy2 : (0 : K) < y ^ 2 := by positivity
   have hxz : (0 : K) < x * z := by positivity
   -- `(1/y)^2 = 1/y^2` and `(1/x)*(1/z) = 1/(x*z)`; reciprocal reverses `y^2 < x*z`.
-  rw [div_pow, one_pow, div_mul_div_comm, one_mul]
+  have e1 : (1 / x) * (1 / z) = 1 / (x * z) := by
+    field_simp
+  have e2 : (1 / y) ^ 2 = 1 / y ^ 2 := by rw [div_pow, one_pow]
+  rw [e1, e2]
   exact one_div_lt_one_div_of_lt hy2 h
 
 /-- **Strict log-concavity of the reciprocal Catalan sequence.** For every `n`,
