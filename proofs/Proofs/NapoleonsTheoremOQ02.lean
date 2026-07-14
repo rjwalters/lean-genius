@@ -91,17 +91,17 @@ theorem omegaSq_eq_sq : omegaSq = omega ^ 2 := by
       Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im,
       Complex.ofReal_re, Complex.ofReal_im, Complex.div_ofNat]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3]
+    nlinarith [h3, Real.sq_sqrt (show (3:ℝ) ≥ 0 by norm_num), Real.sqrt_nonneg 3]
 
 /-- 1 + ω + ω² = 0: fundamental identity for cube roots of unity -/
 theorem one_add_omega_add_omegaSq : 1 + omega + omegaSq = 0 := by
   simp only [omega, omegaSq]
   apply Complex.ext <;>
-  simp only [Complex.add_re, Complex.add_im, Complex.one_re, Complex.one_im,
-    Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im,
-    Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-    Complex.div_ofNat] <;>
+  simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
+      Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
+      mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add] <;>
   ring
 
 /-- ω³ = 1: omega is a cube root of unity -/
@@ -112,8 +112,7 @@ theorem omega_cube : omega ^ 3 = 1 := by
       Complex.one_re, Complex.one_im, Complex.neg_re, Complex.neg_im,
       Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.div_ofNat]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3]
+    nlinarith [h3, Real.sq_sqrt (show (3:ℝ) ≥ 0 by norm_num), Real.sqrt_nonneg 3]
 
 -- ============================================================
 -- PART 2: Main DFT Theorems — Outer Napoleon Triangle
@@ -133,27 +132,21 @@ theorem napoleon_outer_dft1 (z₁ z₂ z₃ : ℂ) :
   simp only [G₁, G₂, G₃, napoleonCenter, omega, omegaSq]
   apply Complex.ext
   · -- Real part
-    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.neg_re,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.one_re, Complex.neg_re,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (-z₁.re/6 + z₂.re/12 + z₃.re/12) * h3
   · -- Imaginary part
-    simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.neg_im,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.one_im, Complex.neg_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (-z₁.im/6 + z₂.im/12 + z₃.im/12) * h3
 
 /-- **Outer Napoleon DFT at Frequency 2**: The DFT of the outer Napoleon
     triangle at frequency 2 is ZERO.
@@ -168,27 +161,21 @@ theorem napoleon_outer_dft2 (z₁ z₂ z₃ : ℂ) :
   simp only [G₁, G₂, G₃, napoleonCenter, omega, omegaSq]
   apply Complex.ext
   · -- Real part
-    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.zero_re,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.neg_re,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (z₁.re/6 - z₂.re/12 - z₃.re/12) * h3
   · -- Imaginary part
-    simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.zero_im,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.neg_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (z₁.im/6 - z₂.im/12 - z₃.im/12) * h3
 
 -- ============================================================
 -- PART 3: Main DFT Theorems — Inner Napoleon Triangle
@@ -206,27 +193,21 @@ theorem napoleon_inner_dft1 (z₁ z₂ z₃ : ℂ) :
   simp only [G₁', G₂', G₃', innerNapoleonCenter, omega, omegaSq]
   apply Complex.ext
   · -- Real part
-    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.zero_re,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.neg_re,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (z₁.re/6 - z₂.re/12 - z₃.re/12) * h3
   · -- Imaginary part
-    simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.zero_im,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.neg_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (z₁.im/6 - z₂.im/12 - z₃.im/12) * h3
 
 /-- **Inner Napoleon DFT at Frequency 2**: The DFT of the inner Napoleon
     triangle at frequency 2 equals the NEGATIVE of the DFT of the original
@@ -242,27 +223,21 @@ theorem napoleon_inner_dft2 (z₁ z₂ z₃ : ℂ) :
   simp only [G₁', G₂', G₃', innerNapoleonCenter, omega, omegaSq]
   apply Complex.ext
   · -- Real part
-    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.neg_re,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.neg_re,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (-z₁.re/6 + z₂.re/12 + z₃.re/12) * h3
   · -- Imaginary part
-    simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.neg_im,
+    simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
       Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
-      Complex.I_re, Complex.I_im, Complex.neg_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
       mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3, sq_nonneg (Real.sqrt 3),
-              mul_comm (Real.sqrt 3) z₁.im, mul_comm (Real.sqrt 3) z₂.im,
-              mul_comm (Real.sqrt 3) z₃.im, mul_comm (Real.sqrt 3) z₁.re,
-              mul_comm (Real.sqrt 3) z₂.re, mul_comm (Real.sqrt 3) z₃.re]
+    linear_combination (-z₁.im/6 + z₂.im/12 + z₃.im/12) * h3
 
 -- ============================================================
 -- PART 4: Complete DFT Picture
@@ -322,18 +297,20 @@ theorem napoleon_center_idft_recovery (z₁ z₂ z₃ : ℂ) :
     ((z₁ + z₂ + z₃) - (z₁ + omega * z₂ + omegaSq * z₃)) / 3 := by
   simp only [G₁, napoleonCenter, omega, omegaSq]
   apply Complex.ext
-  · simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.div_ofNat,
-      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
-      Complex.neg_re, mul_zero, zero_mul, sub_zero, add_zero, zero_add]
+  · simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
+      Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
+      mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3]
-  · simp only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.div_ofNat,
-      Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
-      Complex.neg_im, mul_zero, zero_mul, sub_zero, add_zero, zero_add]
+    ring
+  · simp only [Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.mul_im,
+      Complex.add_im, Complex.sub_im, Complex.neg_re, Complex.neg_im,
+      Complex.div_ofNat, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.zero_re, Complex.zero_im,
+      mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add]
     have h3 : Real.sqrt 3 * Real.sqrt 3 = 3 := sqrt3_sq_real
-    ring_nf
-    nlinarith [h3]
+    ring
 
 -- Summary
 #check napoleon_outer_dft1          -- Y₁ = -X₁ for outer Napoleon

@@ -12,11 +12,10 @@ open Set Submodule Filter
 #check Module.Finite.span_of_finite
 
 -- 3. Compactness in finite-dimensional subspace
-#check IsCompact.of_isClosed_isBounded
-#check isCompact_of_isClosed_of_isBounded
+#check @Metric.isCompact_of_isClosed_isBounded
 
 -- 4. Subspace closure properties
-#check Submodule.isClosed
+#check @Submodule.closed_of_finiteDimensional
 #check IsClosed.closure_eq
 
 -- 5. Convex hull properties

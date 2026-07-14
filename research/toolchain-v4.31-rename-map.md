@@ -1208,6 +1208,37 @@ migration, not a one-line compat (NapoleonsTheorem family deferred).
 | `List.mem_cons_self a l` → "Function expected … a::l" | `List.mem_cons_self ..` (explicit args dropped) | (Erdos382 partial) |
 | `![…] : EuclideanSpace ℝ (Fin 2)` type mismatch (matrix literal no longer coerces to PiLp) | `!₂[…]` (or `(EuclideanSpace.equiv _ _).symm ![…]`) | (Erdos94OQ02 partial) |
 
+## §7y Doctor increment 31 recipes (tm/pd/rewrite/unknown-const/instance-synth, N-Z + Erdos≥600, #38065, +5 GREEN)
+
+| Symptom (v4.31) | Fix | Files |
+|---|---|---|
+| **`Complex.abs` removed** (now a local compat `def Complex.abs z := ‖z‖`); `map_mul`/`AbsoluteValue`-API on it all fail; a prior migration's compat `lemma Complex.norm_def` now **collides** with Mathlib's real `Complex.norm_def` ("has already been declared") | Rename the local shim `Complex.norm_def`→`Complex.abs_def`; add `lemma Complex.abs_mul (w z) : Complex.abs (w*z) = _ * _ := norm_mul w z` and replace every `map_mul` on `Complex.abs` with `Complex.abs_mul`; for `Complex.abs X = 1` proofs, prove `Complex.normSq X = 1` as a `have` then `rw [abs_def, hns, Real.sqrt_one]` (the old `rw [show √(…)=√1 from …]` pattern no longer matches the drifted simp form) | NapoleonsTheorem, NapoleonsTheoremOQ02 |
+| **`simp only`+`nlinarith`/`ring_nf` on a ℂ-`ext` algebraic identity fails** — v4.31 simp leaves `(I * ↑√3).im` / `{re:=…, im:=…}` structure-literals when the simp set is **asymmetric** (real bullet missing `mul_im`/`add_im`/`sub_im`, or vice versa) | Give BOTH `Complex.ext` bullets the **FULL symmetric** simp set (all `add/sub/mul/neg/one/zero`_re AND _im + `I_re/I_im/ofReal_re/ofReal_im/div_ofNat/re_ofNat/im_ofNat`), then close each **exact** identity with `linear_combination (C) * h3` where `h3 : √3*√3=3` and `C` = the √3²-coefficient polynomial of the goal difference. Probe C via `linear_combination (0:ℝ)*h3` and read the residual's `√3^2` coefficients, or compute symbolically (sympy `Poly(diff,t).coeff_monomial(t**2)`). nlinarith cannot prove these (equalities over ℝ with an exact √3²→3 substitution). | NapoleonsTheorem (6 cores), NapoleonsTheoremOQ02 (10 DFT branches) |
+| **STATEMENT REPAIR**: `napoleon_side_sq` cross-term sign was `+(√3/6)·(signed area)`; the true Napoleon side-length identity needs `−(√3/6)·(…)` — verified symbolically (`solve` for the cross coeff k=−1/6). Repaired to intended-true form, NOT weakened. | NapoleonsTheorem |
+| `Finset.prod_pos _ (fun i _ => …)` "Function expected" — `Finset.prod_pos` **dropped its leading placeholder arg**, now takes only the pointwise-positivity proof | `Finset.prod_pos (fun i _ => …)` | NewtonInductiveStepOQ03 |
+| `simp [pow_succ]` no longer **folds `set`-bound atoms** (`set A := q^(n-k)`; goal `q^(n-k+1)=A*q` — simp re-expands to `q^(n-k)*q ≠ A`) | `rw [pow_succ]` (A is defeq q^(n-k)); for `A*B=q^n` use explicit `rw [show A=q^(n-k) from rfl, …, ← pow_add]` | NewtonInductiveStepOQ03 |
+| `induction xs generalizing k` where a hypothesis `hxs : ∀ x ∈ xs, 0≤x` **mentions the inducted list** → v4.31 reverts `hxs` too, so the IH's **first** arg becomes the tail-nonneg hypothesis (arg order shifted) | reorder IH calls: `ih hxs' k hk hkn` (nonneg-hyp FIRST, was `ih k hk hkn hxs'`) | NewtonInductiveStepOQ02 (partial — deeper nlinarith drift remains) |
+| `simp [M] at hM` no longer closes `Nat.Prime 0`/`Nat.Prime 1` to `False` | `norm_num [M, Nat.not_prime_zero] at hM` | PerfectNumbersOQ03 |
+| `rw [ZMod.natCast_eq_zero_iff]` "did not find `↑?a = 0`" — a bare `(2 : ZMod q)` is NOT seen as a `natCast` | `rw [show (2:ZMod q) = ((2:ℕ):ZMod q) by norm_cast, ZMod.natCast_eq_zero_iff]` | PerfectNumbersOQ03 |
+| `ZMod.pow_card_sub_one_eq_one h` now returns `x^(q-1)=1` **directly** (was the `Fintype.card (ZMod q)` form) | drop the redundant `rw [ZMod.card q]`; type the `have` as `x^(q-1)=1` | PerfectNumbersOQ03 |
+| `norm_num [M]` now **fully evaluates** `¬Nat.Prime 2047` → a trailing `decide` hits "No goals to be solved" | drop the `decide` | PerfectNumbersOQ03 |
+| **`p ∣ x` destructures as `⟨k, hkp : x = p * k⟩`** (was `k * p`) — later `rw [hkp]`/`hkp.symm` break on factor order | add `have hkp' : k * p = x := by rw [hkp]; ring` and use `hkp'` (or `mul_comm`) at every consumer | PicksTheoremOQ02 |
+| `Finset.mem_image`/`mem_range` membership no longer **auto-splits a `Prod` equality**: a merged goal `(k*p, k*q) = (x,y)` wants ONE `⟨…⟩` proof field, not two ("Constructor `Eq.refl` does not have explicit fields, but 2 were provided") | provide the pair eq as a single term: `⟨k, by omega, by rw […]⟩` (fold the two r[/simp closers into one) | PicksTheoremOQ02 |
+
+**Meta (partition N-Z + Erdos≥600)**: the Complex.abs cluster (NapoleonsTheorem family) IS clearable but is a genuine whole-file migration, not a one-line compat — the payoff recipe is *full-symmetric-simp + linear_combination(√3²-coeff)* for every ℂ-`ext` algebraic core. Two S-files (SubsetCountOQ02OQ01, SumOfDivisorsOQ01SpecialPrime) were stale-clean off the 37508 base but already flipped by the sibling — always re-check `origin/feature/issue-38065-c` GREEN set before claiming.
+
+### §7y addendum — increment 31 continued (+4 more GREEN: SpectralTrace, SolutionOfCubic, PowerMean, Search, TestApi960/1061)
+
+| Symptom (v4.31) | Fix | Files |
+|---|---|---|
+| `Matrix.charpoly_units_conj P A` is now `(↑P·A·(↑P)⁻¹).charpoly = A.charpoly` (P first; the `↑P⁻¹·A·↑P` order was the *primed* variant pre-v4.31) | for the `↑P⁻¹·A·↑P` goal apply `charpoly_units_conj P⁻¹ A` then `simpa` (folds `(↑P⁻¹)⁻¹ = ↑P`); needs `set_option maxHeartbeats 1000000 in` (abbrev-`charpoly` defeq is heavy) — put the `set_option … in` ABOVE the docstring | SpectralTraceDetEigenvaluesOQ02 |
+| `ring` no longer distributes `Polynomial.C` over `+`/`*` | `simp only [Polynomial.C_add, Polynomial.C_mul]; ring` | SolutionOfCubicOQ03OQ05 |
+| coeff-matching `simp [Polynomial.coeff_mul]` leaves an un-reduced `∑ x ∈ Finset.antidiagonal n, if …` | use `simp only [coeff_add, coeff_sub, coeff_X_pow, coeff_C_mul, coeff_C, coeff_X]; norm_num`; over a general `CommRing` close with `linear_combination this` (NOT linarith — R unordered) | SolutionOfCubicOQ03OQ05 |
+| **STATEMENT REPAIR**: a `Filter.Tendsto (fun r => …) (nhdsWithin 0 {0}ᶜ) …` whose binder `r` **defaulted to ℕ** (broken: ℕ-division `1/r`, ℕ-`nhds 0`) — the intended real limit collapses | annotate `fun r : ℝ => …`; then the whole rpow/exp/log chain elaborates. (`HasDerivAt.sum` also needs the goal as `∑ i, (fun r => …)` via `Finset.sum_apply`, not `fun r => ∑`; `.const_mul` already gives `c*f` order — drop stale `mul_comm`; `slope` unfolds via `vsub_eq_sub`) | PowerMeanLimitOQ |
+| `IsCompact.of_isClosed_isBounded` / `isCompact_of_isClosed_of_isBounded` unknown | `Metric.isCompact_of_isClosed_isBounded` | SearchMathlib, TestApi1056 (partial) |
+| `Submodule.isClosed` unknown (finite-dim submodule is closed) | `Submodule.closed_of_finiteDimensional` | SearchMathlib |
+| `Finset.offDiag_card` is now `#s.offDiag = #s * #s - #s` (was `#s * (#s - 1)`) | update the RHS; `Rat.toNat` removed (drop) | TestApi960 |
+| `Finset.sum_pair h` — for a `{1, p}` (ascending) literal wants `h : 1 ≠ p` (use `hp.one_lt.ne`, NOT `.ne'` which gives `p ≠ 1` for `{p,1}`); a `.sum id` needs `rw [show id = fun x => x from rfl]` first | as noted | TestApi1061 |
 ## §7y Doctor increment 30 recipes (tm/pd/rewrite/unknown-const/instance-synth, A–M partition, +23 GREEN)
 
 | symptom (v4.31) | fix | files |

@@ -71,11 +71,11 @@ lemma one_sub_pow_pos {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) {m : ℕ} (hm : 1 �
   linarith [pow_lt_one₀ hq0.le hq1 (by omega : m ≠ 0)]
 
 lemma qPoch_pos {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (n : ℕ) : 0 < qPoch n q :=
-  Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
+  Finset.prod_pos (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
 
 lemma gaussBinom_num_pos {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (hkn : k ≤ n) :
     0 < ∏ i ∈ Finset.range k, (1 - q ^ (n - i)) :=
-  Finset.prod_pos _ (fun i hi =>
+  Finset.prod_pos (fun i hi =>
     one_sub_pow_pos hq0 hq1 (by have := Finset.mem_range.mp hi; omega))
 
 theorem gaussBinom_pos {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (hkn : k ≤ n) :
@@ -96,7 +96,7 @@ theorem gaussBinom_ratio_mul {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1)
   rw [Finset.prod_range_succ (f := fun i => 1 - q ^ (n - i)),
       Finset.prod_range_succ (f := fun i => 1 - q ^ (i + 1))]
   have hpoch : 0 < ∏ i ∈ Finset.range k, (1 - q ^ (i + 1)) :=
-    Finset.prod_pos _ (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
+    Finset.prod_pos (fun i _ => one_sub_pow_pos hq0 hq1 (by omega))
   have hdk1 : (1 - q ^ (k + 1)) ≠ 0 := (one_sub_pow_pos hq0 hq1 (by omega)).ne'
   field_simp [hpoch.ne', hdk1]
 
@@ -135,13 +135,13 @@ theorem ratio_ineq {n k : ℕ} {q : ℝ} (hq0 : 0 < q) (hq1 : q < 1) (hkn : k �
   set A := q ^ (n - k)
   set B := q ^ k
   -- Express the RHS factors in terms of A and B
-  have hAq : q ^ (n - k + 1) = A * q := by simp [pow_succ]
-  have hBq : q ^ (k + 1) = B * q := by simp [pow_succ]
+  have hAq : q ^ (n - k + 1) = A * q := by rw [pow_succ]
+  have hBq : q ^ (k + 1) = B * q := by rw [pow_succ]
   rw [hAq, hBq]
   -- Goal: (1 - A)(1 - B) ≤ (1 - A*q)(1 - B*q)
   -- Using: (1-Aq)(1-Bq) - (1-A)(1-B) = (1-q)(A+B-AB-ABq) ≥ 0
-  have hAB : A * B = q ^ n := by simp [← pow_add]; congr 1; omega
-  have hABq : A * B * q = q ^ (n + 1) := by rw [mul_assoc, hAB, ← pow_succ]
+  have hAB : A * B = q ^ n := by rw [show A = q^(n-k) from rfl, show B = q^k from rfl, ← pow_add]; congr 1; omega
+  have hABq : A * B * q = q ^ (n + 1) := by rw [hAB, ← pow_succ]
   have h1q : 0 < 1 - q := by linarith
   have hkey : q ^ n + q ^ (n + 1) ≤ A + B := q_pow_key_ineq hq0 hq1 hkn
   linarith [expand_ratio_diff A B q,
