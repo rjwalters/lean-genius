@@ -219,7 +219,7 @@ theorem discrete_log_stirling :
         Real.log ((Nat.factorial n : ℝ) / (Real.sqrt (2 * (n : ℝ) * π) * ((n : ℝ) / Real.exp 1) ^ n)))
       atTop (𝓝 0) := by
     have h := (Real.continuousAt_log (one_ne_zero)).tendsto.comp htend1
-    simpa using h
+    simpa [Function.comp_def] using h
   refine Filter.Tendsto.congr' ?_ htendlog
   filter_upwards [eventually_gt_atTop 0] with n hn
   have hn' : (0 : ℝ) < n := by exact_mod_cast hn
@@ -253,7 +253,7 @@ theorem half_log_floor_div_tendsto :
   have hdiv : Tendsto (fun x : ℝ => (⌊x⌋₊ : ℝ) / x) atTop (𝓝 1) := tendsto_nat_floor_div_atTop
   have hlog : Tendsto (fun x : ℝ => Real.log ((⌊x⌋₊ : ℝ) / x)) atTop (𝓝 0) := by
     have h := (Real.continuousAt_log (one_ne_zero)).tendsto.comp hdiv
-    simpa using h
+    simpa [Function.comp_def] using h
   have := hlog.const_mul (1 / 2 : ℝ)
   simpa using this
 
@@ -384,7 +384,7 @@ theorem gamma_continuous_isEquivalent_stirling :
         (fun x : ℝ => Real.exp (Real.log (Real.Gamma (x + 1)) - logApprox x))
         atTop (𝓝 1) := by
       have h := (Real.continuous_exp.tendsto 0).comp log_gamma_continuous_stirling
-      simpa using h
+      simpa [Function.comp_def] using h
     refine hexp.congr' ?_
     filter_upwards [eventually_gt_atTop (0 : ℝ)] with x hx
     have hΓ : 0 < Real.Gamma (x + 1) := Real.Gamma_pos_of_pos (by linarith)

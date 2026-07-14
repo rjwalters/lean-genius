@@ -2340,7 +2340,7 @@ PtolemysTheoremOQ01OQ01	GREEN
 PtolemysTheoremOQ01OQ02	RESIDUAL	unknown-const:spherical_ptolemy
 PuiseuxTheorem	GREEN	
 PuiseuxTheoremOQ02	RESIDUAL	instance-synth
-PuiseuxTheoremOQ03	RESIDUAL	type-mismatch
+PuiseuxTheoremOQ03	GREEN	type-mismatch
 PythagoreanTheorem	GREEN	
 PythagoreanTheoremOQ01	GREEN	
 PythagoreanTheoremOQ03	GREEN	
@@ -2504,7 +2504,7 @@ Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02	GREEN
 StirlingExpansion	GREEN	
 StirlingExpansionAristotle	GREEN	
 StirlingFormula	RESIDUAL	parse-error
-StirlingFormulaOQ02OQ01	RESIDUAL	type-mismatch
+StirlingFormulaOQ02OQ01	GREEN	type-mismatch
 SubsetCount	GREEN	
 SubsetCountOQ02	GREEN	
 SubsetCountOQ02OQ01	GREEN	unknown-const:Finset.disjoint_comm.mp
