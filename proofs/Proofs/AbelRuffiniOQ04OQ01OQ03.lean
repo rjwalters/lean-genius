@@ -431,8 +431,10 @@ the centralizer `C_G(c)`.  Pure group theory — no finiteness or order hypothes
 theorem orbit_conjAct_card_eq_centralizer_index {G : Type*} [Group G] (c : G) :
     Nat.card (MulAction.orbit (ConjAct G) c) = (Subgroup.centralizer {c}).index := by
   rw [Nat.card_congr (MulAction.orbitEquivQuotientStabilizer (ConjAct G) c),
-    ← Subgroup.index_eq_card, Subgroup.centralizer_eq_comap_stabilizer c,
-    Subgroup.index_comap_of_surjective _ (ConjAct.toConjAct (G := G)).surjective]
+    ← Subgroup.index_eq_card, Subgroup.centralizer_eq_comap_stabilizer c]
+  exact (Subgroup.index_comap_of_surjective (MulAction.stabilizer (ConjAct G) c)
+    (f := ConjAct.toConjAct.toMonoidHom)
+    (ConjAct.toConjAct (G := G)).surjective).symm
 
 /-- **N/C bound, conjugacy-class form.**  Under the hypotheses of `zpowers_sylow_normal`,
 the number of conjugates of the order-`p` element `c` — the size of its conjugacy class,
@@ -857,7 +859,7 @@ theorem isNilpotent_of_sylow_central_primePow_index {G : Type*} [Group G] [Finit
   have hidx : Nat.card (G ⧸ Subgroup.zpowers c) = q ^ k := by
     rw [← Subgroup.index_eq_card]; exact zpowers_index_eq (q ^ k) hcard c hc
   haveI : Group.IsNilpotent (G ⧸ Subgroup.zpowers c) := (IsPGroup.of_card hidx).isNilpotent
-  refine isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?_ inferInstance
+  refine isNilpotent_of_ker_le_center (QuotientGroup.mk' (Subgroup.zpowers c)) ?_
   rw [QuotientGroup.ker_mk']; exact hle
 
 /-! ### The fixed prime `p = 5`, nilpotency form -/
