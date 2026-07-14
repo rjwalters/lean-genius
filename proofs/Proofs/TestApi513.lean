@@ -14,7 +14,7 @@ example : (1 : ℝ) / 2 < 2 / Real.pi := by
   have hpi_pos : (0 : ℝ) < Real.pi := by linarith
   rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 2) hpi_pos]
   -- Need: 1 * π < 2 * 2 = 4, i.e., π < 4
-  have : Real.pi < 4 := by linarith [Real.pi_lt_3141593]
+  have : Real.pi < 4 := Real.pi_lt_four
   linarith
 
 -- Test: if_neg simplification

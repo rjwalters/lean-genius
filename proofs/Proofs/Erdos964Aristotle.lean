@@ -24,11 +24,11 @@ def tau (n : ℕ) : ℕ := (Nat.divisors n).card
 
 /-- τ(1) = 1. -/
 theorem tau_one : tau 1 = 1 := by
-  simp [tau, Nat.divisors]
+  simp [tau, Nat.divisors_one]
 
 /-- τ(p) = 2 for prime p. -/
 theorem tau_prime (p : ℕ) (hp : Nat.Prime p) : tau p = 2 := by
-  simp [tau, Nat.divisors_prime hp]
+  simp only [tau, Nat.Prime.divisors hp, Finset.card_pair hp.one_lt.ne]
 
 /-- τ(p^k) = k + 1 for prime p. -/
 theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
@@ -73,7 +73,7 @@ theorem rationals_dense_in_positives :
   obtain ⟨q, hq⟩ := exists_nat_gt (1 / ε)
   have hq_cast : (1 : ℝ) / ε < (q : ℝ) := by exact_mod_cast hq
   have hq_pos : (0 : ℝ) < (q : ℝ) := lt_trans (div_pos one_pos hε) hq_cast
-  have hq_ge1 : q ≥ 1 := by omega
+  have hq_ge1 : q ≥ 1 := Nat.cast_pos.mp hq_pos
   have h1q_lt_ε : (1 : ℝ) / q < ε := by
     rw [div_lt_iff₀ hq_pos]; linarith [mul_comm ε ((q : ℝ)), (div_lt_iff₀ hε).mp hq_cast]
   -- Find p = ⌈r * q⌉₊

@@ -152,14 +152,13 @@ theorem cast_mersenne_val (n : ℕ) (hn : n ≥ 1) :
 /-- P > 2n (ℕ) implies P/n > 2 (ℝ) for n > 0. -/
 theorem div_gt_two_of_gt_two_mul (p n : ℕ) (hn : 0 < n) (h : 2 * n < p) :
     2 < (p : ℝ) / n := by
-  rw [gt_iff_lt, lt_div_iff₀ (Nat.cast_pos.mpr hn)]
-  push_cast
-  linarith
+  rw [lt_div_iff₀ (Nat.cast_pos.mpr hn)]
+  exact_mod_cast h
 
 /-- Mersenne ratio is positive for n ≥ 1. -/
 theorem mersenne_ratio_pos (n : ℕ) (hn : n ≥ 1) :
     0 < ((2 ^ n - 1 : ℕ) : ℝ) / n := by
-  apply div_pos
+  apply _root_.div_pos
   · exact_mod_cast mersenne_val_pos n hn
   · exact Nat.cast_pos.mpr (by omega)
 

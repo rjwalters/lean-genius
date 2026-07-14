@@ -113,7 +113,7 @@ theorem p101_qualifying : AllFactorialSubtractionsComposite 101 := by
     by_contra hlt
     push_neg at hlt
     have h5 : Nat.factorial 5 ≤ Nat.factorial k := by
-      apply Nat.factorial_le_factorial
+      apply Nat.factorial_le
       omega
     simp only [show Nat.factorial 5 = 120 from by norm_num] at h5
     linarith

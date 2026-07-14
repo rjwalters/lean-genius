@@ -66,7 +66,7 @@ theorem legendreSym_mul_eq_sign_gridTranspose
   have oddp : Odd p := pp.eq_two_or_odd'.resolve_left hp
   have oddq : Odd q := qp.eq_two_or_odd'.resolve_left hq
   rw [legendreSym.quadratic_reciprocity hp hq hpq, sign_gridTranspose oddp oddq,
-      odd_div_two_eq oddp, odd_div_two_eq oddq, Units.val_pow_eq_pow_val]
-  norm_num
+      odd_div_two_eq oddp, odd_div_two_eq oddq]
+  norm_cast
 
 end QuadraticReciprocityAlgorithmOQ03M2

@@ -126,12 +126,12 @@ theorem commute_iff_commutator_zero (x y : R) :
 /-- The commutator is bilinear in the first argument: [x+y, z] = [x,z] + [y,z]. -/
 theorem ringCommutator_add_left (x y z : R) :
     ringCommutator (x + y) z = ringCommutator x z + ringCommutator y z := by
-  simp [ringCommutator, mul_add, add_mul]; ring
+  unfold ringCommutator; noncomm_ring
 
 /-- The commutator is bilinear in the second argument: [x, y+z] = [x,y] + [x,z]. -/
 theorem ringCommutator_add_right (x y z : R) :
     ringCommutator x (y + z) = ringCommutator x y + ringCommutator x z := by
-  simp [ringCommutator, mul_add, add_mul]; ring
+  unfold ringCommutator; noncomm_ring
 
 /-- The Jacobi identity for ring commutators:
     [x,[y,z]] + [y,[z,x]] + [z,[x,y]] = 0. -/
@@ -139,7 +139,7 @@ theorem jacobi_identity (x y z : R) :
     ringCommutator x (ringCommutator y z) +
     ringCommutator y (ringCommutator z x) +
     ringCommutator z (ringCommutator x y) = 0 := by
-  simp [ringCommutator]; ring
+  unfold ringCommutator; noncomm_ring
 
 end Erdos1098OQ03
 

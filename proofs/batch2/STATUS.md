@@ -1435,3 +1435,53 @@ Recipes catalogued in rename-map §7r.
 - Erdos370/391/402: contain `sorry` (formalized, not GREEN-able).
 - Erdos27: 3 interlocking (liminf_eq, map-injectivity cascade, cast-max).
 - Erdos225/288/391: deep convert/structure/Fin-NeZero rework.
+
+---
+
+# DOCTOR INCREMENT 24 (tm/pd/rewrite + unknown-const-mixed + instance-synth, N-Z & Erdos≥600 partition, #38065, 2026-07-13)
+
+Ledger: **1619 GREEN at start → 1643 GREEN** (+24 verified this increment).
+Partition (disjoint from sibling inc-23): basenames N–Z (non-Erdos) + Erdos ≥ 600.
+Classes: type-mismatch, proof-drift, rewrite-drift, unknown-const-mixed, instance-synth.
+
+## Method
+Per-file isolated `docker exec dr34 lake build Proofs.X; echo $?` off the warm v4.31 cache
+(DR20a diags stale). Batch-build to RANK candidates by own-`error:`-line count, then confirm
+EACH single/double-error candidate individually — the batch "clean" set is unreliable (a file with
+no error line often just never compiled behind a failed dep). Reverted every non-flipping edit.
+
+## Waves (all in-container lake exit-0 confirmed)
+- **DR34a (+3)**: Erdos1000OQ02 (already-passing), Erdos1006OQ04Decidability (theorem→noncomputable def on DecidablePred), Erdos1012OQ01OQ02 (post-`rfl` n→2*m+1).
+- **DR34b (+2)**: Erdos1059OQ02OQ01 (factorial_le rename), Erdos1098OQ03 (noncomm_ring for non-CommRing commutator).
+- **DR34c (+2)**: Erdos1126Problem (axiom fwd-ref reorder), Erdos1150Problem (theorem fwd-ref reorder + tendsto pin).
+- **DR34d (+1)**: Erdos604Problem (calc-pipe paren + mem_image/filter/product destructure).
+- **DR34e (+2)**: Erdos612ProblemAristotle (const_mul), Erdos673Aristotle (card_pair + card_divisors_mul).
+- **DR34f (+2)**: PellEquationOQ01 (cast_nonneg→exact_mod_cast), PropertyBFirstMomentRecoloring (Nontrivial.exists_ne).
+- **DR34g (+1)**: QuadraticReciprocityAlgorithmOQ03M2Capstone (norm_cast for Units-val-pow coercion).
+- **DR34h (+2)**: PrimitiveRoots + PrimitiveRootsOQ02 (Units.val_injective + orderOf Nat.card bridge + Classical.dec instance).
+- **DR34i (+2)**: RothTheoremOQ03OQ01OQ01 (dup-decl removal), SumOfDivisorsOQ01SpecialPrime (Nat.not_even_iff_odd).
+- **DR34j (+1)**: SubsetCountOQ02OQ01 (disjoint_comm + Iic-card simp).
+- **DR34k (+1)**: TestApi513 (pi_lt_four).
+- **DR34l (+2)**: TestApi963 (#check removed-const swap), TestApi688 (not_prime + div/mod omega).
+- **DR34m (+2)**: Erdos829Problem (native_decide theorem fwd-ref reorder), Erdos873ProblemProvable (lcm_insert bare simp-eq).
+
+Recipes catalogued in rename-map §7v.
+
+## Statement repairs
+None required — all fixes were true-preserving. TestApi241 FLAGGED (not fixed): its
+`test_b3 : IsB3 {1,2,4,8}` native-evaluates to FALSE once the load-bearing-but-native_decide-breaking
+`open scoped Classical` is removed and the genuine computable Decidable instance is used —
+the assertion is false, a pre-existing bad test. Not weakened.
+
+## New v4.31 shapes worth flagging to the team
+- **Forward reference now hard-fails**: an `axiom` or `theorem` used before its in-file declaration
+  (5 files this increment). Older elaboration tolerated it; v4.31 errors "Unknown identifier". Fix =
+  move the decl above its first use (watch for orphaned docstrings after the move).
+- **Non-commutative `ring` fall-through removed**: commutator/bilinearity identities over `[Ring R]`
+  (not CommRing) need `noncomm_ring`, not `ring`.
+- **Duplicate cross-import decl**: same-namespace re-declaration of a parent's theorem now errors
+  (confirms inc-22 §7u).
+
+## Deferred (see rename-map §7v deferred list)
+Erdos1055/1206/680/662/838, SchroederBernsteinOQ01, SylowTheoremsOQ05,
+PtolemysTheoremOQ01Incomplete01, Erdos870Aristotle (sorry-in-def).
