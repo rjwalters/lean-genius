@@ -105,9 +105,9 @@ theorem chebyshevPsiAP_le_chebyshevPsi (x q a : ℕ) :
 theorem expectedMainTerm_pos {x q : ℕ} (hx : 0 < x) (hq : 0 < q) :
     0 < expectedMainTerm x q := by
   unfold expectedMainTerm
-  apply div_pos
+  apply _root_.div_pos
   · exact Nat.cast_pos.mpr hx
-  · exact Nat.cast_pos.mpr (Nat.totient_pos hq)
+  · exact Nat.cast_pos.mpr (Nat.totient_pos.mpr hq)
 
 /-- For q = 1, the expected main term equals x (since φ(1) = 1). -/
 theorem expectedMainTerm_q_one (x : ℕ) :
@@ -122,7 +122,7 @@ theorem bv_error_nonneg_terms (x q a : ℕ) :
     0 ≤ chebyshevPsiAP x q a ∧
     0 ≤ expectedMainTerm x q :=
   ⟨chebyshevPsiAP_nonneg x q a,
-   div_nonneg (Nat.cast_nonneg) (Nat.cast_nonneg)⟩
+   div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)⟩
 
 /-
 ## Part II: The 6 Minimal Additions — Precise Lean 4 Types
