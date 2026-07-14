@@ -1586,3 +1586,47 @@ Erdos900 (sorry-in-def pathLengthFunction/probHasProperty), Erdos807 (S.card sta
 Erdos608 (known-hard, parse cascade under mod-index fix), Erdos613ProblemAristotle (nonlinear
 ℕ-division choose identity), Erdos874 (k/√N division-nonlinearity needs field rework), Erdos720
 (sizeRamseyCycle proof-arg n≥3 undischarged in ∀n lambda).
+
+---
+
+## Increment 26 (Doctor, A–M / Erdos<600 partition) — +21 GREEN
+
+Classes: type-mismatch, proof-drift, rewrite-drift, unknown-const-mixed, instance-synth-cascades.
+Base origin/feature/issue-37508 (ledger 1683→1704 own contribution; +7 more merged from base = 1711).
+
+Waves (all in-container `docker exec dr36 lake build` exit 0):
+- DR36-1 AlgebraicNumbersCountableOQ01OQ03 + OQ01OQ01OQ01 (instance-synth: reassemble
+  IsAlgClosure/Algebra.IsAlgebraic that no longer unify through the `algebraicNumbersField` abbrev)
+- DR36-2 CayleyHamiltonMinpolyOQ05OQ02 (finrank_mul_finrank .symm; separability-free splitting-field
+  root via Splits.exists_eval_eq_zero — Irreducible.separable now needs perfect/char-0 base) +
+  ChebyshevBoundsOQ03OQ02 (log_le_rpow_div div-shape calc; add_sum_erase inferred summand; div_nonneg
+  for floor_le)
+- DR36-3 Erdos445 ((p:ℝ)^c; calc <1→≤1) + Erdos592 (Ordinal.omega→omega0) + Erdos500 (def→abbrev)
+- DR36-4 Erdos499 (matrix simp; explicit M type; n:ℕ) + Erdos370 (getLast?_replicate; nlinarith side
+  cond) + Erdos543 (push_neg makes ¬-complementary defeq → rfl)
+- DR36-5 ContinuumHypothesisOQ02OQ01 ((2:Cardinal)^ℵ₀; le_sup explicit f; show before omega) +
+  BaselProblemOQ01OQ01 (sum_le_sum_of_subset_of_nonneg; gcongr; push_cast+convert)
+- DR36-6 BorsukUlamOQ03OQ02 (map_zsmul via conv/show; simpa [degreeOfEnd]; arg order) +
+  BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01 (primeFactors_mul→{p}∪{q}→sup_union; IsExotic is `<` not struct)
+- DR36-7 Erdos453OQ02 (nthPrime if-then-else rw [if_neg]; simp now fully closes value goals)
+- DR36-8 Erdos441Aristotle (Nat.lcm_self; sqrt(N/2)≤N/2≤N calc)
+- DR36-9 EulerTotientOQ01OQ01OQ01 (ArithmeticFunction.Carmichael deprecated alias no longer matches
+  rw patterns → applied Carmichael→carmichael)
+- DR36-10 LawOfCosinesOQ04OQ01 (⟪⟫_ℝ suffix removed → ⟪⟫ under open scoped RealInnerProductSpace;
+  linear_combination atom name) + LawOfCosinesOQ04OQ01Bisector (greens transitively)
+- DR36-11 GCDAlgorithmOQ01OQ03OQ01OQ01 (phi_pow_le_smaller arg order hn before hsteps; field_simp
+  self-closes)
+
+Statement repairs (1, no weakening): Erdos499Problem erdos_499_summary — made M's
+`Matrix (Fin n) (Fin n) ℝ` type explicit so its dimension infers (same proposition, second conjunct
+never mentioned Fin n).
+
+Confirmed-deferred (multi-error / genuine gaps / known-hard):
+BinomialTheoremOQ02OQ04 (`g + fun t` vs lambda sum_congr mismatch + line-175 multinomial),
+Erdos382Problem (induction_on insert case + Nat.one_le_div_of_dvd rename + 4 indep errs),
+Erdos459Problem (mem_primeFactors m≠0 fixed but use u*u wrong for u=0 + noncomputable + unknown const),
+Erdos94OQ02 (`![..]`→EuclideanSpace needs !₂[]; but .image + Nat.lt_div_mul_add cascade),
+Erdos391 (`⟨0, by omega⟩:Fin n` needs 0<n, def ill-defined for n=0),
+Erdos478 (subst succ 0=k + non-linear ZMod omega), Erdos395/407 (Fintype of {ε:Fin n→ℤ|..}.toFinset —
+infinite domain, no clean instance), ErdosMordell*/Konigsberg (grind timeouts on geometry/graph goals),
+MaschkeLocalRing (sorry-in-def).
