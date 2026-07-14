@@ -74,6 +74,7 @@ the bookkeeping of the induction itself.
 namespace LagrangeOQ01OQ03OQ01
 
 open Subgroup
+open scoped commutatorElement
 
 variable {G : Type*} [Group G]
 
@@ -182,7 +183,9 @@ private theorem eq_of_le_of_card_le [Finite G] {M N : Subgroup G}
     (hle : M ≤ N) (hcard : Nat.card N ≤ Nat.card M) : M = N := by
   apply SetLike.coe_injective
   refine Set.eq_of_subset_of_ncard_le hle ?_ (Set.toFinite _)
-  simpa only [Nat.card_coe_set_eq] using hcard
+  have hN : ((N : Set G)).ncard = Nat.card N := (Nat.card_coe_set_eq _).symm
+  have hM : ((M : Set G)).ncard = Nat.card M := (Nat.card_coe_set_eq _).symm
+  rw [hN, hM]; exact hcard
 
 /-- **Existence of a minimal normal subgroup.** Every nontrivial finite group `G`
 has a normal subgroup `N ≠ ⊥` that is minimal among nontrivial normal subgroups:
