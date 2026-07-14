@@ -152,15 +152,15 @@ theorem angle_bisector_length_inner (A B C : V) (s : ℝ)
     `(w − bc)·(s(b+c) − c)`. -/
 theorem angle_bisector_ratio_inner (A B C : V) (s : ℝ)
     (hs : s * (‖A - C‖ + ‖A - B‖) = ‖A - B‖) :
-    ‖A - C‖ * ⟪B - A, ((1 - s) • B + s • C) - A⟫_ℝ
-      = ‖A - B‖ * ⟪C - A, ((1 - s) • B + s • C) - A⟫_ℝ := by
+    ‖A - C‖ * ⟪B - A, ((1 - s) • B + s • C) - A⟫
+      = ‖A - B‖ * ⟪C - A, ((1 - s) • B + s • C) - A⟫ := by
   have hD : ((1 - s) • B + s • C) - A = (1 - s) • (B - A) + s • (C - A) := by
     module
   rw [hD, inner_add_right, inner_add_right, real_inner_smul_right, real_inner_smul_right,
     real_inner_smul_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
     real_inner_self_eq_norm_sq, real_inner_comm (C - A) (B - A), norm_sub_rev B A,
     norm_sub_rev C A]
-  linear_combination (⟪B - A, C - A⟫_ℝ - ‖A - C‖ * ‖A - B‖) * hs
+  linear_combination (⟪C - A, B - A⟫ - ‖A - C‖ * ‖A - B‖) * hs
 
 /-
 ## Summary

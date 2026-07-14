@@ -77,7 +77,7 @@ theorem buDim_crt_semiprime_proved (p q d : ℕ)
   have heq : buDimFormula (p * q) d = buDim p d ⊔ buDim q d := by
     rw [buDimFormula, Nat.primeFactors_mul hp.ne_zero hq.ne_zero,
         Nat.Prime.primeFactors hp, Nat.Prime.primeFactors hq]
-    simp only [Finset.sup_insert, Finset.sup_singleton]
+    rw [Finset.sup_union, Finset.sup_singleton, Finset.sup_singleton]
   exact hle.trans heq.le
 
 -- ============================================================
@@ -97,11 +97,11 @@ theorem buDim_semiprime_eq_max_proved (p q d : ℕ)
 theorem not_exotic_semiprime_proved (p q d : ℕ)
     (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p ≠ q) :
     ¬ IsExotic (p * q) d := by
-  intro ⟨hexot⟩
+  intro hexot
   have hle : buDim (p * q) d ≤ buDimFormula (p * q) d := by
     have h2 : 2 ≤ p * q := by nlinarith [hp.two_le, hq.two_le]
     exact buDim_le_formula _ _ h2
-  exact absurd hle hexot
+  exact absurd hle (not_le.mpr hexot)
 
 -- ============================================================
 -- PART 3: Concrete Instances

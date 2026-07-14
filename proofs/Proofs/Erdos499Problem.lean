@@ -220,13 +220,11 @@ theorem two_by_two_diagonals (a : ℝ) (ha : 0 ≤ a) (ha' : a ≤ 1) :
     (∃ σ : Equiv.Perm (Fin 2), diagonalProduct M σ = (1-a) * (1-a)) := by
   refine ⟨?_, ?_⟩
   · -- Identity permutation: M 0 0 * M 1 1 = a * a
-    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.Perm.one_apply,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const]
+    simp [diagonalProduct, Fin.prod_univ_two, Equiv.Perm.one_apply]
   · -- Swap permutation: M 0 1 * M 1 0 = (1-a) * (1-a)
     refine ⟨Equiv.swap (0 : Fin 2) 1, ?_⟩
-    simp only [diagonalProduct, Fin.prod_univ_two, Equiv.swap_apply_left,
-      Equiv.swap_apply_right, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons, Matrix.head_fin_const]
+    simp [diagonalProduct, Fin.prod_univ_two, Equiv.swap_apply_left,
+      Equiv.swap_apply_right]
 
 /- 
 For a 2×2 doubly stochastic matrix, max(a², (1-a)²) ≥ 1/4.
@@ -276,7 +274,8 @@ Key results:
 theorem erdos_499_summary :
     (∀ n (hn : n ≠ 0) M (hM : IsDoublyStochastic M),
       ∃ σ : Equiv.Perm (Fin n), (n : ℝ)⁻¹ ^ n ≤ diagonalProduct M σ) ∧
-    (∀ n (hn : n ≠ 0) M (hM : IsDoublyStochastic M),
+    (∀ (n : ℕ) (hn : n ≠ 0) (M : Matrix (Fin n) (Fin n) ℝ)
+      (hM : IsDoublyStochastic M),
       (n : ℝ)⁻¹ ^ n * n ! ≤ perm' M) :=
   ⟨fun n hn M hM => marcus_minc_theorem hn M hM,
    fun n hn M hM => van_der_waerden hn M hM⟩

@@ -91,7 +91,10 @@ theorem gpf_prime (p : ℕ) (hp : p.Prime) : gpf p = p := by
 
 /-- gpf of a prime power is the prime. -/
 theorem gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p ^ k) = p := by
-  simp [gpf, Nat.Prime.primeFactorsList_pow hp]
+  simp only [gpf, Nat.Prime.primeFactorsList_pow hp]
+  rcases k with _ | k
+  · omega
+  · simp [List.getLast?_replicate]
 
 /-- gpf of a product is at most the max of the gpfs. -/
 axiom gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :
@@ -126,7 +129,7 @@ def SteinerbergerConstruction (m : ℕ) : ℕ := m ^ 2 - 1
 theorem steinerberger_factorization (m : ℕ) (hm : m ≥ 2) :
     SteinerbergerConstruction m = (m - 1) * (m + 1) := by
   unfold SteinerbergerConstruction
-  zify [show 1 ≤ m ^ 2 from by positivity, show 1 ≤ m from by omega]
+  zify [show 1 ≤ m ^ 2 by nlinarith, show 1 ≤ m by omega]
   ring
 
 /-- For the construction, n + 1 = m². -/
