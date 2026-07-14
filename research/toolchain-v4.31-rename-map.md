@@ -988,3 +988,55 @@ instance-synth / tm / removed-const / latent statement bug). Those files were re
 the tree clean; see STATUS.md inc-22 "Flagged deep" for the full list and the exact residual
 per file. The reliably-flippable shapes this increment were small self-contained Aristotle
 companions and duplicate-decl / nested-comment / calc-pipe single-issue files.
+
+---
+
+## §7v Doctor increment 24 recipes (tm/pd/rewrite/unknown-const/instance-synth, N-Z + Erdos≥600 partition, #38065, +24 GREEN)
+
+| Symptom (v4.31) | Fix | Files |
+|---|---|---|
+| `theorem foo : DecidablePred p` / any `Sort`-valued (non-Prop) theorem "type of theorem is not a proposition" | `noncomputable def foo` | Erdos1006OQ04Decidability |
+| explicit binder `n` referenced in `by omega`/lemma-arg AFTER `obtain ⟨m, rfl⟩ := hodd` substituted `n := 2*m+1` → "Unknown identifier `n`" | replace the now-gone `n` with its substituted value `(2*m+1)` | Erdos1012OQ01OQ02 |
+| `rpow_one` / `rpow_le_rpow_of_exponent_le` "Unknown identifier" in narrow-import file | namespace-qualify `Real.rpow_one`, `Real.rpow_le_rpow_of_exponent_le` | Erdos1028Problem |
+| `use a,b,…,N` then `exact hN` → "No goals to be solved" (the `use` auto-closed the ∀-tail via `hN`) | fold the witness into one `exact ⟨a,b,…,N,hN⟩` | Erdos1028Problem |
+| `Nat.factorial_le_factorial` "Unknown constant" | `Nat.factorial_le` | Erdos1059OQ02OQ01 |
+| **`ring` fails / `ring_nf made no progress` on a NON-commutative `[Ring R]` commutator identity** (`[x+y,z]=[x,z]+[y,z]`, Jacobi) — v4.31 `ring` no longer silently falls through on a non-`CommRing` | `unfold myDef; noncomm_ring` | Erdos1098OQ03 |
+| **axiom / theorem used BEFORE its declaration** (v4.31 forbids forward reference that older elab tolerated) → "Unknown identifier `foo`" where `foo` is declared later in the file | MOVE the `axiom`/`theorem` block up above its first consumer; if this orphans a docstring, convert that `/-- -/` → `/- -/` (or attach it to the moved decl) | Erdos1126Problem (axiom), Erdos1150Problem (theorem), Erdos829Problem (native_decide theorem) |
+| `tendsto_const_nhds.add _` / `.const_mul_zero` — const/filter metavars unsolved, or `Filter.Tendsto.const_mul_zero` removed | pin `tendsto_const_nhds (x := 1) (f := atTop)`; for the removed `const_mul_zero` use `(h.inv_tendsto_atTop).const_mul c` + `simpa` | Erdos1150Problem, Erdos612ProblemAristotle |
+| `calc EXPR \|>.card ≤ …` pipe-projection at calc-atom → "type expected, got #(…)" + next-line "unexpected token" | parenthesize: `calc (EXPR).card ≤ …` (also fix the `have`-type line the same way) | Erdos604Problem |
+| `obtain ⟨…⟩ := hmem` where `hmem : x ∈ Finset.image/filter …` → "Quot.lift … is not an inductive datatype" | destructure via explicit `rw [Finset.mem_image] at hmem; obtain …; rw [Finset.mem_filter] at …`; build membership with `Finset.mk_mem_product hx hy` (filter predicate `(p,q)↦p≠q` wants `x≠y`, so `hy_ne.symm` if you have `y≠x`) | Erdos604Problem |
+| `native_decide` "depends on 'X', which is 'noncomputable'" where the *only* noncomputability source is an `open scoped Classical` / `attribute [local instance] Classical.propDecidable` making a genuinely-decidable `def` noncomputable | DROP the Classical open/attribute so the concrete `Decidable` instance is used; if the def is over `Finset ℤ` etc. the `≤`/`Icc` are already computable. **CAUTION**: after dropping, native_decide computes the REAL truth — if it evaluates the test proposition to `False`, that was a pre-existing bad statement (flag, don't weaken) | (Erdos662/Erdos838 = Classical is load-bearing for ℤ-order, deferred; TestApi241 = evaluates FALSE, flagged) |
+| `#{1,p}=2` residual after `simp [Nat.Prime.divisors hp]` | `Finset.card_pair hp.one_lt.ne` | Erdos673Aristotle |
+| `Nat.Coprime.divisors_mul` now returns a `Finset.attach.map` form (card lemma broke) | use `hcop.card_divisors_mul` (in `Nat.Coprime` ns, gives `#(m*n).divisors = #m.divisors * #n.divisors`) | Erdos673Aristotle |
+| docstring `/-! -/` (or `/-- -/`) FOLLOWED BY `import` → "invalid 'import' command, it must be used in the beginning of the file" | move ALL `import` lines to the very top, above the header docstring | PtolemysTheoremOQ01Incomplete01 (import fixed; deeper `Complex.abs_mul_exp_arg_mul_I` cascade deferred) |
+| `Int.cast_nonneg.mpr` "Unknown constant" (`Int.cast_nonneg` no longer the Iff/moved to bare `cast_nonneg`) | `by exact_mod_cast h.le` / `by exact_mod_cast h` | PellEquationOQ01 |
+| `Finset.exists_ne_of_one_lt_card h a` removed (only the `Fintype.card` form `exists_ne_of_one_lt_card` survives, in EquivFin.lean) | `(Finset.one_lt_card_iff_nontrivial.mp h).exists_ne a` | PropertyBFirstMomentRecoloring |
+| `Units.val_pow_eq_pow_val` `rw` metavar-stalls on a `↑((-1:ℤˣ)^k)` coercion goal `x = ↑(y^k)` | close with `norm_cast` (not rw + norm_num) | QuadraticReciprocityAlgorithmOQ03M2Capstone |
+| `isCyclic_of_subgroup_isDomain f Units.ext` — `Units.ext` no longer the injectivity proof | `Units.val_injective` | PrimitiveRoots, PrimitiveRootsOQ02 |
+| `orderOf_eq_card_of_forall_mem_zpowers hg` now returns `orderOf g = Nat.card α` (was `Fintype.card α`) | append `Nat.card_eq_fintype_card` in the rw chain | PrimitiveRoots, PrimitiveRootsOQ02 |
+| `instance : Decidable (myDef …) := inferInstance` fails because `myDef := orderOf g = …` and `orderOf` is noncomputable in v4.31 | `noncomputable instance … := Classical.dec _` (acceptable when no `native_decide` depends on it) | PrimitiveRootsOQ02 |
+| duplicate `theorem foo` where an imported parent (same `namespace`) already declares `foo` → "`Parent.foo` has already been declared" | remove the child's duplicate decl; its uses resolve to the parent's | RothTheoremOQ03OQ01OQ01 |
+| `not_even_iff_odd` "Unknown identifier" | `Nat.not_even_iff_odd` | SumOfDivisorsOQ01SpecialPrime |
+| `Finset.disjoint_comm` "Unknown constant" (moved out of `Finset` ns) | bare `disjoint_comm` (Order namespace) | SubsetCountOQ02OQ01 |
+| `Real.pi_lt_3141593` removed (decimal-name pi bounds gone) | `Real.pi_lt_four` (goal needs π<4) / `Real.pi_lt_d4` (needs <3.1416) | TestApi513 |
+| `Nat.not_prime_of_le_one h` removed | `fun h' => absurd h'.one_lt (by omega)` | TestApi688 |
+| `omega` fails on a `Nat.div_add_mod`-based goal with `p` a variable (nonlinear `p * (x/p)`) | `rw` the `% p = a` and equal-div hyps INTO the `div_add_mod` equations first, so omega sees only linear residuals | TestApi688 |
+| `Finset.lcm_insert (by simp)` — "Function expected" (`lcm_insert` is now a bare `@[simp]` eq, no membership arg) | drop the `(by simp)`: `rw [Finset.lcm_insert]` | Erdos873ProblemProvable |
+
+**Meta**: the batch-build "clean" heuristic is UNRELIABLE — a file with no own `error:` line in a
+multi-target build often just never compiled (a shared dep failed early). Always confirm each
+candidate with an isolated per-file `lake build Proofs.X; echo $?`. Mid-edit races produce
+transient wrong exit codes (a build that overlaps a file write) — re-run once, isolated, and trust
+the "Build completed successfully"/`EXIT=0` line. Forward-reference (axiom/theorem-before-use) and
+duplicate-decl are the two highest-yield NEW v4.31 shapes in this partition (5 of 24 flips).
+
+**Deferred (deep / multi-class / genuine gap, reverted):** Erdos1055Problem (`change`/`show` defeq
+blocked by a `foldl` `have`-proof-term in the WF def body); Erdos1206Problem (`simp`/`linarith`
+gaps are REAL math: subset needs `N-k≥1`, card bound needs `·^3` injectivity); Erdos680Problem
+(`tendsto_pow_mul_exp_neg_atTop_nhds` lost its `(1+ε)` scaling arg → proof restructure);
+Erdos662Problem/Erdos838Problem (Classical propDecidable is load-bearing for the ℤ/Point2D-order
+Finset); SchroederBernsteinOQ01 (`HasForget` removed → ConcreteCategory overhaul);
+SylowTheoremsOQ05 (whnf heartbeat blowup, >1M insufficient); PtolemysTheoremOQ01Incomplete01
+(`Complex.abs_mul_exp_arg_mul_I` removed atop an existing partial migration); Erdos870Aristotle
+(sorry-in-`def` after the `theorem`→`def` Sort fix — hard error). TestApi241 flagged: `IsB3 {1,2,4,8}`
+native-evaluates to FALSE once Classical is dropped (bad pre-existing test, not weakened).
