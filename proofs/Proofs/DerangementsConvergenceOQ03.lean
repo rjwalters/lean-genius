@@ -39,7 +39,6 @@ private lemma factorial_mul_one_div_factorial_succ (n : ℕ) :
   rw [Nat.factorial_succ]
   push_cast
   field_simp
-  ring
 
 /-- For n ≥ 2, the number of derangements equals the nearest integer to n!/e.
 
@@ -67,13 +66,14 @@ theorem derangements_eq_round (n : ℕ) (hn : 2 ≤ n) :
     have hn3 : (2 : ℝ) < n + 1 := by exact_mod_cast (show 2 < n + 1 by omega)
     have hlt3 : 1 / (n + 1 : ℝ) < 1 / 2 := one_div_lt_one_div_of_lt (by norm_num) hn3
     calc |(numDerangements n : ℝ) - x|
-        ≤ (n.factorial : ℝ) * (1 / ((n + 1).factorial : ℝ)) := hrate
+        ≤ (n.factorial : ℝ) * (1 / ((n + 1).factorial : ℝ)) := by
+            rw [mul_comm]; exact hrate
       _ = 1 / (n + 1 : ℝ) := factorial_mul_one_div_factorial_succ n
       _ < 1 / 2 := hlt3
   -- Step 2: D(n) = ⌊x + 1/2⌋ = round x
   rw [round_eq]
   symm
-  apply floor_eq_iff.mpr
+  apply Int.floor_eq_iff.mpr
   have habs := abs_lt.mp hlt
   -- habs.1 : -(1/2) < D - x, i.e., x - 1/2 < D, i.e., x + 1/2 < D + 1
   -- habs.2 : D - x < 1/2, i.e., D < x + 1/2, i.e., D ≤ x + 1/2
