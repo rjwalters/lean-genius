@@ -125,11 +125,11 @@ theorem IsDiamondSeq.mk_powerset_le {seq : Ordinal → Set Ordinal}
 
 /-- `#(Iio ω) = lift ℵ₀`: there are countably many ordinals below `ω`. -/
 theorem mk_Iio_omega : #(↥(Iio (ω : Ordinal.{0}))) = Cardinal.lift.{1, 0} ℵ₀ := by
-  rw [mk_Iio_ordinal, card_omega0]
+  rw [Ordinal.mk_Iio_ordinal, card_omega0]
 
 /-- `#(Iio ω₁) = lift ℵ₁`: there are `ℵ₁`-many ordinals below `ω₁`. -/
 theorem mk_Iio_omega1 : #(↥(Iio (ω₁ : Ordinal.{0}))) = Cardinal.lift.{1, 0} ℵ₁ := by
-  rw [mk_Iio_ordinal, card_omega]
+  rw [Ordinal.mk_Iio_ordinal, card_omega]
 
 /-- **Diamond implies the continuum bound.**  If a `◇`-sequence exists then
 `𝔠 ≤ ℵ₁`, i.e. there are at most `ℵ₁` subsets of `ℕ`. -/
