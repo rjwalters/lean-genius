@@ -24,6 +24,12 @@ Erdos < 600; sibling increment 24 = N–Z + Erdos ≥ 600.
 - **DR33k (+1)**: BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01 (convert instance-congruence → value-first).
 - **DR33l (+1)**: DiamondImpliesCH (Ordinal.mk_Iio_ordinal qualify).
 - **DR33m (+1)**: DerangementsConvergenceOQ05OQ01 (NormedSpace.expSeries_div_hasSum_exp).
+- **DR33n (+1)**: Erdos341Problem (id_eq simp, mem_product.mp term-mode, rw h0 not Prod.fst simp).
+- **DR33o (+1)**: Erdos350Problem (fin_cases on powerset not Prop-disjunction; zpow_sub₀ geometric series).
+- **DR33p (+1)**: Erdos397Problem (rintro named + omega on nonlinear-unfolded goal; prod_insert mul_assoc).
+
+DR33n was folded into the #38623 reconcile-merge; DR33o-p (+2) are a follow-up
+beyond the merged PR.
 
 Ledger: 1612 → 1630 GREEN (+18). PR #38623 (base feature/issue-37508).
 Recipes catalogued in rename-map §7u (+continued).
