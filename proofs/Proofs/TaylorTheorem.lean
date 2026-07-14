@@ -88,12 +88,16 @@ theorem taylor_lagrange {f : ℝ → ℝ} {x₀ x : ℝ} {n : ℕ} (hx : x₀ < 
     ∃ x' ∈ Ioo x₀ x,
       f x - taylorWithinEval f n (Icc x₀ x) x₀ x =
         iteratedDerivWithin (n + 1) f (Icc x₀ x) x' * (x - x₀) ^ (n + 1) / (n + 1)! := by
-  have hf_n : ContDiffOn ℝ n f (Icc x₀ x) := hf.of_succ
-  have hdiff : DifferentiableOn ℝ (iteratedDerivWithin n f (Icc x₀ x)) (Ioo x₀ x) := by
-    have hlt : (n : ℕ∞) < n + 1 := by norm_cast; omega
+  have huIcc : uIcc x₀ x = Icc x₀ x := uIcc_of_le hx.le
+  have huIoo : uIoo x₀ x = Ioo x₀ x := uIoo_of_lt hx
+  have hf_n : ContDiffOn ℝ n f (uIcc x₀ x) := by rw [huIcc]; exact hf.of_succ
+  have hdiff : DifferentiableOn ℝ (iteratedDerivWithin n f (uIcc x₀ x)) (uIoo x₀ x) := by
+    rw [huIcc, huIoo]
+    have hlt : (n : WithTop ℕ∞) < n + 1 := by norm_cast; omega
     have h := hf.differentiableOn_iteratedDerivWithin (m := n) hlt (uniqueDiffOn_Icc hx)
     exact h.mono Ioo_subset_Icc_self
-  exact taylor_mean_remainder_lagrange hx hf_n hdiff
+  have := taylor_mean_remainder_lagrange hx.ne hf_n hdiff
+  rwa [huIcc, huIoo] at this
 
 /-! ## Cauchy Remainder Form
 
@@ -113,12 +117,16 @@ theorem taylor_cauchy {f : ℝ → ℝ} {x₀ x : ℝ} {n : ℕ} (hx : x₀ < x)
     ∃ x' ∈ Ioo x₀ x,
       f x - taylorWithinEval f n (Icc x₀ x) x₀ x =
         iteratedDerivWithin (n + 1) f (Icc x₀ x) x' * (x - x') ^ n / n ! * (x - x₀) := by
-  have hf_n : ContDiffOn ℝ n f (Icc x₀ x) := hf.of_succ
-  have hdiff : DifferentiableOn ℝ (iteratedDerivWithin n f (Icc x₀ x)) (Ioo x₀ x) := by
-    have hlt : (n : ℕ∞) < n + 1 := by norm_cast; omega
+  have huIcc : uIcc x₀ x = Icc x₀ x := uIcc_of_le hx.le
+  have huIoo : uIoo x₀ x = Ioo x₀ x := uIoo_of_lt hx
+  have hf_n : ContDiffOn ℝ n f (uIcc x₀ x) := by rw [huIcc]; exact hf.of_succ
+  have hdiff : DifferentiableOn ℝ (iteratedDerivWithin n f (uIcc x₀ x)) (uIoo x₀ x) := by
+    rw [huIcc, huIoo]
+    have hlt : (n : WithTop ℕ∞) < n + 1 := by norm_cast; omega
     have h := hf.differentiableOn_iteratedDerivWithin (m := n) hlt (uniqueDiffOn_Icc hx)
     exact h.mono Ioo_subset_Icc_self
-  exact taylor_mean_remainder_cauchy hx hf_n hdiff
+  have := taylor_mean_remainder_cauchy hx.ne hf_n hdiff
+  rwa [huIcc, huIoo] at this
 
 /-! ## Remainder Bounds
 
@@ -174,7 +182,7 @@ theorem taylor_second_order {f : ℝ → ℝ} {x₀ x : ℝ} (hx : x₀ < x)
       f x - taylorWithinEval f 1 (Icc x₀ x) x₀ x =
         iteratedDerivWithin 2 f (Icc x₀ x) x' * (x - x₀) ^ 2 / 2 := by
   have h := taylor_lagrange (n := 1) hx hf
-  simp only [Nat.factorial_two, Nat.cast_ofNat] at h
+  norm_num [Nat.factorial] at h ⊢
   exact h
 
 /-! ## Existence of Remainder Bound
