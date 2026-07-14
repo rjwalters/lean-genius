@@ -20,9 +20,16 @@ Erdos < 600; sibling increment 24 = N–Z + Erdos ≥ 600.
 - **DR33g (+1)**: BernoulliInequalityOQ01OQ02 (pow_succ nlinarith hint, Nat.cast_choose_two).
 - **DR33h (+1)**: BorsukUlamOQ02OQ01OQ01OQ02OQ03 (sup_union, not_le.mpr, intro ⟨⟩ on <).
 - **DR33i (+1)**: BezoutIdentityOQ04OQ01OQ01 (IsUnimodularPID/IsUnit.mul shadow, Fin OfNat index align).
+- **DR33j (+1)**: CubeRoot3IrrationalOQ03OQ03 (minpoly_gen explicit + show-form instance force).
+- **DR33k (+1)**: BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01 (convert instance-congruence → value-first).
+- **DR33l (+1)**: DiamondImpliesCH (Ordinal.mk_Iio_ordinal qualify).
+- **DR33m (+1)**: DerangementsConvergenceOQ05OQ01 (NormedSpace.expSeries_div_hasSum_exp).
 
-Ledger: 1612 → 1626 GREEN (+14). My-class RESIDUAL: type-mismatch 225→216,
-proof-drift 148→143, rewrite-drift 70→70 (several flips were mixed-class rows).
+Ledger: 1612 → 1630 GREEN (+18). Recipes catalogued in rename-map §7u (+continued).
+Deferred deep this increment: BorsukUlamOQ03OQ02 (ℤ→+ℤ map_zsmul arg-order +
+defeq-unfold cascade), DissectionOfCubesOQ02OQ02/OQ04 (ℝ⧸zmultiples quotient
+rewrites), ElementaryQuadraticReciprocityOQ02OQ01 (10 scattered), ChineseRemainder,
+Chebyshev/CauchySchwarz clusters.
 
 ## Highest-value new recipes (see rename-map §7u)
 - **`integral_mul_deriv_eq_deriv_mul` now takes tsupport-restricted deriv hyps**:

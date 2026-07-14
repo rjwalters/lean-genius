@@ -991,3 +991,22 @@ General proof-drift (Cantor nested-interval / countability cluster):
 | `abs_of_nonneg` on `dist (a n) (a (n+1))` fails (a strictly incr → inner is negative): `Real.dist_eq x y = |x - y|` in that order | `rw [Real.dist_eq, abs_sub_comm, abs_of_nonneg (…)]` | AlgNumbers OQ02OQ02OQ01 |
 | no-op `dsimp only` → "made no progress" | delete the line | AreaOfCircleOQ07OQ05OQ02 |
 | `convert x using 1; ring` "made no progress" (metavar stall, confirms §7s) | `have hval : lhs = rhs := by ring; rw [hval]; exact x` | OQ07OQ05OQ01, OQ07OQ05, OQ05OQ03OQ05 |
+
+### §7u continued — increment 23 waves DR33f-m
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `Polynomial.content_dvd_coeff q n` "type mismatch: q : ℤ[X] expected ℕ" — polynomial arg is now `{p}`-implicit, only `(n)` explicit | `content_dvd_coeff (p := q) n`; but for `IsPrimitive`'s `hr : C r ∣ p` use `(C_dvd_iff_dvd_coeff r p).mp hr n` for `r ∣ p.coeff n` | AngleTrisectionCos20GalOQ03OQ01 |
+| `unfold abbrevName` "failed to unfold" (abbrev, not def) | `simp only [abbrevName]` | AngleTrisectionCos20GalOQ03OQ01 |
+| `linarith` over a bare `CommRing` (no order) | `sub_eq_zero.mp (key.trans hrhs)` for `a = b` from `a - b = 0` | AngleTrisectionCos20GalOQ03OQ01 |
+| `rw [pow_succ]` no longer rewrites `(1+a)^(m+1)` inside a subsequent `nlinarith` goal | drop the `rw`, pass `pow_succ (1+a) m` as an `nlinarith` hint | BernoulliInequalityOQ01OQ02 |
+| casting `↑(n*(n-1)/2)` (Nat division) — `push_cast` can't split the `/2` | `Nat.cast_choose_two` (`↑(a.choose 2) = ↑a*(↑a-1)/2`) | BernoulliInequalityOQ01OQ02 |
+| `Nat.primeFactors_mul` yields `∪` (not `insert`) | `Finset.sup_union` (not `sup_insert`) | BorsukUlamOQ02OQ01OQ01OQ02OQ03 |
+| `not_le_of_lt` removed | `not_le.mpr h` | BorsukUlamOQ02OQ01OQ01OQ02OQ03 |
+| `intro ⟨h⟩` / `rintro ⟨h⟩` on a hyp that is a `<` (= `Nat.le (succ ..)`, multi-ctor) fails "more than one constructor" | `intro h` (it's a plain `<`, not a 1-field structure) | BorsukUlamOQ02OQ01OQ01OQ02OQ03 |
+| a 1-field `abbrev`/`def P := IsUnit …` shadows `IsUnit.mul` — `hM.mul hN` resolves to `P.mul` (recursion) | `simp only [P, …] at *` to expose the underlying `IsUnit` before `.mul` | BezoutIdentityOQ04OQ01OQ01 |
+| matrix `snf.D ⟨0, by omega⟩ ⟨1, _⟩` accesses fail to fold with `set`-vars after a `simp` normalizes indices `⟨0,_⟩ → (0 : Fin n)` (OfNat) | restate ALL index accesses (haves, `set`, `congr_fun`) with `(0 : Fin n)` OfNat literals — mixing `⟨0,_⟩` and OfNat breaks `linear_combination` folding | BezoutIdentityOQ04OQ01OQ01 |
+| `minpoly_gen`/`minpoly_cbrt3` `rw` "did not find pattern" though visibly present — instance mismatch on the `AdjoinSimple`/`Algebra` instance; `minpoly_gen` also needs `F α` explicit now | `rw [show minpoly ℚ (AdjoinSimple.gen ℚ α) = minpoly ℚ α from minpoly_gen ℚ α, …]` forces the instance to unify | CubeRoot3IrrationalOQ03OQ03 |
+| `convert hd using 1` surfaces an instance-congruence goal FIRST (`instAddCommGroup = NormedDivisionRing…toAddCommGroup`) — §7s (recurred) | value-first: `have hval : <goal-value> = <hd-value> := by …; rw [hval]; exact hd` | BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01 |
+| `mk_Iio_ordinal` now ambiguous | qualify `Ordinal.mk_Iio_ordinal` | DiamondImpliesCH |
+| `expSeries_div_hasSum_exp 𝕂 x` — moved to `NormedSpace` namespace, field now implicit (only `(x)` explicit); result is `NormedSpace.exp x` | `NormedSpace.expSeries_div_hasSum_exp x`; `Real.exp_eq_exp_ℝ : Real.exp = NormedSpace.exp` bridges | DerangementsConvergenceOQ05OQ01 |
