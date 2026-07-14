@@ -478,7 +478,8 @@ theorem genFun_pent_eq_tprod :
     · intro b hb
       simp only [pentChar]
       rw [if_neg (show ¬ (b + 1 = 1) by omega), zero_smul]
-  rw [hsingle]; ring
+  rw [sub_eq_add_neg, ← hsingle]
+  rfl
 
 /-- **Coefficient side of Euler's identity.**  The `n`-th coefficient of the same
 generating function is the signed count of partitions of `n` into distinct parts,

@@ -51,9 +51,9 @@ theorem discriminant_eq_root_form (p q x₁ x₂ x₃ : R)
   unfold discriminant rootDiscriminant
   -- Substitute p = x₁x₂ + x₁x₃ + x₂x₃ and q = -(x₁x₂x₃)
   -- using x₁ + x₂ + x₃ = 0, then verify by ring
-  rw [← h.sum_products, ← show q = -(x₁ * x₂ * x₃) from by linarith [h.product]]
+  rw [← h.sum_products, show q = -(x₁ * x₂ * x₃) from by linear_combination h.product]
   -- With x₃ = -(x₁ + x₂) from sum_zero:
-  have hx₃ : x₃ = -(x₁ + x₂) := by linarith [h.sum_zero]
+  have hx₃ : x₃ = -(x₁ + x₂) := by linear_combination h.sum_zero
   rw [hx₃]
   ring
 

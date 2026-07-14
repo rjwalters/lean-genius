@@ -106,18 +106,19 @@ theorem arcsineCDF_hasDerivAt {x : ℝ} (hx0 : 0 < x) (hx1 : x < 1) :
   have hfun : arcsineCDF = fun y => (2 / π) * (arcsin ∘ fun y => Real.sqrt y) y := by
     funext y; simp [arcsineCDF, Function.comp]
   rw [hfun]
-  -- Now identify the derivative value with `arcsineDensity x`.
-  convert hscaled using 1
-  -- Goal: arcsineDensity x = (2/π) * ((1/√(1-(√x)^2)) * (1/(2√x)))
+  -- Identify the derivative value with `arcsineDensity x`, then transport `hscaled`.
   have hsq : (Real.sqrt x) ^ 2 = x := Real.sq_sqrt hx0.le
-  rw [hsq]
   have h1x : (0 : ℝ) < 1 - x := by linarith
   have hs1x_pos : (0 : ℝ) < Real.sqrt (1 - x) := Real.sqrt_pos.mpr h1x
   have hpi : (0 : ℝ) < π := Real.pi_pos
   have hprod : Real.sqrt (x * (1 - x)) = Real.sqrt x * Real.sqrt (1 - x) :=
     Real.sqrt_mul hx0.le _
-  rw [arcsineDensity, hprod]
-  field_simp
+  have hval : arcsineDensity x
+      = 2 / π * (1 / Real.sqrt (1 - (Real.sqrt x) ^ 2) * (1 / (2 * Real.sqrt x))) := by
+    rw [hsq, arcsineDensity, hprod]
+    field_simp
+  rw [hval]
+  exact hscaled
 
 /-! ### Continuity and interval integrability of the density -/
 

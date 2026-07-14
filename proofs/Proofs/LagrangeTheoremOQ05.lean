@@ -31,14 +31,15 @@ This is the foundation that makes orbit-stabilizer work. -/
 
 /-- Lagrange's theorem: the order of a subgroup divides the order of the group. -/
 theorem lagrange_divides (H : Subgroup G) [Fintype H] :
-    Fintype.card H ∣ Fintype.card G :=
-  Subgroup.card_subgroup_dvd_card H
+    Fintype.card H ∣ Fintype.card G := by
+  simpa only [Nat.card_eq_fintype_card] using Subgroup.card_subgroup_dvd_card H
 
 /-- Lagrange's theorem: |G| = [G : H] · |H|. -/
 theorem lagrange_index (H : Subgroup G) [Fintype H]
     [Fintype (G ⧸ H)] :
-    Fintype.card G = Fintype.card (G ⧸ H) * Fintype.card H :=
-  (Subgroup.card_eq_card_quotient_mul_card_subgroup H).symm
+    Fintype.card G = Fintype.card (G ⧸ H) * Fintype.card H := by
+  simpa only [Nat.card_eq_fintype_card] using
+    (Subgroup.card_eq_card_quotient_mul_card_subgroup H)
 
 /-! ## Part II: Orbit-Stabilizer Theorem
 

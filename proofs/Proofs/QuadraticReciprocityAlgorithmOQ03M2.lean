@@ -146,8 +146,17 @@ theorem choose_two_mod_two {n : ℕ} (hn : Odd n) :
 derive it directly from `neg_one_sq : (-1)^2 = 1` (which holds for any
 `[Monoid R] [HasDistribNeg R]`, in particular `ℤˣ`). -/
 theorem neg_one_units_pow_mod_two (n : ℕ) : (-1 : ℤˣ) ^ n = (-1 : ℤˣ) ^ (n % 2) := by
-  nth_rewrite 1 [← Nat.mod_add_div n 2]
-  rw [pow_add, pow_mul, neg_one_sq, one_pow, mul_one]
+  -- v4.31: `rw [pow_add]`/`rw [pow_mul]` no longer unify against the `ℤˣ` `Monoid.npow`
+  -- power (the metavariable elaboration stalls); drive the computation term-mode instead.
+  have h2 : (-1 : ℤˣ) ^ 2 = 1 := by decide
+  have e1 : (-1 : ℤˣ) ^ (2 * (n / 2)) = 1 :=
+    calc (-1 : ℤˣ) ^ (2 * (n / 2)) = ((-1 : ℤˣ) ^ 2) ^ (n / 2) := pow_mul _ _ _
+      _ = (1 : ℤˣ) ^ (n / 2) := congrArg (· ^ (n / 2)) h2
+      _ = 1 := one_pow _
+  calc (-1 : ℤˣ) ^ n = (-1 : ℤˣ) ^ (2 * (n / 2) + n % 2) := by rw [Nat.div_add_mod]
+    _ = (-1 : ℤˣ) ^ (2 * (n / 2)) * (-1 : ℤˣ) ^ (n % 2) := pow_add _ _ _
+    _ = 1 * (-1 : ℤˣ) ^ (n % 2) := by rw [e1]
+    _ = (-1 : ℤˣ) ^ (n % 2) := one_mul _
 
 /-- **Parity reduction** (the verified elementary step of Milestone 2).
 For odd `p, q`, `(-1)^(C(p,2)·C(q,2)) = (-1)^((p-1)/2 · (q-1)/2)`. -/
@@ -257,7 +266,9 @@ theorem sign_gridTranspose_eq_choose (p q : ℕ) :
       rw [(divNat_modNat_fpfe u t).1, (divNat_modNat_fpfe v s).1,
           (divNat_modNat_fpfe v s).2, (divNat_modNat_fpfe u t).2]
   rw [Equiv.Perm.sign_eq_prod_prod_Ioi (gridTranspose p q), Finset.prod_sigma']
-  rw [Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const, ← hD, hcard]
+  rw [Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const, ← hD]
+  -- v4.31: `rw [hcard]` leaves the reflexive `(-1)^X = (-1)^X`; close it explicitly.
+  exact congrArg (fun k => (-1 : ℤˣ) ^ k) hcard
 
 /-- **Milestone 2 core lemma.**  For odd `p, q`, the sign of the grid-transpose
 permutation is the quadratic-reciprocity factor `(-1) ^ ((p-1)/2 · (q-1)/2)`.

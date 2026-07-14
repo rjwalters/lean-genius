@@ -405,6 +405,7 @@ example : collinear_K (qvec 1 0 1) (qvec 0 1 1) (qvec 1 1 2) := by
   unfold collinear_K threeVecMat
   simp [Matrix.det_fin_three, Matrix.of_apply, qvec,
         Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const]
+  ring
 
 -- Pappus conclusion for Configuration 2
 example : collinear_K
@@ -426,6 +427,7 @@ example : collinear_K (qvec 1 2 1) (qvec 2 1 1) (qvec 3 3 2) := by
   unfold collinear_K threeVecMat
   simp [Matrix.det_fin_three, Matrix.of_apply, qvec,
         Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.head_fin_const]
+  ring
 
 -- Pappus conclusion for Configuration 3
 example : collinear_K

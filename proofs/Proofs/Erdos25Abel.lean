@@ -105,12 +105,13 @@ theorem weightedCount_abel (A : Set ℕ) : ∀ N : ℕ, 1 ≤ N →
       split_ifs with h
       · -- N+1 ∈ A: need c(n)/n + Σ + 1/(n+1) = (c(n)+1)/(n+1) + Σ + c(n)/(n·(n+1))
         field_simp
+        push_cast
         ring
       · -- N+1 ∉ A: need c(n)/n + Σ = c(n)/(n+1) + Σ + c(n)/(n·(n+1))
         -- i.e., c(n)/n = c(n)/(n+1) + c(n)/(n·(n+1))  [partial fractions]
         simp only [add_zero]
-        ring_nf
         field_simp
+        push_cast
         ring
 
 end Erdos25Abel

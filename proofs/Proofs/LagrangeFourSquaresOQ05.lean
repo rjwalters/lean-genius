@@ -177,7 +177,7 @@ theorem quaternion_normSq_mul (p q : ℍ[ℤ]) :
 theorem euler_via_quaternion (a b c d x y z w : ℤ) :
     (a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2) * (x ^ 2 + y ^ 2 + z ^ 2 + w ^ 2) =
       Quaternion.normSq ((⟨a, b, c, d⟩ : ℍ[ℤ]) * (⟨x, y, z, w⟩ : ℍ[ℤ])) := by
-  rw [quaternion_normSq_mul]
-  simp only [Quaternion.normSq_def']
+  simp only [Quaternion.normSq_def', QuaternionAlgebra.mk_mul_mk]
+  ring
 
 end LagrangeFourSquaresOQ05
