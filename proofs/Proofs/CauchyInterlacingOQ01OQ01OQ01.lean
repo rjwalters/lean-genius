@@ -101,8 +101,7 @@ theorem eigenvalues_eq_of_eigenbasis {T : E →ₗ[𝕜] E} (hT : T.IsSymmetric)
     List.pairwise_ofFn.2 (fun {_ _} hij => (hT.eigenvalues_antitone hn) hij.le)
   have hsort₂ : (List.ofFn f).Pairwise (· ≥ ·) :=
     List.pairwise_ofFn.2 (fun {_ _} hij => hf hij.le)
-  have := List.eq_of_perm_of_sorted (le := (· ≥ ·))
-    (fun a b _ _ hab hba => le_antisymm hba hab) hsort₁ hsort₂ hperm
+  have := hperm.eq_of_pairwise' hsort₁ hsort₂
   exact List.ofFn_inj.1 this
 
 end CauchyInterlacingOQ01OQ01OQ01

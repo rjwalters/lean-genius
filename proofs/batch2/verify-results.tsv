@@ -341,7 +341,7 @@ CatalanNumbersOQ01OQ04OQ02	GREEN
 CatalanNumbersOQ05OQ02OQ01	GREEN	
 CauchyInterlacingIsometryConj	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingMajorizationPositivity	GREEN	
-CauchyInterlacingOQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
+CauchyInterlacingOQ01OQ01OQ01	GREEN	
 CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
 CauchyInterlacingWeylDual	GREEN	
@@ -475,7 +475,7 @@ CramersRuleOQ01OQ02OQ03	GREEN
 CramersRuleOQ01OQ03	GREEN	
 CramersRuleOQ01OQ04	RESIDUAL	unknown-const:Matrix.charpoly_natDegree_eq_card
 CramersRuleOQ03OQ03	RESIDUAL	unknown-const:Quaternion.imI
-CramersRuleOQ04OQ01	RESIDUAL	unknown-const:smul_mulVec_assoc
+CramersRuleOQ04OQ01	GREEN	
 CramersRuleOQ05	GREEN	
 CramersRuleOQ05OQ01	GREEN	
 CramersRuleOQ05OQ02	GREEN	
@@ -1947,7 +1947,7 @@ ErdosRamseyLowerBound	GREEN
 EulerIdentityOQ01	RESIDUAL	proof-drift
 EulerIdentityOQ01OQ02OQ01	RESIDUAL	instance-synth
 EulerPolyhedralFormula	RESIDUAL	proof-drift
-EulerPolyhedralFormulaOQ01OQ02	RESIDUAL	unknown-const:SimpleGraph.Colorable.mk
+EulerPolyhedralFormulaOQ01OQ02	GREEN	
 EulerPolyhedralOQ01OQ04	GREEN	
 EulerTotientOQ01OQ01OQ01	GREEN	
 EulerTotientOQ01OQ02OQ01	GREEN	
@@ -1958,7 +1958,7 @@ EulerTotientOQ02OQ01	GREEN
 EulerTotientOQ02OQ02OQ01	RESIDUAL	rewrite-drift
 EulerTotientOQ06OQ02	GREEN	
 FactorRemainderNullstellensatzOQ01	RESIDUAL	instance-synth
-FactorRemainderNullstellensatzOQ02	RESIDUAL	unknown-const:card_roots_le_degree
+FactorRemainderNullstellensatzOQ02	GREEN	
 FactorRemainderTheorem	GREEN	parse-error
 FactorRemainderTheoremOQ01OQ01OQ02	RESIDUAL	proof-drift
 FactorRemainderTheoremOQ02	GREEN	
