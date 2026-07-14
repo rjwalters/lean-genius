@@ -876,6 +876,31 @@ CLEARED; GeneralizeProofs vendored-block 1/3; SimpleGraph-field cluster 3/6 + Ro
 | `∆` symmDiff "expected token" | `open scoped symmDiff` (notation is `scoped[symmDiff]`) — but this only fixes the parse; a Setoid built on it may then hit `symmDiff_comm` rename + real transitivity obligations | Erdos1123 (reverted — transitivity is a real theorem) |
 | Mathlib now defines root-level `Hypergraph` (`Mathlib.Combinatorics.Hypergraph.Basic`) → "already been declared" | namespace-wrap the project file's own declarations | Erdos1020 (namespace fix ready but 10+ deeper errors — reverted) |
 
+### §7s Doctor increment 20 recipes (tm/pd/rewrite + mixed, 2026-07-13)
+
+| symptom | fix | files |
+|---|---|---|
+| `rw [pow_add]` / `rw [pow_mul]` fail to unify against `ℤˣ` (`Units Int`) `Monoid.npow` (rewrite metavar stalls, though `exact pow_add _ _ _` works term-mode) | drive via `calc` + TERM-mode `pow_add _ _ _`/`pow_mul _ _ _`; `congrArg (·^k) h` for `(-1:ℤˣ)^2=1 (by decide)` | QuadraticReciprocityAlgorithmOQ03M2 |
+| `convert x using 1` on a value/HasDerivAt goal surfaces an instance-congruence goal FIRST (`instAddCommGroup = …toAddCommGroup`), blocking the value `rw`/`nlinarith` | value-first: `have hval : <goal> := by …; rw [hval]; exact x` (sidestep convert; `using 2` does NOT reliably skip it) | BallotProblemOQ02OQ03, BuffonsNeedleOQ01OQ01OQ04OQ01Beta, ArsinhLogFormula…, Erdos1049Aristotle |
+| `Subgroup.card_subgroup_dvd_card` / `card_eq_card_quotient_mul_card_subgroup` return `Nat.card` (was `Fintype.card`) | `simpa only [Nat.card_eq_fintype_card] using …` + drop the now-wrong `.symm` | LagrangeTheoremOQ05 |
+| `Subgroup.Normal.quotient_commutative_iff_commutator_le` yields `IsMulCommutative` (was `Std.Commutative (·*·)`) | `haveI : IsMulCommutative …`; comm proof via `h.is_comm.comm a b` (NOT `h.comm`) | AbelRuffiniOQ06OQ01 |
+| `MonoidAlgebra.single` no longer unfolds to `Finsupp.single` → `rw [Finsupp.single_eq_single_iff]` fails | retype: `have hg2 : (Finsupp.single a b : …) = Finsupp.single c d := hg; rw [Finsupp.single_eq_single_iff] at hg2`; `Multiplicative.ofAdd_eq_one` is bare `ofAdd_eq_one` (`↔ x=0`) | MaschkeModularCounterexampleOQ01 |
+| `Submodule.map_span` needs a `LinearMap`; a `LinearEquiv` coercion doesn't match | `Submodule.span_image_linearEquiv` then `Submodule.map_eq_top_iff` | CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge |
+| `AffineIndependent.fintype_card_le_finrank_succ` → `card_le_finrank_succ`, now over `finrank (vectorSpan …)` not `finrank E` | bridge `Submodule.finrank_le _` before omega | ShapleyFolkmanAristotle |
+| `Multiset.coe_sum` → `Multiset.sum_coe` | rename | Erdos338Aristotle |
+| `Nat.Coprime.divisors_mul` now yields a `Finset.map` form | use `Nat.Coprime.card_divisors_mul` for the card | Erdos1049Aristotle |
+| `IsInteger` (bare) → `IsLocalization.IsInteger` | namespace-qualify | FactorRemainderTheoremOQ02 |
+| `div_eq_div_iff` denominator `ne` args must match the goal EXACTLY (stricter unify) | pass the denominators that actually appear (swapped hA↔ha) | LawOfCosinesOQ01OQ01OQ01 |
+| `Nat.fib k` no longer simp-reduces to a literal; `0<b` ↮ `1≤b` under simpa | `rw [show Nat.fib 3 = 2 from rfl]`; `omega` | GCDAlgorithmOQ01OQ03OQ01 |
+| `theorem` on `Fintype …` (Sort, not Prop) rejected | `noncomputable def`; `IsPrincipalIdealRing (𝓞 ℚ)` via `IsPrincipalIdealRing.of_surjective (Rat.ringOfIntegersEquiv).symm.toRingHom …surjective` | MinkowskiFundamentalTheoremOQ02 |
+| `Quaternion.normSq (p*q)` rewrite (`map_mul normSq`) no longer type-checks on anonymous-constructor product | `simp only [Quaternion.normSq_def', QuaternionAlgebra.mk_mul_mk]; ring` | LagrangeFourSquaresOQ05 |
+| narrow-import file: `(6:ℚ)/2=3` leaves `⊢ 6/2=3` (norm_num ℚ-division extension not imported) | `import Mathlib.Tactic.NormNum.DivMod` (+ `Data.Rat.Cast.Defs`) | Erdos812Problem |
+| `field_simp` no longer self-finishes cast normalization inside a `∑` | `field_simp; push_cast; ring` (both split_ifs branches) | Erdos25Abel |
+| `det_fin_three` simp leaves numeric residual `2-1-1=0` | append `ring` | PappusTheoremOQ02 |
+| AddAction→MulAction: `Multiplicative.ofAdd r • c = c ↔ r +ᵥ c = c` closes by `rfl`; `∑ ZMod n` vs `∑ Multiplicative (ZMod n)` domain | `rfl`; re-index via `Equiv.sum_comp Multiplicative.ofAdd` | BurnsideCountingOQ03OQ03 |
+| `field_simp` matches denominators up to SYNTACTIC order only | supply commuted `1-e+e*d ≠ 0` haves via `rw [mul_comm]; exact …` | CevasTheoremOQ01OQ03 (denominators fixed; ring identity deferred) |
+
+**Meta**: single/two-own-error triage off the warm cache is the fast finder — build all sorry-free my-class candidates in ONE `lake build`, `grep -oE '^error: Proofs/…\.lean' | uniq -c | sort -n`; single-error rows are highest-confidence. Files with `grep -w sorry` are formalized and CANNOT go GREEN (pre-filter them: 100 of 469 my-class rows). Statement-repair a genuinely false numeric claim to the intended-true value (Cevas `1/10`→`25/252`), never weaken.
 ### 7s. Doctor increment-19 recipes (#38065, 2026-07-13, structured remainder: parse/sig/elab/dot)
 
 **+28 GREEN.** Classes worked: parse-error, elab-drift, dot-notation-drift, plus mixed

@@ -38,7 +38,7 @@ theorem squares_order_four_aristotle : IsBasisOfOrder squares 4 := by
     rcases hx with rfl | rfl | rfl | rfl
     all_goals exact ⟨_, by ring⟩
   · simp [Multiset.card_coe]
-  · simp only [Multiset.coe_sum, List.sum_cons, List.sum_nil, add_zero]
+  · simp only [Multiset.sum_coe, List.sum_cons, List.sum_nil, add_zero]
     linarith
 
 end Erdos338

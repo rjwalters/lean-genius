@@ -25,6 +25,9 @@ References:
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Tactic.NormNum.Basic
+import Mathlib.Tactic.NormNum.DivMod
+import Mathlib.Data.Rat.Cast.Defs
 
 namespace Erdos812
 

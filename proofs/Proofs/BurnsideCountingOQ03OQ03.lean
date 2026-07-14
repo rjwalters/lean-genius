@@ -49,6 +49,7 @@ lemma mem_fixedBy_iff (r : ZMod n) (c : Coloring n k) :
     c ∈ MulAction.fixedBy (Coloring n k) (Multiplicative.ofAdd r) ↔
     IsFixedByRotation r c := by
   simp only [MulAction.mem_fixedBy, IsFixedByRotation]
+  rfl
 
 /-- Cardinality of `fixedBy (Multiplicative.ofAdd r)` equals cardinality of
     `{c | IsFixedByRotation r c}`. -/
@@ -102,8 +103,10 @@ theorem burnside_necklace_count_zmod :
     Fintype.card (MulAction.orbitRel.Quotient (Multiplicative (ZMod n)) (Coloring n k)) * n := by
   -- Rewrite each term via card_fixedBy_eq, then close with burnside_necklace_count.
   -- Note: Multiplicative (ZMod n) = ZMod n by def, so 'exact' unifies the sum domains.
-  refine (Finset.sum_congr rfl fun r _ => (card_fixedBy_eq r).symm).trans ?_
-  exact burnside_necklace_count
+  rw [← burnside_necklace_count (n := n) (k := k),
+    ← Equiv.sum_comp Multiplicative.ofAdd
+      (fun g => Fintype.card (MulAction.fixedBy (Coloring n k) g))]
+  exact Finset.sum_congr rfl fun r _ => (card_fixedBy_eq r).symm
 
 /-! ## Section V: Consequences -/
 

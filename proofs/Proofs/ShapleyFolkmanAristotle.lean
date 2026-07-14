@@ -54,8 +54,12 @@ theorem not_affineIndependent_of_card_gt [FiniteDimensional ℝ E]
     {f : Fin n → E} :
     ¬AffineIndependent ℝ f := by
   intro haf
-  have hcard := haf.fintype_card_le_finrank_succ
+  have hcard := haf.card_le_finrank_succ
   simp [Fintype.card_fin] at hcard
+  -- v4.31: `card_le_finrank_succ` now bounds by `finrank (vectorSpan …)`, which is
+  -- ≤ `finrank E`; bridge that before omega.
+  have hle : Module.finrank ℝ (vectorSpan ℝ (Set.range f)) ≤ Module.finrank ℝ E :=
+    Submodule.finrank_le _
   omega
 
 /-- The convex hull of the empty set is empty. -/

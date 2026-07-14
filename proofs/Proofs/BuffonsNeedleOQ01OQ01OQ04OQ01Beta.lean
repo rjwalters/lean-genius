@@ -48,9 +48,10 @@ theorem integral_cos_mul_sin_pow (m : ℕ) :
     rw [Nat.add_sub_cancel] at hp
     have hd := hp.div_const ((m : ℝ) + 1)
     have hne : ((m : ℝ) + 1) ≠ 0 := by positivity
-    convert hd using 1
-    push_cast
-    skip
+    have hval : Real.cos θ * Real.sin θ ^ m
+        = (↑(m + 1) : ℝ) * Real.sin θ ^ m * Real.cos θ / ((m : ℝ) + 1) := by
+      push_cast; field_simp
+    rw [hval]; exact hd
   have hcont : Continuous (fun θ : ℝ => Real.cos θ * Real.sin θ ^ m) :=
     Real.continuous_cos.mul (Real.continuous_sin.pow m)
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv

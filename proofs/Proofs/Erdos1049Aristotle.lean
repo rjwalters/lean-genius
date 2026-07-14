@@ -24,7 +24,7 @@ def tau (n : ℕ) : ℕ := n.divisors.card
 -- as Nat.card_divisors_mul_of_coprime or similar.
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
     tau (m * n) = tau m * tau n := by
-  simp only [tau, hmn.divisors_mul, Finset.card_product]
+  simp only [tau, hmn.card_divisors_mul]
 
 -- Routine: Geometric series ∑_{m≥1} x^m = x/(1-x) for |x| < 1
 -- Applied to x = 1/t^d where t > 1, d ≥ 1.
@@ -48,9 +48,13 @@ theorem geometric_inverse_pow (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
       (fun m : ℕ => if m = 0 then (0 : ℝ) else r ^ m) := by
     ext m; split_ifs with hm <;> simp
   rw [h_eq] at h_diff
-  -- Show (1-r)⁻¹ - 1 = 1/(t^d - 1)
-  convert h_diff using 1
-  rw [hr_def]; field_simp; ring
+  -- Show 1/(t^d - 1) = (1-r)⁻¹ - 1, then transport `h_diff`.
+  have htd0 : t ^ d ≠ 0 := by positivity
+  have htd1 : t ^ d - 1 ≠ 0 := by
+    have : (1 : ℝ) < t ^ d := htd; linarith
+  have hval : (1 : ℝ) / (t ^ d - 1) = (1 - r)⁻¹ - 1 := by
+    rw [hr_def]; field_simp; ring
+  rw [hval]; exact h_diff
 
 -- Routine: The series ∑ 1/t^n converges for t > 1
 theorem inv_pow_summable (t : ℝ) (ht : t > 1) :

@@ -1,3 +1,74 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 20, #38065, 2026-07-13)
+
+# DOCTOR INCREMENT 20 (type-mismatch + proof-drift + rewrite-drift + mixed, #38065, 2026-07-13)
+
+Classes worked: type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed.
+Container `dr30` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-c`. Fresh single/two-error diags generated in-container off the
+warm cache (369 sorry-free candidates from 469 my-class rows; 100 pre-filtered as
+sorry-holed). **+24 GREEN this increment** (type-mismatch 230→225 −5, proof-drift
+159→148 −11, rewrite-drift 80→70 −10, wait — many flips are mixed-class rows).
+
+## Waves (all in-container `lake build` exit-0 confirmed, then ledger-flipped)
+- **DR30a (+10)** single-error: AbelRuffiniOQ06OQ01, ArsinhLogFormula…OQ01×4-deep,
+  BuffonsNeedle…Beta, BallotProblemOQ02OQ03, SolutionOfCubicOQ03OQ01,
+  LagrangeFourSquaresOQ05, MaschkeModularCounterexampleOQ01,
+  CayleyHamilton…OQ03Bridge, PentagonalNumberTheoremOQ01, Erdos1026OQ05KMonotonic.
+- **DR30b (+5)** two-error: Erdos338Aristotle, LawOfCosinesOQ01OQ01OQ01,
+  Erdos974Problem, ShapleyFolkmanAristotle, PythagoreanTriplesOQ02.
+- **DR30c (+4)**: LagrangeTheoremOQ05, FactorRemainderTheoremOQ02,
+  GCDAlgorithmOQ01OQ03OQ01 (PythagoreanTriplesOQ02 counted DR30b).
+- **DR30d (+3)**: Erdos812Problem, Erdos491Problem (statement repair),
+  Erdos25Abel.
+- **DR30e (+2)**: PappusTheoremOQ02, MinkowskiFundamentalTheoremOQ02.
+- **DR30f (+1)**: BurnsideCountingOQ03OQ03.
+- **DR30g (+1)**: QuadraticReciprocityAlgorithmOQ03M2 (0-axiom verified file saved).
+- **DR30h (+1)**: Erdos1049Aristotle.
+
+## Per-class before → after (RESIDUAL, my classes)
+- type-mismatch: 230 → 225
+- proof-drift: 159 → 148
+- rewrite-drift: 80 → 70
+- (Of 443 remaining my-class RESIDUAL rows, **99 are sorry-holed / un-greenable**.)
+
+## Increment 20 statement repairs (operator policy 2026-07-13)
+| file | declaration | repair |
+|---|---|---|
+| Erdos491Problem | wirsing summary uniqueness clause | added the `IsAdditive f` hypothesis that axiom `wirsing_constant_unique` requires (the claimed uniqueness-without-additivity was stronger than what is proven — intended-true form) |
+| CevasTheoremOQ01OQ03 | `routh_asymmetric_example` | `1/10` → `25/252`: recomputed with the def's true `w₃ = 1-f+f·d` (num 25/576, denom (2/3)(3/4)(7/8)=7/16, ratio 25/252). The `1/10` used the wrong `w₃` spelling. (File later reverted — routh_theorem_std ring identity is deep cross-file rework; the corrected value stands as the finding.) |
+
+## Highest-value new recipes (increment 20 — see rename-map §7s)
+- **`rw [pow_add]`/`rw [pow_mul]` no longer unify against `ℤˣ` (`Units Int`) `Monoid.npow`** — the rewrite metavar elaboration stalls even though the target has `a^(m+n)` and `exact pow_add _ _ _` works TERM-mode. Drive the computation via `calc` + term-mode `pow_add _ _ _` / `pow_mul _ _ _`, and use `congrArg (·^k) h` for the `(-1:ℤˣ)^2 = 1 (by decide)` collapse. (QuadraticReciprocityAlgorithmOQ03M2 — a 0-axiom file worth this effort.)
+- **`convert x using 1` on a `HasDerivAt`/value goal surfaces an instance-congruence goal FIRST** (`instAddCommGroup = …toAddCommGroup`), blocking the value-side `rw`/`nlinarith`. **Value-first pattern**: prove `have hval : <value goal> := by …` then `rw [hval]; exact x` — sidesteps convert entirely. (BallotProblemOQ02OQ03, BuffonsNeedle…Beta, Arsinh…, Erdos1049Aristotle). `using 2` does NOT reliably skip past it.
+- **`Subgroup.card_subgroup_dvd_card` / `card_eq_card_quotient_mul_card_subgroup` now return `Nat.card`** (was `Fintype.card`) → `simpa only [Nat.card_eq_fintype_card] using …` (and drop the now-wrong `.symm`). (LagrangeTheoremOQ05)
+- **`Subgroup.Normal.quotient_commutative_iff_commutator_le` now yields `IsMulCommutative`** (was `Std.Commutative (·*·)`) → `haveI … : IsMulCommutative …`; access the comm proof via `h.is_comm.comm a b` (NOT `h.comm` — `IsMulCommutative.comm` doesn't exist). (AbelRuffiniOQ06OQ01)
+- **`MonoidAlgebra.single` no longer syntactically unfolds to `Finsupp.single`** — `rw [Finsupp.single_eq_single_iff]` fails. Retype the equality at the Finsupp level: `have hg2 : (Finsupp.single a b : …) = Finsupp.single c d := hg` then `rw [Finsupp.single_eq_single_iff] at hg2`. `Multiplicative.ofAdd_eq_one` is bare `ofAdd_eq_one` (`↔ x = 0`). (MaschkeModularCounterexampleOQ01)
+- **`Submodule.map_span` needs a `LinearMap`; for a `LinearEquiv` use `Submodule.span_image_linearEquiv`** (`span R (e '' s) = map e (span R s)`), then `Submodule.map_eq_top_iff`. (CayleyHamilton…OQ03Bridge)
+- **`AffineIndependent.fintype_card_le_finrank_succ` → `card_le_finrank_succ`, now bounded by `finrank (vectorSpan …)`** (not `finrank E`) → bridge `Submodule.finrank_le _` before omega. (ShapleyFolkmanAristotle)
+- **`Multiset.coe_sum` → `Multiset.sum_coe`**; **`Nat.Coprime.divisors_mul` now yields a `Finset.map` form** → use `Nat.Coprime.card_divisors_mul` for the card. (Erdos338Aristotle, Erdos1049Aristotle)
+- **`IsInteger` (bare) → `IsLocalization.IsInteger`** (namespace lost). (FactorRemainderTheoremOQ02)
+- **`div_eq_div_iff` denominator args must match the goal EXACTLY** (v4.31 stricter unify) — a swapped `(ne_of_gt hA)` vs `(ne_of_gt ha)` fails "did not find pattern". (LawOfCosinesOQ01OQ01OQ01)
+- **`Nat.fib k` no longer simp-reduces to a literal** → `rw [show Nat.fib 3 = 2 from rfl]`; `0<b` vs `1≤b` no longer bridged by `simpa` → `omega`. (GCDAlgorithmOQ01OQ03OQ01)
+- **`theorem` on a `Fintype …` (Sort, not Prop) is rejected** → `noncomputable def`. (MinkowskiFundamentalTheoremOQ02 classGroup_finite; also `IsPrincipalIdealRing (𝓞 ℚ)` via `IsPrincipalIdealRing.of_surjective (Rat.ringOfIntegersEquiv).symm.toRingHom …surjective`)
+- **`QuaternionAlgebra.mk_mul_mk` + `Quaternion.normSq_def' + ring`** replaces a `Quaternion.normSq (p*q)` rewrite that no longer type-checks (the `map_mul normSq` rewrite fails on the anonymous-constructor product). (LagrangeFourSquaresOQ05)
+- **narrow-import files lose norm_num's ℚ-division extension** (`(6:ℚ)/2 = 3` leaves `⊢ 6/2=3`) → add `import Mathlib.Tactic.NormNum.DivMod` (+ `Data.Rat.Cast.Defs`). (Erdos812Problem)
+- **`field_simp` no longer self-finishes cast normalization inside a sum** → `field_simp; push_cast; ring`. (Erdos25Abel). And field_simp matches denominators up to SYNTACTIC order — supply commuted `1-e+e*d ≠ 0` haves. (Cevas — deferred)
+- **`det_fin_three` simp leaves a numeric residual `2-1-1=0`** → append `ring`. (PappusTheoremOQ02)
+- **`BurnsideCounting`: `Multiplicative.ofAdd r • c = c ↔ r +ᵥ c = c` closes by `rfl`** (defeq via AddAction→MulAction); ZMod n vs Multiplicative (ZMod n) sum-domain → re-index with `Equiv.sum_comp Multiplicative.ofAdd`.
+- **`rw [pow_add]` picks the wrong occurrence** — confirmed §7l `nth_rewrite`→`conv_lhs` migration.
+
+## Flagged deep-rework (deferred this increment)
+- CevasTheoremOQ01OQ03 (routh_theorem_std ring identity spans imported `routhRatio`
+  def; found + repaired the false `1/10`→`25/252` numeric claim en route).
+- QuadRecip's ℤˣ pow-rewrite is documented above (SAVED).
+- HierholzerAlgorithm (4-error cascade after 2 valid fixes: `Set.mem_coe`,
+  `Finset.card_nbij` sig, simp-no-progress — axiomatized file).
+- Erdos407Problem (PRIMARY error = `Fintype` on a ℕ⁴ set-builder = instance-synth
+  sibling's territory; the `Nat.one_le_mul` rename alone won't flip it).
+- BurnsideCountingOQ03OQ03 SOLVED (was flagged, then closed via Equiv.sum_comp).
+
+---
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 17, #38065, 2026-07-13)
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 21, #38065, 2026-07-13)
 
 # DOCTOR INCREMENT 21 (structured remainder: parse/sig/elab/dot + deep-rework, #38065, 2026-07-13)

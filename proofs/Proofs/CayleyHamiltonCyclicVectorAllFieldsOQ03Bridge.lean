@@ -101,7 +101,7 @@ theorem aeval_cyclic_iff_krylov_span_top [FiniteDimensional K V] (T : Module.End
     congr 1
     funext n
     rw [Function.comp_apply, Module.AEval'.X_pow_smul_of, Module.End.smul_def]
-  rw [hset, ← Submodule.map_span, Submodule.map_eq_top_iff]
+  rw [hset, Submodule.span_image_linearEquiv, Submodule.map_eq_top_iff]
 
 /-! ## Recognizing the PID structure theorem -/
 

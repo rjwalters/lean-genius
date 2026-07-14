@@ -45,12 +45,12 @@ theorem spherical_law_of_sines_angle_over_side (t : SphericalTriangle)
   -- h2 : sin(a)/sin(A) = sin(c)/sin(C)
   constructor
   · -- A/a = B/b  iff  sin(A)*sin(b) = sin(B)*sin(a)
-    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)]
-    rw [div_eq_div_iff (ne_of_gt ha) (ne_of_gt hb)] at h1
+    rw [div_eq_div_iff (ne_of_gt ha) (ne_of_gt hb)]
+    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)] at h1
     linear_combination -h1
   · -- A/a = C/c  iff  sin(A)*sin(c) = sin(C)*sin(a)
-    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hC)]
-    rw [div_eq_div_iff (ne_of_gt ha) (ne_of_gt hc)] at h2
+    rw [div_eq_div_iff (ne_of_gt ha) (ne_of_gt hc)]
+    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hC)] at h2
     linear_combination -h2
 
 /-- The B/b = C/c part follows by transitivity. -/
