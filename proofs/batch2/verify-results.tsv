@@ -81,7 +81,7 @@ AngleTrisectionCos20GalOQ03	GREEN
 AngleTrisectionCos20GalOQ03OQ01	GREEN	
 AngleTrisectionEmbedding	GREEN	
 AngleTrisectionOQ02	GREEN	
-AngleTrisectionOQ02OQ01OQ02	RESIDUAL	rewrite-drift
+AngleTrisectionOQ02OQ01OQ02	GREEN	rewrite-drift
 AngleTrisectionOQ02OQ01OQ02Aristotle	GREEN	
 AngleTrisectionOQ02OQ01OQ02Incomplete01	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ03	GREEN	
@@ -95,7 +95,7 @@ AngleTrisectionOQ03OQ01	GREEN
 AngleTrisectionOQ03OQ02	GREEN	
 AngleTrisectionOQ03OQ02OQ03	GREEN	
 AngleTrisectionOQ05OQ02	GREEN	
-AngleTrisectionOQ05OQ03	RESIDUAL	proof-drift
+AngleTrisectionOQ05OQ03	GREEN	proof-drift
 ArchimedesMethodOfExhaustion	RESIDUAL	instance-synth
 AreaFromCircumferenceIntegral	GREEN	
 AreaOfCircleOQ01OQ02OQ01	GREEN	
@@ -123,8 +123,8 @@ AreaOfCircleOQ02OQ01	GREEN
 AreaOfCircleOQ02OQ04	GREEN	
 AreaOfCircleOQ03OQ01	GREEN	
 AreaOfCircleOQ03OQ02OQ01	GREEN	
-AreaOfCircleOQ03OQ02OQ02	RESIDUAL	proof-drift
-AreaOfCircleOQ03OQ02OQ02OQ01	RESIDUAL	proof-drift
+AreaOfCircleOQ03OQ02OQ02	GREEN	proof-drift
+AreaOfCircleOQ03OQ02OQ02OQ01	GREEN	proof-drift
 AreaOfCircleOQ03OQ03	GREEN	
 AreaOfCircleOQ03OQ03OQ02	GREEN	
 AreaOfCircleOQ05OQ01	RESIDUAL	unknown-const:MeasureTheory.Measure.restrict_prod_eq_prod_restrict
@@ -252,7 +252,7 @@ BirthdayProblemOQ01OQ01OQ03	RESIDUAL	parse-error
 BirthdayProblemOQ02OQ01	RESIDUAL	unknown-const:Finset.sum_range_id_eq_sum_range_succ_div_two
 BirthdayProblemOQ03OQ01	GREEN	
 BirthdayProblemOQ03OQ01OQ02	GREEN	
-BirthdayProblemOQ03OQ03	RESIDUAL	proof-drift
+BirthdayProblemOQ03OQ03	GREEN	proof-drift
 BorsukUlamOQ02	RESIDUAL	unknown-const:EuclideanSpace.equiv_symm_pi_lp_apply
 BorsukUlamOQ02OQ01OQ01OQ02	GREEN	
 BorsukUlamOQ02OQ01OQ01OQ02OQ03	GREEN	

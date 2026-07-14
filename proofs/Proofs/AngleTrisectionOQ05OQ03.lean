@@ -97,6 +97,32 @@ theorem minFoldLevel_le_iff (d : ℕ) (hd : d > 0) {k : ℕ} (hk : k ≥ 1) :
   ⟨fun hle => constructible_mono_le hle (minFoldLevel_constructible d hd),
    fun h => minFoldLevel_le_of_constructible d hd hk h⟩
 
+/-! ## Prime Fold-Level Helpers
+
+    The following three helpers package the prime facts about `foldPrimeBound`
+    (the k-th prime) that the exact-fold-level results below rely on. They were
+    previously referenced from the OQ-02 layer under ad-hoc names; here they are
+    proved directly from `prime_kfold_iff_bound` and strict monotonicity of the
+    prime-counting `Nat.nth`. -/
+
+/-- The `j`-th fold bound `foldPrimeBound j = Nat.nth Nat.Prime j` is prime. -/
+theorem nth_prime_is_prime (j : ℕ) : (foldPrimeBound j).Prime :=
+  Nat.prime_nth_prime j
+
+/-- The `j`-th prime is `j`-fold constructible (upper bound). -/
+theorem nth_prime_constructible_at (j : ℕ) (hj : j ≥ 1) :
+    IsKFoldConstructible (foldPrimeBound j) j :=
+  (prime_kfold_iff_bound (nth_prime_is_prime j) hj).mpr le_rfl
+
+/-- The `j`-th prime is NOT `k`-fold constructible for `k < j` (lower bound):
+    `foldPrimeBound` is strictly monotone, so `p_j > p_k ≥` any `k`-fold bound. -/
+theorem nth_prime_not_constructible_below (j k : ℕ) (hk : k ≥ 1) (hlt : k < j)
+    (h : IsKFoldConstructible (foldPrimeBound j) k) : False := by
+  have hle := (prime_kfold_iff_bound (nth_prime_is_prime j) hk).mp h
+  have hstrict : foldPrimeBound k < foldPrimeBound j :=
+    Nat.nth_strictMono Nat.infinite_setOf_prime hlt
+  omega
+
 /-! ## Exact Fold Level for Primes and Concrete Values -/
 
 /-- The j-th prime (0-indexed) has minimum fold level exactly j, for j ≥ 1.

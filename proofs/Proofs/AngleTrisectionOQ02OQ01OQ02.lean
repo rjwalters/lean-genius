@@ -1,4 +1,5 @@
 import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.FieldTheory.PolynomialGaloisGroup
 import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
@@ -50,10 +51,10 @@ open Polynomial IntermediateField
     with [Fᵢ₊₁:Fᵢ] ≤ 2 for each i, such that α ∈ Fₙ.
 
     Each step of the tower corresponds to adding a square root. -/
-inductive IsConstructible (α : ℂ) : Prop where
-  | rational : α ∈ Set.range (algebraMap ℚ ℂ) → IsConstructible α
-  | sqrt_ext {β : ℂ} (hβ : IsConstructible β) (hα : ∃ a b : ℂ,
-      IsConstructible a ∧ IsConstructible b ∧ β * β = a ∧ α = b + β) :
+inductive IsConstructible : ℂ → Prop where
+  | rational {α : ℂ} : α ∈ Set.range (algebraMap ℚ ℂ) → IsConstructible α
+  | sqrt_ext {α β a b : ℂ} (hβ : IsConstructible β) (ha : IsConstructible a)
+      (hb : IsConstructible b) (hsq : β * β = a) (heq : α = b + β) :
     IsConstructible α
 
 /-- Rational numbers are constructible. -/
@@ -61,12 +62,14 @@ theorem isConstructible_rat (q : ℚ) : IsConstructible (algebraMap ℚ ℂ q) :
   IsConstructible.rational ⟨q, rfl⟩
 
 /-- 0 is constructible. -/
-theorem isConstructible_zero : IsConstructible (0 : ℂ) :=
-  isConstructible_rat 0
+theorem isConstructible_zero : IsConstructible (0 : ℂ) := by
+  have := isConstructible_rat 0
+  simpa using this
 
 /-- 1 is constructible. -/
-theorem isConstructible_one : IsConstructible (1 : ℂ) :=
-  isConstructible_rat 1
+theorem isConstructible_one : IsConstructible (1 : ℂ) := by
+  have := isConstructible_rat 1
+  simpa using this
 
 -- ============================================================
 -- PART 2: Tower of Quadratic Extensions
@@ -88,14 +91,16 @@ theorem finrank_of_double_quadratic (F K L : Type*) [Field F] [Field K]
     [IsScalarTower F K L]
     (h1 : Module.finrank F K = 2) (h2 : Module.finrank K L = 2) :
     Module.finrank F L = 4 := by
-  rw [show (4 : ℕ) = 2 * 2 from by norm_num, ← h1, ← h2]
-  exact (Module.finrank_mul_finrank F K L).symm
+  rw [← Module.finrank_mul_finrank F K L, h1, h2]
 
 /-- The degree of a tower of n quadratic extensions divides 2^n. -/
-theorem tower_degree_dvd_pow_two (n : ℕ) :
+theorem tower_degree_dvd_pow_two (n : ℕ) (hn : 0 < n) :
     ∀ d : ℕ, (∀ i : Fin n, d ∣ 2 ^ (i : ℕ).succ) → d ∣ 2 ^ n := by
-  intro d _; exact dvd_pow_self 2 (by omega : n ≠ 0 ∨ n = 0 |>.elim id (by omega))
-  -- This is a placeholder; the real tower argument is more subtle
+  intro d h
+  -- Apply the hypothesis at the last index i = n - 1, giving d ∣ 2 ^ n.
+  have hi : (n - 1 : ℕ) < n := by omega
+  have := h ⟨n - 1, hi⟩
+  simpa [Nat.succ_eq_add_one, Nat.sub_add_cancel hn] using this
 
 -- ============================================================
 -- PART 3: Degree Criterion (Necessary Condition)
@@ -161,20 +166,31 @@ theorem three_not_pow_two : ¬ DegreePowerOfTwo (X ^ 3 - C 2 : ℚ[X]) := by
   rw [cube_root_2_degree] at hk
   -- 3 = 2^k has no solution for k : ℕ
   -- k=0: 2^0=1≠3; k=1: 2^1=2≠3; k≥2: 2^k≥4>3
-  interval_cases k <;> simp_all
+  rcases k with _ | _ | k
+  · simp at hk
+  · norm_num at hk
+  · have h4 : (4 : ℕ) ≤ 2 ^ (k + 2) := by
+      calc (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ (k + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
 
 /-- 8x³ - 6x - 1 is irreducible over ℚ. This is the minimal polynomial
     of cos(20°) (up to scaling). It arises from the triple angle formula:
     cos(3θ) = 4cos³(θ) - 3cos(θ), with θ = 20°, cos(60°) = 1/2. -/
 theorem cos20_minpoly_degree : (8 * X ^ 3 - 6 * X - 1 : ℚ[X]).natDegree = 3 := by
-  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_mul, natDegree_pow,
-    natDegree_X, natDegree_C, natDegree_one]
+  compute_degree!
 
 theorem cos20_degree_not_pow_two :
     ¬ DegreePowerOfTwo (8 * X ^ 3 - 6 * X - 1 : ℚ[X]) := by
   intro ⟨k, hk⟩
   rw [show (8 * X ^ 3 - 6 * X - 1 : ℚ[X]).natDegree = 3 from cos20_minpoly_degree] at hk
-  interval_cases k <;> simp_all
+  rcases k with _ | _ | k
+  · simp at hk
+  · norm_num at hk
+  · have h4 : (4 : ℕ) ≤ 2 ^ (k + 2) := by
+      calc (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ (k + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
 
 -- ============================================================
 -- PART 5: The Three Classical Impossibilities
@@ -202,10 +218,15 @@ theorem regular_7gon_impossible_degree :
     ¬ DegreePowerOfTwo (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]) := by
   intro ⟨k, hk⟩
   have hdeg : (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]).natDegree = 3 := by
-    norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_add_eq_left_of_natDegree_lt,
-      natDegree_mul, natDegree_pow, natDegree_X, natDegree_C, natDegree_one]
+    compute_degree!
   rw [hdeg] at hk
-  interval_cases k <;> simp_all
+  rcases k with _ | _ | k
+  · simp at hk
+  · norm_num at hk
+  · have h4 : (4 : ℕ) ≤ 2 ^ (k + 2) := by
+      calc (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ (k + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
 
 -- ============================================================
 -- PART 6: Galois Characterization (Sufficient Condition)
