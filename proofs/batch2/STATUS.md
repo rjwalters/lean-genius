@@ -1906,3 +1906,27 @@ incomplete formalization, not drift), Erdos1078Problem (`minDegree` `Classical.a
 [Nonempty V] which cascades to `Fin (r*n)` (can be empty) + `G.degree` fintype — def restructure),
 Erdos1040Problem (`csInf_le_csInf` signature + anon-ctor Eq.refl), Erdos1048Aristotle (12 errors,
 Complex.abs family + multiple renames).
+
+## Increment 37 (continued) — +5 more GREEN (total +18)
+
+- 37-15 Erdos652Problem — `alpha_k k < ⊤` ill-typed (ℝ has no Top) → statement repair `∃ B, alpha_k k ≤ B`.
+- 37-16 Erdos640Problem — Fin-index equalities: build explicit `hidx : (⟨…⟩:Fin _) = ⟨…⟩ := Fin.ext hmod`
+  then `rw [hidx]` (can't `congr 1; Fin.ext` — goes to wrong level); `(S.card-1+1)%S.card=0` via
+  `Nat.sub_add_cancel + Nat.mod_self` (omega can't do variable modulus); final omega needs
+  `.isLt` bounds + `obtain ⟨m,hm⟩ := hodd`.
+- 37-17 Erdos775Problem — RECIPE: file imported only narrow modules → `norm_num`/`omega`/`push_neg`
+  report "unknown tactic" → add `import Mathlib.Tactic`. Also `insert` needs `[DecidableEq V]`.
+  Statement repairs: `erdos775Question`/`graphs_vs_hypergraphs` had disconnected free `∃ numSizes`
+  (trivially SAT ⟹ `¬Question` unprovable) → bind to `numCliqueSizes H`; fixed `n≥k`/`n>C` witness
+  gaps (`max` over N,k,C+1).
+- 37-18 Erdos966Problem — same `import Mathlib.Tactic` recipe; `h 0 _ : a + 0*d ∈ {n}` — annotate the
+  `have` with the literal `a + 0*d` form (not pre-simplified `a`) then `simp`.
+- 37-19 Erdos757Problem — RECIPE: `Set.ncard` API renames: `Set.ncard_insert_of_not_mem`→`_notMem`,
+  `Set.ncard_coe_Finset`→`Set.ncard_coe_finset` (lowercase f), `Set.Finite.toFinset_card`→
+  `Set.ncard_eq_toFinset_card B hBfin` (different toFinset than the `[Fintype]` one); `insert 0 ↑F`
+  needs explicit `(↑F : Set ℝ)` coercion or it's read as `Finset`.
+
+Deferred this batch: Erdos794Problem (genuine universe-polymorphism mismatch — `Erdos794Simplified`
+and `…Conjecture` fix DIFFERENT `Type u` levels, `@h V` rejects `V : Type u₂`; plus `Fin 9 : Type`
+arg + `erdos_794_origina` typo), Erdos814Problem (HSub ℕ ℚ / LT ℚ instance gaps),
+Erdos732Problem (`Fintype (List ℕ)` ill-defined def), Erdos611Problem (sorry in theorem TYPES).

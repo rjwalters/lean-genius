@@ -1332,3 +1332,19 @@ exactly one file in this partition.
 **Statement repairs (inc-37):** Erdos723 `order_1_is_prime_power : IsPrimePow 1` was FALSE (1∉PrimePow)
 → `order_1_not_prime_power : ¬IsPrimePow 1`. Erdos620 `triangleFree_implies_K4Free` intro pattern
 mismatched HasK4's 6-neq/6-adj conjunction → rewrote destructuring.
+
+## §7aa Increment 37 (continued) recipes
+
+| Symptom | Fix | Files |
+|---|---|---|
+| `norm_num`/`omega`/`push_neg`/`linarith` "unknown tactic" (parse error) in a file importing only narrow `Mathlib.X` modules | add `import Mathlib.Tactic` | Erdos775Problem, Erdos966Problem |
+| `Set.ncard_insert_of_not_mem` "Unknown constant" | `Set.ncard_insert_of_notMem` | Erdos757Problem |
+| `Set.ncard_coe_Finset` "Unknown constant" | `Set.ncard_coe_finset` (lowercase f) | Erdos757Problem |
+| `Set.Finite.toFinset_card` "Unknown constant" for `hfin.toFinset.card` | `rw [← Set.ncard_eq_toFinset_card s hfin]` | Erdos757Problem |
+| `insert a ↑F` treated as `Finset` ("Invalid field ncard: no Finset.ncard") | annotate `(↑F : Set _)` | Erdos757Problem |
+| `x < ⊤` where `x : ℝ` ("failed to synthesize Top ℝ") | ℝ has no Top; restate finiteness as `∃ B, x ≤ B` | Erdos652Problem |
+| `congr 1; Fin.ext h` overshoots to `b x = b y` goal | build `hidx : (⟨…⟩:Fin n) = ⟨…⟩ := Fin.ext h` then `rw [hidx]` | Erdos640Problem |
+| `(k+1) % n = 0` / variable-modulus omega fails | `rw [Nat.sub_add_cancel …, Nat.mod_self]` | Erdos640Problem |
+
+**Deferred:** universe-polymorphism mismatch between two `Prop` defs that each fix a different
+`Type u` (`@h V` rejects `V : Type u₂`) is NOT a rename — needs `Type _`/level unification (Erdos794).
