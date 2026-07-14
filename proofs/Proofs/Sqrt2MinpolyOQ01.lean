@@ -159,7 +159,7 @@ private lemma irrational_sqrt_of_not_sq {n : ℕ} (hn : 0 < n) (hns : ¬ IsSquar
         rw [← Real.rpow_natCast ((n : ℝ) ^ ((1 : ℝ) / (2 : ℕ))) 2,
             ← Real.rpow_mul (Nat.cast_nonneg n)]
         norm_num
-      rw [← hk] at hrpow
+      rw [hk] at hrpow
       exact_mod_cast hrpow
     refine ⟨k.natAbs, ?_⟩
     have habs : k.natAbs ^ 2 = n := by
@@ -188,26 +188,28 @@ theorem minpoly_sqrt_of_not_sq (n : ℕ) (hn : 0 < n) (hns : ¬ IsSquare n) :
     minpoly.dvd ℚ (Real.sqrt n) hXn_aeval
   have hXn_ne : (X ^ 2 - C (n : ℚ) : ℚ[X]) ≠ 0 := Polynomial.Monic.ne_zero hXn_monic
   have hdeg_le : (minpoly ℚ (Real.sqrt n)).natDegree ≤ 2 := by
+    have hnd : (X ^ 2 - C (n : ℚ) : ℚ[X]).natDegree = 2 := natDegree_X_pow_sub_C
     have := Polynomial.natDegree_le_of_dvd hdvd hXn_ne
-    simpa [Polynomial.natDegree_X_pow_sub_C] using this
+    rwa [hnd] at this
   have hirr : Irrational (Real.sqrt n) := irrational_sqrt_of_not_sq hn hns
   have hdeg_ge : 2 ≤ (minpoly ℚ (Real.sqrt n)).natDegree := by
     by_contra hlt
     push_neg at hlt
     have hdeg1 : (minpoly ℚ (Real.sqrt n)).natDegree = 1 := by
       have hge1 := minpoly.natDegree_pos hintegral; omega
-    obtain ⟨a, b, ha, hfab⟩ := Polynomial.natDegree_eq_one.mp hdeg1
+    obtain ⟨a, ha, b, hfab⟩ := Polynomial.natDegree_eq_one.mp hdeg1
     have hmonic := minpoly.monic hintegral
     have ha1 : a = 1 := by
       have hlc := hmonic.leadingCoeff
-      rw [hfab] at hlc
+      rw [← hfab] at hlc
       simp [Polynomial.leadingCoeff_add_of_degree_lt, Polynomial.degree_C_mul_X ha,
             Polynomial.degree_C, ha] at hlc
       exact hlc
-    rw [ha1, one_mul] at hfab
+    rw [ha1, map_one, one_mul] at hfab
     have heval := minpoly.aeval ℚ (Real.sqrt n)
-    rw [hfab] at heval
+    rw [← hfab] at heval
     simp only [map_add, aeval_X, aeval_C] at heval
+    rw [show (algebraMap ℚ ℝ) b = (b : ℝ) from by simp] at heval
     exact hirr ⟨-b, by push_cast at heval ⊢; linarith⟩
   have hdeg : (minpoly ℚ (Real.sqrt n)).natDegree = 2 := Nat.le_antisymm hdeg_le hdeg_ge
   obtain ⟨c, hc⟩ := hdvd
