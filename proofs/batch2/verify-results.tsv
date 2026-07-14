@@ -2153,7 +2153,7 @@ InverseGaloisOQ06OQ02	GREEN
 InverseGaloisOQ06OQ02GalBridge	GREEN	
 InverseGaloisOQ06OQ02GapChar	GREEN	
 InverseGaloisOQ06OQ02P11	GREEN	
-IsoperimetricTheorem	RESIDUAL	unknown-const:IsoperimetricTheorem.equality_iff_circle
+IsoperimetricTheorem	GREEN	
 IsoperimetricTheoremOQ01	RESIDUAL	unknown-const:cos_lt_one_of_ne_zero
 IsoperimetricTheoremOQ02	GREEN	
 KnightsTourOblique	GREEN	
@@ -2224,7 +2224,7 @@ LawsOfLargeNumbersOQ01OQ03	RESIDUAL	signature-drift
 LawsOfLargeNumbersOQ02	RESIDUAL	type-mismatch
 LawsOfLargeNumbersOQ03	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
 LawsOfLargeNumbersOQ03Aristotle	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
-LebesgueMeasure	RESIDUAL	unknown-const:integral_mul_left
+LebesgueMeasure	GREEN	
 LebesgueMeasureOQ01	GREEN	
 LebesgueMeasureOQ01OQ01	RESIDUAL	type-mismatch
 LebesgueMeasureOQ01OQ01OQ01OQ02	GREEN	
