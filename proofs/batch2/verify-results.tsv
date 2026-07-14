@@ -85,9 +85,9 @@ AngleTrisectionOQ02OQ01OQ02	RESIDUAL	rewrite-drift
 AngleTrisectionOQ02OQ01OQ02Aristotle	GREEN	
 AngleTrisectionOQ02OQ01OQ02Incomplete01	RESIDUAL	instance-synth
 AngleTrisectionOQ02OQ03	GREEN	
-AngleTrisectionOQ02OQ03Ext	RESIDUAL	rewrite-drift
+AngleTrisectionOQ02OQ03Ext	GREEN	rewrite-drift
 AngleTrisectionOQ02OQ03OQ01	GREEN	
-AngleTrisectionOQ02OQ04	RESIDUAL	unknown-const:Group.IsSolvable
+AngleTrisectionOQ02OQ04	GREEN	unknown-const:Group.IsSolvable
 AngleTrisectionOQ02OQ04OQ01	GREEN	
 AngleTrisectionOQ02OQ04OQ01Aristotle	GREEN	
 AngleTrisectionOQ03	GREEN	
@@ -216,7 +216,7 @@ BezoutIdentityOQ02OQ01OQ01OQ01OQ01	RESIDUAL	type-mismatch
 BezoutIdentityOQ02OQ01OQ02	GREEN	
 BezoutIdentityOQ02OQ01OQ02OQ02OQ03	RESIDUAL	parse-error
 BezoutIdentityOQ02OQ01OQ02OQ03	RESIDUAL	type-mismatch
-BezoutIdentityOQ02OQ02	RESIDUAL	unknown-const:euclids_lemma_irreducible
+BezoutIdentityOQ02OQ02	GREEN	unknown-const:euclids_lemma_irreducible
 BezoutIdentityOQ02OQ02OQ01OQ03	GREEN	
 BezoutIdentityOQ02OQ04	RESIDUAL	instance-synth
 BezoutIdentityOQ03OQ01OQ01OQ02OQ02	GREEN	
@@ -345,7 +345,7 @@ CauchyInterlacingOQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingOQ01OQ01OQ01OQ01	RESIDUAL	unknown-const:List.eq_of_perm_of_sorted
 CauchyInterlacingPoincareCompression	RESIDUAL	unknown-const:LinearMap.mul_apply
 CauchyInterlacingWeylDual	GREEN	
-CauchySchwarz	RESIDUAL	type-mismatch
+CauchySchwarz	GREEN	type-mismatch
 CauchySchwarzIntegralLpDualityGluing	GREEN	
 CauchySchwarzIntegralLpDualityIngredients	GREEN	
 CauchySchwarzIntegralLpDualityMaximal	GREEN	
@@ -449,7 +449,7 @@ ChineseRemainderNonCoprimeList	GREEN
 ChineseRemainderNonCoprimeOQ01	GREEN	
 ChineseRemainderNonCoprimeOQ01OQ01	GREEN	
 ChineseRemainderNonCoprimeOQ02	RESIDUAL	parse-error
-ChineseRemainderNonCoprimeOQ02OQ01	RESIDUAL	instance-synth
+ChineseRemainderNonCoprimeOQ02OQ01	GREEN	instance-synth
 ChineseRemainderNonCoprimeOQ03OQ02	RESIDUAL	type-mismatch
 CircumferenceFromArea	GREEN	
 CircumferenceViaDifferentiationOQ01	GREEN	
@@ -974,7 +974,7 @@ Erdos179ProblemAristotle	RESIDUAL	proof-drift
 Erdos17Problem	GREEN	
 Erdos180Problem	RESIDUAL	instance-synth
 Erdos181OQ01	RESIDUAL	unknown-const:Function.id
-Erdos181Problem	RESIDUAL	unknown-const:rpow_le_rpow_of_exponent_le
+Erdos181Problem	GREEN	unknown-const:rpow_le_rpow_of_exponent_le
 Erdos182Problem	GREEN	
 Erdos183Problem	RESIDUAL	proof-drift
 Erdos184Problem	RESIDUAL	proof-drift

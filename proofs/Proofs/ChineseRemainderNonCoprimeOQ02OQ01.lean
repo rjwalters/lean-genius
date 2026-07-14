@@ -77,7 +77,7 @@ we transport distributivity from the `FactorSet` (multiset) model.
 
 section Distrib
 
-variable {R : Type*} [CancelCommMonoidWithZero R] [UniqueFactorizationMonoid R]
+variable {R : Type*} [CommMonoidWithZero R] [IsCancelMulZero R] [UniqueFactorizationMonoid R]
 
 /-- The lattice `Associates R` of a UFD is distributive (the nontrivial direction
 `(A ⊔ B) ⊓ C ≤ (A ⊓ C) ⊔ (B ⊓ C)`).  Proved by pushing the inequality through the
