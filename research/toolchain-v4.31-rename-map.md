@@ -847,3 +847,31 @@ is too slow on `import Mathlib` umbrellas (~15-20s each even warm). Once the bas
 cache is built, a per-file `lake build Proofs.X` is the fast fix-verify loop.
 `docker restart dr28` before each rebuild to dodge virtiofs staleness on
 /Volumes/Stripe worktrees (confirms 5B).
+### 7r. Doctor increment-17 recipes (#38065, 2026-07-13, structured remainder + deep-rework clusters)
+
+**Cluster clears:** ThreeSubgroupsLemma `lowerCentralSeries` (39-site, #38612 item 3)
+CLEARED; GeneralizeProofs vendored-block 1/3; SimpleGraph-field cluster 3/6 + RothTheorem dep.
+
+| symptom (v4.31) | fix | notes / files |
+|---|---|---|
+| `lowerCentralSeries G n` "Ambiguous term" / "Unknown identifier G" (`open Subgroup`) | `Subgroup.lowerCentralSeries (⊤ : Subgroup G) n` | `lowerCentralSeries` redefined to take a `Subgroup S` (LCS of a subgroup in the ambient group); the group's series is `S = ⊤`. `Subgroup.` prefix kills the _root_-vs-Subgroup open-ambiguity. `_zero`/`_antitone`/`_succ` are now S-methods (antitone takes S explicit THEN the `a ≤ b` proof). ThreeSubgroupsLemmaOQ0101/OQ01OQ01 |
+| vendored `namespace …GeneralizeProofs` referencing `Mathlib.Tactic.GeneralizeProofs` ("unknown namespace") | delete the whole vendored block; `generalize_proofs` falls back to the standard tactic (moved to `Batteries.Tactic.GeneralizeProofs`, still re-exported by Mathlib) | AmgmInequalityOQ02Aristotle FLIPPED; Erdos643/LawsOfLargeNumbers had deep own errors (sorry+timeouts / rename+aesop) — reverted. Aristotle exporter sometimes wraps the file's real `import`+tactic defs inside the header doc-comment code fence (`/- … ```lean import Mathlib … ``` … -/`) → they're commented out; re-declare them as real code (Erdos643) |
+| `Cardinal.toType` "Invalid field `toType`/`Quot.toType`" | `Cardinal.out` (`c.out`) | Erdos1175 |
+| `Cardinal.IsLimit` "Invalid field `IsLimit`/`Quot.IsLimit`" | `Order.IsSuccLimit c` (dot `c.IsLimit` → prefix `Order.IsSuccLimit c`) | Erdos739 |
+| `Cardinal.aleph0_lt_aleph 1` "Function expected" | `Cardinal.aleph0_lt_aleph.mpr one_pos` — it is now an iff `ℵ₀ < ℵ_o ↔ 0 < o` | Erdos1175 |
+| `Polynomial.modByMonic_add_div f hm` "Application type mismatch (hm : …Monic expected R[X])" | `modByMonic_add_div f <divisorPoly>` — signature is now `(p q : R[X]) : p %ₘ q + q*(p /ₘ q) = p`; pass the DIVISOR polynomial, not the Monic proof | CayleyHamiltonOQ01/OQ02 |
+| `Finset.sort_sorted (· ≤ ·)` "environment does not contain" | `Finset.pairwise_sort` (gives `List.Pairwise r`; `List.Sorted r = Pairwise r`); drop `List.Sorted`/`mem_product` from any following `simp` (`List.pairwise_cons` for cons) | Erdos884 |
+| `Finset.sum_eq_add_sum_diff_singleton (h : a∈s) f` "Unknown constant" | reconstruct locally: `∑ x∈s, f x = f a + ∑ x∈s\{a}, f x := by rw [← Finset.erase_eq, Finset.add_sum_erase s f h]` | RothTheorem (3 sites); the upstream lemma was removed |
+| `SimpleGraph.degree_lt_card v` "environment does not contain" | `G.degree_lt_card_verts v` | Erdos637Aristotle |
+| `G.edge_mem_edgeSet` "environment does not contain" | `G.mem_edgeSet` | Erdos582 |
+| `Fintype`/`DecidableEq`/`DecidableRel` synth "failed to synthesize" on a wrapper `def` (`def T := Fin k → Bool`) | change `def T` → `abbrev T` (v4.31 instance resolution no longer unfolds `def`); a graph over it needs an explicit `instance : DecidableRel (graph k).Adj` | Erdos576 |
+| named-instance application `foo (DecidableRel := Classical.decRel _)` "Invalid argument name" | `letI := Classical.decRel (α := V) (G : SimpleGraph V).Adj` before the goal (instance args are anonymous) | Erdos637Aristotle |
+| `simp`/`convert … using 2` proof closes/nests differently: 3-field `⟨v, mem, pf⟩` → 2-field, `mem_product` unused, `convert` depth off | drop the extra field / use `Finset.mem_image.mpr ⟨x, Finset.mk_mem_product ha ha, pf⟩` / replace `convert` with explicit `Finset.filter_congr` | Erdos637Aristotle/539/576 |
+| `simp [lemmas]; omega` "No goals to be solved" | drop the trailing `; omega` — simp now self-closes | Erdos324 |
+| curated-import file: `norm_num`/`Real.log`/`Real.sqrt` "unknown tactic"/"Function expected" | add the missing import (`Mathlib.Tactic.NormNum`, `…SpecialFunctions.Log.Basic`, `…Sqrt`); or replace the tactic with a lemma (`one_pos` etc.) | Erdos582/91/1175 |
+| universe metavar in a `Prop`-valued def ("Failed to infer universe levels" / "contains universe level metavariables") | pin internal `∀/∃ (V : Type*)`→`Type`, `κ/μ : Cardinal`→`Cardinal.{0}`, axiom/def `Cardinal` returns, and matching `variable {V : Type}` | Erdos1031/1175/474/739. **NOT pinnable** when a `Set.Iio kappa` subtype forces `Type 1` vs `α : Type 0` (Erdos598 — genuine design issue, deferred) |
+| `λ'` / `∀ λ : T` binder — `λ` is a reserved token ("unexpected token 'λ'") | rename the binder (`μ`, `μ'`) | Erdos1175/474 |
+| `@axiom W _ _ G` over-applied — axiom's section `[Fintype]`/`[DecidableEq]` no longer auto-included when its body doesn't use them | drop the extra `_` (or use the non-`@` `axiom G` form) | Erdos84 |
+| `Nat.find ⟨…⟩` "expected type could not be determined" | give the predicate explicitly `Nat.find (p := fun m => …)` + `haveI : DecidablePred _ := Classical.decPred _` + a full-arity witness | Erdos91 |
+| `∆` symmDiff "expected token" | `open scoped symmDiff` (notation is `scoped[symmDiff]`) — but this only fixes the parse; a Setoid built on it may then hit `symmDiff_comm` rename + real transitivity obligations | Erdos1123 (reverted — transitivity is a real theorem) |
+| Mathlib now defines root-level `Hypergraph` (`Mathlib.Combinatorics.Hypergraph.Basic`) → "already been declared" | namespace-wrap the project file's own declarations | Erdos1020 (namespace fix ready but 10+ deeper errors — reverted) |

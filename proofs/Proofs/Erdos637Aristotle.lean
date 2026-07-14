@@ -47,10 +47,11 @@ theorem regular_one_degree (G : SimpleGraph V) [DecidableRel G.Adj]
     numDistinctDegrees G = 1 := by
   unfold numDistinctDegrees distinctDegrees
   have : Finset.image (vertexDegree G) Finset.univ = {k} := by
-    ext d; simp [Finset.mem_image, Finset.mem_singleton]
+    ext d
+    simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_singleton]
     constructor
-    · rintro ⟨v, _, rfl⟩; exact h v
-    · intro hd; exact ⟨Classical.arbitrary V, Finset.mem_univ _, hd ▸ (h _).symm⟩
+    · rintro ⟨v, rfl⟩; exact h v
+    · intro hd; exact ⟨Classical.arbitrary V, hd ▸ h _⟩
   rw [this, Finset.card_singleton]
 
 -- Degree bounds
@@ -71,7 +72,7 @@ theorem numDistinctDegrees_le_card' (G : SimpleGraph V) [DecidableRel G.Adj] :
 theorem degree_lt_card (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
     vertexDegree G v < Fintype.card V := by
   unfold vertexDegree
-  exact G.degree_lt_card v
+  exact G.degree_lt_card_verts v
 
 /-- If the graph has at least one vertex, it has at least one distinct degree. -/
 theorem numDistinctDegrees_pos (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V] :
@@ -85,8 +86,8 @@ theorem numDistinctDegrees_pos (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempt
 /-- An induced subgraph on a vertex set S. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj := fun u v => G.Adj u.val v.val
-  symm.symm := fun _ _ h => G.adj_symm h
-  loopless.irrefl := fun v => G.loopless.irrefl v.val
+  symm := ⟨fun _ _ h => G.adj_symm h⟩
+  loopless := ⟨fun v => G.loopless.irrefl v.val⟩
 
 /-- Degrees in an induced subgraph are bounded by degrees in the full graph. -/
 theorem induced_degree_le (G : SimpleGraph V) [DecidableRel G.Adj]
@@ -107,15 +108,18 @@ theorem induced_degree_le (G : SimpleGraph V) [DecidableRel G.Adj]
 
 -- The empty graph
 /-- The empty graph (no edges) is 0-regular. -/
-theorem bot_regular : IsRegular (⊥ : SimpleGraph V) (DecidableRel := Classical.decRel _) 0 := by
+theorem bot_regular : letI := Classical.decRel (α := V) (⊥ : SimpleGraph V).Adj
+    IsRegular (⊥ : SimpleGraph V) 0 := by
+  letI := Classical.decRel (α := V) (⊥ : SimpleGraph V).Adj
   intro v; unfold vertexDegree
   have : (⊥ : SimpleGraph V).neighborFinset v = ∅ := by
     ext w; simp [SimpleGraph.mem_neighborFinset]
   simp [SimpleGraph.degree, this]
 
 /-- The complete graph on n vertices is (n-1)-regular. -/
-theorem top_regular [Nonempty V] :
-    IsRegular (⊤ : SimpleGraph V) (DecidableRel := Classical.decRel _) (Fintype.card V - 1) := by
+theorem top_regular [Nonempty V] : letI := Classical.decRel (α := V) (⊤ : SimpleGraph V).Adj
+    IsRegular (⊤ : SimpleGraph V) (Fintype.card V - 1) := by
+  letI := Classical.decRel (α := V) (⊤ : SimpleGraph V).Adj
   intro v; unfold vertexDegree
   have : (⊤ : SimpleGraph V).neighborFinset v = Finset.univ.erase v := by
     ext w; simp [SimpleGraph.mem_neighborFinset, Finset.mem_erase, ne_comm]

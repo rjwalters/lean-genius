@@ -77,8 +77,7 @@ theorem quotient_set_nonempty (A : Finset ℕ) (hne : A.Nonempty) (hpos : ∀ a 
   obtain ⟨a, ha⟩ := hne
   use gcdQuotient a a
   unfold gcdQuotientSet
-  simp only [mem_image, mem_product]
-  exact ⟨(a, a), ⟨ha, ha⟩, rfl⟩
+  exact Finset.mem_image.mpr ⟨(a, a), Finset.mk_mem_product ha ha, rfl⟩
 
 /-- gcdQuotient a a = 1 for a > 0. -/
 theorem gcdQuotient_self (a : ℕ) (ha : a > 0) : gcdQuotient a a = 1 := by
@@ -90,8 +89,8 @@ theorem one_in_quotient_set (A : Finset ℕ) (hne : A.Nonempty) (hpos : ∀ a �
     1 ∈ gcdQuotientSet A := by
   obtain ⟨a, ha⟩ := hne
   unfold gcdQuotientSet
-  simp only [mem_image, mem_product]
-  exact ⟨(a, a), ⟨ha, ha⟩, gcdQuotient_self a (hpos a ha)⟩
+  exact Finset.mem_image.mpr
+    ⟨(a, a), Finset.mk_mem_product ha ha, gcdQuotient_self a (hpos a ha)⟩
 
 /-
 ## Part III: Erdős-Szemerédi Bounds

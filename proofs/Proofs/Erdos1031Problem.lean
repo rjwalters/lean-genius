@@ -164,7 +164,7 @@ def containsInduced (G : SimpleGraph V) (H : SimpleGraph W) [Fintype W] : Prop :
 
 /-- G is k-universal: contains all graphs on k vertices as induced subgraphs. -/
 def isKUniversal (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∀ (W : Type*) [DecidableEq W] [Fintype W],
+  ∀ (W : Type) [DecidableEq W] [Fintype W],
   Fintype.card W = k →
   ∀ H : SimpleGraph W, containsInduced G H
 
@@ -336,8 +336,8 @@ private theorem adj_gives_pred (i j k : ℕ) (hi : i < k) (hj : j < k) (hk : k �
 /-- The cycle graph on k vertices. -/
 private def cycleGraph' (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
   Adj := cycleAdj k
-  symm.symm := cycleAdj_symm k
-  loopless.irrefl := cycleAdj_loopless k hk
+  symm := ⟨cycleAdj_symm k⟩
+  loopless := ⟨cycleAdj_loopless k hk⟩
 
 /-- Universal graphs contain regular subgraphs. -/
 theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
@@ -349,8 +349,8 @@ theorem universal_has_regular (G : SimpleGraph V) (k : ℕ) (hk : k ≥ 6) :
   let W := ULift.{_, 0} (Fin k)
   let H : SimpleGraph W := {
     Adj := fun a b => cycleAdj k a.down b.down
-    symm.symm := fun a b h => cycleAdj_symm k a.down b.down h
-    loopless.irrefl := fun a h => cycleAdj_loopless k hk3 a.down h
+    symm := ⟨fun a b h => cycleAdj_symm k a.down b.down h⟩
+    loopless := ⟨fun a h => cycleAdj_loopless k hk3 a.down h⟩
   }
   have hWcard : Fintype.card W = k := by
     change Fintype.card (ULift (Fin k)) = k
@@ -480,10 +480,12 @@ theorem erdos_1031_via_promel_rodl :
     have : 0 < n := by omega
     exact_mod_cast this
   have hexp_le : Real.exp (6 / c'') ≤ ↑n := by
-    calc Real.exp (6 / c'')
-        ≤ ↑(Nat.ceil (Real.exp (6 / c''))) := Nat.le_ceil _
-      _ < ↑(Nat.ceil (Real.exp (6 / c'')) + 1) := by push_cast; linarith
-      _ ≤ ↑n := by exact_mod_cast hn2
+    have : Real.exp (6 / c'') < ↑n :=
+      calc Real.exp (6 / c'')
+          ≤ ↑(Nat.ceil (Real.exp (6 / c''))) := Nat.le_ceil _
+        _ < ↑(Nat.ceil (Real.exp (6 / c'')) + 1) := by push_cast; linarith
+        _ ≤ ↑n := by exact_mod_cast hn2
+    exact this.le
   have hlog_bound : c'' * Real.log ↑n ≥ 6 := by
     calc c'' * Real.log ↑n
         ≥ c'' * Real.log (Real.exp (6 / c'')) := by
@@ -504,8 +506,7 @@ theorem erdos_1031_via_promel_rodl :
   rw [hScard]
   have hfloor_ge : (k : ℝ) ≥ c'' * Real.log ↑n - 1 := by
     have h := Nat.lt_floor_add_one (c'' * Real.log ↑n)
-    change c'' * Real.log ↑n < ↑(k + 1) at h
-    push_cast at h
+    -- h : c'' * Real.log ↑n < ↑⌊c'' * Real.log ↑n⌋₊ + 1  (i.e. ↑k + 1)
     linarith
   calc (k : ℝ) ≥ c'' * Real.log ↑n - 1 := hfloor_ge
     _ ≥ c'' * Real.log ↑n / 2 := by linarith

@@ -72,7 +72,7 @@ whose cycle set is exactly A.
 def isAchievableCycleSet (n : ℕ) (A : Set ℕ) : Prop :=
   ∃ (W : Type) (_ : Fintype W) (_ : DecidableEq W),
     Fintype.card W = n ∧
-    ∃ (G : SimpleGraph W), @cycleSet W _ _ G = A
+    ∃ (G : SimpleGraph W), cycleSet G = A
 
 /--
 **The Cycle Set Count f(n):**

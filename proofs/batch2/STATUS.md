@@ -1,3 +1,75 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 17, #38065, 2026-07-13)
+
+# DOCTOR INCREMENT 17 (structured remainder + deep-rework clusters, #38065, 2026-07-13)
+
+Ledger at increment close: **1505 GREEN** (was 1483 at inc-16 close; **+22**).
+Container `dr27` (cpus 0-5, 11g, cache v431). Classes worked: the deep-rework
+ThreeSubgroupsLemma + GeneralizeProofs clusters, the SimpleGraph-field cluster, and
+the parse/sig/elab/dot structured remainder.
+
+## Cluster outcomes
+- **ThreeSubgroupsLemma lowerCentralSeries (39-site cluster #38612 item 3): CLEARED.**
+  Both dependent files flipped (ThreeSubgroupsLemmaOQ0101 +
+  ThreeSubgroupsLemmaOQ01OQ01). Recipe: `lowerCentralSeries` was redefined to take a
+  `Subgroup S` (LCS of a subgroup in the ambient group); the group's series is the
+  `S = ⊤` case. `lowerCentralSeries G n` → `Subgroup.lowerCentralSeries (⊤ : Subgroup G) n`
+  (`Subgroup.` prefix kills the `open Subgroup` _root_-vs-Subgroup ambiguity).
+  `lowerCentralSeries_zero/_antitone` now S-methods (antitone takes S explicit then
+  the `a ≤ b` proof).
+- **GeneralizeProofs vendored-block cluster (#38612 item 4): 1/3.**
+  The 3 Aristotle files vendored a copy of `Mathlib.Tactic.GeneralizeProofs` — that
+  namespace was removed (tactic moved to `Batteries.Tactic.GeneralizeProofs`, still
+  re-exported by Mathlib). Recipe: delete the whole `namespace
+  Harmonic.GeneralizeProofs … end Harmonic` block so `generalize_proofs` resolves to
+  the standard tactic. AmgmInequalityOQ02Aristotle FLIPPED. Erdos643Problem (its real
+  `import Mathlib`+`revert_all`/`negate_state` tactic defs were wrapped in the header
+  doc-comment code fence — re-declared them, but the file then hit sorry L1092 +
+  heartbeat timeouts) and LawsOfLargeNumbersOQ01Aristotle (rename+aesop-loop+
+  rewrite/tm/field errors) have deep own errors — block-removal ready, reverted.
+- **SimpleGraph-field cluster: 3/6 flipped + 1 dep cleared.**
+  Erdos582, Erdos637Aristotle, Erdos1031, Erdos1175 FLIPPED; Erdos576 FLIPPED (with
+  RothTheorem dep also cleared). RothTriangleRemoval field-fix ready but 5 own
+  tm/pd/synth/rcases errors + 2 pre-existing sorries → reverted (deep-rework).
+
+## Waves (all in-container `lake build` exit-0 confirmed, then ledger-flipped)
+- **DR27a (+2)**: ThreeSubgroupsLemmaOQ0101 + OQ01OQ01 (lowerCentralSeries recipe).
+- **DR27b (+1)**: AmgmInequalityOQ02Aristotle (GeneralizeProofs block removal).
+- **DR27c (+2)**: Erdos582 (field fix + G.adj_symm/G.loopless.irrefl + edge_mem_edgeSet→mem_edgeSet + import NormNum), Erdos637Aristotle (field fix + degree_lt_card→degree_lt_card_verts + letI Classical.decRel for named-instance IsRegular + simp-drops-v∈univ ⟨⟩ arity).
+- **DR27d (+2)**: Erdos1031 (calc ≤/</≤ now < → wrap+.le; stale `change` on Nat.lt_floor_add_one; ∀(W:Type*) in Prop-body universe metavar → Type), Erdos1175 (Cardinal.toType→.out; λ' binder reserved → μ'; V:Type* → Type; Cardinal.{0} pins; aleph0_lt_aleph now iff; Nat.mod_lt _ i.pos).
+- **DR27e (+2)**: Erdos576 (convert-depth → Finset.filter_congr; def→abbrev HypercubeVertex for instance synth; DecidableRel instance; ∃-chain [inst]→(_:…); ∀ᶠ n→ℕ), RothTheorem (Finset.sum_eq_add_sum_diff_singleton removed → local reconstruct via add_sum_erase+erase_eq; positivity max-recursion → explicit Nat.cast_nonneg).
+- **DR27f (+3)**: Erdos884 (sort_sorted→pairwise_sort; List.Sorted→pairwise_cons), Erdos965 (A.nontrivial→A.Nontrivial), Erdos772 (filter ⟨a,b,c,d⟩ destructure→x.1/x.2.1 projections).
+- **DR27g (+1)**: Erdos474 (continuum/aleph1/κ/μ pinned Cardinal.{0}; ∀ λ:Cardinal→μ).
+- **DR27h (+2)**: Erdos84 (@cycleSet W _ _ G over-applied → cycleSet G; Fintype/DecidableEq no longer auto-included when unused), Erdos91 (import Log.Basic/Sqrt; Nat.find explicit predicate+DecidablePred+3-tuple witness).
+- **DR27i (+3)**: Erdos496 (Irrational witness ⟨(p:ℚ)/(q:ℚ),…⟩), Erdos1022OQ03 (h▸ over wrong side → card_eq_zero.mp h ▸), Erdos539 (mem_product simp-fail → Finset.mem_image.mpr+mk_mem_product).
+- **DR27j (+3)**: CayleyHamiltonOQ01/OQ02 (modByMonic_add_div now (p q:R[X]) not (p)(monic) → pass divisor poly), Erdos739 (Cardinal.IsLimit→Order.IsSuccLimit; V:Type + Cardinal.{0} pins).
+- **DR27k (+1)**: Erdos324 (simp now self-closes → drop trailing `; omega`).
+
+## Per-class before → after (RESIDUAL)
+- parse-error: 57 → 52 (−5)
+- signature-drift: 24 → 21 (−3)
+- elab-drift: 31 → 26 (−5)
+- dot-notation-drift: 19 → 12 (−7)
+- unknown-const (incl. `:G`, `Finset.sum_eq_add_sum_diff_singleton`): −2 (ThreeSubgroupsLemmaOQ01OQ01, RothTheorem)
+
+## Key recipes (new for rename-map §7r)
+- `lowerCentralSeries G n` → `Subgroup.lowerCentralSeries (⊤ : Subgroup G) n` (redefined to take a Subgroup; group series = S=⊤ case; `Subgroup.` prefix kills open-ambiguity). `_zero`/`_antitone`/`_succ` are now S-methods.
+- Vendored `Mathlib.Tactic.GeneralizeProofs` (namespace removed → Batteries): delete the vendored `namespace …GeneralizeProofs … end` block; `generalize_proofs` falls back to the standard tactic.
+- `Cardinal.toType` → `Cardinal.out`; `Cardinal.IsLimit` → `Order.IsSuccLimit c`; `aleph0_lt_aleph` is now an iff `ℵ₀ < ℵ_o ↔ 0 < o` (`.mpr one_pos`).
+- `Polynomial.modByMonic_add_div` now `(p q : R[X])` (was `(p)(hq : q.Monic)`): pass the DIVISOR polynomial, not the Monic proof.
+- `Finset.sort_sorted (· ≤ ·)` removed → `Finset.pairwise_sort` (gives `List.Pairwise r`); `List.Sorted`/`mem_product` in simp gone.
+- `Finset.sum_eq_add_sum_diff_singleton` removed → local reconstruct from `Finset.add_sum_erase` + `Finset.erase_eq` (reversed eqn, `erase` vs `\ {a}`).
+- `SimpleGraph.degree_lt_card` → `degree_lt_card_verts`; `G.edge_mem_edgeSet` → `G.mem_edgeSet`.
+- `def`→`abbrev` when a wrapper type (`Fin k → Bool`) needs `Fintype`/`DecidableEq`/`DecidableRel` synth (v4.31 instance resolution no longer unfolds `def`).
+- named-instance application `foo (DecidableRel := …)` invalid → `letI := Classical.decRel …Adj` before the goal.
+- universe-metavar in a `Prop`-valued def: pin internal `∀/∃ (V : Type*)`→`Type` and `κ/μ : Cardinal`→`Cardinal.{0}` (and axiom/def Cardinal returns). WATCH: fails when a `Set.Iio kappa` subtype forces `Type 1` vs `α : Type 0` (Erdos598 — genuine, not pinnable).
+- `λ'`/`∀ λ :` binder — `λ` is a reserved token → rename (`μ`, `μ'`).
+- `simp [lemmas]` that now self-closes → drop trailing `; omega`/tactics (No goals to be solved).
+- Mathlib now defines root-level `Hypergraph` (`Mathlib.Combinatorics.Hypergraph.Basic`) → project files declaring their own must namespace-wrap.
+
+## Flagged (deeper, left for sibling / deferred)
+- RothTriangleRemoval (5 own tm/pd/synth/rcases + 2 sorries), Erdos643Problem (sorry + heartbeat timeouts), LawsOfLargeNumbersOQ01Aristotle (multi-class), Erdos1020 (10+ omega/rw/linarith/tm after namespace fix), Erdos598/Erdos1055 (genuine universe-subtype / defeq drift), Erdos1123 (∆ parse fixes but Setoid transitivity is a real theorem).
+
+---
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 15, #38065, 2026-07-13)
 
 ## DOCTOR INCREMENT 15 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed, #38065)
