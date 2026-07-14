@@ -96,11 +96,11 @@ def ePairing (ω : EFieldConfiguration) (f : ETestFunction) : ℝ := ω f
 
 lemma ePairing_add_left (ω₁ ω₂ : EFieldConfiguration) (f : ETestFunction) :
     ePairing (ω₁ + ω₂) f = ePairing ω₁ f + ePairing ω₂ f := by
-  unfold ePairing; exact ContinuousLinearMap.add_apply ω₁ ω₂ f
+  unfold ePairing; rfl
 
 lemma ePairing_smul (s : ℝ) (ω : EFieldConfiguration) (f : ETestFunction) :
     ePairing (s • ω) f = s * ePairing ω f := by
-  unfold ePairing; exact ContinuousLinearMap.smul_apply s ω f
+  unfold ePairing; rfl
 
 /-- Linearity of the pairing in the test function argument. -/
 lemma ePairing_add_right (ω : EFieldConfiguration) (f g : ETestFunction) :
@@ -583,7 +583,7 @@ def YangMillsContinuumLimitFull (G : Type*) [Group G] [TopologicalSpace G]
   ∃ (_family : ℕ → LatticeYangMills.{0})
     (dμ : ProbabilityMeasure EFieldConfiguration),
     SatisfiesAllOS dμ ∧
-    GaugeInvariant dμ ∧
+    GaugeInvariant G dμ ∧
     HasNonGaussianCorrelations dμ ∧
     ∃ Δ : ℝ, hasExponentialClustering dμ Δ
 
