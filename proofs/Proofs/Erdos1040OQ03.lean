@@ -85,7 +85,7 @@ theorem lem_near_root (p : RootedPoly) {z : ℂ} (hz : z ∈ lem p) :
   have h1 : (1 : ℝ) ≤ ‖p.eval z‖ := by
     unfold RootedPoly.eval
     rw [norm_prod]
-    exact Finset.one_le_prod' fun i _ => h i
+    exact Finset.one_le_prod fun i _ => h i
   have hz' : ‖p.eval z‖ < 1 := hz
   exact absurd hz' (not_lt.mpr h1)
 
@@ -101,8 +101,9 @@ theorem lem_subset_iUnion_ball (p : RootedPoly) :
 
 /-- The lemniscate is bounded: it sits inside a finite union of unit balls. -/
 theorem isBounded_lem (p : RootedPoly) : Bornology.IsBounded (lem p) := by
-  have hb : Bornology.IsBounded (⋃ i : Fin p.degree, Metric.ball (p.roots i) 1) :=
-    isBounded_iUnion.mpr fun _ => Metric.isBounded_ball
+  have hb : Bornology.IsBounded (⋃ i : Fin p.degree, Metric.ball (p.roots i) 1) := by
+    rw [Bornology.isBounded_iUnion]
+    exact fun _ => Metric.isBounded_ball
   exact hb.subset (lem_subset_iUnion_ball p)
 
 /-- **Unconditional area bound.** The Lebesgue (area) measure of the lemniscate is
