@@ -104,13 +104,13 @@ theorem erdos_503_bounds :
 **Consistency check: n = 2.**
 C(3, 2) + 1 = 4 ≤ 6 ≤ C(4, 2) = 6. Both bounds match.
 -/
-example : Nat.choose 3 2 + 1 ≤ 6 ∧ 6 ≤ Nat.choose 4 2 := by norm_num
+example : Nat.choose 3 2 + 1 ≤ 6 ∧ 6 ≤ Nat.choose 4 2 := by decide
 
 /--
 **Consistency check: n = 3.**
 C(4, 2) + 1 = 7 ≤ 8 ≤ C(5, 2) = 10.
 -/
-example : Nat.choose 4 2 + 1 ≤ 8 ∧ 8 ≤ Nat.choose 5 2 := by norm_num
+example : Nat.choose 4 2 + 1 ≤ 8 ∧ 8 ≤ Nat.choose 5 2 := by decide
 
 /- ## Part V: Summary -/
 

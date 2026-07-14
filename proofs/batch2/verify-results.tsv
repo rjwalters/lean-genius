@@ -602,7 +602,7 @@ ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ03	RESIDUAL	unknown-const:legendreSym.eq_one_iff_isSquare
 Erdos1000OQ01	RESIDUAL	rewrite-drift
 Erdos1000OQ02	RESIDUAL	type-mismatch
-Erdos1000Problem	RESIDUAL	type-mismatch
+Erdos1000Problem	GREEN	
 Erdos1001OQ02OQ01	GREEN	
 Erdos1002OQ01	RESIDUAL	type-mismatch
 Erdos1002OQ01OQ01	RESIDUAL	type-mismatch
@@ -1341,7 +1341,7 @@ Erdos501Aristotle	RESIDUAL	instance-synth
 Erdos501Problem	RESIDUAL	unknown-const:independent_subset
 Erdos501ProblemProvable	RESIDUAL	unknown-const:independent_subset
 Erdos502Problem	GREEN	
-Erdos503Problem	RESIDUAL	proof-drift
+Erdos503Problem	GREEN	
 Erdos505Problem	RESIDUAL	instance-synth
 Erdos506Problem	GREEN	
 Erdos507Problem	GREEN	
