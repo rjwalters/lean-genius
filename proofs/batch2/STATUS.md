@@ -2155,3 +2155,45 @@ Deferred (multi-error, >5 genuine fixes): BezoutIdentityOQ01OQ02OQ02Transitive (
 natAdd API churn + headBlockNSL SpecialLinearGroup→Matrix .val coercion), CauchySchwarzOQ01OQ02
 (inner needs `inner 𝕜` annots at 8+ sites + `residual_orthogonal`/`gs_pythagoras` unknown-ident
 forward-refs), Erdos106OQ02/Erdos109OQ01/Erdos140Problem/Erdos171Problem (8-36 errors each).
+
+## Increment 44 (Doctor, N-Z + Erdos≥600, deep-cluster tail) — +4 GREEN
+
+- 44-1 Erdos1045Problem — set-builder `{ Delta z | z : Configuration n ∧ DiameterAtMost2 z }` no
+  longer parses (binder can't carry a `∧` predicate) → `{ x : ℝ | ∃ z, DiameterAtMost2 z ∧ Delta z = x }`.
+  ★Term-mode `by omega` proving `n > 0` inside a `∀ n, n ≥ 3 → …` Prop reports "No usable
+  constraints" — the preceding ANONYMOUS `n ≥ 3` binder isn't visible; NAME it (`(hn3 : n ≥ 3)`).
+- 44-2 TaylorSinCosConvergenceOQ03Aristotle — `div_le_div (0≤c)(a≤c)(0<d)(d≤b)` → `div_le_div₀`
+  (identical 4-arg signature). `Real.tendsto_pow_div_factorial_atTop` →
+  `FloorSemiring.tendsto_pow_div_factorial_atTop`. `Nat.factorial_mono` → `Nat.factorial_le`.
+  (sorries in theorem bodies compile green.)
+- 44-3 Erdos726Problem — `Nat.Prime.not_dvd_of_lt` gone; `¬ 2 ∣ p` (p prime ≥3) via
+  `Nat.odd_iff.mp (hp.odd_of_ne_two (by omega)); omega`. `↑(p-1)` needs
+  `push_cast [Nat.cast_sub (show 1 ≤ p …)]` then `ring`. `Finset.single_le_sum` now needs explicit
+  `(f := fun p : ℕ => …)` AND the nonneg lambda types `p:ℕ` (use `one_div_nonneg.mpr (Nat.cast_nonneg _)`).
+  ★When `simp`/`field_simp` self-closes, trailing `omega`/`ring`/`ring_nf` error "No goals" → delete.
+- 44-4 Erdos1055Problem (was KNOWN-HARD skip, actually 1 error) — a `change primeClass q < 1 + …`
+  failed def-eq because a global `unfold primeClass` had expanded `primeClass q` too, and the def's
+  foldl closure carries a `have : q<p` proof term. FIX: don't unfold globally; prove
+  `hpeq : primeClass p = 1 + ns.attach.foldl … := by conv_lhs => rw [primeClass]; simp only […]; rfl`
+  then `rw [hpeq]`. `if (…).isEmpty = false substituted → if false = true` reduces via
+  `simp only [h_not_empty, Bool.false_eq_true, if_false]`. Annotate `foldl_max_ge_of_mem` result as
+  `≥ primeClass q` (def-eq collapses `↑⟨q,_⟩.val` to `q`) so omega sees a shared atom.
+
+FALSE-STATEMENT / PRE-EXISTING-BROKEN residuals (reverted, NOT weakened — flagged for math repair):
+- Erdos1123Problem — the density-quotient `Setoid` transitivity is mathematically FALSE as stated
+  (`hasDensityZero` uses `card < ε*n`; not closed under `A ∆ C ⊆ (A∆B)∪(B∆C)` doubling). Only ever
+  "compiled" via a fake `intro _ _; trivial` that a pre-4.31 `simp` accepted. Needs a corrected
+  density definition, not a migration fix.
+- Erdos1112Problem — the `B 0 < 5` branch of `r2_23_equals_2` claims `A n = 2n+1` (even sumset)
+  avoids an ARBITRARY lacunary B — false. Old `simp_all` masked it.
+- Erdos1125Problem — `kemperman_equiv` is FALSE: `satisfiesKempermanAlt` has a sign typo
+  (`f x - f(x+h) ≤ f(x+h) - f(x+2h)` ⇒ `a+c ≤ 2b`) that is NOT equivalent to Kemperman
+  (`2a ≤ b+c`). The CORRECT rearrangement is in `kemperman_interpretation` (L116). Repairable by
+  fixing the Alt def to `f x - f(x+h) ≤ f(x+2h) - f x`, but that is a math-content change — deferred.
+- Erdos724Problem — `def latinSquare3_M` has an EMPTY body (blank line then a comment) = pre-existing
+  incomplete def, plus `1/14.8 : ℝ` supplied where `ℕ∞` expected. Not a migration issue.
+
+HONEST N-Z tail assessment (inc 44): confirms inc43 — easy 1-2-error N-Z files are exhausted.
+Of ~30 residuals sampled, only ~1 in 6 is catalog-fixable; the rest are ≥5-error mixed clusters,
+genuine deep-rework, or (notably) files whose ORIGINAL statements are unsound/incomplete and merely
+compiled by luck pre-4.31. Remaining N-Z GREEN yield is low and increasingly requires math judgment.
