@@ -98,7 +98,7 @@ def upperHalf (N : ℕ) : Finset ℕ := Finset.Ioc (N / 2) N
 The upper half has size approximately N/2.
 -/
 theorem upperHalf_card (N : ℕ) : (upperHalf N).card = N - N / 2 := by
-  simp [upperHalf, Finset.card_Ioc]
+  simp [upperHalf, Nat.card_Ioc]
 
 /- 
 The upper half achieves density approaching 1/2.
@@ -195,7 +195,7 @@ consecutive sum lies in A.
 -/
 def isInfiniteConsecutiveSumFree (A : Set ℕ) : Prop :=
   ∀ (seq : List ℕ), seq.length ≥ 2 →
-    (∀ i : ℕ, i < seq.length - 1 → seq.get? i < seq.get? (i + 1)) →
+    (∀ i : ℕ, i < seq.length - 1 → seq[i]? < seq[i + 1]?) →
     (∀ x ∈ seq, x ∈ A) →
     seq.sum ∉ A
 
@@ -216,8 +216,7 @@ consecutive sum-free sets.
 - 3 + 4 + 5 = 12 ∉ {3, 4, 5}
 -/
 example : ({3, 4, 5} : Finset ℕ) ⊆ Finset.Icc 1 5 := by
-  simp [Finset.subset_iff]
-  omega
+  decide
 
 /--
 **Example: Upper half {3, 4, 5} in {1, ..., 5} has 3 elements.**

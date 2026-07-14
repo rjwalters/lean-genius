@@ -92,7 +92,7 @@ def hasCycle (G : SimpleGraph V) : Prop :=
   ∃ (vertices : List V), vertices.length ≥ 3 ∧
     vertices.Nodup ∧
     ∀ i : Fin vertices.length,
-      G.Adj (vertices[i]) (vertices[(i.val + 1) % vertices.length])
+      G.Adj (vertices[i]) (vertices[(i.val + 1) % vertices.length]'(Nat.mod_lt _ i.pos))
 
 /--
 **Vertex Adjacent to Three Cycle Vertices:**
@@ -105,7 +105,7 @@ def hasVertexTriplyAdjacentToCycle (G : SimpleGraph V) : Prop :=
     cycle.length ≥ 3 ∧
     cycle.Nodup ∧
     (∀ i : Fin cycle.length,
-      G.Adj (cycle[i]) (cycle[(i.val + 1) % cycle.length])) ∧
+      G.Adj (cycle[i]) (cycle[(i.val + 1) % cycle.length]'(Nat.mod_lt _ i.pos))) ∧
     -- v is not on the cycle
     v ∉ cycle ∧
     -- v is adjacent to at least 3 vertices on the cycle
@@ -194,7 +194,7 @@ def edgeThreshold (n : ℕ) : ℕ := 2 * n - 2
 **Tree Lower Bound:**
 A tree on n vertices has exactly n-1 edges.
 -/
-theorem tree_edge_count (n : ℕ) (hn : n ≥ 1) :
+theorem tree_edge_count (n : ℕ) (hn : n ≥ 2) :
     n - 1 < edgeThreshold n := by
   simp only [edgeThreshold]
   omega
