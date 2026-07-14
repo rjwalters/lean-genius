@@ -281,8 +281,8 @@ def headBlockN {m : ℕ} (N : Matrix (Fin 2) (Fin 2) ℤ) :
 /-- `det (diag(N, Iₘ)) = det N`: the reindexing preserves the determinant (`det_submatrix_equiv_self`)
 and the block form is block-triangular with an identity corner (`det_fromBlocks_zero₂₁`). -/
 theorem det_headBlockN {m : ℕ} (N : Matrix (Fin 2) (Fin 2) ℤ) :
-    (headBlockN N).det = N.det := by
-  have hsub : (headBlockN N).det
+    (headBlockN (m := m) N).det = N.det := by
+  have hsub : (headBlockN (m := m) N).det
       = (Matrix.fromBlocks N 0 0 (1 : Matrix (Fin m) (Fin m) ℤ)).det :=
     Matrix.det_submatrix_equiv_self finSumFinEquiv.symm _
   rw [hsub, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
