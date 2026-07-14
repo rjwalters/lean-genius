@@ -2042,3 +2042,31 @@ Deferred this batch: Erdos794Problem (genuine universe-polymorphism mismatch —
 and `…Conjecture` fix DIFFERENT `Type u` levels, `@h V` rejects `V : Type u₂`; plus `Fin 9 : Type`
 arg + `erdos_794_origina` typo), Erdos814Problem (HSub ℕ ℚ / LT ℚ instance gaps),
 Erdos732Problem (`Fintype (List ℕ)` ill-defined def), Erdos611Problem (sorry in theorem TYPES).
+
+## Increment 39 (Doctor-b, A-M partition + Erdos<600) — tm/pd/rewrite/unknown-const/instance-synth
+
+- 39-1 AreaOfCircleOQ07OQ04OQ01 — `integral_ofReal` now oriented `∫ ↑f = ↑(∫ f)` (was reverse) AND
+  there are now TWO `integral_ofReal` (Bochner top-level `_root_.integral_ofReal` vs
+  `intervalIntegral.integral_ofReal`); a bare `rw [← integral_ofReal]` resolves to the interval one
+  (fails on set integrals). RECIPE: for a set integral over `Ioi`, restructure to
+  `rw [← key, ← hcong]; exact (_root_.integral_ofReal (f := …)).symm`. Also `setIntegral_prod_mul`
+  now needs the measure as `μ.prod ν` explicitly → prefix with `rw [Measure.volume_eq_prod ℝ ℝ, …]`.
+- 39-2 BorsukUlamOQ02OQ02 — RECIPE: a def `IsEquivariant {G α β} [SMul G α] [SMul G β] (f : α→β)`
+  where `G` is NOT determined by `f`'s type → every use is "typeclass instance problem is stuck
+  SMul ?m α". Fix each occurrence (conclusion AND hypotheses) with explicit `(G := G)`. Statement
+  repair: `isEquivariant_const_iff` forward dir is FALSE for empty α (old proof leaned on
+  `Classical.arbitrary α` secretly assuming Nonempty) → added `[Nonempty α]`. Also `push_neg` on
+  `¬ Nonempty α` now yields `IsEmpty α` (not a function) — restructure the empty branch.
+- 39-3/4 CauchyInterlacing{IsometryConj,OQ01OQ01OQ01OQ01} & 39-5 Erdos265Problem — FREE GREEN: source
+  already fixed by earlier commit but ledger row lagged RESIDUAL. Detected via grep: flagged
+  `unknown-const:X` leaf no longer present in source → build → EXIT 0 → flip. High-yield: sweep the
+  whole partition for already-green residuals.
+- 39-6 BinomialTheoremOQ02OQ02 — Vandermonde file. `vandermonde_index_swap`: after the add_choose_eq
+  round-trip, close residual with `Finset.sum_congr rfl (fun _ _ => Nat.mul_comm _ _)`.
+  `vandermonde_two`: `omega` CANNOT prove `C(m+n,2)=C(m,2)+mn+C(n,2)` (nonlinear via
+  `choose_two_right = n*(n-1)/2`) → prove by expanding `Nat.add_choose_eq` over `antidiagonal 2`
+  (`Finset.Nat.sum_antidiagonal_succ` twice + `antidiagonal_zero`). `triple_vandermonde`: rewrite
+  FORWARD `Nat.add_choose_eq` then inner `sum_congr` + `Nat.add_choose_eq` (the old
+  `rw [← add_choose_eq]; congr` fails — outer summand is a sum, not a `choose`). Statement repair:
+  `pascal_from_vandermonde` was FALSE at r=0 (`C(m+1,0)=1` vs `C(m,0)+C(m,0-1)=2` since `0-1=0` in ℕ)
+  → restated unconditionally as `C(m+1,r+1)=C(m,r+1)+C(m,r)`.
