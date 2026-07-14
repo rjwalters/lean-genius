@@ -2597,7 +2597,7 @@ TestApi963	GREEN	unknown-const:Finset.sum_pow_eq_pow_sum
 TestConvexHull	RESIDUAL	unknown-const:isCompact_isClosed_isBounded
 TestCovByApi	GREEN	
 TestDerangConvApi	GREEN	
-TestErdos43Api	RESIDUAL	unknown-const:Int.Icc_toFinset_card
+TestErdos43Api	GREEN	
 TestHLTension	RESIDUAL	unknown-const:Finset.card_sdiff_eq_card_sub_card_inter
 TestHolderApi	RESIDUAL	unknown-const:MeasureTheory.snorm
 TestSphereLocEuc	RESIDUAL	proof-drift
