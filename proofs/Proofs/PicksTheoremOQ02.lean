@@ -99,8 +99,8 @@ theorem segmentMap_injective (a b : ℕ) (hg : 0 < Nat.gcd a b) :
       rw [hap, mul_zero] at h; exact h.symm
     rw [ha, Nat.gcd_zero_left] at heq hg
     simp only [Nat.zero_div, mul_zero, true_and] at heq
-    rw [Nat.div_self hg, mul_one] at heq
-    exact heq
+    rw [Nat.div_self hg] at heq
+    simpa using heq
   · -- a/g > 0: use first component
     exact Nat.eq_of_mul_eq_mul_right hap heq.1
 
@@ -138,16 +138,16 @@ theorem onSegment_mem_segmentPoints {a b x y : ℕ} (h : onSegment a b x y) :
   rcases Nat.eq_zero_or_pos (Nat.gcd a b) with hg0 | hg
   · -- gcd = 0: a = b = 0, so x = y = 0
     obtain ⟨rfl, rfl⟩ := Nat.gcd_eq_zero_iff.mp hg0
-    exact ⟨0, by norm_num, Nat.le_zero.mp hxa, Nat.le_zero.mp hyb⟩
+    exact ⟨0, by norm_num, by simp [Nat.le_zero.mp hxa, Nat.le_zero.mp hyb]⟩
   · -- gcd > 0: split on whether a = 0
     set g := Nat.gcd a b
     rcases Nat.eq_zero_or_pos a with ha | ha
     · -- a = 0: g = b, and x ≤ 0, so x = 0; use k = y
-      rw [ha, Nat.gcd_zero_left] at *
-      have hx0 : x = 0 := Nat.le_zero.mp hxa
-      refine ⟨y, by omega, ?_, ?_⟩
-      · rw [ha, Nat.gcd_zero_left, Nat.zero_div, mul_zero]; exact hx0.symm
-      · simp [Nat.div_self hg]
+      have hgb : g = b := by rw [show g = Nat.gcd a b from rfl, ha, Nat.gcd_zero_left]
+      have hx0 : x = 0 := Nat.le_zero.mp (ha ▸ hxa)
+      have hbg : b / g = 1 := by rw [← hgb]; exact Nat.div_self hg
+      have hag : a / g = 0 := by rw [ha]; exact Nat.zero_div g
+      exact ⟨y, by omega, by rw [hag, hbg, mul_zero, mul_one, hx0]⟩
     · -- a > 0: use coprimality to find k with x = k·(a/g)
       set p := a / g
       set q := b / g
@@ -168,19 +168,21 @@ theorem onSegment_mem_segmentPoints {a b x y : ℕ} (h : onSegment a b x y) :
         hcop.dvd_of_dvd_mul_right ⟨y, heq.trans (mul_comm y p)⟩
       -- Write x = k·p; then y = k·q from x·q = y·p
       obtain ⟨k, hkp⟩ := hpdvdx
+      -- v4.31: `p ∣ x` destructures as `hkp : x = p * k`
+      have hkp' : k * p = x := by rw [hkp]; ring
       have hkq : k * q = y := by
         apply Nat.eq_of_mul_eq_mul_right hp
         calc k * q * p = k * p * q := by ring
-          _ = x * q := by rw [← hkp]
+          _ = x * q := by rw [hkp']
           _ = y * p := heq
       -- k ≤ g from k·p = x ≤ a = g·p
       have hkg : k ≤ g := by
         have hkp_le : k * p ≤ g * p :=
-          calc k * p = x := hkp.symm
+          calc k * p = x := hkp'
             _ ≤ a := hxa
             _ = g * p := hgp.symm
         exact Nat.le_of_mul_le_mul_right hkp_le hp
-      exact ⟨k, by omega, by rw [hkp], by rw [hkq]⟩
+      exact ⟨k, by omega, by rw [← hkp', hkq]⟩
 
 /-
 ══════════════════════════════════════════════════════════════
