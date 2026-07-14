@@ -145,7 +145,7 @@ ArithmeticSeriesOQ00OQ02	GREEN
 ArithmeticSeriesOQ00OQ02OQ01	RESIDUAL	instance-synth
 ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
 ArithmeticSeriesOQ02OQ02OQ03OQ01	GREEN	
-ArithmeticSeriesOQ02OQ03	RESIDUAL	unknown-const:Nat.choose_two_middle
+ArithmeticSeriesOQ02OQ03	GREEN	
 ArithmeticSeriesOQ02OQ04OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ01OQ01	GREEN	
@@ -413,7 +413,7 @@ CayleyHamiltonReductionOQ01OQ02	RESIDUAL	type-mismatch
 CayleyHamiltonReductionOQ02	GREEN	
 CayleysTheoremOQ01OQ01OQ02OQ02OQ01	GREEN	
 CayleysTheoremOQ01OQ02OQ02	GREEN	
-CentralLimitTheorem	RESIDUAL	unknown-const:tendsto_one_plus_div_pow_exp
+CentralLimitTheorem	GREEN	
 CentralLimitTheoremOQ01OQ01	GREEN	
 CentralLimitTheoremOQ01OQ01OQ04	GREEN	
 CentralLimitTheoremOQ01OQ02OQ01OQ01	RESIDUAL	instance-synth
@@ -948,7 +948,7 @@ Erdos154Problem	GREEN
 Erdos155Problem	GREEN	
 Erdos156Aristotle	RESIDUAL	instance-synth
 Erdos156OQ02	RESIDUAL	unknown-const:x
-Erdos156ProblemAristotle	RESIDUAL	duplicate-decl
+Erdos156ProblemAristotle	GREEN	
 Erdos158Problem	GREEN	
 Erdos159Problem	RESIDUAL	type-mismatch
 Erdos15Problem	GREEN	
@@ -982,7 +982,7 @@ Erdos184ProblemProvable	RESIDUAL	proof-drift
 Erdos185Problem	GREEN	
 Erdos186Problem	GREEN	
 Erdos188Problem	RESIDUAL	instance-synth
-Erdos189Problem	RESIDUAL	unknown-const:det
+Erdos189Problem	GREEN	
 Erdos18OQ01	GREEN	
 Erdos190Problem	RESIDUAL	unknown-const:exists_canonical_threshold
 Erdos191Problem	RESIDUAL	instance-synth
@@ -1041,7 +1041,7 @@ Erdos247Problem	RESIDUAL	instance-synth
 Erdos249OQ01	RESIDUAL	proof-drift
 Erdos249Problem	GREEN	
 Erdos24Problem	GREEN	
-Erdos250Problem	RESIDUAL	unknown-const:Nat.smul_eq_mul
+Erdos250Problem	GREEN	
 Erdos251Problem	GREEN	
 Erdos252Problem	RESIDUAL	parse-error
 Erdos254Problem	RESIDUAL	instance-synth
@@ -1191,7 +1191,7 @@ Erdos370Problem	RESIDUAL	proof-drift
 Erdos371Problem	GREEN	
 Erdos372Problem	GREEN	
 Erdos374Problem	RESIDUAL	unknown-const:not_le_of_lt
-Erdos375Aristotle	RESIDUAL	unknown-const:Nat.coprime_succ_self
+Erdos375Aristotle	GREEN	
 Erdos375Problem	GREEN	
 Erdos377Problem	GREEN	
 Erdos379Problem	GREEN	
@@ -1200,7 +1200,7 @@ Erdos381Problem	GREEN
 Erdos381ProblemAristotle	GREEN	
 Erdos382Problem	RESIDUAL	type-mismatch
 Erdos383Problem	RESIDUAL	proof-drift
-Erdos384Problem	RESIDUAL	unknown-const:Nat.one_lt_iff_ne_one.mp
+Erdos384Problem	GREEN	
 Erdos385Problem	GREEN	
 Erdos386Problem	RESIDUAL	unknown-const:Nat.Primes.instCountable.toEncodable.decode
 Erdos388Problem	GREEN	
@@ -1304,7 +1304,7 @@ Erdos472Problem	GREEN
 Erdos473Problem	GREEN	
 Erdos474Problem	GREEN	
 Erdos475Problem	GREEN	
-Erdos476Aristotle	RESIDUAL	elab-drift
+Erdos476Aristotle	GREEN	
 Erdos476OQ05Aristotle	RESIDUAL	unknown-const:b₂
 Erdos476OQ05Problem	RESIDUAL	proof-drift
 Erdos476Problem	PRE-EXISTING	never-compiled:B
@@ -1368,7 +1368,7 @@ Erdos527Problem	GREEN
 Erdos528Problem	GREEN	
 Erdos529Problem	PRE-EXISTING	never-compiled:d_2
 Erdos52Problem	GREEN	
-Erdos530Problem	RESIDUAL	unknown-const:komlos_sulyok_szemeredi
+Erdos530Problem	GREEN	
 Erdos531Problem	GREEN	
 Erdos532Problem	GREEN	
 Erdos533Problem	RESIDUAL	type-mismatch
@@ -1386,7 +1386,7 @@ Erdos543Problem	RESIDUAL	proof-drift
 Erdos545Problem	GREEN	
 Erdos546Problem	GREEN	
 Erdos547Problem	GREEN	
-Erdos548Aristotle	RESIDUAL	instance-synth
+Erdos548Aristotle	GREEN	
 Erdos548Problem	GREEN	
 Erdos548ProblemAristotle	GREEN	
 Erdos549Problem	RESIDUAL	instance-synth
@@ -1418,7 +1418,7 @@ Erdos567Problem	GREEN
 Erdos568Problem	GREEN	
 Erdos569Problem	GREEN	
 Erdos570Problem	RESIDUAL	type-mismatch
-Erdos571Problem	RESIDUAL	instance-synth
+Erdos571Problem	GREEN	
 Erdos572Problem	GREEN	
 Erdos573Problem	GREEN	
 Erdos575Problem	GREEN	
@@ -2047,7 +2047,7 @@ GeometricSeries	GREEN
 GeometricSeriesOQ01	GREEN	
 GeometricSeriesOQ01Neumann	GREEN	
 GeometricSeriesOQ01OQ02	GREEN	
-GeometricSeriesOQ02OQ03	RESIDUAL	type-mismatch
+GeometricSeriesOQ02OQ03	GREEN	
 GeometricSeriesOQ02OQ05	RESIDUAL	rewrite-drift
 GeometricSeriesOQ03	RESIDUAL	unknown-const:inv_ne_zero.mpr
 GeometricSeriesOQ07	GREEN	
@@ -2097,7 +2097,7 @@ Hilbert19Regularity	GREEN
 Hilbert20BoundaryValue	GREEN	signature-drift
 Hilbert20LocalSolvability	RESIDUAL	instance-synth
 Hilbert20OQ01OQ03	RESIDUAL	instance-synth
-Hilbert20OQ01OQ03Aristotle	RESIDUAL	type-mismatch
+Hilbert20OQ01OQ03Aristotle	GREEN	
 Hilbert21RiemannHilbert	RESIDUAL	type-mismatch
 Hilbert22OQ01	GREEN	
 Hilbert22OQ01OQ03	GREEN	
@@ -2143,7 +2143,7 @@ InverseGaloisD4OQ02OQ03OQ01OQ01	GREEN
 InverseGaloisD4OQ02OQ03OQ01OQ01OQ01	GREEN	
 InverseGaloisD4OQ02OQ04	GREEN	
 InverseGaloisD4OQ03	GREEN	
-InverseGaloisF20	RESIDUAL	unknown-const:cyclotomic_5_has_root_in_splitting_field
+InverseGaloisF20	GREEN	
 InverseGaloisF20OQ02	GREEN	
 InverseGaloisOQ01	GREEN	
 InverseGaloisOQ02	GREEN	
@@ -2189,7 +2189,7 @@ LHopitalOQ04OQ01	GREEN
 LagrangeFourSquaresOQ01OQ03	RESIDUAL	noncomputable
 LagrangeFourSquaresOQ02	RESIDUAL	proof-drift
 LagrangeFourSquaresOQ02OQ02	GREEN	
-LagrangeFourSquaresOQ04	RESIDUAL	proof-drift
+LagrangeFourSquaresOQ04	GREEN	
 LagrangeFourSquaresOQ05	GREEN	
 LagrangeTheorem	GREEN	
 LagrangeTheoremOQ01	RESIDUAL	type-mismatch

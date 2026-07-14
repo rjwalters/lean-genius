@@ -106,14 +106,14 @@ theorem composite_has_prime_dvd (n : ℕ) (hn : n > 1) (hnotprime : ¬n.Prime) :
   ⟨n.minFac, Nat.minFac_prime (by omega), Nat.minFac_dvd n⟩
 
 -- Consecutive integers are coprime: gcd(n, n+1) = 1
-theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
-  Nat.Coprime.symm (Nat.coprime_succ_self n)
+theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) := by
+  simpa using (Nat.coprime_self_add_right (m := n) (n := 1)).mpr (Nat.coprime_one_right n)
 
 -- Coprime numbers have no common prime divisors
 theorem coprime_disjoint_primes (a b : ℕ) (h : Nat.Coprime a b)
     (p : ℕ) (hp : p.Prime) (hpa : p ∣ a) (hpb : p ∣ b) : False := by
   have : p ∣ Nat.gcd a b := Nat.dvd_gcd hpa hpb
   rw [h] at this
-  exact Nat.Prime.one_lt hp |>.not_le (Nat.le_of_dvd one_pos this)
+  exact absurd (Nat.le_of_dvd one_pos this) (Nat.not_le.mpr (Nat.Prime.one_lt hp))
 
 end Erdos375Aristotle
