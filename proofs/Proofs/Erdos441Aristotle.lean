@@ -98,8 +98,7 @@ theorem sqrt_2N_bound (N : ℕ) : Nat.sqrt (2 * N) ≤ 2 * Nat.sqrt N + 1 := by
 -/
 
 /-- lcm(a, a) = a. -/
-theorem lcm_self_eq (a : ℕ) : Nat.lcm a a = a := by
-  simp [Nat.lcm]
+theorem lcm_self_eq (a : ℕ) : Nat.lcm a a = a := Nat.lcm_self a
 
 /-- lcm(a, b) ≤ a * b for positive a, b. -/
 theorem lcm_le_mul (a b : ℕ) : Nat.lcm a b ≤ a * b := by
@@ -118,7 +117,8 @@ theorem lcm_le_sq (a b k : ℕ) (ha : a ≤ k) (hb : b ≤ k) : Nat.lcm a b ≤ 
 theorem erdosFirstPart_le_N (N x : ℕ) (hN : N ≥ 1) (hx : x ∈ ErdosFirstPart N) : x ≤ N := by
   have h1 := erdosFirstPart_le_sqrt N x hx
   have h2 : Nat.sqrt (N / 2) ≤ N := by
-    apply Nat.sqrt_le_self
+    calc Nat.sqrt (N / 2) ≤ N / 2 := Nat.sqrt_le_self _
+      _ ≤ N := Nat.div_le_self _ _
   omega
 
 /-- LCM of two elements in ErdosFirstPart is at most N.
