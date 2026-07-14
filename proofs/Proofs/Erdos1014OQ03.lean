@@ -174,11 +174,11 @@ theorem log_increment_tendsto_zero_iff_ratio_tendsto_one (R : ℕ → ℝ)
       filter_upwards [hratio_pos] with l hl using (Real.exp_log hl).symm
     rw [tendsto_congr' hexp]
     have := (Real.continuous_exp.tendsto 0).comp h
-    simpa using this
+    simpa [Function.comp_def] using this
   · -- `ratio → 1` ⟹ `log(ratio) → log 1 = 0` by continuity of `log` at `1`
     intro h
     have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp h
-    simpa using this
+    simpa [Function.comp_def] using this
 
 /-- **Corollary (log-increment vanishes).** If the consecutive ratio tends to `1`
 then the additive log-increment `log R(l+1) − log R(l)` tends to `0`. The forward
@@ -226,11 +226,11 @@ theorem log_increment_tendsto_log_iff_ratio_tendsto (R : ℕ → ℝ) (L : ℝ) 
     rw [tendsto_congr' hexp]
     have := (Real.continuous_exp.tendsto (Real.log L)).comp h
     rw [Real.exp_log hL] at this
-    simpa using this
+    simpa [Function.comp_def] using this
   · -- `ratio → L` ⟹ `log(ratio) → log L` by continuity of `log` at `L ≠ 0`
     intro h
     have := (Real.continuousAt_log (ne_of_gt hL)).tendsto.comp h
-    simpa using this
+    simpa [Function.comp_def] using this
 
 /-- **Additive–multiplicative increment equivalence.** For an eventually-positive
 sequence `R`, the *normalized (multiplicative) increment* `(R(l+1) − R(l))/R(l)`
@@ -349,7 +349,7 @@ theorem log_increment_gap_tendsto_zero (R : ℕ → ℝ) (m : ℕ)
     rw [Real.log_div (ne_of_gt hlm) (ne_of_gt hl)]
   rw [tendsto_congr' heq]
   have := (Real.continuousAt_log (by norm_num : (1 : ℝ) ≠ 0)).tendsto.comp hgap
-  simpa using this
+  simpa [Function.comp_def] using this
 
 
 end Erdos1014OQ03
