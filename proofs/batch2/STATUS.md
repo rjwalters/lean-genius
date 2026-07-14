@@ -7,12 +7,22 @@ Container `dr33` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
 candidates from 443 my-class RESIDUAL rows (99 sorry-holed). Tight per-file
 `lake build Proofs.X` fix-verify loop off warm cache; diags read in-container.
 
+Partitioned (per orchestrator, mid-increment): this agent = A–M basenames +
+Erdos < 600; sibling increment 24 = N–Z + Erdos ≥ 600.
+
 ## Waves (all in-container `lake build` exit-0 confirmed, then ledger-flipped)
 - **DR33a (+3)**: AreaOfCircleOQ07OQ05OQ01 + 2 dependents (OQ01OQ01/OQ01OQ02).
 - **DR33b (+2)**: AreaOfCircleOQ07OQ05 + OQ07OQ05OQ02 (same gaussian-moment IBP).
 - **DR33c (+2)**: AreaOfCircleOQ02 + OQ02OQ01.
 - **DR33d (+1)**: AreaOfCircleOQ05OQ03OQ05 (dominated-deriv ε→nhds).
 - **DR33e (+2)**: AlgebraicNumbersCountableOQ02OQ02 + OQ02OQ02OQ01.
+- **DR33f (+1)**: AngleTrisectionCos20GalOQ03OQ01 (content_dvd_coeff, C_dvd_iff_dvd_coeff, abbrev unfold).
+- **DR33g (+1)**: BernoulliInequalityOQ01OQ02 (pow_succ nlinarith hint, Nat.cast_choose_two).
+- **DR33h (+1)**: BorsukUlamOQ02OQ01OQ01OQ02OQ03 (sup_union, not_le.mpr, intro ⟨⟩ on <).
+- **DR33i (+1)**: BezoutIdentityOQ04OQ01OQ01 (IsUnimodularPID/IsUnit.mul shadow, Fin OfNat index align).
+
+Ledger: 1612 → 1626 GREEN (+14). My-class RESIDUAL: type-mismatch 225→216,
+proof-drift 148→143, rewrite-drift 70→70 (several flips were mixed-class rows).
 
 ## Highest-value new recipes (see rename-map §7u)
 - **`integral_mul_deriv_eq_deriv_mul` now takes tsupport-restricted deriv hyps**:
