@@ -1207,3 +1207,41 @@ migration, not a one-line compat (NapoleonsTheorem family deferred).
 | `field_simp; ring` → "No goals to be solved" | `field_simp` self-closes on ℝ div goals — drop the trailing `ring` (confirms earlier §7 recipe) | GCDAlgorithmOQ01OQ03OQ01OQ01 |
 | `List.mem_cons_self a l` → "Function expected … a::l" | `List.mem_cons_self ..` (explicit args dropped) | (Erdos382 partial) |
 | `![…] : EuclideanSpace ℝ (Fin 2)` type mismatch (matrix literal no longer coerces to PiLp) | `!₂[…]` (or `(EuclideanSpace.equiv _ _).symm ![…]`) | (Erdos94OQ02 partial) |
+
+## §7y Doctor increment 30 recipes (tm/pd/rewrite/unknown-const/instance-synth, A–M partition, +23 GREEN)
+
+| symptom (v4.31) | fix | files |
+|---|---|---|
+| `rw [hker] at e` "motive is not type correct" (quotient group instance depends on the subgroup) | bridge via `QuotientGroup.quotientMulEquivOfEq hker`: `(quotientMulEquivOfEq hker).symm.trans e` | AbelRuffiniGaloisExtensionsOQ04OQ03 |
+| `rw [Fintype.prod_sum]` leaves a defeq `X = X` residual (`Family σ` unfold) | append `rfl` | BallotProblemOQ03OQ02OQ03 |
+| `structure.field` projection (`F.Total`) won't reduce for `[Subsingleton …]`/`[Nontrivial …]` instance synth | supply locally: `have : Subsingleton F.Total := inferInstance` (concrete type is known) | BorsukUlamOQ04OQ03 |
+| `p ∈ L` "failed to synthesize `Membership _ Line`" (structure has no membership) | add `instance : Membership Point Line where mem L p := …` — **v4.31 arg order is `mem collection element`** | Erdos211Problem |
+| `omega` on `0 < a*(b)*(c)` "No usable constraints" (nonlinear product) | `positivity` | Erdos130WIP01 |
+| `lt_or_le` "Unknown identifier" | `lt_or_ge` (`a < b ∨ b ≤ a`) | CombinationsFormula…OQ02OQ01 |
+| `inv_ne_zero.mpr` "Unknown constant" | `inv_ne_zero` is now a plain implication `a ≠ 0 → a⁻¹ ≠ 0` (drop `.mpr`, `apply inv_ne_zero`) | GeometricSeriesOQ03 |
+| `rw [heq]` picks wrong occurrence when `heq : 1 = f x` (reversed) rewrites the RHS `1` | `rw [← heq]` | GeometricSeriesOQ03 |
+| `Nat.eq_of_mul_eq_left` "Unknown constant" | `Nat.eq_of_mul_eq_mul_left` | Erdos327OQ01 |
+| `Nat.dvd_of_dvd_of_dvd h (dvd_refl _)` "Unknown constant" (was a no-op trans) | drop it — the term is just `h` | Erdos369Problem |
+| `Finset.card_Ico` "Unknown constant" | `Nat.card_Ico` (lives in `namespace Nat`, `#(Ico a b) = b - a`) | Erdos456Aristotle |
+| `Real.one_lt_sqrt` "Unknown constant" | `Real.lt_sqrt (hx : 0 ≤ x) : x < √y ↔ x^2 < y` (rw `[gt_iff_lt, Real.lt_sqrt (le for x)]`) | Erdos267Problem |
+| `Nat.fib_pos hn` "Function expected" | `Nat.fib_pos.mpr hn` (now an iff `0 < fib n ↔ 0 < n`) | Erdos267Problem |
+| `intermediate_value_zero_of_le` "Unknown identifier" | `intermediate_value_Icc'` (decreasing: `hab` + `ContinuousOn` gives `Icc (f b) (f a) ⊆ f '' Icc a b`); membership `⟨hg1, hg0⟩` | IntermediateValueTheoremOQ03 |
+| local `def Complex.abs (z) := ‖z‖` compat shim: `Complex.abs.map_zero` fails, `map_zero` won't fire | unfold the shim: `simp only [Complex.abs, norm_zero]` (the identifier `Complex.abs` itself is GONE from Mathlib — many files add a local shim) | Erdos509Problem |
+| `Finset.sum_eq_sum_diff_singleton_add` "Unknown constant" | `← Finset.sum_erase (a := x₀) s (h : f x₀ = 0)` + `Finset.erase_eq` (`s.erase x = s \ {x}`); match the summand's `↑`-cast form exactly in the `f x₀ = 0` proof | TriangularNumberReciprocals |
+| removed helper referenced BEFORE its later `def`/`theorem` = forward-ref hard-error (not just unknown-const) | inline the proof at the use site (don't rely on the later decl) | Erdos479Problem |
+| Fermat `2^p ≡ 2 [ZMOD p]` from scratch | `rw [← ZMod.intCast_eq_intCast_iff]; push_cast; exact ZMod.pow_card (2 : ZMod p)` (needs `haveI : Fact p.Prime`) | Erdos479Problem |
+| `rw [← ZMod.card p]` "motive not type correct" (rewrites the exponent `p` which also appears in `Fact p.Prime`) | use `ZMod.pow_card x : x^p = x` directly (avoids rewriting `p`) | Erdos479Problem |
+| `List.bind` "environment does not contain" | `List.flatMap` | Erdos356Problem |
+| `Finset.range'` "Unknown constant" (no such thing; only `List.range'`) | for `{1,…,n}` use `Finset.Icc 1 n` | Erdos356Problem |
+| `![a, b]` "Type mismatch, expected `EuclideanSpace ℝ (Fin 2)`" (a `PiLp` alias) — `![…]` gives plain `Fin 2 → ℝ` | `(EuclideanSpace.equiv (Fin 2) ℝ).symm ![…]` (a bare `Fin 2 → ℝ` value coerces INTO `mulVec` etc. fine, only the constructed alias-typed value needs the wrap) | Hilbert16 |
+| **`Module.finBasisOfFinrankEq` binder order changed** — `@… R M _ _ inst hfree hmf` now misaligns | new order is `(R M)[Semiring][AddCommMonoid][Module][Free][StrongRankCondition][Module.Finite]{n} hn` → `@Module.finBasisOfFinrankEq R M _ _ inst hfree _ hmf n hn` (query with `#check @…` to confirm binder order before guessing) | GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02 |
+| own `theorem foo` collides with an imported parent's `foo` in a **reopened same namespace** ("already been declared") | rename the local (`foo_self`) and, if the parent's is more general, derive the local from it | Hilbert22OQ01OQ03Universal |
+| `Nat.Primes.instCountable.toEncodable.decode i` "Unknown constant" (i-th prime) | `Nat.nth Nat.Prime i` | Erdos386Problem |
+| `Set.eq_of_subset_of_ncard_le` needs `.ncard` but hyp is `Nat.card ↥S` | bridge each side: `(Nat.card_coe_set_eq _).symm : (↑S).ncard = Nat.card ↥S` then `rw` | LagrangeTheoremOQ01OQ03OQ01 |
+| element bracket `⁅a, b⁆` "failed to synthesize `Bracket G G`" (subgroup bracket `⁅N,N⁆` still works) | `open scoped commutatorElement` | LagrangeTheoremOQ01OQ03OQ01 |
+| `charmatrix_apply_ne h` "rewrite did not find pattern" / "hne wrong type" | now takes explicit `i j h` (`charmatrix_apply_ne _ _ _ hne`); `rw` won't unify the `.charmatrix` dot-notation → wrap as `rw [show M.charmatrix i j = -C (M i j) from charmatrix_apply_ne _ _ _ hne]` | MinpolyCharpolyOQ01 |
+
+**Triage recipe (reusable):** build ALL sorry-free my-class candidates in ~5 batches of 90 off the warm
+cache; the combined `lake build` stderr tags every error with its file (`error: Proofs/File.lean:L:C:`),
+so `grep -oE '^error: Proofs/[^:]+' | sort | uniq -c` finds single-/two-error files (highest-confidence
+fixes) across the whole partition in one pass, without per-file rebuilds.

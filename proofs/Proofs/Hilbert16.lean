@@ -105,7 +105,8 @@ structure PolynomialVectorField (n : ℕ) where
 
 /-- Evaluate a polynomial vector field at a point -/
 def PolynomialVectorField.eval (F : PolynomialVectorField n) (p : Plane) : Plane :=
-  ![MvPolynomial.eval ![p 0, p 1] F.P, MvPolynomial.eval ![p 0, p 1] F.Q]
+  (EuclideanSpace.equiv (Fin 2) ℝ).symm
+    ![MvPolynomial.eval ![p 0, p 1] F.P, MvPolynomial.eval ![p 0, p 1] F.Q]
 
 /-- The vector field function associated to a polynomial vector field -/
 def PolynomialVectorField.toVectorField (F : PolynomialVectorField n) : VectorField :=
@@ -238,7 +239,7 @@ def LinearVectorField.matrix (L : LinearVectorField) : Matrix (Fin 2) (Fin 2) �
 
 /-- Evaluate a linear vector field at a point -/
 def LinearVectorField.eval (L : LinearVectorField) (p : Plane) : Plane :=
-  L.matrix.mulVec p
+  (EuclideanSpace.equiv (Fin 2) ℝ).symm (L.matrix.mulVec p)
 
 /-- **Linear Polynomial Degree Bound** (formerly axiom, now proved)
 

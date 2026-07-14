@@ -139,10 +139,10 @@ theorem geom_series_eq_euler_factor (p : Nat.Primes) {s : ℂ} (hs : 1 < s.re) :
 /-- Each Euler factor is nonzero for Re(s) > 1. -/
 theorem euler_factor_ne_zero (p : Nat.Primes) {s : ℂ} (hs : 1 < s.re) :
     (1 - (p : ℂ) ^ (-s))⁻¹ ≠ 0 := by
-  apply inv_ne_zero.mpr
+  apply inv_ne_zero
   rw [sub_ne_zero]
   intro heq
-  have : ‖(p : ℂ) ^ (-s)‖ = 1 := by rw [heq]; simp
+  have : ‖(p : ℂ) ^ (-s)‖ = 1 := by rw [← heq]; simp
   linarith [prime_cpow_norm_lt_one p hs]
 
 /-! ## Part 5: The Euler Product Formula and Main Bridge Theorem -/

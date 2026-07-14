@@ -42,10 +42,11 @@ theorem brouwer_1d (f : ℝ → ℝ) (hf : Continuous f)
   have hg : Continuous g := hf.sub continuous_id
   have hg0 : 0 ≤ g 0 := by simp [g]; linarith
   have hg1 : g 1 ≤ 0 := by simp [g]; linarith
-  -- By IVT, g has a zero in [0,1]
-  obtain ⟨c, hc_mem, hc_eq⟩ := intermediate_value_zero_of_le (by norm_num : (0:ℝ) ≤ 1)
-    hg.continuousOn hg0 hg1
-  exact ⟨c, hc_mem, by linarith⟩
+  -- By IVT (decreasing form), g has a zero in [0,1]: 0 ∈ Icc (g 1) (g 0) ⊆ g '' Icc 0 1.
+  have hmem : (0 : ℝ) ∈ Set.Icc (g 1) (g 0) := ⟨hg1, hg0⟩
+  obtain ⟨c, hc_mem, hc_eq⟩ :=
+    intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1) hg.continuousOn hmem
+  exact ⟨c, hc_mem, by simp only [g] at hc_eq; linarith⟩
 
 -- ============================================================
 -- Part II: IVT from 1D Brouwer

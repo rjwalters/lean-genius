@@ -109,6 +109,7 @@ theorem det_matrix_eq_signed_family_sum :
   simp only [Matrix.transpose_apply, matrix, Matrix.of_apply, familyWeight, Family]
   -- A product of sums is a sum of products over the pi type = Family σ.
   rw [Fintype.prod_sum]
+  rfl
 
 /-- Specialising every weight to `1`, the algebraic core reduces to the
     *counting* form of the determinant expansion used by the unweighted parent:

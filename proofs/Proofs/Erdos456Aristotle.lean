@@ -74,7 +74,7 @@ theorem density_implies_witness (P : ℕ → Prop) (N M : ℕ)
     rw [Finset.mem_Ico] at hn
     exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), h n hn.1 hn.2⟩
   have hle := Finset.card_le_card hsub
-  rw [Finset.card_Ico] at hle
+  rw [Nat.card_Ico] at hle
   omega
 
 end

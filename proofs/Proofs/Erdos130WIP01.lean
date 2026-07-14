@@ -196,6 +196,6 @@ theorem anning_erdos_algebraic_core (D r_x r_y x y a s t : ℝ)
     the number of additional integer-distance points is at most 4(2D+1)(2E+1)-3. -/
 theorem anning_erdos_finiteness (D E : ℕ) :
     ∃ N : ℕ, N = 4 * (2 * D + 1) * (2 * E + 1) ∧ 0 < N :=
-  ⟨4 * (2 * D + 1) * (2 * E + 1), rfl, by omega⟩
+  ⟨4 * (2 * D + 1) * (2 * E + 1), rfl, by positivity⟩
 
 end Erdos130.AnningErdos

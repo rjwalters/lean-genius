@@ -1714,3 +1714,62 @@ Erdos391 (`⟨0, by omega⟩:Fin n` needs 0<n, def ill-defined for n=0),
 Erdos478 (subst succ 0=k + non-linear ZMod omega), Erdos395/407 (Fintype of {ε:Fin n→ℤ|..}.toFinset —
 infinite domain, no clean instance), ErdosMordell*/Konigsberg (grind timeouts on geometry/graph goals),
 MaschkeLocalRing (sorry-in-def).
+
+## Increment 30 (Doctor, A–M / Erdos<600 partition) — +28 GREEN
+
+Classes: type-mismatch, proof-drift, rewrite-drift, unknown-const-mixed, instance-synth-cascades.
+Base origin/feature/issue-37508 (fc8fb5826a, ledger 1731 sibling baseline). Triage method:
+built all 449 in-partition my-class candidates in 5 batches off warm cache, aggregated per-file
+error counts from combined `lake build` output (`error: Proofs/File.lean:L:C:` carries filename),
+worked single-error then 2-error files first (highest confidence).
+
+Waves (all in-container `docker exec dr40 lake build` exit 0):
+- DR40-1 AbelRuffiniGaloisExtensionsOQ04OQ03 (rw motive-not-type-correct on quotient: replace
+  `rw [hker] at e` with `(quotientMulEquivOfEq hker).symm.trans e` bridge) + BallotProblemOQ03OQ02OQ03
+  (`rw [Fintype.prod_sum]` leaves defeq residual → append `rfl`) + BorsukUlamOQ04OQ03
+  (struct-projection `.Total`/`.Base` don't reduce for instance synth → supply
+  `Subsingleton`/`Nontrivial` via `have : … := inferInstance`)
+- DR40-2 Erdos211Problem (add missing `instance : Membership Point Line` — v4.31 `Membership`
+  arg order is `mem coll elem`) + Erdos130WIP01 (`omega`→`positivity` for product `0 < 4*(2D+1)*(2E+1)`)
+- DR40-3 CombinationsFormula…OQ02OQ01 (`lt_or_le`→`lt_or_ge`) + GeometricSeriesOQ03
+  (`inv_ne_zero.mpr`→`inv_ne_zero` now a plain implication; reversed-hyp `rw [heq]`→`rw [← heq]`)
+  + Erdos369Problem (`Nat.dvd_of_dvd_of_dvd`→drop; prime-smooth via `Nat.le_of_dvd`) + Erdos327OQ01
+  (`Nat.eq_of_mul_eq_left`→`Nat.eq_of_mul_eq_mul_left`; `interval_cases a` needs explicit `a ≤ 5` have)
+- DR40-4 Erdos456Aristotle (`Finset.card_Ico`→`Nat.card_Ico`) + Erdos267Problem
+  (`Real.one_lt_sqrt`→`Real.lt_sqrt` iff; `Nat.fib_pos`→`.mpr`) + IntermediateValueTheoremOQ03
+  (`intermediate_value_zero_of_le` removed → `intermediate_value_Icc'` decreasing form, 0 ∈ Icc(g1,g0))
+- DR40-5 Erdos509Problem (local `Complex.abs` compat shim `:= ‖·‖` → unfold `Complex.abs, norm_zero`
+  not `map_zero`) + TriangularNumberReciprocals (`Finset.sum_eq_sum_diff_singleton_add` removed →
+  `Finset.sum_erase (a := 0)` with `f 0 = 0` proof + `Finset.erase_eq`; scale-by-2 HasSum via funext)
+- DR40-6 Erdos479Problem (removed `fermat_little` referenced BEFORE its later def = forward-ref
+  hard-error → inline the proof via `ZMod.pow_card` + `ZMod.intCast_eq_intCast_iff`; the def's own
+  `rw [← ZMod.card p]` motive-error on `Fact p.Prime`→ use `ZMod.pow_card` directly)
+- DR40-7 Erdos356Problem (`List.bind`→`List.flatMap`; `Finset.range' 1 n`→`Finset.Icc 1 n`) +
+  Hilbert16 (`![a,b]` no longer coerces to `EuclideanSpace ℝ (Fin 2)` alias →
+  `(EuclideanSpace.equiv (Fin 2) ℝ).symm ![…]`)
+- DR40-8 GroupOrderPrimeSquaredAbelianIsoOQ01OQ01OQ02 (**`Module.finBasisOfFinrankEq` binder order
+  changed** — now `[Module][Free][StrongRankCondition][Module.Finite]`, so `@… _ _ inst hfree _ hmf`)
+- DR40-9 Hilbert22OQ01OQ03Universal (`le_chainCost_of_triangle` collided with imported parent's same
+  name in the SAME reopened namespace → rename local to `_self` + derive from parent's more-general
+  `(c d)` version at `c:=d`) + Erdos263Aristotle (D-let-zeta expansion in `pow` goal →
+  `rw [hD_def, ← pow_mul, ← pow_mul, ← pow_mul]` closes by defeq; drop now-redundant tail tactics —
+  `congr 1`/rw already close via `n+(k+1) ≡ (n+1)+k` defeq)
+- DR40-10 Erdos386Problem (`Nat.Primes.instCountable.toEncodable.decode`→`Nat.nth Nat.Prime`;
+  `Nat.choose_mul_factorial_mul_factorial` assoc mismatch in anon-ctor → `rw [← mul_assoc, …]`)
+- DR40-11 LagrangeTheoremOQ01OQ03OQ01 (`Set.eq_of_subset_of_ncard_le` wants `.ncard` not `Nat.card`
+  → bridge each side via `(Nat.card_coe_set_eq _).symm`; element bracket `⁅a,b⁆` needs
+  `open scoped commutatorElement`)
+- DR40-12 MinpolyCharpolyOQ01 (`charmatrix_apply_ne` now takes explicit `i j h` = `_ _ _ hne`;
+  `rw` won't unify the `.charmatrix` dot-notation pattern → wrap in `show … from`)
+
+Statement repairs: none (all fixes preserve the intended proposition).
+
+Confirmed-deferred (multi-error / genuine gaps, not v4.31 drift):
+FermatsLastTheoremOQ03 (`fermat_n1` is FALSE for char-2 rings: x=y=1 ⟹ z=1+1=0 in ZMod 2, no
+nonzero witness exists — needs a char≠2/|K|>2 hypothesis = genuine modeling defect),
+Erdos490ProblemAristotle (`Nat.eq_zero_of_mul_eq_zero_left`+`eq_of_dvd_of_prime` renames but the
+a₂=0 subcase logic is genuinely incomplete beyond a rename), Hilbert20LocalSolvability
+(`Finset.univ` over infinite `MultiIndex n = Fin n → ℕ` — genuine ill-defined sum domain),
+Erdos152ProblemAPN/KonigsbergOQ02OQ01Aristotle (dense AlphaProof `grind` timeouts),
+GreensTheorem/FourierSeriesOQ04OQ01/MeanValueTheorem (deep analysis rewrite/induction cascades),
+Erdos20Problem (`Finset.inf id` needs `OrderTop (Finset α)` which doesn't exist — def-level restructure).
