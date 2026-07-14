@@ -1,3 +1,72 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 22, #38065, 2026-07-13)
+
+# DOCTOR INCREMENT 22 (structured remainder: parse/sig/elab/dot, #38065, 2026-07-13)
+
+Container `dr32` (cpus 0-5, 11g, cache v431). Worked the parse/sig/elab/dot structured
+remainder (80 target rows: parse-error 45, signature-drift 18, elab-drift 13, dot-notation 4).
+**+7 GREEN** (all in-container `lake build` exit-0).
+
+## Per-class before → after (RESIDUAL)
+- parse-error: 45 → 42 (−3: Erdos1043Aristotle, Erdos52Problem, Erdos806Problem)
+- signature-drift: 18 → 16 (−2: Erdos795ProblemAristotle dup-decl, Erdos79Incomplete01OQ01 free-flip)
+- elab-drift: 13 → 12 (−1: Hilbert11_QuadraticFormsAristotle)
+- (BaselProblemOQ02Aristotle was parse-classified but its true first error was proof-drift —
+  net parse rows still −3 counting it out; +1 GREEN uncounted in the parse tally above)
+
+## Waves (all in-container `lake build` exit-0, then ledger-flipped)
+- **DR32a (+3)**: Erdos1043Aristotle (`open scoped ENNReal` — ℝ≥0∞ notation now scoped;
+  ENNReal scientific-literal comparisons bridged NNReal→ℝ), Erdos795ProblemAristotle
+  (remove duplicate `distinct_products_not_sidon` stub — same-namespace re-decl across
+  the parent import now errors), Erdos79Incomplete01OQ01 (dependency-backfill free-flip).
+- **DR32b (+1)**: BaselProblemOQ02Aristotle (`comp_ne_zero_of_pos_natDegree`:
+  `interval_cases p.natDegree`/`simp_all … at *` → direct `Polynomial.comp_eq_zero_iff`
+  case split).
+- **DR32c (+2)**: Erdos52Problem, Erdos806Problem (calc first-term `EXPR |>.card` →
+  `(EXPR).card`; Erdos806 also `left`/`right` on `a ∈ A ∪ {0}` → `Finset.mem_union.mpr`).
+- **DR32d (+1)**: Hilbert11_QuadraticFormsAristotle (literal `/-!` token in the header
+  block comment opened a NESTED comment that swallowed the header's `-/`; remove the token;
+  then two `absurd h (by decide)` with free var n → `simp [Signature.posDef/negDef] at h`).
+
+## Key recipes (new for rename-map §7u)
+- `ℝ≥0∞` (ENNReal) notation is now SCOPED: files using it without `open scoped ENNReal`
+  get `expected token` at every `ℝ≥0∞`. Add `open scoped ENNReal`. Separately, `norm_num`
+  no longer evaluates ENNReal `OfScientific` literals (`2.386`, `3.3`): bridge each literal
+  `(d : ℝ≥0∞) = ((d : NNReal) : ℝ≥0∞)` (holds by `rfl`), `rw [ENNReal.coe_lt_coe/coe_le_coe]`,
+  then `rw [← NNReal.coe_lt_coe/coe_le_coe]; push_cast; norm_num` (ℝ norm_num is complete).
+- A trailing pipe-projection `EXPR |>.card` as a **calc first term or step** parses
+  `unsolved goals` + `unexpected token '≤'; expected command` on the next step in v4.31 →
+  parenthesize `(EXPR).card`. (Def bodies / non-calc positions are unaffected.)
+- A literal `/-!` (or `/-`) token appearing as PROSE inside a `/- … -/` header comment now
+  opens a NESTED comment (v4.31 nests block comments) that consumes the header's closing
+  `-/` → `unterminated comment` at EOF. Remove/reword the token in the prose.
+- Same-namespace re-declaration of a name that a file's `import`ed parent already declares
+  now errors (`X has already been declared`) → remove the duplicate stub from the child.
+- `interval_cases <projection>` (non-variable term) and `simp_all [...] at *` (simp_all takes
+  no `at`) both broke; replace the whole tactic block with a direct lemma-driven proof.
+
+## Flagged deep (structural first-error clears but exposes multi-class residual — left for sibling)
+Consistent with inc-17/19/21: the clean structural single-blockers are largely harvested.
+The structural fix was applied and VERIFIED-necessary but the file did not flip GREEN, so it
+was reverted, on: BezoutIdentity…OQ03 (`ℤ√`-reserved-token abbrev rename → 8 unknown-const/
+rewrite Zsqrtd.mul_def/star_def/lift_apply), Erdos1020Problem (`Hypergraph` namespace-wrap →
+8 omega/linarith/rewrite), BirthdayProblemOQ01OQ01 (`filter_eq_empty`→`_iff` changes simp
+normal form + 8 tm/unknown-const), ShannonChannelCodingOQ03Aristotle (`h`=binaryEntropy from
+removed `InformationTheory.BinaryEntropy` namespace), LebesgueMeasureOQ03OQ01 (`open scoped
+ENNReal` clears L44 but ⟪,⟫ inner-product notation + tm/synth), MaschkeTheoremOQ01 (docstring/
+omit reorder → 7 instance-synth), Erdos552Problem (Std.Symm/Irrefl `⟨⟩` field fix but
+cycleGraph.loopless FALSE at n=1 latent bug + L189 instance-synth), Erdos133Problem
+(universe-metavar + instance-binder fix on `f` correct but `Nat.find ⟨1, by trivial⟩` needs a
+genuine satisfiability proof), Erdos598Problem (kappa`.{0}`+α:Type pins fix the 2 flagged
+binders but expose `Cardinal.mk X = kappa` universe clash — Set.Iio kappa carrier is Type 1,
+needs Cardinal.lift; inc-17 flagged), Erdos863Aristotle (calc `|>.card` wraps but `{a}×ˢ{a}`
+singleton-parse + `Finset.product_singleton_singleton` removed), FundamentalTheoremCalculus
+LebesgueOQ04 + PtolemysTheoremOQ01Incomplete01 (`/-!`→`/-` import-order fix clears parse but
+exposes flagged removed-const drift dist_norm/eVariationOn/Complex.abs_mul_exp_arg_mul_I;
+inc-19), SchroederBernsteinOQ01 (`HasForget`→`ConcreteCategory` signature overhaul).
+Dep-masked free-flips (13) all blocked on deep RESIDUAL parents (ErdosKoRado, Erdos3LogHarmonic,
+DirichletsTheorem, BirthdayProblemOQ01OQ01, GeneralizeProofs-blocked LawsOfLargeNumbers, …).
+
+---
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 20, #38065, 2026-07-13)
 
 # DOCTOR INCREMENT 20 (type-mismatch + proof-drift + rewrite-drift + mixed, #38065, 2026-07-13)
