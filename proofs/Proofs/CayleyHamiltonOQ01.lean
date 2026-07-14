@@ -70,7 +70,7 @@ theorem aeval_eq_aeval_mod_minpoly {K : Type*} [Field K]
     aeval M f = aeval M (f %ₘ minpoly K M) := by
   have hm : (minpoly K M).Monic := minpoly.monic (Matrix.isIntegral M)
   have hann : aeval M (minpoly K M) = 0 := minpoly.aeval K M
-  have hdiv := Polynomial.modByMonic_add_div f hm
+  have hdiv := Polynomial.modByMonic_add_div f (minpoly K M)
   have := congr_arg (aeval M) hdiv
   simp only [map_add, map_mul] at this
   rw [hann, zero_mul, add_zero] at this
@@ -263,7 +263,7 @@ theorem charpoly_mod_refines_to_minpoly {K : Type*} [Field K]
     aeval M (f %ₘ M.charpoly) = aeval M (f %ₘ minpoly K M) := by
   have h1 : aeval M f = aeval M (f %ₘ M.charpoly) := by
     have hm_c : M.charpoly.Monic := Matrix.charpoly_monic M
-    have hdiv_c := Polynomial.modByMonic_add_div f hm_c
+    have hdiv_c := Polynomial.modByMonic_add_div f M.charpoly
     have heq := congr_arg (aeval M) hdiv_c
     simp only [map_add, map_mul] at heq
     rw [Matrix.aeval_self_charpoly, zero_mul, add_zero] at heq

@@ -399,13 +399,13 @@ CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	RESIDUAL	proof-drift
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	GREEN	
 CayleyHamiltonMinpolyOQ05OQ02	RESIDUAL	instance-synth
 CayleyHamiltonMinpolyOQ05OQ02OQ03	RESIDUAL	instance-synth
-CayleyHamiltonOQ01	RESIDUAL	parse-error
+CayleyHamiltonOQ01	GREEN	
 CayleyHamiltonOQ01OQ01	GREEN	
 CayleyHamiltonOQ01OQ01OQ01	GREEN	
 CayleyHamiltonOQ01OQ01OQ01OQ01	GREEN	
 CayleyHamiltonOQ01OQ02	GREEN	
 CayleyHamiltonOQ01OQ03	RESIDUAL	parse-error
-CayleyHamiltonOQ02	RESIDUAL	parse-error
+CayleyHamiltonOQ02	GREEN	
 CayleyHamiltonOQ02OQ01Analytic	GREEN	
 CayleyHamiltonOQ04OQ02	GREEN	
 CayleyHamiltonReductionOQ01	GREEN	
@@ -1639,7 +1639,7 @@ Erdos734Problem	GREEN
 Erdos736Problem	RESIDUAL	unknown-const:colorable_of_isEmpty
 Erdos737Problem	GREEN	
 Erdos738Problem	RESIDUAL	unclassified
-Erdos739Problem	RESIDUAL	dot-notation-drift
+Erdos739Problem	GREEN	
 Erdos73Aristotle	GREEN	
 Erdos73Problem	RESIDUAL	type-mismatch
 Erdos740Problem	RESIDUAL	instance-synth
