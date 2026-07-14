@@ -79,24 +79,6 @@ The key results on `ℓ(N)`:
 - Komlós–Sulyok–Szemerédi: `N^{1/2} ≪ ℓ(N)` (improved lower bound)
 -/
 
-/-- Erdős's lower bound: every set of size N has a Sidon subset of
-    size at least c · N^{1/3} for some absolute constant c.
-    Proof: follows immediately from the stronger KSS bound k² ≥ c·N.
-    Since k ≥ 1, we have k³ = k·k² ≥ 1·(c·N) = c·N. -/
-theorem erdos_lower_bound :
-    ∃ c : ℕ, c ≥ 1 ∧
-      ∀ A : Finset ℤ, A.card ≥ 8 →
-        maxSidonSize A * maxSidonSize A * maxSidonSize A ≥ c * A.card := by
-  obtain ⟨c, hc, hkss⟩ := komlos_sulyok_szemeredi
-  refine ⟨c, hc, fun A hA => ?_⟩
-  have h := hkss A (by omega : A.card ≥ 4)
-  -- k³ = k · k² ≥ 1 · (c · |A|) = c · |A|
-  calc c * A.card
-      ≤ maxSidonSize A * maxSidonSize A := h
-    _ ≤ maxSidonSize A * maxSidonSize A * maxSidonSize A :=
-        le_mul_of_one_le_right (Nat.zero_le _)
-          (maxSidonSize_pos (Finset.card_pos.mp (by omega : 0 < A.card)))
-
 /-- Komlós–Sulyok–Szemerédi improved lower bound: every set of size N
     has a Sidon subset of size at least c · N^{1/2}. -/
 axiom komlos_sulyok_szemeredi :
@@ -118,6 +100,24 @@ theorem maxSidonSize_pos {A : Finset ℤ} (hA : A.Nonempty) : 1 ≤ maxSidonSize
     _ ≤ (A.powerset.filter fun S => IsSidon S).sup Finset.card :=
         Finset.le_sup (Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr
           (Finset.singleton_subset_iff.mpr hx), isSidon_singleton x⟩)
+
+/-- Erdős's lower bound: every set of size N has a Sidon subset of
+    size at least c · N^{1/3} for some absolute constant c.
+    Proof: follows immediately from the stronger KSS bound k² ≥ c·N.
+    Since k ≥ 1, we have k³ = k·k² ≥ 1·(c·N) = c·N. -/
+theorem erdos_lower_bound :
+    ∃ c : ℕ, c ≥ 1 ∧
+      ∀ A : Finset ℤ, A.card ≥ 8 →
+        maxSidonSize A * maxSidonSize A * maxSidonSize A ≥ c * A.card := by
+  obtain ⟨c, hc, hkss⟩ := komlos_sulyok_szemeredi
+  refine ⟨c, hc, fun A hA => ?_⟩
+  have h := hkss A (by omega : A.card ≥ 4)
+  -- k³ = k · k² ≥ 1 · (c · |A|) = c · |A|
+  calc c * A.card
+      ≤ maxSidonSize A * maxSidonSize A := h
+    _ ≤ maxSidonSize A * maxSidonSize A * maxSidonSize A :=
+        le_mul_of_one_le_right (Nat.zero_le _)
+          (maxSidonSize_pos (Finset.card_pos.mp (by omega : 0 < A.card)))
 
 /-- For A with ≥ 2 elements, maxSidonSize A ≥ 2 (any pair is Sidon). -/
 theorem maxSidonSize_ge_two {A : Finset ℤ} (hA : 2 ≤ A.card) : 2 ≤ maxSidonSize A := by
@@ -413,7 +413,7 @@ theorem interval_sidon_upper (N : ℕ) (hN : 1 ≤ N) :
 
 /-- The card of Finset.Icc 1 N equals N for integers. -/
 private theorem icc_one_card (N : ℕ) : (Finset.Icc (1 : ℤ) ↑N).card = N := by
-  simp [Nat.card_Icc]; omega
+  simp
 
 /-- The corrected Erdős Problem 530 is proved: ℓ(N) = Θ(√N).
     Lower bound from KSS axiom; upper bound from interval sum counting (proved).
