@@ -21,8 +21,8 @@ theorem amended_limit :
   unfold amended_alpha
   have h : Filter.Tendsto (fun k : ℕ => (2 : ℝ) / k) Filter.atTop (nhds 0) := by
     simp_rw [div_eq_mul_inv]
-    apply Filter.Tendsto.const_mul_zero
-    exact tendsto_natCast_atTop_atTop.inv_tendsto_atTop
+    have := (tendsto_natCast_atTop_atTop (R := ℝ)).inv_tendsto_atTop.const_mul (2 : ℝ)
+    simpa using this
   have h3 : Filter.Tendsto (fun k : ℕ => (3 : ℝ) - 2 / k) Filter.atTop (nhds (3 - 0)) :=
     h.const_sub 3
   simp only [sub_zero] at h3

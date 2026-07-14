@@ -79,15 +79,14 @@ theorem tau_one : tau 1 = 1 := by
 
 -- Routine lemma: tau(p) = 2 for prime p
 theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
-  simp [tau, Nat.Prime.divisors hp]
+  simp only [tau, Nat.Prime.divisors hp, Finset.card_pair hp.one_lt.ne]
 
 -- Routine lemma: tau is multiplicative for coprime arguments
 theorem tau_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
     (hcop : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
   simp only [tau]
-  rw [hcop.divisors_mul]
-  exact Finset.card_product _ _
+  exact hcop.card_divisors_mul
 
 -- Routine lemma: G(n) ≥ 0 for all n (sum of nonneg ratios)
 theorem G_nonneg (n : ℕ) : G n ≥ 0 := by
