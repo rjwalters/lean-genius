@@ -141,7 +141,7 @@ theorem consecutiveLcm_powers_of_two (i : ℕ) :
   unfold consecutiveLcm
   rw [show Finset.range 2 = insert 1 {0} from by
     rw [Finset.range_add_one, Finset.range_one]]
-  rw [Finset.lcm_insert (by simp), Finset.lcm_singleton]
+  rw [Finset.lcm_insert, Finset.lcm_singleton]
   simp only [normalize_eq, Nat.add_zero]
   exact (Nat.dvd_antisymm
     (dvd_lcm_left _ _)
