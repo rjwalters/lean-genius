@@ -32,6 +32,7 @@ theorem cubic_factor_expansion (r₁ r₂ r₃ : R) :
     Polynomial.C (r₁ + r₂ + r₃) * Polynomial.X ^ 2 +
     Polynomial.C (r₁ * r₂ + r₁ * r₃ + r₂ * r₃) * Polynomial.X -
     Polynomial.C (r₁ * r₂ * r₃) := by
+  simp only [Polynomial.C_add, Polynomial.C_mul]
   ring
 
 -- ============================================================
@@ -47,9 +48,10 @@ theorem vieta_sigma1 (a b c r₁ r₂ r₃ : R)
     a = -(r₁ + r₂ + r₃) := by
   rw [cubic_factor_expansion] at h
   have := congr_arg (fun p => Polynomial.coeff p 2) h
-  simp [Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_mul,
-        Polynomial.coeff_sub, Polynomial.coeff_add] at this
-  linarith
+  simp only [Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_X_pow,
+        Polynomial.coeff_C_mul, Polynomial.coeff_C, Polynomial.coeff_X] at this
+  norm_num at this
+  linear_combination this
 
 /-- If x³ + ax² + bx + c = (x - r₁)(x - r₂)(x - r₃), then b = r₁r₂+r₁r₃+r₂r₃. -/
 theorem vieta_sigma2 (a b c r₁ r₂ r₃ : R)
@@ -60,9 +62,10 @@ theorem vieta_sigma2 (a b c r₁ r₂ r₃ : R)
     b = r₁ * r₂ + r₁ * r₃ + r₂ * r₃ := by
   rw [cubic_factor_expansion] at h
   have := congr_arg (fun p => Polynomial.coeff p 1) h
-  simp [Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_mul,
-        Polynomial.coeff_sub, Polynomial.coeff_add] at this
-  linarith
+  simp only [Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_X_pow,
+        Polynomial.coeff_C_mul, Polynomial.coeff_C, Polynomial.coeff_X] at this
+  norm_num at this
+  linear_combination this
 
 /-- If x³ + ax² + bx + c = (x - r₁)(x - r₂)(x - r₃), then c = -r₁r₂r₃. -/
 theorem vieta_sigma3 (a b c r₁ r₂ r₃ : R)
@@ -73,9 +76,10 @@ theorem vieta_sigma3 (a b c r₁ r₂ r₃ : R)
     c = -(r₁ * r₂ * r₃) := by
   rw [cubic_factor_expansion] at h
   have := congr_arg (fun p => Polynomial.coeff p 0) h
-  simp [Polynomial.coeff_X_pow, Polynomial.coeff_C, Polynomial.coeff_mul,
-        Polynomial.coeff_sub, Polynomial.coeff_add] at this
-  linarith
+  simp only [Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_X_pow,
+        Polynomial.coeff_C_mul, Polynomial.coeff_C, Polynomial.coeff_X] at this
+  norm_num at this
+  linear_combination this
 
 -- ============================================================
 -- SECTION III: Combined Vieta's Formulas
