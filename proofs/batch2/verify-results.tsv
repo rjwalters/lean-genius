@@ -397,7 +397,7 @@ CayleyHamiltonMinpolyOQ05OQ01OQ01	RESIDUAL	unknown-const:isUnit_of_natDegree_eq_
 CayleyHamiltonMinpolyOQ05OQ01OQ02	RESIDUAL	unknown-const:dvd_of_mem_normalizedFactors
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	RESIDUAL	proof-drift
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	GREEN	
-CayleyHamiltonMinpolyOQ05OQ02	RESIDUAL	instance-synth
+CayleyHamiltonMinpolyOQ05OQ02	GREEN	
 CayleyHamiltonMinpolyOQ05OQ02OQ03	RESIDUAL	instance-synth
 CayleyHamiltonOQ01	GREEN	
 CayleyHamiltonOQ01OQ01	GREEN	
@@ -436,7 +436,7 @@ CevasTheoremNonEuclideanOQ02	GREEN
 CevasTheoremNonEuclideanOQ03	GREEN	
 CevasTheoremOQ01OQ03	RESIDUAL	proof-drift
 ChebyshevBoundsOQ03	GREEN	
-ChebyshevBoundsOQ03OQ02	RESIDUAL	type-mismatch
+ChebyshevBoundsOQ03OQ02	GREEN	
 ChebyshevBoundsOQ04Aristotle	GREEN	
 ChebyshevBoundsOQ0601	GREEN	
 ChebyshevPNTBridgeOQ01	RESIDUAL	partenat-removal

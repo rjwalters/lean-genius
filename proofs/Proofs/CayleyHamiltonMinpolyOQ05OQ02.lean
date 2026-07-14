@@ -73,7 +73,7 @@ theorem minpoly_natDegree_dvd_finrank (x : L) (hx : IsIntegral K x) :
 theorem finrank_eq_minpoly_mul (x : L) (hx : IsIntegral K x) :
     finrank K L = (minpoly K x).natDegree * finrank (↥K⟮x⟯) L := by
   rw [← simple_extension_dim x hx]
-  exact finrank_mul_finrank K (↥K⟮x⟯) L
+  exact (finrank_mul_finrank K (↥K⟮x⟯) L).symm
 
 /-- The minimal polynomial degree is at most the extension degree. -/
 theorem minpoly_natDegree_le_finrank (x : L) (hx : IsIntegral K x)
@@ -173,13 +173,16 @@ degree drop to concrete factorization.
 theorem irred_degree_dvd_splitting_finrank (p : K[X])
     (hirr : Irreducible p) (hmonic : p.Monic) :
     p.natDegree ∣ finrank K p.SplittingField := by
-  -- p has a root α in its splitting field
+  -- p has a root α in its splitting field (separability-free existence: v4.31
+  -- compat #38065 — `Irreducible.separable` needs a perfect/char-zero base field,
+  -- which is not assumed here, so obtain the root directly from `Splits`).
   have hsplit := SplittingField.splits p
-  have hsep := hirr.separable
-  have hcard : Fintype.card (p.rootSet p.SplittingField) = p.natDegree :=
-    Polynomial.card_rootSet_eq_natDegree hsep hsplit
-  obtain ⟨⟨α, hα_mem⟩⟩ := Fintype.card_pos_iff.mp (by rw [hcard]; exact hirr.natDegree_pos)
-  have hα_root : aeval α p = 0 := (Polynomial.mem_rootSet.mp hα_mem).2
+  have hα_root_exists : ∃ α : p.SplittingField, aeval α p = 0 := by
+    have hdeg : (p.map (algebraMap K p.SplittingField)).degree ≠ 0 := by
+      rw [degree_map]; exact (degree_pos_of_irreducible hirr).ne'
+    obtain ⟨x, hx⟩ := hsplit.exists_eval_eq_zero hdeg
+    exact ⟨x, by rw [aeval_def, ← eval_map]; exact hx⟩
+  obtain ⟨α, hα_root⟩ := hα_root_exists
   have hα_int : IsIntegral K α := .of_finite K α
   have hminp : minpoly K α = p :=
     (minpoly.eq_of_irreducible_of_monic hirr hα_root hmonic).symm
