@@ -49,20 +49,20 @@ theorem apFree_of_isKAPFreeZMod_three {N : ℕ} {A : Finset (ZMod N)}
   intro a d hd ha had hadd
   exact h a d hd fun i => by
     fin_cases i
-    · rw [show (0 : Fin 3).val = 0 from rfl, zero_nsmul, add_zero]; exact ha
-    · rw [show (1 : Fin 3).val = 1 from rfl, one_nsmul]; exact had
-    · rw [show (2 : Fin 3).val = 2 from rfl, two_nsmul, ← two_mul]; exact hadd
+    · simpa using ha
+    · simpa using had
+    · simpa [two_nsmul, ← two_mul] using hadd
 
 /-- Converse: Szemeredi.Roth.APFree implies IsKAPFreeZMod for k=3. -/
 theorem isKAPFreeZMod_three_of_apFree {N : ℕ} {A : Finset (ZMod N)}
     (h : Szemeredi.Roth.APFree A) : IsKAPFreeZMod A 3 := by
   intro a d hd hAP
   have ha : a ∈ A := by
-    have := hAP ⟨0, by omega⟩; rwa [show (0 : Fin 3).val = 0 from rfl, zero_nsmul, add_zero] at this
+    have := hAP ⟨0, by omega⟩; simpa using this
   have had : a + d ∈ A := by
-    have := hAP ⟨1, by omega⟩; rwa [show (1 : Fin 3).val = 1 from rfl, one_nsmul] at this
+    have := hAP ⟨1, by omega⟩; simpa using this
   have hadd : a + 2 * d ∈ A := by
-    have := hAP ⟨2, by omega⟩; rwa [show (2 : Fin 3).val = 2 from rfl, two_nsmul, ← two_mul] at this
+    have := hAP ⟨2, by omega⟩; simpa [two_nsmul, ← two_mul] using this
   exact h a d hd ha had hadd
 
 -- ============================================================

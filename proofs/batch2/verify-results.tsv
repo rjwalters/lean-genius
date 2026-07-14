@@ -2377,7 +2377,7 @@ RothTheoremOQ01Primes	GREEN
 RothTheoremOQ01RecipSufficient	GREEN	
 RothTheoremOQ01Reciprocal	GREEN	
 RothTheoremOQ01Weighted	GREEN	
-RothTheoremOQ03	RESIDUAL	unknown-const:Finset.sum_eq_add_sum_diff_singleton
+RothTheoremOQ03	GREEN	
 RothTheoremOQ03OQ01OQ01	GREEN	duplicate-decl
 RothTheoremOQ03OQ01OQ01OQ01	GREEN	
 RothTheoremOQ03OQ01OQ01OQ01OQ01	GREEN	
@@ -2516,7 +2516,7 @@ SumOfKthPowersOQ05	GREEN
 SumOfKthPowersOQ05OQ01	GREEN	
 SumOfKthPowersOQ05OQ01OQ01	GREEN	
 SumOfOddsStatementOnly	GREEN	
-SylowTheorem	RESIDUAL	unknown-const:card_sylow_dvd_index
+SylowTheorem	GREEN	
 SylowTheoremOQ01	RESIDUAL	rewrite-drift
 SylowTheoremOQ02	GREEN	
 SylowTheoremOQ02OQ01Nilpotent	GREEN	
@@ -2561,17 +2561,17 @@ TaylorTheoremOQ03OQ02	GREEN
 TestApi1056	RESIDUAL	proof-drift
 TestApi1059	GREEN	
 TestApi1061	GREEN	
-TestApi1061b	RESIDUAL	unknown-const:Nat.divisors_prime_eq
+TestApi1061b	GREEN	
 TestApi1141	GREEN	
 TestApi1148	GREEN	
-TestApi1159b	RESIDUAL	unknown-const:Configuration.HasLines.mkFinOrder
+TestApi1159b	GREEN	
 TestApi1159c	RESIDUAL	proof-drift
 TestApi203	RESIDUAL	unclassified
-TestApi234	RESIDUAL	unknown-const:Continuous.if_lt
+TestApi234	GREEN	
 TestApi241	RESIDUAL	noncomputable
 TestApi249	GREEN	
 TestApi301	GREEN	
-TestApi312	RESIDUAL	unknown-const:Real.exp_ge_one_add_of_nonneg
+TestApi312	GREEN	
 TestApi321	GREEN	
 TestApi342	GREEN	
 TestApi361	GREEN	
@@ -2594,12 +2594,12 @@ TestApi913	GREEN
 TestApi959	GREEN	
 TestApi960	GREEN	
 TestApi963	GREEN	unknown-const:Finset.sum_pow_eq_pow_sum
-TestConvexHull	RESIDUAL	unknown-const:isCompact_isClosed_isBounded
+TestConvexHull	GREEN	
 TestCovByApi	GREEN	
 TestDerangConvApi	GREEN	
-TestErdos43Api	RESIDUAL	unknown-const:Int.Icc_toFinset_card
+TestErdos43Api	GREEN	
 TestHLTension	RESIDUAL	unknown-const:Finset.card_sdiff_eq_card_sub_card_inter
-TestHolderApi	RESIDUAL	unknown-const:MeasureTheory.snorm
+TestHolderApi	GREEN	
 TestSphereLocEuc	RESIDUAL	proof-drift
 TestWolstenholme	RESIDUAL	unknown-const:ZMod.prod_univ_prime
 TestZetaNonzero	GREEN	

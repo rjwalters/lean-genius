@@ -4,17 +4,16 @@ open Real
 
 -- Test 1: piecewise continuous with if-then-else
 noncomputable def testPiecewise (c : ℝ) : ℝ :=
-  if c < 0 then 0 else 1 - Real.exp (-c)
+  if (0 : ℝ) ≤ c then 1 - Real.exp (-c) else 0
 
 -- Test 2: Continuous.if_le for piecewise
 theorem test_piecewise_continuous : Continuous testPiecewise := by
   unfold testPiecewise
-  apply Continuous.if_lt continuous_id continuous_const
-  · exact continuous_const
-  · exact continuous_const.sub (continuous_exp.comp continuous_neg)
+  apply Continuous.if_le
+    (continuous_const.sub (continuous_exp.comp continuous_neg)) continuous_const
+    continuous_const continuous_id
   · intro x hx
-    simp at hx
-    rw [hx]
+    subst hx
     simp
 
 -- Test 3: exp bounds
@@ -28,7 +27,7 @@ theorem test_filter_mono {N : ℕ} {c₁ c₂ : ℝ} (h : c₁ ≤ c₂) :
     ((Finset.range N).filter (fun n => decide (n < 3) = true)).card ≤
     ((Finset.range N).filter (fun n => decide (n < 5) = true)).card := by
   apply Finset.card_le_card
-  apply Finset.filter_subset_filter
+  apply Finset.monotone_filter_right
   intro x
   simp
   omega
@@ -39,5 +38,5 @@ example {N : ℕ} {P Q : ℕ → Prop} [DecidablePred P] [DecidablePred Q]
     (h : ∀ x, P x → Q x) :
     ((Finset.range N).filter P).card ≤ ((Finset.range N).filter Q).card := by
   apply Finset.card_le_card
-  apply Finset.filter_subset_filter
-  exact fun _ => h _
+  apply Finset.monotone_filter_right
+  exact fun a _ => h a

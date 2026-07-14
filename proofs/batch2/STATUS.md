@@ -1,3 +1,73 @@
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 35, #38065, 2026-07-14)
+
+# DOCTOR INCREMENT 35 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, #38065, 2026-07-14)
+
+Container `dr45` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065`, reset onto origin/feature/issue-37508 (ledger 1777).
+Partition: **N–Z basenames + Erdos ≥ 600** (sibling increment 34 = A–M + Erdos < 600).
+317 my-class RESIDUAL rows after known-hard/Zsqrtd filter. Finding reconfirmed
+(inc-14/17/32): the clean single-error rows are largely harvested; N–Z/Erdos≥600
+proof-drift/type-mismatch rows now cluster 3–18 errors each. The reliable seam this
+increment was the **Test*/TestApi* API-probe files** (small, mostly `#check` of
+removed consts + one example needing a rename).
+
+## Waves (all in-container `lake build` exit-0, then ledger-flipped)
+- **DR45a (+1)** SylowTheorem: `card_sylow_dvd_index P`→`P.card_dvd_index` (Sylow.card_dvd_index);
+  `normalizer_eq_top`→`normalizer_eq_top_iff`; `isCyclic_of_prime_card` now needs
+  `Nat.card` (bridge `⟨by rwa [Nat.card_eq_fintype_card]⟩`); `mem_normalizer_iff` two-step
+  `rw … at this` → term-mode `(mem_normalizer_iff.mp this) x`.
+- **DR45b (+1)** RothTheoremOQ03: `fin_cases i` on `Fin 3` now yields `⟨0,_⟩/⟨1,_⟩/⟨2,_⟩`
+  literals so `rw [show (i:Fin 3).val = k from rfl, zero_nsmul/one_nsmul/two_nsmul]` no
+  longer matches → replace the whole chain with `simpa [two_nsmul, ← two_mul] using …`.
+- **DR45c (+1)** TestErdos43Api: removed `#check @Int.Icc_toFinset_card`/`@Nat.card_Icc_of_le`;
+  the `Finset.Icc (1:ℤ) (N-1)` card example now `rw [Int.card_Icc]; omega` (the `toNat`
+  have no longer closes by `rfl`).
+- **DR45d (+2)** TestApi1159b (removed `#check HasLines.mkFinOrder`/`ProjectivePlane.mkFinOrder`);
+  TestConvexHull (removed `#check isCompact_isClosed_isBounded`; **`Set.Finite.isCompact_convexHull`
+  now takes `𝕜` explicitly** → `(… ).isCompact_convexHull (𝕜 := ℝ)`).
+- **DR45e (+2)** TestApi312 (removed `#check` of `Real.exp_ge_one_add_of_nonneg`/
+  `Real.exp_lt_one_of_neg`/`isLittleO_pow_exp_atTop`); TestHolderApi (**`MeasureTheory.snorm`
+  →`eLpNorm`**: `snorm_add_le`→`eLpNorm_add_le`, `snorm_le_snorm_mul_snorm_of_nq`→
+  `eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm`; **`NNReal.HolderConjugate` is now a predicate**
+  → `rw [NNReal.holderConjugate_iff]` not `rw [NNReal.HolderConjugate]`).
+- **DR45f (+1)** TestApi1061b: **`σ` notation for `ArithmeticFunction.sigma` no longer applies
+  in term/application position** ("Function expected at σ") → use `ArithmeticFunction.sigma 1`;
+  removed `#check Nat.divisors_prime_eq`.
+- **DR45g (+1)** TestApi234: **`Continuous.if_lt` removed** (only `Continuous.if_le`/`if_ge`) →
+  restate the piecewise with `0 ≤ c` and `Continuous.if_le hf' hg' hf hg hfg` (frontier `hfg`
+  via `subst`); **`Finset.filter_subset_filter` is now same-predicate/subset-set** — for a
+  monotone predicate use `Finset.monotone_filter_right` (`h : ∀ a ∈ s, p a → q a`).
+
+Ledger: 1777 → 1786 GREEN (+9). Recipes catalogued in rename-map §7z.
+
+## Statement repairs
+- (none this increment — all fixes were faithful migration repairs / removal of `#check`s
+  of removed constants in API-probe test files.)
+
+## Sylow cluster status
+Only SylowTheorem flipped. SylowTheoremOQ04 (Finite (Sylow p A5) instance-synth +
+native_decide noncomputable `SetLike.instFintype`), SylowTheoremOQ02Orbit (2 app-type-mismatch
++ `sylow_count_eq_normalizer_index` internal forward-ref), SylowTheoremOQ01 (rewrite-drift),
+SylowTheoremOQ04OQ03 (decide-maxrecdepth), SylowTheoremsOQ05 (slow-timeout) all remain deep.
+The `card_sylow_dvd_index`→`card_dvd_index` and `Sylow.exists_smul_eq`→`MulAction.exists_smul_eq`
+renames are correct but insufficient alone on OQ04/OQ02Orbit.
+
+## Flagged deep (fix attempted / triaged, did NOT flip, reverted / skipped)
+- Erdos857Problem: `mem_empty_iff_false`/`not_not_mem` removed (fixed via `Finset.disjoint_left`)
+  but exposed `inter_eq_empty` (×N in a `simp`) + `Nat.find`-instance-synth at L104 — multi-error.
+- TestApi1159c: `ProjectivePlane.pointCount_eq` now `(P) {L} (l)` (drop the `L` arg) fixes the
+  "Function expected" but exposes omega (pointCount no longer defeq to the `{p // p ∈ l}` card) +
+  two "stuck typeclass" in the ↔ example — deep.
+- TestWolstenholme: `#check` removals aside, the power-sum example drifted (`IsCyclic.exists_monoid_generator`
+  gives `Submonoid.powers` not `zpowers`; omega/unsolved cascade) — deep.
+- TestApi1056: `List.get ⟨i.val+1, by omega⟩` inside a `def` — omega has no length fact in scope
+  (def-level hard error) + `decide` failures — skip.
+- Erdos980Problem: `Nat.Prime.nthPrime` (project-broken name; intended `Nat.nth Nat.Prime`) but two
+  instance-synth errors at L76-77 unrelated — deep.
+- TestApi1061b/234 recipes reused where possible; no cluster of the `fin_cases nsmul` or
+  `isCompact_convexHull (𝕜:=)` renames found elsewhere in the N–Z partition (each 1 file).
+
+---
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 25, #38065, 2026-07-13)
 
 # DOCTOR INCREMENT 25 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, #38065, 2026-07-13)
