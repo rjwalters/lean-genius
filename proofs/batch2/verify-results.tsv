@@ -2507,7 +2507,7 @@ StirlingFormula	RESIDUAL	parse-error
 StirlingFormulaOQ02OQ01	RESIDUAL	type-mismatch
 SubsetCount	GREEN	
 SubsetCountOQ02	GREEN	
-SubsetCountOQ02OQ01	RESIDUAL	unknown-const:Finset.disjoint_comm.mp
+SubsetCountOQ02OQ01	GREEN	unknown-const:Finset.disjoint_comm.mp
 SumOfDivisorsOQ01SpecialPrime	GREEN	unknown-const:not_even_iff_odd
 SumOfKthPowers	RESIDUAL	unknown-const:Finset.sum_range_pow
 SumOfKthPowersOQ03	RESIDUAL	instance-synth
