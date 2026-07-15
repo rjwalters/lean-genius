@@ -68,6 +68,8 @@ theorem quadratic_case (p a : ℕ) :
 ## Part II: Least Power Nonresidue
 -/
 
+attribute [local instance] Classical.propDecidable
+
 /--
 **Least k-th Power Nonresidue:**
 n_k(p) = min{a ≥ 1 : a is a k-th power nonresidue mod p}
@@ -118,7 +120,7 @@ c₂ = Σ_{j=1}^∞ p_j / 2^j
 where p_j is the j-th prime (p_1 = 2, p_2 = 3, ...).
 -/
 noncomputable def c_2 : ℝ :=
-  ∑' j : ℕ, (Nat.Prime.nthPrime j : ℝ) / 2 ^ (j + 1)
+  ∑' j : ℕ, (Nat.nth Nat.Prime j : ℝ) / 2 ^ (j + 1)
 
 /--
 c₂ converges and is positive.
