@@ -124,7 +124,7 @@ theorem oddSet_card (N : ℕ) : (oddSet N).card = (N + 1) / 2 := by
 private lemma no_consecutive_in_admissible (A : Finset ℕ) (N : ℕ)
     (hA : IsAdmissible A N 1) (a : ℕ) (ha : a ∈ A) (ha1 : a + 1 ∈ A) : False := by
   have := hA.2 a (a + 1) ha ha1 (by omega) (by omega)
-  exact this ⟨a + 1, by omega⟩
+  exact this ⟨a + 1, by simp⟩
 
 /-- Upper bound: any 1-admissible set in {1,...,N} has at most (N+1)/2 elements.
     Proof: the map a ↦ (a-1)/2 is injective on A (no consecutive elements
@@ -133,11 +133,11 @@ private lemma no_consecutive_in_admissible (A : Finset ℕ) (N : ℕ)
 private theorem admissible_card_upper (A : Finset ℕ) (N : ℕ) (hA : IsAdmissible A N 1) :
     A.card ≤ (N + 1) / 2 := by
   -- Injection: a ↦ (a - 1) / 2
-  let φ : ℕ → ℕ := fun a => (a - 1) / 2
-  -- Show φ is injective on A
-  have hinj : Set.InjOn φ ↑A := by
+  let phi : ℕ → ℕ := fun a => (a - 1) / 2
+  -- Show phi is injective on A
+  have hinj : Set.InjOn phi ↑A := by
     intro a ha b hb heq
-    simp only [φ] at heq
+    simp only [phi] at heq
     have ha1 : 1 ≤ a := (hA.1 a (Finset.mem_coe.mp ha)).1
     have hb1 : 1 ≤ b := (hA.1 b (Finset.mem_coe.mp hb)).1
     -- From (a-1)/2 = (b-1)/2, derive a and b are in the same {2k+1, 2k+2}
@@ -154,21 +154,34 @@ private theorem admissible_card_upper (A : Finset ℕ) (N : ℕ) (hA : IsAdmissi
         (Finset.mem_coe.mp hb) (Finset.mem_coe.mp ha)
     · exact no_consecutive_in_admissible A N hA a
         (Finset.mem_coe.mp ha) (Finset.mem_coe.mp hb)
-  -- Show φ(A) ⊆ Finset.range ((N+1)/2)
-  have hrange : A.image φ ⊆ Finset.range ((N + 1) / 2) := by
+  -- Show phi(A) ⊆ Finset.range ((N+1)/2)
+  have hrange : A.image phi ⊆ Finset.range ((N + 1) / 2) := by
     intro x hx
     simp only [Finset.mem_image] at hx
     obtain ⟨a, ha, rfl⟩ := hx
-    simp only [Finset.mem_range, φ]
+    simp only [Finset.mem_range, phi]
     have ha_le : a ≤ N := (hA.1 a ha).2
     have ha_ge : a ≥ 1 := (hA.1 a ha).1
     -- (a-1)/2 < (N+1)/2 since a ≤ N
     have : a - 1 < N + 1 := by omega
     exact Nat.div_lt_of_lt_mul (by omega)
-  -- Combine: |A| = |φ(A)| ≤ |range((N+1)/2)| = (N+1)/2
-  calc A.card = (A.image φ).card := (Finset.card_image_of_injOn hinj).symm
+  -- Combine: |A| = |phi(A)| ≤ |range((N+1)/2)| = (N+1)/2
+  calc A.card = (A.image phi).card := (Finset.card_image_of_injOn hinj).symm
     _ ≤ (Finset.range ((N + 1) / 2)).card := Finset.card_le_card hrange
     _ = (N + 1) / 2 := Finset.card_range _
+
+/-- The set of achievable cardinalities is nonempty (∅ is always admissible). -/
+theorem f_set_nonempty (N t : ℕ) :
+    {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t}.Nonempty :=
+  ⟨0, ∅, rfl, ⟨fun _ h => absurd h (Finset.notMem_empty _),
+    fun _ _ h => absurd h (Finset.notMem_empty _)⟩⟩
+
+/-- The set of achievable cardinalities is bounded above by N. -/
+theorem f_set_bddAbove (N t : ℕ) :
+    BddAbove {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t} :=
+  ⟨N, fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
+    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
+      (by rw [Nat.card_Icc]; omega)⟩
 
 /-- For t = 1, the maximum is exactly ⌊(N+1)/2⌋.
 
@@ -225,26 +238,13 @@ theorem IsAdmissible_mono_t {A : Finset ℕ} {N t t' : ℕ} (h : t ≤ t')
     (hA : IsAdmissible A N t) : IsAdmissible A N t' :=
   ⟨hA.1, fun a b ha hb hab hd => hA.2 a b ha hb hab (le_trans h hd)⟩
 
-/-- The set of achievable cardinalities is nonempty (∅ is always admissible). -/
-theorem f_set_nonempty (N t : ℕ) :
-    {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t}.Nonempty :=
-  ⟨0, ∅, rfl, ⟨fun _ h => absurd h (Finset.notMem_empty _),
-    fun _ _ h => absurd h (Finset.notMem_empty _)⟩⟩
-
-/-- The set of achievable cardinalities is bounded above by N. -/
-theorem f_set_bddAbove (N t : ℕ) :
-    BddAbove {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t} :=
-  ⟨N, fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
-    le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
-      (by simp [Finset.card_Icc]; omega)⟩
-
 /-- Trivial upper bound: f(N, t) ≤ N for all t.
     Proof: A ⊆ {1,...,N} implies |A| ≤ N. -/
 theorem f_upper_trivial (N t : ℕ) : f N t ≤ N := by
   unfold f
   exact csSup_le (f_set_nonempty N t) fun _ ⟨A, hcard, hAdm⟩ => hcard ▸
     le_trans (Finset.card_le_card (fun x hx => Finset.mem_Icc.mpr (hAdm.1 x hx)))
-      (by simp [Finset.card_Icc]; omega)
+      (by rw [Nat.card_Icc]; omega)
 
 /-- Monotonicity: f(N, t) ≤ f(N, t') when t ≤ t'.
     Proof: Larger t means fewer restricted pairs, so more admissible sets. -/
@@ -272,36 +272,37 @@ theorem f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
 theorem f_t1_density :
     Filter.Tendsto (fun N => (f N 1 : ℝ) / N) Filter.atTop (nhds (1 / 2)) := by
   -- Squeeze: constant 1/2 ≤ f(N,1)/N ≤ 1/2 + 1/(2N) → 1/2
-  apply tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
-  · -- Upper bound function: 1/2 + 1/(2N) → 1/2
-    have h0 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / (2 * (N : ℝ))) Filter.atTop (nhds 0) := by
-      have := Filter.Tendsto.const_mul
-        (show Filter.Tendsto (fun n : ℕ => (n : ℝ)⁻¹) Filter.atTop (nhds 0) from
-          tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop) (1 / 2 : ℝ)
-      simp only [mul_zero] at this
-      convert this using 1
-      ext n; ring
-    convert h0.const_add (1 / 2) using 1
-    · ext; ring
-    · ring
+  have hupper : Filter.Tendsto (fun N : ℕ => (1 / 2 : ℝ) + 1 / (2 * (N : ℝ)))
+      Filter.atTop (nhds (1 / 2)) := by
+    have h1 : Filter.Tendsto (fun n : ℕ => (n : ℝ)⁻¹) Filter.atTop (nhds 0) :=
+      tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+    have h2 := h1.const_mul ((2 : ℝ)⁻¹)
+    rw [mul_zero] at h2
+    have h3 := h2.const_add (1 / 2 : ℝ)
+    rw [add_zero] at h3
+    exact h3.congr fun n => by ring
+  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hupper ?_ ?_
   · -- Lower bound: 1/2 ≤ f(N,1)/N eventually
-    exact Filter.eventually_atTop.mpr ⟨2, fun N hN => by
-      rw [f_t1 N (by omega : N ≥ 1)]
-      rw [le_div_iff₀ (by positivity : (0 : ℝ) < ↑N)]
-      have : N ≤ ((N + 1) / 2) * 2 := by omega
-      exact_mod_cast this⟩
+    refine Filter.eventually_atTop.mpr ⟨2, fun N hN => ?_⟩
+    rw [f_t1 N (by omega : N ≥ 1),
+      le_div_iff₀ (by positivity : (0 : ℝ) < (N : ℝ))]
+    have h1 : N ≤ ((N + 1) / 2) * 2 := by omega
+    calc (1 / 2 : ℝ) * N = (N : ℝ) / 2 := by ring
+      _ ≤ (((N + 1) / 2 : ℕ) : ℝ) := by
+          rw [div_le_iff₀ (two_pos)]
+          exact_mod_cast h1
   · -- Upper bound: f(N,1)/N ≤ 1/2 + 1/(2N) eventually
-    exact Filter.eventually_atTop.mpr ⟨2, fun N hN => by
-      rw [f_t1 N (by omega : N ≥ 1)]
-      have hNpos : (0 : ℝ) < ↑N := by positivity
-      rw [div_le_iff₀ hNpos]
-      have hdiv : ((N + 1) / 2 : ℕ) * 2 ≤ N + 1 := Nat.div_mul_le_self (N + 1) 2
-      have : (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := by
-        rw [div_le_iff₀ (two_pos)]
-        exact_mod_cast hdiv
-      calc (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := this
-        _ = (1 / 2 + 1 / (2 * ↑N)) * ↑N := by field_simp; ring
-      ⟩
+    refine Filter.eventually_atTop.mpr ⟨2, fun N hN => ?_⟩
+    rw [f_t1 N (by omega : N ≥ 1)]
+    have hNpos : (0 : ℝ) < (N : ℝ) := by positivity
+    have hN0 : (N : ℝ) ≠ 0 := ne_of_gt hNpos
+    rw [div_le_iff₀ hNpos]
+    have hdiv : ((N + 1) / 2 : ℕ) * 2 ≤ N + 1 := Nat.div_mul_le_self (N + 1) 2
+    have hle : (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := by
+      rw [le_div_iff₀ (two_pos)]
+      exact_mod_cast hdiv
+    calc (((N + 1) / 2 : ℕ) : ℝ) ≤ ((N : ℝ) + 1) / 2 := hle
+      _ = (1 / 2 + 1 / (2 * (N : ℝ))) * (N : ℝ) := by field_simp
 
 /- ## Part VII: Structural Observations
 

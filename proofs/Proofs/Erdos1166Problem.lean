@@ -90,7 +90,7 @@ theorem maxVisitCount_is_max (ω : RandomWalk) (k : ℕ) (x : LatticePoint) :
   · exact Finset.le_sup hx
   · -- x not visited in first k+1 steps: visitCount = 0
     suffices visitCount ω k x = 0 by omega
-    unfold visitCount; rw [Finset.card_eq_zero, Finset.filter_eq_empty]
+    unfold visitCount; rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
     intro n hn heq
     exact hx (Finset.mem_image.mpr ⟨n, hn, heq⟩)
 
@@ -126,7 +126,8 @@ theorem maxVisitCount_le_of_le (ω : RandomWalk) {a b : ℕ} (h : a ≤ b) :
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h
   induction d with
   | zero => exact le_rfl
-  | succ n ih => exact le_trans ih (maxVisitCount_mono_succ ω (a + n))
+  | succ n ih =>
+    exact le_trans (ih (Nat.le_add_right a n)) (maxVisitCount_mono_succ ω (a + n))
 
 -- ## Set of Most-Visited Points
 
@@ -175,15 +176,16 @@ theorem mostVisited_nesting_range (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
     mostVisitedSet ω a ⊆ mostVisitedSet ω b := by
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hab
   induction d with
-  | zero => exact Subset.rfl
+  | zero => exact Finset.Subset.rfl
   | succ n ih =>
     have hTn : maxVisitCount ω a = maxVisitCount ω (a + n) := by
       apply le_antisymm (maxVisitCount_le_of_le ω (Nat.le_add_right a n))
       have := maxVisitCount_le_of_le ω (show a + n ≤ a + (n + 1) by omega)
       omega
-    exact Subset.trans (ih hTn) (mostVisited_nesting ω (a + n) (by
+    exact Finset.Subset.trans (ih (Nat.le_add_right a n) hTn) (mostVisited_nesting ω (a + n) (by
       apply le_antisymm (maxVisitCount_mono_succ ω (a + n))
-      have := maxVisitCount_le_of_le ω (show a ≤ a + n by omega)
+      have h1 := maxVisitCount_le_of_le ω (show a ≤ a + n by omega)
+      have hT' : maxVisitCount ω a = maxVisitCount ω (a + n + 1) := hT
       omega))
 
 -- ## Cumulative Most-Visited Points
@@ -205,7 +207,7 @@ theorem cumulativeMostVisited_subset (ω : RandomWalk) (n : ℕ)
     (x : LatticePoint) (hx : x ∈ cumulativeMostVisited ω n) :
     ∃ k : ℕ, k ≤ n ∧ x ∈ mostVisitedSet ω k := by
   obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
-  exact ⟨k, by omega, hxk⟩
+  exact ⟨k, Nat.lt_succ_iff.mp (Finset.mem_range.mp hk), hxk⟩
 
 /-- Monotonicity: the cumulative set grows with n. -/
 theorem cumulativeMostVisited_mono (ω : RandomWalk) (m n : ℕ) (h : m ≤ n) :
@@ -225,7 +227,7 @@ theorem biUnion_subset_last_of_constant_T (ω : RandomWalk) (a b : ℕ) (hab : a
   intro x hx
   obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
   have hak : a ≤ k := (Finset.mem_Ico.mp hk).1
-  have hkb : k ≤ b := by omega
+  have hkb : k ≤ b := Nat.lt_succ_iff.mp (Finset.mem_Ico.mp hk).2
   have hTk : maxVisitCount ω k = maxVisitCount ω b := by
     apply le_antisymm (maxVisitCount_le_of_le ω hkb)
     calc maxVisitCount ω b = maxVisitCount ω a := hT.symm
@@ -266,7 +268,7 @@ theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
     subst hab'
     have hIco : Finset.Ico a (a + 1) = {a} := by
       ext k; simp only [Finset.mem_Ico, Finset.mem_singleton]; omega
-    rw [hIco, Finset.biUnion_singleton]
+    rw [hIco, Finset.singleton_biUnion]
     have := hcard a le_rfl le_rfl; omega
   | succ n ih =>
     intro a b hlen hab hcard
@@ -283,7 +285,7 @@ theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
         lt_of_le_of_ne (maxVisitCount_le_of_le ω hab) hT
       have hIco : Finset.Ico a (b + 1) = {a} ∪ Finset.Ico (a + 1) (b + 1) := by
         ext k; simp only [Finset.mem_Ico, Finset.mem_union, Finset.mem_singleton]; omega
-      rw [hIco, Finset.biUnion_union, Finset.biUnion_singleton]
+      rw [hIco, Finset.union_biUnion, Finset.singleton_biUnion]
       -- IH on [a+1, b]
       have ih_ab : ((Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω)).card ≤
           3 * (maxVisitCount ω b - maxVisitCount ω (a + 1) + 1) :=
@@ -295,7 +297,7 @@ theorem cumulative_card_bound (ω : RandomWalk) (a b : ℕ) (hab : a ≤ b)
           intro x hx
           have hx' := mostVisited_nesting ω a hTstep hx
           exact Finset.mem_biUnion.mpr ⟨a + 1, Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩, hx'⟩
-        rw [sup_eq_right.mpr hFa_sub]
+        rw [Finset.union_eq_right.mpr hFa_sub]
         calc ((Finset.Ico (a + 1) (b + 1)).biUnion (mostVisitedSet ω)).card
             ≤ 3 * (maxVisitCount ω b - maxVisitCount ω (a + 1) + 1) := ih_ab
           _ = 3 * (maxVisitCount ω b - maxVisitCount ω a + 1) := by omega
@@ -353,49 +355,6 @@ axiom mostVisited_bounded_eventually :
 -- [Formerly axiom erdosTaylor_upper_bound — now derived from
 --  erdosTaylor_constant via erdosTaylor_implies_bound below.]
 
--- ## Main Theorem: Erdős Problem #1166
-
-/-- **Erdős Problem #1166 (PROVED)**:
-    Almost surely, for all but finitely many n,
-    |⋃_{k ≤ n} F(k)| ≤ O((log n)²).
-
-    The key idea: since |F(k)| ≤ 3 for large k, and the maximum visit count
-    T_n ≤ C · (log n)², only O((log n)²) different "regimes" of most-visited
-    points can occur, bounding the cumulative set size. -/
-theorem erdos1166_main :
-    AlmostSurely (fun ω =>
-      ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
-        ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log n) ^ 2) :=
-  erdos1166_from_ingredients mostVisited_bounded_eventually
-    (erdosTaylor_implies_bound erdosTaylor_constant)
-
-/-- The bound in explicit polylogarithmic form:
-    |⋃_{k ≤ n} F(k)| ≤ (log n)^{O(1)} a.s.
-    Follows from erdos1166_main since C · (log n)² ≤ (log n)³ for large n. -/
-theorem erdos1166_polylog :
-    AlmostSurely (fun ω =>
-      ∃ α : ℝ, α > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
-        ((cumulativeMostVisited ω n).card : ℝ) ≤ (Real.log n) ^ α) := by
-  apply almostSurely_mono _ erdos1166_main
-  intro ω ⟨C, hC, N, hN⟩
-  -- Choose N' large enough that log n ≥ C for all n ≥ N'
-  -- Then C * (log n)² ≤ (log n)³ = (log n)^3
-  refine ⟨3, by norm_num, max N (Nat.ceil (Real.exp C) + 1), fun n hn => ?_⟩
-  have hN' : N ≤ n := (le_max_left _ _).trans hn
-  have hexp : Nat.ceil (Real.exp C) + 1 ≤ n := (le_max_right _ _).trans hn
-  have hn_large : (Real.exp C : ℝ) < n := by
-    calc Real.exp C ≤ ↑(Nat.ceil (Real.exp C)) := Nat.le_ceil _
-      _ < ↑(Nat.ceil (Real.exp C) + 1) := by exact_mod_cast Nat.lt_succ_of_le le_rfl
-      _ ≤ (n : ℝ) := by exact_mod_cast hexp
-  have hlog_ge : C ≤ Real.log n := by
-    rw [← Real.log_exp C]
-    exact Real.log_le_log (Real.exp_pos C) (le_of_lt hn_large)
-  have hlog_pos : 0 < Real.log n :=
-    lt_of_lt_of_le (by positivity) hlog_ge
-  calc ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log ↑n) ^ 2 := hN n hN'
-    _ ≤ Real.log ↑n * (Real.log ↑n) ^ 2 := by nlinarith [sq_nonneg (Real.log (n : ℝ))]
-    _ = (Real.log ↑n) ^ 3 := by ring
-
 -- ## Proof Structure
 
 /-- The proof combines two key ingredients:
@@ -433,7 +392,7 @@ theorem erdos1166_from_ingredients :
   refine ⟨3 * C + 1, by linarith, max (max N₁ N₂) N₃, fun n hn => ?_⟩
   have hN₁n : N₁ ≤ n := le_trans (le_max_left _ _) (le_trans (le_max_left _ _) hn)
   have hN₂n : N₂ ≤ n := le_trans (le_max_right _ _) (le_trans (le_max_left _ _) hn)
-  have hN₃n : N₃ ≤ n := le_trans (le_max_right _ _) hn
+  have hN₃n : Nat.ceil (Real.exp (↑N₁ + 4)) + 1 ≤ n := le_trans (le_max_right _ _) hn
   -- T_n is bounded by C * (log n)²
   have hTn : (maxVisitCount ω n : ℝ) ≤ C * (Real.log ↑n) ^ 2 := hN₂ n hN₂n
   -- n > exp(N₁ + 4), so log n > N₁ + 4, so (log n)² > (N₁ + 4)² ≥ N₁ + 3
@@ -447,7 +406,9 @@ theorem erdos1166_from_ingredients :
   have hlog_pos : (0 : ℝ) < Real.log ↑n := by linarith
   -- (log n)² ≥ N₁ + 4 > N₁ + 3
   have hlog_sq_ge : (↑N₁ + 3 : ℝ) ≤ (Real.log ↑n) ^ 2 := by
-    have h1 : (1 : ℝ) ≤ ↑N₁ + 4 := by positivity
+    have h1 : (1 : ℝ) ≤ ↑N₁ + 4 := by
+      have : (0 : ℝ) ≤ ↑N₁ := Nat.cast_nonneg N₁
+      linarith
     nlinarith [sq_nonneg (Real.log (↑n : ℝ) - 1)]
   -- The cumulative set card bound (combines early + late parts)
   -- This is the key step using the nesting argument infrastructure
@@ -455,13 +416,15 @@ theorem erdos1166_from_ingredients :
       ↑N₁ + 3 * ↑(maxVisitCount ω n) + 3 := by
     -- Suffices to prove in ℕ: card ≤ N₁ + 3*(T_n + 1)
     suffices hnat : (cumulativeMostVisited ω n).card ≤ N₁ + 3 * (maxVisitCount ω n + 1) by
-      push_cast [Nat.cast_le] at hnat ⊢; linarith
+      have hcast := (Nat.cast_le (α := ℝ)).mpr hnat
+      push_cast at hcast
+      linarith
     -- Split range(n+1) = range(N₁) ∪ Ico(N₁, n+1)
     have hrange : Finset.range (n + 1) = Finset.range N₁ ∪ Finset.Ico N₁ (n + 1) := by
       rw [Finset.range_eq_Ico, Finset.range_eq_Ico]
       exact (Finset.Ico_union_Ico_eq_Ico (Nat.zero_le N₁) (by omega)).symm
     unfold cumulativeMostVisited
-    rw [hrange, Finset.biUnion_union]
+    rw [hrange, Finset.union_biUnion]
     -- Card of union ≤ sum of cards
     calc ((Finset.range N₁).biUnion (mostVisitedSet ω) ∪
             (Finset.Ico N₁ (n + 1)).biUnion (mostVisitedSet ω)).card
@@ -477,6 +440,8 @@ theorem erdos1166_from_ingredients :
                   obtain ⟨k, hk, hxk⟩ := Finset.mem_biUnion.mp hx
                   have hxv := mostVisited_subset_trajectory ω k hxk
                   obtain ⟨j, hj, hjx⟩ := Finset.mem_image.mp hxv
+                  have hj' := Finset.mem_range.mp hj
+                  have hk' := Finset.mem_range.mp hk
                   exact Finset.mem_image.mpr ⟨j, Finset.mem_range.mpr (by omega), hjx⟩
               _ ≤ (Finset.range N₁).card := Finset.card_image_le
               _ = N₁ := Finset.card_range N₁
@@ -491,6 +456,11 @@ theorem erdos1166_from_ingredients :
     _ = (↑N₁ + 3) + 3 * C * (Real.log ↑n) ^ 2 := by ring
     _ ≤ (Real.log ↑n) ^ 2 + 3 * C * (Real.log ↑n) ^ 2 := by linarith [hlog_sq_ge]
     _ = (3 * C + 1) * (Real.log ↑n) ^ 2 := by ring
+
+-- ## Main Theorem: Erdős Problem #1166
+-- (placed after its ingredients: erdos1166_from_ingredients,
+--  erdosTaylor_implies_bound, erdosTaylor_constant — v4.31 rejects
+--  in-file forward references)
 
 -- ## Connection to Erdős Problem #1165
 
@@ -543,5 +513,51 @@ theorem erdosTaylor_implies_bound :
   have h2 : (maxVisitCount ω n : ℝ) < (1 / Real.pi + 1) * (Real.log ↑n) ^ 2 :=
     (div_lt_iff₀ hlog2_pos).mp h1
   linarith
+
+-- ## Main Theorem: Erdős Problem #1166
+
+/-- **Erdős Problem #1166 (PROVED)**:
+    Almost surely, for all but finitely many n,
+    |⋃_{k ≤ n} F(k)| ≤ O((log n)²).
+
+    The key idea: since |F(k)| ≤ 3 for large k, and the maximum visit count
+    T_n ≤ C · (log n)², only O((log n)²) different "regimes" of most-visited
+    points can occur, bounding the cumulative set size. -/
+theorem erdos1166_main :
+    AlmostSurely (fun ω =>
+      ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
+        ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log n) ^ 2) :=
+  erdos1166_from_ingredients mostVisited_bounded_eventually
+    (erdosTaylor_implies_bound erdosTaylor_constant)
+
+/-- The bound in explicit polylogarithmic form:
+    |⋃_{k ≤ n} F(k)| ≤ (log n)^{O(1)} a.s.
+    Follows from erdos1166_main since C · (log n)² ≤ (log n)³ for large n. -/
+theorem erdos1166_polylog :
+    AlmostSurely (fun ω =>
+      ∃ α : ℝ, α > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
+        ((cumulativeMostVisited ω n).card : ℝ) ≤ (Real.log n) ^ α) := by
+  apply almostSurely_mono _ erdos1166_main
+  intro ω ⟨C, hC, N, hN⟩
+  -- Choose N' large enough that log n ≥ C for all n ≥ N'
+  -- Then C * (log n)² ≤ (log n)³ = (log n)^3
+  refine ⟨3, by norm_num, max N (Nat.ceil (Real.exp C) + 1), fun n hn => ?_⟩
+  have hN' : N ≤ n := (le_max_left _ _).trans hn
+  have hexp : Nat.ceil (Real.exp C) + 1 ≤ n := (le_max_right _ _).trans hn
+  have hn_large : (Real.exp C : ℝ) < n := by
+    calc Real.exp C ≤ ↑(Nat.ceil (Real.exp C)) := Nat.le_ceil _
+      _ < ↑(Nat.ceil (Real.exp C) + 1) := by exact_mod_cast Nat.lt_succ_of_le le_rfl
+      _ ≤ (n : ℝ) := by exact_mod_cast hexp
+  have hlog_ge : C ≤ Real.log n := by
+    rw [← Real.log_exp C]
+    exact Real.log_le_log (Real.exp_pos C) (le_of_lt hn_large)
+  have hlog_pos : 0 < Real.log n :=
+    lt_of_lt_of_le (by positivity) hlog_ge
+  calc ((cumulativeMostVisited ω n).card : ℝ) ≤ C * (Real.log ↑n) ^ 2 := hN n hN'
+    _ ≤ Real.log ↑n * (Real.log ↑n) ^ 2 := by nlinarith [sq_nonneg (Real.log (n : ℝ))]
+    _ = (Real.log ↑n) ^ (3 : ℕ) := by ring
+    _ = (Real.log ↑n) ^ (3 : ℝ) := by
+        rw [← Real.rpow_natCast (Real.log ↑n) 3]
+        norm_num
 
 end Erdos1166

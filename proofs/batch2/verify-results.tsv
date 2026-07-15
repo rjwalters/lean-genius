@@ -787,7 +787,7 @@ Erdos1089Problem	RESIDUAL	unknown-const:PiLp.equiv_symm_apply
 Erdos1091Problem	RESIDUAL	instance-synth
 Erdos1093OQ02FactorialGrowth	GREEN	
 Erdos1095OQ01Problem	RESIDUAL	partenat-removal
-Erdos1096Problem	RESIDUAL	unknown-const:intermediate_value_zero_of_neg_of_pos
+Erdos1096Problem	GREEN	
 Erdos1097OQ01	RESIDUAL	instance-synth
 Erdos1097Problem	RESIDUAL	instance-synth
 Erdos1098OQ01	RESIDUAL	type-mismatch
@@ -872,7 +872,7 @@ Erdos115Problem	GREEN
 Erdos1161Problem	GREEN	
 Erdos1162Problem	RESIDUAL	unknown-const:Nat.card_pos_of_nonempty
 Erdos1165Problem	GREEN	
-Erdos1166Problem	RESIDUAL	unknown-const:Finset.filter_eq_empty
+Erdos1166Problem	GREEN	
 Erdos1167Problem	RESIDUAL	parse-error
 Erdos1168Problem	GREEN	
 Erdos1169Problem	RESIDUAL	proof-drift
@@ -1515,7 +1515,7 @@ Erdos631ProblemAristotle	GREEN
 Erdos632Aristotle	GREEN	
 Erdos634Aristotle	GREEN	
 Erdos634Problem	GREEN	
-Erdos635Problem	RESIDUAL	unknown-const:f_set_nonempty
+Erdos635Problem	GREEN	
 Erdos636Aristotle	GREEN	
 Erdos636Problem	GREEN	
 Erdos636ProblemAristotle	GREEN	
@@ -1823,7 +1823,7 @@ Erdos895CounterexampleFin18	GREEN
 Erdos895OQ01Problem	GREEN	
 Erdos895Problem	GREEN	
 Erdos895ProblemAristotle	RESIDUAL	proof-drift
-Erdos896Problem	RESIDUAL	unknown-const:Finset.product_singleton_right
+Erdos896Problem	GREEN	
 Erdos89Problem	GREEN	
 Erdos8OQ02	GREEN	
 Erdos8Problem	RESIDUAL	unknown-const:bottleneck_counterexample
@@ -2646,7 +2646,7 @@ WilsonsTheoremOQ02ExtOQ02	RESIDUAL	rewrite-drift
 WilsonsTheoremOQ04	RESIDUAL	rewrite-drift
 WilsonsTheoremOQ07	GREEN	
 WolstenholmeTheoremOQ01	RESIDUAL	oom-killed
-WolstenholmeTheoremOQ02OQ02	RESIDUAL	unknown-const:Equiv.mulLeft_apply
+WolstenholmeTheoremOQ02OQ02	GREEN	
 WolstenholmeTheoremOQ03	GREEN	
 YangMills2DOQ01	GREEN	
 YangMills2DOQ02	GREEN	
