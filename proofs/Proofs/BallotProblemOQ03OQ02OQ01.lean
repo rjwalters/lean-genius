@@ -90,9 +90,9 @@ theorem comp_matrix (W₁ W₂ : WeightedLGV R r) :
   ext i j
   rw [Matrix.mul_apply]
   simp only [comp, WeightedLGV.matrix, Matrix.of_apply]
-  rw [Fintype.sum_sigma]
+  erw [Fintype.sum_sigma]
   refine Finset.sum_congr rfl fun k _ => ?_
-  rw [Fintype.sum_prod_type, Fintype.sum_mul_sum]
+  erw [Fintype.sum_prod_type, Fintype.sum_mul_sum]
 
 /-- **Multiplicativity of the LGV determinant (★★).**  The determinant of the
     composite generating-function matrix is the product of the two layers'
@@ -140,6 +140,7 @@ theorem comp_card_matrix (W₁ W₂ : WeightedLGV R r)
       = (Fintype.card (Σ k, W₁.Path i k × W₂.Path k j) : R) := by
   simp only [WeightedLGV.matrix, Matrix.of_apply, comp, h₁, h₂, mul_one,
     Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  congr 1
 
 /-- **Bridge to the sibling's algebraic core.**  Combining multiplicativity with
     the sibling entry's Leibniz/family expansion `det_matrix_eq_signed_family_sum`,
