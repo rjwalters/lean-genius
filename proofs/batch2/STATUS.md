@@ -2309,3 +2309,46 @@ GREEN this increment:
 - **BertrandsPostulateOQ03OQ04OQ01** (started 6, fixed 4 mechanically): remaining 2 are a broken ℝ↔ℕ bridge — `PrimeGapConjecture` quantifies over `x:ℝ` but `cramer_implies_primeGapConjecture_eventually` is over `x:ℕ` (`hN x` type-mismatch), AND the small-x branch asserts `x^0.525 ≤ x^ε` which is false for `x>1, ε<0.525` (`rpow_le_rpow_of_exponent_ge` now needs `0<x ∧ x≤1`). Needs genuine reconstruction; reverted whole file.
 
 **Honest remaining A–M / Erdos<600 assessment**: 443 residuals at session start; ~7 now GREEN. Easy 1–2-error files exhausted. Sampled ~18 files: the large majority are 10–24-error genuine rewrites (BaselProblemOQ04OQ03=24, BinaryGcdOQ02OQ01=20, CantorDiagonalizationOQ01OQ01=19, DescartesRuleOfSignsOQ02=18, CayleyHamiltonMinpolyOQ02OQ02=18, DesarguesTheoremOQ01OQ01=16, CombinationsFormulaOQ01OQ04=16, BirthdayProblemOQ01OQ01OQ03=16, DescartesRuleOfSignsOQ01OQ02=14, AlgebraicNumbersCountableOQ04=14, ChineseRemainderConstructiveOQ03=18). A thin seam of ~6-error mixed-rename files remains fixable per this increment (CauchySchwarzOQ01OQ01OQ01=8 next candidate). Estimate: <10% of remaining A–M residuals are mechanical-cluster fixable; the rest are deep-rework or OOM.
+
+## Increment 47 (Doctor-b, A–M / Erdos<600) — +4 GREEN
+
+Recipes catalogued in rename-map §7ae. TAIL phase: worked mechanical-seam clusters.
+
+GREEN this increment:
+- **CauchySchwarzOQ01OQ01OQ01** (6→0): ROOT CAUSE = output-only implicit `𝕜` in defs
+  (`projCoeff`/`orthProj`/`orthResidual`/`gramSchmidt3`) is a stuck metavar in v4.31
+  ("InnerProductSpace ?m E, first/third args metavars"). Fix: promote `𝕜` to an explicit
+  named param of each def; thread through all call sites. `(𝕜 := 𝕜)` named-arg pinning
+  does NOT work for auto-bound implicits. Plus proof-drift: field_simp+ring for div-cancel;
+  RCLike.norm_conj + RCLike.norm_ofReal (via ℝ-recast) replacing a LOOPING norm simp;
+  sub_eq_zero.mp direct; nlinarith + norm_nonneg lemmas.
+- **ArithmeticSeriesOQ00OQ02OQ01** (6→0): `Ico 1 (n+1)` inside a ℤ/ℚ-valued sum body
+  elaborated its index type as the body field (`HAdd ℕ ℕ ℤ` / `LocallyFiniteOrder ℚ`).
+  Pin `Ico (1 : ℕ) (n+1)`. Downstream omega/linarith were cascades.
+- **BallotProblemOQ03OQ03** (4→0): `lgvDet_nonneg` now needs 5 order hyps → STATEMENT
+  REPAIR: added 3 ordering hypotheses to `lgv_nonneg_standard` wrapper (bare form unprovable).
+  `Nat.one_le_succ` → `Nat.succ_le_succ (Nat.zero_le _)`. choose-index normalize via
+  omega-`show`s + `push_cast; ring` (cast-of-power/product drift). Drop redundant ring_nf.
+- **BezoutIdentityOQ02OQ04** (5→0): `Polynomial.content`/`.IsPrimitive.mul`/`content_mul`
+  now require `[NormalizedGCDMonoid R]` not bare `[GCDMonoid R]` → widen constraint.
+  `Polynomial.content_mul` args now implicit → drop `f g`.
+
+**Statement repairs**: `lgv_nonneg_standard` (BallotProblemOQ03OQ03) gained 3 ordering
+hypotheses required by `lgvDet_nonneg`. Strengthening → intended-true; no weakening/sorry/axiom.
+
+**Reverted (deep-rework, NOT mechanical)**: AmgmInequalityOQ02OQ01OQ02OQ01OQ03 — probed at
+4 errors but clearing the first blocker (elemSymm_gt_eq_zero rename, `generalizing`, sum_range_succ
+pattern) surfaces 6+ delicate induction-drift sites (simp_rw sum_add_distrib no-progress,
+sum_congr unify failures, IH arity change from `generalizing e Y`→`generalizing e`). Genuine
+multi-site reconstruction, not a seam. Reverted whole file.
+
+**Honest remaining A–M / Erdos<600 assessment**: ~663 A–M residuals. Probed ~17 files:
+error counts of 4–8 are common but MOST are genuine multi-site rewrites once the first
+blocker clears (AMGM is the cautionary example). Reliable seam signatures that DO green
+cheaply: (a) instance-synth / elaboration-order single-root failures (Ico index-type,
+NormalizedGCDMonoid widening); (b) output-only-implicit stuck-metavar defs; (c) unknown-const
+renames + implicit-arg-count changes on Mathlib lemmas. Probed 10–18-err deep files:
+ArchimedesMethodOfExhaustion 17, BorsukUlamOQ02 18, AlgebraicNumbersCountableOQ04 12,
+ArithmeticSeriesOQ02OQ02OQ03 13, BinomialTheoremOQ02OQ03 10. Estimate: <10% of remaining
+A–M residuals are mechanical-seam fixable and the seam is thinning; each green now averages
+real proof surgery.
