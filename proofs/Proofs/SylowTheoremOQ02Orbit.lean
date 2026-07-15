@@ -60,7 +60,7 @@ theorem sylow_orbit_is_all [Finite (Sylow p G)] (P : Sylow p G) :
 /-- Every Sylow p-subgroup Q is conjugate to P: there exists g ∈ G with g • P = Q.
     This is the direct corollary of the orbit covering all of Sylow p G. -/
 theorem exists_conj_eq (P Q : Sylow p G) : ∃ g : G, g • P = Q :=
-  Sylow.exists_smul_eq G P Q
+  MulAction.exists_smul_eq G P Q
 
 /-- Conjugation by any g gives an isomorphism P ≅ g • P as groups. -/
 noncomputable def conj_iso (P : Sylow p G) (g : G) : P ≃* (g • P : Sylow p G) :=
@@ -95,7 +95,7 @@ Combining the orbit = ⊤ fact with orbit-stabilizer gives the count formula:
     3. stab G P = N_G(P)          (by stabilizer_eq_normalizer)
     4. Therefore |Sylow p G| = [G : N_G(P)] -/
 theorem sylow_count_eq_normalizer_index [Finite (Sylow p G)] (P : Sylow p G) :
-    Nat.card (Sylow p G) = (Subgroup.normalizer P).index :=
+    Nat.card (Sylow p G) = (Subgroup.normalizer (P : Set G)).index :=
   Sylow.card_eq_index_normalizer P
 
 /-- **Bijective enumeration**: There is an explicit bijection between the set of
@@ -124,9 +124,9 @@ The orbit-stabilizer theorem, specialized to Sylow subgroups:
     This is the group-theoretic version of the orbit-stabilizer theorem:
       |G| = |orbit G P| × |stabilizer G P| = n_p × |N_G(P)| -/
 theorem sylow_orbit_stabilizer_formula [Finite (Sylow p G)] (P : Sylow p G) :
-    Nat.card G = Nat.card (Sylow p G) * Nat.card (Subgroup.normalizer P) := by
+    Nat.card G = Nat.card (Sylow p G) * Nat.card (Subgroup.normalizer (P : Set G)) := by
   rw [sylow_count_eq_normalizer_index P, mul_comm]
-  exact (Subgroup.normalizer P).card_mul_index.symm
+  exact (Subgroup.normalizer (P : Set G)).card_mul_index.symm
 
 /-!
 ## Part V: Normality Criterion
@@ -151,9 +151,9 @@ theorem sylow_unique_iff_normal [Finite (Sylow p G)] (P : Sylow p G) :
 theorem sylow_unique_of_normal [Finite (Sylow p G)] (P : Sylow p G)
     (hN : (P : Subgroup G).Normal) : ∀ Q : Sylow p G, Q = P := by
   have h1 : Nat.card (Sylow p G) = 1 := (sylow_unique_iff_normal P).mpr hN
-  have := Nat.card_eq_one.mp h1
+  obtain ⟨u⟩ := Nat.card_eq_one_iff_unique.mp h1
   intro Q
-  exact Unique.uniq (α := Sylow p G) ⟨⟩ Q
+  exact Subsingleton.elim Q P
 
 /-- A normal Sylow p-subgroup is fixed under every conjugation. -/
 theorem smul_eq_of_normal (P : Sylow p G) (g : G) [h : P.Normal] :
