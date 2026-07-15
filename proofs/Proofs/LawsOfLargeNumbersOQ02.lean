@@ -127,14 +127,17 @@ theorem variance_sampleMean
   have hvar_sum :
       variance (fun ω => ∑ i ∈ Finset.range n, X i ω) volume
         = ∑ i ∈ Finset.range n, variance (X i) volume := by
-    simpa [Finset.sum_apply] using IndepFun.variance_sum hLp_set hpair
+    have hfun : (fun ω => ∑ i ∈ Finset.range n, X i ω)
+        = (∑ i ∈ Finset.range n, X i) := by
+      funext ω; rw [Finset.sum_apply]
+    rw [hfun]
+    exact IndepFun.variance_sum hLp_set hpair
   have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
   unfold sampleMean
   rw [variance_const_mul, hvar_sum]
   simp_rw [h_var]
   rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   field_simp
-  ring
 
 -- ============================================================
 -- SECTION 3: The Chebyshev Convergence Rate
@@ -192,7 +195,7 @@ theorem chebyshevBound_nonneg (σ_sq : ℝ) (hσ : σ_sq ≥ 0) (n : ℕ) (hn : 
   unfold chebyshevBound
   apply div_nonneg hσ
   apply mul_nonneg
-  · exact Nat.cast_nonneg
+  · exact Nat.cast_nonneg _
   · exact sq_nonneg ε
 
 /-- The Chebyshev bound decreases as n increases (for fixed σ², ε) -/
@@ -322,7 +325,7 @@ theorem chebyshev_rate_implies_convergence
     exact (ENNReal.continuous_ofReal.tendsto 0).comp h
   -- Step 2: Rewrite chebyshevBound as constant/n
   simp only [chebyshevBound]
-  have heq : (fun n : ℕ => σ_sq / (↑n * ε ^ 2)) = fun n => (σ_sq / ε ^ 2) / ↑n := by
+  have heq : (fun n : ℕ => σ_sq / (↑n * ε ^ 2)) = fun n : ℕ => (σ_sq / ε ^ 2) / ↑n := by
     ext n; ring
   rw [heq]
   -- Step 3: c/n → 0 by standard Mathlib lemma
