@@ -73,7 +73,7 @@ That is, for large `n`, no `N < C^{√n}` satisfies `HasRamseyAvoid N n 3 r`. -/
 
 /-- The `n = 0` case is trivially satisfiable: the empty set has card ≥ 0
     and vacuously avoids all monochromatic cliques. -/
-theorem hasRamseyAvoid_zero (N k r : ℕ) (hr : 0 < r) :
+theorem hasRamseyAvoid_zero (N k r : ℕ) (hk : 1 ≤ k) (hr : 0 < r) :
     HasRamseyAvoid N 0 k r := by
   intro coloring
   exact ⟨∅, by omega, fun c T hT hTk => by
@@ -108,16 +108,22 @@ theorem hasRamseyAvoid_of_n_le_one (N n k r : ℕ) (hk : 3 ≤ k)
     (hn : n ≤ 1) (hN : n ≤ N) (hr : 0 < r) :
     HasRamseyAvoid N n k r := by
   intro coloring
-  have ⟨v⟩ : Nonempty (Fin N) := ⟨⟨0, by omega⟩⟩
-  refine ⟨{v}, by simp; omega, fun c T hT hTk => ?_⟩
-  have : T.card ≤ ({v} : Finset (Fin N)).card := Finset.card_le_card hT
-  simp at this
-  omega
+  rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+  · -- N = 0, so n = 0; the empty set works
+    subst hN0
+    refine ⟨∅, by simp; omega, fun c T hT hTk => ?_⟩
+    have : T.card = 0 := Finset.card_eq_zero.mpr (Finset.subset_empty.mp hT)
+    omega
+  · have v : Fin N := ⟨0, hNpos⟩
+    refine ⟨{v}, by simp; omega, fun c T hT hTk => ?_⟩
+    have : T.card ≤ ({v} : Finset (Fin N)).card := Finset.card_le_card hT
+    simp at this
+    omega
 
 /-- With more colors, avoiding monochromatic cliques in a fixed set is easier:
     if NoMonoClique holds for r colors, it holds for r' ≥ r colors
     (viewing the r-coloring as an r'-coloring via Fin.castLE). -/
-theorem noMonoClique_of_color_embed (N r r' : ℕ) (hr : r ≤ r')
+theorem noMonoClique_of_color_embed (N r r' : ℕ) (hr : r ≤ r') (hr0 : 0 < r)
     (coloring : EdgeColoring N r)
     (S : Finset (Fin N)) (k : ℕ)
     (h : NoMonoClique N r coloring S k) :
@@ -129,12 +135,14 @@ theorem noMonoClique_of_color_embed (N r r' : ℕ) (hr : r ≤ r')
   by_cases hc : c.val < r
   · -- c is in the range of the original colors
     obtain ⟨e, he1, he2, hne⟩ := h ⟨c.val, hc⟩ T hT hTk
-    exact ⟨e, he1, he2, by simp [Fin.castLE]; intro heq; exact hne (Fin.ext (by omega))⟩
+    refine ⟨e, he1, he2, fun heq => hne (Fin.ext ?_)⟩
+    have hv := congrArg Fin.val heq
+    simpa using hv
   · -- c is a "new" color not used by the embedded coloring
     -- Any edge in any k-subset will have castLE(coloring e).val < r ≤ c.val
-    obtain ⟨e, he1, he2, _⟩ := h ⟨0, by omega⟩ T hT hTk
-    exact ⟨e, he1, he2, by
-      intro heq
-      have : (Fin.castLE hr (coloring e)).val < r := (coloring e).isLt
-      rw [heq] at this
-      omega⟩
+    obtain ⟨e, he1, he2, _⟩ := h ⟨0, hr0⟩ T hT hTk
+    refine ⟨e, he1, he2, fun heq => ?_⟩
+    have hv : (coloring e).val = c.val := by
+      have := congrArg Fin.val heq; simpa using this
+    have hlt : (coloring e).val < r := (coloring e).isLt
+    omega

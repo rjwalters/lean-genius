@@ -226,8 +226,9 @@ theorem distribution_at_infinity :
   rw [Filter.tendsto_congr' h_eq]
   have h_exp : Tendsto (fun c : ℝ => Real.exp (-c)) atTop (nhds 0) :=
     Real.tendsto_exp_atBot.comp tendsto_neg_atTop_atBot
-  have := tendsto_const_nhds.sub h_exp
-  rwa [sub_zero] at this
+  have h1 : Tendsto (fun c : ℝ => 1 - Real.exp (-c)) atTop (nhds (1 - 0)) :=
+    tendsto_const_nhds.sub h_exp
+  rwa [sub_zero] at h1
 
 /--
 **Median gap:**
@@ -324,7 +325,9 @@ theorem erdos_235 : ErdosConjecture235 := erdos_235_proved
 **The answer:**
 -/
 theorem erdos_235_answer (c : ℝ) (hc : c ≥ 0) :
-    Tendsto (fun k => gapDistribution k c) atTop (nhds (1 - Real.exp (-c))) :=
-  hooley_theorem c hc
+    Tendsto (fun k => gapDistribution k c) atTop (nhds (1 - Real.exp (-c))) := by
+  have h := hooley_theorem c hc
+  rwa [show exponentialCDF c = 1 - Real.exp (-c) from by
+    simp only [exponentialCDF, if_neg (not_lt.mpr hc)]] at h
 
 end Erdos235

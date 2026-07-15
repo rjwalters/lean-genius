@@ -37,19 +37,32 @@ def arithmeticProgression (a d k : ℕ) : Finset ℕ :=
 /-- A 2-AP is a 2-element set {a, a+d}. -/
 theorem arithmeticProgression_two (a d : ℕ) (hd : d > 0) :
     (arithmeticProgression a d 2).card = 2 := by
-  simp [arithmeticProgression]
-  omega
+  have hinj : Function.Injective (fun i => a + i * d) := by
+    intro i j hij
+    simp only at hij
+    exact Nat.eq_of_mul_eq_mul_right hd (by omega : i * d = j * d)
+  rw [arithmeticProgression, Finset.card_image_of_injective _ hinj, Finset.card_range]
 
 /-- A 2-AP {a, a+d} contains a and a+d. -/
 theorem mem_arithmeticProgression_two (a d : ℕ) :
     a ∈ arithmeticProgression a d 2 ∧ a + d ∈ arithmeticProgression a d 2 := by
-  simp [arithmeticProgression]
+  refine ⟨Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (by norm_num), by ring⟩,
+    Finset.mem_image.mpr ⟨1, Finset.mem_range.mpr (by norm_num), by ring⟩⟩
 
 /-- For any two distinct naturals a < b, {a, b} = arithmeticProgression a (b-a) 2. -/
 theorem pair_is_2AP (a b : ℕ) (hab : a < b) :
     ({a, b} : Finset ℕ) = arithmeticProgression a (b - a) 2 := by
-  simp [arithmeticProgression, Finset.ext_iff]
-  omega
+  ext x
+  simp only [arithmeticProgression, Finset.mem_insert, Finset.mem_singleton,
+    Finset.mem_image, Finset.mem_range]
+  constructor
+  · rintro (rfl | rfl)
+    · exact ⟨0, by norm_num, by ring⟩
+    · exact ⟨1, by norm_num, by omega⟩
+  · rintro ⟨i, hi, rfl⟩
+    interval_cases i
+    · left; ring
+    · right; omega
 
 /-- In a 2-AP, the two elements are distinct. -/
 theorem two_AP_distinct (a d : ℕ) (hd : d > 0) :
@@ -73,8 +86,8 @@ theorem pair_subset_is_2AP (A : Finset ℕ) (S : Finset ℕ) (hS : S ⊆ A)
   rw [Finset.card_eq_two] at hcard
   obtain ⟨a, b, hab, rfl⟩ := hcard
   rcases Nat.lt_or_gt_of_ne hab with h | h
-  · exact ⟨a, b - a, by omega, by simp [arithmeticProgression, Finset.ext_iff]; omega⟩
-  · exact ⟨b, a - b, by omega, by simp [arithmeticProgression, Finset.ext_iff]; omega⟩
+  · exact ⟨a, b - a, by omega, pair_is_2AP a b h⟩
+  · exact ⟨b, a - b, by omega, by rw [Finset.pair_comm]; exact pair_is_2AP b a h⟩
 
 /-- Any set A has exactly C(|A|, 2) two-term arithmetic progressions.
     (Every pair of distinct elements forms a 2-AP.) -/
@@ -119,8 +132,8 @@ theorem improvement_significant_real (C c : ℝ) (hC : C > 0) (hc : c > 0) :
 
 /-- For any C, c > 0, exp((log(log N))^c) > (log(log N))^C for large N : ℕ. -/
 theorem improvement_significant (C c : ℝ) (hC : C > 0) (hc : c > 0) :
-    ∀ᶠ N in (Filter.atTop : Filter ℕ),
-      Real.exp ((Real.log (Real.log N)) ^ c) > (Real.log (Real.log N)) ^ C := by
+    ∀ᶠ (N : ℕ) in Filter.atTop,
+      Real.exp ((Real.log (Real.log (N : ℝ))) ^ c) > (Real.log (Real.log (N : ℝ))) ^ C := by
   sorry
 
 /-
