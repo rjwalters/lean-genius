@@ -56,6 +56,7 @@ private lemma cancel_sum (k : ℕ) (e : ℕ → ℝ) (Y : ℝ) :
   induction k generalizing e with
   | zero => simp
   | succ k ih =>
+    simp only [Nat.add_sub_cancel]
     rw [Finset.sum_range_succ (f := fun j => (-1 : ℝ) ^ j * e (k + 1 - j) * Y ^ j),
         Finset.sum_range_succ (f := fun j => (-1 : ℝ) ^ j * e (k - j) * Y ^ (j + 1))]
     simp only [Nat.sub_self, Nat.add_sub_cancel]
@@ -65,15 +66,17 @@ private lemma cancel_sum (k : ℕ) (e : ℕ → ℝ) (Y : ℝ) :
       by linear_combination e 0 * Y ^ (k + 1) * h_sign
     have h_bracket : ∑ j ∈ Finset.range (k + 1), (-1 : ℝ) ^ j * e (k + 1 - j) * Y ^ j +
                      ∑ j ∈ Finset.range k, (-1 : ℝ) ^ j * e (k - j) * Y ^ (j + 1) = e (k + 1) := by
-      have := ih (fun j => e (j + 1)) Y
+      have := ih (fun j => e (j + 1))
       have hconv1 : ∀ j ∈ Finset.range (k + 1),
           (-1 : ℝ) ^ j * e (k + 1 - j) * Y ^ j =
           (-1 : ℝ) ^ j * (fun m => e (m + 1)) (k - j) * Y ^ j := by
-        intro j hj; rw [Finset.mem_range] at hj; congr 2; omega
+        intro j hj; rw [Finset.mem_range] at hj
+        rw [show k + 1 - j = k - j + 1 from by omega]
       have hconv2 : ∀ j ∈ Finset.range k,
           (-1 : ℝ) ^ j * e (k - j) * Y ^ (j + 1) =
           (-1 : ℝ) ^ j * (fun m => e (m + 1)) (k - 1 - j) * Y ^ (j + 1) := by
-        intro j hj; rw [Finset.mem_range] at hj; congr 2; omega
+        intro j hj; rw [Finset.mem_range] at hj
+        rw [show k - j = k - 1 - j + 1 from by omega]
       rw [Finset.sum_congr rfl hconv1, Finset.sum_congr rfl hconv2, this]
     linarith
 
@@ -90,13 +93,13 @@ private lemma cancel_sum (k : ℕ) (e : ℕ → ℝ) (Y : ℝ) :
 theorem newton_girard (n k : ℕ) (x : Fin n → ℝ) :
     (k : ℝ) * elemSymm k x =
     ∑ j ∈ Finset.range k, (-1 : ℝ) ^ j * elemSymm (k - 1 - j) x * powerSum (j + 1) x := by
-  induction n generalizing k x with
+  induction n generalizing k with
   | zero =>
     simp only [powerSum, Finset.univ_eq_empty, Finset.sum_empty]
     cases k with
     | zero => simp [elemSymm, powersetCard_zero]
     | succ k =>
-      rw [elemSymm_fin_zero (k + 1) (Nat.succ_pos k) x]
+      rw [elemSymm_gt_eq_zero (k + 1) (Nat.succ_pos k) x]
       simp [powerSum]
   | succ n ih =>
     cases k with
@@ -116,7 +119,7 @@ theorem newton_girard (n k : ℕ) (x : Fin n → ℝ) :
       simp only [Nat.add_sub_cancel]
       -- RHS: split last term j=k
       rw [Finset.sum_range_succ]
-      rw [show k + 1 - 1 - k = 0 from by omega, elemSymm_zero x, mul_one, powerSum_succ]
+      rw [show k - k = 0 from by omega, elemSymm_zero x, mul_one, powerSum_succ]
       -- Expand inner sum (j < k) using splitting lemmas
       have h_inner :
           ∑ j ∈ Finset.range k, (-1 : ℝ) ^ j * elemSymm (k - j) x * powerSum (j + 1) x =
@@ -128,14 +131,15 @@ theorem newton_girard (n k : ℕ) (x : Fin n → ℝ) :
               x (Fin.last n) ^ (j + 1)) +
           x (Fin.last n) * (∑ j ∈ Finset.range k, (-1 : ℝ) ^ j *
               elemSymm (k - 1 - j) (x ∘ Fin.castSucc) * x (Fin.last n) ^ (j + 1)) := by
-        simp_rw [← Finset.sum_add_distrib, ← Finset.mul_sum]
+        simp only [Finset.mul_sum, ← Finset.sum_add_distrib]
         apply Finset.sum_congr rfl
         intro j hj
         rw [Finset.mem_range] at hj
         rw [show elemSymm (k - j) x = elemSymm (k - j - 1 + 1) x from by congr 1; omega]
         rw [elemSymm_succ (k - j - 1) x, powerSum_succ (j + 1) x]
-        have h_eq : k - j - 1 = k - 1 - j := by omega
-        rw [h_eq]; ring
+        rw [show k - j - 1 + 1 = k - j from by omega,
+            show k - j - 1 = k - 1 - j from by omega]
+        ring
       rw [h_inner]
       -- Name four sums and apply key identities
       set A := ∑ j ∈ Finset.range k, (-1:ℝ)^j * elemSymm (k-j) (x ∘ Fin.castSucc) *
@@ -169,9 +173,11 @@ theorem newton_girard (n k : ℕ) (x : Fin n → ℝ) :
         set F2 := ∑ j ∈ Finset.range k, (-1:ℝ)^j * elemSymm (k-1-j) x' * Y^(j+1)
         have hF1 : C + (-1:ℝ)^k * Y^(k+1) = Y * F1 := by
           simp only [F1, C, Finset.mul_sum, Finset.sum_range_succ, Nat.sub_self,
-                     elemSymm_zero, mul_one]
-          congr 1; apply Finset.sum_congr rfl; intro j _; ring
-        have hF2 : Y * D' = Y * F2 := by simp [D', F2]
+                     elemSymm_zero, mul_one, mul_add]
+          congr 1
+          · apply Finset.sum_congr rfl; intro j _; ring
+          · ring
+        have hF2 : Y * D' = Y * F2 := rfl
         have hcs : F1 + F2 = elemSymm k x' := cancel_sum k (fun j => elemSymm j x') Y
         have hmul : Y * F1 + Y * F2 = Y * elemSymm k x' := by
           rw [← mul_add]; exact congr_arg (Y * ·) hcs
@@ -180,7 +186,7 @@ theorem newton_girard (n k : ℕ) (x : Fin n → ℝ) :
       have hfinal : (↑(k+1):ℝ) * x (Fin.last n) * elemSymm k (x ∘ Fin.castSucc) =
                     x (Fin.last n) * ((↑k:ℝ) * elemSymm k (x ∘ Fin.castSucc)) +
                     x (Fin.last n) * elemSymm k (x ∘ Fin.castSucc) := by push_cast; ring
-      push_cast
+      push_cast at hA hfinal ⊢
       linarith [hA, hB, hCD, hfinal]
 
 end AmgmInequalityOQ02OQ01OQ02OQ01OQ03
