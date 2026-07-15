@@ -52,7 +52,7 @@ open Set Topology Cardinal
 Basic definitions for connected subspaces.
 -/
 
-variable {X : Type*} [TopologicalSpace X]
+variable {X : Type} [TopologicalSpace X]
 
 /-- The set of all connected subsets of a topological space -/
 def connectedSubsets (X : Type*) [TopologicalSpace X] : Set (Set X) :=
@@ -98,7 +98,7 @@ def HasDiverseConnectedSubset (S : Set X) : Prop :=
 
 /-- Erdős's first conjecture: every connected set has diverse subsets -/
 def erdosFirstConjecture : Prop :=
-  ∀ (X : Type*) [TopologicalSpace X] (S : Set X),
+  ∀ (X : Type) [TopologicalSpace X] (S : Set X),
     IsConnected S → HasDiverseConnectedSubset S
 
 /-
@@ -118,7 +118,7 @@ noncomputable def continuum : Cardinal := #ℝ
 /-- Erdős's second conjecture: connected sets in ℝⁿ have > 2^ℵ₀ connected subsets -/
 def erdosSecondConjecture : Prop :=
   ∀ (n : ℕ) (hn : n ≥ 2) (S : Set (Fin n → ℝ)),
-    IsConnected S → connectedSubsetCardinality S > continuum
+    IsConnected S → connectedSubsetCardinality S > _root_.continuum
 
 /-
 ## The Rudin Set (Counterexample)
@@ -127,7 +127,7 @@ Under CH, Rudin constructed a connected planar set with special properties.
 -/
 
 /-- The Continuum Hypothesis: ℵ₁ = 2^ℵ₀ -/
-def ContinuumHypothesis : Prop := aleph 1 = 2 ^ aleph 0
+def ContinuumHypothesis : Prop := (aleph 1 : Cardinal.{0}) = 2 ^ (aleph 0 : Cardinal.{0})
 
 /-- A "Rudin set" is a connected set where every proper connected subset
     is either a point or homeomorphic to the whole -/
@@ -138,7 +138,7 @@ def IsRudinSet (S : Set X) : Prop :=
 
 /-- A Rudin set has exactly continuum-many connected subsets -/
 def HasExactlyContinuumConnectedSubsets (S : Set X) : Prop :=
-  connectedSubsetCardinality S = continuum
+  connectedSubsetCardinality S = _root_.continuum
 
 /-
 ## Rudin's Theorem (Main Result)
@@ -159,7 +159,7 @@ theorem rudin_theorem :
 
 /-- Rudin sets disprove Erdős's first conjecture -/
 theorem rudin_set_no_diverse_subset (S : Set X) (hS : IsRudinSet S)
-    (hcard : S.nontrivial) : ¬HasDiverseConnectedSubset S := by
+    (hcard : S.Nontrivial) : ¬HasDiverseConnectedSubset S := by
   intro ⟨T, hTsub, hTne, hTconn, ⟨x, y, hx, hy, hxy⟩, hnotHomeo⟩
   -- T is a proper connected subset with more than one point
   have := hS.2 T hTsub hTne hTconn
@@ -184,7 +184,7 @@ theorem erdos_first_conjecture_false :
   -- Apply the conjecture to get a diverse subset
   have hdiv := hconj (ℝ × ℝ) S hconn
   -- But Rudin sets have no diverse subsets
-  have hnontriv : S.nontrivial := by
+  have hnontriv : S.Nontrivial := by
     -- Rudin set is nontrivial (it's connected and has continuum-many subsets)
     sorry
   exact rudin_set_no_diverse_subset S hRudin hnontriv hdiv
