@@ -2449,3 +2449,73 @@ decide-maxrecdepth / partenat-removal classes, exactly ONE (the Dirichlet chain)
 Low reported error counts (3–5) reliably explode into multi-site rewrites once the head blocker
 clears. Remaining fixable estimate: a handful (<5%) of the ~400 A–M/Erdos<600 residuals, each
 requiring real proof surgery rather than a rename/seam. Recommend the seam be considered exhausted.
+
+---
+
+## Increment 51 (Doctor, N–Z / Erdos≥600, deep-rework clusters) — +4 GREEN + 1 statement repair
+
+**+4 GREEN**:
+- **SylowTheoremOQ02Orbit** (Sylow-API cluster): three-part rename:
+  - `Sylow.exists_smul_eq G P Q` → `MulAction.exists_smul_eq G P Q` (the const moved to the
+    pretransitivity API; `Sylow` no longer carries it).
+  - `Subgroup.normalizer P` → `Subgroup.normalizer (P : Set G)` — **`Subgroup.normalizer` now
+    takes a `Set G`, not a `Subgroup G`**. Only breaks in type positions (`.index`, `Nat.card …`);
+    in `stabilizer G P = Subgroup.normalizer P` it still unifies via the Sylow coercion.
+  - `Nat.card_eq_one.mp` (gone) → `Nat.card_eq_one_iff_unique.mp` (returns `Nonempty (Unique α)`);
+    then `Subsingleton.elim` for `Q = P` (dot-notation `.uniq` resolves to `Subsingleton.uniq` and
+    fails — use `Subsingleton.elim`).
+- **SchroederBernsteinOQ01** (concrete-category refactor): **`HasForget C` removed in v4.31**.
+  Replace the class binder with the new bundle that `forget C` requires:
+  `{FC : C → C → Type*} {CC : C → Type*} [∀ X Y, FunLike (FC X Y) (CC X) (CC Y)] [ConcreteCategory C FC]`.
+  Clean 1-binder swap; the proof body (FullyFaithful.preimageIso etc.) was unchanged.
+- **Erdos724Problem** (statement repair): empty `latinSquare3_M` def body supplied with the
+  intended orthogonal mate `(2i+j)%3` (mate of `L=(i+j)%3`). ALSO fixed pre-existing latent
+  ℕ∞-vs-ℝ type errors (masked by the parse-error head): `f(n) : ℕ∞` cannot be `≥` a real, so
+  coerce via `(f(n) : ENNReal).toReal` in `beth_1983` / `erdos_724_conjecture` /
+  `current_best_lower_bound`. `ℝ≥0∞` notation was "expected token" (scope not open) → use spelled
+  `ENNReal`. Pinned the `⨆` binder's `Set _` coercion element type.
+- **Erdos1123Problem** (statement repair — genuine intended-true transitivity): the density-zero
+  symmetric-difference setoid had a **fake** transitivity proof (`by simp [hasDensityZero]; intro _ _; trivial`).
+  The relation IS a true equivalence; supplied the real proof: `hasDensityZero` is subset-closed
+  (`hasDensityZero_mono`) and union-closed (`hasDensityZero_union`, via ε/2 split + `countUpTo`
+  subadditivity `countUpTo_union_le`), so `symmDiff_triangle` (`A∆C ⊆ (A∆B)∪(B∆C)`) gives
+  transitivity. Also fixed the type-degenerate def (**ε was ℕ**, making refl unprovable → made it
+  `ℝ` with `(countUpTo:ℝ)`), and `∆` notation now needs `open scoped symmDiff`. Both `B1`/`B2`
+  now use proper named `Setoid` instances.
+
+**Statement repair (row stays PRE-EXISTING, not flipped) — RamseysTheoremOQ04** — now fully
+compiles. Fixes per #38611:
+- Misparenthesized `(A∧B∧C)∨D` → `A∧B∧(C∨D)` in `classical_ramsey_is_k2` (the ∨ ranges over the
+  two monochromatic colorings, not the whole conjunction — the `⟨…⟩` "more than one constructor"
+  error pinpoints it).
+- Removed duplicate `pigeonhole_ramsey` declaration (Part VI copy; the Part II one is the referenced one).
+- `Finset.exists_subset_card_le` → `Finset.exists_subset_card_eq` (now returns `#t = n`, was `≤`).
+- `Nat.lt_two_pow` → `Nat.lt_two_pow_self` (implicit `n`).
+- `def Coloring … : Type := …` → `abbrev … : Type _` (universe drift `Type u_1` vs `Type`, plus
+  needs reducibility so `c ⟨e,he⟩` application elaborates).
+- `tower_strictMono`: `induction n` (with `hmn`/`m` depending on `n`) is broken → rewrite via
+  `strictMono_nat_of_lt_succ` (suffices `tower b n < tower b (n+1)`).
+- `ramsey_property_mono`: restored the missing `i` witness in the final `⟨T, i, …⟩` and fixed the
+  subset direction (`hTS' : T ⊆ S'`, not `hS'sub`).
+
+**Probed-and-skipped (deep / genuinely stuck, NOT mechanical seam)**:
+- **SylowTheoremOQ04** — `native_decide` on `Fintype.card (Sylow p G) = 5/10/6` now FAILS:
+  `SetLike.instFintype` is **noncomputable** in v4.31, so `native_decide` can't compile the Sylow
+  count. This is a computability-model change, not a rename; the whole simplicity-of-A₅ argument
+  rests on those three computed counts. Reverted.
+- **SylowTheoremOQ01** — 14-site rewrite-drift (`rw` pattern misses, rcases on non-inductive,
+  `Nat.Prime.eq_of_dvd_of_prime`/`orderOf_eq_one_iff_eq_one` renames). Deep.
+- **Wilsons cluster** (OQ01/OQ02/OQ02Ext/…) — all dep-blocked on `WilsonsTheoremOQ02Ext`, which has
+  ~8 independent errors incl. a v4.31 hygiene bug (`Invalid pattern variable … Nat.totient._@…_hyg`
+  multi-component name), `rw` pattern misses, `Int.natAbs_le.mp` gone, omega drift. Deep.
+- SkolemNoetherMatrixAut, ShannonSourceCodingOQ03, RandomizedMaxcutOQ04, PartitionTheorem,
+  SpernerNDimOQ04, StirlingFormula — all multi-site (unknown-const + unsolved-goals + type-mismatch
+  mixed). The parse-error heads (SpernerNDimOQ04 `unexpected '|'`, StirlingFormula `/-!` doc-command)
+  mask 5+ real proof-drift sites each.
+
+**VERDICT (N–Z seam):** matches the A–M finding — **the mechanical seam is dry**. Of the deep
+clusters, the Sylow-API cluster *partially* yielded (OQ02Orbit: normalizer-signature + const-move +
+`card_eq_one` renames), and the concrete-category refactor (SchroederBernsteinOQ01) was a clean
+1-binder swap. But `native_decide`-on-noncomputable-Fintype (SylowTheoremOQ04) is a hard model
+change, and the remaining N–Z residuals are genuine multi-site proof surgery. The statement-repair
+targets (Erdos724, Erdos1123, RamseysTheoremOQ04) all yielded to real intended-true fixes.
