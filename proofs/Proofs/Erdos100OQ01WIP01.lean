@@ -53,6 +53,7 @@ lemma quadratic_at_most_two_roots (a b c : ℝ) (ha : a ≠ 0)
 
 /-! ## Circle intersection lemma -/
 
+set_option maxHeartbeats 1000000 in
 /-- Three distinct points cannot simultaneously lie on two circles with distinct centers. -/
 theorem three_pts_two_circles_contra
     (c₁ c₂ : ℝ × ℝ) (r₁ r₂ : ℝ)
@@ -83,7 +84,10 @@ theorem three_pts_two_circles_contra
                        (by simp [dy] at h; linarith [h.2]))
   rcases eq_or_ne dx 0 with hdx0 | hdx
   · -- dx = 0, so dy ≠ 0
-    have hdy : dy ≠ 0 := by rcases hdc with h | h; · exact absurd hdx0 h; · exact h
+    have hdy : dy ≠ 0 := by
+      rcases hdc with h | h
+      · exact absurd hdx0 h
+      · exact h
     have hdy2 : 2 * dy ≠ 0 := mul_ne_zero two_ne_zero hdy
     -- Radical axis: 2*dy*y = K, so all three points have the same y-coordinate
     have hpy : p.2 * (2 * dy) = K := by
@@ -104,14 +108,16 @@ theorem three_pts_two_circles_contra
     have hquad_p : A * p.1 ^ 2 + B * p.1 + C = 0 := by
       simp only [A, B, C]; nlinarith [hp1]
     have hquad_q : A * q.1 ^ 2 + B * q.1 + C = 0 := by
-      simp only [A, B, C]; nlinarith [hq1, hpeqq.symm]
+      have hq1' : (q.1 - c₁.1) ^ 2 + (p.2 - c₁.2) ^ 2 = r₁ ^ 2 := by rw [hpeqq]; exact hq1
+      simp only [A, B, C]; nlinarith [hq1']
     have hquad_s : A * s.1 ^ 2 + B * s.1 + C = 0 := by
-      simp only [A, B, C]; nlinarith [hs1, hpeqs.symm]
+      have hs1' : (s.1 - c₁.1) ^ 2 + (p.2 - c₁.2) ^ 2 = r₁ ^ 2 := by rw [hpeqs]; exact hs1
+      simp only [A, B, C]; nlinarith [hs1']
     have hpx_ne_qx : p.1 ≠ q.1 := fun h => hpq (Prod.ext h hpeqq)
     rcases quadratic_at_most_two_roots A B C hA p.1 q.1 s.1
         hquad_p hquad_q hpx_ne_qx hquad_s with h | h
-    · exact hps (Prod.ext h hpeqs)
-    · exact hqs (Prod.ext h (hpeqq ▸ hpeqs))
+    · exact hps (Prod.ext h.symm hpeqs)
+    · exact hqs (Prod.ext h.symm (hpeqq.symm.trans hpeqs))
   · -- dx ≠ 0: express x from radical axis, substitute into circle 1 → quadratic in y
     have hdx2 : 2 * dx ≠ 0 := mul_ne_zero two_ne_zero hdx
     -- Radical axis: p.1*(2*dx) = K - 2*dy*p.2
@@ -119,12 +125,18 @@ theorem three_pts_two_circles_contra
     have hqx : q.1 * (2 * dx) = K - 2 * dy * q.2 := by linarith
     have hsx : s.1 * (2 * dx) = K - 2 * dy * s.2 := by linarith
     -- If two points share y-coord, they share x-coord (from radical axis) → same point
-    have hpy_ne_qy : p.2 ≠ q.2 := fun h =>
-      hpq (Prod.ext (mul_left_cancel₀ hdx2 (by linarith)) h)
-    have hpy_ne_sy : p.2 ≠ s.2 := fun h =>
-      hps (Prod.ext (mul_left_cancel₀ hdx2 (by linarith)) h)
-    have hqy_ne_sy : q.2 ≠ s.2 := fun h =>
-      hqs (Prod.ext (mul_left_cancel₀ hdx2 (by linarith)) h)
+    have hpy_ne_qy : p.2 ≠ q.2 := by
+      intro h
+      have hx : p.1 * (2 * dx) = q.1 * (2 * dx) := by rw [hpx, hqx, h]
+      exact hpq (Prod.ext (mul_right_cancel₀ hdx2 hx) h)
+    have hpy_ne_sy : p.2 ≠ s.2 := by
+      intro h
+      have hx : p.1 * (2 * dx) = s.1 * (2 * dx) := by rw [hpx, hsx, h]
+      exact hps (Prod.ext (mul_right_cancel₀ hdx2 hx) h)
+    have hqy_ne_sy : q.2 ≠ s.2 := by
+      intro h
+      have hx : q.1 * (2 * dx) = s.1 * (2 * dx) := by rw [hqx, hsx, h]
+      exact hqs (Prod.ext (mul_right_cancel₀ hdx2 hx) h)
     -- Substitute into circle 1: ((K-2*dy*y) - c₁.1*(2*dx))² + (2*dx)²*(y-c₁.2)² = r₁²*(2*dx)²
     -- Set α = K - 2*dx*c₁.1 = p.1*(2*dx) + 2*dy*p.2 - ... wait, just use the substituted form
     -- Quadratic coefficients in y:
@@ -166,8 +178,10 @@ theorem three_pts_two_circles_contra
       simp only [A, B, C, α]; linear_combination key_s
     rcases quadratic_at_most_two_roots A B C hA p.2 q.2 s.2
         hquad_p hquad_q hpy_ne_qy hquad_s with h | h
-    · exact hps (Prod.ext (mul_left_cancel₀ hdx2 (by linarith)) h)
-    · exact hqs (Prod.ext (mul_left_cancel₀ hdx2 (by linarith)) h)
+    · have hx1 : p.1 * (2 * dx) = s.1 * (2 * dx) := by rw [hpx, hsx, h]
+      exact hps (Prod.ext (mul_right_cancel₀ hdx2 hx1) h.symm)
+    · have hx2 : q.1 * (2 * dx) = s.1 * (2 * dx) := by rw [hqx, hsx, h]
+      exact hqs (Prod.ext (mul_right_cancel₀ hdx2 hx2) h.symm)
 
 /-! ## Cardinality bound -/
 
@@ -213,8 +227,11 @@ theorem int_dist_card_le
     have hQP₂ : Q ≠ P₂ := (Finset.mem_erase.mp hQ).1
     obtain ⟨k₁, hk₁pos, hk₁le, hd₁⟩ := hS_dist Q (hT_sub hQ) P₁ hP₁S hQP₁
     obtain ⟨k₂, hk₂pos, hk₂le, hd₂⟩ := hS_dist Q (hT_sub hQ) P₂ hP₂S hQP₂
-    simp only [Finset.mem_biUnion, Finset.mem_product, Finset.mem_Icc, Finset.mem_filter]
-    exact ⟨(k₁, k₂), ⟨⟨hk₁pos, hk₁le⟩, ⟨hk₂pos, hk₂le⟩⟩, hQ, hd₁, hd₂⟩
+    refine Finset.mem_biUnion.mpr ⟨(k₁, k₂), ?_, ?_⟩
+    · show (k₁, k₂) ∈ (Finset.Icc 1 d) ×ˢ (Finset.Icc 1 d)
+      exact Finset.mem_product.mpr ⟨Finset.mem_Icc.mpr ⟨hk₁pos, hk₁le⟩,
+        Finset.mem_Icc.mpr ⟨hk₂pos, hk₂le⟩⟩
+    · exact Finset.mem_filter.mpr ⟨hQ, hd₁, hd₂⟩
   -- Each fiber has ≤ 2 elements (by two-circle intersection)
   have hfiber_le : ∀ kp ∈ pairs, (((S.erase P₁).erase P₂).filter (fun Q =>
       (Q.1 - P₁.1) ^ 2 + (Q.2 - P₁.2) ^ 2 = (kp.1 : ℝ) ^ 2 ∧
@@ -231,7 +248,8 @@ theorem int_dist_card_le
       hQ₁'.1 hQ₁'.2 hQ₂'.1 hQ₂'.2 hQ₃'.1 hQ₃'.2
   -- pairs.card = d²
   have hpairs_card : pairs.card = d ^ 2 := by
-    simp only [pairs, Finset.card_product, Finset.card_Icc]
+    show ((Finset.Icc 1 d) ×ˢ (Finset.Icc 1 d)).card = d ^ 2
+    rw [Finset.card_product, Nat.card_Icc]
     have : d + 1 - 1 = d := by omega
     rw [this]; ring
   -- Chain the bounds
