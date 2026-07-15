@@ -78,7 +78,7 @@ import Mathlib
 namespace Harmonic.GeneralizeProofs
 -- Harmonic `generalize_proofs` tactic
 
-open Lean Meta Elab Parser.Tactic Elab.Tactic Mathlib.Tactic.GeneralizeProofs
+open Lean Meta Elab Parser.Tactic Elab.Tactic Batteries.Tactic.GeneralizeProofs
 def mkLambdaFVarsUsedOnly' (fvars : Array Expr) (e : Expr) : MetaM (Array Expr × Expr) := do
   let mut e := e
   let mut fvars' : List Expr := []
@@ -248,7 +248,7 @@ where
 
 end GeneralizeProofs
 
-open Lean Elab Parser.Tactic Elab.Tactic Mathlib.Tactic.GeneralizeProofs
+open Lean Elab Parser.Tactic Elab.Tactic Batteries.Tactic.GeneralizeProofs
 partial def generalizeProofs'
     (g : MVarId) (fvars : Array FVarId) (target : Bool) (config : Config := {}) :
     MetaM (Array Expr × MVarId) := do
@@ -432,7 +432,13 @@ theorem tendsto_zero_div_of_tendsto_sum_div
       -- We want to show that $u_n/n \to 0$. Note that $u_n = S_{n+1} - S_n$.
       have h_diff : Filter.Tendsto (fun n => (S (n + 1) - S n) / (n : ℝ)) Filter.atTop (nhds 0) := by
         have h_diff : Filter.Tendsto (fun n => (S (n + 1) / (n + 1 : ℝ)) * ((n + 1 : ℝ) / (n : ℝ)) - (S n / (n : ℝ))) Filter.atTop (nhds 0) := by
-          simpa using Filter.Tendsto.sub ( Filter.Tendsto.mul ( hS.comp ( Filter.tendsto_add_atTop_nat 1 ) ) ( show Filter.Tendsto ( fun n : ℕ => ( n + 1 : ℝ ) / n ) Filter.atTop ( nhds 1 ) from by simpa [ add_div ] using tendsto_const_nhds.add ( tendsto_inverse_atTop_nhds_zero_nat ) |> Filter.Tendsto.congr' ( by filter_upwards [ Filter.eventually_ne_atTop 0 ] with n hn; aesop ) ) ) hS;
+          simpa using Filter.Tendsto.sub ( Filter.Tendsto.mul ( hS.comp ( Filter.tendsto_add_atTop_nat 1 ) ) ( show Filter.Tendsto ( fun n : ℕ => ( n + 1 : ℝ ) / n ) Filter.atTop ( nhds 1 ) from by
+            have hbase : Filter.Tendsto ( fun n : ℕ => 1 + ( n : ℝ )⁻¹ ) Filter.atTop ( nhds 1 ) := by
+              simpa using tendsto_const_nhds.add (tendsto_inv_atTop_nhds_zero_nat (𝕜 := ℝ))
+            refine hbase.congr' ?_
+            filter_upwards [ Filter.eventually_ne_atTop 0 ] with n hn
+            have hn' : ( n : ℝ ) ≠ 0 := Nat.cast_ne_zero.mpr hn
+            rw [ add_div, div_self hn', one_div ] ) ) hS;
         refine h_diff.congr' ( by filter_upwards [ Filter.eventually_gt_atTop 0 ] with n hn; rw [ div_mul_div_cancel₀ ( by positivity ) ] ; ring );
       simp +zetaDelta at *;
       simpa [ div_eq_inv_mul, Finset.sum_range_succ ] using h_diff
@@ -502,41 +508,28 @@ theorem variance_sum_indicator_le
         exacts [ fun _ => 1, MeasureTheory.integrable_const _, Measurable.aestronglyMeasurable ( by exact Measurable.ite ( hmeas i hi ) measurable_const measurable_const ), Filter.Eventually.of_forall fun _ => by split_ifs <;> norm_num ]);
       -- Since the sets are pairwise independent, the covariance between any two distinct indicators is zero.
       have h_cov_zero : ∀ i ∈ t, ∀ j ∈ t, i ≠ j → ProbabilityTheory.covariance ((s i).indicator (fun _ => (1 : ℝ))) ((s j).indicator (fun _ => (1 : ℝ))) μ = 0 := by
-        intro i hi j hj hij; specialize hindep hi hj hij; simp_all +decide [ ProbabilityTheory.IndepSet ] ;
-        rw [ ProbabilityTheory.covariance ] ; simp_all +decide [ Set.indicator_apply ] ; ring;
-        rw [ MeasureTheory.integral_add, MeasureTheory.integral_add ] <;> norm_num [ MeasureTheory.integral_neg, MeasureTheory.integral_const_mul, MeasureTheory.integral_mul_const, MeasureTheory.integral_indicator, hmeas i hi, hmeas j hj ] ; ring!;
-        · rw [ MeasureTheory.integral_sub ] <;> norm_num [ MeasureTheory.integral_neg, MeasureTheory.integral_const_mul, MeasureTheory.integral_mul_const, MeasureTheory.integral_indicator, hmeas i hi, hmeas j hj ] ; ring!;
-          · rw [ sub_eq_zero, mul_comm ];
-            convert hindep.measure_inter_eq_mul using 1;
-            rw [ show ( fun a => ( s i ).indicator ( fun _ => 1 : Ω → ℝ ) a * ( s j ).indicator ( fun _ => 1 : Ω → ℝ ) a ) = ( s i ∩ s j ).indicator ( fun _ => 1 : Ω → ℝ ) by ext; by_cases hi : ‹_› ∈ s i <;> by_cases hj : ‹_› ∈ s j <;> simp +decide [ hi, hj ] ] ; rw [ MeasureTheory.integral_indicator ( hmeas i hi |> MeasurableSet.inter <| hmeas j hj ) ] ; simp +decide [ MeasureTheory.measureReal_def ] ;
-            rw [ ← ENNReal.toReal_eq_toReal ] <;> norm_num [ ENNReal.toReal_mul ];
-            exact ENNReal.mul_ne_top ( MeasureTheory.measure_ne_top _ _ ) ( MeasureTheory.measure_ne_top _ _ );
-          · refine' MeasureTheory.Integrable.neg _;
-            refine' MeasureTheory.Integrable.mul_const _ _;
-            exact MeasureTheory.integrable_indicator_iff ( hmeas i hi ) |>.2 ( MeasureTheory.integrable_const _ );
-          · refine' MeasureTheory.Integrable.const_mul _ _;
-            exact MeasureTheory.integrable_indicator_iff ( hmeas j hj ) |>.2 ( MeasureTheory.integrable_const _ );
-        · refine' MeasureTheory.Integrable.mono' _ _ _ <;> norm_num [ Set.indicator ];
-          exacts [ fun _ => 1, MeasureTheory.integrable_const _, Measurable.aestronglyMeasurable ( by exact Measurable.ite ( hmeas j hj ) ( Measurable.ite ( hmeas i hi ) measurable_const measurable_const ) measurable_const ), Filter.Eventually.of_forall fun _ => by split_ifs <;> norm_num ];
-        · refine' MeasureTheory.Integrable.sub _ _;
-          · refine' MeasureTheory.Integrable.neg _;
-            refine' MeasureTheory.Integrable.mul_const _ _;
-            exact MeasureTheory.integrable_indicator_iff ( hmeas i hi ) |>.2 ( MeasureTheory.integrable_const _ );
-          · refine' MeasureTheory.Integrable.const_mul _ _;
-            exact MeasureTheory.integrable_indicator_iff ( hmeas j hj ) |>.2 ( MeasureTheory.integrable_const _ );
-        · refine' MeasureTheory.Integrable.add _ _;
-          · refine' MeasureTheory.Integrable.mono' _ _ _ <;> norm_num [ Set.indicator ];
-            refine' fun ω => 1;
-            · norm_num;
-            · exact Measurable.aestronglyMeasurable ( by exact Measurable.ite ( hmeas j hj ) ( Measurable.ite ( hmeas i hi ) measurable_const measurable_const ) measurable_const );
-            · exact Filter.Eventually.of_forall fun x => by split_ifs <;> norm_num;
-          · refine' MeasureTheory.Integrable.sub _ _;
-            · refine' MeasureTheory.Integrable.neg _;
-              refine' MeasureTheory.Integrable.mul_const _ _;
-              exact MeasureTheory.integrable_indicator_iff ( hmeas i hi ) |>.2 ( MeasureTheory.integrable_const _ );
-            · refine' MeasureTheory.Integrable.const_mul _ _;
-              exact MeasureTheory.integrable_indicator_iff ( hmeas j hj ) |>.2 ( MeasureTheory.integrable_const _ );
-        · exact MeasureTheory.integrable_const _;
+        intro i hi j hj hij
+        have hInd : ProbabilityTheory.IndepSet (s i) (s j) μ := hindep hi hj hij
+        have hMi : MeasureTheory.MemLp ((s i).indicator (fun _ => (1 : ℝ))) 2 μ :=
+          (MeasureTheory.memLp_const (1 : ℝ)).indicator (hmeas i hi)
+        have hMj : MeasureTheory.MemLp ((s j).indicator (fun _ => (1 : ℝ))) 2 μ :=
+          (MeasureTheory.memLp_const (1 : ℝ)).indicator (hmeas j hj)
+        have hXi : ∫ ω, (s i).indicator (fun _ => (1 : ℝ)) ω ∂μ = (μ (s i)).toReal := by
+          rw [MeasureTheory.integral_indicator (hmeas i hi)]
+          simp [MeasureTheory.measureReal_def]
+        have hXj : ∫ ω, (s j).indicator (fun _ => (1 : ℝ)) ω ∂μ = (μ (s j)).toReal := by
+          rw [MeasureTheory.integral_indicator (hmeas j hj)]
+          simp [MeasureTheory.measureReal_def]
+        have hprod : ((s i).indicator (fun _ => (1 : ℝ))) * ((s j).indicator (fun _ => (1 : ℝ)))
+            = (s i ∩ s j).indicator (fun _ => (1 : ℝ)) := by
+          funext ω
+          by_cases hI : ω ∈ s i <;> by_cases hJ : ω ∈ s j <;>
+            simp [Set.indicator_apply, hI, hJ, Pi.mul_apply]
+        rw [ProbabilityTheory.covariance_eq_sub hMi hMj, sub_eq_zero, hXi, hXj, hprod,
+          MeasureTheory.integral_indicator ((hmeas i hi).inter (hmeas j hj))]
+        simp only [MeasureTheory.setIntegral_const, smul_eq_mul, mul_one,
+          MeasureTheory.measureReal_def]
+        rw [hInd.measure_inter_eq_mul, ENNReal.toReal_mul]
       rw [ h_var, Finset.sum_congr rfl fun i hi => Finset.sum_eq_single i ( fun j hj => by by_cases hij : i = j <;> aesop ) ( by aesop ) ];
       refine' Finset.sum_le_sum fun i hi => _;
       rw [ ProbabilityTheory.covariance_self ];
@@ -703,7 +696,7 @@ theorem slln_necessity_statement
       · intro i j hij; specialize hindep hij; simp_all +decide [ ProbabilityTheory.IndepFun, ProbabilityTheory.IndepSet ] ;
         rw [ ProbabilityTheory.Kernel.indepSet_iff_measure_inter_eq_mul ] at *;
         · rw [ ProbabilityTheory.Kernel.indepFun_iff_measure_inter_preimage_eq_mul ] at hindep;
-          convert hindep { x : ℝ | ( i : ℝ ) < |x| } { x : ℝ | ( j : ℝ ) < |x| } ( measurableSet_lt measurable_const ( measurable_norm ) ) ( measurableSet_lt measurable_const ( measurable_norm ) ) using 1;
+          convert hindep { x : ℝ | ( i : ℝ ) < |x| } { x : ℝ | ( j : ℝ ) < |x| } ( measurableSet_lt measurable_const ( measurable_norm ) ) ( measurableSet_lt measurable_const ( measurable_norm ) ) using 1 <;> rfl;
         · exact measurableSet_lt measurable_const ( hmeas i |> Measurable.norm );
         · exact measurableSet_lt measurable_const ( hmeas j |> Measurable.norm );
       · convert tsum_prob_norm_gt_eq_top_of_not_integrable ( X 0 ) ( hmeas 0 ) h_not_integrable using 1;
@@ -718,6 +711,6 @@ theorem slln_necessity_statement
     simpa [ div_eq_inv_mul ] using this;
   have h_contradiction : ∀ᵐ ω ∂μ, ∃ N : ℕ, ∀ n ≥ N, ‖X n ω‖ ≤ n := by
     filter_upwards [ h_contradiction ] with ω hω using by rcases Metric.tendsto_atTop.mp hω 1 zero_lt_one with ⟨ N, hN ⟩ ; exact ⟨ N + 1, fun n hn => by have := hN n ( by linarith ) ; rw [ dist_zero_right ] at this; rw [ Real.norm_eq_abs, abs_div, abs_of_nonneg ( by positivity : ( 0 : ℝ ) ≤ n ) ] at *; rw [ div_lt_one ( by norm_cast; linarith ) ] at *; linarith ⟩ ;
-  exact absurd ( h_borel_cantelli.and h_contradiction ) ( by intro H; obtain ⟨ ω, hω₁, hω₂ ⟩ := H.exists; obtain ⟨ N, hN ⟩ := hω₂; obtain ⟨ n, hn₁, hn₂ ⟩ := hω₁ N; exact hn₂.not_le ( hN n hn₁ ) )
+  exact absurd ( h_borel_cantelli.and h_contradiction ) ( by intro H; obtain ⟨ ω, hω₁, hω₂ ⟩ := H.exists; obtain ⟨ N, hN ⟩ := hω₂; obtain ⟨ n, hn₁, hn₂ ⟩ := hω₁ N; exact hn₂.not_ge ( hN n hn₁ ) )
 
 end LawsOfLargeNumbersOQ01
