@@ -1,3 +1,80 @@
+# DOCTOR INCREMENT 75 (deep-rework partition non-Erdos A–K / lane3, #38065, 2026-07-15)
+
+Container cpuset 12-17, 11g, cache `lean-mathlib-cache-v431-c`, worktree doctor-c, branch
+`feature/issue-38065-inc75` off origin/feature/issue-37508. **+3 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **ArithmeticSeriesOQ02OQ02OQ03** (unknown-const): **`PowerSeries.coeff` dropped its ring
+  argument** — now `PowerSeries.coeff (n : ℕ) : R⟦X⟧ →ₗ[R] R` with `R` implicit, so
+  `PowerSeries.coeff ℕ n f` → `PowerSeries.coeff n f` (RingTheory/PowerSeries/Basic.lean:78).
+  **`Finset.Nat.antidiagonal` def is gone** → unqualified `Finset.antidiagonal` (the
+  `HasAntidiagonal` one); BUT the SUM lemma **`Finset.Nat.sum_antidiagonal_eq_sum_range_succ`
+  still exists** (namespace `Finset.Nat`, Algebra/BigOperators/NatAntidiagonal.lean) — do NOT
+  rename it to `Nat.…`. `coeff_mul` now sums the negBin-coeff over `p.2`, so the hockey-stick
+  reindex needed `(fun _ j => …)` + a `Finset.sum_range_reflect` term (via `← hockey_stick`,
+  `exact` for the `n+1-1` vs `n` defeq the `rw` couldn't see). Also dropped a stale
+  `map_mul, Finsupp.sum` from the `rw` (coeff is linear, not a ring hom).
+- **HierholzerAlgorithm** (type-mismatch): **`Finset.filter_card_add_filter_neg_card_eq_card`
+  → `Finset.card_filter_add_card_filter_not (p)`** (only takes the predicate; s implicit) and it
+  yields `{∈}+{∉}` so the goal (stated `{∉}+{∈}`) needs a `rw [add_comm]` first.
+  **`List.countP_eq_length_filter` arrow flipped** (now `countP p l = (l.filter p).length`) →
+  use forward, not `←`. **`Set.mem_coe` removed → `Finset.mem_coe`** (a ∈ ↑s ↔ a ∈ s;
+  Finset/Defs.lean:126). `Finset.card_nbij` delivers the MapsTo/inj/surj membership hyps in
+  `↑`-coe form, so their `simp only [mem_filter]` sets need `Finset.mem_coe` prepended.
+  Two goal-state repairs unmasked afterwards: the Sym2 injective impossible-branch must rewrite
+  the `x₁ = v` component (not `v = x₂`) to expose the self-loop; and the surjective branch's
+  `revert…; Sym2.ind; intro` reintro order is now `hmem hv hedge` (hedge/hv swapped).
+- **FourColorTheoremOQ01** (unknown-const + **statement repair**): **`Finset.ne_univ_iff_exists_notMem`
+  removed** → derive via `rw [Ne, Finset.eq_univ_iff_forall, not_forall]`. `Ne.symm h12` no longer
+  matched the post-`simp` goal `c₁ ≠ c₂` → use `h12`/`h13` directly. **STATEMENT REPAIR (#38611
+  candidate):** `min_counterexample_has_low_degree` was FALSE as stated —
+  `avgDeg ≤ 5, minDeg ≥ 4 ⊢ minDeg ∈ {4,5}` fails for minDeg=6, avgDeg=3; it silently relied on
+  the unstated fact `minDeg ≤ avgDeg` (min degree ≤ average degree). Added that hypothesis
+  (`hle : minDeg ≤ avgDeg`); no callers, illustrative lemma. omega then closes it.
+
+## New systematic seams (rename-map candidates)
+1. **`PowerSeries.coeff (n : ℕ) : R⟦X⟧ →ₗ[R] R`** — ring arg now IMPLICIT (drop the `ℂ`/`ℕ`/`R`
+   first arg at every call site). Same for `PowerSeries.coeff_mk`.
+2. **`Finset.Nat.antidiagonal` def → `Finset.antidiagonal`** (HasAntidiagonal); but the
+   `Finset.Nat.sum_antidiagonal_eq_sum_range_succ(_mk)` lemmas KEEP the `Finset.Nat.` namespace.
+3. **`List.countP_eq_length_filter` direction flipped** to `countP = (filter).length` (v4.31).
+4. **`Finset.filter_card_add_filter_neg_card_eq_card` → `Finset.card_filter_add_card_filter_not`**
+   (deprecated alias still exists; new one takes only `p`, gives `{p}+{¬p}` — mind the order).
+5. **`Set.mem_coe` removed → `Finset.mem_coe`.**
+6. **`Finset.ne_univ_iff_exists_notMem` removed** → `Ne, Finset.eq_univ_iff_forall, not_forall`.
+7. **`expSeries_div_hasSum_exp` / `NormedSpace.exp` dropped their field (`𝕂`) argument** — now
+   `expSeries_div_hasSum_exp (x)` and `NormedSpace.exp x`; `Complex.exp_eq_exp_ℂ : Complex.exp =
+   NormedSpace.exp` (was `= NormedSpace.exp ℂ ℂ`). (Seen in EulerIdentityOQ01OQ02OQ01 — deferred.)
+
+## Statement repairs (for #38611, gallery-meta re-audit)
+- **FourColorTheoremOQ01** `min_counterexample_has_low_degree` — added missing `minDeg ≤ avgDeg`
+  hypothesis (was false as stated). FLIPPED green.
+- **CevasTheoremOQ01OQ03** (DEFERRED, cannot fix in-partition): the imported `routhRatio` (defined
+  in parent `CevasTheoremOQ01`, OUTSIDE lane3) has buggy denominators
+  `(1-d+de)(1-e+ef)(1-f+fd)` that do NOT match this file's geometry denominators
+  `(1-e+de)(1-f+ef)(1-d+fd)`. Consequently `routh_theorem_std` (signedArea(P,Q,R) = routhRatio·1)
+  is FALSE for asymmetric params: at (d,e,f)=(1/2,1/3,1/4) the true signedArea is **1/10** but
+  routhRatio computes **25/252**. The parent's only test (`routh_medial_thirds`, d=e=f=1/3) masks
+  the bug because the two denominator sets coincide when d=e=f. The child's own docstring documents
+  the intended denominators as the geometry ones (`w₁=1-e+de`, …), confirming the parent def is the
+  bug. **Fix belongs in the parent `CevasTheoremOQ01.routhRatio` (another lane's partition).**
+
+## Good next leads (lane3 partition)
+- **Parent-olean masking:** several `type-mismatch` rows (e.g. BinomialTheoremOQ02OQ01OQ01OQ02)
+  first show only a single `object file …olean does not exist` for a GREEN parent that isn't in
+  the shared cache. I built `Proofs.BinomialTheoremOQ02OQ01.olean` into cache-v431-c
+  (`lake env lean -o …olean`) — its children now show their REAL drift (8 sites for that one).
+  Building green parents' oleans first will unmask/prep the Binomial + other OQ-chain clusters.
+- **EulerIdentityOQ01OQ02OQ01** (deferred): after the `expSeries_div_hasSum_exp`/`NormedSpace.exp`
+  field-arg drop (seam #7), the remaining blocker is that `dsimp [Function.comp_def]` no longer
+  reduces `(Nat.divModEquiv 2).symm x`, so the even/odd fiber regroup (`prod_fiberwise` +
+  `convert hasSum_fintype`) drifts. Needs the right divModEquiv reduction lemma.
+- **CartesianClosed refactor** (CantorDiagonalizationOQ04OQ01OQ01 etc.): `[CartesianClosed C]`
+  "type is not a class instance" — deep category-theory monoidal refactor, defer.
+- AbelRuffini cluster (OQ04/OQ06) is genuine multi-site type-mismatch (~8 sites each), grind later.
+
+
 # DOCTOR INCREMENT 76 (deep-rework partition: non-Erdos L–Z, #38065, 2026-07-15)
 
 Container cpuset 18-23, 11g, cache `lean-mathlib-cache-v431-d`, worktree doctor-d, branch

@@ -143,7 +143,7 @@ AreaOfCircleOQ07OQ05OQ01OQ02	GREEN
 AreaOfCircleOQ07OQ05OQ02	GREEN	
 ArithmeticSeriesOQ00OQ02	GREEN	
 ArithmeticSeriesOQ00OQ02OQ01	GREEN	instance-synth
-ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
+ArithmeticSeriesOQ02OQ02OQ03	GREEN	
 ArithmeticSeriesOQ02OQ02OQ03OQ01	GREEN	
 ArithmeticSeriesOQ02OQ03	GREEN	
 ArithmeticSeriesOQ02OQ04OQ01	GREEN	
@@ -1982,7 +1982,7 @@ FibonacciIdentitiesOQ02	GREEN
 FibonacciIdentitiesOQ02OQ02PrimeIndex	GREEN	
 FiveColorTheorem	GREEN	
 FourColorTheorem	GREEN	
-FourColorTheoremOQ01	RESIDUAL	unknown-const:Finset.ne_univ_iff_exists_notMem
+FourColorTheoremOQ01	GREEN	
 FourColorTheoremOQ02	GREEN	
 FourSquareDistributionOQ01	GREEN	
 FourSquareDistributionOQ04Arrange	GREEN	
@@ -2081,7 +2081,7 @@ HermiteLindemann	GREEN
 HermiteSawtoothIdentity	GREEN	
 HermiteSawtoothIdentityOQ02	GREEN	
 HeronsFormulaOQ01	GREEN	
-HierholzerAlgorithm	RESIDUAL	type-mismatch
+HierholzerAlgorithm	GREEN	
 Hilbert11OQ01Aristotle	GREEN	
 Hilbert11_QuadraticFormsAristotle	GREEN	
 Hilbert14Invariants	GREEN	

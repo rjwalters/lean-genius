@@ -166,7 +166,8 @@ lemma degree_eq_deleteEdges_add (v : V)
     ext w
     simp [mem_neighborFinset, deleteEdges_adj]
   simp only [SimpleGraph.degree, h1]
-  exact (Finset.filter_card_add_filter_neg_card_eq_card (fun w => s(v, w) ∈ S)).symm
+  rw [add_comm]
+  exact (Finset.card_filter_add_card_filter_not (fun w => s(v, w) ∈ S)).symm
 
 /-- The number of deleted neighbors of v (neighbors w such that s(v,w) is in the
     trail's edge set) equals the countP of trail edges incident to v.
@@ -186,7 +187,7 @@ lemma deleted_neighbors_eq_countP
       p.edges.countP (fun e => v ∈ e) := by
   have hnodup := hp.edges_nodup
   -- countP on a list = length of filter
-  rw [← List.countP_eq_length_filter]
+  rw [List.countP_eq_length_filter]
   -- For a nodup list, (l.filter p).length = (l.toFinset.filter p).card
   rw [show (p.edges.filter (fun e => v ∈ e)).length =
       (p.edges.toFinset.filter (fun e => v ∈ e)).card from by
@@ -197,29 +198,29 @@ lemma deleted_neighbors_eq_countP
   apply Finset.card_nbij (fun x => s(v, x))
   · -- MapsTo: if x is a neighbor with s(v,x) in trail, then s(v,x) ∈ trail.filter(v ∈ ·)
     intro x hx
-    simp only [Finset.mem_filter, Set.mem_coe, List.mem_toFinset] at hx ⊢
+    simp only [Finset.mem_filter, Finset.mem_coe, List.mem_toFinset] at hx ⊢
     exact ⟨hx.2, Sym2.mem_mk_left v x⟩
   · -- Injective: s(v,x₁) = s(v,x₂) implies x₁ = x₂ (using looplessness of G)
     intro x₁ hx₁ x₂ _ heq
-    simp only [Finset.mem_filter, mem_neighborFinset] at hx₁
-    rcases Sym2.eq_iff.mp heq with ⟨_, h⟩ | ⟨h₁, _⟩
+    simp only [Finset.mem_coe, Finset.mem_filter, mem_neighborFinset] at hx₁
+    rcases Sym2.eq_iff.mp heq with ⟨_, h⟩ | ⟨_, h₂⟩
     · exact h
-    · rw [h₁] at hx₁; exact absurd rfl (G.ne_of_adj hx₁.1)
+    · rw [h₂] at hx₁; exact absurd rfl (G.ne_of_adj hx₁.1)
   · -- Surjective: every e ∈ trail.toFinset with v ∈ e has form s(v,x) for neighbor x
     intro e he
-    simp only [Finset.mem_filter, List.mem_toFinset] at he
+    simp only [Finset.mem_coe, Finset.mem_filter, List.mem_toFinset] at he
     obtain ⟨hmem, hv⟩ := he
     have hedge : e ∈ G.edgeSet := p.edges_subset_edgeSet hmem
     revert hv hedge hmem
     refine Sym2.ind (fun a b => ?_) e
-    intro hmem hedge hv
+    intro hmem hv hedge
     rw [mem_edgeSet] at hedge
     rw [Sym2.mem_iff] at hv
     rcases hv with rfl | rfl
     · exact ⟨b, by simp [Finset.mem_filter, mem_neighborFinset, hedge,
-        Set.mem_coe, List.mem_toFinset, hmem], rfl⟩
+        Finset.mem_coe, List.mem_toFinset, hmem], rfl⟩
     · refine ⟨a, ?_, Sym2.eq_swap⟩
-      simp only [Finset.mem_filter, mem_neighborFinset, Set.mem_coe, List.mem_toFinset]
+      simp only [Finset.mem_filter, mem_neighborFinset, Finset.mem_coe, List.mem_toFinset]
       exact ⟨hedge.symm, by rwa [show s(v, a) = s(a, v) from Sym2.eq_swap]⟩
 
 /-- **Circuit Removal Preserves Even Degrees** (PROVED):
