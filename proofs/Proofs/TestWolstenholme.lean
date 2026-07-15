@@ -1,13 +1,8 @@
 import Mathlib
 
--- Wilson's theorem: (p-1)! ≡ -1 (mod p)
--- In ZMod p: product of nonzero elements = -1
-#check ZMod.prod_univ_prime
 -- Fermat's little theorem
 #check ZMod.pow_card_sub_one_eq_one
 #check ZMod.units_pow_card_sub_one_eq_one
--- Sum of powers
-#check Finset.sum_pow_eq_pow_sum
 -- ZMod field instance
 #check ZMod.instField
 -- Finite field power sum: for 1 ≤ k < p-1, ∑_{x ∈ (ℤ/pℤ)*} x^k = 0.
@@ -18,7 +13,7 @@ example (p : ℕ) (hp : Fact (Nat.Prime p)) (k : ℕ) (hk : 1 ≤ k) (hkp : k < 
     ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ k = 0 := by
   -- Pick a generator g of (ZMod p)ˣ (which is cyclic since p is prime)
   haveI : IsCyclic (ZMod p)ˣ := inferInstance
-  obtain ⟨g, hg⟩ := IsCyclic.exists_monoid_generator (α := (ZMod p)ˣ)
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
   -- g^k ≠ 1 since 0 < k < p-1 = |group| and g is a generator
   have hgk_ne : (g : ZMod p) ^ k ≠ 1 := by
     intro heq
@@ -27,10 +22,12 @@ example (p : ℕ) (hp : Fact (Nat.Prime p)) (k : ℕ) (hk : 1 ≤ k) (hkp : k < 
       ext; simpa using heq
     -- orderOf g = p - 1 (generator of group of order p - 1)
     have hord : orderOf g = Fintype.card (ZMod p)ˣ := by
-      rw [orderOf_eq_card_of_forall_mem_zpowers (fun x => hg x)]
+      rw [orderOf_eq_card_of_forall_mem_zpowers (fun x => hg x), Nat.card_eq_fintype_card]
     rw [ZMod.card_units_eq_totient, Nat.totient_prime hp.out] at hord
     -- k < p - 1 = orderOf g, but g^k = 1 contradicts minimality of order
     have := orderOf_dvd_of_pow_eq_one hunit
+    rw [hord] at this
+    have hle := Nat.le_of_dvd (by omega) this
     omega
   -- The sum is invariant under multiplication by g:
   -- ∑ x^k = ∑ (g·x)^k = g^k · ∑ x^k
@@ -43,6 +40,7 @@ example (p : ℕ) (hp : Fact (Nat.Prime p)) (k : ℕ) (hk : 1 ≤ k) (hkp : k < 
     · intro b _; exact ⟨b * g⁻¹, Finset.mem_univ _, by group⟩
     · intro a _
       simp only [Units.val_mul, mul_pow]
+      ring
   -- From g^k · S = S and g^k ≠ 1, conclude S = 0
   -- Rearrange: (g^k - 1) · S = 0, and g^k - 1 is a unit, so S = 0
   have hsub : ((g : ZMod p) ^ k - 1) * ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ k = 0 := by

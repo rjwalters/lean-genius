@@ -1,3 +1,80 @@
+# DOCTOR INCREMENT 80 (deep-rework partition non-Erdos L–Z / lane4, #38065, 2026-07-15)
+
+Container cpuset 18-23, 11g, cache `lean-mathlib-cache-v431-d`, worktree doctor-d, branch
+`feature/issue-38065-inc80` off origin/feature/issue-37508. **+5 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+(Local-import chains built with in-container `lake build Proofs.X` to materialize dependency oleans.)
+
+## Flips (failure class in parens)
+- **QuadraticReciprocityOQ03** (instance-synth) — HUB. Two seams:
+  (1) **`legendreSym.at_neg_one` now returns `χ₄ ↑p`** (was `(-1)^(p/2)`). Bridge with
+  **`ZMod.χ₄_eq_neg_one_pow (hodd : p % 2 = 1)`** (`ZModChar.lean:77`): `rw [legendreSym.at_neg_one hp,
+  χ₄_eq_neg_one_pow hodd]` where `hodd := (Fact.out : p.Prime).eq_two_or_odd.resolve_left hp`.
+  (2) **`map_mul (legendreSym p)` no longer synthesizes** — `legendreSym p` is a plain `ℤ→ℤ`, not a
+  bundled hom; use **`legendreSym.mul p a b`** (`Basic.lean:154`). (3) **`decide` on `legendreSym k a`
+  needs explicit `instance : Fact (Nat.Prime k)`** for each literal k (v4.31 stopped auto-synthesizing
+  `Fact (Nat.Prime <lit>)`) — added `instance : Fact (Nat.Prime 5/7/11/13/17) := ⟨by norm_num⟩`.
+- **QuadraticReciprocityOQ03OQ01** (instance-synth, dependent of ↑). **`legendreSym.eq_one_iff` now takes
+  `p` EXPLICITLY** (section `variable (p : ℕ)` at `Basic.lean:97`): `legendreSym.eq_one_iff h2` →
+  `legendreSym.eq_one_iff p h2`. Also `IsSquare`-form is unchanged (`exists_sq_eq_two_iff` still
+  `IsSquare (2:ZMod p) ↔ …`). Added `Fact (Nat.Prime 3/5/23/31/41)` instances for the `decide`s.
+- **QuadraticReciprocityOQ03OQ01Exp** (instance-synth, transitive dependent). No own edits — went GREEN
+  once its two-deep local-import chain (OQ03 → OQ03OQ01) built.
+- **LawsOfLargeNumbersOQ02** (type-mismatch). (1) `IndepFun.variance_sum` yields
+  `Var[∑ i, X i]` (function-sum); goal is `Var[fun ω => ∑ i, X i ω]`. Bridge with an explicit
+  `funext ω; rw [Finset.sum_apply]` `have` then `exact` (the old `simpa [Finset.sum_apply] using …`
+  no longer fires — `sum_apply` needs an actual application node). (2) **`Nat.cast_nonneg` stuck on
+  `IsOrderedRing ?m`** metavar → give it the arg: `Nat.cast_nonneg _`. (3) tendsto-lambda `fun n =>
+  C / ↑n` inferred as `ℝ→ℝ`; annotate binder `fun n : ℕ => …`. (4) a trailing `ring` became
+  "no goals" after `field_simp` closed it — dropped.
+- **TestWolstenholme** (unknown-const). (1) removed two dead `#check`s (`ZMod.prod_univ_prime`,
+  `Finset.sum_pow_eq_pow_sum` — neither exists in v4.31, both unused by the proof). (2)
+  **`IsCyclic.exists_monoid_generator` (→ `Submonoid.powers`) vs `orderOf_eq_card_of_forall_mem_zpowers`
+  (wants `Subgroup.zpowers`)** — switch to **`IsCyclic.exists_generator`** which delivers the `zpowers`
+  form directly. (3) `orderOf_eq_card_of_forall_mem_zpowers` now yields **`Nat.card`**, not
+  `Fintype.card` → append `, Nat.card_eq_fintype_card` to the rw. (4) **`omega` cannot use a
+  variable-divisor `(p-1) ∣ k`** — derive `Nat.le_of_dvd (by omega) this : p-1 ≤ k` first, then omega.
+  (5) `Finset.sum_nbij` summand goal `g^k*a^k = a^k*g^k` needs an explicit `ring` after the `simp only`.
+
+## New systematic seams (rename-map candidates)
+- **`Mathlib.Tactic.GeneralizeProofs` namespace moved to `Batteries.Tactic.GeneralizeProofs`** — the
+  `generalize_proofs` tactic (incl. the `MAbs`/`MGen` monads, `abstractProofs`, `MGen.runMAbs`,
+  `MAbs.findProof?/insertProof/withLocal/withRecurse`) migrated Mathlib→Batteries. Affects any file
+  vendoring the Harmonic modified `generalize_proofs` (all `*Aristotle` companions with a
+  `namespace Harmonic.GeneralizeProofs` block). Swap the `open … Mathlib.Tactic.GeneralizeProofs` →
+  `open … Batteries.Tactic.GeneralizeProofs` (NB: a failed `open` on the unknown namespace rejects the
+  WHOLE `open` line, cascading dozens of phantom "unknown identifier MetaM/MAbs/binderIdent" errors —
+  fix the namespace first, re-verify, only then chase real errors).
+- **`legendreSym.at_neg_one : … = χ₄ ↑p`** (character form now) + bridge **`ZMod.χ₄_eq_neg_one_pow`**.
+- **`legendreSym p` is a bare function** — `map_mul`/`map_pow` fail; use `legendreSym.mul`/`.pow`.
+- **`legendreSym.eq_one_iff`/`eq_neg_one_iff` take `p` explicitly** (positional first arg).
+- **`tendsto_inverse_atTop_nhds_zero_nat` → `tendsto_inv_atTop_nhds_zero_nat`** (inverse→inv).
+- **`LT.lt.not_le` → `LT.lt.not_ge`** (the `.not_le` dot-projection; alias of `not_le_of_gt`).
+- **`Fact (Nat.Prime <literal>)` no longer auto-synthesized** — add explicit `instance` per literal.
+
+## Deferred / next leads (my partition, L–Z)
+- **LawsOfLargeNumbersOQ01Aristotle** (HUB for OQ01OQ01/OQ01OQ03) — META BLOCK NOW FIXED (both
+  `open` lines swapped to `Batteries.Tactic.GeneralizeProofs`) + `tendsto_inv…` + `.not_ge` done;
+  partial patch saved at `/tmp/lln01aristotle.partial.patch`. 3 dense Aristotle blobs remain:
+  L435 `aesop` normalization infinite-loop (the `(n+1)/n → 1` `Tendsto.congr'`), L507
+  `integral_add` no longer matches the `A*B - A*μ.real - μ.real*B` subtraction integrand
+  (covariance now unfolds with `μ.real` and as a subtraction chain), L705 unsolved. Needs real
+  reconstruction of the covariance/integral algebra — reserve a full session.
+- **NewtonIndStep2** (proof-drift) — NOT cheap. All THREE `nlinarith` Positivstellensatz certificates
+  (α≥0 L62, γ≥0 L77, discriminant L100) genuinely broke under v4.31 nlinarith normalization (with
+  `maxHeartbeats 1600000` they finish searching and report "linarith failed", i.e. certificate miss,
+  not timeout). Needs new hint sets / SOS certificates.
+- **LawOfSinesOQ06** (WithLp reshape) — bigger than cheap. `EuclideanSpace.inner_apply` →
+  `PiLp.inner_apply` (`⟪x,y⟫ = ∑ i, ⟪x i,y i⟫`, still needs real-inner `x i * y i` bridge), function
+  app `u 0` now normalizes to `u.ofLp 0`, AND a `structure Triangle` elaboration cascade at L110
+  (`cross2D (B - A) (C - A)` → `HSub … ((B:?)→?B→Vec2) Vec2` stuck) that kills all of Part III.
+- **RationalCanonicalFormExists** (type-mismatch) — HUB for MinpolyCharpolyOQ03(+OQ03OQ01); 13
+  errors (unsolved goals, ext, rewrite-pattern, instance). Expensive, not yet started.
+- **WolstenholmeTheoremOQ01** (oom-killed) and **TestApi203** (unclassified) — both OOM at 11g
+  (`lake env lean` EXIT=137); defer to a higher-memory lane like TestApi203.
+- Quick error-count scan of my partition: MathematicalInductionOQ03 (8), TaylorTheoremOQ03 (9),
+  PrimeGapBoundsOQ01 (12) — none are single-blocker; grind as budget allows.
+
 # DOCTOR INCREMENT 75 (deep-rework partition non-Erdos A–K / lane3, #38065, 2026-07-15)
 
 Container cpuset 12-17, 11g, cache `lean-mathlib-cache-v431-c`, worktree doctor-c, branch

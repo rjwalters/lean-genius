@@ -48,12 +48,13 @@ namespace QRAlgorithm
 /-- **Step 1: Multiplicativity.** Factor and handle each factor separately. -/
 theorem legendreSym_mul_eq (a b : ℤ) (p : ℕ) [Fact p.Prime] :
     legendreSym p (a * b) = legendreSym p a * legendreSym p b :=
-  map_mul (legendreSym p) a b
+  legendreSym.mul p a b
 
 /-- **Step 3a: Handle factor of -1.** Uses the first supplementary law. -/
 theorem legendreSym_neg_one_eq (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
-    legendreSym p (-1) = (-1) ^ (p / 2) :=
-  legendreSym.at_neg_one hp
+    legendreSym p (-1) = (-1) ^ (p / 2) := by
+  have hodd : p % 2 = 1 := (Fact.out : p.Prime).eq_two_or_odd.resolve_left hp
+  rw [legendreSym.at_neg_one hp, χ₄_eq_neg_one_pow hodd]
 
 /-- **Step 3: Reciprocity swap.** When a is an odd prime q ≠ p, swap:
 (q/p) = (-1)^((p-1)/2 · (q-1)/2) · (p/q).
@@ -66,6 +67,14 @@ theorem reciprocity_swap {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
 -- ============================================================
 -- PART 2: Verified Example Computations
 -- ============================================================
+
+-- Small-prime `Fact` instances for the `decide` computations below
+-- (v4.31 no longer auto-synthesizes `Fact (Nat.Prime k)` for literals).
+instance : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 11) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 13) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 17) := ⟨by norm_num⟩
 
 /-- Example: (3/7) = -1 (3 is not a quadratic residue mod 7).
 Proof: By reciprocity, (3/7)(7/3) = (-1)^(3·1) = -1.
