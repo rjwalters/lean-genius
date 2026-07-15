@@ -1,3 +1,72 @@
+# DOCTOR INCREMENT 60 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-14)
+
+Container `dr60` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc60` off origin/feature/issue-37508. Partition A pool =
+380 RESIDUAL rows. Bulk-probed the 121 cheap-class rows (unknown-const/parse/
+sig/elab/dot) in one combined `lake build`, then cheapest-first per-file loop.
+**Finding (confirms inc-56/57): partition A is now genuinely deep-rework** —
+every sampled RESIDUAL file (forward-ref candidates, Mathlib-name unknown-const
+singletons, simple-class) has 5–33 real errors; the clean 1-blocker rows are
+harvested. The "unknown-const:X" ledger class is just the FIRST error, not the
+only one (e.g. Erdos190 classed unknown-const was really a `{N : ℕ}` signature
+bug + DecidablePred synth + 6 proof-drift sites). **+4 GREEN**, PR #38664.
+All flips in-container per-file `lake build Proofs.X` exit-0 before ledger flip.
+
+## Flips (failure class in parens)
+- CayleyHamiltonCyclicVectorAllFieldsOQ03Converse (rewrite-drift): `set`-folded
+  `W` not syntactically in the calc target → fold via `← hW_def` before
+  `rw [hWtop, finrank_top]`.
+- Erdos124CompleteSequences (unknown-const): `gcongr` auto-named sum index `i_1`
+  changed → name explicitly `gcongr with i_1` so `linarith [h_ge i_1]` resolves.
+- Erdos477Problem (unknown-const): `Set.Finite.of_not_infinite` removed →
+  `push_neg` on `¬s.Infinite` already yields `s.Finite` (drop redundant convert,
+  or `rw [Set.not_infinite]`); `And.symm.elim` orientation → `⟨hu.2, hu.1⟩`;
+  `complement_unique_repr` h₂ orientation → `heq.symm`; `ring` can't close Nat
+  `(n+1)^2 - n^2` → `have + omega`.
+- FundamentalTheoremCalculusStokesAristotle (unclassified; pre-existing sorry):
+  `hasFDerivAt_id` dropped explicit 𝕜; `HasFDerivAt.prod` → `.prodMk`;
+  `comp_hasDerivAt` now returns HasDerivAt directly (drop trailing `rfl` ×4);
+  `hasFDerivAt_const` arg order is (value, point); `isSymmSndFDerivAt` hn arg is
+  `minSmoothness ℝ 2 ≤ n` → `le_of_eq minSmoothness_of_isRCLikeNormedField`.
+
+## New systematic seams (rename-map §7ag candidates)
+1. **`HasFDerivAt.prod` → `HasFDerivAt.prodMk`** (Prod.mk rename family reaches
+   the derivative-constructor lemmas).
+2. **`HasFDerivAt.comp_hasDerivAt` is now 3-arg** `(x) (hg) (hf) : HasDerivAt
+   (g∘f) _ x` returning HasDerivAt directly; the old equality 4th arg (`rfl`) is
+   gone → "Function expected" if you still pass it.
+3. **`hasFDerivAt_id x`** (field implicit now); **`hasFDerivAt_const (c) (x)`**
+   is (value, point).
+4. **`isSymmSndFDerivAt`** smoothness hyp is `minSmoothness 𝕜 2 ≤ n`; `le_rfl`
+   won't unify — `le_of_eq minSmoothness_of_isRCLikeNormedField` (ℝ is RCLike).
+5. **`Set.Finite.of_not_infinite` removed** → `Set.not_infinite : ¬s.Infinite ↔
+   s.Finite`; `push_neg at h` on `¬s.Infinite` already gives `s.Finite`.
+6. **`gcongr` sum-index auto-name unstable** — `gcongr with <name>` when the body
+   references the peeled index.
+
+## Attempted-but-not-flipped (one-line diagnosis; reverted)
+- Erdos190Problem: `hasCanonicalAP` had `{N C : Type*}` but uses `Fin N`
+  (needs `{N : ℕ}`, faithful repair) + missing `open Classical` for `Nat.find`
+  DecidablePred + 6 residual proof-drift sites (congr_arg Fin.val orientation,
+  Nat.mul_le_mul_left, rpow/div metavar) — genuine deep.
+- FourierSeriesOQ02OQ02 (5): fixed 3/5 (convert-using-1 instance-congruence on
+  AddCommMonoid ℝ → `Summable.congr`; `summable_nat_rpow_inv` shape mismatch →
+  `Real.not_summable_one_div_natCast`) but 2 numeric branch goals blocked by an
+  NNReal literal `⟨1/2, ⋯⟩` whose buried proof term defeats `rw`/`simp only
+  [NNReal.coe_mk]` reduction of the rpow exponent — reverted.
+- AreaOfCircleOQ01OQ02OQ02OQ02OQ02: references `IsoperimetricFourier.
+  wirtinger_inequality` which its imported parent AreaOfCircleOQ01OQ02OQ02OQ02
+  does NOT declare (only the Fourier-coeff machinery); the real wirtinger lemma
+  lives in AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier (itself RESIDUAL,
+  decide-maxrecdepth) and isn't in the import closure — 2-file job.
+- Erdos106/110/201/358/367/36/411/424/434/501/501Provable/8 (forward-ref class),
+  Erdos104/334/353/390/405/461/471, Cantor/Continuum/Cramers/Descartes/etc:
+  all 5–33 errors each (forward-ref is just the first) — deep, not cheap.
+
+Ledger after increment 60: +4 GREEN (partition A).
+
+---
+
 # DOCTOR INCREMENT 57 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-14)
 
 Container `dr57` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
