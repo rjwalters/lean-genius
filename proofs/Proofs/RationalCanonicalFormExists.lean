@@ -73,8 +73,10 @@ lemma charpoly_mulX_aeval' {W : Type*} [AddCommGroup W] [Module F W]
     (mulX F (Module.AEval' f)).charpoly = f.charpoly := by
   -- By definition of $AEval'$, we know that $mulX F (Module.AEval' f)$ is conjugate to $f$.
   have h_conj : (mulX F (Module.AEval' f)) = (LinearEquiv.conj (Module.AEval'.of f) f) := by
-    ext m;
-    convert Module.AEval'.of_symm_X_smul f ( ( Module.AEval'.of f ).symm m ) using 1;
+    ext m
+    show (X : F[X]) • m = (Module.AEval'.of f) (f ((Module.AEval'.of f).symm m))
+    conv_lhs => rw [← (Module.AEval'.of f).apply_symm_apply m]
+    rw [Module.AEval'.X_smul_of]
   rw [ h_conj, LinearEquiv.charpoly_conj ]
 
 /-
@@ -127,7 +129,7 @@ lemma det_blockDiagonal' {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [Dec
       rw [ ← Matrix.det_submatrix_equiv_self e ];
       exact congr_arg Matrix.det ( by ext x y; exact he x y );
     rw [ h_det, Matrix.det_fromBlocks_zero₂₁, ih ];
-    · rw [ Finset.prod_eq_mul_prod_diff_singleton ( Finset.mem_univ i ) ];
+    · rw [ Finset.prod_eq_mul_prod_sdiff_singleton_of_mem ( Finset.mem_univ i ) ];
       refine' congr rfl ( Finset.prod_bij ( fun j _ => j ) _ _ _ _ ) <;> simp +decide;
       · exact fun x hx => hx;
       · exact fun j hj => hj;
@@ -140,10 +142,9 @@ lemma charpoly_blockDiagonal' {R : Type*} [CommRing R] {ι : Type*} [Fintype ι]
     {m : ι → Type*} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
     (Mat : (i : ι) → Matrix (m i) (m i) R) :
     (Matrix.blockDiagonal' Mat).charpoly = ∏ i, (Mat i).charpoly := by
-  convert det_blockDiagonal' _ using 1;
-  all_goals try infer_instance;
   unfold Matrix.charpoly;
-  congr;
+  rw [← det_blockDiagonal' (fun i => Matrix.charmatrix (Mat i))];
+  congr 1;
   ext ⟨ i, a ⟩ ⟨ j, b ⟩ ; by_cases hij : i = j <;> simp +decide [ hij, Matrix.charmatrix ] ;
   · subst hij; simp +decide [ Matrix.diagonal ] ;
   · simp +decide [ hij, blockDiagonal' ]
@@ -159,9 +160,11 @@ lemma charpoly_mulX_isInternal {ι : Type*} [Fintype ι] [DecidableEq ι]
     (hmap : ∀ i, ∀ x ∈ S i, mulX F W x ∈ S i)
     (h : DirectSum.IsInternal S) :
     (mulX F W).charpoly = ∏ i, ((mulX F W).restrict (fun x hx => hmap i x hx)).charpoly := by
-  convert ( RCF.charpoly_blockDiagonal' fun i => LinearMap.toMatrix ( Module.Free.chooseBasis F ( S i ) ) ( Module.Free.chooseBasis F ( S i ) ) ( ( mulX F W ).restrict ( hmap i ) ) ) using 1;
-  convert ( LinearMap.charpoly_toMatrix ( mulX F W ) ( h.collectedBasis ( fun i => Module.Free.chooseBasis F ( S i ) ) ) ) |> Eq.symm using 1;
-  rw [ LinearMap.toMatrix_directSum_collectedBasis_eq_blockDiagonal' ]
+  rw [← LinearMap.charpoly_toMatrix (mulX F W)
+        (h.collectedBasis (fun i => Module.Free.chooseBasis F (S i))),
+      LinearMap.toMatrix_directSum_collectedBasis_eq_blockDiagonal' h h _ _ (fun i => hmap i),
+      RCF.charpoly_blockDiagonal']
+  exact Finset.prod_congr rfl fun i _ => LinearMap.charpoly_toMatrix _ _
 
 /-
 The canonical component submodules of an external direct sum form an internal direct sum
@@ -192,23 +195,23 @@ lemma charpoly_mulX_directSum {ι : Type*} [Fintype ι] [DecidableEq ι]
     [∀ i, Module F (W i)] [∀ i, IsScalarTower F F[X] (W i)]
     [∀ i, Module.Finite F (W i)] [∀ i, Module.Free F (W i)] :
     (mulX F (DirectSum ι W)).charpoly = ∏ i, (mulX F (W i)).charpoly := by
-  convert RCF.charpoly_mulX_isInternal _ _;
-  any_goals try exact fun i => ( LinearMap.range ( DirectSum.lof F[X] ι W i ) ).restrictScalars F;
-  any_goals exact RCF.directSum_components_isInternal W;
-  swap;
-  intro i x hx;
-  obtain ⟨ y, rfl ⟩ := hx;
-  exact ⟨ ( X : F[X] ) • y, by simp +decide [ mulX ] ⟩;
-  convert RCF.charpoly_mulX_congr _;
-  · infer_instance;
-  · infer_instance;
-  · infer_instance;
-  · refine' LinearEquiv.ofBijective _ ⟨ _, _ ⟩;
-    refine' { toFun := fun x => ⟨ DirectSum.lof F[X] ι W _ x, _ ⟩, map_add' := _, map_smul' := _ };
-    all_goals simp +decide [ Function.Injective, Function.Surjective ];
-    · aesop;
-    · intro x y hxy;
-      replace hxy := congr_arg ( fun f => f ‹_› ) hxy ; aesop
+  classical
+  have hmap : ∀ i, ∀ x ∈ (LinearMap.range (DirectSum.lof F[X] ι W i)).restrictScalars F,
+      mulX F (DirectSum ι W) x ∈ (LinearMap.range (DirectSum.lof F[X] ι W i)).restrictScalars F := by
+    intro i x hx
+    obtain ⟨y, rfl⟩ := hx
+    exact ⟨(X : F[X]) • y, by simp [mulX]⟩
+  have hinj : ∀ i, Function.Injective (DirectSum.lof F[X] ι W i) :=
+    fun i => Function.LeftInverse.injective (g := DirectSum.component F[X] ι W i)
+      (fun b => DirectSum.component.lof_self F i b)
+  have e : ∀ i, W i ≃ₗ[F[X]] ↥((LinearMap.range (DirectSum.lof F[X] ι W i)).restrictScalars F) :=
+    fun i => (LinearEquiv.ofInjective (DirectSum.lof F[X] ι W i) (hinj i)).trans
+      (Submodule.restrictScalarsEquiv (R := F[X]) (M := DirectSum ι W) F
+        (LinearMap.range (DirectSum.lof F[X] ι W i))).symm
+  rw [RCF.charpoly_mulX_isInternal hmap (RCF.directSum_components_isInternal W)]
+  refine Finset.prod_congr rfl fun i _ => ?_
+  rw [RCF.charpoly_mulX_congr (e i)]
+  rfl
 
 /-
 The charpoly of multiplication-by-`X` on the cyclic module `F[X] ⧸ (g)` is `g`
@@ -224,11 +227,8 @@ lemma charpoly_mulX_quotient (g : F[X]) (hg : g.Monic)
       intro p
       have h_aeval : ∀ w : F[X] ⧸ Ideal.span {g}, (aeval (mulX F (F[X] ⧸ Ideal.span {g})) p) w = p • w := by
         induction p using Polynomial.induction_on <;> simp_all +decide [ Polynomial.aeval_add, Polynomial.aeval_X, Polynomial.aeval_C ];
-        · intro w; exact (by
-          convert rfl;
-          ext; simp [HSMul.hSMul];
-          simp +decide [ SMul.smul ];
-          simp +decide [ Algebra.smul_def ]);
+        · intro w
+          simp only [← Polynomial.algebraMap_eq, algebraMap_smul];
         · simp +decide [ add_smul ];
         · simp_all +decide [ pow_succ, mulX ];
           simp +decide [ ← mul_assoc, ← smul_assoc ];
@@ -270,7 +270,7 @@ The quotient of `F[X]` by the span of a nonzero polynomial is finite-dimensional
 -/
 lemma finite_quotient_span (g : F[X]) (hg : g ≠ 0) :
     Module.Finite F (F[X] ⧸ Ideal.span {g}) := by
-  convert ( AdjoinRoot.powerBasis hg ).finite
+  exact ( AdjoinRoot.powerBasis hg ).finite
 
 /-- The monic associate of a polynomial. -/
 noncomputable def monicAssoc (g : F[X]) : F[X] := g * Polynomial.C (g.leadingCoeff)⁻¹
@@ -323,11 +323,11 @@ lemma decomp_charpoly_minpoly {n : Type*} [Fintype n] [DecidableEq n] (M : Matri
         (RCF.monicAssoc_monic (pow_ne_zero _ (hp i).ne_zero))]
   · have h_annihilator : Ideal.span {minpoly F M} = ⨅ i, Ideal.span {p i ^ ev i} := by
       have h_annihilator : Module.annihilator F[X] (DirectSum ι' (fun i => F[X] ⧸ Ideal.span {p i ^ ev i})) = ⨅ i, Ideal.span {p i ^ ev i} := by
-        have h_annihilator : ∀ i, Module.annihilator F[X] (F[X] ⧸ Ideal.span {p i ^ ev i}) = Ideal.span {p i ^ ev i} := by
-          intro i;
-          exact Ideal.annihilator_quotient;
-        convert Module.annihilator_dfinsupp;
-        rw [ h_annihilator ];
+        have h1 : Module.annihilator F[X] (DirectSum ι' (fun i => F[X] ⧸ Ideal.span {p i ^ ev i}))
+            = ⨅ i, Module.annihilator F[X] (F[X] ⧸ Ideal.span {p i ^ ev i}) :=
+          Module.annihilator_dfinsupp
+        rw [h1];
+        exact iInf_congr fun i => Ideal.annihilator_quotient;
       rw [ ← h_annihilator, ← e.annihilator_eq ];
       rw [ ← minpoly_toLin', Polynomial.span_minpoly_eq_annihilator ];
     intro c; rw [ Ideal.ext_iff ] at h_annihilator; specialize h_annihilator c; simp_all +decide [ Ideal.mem_span_singleton, Submodule.mem_iInf ] ;
@@ -446,9 +446,7 @@ lemma exists_chain_aux {ι : Type*} [DecidableEq ι]
       by_cases ha : a.val < L'.length <;> by_cases hb : b.val < L'.length <;> simp +decide [ ha, hb ] at hab ⊢;
       · exact hL'chain ⟨ a, ha ⟩ ⟨ b, hb ⟩ hab;
       · have h_div : L'[a] ∣ L'.getLast?.getD 1 := by
-          convert hL'chain ⟨ a, ha ⟩ ⟨ L'.length - 1, Nat.sub_lt ( by linarith ) zero_lt_one ⟩ _ using 1;
-          · grind;
-          · exact Nat.le_pred_of_lt ha;
+          convert hL'chain ⟨ a, ha ⟩ ⟨ L'.length - 1, Nat.sub_lt ( by linarith ) zero_lt_one ⟩ ( Nat.le_pred_of_lt ha ) using 1 <;> grind;
         refine' dvd_trans h_div _;
         grind;
       · exact False.elim ( ha ( lt_of_le_of_lt hab hb ) );
