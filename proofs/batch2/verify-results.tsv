@@ -747,7 +747,7 @@ Erdos1056Problem	RESIDUAL	instance-synth
 Erdos1057Problem	GREEN	
 Erdos1059OQ02OQ01	GREEN	unknown-const:Nat.factorial_le_factorial
 Erdos1059OQ03	GREEN	
-Erdos1059OQ04	RESIDUAL	unknown-const:AllFactorialSubtractionsComposite
+Erdos1059OQ04	GREEN	
 Erdos1059Problem	GREEN	
 Erdos105OQ05	GREEN	
 Erdos1060Problem	GREEN	
@@ -1588,7 +1588,7 @@ Erdos688Problem	GREEN
 Erdos690Problem	GREEN	
 Erdos691Problem	GREEN	
 Erdos692Problem	GREEN	
-Erdos693Problem	RESIDUAL	unknown-const:Finset.sort_sorted
+Erdos693Problem	GREEN	
 Erdos694Problem	GREEN	
 Erdos696Problem	GREEN	
 Erdos697Problem	GREEN	
@@ -1596,7 +1596,7 @@ Erdos698Problem	GREEN
 Erdos699Problem	GREEN	
 Erdos69Problem	RESIDUAL	proof-drift
 Erdos6Problem	GREEN	
-Erdos700Problem	RESIDUAL	unknown-const:Nat.Prime.multiplicity_choose
+Erdos700Problem	GREEN	
 Erdos701Problem	PRE-EXISTING	never-compiled:A
 Erdos702Problem	GREEN	
 Erdos704Problem	GREEN	
@@ -1771,7 +1771,7 @@ Erdos853Problem	GREEN
 Erdos854Problem	RESIDUAL	type-mismatch
 Erdos855Problem	GREEN	
 Erdos856Problem	PRE-EXISTING	never-compiled:A
-Erdos857Problem	RESIDUAL	unknown-const:mem_empty_iff_false
+Erdos857Problem	GREEN	
 Erdos858Problem	GREEN	
 Erdos859Aristotle	RESIDUAL	instance-synth
 Erdos859Problem	RESIDUAL	proof-drift
@@ -1874,7 +1874,7 @@ Erdos935Problem	GREEN
 Erdos936Problem	GREEN	
 Erdos937Problem	RESIDUAL	proof-drift
 Erdos939Problem	GREEN	
-Erdos940Problem	RESIDUAL	unknown-const:Finset.card_Ioc
+Erdos940Problem	GREEN	
 Erdos942Problem	GREEN	
 Erdos943Problem	RESIDUAL	type-mismatch
 Erdos944Problem	GREEN	
@@ -1896,7 +1896,7 @@ Erdos958Problem	GREEN
 Erdos959Problem	GREEN	
 Erdos95Problem	RESIDUAL	type-mismatch
 Erdos960Problem	GREEN	unknown-const:p
-Erdos961Problem	RESIDUAL	unknown-const:Nat.primFactors
+Erdos961Problem	GREEN	
 Erdos962Problem	GREEN	
 Erdos963Problem	GREEN	
 Erdos964Aristotle	GREEN	unknown-const:Nat.divisors_prime
@@ -1919,7 +1919,7 @@ Erdos977ProblemAristotle	GREEN	rewrite-drift
 Erdos978Problem	RESIDUAL	parse-error
 Erdos979Problem	GREEN	
 Erdos97Problem	GREEN	
-Erdos980Problem	RESIDUAL	unknown-const:Nat.Prime.nthPrime
+Erdos980Problem	GREEN	
 Erdos981Problem	GREEN	
 Erdos982Problem	GREEN	
 Erdos983Problem	GREEN	
@@ -1935,7 +1935,7 @@ Erdos993Problem	GREEN
 Erdos994Problem	GREEN	
 Erdos995Problem	GREEN	
 Erdos996Problem	GREEN	
-Erdos997Problem	RESIDUAL	unknown-const:sub_floor_div_mul_nonneg
+Erdos997Problem	GREEN	
 Erdos998Problem	GREEN	
 Erdos999Problem	GREEN	
 Erdos99Problem	RESIDUAL	type-mismatch
