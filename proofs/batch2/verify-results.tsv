@@ -515,7 +515,7 @@ DeMoivreOQ03OQ01	GREEN
 DeMoivreOQ06	GREEN	
 DedekindFrobeniusBridge	RESIDUAL	rewrite-drift
 DenumerabilityRationalsOQ01	GREEN	elab-drift
-DenumerabilityRationalsOQ02OQ02	RESIDUAL	elab-drift
+DenumerabilityRationalsOQ02OQ02	GREEN	
 DenumerabilityRationalsOQ04	RESIDUAL	unknown-const:Polynomial.setOf_isRoot_finite
 DerangementsConvergence	GREEN	
 DerangementsConvergenceOQ01	GREEN	
@@ -652,7 +652,7 @@ Erdos1014OQ03Concrete	RESIDUAL	type-mismatch
 Erdos1014OQ03LogIncrement	GREEN	
 Erdos1014OQ03Obstruction	GREEN	
 Erdos1014OQ04	GREEN	
-Erdos1014Problem	RESIDUAL	type-mismatch
+Erdos1014Problem	GREEN	
 Erdos1015OQ05	GREEN	
 Erdos1015Problem	PRE-EXISTING	never-compiled:n
 Erdos1017OQ01	RESIDUAL	type-mismatch
@@ -1894,7 +1894,7 @@ Erdos956Problem	GREEN
 Erdos957Problem	RESIDUAL	proof-drift
 Erdos958Problem	GREEN	
 Erdos959Problem	GREEN	
-Erdos95Problem	RESIDUAL	type-mismatch
+Erdos95Problem	GREEN	
 Erdos960Problem	GREEN	unknown-const:p
 Erdos961Problem	GREEN	
 Erdos962Problem	GREEN	

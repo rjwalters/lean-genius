@@ -45,15 +45,18 @@ explicit in 20th-century algebra. It is now standard in analysis textbooks.
 
 namespace DenumerabilityRationalsOQ02OQ02
 
--- Open the induced map namespace to access `inducedOrderRingIso` and `uniqueOrderRingIso`
-open ConditionallyCompleteLinearOrderedField.InducedMap
+-- Open the namespace to access `inducedOrderRingIso` and activate the `uniqueOrderRingIso` instance
+open ConditionallyCompleteLinearOrderedField
 
 -- ============================================================================
 -- Section 1: ℝ as a Complete Ordered Field
 -- ============================================================================
 
-/-- ℝ is a complete ordered field: the `ConditionallyCompleteLinearOrderedField` instance. -/
-example : ConditionallyCompleteLinearOrderedField ℝ := inferInstance
+/-- ℝ is a complete ordered field: it carries `Field`, `ConditionallyCompleteLinearOrder`,
+    and `IsStrictOrderedRing` instances (the unbundled form of a complete ordered field). -/
+noncomputable example : Field ℝ := inferInstance
+noncomputable example : ConditionallyCompleteLinearOrder ℝ := inferInstance
+example : IsStrictOrderedRing ℝ := inferInstance
 
 /-- ℝ is Archimedean: for any x : ℝ, there exists n : ℕ with x < n. -/
 theorem real_archimedean : Archimedean ℝ := inferInstance
@@ -77,17 +80,17 @@ theorem real_lub (S : Set ℝ) (hne : S.Nonempty) (hbdd : BddAbove S) :
     - **Ring homomorphism**: Preserved by the algebraic structure of cuts.
     - **Order-preserving**: x ≤ y implies {q | q ≤ x} ⊆ {q | q ≤ y}.
     - **Bijective**: Surjective (every real is a cut), injective (cuts determine elements). -/
-noncomputable def isoToReal (F : Type*) [ConditionallyCompleteLinearOrderedField F] :
+noncomputable def isoToReal (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] :
     F ≃+*o ℝ :=
   inducedOrderRingIso F ℝ
 
 /-- The Dedekind cut isomorphism is order-preserving. -/
-theorem isoToReal_mono (F : Type*) [ConditionallyCompleteLinearOrderedField F] :
+theorem isoToReal_mono (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] :
     Monotone (isoToReal F) :=
-  (isoToReal F).monotone
+  (isoToReal F).toOrderIso.monotone
 
 /-- The isomorphism fixes rationals: φ((q : F)) = (q : ℝ). -/
-theorem isoToReal_ratCast (F : Type*) [ConditionallyCompleteLinearOrderedField F] (q : ℚ) :
+theorem isoToReal_ratCast (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] (q : ℚ) :
     isoToReal F (q : F) = (q : ℝ) :=
   map_ratCast (isoToReal F) q
 
@@ -100,15 +103,15 @@ theorem isoToReal_ratCast (F : Type*) [ConditionallyCompleteLinearOrderedField F
 
     Proof: Two such isomorphisms agree on ℚ (both fix rationals), and by density
     of ℚ in F and continuity (i.e., order-preservation), they agree everywhere. -/
-theorem iso_to_real_unique (F : Type*) [ConditionallyCompleteLinearOrderedField F]
+theorem iso_to_real_unique (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F]
     (f g : F ≃+*o ℝ) : f = g := by
   haveI : Unique (F ≃+*o ℝ) := inferInstance
   exact Unique.eq_default f |>.trans (Unique.eq_default g).symm
 
 /-- **Existence and Uniqueness**: there is exactly one ordered ring isomorphism F ≃+*o ℝ. -/
-theorem iso_to_real_exists_unique (F : Type*) [ConditionallyCompleteLinearOrderedField F] :
+theorem iso_to_real_exists_unique (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] :
     ∃! f : F ≃+*o ℝ, True :=
-  ⟨isoToReal F, trivial, fun g _ => (iso_to_real_unique F g (isoToReal F)).symm⟩
+  ⟨isoToReal F, trivial, fun g _ => iso_to_real_unique F g (isoToReal F)⟩
 
 -- ============================================================================
 -- Section 4: Categoricity
@@ -117,15 +120,15 @@ theorem iso_to_real_exists_unique (F : Type*) [ConditionallyCompleteLinearOrdere
 /-- **Categoricity**: Any two complete ordered fields are isomorphic as ordered rings.
     ℝ is the unique model of "complete ordered field" up to isomorphism. -/
 noncomputable def completeOrderedFieldIso (F G : Type*)
-    [ConditionallyCompleteLinearOrderedField F]
-    [ConditionallyCompleteLinearOrderedField G] :
+    [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F]
+    [Field G] [ConditionallyCompleteLinearOrder G] [IsStrictOrderedRing G] :
     F ≃+*o G :=
   inducedOrderRingIso F G
 
 /-- The isomorphism between any two complete ordered fields is unique. -/
 theorem complete_ordered_fields_iso_unique (F G : Type*)
-    [ConditionallyCompleteLinearOrderedField F]
-    [ConditionallyCompleteLinearOrderedField G]
+    [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F]
+    [Field G] [ConditionallyCompleteLinearOrder G] [IsStrictOrderedRing G]
     (f g : F ≃+*o G) : f = g := by
   haveI : Unique (F ≃+*o G) := inferInstance
   exact Unique.eq_default f |>.trans (Unique.eq_default g).symm
@@ -140,17 +143,17 @@ theorem complete_ordered_fields_iso_unique (F G : Type*)
 
     This shows there is no non-Archimedean complete ordered field. -/
 theorem complete_ordered_field_archimedean (F : Type*)
-    [ConditionallyCompleteLinearOrderedField F] : Archimedean F :=
+    [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] : Archimedean F :=
   inferInstance
 
 /-- ℕ is cofinal in every complete ordered field. -/
-theorem nat_cofinal (F : Type*) [ConditionallyCompleteLinearOrderedField F]
+theorem nat_cofinal (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F]
     (x : F) : ∃ n : ℕ, x < n :=
   exists_nat_gt x
 
 /-- ℤ is cofinal in both directions: for any x in a complete ordered field,
     there exists a negative integer less than x. -/
-theorem int_below (F : Type*) [ConditionallyCompleteLinearOrderedField F]
+theorem int_below (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F]
     (x : F) : ∃ m : ℤ, (m : F) < x := by
   obtain ⟨n, hn⟩ := exists_nat_gt (-x)
   exact ⟨-n, by push_cast; linarith⟩
@@ -161,12 +164,12 @@ theorem int_below (F : Type*) [ConditionallyCompleteLinearOrderedField F]
 
 /-- ℚ is order-dense in every complete ordered field: between any two elements
     of F there is a rational. This mirrors the density of ℚ in ℝ. -/
-theorem rat_dense (F : Type*) [ConditionallyCompleteLinearOrderedField F]
+theorem rat_dense (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F]
     (x y : F) (h : x < y) : ∃ q : ℚ, x < q ∧ (q : F) < y :=
   exists_rat_btwn h
 
 /-- The rational cast ℚ → F is strictly order-preserving. -/
-theorem ratCast_strictMono (F : Type*) [ConditionallyCompleteLinearOrderedField F] :
+theorem ratCast_strictMono (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] :
     StrictMono ((↑) : ℚ → F) :=
   Rat.cast_strictMono
 
@@ -192,7 +195,7 @@ theorem real_automorphism_unique (f : ℝ ≃+*o ℝ) : f = OrderRingIso.refl �
 
     This is the categorical characterization of the real numbers. -/
 theorem real_unique_complete_ordered_field (F : Type*)
-    [ConditionallyCompleteLinearOrderedField F] :
+    [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F] :
     ∃! f : F ≃+*o ℝ, True :=
   iso_to_real_exists_unique F
 
@@ -209,8 +212,8 @@ theorem real_unique_complete_ordered_field (F : Type*)
 theorem categoricity_parallel :
     (∀ (A : Type*) [LinearOrder A] [Countable A] [DenselyOrdered A]
        [NoMinOrder A] [NoMaxOrder A] [Nonempty A], Nonempty (A ≃o ℚ)) ∧
-    (∀ (F : Type*) [ConditionallyCompleteLinearOrderedField F], Nonempty (F ≃+*o ℝ)) := by
-  exact ⟨fun A _ _ _ _ _ _ => ⟨Order.iso_of_countable_dense A ℚ⟩,
-         fun F _ => ⟨isoToReal F⟩⟩
+    (∀ (F : Type*) [Field F] [ConditionallyCompleteLinearOrder F] [IsStrictOrderedRing F], Nonempty (F ≃+*o ℝ)) := by
+  exact ⟨fun A _ _ _ _ _ _ => Order.iso_of_countable_dense A ℚ,
+         fun F _ _ _ => ⟨isoToReal F⟩⟩
 
 end DenumerabilityRationalsOQ02OQ02

@@ -64,8 +64,9 @@ private theorem ramsey_mono_left_ge2 (k l : ℕ) (hk : k ≥ 2) :
     by_cases hn : n ≥ 2
     · exact (ih hn).trans (ramsey_monotone_left' n l)
     · -- n < 2 and n + 1 ≥ 2, so n = 1 and k = n + 1 = 2
-      have : n = 1 := by omega
-      subst this
+      have hn1 : n = 1 := by omega
+      subst hn1
+      exact le_refl _
 
 /-- R(k, l) ≥ 1 for all k ≥ 2, l ≥ 1. Proved from R(2,l)=l and iterated
     left-monotonicity: R(2,l) ≤ R(k,l) for k ≥ 2. -/
@@ -110,8 +111,10 @@ private lemma tendsto_succ_div_pow (a : ℕ) :
   have h : Tendsto (fun n : ℕ => 1 + (n : ℝ)⁻¹) atTop (nhds (1 + 0)) :=
     tendsto_const_nhds.add (tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop)
   rw [add_zero] at h
-  exact h.congr (eventually_atTop.mpr ⟨1, fun n hn => by
-    have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega); skip⟩)
+  refine h.congr' (eventually_atTop.mpr ⟨1, fun n hn => ?_⟩)
+  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  show 1 + (n : ℝ)⁻¹ = ((n : ℝ) + 1) / (n : ℝ)
+  rw [add_div, div_self hn0, one_div]
 
 /-- For any fixed b : ℕ, (log n / log(n+1))^b → 1 as n → ∞.
     Uses squeeze: for n ≥ 2, 1 - 1/(n·log 2) ≤ log n/log(n+1) ≤ 1, and both → 1. -/
@@ -120,12 +123,13 @@ private lemma tendsto_log_ratio_pow (b : ℕ) :
   conv_rhs => rw [show (1 : ℝ) = 1 ^ b from (one_pow b).symm]
   apply Tendsto.pow
   -- Squeeze: 1 - (n⁻¹/log 2) ≤ log(n)/log(n+1) ≤ 1, both bounds → 1
-  apply tendsto_of_tendsto_of_tendsto_of_le_of_le
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le'
     -- Lower bound → 1
     (show Tendsto (fun n : ℕ => 1 - (n : ℝ)⁻¹ / log 2) atTop (nhds 1) from by
-      rw [show (1 : ℝ) = 1 - 0 / log 2 from by simp]
-      exact tendsto_const_nhds.sub
-        ((tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop).div_const _))
+      have h0 : Tendsto (fun n : ℕ => (n : ℝ)⁻¹ / log 2) atTop (nhds 0) := by
+        rw [show (0 : ℝ) = 0 / log 2 from by simp]
+        exact (tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop).div_const (log 2)
+      simpa using tendsto_const_nhds.sub h0)
     -- Upper bound → 1
     tendsto_const_nhds
     -- f(n) ≥ lower bound eventually
@@ -152,11 +156,12 @@ private lemma tendsto_log_ratio_pow (b : ℕ) :
         rw [div_le_div_iff₀ hlog_n1 hlog2]
         calc (log ((n : ℝ) + 1) - log (n : ℝ)) * log 2
             ≤ (n : ℝ)⁻¹ * log 2 := by nlinarith [h_log_diff]
-          _ ≤ (n : ℝ)⁻¹ * log ((n : ℝ) + 1) := by nlinarith [hlog2_le]
+          _ ≤ (n : ℝ)⁻¹ * log ((n : ℝ) + 1) :=
+              mul_le_mul_of_nonneg_left hlog2_le (inv_nonneg.mpr hn_pos.le)
       rw [h_eq]; linarith⟩)
     -- f(n) ≤ 1 eventually (log is increasing)
     (eventually_atTop.mpr ⟨2, fun n hn => by
-      exact div_le_one_of_le
+      exact div_le_one_of_le₀
         (log_le_log (by exact_mod_cast (show 0 < n by omega))
           (by exact_mod_cast (show n ≤ n + 1 by omega)))
         (le_of_lt (log_pos (by exact_mod_cast (show 1 < n + 1 by omega))))⟩)
@@ -170,11 +175,13 @@ private lemma growth_ratio_close (a b : ℕ) (δ : ℝ) (hδ : δ > 0) :
   have ht : Tendsto (fun n : ℕ =>
       (((n : ℝ) + 1) / (n : ℝ)) ^ a *
       (log (n : ℝ) / log ((n : ℝ) + 1)) ^ b) atTop (nhds 1) := by
-    rw [show (1 : ℝ) = 1 * 1 from (mul_one 1).symm]
-    exact (tendsto_succ_div_pow a).mul (tendsto_log_ratio_pow b)
+    have h := (tendsto_succ_div_pow a).mul (tendsto_log_ratio_pow b)
+    simpa using h
   rw [Metric.tendsto_atTop] at ht
   obtain ⟨N, hN⟩ := ht δ hδ
-  exact ⟨N, fun l hl => by rwa [Real.dist_eq] at hN l (by omega)⟩
+  refine ⟨N, fun l hl => ?_⟩
+  have hd := hN l (by omega)
+  rwa [Real.dist_eq] at hd
 
 end GrowthRatioHelpers
 
@@ -219,8 +226,17 @@ theorem ratio_from_asymptotics (k : ℕ) (hk : k ≥ 3) :
   have hα : |(ramseyNumber k (l + 1) : ℝ) / g' - 1| < δ := by
     convert hL₁ (l + 1) (by omega) using 2; push_cast; ring
   have hβ : |g' / g - 1| < δ := by
-    convert hL₂ l hl2 using 2
-    simp only [g, g']; field_simp; ring
+    have hcne : c ≠ 0 := ne_of_gt hc
+    have hlp : ((l : ℝ)) ^ (k - 1) ≠ 0 := pow_ne_zero _ (ne_of_gt hl_pos)
+    have hLp : (Real.log (l : ℝ)) ^ (k - 2) ≠ 0 := pow_ne_zero _ (ne_of_gt hlog_l)
+    have hMp : (Real.log ((l : ℝ) + 1)) ^ (k - 2) ≠ 0 := pow_ne_zero _ (ne_of_gt hlog_l1)
+    have key : g' / g =
+        (((l : ℝ) + 1) / (l : ℝ)) ^ (k - 1) *
+        (Real.log (l : ℝ) / Real.log ((l : ℝ) + 1)) ^ (k - 2) := by
+      simp only [g, g', div_pow]
+      field_simp
+    rw [key]
+    exact hL₂ l hl2
   have hζ : |(ramseyNumber k l : ℝ) / g - 1| < δ := hL₁ l hl1
   -- R(k,l) > 0 from sandwich
   set R := (ramseyNumber k l : ℝ)
@@ -256,7 +272,7 @@ theorem ratio_from_asymptotics (k : ℕ) (hk : k ≥ 3) :
     -- γ = g/R = 1/(R/g), |1/x - 1| = |x-1|/x when x > 0
     have hRg_pos : 0 < R / g := by linarith
     have hγ_eq : γ - 1 = -(R / g - 1) / (R / g) := by
-      simp only [γ]; field_simp
+      simp only [γ]; field_simp; ring
     rw [hγ_eq, abs_div, abs_neg, abs_of_pos hRg_pos]
     -- Need: |R/g-1| / (R/g) ≤ 4δ/3, i.e., |R/g-1| ≤ (4δ/3)·(R/g)
     rw [div_le_iff₀ hRg_pos]
@@ -271,10 +287,23 @@ theorem ratio_from_asymptotics (k : ℕ) (hk : k ≥ 3) :
     _ = |α| * |β| * |γ - 1| + |α| * |β - 1| + |α - 1| := by
         rw [abs_mul, abs_mul, abs_mul]
     _ ≤ (1 + δ) * (1 + δ) * (4 * δ / 3) + (1 + δ) * δ + δ := by
-        have := abs_nonneg α; have := abs_nonneg β; have := abs_nonneg (γ - 1)
-        have := abs_nonneg (β - 1); have := abs_nonneg (α - 1)
-        nlinarith [hα_abs, hβ_abs, hγ_abs, le_of_lt hα, le_of_lt hβ]
-    _ ≤ (5/4) * (5/4) * (4 * δ / 3) + (5/4) * δ + δ := by nlinarith
+        have h1 : |α| * |β| ≤ (1 + δ) * (1 + δ) :=
+          mul_le_mul hα_abs hβ_abs (abs_nonneg β) (by linarith)
+        have h2 : |α| * |β| * |γ - 1| ≤ (1 + δ) * (1 + δ) * (4 * δ / 3) :=
+          mul_le_mul h1 hγ_abs (abs_nonneg _)
+            (mul_nonneg (by linarith) (by linarith))
+        have h3 : |α| * |β - 1| ≤ (1 + δ) * δ :=
+          mul_le_mul hα_abs (le_of_lt hβ) (abs_nonneg _) (by linarith)
+        have h4 : |α - 1| ≤ δ := le_of_lt hα
+        linarith
+    _ ≤ (5/4) * (5/4) * (4 * δ / 3) + (5/4) * δ + δ := by
+        have hb : (1 : ℝ) + δ ≤ 5 / 4 := by linarith
+        have hsq : (1 + δ) * (1 + δ) ≤ (5 / 4) * (5 / 4) := by nlinarith [hδ, hδ14]
+        have ht1 : (1 + δ) * (1 + δ) * (4 * δ / 3) ≤ (5 / 4) * (5 / 4) * (4 * δ / 3) :=
+          mul_le_mul_of_nonneg_right hsq (by linarith)
+        have ht2 : (1 + δ) * δ ≤ (5 / 4) * δ :=
+          mul_le_mul_of_nonneg_right hb (by linarith)
+        linarith
     _ = 52 * δ / 12 := by ring
     _ = 13 * δ / 3 := by ring
     _ ≤ 13 * (ε / 6) / 3 := by nlinarith
@@ -365,19 +394,7 @@ theorem R22 : ramseyNumber 2 2 = 2 := ramsey_k2 2 (by norm_num)
 theorem diagonal_ramsey_lower (k : ℕ) (hk : k ≥ 2) :
     k ≤ ramseyNumber k k := by
   calc k = ramseyNumber 2 k := (ramsey_k2 k (by omega)).symm
-    _ ≤ ramseyNumber k k := by
-        have h1 : ramseyNumber 2 k ≤ ramseyNumber k k := by
-          induction k with
-          | zero => omega
-          | succ n ih =>
-            by_cases hn : n ≥ 2
-            · calc ramseyNumber 2 (n + 1)
-                  ≤ ramseyNumber (n + 1) (n + 1) := by
-                    calc ramseyNumber 2 (n + 1)
-                        = ramseyNumber (n + 1) 2 := ramsey_symm 2 (n + 1)
-                      _ ≤ ramseyNumber (n + 1) (n + 1) := ramsey_monotone_right (n + 1) 2
-            · interval_cases n <;> simp_all [R22, ramsey_k2, ramsey_symm]
-        exact h1
+    _ ≤ ramseyNumber k k := ramsey_mono_left_ge2 k k hk
 
 /- ## General Increment Bound -/
 
@@ -419,7 +436,7 @@ theorem R3_ratio_convergence :
   intro ε hε
   obtain ⟨c, hc, L₁, hL₁⟩ := R3_lower
   -- Find L₂ where (l+1)·log l / (c·l²) < ε, via log = o(x)
-  have ho := Real.isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
+  have ho := isLittleO_log_rpow_atTop (show (0 : ℝ) < 1 by norm_num)
   have hev := ho.bound (show (0 : ℝ) < c * ε / 4 by positivity)
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hev
   use max (max L₁ (⌈N⌉₊ + 1)) 2

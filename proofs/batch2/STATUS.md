@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 2 (8-slot, #38065, 2026-07-15)
+
+**+3 GREEN**: DenumerabilityRationalsOQ02OQ02 (ConditionallyCompleteLinearOrderedField class
+deprecated -> unbundle to Field+ConditionallyCompleteLinearOrder+IsStrictOrderedRing; induced-map
+lemmas moved under its namespace; Order.iso_of_countable_dense returns Nonempty), Erdos95Problem
+(card_eq_sum_card_fiberwise H-arg now Set.MapsTo -> use card_eq_sum_card_image; WithLp-coercion whnf
+blowup in EuclideanSpace Finset filter -> mark dist @[irreducible]; ^(3+ε) no longer forces ε:ℝ),
+Erdos1014Problem (~21-site real-analysis HUB: Tendsto.congr->.congr', squeeze lemma primed,
+div_le_one_of_le₀, isLittleO_log_rpow_atTop root ns; parent olean now unblocks children
+Erdos1014OQ02 + Erdos1014OQ03Concrete). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 1 (8-slot one-proof-per-agent, #38065, 2026-07-15)
 
 New model: 8 parallel slots (own cache volume v431/-b..-h, cpuset of 3, --memory 6g), ONE proof
