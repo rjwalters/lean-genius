@@ -114,22 +114,22 @@ theorem matB_ne_zero : (matB : Matrix (Fin 4) (Fin 4) K) ≠ 0 := by
 
 /-- X² annihilates matA: aeval A (X²) = A² = 0 -/
 theorem matA_annihilated :
-    Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) (X ^ 2) = 0 := by
+    Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) ((X : K[X]) ^ 2) = 0 := by
   simp [map_pow, aeval_X, sq, matA_sq_zero]
 
 /-- X² annihilates matB: aeval B (X²) = B² = 0 -/
 theorem matB_annihilated :
-    Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) (X ^ 2) = 0 := by
+    Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) ((X : K[X]) ^ 2) = 0 := by
   simp [map_pow, aeval_X, sq, matB_sq_zero]
 
 /-- X does NOT annihilate matA. -/
 theorem matA_not_annihilated_by_X :
-    Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) X ≠ 0 := by
+    Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) (X : K[X]) ≠ 0 := by
   rw [aeval_X]; exact matA_ne_zero
 
 /-- X does NOT annihilate matB. -/
 theorem matB_not_annihilated_by_X :
-    Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) X ≠ 0 := by
+    Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) (X : K[X]) ≠ 0 := by
   rw [aeval_X]; exact matB_ne_zero
 
 /-- The minimal polynomial of matA is X².
@@ -145,22 +145,25 @@ theorem matB_not_annihilated_by_X :
 theorem minpoly_matA :
     minpoly K (matA : Matrix (Fin 4) (Fin 4) K) = X ^ 2 := by
   have h_int := Matrix.isIntegral (R := K) matA
-  have h_dvd : minpoly K matA ∣ X ^ 2 := minpoly.dvd K matA matA_annihilated
+  have h_dvd : minpoly K (matA : Matrix (Fin 4) (Fin 4) K) ∣ X ^ 2 := minpoly.dvd K matA matA_annihilated
   -- minpoly doesn't divide X: if it did, then aeval A X = 0, but A ≠ 0
-  have h_not_dvd_X : ¬(minpoly K matA ∣ X) := by
+  have h_not_dvd_X : ¬(minpoly K (matA : Matrix (Fin 4) (Fin 4) K) ∣ (X : K[X])) := by
     intro ⟨q, hq⟩
-    have : Polynomial.aeval matA X = 0 := by
-      calc Polynomial.aeval matA X
-          = Polynomial.aeval matA (minpoly K matA * q) := by rw [← hq]
-        _ = Polynomial.aeval matA (minpoly K matA) * Polynomial.aeval matA q := map_mul _ _ _
-        _ = 0 * Polynomial.aeval matA q := by rw [minpoly.aeval]
+    have : Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) (X : K[X]) = 0 := by
+      calc Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) (X : K[X])
+          = Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) (minpoly K (matA : Matrix (Fin 4) (Fin 4) K) * q) := by
+              rw [← hq]
+        _ = Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) (minpoly K (matA : Matrix (Fin 4) (Fin 4) K)) *
+              Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) q := map_mul _ _ _
+        _ = 0 * Polynomial.aeval (matA : Matrix (Fin 4) (Fin 4) K) q := by rw [minpoly.aeval]
         _ = 0 := zero_mul _
     rw [aeval_X] at this
     exact matA_ne_zero this
   -- Degree bounds: 0 < deg(minpoly) ≤ 2
-  have h_deg_le : (minpoly K matA).natDegree ≤ 2 :=
-    Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 X_ne_zero)
-  have h_deg_pos : 0 < (minpoly K matA).natDegree := minpoly.natDegree_pos h_int
+  have h_deg_le : (minpoly K (matA : Matrix (Fin 4) (Fin 4) K)).natDegree ≤ 2 := by
+    have h := Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 (X_ne_zero (R := K)))
+    simpa using h
+  have h_deg_pos : 0 < (minpoly K (matA : Matrix (Fin 4) (Fin 4) K)).natDegree := minpoly.natDegree_pos h_int
   -- By UFD: minpoly ∣ X^2 with X prime means minpoly ~ X^j for some j ≤ 2
   have h_monic := minpoly.monic h_int
   have hX_prime : Prime (X : K[X]) := Polynomial.prime_X
@@ -173,7 +176,9 @@ theorem minpoly_matA :
     rw [Polynomial.leadingCoeff_mul, h_monic.leadingCoeff, one_mul,
         (monic_X_pow j (R := K)).leadingCoeff] at h
     exact h
-  have heq : minpoly K matA = X ^ j := by rw [← hu, hlc, mul_one]
+  -- A unit polynomial that is monic (leadingCoeff 1) must equal 1.
+  have hu1 : (u : K[X]) = 1 := (Polynomial.Monic.isUnit_iff hlc).mp u.isUnit
+  have heq : minpoly K (matA : Matrix (Fin 4) (Fin 4) K) = X ^ j := by rw [← hu, hu1, mul_one]
   -- j = 2: not 0 (degree > 0) and not 1 (would mean minpoly ∣ X)
   have : j ≠ 0 := by
     intro hj; rw [hj, pow_zero] at heq
@@ -188,20 +193,23 @@ theorem minpoly_matA :
 theorem minpoly_matB :
     minpoly K (matB : Matrix (Fin 4) (Fin 4) K) = X ^ 2 := by
   have h_int := Matrix.isIntegral (R := K) matB
-  have h_dvd : minpoly K matB ∣ X ^ 2 := minpoly.dvd K matB matB_annihilated
-  have h_not_dvd_X : ¬(minpoly K matB ∣ X) := by
+  have h_dvd : minpoly K (matB : Matrix (Fin 4) (Fin 4) K) ∣ X ^ 2 := minpoly.dvd K matB matB_annihilated
+  have h_not_dvd_X : ¬(minpoly K (matB : Matrix (Fin 4) (Fin 4) K) ∣ (X : K[X])) := by
     intro ⟨q, hq⟩
-    have : Polynomial.aeval matB X = 0 := by
-      calc Polynomial.aeval matB X
-          = Polynomial.aeval matB (minpoly K matB * q) := by rw [← hq]
-        _ = Polynomial.aeval matB (minpoly K matB) * Polynomial.aeval matB q := map_mul _ _ _
-        _ = 0 * Polynomial.aeval matB q := by rw [minpoly.aeval]
+    have : Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) (X : K[X]) = 0 := by
+      calc Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) (X : K[X])
+          = Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) (minpoly K (matB : Matrix (Fin 4) (Fin 4) K) * q) := by
+              rw [← hq]
+        _ = Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) (minpoly K (matB : Matrix (Fin 4) (Fin 4) K)) *
+              Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) q := map_mul _ _ _
+        _ = 0 * Polynomial.aeval (matB : Matrix (Fin 4) (Fin 4) K) q := by rw [minpoly.aeval]
         _ = 0 := zero_mul _
     rw [aeval_X] at this
     exact matB_ne_zero this
-  have h_deg_le : (minpoly K matB).natDegree ≤ 2 :=
-    Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 X_ne_zero)
-  have h_deg_pos : 0 < (minpoly K matB).natDegree := minpoly.natDegree_pos h_int
+  have h_deg_le : (minpoly K (matB : Matrix (Fin 4) (Fin 4) K)).natDegree ≤ 2 := by
+    have h := Polynomial.natDegree_le_of_dvd h_dvd (pow_ne_zero 2 (X_ne_zero (R := K)))
+    simpa using h
+  have h_deg_pos : 0 < (minpoly K (matB : Matrix (Fin 4) (Fin 4) K)).natDegree := minpoly.natDegree_pos h_int
   have h_monic := minpoly.monic h_int
   have hX_prime : Prime (X : K[X]) := Polynomial.prime_X
   rw [dvd_prime_pow hX_prime] at h_dvd
@@ -212,7 +220,9 @@ theorem minpoly_matB :
     rw [Polynomial.leadingCoeff_mul, h_monic.leadingCoeff, one_mul,
         (monic_X_pow j (R := K)).leadingCoeff] at h
     exact h
-  have heq : minpoly K matB = X ^ j := by rw [← hu, hlc, mul_one]
+  -- A unit polynomial that is monic (leadingCoeff 1) must equal 1.
+  have hu1 : (u : K[X]) = 1 := (Polynomial.Monic.isUnit_iff hlc).mp u.isUnit
+  have heq : minpoly K (matB : Matrix (Fin 4) (Fin 4) K) = X ^ j := by rw [← hu, hu1, mul_one]
   have : j ≠ 0 := by
     intro hj; rw [hj, pow_zero] at heq
     have := h_deg_pos; rw [heq, Polynomial.natDegree_one] at this; omega
@@ -224,7 +234,7 @@ theorem minpoly_matB :
 
 /-- Both matrices have the same minimal polynomial. -/
 theorem same_minpoly :
-    minpoly K (matA : Matrix (Fin 4) (Fin 4) K) = minpoly K matB := by
+    minpoly K (matA : Matrix (Fin 4) (Fin 4) K) = minpoly K (matB : Matrix (Fin 4) (Fin 4) K) := by
   rw [minpoly_matA, minpoly_matB]
 
 -- ============================================================
@@ -260,17 +270,16 @@ theorem intertwining_forces_zeros (P : Matrix (Fin 4) (Fin 4) K)
   -- (AP)(1,j) = 0 and (PB)(1,j) = P(1,0)·δ(j,1)
   -- (AP)(3,j) = 0 and (PB)(3,j) = P(3,0)·δ(j,1)
   have entry := fun i j => congr_fun (congr_fun h i) j
-  simp only [Matrix.mul_apply, matA_apply, matB_apply] at entry
   -- Extract the 6 specific matrix equation entries needed
   have h00 := entry 0 0; have h02 := entry 0 2; have h03 := entry 0 3
   have h20 := entry 2 0; have h22 := entry 2 2; have h23 := entry 2 3
-  -- Expand Fin 4 sums and evaluate if-then-else on concrete indices
-  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, Fin.isValue] at
-    h00 h02 h03 h20 h22 h23
-  -- Aggressive simplification to resolve all Fin arithmetic
-  simp only [Fin.isValue, mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul,
-    zero_add, add_zero, ite_true, ite_false] at h00 h02 h03 h20 h22 h23
-  exact ⟨by linarith, by linarith, by linarith, by linarith, by linarith, by linarith⟩
+  -- Expand the Fin 4 sums fully and evaluate all if-then-else conditions on
+  -- concrete indices (decide handles the Fin equality tests).
+  simp only [Matrix.mul_apply, matA_apply, matB_apply, Fin.sum_univ_four, Fin.isValue,
+    mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul, zero_add, add_zero,
+    if_true, if_false, and_true, and_false, true_and, false_and, decide_eq_true_eq,
+    Fin.reduceEq, reduceCtorEq] at h00 h02 h03 h20 h22 h23
+  exact ⟨h00, h02, h03, h20, h22, h23⟩
 
 /-- Any matrix P satisfying AP = PB has det(P) = 0.
 
@@ -313,12 +322,9 @@ theorem det_intertwiner_zero (P : Matrix (Fin 4) (Fin 4) K)
       · -- All of σ(0), σ(2), σ(3) ∈ {0, 2}: pigeonhole contradiction
         push_neg at hσ3
         -- σ(0) ∈ {0,2}, σ(2) ∈ {0,2}, σ(3) ∈ {0,2}
-        have hσ0' : σ 0 = 0 ∨ σ 0 = 2 := by
-          fin_cases h : σ 0 <;> simp_all
-        have hσ2' : σ 2 = 0 ∨ σ 2 = 2 := by
-          fin_cases h : σ 2 <;> simp_all
-        have hσ3' : σ 3 = 0 ∨ σ 3 = 2 := by
-          fin_cases h : σ 3 <;> simp_all
+        have hσ0' : σ 0 = 0 ∨ σ 0 = 2 := by omega
+        have hσ2' : σ 2 = 0 ∨ σ 2 = 2 := by omega
+        have hσ3' : σ 3 = 0 ∨ σ 3 = 2 := by omega
         -- Three distinct values in {0, 2}: impossible
         exfalso
         rcases hσ0' with h0 | h0 <;> rcases hσ2' with h2 | h2 <;> rcases hσ3' with h3 | h3
@@ -340,13 +346,14 @@ theorem not_similar :
   rintro ⟨P, hP⟩
   -- From P⁻¹AP = B, derive AP = PB (multiply on left by P)
   have hAP : matA * P.val = P.val * matB := by
-    have : P.val * (P⁻¹.val * matA * P.val) = P.val * matB := congr_arg (P.val * ·) hP
-    rwa [← mul_assoc, ← mul_assoc, Units.mul_inv_cancel_left] at this
+    have hP' : (P⁻¹.val : Matrix (Fin 4) (Fin 4) K) * (matA * P.val) = matB := by
+      rw [← mul_assoc]; exact hP
+    have h2 : P.val * (P⁻¹.val * (matA * P.val)) = P.val * matB := by rw [hP']
+    rwa [Units.mul_inv_cancel_left] at h2
   -- det(P) = 0 from the intertwining structure
   have hdet : P.val.det = 0 := det_intertwiner_zero P.val hAP
   -- But P is a unit, so det(P) is a unit, hence nonzero
-  have hP_unit : IsUnit P.val.det := by
-    rw [Matrix.isUnit_iff_isUnit_det.mp ⟨P, rfl⟩]
+  have hP_unit : IsUnit P.val.det := Matrix.isUnits_det_units P
   exact hP_unit.ne_zero hdet
 
 -- ============================================================
