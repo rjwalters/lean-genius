@@ -1,4 +1,88 @@
-# DOCTOR INCREMENT 63 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
+# DOCTOR INCREMENT 65 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
+
+Container `dr65` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc65` off origin/feature/issue-37508 (base 2015 GREEN /
+620 RESIDUAL). Worked the inc-63 warm leads + a low-error family. Every file was
+5–14 real errors (confirms deep-rework). **+6 GREEN.** PR #38668. All flips
+in-container `lake build Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- Erdos1034Problem (unknown-const → forward-ref+autobound+universe): reorder
+  maTang* above erdos_faudree_false and fully_adjacent_is_good above
+  book_pages_are_good (in-file forward-refs hard-error); **auto-bound `G` in
+  `def Triangle.vertices (T : Triangle G)` does NOT pull `variable [DecidableEq V]`**
+  → explicit `{G : SimpleGraph V}` binder restores the Finset-singleton instance;
+  **`sSup {k | isValidBound n k}` with `isValidBound : Type*`-polymorphic ⇒
+  universe-level metavariables in `def h`** → pin `isValidBound.{0}`; `exact?`→`rfl`;
+  explicit `Finset.filter_subset` predicate; fully-explicit `@hN_conj` instance
+  application + nlinarith product hint.
+- PtolemysTheoremOQ01Incomplete01 (elab-drift → import-order + API + imported-sig):
+  move imports above the module docstring (import must precede all content);
+  `Complex.abs_mul_exp_arg_mul_I`→`Complex.norm_mul_exp_arg_mul_I`;
+  `Real.sin_nonpos_of_nonneg_of_nonpos`→`Real.sin_nonpos_of_nonpos_of_neg_pi_le`
+  (arg order nonpos-first); **`Real.sin_ne_zero_iff` is now `∀ n:ℤ, (n:ℝ)*π ≠ x`**
+  (a forall, not exists-negation) → `intro n hn` + nlinarith for the n-bound
+  (linarith cannot divide by π); h2isin: keep the negation on the COMPLEX number and
+  use `Complex.cos_neg`/`sin_neg` then bridge via `ofReal_cos`/`ofReal_sin`
+  (push_cast fragments the coerced arg); **imported-lemma signature drift** —
+  `ptolemy_equality_implies_proportional` now takes the equality first and returns
+  `t • X` (add `Complex.real_smul` + `.symm`), `ptolemy_ratio_pos_of_ccw` gained
+  norm+denom/numer hyps before hccw (supply at both call sites; reversed-labeling
+  denom'/numer' for the CW branch).
+- Erdos1039Aristotle (unknown-const; Aristotle companion, 0 pre-existing sorries):
+  `Erdos1039.Complex.abs` removed from the imported problem → local root
+  `Complex.abs` shim; `exact?`→`exact degree_one_sublevel_eq_ari f hf`; **`.abs`
+  (= ‖·‖) defeq gaps**: unfold `Complex.abs` in closing simp, close convert-residual
+  `ball = setOf` via `ext`+`Metric.mem_ball`/`dist_eq_norm`, `simpa` to bridge
+  `‖z-c‖<1` ↔ `z ∈ ball`; `Complex.norm_exp_ofReal_mul_I` no longer matches
+  `2πik/n` → reuse the `norm_exp` + purely-imaginary-re=0 pattern.
+- Erdos733Problem + Erdos733LimitBounds (unknown-const, family; LimitBounds imports
+  the parent so the parent fix clears both): `List.Sorted`→`List.Pairwise`;
+  **`λ` is now a reserved keyword and cannot bind a variable** (`∃/∀ λ : ℝ`) → rename
+  to `L`; `Nat.one_lt_of_ne_one` removed → `(by omega)`; `P.filter (· ∈ L)` for a
+  Set predicate needs `DecidablePred` not supplied by ambient Classical →
+  `attribute [local instance] Classical.propDecidable` (no native_decide in file) +
+  mark `pointsOnLine` noncomputable.
+- Erdos1182Problem (unknown-const → Finset.product mem-drift + Fin/decide + Nat-div):
+  **`Finset.univ.product Finset.univ` no longer matches `Finset.mem_product` simp**
+  (`univ ×ˢ univ` is definitionally `univ`, but the `.product` term is not the `×ˢ`
+  the lemma is stated for) → destructure via `Finset.mem_filter.mp`/`.mpr` +
+  `Finset.mem_univ`, drop `mem_product` from the simp set; **`decide` cannot see
+  through an opaque structure field of `Prop` type** (`Graph.adj : Fin n → Fin n →
+  Prop`, def'd `fun a b => a ≠ b`) — no Decidable instance from the projection →
+  `(show (i:Fin 2) ≠ j by decide)` bridges via defeq; `Fin.one_ne_zero` removed;
+  omega can't do `n-1 ≤ n*(n-1)/2` → `Nat.le_div_iff_mul_le` + `mul_le_mul_right'`;
+  BddAbove-witness omega needs the setOf membership destructured first.
+
+## New systematic seams (rename-map §7ai candidates)
+1. **`Finset.s.product t` ↛ `Finset.mem_product` simp**: `univ.product univ`
+   reduces to `univ` (so `Finset.mem_univ _` proves membership directly), and the
+   `.product` term does not match the `s ×ˢ t`-stated `Finset.mem_product` — a
+   `simp only [Finset.mem_product]` makes NO progress. Fix: `Finset.mem_filter.mp/.mpr`
+   with `Finset.mem_univ`, not the mem_product simp set.
+2. **`decide` can't pierce an opaque `Prop`-valued structure field**: for
+   `structure Graph where adj : … → Prop`, `decide` on `G.adj a b` fails (no
+   Decidable synth from the projection) even when the concrete def is `a ≠ b`. Fix:
+   `show <concrete decidable Prop> by decide` to unify through defeq.
+3. **`λ` is a reserved keyword**: `∃ λ : ℝ, …` / `∀ λ : ℝ, …` now parse-error
+   ("unexpected token 'λ'"). Rename the bound variable.
+4. **`Real.sin_ne_zero_iff` is a `∀`** (`∀ n:ℤ, (n:ℝ)*π ≠ x`), not an exists-negation
+   → `intro n hn`; the n-bound needs nlinarith (linarith cannot divide by π).
+5. **`Complex.abs_mul_exp_arg_mul_I`→`Complex.norm_mul_exp_arg_mul_I`**;
+   **`Real.sin_nonpos_of_nonneg_of_nonpos`→`Real.sin_nonpos_of_nonpos_of_neg_pi_le`**
+   (args: nonpos first, then `-π ≤ x`).
+6. **Auto-bound `G` in `def T.foo (x : Struct G)` drops `variable` instance-binders**:
+   the auto-bound `V` (via `G`) does not inherit `[DecidableEq V]` → write `{G : … V}`
+   explicitly so the declared `variable {V} [DecidableEq V]` is used.
+7. **Universe metavars from `sSup`/set-builder over a `Type*`-polymorphic Prop**
+   (`{k | isValidBound n k}`) → pin the universe at the use site (`isValidBound.{0}`).
+8. **Migrated imported lemmas change signatures** (arg order, `•` vs `*`, added
+   hypotheses) — always re-grep the current signature of any cross-file lemma before
+   trusting an old call.
+
+Ledger after increment 65: 2021 GREEN / 614 RESIDUAL.
+
+
 
 Container `dr63` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
 `feature/issue-38065-inc63` off origin/feature/issue-37508 (base 2004 GREEN /
