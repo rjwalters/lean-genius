@@ -70,22 +70,31 @@ theorem one_squarefree : IsSquarefree 1 := by
   constructor
   · omega
   · intros p hp hdiv
-    have : p^2 ≥ 4 := by
+    have h4 : p^2 ≥ 4 := by
       have := hp.two_le
       nlinarith
+    have hle := Nat.le_of_dvd (by norm_num) hdiv
     omega
 
 theorem two_squarefree : IsSquarefree 2 := by
   constructor
   · omega
   · intros p hp hdiv
-    interval_cases p <;> simp_all
+    have h4 : p^2 ≥ 4 := by
+      have := hp.two_le
+      nlinarith
+    have hle := Nat.le_of_dvd (by norm_num) hdiv
+    omega
 
 theorem three_squarefree : IsSquarefree 3 := by
   constructor
   · omega
   · intros p hp hdiv
-    interval_cases p <;> simp_all
+    have h4 : p^2 ≥ 4 := by
+      have := hp.two_le
+      nlinarith
+    have hle := Nat.le_of_dvd (by norm_num) hdiv
+    omega
 
 /-
 ## Part II: Irreducible Polynomials
@@ -120,9 +129,8 @@ This follows from Eisenstein's criterion with p = 2.
 For polynomial f of degree d, the density of n where f(n) is k-power-free.
 -/
 noncomputable def powerFreeDensity (f : Polynomial ℤ) (k : ℕ) (x : ℕ) : ℝ :=
-  (Finset.range (x + 1)).filter (fun n =>
-    IsPowerFree k (f.eval n).natAbs
-  ) |>.card / x
+  ((Finset.range (x + 1)).filter (fun n =>
+    IsPowerFree k (f.eval (n : ℤ)).natAbs)).card / (x : ℝ)
 
 /-
 ## Part IV: Erdős's Result (1953)
@@ -179,7 +187,7 @@ axiom browning_2011 :
   ∀ f : Polynomial ℤ, IsIrreducible f →
     f.natDegree ≥ 9 →
       ∀ N : ℕ, ∃ n : ℕ, n > N ∧
-        IsPowerFree (f.natDegree - 2) (f.eval n).natAbs
+        IsPowerFree (f.natDegree - 2) (f.eval (n : ℤ)).natAbs
 
 /--
 **Second question answered: YES for k ≥ 9**
@@ -188,7 +196,7 @@ theorem second_question_partial :
     ∀ f : Polynomial ℤ, IsIrreducible f →
     f.natDegree ≥ 9 →
       ∀ N : ℕ, ∃ n : ℕ, n > N ∧
-        IsPowerFree (f.natDegree - 2) (f.eval n).natAbs :=
+        IsPowerFree (f.natDegree - 2) (f.eval (n : ℤ)).natAbs :=
   browning_2011
 
 /-
@@ -272,7 +280,7 @@ theorem erdos_978_summary :
     (∀ f : Polynomial ℤ, IsIrreducible f →
       f.natDegree ≥ 9 →
       ∀ N : ℕ, ∃ n : ℕ, n > N ∧
-        IsPowerFree (f.natDegree - 2) (f.eval n).natAbs) ∧
+        IsPowerFree (f.natDegree - 2) (f.eval (n : ℤ)).natAbs) ∧
     -- n⁴ + 2 is cubefree infinitely often
     (∀ N : ℕ, ∃ n : ℕ, n > N ∧ IsCubefree ((n^4 + 2 : ℤ).natAbs)) := by
   constructor
