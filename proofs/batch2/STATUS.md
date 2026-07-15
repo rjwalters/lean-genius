@@ -74,6 +74,90 @@ Every flip verified in-container `lake env lean Proofs/X.lean` exit-0 before led
 ---
 
 
+# DOCTOR INCREMENT 74 (deep-rework LANE 2 / partition Erdos >= 500, #38065, 2026-07-15)
+
+Container `dr-b` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc74` off origin/feature/issue-37508. **+3 GREEN.** PR (below).
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos1006Problem** (instance-synth): (1) `structure Orientation` at root now COLLIDES
+  with Mathlib's `_root_.Orientation` (linear-algebra module orientations) — v4.31 rejects the
+  redeclaration and it cascades into ~8 `synthInstanceFailed` on `Orientation G`. Fix: wrap the
+  whole file in `namespace Erdos1006`. (2) `G.IsCycle (cycle : List V)` uses a projection
+  `SimpleGraph.IsCycle` that does not exist (cycles are `Walk.IsCycle`); replaced with a local
+  `isCycleIn G cycle := cycle.Chain' G.Adj ∧ head?=getLast? ∧ 3 ≤ length` predicate. (3) the
+  `Orientation.*` methods autobound a fresh vertex type `V✝` while `reverseEdge`'s `(u v : V)`
+  used the `variable V` → two vertex types; added `variable {G : SimpleGraph V}` to pin them.
+  (4) `by omega` inside `path.get ⟨i, by omega⟩` couldn't see the anonymous arrow hypothesis →
+  name it `∀ i (h : i+1 < path.length), …`. (5) universe mismatch: `oresConjecture` quantifies
+  `∀ (V : Type*)` but the counterexample axioms fixed `V : Type` (Type 0), so `hconj V` couldn't
+  unify — made `grotzsch_counterexample` / `nesetril_rodl_1978` universe-polymorphic (`Type*`),
+  preserving the full-strength negation.
+- **Erdos1018Aristotle** (proof-drift; **minimal-import file**): the file imports a handful of
+  specific `Mathlib.*` modules (not `import Mathlib`). The ceiling notation `⌈ ⌉` and the
+  `FloorRing ℝ` instance used to come in transitively but no longer do on v4.31 → `⌈x⌉` fails to
+  lex ("expected token" at U+2308). Fix: `import Mathlib.Data.Real.Archimedean` (provides both the
+  Floor notation and the `FloorRing ℝ` instance). Also two `positivity` proofs of `ε^2>0` /
+  `1/ε^2>0` from `ε>0` now fail (positivity won't mine `ε>0` for the `ε≠0` side-condition) →
+  explicit `pow_pos hε 2` / `div_pos one_pos (pow_pos hε 2)`. Pre-existing `sorry`s preserved.
+- **Erdos552Problem** (parse-error + **statement repair #38611**): (1) the SimpleGraph field
+  proofs `symm := by constructor; … <;> (right; assumption) <|> (left; assumption)` no longer
+  parse (`;` inside the `( )` tactic group) AND explicit `intro`/`rintro` on the reduced
+  `Symmetric Adj` / `Irreflexive Adj` field goal fails with `introN` ("no additional binders").
+  Fix: **delete the explicit `symm`/`loopless` fields and let SimpleGraph's default `aesop_graph`
+  discharge them** (verified: the same `where`-def with the fields omitted compiles). (2)
+  **STATEMENT REPAIR**: `cycleGraph n` had `Adj i j := (i+1)%n=j ∨ (j+1)%n=i`, which for n=1 gives
+  `Adj 0 0 = ((0+1)%1 = 0) = True` — a SELF-LOOP — so `loopless` was genuinely false for n=1 (the
+  old `simp at h; omega` masked it; on v4.31 `simp` errors "no progress" and omega can't refute the
+  i+1=n=1 case). Added the missing `i ≠ j` conjunct → genuinely-correct cycle graph, unchanged for
+  n≥2. (3) `c4_minimum_degree` uses `G.degree v` on an arbitrary `G` → added `[DecidableRel G.Adj]`.
+
+## New systematic seams (rename-map §7al candidates)
+1. **A root `structure`/`def` whose name collides with a Mathlib `_root_` decl** (`Orientation`,
+   possibly `Coloring`, `Path`, …) is now rejected as "already declared" and cascades into
+   `synthInstanceFailed` on every use → wrap the file in a `namespace`.
+2. **Minimal-import files that used `⌈ ⌉`/`⌊ ⌋`/`FloorRing`/`Int.ceil` via a now-dropped
+   transitive import** fail to LEX the notation ("expected token" at the ceil/floor glyph) → add
+   `import Mathlib.Data.Real.Archimedean` (notation + `FloorRing ℝ` instance). Likely affects other
+   minimal-import Erdos files: candidates seen this session = Erdos1012OQ03, Erdos1035Problem,
+   Erdos1155OQ02, Erdos583/570/551/625/662/780/552/766 (grep: uses ⌈/floor, no bare `import Mathlib`).
+3. **`positivity` no longer mines a `0 < x` hypothesis for the `x ≠ 0` side-condition of `x^2`** →
+   use `pow_pos` / `div_pos` explicitly.
+4. **SimpleGraph `where`-def field proofs**: on v4.31 explicit `intro`/`rintro` on the `symm`/
+   `loopless` field goal fails with `introN` (the field's expected type is presented reduced, not as
+   a `∀`-Pi). Prefer OMITTING the fields and letting the default `aesop_graph` prove them; only give
+   explicit proofs in plain term form (`fun _ _ h => h.symm`) when aesop can't.
+5. **A `(t1; t2)` tactic group with `;` inside parens** no longer parses in some positions → use
+   `<;>` / `first | … | …` / a `by` block.
+
+## Statement repairs logged for #38611
+- **Erdos552Problem / cycleGraph**: added `i ≠ j` to the cycle-graph adjacency; the old definition
+  admitted a self-loop at n=1 (loopless was false there). Not a weakening — the fix restores the
+  intended loop-free cycle graph. Gallery meta for erdos-552 may want a re-audit.
+- **Erdos807Problem (DEFERRED, candidate)**: `ERW_conjecture n := True` (placeholder) yet
+  `erw_conjecture_false : ¬∀ n, ERW_conjecture n` claims to prove `¬(∀n, True)`, which is genuinely
+  unprovable — the old "green" via `trivial` could not have been legitimate. Needs a real
+  formalization of the τ = n − α equality to refute, not a mechanical drift fix. Left RESIDUAL.
+
+## Deferred (LANE 2, triaged — good next leads)
+- **Erdos1067Problem / Erdos910Problem(+Provable)** (Cardinal/universe): `chromaticNumber` uses
+  `κ.toPartENat` (removed → `Cardinal.toENat`) AND `∃ (c : V → κ)` treats a Cardinal `κ` as a type,
+  plus "universe level metavariables" in `hasAleph1ChromaticNumber` and `V→κ` Ambiguous-term. Real
+  universe-polymorphism rework; defer.
+- **Erdos560Problem** (elab-drift): `Sym2.Rel` projections / `Quot (Sym2.Rel V)` `⟨…⟩` no longer
+  valid + synthInstance + `invalid atom`. Multi-root.
+- **Erdos1014Problem** (21 err, real-analysis): `Real.isLittleO_log_rpow_atTop` gone,
+  `div_le_one_of_le` gone, linarith/rpow drift — cascade-parent of Erdos1014OQ02 &
+  Erdos1014OQ03Concrete (both are 1-error missing-olean cascades that flip once 1014Problem builds).
+- **Import-cascade families**: Erdos1007OQ05/OQ01 (parent Erdos1007Problem), Erdos1017Problem
+  (parent Erdos1017OQ01, 24 err) — fix the parent, build its olean into the cache, siblings cascade.
+- **Cheap 2-error leads not yet done**: Erdos1035Problem (synthInstance ×2), Erdos625Problem
+  (typeclass stuck ×2). Erdos662Problem is a native_decide-on-noncomputable case (rule-2, deeper).
+
+---
+
+# DOCTOR INCREMENT 72 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
 
 Container `dr72` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
 `feature/issue-38065-inc72` off origin/feature/issue-37508. **+5 GREEN.** PR #38675.

@@ -47,19 +47,28 @@ open SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
+namespace Erdos1006
+
+variable {G : SimpleGraph V}
+
 /-
 ## Graph Girth
 
 The girth of a graph is the length of its shortest cycle.
 -/
 
+/-- A `List V` describes a cycle in `G`: consecutive vertices are adjacent, the
+    list is closed (first vertex equals last), and it has length at least 3. -/
+def isCycleIn (G : SimpleGraph V) (cycle : List V) : Prop :=
+  cycle.Chain' G.Adj ∧ cycle.head? = cycle.getLast? ∧ 3 ≤ cycle.length
+
 /-- A graph has girth at least g if it contains no cycles of length < g -/
 def hasGirthAtLeast (G : SimpleGraph V) (g : ℕ) : Prop :=
-  ∀ (cycle : List V), cycle.length < g → ¬G.IsCycle cycle
+  ∀ (cycle : List V), cycle.length < g → ¬isCycleIn G cycle
 
 /-- A graph has girth exactly g if g is the length of its shortest cycle -/
 def hasGirth (G : SimpleGraph V) (g : ℕ) : Prop :=
-  hasGirthAtLeast G g ∧ ∃ (cycle : List V), cycle.length = g ∧ G.IsCycle cycle
+  hasGirthAtLeast G g ∧ ∃ (cycle : List V), cycle.length = g ∧ isCycleIn G cycle
 
 /-
 ## Directed Graphs and Orientations
@@ -77,7 +86,8 @@ structure Orientation (G : SimpleGraph V) where
 
 /-- A directed path in an orientation -/
 def Orientation.hasDirectedPath (O : Orientation G) (path : List V) : Prop :=
-  path.length ≥ 2 ∧ ∀ i, i + 1 < path.length → O.directed (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩)
+  path.length ≥ 2 ∧ ∀ i (h : i + 1 < path.length),
+    O.directed (path.get ⟨i, by omega⟩) (path.get ⟨i+1, by omega⟩)
 
 /-- An orientation is acyclic if it has no directed cycles -/
 def Orientation.isAcyclic (O : Orientation G) : Prop :=
@@ -118,13 +128,13 @@ def oresConjecture : Prop :=
 
 /-- The Grötzsch graph has girth 4 and no robustly acyclic orientation -/
 axiom grotzsch_counterexample :
-  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
+  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     hasGirth G 4 ∧ ¬admitsRobustlyAcyclicOrientation G
 
 /-- Nešetřil-Rödl theorem: For every g ≥ 3, there exists a graph with girth g
     that has no robustly acyclic orientation -/
 axiom nesetril_rodl_1978 (g : ℕ) (hg : g ≥ 3) :
-  ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
+  ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V) (_ : DecidableRel G.Adj),
     hasGirth G g ∧ ¬admitsRobustlyAcyclicOrientation G
 
 /-- Corollary: Ore's conjecture is false -/
@@ -139,3 +149,5 @@ theorem ores_conjecture_false : ¬oresConjecture := by
 
 #check ores_conjecture_false
 #check @nesetril_rodl_1978
+
+end Erdos1006
