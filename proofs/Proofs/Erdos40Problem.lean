@@ -72,7 +72,7 @@ private lemma rep_set_finite (A : Set ℕ) (n : ℕ) :
 private lemma basis_has_element {A : Set ℕ} {n : ℕ} (hn : 1 ≤ n)
     (hrep : repCount A n ≥ 1) : ∃ b ∈ A, 1 ≤ b ∧ b ≤ n := by
   unfold repCount at hrep
-  obtain ⟨⟨a, b⟩, -, hbA, -, hsum⟩ :=
+  obtain ⟨⟨a, b⟩, -, hbA, hab, hsum⟩ :=
     (Set.ncard_pos (rep_set_finite A n)).mp (by omega)
   exact ⟨b, hbA, by omega, by omega⟩
 
@@ -104,7 +104,9 @@ theorem problem_40_implies_28
   · -- HasDensity A (fun N => ↑N)
     refine ⟨1, one_pos, max N₀ 1, fun N hN => ?_⟩
     simp only [one_mul]
-    have hN_pos : (0 : ℝ) < ↑N := by positivity
+    have hN_pos : (0 : ℝ) < ↑N := by
+      have : (0 : ℕ) < N := by omega
+      exact_mod_cast this
     have hcf : (1 : ℝ) ≤ ↑(countingFn A N) := by
       exact_mod_cast countingFn_pos ha₀A ha₀_ge1 (by omega)
     have hsqrt_le : Real.sqrt ↑N ≤ ↑N := by
@@ -144,7 +146,7 @@ private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
       (Set.finite_Icc 1 N).subset Set.inter_subset_right
     rw [Set.ncard_eq_toFinset_card _ hfin]
     congr 1; ext x
-    simp only [Set.Finite.mem_toFinset, Set.mem_inter_iff, Set.mem_Icc,
+    simp only [hS_def, Set.Finite.mem_toFinset, Set.mem_inter_iff, Set.mem_Icc,
                Finset.mem_filter, Finset.mem_Icc]
     tauto
   rw [← hS_card, ← Finset.card_product]
@@ -222,7 +224,7 @@ private lemma b2g_counting_sq_bound (A : Set ℕ) (g N : ℕ) (hN : N ≥ 1)
             _ ≤ g := hrep m
         linarith
     _ = 2 * g * (2 * N - 1) := by
-        rw [Finset.sum_const, smul_eq_mul, hT_card]
+        rw [Finset.sum_const, smul_eq_mul, hT_card]; ring
 
 /-- **PROVED** (modulo counting lemma): For B₂[g] sets (r_A(n) ≤ g for all n),
     the counting function satisfies |A ∩ {1,...,N}| ≤ 2(g+1)·√N.
@@ -240,7 +242,7 @@ theorem b2g_density_bound (g : ℕ) :
     calc k * k ≤ 2 * g * (2 * N - 1) := h_count
       _ ≤ 2 * g * (2 * N) := by apply Nat.mul_le_mul_left; exact Nat.sub_le _ _
       _ = 4 * g * N := by ring
-      _ ≤ 4 * (g + 1) ^ 2 * N := by nlinarith
+      _ ≤ 4 * (g + 1) ^ 2 * N := by gcongr; nlinarith
   -- Step 3: (k:ℝ)² ≤ (2(g+1))²·N
   have h_real : (↑k : ℝ) ^ 2 ≤ (2 * ((↑g : ℝ) + 1)) ^ 2 * ↑N := by
     have : (k : ℝ) * k ≤ 4 * ((↑g : ℝ) + 1) ^ 2 * ↑N := by exact_mod_cast h_ksq
