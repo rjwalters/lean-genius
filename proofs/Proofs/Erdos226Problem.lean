@@ -78,7 +78,7 @@ def IsCountableDense (S : Set ℝ) : Prop :=
 theorem rationals_countable_dense : IsCountableDense (Set.range (↑· : ℚ → ℝ)) := by
   constructor
   · exact Set.countable_range _
-  · exact Rat.denseRange_ratCast
+  · exact Rat.denseRange_cast
 
 /- ## Part III: The Rationality Preservation Property -/
 
@@ -165,21 +165,15 @@ theorem erdos_question_affirmative : ErdosQuestion := by
   constructor
   · -- f is non-linear (transcendental implies non-linear)
     intro ⟨a, b, hlin⟩
-    have : ¬∃ n p, ∀ z, f z = p.eval z := hf_trans.2
+    have : ¬∃ (n : ℕ) (p : Polynomial ℂ), ∀ z, f z = p.eval z := hf_trans.2
     apply this
     use 1, Polynomial.C b + Polynomial.C a * Polynomial.X
     intro z
     simp only [Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_X]
-    ring_nf
-    exact hlin z
+    rw [hlin z]; ring
   · -- f preserves rationality
     intro x
-    rw [hf_preserves x]
-    constructor
-    · intro ⟨q, hq⟩
-      exact ⟨q, hq⟩
-    · intro ⟨q, hq⟩
-      exact ⟨q, hq⟩
+    simpa [Set.mem_range] using hf_preserves x
 
 /--
 **The General Question is Also Answered:**

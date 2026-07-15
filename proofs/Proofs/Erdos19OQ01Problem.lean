@@ -30,6 +30,7 @@
 -/
 
 import Mathlib
+import Proofs.GraphCore
 
 open Finset SimpleGraph Classical
 
@@ -105,8 +106,9 @@ theorem efl_holds_above_threshold :
     EFL does not hold (unless the threshold is 0). -/
 theorem efl_threshold_minimal (h : eflThreshold ≠ 0) :
     ∃ n < eflThreshold, ¬ (∀ m ≥ n, EFLHoldsAt m) := by
-  have hmin := Nat.find_min kang_kelly_kuhn_methuku_osthus_asymptotic
-  exact ⟨eflThreshold - 1, by omega, hmin (by omega)⟩
+  refine ⟨eflThreshold - 1, by omega, ?_⟩
+  have hlt : eflThreshold - 1 < eflThreshold := by omega
+  exact Nat.find_min kang_kelly_kuhn_methuku_osthus_asymptotic hlt
 
 /-
 ## Part IV: Hindman's Small Cases

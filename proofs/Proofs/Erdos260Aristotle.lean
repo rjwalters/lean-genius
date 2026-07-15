@@ -65,8 +65,7 @@ theorem strictMono_telescope (f : ℕ → ℕ) (hf : StrictMono f) (n : ℕ) :
   induction n with
   | zero => simp
   | succ n ih =>
-    rw [Finset.sum_range_succ, ← Nat.add_sub_cancel (f (n + 1)),
-        show f (n + 1) - f (n + 1) + f (n + 1) = f (n + 1) from by omega]
+    rw [Finset.sum_range_succ]
     have : f n < f (n + 1) := hf (by omega)
     omega
 
@@ -76,7 +75,7 @@ theorem finset_sum_ge_of_ge {M : ℝ} {f : ℕ → ℝ} {n : ℕ}
     ∑ i ∈ Finset.range n, f i ≥ M * n := by
   calc ∑ i ∈ Finset.range n, f i ≥ ∑ _ ∈ Finset.range n, M :=
         Finset.sum_le_sum hf
-    _ = M * n := by simp [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    _ = M * n := by simp [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_comm]
 
 -- Aristotle target: constant / n -> 0
 theorem const_div_n_tendsto_zero (c : ℝ) :
@@ -90,14 +89,14 @@ theorem const_div_n_tendsto_zero (c : ℝ) :
 -- Aristotle target: log n -> infinity
 theorem real_log_tendsto_atTop :
     Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
-  Real.tendsto_log_nat_atTop
+  Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
 
 -- Aristotle target: if f -> infty and g -> infty then f * g -> infty (for eventually positive)
 theorem tendsto_mul_atTop_of_pos {f g : ℕ → ℝ}
     (hf : Tendsto f atTop atTop) (hg : ∀ᶠ n in atTop, g n > 0)
     (hg' : Tendsto g atTop atTop) :
     Tendsto (fun n => f n * g n) atTop atTop :=
-  Filter.Tendsto.atTop_mul_atTop hf hg'
+  Filter.Tendsto.atTop_mul_atTop₀ hf hg'
 
 -- Aristotle target: sqrt is monotone on nonneg reals
 theorem sqrt_mono {a b : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) :

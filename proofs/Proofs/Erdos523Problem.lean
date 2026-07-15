@@ -52,7 +52,7 @@ noncomputable def randomPolynomial (s : SignVector n) (z : ℂ) : ℂ :=
 
 /-- The maximum modulus on the unit circle. -/
 noncomputable def maxModulus (s : SignVector n) : ℝ :=
-  ⨆ (θ : ℝ), abs (randomPolynomial s (exp (I * θ)))
+  ⨆ (θ : ℝ), ‖randomPolynomial s (exp (I * θ))‖
 
 /-- The polynomial evaluated at a point on the unit circle. -/
 noncomputable def evalOnCircle (s : SignVector n) (θ : ℝ) : ℂ :=
@@ -143,7 +143,7 @@ def AlmostSureConvergence (C : ℝ) : Prop :=
 /-- The L² norm on the circle. -/
 noncomputable def L2Norm (s : SignVector n) : ℝ :=
   Real.sqrt ((1 / (2 * Real.pi)) * ∫ θ in (0 : ℝ)..(2 * Real.pi),
-    (abs (evalOnCircle s θ))^2)
+    ‖evalOnCircle s θ‖^2)
 
 /-  The L² norm is exactly √(n+1). -/
 /-  The max is much larger than the L² norm (by √(log n) factor). -/
@@ -197,7 +197,7 @@ def RudinConjecture : Prop :=
 /-- The Mahler measure of random polynomials. -/
 noncomputable def mahlerMeasure (s : SignVector n) : ℝ :=
   Real.exp ((1 / (2 * Real.pi)) * ∫ θ in (0 : ℝ)..(2 * Real.pi),
-    Real.log (abs (evalOnCircle s θ)))
+    Real.log ‖evalOnCircle s θ‖)
 
 /-- Connection to Szegő's theorem. -/
 def szegoConnection : Prop :=
@@ -230,7 +230,7 @@ theorem erdos_523_constant : ∃ C : ℝ, C = 1 ∧ ErdosQuestion523 := by
 /-- Main result: max = (1 + o(1))√(n log n) almost surely. -/
 theorem erdos_523_main :
     ∀ ε : ℝ, ε > 0 → True := -- Probability statement
-  halasz_theorem
+  fun _ _ => trivial
 
 /-- The problem is completely solved. -/
 theorem erdos_523_solved : ErdosQuestion523 := erdos_523

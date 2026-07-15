@@ -381,10 +381,10 @@ CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02	GREEN
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Masa	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Range	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Scalar	GREEN	
-CayleyHamiltonCyclicVectorAllFieldsOQ03	RESIDUAL	unknown-const:Basis
+CayleyHamiltonCyclicVectorAllFieldsOQ03	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Converse	RESIDUAL	unknown-const:Basis
-CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	RESIDUAL	unknown-const:Basis
+CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	GREEN	
 CayleyHamiltonMinpolyOQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ02OQ01OQ02	GREEN	
 CayleyHamiltonMinpolyOQ02OQ02	RESIDUAL	proof-drift
@@ -394,7 +394,7 @@ CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
 CayleyHamiltonMinpolyOQ04BackwardAristotle	GREEN	
 CayleyHamiltonMinpolyOQ05	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ01	RESIDUAL	unknown-const:isUnit_of_natDegree_eq_zero
-CayleyHamiltonMinpolyOQ05OQ01OQ02	RESIDUAL	unknown-const:dvd_of_mem_normalizedFactors
+CayleyHamiltonMinpolyOQ05OQ01OQ02	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	RESIDUAL	proof-drift
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	GREEN	
 CayleyHamiltonMinpolyOQ05OQ02	GREEN	
@@ -580,7 +580,7 @@ EgorovTheorem	GREEN
 EgorovTheoremOQ01OQ02	GREEN	
 EgorovTheoremOQ01OQ03	GREEN	
 EhrhartCrossPolytope	GREEN	
-EisensteinCriterionOQ01OQ03OQ02OQ01	RESIDUAL	unclassified
+EisensteinCriterionOQ01OQ03OQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01	RESIDUAL	unknown-const:generator_orderOf
 ElementaryQuadraticReciprocityOQ01OQ01OQ03	RESIDUAL	instance-synth
 ElementaryQuadraticReciprocityOQ01OQ03	GREEN	
@@ -599,7 +599,7 @@ ElementaryQuadraticReciprocityOQ03OQ01	GREEN
 ElementaryQuadraticReciprocityOQ03OQ01OQ02	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
-ElementaryQuadraticReciprocityOQ03OQ03	RESIDUAL	unknown-const:legendreSym.eq_one_iff_isSquare
+ElementaryQuadraticReciprocityOQ03OQ03	GREEN	
 Erdos1000OQ01	RESIDUAL	rewrite-drift
 Erdos1000OQ02	GREEN	type-mismatch
 Erdos1000Problem	GREEN	
@@ -953,7 +953,7 @@ Erdos158Problem	GREEN
 Erdos159Problem	GREEN
 Erdos15Problem	GREEN	
 Erdos161Problem	GREEN	
-Erdos162Problem	RESIDUAL	unknown-const:Bool.true_ne_false
+Erdos162Problem	GREEN	
 Erdos163Problem	GREEN	
 Erdos164Problem	GREEN	
 Erdos166Problem	GREEN
@@ -989,10 +989,10 @@ Erdos191Problem	RESIDUAL	instance-synth
 Erdos192Problem	GREEN	
 Erdos193Problem	RESIDUAL	unknown-const:p
 Erdos194Problem	GREEN	
-Erdos195Problem	RESIDUAL	unknown-const:List.Chain'.take
+Erdos195Problem	GREEN	
 Erdos196Problem	GREEN	
 Erdos199Problem	GREEN	
-Erdos19OQ01Problem	RESIDUAL	unknown-const:GraphCore.IsKColorable
+Erdos19OQ01Problem	GREEN	
 Erdos19Problem	GREEN	
 Erdos1OQ03	RESIDUAL	type-mismatch
 Erdos1OQ03Aristotle	RESIDUAL	type-mismatch
@@ -1021,7 +1021,7 @@ Erdos222Problem	GREEN
 Erdos223Problem	RESIDUAL	type-mismatch
 Erdos225Aristotle	GREEN	
 Erdos225Problem	RESIDUAL	proof-drift
-Erdos226Problem	RESIDUAL	unknown-const:Rat.denseRange_ratCast
+Erdos226Problem	GREEN	
 Erdos229Problem	GREEN	
 Erdos230LowerBound	GREEN	
 Erdos230ProblemAristotle	GREEN	
@@ -1043,7 +1043,7 @@ Erdos249Problem	GREEN
 Erdos24Problem	GREEN	
 Erdos250Problem	GREEN	
 Erdos251Problem	GREEN	
-Erdos252Problem	RESIDUAL	parse-error
+Erdos252Problem	GREEN	
 Erdos254Problem	GREEN	
 Erdos255Problem	GREEN	
 Erdos256Problem	GREEN	
@@ -1054,14 +1054,14 @@ Erdos259Problem	GREEN
 Erdos25Abel	GREEN	
 Erdos25LogDensity	RESIDUAL	type-mismatch
 Erdos25Problem	RESIDUAL	type-mismatch
-Erdos260Aristotle	RESIDUAL	unknown-const:Real.tendsto_log_nat_atTop
+Erdos260Aristotle	GREEN	
 Erdos261Problem	GREEN	
 Erdos262Problem	GREEN	
 Erdos263Aristotle	GREEN	
 Erdos263Problem	RESIDUAL	proof-drift
 Erdos264Problem	GREEN	
 Erdos265Problem	GREEN
-Erdos266Problem	RESIDUAL	unknown-const:Real.not_summable_nat_of_tendsto_nat
+Erdos266Problem	GREEN	
 Erdos267Problem	GREEN	
 Erdos268Aristotle	RESIDUAL	unknown-const:summable_of_finite
 Erdos268Problem	RESIDUAL	proof-drift
@@ -1084,20 +1084,20 @@ Erdos285Problem	GREEN
 Erdos286Problem	GREEN	
 Erdos287Problem	GREEN	
 Erdos288Problem	RESIDUAL	rewrite-drift
-Erdos289Problem	RESIDUAL	unknown-const:div_le_div_of_le_left
+Erdos289Problem	GREEN	
 Erdos28AdditiveBases	GREEN	
 Erdos28Problem	GREEN	
 Erdos291Problem	RESIDUAL	proof-drift
 Erdos292Problem	GREEN	
 Erdos293Problem	GREEN	
 Erdos294Problem	GREEN	
-Erdos296Problem	RESIDUAL	unknown-const:Filter.Tendsto.unique
+Erdos296Problem	GREEN	
 Erdos297Problem	GREEN	
 Erdos298Problem	GREEN	
 Erdos299Problem	RESIDUAL	unknown-const:Nat.not_eq_zero_of_lt
 Erdos29OQ02	RESIDUAL	parse-error
 Erdos29Problem	RESIDUAL	unknown-const:JPSZ_representation_bound
-Erdos2OQ01	RESIDUAL	unknown-const:balister_bound
+Erdos2OQ01	GREEN	
 Erdos2OQ01Aristotle	RESIDUAL	proof-drift
 Erdos2Problem	GREEN	
 Erdos300Problem	GREEN	
@@ -1120,11 +1120,11 @@ Erdos318Aristotle	GREEN
 Erdos318Problem	GREEN	
 Erdos319Problem	RESIDUAL	proof-drift
 Erdos31Problem	GREEN	
-Erdos320Problem	RESIDUAL	unknown-const:erdos_320_open_bounds
+Erdos320Problem	GREEN	
 Erdos321Problem	GREEN	
 Erdos321ProblemR1	GREEN	
 Erdos322Problem	GREEN	
-Erdos323Problem	RESIDUAL	unknown-const:IsSumOfPowers_one_iff.mpr
+Erdos323Problem	GREEN	
 Erdos324Problem	GREEN	
 Erdos325Problem	GREEN	
 Erdos326Problem	GREEN	
@@ -1160,7 +1160,7 @@ Erdos343Problem	GREEN
 Erdos344Problem	GREEN	
 Erdos345Problem	GREEN	parse-error
 Erdos346Problem	GREEN	
-Erdos347Problem	RESIDUAL	unknown-const:Finset.card_Icc
+Erdos347Problem	GREEN	
 Erdos348Problem	RESIDUAL	type-mismatch
 Erdos349Problem	GREEN	
 Erdos350Problem	GREEN	
@@ -1207,7 +1207,7 @@ Erdos388Problem	GREEN
 Erdos38Problem	GREEN	
 Erdos390Problem	RESIDUAL	unknown-const:List.Sorted
 Erdos391Problem	RESIDUAL	type-mismatch
-Erdos393Problem	RESIDUAL	unknown-const:Nat.radical
+Erdos393Problem	GREEN	
 Erdos394Problem	GREEN	
 Erdos395OQ01	RESIDUAL	instance-synth
 Erdos395OQ01Incomplete01	RESIDUAL	instance-synth
@@ -1254,7 +1254,7 @@ Erdos428Problem	RESIDUAL	unknown-const:primeDensityRatio_nonneg
 Erdos429Problem	RESIDUAL	type-mismatch
 Erdos42Problem	GREEN	
 Erdos431Problem	GREEN	
-Erdos432Problem	RESIDUAL	unknown-const:Finset.card_filter_le_card_filter
+Erdos432Problem	GREEN	
 Erdos433Aristotle	GREEN	
 Erdos433Problem	GREEN	
 Erdos434Aristotle	GREEN	
@@ -1262,7 +1262,7 @@ Erdos434Frobenius	GREEN
 Erdos434Problem	RESIDUAL	unknown-const:sylvester_frobenius
 Erdos435Problem	GREEN	
 Erdos436Problem	GREEN	
-Erdos437Aristotle	RESIDUAL	unknown-const:div_le_one_of_le
+Erdos437Aristotle	GREEN	
 Erdos437Problem	GREEN	
 Erdos438Problem	GREEN	
 Erdos439Problem	GREEN	
@@ -1326,7 +1326,7 @@ Erdos489Problem	GREEN
 Erdos48Problem	GREEN	
 Erdos490Aristotle	GREEN	parse-error
 Erdos490OQ01	GREEN	
-Erdos490ProblemAristotle	RESIDUAL	unknown-const:Nat.eq_zero_of_mul_eq_zero_left
+Erdos490ProblemAristotle	GREEN	
 Erdos491Problem	GREEN	
 Erdos492Problem	RESIDUAL	unknown-const:Int.frac
 Erdos494Problem	GREEN	
@@ -1359,7 +1359,7 @@ Erdos51Problem	GREEN
 Erdos520Problem	GREEN	
 Erdos521Problem	GREEN	
 Erdos522Problem	GREEN	
-Erdos523Problem	RESIDUAL	unknown-const:halasz_theorem
+Erdos523Problem	GREEN	
 Erdos524Problem	GREEN	
 Erdos525OQ02	GREEN	
 Erdos525Problem	RESIDUAL	instance-synth
@@ -1991,13 +1991,13 @@ FourSquareDistributionOQ04Bridge	GREEN
 FourSquareDistributionOQ04Decomp	GREEN	
 FourSquareDistributionOQ04Keystone	GREEN	
 FourierSeriesOQ01	RESIDUAL	rewrite-drift
-FourierSeriesOQ02	RESIDUAL	unclassified
+FourierSeriesOQ02	GREEN	
 FourierSeriesOQ02Incomplete01	GREEN	
 FourierSeriesOQ02OQ02	RESIDUAL	unclassified
 FourierSeriesOQ02OQ03	RESIDUAL	proof-drift
 FourierSeriesOQ02OQ03OQ02	RESIDUAL	unknown-const:Real.exp_le_one_of_nonpos
 FourierSeriesOQ02OQ03WIP01	GREEN	
-FourierSeriesOQ02OQ04	RESIDUAL	unclassified
+FourierSeriesOQ02OQ04	GREEN	
 FourierSeriesOQ04	GREEN	
 FourierSeriesOQ04OQ01	RESIDUAL	type-mismatch
 FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	type-mismatch
@@ -2022,7 +2022,7 @@ FrobeniusNumberOQ02OQ01	GREEN
 FrobeniusNumberOQ02OQ02	GREEN	
 FrobeniusNumberOQ03	GREEN	
 FundamentalArithmetic	GREEN	
-FundamentalArithmeticOQ01	RESIDUAL	unknown-const:Nat.coprime_iff_disjoint.mp
+FundamentalArithmeticOQ01	GREEN	
 FundamentalArithmeticOQ02	RESIDUAL	unknown-const:Zsqrtd.mul_def
 FundamentalTheoremAlgebra	RESIDUAL	type-mismatch
 FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01	GREEN	
@@ -2088,8 +2088,8 @@ Hilbert14Invariants	GREEN
 Hilbert14InvariantsOQ01	GREEN	type-mismatch
 Hilbert14NonReductive	RESIDUAL	type-mismatch
 Hilbert15OQ02OQ03OQ01	RESIDUAL	rewrite-drift
-Hilbert15SchubertCalculus	RESIDUAL	unknown-const:finrank
-Hilbert15SchubertCalculusOQ01	RESIDUAL	unknown-const:finrank
+Hilbert15SchubertCalculus	GREEN	
+Hilbert15SchubertCalculusOQ01	GREEN	
 Hilbert16	GREEN	
 Hilbert17OQ01	GREEN	
 Hilbert17RobinsonRationalSOS	GREEN	
@@ -2105,7 +2105,7 @@ Hilbert22OQ01OQ03Pseudohyperbolic	GREEN
 Hilbert22OQ01OQ03Universal	GREEN	
 Hilbert22Uniformization	GREEN	
 Hilbert23CalculusVariations	GREEN	
-Hilbert23CalculusVariationsOQ01	RESIDUAL	unknown-const:Ici_diff_left
+Hilbert23CalculusVariationsOQ01	GREEN	
 Hilbert3ScissorsCongruence	GREEN	
 Hilbert4Geodesics	RESIDUAL	instance-synth
 Hilbert5LieGroups	GREEN	elab-drift
@@ -2250,7 +2250,7 @@ MaschkeAugmentationNoSplitOQ010101	GREEN
 MaschkeLocalRingOQ010102	RESIDUAL	instance-synth
 MaschkeModularCounterexampleOQ01	GREEN	
 MaschkeTheoremOQ01	RESIDUAL	parse-error
-MathematicalInductionOQ01	RESIDUAL	unknown-const:Ordinal.IsLimit
+MathematicalInductionOQ01	GREEN	
 MathematicalInductionOQ03	RESIDUAL	type-mismatch
 MatrixSimilarityInvariantsOQ01	GREEN	
 MeanValueTheorem	GREEN	
