@@ -177,7 +177,7 @@ theorem non_cyclic_mem_cofactorKernel (M : Matrix (Fin n) (Fin n) ℝ) (hn : 0 <
   -- s has a normalized irreducible factor q₀
   obtain ⟨q₀, hq₀_mem_s⟩ :=
     UniqueFactorizationMonoid.exists_mem_normalizedFactors hs_ne hs_not_unit
-  have hq₀_dvd_s : q₀ ∣ s := dvd_of_mem_normalizedFactors hq₀_mem_s
+  have hq₀_dvd_s : q₀ ∣ s := UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hq₀_mem_s
   have hq₀_irr : Irreducible q₀ :=
     (UniqueFactorizationMonoid.prime_of_normalized_factor q₀ hq₀_mem_s).irreducible
   have hq₀_dvd_μ : q₀ ∣ μ := dvd_trans hq₀_dvd_s ⟨d, by rw [hs_eq]; ring⟩
@@ -186,7 +186,7 @@ theorem non_cyclic_mem_cofactorKernel (M : Matrix (Fin n) (Fin n) ℝ) (hn : 0 <
     UniqueFactorizationMonoid.exists_mem_normalizedFactors_of_dvd hμ_ne hq₀_irr hq₀_dvd_μ
   have hq'_in_nf : q' ∈ (UniqueFactorizationMonoid.normalizedFactors μ).toFinset :=
     Multiset.mem_toFinset.mpr hq'_mem
-  have hq'_ne : q' ≠ 0 := ne_zero_of_mem_normalizedFactors hq'_mem
+  have hq'_ne : q' ≠ 0 := UniqueFactorizationMonoid.ne_zero_of_mem_normalizedFactors hq'_mem
   have hq'_dvd_q₀ : q' ∣ q₀ := hq'_assoc.symm.dvd
   have hq'_dvd_s : q' ∣ s := dvd_trans hq'_dvd_q₀ hq₀_dvd_s
   -- Show v ∈ cofactorKernel M q'
@@ -244,18 +244,19 @@ theorem non_cyclic_measure_zero (hn : 0 < n)
     intro q hq
     have hq_mem : q ∈ UniqueFactorizationMonoid.normalizedFactors μ :=
       Multiset.mem_toFinset.mp hq
-    have hq_dvd : q ∣ μ := dvd_of_mem_normalizedFactors hq_mem
-    have hq_ne : q ≠ 0 := ne_zero_of_mem_normalizedFactors hq_mem
+    have hq_dvd : q ∣ μ := UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hq_mem
+    have hq_ne : q ≠ 0 := UniqueFactorizationMonoid.ne_zero_of_mem_normalizedFactors hq_mem
     have hq_irr : Irreducible q :=
       (UniqueFactorizationMonoid.prime_of_normalized_factor q hq_mem).irreducible
     exact volume_submodule_eq_zero _ (cofactorKernel_ne_top M hn hM q hq_dvd hq_ne hq_irr)
   -- Finite union of null sets is null
+  refine le_antisymm ?_ zero_le
   calc volume {v : Fin n → ℝ | ¬IsCyclicVector M v}
       ≤ volume (⋃ q ∈ nf, (cofactorKernel M q : Set (Fin n → ℝ))) :=
         measure_mono h_subset
     _ ≤ ∑ q ∈ nf, volume (cofactorKernel M q : Set (Fin n → ℝ)) :=
         measure_biUnion_finset_le nf _
-    _ = 0 := by simp [h_zero]
+    _ = 0 := Finset.sum_eq_zero h_zero
 
 /-- Cyclic vectors for a nonderogatory real matrix have full Lebesgue measure.
     This is the positive formulation: the complement of cyclic vectors is null. -/

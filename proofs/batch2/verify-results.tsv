@@ -381,10 +381,10 @@ CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02	GREEN
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Masa	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Range	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Scalar	GREEN	
-CayleyHamiltonCyclicVectorAllFieldsOQ03	RESIDUAL	unknown-const:Basis
+CayleyHamiltonCyclicVectorAllFieldsOQ03	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Converse	RESIDUAL	unknown-const:Basis
-CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	RESIDUAL	unknown-const:Basis
+CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	GREEN	
 CayleyHamiltonMinpolyOQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ02OQ01OQ02	GREEN	
 CayleyHamiltonMinpolyOQ02OQ02	RESIDUAL	proof-drift
@@ -394,7 +394,7 @@ CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
 CayleyHamiltonMinpolyOQ04BackwardAristotle	GREEN	
 CayleyHamiltonMinpolyOQ05	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ01	RESIDUAL	unknown-const:isUnit_of_natDegree_eq_zero
-CayleyHamiltonMinpolyOQ05OQ01OQ02	RESIDUAL	unknown-const:dvd_of_mem_normalizedFactors
+CayleyHamiltonMinpolyOQ05OQ01OQ02	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	RESIDUAL	proof-drift
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	GREEN	
 CayleyHamiltonMinpolyOQ05OQ02	GREEN	
@@ -1043,7 +1043,7 @@ Erdos249Problem	GREEN
 Erdos24Problem	GREEN	
 Erdos250Problem	GREEN	
 Erdos251Problem	GREEN	
-Erdos252Problem	RESIDUAL	parse-error
+Erdos252Problem	GREEN	
 Erdos254Problem	GREEN	
 Erdos255Problem	GREEN	
 Erdos256Problem	GREEN	
