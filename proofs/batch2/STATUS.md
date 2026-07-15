@@ -1,7 +1,7 @@
 # DOCTOR INCREMENT 78 (deep-rework partition Erdős ≥ 500 / lane2, #38065, 2026-07-15)
 
 Container cpuset 6-11, 11g, cache `lean-mathlib-cache-v431-b`, worktree doctor-b, branch
-`feature/issue-38065-inc78` off origin/feature/issue-37508. **+5 GREEN.**
+`feature/issue-38065-inc78` off origin/feature/issue-37508. **+4 GREEN.**
 Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
 
 ## Flips (failure class in parens)
