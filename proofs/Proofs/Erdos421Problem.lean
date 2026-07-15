@@ -256,7 +256,10 @@ theorem total_product_ge_factorial (d : ℕ → ℕ) (hd : IsValidSequence d) (n
   | zero => simp
   | succ n ih =>
     rw [Nat.factorial_succ, Finset.prod_range_succ]
-    exact Nat.mul_le_mul (valid_seq_ge_succ d hd n) ih
+    calc (n + 1) * n !
+        = n ! * (n + 1) := by ring
+      _ ≤ (∏ i ∈ Finset.range n, d i) * d n :=
+          Nat.mul_le_mul ih (valid_seq_ge_succ d hd n)
 
 /-- For distinct products, d(0) ≥ 2. If d(0) = 1, then
     intervalProduct [0,1] = 1 * d(1) = d(1) = intervalProduct [1,1],
@@ -266,7 +269,7 @@ theorem first_term_ge_two (d : ℕ → ℕ) (hd : IsValidSequence d)
   by_contra h
   push_neg at h
   have hd0 : d 0 = 1 := by
-    have := hd.2; omega
+    have h2 : 1 ≤ d 0 := hd.2; omega
   -- intervalProduct [0,1] = d(0) * d(1) = d(1)
   have h01 : productMap d (0, 1) = d 1 := by
     simp only [productMap, intervalProduct]
@@ -277,8 +280,10 @@ theorem first_term_ge_two (d : ℕ → ℕ) (hd : IsValidSequence d)
   have h11 : productMap d (1, 1) = d 1 := by
     simp [productMap]
   -- Same product, different valid pairs → contradiction
-  have hpairs : (0, 1) ≠ (1, 1 : ℕ × ℕ) := by simp
-  exact hpairs (hdist (show (0 : ℕ) ≤ 1 by omega) le_rfl (h01.trans h11.symm))
+  have hpairs : ((0, 1) : ℕ × ℕ) ≠ (1, 1) := by simp
+  have hmem0 : ((0, 1) : ℕ × ℕ) ∈ ValidPairs := Nat.zero_le 1
+  have hmem1 : ((1, 1) : ℕ × ℕ) ∈ ValidPairs := le_refl 1
+  exact hpairs (hdist hmem0 hmem1 (h01.trans h11.symm))
 
 /-- For distinct products, d(i) ≥ i + 2 for all i (strengthening valid_seq_ge_succ).
     Proof: d(0) ≥ 2 and d strictly increasing with d(i) ≥ i+1, so d(i) ≥ i+2. -/
@@ -300,7 +305,10 @@ theorem total_product_ge_shifted_factorial (d : ℕ → ℕ) (hd : IsValidSequen
   | zero => simp
   | succ n ih =>
     rw [Nat.factorial_succ, Finset.prod_range_succ]
-    exact Nat.mul_le_mul (distinct_products_stronger_growth d hd hdist n) ih
+    calc (n + 1 + 1) * (n + 1)!
+        = (n + 1)! * (n + 1 + 1) := by ring
+      _ ≤ (∏ i ∈ Finset.range n, d i) * d n :=
+          Nat.mul_le_mul ih (distinct_products_stronger_growth d hd hdist n)
 
 /-
 # Part 5: The Main Conjecture
@@ -404,15 +412,15 @@ This constrains how small the maximum product (= ∏ all terms) can be.
 /-- The number of valid pairs (u,v) with u ≤ v and both in {0, ..., n-1}
     is exactly n*(n+1)/2. Uses `Finset.range n` for correct n=0 handling. -/
 theorem numValidPairs_eq (n : ℕ) :
-    ((Finset.range n).product (Finset.range n)).filter
-      (fun p => p.1 ≤ p.2) |>.card = n * (n + 1) / 2 := by
+    (((Finset.range n) ×ˢ (Finset.range n)).filter
+      (fun p => p.1 ≤ p.2)).card = n * (n + 1) / 2 := by
   induction n with
   | zero => simp
   | succ n ih =>
     -- Decompose: filtered pairs on range(n+1) = filtered pairs on range(n)
     --   ∪ {(u, n) : u ∈ range(n+1)} (n+1 new pairs with second component = n)
-    set S := ((Finset.range (n + 1)).product (Finset.range (n + 1))).filter (fun p => p.1 ≤ p.2)
-    set S_old := ((Finset.range n).product (Finset.range n)).filter (fun p => p.1 ≤ p.2)
+    set S := ((Finset.range (n + 1)) ×ˢ (Finset.range (n + 1))).filter (fun p => p.1 ≤ p.2)
+    set S_old := ((Finset.range n) ×ˢ (Finset.range n)).filter (fun p => p.1 ≤ p.2)
     set S_new := (Finset.range (n + 1)).image (fun u => (u, n))
     have h_eq : S = S_old ∪ S_new := by
       ext ⟨a, b⟩
@@ -473,7 +481,7 @@ theorem consecutive_product_gt_single (d : ℕ → ℕ) (hd : IsValidSequence d)
   have h := distinct_products_stronger_growth d hd hdist (u + 1)
   have hpos : 0 < d u := Nat.lt_of_lt_of_le Nat.zero_lt_one (valid_seq_pos d hd u)
   calc d u = d u * 1 := (Nat.mul_one _).symm
-    _ < d u * d (u + 1) := Nat.mul_lt_mul_left hpos (by omega)
+    _ < d u * d (u + 1) := (Nat.mul_lt_mul_left hpos).mpr (by omega)
 
 /-- If d has distinct products, single-element products and 2-element products
     never collide: for any w and any u, d(w) ≠ d(u)*d(u+1).
@@ -486,11 +494,13 @@ theorem single_ne_pair_product (d : ℕ → ℕ) (hd : IsValidSequence d)
     intervalProduct d w w ≠ intervalProduct d u (u + 1) := by
   intro heq
   -- In HasDistinctProducts (InjOn), same product forces same pair
-  have hw : w ≤ w := le_refl w
-  have hu : u ≤ u + 1 := Nat.le_succ u
-  have hpairs := hdist hw hu heq
+  have hw : (w, w) ∈ ValidPairs := le_refl w
+  have hu : (u, u + 1) ∈ ValidPairs := Nat.le_succ u
+  have hprod : productMap d (w, w) = productMap d (u, u + 1) := heq
+  have hpairs := hdist hw hu hprod
   -- But (w, w) ≠ (u, u+1) since snd differs
-  simp at hpairs
+  simp only [Prod.mk.injEq] at hpairs
+  omega
 
 /-- Product with a longer interval strictly dominates the shorter one
     extending from the same start: ∏[u,v] < ∏[u,v+1] for valid sequences.
@@ -505,7 +515,7 @@ theorem product_strict_mono_right (d : ℕ → ℕ) (hd : IsValidSequence d)
   calc intervalProduct d u v
       = intervalProduct d u v * 1 := (Nat.mul_one _).symm
     _ < intervalProduct d u v * d (v + 1) :=
-        Nat.mul_lt_mul_left hprod_pos (by omega)
+        (Nat.mul_lt_mul_left hprod_pos).mpr (by omega)
 
 /-- For distinct products, the maximum product among all intervals in [0, n-1]
     (which is ∏[0, n-1]) must be at least n*(n+1)/2, because n*(n+1)/2 distinct
@@ -537,9 +547,11 @@ theorem total_product_lower_from_counting (d : ℕ → ℕ) (hd : IsValidSequenc
           | zero => simp
           | succ k =>
             -- (k+2)*(k+3)/2 ≤ (k+3)*(k+2)!
-            -- Since (k+2)! ≥ (k+2)/2 ≥ 1 for k ≥ 0
-            have : (k + 2) ! ≥ 1 := Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)
-            nlinarith [Nat.factorial_pos (k + 2)]
+            -- Since (k+2)! ≥ (k+2) ≥ 1 for k ≥ 0
+            calc (k + 2) * (k + 3) / 2
+                ≤ (k + 2) * (k + 3) := Nat.div_le_self _ _
+              _ = (k + 3) * (k + 2) := by ring
+              _ ≤ (k + 3) * (k + 2)! := Nat.mul_le_mul le_rfl (Nat.self_le_factorial _)
     _ ≤ ∏ i ∈ Finset.range n, d i := hfact
 
 /-
