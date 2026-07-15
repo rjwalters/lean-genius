@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 5 (8-slot, #38065, 2026-07-15)
+
+**+3 GREEN**: RationalCanonicalFormExists (13-site HUB, hardest of the wave ~22min: Aristotle
+convert-chains decayed -> explicit rw/term proofs w/ LinearMap.charpoly_toMatrix +
+toMatrix_directSum_collectedBasis_eq_blockDiagonal'; Finset.prod_eq_mul_prod_diff_singleton alias
+retargets a DIFFERENT sig -> use ..._sdiff_singleton_of_mem; unblocks MinpolyCharpolyOQ03),
+Erdos515Problem (λ is now a hard keyword -> rename bound var; <⊤ on ℝ fails Top synth -> ENNReal),
+Erdos552Aristotle (SimpleGraph.starGraph now in Mathlib -> qualify local; degree needs DecidableRel).
+Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 4 (8-slot, #38065, 2026-07-15)
 
 **+4 GREEN** (2 cascade children harvested): Erdos1014OQ03Concrete (PURE missing-olean cascade,
