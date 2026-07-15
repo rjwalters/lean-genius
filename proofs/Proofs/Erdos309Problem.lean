@@ -58,8 +58,8 @@ noncomputable def unitFraction (n : ℕ) : ℚ :=
 Unit fractions are positive for n ≥ 1.
 -/
 theorem unitFraction_pos (n : ℕ) (hn : n ≥ 1) : unitFraction n > 0 := by
-  simp only [unitFraction]
-  simp [Nat.one_le_iff_ne_zero.mp hn]
+  simp only [unitFraction, if_neg (Nat.one_le_iff_ne_zero.mp hn)]
+  positivity
 
 /--
 **Sum of Unit Fractions:**
@@ -105,8 +105,9 @@ The denominator range has N elements.
 theorem denominatorRange_card (N : ℕ) (hN : N ≥ 1) :
     (denominatorRange N).card = N := by
   simp only [denominatorRange]
-  rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega))),
+  rw [Finset.card_sdiff_of_subset (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega))),
       Finset.card_range, Finset.card_singleton]
+  omega
 
 /-
 ## Part III: Representable Integers
@@ -133,11 +134,10 @@ theorem zero_representable (N : ℕ) : IsRepresentable N 0 := by
 1 is representable for N ≥ 1 (using {1}).
 -/
 theorem one_representable (N : ℕ) (hN : N ≥ 1) : IsRepresentable N 1 := by
-  use {1}
-  constructor
+  refine ⟨{1}, ?_, ?_⟩
   · intro x hx
-    simp at hx
-    simp [denominatorRange, hx, hN]
+    rw [Finset.mem_singleton.mp hx]
+    exact (mem_denominatorRange N 1).mpr ⟨le_refl 1, hN⟩
   · simp [sumUnitFractions, unitFraction]
 
 /-
@@ -168,7 +168,8 @@ noncomputable def harmonicNumber (N : ℕ) : ℚ :=
 H_1 = 1.
 -/
 theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
-  simp [harmonicNumber, sumUnitFractions, denominatorRange, unitFraction]
+  unfold harmonicNumber sumUnitFractions unitFraction denominatorRange
+  norm_num [Finset.sum_range_succ]
 
 /--
 **Trivial Upper Bound:**
@@ -272,7 +273,12 @@ With denominators {1, 2, 3, 4, 5, 6}, representable integers are:
 0 = (empty), 1 = 1, 2 = 1 + 1/2 + 1/3 + 1/6
 H_6 = 1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 = 49/20 = 2.45
 -/
-example : harmonicNumber 6 = 49 / 20 := by native_decide
+example : harmonicNumber 6 = 49 / 20 := by
+  have hset : denominatorRange 6 = {1, 2, 3, 4, 5, 6} := by
+    ext n; simp only [mem_denominatorRange, Finset.mem_insert, Finset.mem_singleton]; omega
+  unfold harmonicNumber sumUnitFractions unitFraction
+  rw [hset]
+  norm_num
 
 /--
 **Egyptian Fraction Representation:**
