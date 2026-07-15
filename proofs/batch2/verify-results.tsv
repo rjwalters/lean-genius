@@ -580,7 +580,7 @@ EgorovTheorem	GREEN
 EgorovTheoremOQ01OQ02	GREEN	
 EgorovTheoremOQ01OQ03	GREEN	
 EhrhartCrossPolytope	GREEN	
-EisensteinCriterionOQ01OQ03OQ02OQ01	RESIDUAL	unclassified
+EisensteinCriterionOQ01OQ03OQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01	RESIDUAL	unknown-const:generator_orderOf
 ElementaryQuadraticReciprocityOQ01OQ01OQ03	RESIDUAL	instance-synth
 ElementaryQuadraticReciprocityOQ01OQ03	GREEN	
@@ -1097,7 +1097,7 @@ Erdos298Problem	GREEN
 Erdos299Problem	RESIDUAL	unknown-const:Nat.not_eq_zero_of_lt
 Erdos29OQ02	RESIDUAL	parse-error
 Erdos29Problem	RESIDUAL	unknown-const:JPSZ_representation_bound
-Erdos2OQ01	RESIDUAL	unknown-const:balister_bound
+Erdos2OQ01	GREEN	
 Erdos2OQ01Aristotle	RESIDUAL	proof-drift
 Erdos2Problem	GREEN	
 Erdos300Problem	GREEN	
@@ -1991,7 +1991,7 @@ FourSquareDistributionOQ04Bridge	GREEN
 FourSquareDistributionOQ04Decomp	GREEN	
 FourSquareDistributionOQ04Keystone	GREEN	
 FourierSeriesOQ01	RESIDUAL	rewrite-drift
-FourierSeriesOQ02	RESIDUAL	unclassified
+FourierSeriesOQ02	GREEN	
 FourierSeriesOQ02Incomplete01	GREEN	
 FourierSeriesOQ02OQ02	RESIDUAL	unclassified
 FourierSeriesOQ02OQ03	RESIDUAL	proof-drift
