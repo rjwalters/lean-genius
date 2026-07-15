@@ -65,7 +65,8 @@ theorem one_squarefull : IsSquarefull 1 := by
   constructor
   · omega
   · intros p hp hd
-    have : p ≥ 2 := hp.two_le
+    have h2 : p ≥ 2 := hp.two_le
+    have h1 : p ≤ 1 := Nat.le_of_dvd Nat.one_pos hd
     omega
 
 /--
@@ -117,19 +118,25 @@ theorem four_squarefull : IsSquarefull 4 := by
   constructor
   · omega
   · intros p hp hd
-    interval_cases p <;> simp_all
+    have hlo : 2 ≤ p := hp.two_le
+    have hhi : p ≤ 4 := Nat.le_of_dvd (by norm_num) hd
+    interval_cases p <;> revert hp hd <;> decide
 
 theorem eight_squarefull : IsSquarefull 8 := by
   constructor
   · omega
   · intros p hp hd
-    interval_cases p <;> simp_all
+    have hlo : 2 ≤ p := hp.two_le
+    have hhi : p ≤ 8 := Nat.le_of_dvd (by norm_num) hd
+    interval_cases p <;> revert hp hd <;> decide
 
 theorem nine_squarefull : IsSquarefull 9 := by
   constructor
   · omega
   · intros p hp hd
-    interval_cases p <;> simp_all
+    have hlo : 2 ≤ p := hp.two_le
+    have hhi : p ≤ 9 := Nat.le_of_dvd (by norm_num) hd
+    interval_cases p <;> revert hp hd <;> decide
 
 /-
 ## Part II: Sums of Two Squarefull Numbers
@@ -164,15 +171,17 @@ theorem thirteen_is_sum : IsSumOfTwoSquarefull 13 := by
 **The counting function A(x):**
 A(x) = #{n ≤ x : n is a sum of two squarefull numbers}
 -/
-noncomputable def A (x : ℕ) : ℕ :=
-  (Finset.range (x + 1)).filter (fun n => IsSumOfTwoSquarefull n) |>.card
+noncomputable def A (x : ℕ) : ℕ := by
+  classical
+  exact (Finset.range (x + 1)).filter (fun n => IsSumOfTwoSquarefull n) |>.card
 
 /--
 **Squarefull numbers up to x:**
 S(x) = #{n ≤ x : n is squarefull} ~ ζ(3/2)/ζ(3) · √x
 -/
-noncomputable def S (x : ℕ) : ℕ :=
-  (Finset.range (x + 1)).filter (fun n => IsSquarefull n) |>.card
+noncomputable def S (x : ℕ) : ℕ := by
+  classical
+  exact (Finset.range (x + 1)).filter (fun n => IsSquarefull n) |>.card
 
 /- 
 **Asymptotic for squarefull count:**

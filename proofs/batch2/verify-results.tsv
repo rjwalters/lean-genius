@@ -600,25 +600,25 @@ ElementaryQuadraticReciprocityOQ03OQ01OQ02	GREEN
 ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ03	GREEN	
-Erdos1000OQ01	RESIDUAL	rewrite-drift
+Erdos1000OQ01	GREEN	
 Erdos1000OQ02	GREEN	type-mismatch
 Erdos1000Problem	GREEN	
 Erdos1001OQ02OQ01	GREEN	
-Erdos1002OQ01	RESIDUAL	type-mismatch
+Erdos1002OQ01	GREEN	
 Erdos1002OQ01OQ01	RESIDUAL	type-mismatch
 Erdos1002OQ01OQ01Aristotle	GREEN	
 Erdos1003OQ02	GREEN	
-Erdos1005Problem	RESIDUAL	proof-drift
+Erdos1005Problem	GREEN	
 Erdos1005ProblemOQ02	GREEN	
 Erdos1006OQ01	GREEN	
 Erdos1006OQ01OQ02	GREEN	v4.31-migrated
-Erdos1006OQ02	RESIDUAL	elab-drift
+Erdos1006OQ02	GREEN	
 Erdos1006OQ03	GREEN	
 Erdos1006OQ04	GREEN	
 Erdos1006OQ04Decidability	GREEN	unclassified
 Erdos1006Problem	RESIDUAL	instance-synth
 Erdos1007OQ01	RESIDUAL	proof-drift
-Erdos1007OQ01OQ01	RESIDUAL	proof-drift
+Erdos1007OQ01OQ01	GREEN	
 Erdos1007OQ04	GREEN	
 Erdos1007OQ05	RESIDUAL	instance-synth
 Erdos1007Problem	GREEN	
@@ -773,7 +773,7 @@ Erdos107OQ01	RESIDUAL	instance-synth
 Erdos107OQ01KleinUpperAristotle	RESIDUAL	instance-synth
 Erdos1080OQ03	RESIDUAL	type-mismatch
 Erdos1080Problem	GREEN	
-Erdos1081Problem	RESIDUAL	proof-drift
+Erdos1081Problem	GREEN	
 Erdos1082Problem	GREEN	
 Erdos1083OQ02	GREEN	
 Erdos1083Problem	GREEN	
@@ -822,7 +822,7 @@ Erdos1112Problem	GREEN
 Erdos1113Problem	GREEN	
 Erdos1114Problem	GREEN	
 Erdos1115Problem	GREEN	
-Erdos1116Problem	RESIDUAL	unknown-const:not_lt_of_le
+Erdos1116Problem	GREEN	
 Erdos1117Problem	GREEN	
 Erdos1118OQ02	GREEN	
 Erdos1118Problem	RESIDUAL	instance-synth
@@ -836,7 +836,7 @@ Erdos1124Problem	GREEN
 Erdos1125Problem	GREEN	
 Erdos1126Problem	GREEN	unknown-const:measurable_additive_is_linear
 Erdos1127Problem	RESIDUAL	instance-synth
-Erdos1128Problem	RESIDUAL	proof-drift
+Erdos1128Problem	GREEN	
 Erdos1129OQ02	GREEN	
 Erdos112Problem	GREEN	
 Erdos1130Problem	RESIDUAL	type-mismatch
@@ -2417,7 +2417,7 @@ ShannonChannelCodingOQ04OQ01OQ01	GREEN
 ShannonEntropyAristotle	GREEN	
 ShannonEntropyOQ01	GREEN	
 ShannonEntropyOQ01OQ01	GREEN	
-ShannonEntropyOQ02	RESIDUAL	rewrite-drift
+ShannonEntropyOQ02	GREEN	
 ShannonSourceCodingOQ01	RESIDUAL	unknown-const:InformationTheory.mutualInformation
 ShannonSourceCodingOQ02	GREEN	type-mismatch
 ShannonSourceCodingOQ03	RESIDUAL	unknown-const:Fintype.sum_piFinset_succ

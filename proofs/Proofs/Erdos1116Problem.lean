@@ -35,6 +35,10 @@ noncomputable def Complex.abs (z : ℂ) : ℝ := ‖z‖
 
 open Complex Set Filter
 
+-- v4.31: `if h : Set.Finite …` (dite) needs a Decidable instance; supply it
+-- classically (no `decide`/`native_decide` in this file, so no shadowing hazard).
+attribute [local instance] Classical.propDecidable
+
 namespace Erdos1116
 
 /-
@@ -67,8 +71,8 @@ def IsEntire (f : ℂ → ℂ) : Prop :=
 theorem entire_is_meromorphic (f : ℂ → ℂ) (hf : IsEntire f) :
     IsMeromorphic f ∅ := by
   constructor
-  · intro z hz
-    simp at hz
+  · intro z _
+    exact hf z
   · constructor
     · intro p hp
       simp at hp
@@ -95,7 +99,7 @@ For an entire function, this is finite for each r.
 
 Note: In general, this counts with multiplicity, but we simplify here.
 -/
-def countingFunction (f : ℂ → ℂ) (a : ℂ) (r : ℝ) : ℕ :=
+noncomputable def countingFunction (f : ℂ → ℂ) (a : ℂ) (r : ℝ) : ℕ :=
   if h : (aPoints f a ∩ {z | Complex.abs z < r}).Finite
   then h.toFinset.card
   else 0
@@ -121,7 +125,7 @@ theorem countingFunction_nonpos (f : ℂ → ℂ) (a : ℂ) {r : ℝ} (hr : r �
   ext z
   simp only [aPoints, mem_inter_iff, mem_setOf_eq, mem_empty_iff_false, iff_false, not_and]
   intro _
-  exact not_lt_of_le (le_trans hr (norm_nonneg z))
+  exact not_lt.mpr (le_trans hr (norm_nonneg z))
 
 /-
 ## Part III: The Problem Statement
@@ -159,7 +163,7 @@ theorem not_hasUnboundedRatio_self (f : ℂ → ℂ) (a : ℂ) :
     ¬HasUnboundedRatio f a a := by
   intro h
   obtain ⟨r, _, hgt⟩ := h 2 two_pos 1 one_pos
-  linarith [Nat.cast_nonneg (countingFunction f a r)]
+  linarith [Nat.cast_nonneg (α := ℝ) (countingFunction f a r)]
 
 /-- Extreme value distribution requires distinct values: a ≠ b is necessary. -/
 theorem extreme_requires_two_values (f : ℂ → ℂ) (h : HasExtremeValueDistribution f) :
@@ -225,7 +229,7 @@ This means "most" values are taken with roughly equal frequency.
 -/
 theorem nevanlinna_deficiency_sum (f : ℂ → ℂ) (hf : IsEntire f) :
     ∀ S : Finset ℂ, (S.sum fun a => deficiency f a) ≤ 2 := by
-  intro S; simp [deficiency]; norm_num
+  intro S; simp [deficiency]
 
 /-
 ## Part VI: Why This is Surprising
@@ -291,7 +295,7 @@ def IsLacunarySeries (coeffs : ℕ → ℂ) (support : Set ℕ) : Prop :=
 The construction also uses Weierstrass products to place zeros
 at specific locations with controlled growth.
 -/
-def WeierstrassProduct (zeros : ℕ → ℂ) (n : ℕ) : ℂ → ℂ :=
+noncomputable def WeierstrassProduct (zeros : ℕ → ℂ) (n : ℕ) : ℂ → ℂ :=
   fun z => (Finset.range n).prod fun k => (1 - z / zeros k)
 
 /-
@@ -304,7 +308,7 @@ e^z has no zeros, so n(r, 0) = 0 for all r.
 But n(r, 1) ~ r/π for large r (roots at 2πik).
 So e^z does NOT have extreme value distribution (0 has special status).
 -/
-def expFunction : ℂ → ℂ := Complex.exp
+noncomputable def expFunction : ℂ → ℂ := Complex.exp
 
 /-- Complex exponential is never zero: exp(z) * exp(-z) = exp(0) = 1. -/
 private lemma complex_exp_ne_zero (z : ℂ) : Complex.exp z ≠ 0 := by
@@ -329,7 +333,7 @@ theorem exp_not_extreme : ¬ HasExtremeValueDistribution expFunction := by
   have h01 := (h 0 1 (by norm_num)).1
   obtain ⟨r, _, hgt⟩ := h01 1 one_pos 1 one_pos
   simp only [exp_counting_zero, Nat.cast_zero] at hgt
-  linarith [Nat.cast_nonneg (countingFunction expFunction 1 r)]
+  linarith [Nat.cast_nonneg (α := ℝ) (countingFunction expFunction 1 r)]
 
 /--
 **Example: Polynomial**

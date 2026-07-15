@@ -80,17 +80,20 @@ axiom longestSimilarRun (n : ℕ) : ℕ
 theorem consecutive_farey_gap {n : ℕ} (f g : FareyFraction n)
     (h : IsConsecutiveFarey f g) (hf : f.toRat < g.toRat) :
     g.toRat - f.toRat = 1 / (f.q * g.q : ℚ) := by
-  unfold FareyFraction.toRat
-  have hfq : (f.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have hgq : (g.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  field_simp
+  have hfq : (f.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by have := f.hq_pos; omega)
+  have hgq : (g.q : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by have := g.hq_pos; omega)
   unfold IsConsecutiveFarey at h
-  push_cast [Nat.sub_eq_iff_eq_add] at h ⊢
-  · linarith
-  · -- Need g.p * f.q ≥ f.p * g.q (from f < g)
-    by_contra hlt
-    push_neg at hlt
-    omega
+  -- Nat subtraction in `h` is genuine: g.p*f.q = f.p*g.q + 1
+  have hcast : (g.p : ℚ) * f.q - f.p * g.q = 1 := by
+    have hnat : g.p * f.q = f.p * g.q + 1 := by omega
+    have := congrArg (Nat.cast : ℕ → ℚ) hnat
+    push_cast at this
+    linarith
+  unfold FareyFraction.toRat
+  rw [div_sub_div _ _ hgq hfq,
+      div_eq_div_iff (mul_ne_zero hgq hfq) (mul_ne_zero hfq hgq)]
+  push_cast
+  linear_combination ((f.q : ℚ) * (g.q : ℚ)) * hcast
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 6: Mediant Properties
@@ -119,8 +122,8 @@ theorem mediant_between {n : ℕ} (f g : FareyFraction n)
     f.toRat < (f.p + g.p : ℚ) / (f.q + g.q : ℚ) ∧
     (f.p + g.p : ℚ) / (f.q + g.q : ℚ) < g.toRat := by
   unfold FareyFraction.toRat
-  have hfq : (f.q : ℚ) > 0 := Nat.cast_pos.mpr (by omega)
-  have hgq : (g.q : ℚ) > 0 := Nat.cast_pos.mpr (by omega)
+  have hfq : (f.q : ℚ) > 0 := Nat.cast_pos.mpr (by have := f.hq_pos; omega)
+  have hgq : (g.q : ℚ) > 0 := Nat.cast_pos.mpr (by have := g.hq_pos; omega)
   have hsum : (f.q + g.q : ℚ) > 0 := by positivity
   constructor
   · -- f.p/f.q < (f.p+g.p)/(f.q+g.q)
