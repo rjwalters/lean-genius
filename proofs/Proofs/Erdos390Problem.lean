@@ -21,7 +21,7 @@ The list `factors` must be strictly increasing, all elements > n,
 and their product equals n!. -/
 structure ValidFactorization (n : ℕ) where
   factors : List ℕ
-  sorted : factors.Sorted (· < ·)
+  sorted : factors.Pairwise (· < ·)
   all_gt : ∀ a ∈ factors, a > n
   nonempty : factors ≠ []
   prod_eq : factors.prod = n.factorial
@@ -29,13 +29,14 @@ structure ValidFactorization (n : ℕ) where
 /-- The maximum element of a valid factorization (the last element
 of the sorted list). -/
 def ValidFactorization.maxFactor {n : ℕ} (vf : ValidFactorization n) : ℕ :=
-  vf.factors.getLast (by exact vf.nonempty)
+  vf.factors.getLastD 0
 
 /-- f(n) is the minimal maximum factor over all valid factorizations. -/
-noncomputable def factorizationMax (n : ℕ) : ℕ :=
-  if h : ∃ vf : ValidFactorization n, True
-  then sInf { vf.maxFactor | vf : ValidFactorization n }
-  else 0
+noncomputable def factorizationMax (n : ℕ) : ℕ := by
+  classical
+  exact if h : ∃ vf : ValidFactorization n, True
+    then sInf { vf.maxFactor | vf : ValidFactorization n }
+    else 0
 
 /- ## Section II: Concrete Values via Explicit Witnesses -/
 
@@ -45,7 +46,7 @@ noncomputable def factorizationMax (n : ℕ) : ℕ :=
 /-- Witness: 3! = 6, factored as [6]. -/
 def vf3 : ValidFactorization 3 where
   factors := [6]
-  sorted := by simp [List.Sorted]
+  sorted := by simp [List.Pairwise]
   all_gt := by simp
   nonempty := by simp
   prod_eq := by native_decide
@@ -68,8 +69,9 @@ theorem factorizationMax_3_ge : ∀ vf : ValidFactorization 3, vf.maxFactor ≥ 
   | cons x xs =>
     cases xs with
     | nil =>
-      simp [List.prod] at hprod
-      simp [List.getLast] at *
+      rw [hf] at hprod
+      simp [List.prod, Nat.factorial] at hprod
+      simp only [List.getLastD_cons, List.getLastD_nil]
       omega
     | cons y ys =>
       exfalso
@@ -77,12 +79,12 @@ theorem factorizationMax_3_ge : ∀ vf : ValidFactorization 3, vf.maxFactor ≥ 
       have hy : y > x := by
         have hsorted := vf.sorted
         rw [hf] at hsorted
-        simp [List.Sorted, List.Pairwise] at hsorted
+        simp [List.Pairwise] at hsorted
         exact hsorted.1.1
       have hy5 : y ≥ 5 := by omega
       have hys_pos : ys.prod ≥ 1 :=
-        (List.prod_pos (fun a ha => by
-          have := hall4 a (by rw [hf]; simp [ha]); omega)).le
+        List.prod_pos (s := ys) (fun a ha => by
+          have := hall4 a (by rw [hf]; simp [ha]); omega)
       have hprod_ge : vf.factors.prod ≥ 4 * 5 := by
         rw [hf]; simp [List.prod]
         calc x * (y * ys.prod) ≥ x * y := by
@@ -97,7 +99,7 @@ theorem factorizationMax_3_ge : ∀ vf : ValidFactorization 3, vf.maxFactor ≥ 
 
 def vf4 : ValidFactorization 4 where
   factors := [24]
-  sorted := by simp [List.Sorted]
+  sorted := by simp [List.Pairwise]
   all_gt := by simp
   nonempty := by simp
   prod_eq := by native_decide
@@ -118,8 +120,9 @@ theorem factorizationMax_4_ge : ∀ vf : ValidFactorization 4, vf.maxFactor ≥ 
   | cons x xs =>
     cases xs with
     | nil =>
-      simp [List.prod] at hprod
-      simp [List.getLast] at *
+      rw [hf] at hprod
+      simp [List.prod, Nat.factorial] at hprod
+      simp only [List.getLastD_cons, List.getLastD_nil]
       omega
     | cons y ys =>
       exfalso
@@ -127,12 +130,12 @@ theorem factorizationMax_4_ge : ∀ vf : ValidFactorization 4, vf.maxFactor ≥ 
       have hy : y > x := by
         have hsorted := vf.sorted
         rw [hf] at hsorted
-        simp [List.Sorted, List.Pairwise] at hsorted
+        simp [List.Pairwise] at hsorted
         exact hsorted.1.1
       have hy6 : y ≥ 6 := by omega
       have hys_pos : ys.prod ≥ 1 :=
-        (List.prod_pos (fun a ha => by
-          have := hall5 a (by rw [hf]; simp [ha]); omega)).le
+        List.prod_pos (s := ys) (fun a ha => by
+          have := hall5 a (by rw [hf]; simp [ha]); omega)
       have hprod_ge : vf.factors.prod ≥ 5 * 6 := by
         rw [hf]; simp [List.prod]
         calc x * (y * ys.prod) ≥ x * y := by
@@ -145,8 +148,8 @@ theorem factorizationMax_4_ge : ∀ vf : ValidFactorization 4, vf.maxFactor ≥ 
 -- For n=5: 5! = 120 = 10 · 12
 def vf5 : ValidFactorization 5 where
   factors := [10, 12]
-  sorted := by simp [List.Sorted, List.Pairwise]
-  all_gt := by simp; omega
+  sorted := by simp [List.Pairwise]
+  all_gt := by decide
   nonempty := by simp
   prod_eq := by native_decide
 
@@ -169,20 +172,21 @@ theorem factorizationMax_5_ge : ∀ vf : ValidFactorization 5, vf.maxFactor ≥ 
     cases xs with
     | nil =>
       -- Single factor: x = 120 ≥ 12
-      simp [List.prod] at hprod
-      simp [List.getLast] at *
+      rw [hf] at hprod
+      simp [List.prod, Nat.factorial] at hprod
+      simp only [List.getLastD_cons, List.getLastD_nil]
       omega
     | cons y ys =>
       have hxy : x < y := by
         have hsorted := vf.sorted; rw [hf] at hsorted
-        simp [List.Sorted, List.Pairwise] at hsorted
+        simp [List.Pairwise] at hsorted
         exact hsorted.1.1
       cases ys with
       | nil =>
         -- Two factors [x, y]: x·y = 120, x ≥ 6, y > x. Need y ≥ 12.
         -- If y ≤ 11 then x ≤ 10, product ≤ 10·11 = 110 < 120.
-        simp [List.getLast]
-        rw [hf] at hprod; simp [List.prod] at hprod
+        simp only [List.getLastD_cons, List.getLastD_nil]
+        rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
         by_contra h_lt; push_neg at h_lt
         have : x * y ≤ 10 * 11 := Nat.mul_le_mul (by omega) (by omega)
         omega
@@ -191,11 +195,11 @@ theorem factorizationMax_5_ge : ∀ vf : ValidFactorization 5, vf.maxFactor ≥ 
         exfalso
         have hyz : y < z := by
           have hsorted := vf.sorted; rw [hf] at hsorted
-          simp [List.Sorted, List.Pairwise] at hsorted
+          simp [List.Pairwise] at hsorted
           exact hsorted.2.1.1
         have hzs_pos : zs.prod ≥ 1 :=
-          (List.prod_pos (fun a ha => by
-            have := hgt a (by rw [hf]; simp [ha]); omega)).le
+          List.prod_pos (s := zs) (fun a ha => by
+            have := hgt a (by rw [hf]; simp [ha]); omega)
         have hprod_ge : vf.factors.prod ≥ 6 * 7 * 8 := by
           rw [hf]; simp [List.prod]
           calc x * (y * (z * zs.prod))
@@ -210,8 +214,8 @@ theorem factorizationMax_5_ge : ∀ vf : ValidFactorization 5, vf.maxFactor ≥ 
 -- For n=6: 6! = 720 = 8 · 9 · 10
 def vf6 : ValidFactorization 6 where
   factors := [8, 9, 10]
-  sorted := by simp [List.Sorted, List.Pairwise]; omega
-  all_gt := by simp; omega
+  sorted := by decide
+  all_gt := by decide
   nonempty := by simp
   prod_eq := by native_decide
 
@@ -234,34 +238,35 @@ theorem factorizationMax_6_ge : ∀ vf : ValidFactorization 6, vf.maxFactor ≥ 
     cases xs with
     | nil =>
       -- Single factor: x = 720 ≥ 10
-      simp [List.prod] at hprod
-      simp [List.getLast] at *
+      rw [hf] at hprod
+      simp [List.prod, Nat.factorial] at hprod
+      simp only [List.getLastD_cons, List.getLastD_nil]
       omega
     | cons y ys =>
       have hxy : x < y := by
         have hsorted := vf.sorted; rw [hf] at hsorted
-        simp [List.Sorted, List.Pairwise] at hsorted
+        simp [List.Pairwise] at hsorted
         exact hsorted.1.1
       cases ys with
       | nil =>
         -- Two factors [x, y]: x·y = 720, x ≥ 7, y > x. Need y ≥ 10.
         -- If y ≤ 9 then x ≤ 8, product ≤ 8·9 = 72 < 720.
-        simp [List.getLast]
-        rw [hf] at hprod; simp [List.prod] at hprod
+        simp only [List.getLastD_cons, List.getLastD_nil]
+        rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
         by_contra h_lt; push_neg at h_lt
         have : x * y ≤ 8 * 9 := Nat.mul_le_mul (by omega) (by omega)
         omega
       | cons z zs =>
         have hyz : y < z := by
           have hsorted := vf.sorted; rw [hf] at hsorted
-          simp [List.Sorted, List.Pairwise] at hsorted
+          simp [List.Pairwise] at hsorted
           exact hsorted.2.1.1
         cases zs with
         | nil =>
           -- Three factors [x, y, z]: x·y·z = 720. Need z ≥ 10.
           -- If z ≤ 9 then y ≤ 8, x ≤ 7, product ≤ 7·8·9 = 504 < 720.
-          simp [List.getLast]
-          rw [hf] at hprod; simp [List.prod] at hprod
+          simp only [List.getLastD_cons, List.getLastD_nil]
+          rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
           by_contra h_lt; push_neg at h_lt
           have : x * (y * z) ≤ 7 * (8 * 9) :=
             Nat.mul_le_mul (by omega) (Nat.mul_le_mul (by omega) (by omega))
@@ -272,11 +277,11 @@ theorem factorizationMax_6_ge : ∀ vf : ValidFactorization 6, vf.maxFactor ≥ 
           exfalso
           have hzw : z < w := by
             have hsorted := vf.sorted; rw [hf] at hsorted
-            simp [List.Sorted, List.Pairwise] at hsorted
+            simp [List.Pairwise] at hsorted
             exact hsorted.2.2.1.1
           have hws_pos : ws.prod ≥ 1 :=
-            (List.prod_pos (fun a ha => by
-              have := hgt a (by rw [hf]; simp [ha]); omega)).le
+            List.prod_pos (s := ws) (fun a ha => by
+              have := hgt a (by rw [hf]; simp [ha]); omega)
           have hprod_ge : vf.factors.prod ≥ 7 * 8 * 9 * 10 := by
             rw [hf]; simp [List.prod]
             calc x * (y * (z * (w * ws.prod)))
@@ -294,8 +299,8 @@ theorem factorizationMax_6_ge : ∀ vf : ValidFactorization 6, vf.maxFactor ≥ 
 -- For n=7: 7! = 5040 = 14 · 18 · 20
 def vf7 : ValidFactorization 7 where
   factors := [14, 18, 20]
-  sorted := by simp [List.Sorted, List.Pairwise]; omega
-  all_gt := by simp; omega
+  sorted := by decide
+  all_gt := by decide
   nonempty := by simp
   prod_eq := by native_decide
 
@@ -320,24 +325,25 @@ theorem factorizationMax_7_ge : ∀ vf : ValidFactorization 7, vf.maxFactor ≥ 
     cases xs with
     | nil =>
       -- Single factor: x = 5040 ≥ 20
-      simp [List.prod] at hprod; simp [List.getLast] at *; omega
+      rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
+      simp only [List.getLastD_cons, List.getLastD_nil]; omega
     | cons y ys =>
       have hxy : x < y := by
         have hsorted := vf.sorted; rw [hf] at hsorted
-        simp [List.Sorted, List.Pairwise] at hsorted; exact hsorted.1.1
+        simp [List.Pairwise] at hsorted; exact hsorted.1.1
       cases ys with
       | nil =>
         -- Two factors [x, y]: x·y = 5040, x ≥ 8, y > x. Need y ≥ 20.
         -- If y ≤ 19 then x ≤ 18, product ≤ 18·19 = 342 < 5040.
-        simp [List.getLast]
-        rw [hf] at hprod; simp [List.prod] at hprod
+        simp only [List.getLastD_cons, List.getLastD_nil]
+        rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
         by_contra h_lt; push_neg at h_lt
         have : x * y ≤ 18 * 19 := Nat.mul_le_mul (by omega) (by omega)
         omega
       | cons z zs =>
         have hyz : y < z := by
           have hsorted := vf.sorted; rw [hf] at hsorted
-          simp [List.Sorted, List.Pairwise] at hsorted; exact hsorted.2.1.1
+          simp [List.Pairwise] at hsorted; exact hsorted.2.1.1
         cases zs with
         | nil =>
           -- Three factors [x, y, z]: x·y·z = 5040. Need z ≥ 20.
@@ -356,8 +362,8 @@ theorem factorizationMax_7_ge : ∀ vf : ValidFactorization 7, vf.maxFactor ≥ 
           -- z=18: 280 = x·y, x<y<18. 280/8=35. ≥18. No.
           -- (Odd z: 5040/z often not integer. z=9:560, z=11:not int, z=13:not int, z=17:not int, z=19:not int)
           -- So no valid triple with z ≤ 19 exists.
-          simp [List.getLast]
-          rw [hf] at hprod; simp [List.prod] at hprod
+          simp only [List.getLastD_cons, List.getLastD_nil]
+          rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
           by_contra h_lt; push_neg at h_lt
           -- h_lt : z < 20, i.e., z ≤ 19
           -- Split: x ≤ 14 → product too small. x ≥ 15 → enumerate.
@@ -378,10 +384,10 @@ theorem factorizationMax_7_ge : ∀ vf : ValidFactorization 7, vf.maxFactor ≥ 
           exfalso
           have hzw : z < w := by
             have hsorted := vf.sorted; rw [hf] at hsorted
-            simp [List.Sorted, List.Pairwise] at hsorted; exact hsorted.2.2.1.1
+            simp [List.Pairwise] at hsorted; exact hsorted.2.2.1.1
           have hws_pos : ws.prod ≥ 1 :=
-            (List.prod_pos (fun a ha => by
-              have := hall8 a (by rw [hf]; simp [ha]); omega)).le
+            List.prod_pos (s := ws) (fun a ha => by
+              have := hall8 a (by rw [hf]; simp [ha]); omega)
           have hprod_ge : vf.factors.prod ≥ 8 * 9 * 10 * 11 := by
             rw [hf]; simp [List.prod]
             calc x * (y * (z * (w * ws.prod)))
@@ -399,8 +405,8 @@ theorem factorizationMax_7_ge : ∀ vf : ValidFactorization 7, vf.maxFactor ≥ 
 -- (four factors give ≤ 32760, five give ≥ 154440). So f(8) = 16.
 def vf8 : ValidFactorization 8 where
   factors := [12, 14, 15, 16]
-  sorted := by simp [List.Sorted, List.Pairwise]; omega
-  all_gt := by simp; omega
+  sorted := by decide
+  all_gt := by decide
   nonempty := by simp
   prod_eq := by native_decide
 
@@ -425,30 +431,31 @@ theorem factorizationMax_8_ge : ∀ vf : ValidFactorization 8, vf.maxFactor ≥ 
     cases xs with
     | nil =>
       -- Single factor: x = 40320 ≥ 16
-      simp [List.prod] at hprod; simp [List.getLast] at *; omega
+      rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
+      simp only [List.getLastD_cons, List.getLastD_nil]; omega
     | cons y ys =>
       have hxy : x < y := by
         have hsorted := vf.sorted; rw [hf] at hsorted
-        simp [List.Sorted, List.Pairwise] at hsorted; exact hsorted.1.1
+        simp [List.Pairwise] at hsorted; exact hsorted.1.1
       cases ys with
       | nil =>
         -- Two factors [x, y]: x·y = 40320, x ≥ 9, y > x. Need y ≥ 16.
         -- If y ≤ 15 then x ≤ 14, product ≤ 14·15 = 210 < 40320.
-        simp [List.getLast]
-        rw [hf] at hprod; simp [List.prod] at hprod
+        simp only [List.getLastD_cons, List.getLastD_nil]
+        rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
         by_contra h_lt; push_neg at h_lt
         have : x * y ≤ 14 * 15 := Nat.mul_le_mul (by omega) (by omega)
         omega
       | cons z zs =>
         have hyz : y < z := by
           have hsorted := vf.sorted; rw [hf] at hsorted
-          simp [List.Sorted, List.Pairwise] at hsorted; exact hsorted.2.1.1
+          simp [List.Pairwise] at hsorted; exact hsorted.2.1.1
         cases zs with
         | nil =>
           -- Three factors [x, y, z]: x·y·z = 40320. Need z ≥ 16.
           -- If z ≤ 15 then product ≤ 13·14·15 = 2730 < 40320.
-          simp [List.getLast]
-          rw [hf] at hprod; simp [List.prod] at hprod
+          simp only [List.getLastD_cons, List.getLastD_nil]
+          rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
           by_contra h_lt; push_neg at h_lt
           have : x * (y * z) ≤ 13 * (14 * 15) :=
             Nat.mul_le_mul (by omega) (Nat.mul_le_mul (by omega) (by omega))
@@ -456,13 +463,13 @@ theorem factorizationMax_8_ge : ∀ vf : ValidFactorization 8, vf.maxFactor ≥ 
         | cons w ws =>
           have hzw : z < w := by
             have hsorted := vf.sorted; rw [hf] at hsorted
-            simp [List.Sorted, List.Pairwise] at hsorted; exact hsorted.2.2.1.1
+            simp [List.Pairwise] at hsorted; exact hsorted.2.2.1.1
           cases ws with
           | nil =>
             -- Four factors [x, y, z, w]: x·y·z·w = 40320. Need w ≥ 16.
             -- If w ≤ 15 then product ≤ 12·13·14·15 = 32760 < 40320.
-            simp [List.getLast]
-            rw [hf] at hprod; simp [List.prod] at hprod
+            simp only [List.getLastD_cons, List.getLastD_nil]
+            rw [hf] at hprod; simp [List.prod, Nat.factorial] at hprod
             by_contra h_lt; push_neg at h_lt
             have : x * (y * (z * w)) ≤ 12 * (13 * (14 * 15)) :=
               Nat.mul_le_mul (by omega) (Nat.mul_le_mul (by omega)
@@ -474,11 +481,11 @@ theorem factorizationMax_8_ge : ∀ vf : ValidFactorization 8, vf.maxFactor ≥ 
             exfalso
             have hwv : w < v := by
               have hsorted := vf.sorted; rw [hf] at hsorted
-              simp [List.Sorted, List.Pairwise] at hsorted
+              simp [List.Pairwise] at hsorted
               exact hsorted.2.2.2.1.1
             have hvs_pos : vs.prod ≥ 1 :=
-              (List.prod_pos (fun a ha => by
-                have := hall9 a (by rw [hf]; simp [ha]); omega)).le
+              List.prod_pos (s := vs) (fun a ha => by
+                have := hall9 a (by rw [hf]; simp [ha]); omega)
             have hprod_ge : vf.factors.prod ≥ 9 * 10 * 11 * 12 * 13 := by
               rw [hf]; simp [List.prod]
               calc x * (y * (z * (w * (v * vs.prod))))
@@ -498,7 +505,7 @@ theorem factorizationMax_7_eq : factorizationMax 7 = 20 := by
   simp only [show ∃ _ : ValidFactorization 7, True from ⟨vf7, trivial⟩, dite_true]
   apply Nat.le_antisymm
   · exact Nat.sInf_le ⟨vf7, by native_decide⟩
-  · apply Nat.le_sInf ⟨vf7.maxFactor, ⟨vf7, rfl⟩⟩
+  · refine le_csInf ⟨vf7.maxFactor, vf7, rfl⟩ ?_
     rintro m ⟨vf, rfl⟩
     exact factorizationMax_7_ge vf
 
@@ -508,7 +515,7 @@ theorem factorizationMax_8_eq : factorizationMax 8 = 16 := by
   simp only [show ∃ _ : ValidFactorization 8, True from ⟨vf8, trivial⟩, dite_true]
   apply Nat.le_antisymm
   · exact Nat.sInf_le ⟨vf8, by native_decide⟩
-  · apply Nat.le_sInf ⟨vf8.maxFactor, ⟨vf8, rfl⟩⟩
+  · refine le_csInf ⟨vf8.maxFactor, vf8, rfl⟩ ?_
     rintro m ⟨vf, rfl⟩
     exact factorizationMax_8_ge vf
 
@@ -517,15 +524,17 @@ theorem factorizationMax_8_eq : factorizationMax 8 = 16 := by
 /-- For any valid factorization of n!, the maximum factor is > n. -/
 theorem maxFactor_gt (n : ℕ) (vf : ValidFactorization n) : vf.maxFactor > n := by
   unfold ValidFactorization.maxFactor
-  exact vf.all_gt _ (List.getLast_mem vf.nonempty)
+  obtain ⟨hd, tl, hf⟩ := List.exists_cons_of_ne_nil vf.nonempty
+  refine vf.all_gt _ ?_
+  rw [hf]; simp only [List.getLastD_cons]; exact List.getLastD_mem_cons
 
 /-- A single-factor factorization [n!] is always valid for n ≥ 3,
 giving an upper bound f(n) ≤ n!. -/
 theorem factorizationMax_le_factorial (n : ℕ) (hn : n ≥ 3) :
     ∃ vf : ValidFactorization n, vf.maxFactor = n.factorial := by
   refine ⟨⟨[n.factorial], ?_, ?_, ?_, ?_⟩, ?_⟩
-  · simp [List.Sorted]
-  · simp; omega
+  · simp [List.Pairwise]
+  · simp only [List.mem_singleton, forall_eq]; exact Nat.lt_factorial_self hn
   · simp
   · simp
   · simp [ValidFactorization.maxFactor]
