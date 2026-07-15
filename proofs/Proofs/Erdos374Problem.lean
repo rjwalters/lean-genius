@@ -152,14 +152,15 @@ private theorem not_prime_dvd_factorialProduct {p : ℕ} (hp : p.Prime) (seq : L
   induction seq with
   | nil =>
     simp [factorialProduct, List.foldl]
-    exact fun h => absurd (Nat.le_of_dvd Nat.one_pos h) (by omega)
+    intro h
+    exact absurd h (by have := hp.two_le; omega)
   | cons x xs ih =>
     rw [factorialProduct_cons]
     intro h
     rcases hp.dvd_mul.mp h with hx | hxs
     · -- p ∣ x! implies p ≤ x, contradicting x < p
       exact absurd (hp.dvd_factorial.mp hx)
-        (not_le_of_lt (hlt x (List.mem_cons_self x xs)))
+        (not_le.mpr (hlt x List.mem_cons_self))
     · -- p ∣ factorialProduct xs contradicts induction hypothesis
       exact ih (fun a ha => hlt a (List.mem_cons_of_mem x ha)) hxs
 
@@ -188,16 +189,17 @@ theorem no_square_factorial_product_for_primes (p : ℕ) (hp : p.Prime)
   -- factorialProduct seq = factorialProduct init * p!
   have hprod : factorialProduct seq = factorialProduct init * p.factorial := by
     rw [hseq, factorialProduct_append]
+    simp [factorialProduct, List.foldl]
   -- p! = p * (p-1)!
   have hfact : p.factorial = p * (p - 1).factorial := by
-    have := Nat.factorial_succ (p - 1)
-    rwa [Nat.succ_eq_add_one, Nat.sub_add_cancel hp.pos] at this
+    have h := Nat.factorial_succ (p - 1)
+    rwa [Nat.sub_add_cancel hp.pos] at h
   -- p does not divide factorialProduct init (all elements < p)
   have hndvd_init : ¬(p ∣ factorialProduct init) :=
     not_prime_dvd_factorialProduct hp init hlt
   -- p does not divide (p-1)!
   have hndvd_prev : ¬(p ∣ (p - 1).factorial) := by
-    intro h; exact absurd (hp.dvd_factorial.mp h) (by omega)
+    intro h; exact absurd (hp.dvd_factorial.mp h) (by have := hp.two_le; omega)
   -- Combine: factorialProduct seq = p * M where M = factorialProduct init * (p-1)!
   set M := factorialProduct init * (p - 1).factorial with hM_def
   have hprod2 : factorialProduct seq = p * M := by
