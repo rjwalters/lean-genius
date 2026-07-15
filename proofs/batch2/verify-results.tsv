@@ -307,7 +307,7 @@ BuffonsNeedleOQ01OQ04	GREEN
 BuffonsNeedleOQ02	GREEN	
 BuffonsNeedleOQ02OQ01	GREEN	
 BuffonsNeedleOQ02OQ01OQ01	GREEN	
-BuffonsNeedleOQ02OQ02	RESIDUAL	signature-drift
+BuffonsNeedleOQ02OQ02	GREEN	
 BuffonsNeedleOQ02OQ03	RESIDUAL	proof-drift
 BuffonsNoodle	GREEN	
 BuffonsNoodleOQ01	GREEN	
@@ -2027,7 +2027,7 @@ FundamentalArithmeticOQ02	RESIDUAL	unknown-const:Zsqrtd.mul_def
 FundamentalTheoremAlgebra	RESIDUAL	type-mismatch
 FundamentalTheoremAlgebraOQ04OQ03OQ01OQ01	GREEN	
 FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02	GREEN	
-FundamentalTheoremAlgebraOQ04OQ04	RESIDUAL	parse-error
+FundamentalTheoremAlgebraOQ04OQ04	GREEN	
 FundamentalTheoremCalculus	GREEN	
 FundamentalTheoremCalculusLebesgueOQ04	GREEN	
 FundamentalTheoremCalculusOQ04	GREEN	
@@ -2035,7 +2035,7 @@ FundamentalTheoremCalculusStokes	RESIDUAL	type-mismatch
 FundamentalTheoremCalculusStokesAristotle	GREEN	unclassified
 FurstenbergCorrespondence	GREEN	type-mismatch
 FurstenbergCorrespondenceOQ01	RESIDUAL	instance-synth
-FurstenbergCorrespondenceOQ02	RESIDUAL	parse-error
+FurstenbergCorrespondenceOQ02	GREEN	
 GCDAlgorithmOQ01OQ03OQ01	GREEN	
 GCDAlgorithmOQ01OQ03OQ01OQ01	GREEN	
 GcdAlgorithmOQ02	GREEN	
@@ -2209,7 +2209,7 @@ LawOfCosines	GREEN
 LawOfCosinesOQ01OQ01OQ01	GREEN	
 LawOfCosinesOQ01OQ01OQ03	RESIDUAL	type-mismatch
 LawOfCosinesOQ01OQ04	RESIDUAL	type-mismatch
-LawOfCosinesOQ03OQ02	RESIDUAL	parse-error
+LawOfCosinesOQ03OQ02	GREEN	
 LawOfCosinesOQ04OQ01	GREEN	
 LawOfCosinesOQ04OQ01Bisector	GREEN	
 LawOfCosinesOQ07OQ01	GREEN	

@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 10 (8-slot, #38065, 2026-07-15)
+
+**+4 GREEN**: FurstenbergCorrespondenceOQ02 (Ergodic .preErgodic->.toPreErgodic; @[reducible] on custom
+MeasurableSpace where-defs; pattern binders in structure where no longer parse), FundamentalTheoremAlgebraOQ04OQ04
+(implicit (p:=p) no longer inferred via downstream instance; ∃ Type*->Type for Type-0 witness),
+LawOfCosinesOQ03OQ02 (SONNET: rw-at-field-projection disallowed; Real.cos_injOn_Icc->injOn_cos; div_left_inj' gone),
+BuffonsNeedleOQ02OQ02 (SONNET: ContDiff/Real.Pi.Bounds import drift; integral_add_adjacent_intervals needs (μ:=)).
+MODEL EXPERIMENT: Sonnet 3/3 GREEN (Maschke 92s/58k, LawOfCosines 4.5m/86k, Buffons 2m/63k). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 9 (8-slot, #38065, 2026-07-15)
 
 **+4 GREEN**: Erdos1167Problem (Erdos-Hajnal-Rado, 13 seams: λ illegal ANYWHERE in identifier

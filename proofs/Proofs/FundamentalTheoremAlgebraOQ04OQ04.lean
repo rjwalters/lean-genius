@@ -120,11 +120,8 @@ axiom Xn_sub_p_irred_Qp (n : ℕ) (hn : 1 ≤ n) :
 
 /-- X^n - C p ≠ 0 over ℚ_p for n ≥ 1 (has natDegree n ≥ 1, so nonzero). -/
 theorem Xn_sub_p_ne_zero_Qp (n : ℕ) (hn : 1 ≤ n) :
-    (X ^ n - C (p : ℚ_[p]) : ℚ_[p][X]) ≠ 0 := by
-  have h : (C (p : ℚ_[p])).natDegree < (X ^ n : ℚ_[p][X]).natDegree := by
-    simp [natDegree_C, natDegree_pow, natDegree_X]; omega
-  have hne := natDegree_sub_eq_left_of_natDegree_lt h
-  intro heq; simp [heq] at hne; skip; omega
+    (X ^ n - C (p : ℚ_[p]) : ℚ_[p][X]) ≠ 0 :=
+  (monic_X_pow_sub_C (p : ℚ_[p]) (by omega : n ≠ 0)).ne_zero
 
 /-- natDegree(X^n - C p) = n over ℚ_p. -/
 theorem natDegree_Xn_sub_p (n : ℕ) (hn : 1 ≤ n) :
@@ -182,14 +179,15 @@ theorem real_padic_closure_contrast :
 
 /-- ℚ_p has field extensions of every degree n ≥ 1 (AdjoinRoot(X^n - p) has degree n). -/
 theorem padic_extensions_unbounded (n : ℕ) (hn : 1 ≤ n) :
-    ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_[p] K), Module.finrank ℚ_[p] K = n :=
-  ⟨AdjoinRoot (X ^ n - C (p : ℚ_[p])), inferInstance, inferInstance,
-   padic_root_extension_finrank n hn⟩
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ_[p] K), Module.finrank ℚ_[p] K = n := by
+  haveI : Fact (Irreducible (X ^ n - C (p : ℚ_[p]))) := ⟨Xn_sub_p_irred_Qp n hn⟩
+  exact ⟨AdjoinRoot (X ^ n - C (p : ℚ_[p])), inferInstance, inferInstance,
+    padic_root_extension_finrank (p := p) n hn⟩
 
 /-- For any bound N, ℚ_p has an extension of degree exceeding N. -/
 theorem padic_extensions_strictly_unbounded (N : ℕ) :
-    ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_[p] K), N < Module.finrank ℚ_[p] K := by
-  obtain ⟨K, hf, ha, hrk⟩ := padic_extensions_unbounded (N + 1) (by omega)
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ_[p] K), N < Module.finrank ℚ_[p] K := by
+  obtain ⟨K, hf, ha, hrk⟩ := padic_extensions_unbounded (p := p) (N + 1) (by omega)
   exact ⟨K, hf, ha, hrk ▸ by omega⟩
 
 /-- **Degree contrast summary**: [ℂ:ℝ] = 2; [ℚ_p(p^{1/n}):ℚ_p] = n; extensions unbounded;
@@ -198,7 +196,7 @@ theorem degree_contrast_summary :
     Module.finrank ℝ ℂ = 2 ∧
     (∀ n : ℕ, 1 ≤ n →
       Module.finrank ℚ_[p] (AdjoinRoot (X ^ n - C (p : ℚ_[p]))) = n) ∧
-    (∀ n : ℕ, 1 ≤ n → ∃ (K : Type*) (_ : Field K) (_ : Algebra ℚ_[p] K),
+    (∀ n : ℕ, 1 ≤ n → ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ_[p] K),
       Module.finrank ℚ_[p] K = n) ∧
     ¬ Module.Finite ℚ_[p] (AlgebraicClosure ℚ_[p]) :=
   ⟨real_complex_finrank, padic_root_extension_finrank,
