@@ -599,7 +599,7 @@ ElementaryQuadraticReciprocityOQ03OQ01	GREEN
 ElementaryQuadraticReciprocityOQ03OQ01OQ02	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
-ElementaryQuadraticReciprocityOQ03OQ03	RESIDUAL	unknown-const:legendreSym.eq_one_iff_isSquare
+ElementaryQuadraticReciprocityOQ03OQ03	GREEN	
 Erdos1000OQ01	RESIDUAL	rewrite-drift
 Erdos1000OQ02	GREEN	type-mismatch
 Erdos1000Problem	GREEN	
@@ -1326,7 +1326,7 @@ Erdos489Problem	GREEN
 Erdos48Problem	GREEN	
 Erdos490Aristotle	GREEN	parse-error
 Erdos490OQ01	GREEN	
-Erdos490ProblemAristotle	RESIDUAL	unknown-const:Nat.eq_zero_of_mul_eq_zero_left
+Erdos490ProblemAristotle	GREEN	
 Erdos491Problem	GREEN	
 Erdos492Problem	RESIDUAL	unknown-const:Int.frac
 Erdos494Problem	GREEN	
@@ -1997,7 +1997,7 @@ FourierSeriesOQ02OQ02	RESIDUAL	unclassified
 FourierSeriesOQ02OQ03	RESIDUAL	proof-drift
 FourierSeriesOQ02OQ03OQ02	RESIDUAL	unknown-const:Real.exp_le_one_of_nonpos
 FourierSeriesOQ02OQ03WIP01	GREEN	
-FourierSeriesOQ02OQ04	RESIDUAL	unclassified
+FourierSeriesOQ02OQ04	GREEN	
 FourierSeriesOQ04	GREEN	
 FourierSeriesOQ04OQ01	RESIDUAL	type-mismatch
 FourierSeriesOQ04OQ01Incomplete01	RESIDUAL	type-mismatch

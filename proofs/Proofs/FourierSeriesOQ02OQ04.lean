@@ -140,6 +140,8 @@ private theorem wFunc_fourierCoeff (α : ℝ) (hα : 0 < α) (k₀ : ℕ) :
       fun x => ∑' k : ℕ, fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℝ)^k • fourier ((2:ℤ)^k) x)
     from funext fun x => by rw [← tsum_mul_left]]
   rw [integral_tsum
+    (f := fun (k : ℕ) (x : AddCircle T) =>
+      fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℝ)^k • fourier ((2:ℤ)^k) x))
     (fun k => (((fourier (-(2:ℤ)^k₀)).continuous.mul
       ((continuous_const.smul (fourier ((2:ℤ)^k)).continuous))).aestronglyMeasurable))
     (wFunc_norm_tsum_ne_top α hα _)]
