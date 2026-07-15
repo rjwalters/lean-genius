@@ -1,3 +1,16 @@
+# DOCTOR SINGLE-PROOF BATCH 17 (8-slot, all SONNET, post-/login wave, #38065, 2026-07-15)
+
+**+4 GREEN**: Erdos1026OQ05Extremal ((natExpr:ℤ) pushes cast to leaves -> ((n:ℕ):ℤ); apply f ⟨⟩ ->
+refine f ⟨⟩ ?_ for csSup_le), Erdos1136Problem (simp at h auto-closes -> drop trailing; bare (by omega)
+arg needs show-ascription), Erdos1151OQ04Aristotle (field_simp now cancels π fully -> drop mul_right_cancel₀),
+Erdos1169Problem (universe metavars: pin SOURCE def omega1:Ordinal.{0} not use-sites; Ordinal.omega->omega0,
+Ordinal.IsLimit->Order.IsSuccLimit). Repairs: none.
+
+NOTE: BallotProblemOQ01OQ04OQ01 owned by a live pre-/login agent in worktree mig-ballot-recover —
+NOT re-dispatched (a duplicate slot-0 agent correctly stood down; collision-detection worked). Collect
+mig/BallotProblemOQ01OQ04OQ01 when that agent completes. EQR OQ03OQ02OQ03 deferred behind parent OQ01;
+Erdos100OQ01 deferred behind parent Erdos100OQ01WIP01.
+
 # DOCTOR SINGLE-PROOF BATCH 16 (8-slot, #38065, 2026-07-15)
 
 **+5 GREEN (all Sonnet)**: DesarguesTheoremOQ01OQ01, CombinationsFormulaOQ02 (Nat.choose_symm dir flip

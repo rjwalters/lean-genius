@@ -42,8 +42,10 @@ theorem n_mul_chebyshevAngle (n : ℕ) (hn : 0 < n) (k : Fin n) :
 
 /-- The Chebyshev node angles are positive. -/
 theorem chebyshevAngle_pos (n : ℕ) (k : Fin n) :
-    0 < (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) :=
-  div_pos (mul_pos (by positivity) Real.pi_pos) (by positivity)
+    0 < (2 * k.val + 1 : ℝ) * Real.pi / (2 * n) := by
+  have hn : 0 < n := lt_of_le_of_lt (Nat.zero_le k.val) k.isLt
+  have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  exact div_pos (mul_pos (by positivity) Real.pi_pos) (by positivity)
 
 /-- The Chebyshev node angles are less than π, using k.val < n. -/
 theorem chebyshevAngle_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
@@ -51,7 +53,7 @@ theorem chebyshevAngle_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
   rw [div_lt_iff₀ (by positivity : (0 : ℝ) < 2 * n)]
   have : k.val + 1 ≤ n := k.isLt
   have hcast : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast by omega
-  linarith [Real.pi_pos]
+  nlinarith [Real.pi_pos]
 
 /-- The Chebyshev node angles lie in the open interval (0, π). -/
 theorem chebyshevAngle_mem_Ioo (n : ℕ) (hn : 0 < n) (k : Fin n) :
@@ -67,11 +69,11 @@ theorem chebyshevAngle_ne_of_ne (n : ℕ) (hn : 0 < n) (i j : Fin n) (hij : i �
   apply Fin.ext
   have hpos : (0 : ℝ) < 2 * n := by positivity
   have hpi : Real.pi > 0 := Real.pi_pos
-  have h2 : (2 * (i.val : ℝ) + 1) * Real.pi = (2 * j.val + 1) * Real.pi := by
-    field_simp [hpos.ne'] at h; linarith
-  have h3 : (2 * (i.val : ℝ) + 1) = 2 * j.val + 1 :=
-    mul_right_cancel₀ hpi.ne' h2
-  exact_mod_cast by linarith
+  have h2 : (2 * (i.val : ℝ) + 1) = 2 * j.val + 1 := by
+    field_simp [hpos.ne', hpi.ne'] at h
+    linarith
+  have h4 : (i.val : ℝ) = j.val := by linarith
+  exact_mod_cast h4
 
 /-
 ## Section 2: Aristotle Targets
@@ -107,7 +109,6 @@ theorem chebyshevNode_is_root (n : ℕ) (hn : 0 < n) (k : Fin n) :
     push_cast
     have : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
     field_simp
-    ring
   rw [hmul]
   exact cos_odd_half_pi k.val
 
