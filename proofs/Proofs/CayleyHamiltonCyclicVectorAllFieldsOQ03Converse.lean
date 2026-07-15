@@ -78,7 +78,7 @@ theorem span_cyclic_implies_nonderogatoryOp [FiniteDimensional K V]
     calc Module.finrank K V
         = Module.finrank K
             (Submodule.span K (Set.range fun i : Fin d => (T ^ (i : ℕ)) v)) := by
-          rw [hWtop, finrank_top]
+          rw [← hW_def, hWtop, finrank_top]
       _ = (Set.range fun i : Fin d => (T ^ (i : ℕ)) v).finrank K := rfl
       _ ≤ d := hcard
   -- `d ≤ finrank K V`, because `minpoly K T ∣ T.charpoly` and the characteristic
