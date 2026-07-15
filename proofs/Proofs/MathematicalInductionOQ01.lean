@@ -27,6 +27,7 @@ principle: if a property holds for all ordinals less than α (the
 -/
 
 open Ordinal
+open scoped Classical
 
 namespace TransfiniteInduction
 
@@ -70,11 +71,11 @@ theorem transfinite_induction (P : Ordinal → Prop)
 theorem transfinite_induction_cases (P : Ordinal → Prop)
     (hzero : P 0)
     (hsucc : ∀ α, P α → P (Order.succ α))
-    (hlimit : ∀ α, Ordinal.IsLimit α → (∀ β, β < α → P β) → P α) :
+    (hlimit : ∀ α, Order.IsSuccLimit α → (∀ β, β < α → P β) → P α) :
     ∀ α, P α := by
   apply transfinite_induction
   intro α ih
-  rcases Ordinal.zero_or_succ_or_limit α with rfl | ⟨β, rfl⟩ | hlim
+  rcases Ordinal.zero_or_succ_or_isSuccLimit α with rfl | ⟨β, rfl⟩ | hlim
   · exact hzero
   · exact hsucc β (ih β (Order.lt_succ β))
   · exact hlimit α hlim ih
@@ -91,7 +92,7 @@ theorem transfinite_induction_cases (P : Ordinal → Prop)
 theorem course_of_values (P : ℕ → Prop)
     (h : ∀ n, (∀ m, m < n → P m) → P n) :
     ∀ n, P n :=
-  Nat.strongRecOn h
+  fun n => Nat.strongRecOn n h
 
 /-- Standard (weak) induction follows from course-of-values:
     From P(0) and P(n) → P(n+1), derive P(n) for all n. -/
