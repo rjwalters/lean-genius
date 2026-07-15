@@ -2449,3 +2449,70 @@ decide-maxrecdepth / partenat-removal classes, exactly ONE (the Dirichlet chain)
 Low reported error counts (3–5) reliably explode into multi-site rewrites once the head blocker
 clears. Remaining fixable estimate: a handful (<5%) of the ~400 A–M/Erdos<600 residuals, each
 requiring real proof surgery rather than a rename/seam. Recommend the seam be considered exhausted.
+
+---
+
+## Increment 50 (Doctor-b, deep-rework clusters, A–M + Erdos<600)
+
+**+5 GREEN**. All 4 operator-assigned statement-repair files fixed to intended-true form,
+plus one partenat-cluster file.
+
+### Statement repairs (intended-true, never weakened/sorried)
+- **BertrandsPostulateOQ03OQ04OQ01** — false exponent inequality. `cramer_implies_primeGapConjecture`
+  small-x branch asserted `x^0.525 ≤ x^ε` for ε<0.525, base x≥2 (FALSE: BHP's interval is strictly
+  WIDER, cannot supply a prime in the narrower target). Corrected to the genuine asymptotic
+  (eventual) conclusion; updated `cramer_hierarchy` clause (2) to match. Plus rpow
+  `(2/ε)*(ε/2)=1` via `show ... by field_simp; rpow_one`; `nextPrimeFrom_ge` bind find_spec.2 to
+  a typed hyp so omega sees the same opaque term.
+- **FermatsLastTheoremOQ03** — `fermat_n1` (solution (1,1,1+1)) false in char 2 (1+1=0⇒z=0). Added
+  `[NeZero (2:K)]` (the intended char≠2 hypothesis), proved z=2≠0.
+- **Erdos1125Problem** — `kemperman_equiv` sign typo (`satisfiesKempermanAlt` RHS `f(x+h)-f(x+2h)`
+  should be `f(x+2h)-f(x)`); matched `kemperman_interpretation` to the same true RHS. Follow-through:
+  the example theorems were also false vs the literal one-sided Kemperman inequality — `linear_satisfies`
+  needs `0≤a`; `square_satisfies` (x² convex ⇒ Kemperman) is FALSE (violated at x=-2h) → replaced with
+  true `square_not_satisfies` + `nonDecreasing_satisfies`; removed the false `convex_satisfies` axiom.
+- **Erdos1112Problem** — `r2_23_equals_2` b₁<5 fallback used `A n=2n+1` (FALSE: {odd}+{odd}=evens can
+  meet lacunary B). Dropped the artefactual `B 0 ≥ 5` hyp from `erdos_graham_1980` axiom (avoidance
+  holds for all 2-lacunary B) and removed the bogus branch.
+
+### partenat/emultiplicity cluster — RECIPE + one green
+- **KummerTheoremOQ03** (+GREEN). Parent KummerTheorem already migrated `kummer` to
+  `emultiplicity p _ = (_ : ℕ∞)`. Recipe:
+  - `multiplicity.pow_dvd_iff_le_multiplicity` → `pow_dvd_iff_le_emultiplicity`
+    (`p^k ∣ b ↔ (↑k : ℕ∞) ≤ emultiplicity p b`).
+  - `PartENat.coe_le_coe` → `Nat.cast_le` (on ℕ∞).
+  - qualify parent lemmas: `open KummerTheorem` (prime_dvd_choose_prime_pow, kummer were unqualified).
+  - `p^1` no longer defeq for omega: `rw [pow_one]` before omega, `rwa [pow_one]` to bridge
+    `(p^1).choose` vs `p.choose`.
+  - `.symm` on a fresh iff rewrote the wrong side — drop it.
+  - Also useful (from Chebyshev probe): `Nat.factorization_factorial hp (log p n < b)` gives
+    `(n!).factorization p = ∑ i∈Ico 1 b, n/p^i` DIRECTLY over ℕ (bypasses the whole
+    PartENat/multiplicity_eq_factorization detour). `Nat.log_lt` → `Nat.log_lt_self p (x≠0)`.
+
+**Probed-and-reverted (genuinely deep, NOT the clean recipe)**:
+- **ChebyshevPNTBridgeOQ01** (partenat). The `factorization_factorial`/`log_lt_self` head cleared
+  (2 lemmas), but the file has ~10 independent downstream sites: div-carry `2n/p^i - 2(n/p^i) ≤ 1`
+  (omega can't do div; needs manual `Nat.add_mul_div_right` decomposition and it fought back on
+  `set d`), `Nat.div_eq_zero_iff` arity change, two Type mismatches, an `unterminated comment` near
+  L199. Real multi-site surgery.
+- **GeneralizeProofs cluster** (Erdos643Problem, LawsOfLargeNumbersOQ01Aristotle): the "delete
+  vendored block" recipe is NOT clean here — these files have NO active `import Mathlib` (the only
+  one is commented inside the header `/- ```lean ``` -/`), so the vendored `namespace
+  Harmonic.GeneralizeProofs` block was anchoring resolution. Fix = PREPEND a real `import Mathlib`
+  AND delete the block (lines 94–296 / 78–280). That gets Erdos643 to deep proof timeouts
+  (heartbeat/whnf, kernel unknown constant — reverted) and LawsOfLargeNumbers to just 5 errors, of
+  which 3 greened cheaply (`tendsto_inverse_atTop_nhds_zero_nat`→`tendsto_one_div_atTop_nhds_zero_nat`
+  with `(𝕜:=ℝ)` pin; `LT.lt.not_le`→`.not_ge`; an aesop-loop congr' rewritten explicitly) but the
+  last 2 are deep probability API drift (`integral_add` pattern in a covariance unfolding;
+  `Kernel.indepFun/indepSet_iff_measure...`) — reverted.
+
+**decide-maxrecdepth cluster**: in my partition only AreaOfCircleOQ01OQ03 and ErdosMordellChordIdentity
+carry `set_option maxRecDepth`; both fail on proof drift (simp/rewrite/grind), NOT recursion budget.
+Not a bump-the-number cluster here.
+
+**VERDICT**: the statement-repair files were the highest-yield deep targets (4/4 greened — each a
+genuine content bug: false direction / missing char hyp / sign typo / unsound constructive branch).
+The partenat cluster is deep EXCEPT where a green parent already did the emultiplicity migration
+(KummerTheoremOQ03). The GeneralizeProofs and decide clusters are NOT mechanical in this partition —
+they bottom out in domain proof-drift (probability/measure, div arithmetic) after the seam layer
+clears. Recipes above are reusable; new greens now require real proof surgery.
