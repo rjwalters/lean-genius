@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 19 (8-slot, all SONNET, #38065, 2026-07-15)
+
+**+4 GREEN**: BallotProblemOQ01OQ04 (pure cascade, wrapper flips off OQ01OQ04OQ01), Erdos179ProblemAristotle
+(Finset.mem_image result orientation flip; lambda-app not beta-reducing before omega), Erdos152ProblemAPN
+(grind splits budget 9->40), Erdos291Problem (decide->native_decide x5 on sum_inv_ZMod_eq_zero_* — ZMod
+inverse no longer kernel-reduces). **META-AUDIT FLAG: Erdos291Problem now uses native_decide (was decide)
+-> introduces Lean.ofReduceBool; gallery meta axiomCount/status needs re-audit (logged scratchpad/
+native-decide-introductions.txt; feeds #38611-adjacent gallery re-audit).** Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 18 (8-slot, #38065, 2026-07-15)
 
 **+7 GREEN**: BallotProblemOQ01OQ04OQ01 (OPUS 48min/385k — the recovered file: List.get? fully removed

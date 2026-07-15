@@ -252,7 +252,7 @@ lemma num_isolated_Z_rel (A : Set ℕ) :
   by_cases h:{M|M-1 ∉A+A∧M ∈A+A∧M+1 ∉A+A}.Finite
   · use(Nat.card_mono (h.image (↑) |>.insert 0) ? _).trans (.trans (Set.ncard_insert_le _ _) (by rw [Set.ncard_image_of_injective _ Nat.cast_injective]))
     refine fun and⟨ ⟨a, A, I⟩,R, L⟩=>by cases I with use a.eq_zero_or_pos.imp ↑(congr_arg _) (by use a, ⟨ fun and=>(R _) ⟨and,Nat.cast_pred ·⟩,A,(L _ ⟨ ·, rfl⟩)⟩)
-  · exact (Set.Infinite.ncard (h.comp (·.preimage Nat.cast_injective.injOn|>.insert 0|>.subset ↑ fun and⟨A, B, C⟩=>and.eq_zero_or_pos.imp_right fun and' =>⟨⟨ _,B, rfl⟩,by grind⟩))).trans_le bot_le
+  · exact (Set.Infinite.ncard (h.comp (·.preimage Nat.cast_injective.injOn|>.insert 0|>.subset ↑ fun and⟨A, B, C⟩=>and.eq_zero_or_pos.imp_right fun and' =>⟨⟨ _,B, rfl⟩,by grind (splits := 40)⟩))).trans_le bot_le
 
 lemma N_k_Z_rel_1 (A : Set ℕ) : N_k_Z (Z_S (A + A)) (1 : ℤ) = N_k_N (A + A) 1 := by
   -- Explicit replacement for an AlphaProof `grind` call that fails under Mathlib v4.26.0:
