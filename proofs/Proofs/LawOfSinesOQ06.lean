@@ -56,8 +56,9 @@ lemma cross2D_antisymm (u v : Vec2) : cross2D u v = -cross2D v u := by
     Proof by ring in Fin 2 coordinates. -/
 theorem lagrange_2d (u v : Vec2) :
     ‖u‖ ^ 2 * ‖v‖ ^ 2 = (@inner ℝ _ _ u v) ^ 2 + cross2D u v ^ 2 := by
-  simp only [EuclideanSpace.norm_sq_eq, EuclideanSpace.inner_apply,
-             cross2D, Fin.sum_univ_two]
+  simp only [EuclideanSpace.norm_sq_eq, PiLp.inner_apply,
+             RCLike.inner_apply, conj_trivial, cross2D, Fin.sum_univ_two,
+             Real.norm_eq_abs, sq_abs]
   ring
 
 -- ============================================================
@@ -106,7 +107,9 @@ lemma sin_angle_mul_norms (u v : Vec2) (hu : u ≠ 0) (hv : v ≠ 0) :
 -- ============================================================
 
 structure Triangle where
-  A B C : Vec2
+  A : Vec2
+  B : Vec2
+  C : Vec2
   hNonDeg : cross2D (B - A) (C - A) ≠ 0
 
 namespace Triangle
@@ -145,12 +148,12 @@ lemma a_pos (t : Triangle) : 0 < t.a := norm_pos_iff.mpr t.hCB_ne
 /-- cross2D for angle β = -cross2D for angle α. -/
 lemma cross_β (t : Triangle) :
     cross2D (t.A - t.B) (t.C - t.B) = -cross2D (t.B - t.A) (t.C - t.A) := by
-  simp only [cross2D, Pi.sub_apply]; ring
+  simp only [cross2D, WithLp.ofLp_sub, Pi.sub_apply]; ring
 
 /-- cross2D for angle γ = cross2D for angle α. -/
 lemma cross_γ (t : Triangle) :
     cross2D (t.A - t.C) (t.B - t.C) = cross2D (t.B - t.A) (t.C - t.A) := by
-  simp only [cross2D, Pi.sub_apply]; ring
+  simp only [cross2D, WithLp.ofLp_sub, Pi.sub_apply]; ring
 
 lemma abs_cross_β (t : Triangle) :
     |cross2D (t.A - t.B) (t.C - t.B)| = |cross2D (t.B - t.A) (t.C - t.A)| := by
