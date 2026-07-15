@@ -91,15 +91,15 @@ This maps [aᵢ, aᵢ₊₁) linearly onto [0, 1).
 noncomputable def generalizedFrac (A : UnityRatioSeq) (x : ℝ) : ℝ :=
   let i := intervalIndex A x
   let aᵢ := (A.seq i : ℝ)
-  let aᵢ₊₁ := (A.seq (i + 1) : ℝ)
-  (x - aᵢ) / (aᵢ₊₁ - aᵢ)
+  let aᵢ' := (A.seq (i + 1) : ℝ)
+  (x - aᵢ) / (aᵢ' - aᵢ)
 
 /--
 **Standard Case:**
 When A = ℕ, f(x) = {x} is the usual fractional part.
 -/
 theorem naturals_frac_eq (x : ℝ) (hx : x ≥ 1) :
-    generalizedFrac naturalsSeq x = Int.frac x := by
+    generalizedFrac naturalsSeq x = Int.fract x := by
   sorry
 
 /--
@@ -122,7 +122,7 @@ A sequence (xₙ) in [0,1) is uniformly distributed if for all 0 ≤ a < b ≤ 1
 def isUniformlyDistributed (x : ℕ → ℝ) : Prop :=
   ∀ a b : ℝ, 0 ≤ a → a < b → b ≤ 1 →
     Filter.Tendsto
-      (fun N => (Finset.filter (fun n => x n ∈ Ico a b) (Finset.range N)).card / N)
+      (fun N => ((Finset.filter (fun n => x n ∈ Ico a b) (Finset.range N)).card : ℝ) / N)
       Filter.atTop (nhds (b - a))
 
 /- 
@@ -145,7 +145,7 @@ noncomputable def erdosDavenportSeq (A : UnityRatioSeq) (α : ℝ) : ℕ → ℝ
 For almost all α, the sequence f(αn) is uniformly distributed.
 -/
 def erdosConjecture (A : UnityRatioSeq) : Prop :=
-  ∃ S : Set ℝ, volume.ae (· ∈ S) ∧ ∀ α ∈ S, isUniformlyDistributed (erdosDavenportSeq A α)
+  ∃ S : Set ℝ, (∀ᵐ α ∂volume, α ∈ S) ∧ ∀ α ∈ S, isUniformlyDistributed (erdosDavenportSeq A α)
 
 /--
 **Schmidt's Counterexample (1969):**
