@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 13 (8-slot, all SONNET, #38065, 2026-07-15)
+
+**+3 GREEN (all Sonnet 5)**: LebesgueMeasureOQ03OQ01 (file-internal breakage: commented-out lemma +
+downstream index bug reproved; the file HAIKU thrashed+failed on — Sonnet did it in 4.6min; zero_le arg
+now implicit; Set.biUnion_subset->iUnion₂_subset), Erdos643Problem (13min/197k HARD: delete vendored
+Harmonic.GeneralizeProofs block -> Mathlib re-export of Batteries; Sym2.mk now CURRIED α→α→Sym2 α;
+convert->calc), Erdos1020Problem (15min/160k HARD + STATEMENT REPAIR #38611: large_n_construction2_dominates
+old k≥1 FALSE at k=1 -> restrict k≥2; structure Hypergraph now in Mathlib=root collision; Nat.choose_anti
+removed). FINDING: Sonnet handles HARD files too (160-197k), not just mechanical — 10/10 attempted, 0 fails.
+Repairs: Erdos1020 (k≥2) logged #38611.
+
 # DOCTOR SINGLE-PROOF BATCH 12 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN**: BezoutIdentityOQ02OQ01OQ02OQ02OQ03 (OPUS ~36min/244k deepest-of-session: Mathlib new
