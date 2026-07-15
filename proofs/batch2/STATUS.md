@@ -1,3 +1,71 @@
+# DOCTOR INCREMENT 76 (deep-rework partition: non-Erdos L–Z, #38065, 2026-07-15)
+
+Container cpuset 18-23, 11g, cache `lean-mathlib-cache-v431-d`, worktree doctor-d, branch
+`feature/issue-38065-inc76` off origin/feature/issue-37508. **+3 GREEN.** PR pending.
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **LawsOfLargeNumbersOQ03** (unknown-const → **Ergodic/PreErgodic API reshape**): the ledger
+  class undercounted (8 distinct errors). Big seam: **`PreErgodic` field is now
+  `aeconst_set : MeasurableSet s → f⁻¹'s = s → EventuallyConst s (ae μ)`** (was the
+  `μ s = 0 ∨ μ s = μ univ` disjunction taking an *ae-eq* preimage). To CONSTRUCT `Ergodic`
+  from the mixing argument: `refine ⟨hT, ⟨fun s hs hinv => ?_⟩⟩` (extra `⟨⟩` for the PreErgodic
+  wrapper), then `refine eventuallyConst_set'.mpr ?_` and produce the disjunction
+  `s =ᵐ[μ] ∅ ∨ s =ᵐ[μ] univ`. `hinv : f⁻¹'s = s` is now STRICT eq → lift to ae with
+  `hinv.eventuallyEq` (`Eq.eventuallyEq`). Other sites in same file:
+  `MeasureTheory.ae_eq_of_eq h`→`h.eventuallyEq`; `measure_preimage hs`→`hs.nullMeasurableSet`;
+  `MeasurePreserving.comp` arg order flipped (`ih.comp hT`→`hT.comp ih` under `iterate_succ'`);
+  `MemLpClass p f μ`→`MemLp f p μ`; `∞` token→`⊤`; `one_lt_top`→`ENNReal.one_lt_top`;
+  `ENNReal.mul_left_cancel₀` GONE → `(ENNReal.mul_eq_left ha0 hatop).mp` (`a*b=a ↔ b=1`);
+  `ae_eq_empty.mpr` needs explicit `(μ := …) (s := …)` (else `OuterMeasureClass` metavar stuck);
+  `s =ᵐ univ` from `μ s = μ univ` via `(ae_eq_univ_iff_measure_eq hs.nullMeasurableSet).mpr`;
+  `IsProbabilityMeasure.measure_univ` as a simp/rw arg leaves μ meta → use bare `measure_univ`
+  (`(measure_mono …).trans_eq measure_univ`). A dangling `ring` after `simp` closed the goal →
+  drop it ("No goals").
+- **LawsOfLargeNumbersOQ03Aristotle** (same reshape): companion `mixing_implies_ergodic_ari` is
+  a near-clone of OQ03's proof; applied the identical PreErgodic/EventuallyConst rework verbatim.
+  (Was blocked behind OQ03's missing olean; `lake build` in-container seeds the dep olean.)
+- **PartitionTheoremOQ03** (unknown-const → **Euler-partition Archive→mainline**):
+  `Nat.Partition.IsOdd.card`/`IsDistinct.card` + `Theorems100.partition` (Archive, unreachable via
+  `import Mathlib`) → mainline `Nat.Partition.card_odds_eq_card_distincts n : #(odds n) = #(distincts n)`
+  with `Nat.Partition.odds`/`distincts : Finset n.Partition`; drop the `.symm`. Also
+  `Nat.Partition.parts` is a **`Multiset ℕ`** → `.length`→`.card`; an orphan `/-- … -/` doc before a
+  `/-!` section broke parsing → make it a plain `/- … -/` comment.
+
+## New systematic seams (rename-map candidates)
+1. **`PreErgodic`/`Ergodic` reshape:** field `aeconst_set … : EventuallyConst s (ae μ)` (strict
+   preimage eq in, `EventuallyConst` out). Build via `⟨hT, ⟨fun s hs hinv => ?_⟩⟩` +
+   `eventuallyConst_set'.mpr` on the `s =ᵐ ∅ ∨ s =ᵐ univ` disjunction; strict `hinv` → `.eventuallyEq`.
+2. **`ENNReal.mul_left_cancel₀` GONE** → `ENNReal.mul_eq_left (a≠0)(a≠⊤) : a*b=a ↔ b=1`.
+   **`one_lt_top`→`ENNReal.one_lt_top`; `∞` literal→`⊤`.**
+3. **`MemLpClass p f μ`→`MemLp f p μ`** (arg order swap, drops the "Class").
+4. **`ae_eq_empty` / `ae_empty_or_univ` measure metavar:** pass `(μ := …)(s := …)` explicitly;
+   `IsProbabilityMeasure.measure_univ` as simp/rw arg leaves μ unsolved → use bare `measure_univ`.
+5. **Euler partition Archive→mainline** (see inc52 §7af too): `card_odds_eq_card_distincts`,
+   `odds`/`distincts`; `Nat.Partition.parts : Multiset ℕ` (`.length`→`.card`).
+6. **`EuclideanSpace.inner_apply`→`PiLp.inner_apply`** (confirmed; but Vec2 files also hit the
+   `WithLp`/`.ofLp` element-application reshape — see leads).
+7. **`Sylow` cluster:** `card_sylow_dvd_index P`→`P.card_dvd_index` (namespaced `Sylow.card_dvd_index`).
+
+## Deferred / warm leads (non-Erdos L–Z partition, triaged with diagnoses)
+- **LawsOfLargeNumbersOQ02** (4 err): `IndepFun.variance_sum` gives `Var[∑ i, X i]` but goal is
+  `Var[fun ω => ∑ i, X i ω]` → bridge with `Finset.sum_apply`/funext; `IsOrderedRing ?m` stuck at
+  L195 (add type annotation); `fun n => σ_sq/ε^2/n` typed ℝ→ℝ but wants ℕ→ℝ → `(n : ℝ)` cast (L325);
+  a "No goals" trailing tactic (L137). `integral_finset_sum`→`integral_finsetSum` (deprecation).
+- **QuadraticReciprocityOQ03** (9 err; HUB → unblocks OQ03OQ01 + OQ03OQ01Exp): 7× `Fact (Nat.Prime k)`
+  synth failures on `example : legendreSym k a = … := by decide` — add `haveI : Fact (Nat.Prime k) :=
+  ⟨by norm_num⟩`; `map_mul (legendreSym p)` FunLike-fail → use `legendreSym.mul`; **statement drift**
+  `legendreSym.at_neg_one hp` now `= χ₄ ↑p` (was `(-1)^(p/2)`) → bridge via `ZMod.χ₄_eq_neg_one_pow`
+  with the p-odd hyp.
+- **RationalCanonicalFormExists** (13 err; HUB → unblocks MinpolyCharpolyOQ03 → OQ03OQ01): type-mismatch +
+  instance-synth cluster. **LawsOfLargeNumbersOQ01Aristotle** (20 err; HUB → unblocks OQ01OQ01, OQ01OQ03).
+- **NewtonIndStep2** (3 err): `linarith` fails + 2 heartbeat timeouts (v4.31 linarith slower/needs new
+  nlinarith hints; try `set_option maxHeartbeats` + hint tuning).
+- **LawOfSinesOQ06** (multi-cluster): `EuclideanSpace.inner_apply`→`PiLp.inner_apply` is right but the
+  `Vec2 = EuclideanSpace ℝ (Fin 2)` arithmetic hit the **`WithLp`/`.ofLp` reshape** — `u 0` element
+  application and `B - A` in a structure field are stuck; needs `.ofLp` threading + real-inner simp.
+- **TestApi203**: OOM-killed (137) at 11g — memory-heavy (likely native_decide); needs a real argument
+  or a bigger cap.
 # DOCTOR INCREMENT 73 (deep-rework LANE 1: residual Erdős < 500, #38065, 2026-07-15)
 
 Container `lean4-arm64:v4.31.0` (cpuset 0-5, 11g, cache `lean-mathlib-cache-v431`,

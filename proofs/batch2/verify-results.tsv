@@ -2222,8 +2222,8 @@ LawsOfLargeNumbersOQ01OQ02	GREEN
 LawsOfLargeNumbersOQ01OQ02OQ01	RESIDUAL	type-mismatch
 LawsOfLargeNumbersOQ01OQ03	RESIDUAL	signature-drift
 LawsOfLargeNumbersOQ02	RESIDUAL	type-mismatch
-LawsOfLargeNumbersOQ03	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
-LawsOfLargeNumbersOQ03Aristotle	RESIDUAL	unknown-const:MeasureTheory.ae_eq_of_eq
+LawsOfLargeNumbersOQ03	GREEN	
+LawsOfLargeNumbersOQ03Aristotle	GREEN	
 LebesgueMeasure	GREEN	
 LebesgueMeasureOQ01	GREEN	
 LebesgueMeasureOQ01OQ01	RESIDUAL	type-mismatch
@@ -2295,7 +2295,7 @@ PappusTheoremOQ02	GREEN
 PartitionTheorem	GREEN	
 PartitionTheoremOQ01	RESIDUAL	unknown-const:Finset.mem_empty
 PartitionTheoremOQ01OQ01	RESIDUAL	unknown-const:Finset.mem_empty
-PartitionTheoremOQ03	RESIDUAL	unknown-const:Nat.Partition.IsOdd.card
+PartitionTheoremOQ03	GREEN	
 PartitionTheoremOQ04	GREEN	
 PartitionTheoremOQ04Aristotle	GREEN	
 PascalsHexagon	GREEN	
