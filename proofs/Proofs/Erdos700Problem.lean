@@ -82,6 +82,7 @@ private theorem n_dvd_k_mul_choose {n k : ℕ} (hn : 1 ≤ n) (hk : 1 ≤ k) (hk
   have hn' : n - 1 + 1 = n := by omega
   have hk' : k - 1 + 1 = k := by omega
   have h := Nat.succ_mul_choose_eq (n - 1) (k - 1)
+  simp only [Nat.succ_eq_add_one] at h
   rw [hn', hk'] at h
   -- h : n * (n - 1).choose (k - 1) = n.choose k * k
   exact ⟨(n - 1).choose (k - 1), by rw [mul_comm k]; exact h.symm⟩
@@ -161,14 +162,17 @@ private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (h
   set N := p ^ a * m - 1 with hN_def
   set K := p ^ a - 1 with hK_def
   have hp2 : 2 ≤ p := hp.two_le
-  have hpa_pos : 0 < p ^ a := Nat.pos_of_ne_zero (by positivity)
+  have hpa_pos : 0 < p ^ a := pow_pos hp.pos a
+  have hsplit : p ^ a * m = p ^ a * (m - 1) + p ^ a := by
+    conv_lhs => rw [show m = (m - 1) + 1 from by omega]
+    ring
   have hKN : K ≤ N := by simp only [hK_def, hN_def]; omega
   have hNK_eq : N - K = p ^ a * (m - 1) := by simp only [hN_def, hK_def]; omega
   have hC_pos : 0 < Nat.choose N K := Nat.choose_pos hKN
   -- Use Kummer: multiplicity p (C(N,K)) = |{carries}|
   set b := Nat.log p N + 2 with hb_def
   have hNb : Nat.log p N < b := by simp only [hb_def]; omega
-  have h_kummer := Nat.Prime.multiplicity_choose hp hKN hNb
+  have h_kummer := Nat.Prime.emultiplicity_choose hp hKN hNb
   -- Step 1: Show the carry set is empty (no carry at any position)
   have h_no_carry : ∀ i, i ∈ Finset.Ico 1 b →
       K % p ^ i + (N - K) % p ^ i < p ^ i := by
@@ -193,7 +197,7 @@ private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (h
       set r := (m - 1) % p ^ (i - a)
       have hr_lt : r < p ^ (i - a) := Nat.mod_lt _ (by positivity)
       have h_pa_r_lt : p ^ a * r < p ^ i := by
-        calc p ^ a * r < p ^ a * p ^ (i - a) := Nat.mul_lt_mul_left hpa_pos hr_lt
+        calc p ^ a * r < p ^ a * p ^ (i - a) := (Nat.mul_lt_mul_left hpa_pos).mpr hr_lt
           _ = p ^ i := by rw [← pow_add, hia_sub]
       have h_mod_NK : p ^ a * (m - 1) % p ^ i = p ^ a * r := by
         have h_eq : p ^ a * (m - 1) = (m - 1) / p ^ (i - a) * p ^ i + p ^ a * r := by
@@ -204,14 +208,15 @@ private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (h
             _ = p ^ i * ((m - 1) / p ^ (i - a)) + p ^ a * r := by
                 rw [← pow_add, hia_sub]
             _ = (m - 1) / p ^ (i - a) * p ^ i + p ^ a * r := by ring
-        rw [h_eq, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt h_pa_r_lt]
+        rw [h_eq, Nat.mul_add_mod_self_right, Nat.mod_eq_of_lt h_pa_r_lt]
       rw [hK_mod, h_mod_NK]
       -- K + p^a * r = (p^a - 1) + p^a * r ≤ p^i - 1 < p^i
       have : p ^ a * r ≤ p ^ i - p ^ a := by
         calc p ^ a * r ≤ p ^ a * (p ^ (i - a) - 1) :=
               Nat.mul_le_mul_left _ (by omega)
-          _ = p ^ a * p ^ (i - a) - p ^ a * 1 := by rw [Nat.mul_sub_one]
+          _ = p ^ a * p ^ (i - a) - p ^ a * 1 := by rw [Nat.mul_sub_left_distrib]
           _ = p ^ i - p ^ a := by rw [← pow_add, hia_sub, mul_one]
+      have hAC : p ^ a ≤ p ^ i := Nat.pow_le_pow_right (by omega) (le_of_lt hia)
       simp only [hK_def]; omega
   -- Step 2: Empty carry set → multiplicity 0 → ¬(p | C(N,K))
   have h_filter_empty : ((Finset.Ico 1 b).filter fun i =>
@@ -220,10 +225,10 @@ private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (h
     intro i hi; exact not_le.mpr (h_no_carry i hi)
   -- multiplicity p C(N,K) = 0
   intro h_dvd
-  have h_one_le : (1 : PartENat) ≤ multiplicity (p : ℕ) (Nat.choose N K) :=
-    multiplicity.le_multiplicity_of_pow_dvd (show p ^ 1 ∣ _ from by rwa [pow_one])
+  have h_one_le : (1 : ℕ∞) ≤ emultiplicity (p : ℕ) (Nat.choose N K) :=
+    le_emultiplicity_of_pow_dvd (show p ^ 1 ∣ _ from by rwa [pow_one])
   rw [h_kummer, h_filter_empty, Finset.card_empty, Nat.cast_zero] at h_one_le
-  exact absurd h_one_le (by norm_num)
+  simp at h_one_le
 
 /-- The absorption identity: C(n, k) = (n/k) * C(n-1, k-1) when k | n and k ≥ 1. -/
 private theorem choose_eq_mul_choose_pred {n k : ℕ} (hk : 1 ≤ k) (hkn : k ≤ n)
@@ -231,38 +236,39 @@ private theorem choose_eq_mul_choose_pred {n k : ℕ} (hk : 1 ≤ k) (hkn : k �
     Nat.choose n k = (n / k) * Nat.choose (n - 1) (k - 1) := by
   have hk_pos : 0 < k := by omega
   have h := Nat.succ_mul_choose_eq (n - 1) (k - 1)
+  simp only [Nat.succ_eq_add_one] at h
   have hn' : n - 1 + 1 = n := by omega
   have hk' : k - 1 + 1 = k := by omega
   rw [hn', hk'] at h
   -- h : n * C(n-1, k-1) = C(n, k) * k
   obtain ⟨q, hq⟩ := hdvd
-  have hq_eq : n / k = q := by rw [hq]; exact Nat.mul_div_cancel_left q hk_pos
+  subst hq
+  have hq_eq : k * q / k = q := Nat.mul_div_cancel_left q hk_pos
   rw [hq_eq]
   have : k * (q * Nat.choose (k * q - 1) (k - 1)) = k * Nat.choose (k * q) k := by
-    rw [← mul_assoc]; linarith [hq ▸ h]
+    rw [← mul_assoc]; linarith [h]
   exact Nat.eq_of_mul_eq_mul_left hk_pos this.symm
 
 /-- For a prime power p^a, if ¬(p ∣ x) then gcd(p^a, x) = 1. -/
 private theorem coprime_prime_pow_of_not_dvd {p a x : ℕ} (hp : p.Prime) (hx : ¬(p ∣ x)) :
     Nat.gcd (p ^ a) x = 1 := by
-  rw [Nat.Coprime.comm]
-  exact (hp.coprime_iff_not_dvd.mpr hx).pow_right a
+  exact (hp.coprime_iff_not_dvd.mpr hx).pow_left a
 
 /-- For p^a * m with p prime, a ≥ 1, m ≥ 1: gcd(p^a*m, C(p^a*m, p^a)) = m.
     Combines absorption identity, GCD factoring, and non-divisibility. -/
 private theorem gcd_choose_prime_pow_eq {p : ℕ} (hp : p.Prime) {a : ℕ} (ha : 1 ≤ a)
     {m : ℕ} (hm_pos : 1 ≤ m) :
     Nat.gcd (p ^ a * m) (Nat.choose (p ^ a * m) (p ^ a)) = m := by
-  have hpa_pos : 0 < p ^ a := Nat.pos_of_ne_zero (by positivity)
+  have hpa_pos : 0 < p ^ a := pow_pos hp.pos a
   have hk : 1 ≤ p ^ a := by omega
   have hkn : p ^ a ≤ p ^ a * m := Nat.le_mul_of_pos_right _ (by omega)
   have hdvd : p ^ a ∣ p ^ a * m := dvd_mul_right _ _
   have hchoose := choose_eq_mul_choose_pred hk hkn hdvd
   have hdiv : p ^ a * m / p ^ a = m := Nat.mul_div_cancel_left m hpa_pos
   rw [hdiv] at hchoose
-  rw [hchoose, mul_comm (p ^ a) m, Nat.gcd_mul_left]
   have h_not_dvd := prime_not_dvd_choose_shift hp ha hm_pos
-  rw [coprime_prime_pow_of_not_dvd hp h_not_dvd, mul_one]
+  rw [hchoose, Nat.mul_comm m (Nat.choose (p ^ a * m - 1) (p ^ a - 1)),
+    Nat.gcd_mul_right, coprime_prime_pow_of_not_dvd hp h_not_dvd, one_mul]
 
 /-- f(n) ≤ n/P(n) for all composite n.
     For non-prime-powers: k = P(n)^a with P(n)^a ‖ n gives
@@ -276,13 +282,28 @@ theorem f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
   set P := largestPrimeFactor n with hP_def
   have h4 : 4 ≤ n := by
     -- n ≥ 2 and not prime → n ≥ 4
-    interval_cases n <;> simp_all [Nat.Prime] <;> omega
+    by_contra h
+    push_neg at h
+    interval_cases n
+    · exact hn Nat.prime_two
+    · exact hn Nat.prime_three
+  -- The filtered finset of prime divisors is nonempty and its sup is a member.
+  have hne : ((Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ∣ n)).Nonempty := by
+    refine ⟨n.minFac, ?_⟩
+    rw [Finset.mem_filter, Finset.mem_range]
+    have hmf_le : n.minFac ≤ n := Nat.minFac_le (by omega)
+    exact ⟨by omega, Nat.minFac_prime (by omega), Nat.minFac_dvd n⟩
+  have hsup_mem : ((Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ∣ n)).sup id
+      ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ∣ n) := by
+    have h1 := (Finset.sup'_eq_sup hne id).symm
+    rw [h1, ← Finset.max'_eq_sup']
+    exact Finset.max'_mem _ hne
   have hP_prime : P.Prime := by
     simp only [hP_def]; unfold largestPrimeFactor; rw [dif_pos hn2]
-    exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).1
+    exact (Finset.mem_filter.mp hsup_mem).2.1
   have hP_dvd : P ∣ n := by
     simp only [hP_def]; unfold largestPrimeFactor; rw [dif_pos hn2]
-    exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).2.1
+    exact (Finset.mem_filter.mp hsup_mem).2.2
   -- n/P ≥ 2 since n is composite (if n/P = 1 then n = P is prime)
   set q := n / P with hq_def
   have hPq : n = P * q := (Nat.div_mul_cancel hP_dvd).symm ▸ (mul_comm P q ▸ rfl)
@@ -307,9 +328,11 @@ theorem f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
         Finset.min'_le _ _ (Finset.mem_image.mpr ⟨P, hP_mem, rfl⟩)
     _ = q := by
         -- gcd(P * q, C(P * q, P)) = q by gcd_choose_prime_pow_eq
-        have h_eq : P * q = P ^ 1 * q := by rw [pow_one]
-        conv_lhs => rw [show n = P * q from by omega, h_eq]
-        exact gcd_choose_prime_pow_eq hP_prime (le_refl 1) (by omega : 1 ≤ q)
+        have hlem := gcd_choose_prime_pow_eq (p := P) hP_prime (le_refl 1)
+          (by omega : (1 : ℕ) ≤ q)
+        rw [pow_one] at hlem
+        rw [show n = P * q from by omega]
+        exact hlem
     _ = n / largestPrimeFactor n := by simp only [hq_def, hP_def]
 
 /-- f(n) ≥ p(n), the smallest prime factor of n.
