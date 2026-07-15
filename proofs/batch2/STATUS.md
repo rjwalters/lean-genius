@@ -1,3 +1,70 @@
+# DOCTOR INCREMENT 62 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-14)
+
+Container `dr62` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc62` off origin/feature/issue-37508. Confirms inc-56/57/60:
+partition A is genuine deep-rework — every RESIDUAL file is 5–33 diverse errors,
+the ledger class is only the FIRST error. Worked cheapest-first per-file; all
+flips in-container per-file `lake build Proofs.X` exit-0 before ledger flip;
+pushed after every file. **+5 GREEN**, PR #38665.
+
+## Flips (failure class in parens)
+- Erdos190Problem (unknown-const → signature+forward-ref+drift): `{N C : Type*}`
+  → `{N : ℕ} {C : Type*}` (def uses `Fin N`); forward-ref axiom moved before
+  `def H`; `open scoped Classical` for `Nat.find` DecidablePred; beta-reduce
+  `isAPSequence` witness via `replace hf : <beta form> := hf`; `(hf i).symm`;
+  `Nat.eq_of_mul_eq_mul_right` for AP-injectivity; **ascribe `Nat.find_spec`
+  results to the `def`-form** (`have : … H k … := Nat.find_spec …`) so omega sees
+  matching atoms — raw result carries syntactic `Nat.find (…)`, a different atom
+  from a hypothesis stated with the def name.
+- Erdos104Problem (unknown-const + mixed): `zero_rpow`/`rpow_add`/`rpow_one` →
+  `Real.*`; **`def PointSet := Finset Point` → `abbrev`** (Membership instance
+  synth `x ∈ (p : PointSet)` won't unfold a `def` alias); **`congr_fun` on an
+  EuclideanSpace/PiLp equality → `congrArg (· i) h`** (`WithLp` not reducibly a
+  Pi type); **`set n : ℝ := P.card` needs explicit `(P.card : ℝ)`** (no auto-coe);
+  `norm_sub_rev` pinned `(c.center q)` (unpinned first-match hit the wrong term);
+  `Nat.cast_nonneg` linarith hint type-pinned (IsOrderedRing metavar).
+- Erdos129Problem (proof-drift + degenerate repairs, see #38611): omega atom
+  hygiene + castLE beta-redex in unused base-case lemmas; rewrote color-cast
+  branches via `congrArg Fin.val + simpa`.
+- Erdos235Problem (proof-drift → 2 root causes): **`tendsto_const_nhds.sub`
+  constant metavar not inferred in a bare `have :=`** → annotate target
+  `nhds (1 - 0)`; `erdos_235_answer` relied on `exponentialCDF c` defeq
+  `1 - exp(-c)` which no longer unifies → explicit `rw [show … from …]`.
+- Erdos179Aristotle (simp-drift + eventually binder; Aristotle companion, keeps
+  pre-existing sorries): fragile `simp;omega` → explicit
+  `Finset.card_image_of_injective`/`mem_image.mpr`/`ext+interval_cases`;
+  **`∀ᶠ N in (atTop : Filter ℕ), …(N:ℝ)…` binder-inference trap** — when the body
+  touches N only through a coercion, Lean infers the binder as ℝ (cast becomes a
+  no-op) and clashes with `Filter ℕ` → pin `∀ᶠ (N : ℕ) in atTop`.
+
+## Statement repairs (#38611, both in Erdos129Problem, lemmas unused externally)
+| lemma | repair |
+|---|---|
+| `hasRamseyAvoid_zero` | added `1 ≤ k`. `HasRamseyAvoid N 0 0 r` is FALSE: the empty avoid-set must still exhibit an edge in the card-0 subset (k=0). |
+| `noMonoClique_of_color_embed` | added `0 < r`. With r=0 the hypothesis `NoMonoClique` is vacuous (no colors) yet cannot hand back an edge, so the conclusion fails; `0 < r` lets `h ⟨0⟩` supply the needed edge. |
+
+## New systematic seams (rename-map §7ah candidates)
+1. **`∀ᶠ N in atTop, …(N:ℝ)…` binder-inference trap**: body-first elaboration
+   infers binder = ℝ (coercion becomes identity), clashing with a `Filter ℕ`
+   annotation. Fix: pin the binder `∀ᶠ (N : ℕ) in atTop`.
+2. **`Nat.find`/`Nat.find_spec` atom mismatch**: results carry the syntactic
+   `Nat.find (…)`, NOT the `def` name; omega/`rw` treat them as distinct from a
+   hypothesis phrased with the def. Fix: `have h : …<def>… := Nat.find_spec …`.
+3. **`def TypeAlias := Finset X` blocks Membership synth** (`x ∈ (p : Alias)`);
+   dot-notation (`p.card`) still unfolds. Fix: make the alias an `abbrev`.
+4. **`congr_fun` on EuclideanSpace/PiLp equality fails** ("function expected" /
+   type mismatch) — `WithLp` isn't reducibly a Pi. Fix: `congrArg (· i) h`.
+5. **`set x : ℝ := <ℕ term>` no longer inserts the coercion** — write the cast.
+6. **`tendsto_const_nhds.*` constant metavar** unresolved in a bare `have :=`
+   (no expected type) — annotate the `have` target (`nhds (c - 0)` etc.).
+7. **beta-redex from `def P (f := fun i => …)`**: `hf i : (fun i => …) i = …`
+   doesn't auto-beta and defeats `rw`/omega atom matching — `replace hf :
+   <beta-reduced> := hf`.
+
+Ledger after increment 62: +5 GREEN (partition A).
+
+---
+
 # DOCTOR INCREMENT 60 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-14)
 
 Container `dr60` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
