@@ -152,8 +152,8 @@ ArsinhLogFormulaOQ01OQ01OQ01OQ01	GREEN
 ArsinhLogFormulaOQ01OQ01OQ02	GREEN	
 BallVolumeSurfaceDuality	GREEN	
 BallotProblem	GREEN	
-BallotProblemOQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
-BallotProblemOQ01OQ02OQ01Aristotle	RESIDUAL	unknown-const:Set.ncard_biUnion
+BallotProblemOQ01OQ02OQ01	GREEN	
+BallotProblemOQ01OQ02OQ01Aristotle	GREEN	
 BallotProblemOQ01OQ02OQ01OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
@@ -230,7 +230,7 @@ BinaryGcdOQ02OQ01	RESIDUAL	unknown-const:a
 BinomialTheorem	GREEN	
 BinomialTheoremOQ01	GREEN	
 BinomialTheoremOQ02OQ01	GREEN
-BinomialTheoremOQ02OQ01OQ01OQ02	RESIDUAL	type-mismatch
+BinomialTheoremOQ02OQ01OQ01OQ02	GREEN	
 BinomialTheoremOQ02OQ01OQ02OQ03	GREEN	
 BinomialTheoremOQ02OQ01OQ03	GREEN	
 BinomialTheoremOQ02OQ01OQ04	GREEN	
@@ -558,7 +558,7 @@ DissectionOfCubesOQ03OQ02	RESIDUAL	rewrite-drift
 DissectionOfCubesOQ04	RESIDUAL	type-mismatch
 DissectionOfCubesOQ04Aristotle	RESIDUAL	type-mismatch
 DivisibilityBy3	GREEN	
-DivisibilityBy3OQ03	RESIDUAL	unknown-const:Nat.sum_digits_lt
+DivisibilityBy3OQ03	GREEN	
 DivisibilityBy3OQ03OQ02	GREEN	
 DivisibilityByThreeOQ01OQ02Aristotle	GREEN	
 DivisibilityByThreeOQ02	GREEN	
