@@ -53,27 +53,9 @@ Product: kronecker0(a) * kronecker0(b) = 1*1 = 1 if both units, 0 otherwise.
 /-- kronecker0 is multiplicative for nonzero arguments. -/
 theorem kronecker0_mul_of_ne_zero (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
     kronecker0 (a * b) = kronecker0 a * kronecker0 b := by
-  simp only [kronecker0]
-  -- Case analysis: a = ±1, b = ±1, or not
-  by_cases ha1 : a = 1 ∨ a = -1 <;> by_cases hb1 : b = 1 ∨ b = -1 <;> simp_all
-  · -- Both units: ab = ±1
-    rcases ha1 with rfl | rfl <;> rcases hb1 with rfl | rfl <;> simp
-  · -- a is unit, b is not: |ab| ≠ 1 since |b| > 1
-    push_neg at hb1
-    rcases ha1 with rfl | rfl
-    · simp at hb1 ⊢; exact hb1
-    · simp at hb1 ⊢; intro h; exact hb1 (Or.symm h)
-  · -- a is not unit, b is unit: |ab| ≠ 1 since |a| > 1
-    push_neg at ha1
-    rcases hb1 with rfl | rfl
-    · simp at ha1 ⊢; exact ha1
-    · simp at ha1 ⊢; intro h
-      rcases h with rfl | rfl
-      · exact ha1 (Or.inr rfl)
-      · exact ha1 (Or.inl rfl)
-  · -- Neither is unit: product is 0 * anything = 0
-    push_neg at ha1 hb1
-    skip
+  -- a*b is a unit iff both a and b are units; kronecker0 is the unit indicator.
+  simp only [kronecker0, ← Int.isUnit_iff, IsUnit.mul_iff]
+  by_cases hau : IsUnit a <;> by_cases hbu : IsUnit b <;> simp [hau, hbu]
 
 /-
 ## Part 2: Multiplicativity of kroneckerNeg1
@@ -89,24 +71,27 @@ Product of signs = sign of product (for nonzero arguments).
 theorem kroneckerNeg1_mul_of_ne_zero (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
     kroneckerNeg1 (a * b) = kroneckerNeg1 a * kroneckerNeg1 b := by
   simp only [kroneckerNeg1]
-  by_cases ha0 : a < 0 <;> by_cases hb0 : b < 0 <;> simp_all
+  by_cases ha0 : a < 0 <;> by_cases hb0 : b < 0
   · -- a < 0, b < 0: ab > 0, (-1)*(-1) = 1  ✓
-    constructor
-    · linarith [Int.mul_pos_of_neg_of_neg ha0 hb0]
-    · ring
+    rw [if_neg (not_lt.mpr (le_of_lt (Int.mul_pos_of_neg_of_neg ha0 hb0))), if_pos ha0, if_pos hb0]
+    ring
   · -- a < 0, b ≥ 0: b > 0, ab < 0, (-1)*1 = -1  ✓
     push_neg at hb0
     have hbpos : 0 < b := lt_of_le_of_ne hb0 (Ne.symm hb)
-    exact Int.mul_neg_of_neg_of_pos ha0 hbpos
+    rw [if_pos (Int.mul_neg_of_neg_of_pos ha0 hbpos), if_pos ha0, if_neg (not_lt.mpr hb0)]
+    ring
   · -- a ≥ 0, b < 0: a > 0, ab < 0, 1*(-1) = -1  ✓
     push_neg at ha0
     have hapos : 0 < a := lt_of_le_of_ne ha0 (Ne.symm ha)
-    exact Int.mul_neg_of_pos_of_neg hapos hb0
+    rw [if_pos (Int.mul_neg_of_pos_of_neg hapos hb0), if_neg (not_lt.mpr ha0), if_pos hb0]
+    ring
   · -- a ≥ 0, b ≥ 0: a,b > 0, ab > 0, 1*1 = 1  ✓
     push_neg at ha0 hb0
     have hapos : 0 < a := lt_of_le_of_ne ha0 (Ne.symm ha)
     have hbpos : 0 < b := lt_of_le_of_ne hb0 (Ne.symm hb)
-    linarith [Int.mul_pos hapos hbpos]
+    rw [if_neg (not_lt.mpr (le_of_lt (Int.mul_pos hapos hbpos))), if_neg (not_lt.mpr ha0),
+      if_neg (not_lt.mpr hb0)]
+    ring
 
 /-
 ## Part 3: Main Theorem — kronecker_mul_left
@@ -129,24 +114,21 @@ theorem kronecker_mul_left_proved (a b n : ℤ) (hab : a * b ≠ 0) :
   have hb : b ≠ 0 := right_ne_zero_of_mul hab
   -- Unfold kronecker and case split on n
   simp only [kronecker]
-  split_ifs with h0 h1 h2 h0' h1' h2' h0'' h1'' h2''
+  -- split_ifs unifies the shared conditions (n = 0, n = -1, n = 1, n < 0) across all three
+  -- unfoldings, producing 5 leaf goals: the three special moduli, then n < 0 / ¬(n < 0).
+  split_ifs with h0 h1 h2 h0'
   · -- n = 0: kronecker0 multiplicativity
     exact kronecker0_mul_of_ne_zero a b ha hb
   · -- n = -1: kroneckerNeg1 multiplicativity
     exact kroneckerNeg1_mul_of_ne_zero a b ha hb
   · -- n = 1: both sides are 1
     ring
-  · -- General case: sign * jacobiSym
-    -- Split on whether n < 0 (determines the sign factor)
-    by_cases hn_neg : n < 0
-    · -- n < 0: sign factor is kroneckerNeg1
-      simp only [hn_neg, ite_true]
-      rw [kroneckerNeg1_mul_of_ne_zero a b ha hb, jacobiSym.mul_left]
-      ring
-    · -- n ≥ 0: sign factor is 1
-      simp only [hn_neg, ite_false]
-      rw [jacobiSym.mul_left]
-      ring
+  · -- General case, n < 0: sign factor is kroneckerNeg1
+    rw [kroneckerNeg1_mul_of_ne_zero a b ha hb, jacobiSym.mul_left]
+    ring
+  · -- General case, n ≥ 0: sign factor is 1
+    rw [jacobiSym.mul_left]
+    ring
 
 -- Verify the type matches the axiom
 #check @kronecker_mul_left_proved
@@ -176,13 +158,17 @@ private lemma kronecker_neg_modulus (a n : ℤ) (hn : n ≠ 0) (hn1 : n ≠ 1) (
     ite_false, Int.natAbs_neg]
   by_cases h : n < 0
   · -- n < 0: -n > 0, so sign(-n) = 1, sign(n) = kroneckerNeg1 a
-    have : ¬(-n < 0) := by omega
-    simp [h, this, kroneckerNeg1_sq]
+    have hnn : ¬(-n < 0) := by omega
+    rw [if_neg hnn, if_pos h, one_mul,
+      show kroneckerNeg1 a * (kroneckerNeg1 a * jacobiSym a n.natAbs)
+        = (kroneckerNeg1 a * kroneckerNeg1 a) * jacobiSym a n.natAbs from by ring,
+      kroneckerNeg1_sq, one_mul]
   · -- n ≥ 0: n > 0 (since n ≠ 0), -n < 0, sign(-n) = kroneckerNeg1 a, sign(n) = 1
     push_neg at h
     have hpos : 0 < n := lt_of_le_of_ne h (Ne.symm hn)
-    have : -n < 0 := by omega
-    simp [this, hpos, show ¬(n < 0) from by omega]; ring
+    have hnn : -n < 0 := by omega
+    rw [if_pos hnn, if_neg (show ¬ n < 0 by omega)]
+    ring
 
 /-- **Multiplicativity of the Kronecker symbol in the second argument.**
 
@@ -198,29 +184,28 @@ theorem kronecker_mul_right_proved (a m n : ℤ) (hmn : m * n ≠ 0) :
   -- Case: m = 1
   by_cases hm1 : m = 1
   · subst hm1; simp only [one_mul, kronecker, show (1 : ℤ) ≠ 0 by omega,
-      show (1 : ℤ) ≠ -1 by omega, ite_true, ite_false]; ring
+      show (1 : ℤ) ≠ -1 by omega, ite_true, ite_false]
   -- Case: n = 1
   by_cases hn1 : n = 1
   · subst hn1; simp only [mul_one, kronecker, show (1 : ℤ) ≠ 0 by omega,
-      show (1 : ℤ) ≠ -1 by omega, ite_true, ite_false]; ring
+      show (1 : ℤ) ≠ -1 by omega, ite_true, ite_false]
   -- Case: m = -1
   by_cases hm_neg1 : m = -1
   · subst hm_neg1
-    simp only [neg_one_mul, kronecker, show (-1 : ℤ) ≠ 0 by omega,
-      show (-1 : ℤ) = -1 from rfl, ite_true, ite_false]
-    -- RHS: kroneckerNeg1 a * kronecker a n
-    -- LHS: kronecker a (-n)
+    have hkm1 : kronecker a (-1 : ℤ) = kroneckerNeg1 a := by simp [kronecker]
+    rw [neg_one_mul, hkm1]
+    -- Goal: kronecker a (-n) = kroneckerNeg1 a * kronecker a n
     by_cases hn_neg1 : n = -1
-    · subst hn_neg1; simp [kroneckerNeg1_sq]
-    · rw [show kronecker a (-n) = kroneckerNeg1 a * kronecker a n from
-        kronecker_neg_modulus a n hn hn1 hn_neg1]
+    · subst hn_neg1
+      have hk1 : kronecker a (1 : ℤ) = 1 := by simp [kronecker]
+      rw [show (-(-1) : ℤ) = 1 by ring, hk1, hkm1]
+      exact (kroneckerNeg1_sq a).symm
+    · exact kronecker_neg_modulus a n hn hn1 hn_neg1
   -- Case: n = -1
   by_cases hn_neg1 : n = -1
   · subst hn_neg1
-    simp only [mul_neg_one, kronecker, show (-1 : ℤ) ≠ 0 by omega,
-      show (-1 : ℤ) = -1 from rfl, ite_true, ite_false]
-    rw [show kronecker a (-m) = kroneckerNeg1 a * kronecker a m from
-      kronecker_neg_modulus a m hm hm1 hm_neg1]
+    have hkn1 : kronecker a (-1 : ℤ) = kroneckerNeg1 a := by simp [kronecker]
+    rw [mul_neg_one, hkn1, kronecker_neg_modulus a m hm hm1 hm_neg1]
     ring
   -- General case: m, n ≠ 0, ±1
   -- kronecker a (m*n) = sign(m*n) * jacobiSym a |m*n|
@@ -238,29 +223,35 @@ theorem kronecker_mul_right_proved (a m n : ℤ) (hmn : m * n ≠ 0) :
   simp only [kronecker, hmn0, hmn1, hmn_neg1, hm, hn, hm1, hm_neg1, hn1, hn_neg1,
     ite_false, Int.natAbs_mul]
   -- Now: sign(m*n) * jacobiSym a (|m|*|n|) = (sign(m) * jacobiSym a |m|) * (sign(n) * jacobiSym a |n|)
-  rw [jacobiSym.mul_right]
+  rw [jacobiSym.mul_right' a (Int.natAbs_pos.mpr hm).ne' (Int.natAbs_pos.mpr hn).ne']
   -- Handle sign factors
   by_cases hm_neg : m < 0 <;> by_cases hn_neg : n < 0
   · -- m < 0, n < 0: m*n > 0, sign = 1, product of signs = kroneckerNeg1² = 1
-    have : ¬(m * n < 0) := by nlinarith [Int.mul_pos_of_neg_of_neg hm_neg hn_neg]
-    simp [hm_neg, hn_neg, this, kroneckerNeg1_sq]
-  · -- m < 0, n > 0: m*n < 0
+    have hmn_pos : ¬(m * n < 0) := not_lt.mpr (le_of_lt (Int.mul_pos_of_neg_of_neg hm_neg hn_neg))
+    rw [if_neg hmn_pos, if_pos hm_neg, if_pos hn_neg, one_mul,
+      show kroneckerNeg1 a * jacobiSym a m.natAbs * (kroneckerNeg1 a * jacobiSym a n.natAbs)
+        = (kroneckerNeg1 a * kroneckerNeg1 a) * (jacobiSym a m.natAbs * jacobiSym a n.natAbs) from
+        by ring,
+      kroneckerNeg1_sq, one_mul]
+  · -- m < 0, n ≥ 0 (n > 0 since n ≠ 0): m*n < 0
     push_neg at hn_neg
     have hn_pos : 0 < n := lt_of_le_of_ne hn_neg (Ne.symm hn)
-    have : m * n < 0 := Int.mul_neg_of_neg_of_pos hm_neg hn_pos
-    simp [hm_neg, hn_neg, this, show ¬(n < 0) from not_lt.mpr hn_neg.le]; ring
-  · -- m > 0, n < 0: m*n < 0
+    have hmn_neg : m * n < 0 := Int.mul_neg_of_neg_of_pos hm_neg hn_pos
+    rw [if_pos hmn_neg, if_pos hm_neg, if_neg (not_lt.mpr hn_neg)]
+    ring
+  · -- m ≥ 0, n < 0: m*n < 0
     push_neg at hm_neg
     have hm_pos : 0 < m := lt_of_le_of_ne hm_neg (Ne.symm hm)
-    have : m * n < 0 := Int.mul_neg_of_pos_of_neg hm_pos hn_neg
-    simp [hm_neg, hn_neg, this, show ¬(m < 0) from not_lt.mpr hm_neg.le]; ring
-  · -- m > 0, n > 0: m*n > 0
+    have hmn_neg : m * n < 0 := Int.mul_neg_of_pos_of_neg hm_pos hn_neg
+    rw [if_pos hmn_neg, if_neg (not_lt.mpr hm_neg), if_pos hn_neg]
+    ring
+  · -- m ≥ 0, n ≥ 0: m*n ≥ 0
     push_neg at hm_neg hn_neg
     have hm_pos : 0 < m := lt_of_le_of_ne hm_neg (Ne.symm hm)
     have hn_pos : 0 < n := lt_of_le_of_ne hn_neg (Ne.symm hn)
-    have : ¬(m * n < 0) := not_lt.mpr (le_of_lt (Int.mul_pos hm_pos hn_pos))
-    simp [hm_neg, hn_neg, this, show ¬(m < 0) from not_lt.mpr hm_neg.le,
-      show ¬(n < 0) from not_lt.mpr hn_neg.le]; ring
+    have hmn_pos : ¬(m * n < 0) := not_lt.mpr (le_of_lt (Int.mul_pos hm_pos hn_pos))
+    rw [if_neg hmn_pos, if_neg (not_lt.mpr hm_neg), if_neg (not_lt.mpr hn_neg)]
+    ring
 
 #check @kronecker_mul_right_proved
 
