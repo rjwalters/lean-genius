@@ -73,7 +73,7 @@ This shows the cube set contains Sidon subsets of size ≫ N^{1/2} ≫ cubeRoot(
 -/
 axiom gabdullin_konyagin_2024 :
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 2 →
-      ∃ k : ℕ, (k : ℝ) ≥ c * Real.sqrt N ∧
+      ∃ k : ℕ, k < N ∧ (k : ℝ) ≥ c * Real.sqrt N ∧
         IsSidon (nearTopCubes N k)
 
 /--
@@ -83,12 +83,22 @@ theorem sidon_in_cubes :
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in Filter.atTop,
       ∃ S : Finset ℕ, S ⊆ cubeSet N ∧ IsSidon S ∧ (S.card : ℝ) ≥ c * Real.sqrt N := by
   obtain ⟨c, hc, h⟩ := gabdullin_konyagin_2024
-  exact ⟨c, hc, Filter.Eventually.of_forall fun N => by
-    by_cases hN : N ≥ 2
-    · obtain ⟨k, hk, hSidon⟩ := h N hN
-      exact ⟨nearTopCubes N k, by simp [nearTopCubes, cubeSet],
-             hSidon, by linarith [Finset.card_image_le]⟩
-    · exact ⟨∅, Finset.empty_subset _, by simp [IsSidon], by simp⟩⟩
+  refine ⟨c, hc, Filter.eventually_atTop.mpr ⟨2, fun N hN => ?_⟩⟩
+  obtain ⟨k, hkN, hk, hSidon⟩ := h N hN
+  refine ⟨nearTopCubes N k, ?_, hSidon, ?_⟩
+  · -- nearTopCubes N k ⊆ cubeSet N, using k < N so N - k ≥ 1
+    apply Finset.image_subset_image
+    apply Finset.Icc_subset_Icc <;> omega
+  · -- cardinality lower bound: card = k + 1 ≥ c * √N
+    have hinj : Function.Injective (fun n : ℕ => n ^ 3) :=
+      Nat.pow_left_injective (by norm_num)
+    have hcard : (nearTopCubes N k).card = k + 1 := by
+      unfold nearTopCubes
+      rw [Finset.card_image_of_injective _ hinj, Nat.card_Icc]
+      omega
+    rw [hcard]
+    push_cast
+    linarith
 
 /--
 **Erdős Problem #1206: SOLVED.**
