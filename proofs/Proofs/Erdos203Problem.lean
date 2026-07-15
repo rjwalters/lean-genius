@@ -86,12 +86,12 @@ private lemma dvd_of_pow2_mod_eq {p m k r : ℕ}
     (hmod : 2 ^ k % p = 2 ^ r % p)
     (hdvd : p ∣ (2 ^ r * m + 1)) : p ∣ (2 ^ k * m + 1) := by
   obtain ⟨c, hc⟩ := hdvd
+  have hmul : (2 ^ k * m) % p = (2 ^ r * m) % p := by
+    rw [Nat.mul_mod, hmod, ← Nat.mul_mod]
+  have h : (2 ^ k * m + 1) % p = (2 ^ r * m + 1) % p := by
+    rw [Nat.add_mod, hmul, ← Nat.add_mod]
   apply Nat.dvd_of_mod_eq_zero
-  calc (2 ^ k * m + 1) % p
-      = ((2 ^ k % p) * (m % p) + 1 % p) % p := by rw [Nat.add_mod, Nat.mul_mod]
-    _ = ((2 ^ r % p) * (m % p) + 1 % p) % p := by rw [hmod]
-    _ = (2 ^ r * m + 1) % p := by rw [← Nat.mul_mod, ← Nat.add_mod]
-    _ = 0 := by rw [hc, Nat.mul_mod_right]
+  rw [h, hc, Nat.mul_mod_right]
 
 /-- For each residue r < 36, a covering prime ≤ 73 divides 2^r * 78557 + 1. -/
 private lemma covering_prime (r : ℕ) (hr : r < 36) :
@@ -114,8 +114,10 @@ theorem selfridge_sierpinski_is_sierpinski : IsSierpinskiNumber selfridge_sierpi
   intro hprime
   have hpn := hprime.eq_one_or_self_of_dvd p hdvd
   have hlt := hp_prime.one_lt
-  have hge : 78558 ≤ 2 ^ k * 78557 + 1 := by
-    nlinarith [Nat.one_le_pow k 2 (by omega)]
+  have hge : 78558 ≤ 2 ^ k * selfridge_sierpinski + 1 := by
+    have hpow : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_pow k 2 (by omega)
+    simp only [selfridge_sierpinski]
+    nlinarith [hpow]
   rcases hpn with rfl | rfl <;> omega
 
 -- Sierpinski numbers exist (consequence of the above)
@@ -363,15 +365,19 @@ def IsGeneralizedAvoiding (primes : List ℕ) (m : ℕ) : Prop :=
 theorem candidate_mono_k (m k₁ k₂ l : ℕ) (h : k₁ ≤ k₂) :
     candidateNumber m k₁ l ≤ candidateNumber m k₂ l := by
   unfold candidateNumber
-  have : 2 ^ k₁ ≤ 2 ^ k₂ := Nat.pow_le_pow_right (by omega) h
-  nlinarith [Nat.one_le_pow l 3 (by omega)]
+  have hp : 2 ^ k₁ ≤ 2 ^ k₂ := Nat.pow_le_pow_right (by omega) h
+  have h1 : 2 ^ k₁ * 3 ^ l ≤ 2 ^ k₂ * 3 ^ l := mul_le_mul_right' hp (3 ^ l)
+  have h2 : 2 ^ k₁ * 3 ^ l * m ≤ 2 ^ k₂ * 3 ^ l * m := mul_le_mul_right' h1 m
+  omega
 
 -- candidateNumber with larger l is at least as large
 theorem candidate_mono_l (m k l₁ l₂ : ℕ) (h : l₁ ≤ l₂) :
     candidateNumber m k l₁ ≤ candidateNumber m k l₂ := by
   unfold candidateNumber
-  have : 3 ^ l₁ ≤ 3 ^ l₂ := Nat.pow_le_pow_right (by omega) h
-  nlinarith [Nat.one_le_pow k 2 (by omega)]
+  have hp : 3 ^ l₁ ≤ 3 ^ l₂ := Nat.pow_le_pow_right (by omega) h
+  have h1 : 2 ^ k * 3 ^ l₁ ≤ 2 ^ k * 3 ^ l₂ := mul_le_mul_left' hp (2 ^ k)
+  have h2 : 2 ^ k * 3 ^ l₁ * m ≤ 2 ^ k * 3 ^ l₂ * m := mul_le_mul_right' h1 m
+  omega
 
 /- Part 10: Problem Status
 

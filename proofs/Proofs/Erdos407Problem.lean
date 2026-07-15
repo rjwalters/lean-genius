@@ -84,8 +84,8 @@ w(n) = number of tuples (a, b, c, d) with n = 2^a + 3^b + 2^c·3^d.
 Note: This counts all tuples, not just distinct sums.
 -/
 noncomputable def w (n : ℕ) : ℕ :=
-  Finset.card {x : ℕ × ℕ × ℕ × ℕ | x.1 ≤ n ∧ x.2.1 ≤ n ∧ x.2.2.1 ≤ n ∧ x.2.2.2 ≤ n ∧
-    IsValidRep n x.1 x.2.1 x.2.2.1 x.2.2.2}.toFinset
+  {x : ℕ × ℕ × ℕ × ℕ | x.1 ≤ n ∧ x.2.1 ≤ n ∧ x.2.2.1 ≤ n ∧ x.2.2.2 ≤ n ∧
+    IsValidRep n x.1 x.2.1 x.2.2.1 x.2.2.2}.ncard
 
 /--
 **Alternative: Distinct Representations**
@@ -114,7 +114,7 @@ theorem w_one_zero : ∀ a b c d : ℕ, ¬IsValidRep 1 a b c d := by
   have h3 : 2 ^ c * 3 ^ d ≥ 1 := by
     have hc : 2 ^ c ≥ 1 := Nat.one_le_pow c 2 (by norm_num)
     have hd : 3 ^ d ≥ 1 := Nat.one_le_pow d 3 (by norm_num)
-    exact Nat.one_le_mul hc hd
+    exact Nat.mul_pos hc hd
   omega
 
 /--

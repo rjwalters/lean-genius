@@ -1,3 +1,86 @@
+# DOCTOR INCREMENT 77 (deep-rework partition Erdos<500 / lane1, #38065, 2026-07-15)
+
+Container cpuset 0-5, 11g, cache `lean-mathlib-cache-v431`, worktree issue-38065, branch
+`feature/issue-38065-inc77` off origin/feature/issue-37508. **+5 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos301Problem** (parse-error→proof-drift): (1) `by_cases`-neg branch omega for `2 ≤ #B`
+  needed `have hpos := Finset.Nonempty.card_pos hne` (omega no longer picks up nonempty→card_pos).
+  (2) `absurd h hn |>.elim` → drop `.elim` (`absurd` already returns any type). (3) sum-lower
+  rewrite `rw [div_eq_inv_mul, ← Finset.sum_const]` no longer matched (nsmul vs mul) → replaced
+  with `have hrw : #B/N = ∑ _∈B, 1/N := by rw [Finset.sum_const, nsmul_eq_mul]; ring` then
+  `Finset.sum_le_sum`. (4) `inv_anti₀` arg types must be pinned first (`have hbpos`/`hbN` before
+  the `exact`, else the ℕ/ℝ metavar defaults wrong). (5) singleton branch `exact_mod_cast hBsum.symm`
+  → drop `.symm` (cast produced `b=a`, needed `a=b`).
+- **Erdos3LogHarmonic** (parse-error/mod_cast): `set N₀ := max 2 (…) with hN₀def` makes N₀ opaque,
+  so `exact_mod_cast le_max_left 2 …` fails to unify `↑N₀` with `max …`. Fix: `rw [hN₀def]` first,
+  then cast. **Also: re-typing the max's argument `⌈1/c^2⌉₊` picks up rpow `c^(2:ℝ)` (mismatch with
+  the def's npow `c^(2:ℕ)`)** — use `le_max_left 2 _` / `le_max_right 2 _` (underscore) so it unifies
+  against the goal's correct powers. (Cascades to **Erdos3Problem** import; that file has its own
+  residual errors — see leads.)
+- **Erdos407Problem** (proof-drift): `Nat.one_le_mul` gone → `Nat.mul_pos` (`1≤x` defeq `0<x` in ℕ).
+  **`Set.toFinset` on `{x : ℕ×ℕ×ℕ×ℕ | …bounded…}` fails `Fintype ↥S` synth** (ambient infinite);
+  since `w` is `noncomputable` and only used in abstract `w n ≤ C` bounds, switched
+  `Finset.card {…}.toFinset` → `{…}.ncard` (Set.ncard needs no Fintype).
+- **Erdos203Problem** (rewrite-drift): (1) mod-arith calc `rw [Nat.add_mod, Nat.mul_mod]` left an
+  extra inner `%p` → rebuilt as two `have`s (`hmul` via `Nat.mul_mod,hmod,←Nat.mul_mod`, then
+  `Nat.add_mod,hmul,←Nat.add_mod`). (2) pow-monotone products: `nlinarith` couldn't derive
+  `2^k₁·3^l·m ≤ 2^k₂·3^l·m` from `2^k₁≤2^k₂` → chain `mul_le_mul_right'`/`mul_le_mul_left'` then
+  omega. (3) **omega def-unfold seam:** after `rcases … with rfl`, `p` carries def
+  `selfridge_sierpinski` but the helper bound `hge` used literal `78557`; omega no longer unfolds
+  the def so the `2^k*_` atoms didn't match → restated `hge` in terms of `selfridge_sierpinski`
+  (`simp only [selfridge_sierpinski]; nlinarith`).
+- **Erdos27Problem** (rewrite-drift): (1) `linarith [htend.liminf_eq]` couldn't equate
+  `asymptoticUncoveredDensity S` (a `liminf` def) with the hint's `liminf …` atom → `exact
+  le_of_eq htend.liminf_eq` (defeq). (2) Finset.map embedding `⟨(·+m₁), by intro; omega⟩`: bare
+  `intro` no longer intros all Injective binders → `add_left_injective m₁`. (3) once the def
+  elaborated, `Finset.map_insert` leaves the embedding **unreduced** `{toFun:=…} y` → prepend
+  `simp only [Function.Embedding.coeFn_mk]` before the `rw [show …]`. (4) `simp only [← naturalDensity]`
+  rejected (can't reverse-unfold a def) → fold via explicit `have hfold : (∏ …) = naturalDensity 2 m
+  := rfl; rw [hfold, ihm]`. (5) `(max 2 N : ℝ)` ascription elaborates to **real-max** `max 2 ↑N`,
+  mismatching the goal's **cast-of-nat-max** `↑(max 2 N)` → `set K : ℕ := max 2 N` unifies both.
+  (6) a broken calc (`1 < 1/ε*ε` is `1<1`; old `div_mul_cancel₀` drift) rebuilt as
+  `1 = ε*(1/ε) < ε*↑N ≤ ε*↑K`. Earlier `sorry` warnings were cascade artifacts of the broken def;
+  final file is genuinely sorry-free.
+
+## New systematic seams (rename-map candidates)
+1. **`set x := <expr> with h` makes `x` opaque to `omega`/`exact_mod_cast`/`simp` unfolding** — when
+   a later tactic needs the body, `rw [h]` first. (Seen twice: Erdos301 sum, Erdos3LogHarmonic N₀,
+   Erdos27 K.) Corollary: `omega` no longer unfolds plain `def`s (Erdos203 `selfridge_sierpinski`).
+2. **Numeric-literal power under a type ascription flips npow↔rpow:** `⌈1/c^2⌉₊` re-typed inside a
+   proof elaborates `c^(2:ℝ)`; leave the argument as `_` to unify against the goal's `c^(2:ℕ)`.
+3. **`Set.toFinset` needs `Fintype ↥S`** which is unsynthesizable for bounded subsets of infinite
+   types → for `noncomputable` counts used only in abstract bounds, use **`Set.ncard`**.
+4. **`Nat.one_le_mul` removed → `Nat.mul_pos`** (`1≤·` defeq `0<·` in ℕ).
+5. **`Finset.map`/`Finset.map_insert` leave the `Function.Embedding` application unreduced** — add
+   `simp only [Function.Embedding.coeFn_mk]` to beta-reduce before matching `f a` patterns.
+6. **`simp only [← <def>]` is rejected** (a def name can only be unfolded forward) → fold via a
+   local `have : … = <def> … := rfl; rw [this]`.
+7. **`absurd h hn |>.elim`** — drop the `.elim`; `absurd` already yields any goal type.
+8. **`X.symm` where `X : a ∈ l`** resolves to the removed `List.Mem.symm` — use `Ne.symm`/`Eq.symm`
+   explicitly or restructure (seen deferred in Erdos86).
+
+## Statement repairs (for #38611)
+- None this increment (no false-as-stated theorems hit; all were genuine v4.31 surface drift).
+
+## Good next leads (lane1, Erdos<500, still RESIDUAL)
+- **Erdos3Problem** (imports Erdos3LogHarmonic — now GREEN, olean built): remaining 4 errors —
+  `522` type-mismatch after simp, `788` typeclass stuck, `840` "no goals", `1225` **unterminated
+  comment** (find the stray `/-`), plus a *pre-existing* `sorry` at 179 (docstring says the
+  implication is not known — keep it).
+- **Erdos86Problem** (parse-error, ~6 err): `List.Mem.symm` gone (L72), `{ … // ∀ [DecidableRel] … }`
+  set-builder `//` parse (L115) — the `f` sSup comprehension needs restated binder syntax, `//` in
+  `{ x | p x // q }` is invalid; `HypercubeSubgraph` synth (L83), linarith L143, rewrite L182.
+- **Erdos20Problem** (2 err): `SunflowerCore := petals.inf id` needs `OrderTop (Finset α)` (only
+  `[DecidableEq α]` in scope, no Fintype) — needs a def redesign (e.g. filter over `petals.sup id`),
+  plus a `not a positivity goal` at L100. Deferred as def-change.
+- **Erdos247Problem** blocked cross-lane on `LiouvilleTheorem.olean` (LiouvilleTheorem is RESIDUAL in
+  another lane) — will cascade GREEN once that lane fixes it.
+- Cheap-ish single/low-blocker rows to try next: Erdos40Problem (5 scattered: omega/positivity/tauto/
+  linarith), Erdos291Problem, Erdos184Problem, Erdos95Problem, Erdos209Problem (all 5 err).
+
+---
 # DOCTOR INCREMENT 78 (deep-rework partition Erdős ≥ 500 / lane2, #38065, 2026-07-15)
 
 Container cpuset 6-11, 11g, cache `lean-mathlib-cache-v431-b`, worktree doctor-b, branch
