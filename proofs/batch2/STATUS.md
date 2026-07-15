@@ -1,3 +1,82 @@
+# DOCTOR INCREMENT 72 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
+
+Container `dr72` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc72` off origin/feature/issue-37508. **+5 GREEN.** PR #38675.
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos461Problem** (unknown-const): full `Nat.factors`→`primeFactorsList` rename
+  (`prod_factors`→`prod_primeFactorsList`, `prime_of_mem_factors`→`prime_of_mem_primeFactorsList`,
+  `factors_one/zero/prime`→`primeFactorsList_*`, `dvd_of_mem_factors`→`dvd_of_mem_primeFactorsList`,
+  `factors_mul`→`perm_primeFactorsList_mul`) + **filter-predicate unification**: `¬x<t` /
+  `decide(¬x<t)` / `!decide(x<t)` are no longer defeq at the `List.filter`, so pick ONE canonical
+  Bool complement form `fun x => !decide (x < t)` and thread it through `list_prod_filter_mul_not`,
+  `no_small_prime_in_complement`, and the coprimality arg. Also `List.mem_cons_self` now arg-free;
+  **`List.prod_append` is now an equation, not a fn** (`List.prod_append _ _`→`List.prod_append`);
+  `Nat.dvd_gcd.mp`→`Nat.dvd_gcd_iff.mp`; `Finset.card_Icc`→`Nat.card_Icc`;
+  `List.filter_eq_nil`→`filter_eq_nil_iff`; `of_decide_eq_true` to bridge `decide _ = true` → Prop.
+- **Erdos390Problem** (unknown-const:List.Sorted): **`List.Sorted` REMOVED → `List.Pairwise`**
+  (structure field `factors.Sorted (·<·)`→`factors.Pairwise (·<·)` + every simp site; drop the
+  now-redundant `List.Sorted` from `simp [List.Sorted, List.Pairwise]`). **`getLast` with a
+  nonempty-proof breaks `cases hf : vf.factors`** ("generalize: result is not type correct" —
+  the proof arg's type mentions the scrutinee) → redefine `maxFactor` to `getLastD 0` (no proof
+  arg); membership via `List.getLastD_cons` + `List.getLastD_mem_cons`. `dite` over `∃ vf, True`
+  needs a `Decidable` instance → `noncomputable def … := by classical; exact …`.
+  **`List.prod_pos`: `s` is NOT inferred from a `_ ≥ 1` expected type** (`0<_` vs `1≤_` defeq
+  isn't unified during elab) → pass `(s := ys)` explicitly (and drop the stale `.le`). nil (single
+  factor) branches: `cases` does NOT substitute into pre-existing `hprod`/`hgt` → `rw [hf] at hprod`
+  then `simp [Nat.factorial]` to expose the numeral for omega. `Nat.le_sInf` REMOVED → `le_csInf`
+  (takes `s.Nonempty` + bound; give the nonempty witness via `refine le_csInf ⟨…⟩ ?_`, not
+  `apply`+anon-ctor which can't infer `s`). `Nat.lt_factorial_self` for the `[n!]` witness.
+- **Erdos334Problem** (unknown-const:Nat.Prime.dvd_prime_pow): `Nat.Prime.dvd_prime_pow` /
+  `Nat.Prime.eq_one_or_self_of_prime_of_dvd` REMOVED. For "q prime ∣ p^k ⇒ q ≤ p" use
+  `((Nat.prime_dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow hdiv)).le`. Also
+  **`Real.sqrt Real.exp 1` is a real typo** (rexp : ℝ→ℝ needs application) → `Real.sqrt (Real.exp 1)`.
+  (Formalized entry, 3 pre-existing sorries preserved — GREEN = compiles, sorries are orthogonal.)
+- **Erdos405Problem** (unknown-const:ZMod.val_neg_one'): **`ZMod.val_neg_one'` gone** → derive
+  `(-1 : ZMod p).val = p-1` via `(-1) = ((p-1 : ℕ) : ZMod p)` (cast_sub) + `val_natCast` +
+  `mod_eq_of_lt`. **`ZMod.pow_card_sub_one_eq_one` now returns `a^(p-1)` directly** (drop the
+  `Fintype.card`-reindex `hcard`). `Nat.log_lt`→**`Nat.log_lt_iff_lt_pow`**; `Nat.lt_two_pow`→
+  **`Nat.lt_two_pow_self`** (n now implicit). An **iff-axiom `yu_liu_1996` + `rw [h]` on a
+  Prop-proof fails** ("Invalid rewrite argument: `h` is a proof of …") → `(yu_liu_1996 …).mp h`;
+  `simp` then collapses the `3=3`/`5=5` guards so the downstream rcases arity shrinks. `sum_congr`
+  range-eq via `congr 1` (`n+1-1` defeq `n`, so omega after is a No-goals error — drop it).
+  **`6.factorial` parses as `6.` + `factorial`** → `Nat.factorial 6`. `p ∣ p` mod via `Nat.mod_self`.
+- **Erdos59Problem** (unknown-const:Set.mem_union.mp): `Set.mem_union` now takes explicit
+  `(x a b)` → `(Set.mem_union _ _ _).mp h`. `Nat.even_succ`→**`Nat.even_add_one`**;
+  **`even_zero`→`Even.zero`**; omega won't synth an `Even` goal from `Odd n` → give the explicit
+  `⟨k, by omega⟩` witness. **v4.31 `simp` on `A ∩ B = ∅` after `ext` leaves `(P ∧ ¬P) ↔ False`,
+  not `P ∧ ¬P → False`** → add `iff_false` to the `simp only` set (this one refine-`⟨⟩` failure
+  had cascaded as spurious `unterminated comment` / `end` / type-mismatch errors 100+ lines below —
+  fix the real goal and they vanish).
+
+## New systematic seams (rename-map §7al candidates)
+1. **`List.Sorted` REMOVED** → `List.Pairwise` (was `Sorted r = Pairwise r`); `List.sorted_cons`→`pairwise_cons`.
+2. **`getLast` carrying a `≠[]` proof blocks `cases h : theList`** (dependent-proof motive) → switch
+   the def to `getLastD default` (proof-free) and case cleanly; membership via `List.getLastD_mem_cons`.
+3. **`List.prod_pos` won't infer `{s}` from a `_ ≥ 1` expected type** (`0<_` vs `1≤_` not unified) → `(s := …)`.
+4. **`List.prod_append` / `Nat.prod_primeFactorsList` are equations, not fns** — drop trailing `_ _`.
+5. **`Nat.le_sInf` REMOVED → `le_csInf`** (`s.Nonempty` first); anon-ctor nonempty needs `refine`, not `apply`.
+6. **`Nat.log_lt`→`Nat.log_lt_iff_lt_pow`; `Nat.lt_two_pow`→`Nat.lt_two_pow_self` (implicit n);
+   `Nat.even_succ`→`Nat.even_add_one`; `even_zero`→`Even.zero`; `Nat.dvd_gcd.mp`→`Nat.dvd_gcd_iff.mp`;
+   `Nat.Prime.dvd_prime_pow` gone (use `prime_dvd_prime_iff_eq` + `dvd_of_dvd_pow`).**
+7. **A bare numeral dot-projection `6.factorial` now parses `6.` as a float** → `Nat.factorial 6` / `(6:ℕ).factorial`.
+8. **v4.31 `simp` normalizes `_ = ∅`/`_ = univ` membership goals to `P ↔ False`/`P ↔ True`** — add
+   `iff_false`/`iff_true` so a `→`-shaped exact still closes. A refine-`⟨⟩` failure can cascade as
+   spurious lexer/`end` errors far downstream; fix the real subgoal first.
+9. **`Set.mem_union` args now explicit** `(x a b)`; membership in `∪` is still defeq to `∨` (`exact h` often works).
+
+## Deferred (partition A, triaged — good next starting points)
+- **Erdos367Problem** (14 err): `twoFullPart_le` (thm L344) and `van_doorn_lower_bound` (axiom L245)
+  are FORWARD-REFERENCED at L140/157/158/205 → reorder above first use; ALSO `Nat.factorization_prime`
+  gone, `Finset.filter_eq_empty`→`_iff`, unknown-`p` scoping at L267/278, two type-mismatches.
+- **Erdos411Problem** (8 err): `totientStep_ge`/`totientStep_even_of_even` forward-refs; TWO
+  `maxHeartbeats` timeouts at L247/248 (bump `set_option maxHeartbeats` if the proof is just slow on
+  v4.31, else rewrite); two type-mismatches (L380/422).
+- **Erdos358Problem** (14 err, `two_mul_sum_Icc`), **Erdos201Problem** (29 err) — larger multi-root.
+
+---
+
 # DOCTOR INCREMENT 70 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
 
 Container `dr70` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
