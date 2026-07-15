@@ -61,7 +61,7 @@ theorem sigma_val_21 : sigma 1 21 = 32 := by native_decide
 
 /-- sigma(p) = p + 1 for prime p -/
 theorem sigma_prime' (p : ℕ) (hp : p.Prime) : sigma 1 p = p + 1 := by
-  simp [sigma_apply, hp.divisors]
+  rw [sigma_one_apply, hp.divisors, Finset.sum_pair hp.one_lt.ne]
   omega
 
 /-
@@ -141,10 +141,8 @@ this family alone contributes linearly many solutions.
 theorem sigma_add_eq_coprime6 (a : ℕ) (ha : a ≠ 0)
     (hcop2 : Nat.Coprime 2 a) (hcop3 : Nat.Coprime 3 a) :
     sigma 1 a + sigma 1 (2 * a) = sigma 1 (3 * a) := by
-  have hmul2 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
-    isMultiplicative_sigma hcop2
-  have hmul3 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
-    isMultiplicative_sigma hcop3
+  have hmul2 := (isMultiplicative_sigma (k := 1)).map_mul_of_coprime hcop2
+  have hmul3 := (isMultiplicative_sigma (k := 1)).map_mul_of_coprime hcop3
   rw [hmul2, hmul3]
   have hs2 : sigma 1 2 = 3 := by native_decide
   have hs3 : sigma 1 3 = 4 := by native_decide
@@ -191,6 +189,7 @@ theorem sigma_add_eq_of_prime (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p �
 /-- (p, 2p) is a solution for every prime p >= 5. -/
 theorem solution_prime_2p (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
     IsAdditiveDivisorPair p (2 * p) := by
+  have hp2 := hp.two_le
   refine ⟨hp.one_le, by omega, ?_⟩
   have heq : p + 2 * p = 3 * p := by ring
   rw [heq]
@@ -275,6 +274,7 @@ theorem twentyone_in_A110177 : 21 ∈ A110177 :=
 /-- For every prime p >= 5, 3p is in A110177. -/
 theorem three_p_in_A110177 (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
     3 * p ∈ A110177 := by
+  have hp2 := hp.two_le
   refine ⟨p, 2 * p, hp.one_le, by omega, by ring, ?_⟩
   show sigma 1 p + sigma 1 (2 * p) = sigma 1 (3 * p)
   exact sigma_add_eq_of_prime p hp h2 h3
@@ -296,7 +296,7 @@ theorem solution_symmetric (a b : ℕ) (h : IsAdditiveDivisorPair a b) :
     IsAdditiveDivisorPair b a := by
   obtain ⟨ha, hb, heq⟩ := h
   refine ⟨hb, ha, ?_⟩
-  rw [add_comm]
+  rw [add_comm b a]
   linarith
 
 /-
@@ -339,6 +339,7 @@ theorem prime_solution_counted (p x : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p
     (hle : 3 * p ≤ x) :
     (p, 2 * p) ∈ (Finset.Icc 1 x ×ˢ Finset.Icc 1 x).filter
       fun (a, b) => a + b ≤ x ∧ sigma 1 a + sigma 1 b = sigma 1 (a + b) := by
+  have hp2 := hp.two_le
   simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_Icc]
   refine ⟨⟨⟨hp.one_le, by omega⟩, ⟨by omega, by omega⟩⟩, ⟨by omega, ?_⟩⟩
   have heq : p + 2 * p = 3 * p := by ring

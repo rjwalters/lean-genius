@@ -55,7 +55,7 @@ private lemma factorization_pq_at_q (h : IsPQGroup G) :
       Finsupp.add_apply]
   have h1 : h.p.factorization h.q = 0 := by
     rw [h.hp.factorization, Finsupp.single_apply,
-        if_neg (Ne.symm h.hpq)]
+        if_neg h.hpq]
   have h2 : h.q.factorization h.q = 1 := by
     rw [h.hq.factorization, Finsupp.single_apply, if_pos rfl]
   omega
@@ -109,11 +109,8 @@ private lemma sylow_normal_of_card_one {p : ℕ} [Fact p.Prime]
     ∃ P : Sylow p G, (P : Subgroup G).Normal := by
   haveI : Subsingleton (Sylow p G) :=
     Fintype.card_le_one_iff_subsingleton.mp (by omega)
-  obtain ⟨P⟩ := Sylow.nonempty p G
-  exact ⟨P, by
-    rw [← normalizer_eq_top, eq_top_iff]
-    intro g _
-    exact Sylow.smul_eq_iff_mem_normalizer.mp (Subsingleton.elim _ _)⟩
+  obtain ⟨P⟩ := (Sylow.nonempty : Nonempty (Sylow p G))
+  exact ⟨P, Sylow.normal_of_subsingleton P⟩
 
 /-
 ## Part II: Sylow q-subgroup is Unique
@@ -129,10 +126,10 @@ theorem sylow_q_count_constraint (h : IsPQGroup G)
       n ∣ h.p ∧ n % h.q = 1 := by
   haveI : Fact h.q.Prime := ⟨h.hq⟩
   intro n hn; subst hn
-  obtain ⟨Q⟩ := Sylow.nonempty h.q G
+  obtain ⟨Q⟩ := (Sylow.nonempty : Nonempty (Sylow h.q G))
   constructor
   · -- n_q | index Q = p
-    have hdvd := card_sylow_dvd_index Q
+    have hdvd := Q.card_dvd_index
     rw [sylow_q_index h Q] at hdvd
     rwa [← Nat.card_eq_fintype_card]
   · -- n_q ≡ 1 (mod q)
@@ -169,8 +166,8 @@ n_p = q requires q ≡ 1 (mod p), i.e., p | (q - 1).
 theorem sylow_p_count (h : IsPQGroup G) (hpq : h.p < h.q) :
     Fintype.card (Sylow h.p G) = 1 ∨ Fintype.card (Sylow h.p G) = h.q := by
   haveI : Fact h.p.Prime := ⟨h.hp⟩
-  obtain ⟨P⟩ := Sylow.nonempty h.p G
-  have hdvd := card_sylow_dvd_index P
+  obtain ⟨P⟩ := (Sylow.nonempty : Nonempty (Sylow h.p G))
+  have hdvd := P.card_dvd_index
   rw [sylow_p_index h P] at hdvd
   rw [← Nat.card_eq_fintype_card]
   exact h.hq.eq_one_or_self_of_dvd _ hdvd
@@ -231,8 +228,8 @@ private theorem cyclic_of_both_sylow_normal (h : IsPQGroup G) (hpq : h.p < h.q)
       rwa [hQ_card, Subgroup.orderOf_mk] at this
     have hcop : Nat.Coprime h.p h.q :=
       (h.hp.coprime_iff_not_dvd).mpr (fun hdvd =>
-        absurd (Nat.Prime.eq_of_dvd_of_prime h.hp h.hq hdvd) h.hpq)
-    exact (orderOf_eq_one_iff_eq_one).mp (Nat.eq_one_of_dvd_coprimes hcop h1 h2)
+        absurd ((Nat.prime_dvd_prime_iff_eq h.hp h.hq).mp hdvd) h.hpq)
+    exact orderOf_eq_one_iff.mp (Nat.eq_one_of_dvd_coprimes hcop h1 h2)
   -- Step 2: Elements of P and Q commute (commutator argument)
   have hcommute : ∀ g : G, g ∈ (P : Subgroup G) →
       ∀ k : G, k ∈ (Q : Subgroup G) → Commute g k := by
@@ -251,19 +248,17 @@ private theorem cyclic_of_both_sylow_normal (h : IsPQGroup G) (hpq : h.p < h.q)
     -- Both are the same element (by associativity), and it's in P ∩ Q = {1}
     have hc_one : g⁻¹ * (k⁻¹ * g * k) = 1 := by
       have : g⁻¹ * k⁻¹ * g * k = g⁻¹ * (k⁻¹ * g * k) := by group
-      exact Subgroup.disjoint_def.mp hdisjoint _ hc_in_P (this ▸ hc_in_Q)
+      exact Subgroup.disjoint_def.mp hdisjoint hc_in_P (this ▸ hc_in_Q)
     -- From g⁻¹ * (k⁻¹ * g * k) = 1, derive g = k⁻¹ * g * k
-    have h_conj_eq : k⁻¹ * g * k = g := by rwa [inv_mul_eq_one] at hc_one
+    have h_conj_eq : k⁻¹ * g * k = g := (inv_mul_eq_one.mp hc_one).symm
     -- Therefore g * k = k * g
     show g * k = k * g
     calc g * k = k * (k⁻¹ * g * k) := by group
       _ = k * g := by rw [h_conj_eq]
   -- Step 3: Get generators of P and Q
   -- P is cyclic (prime order)
-  haveI : IsCyclic (P : Subgroup G) := isCyclic_of_prime_card (by
-    rw [← Nat.card_eq_fintype_card]; exact hP_card)
-  haveI : IsCyclic (Q : Subgroup G) := isCyclic_of_prime_card (by
-    rw [← Nat.card_eq_fintype_card]; exact hQ_card)
+  haveI : IsCyclic (P : Subgroup G) := isCyclic_of_prime_card hP_card
+  haveI : IsCyclic (Q : Subgroup G) := isCyclic_of_prime_card hQ_card
   -- Get generators
   obtain ⟨⟨g, hg_mem⟩, hg_gen⟩ := IsCyclic.exists_generator (α := (P : Subgroup G))
   obtain ⟨⟨k, hk_mem⟩, hk_gen⟩ := IsCyclic.exists_generator (α := (Q : Subgroup G))
@@ -271,30 +266,31 @@ private theorem cyclic_of_both_sylow_normal (h : IsPQGroup G) (hpq : h.p < h.q)
   have hg_ord : orderOf g = h.p := by
     have h1 : orderOf (⟨g, hg_mem⟩ : (P : Subgroup G)) = h.p := by
       rw [orderOf_eq_card_of_forall_mem_zpowers (fun x => hg_gen x)]
-      rw [← Nat.card_eq_fintype_card]; exact hP_card
+      exact hP_card
     rwa [Subgroup.orderOf_mk] at h1
   -- orderOf k = q
   have hk_ord : orderOf k = h.q := by
     have h1 : orderOf (⟨k, hk_mem⟩ : (Q : Subgroup G)) = h.q := by
       rw [orderOf_eq_card_of_forall_mem_zpowers (fun x => hk_gen x)]
-      rw [← Nat.card_eq_fintype_card]; exact hQ_card
+      exact hQ_card
     rwa [Subgroup.orderOf_mk] at h1
   -- g and k commute
   have hgk_comm : Commute g k := hcommute g hg_mem k hk_mem
   -- Step 4: orderOf (g * k) = p * q = |G|
   have hcop_pq : Nat.Coprime h.p h.q :=
     (h.hp.coprime_iff_not_dvd).mpr (fun hdvd =>
-      absurd (Nat.Prime.eq_of_dvd_of_prime h.hp h.hq hdvd) h.hpq)
+      absurd ((Nat.prime_dvd_prime_iff_eq h.hp h.hq).mp hdvd) h.hpq)
   have hord_mul : orderOf (g * k) = h.p * h.q := by
     have := hgk_comm.orderOf_mul_eq_mul_orderOf_of_coprime (by rwa [hg_ord, hk_ord])
     rwa [hg_ord, hk_ord] at this
   -- G is cyclic: zpowers (g * k) has cardinality pq = |G|, so it's all of G
   refine ⟨⟨g * k, fun x => ?_⟩⟩
   have h_card_zpow : Nat.card (Subgroup.zpowers (g * k)) = Nat.card G := by
-    rw [Subgroup.card_zpowers, hord_mul, Nat.card_eq_fintype_card, h.hcard]
+    rw [Nat.card_zpowers, hord_mul, Nat.card_eq_fintype_card, h.hcard]
   have h_top : Subgroup.zpowers (g * k) = ⊤ :=
-    Subgroup.eq_top_of_card_eq h_card_zpow
-  rw [h_top]; exact Subgroup.mem_top x
+    Subgroup.eq_top_of_card_eq _ h_card_zpow
+  have hx : x ∈ Subgroup.zpowers (g * k) := by rw [h_top]; exact Subgroup.mem_top x
+  exact hx
 
 /-- When p ∤ (q-1), G is cyclic of order pq -/
 theorem cyclic_when_coprime (h : IsPQGroup G) (hpq : h.p < h.q)
