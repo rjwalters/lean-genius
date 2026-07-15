@@ -15,6 +15,7 @@
   - gibbs_inequality (already proved in main file)
 -/
 import Mathlib
+import Proofs.ShannonChannelCodingOQ04
 
 open Real Finset InformationTheory.BinaryEntropy
 
