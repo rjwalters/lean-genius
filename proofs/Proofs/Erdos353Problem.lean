@@ -289,9 +289,10 @@ private lemma hasInfiniteMeasure_inv_smul (c : ℝ) (hc : c ≠ 0)
       from (inv_smul_set_eq_preimage c hc A).symm]
     rw [MeasureTheory.Measure.addHaar_smul volume c⁻¹ A, hA.2]
     -- Goal: ENNReal.ofReal |c⁻¹| ^ finrank ℝ (EuclideanSpace ℝ (Fin 2)) * ⊤ = ⊤
-    have h_pos : (0 : ℝ≥0∞) < ENNReal.ofReal |c⁻¹| ^ FiniteDimensional.finrank ℝ (EuclideanSpace ℝ (Fin 2)) :=
-      pow_pos (ENNReal.ofReal_pos.mpr (abs_pos.mpr (inv_ne_zero.mpr hc))) _
-    simp [ENNReal.mul_top, h_pos.ne']
+    have h_ne : ENNReal.ofReal |c⁻¹ ^ Module.finrank ℝ (EuclideanSpace ℝ (Fin 2))| ≠ 0 := by
+      rw [Ne, ENNReal.ofReal_eq_zero, not_le]
+      exact abs_pos.mpr (pow_ne_zero _ (inv_ne_zero hc))
+    rw [ENNReal.mul_top h_ne]
 
 /-- Scaling preserves the isosceles triangle property. -/
 private lemma isIsoscelesTriangle_smul (c : ℝ) (hc : c ≠ 0)
@@ -313,7 +314,7 @@ private lemma triangleArea_smul_eq (c : ℝ) (hc : c > 0)
     triangleArea (c • p) (c • q) (c • r) = c ^ 2 * triangleArea p q r := by
   unfold triangleArea
   dsimp only
-  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  simp only [PiLp.sub_apply, PiLp.smul_apply, smul_eq_mul]
   rw [show (c * q 0 - c * p 0) * (c * r 1 - c * p 1) - (c * q 1 - c * p 1) * (c * r 0 - c * p 0) =
       c ^ 2 * ((q 0 - p 0) * (r 1 - p 1) - (q 1 - p 1) * (r 0 - p 0)) from by ring]
   rw [abs_mul, abs_of_pos (pow_pos hc 2)]
@@ -349,9 +350,9 @@ theorem scaling_property (A : Set (EuclideanSpace ℝ (Fin 2)))
   -- Construct the isosceles triangle in A
   refine ⟨c • p, c • q, c • r, hp, hq, hr, ?_, ?_, ?_, ?_, ?_⟩
   -- Distinctness: scaling by c ≠ 0 is injective
-  · exact fun h => hpq (smul_left_cancel₀ hc_ne h)
-  · exact fun h => hqr (smul_left_cancel₀ hc_ne h)
-  · exact fun h => hpr (smul_left_cancel₀ hc_ne h)
+  · exact fun h => hpq ((smul_right_inj hc_ne).mp h)
+  · exact fun h => hqr ((smul_right_inj hc_ne).mp h)
+  · exact fun h => hpr ((smul_right_inj hc_ne).mp h)
   -- Isosceles: scaling preserves distance ratios
   · exact isIsoscelesTriangle_smul c hc_ne hiso
   -- Area: c² · area(p,q,r) = (√t)² · 1 = t

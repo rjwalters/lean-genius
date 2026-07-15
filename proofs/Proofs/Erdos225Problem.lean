@@ -260,25 +260,30 @@ theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :
   have h_bij_sup : ∀ z : ℂ, ‖z‖ = 1 → ∃ θ ∈ Set.Icc 0 (2 * Real.pi), ‖∑ k : Fin (n + 1), p k * z ^ (k : ℕ)‖ = ‖∑ k : Fin (n + 1), p k * Complex.exp (Complex.I * k * θ)‖ := by
     intro z hz; obtain ⟨ θ, hθ₁, rfl ⟩ := h_bij z hz; use θ; simp +decide [ mul_assoc, mul_left_comm, ← Complex.exp_nat_mul ] ;
     exact hθ₁;
-  have h_bij_sup : ∀ θ ∈ Set.Icc 0 (2 * Real.pi), ∃ z : ℂ, ‖z‖ = 1 ∧ ‖∑ k : Fin (n + 1), p k * Complex.exp (Complex.I * k * θ)‖ = ‖∑ k : Fin (n + 1), p k * z ^ (k : ℕ)‖ := by
+  have h_bij_sup' : ∀ θ ∈ Set.Icc 0 (2 * Real.pi), ∃ z : ℂ, ‖z‖ = 1 ∧ ‖∑ k : Fin (n + 1), p k * Complex.exp (Complex.I * k * θ)‖ = ‖∑ k : Fin (n + 1), p k * z ^ (k : ℕ)‖ := by
     exact fun θ hθ => ⟨ Complex.exp ( Complex.I * θ ), by norm_num [ Complex.norm_exp ], by norm_num [ ← Complex.exp_nat_mul, mul_assoc, mul_comm, mul_left_comm ] ⟩;
+  -- BddAbove facts for the two supremum ranges.
+  have hbdd_icc : BddAbove (Set.range (fun θ : ↥(Set.Icc (0 : ℝ) (2 * Real.pi)) => ‖p.eval ↑θ‖)) := by
+    refine IsCompact.bddAbove (isCompact_range ?_)
+    refine Continuous.norm (continuous_finset_sum _ fun _ _ => Continuous.mul continuous_const ?_)
+    exact Complex.continuous_exp.comp (by continuity)
+  have hbdd_z : BddAbove (Set.range (fun z : {w : ℂ | ‖w‖ = 1} =>
+      ‖∑ k : Fin (n + 1), p k * (z : ℂ) ^ (k : ℕ)‖)) := by
+    refine ⟨ ∑ k : Fin ( n + 1 ), ‖p k‖, Set.forall_mem_range.2 fun z => ?_ ⟩
+    exact le_trans ( norm_sum_le _ _ ) ( Finset.sum_le_sum fun _ _ => by simp +decide [ z.2.out ] )
+  haveI : Nonempty {w : ℂ | ‖w‖ = 1} := ⟨⟨1, by simp⟩⟩
+  haveI : Nonempty (↥(Set.Icc (0 : ℝ) (2 * Real.pi))) :=
+    ⟨⟨0, ⟨le_rfl, by positivity⟩⟩⟩
   apply le_antisymm;
-  · convert ciSup_le _;
-    · exact ⟨ 1, by norm_num ⟩;
-    · intro x;
-      obtain ⟨ θ, hθ₁, hθ₂ ⟩ := ‹∀ z : ℂ, ‖z‖ = 1 → ∃ θ ∈ Set.Icc 0 ( 2 * Real.pi ), ‖∑ k : Fin ( n + 1 ), p k * z ^ ( k : ℕ )‖ = ‖∑ k : Fin ( n + 1 ), p k * Complex.exp ( Complex.I * ( k : ℂ ) * θ )‖› x x.2;
-      refine' le_trans _ ( le_ciSup _ ⟨ θ, hθ₁ ⟩ );
-      · convert hθ₂.le using 1;
-      · refine' IsCompact.bddAbove _;
-        exact isCompact_range ( by exact Continuous.norm <| by exact continuous_finset_sum _ fun _ _ => Continuous.mul ( continuous_const ) <| Complex.continuous_exp.comp <| by continuity );
-  · convert ciSup_le _;
-    · exact ⟨ ⟨ 0, ⟨ by norm_num, by positivity ⟩ ⟩ ⟩;
-    · intro x;
-      obtain ⟨ z, hz₁, hz₂ ⟩ := h_bij_sup x x.2;
-      refine' le_trans _ ( le_ciSup _ ⟨ z, hz₁ ⟩ );
-      · convert hz₂.le using 1;
-      · refine' ⟨ ∑ k : Fin ( n + 1 ), ‖p k‖, Set.forall_mem_range.2 fun z => _ ⟩;
-        exact le_trans ( norm_sum_le _ _ ) ( Finset.sum_le_sum fun _ _ => by simp +decide [ z.2.out ] )
+  · refine ciSup_le (fun x => ?_)
+    obtain ⟨ θ, hθ₁, hθ₂ ⟩ := h_bij_sup x x.2
+    rw [hθ₂]
+    exact le_ciSup hbdd_icc ⟨θ, hθ₁⟩
+  · refine ciSup_le (fun θ => ?_)
+    obtain ⟨ z, hz₁, hz₂ ⟩ := h_bij_sup' θ θ.2
+    show ‖p.eval ↑θ‖ ≤ _
+    rw [show ‖p.eval ↑θ‖ = ‖∑ k : Fin (n + 1), p k * Complex.exp (Complex.I * ↑↑k * ↑(θ : ℝ))‖ from rfl, hz₂]
+    exact le_ciSup hbdd_z ⟨z, hz₁⟩
 
 /- ## The Fejér-Riesz Theorem Connection -/
 
