@@ -11,17 +11,19 @@ open Set Metric Topology TopologicalSpace
 -- The orthogonal complement homeomorphism to EuclideanSpace ℝ (Fin 3)
 def orthCompHomeomorph (v : EuclideanSpace ℝ (Fin 4)) (hv : ‖v‖ = 1) :
     ↥(Submodule.span ℝ {v})ᗮ ≃ₜ EuclideanSpace ℝ (Fin 3) := by
+  have hv0 : v ≠ 0 := by
+    intro h; rw [h, norm_zero] at hv; norm_num at hv
   have hdim : Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ = 3 := by
     have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) = 4 := by
       rw [finrank_euclideanSpace_fin]
-    have h2 : Module.finrank ℝ (Submodule.span ℝ {v}) = 1 := by
-      rw [finrank_span_singleton]
-      simp [hv, norm_ne_zero_iff.mpr (by intro h; skip)]
+    have h2 : Module.finrank ℝ (Submodule.span ℝ {v}) = 1 :=
+      finrank_span_singleton hv0
     have h3 := Submodule.finrank_add_finrank_orthogonal
       (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin 4))))
     omega
   let b := stdOrthonormalBasis ℝ ↥(Submodule.span ℝ {v})ᗮ
-  let b3 := b.reindex (Fintype.equivFinOfCardEq (by simp [hdim]))
+  let b3 := b.reindex (Fintype.equivFinOfCardEq
+    (by rw [Fintype.card_fin, hdim]))
   exact b3.repr.toHomeomorph
 
 -- Compose stereographic with orthCompHomeomorph to get chart to R^3
@@ -41,7 +43,7 @@ lemma sphere_ne_neg (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) 1)) 
     mem_sphere_zero_iff_norm.mp x.2
   -- From x = -x we get x + x = 0
   have h2 : (x : EuclideanSpace ℝ (Fin 4)) + (x : EuclideanSpace ℝ (Fin 4)) = 0 := by
-    rw [heq]; simp [add_neg_cancel]
+    nth_rewrite 1 [heq]; rw [neg_add_cancel]
   -- So 2 • x = 0
   have h3 : (2 : ℝ) • (x : EuclideanSpace ℝ (Fin 4)) = 0 := by
     rw [two_smul]; exact h2
@@ -86,8 +88,6 @@ theorem sphere3_locally_euclidean' :
     -- chart.toHomeomorphSourceTarget : source ≃ₜ target
     -- We want: source ≃ₜ EuclideanSpace ℝ (Fin 3)
     -- Use: target = univ, so target ≃ₜ EuclideanSpace ℝ (Fin 3)
-    have heq : ↥chart.target = EuclideanSpace ℝ (Fin 3) := by
-      rw [htarget]; simp
     refine ⟨chart.toHomeomorphSourceTarget.trans ?_, trivial⟩
     exact Homeomorph.setCongr htarget |>.trans (Homeomorph.Set.univ _)
 

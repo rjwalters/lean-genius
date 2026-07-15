@@ -153,11 +153,8 @@ theorem sign_mulLeft_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
     exact hg1 this
   -- `IsCycle.sign : sign f = -(-1) ^ f.support.card`
   rw [hcyc.sign, hsupp, Finset.card_univ]
-  rcases heven with ⟨k, hk⟩
   -- card even ⇒ `(-1)^card = 1` ⇒ `-(1) = -1`
-  have : ((-1 : ℤˣ)) ^ (Fintype.card G) = 1 := by
-    rw [hk]; skip
-  rw [this]
+  simp only [Even.neg_one_pow heven, neg_neg]
 
 /-! ## Zolotarev sign of an arbitrary element via its discrete logarithm -/
 
@@ -186,6 +183,7 @@ theorem sign_mulLeft_eq_neg_one_zpow {G : Type*} [Group G] [Fintype G] [Decidabl
         G →* Equiv.Perm G) g k
     rw [ha]; simpa using hz
   rw [hmono, map_zpow, sign_mulLeft_generator hg hG heven]
+  rfl
 
 /-! ## The crux: a primitive root raised to `(p-1)/2` equals `-1`
 
@@ -267,7 +265,7 @@ theorem legendreSym_eq_sign_mulLeft {p : ℕ} [Fact p.Prime] (hp : 2 < p)
   -- sign side: sign (mulLeft u) = (-1)^k  (npow)
   have hsign : Equiv.Perm.sign (Equiv.mulLeft u) = (-1 : ℤˣ) ^ k := by
     have h0 := sign_mulLeft_eq_neg_one_zpow (fun x => hg x) hcard2 heven ha
-    rwa [zpow_natCast] at h0
+    rwa [uzpow_natCast] at h0
   -- the crux
   have hcrux : (g : ZMod p) ^ ((p - 1) / 2) = -1 :=
     primitiveRoot_pow_half_eq_neg_one hp (fun x => hg x)
@@ -286,7 +284,7 @@ theorem legendreSym_eq_sign_mulLeft {p : ℕ} [Fact p.Prime] (hp : 2 < p)
   rw [hsign]
   refine intCast_inj_pm hp hLpm ?_ ?_
   · rcases Int.units_eq_one_or ((-1 : ℤˣ) ^ k) with h | h <;> simp [h]
-  · rw [hL]; push_cast; ring
+  · rw [hL]; norm_cast
 
 
 end QuadraticReciprocityAlgorithmOQ03

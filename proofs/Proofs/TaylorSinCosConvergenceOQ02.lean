@@ -113,10 +113,11 @@ justify the complex series identifications. -/
 theorem euler_formula_from_taylor (x : ℝ) :
     exp (↑x * I) = ↑(Real.cos x) + ↑(Real.sin x) * I := by
   have hexp : exp (↑x * I) = ∑' n, expTerm (↑x * I) n := by
-    have hne : NormedSpace.exp (↑x * I) = ∑' n, expTerm (↑x * I) n :=
-      (NormedSpace.expSeries_hasSum_exp (𝕂 := ℂ) (↑x * I)).congr (fun n => by
-        simp [expTerm, NormedSpace.expSeries, smul_eq_mul, div_eq_mul_inv, mul_comm]
-      ) |>.tsum_eq.symm
+    have hsum : HasSum (fun n => expTerm (↑x * I) n) (NormedSpace.exp (↑x * I)) := by
+      refine (NormedSpace.expSeries_hasSum_exp (𝕂 := ℂ) (↑x * I)).congr_fun ?_
+      intro n
+      simp [expTerm, NormedSpace.expSeries, smul_eq_mul, div_eq_mul_inv, mul_comm]
+    have hne : NormedSpace.exp (↑x * I) = ∑' n, expTerm (↑x * I) n := hsum.tsum_eq.symm
     rw [show exp (↑x * I) = NormedSpace.exp (↑x * I) from
       congr_fun Complex.exp_eq_exp_ℂ _, hne]
   rw [hexp, tsum_even_add_odd_of_summable (expSeries_summable (↑x * I))]

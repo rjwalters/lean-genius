@@ -2310,6 +2310,60 @@ GREEN this increment:
 
 **Honest remaining A–M / Erdos<600 assessment**: 443 residuals at session start; ~7 now GREEN. Easy 1–2-error files exhausted. Sampled ~18 files: the large majority are 10–24-error genuine rewrites (BaselProblemOQ04OQ03=24, BinaryGcdOQ02OQ01=20, CantorDiagonalizationOQ01OQ01=19, DescartesRuleOfSignsOQ02=18, CayleyHamiltonMinpolyOQ02OQ02=18, DesarguesTheoremOQ01OQ01=16, CombinationsFormulaOQ01OQ04=16, BirthdayProblemOQ01OQ01OQ03=16, DescartesRuleOfSignsOQ01OQ02=14, AlgebraicNumbersCountableOQ04=14, ChineseRemainderConstructiveOQ03=18). A thin seam of ~6-error mixed-rename files remains fixable per this increment (CauchySchwarzOQ01OQ01OQ01=8 next candidate). Estimate: <10% of remaining A–M residuals are mechanical-cluster fixable; the rest are deep-rework or OOM.
 
+## Increment 48 (Doctor, N–Z / Erdos≥600) — +6 GREEN
+
+TAIL-phase harvest of the mechanically-fixable N–Z seam. Ledger 1891→1897.
+
+GREEN this increment:
+- **TaylorTheoremOQ01** (2 err): `taylor_mean_remainder_lagrange_iteratedDeriv` now
+  returns `θ ∈ uIoo 0 1` → `rw [Set.uIoo_of_le]`; `HasDerivAt` comp mismatch
+  (`f∘line` vs `restriction`) → explicit `funext` eq + `rw`.
+- **TaylorSinCosConvergenceOQ02** (2 err): `HasSum.congr |>.tsum_eq` broke
+  (`expSeries_hasSum_exp` now returns `HasSum` directly, `.congr` metavar RHS failed)
+  → `HasSum.congr_fun (∀ x, g x = f x)` + `div_eq_mul_inv`.
+- **SumOfKthPowersOQ04** (5 err): `tendsto_finset_sum`→`tendsto_finsetSum` (finset now
+  explicit first arg); `Polynomial.eval_eq_sum_range` uses `natDegree+1` → switch to
+  `eval_eq_sum_range'` (takes `natDegree<n` bound + x); `leadingCoeff_ne_zero` over-rewrite
+  → rebuilt via `leadingCoeff_eq_zero`; `div_eq_div_iff` arg order swap + `Nat.add_sub_cancel'`;
+  `tendsto_const_nhds` add via `.add`+`simpa`.
+- **TestApi1159c** (6 err): `ProjectivePlane.pointCount_eq` now `(P) {L} (l)` (drop
+  explicit `L`); unfold `Configuration.pointCount` to feed `omega`; `IsBlockingSet'`/
+  `IsBoundedBlockingSet'` `L` undetermined from `Set P` → `@`-apply; `↔` across two
+  `∀(P L:Type*)` got independent universes → pin both to `Type u`; forward dir via `.1/.2`.
+- **QuadraticReciprocityAlgorithmOQ03** (6 err): `(-1:ℤˣ)^even` → `Even.neg_one_pow heven`
+  (fn form, not dot); `zpow_natCast`→`uzpow_natCast` (units exponent coercion);
+  `IsCycle.sign` zpow tail needs trailing `rfl`; `simp only [_, neg_neg]` for
+  `-(-1)^card`; double units→int→ZMod cast `(-1)^k = ↑↑((-1)^k)` → `norm_cast`.
+- **TestSphereLocEuc** (6 err): `finrank_span_singleton` now takes `v≠0` explicit
+  (est. via `norm_zero`); removed broken `by intro h; skip` placeholder;
+  `OrthonormalBasis.reindex` card via `Fintype.card_fin + hdim`; `x=-x` sum via
+  `nth_rewrite 1 [heq] + neg_add_cancel` (was `add_neg_cancel` simp); dropped dead
+  `heq : ↥univ = EuclideanSpace` have (unused, simp no longer closes type-eq).
+
+**Statement repairs**: none — all fixes preserved statements (no weakening/sorry/axiomatize).
+The QRA "UNVERIFIED (blackout S13)" prose comment is a doc note; `sign_mulLeft_eq_neg_one_zpow`
+is fully proven (0 sorry/0 axiom). TestSphereLocEuc's `skip` placeholder was a genuine
+incomplete proof, now properly closed.
+
+**Reverted (deep, not mechanical)**:
+- **TaylorTheoremOQ02** (4 err): `HasFPowerSeriesAt.hasSum` REMOVED in 4.31. Only
+  `HasFPowerSeriesOnBall.hasSum` survives, on `Metric.eball 0 r` (a smaller ball) not
+  the full `p.radius` ball. No drop-in replacement; all 4 errors (132/158/185 + downstream)
+  chain off this sum-at-radius pattern. Requires reconstructing the analytic-continuation
+  bridge from `hr.hasSum` (small ball) to `p.radius`. Genuine API refactor, reverted whole.
+- **ShannonEntropyOQ02** (5 err): NOT attempted — linarith failures at 163/308 +
+  scattered rewrite-drift at 258/358/380; smells like genuine proof-drift not rename.
+
+**Honest remaining N–Z / Erdos≥600 assessment**: The mechanical seam is nearly dry.
+Of the low-error N–Z candidates probed this session, the ≤6-error catalogued-rename
+files (Taylor01, TaylorSinCos, SumKth04, TestApi1159c, QRAlg03, SphereLocEuc) are now
+harvested. Remaining sampled files split into: (a) deep API refactors masquerading as
+low-error (TaylorTheoremOQ02 = HasFPowerSeriesAt.hasSum removal), (b) genuine proof-drift
+with linarith/rewrite failures (ShannonEntropyOQ02, TaylorTheoremOQ03=9), (c) the large
+KNOWN-HARD/DEEP/UNSOUND skip-list. **Verdict: N–Z mechanical seam is DRY** — estimate
+≤3 more genuinely fixable N–Z files remain (would need file-by-file probing of the
+Erdos≥600 residuals, mostly instance-synth/decide-maxrecdepth = deep). Recommend the
+next increment focus on Erdos≥600 instance-synth clusters or declare the batch complete.
 ## Increment 47 (Doctor-b, A–M / Erdos<600) — +4 GREEN
 
 Recipes catalogued in rename-map §7ae. TAIL phase: worked mechanical-seam clusters.
