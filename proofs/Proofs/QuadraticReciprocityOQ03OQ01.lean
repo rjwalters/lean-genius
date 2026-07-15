@@ -97,7 +97,7 @@ theorem legendreSym_two_eq_one_iff (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
     rw [ZMod.natCast_eq_zero_iff] at hz
     rw [Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) Nat.prime_two] at hz
     exact hp hz
-  rw [legendreSym.eq_one_iff h2]
+  rw [legendreSym.eq_one_iff p h2]
   have e2 : ((2 : ℤ) : ZMod p) = (2 : ZMod p) := by norm_cast
   rw [e2]
   exact ZMod.exists_sq_eq_two_iff hp
@@ -122,6 +122,14 @@ theorem legendreSym_two_eq_neg_one_iff (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
 -- ============================================================
 -- Verified example computations of (2/p)
 -- ============================================================
+
+-- Small-prime `Fact` instances for the `decide` computations below
+-- (v4.31 no longer auto-synthesizes `Fact (Nat.Prime k)` for literals).
+instance : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 23) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 31) := ⟨by norm_num⟩
+instance : Fact (Nat.Prime 41) := ⟨by norm_num⟩
 
 /-- (2/3) = -1  (3 ≡ 3 mod 8, so 2 is a non-residue). -/
 example : legendreSym 3 2 = -1 := by decide
