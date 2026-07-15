@@ -38,11 +38,14 @@ axiom flt_over_Q (n : ℕ) (hn : n ≥ 3) : ¬ FermatEquation ℚ n
 -- Part II: Small Exponents Always Have Solutions
 -- ============================================================
 
-/-- For n = 1, x + y = z always has nontrivial solutions. -/
-theorem fermat_n1 (K : Type*) [CommRing K] [Nontrivial K] :
+/-- For n = 1, x + y = z has the nontrivial solution (1, 1, 2), provided the
+    characteristic is not 2 (otherwise 1 + 1 = 0 and z = 0 is excluded).
+    The `NeZero (2 : K)` hypothesis records exactly the char ≠ 2 requirement. -/
+theorem fermat_n1 (K : Type*) [CommRing K] [Nontrivial K] [NeZero (2 : K)] :
     FermatEquation K 1 := by
   refine ⟨1, 1, 1 + 1, one_ne_zero, one_ne_zero, ?_, ?_⟩
-  · intro h; exact two_ne_zero (add_left_cancel (show (1 : K) + 1 = 1 + 0 from by rw [h, add_zero]))
+  · have : (1 : K) + 1 = (2 : K) := by norm_num
+    rw [this]; exact NeZero.ne (2 : K)
   · simp [pow_one]
 
 /-- For n = 2, x² + y² = z² has solutions (Pythagorean triples). -/

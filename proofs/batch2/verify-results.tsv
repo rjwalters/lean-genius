@@ -202,7 +202,7 @@ BernoulliInequalityOQ01OQ02OQ01	GREEN
 BertrandsPostulateOQ03	GREEN	
 BertrandsPostulateOQ03OQ04	GREEN	
 BertrandsPostulateOQ03OQ04Aristotle	GREEN	
-BertrandsPostulateOQ03OQ04OQ01	RESIDUAL	proof-drift
+BertrandsPostulateOQ03OQ04OQ01	GREEN	
 BertrandsPostulateOQ03OQ04OQ03	GREEN	
 BetaCentralBinomialExplicitRate	GREEN	
 BetaCentralBinomialExplicitRateOQ02	GREEN	
@@ -818,7 +818,7 @@ Erdos110HigherCardinals	GREEN
 Erdos110Problem	RESIDUAL	unknown-const:lambie_hanson_counterexample
 Erdos1110OQ01	GREEN	
 Erdos1111Problem	GREEN	
-Erdos1112Problem	RESIDUAL	proof-drift
+Erdos1112Problem	GREEN	
 Erdos1113Problem	GREEN	
 Erdos1114Problem	GREEN	
 Erdos1115Problem	GREEN	
@@ -833,7 +833,7 @@ Erdos1121Problem	RESIDUAL	instance-synth
 Erdos1122Problem	GREEN	
 Erdos1123Problem	GREEN	
 Erdos1124Problem	GREEN	
-Erdos1125Problem	RESIDUAL	proof-drift
+Erdos1125Problem	GREEN	
 Erdos1126Problem	GREEN	unknown-const:measurable_additive_is_linear
 Erdos1127Problem	RESIDUAL	instance-synth
 Erdos1128Problem	RESIDUAL	proof-drift
@@ -1972,7 +1972,7 @@ FairGamesTheoremOQ03Aristotle	RESIDUAL	type-mismatch
 FatouLemmaOQ01OQ02	GREEN	
 FermatTwoSquaresOQ04	GREEN	
 FermatTwoSquaresOQ04OQ01	GREEN	
-FermatsLastTheoremOQ03	RESIDUAL	type-mismatch
+FermatsLastTheoremOQ03	GREEN	
 FeuerbachsTheoremDefsOQ04	GREEN	type-mismatch
 FeuerbachsTheoremOQ01Aristotle	GREEN	
 FeuerbachsTheoremOQ01OQ03	RESIDUAL	unknown-const:h1
@@ -2181,7 +2181,7 @@ KroneckersJugendtraumStarkRankOne	GREEN
 KummerTheorem	GREEN	
 KummerTheoremOQ01OQ01	GREEN	
 KummerTheoremOQ02	PRE-EXISTING	never-compiled:n
-KummerTheoremOQ03	RESIDUAL	partenat-removal
+KummerTheoremOQ03	GREEN	
 LHopitalOQ02Incomplete01	GREEN	
 LHopitalOQ03	GREEN	
 LHopitalOQ04	GREEN	

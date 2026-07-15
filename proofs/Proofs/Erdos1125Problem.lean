@@ -47,9 +47,14 @@ The condition 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0.
 def satisfiesKemperman (f : ℝ → ℝ) : Prop :=
   ∀ x : ℝ, ∀ h : ℝ, h > 0 → 2 * f x ≤ f (x + h) + f (x + 2*h)
 
-/-- **Alternative formulation:** f(x) - f(x+h) ≤ f(x+h) - f(x+2h). -/
+/-- **Alternative formulation:** f(x) - f(x+h) ≤ f(x+2h) - f(x).
+
+    This is the correct rearrangement of 2f(x) ≤ f(x+h) + f(x+2h): moving one
+    copy of f(x) to each side gives f(x) - f(x+h) ≤ f(x+2h) - f(x). (The earlier
+    right-hand side f(x+h) - f(x+2h) was a sign typo — it is not equivalent to
+    the Kemperman inequality.) -/
 def satisfiesKempermanAlt (f : ℝ → ℝ) : Prop :=
-  ∀ x : ℝ, ∀ h : ℝ, h > 0 → f x - f (x + h) ≤ f (x + h) - f (x + 2*h)
+  ∀ x : ℝ, ∀ h : ℝ, h > 0 → f x - f (x + h) ≤ f (x + 2*h) - f x
 
 /-- The two formulations are equivalent. -/
 theorem kemperman_equiv (f : ℝ → ℝ) :
@@ -109,11 +114,12 @@ theorem kemperman_question_resolved : kemperman_question :=
 
 /- ## Part VI: Interpretation and Context -/
 
-/-- The Kemperman inequality prevents certain "local maximum" patterns.
-    Specifically, we cannot have f(x+h) < f(x) and f(x+h) < f(x+2h) too strongly. -/
+/-- The Kemperman inequality prevents certain "local maximum" patterns:
+    the increment f(x+h) - f(x) is at least as large as the deficit f(x) - f(x+2h).
+    Equivalently, f(x) - f(x+h) ≤ f(x+2h) - f(x). -/
 theorem kemperman_interpretation (f : ℝ → ℝ) (hf : satisfiesKemperman f)
     (x h : ℝ) (hh : h > 0) :
-    f x - f (x + h) ≤ f (x + 2*h) - f (x + h) := by
+    f x - f (x + h) ≤ f (x + 2*h) - f x := by
   have := hf x h hh
   linarith
 
@@ -122,23 +128,41 @@ theorem kemperman_interpretation (f : ℝ → ℝ) (hf : satisfiesKemperman f)
 /-- Constant functions satisfy Kemperman. -/
 theorem constant_satisfies (c : ℝ) : satisfiesKemperman (fun _ => c) := by
   intro x h _
-  ring_nf
+  simp only
+  linarith
 
-/-- Linear functions f(x) = ax + b satisfy Kemperman. -/
-theorem linear_satisfies (a b : ℝ) : satisfiesKemperman (fun x => a * x + b) := by
+/-- Non-decreasing linear functions f(x) = ax + b (with a ≥ 0) satisfy Kemperman.
+
+    The `0 ≤ a` hypothesis is required: the Kemperman inequality
+    2f(x) ≤ f(x+h) + f(x+2h) reduces here to 0 ≤ 3·a·h, which fails when a < 0.
+    (This corrects an earlier version that dropped the sign hypothesis.) -/
+theorem linear_satisfies (a b : ℝ) (ha : 0 ≤ a) :
+    satisfiesKemperman (fun x => a * x + b) := by
   intro x h hh
-  ring_nf
+  have : (0 : ℝ) ≤ 3 * a * h := by positivity
+  simp only
+  nlinarith [this]
 
-/-- Convex functions satisfy Kemperman. -/
-axiom convex_satisfies (f : ℝ → ℝ) :
-    (∀ x y t : ℝ, 0 ≤ t → t ≤ 1 → f (t * x + (1 - t) * y) ≤ t * f x + (1 - t) * f y) →
-    satisfiesKemperman f
-
-/-- The function f(x) = x² satisfies Kemperman (it's convex). -/
-theorem square_satisfies : satisfiesKemperman (fun x => x^2) := by
+/-- Any non-decreasing function satisfies Kemperman: if f x ≤ f (x+h) ≤ f (x+2h)
+    then 2 f x ≤ f x + f (x+2h) ≤ f (x+h) + f (x+2h). This is the correct
+    general source of examples (the Kemperman inequality is a one-sided condition
+    that forbids local-maximum patterns, so monotone-up functions trivially
+    satisfy it — whereas arbitrary convex functions such as x² do NOT). -/
+theorem nonDecreasing_satisfies (f : ℝ → ℝ) (hf : isNonDecreasing f) :
+    satisfiesKemperman f := by
   intro x h hh
-  ring_nf
-  nlinarith [sq_nonneg h]
+  have h1 : f x ≤ f (x + h) := hf x (x + h) (by linarith)
+  have h2 : f x ≤ f (x + 2 * h) := hf x (x + 2 * h) (by linarith)
+  linarith
+
+/-- The function f(x) = x² does **not** satisfy the Kemperman inequality:
+    at x = -2h the second point pattern violates 2f(x) ≤ f(x+h) + f(x+2h).
+    (Kemperman's 2f(x) ≤ f(x+h)+f(x+2h) is a one-sided condition, *not* midpoint
+    convexity, so convex functions need not satisfy it.) -/
+theorem square_not_satisfies : ¬ satisfiesKemperman (fun x => x ^ 2) := by
+  intro h
+  have := h (-2) 1 (by norm_num)
+  norm_num at this
 
 /- ## Part VIII: Summary
 
