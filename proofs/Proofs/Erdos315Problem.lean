@@ -66,35 +66,37 @@ theorem sylvester_4 : sylvester 4 = 1807 := rfl
 theorem sylvester_recurrence (n : ℕ) :
     sylvester (n + 1) = sylvester n ^ 2 - sylvester n + 1 := rfl
 
+/-- All terms are at least 2. -/
+theorem sylvester_ge_two (n : ℕ) : sylvester n ≥ 2 := by
+  induction n with
+  | zero => simp [sylvester]
+  | succ n ih =>
+    have hsq : sylvester n ^ 2 ≥ 2 * sylvester n := by
+      have heq : sylvester n ^ 2 = sylvester n * sylvester n := by ring
+      rw [heq]
+      nlinarith
+    simp only [sylvester]
+    omega
+
 /-- Sylvester's sequence is strictly increasing. -/
 theorem sylvester_strictMono : StrictMono sylvester := by
   intro m n hmn
   induction n with
   | zero => omega
   | succ n ih =>
+    have hge : sylvester n ≥ 2 := sylvester_ge_two n
+    have hsq : sylvester n ^ 2 ≥ 2 * sylvester n := by
+      have heq : sylvester n ^ 2 = sylvester n * sylvester n := by ring
+      rw [heq]
+      nlinarith
     cases Nat.lt_succ_iff_lt_or_eq.mp hmn with
     | inl h =>
-      calc sylvester m < sylvester n := ih h
-        _ < sylvester n ^ 2 - sylvester n + 1 := by
-          have : sylvester n ≥ 2 := by
-            induction n with
-            | zero => simp [sylvester]
-            | succ k ihk => simp [sylvester]; omega
-          omega
-        _ = sylvester (n + 1) := rfl
-    | inr h =>
-      simp [h, sylvester]
-      have : sylvester n ≥ 2 := by
-        induction n with
-        | zero => simp [sylvester]
-        | succ k ihk => simp [sylvester]; omega
+      have hlt : sylvester m < sylvester n := ih h
+      simp only [sylvester]
       omega
-
-/-- All terms are at least 2. -/
-theorem sylvester_ge_two (n : ℕ) : sylvester n ≥ 2 := by
-  induction n with
-  | zero => simp [sylvester]
-  | succ n ih => simp [sylvester]; omega
+    | inr h =>
+      simp only [h, sylvester]
+      omega
 
 /-
 ## Part II: The Egyptian Fraction Property
@@ -111,7 +113,8 @@ def sylvesterProduct (n : ℕ) : ℕ :=
 theorem sylvester_identity (n : ℕ) :
     sylvester (n + 1) - 1 = sylvester n * (sylvester n - 1) := by
   simp [sylvester]
-  ring
+  have heq : sylvester n ^ 2 = sylvester n * sylvester n := by ring
+  rw [heq, Nat.mul_sub_one]
 
 /-  The telescoping property that leads to Σ 1/u_k = 1. -/
 /-- Sylvester's sequence sums to 1 (limit form). -/

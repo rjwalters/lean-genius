@@ -285,7 +285,7 @@ private lemma no_three_distinct_lt3 {m : ℕ} (hm : m < 3) (i j l : Fin m)
       simp only [Fin.mk.injEq]; omega
     rcases this with rfl | rfl | rfl <;> contradiction
 
-set_option maxHeartbeats 800000 in
+set_option maxHeartbeats 4000000 in
 /-- R(3;2) = 6 is the classical Ramsey number R(3,3).
     Proof: Upper bound by pigeonhole (vertex with 5 edges → 3 same color → forced triangle).
     Lower bound: exhibit triangle-free 2-colorings for K₃, K₄, K₅. -/
@@ -317,7 +317,7 @@ theorem R3k_two : R3k 2 = 6 := by
     set n := Nat.find (forcing_set_nonempty 2 (by omega)) with hn_def
     have hn_lt : n < 6 := hlt
     have h_spec : ForcesMonochromaticTriangle n 2 := Nat.find_spec (forcing_set_nonempty 2 (by omega))
-    interval_cases n
+    interval_cases n <;> clear hn_def
     · obtain ⟨_, i, _, _, _, _, _, _, _, _⟩ :=
         h_spec (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
       exact i.elim0
@@ -331,18 +331,29 @@ theorem R3k_two : R3k 2 = 6 := by
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) then 0 else 1
       have hsym₃ : IsSymmetric c₃ := by
         intro i j; simp only [c₃]; fin_cases i <;> fin_cases j <;> simp
-      have h_avoid₃ : AvoidsMonochromaticTriangles c₃ := by decide
+      have h_avoid₃ : AvoidsMonochromaticTriangles c₃ := by
+        rintro ⟨color, i, j, l, hij, hjl, hil, h1, h2, h3⟩
+        simp only [c₃] at h1 h2 h3
+        fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all
       exact h_avoid₃ (h_spec (by omega) c₃ hsym₃)
     · let c₄ : EdgeColoring 4 2 := fun p =>
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) ∨
            (p.1.val = 2 ∧ p.2.val = 3) ∨ (p.1.val = 3 ∧ p.2.val = 2) then 0 else 1
-      have hsym₄ : IsSymmetric c₄ := by decide
-      have h_avoid₄ : AvoidsMonochromaticTriangles c₄ := by decide
+      have hsym₄ : IsSymmetric c₄ := by
+        intro i j; simp only [c₄]; fin_cases i <;> fin_cases j <;> simp
+      have h_avoid₄ : AvoidsMonochromaticTriangles c₄ := by
+        rintro ⟨color, i, j, l, hij, hjl, hil, h1, h2, h3⟩
+        simp only [c₄] at h1 h2 h3
+        fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all
       exact h_avoid₄ (h_spec (by omega) c₄ hsym₄)
     · let c₅ : EdgeColoring 5 2 := fun p =>
         if (p.1.val + 5 - p.2.val) % 5 = 1 ∨ (p.1.val + 5 - p.2.val) % 5 = 4 then 0 else 1
-      have hsym₅ : IsSymmetric c₅ := by decide
-      have h_avoid₅ : AvoidsMonochromaticTriangles c₅ := by decide
+      have hsym₅ : IsSymmetric c₅ := by
+        intro i j; simp only [c₅]; fin_cases i <;> fin_cases j <;> simp
+      have h_avoid₅ : AvoidsMonochromaticTriangles c₅ := by
+        rintro ⟨color, i, j, l, hij, hjl, hil, h1, h2, h3⟩
+        simp only [c₅] at h1 h2 h3
+        fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all
       exact h_avoid₅ (h_spec (by omega) c₅ hsym₅)
 
 /-- Monotonicity: more colors requires more vertices to force a monochromatic triangle.
@@ -608,8 +619,8 @@ lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
       fun h => hij (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
       fun h => hjl (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
       fun h => hil (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
-      rfl, Fin.ext (congrArg Fin.val (hcjl.trans hcij.symm)),
-      Fin.ext (congrArg Fin.val (hcil.trans hcij.symm))⟩
+      rfl, Fin.castLE_injective (Nat.le_succ k) (hcjl.trans hcij.symm),
+      Fin.castLE_injective (Nat.le_succ k) (hcil.trans hcij.symm)⟩
   -- (T,T,F): i,j first, l second — i,j edge is within-first (castLE), others cross (last k)
   · exact absurd (hcij.trans hcil.symm) (castLE_ne_last _)
   -- (T,F,T): i,l first, j second — i,l edge is within-first, others cross
@@ -628,8 +639,8 @@ lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
       fun h => hij (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
       fun h => hjl (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
       fun h => hil (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
-      rfl, Fin.ext (congrArg Fin.val (hcjl.trans hcij.symm)),
-      Fin.ext (congrArg Fin.val (hcil.trans hcij.symm))⟩
+      rfl, Fin.castLE_injective (Nat.le_succ k) (hcjl.trans hcij.symm),
+      Fin.castLE_injective (Nat.le_succ k) (hcil.trans hcij.symm)⟩
 
 /-- R3k k satisfies both the forcing property and the minimality property. -/
 private lemma R3k_min_spec (k : ℕ) (hk : k ≥ 1) :
