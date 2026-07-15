@@ -4,7 +4,7 @@ Container `dr68` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
 `feature/issue-38065-inc68` off origin/feature/issue-37508. Confirms partition A
 is genuine deep-rework (4–6 diverse root errors per file, ledger class = FIRST
 error only). All flips in-container `lake build Proofs.X` exit-0 before ledger
-flip; pushed per file. **+3 GREEN.** PR #38671.
+flip; pushed per file. **+4 GREEN.** PR #38671.
 
 ## Flips (failure class in parens)
 - AmgmInequalityOQ02OQ01OQ02OQ01OQ03 (unknown-const:elemSymm_fin_zero → Newton-Girard,
@@ -37,6 +37,32 @@ flip; pushed per file. **+3 GREEN.** PR #38671.
   the same way; verified: `field_simp; ring` closes only the `+` form, the `−` form
   reduces to `a = −a`). Fixed the statement, docstring, and the witness in
   `feuerbach_inversive_parallel_lines` to the intended-true `+R/r`. Not a weakening.
+- DerangementsOQ03OQ01 (signature-drift → 2nd-order derangement convergence, root
+  cause + 4 masked): **LOST IMPORT** — the file `namespace DerangementsOQ03`-reopens
+  to reuse `altFactTerm`/`derangements_div_factorial`/… but imported only Mathlib
+  modules → add `import Proofs.DerangementsOQ03` (cleared the whole `Function expected
+  at altFactTerm` cluster); dead `rw [h0]` (`altFactTerm (m+0)` — goal already `m`)
+  → delete; `Summable.tsum_eq_zero_add` yields `f 0 = altFactTerm (m+0)` → simp needs
+  `add_zero` not `zero_add`; **`ring_nf` reindexed the tsum value** so `convert … using 1`
+  emitted a 2nd (value) goal → `rw [add_sub_cancel_left]` cancels cleanly with no
+  reindex, leaving only the function goal; reverse-triangle `h1` rebuilt via
+  `abs_sub_abs_le_abs_sub a (-b)` + `simpa [abs_neg, sub_neg_eq_add]`; concrete
+  n0/n1/n2 bounds `convert h using 2` leaves a factorial leaf → `<;> norm_num [Nat.factorial]`.
+
+## Deferred (partition A, triaged this increment)
+- DeMoivreOQ02OQ02 (signature-drift): `private def P/Q : Prop` over a section
+  `variable {R} [CommRing R]` — `R` no longer inferrable at the many `P n m` call
+  sites (return type is `Prop`, args are `ℤ`), v4.31 refuses the `CommRing ?m` synth.
+  Needs `(R := R)` at every use or an explicit-R refactor — pervasive, not mechanical.
+- LawsOfLargeNumbersOQ01Aristotle: reimplements `generalize_proofs` over
+  `Mathlib.Tactic.GeneralizeProofs` internals — that namespace is gone in v4.31;
+  deep metaprogramming API rework.
+- LagrangeFourSquaresOQ01OQ03: `native_decide` × noncomputable `r4` catch-22.
+- BezoutIdentityOQ01OQ02OQ02Transitive: docstring self-declares UNVERIFIED / never
+  machine-checked (Fin.cons/append index-arithmetic bridges) — not a portable v4.26 green.
+- CantorDiagonalizationOQ03OQ01Incomplete01: `typeUniverse` with `Obj := Type*`
+  instantiated at `Prop` forces a universe-level metavariable mismatch
+  (`[u1,u2,u3]` vs `[u1,u2]`) — genuine universe-design problem, not a pin.
 
 ## New systematic seams (rename-map §7ai candidates)
 1. **`Finset.mul_sum` orientation is now `a * ∑ f = ∑ a*f`** (forward distributes).
@@ -59,8 +85,15 @@ flip; pushed per file. **+3 GREEN.** PR #38671.
    `def Ns2.Type.foo` declared while inside `namespace Ns1` registers as
    `Ns1.Ns2.Type.foo` and is invisible to `x.foo` for `x : Ns2.Type`. Declare it
    `def _root_.Ns2.Type.foo` (or move it out of the wrapping namespace).
+7. **Lost `import Proofs.X`**: files that `namespace X`-reopen to reuse a sibling's
+   defs sometimes carry ONLY Mathlib imports (the `import Proofs.X` was dropped) →
+   every reused name reads as `Function expected at foo : ?m`. Add the missing import.
+8. **`ring_nf` reindexes `∑'`/`Finset.sum` binders** (`m+(k+1) → 1+m+k`), which then
+   makes a later `convert … using 1` emit an extra tsum/sum value goal. Prefer a
+   targeted `rw [add_sub_cancel_left]` (or similar) over `ring_nf` when the value is
+   about to be matched by `convert`.
 
-Ledger after increment 68: +3 GREEN (partition A).
+Ledger after increment 68: +4 GREEN (partition A).
 
 ---
 
