@@ -39,7 +39,10 @@ Points in ℝ² in general position (no three collinear) and convex subsets.
 structure Point2D where
   x : ℝ
   y : ℝ
-deriving DecidableEq
+
+/-- `Point2D` has decidable equality (noncomputably, via `Classical` — the real
+    coordinates make the derived instance noncomputable in v4.31). -/
+noncomputable instance : DecidableEq Point2D := Classical.decEq _
 
 /-- Three points are collinear if they lie on a common line -/
 def collinear (p q r : Point2D) : Prop :=

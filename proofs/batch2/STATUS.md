@@ -2583,3 +2583,107 @@ clusters, the Sylow-API cluster *partially* yielded (OQ02Orbit: normalizer-signa
 1-binder swap. But `native_decide`-on-noncomputable-Fintype (SylowTheoremOQ04) is a hard model
 change, and the remaining N–Z residuals are genuine multi-site proof surgery. The statement-repair
 targets (Erdos724, Erdos1123, RamseysTheoremOQ04) all yielded to real intended-true fixes.
+
+## Increment 52 (Doctor, N–Z / Erdos≥600, deep-rework clusters) — +7 GREEN
+
+**+7 GREEN**:
+- **TriangleInequalityOQ01** (namespace move + parser): `LpAddConst` /
+  `LpAddConst_of_one_le` moved into the `ENNReal` namespace (were unqualified /
+  `MeasureTheory.*`) → qualify `ENNReal.LpAddConst[_of_one_le]`. Plus a v4.31 parser change:
+  a `/-- docstring -/` immediately before `omit hp in` orphans the docstring
+  (`unexpected token 'omit'; expected 'lemma'`) → put `omit hp in` FIRST, docstring second.
+- **PartitionTheorem** (Archive→mainline relocation): `Theorems100.partition_theorem`
+  (Archive/Wiedijk100Theorems — NOT in `import Mathlib`) moved into mainline as
+  `Nat.Partition.card_odds_eq_card_distincts` (Combinatorics.Enumerative.Partition.Glaisher),
+  stated `#(odds n) = #(distincts n)` → use `.symm`. Also `Nat.Partition.odds` now unfolds to
+  `restricted n (¬Even ·)`; the membership `simp` needs `[Nat.Partition.odds,
+  Nat.Partition.restricted]` and must KEEP `¬Even` (do NOT rewrite to `Odd`).
+- **QuadraticReciprocityAlgorithmOQ03FieldBridge** (free-green): dep cleared upstream; no edit.
+- **Erdos628Aristotle** (name ambiguity): `chromaticNumber` is now ambiguous —
+  `SimpleGraph.chromaticNumber : ℕ∞` vs project `GraphCore.chromaticNumber : ℕ`, both opened
+  via `open GraphCore SimpleGraph`. Qualify all 4 uses as `GraphCore.chromaticNumber`
+  (the ℕ one, paired with `cliqueNumber : ℕ`). sorry bodies are pre-existing Aristotle stubs.
+- **ShannonChannelCodingOQ03Aristotle** (missing project import): `open
+  InformationTheory.BinaryEntropy` refers to a PROJECT namespace (defined in
+  `ShannonChannelCodingOQ04.lean`, where `h` = binary entropy lives) — Mathlib REMOVED its own
+  `binaryEntropy`. The companion opened the namespace but imported only `Mathlib`, so `h` was
+  unresolved (`unknown namespace` + `Function expected`). Add `import
+  Proofs.ShannonChannelCodingOQ04`.
+- **Erdos620ProblemAristotle** (free-green): dep chain greened upstream; no edit.
+- **Erdos870Aristotle** (Type-valued theorem → def): v4.31 rejects a `theorem` whose statement
+  is Type-valued (`type of theorem … is not a proposition`). `lift_rep` returns `KRep A k n`
+  (a structure). Convert `theorem`→`def` and supply a REAL body (lift re-uses the same
+  terms/count/sum/bound and composes the subset field: `fun a ha => h (rep.subset a ha)`),
+  discharging the former `sorry` with an actual proof.
+
+**Statement repairs**: none this increment. The named targets Erdos1112/Erdos1125 were ALREADY
+greened by sibling increment 50 (skip). TestApi241 remains genuinely-false (`{1,2,4,8}` not B3).
+
+**New recipes** (see rename-map §7af):
+- `ENNReal.LpAddConst` / `ENNReal.LpAddConst_of_one_le` namespace move.
+- `omit … in` must PRECEDE (not follow) a docstring.
+- Archive→mainline: `Theorems100.partition_theorem` → `Nat.Partition.card_odds_eq_card_distincts`;
+  `Nat.Partition.odds = restricted n (¬Even ·)`.
+- `chromaticNumber` ℕ∞ (SimpleGraph) vs ℕ (project GraphCore) ambiguity → qualify.
+- Project-namespace `open X` needs the file defining `X` imported (Shannon `h` in OQ04).
+- **Type-valued `theorem` now rejected** → make it a `def` (v4.31 enforcement).
+
+**Probed-and-skipped (genuine regressions / multi-site, NOT mechanical seam)**:
+- **NormEuclideanZsqrtdFamilyOQ03OQ02** — `isPrincipalIdealRing` yields via
+  `EuclideanDomain.to_principal_ideal_domain`, but the UFD half is blocked by a real Mathlib
+  regression: `Nontrivial (ℤ√d)` LOST its instance in v4.31, so `IsDomain (ℤ√d)` no longer
+  synthesizes (globally or via the EuclideanDomain letI) — breaks `to_uniqueFactorizationMonoid`
+  and the whole PID/UFD/prime chain. Needs `Nontrivial (ℤ√d)` reconstructed throughout. Reverted.
+- **SzemerediRegularityOQ02** — `simp [hCard_eq0]`/`positivity` hit `maximum recursion depth`
+  (already `maxRecDepth 40000`); the loop is inside `positivity`'s internal simp, a v4.31
+  regression, not a rename. Surgical `rw` on the trans-branch clears but `positivity` still loops.
+  Reverted.
+- **Erdos608Problem** — `O(1)` pseudo-syntax in a theorem statement (`unexpected token '('`) +
+  `_ % (2*k+1)` omega failures on Fin-coerced mod. Statement-repair + drift. Deferred.
+- **Erdos680Problem** — `Real.tendsto_pow_mul_exp_neg_atTop_nhds n c hc` (scalar-`c` form)
+  REMOVED; only `tendsto_pow_mul_exp_neg_atTop_nhds_zero n` (coefficient 1) survives — needs the
+  `c`-scaled version reconstructed by composing with `x ↦ c*x`. Genuine, not a rename.
+- **Erdos662Problem / PicksTheoremOQ01OQ01OQ01** — `native_decide` on noncomputable
+  Fintype/`realInteriorCount` (the SetLike/noncomputable model change). Stuck.
+- **Erdos613Aristotle** — 3 omega failures rooted in `Nat.choose_two_right`'s `/2` truncated
+  division; needs per-theorem nlinarith surgery on the even-numerator facts (nonlinear). Deep.
+- **TestApi1056** — omega-in-`def` + `decide` failures (per skip-list). PNPBarriersLegacy —
+  `Computability.FinEncoding` API mismatch in a 5800-line file. Both deep.
+
+**VERDICT (N–Z / Erdos≥600 seam):** thinning but **NOT fully dry**. Single-recipe wins still
+surface reliably in a few recognizable classes: (a) Mathlib namespace MOVES (ENNReal.LpAddConst),
+(b) Archive→mainline theorem RELOCATIONS (partition), (c) name-AMBIGUITY qualifications
+(chromaticNumber), (d) missing PROJECT-namespace imports (Shannon h), (e) Type-valued-theorem→def
+enforcement, and (f) FREE-GREENS as deps clear (2 this increment). The hard residuals are genuine
+Mathlib regressions needing surgery (`Nontrivial (ℤ√d)` instance loss, positivity/simp
+maxRecDepth loops, native_decide-on-noncomputable, scalar-form lemma removals). Estimate ~5-10
+more single-recipe N–Z/Erdos≥600 files remain harvestable.
+
+### Increment 52 (continued) — +3 more GREEN (total +10, ledger 1908→1918)
+
+- **Erdos838Problem** (deriving-DecidableEq on ℝ-field struct): v4.31 `deriving DecidableEq` on a
+  structure with `ℝ` fields (`Point2D`) fails to COMPILE the derived instance (`DecidableEq ℝ` is
+  noncomputable). Replace with `noncomputable instance : DecidableEq Point2D := Classical.decEq _`
+  — still gives `Finset Point2D` the instance, without a compiled decision procedure.
+- **Erdos927Problem** (termination): v4.31 no longer auto-infers well-founded recursion for
+  `logStar` (recursive call `logStar (Nat.log 2 (n+2))`). Add `termination_by n => n` +
+  `decreasing_by exact Nat.log_lt_self 2 (by omega)` (`Nat.log_lt_self : log b x < x` for `x≠0`).
+- **TestApi241** (STATEMENT REPAIR, #38611): the original `test_b3 : IsB3 {1,2,4,8}` was UNSOUND
+  ({1,2,4,8} is not B₃ — 1+1+4 = 6 = 2+2+2). Repaired to the intended-true witness
+  `IsB3 {1,4,16,64}` (powers of 4 are B₃: a 3-element multiset sum is a base-4 numeral, all digits
+  ≤ 3 ⇒ unique). Dropped `open scoped Classical` (made IsB3 noncomputable) and proved via
+  `unfold IsB3; decide` — kernel decide, NO `Lean.ofReduceBool` (fully verified, 0 axioms).
+
+**Additional probed-and-skipped**:
+- **Erdos807Problem** — UNSOUND (like TestApi241 but not repairable as a seam): `ERW_conjecture := True`
+  placeholder makes `erw_conjecture_false : ¬∀n, ERW_conjecture n` = `¬True` = provably false. Every
+  theorem is a `True`-placeholder; a real repair needs the actual probabilistic statement formalized.
+  Reverted.
+- **Erdos807/874/625/611, Ptolemy** — Ptolemy confirmed deep (import `/-!`→`/-` fix surfaces 14
+  errors: `Complex.abs_mul_exp_arg_mul_I` unknown, `Real.sin_nonpos_of_nonneg_of_nonpos` unknown,
+  ℤ-anon-constructor, rcases/type-mismatch). Erdos874 linarith drift. Multi-site.
+
+**Free-green note**: the LOW(0) residuals in both partitions (Wilsons/Sperner/Szemeredi/YangMills
+clusters, TestApi203, NormEuclidean…OQ01) are all DEP-BLOCKED (own=0 but tot>0), not free-green —
+their deps still fail. Only 2 genuine free-greens this increment
+(QuadraticReciprocityAlgorithmOQ03FieldBridge, Erdos620ProblemAristotle).

@@ -118,6 +118,8 @@ noncomputable def logStar : ℕ → ℕ
   | n + 2 =>
     if Nat.log 2 (n + 2) ≤ 1 then 1
     else 1 + logStar (Nat.log 2 (n + 2))
+  termination_by n => n
+  decreasing_by exact Nat.log_lt_self 2 (by omega)
 
 /- 
 **log*(n) is very slowly growing:**
