@@ -194,6 +194,38 @@ theorem syndetic_infinite {S : Set ℕ} (h : IsSyndetic S) : S.Infinite := by
 ## Density Properties (Axiomatized)
 -/
 
+/-- The density ratio is always nonneg. -/
+theorem density_ratio_nonneg (A : Set ℕ) (n : ℕ) :
+    (0 : ℝ) ≤ ((A ∩ Set.Iic n).ncard : ℝ) / (↑n + 1) := by positivity
+
+/-- The density ratio is always at most 1. -/
+theorem density_ratio_le_one (A : Set ℕ) (n : ℕ) :
+    ((A ∩ Set.Iic n).ncard : ℝ) / (↑n + 1) ≤ 1 := by
+  rw [div_le_one (by positivity)]
+  have hsub : (A ∩ Set.Iic n).ncard ≤ (Set.Iic n).ncard :=
+    Set.ncard_le_ncard Set.inter_subset_right (Set.finite_Iic n)
+  have hIic : (Set.Iic n : Set ℕ).ncard = n + 1 := by
+    rw [show (Set.Iic n : Set ℕ) = ↑(Finset.range (n + 1)) from by
+          ext m; simp [Finset.mem_range, Nat.lt_succ_iff]]
+    rw [Set.ncard_coe_finset, Finset.card_range]
+  calc ((A ∩ Set.Iic n).ncard : ℝ) ≤ ((Set.Iic n).ncard : ℝ) := by exact_mod_cast hsub
+    _ = ↑n + 1 := by rw [hIic]; push_cast; ring
+
+/-- The density ratio sequence is bounded above (by 1). -/
+theorem density_ratio_isBoundedUnder (A : Set ℕ) :
+    Filter.IsBoundedUnder (· ≤ ·) Filter.atTop
+      (fun n : ℕ => ((A ∩ Set.Iic n).ncard : ℝ) / (↑n + 1)) := by
+  refine ⟨1, ?_⟩
+  rw [Filter.eventually_map]
+  exact Filter.Eventually.of_forall (density_ratio_le_one A)
+
+/-- The density ratio sequence is coboundedUnder ≤ (bounded below by 0). -/
+theorem density_ratio_isCoboundedUnder (A : Set ℕ) :
+    Filter.IsCoboundedUnder (· ≤ ·) Filter.atTop
+      (fun n : ℕ => ((A ∩ Set.Iic n).ncard : ℝ) / (↑n + 1)) :=
+  Filter.isCoboundedUnder_le_of_eventually_le Filter.atTop
+    (Filter.Eventually.of_forall (density_ratio_nonneg A))
+
 /-- The empty set has zero density. -/
 theorem density_empty : upperDensity ∅ = 0 := by
   simp only [upperDensity, Set.empty_inter, Set.ncard_empty, Nat.cast_zero, zero_div]
@@ -216,12 +248,15 @@ theorem density_univ : upperDensity Set.univ = 1 := by
 /-- Density is monotone: A ⊆ B implies upperDensity A ≤ upperDensity B. -/
 theorem density_mono {A B : Set ℕ} (h : A ⊆ B) : upperDensity A ≤ upperDensity B := by
   unfold upperDensity
-  apply Filter.limsup_le_limsup
-  · apply Filter.Eventually.of_forall
-    intro n
-    apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)
+  refine Filter.limsup_le_limsup ?_ (density_ratio_isCoboundedUnder A)
+    (density_ratio_isBoundedUnder B)
+  apply Filter.Eventually.of_forall
+  intro n
+  have hle : ((A ∩ Set.Iic n).ncard : ℝ) ≤ ((B ∩ Set.Iic n).ncard : ℝ) := by
     exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
-        ((Set.Iic n).toFinite.subset Set.inter_subset_right)
+      ((Set.Iic n).toFinite.subset Set.inter_subset_right)
+  dsimp only
+  gcongr
 
 /-- Upper density is at most 1 for any set. -/
 theorem density_le_one (A : Set ℕ) : upperDensity A ≤ 1 :=
@@ -249,6 +284,7 @@ theorem basis_infinite {A : Set ℕ} (h : IsBasisOrder2 A) : A.Infinite := by
     have := hA_bound b hb
     omega
   -- But h says all large enough numbers are in sumset A A
+  unfold IsBasisOrder2 at h
   rw [Filter.eventually_atTop] at h
   obtain ⟨N, hN⟩ := h
   -- Take m = max(N, 2*n + 1)
@@ -282,32 +318,31 @@ theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
       (1 : ℝ) - N₀ / (↑n + 1) ≤ ((S ∩ Set.Iic n).ncard : ℝ) / (↑n + 1) := by
     filter_upwards [Filter.eventually_ge_atTop N₀] with n hn
     have hn_pos : (0 : ℝ) < n + 1 := by positivity
-    rw [div_le_div_iff₀ hn_pos hn_pos]  -- both as cross-multiply
-    have hc := Nat.cast_le.mpr (hcard n hn)
-    push_cast [Nat.sub_add_cancel hn] at hc ⊢
+    have hc : ((n - N₀ + 1 : ℕ) : ℝ) ≤ ((S ∩ Set.Iic n).ncard : ℝ) := by
+      exact_mod_cast hcard n hn
+    push_cast [Nat.cast_sub hn] at hc
+    rw [le_div_iff₀ hn_pos, sub_mul, one_mul, div_mul_cancel₀ _ (ne_of_gt hn_pos)]
     linarith
   -- 1 - N₀/(n+1) → 1 as n → ∞
   have htend_lb : Filter.Tendsto (fun n : ℕ => (1 : ℝ) - N₀ / (↑n + 1))
       Filter.atTop (nhds 1) := by
-    rw [show (1 : ℝ) = 1 - 0 from by ring]
-    apply Filter.Tendsto.sub tendsto_const_nhds
-    -- N₀/(n+1) → 0: write as N₀ * (n+1)⁻¹ → N₀ * 0 = 0
-    simp_rw [div_eq_mul_inv]
-    rw [show (0 : ℝ) = N₀ * 0 from (mul_zero _).symm]
-    apply Filter.Tendsto.const_mul
-    -- (n+1)⁻¹ → 0 since n+1 → ∞
-    apply Filter.Tendsto.inv_tendsto_atTop
-    apply Filter.tendsto_atTop_atTop.mpr
-    intro b; refine ⟨⌈b⌉₊, fun n hn => ?_⟩
-    have hb : b ≤ (⌈b⌉₊ : ℝ) := Nat.le_ceil b
-    have hn_cast : (⌈b⌉₊ : ℝ) ≤ (n : ℝ) := Nat.cast_le.mpr hn
-    linarith
+    have hden : Filter.Tendsto (fun n : ℕ => (↑n + 1 : ℝ)) Filter.atTop Filter.atTop :=
+      Filter.tendsto_atTop_mono (fun n => by linarith) tendsto_natCast_atTop_atTop
+    have h0 : Filter.Tendsto (fun n : ℕ => (N₀ : ℝ) / (↑n + 1))
+        Filter.atTop (nhds 0) :=
+      Filter.Tendsto.div_atTop tendsto_const_nhds hden
+    have hconst : Filter.Tendsto (fun _ : ℕ => (1 : ℝ)) Filter.atTop (nhds 1) :=
+      tendsto_const_nhds
+    have hsub := hconst.sub h0
+    rw [sub_zero] at hsub
+    exact hsub
   -- limsup ≥ lim of lower bound = 1
-  calc (1 : ℝ) = atTop.limsup (fun n : ℕ => 1 - ↑N₀ / (↑n + 1)) := by
-          exact (htend_lb.limsup_eq ⟨1, by
-            filter_upwards [] with n; apply sub_le_self; positivity⟩).symm
-      _ ≤ atTop.limsup (fun n : ℕ => ((S ∩ Set.Iic n).ncard : ℝ) / (↑n + 1)) :=
-          Filter.limsup_le_limsup hlb
+  have hcob := htend_lb.isCoboundedUnder_le
+  have hbdd := density_ratio_isBoundedUnder S
+  have heq := htend_lb.limsup_eq
+  have hmain := Filter.limsup_le_limsup hlb hcob hbdd
+  rw [heq] at hmain
+  exact hmain
 
 /-- A basis of order 2 has positive density sumset. -/
 theorem basis_has_pos_density_sumset {A : Set ℕ} (h : IsBasisOrder2 A) :
