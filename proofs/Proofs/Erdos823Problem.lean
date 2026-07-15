@@ -61,9 +61,8 @@ theorem sigma_one : sigma 1 = 1 := by unfold sigma; native_decide
 
 /-- σ(p) = p + 1 for prime p -/
 theorem sigma_prime (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
-  simp only [sigma, ArithmeticFunction.sigma_apply, hp.divisors,
-    Finset.sum_insert (Finset.notMem_singleton.mpr hp.one_lt.ne'),
-    Finset.sum_singleton, pow_one]
+  unfold sigma
+  rw [ArithmeticFunction.sigma_one_apply, hp.divisors, Finset.sum_pair (Ne.symm hp.ne_one)]
   omega
 
 /-- σ(p^k) = (p^{k+1} - 1)/(p - 1) for prime p -/
@@ -75,10 +74,16 @@ theorem sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
   simp only [Finset.sum_map, Function.Embedding.coeFn_mk, pow_one]
   -- Goal: (∑ i ∈ range (k+1), p^i) * (p - 1) = p^(k+1) - 1
   induction k with
-  | zero => simp; omega
+  | zero => simp
   | succ n ih =>
-    rw [Finset.sum_range_succ, add_mul]
-    nlinarith [Nat.one_le_pow (n + 1) p hp.pos, Nat.one_le_pow (n + 2) p hp.pos]
+    rw [Finset.sum_range_succ, add_mul, ih]
+    have ha : 1 ≤ p ^ (n + 1) := Nat.one_le_pow _ _ hp.pos
+    have hdist : p ^ (n + 1) * (p - 1) = p ^ (n + 1) * p - p ^ (n + 1) :=
+      Nat.mul_pred (p ^ (n + 1)) p
+    have hpow : p ^ (n + 1 + 1) = p ^ (n + 1) * p := pow_succ p (n + 1)
+    have hle : p ^ (n + 1) ≤ p ^ (n + 1) * p := Nat.le_mul_of_pos_right _ hp.pos
+    rw [hdist, hpow]
+    omega
 
 /-- σ is multiplicative on coprime arguments -/
 theorem sigma_multiplicative (m n : ℕ) (_hm : m ≥ 1) (_hn : n ≥ 1) (h : Nat.Coprime m n) :
@@ -139,11 +144,16 @@ theorem sigma_15_value : sigma 15 = 24 := by unfold sigma; native_decide
 /-- σ(14) = σ(15) verified: 14/15 is close to 1 -/
 example : (14 : ℚ) / 15 < 1 := by native_decide
 
-/-- σ(206) = σ(210) = 432 -/
-theorem sigma_206_210 : sigma 206 = sigma 210 := by unfold sigma; native_decide
+/-- σ(33) = σ(35) = 48 (a genuine σ-pair).
 
-/-- 206/210 ≈ 0.981 -/
-example : (206 : ℚ) / 210 < 1 := by native_decide
+Note: an earlier version stated `σ 206 = σ 210`, which is FALSE:
+σ(206) = σ(2·103) = 3·104 = 312 while σ(210) = σ(2·3·5·7) = 3·4·6·8 = 576.
+Repaired (#38611) to the intended-true small σ-pair σ(33) = σ(35) = 48:
+σ(33) = σ(3·11) = 4·12 = 48 and σ(35) = σ(5·7) = 6·8 = 48. -/
+theorem sigma_33_35 : sigma 33 = sigma 35 := by unfold sigma; native_decide
+
+/-- 33/35 ≈ 0.943 -/
+example : (33 : ℚ) / 35 < 1 := by native_decide
 
 /-- σ(957) = σ(958) (consecutive integers can have equal σ) -/
 theorem sigma_957_958 : sigma 957 = sigma 958 := by unfold sigma; native_decide
@@ -158,7 +168,7 @@ Erdős noted the Euler totient case is "easy to prove".
 -/
 
 /-- Euler's totient function φ(n) -/
-noncomputable def phi (n : ℕ) : ℕ := ArithmeticFunction.totient n
+def phi (n : ℕ) : ℕ := Nat.totient n
 
 /-- φ(n) counts integers in [1,n] coprime to n -/
 theorem phi_definition (n : ℕ) (hn : n ≥ 1) :
@@ -249,7 +259,7 @@ to construct pairs with equal σ values at any prescribed ratio.
 
 **Examples of σ-pairs:**
 - σ(14) = σ(15) = 24
-- σ(206) = σ(210) = 432
+- σ(33) = σ(35) = 48
 - σ(957) = σ(958)
 
 **Status:** SOLVED
