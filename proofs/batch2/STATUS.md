@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 8 (8-slot, #38065, 2026-07-15)
+
+**+3 GREEN**: AbelRuffiniGaloisExtensionsOQ04 (deepest file of wave ~31min: JordanHolderLattice
+(Subgroup G) instance rebuilt — 2 helper lemmas for sup-normality/second-iso; Subgroup.mem_sup now
+CommGroup-only -> mem_sup_of_normal_left; inclusion_mk->coe_inclusion; q.inductionOn'->induction_on'
+with explicit motive; original file was internally inconsistent/uncompilable-as-written, fixed to
+correct form not a weakening), Erdos978Problem (ℕ->ℤ eval coercion; pipe reparenthesize), Erdos863Aristotle
+(filter_card_add H-arg implicit; card_Icc->Nat.card_Icc; set-locals opaque to simp). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 7 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN** (2 pure cascades): Erdos715ProblemAristotle (pure cascade, no edit), MinpolyCharpolyOQ03
