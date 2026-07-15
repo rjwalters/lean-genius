@@ -1485,7 +1485,7 @@ Erdos619Problem	RESIDUAL	instance-synth
 Erdos61Problem	GREEN	
 Erdos620Aristotle	GREEN	
 Erdos620Problem	GREEN	
-Erdos620ProblemAristotle	RESIDUAL	type-mismatch
+Erdos620ProblemAristotle	GREEN	
 Erdos621Problem	GREEN	
 Erdos622OQ04	RESIDUAL	instance-synth
 Erdos622Problem	RESIDUAL	instance-synth
@@ -1501,7 +1501,7 @@ Erdos626ProblemAristotle	GREEN
 Erdos627Aristotle	GREEN	
 Erdos627Problem	GREEN	
 Erdos627ProblemAristotle	GREEN	
-Erdos628Aristotle	RESIDUAL	instance-synth
+Erdos628Aristotle	GREEN	
 Erdos628Problem	GREEN	
 Erdos628ProblemAristotle	GREEN	
 Erdos629Aristotle	RESIDUAL	unknown-const:Nat.sInf
@@ -1790,7 +1790,7 @@ Erdos867Problem	GREEN	unknown-const:Finset.card_Ioc
 Erdos868Problem	GREEN	
 Erdos869Problem	GREEN	
 Erdos86Problem	RESIDUAL	parse-error
-Erdos870Aristotle	RESIDUAL	uses-sorry
+Erdos870Aristotle	GREEN	
 Erdos870Problem	GREEN	
 Erdos871Problem	GREEN	
 Erdos872Problem	GREEN	
@@ -2292,7 +2292,7 @@ PNPBarriersLegacy	RESIDUAL	type-mismatch
 PNPBarriersSound	GREEN	
 PNPBarriersUnified	GREEN	
 PappusTheoremOQ02	GREEN	
-PartitionTheorem	RESIDUAL	unknown-const:Theorems100.partition_theorem
+PartitionTheorem	GREEN	
 PartitionTheoremOQ01	RESIDUAL	unknown-const:Finset.mem_empty
 PartitionTheoremOQ01OQ01	RESIDUAL	unknown-const:Finset.mem_empty
 PartitionTheoremOQ03	RESIDUAL	unknown-const:Nat.Partition.IsOdd.card
@@ -2348,7 +2348,7 @@ PythagoreanTheoremOQ05	GREEN
 PythagoreanTriplesOQ02	GREEN	
 PythagoreanTriplesOQ04OQ01OQ01	GREEN	
 QuadraticReciprocityAlgorithmOQ03	GREEN	
-QuadraticReciprocityAlgorithmOQ03FieldBridge	RESIDUAL	rewrite-drift
+QuadraticReciprocityAlgorithmOQ03FieldBridge	GREEN	
 QuadraticReciprocityAlgorithmOQ03M2	GREEN	
 QuadraticReciprocityAlgorithmOQ03M2Capstone	GREEN	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03Zolotarev	GREEN	rewrite-drift
@@ -2411,7 +2411,7 @@ ShannonChannelCodingOQ02OQ01Aristotle	GREEN
 ShannonChannelCodingOQ02OQ03	GREEN	
 ShannonChannelCodingOQ02OQ04	GREEN	
 ShannonChannelCodingOQ03	GREEN	
-ShannonChannelCodingOQ03Aristotle	RESIDUAL	signature-drift
+ShannonChannelCodingOQ03Aristotle	GREEN	
 ShannonChannelCodingOQ04OQ01	GREEN	
 ShannonChannelCodingOQ04OQ01OQ01	GREEN	
 ShannonEntropyAristotle	GREEN	
@@ -2617,7 +2617,7 @@ TractatusQuantifiers	GREEN
 TriangleAngleSum	GREEN	
 TriangleAngleSumOQ02	RESIDUAL	type-mismatch
 TriangleInequality	GREEN	
-TriangleInequalityOQ01	RESIDUAL	unknown-const:MeasureTheory.LpAddConst_of_one_le
+TriangleInequalityOQ01	GREEN	
 TriangleInequalityOQ04	GREEN	
 TriangleInequalityOQ06	GREEN
 TriangularNumberReciprocals	GREEN	
