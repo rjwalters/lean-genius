@@ -117,7 +117,13 @@ theorem wilson_theorem (p : ℕ) (hp : Nat.Prime p) :
   have h := ZMod.wilsons_lemma p
   -- h : ((p-1)! : ZMod p) = -1
   have hval := congr_arg ZMod.val h
-  rw [ZMod.val_natCast, ZMod.val_neg_one'] at hval
+  rw [ZMod.val_natCast] at hval
+  have hneg : (-1 : ZMod p).val = p - 1 := by
+    have hp1 : (p : ℕ) - 1 < p := by have := hp.two_le; omega
+    have hcast : (-1 : ZMod p) = ((p - 1 : ℕ) : ZMod p) := by
+      rw [Nat.cast_sub hp.one_le]; simp
+    rw [hcast, ZMod.val_natCast, Nat.mod_eq_of_lt hp1]
+  rw [hneg] at hval
   exact hval
 
 /-- Fermat's little theorem: a^(p-1) ≡ 1 (mod p) when p ∤ a.
@@ -128,10 +134,8 @@ theorem fermat_little (p a : ℕ) (hp : Nat.Prime p) (ha : ¬p ∣ a) :
   have ha_zmod : (a : ZMod p) ≠ 0 := by
     intro h; apply ha
     rwa [ZMod.natCast_eq_zero_iff] at h
-  have hcard : p - 1 = Fintype.card (ZMod p) - 1 := by
-    rw [ZMod.card p]
-  have key : ((a : ZMod p)) ^ (p - 1) = 1 := by
-    rw [hcard]; exact ZMod.pow_card_sub_one_eq_one ha_zmod
+  have key : ((a : ZMod p)) ^ (p - 1) = 1 :=
+    ZMod.pow_card_sub_one_eq_one ha_zmod
   have h1 : ((a ^ (p - 1) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by
     push_cast; exact key
   rwa [ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt hp.one_lt] at h1
@@ -144,7 +148,7 @@ theorem sum_divisible_by_p (p a : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (ha : 
   have hf := fermat_little p a hp ha
   rw [Nat.dvd_iff_mod_eq_zero]
   rw [Nat.add_mod, hw, hf]
-  omega
+  rw [show p - 1 + 1 = p from by omega, Nat.mod_self]
 
 /-
 ## Part 5: The Exceptional Case p ∣ a
@@ -182,13 +186,14 @@ theorem legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
   rcases eq_or_ne n 0 with rfl | hn
   · simp [factorialPadicVal]
   · have hlog : Nat.log p n < n + 1 := by
-      rw [Nat.log_lt hp.one_lt hn]
-      calc n < 2 ^ n := Nat.lt_two_pow n
+      rw [Nat.log_lt_iff_lt_pow hp.one_lt hn]
+      calc n < 2 ^ n := Nat.lt_two_pow_self
         _ ≤ p ^ n := Nat.pow_le_pow_left hp.two_le n
         _ ≤ p ^ (n + 1) := Nat.pow_le_pow_right hp.pos (Nat.le_succ n)
     rw [padicValNat_factorial hlog, Finset.sum_Ico_eq_sum_range]
     unfold factorialPadicVal
-    exact Finset.sum_congr (by omega) fun k _ => by rw [add_comm]
+    refine Finset.sum_congr ?_ (fun k _ => by rw [add_comm])
+    congr 1
 
 /-- For (p-1)!, the p-adic valuation is 0.
     Since (p-1)! is the product of {1,...,p-1}, none divisible by p. -/
@@ -217,25 +222,19 @@ theorem p_equals_3_analysis :
     ∀ a k : ℕ, IsSolution 3 a k →
       (a = 1 ∧ k = 1) ∨ (a = 5 ∧ k = 3) := by
   intro a k h
-  have := yu_liu_1996 3 a k
-  rw [h] at this
+  have := (yu_liu_1996 3 a k).mp h
   simp at this
-  rcases this with ⟨_, ha, hk⟩ | ⟨_, ha, hk⟩ | ⟨hp, _, _⟩
+  rcases this with ⟨ha, hk⟩ | ⟨ha, hk⟩
   · left; exact ⟨ha, hk⟩
   · right; exact ⟨ha, hk⟩
-  · norm_num at hp
 
 /-- For p = 5: 4! = 24, so need 24 + a⁴ = 5^k -/
 theorem p_equals_5_analysis :
     ∀ a k : ℕ, IsSolution 5 a k → a = 1 ∧ k = 2 := by
   intro a k h
-  have := yu_liu_1996 5 a k
-  rw [h] at this
+  have := (yu_liu_1996 5 a k).mp h
   simp at this
-  rcases this with ⟨hp, _, _⟩ | ⟨hp, _, _⟩ | ⟨_, ha, hk⟩
-  · norm_num at hp
-  · norm_num at hp
-  · exact ⟨ha, hk⟩
+  exact this
 
 /-
 ## Part 8: General Perfect Power Question
@@ -249,8 +248,8 @@ def IsPerfectPower (n : ℕ) : Prop :=
 
 /-- Example: 6! + 2⁶ = 720 + 64 = 784 = 28² -/
 theorem example_perfect_power :
-    6.factorial + 2 ^ 6 = 28 ^ 2 := by
-  norm_num
+    Nat.factorial 6 + 2 ^ 6 = 28 ^ 2 := by
+  norm_num [Nat.factorial]
 
 /-
 ## Part 9: Main Problem Statement
