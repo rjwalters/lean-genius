@@ -831,7 +831,7 @@ Erdos111Problem	GREEN
 Erdos1120Problem	RESIDUAL	instance-synth
 Erdos1121Problem	RESIDUAL	instance-synth
 Erdos1122Problem	GREEN	
-Erdos1123Problem	RESIDUAL	parse-error
+Erdos1123Problem	GREEN	
 Erdos1124Problem	GREEN	
 Erdos1125Problem	GREEN	
 Erdos1126Problem	GREEN	unknown-const:measurable_additive_is_linear
@@ -1623,7 +1623,7 @@ Erdos720Problem	RESIDUAL	proof-drift
 Erdos721Problem	GREEN	
 Erdos722Problem	GREEN	
 Erdos723Problem	GREEN	
-Erdos724Problem	RESIDUAL	parse-error
+Erdos724Problem	GREEN	
 Erdos725Problem	GREEN	
 Erdos726Problem	GREEN	
 Erdos727Problem	GREEN	
@@ -2388,7 +2388,7 @@ SchauderFixedPoint	RESIDUAL	instance-synth
 SchauderFixedPointOQ01	GREEN	instance-synth
 SchauderFixedPointOQ03	RESIDUAL	instance-synth
 SchauderFixedPointOQ03OQ01	GREEN	
-SchroederBernsteinOQ01	RESIDUAL	elab-drift
+SchroederBernsteinOQ01	GREEN	
 SchroederBernsteinOQ02	GREEN	
 SchroederBernsteinOQ03	GREEN	
 SchursTheorem	GREEN	
@@ -2520,7 +2520,7 @@ SylowTheorem	GREEN
 SylowTheoremOQ01	RESIDUAL	rewrite-drift
 SylowTheoremOQ02	GREEN	
 SylowTheoremOQ02OQ01Nilpotent	GREEN	
-SylowTheoremOQ02Orbit	RESIDUAL	unknown-const:Sylow.exists_smul_eq
+SylowTheoremOQ02Orbit	GREEN	
 SylowTheoremOQ03	GREEN	
 SylowTheoremOQ03B	GREEN	
 SylowTheoremOQ04	RESIDUAL	unknown-const:card_sylow_dvd_index

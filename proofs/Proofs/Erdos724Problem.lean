@@ -101,7 +101,8 @@ Key values:
 - f(p^k) = p^k - 1 for prime powers (projective plane construction)
 -/
 noncomputable def maxMOLS (n : ℕ) : ℕ∞ :=
-  ⨆ (S : Finset (Fin n → Fin n → Fin n)) (hS : MutuallyOrthogonal (S : Set _)), (S.card : ℕ∞)
+  ⨆ (S : Finset (Fin n → Fin n → Fin n))
+    (_ : MutuallyOrthogonal (↑S : Set (Fin n → Fin n → Fin n))), (S.card : ℕ∞)
 
 /-- Notation for the MOLS function -/
 notation "f(" n ")" => maxMOLS n
@@ -172,7 +173,7 @@ f(n) ≫ n^(1/14.8).
 This is the current best known lower bound exponent.
 -/
 axiom beth_1983 : ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ)
+    ∀ n : ℕ, n ≥ 2 → ((f(n) : ENNReal).toReal) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ)
 
 /-
 ## Part VI: The Erdős Conjecture
@@ -193,7 +194,7 @@ The gap between the best known exponent (1/14.8 ≈ 0.068) and the
 conjectured exponent (1/2 = 0.5) is substantial.
 -/
 def erdos_724_conjecture : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 2 : ℝ)
+  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → ((f(n) : ENNReal).toReal) ≥ C * (n : ℝ) ^ (1 / 2 : ℝ)
 
 /-
 ## Part VII: Examples and Constructions
@@ -209,9 +210,11 @@ def latinSquare3_L : Fin 3 → Fin 3 → Fin 3 :=
   fun i j => ⟨(i.val + j.val) % 3, Nat.mod_lt _ (by decide)⟩
 
 def latinSquare3_M : Fin 3 → Fin 3 → Fin 3 :=
+  fun i j => ⟨(2 * i.val + j.val) % 3, Nat.mod_lt _ (by decide)⟩
 
-/- 
+/-
 f(3) = 2, achieved by the construction above.
+The mate M(i,j) = (2i + j) mod 3 is orthogonal to L(i,j) = (i + j) mod 3.
 -/
 
 /- 
@@ -292,7 +295,7 @@ theorem erdos_724_status :
 The best known result is f(n) ≫ n^(1/14.8) by Beth (1983).
 -/
 theorem current_best_lower_bound : ∃ C : ℝ, C > 0 ∧
-    ∀ n : ℕ, n ≥ 2 → (f(n) : ℕ∞) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ) :=
+    ∀ n : ℕ, n ≥ 2 → ((f(n) : ENNReal).toReal) ≥ C * (n : ℝ) ^ (1 / 14.8 : ℝ) :=
   beth_1983
 
 /--

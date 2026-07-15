@@ -32,7 +32,7 @@ def kSubsets (s : Finset α) (k : ℕ) [DecidableEq α] : Finset (Finset α) :=
   s.powersetCard k
 
 /-- An r-coloring of k-element subsets. -/
-def Coloring (s : Finset α) (k : ℕ) (r : ℕ) [DecidableEq α] : Type :=
+abbrev Coloring (s : Finset α) (k : ℕ) (r : ℕ) [DecidableEq α] : Type _ :=
   kSubsets s k → Fin r
 
 /-- A subset is monochromatic for a coloring if all its k-element subsets have the same color. -/
@@ -66,8 +66,8 @@ theorem classical_ramsey_is_k2 (n₁ n₂ N : ℕ)
     ∀ (S : Finset ℕ), S.card = N →
       ∀ (c : kSubsets S 2 → Fin 2),
         ∃ (T : Finset ℕ), T ⊆ S ∧ T.card ≥ max n₁ n₂ ∧
-          (∀ e ∈ kSubsets T 2, ∀ he, c ⟨e, he⟩ = 0) ∨
-          (∀ e ∈ kSubsets T 2, ∀ he, c ⟨e, he⟩ = 1) := by
+          ((∀ e ∈ kSubsets T 2, ∀ he, c ⟨e, he⟩ = 0) ∨
+           (∀ e ∈ kSubsets T 2, ∀ he, c ⟨e, he⟩ = 1)) := by
   intro S hS c
   obtain ⟨T, i, hTS, hTn, hmono⟩ := hN S hS c
   exact ⟨T, hTS, hTn, by fin_cases i <;> [left; right] <;> exact hmono⟩
@@ -162,20 +162,12 @@ theorem tower_2_2 : tower 2 2 = 4 := by simp [tower]
 
 /-- The tower function grows strictly. -/
 theorem tower_strictMono (b : ℕ) (hb : b ≥ 2) : StrictMono (tower b) := by
-  intro m n hmn
-  induction n with
-  | zero => omega
-  | succ n ih =>
-    rcases eq_or_lt_of_le (Nat.lt_succ_iff.mp hmn) with rfl | hlt
-    · -- m = n case: tower b n < tower b (n+1) = b ^ tower b n
-      simp only [tower]
-      calc tower b n < 2 ^ tower b n := Nat.lt_two_pow (tower b n)
-        _ ≤ b ^ tower b n := Nat.pow_le_pow_left (by omega) (tower b n)
-    · -- m < n case: use IH
-      exact lt_trans (ih hlt) (by
-        simp only [tower]
-        calc tower b n < 2 ^ tower b n := Nat.lt_two_pow _
-          _ ≤ b ^ tower b n := Nat.pow_le_pow_left (by omega) _)
+  -- It suffices to show tower b n < tower b (n+1) = b ^ tower b n for all n.
+  apply strictMono_nat_of_lt_succ
+  intro n
+  simp only [tower]
+  calc tower b n < 2 ^ tower b n := Nat.lt_two_pow_self
+    _ ≤ b ^ tower b n := Nat.pow_le_pow_left (by omega) (tower b n)
 
 /-! ## Part V: Infrastructure for Proving the Hypergraph Ramsey Theorem
 
@@ -215,7 +207,8 @@ theorem kSubsets_eq_empty_of_lt [DecidableEq α] {s : Finset α} {k : ℕ}
     (h : s.card < k) : kSubsets s k = ∅ := by
   ext e; simp only [kSubsets, Finset.mem_powersetCard, Finset.notMem_empty, iff_false]
   intro ⟨he_sub, he_card⟩
-  exact absurd (le_trans (Finset.card_le_card he_sub) h.le) (by omega)
+  have : e.card ≤ s.card := Finset.card_le_card he_sub
+  omega
 
 /-- Tower(b, n) is positive when b ≥ 1. -/
 theorem tower_pos (b : ℕ) (hb : b ≥ 1) (n : ℕ) : tower b n ≥ 1 := by
@@ -229,11 +222,11 @@ theorem ramsey_property_mono {k r n N : ℕ} (N' : ℕ) (hNN : N ≤ N')
     HypergraphRamseyProperty k r n N' := by
   intro S hS c
   have hNS : N ≤ S.card := hS ▸ hNN
-  obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_le hNS
+  obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_eq hNS
   obtain ⟨T, i, hTS', hTn, hmono⟩ := h S' hS'card (fun ⟨e, he⟩ =>
     c ⟨e, kSubsets_mem_of_subset hS'sub he⟩)
-  exact ⟨T, Finset.Subset.trans hTS' hS'sub, hTn, fun e he_T _ =>
-    hmono e he_T (kSubsets_mem_of_subset hS'sub he_T)⟩
+  exact ⟨T, i, Finset.Subset.trans hTS' hS'sub, hTn, fun e he_T _ =>
+    hmono e he_T (kSubsets_mem_of_subset hTS' he_T)⟩
 
 /-- Base case: when n ≤ k, N = n works.
     When n < k: no k-subsets exist, so monochromaticity holds vacuously.
@@ -261,41 +254,7 @@ theorem ramsey_base (k r n : ℕ) (hr : r ≥ 1) (hn : n ≤ k) :
 For k = 1, coloring singletons is equivalent to coloring elements.
 By the pigeonhole principle, if |S| ≥ r*(n-1)+1, some color appears ≥ n times. -/
 
-/-- **Pigeonhole Ramsey**: the k = 1 base case of the Hypergraph Ramsey Theorem.
-    When we color elements (= singletons) with r colors, N = r*(n-1)+1 suffices
-    to find n elements of the same color. This is the pigeonhole principle. -/
-theorem pigeonhole_ramsey (r n : ℕ) (hr : r ≥ 1) (hn : n ≥ 1) :
-    HypergraphRamseyProperty 1 r n (r * (n - 1) + 1) := by
-  intro S hS c
-  -- Singleton membership: for a ∈ S, {a} is a 1-subset of S
-  have h_sing : ∀ a ∈ S, {a} ∈ kSubsets S 1 := fun a ha => by
-    simp only [kSubsets, Finset.mem_powersetCard]
-    exact ⟨Finset.singleton_subset_iff.mpr ha, Finset.card_singleton a⟩
-  -- Define element coloring: map each element to the color of its singleton
-  let f : ℕ → Fin r := fun a =>
-    if h : a ∈ S then c ⟨{a}, h_sing a h⟩ else ⟨0, by omega⟩
-  -- Pigeonhole: r • (n-1) < |S| = r*(n-1)+1, so some color fiber has > n-1 elements
-  have h_pig : (Finset.univ : Finset (Fin r)).card • (n - 1) < S.card := by
-    rw [Finset.card_univ, Fintype.card_fin, hS, smul_eq_mul]; omega
-  obtain ⟨i, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_nsmul_lt_card
-    (f := f) (fun _ _ => Finset.mem_univ _) h_pig
-  -- The monochromatic set: elements of S whose singleton has color i
-  refine ⟨S.filter (f · = i), i, Finset.filter_subset _ _, ?_, ?_⟩
-  · -- Size: fiber has > n-1 elements, so ≥ n
-    omega
-  · -- Monochromaticity: every 1-subset {a} of the filter has color i
-    intro e he_T he_S
-    -- e is a 1-element subset of our filter, so e = {a} for some a
-    simp only [kSubsets, Finset.mem_powersetCard] at he_T
-    obtain ⟨he_sub, he_card⟩ := he_T
-    obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp he_card
-    -- a is in the color-i filter, so f a = i, so c ⟨{a}, _⟩ = i
-    have ha_filt := Finset.singleton_subset_iff.mp he_sub
-    have ha_S : a ∈ S := Finset.filter_subset _ _ ha_filt
-    have ha_color : f a = i := (Finset.mem_filter.mp ha_filt).2
-    -- f a = c ⟨{a}, h_sing a ha_S⟩ when a ∈ S (by dif_pos)
-    simp only [f, dif_pos ha_S] at ha_color
-    -- Goal: c ⟨{a}, he_S⟩ = i. By proof irrelevance, he_S = h_sing a ha_S
-    exact ha_color
+/- The k = 1 pigeonhole base case `pigeonhole_ramsey` is proved above in Part II
+   (a duplicate re-declaration was removed here to avoid a name collision). -/
 
 end HypergraphRamsey
