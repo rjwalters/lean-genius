@@ -51,7 +51,7 @@ def IsStrictlyIncreasing (factors : List ℕ) : Prop :=
 def span (factors : List ℕ) : ℕ :=
   match factors with
   | [] => 0
-  | a :: rest => (factors.getLast (by simp)) - a
+  | a :: rest => ((a :: rest).getLast (by simp)) - a
 
 /-- A valid factorization for our problem:
     n! = a₁ · ... · aₜ with a₁ < ... < aₜ and span m -/
@@ -69,6 +69,7 @@ def IsValidFactorization (n m : ℕ) (factors : List ℕ) : Prop :=
 axiom f_exists (n : ℕ) :
     ∃ m, ∃ factors : List ℕ, IsValidFactorization n m factors
 
+open Classical in
 /-- f(n) = minimal m such that n! has a valid factorization with span m -/
 noncomputable def f (n : ℕ) : ℕ :=
   Nat.find (f_exists n)
@@ -83,7 +84,7 @@ def IsProductOfConsecutive (n : ℕ) : Prop :=
 
 /-  f(n) = 1 iff n! is a product of two consecutive integers -/
 /-- Example: 3! = 6 = 2 · 3, so f(3) ≤ 1 -/
-theorem example_3_factorial : 3.factorial = 2 * 3 := by
+theorem example_3_factorial : (3 : ℕ).factorial = 2 * 3 := by
   native_decide
 
 /-- The open question: Is f(n) = 1 for infinitely many n? -/
@@ -117,7 +118,7 @@ theorem power_saving : (33 : ℝ) / 34 < 1 := by norm_num
 def ABCConjecture : Prop :=
   ∀ ε > 0, ∃ K : ℝ, K > 0 ∧
     ∀ a b c : ℕ, a + b = c → Nat.Coprime a b →
-      (c : ℝ) ≤ K * (Nat.radical (a * b * c) : ℝ)^(1 + ε)
+      (c : ℝ) ≤ K * (UniqueFactorizationMonoid.radical (a * b * c) : ℝ)^(1 + ε)
 
 /-- Luca (2002): Assuming ABC, f(n) → ∞ as n → ∞ -/
 axiom luca_2002 : ABCConjecture →
