@@ -34,6 +34,9 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Order.Lattice.Nat
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 open SimpleGraph
 
@@ -83,10 +86,10 @@ Number of edges in K_{n,n} is n^2.
 **Edge membership proof axiom:**
 If f embeds G into H and preserves edges, then the image edge is in H.edgeSet.
 -/
-axiom embedding_preserves_edges {V W : Type*} [DecidableEq V]
+axiom embedding_preserves_edges {V W : Type*}
     (H : SimpleGraph V) (G : SimpleGraph W) (f : W ↪ V)
-    (hf : ∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2))
-    (e : G.edgeSet) : (⟨f e.1.1, f e.1.2⟩ : Sym2 V) ∈ H.edgeSet
+    (hf : ∀ e : G.edgeSet, H.Adj (f e.1.out.1) (f e.1.out.2))
+    (e : G.edgeSet) : (s(f e.1.out.1, f e.1.out.2) : Sym2 V) ∈ H.edgeSet
 
 /--
 **Monochromatic Copy:**
@@ -96,8 +99,8 @@ A subgraph H' of H is a monochromatic copy of G under coloring c if:
 -/
 def HasMonochromaticCopy (H : SimpleGraph V) (G : SimpleGraph W)
     (c : EdgeColoring H) : Prop :=
-  ∃ (f : W ↪ V), ∃ (hf : ∀ e : G.edgeSet, H.Adj (f e.1.1) (f e.1.2)),
-    ∃ color : Bool, ∀ e : G.edgeSet, c ⟨⟨f e.1.1, f e.1.2⟩, embedding_preserves_edges H G f hf e⟩ = color
+  ∃ (f : W ↪ V), ∃ (hf : ∀ e : G.edgeSet, H.Adj (f e.1.out.1) (f e.1.out.2)),
+    ∃ color : Bool, ∀ e : G.edgeSet, c ⟨s(f e.1.out.1, f e.1.out.2), embedding_preserves_edges H G f hf e⟩ = color
 
 /--
 **Size Ramsey Number Definition:**
@@ -224,6 +227,8 @@ Ratio: O(n)
 -/
 theorem bounds_gap (n : ℕ) (hn : n ≥ 6) :
     ((3 : ℝ) / 2 * (n : ℝ)^3 * (2 : ℝ)^n) / ((1 : ℝ) / 60 * (n : ℝ)^2 * (2 : ℝ)^n) = 90 * n := by
+  have h2 : (2 : ℝ)^n ≠ 0 := pow_ne_zero n two_ne_zero
+  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
   field_simp
   ring
 
@@ -234,7 +239,7 @@ This is by definition: Θ(f) means bounded above and below by constant multiples
 
 -- Placeholder definition for Θ notation
 axiom thetaNotation {α : Type*} [Preorder α] (f : α → ℝ) : α → ℝ
-notation:50 f " = Θ(" g ")" => f = thetaNotation g
+notation:50 f " = " "Θ(" g ")" => f = thetaNotation g
 
 /-
 ## Part VIII: Main Results Summary
