@@ -26,8 +26,11 @@
 -/
 
 import Proofs.BallotProblemOQ01OQ02
+-- v4.31: `Set.ncard_biUnion` was replaced by `Set.Finite.ncard_biUnion`,
+-- which lives in this (newer) module not transitively imported by the parent.
+import Mathlib.Data.Set.Card.Arithmetic
 
-open Ballot ProbabilityTheory Set
+open Ballot ProbabilityTheory Set MultiBallot
 
 namespace BallotFiberTransfer
 
@@ -50,12 +53,13 @@ theorem ncard_biUnion_eq_of_uniform {α ι : Type*}
     (hdisj : ∀ i ∈ I, ∀ j ∈ I, i ≠ j → Disjoint (S i) (S j))
     (k : ℕ) (hk : ∀ i ∈ I, (S i).ncard = k) :
     (⋃ i ∈ I, S i).ncard = k * I.ncard := by
-  rw [Set.ncard_biUnion hI hdisj (fun i hi => hfin i hi)]
+  rw [Set.Finite.ncard_biUnion hI (fun i hi => hfin i hi) hdisj, ← hI.coe_toFinset,
+      finsum_mem_coe_finset]
   -- Goal: ∑ i ∈ hI.toFinset, (S i).ncard = k * I.ncard
   have hmem : ∀ i ∈ hI.toFinset, (S i).ncard = k :=
     fun i hi => hk i (hI.mem_toFinset.mp hi)
   rw [Finset.sum_congr rfl hmem, Finset.sum_const, smul_eq_mul,
-      mul_comm, hI.toFinset_card]
+      mul_comm, Set.ncard_coe_finset]
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART II: FIBER PARTITION PROPERTIES
@@ -114,6 +118,18 @@ end FiberPartition
 -- PART III: THE ENNReal RATIO CANCELLATION
 -- ═══════════════════════════════════════════════════════════════
 
+/-- v4.31: `uniformOn` is `Measure.count[|s]` (a `cond` measure); this expresses
+    its value as the ncard ratio `↑(s ∩ t).ncard / ↑s.ncard` for finite `s`. -/
+lemma uniformOn_eq_ncard_div {α : Type*} [MeasurableSpace α] [MeasurableSingletonClass α]
+    {s t : Set α} (hs : s.Finite) :
+    uniformOn s t = ((s ∩ t).ncard : ENNReal) / s.ncard := by
+  have hst : (s ∩ t).Finite := hs.inter_of_left t
+  rw [uniformOn, ProbabilityTheory.cond_apply hs.measurableSet,
+      MeasureTheory.Measure.count_apply_finite s hs,
+      MeasureTheory.Measure.count_apply_finite _ hst,
+      ← Set.ncard_eq_toFinset_card s hs, ← Set.ncard_eq_toFinset_card _ hst,
+      ENNReal.div_eq_inv_mul]
+
 /-- If both numerator and denominator are k times the respective values,
     the ratio is the same (for k > 0 and finite values). -/
 theorem ENNReal.div_eq_div_of_mul_eq {a b c d : ℕ} {k : ℕ} (hk : 0 < k)
@@ -122,8 +138,8 @@ theorem ENNReal.div_eq_div_of_mul_eq {a b c d : ℕ} {k : ℕ} (hk : 0 < k)
   rw [ha, hb]
   simp only [Nat.cast_mul]
   rw [ENNReal.mul_div_mul_left]
-  · exact ENNReal.natCast_ne_top
-  · exact Nat.cast_ne_zero.mpr (Nat.pos_of_ne_zero (by omega))
+  · exact Nat.cast_ne_zero.mpr hk.ne'
+  · exact ENNReal.natCast_ne_top k
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: MAIN THEOREM
@@ -163,15 +179,15 @@ theorem uniformOn_fiber_transfer' (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
   have hMCS_ne : (multiCountedSequence m hm1 a b).Nonempty := by
     refine ⟨List.replicate a (leader m hm1) ++ List.replicate b ⟨1, by omega⟩, ?_, ?_⟩
     · simp only [List.count_append, List.count_replicate, leader]
-      have hne : (⟨0, by omega⟩ : Fin m) ≠ ⟨1, by omega⟩ := by
-        intro h; exact absurd (Fin.val_eq_of_eq h) (by omega)
+      have hne : (⟨0, by omega⟩ : Fin m) ≠ ⟨1, by omega⟩ :=
+        Fin.ne_of_val_ne (by norm_num)
       simp [hne]
     · simp
   -- Positive ncard
   have hMCS_pos : 0 < (multiCountedSequence m hm1 a b).ncard :=
-    Set.ncard_pos hMCS_fin ⟨_, hMCS_ne.choose_spec⟩
+    (Set.ncard_pos hMCS_fin).mpr ⟨_, hMCS_ne.choose_spec⟩
   have hCS_pos : 0 < (Ballot.countedSequence a b).ncard :=
-    Set.ncard_pos hCS_fin ⟨_, hCS_ne.choose_spec⟩
+    (Set.ncard_pos hCS_fin).mpr ⟨_, hCS_ne.choose_spec⟩
   -- Reference target and fiber witness
   obtain ⟨t0, ht0⟩ := hCS_ne
   obtain ⟨s0, hs0⟩ := hMCS_ne
@@ -185,8 +201,8 @@ theorem uniformOn_fiber_transfer' (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
   -- Fiber over t0 is nonempty (since fiber over project(s0) is nonempty)
   set k := (multiProjectionFiber m hm1 a b t0).ncard with hk_def
   have hk_pos : 0 < k := by
-    rw [hk_def, ← fiber_card_uniform m hm a b t0 (project (leader m hm1) s0) ht0 ht1]
-    exact Set.ncard_pos (multiProjectionFiber_finite m hm1 a b _)
+    rw [hk_def, fiber_card_uniform m hm a b t0 (project (leader m hm1) s0) ht0 ht1]
+    exact (Set.ncard_pos (multiProjectionFiber_finite m hm1 a b _)).mpr
       ⟨s0, hs0, rfl⟩
   -- ncard(MCS) = k * ncard(CS)
   have hMCS_ncard : (multiCountedSequence m hm1 a b).ncard =
@@ -212,20 +228,8 @@ theorem uniformOn_fiber_transfer' (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
       k (fun t ht => hk_uniform t ht.1)
   -- Assemble via ENNReal ratio: simp [uniformOn] gives ncard ratio,
   -- div_eq_div_iff reduces to cross-multiplication, fiber counting closes it.
-  simp only [ProbabilityTheory.uniformOn]
-  rw [ENNReal.div_eq_div_iff
-    (by exact_mod_cast hMCS_pos.ne' :
-      (↑(multiCountedSequence m hm1 a b).ncard : ENNReal) ≠ 0)
-    (ENNReal.natCast_ne_top _)
-    (by exact_mod_cast hCS_pos.ne' :
-      (↑(Ballot.countedSequence a b).ncard : ENNReal) ≠ 0)
-    (ENNReal.natCast_ne_top _)]
-  exact_mod_cast (show
-      (multiCountedSequence m hm1 a b ∩ multiStaysPositive m hm1).ncard *
-        (Ballot.countedSequence a b).ncard =
-      (Ballot.countedSequence a b ∩ Ballot.staysPositive).ncard *
-        (multiCountedSequence m hm1 a b).ncard by
-    rw [hMCS_pos_ncard, hMCS_ncard]; ring)
+  rw [uniformOn_eq_ncard_div hMCS_fin, uniformOn_eq_ncard_div hCS_fin]
+  exact ENNReal.div_eq_div_of_mul_eq hk_pos hMCS_pos_ncard hMCS_ncard hCS_pos
 
 /-! ## Summary
 
