@@ -68,7 +68,7 @@ theorem prod_units_eq_one_or_unique_involution
     (∏ u : Rˣ, u = 1) ∨
       (∃ t : Rˣ, t ≠ 1 ∧ t ^ 2 = 1 ∧
         (∀ s : Rˣ, s ^ 2 = 1 → s = 1 ∨ s = t) ∧ ∏ u : Rˣ, u = t) :=
-  WilsonsTheoremOQ02ExtOQ01.prod_eq_one_or_unique_involution
+  WilsonsTheoremOQ02ExtOQ01.miller_prod
 
 /-- **Classical packaging.** If `-1` is the unique element of order two in `Rˣ`,
     then the product of all units of `R`, taken in `R`, equals `-1`. This is the

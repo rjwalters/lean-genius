@@ -156,20 +156,24 @@ theorem prod_klein_four {G : Type*} [CommGroup G] [DecidableEq G]
     (hab : a ≠ b) (ha1 : a ≠ 1) (hb1 : b ≠ 1) (hab1 : a * b ≠ 1) :
     ({1, a, b, a * b} : Finset G).prod id = 1 := by
   -- All four elements are distinct
-  have hab_ne_a : a * b ≠ a := fun h => hb1 (mul_left_cancel h)
-  have hab_ne_b : a * b ≠ b := fun h => ha1 (mul_right_cancel h)
+  have hab_ne_a : a * b ≠ a := fun h => hb1 (mul_left_cancel (a := a) (by rw [mul_one]; exact h))
+  have hab_ne_b : a * b ≠ b := fun h => ha1 (mul_right_cancel (b := b) (by rw [one_mul]; exact h))
   have ha_ne_1 : a ≠ 1 := ha1
   have hb_ne_1 : b ≠ 1 := hb1
-  rw [Finset.prod_insert (by simp [Finset.mem_insert, Finset.mem_singleton]; push_neg
-                              exact ⟨ha1, hb1, hab1⟩)]
-  rw [Finset.prod_insert (by simp [Finset.mem_insert, Finset.mem_singleton]; push_neg
-                              exact ⟨hab, hab_ne_b⟩)]
-  rw [Finset.prod_insert (by simp; exact (fun h => hab_ne_a (mul_comm b a ▸ h)))]
+  rw [Finset.prod_insert (by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨fun h => ha1 h.symm, fun h => hb1 h.symm, fun h => hab1 h.symm⟩)]
+  rw [Finset.prod_insert (by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨hab, hab_ne_a.symm⟩)]
+  rw [Finset.prod_insert (by
+    simp only [Finset.mem_singleton]
+    exact hab_ne_b.symm)]
   simp only [Finset.prod_singleton, id]
   -- Goal: 1 * (a * (b * (a * b))) = 1
   rw [one_mul]
   -- a * (b * (a * b)) = a * b * (a * b) = (ab)²
-  have key : a * (b * (a * b)) = (a * b) ^ 2 := by group
+  have key : a * (b * (a * b)) = (a * b) ^ 2 := by rw [sq, mul_assoc]
   rw [key, mul_sq_eq_one_of_sq_eq_one ha hb]
 
 -- ============================================================================
@@ -187,9 +191,7 @@ theorem prod_univ_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] :
   -- But ∏ x⁻¹ = (∏ x)⁻¹
   -- So ∏ x = (∏ x)⁻¹, giving (∏ x)² = 1
   suffices h : (∏ x : G, x)⁻¹ = ∏ x : G, x by
-    rw [sq]
-    conv_lhs => rw [← h]
-    exact inv_mul_cancel _
+    rw [sq_eq_one_iff_eq_inv]; exact h.symm
   rw [← Finset.prod_inv_distrib]
   -- Goal: ∏ x ∈ univ, x⁻¹ = ∏ x ∈ univ, x
   -- The map x ↦ x⁻¹ is a bijection on univ
@@ -212,10 +214,7 @@ theorem prod_eq_prod_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] [DecidableE
     (Finset.prod_filter_mul_prod_filter_not Finset.univ (fun x : G => x ^ 2 = 1) id).symm
   -- The second factor is 1 by involution x ↦ x⁻¹
   have hrest : ∏ x ∈ Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1)), x = 1 := by
-    apply Finset.prod_involution (fun x _ => x⁻¹)
-    · -- x * x⁻¹ = 1
-      intros a _
-      exact mul_inv_cancel a
+    refine Finset.prod_involution (fun x _ => x⁻¹) (fun a _ => mul_inv_cancel a) ?_ ?_ ?_
     · -- x ≠ x⁻¹ when x² ≠ 1
       intro a ha hne
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
@@ -225,7 +224,7 @@ theorem prod_eq_prod_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] [DecidableE
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
       rwa [inv_pow, inv_eq_one]
     · -- Involution: (x⁻¹)⁻¹ = x
-      intros a _
+      intro a _
       exact inv_inv a
   rw [hsplit, hrest, mul_one]
 
@@ -302,23 +301,23 @@ theorem unitsProduct_cast_eq_abstract {n : ℕ} (hn : n ≥ 1) [hne : NeZero n] 
   -- We use prod_bij with the map a ↦ ZMod.unitOfCoprime a (coprime proof)
   -- but first rewrite the RHS to use ↑u for units
   symm
-  apply Finset.prod_nbij (fun u => ZMod.val (u : ZMod n))
+  refine Finset.prod_nbij (fun u => ZMod.val (u : ZMod n)) ?_ ?_ ?_ ?_
   · -- Map sends units into the filtered set
     intro u _
     simp only [Finset.mem_filter, Finset.mem_range]
-    exact ⟨ZMod.val_lt _, ZMod.val_coe_unit_coprime⟩
+    exact ⟨ZMod.val_lt _, ZMod.val_coe_unit_coprime u⟩
   · -- Injective: val is injective on ZMod n, and units coerce injectively
-    intro u₁ u₂ _ _ h
-    have hval : (u₁ : ZMod n) = (u₂ : ZMod n) := ZMod.val_injective h
+    intro u₁ _ u₂ _ h
+    have hval : (u₁ : ZMod n) = (u₂ : ZMod n) := ZMod.val_injective n h
     exact Units.val_injective hval
   · -- Surjective: every coprime natural < n comes from a unit
     intro a ha
-    simp only [Finset.mem_filter, Finset.mem_range] at ha
+    rw [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha
     exact ⟨ZMod.unitOfCoprime a ha.2, Finset.mem_univ _,
-      by rw [Units.val_unitOfCoprime]; exact (ZMod.val_natCast_of_lt ha.1).symm⟩
+      by dsimp only; rw [ZMod.coe_unitOfCoprime]; exact ZMod.val_natCast_of_lt ha.1⟩
   · -- Values agree: casting a through id and casting unit value agree
     intro u _
-    simp [Nat.cast_id]
+    simp [ZMod.natCast_val, Nat.cast_id]
 
 -- ============================================================================
 -- Part 9: Computational Verification
