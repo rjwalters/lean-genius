@@ -22,25 +22,25 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 /-- Perfect graphs satisfy cliqueNumber G < chromaticNumber G + 1.
     Follows because IsPerfect implies chromaticNumber G = cliqueNumber G. -/
 theorem perfect_clique_free (G : SimpleGraph V) (hperf : IsPerfect G) :
-    IsCliqueFree G (chromaticNumber G + 1) := by
+    IsCliqueFree G (GraphCore.chromaticNumber G + 1) := by
   sorry
 
 /-- For a perfect graph with chromaticNumber k, G is not K_k-free.
     Perfect graphs contain K_k when χ(G) = k. -/
 theorem perfect_tihany_vacuous (G : SimpleGraph V) (hperf : IsPerfect G)
-    (k : ℕ) (hχ : chromaticNumber G = k) :
+    (k : ℕ) (hχ : GraphCore.chromaticNumber G = k) :
     ¬IsCliqueFree G k := by
   sorry
 
 /-- Bipartite graphs have chromatic number ≤ 2. -/
 theorem bipartite_chi_le_2 (G : SimpleGraph V) (hbip : G.IsBipartite) :
-    chromaticNumber G ≤ 2 := by
+    GraphCore.chromaticNumber G ≤ 2 := by
   sorry
 
 /-- Every perfect graph is χ = ω (chromatic number equals clique number).
     Specialization of IsPerfect to the full vertex set. -/
 theorem perfect_chi_eq_omega (G : SimpleGraph V) (hperf : IsPerfect G) :
-    chromaticNumber G = cliqueNumber G := by
+    GraphCore.chromaticNumber G = cliqueNumber G := by
   sorry
 
 end Erdos628Aristotle
