@@ -1,6 +1,8 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
@@ -85,9 +87,10 @@ theorem arcLength3D_add (γ : ℝ → ℝ × ℝ × ℝ) (a b c : ℝ)
       (deriv (Prod.snd ∘ Prod.snd ∘ γ) t) ^ 2))) :
     arcLength3D γ a c = arcLength3D γ a b + arcLength3D γ b c := by
   unfold arcLength3D
-  exact integral_add_adjacent_intervals
+  exact (integral_add_adjacent_intervals
+    (μ := MeasureTheory.volume)
     (hcont.intervalIntegrable a b)
-    (hcont.intervalIntegrable b c)
+    (hcont.intervalIntegrable b c)).symm
 
 /-! ## Part II: 3D Polygonal Infrastructure
 
@@ -322,7 +325,6 @@ theorem helix_expected_crossings (r h d : ℝ) (hd : 0 < d) :
     π * Real.sqrt (r ^ 2 + h ^ 2) / d := by
   have hd' : d ≠ 0 := ne_of_gt hd
   field_simp [hd']
-  ring
 
 /-- For a great circle of circumference 2πR on a sphere of radius R,
     the expected crossings with parallel planes is πR/d.
@@ -332,7 +334,6 @@ theorem great_circle_expected_crossings (R d : ℝ) (hd : 0 < d) :
     2 * π * R / (2 * d) = π * R / d := by
   have hd' : d ≠ 0 := ne_of_gt hd
   field_simp [hd']
-  ring
 
 /-! ## Part IX: Connection to the Cauchy–Crofton Formula
 
