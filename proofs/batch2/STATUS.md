@@ -1,3 +1,79 @@
+# DOCTOR INCREMENT 73 (deep-rework LANE 1: residual Erdős < 500, #38065, 2026-07-15)
+
+Container `lean4-arm64:v4.31.0` (cpuset 0-5, 11g, cache `lean-mathlib-cache-v431`,
+packages `lean-mathlib-packages-v431`), worktree `issue-38065`, branch
+`feature/issue-38065-inc73` off origin/feature/issue-37508. **+4 GREEN.**
+Every flip verified in-container `lake env lean Proofs/X.lean` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos367Problem** (unknown-const:twoFullPart_le): two **forward-reference** blockers —
+  `twoFullPart_le` (used L140/157/158, defined L344) and axiom `van_doorn_lower_bound`
+  (used L205, defined L245); moved both above first use. Renames: `Nat.factorization_prime hp`
+  → `hp.factorization`; `Nat.factorization_prime_pow hp` → `Nat.Prime.factorization_pow hp`;
+  `Finset.filter_eq_empty` → `Finset.filter_eq_empty_iff`; `exact Finset.prod_singleton` (no longer
+  a bare fn for the goal) → `rw [Finset.prod_singleton]`. **`rintro rfl` on `q ∈ {p}` (i.e. `q = p`)
+  now substitutes AWAY `p`** (the lemma arg) not `q` → replace explicit `p` with `_` in the witness
+  (`dvd_refl _`, `dvd_pow_self _`). **`ε` in `weakBound` is `ℕ` not `ℝ`** so `(n:ℝ)^(2+ε)` is a
+  Nat-power (npow), not rpow — the old `Real.rpow_le_rpow_of_exponent_le` approach mismatched;
+  replaced with `pow_le_pow_right₀ hn1 (by omega)`. `by simp; omega` where simp now closes the goal
+  → `by simp only [Finset.mem_singleton]; omega` (drops the "No goals" from the orphan omega).
+- **Erdos411Problem** (unknown-const:totientStep_ge): two **forward-refs** —
+  `totientStep_even_of_even` (used L96, def L377) and `totientStep_ge` (used L84, def L392) moved
+  above `iteratedTotientStep_ge_start`. **`Nat.totient_even` now returns `Even n.totient`, not
+  `2 ∣ n.totient`** → `(Nat.totient_even h).two_dvd`. `conv_lhs => rw [show k = (k-1)+1 …]` no longer
+  auto-closes the residual defeq goal → append explicit `rfl` (3 sites). Bumped
+  `set_option maxHeartbeats 1000000 in` on `ratio4_4325798_aux` (two `interval_cases <;> native_decide`
+  timeouts on the 4325798 tower).
+- **Erdos281Problem** (parse-error): **`Finset.filter` now needs `DecidablePred`** for the
+  `¬IsCoveredByFirst` predicate → added `open scoped Classical` (fixes both synth failures).
+  `Finset.filter_subset_filter` no longer matches same-set/different-predicate subset → prove the
+  subset directly (`intro m hm; simp only [Finset.mem_filter] …`). **`Finset.card_Icc` gone for ℤ**
+  → `Int.card_Icc`. Old multi-line `calc EXPR` / `≤ … := …` with a bare `_` filter predicate broke
+  the parser → rewrote as `refine le_trans (Finset.card_filter_le _ _) ?_`. **`(by omega : 0 < N)`
+  under an anonymous `0 < N →` binder failed ("no usable constraints")** → named the binder
+  `∀ hN : 0 < N` and passed `hN` (defs `HasFullCovering`, `HasUniformFiniteCoverage`; statement
+  unchanged up to binder name).
+- **Erdos471Problem** (unknown-const:Set.Finite.of_finset): `Set.Finite.of_finset` gone →
+  `Set.Finite.subset (Set.finite_Iic N)` + `exact hx.2`. **`Nat.prime_def_lt''.mpr ⟨…⟩` removed**
+  (6 sites) → `by norm_num`. `Q1_contains_19/23` membership goals were `x ∈ QSeq ulamQ₀ 0`
+  (not literal `ulamQ₀`) so `simp [ulamQ₀]` couldn't discharge → `simp [QSeq, ulamQ₀]`; rewrote both
+  as one flat anonymous constructor over `IsSumOfThreeDistinctPrimes`.
+
+## New systematic seams (rename-map candidates)
+1. **`Nat.totient_even h : Even n.totient`** (was `2 ∣ n.totient`) → `.two_dvd` to recover divisibility.
+2. **`Finset.card_Icc` unavailable for ℤ** → `Int.card_Icc` (`(Icc a b).card = (b+1-a).toNat`).
+3. **`Finset.filter_eq_empty` → `Finset.filter_eq_empty_iff`** (paralleling `filter_eq_nil_iff`).
+4. **`Nat.factorization_prime` / `Nat.factorization_prime_pow` → `Nat.Prime.factorization` /
+   `Nat.Prime.factorization_pow`** (dot-notation on the primality hyp).
+5. **`Set.Finite.of_finset` removed** → `Set.Finite.subset (Set.finite_Iic …)` for `{p | … ∧ p ≤ N}`.
+6. **`Nat.prime_def_lt''` removed** → `by norm_num` / `by decide` for concrete primes.
+7. **`rintro rfl` on `a ∈ {b}` (= `a = b`) now substitutes the RHS var `b`** — swap explicit `b` for `_`.
+8. **v4.31 `simp` closes membership/`∉ {x}` goals fully** → a trailing `; omega`/`ring` becomes
+   "No goals to be solved"; use `simp only […]` and let omega finish, or drop the trailing tactic.
+9. **Anonymous `0 < N →` Pi binders no longer feed `by omega`** in def bodies → name the binder.
+10. **`Finset.filter` requires `DecidablePred`** for non-decidable Props → `open scoped Classical`.
+
+## Statement repairs (#38611 candidates)
+- None. No unsound-original / vacuous statements found in the 4 flipped files. The `Erdos367.weakBound`
+  ε:ℕ (not ℝ) is a pre-existing semantic choice (weaker but non-vacuous; strongBound ⇒ weakBound holds),
+  left as-is; the proof was corrected to match the actual (Nat-power) statement, not weakened.
+
+## Deferred / warm leads for the next LANE-1 wave (residual Erdős < 500)
+- **Erdos358Problem** (unknown-const:two_mul_sum_Icc): STARTED then reverted — fixed forward-refs
+  (`two_mul_sum_Icc`, `odd_dvd_two_pow_eq_one`, `power_of_two_obstruction` moved up), `dvd_add hd hd`
+  for `Even`-as-`m+m`, `Nat.mul_div_cancel'`, `Finset.card_bij` needs a leading `symm` (proves
+  `s.card=t.card` with s=domain), `Nat.not_even_iff_odd`. BUT the surjective bijection block (L385-455)
+  has deep cascading breakage: `Nat.max_add_min` gone, `Nat.odd_iff_not_even`/`Nat.not_eq_zero_of_lt`
+  gone, `(¬Odd _).symm.even` is now ill-typed, `split_ifs <;> [t1; t2]` combinator syntax rejected
+  ("too many tactics"), and ~8 downstream omega/linarith failures. ~30-min file on its own.
+- **Erdos301Problem** (parse-error): `show P by tac` term syntax rejected (needs `show P from by tac`),
+  `inv_anti₀`, `div_le_div_of_nonneg_right`, `|>.elim` on an `absurd` result.
+- **Erdos86Problem**: `List.Mem.symm` invalid, a `//` set-builder parse error (L115), synth + linarith + rewrite.
+- **Erdos153Problem** (elab-drift), **Erdos201Problem** (unknown-const:isAPFree_empty, 29 err) — not yet probed.
+
+---
+
+
 # DOCTOR INCREMENT 74 (deep-rework LANE 2 / partition Erdos >= 500, #38065, 2026-07-15)
 
 Container `dr-b` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
