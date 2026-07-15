@@ -1,3 +1,91 @@
+# DOCTOR INCREMENT 71 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
+
+Container `dr71` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc71` off origin/feature/issue-37508 (base 2047 GREEN /
+588 RESIDUAL after incs 56–69). **Family-first: the entire Wilson cluster (6
+files) flipped from fixing the hub OQ02Ext.** All in-container `lake build
+Proofs.X` exit-0 before ledger flip; pushed per file. **+6 GREEN.** PR #38674.
+
+## Flips (failure class in parens)
+- WilsonsTheoremOQ02Ext (rewrite-drift, HUB — 35 real errors): deleted a **dead
+  pow2/CRT helper block** (155–241; the file now delegates to
+  GaussWilsonNonCyclic, each helper was only used by the dead block or by
+  sibling files' own copies) → cleared ~15 errors; **`set T := …` now fully
+  abstracts** so `simp only [mem_sdiff…] at hx` gets "no progress" and
+  `card_sdiff hpair_sub` etc. don't fire → `set … with hT_def` + `rw [hT_def] at
+  hx ⊢` before the simp/card rewrites; **`Finset.card_sdiff` is now the
+  UNCONDITIONAL `#(s\t)=#s-#(s∩t)`** — the subset-hypothesis lemma is
+  `Finset.card_sdiff_of_subset (h : s ⊆ t)`; **`Finset.sdiff_ssubset` now takes
+  TWO args** `(h : t ⊆ s) (ht : t.Nonempty)`; **`not_or` no longer auto-applied
+  by `simp only [mem_insert…]`** so `x ∉ {a,b}` stays `¬(x=a ∨ x=b)` not a
+  conjunction → `refine ⟨_, ?_⟩; rintro (h|h)`; extracted the `where
+  sq_eq_one_iff_eq_inv {G}` helper into a top-level private lemma (**a `where`
+  clause that re-binds a fresh `{G : Type*}` makes the theorem carry an extra
+  universe param → kernel `commitConst: level params [u_1,u_2] but expected
+  [u_1]`**); **`Finset.prod_involution` bullet order**: `refine … ?_ ?_ ?_`
+  after supplying the pair-product arg inline; omega needs `2 ≤ #S` materialized
+  (truncated ℕ subtraction from `#S - 2 = k+k`); moved `neg_one_ne_one_units'`
+  above its first use (in-file forward ref); `c*c^k=c^(k+1)` → `rw [pow_succ];
+  exact mul_comm _ _` (plain `ring` fails on multiplicative-only CommGroup).
+- WilsonsTheoremOQ02 (rewrite-drift, 5+ errors): **multiline `by simp […];
+  push_neg` newline `exact` no longer parses** (unexpected identifier) → clean
+  indented `by`-block with `simp only [… , not_or]`; `mul_left_cancel h` /
+  `mul_right_cancel h` need the `a*1`/`1*b` form supplied
+  (`mul_left_cancel (a:=a) (by rw [mul_one]; exact h)`); the `conv_lhs => rw
+  [← h]` in prod_univ_sq **rewrites BOTH `∏x` occurrences** → prove via
+  `sq_eq_one_iff_eq_inv` instead; `prod_involution` refine+reorder; **`ZMod.val_injective`
+  now takes `n` explicitly** (`ZMod.val_injective n h`); `prod_nbij` InjOn intro
+  order is `a ha b hb h` (`intro u₁ _ u₂ _ h`); `Units.val_unitOfCoprime` →
+  `ZMod.coe_unitOfCoprime` (+ `dsimp only` to beta-reduce the map before the rw);
+  `group` left `a*(b*(a*b))=(a*b)^2` → `rw [sq, mul_assoc]`.
+- WilsonsTheoremOQ01 (rewrite-drift, 9 errors): Wilson mod arithmetic —
+  **omega can't relate `p*k` and `p*(k-1)`** (distinct nonlinear atoms) → bridge
+  `p*(k-1)+p = p*k` via `cases k … | succ m => simp [Nat.succ_sub_one,
+  Nat.mul_succ]`; `add_mul_mod_self_left` needs `add_comm` first + explicit
+  `mod_eq_of_lt`; `natCast_sub_one_eq_neg_one'` via `Nat.cast_sub hn` +
+  `ZMod.natCast_self`; **`ZMod.val_injective n`**; **`Nat.mod_eq_of_lt (by omega)`
+  with an unpinned `?a` matches the WRONG mod occurrence** (`unitsProduct n % n`
+  instead of `(n-1)%n`) → `mod_eq_of_lt (show n-1 < n by omega)`; classification
+  `rintro` branch order rewritten to match the post-`rw` disjunction shapes.
+- WilsonsTheoremOQ04 (cascade, 0 own errors): green once OQ01 built.
+- WilsonsTheoremOQ02ExtOQ01 (rewrite-drift, 4 errors): mirror of OQ02Ext's FPF
+  (`mul_right_cancel`), `hcd_ne_1` (`eq_inv_of_mul_eq_one_left` wants `b*a=1` →
+  `mul_comm` first), and two-involution algebra (`by rw [mul_one]; exact h.symm`;
+  `rw [← hP_eq_c, …]`).
+- WilsonsTheoremOQ02ExtOQ02 (dangling-ref repair, #38611): referenced
+  `WilsonsTheoremOQ02ExtOQ01.prod_eq_one_or_unique_involution` which **never
+  existed** (v4.26 baseline results-full.tsv = FAIL; `git log -S` finds no such
+  name); the theorem with that exact statement is `miller_prod`. Renamed the
+  reference — not a weakening, not a new axiom.
+
+## New systematic seams (rename-map §7al candidates)
+1. **`set x := e` (no `with`) now fully abstracts `x`** — `simp only […] at h`
+   where `h : _ ∈ x` gets "no progress", and `rw [lemma_about_e] at h`/goal
+   can't fire. Add `with hx_def` and `rw [hx_def] at h ⊢` before the simp/rw.
+2. **`Finset.card_sdiff` is unconditional** (`#(s\t)=#s-#(s∩t)`); the
+   subset-hyp form is now **`Finset.card_sdiff_of_subset (h:s⊆t)`**.
+3. **`Finset.sdiff_ssubset` takes TWO explicit args** `(h:t⊆s)(ht:t.Nonempty)`.
+4. **`simp only [mem_insert, mem_singleton]` no longer folds in `not_or`** — a
+   `∉` goal stays `¬(…∨…)`; add `not_or` to the simp set OR `rintro (h|h)`.
+5. **A `where`-clause lemma that re-binds a fresh universe var `{G:Type*}`**
+   gives the enclosing theorem an extra level param → kernel
+   `commitConst: level params [u_1,u_2] but expected [u_1]`. Hoist it to a
+   top-level lemma.
+6. **`ZMod.val_injective` now takes the modulus `n` explicitly**
+   (`ZMod.val_injective n h`); `Units.val_unitOfCoprime`→`ZMod.coe_unitOfCoprime`.
+7. **`Nat.mod_eq_of_lt (by omega)` with an unpinned `?a`** rewrites the FIRST
+   `?a % n` in the goal (often the wrong one) → pass `(show a < n by omega)`.
+8. **omega treats `p*k` and `p*(k-1)` as unrelated atoms** — supply a bridge
+   `p*(k-1)+p = p*k` (via `cases k`/`Nat.mul_succ`).
+9. **A multiline `(by simp […]; push_neg`⏎`exact …)` term no longer parses** —
+   use a properly-indented `by` block.
+10. **`conv_lhs => rw [← h]`** where `h`'s RHS appears twice in the LHS rewrites
+    BOTH occurrences.
+
+Ledger after increment 71: +6 GREEN (partition B, whole Wilson family).
+
+---
+
 # DOCTOR INCREMENT 69 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
 
 Container `dr69` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
