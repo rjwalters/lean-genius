@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 3 (8-slot, #38065, 2026-07-15)
+
+**+4 GREEN**: Erdos910Problem (Cardinal/universe: continuum collision -> _root_.continuum, whole-file
+Type-0 pin for #ℝ-continuum counterexample, setOf .1/.2 term-mode no longer unfolds -> mk_image_eq),
+Erdos153Problem (card_nbij now Set.MapsTo/InjOn/SurjOn; filter_card_add_filter_neg->card_filter_add_card_filter_not;
+omega needs ring bridge for n*(n+1)), Erdos560Problem (Sym2 endpoint .1.1/.1.2 -> .out.1/.out.2, s(,)
+ctor; minimal-import loses field_simp/ring/SupSet-ℕ -> add imports; notation atom no internal space),
+FundamentalTheoremCalculusLebesgueOQ04 (/-! docstring must follow imports; eVariationOn.eq_zero_iff +
+ENNReal.natCast_ne_top gained explicit args; set-var opaque to push_cast). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 2 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN**: DenumerabilityRationalsOQ02OQ02 (ConditionallyCompleteLinearOrderedField class
