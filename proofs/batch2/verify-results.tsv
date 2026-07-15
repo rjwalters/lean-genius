@@ -548,7 +548,7 @@ DiniTheorem	GREEN
 DiniTheoremOQ01OQ01	GREEN	
 DirichletApproximationOQ02	GREEN	
 DirichletApproximationOQ04OQ02	GREEN	
-DirichletsTheorem	RESIDUAL	parse-error
+DirichletsTheorem	GREEN	
 DirichletsTheoremOQ01OQ01	GREEN	
 DirichletsTheoremOQ03	GREEN	
 DissectionOfCubesOQ01OQ02	GREEN	
@@ -2122,8 +2122,8 @@ InclusionExclusionSecondBonferroni	RESIDUAL	unknown-const:sieveLayer_eq_sum_choo
 InfinitudePrimes	GREEN	
 InfinitudePrimes4k1	GREEN	
 InfinitudePrimes4k1OQ03	GREEN	
-InfinitudePrimes4k3OQ01	RESIDUAL	parse-error
-InfinitudePrimes4k3OQ01Q12Q24	RESIDUAL	parse-error
+InfinitudePrimes4k3OQ01	GREEN	
+InfinitudePrimes4k3OQ01Q12Q24	GREEN	
 InfinitudePrimes4k3OQ03	GREEN	
 InfinitudePrimesOQ01	GREEN	
 IntermediateValueTheoremOQ03	GREEN	
