@@ -127,7 +127,7 @@ example (n : ℕ) : Finset (Nat.Partition n) := Nat.Partition.odds n
 /-- A partition is odd iff all its parts are odd numbers. -/
 theorem odd_iff_all_odd {n : ℕ} (p : Nat.Partition n) :
     p ∈ Nat.Partition.odds n ↔ ∀ i ∈ p.parts, ¬Even i := by
-  simp [Nat.Partition.odds]
+  simp [Nat.Partition.odds, Nat.Partition.restricted]
 
 /-! ## Part IV: The Partition Theorem -/
 
@@ -148,7 +148,7 @@ These are equal because:
 -/
 theorem partition_theorem (n : ℕ) :
     (Nat.Partition.distincts n).card = (Nat.Partition.odds n).card :=
-  (Theorems100.partition_theorem n).symm
+  (Nat.Partition.card_odds_eq_card_distincts n).symm
 
 /-! ## Part V: Concrete Examples
 
