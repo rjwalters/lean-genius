@@ -124,12 +124,9 @@ def vinogradovQ₀ : Set ℕ :=
 There are finitely many primes ≤ N.
 -/
 theorem vinogradovQ₀_finite : vinogradovQ₀.Finite := by
-  apply Set.Finite.of_finset
-  · exact Finset.filter (fun p => Nat.Prime p) (Finset.range (Classical.choose vinogradov_smaller_primes + 1))
-  · intro x
-    simp only [Finset.mem_filter, Finset.mem_range, Set.mem_setOf_eq]
-    intro ⟨hp, hx⟩
-    exact ⟨Nat.lt_add_one_iff.mpr hx, hp⟩
+  apply Set.Finite.subset (Set.finite_Iic (Classical.choose vinogradov_smaller_primes))
+  intro x hx
+  exact hx.2
 
 /--
 **All primes appear in Q∞:**
@@ -173,15 +170,8 @@ def ulamQ₀ : Set ℕ := {3, 5, 7, 11}
 -/
 theorem Q1_contains_19 : 19 ∈ QSeq ulamQ₀ 1 := by
   right
-  constructor
-  · exact Nat.prime_def_lt''.mpr ⟨by norm_num, fun m hm h => by interval_cases m <;> simp_all⟩
-  · use 3, 5, 11
-    simp [ulamQ₀]
-    constructor; · exact Nat.prime_three
-    constructor; · exact Nat.prime_five
-    constructor
-    · exact Nat.prime_def_lt''.mpr ⟨by norm_num, fun m hm h => by interval_cases m <;> simp_all⟩
-    · norm_num
+  exact ⟨by norm_num, 3, 5, 11, by simp [QSeq, ulamQ₀], by simp [QSeq, ulamQ₀], by simp [QSeq, ulamQ₀],
+    by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num⟩
 
 /--
 **Q₁ includes 23:**
@@ -189,16 +179,8 @@ theorem Q1_contains_19 : 19 ∈ QSeq ulamQ₀ 1 := by
 -/
 theorem Q1_contains_23 : 23 ∈ QSeq ulamQ₀ 1 := by
   right
-  constructor
-  · exact Nat.prime_def_lt''.mpr ⟨by norm_num, fun m hm h => by interval_cases m <;> simp_all⟩
-  · use 5, 7, 11
-    simp [ulamQ₀]
-    constructor; · exact Nat.prime_five
-    constructor
-    · exact Nat.prime_def_lt''.mpr ⟨by norm_num, fun m hm h => by interval_cases m <;> simp_all⟩
-    constructor
-    · exact Nat.prime_def_lt''.mpr ⟨by norm_num, fun m hm h => by interval_cases m <;> simp_all⟩
-    · norm_num
+  exact ⟨by norm_num, 5, 7, 11, by simp [QSeq, ulamQ₀], by simp [QSeq, ulamQ₀], by simp [QSeq, ulamQ₀],
+    by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, by norm_num⟩
 
 /- 
 **Does Q∞ contain all primes starting from {3,5,7,11}?**
