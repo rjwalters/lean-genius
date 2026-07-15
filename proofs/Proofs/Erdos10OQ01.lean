@@ -259,20 +259,13 @@ theorem gallagher_does_not_imply_oq01_in_principle :
     have hcsq_le : ((Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card : ℝ) ≤
         ε * N := le_trans hsq_real hsqrt_bound
     rw [ge_iff_le, le_div_iff₀ hN_real, show (1 - ε) * (N : ℝ) = N - ε * N from by ring]
-    -- Capture the goal's filter with 'set' to bind its exact DecidablePred instance
-    set nonsq_fin := Finset.filter (· ∈ ({n | ¬∃ m : ℕ, m * m = n} : Set ℕ)) (Finset.range N)
-      with hF
-    -- Goal is now: (N : ℝ) - ε * N ≤ ↑nonsq_fin.card
-    -- Prove nonsq_fin equals the explicit-lambda filter (same elements, via finset ext)
-    have hfilt_eq : nonsq_fin = Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N) := by
-      rw [hF]; ext x; simp only [Finset.mem_filter, Finset.mem_range, Set.mem_setOf_eq]
+    -- Unfold the goal's inner set-membership `x ∈ {n | P n}` to `P x`.
+    simp only [Set.mem_setOf_eq]
     -- Step-by-step calc to avoid linarith cast issues
     calc (N : ℝ) - ε * ↑N
         ≤ ↑N - ↑(Finset.filter (fun n => ∃ m : ℕ, m * m = n) (Finset.range N)).card := by
             linarith [hcsq_le]
       _ = ↑(Finset.filter (fun n => ¬∃ m : ℕ, m * m = n) (Finset.range N)).card := hcast.symm
-      _ = ↑nonsq_fin.card := by
-            exact_mod_cast (congr_arg Finset.card hfilt_eq).symm
   · -- The non-squares miss all perfect squares (infinitely many large squares exist)
     intro N
     use (N + 1) * (N + 1)

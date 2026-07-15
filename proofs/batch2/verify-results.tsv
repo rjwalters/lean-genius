@@ -151,7 +151,7 @@ ArsinhLogFormulaOQ01OQ01OQ01	GREEN
 ArsinhLogFormulaOQ01OQ01OQ01OQ01	GREEN	
 ArsinhLogFormulaOQ01OQ01OQ02	GREEN	
 BallVolumeSurfaceDuality	GREEN	
-BallotProblem	RESIDUAL	signature-drift
+BallotProblem	GREEN	
 BallotProblemOQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01Aristotle	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
@@ -236,7 +236,7 @@ BinomialTheoremOQ02OQ01OQ03	GREEN
 BinomialTheoremOQ02OQ01OQ04	GREEN	
 BinomialTheoremOQ02OQ02	GREEN
 BinomialTheoremOQ02OQ03	RESIDUAL	type-mismatch
-BinomialTheoremOQ02OQ04	RESIDUAL	type-mismatch
+BinomialTheoremOQ02OQ04	GREEN	
 BinomialTheoremOQ02OQ04OQ02	GREEN	
 BinomialTheoremOQ03OQ02OQ03	GREEN	
 BinomialTheoremOQ04	GREEN	
@@ -799,7 +799,7 @@ Erdos109OQ01	RESIDUAL	type-mismatch
 Erdos109OQ01Aristotle	GREEN	
 Erdos109Problem	GREEN	
 Erdos10Incomplete01OQ02	RESIDUAL	slow-timeout
-Erdos10OQ01	RESIDUAL	proof-drift
+Erdos10OQ01	GREEN	
 Erdos10OQ01Incomplete01	RESIDUAL	slow-timeout
 Erdos10OQ02Bridge	GREEN	
 Erdos10Problem	GREEN	
@@ -912,7 +912,7 @@ Erdos1213Problem	GREEN
 Erdos1214Problem	RESIDUAL	proof-drift
 Erdos1216Problem	GREEN	
 Erdos1217Problem	GREEN	
-Erdos121Problem	RESIDUAL	duplicate-decl
+Erdos121Problem	GREEN	
 Erdos124CompleteSequences	RESIDUAL	unknown-const:i_1
 Erdos124Problem	GREEN	
 Erdos125Problem	GREEN	
@@ -973,7 +973,7 @@ Erdos179Problem	GREEN
 Erdos179ProblemAristotle	RESIDUAL	proof-drift
 Erdos17Problem	GREEN	
 Erdos180Problem	GREEN	instance-synth
-Erdos181OQ01	RESIDUAL	unknown-const:Function.id
+Erdos181OQ01	GREEN	
 Erdos181Problem	GREEN	unknown-const:rpow_le_rpow_of_exponent_le
 Erdos182Problem	GREEN	
 Erdos183Problem	RESIDUAL	proof-drift
@@ -1159,7 +1159,7 @@ Erdos342Problem	GREEN
 Erdos343Problem	GREEN	
 Erdos344Problem	GREEN	
 Erdos345Problem	GREEN	parse-error
-Erdos346Problem	RESIDUAL	duplicate-decl
+Erdos346Problem	GREEN	
 Erdos347Problem	RESIDUAL	unknown-const:Finset.card_Icc
 Erdos348Problem	RESIDUAL	type-mismatch
 Erdos349Problem	GREEN	
@@ -2165,7 +2165,7 @@ KnightsTourObliqueOQ02Palindrome	GREEN
 KnightsTourObliqueOQ02Reverse	GREEN	
 KnightsTourObliqueOQ02ReverseCount	GREEN	
 KnightsTourObliqueOQ03	GREEN	
-Konigsberg	RESIDUAL	unknown-const:Nat.odd_iff_not_even
+Konigsberg	GREEN	
 KonigsbergOQ01	GREEN	
 KonigsbergOQ01OQ02	RESIDUAL	unknown-const:Finset.card_eq_sum_ones.symm
 KonigsbergOQ01OQ02Recipe	GREEN	

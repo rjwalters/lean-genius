@@ -153,7 +153,9 @@ lemma not_even_degree_iff (w : Verts) :
 lemma setOf_odd_degree_eq :
     {v | Odd (graph.degree v)} = {Verts.V1, Verts.V2, Verts.V3, Verts.V4} := by
   ext w
-  simp [not_even_degree_iff, Nat.odd_iff_not_even]
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff,
+    degree_eq_degree, ← Nat.not_even_iff_odd]
+  exact not_even_degree_iff w
 
 /-!
 ## Part 6: The Main Theorem

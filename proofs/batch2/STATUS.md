@@ -2584,6 +2584,69 @@ clusters, the Sylow-API cluster *partially* yielded (OQ02Orbit: normalizer-signa
 change, and the remaining N–Z residuals are genuine multi-site proof surgery. The statement-repair
 targets (Erdos724, Erdos1123, RamseysTheoremOQ04) all yielded to real intended-true fixes.
 
+## Increment 53 (Doctor, A–M / Erdos<600, deep-rework clusters) — +7 GREEN
+
+Method: built an in-target error-count probe (`grep -cE "error: Proofs/<F>.lean:"`) over all
+426 RED files in the A–M + Erdos<600 partition, then attacked the 1–4-error files (most likely
+single-recipe). The greens were exactly the genuinely single-cause files; everything ≥5 sites (and
+several ≤2-site files whose head error MASKED a multi-error tail) bottomed out in real proof surgery.
+
+**+7 GREEN**:
+- **BallotProblem** — `ProbabilityTheory.condCount` → `uniformOn` (whole-file rename; the Archive
+  lemmas `ballot_problem`/`ballot_problem'`/`ballot_edge`/`ballot_same` are now stated via `uniformOn`).
+- **BinomialTheoremOQ02OQ04** — (1) `h ▸ hi` elaboration drift → `by rw [← h]; exact hi`; (2) goal
+  carries the un-beta-reduced Pi-add form `(g + fun t => …)`, so restate `hmn` in `+`-function form
+  and normalize with `Pi.add_apply`/`if_true`; (3) stale terminal theorem hit a `DecidableEq (Fin 3)`
+  instance diamond (`Classical.propDecidable` vs `instDecidableEqFin`) — bridge with
+  `Finset.sum_congr (by congr 1; exact Subsingleton.elim _ _)` + per-summand `prod_congr`.
+- **Erdos121Problem** — local `def IsSquare` now collides with Mathlib `IsSquare` → rename `IsPerfectSq`.
+- **Erdos346Problem** — local `def IsComplete` collides with Mathlib `IsComplete` → rename `IsCompleteSet`.
+- **Erdos181OQ01** — `simp_all [Function.id]` (`Function.id` identifier gone; plain `simp_all` also
+  blows the recursion budget) → explicit `fin_cases … <;> first | exact absurd rfl hxy | rfl | exact hsymm _ _`.
+- **Erdos10OQ01** — `set … with hF` no longer FOLDS the goal's filter (regression) so the calc chain
+  ended at `nonsq_fin.card` while the goal kept the set-builder form; dropped `set` and normalized the
+  goal directly with `simp only [Set.mem_setOf_eq]`.
+- **Konigsberg** — `Nat.odd_iff_not_even` REMOVED → `Nat.not_even_iff_odd` (reversed direction);
+  also needed `Set.mem_setOf_eq` unfold + `degree_eq_degree` to bridge `graph.degree` vs local `degree`.
+
+**Reusable recipes (for rename-map)**:
+- `ProbabilityTheory.condCount` → `uniformOn` (Archive Ballot lemmas restated).
+- `Function.id` identifier removed → `id` / `id_eq`, or drop & prove finite cases explicitly.
+- `Nat.odd_iff_not_even` removed → `Nat.not_even_iff_odd` (direction reversed).
+- Local `IsSquare` / `IsComplete` defs now SHADOW Mathlib `IsSquare` / `IsComplete` → rename the local.
+- `set x := … with hF` may no longer fold the goal (only the `have`s) → normalize goal with
+  `simp only [Set.mem_setOf_eq]` instead of relying on `set` folding.
+- `DecidableEq` instance diamond from `piAntidiag`/classical defs → `Subsingleton.elim` under `congr 1`.
+
+**Probed-and-skipped (deep / not mechanical seam)**:
+- **AbelRuffiniOQ10** — `native_decide` on `orderOf` (noncomputable in v4.31); same hard model change
+  as inc51's SylowTheoremOQ04. Reverted.
+- **Erdos39Problem** — `frequently_lt_of_liminf_lt` now takes an `IsCoboundedUnder (· ≥ ·)` autoParam
+  (was `IsBoundedUnder (· ≥ ·)`); cobounded-ge is NOT cleanly derivable from the nonneg lower bound
+  (needs an upper-bound-frequently). Real surgery. Reverted.
+- **Erdos490ProblemAristotle** — two clean renames (`Nat.eq_zero_of_mul_eq_zero_left`,
+  `Nat.Prime.eq_of_dvd_of_prime` → `Nat.prime_dvd_prime_iff_eq`) BUT the `a₂ = 0` branch is a genuine
+  LATENT logic gap (a₁=a₂=0 with p₁≠p₂ satisfies the hypotheses) that old simp masked. Reverted.
+- **Erdos598Problem** — universe-inference on `Set.Iio kappa` as a codomain type; pinning `kappa` to
+  `Cardinal.{0}` breaks the `α : Type*` universe-poly defs downstream. Multi-def universe surgery. Reverted.
+- **FundamentalTheoremCalculusLebesgueOQ04** — imports were after the `/-!` docstring
+  (`invalid 'import' command`); moving them to the top is correct but MASKED 10+ downstream errors
+  (`dist_norm`, `eVariationOn.eq_zero_iff`, rewrite misses). Reverted — genuinely deep.
+- **CevasTheoremOQ01OQ03** — `field_simp` no longer clears all `⁻¹` denominators (leaves
+  `(1-e+e*d)⁻¹ * 7` etc.), so the `ring` polynomial identity fails. field_simp normalization drift.
+- Fintype-synthesis-on-set-comprehension cluster (**Erdos395/407/559**, **Hilbert20LocalSolvability**,
+  **MaschkeLocalRingOQ010102**): `Fintype {x | P x}` / `Fintype (MultiIndex n)` no longer auto-synthesizes.
+- `generalize_proofs` auto-name churn (**Erdos124CompleteSequences**: `i_1` unknown) — GeneralizeProofs
+  API drift, matches inc50's stuck list. `grind`-fail cluster (**Erdos152ProblemAPN**,
+  **KonigsbergOQ02OQ01Aristotle**). `greedyCount` counting-set mismatch (**Erdos340**) = content gap.
+
+**VERDICT (A–M seam, inc53):** confirms inc50/51 — **A–M deep-rework is nearly tapped out.** The only
+reliably-yielding veins left are (a) local-def-shadows-Mathlib name collisions and (b) single-symbol
+API renames (`condCount`→`uniformOn`, `Function.id`, `Nat.odd_iff_not_even`), both of which the
+error-count probe exhausted in this partition. The remaining RED files are dominated by genuine
+multi-site proof surgery, Fintype-synthesis drift, `field_simp`/`ring` normalization drift,
+`native_decide`-on-noncomputable, universe-polymorphism, and a couple of latent logic gaps. Several
+"1-error" files were parse-error-masked multi-error files. New greens now require real content work.
 ## Increment 52 (Doctor, N–Z / Erdos≥600, deep-rework clusters) — +7 GREEN
 
 **+7 GREEN**:
