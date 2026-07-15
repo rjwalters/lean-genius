@@ -1,3 +1,90 @@
+# DOCTOR INCREMENT 61 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-14)
+
+Container `dr61` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc61` off origin/feature/issue-37508 (base 1992 GREEN /
+643 RESIDUAL). Cheap-class bulk probe (targets-dr61a, 75 files: unknown-const/
+parse/sig/dot/partenat/elab/unclassified) = **0 free-flips** — all genuinely
+broken. Worked warm leads + fresh singletons cheapest-first. **+8 GREEN.** PR #38663.
+
+## Flips (failure class in parens)
+- Erdos700Problem (unknown-const): PartENat/multiplicity → ℕ∞/emultiplicity Kummer
+  API (le_emultiplicity_of_pow_dvd, Nat.Prime.emultiplicity_choose); Nat.mul_add_mod
+  → Nat.mul_add_mod_self_right; Nat.mul_sub_one → Nat.mul_sub_left_distrib;
+  interval_cases needs explicit upper bound (by_contra+push_neg over Nat.prime_two/
+  three); **stale proof vs def**: hP_prime/hP_dvd used Nat.primeFactors.max' but def
+  is Finset.sup(filter)id → bridged Finset.sup'_eq_sup + Finset.max'_eq_sup'.
+- Erdos961Problem (unknown-const): Nat.smoothNumbers uses primeFactorsList (List)
+  not primeFactors — drop bogus Nat.primFactors from simp, n≠0 first component,
+  prime/dvd_of_mem_primeFactorsList, (Nat.mem_primeFactorsList hn).mpr; CLASSICAL
+  INSTANCE for Nat.find; ambiguous log → Real.log (Nat.log in scope); noncomputable sSup.
+- Erdos857Problem (unknown-const): mem_empty_iff_false/not_not_mem simp lemmas gone
+  → restructure via Finset.eq_empty_iff_forall_notMem; CLASSICAL INSTANCE for Nat.find;
+  inter_eq_empty gone → decide on concrete Fin 3.
+- Erdos940Problem (unknown-const): interval_cases can't bound p from p∣n (Nat.dvd_one
+  / Nat.le_of_dvd+revert;decide); Finset.card_Ioc → Nat.card_Ioc;
+  not_tendsto_iff_exists_frequently_nmem → notMem; **Iio ambiguity** (Finset.Iio vs
+  Set.Iio under open Finset) → Set.Iio(_:ℝ); le_div_iff₀ via .mpr; ∉Set.Iio needs
+  both mem_Iio+not_lt; calc ℝ-literal pins + Nat.cast_sub.
+- Erdos980Problem (unknown-const): CLASSICAL INSTANCE for Nat.find/dite;
+  Nat.Prime.nthPrime → Nat.nth Nat.Prime.
+- Erdos693Problem (unknown-const): List.mem_cons_self now all-implicit (drop _ _);
+  **List.Sorted REMOVED** → restate as List.Pairwise via Finset.pairwise_sort
+  (Finset.sort_sorted gone; also sortedLT_sort/.SortedLT/.SortedLE exist); rpow_*
+  root → Real.rpow_* (nonneg/le_rpow/mul/add/one) + rpow_mul orientation flip;
+  **greedy `show T by tac` in rw list eats to EOF** → `show T from by tac`.
+- Erdos1059OQ04 (unknown-const): namespaced OQ01 names auto-bound as implicits →
+  Function-expected cascade, fix = `open Erdos1059OQ01`; lt_of_le_not_le gone →
+  HasSubset.Subset.ssubset_of_not_subset; STATEMENT: `density_one_conjecture` is an
+  AXIOM (proof term) not a Prop, so `axiom → X` ill-typed → inlined its Prop as a
+  named hyp (faithful; axiom still satisfies callers). #38611.
+- Erdos997Problem (unknown-const): sub_floor_div_mul_nonneg/lt_one gone →
+  sub_nonneg.mpr(Int.floor_le)+linarith[Int.lt_floor_add_one]; CLASSICAL INSTANCE;
+  **`theorem x : Prop := P` now rejected** (type not a proposition) → def.
+
+## New systematic seams (rename-map §7ab candidates)
+1. **CLASSICAL INSTANCE for Nat.find/dite** — highest-recurrence this inc (4 files):
+   Nat.find on a non-decidable predicate now hard-errors DecidablePred synth. Fix =
+   `attribute [local instance] Classical.propDecidable` placed BEFORE the def's
+   docstring (after a `/-- -/` it errors "unexpected token 'attribute'; expected 'lemma'").
+2. **List.Sorted removed** → `List.Pairwise r` (Sorted was defeq Pairwise); Finset
+   sortedness: `Finset.pairwise_sort s r : List.Pairwise r (s.sort r)`, or
+   `.SortedLT`/`.SortedLE` fields + `Finset.sortedLT_sort` (sort_sorted_lt deprecated).
+3. **rpow_* delisted from root namespace** → `Real.rpow_*` (rpow_nonneg, rpow_le_rpow,
+   rpow_mul, rpow_add, rpow_one); rpow_mul orientation is `x^(y*z)=(x^y)^z` (add ←/.symm).
+4. **Greedy `by` in term/rw position** — `rw [.., show T by tac, ..]` now lets the
+   `by` block consume the rest of the list AND the file → "unexpected end of input"
+   at EOF. Fix = `show T from by tac` (or parenthesize the whole show-term).
+5. **Mathlib added root `Hypergraph V`** (arity 1) — files with a local
+   `structure Hypergraph V r` now clash ("already declared" + Function-expected on
+   `Hypergraph V r`); fix = wrap file in a `namespace` (Erdos1020 needs it but has
+   10+ other errors underneath — deferred).
+6. **`theorem x : Prop := P`** (theorem whose *type* is `Prop`) now rejected — the
+   type of a theorem must be a proposition, and `Prop : Type`. Change to `def`.
+7. **Iio ambiguity** — under `open Finset`, bare `Iio` resolves to `Finset.Iio`;
+   in an ℝ/Set context pin `Set.Iio (_ : ℝ)`.
+8. **interval_cases lost dvd-bounding** — can no longer bound `p` from `p ∣ n`
+   (or `p ∣ 1`); materialize `Nat.le_of_dvd`/`Nat.dvd_one` first. For concrete
+   membership goals `revert hp hdiv <;> decide` is robust (auto-reverts dependents).
+
+## Flagged deep (triaged, NOT flipped, one-line diagnosis)
+- Erdos749Problem: liminf/limsup boundedness args became autoParams whose default
+  tactic can't discharge for ℝ (no bot/top) → must supply IsBounded/IsCobounded
+  explicitly at 4 sites, PLUS forward-ref sidon_upper_bound_weak + rewrite/linarith
+  drift + a 2nd limsup_le_of_le site (12+ err).
+- Erdos807Problem: **latent logic bug** — ERW_conjecture := True, but
+  erw_conjecture_false/erdos_807_answer assert `¬∀n, True` (= False), proven by
+  `trivial` (impossible); needs a real ERW formalization, not mechanical. #38611.
+- Erdos823Problem: native_decide evaluates `σ₁ 206 = σ₁ 210` to FALSE (statement/
+  value bug) + omega/linarith drift.
+- Erdos1020Problem: root-Hypergraph clash fixed by namespace, but 10+ underneath
+  (universe metavars in conjecture def + many omega/linarith/rewrite drift).
+- Erdos1067/910: Cardinal `toPartENat`/`continuum` ambiguity + universe-level
+  metavars in aleph/chromaticNumber Prop defs.
+- PtolemysTheoremOQ01Incomplete01: import-after-docstring (moved to top) unmasks 9
+  diverse errors (Complex.abs_mul_exp_arg_mul_I, ⟨⟩ on ℤ, Real.sin_nonpos... removed).
+
+Ledger after increment 61: 2000 GREEN / 635 RESIDUAL.
+
 # DOCTOR INCREMENT 57 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-14)
 
 Container `dr57` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
