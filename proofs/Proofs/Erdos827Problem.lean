@@ -94,15 +94,7 @@ lemma nkProperty_nonempty (k : ℕ) (hk : 3 ≤ k) : {n : ℕ | NkProperty k n}.
 theorem minimalNk_valid (k : ℕ) (hk : 3 ≤ k) : NkProperty k (minimalNk k) :=
   Nat.sInf_mem (nkProperty_nonempty k hk)
 
-/-- minimalNk k is minimal: n_k - 1 fails the threshold property.
-
-    Proof: if minimalNk k - 1 were valid, sInf ≤ minimalNk k - 1,
-    contradicting sInf = minimalNk k. -/
-theorem minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) : ¬ NkProperty k (minimalNk k - 1) := by
-  intro h
-  have hle : minimalNk k ≤ minimalNk k - 1 :=
-    Nat.sInf_le (show (minimalNk k - 1) ∈ {n : ℕ | NkProperty k n} from h)
-  omega
+-- (minimalNk_sharp moved below nk_ge_k — its omega now needs the k ≤ minimalNk k fact.)
 
 /- ## Main Problem -/
 
@@ -182,6 +174,17 @@ theorem nk_ge_k (k : ℕ) (hk : 3 ≤ k) : k ≤ minimalNk k := by
   rw [parabolaSet_card] at this
   omega
 
+/-- minimalNk k is minimal: n_k - 1 fails the threshold property.
+
+    Proof: if minimalNk k - 1 were valid, sInf ≤ minimalNk k - 1,
+    contradicting sInf = minimalNk k (which is ≥ k ≥ 3 > 0). -/
+theorem minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) : ¬ NkProperty k (minimalNk k - 1) := by
+  intro h
+  have hle : minimalNk k ≤ minimalNk k - 1 :=
+    Nat.sInf_le (show (minimalNk k - 1) ∈ {n : ℕ | NkProperty k n} from h)
+  have hge := nk_ge_k k hk
+  omega
+
 /- ## Trivial Cases -/
 
 /-- AllDistinctCircumradii is vacuously true for 3-element sets:
@@ -225,6 +228,12 @@ theorem nk_three : minimalNk 3 = 3 := by
   obtain ⟨T, hTS, hTcard⟩ := Finset.exists_subset_card_eq hCard
   exact ⟨T, hTS, hTcard, allDistinctCircumradii_of_card_three hTcard⟩
 
+/-- AllDistinctCircumradii is hereditary: subsets inherit the property. -/
+theorem allDistinctCircumradii_subset {S T : Finset Point} (hTS : T ⊆ S)
+    (h : AllDistinctCircumradii S) : AllDistinctCircumradii T :=
+  fun p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂ =>
+    h p₁ (hTS hp₁) q₁ (hTS hq₁) r₁ (hTS hr₁) p₂ (hTS hp₂) q₂ (hTS hq₂) r₂ (hTS hr₂)
+
 /- ## Monotonicity -/
 
 /-- n_k is monotone non-decreasing.
@@ -238,7 +247,7 @@ theorem nk_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) (hk : 3 ≤ k₁) :
   intro S hGP hCard
   have hk2 : 3 ≤ k₂ := le_trans hk h
   obtain ⟨T, hTS, hTcard, hTgood⟩ := minimalNk_valid k₂ hk2 S hGP hCard
-  obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_subset_card_eq (by omega)
+  obtain ⟨T', hT'T, hT'card⟩ := Finset.exists_subset_card_eq (n := k₁) (s := T) (by omega)
   exact ⟨T', Finset.Subset.trans hT'T hTS, hT'card, allDistinctCircumradii_subset hT'T hTgood⟩
 
 /- ## Structural Properties -/
@@ -273,11 +282,7 @@ theorem generalPosition_subset {S T : Finset Point} (hTS : T ⊆ S)
     (hGP : GeneralPosition S) : GeneralPosition T :=
   fun p hp q hq r hr => hGP p (hTS hp) q (hTS hq) r (hTS hr)
 
-/-- AllDistinctCircumradii is hereditary: subsets inherit the property. -/
-theorem allDistinctCircumradii_subset {S T : Finset Point} (hTS : T ⊆ S)
-    (h : AllDistinctCircumradii S) : AllDistinctCircumradii T :=
-  fun p₁ hp₁ q₁ hq₁ r₁ hr₁ p₂ hp₂ q₂ hq₂ r₂ hr₂ =>
-    h p₁ (hTS hp₁) q₁ (hTS hq₁) r₁ (hTS hr₁) p₂ (hTS hp₂) q₂ (hTS hq₂) r₂ (hTS hr₂)
+-- (allDistinctCircumradii_subset moved above nk_monotone — forward refs now error.)
 
 /-- NkExists is proved for all k ≥ 3 using the axioms. -/
 theorem nkExists_of_axioms (k : ℕ) (hk : 3 ≤ k) : NkExists k :=

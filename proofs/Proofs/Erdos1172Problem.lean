@@ -206,10 +206,8 @@ theorem q3_first_target_large : omega1 < omega1 ^ (omegaOrd + 2) + 2 := by
         apply Ordinal.opow_le_opow_right omega1_pos
         calc (1 : Ordinal) ≤ omegaOrd := le_of_lt (by unfold omegaOrd; exact Ordinal.one_lt_omega0)
           _ ≤ omegaOrd + 2 := le_self_add
-    _ < omega1 ^ (omegaOrd + 2) + 2 := by
-        apply Ordinal.lt_add_of_limit_left
-        · exact Ordinal.isLimit_iff_omega0_dvd.mpr ⟨by omega, ⟨omega1 ^ (omegaOrd + 1), by ring⟩⟩
-        · exact Ordinal.pos_iff_ne_zero.mp (by norm_num)
+    _ < omega1 ^ (omegaOrd + 2) + 2 :=
+        lt_add_of_pos_right _ (by norm_num : (0 : Ordinal) < 2)
 
 /-- ω₂ + ω₁ < ω₃ and ω₂ + ω < ω₃. -/
 theorem q2_targets_lt_omega3 :
@@ -220,7 +218,7 @@ theorem q2_targets_lt_omega3 :
     rw [show omega3 = (Cardinal.aleph 3).ord from rfl]
     rw [Cardinal.lt_ord]
     calc (omega2 + omega1).card
-        ≤ omega2.card + omega1.card := Ordinal.card_add_le_card_add_card omega2 omega1
+        ≤ omega2.card + omega1.card := (Ordinal.card_add omega2 omega1).le
       _ = Cardinal.aleph 2 + Cardinal.aleph 1 := by
           simp [omega2, omega1, Cardinal.card_ord]
       _ = Cardinal.aleph 2 := by
@@ -231,9 +229,9 @@ theorem q2_targets_lt_omega3 :
     rw [show omega3 = (Cardinal.aleph 3).ord from rfl]
     rw [Cardinal.lt_ord]
     calc (omega2 + omegaOrd).card
-        ≤ omega2.card + omegaOrd.card := Ordinal.card_add_le_card_add_card omega2 omegaOrd
+        ≤ omega2.card + omegaOrd.card := (Ordinal.card_add omega2 omegaOrd).le
       _ = Cardinal.aleph 2 + ℵ₀ := by
-          simp [omega2, omegaOrd, Cardinal.card_ord, Cardinal.card_omega0]
+          simp [omega2, omegaOrd, Cardinal.card_ord, Ordinal.card_omega0]
       _ = Cardinal.aleph 2 := by
           rw [Cardinal.add_eq_max (Cardinal.aleph0_le_aleph 2)]
           exact max_eq_left (Cardinal.aleph0_le_aleph 2)

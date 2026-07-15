@@ -69,9 +69,11 @@ theorem swap_preserves_eq (x y z : ℕ) :
 theorem coprime_prime_div (x y p : ℕ) (hcop : x.gcd y = 1)
     (hp : p.Prime) (hdvd : p ∣ x) : ¬(p ∣ y) := by
   intro hdy
-  have := Nat.Prime.dvd_gcd hp hdvd hdy
+  have := Nat.dvd_gcd hdvd hdy
   rw [hcop] at this
-  exact Nat.Prime.one_lt hp |>.not_le (Nat.le_of_dvd (by omega) this)
+  have hle := Nat.le_of_dvd (by omega) this
+  have := hp.one_lt
+  omega
 
 /-- gcd(x, y) > 1 ↔ gcd(x, y) ≠ 1 for x, y > 1. -/
 theorem gcd_gt_one_iff (x y : ℕ) (hx : x > 1) (hy : y > 1) :
@@ -79,7 +81,10 @@ theorem gcd_gt_one_iff (x y : ℕ) (hx : x > 1) (hy : y > 1) :
   constructor
   · intro h; omega
   · intro h
-    have hpos : x.gcd y > 0 := Nat.pos_of_ne_zero (by intro h0; simp [h0] at h)
+    have hpos : x.gcd y > 0 := Nat.pos_of_ne_zero (by
+      intro h0
+      have := Nat.eq_zero_of_gcd_eq_zero_left h0
+      omega)
     omega
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -101,6 +106,6 @@ theorem solution_z_gt_one (a b c : ℕ) (ha : a > 1) (hb : b > 1)
   push_neg at hc
   interval_cases c
   · simp at heq; have := mul_pos (Nat.pos_of_ne_zero (by positivity)) (Nat.pos_of_ne_zero (by positivity)); omega
-  · simp at heq; have h1 := Nat.one_lt_pow ha; have h2 := Nat.one_lt_pow hb; nlinarith
+  · simp at heq; have h1 := Nat.one_lt_pow (by omega : a ≠ 0) ha; have h2 := Nat.one_lt_pow (by omega : b ≠ 0) hb; omega
 
 end Erdos674Aristotle

@@ -34,12 +34,8 @@ def IsTwoThreeTimePrimePlusOne (p : ℕ) : Prop :=
 axiom erdos_1065a :
   Set.Infinite {p : ℕ | IsTwoTimePrimePlusOne p}
 
-/-- **Erdős Problem #1065b**: infinitely many primes p = 2^k · 3^l · q + 1.
-    PROVED from erdos_1065a: every Form A prime is Form B (take l = 0).
-    (Previously axiom; axiom count reduced 2→1.) -/
-theorem erdos_1065b :
-    Set.Infinite {p : ℕ | IsTwoThreeTimePrimePlusOne p} :=
-  conjecture_a_implies_b erdos_1065a
+-- (erdos_1065b is stated after `conjecture_a_implies_b` below —
+-- v4.31 no longer allows forward references within a file.)
 
 -- ## Verified Form A Examples
 
@@ -200,7 +196,7 @@ theorem not_form_a_37 : ¬ IsTwoTimePrimePlusOne 37 := by
   have h36 : 2 ^ k * q = 36 := by omega
   have hk : k ≤ 4 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 36 := by omega
@@ -218,7 +214,7 @@ theorem not_form_a_61 : ¬ IsTwoTimePrimePlusOne 61 := by
   have h60 : 2 ^ k * q = 60 := by omega
   have hk : k ≤ 4 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 60 := by omega
@@ -236,7 +232,7 @@ theorem not_form_a_71 : ¬ IsTwoTimePrimePlusOne 71 := by
   have h70 : 2 ^ k * q = 70 := by omega
   have hk : k ≤ 5 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 70 := by omega
@@ -255,16 +251,24 @@ theorem not_form_b_71 : ¬ IsTwoThreeTimePrimePlusOne 71 := by
   have h70 : 2 ^ k * 3 ^ l * q = 70 := by omega
   have hk : k ≤ 5 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
-    nlinarith [hq.two_le, Nat.one_le_pow l 3 (by norm_num)]
+    have h2k := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
+    have hprod := Nat.mul_le_mul (Nat.mul_le_mul h2k
+      (Nat.one_le_pow l 3 (by norm_num))) hq.two_le
+    rw [h70] at hprod
+    norm_num at hprod
   have hl : l ≤ 3 := by
     by_contra hl; push_neg at hl
-    have := Nat.pow_le_pow_right (show 1 < 3 from by norm_num) hl
-    nlinarith [hq.two_le, Nat.one_le_pow k 2 (by norm_num)]
+    have h3l := Nat.pow_le_pow_right (show 0 < 3 from by norm_num) hl
+    have hprod := Nat.mul_le_mul (Nat.mul_le_mul
+      (Nat.one_le_pow k 2 (by norm_num)) h3l) hq.two_le
+    rw [h70] at hprod
+    norm_num at hprod
   interval_cases k <;> interval_cases l <;> simp_all <;>
     first
     | omega
-    | (have : q = _ := by omega; subst this; exact absurd hq (by decide))
+    | exact absurd hq (by decide)
+    | (have hq35 : q = 35 := by omega
+       subst hq35; exact absurd hq (by decide))
 
 /-- p = 19 is NOT Form A: 18 = 2 · 9 and 9 = 3² is not prime. -/
 theorem not_form_a_19 : ¬ IsTwoTimePrimePlusOne 19 := by
@@ -272,7 +276,7 @@ theorem not_form_a_19 : ¬ IsTwoTimePrimePlusOne 19 := by
   have h18 : 2 ^ k * q = 18 := by omega
   have hk : k ≤ 4 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 18 := by omega
@@ -289,7 +293,7 @@ theorem not_form_a_31 : ¬ IsTwoTimePrimePlusOne 31 := by
   have h30 : 2 ^ k * q = 30 := by omega
   have hk : k ≤ 4 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 30 := by omega
@@ -306,7 +310,7 @@ theorem not_form_a_43 : ¬ IsTwoTimePrimePlusOne 43 := by
   have h42 : 2 ^ k * q = 42 := by omega
   have hk : k ≤ 4 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 42 := by omega
@@ -323,7 +327,7 @@ theorem not_form_a_67 : ¬ IsTwoTimePrimePlusOne 67 := by
   have h66 : 2 ^ k * q = 66 := by omega
   have hk : k ≤ 6 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 66 := by omega
@@ -342,7 +346,7 @@ theorem not_form_a_73 : ¬ IsTwoTimePrimePlusOne 73 := by
   have h72 : 2 ^ k * q = 72 := by omega
   have hk : k ≤ 6 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 72 := by omega
@@ -363,7 +367,7 @@ theorem not_form_a_79 : ¬ IsTwoTimePrimePlusOne 79 := by
   have h78 : 2 ^ k * q = 78 := by omega
   have hk : k ≤ 6 := by
     by_contra hk; push_neg at hk
-    have := Nat.pow_le_pow_right (show 1 < 2 from by norm_num) hk
+    have := Nat.pow_le_pow_right (show 0 < 2 from by norm_num) hk
     nlinarith [hq.two_le]
   interval_cases k
   · have : q = 78 := by omega
@@ -455,6 +459,13 @@ theorem conjecture_a_implies_b :
   intro p hp
   exact form_a_implies_b p hp
 
+/-- **Erdős Problem #1065b**: infinitely many primes p = 2^k · 3^l · q + 1.
+    PROVED from erdos_1065a: every Form A prime is Form B (take l = 0).
+    (Previously axiom; axiom count reduced 2→1.) -/
+theorem erdos_1065b :
+    Set.Infinite {p : ℕ | IsTwoThreeTimePrimePlusOne p} :=
+  conjecture_a_implies_b erdos_1065a
+
 /-- p = 2 is NOT Form A: 2 - 1 = 1 = 2^0 · 1, but 1 is not prime. -/
 theorem not_form_a_2 : ¬ IsTwoTimePrimePlusOne 2 := by
   intro ⟨_, q, k, hq, heq⟩
@@ -467,10 +478,10 @@ theorem not_form_a_2 : ¬ IsTwoTimePrimePlusOne 2 := by
 theorem not_form_b_2 : ¬ IsTwoThreeTimePrimePlusOne 2 := by
   intro ⟨_, q, k, l, hq, heq⟩
   have h1 : 2 ^ k * 3 ^ l * q = 1 := by omega
-  have := hq.two_le
-  have := Nat.one_le_pow k 2 (by norm_num)
-  have := Nat.one_le_pow l 3 (by norm_num)
-  nlinarith
+  have hprod := Nat.mul_le_mul (Nat.mul_le_mul
+    (Nat.one_le_pow k 2 (by norm_num)) (Nat.one_le_pow l 3 (by norm_num))) hq.two_le
+  rw [h1] at hprod
+  norm_num at hprod
 
 /-- **Complete Form B census ≤ 100**: all 23 Form B primes.
     These are all primes ≤ 100 except p = 2 and p = 71.

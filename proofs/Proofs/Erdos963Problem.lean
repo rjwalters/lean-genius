@@ -84,33 +84,7 @@ private lemma gt_add_pow3_of_lt_log (n j : ℕ) (hn : n ≥ 1) (hj : j < Nat.log
   have h2 : 3 ^ Nat.log 3 n ≤ n := Nat.pow_log_le_self 3 hne
   exact lt_of_lt_of_le (add_pow3_lt_pow3_succ j) (le_trans h1 h2)
 
-/-- **PROVED** (was axiom): **Erdős's greedy bound**: f(n) ≥ ⌊log₃ n⌋.
-    The greedy algorithm produces a dissociated subset of this size:
-    at each step, a new element can be added unless all remaining elements
-    are sums or differences of existing subset sums, which limits
-    exclusions to at most 3^k − 1 values after choosing k elements. -/
-theorem greedy_lower_bound :
-    ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n := by
-  intro n hn
-  -- We show every n-element set has a dissociated subset of size ≥ log₃ n
-  -- This means log₃ n is in the set whose sSup is maxDissociatedSize n
-  unfold maxDissociatedSize
-  apply le_csSup
-  · -- BddAbove: bounded by n
-    refine ⟨n, fun k (hk : ∀ A : Finset ℝ, A.card = n →
-        ∃ B, IsDissociatedSubset A B ∧ B.card ≥ k) => ?_⟩
-    have ⟨A, hA⟩ : ∃ A : Finset ℝ, A.card = n :=
-      ⟨(Finset.range n).image ((↑) : ℕ → ℝ), by
-        rw [Finset.card_image_of_injOn]
-        · exact Finset.card_range n
-        · intro a _ b _ hab; exact_mod_cast hab⟩
-    obtain ⟨B, ⟨hBsub, _⟩, hBcard⟩ := hk A hA
-    exact le_trans hBcard (le_trans (Finset.card_le_card hBsub) (le_of_eq hA))
-  · -- Nat.log 3 n ∈ the set: for any A with |A| = n, greedy_dissociated gives a
-    -- dissociated subset of size = log₃ n ≥ log₃ n
-    intro A hA
-    exact greedy_dissociated A (Nat.log 3 n)
-      (fun j hj => by rw [hA]; exact gt_add_pow3_of_lt_log n j hn hj)
+-- (greedy_lower_bound moved below greedy_dissociated — forward refs now error.)
 
 /- ## Upper Bound (proved below in `trivial_upper_bound`, after structural lemmas) -/
 
@@ -243,8 +217,8 @@ theorem dissociated_insert {A B : Finset ℝ} {a : ℝ}
   by_cases haS : a ∈ S <;> by_cases haT : a ∈ T
   · -- Both contain a: erase a from both, reduce to original property
     have heq : (S.erase a).sum id = (T.erase a).sum id := by
-      have := Finset.sum_erase_add S id haS
-      have := Finset.sum_erase_add T id haT
+      have h1 : (S.erase a).sum id + a = S.sum id := Finset.sum_erase_add S id haS
+      have h2 : (T.erase a).sum id + a = T.sum id := Finset.sum_erase_add T id haT
       linarith
     have := hB.2 _ _ (erase_sub S hS) (erase_sub T hT) heq
     calc S = insert a (S.erase a) := (Finset.insert_erase haS).symm
@@ -253,12 +227,14 @@ theorem dissociated_insert {A B : Finset ℝ} {a : ℝ}
   · -- a ∈ S, a ∉ T: contradicts hforbid
     exfalso
     exact absurd (show a = T.sum id - (S.erase a).sum id by
-      have := Finset.sum_erase_add S id haS; linarith)
+      have h1 : (S.erase a).sum id + a = S.sum id := Finset.sum_erase_add S id haS
+      linarith)
       (hforbid _ _ (erase_sub S hS) (not_mem_sub T hT haT))
   · -- a ∉ S, a ∈ T: symmetric contradiction
     exfalso
     exact absurd (show a = S.sum id - (T.erase a).sum id by
-      have := Finset.sum_erase_add T id haT; linarith)
+      have h1 : (T.erase a).sum id + a = T.sum id := Finset.sum_erase_add T id haT
+      linarith)
       (hforbid _ _ (erase_sub T hT) (not_mem_sub S hS haS))
   · -- Neither contains a: both subsets of B
     exact hB.2 S T (not_mem_sub S hS haS) (not_mem_sub T hT haT) hsum
@@ -303,10 +279,12 @@ theorem dissociated_extend {A B : Finset ℝ}
     it equals (T\S).sum - (S\T).sum since the intersection cancels. -/
 private lemma sum_factor_disjoint {S T : Finset ℝ} :
     T.sum id - S.sum id = (T \ S).sum id - (S \ T).sum id := by
-  have hS := (Finset.sum_sdiff_add_sum_inter S T id).symm
-  have hT := (Finset.sum_sdiff_add_sum_inter T S id).symm
-  have : (S ∩ T).sum id = (T ∩ S).sum id := by
-    congr 1; exact Finset.inter_comm S T
+  have hS : (S ∩ T).sum id + (S \ T).sum id = S.sum id :=
+    Finset.sum_inter_add_sum_sdiff S T id
+  have hT : (T ∩ S).sum id + (T \ S).sum id = T.sum id :=
+    Finset.sum_inter_add_sum_sdiff T S id
+  have hcomm : (S ∩ T).sum id = (T ∩ S).sum id := by
+    rw [Finset.inter_comm]
   linarith
 
 /-- The number of ordered disjoint pairs (S, T) with S, T ⊆ B is 3^|B|.
@@ -404,7 +382,7 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
       obtain ⟨⟨S₂, T₂⟩, _, heq₂⟩ := Finset.mem_image.mp h₂
       simp only [f₁, id, f₂, Prod.mk.injEq] at heq₁ heq₂
       have := (not_mem_of_P hST₁).1
-      rw [← heq₁.1, ← heq₂.1] at this
+      rw [heq₁.1, ← heq₂.1] at this
       exact this (Finset.mem_insert_self a S₂)
     have hdisj₁₃ : Disjoint I₁ I₃ := by
       rw [Finset.disjoint_left]; intro ⟨S, T⟩ h₁ h₃
@@ -412,18 +390,17 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
       obtain ⟨⟨S₃, T₃⟩, _, heq₃⟩ := Finset.mem_image.mp h₃
       simp only [f₁, id, f₃, Prod.mk.injEq] at heq₁ heq₃
       have := (not_mem_of_P hST₁).2
-      rw [← heq₁.2, ← heq₃.2] at this
+      rw [heq₁.2, ← heq₃.2] at this
       exact this (Finset.mem_insert_self a T₃)
     have hdisj₂₃ : Disjoint I₂ I₃ := by
       rw [Finset.disjoint_left]; intro ⟨S, T⟩ h₂ h₃
       obtain ⟨⟨S₂, T₂⟩, hST₂, heq₂⟩ := Finset.mem_image.mp h₂
       obtain ⟨⟨S₃, T₃⟩, hST₃, heq₃⟩ := Finset.mem_image.mp h₃
       simp only [f₂, f₃, Prod.mk.injEq] at heq₂ heq₃
-      -- a ∈ S (from f₂), but Disjoint S T, and a ∈ T (from f₃) — contradiction
-      rw [mem_P] at h₂
-      have haS : a ∈ S := heq₂.1 ▸ Finset.mem_insert_self a S₂
-      have haT : a ∈ T := heq₃.2 ▸ Finset.mem_insert_self a T₃
-      exact Finset.disjoint_left.mp h₂.2.2 haS haT
+      -- a ∉ T₂ = T (from P s), but T = insert a T₃ (from f₃) — contradiction
+      have hnotT : a ∉ T₂ := (not_mem_of_P hST₂).2
+      rw [heq₂.2, ← heq₃.2] at hnotT
+      exact hnotT (Finset.mem_insert_self a T₃)
     -- P (insert a s) ⊆ I₁ ∪ I₂ ∪ I₃ (covering)
     have hcover : P (insert a s) ⊆ I₁ ∪ I₂ ∪ I₃ := by
       intro ⟨S, T⟩ hST
@@ -437,8 +414,8 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
         have hT' : T ⊆ s := fun x hx =>
           (Finset.mem_insert.mp (hST.2.1 hx)).elim (fun h => absurd (h ▸ hx) haT) id
         have hdisj' : Disjoint (S.erase a) T := Finset.disjoint_of_subset_left
-          Finset.erase_subset hST.2.2
-        have hpre : (S.erase a, T) ∈ P s := mem_P.mpr ⟨hS', hT', hdisj'⟩
+          (Finset.erase_subset _ _) hST.2.2
+        have hpre : (S.erase a, T) ∈ P s := (mem_P _ _).mpr ⟨hS', hT', hdisj'⟩
         apply Finset.mem_union_left
         apply Finset.mem_union_right
         rw [Finset.mem_image]
@@ -451,8 +428,8 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
             intro x hx; have ⟨hne, hxT⟩ := Finset.mem_erase.mp hx
             exact (Finset.mem_insert.mp (hST.2.1 hxT)).elim (fun h => absurd h hne) id
           have hdisj' : Disjoint S (T.erase a) := Finset.disjoint_of_subset_right
-            Finset.erase_subset hST.2.2
-          have hpre : (S, T.erase a) ∈ P s := mem_P.mpr ⟨hS', hT', hdisj'⟩
+            (Finset.erase_subset _ _) hST.2.2
+          have hpre : (S, T.erase a) ∈ P s := (mem_P _ _).mpr ⟨hS', hT', hdisj'⟩
           apply Finset.mem_union_right
           rw [Finset.mem_image]
           exact ⟨(S, T.erase a), hpre, by simp [f₃, Finset.insert_erase haT]⟩
@@ -461,7 +438,7 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
             (Finset.mem_insert.mp (hST.1 hx)).elim (fun h => absurd (h ▸ hx) haS) id
           have hT' : T ⊆ s := fun x hx =>
             (Finset.mem_insert.mp (hST.2.1 hx)).elim (fun h => absurd (h ▸ hx) haT) id
-          have hpre : (S, T) ∈ P s := mem_P.mpr ⟨hS', hT', hST.2.2⟩
+          have hpre : (S, T) ∈ P s := (mem_P _ _).mpr ⟨hS', hT', hST.2.2⟩
           apply Finset.mem_union_left; apply Finset.mem_union_left
           exact Finset.mem_image.mpr ⟨(S, T), hpre, rfl⟩
     -- Now compute the cardinality
@@ -474,8 +451,11 @@ private lemma disjoint_pairs_card (B : Finset ℝ) :
         rcases Finset.mem_union.mp hx with h₁ | h₂
         · exact Finset.disjoint_left.mp hdisj₁₃ h₁ hx₃
         · exact Finset.disjoint_left.mp hdisj₂₃ h₂ hx₃
+    show (P (insert a s)).card = 3 * 3 ^ s.card
     rw [heq, Finset.card_union_of_disjoint hdisj_outer,
         Finset.card_union_of_disjoint hdisj₁₂, hcard₁, hcard₂, hcard₃]
+    have hP : (P s).card = 3 ^ s.card := ih
+    rw [hP]
     ring
 
 theorem diffSumFinset_card_le (B : Finset ℝ) :
@@ -500,8 +480,8 @@ theorem diffSumFinset_card_le (B : Finset ℝ) :
     Finset.mem_filter.mpr ⟨Finset.mem_product.mpr
       ⟨Finset.mem_powerset.mpr (Finset.sdiff_subset.trans hS),
        Finset.mem_powerset.mpr (Finset.sdiff_subset.trans hT)⟩,
-      Finset.disjoint_sdiff_sdiff⟩,
-    sum_factor_disjoint⟩
+      disjoint_sdiff_sdiff⟩,
+    sum_factor_disjoint.symm⟩
 
 /- ## Greedy Construction -/
 
@@ -517,9 +497,11 @@ theorem greedy_dissociated (A : Finset ℝ) (k : ℕ)
     -- By IH, get a dissociated B of size k
     obtain ⟨B, hB, hBcard⟩ := ih (fun j hj => hk j (Nat.lt_succ_of_lt hj))
     -- We need (diffSumFinset B).card < (A \ B).card to extend
-    have hAB : (A \ B).card = A.card - B.card := Finset.card_sdiff hB.1
+    have hAB : (A \ B).card = A.card - B.card := by
+      rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hB.1]
     have h3k : (diffSumFinset B).card < (A \ B).card := by
       have hbound := diffSumFinset_card_le B
+      rw [hBcard] at hbound
       rw [hAB, hBcard]
       have := hk k (Nat.lt_succ_iff.mpr le_rfl)
       omega
@@ -527,6 +509,36 @@ theorem greedy_dissociated (A : Finset ℝ) (k : ℕ)
     obtain ⟨a, haAB, hins⟩ := dissociated_extend hB h3k
     exact ⟨insert a B, hins,
       by rw [Finset.card_insert_of_notMem (Finset.mem_sdiff.mp haAB).2, hBcard]⟩
+
+/-- **PROVED** (was axiom): **Erdős's greedy bound**: f(n) ≥ ⌊log₃ n⌋.
+    The greedy algorithm produces a dissociated subset of this size:
+    at each step, a new element can be added unless all remaining elements
+    are sums or differences of existing subset sums, which limits
+    exclusions to at most 3^k − 1 values after choosing k elements. -/
+theorem greedy_lower_bound :
+    ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n := by
+  intro n hn
+  -- We show every n-element set has a dissociated subset of size ≥ log₃ n
+  -- This means log₃ n is in the set whose sSup is maxDissociatedSize n
+  unfold maxDissociatedSize
+  apply le_csSup
+  · -- BddAbove: bounded by n
+    refine ⟨n, fun k (hk : ∀ A : Finset ℝ, A.card = n →
+        ∃ B, IsDissociatedSubset A B ∧ B.card ≥ k) => ?_⟩
+    have ⟨A, hA⟩ : ∃ A : Finset ℝ, A.card = n :=
+      ⟨(Finset.range n).image ((↑) : ℕ → ℝ), by
+        rw [Finset.card_image_of_injOn]
+        · exact Finset.card_range n
+        · intro a _ b _ hab; exact_mod_cast hab⟩
+    obtain ⟨B, ⟨hBsub, _⟩, hBcard⟩ := hk A hA
+    exact le_trans hBcard (le_trans (Finset.card_le_card hBsub) (le_of_eq hA))
+  · -- Nat.log 3 n ∈ the set: for any A with |A| = n, greedy_dissociated gives a
+    -- dissociated subset of size = log₃ n ≥ log₃ n
+    intro A hA
+    obtain ⟨B, hB, hBcard⟩ := greedy_dissociated A (Nat.log 3 n)
+      (fun j hj => by rw [hA]; exact gt_add_pow3_of_lt_log n j hn hj)
+    exact ⟨B, hB, ge_of_eq hBcard⟩
+
 
 /-- Auxiliary: ∑_{i<k} 2^i = 2^k - 1 (geometric series for ℕ). -/
 private lemma sum_range_pow_two (k : ℕ) :
@@ -579,7 +591,7 @@ private lemma binary_uniqueness_nat :
         have := Finset.sum_erase_add T (fun i => (2 : ℕ) ^ i) hnT
         omega
       have := ih (S.erase n) (T.erase n) hS' hT' hsum'
-      exact Finset.erase_injOn_of_mem hnS hnT this
+      rw [← Finset.insert_erase hnS, ← Finset.insert_erase hnT, this]
     · -- n ∈ S, n ∉ T: contradiction (S sum ≥ 2^n, T sum < 2^n)
       exfalso
       have hT' : T ⊆ Finset.range n := by
@@ -661,7 +673,7 @@ theorem maxDissociatedSize_mono :
         ∃ B, IsDissociatedSubset A B ∧ B.card ≥ k)
     intro A (hA : A.card = n)
     -- A has n ≥ m elements; extract an m-element subset A'
-    obtain ⟨A', hA'sub, hA'card⟩ := Finset.exists_smaller_set A m (hA ▸ hmn)
+    obtain ⟨A', hA'sub, hA'card⟩ := Finset.exists_subset_card_eq (show m ≤ A.card from hA ▸ hmn)
     -- A' has a dissociated subset B of size ≥ k
     obtain ⟨B, ⟨hBsub, hBdiss⟩, hBcard⟩ := hk A' hA'card
     -- B ⊆ A' ⊆ A, and dissociatedness depends only on B

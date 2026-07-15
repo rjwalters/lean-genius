@@ -731,7 +731,7 @@ Erdos1049Problem	GREEN
 Erdos104Problem	RESIDUAL	unknown-const:zero_rpow
 Erdos1050Aristotle	GREEN	
 Erdos1050Problem	RESIDUAL	type-mismatch
-Erdos1050ProblemAristotle	RESIDUAL	unknown-const:summable_of_summable_norm
+Erdos1050ProblemAristotle	GREEN	
 Erdos1051Problem	RESIDUAL	type-mismatch
 Erdos1052Problem	RESIDUAL	rewrite-drift
 Erdos1053Problem	GREEN	
@@ -755,7 +755,7 @@ Erdos1061Problem	RESIDUAL	proof-drift
 Erdos1062OQ04	GREEN	
 Erdos1062Problem	GREEN	
 Erdos1065CunninghamChains	RESIDUAL	type-mismatch
-Erdos1065Problem	RESIDUAL	unknown-const:conjecture_a_implies_b
+Erdos1065Problem	GREEN	
 Erdos1066OQ04	GREEN	
 Erdos1066Problem	PRE-EXISTING	never-compiled:n
 Erdos1067Problem	RESIDUAL	partenat-removal
@@ -844,7 +844,7 @@ Erdos1131OQ01	RESIDUAL	rewrite-drift
 Erdos1131Problem	RESIDUAL	rewrite-drift
 Erdos1132Aristotle	GREEN	
 Erdos1132Problem	GREEN	
-Erdos1134Problem	RESIDUAL	unknown-const:crampin_hilton_tau_exists
+Erdos1134Problem	GREEN	
 Erdos1135Problem	GREEN	
 Erdos1136Problem	RESIDUAL	proof-drift
 Erdos1138Problem	GREEN	
@@ -864,7 +864,7 @@ Erdos1155OQ01OQ07	GREEN
 Erdos1155OQ02	RESIDUAL	type-mismatch
 Erdos1155Problem	GREEN	
 Erdos1156Problem	GREEN	
-Erdos1157Problem	RESIDUAL	unknown-const:delcourt_postle_theorem
+Erdos1157Problem	GREEN	
 Erdos1158Problem	GREEN	
 Erdos1159Problem	RESIDUAL	signature-drift
 Erdos115OQ01Problem	GREEN	
@@ -874,12 +874,12 @@ Erdos1162Problem	RESIDUAL	unknown-const:Nat.card_pos_of_nonempty
 Erdos1165Problem	GREEN	
 Erdos1166Problem	RESIDUAL	unknown-const:Finset.filter_eq_empty
 Erdos1167Problem	RESIDUAL	parse-error
-Erdos1168Problem	RESIDUAL	unknown-const:Cardinal.cof_aleph
+Erdos1168Problem	GREEN	
 Erdos1169Problem	RESIDUAL	proof-drift
 Erdos116Problem	GREEN	
 Erdos1170Problem	GREEN	
 Erdos1171Problem	RESIDUAL	unknown-const:Ordinal.mul_lt_mul_iff_left
-Erdos1172Problem	RESIDUAL	unknown-const:Ordinal.lt_add_of_limit_left
+Erdos1172Problem	GREEN	
 Erdos1173Problem	RESIDUAL	instance-synth
 Erdos1174Problem	GREEN	
 Erdos1175Problem	GREEN	
@@ -1453,7 +1453,7 @@ Erdos599Problem	GREEN
 Erdos59Problem	RESIDUAL	unknown-const:Set.mem_union.mp
 Erdos5Problem	GREEN	
 Erdos600Problem	GREEN	
-Erdos601Aristotle	RESIDUAL	unknown-const:Ordinal.zero_or_succ_or_limit
+Erdos601Aristotle	GREEN	
 Erdos601Problem	RESIDUAL	instance-synth
 Erdos603Problem	GREEN	
 Erdos604Problem	GREEN	parse-error
@@ -1490,8 +1490,8 @@ Erdos621Problem	GREEN
 Erdos622OQ04	RESIDUAL	instance-synth
 Erdos622Problem	RESIDUAL	instance-synth
 Erdos623Aristotle	GREEN	
-Erdos623Problem	RESIDUAL	unknown-const:Cardinal.isLimit_aleph
-Erdos623ProblemAristotle	RESIDUAL	unknown-const:Cardinal.isLimit_aleph
+Erdos623Problem	GREEN	
+Erdos623ProblemAristotle	GREEN	
 Erdos625Aristotle	RESIDUAL	instance-synth
 Erdos625Problem	RESIDUAL	instance-synth
 Erdos625ProblemAristotle	RESIDUAL	instance-synth
@@ -1504,7 +1504,7 @@ Erdos627ProblemAristotle	GREEN
 Erdos628Aristotle	GREEN	
 Erdos628Problem	GREEN	
 Erdos628ProblemAristotle	GREEN	
-Erdos629Aristotle	RESIDUAL	unknown-const:Nat.sInf
+Erdos629Aristotle	GREEN	
 Erdos629Problem	RESIDUAL	type-mismatch
 Erdos630Aristotle	GREEN	
 Erdos630Problem	GREEN	
@@ -1565,7 +1565,7 @@ Erdos671ProblemAristotle	GREEN
 Erdos672Problem	GREEN	
 Erdos673Aristotle	GREEN	type-mismatch
 Erdos673Problem	GREEN	
-Erdos674Aristotle	RESIDUAL	unknown-const:Nat.Prime.dvd_gcd
+Erdos674Aristotle	GREEN	
 Erdos674Problem	GREEN	
 Erdos674ProblemAristotle	GREEN	
 Erdos675Problem	GREEN	
@@ -1577,7 +1577,7 @@ Erdos679Aristotle	RESIDUAL	type-mismatch
 Erdos679Problem	GREEN	
 Erdos679ProblemAristotle	RESIDUAL	proof-drift
 Erdos67Problem	GREEN	
-Erdos680Problem	RESIDUAL	unknown-const:Real.tendsto_pow_mul_exp_neg_atTop_nhds
+Erdos680Problem	GREEN	
 Erdos681Problem	GREEN	
 Erdos682Problem	RESIDUAL	type-mismatch
 Erdos683Problem	GREEN	
@@ -1740,7 +1740,7 @@ Erdos824Problem	GREEN
 Erdos824ProblemProvable	RESIDUAL	type-mismatch
 Erdos825Problem	GREEN	
 Erdos826Problem	GREEN	
-Erdos827Problem	RESIDUAL	unknown-const:allDistinctCircumradii_subset
+Erdos827Problem	GREEN	
 Erdos829Problem	GREEN	unknown-const:hardy_ramanujan_1729
 Erdos82Problem	GREEN	
 Erdos830Problem	GREEN	
@@ -1797,7 +1797,7 @@ Erdos872Problem	GREEN
 Erdos873Problem	GREEN	
 Erdos873ProblemProvable	GREEN	proof-drift
 Erdos874Problem	RESIDUAL	proof-drift
-Erdos875Problem	RESIDUAL	unknown-const:Ne.lt_or_lt
+Erdos875Problem	GREEN	
 Erdos876Problem	GREEN	
 Erdos876ProblemAristotle	GREEN	
 Erdos877ProblemAristotle	GREEN	
@@ -1871,7 +1871,7 @@ Erdos933ProblemAristotle	GREEN
 Erdos934Problem	GREEN	
 Erdos934ProblemAristotle	RESIDUAL	proof-drift
 Erdos935Problem	GREEN	
-Erdos936Problem	RESIDUAL	unknown-const:Nat.pow_dvd_pow_of_dvd
+Erdos936Problem	GREEN	
 Erdos937Problem	RESIDUAL	proof-drift
 Erdos939Problem	GREEN	
 Erdos940Problem	RESIDUAL	unknown-const:Finset.card_Ioc
@@ -1898,14 +1898,14 @@ Erdos95Problem	RESIDUAL	type-mismatch
 Erdos960Problem	GREEN	unknown-const:p
 Erdos961Problem	RESIDUAL	unknown-const:Nat.primFactors
 Erdos962Problem	GREEN	
-Erdos963Problem	RESIDUAL	unknown-const:greedy_dissociated
+Erdos963Problem	GREEN	
 Erdos964Aristotle	GREEN	unknown-const:Nat.divisors_prime
 Erdos964Problem	RESIDUAL	rewrite-drift
 Erdos965Problem	GREEN	
 Erdos966Problem	GREEN	
 Erdos967Problem	GREEN	proof-drift
 Erdos968Problem	RESIDUAL	noncomputable
-Erdos969Problem	RESIDUAL	unknown-const:Nat.Prime.squarefree
+Erdos969Problem	GREEN	
 Erdos96Problem	GREEN	
 Erdos970Problem	GREEN	
 Erdos971Problem	GREEN	
@@ -2598,7 +2598,7 @@ TestConvexHull	GREEN
 TestCovByApi	GREEN	
 TestDerangConvApi	GREEN	
 TestErdos43Api	GREEN	
-TestHLTension	RESIDUAL	unknown-const:Finset.card_sdiff_eq_card_sub_card_inter
+TestHLTension	GREEN	
 TestHolderApi	GREEN	
 TestSphereLocEuc	GREEN	
 TestWolstenholme	RESIDUAL	unknown-const:ZMod.prod_univ_prime

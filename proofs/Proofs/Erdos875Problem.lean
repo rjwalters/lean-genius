@@ -115,7 +115,7 @@ private lemma pow2_subset_sum_inj : ∀ (N : ℕ) (S T : Finset ℕ),
           (2 : ℕ) ^ i = 2 ^ j → i = j := by
         intro i _ j _ h
         by_contra hne
-        rcases Ne.lt_or_lt hne with hlt | hlt
+        rcases lt_or_gt_of_ne hne with hlt | hlt
         · exact absurd h (Nat.pow_lt_pow_right (by omega) hlt).ne
         · exact absurd h (Nat.pow_lt_pow_right (by omega) hlt).ne'
       rw [Finset.sum_image h_inj]
@@ -125,8 +125,10 @@ private lemma pow2_subset_sum_inj : ∀ (N : ℕ) (S T : Finset ℕ),
       have hS' := to_smaller_erase hS hnS
       have hT' := to_smaller_erase hT hnT
       have heq' : (S.erase (2 ^ n)).sum id = (T.erase (2 ^ n)).sum id := by
-        have := Finset.add_sum_erase S id hnS
-        have := Finset.add_sum_erase T id hnT
+        have h1 : 2 ^ n + (S.erase (2 ^ n)).sum id = S.sum id :=
+          Finset.add_sum_erase S id hnS
+        have h2 : 2 ^ n + (T.erase (2 ^ n)).sum id = T.sum id :=
+          Finset.add_sum_erase T id hnT
         omega
       rw [← Finset.insert_erase hnS, ← Finset.insert_erase hnT, ih _ _ hS' hT' heq']
     · -- S has 2^n, T doesn't: T.sum ≤ 2^n - 1 < 2^n ≤ S.sum, contradiction
@@ -138,7 +140,8 @@ private lemma pow2_subset_sum_inj : ∀ (N : ℕ) (S T : Finset ℕ),
                 (fun _ _ _ => Nat.zero_le _)
           _ = 2 ^ n - 1 := sum_bound
       have h2 : 2 ^ n ≤ S.sum id :=
-        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hnS
+        Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hnS
+      have hp : 0 < 2 ^ n := Nat.two_pow_pos n
       omega
     · -- T has 2^n, S doesn't: symmetric
       exfalso
@@ -149,7 +152,8 @@ private lemma pow2_subset_sum_inj : ∀ (N : ℕ) (S T : Finset ℕ),
                 (fun _ _ _ => Nat.zero_le _)
           _ = 2 ^ n - 1 := sum_bound
       have h2 : 2 ^ n ≤ T.sum id :=
-        Finset.single_le_sum (fun _ _ => Nat.zero_le _) hnT
+        Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hnT
+      have hp : 0 < 2 ^ n := Nat.two_pow_pos n
       omega
     · -- Neither has 2^n: both ⊆ (range n).image, apply IH
       exact ih S T (to_smaller hS hnS) (to_smaller hT hnT) heq

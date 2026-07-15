@@ -135,7 +135,7 @@ theorem abs_term_bound (n : ℕ) (hn : n ≥ 3) :
 /-- The geometric series ∑ 1/2^n converges. -/
 theorem inv_two_pow_summable :
     Summable (fun n : ℕ => (1 : ℝ) / 2 ^ n) := by
-  apply Summable.congr (summable_geometric_of_lt_one (by norm_num) (by norm_num : 1/2 < 1))
+  apply Summable.congr (summable_geometric_of_lt_one (r := 1/2) (by norm_num) (by norm_num))
   intro n; simp [one_div, pow_succ]
 
 /-
@@ -162,7 +162,7 @@ Used when proving summability by comparison with geometric series.
 /-- For q ≥ 2, 1/q^n → 0. -/
 theorem inv_q_pow_tendsto_zero (q : ℕ) (hq : q ≥ 2) :
     Tendsto (fun n : ℕ => (1 : ℝ) / (q : ℝ) ^ n) atTop (nhds 0) := by
-  have hq_gt : (1 : ℝ) < q := by exact_mod_cast Nat.lt_of_lt_pred hq
+  have hq_gt : (1 : ℝ) < q := by exact_mod_cast (show 1 < q by omega)
   have : Tendsto (fun n : ℕ => ((1 : ℝ) / q) ^ n) atTop (nhds 0) :=
     tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (by rw [div_lt_one (by positivity)]; linarith)
   simpa [div_pow]
@@ -170,9 +170,9 @@ theorem inv_q_pow_tendsto_zero (q : ℕ) (hq : q ≥ 2) :
 /-- For q ≥ 2, ∑ 1/q^n is summable. -/
 theorem inv_q_pow_summable (q : ℕ) (hq : q ≥ 2) :
     Summable (fun n : ℕ => (1 : ℝ) / (q : ℝ) ^ n) := by
-  apply summable_of_summable_norm
+  apply Summable.of_norm
   simp only [norm_div, norm_pow, Real.norm_ofNat]
-  apply Summable.congr (summable_geometric_of_lt_one (by positivity)
+  apply Summable.congr (summable_geometric_of_lt_one (r := 1/(q:ℝ)) (by positivity)
     (by rw [div_lt_one (by exact_mod_cast (show 0 < q by omega))];
         exact_mod_cast (show 1 < q by omega)))
   intro n; simp [div_pow]
@@ -187,7 +187,7 @@ theorem add_neg_self (r : ℝ) : r + (-r) = 0 := add_neg_cancel r
 /-- q^n + r ≠ 0 when r > 0 and q ≥ 2. -/
 theorem q_pow_add_pos_ne_zero (q : ℕ) (n : ℕ) (hq : q ≥ 2) (r : ℝ) (hr : r > 0) :
     (q : ℝ) ^ n + r ≠ 0 := by
-  have hq_pos : (0 : ℝ) < q := by exact_mod_cast Nat.lt_of_lt_pred hq
+  have hq_pos : (0 : ℝ) < q := by exact_mod_cast (show 0 < q by omega)
   have := pow_pos hq_pos n
   linarith
 
