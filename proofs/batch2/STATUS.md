@@ -100,6 +100,82 @@ Ledger after increment 64: +6 GREEN (partition A).
 
 ---
 
+# DOCTOR INCREMENT 63 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
+
+Container `dr63` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc63` off origin/feature/issue-37508 (base 2004 GREEN /
+631 RESIDUAL). Probed cheap classes (parse/unknown-const/dot/sig) + rewrite/
+dot/elab/unclassified: all genuinely deep (min 6 err, confirms inc-61). Worked
+warm leads + lowest-error singletons + a sibling pair. **+6 GREEN.** PR #38666.
+All flips in-container `lake build Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- Erdos823Problem (unknown-const): **STATEMENT REPAIR #38611** — `sigma_206_210`
+  asserted σ(206)=σ(210), FALSE (σ 206=312, σ 210=576; native_decide now actually
+  evaluates it). Repaired to σ(33)=σ(35)=48 (confirmed by companion Erdos823SigmaValues).
+  sigma_prime via Finset.sum_pair; sigma_prime_power succ via Nat.mul_pred+pow_succ+omega
+  (nlinarith lost multi-factor); ArithmeticFunction.totient → Nat.totient.
+- Erdos850Problem (noncomputable): forward-ref (KShiftProblem def moved above uses);
+  **STATEMENT REPAIR #38611** — kshift_monotone `k→(k-1)` FALSE (fewer shift-constraints
+  is easier) → intended-true `k→(k+1)`; `open scoped Classical` shadowed computable
+  DecidableEq (native_decide "depends on Classical.propDecidable") → removed open +
+  made SamePrimeFactors an `abbrev`.
+- Erdos1006OQ01OQ02 (signature-drift): locally-namespaced `def GraphOrientation.foo`
+  (inside `namespace Erdos1006OQ01OQ02`) — v4.31 dot-notation `O.foo` resolves to
+  ROOT `GraphOrientation.foo`, not the namespaced one → qualified application
+  `GraphOrientation.foo O`; cover_search_space_bound needs [DecidableEq V];
+  k3_not_cover_graph instance war (witnessed PartialOrder(Fin 3) vs canonical order,
+  CovBy/</lt_irrefl kept resolving to instLTFin) → extracted the 8-case core into an
+  abstract `no_pairwise_covering_triangle {W} [PartialOrder W]` lemma (single ambient
+  order) applied with the witnessed order passed via `@`; SimpleGraph.top_adj coercion.
+- Erdos1208Problem (rewrite-drift): distance_sidon_size_bound uses offDiag/filter +
+  {(a,b),(b,a)} pair literal → needs [DecidableEq α] (v4.31 no longer implicit). 1-line.
+- Erdos1021Problem + Erdos1021OQ01 (rewrite-drift, sibling pair): custom `" = o("`
+  notation atom rejected ("invalid atom") → `=ₒ`; **unannotated notation operands
+  parse at min precedence, absorbing a trailing `→`** ("type expected") → pin `g:51`;
+  `∀.., A → B ↔ C` parses `(A→B)↔C` (↔ looser than →) → parens for `A→(B↔C)`;
+  omega no longer decomposes `(i+1)%n` nor auto-supplies Fin bound → i.isLt +
+  Nat.mod_eq_of_lt/Nat.mod_self split; `use X` on `∃ C>0, P` leaves `X>0 ∧ P` unsplit
+  → refine ⟨X, ?_, ?_⟩ + positivity; `Nat.sub_pos_of_lt` via exact_mod_cast to a REAL
+  `(k:ℝ)-1>0` fails (Nat trunc-sub ≠ Real sub) → `(2:ℝ)≤k`+linarith; removed unknown
+  `div_tendsto_iff_tendsto_div` (surrounding proof already ended in sorry).
+
+## New systematic seams (rename-map §7ah candidates)
+1. **Locally-namespaced structure-extension defs**: `def T.foo` written inside
+   `namespace N` (where `T` is a root structure) is `N.T.foo`; v4.31 dot-notation
+   `x.foo` (x : T) resolves ONLY to root `T.foo` → "environment does not contain
+   T.foo". Fix: qualified application `T.foo x` (identifier resolves in current
+   namespace), or move the def to the root `T` namespace.
+2. **Instance-coherence on concrete types with a witnessed order**: an
+   existentially-introduced `PartialOrder (Fin n)` competes with the canonical
+   order; `CovBy`/`<`/`lt_irrefl` resolve to the canonical `instLTFin` (direct
+   `[LT]` beats a local PartialOrder's derived LT, and `letI`/`@…ho.toLT`
+   annotations hit "synthesized instance not defeq"). **Robust fix: extract the
+   order-only argument into a standalone lemma with a proper `[PartialOrder W]`
+   instance param (no competing instance) and apply it with the witnessed order
+   passed explicitly via `@lemma W ho …`.**
+3. **`open scoped Classical` breaks native_decide** on decidable predicates: it
+   shadows the computable DecidableEq with noncomputable `Classical.propDecidable`
+   ("failed to compile … depends on Classical.propDecidable"). Fix: drop the open;
+   if the predicate is an opaque `def`, make it `abbrev` so the computable instance
+   is visible.
+4. **Missing `[DecidableEq α]`**: Finset `offDiag`/`filter`/pair-literal `{a,b}` on a
+   `[MetricSpace α]` (or other non-DecidableEq) type need it; v4.31 no longer supplies
+   it implicitly (previously via ambient Classical). Add `[DecidableEq α]`.
+5. **Notation regressions**: (a) atoms containing `= o(`-style tokens are rejected
+   ("invalid atom") — rename; (b) **unannotated notation operands parse at min
+   precedence and swallow a trailing `→`** → pin operand levels (`g:51`).
+6. **omega mod/Fin regressions**: omega no longer decomposes `(i+1) % n` (variable
+   modulus) into an opaque atom's euclidean relation, nor auto-supplies `i.isLt` for
+   `i : Fin n`. Materialize `have := i.isLt` and case-split the mod via
+   `Nat.mod_eq_of_lt` / `Nat.mod_self`.
+7. **`use X` on `∃ C > 0, P`** no longer auto-splits/discharges the `C > 0` conjunct —
+   leaves `X > 0 ∧ P` (so a following `intro` fails). Use `refine ⟨X, ?_, ?_⟩`.
+8. **`exact_mod_cast … Nat.sub_pos_of_lt` to a REAL `(k:ℝ)-1 > 0`** fails — Nat
+   truncated subtraction is not mod_cast-equal to Real subtraction. Derive from a
+   cast bound (`(2:ℝ) ≤ k`) + `linarith` instead.
+
+Ledger after increment 63: 2010 GREEN / 625 RESIDUAL.
 # DOCTOR INCREMENT 62 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-14)
 
 Container `dr62` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch

@@ -20,12 +20,10 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic
 
-open scoped Classical
-
 /- ## Same Prime Factors -/
 
 /-- Two positive integers share the same set of prime divisors. -/
-def SamePrimeFactors (x y : ℕ) : Prop :=
+abbrev SamePrimeFactors (x y : ℕ) : Prop :=
   x.primeFactors = y.primeFactors
 
 /- ## Main Conjecture -/
@@ -76,6 +74,14 @@ theorem makowski_same_primes_shift : SamePrimeFactors 76 1216 := by
 theorem two_shift_is_solvable : TwoShiftSolvable :=
   ⟨75, 1215, by decide, makowski_same_primes_base, makowski_same_primes_shift⟩
 
+/- ## General k-Shift Version -/
+
+/-- The generalized k-shift version: do there exist distinct x, y with
+    same prime factors for all x+i, y+i where 0 ≤ i ≤ k? -/
+def KShiftProblem (k : ℕ) : Prop :=
+  ¬∃ x y : ℕ, x ≠ y ∧
+    ∀ i : ℕ, i ≤ k → SamePrimeFactors (x + i) (y + i)
+
 /-- **The 0-shift problem has trivial solutions.**
     For k = 0: any two distinct numbers with the same prime factors work.
     E.g., x = 2, y = 4: primeFactors(2) = primeFactors(4) = {2}. -/
@@ -115,14 +121,6 @@ def StrongABCConjecture : Prop :=
 axiom shorey_tijdeman :
     StrongABCConjecture → ErdosProblem850
 
-/- ## General k-Shift Version -/
-
-/-- The generalized k-shift version: do there exist distinct x, y with
-    same prime factors for all x+i, y+i where 0 ≤ i ≤ k? -/
-def KShiftProblem (k : ℕ) : Prop :=
-  ¬∃ x y : ℕ, x ≠ y ∧
-    ∀ i : ℕ, i ≤ k → SamePrimeFactors (x + i) (y + i)
-
 /-- Problem 850 is the k=2 case. -/
 theorem problem850_is_2shift : ErdosProblem850 ↔ KShiftProblem 2 := by
   unfold ErdosProblem850 KShiftProblem
@@ -135,9 +133,15 @@ theorem problem850_is_2shift : ErdosProblem850 ↔ KShiftProblem 2 := by
     refine ⟨x, y, hne, fun i hi => ?_⟩
     interval_cases i <;> assumption
 
-/-- Larger k makes the problem strictly harder: if k-shift has no solution,
-    then (k-1)-shift also has no solution. -/
-theorem kshift_monotone (k : ℕ) (h : KShiftProblem k) : KShiftProblem (k - 1) := by
+/-- Larger k makes the problem strictly harder: if the k-shift problem has no
+    solution, then neither does the (k+1)-shift problem (a solution of the
+    (k+1)-shift problem restricts to a solution of the k-shift problem).
+
+    Note: an earlier version stated `KShiftProblem k → KShiftProblem (k - 1)`,
+    which is FALSE — the (k-1)-shift problem has fewer constraints and may be
+    solvable even when the k-shift problem is not. Repaired (#38611) to the
+    intended-true upward direction. -/
+theorem kshift_monotone (k : ℕ) (h : KShiftProblem k) : KShiftProblem (k + 1) := by
   intro ⟨x, y, hne, hshift⟩
   apply h
   exact ⟨x, y, hne, fun i hi => hshift i (by omega)⟩

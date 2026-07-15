@@ -611,7 +611,7 @@ Erdos1003OQ02	GREEN
 Erdos1005Problem	RESIDUAL	proof-drift
 Erdos1005ProblemOQ02	GREEN	
 Erdos1006OQ01	GREEN	
-Erdos1006OQ01OQ02	RESIDUAL	signature-drift
+Erdos1006OQ01OQ02	GREEN	v4.31-migrated
 Erdos1006OQ02	RESIDUAL	elab-drift
 Erdos1006OQ03	GREEN	
 Erdos1006OQ04	GREEN	
@@ -674,9 +674,9 @@ Erdos101OQ04	GREEN
 Erdos101OQ04OQ01	GREEN	
 Erdos1020Problem	RESIDUAL	signature-drift
 Erdos1021Aristotle	GREEN	
-Erdos1021OQ01	RESIDUAL	rewrite-drift
+Erdos1021OQ01	GREEN	v4.31-migrated
 Erdos1021OQ01Incomplete01	GREEN	
-Erdos1021Problem	RESIDUAL	rewrite-drift
+Erdos1021Problem	GREEN	v4.31-migrated
 Erdos1021Wip01	GREEN	
 Erdos1021Wip02	GREEN	
 Erdos1022OQ01	RESIDUAL	instance-synth
@@ -904,7 +904,7 @@ Erdos11Problem	GREEN
 Erdos1201Problem	RESIDUAL	type-mismatch
 Erdos1202Problem	GREEN	
 Erdos1206Problem	RESIDUAL	proof-drift
-Erdos1208Problem	RESIDUAL	rewrite-drift
+Erdos1208Problem	GREEN	v4.31-migrated
 Erdos120Problem	GREEN
 Erdos1211Problem	GREEN	
 Erdos1212Problem	GREEN	
@@ -1735,7 +1735,7 @@ Erdos820Aristotle	GREEN
 Erdos820Problem	GREEN	
 Erdos821Problem	GREEN	
 Erdos822Problem	RESIDUAL	instance-synth
-Erdos823Problem	RESIDUAL	unknown-const:ArithmeticFunction.totient
+Erdos823Problem	GREEN	v4.31-migrated
 Erdos824Problem	GREEN	
 Erdos824ProblemProvable	RESIDUAL	type-mismatch
 Erdos825Problem	GREEN	
@@ -1764,7 +1764,7 @@ Erdos848Problem	GREEN
 Erdos848ProblemOQ01	GREEN	
 Erdos849Problem	GREEN	
 Erdos84Problem	GREEN	
-Erdos850Problem	RESIDUAL	noncomputable
+Erdos850Problem	GREEN	v4.31-migrated
 Erdos851Problem	GREEN	
 Erdos852Problem	GREEN	
 Erdos853Problem	GREEN	
