@@ -88,212 +88,13 @@ on n vertices with at least f(n;t) edges must contain four edges A,B,C,D with:
 Reference: https://erdosproblems.com/643
 -/
 
+import Mathlib
 
-
-
-namespace Harmonic.GeneralizeProofs
--- Harmonic `generalize_proofs` tactic
-
-open Lean Meta Elab Parser.Tactic Elab.Tactic Mathlib.Tactic.GeneralizeProofs
-def mkLambdaFVarsUsedOnly' (fvars : Array Expr) (e : Expr) : MetaM (Array Expr × Expr) := do
-  let mut e := e
-  let mut fvars' : List Expr := []
-  for i' in [0:fvars.size] do
-    let fvar := fvars[fvars.size - i' - 1]!
-    e ← mkLambdaFVars #[fvar] e (usedOnly := false) (usedLetOnly := false)
-    match e with
-    | .letE _ _ v b _ => e := b.instantiate1 v
-    | .lam _ _ _b _ => fvars' := fvar :: fvars'
-    | _ => unreachable!
-  return (fvars'.toArray, e)
-
-partial def abstractProofs' (e : Expr) (ty? : Option Expr) : MAbs Expr := do
-  if (← read).depth ≤ (← read).config.maxDepth then MAbs.withRecurse <| visit (← instantiateMVars e) ty?
-  else return e
-where
-  visit (e : Expr) (ty? : Option Expr) : MAbs Expr := do
-    if (← read).config.debug then
-      if let some ty := ty? then
-        unless ← isDefEq (← inferType e) ty do
-          throwError "visit: type of{indentD e}\nis not{indentD ty}"
-    if e.isAtomic then
-      return e
-    else
-      checkCache (e, ty?) fun _ ↦ do
-        if ← isProof e then
-          visitProof e ty?
-        else
-          match e with
-          | .forallE n t b i =>
-            withLocalDecl n i (← visit t none) fun x ↦ MAbs.withLocal x do
-              mkForallFVars #[x] (← visit (b.instantiate1 x) none) (usedOnly := false) (usedLetOnly := false)
-          | .lam n t b i => do
-            withLocalDecl n i (← visit t none) fun x ↦ MAbs.withLocal x do
-              let ty'? ←
-                if let some ty := ty? then
-                  let .forallE _ _ tyB _ ← pure ty
-                    | throwError "Expecting forall in abstractProofs .lam"
-                  pure <| some <| tyB.instantiate1 x
-                else
-                  pure none
-              mkLambdaFVars #[x] (← visit (b.instantiate1 x) ty'?) (usedOnly := false) (usedLetOnly := false)
-          | .letE n t v b _ =>
-            let t' ← visit t none
-            withLetDecl n t' (← visit v t') fun x ↦ MAbs.withLocal x do
-              mkLetFVars #[x] (← visit (b.instantiate1 x) ty?) (usedLetOnly := false)
-          | .app .. =>
-            e.withApp fun f args ↦ do
-              let f' ← visit f none
-              let argTys ← appArgExpectedTypes f' args ty?
-              let mut args' := #[]
-              for arg in args, argTy in argTys do
-                args' := args'.push <| ← visit arg argTy
-              return mkAppN f' args'
-          | .mdata _ b  => return e.updateMData! (← visit b ty?)
-          | .proj _ _ b => return e.updateProj! (← visit b none)
-          | _           => unreachable!
-  visitProof (e : Expr) (ty? : Option Expr) : MAbs Expr := do
-    let eOrig := e
-    let fvars := (← read).fvars
-    let e := e.withApp' fun f args => f.beta args
-    if e.withApp' fun f args => f.isAtomic && args.all fvars.contains then return e
-    let e ←
-      if let some ty := ty? then
-        if (← read).config.debug then
-          unless ← isDefEq ty (← inferType e) do
-            throwError m!"visitProof: incorrectly propagated type{indentD ty}\nfor{indentD e}"
-        mkExpectedTypeHint e ty
-      else pure e
-    if (← read).config.debug then
-      unless ← Lean.MetavarContext.isWellFormed (← getLCtx) e do
-        throwError m!"visitProof: proof{indentD e}\nis not well-formed in the current context\n\
-          fvars: {fvars}"
-    let (fvars', pf) ← mkLambdaFVarsUsedOnly' fvars e
-    if !(← read).config.abstract && !fvars'.isEmpty then
-      return eOrig
-    if (← read).config.debug then
-      unless ← Lean.MetavarContext.isWellFormed (← read).initLCtx pf do
-        throwError m!"visitProof: proof{indentD pf}\nis not well-formed in the initial context\n\
-          fvars: {fvars}\n{(← mkFreshExprMVar none).mvarId!}"
-    let pfTy ← instantiateMVars (← inferType pf)
-    let pfTy ← abstractProofs' pfTy none
-    if let some pf' ← MAbs.findProof? pfTy then
-      return mkAppN pf' fvars'
-    MAbs.insertProof pfTy pf
-    return mkAppN pf fvars'
-partial def withGeneralizedProofs' {α : Type} [Inhabited α] (e : Expr) (ty? : Option Expr)
-    (k : Array Expr → Array Expr → Expr → MGen α) :
-    MGen α := do
-  let propToFVar := (← get).propToFVar
-  let (e, generalizations) ← MGen.runMAbs <| abstractProofs' e ty?
-  let rec
-    go [Inhabited α] (i : Nat) (fvars pfs : Array Expr)
-        (proofToFVar propToFVar : ExprMap Expr) : MGen α := do
-      if h : i < generalizations.size then
-        let (ty, pf) := generalizations[i]
-        let ty := (← instantiateMVars (ty.replace proofToFVar.get?)).cleanupAnnotations
-        withLocalDeclD (← mkFreshUserName `pf) ty fun fvar => do
-          go (i + 1) (fvars := fvars.push fvar) (pfs := pfs.push pf)
-            (proofToFVar := proofToFVar.insert pf fvar)
-            (propToFVar := propToFVar.insert ty fvar)
-      else
-        withNewLocalInstances fvars 0 do
-          let e' := e.replace proofToFVar.get?
-          modify fun s => { s with propToFVar }
-          k fvars pfs e'
-  go 0 #[] #[] (proofToFVar := {}) (propToFVar := propToFVar)
-
-partial def generalizeProofsCore'
-    (g : MVarId) (fvars rfvars : Array FVarId) (target : Bool) :
-    MGen (Array Expr × MVarId) := go g 0 #[]
-where
-  go (g : MVarId) (i : Nat) (hs : Array Expr) : MGen (Array Expr × MVarId) := g.withContext do
-    let tag ← g.getTag
-    if h : i < rfvars.size then
-      let fvar := rfvars[i]
-      if fvars.contains fvar then
-        let tgt ← instantiateMVars <| ← g.getType
-        let ty := (if tgt.isLet then tgt.letType! else tgt.bindingDomain!).cleanupAnnotations
-        if ← pure tgt.isLet <&&> Meta.isProp ty then
-          let tgt' := Expr.forallE tgt.letName! ty tgt.letBody! .default
-          let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
-          g.assign <| .app g' tgt.letValue!
-          return ← go g'.mvarId! i hs
-        if let some pf := (← get).propToFVar.get? ty then
-          let tgt' := tgt.bindingBody!.instantiate1 pf
-          let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
-          g.assign <| .lam tgt.bindingName! tgt.bindingDomain! g' tgt.bindingInfo!
-          return ← go g'.mvarId! (i + 1) hs
-        match tgt with
-        | .forallE n t b bi =>
-          let prop ← Meta.isProp t
-          withGeneralizedProofs' t none fun hs' pfs' t' => do
-            let t' := t'.cleanupAnnotations
-            let tgt' := Expr.forallE n t' b bi
-            let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
-            g.assign <| mkAppN (← mkLambdaFVars hs' g' (usedOnly := false) (usedLetOnly := false)) pfs'
-            let (fvar', g') ← g'.mvarId!.intro1P
-            g'.withContext do Elab.pushInfoLeaf <|
-              .ofFVarAliasInfo { id := fvar', baseId := fvar, userName := ← fvar'.getUserName }
-            if prop then
-              MGen.insertFVar t' (.fvar fvar')
-            go g' (i + 1) (hs ++ hs')
-        | .letE n t v b _ =>
-          withGeneralizedProofs' t none fun hs' pfs' t' => do
-            withGeneralizedProofs' v t' fun hs'' pfs'' v' => do
-              let tgt' := Expr.letE n t' v' b false
-              let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
-              g.assign <| mkAppN (← mkLambdaFVars (hs' ++ hs'') g' (usedOnly := false) (usedLetOnly := false)) (pfs' ++ pfs'')
-              let (fvar', g') ← g'.mvarId!.intro1P
-              g'.withContext do Elab.pushInfoLeaf <|
-                .ofFVarAliasInfo { id := fvar', baseId := fvar, userName := ← fvar'.getUserName }
-              go g' (i + 1) (hs ++ hs' ++ hs'')
-        | _ => unreachable!
-      else
-        let (fvar', g') ← g.intro1P
-        g'.withContext do Elab.pushInfoLeaf <|
-          .ofFVarAliasInfo { id := fvar', baseId := fvar, userName := ← fvar'.getUserName }
-        go g' (i + 1) hs
-    else if target then
-      withGeneralizedProofs' (← g.getType) none fun hs' pfs' ty' => do
-        let g' ← mkFreshExprSyntheticOpaqueMVar ty' tag
-        g.assign <| mkAppN (← mkLambdaFVars hs' g' (usedOnly := false) (usedLetOnly := false)) pfs'
-        return (hs ++ hs', g'.mvarId!)
-    else
-      return (hs, g)
-
-end GeneralizeProofs
-
-open Lean Elab Parser.Tactic Elab.Tactic Mathlib.Tactic.GeneralizeProofs
-partial def generalizeProofs'
-    (g : MVarId) (fvars : Array FVarId) (target : Bool) (config : Config := {}) :
-    MetaM (Array Expr × MVarId) := do
-  let (rfvars, g) ← g.revert fvars (clearAuxDeclsInsteadOfRevert := true)
-  g.withContext do
-    let s := { propToFVar := ← initialPropToFVar }
-    GeneralizeProofs.generalizeProofsCore' g fvars rfvars target |>.run config |>.run' s
-
-elab (name := generalizeProofsElab'') "generalize_proofs" config?:(Parser.Tactic.config)?
-    hs:(ppSpace colGt binderIdent)* loc?:(location)? : tactic => withMainContext do
-  let config ← elabConfig (mkOptionalNode config?)
-  let (fvars, target) ←
-    match expandOptLocation (Lean.mkOptionalNode loc?) with
-    | .wildcard => pure ((← getLCtx).getFVarIds, true)
-    | .targets t target => pure (← getFVarIds t, target)
-  liftMetaTactic1 fun g => do
-    let (pfs, g) ← generalizeProofs' g fvars target config
-    g.withContext do
-      let mut lctx ← getLCtx
-      for h in hs, fvar in pfs do
-        if let `(binderIdent| $s:ident) := h then
-          lctx := lctx.setUserName fvar.fvarId! s.getId
-        Expr.addLocalVarInfoForBinderIdent fvar h
-      Meta.withLCtx lctx (← Meta.getLocalInstances) do
-        let g' ← Meta.mkFreshExprSyntheticOpaqueMVar (← g.getType) (← g.getTag)
-        g.assign g'
-        return g'.mvarId!
-
-end Harmonic
+-- v4.31 elaborator is slower on several of the deep `simp_all`/`grind`-heavy
+-- proofs below; the mathematical content is unchanged from the toolchain this
+-- file was originally verified on, so we simply give the elaborator more
+-- budget rather than restructure the proofs.
+set_option maxHeartbeats 1000000
 
 namespace Erdos643
 
@@ -471,11 +272,15 @@ lemma Erdos643.sum_degree_choose_two_le {n : ℕ} {H : Hypergraph (Fin n)} (h_un
         refine' Finset.sum_le_sum fun i hi => _;
         rw [ Finset.sum_comm ];
         exact Finset.sum_le_sum fun j hj => by rw [ Finset.card_filter ] ;
-      convert h_sum_cherries_le_pairs.trans _ using 2;
-      · rw [ ← Nat.choose_two_right ];
-        rw [ ← Set.ncard_coe_finset ] ; congr ; ext ; aesop;
-      · refine' le_trans ( Finset.sum_le_sum fun i hi => Finset.sum_le_sum fun j hj => h_common_neighbors_le_one i j <| ne_of_lt <| Finset.mem_Ioi.mp hj ) _;
-        exact Nat.recOn n ( by norm_num ) fun n ih => by cases n <;> simp +decide [ Nat.choose, Fin.sum_univ_succ ] at * ; linarith;
+      calc ∑ v : Fin n, Nat.choose (Set.ncard {e ∈ H | v ∈ e}) 2
+          = ∑ v : Fin n, (Finset.card (Finset.filter (fun e => e ∈ H ∧ v ∈ e) (Finset.powersetCard 2 (Finset.univ : Finset (Fin n))))) * ((Finset.card (Finset.filter (fun e => e ∈ H ∧ v ∈ e) (Finset.powersetCard 2 (Finset.univ : Finset (Fin n))))) - 1) / 2 := by
+            refine Finset.sum_congr rfl fun v _ => ?_;
+            rw [ ← Nat.choose_two_right ];
+            rw [ ← Set.ncard_coe_finset ] ; congr ; ext ; aesop;
+        _ ≤ (∑ x : Fin n, ∑ y ∈ Finset.Ioi x, (Finset.card (Finset.filter (fun u => {u, x} ∈ H ∧ {u, y} ∈ H) Finset.univ))) := h_sum_cherries_le_pairs
+        _ ≤ Nat.choose n 2 := by
+          refine' le_trans ( Finset.sum_le_sum fun i hi => Finset.sum_le_sum fun j hj => h_common_neighbors_le_one i j <| ne_of_lt <| Finset.mem_Ioi.mp hj ) _;
+          exact Nat.recOn n ( by norm_num ) fun n ih => by cases n <;> simp +decide [ Nat.choose, Fin.sum_univ_succ ] at * ; linarith;
 
 open scoped Classical
 open Finset
@@ -561,7 +366,7 @@ open Finset
 lemma AffinePlaneGraph_edge_count (p : ℕ) [Fact (Nat.Prime p)] :
     (AffinePlaneGraph p).edgeFinset.card = p^3 := by
       -- We can count the number of edges in the graph by considering all pairs $(x, m, k)$ where $x, m, k \in \mathbb{F}_p$.
-      have h_edge_count : (Erdos643.AffinePlaneGraph p).edgeFinset = Finset.image (fun (t : ZMod p × ZMod p × ZMod p) => Sym2.mk (Sum.inl (t.1, t.2.1 * t.1 + t.2.2), Sum.inr (t.2.1, t.2.2))) (Finset.univ : Finset (ZMod p × ZMod p × ZMod p)) := by
+      have h_edge_count : (Erdos643.AffinePlaneGraph p).edgeFinset = Finset.image (fun (t : ZMod p × ZMod p × ZMod p) => Sym2.mk (Sum.inl (t.1, t.2.1 * t.1 + t.2.2) : ZMod p × ZMod p ⊕ ZMod p × ZMod p) (Sum.inr (t.2.1, t.2.2) : ZMod p × ZMod p ⊕ ZMod p × ZMod p)) (Finset.univ : Finset (ZMod p × ZMod p × ZMod p)) := by
         ext ⟨ u, v ⟩ ; simp +decide [ Erdos643.AffinePlaneGraph ] ; aesop;
       rw [ h_edge_count, Finset.card_image_of_injective ];
       · norm_num [ Finset.card_univ, pow_succ' ];
@@ -702,8 +507,8 @@ lemma Erdos643.GraphToHypergraph_noCrossedPair_of_C4_free {V : Type*} [Fintype V
             obtain ⟨ e, he, he' ⟩ := hA; obtain ⟨ f, hf, hf' ⟩ := hB; obtain ⟨ g, hg, hg' ⟩ := hC; obtain ⟨ h, hh, hh' ⟩ := hD; simp_all +decide [ Finset.ext_iff, SimpleGraph.adj_comm ] ;
             cases h_cases.1.1 <;> cases h_cases.1.2 <;> simp_all +decide [ SimpleGraph.adj_comm ] ;
             · cases h_cases v ; cases h_cases x ; cases h_cases y ; aesop_cat;
-            · exact ⟨ by rw [ show e = Sym2.mk ( u, v ) by ext; aesop ] at he; exact he, by rw [ show h = Sym2.mk ( v, x ) by ext; aesop ] at hh; exact hh, by rw [ show f = Sym2.mk ( x, y ) by ext; aesop ] at hf; exact hf, by rw [ show g = Sym2.mk ( u, y ) by ext; aesop ] at hg; exact hg ⟩;
-            · exact ⟨ by rw [ show e = Sym2.mk ( u, v ) by ext; aesop ] at he; exact he, by rw [ show g = Sym2.mk ( v, x ) by ext; aesop ] at hg; exact hg, by rw [ show f = Sym2.mk ( x, y ) by ext; aesop ] at hf; exact hf, by rw [ show h = Sym2.mk ( u, y ) by ext; aesop ] at hh; exact hh ⟩;
+            · exact ⟨ by rw [ show e = Sym2.mk u v by ext; aesop ] at he; exact he, by rw [ show h = Sym2.mk v x by ext; aesop ] at hh; exact hh, by rw [ show f = Sym2.mk x y by ext; aesop ] at hf; exact hf, by rw [ show g = Sym2.mk u y by ext; aesop ] at hg; exact hg ⟩;
+            · exact ⟨ by rw [ show e = Sym2.mk u v by ext; aesop ] at he; exact he, by rw [ show g = Sym2.mk v x by ext; aesop ] at hg; exact hg, by rw [ show f = Sym2.mk x y by ext; aesop ] at hf; exact hf, by rw [ show h = Sym2.mk u y by ext; aesop ] at hh; exact hh ⟩;
             · cases h_cases u ; cases h_cases v ; cases h_cases x ; cases h_cases y ; aesop ( simp_config := { singlePass := true } ) ;
           generalize_proofs at *; (
           use SimpleGraph.Walk.cons h_cycle.1 (SimpleGraph.Walk.cons h_cycle.2.1 (SimpleGraph.Walk.cons h_cycle.2.2.1 (SimpleGraph.Walk.cons h_cycle.2.2.2 SimpleGraph.Walk.nil)));
