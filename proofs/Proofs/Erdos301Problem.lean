@@ -70,19 +70,23 @@ theorem halfInterval_egyptFree (N : ℕ) :
       exact_mod_cast show 0 < b by have := (hb_info b (mem_singleton.mpr rfl)).1; omega
     rw [div_eq_div_iff hb_pos.ne' ha_pos.ne'] at hBsum
     simp only [one_mul] at hBsum
-    exact haB (mem_singleton.mpr (by exact_mod_cast hBsum.symm))
+    exact haB (mem_singleton.mpr (by exact_mod_cast hBsum))
   · -- |B| ≥ 2: sum ≥ 2/N > 1/a
     have hcard : 2 ≤ B.card := by
       rcases B.eq_empty_or_nonempty with rfl | hne
-      · exact absurd (Finset.not_nonempty_empty) (not_not.mpr hBne) |>.elim
-      · omega
+      · exact absurd (Finset.not_nonempty_empty) (not_not.mpr hBne)
+      · have hpos := Finset.Nonempty.card_pos hne; omega
     -- Each 1/b ≥ 1/N (since b ≤ N)
     have hsum_lower : (B.card : ℚ) / N ≤ B.sum (fun b => (1 : ℚ) / b) := by
-      rw [div_eq_inv_mul, ← Finset.sum_const]
+      have hrw : (B.card : ℚ) / N = ∑ _b ∈ B, (1 : ℚ) / N := by
+        rw [Finset.sum_const, nsmul_eq_mul]; ring
+      rw [hrw]
       exact Finset.sum_le_sum (fun b hb => by
+        have hbpos : (0 : ℚ) < b := by
+          exact_mod_cast show 0 < b by have := (hb_info b hb).1; omega
+        have hbN : (b : ℚ) ≤ N := by exact_mod_cast (hb_info b hb).2
         rw [one_div, one_div]
-        exact inv_anti₀ (by exact_mod_cast (hb_info b hb).2) (by exact_mod_cast show 0 < b by
-          have := (hb_info b hb).1; omega))
+        exact inv_anti₀ hbpos hbN)
     -- sum ≥ 2/N
     have hsum_ge : 2 / (N : ℚ) ≤ B.sum (fun b => (1 : ℚ) / b) := by
       calc (2 : ℚ) / N ≤ B.card / N := by
