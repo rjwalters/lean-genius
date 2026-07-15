@@ -98,6 +98,7 @@ theorem ramseyNumberSymm_ge (n : ℕ) (hne : (symmRamseySet n).Nonempty) :
 ## Part IV: R_sym(Q_1) = 2
 -/
 
+set_option maxRecDepth 2000 in
 /-- 2 is in the symmetric Ramsey set for Q_1. -/
 theorem two_in_symm_ramsey_set : (2 : ℕ) ∈ symmRamseySet 1 := by
   unfold symmRamseySet
@@ -106,7 +107,11 @@ theorem two_in_symm_ramsey_set : (2 : ℕ) ∈ symmRamseySet 1 := by
   refine ⟨id, Function.injective_id, c ⟨0, by norm_num⟩ ⟨1, by norm_num⟩, ?_⟩
   intro x y hxy
   rw [hypercubeAdj_one_iff] at hxy
-  fin_cases x <;> fin_cases y <;> simp_all [Function.id]
+  fin_cases x <;> fin_cases y <;>
+    first
+    | exact absurd rfl hxy
+    | rfl
+    | exact hsymm _ _
 
 /-- R_sym(Q_1) ≤ 2 since 2 is in the symmetric Ramsey set. -/
 theorem ramseyNumberSymm_one_le : ramseyNumberSymm 1 ≤ 2 := by
