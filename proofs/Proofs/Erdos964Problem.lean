@@ -52,10 +52,11 @@ def tau (n : ℕ) : ℕ :=
 τ(1) = 1, τ(p) = 2 for prime p, τ(p^k) = k+1
 -/
 theorem tau_one : tau 1 = 1 := by
-  simp [tau, Nat.divisors]
+  rw [tau, Nat.divisors_one, Finset.card_singleton]
 
 theorem tau_prime (p : ℕ) (hp : Nat.Prime p) : tau p = 2 := by
-  simp [tau, Nat.Prime.divisors hp]
+  rw [tau, hp.divisors]
+  exact Finset.card_pair_eq_two_iff.mpr hp.one_lt.ne
 
 theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
     tau (p ^ k) = k + 1 := by
@@ -67,7 +68,8 @@ theorem tau_prime_power (p k : ℕ) (hp : Nat.Prime p) :
 -/
 theorem tau_multiplicative (m n : ℕ) (h : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
-  simp only [tau, h.divisors_mul, Finset.card_product]
+  simp only [tau]
+  exact h.card_divisors_mul
 
 /-
 ## Part II: Ratios of Consecutive Values
@@ -161,12 +163,12 @@ theorem rationals_dense_in_positives :
   refine ⟨⟨p, q, hp_ge, hq_ge, rfl⟩, ?_⟩
   -- |p/q - r| = p/q - r (since p/q ≥ r) and p/q - r < 1/q < ε
   have h_nonneg : (↑p : ℝ) / ↑q - r ≥ 0 := by
-    rw [sub_nonneg, le_div_iff₀ hq_pos]
+    rw [ge_iff_le, sub_nonneg, le_div_iff₀ hq_pos]
     exact hceil_ge
   rw [abs_of_nonneg h_nonneg]
   calc (↑p : ℝ) / ↑q - r
       < (r * ↑q + 1) / ↑q - r := by
-        exact sub_lt_sub_right ((div_lt_div_right hq_pos).mpr hceil_lt) r
+        gcongr
     _ = 1 / ↑q := by field_simp; ring
     _ < ε := h_inv_lt
 
@@ -329,7 +331,9 @@ theorem erdos_964 : ErdosConjecture964 := erdos_964_true
 **The answer:**
 -/
 theorem erdos_964_answer :
-    ∀ r : ℝ, r > 0 → ∀ ε > 0, ∃ n : ℕ, n ≥ 1 ∧ |divisorRatio n - r| < ε :=
-  erdos_964
+    ∀ r : ℝ, r > 0 → ∀ ε > 0, ∃ n : ℕ, n ≥ 1 ∧ |divisorRatio n - r| < ε := by
+  intro r hr ε hε
+  obtain ⟨s, ⟨n, hn, hs⟩, hdist⟩ := erdos_964 r hr ε hε
+  exact ⟨n, hn, by rw [hs]; exact hdist⟩
 
 end Erdos964

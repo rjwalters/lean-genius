@@ -81,6 +81,85 @@ Ledger after increment 70: +5 GREEN (partition A: Erdos483×2, Birthday×3).
 
 ---
 
+# DOCTOR INCREMENT 69 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
+
+Container `dr69` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc69` off origin/feature/issue-37508 (base 2037 GREEN /
+598 RESIDUAL). Warm leads from inc-67 + rewrite-drift family. Every file was
+6–17 real errors (deep-rework confirmed, 0 free flips). **+6 GREEN.** PR #38672.
+All flips in-container `lake build Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- Erdos1061Problem (proof-drift): sigma_prime' `simp[sigma_apply]` no longer closes →
+  `rw[sigma_one_apply, hp.divisors, Finset.sum_pair hp.one_lt.ne]`;
+  `isMultiplicative_sigma` needs explicit `(k := 1)`; **omega no longer derives
+  `1 ≤ p` from `Prime`** → materialize `hp.two_le` (×3 sites); `rw[add_comm]` →
+  `rw[add_comm b a]` to align the sigma atom for linarith.
+- SylowTheoremOQ01 (rewrite-drift): `Finsupp.single_apply` now `if a = a'` (flip
+  `if_neg` arg); **`Sylow.nonempty` is an instance** (no `p G` args) → type-ascribe
+  `(Sylow.nonempty : Nonempty (Sylow p G))`; `card_sylow_dvd_index` →
+  `Sylow.card_dvd_index` (now `Nat.card (Sylow p G) ∣ P.index`);
+  `Nat.Prime.eq_of_dvd_of_prime` → `(Nat.prime_dvd_prime_iff_eq h h').mp`;
+  `orderOf_eq_one_iff_eq_one` → `orderOf_eq_one_iff`; **`Subgroup.disjoint_def` x
+  now IMPLICIT** → drop the `_`; manual normalizer proof → `Sylow.normal_of_subsingleton`;
+  `inv_mul_eq_one` gives symm form → `.symm`; `orderOf_eq_card_of_forall_mem_zpowers`
+  now returns `Nat.card` → drop follow-up `rw[← Nat.card_eq_fintype_card]`;
+  `Subgroup.card_zpowers` → `Nat.card_zpowers`; **`eq_top_of_card_eq` H now explicit**
+  → pass `_`; IsCyclic generator goal unfolds to `∃ a, g^a = x` → intermediate typed
+  membership `have`.
+- Erdos964Problem (rewrite-drift): `tau_one`/`tau_prime` `simp[Nat.divisors]` no longer
+  closes → `rw` divisors_one/`hp.divisors` + `card_singleton`/`card_pair_eq_two_iff.mpr`;
+  `tau_multiplicative`: `divisors_mul` now yields map/attach form → `Nat.Coprime.card_divisors_mul`;
+  **`sub_nonneg` won't rw through `≥ 0`** → prepend `ge_iff_le`; `div_lt_div_right`
+  removed → `gcongr`; `erdos_964_answer` no longer defeq to the set-based conjecture →
+  destructure ratioSet membership explicitly.
+- Erdos730Problem (rewrite-drift): `Nat.choose_succ_succ` now emits `.succ` form →
+  `simp[Nat.succ_eq_add_one]` before rw; hsymm via `rw show n-1=(2n-1)-n` +
+  `Nat.choose_symm`; **`Nat.Prime` dot-notation for `dvd_factorial` resolves to
+  `Irreducible` unless `Data.Nat.Prime.Factorial` is imported** → add import;
+  `choose_mul_factorial`: rewrite `2n-n=n` in hfact BEFORE matching hdvd_prod; drop
+  stale `mul_assoc`; **`Set.Infinite.image` now needs `InjOn` (not the map fn)** →
+  hoist `hinj`; `rintro` for image membership.
+- Erdos741Problem (rewrite-drift): **Filter/limsup API rework** — `limsup_le_limsup`
+  now takes explicit `IsCoboundedUnder` + `IsBoundedUnder` args (`isBoundedDefault`
+  can't discharge on ℝ) → reusable `density_ratio_isBoundedUnder`/`isCoboundedUnder`
+  helpers (`eventually_map` / `isCoboundedUnder_le_of_eventually_le`);
+  `Tendsto.limsup_eq` lost its boundedness arg; `IsBasisOrder2` needs `unfold` before
+  `eventually_atTop` rw; `div_le_div_iff₀` mismatch (LHS not a single div) →
+  `le_div_iff₀`+`sub_mul`+`div_mul_cancel₀`; `Nat.cast_le` target metavar → pin ℝ via
+  typed `have`; `N₀/(n+1)→0` via `Tendsto.div_atTop`+`tendsto_atTop_mono`; `gcongr`
+  replaces removed `div_le_div_right`; **a `calc` restating the limsup functions
+  triggers a whnf heartbeat loop on the coercions → use explicit `have`+`rw [heq]`.**
+- Erdos1052Problem (rewrite-drift): gcd-positivity fragile `rcases`+`rw[←h,gcd_eq_zero_iff]
+  at *` → clean `eq_zero_or_pos` + `gcd_eq_zero_iff at hz` (×5); `mul_div_cancel'` rw
+  needs `← mul_assoc` FIRST to expose `gcd*(m/gcd)`; **`conv_lhs`→`conv_rhs`** (rewrite
+  `d` in the `m*n/d` denominator, not the `m/gcd` numerator); sum over `{1,p^k}` leaves
+  `id` → append `simp`; `sum_product'`+`simp_rw mul_sum/sum_mul` → `Finset.sum_mul_sum`;
+  omega can't prove `1≤d₁*d₂` or `0<m*n` → `Nat.mul_pos`; `pow_succ` proof reorder to
+  avoid rewriting `n` inside `n.factorization p`; `id_eq` before omega; `le_self_pow`
+  → `Nat.le_self_pow`; **`n.factorization p` contains `n`, so `rw[n=…]` corrupts the
+  exponent → `set P` first.**
+
+## New systematic seams (rename-map §7ak candidates)
+1. **`Sylow.nonempty` is an instance** (no explicit `p G`) — apply args → "function
+   expected"; type-ascribe `(Sylow.nonempty : Nonempty (Sylow p G))`.
+2. **`card_sylow_dvd_index`→`Sylow.card_dvd_index`** (returns `Nat.card (Sylow p G) ∣
+   P.index`); **`Subgroup.card_zpowers`→`Nat.card_zpowers`**; **`Subgroup.eq_top_of_card_eq`
+   H now explicit**; **`Subgroup.disjoint_def` bound var now implicit** (drop the `_`).
+3. **`Nat.Prime.dvd_factorial` dot-notation** silently resolves the head to `Irreducible`
+   (unknown const) when `Mathlib.Data.Nat.Prime.Factorial` isn't imported → add the import.
+4. **`limsup_le_limsup` now takes explicit `IsCoboundedUnder`/`IsBoundedUnder`** (auto
+   `isBoundedDefault` fails on ℝ); **`Tendsto.limsup_eq` dropped its boundedness arg**.
+5. **A `calc` step restating a `limsup (fun n => …coercions…)` deterministically
+   whnf-loops** past the heartbeat cap → prove `limsup_le_limsup` into a `have` and
+   `rw [tendsto.limsup_eq]` instead of stating the functions inside `calc`.
+6. **`rw [h : n = …]` corrupts `n.factorization p`** (the exponent literally contains
+   `n`) → `set P := p^(n.factorization p)` before rewriting `n`.
+7. **`conv_lhs` on `a ∣ b` targets `a`** — for a denominator rewrite in `b` use `conv_rhs`.
+8. **omega no longer derives products** (`1≤a*b`, `0<m*n`, `1≤p` from `Prime`) → supply
+   `Nat.mul_pos` / materialize `hp.two_le`.
+
+Ledger after increment 69: +6 GREEN (partition B).
 # DOCTOR INCREMENT 68 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
 
 Container `dr68` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
