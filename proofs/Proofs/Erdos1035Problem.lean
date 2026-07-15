@@ -337,17 +337,17 @@ private lemma hypercubeBitCount_xor_pow_parity (n k : ℕ) (hk : k < n) (v : ℕ
     hypercubeBitCount n (v ^^^ 2 ^ k) % 2 ≠ hypercubeBitCount n v % 2 := by
   simp only [hypercubeBitCount]
   -- The erase-k sum is identical for v and v ^^^ 2^k (bits j ≠ k are unchanged)
-  have h_rest : ∑ j ∈ Finset.univ.erase (⟨k, hk⟩ : Fin n),
-      if (v ^^^ 2 ^ k).testBit j.val then 1 else 0 =
-      ∑ j ∈ Finset.univ.erase (⟨k, hk⟩ : Fin n),
-      if v.testBit j.val then 1 else 0 := by
+  have h_rest : (∑ j ∈ Finset.univ.erase (⟨k, hk⟩ : Fin n),
+      if (v ^^^ 2 ^ k).testBit j.val then 1 else 0) =
+      (∑ j ∈ Finset.univ.erase (⟨k, hk⟩ : Fin n),
+      if v.testBit j.val then 1 else 0) := by
     apply Finset.sum_congr rfl
     intro ⟨j, _⟩ hmem
     simp only [Finset.mem_erase, ne_eq, Fin.mk.injEq] at hmem
-    rw [Nat.testBit_xor, Nat.testBit_two_pow_of_ne hmem.1, Bool.xor_false]
+    rw [Nat.testBit_xor, Nat.testBit_two_pow_of_ne (Ne.symm hmem.1), Bool.xor_false]
   -- The k-th bit flips: testBit (v ^^^ 2^k) k = !testBit v k
   have h_flip : (v ^^^ 2 ^ k).testBit k = !(v.testBit k) := by
-    rw [Nat.testBit_xor, Nat.testBit_two_pow_self, Bool.true_xor]
+    rw [Nat.testBit_xor, Nat.testBit_two_pow_self, Bool.xor_true]
   -- Expand both sums: isolate k-th term + erase sum
   rw [← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨k, hk⟩ : Fin n)),
       show (⟨k, hk⟩ : Fin n).val = k from rfl, h_flip, h_rest,
@@ -358,10 +358,10 @@ private lemma hypercubeBitCount_xor_pow_parity (n k : ℕ) (hk : k < n) (v : ℕ
   -- Case split: bit k is false or true
   cases hb : v.testBit k
   · -- bit k = false → !bit k = true → sum_new = 1 + X, sum_old = 0 + X
-    simp only [hb, Bool.not_false, ite_true, ite_false, zero_add]
+    simp only [hb, Bool.not_false, Bool.false_eq_true, if_false, if_true, ite_true]
     omega
   · -- bit k = true → !bit k = false → sum_new = 0 + X, sum_old = 1 + X
-    simp only [hb, Bool.not_true, ite_true, ite_false, zero_add]
+    simp only [hb, Bool.not_true, Bool.false_eq_true, if_false, if_true, ite_true]
     omega
 
 /-- **Q_n is bipartite** (2-colorable): the vertex set splits into two independent sets
@@ -379,5 +379,5 @@ theorem hypercube_bipartite (n : ℕ) : (hypercubeGraph n).IsBipartite :=
         have h1 : u.val ^^^ (u.val ^^^ v.val) = u.val ^^^ 2 ^ k.val := by rw [hk]
         rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h1
         exact h1
-      simp only [hypercubeColor, Fin.mk.injEq, hv]
-      exact hypercubeBitCount_xor_pow_parity n k.val k.isLt u.val)⟩
+      simp only [hypercubeColor, ne_eq, Fin.mk.injEq, hv]
+      exact (hypercubeBitCount_xor_pow_parity n k.val k.isLt u.val).symm)⟩

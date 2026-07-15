@@ -703,7 +703,7 @@ Erdos1033Problem	RESIDUAL	unknown-const:fan_lower
 Erdos1034Aristotle	GREEN	
 Erdos1034OQ02	GREEN	
 Erdos1034Problem	GREEN	doctor-inc65
-Erdos1035Problem	RESIDUAL	instance-synth
+Erdos1035Problem	GREEN	
 Erdos1036OQ01	GREEN	
 Erdos1036OQ01OQ01	GREEN	
 Erdos1036Problem	GREEN	
@@ -1406,7 +1406,7 @@ Erdos556Problem	RESIDUAL	type-mismatch
 Erdos557Problem	RESIDUAL	type-mismatch
 Erdos558Problem	GREEN	
 Erdos559Aristotle	GREEN	
-Erdos559Problem	RESIDUAL	instance-synth
+Erdos559Problem	GREEN	
 Erdos55Problem	GREEN	
 Erdos560Problem	RESIDUAL	elab-drift
 Erdos561Problem	GREEN	
@@ -1493,7 +1493,7 @@ Erdos623Aristotle	GREEN
 Erdos623Problem	GREEN	
 Erdos623ProblemAristotle	GREEN	
 Erdos625Aristotle	RESIDUAL	instance-synth
-Erdos625Problem	RESIDUAL	instance-synth
+Erdos625Problem	GREEN	
 Erdos625ProblemAristotle	RESIDUAL	instance-synth
 Erdos626Aristotle	GREEN	
 Erdos626Problem	GREEN	
@@ -1653,7 +1653,7 @@ Erdos747Problem	GREEN
 Erdos749Problem	RESIDUAL	unknown-const:le_liminf_of_le
 Erdos74Problem	GREEN	
 Erdos750Problem	GREEN	
-Erdos751Problem	RESIDUAL	type-mismatch
+Erdos751Problem	GREEN	
 Erdos752Problem	RESIDUAL	instance-synth
 Erdos753Problem	GREEN	
 Erdos754Problem	GREEN	
@@ -2221,7 +2221,7 @@ LawsOfLargeNumbersOQ01OQ01	RESIDUAL	signature-drift
 LawsOfLargeNumbersOQ01OQ02	GREEN	
 LawsOfLargeNumbersOQ01OQ02OQ01	RESIDUAL	type-mismatch
 LawsOfLargeNumbersOQ01OQ03	RESIDUAL	signature-drift
-LawsOfLargeNumbersOQ02	RESIDUAL	type-mismatch
+LawsOfLargeNumbersOQ02	GREEN	
 LawsOfLargeNumbersOQ03	GREEN	
 LawsOfLargeNumbersOQ03Aristotle	GREEN	
 LebesgueMeasure	GREEN	
@@ -2352,9 +2352,9 @@ QuadraticReciprocityAlgorithmOQ03FieldBridge	GREEN
 QuadraticReciprocityAlgorithmOQ03M2	GREEN	
 QuadraticReciprocityAlgorithmOQ03M2Capstone	GREEN	rewrite-drift
 QuadraticReciprocityAlgorithmOQ03Zolotarev	GREEN	rewrite-drift
-QuadraticReciprocityOQ03	RESIDUAL	instance-synth
-QuadraticReciprocityOQ03OQ01	RESIDUAL	instance-synth
-QuadraticReciprocityOQ03OQ01Exp	RESIDUAL	instance-synth
+QuadraticReciprocityOQ03	GREEN	
+QuadraticReciprocityOQ03OQ01	GREEN	
+QuadraticReciprocityOQ03OQ01Exp	GREEN	
 RamanujanSumFallacy	GREEN	
 RamseyHypergraph	GREEN	
 RamseyR4kExtensions	GREEN	
@@ -2601,7 +2601,7 @@ TestErdos43Api	GREEN
 TestHLTension	GREEN	
 TestHolderApi	GREEN	
 TestSphereLocEuc	GREEN	
-TestWolstenholme	RESIDUAL	unknown-const:ZMod.prod_univ_prime
+TestWolstenholme	GREEN	
 TestZetaNonzero	GREEN	
 ThreeSquares	GREEN	
 ThreeSquaresGaussEureka	GREEN	
