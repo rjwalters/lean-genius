@@ -33,6 +33,8 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 import Proofs.Erdos1059OQ01
 
+open Erdos1059OQ01
+
 /-!
 ## Setup
 
@@ -67,7 +69,7 @@ private theorem primeCount_step' {x p : ℕ} (hxp : x < p) (hp : p.Prime) :
   unfold primeCount
   apply Finset.card_lt_card
   -- Prove strict subset: range(x+1).filter ⊂ range(p+1).filter
-  apply lt_of_le_not_le
+  apply HasSubset.Subset.ssubset_of_not_subset
   · -- Forward inclusion
     apply Finset.filter_subset_filter
     exact Finset.range_mono (by omega)
@@ -110,9 +112,10 @@ theorem primeCount_unbounded' : ∀ N : ℕ, ∃ x : ℕ, N < primeCount x := by
     Then qualifyingPrimeCount(x) ≤ M for all x (some fixed M).
     By density_one_conjecture with k=1: eventually primeCount(x) ≤ 2·qualifyingPrimeCount(x) ≤ 2M.
     But primeCount grows without bound. Contradiction. -/
-theorem density_one_implies_infinitely_many :
-    density_one_conjecture → ErdosProblem1059' := by
-  intro h_density
+theorem density_one_implies_infinitely_many
+    (h_density : ∀ (k : ℕ), ∃ X, ∀ x ≥ X,
+      qualifyingPrimeCount x * (k + 1) ≥ primeCount x * k) :
+    ErdosProblem1059' := by
   by_contra h_fin
   rw [ErdosProblem1059', Set.not_infinite] at h_fin
   -- h_fin : Set.Finite {p | p.Prime ∧ AllFactorialSubtractionsComposite p}
