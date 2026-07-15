@@ -119,7 +119,7 @@ lemma collinear_OAA' : MoultonCollinear O_pt A_pt A'_pt := by
 lemma collinear_OBB' : MoultonCollinear O_pt B_pt B'_pt := by
   right
   exact ⟨2/3, 0,
-    onML_pos_left (by norm_num) _ (by norm_num) (by simp [O_pt] ),
+    onML_pos_left (by norm_num) _ (by simp [O_pt]) (by simp [O_pt] ),
     onML_pos_right (by norm_num) _ (by simp [B_pt] ) (by simp [B_pt]; ring),
     onML_pos_right (by norm_num) _ (by simp [B'_pt] ) (by simp [B'_pt]; ring)⟩
 
@@ -162,28 +162,28 @@ lemma B'_on_A'B' : onMoultonLine (-3/13) (66/13) B'_pt :=
 /-- Q = (27, 17) lies on the right-half Moulton line BC
     (left-slope 4/3, intercept -1; right slope 2/3). -/
 lemma Q_on_BC : onMoultonLine (4/3) (-1) Q_pt :=
-  onML_pos_right (by norm_num) _ (by simp [Q_pt]; norm_num) (by simp [Q_pt]; ring)
+  onML_pos_right (by norm_num) _ (by simp [Q_pt]) (by simp [Q_pt]; ring)
 
 /-- Q = (27, 17) lies on the right-half Moulton line B'C'
     (left-slope 14/9, intercept -4; right slope 7/9). -/
 lemma Q_on_B'C' : onMoultonLine (14/9) (-4) Q_pt :=
-  onML_pos_right (by norm_num) _ (by simp [Q_pt]; norm_num) (by simp [Q_pt]; ring)
+  onML_pos_right (by norm_num) _ (by simp [Q_pt]) (by simp [Q_pt]; ring)
 
 /-- B = (3, 1) lies on Moulton line BC. -/
 lemma B_on_BC : onMoultonLine (4/3) (-1) B_pt :=
-  onML_pos_right (by norm_num) _ (by simp [B_pt]; norm_num) (by simp [B_pt]; ring)
+  onML_pos_right (by norm_num) _ (by simp [B_pt]) (by simp [B_pt]; ring)
 
 /-- C = (0, -1) lies on Moulton line BC. -/
 lemma C_on_BC : onMoultonLine (4/3) (-1) C_pt :=
-  onML_pos_left (by norm_num) _ (by simp [C_pt]; norm_num) (by simp [C_pt]; ring)
+  onML_pos_left (by norm_num) _ (by simp [C_pt]) (by simp [C_pt])
 
 /-- B' = (9, 3) lies on Moulton line B'C'. -/
 lemma B'_on_B'C' : onMoultonLine (14/9) (-4) B'_pt :=
-  onML_pos_right (by norm_num) _ (by simp [B'_pt]; norm_num) (by simp [B'_pt]; ring)
+  onML_pos_right (by norm_num) _ (by simp [B'_pt]) (by simp [B'_pt]; ring)
 
 /-- C' = (0, -4) lies on Moulton line B'C'. -/
 lemma C'_on_B'C' : onMoultonLine (14/9) (-4) C'_pt :=
-  onML_pos_left (by norm_num) _ (by simp [C'_pt]; norm_num) (by simp [C'_pt]; ring)
+  onML_pos_left (by norm_num) _ (by simp [C'_pt]) (by simp [C'_pt])
 
 /-- R = (-6, 11) lies on Moulton line CA (slope -2, intercept -1). -/
 lemma R_on_CA : onMoultonLine (-2) (-1) R_pt :=
@@ -195,7 +195,7 @@ lemma R_on_C'A' : onMoultonLine (-5/2) (-4) R_pt :=
 
 /-- C = (0, -1) lies on Moulton line CA. -/
 lemma C_on_CA : onMoultonLine (-2) (-1) C_pt :=
-  onML_neg_slope (by norm_num) _ (by simp [C_pt]; ring)
+  onML_neg_slope (by norm_num) _ (by simp [C_pt])
 
 /-- A = (-2, 3) lies on Moulton line CA. -/
 lemma A_on_CA : onMoultonLine (-2) (-1) A_pt :=
@@ -203,7 +203,7 @@ lemma A_on_CA : onMoultonLine (-2) (-1) A_pt :=
 
 /-- C' = (0, -4) lies on Moulton line C'A'. -/
 lemma C'_on_C'A' : onMoultonLine (-5/2) (-4) C'_pt :=
-  onML_neg_slope (by norm_num) _ (by simp [C'_pt]; ring)
+  onML_neg_slope (by norm_num) _ (by simp [C'_pt])
 
 /-- A' = (-4, 6) lies on Moulton line C'A'. -/
 lemma A'_on_C'A' : onMoultonLine (-5/2) (-4) A'_pt :=
@@ -245,9 +245,9 @@ theorem desargues_fails : ¬ MoultonCollinear P_pt Q_pt R_pt := by
       -- hP': 9 = m * (-17) + b,  hQ': 17 = m * 27 + b  →  44m = 8 > 0
       linarith
     · -- m > 0: P.1 = -17 ≤ 0, Q.1 = 27 > 0, R.1 = -6 ≤ 0.
-      have hPx : P_pt.1 ≤ 0 := by simp [P_pt]; norm_num
-      have hQx : ¬ Q_pt.1 ≤ 0 := by simp [Q_pt]; norm_num
-      have hRx : R_pt.1 ≤ 0 := by simp [R_pt]; norm_num
+      have hPx : P_pt.1 ≤ 0 := by simp [P_pt]
+      have hQx : ¬ Q_pt.1 ≤ 0 := by simp [Q_pt]
+      have hRx : R_pt.1 ≤ 0 := by simp [R_pt]
       -- Extract equations for each point
       have hP' := onML_eq_pos_left hm _ hPx hP   -- 9 = m * (-17) + b
       have hQ' := onML_eq_pos_right hm _ hQx hQ  -- 17 = m / 2 * 27 + b
