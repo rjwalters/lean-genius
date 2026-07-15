@@ -241,10 +241,10 @@ theorem xy_edge_unique_triangle {N : ℕ} [NeZero N]
   -- z₁ - y = b₁ = a₁ = y - x, so z₁ = 2y - x
   -- z₂ - y = b₂ = a₂ = y - x, so z₂ = 2y - x
   have hz₁ : z₁ = 2 * y - x := by
-    have : z₁ - y = y - x := by rw [← ht₁b, ← ht₁a]; exact hab₁
+    have : z₁ - y = y - x := by rw [← ht₁b, ← ht₁a]; exact hab₁.symm
     linear_combination this
   have hz₂ : z₂ = 2 * y - x := by
-    have : z₂ - y = y - x := by rw [← ht₂b, ← ht₂a]; exact hab₂
+    have : z₂ - y = y - x := by rw [← ht₂b, ← ht₂a]; exact hab₂.symm
     linear_combination this
   linear_combination hz₁ - hz₂
 
@@ -314,8 +314,7 @@ theorem xz_edge_unique_triangle {N : ℕ} [NeZero N]
       (ZMod.isUnit_iff_coprime 2 N).mpr (Odd.coprime_two_left hOdd)
     have h2cast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
     rw [h2cast] at h2unit
-    have h2ne : (2 : ZMod N) ≠ 0 := h2unit.ne_zero
-    exact mul_left_cancel₀ h2ne h_diff
+    exact h2unit.mul_left_cancel h_diff
 
 /-- When A is AP-free, for each a ∈ A and x ∈ Z/NZ, the triple
     (0,x), (1,x+a), (2,x+2a) forms a triangle in the RS graph. -/
@@ -398,6 +397,7 @@ theorem ap_free_min_removal {N : ℕ} [NeZero N]
         (xVert x, zVert z) ∈ R ∨ (zVert z, xVert x) ∈ R := by
   intro R hR a x ha
   by_contra h
+  simp only at h
   push_neg at h
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := h
   have htri := ap_free_triangle_exists A a x ha
@@ -494,7 +494,8 @@ theorem roth_via_triangle_removal (delta : ℝ) (hdelta : 0 < delta) :
   -- Step 11: 9·eps_q < delta (from n₀ > 18/delta).
   have h9eps_lt : (9 : ℝ) * (eps_q : ℝ) < delta := by
     have heps_r : (eps_q : ℝ) = 1 / n₀ := by push_cast [eps_q]; ring
-    have h18 : (18 : ℝ) < delta * n₀ := by rwa [div_lt_iff₀ hdelta] at hn₀
+    have h18 : (18 : ℝ) < delta * n₀ := by
+      rw [div_lt_iff₀ hdelta] at hn₀; linarith
     rw [heps_r, show (9 : ℝ) * (1 / n₀) = 9 / n₀ from by ring,
         div_lt_iff₀ (by exact_mod_cast hn₀_pos : (0 : ℝ) < n₀)]
     linarith
