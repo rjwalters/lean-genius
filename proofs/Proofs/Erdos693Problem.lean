@@ -241,8 +241,8 @@ private theorem consecutiveGaps_foldl_max_le (lo hi : ℕ) :
       rw [hcg]; change (consecutiveGaps (b :: L')).foldl max (max acc (b - a)) ≤ hi - lo
       apply ih
       · exact max_le hacc (by
-          have := (hL a (List.mem_cons_self _ _)).1
-          have := (hL b (List.mem_cons_of_mem _ (List.mem_cons_self _ _))).2
+          have := (hL a (List.mem_cons_self)).1
+          have := (hL b (List.mem_cons_of_mem _ (List.mem_cons_self))).2
           omega)
       · intro x hx; exact hL x (List.mem_cons_of_mem _ hx)
 
@@ -279,8 +279,9 @@ noncomputable def countA (n k : ℕ) (hn : n ≥ 1) : ℕ :=
 
 /-- The sorted list of A is sorted in increasing order. -/
 theorem orderedA_sorted (n k : ℕ) (hn : n ≥ 1) :
-    (orderedA n k hn).Sorted (· ≤ ·) :=
-  Finset.sort_sorted (· ≤ ·) _
+    List.Pairwise (· ≤ ·) (orderedA n k hn) := by
+  unfold orderedA
+  exact Finset.pairwise_sort _ _
 
 /-- Membership in orderedA iff membership in setAFinset. -/
 theorem mem_orderedA_iff {n k : ℕ} (hn : n ≥ 1) (m : ℕ) :
@@ -379,28 +380,28 @@ theorem polylog_implies_subpoly : ∀ k : ℕ, polylogBoundedGap k → subpolyno
   -- (1) log n ≤ n^(ε/(2α)) from isLittleO bound
   have h_logb := hR (n : ℝ) hR_real
   rw [one_mul, Real.norm_eq_abs, Real.norm_eq_abs,
-      abs_of_nonneg hlog_nn, abs_of_nonneg (rpow_nonneg hn_nn _)] at h_logb
+      abs_of_nonneg hlog_nn, abs_of_nonneg (Real.rpow_nonneg hn_nn _)] at h_logb
   -- (2) (log n)^α ≤ n^(ε/2) by raising to power α
   have h_pow : Real.log (n : ℝ) ^ α ≤ (n : ℝ) ^ (ε / 2) :=
     calc Real.log (n : ℝ) ^ α
         ≤ ((n : ℝ) ^ (ε / (2 * α))) ^ α :=
-          rpow_le_rpow hlog_nn h_logb hα.le
-      _ = (n : ℝ) ^ (ε / (2 * α) * α) := rpow_mul hn_nn _ _
+          Real.rpow_le_rpow hlog_nn h_logb hα.le
+      _ = (n : ℝ) ^ (ε / (2 * α) * α) := (Real.rpow_mul hn_nn _ _).symm
       _ = (n : ℝ) ^ (ε / 2) := by congr 1; field_simp
   -- (3) C ≤ n^(ε/2) since n ≥ C^(2/ε)
   have h_C : C ≤ (n : ℝ) ^ (ε / 2) := by
     have hC_eq : C = (C ^ (2 / ε)) ^ (ε / 2) := by
-      rw [rpow_mul hC.le, show (2 : ℝ) / ε * (ε / 2) = 1 by field_simp, rpow_one]
+      rw [← Real.rpow_mul hC.le, show (2 : ℝ) / ε * (ε / 2) = 1 from by field_simp, Real.rpow_one]
     rw [hC_eq]
-    exact rpow_le_rpow (rpow_nonneg hC.le _) hCexp_real hε2.le
+    exact Real.rpow_le_rpow (Real.rpow_nonneg hC.le _) hCexp_real hε2.le
   -- Combine: maxGap ≤ C·(log n)^α ≤ C·n^(ε/2) ≤ n^(ε/2)·n^(ε/2) = n^ε
   calc (maxGapA n k hn1 : ℝ)
       ≤ C * Real.log (n : ℝ) ^ α := hN n hN_le hn1
     _ ≤ C * (n : ℝ) ^ (ε / 2) :=
         mul_le_mul_of_nonneg_left h_pow hC.le
     _ ≤ (n : ℝ) ^ (ε / 2) * (n : ℝ) ^ (ε / 2) :=
-        mul_le_mul_of_nonneg_right h_C (rpow_nonneg hn_nn _)
-    _ = (n : ℝ) ^ ε := by rw [← rpow_add hn_pos]; congr 1; ring
+        mul_le_mul_of_nonneg_right h_C (Real.rpow_nonneg hn_nn _)
+    _ = (n : ℝ) ^ ε := by rw [← Real.rpow_add hn_pos]; congr 1; ring
 
 /- ## Part XII: Summary -/
 

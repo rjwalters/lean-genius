@@ -72,10 +72,10 @@ theorem sunflower_petals_disjoint {α : Type*} [DecidableEq α]
     (A B : Finset α) (hA : A ∈ family) (hB : B ∈ family) (hne : A ≠ B) :
     Disjoint (Petal A core) (Petal B core) := by
   unfold Petal
-  simp only [disjoint_iff_inter_eq_empty]
-  ext x
-  simp only [mem_inter, mem_sdiff, mem_empty_iff_false, iff_false, not_and, not_not_mem]
-  intro ⟨hxA, hxnotC⟩ ⟨hxB, _⟩
+  rw [disjoint_iff_inter_eq_empty, Finset.eq_empty_iff_forall_notMem]
+  intro x hx
+  rw [mem_inter, mem_sdiff, mem_sdiff] at hx
+  obtain ⟨⟨hxA, hxnotC⟩, hxB, _⟩ := hx
   -- If x ∈ A and x ∈ B, then x ∈ A ∩ B = core
   have h := hsf A B hA hB hne
   have hxcore : x ∈ A ∩ B := mem_inter.mpr ⟨hxA, hxB⟩
@@ -94,6 +94,8 @@ This follows from the pigeonhole principle: at most 2^n subsets exist.
 axiom sunflower_number_exists (n k : ℕ) :
     ∃ m : ℕ, ∀ family : Finset (Finset (Fin n)),
       family.card ≥ m → ContainsSunflower family k
+
+attribute [local instance] Classical.propDecidable
 
 /--
 **m(n, k):**
@@ -191,7 +193,7 @@ theorem singleton_sunflower_example :
   intro A B hA hB hne
   simp only [mem_insert, mem_singleton] at hA hB
   rcases hA with rfl | rfl | rfl <;> rcases hB with rfl | rfl | rfl <;>
-    first | exact absurd rfl hne | simp [inter_eq_empty, Fin.ext_iff]
+    first | exact absurd rfl hne | decide
 
 /- 
 **Example: Sunflower with Non-empty Core**

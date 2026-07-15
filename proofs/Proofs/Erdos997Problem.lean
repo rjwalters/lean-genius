@@ -38,6 +38,8 @@ open Set Real
 
 namespace Erdos997
 
+attribute [local instance] Classical.propDecidable
+
 /-
 ## Part I: Basic Definitions
 
@@ -56,10 +58,8 @@ The fractional part is always in [0, 1).
 theorem frac_mem_Ico (x : ℝ) : frac x ∈ Ico 0 1 := by
   simp only [frac, mem_Ico]
   constructor
-  · exact sub_floor_div_mul_nonneg x 1
-  · have h := sub_floor_div_mul_lt_one x 1
-    simp at h
-    exact h
+  · exact sub_nonneg.mpr (Int.floor_le x)
+  · linarith [Int.lt_floor_add_one x]
 
 /--
 **Sequence in Unit Interval:**
@@ -316,6 +316,6 @@ theorem erdos_997_summary :
 **The Conjecture (OPEN):**
 For all α, the sequence {αpₙ} is not well-distributed.
 -/
-theorem erdos_997_conjecture_statement : Prop := Erdos997Conjecture
+def erdos_997_conjecture_statement : Prop := Erdos997Conjecture
 
 end Erdos997
