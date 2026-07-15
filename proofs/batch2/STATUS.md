@@ -2519,3 +2519,78 @@ clusters, the Sylow-API cluster *partially* yielded (OQ02Orbit: normalizer-signa
 1-binder swap. But `native_decide`-on-noncomputable-Fintype (SylowTheoremOQ04) is a hard model
 change, and the remaining N–Z residuals are genuine multi-site proof surgery. The statement-repair
 targets (Erdos724, Erdos1123, RamseysTheoremOQ04) all yielded to real intended-true fixes.
+
+## Increment 52 (Doctor, N–Z / Erdos≥600, deep-rework clusters) — +7 GREEN
+
+**+7 GREEN**:
+- **TriangleInequalityOQ01** (namespace move + parser): `LpAddConst` /
+  `LpAddConst_of_one_le` moved into the `ENNReal` namespace (were unqualified /
+  `MeasureTheory.*`) → qualify `ENNReal.LpAddConst[_of_one_le]`. Plus a v4.31 parser change:
+  a `/-- docstring -/` immediately before `omit hp in` orphans the docstring
+  (`unexpected token 'omit'; expected 'lemma'`) → put `omit hp in` FIRST, docstring second.
+- **PartitionTheorem** (Archive→mainline relocation): `Theorems100.partition_theorem`
+  (Archive/Wiedijk100Theorems — NOT in `import Mathlib`) moved into mainline as
+  `Nat.Partition.card_odds_eq_card_distincts` (Combinatorics.Enumerative.Partition.Glaisher),
+  stated `#(odds n) = #(distincts n)` → use `.symm`. Also `Nat.Partition.odds` now unfolds to
+  `restricted n (¬Even ·)`; the membership `simp` needs `[Nat.Partition.odds,
+  Nat.Partition.restricted]` and must KEEP `¬Even` (do NOT rewrite to `Odd`).
+- **QuadraticReciprocityAlgorithmOQ03FieldBridge** (free-green): dep cleared upstream; no edit.
+- **Erdos628Aristotle** (name ambiguity): `chromaticNumber` is now ambiguous —
+  `SimpleGraph.chromaticNumber : ℕ∞` vs project `GraphCore.chromaticNumber : ℕ`, both opened
+  via `open GraphCore SimpleGraph`. Qualify all 4 uses as `GraphCore.chromaticNumber`
+  (the ℕ one, paired with `cliqueNumber : ℕ`). sorry bodies are pre-existing Aristotle stubs.
+- **ShannonChannelCodingOQ03Aristotle** (missing project import): `open
+  InformationTheory.BinaryEntropy` refers to a PROJECT namespace (defined in
+  `ShannonChannelCodingOQ04.lean`, where `h` = binary entropy lives) — Mathlib REMOVED its own
+  `binaryEntropy`. The companion opened the namespace but imported only `Mathlib`, so `h` was
+  unresolved (`unknown namespace` + `Function expected`). Add `import
+  Proofs.ShannonChannelCodingOQ04`.
+- **Erdos620ProblemAristotle** (free-green): dep chain greened upstream; no edit.
+- **Erdos870Aristotle** (Type-valued theorem → def): v4.31 rejects a `theorem` whose statement
+  is Type-valued (`type of theorem … is not a proposition`). `lift_rep` returns `KRep A k n`
+  (a structure). Convert `theorem`→`def` and supply a REAL body (lift re-uses the same
+  terms/count/sum/bound and composes the subset field: `fun a ha => h (rep.subset a ha)`),
+  discharging the former `sorry` with an actual proof.
+
+**Statement repairs**: none this increment. The named targets Erdos1112/Erdos1125 were ALREADY
+greened by sibling increment 50 (skip). TestApi241 remains genuinely-false (`{1,2,4,8}` not B3).
+
+**New recipes** (see rename-map §7af):
+- `ENNReal.LpAddConst` / `ENNReal.LpAddConst_of_one_le` namespace move.
+- `omit … in` must PRECEDE (not follow) a docstring.
+- Archive→mainline: `Theorems100.partition_theorem` → `Nat.Partition.card_odds_eq_card_distincts`;
+  `Nat.Partition.odds = restricted n (¬Even ·)`.
+- `chromaticNumber` ℕ∞ (SimpleGraph) vs ℕ (project GraphCore) ambiguity → qualify.
+- Project-namespace `open X` needs the file defining `X` imported (Shannon `h` in OQ04).
+- **Type-valued `theorem` now rejected** → make it a `def` (v4.31 enforcement).
+
+**Probed-and-skipped (genuine regressions / multi-site, NOT mechanical seam)**:
+- **NormEuclideanZsqrtdFamilyOQ03OQ02** — `isPrincipalIdealRing` yields via
+  `EuclideanDomain.to_principal_ideal_domain`, but the UFD half is blocked by a real Mathlib
+  regression: `Nontrivial (ℤ√d)` LOST its instance in v4.31, so `IsDomain (ℤ√d)` no longer
+  synthesizes (globally or via the EuclideanDomain letI) — breaks `to_uniqueFactorizationMonoid`
+  and the whole PID/UFD/prime chain. Needs `Nontrivial (ℤ√d)` reconstructed throughout. Reverted.
+- **SzemerediRegularityOQ02** — `simp [hCard_eq0]`/`positivity` hit `maximum recursion depth`
+  (already `maxRecDepth 40000`); the loop is inside `positivity`'s internal simp, a v4.31
+  regression, not a rename. Surgical `rw` on the trans-branch clears but `positivity` still loops.
+  Reverted.
+- **Erdos608Problem** — `O(1)` pseudo-syntax in a theorem statement (`unexpected token '('`) +
+  `_ % (2*k+1)` omega failures on Fin-coerced mod. Statement-repair + drift. Deferred.
+- **Erdos680Problem** — `Real.tendsto_pow_mul_exp_neg_atTop_nhds n c hc` (scalar-`c` form)
+  REMOVED; only `tendsto_pow_mul_exp_neg_atTop_nhds_zero n` (coefficient 1) survives — needs the
+  `c`-scaled version reconstructed by composing with `x ↦ c*x`. Genuine, not a rename.
+- **Erdos662Problem / PicksTheoremOQ01OQ01OQ01** — `native_decide` on noncomputable
+  Fintype/`realInteriorCount` (the SetLike/noncomputable model change). Stuck.
+- **Erdos613Aristotle** — 3 omega failures rooted in `Nat.choose_two_right`'s `/2` truncated
+  division; needs per-theorem nlinarith surgery on the even-numerator facts (nonlinear). Deep.
+- **TestApi1056** — omega-in-`def` + `decide` failures (per skip-list). PNPBarriersLegacy —
+  `Computability.FinEncoding` API mismatch in a 5800-line file. Both deep.
+
+**VERDICT (N–Z / Erdos≥600 seam):** thinning but **NOT fully dry**. Single-recipe wins still
+surface reliably in a few recognizable classes: (a) Mathlib namespace MOVES (ENNReal.LpAddConst),
+(b) Archive→mainline theorem RELOCATIONS (partition), (c) name-AMBIGUITY qualifications
+(chromaticNumber), (d) missing PROJECT-namespace imports (Shannon h), (e) Type-valued-theorem→def
+enforcement, and (f) FREE-GREENS as deps clear (2 this increment). The hard residuals are genuine
+Mathlib regressions needing surgery (`Nontrivial (ℤ√d)` instance loss, positivity/simp
+maxRecDepth loops, native_decide-on-noncomputable, scalar-form lemma removals). Estimate ~5-10
+more single-recipe N–Z/Erdos≥600 files remain harvestable.

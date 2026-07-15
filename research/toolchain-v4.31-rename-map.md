@@ -1504,3 +1504,41 @@ subtraction made the original statement false; geometric gluing bound). No calle
   per decl; clearing it can surface a cluster of genuine drift (AmgmInequalityOQ02OQ01OQ02OQ01OQ03:
   4 reported → 6+ real induction-drift sites). Probe by fixing the head error and re-counting
   before committing to a file.
+
+## §7af — Increment 52 recipes (N–Z / Erdos≥600 deep-rework)
+
+- **`LpAddConst` / `LpAddConst_of_one_le` moved to the `ENNReal` namespace.** Unqualified or
+  `MeasureTheory.LpAddConst*` now fail (`Function expected` / `unknown-const`). Qualify:
+  `ENNReal.LpAddConst`, `ENNReal.LpAddConst_of_one_le`. (`eLpNorm_add_le'` stays
+  `MeasureTheory.eLpNorm_add_le'`.) The Mathlib file that uses them just does `open … ENNReal`.
+- **`omit … in` must PRECEDE a docstring, not follow it.** In v4.31 `/-- doc -/` immediately
+  before `omit h in theorem …` errors `unexpected token 'omit'; expected 'lemma'` (the docstring
+  is orphaned). Reorder to `omit h in` then `/-- doc -/` then the declaration.
+- **Euler partition theorem moved Archive→mainline.** `Theorems100.partition_theorem` lived in
+  `Archive/Wiedijk100Theorems/Partition.lean` (NOT reachable via `import Mathlib`). Now mainline:
+  `Nat.Partition.card_odds_eq_card_distincts (n) : #(odds n) = #(distincts n)`
+  (Mathlib.Combinatorics.Enumerative.Partition.Glaisher). For `#(distincts n) = #(odds n)` use
+  `.symm`. Related: `Nat.Partition.odds n = restricted n (¬Even ·)`; to reduce membership to
+  `∀ i ∈ p.parts, ¬Even i`, `simp [Nat.Partition.odds, Nat.Partition.restricted]` — do NOT rewrite
+  `¬Even`→`Odd` (the def is stated with `¬Even`, so it re-loops).
+- **`chromaticNumber` ambiguity.** With `open GraphCore SimpleGraph`, `chromaticNumber` resolves
+  to both `SimpleGraph.chromaticNumber : ℕ∞` and the project's `GraphCore.chromaticNumber : ℕ`
+  (`Ambiguous term`). Qualify to the intended one (usually `GraphCore.chromaticNumber`, matched to
+  `cliqueNumber : ℕ`).
+- **Project-namespace `open` needs the defining file imported.** `open InformationTheory.BinaryEntropy`
+  is a PROJECT namespace (Mathlib removed its own binaryEntropy); `h` (binary entropy) lives in
+  `Proofs.ShannonChannelCodingOQ04`. Companions that only `import Mathlib` get `unknown namespace`
+  + `Function expected` on `h`; add `import Proofs.ShannonChannelCodingOQ04`.
+- **Type-valued `theorem` now rejected.** `theorem f … : T` where `T : Type _` (e.g. returns a
+  `structure` like `KRep A k n`) errors `type of theorem … is not a proposition`. Make it a `def`.
+  (Often the body can be a real term, discharging any sorry — e.g. re-bundle the structure fields
+  and thread the hypothesis through the `Prop`-valued fields.)
+- **`Nontrivial (ℤ√d)` lost its instance (regression, NOT a rename).** `IsDomain (ℤ√d)` no longer
+  synthesizes (the global `Zsqrtd` instance calls `NoZeroDivisors.to_isDomain _` which needs
+  `Nontrivial`). Blocks `PrincipalIdealRing.to_uniqueFactorizationMonoid` and any UFD/prime chain
+  on `ℤ√d`. `EuclideanDomain.to_principal_ideal_domain` (PID half) still works under a local
+  `letI := euclideanDomain …`. Full fix needs `Nontrivial (ℤ√d)` reconstructed — deep.
+- **FREE-GREENS:** re-probe RESIDUAL files whose ONLY errors were in deps (own=0) — several now
+  build clean as earlier increments greened their deps (this increment:
+  QuadraticReciprocityAlgorithmOQ03FieldBridge, Erdos620ProblemAristotle). A `PASS` with no source
+  edit is a legitimate flip.
