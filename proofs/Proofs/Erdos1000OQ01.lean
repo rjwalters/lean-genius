@@ -119,9 +119,11 @@ theorem factorialSeq_densityRatio_ge (k : ℕ) (hk : 2 ≤ k) :
         · exact_mod_cast Nat.le_of_lt h_sum_lt
         · exact hfact_pos.le
     _ = 2 / ((k : ℝ) + 1) := by
+        have h1 : (k.factorial : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero k)
+        have h2 : ((k : ℝ) + 1) ≠ 0 := by positivity
         rw [hfact, Nat.cast_mul]
+        push_cast
         field_simp
-        ring
 
 /-- The factorial sequence is NOT Haight-type: ρ(k) ≥ 1/2 for k ≥ 3,
     so the density ratio cannot converge to 0. -/
@@ -130,10 +132,9 @@ theorem factorialSeq_not_vanishing :
   not_densityToZero_of_frequently_ge factorialSeq (by norm_num : (0 : ℝ) < 1/2)
     (eventually_atTop.mpr ⟨3, fun k hk => by
       have h := factorialSeq_densityRatio_ge k (by omega)
-      have : 1 - 2 / (↑k + 1) ≥ 1/2 := by
-        have : (2 : ℝ) / (↑k + 1) ≤ 1/2 := by
-          rw [div_le_div_iff₀ (by positivity : (0:ℝ) < ↑k + 1) (by norm_num : (0:ℝ) < 2)]
-          push_cast; linarith
+      have hk3 : (3 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+      have hbound : (2 : ℝ) / ((k : ℝ) + 1) ≤ 1/2 := by
+        rw [div_le_iff₀ (by positivity : (0:ℝ) < (k : ℝ) + 1)]
         linarith
       linarith⟩ |>.frequently)
 
@@ -170,21 +171,21 @@ theorem haight_density_one_low (A : IncreasingSeq) (hV : VanishingAverage A)
     calc (S.card : ℝ) * ε
         = ∑ _ ∈ S, ε := by rw [sum_const, nsmul_eq_mul]
       _ ≤ ∑ k ∈ S, densityRatio A k :=
-          sum_le_sum fun k hk => by simp only [mem_filter] at hk; exact hk.2
+          sum_le_sum fun k hk => (mem_filter.mp hk).2
       _ ≤ ∑ k ∈ range N, densityRatio A k :=
           sum_le_sum_of_subset_of_nonneg (filter_subset _ _)
             fun k _ _ => densityRatio_nonneg A k
   -- Sum = N * C_A(N) < N * δε/2
   have hsum_lt : ∑ k ∈ range N, densityRatio A k < N * (δ * ε / 2) := by
     have := hC; unfold cesaroAvg at this
-    rwa [div_lt_iff₀ hNr] at this
+    rw [div_lt_iff₀ hNr] at this; linarith
   -- So |S| * ε < N * δε/2, hence |S|/N < δ/2 < δ
   rw [Real.dist_eq, sub_zero, abs_of_nonneg (div_nonneg (Nat.cast_nonneg _) hNr.le)]
   calc (S.card : ℝ) / N
       ≤ N * (δ * ε / 2) / (N * ε) := by
         rw [div_le_div_iff₀ hNr (by positivity : (0:ℝ) < N * ε)]
         nlinarith
-    _ = δ / 2 := by field_simp; ring
+    _ = δ / 2 := by field_simp
     _ < δ := by linarith
 
 /-! ## Part III: Growth Rate Constraints -/
@@ -224,11 +225,8 @@ theorem divDensity_le_one (A : IncreasingSeq) (k : ℕ) :
 theorem divDensity_zero (A : IncreasingSeq) :
     divDensity A 0 = 0 := by
   unfold divDensity
-  suffices h : ((A.seq 0).divisors.filter (fun e => ∃ j, j < 0 ∧ e = A.seq j)) = ∅ by
-    rw [h, card_empty, Nat.cast_zero, zero_div]
-  rw [eq_empty_iff_forall_not_mem]
-  intro e; simp only [mem_filter, Nat.mem_divisors, not_and]
-  intro _; rintro ⟨j, hj, _⟩; omega
+  simp only [Nat.not_lt_zero, false_and, exists_false, Finset.filter_false,
+             Finset.card_empty, Nat.cast_zero, zero_div]
 
 /-- For the factorial sequence, divDensity ≤ k/d((k+1)!) where d(n) is
     the divisor count. Since d(k!) grows super-polynomially while k grows
@@ -240,7 +238,7 @@ theorem factorialSeq_divDensity_le (k : ℕ) :
   dsimp
   rcases Nat.eq_zero_or_pos ((k + 1).factorial).divisors.card with h | h
   · simp [h]
-  · rw [div_le_div_right (Nat.cast_pos.mpr h)]
+  · gcongr
     exact_mod_cast usedDivisors_card_le factorialSeq k
 
 end Erdos1000OQ01
