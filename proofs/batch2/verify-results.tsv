@@ -157,7 +157,7 @@ BallotProblemOQ01OQ02OQ01Aristotle	GREEN
 BallotProblemOQ01OQ02OQ01OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
-BallotProblemOQ01OQ02OQ04	RESIDUAL	proof-drift
+BallotProblemOQ01OQ02OQ04	GREEN	
 BallotProblemOQ01OQ04	RESIDUAL	proof-drift
 BallotProblemOQ01OQ04Core	GREEN	
 BallotProblemOQ01OQ04OQ01	RESIDUAL	proof-drift
@@ -214,7 +214,7 @@ BezoutIdentityOQ01OQ02OQ02Descent	GREEN
 BezoutIdentityOQ01OQ02OQ02Transitive	RESIDUAL	unknown-const:det_headBlockN
 BezoutIdentityOQ02OQ01OQ01OQ01OQ01	RESIDUAL	type-mismatch
 BezoutIdentityOQ02OQ01OQ02	GREEN	
-BezoutIdentityOQ02OQ01OQ02OQ02OQ03	RESIDUAL	parse-error
+BezoutIdentityOQ02OQ01OQ02OQ02OQ03	GREEN	
 BezoutIdentityOQ02OQ01OQ02OQ03	RESIDUAL	type-mismatch
 BezoutIdentityOQ02OQ02	GREEN	unknown-const:euclids_lemma_irreducible
 BezoutIdentityOQ02OQ02OQ01OQ03	GREEN	
@@ -2383,7 +2383,7 @@ RothTheoremOQ03OQ01OQ01OQ01	GREEN
 RothTheoremOQ03OQ01OQ01OQ01OQ01	GREEN	
 RothTheoremQuantitative	GREEN	
 RothTheoremQuantitativeAristotle	RESIDUAL	unknown-const:div_le_div_of_le_left
-RothTriangleRemoval	RESIDUAL	signature-drift
+RothTriangleRemoval	GREEN	
 SchauderFixedPoint	RESIDUAL	instance-synth
 SchauderFixedPointOQ01	GREEN	instance-synth
 SchauderFixedPointOQ03	RESIDUAL	instance-synth
