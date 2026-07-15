@@ -41,30 +41,44 @@ Ramsey numbers for 3-colorings.
 /-- A 3-coloring of edges of a complete graph -/
 def EdgeColoring3 (n : ℕ) := Fin n × Fin n → Fin 3
 
-/-- A cycle graph C_n on n vertices -/
+/-- A cycle graph C_n on n vertices.
+    The `i ≠ j` conjunct is required: without it the adjacency
+    `(i+1) % n = j` is reflexive at `n = 1` (`0 + 1 ≡ 0`), which would
+    make the graph have a self-loop and break `loopless`. -/
 def cycleGraph (n : ℕ) : SimpleGraph (Fin n) where
-  Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
+  Adj i j := ((i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val) ∧ i ≠ j
   symm := by
     constructor
     intro i j h
+    obtain ⟨h, hne⟩ := h
+    refine ⟨?_, hne.symm⟩
     cases h with
     | inl h => right; exact h
     | inr h => left; exact h
   loopless := by
     constructor
     intro i h
-    cases h with
-    | inl h => omega
-    | inr h => omega
+    exact h.2 rfl
 
 /-- A subgraph is monochromatic under a coloring if all its edges have the same color -/
 def IsMonochromaticCycle (coloring : EdgeColoring3 m) (c : Fin 3)
     (embedding : Fin n → Fin m) : Prop :=
-  ∀ i : Fin n, coloring (embedding i, embedding ((i.val + 1) % n)) = c
+  ∀ i : Fin n,
+    coloring (embedding i, embedding ⟨(i.val + 1) % n, Nat.mod_lt _ i.pos⟩) = c
 
 /-- R(C_n;3) = minimum m such that any 3-coloring of K_m contains a monochromatic C_n -/
 noncomputable def R_cycle_3 (n : ℕ) : ℕ :=
-  Nat.find (⟨4 * n, by trivial⟩ : ∃ m, ∀ coloring : EdgeColoring3 m,
+  Nat.find (⟨4 * n, by
+    -- A constant embedding sends the whole cycle to a single vertex `v`,
+    -- so every edge is `(v, v)` and the "cycle" is trivially monochromatic
+    -- in the color `coloring (v, v)`.
+    intro coloring
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · subst hn
+      exact ⟨0, Fin.elim0, fun i => i.elim0⟩
+    · have hm : 0 < 4 * n := by omega
+      exact ⟨coloring (⟨0, hm⟩, ⟨0, hm⟩), fun _ => ⟨0, hm⟩, fun _ => rfl⟩⟩ :
+    ∃ m, ∀ coloring : EdgeColoring3 m,
     ∃ c : Fin 3, ∃ embedding : Fin n → Fin m, IsMonochromaticCycle coloring c embedding)
 
 /-
