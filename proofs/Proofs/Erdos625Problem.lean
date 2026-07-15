@@ -92,7 +92,7 @@ def ErdosRenyi (n : ℕ) : Type := RandomGraph n (1/2)
 
 /-- Almost sure property for random graphs. -/
 def AlmostSurely (P : ∀ n, RandomGraph n (1/2) → Prop) : Prop :=
-  ∀ ε > 0, ∃ N, ∀ n ≥ N, True  -- Placeholder for measure-theoretic statement
+  ∀ ε > (0:ℝ), ∃ N : ℕ, ∀ n ≥ N, True  -- Placeholder for measure-theoretic statement
 
 /- ## Part IV: Known Bounds -/
 
@@ -195,13 +195,13 @@ theorem cochromatic_clique_independence (G : SimpleGraph V) :
 /-- χ(G) is concentrated in an interval of width O(n/log²n). -/
 theorem chromatic_concentration :
     AlmostSurely (fun n G =>
-      ∃ χ₀ : ℕ, |chromaticNumber G.graph - χ₀| ≤ n / (Real.log n)^2) := by
+      ∃ χ₀ : ℕ, |(chromaticNumber G.graph : ℝ) - χ₀| ≤ n / (Real.log n)^2) := by
   sorry
 
 /-- ζ(G) is also concentrated (less is known). -/
 theorem cochromatic_concentration :
     AlmostSurely (fun n G =>
-      ∃ ζ₀ : ℕ, |cochromaticNumber G.graph - ζ₀| ≤ n / Real.log n) := by
+      ∃ ζ₀ : ℕ, |(cochromaticNumber G.graph : ℝ) - ζ₀| ≤ n / Real.log n) := by
   sorry
 
 /- ## Part X: Special Graph Classes -/
@@ -242,8 +242,10 @@ theorem known_summary :
 
 /-- The problem remains open despite recent progress. -/
 theorem problem_status :
-    heckel_steiner_unbounded 1 →  -- Difference grows
-    ¬(∀ n G, chromaticNumber G.graph = cochromaticNumber G.graph) := by  -- Not always equal
+    -- Difference grows (statement of `heckel_steiner_unbounded` at M = 1)
+    AlmostSurely (fun n G => chromaticNumber G.graph - cochromaticNumber G.graph ≥ 1) →
+    ¬(∀ (n : ℕ) (G : RandomGraph n (1/2)),
+      chromaticNumber G.graph = cochromaticNumber G.graph) := by  -- Not always equal
   sorry
 
 end Erdos625

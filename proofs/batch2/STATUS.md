@@ -73,6 +73,249 @@ clears it — a false EXIT=1, not a real error.)
   projection type-mismatches, `(H ⊓ K).subgroupOf K` rewrite needs inf-comm. Deep.
 
 ---
+# DOCTOR INCREMENT 77 (deep-rework partition Erdos<500 / lane1, #38065, 2026-07-15)
+
+Container cpuset 0-5, 11g, cache `lean-mathlib-cache-v431`, worktree issue-38065, branch
+`feature/issue-38065-inc77` off origin/feature/issue-37508. **+5 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos301Problem** (parse-error→proof-drift): (1) `by_cases`-neg branch omega for `2 ≤ #B`
+  needed `have hpos := Finset.Nonempty.card_pos hne` (omega no longer picks up nonempty→card_pos).
+  (2) `absurd h hn |>.elim` → drop `.elim` (`absurd` already returns any type). (3) sum-lower
+  rewrite `rw [div_eq_inv_mul, ← Finset.sum_const]` no longer matched (nsmul vs mul) → replaced
+  with `have hrw : #B/N = ∑ _∈B, 1/N := by rw [Finset.sum_const, nsmul_eq_mul]; ring` then
+  `Finset.sum_le_sum`. (4) `inv_anti₀` arg types must be pinned first (`have hbpos`/`hbN` before
+  the `exact`, else the ℕ/ℝ metavar defaults wrong). (5) singleton branch `exact_mod_cast hBsum.symm`
+  → drop `.symm` (cast produced `b=a`, needed `a=b`).
+- **Erdos3LogHarmonic** (parse-error/mod_cast): `set N₀ := max 2 (…) with hN₀def` makes N₀ opaque,
+  so `exact_mod_cast le_max_left 2 …` fails to unify `↑N₀` with `max …`. Fix: `rw [hN₀def]` first,
+  then cast. **Also: re-typing the max's argument `⌈1/c^2⌉₊` picks up rpow `c^(2:ℝ)` (mismatch with
+  the def's npow `c^(2:ℕ)`)** — use `le_max_left 2 _` / `le_max_right 2 _` (underscore) so it unifies
+  against the goal's correct powers. (Cascades to **Erdos3Problem** import; that file has its own
+  residual errors — see leads.)
+- **Erdos407Problem** (proof-drift): `Nat.one_le_mul` gone → `Nat.mul_pos` (`1≤x` defeq `0<x` in ℕ).
+  **`Set.toFinset` on `{x : ℕ×ℕ×ℕ×ℕ | …bounded…}` fails `Fintype ↥S` synth** (ambient infinite);
+  since `w` is `noncomputable` and only used in abstract `w n ≤ C` bounds, switched
+  `Finset.card {…}.toFinset` → `{…}.ncard` (Set.ncard needs no Fintype).
+- **Erdos203Problem** (rewrite-drift): (1) mod-arith calc `rw [Nat.add_mod, Nat.mul_mod]` left an
+  extra inner `%p` → rebuilt as two `have`s (`hmul` via `Nat.mul_mod,hmod,←Nat.mul_mod`, then
+  `Nat.add_mod,hmul,←Nat.add_mod`). (2) pow-monotone products: `nlinarith` couldn't derive
+  `2^k₁·3^l·m ≤ 2^k₂·3^l·m` from `2^k₁≤2^k₂` → chain `mul_le_mul_right'`/`mul_le_mul_left'` then
+  omega. (3) **omega def-unfold seam:** after `rcases … with rfl`, `p` carries def
+  `selfridge_sierpinski` but the helper bound `hge` used literal `78557`; omega no longer unfolds
+  the def so the `2^k*_` atoms didn't match → restated `hge` in terms of `selfridge_sierpinski`
+  (`simp only [selfridge_sierpinski]; nlinarith`).
+- **Erdos27Problem** (rewrite-drift): (1) `linarith [htend.liminf_eq]` couldn't equate
+  `asymptoticUncoveredDensity S` (a `liminf` def) with the hint's `liminf …` atom → `exact
+  le_of_eq htend.liminf_eq` (defeq). (2) Finset.map embedding `⟨(·+m₁), by intro; omega⟩`: bare
+  `intro` no longer intros all Injective binders → `add_left_injective m₁`. (3) once the def
+  elaborated, `Finset.map_insert` leaves the embedding **unreduced** `{toFun:=…} y` → prepend
+  `simp only [Function.Embedding.coeFn_mk]` before the `rw [show …]`. (4) `simp only [← naturalDensity]`
+  rejected (can't reverse-unfold a def) → fold via explicit `have hfold : (∏ …) = naturalDensity 2 m
+  := rfl; rw [hfold, ihm]`. (5) `(max 2 N : ℝ)` ascription elaborates to **real-max** `max 2 ↑N`,
+  mismatching the goal's **cast-of-nat-max** `↑(max 2 N)` → `set K : ℕ := max 2 N` unifies both.
+  (6) a broken calc (`1 < 1/ε*ε` is `1<1`; old `div_mul_cancel₀` drift) rebuilt as
+  `1 = ε*(1/ε) < ε*↑N ≤ ε*↑K`. Earlier `sorry` warnings were cascade artifacts of the broken def;
+  final file is genuinely sorry-free.
+
+## New systematic seams (rename-map candidates)
+1. **`set x := <expr> with h` makes `x` opaque to `omega`/`exact_mod_cast`/`simp` unfolding** — when
+   a later tactic needs the body, `rw [h]` first. (Seen twice: Erdos301 sum, Erdos3LogHarmonic N₀,
+   Erdos27 K.) Corollary: `omega` no longer unfolds plain `def`s (Erdos203 `selfridge_sierpinski`).
+2. **Numeric-literal power under a type ascription flips npow↔rpow:** `⌈1/c^2⌉₊` re-typed inside a
+   proof elaborates `c^(2:ℝ)`; leave the argument as `_` to unify against the goal's `c^(2:ℕ)`.
+3. **`Set.toFinset` needs `Fintype ↥S`** which is unsynthesizable for bounded subsets of infinite
+   types → for `noncomputable` counts used only in abstract bounds, use **`Set.ncard`**.
+4. **`Nat.one_le_mul` removed → `Nat.mul_pos`** (`1≤·` defeq `0<·` in ℕ).
+5. **`Finset.map`/`Finset.map_insert` leave the `Function.Embedding` application unreduced** — add
+   `simp only [Function.Embedding.coeFn_mk]` to beta-reduce before matching `f a` patterns.
+6. **`simp only [← <def>]` is rejected** (a def name can only be unfolded forward) → fold via a
+   local `have : … = <def> … := rfl; rw [this]`.
+7. **`absurd h hn |>.elim`** — drop the `.elim`; `absurd` already yields any goal type.
+8. **`X.symm` where `X : a ∈ l`** resolves to the removed `List.Mem.symm` — use `Ne.symm`/`Eq.symm`
+   explicitly or restructure (seen deferred in Erdos86).
+
+## Statement repairs (for #38611)
+- None this increment (no false-as-stated theorems hit; all were genuine v4.31 surface drift).
+
+## Good next leads (lane1, Erdos<500, still RESIDUAL)
+- **Erdos3Problem** (imports Erdos3LogHarmonic — now GREEN, olean built): remaining 4 errors —
+  `522` type-mismatch after simp, `788` typeclass stuck, `840` "no goals", `1225` **unterminated
+  comment** (find the stray `/-`), plus a *pre-existing* `sorry` at 179 (docstring says the
+  implication is not known — keep it).
+- **Erdos86Problem** (parse-error, ~6 err): `List.Mem.symm` gone (L72), `{ … // ∀ [DecidableRel] … }`
+  set-builder `//` parse (L115) — the `f` sSup comprehension needs restated binder syntax, `//` in
+  `{ x | p x // q }` is invalid; `HypercubeSubgraph` synth (L83), linarith L143, rewrite L182.
+- **Erdos20Problem** (2 err): `SunflowerCore := petals.inf id` needs `OrderTop (Finset α)` (only
+  `[DecidableEq α]` in scope, no Fintype) — needs a def redesign (e.g. filter over `petals.sup id`),
+  plus a `not a positivity goal` at L100. Deferred as def-change.
+- **Erdos247Problem** blocked cross-lane on `LiouvilleTheorem.olean` (LiouvilleTheorem is RESIDUAL in
+  another lane) — will cascade GREEN once that lane fixes it.
+- Cheap-ish single/low-blocker rows to try next: Erdos40Problem (5 scattered: omega/positivity/tauto/
+  linarith), Erdos291Problem, Erdos184Problem, Erdos95Problem, Erdos209Problem (all 5 err).
+
+---
+# DOCTOR INCREMENT 78 (deep-rework partition Erdős ≥ 500 / lane2, #38065, 2026-07-15)
+
+Container cpuset 6-11, 11g, cache `lean-mathlib-cache-v431-b`, worktree doctor-b, branch
+`feature/issue-38065-inc78` off origin/feature/issue-37508. **+4 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos1035Problem** (instance-synth): four seams in the popcount-parity lemma /
+  hypercube-bipartite proof. (1) **Big-operator `∑ x ∈ s, f` now parses greedily over a
+  trailing `= …`** — `have h : ∑ … = ∑ … := by` elaborated the `= ∑…` INTO the first sum body
+  (→ `AddCommMonoid Prop` / `OfNat (Sort) 1`); fix = parenthesize each sum. (2) `Bool.true_xor`
+  → **`Bool.xor_true`** after `Nat.testBit_two_pow_self` puts the literal on the RIGHT
+  (`b ^^ true`). (3) `Nat.testBit_two_pow_of_ne hmem.1` wrong orientation → **`(Ne.symm hmem.1)`**
+  (lemma wants `k ≠ j`, mem_erase gives `j ≠ k`). (4) `Fin.mk.injEq` didn't fire on the `≠` goal
+  (add **`ne_eq`**) and the resulting Nat-`≠` is the reverse of the lemma → **`.symm`**. Also the
+  `cases hb`/`omega` branches left `if false = true then 1 else 0` opaque to omega — reduced with
+  `Bool.false_eq_true, if_false, if_true, ite_true` in the `simp only`.
+- **Erdos625Problem** (instance-synth): (1) placeholder `AlmostSurely := ∀ ε > 0, ∃ N, ∀ n ≥ N,
+  True` had **untyped ε and N** → `LE (?m ε)` stuck; annotate `∀ ε > (0:ℝ), ∃ N : ℕ`. (2) abs of a
+  ℕ subtraction: `|chromaticNumber G.graph - χ₀|` needs `AddGroup ℕ` → coerce inside abs
+  `|(chromaticNumber G.graph : ℝ) - χ₀|` (same for cochromatic). (3) **statement repair**
+  (#38611 cand.): `problem_status` used `heckel_steiner_unbounded 1` (a *proof term* of type
+  `AlmostSurely …`) in `→`-hypothesis position (type expected, got term) — replaced with the
+  statement `AlmostSurely (fun n G => … ≥ 1)`; and its conclusion `∀ n G, … G.graph …` had
+  unconstrained binders → annotated `∀ (n : ℕ) (G : RandomGraph n (1/2))`. (pre-existing sorries
+  kept — file is a survey of an open problem.)
+- **Erdos559Problem** (elab-drift): (1) `edgeCount`'s `fun p : V×V => p.1 < p.2` needs
+  **`LT V`** — the v4.26-green source only had `[Fintype V][DecidableEq V]`, so an implicit order
+  instance is gone in v4.31; added `[LinearOrder V]` to `edgeCount`/`IsTree`/`IsCycle` (all
+  concrete callers use `Fin n`, which has it). (2) anonymous `⟨…⟩` for `FiniteGraph.mk` no longer
+  auto-fills the **default-valued `dec` field** — provide 4th field `inferInstance`. (3) the
+  `Nat.find` witness graph was annotated `: FiniteGraph V` but the existential needs
+  `FiniteGraph (Fin m)`; dropped the wrong annotation so expected-type drives it (complete-graph
+  ctor works for any DecidableEq type).
+- **Erdos751Problem** (instance-synth): `minDegree`/`maxDegree` via `Finset.min'`/`max'` of
+  `Finset.univ.image G.degree`. Two fixes: (a) **`G.degree` carries an instance binder**
+  `[Fintype ↑(G.neighborSet v)]` so bare `Finset.image G.degree` fails — wrap `(fun v => G.degree v)`
+  and add `[DecidableRel G.Adj]`; (b) `min'`/`max'` nonempty obligation `Finset.univ.Nonempty`
+  needs `[Nonempty V]` (added to the section `variable` line; auto-included into every
+  `minDegree G` statement). Blanket-added `[DecidableRel G.Adj]` after each `(G : SimpleGraph V)`.
+
+## New systematic seams (rename-map candidates)
+- **Big-operator notation `∑ x ∈ s, f` / `∏` binds greedily over a trailing binary relation**
+  (`= …`, `≤ …`) in v4.31 — any `have h : ∑ … = ∑ … := by` where the sums are written without
+  surrounding parens now folds the RHS into the first summand (yields bogus `AddCommMonoid Prop`
+  / `OfNat (Sort ?u) 1`). Fix: parenthesize each big-operator term.
+- **`Bool.true_xor` vs `Bool.xor_true`** — pick by which side the literal ends up on after
+  `Nat.testBit_two_pow_self`; the self-rewrite yields `b ^^ true` → `Bool.xor_true`.
+- **Anonymous-constructor `⟨…⟩` no longer auto-fills structure fields with `:= by …`/`:=` defaults**
+  — must supply every explicit field (e.g. a `DecidableRel`-valued `dec := by infer_instance` field
+  now needs an explicit `inferInstance` arg). (Recurred across Erdos559 + others in-wave.)
+- **min-over-ℕ seam:** `Finset.inf` over ℕ now demands `OrderTop ℕ` (absent); `Finset.min'`/`max'`
+  demand `[Nonempty V]`; and `SimpleGraph.degree` needs `[DecidableRel G.Adj]` to shed its
+  `[Fintype (neighborSet v)]` binder before use in `Finset.image`. (Erdos751 fixed; Erdos803 same
+  shape, deferred.)
+
+## Statement repairs (for #38611, gallery-meta re-audit)
+- **Erdos625Problem.problem_status** — was type-incorrect (proof term in `→`-hyp position);
+  restated hypothesis as the statement `AlmostSurely (fun n G => χ − ζ ≥ 1)`. Not a soundness
+  change (proof is a pre-existing `sorry`), but the gallery meta should reflect the corrected form.
+- **Erdos807Problem.erw_conjecture_false** (NOT flipped — deferred): with the placeholder
+  `def ERW_conjecture n := True`, the theorem `¬∀ n, ERW_conjecture n` is genuinely FALSE and
+  `intro _; trivial` cannot close `⊢ False`. This is an unsound placeholder formalization
+  (a `True` stand-in makes the "conjecture is false" corollary unprovable). Needs a real
+  (dis)provable formalization or restructuring — flagged as a #38611 re-audit candidate, not a
+  mechanical migration flip.
+
+## Next leads for this partition (Erdős ≥ 500)
+- **Erdos1007Problem.olean was BUILT into cache lean-mathlib-cache-v431-b** (green parent) to
+  unmask children — but Erdos1007OQ05 is NOT a pure cascade (own drift: line 70 `Finset.add_sum_erase`
+  rewrite + a `|>.sum … = 0` parse error at 78) and Erdos1007OQ01 is heavy (whnf timeout, unknown
+  `K5_unit_embedding`, `open` token). Erdos1014Problem is the real cascade hub (21 err) — fixing it
+  unmasks **pure missing-olean** children Erdos1014OQ02 + Erdos1014OQ03Concrete (each a single
+  "object file … .olean does not exist" error, so they'll go green the moment the parent olean lands
+  in the cache).
+- **Cheap-ish (single seam family):** Erdos803Problem (3 err, `Finset.inf`→`min'`+Nonempty, same as
+  Erdos751), Erdos556Problem (4 err — but has an unsound edge case: `cycleGraph` loopless is FALSE
+  for n=1; fix by adding `i ≠ j` to `Adj`; plus a `by trivial` on a Ramsey existence that needs a
+  real constant-embedding witness — #38611 candidate).
+- **Error-count survey (this wave, uncached-sibling counts):** 559✓ 625✓ 751✓ 807(2,deferred)
+  803(3) 556(4) 720(5,all omega) 732(5) 766(5) 796(5) 537/525/505/1040(6) 781/782/794/738(6)
+  1056/515/533(10-11) 1019(11) — lower is cheaper.
+
+---
+# DOCTOR INCREMENT 80 (deep-rework partition non-Erdos L–Z / lane4, #38065, 2026-07-15)
+
+Container cpuset 18-23, 11g, cache `lean-mathlib-cache-v431-d`, worktree doctor-d, branch
+`feature/issue-38065-inc80` off origin/feature/issue-37508. **+5 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+(Local-import chains built with in-container `lake build Proofs.X` to materialize dependency oleans.)
+
+## Flips (failure class in parens)
+- **QuadraticReciprocityOQ03** (instance-synth) — HUB. Two seams:
+  (1) **`legendreSym.at_neg_one` now returns `χ₄ ↑p`** (was `(-1)^(p/2)`). Bridge with
+  **`ZMod.χ₄_eq_neg_one_pow (hodd : p % 2 = 1)`** (`ZModChar.lean:77`): `rw [legendreSym.at_neg_one hp,
+  χ₄_eq_neg_one_pow hodd]` where `hodd := (Fact.out : p.Prime).eq_two_or_odd.resolve_left hp`.
+  (2) **`map_mul (legendreSym p)` no longer synthesizes** — `legendreSym p` is a plain `ℤ→ℤ`, not a
+  bundled hom; use **`legendreSym.mul p a b`** (`Basic.lean:154`). (3) **`decide` on `legendreSym k a`
+  needs explicit `instance : Fact (Nat.Prime k)`** for each literal k (v4.31 stopped auto-synthesizing
+  `Fact (Nat.Prime <lit>)`) — added `instance : Fact (Nat.Prime 5/7/11/13/17) := ⟨by norm_num⟩`.
+- **QuadraticReciprocityOQ03OQ01** (instance-synth, dependent of ↑). **`legendreSym.eq_one_iff` now takes
+  `p` EXPLICITLY** (section `variable (p : ℕ)` at `Basic.lean:97`): `legendreSym.eq_one_iff h2` →
+  `legendreSym.eq_one_iff p h2`. Also `IsSquare`-form is unchanged (`exists_sq_eq_two_iff` still
+  `IsSquare (2:ZMod p) ↔ …`). Added `Fact (Nat.Prime 3/5/23/31/41)` instances for the `decide`s.
+- **QuadraticReciprocityOQ03OQ01Exp** (instance-synth, transitive dependent). No own edits — went GREEN
+  once its two-deep local-import chain (OQ03 → OQ03OQ01) built.
+- **LawsOfLargeNumbersOQ02** (type-mismatch). (1) `IndepFun.variance_sum` yields
+  `Var[∑ i, X i]` (function-sum); goal is `Var[fun ω => ∑ i, X i ω]`. Bridge with an explicit
+  `funext ω; rw [Finset.sum_apply]` `have` then `exact` (the old `simpa [Finset.sum_apply] using …`
+  no longer fires — `sum_apply` needs an actual application node). (2) **`Nat.cast_nonneg` stuck on
+  `IsOrderedRing ?m`** metavar → give it the arg: `Nat.cast_nonneg _`. (3) tendsto-lambda `fun n =>
+  C / ↑n` inferred as `ℝ→ℝ`; annotate binder `fun n : ℕ => …`. (4) a trailing `ring` became
+  "no goals" after `field_simp` closed it — dropped.
+- **TestWolstenholme** (unknown-const). (1) removed two dead `#check`s (`ZMod.prod_univ_prime`,
+  `Finset.sum_pow_eq_pow_sum` — neither exists in v4.31, both unused by the proof). (2)
+  **`IsCyclic.exists_monoid_generator` (→ `Submonoid.powers`) vs `orderOf_eq_card_of_forall_mem_zpowers`
+  (wants `Subgroup.zpowers`)** — switch to **`IsCyclic.exists_generator`** which delivers the `zpowers`
+  form directly. (3) `orderOf_eq_card_of_forall_mem_zpowers` now yields **`Nat.card`**, not
+  `Fintype.card` → append `, Nat.card_eq_fintype_card` to the rw. (4) **`omega` cannot use a
+  variable-divisor `(p-1) ∣ k`** — derive `Nat.le_of_dvd (by omega) this : p-1 ≤ k` first, then omega.
+  (5) `Finset.sum_nbij` summand goal `g^k*a^k = a^k*g^k` needs an explicit `ring` after the `simp only`.
+
+## New systematic seams (rename-map candidates)
+- **`Mathlib.Tactic.GeneralizeProofs` namespace moved to `Batteries.Tactic.GeneralizeProofs`** — the
+  `generalize_proofs` tactic (incl. the `MAbs`/`MGen` monads, `abstractProofs`, `MGen.runMAbs`,
+  `MAbs.findProof?/insertProof/withLocal/withRecurse`) migrated Mathlib→Batteries. Affects any file
+  vendoring the Harmonic modified `generalize_proofs` (all `*Aristotle` companions with a
+  `namespace Harmonic.GeneralizeProofs` block). Swap the `open … Mathlib.Tactic.GeneralizeProofs` →
+  `open … Batteries.Tactic.GeneralizeProofs` (NB: a failed `open` on the unknown namespace rejects the
+  WHOLE `open` line, cascading dozens of phantom "unknown identifier MetaM/MAbs/binderIdent" errors —
+  fix the namespace first, re-verify, only then chase real errors).
+- **`legendreSym.at_neg_one : … = χ₄ ↑p`** (character form now) + bridge **`ZMod.χ₄_eq_neg_one_pow`**.
+- **`legendreSym p` is a bare function** — `map_mul`/`map_pow` fail; use `legendreSym.mul`/`.pow`.
+- **`legendreSym.eq_one_iff`/`eq_neg_one_iff` take `p` explicitly** (positional first arg).
+- **`tendsto_inverse_atTop_nhds_zero_nat` → `tendsto_inv_atTop_nhds_zero_nat`** (inverse→inv).
+- **`LT.lt.not_le` → `LT.lt.not_ge`** (the `.not_le` dot-projection; alias of `not_le_of_gt`).
+- **`Fact (Nat.Prime <literal>)` no longer auto-synthesized** — add explicit `instance` per literal.
+
+## Deferred / next leads (my partition, L–Z)
+- **LawsOfLargeNumbersOQ01Aristotle** (HUB for OQ01OQ01/OQ01OQ03) — META BLOCK NOW FIXED (both
+  `open` lines swapped to `Batteries.Tactic.GeneralizeProofs`) + `tendsto_inv…` + `.not_ge` done;
+  partial patch saved at `/tmp/lln01aristotle.partial.patch`. 3 dense Aristotle blobs remain:
+  L435 `aesop` normalization infinite-loop (the `(n+1)/n → 1` `Tendsto.congr'`), L507
+  `integral_add` no longer matches the `A*B - A*μ.real - μ.real*B` subtraction integrand
+  (covariance now unfolds with `μ.real` and as a subtraction chain), L705 unsolved. Needs real
+  reconstruction of the covariance/integral algebra — reserve a full session.
+- **NewtonIndStep2** (proof-drift) — NOT cheap. All THREE `nlinarith` Positivstellensatz certificates
+  (α≥0 L62, γ≥0 L77, discriminant L100) genuinely broke under v4.31 nlinarith normalization (with
+  `maxHeartbeats 1600000` they finish searching and report "linarith failed", i.e. certificate miss,
+  not timeout). Needs new hint sets / SOS certificates.
+- **LawOfSinesOQ06** (WithLp reshape) — bigger than cheap. `EuclideanSpace.inner_apply` →
+  `PiLp.inner_apply` (`⟪x,y⟫ = ∑ i, ⟪x i,y i⟫`, still needs real-inner `x i * y i` bridge), function
+  app `u 0` now normalizes to `u.ofLp 0`, AND a `structure Triangle` elaboration cascade at L110
+  (`cross2D (B - A) (C - A)` → `HSub … ((B:?)→?B→Vec2) Vec2` stuck) that kills all of Part III.
+- **RationalCanonicalFormExists** (type-mismatch) — HUB for MinpolyCharpolyOQ03(+OQ03OQ01); 13
+  errors (unsolved goals, ext, rewrite-pattern, instance). Expensive, not yet started.
+- **WolstenholmeTheoremOQ01** (oom-killed) and **TestApi203** (unclassified) — both OOM at 11g
+  (`lake env lean` EXIT=137); defer to a higher-memory lane like TestApi203.
+- Quick error-count scan of my partition: MathematicalInductionOQ03 (8), TaylorTheoremOQ03 (9),
+  PrimeGapBoundsOQ01 (12) — none are single-blocker; grind as budget allows.
 
 # DOCTOR INCREMENT 75 (deep-rework partition non-Erdos A–K / lane3, #38065, 2026-07-15)
 
