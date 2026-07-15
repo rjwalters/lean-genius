@@ -2594,3 +2594,32 @@ enforcement, and (f) FREE-GREENS as deps clear (2 this increment). The hard resi
 Mathlib regressions needing surgery (`Nontrivial (ℤ√d)` instance loss, positivity/simp
 maxRecDepth loops, native_decide-on-noncomputable, scalar-form lemma removals). Estimate ~5-10
 more single-recipe N–Z/Erdos≥600 files remain harvestable.
+
+### Increment 52 (continued) — +3 more GREEN (total +10, ledger 1908→1918)
+
+- **Erdos838Problem** (deriving-DecidableEq on ℝ-field struct): v4.31 `deriving DecidableEq` on a
+  structure with `ℝ` fields (`Point2D`) fails to COMPILE the derived instance (`DecidableEq ℝ` is
+  noncomputable). Replace with `noncomputable instance : DecidableEq Point2D := Classical.decEq _`
+  — still gives `Finset Point2D` the instance, without a compiled decision procedure.
+- **Erdos927Problem** (termination): v4.31 no longer auto-infers well-founded recursion for
+  `logStar` (recursive call `logStar (Nat.log 2 (n+2))`). Add `termination_by n => n` +
+  `decreasing_by exact Nat.log_lt_self 2 (by omega)` (`Nat.log_lt_self : log b x < x` for `x≠0`).
+- **TestApi241** (STATEMENT REPAIR, #38611): the original `test_b3 : IsB3 {1,2,4,8}` was UNSOUND
+  ({1,2,4,8} is not B₃ — 1+1+4 = 6 = 2+2+2). Repaired to the intended-true witness
+  `IsB3 {1,4,16,64}` (powers of 4 are B₃: a 3-element multiset sum is a base-4 numeral, all digits
+  ≤ 3 ⇒ unique). Dropped `open scoped Classical` (made IsB3 noncomputable) and proved via
+  `unfold IsB3; decide` — kernel decide, NO `Lean.ofReduceBool` (fully verified, 0 axioms).
+
+**Additional probed-and-skipped**:
+- **Erdos807Problem** — UNSOUND (like TestApi241 but not repairable as a seam): `ERW_conjecture := True`
+  placeholder makes `erw_conjecture_false : ¬∀n, ERW_conjecture n` = `¬True` = provably false. Every
+  theorem is a `True`-placeholder; a real repair needs the actual probabilistic statement formalized.
+  Reverted.
+- **Erdos807/874/625/611, Ptolemy** — Ptolemy confirmed deep (import `/-!`→`/-` fix surfaces 14
+  errors: `Complex.abs_mul_exp_arg_mul_I` unknown, `Real.sin_nonpos_of_nonneg_of_nonpos` unknown,
+  ℤ-anon-constructor, rcases/type-mismatch). Erdos874 linarith drift. Multi-site.
+
+**Free-green note**: the LOW(0) residuals in both partitions (Wilsons/Sperner/Szemeredi/YangMills
+clusters, TestApi203, NormEuclidean…OQ01) are all DEP-BLOCKED (own=0 but tot>0), not free-green —
+their deps still fail. Only 2 genuine free-greens this increment
+(QuadraticReciprocityAlgorithmOQ03FieldBridge, Erdos620ProblemAristotle).

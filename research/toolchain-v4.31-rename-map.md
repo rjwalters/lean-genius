@@ -1542,3 +1542,17 @@ subtraction made the original statement false; geometric gluing bound). No calle
   build clean as earlier increments greened their deps (this increment:
   QuadraticReciprocityAlgorithmOQ03FieldBridge, Erdos620ProblemAristotle). A `PASS` with no source
   edit is a legitimate flip.
+
+### §7af addenda (inc52 second half)
+
+- **`deriving DecidableEq` on a struct with `ℝ` (or other noncomputable-DecidableEq) fields now
+  fails to COMPILE.** `deriving DecidableEq` errors `failed to compile definition, consider marking
+  it as 'noncomputable' … depends on 'decidableEq'`. Fix: drop the `deriving` clause and add
+  `noncomputable instance : DecidableEq T := Classical.decEq _`. Downstream `Finset T` still works.
+- **Well-founded recursion no longer auto-inferred for `Nat.log`-style descent.** A `def f : ℕ → ℕ`
+  with a recursive call `f (Nat.log b (n+…))` errors `fail to show termination`. Add
+  `termination_by n => n` and `decreasing_by exact Nat.log_lt_self b (by omega)`.
+- **UNSOUND-placeholder files are NOT migration seams** (skip, don't force-green): e.g. Erdos807
+  (`ERW_conjecture := True` ⇒ `¬∀n, True` unprovable), TestApi241's original `{1,2,4,8}` B3 claim.
+  For TestApi241 the fix was a genuine STATEMENT REPAIR to a true witness `{1,4,16,64}` — do that only
+  when a true correction is clear; otherwise leave the file RESIDUAL.
