@@ -97,7 +97,7 @@ theorem exact_value_q2_minus_t_ari (q t : ℕ) (ht : t ≤ q)
     H is C₄-free and the complement of H contains no S_{q²}. -/
 theorem parsons_construction_ari (q : ℕ) (hq : Nat.Prime q) :
     ∃ G : SimpleGraph (Fin (q ^ 2 + q + 1)),
-      ¬ContainsSubgraph G C4 ∧ ¬ContainsSubgraph (complement G) (starGraph (q ^ 2)) := by
+      ¬ContainsSubgraph G C4 ∧ ¬ContainsSubgraph (complement G) (Erdos552.starGraph (q ^ 2)) := by
   sorry
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -110,7 +110,7 @@ theorem parsons_construction_ari (q : ℕ) (hq : Nat.Prime q) :
     Proof sketch: Any two vertices u, v of high degree share ≥ 2 common
     neighbors by pigeonhole (degrees sum to ≥ n, so intersection ≥ 2), giving
     a 4-cycle u—w₁—v—w₂—u. -/
-theorem c4_minimum_degree_ari (n : ℕ) (G : SimpleGraph (Fin n)) (hn : n ≥ 4) :
+theorem c4_minimum_degree_ari (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (hn : n ≥ 4) :
     (∀ v : Fin n, G.degree v ≥ n / 2) → ContainsSubgraph G C4 := by
   sorry
 
