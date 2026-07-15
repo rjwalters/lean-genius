@@ -143,12 +143,12 @@ This is proved by:
 2. "Staying positive" means all suffix sums are positive
 3. Using induction on p and q with the reflection principle -/
 theorem ballot_theorem (p q : ℕ) (h : q < p) :
-    condCount (countedSequence p q) staysPositive = (p - q) / (p + q) :=
+    uniformOn (countedSequence p q) staysPositive = (p - q) / (p + q) :=
   ballot_problem q p h
 
 /-- The real-valued version of the ballot theorem. -/
 theorem ballot_theorem_real (p q : ℕ) (h : q < p) :
-    (condCount (countedSequence p q) staysPositive).toReal = (p - q) / (p + q) :=
+    (uniformOn (countedSequence p q) staysPositive).toReal = (p - q) / (p + q) :=
   ballot_problem' q p h
 
 /-! ## Part IV: Edge Cases and Special Values -/
@@ -156,13 +156,13 @@ theorem ballot_theorem_real (p q : ℕ) (h : q < p) :
 /-- When q = 0 (A receives all votes), the probability is 1.
 This makes sense: if B gets no votes, A is always ahead! -/
 theorem ballot_unanimous (p : ℕ) :
-    condCount (countedSequence (p + 1) 0) staysPositive = 1 :=
+    uniformOn (countedSequence (p + 1) 0) staysPositive = 1 :=
   ballot_edge p
 
 /-- When p = q (a tie), the probability that A leads throughout is 0.
 This is because at some point the running totals must be equal. -/
 theorem ballot_tie (p : ℕ) :
-    condCount (countedSequence (p + 1) (p + 1)) staysPositive = 0 :=
+    uniformOn (countedSequence (p + 1) (p + 1)) staysPositive = 0 :=
   ballot_same p
 
 /-! ## Part V: Concrete Probability Values
