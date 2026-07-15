@@ -149,7 +149,7 @@ The divisors of p are {1, p}, so σ_k(p) = 1^k + p^k = 1 + p^k.
 -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) (k : ℕ) :
     sigma k p = 1 + p ^ k := by
-  simp only [sigma_apply, Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne', one_pow]
+  rw [sigma_apply, Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne, one_pow]
 
 /- ## Convergence
 
@@ -168,7 +168,7 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
     simp [sigma]
   · -- n ≥ 1: bound each term and count
     unfold sigma
-    rw [pow_succ]
+    rw [pow_succ']
     -- σ_k(n) = ∑ d ∈ n.divisors, d^k
     -- Each d ≤ n, so d^k ≤ n^k. Sum ≤ |n.divisors| · n^k ≤ n · n^k
     calc Finset.sum (Nat.divisors n) (· ^ k)
@@ -184,10 +184,10 @@ theorem sigma_le_pow (n k : ℕ) : sigma k n ≤ n ^ (k + 1) := by
                 apply Finset.card_le_card
                 intro d hd
                 simp only [Finset.mem_Icc]
-                exact ⟨Nat.pos_of_mem_divisors hd, Nat.divisor_le (Nat.mem_divisors.mp hd).1⟩
-            _ = n := by simp [Nat.card_Icc]; omega
+                exact ⟨Nat.pos_of_mem_divisors hd, Nat.divisor_le hd⟩
+            _ = n := by simp [Nat.card_Icc]
 
-/-- The series converges (proof sketch via comparison test).
+/- The series converges (proof sketch via comparison test).
 
 By sigma_le_pow, σ_k(n)/n! ≤ n^(k+1)/n!, and Σ n^(k+1)/n! converges
 since n^(k+1)/n! → 0 faster than any geometric sequence.

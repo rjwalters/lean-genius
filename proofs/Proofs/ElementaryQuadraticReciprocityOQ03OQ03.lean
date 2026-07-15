@@ -36,7 +36,8 @@ open ZMod
 theorem legendre_characterizes_qr (p : ℕ) [hp : Fact p.Prime] (a : ℤ)
     (ha : ¬(↑p : ℤ) ∣ a) :
     legendreSym p a = 1 ↔ IsSquare (a : ZMod p) := by
-  exact legendreSym.eq_one_iff_isSquare ha
+  exact legendreSym.eq_one_iff p
+    (by rwa [Ne, ZMod.intCast_zmod_eq_zero_iff_dvd])
 
 -- ============================================================
 -- SECTION II: Product Formula as Reciprocity
@@ -48,13 +49,15 @@ theorem legendre_characterizes_qr (p : ℕ) [hp : Fact p.Prime] (a : ℤ)
 theorem qr_legendre (p q : ℕ) [hp : Fact p.Prime] [hq : Fact q.Prime]
     (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hpq : p ≠ q) :
     legendreSym p q * legendreSym q p =
-    (-1) ^ ((p / 2) * (q / 2)) :=
-  legendreSym.quadratic_reciprocity hp2 hq2 hpq
+    (-1) ^ ((p / 2) * (q / 2)) := by
+  rw [mul_comm (legendreSym p (q : ℤ)) (legendreSym q (p : ℤ))]
+  exact legendreSym.quadratic_reciprocity hp2 hq2 hpq
 
 /-- First supplement to QR: (-1/p) = (-1)^((p-1)/2). -/
 theorem first_supplement (p : ℕ) [hp : Fact p.Prime] (hp2 : p ≠ 2) :
     legendreSym p (-1) = (-1) ^ (p / 2) :=
-  legendreSym.at_neg_one hp2
+  (legendreSym.at_neg_one hp2).trans
+    (ZMod.χ₄_eq_neg_one_pow (Nat.odd_iff.mp (hp.out.odd_of_ne_two hp2)))
 
 -- ============================================================
 -- SECTION III: The Hilbert Symbol (Definition)

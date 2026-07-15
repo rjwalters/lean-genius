@@ -95,7 +95,7 @@ theorem subsetSums_insert (A : Set ℕ) (S : Finset ℕ) (a : ℕ)
     (hS : (↑S : Set ℕ) ⊆ A) (ha : a ∈ A) (hna : a ∉ S) :
     S.sum id + a ∈ subsetSums A :=
   ⟨insert a S, by simpa [Set.insert_subset_iff] using ⟨ha, hS⟩,
-   by rw [Finset.sum_insert hna]; ring⟩
+   by rw [Finset.sum_insert hna]; simp [id_eq, add_comm]⟩
 
 /-- If `A ⊆ B`, then `P(A) ⊆ P(B)`. -/
 theorem subsetSums_mono (A B : Set ℕ) (h : A ⊆ B) :
@@ -134,14 +134,14 @@ theorem isCofiniteSubseq_id (a : ℕ → ℕ) : IsCofiniteSubseq a id :=
 theorem countIn_mono (A B : Set ℕ) (h : A ⊆ B) (N : ℕ) :
     countIn A N ≤ countIn B N := by
   apply Finset.card_le_card
-  apply Finset.filter_subset_filter
-  intro x _
-  exact h
+  apply Finset.monotone_filter_right
+  intro x _ hx
+  exact h hx
 
 /-- The count is bounded by N: countIn S N ≤ N. -/
 theorem countIn_le (S : Set ℕ) (N : ℕ) : countIn S N ≤ N := by
   apply le_trans (Finset.card_filter_le _ _)
-  simp [Finset.card_Icc]
+  simp [Nat.card_Icc]
 
 /-- Density is monotone upward: if A ⊆ B and A has density 1, then B also has density 1.
     Proof: sandwich countIn A N / N ≤ countIn B N / N ≤ 1 with countIn A N / N → 1. -/
@@ -157,9 +157,9 @@ theorem hasDensity_one_of_superset (A B : Set ℕ) (hAB : A ⊆ B)
   have step1 : (countIn A N : ℚ) / N ≤ (countIn B N : ℚ) / N :=
     (div_le_div_iff_of_pos_right hNpos).mpr (by exact_mod_cast countIn_mono A B hAB N)
   have step2 : (countIn B N : ℚ) / N ≤ 1 :=
-    div_le_one_of_le (by exact_mod_cast countIn_le B N) hNpos.le
+    div_le_one_of_le₀ (by exact_mod_cast countIn_le B N) hNpos.le
   have step3 : (countIn A N : ℚ) / N ≤ 1 :=
-    div_le_one_of_le (by exact_mod_cast countIn_le A N) hNpos.le
+    div_le_one_of_le₀ (by exact_mod_cast countIn_le A N) hNpos.le
   rw [abs_sub_comm, abs_of_nonneg (by linarith)] at hA_close
   rw [abs_sub_comm, abs_of_nonneg (by linarith)]
   linarith

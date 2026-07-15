@@ -126,9 +126,106 @@ before each ledger flip; pushed after every file). PR #38660.
 Ledger after increment 57: 1948 GREEN / 687 RESIDUAL.
 
 
-# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 34, #38065, 2026-07-14)
+# Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 57, #38065, 2026-07-14)
 
-# DOCTOR INCREMENT 34 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, A–M partition, #38065, 2026-07-14)
+# DOCTOR INCREMENT 56 (deep-rework partition A: unknown-const/parse/cheap-first, #38065, 2026-07-14)
+
+Container `dr56` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc56` (fresh off origin/feature/issue-37508). Partition A
+(basenames A–M + Erdos < 600), 419 RESIDUAL rows, 334 sorry-free. Whole-pool
+bulk probe of the 140 cheap-class rows (unknown-const/parse/sig/elab/dot) in one
+combined `lake build`, then cheapest-first per-file fix loop. **+30 GREEN**
+(PR #38659). All flips in-container per-file `lake build` exit-0.
+
+## Waves
+- **Free-flip harvest (+3)**: EisensteinCriterionOQ01OQ03OQ02OQ01, Erdos2OQ01,
+  FourierSeriesOQ02 (no own errors in probe; exit-code verified).
+- **Forward-reference seam (+4)**: Erdos320Problem (2 axioms moved before first
+  use), Erdos29Problem (JPSZ_representation_bound/JPSZ_size_optimal moved after
+  JPSZ_is_basis), Erdos428-style lemma-after-use in Erdos428 NOT flipped (see
+  deep). Pattern: v4.31 rejects forward refs; 9 of 10 sampled unknown-const
+  project-local names were forward refs.
+- **Rename/API singles (+18)**: Erdos490ProblemAristotle (STATEMENT REPAIR
+  #38611: optimal_works_because_primes_ari FALSE for a₂=0 — added 0 < a₂),
+  FourierSeriesOQ02OQ04 (integral_tsum f-pin), EQR-OQ03OQ03 (legendreSym API),
+  Erdos523 (dangling halasz_theorem + ℂ |.|→‖.‖), Erdos226 (denseRange_cast,
+  mem_range simpa), Erdos437Aristotle (4=2*2 mul_pow, foldl one_mul, div-atom
+  show-align, div_le_one_of_le₀), Hilbert23 (Ici_diff_left→Ici_sdiff_left),
+  Erdos260Aristotle (tendsto_log_atTop.comp natCast, atTop_mul_atTop₀),
+  Erdos162 (congr-1 hoist + offDiag_card + Bool decide), FundamentalArithmeticOQ01
+  (Coprime.disjoint_primeFactors, statement-pipe parens, prod_ne_zero 0∉l),
+  Erdos393 (match-arm getLast, numeral-dot parse, UFM.radical), Erdos347
+  (monotone_filter_right, Nat.card_Icc, id_eq simp), Erdos432 (open scoped
+  Classical, not_le, monotone_filter_right), Erdos195 (get!→getElem! + private
+  getElem!_take_of_lt helper, IsChain.take), Erdos252 (sum_pair .ne order,
+  pow_succ', divisor_le, orphan docstring), Erdos266 (summable_nat_add_iff ←rw,
+  not_summable_natCast_inv), Erdos296 (named def binders for omega, tendsto_nhds_unique,
+  cast-shape witness rework), Erdos323 (open scoped Classical + ℚ^ℚ conjecture
+  defs respelled to ℝ rpow — no HPow ℚ ℚ), MathematicalInductionOQ01
+  (Order.IsSuccLimit, zero_or_succ_or_isSuccLimit, strongRecOn arg order).
+- **CayleyHamilton Basis cluster (+3)**: CayleyHamiltonMinpolyOQ05OQ01OQ02 (UFM
+  namespace + le_antisymm zero_le + sum_eq_zero), CayleyHamiltonCyclicVectorAllFieldsOQ03
+  (SEAM: `Basis` → `Module.Basis`, no alias; span_eq_top_of_card_eq_finrank';
+  `set` after intro makes hypotheses reference inaccessible c✝ — drop set),
+  +OQ03OQ02 dep free-flip.
+- **Hilbert15 pair (+2) + Erdos19OQ01 (+1)**: bare finrank → Module.finrank
+  (open FiniteDimensional no longer exports it); chain'_singleton→isChain_singleton,
+  Chain' [2,2] decidability gone → explicit List.Chain.cons term;
+  Submodule.nontrivial_iff_ne_bot; Erdos19OQ01 missing `import Proofs.GraphCore`
+  + Nat.find_min goal-first.
+
+## Statement repairs (#38611)
+- **Erdos490ProblemAristotle.optimal_works_because_primes_ari**: FALSE as stated
+  (a₁=a₂=0, p₁=3, p₂=5 satisfies all hypotheses but concludes p₁=p₂). Added
+  missing `(ha₂pos : 0 < a₂)` — intended-true form (construction elements ≥ 1).
+- **Erdos323Problem** conjecture defs: `(x : ℚ) ^ (ε : ℚ)` no longer elaborates
+  (no HPow ℚ ℚ); the two open-conjecture Prop defs now state the exponent bound
+  in ℝ (rpow) — the intended reading; nothing proves these Props.
+- **Erdos296Problem.k_infinitely_often_large**: witness changed max N₀ N₁ + 1 →
+  max (max N₀ N₁ + 1) 2 — the old proof's log_pos side goal was unprovable for
+  N₀ = N₁ = 0 (latent); new witness keeps the statement, repairs the proof.
+
+## New systematic seams worth cataloging (rename-map candidates)
+- **Forward-reference harvest**: `awk unknown-const rows` × `decl-line > first-use-line`
+  finds them mechanically; ~9/10 project-local unknown-consts in partition A were this.
+- **`Basis` → `Module.Basis`** (no alias/export); also `Basis.equivFun_apply` etc.
+- **bare `finrank` via `open FiniteDimensional` is gone** → `Module.finrank`;
+  `finrank_pos_iff` → `Module.finrank_pos_iff`.
+- **`List.Chain'` family → `List.IsChain`** (isChain_singleton, IsChain.take,
+  IsChain.prefix; Chain' [a,b] lost its Decidable instance — use explicit
+  List.Chain.cons terms); `List.get!` field removed → `xs[i]!` (getElem!);
+  no getElem!/take lemma — bridge via getElem!_pos/neg + getElem_take (pass the
+  container explicitly or the unifier binds cont := ℕ from the bound proof).
+- **`diff` → `sdiff` rename family (2026-06)**: Ici_diff_left → Ici_sdiff_left
+  (some members have deprecated aliases, this one does not).
+- **omega no longer sees structure-field facts or anonymous ∀-antecedents in
+  def bodies** → materialize `have := I.hle` / name the binders.
+- **`Nat.find_min` / getElem!_pos-style lemmas**: positional `_` can unify the
+  WRONG instantiation (cont := ℕ) — pass values explicitly or goal-first.
+- **normalizedFactors lemmas moved into UniqueFactorizationMonoid namespace**
+  (dvd_of_mem_normalizedFactors, ne_zero_of_mem_normalizedFactors).
+- **`Nat.radical` never existed**: NatInt.lean lemmas are in namespace Nat but
+  the def is `UniqueFactorizationMonoid.radical`.
+
+## Flagged deep (triaged, did NOT flip, reverted where edited)
+- Erdos428Problem: `Filter.le_limsup_of_le` now demands `IsBoundedUnder (≤)`
+  (autoParam); the file's cobounded-only route is gone and primeDensityRatio is
+  not obviously bounded above — needs a boundedness argument or statement work.
+- AmgmInequalityOQ02OQ01OQ02OQ01OQ03: sum-reindex/Nat-sub normalization drift
+  through a long Newton–Girard double induction (fixing the first two exposes
+  4 deeper); reverted.
+- CayleyHamiltonMinpolyOQ05OQ01OQ01: fintypeBiUnion' motive-not-type-correct +
+  natDegree_multiset_prod arg change — deep.
+- Erdos512Problem: 15 errors (cast-shape drift × intervalIntegral removals) —
+  tractable but long; left for next increment.
+- FundamentalTheoremCalculusLebesgueOQ04 (import-order + removed-const cascade,
+  prior triage), Erdos598 (universe metavars, prior triage), Erdos133 (universe
+  metavar + Prop-def), DenumerabilityRationalsOQ02OQ02 (InducedMap namespace),
+  Erdos274 (leftCoset removed), CauchySchwarzOQ02 (HolderConjugate API +
+  inner_mul_le_norm_mul_sq), Erdos281/301/29OQ02/86/3LogHarmonic (5-10 mixed).
+
+---
+# HISTORY: DOCTOR INCREMENT 34 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, A–M partition, #38065, 2026-07-14)
 
 Container `dr44` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
 `feature/issue-38065-c`. Partition A–M basenames + Erdos < 600. Whole-partition

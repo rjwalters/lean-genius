@@ -72,7 +72,7 @@ lemma firstVariation_le_sub {J : E → ℝ} (hJ : ConvexOn ℝ univ J)
     simp only [smul_eq_mul] at hc
     nlinarith [hc]
   -- Pass to the limit `t → 0⁺`: the right derivative is `≤` every such slope bound.
-  rw [hasDerivWithinAt_iff_tendsto_slope, Ici_diff_left] at hd
+  rw [hasDerivWithinAt_iff_tendsto_slope, Ici_sdiff_left] at hd
   refine le_of_tendsto hd ?_
   have hlt1 : ∀ᶠ t in 𝓝[Ioi (0:ℝ)] 0, t < 1 := by
     have hmem : Iio (1 : ℝ) ∈ 𝓝 (0 : ℝ) := isOpen_Iio.mem_nhds (by norm_num)
@@ -89,7 +89,7 @@ lemma firstVariation_nonneg_of_isMinOn {J : E → ℝ} {y₀ y : E} {d : ℝ}
     (hmin : ∀ z, J y₀ ≤ J z)
     (hd : HasDerivWithinAt (segPath J y₀ y) d (Ici 0) 0) :
     0 ≤ d := by
-  rw [hasDerivWithinAt_iff_tendsto_slope, Ici_diff_left] at hd
+  rw [hasDerivWithinAt_iff_tendsto_slope, Ici_sdiff_left] at hd
   refine ge_of_tendsto hd ?_
   filter_upwards [self_mem_nhdsWithin] with t ht0
   have ht0' : 0 < t := ht0

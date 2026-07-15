@@ -48,8 +48,9 @@ theorem factorization_mul_apply (m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0) (p : �
     This is the content of Nat.coprime: gcd(m,n) = 1 iff no prime
     divides both, iff the factorizations have disjoint support. -/
 theorem factorization_disjoint_of_coprime (m n : ℕ) (hcop : Nat.Coprime m n) :
-    Disjoint m.factorization.support n.factorization.support :=
-  Nat.coprime_iff_disjoint.mp hcop
+    Disjoint m.factorization.support n.factorization.support := by
+  rw [Nat.support_factorization, Nat.support_factorization]
+  exact Nat.Coprime.disjoint_primeFactors hcop
 
 /-- For coprime m, n: for each prime p, at most one of v_p(m) and v_p(n)
     is nonzero. This is the pointwise consequence of disjoint support. -/
@@ -59,7 +60,7 @@ theorem coprime_valuation_exclusive (m n : ℕ) (hcop : Nat.Coprime m n) (p : �
   push_neg at h
   have hm : p ∈ m.factorization.support := Finsupp.mem_support_iff.mpr (Nat.pos_of_ne_zero h.1).ne'
   have hn : p ∈ n.factorization.support := Finsupp.mem_support_iff.mpr (Nat.pos_of_ne_zero h.2).ne'
-  exact (factorization_disjoint_of_coprime m n hcop).ne_of_mem hm hn rfl
+  exact (Finset.disjoint_left.mp (factorization_disjoint_of_coprime m n hcop) hm) hn
 
 -- ============================================================
 -- Part III: Concrete Examples
@@ -99,13 +100,13 @@ theorem factorization_420_split :
     the sum of their individual factorizations.
     Proof: induction using Nat.factorization_mul at each step. -/
 theorem factorization_prod_eq (l : List ℕ) (hpos : ∀ x ∈ l, x ≠ 0) :
-    l.prod.factorization = l.map Nat.factorization |>.sum := by
+    l.prod.factorization = (l.map Nat.factorization).sum := by
   induction l with
   | nil => simp
   | cons a l ih =>
     simp only [List.prod_cons, List.map_cons, List.sum_cons]
-    rw [Nat.factorization_mul (hpos a (List.mem_cons_self a l))
-      (List.prod_ne_zero (fun x hx => hpos x (List.mem_cons_of_mem a hx)))]
+    rw [Nat.factorization_mul (hpos a List.mem_cons_self)
+      (List.prod_ne_zero (fun h0 => hpos 0 (List.mem_cons_of_mem a h0) rfl))]
     rw [ih (fun x hx => hpos x (List.mem_cons_of_mem a hx))]
 
 end FundamentalArithmeticOQ01

@@ -102,13 +102,13 @@ theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := b
   -- The p-series ∑ 1/n^p diverges for p ≤ 1. Here p = 1.
   intro h
   have h1 : Summable (fun n : ℕ => (↑(n + 1) : ℝ)⁻¹) := by
-    simp_rw [one_div] at h; exact h
+    simp_rw [one_div] at h
+    exact h.congr (fun n => by norm_cast)
   -- Summability of f ∘ (· + 1) implies summability of f (adding one term)
   have h2 : Summable (fun n : ℕ => ((n : ℝ))⁻¹) := by
-    rw [summable_nat_add_iff 1] at h1 ⊢
-    convert h1 using 1
-    ext n; push_cast; ring_nf
-  exact Real.not_summable_nat_of_tendsto_nat tendsto_harmonic h2
+    rw [← summable_nat_add_iff 1]
+    exact h1
+  exact Real.not_summable_natCast_inv h2
 
 /-- Sums like ∑ 1/n² converge, so are candidates for Stolarsky's conjecture -/
 theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by
@@ -116,12 +116,8 @@ theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (
   have h : Summable (fun n : ℕ => ((n : ℝ))⁻¹ ^ 2) :=
     (Real.summable_nat_rpow_inv.mpr (by norm_num : (1 : ℝ) < 2)).congr (fun n => by
       simp [inv_pow])
-  rw [summable_nat_add_iff 1] at h ⊢
-  apply h.of_nonneg_of_le (fun n => by positivity) (fun n => by positivity)
-  intro n
-  simp only [one_div, inv_pow]
-  apply inv_le_inv_of_le (by positivity : (0 : ℝ) < (↑(n + 1))^2)
-  push_cast; nlinarith [show (0:ℝ) ≤ n from Nat.cast_nonneg n]
+  have h2 : Summable (fun n : ℕ => ((↑(n + 1) : ℝ))⁻¹ ^ 2) := (summable_nat_add_iff 1).mpr h
+  exact h2.congr (fun n => by push_cast; rw [inv_pow, one_div])
 
 /-- The geometric series ∑ 1/2ⁿ converges to 2 -/
 example : ∑' n : ℕ, (1 : ℝ) / 2^n = 2 := by
@@ -132,14 +128,13 @@ example : ∑' n : ℕ, (1 : ℝ) / 2^n = 2 := by
 
 /-- Shifted geometric: ∑ 1/(2ⁿ + 1) also converges -/
 example : Summable (fun n : ℕ => (1 : ℝ) / (2^n + 1)) := by
-  apply Summable.of_nonneg_of_le (fun n => by positivity)
-  · intro n
-    rw [one_div]
-    exact inv_le_inv_of_le (by positivity : (0:ℝ) < 2^n)
-      (le_add_of_nonneg_right (by positivity))
-  · have : (fun n : ℕ => (1 : ℝ) / 2 ^ n) = (fun n : ℕ => ((1 : ℝ) / 2) ^ n) := by
+  have hg : Summable (fun n : ℕ => (1 : ℝ) / 2 ^ n) := by
+    have : (fun n : ℕ => (1 : ℝ) / 2 ^ n) = (fun n : ℕ => ((1 : ℝ) / 2) ^ n) := by
       ext n; rw [one_div, one_div, inv_pow]
     rw [this]
     exact summable_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)
+  refine Summable.of_nonneg_of_le (fun n => by positivity) (fun n => ?_) hg
+  have h2 : (0:ℝ) < 2 ^ n := by positivity
+  exact one_div_le_one_div_of_le h2 (by linarith)
 
 end Erdos266

@@ -33,7 +33,7 @@ def IsPermutation (f : ℤ → ℤ) : Prop :=
     a, a+d, a+2d, ..., a+(k-1)d -/
 def IsAP (xs : List ℤ) : Prop :=
   xs.length ≥ 2 ∧ ∃ d : ℤ, d ≠ 0 ∧ ∀ i : ℕ, i + 1 < xs.length →
-    xs.get! (i + 1) - xs[i]! = d
+    xs[i + 1]! - xs[i]! = d
 
 /-- A monotone arithmetic progression (MAP) in a permutation f:
     An AP x₁ < x₂ < ... < xₖ such that the positions of these values
@@ -90,6 +90,16 @@ def OpenQuestion : Prop :=
 
 /- ## Part VI: Adenwalla's Bound Implies Geneson's -/
 
+/-- `getElem!` commutes with `take` below the cutoff. -/
+private lemma getElem!_take_of_lt (xs : List ℤ) (n i : ℕ) (h : i < n) :
+    (xs.take n)[i]! = xs[i]! := by
+  rcases Nat.lt_or_ge i xs.length with hx | hx
+  · have h1 : i < (xs.take n).length := by simp [List.length_take]; omega
+    rw [getElem!_pos (xs.take n) i h1, getElem!_pos xs i hx]
+    simp [List.getElem_take]
+  · have h1 : ¬ i < (xs.take n).length := by simp [List.length_take]; omega
+    rw [getElem!_neg (xs.take n) i h1, getElem!_neg xs i (by omega)]
+
 /-- Adenwalla's result implies Geneson's: if we can avoid 5-MAPs, we certainly
     avoid 6-MAPs (since any 6-MAP contains a 5-MAP as a subsequence). -/
 theorem adenwalla_implies_geneson :
@@ -101,19 +111,19 @@ theorem adenwalla_implies_geneson :
     apply havoid
     obtain ⟨⟨hlen2, d, hd, hAP⟩, hchain, hpos⟩ := hmap
     refine ⟨xs.take 5, by simp [List.length_take, hlen], ?_⟩
-    refine ⟨⟨by simp [List.length_take, hlen]; omega, d, hd, fun i hi => ?_⟩,
-            List.Chain'.take hchain, fun i j hij hjlen => ?_⟩
+    refine ⟨⟨by simp [List.length_take, hlen], d, hd, fun i hi => ?_⟩,
+            List.IsChain.take hchain 5, fun i j hij hjlen => ?_⟩
     · -- AP property preserved under take
       have hi' : i + 1 < xs.length := by
         simp [List.length_take, hlen] at hi; omega
-      rw [List.get!_take (by simp [List.length_take, hlen] at hi ⊢; omega),
-          List.get!_take (by simp [List.length_take, hlen] at hi ⊢; omega)]
+      rw [getElem!_take_of_lt xs 5 (i + 1) (by simp [List.length_take, hlen] at hi; omega),
+          getElem!_take_of_lt xs 5 i (by simp [List.length_take, hlen] at hi; omega)]
       exact hAP i hi'
     · -- Position monotonicity preserved under take
       have hjlen' : j < xs.length := by
         simp [List.length_take, hlen] at hjlen; omega
-      rw [List.get!_take (by simp [List.length_take, hlen] at hjlen ⊢; omega),
-          List.get!_take (by simp [List.length_take, hlen] at hjlen ⊢; omega)]
+      rw [getElem!_take_of_lt xs 5 i (by simp [List.length_take, hlen] at hjlen; omega),
+          getElem!_take_of_lt xs 5 j (by simp [List.length_take, hlen] at hjlen; omega)]
       exact hpos i j hij hjlen'⟩
 
 /- ## Part VII: Examples -/
