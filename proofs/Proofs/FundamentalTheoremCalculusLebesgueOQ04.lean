@@ -1,4 +1,4 @@
-/-!
+/-
 # AbsolutelyContinuousOn for Normed Space-Valued Functions (OQ-04)
 
 **Open Question OQ-04** from `fundamental-theorem-calculus-oq-01`
@@ -100,7 +100,7 @@ theorem lipschitz_implies_normed_ac {f : ℝ → E} {K : ℝ} (hK : K ≥ 0)
     _ = K * ∑ k, (bs k - as k) := by rw [Finset.mul_sum]
     _ < K * (ε / (K + 1)) + ε / (K + 1) := by
         nlinarith [mul_le_mul_of_nonneg_left htotal.le hK, div_pos hε hKp]
-    _ = ε := by field_simp; ring
+    _ = ε := by field_simp
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: Connection to Real-Valued AC
@@ -155,7 +155,7 @@ theorem normed_ac_mono_subinterval {f : ℝ → E} {a b c d : ℝ}
 
 private lemma edist_norm_ofReal (x y : E) :
     edist x y = ENNReal.ofReal ‖x - y‖ := by
-  rw [edist_dist, dist_norm]
+  rw [edist_dist, dist_eq_norm]
 
 private lemma eVariationOn_le_of_forall_normed {f : ℝ → E} {s : Set ℝ} {C : ℝ≥0∞}
     (h : ∀ (n : ℕ) (u : ℕ → ℝ), Monotone u → (∀ i, u i ∈ s) →
@@ -204,8 +204,7 @@ private lemma eVariationOn_le_one_normed {f : ℝ → E} {a b c d : ℝ}
       · right; exact hu_mono (Nat.succ_le_of_lt h))
     -- Total length < δ
     (by
-      rw [← Fin.sum_univ_eq_sum_range (fun i => u (i + 1) - u i) n,
-          fin_telescoping_normed]
+      rw [fin_telescoping_normed]
       have hc := (hu_mem 0).1
       have hd := (hu_mem n).2
       linarith)
@@ -221,7 +220,7 @@ private lemma eVariationOn_le_n_normed {f : ℝ → E} (a step : ℝ) (hstep : 0
   | zero =>
     simp only [Nat.cast_zero, zero_mul, add_zero]
     rw [le_zero_iff]
-    exact eVariationOn.eq_zero_iff.mpr fun x hx y hy => by
+    exact (eVariationOn.eq_zero_iff f).mpr fun x hx y hy => by
       have hxa : x = a := le_antisymm (Set.mem_Icc.mp hx).2 (Set.mem_Icc.mp hx).1
       have hya : y = a := le_antisymm (Set.mem_Icc.mp hy).2 (Set.mem_Icc.mp hy).1
       rw [hxa, hya]; exact edist_self _
@@ -261,25 +260,28 @@ theorem normed_ac_implies_bv {f : ℝ → E} {a b : ℝ} (hab : a ≤ b)
   rcases eq_or_lt_of_le hab with rfl | hab'
   · -- Degenerate case: [a, a] has variation 0 ≠ ⊤
     have : eVariationOn f (Set.Icc a a) = 0 :=
-      eVariationOn.eq_zero_iff.mpr fun x hx y hy => by
+      (eVariationOn.eq_zero_iff f).mpr fun x hx y hy => by
         have hxa : x = a := le_antisymm (Set.mem_Icc.mp hx).2 (Set.mem_Icc.mp hx).1
         have hya : y = a := le_antisymm (Set.mem_Icc.mp hy).2 (Set.mem_Icc.mp hy).1
         rw [hxa, hya]; exact edist_self _
-    exact this ▸ ENNReal.zero_ne_top
+    show eVariationOn f (Set.Icc a a) ≠ ⊤
+    rw [this]
+    exact ENNReal.zero_ne_top
   -- General case: a < b
   obtain ⟨δ, hδ, hac⟩ := hf 1 one_pos
   have hba : 0 < b - a := sub_pos.mpr hab'
   -- Choose n so that each piece has length < δ
-  set n : ℕ := ⌈(b - a) / δ⌉₊ + 1
+  set n : ℕ := ⌈(b - a) / δ⌉₊ + 1 with hn_def
   have hn_pos : (0 : ℝ) < (n : ℝ) := by positivity
   set step : ℝ := (b - a) / n
   have hstep_pos : 0 < step := div_pos hba hn_pos
   have hstep_lt : step < δ := by
     rw [div_lt_iff₀ hn_pos]
     have h_ceil : (b - a) / δ ≤ (⌈(b - a) / δ⌉₊ : ℝ) := Nat.le_ceil _
-    have hn_eq : (n : ℝ) = ⌈(b - a) / δ⌉₊ + 1 := by push_cast; ring
+    have h_mul : b - a ≤ (⌈(b - a) / δ⌉₊ : ℝ) * δ := (div_le_iff₀ hδ).mp h_ceil
+    have hn_eq : (n : ℝ) = ⌈(b - a) / δ⌉₊ + 1 := by rw [hn_def]; push_cast; ring
     rw [hn_eq]
-    nlinarith [mul_le_mul_of_nonneg_right h_ceil hδ.le, Nat.cast_nonneg (⌈(b - a) / δ⌉₊)]
+    nlinarith [h_mul, hδ]
   have hab_step : a + n * step = b := by
     have : n * step = b - a := mul_div_cancel₀ _ hn_pos.ne'
     linarith
@@ -287,7 +289,7 @@ theorem normed_ac_implies_bv {f : ℝ → E} {a b : ℝ} (hab : a ≤ b)
   have hpieces : ∀ k : Fin n,
       eVariationOn f (Set.Icc (a + k.val * step) (a + (k.val + 1) * step)) ≤ 1 := by
     intro k
-    apply eVariationOn_le_one_normed
+    apply eVariationOn_le_one_normed (a := a) (b := b)
     · exact le_add_of_nonneg_right (mul_nonneg (Nat.cast_nonneg _) hstep_pos.le)
     · linarith [hstep_pos]
     · have hk : (k.val : ℝ) + 1 ≤ n := by exact_mod_cast Nat.succ_le_of_lt k.isLt
@@ -299,7 +301,7 @@ theorem normed_ac_implies_bv {f : ℝ → E} {a b : ℝ} (hab : a ≤ b)
   -- Total variation ≤ n < ⊤
   show eVariationOn f (Set.Icc a b) ≠ ⊤
   rw [← hab_step]
-  exact ne_top_of_le_ne_top ENNReal.natCast_ne_top
+  exact ne_top_of_le_ne_top (ENNReal.natCast_ne_top n)
     (eVariationOn_le_n_normed a step hstep_pos n hpieces)
 
 /-- Bounded variation (non-top eVariation) from normed-AC: explicit formulation. -/
