@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 4 (8-slot, #38065, 2026-07-15)
+
+**+4 GREEN** (2 cascade children harvested): Erdos1014OQ03Concrete (PURE missing-olean cascade,
+zero .lean edit — just built parent olean), Erdos1014OQ02 (cascade + own drift: isLittleO_log_rpow_atTop
+root ns, IsLittleO.bound ≤-vs-strict gap -> smaller little-o const), Erdos29OQ02 (mem_basisRestriction
+explicit constructor, de-pipe |>.card, Real.sqrt_le_sqrt+sqrt_sq), Erdos910ProblemProvable (cascade +
+Cardinal Type-0 pin, continuum->_root_.continuum, aleph universe pin; pre-existing sorries preserved).
+CASCADE PATTERN CONFIRMED: fix+merge a hub parent, then children flip cheaply. Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 3 (8-slot, #38065, 2026-07-15)
 
 **+4 GREEN**: Erdos910Problem (Cardinal/universe: continuum collision -> _root_.continuum, whole-file
