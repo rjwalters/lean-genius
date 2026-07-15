@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 7 (8-slot, #38065, 2026-07-15)
+
+**+3 GREEN** (2 pure cascades): Erdos715ProblemAristotle (pure cascade, no edit), MinpolyCharpolyOQ03
+(pure cascade off RationalCanonicalFormExists, no edit — unblocks MinpolyCharpolyOQ03OQ01),
+Erdos813Problem (Pow.Real import for ℝ^ℝ rpow; ∃ a b >0 multi-var binder split; ∀n≥1 pin to ℕ).
+Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 6 (8-slot, #38065, 2026-07-15)
 
 **+4 GREEN**: Erdos766Problem (edgeSet.ncard drops vanished Fintype; {f x|x:T//p} subtype set-builder
