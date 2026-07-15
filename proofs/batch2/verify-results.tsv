@@ -702,14 +702,14 @@ Erdos1033Aristotle	GREEN
 Erdos1033Problem	RESIDUAL	unknown-const:fan_lower
 Erdos1034Aristotle	GREEN	
 Erdos1034OQ02	GREEN	
-Erdos1034Problem	RESIDUAL	unknown-const:maTang_counterexample
+Erdos1034Problem	GREEN	doctor-inc65
 Erdos1035Problem	RESIDUAL	instance-synth
 Erdos1036OQ01	GREEN	
 Erdos1036OQ01OQ01	GREEN	
 Erdos1036Problem	GREEN	
 Erdos1038Problem	GREEN	
 Erdos1038WIP01	GREEN	
-Erdos1039Aristotle	RESIDUAL	unknown-const:Erdos1039.Complex.abs
+Erdos1039Aristotle	GREEN	doctor-inc65
 Erdos1039Conformal	GREEN	
 Erdos1039ProblemAristotle	RESIDUAL	type-mismatch
 Erdos103OQ02Bounds	GREEN	
@@ -895,7 +895,7 @@ Erdos1179OQ02Witness	GREEN
 Erdos1179Problem	GREEN	
 Erdos117Problem	GREEN	
 Erdos1181Problem	RESIDUAL	unknown-const:Real.tendsto_log_div_rpow_atTop
-Erdos1182Problem	RESIDUAL	unknown-const:Fin.one_ne_zero
+Erdos1182Problem	GREEN	doctor-inc65
 Erdos1183Problem	GREEN	
 Erdos118Problem	GREEN	
 Erdos1196Problem	GREEN	
@@ -1633,8 +1633,8 @@ Erdos72Problem	GREEN
 Erdos730Problem	RESIDUAL	rewrite-drift
 Erdos731Problem	GREEN	
 Erdos732Problem	RESIDUAL	instance-synth
-Erdos733LimitBounds	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
-Erdos733Problem	RESIDUAL	unknown-const:Nat.one_lt_of_ne_one
+Erdos733LimitBounds	GREEN	doctor-inc65
+Erdos733Problem	GREEN	doctor-inc65
 Erdos734Problem	GREEN	
 Erdos736Problem	GREEN	
 Erdos737Problem	GREEN	
@@ -2335,7 +2335,7 @@ ProductOfSegmentsOfChordsConverse	GREEN
 ProductOfSegmentsOfChordsOQ01	GREEN	
 PropertyBFirstMomentRecoloring	GREEN	unknown-const:Finset.exists_ne_of_one_lt_card
 PtolemysComplexProofOQ02	RESIDUAL	unknown-const:Real.cos_eq_one_iff.mp
-PtolemysTheoremOQ01Incomplete01	RESIDUAL	elab-drift
+PtolemysTheoremOQ01Incomplete01	GREEN	doctor-inc65
 PtolemysTheoremOQ01OQ01	GREEN	
 PtolemysTheoremOQ01OQ02	GREEN	v4.31-migrated
 PuiseuxTheorem	GREEN	

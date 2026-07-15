@@ -45,6 +45,10 @@ A finite set of n points in the plane ℝ².
 -/
 abbrev PointSet := Finset (ℝ × ℝ)
 
+-- v4.31: `P.filter (· ∈ L)` for a `Set` predicate needs a `DecidablePred` instance
+-- that ambient Classical no longer supplies implicitly.
+attribute [local instance] Classical.propDecidable
+
 /--
 **Line through two points:**
 Given two distinct points, the line through them.
@@ -58,7 +62,7 @@ def lineThrough (p q : ℝ × ℝ) : Set (ℝ × ℝ) :=
 **Points on a line:**
 Given a line (as a set) and a point configuration, count the incidences.
 -/
-def pointsOnLine (P : PointSet) (L : Set (ℝ × ℝ)) : ℕ :=
+noncomputable def pointsOnLine (P : PointSet) (L : Set (ℝ × ℝ)) : ℕ :=
   (P.filter (· ∈ L)).card
 
 /--
@@ -83,7 +87,7 @@ The sequence records the multiplicities of points on lines.
 -/
 def isLineCompatible (seq : List ℕ) (n : ℕ) : Prop :=
   -- The sequence is sorted and entries are in [2, n]
-  seq.Sorted (· ≤ ·) ∧
+  seq.Pairwise (· ≤ ·) ∧
   (∀ x ∈ seq, 2 ≤ x ∧ x ≤ n) ∧
   -- There exists an n-point configuration realizing this sequence
   ∃ P : PointSet, P.card = n ∧
@@ -215,7 +219,7 @@ theorem erdos_733 :
   intro n hn
   constructor
   · exact hlower n hn
-  · exact hupper n (Nat.one_lt_of_ne_one (by omega))
+  · exact hupper n (by omega)
 
 /-
 ## Part VII: The Limit Question
@@ -228,19 +232,19 @@ Erdős asked about the limiting constant.
 Does lim_{n→∞} (log f(n)) / √n exist? If so, what is its value?
 -/
 def limitConstant : Prop :=
-  ∃ λ : ℝ, Filter.Tendsto
+  ∃ L : ℝ, Filter.Tendsto
     (fun n : ℕ => Real.log (countLineCompatible n) / Real.sqrt n)
     Filter.atTop
-    (nhds λ)
+    (nhds L)
 
 /--
 **The Limit Exists:**
 By the tight bounds, the limit (if it exists) is between c and C.
 -/
 theorem limit_bounds :
-  ∀ λ : ℝ, (∃ ε : ℝ, ε > 0 ∧ ∀ n : ℕ, n ≥ 4 →
-    |Real.log (countLineCompatible n) / Real.sqrt n - λ| < ε) →
-  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ c ≤ λ ∧ λ ≤ C := by
+  ∀ L : ℝ, (∃ ε : ℝ, ε > 0 ∧ ∀ n : ℕ, n ≥ 4 →
+    |Real.log (countLineCompatible n) / Real.sqrt n - L| < ε) →
+  ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ c ≤ L ∧ L ≤ C := by
   sorry
 
 /-

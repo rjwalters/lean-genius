@@ -126,9 +126,8 @@ lemma graph2_edge_le_one (G : Graph 2) : edgeCount G ≤ 1 := by
   unfold edgeCount
   rw [Finset.card_le_one]
   intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂
-  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and] at h₁ h₂
-  obtain ⟨hab₁, _⟩ := h₁
-  obtain ⟨hab₂, _⟩ := h₂
+  obtain ⟨-, hab₁, -⟩ := Finset.mem_filter.mp h₁
+  obtain ⟨-, hab₂, -⟩ := Finset.mem_filter.mp h₂
   have := fin2_lt_unique a₁ b₁ hab₁
   have := fin2_lt_unique a₂ b₂ hab₂
   ext <;> simp_all
@@ -141,8 +140,9 @@ lemma edgeCount_completeGraph2 : edgeCount completeGraph2 = 1 := by
   have hmem : ((0 : Fin 2), (1 : Fin 2)) ∈
     ((Finset.univ.product Finset.univ).filter fun (p : Fin 2 × Fin 2) =>
       p.1 < p.2 ∧ completeGraph2.adj p.1 p.2) := by
-    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and]
-    exact ⟨Fin.zero_lt_one, Fin.zero_ne_one⟩
+    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_, ?_⟩
+    · decide
+    · exact (show (0 : Fin 2) ≠ 1 by decide)
   exact Finset.card_pos.mpr ⟨_, hmem⟩
 
 /-- K₂ is connected (trivially: the two vertices are adjacent). -/
@@ -151,7 +151,7 @@ lemma completeGraph2_connected : completeGraph2.Connected := by
   fin_cases u <;> fin_cases v
   · exact Relation.ReflTransGen.refl
   · exact Relation.ReflTransGen.single (show completeGraph2.adj 0 1 from Fin.zero_ne_one)
-  · exact Relation.ReflTransGen.single (show completeGraph2.adj 1 0 from Fin.one_ne_zero)
+  · exact Relation.ReflTransGen.single (show completeGraph2.adj 1 0 from (show (1 : Fin 2) ≠ 0 by decide))
   · exact Relation.ReflTransGen.refl
 
 -- ## Part VI: Proved Bounds
@@ -170,7 +170,9 @@ theorem bigF_lower_bound_tree (n : ℕ) (hn : n ≥ 2) :
   · -- n - 1 ∈ the set
     constructor
     · -- n - 1 ≤ n*(n-1)/2 for n ≥ 2
-      omega
+      rw [Nat.le_div_iff_mul_le (by norm_num : (0:ℕ) < 2)]
+      calc (n - 1) * 2 = 2 * (n - 1) := by ring
+        _ ≤ n * (n - 1) := mul_le_mul_right' hn (n - 1)
     · intro G hConn hEdge
       have hge := connected_min_edges G (by omega) hConn
       have heq : edgeCount G = n - 1 := Nat.le_antisymm hEdge hge
@@ -220,7 +222,7 @@ theorem bigF_val_2 : bigF_threshold 2 = 1 := by
   have hbdd : BddAbove { e : ℕ | e ≤ 2 * (2 - 1) / 2 ∧
       ∀ G : Graph 2, G.Connected → edgeCount G ≤ e →
         graphRamseyK3 G = 2 * 2 - 1 } :=
-    ⟨1, fun _ he => by omega⟩
+    ⟨1, fun _ he => by obtain ⟨hle, _⟩ := he; omega⟩
   apply le_antisymm
   · -- sSup ≤ 1
     apply csSup_le ⟨1, hmem_1⟩

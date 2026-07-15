@@ -74,12 +74,12 @@ theorem inscribedDiscRadius_ge_ari (S : Set ℂ) (c : ℂ) (r : ℝ)
 /-- For a degree-1 polynomial f, the sublevel set equals the open unit disc at f.roots 0.
     Since f.eval z = z - f.roots 0, |f.eval z| < 1 iff |z - f.roots 0| < 1. -/
 theorem degree_one_sublevel_eq_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
-    sublevelSet f = {z : ℂ | Erdos1039.Complex.abs (z - f.roots ⟨0, by omega⟩) < 1} := by
+    sublevelSet f = {z : ℂ | Complex.abs (z - f.roots ⟨0, by omega⟩) < 1} := by
   ext z
   simp only [sublevelSet, UnitDiscPolynomial.eval, Set.mem_setOf_eq]
   rw [show (Finset.univ : Finset (Fin f.degree)) = {⟨0, by omega⟩} from by
         ext i; simp [Fin.ext_iff]; omega]
-  simp [Finset.prod_singleton]
+  simp [Finset.prod_singleton, Complex.abs]
 
 /-
 For degree 1, the disc of radius 1 centered at f.roots 0 is inscribed in the sublevel set.
@@ -92,7 +92,7 @@ theorem degree_one_isInscribedDisc_ari (f : UnitDiscPolynomial) (hf : f.degree =
     convert hz using 1;
     rw [ show sublevelSet f = { z : ℂ | Complex.abs ( z - f.roots ⟨ 0, by linarith ⟩ ) < 1 } from ?_ ];
     · rfl;
-    · exact?
+    · exact degree_one_sublevel_eq_ari f hf
 
 /-
 For degree 1, rho f ≥ 1.
@@ -104,7 +104,8 @@ theorem degree_one_rho_ge_one_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
   have h_bounded : ∃ M : ℝ, ∀ z ∈ sublevelSet f, ‖z‖ ≤ M := by
     -- For a degree 1 polynomial $f(z) = z - r$, the sublevel set is the open unit disc centered at $r$.
     have h_sublevel_set : sublevelSet f = Metric.ball (f.roots ⟨0, by omega⟩) 1 := by
-      convert degree_one_sublevel_eq_ari f hf using 1;
+      convert degree_one_sublevel_eq_ari f hf using 1
+      ext z; simp [Metric.mem_ball, dist_eq_norm, Complex.abs]
     exact ⟨ ‖f.roots ⟨ 0, by omega ⟩‖ + 1, fun z hz => by rw [ h_sublevel_set ] at hz; exact le_trans ( norm_le_of_mem_closedBall <| by simpa using hz.out.le ) ( by norm_num ) ⟩;
   obtain ⟨ M, hM ⟩ := h_bounded;
   use 2 * M + 1;
@@ -126,9 +127,10 @@ theorem degree_one_rho_le_one_ari (f : UnitDiscPolynomial) (hf : f.degree = 1) :
     rho f ≤ 1 := by
   -- Since $f$ is a degree 1 polynomial, its sublevel set is the open unit disc centered at $f.roots 0$.
   have h_sublevel : sublevelSet f = Metric.ball (f.roots ⟨0, by linarith⟩) 1 := by
-    convert degree_one_sublevel_eq_ari f hf;
+    convert degree_one_sublevel_eq_ari f hf using 1
+    ext z; simp [Metric.mem_ball, dist_eq_norm, Complex.abs]
   refine' csSup_le _ _ <;> norm_num [ h_sublevel ];
-  · exact ⟨ 1, ⟨ f.roots ⟨ 0, by linarith ⟩, ⟨ by norm_num, fun z hz => hz ⟩ ⟩ ⟩;
+  · exact ⟨ 1, ⟨ f.roots ⟨ 0, by linarith ⟩, ⟨ by norm_num, fun z hz => by simpa [Metric.mem_ball, dist_eq_norm] using hz ⟩ ⟩ ⟩;
   · rintro b x ⟨ hb₁, hb₂ ⟩;
     -- By contradiction, assume $b > 1$.
     by_contra hb_gt_one;
@@ -163,8 +165,13 @@ theorem inscribedDiscRadius_mono_ari (S T : Set ℂ) (hST : S ⊆ T)
 /-- The benchmark polynomial zⁿ-1 has all roots on the unit circle.
     Each n-th root of unity has absolute value 1. -/
 theorem rootsOfUnity_abs_ari (n : ℕ) (hn : n > 0) (i : Fin n) :
-    Erdos1039.Complex.abs ((Erdos1039.rootsOfUnity n hn).roots i) = 1 := by
-  simp only [Erdos1039.rootsOfUnity, Erdos1039.Complex.abs]
-  exact Complex.norm_exp_ofReal_mul_I _
+    Complex.abs ((Erdos1039.rootsOfUnity n hn).roots i) = 1 := by
+  simp only [Erdos1039.rootsOfUnity, Complex.abs, Complex.norm_exp]
+  have heq : 2 * ↑Real.pi * Complex.I * ↑↑(i : ℕ) / ↑(n : ℕ) =
+      ↑(2 * Real.pi * (↑(i : ℕ) : ℝ) / (↑n : ℝ)) * Complex.I := by
+    push_cast; ring
+  rw [heq, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im]
+  simp [Real.exp_zero]
 
 end Erdos1039Aristotle
