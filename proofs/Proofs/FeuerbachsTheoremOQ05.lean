@@ -76,7 +76,7 @@ private lemma feuerbach_NI_sqrt (T : Triangle) (h : T.inradius < T.ninePointRadi
 
     Requires inradius < ninePointRadius, which holds for all non-equilateral triangles.
     (Equilateral triangles have inradius = ninePointRadius and the circles coincide.) -/
-def Triangle.feuerbachPoint (T : Triangle) (h : T.inradius < T.ninePointRadius) : Point :=
+def _root_.FeuerbachsTheorem.Triangle.feuerbachPoint (T : Triangle) (h : T.inradius < T.ninePointRadius) : Point :=
   let d := T.ninePointRadius - T.inradius
   (T.ninePointCenter.1 + (T.ninePointRadius / d) * (T.incenter.1 - T.ninePointCenter.1),
    T.ninePointCenter.2 + (T.ninePointRadius / d) * (T.incenter.2 - T.ninePointCenter.2))
@@ -95,7 +95,7 @@ theorem feuerbachPoint_on_ninePointCircle (T : Triangle) (h : T.inradius < T.nin
       (T.ninePointRadius / (T.ninePointRadius - T.inradius)) ^ 2 *
       ((T.incenter.1 - T.ninePointCenter.1) ^ 2 +
        (T.incenter.2 - T.ninePointCenter.2) ^ 2) by field_simp; ring]
-  rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (by positivity)]
+  rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (div_nonneg (ninePointRadius_nonneg T) hd.le)]
   rw [feuerbach_NI_sqrt T h]
   field_simp
 
@@ -152,7 +152,7 @@ theorem circle_to_line (O C : Point) (ρ k : ℝ)
     (hPO : dist2_sq P O ≠ 0) :
     let Q := invertPoint O k P
     2 * ((Q.1 - O.1) * (C.1 - O.1) + (Q.2 - O.2) * (C.2 - O.2)) = k ^ 2 := by
-  simp only [invertPoint]
+  simp only [invertPoint, add_sub_cancel_left]
   have hcomm : dist2_sq O P = dist2_sq P O := dist2_sq_comm O P
   have hOP_ne : dist2_sq O P ≠ 0 := hcomm ▸ hPO
   have hkey : dist2_sq P O = 2 * ((P.1 - O.1) * (C.1 - O.1) + (P.2 - O.2) * (C.2 - O.2)) :=
@@ -210,13 +210,14 @@ theorem ninePointCircle_maps_to_line (T : Triangle) (h : T.inradius < T.ninePoin
 
 /-- **Normals are proportional**: The normal to the incircle image line (direction I − F)
     and the normal to the nine-point circle image line (direction N − F) are proportional:
-      N − F = −(R/r) · (I − F)
-    Therefore the two image lines are parallel. -/
+      N − F = (R/r) · (I − F)
+    Therefore the two image lines are parallel.  (Since F lies beyond I on the ray N→I,
+    the vectors N − F and I − F point the same way, so the ratio R/r is positive.) -/
 theorem feuerbach_normals_proportional (T : Triangle) (h : T.inradius < T.ninePointRadius) :
     T.ninePointCenter.1 - (T.feuerbachPoint h).1 =
-      -(T.ninePointRadius / T.inradius) * (T.incenter.1 - (T.feuerbachPoint h).1) ∧
+      (T.ninePointRadius / T.inradius) * (T.incenter.1 - (T.feuerbachPoint h).1) ∧
     T.ninePointCenter.2 - (T.feuerbachPoint h).2 =
-      -(T.ninePointRadius / T.inradius) * (T.incenter.2 - (T.feuerbachPoint h).2) := by
+      (T.ninePointRadius / T.inradius) * (T.incenter.2 - (T.feuerbachPoint h).2) := by
   have hd_ne : T.ninePointRadius - T.inradius ≠ 0 := by linarith
   have hr_ne : T.inradius ≠ 0 := ne_of_gt (inradius_pos T)
   unfold Triangle.feuerbachPoint
@@ -226,12 +227,12 @@ theorem feuerbach_normals_proportional (T : Triangle) (h : T.inradius < T.ninePo
     (N − F) = λ · (I − F) componentwise.
     This means the lines 2(Q−F)·(I−F)=k² and 2(Q−F)·(N−F)=k² are parallel. -/
 theorem feuerbach_inversive_parallel_lines (T : Triangle) (h : T.inradius < T.ninePointRadius) :
-    ∃ λ : ℝ,
+    ∃ L : ℝ,
       T.ninePointCenter.1 - (T.feuerbachPoint h).1 =
-        λ * (T.incenter.1 - (T.feuerbachPoint h).1) ∧
+        L * (T.incenter.1 - (T.feuerbachPoint h).1) ∧
       T.ninePointCenter.2 - (T.feuerbachPoint h).2 =
-        λ * (T.incenter.2 - (T.feuerbachPoint h).2) :=
-  ⟨-(T.ninePointRadius / T.inradius), feuerbach_normals_proportional T h⟩
+        L * (T.incenter.2 - (T.feuerbachPoint h).2) :=
+  ⟨T.ninePointRadius / T.inradius, feuerbach_normals_proportional T h⟩
 
 /-
 ## Summary
