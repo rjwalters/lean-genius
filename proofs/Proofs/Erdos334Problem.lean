@@ -54,9 +54,7 @@ theorem one_smooth (y : ℕ) : isSmooth 1 y := by
 -/
 theorem prime_power_smooth (p k : ℕ) (hp : p.Prime) : isSmooth (p ^ k) p := by
   intro q hq hdiv
-  have := (Nat.Prime.dvd_prime_pow hp hq).mp hdiv
-  rcases this with ⟨_, rfl⟩
-  exact le_refl p
+  exact ((Nat.prime_dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow hdiv)).le
 
 /--
 **Product of smooth numbers is smooth.**
@@ -121,7 +119,7 @@ axiom erdos_cube_root_bound :
 f(n) << n^{4/(9√e)+ε} for all ε > 0.
 The exponent 4/(9√e) ≈ 0.2695 is the current best.
 -/
-noncomputable def balogExponent : ℝ := 4 / (9 * Real.sqrt Real.exp 1)
+noncomputable def balogExponent : ℝ := 4 / (9 * Real.sqrt (Real.exp 1))
 
 theorem balog_exponent_value : balogExponent < 0.27 := by
   unfold balogExponent
@@ -175,16 +173,13 @@ theorem example_10 : hasSmootPairRepr 10 2 := by
   · ring
   constructor
   · intro p hp hdiv
-    have := (Nat.Prime.eq_one_or_self_of_prime_of_dvd hp 2 Nat.Prime.two hdiv)
-    rcases this with h | h
-    · omega
-    · rw [h]
+    have : p = 2 := (Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp hdiv
+    omega
   · intro p hp hdiv
     have h8 : (8 : ℕ) = 2^3 := by norm_num
     rw [h8] at hdiv
-    have := (Nat.Prime.dvd_prime_pow Nat.Prime.two hp).mp hdiv
-    rcases this with ⟨_, rfl⟩
-    exact le_refl 2
+    have : p = 2 := (Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp (hp.dvd_of_dvd_pow hdiv)
+    omega
 
 /--
 **Example: 100 = 64 + 36**
@@ -200,19 +195,16 @@ theorem example_100 : hasSmootPairRepr 100 3 := by
   · intro p hp hdiv
     have h64 : (64 : ℕ) = 2^6 := by norm_num
     rw [h64] at hdiv
-    have := (Nat.Prime.dvd_prime_pow Nat.Prime.two hp).mp hdiv
-    rcases this with ⟨_, rfl⟩
+    have : p = 2 := (Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp (hp.dvd_of_dvd_pow hdiv)
     omega
   · intro p hp hdiv
     have h36 : (36 : ℕ) = 2^2 * 3^2 := by norm_num
     rw [h36] at hdiv
     rcases (Nat.Prime.dvd_mul hp).mp hdiv with h | h
-    · have := (Nat.Prime.dvd_prime_pow Nat.Prime.two hp).mp h
-      rcases this with ⟨_, rfl⟩
+    · have : p = 2 := (Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp (hp.dvd_of_dvd_pow h)
       omega
-    · have := (Nat.Prime.dvd_prime_pow (by norm_num : Nat.Prime 3) hp).mp h
-      rcases this with ⟨_, rfl⟩
-      exact le_refl 3
+    · have : p = 3 := (Nat.prime_dvd_prime_iff_eq hp (by norm_num : Nat.Prime 3)).mp (hp.dvd_of_dvd_pow h)
+      omega
 
 /-
 ## Part VII: Connection to Other Problems
