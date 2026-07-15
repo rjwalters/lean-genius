@@ -56,13 +56,12 @@ theorem omega_recurrence (n : ℕ) :
   unfold ω
   have hcast1 : (↑(n + 2) : ℝ) / 2 = ↑n / 2 + 1 := by push_cast; ring
   have hcast2 : (↑(n + 2) : ℝ) / 2 + 1 = ↑n / 2 + 2 := by push_cast; ring
-  rw [hcast1, hcast2, rpow_add pi_pos, rpow_one]
+  rw [hcast2, hcast1, rpow_add pi_pos, rpow_one]
   have hpos : (0 : ℝ) < ↑n / 2 + 1 := by positivity
   rw [show (↑n : ℝ) / 2 + 2 = (↑n / 2 + 1) + 1 from by ring,
       Gamma_add_one hpos.ne']
   have hΓ : 0 < Gamma (↑n / 2 + 1) := Gamma_pos_of_pos (by positivity)
   field_simp [hpos.ne', hΓ.ne']
-  ring
 
 /- ## Part II: Ratio Bound -/
 
@@ -72,7 +71,7 @@ theorem ratio_le_two_thirds (n : ℕ) (hn : 8 ≤ n) :
     2 * π / (↑n + 2) ≤ 2 / 3 := by
   rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < ↑n + 2) (by norm_num : (0 : ℝ) < 3)]
   -- Goal: 6π ≤ 2n + 4. From π < 10/3: 6π < 20. From n ≥ 8: 2n + 4 ≥ 20.
-  have hπ : π < 10 / 3 := by linarith [pi_lt_3141593]
+  have hπ : π < 10 / 3 := by linarith [pi_lt_d6]
   have hn' : (8 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn
   linarith
 
@@ -116,7 +115,7 @@ theorem tendsto_omega_zero : Tendsto (fun n => ω n) atTop (𝓝 0) := by
   have hM_pos : 0 < M := lt_max_of_lt_left (omega_pos 8)
   -- Find K such that (2/3)^K · M < ε
   obtain ⟨K, hK⟩ := exists_pow_lt_of_lt_one (div_pos hε hM_pos) (by norm_num : (2 : ℝ) / 3 < 1)
-  have hKε : (2 / 3) ^ K * M < ε := by rwa [div_lt_iff₀ hM_pos] at hK
+  have hKε : (2 / 3) ^ K * M < ε := by rwa [lt_div_iff₀ hM_pos] at hK
   -- N = 9 + 2K suffices
   refine ⟨9 + 2 * K, fun n hn => ?_⟩
   simp only [dist_zero_right, Real.norm_eq_abs, abs_of_nonneg (omega_nonneg n)]
@@ -161,9 +160,9 @@ theorem thin_shell_concentration (ε : ℝ) (hε0 : 0 < ε) (hε1 : ε < 1) :
   have h_base_nn : 0 ≤ 1 - ε := by linarith
   have h_base_lt : 1 - ε < 1 := by linarith
   have h_pow := tendsto_pow_atTop_nhds_zero_of_lt_one h_base_nn h_base_lt
-  have h := tendsto_const_nhds.sub h_pow
-  simp only [sub_zero] at h
-  exact h
+  have h : Tendsto (fun n : ℕ => 1 - (1 - ε) ^ n) atTop (𝓝 (1 - 0)) :=
+    tendsto_const_nhds.sub h_pow
+  simpa using h
 
 /- ## Part VI: Summary
 
