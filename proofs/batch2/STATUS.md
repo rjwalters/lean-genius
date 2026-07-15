@@ -77,6 +77,104 @@ All flips in-container `lake build Proofs.X` exit-0 before ledger flip; pushed p
    `Nat.mul_pos` / materialize `hp.two_le`.
 
 Ledger after increment 69: +6 GREEN (partition B).
+# DOCTOR INCREMENT 68 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
+
+Container `dr68` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc68` off origin/feature/issue-37508. Confirms partition A
+is genuine deep-rework (4–6 diverse root errors per file, ledger class = FIRST
+error only). All flips in-container `lake build Proofs.X` exit-0 before ledger
+flip; pushed per file. **+4 GREEN.** PR #38671.
+
+## Flips (failure class in parens)
+- AmgmInequalityOQ02OQ01OQ02OQ01OQ03 (unknown-const:elemSymm_fin_zero → Newton-Girard,
+  6 roots): elemSymm_fin_zero→elemSymm_gt_eq_zero; `induction n generalizing k x`
+  auto-generalizes dependent `x` (drop it); **`Finset.mul_sum` orientation flipped**
+  (now `a*∑ = ∑ a*f`) so `←mul_sum` to distribute goes the wrong way → forward
+  `Finset.mul_sum` (+`mul_add` for `a*(∑+t)`); `congr 2; omega` no longer peels
+  through `e (…)` to a Nat goal → explicit index `rw`; ih no longer generalizes a
+  non-reverted var `Y` (drop the extra arg); final linarith cast-atom parity
+  (`push_cast at hA hfinal ⊢`); defeq `set` lets → `rfl`.
+- BinomialTheoremOQ02OQ01 (type-mismatch → multinomial MGF, 5 roots):
+  **`HasDerivAt.comp` yields `Real.exp ∘ (fun t => …)`** — `simpa` needs
+  `Function.comp_def` to unfold (×3); **`convert (HasDerivAt _ _ _) using 1` now
+  emits junk goals** (2 instance-eqs + 1 Pi-power/Pi-mul function-eq) *before* the
+  derivative goal → `<;> try (first | rfl | (funext t; rfl))` clears junk, leaving
+  the derivative; `exp 0` no longer pre-reduced by convert.
+- FeuerbachsTheoremOQ05 (dot-notation-drift, 5 roots incl. **STATEMENT REPAIR #38611**):
+  **field notation no longer resolves a `def Triangle.foo` declared under the wrong
+  namespace** — file is `namespace FeuerbachsTheoremOQ05` but `Triangle` lives in
+  `FeuerbachsTheorem`, so `def Triangle.feuerbachPoint` registered as
+  `FeuerbachsTheoremOQ05.…` and `T.feuerbachPoint` (T : FeuerbachsTheorem.Triangle)
+  couldn't project → `def _root_.FeuerbachsTheorem.Triangle.feuerbachPoint`
+  (cleared ~20 cascade errors); `λ` reserved keyword → `L`; `simp only [invertPoint]`
+  no longer cancels `O.1 + X - O.1` → add `add_sub_cancel_left` so the `calc` LHS
+  matches; `positivity` can't sign a hypothesis-dependent denominator →
+  `div_nonneg (ninePointRadius_nonneg T) hd.le`.
+  **STATEMENT REPAIR (#38611):** `feuerbach_normals_proportional` asserted
+  `N − F = −(R/r)·(I − F)`, which is FALSE — with `F = N + (R/d)(I−N)`, `d = R−r`,
+  one has `N − F = +(R/r)·(I − F)` (F lies beyond I on ray N→I, so N−F and I−F point
+  the same way; verified: `field_simp; ring` closes only the `+` form, the `−` form
+  reduces to `a = −a`). Fixed the statement, docstring, and the witness in
+  `feuerbach_inversive_parallel_lines` to the intended-true `+R/r`. Not a weakening.
+- DerangementsOQ03OQ01 (signature-drift → 2nd-order derangement convergence, root
+  cause + 4 masked): **LOST IMPORT** — the file `namespace DerangementsOQ03`-reopens
+  to reuse `altFactTerm`/`derangements_div_factorial`/… but imported only Mathlib
+  modules → add `import Proofs.DerangementsOQ03` (cleared the whole `Function expected
+  at altFactTerm` cluster); dead `rw [h0]` (`altFactTerm (m+0)` — goal already `m`)
+  → delete; `Summable.tsum_eq_zero_add` yields `f 0 = altFactTerm (m+0)` → simp needs
+  `add_zero` not `zero_add`; **`ring_nf` reindexed the tsum value** so `convert … using 1`
+  emitted a 2nd (value) goal → `rw [add_sub_cancel_left]` cancels cleanly with no
+  reindex, leaving only the function goal; reverse-triangle `h1` rebuilt via
+  `abs_sub_abs_le_abs_sub a (-b)` + `simpa [abs_neg, sub_neg_eq_add]`; concrete
+  n0/n1/n2 bounds `convert h using 2` leaves a factorial leaf → `<;> norm_num [Nat.factorial]`.
+
+## Deferred (partition A, triaged this increment)
+- DeMoivreOQ02OQ02 (signature-drift): `private def P/Q : Prop` over a section
+  `variable {R} [CommRing R]` — `R` no longer inferrable at the many `P n m` call
+  sites (return type is `Prop`, args are `ℤ`), v4.31 refuses the `CommRing ?m` synth.
+  Needs `(R := R)` at every use or an explicit-R refactor — pervasive, not mechanical.
+- LawsOfLargeNumbersOQ01Aristotle: reimplements `generalize_proofs` over
+  `Mathlib.Tactic.GeneralizeProofs` internals — that namespace is gone in v4.31;
+  deep metaprogramming API rework.
+- LagrangeFourSquaresOQ01OQ03: `native_decide` × noncomputable `r4` catch-22.
+- BezoutIdentityOQ01OQ02OQ02Transitive: docstring self-declares UNVERIFIED / never
+  machine-checked (Fin.cons/append index-arithmetic bridges) — not a portable v4.26 green.
+- CantorDiagonalizationOQ03OQ01Incomplete01: `typeUniverse` with `Obj := Type*`
+  instantiated at `Prop` forces a universe-level metavariable mismatch
+  (`[u1,u2,u3]` vs `[u1,u2]`) — genuine universe-design problem, not a pin.
+
+## New systematic seams (rename-map §7ai candidates)
+1. **`Finset.mul_sum` orientation is now `a * ∑ f = ∑ a*f`** (forward distributes).
+   Old `← Finset.mul_sum` used to fold `∑ a*f → a*∑` now folds the wrong way;
+   to distribute `a*∑`, use FORWARD `Finset.mul_sum`, and add `mul_add` first when
+   the shape is `a*(∑ + t)`. `simp only [Finset.mul_sum, ← Finset.sum_add_distrib]`
+   is the reliable fold-into-one-sum; `simp_rw` with the reversed pair makes no progress.
+2. **`convert (HasDerivAt …) using 1` emits extra junk goals** on v4.31: two
+   instance-equalities (`Real.instAddCommGroup = …`) and a Pi-power/Pi-mul function
+   equality (`fun t => f t ^ n` vs `(fun t => f t)^n`), BEFORE the derivative-value
+   goal. A following `simp`/`rw` silently targets a junk goal → "no progress" /
+   "rewrite failed". Clear them with `<;> try (first | rfl | (funext t; rfl))`.
+3. **`HasDerivAt.comp` keeps the `g ∘ f` form** — `simpa` needs `Function.comp_def`
+   to unfold to `fun x => g (f x)`.
+4. **`congr N; omega` no longer peels through an opaque function application**
+   (`e a = (fun m => …) b`) to expose the Nat index — rewrite the index explicitly.
+5. **`induction n generalizing k x`** where `x : Fin n → …` (x depends on n): `x`
+   is auto-generalized, so LISTING it is a hard error → drop it.
+6. **Field/dot notation only resolves in the type's exact namespace**: a
+   `def Ns2.Type.foo` declared while inside `namespace Ns1` registers as
+   `Ns1.Ns2.Type.foo` and is invisible to `x.foo` for `x : Ns2.Type`. Declare it
+   `def _root_.Ns2.Type.foo` (or move it out of the wrapping namespace).
+7. **Lost `import Proofs.X`**: files that `namespace X`-reopen to reuse a sibling's
+   defs sometimes carry ONLY Mathlib imports (the `import Proofs.X` was dropped) →
+   every reused name reads as `Function expected at foo : ?m`. Add the missing import.
+8. **`ring_nf` reindexes `∑'`/`Finset.sum` binders** (`m+(k+1) → 1+m+k`), which then
+   makes a later `convert … using 1` emit an extra tsum/sum value goal. Prefer a
+   targeted `rw [add_sub_cancel_left]` (or similar) over `ring_nf` when the value is
+   about to be matched by `convert`.
+
+Ledger after increment 68: +4 GREEN (partition A).
+
+---
 
 
 # DOCTOR INCREMENT 67 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)

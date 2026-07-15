@@ -59,7 +59,7 @@ AmgmInequalityOQ02OQ01OQ02	GREEN
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01	GREEN	
-AmgmInequalityOQ02OQ01OQ02OQ01OQ03	RESIDUAL	unknown-const:elemSymm_fin_zero
+AmgmInequalityOQ02OQ01OQ02OQ01OQ03	GREEN
 AmgmInequalityOQ02OQ02	GREEN	
 AmgmInequalityOQ02OQ02OQ02	GREEN	
 AmgmInequalityOQ02OQ03	GREEN	
@@ -229,7 +229,7 @@ BinaryGcdOQ02	GREEN
 BinaryGcdOQ02OQ01	RESIDUAL	unknown-const:a
 BinomialTheorem	GREEN	
 BinomialTheoremOQ01	GREEN	
-BinomialTheoremOQ02OQ01	RESIDUAL	type-mismatch
+BinomialTheoremOQ02OQ01	GREEN
 BinomialTheoremOQ02OQ01OQ01OQ02	RESIDUAL	type-mismatch
 BinomialTheoremOQ02OQ01OQ02OQ03	GREEN	
 BinomialTheoremOQ02OQ01OQ03	GREEN	
@@ -531,7 +531,7 @@ DerangementsConvergenceOQ05OQ01	GREEN
 DerangementsConvergenceOQ06	GREEN	
 DerangementsConvergenceOQ06OQ01	GREEN	
 DerangementsOQ03	GREEN	
-DerangementsOQ03OQ01	RESIDUAL	signature-drift
+DerangementsOQ03OQ01	GREEN
 DerangementsOQ03OQ01OQ02	GREEN	
 DerangementsOQ03OQ02	GREEN	
 DerangementsOQ04OQ01OQ01	GREEN	
@@ -1977,7 +1977,7 @@ FeuerbachsTheoremDefsOQ04	GREEN	type-mismatch
 FeuerbachsTheoremOQ01Aristotle	GREEN	
 FeuerbachsTheoremOQ01OQ03	RESIDUAL	unknown-const:h1
 FeuerbachsTheoremOQ04TangentLine	GREEN	
-FeuerbachsTheoremOQ05	RESIDUAL	dot-notation-drift
+FeuerbachsTheoremOQ05	GREEN
 FibonacciIdentitiesOQ02	GREEN	
 FibonacciIdentitiesOQ02OQ02PrimeIndex	GREEN	
 FiveColorTheorem	GREEN	

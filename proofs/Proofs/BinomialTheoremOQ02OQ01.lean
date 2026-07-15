@@ -231,8 +231,8 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
     have hbase : HasDerivAt (fun t : ℝ => p i * Real.exp t + (1 - p i)) (p i) 0 := by
       simpa using ((Real.hasDerivAt_exp (0 : ℝ)).const_mul (p i)).add_const (1 - p i)
     have hpow := hbase.pow n
-    convert hpow using 1
-    skip
+    convert hpow using 1 <;> try (first | rfl | (funext t; rfl))
+    simp only [Real.exp_zero, mul_one]
     rw [show p i + (1 - p i) = (1 : ℝ) by ring, one_pow, mul_one]
   -- Step 5: differentiate the right-hand side; derivative is the target sum.
   have hR : HasDerivAt
@@ -246,7 +246,7 @@ theorem multinomial_mean {α : Type*} [DecidableEq α]
       have hmul : HasDerivAt (fun t : ℝ => t * (k i : ℝ)) ((k i : ℝ)) 0 := by
         simpa using (hasDerivAt_id (0 : ℝ)).mul_const ((k i : ℝ))
       have hc := (Real.hasDerivAt_exp ((0 : ℝ) * (k i : ℝ))).comp 0 hmul
-      simpa using hc
+      simpa [Function.comp_def] using hc
     simpa [mul_comm] using hinner.const_mul (multinomialProb s p n k)
   -- Step 6: equate the two derivatives.
   have hfun : (fun t : ℝ => (p i * Real.exp t + (1 - p i)) ^ n)
@@ -343,7 +343,7 @@ theorem multinomial_second_moment {α : Type*} [DecidableEq α]
       have hmul : HasDerivAt (fun t : ℝ => t * (k i : ℝ)) ((k i : ℝ)) t := by
         simpa using (hasDerivAt_id t).mul_const ((k i : ℝ))
       have hc := (Real.hasDerivAt_exp (t * (k i : ℝ))).comp t hmul
-      simpa [mul_comm] using hc
+      simpa [mul_comm, Function.comp_def] using hc
     exact hinner.const_mul (multinomialProb s p n k)
   -- The two derivative functions coincide (derivatives of equal functions).
   have hderiv_eq : (fun t : ℝ =>
@@ -375,7 +375,7 @@ theorem multinomial_second_moment {α : Type*} [DecidableEq α]
         have hmul : HasDerivAt (fun t : ℝ => t * (k i : ℝ)) ((k i : ℝ)) 0 := by
           simpa using (hasDerivAt_id (0 : ℝ)).mul_const ((k i : ℝ))
         have hc := (Real.hasDerivAt_exp ((0 : ℝ) * (k i : ℝ))).comp 0 hmul
-        simpa [mul_comm] using hc
+        simpa [mul_comm, Function.comp_def] using hc
       simpa [pow_two, zero_mul, Real.exp_zero, mul_comm, mul_left_comm, mul_assoc]
         using hbase.const_mul ((k i : ℝ))
     exact hinner.const_mul (multinomialProb s p n k)
@@ -392,7 +392,7 @@ theorem multinomial_second_moment {α : Type*} [DecidableEq α]
     have hB : HasDerivAt (fun t : ℝ => p i * Real.exp t) (p i * Real.exp 0) 0 := by
       simpa using (Real.hasDerivAt_exp (0 : ℝ)).const_mul (p i)
     have hAB := hA.mul hB
-    convert hAB using 1
+    convert hAB using 1 <;> try (first | rfl | (funext t; rfl))
     simp only [Real.exp_zero, mul_one]
     rw [show p i + (1 - p i) = (1 : ℝ) from by ring]
     simp only [one_pow, mul_one]
