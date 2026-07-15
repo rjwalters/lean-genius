@@ -1,3 +1,87 @@
+# DOCTOR INCREMENT 78 (deep-rework partition Erdős ≥ 500 / lane2, #38065, 2026-07-15)
+
+Container cpuset 6-11, 11g, cache `lean-mathlib-cache-v431-b`, worktree doctor-b, branch
+`feature/issue-38065-inc78` off origin/feature/issue-37508. **+4 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos1035Problem** (instance-synth): four seams in the popcount-parity lemma /
+  hypercube-bipartite proof. (1) **Big-operator `∑ x ∈ s, f` now parses greedily over a
+  trailing `= …`** — `have h : ∑ … = ∑ … := by` elaborated the `= ∑…` INTO the first sum body
+  (→ `AddCommMonoid Prop` / `OfNat (Sort) 1`); fix = parenthesize each sum. (2) `Bool.true_xor`
+  → **`Bool.xor_true`** after `Nat.testBit_two_pow_self` puts the literal on the RIGHT
+  (`b ^^ true`). (3) `Nat.testBit_two_pow_of_ne hmem.1` wrong orientation → **`(Ne.symm hmem.1)`**
+  (lemma wants `k ≠ j`, mem_erase gives `j ≠ k`). (4) `Fin.mk.injEq` didn't fire on the `≠` goal
+  (add **`ne_eq`**) and the resulting Nat-`≠` is the reverse of the lemma → **`.symm`**. Also the
+  `cases hb`/`omega` branches left `if false = true then 1 else 0` opaque to omega — reduced with
+  `Bool.false_eq_true, if_false, if_true, ite_true` in the `simp only`.
+- **Erdos625Problem** (instance-synth): (1) placeholder `AlmostSurely := ∀ ε > 0, ∃ N, ∀ n ≥ N,
+  True` had **untyped ε and N** → `LE (?m ε)` stuck; annotate `∀ ε > (0:ℝ), ∃ N : ℕ`. (2) abs of a
+  ℕ subtraction: `|chromaticNumber G.graph - χ₀|` needs `AddGroup ℕ` → coerce inside abs
+  `|(chromaticNumber G.graph : ℝ) - χ₀|` (same for cochromatic). (3) **statement repair**
+  (#38611 cand.): `problem_status` used `heckel_steiner_unbounded 1` (a *proof term* of type
+  `AlmostSurely …`) in `→`-hypothesis position (type expected, got term) — replaced with the
+  statement `AlmostSurely (fun n G => … ≥ 1)`; and its conclusion `∀ n G, … G.graph …` had
+  unconstrained binders → annotated `∀ (n : ℕ) (G : RandomGraph n (1/2))`. (pre-existing sorries
+  kept — file is a survey of an open problem.)
+- **Erdos559Problem** (elab-drift): (1) `edgeCount`'s `fun p : V×V => p.1 < p.2` needs
+  **`LT V`** — the v4.26-green source only had `[Fintype V][DecidableEq V]`, so an implicit order
+  instance is gone in v4.31; added `[LinearOrder V]` to `edgeCount`/`IsTree`/`IsCycle` (all
+  concrete callers use `Fin n`, which has it). (2) anonymous `⟨…⟩` for `FiniteGraph.mk` no longer
+  auto-fills the **default-valued `dec` field** — provide 4th field `inferInstance`. (3) the
+  `Nat.find` witness graph was annotated `: FiniteGraph V` but the existential needs
+  `FiniteGraph (Fin m)`; dropped the wrong annotation so expected-type drives it (complete-graph
+  ctor works for any DecidableEq type).
+- **Erdos751Problem** (instance-synth): `minDegree`/`maxDegree` via `Finset.min'`/`max'` of
+  `Finset.univ.image G.degree`. Two fixes: (a) **`G.degree` carries an instance binder**
+  `[Fintype ↑(G.neighborSet v)]` so bare `Finset.image G.degree` fails — wrap `(fun v => G.degree v)`
+  and add `[DecidableRel G.Adj]`; (b) `min'`/`max'` nonempty obligation `Finset.univ.Nonempty`
+  needs `[Nonempty V]` (added to the section `variable` line; auto-included into every
+  `minDegree G` statement). Blanket-added `[DecidableRel G.Adj]` after each `(G : SimpleGraph V)`.
+
+## New systematic seams (rename-map candidates)
+- **Big-operator notation `∑ x ∈ s, f` / `∏` binds greedily over a trailing binary relation**
+  (`= …`, `≤ …`) in v4.31 — any `have h : ∑ … = ∑ … := by` where the sums are written without
+  surrounding parens now folds the RHS into the first summand (yields bogus `AddCommMonoid Prop`
+  / `OfNat (Sort ?u) 1`). Fix: parenthesize each big-operator term.
+- **`Bool.true_xor` vs `Bool.xor_true`** — pick by which side the literal ends up on after
+  `Nat.testBit_two_pow_self`; the self-rewrite yields `b ^^ true` → `Bool.xor_true`.
+- **Anonymous-constructor `⟨…⟩` no longer auto-fills structure fields with `:= by …`/`:=` defaults**
+  — must supply every explicit field (e.g. a `DecidableRel`-valued `dec := by infer_instance` field
+  now needs an explicit `inferInstance` arg). (Recurred across Erdos559 + others in-wave.)
+- **min-over-ℕ seam:** `Finset.inf` over ℕ now demands `OrderTop ℕ` (absent); `Finset.min'`/`max'`
+  demand `[Nonempty V]`; and `SimpleGraph.degree` needs `[DecidableRel G.Adj]` to shed its
+  `[Fintype (neighborSet v)]` binder before use in `Finset.image`. (Erdos751 fixed; Erdos803 same
+  shape, deferred.)
+
+## Statement repairs (for #38611, gallery-meta re-audit)
+- **Erdos625Problem.problem_status** — was type-incorrect (proof term in `→`-hyp position);
+  restated hypothesis as the statement `AlmostSurely (fun n G => χ − ζ ≥ 1)`. Not a soundness
+  change (proof is a pre-existing `sorry`), but the gallery meta should reflect the corrected form.
+- **Erdos807Problem.erw_conjecture_false** (NOT flipped — deferred): with the placeholder
+  `def ERW_conjecture n := True`, the theorem `¬∀ n, ERW_conjecture n` is genuinely FALSE and
+  `intro _; trivial` cannot close `⊢ False`. This is an unsound placeholder formalization
+  (a `True` stand-in makes the "conjecture is false" corollary unprovable). Needs a real
+  (dis)provable formalization or restructuring — flagged as a #38611 re-audit candidate, not a
+  mechanical migration flip.
+
+## Next leads for this partition (Erdős ≥ 500)
+- **Erdos1007Problem.olean was BUILT into cache lean-mathlib-cache-v431-b** (green parent) to
+  unmask children — but Erdos1007OQ05 is NOT a pure cascade (own drift: line 70 `Finset.add_sum_erase`
+  rewrite + a `|>.sum … = 0` parse error at 78) and Erdos1007OQ01 is heavy (whnf timeout, unknown
+  `K5_unit_embedding`, `open` token). Erdos1014Problem is the real cascade hub (21 err) — fixing it
+  unmasks **pure missing-olean** children Erdos1014OQ02 + Erdos1014OQ03Concrete (each a single
+  "object file … .olean does not exist" error, so they'll go green the moment the parent olean lands
+  in the cache).
+- **Cheap-ish (single seam family):** Erdos803Problem (3 err, `Finset.inf`→`min'`+Nonempty, same as
+  Erdos751), Erdos556Problem (4 err — but has an unsound edge case: `cycleGraph` loopless is FALSE
+  for n=1; fix by adding `i ≠ j` to `Adj`; plus a `by trivial` on a Ramsey existence that needs a
+  real constant-embedding witness — #38611 candidate).
+- **Error-count survey (this wave, uncached-sibling counts):** 559✓ 625✓ 751✓ 807(2,deferred)
+  803(3) 556(4) 720(5,all omega) 732(5) 766(5) 796(5) 537/525/505/1040(6) 781/782/794/738(6)
+  1056/515/533(10-11) 1019(11) — lower is cheaper.
+
+---
 # DOCTOR INCREMENT 80 (deep-rework partition non-Erdos L–Z / lane4, #38065, 2026-07-15)
 
 Container cpuset 18-23, 11g, cache `lean-mathlib-cache-v431-d`, worktree doctor-d, branch

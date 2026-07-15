@@ -57,7 +57,7 @@ structure FiniteGraph (V : Type*) [Fintype V] where
   dec : DecidableRel adj := by infer_instance
 
 /-- The number of edges in a graph -/
-noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
+noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
     (G : FiniteGraph V) : ℕ :=
   (Finset.filter (fun p : V × V => p.1 < p.2 ∧ G.adj p.1 p.2)
     Finset.univ).card
@@ -89,8 +89,8 @@ def IsRamseyFor {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [Decidable
 noncomputable def sizeRamsey {V : Type*} [Fintype V] [DecidableEq V]
     (G : FiniteGraph V) : ℕ :=
   Nat.find (⟨Fintype.card V * (Fintype.card V - 1) / 2,
-    ⟨(⟨fun u v => u ≠ v, fun _ _ h => h.symm, fun _ h => h rfl⟩ :
-      FiniteGraph V), by sorry⟩⟩ :
+    ⟨⟨fun u v => u ≠ v, fun _ _ h => h.symm, fun _ h => h rfl, inferInstance⟩,
+      by sorry⟩⟩ :
     ∃ m, ∃ (H : FiniteGraph (Fin m)), IsRamseyFor H G)
 
 /- ## The Conjecture (Disproved) -/
@@ -127,7 +127,7 @@ theorem beck_paths (n : ℕ) (hn : n ≥ 2) :
   sorry -- Beck (1983)
 
 /-- A graph is a tree if it is connected and has n-1 edges -/
-def IsTree {V : Type*} [Fintype V] [DecidableEq V] (G : FiniteGraph V) : Prop :=
+def IsTree {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V] (G : FiniteGraph V) : Prop :=
   edgeCount G = Fintype.card V - 1 ∧
   -- Connected: any two vertices are reachable
   True -- Simplified; full connectivity definition omitted
@@ -140,7 +140,7 @@ theorem friedman_pippenger_trees (n : ℕ) (hn : n ≥ 2) :
   sorry -- Friedman-Pippenger (1987)
 
 /-- A graph is a cycle if it has n vertices and n edges forming a ring -/
-def IsCycle {V : Type*} [Fintype V] [DecidableEq V] (G : FiniteGraph V) : Prop :=
+def IsCycle {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V] (G : FiniteGraph V) : Prop :=
   edgeCount G = Fintype.card V ∧
   ∀ v : V, degree G v = 2
 
