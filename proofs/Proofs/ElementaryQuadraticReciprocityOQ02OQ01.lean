@@ -93,25 +93,10 @@ theorem quadCharC_isQuadratic : (quadCharC p).IsQuadratic :=
 theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   have hqc_ne : quadraticChar (ZMod p) ≠ 1 :=
     quadraticChar_ne_one (char_ZMod_ne_two p hodd)
-  intro heq
-  apply hqc_ne
-  -- quadCharC p = quadraticChar.ringHomComp f, and f = Int.cast is injective
-  -- If quadCharC p = 1, then f ∘ quadraticChar = 1, so quadraticChar = 1 by injectivity
-  ext a
-  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
-    show quadCharC p a = _; rw [heq]
-  rw [MulChar.one_apply] at ha
-  rw [MulChar.one_apply]
-  rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv] at ha; norm_cast at ha
-    · exact absurd ha one_ne_zero.symm
-    · exact hv
-  · rw [hv] at ha; norm_cast at ha
-    · exact hv
-    · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
-  · rw [hv] at ha; push_cast at ha
-    exfalso
-    split_ifs at ha with hu <;> norm_num at ha
+  -- quadCharC p = quadraticChar.ringHomComp (Int.castRingHom ℂ), and since
+  -- Int.cast : ℤ → ℂ is injective, ringHomComp preserves `≠ 1`.
+  have hinj : Function.Injective (Int.castRingHom ℂ) := Int.cast_injective
+  exact (MulChar.ringHomComp_ne_one_iff hinj).mpr hqc_ne
 
 -- ============================================================================
 -- The Main Theorem
@@ -134,7 +119,7 @@ theorem gauss_sum_sq_in_complex (hodd : p ≠ 2) :
   -- Set up NeZero instance (prime p is positive, so p ≠ 0)
   haveI hNeZero : NeZero p := ⟨Nat.pos_iff_ne_zero.mp hp.out.pos⟩
   -- ψ is primitive
-  have hψ : (ZMod.stdAddChar (N := p)).IsPrimitive := ZMod.isPrimitive_stdAddChar
+  have hψ : (ZMod.stdAddChar (N := p)).IsPrimitive := ZMod.isPrimitive_stdAddChar p
   -- χ is nontrivial and quadratic
   have hχ_ne : quadCharC p ≠ 1 := quadCharC_ne_one p hodd
   have hχ_q : (quadCharC p).IsQuadratic := quadCharC_isQuadratic p
@@ -184,14 +169,19 @@ theorem gauss_sum_sq_exists (hodd : p ≠ 2) :
 
 /-- **Verification for p = 3**: τ² = (-1)^1 · 3 = -3 ∈ ℂ. -/
 example : ∃ τ : ℂ, τ ^ 2 = (-1 : ℂ) ^ (3 / 2) * (3 : ℂ) :=
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
   gauss_sum_sq_exists 3 (by norm_num)
 
 /-- **Verification for p = 5**: τ² = (-1)^2 · 5 = 5 ∈ ℂ. -/
 example : ∃ τ : ℂ, τ ^ 2 = (-1 : ℂ) ^ (5 / 2) * (5 : ℂ) :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
   gauss_sum_sq_exists 5 (by norm_num)
 
 /-- **Verification for p = 7**: τ² = (-1)^3 · 7 = -7 ∈ ℂ. -/
 example : ∃ τ : ℂ, τ ^ 2 = (-1 : ℂ) ^ (7 / 2) * (7 : ℂ) :=
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   gauss_sum_sq_exists 7 (by norm_num)
+
+end
 
 end GaussSumQRCyclotomic
