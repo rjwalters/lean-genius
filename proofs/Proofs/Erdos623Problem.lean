@@ -42,21 +42,16 @@ open Cardinal Set Ordinal
 noncomputable def aleph_omega : Cardinal := ℵ_ ω
 
 /-- ℵ_ω is a limit cardinal (supremum of smaller alephs). -/
-theorem aleph_omega_is_limit : aleph_omega.IsLimit := by
-  exact Cardinal.isLimit_aleph ω
+theorem aleph_omega_is_limit : Order.IsSuccLimit aleph_omega :=
+  Cardinal.isSingular_aleph_omega0.isSuccLimit
 
 /-- ℵ_ω is singular (its cofinality is ω, not itself). -/
-theorem aleph_omega_is_singular : ¬aleph_omega.IsRegular := by
-  intro h
-  have := h.cof_eq
-  simp [aleph_omega] at this
-  -- The cofinality of ℵ_ω is ω, not ℵ_ω
-  sorry
+theorem aleph_omega_is_singular : ¬aleph_omega.IsRegular := fun h =>
+  h.not_isSingular Cardinal.isSingular_aleph_omega0
 
 /-- ℵ_n < ℵ_ω for all finite n. -/
-theorem aleph_n_lt_omega (n : ℕ) : ℵ_ n < aleph_omega := by
-  simp [aleph_omega]
-  exact Cardinal.aleph_lt_aleph.mpr (Ordinal.nat_lt_omega0 n)
+theorem aleph_n_lt_omega (n : ℕ) : ℵ_ n < aleph_omega :=
+  Cardinal.aleph_lt_aleph.mpr (Ordinal.nat_lt_omega0 n)
 
 /- ## Part II: Free Functions -/
 
@@ -72,9 +67,8 @@ theorem exists_free_function (X : Type*) [Infinite X] [Nonempty X] :
   -- For any finite A, X \ A is nonempty (X is infinite)
   have key : ∀ A : Finset X, ∃ x : X, x ∉ A := by
     intro A
-    by_contra h
-    push_neg at h
-    exact absurd ⟨⟨A, h⟩⟩ (not_finite X)
+    obtain ⟨x, hx⟩ := (A.finite_toSet.infinite_compl).nonempty
+    exact ⟨x, by simpa using hx⟩
   exact ⟨fun A => (key A).choose, fun A => (key A).choose_spec⟩
 
 /- ## Part III: Independent Sets -/
@@ -161,9 +155,10 @@ def potentially_undecidable : Prop :=
   True  -- Placeholder - actual formalization would require metamathematics
 
 /-- The cofinality of ℵ_ω plays a key role. -/
-theorem cofinality_aleph_omega : aleph_omega.ord.cof = ω := by
-  simp [aleph_omega]
-  exact Cardinal.cof_aleph ω
+theorem cofinality_aleph_omega : aleph_omega.ord.cof = ℵ₀ := by
+  rw [show aleph_omega.ord = ω_ ω from Cardinal.ord_aleph ω,
+    Ordinal.cof_omega Ordinal.isSuccLimit_omega0]
+  exact Ordinal.cof_omega0
 
 /- ## Part VII: Related Concepts -/
 
@@ -189,7 +184,7 @@ theorem countable_case_no (X : Type*) (hX : #X = ℵ₀) :
     ∃ f : Finset X → X, IsFreeFunction f ∧
       ∀ Y : Set X, Y.Infinite → ¬IsIndependent f Y := by
   have hlt : #X < aleph_omega := by
-    rw [hX]
+    rw [hX, ← Cardinal.aleph_zero]
     exact aleph_n_lt_omega 0
   exact erdos_hajnal_below_aleph_omega X hlt
 
