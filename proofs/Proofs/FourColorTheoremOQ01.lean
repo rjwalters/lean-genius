@@ -104,7 +104,7 @@ theorem free_color_of_degree_lt (G : SimpleGraph V) [DecidableRel G.Adj]
     intro heq
     rw [heq, Finset.card_univ] at hcard
     exact Nat.lt_irrefl _ hcard
-  rw [Finset.ne_univ_iff_exists_notMem] at hne
+  rw [Ne, Finset.eq_univ_iff_forall, not_forall] at hne
   exact hne
 
 -- ============================================================
@@ -218,7 +218,7 @@ theorem chain_interference_obstruction
     w_color_after ≠ c₂ ∧ w_color_after ≠ c₃ := by
   subst hw; subst hswap
   simp [Equiv.swap_apply_right]
-  exact ⟨h12.symm, h13.symm⟩
+  exact ⟨h12, h13⟩
 
 -- ============================================================
 -- PART 7: The Contrast — 5-Color Avoids Interference
@@ -377,7 +377,9 @@ theorem min_counterexample_degree (d : ℕ) (hd : d ≤ 3) (k : ℕ) (hk : k = 4
     And some vertex has degree exactly 4 or 5 (since average degree < 6). -/
 theorem min_counterexample_has_low_degree
     (avgDeg : ℕ) (havg : avgDeg ≤ 5)
-    (minDeg : ℕ) (hmin : minDeg ≥ 4) :
+    (minDeg : ℕ) (hmin : minDeg ≥ 4)
+    -- The minimum degree never exceeds the average degree.
+    (hle : minDeg ≤ avgDeg) :
     -- Some vertex has degree 4 or 5
     minDeg = 4 ∨ minDeg = 5 := by
   omega
