@@ -124,10 +124,11 @@ theorem iid_satisfies_lindeberg
         (∫ ω, (S.X k ω / Real.sqrt n) ^ 2
               * (if |S.X k ω / Real.sqrt n| > ε then 1 else 0) ∂μ)
           = (∫ ω, (S.X k ω) ^ 2
-                * (if |S.X k ω| > ε * Real.sqrt n then 1 else 0) ∂μ) / n := by
+                * (if |S.X k ω| > ε * Real.sqrt n then 1 else 0) ∂μ) / (n : ℝ) := by
       intro k
       rw [← integral_div]
       refine integral_congr_ae (Eventually.of_forall (fun ω => ?_))
+      simp only []
       have hcond : (|S.X k ω / Real.sqrt n| > ε)
           ↔ (|S.X k ω| > ε * Real.sqrt n) := by
         rw [gt_iff_lt, gt_iff_lt, abs_div, abs_of_nonneg (Real.sqrt_nonneg _),
@@ -139,11 +140,14 @@ theorem iid_satisfies_lindeberg
         (∫ ω, (S.X k ω / Real.sqrt n) ^ 2
               * (if |S.X k ω / Real.sqrt n| > ε then 1 else 0) ∂μ)
           = (∫ ω, (S.X 0 ω) ^ 2
-                * (if |S.X 0 ω| > ε * Real.sqrt n then 1 else 0) ∂μ) / n := by
+                * (if |S.X 0 ω| > ε * Real.sqrt n then 1 else 0) ∂μ) / (n : ℝ) := by
       intro k _
       rw [hterm k, hIdent (ε * Real.sqrt n) k]
-    rw [Finset.sum_congr rfl hsum, Finset.sum_const, Finset.card_range, nsmul_eq_mul,
-      mul_div_assoc', mul_div_cancel_left₀ _ hn_ne]
+    trans (∑ _k ∈ Finset.range n, (∫ ω, (S.X 0 ω) ^ 2
+              * (if |S.X 0 ω| > ε * Real.sqrt n then 1 else 0) ∂μ) / (n : ℝ))
+    · exact Finset.sum_congr rfl hsum
+    · rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul,
+        mul_div_assoc', mul_div_cancel_left₀ _ hn_ne]
   -- Conclude: the collapsed sequence tends to 0 by dominated convergence.
   refine Tendsto.congr' ?_
     (truncated_moment_tendsto_zero (S.X 0) (S.measurable 0) (S.sq_integrable 0)
