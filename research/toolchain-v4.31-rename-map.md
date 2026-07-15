@@ -1475,3 +1475,32 @@ subtraction made the original statement false; geometric gluing bound). No calle
 | `this.symm` on a `=ᶠ[l]` (EventuallyEq) value "Invalid field notation" (shows as `atTop.1 {…}`) | dot-notation can't find the `EventuallyEq` namespace through the reduced `Eventually`; use `Filter.EventuallyEq.symm this` explicitly | CentralLimitTheoremOQ03OQ01 |
 | after `convert … using 1` closes fully, trailing `ext x; ring` → "No goals to be solved" | drop the trailing tactic (convert now discharges) | CentralLimitTheoremOQ03OQ01, DerangementsConvergenceOQ03 (drop `ring`), BinomialTheoremOQ01 |
 | FREE-GREEN: sibling `*Aristotle` companion RESIDUAL but builds EXIT 0 (transitive dep already fixed) | flip ledger with no edit | CentralLimitTheoremOQ03OQ01Aristotle |
+
+### §7ae Doctor increment 47 recipes (Doctor-b A–M / Erdos<600, #38065, +4 GREEN)
+
+- **Output-only implicit type-class param = stuck metavar in v4.31.** A `def`/`theorem`
+  whose type variable (e.g. `𝕜` in `[RCLike 𝕜]`) appears ONLY in the body / return type and
+  never in an explicit argument now fails with `typeclass instance problem is stuck /
+  InnerProductSpace ?m E (first and third args are metavars)` at every USE site. Fix: make the
+  type an EXPLICIT named parameter of the def (`def foo (𝕜 : Type*) [RCLike 𝕜] {E …} … `) and
+  supply it at all call sites. NOTE: `foo (𝕜 := 𝕜)` named-arg pinning FAILS ("Invalid argument
+  name 𝕜") for auto-bound-implicit vars — must restructure the binder. (CauchySchwarzOQ01OQ01OQ01)
+- **`Ico 1 (n+1)` index-type leak.** Inside a sum whose body is ℤ/ℚ-valued, `Ico 1 (n+1)`
+  elaborates its bounds at the body's field → `HAdd ℕ ℕ ℤ` / `LocallyFiniteOrder ℚ` synth
+  failures. Pin the index type: `Ico (1 : ℕ) (n+1)`. (ArithmeticSeriesOQ00OQ02OQ01)
+- **`Polynomial.content` / `IsPrimitive.mul` / `Polynomial.content_mul` need
+  `[NormalizedGCDMonoid R]`** (v4.31), not bare `[GCDMonoid R]`. Widen the typeclass constraint.
+  Also `Polynomial.content_mul` now takes its polynomial args IMPLICITLY (`content_mul` not
+  `content_mul f g`). (BezoutIdentityOQ02OQ04)
+- **`Nat.one_le_succ` removed** → `Nat.succ_le_succ (Nat.zero_le _)` (or `Nat.succ_pos`/`by omega`).
+- **`lgvDet_nonneg` (BallotProblemOQ03) gained order hyps** `(ha hb ha₁ ha₂ ha₂₁)`; downstream
+  wrappers must add the missing ordering hypotheses to their statement (intended-true strengthening).
+- **`RCLike.norm_ofReal` can loop in `simp`.** For `‖(↑(‖v‖^2) : 𝕜)‖`: recast
+  `(‖v‖^2 : 𝕜) = ((‖v‖^2 : ℝ) : 𝕜)` (`by push_cast; ring`) then `rw [RCLike.norm_ofReal,
+   abs_of_nonneg (by positivity)]`. `RCLike.norm_conj` for `‖conj c‖ = ‖c‖`.
+- **Cast-of-power/product `choose` goals**: `push_cast; ring` closes `↑(a^2) - ↑(x*y)` vs
+  `↑a^2 - ↑y*↑x` once the `Nat`-arith `choose` indices are normalized via omega-`show`s.
+- **CAUTION**: low reported error count (4) ≠ mechanical. Lean stops at the first blocking error
+  per decl; clearing it can surface a cluster of genuine drift (AmgmInequalityOQ02OQ01OQ02OQ01OQ03:
+  4 reported → 6+ real induction-drift sites). Probe by fixing the head error and re-counting
+  before committing to a file.
