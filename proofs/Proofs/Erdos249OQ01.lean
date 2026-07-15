@@ -88,9 +88,10 @@ theorem totientPowerSum_gt_one : totientPowerSum > 1 := by
 /-- The comparison series Σ n * (1/2)^n has sum exactly 2. -/
 private theorem hasSum_n_mul_half :
     HasSum (fun n : ℕ => (n : ℝ) * (1 / 2) ^ n) 2 := by
-  convert hasSum_coe_mul_geometric_of_norm_lt_one (show ‖(1 / 2 : ℝ)‖ < 1 by norm_num)
-    using 1
-  norm_num
+  have h := hasSum_coe_mul_geometric_of_norm_lt_one
+    (r := (1 / 2 : ℝ)) (show ‖(1 / 2 : ℝ)‖ < 1 by norm_num)
+  have heq : (1 / 2 : ℝ) / (1 - 1 / 2) ^ 2 = 2 := by norm_num
+  rwa [heq] at h
 
 /-- Each term is bounded by the comparison sequence: φ(n)/2^n ≤ n/2^n. -/
 private theorem termFn_le_comp (n : ℕ) :
@@ -114,7 +115,7 @@ private theorem termFn_four_lt : termFn 4 < 4 * (1 / 2 : ℝ) ^ 4 := by
     the sum is strictly less than ∑ n * (1/2)^n = 2. -/
 theorem totientPowerSum_lt_two : totientPowerSum < 2 := by
   unfold totientPowerSum
-  exact hasSum_lt (i := 4) termFn_four_lt termFn_le_comp
+  exact hasSum_lt (i := 4) termFn_le_comp termFn_four_lt
     totientPowerSum_summable.hasSum hasSum_n_mul_half
 
 /-- The sum is not an integer: 5/4 ≤ ∑ φ(n)/2^n < 2 rules out all integers. -/
@@ -124,10 +125,11 @@ theorem totientPowerSum_not_int : ¬∃ m : ℤ, totientPowerSum = ↑m := by
   have h2 := totientPowerSum_lt_two
   rw [hm] at h1 h2
   -- m ≥ 5/4 and m < 2, so m = 1. But m ≥ 5/4 > 1.
-  have : (1 : ℝ) < m := by linarith
-  have : (m : ℝ) < 2 := h2
-  have : m = 1 := by omega
-  linarith
+  have hlo : (1 : ℝ) < (m : ℝ) := by linarith
+  have hhi : (m : ℝ) < 2 := h2
+  have hlo' : 1 < m := by exact_mod_cast hlo
+  have hhi' : m < 2 := by exact_mod_cast hhi
+  omega
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Tighter Interval: (5/4, 3/2)
@@ -171,8 +173,14 @@ private theorem comparison_partial_sum_6 :
     So the total ≤ 5/4 + 7/32 = 47/32 < 3/2. -/
 theorem totientPowerSum_lt_three_halves : totientPowerSum < 3 / 2 := by
   -- Split both series at position 6
-  have h_our := totientPowerSum_summable.hasSum.nat_add 6
-  have h_comp := hasSum_n_mul_half.nat_add 6
+  have h_our : HasSum (fun j => termFn (j + 6))
+      ((∑' n, termFn n) - Finset.sum (Finset.range 6) termFn) := by
+    rw [hasSum_nat_add_iff, sub_add_cancel]
+    exact totientPowerSum_summable.hasSum
+  have h_comp : HasSum (fun j : ℕ => (↑(j + 6) : ℝ) * (1 / 2) ^ (j + 6))
+      (2 - Finset.sum (Finset.range 6) (fun n : ℕ => (n : ℝ) * (1 / 2) ^ n)) :=
+    (hasSum_nat_add_iff (f := fun n : ℕ => (n : ℝ) * (1 / 2) ^ n) 6).mpr
+      (by rw [sub_add_cancel]; exact hasSum_n_mul_half)
   -- Tail of termFn ≤ tail of comparison (pointwise)
   have h := hasSum_le (fun j => termFn_le_comp (j + 6)) h_our h_comp
   -- Substitute computed partial sums
@@ -248,15 +256,30 @@ private theorem comparison_partial_sum_11 :
   simp only [Finset.sum_range_succ, Finset.sum_range_zero]
   norm_num
 
+/-- φ(11) = 10 (since 11 is prime), so termFn 11 is strictly positive. -/
+private theorem termFn_eleven_pos : (0 : ℝ) < termFn 11 := by
+  unfold termFn
+  have h11 : 0 < Nat.totient 11 := Nat.totient_pos.mpr (by norm_num)
+  exact div_pos (by exact_mod_cast h11) (by positivity)
+
+/-- φ(11) = 10 < 11 (since 11 is prime), witnessing a strict gap at n = 11
+    between termFn and the comparison sequence n * (1/2)^n. -/
+private theorem termFn_eleven_lt_comp : termFn 11 < (11 : ℝ) * (1 / 2 : ℝ) ^ 11 := by
+  unfold termFn
+  simp [Nat.totient_prime (show Nat.Prime 11 by norm_num)]
+  norm_num
+
 /-- **Tighter lower bound**: ∑ φ(n)/2^n > 87/64.
 
     Proof: the partial sum of the first 11 terms (n = 0..10) equals 87/64,
-    and all remaining terms are non-negative. -/
+    and the term at n = 11 is strictly positive, so the partial sum through
+    n = 11 (hence the full tsum) strictly exceeds 87/64. -/
 theorem totientPowerSum_gt_87_64 : totientPowerSum > 87 / 64 := by
   unfold totientPowerSum
-  have h := sum_le_hasSum (Finset.range 11)
+  have h := sum_le_hasSum (Finset.range 12)
     (fun b _ => termFn_nonneg b) totientPowerSum_summable.hasSum
-  linarith [partial_sum_11]
+  rw [Finset.sum_range_succ, partial_sum_11] at h
+  linarith [termFn_eleven_pos]
 
 /-- **Tighter upper bound**: ∑ φ(n)/2^n < 351/256.
 
@@ -265,9 +288,16 @@ theorem totientPowerSum_gt_87_64 : totientPowerSum > 87 / 64 := by
       ∑_{n≥11} φ(n)/2^n ≤ ∑_{n≥11} n/2^n = 2 - 509/256 = 3/256
     So the total ≤ 87/64 + 3/256 = 351/256. -/
 theorem totientPowerSum_lt_351_256 : totientPowerSum < 351 / 256 := by
-  have h_our := totientPowerSum_summable.hasSum.nat_add 11
-  have h_comp := hasSum_n_mul_half.nat_add 11
-  have h := hasSum_le (fun j => termFn_le_comp (j + 11)) h_our h_comp
+  have h_our : HasSum (fun j => termFn (j + 11))
+      ((∑' n, termFn n) - Finset.sum (Finset.range 11) termFn) := by
+    rw [hasSum_nat_add_iff, sub_add_cancel]
+    exact totientPowerSum_summable.hasSum
+  have h_comp : HasSum (fun j : ℕ => (↑(j + 11) : ℝ) * (1 / 2) ^ (j + 11))
+      (2 - Finset.sum (Finset.range 11) (fun n : ℕ => (n : ℝ) * (1 / 2) ^ n)) :=
+    (hasSum_nat_add_iff (f := fun n : ℕ => (n : ℝ) * (1 / 2) ^ n) 11).mpr
+      (by rw [sub_add_cancel]; exact hasSum_n_mul_half)
+  have h := hasSum_lt (i := 0) (fun j => termFn_le_comp (j + 11)) termFn_eleven_lt_comp
+    h_our h_comp
   rw [partial_sum_11, comparison_partial_sum_11] at h
   unfold totientPowerSum
   linarith

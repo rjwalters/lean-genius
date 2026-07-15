@@ -1,3 +1,20 @@
+# DOCTOR SINGLE-PROOF BATCH 22 (conflict-proof collect, #38065, 2026-07-15)
+
+**+7 GREEN** (each RE-VERIFIED EXIT=0 via conflict-proof collector — apply .lean + flip single row,
+NO branch merge): Erdos183Problem, Erdos249OQ01 (#38611: totientPowerSum_gt_87_64 sum_le_hasSum vs
+equal-bound could never prove strict > — fixed w/ range-12 partial + φ(11)>0 witness), Erdos263Problem
+(re-verified clean despite collision-3 shared-worktree tangle), Erdos302Problem (missed in batch-21 tsv
+conflict, now collected), Erdos307OQ02 (#38611: one_helps_balance missing hpos:∀p∈P,0<p — false at P={0,1};
+restored from parent), Erdos315Problem, Erdos319Problem.
+
+INCIDENT-3 (my error again): Erdos1109Problem (slot7/doctor-h, 300k-token long-runner, still FAILING at
+EXIT=1) was STILL LIVE when a later wave reset doctor-h + dispatched Erdos263Problem there -> tangled work.
+Erdos1109 partial DISCARDED (was never green), re-queued for fresh run; Erdos263 re-verified clean.
+ROOT CAUSE: bash worktree-reset didn't enforce per-worktree live-agent check (docker ps alone misses an
+agent between builds). FIX: switched to conflict-proof collector (re-verifies every green in-container
+before flip) + must track long-runners; NEVER reset a worktree whose agent hasn't reported terminal.
+Batches 21/22 STATUS records: EQR kronecker soundness (#38611 high-pri), Erdos291 native_decide flag.
+
 # DOCTOR SINGLE-PROOF BATCH 20 (8-slot, all SONNET, #38065, 2026-07-15)
 
 **+3 GREEN**: Erdos100OQ01 (cascade child off WIP01 + #38611 repair: original log_gt_one calc step

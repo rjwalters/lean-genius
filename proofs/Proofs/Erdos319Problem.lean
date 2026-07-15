@@ -123,7 +123,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · left; rfl; · right; rfl; · contradiction)
+          · left; rfl
+          · right; rfl
+          · contradiction)
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;> assumption)
@@ -136,7 +138,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · left; rfl; · contradiction; · right; rfl)
+          · left; rfl
+          · contradiction
+          · right; rfl)
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;> assumption)
@@ -149,7 +153,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · rfl; · contradiction; · contradiction)
+          · rfl
+          · contradiction
+          · contradiction)
         (Finset.singleton_subset_iff.mpr h2)
       rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
       push_cast; norm_num
@@ -158,7 +164,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · contradiction; · left; rfl; · right; rfl)
+          · contradiction
+          · left; rfl
+          · right; rfl)
         (fun x hx => by
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;> assumption)
@@ -171,7 +179,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · contradiction; · rfl; · contradiction)
+          · contradiction
+          · rfl
+          · contradiction)
         (Finset.singleton_subset_iff.mpr h3)
       rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
       push_cast; norm_num
@@ -180,7 +190,9 @@ theorem small_example :
         (fun x hx => by
           simp only [Finset.mem_singleton]
           rcases hmem x hx with rfl | rfl | rfl
-          · contradiction; · contradiction; · rfl)
+          · contradiction
+          · contradiction
+          · rfl)
         (Finset.singleton_subset_iff.mpr h6)
       rw [hA']; unfold signedSum; simp only [Finset.sum_singleton]
       push_cast; norm_num

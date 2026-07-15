@@ -50,12 +50,12 @@ theorem unit_fraction_equiv (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
   have hc' : (c : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
   constructor
   · intro h
-    have : (↑(b * c) : ℚ) = ↑(a * (b + c)) := by
-      field_simp at h; linarith
-    exact_mod_cast this
+    have hq : (b : ℚ) * c = a * (b + c) := by field_simp at h; linear_combination h
+    exact_mod_cast hq
   · intro h
-    have : (↑(b * c) : ℚ) = ↑(a * (b + c)) := by exact_mod_cast h
-    field_simp; linarith
+    have hq : (b : ℚ) * c = a * (b + c) := by exact_mod_cast h
+    field_simp
+    linear_combination hq
 
 /-- A set is sum-free for unit fractions if no three distinct elements satisfy 1/a = 1/b + 1/c -/
 def IsUnitFractionSumFree (A : Finset ℕ) : Prop :=
@@ -82,7 +82,8 @@ theorem f_le_N (N : ℕ) : f N ≤ N := by
     have hA_sub : A ⊆ Finset.range (N + 1) \ {0} :=
       Finset.mem_powerset.mp hA
     have hcard : (Finset.range (N + 1) \ {0}).card = N := by
-      rw [Finset.card_sdiff (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega)))]
+      rw [Finset.card_sdiff_of_subset
+        (Finset.singleton_subset_iff.mpr (Finset.mem_range.mpr (by omega)))]
       simp [Finset.card_range]
     calc A.card ≤ (Finset.range (N + 1) \ {0}).card := Finset.card_le_card hA_sub
       _ = N := hcard
@@ -108,11 +109,16 @@ theorem odd_integers_sum_free (N : ℕ) : IsUnitFractionSumFree (oddIntegers N) 
   -- From 1/a = 1/b + 1/c, we get bc = a(b+c)
   rw [unit_fraction_equiv a b c ha_pos hb_pos hc_pos] at heq
   -- b*c is odd (product of two odds)
-  have hbc_odd : (b * c) % 2 = 1 := by omega
+  have hbc_odd : (b * c) % 2 = 1 := by
+    have hob : Odd b := Nat.odd_iff.mpr hb_odd
+    have hoc : Odd c := Nat.odd_iff.mpr hc_odd
+    exact Nat.odd_iff.mp (hob.mul hoc)
   -- b+c is even (sum of two odds)
   have hbc_even : (b + c) % 2 = 0 := by omega
   -- a*(b+c) is even (product with an even number)
-  have habceven : (a * (b + c)) % 2 = 0 := by omega
+  have habceven : (a * (b + c)) % 2 = 0 := by
+    have heven : Even (b + c) := Nat.even_iff.mpr hbc_even
+    exact Nat.even_iff.mp (heven.mul_left a)
   -- But bc = a(b+c): odd = even, contradiction
   omega
 
@@ -260,8 +266,8 @@ theorem original_question_false : ¬original_question := by
   have h_upper : (f M : ℚ) / M < 1/2 + 1/32 := by linarith
   have h_lower : (f M : ℚ) ≥ (5/8 - 1/32) * M := h2
   have h_div : (f M : ℚ) / M ≥ 19/32 := by
-    rw [ge_iff_le, div_le_iff₀ hM_pos] at *
-    linarith
+    rw [ge_iff_le, le_div_iff₀ hM_pos]
+    linarith [h_lower]
   linarith
 
 /-- The refined question: What is lim f(N)/N? -/
@@ -323,7 +329,7 @@ theorem algebraic_form (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0) :
 theorem solution_b_lt_2a (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
     (hab : a < b) (hbc : b < c) (hsum : UnitFractionSum a b c) :
     b < 2 * a := by
-  obtain ⟨_, _, _, heq⟩ := hsum
+  have heq := hsum.2.2.2
   rw [unit_fraction_equiv a b c ha hb hc] at heq
   -- heq : b * c = a * (b + c)
   by_contra h; push_neg at h -- h : 2 * a ≤ b
@@ -339,7 +345,7 @@ theorem solution_b_lt_2a (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
 theorem solution_c_bound (a b c : ℕ) (ha : a > 0) (hb : b > 0) (hc : c > 0)
     (hab : a < b) (hbc : b < c) (hsum : UnitFractionSum a b c) :
     c ≤ a * (a + 1) := by
-  obtain ⟨_, _, _, heq⟩ := hsum
+  have heq := hsum.2.2.2
   rw [unit_fraction_equiv a b c ha hb hc] at heq
   have hb_lt : b < 2 * a := solution_b_lt_2a a b c ha hb hc hab hbc hsum
   -- Work over ℤ to avoid ℕ subtraction issues
@@ -375,7 +381,6 @@ theorem standard_pattern (n : ℕ) (hn : n > 0) :
   have hn1 : (n : ℚ) + 1 ≠ 0 := by positivity
   have hnm : (n : ℚ) * ((n : ℚ) + 1) ≠ 0 := mul_ne_zero hn' hn1
   field_simp
-  ring
 
 /-
 ## Part 10: Why the Problem is Hard
