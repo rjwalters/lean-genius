@@ -154,10 +154,17 @@ axiom lower_bound_from_bipartite :
 **The Iterated Logarithm:**
 log* n = 0 if n ≤ 1, else 1 + log*(log n)
 -/
-noncomputable def logStar : ℕ → ℕ
+def logStar : ℕ → ℕ
   | 0 => 0
   | 1 => 0
   | n + 2 => 1 + logStar (Nat.log2 (n + 2))
+  termination_by n => n
+  decreasing_by
+    simp_wf
+    have h : (n + 2).log2 < n + 2 := by
+      rw [Nat.log2_lt (by omega)]
+      exact Nat.lt_two_pow_self
+    omega
 
 /--
 **Bucić-Montgomery (2022):**
@@ -176,7 +183,9 @@ axiom bucic_montgomery_bound :
 **Minimum Degree:**
 -/
 noncomputable def minDegree (G : Graph V) : ℕ :=
-  (Finset.univ.image (fun v => G.degree v)).min' (by simp [Finset.image_nonempty])
+  if h : (Finset.univ.image (fun v => G.degree v)).Nonempty then
+    (Finset.univ.image (fun v => G.degree v)).min' h
+  else 0
 
 /--
 **Conlon-Fox-Sudakov (2014):**
