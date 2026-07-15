@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 6 (8-slot, #38065, 2026-07-15)
+
+**+4 GREEN**: Erdos766Problem (edgeSet.ncard drops vanished Fintype; {f x|x:T//p} subtype set-builder
+->binder form), Erdos642Problem (λ reserved; unascribed n^(3/2) on ℝ silently becomes ℕ npow=1 ->
+ascribe :ℝ), Erdos421Problem (Nat.mul_lt_mul_left now iff; Nat.mul_le_mul result-type-directed;
+(a,b:T) ascription ->((a,b):T)), Erdos715Problem (by constructor on Pi-type struct fields fails ->
+intro/term; Nat.find needs (p:=…); Type* under ∃ -> pin Type). Unblocks Erdos715ProblemAristotle.
+Repairs: none. NEW SEAMS: λ hard keyword; unascribed ^(a/b) on ℝ = npow silent statement change;
+Nat.mul_le_mul factor-order-directed; (a,b:T) tuple ascription reparse.
+
 # DOCTOR SINGLE-PROOF BATCH 5 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN**: RationalCanonicalFormExists (13-site HUB, hardest of the wave ~22min: Aristotle

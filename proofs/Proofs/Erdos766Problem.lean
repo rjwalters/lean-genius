@@ -33,6 +33,9 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
+import Mathlib.Order.Lattice.Nat
+import Mathlib.Data.Set.Card
+import Mathlib.Data.Real.Basic
 
 open Finset Nat
 
@@ -44,9 +47,8 @@ namespace Erdos766
 abbrev Graph (V : Type*) [Fintype V] := SimpleGraph V
 
 /-- Number of edges in a graph. -/
-noncomputable def numEdges {V : Type*} [Fintype V] [DecidableEq V]
-    (G : Graph V) : ℕ :=
-  Finset.card G.edgeFinset
+noncomputable def numEdges {V : Type*} [Fintype V] (G : Graph V) : ℕ :=
+  G.edgeSet.ncard
 
 /-- A graph G contains H as a subgraph if there's an embedding. -/
 def containsSubgraph {V W : Type*} [Fintype V] [Fintype W]
@@ -60,9 +62,10 @@ def isHFree {V W : Type*} [Fintype V] [Fintype W]
 
 /- ## Part II: The Turán Number ex(n; H) -/
 
-/-- ex(n; H) = maximum edges in an n-vertex H-free graph. -/
-noncomputable def turanNumber (n : ℕ) (H : Graph (Fin n)) : ℕ :=
-  sSup { numEdges G | G : Graph (Fin n) // isHFree G H }
+/-- ex(n; H) = maximum edges in an n-vertex H-free graph, where the
+    forbidden pattern H lives on `k` vertices. -/
+noncomputable def turanNumber (n k : ℕ) (H : Graph (Fin k)) : ℕ :=
+  sSup { numEdges G | (G : Graph (Fin n)) (_ : isHFree G H) }
 
 /- ## Part III: The Function f(n; k, l) -/
 
@@ -72,7 +75,7 @@ def graphsWithEdges (k l : ℕ) : Set (Graph (Fin k)) :=
 
 /-- f(n; k, l) = min ex(n; G) over all graphs G with k vertices and l edges. -/
 noncomputable def f (n k l : ℕ) : ℕ :=
-  sInf { turanNumber n ⟨G, hG⟩ | (G : Graph (Fin k)) (hG : numEdges G = l) }
+  sInf { turanNumber n k H | (H : Graph (Fin k)) (_ : numEdges H = l) }
 
 /- ## Part IV: The Range of Interest: k < l ≤ k²/4 -/
 
