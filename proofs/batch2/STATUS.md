@@ -1,3 +1,131 @@
+# DOCTOR INCREMENT 57 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-14)
+
+Container `dr57` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc57` off origin/feature/issue-37508. Partition B pool =
+286 RESIDUAL rows. Worked cheapest-first: unknown-const singletons, then the
+ordinal/aleph API cluster, then the **in-file forward-reference** seam (highest
+yield this increment — v4.31 rejects references to axioms/lemmas declared later
+in the same file; 5 files flipped on reorder + drift cleanup).
+**+18 GREEN this increment** (all in-container `lake build Proofs.X` exit-0
+before each ledger flip; pushed after every file). PR #38660.
+
+## Flips (failure class in parens)
+- Erdos680Problem (unknown-const): tendsto_pow_mul_exp_neg_atTop_nhds coefficient
+  form removed -> bridge via _nhds_zero + const_mul_atTop; root `Tendsto`/`𝓝`
+  aliases gone -> open Filter Topology; ∀ᶠ-binder needs : ℕ annotation;
+  tendsto_atTop_atTop_of_monotone arg-2 is now ∀ b, ∃ a.
+- Erdos875Problem (unknown-const): Ne.lt_or_lt -> lt_or_gt_of_ne; typed
+  Finset.add_sum_erase haves (∑-notation vs .sum atom split breaks omega);
+  single_le_sum (f := id); omega no longer knows 0 < 2^n -> Nat.two_pow_pos.
+- Erdos936Problem (unknown-const): Nat.pow_dvd_pow_of_dvd -> root
+  pow_dvd_pow_of_dvd; interval_cases can't bound p from p ∣ 1 -> Nat.dvd_one;
+  p^2/p*p defeq have rejected -> nlinarith.
+- Erdos1050ProblemAristotle (unknown-const): summable_of_summable_norm ->
+  Summable.of_norm; summable_geometric_of_lt_one ratio side-goal now eager ->
+  pin (r := ...); Nat.lt_of_lt_pred signature changed -> show+omega.
+- Erdos969Problem (unknown-const): Nat.Prime.squarefree -> hp.prime.squarefree;
+  decide on Squarefree stuck on WF minSqFac -> Nat.squarefree_mul_iff decomposition
+  (6/10/30) + direct witness for ¬4/¬12; Float literal nlinarith hints -> (:ℝ);
+  density_approx pi_gt_d2/lt_d2 mathematically insufficient -> d4 + lt_div_iff₀;
+  Real.abs removed -> |s.im|.
+- Erdos674Aristotle (unknown-const): Nat.Prime.dvd_gcd -> Nat.dvd_gcd; .not_le
+  projection gone -> omega; Nat.one_lt_pow takes n ≠ 0 first; simp [h0] at h
+  closes h to True -> eq_zero_of_gcd_eq_zero_left.
+- Erdos601Aristotle (unknown-const): ordinal API sweep — IsLimit -> Order.IsSuccLimit,
+  zero_or_succ_or_limit -> zero_or_succ_or_isSuccLimit, Ordinal.omega1 -> ω₁ (ω_ 1),
+  omega0_lt_omega1 -> omega0_lt_omega_one, one_lt_omega -> one_lt_omega0,
+  opow_lt_opow_right -> (opow_lt_opow_iff_right h).mpr, Ordinal.lt_succ ->
+  Order.lt_succ + succ_eq_add_one simpa bridges.
+- Erdos623Problem + Erdos623ProblemAristotle free-flip (unknown-const):
+  Cardinal.IsLimit removed -> IsSuccLimit via isSingular_aleph_omega0.isSuccLimit;
+  Cardinal.cof_aleph removed -> ord_aleph + Ordinal.cof_omega isSuccLimit_omega0 +
+  cof_omega0; ℵ_ 0 vs ℵ₀ rw needs ← aleph_zero; SORRY ELIMINATED in
+  aleph_omega_is_singular (h.not_isSingular isSingular_aleph_omega0).
+- Erdos1172Problem (unknown-const): lt_add_of_limit_left -> generic
+  lt_add_of_pos_right; card_add_le_card_add_card -> (Ordinal.card_add _ _).le;
+  Cardinal.card_omega0 -> Ordinal.card_omega0.
+- Erdos1168Problem (unknown-const): cof_aleph route as above; universe metavars
+  in Prop defs -> partitionRelation.{0} / stepping_up.{0,0} pins; congr 1 now
+  self-closes succ-vs-+1.
+- Erdos629Aristotle (unknown-const): Nat.sInf -> root sInf; Sum.noConfusion
+  signature -> Sum.inl_ne_inr; nlinarith 2^(k+2) atom split -> rw + linear calc.
+- TestHLTension (unknown-const): **Finset.card_sdiff is now the UNCONDITIONAL
+  #(s\t) = #s - #(t ∩ s)** (subset-hypothesis form gone) -> rw + inter_eq_left;
+  omega ∀-hyp materialization; Nat.count_monotone fact; convert-on-count-atoms
+  stall -> rw n-1+1=n at hhl2.
+- Erdos1065Problem (unknown-const): FORWARD-REF reorder (erdos_1065b after
+  conjecture_a_implies_b); Nat.pow_le_pow_right takes 0 < x (was 1 ≤/1 <), 10
+  sites; nlinarith 2^k*3^l*q triple products -> Nat.mul_le_mul chains + norm_num;
+  interval_cases 'have : q = _ := by omega' placeholder no longer synthesized.
+- Erdos827Problem (unknown-const): forward-ref reorders (allDistinctCircumradii_subset,
+  minimalNk_sharp needs nk_ge_k); exists_subset_card_eq metavar -> pin (n :=) (s :=).
+- Erdos1157Problem (unknown-const): see statement repairs below + forward-ref
+  axiom move + isLittleO_of_eventually_le (g :=) pin + Nat.cast_sub (R := ℝ).
+- Erdos1134Problem (unknown-const): axiom forward-ref move; Set-membership filter
+  needs open Classical in (docstring AFTER the open line); List.not_mem_nil now
+  takes the membership proof; wrong obtain on axiom -> Classical.choose_spec.
+- Erdos963Problem (unknown-const): forward-ref move (greedy_lower_bound below
+  greedy_dissociated); sum_erase_add/sum_inter_add_sum_sdiff typed haves;
+  Prod.mk.injEq orientation flip in rw; projection-reduction loss ->
+  sum_factor_disjoint.symm; erase_subset explicit args; card_sdiff unconditional
+  form; disjoint_sdiff_sdiff root; erase_injOn_of_mem -> insert_erase rw;
+  exists_smaller_set -> exists_subset_card_eq; let-bound P defeq bridges.
+
+## Statement repairs (#38611)
+| file | declaration | repair |
+|---|---|---|
+| Erdos1157Problem | `achievable_nonempty` | was FALSE at s = 0 (empty edge-family F has card ≥ 0, forcing 0 > k, so NO hypergraph is (k,0)-valid). Added `1 ≤ s`; added `achievableEdgeCounts_eq_empty_of_s_zero` and s = 0 case splits in `extremalNumber_mono_k/_s` so their (true) statements are unchanged. |
+| Erdos1157Problem | `bes_monotone_in_s`, `bes_monotone_in_s_general` | claimed UPWARD transfer of o(n^t) in s — false: extremalNumber is increasing in s (valid family grows), e.g. k=6, s₂ > C(6,3) gives extremal = C(n,3) ≠ o(n²). Repaired to the true DOWNWARD transfer (holds for s₂ ⇒ holds for s₁ ≤ s₂), which is what the comparison proof establishes. No other callers. |
+| Erdos623Problem | `cofinality_aleph_omega` | RHS `ω` (Ordinal) never type-checks against `Ordinal.cof : Cardinal` on v4.31 — restated as `= ℵ₀` (identical intended content). |
+
+## New systematic seams worth cataloging (rename-map §7aa candidates)
+1. **In-file forward references now hard-error** (was: worked for axioms/some
+   decls). Highest-yield seam in partition B: grep `Unknown identifier` where
+   the name IS declared later in the same file; fix = pure reorder. (5 files.)
+2. **Finset.card_sdiff changed to unconditional form** `#(s \ t) = #s - #(t ∩ s)`
+   — the `t ⊆ s` hypothesis form is gone; `card_sdiff_eq_card_sub_card_inter`
+   also gone (it IS the new card_sdiff). Fix: `rw [Finset.card_sdiff,
+   Finset.inter_eq_left.mpr hsub]`.
+3. **omega atom hygiene regressions**: (a) `have := Finset.add_sum_erase …`
+   anonymous haves now yield ∑-notation atoms that don't match `.sum id` goals —
+   use TYPED haves in .sum form; (b) omega no longer derives `0 < 2^n` /
+   `0 < minimalNk` for opaque atoms — materialize positivity facts; (c) omega
+   never instantiates ∀-hypotheses — `have := h x hx` first.
+4. **nlinarith lost multi-factor product reasoning** (2^k * 3^l * q ≥ c):
+   replace with explicit `Nat.mul_le_mul` chains + `rw [heq]` + norm_num.
+5. **Prod.mk.injEq / anonymous-constructor orientation flips**: simp now yields
+   `S₁ = S` (component = target) where v4.26 gave the reverse — `rw [← h.1]`
+   sites need the arrow dropped/added; Prod projections `(a,b).2` no longer
+   reduce during unification (supply `.symm`/`show`).
+6. **Metavar pinning wave** (continuation of §7s): `summable_geometric_of_lt_one`
+   ratio, `exists_subset_card_eq` n/s, `isLittleO_of_eventually_le` g,
+   `Nat.cast_sub` target ring — all need explicit (x := …) pins now.
+
+## Flagged deep (triaged, NOT flipped, one-line diagnosis)
+- YangMillsMassGap: 51 errors across 22k-line Proofs/YangMills/Exploration.lean
+  (exp_lt_exp_of_lt sweep + ~15 varied tactic-drift sites + 1 parse) — budget.
+- Erdos1171Problem: ω₁/ω_ OrderEmbedding coercion drift + universe metavars in
+  ordinalPartitionRelMulti Prop defs + ℕ-literal successor mismatches (12+ err).
+- Erdos1166Problem: biUnion singleton/union rewrite drift + calc-step self-eq
+  goals + AlmostSurely combination linarith (10 err).
+- Erdos635Problem: forward-refs (f_set_nonempty/bddAbove) are easy BUT tail has
+  Tendsto have-elaboration restructuring (Tendsto.const_mul term becomes Type-
+  level mismatch) + Finset.card_Icc removal + f N 1 rw-into-metavar (12+ err).
+- Erdos1162Problem: native_decide × noncomputable SetLike.instFintype (Sylow-
+  catalog class) + Equiv.Perm.subsingleton removal — axiom-status-adjacent.
+- Erdos1116Problem: 8+ diverse (noncomputable compile failures on exp/DivInvMonoid
+  defs + stuck instances + root Tendsto loss).
+- Erdos1096Problem (intermediate_value_zero_of_neg_of_pos removal + Polynomial
+  parse drift), Erdos896Problem (product_singleton_right/eq_of_mul_eq_left
+  removals + le_sup unify), WolstenholmeTheoremOQ02OQ02 (Equiv.mulLeft_apply +
+  factorial_mul_choose removals + ZMod rewrites), Erdos700Problem
+  (Prime.multiplicity_choose + interval_cases upper-bound loss + rw drift),
+  Erdos1059OQ04 (unfold-local-let regression + Function-expected cascade),
+  Erdos693/749/961/980/940/857 — 5-7 mixed errors each, second-pass targets.
+
+Ledger after increment 57: 1948 GREEN / 687 RESIDUAL.
+
+
 # Batch 2/3/4/5 + Doctor verification state (updated Doctor increment 34, #38065, 2026-07-14)
 
 # DOCTOR INCREMENT 34 (type-mismatch + proof-drift + rewrite-drift + unknown-const-mixed + instance-synth, A–M partition, #38065, 2026-07-14)
