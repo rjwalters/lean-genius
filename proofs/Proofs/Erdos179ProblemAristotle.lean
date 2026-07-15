@@ -40,7 +40,10 @@ def ContainsAP (A : Finset ℕ) (k : ℕ) : Prop :=
 theorem mem_ap_iff (a d k x : ℕ) :
     x ∈ arithmeticProgression a d k ↔ ∃ i, i < k ∧ x = a + i * d := by
   unfold arithmeticProgression
-  simp [Finset.mem_image, Finset.mem_range]
+  simp only [Finset.mem_image, Finset.mem_range]
+  constructor
+  · rintro ⟨i, hi, h⟩; exact ⟨i, hi, h.symm⟩
+  · rintro ⟨i, hi, h⟩; exact ⟨i, hi, h.symm⟩
 
 /-- The first element a is in arithmeticProgression a d k for k ≥ 1. -/
 theorem ap_mem_first (a d k : ℕ) (hk : k ≥ 1) :
@@ -68,6 +71,7 @@ theorem ap_mem_third (a d k : ℕ) (hk : k ≥ 3) :
 theorem ap_map_injective (a d : ℕ) (hd : 0 < d) :
     Function.Injective (fun i => a + i * d) := by
   intro i j h
+  simp only at h
   have : i * d = j * d := by omega
   exact Nat.eq_of_mul_eq_mul_right hd this
 
@@ -82,13 +86,14 @@ theorem ap_card_of_pos (a d k : ℕ) (hd : 0 < d) :
 theorem ap_card_zero_diff (a k : ℕ) (hk : k ≥ 1) :
     (arithmeticProgression a 0 k).card = 1 := by
   unfold arithmeticProgression
-  have : Finset.image (fun i => a + i * 0) (Finset.range k) = {a} := by
-    ext x
-    simp [Finset.mem_image, Finset.mem_range]
+  have heq : Finset.image (fun i => a + i * 0) (Finset.range k) = {a} := by
+    apply Finset.eq_singleton_iff_unique_mem.mpr
     constructor
-    · rintro ⟨i, hi, rfl⟩; simp
-    · rintro rfl; exact ⟨0, hk, by simp⟩
-  rw [this]
+    · exact Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr hk, by ring⟩
+    · intro x hx
+      obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+      ring
+  rw [heq]
   simp
 
 /-- AP of length 0 is empty. -/
