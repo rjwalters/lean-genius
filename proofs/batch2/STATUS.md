@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 12 (8-slot, #38065, 2026-07-15)
+
+**+3 GREEN**: BezoutIdentityOQ02OQ01OQ02OQ02OQ03 (OPUS ~36min/244k deepest-of-session: Mathlib new
+`ℤ√` prefix notation collides w/ `abbrev ℤ√…` -> rename; Zsqrtd.lift now Equiv w/ r*r=↑d; norm/star/mul
+_def lemmas renamed; EuclideanDomain->UFM now automatic), BallotProblemOQ01OQ02OQ04 (SONNET: Rat decide
+kernel-reduction stall on ℚ-literal arith -> explicit iff lemmas + norm_num), RothTriangleRemoval (SONNET:
+mul_left_cancel₀ needs IsLeftCancelMulZero -> IsUnit.mul_left_cancel; push_neg no longer zeta-reduces let).
+MODEL: Sonnet now 7/7 GREEN. Haiku dropped (thrashes/fails). Opus reserved for known-hard hubs. Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 11 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN**: CayleyHamiltonOQ01OQ03 (OPUS, ~27min/202k deep: matrix-exp-as-poly, ^ binds tighter than
