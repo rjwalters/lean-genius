@@ -421,7 +421,7 @@ CentralLimitTheoremOQ01OQ02OQ01OQ03	GREEN
 CentralLimitTheoremOQ01OQ03	GREEN	
 CentralLimitTheoremOQ02	GREEN	
 CentralLimitTheoremOQ02Aristotle	GREEN	
-CentralLimitTheoremOQ02OQ02	RESIDUAL	instance-synth
+CentralLimitTheoremOQ02OQ02	GREEN	instance-synth
 CentralLimitTheoremOQ02OQ03	GREEN	
 CentralLimitTheoremOQ02OQ04	GREEN	
 CentralLimitTheoremOQ03	GREEN	
@@ -448,7 +448,7 @@ ChineseRemainderExplicitOQ04OQ03OQ01	GREEN
 ChineseRemainderNonCoprimeList	GREEN	
 ChineseRemainderNonCoprimeOQ01	GREEN	
 ChineseRemainderNonCoprimeOQ01OQ01	GREEN	
-ChineseRemainderNonCoprimeOQ02	RESIDUAL	parse-error
+ChineseRemainderNonCoprimeOQ02	GREEN	parse-error
 ChineseRemainderNonCoprimeOQ02OQ01	GREEN	instance-synth
 ChineseRemainderNonCoprimeOQ03OQ02	RESIDUAL	type-mismatch
 CircumferenceFromArea	GREEN	
@@ -457,7 +457,7 @@ CircumferenceViaDifferentiationOQ02	GREEN
 CircumferenceViaDifferentiationOQ03	GREEN	
 CollatzCyclesOQ04	GREEN	
 CollatzStructuredOQ02OQ01	GREEN	
-CollatzStructuredOQ03	RESIDUAL	instance-synth
+CollatzStructuredOQ03	GREEN	instance-synth
 CombinationsFormulaOQ01OQ04	RESIDUAL	type-mismatch
 CombinationsFormulaOQ02	RESIDUAL	proof-drift
 CombinationsFormulaOQ02Aristotle	GREEN	
@@ -924,7 +924,7 @@ Erdos12Problem	GREEN
 Erdos130Problem	GREEN	
 Erdos130WIP01	GREEN	
 Erdos132Problem	GREEN	
-Erdos133Problem	RESIDUAL	elab-drift
+Erdos133Problem	GREEN	elab-drift
 Erdos134Problem	GREEN	
 Erdos136Problem	GREEN	
 Erdos13Problem	GREEN	
@@ -1020,7 +1020,7 @@ Erdos221Problem	GREEN
 Erdos222Problem	GREEN	
 Erdos223Problem	RESIDUAL	type-mismatch
 Erdos225Aristotle	GREEN	
-Erdos225Problem	RESIDUAL	proof-drift
+Erdos225Problem	GREEN	proof-drift
 Erdos226Problem	GREEN	
 Erdos229Problem	GREEN	
 Erdos230LowerBound	GREEN	
@@ -1167,7 +1167,7 @@ Erdos350Problem	GREEN
 Erdos351Problem	GREEN	
 Erdos352Problem	GREEN	
 Erdos353Aristotle	GREEN	instance-synth
-Erdos353Problem	RESIDUAL	unknown-const:smul_left_cancel₀
+Erdos353Problem	GREEN	unknown-const:smul_left_cancel₀
 Erdos354Problem	GREEN	
 Erdos355Problem	GREEN	
 Erdos356Problem	GREEN	

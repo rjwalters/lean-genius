@@ -1,3 +1,105 @@
+# DOCTOR INCREMENT 64 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
+
+Container `dr64` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc64` off origin/feature/issue-37508. Confirms inc-56/57/60/62:
+partition A is genuine deep-rework — every RESIDUAL file is 4–35 diverse errors,
+ledger class = FIRST error only. All flips in-container per-file `lake build
+Proofs.X` exit-0 before ledger flip; pushed after every file. **+6 GREEN**, PR #38667.
+
+## Flips (failure class in parens)
+- Erdos225Problem (proof-drift): two `convert ciSup_le _` branches — v4.31
+  congruence emits Eq.refl-field + `Nonempty sorry` side goals → rewrote as direct
+  `ciSup_le`/`le_ciSup` with hoisted BddAbove + Nonempty instances (pre-existing
+  sorries retained).
+- Erdos133Problem (elab-drift; STATEMENT REPAIR #38611): (a) `def f` witness
+  `⟨1, by trivial⟩` is FALSE — the single-vertex graph is triangle-free, vacuously
+  diameter-2, but has NO vertex of degree ≥1 → replaced with the always-valid
+  `k=0` witness proved from `Connected.nonempty`. (b) `∀ V : Type*` made `f`
+  universe-polymorphic, so `f n` in OriginalQuestion/AlonConjecture carried
+  universe-level metavariables → pinned `V : Type` (card-n fixes every finite
+  iso-class; triangle-free/diameter-2/degree are iso-invariant → faithful).
+- Erdos353Problem (unknown-const:smul_left_cancel₀): `FiniteDimensional.finrank`→
+  `Module.finrank`; `(0 : ℝ≥0∞)` scoped notation not in scope (no `open scoped
+  ENNReal`) → `(0 : ENNReal)`; `inv_ne_zero` is now an implication not iff → drop
+  `.mpr`; `smul_left_cancel₀` removed → `(smul_right_inj hc).mp`; `Pi.sub_apply`/
+  `Pi.smul_apply` don't fire on EuclideanSpace(WithLp) → `PiLp.sub_apply`/
+  `PiLp.smul_apply`; `pow_pos` instance-synth fails on ENNReal → prove base ≠ 0
+  (`ofReal_eq_zero`+`abs_pos`+`pow_ne_zero`) then `rw [ENNReal.mul_top h]`.
+- CollatzStructuredOQ03 (instance-synth): `Nat.find` on a `dite` over a Prop needs
+  Decidable → `open scoped Classical`; `Real.toNat` does not exist → `⌊·⌋₊`
+  (Nat.floor); `/--` docstring with no following declaration before `#check` →
+  plain `/-` comment; concrete `stoppingTime` proofs: `decide` blocked by
+  `Classical.propDecidable` shadowing the computable instance → `rfl`/`simp`
+  reductions, `(Nat.find_eq_zero).mpr` via `simp only`, `Nat.find_eq_iff` refine.
+- ChineseRemainderNonCoprimeOQ02 (parse-error → ideal-CRT proof drift): `show -i ∈ I`
+  no longer defeq to `(a-i)-a ∈ I` → `rw [show a-i-a = -i from by ring]`; `linarith`
+  on a CommRing (unordered!) → `linear_combination`; `Submodule.mem_sup` yields
+  `i+j = a-b` so sign is `-hij`; stale `.1` on an `ideal_crt_unique` that already
+  returns `∈ I ⊓ J`; `mem_span_singleton_iff_dvd` = exactly `Ideal.mem_span_singleton`
+  (drop the `.trans` with wrong-direction `hc.symm`).
+- CentralLimitTheoremOQ02OQ02 (instance-synth): `(∫…)/n` with `n:ℕ` no longer
+  auto-coerces → the whole equation typed at ℕ (`NormedAddCommGroup ℕ`/`HMul ℝ ℝ ℕ`
+  synth fails) → `/ (n : ℝ)`; `integral_congr_ae` leaves an unapplied lambda
+  `(fun ω => …) ω` → `simp only []` to β-reduce before the `div_pow`/`sq_sqrt` rw;
+  `Finset.sum_congr rfl hsum` — `simp [toMDA]` unfolds the `if` BODY but not the
+  Decidable instance inside it, so `rw` can't syntactically match → `trans` + `exact`
+  (defeq closes the instance gap).
+
+## Statement bug FOUND (NOT flipped — pre-existing false formula, #38611)
+- **CevasTheoremOQ01OQ03** (ledger proof-drift): `routh_asymmetric_example` claims
+  `routhRatio (1/2)(1/3)(1/4) = 1/10`, but the parent `CevasTheoremOQ01.routhRatio`
+  denominator `(1-d+d·e)(1-e+e·f)(1-f+f·d)` is WRONG — it should be the stdP/Q/R
+  denominators `(1-e+d·e)(1-f+e·f)(1-d+f·d)`. Verified numerically: `signedArea(P,Q,R)
+  = 1/10` at (1/2,1/3,1/4) but `routhRatio = 25/252`; they coincide only at the
+  symmetric point (both 1/7), which is why the symmetric tests hid the bug. So
+  `routh_theorem_std`/`routh_area_explicit` are genuinely FALSE — this file was
+  never truly green (a math bug in a *dependency's def*, not v4.31 drift). Fixing it
+  means correcting the parent `routhRatio` denominator + re-verifying the parent and
+  all dependents — out of scope for mechanical migration, DEFERRED.
+
+## Flagged deep (triaged, NOT flipped)
+- Erdos598Problem (elab-drift, 4 err): `kappa : Cardinal` is universe-polymorphic;
+  `∃ c : … Set.Iio kappa` binders fail universe inference. `ErdosProblem598Minimal`
+  applies `ChromaticCompleteness` to `Set.Iio kappa` (one universe ABOVE where kappa
+  lives → `Cardinal.mk X` forces kappa.{w+1} while `c`'s codomain is kappa.{w}) —
+  universe-inconsistent, likely never green. Deep universe rework, deferred.
+- CantorDiagonalizationOQ03OQ01Incomplete01 (9): level-param mismatch [u1,u2,u3] vs
+  [u1,u2] in a Prop/Type-polymorphic Lawvere setup + diagonal type mismatches.
+- ErdosKoRado (11), Erdos560Problem (14, Sym2.Rel projection changes), Erdos461/
+  Erdos153/Erdos483 (23–34): diverse multi-root.
+- AmgmInequality…OQ03 (6): Newton-identity sum re-indexing drift + local
+  `elemSymm_fin_zero` missing. BezoutIdentity…Transitive (6): `Fin.cons` vs
+  `Fin.append` representation change + `headBlockN` SL-group type mismatch.
+
+## New systematic seams (rename-map §7ai candidates)
+1. **`ℝ≥0∞` is scoped notation** — needs `open scoped ENNReal`; a file that used it
+   under an older global export now fails to PARSE (`expected token` at the `∞`).
+   Fix: `open scoped ENNReal` or write `ENNReal`.
+2. **`inv_ne_zero` is an implication, not an iff** (`a ≠ 0 → a⁻¹ ≠ 0`) — drop `.mpr`.
+3. **`smul_left_cancel₀` removed** → `smul_right_inj (hr : r≠0) : r•m₁ = r•m₂ ↔ m₁=m₂`
+   (or `smul_right_injective M hr`), needs `[IsCancelMulZero R] [IsTorsionFree R M]`.
+4. **`Pi.sub_apply`/`Pi.smul_apply` don't fire on EuclideanSpace/PiLp** (WithLp not
+   reducibly Pi) → `PiLp.sub_apply`/`PiLp.smul_apply` (both `@[simp]`).
+5. **`pow_pos` instance-synth fails on ENNReal** (ordered-structure refactor) — prove
+   the base `≠ 0` (`pow_ne_zero`) and `rw [ENNReal.mul_top h]` instead.
+6. **`Real.toNat` does not exist** — use `⌊·⌋₊` (`Nat.floor`).
+7. **`open scoped Classical` shadows computable Decidable instances** — `decide` then
+   fails ("did not reduce to isTrue/isFalse" via `Classical.propDecidable`); replace
+   `decide` on concrete decidable props with `rfl`/`simp [defs]` reductions.
+8. **`linarith` needs an ordered field** — on a bare `CommRing` an equality that was
+   `linarith`-closed on v4.26 now fails; use `linear_combination`.
+9. **`if`-Decidable-instance mismatch defeats `rw`** — `simp only [def]` rewrites the
+   `if` body but NOT the Decidable instance argument, so a subsequent `rw
+   [sum_congr rfl h]` can't syntactically match; switch to `trans`/`exact` (or `calc`)
+   which close by defeq.
+10. **`convert ciSup_le`/congruence golf regenerates side goals** (Eq.refl-field,
+    `Nonempty sorry`) on v4.31 — prefer direct `ciSup_le`/`le_ciSup` with explicit
+    Nonempty + BddAbove over `convert`.
+
+Ledger after increment 64: +6 GREEN (partition A).
+
+---
+
 # DOCTOR INCREMENT 63 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
 
 Container `dr63` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch

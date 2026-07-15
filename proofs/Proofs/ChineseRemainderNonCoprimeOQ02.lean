@@ -537,10 +537,9 @@ theorem ideal_crt_sufficient {I J : Ideal R} {a b : R}
   rw [Submodule.mem_sup] at h
   obtain ⟨i, hi, j, hj, hij⟩ := h
   refine ⟨a - i, ?_, ?_⟩
-  · show -i ∈ I
+  · rw [show a - i - a = -i from by ring]
     exact I.neg_mem hi
-  · show a - i - b ∈ J
-    have : a - i - b = j := by linarith
+  · have : a - i - b = j := by linear_combination -hij
     rw [this]
     exact hj
 
@@ -585,7 +584,7 @@ theorem ideal_crt_three_unique {I J K : Ideal R} {a b c x₁ x₂ : R}
     (x₁ - x₂) ∈ I ⊓ J ⊓ K := by
   rw [Submodule.mem_inf]
   refine ⟨?_, ?_⟩
-  · exact (ideal_crt_unique ⟨h₁.1, h₁.2.1⟩ ⟨h₂.1, h₂.2.1⟩).1
+  · exact ideal_crt_unique ⟨h₁.1, h₁.2.1⟩ ⟨h₂.1, h₂.2.1⟩
   · have := K.sub_mem h₁.2.2 h₂.2.2
     rwa [show (x₁ - c) - (x₂ - c) = x₁ - x₂ from by ring] at this
 
@@ -605,8 +604,7 @@ variable {R : Type*} [CommRing R]
 /-- Principal ideal membership: x ∈ Ideal.span {m} ↔ m ∣ x. -/
 theorem mem_span_singleton_iff_dvd (m x : R) :
     x ∈ Ideal.span {m} ↔ m ∣ x :=
-  Ideal.mem_span_singleton.trans ⟨fun ⟨c, hc⟩ => ⟨c, hc.symm⟩,
-                                  fun ⟨c, hc⟩ => ⟨c, hc.symm⟩⟩
+  Ideal.mem_span_singleton
 
 /-- Element CRT from ideal CRT: solvability via principal ideals.
     The element-level CRT (Part I for EDs) is a special case of the ideal CRT

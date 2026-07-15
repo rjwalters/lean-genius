@@ -19,6 +19,7 @@
 import Mathlib
 
 open Nat Finset
+open scoped Classical
 
 namespace CollatzStoppingTime
 
@@ -49,19 +50,18 @@ noncomputable def stoppingTime (n : ℕ) : ℕ :=
 
 /-- Stopping time of 1 is 0 -/
 theorem stoppingTime_one : stoppingTime 1 = 0 := by
-  unfold stoppingTime
-  simp [reachesOne, reachesOneIn, collatzIter]
-  split
-  · exact Nat.find_eq_zero.mpr rfl
-  · rfl
+  have h : reachesOne 1 := ⟨0, rfl⟩
+  rw [stoppingTime, dif_pos h]
+  simp only [Nat.find_eq_zero]
+  rfl
 
 /-- Stopping time of 2 is 1 -/
 theorem stoppingTime_two : stoppingTime 2 = 1 := by
-  unfold stoppingTime
-  have h : reachesOne 2 := ⟨1, by unfold reachesOneIn collatzIter collatz; norm_num⟩
-  simp [h]
-  exact (Nat.find_eq_iff _).mpr ⟨by unfold reachesOneIn collatzIter collatz; norm_num,
-    fun k hk => by interval_cases k; unfold reachesOneIn collatzIter; norm_num⟩
+  have h : reachesOne 2 := ⟨1, rfl⟩
+  rw [stoppingTime, dif_pos h]
+  refine (Nat.find_eq_iff _).mpr ⟨rfl, fun k hk => ?_⟩
+  interval_cases k
+  simp [reachesOneIn, collatzIter]
 
 /-
 ## Part II: Average Stopping Time
@@ -106,7 +106,7 @@ def collatzConjecture : Prop :=
 axiom terras_density :
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
       ((range N).filter (fun n => reachesOne (n + 1))).card ≥
-        ((1 - ε) * N : ℝ).toNat
+        ⌊(1 - ε) * N⌋₊
 
 /-
 ## Part V: The Open Question
@@ -139,7 +139,7 @@ def exactConstant : Prop :=
 /-  σ(1) = 0, σ(2) = 1, σ(3) = 7, σ(4) = 2, σ(5) = 5, σ(6) = 8 -/
 -- These can be verified by computation
 
-/-- The average for small N grows roughly logarithmically -/
+/- The average for small N grows roughly logarithmically -/
 -- S(1) = 0, S(2) = 0.5, S(3) = 2.67, S(4) = 2.5, S(5) = 3.0, S(6) = 3.83
 
 #check avgStoppingTimeAsymptotic
