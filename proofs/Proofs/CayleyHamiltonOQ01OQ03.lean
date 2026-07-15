@@ -70,8 +70,8 @@ noncomputable def expPolyCoeff (k : ℕ) (t : ℝ) : ℝ :=
 --   C^m ⟨k,hk⟩ ⟨0,hd⟩ = ∑_{j<d} c_{m,j} * δ_{k,j} = c_{m,k} ✓
 private lemma coeff_pow_X_eq_companion (m k : ℕ) (hk : k < (minpoly ℝ M).natDegree) :
     ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k =
-    (CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := (minpoly ℝ M).natDegree)
-      (minpoly ℝ M)) ^ m ⟨k, hk⟩ ⟨0, minpoly_natDegree_pos M⟩ := by
+    ((CayleyHamiltonReductionOQ02OQ01.companionMatrix (d := (minpoly ℝ M).natDegree)
+      (minpoly ℝ M)) ^ m) ⟨k, hk⟩ ⟨0, minpoly_natDegree_pos M⟩ := by
   set μ := minpoly ℝ M
   set d := μ.natDegree
   have hd : 0 < d := minpoly_natDegree_pos M
@@ -81,7 +81,7 @@ private lemma coeff_pow_X_eq_companion (m k : ℕ) (hk : k < (minpoly ℝ M).nat
   haveI : NeZero d := ⟨by omega⟩
   -- The companion matrix satisfies minpoly ℝ C = μ
   have hminpoly_C : minpoly ℝ C = μ :=
-    CayleyHamiltonReductionOQ02OQ01.minpoly_companionMatrix hμ_monic rfl
+    CayleyHamiltonReductionOQ02OQ01.minpoly_companionMatrix (p := μ) hμ_monic rfl
   -- C^m = aeval C (X^m) = aeval C (X^m %ₘ μ)  [since minpoly C = μ]
   have hC_aeval : C ^ m = aeval C ((X : ℝ[X]) ^ m %ₘ μ) := by
     have heq := CayleyHamiltonOQ01.aeval_eq_aeval_mod_minpoly C ((X : ℝ[X]) ^ m)
@@ -89,19 +89,22 @@ private lemma coeff_pow_X_eq_companion (m k : ℕ) (hk : k < (minpoly ℝ M).nat
   -- Basis expansion: aeval C (X^m %ₘ μ) = ∑_{j<d} c_{m,j} · C^j
   have hbasis : C ^ m = ∑ j ∈ Finset.range d,
       ((X : ℝ[X]) ^ m %ₘ μ).coeff j • C ^ j := by
-    rw [hC_aeval, aeval_def, eval₂_eq_sum_range' (modByMonic_natDegree_lt M m)]
-    simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+    have hb : C ^ m = ∑ j ∈ Finset.range (minpoly ℝ M).natDegree,
+        ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff j • C ^ j := by
+      rw [hC_aeval, aeval_def, eval₂_eq_sum_range' (hn := modByMonic_natDegree_lt M m)]
+      simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+    exact hb
   -- Take entry (k, 0): C^m ⟨k,hk⟩ ⟨0,hd⟩ = ∑_{j<d} c_{m,j} * C^j ⟨k,hk⟩ ⟨0,hd⟩
-  have h_entry : C ^ m ⟨k, hk⟩ ⟨0, hd⟩ =
+  have h_entry : (C ^ m) ⟨k, hk⟩ ⟨0, hd⟩ =
       ∑ j ∈ Finset.range d,
-        ((X : ℝ[X]) ^ m %ₘ μ).coeff j * C ^ j ⟨k, hk⟩ ⟨0, hd⟩ := by
+        ((X : ℝ[X]) ^ m %ₘ μ).coeff j * (C ^ j) ⟨k, hk⟩ ⟨0, hd⟩ := by
     have := congr_arg (· ⟨k, hk⟩ ⟨0, hd⟩) hbasis
     simp only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul] at this
     exact this
   -- Entry formula: C^j ⟨k,hk⟩ ⟨0,hd⟩ = δ_{j,k}  [companionMatrix_pow_basis]
   -- Using Pi.single i a applied at ⟨k,hk⟩ gives if i = ⟨k,hk⟩ then a else 0
   have hC_pow_entry : ∀ j : ℕ, ∀ hj : j < d,
-      C ^ j ⟨k, hk⟩ ⟨0, hd⟩ = if j = k then 1 else 0 := by
+      (C ^ j) ⟨k, hk⟩ ⟨0, hd⟩ = if k = j then 1 else 0 := by
     intro j hj
     have horbit := CayleyHamiltonReductionOQ02OQ01.companionMatrix_pow_basis μ j hj
     have h2 := congr_fun horbit ⟨k, hk⟩
@@ -112,10 +115,24 @@ private lemma coeff_pow_X_eq_companion (m k : ℕ) (hk : k < (minpoly ℝ M).nat
   rw [h_entry, Finset.sum_eq_single k]
   · rw [hC_pow_entry k hk, if_pos rfl, mul_one]
   · intro j hj hjk
-    rw [hC_pow_entry j (Finset.mem_range.mp hj), if_neg hjk, mul_zero]
+    rw [hC_pow_entry j (Finset.mem_range.mp hj), if_neg (Ne.symm hjk), mul_zero]
   · intro h
     exact absurd (Finset.mem_range.mpr hk) h
 
+open scoped Matrix.Norms.Operator in
+/-- Absolute value of a matrix entry is bounded by the ℓ∞ operator norm. -/
+private lemma abs_entry_le_opNorm {d : ℕ} [NeZero d]
+    (A : Matrix (Fin d) (Fin d) ℝ) (i j : Fin d) : |A i j| ≤ ‖A‖ := by
+  have h1 : (A *ᵥ Pi.single j (1 : ℝ)) i = A i j := by
+    simp [Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_ite_eq']
+  rw [← h1, ← Real.norm_eq_abs]
+  calc ‖(A *ᵥ Pi.single j (1 : ℝ)) i‖
+      ≤ ‖A *ᵥ Pi.single j (1 : ℝ)‖ := norm_le_pi_norm _ i
+    _ ≤ ‖A‖ * ‖(Pi.single j (1 : ℝ) : Fin d → ℝ)‖ := Matrix.linfty_opNorm_mulVec A _
+    _ = ‖A‖ := by rw [Pi.norm_single, norm_one, mul_one]
+
+set_option maxHeartbeats 800000 in
+open scoped Matrix.Norms.Operator in
 /-- The series defining p_k(t) converges.
     Proof: coeff_k(X^m mod μ) = (C^m)_{k,0} where C is the companion matrix of μ_M.
     Since |c_{m,k}| ≤ ‖C‖^m (matrix norm bound), the comparison test gives convergence:
@@ -126,25 +143,25 @@ theorem expPolyCoeff_summable (k : ℕ) (t : ℝ) :
   by_cases hk : k < (minpoly ℝ M).natDegree
   · -- Case k < d: use companion matrix identity + norm bound
     have hd : 0 < (minpoly ℝ M).natDegree := minpoly_natDegree_pos M
+    haveI : NeZero (minpoly ℝ M).natDegree := ⟨hd.ne'⟩
     set C := CayleyHamiltonReductionOQ02OQ01.companionMatrix
       (d := (minpoly ℝ M).natDegree) (minpoly ℝ M)
     -- Rewrite the coefficient using the key identity
     have hkey : ∀ m, ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k =
-        C ^ m ⟨k, hk⟩ ⟨0, hd⟩ := fun m => coeff_pow_X_eq_companion M m k hk
+        (C ^ m) ⟨k, hk⟩ ⟨0, hd⟩ := fun m => coeff_pow_X_eq_companion M m k hk
     simp_rw [hkey]
     -- The entry series follows from the matrix exp series via norm bound
-    apply Summable.of_norm_bounded (fun m => (|t| * ‖C‖) ^ m / m.factorial)
-    · exact summable_pow_div_factorial _
-    · intro m
-      have hfact_pos : (0 : ℝ) < (m.factorial : ℝ) := Nat.cast_pos.mpr m.factorial_pos
-      rw [Real.norm_eq_abs, abs_mul, abs_div, abs_pow, abs_of_pos hfact_pos,
-          div_mul_eq_mul_div, div_le_div_right hfact_pos, mul_pow]
-      apply mul_le_mul_of_nonneg_left _ (pow_nonneg (abs_nonneg t) m)
-      calc |C ^ m ⟨k, hk⟩ ⟨0, hd⟩|
-          = ‖C ^ m ⟨k, hk⟩ ⟨0, hd⟩‖ := (Real.norm_eq_abs _).symm
-        _ ≤ ‖C ^ m ⟨k, hk⟩‖ := norm_le_pi_norm _ _
-        _ ≤ ‖C ^ m‖ := norm_le_pi_norm _ _
-        _ ≤ ‖C‖ ^ m := norm_pow_le C m
+    apply Summable.of_norm_bounded (g := fun m => (|t| * ‖C‖) ^ m / m.factorial)
+      (Real.summable_pow_div_factorial _)
+    intro m
+    have hfact_pos : (0 : ℝ) < (m.factorial : ℝ) := Nat.cast_pos.mpr m.factorial_pos
+    have hentry : |(C ^ m) ⟨k, hk⟩ ⟨0, hd⟩| ≤ ‖C‖ ^ m :=
+      (abs_entry_le_opNorm (C ^ m) ⟨k, hk⟩ ⟨0, hd⟩).trans (norm_pow_le C m)
+    calc ‖(t ^ m / (m.factorial : ℝ)) * (C ^ m) ⟨k, hk⟩ ⟨0, hd⟩‖
+        = |t| ^ m / m.factorial * |(C ^ m) ⟨k, hk⟩ ⟨0, hd⟩| := by
+          rw [Real.norm_eq_abs, abs_mul, abs_div, abs_pow, abs_of_pos hfact_pos]
+      _ ≤ |t| ^ m / m.factorial * ‖C‖ ^ m := by gcongr
+      _ = (|t| * ‖C‖) ^ m / m.factorial := by rw [mul_pow]; ring
   · -- Case k ≥ d: the remainder polynomial has degree < d ≤ k, so coefficient k is 0
     push_neg at hk
     have hzero : ∀ m, ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k = 0 := fun m =>
@@ -159,11 +176,14 @@ theorem expPolyCoeff_summable (k : ℕ) (t : ℝ) :
 
 /-- The matrix exponential is its power series: exp(t·M) = ∑_m (t^m/m!)·M^m. -/
 theorem matrixExp_eq_tsum (t : ℝ) :
-    exp ℝ (t • M) = ∑' m : ℕ, (t ^ m / (m.factorial : ℝ)) • M ^ m := by
+    exp (t • M) = ∑' m : ℕ, (t ^ m / (m.factorial : ℝ)) • M ^ m := by
   rw [exp_eq_tsum (𝕂 := ℝ) (𝔸 := Matrix n n ℝ)]
   apply tsum_congr; intro m
-  rw [Algebra.smul_pow, smul_smul]
-  congr 1; field_simp
+  have hthis : (t • M) ^ m = t ^ m • M ^ m := by
+    rw [Algebra.smul_def, (Algebra.commute_algebraMap_left t M).mul_pow, ← map_pow,
+        ← Algebra.smul_def]
+  rw [hthis, smul_smul]
+  congr 1; ring
 
 -- ============================================================
 -- Section 3: Basis Expansion of Matrix Powers
@@ -174,39 +194,35 @@ theorem power_eq_basis_sum (m : ℕ) :
     M ^ m = ∑ k ∈ Finset.range (minpoly ℝ M).natDegree,
       ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k • M ^ k := by
   have heval := CayleyHamiltonOQ01.power_eq_aeval_mod_minpoly M m
-  rw [heval, aeval_def, eval₂_eq_sum_range' (modByMonic_natDegree_lt M m)]
+  rw [heval, aeval_def, eval₂_eq_sum_range' (hn := modByMonic_natDegree_lt M m)]
   simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
 
 -- ============================================================
 -- Section 4: Component-wise Interchange and Main Theorem
 -- ============================================================
 
-private lemma expPolyCoeff_summable_mul (k : ℕ) (t : ℝ) (v : ℝ) :
-    Summable (fun m : ℕ =>
-      (t ^ m / (m.factorial : ℝ)) * ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k * v) :=
-  (expPolyCoeff_summable M k t).mul_right v
-
-/-- Interchange of infinite series and finite sum at each matrix entry.
-    Works entry-wise: for each (i,j), the real-valued series can be rearranged. -/
+/-- Interchange of infinite series and finite sum, at the matrix level.
+    The interchange reduces to scalar summability (`expPolyCoeff_summable`). -/
 theorem exp_tsum_interchange (t : ℝ) :
     ∑' m : ℕ, (t ^ m / (m.factorial : ℝ)) • M ^ m =
     ∑ k ∈ Finset.range (minpoly ℝ M).natDegree, expPolyCoeff M k t • M ^ k := by
-  -- Work component-wise: prove equality at each matrix entry
-  apply Matrix.ext; intro i j
-  -- Bring the tsum inside the matrix entry
-  simp only [Matrix.tsum_apply, Matrix.smul_apply, Matrix.sum_apply]
-  -- Replace M^m with its basis expansion
-  simp_rw [power_eq_basis_sum M, Matrix.sum_apply, Matrix.smul_apply]
-  -- LHS is now ∑' m, t^m/m! * ∑_k c_{m,k} * (M^k) i j
-  simp_rw [Finset.mul_sum]
-  -- Interchange ∑' m and ∑ k using tsum_sum (all series are summable)
-  rw [tsum_sum (s := Finset.range (minpoly ℝ M).natDegree)]
-  · congr 1; ext k
-    -- Factor out (M^k) i j and identify with expPolyCoeff
-    rw [← tsum_mul_right, expPolyCoeff]
-    congr 1; ext m; ring
-  · intro k _
-    exact expPolyCoeff_summable_mul M k t ((M ^ k) i j)
+  -- Expand each M^m in the basis {M^k : k < d}, distributing the scalar.
+  have step1 : ∀ m : ℕ, (t ^ m / (m.factorial : ℝ)) • M ^ m
+      = ∑ k ∈ Finset.range (minpoly ℝ M).natDegree,
+          ((t ^ m / (m.factorial : ℝ)) *
+            ((X : ℝ[X]) ^ m %ₘ minpoly ℝ M).coeff k) • M ^ k := by
+    intro m
+    rw [power_eq_basis_sum M, Finset.smul_sum]
+    exact Finset.sum_congr rfl (fun k _ => by rw [smul_smul])
+  simp_rw [step1]
+  -- Interchange the tsum (over m) with the finite sum (over k).
+  rw [Summable.tsum_finsetSum
+      (fun k _ => (expPolyCoeff_summable M k t).smul_const (M ^ k))]
+  apply Finset.sum_congr rfl
+  intro k _
+  -- Pull the constant M^k out of the tsum and identify with expPolyCoeff.
+  rw [Summable.tsum_smul_const (expPolyCoeff_summable M k t) (M ^ k)]
+  simp only [expPolyCoeff]
 
 /-- **Main Theorem**: The matrix exponential is a polynomial in M of degree < d.
 
@@ -218,7 +234,7 @@ theorem exp_tsum_interchange (t : ℝ) :
     ℝ-algebra generated by M. -/
 theorem matrixExp_poly_form (t : ℝ) :
     let d := (minpoly ℝ M).natDegree
-    exp ℝ (t • M) = ∑ k ∈ Finset.range d, expPolyCoeff M k t • M ^ k := by
+    exp (t • M) = ∑ k ∈ Finset.range d, expPolyCoeff M k t • M ^ k := by
   rw [matrixExp_eq_tsum, exp_tsum_interchange]
 
 -- ============================================================
@@ -234,7 +250,7 @@ theorem expPolyCoeff_depends_only_on_minpoly (M N : Matrix n n ℝ)
 
 /-- exp(t·M) is in the ℝ-span of {I, M, ..., M^{d-1}}. -/
 theorem matrixExp_in_span (t : ℝ) :
-    exp ℝ (t • M) ∈ Submodule.span ℝ (Set.range (fun k : Fin (minpoly ℝ M).natDegree => M ^ (k : ℕ))) := by
+    exp (t • M) ∈ Submodule.span ℝ (Set.range (fun k : Fin (minpoly ℝ M).natDegree => M ^ (k : ℕ))) := by
   rw [matrixExp_poly_form]
   apply Submodule.sum_mem
   intro k hk
@@ -244,12 +260,12 @@ theorem matrixExp_in_span (t : ℝ) :
 
 /-- exp(0) = 1 (identity matrix). -/
 theorem matrixExp_zero_eq_one :
-    exp ℝ (0 : Matrix n n ℝ) = 1 := exp_zero
+    exp (0 : Matrix n n ℝ) = 1 := exp_zero
 
 /-- The degree bound: exp(t·M) uses at most n = Fintype.card n terms. -/
 theorem matrixExp_atMost_n_terms (t : ℝ) :
     ∃ (coeffs : Fin (Fintype.card n) → ℝ),
-      exp ℝ (t • M) = ∑ k : Fin (Fintype.card n), coeffs k • M ^ (k : ℕ) := by
+      exp (t • M) = ∑ k : Fin (Fintype.card n), coeffs k • M ^ (k : ℕ) := by
   have hle : (minpoly ℝ M).natDegree ≤ Fintype.card n :=
     calc (minpoly ℝ M).natDegree
         ≤ M.charpoly.natDegree :=
@@ -258,9 +274,14 @@ theorem matrixExp_atMost_n_terms (t : ℝ) :
       _ = Fintype.card n := Matrix.charpoly_natDegree_eq_dim M
   refine ⟨fun k => if h : (k : ℕ) < (minpoly ℝ M).natDegree
     then expPolyCoeff M ↑k t else 0, ?_⟩
-  rw [matrixExp_poly_form, Fin.sum_univ_eq_sum_range]
+  rw [matrixExp_poly_form]
+  rw [Fin.sum_univ_eq_sum_range
+      (fun j => (if h : j < (minpoly ℝ M).natDegree then expPolyCoeff M j t else 0) • M ^ j)]
+  -- Extend the range from d to Fintype.card n (extra terms vanish), then match.
+  rw [← Finset.sum_subset (Finset.range_subset_range.mpr hle)
+      (fun j _ hj => by rw [dif_neg (by simpa using hj), zero_smul])]
   apply Finset.sum_congr rfl
   intro k hk
-  simp [Finset.mem_range.mp hk]
+  rw [dif_pos (Finset.mem_range.mp hk)]
 
 end CayleyHamiltonOQ01OQ03

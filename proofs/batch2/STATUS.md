@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 11 (8-slot, #38065, 2026-07-15)
+
+**+3 GREEN**: CayleyHamiltonOQ01OQ03 (OPUS, ~27min/202k deep: matrix-exp-as-poly, ^ binds tighter than
+application ->parenthesize (A^m) i j; matrix norms now SCOPED Matrix.Norms.Operator not global; Matrix.tsum_apply
+removed; maxHeartbeats 800000), Erdos1159Problem (SONNET: Configuration.ProjectivePlane IsBlockingSet implicit
+L no longer inferred -> (L:=L) at call sites), StirlingFormula (SONNET: orphan /-- docstring before -- header
+parse error; Real.pi_gt_314->pi_gt_d2; linarith no longer bridges Nat hyps into ℝ goals). MODEL EXPERIMENT:
+Sonnet now 5/5 GREEN incl non-trivial files; Haiku 3 agents still unreported (looping — likely unsuitable). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 10 (8-slot, #38065, 2026-07-15)
 
 **+4 GREEN**: FurstenbergCorrespondenceOQ02 (Ergodic .preErgodic->.toPreErgodic; @[reducible] on custom
