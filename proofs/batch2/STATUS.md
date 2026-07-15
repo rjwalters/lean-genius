@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 9 (8-slot, #38065, 2026-07-15)
+
+**+4 GREEN**: Erdos1167Problem (Erdos-Hajnal-Rado, 13 seams: λ illegal ANYWHERE in identifier
+incl hλ; let rec no longer rfl-reduces->Nat.rec; Cardinal.eq_one_iff_unique gives Subsingleton∧Nonempty),
+MinpolyCharpolyOQ03OQ01 (pure cascade off RCF chain), Erdos86Problem (// set-builder w/ instance-binder
+reparse; SimpleGraph.symm needs constructor/Std.Symm; Fintype.card_fun needs abbrev), MaschkeTheoremOQ01
+(SONNET model: omit-before-docstring reorder; Maschke lemmas now need NeZero(Nat.card G:k) not Fintype.card).
+Model experiment: MaschkeTheoremOQ01 done on Sonnet 5 (GREEN 92s/58k). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 8 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN**: AbelRuffiniGaloisExtensionsOQ04 (deepest file of wave ~31min: JordanHolderLattice
