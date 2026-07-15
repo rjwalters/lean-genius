@@ -61,11 +61,11 @@ def GraphOrientation.hasShortcut (O : GraphOrientation G) : Prop :=
 
 /-- An orientation is Hasse-like: acyclic and shortcut-free. -/
 def GraphOrientation.isHasse (O : GraphOrientation G) : Prop :=
-  O.isAcyclic ∧ ¬O.hasShortcut
+  O.isAcyclic ∧ ¬ GraphOrientation.hasShortcut O
 
 /-- G admits a Hasse-like orientation -/
 def isHasseOrientable (G : SimpleGraph V) : Prop :=
-  ∃ (O : GraphOrientation G), O.isHasse
+  ∃ (O : GraphOrientation G), GraphOrientation.isHasse O
 
 /-
 ## Cover Orientations Are Shortcut-Free
@@ -77,7 +77,7 @@ def isHasseOrientable (G : SimpleGraph V) : Prop :=
 theorem coverOrientation_no_shortcut
     [PartialOrder V] [DecidableEq V]
     (hcover : isCoverGraphOf G) :
-    ¬(coverOrientation G hcover).hasShortcut := by
+    ¬ GraphOrientation.hasShortcut (coverOrientation G hcover) := by
   intro ⟨u, v, huv, w, _, _, huw, hwv⟩
   -- huv : u ⋖ v (arc in cover orientation means covering relation)
   -- huw : u ⋖ w, hwv : w ⋖ v
@@ -143,7 +143,7 @@ instance isCoverGraphOf_decidable
 /-- The space of Boolean relations on V has size 2^(|V|²).
     Cover graph recognition searches over all partial orders on V,
     which is a subset of this space. -/
-theorem cover_search_space_bound [Fintype V] :
+theorem cover_search_space_bound [Fintype V] [DecidableEq V] :
     Fintype.card (V → V → Bool) = 2 ^ (Fintype.card V * Fintype.card V) := by
   simp [Fintype.card_fun, Fintype.card_bool, pow_mul]
 
@@ -211,39 +211,37 @@ theorem k3_is_comparability_graph : isComparabilityGraph (⊤ : SimpleGraph (Fin
     exact ⟨fun h => lt_or_gt_of_ne h,
            fun h => h.elim ne_of_lt (fun hvu => hvu.ne')⟩⟩
 
-/-- K₃ is NOT a cover graph: no partial order on 3 vertices has all three pairs as covering
-    relations. Core argument: x ⋖ y and y ⋖ z immediately forbid x ⋖ z (since y lies strictly
-    between x and z). With three covering edges required, any orientation of the three covering
-    relations either produces a 3-chain (making the long edge non-covering) or a directed cycle
-    (impossible in a partial order). -/
-theorem k3_not_cover_graph : ¬isCoverGraph (⊤ : SimpleGraph (Fin 3)) := by
-  intro ⟨_, hcover⟩
-  -- x ⋖ y and y ⋖ z is impossible alongside x ⋖ z: y lies strictly between x and z
-  have no_chain : ∀ x y z : Fin 3, x ⋖ y → y ⋖ z → ¬(x ⋖ z) := fun x y z hxy hyz hxz =>
+/-- The combinatorial core, stated over an abstract poset so that `⋖`, `<` and
+    `lt_irrefl` all resolve to the single ambient `PartialOrder W` instance (no
+    competing canonical order as there would be on a concrete `Fin 3`). Three
+    pairwise-distinct elements cannot be pairwise covering: every orientation of
+    the three covering pairs yields either a 3-chain (a covering pair with a
+    strictly-between element) or a directed 3-cycle (giving `x < x`). -/
+private theorem no_pairwise_covering_triangle {W : Type*} [PartialOrder W] {a b c : W}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (cov : ∀ x y : W, x ≠ y → (x ⋖ y ∨ y ⋖ x)) : False := by
+  have no_chain : ∀ x y z : W, x ⋖ y → y ⋖ z → ¬(x ⋖ z) := fun x y z hxy hyz hxz =>
     hxz.2 hxy.lt hyz.lt
-  -- All pairs in K₃ must have a covering relation
-  have cov : ∀ i j : Fin 3, i ≠ j → (i ⋖ j ∨ j ⋖ i) := fun i j hij =>
-    (hcover i j).mp hij
-  -- 8-way case split on orientations of covering edges {0,1}, {0,2}, {1,2}
-  rcases cov 0 1 (by decide) with h01 | h01 <;>
-  rcases cov 0 2 (by decide) with h02 | h02 <;>
-  rcases cov 1 2 (by decide) with h12 | h12
-  -- (0⋖1, 0⋖2, 1⋖2): chain 0<1<2 violates 0⋖2
-  · exact no_chain 0 1 2 h01 h12 h02
-  -- (0⋖1, 0⋖2, 2⋖1): chain 0<2<1 violates 0⋖1
-  · exact no_chain 0 2 1 h02 h12 h01
-  -- (0⋖1, 2⋖0, 1⋖2): cycle 2<0<1<2 gives 2<2
-  · exact absurd (h02.lt.trans (h01.lt.trans h12.lt)) (lt_irrefl 2)
-  -- (0⋖1, 2⋖0, 2⋖1): chain 2<0<1 violates 2⋖1
-  · exact no_chain 2 0 1 h02 h01 h12
-  -- (1⋖0, 0⋖2, 1⋖2): chain 1<0<2 violates 1⋖2
-  · exact no_chain 1 0 2 h01 h02 h12
-  -- (1⋖0, 0⋖2, 2⋖1): cycle 1<0<2<1 gives 1<1
-  · exact absurd (h01.lt.trans (h02.lt.trans h12.lt)) (lt_irrefl 1)
-  -- (1⋖0, 2⋖0, 1⋖2): chain 1<2<0 violates 1⋖0
-  · exact no_chain 1 2 0 h12 h02 h01
-  -- (1⋖0, 2⋖0, 2⋖1): chain 2<1<0 violates 2⋖0
-  · exact no_chain 2 1 0 h12 h01 h02
+  rcases cov a b hab with hab' | hab' <;>
+  rcases cov a c hac with hac' | hac' <;>
+  rcases cov b c hbc with hbc' | hbc'
+  · exact no_chain a b c hab' hbc' hac'
+  · exact no_chain a c b hac' hbc' hab'
+  · exact absurd (hab'.lt.trans (hbc'.lt.trans hac'.lt)) (lt_irrefl _)
+  · exact no_chain c a b hac' hab' hbc'
+  · exact no_chain b a c hab' hac' hbc'
+  · exact absurd (hab'.lt.trans (hac'.lt.trans hbc'.lt)) (lt_irrefl _)
+  · exact no_chain b c a hbc' hac' hab'
+  · exact no_chain c b a hbc' hab' hac'
+
+/-- K₃ is NOT a cover graph: no partial order on `Fin 3` has all three pairs as
+    covering relations (see `no_pairwise_covering_triangle`). -/
+theorem k3_not_cover_graph : ¬isCoverGraph (⊤ : SimpleGraph (Fin 3)) := by
+  rintro ⟨ho, hcover⟩
+  -- Apply the abstract core with the witnessed order `ho` passed explicitly, so
+  -- the covering relation matches `hcover`'s (rather than Fin 3's canonical order).
+  exact @no_pairwise_covering_triangle (Fin 3) ho 0 1 2 (by decide) (by decide) (by decide)
+    (fun x y hxy => (hcover x y).mp (by rwa [SimpleGraph.top_adj]))
 
 /-- Strict separation: the inclusion of cover graphs in comparability graphs is proper.
     The triangle K₃ (3 vertices, all pairs connected) is a comparability graph
