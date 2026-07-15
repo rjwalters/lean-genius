@@ -1,3 +1,18 @@
+# DOCTOR SINGLE-PROOF BATCH 1 (8-slot one-proof-per-agent, #38065, 2026-07-15)
+
+New model: 8 parallel slots (own cache volume v431/-b..-h, cpuset of 3, --memory 6g), ONE proof
+per subagent, each commits only its file + ledger row to `mig/<File>` (no STATUS -> zero conflicts),
+orchestrator collects into this PR. Docker relocated to /Volumes/Stripe/docker, VM RAM 24->47GB.
+**+6 GREEN** this collection: Erdos556Problem (unsound cycleGraph loopless n=1 -> added i≠j, #38611),
+Erdos40Problem (5 proof-drift), Erdos803Problem (Finset.inf/sup over ℕ -> min'/max'+Nonempty),
+Erdos3Problem (stray /- unterminated comment + isLittleO_log_rpow_atTop lost Real. prefix; parent
+Erdos3LogHarmonic olean materialized first), LawOfSinesOQ06 (EuclideanSpace.inner_apply->PiLp.inner_apply,
+structure multi-binder field split, WithLp.ofLp_sub), Erdos184Problem (termination_by for logStar,
+minDegree dite-totalized). New seams: Symmetric/Irreflexive fields wrap Std.Symm/Std.Irrefl (need
+constructor); structure shared-binder field line breaks later self-reference (one field per line);
+Finset.inf over ℕ wants OrderTop -> min'/max'; well-founded recursion on Nat.log2 needs explicit
+termination_by. Repair #38611: Erdos556 cycleGraph.
+
 # DOCTOR INCREMENT 79 (deep-rework partition non-Erdos A–K / lane3, wave 2, #38065, 2026-07-15)
 
 Container cpuset 12-17, 11g, cache `lean-mathlib-cache-v431-c`, worktree doctor-c, branch
