@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 20 (8-slot, all SONNET, #38065, 2026-07-15)
+
+**+3 GREEN**: Erdos100OQ01 (cascade child off WIP01 + #38611 repair: original log_gt_one calc step
+`1 < log(exp 1)` was FALSE — log(exp 1)=1 — fixed to `1 = log(exp 1) < log n`; Real.add_one_le_exp_of_nonneg
+now private), Erdos302Aristotle (nlinarith no longer bridges ℕ goal vs ℚ hyp -> exact_mod_cast per side;
+omega opaque on a*b -> destructure to 2k+1), Erdos2OQ01Aristotle (map lambda without explicit `n:ℕ` binder
+elaborates as whole-list coercion, defeats List.map_cons simp -> annotate binder). Repairs #38611: Erdos100OQ01.
+
 # DOCTOR SINGLE-PROOF BATCH 19 (8-slot, all SONNET, #38065, 2026-07-15)
 
 **+4 GREEN**: BallotProblemOQ01OQ04 (pure cascade, wrapper flips off OQ01OQ04OQ01), Erdos179ProblemAristotle
