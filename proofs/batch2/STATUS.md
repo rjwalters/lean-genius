@@ -1,3 +1,79 @@
+# DOCTOR INCREMENT 79 (deep-rework partition non-Erdos A–K / lane3, wave 2, #38065, 2026-07-15)
+
+Container cpuset 12-17, 11g, cache `lean-mathlib-cache-v431-c`, worktree doctor-c, branch
+`feature/issue-38065-inc79` off origin/feature/issue-37508. **+4 GREEN.**
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+(Note: an osxfs mount-cache race can make a freshly-built parent olean read as "does not exist" on
+the next container; warming with `cat .lake/build/lib/lean/Proofs/*.olean >/dev/null` and/or a retry
+clears it — a false EXIT=1, not a real error.)
+
+## Flips (failure class in parens)
+- **BinomialTheoremOQ02OQ01OQ01OQ02** (type-mismatch): built green parent
+  `Proofs.BinomialTheoremOQ02OQ01` into cache first (unmasked the real sites). **`Finset.sum_nbij`
+  now takes `Set.InjOn`/`Set.SurjOn` (was elementwise), and its conclusion is `∑ s = ∑ t` with the
+  map `s→t`** — the reindex here needed a `symm` before `apply` (goal orientation was `∑ t = ∑ s`).
+  SurjOn's membership is in `↑s`/`↑t` coe form → `rw [Finset.mem_coe, Finset.mem_piAntidiag]` and
+  `rw [Set.mem_image]`, and the witness needs `Finset.mem_coe.mpr hj`. **`Nat.multinomial_spec`
+  multiplication order flipped** (`rw [hprod, one_mul]` not `mul_one`). **`subst h` with `h : i = j`
+  now eliminates `j`** (the RHS var), breaking later `k j` refs → use `rw [if_pos h, h]` instead of
+  `subst`. **`Finset.single_le_sum` dropped its explicit index arg** (now implicit `{a}`):
+  `single_le_sum h hj` not `single_le_sum h _ hj`. **`Bool.not_eq_true.mp` → `eq_false_of_ne_true`**.
+- **BallotProblemOQ01OQ02OQ01** (unknown-const:`Set.ncard_biUnion`): the child imports selectively,
+  so first had to build green parent `Proofs.BallotProblemOQ01OQ02` into cache AND add
+  `open MultiBallot` (parent defs `multiCountedSequence`/… are now in that namespace; without it
+  every use reads as autoImplicit "function expected"). **`Set.ncard_biUnion` → `Set.Finite.ncard_biUnion`**
+  (dot-method on `hI : s.Finite`; arg order `(hfin) (hdisj : PairwiseDisjoint)`; result is a **finsum**
+  `∑ᶠ i ∈ t, …` not a Finset sum) — convert with `← hI.coe_toFinset, finsum_mem_coe_finset` then close
+  the toFinset sum with `Set.ncard_coe_finset`. It lives in the NEW module
+  **`Mathlib.Data.Set.Card.Arithmetic`** which the parent didn't transitively import → had to add that
+  import. **`Set.ncard_pos hs` is now an Iff** (`0 < s.ncard ↔ s.Nonempty`) → `(Set.ncard_pos hs).mpr`.
+  **`ProbabilityTheory.uniformOn s` is now `Measure.count[|s]`** (a `cond` measure); `simp only [uniformOn]`
+  no longer yields the ncard ratio → added a local lemma `uniformOn_eq_ncard_div (hs : s.Finite) :
+  uniformOn s t = ↑(s∩t).ncard / ↑s.ncard` via `uniformOn`, `ProbabilityTheory.cond_apply`
+  (was `Measure.cond_apply`), `MeasureTheory.Measure.count_apply_finite`, `Set.ncard_eq_toFinset_card`,
+  `ENNReal.div_eq_inv_mul`. **`ENNReal.mul_div_mul_left` side-goal order swapped** (`≠ 0` then `≠ ⊤`).
+  **`Fin.val_eq_of_eq`-style ne proof → `Fin.ne_of_val_ne (by norm_num)`**. Final cross-mult reuses the
+  file's own `ENNReal.div_eq_div_of_mul_eq` instead of the fragile `ENNReal.div_eq_div_iff` rw.
+- **BallotProblemOQ01OQ02OQ01Aristotle** (unknown-const:`Set.ncard_biUnion`): same `Set.Finite.ncard_biUnion`
+  finsum-conversion fix in the file's own copy of `ncard_biUnion_eq_of_uniform`, plus `hI.toFinset_card`
+  (gone) → `Set.ncard_eq_toFinset_card I hI` in the helper `ncard_sum_eq`.
+- **DivisibilityBy3OQ03** (unknown-const:`Nat.sum_digits_lt`): **`Nat.sum_digits_lt` removed.** For the
+  `≤` use `Nat.digit_sum_le 10 n`; for the strict `digitSum n < n` (n ≥ 10, needed for `digitalRoot`
+  termination) derive it from `Nat.sub_one_mul_sum_log_div_pow_eq_sub_sum_digits (p := 10) n`
+  (the log-sum ≥ 1 via `Finset.single_le_sum` on the i=0 term, then `omega`). Also **`mul_eq_zero.mp`
+  ambiguous** (`Nat.mul_eq_zero` vs `_root_.mul_eq_zero`) → qualify `Nat.mul_eq_zero.mp`; two `simp;omega`
+  / `simpa`-normal-form drifts → `split_ifs/split <;> omega` and `omega` directly; `< n+1` vs `≤ n`
+  defeq gap in `decreasing_by` → `Nat.lt_succ_iff.mp`.
+
+## New systematic seams (rename-map candidates)
+- `Set.ncard_biUnion (hI) (hdisj) (hfin)` → `Set.Finite.ncard_biUnion (hI) (hfin) (hdisj:PairwiseDisjoint)`,
+  result now **finsum**; in module `Mathlib.Data.Set.Card.Arithmetic` (add import if selectively-importing).
+- `Set.ncard_pos hs` : now an **Iff**, add `.mpr`/`.mp`.
+- `ProbabilityTheory.uniformOn s = Measure.count[|s]`; no ncard-ratio simp — use the `cond_apply`/
+  `count_apply_finite` unfolding (see `uniformOn_eq_ncard_div` in BallotProblemOQ01OQ02OQ01).
+- `ProbabilityTheory.cond_apply` (was `Measure.cond_apply`).
+- `Finset.sum_nbij`/`Finset.card_nbij`: InjOn/SurjOn hyps in `↑`-coe form; conclusion `∑ s = ∑ t`.
+- `Finset.single_le_sum`: explicit index arg dropped (implicit `{a}`).
+- `subst h` (h : a = b) eliminates **b** now — avoid when later code names `b`.
+- `Bool.not_eq_true.mp` → `eq_false_of_ne_true`; `Fin.val_eq_of_eq` ne-proof → `Fin.ne_of_val_ne`.
+- `Nat.sum_digits_lt` removed (only `Nat.digit_sum_le` for `≤`).
+- `hI.toFinset_card` / `Finite.toFinset_card` gone → `Set.ncard_eq_toFinset_card I hI` (+ `Set.ncard_coe_finset`).
+
+## Warm leads (next wave, my partition)
+- **BallotProblemOQ01OQ02OQ01OQ02** — reuse `BallotFiberTransfer.uniformOn_eq_ncard_div` +
+  `ENNReal.div_eq_div_of_mul_eq`, `Set.ncard_pos … .mpr`. BUT line 66 `surjOn_fiber_decomp` looks
+  **unsound as stated**: `A = ⋃ t∈T, A ∩ f⁻¹'{t}` needs `MapsTo f A T`, not `SurjOn` (the ⊆ direction
+  is false without it). **Candidate for #38611** (add the missing `MapsTo` hypothesis / thread it from
+  callers). `BallotProblemOQ01OQ02OQ01OQ02OQ01` depends on this one.
+- **BallotProblemOQ01OQ02OQ01OQ01** — mechanical but many small sites: `Set.finite_pair` renamed,
+  `Pairwise (Disjoint on s)` `on`-notation (needs `open Function`?), Finset-vs-Set `biUnion` coe,
+  `PairwiseDisjoint ↑I` vs `I` coe mismatch, plus the standard `Set.Finite.ncard_biUnion` finsum fix.
+- **AbelRuffiniGaloisExtensionsOQ04** (~8 sites) — second-isomorphism / JordanHolderLattice instance:
+  `inclusion_mk` renamed, `QuotientGroup` `inductionOn'` field-notation, several `.right.right`
+  projection type-mismatches, `(H ⊓ K).subgroupOf K` rewrite needs inf-comm. Deep.
+
+---
+
 # DOCTOR INCREMENT 75 (deep-rework partition non-Erdos A–K / lane3, #38065, 2026-07-15)
 
 Container cpuset 12-17, 11g, cache `lean-mathlib-cache-v431-c`, worktree doctor-c, branch
