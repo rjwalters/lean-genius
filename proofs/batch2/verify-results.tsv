@@ -172,7 +172,7 @@ BallotProblemOQ03OQ01OQ02	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ01OQ02Aristotle	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ01OQ02Helpers	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ02	RESIDUAL	type-mismatch
-BallotProblemOQ03OQ02OQ01	RESIDUAL	proof-drift
+BallotProblemOQ03OQ02OQ01	GREEN	
 BallotProblemOQ03OQ02OQ03	GREEN	
 BallotProblemOQ03OQ03	GREEN	unknown-const:Nat.one_le_succ
 BallotProblemOQ04OQ02	GREEN	
@@ -510,7 +510,7 @@ DeMoivreOQ01OQ03OQ01OQ01	GREEN
 DeMoivreOQ01OQ03OQ01OQ01OQ01	GREEN	
 DeMoivreOQ01OQ03OQ01OQ01OQ02	GREEN	
 DeMoivreOQ01OQ03OQ02	GREEN	
-DeMoivreOQ02OQ02	RESIDUAL	signature-drift
+DeMoivreOQ02OQ02	GREEN	
 DeMoivreOQ03OQ01	GREEN	
 DeMoivreOQ06	GREEN	
 DedekindFrobeniusBridge	RESIDUAL	rewrite-drift
@@ -2217,7 +2217,7 @@ LawOfSinesOQ06	GREEN
 LawsOfLargeNumbers	GREEN	
 LawsOfLargeNumbersOQ01	GREEN	
 LawsOfLargeNumbersOQ01Aristotle	RESIDUAL	signature-drift
-LawsOfLargeNumbersOQ01OQ01	RESIDUAL	signature-drift
+LawsOfLargeNumbersOQ01OQ01	GREEN	
 LawsOfLargeNumbersOQ01OQ02	GREEN	
 LawsOfLargeNumbersOQ01OQ02OQ01	RESIDUAL	type-mismatch
 LawsOfLargeNumbersOQ01OQ03	RESIDUAL	signature-drift

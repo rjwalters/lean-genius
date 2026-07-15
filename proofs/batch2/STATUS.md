@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 15 (8-slot, all SONNET, #38065, 2026-07-15)
+
+**+3 GREEN (all Sonnet)**: DeMoivreOQ02OQ02 (15min/156k HARD — the 2nd file Haiku thrashed+killed on;
+v4.31 stricter `variable` auto-bind: implicit typeclass used only in a def BODY not signature no longer
+auto-included -> make explicit; a+c-c=a NOT rfl for symbolic ℤ), LawsOfLargeNumbersOQ01OQ01 (pure cascade
+off hub — NOTE: `lake env lean <parent>` does NOT populate olean cache, must `lake build <Module.Path>`),
+BallotProblemOQ03OQ02OQ01 (inferInstance Fintype field behind semireducible def -> rw fails at instances
+transparency, use erw; congr 1 for trailing Fintype.card mismatch). Repairs: none. Both Haiku-killed files
+(Lebesgue+DeMoivre) now Sonnet greens — model question closed.
+
 # DOCTOR SINGLE-PROOF BATCH 14 (8-slot, #38065, 2026-07-15)
 
 **+3 GREEN**: LawsOfLargeNumbersOQ01Aristotle (OPUS known-hard HUB, 12.5min: GeneralizeProofs
