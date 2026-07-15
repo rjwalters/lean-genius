@@ -107,15 +107,17 @@ private lemma diag_card_eq (A : Finset ℕ) :
 private lemma card_lt_swap (A : Finset ℕ) :
     ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1)).card =
     ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)).card := by
-  apply Finset.card_nbij (fun p : ℕ × ℕ => (p.2, p.1))
-  · intro ⟨a, b⟩ hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp ⊢
-    exact ⟨⟨hp.1.2, hp.1.1⟩, hp.2⟩
-  · intro ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h
-    exact Prod.ext (Prod.mk.inj h).2 (Prod.mk.inj h).1
-  · intro ⟨a, b⟩ hp
-    skip
-    exact ⟨⟨b, a⟩, by simp [Finset.mem_filter, Finset.mem_product, hp.1.2, hp.1.1, hp.2], rfl⟩
+  rw [show (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1)
+        = ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)).image Prod.swap by
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_image, Prod.exists,
+      Prod.swap_prod_mk, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨ha, hb⟩, hlt⟩
+      exact ⟨b, a, ⟨⟨hb, ha⟩, hlt⟩, rfl, rfl⟩
+    · rintro ⟨c, d, ⟨⟨hc, hd⟩, hlt⟩, rfl, rfl⟩
+      exact ⟨⟨hd, hc⟩, hlt⟩]
+  rw [Finset.card_image_of_injective _ Prod.swap_injective]
 
 /-- Upper triangle cardinality: |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2. -/
 private lemma card_upper_triangle (A : Finset ℕ) :
@@ -126,21 +128,13 @@ private lemma card_upper_triangle (A : Finset ℕ) :
   set L := (A ×ˢ A).filter (fun p : ℕ × ℕ => ¬(p.1 ≤ p.2))
   -- U and L partition A ×ˢ A, so U.card + L.card = n²
   have hpart : U.card + L.card = n * n := by
-    have := Finset.filter_card_add_filter_neg_card_eq_card (A ×ˢ A)
+    have := Finset.card_filter_add_card_filter_not (s := A ×ˢ A)
       (fun p : ℕ × ℕ => p.1 ≤ p.2)
     rwa [Finset.card_product] at this
   -- L = {(a,b) : ¬(a ≤ b)} = {(a,b) : b < a}
   have hL_eq : L = (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1) := by
     ext ⟨a, b⟩; simp [L, Nat.not_le]
   -- U = {a < b} ∪ {a = b}, disjointly
-  have hU_lt : (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2) ⊆ U := by
-    intro ⟨a, b⟩ hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp ⊢
-    exact ⟨hp.1, Nat.le_of_lt hp.2⟩
-  have hU_eq : (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 = p.2) ⊆ U := by
-    intro ⟨a, b⟩ hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp ⊢
-    exact ⟨hp.1, le_of_eq hp.2⟩
   have hdisj : Disjoint ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2))
                         ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 = p.2)) := by
     rw [Finset.disjoint_filter]
@@ -152,7 +146,7 @@ private lemma card_upper_triangle (A : Finset ℕ) :
     constructor
     · intro ⟨hmem, hle⟩
       rcases Nat.eq_or_lt_of_le hle with h | h
-      · right; exact ⟨hmem, h.symm⟩
+      · right; exact ⟨hmem, h⟩
       · left; exact ⟨hmem, h⟩
     · rintro (⟨hmem, hlt⟩ | ⟨hmem, heq⟩)
       · exact ⟨hmem, Nat.le_of_lt hlt⟩
@@ -163,9 +157,7 @@ private lemma card_upper_triangle (A : Finset ℕ) :
   have hswap := card_lt_swap A
   -- L.card = |{a < b}| (via hL_eq and hswap)
   have hLcard : L.card = ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)).card := by
-    rw [show L.card = ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1)).card from by
-      congr 1; exact hL_eq]
-    exact hswap
+    rw [hL_eq]; exact hswap
   -- Arithmetic: U.card = |{a<b}| + n, L.card = |{a<b}|, U.card + L.card = n²
   -- So 2*U.card - n = n², thus 2*U.card = n² + n = n*(n+1), U.card = n*(n+1)/2
   set lt_card := ((A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2)).card
@@ -181,7 +173,8 @@ private lemma card_upper_triangle (A : Finset ℕ) :
   --   lt_card = n * (n - 1) / 2
   --   U.card = n * (n - 1) / 2 + n = (n² - n + 2n) / 2 = n*(n+1)/2
   have h2lt : 2 * lt_card + n = n * n := by omega
-  have hgoal : 2 * U.card = n * (n + 1) := by omega
+  have hexp : n * (n + 1) = n * n + n := by ring
+  have hgoal : 2 * U.card = n * (n + 1) := by rw [hexp]; omega
   omega
 
 /-
@@ -228,14 +221,14 @@ theorem sidon_sumset_card (A : Finset ℕ) (h : IsSidon A) :
   -- The sum map is injective on S (Sidon condition)
   have hinj : Set.InjOn (fun p : ℕ × ℕ => p.1 + p.2) ↑S := by
     intro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ heq
-    simp only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe,
+    simp only [hSdef, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe,
                Finset.mem_product] at h₁ h₂
     have := h a₁ h₁.1.1 b₁ h₁.1.2 a₂ h₂.1.1 b₂ h₂.1.2 h₁.2 h₂.2 heq
     exact Prod.ext this.1 this.2
   -- The image of S under the sum map is contained in sumset A
   have hsub : S.image (fun p => p.1 + p.2) ⊆ sumset A := by
     intro s hs
-    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_product] at hs
+    simp only [hSdef, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at hs
     obtain ⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, rfl⟩ := hs
     exact Finset.mem_image.mpr ⟨⟨a, b⟩, Finset.mem_product.mpr ⟨ha, hb⟩, rfl⟩
   -- So |sumset A| ≥ |S| = n(n+1)/2
@@ -434,7 +427,7 @@ private lemma infinite_set_exists_finset (S : Set ℕ) (hS : S.Infinite) :
     ∀ k : ℕ, ∃ (u : Finset ℕ), (↑u : Set ℕ) ⊆ S ∧ u.card = k := by
   intro k
   induction k with
-  | zero => exact ⟨∅, Set.empty_subset _, Finset.card_empty⟩
+  | zero => exact ⟨∅, by simp, Finset.card_empty⟩
   | succ n ih =>
     obtain ⟨u, hu_sub, hu_card⟩ := ih
     have hS' : (S \ ↑u).Infinite := hS.diff u.finite_toSet
@@ -447,7 +440,7 @@ private lemma infinite_set_exists_finset (S : Set ℕ) (hS : S.Infinite) :
         rcases hy with rfl | hy
         · exact hx_S
         · exact hu_sub (Finset.mem_coe.mpr hy),
-      by simp [hu_card]⟩
+      by rw [Finset.card_cons, hu_card]⟩
 
 /-- For an infinite subset of ℕ, the restriction to {0,...,N}
     has cardinality growing without bound as N → ∞. -/
