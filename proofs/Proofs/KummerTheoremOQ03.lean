@@ -22,6 +22,8 @@ open Finset Nat
 
 namespace KummerTheoremOQ03
 
+open KummerTheorem
+
 -- ══════════════════════════════════════════════════════════════════
 -- § Part I: Divisibility by p^m via Carry Count
 -- ══════════════════════════════════════════════════════════════════
@@ -39,9 +41,7 @@ theorem choose_dvd_prime_pow_iff {p n k b m : ℕ} (hp : p.Prime) (hkn : k ≤ n
     (hnb : Nat.log p n < b) :
     m ≤ carryCount p n k b ↔
     (p ^ m : ℕ) ∣ Nat.choose n k := by
-  unfold carryCount
-  rw [← PartENat.coe_le_coe, ← kummer hp hkn hnb]
-  exact (multiplicity.pow_dvd_iff_le_multiplicity hp.prime (Nat.choose_pos hkn).ne').symm
+  rw [pow_dvd_iff_le_emultiplicity, kummer hp hkn hnb, Nat.cast_le, carryCount]
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part II: Row of Pascal's Triangle at p^n
@@ -65,8 +65,9 @@ theorem pascal_row_prime_power_div (p n k : ℕ) (hp : p.Prime)
     Special case of the prime power row result with n = 1. -/
 theorem choose_prime_div (p k : ℕ) (hp : p.Prime) (hk : k ≠ 0) (hkp : k < p) :
     p ∣ Nat.choose p k := by
-  have : k ≠ p ^ 1 := by simp; omega
-  exact pascal_row_prime_power_div p 1 k hp hk this (by omega)
+  have : k ≠ p ^ 1 := by rw [pow_one]; omega
+  have h := pascal_row_prime_power_div p 1 k hp hk this (by rw [pow_one]; omega)
+  rwa [pow_one] at h
 
 /-- C(p^2, k) for 0 < k < p^2 is divisible by p.
     Pattern in the p²-th row. -/
@@ -85,7 +86,7 @@ theorem choose_coprime_of_no_carries {p n k b : ℕ} (hp : p.Prime) (hkn : k ≤
     ¬(p ∣ Nat.choose n k) := by
   intro hdvd
   have h1 : 1 ≤ carryCount p n k b := by
-    rw [(choose_dvd_prime_pow_iff hp hkn hnb).symm]
+    rw [choose_dvd_prime_pow_iff hp hkn hnb]
     simpa using hdvd
   omega
 
