@@ -66,9 +66,11 @@ lemma pow_factor (k : ℕ) : 2 ^ k + k * 2 ^ k = (k + 1) * 2 ^ k := by ring
 
 /-- (k+1) * 2^k ≤ k^2 * 2^(k+2) for k ≥ 2 -/
 lemma k_plus_one_pow_le (k : ℕ) (hk : k ≥ 2) : (k + 1) * 2 ^ k ≤ k ^ 2 * 2 ^ (k + 2) := by
-  have hpow : 0 < 2 ^ k := pow_pos (by norm_num) k
   have hk2 : 2 ^ (k + 2) = 4 * 2 ^ k := by ring
-  nlinarith [hk2, hpow, hk]
+  rw [hk2]
+  have h1 : k + 1 ≤ k ^ 2 * 4 := by nlinarith
+  calc (k + 1) * 2 ^ k ≤ (k ^ 2 * 4) * 2 ^ k := Nat.mul_le_mul_right _ h1
+    _ = k ^ 2 * (4 * 2 ^ k) := by ring
 
 /-
   ## Section 3: Csínf / sInf Monotonicity
@@ -76,7 +78,7 @@ lemma k_plus_one_pow_le (k : ℕ) (hk : k ≥ 2) : (k + 1) * 2 ^ k ≤ k ^ 2 * 2
 
 /-- sInf of a subset is at least sInf of superset (for naturals) -/
 lemma sInf_mono_subset (S T : Set ℕ) (h : T ⊆ S) (hS : S.Nonempty) :
-    Nat.sInf S ≤ Nat.sInf T := by
+    sInf S ≤ sInf T := by
   sorry
 
 /-- n(k) is monotone: n(k₁) ≤ n(k₂) for k₁ ≤ k₂ -/
@@ -104,7 +106,7 @@ lemma K11_card_adj : ∀ (u v : Fin 1 ⊕ Fin 1),
 
 /-- Sum.inl and Sum.inr are always different -/
 lemma inl_ne_inr {α β : Type*} (a : α) (b : β) : Sum.inl a ≠ (Sum.inr b : α ⊕ β) :=
-  fun h => Sum.noConfusion h
+  Sum.inl_ne_inr
 
 /-
   ## Section 5: List Chromatic Ceiling
