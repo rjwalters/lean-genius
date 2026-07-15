@@ -57,7 +57,10 @@ private theorem mul_involution_on_sq_eq_one
     simp only [mem_filter, mem_univ, true_and] at hx ⊢
     exact mul_sq_eq_one hc_sq hx
   · intro x _; rw [← mul_assoc, ← sq, hc_sq, one_mul]
-  · intro x _ h; exact hc_ne (mul_right_cancel h)
+  · intro x _ h
+    apply hc_ne
+    have hcx : c * x * x⁻¹ = x * x⁻¹ := by rw [h]
+    simpa [mul_assoc] using hcx
   · intro x hx
     simp only [mem_filter, mem_univ, true_and] at hx
     rw [mul_comm x (c * x), mul_assoc, ← sq, hx, mul_one]
@@ -107,9 +110,10 @@ theorem prod_eq_one_of_two_torsion_card_ge_three
   have hcd_sq : (c * d) ^ 2 = 1 := mul_sq_eq_one hc_sq hd_sq
   have hcd_ne_1 : c * d ≠ 1 := by
     intro h
-    have : d = c⁻¹ := by rwa [mul_eq_one_iff_eq_inv] at h
-    have : d = c := by rw [this, inv_eq_of_mul_eq_one_right]; rw [← sq]; exact hc_sq
-    exact hd_ne_c this
+    have hdc : d = c := by
+      have hd_inv : d = c⁻¹ := eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact h)
+      rw [hd_inv]; exact inv_eq_of_mul_eq_one_right (by rw [← sq]; exact hc_sq)
+    exact hd_ne_c hdc
   -- Involution data for c, d, cd
   obtain ⟨hσc_mem, hσc_inv, hσc_ne, hσc_prod⟩ := mul_involution_on_sq_eq_one hc_sq hc_ne_1
   obtain ⟨hσd_mem, hσd_inv, hσd_ne, hσd_prod⟩ := mul_involution_on_sq_eq_one hd_sq hd_ne_1
@@ -124,8 +128,8 @@ theorem prod_eq_one_of_two_torsion_card_ge_three
   have hd_pow : d ^ (S.card / 2) = 1 := by
     have h : c ^ (S.card / 2) = (c * d) ^ (S.card / 2) := by rw [← hP_eq_c, hP_eq_cd]
     rw [mul_pow] at h
-    exact mul_left_cancel (a := c ^ (S.card / 2)) (by rwa [mul_one])
-  have hc_pow : c ^ (S.card / 2) = 1 := by rw [hP_eq_c, hP_eq_d, hd_pow]
+    exact mul_left_cancel (a := c ^ (S.card / 2)) (by rw [mul_one]; exact h.symm)
+  have hc_pow : c ^ (S.card / 2) = 1 := by rw [← hP_eq_c, hP_eq_d, hd_pow]
   rw [hP_eq_c, hc_pow]
 
 /-- If the 2-torsion subgroup has size `≠ 2`, the product of all elements is `1`.
