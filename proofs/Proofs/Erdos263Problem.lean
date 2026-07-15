@@ -25,6 +25,10 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
+-- v4.31: several `Summable`/`tsum` lemmas (e.g. `summable_nat_add_iff`) route through the new
+-- generalized `SummationFilter` machinery and take noticeably longer to elaborate/typecheck.
+set_option maxHeartbeats 1000000
+
 -- Compatibility shim: PNat.val_mk was removed in newer Mathlib (it's definitionally rfl)
 @[simp] theorem PNat.val_mk (n : ℕ) (h : 0 < n) : (⟨n, h⟩ : ℕ+).val = n := rfl
 
@@ -537,7 +541,7 @@ private lemma doubleExp_tail_pos (N : ℕ) :
   have hsum : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1))) := by
     have h : Summable (fun k : ℕ => (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + (N + 1)))) :=
       (summable_nat_add_iff (N + 1)).mpr doubleExp_sum_summable
-    exact h.congr (fun k => by congr 1; congr 1; omega)
+    exact h.congr (fun k => by congr 1)
   exact Summable.tsum_pos hsum (fun k => by positivity) 0 (by positivity)
 
 /-- D * (finite sum) is a natural number: 2^{2^N} * Σ_{k<N} 1/2^{2^k} ∈ ℕ.
@@ -600,7 +604,9 @@ private lemma doubleExp_tail_bound (N : ℕ) :
         ≤ 1 / D ^ (2 * (k + 1)) :=
             one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ hD_ge1 (key_arith k))
       _ = r ^ (k + 1) := by
-            simp only [hr_def]; rw [div_pow, one_pow, ← pow_mul]
+            -- v4.31: `D` is defeq-transparent (from `set`), so a backward `pow_mul` rewrite
+            -- can spuriously match inside `D` itself; rewrite the LHS forward instead.
+            simp only [hr_def]; rw [div_pow, one_pow, pow_mul]
   -- Summability
   have hTsumm : Summable (fun k : ℕ => r ^ (k + 1)) :=
     (summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one hr_nn hr_lt1)
@@ -679,7 +685,8 @@ theorem doubleExp_sum_irrational :
     have h2 : (2 : ℕ) ^ N ≤ (2 : ℕ) ^ (2 ^ N) :=
       Nat.pow_le_pow_right (by norm_num) (nat_le_two_pow N)
     calc (N : ℝ) + 1 ≤ (2 : ℝ) ^ N := by exact_mod_cast h1
-      _ ≤ D := by exact_mod_cast h2
+      _ ≤ D := by rw [hD_def]; exact_mod_cast h2
+  have hN_pos' : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN_pos
   have hN_le_D1 : (N : ℝ) ≤ D - 1 := by linarith
   have hD1_pos : (0 : ℝ) < D - 1 := by linarith
   -- Abbreviations for finite sum and tail
@@ -688,7 +695,6 @@ theorem doubleExp_sum_irrational :
   -- Split S = finsum + 1/D + tail
   have hSplit : ∑' n : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ n) = finsum + 1 / D + tail := by
     rw [tsum_split_at _ doubleExp_sum_summable N]
-    simp only [hD_def]
   -- D * finsum is a natural number
   obtain ⟨mf, hmf⟩ := doubleExp_fin_mul_nat N
   -- hmf : D * finsum = mf (as reals, mf : ℕ)
@@ -700,14 +706,11 @@ theorem doubleExp_sum_irrational :
   have hkey : (N : ℝ) * D * tail = q.num * D - N * mf - N := by
     have hrat : (q.num : ℝ) / N = finsum + 1 / D + tail :=
       hS_eq.symm.trans hSplit
-    have hmul : (q.num : ℝ) = N * finsum + N / D + N * tail := by
-      have := congr_arg (· * N) hrat.symm
-      simp only [div_mul_cancel₀ _ hN_ne] at this
-      linarith [show N * (finsum + 1 / D + tail) = N * finsum + N / D + N * tail from by ring]
-    have := congr_arg (· * D) hmul
-    simp only [mul_comm D finsum, ← hmf] at this
-    linarith [show (N : ℝ) * finsum * D = N * (D * finsum) from by ring,
-              show (N : ℝ) / D * D = N from by field_simp]
+    -- v4.31: `field_simp` + `linear_combination` is a more robust way to clear denominators
+    -- and combine with `hmf` than the old manual `congr_arg`/`simp only` chain, which relied
+    -- on syntactic forms (`D * finsum` as a literal subterm) that no longer arise verbatim.
+    field_simp at hrat
+    linear_combination -hrat - N * hmf
   -- N * D * tail is in (0, 1)
   have hgap_pos : 0 < (N : ℝ) * D * tail :=
     mul_pos (mul_pos (Nat.cast_pos.mpr hN_pos) hD_pos) htail_pos
