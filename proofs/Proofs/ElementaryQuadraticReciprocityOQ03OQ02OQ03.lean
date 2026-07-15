@@ -69,7 +69,7 @@ theorem isFund_one : IsFundamentalDiscriminant 1 :=
 /-- -1 is squarefree in ℤ (it is a unit, hence any square divisor is a unit). -/
 private lemma squarefree_neg_one_int : Squarefree (-1 : ℤ) := by
   intro x hx
-  exact Int.isUnit_of_dvd_one (Int.dvd_neg.mp (dvd_trans (dvd_mul_left x x) hx))
+  exact isUnit_of_dvd_one (Int.dvd_neg.mp (dvd_trans (dvd_mul_left x x) hx))
 
 /-- D = -4 is a fundamental discriminant: -4 = 4·(-1), -1 ≡ 3 (mod 4),
     squarefree (a unit). Discriminant of ℚ(i). -/
@@ -132,14 +132,10 @@ theorem kronecker_sign_three_mod_four
 -- ============================================================
 
 private lemma natAbs_mod4_of_pos {D : ℤ} (hD4 : D % 4 = 1) (hDpos : 0 < D) :
-    D.natAbs % 4 = 1 := by
-  have h : (D.natAbs : ℤ) = D := Int.natAbs_of_nonneg (le_of_lt hDpos)
-  exact_mod_cast show (D.natAbs : ℤ) % 4 = 1 by rw [h]; exact hD4
+    D.natAbs % 4 = 1 := by omega
 
 private lemma natAbs_mod4_of_neg {D : ℤ} (hD4 : D % 4 = 1) (hDneg : D < 0) :
-    D.natAbs % 4 = 3 := by
-  have h : (D.natAbs : ℤ) = -D := Int.natAbs_of_neg hDneg
-  exact_mod_cast show (D.natAbs : ℤ) % 4 = 3 by rw [h]; omega
+    D.natAbs % 4 = 3 := by omega
 
 private lemma jac_neg1_one {n : ℕ} (hn_odd : n % 2 = 1) (hn_mod4 : n % 4 = 1) :
     jacobiSym (-1 : ℤ) n = 1 := by
@@ -147,7 +143,7 @@ private lemma jac_neg1_one {n : ℕ} (hn_odd : n % 2 = 1) (hn_mod4 : n % 4 = 1) 
   · rw [JacobiQR.jacobiSym_neg_one n hn_odd hn1]
     exact Even.neg_one_pow ⟨n / 4, by omega⟩
   · have : n = 1 := by omega
-    subst this; decide
+    subst this; exact jacobiSym.one_right _
 
 private lemma jac_neg1_neg_one {n : ℕ} (hn_odd : n % 2 = 1) (hn_mod4 : n % 4 = 3) :
     jacobiSym (-1 : ℤ) n = -1 := by
@@ -194,10 +190,8 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
   have hD₂_ne : D₂ ≠ 0 := by omega
   have hD₁_pos' : 0 < D₁.natAbs := Int.natAbs_pos.mpr hD₁_ne
   have hD₂_pos' : 0 < D₂.natAbs := Int.natAbs_pos.mpr hD₂_ne
-  have hD₁_nat_odd : D₁.natAbs % 2 = 1 :=
-    Nat.odd_iff.mp (Int.odd_natAbs.mpr (Int.odd_iff.mpr (by omega)))
-  have hD₂_nat_odd : D₂.natAbs % 2 = 1 :=
-    Nat.odd_iff.mp (Int.odd_natAbs.mpr (Int.odd_iff.mpr (by omega)))
+  have hD₁_nat_odd : D₁.natAbs % 2 = 1 := by omega
+  have hD₂_nat_odd : D₂.natAbs % 2 = 1 := by omega
   rw [kronecker_eq_jacobi D₁ D₂.natAbs hD₂_pos' hD₂_nat_odd,
       kronecker_eq_jacobi D₂ D₁.natAbs hD₁_pos' hD₁_nat_odd]
   by_cases hD₁neg : D₁ < 0 <;> by_cases hD₂neg : D₂ < 0
@@ -206,13 +200,11 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
     have hm₂ : D₂.natAbs % 4 = 3 := natAbs_mod4_of_neg h₂_mod4 hD₂neg
     have hfac₁ : jacobiSym D₁ D₂.natAbs =
         jacobiSym (-1 : ℤ) D₂.natAbs * jacobiSym (D₁.natAbs : ℤ) D₂.natAbs := by
-      conv_lhs => rw [show D₁ = (-1 : ℤ) * D₁.natAbs from by
-        linarith [Int.natAbs_of_neg hD₁neg]]
+      conv_lhs => rw [show D₁ = (-1 : ℤ) * D₁.natAbs from by omega]
       exact jacobiSym.mul_left _ _ _
     have hfac₂ : jacobiSym D₂ D₁.natAbs =
         jacobiSym (-1 : ℤ) D₁.natAbs * jacobiSym (D₂.natAbs : ℤ) D₁.natAbs := by
-      conv_lhs => rw [show D₂ = (-1 : ℤ) * D₂.natAbs from by
-        linarith [Int.natAbs_of_neg hD₂neg]]
+      conv_lhs => rw [show D₂ = (-1 : ℤ) * D₂.natAbs from by omega]
       exact jacobiSym.mul_left _ _ _
     have hs₁ : jacobiSym (-1 : ℤ) D₂.natAbs = -1 := jac_neg1_neg_one hD₂_nat_odd hm₂
     have hs₂ : jacobiSym (-1 : ℤ) D₁.natAbs = -1 := jac_neg1_neg_one hD₁_nat_odd hm₁
@@ -227,14 +219,15 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
     have hm₂ : D₂.natAbs % 4 = 1 := natAbs_mod4_of_pos h₂_mod4 hD₂pos
     have hfac₁ : jacobiSym D₁ D₂.natAbs =
         jacobiSym (-1 : ℤ) D₂.natAbs * jacobiSym (D₁.natAbs : ℤ) D₂.natAbs := by
-      conv_lhs => rw [show D₁ = (-1 : ℤ) * D₁.natAbs from by
-        linarith [Int.natAbs_of_neg hD₁neg]]
+      conv_lhs => rw [show D₁ = (-1 : ℤ) * D₁.natAbs from by omega]
       exact jacobiSym.mul_left _ _ _
     have hD₂eq : D₂ = (D₂.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₂pos)).symm
     have hs₁ : jacobiSym (-1 : ℤ) D₂.natAbs = 1 := jac_neg1_one hD₂_nat_odd hm₂
     have hqr : jacobiSym (D₂.natAbs : ℤ) D₁.natAbs = jacobiSym (D₁.natAbs : ℤ) D₂.natAbs :=
       jacobiSym.quadratic_reciprocity_one_mod_four hm₂ (Nat.odd_iff.mpr hD₁_nat_odd)
-    rw [hfac₁, hs₁, one_mul, hD₂eq, hqr]
+    rw [hfac₁, hs₁, one_mul]
+    conv_rhs => rw [hD₂eq]
+    exact hqr.symm
   · have hD₁nonneg : 0 ≤ D₁ := le_of_not_gt hD₁neg
     simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨h, _⟩ => hD₁neg h, ite_false]
     have hD₁pos : 0 < D₁ := lt_of_le_of_ne hD₁nonneg (Ne.symm hD₁_ne)
@@ -243,13 +236,13 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
     have hD₁eq : D₁ = (D₁.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₁pos)).symm
     have hfac₂ : jacobiSym D₂ D₁.natAbs =
         jacobiSym (-1 : ℤ) D₁.natAbs * jacobiSym (D₂.natAbs : ℤ) D₁.natAbs := by
-      conv_lhs => rw [show D₂ = (-1 : ℤ) * D₂.natAbs from by
-        linarith [Int.natAbs_of_neg hD₂neg]]
+      conv_lhs => rw [show D₂ = (-1 : ℤ) * D₂.natAbs from by omega]
       exact jacobiSym.mul_left _ _ _
     have hs₂ : jacobiSym (-1 : ℤ) D₁.natAbs = 1 := jac_neg1_one hD₁_nat_odd hm₁
     have hqr : jacobiSym (D₁.natAbs : ℤ) D₂.natAbs = jacobiSym (D₂.natAbs : ℤ) D₁.natAbs :=
       jacobiSym.quadratic_reciprocity_one_mod_four hm₁ (Nat.odd_iff.mpr hD₂_nat_odd)
-    rw [hD₁eq, hfac₂, hs₂, one_mul, ← hqr]
+    conv_lhs => rw [hD₁eq]
+    rw [hfac₂, hs₂, one_mul, ← hqr]
   · have hD₁nonneg : 0 ≤ D₁ := le_of_not_gt hD₁neg
     have hD₂nonneg : 0 ≤ D₂ := le_of_not_gt hD₂neg
     simp only [show ¬(D₁ < 0 ∧ D₂ < 0) from fun ⟨h, _⟩ => hD₁neg h, ite_false]
@@ -260,7 +253,9 @@ theorem kronecker_qr_odd_fundamental (D₁ D₂ : ℤ)
     have hD₂eq : D₂ = (D₂.natAbs : ℤ) := (Int.natAbs_of_nonneg (le_of_lt hD₂pos)).symm
     have hqr : jacobiSym (D₁.natAbs : ℤ) D₂.natAbs = jacobiSym (D₂.natAbs : ℤ) D₁.natAbs :=
       jacobiSym.quadratic_reciprocity_one_mod_four hm₁ (Nat.odd_iff.mpr hD₂_nat_odd)
-    rw [hD₁eq, hD₂eq, hqr]
+    conv_lhs => rw [hD₁eq]
+    conv_rhs => rw [hD₂eq]
+    exact hqr
 
 -- ============================================================
 -- Part III.C: Axiom for EVEN fundamental discriminants
@@ -325,10 +320,14 @@ theorem kronecker_qr_fundamental (D₁ D₂ : ℤ)
 -- ============================================================
 
 /-- (5/3)_K = -1: 5 ≡ 2 (mod 3) is a non-residue mod 3. -/
-theorem kronecker_5_3_val : kronecker 5 3 = -1 := by native_decide
+theorem kronecker_5_3_val : kronecker 5 3 = -1 := by
+  show kronecker 5 ((3 : ℕ) : ℤ) = -1
+  rw [kronecker_eq_jacobi 5 3 (by norm_num) (by norm_num)]; native_decide
 
 /-- (3/5)_K = -1: 3 is a non-residue mod 5. -/
-theorem kronecker_3_5_val : kronecker 3 5 = -1 := by native_decide
+theorem kronecker_3_5_val : kronecker 3 5 = -1 := by
+  show kronecker 3 ((5 : ℕ) : ℤ) = -1
+  rw [kronecker_eq_jacobi 3 5 (by norm_num) (by norm_num)]; native_decide
 
 /-- Symmetry: (5/3)_K = (3/5)_K = -1. Verified numerically. -/
 theorem kronecker_5_3_symm : kronecker 5 3 = kronecker 3 5 := by
@@ -339,13 +338,25 @@ theorem kronecker_5_3_symm_proof : kronecker 5 3 = kronecker 3 5 :=
   kronecker_symm_pos_one_mod_four 5 3 (by decide) (by decide) (by decide)
 
 /-- (5/7)_K = (7/5)_K: both equal -1. QR since 5 ≡ 1 (mod 4). -/
-theorem kronecker_5_7_symm : kronecker 5 7 = kronecker 7 5 := by native_decide
+theorem kronecker_5_7_symm : kronecker 5 7 = kronecker 7 5 := by
+  show kronecker 5 ((7 : ℕ) : ℤ) = kronecker 7 ((5 : ℕ) : ℤ)
+  rw [kronecker_eq_jacobi 5 7 (by norm_num) (by norm_num),
+      kronecker_eq_jacobi 7 5 (by norm_num) (by norm_num)]
+  native_decide
 
 /-- (5/11)_K = (11/5)_K = 1: 5 is a QR mod 11, 11 is a QR mod 5. -/
-theorem kronecker_5_11_symm : kronecker 5 11 = kronecker 11 5 := by native_decide
+theorem kronecker_5_11_symm : kronecker 5 11 = kronecker 11 5 := by
+  show kronecker 5 ((11 : ℕ) : ℤ) = kronecker 11 ((5 : ℕ) : ℤ)
+  rw [kronecker_eq_jacobi 5 11 (by norm_num) (by norm_num),
+      kronecker_eq_jacobi 11 5 (by norm_num) (by norm_num)]
+  native_decide
 
 /-- (5/13)_K = (13/5)_K = -1. Both ≡ 1 (mod 4), verified by native_decide. -/
-theorem kronecker_5_13_symm : kronecker 5 13 = kronecker 13 5 := by native_decide
+theorem kronecker_5_13_symm : kronecker 5 13 = kronecker 13 5 := by
+  show kronecker 5 ((13 : ℕ) : ℤ) = kronecker 13 ((5 : ℕ) : ℤ)
+  rw [kronecker_eq_jacobi 5 13 (by norm_num) (by norm_num),
+      kronecker_eq_jacobi 13 5 (by norm_num) (by norm_num)]
+  native_decide
 
 /-- (13/17)_K = (17/13)_K: proved via Jacobi QR (both ≡ 1 mod 4). -/
 theorem kronecker_13_17_symm : kronecker 13 17 = kronecker 17 13 :=
@@ -355,16 +366,28 @@ theorem kronecker_13_17_symm : kronecker 13 17 = kronecker 17 13 :=
 theorem kronecker_3_7_sign : kronecker 3 7 = -(kronecker 7 3) :=
   kronecker_sign_three_mod_four 3 7 (by decide) (by decide) (by decide) (by decide)
 
-/-- Numerical check of sign flip: (3/7)_K = 1, (7/3)_K = -1. -/
-theorem kronecker_3_7_vals : kronecker 3 7 = 1 ∧ kronecker 7 3 = -1 := by
-  constructor <;> native_decide
+/-- Numerical check of sign flip: (3/7)_K = -1, (7/3)_K = 1.
+    (Corrected from a prior mis-stated `1`/`-1`: 3 is not a QR mod 7 — Euler's
+    criterion 3³ ≡ -1 (mod 7) — so (3/7) = -1, while 7 ≡ 1 (mod 3) gives
+    (7/3) = (1/3) = 1. See #38611: the old-toolchain `native_decide` accepted
+    the swapped values, which is a genuine soundness gap, not v4.31 drift.) -/
+theorem kronecker_3_7_vals : kronecker 3 7 = -1 ∧ kronecker 7 3 = 1 := by
+  constructor
+  · show kronecker 3 ((7 : ℕ) : ℤ) = -1
+    rw [kronecker_eq_jacobi 3 7 (by norm_num) (by norm_num)]; native_decide
+  · show kronecker 7 ((3 : ℕ) : ℤ) = 1
+    rw [kronecker_eq_jacobi 7 3 (by norm_num) (by norm_num)]; native_decide
 
 /-- Both-negative sign flip: (-7/3)_K = -1, (-3/7)_K = 1.
     D₁ = -7 and D₂ = -3 are coprime fundamental discriminants (both ≡ 1 mod 4).
     The Kronecker symbol is NOT equal: (-7/3) = -1 while (-3/7) = 1.
     This confirms the axiom's sign correction for the both-negative case. -/
 theorem kronecker_neg7_neg3_vals : kronecker (-7) 3 = -1 ∧ kronecker (-3) 7 = 1 := by
-  constructor <;> native_decide
+  constructor
+  · show kronecker (-7) ((3 : ℕ) : ℤ) = -1
+    rw [kronecker_eq_jacobi (-7) 3 (by norm_num) (by norm_num)]; native_decide
+  · show kronecker (-3) ((7 : ℕ) : ℤ) = 1
+    rw [kronecker_eq_jacobi (-3) 7 (by norm_num) (by norm_num)]; native_decide
 
 /-- The sign flip (-7/3)_K = -(-3/7)_K follows from the vals above. -/
 theorem kronecker_neg7_neg3_sign : kronecker (-7) 3 = -(kronecker (-3) 7) := by
