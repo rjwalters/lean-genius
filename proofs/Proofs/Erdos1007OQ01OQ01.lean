@@ -95,7 +95,7 @@ theorem monotone_iff_consecutive (f : ℕ → ℕ) :
   · intro hmono d; exact hmono d (d + 1) (Nat.le_succ d)
   · intro hcons d₁ d₂ hle
     induction hle with
-    | refl => le_refl _
+    | refl => exact le_refl _
     | step hle ih => exact le_trans ih (hcons _)
 
 /-- Monotonicity for a constrained function reduces to d ≥ 5.
@@ -139,8 +139,7 @@ theorem known_deficiency (f : ℕ → ℕ) (hf : MinEdgesConstraints f) :
     This is the Pascal's rule increment for binomial coefficients. -/
 theorem choose_succ_step (d : ℕ) :
     Nat.choose (d + 2) 2 = Nat.choose (d + 1) 2 + (d + 1) := by
-  rw [Nat.choose_succ_succ]
-  simp [Nat.choose_one_right]
+  rw [Nat.choose_succ_succ, Nat.choose_one_right, show Nat.succ 1 = 2 from rfl]; omega
 
 /-- C(n, 2) is monotone in n. -/
 theorem choose_two_mono' {n m : ℕ} (h : n ≤ m) :
@@ -178,7 +177,7 @@ theorem deficiency_bound_implies_monotone (f : ℕ → ℕ) (hf : MinEdgesConstr
         simp [deficiency'] at hdef2; omega
       -- C(d₂+1, 2) - d₂ = C(d₂, 2) by Pascal's rule
       have hpascal : Nat.choose (d₂ + 1) 2 - d₂ = Nat.choose d₂ 2 := by
-        rw [Nat.choose_succ_succ]; simp [Nat.choose_one_right]; omega
+        rw [Nat.choose_succ_succ]; simp [Nat.choose_one_right]
       rw [hpascal] at hlb
       -- C(d₁+1, 2) ≤ C(d₂, 2) since d₁+1 ≤ d₂
       have hmono : Nat.choose (d₁ + 1) 2 ≤ Nat.choose d₂ 2 :=
@@ -306,7 +305,7 @@ theorem half_quadratic_implies_monotone (f : ℕ → ℕ) (hf : MinEdgesConstrai
     -- From f(d) ≥ C(d, 2) and C(d+1, 2) = C(d, 2) + d:
     simp only [deficiency']
     have hstep : Nat.choose (d + 1) 2 = Nat.choose d 2 + d := by
-      rw [Nat.choose_succ_succ]; simp [Nat.choose_one_right]
+      rw [Nat.choose_succ_succ, Nat.choose_one_right, show Nat.succ 1 = 2 from rfl]; omega
     omega
   · -- d = 1 (since d > 0 and d < 2)
     have hd1 : d = 1 := by omega
@@ -358,7 +357,7 @@ theorem at_least_linear (f : ℕ → ℕ) (hf : MinEdgesConstraints f)
 theorem at_most_quadratic (f : ℕ → ℕ) (hf : MinEdgesConstraints f)
     (d : ℕ) (hd : 0 < d) : f d ≤ d * (d + 1) / 2 := by
   have h := hf.upper_bound d hd
-  rw [Nat.choose_two_right, Nat.add_sub_cancel] at h
+  rw [Nat.choose_two_right, Nat.add_sub_cancel, Nat.mul_comm (d + 1) d] at h
   exact h
 
 /-- The growth rate is bracketed: d ≤ f(d) ≤ d(d+1)/2 for all d ≥ 1.

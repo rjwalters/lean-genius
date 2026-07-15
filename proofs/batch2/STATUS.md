@@ -1,3 +1,97 @@
+# DOCTOR INCREMENT 67 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
+
+Container `dr67` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch
+`feature/issue-38065-inc67` off origin/feature/issue-37508 (base 2028 GREEN /
+607 RESIDUAL). Every file was 5–10 real errors (confirms deep-rework, 0 free
+flips). **+9 GREEN.** PR #38670. All flips in-container `lake build Proofs.X`
+exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- Erdos1116Problem (unknown-const → noncomputable + instance-synth): `not_lt_of_le`→
+  `not_lt.mpr`; **ℂ division/exp are noncomputable now** → mark countingFunction/
+  WeierstrassProduct/expFunction `noncomputable`; local `Classical.propDecidable`
+  for the `dite` over `Set.Finite`; `Nat.cast_nonneg (α := ℝ)` metavar pin (×2);
+  `simp at hz`→`exact hf z`; drop dead `norm_num`.
+- Erdos1000OQ01 (rewrite-drift): `div_le_div_iff₀`→`div_le_iff₀`; **cast-atom
+  mismatch `↑k+1` vs `↑(k+1)` breaks linarith** → unify to `(k:ℝ)+1`, close via
+  the parent lemma's atom directly (drop the intermediate ↑(k+1)-shaped have);
+  `(mem_filter.mp hk).2` (simp-no-progress on a `set`-bound filter); `div_lt_iff₀`
+  then linarith (mul_comm mismatch broke rwa); divDensity_zero via
+  `simp [Nat.not_lt_zero, Finset.filter_false]` (**`Finset.filter_False`→
+  `Finset.filter_false`**); **`div_le_div_right` (iff) removed → `gcongr`**.
+- Erdos1005Problem (proof-drift): **omega structure-field blindness** — materialize
+  `f.hq_pos` before every omega on q≠0/0<q (×4); consecutive_farey_gap: replace
+  fragile `field_simp`+`push_cast [Nat.sub_eq_iff_eq_add]` two-goal split with
+  `div_sub_div`+`div_eq_div_iff`+`linear_combination`.
+- Erdos1128Problem (elab-drift): **`axiom A/B/C : Type*`→`Type`** — the abstract
+  cardinality-ℵ₁ types were universe-polymorphic, so every `∃ (A₁ : Set A)` binder
+  raised "Failed to infer universe levels" (+ cascaded push_neg mismatch). Type 0
+  is faithful (cardinality only in prose). STATEMENT-NEUTRAL.
+- Erdos1081Problem (proof-drift): omega no longer preprocesses `p ∣ 1` → explicit
+  `Nat.le_of_dvd`; **`interval_cases` can't bound `p` from `p ∣ N`** → add
+  hlo/hhi, close concrete cases with `revert hp hd <;> decide` (whole decidable
+  implication — false-dvd + non-prime uniformly); A/S filters over undecidable
+  preds → **tactic-mode `by classical; exact …` def** (NOT a file-level
+  `Classical.propDecidable` instance — it shadows computable Decidable and breaks
+  the `decide` in interval_cases).
+- Erdos1006OQ02 (elab-drift): `Walk.cons` chain had metavar intermediate vertices
+  when `by decide` elaborated → pin each hop `show G.Adj i j by decide`; **v4.31
+  `decide` refuses goals mentioning a `have`-bound free variable** (cycle.IsCycle)
+  → lift the walk to a top-level `def k3cycle` (closed constant decide can reduce).
+- ShannonEntropyOQ02 (rewrite-drift): fold if-then-else sum to plain ∑ (sum_congr+
+  if_neg) so linarith connects atoms; `⌈…⌉₊` vs `shannonLength` defeq-atom →
+  unfold+exact_mod_cast; `Finset.sum_neg_distrib` needs `∑(-f)` form → `simp only
+  [mul_neg]` first; ring can't do `n·n⁻¹` → `mul_inv_cancel_left₀`; rewrite
+  shannonEntropy→log n in the *hyps* (goal already log n).
+- Erdos1007OQ01OQ01 (proof-drift): Nat.le induction `refl` branch `le_refl _` is a
+  term → `exact le_refl _`; **`choose_succ_succ` leaves `.choose (Nat.succ 1)` vs
+  the statement's `.choose 2` as distinct omega atoms** → `show Nat.succ 1 = 2
+  from rfl` (×2); drop redundant `; omega` where simp now closes; `(d+1)*d` vs
+  `d*(d+1)` → `Nat.mul_comm` in the rw chain.
+- Erdos1002OQ01 (type-mismatch): **`tendsto_arctan_atTop/atBot` now land in
+  `nhdsWithin (±π/2)`, not `nhds`** → `.mono_right nhdsWithin_le_nhds`; `gcongr`
+  now fully closes cauchy_monotone (drop manual follow-up); convert leaves a
+  function equality → `funext c; simp [cauchyDistribution]; field_simp [π≠0]; ring`;
+  `sum_range_succ'` leaves `g(m+0)`+unreduced lambdas → `simp only [Nat.add_zero]`
+  to align linarith atoms.
+
+## New systematic seams (rename-map §7aj candidates)
+1. **`not_lt_of_le`→`not_lt.mpr`**; **`div_le_div_right` (0<c→(a/c≤b/c↔a≤b)) removed
+   → `gcongr`**; **`Finset.filter_False`→`Finset.filter_false`**.
+2. **ℂ `Div`/`exp` are noncomputable** — a `def` returning a ℂ-division/exp value
+   now needs `noncomputable`.
+3. **cast-atom split `↑k+1` vs `↑(k+1)`**: an intermediate `have` written with one
+   shape won't linarith-connect with a lemma stated in the other; keep the atom
+   identical to the lemma's `(k:ℝ)+1` (or push_cast both).
+4. **omega no longer preprocesses `p ∣ 1`** → `Nat.le_of_dvd` explicitly.
+5. **`interval_cases x` won't derive an upper bound from `x ∣ N`** → supply
+   `have : x ≤ N := Nat.le_of_dvd _ hd`; close concrete arithmetic/prime cases with
+   `revert <hyps> <;> decide` on the whole decidable implication.
+6. **file-level `attribute [local instance] Classical.propDecidable` breaks `decide`**
+   (shadows computable Decidable) — for a lone `Finset.filter` over an undecidable
+   pred, prefer a tactic-mode `by classical; exact …` def so the classical instance
+   is scoped to that def only.
+7. **universe-polymorphic `axiom X : Type*`** used inside a later `∃ (_ : Set X)`
+   Prop def → "Failed to infer universe levels"; pin `Type` (Type 0) when the
+   abstract type carries no stated universe constraint.
+8. **`decide` refuses a goal mentioning a `have`-bound free variable** (e.g.
+   `cycle.IsCycle` for a local walk) → lift the term to a top-level `def` so it is a
+   closed constant the kernel can reduce; also pin `Walk.cons` hops with
+   `show G.Adj i j` (metavar intermediate vertices otherwise).
+9. **`Nat.choose_succ_succ` emits `.choose (Nat.succ 1)`**, syntactically ≠ the
+   `.choose 2` elsewhere → omega sees two atoms; normalize `show Nat.succ 1 = 2 from rfl`.
+10. **`tendsto_arctan_atTop`/`atBot` now target `nhdsWithin (±π/2) (Iio/Ioi …)`** not
+    `nhds (±π/2)` → recover with `.mono_right nhdsWithin_le_nhds`.
+11. **`Nat.le` induction `refl` branch**: the old term-mode leaf `le_refl _` must be
+    `exact le_refl _` (case-body is a tactic block).
+12. **`Finset.sum_range_succ'` leaves `f 0` = `g (m+0)` + unreduced summand lambdas**
+    → `simp only [Nat.add_zero] at h` (β-reduces + normalizes) before linarith.
+13. **`Finset.sum_neg_distrib` needs the summand literally as `∑ (-f i)`** →
+    `simp only [mul_neg]` first if it is `∑ (a i * -b i)`.
+
+Ledger after increment 67: +9 GREEN (partition B).
+
+
 # DOCTOR INCREMENT 65 (deep-rework partition B: N–Z + Erdos ≥ 600, #38065, 2026-07-15)
 
 Container `dr65` (cpus 0-5, 11g, cache v431), worktree issue-38065, branch

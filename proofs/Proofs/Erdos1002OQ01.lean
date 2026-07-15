@@ -41,7 +41,6 @@ private theorem cauchy_monotone (ρ : ℝ) (hρ : ρ > 0) :
   intro a b hab
   simp only [cauchyDistribution]
   gcongr
-  exact arctan_strictMono.monotone (mul_le_mul_of_nonneg_left hab hρ.le)
 
 private theorem tendsto_mul_atTop (ρ : ℝ) (hρ : ρ > 0) :
     Tendsto (fun c => ρ * c) atTop atTop := by
@@ -65,23 +64,31 @@ private theorem cauchy_tendsto_one (ρ : ℝ) (hρ : ρ > 0) :
     Tendsto (cauchyDistribution ρ) atTop (nhds 1) := by
   skip
   have h_arc : Tendsto (fun c => arctan (ρ * c)) atTop (nhds (π / 2)) :=
-    tendsto_arctan_atTop.comp (tendsto_mul_atTop ρ hρ)
+    (tendsto_arctan_atTop.comp (tendsto_mul_atTop ρ hρ)).mono_right nhdsWithin_le_nhds
   have h_lim : Tendsto (fun c => 1 / π * arctan (ρ * c) + 1 / 2) atTop
       (nhds (1 / π * (π / 2) + 1 / 2)) :=
     (tendsto_const_nhds.mul h_arc).add tendsto_const_nhds
   convert h_lim using 1
+  funext c
+  simp only [cauchyDistribution]
+  have hpi : π ≠ 0 := Real.pi_ne_zero
   field_simp
+  ring
 
 private theorem cauchy_tendsto_zero (ρ : ℝ) (hρ : ρ > 0) :
     Tendsto (cauchyDistribution ρ) atBot (nhds 0) := by
   skip
   have h_arc : Tendsto (fun c => arctan (ρ * c)) atBot (nhds (-(π / 2))) :=
-    tendsto_arctan_atBot.comp (tendsto_mul_atBot ρ hρ)
+    (tendsto_arctan_atBot.comp (tendsto_mul_atBot ρ hρ)).mono_right nhdsWithin_le_nhds
   have h_lim : Tendsto (fun c => 1 / π * arctan (ρ * c) + 1 / 2) atBot
       (nhds (1 / π * (-(π / 2)) + 1 / 2)) :=
     (tendsto_const_nhds.mul h_arc).add tendsto_const_nhds
   convert h_lim using 1
+  funext c
+  simp only [cauchyDistribution]
+  have hpi : π ≠ 0 := Real.pi_ne_zero
   field_simp
+  ring
 
 /-- **PROVED** (was axiom in Erdos1002Problem.lean):
     The Cauchy CDF is a valid distribution function. -/
@@ -121,8 +128,9 @@ private theorem cyclic_sum_periodic (g : ℕ → ℝ) (q : ℕ) (hper : ∀ k, g
     have hr := Finset.sum_range_succ (fun k => g (m + k)) q
     have hr' := Finset.sum_range_succ' (fun k => g (m + k)) q
     have hper_m : g (m + q) = g m := hper m
-    -- hr:  ∑ range (q+1), g(m+k) = (∑ range q, g(m+k)) + g(m+q)
-    -- hr': ∑ range (q+1), g(m+k) = (∑ range q, g(m+(k+1))) + g(m+0)
+    -- normalize g(m+0)→g m and β-reduce the sum_range_succ' lambdas so the
+    -- summand atoms line up with the (simp_rw'd) goal
+    simp only [Nat.add_zero] at hr hr'
     -- From hr, hr', hper_m: ∑ range q, g(m+(k+1)) = ∑ range q, g(m+k) = ∑ range q, g(k)
     linarith
 
