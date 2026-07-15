@@ -23,8 +23,11 @@ open Cardinal
 ## Section I: Cardinal Setup
 -/
 
-/-- κ = (2^ℵ₀)⁺: the successor of the continuum cardinal. -/
-noncomputable def kappa : Cardinal := Order.succ (2 ^ ℵ₀)
+/-- κ = (2^ℵ₀)⁺: the successor of the continuum cardinal.
+Pinned to `Cardinal.{0}` so `kappa` and `Set.Iio kappa` carry a concrete
+universe level; v4.31 no longer infers the universe of a polymorphic
+`Cardinal` binder used only through `Set.Iio kappa`. -/
+noncomputable def kappa : Cardinal.{0} := Order.succ (2 ^ ℵ₀)
 
 /-  κ is uncountable: κ > ℵ₀. -/
 /-
@@ -45,8 +48,8 @@ def IsKappaColoring (α : Type*) (c : CountableSubset α → Set.Iio kappa) : Pr
 
 /-- The chromatic completeness property: every subset X of α with
 |X| = κ contains countable subsets of every color. -/
-def ChromaticCompleteness (α : Type*) (c : CountableSubset α → Set.Iio kappa) : Prop :=
-  ∀ X : Set α, Cardinal.mk X = kappa →
+def ChromaticCompleteness.{u} (α : Type u) (c : CountableSubset α → Set.Iio kappa) : Prop :=
+  ∀ X : Set α, Cardinal.mk X = Cardinal.lift.{u} kappa →
     ∀ color : Set.Iio kappa,
       ∃ S : CountableSubset α, S.1 ⊆ X ∧ c S = color
 
@@ -57,9 +60,9 @@ def ChromaticCompleteness (α : Type*) (c : CountableSubset α → Set.Iio kappa
 /-- **Erdős Problem #598**: For every infinite type α with |α| ≥ κ,
 can we color countable subsets with κ colors such that every κ-sized
 subset contains all colors? -/
-def ErdosProblem598 : Prop :=
-  ∀ (α : Type*) [Infinite α],
-    Cardinal.mk α ≥ kappa →
+def ErdosProblem598.{u} : Prop :=
+  ∀ (α : Type u) [Infinite α],
+    Cardinal.mk α ≥ Cardinal.lift.{u} kappa →
       ∃ c : CountableSubset α → Set.Iio kappa,
         ChromaticCompleteness α c
 
