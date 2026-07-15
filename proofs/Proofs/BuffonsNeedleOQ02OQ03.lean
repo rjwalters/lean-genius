@@ -44,6 +44,7 @@ version derives from the single-segment formula by linearity of expectation.
 namespace BuffonsNeedleOQ02OQ03
 
 open Real MeasureTheory BigOperators
+open scoped InnerProductSpace
 
 -- ============================================================
 -- Part I: Geometric Definitions
@@ -138,9 +139,11 @@ noncomputable def totalLength (n : ℕ) (segs : List (LineSegment n)) : ℝ :=
 lemma integrable_totalCrossings (n : ℕ) (segs : List (LineSegment n)) :
     Integrable (totalCrossings n segs) (kinematicMeasure n) := by
   induction segs with
-  | nil => skip; exact integrable_zero _ _ _
+  | nil => exact integrable_zero _ _ _
   | cons s rest ih =>
-    simp_rw [totalCrossings_cons]
+    have heq : totalCrossings n (s :: rest) = fun H => s.crossing H + totalCrossings n rest H :=
+      funext (totalCrossings_cons n s rest)
+    rw [heq]
     exact (crossing_integrable n s).add ih
 
 /-- **Main Theorem — Cauchy-Crofton Formula for Polygonal Paths**
@@ -205,19 +208,20 @@ theorem crofton_append (n : ℕ) (P Q : List (LineSegment n)) :
 
 /-- α₄ = 4/(3π). -/
 theorem crossingFactor_four : crossingFactor 4 = 4 / (3 * π) := by
-  simp only [show (4 : ℕ) = 0 + 4 from rfl, crossingFactor_rec, crossingFactor_two]
+  rw [show (4 : ℕ) = 0 + 4 from rfl, crossingFactor_rec, crossingFactor_two]
+  push_cast
   field_simp [pi_ne_zero]; ring
 
 /-- α₅ = 3/8. -/
 theorem crossingFactor_five : crossingFactor 5 = 3 / 8 := by
-  simp only [show (5 : ℕ) = 1 + 4 from rfl, crossingFactor_rec, crossingFactor_three]; norm_num
+  simp only [show (5 : ℕ) = 1 + 4 from rfl, crossingFactor_rec]; norm_num
 
 /-- The crossing factor is strictly positive for n ≥ 2. -/
 theorem crossingFactor_pos : ∀ n : ℕ, 2 ≤ n → 0 < crossingFactor n
   | 0, h => absurd h (by omega)
   | 1, h => absurd h (by omega)
-  | 2, _ => by simp; exact div_pos two_pos pi_pos
-  | 3, _ => by simp; norm_num
+  | 2, _ => by simp only [crossingFactor_two]; positivity
+  | 3, _ => by simp only [crossingFactor_three]; norm_num
   | (n + 4), _ => by
       simp only [crossingFactor_rec]
       exact mul_pos (div_pos (by positivity) (by positivity))
@@ -245,10 +249,10 @@ theorem crossingFactor_succ_succ_lt (n : ℕ) (hn : 1 ≤ n) :
     rcases Nat.lt_or_ge n 2 with h | h
     · -- n = 1 (since hn : 1 ≤ n and h : n < 2)
       have : n = 1 := by omega
-      subst this; simp; norm_num
+      subst this; simp
     · exact crossingFactor_pos n h
   have hlt : (n : ℝ) / (n + 1) < 1 :=
-    div_lt_one_of_lt (by exact_mod_cast Nat.lt_succ_self n) (by positivity)
+    (div_lt_one (by positivity)).mpr (by exact_mod_cast Nat.lt_succ_self n)
   linarith [mul_lt_mul_of_pos_right hlt hpos]
 
 /-- **Dimension comparison 2D vs 3D**: α₂ = 2/π > 1/2 = α₃. -/
