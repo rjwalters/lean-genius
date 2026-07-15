@@ -36,6 +36,7 @@ set_option maxHeartbeats 400000
 namespace ChungFellerBijection
 
 open GeneralizedBallot ChungFeller
+open scoped List
 
 /- ## Part I: Setup and Notation -/
 
@@ -116,47 +117,41 @@ theorem chungFellerRot_tail_nonneg_prefixSum {l : List ℤ} {n : ℕ}
     (hn : 0 < n) (hbal : IsBalancedPath l n) (j : ℕ) :
     0 ≤ ((chungFellerRot l).tail.take j).sum := by
   unfold chungFellerRot
-  set aug := (1 : ℤ) :: l
-  set m := rightmostMinPos aug
-  set rot := cyclicRotation aug m
+  set aug := (1 : ℤ) :: l with haug_def
+  set m := rightmostMinPos aug with hm_def
+  set rot := cyclicRotation aug m with hrot_def
   have haug_sum : 0 < aug.sum := by
     simp [aug, List.sum_cons, balanced_sum_zero hbal]
-  have haug_len : 0 < aug.length := List.length_pos_of_ne_nil (by simp)
+  have haug_len : 0 < aug.length := by simp [aug]
   have hm_lt : m < aug.length := rightmostMinPos_lt aug haug_sum
+  have hrot_len_eq : rot.length = aug.length := by
+    rw [hrot_def]; exact cyclicRotation_length aug m hm_lt.le
   have hgood := goodRotation_at_rightmostMin aug haug_len haug_sum
   -- rot = 1 :: rot.tail (first element is 1, proved above)
   have hhead : rot.headI = 1 := chungFellerRot_head_eq_one hn hbal
-  -- The good rotation has all prefix sums ≥ 1 for j ≥ 1
-  -- (since isGoodRotation means prefix sums are strictly positive)
-  -- rot.tail.take j has sum = (rot.take (j+1)).sum - 1
-  have hrot_len : 0 < rot.length := by
-    simp [cyclicRotation, List.length_drop, List.length_append, List.length_take]; omega
+  have hrot_len : 0 < rot.length := by rw [hrot_len_eq]; exact haug_len
   -- Take (j+1) of rot = headI rot :: (rot.tail.take j)
   have hsplit : (rot.take (j + 1)).sum = rot.headI + (rot.tail.take j).sum := by
-    cases rot with
-    | nil => simp at hrot_len
+    cases hc : rot with
+    | nil => rw [hc] at hrot_len; simp at hrot_len
     | cons h t =>
-      simp [List.take_cons, List.sum_cons]
-      cases j with
-      | zero => simp
-      | succ k =>
-        simp [List.take_succ, List.sum_append]
-        ring
+      rw [List.headI_cons, List.tail_cons, List.take_succ_cons, List.sum_cons]
   by_cases hj : j + 1 ≤ rot.length
   · -- The prefix sum of rot at j+1 is positive
-    have hpos := hgood (j + 1) (by omega) hj
+    have hpos := hgood (j + 1) (by omega) (hrot_len_eq ▸ hj)
     rw [hsplit, hhead] at hpos
     omega
   · -- j ≥ rot.length: the take is the full tail, sum = rot.sum - 1 ≥ 0
     push_neg at hj
-    have hfull : rot.tail.take j = rot.tail := List.take_of_length_le (by omega)
+    have hfull : rot.tail.take j = rot.tail := List.take_of_length_le (by
+      have : rot.tail.length = rot.length - 1 := List.length_tail; omega)
     rw [hfull]
-    have hrot_sum : rot.sum = aug.sum := cyclicRotation_sum aug m
-    have haug_sum_val : aug.sum = 1 := by simp [List.sum_cons, balanced_sum_zero hbal]
+    have hrot_sum : rot.sum = aug.sum := by rw [hrot_def]; exact cyclicRotation_sum aug m
+    have haug_sum_val : aug.sum = 1 := by simp [aug, List.sum_cons, balanced_sum_zero hbal]
     have htail_sum : rot.tail.sum = rot.sum - rot.headI := by
-      cases rot with
-      | nil => simp at hrot_len
-      | cons h t => simp [List.sum_cons]; omega
+      cases hc : rot with
+      | nil => rw [hc] at hrot_len; simp at hrot_len
+      | cons h t => rw [List.tail_cons, List.headI_cons, List.sum_cons]; omega
     rw [htail_sum, hrot_sum, haug_sum_val, hhead]; norm_num
 
 /-- Every upstep in the tail of the Chung-Feller rotation is above the axis.
@@ -174,50 +169,21 @@ theorem chungFellerRot_tail_upsteps_all_above {l : List ℤ} {n : ℕ}
     Standard combinatorial fact: positions of value x in a list = count of x.
     Proof by induction on the list, using the shift bijection i ↦ i+1. -/
 private lemma card_filter_getopt_eq_count : ∀ (t : List ℤ) (x : ℤ),
-    ((Finset.range t.length).filter (fun i => t.get? i = some x)).card = t.count x := by
+    ((Finset.range t.length).filter (fun i => t[i]? = some x)).card = t.count x := by
   intro t
   induction t with
   | nil => simp
   | cons hd tl ih =>
     intro x
-    rw [List.length_cons, Finset.range_add_one, Finset.filter_insert, List.count_cons]
-    simp only [List.get?_zero]
+    rw [List.length_cons, Finset.range_add_one', Finset.filter_insert, Finset.filter_map]
+    simp only [Function.comp_def, Function.Embedding.coeFn_mk, List.getElem?_cons_succ,
+               List.getElem?_cons_zero, Option.some.injEq]
     by_cases h : hd = x
-    · subst h
-      simp only [↓reduceIte, Option.some.injEq, ite_true]
-      rw [Finset.card_insert_of_notMem
-        (by simp [Finset.mem_filter, Finset.mem_range])]
-      rw [← ih x]
-      apply Finset.card_bij (fun i _ => i + 1)
-      · intro i hi
-        simp only [Finset.mem_filter, Finset.mem_range] at hi ⊢
-        exact ⟨by omega, by rw [List.get?_cons_succ]; exact hi.2⟩
-      · intro i j _ _ h; omega
-      · intro i hi
-        simp only [Finset.mem_filter, Finset.mem_range] at hi
-        cases i with
-        | zero => simp at hi
-        | succ k =>
-          refine ⟨k, ?_, rfl⟩
-          simp only [Finset.mem_filter, Finset.mem_range]
-          exact ⟨by omega, by simpa [List.get?_cons_succ] using hi.2⟩
-    · simp only [ne_eq, h, not_false_eq_true, ↓reduceIte, ite_false, Option.some.injEq]
-      rw [← ih x]
-      apply Finset.card_bij (fun i _ => i + 1)
-      · intro i hi
-        simp only [Finset.mem_filter, Finset.mem_range] at hi ⊢
-        exact ⟨by omega, by rw [List.get?_cons_succ]; exact hi.2⟩
-      · intro i j _ _ h; omega
-      · intro i hi
-        simp only [Finset.mem_filter, Finset.mem_range] at hi
-        cases i with
-        | zero =>
-          simp only [List.get?_zero, Option.some.injEq] at hi
-          exact absurd hi.2 h
-        | succ k =>
-          refine ⟨k, ?_, rfl⟩
-          simp only [Finset.mem_filter, Finset.mem_range]
-          exact ⟨by omega, by simpa [List.get?_cons_succ] using hi.2⟩
+    · rw [if_pos h, Finset.card_insert_of_notMem (by simp), Finset.card_map, ih,
+          List.count_cons]
+      simp [h]
+    · rw [if_neg h, Finset.card_map, ih, List.count_cons]
+      simp [h]
 
 /-- Helper: when all prefix sums ≥ 0, upstepsAboveAxis = count of +1 steps. -/
 private lemma upstepsAboveAxis_of_all_nonneg (t : List ℤ)
@@ -225,8 +191,8 @@ private lemma upstepsAboveAxis_of_all_nonneg (t : List ℤ)
     upstepsAboveAxis t = t.count 1 := by
   unfold upstepsAboveAxis
   have hsimp : (Finset.range t.length).filter (fun i =>
-      t.get? i = some 1 ∧ (0 : ℤ) ≤ (t.take i).sum) =
-    (Finset.range t.length).filter (fun i => t.get? i = some 1) := by
+      t[i]? = some 1 ∧ (0 : ℤ) ≤ (t.take i).sum) =
+    (Finset.range t.length).filter (fun i => t[i]? = some 1) := by
     ext i
     simp only [Finset.mem_filter, Finset.mem_range]
     constructor
@@ -245,7 +211,7 @@ private lemma chungFellerRot_tail_count_one {l : List ℤ} {n : ℕ}
   set rot := cyclicRotation ((1 : ℤ) :: l) (rightmostMinPos ((1 : ℤ) :: l))
   have hmem := prepend_mem_kCountedSequence hbal
   have hrot_mem : rot ∈ kCountedSequence 1 (n + 1) n :=
-    cyclicRotation_mem_kCountedSequence hmem _
+    cyclicRotation_mem_kCountedSequence hmem _ (rightmostMinPos_le _)
   -- rot.count 1 = n + 1 (from kCountedSequence membership)
   have hrot_count : rot.count 1 = n + 1 := hrot_mem.1
   -- rot starts with 1
@@ -261,7 +227,7 @@ private lemma chungFellerRot_tail_count_one {l : List ℤ} {n : ℕ}
     -- → tl.count 1 + 1 = n + 1  (since head = 1)
     -- → tl.count 1 = n
     rw [h] at hrot_count
-    simp only [List.count_cons, ↓reduceIte] at hrot_count
+    simp only [List.count_cons, beq_self_eq_true, if_true] at hrot_count
     omega
 
 /-- **Key Result**: The tail of the Chung-Feller rotation has type n (all upsteps above axis).
@@ -285,8 +251,8 @@ theorem upstepsAboveAxis_le_n {l : List ℤ} {n : ℕ} (h : IsBalancedPath l n) 
     upstepsAboveAxis l ≤ n := by
   unfold upstepsAboveAxis
   calc ((Finset.range l.length).filter (fun i =>
-            l.get? i = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
-      ≤ ((Finset.range l.length).filter (fun i => l.get? i = some 1)).card := by
+            l[i]? = some 1 ∧ (0 : ℤ) ≤ (l.take i).sum)).card
+      ≤ ((Finset.range l.length).filter (fun i => l[i]? = some 1)).card := by
         apply Finset.card_le_card
         intro i hi
         simp only [Finset.mem_filter] at hi ⊢
@@ -304,6 +270,7 @@ theorem chungFellerRot_tail_is_balanced {l : List ℤ} {n : ℕ}
   have hrot_mem : chungFellerRot l ∈ kCountedSequence 1 (n + 1) n := by
     unfold chungFellerRot
     exact cyclicRotation_mem_kCountedSequence (prepend_mem_kCountedSequence hbal) _
+      (rightmostMinPos_le _)
   have hne : chungFellerRot l ≠ [] := by
     intro h; rw [h] at hrot_mem; exact absurd hrot_mem.1 (by simp)
   cases hrot : chungFellerRot l with
@@ -320,13 +287,13 @@ theorem chungFellerRot_tail_is_balanced {l : List ℤ} {n : ℕ}
     · -- count(-1) = n: kCountedSequence gives count(-(1:ℤ)) = n, head is 1, tail has n
       have hcount : (chungFellerRot l).count (-1 : ℤ) = n := hrot_mem.2.1
       rw [hrot, List.count_cons] at hcount
-      simp only [show (1 : ℤ) ≠ (-1 : ℤ) from by decide, if_false] at hcount
+      simp only [show ((1 : ℤ) == (-1 : ℤ)) = false from by decide, if_false] at hcount
       exact hcount
     · -- all elements ±1: sublist of ±1 sequence
       intro x hx
       have hall : ∀ y ∈ chungFellerRot l, y = 1 ∨ y = (-1 : ℤ) := hrot_mem.2.2
-      rw [hrot, List.tail_cons] at hx
-      exact hall x (hrot ▸ List.mem_cons_of_mem _ hx)
+      have hxmem : x ∈ chungFellerRot l := by rw [hrot]; exact List.mem_cons_of_mem _ hx
+      exact hall x hxmem
 
 /-- **The tail of the Chung-Feller rotation is a Dyck path**.
     Combines `chungFellerRot_tail_is_balanced` with `chungFellerRot_tail_nonneg_prefixSum`.
@@ -355,32 +322,20 @@ private lemma cyclicRotation_compose_wrap (A : List ℤ) (r m : ℕ)
     (hr : r ≤ A.length) (hm : m ≤ A.length) (hrm : A.length < r + m) :
     cyclicRotation (cyclicRotation A r) m = cyclicRotation A (r + m - A.length) := by
   simp only [cyclicRotation]
-  set k := r + m - A.length
+  set k := r + m - A.length with hk_def
+  have hlenAr : (A.drop r).length = A.length - r := List.length_drop
   have hk_le_r : k ≤ r := by omega
-  have hk_lt : k < A.length := by omega
-  -- B = A.drop r ++ A.take r; m > |A.drop r| = A.length - r
-  have hAr_lt_m : A.length - r < m := by omega
-  -- Compute B.drop m and B.take m
-  have hdrop : (A.drop r ++ A.take r).drop m =
-      (A.drop k).take (r - k) := by
-    rw [List.drop_append]
-    simp [List.length_drop]
-    rw [show m - (A.length - r) = k from by omega]
-    rw [List.drop_take]
-  have htake : (A.drop r ++ A.take r).take m =
-      A.drop r ++ A.take k := by
-    rw [List.take_append]
-    simp [List.length_drop]
-    rw [show m - (A.length - r) = k from by omega]
-    rw [List.take_take]
-    simp [Nat.min_eq_right hk_le_r]
-  rw [hdrop, htake, ← List.append_assoc]
-  -- Show (A.drop k).take(r-k) ++ A.drop r = A.drop k
+  have hmk : m - (A.drop r).length = k := by rw [hlenAr]; omega
+  have hdrop_nil : (A.drop r).drop m = [] := by
+    apply List.drop_eq_nil_of_le; rw [hlenAr]; omega
+  have htake_all : (A.drop r).take m = A.drop r := by
+    apply List.take_of_length_le; rw [hlenAr]; omega
+  rw [List.drop_append, List.take_append, hmk, hdrop_nil, htake_all, List.nil_append,
+      List.drop_take, List.take_take, Nat.min_eq_left hk_le_r, ← List.append_assoc]
   congr 1
-  conv_lhs => rw [← List.take_append_drop (r - k) (A.drop k)]
-  congr 1
-  rw [List.drop_drop]
-  omega
+  have hdd : A.drop r = (A.drop k).drop (r - k) := by
+    rw [List.drop_drop]; congr 1; omega
+  rw [hdd, List.take_append_drop]
 
 /-- **Key structural lemma**: Balanced paths in the same rotation orbit have the same Dyck image.
     If (1::l₂) = cyclicRotation(1::l₁) r, then chungFellerRot l₁ = chungFellerRot l₂.
@@ -423,34 +378,53 @@ lemma orbit_same_dyck {l₁ l₂ : List ℤ} {n : ℕ} {r : ℕ}
   -- chungFellerRot l₂ = cyclicRotation (1::l₂) m₂ = cyclicRotation (cyclicRotation aug₁ r) m₂
   have hG₂ : chungFellerRot l₂ = cyclicRotation (cyclicRotation aug₁ r) m₂ := by
     unfold chungFellerRot; rw [← horbit]
+  -- Length equality (for arithmetic side goals)
+  have hlen_eq : ((1 : ℤ) :: l₂).length = aug₁.length := by
+    rw [horbit, cyclicRotation_length _ _ hr]
+  have hbase : isGoodRotation ((1 : ℤ) :: l₂) m₂ :=
+    goodRotation_at_rightmostMin _ (by rw [hlen_eq]; exact haug₁_len) haug₂_sum
   -- Case: does r + m₂ wrap around?
   rw [hG₁, hG₂]
   by_cases hwrap : r + m₂ ≤ aug₁.length
   · -- No wrap: composition gives cyclicRotation aug₁ (r + m₂)
     have hcomp := cyclicRotation_compose aug₁ r m₂ hr (by omega)
     rw [hcomp]
-    have hk_good : r + m₂ ∈ goodRotations aug₁ := by
-      apply Finset.mem_filter.mpr
-      constructor
-      · exact Finset.mem_range.mpr (by omega)
-      · rw [← hcomp, ← horbit]
-        exact goodRotation_at_rightmostMin _ (by rw [← horbit]; simp [prepend_length h₂])
-            haug₂_sum
-    rw [hm₁] at hk_good
-    exact (Finset.mem_singleton.mp hk_good).symm ▸ rfl
+    have hgr : isGoodRotation aug₁ (r + m₂) := by
+      intro j hj hjn
+      have hroteq : cyclicRotation aug₁ (r + m₂) = cyclicRotation ((1 : ℤ) :: l₂) m₂ := by
+        rw [horbit]; exact hcomp.symm
+      rw [hroteq]; exact hbase j hj (by rw [hlen_eq]; exact hjn)
+    by_cases hbnd : r + m₂ < aug₁.length
+    · have hk_good : r + m₂ ∈ goodRotations aug₁ :=
+        Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hbnd, hgr⟩
+      rw [hm₁] at hk_good
+      exact congrArg (cyclicRotation aug₁) (Finset.mem_singleton.mp hk_good).symm
+    · -- Boundary r + m₂ = aug₁.length: the rotation is aug₁ itself, so 0 is good ⇒ m₁ = 0
+      have heq : r + m₂ = aug₁.length := by omega
+      rw [heq, cyclicRotation_length_self]
+      have h0good : isGoodRotation aug₁ 0 := by
+        intro j hj hjn
+        rw [cyclicRotation_zero]
+        have := hgr j hj hjn
+        rwa [heq, cyclicRotation_length_self] at this
+      have h0mem : 0 ∈ goodRotations aug₁ :=
+        Finset.mem_filter.mpr ⟨Finset.mem_range.mpr haug₁_len, h0good⟩
+      rw [hm₁] at h0mem
+      rw [show m₁ = 0 from (Finset.mem_singleton.mp h0mem).symm, cyclicRotation_zero]
   · -- Wrap: composition gives cyclicRotation aug₁ (r + m₂ - |aug₁|)
     push_neg at hwrap
     have hcomp := cyclicRotation_compose_wrap aug₁ r m₂ hr hm₂_le (by omega)
     rw [hcomp]
-    have hk_good : r + m₂ - aug₁.length ∈ goodRotations aug₁ := by
-      apply Finset.mem_filter.mpr
-      constructor
-      · exact Finset.mem_range.mpr (by omega)
-      · rw [← hcomp, ← horbit]
-        exact goodRotation_at_rightmostMin _ (by rw [← horbit]; simp [prepend_length h₂])
-            haug₂_sum
+    have hgr : isGoodRotation aug₁ (r + m₂ - aug₁.length) := by
+      intro j hj hjn
+      have hroteq : cyclicRotation aug₁ (r + m₂ - aug₁.length)
+          = cyclicRotation ((1 : ℤ) :: l₂) m₂ := by
+        rw [horbit]; exact hcomp.symm
+      rw [hroteq]; exact hbase j hj (by rw [hlen_eq]; exact hjn)
+    have hk_good : r + m₂ - aug₁.length ∈ goodRotations aug₁ :=
+      Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hgr⟩
     rw [hm₁] at hk_good
-    exact (Finset.mem_singleton.mp hk_good).symm ▸ rfl
+    exact congrArg (cyclicRotation aug₁) (Finset.mem_singleton.mp hk_good).symm
 
 /-- The Chung-Feller map sends balanced paths to DyckPaths × Fin(n+1).
     Both components are now well-typed:
@@ -461,7 +435,7 @@ noncomputable def chungFellerMap (n : ℕ) (hn : 0 < n) :
     {l : List ℤ // IsDyckPath l n} × Fin (n + 1) :=
   fun ⟨l, hbal⟩ =>
     ⟨⟨(chungFellerRot l).tail, chungFellerRot_tail_is_dyck hn hbal⟩,
-     ⟨upstepsAboveAxis l, upstepsAboveAxis_le_n hbal⟩⟩
+     ⟨upstepsAboveAxis l, Nat.lt_succ_of_le (upstepsAboveAxis_le_n hbal)⟩⟩
 
 /- ## Part VII: Bijectivity Infrastructure -/
 
@@ -492,7 +466,8 @@ private lemma chungFellerRot_dyck_self {D : List ℤ} {n : ℕ} (hn : 0 < n)
     obtain ⟨i, hi, rfl⟩ := hx
     by_cases h0 : i = 0
     · simp [h0, prefixSum]
-    · linarith [hps_pos i (Nat.one_le_iff_ne_zero.mpr h0) (by omega)]
+    · have h0v : prefixSum (1 :: D) 0 = 0 := prefixSum_zero _
+      linarith [hps_pos i (Nat.one_le_iff_ne_zero.mpr h0) (by omega), h0v]
   -- Filter = {0}, so max = 0
   have hfilter : (Finset.range ((1 :: D).length + 1)).filter
       (fun i => prefixSum (1 :: D) i = minPrefixSum (1 :: D)) = {0} := by
@@ -503,26 +478,34 @@ private lemma chungFellerRot_dyck_self {D : List ℤ} {n : ℕ} (hn : 0 < n)
     constructor
     · rintro ⟨hi, hps⟩
       by_contra h0
-      linarith [hps_pos i (Nat.one_le_iff_ne_zero.mpr h0) (by omega)]
+      have hp1 := hps_pos i (Nat.one_le_iff_ne_zero.mpr h0) (by omega)
+      simp only [prefixSum] at hp1
+      linarith
     · rintro rfl; exact ⟨by simp, by simp [prefixSum]⟩
-  unfold rightmostMinPos; rw [hfilter]; simp
+  have hne : ((Finset.range ((1 :: D).length + 1)).filter
+      (fun i => prefixSum (1 :: D) i = minPrefixSum (1 :: D))).Nonempty :=
+    ⟨0, by rw [hfilter]; simp⟩
+  have hmem : rightmostMinPos (1 :: D) ∈ (Finset.range ((1 :: D).length + 1)).filter
+      (fun i => prefixSum (1 :: D) i = minPrefixSum (1 :: D)) := Finset.max'_mem _ hne
+  rw [hfilter, Finset.mem_singleton] at hmem
+  exact hmem
 
 /-- Helper: the 0th element of a cyclic rotation equals the p-th element of the original. -/
 private lemma cyclicRotation_get?_zero {A : List ℤ} {p : ℕ} (hp : p < A.length) :
-    (cyclicRotation A p).get? 0 = A.get? p := by
+    (cyclicRotation A p)[0]? = A[p]? := by
   simp only [cyclicRotation]
-  rw [List.get?_append_left (by simp [List.length_drop]; omega)]
-  rw [List.get?_drop]; simp
+  rw [List.getElem?_append_left (by simp [List.length_drop]; omega)]
+  rw [List.getElem?_drop]; simp
 
 /-- Type formula: the type of rotation at position p equals the cardinality of
     F(p) = {q ∈ [2n+1] : S[q]=1 ∧ ((q<p ∧ PS q ≥ PS p) ∨ (p<q ∧ PS q > PS p))}.
     Proof: unfold cyclicRotation, split at wrap-around, and use cyclicRotation_prefixSum. -/
 private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
     (hD : IsDyckPath D n) (p : ℕ) (hp : p < (1 :: D).length)
-    (hp_one : (1 :: D).get? p = some 1) :
+    (hp_one : (1 :: D)[p]? = some 1) :
     upstepsAboveAxis (cyclicRotation (1 :: D) p).tail =
     ((Finset.range (1 :: D).length).filter (fun q =>
-      (1 :: D).get? q = some 1 ∧
+      (1 :: D)[q]? = some 1 ∧
       ((q < p ∧ prefixSum (1 :: D) q ≥ prefixSum (1 :: D) p) ∨
        (p < q ∧ prefixSum (1 :: D) q > prefixSum (1 :: D) p)))).card := by
   -- Setup: abbreviations for the key sequences
@@ -535,7 +518,7 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
   have hrot_ne : rot ≠ [] := by
     simp only [rot, cyclicRotation, ← List.length_pos_iff_ne_nil,
                List.length_append, List.length_drop, List.length_take]; omega
-  have hrot_head : rot.get? 0 = some 1 := by
+  have hrot_head : rot[0]? = some 1 := by
     simp only [rot]; rw [cyclicRotation_get?_zero hp]; exact hp_one
   have hrot_cons : rot = 1 :: T := by
     cases hc : rot with
@@ -543,32 +526,28 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
     | cons a tl =>
       have ha : a = 1 := by
         have h := hrot_head
-        simp only [hc, List.get?_zero] at h
+        simp only [hc, List.getElem?_cons_zero] at h
         exact Option.some.inj h
       simp only [T, hc, List.tail_cons, ha]
   have hTlen : T.length = S.length - 1 := by
     simp only [T, rot, cyclicRotation, List.length_tail, List.length_append,
                List.length_drop, List.length_take]; omega
-  have hT_get : ∀ j, T.get? j = rot.get? (j + 1) := fun j => by
-    cases hc : rot with
-    | nil => exact absurd hc hrot_ne
-    | cons a tl =>
-      have hTeq : T = tl := by simp [T, hc]
-      rw [hTeq, hc, List.get?_cons_succ]
+  have hT_get : ∀ j, T[j]? = rot[j + 1]? := fun j => by
+    rw [hrot_cons, List.getElem?_cons_succ]
   have hrot_take : ∀ j, (rot.take (j + 1)).sum = 1 + (T.take j).sum := fun j => by
     rw [hrot_cons, List.take_succ_cons, List.sum_cons]
-  have hrot_get_nw : ∀ k, k < S.length - p → rot.get? k = S.get? (p + k) := fun k hk => by
+  have hrot_get_nw : ∀ k, k < S.length - p → rot[k]? = S[p + k]? := fun k hk => by
     simp only [rot, cyclicRotation]
-    rw [List.get?_append_left (by simp [List.length_drop]; omega)]
-    rw [List.get?_drop]
-  have htake_get : ∀ i, i < p → (S.take p).get? i = S.get? i := fun i hi => by
+    rw [List.getElem?_append_left (by simp [List.length_drop]; omega)]
+    rw [List.getElem?_drop]
+  have htake_get : ∀ i, i < p → (S.take p)[i]? = S[i]? := fun i hi => by
     conv_rhs => rw [show S = S.take p ++ S.drop p from (List.take_append_drop p S).symm]
-    exact (List.get?_append_left
+    exact (List.getElem?_append_left
       (by rw [List.length_take, Nat.min_eq_left hp_le]; exact hi)).symm
-  have hrot_get_w : ∀ k, S.length - p ≤ k → k < S.length → rot.get? k = S.get? (p + k - S.length) :=
+  have hrot_get_w : ∀ k, S.length - p ≤ k → k < S.length → rot[k]? = S[p + k - S.length]? :=
       fun k hklo hkhi => by
     simp only [rot, cyclicRotation]
-    rw [List.get?_append_right (by simp [List.length_drop]; omega)]
+    rw [List.getElem?_append_right (by simp [List.length_drop]; omega)]
     simp only [List.length_drop]
     rw [show k - (S.length - p) = p + k - S.length from by omega]
     exact htake_get _ (by omega)
@@ -595,7 +574,7 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
     obtain ⟨hj_lt, hj_get, hj_psum⟩ := hj
     by_cases hcase : p + j + 1 < S.length
     · simp only [hcase, ↓reduceIte]
-      refine ⟨by omega, ?_, Or.inr ⟨by omega, ?_⟩⟩
+      refine ⟨trivial, ?_, Or.inr ⟨by omega, ?_⟩⟩
       · rw [show p + j + 1 = p + (j + 1) from by omega,
             ← hrot_get_nw (j + 1) (by omega), ← hT_get]; exact hj_get
       · simp only [prefixSum]
@@ -614,7 +593,7 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
           simp only [show S.length - p - 1 + 1 = S.length - p from by omega] at hrt
           have hrp := hrot_psum (S.length - p) (by omega)
           simp only [show p + (S.length - p) = S.length from by omega,
-                     show p + (S.length - p) ≤ S.length from by omega, ↓reduceIte,
+                     le_refl, if_true, ↓reduceIte,
                      List.take_length, hSsum] at hrp
           have hpsp := hpsp_pos p hp1; simp only [prefixSum] at hpsp
           have hjeq : j = S.length - p - 1 := by omega
@@ -644,7 +623,7 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
           simp only [show q - p - 1 + 1 = q - p from by omega] at hrt
           have hrp := hrot_psum (q - p) (by omega)
           simp only [show p + (q - p) = q from by omega,
-                     show p + (q - p) ≤ S.length from by omega, ↓reduceIte] at hrp
+                     show q ≤ S.length from by omega, ↓reduceIte] at hrp
           linarith
     · push_neg at hcase
       have hqlt : q < p := by rcases hq_cond with ⟨h, _⟩ | ⟨h, _⟩; exact h; omega
@@ -654,7 +633,9 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
         subst hq_eq
         rcases hq_cond with ⟨_, hps⟩ | ⟨h, _⟩
         · simp only [prefixSum, List.take_zero, List.sum_nil] at hps
-          linarith [hpsp_pos p (by omega : 1 ≤ p)]
+          have hpp := hpsp_pos p (by omega : 1 ≤ p)
+          simp only [prefixSum] at hpp
+          linarith
         · omega
       simp only [show ¬ (p < q) from by omega, ↓reduceIte]
       refine ⟨by omega, ?_, ?_⟩
@@ -703,15 +684,15 @@ private lemma rotation_type_formula {D : List ℤ} {n : ℕ} (hn : 0 < n)
 private lemma rotation_types_all_distinct {D : List ℤ} {n : ℕ} (hn : 0 < n)
     (hD : IsDyckPath D n) (p₁ p₂ : ℕ) (hp₁ : p₁ < (1 :: D).length)
     (hp₂ : p₂ < (1 :: D).length)
-    (hp₁_one : (1 :: D).get? p₁ = some 1)
-    (hp₂_one : (1 :: D).get? p₂ = some 1)
+    (hp₁_one : (1 :: D)[p₁]? = some 1)
+    (hp₂_one : (1 :: D)[p₂]? = some 1)
     (hne : p₁ ≠ p₂) :
     upstepsAboveAxis (cyclicRotation (1 :: D) p₁).tail ≠
     upstepsAboveAxis (cyclicRotation (1 :: D) p₂).tail := by
   -- Work with S := 1 :: D via local let (avoids set/rw mismatch with rotation_type_formula)
   let S : List ℤ := 1 :: D
   let F := fun p => (Finset.range S.length).filter (fun q =>
-    S.get? q = some 1 ∧
+    S[q]? = some 1 ∧
     ((q < p ∧ prefixSum S q ≥ prefixSum S p) ∨
      (p < q ∧ prefixSum S q > prefixSum S p)))
   -- Helper: p is never in F(p) itself
@@ -721,7 +702,7 @@ private lemma rotation_types_all_distinct {D : List ℤ} {n : ℕ} (hn : 0 < n)
     rcases hp.2.2 with ⟨h, _⟩ | ⟨h, _⟩ <;> exact absurd h (lt_irrefl p)
   -- Core ordered claim: for a < b, the types (as |F|) differ
   have h_ord : ∀ a b : ℕ, a < b → a < S.length → b < S.length →
-      S.get? a = some 1 → S.get? b = some 1 →
+      S[a]? = some 1 → S[b]? = some 1 →
       (F a).card ≠ (F b).card := by
     intro a b hab ha hb ha_one hb_one
     by_cases hPS : prefixSum S a < prefixSum S b
@@ -793,27 +774,25 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
     have hrot_eq : chungFellerRot l₁ = chungFellerRot l₂ := by
       have h1 : (chungFellerRot l₁).headI = 1 := chungFellerRot_head_eq_one hn hbal₁
       have h2 : (chungFellerRot l₂).headI = 1 := chungFellerRot_head_eq_one hn hbal₂
-      -- Decompose by case analysis: both lists are non-empty (headI = 1 ≠ default = 0)
-      cases chungFellerRot l₁ with
-      | nil => simp [List.headI] at h1
-      | cons a₁ t₁ =>
-        cases chungFellerRot l₂ with
-        | nil => simp [List.headI] at h2
-        | cons a₂ t₂ =>
-          simp [List.headI, List.tail_cons] at h1 h2 htail_eq
-          rw [h1, h2, htail_eq]
+      have hne1 : chungFellerRot l₁ ≠ [] := fun h => by rw [h] at h1; simp at h1
+      have hne2 : chungFellerRot l₂ ≠ [] := fun h => by rw [h] at h2; simp at h2
+      obtain ⟨a₁, t₁, hc1⟩ := List.exists_cons_of_ne_nil hne1
+      obtain ⟨a₂, t₂, hc2⟩ := List.exists_cons_of_ne_nil hne2
+      rw [hc1] at h1 htail_eq ⊢
+      rw [hc2] at h2 htail_eq ⊢
+      simp only [List.headI_cons] at h1 h2
+      simp only [List.tail_cons] at htail_eq
+      rw [h1, h2, htail_eq]
     -- Both l₁ and l₂ are rotations of D = (chungFellerRot l₁).tail
     set D := (chungFellerRot l₁).tail
     set D_full : List ℤ := 1 :: D
     have hD_eq₁ : chungFellerRot l₁ = D_full := by
       have h1' : (chungFellerRot l₁).headI = 1 := chungFellerRot_head_eq_one hn hbal₁
-      have hne' : chungFellerRot l₁ ≠ [] := by intro h; simp only [h, List.headI] at h1'
-      cases chungFellerRot l₁ with
-      | nil => exact absurd rfl hne'
-      | cons a t =>
-        simp only [List.headI_cons] at h1'
-        -- h1' : a = 1; goal: a :: t = D_full; D := t, D_full := 1 :: t (definitionally)
-        rw [h1']; rfl
+      have hne' : chungFellerRot l₁ ≠ [] := fun h => by rw [h] at h1'; simp at h1'
+      obtain ⟨a, t, hc⟩ := List.exists_cons_of_ne_nil hne'
+      rw [hc, List.headI_cons] at h1'
+      show chungFellerRot l₁ = 1 :: (chungFellerRot l₁).tail
+      rw [hc, List.tail_cons, h1']
     have hD_eq₂ : chungFellerRot l₂ = D_full := by rw [← hrot_eq, hD_eq₁]
     -- Find rotation positions
     set m₁ := rightmostMinPos (1 :: l₁)
@@ -834,43 +813,56 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
     have hinv₁ : 1 :: l₁ = cyclicRotation D_full (2 * n + 1 - m₁) := by
       conv_rhs => rw [hrot₁]
       rw [cyclicRotation_compose (1 :: l₁) m₁ (2*n+1-m₁)
-          (by rw [hlen₁]; omega) (by rw [hlen₁]; omega)]
+          (by omega) (by omega)]
       rw [show m₁ + (2*n+1-m₁) = (1::l₁).length from by omega]
       exact (cyclicRotation_length_self _).symm
     have hinv₂ : 1 :: l₂ = cyclicRotation D_full (2 * n + 1 - m₂) := by
       conv_rhs => rw [hrot₂]
       rw [cyclicRotation_compose (1 :: l₂) m₂ (2*n+1-m₂)
-          (by rw [hlen₂]; omega) (by rw [hlen₂]; omega)]
+          (by omega) (by omega)]
       rw [show m₂ + (2*n+1-m₂) = (1::l₂).length from by omega]
       exact (cyclicRotation_length_self _).symm
     have hDyck_D : IsDyckPath D n := by
       simp only [D]; exact chungFellerRot_tail_is_dyck hn hbal₁
     have hlen_Dfull : D_full.length = 2 * n + 1 := by
       simp [D_full, balanced_length hDyck_D.1]
-    -- Both p₁=2n+1-m₁ and p₂=2n+1-m₂ are 1-positions of D_full
-    -- (D_full[p] = cyclicRotation(D_full,p)[0] = (1::l₁)[0] = 1)
-    have hbound₁ : 2 * n + 1 - m₁ < D_full.length := by omega
-    have hbound₂ : 2 * n + 1 - m₂ < D_full.length := by omega
-    have hp₁_one : D_full.get? (2 * n + 1 - m₁) = some 1 := by
-      rw [← cyclicRotation_get?_zero hbound₁, hinv₁.symm]; rfl
-    have hp₂_one : D_full.get? (2 * n + 1 - m₂) = some 1 := by
-      rw [← cyclicRotation_get?_zero hbound₂, hinv₂.symm]; rfl
-    -- If 2n+1-m₁ = 2n+1-m₂ then m₁ = m₂, and l₁ = l₂ directly
-    by_cases hm_eq : 2 * n + 1 - m₁ = 2 * n + 1 - m₂
+    -- Reduce rotation indices mod length so they always lie in range (handles m = 0 boundary)
+    have hDlen_pos : 0 < D_full.length := by omega
+    have hcr_mod : ∀ k : ℕ, k ≤ D_full.length →
+        cyclicRotation D_full k = cyclicRotation D_full (k % D_full.length) := by
+      intro k hk
+      rcases Nat.lt_or_ge k D_full.length with h | h
+      · rw [Nat.mod_eq_of_lt h]
+      · have hke : k = D_full.length := by omega
+        rw [hke, cyclicRotation_length_self, Nat.mod_self, cyclicRotation_zero]
+    set p₁ := (2 * n + 1 - m₁) % D_full.length with hp₁_def
+    set p₂ := (2 * n + 1 - m₂) % D_full.length with hp₂_def
+    have hinvP₁ : 1 :: l₁ = cyclicRotation D_full p₁ := by
+      rw [hinv₁, hp₁_def, hcr_mod _ (by omega)]
+    have hinvP₂ : 1 :: l₂ = cyclicRotation D_full p₂ := by
+      rw [hinv₂, hp₂_def, hcr_mod _ (by omega)]
+    have hbound₁ : p₁ < D_full.length := by rw [hp₁_def]; exact Nat.mod_lt _ hDlen_pos
+    have hbound₂ : p₂ < D_full.length := by rw [hp₂_def]; exact Nat.mod_lt _ hDlen_pos
+    have hp₁_one : D_full[p₁]? = some 1 := by
+      rw [← cyclicRotation_get?_zero hbound₁, hinvP₁.symm]; rfl
+    have hp₂_one : D_full[p₂]? = some 1 := by
+      rw [← cyclicRotation_get?_zero hbound₂, hinvP₂.symm]; rfl
+    -- If p₁ = p₂ then l₁ = l₂ directly
+    by_cases hm_eq : p₁ = p₂
     · -- Same rotation position → same l₁ = l₂
       have h12 : 1 :: l₁ = 1 :: l₂ := by
-        rw [hinv₁, hinv₂, hm_eq]
+        rw [hinvP₁, hinvP₂, hm_eq]
       exact Subtype.ext (List.cons.inj h12).2
     · -- Different rotation positions → different types (by rotation_types_all_distinct)
       -- But types are equal (htype_eq), contradiction
       exfalso
       have hdistinct := rotation_types_all_distinct hn hDyck_D
-        (2 * n + 1 - m₁) (2 * n + 1 - m₂) hbound₁ hbound₂ hp₁_one hp₂_one hm_eq
+        p₁ p₂ hbound₁ hbound₂ hp₁_one hp₂_one hm_eq
       -- But upstepsAboveAxis l₁ = upstepsAboveAxis l₂, and these tails are l₁, l₂
-      have htail₁ : (cyclicRotation D_full (2 * n + 1 - m₁)).tail = l₁ := by
-        rw [hinv₁.symm]; simp
-      have htail₂ : (cyclicRotation D_full (2 * n + 1 - m₂)).tail = l₂ := by
-        rw [hinv₂.symm]; simp
+      have htail₁ : (cyclicRotation D_full p₁).tail = l₁ := by
+        rw [hinvP₁.symm]; simp
+      have htail₂ : (cyclicRotation D_full p₂).tail = l₂ := by
+        rw [hinvP₂.symm]; simp
       rw [htail₁, htail₂] at hdistinct
       exact hdistinct (congrArg Fin.val htype_eq)
   · -- SURJECTIVITY: given (D, k), find l with chungFellerMap l = (D, k)
@@ -879,13 +871,13 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
     -- S = 1::D; 1-positions of S form a Finset of size n+1
     set S : List ℤ := 1 :: D
     have hSlen : S.length = 2 * n + 1 := by simp [S, balanced_length hDyck.1]
-    set onePosSet := (Finset.range S.length).filter (fun p => S.get? p = some 1)
+    set onePosSet := (Finset.range S.length).filter (fun p => S[p]? = some 1)
     -- onePosSet has card n+1 (S has count 1 = n+1)
     have honePosCard : onePosSet.card = n + 1 := by
       have hS_count1 : S.count 1 = n + 1 := by
         simp only [S, List.count_cons, show (1 : ℤ) == 1 from rfl, ↓reduceIte,
                    hDyck.1.1]
-      rw [show onePosSet = (Finset.range S.length).filter (fun i => S.get? i = some (1 : ℤ))
+      rw [show onePosSet = (Finset.range S.length).filter (fun i => S[i]? = some (1 : ℤ))
            from rfl, card_filter_getopt_eq_count S 1, hS_count1]
     -- typeMap: p ↦ upstepsAboveAxis (cyclicRotation S p).tail
     set typeMap : ℕ → ℕ := fun p => upstepsAboveAxis (cyclicRotation S p).tail
@@ -902,14 +894,14 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
         have hrot_ne : cyclicRotation S p ≠ [] := by
           rw [← List.length_pos_iff_ne_nil]
           simp [cyclicRotation, List.length_append, List.length_drop, List.length_take]; omega
-        have hrot_head : (cyclicRotation S p).get? 0 = some 1 := by
+        have hrot_head : (cyclicRotation S p)[0]? = some 1 := by
           simp only [S]; rw [cyclicRotation_get?_zero hp.1]; exact hp.2
         -- Head = 1, construct the cons
         cases hc : cyclicRotation S p with
         | nil => exact absurd hc hrot_ne
         | cons a t =>
           have ha : a = 1 := by
-            have h := hrot_head; simp only [hc, List.get?_zero] at h
+            have h := hrot_head; simp only [hc, List.getElem?_cons_zero] at h
             exact Option.some.inj h
           simp only [List.tail_cons]
           refine ⟨?_, ?_, ?_⟩
@@ -922,24 +914,25 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
           · -- count (-1) = n
             have := hrot_perm.count_eq (a := (-1:ℤ))
             simp only [hc, ha, List.count_cons,
-                       show (1:ℤ) == (-1:ℤ) from by decide, ↓reduceIte] at this
-            simp only [S, List.count_cons, show (1:ℤ) == (-1:ℤ) from by decide,
-                       ↓reduceIte, hDyck.1.2.1] at this
+                       show ((1:ℤ) == (-1:ℤ)) = false from by decide,
+                       Bool.false_eq_true, if_false, ↓reduceIte] at this
+            simp only [S, List.count_cons, show ((1:ℤ) == (-1:ℤ)) = false from by decide,
+                       Bool.false_eq_true, if_false, ↓reduceIte, hDyck.1.2.1] at this
             exact this
           · -- elements ±1
             intro x hx
             have hx_in : x ∈ cyclicRotation S p := by rw [hc]; exact List.mem_cons_of_mem _ hx
             have hx_in_S := hrot_perm.subset hx_in
-            exact hDyck.1.2.2 x hx_in_S
-      have := upstepsAboveAxis_le_n hbal
-      omega
+            exact augmented_pm_one hDyck.1 x hx_in_S
+      show upstepsAboveAxis (cyclicRotation S p).tail < n + 1
+      exact Nat.lt_succ_of_le (upstepsAboveAxis_le_n hbal)
     -- typeMap is injective on onePosSet (from rotation_types_all_distinct)
     have htypeInj : Set.InjOn typeMap ↑onePosSet := by
       intro p₁ hp₁ p₂ hp₂ heq
       simp only [onePosSet, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe,
                  Finset.mem_filter, Finset.mem_range] at hp₁ hp₂
       by_contra hne
-      exact absurd heq (rotation_types_all_distinct hn hDyck hp₁.1 hp₂.1 hp₁.2 hp₂.2 hne)
+      exact absurd heq (rotation_types_all_distinct hn hDyck p₁ p₂ hp₁.1 hp₂.1 hp₁.2 hp₂.2 hne)
     -- image of onePosSet under typeMap = Finset.range(n+1)
     have himage_sub : onePosSet.image typeMap ⊆ Finset.range (n + 1) := by
       intro x hx
@@ -966,14 +959,14 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
     have hrot_ne_p : cyclicRotation S p ≠ [] := by
       rw [← List.length_pos_iff_ne_nil]
       simp [cyclicRotation, List.length_append, List.length_drop, List.length_take]; omega
-    have hrot_head_p : (cyclicRotation S p).get? 0 = some 1 := by
+    have hrot_head_p : (cyclicRotation S p)[0]? = some 1 := by
       simp only [S]; rw [cyclicRotation_get?_zero hp_lt]; exact hp_one
     have hrot_starts_1 : cyclicRotation S p = 1 :: l := by
       cases hc : cyclicRotation S p with
       | nil => exact absurd hc hrot_ne_p
       | cons a t =>
         have ha : a = 1 := by
-          have h := hrot_head_p; simp only [hc, List.get?_zero] at h
+          have h := hrot_head_p; simp only [hc, List.getElem?_cons_zero] at h
           exact Option.some.inj h
         simp only [l, hc, List.tail_cons, ha]
     have hl_balanced : IsBalancedPath l n := by
@@ -981,7 +974,7 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
       | nil => exact absurd hc hrot_ne_p
       | cons a t =>
         have ha : a = 1 := by
-          have h := hrot_head_p; simp only [hc, List.get?_zero] at h
+          have h := hrot_head_p; simp only [hc, List.getElem?_cons_zero] at h
           exact Option.some.inj h
         have hTeq : l = t := by simp only [l, hc, List.tail_cons]
         rw [hTeq]
@@ -992,25 +985,25 @@ theorem chung_feller_bijection_exists (n : ℕ) (hn : 0 < n) :
                      hDyck.1.1] at hc1
           omega
         · have hcm := hrot_perm_p.count_eq (a := (-1:ℤ))
-          simp only [hc, ha, List.count_cons, show (1:ℤ) == (-1:ℤ) from by decide,
-                     ↓reduceIte] at hcm
-          simp only [S, List.count_cons, show (1:ℤ) == (-1:ℤ) from by decide,
-                     ↓reduceIte, hDyck.1.2.1] at hcm
+          simp only [hc, ha, List.count_cons, show ((1:ℤ) == (-1:ℤ)) = false from by decide,
+                     Bool.false_eq_true, if_false, ↓reduceIte] at hcm
+          simp only [S, List.count_cons, show ((1:ℤ) == (-1:ℤ)) = false from by decide,
+                     Bool.false_eq_true, if_false, ↓reduceIte, hDyck.1.2.1] at hcm
           exact hcm
         · intro x hx
           have hx_in := hrot_perm_p.subset (hc ▸ List.mem_cons_of_mem _ hx)
-          exact hDyck.1.2.2 x hx_in
+          exact augmented_pm_one hDyck.1 x hx_in
     -- Show (chungFellerRot l).tail = D
     have hl_tail_eq_D : (chungFellerRot l).tail = D := by
       -- 1::l = cyclicRotation S p = cyclicRotation (1::D) p
       -- By orbit_same_dyck: chungFellerRot l = chungFellerRot D = 1::D
-      have horbit : (1 : ℤ) :: l = cyclicRotation ((1 : ℤ) :: D) p := hrot_starts_1
+      have horbit : (1 : ℤ) :: l = cyclicRotation ((1 : ℤ) :: D) p := hrot_starts_1.symm
       have hrot_eq : chungFellerRot l = chungFellerRot D :=
-        orbit_same_dyck hl_balanced hDyck.1 horbit hn (le_of_lt hp_lt)
+        (orbit_same_dyck hDyck.1 hl_balanced horbit hn (le_of_lt hp_lt)).symm
       rw [hrot_eq, chungFellerRot_dyck_self hn hDyck]
       simp
     -- Construct the answer
-    exact ⟨⟨l, hl_balanced⟩, hl_tail_eq_D, hp_type⟩
+    exact ⟨⟨l, hl_balanced⟩, hl_tail_eq_D, Fin.ext hp_type⟩
 
 /-- **Chung-Feller Theorem (uniform distribution)** — proved directly from the bijection.
     Each path type has the same count; combined with `balanced_path_total`,
@@ -1027,7 +1020,7 @@ theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n
     Set.ncard (balancedPathsOfType n j) = Set.ncard (balancedPathsOfType n k) := by
   -- Handle n = 0: only j = k = 0 possible, goal is trivially rfl
   by_cases hn : n = 0
-  · subst hn; have hj0 : j = 0 := by omega; have hk0 : k = 0 := by omega; subst hj0; subst hk0; rfl
+  · subst hn; rw [Nat.le_zero.mp hj, Nat.le_zero.mp hk]
   -- General case: n > 0, use the bijection chung_feller_bijection_exists
   have hn' : 0 < n := by omega
   -- Build the Equiv from chung_feller_bijection_exists
@@ -1038,11 +1031,10 @@ theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n
   -- Key fact: type of e.symm(D, m) equals m.val
   have htype_symm : ∀ (x : {D // IsDyckPath D n} × Fin (n + 1)),
       upstepsAboveAxis (e.symm x).val = x.2.val := fun x => by
-    have h : e.toFun (e.symm x) = x := e.right_inv x
-    simp only [Equiv.ofBijective_apply] at h
-    have h2 := congr_arg (·.2.val) h
-    simp only [chungFellerMap] at h2
-    exact h2
+    have h : e (e.symm x) = x := e.apply_symm_apply x
+    calc upstepsAboveAxis (e.symm x).val
+        = (e (e.symm x)).2.val := rfl
+      _ = x.2.val := by rw [h]
   -- Apply Set.ncard_congr with the type-swapping map
   apply Set.ncard_congr
     (fun l (hl : l ∈ balancedPathsOfType n j) =>
@@ -1053,14 +1045,14 @@ theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n
     exact ⟨(e.symm ((e.toFun ⟨l, hl.1⟩).1, ⟨k, by omega⟩)).property,
            htype_symm ((e.toFun ⟨l, hl.1⟩).1, ⟨k, by omega⟩)⟩
   · -- Injectivity: f(l₁) = f(l₂) → l₁ = l₂
-    intro l₁ hl₁ l₂ hl₂ heq
+    intro l₁ l₂ hl₁ hl₂ heq
     -- Val equality → subtype equality → symm-injectivity → pair equality → D₁ = D₂
     have heq_sub : e.symm ((e.toFun ⟨l₁, hl₁.1⟩).1, ⟨k, by omega⟩) =
                    e.symm ((e.toFun ⟨l₂, hl₂.1⟩).1, ⟨k, by omega⟩) :=
       Subtype.ext heq
     have hpair_eq := e.symm.injective heq_sub
     have hD_eq : (e.toFun ⟨l₁, hl₁.1⟩).1 = (e.toFun ⟨l₂, hl₂.1⟩).1 :=
-      congr_arg Prod.fst hpair_eq
+      (Prod.ext_iff.mp hpair_eq).1
     -- Both types are j, so full image equality
     have hj₁ : (e.toFun ⟨l₁, hl₁.1⟩).2.val = j := by rw [htype l₁ hl₁.1, hl₁.2]
     have hj₂ : (e.toFun ⟨l₂, hl₂.1⟩).2.val = j := by rw [htype l₂ hl₂.1, hl₂.2]
@@ -1084,8 +1076,9 @@ theorem chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n
     have hfun_eq : e.toFun ⟨l_sub.val, hl_j.1⟩ = e.toFun l_sub :=
       congr_arg e.toFun hsub
     -- (e.toFun l_sub).1 = D' (from e.right_inv)
-    have hD'_eq : (e.toFun l_sub).1 = D' :=
-      congr_arg Prod.fst (e.right_inv (D', ⟨j, by omega⟩))
+    have hD'_eq : (e.toFun l_sub).1 = D' := by
+      have h : e.toFun l_sub = (D', (⟨j, by omega⟩ : Fin (n + 1))) := e.apply_symm_apply _
+      rw [h]
     -- e.toFun ⟨l', hl'.1⟩ = (D', ⟨k, _⟩) since type(l') = k
     have hk_fin : (e.toFun ⟨l', hl'.1⟩).2 = ⟨k, by omega⟩ :=
       Fin.ext (by rw [htype l' hl'.1, hl'.2])

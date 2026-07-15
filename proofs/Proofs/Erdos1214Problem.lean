@@ -89,27 +89,50 @@ theorem support_2pow2 : (2 ^ 2 - 1 : ℕ).primeFactors = {3} := by norm_num
 theorem support_2pow3 : (2 ^ 3 - 1 : ℕ).primeFactors = {7} := by norm_num
 
 /-- supp(2^4 - 1) = {3, 5}: two primes appear at n = 4. -/
-theorem support_2pow4 : (2 ^ 4 - 1 : ℕ).primeFactors = {3, 5} := by norm_num
+theorem support_2pow4 : (2 ^ 4 - 1 : ℕ).primeFactors = {3, 5} := by
+  have h : (2 ^ 4 - 1 : ℕ) = 3 * 5 := by norm_num
+  rw [h, Nat.primeFactors_mul (by norm_num) (by norm_num),
+    Nat.Prime.primeFactors (by norm_num), Nat.Prime.primeFactors (by norm_num)]
+  rfl
 
 /-- supp(2^5 - 1) = {31}: Mersenne prime at n = 5. -/
 theorem support_2pow5 : (2 ^ 5 - 1 : ℕ).primeFactors = {31} := by norm_num
 
 /-- supp(3^2 - 1) = {2}. -/
-theorem support_3pow2 : (3 ^ 2 - 1 : ℕ).primeFactors = {2} := by norm_num
+theorem support_3pow2 : (3 ^ 2 - 1 : ℕ).primeFactors = {2} := by
+  have h : (3 ^ 2 - 1 : ℕ) = 2 ^ 3 := by norm_num
+  rw [h, Nat.primeFactors_prime_pow (by norm_num) (by norm_num)]
 
 /-- supp(3^3 - 1) = {2, 13}. -/
-theorem support_3pow3 : (3 ^ 3 - 1 : ℕ).primeFactors = {2, 13} := by norm_num
+theorem support_3pow3 : (3 ^ 3 - 1 : ℕ).primeFactors = {2, 13} := by
+  have h : (3 ^ 3 - 1 : ℕ) = 2 * 13 := by norm_num
+  rw [h, Nat.primeFactors_mul (by norm_num) (by norm_num),
+    Nat.Prime.primeFactors (by norm_num), Nat.Prime.primeFactors (by norm_num)]
+  rfl
 
 /-- supp(4^3 - 1) = {3, 7}. -/
-theorem support_4pow3 : (4 ^ 3 - 1 : ℕ).primeFactors = {3, 7} := by norm_num
+theorem support_4pow3 : (4 ^ 3 - 1 : ℕ).primeFactors = {3, 7} := by
+  have h : (4 ^ 3 - 1 : ℕ) = 3 ^ 2 * 7 := by norm_num
+  rw [h, Nat.primeFactors_mul (by norm_num) (by norm_num),
+    Nat.primeFactors_prime_pow (by norm_num) (by norm_num),
+    Nat.Prime.primeFactors (by norm_num)]
+  rfl
 
 /-- The support sequences for 2 and 3 differ at n = 2: {3} ≠ {2}. -/
 theorem two_three_support_differ :
-    (2 ^ 2 - 1 : ℕ).primeFactors ≠ (3 ^ 2 - 1 : ℕ).primeFactors := by norm_num
+    (2 ^ 2 - 1 : ℕ).primeFactors ≠ (3 ^ 2 - 1 : ℕ).primeFactors := by
+  rw [support_3pow2]
+  have h : (2 ^ 2 - 1 : ℕ) = 3 := by norm_num
+  rw [h, Nat.Prime.primeFactors (by norm_num)]
+  decide
 
 /-- The support sequences for 2 and 4 differ at n = 3: {7} ≠ {3, 7}. -/
 theorem two_four_support_differ_n3 :
-    (2 ^ 3 - 1 : ℕ).primeFactors ≠ (4 ^ 3 - 1 : ℕ).primeFactors := by norm_num
+    (2 ^ 3 - 1 : ℕ).primeFactors ≠ (4 ^ 3 - 1 : ℕ).primeFactors := by
+  rw [support_4pow3]
+  have h : (2 ^ 3 - 1 : ℕ) = 7 := by norm_num
+  rw [h, Nat.Prime.primeFactors (by norm_num)]
+  decide
 
 /-
 ## ZMod Order Characterization
@@ -176,10 +199,10 @@ theorem equal_support_implies_equal_orders (p : ℕ) (hp : p.Prime) (x y : ℤ)
     · exact h0
   apply Nat.dvd_antisymm
   · -- ord_p(x) | ord_p(y): (y:ZMod p)^(ord_p(y)) = 1, hypothesis transfers
-    rw [← orderOf_dvd_iff_pow_eq_one, ← prime_dvd_pow_sub_one_iff_zmod p hp]
+    rw [orderOf_dvd_iff_pow_eq_one, ← prime_dvd_pow_sub_one_iff_zmod p hp]
     exact (h _ hoy).mpr (by rw [prime_dvd_pow_sub_one_iff_zmod p hp]; exact pow_orderOf_eq_one _)
   · -- ord_p(y) | ord_p(x): symmetric
-    rw [← orderOf_dvd_iff_pow_eq_one, ← prime_dvd_pow_sub_one_iff_zmod p hp]
+    rw [orderOf_dvd_iff_pow_eq_one, ← prime_dvd_pow_sub_one_iff_zmod p hp]
     exact (h _ hox).mp (by rw [prime_dvd_pow_sub_one_iff_zmod p hp]; exact pow_orderOf_eq_one _)
 
 /-

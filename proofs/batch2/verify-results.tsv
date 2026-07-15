@@ -160,7 +160,7 @@ BallotProblemOQ01OQ02OQ01OQ02OQ01	RESIDUAL	unknown-const:Set.ncard_biUnion
 BallotProblemOQ01OQ02OQ04	GREEN	
 BallotProblemOQ01OQ04	RESIDUAL	proof-drift
 BallotProblemOQ01OQ04Core	GREEN	
-BallotProblemOQ01OQ04OQ01	RESIDUAL	proof-drift
+BallotProblemOQ01OQ04OQ01	GREEN	
 BallotProblemOQ02OQ02	GREEN	
 BallotProblemOQ02OQ02OQ05	GREEN	
 BallotProblemOQ02OQ03	GREEN	
@@ -597,7 +597,7 @@ ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02	GREEN
 ElementaryQuadraticReciprocityOQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ01OQ02	GREEN	
-ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
+ElementaryQuadraticReciprocityOQ03OQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ02OQ03	RESIDUAL	proof-drift
 ElementaryQuadraticReciprocityOQ03OQ03	GREEN	
 Erdos1000OQ01	GREEN	
@@ -617,7 +617,7 @@ Erdos1006OQ03	GREEN
 Erdos1006OQ04	GREEN	
 Erdos1006OQ04Decidability	GREEN	unclassified
 Erdos1006Problem	GREEN	
-Erdos1007OQ01	RESIDUAL	proof-drift
+Erdos1007OQ01	GREEN
 Erdos1007OQ01OQ01	GREEN	
 Erdos1007OQ04	GREEN	
 Erdos1007OQ05	RESIDUAL	instance-synth
@@ -630,7 +630,7 @@ Erdos1009OQ01	GREEN
 Erdos1009OQ02Problem	GREEN	
 Erdos1009Problem	GREEN	
 Erdos100OQ01	RESIDUAL	proof-drift
-Erdos100OQ01WIP01	RESIDUAL	proof-drift
+Erdos100OQ01WIP01	GREEN
 Erdos100OQ02	GREEN	
 Erdos100OQ02OQ02	GREEN	
 Erdos1010OQ01	GREEN	
@@ -903,13 +903,13 @@ Erdos119Problem	GREEN
 Erdos11Problem	GREEN	
 Erdos1201Problem	RESIDUAL	type-mismatch
 Erdos1202Problem	GREEN	
-Erdos1206Problem	RESIDUAL	proof-drift
+Erdos1206Problem	GREEN	
 Erdos1208Problem	GREEN	v4.31-migrated
 Erdos120Problem	GREEN
 Erdos1211Problem	GREEN	
 Erdos1212Problem	GREEN	
 Erdos1213Problem	GREEN	
-Erdos1214Problem	RESIDUAL	proof-drift
+Erdos1214Problem	GREEN	
 Erdos1216Problem	GREEN	
 Erdos1217Problem	GREEN	
 Erdos121Problem	GREEN	
@@ -938,7 +938,7 @@ Erdos147Problem	GREEN
 Erdos148Problem	GREEN	
 Erdos149Problem	GREEN	
 Erdos14Problem	GREEN	
-Erdos14UniqueSums	RESIDUAL	proof-drift
+Erdos14UniqueSums	GREEN	
 Erdos150Problem	GREEN	
 Erdos152OQ01	RESIDUAL	type-mismatch
 Erdos152Problem	RESIDUAL	type-mismatch

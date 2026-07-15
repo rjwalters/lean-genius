@@ -1,3 +1,20 @@
+# DOCTOR SINGLE-PROOF BATCH 18 (8-slot, #38065, 2026-07-15)
+
+**+7 GREEN**: BallotProblemOQ01OQ04OQ01 (OPUS 48min/385k — the recovered file: List.get? fully removed
+-> l[i]?+getElem? lemmas; List.Perm ~ now scoped -> open scoped List; #38611 m=0 boundary repair via
+index mod length; unblocks sibling re-export BallotProblemOQ01OQ04), ElementaryQuadraticReciprocityOQ03OQ02OQ01
+(PARENT unblocks OQ03OQ02OQ03: split_ifs now unifies identical shared ite conditions -> recount bullets;
+jacobiSym.mul_right needs NeZero -> mul_right'), Erdos100OQ01WIP01 (PARENT unblocks Erdos100OQ01: Nat.card_Icc;
+set_option before docstring), Erdos1206Problem (#38611: original unsound — Filter.Eventually.of_forall proved
+a claim false at N=1 + too-weak axiom; fixed to ∀ᶠ atTop ⟨2,…⟩ + strengthened axiom k<N), Erdos1214Problem
+(Nat.primeFactors literal no longer closes via norm_num/decide -> decompose), Erdos14UniqueSums (set without
+with = opaque to simp/omega/nlinarith), Erdos1007OQ01 (wildcard Fin matches must be exhaustive for simp).
+Repairs #38611: Erdos1206, BallotProblemOQ01OQ04OQ01.
+
+INCIDENT-2 (my error): resetting the 8 worktrees to slotN-idle after collision-1 CLOBBERED doctor-b while
+the Ballot Opus agent was still live there -> it recovered by rebuilding in mig-ballot-recover. LESSON:
+never reset/re-checkout a worktree without confirming no agent is live in it (check docker ps + file mtime).
+
 # DOCTOR SINGLE-PROOF BATCH 17 (8-slot, all SONNET, post-/login wave, #38065, 2026-07-15)
 
 **+4 GREEN**: Erdos1026OQ05Extremal ((natExpr:ℤ) pushes cast to leaves -> ((n:ℕ):ℤ); apply f ⟨⟩ ->
