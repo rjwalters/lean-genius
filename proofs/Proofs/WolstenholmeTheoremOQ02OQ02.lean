@@ -39,13 +39,13 @@ g^m · S = S by reindexing via x ↦ g·x. Since g^m ≠ 1, S = 0.
 lemma sum_units_pow_eq_zero (m : ℕ) (hm : ¬((p - 1) ∣ m)) (hp2 : 2 ≤ p) :
     ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ m = 0 := by
   -- Get a generator g of the cyclic group (ZMod p)ˣ
-  obtain ⟨g, hg⟩ := IsCyclic.exists_monoid_generator (α := (ZMod p)ˣ)
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
   -- g^m ≠ 1 since orderOf g = |group| = p-1 and (p-1) ∤ m
   have hgm : g ^ m ≠ 1 := by
     intro heq
     apply hm
-    rw [← ZMod.card_units_eq_totient p, ← Nat.totient_prime hp.out,
-        ← orderOf_eq_card_of_forall_mem_zpowers hg]
+    rw [← Nat.totient_prime hp.out, ← ZMod.card_units_eq_totient p,
+        Fintype.card_eq_nat_card, ← orderOf_eq_card_of_forall_mem_zpowers hg]
     exact orderOf_dvd_of_pow_eq_one heq
   -- Key: (↑g)^m * S = S by reindexing x ↦ g*x
   set S := ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ m with hS_def
@@ -54,7 +54,7 @@ lemma sum_units_pow_eq_zero (m : ℕ) (hm : ¬((p - 1) ∣ m)) (hp2 : 2 ≤ p) :
     conv_rhs => rw [show (Finset.univ : Finset (ZMod p)ˣ) =
       Finset.univ.map (Equiv.mulLeft g).toEmbedding from
       (Finset.map_univ_equiv _).symm]
-    simp only [Finset.sum_map, Equiv.toEmbedding_apply, Equiv.mulLeft_apply,
+    simp only [Finset.sum_map, Equiv.toEmbedding_apply, Equiv.coe_mulLeft,
                Units.val_mul, mul_pow]
   -- (↑g)^m ≠ 1 in ZMod p (from g^m ≠ 1 as a unit)
   have hne : (↑g : ZMod p) ^ m ≠ 1 := by
@@ -84,7 +84,7 @@ lemma choose_pred_neg_one_pow (k : ℕ) (hk : k ≤ p - 1) (hp5 : 5 ≤ p) :
       exact fun hdvd => absurd (hp.out.dvd_factorial.mp hdvd) (by omega)
     exact mul_left_cancel₀ hne h
   -- Cast the ℕ identity k! * C(n, k) = n.descFactorial k
-  rw [← Nat.cast_mul, Nat.factorial_mul_choose hk]
+  rw [← Nat.cast_mul, ← Nat.descFactorial_eq_factorial_mul_choose]
   -- Now show: ((p-1).descFactorial k : ZMod p) = (k! : ZMod p) * (-1)^k
   rw [mul_comm]
   -- Prove by induction on k
@@ -96,7 +96,7 @@ lemma choose_pred_neg_one_pow (k : ℕ) (hk : k ≤ p - 1) (hp5 : 5 ≤ p) :
     -- Need: (p - 1 - k : ℕ) cast to ZMod p equals -(k + 1 : ℕ)
     have h_sum : (p - 1 - k) + (k + 1) = p := by omega
     have : ((p - 1 - k : ℕ) : ZMod p) = -((k + 1 : ℕ) : ZMod p) := by
-      have hp0 : ((p : ℕ) : ZMod p) = 0 := ZMod.natCast_self_eq_zero
+      have hp0 : ((p : ℕ) : ZMod p) = 0 := ZMod.natCast_self p
       have h_add : ((p - 1 - k : ℕ) : ZMod p) + ((k + 1 : ℕ) : ZMod p) = 0 := by
         rw [← Nat.cast_add, h_sum, hp0]
       exact eq_neg_of_add_eq_zero_left h_add
@@ -143,7 +143,7 @@ private lemma b_sq_eq_inv_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) (k : ℕ)
       (-1) ^ (k - 1) := by
     exact_mod_cast congrArg (Nat.cast : ℕ → ZMod p) h_mul ▸ h_choose
   have h_b : ((Nat.choose p k / p : ℕ) : ZMod p) = (-1) ^ (k - 1) * ((k : ℕ) : ZMod p)⁻¹ := by
-    rw [← h_zmod, mul_comm, mul_assoc, mul_inv_cancel₀ hk_ne, mul_one]
+    rw [← h_zmod, mul_comm, ← mul_assoc, inv_mul_cancel₀ hk_ne, one_mul]
   rw [h_b, mul_pow, ← pow_mul, show (k - 1) * 2 = 2 * (k - 1) from by ring]
   simp [neg_one_sq, one_pow, pow_mul, one_mul]
 
@@ -165,37 +165,45 @@ lemma p_dvd_sum_b_sq (hp' : Nat.Prime p) (h5 : 5 ≤ p) :
   have h_fermat : ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p)⁻¹ ^ 2 =
       ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p) ^ (2 * (p - 2)) := by
     apply Finset.sum_congr rfl; intro k hk
-    rw [inv_pow, ← pow_mul]
-    congr 1
     -- a⁻¹ = a^(p-2) via Fermat's little theorem
     have hflt := ZMod.pow_card_sub_one_eq_one (h_ne k hk)
-    rw [ZMod.card p] at hflt
-    have : ((k : ℕ) : ZMod p) * ((k : ℕ) : ZMod p) ^ (p - 2) = 1 := by
-      rw [← pow_succ, show p - 2 + 1 = p - 1 from by omega, hflt]
-    calc ((k : ℕ) : ZMod p)⁻¹
-        = ((k : ℕ) : ZMod p)⁻¹ * 1 := (mul_one _).symm
-      _ = ((k : ℕ) : ZMod p)⁻¹ * (((k : ℕ) : ZMod p) * ((k : ℕ) : ZMod p) ^ (p - 2)) := by
-            rw [this]
-      _ = ((k : ℕ) : ZMod p) ^ (p - 2) := by
-            rw [← mul_assoc, inv_mul_cancel₀ (h_ne k hk), one_mul]
+    have hmul : ((k : ℕ) : ZMod p) * ((k : ℕ) : ZMod p) ^ (p - 2) = 1 := by
+      rw [mul_comm, ← pow_succ, show p - 2 + 1 = p - 1 from by omega, hflt]
+    have hkinv : ((k : ℕ) : ZMod p)⁻¹ = ((k : ℕ) : ZMod p) ^ (p - 2) := by
+      calc ((k : ℕ) : ZMod p)⁻¹
+          = ((k : ℕ) : ZMod p)⁻¹ * 1 := (mul_one _).symm
+        _ = ((k : ℕ) : ZMod p)⁻¹ * (((k : ℕ) : ZMod p) * ((k : ℕ) : ZMod p) ^ (p - 2)) := by
+              rw [hmul]
+        _ = ((k : ℕ) : ZMod p) ^ (p - 2) := by
+              rw [← mul_assoc, inv_mul_cancel₀ (h_ne k hk), one_mul]
+    rw [hkinv, ← pow_mul, Nat.mul_comm (p - 2) 2]
   rw [h_fermat]
   -- Relate Ico sum to units sum via bijection Units.mk0
   have h_bij : ∑ k ∈ Finset.Ico 1 p, ((k : ℕ) : ZMod p) ^ (2 * (p - 2)) =
       ∑ x : (ZMod p)ˣ, (x : ZMod p) ^ (2 * (p - 2)) := by
     symm
-    apply Finset.sum_nbij' (fun x _ => (x : ZMod p).val) (fun k hk =>
-      Units.mk0 ((k : ℕ) : ZMod p) (h_ne k hk))
-    · intro x _; exact Finset.mem_Ico.mpr
-        ⟨Nat.pos_of_ne_zero (ZMod.val_ne_zero.mpr (Units.ne_zero x)), ZMod.val_lt _⟩
-    · intro _ _; exact Finset.mem_univ _
-    · intro x _; ext; simp [ZMod.natCast_zmod_val]
-    · intro k hk; simp [ZMod.val_natCast_of_lt (show k < p from (Finset.mem_Ico.mp hk).2)]
-    · intro x _; simp [ZMod.natCast_zmod_val]
+    exact Finset.sum_bij'
+      (fun (x : (ZMod p)ˣ) (_ : x ∈ Finset.univ) => (x : ZMod p).val)
+      (fun k hk => Units.mk0 ((k : ℕ) : ZMod p) (h_ne k hk))
+      (fun x _ => Finset.mem_Ico.mpr
+        ⟨Nat.pos_of_ne_zero ((ZMod.val_ne_zero _).mpr (Units.ne_zero x)), ZMod.val_lt _⟩)
+      (fun _ _ => Finset.mem_univ _)
+      (fun x _ => by ext; simp [ZMod.natCast_zmod_val])
+      (fun k hk => by
+        simp [Units.val_mk0,
+          ZMod.val_natCast_of_lt (show k < p from (Finset.mem_Ico.mp hk).2)])
+      (fun x _ => by simp [ZMod.natCast_zmod_val])
   rw [h_bij]
   -- Apply sum_units_pow_eq_zero with m = 2(p-2)
   -- Need: (p-1) ∤ 2(p-2). Since p ≥ 5: 2(p-2) = 2p-4, and
   -- 2p-4 = (p-1) + (p-3), so 2(p-2) mod (p-1) = p-3 ≠ 0.
-  exact sum_units_pow_eq_zero p (2 * (p - 2)) (by omega) (by omega)
+  refine sum_units_pow_eq_zero p (2 * (p - 2)) ?_ (by omega)
+  intro hdvd
+  obtain ⟨c, hc⟩ := hdvd
+  rcases Nat.lt_or_ge c 2 with hc2 | hc2
+  · interval_cases c <;> omega
+  · have h2 : (p - 1) * 2 ≤ (p - 1) * c := Nat.mul_le_mul_left _ hc2
+    omega
 
 /-
 ## Section 4: Wolstenholme's Theorem
