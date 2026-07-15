@@ -65,7 +65,7 @@ def negPartitionRel (α β : Ordinal) (k : ℕ) : Prop :=
 
 /-- ω₁: the first uncountable ordinal.
     This is the order type of the set of all countable ordinals. -/
-noncomputable def omega1 : Ordinal := (Cardinal.aleph 1).ord
+noncomputable def omega1 : Ordinal.{0} := (Cardinal.aleph 1).ord
 
 /-- ω₁²: the ordinal square of ω₁, i.e., ω₁ · ω₁ (ordinal multiplication). -/
 noncomputable def omega1Sq : Ordinal := omega1 * omega1
@@ -95,7 +95,7 @@ def erdos_1169_statement : Prop :=
 -- ============================================================
 
 /-- The Continuum Hypothesis: 2^ℵ₀ = ℵ₁. -/
-def CH : Prop := (2 : Cardinal) ^ Cardinal.aleph0 = Cardinal.aleph 1
+def CH : Prop := (2 : Cardinal.{0}) ^ Cardinal.aleph0 = Cardinal.aleph 1
 
 /-- Hajnal's theorem: Under CH, ω₁² → (ω₁², k)² holds for all finite k.
 
@@ -149,7 +149,7 @@ theorem partition_monotone_clique (α β : Ordinal) (k j : ℕ)
 /-- Monotonicity in the ordinal parameter.
 Property of partition relations; not used in proofs below. -/
 def partition_monotone_ordinal_prop : Prop :=
-    ∀ (α β γ : Ordinal) (k : ℕ),
+    ∀ (α β γ : Ordinal.{0}) (k : ℕ),
       γ ≤ β → ordinalPartitionRel α β k → ordinalPartitionRel α γ k
 
 /-- Under CH, ω₁² → (ω₁², 3)² implies ω₁² → (ω₁², 2)² (pairs).
@@ -165,7 +165,7 @@ theorem erdos_1169_implies_pairs (h : erdos_1169_statement) :
 /-- Connection to Problem #592: the countable ordinal partition problem.
     ω² → (ω², 3)² holds (Specker's theorem). Not used in proofs below. -/
 def connection_to_592_prop : Prop :=
-    ordinalPartitionRel (Ordinal.omega ^ (2 : Ordinal)) (Ordinal.omega ^ (2 : Ordinal)) 3
+    ordinalPartitionRel (Ordinal.omega0.{0} ^ (2 : Ordinal)) (Ordinal.omega0.{0} ^ (2 : Ordinal)) 3
 
 /-- Connection to Problem #118: Erdős asked whether α → (α, 3)² implies
     α → (α, n)² for all n. This was DISPROVED (Schipperus/Darby 1999).
@@ -182,10 +182,10 @@ theorem erdos_1169_stronger_than_118_under_ch (h : CH) :
 -- ============================================================
 
 /-- ω₁ is a limit ordinal. Not used in proofs below. -/
-def omega1_is_limit_prop : Prop := Ordinal.IsLimit omega1
+def omega1_is_limit_prop : Prop := Order.IsSuccLimit omega1
 
 /-- ω < ω₁. Not used in proofs below. -/
-def omega_lt_omega1_prop : Prop := Ordinal.omega < omega1
+def omega_lt_omega1_prop : Prop := Ordinal.omega0 < omega1
 
 /-- ω₁ is a regular cardinal. Not used in proofs below. -/
 def omega1_regular_prop : Prop := omega1.card.ord.cof = omega1.card
