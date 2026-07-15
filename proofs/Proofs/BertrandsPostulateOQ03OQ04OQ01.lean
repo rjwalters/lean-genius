@@ -102,7 +102,8 @@ lemma log_sq_lt_rpow_eventually (C : ℝ) (hC : C > 0) (ε : ℝ) (hε : ε > 0)
     have hCexp_real : C ^ (2 / ε) ≤ (v : ℝ) :=
       le_trans (Nat.le_ceil _) (by exact_mod_cast hCexp_le)
     calc C = (C ^ (2 / ε)) ^ (ε / 2) := by
-            rw [← rpow_mul hC.le]; congr 1; field_simp
+            rw [← rpow_mul hC.le]
+            rw [show (2 / ε) * (ε / 2) = 1 by field_simp, rpow_one]
       _ ≤ (v : ℝ) ^ (ε / 2) := rpow_le_rpow (rpow_nonneg hC.le _) hCexp_real hε2.le
   calc C * (Real.log (v : ℝ)) ^ 2
       ≤ C * (1 / 4 * (v : ℝ) ^ (ε / 2)) :=
@@ -127,7 +128,8 @@ lemma nextPrimeFrom_prime (x : ℕ) : Nat.Prime (nextPrimeFrom x) :=
 
 /-- nextPrimeFrom x ≥ x. -/
 lemma nextPrimeFrom_ge (x : ℕ) : x ≤ nextPrimeFrom x := by
-  have := (Nat.find_spec (Nat.infinite_setOf_prime.exists_gt (x - 1))).2
+  have h : x - 1 < nextPrimeFrom x :=
+    (Nat.find_spec (Nat.infinite_setOf_prime.exists_gt (x - 1))).2
   omega
 
 /-- **Bridge Axiom**: Cramér's gap bound implies nextPrime(x) ≤ x + C · log(x)².
@@ -185,34 +187,18 @@ theorem cramer_implies_primeGapConjecture_eventually (ε : ℝ) (hε : 0 < ε) :
 -- PART 4: Full PrimeGapConjecture via BHP for Small x
 -- ============================================================
 
-/-- **Cramér's conjecture implies PrimeGapConjecture(ε) for all ε > 0.**
+/-- **Cramér's conjecture implies the prime-gap existence property for all ε > 0.**
 
-    For ε ≥ 0.525: use BHP (2001), which is unconditional.
-    For ε < 0.525: use the eventual result + BHP for small x.
-
-    The combination gives PrimeGapConjecture(ε) for ALL x ≥ 2. -/
+    For ε ≥ 0.525 this holds unconditionally (BHP 2001) for every x ≥ 2, and we
+    package that as an eventual statement. For ε < 0.525 the content of Cramér is
+    genuinely *asymptotic*: only for sufficiently large x is the Cramér gap
+    C·log(x)² smaller than x^ε (for small x with ε < 0.525 the interval [x, x+x^ε]
+    is strictly narrower than the BHP interval [x, x+x^0.525], so BHP does **not**
+    supply a prime there — the exponents point the wrong way). Hence the honest,
+    intended-true conclusion is the eventual existence of a prime in [x, x+x^ε]. -/
 theorem cramer_implies_primeGapConjecture (ε : ℝ) (hε : 0 < ε) :
-    PrimeGapConjecture ε := by
-  by_cases h : ε ≥ 0.525
-  · exact prime_gap_conjecture_monotone h BertrandsPostulateOQ03.prime_gap_conjecture_bhp
-  · push_neg at h
-    intro x hx
-    obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp
-                        (cramer_implies_primeGapConjecture_eventually ε hε)
-    by_cases hxN : x ≥ N
-    · obtain ⟨p, hp, hle, hub⟩ := hN x hxN
-      exact ⟨p, hp, by exact_mod_cast hle, hub⟩
-    · push_neg at hxN
-      obtain ⟨p, hp, hle, hub⟩ :=
-        BertrandsPostulateOQ03.prime_gap_conjecture_bhp x hx
-      exact ⟨p, hp, hle, by
-        have hx1 : (x : ℝ) ≥ 1 := by linarith
-        calc (p : ℝ) ≤ x + x ^ (0.525 : ℝ) := hub
-          _ ≤ x + x ^ ε := by
-              have : x ^ ε ≥ x ^ (0.525 : ℝ) := by
-                apply Real.rpow_le_rpow_of_exponent_ge hx1
-                linarith
-              linarith⟩
+    ∀ᶠ x : ℕ in atTop, ∃ p : ℕ, Nat.Prime p ∧ x ≤ p ∧ (p : ℝ) ≤ (x : ℝ) + (x : ℝ) ^ ε :=
+  cramer_implies_primeGapConjecture_eventually ε hε
 
 -- ============================================================
 -- PART 5: The Density Gap — Why ShortIntervalPNT Needs More
@@ -237,14 +223,15 @@ theorem existence_is_weaker_than_density {ε : ℝ} (hε : 0 < ε) :
 /-- **Summary**: The Cramér conjecture bridges the existence hierarchy.
 
     Known: PrimeGapConjecture(0.525) unconditionally (BHP).
-    Cramér: PrimeGapConjecture(ε) for all ε > 0 (this file).
+    Cramér: existence in [x, x+x^ε] for all ε > 0 *eventually* (this file).
     Open: PrimeGapConjecture(0) — even constant-size gaps are unknown.
     Open: ShortIntervalPNT(ε) — density for any ε < 1 (even under Cramér). -/
 theorem cramer_hierarchy :
-    -- (1) Unconditional: existence in [x, x + x^0.525]
+    -- (1) Unconditional: existence in [x, x + x^0.525] for all x ≥ 2
     PrimeGapConjecture 0.525 ∧
-    -- (2) Under Cramér: existence in [x, x + x^ε] for ALL ε > 0 (this file's main result)
-    (∀ ε : ℝ, 0 < ε → PrimeGapConjecture ε) ∧
+    -- (2) Under Cramér: existence in [x, x + x^ε] for ALL ε > 0, eventually
+    (∀ ε : ℝ, 0 < ε →
+      ∀ᶠ x : ℕ in atTop, ∃ p : ℕ, Nat.Prime p ∧ x ≤ p ∧ (p : ℝ) ≤ (x : ℝ) + (x : ℝ) ^ ε) ∧
     -- (3) Under RH: density in [x, x + x^(1/2+ε)] (from parent, not Cramér)
     (PrimeNumberTheorem.RiemannHypothesis →
       ∀ ε : ℝ, 0 < ε → ShortIntervalPNT (1/2 + ε)) :=
