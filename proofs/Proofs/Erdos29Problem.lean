@@ -120,25 +120,32 @@ theorem additive_basis_iff (A : Set ℕ) : IsAdditiveBasis A ↔ CoversAll A := 
 /-- The representation count is o(n^ε) for all ε > 0.
     This means: for all ε > 0, r_A(n) / n^ε → 0 as n → ∞. -/
 def IsEconomical (A : Set ℕ) : Prop :=
-  ∀ ε > 0, Tendsto (fun n => (representationCount A n : ℝ) / (n : ℝ)^ε) atTop (nhds 0)
+  ∀ ε > (0:ℝ), Tendsto (fun n => (representationCount A n : ℝ) / (n : ℝ)^ε) atTop (nhds 0)
 
 /-- Equivalent formulation: for all ε > 0, r_A(n) = o(n^ε). -/
 def IsEconomical' (A : Set ℕ) : Prop :=
-  ∀ ε > 0, ∀ C > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (representationCount A n : ℝ) < C * (n : ℝ)^ε
+  ∀ ε > (0:ℝ), ∀ C > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (representationCount A n : ℝ) < C * (n : ℝ)^ε
 
 theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := by
   -- To prove the equivalence, we can use the fact that the limit definition of o(n^ε) is equivalent to the big-O definition with a constant C.
   apply Iff.intro;
   · intro h ε hε C hC;
     -- By the definition of the limit, for any ε > 0, there exists an N₀ such that for all n ≥ N₀, the ratio is less than C.
-    have h_limit : ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (representationCount A n : ℝ) / (n : ℝ)^ε < C := by
+    have h_limit : ∀ ε > (0:ℝ), ∃ N₀ : ℕ, ∀ n ≥ N₀, (representationCount A n : ℝ) / (n : ℝ)^ε < C := by
       intro ε hε; have := h ε hε; have := this.eventually ( gt_mem_nhds hC ) ; aesop;
-    exact Exists.elim ( h_limit ε hε ) fun N₀ hN₀ => ⟨ N₀ + 1, fun n hn => by have := hN₀ n ( by linarith ) ; rwa [ div_lt_iff₀ ( by norm_cast; exact pow_pos ( by linarith ) _ ) ] at this ⟩;
+    exact Exists.elim ( h_limit ε hε ) fun N₀ hN₀ => ⟨ N₀ + 1, fun n hn => by have := hN₀ n ( by linarith ) ; rwa [ div_lt_iff₀ ( Real.rpow_pos_of_pos ( Nat.cast_pos.mpr ( by omega ) ) _ ) ] at this ⟩;
   · -- To prove the implication from IsEconomical' to IsEconomical, we use the fact that if for all C > 0, there exists an N₀ such that for all n ≥ N₀, r_A(n) < C * n^ε, then the limit of r_A(n) / n^ε as n approaches infinity is 0.
     intro h
-    have h_lim : ∀ ε > 0, ∀ C > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (representationCount A n : ℝ) / (n : ℝ)^ε < C := by
-      exact fun ε hε C hC => by rcases h ε hε C hC with ⟨ N₀, hN₀ ⟩ ; exact ⟨ N₀ + 1, fun n hn => by rw [ div_lt_iff₀ ( by norm_cast; exact pow_pos ( by linarith ) _ ) ] ; exact_mod_cast hN₀ n ( by linarith ) ⟩ ;
-    intro ε hε; rw [ Metric.tendsto_nhds ] ; aesop;
+    have h_lim : ∀ ε > (0:ℝ), ∀ C > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (representationCount A n : ℝ) / (n : ℝ)^ε < C := by
+      exact fun ε hε C hC => by rcases h ε hε C hC with ⟨ N₀, hN₀ ⟩ ; exact ⟨ N₀ + 1, fun n hn => by rw [ div_lt_iff₀ ( Real.rpow_pos_of_pos ( Nat.cast_pos.mpr ( by omega ) ) _ ) ] ; exact_mod_cast hN₀ n ( by linarith ) ⟩ ;
+    intro ε hε
+    rw [ Metric.tendsto_nhds ]
+    intro δ hδ
+    obtain ⟨N₀, hN₀⟩ := h_lim ε hε δ hδ
+    filter_upwards [eventually_ge_atTop N₀] with n hn
+    rw [Real.dist_eq, sub_zero, abs_of_nonneg (div_nonneg (Nat.cast_nonneg _)
+      (Real.rpow_nonneg (Nat.cast_nonneg _) _))]
+    exact hN₀ n hn
 
 -- Standard equivalence of limit definitions
 
@@ -162,6 +169,18 @@ axiom JPSZ_set : Set ℕ
 Unexpected axioms were added during verification: ['harmonicSorry207162', 'Erdos29.JPSZ_is_basis']-/
 /-- The JPSZ set is an additive basis. -/
 axiom JPSZ_is_basis : IsAdditiveBasis JPSZ_set
+
+/- (v4.31: moved before first use — forward references are no longer allowed.) -/
+/-- Representation count bound: r_A(n) ≤ exp(C √(log n)) for JPSZ. -/
+axiom JPSZ_representation_bound :
+  ∃ C > 0, ∀ n ≥ 2, (representationCount JPSZ_set n : ℝ) ≤
+    Real.exp (C * Real.sqrt (Real.log n))
+
+/- (v4.31: moved before first use — forward references are no longer allowed.) -/
+/-- The JPSZ construction is essentially optimal in size. -/
+axiom JPSZ_size_optimal :
+  ∃ C > 0, ∀ N ≥ 1, (Set.ncard (JPSZ_set ∩ Set.Icc 1 N) : ℝ) ≤
+    C * Real.sqrt N * Real.sqrt (Real.log N)
 
 /-- The JPSZ set is economical.
     NOT an independent axiom — follows from JPSZ_representation_bound.
@@ -193,7 +212,9 @@ theorem JPSZ_is_economical : IsEconomical JPSZ_set := by
 
   -- Step 4: C/√(log n) - ε → -ε < 0
   have h_factor : Tendsto (fun n : ℕ => C / Real.sqrt (Real.log (↑n : ℝ)) - ε) atTop (nhds (-ε)) := by
-    have := h_C_div.sub tendsto_const_nhds; rwa [zero_sub] at this
+    have h0 : Tendsto (fun n : ℕ => C / Real.sqrt (Real.log (↑n : ℝ)) - ε) atTop (nhds (0 - ε)) :=
+      h_C_div.sub tendsto_const_nhds
+    rwa [zero_sub] at h0
 
   -- Step 5: C√(log n) - ε·log n = log n · (C/√(log n) - ε) → -∞
   have h_bot : Tendsto (fun n : ℕ => C * Real.sqrt (Real.log (↑n : ℝ)) - ε * Real.log (↑n : ℝ)) atTop atBot := by
@@ -204,7 +225,7 @@ theorem JPSZ_is_economical : IsEconomical JPSZ_set := by
     set s := Real.sqrt (Real.log (↑n : ℝ))
     have hs_ne : s ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hlog_pos)
     have hsq : s * s = Real.log ↑n := Real.mul_self_sqrt hlog_pos.le
-    rw [← hsq]; field_simp; ring
+    rw [← hsq]; field_simp
 
   -- Step 6: exp(C√(log n) - ε·log n) → 0
   have h_exp : Tendsto (fun n : ℕ => Real.exp (C * Real.sqrt (Real.log (↑n : ℝ)) - ε * Real.log (↑n : ℝ))) atTop (nhds 0) :=
@@ -215,14 +236,14 @@ theorem JPSZ_is_economical : IsEconomical JPSZ_set := by
     refine h_exp.congr' ?_
     filter_upwards [eventually_gt_atTop 0] with n hn
     have hnpos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr hn
-    rw [Real.rpow_def_of_pos hnpos, Real.exp_sub]
+    rw [Real.rpow_def_of_pos hnpos, mul_comm ε (Real.log (↑n : ℝ)), Real.exp_sub]
 
   -- Step 8: Squeeze between 0 and exp(C√(log n))/n^ε
   apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
   · filter_upwards with n
-    exact div_nonneg (Nat.cast_nonneg _) (rpow_nonneg (Nat.cast_nonneg _) _)
+    exact div_nonneg (Nat.cast_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
   · filter_upwards [eventually_ge_atTop 2] with n hn
-    exact div_le_div_of_nonneg_right (hbound n hn) (rpow_nonneg (Nat.cast_nonneg _) _)
+    exact div_le_div_of_nonneg_right (hbound n hn) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
 
 /-- The main theorem: Erdős Problem #29 is SOLVED. -/
 theorem erdos_29_solved : Erdos29Statement :=
@@ -272,15 +293,14 @@ theorem JPSZ_density_zero : HasDensityZero JPSZ_set := by
       _ = C * Real.sqrt (Real.log (↑N : ℝ) / (↑N : ℝ)) := by
           rw [Real.sqrt_div hlog_nn, ← Real.mul_self_sqrt (Nat.cast_nonneg N)]
           have : Real.sqrt (↑N : ℝ) ≠ 0 := Real.sqrt_ne_zero'.mpr hNpos
-          field_simp; ring
+          field_simp
+          rw [Real.sqrt_sq (Real.sqrt_nonneg _)]
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Unexpected axioms were added during verification: ['harmonicSorry121130', 'Erdos29.JPSZ_representation_bound']-/
-/-- Representation count bound: r_A(n) ≤ exp(C √(log n)) for JPSZ. -/
-axiom JPSZ_representation_bound :
-  ∃ C > 0, ∀ n ≥ 2, (representationCount JPSZ_set n : ℝ) ≤
-    Real.exp (C * Real.sqrt (Real.log n))
+/- (JPSZ_representation_bound was declared here; moved above JPSZ_is_economical
+   for v4.31, which rejects forward references.) -/
 
 /- ## Comparison with Other Bases -/
 
@@ -307,7 +327,7 @@ theorem univ_not_economical : ¬IsEconomical Set.univ := by
       exact ⟨ fun h => ⟨ by linarith, by omega ⟩, fun h => by omega ⟩;
     rw [ Erdos29.representationCount, h_rep_count, Set.ncard_coe_finset, Finset.card_image_of_injective ] <;> aesop_cat;
   rw [ Filter.tendsto_congr' ( by filter_upwards [ Filter.eventually_gt_atTop 0 ] with n hn; rw [ h_rep_count n hn ] ) ] ; norm_num [ add_div, div_self, ne_of_gt ];
-  exact fun h => absurd ( tendsto_nhds_unique h ( Filter.Tendsto.add ( tendsto_const_nhds.congr' ( by filter_upwards [ Filter.eventually_ne_atTop 0 ] with n hn; aesop ) ) ( tendsto_inverse_atTop_nhds_zero_nat ) ) ) ( by norm_num )
+  exact fun h => absurd ( tendsto_nhds_unique h ( Filter.Tendsto.add ( tendsto_const_nhds.congr' ( by filter_upwards [ Filter.eventually_ne_atTop 0 ] with n hn; aesop ) ) ( tendsto_inv_atTop_nhds_zero_nat ) ) ) ( by norm_num )
 
 /-- The squares are not an additive basis (not every n is sum of two squares). -/
 theorem squares_not_basis : ¬IsAdditiveBasis { n : ℕ | ∃ k : ℕ, n = k^2 } := by
@@ -399,7 +419,7 @@ theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) : ¬IsAdditiveBasis A := 
       apply_rules [ Set.ncard_le_ncard ];
       exact Set.finite_iff_bddAbove.mpr ⟨ ⟨ 6, 6 ⟩, by rintro ⟨ a, b ⟩ ⟨ ha, hb, hab, h ⟩ ; exact ⟨ by linarith, by linarith ⟩ ⟩;
     exact h_card.trans' ( by norm_num );
-  exact h_six_representations.not_lt ( lt_of_le_of_lt ( hS 6 ) ( by norm_num ) )
+  exact absurd ( lt_of_le_of_lt ( hS 6 ) ( by norm_num ) ) ( not_lt.mpr h_six_representations )
 
 /- The JPSZ construction is a "middle ground":
    - Not as thin as Sidon sets (which can't be bases)
@@ -485,10 +505,8 @@ theorem erdos_probabilistic_from_jpsz : ∃ A : Set ℕ, IsAdditiveBasis A ∧ I
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Unexpected axioms were added during verification: ['harmonicSorry153138', 'Erdos29.JPSZ_size_optimal']-/
-/-- The JPSZ construction is essentially optimal in size. -/
-axiom JPSZ_size_optimal :
-  ∃ C > 0, ∀ N ≥ 1, (Set.ncard (JPSZ_set ∩ Set.Icc 1 N) : ℝ) ≤
-    C * Real.sqrt N * Real.sqrt (Real.log N)
+/- (JPSZ_size_optimal was declared here; moved above JPSZ_density_zero
+   for v4.31, which rejects forward references.) -/
 
 /- ## Summary
 

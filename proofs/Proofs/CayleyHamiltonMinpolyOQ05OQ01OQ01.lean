@@ -145,8 +145,16 @@ theorem not_union_proper_subspaces_fin {V : Type*} [AddCommGroup V] [Module K V]
             _ ≤ ∑ _i ∈ s', 1 := Finset.sum_le_sum hcard1
             _ = s'.card := by simp
         have : Fintype.card K ≤ s'.card := by
-          calc Fintype.card K = Set.univ.toFinset.card := by simp
-            _ = (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card := by rw [h_eq]
+          -- v4.31: rewriting with h_eq under `toFinset` is motive-ill-typed
+          -- (the Fintype instance depends on the set); go via membership instead.
+          have hsubu : (Finset.univ : Finset K) ⊆
+              (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset := by
+            intro x _
+            rw [Set.mem_toFinset, h_eq]
+            trivial
+          calc Fintype.card K = (Finset.univ : Finset K).card := Finset.card_univ.symm
+            _ ≤ (⋃ i ∈ s', {t : K | v + t • w ∈ S i}).toFinset.card :=
+                Finset.card_le_card hsubu
             _ ≤ s'.card := this
         omega
       obtain ⟨t, ht⟩ := Set.nonempty_compl.mpr h_bad_ne_univ
@@ -256,8 +264,11 @@ theorem nonderogatory_has_cyclic_vector_fin
                 ≤ ((normalizedFactors μ).map Polynomial.natDegree).sum :=
                   hsuff _ hirr hne
               _ = μ.natDegree := by
-                  rw [← Polynomial.natDegree_multiset_prod hne]
-                  exact (normalizedFactors_prod hμ_ne).symm.natDegree_eq
+                  -- v4.31: natDegree_multiset_prod now takes (0 ∉ t) not (∀ q ∈ t, q ≠ 0)
+                  rw [← Polynomial.natDegree_multiset_prod (normalizedFactors μ)
+                    (fun h0 => hne 0 h0 rfl : (0:K[X]) ∉ normalizedFactors μ)]
+                  rw [UniqueFactorizationMonoid.prod_normalizedFactors_eq hμ_ne,
+                    Polynomial.Monic.normalize_eq_self hμ_monic]
           intro s hirr hne
           induction s using Multiset.induction with
           | empty => simp
@@ -268,7 +279,10 @@ theorem nonderogatory_has_cyclic_vector_fin
                         (fun q hq => hne q (Multiset.mem_cons_of_mem hq))
             have ha_deg : 1 ≤ a.natDegree := by
               rcases Nat.eq_zero_or_pos a.natDegree with h0 | hpos
-              · exfalso; exact ha_irr.1 (isUnit_of_natDegree_eq_zero h0)
+              · exfalso
+                have ha_ne := hne a (Multiset.mem_cons_self a t)
+                exact ha_irr.1 (Polynomial.isUnit_iff_degree_eq_zero.mpr (by
+                  rw [Polynomial.degree_eq_natDegree ha_ne, h0]; rfl))
               · exact hpos
             omega
       _ = n := h_deg

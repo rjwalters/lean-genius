@@ -101,7 +101,7 @@ AreaFromCircumferenceIntegral	GREEN
 AreaOfCircleOQ01OQ02OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ01OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ01OQ01OQ01	GREEN	
-AreaOfCircleOQ01OQ02OQ01OQ03	RESIDUAL	unknown-const:pi_lt_3141593
+AreaOfCircleOQ01OQ02OQ01OQ03	GREEN	
 AreaOfCircleOQ01OQ02OQ02	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier	RESIDUAL	decide-maxrecdepth
@@ -302,7 +302,7 @@ BuffonsNeedleOQ01OQ01OQ04OQ01	RESIDUAL	rewrite-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01Beta	GREEN	
 BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01	GREEN	
 BuffonsNeedleOQ01OQ01OQ05	GREEN	
-BuffonsNeedleOQ01OQ02	RESIDUAL	unknown-const:pi_gt_3141592
+BuffonsNeedleOQ01OQ02	GREEN	
 BuffonsNeedleOQ01OQ04	GREEN	
 BuffonsNeedleOQ02	GREEN	
 BuffonsNeedleOQ02OQ01	GREEN	
@@ -393,7 +393,7 @@ CayleyHamiltonMinpolyOQ03OQ01	GREEN
 CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
 CayleyHamiltonMinpolyOQ04BackwardAristotle	GREEN	
 CayleyHamiltonMinpolyOQ05	GREEN	
-CayleyHamiltonMinpolyOQ05OQ01OQ01	RESIDUAL	unknown-const:isUnit_of_natDegree_eq_zero
+CayleyHamiltonMinpolyOQ05OQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ02	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	RESIDUAL	proof-drift
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	GREEN	
@@ -1094,9 +1094,9 @@ Erdos294Problem	GREEN
 Erdos296Problem	GREEN	
 Erdos297Problem	GREEN	
 Erdos298Problem	GREEN	
-Erdos299Problem	RESIDUAL	unknown-const:Nat.not_eq_zero_of_lt
+Erdos299Problem	GREEN	
 Erdos29OQ02	RESIDUAL	parse-error
-Erdos29Problem	RESIDUAL	unknown-const:JPSZ_representation_bound
+Erdos29Problem	GREEN	
 Erdos2OQ01	GREEN	
 Erdos2OQ01Aristotle	RESIDUAL	proof-drift
 Erdos2Problem	GREEN	
@@ -1190,7 +1190,7 @@ Erdos36Problem	RESIDUAL	unknown-const:white_lower
 Erdos370Problem	GREEN	
 Erdos371Problem	GREEN	
 Erdos372Problem	GREEN	
-Erdos374Problem	RESIDUAL	unknown-const:not_le_of_lt
+Erdos374Problem	GREEN	
 Erdos375Aristotle	GREEN	
 Erdos375Problem	GREEN	
 Erdos377Problem	GREEN	
@@ -1250,7 +1250,7 @@ Erdos424Problem	RESIDUAL	unknown-const:sequence_monotone
 Erdos425Problem	GREEN	
 Erdos426Problem	GREEN	
 Erdos427Problem	GREEN	
-Erdos428Problem	RESIDUAL	unknown-const:primeDensityRatio_nonneg
+Erdos428Problem	GREEN	
 Erdos429Problem	RESIDUAL	type-mismatch
 Erdos42Problem	GREEN	
 Erdos431Problem	GREEN	
@@ -1328,7 +1328,7 @@ Erdos490Aristotle	GREEN	parse-error
 Erdos490OQ01	GREEN	
 Erdos490ProblemAristotle	GREEN	
 Erdos491Problem	GREEN	
-Erdos492Problem	RESIDUAL	unknown-const:Int.frac
+Erdos492Problem	GREEN	
 Erdos494Problem	GREEN	
 Erdos495Problem	GREEN	
 Erdos496Problem	GREEN	
@@ -1350,7 +1350,7 @@ Erdos509Problem	GREEN
 Erdos50Problem	GREEN	
 Erdos510Problem	GREEN	
 Erdos512Aristotle	RESIDUAL	unknown-const:MeasureTheory.integrableOn_const.mpr
-Erdos512Problem	RESIDUAL	unknown-const:MeasureTheory.integrableOn_const.mpr
+Erdos512Problem	GREEN	
 Erdos514Problem	GREEN	
 Erdos515Problem	RESIDUAL	parse-error
 Erdos516Problem	GREEN	
