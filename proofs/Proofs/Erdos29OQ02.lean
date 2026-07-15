@@ -55,8 +55,10 @@ noncomputable def basisRestriction (A : Set ℕ) (N : ℕ) : Finset ℕ :=
 /-- Elements of basisRestriction are in A and ≤ N. -/
 theorem mem_basisRestriction (A : Set ℕ) (N : ℕ) (a : ℕ) :
     a ∈ basisRestriction A N ↔ a ∈ A ∧ a ≤ N := by
-  simp [basisRestriction, Finset.mem_filter, Finset.mem_range]
-  omega
+  simp only [basisRestriction, Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨h1, h2⟩; exact ⟨h2, by omega⟩
+  · rintro ⟨h1, h2⟩; exact ⟨by omega, h1⟩
 
 -- ============================================================
 -- Part III: Counting Argument
@@ -70,7 +72,7 @@ noncomputable def pairSumImage (S : Finset ℕ) : Finset ℕ :=
 theorem pairSumImage_card_le (S : Finset ℕ) :
     (pairSumImage S).card ≤ S.card * S.card := by
   unfold pairSumImage
-  calc (S ×ˢ S).image (fun p => p.1 + p.2) |>.card
+  calc (Finset.image (fun p => p.1 + p.2) (S ×ˢ S)).card
       ≤ (S ×ˢ S).card := Finset.card_image_le
     _ = S.card * S.card := Finset.card_product S S
 
@@ -86,7 +88,7 @@ theorem range_subset_pairSum (A : Set ℕ) (hA : IsAdditiveBasis A) (N : ℕ) :
   rw [Finset.mem_image]
   exact ⟨(a, b), Finset.mem_product.mpr
     ⟨(mem_basisRestriction A N a).mpr ⟨ha, haN⟩,
-     (mem_basisRestriction A N b).mpr ⟨hb, hbN⟩⟩, hab⟩
+     (mem_basisRestriction A N b).mpr ⟨hb, hbN⟩⟩, hab.symm⟩
 
 /-- **Corrected lower bound**: For any additive basis A,
     |A ∩ [0,N]|² ≥ N + 1.
@@ -105,12 +107,11 @@ theorem basis_size_squared_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) (N
     This is the corrected version of the false `basis_size_lower_bound`. -/
 theorem basis_size_lower_bound_correct (A : Set ℕ) (hA : IsAdditiveBasis A) (N : ℕ) :
     Real.sqrt (N + 1 : ℝ) ≤ ((basisRestriction A N).card : ℝ) := by
-  rw [Real.sqrt_le_left]
-  right
-  constructor
-  · exact Nat.cast_nonneg _
-  · rw [sq]
-    exact_mod_cast basis_size_squared_lower_bound A hA N
+  have h : (N + 1 : ℝ) ≤ ((basisRestriction A N).card : ℝ) ^ 2 := by
+    rw [sq]; exact_mod_cast basis_size_squared_lower_bound A hA N
+  calc Real.sqrt (N + 1 : ℝ)
+      ≤ Real.sqrt (((basisRestriction A N).card : ℝ) ^ 2) := Real.sqrt_le_sqrt h
+    _ = ((basisRestriction A N).card : ℝ) := Real.sqrt_sq (by positivity)
 
 -- ============================================================
 -- Part IV: Consistency with Counterexample
