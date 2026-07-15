@@ -54,58 +54,66 @@ theorem colourEdgeCount_total {n : ℕ} (c : EdgeColouring n) (S : Finset (Fin n
   -- Partition: {(i,j) ∈ S×S | i<j ∧ colour=true} ⊔ {... ∧ colour=false} = {(i,j) ∈ S×S | i<j}
   rw [← Finset.card_union_of_disjoint]
   · -- Union = {(i,j) ∈ S×S | i < j}, and its card = C(|S|, 2)
-    congr 1
-    · ext p
+    have hset : ((S ×ˢ S).filter fun p => p.1 < p.2 ∧ c.colour p.1 p.2 = true) ∪
+        ((S ×ˢ S).filter fun p => p.1 < p.2 ∧ c.colour p.1 p.2 = false) =
+        (S ×ˢ S).filter fun p : Fin n × Fin n => p.1 < p.2 := by
+      ext p
       simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_product]
       constructor
       · rintro (⟨h1, h2, _⟩ | ⟨h1, h2, _⟩) <;> exact ⟨h1, h2⟩
       · rintro ⟨h1, h2⟩
-        rcases Bool.eq_true_or_eq_false (c.colour p.1 p.2) with h | h
-        · exact Or.inl ⟨h1, h2, h⟩
-        · exact Or.inr ⟨h1, h2, h⟩
-    · -- |{(i,j) ∈ S×S | i < j}| = C(|S|, 2)
-      -- Proof: strict-order pairs = half of off-diagonal pairs.
-      -- offDiag.card = n*(n-1), and C(n,2) = n*(n-1)/2.
-      rw [Nat.choose_two_right]
-      suffices h : 2 * ((S ×ˢ S).filter fun p : Fin n × Fin n => p.1 < p.2).card =
-          S.card * (S.card - 1) by omega
-      rw [← S.card_offDiag]
-      -- offDiag = filter(<) ∪ filter(>), disjoint, equal halves
-      have hlt_eq : (S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1) =
-          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2)).image Prod.swap := by
-        ext ⟨a, b⟩
-        simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_image, Prod.swap,
-          Prod.exists, Prod.mk.injEq]
-        constructor
-        · rintro ⟨⟨ha, hb⟩, hab⟩; exact ⟨b, a, ⟨⟨hb, ha⟩, hab⟩, rfl, rfl⟩
-        · rintro ⟨c, d, ⟨⟨hc, hd⟩, hcd⟩, rfl, rfl⟩; exact ⟨⟨hd, hc⟩, hcd⟩
-      have hcard_eq : ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2)).card =
-          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
-        rw [hlt_eq, Finset.card_image_of_injective _ Prod.swap_injective]
-      have hunion : (S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2) ∪
-          (S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1) = S.offDiag := by
-        ext ⟨a, b⟩
-        simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_product, Finset.mem_offDiag]
-        constructor
-        · rintro (⟨⟨ha, hb⟩, hab⟩ | ⟨⟨ha, hb⟩, hab⟩)
-          · exact ⟨ha, hb, ne_of_lt hab⟩
-          · exact ⟨ha, hb, ne_of_gt hab⟩
-        · rintro ⟨ha, hb, hab⟩
-          rcases lt_or_gt_of_ne hab with h | h
-          · exact Or.inl ⟨⟨ha, hb⟩, h⟩
-          · exact Or.inr ⟨⟨ha, hb⟩, h⟩
-      have hdisj : Disjoint
-          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2))
-          ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1)) := by
-        rw [Finset.disjoint_filter]
-        intro ⟨a, b⟩ _ h1 h2; exact absurd (lt_trans h1 h2) (lt_irrefl _)
-      have h_union_card := Finset.card_union_of_disjoint hdisj
-      rw [hunion] at h_union_card
-      linarith
+        cases h : c.colour p.1 p.2
+        · exact Or.inr ⟨h1, h2, rfl⟩
+        · exact Or.inl ⟨h1, h2, rfl⟩
+    rw [hset]
+    -- |{(i,j) ∈ S×S | i < j}| = C(|S|, 2)
+    -- Proof: strict-order pairs = half of off-diagonal pairs.
+    -- offDiag.card = n*(n-1), and C(n,2) = n*(n-1)/2.
+    rw [Nat.choose_two_right]
+    suffices h : 2 * ((S ×ˢ S).filter fun p : Fin n × Fin n => p.1 < p.2).card =
+        S.card * (S.card - 1) by omega
+    have hoff : S.offDiag.card = S.card * (S.card - 1) := by
+      rw [Finset.offDiag_card]
+      cases S.card with
+      | zero => simp
+      | succ k => rw [Nat.mul_succ]; simp
+    rw [← hoff]
+    -- offDiag = filter(<) ∪ filter(>), disjoint, equal halves
+    have hlt_eq : (S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1) =
+        ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2)).image Prod.swap := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_image, Prod.swap,
+        Prod.exists, Prod.mk.injEq]
+      constructor
+      · rintro ⟨⟨ha, hb⟩, hab⟩; exact ⟨b, a, ⟨⟨hb, ha⟩, hab⟩, rfl, rfl⟩
+      · rintro ⟨c, d, ⟨⟨hc, hd⟩, hcd⟩, rfl, rfl⟩; exact ⟨⟨hd, hc⟩, hcd⟩
+    have hcard_eq : ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2)).card =
+        ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
+      rw [hlt_eq, Finset.card_image_of_injective _ Prod.swap_injective]
+    have hunion : (S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2) ∪
+        (S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1) = S.offDiag := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_union, Finset.mem_filter, Finset.mem_product, Finset.mem_offDiag]
+      constructor
+      · rintro (⟨⟨ha, hb⟩, hab⟩ | ⟨⟨ha, hb⟩, hab⟩)
+        · exact ⟨ha, hb, ne_of_lt hab⟩
+        · exact ⟨ha, hb, ne_of_gt hab⟩
+      · rintro ⟨ha, hb, hab⟩
+        rcases lt_or_gt_of_ne hab with h | h
+        · exact Or.inl ⟨⟨ha, hb⟩, h⟩
+        · exact Or.inr ⟨⟨ha, hb⟩, h⟩
+    have hdisj : Disjoint
+        ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.1 < p.2))
+        ((S ×ˢ S).filter (fun p : Fin n × Fin n => p.2 < p.1)) := by
+      rw [Finset.disjoint_filter]
+      intro ⟨a, b⟩ _ h1 h2; exact absurd (lt_trans h1 h2) (lt_irrefl _)
+    have h_union_card := Finset.card_union_of_disjoint hdisj
+    rw [hunion] at h_union_card
+    linarith
   · -- Disjoint: true ≠ false
     simp only [Finset.disjoint_filter]
     intro p _ ⟨_, htrue⟩ ⟨_, hfalse⟩
-    exact absurd (htrue.symm.trans hfalse) Bool.true_ne_false
+    exact absurd (htrue.symm.trans hfalse) (by decide)
 
 -- Part II: α-Balanced colourings
 
