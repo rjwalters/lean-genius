@@ -68,7 +68,7 @@ Counting unit circles with many incidences.
 -/
 
 /-- A finite set of points in the plane -/
-def PointSet := Finset Point
+abbrev PointSet := Finset Point
 
 /-- A unit circle contains at least k points from a set -/
 def CircleContainsKPoints (c : UnitCircle) (P : PointSet) (k : ℕ) : Prop :=
@@ -142,7 +142,7 @@ theorem two_points_one_circle :
       exact norm_eq_zero.mp this
     -- From (p-c) + (q-c) = 0, component-wise: c i = (p i + q i) / 2 = m i
     ext i
-    have hi := congr_fun h_zero i
+    have hi : (u + v) i = (0 : Point) i := congrArg (· i) h_zero
     -- PiLp operations are pointwise, so we can reason component-wise
     change (p i - c i) + (q i - c i) = 0 at hi
     change c i = 2⁻¹ * (p i + q i)
@@ -162,7 +162,7 @@ theorem two_points_no_circle :
     calc ‖p - q‖ = ‖(p - c.center) + (c.center - q)‖ := by
           congr 1; abel
       _ ≤ ‖p - c.center‖ + ‖c.center - q‖ := norm_add_le _ _
-  rw [hp, norm_sub_rev, hq] at h1
+  rw [hp, norm_sub_rev c.center q, hq] at h1
   -- h1 : ‖p - q‖ ≤ 1 + 1 = 2, contradicting h : ‖p - q‖ > 2
   linarith
 
@@ -217,11 +217,11 @@ theorem strong_implies_weak : erdos104Conjecture → erdos104WeakConjecture := b
   rcases Nat.eq_zero_or_pos P.card with hn | hn
   · -- n = 0: f(P) ≤ C * 0^{3/2} = 0 ≤ ε * 0² = 0
     have h0 : (P.card : ℝ) = 0 := by exact_mod_cast hn
-    rw [h0, zero_rpow (by norm_num : (3 : ℝ) / 2 ≠ 0), mul_zero] at hbound
+    rw [h0, Real.zero_rpow (by norm_num : (3 : ℝ) / 2 ≠ 0), mul_zero] at hbound
     rw [h0, zero_pow (by norm_num : 2 ≠ 0), mul_zero]
-    linarith [Nat.cast_nonneg (countUnitCircles3 P)]
+    linarith [(Nat.cast_nonneg (countUnitCircles3 P) : (0:ℝ) ≤ (countUnitCircles3 P : ℝ))]
   · -- n ≥ 1
-    set n : ℝ := P.card with hn_def
+    set n : ℝ := (P.card : ℝ) with hn_def
     have hn_pos : 0 < n := Nat.cast_pos.mpr hn
     -- n > (C/ε)² since n ≥ N₀ > (C/ε)²
     have hn_gt : n > (C / ε) ^ 2 :=
@@ -241,7 +241,7 @@ theorem strong_implies_weak : erdos104Conjecture → erdos104WeakConjecture := b
     -- Rewrite n^{3/2} = n * √n
     have h_rpow : n ^ ((3 : ℝ) / 2) = n * Real.sqrt n := by
       rw [show (3 : ℝ) / 2 = 1 + 1 / 2 from by norm_num,
-          rpow_add hn_pos, rpow_one, ← Real.sqrt_eq_rpow]
+          Real.rpow_add hn_pos, Real.rpow_one, ← Real.sqrt_eq_rpow]
     -- √n * √n = n
     have h_sqrt_sq : Real.sqrt n * Real.sqrt n = n :=
       Real.mul_self_sqrt hn_pos.le
