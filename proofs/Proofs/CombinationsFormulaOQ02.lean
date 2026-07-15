@@ -61,9 +61,7 @@ theorem catalan_three : catalan 3 = 5 := by decide
 theorem catalan_four : catalan 4 = 14 := by decide
 
 /-- C₅ = 42. -/
-theorem catalan_five : catalan 5 = 42 := by
-  simp [catalan]
-  norm_num
+theorem catalan_five : catalan 5 = 42 := by decide
 
 /-
 ## Part II: The Fundamental Identity C_n * (n+1) = C(2n,n)
@@ -85,17 +83,16 @@ theorem choose_2n_succ (n : ℕ) :
     simp only [Nat.succ_eq_add_one] at h2
     -- h2: (2*n+2) * C(2*n+1, n) = C(2*n+2, n+1) * (n+1)
     -- Symmetry: C(2n+1, n+1) = C(2n+1, n)
-    have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n := by
-      rw [Nat.choose_symm (show n + 1 ≤ 2 * n + 1 by omega)]
-      congr 1; omega
+    have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n :=
+      Nat.choose_symm_half n
     -- From h1+hsym and h2: C(2n+2, n+2)*(n+2) = C(2n+2, n+1)*(n+1)
     rw [hsym] at h1
     -- h1: (2n+2) * C(2n+1, n) = C(2n+2, n+2) * (n+2)
     -- h2: (2n+2) * C(2n+1, n) = C(2n+2, n+1) * (n+1)
     -- Goal: C(2*(n+1), (n+1)+1) * ((n+1)+1) = C(2*(n+1), n+1) * (n+1)
-    show Nat.choose (2 * (n + 1)) ((n + 1) + 1) * ((n + 1) + 1) =
-         Nat.choose (2 * (n + 1)) (n + 1) * (n + 1)
-    linarith
+    show Nat.choose (2 * n + 1 + 1) ((n + 1) + 1) * ((n + 1) + 1) =
+         Nat.choose (2 * n + 1 + 1) (n + 1) * (n + 1)
+    exact h1.symm.trans h2
 
 /-- **The fundamental Catalan identity**:
     C_n * (n + 1) = C(2n, n).
@@ -108,8 +105,8 @@ theorem catalan_mul_succ (n : ℕ) :
   rw [Nat.sub_mul]
   rw [choose_2n_succ]
   -- goal: C(2n,n) * (n+1) - C(2n,n) * n = C(2n,n)
-  have h : Nat.choose (2 * n) n * n ≤ Nat.choose (2 * n) n * (n + 1) :=
-    Nat.mul_le_mul_left _ (Nat.le_succ n)
+  have h : Nat.choose (2 * n) n * (n + 1) = Nat.choose (2 * n) n * n + Nat.choose (2 * n) n := by
+    ring
   omega
 
 /-- C_n is positive for all n. -/
@@ -133,13 +130,13 @@ abbrev centralBinom (n : ℕ) : ℕ := Nat.choose (2 * n) n
 theorem centralBinom_zero : centralBinom 0 = 1 := by simp
 
 /-- C(2, 1) = 2. -/
-theorem centralBinom_one : centralBinom 1 = 2 := by simp; norm_num
+theorem centralBinom_one : centralBinom 1 = 2 := by decide
 
 /-- C(4, 2) = 6. -/
-theorem centralBinom_two : centralBinom 2 = 6 := by simp; norm_num
+theorem centralBinom_two : centralBinom 2 = 6 := by decide
 
 /-- C(6, 3) = 20. -/
-theorem centralBinom_three : centralBinom 3 = 20 := by simp; norm_num
+theorem centralBinom_three : centralBinom 3 = 20 := by decide
 
 /-- C(2n, n) ≤ 4^n (the standard upper bound).
     Proof: C(2n,n) ≤ ∑_k C(2n,k) = 2^{2n} = 4^n.
@@ -161,9 +158,12 @@ theorem centralBinom_ge_two_pow (n : ℕ) (hn : 1 ≤ n) : 2 ^ n ≤ centralBino
   | zero => omega
   | succ m ih =>
     rcases m with _ | m
-    · simp; norm_num
+    · decide
     · -- C(2(m+2), m+2) = 2 * C(2m+3, m+1) ≥ 2 * C(2m+2, m+1) ≥ 2 * 2^(m+1) = 2^(m+2)
-      have ih' : 2 ^ (m + 1) ≤ centralBinom (m + 1) := ih (by omega)
+      have ih' : 2 ^ (m + 1) ≤ Nat.choose (2 * m + 2) (m + 1) := by
+        have h := ih (by omega)
+        simp only [centralBinom, show 2 * (m + 1) = 2 * m + 2 from by omega] at h
+        exact h
       -- Pascal + symmetry: C(2m+4, m+2) = 2 * C(2m+3, m+1)
       have pascal : Nat.choose (2 * m + 4) (m + 2) =
           Nat.choose (2 * m + 3) (m + 1) + Nat.choose (2 * m + 3) (m + 2) := by
@@ -171,8 +171,8 @@ theorem centralBinom_ge_two_pow (n : ℕ) (hn : 1 ≤ n) : 2 ^ n ≤ centralBino
             show m + 2 = (m + 1) + 1 from by omega]
         exact Nat.choose_succ_succ (2 * m + 3) (m + 1)
       have hsym : Nat.choose (2 * m + 3) (m + 2) = Nat.choose (2 * m + 3) (m + 1) := by
-        rw [Nat.choose_symm (show m + 2 ≤ 2 * m + 3 by omega)]
-        congr 1; omega
+        have h := Nat.choose_symm_half (m + 1)
+        rwa [show 2 * (m + 1) + 1 = 2 * m + 3 from by omega] at h
       have hdouble : Nat.choose (2 * m + 4) (m + 2) = 2 * Nat.choose (2 * m + 3) (m + 1) := by
         rw [pascal, hsym]; ring
       -- Monotonicity: C(2m+3, m+1) ≥ C(2m+2, m+1)
@@ -182,7 +182,7 @@ theorem centralBinom_ge_two_pow (n : ℕ) (hn : 1 ≤ n) : 2 ^ n ≤ centralBino
       show 2 ^ (m + 2) ≤ centralBinom (m + 2)
       simp only [centralBinom]
       calc 2 ^ (m + 2) = 2 * 2 ^ (m + 1) := by ring
-        _ ≤ 2 * Nat.choose (2 * (m + 1)) (m + 1) := by linarith [ih']
+        _ ≤ 2 * Nat.choose (2 * m + 2) (m + 1) := by linarith [ih']
         _ ≤ 2 * Nat.choose (2 * m + 3) (m + 1) := by linarith [hmono]
         _ = Nat.choose (2 * m + 4) (m + 2) := hdouble.symm
         _ = Nat.choose (2 * (m + 2)) (m + 2) := by ring_nf
@@ -194,12 +194,8 @@ theorem centralBinom_ge_two_pow (n : ℕ) (hn : 1 ≤ n) : 2 ^ n ≤ centralBino
 /-- Catalan numbers satisfy C_n ≤ 4^n.
     From C_n * (n+1) = C(2n,n) ≤ 4^n, so C_n ≤ 4^n/(n+1) ≤ 4^n. -/
 theorem catalan_le_four_pow (n : ℕ) : catalan n ≤ 4 ^ n := by
-  rcases n with _ | _ | _ | _ | _
-  · simp [catalan_zero]
-  · simp [catalan_one]
-  · simp [catalan_two]; norm_num
-  · simp [catalan_three]; norm_num
-  · simp [catalan_four]; norm_num
+  rcases lt_or_ge n 5 with h | h
+  · interval_cases n <;> decide
   · -- General case: catalan n ≤ C(2n,n) ≤ 4^n
     -- catalan n = C(2n,n) - C(2n,n+1) ≤ C(2n,n) ≤ 4^n
     calc catalan n = Nat.choose (2 * n) n - Nat.choose (2 * n) (n + 1) := rfl
@@ -214,9 +210,9 @@ private lemma centralBinom_succ_eq (n : ℕ) :
       Nat.choose (2 * n + 1) n + Nat.choose (2 * n + 1) (n + 1) := by
     rw [show 2 * n + 2 = (2 * n + 1) + 1 from by omega]
     exact Nat.choose_succ_succ (2 * n + 1) n
-  have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n := by
-    rw [Nat.choose_symm (show n + 1 ≤ 2 * n + 1 by omega)]
-    congr 1; omega
+  have hsym : Nat.choose (2 * n + 1) (n + 1) = Nat.choose (2 * n + 1) n :=
+    Nat.choose_symm_half n
+  rw [show 2 * (n + 1) = 2 * n + 2 from by omega]
   linarith
 
 /-- Helper: catalan n ≤ catalan (n + 1) for all n. -/
@@ -237,7 +233,7 @@ private lemma catalan_step (n : ℕ) : catalan n ≤ catalan (n + 1) := by
 theorem catalan_mono (m n : ℕ) (hm : 1 ≤ m) (hmn : m ≤ n) :
     catalan m ≤ catalan n := by
   induction hmn with
-  | refl => le_refl _
+  | refl => exact le_refl _
   | step _ ih => exact le_trans ih (catalan_step _)
 
 /-
@@ -282,7 +278,8 @@ theorem catalan_convolution (n : ℕ) :
     rw [_root_.catalan_eq_centralBinom_div, ← hmul, Nat.mul_div_cancel _ (Nat.succ_pos m)]
   -- Use Mathlib's catalan_succ' (convolution over antidiagonal)
   rw [heq (n + 1), _root_.catalan_succ',
-      Finset.Nat.sum_antidiagonal_eq_sum_range_succ]
+      Finset.Nat.sum_antidiagonal_eq_sum_range_succ
+        (fun x y => _root_.catalan x * _root_.catalan y) n]
   apply Finset.sum_congr rfl
   intro k _
   rw [← heq k, ← heq (n - k)]
@@ -291,15 +288,15 @@ theorem catalan_convolution (n : ℕ) :
 
 /-- C₁ = C₀·C₀ = 1. -/
 example : catalan 1 = catalan 0 * catalan 0 := by
-  rw [catalan_one, catalan_zero]; ring
+  rw [catalan_one, catalan_zero]
 
 /-- C₂ = C₀·C₁ + C₁·C₀ = 1+1 = 2. -/
 example : catalan 2 = catalan 0 * catalan 1 + catalan 1 * catalan 0 := by
-  rw [catalan_two, catalan_one, catalan_zero]; ring
+  rw [catalan_two, catalan_one, catalan_zero]
 
 /-- C₃ = C₀·C₂ + C₁·C₁ + C₂·C₀ = 2+1+2 = 5. -/
 example : catalan 3 =
     catalan 0 * catalan 2 + catalan 1 * catalan 1 + catalan 2 * catalan 0 := by
-  rw [catalan_three, catalan_two, catalan_one, catalan_zero]; ring
+  rw [catalan_three, catalan_two, catalan_one, catalan_zero]
 
 end CatalanNumbers
