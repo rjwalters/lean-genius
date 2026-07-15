@@ -18,7 +18,7 @@ References:
 
 import Proofs.Erdos483Problem
 
-open SchursTheorem
+open SchursTheorem hiding schurNumber
 
 namespace Erdos483OQ02
 

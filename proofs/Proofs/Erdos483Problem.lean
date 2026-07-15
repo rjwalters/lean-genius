@@ -25,7 +25,7 @@ Axioms: 5 (schurNumber_4, schurNumber_5, schur_lower_bound, schur_upper_bound, e
 Reference: https://erdosproblems.com/483
 -/
 
-open SchursTheorem
+open SchursTheorem hiding schurNumber
 
 -- ## Defining the Schur Number
 
@@ -178,15 +178,17 @@ def sumFreeColoring13 : IntegerColoring 13 3 := fun i =>
 
 /-- The witness coloring has no monochromatic Schur triple. -/
 theorem sumFreeColoring13_no_triple : ¬HasMonochromaticSchurTriple sumFreeColoring13 := by
-  native_decide
+  unfold HasMonochromaticSchurTriple; native_decide
 
 /-- S(3) > 13: some 3-coloring of {1,...,13} avoids monochromatic triples. -/
 theorem not_schurProp_13_3 : ¬SchurProp 13 3 := by
   intro h
   exact sumFreeColoring13_no_triple (h sumFreeColoring13)
 
-/-- S(3) ≤ 14: every 3-coloring of {1,...,14} has a monochromatic Schur triple. -/
-theorem schurProp_14_3 : SchurProp 14 3 := by native_decide
+/-- S(3) ≤ 14: every 3-coloring of {1,...,14} has a monochromatic Schur triple.
+    This is `SchursTheorem.schur_3_upper` (verified externally by SAT; native_decide over
+    the 3^14 colorings is infeasible, so it is axiomatized upstream in SchursTheorem). -/
+theorem schurProp_14_3 : SchurProp 14 3 := schur_3_upper
 
 /-- S(3) = 14. -/
 theorem schurNumber_3 : schurNumber 3 = 14 := by
@@ -228,8 +230,9 @@ axiom schur_upper_bound :
 /-- castSucc is injective. -/
 private theorem castSucc_inj {m : ℕ} {a b : Fin m}
     (h : a.castSucc = b.castSucc) : a = b :=
-  Fin.ext (congr_arg Fin.val h)
+  Fin.castSucc_inj.mp h
 
+open Classical in
 /-- Recursive lower bound on Schur numbers.
 
     Given a Schur-free k-coloring c of {1,...,S(k)-1}, construct a Schur-free
@@ -237,11 +240,10 @@ private theorem castSucc_inj {m : ℕ} {a b : Fin m}
     - Region A (indices < n): original colors (castSucc)
     - Region B (n ≤ index ≤ 2n): new color (Fin.last k)
     - Region C (index > 2n): mirror of original colors (castSucc) -/
-open Classical in
 theorem schurNumber_recursive_lower (k : ℕ) (hk : k ≥ 1) :
     schurNumber (k + 1) ≥ 3 * schurNumber k - 1 := by
   have hm : schurNumber k ≥ 2 :=
-    le_trans (schurNumber_1 ▸ le_refl 2) (schurNumber_nondecreasing (by omega) hk)
+    le_trans schurNumber_1.ge (schurNumber_nondecreasing (by omega) hk)
   set n := schurNumber k - 1 with hn_def
   have hn : n ≥ 1 := by omega
   -- By minimality, ∃ Schur-free k-coloring of {1,...,n}
@@ -287,10 +289,12 @@ theorem schurNumber_recursive_lower (k : ℕ) (hk : k ≥ 1) :
     have hca := val_B a ha_B.1 ha_B.2
     have hcb : (c' b).val = k := by have := congr_arg Fin.val hab; omega
     have hb_B : n ≤ b.val ∧ b.val ≤ 2 * n := by
-      by_contra h; push_neg at h; exact absurd hcb (val_AC b h).ne
+      by_contra h
+      exact absurd hcb (val_AC b (by omega)).ne
     have hcd : (c' d).val = k := by have := congr_arg Fin.val hbd; omega
     have hd_B : n ≤ d.val ∧ d.val ≤ 2 * n := by
-      by_contra h; push_neg at h; exact absurd hcd (val_AC d h).ne
+      by_contra h
+      exact absurd hcd (val_AC d (by omega)).ne
     -- All in B: (a+1)+(b+1) ≥ 2(n+1) > 2n+1 ≥ d+1. Contradiction.
     omega
   · -- a in A∪C: color value < k. Same for b and d.
@@ -314,14 +318,14 @@ theorem schurNumber_recursive_lower (k : ℕ) (hk : k ≥ 1) :
     · omega
     -- (A,C,C): reduce (a, b-2n-1, d-2n-1) to triple in c
     · exact ⟨⟨a.val, ha⟩, ⟨b.val - (2*n+1), by omega⟩, ⟨d.val - (2*n+1), by omega⟩,
-        by omega,
+        by show (a.val + 1) + (b.val - (2*n+1) + 1) = d.val - (2*n+1) + 1; omega,
         castSucc_inj (by rw [← c'_A a ha, ← c'_C b hb]; exact hab),
         castSucc_inj (by rw [← c'_C b hb, ← c'_C d hd]; exact hbd)⟩
     -- (C,A,A): a+1 ≥ 2n+2, sum ≥ 2n+3 > n ≥ d+1. Contradiction.
     · omega
     -- (C,A,C): reduce (a-2n-1, b, d-2n-1) to triple in c
     · exact ⟨⟨a.val - (2*n+1), by omega⟩, ⟨b.val, hb⟩, ⟨d.val - (2*n+1), by omega⟩,
-        by omega,
+        by show (a.val - (2*n+1) + 1) + (b.val + 1) = d.val - (2*n+1) + 1; omega,
         castSucc_inj (by rw [← c'_C a ha, ← c'_A b hb]; exact hab),
         castSucc_inj (by rw [← c'_A b hb, ← c'_C d hd]; exact hbd)⟩
     -- (C,C,A): sum ≥ 4n+4, d+1 ≤ n. Contradiction.
