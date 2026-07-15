@@ -2364,3 +2364,45 @@ KNOWN-HARD/DEEP/UNSOUND skip-list. **Verdict: N–Z mechanical seam is DRY** —
 ≤3 more genuinely fixable N–Z files remain (would need file-by-file probing of the
 Erdos≥600 residuals, mostly instance-synth/decide-maxrecdepth = deep). Recommend the
 next increment focus on Erdos≥600 instance-synth clusters or declare the batch complete.
+## Increment 47 (Doctor-b, A–M / Erdos<600) — +4 GREEN
+
+Recipes catalogued in rename-map §7ae. TAIL phase: worked mechanical-seam clusters.
+
+GREEN this increment:
+- **CauchySchwarzOQ01OQ01OQ01** (6→0): ROOT CAUSE = output-only implicit `𝕜` in defs
+  (`projCoeff`/`orthProj`/`orthResidual`/`gramSchmidt3`) is a stuck metavar in v4.31
+  ("InnerProductSpace ?m E, first/third args metavars"). Fix: promote `𝕜` to an explicit
+  named param of each def; thread through all call sites. `(𝕜 := 𝕜)` named-arg pinning
+  does NOT work for auto-bound implicits. Plus proof-drift: field_simp+ring for div-cancel;
+  RCLike.norm_conj + RCLike.norm_ofReal (via ℝ-recast) replacing a LOOPING norm simp;
+  sub_eq_zero.mp direct; nlinarith + norm_nonneg lemmas.
+- **ArithmeticSeriesOQ00OQ02OQ01** (6→0): `Ico 1 (n+1)` inside a ℤ/ℚ-valued sum body
+  elaborated its index type as the body field (`HAdd ℕ ℕ ℤ` / `LocallyFiniteOrder ℚ`).
+  Pin `Ico (1 : ℕ) (n+1)`. Downstream omega/linarith were cascades.
+- **BallotProblemOQ03OQ03** (4→0): `lgvDet_nonneg` now needs 5 order hyps → STATEMENT
+  REPAIR: added 3 ordering hypotheses to `lgv_nonneg_standard` wrapper (bare form unprovable).
+  `Nat.one_le_succ` → `Nat.succ_le_succ (Nat.zero_le _)`. choose-index normalize via
+  omega-`show`s + `push_cast; ring` (cast-of-power/product drift). Drop redundant ring_nf.
+- **BezoutIdentityOQ02OQ04** (5→0): `Polynomial.content`/`.IsPrimitive.mul`/`content_mul`
+  now require `[NormalizedGCDMonoid R]` not bare `[GCDMonoid R]` → widen constraint.
+  `Polynomial.content_mul` args now implicit → drop `f g`.
+
+**Statement repairs**: `lgv_nonneg_standard` (BallotProblemOQ03OQ03) gained 3 ordering
+hypotheses required by `lgvDet_nonneg`. Strengthening → intended-true; no weakening/sorry/axiom.
+
+**Reverted (deep-rework, NOT mechanical)**: AmgmInequalityOQ02OQ01OQ02OQ01OQ03 — probed at
+4 errors but clearing the first blocker (elemSymm_gt_eq_zero rename, `generalizing`, sum_range_succ
+pattern) surfaces 6+ delicate induction-drift sites (simp_rw sum_add_distrib no-progress,
+sum_congr unify failures, IH arity change from `generalizing e Y`→`generalizing e`). Genuine
+multi-site reconstruction, not a seam. Reverted whole file.
+
+**Honest remaining A–M / Erdos<600 assessment**: ~663 A–M residuals. Probed ~17 files:
+error counts of 4–8 are common but MOST are genuine multi-site rewrites once the first
+blocker clears (AMGM is the cautionary example). Reliable seam signatures that DO green
+cheaply: (a) instance-synth / elaboration-order single-root failures (Ico index-type,
+NormalizedGCDMonoid widening); (b) output-only-implicit stuck-metavar defs; (c) unknown-const
+renames + implicit-arg-count changes on Mathlib lemmas. Probed 10–18-err deep files:
+ArchimedesMethodOfExhaustion 17, BorsukUlamOQ02 18, AlgebraicNumbersCountableOQ04 12,
+ArithmeticSeriesOQ02OQ02OQ03 13, BinomialTheoremOQ02OQ03 10. Estimate: <10% of remaining
+A–M residuals are mechanical-seam fixable and the seam is thinning; each green now averages
+real proof surgery.

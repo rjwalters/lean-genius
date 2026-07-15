@@ -142,7 +142,7 @@ AreaOfCircleOQ07OQ05OQ01OQ01	GREEN
 AreaOfCircleOQ07OQ05OQ01OQ02	GREEN	
 AreaOfCircleOQ07OQ05OQ02	GREEN	
 ArithmeticSeriesOQ00OQ02	GREEN	
-ArithmeticSeriesOQ00OQ02OQ01	RESIDUAL	instance-synth
+ArithmeticSeriesOQ00OQ02OQ01	GREEN	instance-synth
 ArithmeticSeriesOQ02OQ02OQ03	RESIDUAL	unknown-const:Finset.Nat.antidiagonal
 ArithmeticSeriesOQ02OQ02OQ03OQ01	GREEN	
 ArithmeticSeriesOQ02OQ03	GREEN	
@@ -174,7 +174,7 @@ BallotProblemOQ03OQ01OQ02Helpers	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ02	RESIDUAL	type-mismatch
 BallotProblemOQ03OQ02OQ01	RESIDUAL	proof-drift
 BallotProblemOQ03OQ02OQ03	GREEN	
-BallotProblemOQ03OQ03	RESIDUAL	unknown-const:Nat.one_le_succ
+BallotProblemOQ03OQ03	GREEN	unknown-const:Nat.one_le_succ
 BallotProblemOQ04OQ02	GREEN	
 BallotProblemOQ04OQ02OQ01	GREEN	
 BaselProblemOQ01OQ01	GREEN	
@@ -218,7 +218,7 @@ BezoutIdentityOQ02OQ01OQ02OQ02OQ03	RESIDUAL	parse-error
 BezoutIdentityOQ02OQ01OQ02OQ03	RESIDUAL	type-mismatch
 BezoutIdentityOQ02OQ02	GREEN	unknown-const:euclids_lemma_irreducible
 BezoutIdentityOQ02OQ02OQ01OQ03	GREEN	
-BezoutIdentityOQ02OQ04	RESIDUAL	instance-synth
+BezoutIdentityOQ02OQ04	GREEN	instance-synth
 BezoutIdentityOQ03OQ01OQ01OQ02OQ02	GREEN	
 BezoutIdentityOQ03OQ02OQ01	GREEN	
 BezoutIdentityOQ03OQ03	GREEN	
@@ -364,7 +364,7 @@ CauchySchwarzIntegralOQ01OQ03OQ01	RESIDUAL	unknown-const:eLpNorm_one_eq_lintegra
 CauchySchwarzIntegralOQ02OQ02	RESIDUAL	unknown-const:eLpNorm_mul_le
 CauchySchwarzIntegralOQ02OQ02OQ01	GREEN	
 CauchySchwarzIntegralOQ03	GREEN	
-CauchySchwarzOQ01OQ01OQ01	RESIDUAL	proof-drift
+CauchySchwarzOQ01OQ01OQ01	GREEN	proof-drift
 CauchySchwarzOQ01OQ01OQ02	GREEN	
 CauchySchwarzOQ01OQ01OQ02OQ01	GREEN	
 CauchySchwarzOQ01OQ02	RESIDUAL	instance-synth
