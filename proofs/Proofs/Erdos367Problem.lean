@@ -57,6 +57,17 @@ noncomputable def twoFullPart (n : ℕ) : ℕ :=
   else n
 
 /--
+**Upper Bound: B₂(n) ≤ n**
+
+The 2-full part never exceeds n itself.
+-/
+theorem twoFullPart_le (n : ℕ) : twoFullPart n ≤ n := by
+  unfold twoFullPart
+  split
+  next _ => exact Nat.div_le_self n _
+  next _ => exact le_refl n
+
+/--
 **Alternative Definition via Prime Factorization**
 
 B₂(n) = ∏_{v_p(n) ≥ 2} p^{v_p(n)}.
@@ -151,7 +162,8 @@ theorem strong_bound_k2 : strongBound 2 := by
   unfold productTwoFullParts
   have hIco : Finset.Ico n (n + 2) = {n, n + 1} := by
     ext m; simp only [Finset.mem_Ico, Finset.mem_insert, Finset.mem_singleton]; omega
-  rw [hIco, Finset.prod_insert (show n ∉ ({n + 1} : Finset ℕ) by simp; omega),
+  rw [hIco, Finset.prod_insert (show n ∉ ({n + 1} : Finset ℕ) by
+        simp only [Finset.mem_singleton]; omega),
       Finset.prod_singleton]
   simp only [Nat.cast_mul]
   have h1 : (twoFullPart n : ℝ) ≤ (n : ℝ) := by exact_mod_cast twoFullPart_le n
@@ -175,8 +187,8 @@ lemma strongBound_implies_weakBound {k : ℕ} (h : strongBound k) : weakBound k 
   refine ⟨C, hC, fun n hn => ?_⟩
   have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
   have h_rpow : (n : ℝ) ^ 2 ≤ (n : ℝ) ^ (2 + ε) := by
-    rw [← Real.rpow_natCast (n : ℝ) 2]
-    exact Real.rpow_le_rpow_of_exponent_le hn1 (le_add_of_nonneg_right hε.le)
+    apply pow_le_pow_right₀ hn1
+    omega
   exact (hbound n hn).trans (mul_le_mul_of_nonneg_left h_rpow hC.le)
 
 /-- Erdős conjecture holds for k = 1: ∏B₂(m) ≤ n^{2+ε} for all ε > 0. -/
@@ -190,6 +202,16 @@ theorem weak_bound_k2 : weakBound 2 := strongBound_implies_weakBound strong_boun
 
 van Doorn showed the strong bound fails for k ≥ 3.
 -/
+
+/--
+**van Doorn's Lower Bound**
+
+For k = 3, there exist infinitely many n where the product
+of 2-full parts exceeds n² by a logarithmic factor.
+-/
+axiom van_doorn_lower_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n ≥ N,
+      (productTwoFullParts n 3 : ℝ) ≥ c * (n : ℝ) ^ 2 * Real.log n
 
 /--
 **Strong Bound Fails for k = 3**
@@ -236,16 +258,6 @@ theorem strong_bound_fails_k3 : ¬ strongBound 3 := by
     linarith [mul_div_cancel₀ C (ne_of_gt hc)]
   linarith
 
-/--
-**van Doorn's Lower Bound**
-
-For k = 3, there exist infinitely many n where the product
-of 2-full parts exceeds n² by a logarithmic factor.
--/
-axiom van_doorn_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n ≥ N,
-      (productTwoFullParts n 3 : ℝ) ≥ c * (n : ℝ) ^ 2 * Real.log n
-
 /-
 # Part 7: Properties of the 2-Full Part
 
@@ -264,7 +276,7 @@ private lemma primeFactors_prime_eq (p : ℕ) (hp : p.Prime) :
   · rintro ⟨hq, hqp, -⟩
     exact (hp.eq_one_or_self_of_dvd q hqp).resolve_left hq.one_lt.ne'
   · rintro rfl
-    exact ⟨hp, dvd_refl p, hp.ne_zero⟩
+    exact ⟨hp, dvd_refl _, hp.ne_zero⟩
 
 /- Helper: For a prime p, (p^2).primeFactors = {p} -/
 private lemma primeFactors_prime_sq_eq (p : ℕ) (hp : p.Prime) :
@@ -275,7 +287,7 @@ private lemma primeFactors_prime_sq_eq (p : ℕ) (hp : p.Prime) :
   · rintro ⟨hq, hqp2, -⟩
     exact (hp.eq_one_or_self_of_dvd q (hq.dvd_of_dvd_pow hqp2)).resolve_left hq.one_lt.ne'
   · rintro rfl
-    exact ⟨hp, dvd_pow_self p (by omega), pow_ne_zero 2 hp.ne_zero⟩
+    exact ⟨hp, dvd_pow_self _ (by omega), pow_ne_zero 2 hp.ne_zero⟩
 
 /- Helper: squarefreePart of a prime equals the prime itself -/
 private lemma squarefreePart_prime_eq (p : ℕ) (hp : p.Prime) :
@@ -286,9 +298,8 @@ private lemma squarefreePart_prime_eq (p : ℕ) (hp : p.Prime) :
     apply Finset.filter_true_of_mem
     intro q hq
     rw [Finset.mem_singleton.mp hq]
-    simp [Nat.factorization_prime hp, Finsupp.single_eq_same]
-  rw [hfilt]
-  exact Finset.prod_singleton
+    simp [hp.factorization, Finsupp.single_eq_same]
+  rw [hfilt, Finset.prod_singleton]
 
 /- Helper: squarefreePart of p² is 1 (no primes with exponent exactly 1) -/
 private lemma squarefreePart_prime_sq_eq (p : ℕ) (hp : p.Prime) :
@@ -297,10 +308,10 @@ private lemma squarefreePart_prime_sq_eq (p : ℕ) (hp : p.Prime) :
   rw [primeFactors_prime_sq_eq p hp]
   have hfilt : ({p} : Finset ℕ).filter
       (fun q => (p ^ 2).factorization q = 1) = ∅ := by
-    rw [Finset.filter_eq_empty]
+    rw [Finset.filter_eq_empty_iff]
     intro q hq
     rw [Finset.mem_singleton.mp hq]
-    simp [Nat.factorization_prime_pow hp, Finsupp.single_eq_same]
+    simp [Nat.Prime.factorization_pow hp, Finsupp.single_eq_same]
   rw [hfilt]
   exact Finset.prod_empty
 
@@ -335,17 +346,6 @@ theorem twoFullPart_prime_sq (p : ℕ) (hp : p.Prime) :
 
 /- Note: twoFullPart_mul_coprime (B₂(mn) = B₂(m)·B₂(n) for coprime m,n)
    was removed as it was unused in any proof. The fact is true but not needed. -/
-
-/--
-**Upper Bound: B₂(n) ≤ n**
-
-The 2-full part never exceeds n itself.
--/
-theorem twoFullPart_le (n : ℕ) : twoFullPart n ≤ n := by
-  unfold twoFullPart
-  split
-  next _ => exact Nat.div_le_self n _
-  next _ => exact le_refl n
 
 /--
 **Divisibility: B₂(n) | n**
