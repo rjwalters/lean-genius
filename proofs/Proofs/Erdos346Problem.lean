@@ -30,18 +30,18 @@ def subsetSums (A : Set ℕ) : Set ℕ :=
     { s | ∃ (S : Finset ℕ), (↑S : Set ℕ) ⊆ A ∧ S.sum id = s }
 
 /-- A set is complete if it represents all sufficiently large integers. -/
-def IsComplete (A : Set ℕ) : Prop :=
+def IsCompleteSet (A : Set ℕ) : Prop :=
     ∃ m : ℕ, ∀ n : ℕ, m ≤ n → n ∈ subsetSums A
 
 /- ## Strong completeness and fragility -/
 
 /-- A is strongly complete: removing any finite subset preserves completeness. -/
 def IsStronglyComplete (A : Set ℕ) : Prop :=
-    ∀ B : Finset ℕ, IsComplete (A \ (↑B : Set ℕ))
+    ∀ B : Finset ℕ, IsCompleteSet (A \ (↑B : Set ℕ))
 
 /-- A is fragile: removing any infinite subset destroys completeness. -/
 def IsFragile (A : Set ℕ) : Prop :=
-    ∀ B : Set ℕ, Set.Infinite B → ¬IsComplete (A \ B)
+    ∀ B : Set ℕ, Set.Infinite B → ¬IsCompleteSet (A \ B)
 
 /- ## Lacunary sequences -/
 
