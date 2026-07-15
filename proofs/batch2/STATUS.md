@@ -1,3 +1,86 @@
+# DOCTOR INCREMENT 70 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
+
+Container `dr70` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc70` off origin/feature/issue-37508. **+5 GREEN.** PR #38673.
+Every flip verified in-container `lake build Proofs.X` exit-0 before ledger flip; pushed
+per file. Two coherent families cleared.
+
+## Flips (failure class in parens)
+- **Erdos483Problem + Erdos483OQ02** (elab-drift, family — OQ02 imports parent):
+  `open SchursTheorem` now collides with the file's own root `schurNumber` def (v4.31 makes
+  a root decl + opened-namespace decl of the same name AMBIGUOUS rather than root-wins) →
+  `open SchursTheorem hiding schurNumber` (both files). **native_decide over 3^14 colorings
+  is INFEASIBLE on v4.31** (`schurProp_14_3 : SchurProp 14 3`; observed 34+ min CPU, climbing
+  RAM, OOM-risk) — but SchursTheorem already **axiomatizes this exact fact** as
+  `axiom schur_3_upper : ∀ c : IntegerColoring 14 3, HasMonochromaticSchurTriple c` (SAT-verified
+  upstream). `SchurProp 14 3` is defeq to `schur_3_upper` → `theorem schurProp_14_3 := schur_3_upper`
+  (no NEW axiom; reuses the existing dependency axiom, swaps Lean.ofReduceBool for a stated one).
+  Concrete-single-coloring native_decide (`sumFreeColoring13_no_triple`, 13^3) kept — cheap.
+  Also: `Fin.ext (congr_arg Fin.val h)` → `Fin.castSucc_inj.mp h`; a docstring immediately
+  before `open Classical in` is a v4.31 PARSE ERROR → move `open Classical in` above the
+  docstring; `schurNumber_1 ▸ le_refl 2` triangle → `schurNumber_1.ge`; **push_neg on
+  ¬(a∧b) yields the IMPLICATION form `a → ¬b`, not a disjunction** → route the `val_AC`
+  disjunction argument through `(by omega)`; **omega could not connect `hsum`'s `(↑a : Fin).val`
+  atom with the goal's `(⟨↑a, _⟩ : Fin).val` mk-projection atom** → `show` the reduced ℕ
+  equation (defeq collapses the Fin.mk `.val` projections) then `omega`.
+- **BirthdayProblemOQ01OQ01 + …Aristotle + …OQ03** (parse-error class, 3-file family; root
+  imported by both siblings): `Finset.filter_eq_empty` → `filter_eq_empty_iff` (now
+  `∀ ⦃x⦄, x∈s → ¬p x`; rewrote `collisionCount_eq_zero_iff` to consume the mem-form via
+  `Finset.mem_univ`); `←sum_filter` + `sum_congr rfl` no longer unifies the nested-filter
+  index sets → `unfold` + `Finset.sum_boole` + `Finset.filter_filter` + `Nat.cast_id`;
+  **`Finset.card_offDiag` → `Finset.offDiag_card`** (now yields `s.card*s.card − s.card`, NOT
+  `s.card*(s.card−1)`) → append `Nat.mul_sub_one` to close `n*n−n = n*(n−1)`; **`Finset.card_bij`
+  `i_inj` arg order is now interleaved `a₁ ha₁ a₂ ha₂`** (was `a₁ a₂ ha₁ ha₂`) → insert the `_`;
+  `ne_iff_lt_or_gt` AS A SIMP ARG loops to maxRecDepth → `ext` + `simp only` mem-lemmas +
+  `exact ne_iff_lt_or_gt` (term-mode, no loop); `Finset.filter_subset_filter` no longer proves
+  same-set pred-implication subset → direct `intro x hx; mem_filter; ⟨hx.1, hx.2.1⟩`;
+  `({j}:Finset).compl` field removed → `{j}ᶜ`; `Nat.succ_sub_one` rw now a no-op (push_cast
+  pre-reduced) → drop; `Fintype.card_congr` equiv obligations `simp [hij]` / `simpa using hfij`.
+  OQ03: `collisionProb (fun _ => 1/d)` can't infer implicit `{d}` from an unannotated binder →
+  pin `fun _ : Fin d => …`; `field_simp` now fully closes → drop trailing `ring` (the reported
+  `end`-name mismatch was a cascade of the `No goals` error).
+
+## Deferred (partition A, triaged this increment)
+- **Erdos461Problem** (unknown-const): the `Nat.factors`→`primeFactorsList` rename family is
+  clean and clears ~9 errors (`prod_factors`→`prod_primeFactorsList`,
+  `prime_of_mem_factors`→`prime_of_mem_primeFactorsList`, `factors_one/zero`→`primeFactorsList_one/zero`,
+  `factors_prime`→`primeFactorsList_prime`, `dvd_of_mem_factors`→`dvd_of_mem_primeFactorsList`,
+  `factors_mul`→`perm_primeFactorsList_mul`; also `List.filter_eq_nil.mpr`→`filter_eq_nil_iff.mpr`,
+  `Nat.dvd_gcd.mp`→`Nat.dvd_gcd_iff.mp`, `Finset.card_Icc`→`Nat.card_Icc`,
+  `List.mem_cons_self a l`→`List.mem_cons.mpr (Or.inl rfl)`, nil-case omega→`hp.ne_one`). BUT the
+  file has a GENUINE predicate-encoding inconsistency v4.31 no longer bridges: `comp` is
+  `(…filter (fun x => ¬ x < t)).prod` while `smoothComponent`/`no_small_prime_in_complement` use
+  `fun x => decide (x < t)` / `fun x => ¬ decide (x < t)`, and the `list_prod_filter_mul_not`
+  helper is stated with Bool `!?P`. `¬ x < t` vs `!decide (x<t)` vs `decide (¬ x<t)` are no longer
+  defeq at the filter, breaking `list_prod_filter_mul_not` rw + `no_small_prime_in_complement`
+  application + a linarith-under-DecidableEq + two `dif` unsolved goals. Needs a real filter-predicate
+  unification refactor (make every filter `fun x => decide (x < t)`), not renames. ~8 residual errors.
+  Renames alone were discarded (can't commit a non-green file); redo them first next attempt.
+
+## New systematic seams (rename-map §7ak candidates)
+1. **root-decl vs opened-namespace-decl of the same name is now AMBIGUOUS** (was root-wins):
+   `open Ns hiding foo` when the file also declares `_root_.foo` and Ns exports `foo`.
+2. **native_decide over a `∀ c : (Fin n → Fin k)` Fintype is infeasible for n·log k large**
+   (3^14 hangs 30+ min / OOM-risk). If an imported module axiomatizes the same ∀-statement
+   (SAT-verified upstream), discharge by `:= that_axiom` (defeq) instead — no new axiom.
+3. **push_neg on `¬(a ∧ b)` gives `a → ¬b`** (implication De Morgan), never a disjunction —
+   downstream that wanted `a' ∨ b'` must go through `omega`/explicit, not the push_neg output.
+4. **omega can't see through a `(⟨v, h⟩ : Fin n).val` mk-projection atom** to identify it with a
+   plain `v` atom used elsewhere (e.g. in a hypothesis) → `show` the defeq-reduced ℕ goal first.
+5. **a docstring `/-- … -/` immediately followed by `open X in decl` is a parse error** ("unexpected
+   token 'open'; expected 'lemma'") → put `open X in` ABOVE the docstring.
+6. **`Finset.card_offDiag` → `Finset.offDiag_card`**, subtraction shape `s.card*s.card − s.card`.
+7. **`Finset.card_bij` `i_inj` arg order is interleaved** `a₁ (h₁) a₂ (h₂)`.
+8. **`ne_iff_lt_or_gt` / `Finset.filter_eq_empty` families as SIMP ARGS loop / are gone** —
+   use term-mode `exact ne_iff_lt_or_gt`, and `filter_eq_empty_iff` for the iff.
+9. **`Nat.factors`→`Nat.primeFactorsList` full API rename** (catalog in Erdos461 defer note above).
+10. **unannotated `fun _ => body` at a call site can no longer back-infer an implicit type arg**
+    from the enclosing expected type in some positions → pin the binder (`fun _ : Fin d => …`).
+
+Ledger after increment 70: +5 GREEN (partition A: Erdos483×2, Birthday×3).
+
+---
+
 # DOCTOR INCREMENT 68 (deep-rework partition A: A–M + Erdos < 600, #38065, 2026-07-15)
 
 Container `dr68` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
