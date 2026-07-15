@@ -66,6 +66,7 @@ theorem A_closed_f₃ {x : ℕ} (hx : x ∈ A) : f₃ x ∈ A := InA.step3 hx
 Lower and upper asymptotic density.
 -/
 
+open Classical in
 /-- Counting function: |A ∩ [1, X]| -/
 noncomputable def countingFunction (S : Set ℕ) (X : ℕ) : ℕ :=
   (Finset.range (X + 1)).filter (fun n => n ∈ S ∧ n ≥ 1) |>.card
@@ -99,13 +100,14 @@ theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 The key is that the operations have special structure.
 -/
 
-/-- The Crampin-Hilton exponent τ ≈ 0.900626 -/
-noncomputable def τ : ℝ := Classical.choose crampin_hilton_tau_exists
-
 /-- τ exists and satisfies 6^{-τ} + Σ_{k≥0} (3·2^k)^{-τ} = 1 -/
 axiom crampin_hilton_tau_exists : ∃ τ : ℝ,
     0 < τ ∧ τ < 1 ∧
     (6 : ℝ) ^ (-τ) + ∑' k : ℕ, ((3 : ℝ) * 2 ^ k) ^ (-τ) = 1
+
+/-- The Crampin-Hilton exponent τ ≈ 0.900626 -/
+noncomputable def τ : ℝ := Classical.choose crampin_hilton_tau_exists
+
 
 /-- Numerical value of τ -/
 axiom tau_approx : τ > 0.900 ∧ τ < 0.901
@@ -147,7 +149,7 @@ theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
       n = ops.foldl (fun x f => f x) 1 := by
   change InA n at hn
   induction hn with
-  | base => exact ⟨[], fun _ h => absurd h (List.not_mem_nil _), rfl⟩
+  | base => exact ⟨[], fun _ h => (List.not_mem_nil h).elim, rfl⟩
   | step1 _ ih =>
     obtain ⟨ops, hops, heq⟩ := ih
     refine ⟨ops ++ [f₁], fun f hf => ?_, ?_⟩
@@ -241,8 +243,7 @@ theorem erdos_1134_statement :
   · intro ε hε
     obtain ⟨_, C₂, _, hC₂pos, hbound⟩ := crampin_hilton_theorem ε hε
     exact ⟨C₂, hC₂pos, fun X hX => (hbound X hX).2⟩
-  · obtain ⟨_, htau_lt, _⟩ := crampin_hilton_tau_exists
-    exact htau_lt
+  · exact (Classical.choose_spec crampin_hilton_tau_exists).2.1
 
 /-- Summary of Erdős Problem #1134 -/
 theorem erdos_1134_summary :
