@@ -23,14 +23,14 @@ open scoped Classical
 /- ## Square-free product sets -/
 
 /-- A number is a perfect square. -/
-def IsSquare (n : ℕ) : Prop :=
+def IsPerfectSq (n : ℕ) : Prop :=
     ∃ m : ℕ, n = m * m
 
 /-- A finset `A` is `k`-square-free: no product of `k` distinct
 elements is a perfect square. -/
 def IsKSquareFree (A : Finset ℕ) (k : ℕ) : Prop :=
     ∀ S : Finset ℕ, S ⊆ A → S.card = k →
-      ¬IsSquare (S.prod id)
+      ¬IsPerfectSq (S.prod id)
 
 /-- `F_k(N)`: the maximum size of a `k`-square-free subset of
 `{1,…,N}`. -/
