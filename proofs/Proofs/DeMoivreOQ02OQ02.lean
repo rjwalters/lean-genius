@@ -34,7 +34,7 @@ namespace DeMoivreOQ02OQ02
 
 section PolynomialIdentity
 
-variable {R : Type*} [CommRing R] (n : ℤ)
+variable {R : Type*} [CommRing R]
 
 /-- 2·X·U_k = U_{k+1} + U_{k-1}: rearrangement of the U recurrence -/
 private lemma two_X_U (k : ℤ) :
@@ -44,13 +44,13 @@ private lemma two_X_U (k : ℤ) :
   linear_combination -h
 
 /-- P(m): the main product identity at index m -/
-private def P (m : ℤ) : Prop :=
+private def P (R : Type*) [CommRing R] (n m : ℤ) : Prop :=
   (2 : R[X]) * T R m * U R n = U R (m + n) + U R (n - m)
 
 /-- The paired conjunction used for induction -/
-private def Q (m : ℤ) : Prop := P n m ∧ P n (m - 1)
+private def Q (R : Type*) [CommRing R] (n m : ℤ) : Prop := P R n m ∧ P R n (m - 1)
 
-private lemma Q_zero : Q n 0 := by
+private lemma Q_zero (n : ℤ) : Q R n 0 := by
   constructor
   · -- P(0): 2 * 1 * U n = U n + U n = 2 * U n
     simp [P, T_zero]; ring
@@ -62,54 +62,61 @@ private lemma Q_zero : Q n 0 := by
       have h := T_add_two (R := R) (-1 : ℤ)
       simp only [show (-1 : ℤ) + 2 = 1 from rfl, show (-1 : ℤ) + 1 = 0 from rfl,
                  T_zero, T_one] at h
-      linear_combination -h
+      linear_combination h
     rw [hm1]
-    exact two_X_U n
+    linear_combination two_X_U (R := R) n
 
-private lemma Q_succ (m : ℤ) (ih : Q n m) : Q n (m + 1) := by
+private lemma Q_succ (n : ℤ) (m : ℤ) (ih : Q R n m) : Q R n (m + 1) := by
   obtain ⟨hm, hm1⟩ := ih
-  refine ⟨?_, hm⟩
-  simp only [P, show (m + 1 : ℤ) + n = m + n + 1 from by ring,
-             show n - (m + 1 : ℤ) = n - m - 1 from by ring]
-  have hT := T_add_two (R := R) (m - 1)
-  have hu1 := two_X_U (m + n)
-  have hu2 := two_X_U (n - m)
-  simp only [show m - 1 + 2 = m + 1 from by ring, show m - 1 + 1 = m from by ring] at hT
-  simp only [show m + n + 1 = m + n + 1 from rfl, show m + n - 1 = m - 1 + n from by ring] at hu1
-  simp only [show n - m + 1 = n - (m - 1) from by ring,
-             show n - m - 1 = n - m - 1 from rfl] at hu2
-  simp only [P] at hm hm1
-  simp only [show (m - 1 : ℤ) + n = m - 1 + n from rfl, show n - (m - 1 : ℤ) = n - m + 1 from by ring] at hm1
-  linear_combination 2 * U R n * hT + 2 * X * hm - hm1 - hu1 - hu2
+  refine ⟨?_, ?_⟩
+  · simp only [P, show (m + 1 : ℤ) + n = m + n + 1 from by ring,
+               show n - (m + 1 : ℤ) = n - m - 1 from by ring]
+    have hT := T_add_two (R := R) (m - 1)
+    have hu1 := two_X_U (R := R) (m + n)
+    have hu2 := two_X_U (R := R) (n - m)
+    simp only [show m - 1 + 2 = m + 1 from by ring, show m - 1 + 1 = m from by ring] at hT
+    simp only [show m + n - 1 = m - 1 + n from by ring] at hu1
+    simp only [show n - m + 1 = n - (m - 1) from by ring] at hu2
+    simp only [P] at hm hm1
+    linear_combination 2 * U R n * hT + 2 * X * hm - hm1 + hu1 + hu2
+  · have heq : m + 1 - 1 = m := by ring
+    rw [heq]
+    exact hm
 
-private lemma Q_pred (m : ℤ) (ih : Q n m) : Q n (m - 1) := by
+private lemma Q_pred (n : ℤ) (m : ℤ) (ih : Q R n m) : Q R n (m - 1) := by
   obtain ⟨hm, hm1⟩ := ih
   refine ⟨hm1, ?_⟩
   simp only [P, show (m - 1 : ℤ) - 1 = m - 2 from by ring,
-             show (m - 2 : ℤ) + n = m - 2 + n from rfl,
              show n - (m - 2 : ℤ) = n - m + 2 from by ring]
   have hT := T_add_two (R := R) (m - 2)
-  have hu1 := two_X_U (m - 1 + n)
-  have hu2 := two_X_U (n - m + 1)
+  have hu1 := two_X_U (R := R) (m - 1 + n)
+  have hu2 := two_X_U (R := R) (n - m + 1)
   simp only [show m - 2 + 2 = m from by ring, show m - 2 + 1 = m - 1 from by ring] at hT
   simp only [show m - 1 + n + 1 = m + n from by ring,
              show m - 1 + n - 1 = m - 2 + n from by ring] at hu1
   simp only [show n - m + 1 + 1 = n - m + 2 from by ring,
              show n - m + 1 - 1 = n - m from by ring] at hu2
   simp only [P] at hm hm1
-  simp only [show (m - 1 : ℤ) + n = m - 1 + n from rfl,
-             show n - (m - 1 : ℤ) = n - m + 1 from by ring] at hm1
-  linear_combination 2 * U R n * hT + 2 * X * hm1 - hm - hu1 - hu2
+  simp only [show n - (m - 1 : ℤ) = n - m + 1 from by ring] at hm1
+  linear_combination 2 * U R n * hT + 2 * X * hm1 - hm + hu1 + hu2
 
 /-- **Main polynomial identity**: 2·T_m · U_n = U_{m+n} + U_{n-m} in R[X]
 
 Proved by integer induction (paired), using only the Chebyshev polynomial recurrences. -/
-theorem T_mul_U_product (m : ℤ) : (2 : R[X]) * T R m * U R n = U R (m + n) + U R (n - m) := by
-  suffices h : Q n m from h.1
-  apply Int.induction_on m
-  · exact Q_zero n
-  · intro k ih; exact Q_succ n k ih
-  · intro k ih; exact Q_pred n (-(↑k : ℤ)) ih
+theorem T_mul_U_product (n m : ℤ) : (2 : R[X]) * T R m * U R n = U R (m + n) + U R (n - m) := by
+  suffices h : Q R n m from h.1
+  revert n
+  cases m with
+  | ofNat k =>
+    intro n
+    induction k with
+    | zero => exact Q_zero n
+    | succ k ih => exact Q_succ n _ ih
+  | negSucc k =>
+    intro n
+    induction k with
+    | zero => exact Q_pred n 0 (Q_zero n)
+    | succ k ih => exact Q_pred n _ ih
 
 end PolynomialIdentity
 
