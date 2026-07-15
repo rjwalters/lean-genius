@@ -231,19 +231,23 @@ theorem erdos_299_no_such_sequence :
         have : (a (n + 1) : ℝ) - a n ≥ 0 := by
           have := hmono (Nat.lt_succ_of_le (le_refl n))
           exact sub_nonneg.mpr (by exact_mod_cast le_of_lt this)
-        rw [Real.norm_of_nonneg this] at h
-        exact Nat.sub_le_of_le_add (by exact_mod_cast le_trans h (by linarith [Nat.le_ceil C]))
+        rw [abs_of_nonneg this] at h
+        exact Nat.sub_le_of_le_add (by
+          have h2 : (a (n + 1) : ℝ) ≤ ((⌈C⌉₊ : ℝ) + 1 + a n) := by
+            have h3 : C ≤ (⌈C⌉₊ : ℝ) + 1 := by linarith [Nat.le_ceil C]
+            linarith
+          exact_mod_cast h2)
       exact le_trans hnn (Nat.le_max_right _ _)
     · -- For n < N₀: gap ≤ a(N₀+1) since a is increasing
       push_neg at hn
-      have : a (n + 1) ≤ a (N₀ + 1) := le_of_lt (hmono (by omega : n + 1 < N₀ + 1 + 1))
+      have : a (n + 1) ≤ a (N₀ + 1) := le_of_lt (hmono (by omega : n + 1 < N₀ + 1))
       have : a (n + 1) - a n ≤ a (N₀ + 1) := Nat.sub_le_of_le_add (by omega)
       exact le_trans this (Nat.le_max_left _ _)
   -- Step 2: Bounded gaps → positive density
   have hdens := boundedGaps_implies_positiveDensity a Cnat hCnat_pos hmono hpos hunif
   -- Step 3: 0 ∉ range a (since all values are positive)
   have h0 : (0 : ℕ) ∉ Set.range a := by
-    rintro ⟨n, hn⟩; exact Nat.not_eq_zero_of_lt (hpos n) hn.symm
+    rintro ⟨n, hn⟩; exact (hpos n).ne' hn
   -- Step 4: Bloom's theorem → ∃ finset S with unit fraction sum
   obtain ⟨S, hS_sub, hS_ufs⟩ := bloom_theorem (Set.range a) h0 hdens
   -- Step 5: Construct index set and derive contradiction
@@ -252,7 +256,7 @@ theorem erdos_299_no_such_sequence :
   -- g is a right inverse of a on range a
   have hag : ∀ s, s ∈ (S : Set ℕ) → a (g s) = s := by
     intro s hs
-    exact Function.Injective.invFun_eq hmono.injective (hS_sub hs)
+    exact Function.invFun_eq (hS_sub hs)
   -- g is injective on S (since a is injective)
   have hg_inj : ∀ s₁ ∈ S, ∀ s₂ ∈ S, g s₁ = g s₂ → s₁ = s₂ := by
     intro s₁ h₁ s₂ h₂ hg
@@ -270,8 +274,10 @@ theorem erdos_299_no_such_sequence :
     exact_mod_cast hag s hs
   -- ℚ sum = 1 implies ℝ sum = 1
   have hsum_one : ∑ s ∈ S, (1 : ℝ) / (s : ℝ) = 1 := by
-    have := hS_ufs.2  -- ∑ n ∈ S, (1 : ℚ) / n = 1
-    exact_mod_cast this
+    have h := hS_ufs.2  -- ∑ n ∈ S, (1 : ℚ) / n = 1
+    have h3 := congrArg (fun q : ℚ => (q : ℝ)) h
+    push_cast at h3
+    exact h3
   -- Contradiction: havoid T says sum ≠ 1, but we showed sum = 1
   exact havoid T (hsum_eq.trans hsum_one)
 
