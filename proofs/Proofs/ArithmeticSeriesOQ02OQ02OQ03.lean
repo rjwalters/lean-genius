@@ -73,7 +73,7 @@ def negBin (k : ℕ) : PowerSeries ℕ := geom ^ (k + 1)
 -- ============================================================
 
 /-- The geometric series has all coefficients equal to 1. -/
-theorem coeff_geom (n : ℕ) : PowerSeries.coeff ℕ n geom = 1 := by
+theorem coeff_geom (n : ℕ) : PowerSeries.coeff n geom = 1 := by
   simp [geom, PowerSeries.coeff_mk]
 
 /-- The n-th coefficient of negBin(k) is the simplicial number C(n+k, k).
@@ -82,7 +82,7 @@ theorem coeff_geom (n : ℕ) : PowerSeries.coeff ℕ n geom = 1 := by
     - Step: g^{k+2} = g^{k+1} · g, Cauchy product gives
       Σ C(i+k,k) = C(n+k+1,k+1) by the hockey stick -/
 theorem coeff_negBin (k n : ℕ) :
-    PowerSeries.coeff ℕ n (negBin k) = simplicial k n := by
+    PowerSeries.coeff n (negBin k) = simplicial k n := by
   induction k generalizing n with
   | zero =>
     simp [negBin, pow_one, coeff_geom, simplicial, Nat.choose_zero_right]
@@ -90,16 +90,17 @@ theorem coeff_negBin (k n : ℕ) :
     -- negBin (k+1) = geom * negBin k
     have hprod : negBin (k + 1) = geom * negBin k := by
       simp only [negBin, pow_succ']
-    rw [hprod, map_mul, Finsupp.sum]
+    rw [hprod]
     -- Cauchy product: Σ coeff_i(geom) · coeff_j(negBin k) over antidiagonal
     simp only [PowerSeries.coeff_mul]
     -- Simplify using known coefficients
     conv_lhs =>
       arg 2; ext p; rw [coeff_geom, ih, one_mul]
     -- Convert antidiagonal sum to range sum
-    rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i _ => simplicial k i)]
-    -- This is the hockey stick identity
-    exact hockey_stick k n
+    rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun _ j => simplicial k j),
+        ← hockey_stick k n]
+    -- Reindex the range (reflection) to match the hockey-stick sum
+    exact Finset.sum_range_reflect (fun i => simplicial k i) (n + 1)
 
 -- ============================================================
 -- Part III: The Algebraic Product Formula
@@ -136,19 +137,19 @@ theorem negBin_mul (a b : ℕ) :
     This is the generating function proof the open question requested:
     the algebraic identity pow_add does all the combinatorial work. -/
 theorem parallel_vandermonde_gf (a b n : ℕ) :
-    ∑ p ∈ Finset.Nat.antidiagonal n, simplicial a p.1 * simplicial b p.2 =
+    ∑ p ∈ Finset.antidiagonal n, simplicial a p.1 * simplicial b p.2 =
     simplicial (a + b + 1) n := by
   -- Step 1: LHS = n-th coefficient of negBin(a) · negBin(b)
-  have lhs_eq : ∑ p ∈ Finset.Nat.antidiagonal n,
+  have lhs_eq : ∑ p ∈ Finset.antidiagonal n,
       simplicial a p.1 * simplicial b p.2 =
-      PowerSeries.coeff ℕ n (negBin a * negBin b) := by
+      PowerSeries.coeff n (negBin a * negBin b) := by
     rw [PowerSeries.coeff_mul]
     apply sum_congr rfl
     intro p _
     rw [coeff_negBin, coeff_negBin]
   -- Step 2: RHS = n-th coefficient of negBin(a+b+1)
   have rhs_eq : simplicial (a + b + 1) n =
-      PowerSeries.coeff ℕ n (negBin (a + b + 1)) := by
+      PowerSeries.coeff n (negBin (a + b + 1)) := by
     rw [coeff_negBin]
   -- Step 3: Connect via negBin_mul
   rw [lhs_eq, rhs_eq, negBin_mul]
@@ -175,7 +176,7 @@ theorem check_gf_a1b1n3 : simplicial 3 3 = 20 := by native_decide
 
 /-- The antidiagonal sum: (1·4) + (2·3) + (3·2) + (4·1) = 4+6+6+4 = 20. -/
 theorem check_gf_convolution :
-    ∑ p ∈ Finset.Nat.antidiagonal 3,
+    ∑ p ∈ Finset.antidiagonal 3,
       simplicial 1 p.1 * simplicial 1 p.2 = 20 := by native_decide
 
 end
