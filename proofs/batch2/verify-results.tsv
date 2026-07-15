@@ -246,9 +246,9 @@ BirchSwinnertonDyerOQ06	GREEN
 BirchSwinnertonDyerOQ06OQ02	GREEN	
 BirthdayProblem	GREEN	
 BirthdayProblemOQ01	GREEN	
-BirthdayProblemOQ01OQ01	RESIDUAL	parse-error
-BirthdayProblemOQ01OQ01Aristotle	RESIDUAL	parse-error
-BirthdayProblemOQ01OQ01OQ03	RESIDUAL	parse-error
+BirthdayProblemOQ01OQ01	GREEN	parse-error
+BirthdayProblemOQ01OQ01Aristotle	GREEN	parse-error
+BirthdayProblemOQ01OQ01OQ03	GREEN	parse-error
 BirthdayProblemOQ02OQ01	RESIDUAL	unknown-const:Finset.sum_range_id_eq_sum_range_succ_div_two
 BirthdayProblemOQ03OQ01	GREEN	
 BirthdayProblemOQ03OQ01OQ02	GREEN	
@@ -1313,8 +1313,8 @@ Erdos478Problem	RESIDUAL	type-mismatch
 Erdos479Problem	GREEN	
 Erdos47Problem	GREEN	
 Erdos481Problem	GREEN	
-Erdos483OQ02	RESIDUAL	elab-drift
-Erdos483Problem	RESIDUAL	elab-drift
+Erdos483OQ02	GREEN	elab-drift
+Erdos483Problem	GREEN	elab-drift
 Erdos484Problem	GREEN	
 Erdos485OQ01	PRE-EXISTING	never-compiled:d
 Erdos485OQ02	RESIDUAL	instance-synth

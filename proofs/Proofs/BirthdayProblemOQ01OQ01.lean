@@ -70,16 +70,15 @@ def collisionIndicator (f : Fin n → Fin d) (i j : Fin n) : ℕ :=
 /-- X(f) = 0 iff f is injective (no two people share a birthday). -/
 theorem collisionCount_eq_zero_iff {f : Fin n → Fin d} :
     collisionCount f = 0 ↔ Function.Injective f := by
-  simp only [collisionCount, Finset.card_eq_zero, Finset.filter_eq_empty,
-             Finset.mem_univ, forall_true_left, not_and]
+  rw [collisionCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
   constructor
   · intro h a b hab
     by_contra hne
     rcases lt_or_gt_of_ne hne with hlt | hlt
-    · exact absurd hab (h (a, b) hlt)
-    · exact absurd hab.symm (h (b, a) hlt)
-  · intro hinj ⟨a, b⟩ hlt heq
-    exact absurd (hinj heq) (ne_of_lt hlt)
+    · exact h (Finset.mem_univ (a, b)) ⟨hlt, hab⟩
+    · exact h (Finset.mem_univ (b, a)) ⟨hlt, hab.symm⟩
+  · intro hinj x _ hp
+    exact absurd (hinj hp.2) (ne_of_lt hp.1)
 
 theorem injective_of_zero {f : Fin n → Fin d} (h : collisionCount f = 0) :
     Function.Injective f := collisionCount_eq_zero_iff.mp h
@@ -139,11 +138,8 @@ theorem collisionCount_eq_sum_indicators (f : Fin n → Fin d) :
     collisionCount f =
     ∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2),
       collisionIndicator f p.1 p.2 := by
-  simp only [collisionCount, collisionIndicator, Finset.card_filter, ← Finset.sum_filter]
-  apply Finset.sum_congr rfl
-  intro ⟨i, j⟩ _
-  by_cases h1 : i < j <;> by_cases h2 : f i = f j <;>
-    simp [h1, h2, and_comm (a := i < j)]
+  unfold collisionCount collisionIndicator
+  rw [Finset.sum_boole, Finset.filter_filter, Nat.cast_id]
 
 -- ============================================================
 -- PART VI: Distributional Upper Bound
@@ -158,12 +154,12 @@ theorem card_ordered_pairs (n : ℕ) :
     have hset : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
         (Finset.univ : Finset (Fin n)).offDiag := by
       ext ⟨a, b⟩; simp [Finset.mem_offDiag]
-    rw [hset, Finset.card_offDiag, Finset.card_univ, Fintype.card_fin]
+    rw [hset, Finset.offDiag_card, Finset.card_univ, Fintype.card_fin, Nat.mul_sub_one]
   have h_symm : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card =
       ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)).card :=
     Finset.card_bij (fun p _ => (p.2, p.1))
       (fun ⟨a, b⟩ h => by simp_all)
-      (fun ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ _ _ h => by simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
+      (fun ⟨a₁, b₁⟩ _ ⟨a₂, b₂⟩ _ h => by simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
       (fun ⟨a, b⟩ h => ⟨(b, a), by simp_all, by simp⟩)
   have h_disj : Disjoint ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2))
       ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)) := by
@@ -172,7 +168,9 @@ theorem card_ordered_pairs (n : ℕ) :
   have h_union : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
       (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)) ∪
       (Finset.univ.filter (fun p : Fin n × Fin n => p.2 < p.1)) := by
-    ext ⟨a, b⟩; simp [ne_iff_lt_or_gt]
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, Finset.mem_union, true_and]
+    exact ne_iff_lt_or_gt
   rw [h_union, Finset.card_union_of_disjoint h_disj] at h_offDiag
   omega
 
@@ -183,8 +181,9 @@ theorem collisionCount_le_choose_two (f : Fin n → Fin d) :
   calc (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ f p.1 = f p.2)).card
       ≤ (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2)).card := by
         apply Finset.card_le_card
-        apply Finset.filter_subset_filter
-        intro p _; tauto
+        intro x hx
+        simp only [Finset.mem_filter] at hx ⊢
+        exact ⟨hx.1, hx.2.1⟩
     _ = n.choose 2 := card_ordered_pairs n
 
 -- ============================================================
@@ -207,10 +206,10 @@ theorem card_funs_shared_birthday (n d : ℕ) (i j : Fin n) (hij : i ≠ j) :
     Fintype.card_congr {
       toFun := fun ⟨f, _⟩ ⟨k, _⟩ => f k
       invFun := fun g => ⟨fun k => if h : k = j then g ⟨i, hij⟩ else g ⟨k, h⟩, by
-        simp only [dif_neg hij, dif_pos rfl]⟩
+        simp [hij]⟩
       left_inv := fun ⟨f, hfij⟩ => Subtype.ext (funext fun k => by
         by_cases h : k = j
-        · subst h; simp [hfij]
+        · subst h; simpa using hfij
         · simp [h])
       right_inv := fun g => funext fun ⟨k, hk⟩ => by simp [hk]
     }]
@@ -219,7 +218,7 @@ theorem card_funs_shared_birthday (n d : ℕ) (i j : Fin n) (hij : i ≠ j) :
   -- Fintype.card {k : Fin n // k ≠ j} = n - 1
   rw [Fintype.card_subtype]
   rw [show Finset.univ.filter (fun k : Fin n => k ≠ j) =
-         ({j} : Finset (Fin n)).compl from by ext k; simp [Finset.mem_compl]]
+         ({j} : Finset (Fin n))ᶜ from by ext k; simp [Finset.mem_compl]]
   rw [Finset.card_compl, Fintype.card_fin, Finset.card_singleton]
 
 /-- **Σ_f X(f) = C(n,2) · d^{n-1}** (double counting, proved):
@@ -253,7 +252,6 @@ theorem mean_collisionCount (n d : ℕ) (hd : 0 < d) :
   | zero => simp
   | succ n =>
     push_cast
-    rw [Nat.succ_sub_one]
     field_simp
     ring
 
