@@ -33,9 +33,11 @@ theorem nat_has_one_rep (n : ℕ) : Nonempty (KRep (Set.univ : Set ℕ) 1 n) := 
 theorem singleton_sum_eq (a : ℕ) (f : ℕ → ℕ) : ({a} : Finset ℕ).sum f = f a := by
   sorry
 
-/-- Any k-representation in B is also one in A when B ⊆ A. -/
-theorem lift_rep (A B : Set ℕ) (k n : ℕ) (h : B ⊆ A) (rep : KRep B k n) : KRep A k n := by
-  sorry
+/-- Any k-representation in B is also one in A when B ⊆ A.
+    (Data-carrying: `KRep` is a structure, so this must be a `def`, not a `theorem`.) -/
+def lift_rep (A B : Set ℕ) (k n : ℕ) (h : B ⊆ A) (rep : KRep B k n) : KRep A k n :=
+  { terms := rep.terms, count := rep.count, sum_eq := rep.sum_eq, bound := rep.bound,
+    subset := fun a ha => h (rep.subset a ha) }
 
 /-- If B ⊆ A and B has k-representations, then A does too. -/
 theorem basis_subset_inherit (A B : Set ℕ) (k n : ℕ) (h : B ⊆ A)
