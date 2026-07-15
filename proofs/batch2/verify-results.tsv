@@ -1021,7 +1021,7 @@ Erdos222Problem	GREEN
 Erdos223Problem	RESIDUAL	type-mismatch
 Erdos225Aristotle	GREEN	
 Erdos225Problem	RESIDUAL	proof-drift
-Erdos226Problem	RESIDUAL	unknown-const:Rat.denseRange_ratCast
+Erdos226Problem	GREEN	
 Erdos229Problem	GREEN	
 Erdos230LowerBound	GREEN	
 Erdos230ProblemAristotle	GREEN	
@@ -1262,7 +1262,7 @@ Erdos434Frobenius	GREEN
 Erdos434Problem	RESIDUAL	unknown-const:sylvester_frobenius
 Erdos435Problem	GREEN	
 Erdos436Problem	GREEN	
-Erdos437Aristotle	RESIDUAL	unknown-const:div_le_one_of_le
+Erdos437Aristotle	GREEN	
 Erdos437Problem	GREEN	
 Erdos438Problem	GREEN	
 Erdos439Problem	GREEN	
@@ -2105,7 +2105,7 @@ Hilbert22OQ01OQ03Pseudohyperbolic	GREEN
 Hilbert22OQ01OQ03Universal	GREEN	
 Hilbert22Uniformization	GREEN	
 Hilbert23CalculusVariations	GREEN	
-Hilbert23CalculusVariationsOQ01	RESIDUAL	unknown-const:Ici_diff_left
+Hilbert23CalculusVariationsOQ01	GREEN	
 Hilbert3ScissorsCongruence	GREEN	
 Hilbert4Geodesics	RESIDUAL	instance-synth
 Hilbert5LieGroups	GREEN	elab-drift
