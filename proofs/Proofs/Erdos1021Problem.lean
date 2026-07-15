@@ -75,7 +75,7 @@ def Gk (k : ℕ) : SimpleGraph (Gk_vertex k) where
 
 /-- G_k is bipartite by construction: every edge connects a primary to a pair vertex. -/
 theorem Gk_bipartite (k : ℕ) : ∀ v w : Gk_vertex k,
-    (Gk k).Adj v w → (∃ i, v = Sum.inl i) ↔ (∃ j, w = Sum.inr j) := by
+    (Gk k).Adj v w → ((∃ i, v = Sum.inl i) ↔ (∃ j, w = Sum.inr j)) := by
   intro v w h
   rcases v with i | ⟨⟨a, b⟩, hab⟩ <;> rcases w with j | ⟨⟨c, d⟩, hcd⟩
   · simp [Gk] at h       -- inl/inl: Adj is False
@@ -94,8 +94,12 @@ def cycleGraph (n : ℕ) (hn : n ≥ 3) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1) % n = j.val ∨ (j.val + 1) % n = i.val
   symm.symm := fun i j h => by simp only [or_comm]; exact h
   loopless.irrefl := fun i h => by
-    simp at h
-    omega
+    have hi : i.val < n := i.isLt
+    have hh : (i.val + 1) % n = i.val := h.elim id id
+    rcases Nat.lt_or_ge (i.val + 1) n with hlt | hge
+    · rw [Nat.mod_eq_of_lt hlt] at hh; omega
+    · have he : i.val + 1 = n := by omega
+      rw [he, Nat.mod_self] at hh; omega
 
 /-  G_3 is isomorphic to C_6. -/
 /-
@@ -128,8 +132,11 @@ def isAsympBounded (f g : ℕ → ℝ) : Prop :=
 def isLittleO (f g : ℕ → ℝ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, f n ≤ ε * g n
 
-notation:50 f " ≪ " g => isAsympBounded f g
-notation:50 f " = o(" g ")" => isLittleO f g
+notation:50 f:51 " ≪ " g:51 => isAsympBounded f g
+/-- `f =ₒ g` denotes `isLittleO f g` (v4.31: the earlier `f = o(g)` notation used
+    an atom the parser now rejects; operands are pinned to level 51 so a trailing
+    `→` is not absorbed into the right operand). -/
+notation:50 f:51 " =ₒ " g:51 => isLittleO f g
 
 /-
 ## The Conjecture
@@ -168,7 +175,7 @@ Even ex(n, G_k) = o(n^(3/2)) is unknown.
 
 /-- The weak conjecture: ex(n, G_k) = o(n^(3/2)). -/
 def weak_conjecture : Prop :=
-  ∀ k ≥ 3, (fun n => exGk k n) = o(fun n => (n : ℝ) ^ (3/2 : ℝ))
+  ∀ k ≥ 3, (fun n => exGk k n) =ₒ (fun n => (n : ℝ) ^ (3/2 : ℝ))
 
 /-- The main conjecture implies the weak conjecture.
     Proof reduces to showing C·n^{3/2-c} ≤ ε·n^{3/2} for large n,
