@@ -60,11 +60,8 @@ private noncomputable def companionMat (p : K[X]) : Matrix (Fin n) (Fin n) K :=
 private lemma companionMat_subdiag (p : K[X]) {i j : Fin n}
     (h : i.val = j.val + 1) (hj : j.val + 1 < n) :
     companionMat p i j = 1 := by
-  simp [companionMat]
-  split_ifs with h1 h2
-  · omega
-  · rfl
-  · exact absurd h h2
+  unfold companionMat
+  rw [if_neg (by omega : ¬ j.val + 1 = n), if_pos h]
 
 private lemma companionMat_last_col (p : K[X]) {i j : Fin n}
     (hj : j.val + 1 = n) :
@@ -74,85 +71,65 @@ private lemma companionMat_last_col (p : K[X]) {i j : Fin n}
 private lemma companionMat_zero (p : K[X]) {i j : Fin n}
     (h1 : j.val + 1 ≠ n) (h2 : i.val ≠ j.val + 1) :
     companionMat p i j = 0 := by
-  simp [companionMat]
-  split_ifs <;> contradiction
+  unfold companionMat
+  rw [if_neg h1, if_neg h2]
 
 /-- companionMat maps ej to ej+1 for j < n-1 (the subdiagonal shift). -/
 private lemma companionMat_mulVec_basis (p : K[X]) (j : Fin n) (hj : j.val + 1 < n) :
     (companionMat p).mulVec (Pi.single j 1) =
       Pi.single (⟨j.val + 1, hj⟩ : Fin n) 1 := by
-  ext ⟨i, hi⟩
-  simp only [Matrix.mulVec, dotProduct, Finset.sum_apply]
-  rw [Fintype.sum_eq_single j (fun k hk => by simp [Pi.single_apply, hk])]
-  simp only [Pi.single_apply, if_true, eq_self_iff_true, mul_one]
+  ext i
+  simp only [Matrix.mulVec, dotProduct]
+  rw [Finset.sum_eq_single j (fun k _ hk => by simp [Pi.single_apply, hk])
+      (fun h => absurd (Finset.mem_univ j) h)]
+  rw [Pi.single_eq_same, mul_one]
   simp only [companionMat]
   split_ifs with h1 h2
   · omega
-  · simp [Pi.single_apply, Fin.ext_iff, h2]
-  · simp [Pi.single_apply, Fin.ext_iff]
-    intro heq; exact h2 heq
+  · rw [Pi.single_apply, if_pos (Fin.ext h2)]
+  · rw [Pi.single_apply, if_neg (fun heq => h2 (congrArg Fin.val heq))]
 
 /-- The orbit of e0 under companionMat: (companionMat p)^k * e0 = ek for k < n. -/
-lemma companionMat_pow_e0 (p : K[X]) (k : ℕ) (hk : k < n) :
+lemma companionMat_pow_e0 [NeZero n] (p : K[X]) (k : ℕ) (hk : k < n) :
     ((companionMat p : Matrix (Fin n) (Fin n) K) ^ k).mulVec (Pi.single 0 1) =
       Pi.single (⟨k, hk⟩ : Fin n) 1 := by
   induction k with
   | zero =>
     simp only [pow_zero, Matrix.one_mulVec]
-    congr 1; ext; simp [Fin.ext_iff]
+    have h0 : (0 : Fin n) = ⟨0, hk⟩ := Fin.ext (by simp)
+    rw [h0]
   | succ m ih =>
-    rw [pow_succ, Matrix.mul_mulVec, ih (by omega)]
+    rw [pow_succ', ← Matrix.mulVec_mulVec, ih (by omega)]
     exact companionMat_mulVec_basis p ⟨m, by omega⟩ hk
 
 -- ============================================================
 -- SECTION III: Key Computation Lemmas
 -- ============================================================
 
-/-- mulVec distributes over finite sums. -/
-private lemma sum_mulVec {ι : Type*} (s : Finset ι)
-    (f : ι → Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
-    (∑ i ∈ s, f i) *ᵥ v = ∑ i ∈ s, f i *ᵥ v := by
-  induction s using Finset.induction_on with
-  | empty => simp [Matrix.zero_mulVec]
-  | insert ha ih =>
-    rw [Finset.sum_insert ha, Matrix.add_mulVec, ih, Finset.sum_insert ha]
-
 /-- For a nonzero polynomial q with natDegree q < n, evaluating (aeval C q).mulVec e0
     at index natDegree q gives q.leadingCoeff. -/
-private lemma companion_orbit_eval (p q : K[X]) (hq : q.natDegree < n) (hq_ne : q ≠ 0) :
+private lemma companion_orbit_eval [NeZero n] (p q : K[X]) (hq : q.natDegree < n)
+    (hq_ne : q ≠ 0) :
     ((aeval (companionMat (n := n) p) q).mulVec (Pi.single 0 1)) ⟨q.natDegree, hq⟩ =
       q.leadingCoeff := by
-  set C := companionMat (n := n) p
+  set C := companionMat (n := n) p with hC
   -- Expand aeval as a sum: aeval C q = sum over q.support of q.coeff k * C^k
   have haeval_sum : aeval C q = ∑ k ∈ q.support, q.coeff k • C ^ k := by
-    simp only [aeval_def, eval₂_eq_sum, Finset.sum_def]
-    congr 1; ext k
+    rw [aeval_def, eval₂_eq_sum, Polynomial.sum_def]
+    apply Finset.sum_congr rfl
+    intro k _
     simp [Algebra.smul_def]
   -- Distribute mulVec over the sum
-  rw [haeval_sum, sum_mulVec]
-  -- Replace C^k mulVec e0 with Pi.single k 1 (for k in support, so k <= natDegree q < n)
-  have hstep : ∀ k ∈ q.support,
-      (C ^ k).mulVec (Pi.single (0 : Fin n) 1) =
-        Pi.single ⟨k, Nat.lt_of_le_of_lt (Polynomial.le_natDegree_of_mem_supp k ‹_›) hq⟩ 1 := by
-    intro k hk
-    apply companionMat_pow_e0
-  -- Evaluate the sum at index natDegree q
-  simp only [Finset.sum_apply, Pi.smul_apply]
-  -- Each term is q.coeff k * Pi.single (k,...) 1 evaluated at natDegree q
-  have hkey : ∀ k ∈ q.support,
-      (q.coeff k • (C ^ k).mulVec (Pi.single 0 1)) ⟨q.natDegree, hq⟩ =
-        q.coeff k * if k = q.natDegree then 1 else 0 := by
-    intro k hk
-    rw [Pi.smul_apply, hstep k hk, Pi.single_apply]
-    simp [smul_eq_mul, Fin.ext_iff]
-  rw [show (∑ k ∈ q.support, (q.coeff k • (C ^ k).mulVec (Pi.single 0 1)) ⟨q.natDegree, hq⟩) =
-      ∑ k ∈ q.support, q.coeff k * if k = q.natDegree then 1 else 0 from by
-    congr 1; ext k; by_cases hk : k ∈ q.support
-    · exact hkey k hk
-    · simp [Polynomial.notMem_support_iff.mp hk]]
+  rw [haeval_sum, Matrix.sum_mulVec]
+  simp only [Finset.sum_apply, Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul]
   rw [Finset.sum_eq_single q.natDegree]
-  · simp [Polynomial.leadingCoeff]
-  · intro k _ hne; simp [hne]
+  · rw [companionMat_pow_e0 p q.natDegree hq, Pi.single_eq_same, mul_one]
+    rfl
+  · intro k hk hne
+    have hkn : k < n := lt_of_le_of_lt (Polynomial.le_natDegree_of_mem_supp k hk) hq
+    have hidx : (⟨q.natDegree, hq⟩ : Fin n) ≠ ⟨k, hkn⟩ :=
+      fun heq => hne (congrArg Fin.val heq).symm
+    rw [companionMat_pow_e0 p k hkn, Pi.single_apply, if_neg hidx, mul_zero]
   · intro h
     exact absurd (Polynomial.mem_support_iff.mpr (Polynomial.leadingCoeff_ne_zero.mpr hq_ne)) h
 
@@ -166,7 +143,7 @@ private lemma companion_orbit_eval (p q : K[X]) (hq : q.natDegree < n) (hq_ne : 
     Proof: The Krylov sequence {e0, Ce0, ..., C^{n-1}e0} = standard basis.
     So evaluating q(C)*e0 at index natDegree(q) gives q.leadingCoeff.
     If q(C)*e0 = 0 and deg q < n, then q.leadingCoeff = 0, so q = 0. -/
-theorem companionMat_e0_cyclic (p : K[X]) (hp : p.Monic) (hn : 0 < n)
+theorem companionMat_e0_cyclic [NeZero n] (p : K[X]) (hp : p.Monic) (hn : 0 < n)
     (hdeg : p.natDegree = n) :
     IsCyclicVector (companionMat (n := n) p) (Pi.single 0 1) := by
   intro q hq hann
@@ -176,12 +153,31 @@ theorem companionMat_e0_cyclic (p : K[X]) (hp : p.Monic) (hn : 0 < n)
   -- companion_orbit_eval: evaluating at index natDegree q gives leadingCoeff
   have hval := congr_fun hann ⟨q.natDegree, hq⟩
   simp only [Pi.zero_apply] at hval
-  rw [← companion_orbit_eval p q hq hq_ne] at hval
+  rw [companion_orbit_eval p q hq hq_ne] at hval
   exact hlc hval
 
 -- ============================================================
 -- SECTION V: Similarity Transfer (The Remaining Gap)
 -- ============================================================
+
+/-- Conjugation formula for `aeval`: if `M = P⁻¹ * N * P` then `aeval M q = P⁻¹ * aeval N q * P`.
+    Proved as a standalone lemma (rather than inline via `induction q`) so that no hypotheses
+    depending on `q` are in context when the induction principle generalizes the motive. -/
+private lemma aeval_conj (M N : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K)ˣ)
+    (hMN : M = P.inv * N * P.val) (q : K[X]) :
+    aeval M q = P.inv * aeval N q * P.val := by
+  induction q using Polynomial.induction_on' with
+  | add p r hp hr =>
+    simp only [map_add, hp, hr, mul_add, add_mul]
+  | monomial k a =>
+    simp only [aeval_monomial, ← Algebra.smul_def]
+    rw [mul_smul_comm, smul_mul_assoc]
+    congr 1
+    -- (P.inv * N * P.val) ^ m = P.inv * N ^ m * P.val is conjugation of N by the unit P
+    -- commuting with powers; `Units.conj_pow'` gives exactly this (↑P⁻¹ = P.inv, ↑P = P.val
+    -- by rfl on the `Units` structure).
+    rw [hMN]
+    exact Units.conj_pow' P N k
 
 /-- **Similarity of cyclic vectors**: If M = P_inv*N*P and v is cyclic for N,
     then P_inv*v is cyclic for M. (Recall aeval_conj from OQ04.) -/
@@ -193,44 +189,20 @@ theorem cyclic_vector_similar_transfer
     IsCyclicVector M (P.inv.mulVec v) := by
   intro q hq hann
   apply hv q hq
-  -- aeval M q = P.inv * aeval N q * P.val (conjugation formula)
-  have haeval : aeval M q = P.inv * aeval N q * P.val := by
-    induction q using Polynomial.induction_on' with
-    | h_add p r hp hr =>
-      simp only [map_add, hp, hr, mul_add, add_mul]
-    | h_monomial k a =>
-      simp only [aeval_monomial, ← Algebra.smul_def]
-      rw [← smul_mul_assoc, ← mul_smul_comm]
-      congr 1
-      have conj_pow : ∀ m : ℕ, (P.inv * N * P.val) ^ m = P.inv * N ^ m * P.val := by
-        intro m
-        induction m with
-        | zero => simp [P.inv_val]
-        | succ m ih =>
-          rw [pow_succ, ih]
-          calc P.inv * N ^ m * P.val * (P.inv * N * P.val)
-              = P.inv * N ^ m * (P.val * P.inv) * N * P.val := by ring
-            _ = P.inv * N ^ m * 1 * N * P.val := by rw [P.val_inv]
-            _ = P.inv * N ^ (m + 1) * P.val := by rw [mul_one, ← pow_succ, mul_assoc]
-      rw [hMN, conj_pow]
-  rw [haeval] at hann
+  have haeval : aeval M q = P.inv * aeval N q * P.val := aeval_conj M N P hMN q
   -- (P.inv * aeval N q * P.val) mulVec (P.inv mulVec v) = 0
   -- Multiply on left by P.val: (aeval N q * P.val) mulVec (P.inv mulVec v) = 0
   -- Then: aeval N q mulVec v = 0
-  have : (aeval N q).mulVec v = 0 := by
-    have h1 : (P.inv * aeval N q * P.val) *ᵥ (P.inv *ᵥ v) =
-              P.inv *ᵥ ((aeval N q).mulVec v) := by
-      simp [Matrix.mulVec_mulVec, mul_assoc]
-    rw [h1] at hann
-    have h2 : P.val *ᵥ (P.inv *ᵥ ((aeval N q).mulVec v)) = (aeval N q).mulVec v := by
-      rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
-      have : P.val * P.inv = 1 := P.val_inv
-      simp [this]
-    apply_fun (P.val.mulVec ·) at hann
-    simp [Matrix.mulVec_zero] at hann
-    rw [h2] at hann
+  have expand : (P.inv * aeval N q * P.val) *ᵥ (P.inv *ᵥ v)
+      = P.inv *ᵥ (aeval N q *ᵥ v) := by
+    rw [Matrix.mulVec_mulVec, mul_assoc, P.val_inv, mul_one, ← Matrix.mulVec_mulVec]
+  have key : P.inv *ᵥ (aeval N q *ᵥ v) = 0 := by
+    rw [← expand, ← haeval]
     exact hann
-  exact this
+  have final : P.val *ᵥ (P.inv *ᵥ (aeval N q *ᵥ v)) = P.val *ᵥ (0 : Fin n → K) :=
+    congrArg (P.val *ᵥ ·) key
+  rw [Matrix.mulVec_zero, Matrix.mulVec_mulVec, P.val_inv, Matrix.one_mulVec] at final
+  exact final
 
 /-- **Axiom**: A nonderogatory matrix M is similar to its companion matrix.
     This is the classical theorem that requires the rational canonical form
@@ -284,6 +256,7 @@ theorem nonderogatory_has_cyclic_vector_any_field
     ∃ v, IsCyclicVector M v := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · exact ⟨Fin.elim0, fun p hp _ => by omega⟩
+  haveI : NeZero n := ⟨hn.ne'⟩
   -- Step 1: e0 is cyclic for the companion matrix
   have hcompanion_cyclic : IsCyclicVector (companionMat (n := n) M.charpoly)
       (Pi.single 0 1) := by

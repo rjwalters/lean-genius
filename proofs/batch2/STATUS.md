@@ -1,3 +1,20 @@
+# DOCTOR SINGLE-PROOF BATCH 16 (8-slot, #38065, 2026-07-15)
+
+**+5 GREEN (all Sonnet)**: DesarguesTheoremOQ01OQ01, CombinationsFormulaOQ02 (Nat.choose_symm dir flip
+->choose_symm_half; rcases on Nat k pipes = k cases not k+1), CayleyHamiltonMinpolyOQ02OQ02 (aeval/minpoly
+bare args need type ascription; Matrix.isUnit_iff_isUnit_det->isUnits_det_units), ElementaryQuadraticReciprocity
+OQ02OQ01 (MulChar.ringHomComp_ne_one_iff; numeral Fact(Prime) not auto-derived), CayleyHamiltonMinpolyOQ05
+OQ01OQ04WIP01 (Fin 0-literal needs [NeZero n]; Polynomial.induction_on' reverts ctx hyps->standalone lemma;
+Units.conj_pow').
+
+## INCIDENT: doctor-b worktree collision (mis-routed agent) — FIXED in PR #38700
+A Ballot-child Opus agent was mis-dispatched to WORKTREE doctor-b (cpuset 3-5) while the
+LawsOfLargeNumbersOQ01Aristotle Opus agent was already running there -> tangled branches; batch 14
+merged STALE hub source (did NOT compile) + batch 15 false-flipped OQ01OQ01 GREEN. Repaired: took
+verified-good source from mig/LawsOfLargeNumbersOQ01OQ03 (carried the real cherry-picked fix), rebuilt
+all 3 EXIT=0, corrected ledger. LESSON: NEVER dispatch two agents to the same worktree concurrently.
+BallotProblemOQ01OQ04OQ01 fix was LOST in the collision -> still RESIDUAL, must re-run.
+
 # DOCTOR SINGLE-PROOF BATCH 15 (8-slot, all SONNET, #38065, 2026-07-15)
 
 **+3 GREEN (all Sonnet)**: DeMoivreOQ02OQ02 (15min/156k HARD — the 2nd file Haiku thrashed+killed on;

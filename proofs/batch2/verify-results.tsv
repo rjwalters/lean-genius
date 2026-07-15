@@ -387,7 +387,7 @@ CayleyHamiltonCyclicVectorAllFieldsOQ03Converse	GREEN	unknown-const:Basis
 CayleyHamiltonCyclicVectorAllFieldsOQ03OQ02	GREEN	
 CayleyHamiltonMinpolyOQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ02OQ01OQ02	GREEN	
-CayleyHamiltonMinpolyOQ02OQ02	RESIDUAL	proof-drift
+CayleyHamiltonMinpolyOQ02OQ02	GREEN	
 CayleyHamiltonMinpolyOQ02OQ03	GREEN	
 CayleyHamiltonMinpolyOQ03OQ01	GREEN	
 CayleyHamiltonMinpolyOQ04Backward	RESIDUAL	type-mismatch
@@ -395,7 +395,7 @@ CayleyHamiltonMinpolyOQ04BackwardAristotle	GREEN
 CayleyHamiltonMinpolyOQ05	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ01	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ02	GREEN	
-CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	RESIDUAL	proof-drift
+CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01	GREEN	
 CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03	GREEN	
 CayleyHamiltonMinpolyOQ05OQ02	GREEN	
 CayleyHamiltonMinpolyOQ05OQ02OQ03	RESIDUAL	instance-synth
@@ -459,7 +459,7 @@ CollatzCyclesOQ04	GREEN
 CollatzStructuredOQ02OQ01	GREEN	
 CollatzStructuredOQ03	GREEN	instance-synth
 CombinationsFormulaOQ01OQ04	RESIDUAL	type-mismatch
-CombinationsFormulaOQ02	RESIDUAL	proof-drift
+CombinationsFormulaOQ02	GREEN
 CombinationsFormulaOQ02Aristotle	GREEN	
 CombinationsFormulaOQ03OQ06	GREEN	
 CombinationsFormulaOQ07OQ04OQ01OQ02	GREEN	
@@ -536,7 +536,7 @@ DerangementsOQ03OQ01OQ02	GREEN
 DerangementsOQ03OQ02	GREEN	
 DerangementsOQ04OQ01OQ01	GREEN	
 DesarguesTheorem	RESIDUAL	type-mismatch
-DesarguesTheoremOQ01OQ01	RESIDUAL	proof-drift
+DesarguesTheoremOQ01OQ01	GREEN
 DescartesRuleOfSignsOQ01OQ01	GREEN	
 DescartesRuleOfSignsOQ01OQ02	RESIDUAL	unknown-const:Even.add_even
 DescartesRuleOfSignsOQ02	RESIDUAL	rewrite-drift
@@ -594,7 +594,7 @@ ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02	GREEN
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02	GREEN	
-ElementaryQuadraticReciprocityOQ02OQ01	RESIDUAL	proof-drift
+ElementaryQuadraticReciprocityOQ02OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ01	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ01OQ02	GREEN	
 ElementaryQuadraticReciprocityOQ03OQ02OQ01	RESIDUAL	proof-drift
