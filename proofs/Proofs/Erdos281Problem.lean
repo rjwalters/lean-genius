@@ -29,6 +29,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
 open Finset
+open scoped Classical
 
 /- ## Core Definitions -/
 
@@ -80,17 +81,17 @@ theorem uncoveredCount_antitone {moduli : ℕ → ℕ} {choice : CongruenceChoic
     uncoveredCount moduli choice k₂ N ≤ uncoveredCount moduli choice k₁ N := by
   unfold uncoveredCount
   apply card_le_card
-  apply Finset.filter_subset_filter
-  intro m hm hncov
-  exact hncov (isCoveredByFirst_mono h hm)
+  intro m hm
+  simp only [Finset.mem_filter] at hm ⊢
+  exact ⟨hm.1, fun hcov1 => hm.2 (isCoveredByFirst_mono h hcov1)⟩
 
 /-- Trivial upper bound: at most N integers in [1, N] are uncovered. -/
 theorem uncoveredCount_le (moduli : ℕ → ℕ) (choice : CongruenceChoice moduli)
     (k N : ℕ) : uncoveredCount moduli choice k N ≤ N := by
   unfold uncoveredCount
-  calc (Finset.Icc (1 : ℤ) N).filter _ |>.card
-      ≤ (Finset.Icc (1 : ℤ) N).card := card_filter_le _ _
-    _ ≤ N := by simp [Finset.card_Icc]; omega
+  refine le_trans (Finset.card_filter_le _ _) ?_
+  simp only [Int.card_Icc]
+  omega
 
 /-- With zero classes, all N integers in [1, N] are uncovered (for N ≥ 1). -/
 theorem uncoveredCount_zero_classes (moduli : ℕ → ℕ) (choice : CongruenceChoice moduli)
@@ -103,8 +104,8 @@ theorem uncoveredCount_zero_classes (moduli : ℕ → ℕ) (choice : CongruenceC
     simp only [Finset.mem_filter, and_iff_left_iff_imp]
     intro _
     exact not_isCoveredByFirst_zero moduli choice m
-  rw [hfilt]
-  simp [Finset.card_Icc]; omega
+  rw [hfilt, Int.card_Icc]
+  omega
 
 /-- The density is at most 1. -/
 theorem uncoveredDensity_le_one (moduli : ℕ → ℕ) (choice : CongruenceChoice moduli)
@@ -136,8 +137,8 @@ theorem uncoveredDensity_antitone {moduli : ℕ → ℕ} {choice : CongruenceCho
     the set of uncovered integers has upper density 0. -/
 def HasFullCovering (moduli : ℕ → ℕ) : Prop :=
   ∀ choice : CongruenceChoice moduli,
-    ∀ ε : ℚ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → 0 < N →
-      uncoveredDensity moduli choice (N + 1) N (by omega) < ε
+    ∀ ε : ℚ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → ∀ hN : 0 < N,
+      uncoveredDensity moduli choice (N + 1) N hN < ε
 
 /-- Strictly increasing moduli. -/
 def IsStrictlyIncreasing (moduli : ℕ → ℕ) : Prop :=
@@ -160,8 +161,8 @@ def PairwiseCoprime (moduli : ℕ → ℕ) : Prop :=
 def HasUniformFiniteCoverage (moduli : ℕ → ℕ) : Prop :=
   ∀ ε : ℚ, 0 < ε → ∃ k : ℕ,
     ∀ choice : CongruenceChoice moduli,
-      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → 0 < N →
-        uncoveredDensity moduli choice k N (by omega) < ε
+      ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → ∀ hN : 0 < N,
+        uncoveredDensity moduli choice k N hN < ε
 
 /-- **Easy direction (proved)**: Uniform finite ε-coverage implies full
     covering. This is the trivial direction: if finitely many classes

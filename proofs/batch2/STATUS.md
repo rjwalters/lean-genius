@@ -66,6 +66,162 @@ Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger f
   application and `B - A` in a structure field are stuck; needs `.ofLp` threading + real-inner simp.
 - **TestApi203**: OOM-killed (137) at 11g — memory-heavy (likely native_decide); needs a real argument
   or a bigger cap.
+# DOCTOR INCREMENT 73 (deep-rework LANE 1: residual Erdős < 500, #38065, 2026-07-15)
+
+Container `lean4-arm64:v4.31.0` (cpuset 0-5, 11g, cache `lean-mathlib-cache-v431`,
+packages `lean-mathlib-packages-v431`), worktree `issue-38065`, branch
+`feature/issue-38065-inc73` off origin/feature/issue-37508. **+4 GREEN.**
+Every flip verified in-container `lake env lean Proofs/X.lean` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos367Problem** (unknown-const:twoFullPart_le): two **forward-reference** blockers —
+  `twoFullPart_le` (used L140/157/158, defined L344) and axiom `van_doorn_lower_bound`
+  (used L205, defined L245); moved both above first use. Renames: `Nat.factorization_prime hp`
+  → `hp.factorization`; `Nat.factorization_prime_pow hp` → `Nat.Prime.factorization_pow hp`;
+  `Finset.filter_eq_empty` → `Finset.filter_eq_empty_iff`; `exact Finset.prod_singleton` (no longer
+  a bare fn for the goal) → `rw [Finset.prod_singleton]`. **`rintro rfl` on `q ∈ {p}` (i.e. `q = p`)
+  now substitutes AWAY `p`** (the lemma arg) not `q` → replace explicit `p` with `_` in the witness
+  (`dvd_refl _`, `dvd_pow_self _`). **`ε` in `weakBound` is `ℕ` not `ℝ`** so `(n:ℝ)^(2+ε)` is a
+  Nat-power (npow), not rpow — the old `Real.rpow_le_rpow_of_exponent_le` approach mismatched;
+  replaced with `pow_le_pow_right₀ hn1 (by omega)`. `by simp; omega` where simp now closes the goal
+  → `by simp only [Finset.mem_singleton]; omega` (drops the "No goals" from the orphan omega).
+- **Erdos411Problem** (unknown-const:totientStep_ge): two **forward-refs** —
+  `totientStep_even_of_even` (used L96, def L377) and `totientStep_ge` (used L84, def L392) moved
+  above `iteratedTotientStep_ge_start`. **`Nat.totient_even` now returns `Even n.totient`, not
+  `2 ∣ n.totient`** → `(Nat.totient_even h).two_dvd`. `conv_lhs => rw [show k = (k-1)+1 …]` no longer
+  auto-closes the residual defeq goal → append explicit `rfl` (3 sites). Bumped
+  `set_option maxHeartbeats 1000000 in` on `ratio4_4325798_aux` (two `interval_cases <;> native_decide`
+  timeouts on the 4325798 tower).
+- **Erdos281Problem** (parse-error): **`Finset.filter` now needs `DecidablePred`** for the
+  `¬IsCoveredByFirst` predicate → added `open scoped Classical` (fixes both synth failures).
+  `Finset.filter_subset_filter` no longer matches same-set/different-predicate subset → prove the
+  subset directly (`intro m hm; simp only [Finset.mem_filter] …`). **`Finset.card_Icc` gone for ℤ**
+  → `Int.card_Icc`. Old multi-line `calc EXPR` / `≤ … := …` with a bare `_` filter predicate broke
+  the parser → rewrote as `refine le_trans (Finset.card_filter_le _ _) ?_`. **`(by omega : 0 < N)`
+  under an anonymous `0 < N →` binder failed ("no usable constraints")** → named the binder
+  `∀ hN : 0 < N` and passed `hN` (defs `HasFullCovering`, `HasUniformFiniteCoverage`; statement
+  unchanged up to binder name).
+- **Erdos471Problem** (unknown-const:Set.Finite.of_finset): `Set.Finite.of_finset` gone →
+  `Set.Finite.subset (Set.finite_Iic N)` + `exact hx.2`. **`Nat.prime_def_lt''.mpr ⟨…⟩` removed**
+  (6 sites) → `by norm_num`. `Q1_contains_19/23` membership goals were `x ∈ QSeq ulamQ₀ 0`
+  (not literal `ulamQ₀`) so `simp [ulamQ₀]` couldn't discharge → `simp [QSeq, ulamQ₀]`; rewrote both
+  as one flat anonymous constructor over `IsSumOfThreeDistinctPrimes`.
+
+## New systematic seams (rename-map candidates)
+1. **`Nat.totient_even h : Even n.totient`** (was `2 ∣ n.totient`) → `.two_dvd` to recover divisibility.
+2. **`Finset.card_Icc` unavailable for ℤ** → `Int.card_Icc` (`(Icc a b).card = (b+1-a).toNat`).
+3. **`Finset.filter_eq_empty` → `Finset.filter_eq_empty_iff`** (paralleling `filter_eq_nil_iff`).
+4. **`Nat.factorization_prime` / `Nat.factorization_prime_pow` → `Nat.Prime.factorization` /
+   `Nat.Prime.factorization_pow`** (dot-notation on the primality hyp).
+5. **`Set.Finite.of_finset` removed** → `Set.Finite.subset (Set.finite_Iic …)` for `{p | … ∧ p ≤ N}`.
+6. **`Nat.prime_def_lt''` removed** → `by norm_num` / `by decide` for concrete primes.
+7. **`rintro rfl` on `a ∈ {b}` (= `a = b`) now substitutes the RHS var `b`** — swap explicit `b` for `_`.
+8. **v4.31 `simp` closes membership/`∉ {x}` goals fully** → a trailing `; omega`/`ring` becomes
+   "No goals to be solved"; use `simp only […]` and let omega finish, or drop the trailing tactic.
+9. **Anonymous `0 < N →` Pi binders no longer feed `by omega`** in def bodies → name the binder.
+10. **`Finset.filter` requires `DecidablePred`** for non-decidable Props → `open scoped Classical`.
+
+## Statement repairs (#38611 candidates)
+- None. No unsound-original / vacuous statements found in the 4 flipped files. The `Erdos367.weakBound`
+  ε:ℕ (not ℝ) is a pre-existing semantic choice (weaker but non-vacuous; strongBound ⇒ weakBound holds),
+  left as-is; the proof was corrected to match the actual (Nat-power) statement, not weakened.
+
+## Deferred / warm leads for the next LANE-1 wave (residual Erdős < 500)
+- **Erdos358Problem** (unknown-const:two_mul_sum_Icc): STARTED then reverted — fixed forward-refs
+  (`two_mul_sum_Icc`, `odd_dvd_two_pow_eq_one`, `power_of_two_obstruction` moved up), `dvd_add hd hd`
+  for `Even`-as-`m+m`, `Nat.mul_div_cancel'`, `Finset.card_bij` needs a leading `symm` (proves
+  `s.card=t.card` with s=domain), `Nat.not_even_iff_odd`. BUT the surjective bijection block (L385-455)
+  has deep cascading breakage: `Nat.max_add_min` gone, `Nat.odd_iff_not_even`/`Nat.not_eq_zero_of_lt`
+  gone, `(¬Odd _).symm.even` is now ill-typed, `split_ifs <;> [t1; t2]` combinator syntax rejected
+  ("too many tactics"), and ~8 downstream omega/linarith failures. ~30-min file on its own.
+- **Erdos301Problem** (parse-error): `show P by tac` term syntax rejected (needs `show P from by tac`),
+  `inv_anti₀`, `div_le_div_of_nonneg_right`, `|>.elim` on an `absurd` result.
+- **Erdos86Problem**: `List.Mem.symm` invalid, a `//` set-builder parse error (L115), synth + linarith + rewrite.
+- **Erdos153Problem** (elab-drift), **Erdos201Problem** (unknown-const:isAPFree_empty, 29 err) — not yet probed.
+
+---
+
+
+# DOCTOR INCREMENT 74 (deep-rework LANE 2 / partition Erdos >= 500, #38065, 2026-07-15)
+
+Container `dr-b` (cpus 6-11, 11g, cache v431-b), worktree doctor-b, branch
+`feature/issue-38065-inc74` off origin/feature/issue-37508. **+3 GREEN.** PR (below).
+Every flip verified in-container `lake env lean Proofs.X` exit-0 before ledger flip; pushed per file.
+
+## Flips (failure class in parens)
+- **Erdos1006Problem** (instance-synth): (1) `structure Orientation` at root now COLLIDES
+  with Mathlib's `_root_.Orientation` (linear-algebra module orientations) — v4.31 rejects the
+  redeclaration and it cascades into ~8 `synthInstanceFailed` on `Orientation G`. Fix: wrap the
+  whole file in `namespace Erdos1006`. (2) `G.IsCycle (cycle : List V)` uses a projection
+  `SimpleGraph.IsCycle` that does not exist (cycles are `Walk.IsCycle`); replaced with a local
+  `isCycleIn G cycle := cycle.Chain' G.Adj ∧ head?=getLast? ∧ 3 ≤ length` predicate. (3) the
+  `Orientation.*` methods autobound a fresh vertex type `V✝` while `reverseEdge`'s `(u v : V)`
+  used the `variable V` → two vertex types; added `variable {G : SimpleGraph V}` to pin them.
+  (4) `by omega` inside `path.get ⟨i, by omega⟩` couldn't see the anonymous arrow hypothesis →
+  name it `∀ i (h : i+1 < path.length), …`. (5) universe mismatch: `oresConjecture` quantifies
+  `∀ (V : Type*)` but the counterexample axioms fixed `V : Type` (Type 0), so `hconj V` couldn't
+  unify — made `grotzsch_counterexample` / `nesetril_rodl_1978` universe-polymorphic (`Type*`),
+  preserving the full-strength negation.
+- **Erdos1018Aristotle** (proof-drift; **minimal-import file**): the file imports a handful of
+  specific `Mathlib.*` modules (not `import Mathlib`). The ceiling notation `⌈ ⌉` and the
+  `FloorRing ℝ` instance used to come in transitively but no longer do on v4.31 → `⌈x⌉` fails to
+  lex ("expected token" at U+2308). Fix: `import Mathlib.Data.Real.Archimedean` (provides both the
+  Floor notation and the `FloorRing ℝ` instance). Also two `positivity` proofs of `ε^2>0` /
+  `1/ε^2>0` from `ε>0` now fail (positivity won't mine `ε>0` for the `ε≠0` side-condition) →
+  explicit `pow_pos hε 2` / `div_pos one_pos (pow_pos hε 2)`. Pre-existing `sorry`s preserved.
+- **Erdos552Problem** (parse-error + **statement repair #38611**): (1) the SimpleGraph field
+  proofs `symm := by constructor; … <;> (right; assumption) <|> (left; assumption)` no longer
+  parse (`;` inside the `( )` tactic group) AND explicit `intro`/`rintro` on the reduced
+  `Symmetric Adj` / `Irreflexive Adj` field goal fails with `introN` ("no additional binders").
+  Fix: **delete the explicit `symm`/`loopless` fields and let SimpleGraph's default `aesop_graph`
+  discharge them** (verified: the same `where`-def with the fields omitted compiles). (2)
+  **STATEMENT REPAIR**: `cycleGraph n` had `Adj i j := (i+1)%n=j ∨ (j+1)%n=i`, which for n=1 gives
+  `Adj 0 0 = ((0+1)%1 = 0) = True` — a SELF-LOOP — so `loopless` was genuinely false for n=1 (the
+  old `simp at h; omega` masked it; on v4.31 `simp` errors "no progress" and omega can't refute the
+  i+1=n=1 case). Added the missing `i ≠ j` conjunct → genuinely-correct cycle graph, unchanged for
+  n≥2. (3) `c4_minimum_degree` uses `G.degree v` on an arbitrary `G` → added `[DecidableRel G.Adj]`.
+
+## New systematic seams (rename-map §7al candidates)
+1. **A root `structure`/`def` whose name collides with a Mathlib `_root_` decl** (`Orientation`,
+   possibly `Coloring`, `Path`, …) is now rejected as "already declared" and cascades into
+   `synthInstanceFailed` on every use → wrap the file in a `namespace`.
+2. **Minimal-import files that used `⌈ ⌉`/`⌊ ⌋`/`FloorRing`/`Int.ceil` via a now-dropped
+   transitive import** fail to LEX the notation ("expected token" at the ceil/floor glyph) → add
+   `import Mathlib.Data.Real.Archimedean` (notation + `FloorRing ℝ` instance). Likely affects other
+   minimal-import Erdos files: candidates seen this session = Erdos1012OQ03, Erdos1035Problem,
+   Erdos1155OQ02, Erdos583/570/551/625/662/780/552/766 (grep: uses ⌈/floor, no bare `import Mathlib`).
+3. **`positivity` no longer mines a `0 < x` hypothesis for the `x ≠ 0` side-condition of `x^2`** →
+   use `pow_pos` / `div_pos` explicitly.
+4. **SimpleGraph `where`-def field proofs**: on v4.31 explicit `intro`/`rintro` on the `symm`/
+   `loopless` field goal fails with `introN` (the field's expected type is presented reduced, not as
+   a `∀`-Pi). Prefer OMITTING the fields and letting the default `aesop_graph` prove them; only give
+   explicit proofs in plain term form (`fun _ _ h => h.symm`) when aesop can't.
+5. **A `(t1; t2)` tactic group with `;` inside parens** no longer parses in some positions → use
+   `<;>` / `first | … | …` / a `by` block.
+
+## Statement repairs logged for #38611
+- **Erdos552Problem / cycleGraph**: added `i ≠ j` to the cycle-graph adjacency; the old definition
+  admitted a self-loop at n=1 (loopless was false there). Not a weakening — the fix restores the
+  intended loop-free cycle graph. Gallery meta for erdos-552 may want a re-audit.
+- **Erdos807Problem (DEFERRED, candidate)**: `ERW_conjecture n := True` (placeholder) yet
+  `erw_conjecture_false : ¬∀ n, ERW_conjecture n` claims to prove `¬(∀n, True)`, which is genuinely
+  unprovable — the old "green" via `trivial` could not have been legitimate. Needs a real
+  formalization of the τ = n − α equality to refute, not a mechanical drift fix. Left RESIDUAL.
+
+## Deferred (LANE 2, triaged — good next leads)
+- **Erdos1067Problem / Erdos910Problem(+Provable)** (Cardinal/universe): `chromaticNumber` uses
+  `κ.toPartENat` (removed → `Cardinal.toENat`) AND `∃ (c : V → κ)` treats a Cardinal `κ` as a type,
+  plus "universe level metavariables" in `hasAleph1ChromaticNumber` and `V→κ` Ambiguous-term. Real
+  universe-polymorphism rework; defer.
+- **Erdos560Problem** (elab-drift): `Sym2.Rel` projections / `Quot (Sym2.Rel V)` `⟨…⟩` no longer
+  valid + synthInstance + `invalid atom`. Multi-root.
+- **Erdos1014Problem** (21 err, real-analysis): `Real.isLittleO_log_rpow_atTop` gone,
+  `div_le_one_of_le` gone, linarith/rpow drift — cascade-parent of Erdos1014OQ02 &
+  Erdos1014OQ03Concrete (both are 1-error missing-olean cascades that flip once 1014Problem builds).
+- **Import-cascade families**: Erdos1007OQ05/OQ01 (parent Erdos1007Problem), Erdos1017Problem
+  (parent Erdos1017OQ01, 24 err) — fix the parent, build its olean into the cache, siblings cascade.
+- **Cheap 2-error leads not yet done**: Erdos1035Problem (synthInstance ×2), Erdos625Problem
+  (typeclass stuck ×2). Erdos662Problem is a native_decide-on-noncomputable case (rule-2, deeper).
 
 ---
 
