@@ -2352,3 +2352,46 @@ ArchimedesMethodOfExhaustion 17, BorsukUlamOQ02 18, AlgebraicNumbersCountableOQ0
 ArithmeticSeriesOQ02OQ02OQ03 13, BinomialTheoremOQ02OQ03 10. Estimate: <10% of remaining
 A–M residuals are mechanical-seam fixable and the seam is thinning; each green now averages
 real proof surgery.
+
+---
+
+## Increment 49 (Doctor-b, A–M seam + Erdos<600)
+
+**+3 GREEN** (one cluster):
+- `DirichletsTheorem` — signature-drift + doc-on-command. Recipes:
+  - `Nat.infinite_setOf_prime_and_eq_mod`: `a` now IMPLICIT → drop explicit `a`, pass only `IsUnit a`.
+  - `Nat.forall_exists_prime_gt_and_modEq` / `_zmodEq`: `n` moved to FIRST explicit arg; result is now
+    `∃ p > n, Nat.Prime p ∧ ...` (i.e. `∃ p, p > n ∧ ...`) not `∃ p, Nat.Prime p ∧ n < p ∧ ...` →
+    adapt via `obtain ⟨p, hpn, hp, hc⟩ := lemma n hq ha; exact ⟨p, hp, hpn, hc⟩`.
+  - `Int.gcd a q = 1` → `IsCoprime a ↑q` via `Int.isCoprime_iff_gcd_eq_one.mpr`.
+  - `/-- docstring -/` immediately before a `#check` COMMAND now hard-errors ("unexpected token '#check'")
+    → convert those `/--` to `/-`.
+  - `convert this using 1; ext p; simp only [...]` now CLOSES the goal in v4.31 → trailing
+    `constructor <;> intro ⟨..⟩ ...` gives "No goals to be solved"; delete the dead tail.
+- `InfinitudePrimes4k3OQ01`, `InfinitudePrimes4k3OQ01Q12Q24` — own files clean, were dep-blocked on
+  DirichletsTheorem; greened for free once the dep greened.
+
+**Probed-and-skipped (deep / not mechanical seam)**:
+- Erdos598Problem — `def`-level universe-metavar on `Set.Iio kappa` used as a type; pinning
+  `kappa : Cardinal.{0}` breaks `Cardinal.mk α ≥ kappa` (α : Type*) and surfaces an unterminated
+  comment. Genuine universe rework. Reverted.
+- Erdos181OQ01 — `Function.id`→`id` is right, but the follow-on `fin_cases … <;> simp_all` now hits
+  maxRecDepth and `id` is reported unused; needs a real proof for the off-diagonal `c` case (uses
+  `hsymm`). Reverted.
+- FeuerbachsTheoremOQ05 — base `FeuerbachsTheorem` never defines `Triangle.feuerbachPoint`;
+  missing-definition, not drift.
+- ChebyshevPNTBridgeOQ01 / KummerTheoremOQ03 — `PartENat` removal cascades into
+  `multiplicity`/`Nat.log_lt`/`prime_dvd_choose_prime_pow` API changes; multi-site.
+- Multi-site proof-drift (4–8 own-file errors, verified deep on inspection):
+  ChineseRemainderNonCoprimeOQ02, Erdos281/301/86, FourColorTheoremOQ01, Erdos437Aristotle,
+  CauchySchwarzOQ01OQ04, DeMoivreOQ02OQ02, DerangementsOQ03OQ01, AreaOfCircleOQ01OQ03,
+  BezoutIdentityOQ02OQ01OQ01OQ01OQ01, AlgebraicNumbersCountableOQ04.
+- Dep-blocked-by-deep-dep: CantorDiagonalizationOQ04OQ01OQ01OQ01 (dep …OQ01OQ01 instance-synth),
+  CantorDiagonalizationOQ04OQ03Aristotle (dep …OQ03 multi-site).
+
+**VERDICT: the A–M mechanical seam is DRY.** Of 16 residuals probed this increment across
+parse-error / signature-drift / elab-drift / unknown-const / instance-synth / type-mismatch /
+decide-maxrecdepth / partenat-removal classes, exactly ONE (the Dirichlet chain) was mechanical.
+Low reported error counts (3–5) reliably explode into multi-site rewrites once the head blocker
+clears. Remaining fixable estimate: a handful (<5%) of the ~400 A–M/Erdos<600 residuals, each
+requiring real proof surgery rather than a rename/seam. Recommend the seam be considered exhausted.
