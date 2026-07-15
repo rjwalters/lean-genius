@@ -57,7 +57,8 @@ noncomputable def maxDegree {V : Type*} [Fintype V] [DecidableEq V]
 /-- f(n) = minimum k such that every triangle-free diameter-2 graph on n vertices
     has a vertex of degree ≥ k -/
 noncomputable def f (n : ℕ) : ℕ :=
-  Nat.find (⟨1, by trivial⟩ : ∃ k : ℕ, ∀ V : Type*, ∀ _ : Fintype V,
+  Nat.find (⟨0, fun _ _ _ _ _ _ _ hd => ⟨hd.1.nonempty.some, Nat.zero_le _⟩⟩ :
+    ∃ k : ℕ, ∀ V : Type, ∀ _ : Fintype V,
     Fintype.card V = n → ∀ G : SimpleGraph V, [DecidableEq V] → [DecidableRel G.Adj] →
     TriangleFree G → HasDiameter2 G → ∃ v : V, G.degree v ≥ k)
 
