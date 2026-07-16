@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 144 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos81Problem (variable-inclusion drift @-apps->plain; Nat.find->sInf;
+Fin k cyclic succ explicit; minimal-import ℚ auto-bind -> import Order.Field.Rat; #38611 SERIOUS REPAIR:
+erdos_ordman_zalcstein axiom elaborated in ℕ ((1/4-ε)=0) -> cliquePartitionNumber≤0 ALL chordal G,
+INCONSISTENT w/ extremal_construction_exists -> ℚ-valued form). Repairs: 1 (inconsistent-axiom-pair fix).
+
 # DOCTOR SINGLE-PROOF BATCH 143 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos861Problem ((maxSidonSize N:ℝ) coercions x4 — scientific literal
