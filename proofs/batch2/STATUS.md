@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 330 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: NormEuclideanZsqrtdFamilyOQ03OQ02OQ01 (deep cascade child; instance-synth via explicit
+EuclideanDomain.to_principal_ideal_domain/instIsDomain/PrincipalIdealRing.to_uniqueFactorizationMonoid
+terms — bare letI EuclideanDomain no longer auto-chains to UniqueFactorizationMonoid (ℤ√d)). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 329 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos613Aristotle (nonlinear-omega in critical_edge_count_formula_ari/mono/pos:
