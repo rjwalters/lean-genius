@@ -27,9 +27,12 @@ def hasDistinctSubsetSums (A : Finset ℕ) : Prop :=
 instance decidableHasDistinctSubsetSums (A : Finset ℕ) :
     Decidable (hasDistinctSubsetSums A) :=
   decidable_of_iff
-    (∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T)
-    ⟨fun h S T hS hT => h S (mem_powerset.mpr hS) T (mem_powerset.mpr hT),
-     fun h S hS T hT => h S (mem_powerset.mp hS) T (mem_powerset.mp hT)⟩
+    (∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T) (by
+      constructor
+      · intro h S T hS hT hsum
+        exact h S (mem_powerset.mpr hS) T (mem_powerset.mpr hT) hsum
+      · intro h S hS T hT hsum
+        exact h S T (mem_powerset.mp hS) (mem_powerset.mp hT) hsum)
 
 /-- A set of n positive integers in {1,...,N} with distinct subset sums exists. -/
 def achievesDistinctSums (n N : ℕ) : Prop :=
@@ -60,19 +63,19 @@ theorem f1_eq_1 : achievesDistinctSums 1 1 := by
 
 /-- f(2) = 2: {1,2} achieves it. -/
 theorem f2_eq_2 : achievesDistinctSums 2 2 := by
-  exact ⟨{1, 2}, by native_decide, by simp; omega, by simp; omega, dss_12⟩
+  exact ⟨{1, 2}, by native_decide, by simp, by simp, dss_12⟩
 
 /-- f(3) = 4: {1,2,4} achieves it (powers of 2 give binary representation). -/
 theorem f3_le_4 : achievesDistinctSums 3 4 := by
-  exact ⟨{1, 2, 4}, by native_decide, by simp; omega, by simp; omega, dss_124⟩
+  exact ⟨{1, 2, 4}, by native_decide, by simp, by simp, dss_124⟩
 
 /-- f(4) ≤ 7: {3,5,6,7} achieves it. -/
 theorem f4_le_7 : achievesDistinctSums 4 7 := by
-  exact ⟨{3, 5, 6, 7}, by native_decide, by simp; omega, by simp; omega, dss_3567⟩
+  exact ⟨{3, 5, 6, 7}, by native_decide, by simp, by simp, dss_3567⟩
 
 /-- f(5) ≤ 13: {6,9,11,12,13} achieves it (Conway-Guy construction). -/
 theorem f5_le_13 : achievesDistinctSums 5 13 := by
-  exact ⟨{6, 9, 11, 12, 13}, by native_decide, by simp; omega, by simp; omega,
+  exact ⟨{6, 9, 11, 12, 13}, by native_decide, by simp, by simp,
     dss_conway_guy_5⟩
 
 /- ## The Conway-Guy Conjecture -/
@@ -108,7 +111,7 @@ def conwayGuyConjecture : Prop :=
 /- ## Structural Observations -/
 
 /-- Geometric sum: ∑_{i<n} 2^i + 1 = 2^n. -/
-private lemma geom_sum_two (n : ℕ) :
+private lemma geomSumPowTwoSucc (n : ℕ) :
     (Finset.range n).sum (fun i : ℕ => 2 ^ i) + 1 = 2 ^ n := by
   induction n with
   | zero => simp
@@ -120,7 +123,7 @@ private lemma sum_pow_lt_of_subset_range (n : ℕ) (T : Finset ℕ)
     T.sum (fun i : ℕ => 2 ^ i) < 2 ^ n := by
   have h1 := Finset.sum_le_sum_of_subset_of_nonneg hT
     (fun _ _ _ => Nat.zero_le _) (f := fun i : ℕ => 2 ^ i)
-  have h2 := geom_sum_two n
+  have h2 := geomSumPowTwoSucc n
   omega
 
 /-- If S ⊆ range (n+1) and n ∉ S, then S ⊆ range n. -/
@@ -197,6 +200,7 @@ theorem powers_of_two_dss (n : ℕ) :
     -- S = S'.image (2^·)
     have hS_eq : S = S'.image (fun i => (2 : ℕ) ^ i) := by
       ext x
+      rw [hS'_def]
       simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_range]
       constructor
       · intro hx; obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp (hS hx)
@@ -204,6 +208,7 @@ theorem powers_of_two_dss (n : ℕ) :
       · rintro ⟨i, ⟨_, hx⟩, rfl⟩; exact hx
     have hT_eq : T = T'.image (fun i => (2 : ℕ) ^ i) := by
       ext x
+      rw [hT'_def]
       simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_range]
       constructor
       · intro hx; obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp (hT hx)
@@ -242,4 +247,3 @@ All verified computationally via native_decide.
 
 **Open**: Conway-Guy conjecture (these are the exact minima).
 -/
-end
