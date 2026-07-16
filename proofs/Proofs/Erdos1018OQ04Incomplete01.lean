@@ -204,16 +204,16 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h0 : x 0 = 0 := by
             refine proj_const _ (fun v => v 0) 0
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (-- {0,2} and {0,1}: x=0 ∧ y=0 → x=(0,0)  [symmetric case]
           have h0 : x 0 = 0 := by
             refine proj_const _ (fun v => v 0) 0
@@ -221,16 +221,16 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h1 : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (-- {0,1} and {1,2}: y=0 ∧ x+y=1 → x=(1,0)
           have h1 : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
@@ -238,16 +238,16 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : x 0 + x 1 = 1 := by
             refine proj_const _ (fun v => v 0 + v 1) 1
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (-- {1,2} and {0,1}: x+y=1 ∧ y=0 → x=(1,0)  [symmetric]
           have hsum : x 0 + x 1 = 1 := by
             refine proj_const _ (fun v => v 0 + v 1) 1
@@ -255,16 +255,16 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h1 : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (-- {0,2} and {1,2}: x=0 ∧ x+y=1 → x=(0,1)
           have h0 : x 0 = 0 := by
             refine proj_const _ (fun v => v 0) 0
@@ -272,16 +272,16 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : x 0 + x 1 = 1 := by
             refine proj_const _ (fun v => v 0 + v 1) 1
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (-- {1,2} and {0,2}: x+y=1 ∧ x=0 → x=(0,1)  [symmetric]
           have hsum : x 0 + x 1 = 1 := by
             refine proj_const _ (fun v => v 0 + v 1) 1
@@ -289,16 +289,16 @@ theorem K3_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 3 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h0 : x 0 = 0 := by
             refine proj_const _ (fun v => v 0) 0
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)))
+          simp [φ] <;> linarith)))
 
 /-! ## Part IV: K₄ is Planar -/
 
@@ -376,32 +376,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e01(y=0) ∩ e03(x-y=0) → vertex 0=(0,0)
        | (have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
@@ -409,32 +409,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e01(y=0) ∩ e12(2x+y=4) → vertex 1=(2,0)
        | (have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
@@ -442,32 +442,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e01(y=0) ∩ e13(x+y=2) → vertex 1=(2,0)
        | (have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
@@ -475,32 +475,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hxy : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hy : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e02(2x-y=0) ∩ e03(x-y=0) → vertex 0=(0,0)
        | (have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
@@ -508,32 +508,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e02(2x-y=0) ∩ e12(2x+y=4) → vertex 2=(1,2)
        | (have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
@@ -541,32 +541,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e02(2x-y=0) ∩ e23(x=1) → vertex 2=(1,2)
        | (have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
@@ -574,32 +574,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e03(x-y=0) ∩ e13(x+y=2) → vertex 3=(1,1)
        | (have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
@@ -607,32 +607,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e03(x-y=0) ∩ e23(x=1) → vertex 3=(1,1)
        | (have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
@@ -640,32 +640,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e12(2x+y=4) ∩ e13(x+y=2) → vertex 1=(2,0)
        | (have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
@@ -673,32 +673,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e12(2x+y=4) ∩ e23(x=1) → vertex 2=(1,2)
        | (have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
@@ -706,32 +706,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- e13(x+y=2) ∩ e23(x=1) → vertex 3=(1,1)
        | (have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
@@ -739,32 +739,32 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
        | (have hx1 : x 0 = 1 := by
             refine proj_const _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           funext i; fin_cases i <;>
-          simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> linarith)
+          simp [φ] <;> linarith)
           -- Non-adjacent pair e01(y=0) ∩ e23(x=1,y≥1): y=0 but hull(e23) has y≥1 → contradiction
        | (have hy0 : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
@@ -772,14 +772,14 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hylb : x 1 ≥ 1 := by
             refine proj_lb _ (fun v => v 1) 1
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           linarith)
        | (have hylb : x 1 ≥ 1 := by
             refine proj_lb _ (fun v => v 1) 1
@@ -787,14 +787,14 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hy0 : x 1 = 0 := by
             refine proj_const _ (fun v => v 1) 0
               ⟨fun a b => Pi.add_apply a b 1, fun r a => Pi.smul_apply r a 1⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           linarith)
           -- Non-adjacent pair e02(2x-y=0) ∩ e13(x+y=2): forces x=2/3 but hull(e13) has x≥1 → contradiction
        | (have h2xy : 2 * x 0 - x 1 = 0 := by
@@ -803,21 +803,21 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxlb : x 0 ≥ 1 := by
             refine proj_lb _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           linarith)
        | (have hxy2 : x 0 + x 1 = 2 := by
             refine proj_const _ (fun v => v 0 + v 1) 2
@@ -825,21 +825,21 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have h2xy : 2 * x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => 2 * v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxlb : x 0 ≥ 1 := by
             refine proj_lb _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           linarith)
           -- Non-adjacent pair e03(x-y=0) ∩ e12(2x+y=4): forces x=4/3 but hull(e03) has x≤1 → contradiction
        | (have hxy : x 0 - x 1 = 0 := by
@@ -848,21 +848,21 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxub : x 0 ≤ 1 := by
             refine proj_ub _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₁
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           linarith)
        | (have hsum : 2 * x 0 + x 1 = 4 := by
             refine proj_const _ (fun v => 2 * v 0 + v 1) 4
@@ -870,21 +870,21 @@ theorem K4_planar : isEmbeddableConc (Erdos1018OQ04.completeHypergraph 4 2) 2 :=
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxy : x 0 - x 1 = 0 := by
             refine proj_const _ (fun v => v 0 - v 1) 0
               ⟨fun a b => by simp [Pi.add_apply]; ring, fun r a => by simp [Pi.smul_apply]; ring⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           have hxub : x 0 ≤ 1 := by
             refine proj_ub _ (fun v => v 0) 1
               ⟨fun a b => Pi.add_apply a b 0, fun r a => Pi.smul_apply r a 0⟩ ?_ x hx₂
             rintro v hv; fin_cases v <;>
                 first
                 | (exfalso; revert hv; decide)
-                | (simp only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]; norm_num)
+                | (simp [φ] <;> norm_num)
           linarith)))
           /-! ## Part V: Graph Case Recovery -/
 
