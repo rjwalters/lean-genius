@@ -66,7 +66,7 @@ abbrev Lin3 := EuclideanSpace ℝ (Fin 3) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin 3)
     groups put composition on the underlying maps (`a * b = b.trans a`). This is the
     bridge that lets us move Hausdorff's freeness statement from the `≃ₗ` world (where
     the parent proves it) into the isometry group. -/
-def toLinearEquivHom : Rot3 →* Lin3 :=
+noncomputable def toLinearEquivHom : Rot3 →* Lin3 :=
   MonoidHom.mk' (fun e => e.toLinearEquiv) <| by
     intro a b
     show (a * b).toLinearEquiv = a.toLinearEquiv * b.toLinearEquiv
