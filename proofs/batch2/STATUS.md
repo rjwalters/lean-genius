@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 285 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): DescartesRuleOfSignsOQ02OQ01 (Set.Subsingleton.ncard_le_one gone ->
+eq_empty_or_singleton; card_roots_le_degree->card_roots'; Multiset.toFinset_card_le_card->toFinset_card_le
+classical). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 284 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): SzemerediHypergraphGowers (Finset.mem_powerset no longer defeq-transitive
