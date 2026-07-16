@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 164 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): ChebyshevPNTBridgeOQ01 (PartENat/multiplicity machinery removed ->
+Nat.factorization_def+padicValNat_factorial; Nat.div_eq_zero_iff dropped positivity arg;
+Nat.lt_two_pow_self; pow_factorization_choose_le now 0<n; choose_le_middle arg order; ring can't 4^n=2^(2n)
+-> pow_mul). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 163 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos776Problem (SubsetFamily/IsAntichainFamily def->abbrev; open scoped
