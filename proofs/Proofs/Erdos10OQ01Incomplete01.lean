@@ -59,12 +59,12 @@ theorem pow_two_mod_period {q d : ℕ} (hq : 1 < q) (hd : 2 ^ d % q = 1) (a : �
 /-! The six order facts.  Each says the multiplicative order of `2` modulo the prime divides
 the stated modulus. -/
 
-theorem ord3   : 2 ^ 2  % 3   = 1 := by decide
-theorem ord7   : 2 ^ 3  % 7   = 1 := by decide
-theorem ord5   : 2 ^ 4  % 5   = 1 := by decide
-theorem ord17  : 2 ^ 8  % 17  = 1 := by decide
-theorem ord13  : 2 ^ 12 % 13  = 1 := by decide
-theorem ord241 : 2 ^ 24 % 241 = 1 := by decide
+theorem ord3   : 2 ^ 2  % 3   = 1 := by norm_num
+theorem ord7   : 2 ^ 3  % 7   = 1 := by norm_num
+theorem ord5   : 2 ^ 4  % 5   = 1 := by norm_num
+theorem ord17  : 2 ^ 8  % 17  = 1 := by norm_num
+theorem ord13  : 2 ^ 12 % 13  = 1 := by norm_num
+theorem ord241 : 2 ^ 24 % 241 = 1 := by norm_num
 
 /-! ## Part II: The covering system -/
 
@@ -95,28 +95,28 @@ theorem obstruction {n : ℕ}
   rcases covering a with ha | ha | ha | ha | ha | ha
   · refine ⟨3, by decide, ?_⟩
     have h1 : 2 ^ a % 3 = 2 ^ (a % 2) % 3 := pow_two_mod_period (by norm_num) ord3 a
-    have h2 : 2 ^ (a % 2) % 3 = 1 := by rewrite [ha]; decide
-    omega
+    have h2 : 2 ^ (a % 2) % 3 = 1 := by rewrite [ha]; norm_num
+    exact (h1.trans h2).trans h3.symm
   · refine ⟨7, by decide, ?_⟩
     have h1 : 2 ^ a % 7 = 2 ^ (a % 3) % 7 := pow_two_mod_period (by norm_num) ord7 a
-    have h2 : 2 ^ (a % 3) % 7 = 1 := by rewrite [ha]; decide
-    omega
+    have h2 : 2 ^ (a % 3) % 7 = 1 := by rewrite [ha]; norm_num
+    exact (h1.trans h2).trans h7.symm
   · refine ⟨5, by decide, ?_⟩
     have h1 : 2 ^ a % 5 = 2 ^ (a % 4) % 5 := pow_two_mod_period (by norm_num) ord5 a
-    have h2 : 2 ^ (a % 4) % 5 = 2 := by rewrite [ha]; decide
-    omega
+    have h2 : 2 ^ (a % 4) % 5 = 2 := by rewrite [ha]; norm_num
+    exact (h1.trans h2).trans h5.symm
   · refine ⟨17, by decide, ?_⟩
     have h1 : 2 ^ a % 17 = 2 ^ (a % 8) % 17 := pow_two_mod_period (by norm_num) ord17 a
-    have h2 : 2 ^ (a % 8) % 17 = 8 := by rewrite [ha]; decide
-    omega
+    have h2 : 2 ^ (a % 8) % 17 = 8 := by rewrite [ha]; norm_num
+    exact (h1.trans h2).trans h17.symm
   · refine ⟨13, by decide, ?_⟩
     have h1 : 2 ^ a % 13 = 2 ^ (a % 12) % 13 := pow_two_mod_period (by norm_num) ord13 a
-    have h2 : 2 ^ (a % 12) % 13 = 11 := by rewrite [ha]; decide
-    omega
+    have h2 : 2 ^ (a % 12) % 13 = 11 := by rewrite [ha]; norm_num
+    exact (h1.trans h2).trans h13.symm
   · refine ⟨241, by decide, ?_⟩
     have h1 : 2 ^ a % 241 = 2 ^ (a % 24) % 241 := pow_two_mod_period (by norm_num) ord241 a
-    have h2 : 2 ^ (a % 24) % 241 = 121 := by rewrite [ha]; decide
-    omega
+    have h2 : 2 ^ (a % 24) % 241 = 121 := by rewrite [ha]; norm_num
+    exact (h1.trans h2).trans h241.symm
 
 /-! ## Part IV: Consequence for representations `n = 2^a + p` -/
 
@@ -131,7 +131,7 @@ theorem prime_forced_small {n : ℕ}
     p ∈ coveringPrimes := by
   obtain ⟨q, hqmem, hq⟩ := obstruction h3 h7 h5 h17 h13 h241 a
   -- From `2^a ≡ n (mod q)` and `n = 2^a + p` we get `q ∣ p`.
-  have hle : 2 ^ a ≤ n := by omega
+  have hle : 2 ^ a ≤ n := hrep ▸ Nat.le_add_right _ _
   have hmod : 2 ^ a ≡ n [MOD q] := hq
   have hqdvd : q ∣ (n - 2 ^ a) := (Nat.modEq_iff_dvd' hle).mp hmod
   have hqp : q ∣ p := by
