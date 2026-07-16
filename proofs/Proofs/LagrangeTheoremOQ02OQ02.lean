@@ -56,12 +56,12 @@ open Subgroup ConjClasses MulAction
 
     Source: `Group.nat_card_center_add_sum_card_noncenter_eq_card` in
     `Mathlib.GroupTheory.ClassEquation`. -/
-theorem class_equation {G : Type*} [Group G] :
+theorem class_equation {G : Type*} [Group G] [Finite G] :
     Nat.card (center G) + ∑ᶠ c ∈ noncenter G, Nat.card c.carrier = Nat.card G :=
   Group.nat_card_center_add_sum_card_noncenter_eq_card G
 
 /-- Equivalent form: |G| = |Z(G)| + Σ_{non-central classes c} |c|. -/
-theorem class_equation_symm {G : Type*} [Group G] :
+theorem class_equation_symm {G : Type*} [Group G] [Finite G] :
     Nat.card G = Nat.card (center G) + ∑ᶠ c ∈ noncenter G, Nat.card c.carrier :=
   class_equation.symm
 
@@ -81,40 +81,36 @@ variable {G : Type*} [Group G]
 theorem conj_orbit_eq_carrier (x : G) :
     orbit (ConjAct G) x = (ConjClasses.mk x).carrier := by
   ext y
-  simp only [mem_orbit_iff, ConjClasses.mem_carrier_iff_isConj, IsConj, SemiconjBy]
+  -- `y ∈ (ConjClasses.mk x).carrier ↔ mk y = mk x ↔ IsConj y x ↔ IsConj x y
+  --   ↔ ∃ c, c * x * c⁻¹ = y`, matched against the ConjAct orbit membership.
+  rw [mem_orbit_iff, mem_carrier_iff_mk_eq, mk_eq_mk_iff_isConj, isConj_comm, isConj_iff]
   constructor
-  · rintro ⟨c, hc⟩
-    -- hc : c • x = y; use g = ConjAct.ofConjAct c to witness SemiconjBy
-    refine ⟨ConjAct.ofConjAct c, ?_⟩
-    rw [ConjAct.smul_def] at hc
-    -- hc : ConjAct.ofConjAct c * x * (ConjAct.ofConjAct c)⁻¹ = y
-    -- Need: ConjAct.ofConjAct c * x = y * ConjAct.ofConjAct c
-    calc ConjAct.ofConjAct c * x
-        = ConjAct.ofConjAct c * x * (ConjAct.ofConjAct c)⁻¹ * ConjAct.ofConjAct c := by group
-      _ = y * ConjAct.ofConjAct c := by rw [hc]
   · rintro ⟨g, hg⟩
-    -- hg : g * x = y * g; use ConjAct.toConjAct g as witness
-    refine ⟨ConjAct.toConjAct g, ?_⟩
+    -- hg : g • x = y; unfold the ConjAct smul to exhibit the conjugating element
+    refine ⟨ConjAct.ofConjAct g, ?_⟩
+    rwa [ConjAct.smul_def] at hg
+  · rintro ⟨c, hc⟩
+    -- hc : c * x * c⁻¹ = y; use ConjAct.toConjAct c as witness
+    refine ⟨ConjAct.toConjAct c, ?_⟩
     rw [ConjAct.toConjAct_smul]
-    -- Goal: g * x * g⁻¹ = y
-    calc g * x * g⁻¹ = y * g * g⁻¹ := by rw [← hg]
-      _ = y := by group
+    exact hc
 
 /-- The stabilizer of x under conjugation, pulled back to G, equals C_G(x).
 
     g stabilizes x ↔ g * x * g⁻¹ = x ↔ g * x = x * g ↔ g ∈ C_G(x). -/
 theorem conj_stabilizer_eq_centralizer (x : G) :
-    (stabilizer (ConjAct G) x).comap ConjAct.toConjAct = centralizer {x} := by
+    (stabilizer (ConjAct G) x).comap (ConjAct.toConjAct (G := G)).toMonoidHom =
+      centralizer {x} := by
   ext g
-  simp only [Subgroup.mem_comap, mem_stabilizer_iff, ConjAct.toConjAct_smul,
-             mem_centralizer_iff, Set.mem_singleton_iff, forall_eq]
-  -- Goal: g * x * g⁻¹ = x ↔ g * x = x * g
+  simp only [Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, mem_stabilizer_iff,
+             ConjAct.toConjAct_smul, mem_centralizer_iff, Set.mem_singleton_iff, forall_eq]
+  -- Goal: g * x * g⁻¹ = x ↔ x * g = g * x
   constructor
   · intro h
-    calc g * x = g * x * g⁻¹ * g := by group
-      _ = x * g := by rw [h]
+    calc x * g = g * x * g⁻¹ * g := by rw [h]
+      _ = g * x := by group
   · intro h
-    calc g * x * g⁻¹ = x * g * g⁻¹ := by rw [← h]
+    calc g * x * g⁻¹ = x * g * g⁻¹ := by rw [h]
       _ = x := by group
 
 /-- **Orbit-Centralizer Formula**: the conjugacy class of x has size [G : C_G(x)].
@@ -133,7 +129,8 @@ theorem card_conjClass_eq_centralizer_index [Fintype G] (x : G) :
     exact Nat.card_congr (MulAction.orbitEquivQuotientStabilizer (ConjAct G) x)
   -- Step 2: stabilizer index = centralizer index via ConjAct.toConjAct isomorphism
   rw [horb, ← conj_stabilizer_eq_centralizer]
-  exact (Subgroup.index_comap_of_surjective _
+  exact (Subgroup.index_comap_of_surjective (stabilizer (ConjAct G) x)
+    (f := (ConjAct.toConjAct (G := G)).toMonoidHom)
     (ConjAct.toConjAct (G := G)).surjective).symm
 
 /-- A conjugacy class is a singleton iff the element is central. -/
@@ -143,32 +140,36 @@ theorem card_conjClass_eq_one_iff_mem_center [Fintype G] (x : G) :
   constructor
   · intro h
     rw [Nat.card_eq_one_iff_unique] at h
+    -- h : Subsingleton ↑(orbit (ConjAct G) x) ∧ Nonempty ↑(orbit (ConjAct G) x)
+    haveI := h.1
     rw [mem_center_iff]
     intro g
     -- The orbit is a singleton; both x and ConjAct.toConjAct g • x lie in it
-    have huniq : ∀ a b : orbit (ConjAct G) x, a = b := fun a b =>
-      (h.uniq a).trans (h.uniq b).symm
     have heq := congr_arg Subtype.val
-      (huniq ⟨ConjAct.toConjAct g • x, mem_orbit _ _⟩ ⟨x, mem_orbit_self _⟩)
+      (Subsingleton.elim (⟨ConjAct.toConjAct g • x, mem_orbit _ _⟩ : orbit (ConjAct G) x)
+        ⟨x, mem_orbit_self _⟩)
     -- heq : ConjAct.toConjAct g • x = x, i.e., g * x * g⁻¹ = x
+    change ConjAct.toConjAct g • x = x at heq
     rw [ConjAct.toConjAct_smul] at heq
     -- heq : g * x * g⁻¹ = x; derive g * x = x * g
     have key : g * x = x * g := by
       calc g * x = g * x * g⁻¹ * g := by group
         _ = x * g := by rw [heq]
-    exact key.symm
+    exact key
   · intro hx
     rw [Nat.card_eq_one_iff_unique]
-    exact ⟨⟨⟨x, mem_orbit_self _⟩, fun ⟨y, c, hc⟩ => by
-      simp only [Subtype.mk.injEq]
-      -- hc : c • x = y (c : ConjAct G); show y = x using hx ∈ Z(G)
+    have hall : ∀ y ∈ orbit (ConjAct G) x, y = x := by
+      rintro y ⟨c, hc⟩
+      dsimp only at hc
       rw [← hc, ConjAct.smul_def]
       -- Goal: ConjAct.ofConjAct c * x * (ConjAct.ofConjAct c)⁻¹ = x
       have hcomm : ConjAct.ofConjAct c * x = x * ConjAct.ofConjAct c :=
-        (mem_center_iff.mp hx (ConjAct.ofConjAct c)).symm
+        mem_center_iff.mp hx (ConjAct.ofConjAct c)
       calc ConjAct.ofConjAct c * x * (ConjAct.ofConjAct c)⁻¹
           = x * ConjAct.ofConjAct c * (ConjAct.ofConjAct c)⁻¹ := by rw [hcomm]
-        _ = x := by group⟩⟩
+        _ = x := by group
+    exact ⟨⟨fun a b => Subtype.ext ((hall a.1 a.2).trans (hall b.1 b.2).symm)⟩,
+      ⟨x, mem_orbit_self _⟩⟩
 
 end ConjugationAction
 
@@ -204,8 +205,8 @@ theorem center_nontrivial_of_pgroup (hG : IsPGroup p G) (hnt : Nontrivial G) :
     If |Z(G)| = p: G/Z(G) has order p (cyclic) → G is abelian. -/
 theorem p_sq_group_comm (hG : IsPGroup p G) (hcard : Fintype.card G = p ^ 2) :
     ∀ (a b : G), a * b = b * a := by
-  have hcomm : CommGroup G := IsPGroup.commGroupOfCardEqPrimeSq hG hcard
-  exact fun a b => mul_comm a b
+  have hcard' : Nat.card G = p ^ 2 := by rw [Nat.card_eq_fintype_card]; exact hcard
+  exact (IsPGroup.isMulCommutative_of_card_eq_prime_sq hcard').is_comm.comm
 
 end PGroupApplications
 
