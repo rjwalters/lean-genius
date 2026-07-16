@@ -1444,7 +1444,9 @@ def directSum_inl {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
   rationalMap := LinearMap.inl ℚ H₁.VQ H₂.VQ
   complexMap := LinearMap.inl ℂ H₁.VC H₂.VC
   compatible := fun v => by
-    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.inl_apply, map_zero]
+    show (H₁.complexify.prodMap H₂.complexify) (LinearMap.inl ℚ H₁.VQ H₂.VQ v) =
+      LinearMap.inl ℂ H₁.VC H₂.VC (H₁.complexify v)
+    simp [LinearMap.inl_apply, LinearMap.prodMap_apply]
   hodge_preserve := fun p q hpq x hx => by
     simp only [directSumHodge, LinearMap.inl_apply]
     exact Submodule.mem_prod.mpr ⟨hx, Submodule.zero_mem _⟩
@@ -1457,7 +1459,9 @@ def directSum_inr {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
   rationalMap := LinearMap.inr ℚ H₁.VQ H₂.VQ
   complexMap := LinearMap.inr ℂ H₁.VC H₂.VC
   compatible := fun v => by
-    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.inr_apply, map_zero]
+    show (H₁.complexify.prodMap H₂.complexify) (LinearMap.inr ℚ H₁.VQ H₂.VQ v) =
+      LinearMap.inr ℂ H₁.VC H₂.VC (H₂.complexify v)
+    simp [LinearMap.inr_apply, LinearMap.prodMap_apply]
   hodge_preserve := fun p q hpq x hx => by
     simp only [directSumHodge, LinearMap.inr_apply]
     exact Submodule.mem_prod.mpr ⟨Submodule.zero_mem _, hx⟩
@@ -1473,7 +1477,10 @@ def directSum_fst {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
   rationalMap := LinearMap.fst ℚ H₁.VQ H₂.VQ
   complexMap := LinearMap.fst ℂ H₁.VC H₂.VC
   compatible := fun v => by
-    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.fst_apply]
+    obtain ⟨v₁, v₂⟩ := v
+    show H₁.complexify (LinearMap.fst ℚ H₁.VQ H₂.VQ (v₁, v₂)) =
+      LinearMap.fst ℂ H₁.VC H₂.VC ((H₁.complexify.prodMap H₂.complexify) (v₁, v₂))
+    simp [LinearMap.fst_apply, LinearMap.prodMap_apply]
   hodge_preserve := fun p q hpq x hx => by
     simp only [directSumHodge, LinearMap.fst_apply] at hx ⊢
     exact (Submodule.mem_prod.mp hx).1
@@ -1486,7 +1493,10 @@ def directSum_snd {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
   rationalMap := LinearMap.snd ℚ H₁.VQ H₂.VQ
   complexMap := LinearMap.snd ℂ H₁.VC H₂.VC
   compatible := fun v => by
-    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.snd_apply]
+    obtain ⟨v₁, v₂⟩ := v
+    show H₂.complexify (LinearMap.snd ℚ H₁.VQ H₂.VQ (v₁, v₂)) =
+      LinearMap.snd ℂ H₁.VC H₂.VC ((H₁.complexify.prodMap H₂.complexify) (v₁, v₂))
+    simp [LinearMap.snd_apply, LinearMap.prodMap_apply]
   hodge_preserve := fun p q hpq x hx => by
     simp only [directSumHodge, LinearMap.snd_apply] at hx ⊢
     exact (Submodule.mem_prod.mp hx).2
@@ -1556,8 +1566,10 @@ def directSum_universal {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
   complexMap := f₁.complexMap.coprod f₂.complexMap
   compatible := fun v => by
     obtain ⟨v₁, v₂⟩ := v
-    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.coprod_apply,
-               map_add, f₁.compatible, f₂.compatible]
+    show H₃.complexify ((f₁.rationalMap.coprod f₂.rationalMap) (v₁, v₂)) =
+      (f₁.complexMap.coprod f₂.complexMap) ((H₁.complexify.prodMap H₂.complexify) (v₁, v₂))
+    simp [LinearMap.prodMap_apply, LinearMap.coprod_apply,
+          map_add, f₁.compatible, f₂.compatible]
   hodge_preserve := fun p q hpq x hx => by
     obtain ⟨x₁, x₂⟩ := x
     simp only [directSumHodge, LinearMap.coprod_apply] at hx ⊢
@@ -4243,7 +4255,8 @@ theorem pure_from_smooth_complete.{v} (k : ℕ) (H : PureHodgeStructure.{v} k) :
     and W_k = ⊤. We prove this from the PureHodgeStructure.toMixed construction. -/
 theorem weight_spectral_sequence (k : ℕ) (H : PureHodgeStructure k) :
     H.toMixed.W k = ⊤ := by
-  simp [PureHodgeStructure.toMixed]
+  show (if k < k then (⊥ : Submodule ℚ H.VQ) else ⊤) = ⊤
+  rw [if_neg (lt_irrefl k)]
 
 /-- Strict morphisms: morphisms of MHS are strictly compatible with both
     filtrations. This is a key structural result of Deligne's theory.
@@ -4270,7 +4283,9 @@ theorem mhs_category_abelian :
     where W_k = ⊤ (the mixed structure "forgets" to pure at weight k). -/
 theorem ext_mixed_hodge (k : ℕ) (H : PureHodgeStructure k) :
     ∃ (M : MixedHodgeStructure), M.VQ = H.VQ ∧ M.W k = ⊤ :=
-  ⟨H.toMixed, rfl, by simp [PureHodgeStructure.toMixed]⟩
+  ⟨H.toMixed, rfl, by
+    show (if k < k then (⊥ : Submodule ℚ H.VQ) else ⊤) = ⊤
+    rw [if_neg (lt_irrefl k)]⟩
 
 /-- Carlson's theorem: for two pure HS, Ext¹ in MHS computes
     the intermediate Jacobian J^p(X).
