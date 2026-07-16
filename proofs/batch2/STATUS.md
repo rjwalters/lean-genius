@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 229 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos348Problem (HARD 24min/214k: Nat.pow_log_le_self rename;
+sum_erase_eq_sub no AddCommGroup ℕ -> Finset.add_sum_erase; single_le_sum explicit (f:=id) vs postponed
+mvar; Nat.find named ∃-witness). Repair: none (pre-existing fib_1_robust axiom untouched, #38611 follow-up cand).
+
 # DOCTOR SINGLE-PROOF BATCH 228 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos488Problem (Nat.div_add_mod->div_add_mod' arg swap; div_pos explicit
