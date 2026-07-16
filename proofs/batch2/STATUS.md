@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 287 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): AbelRuffiniOQ10 (orderOf on Subgroup elements no longer native_decide-
+compilable [noncomputable path] -> bridge via Subgroup.orderOf_coe+Equiv.Perm.lcm_cycleType+filter_congr to
+computable cycleType.lcm predicate). Repair: none (native_decide preserved on computable form).
+
 # DOCTOR SINGLE-PROOF BATCH 286 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FourierSeriesOQ02OQ02 (12min: NNReal-literal proof-term dup defeats rw/simp
