@@ -78,7 +78,8 @@ def IsRamseyBounded (G : SimpleGraph V) (k ℓ : ℕ) : Prop :=
 /-- A graph is ε-Ramsey if ω(G), α(G) < ε log n. -/
 def IsEpsilonRamsey [Fintype V] (G : SimpleGraph V) (ε : ℝ) : Prop :=
   let n := Fintype.card V
-  cliqueNumber G < ε * Real.log n ∧ independenceNumber G < ε * Real.log n
+  ((cliqueNumber G).toNat : ℝ) < ε * Real.log n ∧
+    ((independenceNumber G).toNat : ℝ) < ε * Real.log n
 
 /-  Ramsey's theorem implies ε-Ramsey graphs have bounded size. -/
 /-
@@ -90,13 +91,13 @@ The central objects of the problem.
 /-- The induced subgraph on a subset S of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj := fun u v => G.Adj u.val v.val
-  symm.symm := fun u v h => G.symm h
-  loopless.irrefl := fun u h => G.loopless u.val h
+  symm.symm := fun _ _ h => G.adj_symm h
+  loopless.irrefl := fun _ h => G.irrefl h
 
 /-- The number of edges in the induced subgraph on S. -/
 noncomputable def inducedEdgeCount [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) : ℕ :=
-  (G.edgeFinset.filter fun e => e.1 ∈ S ∧ e.2 ∈ S).card / 2
+  (G.edgeFinset.filter fun e => e ∈ S.sym2).card / 2
 
 /-- G has an induced subgraph with exactly m edges. -/
 def HasInducedWithEdges [Fintype V] [DecidableEq V]
@@ -199,14 +200,14 @@ What we know about the parameter δ.
 /-- The function δ(ε) exists by the KSSS theorem. -/
 noncomputable def delta (ε : ℝ) : ℝ :=
   if h : ε > 0 then
-    Classical.choose (ksss_theorem ε h)
+    Classical.choose (ksss_theorem.{0} ε h)
   else 0
 
 /-- δ(ε) > 0 for ε > 0. -/
 theorem delta_pos (ε : ℝ) (hε : ε > 0) : delta ε > 0 := by
   unfold delta
   simp [hε]
-  exact (Classical.choose_spec (ksss_theorem ε hε)).1
+  exact (Classical.choose_spec (ksss_theorem.{0} ε hε)).1
 
 /-  The KSSS bound is optimal up to constants. -/
 /-

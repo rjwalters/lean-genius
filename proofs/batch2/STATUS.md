@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 246 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos88Problem (ℕ∞->ℝ via .toNat; SimpleGraph symm/loopless field reshape
+-> G.adj_symm/G.irrefl; Sym2 edge-membership via S.sym2; universe .{0} pin). Repair: none. [GREEN=2500 milestone]
+
 # DOCTOR SINGLE-PROOF BATCH 245 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos846Problem (nonTrilinear_singleton tactic mode; finset_pigeonhole via
