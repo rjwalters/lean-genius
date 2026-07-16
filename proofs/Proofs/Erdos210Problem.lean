@@ -45,7 +45,7 @@ namespace Erdos210
 abbrev Point := EuclideanSpace ℝ (Fin 2)
 
 /-- A finite point configuration in the plane. -/
-def PointSet := Finset Point
+abbrev PointSet := Finset Point
 
 /-- Three points are collinear. -/
 def Collinear (p q r : Point) : Prop :=
