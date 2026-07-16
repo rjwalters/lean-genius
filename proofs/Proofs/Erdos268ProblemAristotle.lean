@@ -74,7 +74,7 @@ theorem shifted_summable (A : Set ℕ) (k : ℕ)
       · have : (fun n : A => if (n : ℕ) = 0 then (1 : ℝ) / k else 0) = 0 := by
           ext ⟨n, hn⟩; simp [show n ≠ 0 from fun heq => h0 (heq ▸ hn)]
         rw [this]; exact summable_zero
-    · apply Summable.of_nonneg_of_le
+    · apply Summable.of_nonneg_of_le (f := fun n : A => (1 : ℝ) / (n : ℕ))
       · intro n; split_ifs <;> positivity
       · intro ⟨n, hn⟩
         by_cases hn0 : n = 0
@@ -82,21 +82,28 @@ theorem shifted_summable (A : Set ℕ) (k : ℕ)
         · simp only [show n ≠ 0 from hn0, ne_eq, not_false_eq_true, ↓reduceIte]
           exact one_div_le_one_div_of_le
             (by exact_mod_cast Nat.pos_of_ne_zero hn0)
-            (by push_cast; linarith [Nat.cast_nonneg' (n := k)])
+            (by push_cast; linarith [Nat.cast_nonneg' (α := ℝ) k])
       · exact h
 
 /- ## Section 2: Coordinate Properties -/
 
--- Each coordinate is positive for non-empty A with convergent sum
+-- All coordinates are positive (for infinite A).
+-- Note: `A.Nonempty` alone is not enough -- if `A = {0}` and `i = 0` the single term
+-- `1/(0+0) = 0` is not positive. `A.Infinite` guarantees a nonzero witness exists.
+-- (matches the fixed statement in Erdos268Problem.lean; the original `A.Nonempty`
+-- hypothesis here was unsound.)
 theorem all_coordinates_positive (d : ℕ) (A : Set ℕ)
-    (hA : A.Nonempty) (hconv : HasConvergentHarmonicSubseries A)
+    (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A)
     (i : Fin d) :
     (harmonicPoint d A) i > 0 := by
   simp only [harmonicPoint, shiftedHarmonicSum]
-  obtain ⟨n, hn⟩ := hA
+  obtain ⟨n, hn⟩ := (hA.sdiff (Set.finite_singleton 0)).nonempty
+  rw [Set.mem_diff, Set.mem_singleton_iff] at hn
+  obtain ⟨hnA, hn0⟩ := hn
   apply Summable.tsum_pos (shifted_summable A i.val hconv)
-    (fun m => div_nonneg one_nonneg (Nat.cast_nonneg' _))
-  exact ⟨⟨n, hn⟩, div_pos one_pos (Nat.cast_pos.mpr (by omega))⟩
+    (fun m => div_nonneg zero_le_one (by positivity)) ⟨n, hnA⟩
+  have hnpos : (0:ℝ) < (n:ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hn0
+  exact div_pos one_pos (by positivity)
 
 -- Coordinates decrease: 1/(n+j) < 1/(n+i) for i < j, term-by-term
 -- Requires 0 ∉ A to avoid the degenerate case (1/(0+k) varies with k for 0 ∈ A)
@@ -112,11 +119,19 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
   · intro ⟨n, hn⟩
     have hn_pos : 0 < n := Nat.pos_of_ne_zero (fun h => h0 (h ▸ hn))
     apply one_div_le_one_div_of_le
-    · exact_mod_cast Nat.add_pos_left hn_pos i
-    · exact_mod_cast Nat.add_le_add_left (Nat.le_of_lt hij) n
+    · show (0:ℝ) < (n:ℝ) + (i:ℝ)
+      have : (0:ℕ) < n + i := Nat.add_pos_left hn_pos i
+      exact_mod_cast this
+    · show (n:ℝ) + (i:ℝ) ≤ (n:ℝ) + (j:ℝ)
+      have : n + i ≤ n + j := Nat.add_le_add_left (Nat.le_of_lt hij) n
+      exact_mod_cast this
   · apply one_div_lt_one_div_of_lt
-    · exact_mod_cast Nat.add_pos_left hn₀_pos i
-    · exact_mod_cast Nat.add_lt_add_left hij n₀
+    · show (0:ℝ) < (n₀:ℝ) + (i:ℝ)
+      have : (0:ℕ) < n₀ + i := Nat.add_pos_left hn₀_pos i
+      exact_mod_cast this
+    · show (n₀:ℝ) + (i:ℝ) < (n₀:ℝ) + (j:ℝ)
+      have : n₀ + i < n₀ + j := Nat.add_lt_add_left hij n₀
+      exact_mod_cast this
   · exact shifted_summable A i hconv
 
 -- The first coordinate is the largest (follows from decreasing)
@@ -124,7 +139,7 @@ theorem coordinate_decreasing (A : Set ℕ) (hA : A.Infinite)
 theorem first_coordinate_largest (d : ℕ) (hd : d ≥ 2) (A : Set ℕ)
     (hA : A.Infinite) (hconv : HasConvergentHarmonicSubseries A)
     (h0 : (0 : ℕ) ∉ A) :
-    ∀ i : Fin d, (harmonicPoint d A) 0 ≥ (harmonicPoint d A) i := by
+    ∀ i : Fin d, (harmonicPoint d A) ⟨0, by omega⟩ ≥ (harmonicPoint d A) i := by
   intro i
   simp only [harmonicPoint]
   rcases Nat.eq_zero_or_pos i.val with h | h
@@ -171,11 +186,11 @@ theorem powers_convergent : HasConvergentHarmonicSubseries powersOf2Set := by
     rintro ⟨n, k, hk⟩
     exact ⟨k, Subtype.ext hk.symm⟩
   rw [← (Equiv.ofBijective e ⟨he_inj, he_surj⟩).summable_iff]
-  simp only [Equiv.ofBijective_apply, e]
-  have heq : (fun k : ℕ => (1 : ℝ) / ↑(2 ^ k)) = (fun k : ℕ => (1 / 2 : ℝ) ^ k) := by
-    ext k; push_cast; ring
-  rw [heq]
-  exact summable_geometric_of_lt_one (by norm_num) (by norm_num)
+  apply (summable_geometric_of_lt_one (r := (1 / 2 : ℝ)) (by norm_num) (by norm_num)).congr
+  intro k
+  simp only [Function.comp, Equiv.ofBijective_apply, e]
+  push_cast
+  rw [div_pow, one_pow]
 
 /- ## Section 4: The Point Set -/
 
@@ -184,7 +199,7 @@ theorem harmonicPointSet_nonempty (d : ℕ) :
     (harmonicPointSet d).Nonempty := by
   refine ⟨harmonicPoint d powersOf2Set, powersOf2Set, ?_, powers_convergent, rfl⟩
   have hrange : powersOf2Set = Set.range (fun k : ℕ => 2 ^ k) := by
-    ext n; simp [powersOf2Set, Set.mem_range]
+    ext n; simp [powersOf2Set, Set.mem_range, eq_comm]
   rw [hrange]
   exact Set.infinite_range_of_injective
     (fun m n h => Nat.pow_right_injective (by norm_num) h)
