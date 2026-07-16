@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 35 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): FactorRemainderTheoremOQ01OQ01OQ02 (Finset.range_subset->
+range_subset_range; fwdDiff_iter_finset_sum->finsetSum; eval_finset_sum->eval_finsetSum),
+FairGamesTheoremOQ02 (missing sibling import collapsed file to autoImplicit; Nat.pow_log_le_self now
+(b){x}(hx:x≠0); simp;tac -> simp<;>tac; field_simp;ring no longer closes (1/2)^n*2^n=1). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 34 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): EulerIdentityOQ01 (cos/sin ambiguous under open Complex Real ->
