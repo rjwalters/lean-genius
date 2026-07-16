@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 231 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos580Problem (@-fully-applied satisfiesLKS/GeneralizedLKS/
+ContainsAllTreesUpTo arity changed [instance auto-inclusion scoping] -> plain application). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 230 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos557Problem (local Tree struct collides w/ Mathlib root Tree ->
