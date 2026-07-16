@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 137 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos667Problem (open scoped Classical instance-diamond; inline
+set-builders vs set rw-mismatch; IsNClique.mk needs G.IsClique; sSup_empty->csSup_empty ℕ x3;
+div_le_one_of_le₀; rw kabstract fail on Classical-instance diamond -> .trans_eq; coe_prodMap+Prod.map_apply;
+simp zetaDelta:=true for local let). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 136 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0 against merged parent Erdos622Problem): Erdos622OQ04 (G.symm h->h.symm
