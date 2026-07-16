@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 230 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos557Problem (local Tree struct collides w/ Mathlib root Tree ->
+ErdosTree; starTree.symm exact h; named hn for omega; Nat.find explicit predicate). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 229 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos348Problem (HARD 24min/214k: Nat.pow_log_le_self rename;
