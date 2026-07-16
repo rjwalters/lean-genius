@@ -64,12 +64,12 @@ theorem smooth_iff_composed (m n : ℕ) (hm : m > 0) (hn : n > 0) :
     IsSmooth m n ↔ ComposedOfPrimesDividing m n := by
   constructor
   · intro h p hp hpm
-    have hpf : p ∈ m.primeFactors := mem_primeFactors.mpr ⟨hp, hpm, hm⟩
+    have hpf : p ∈ m.primeFactors := mem_primeFactors.mpr ⟨hp, hpm, hm.ne'⟩
     have := h hpf
     exact (mem_primeFactors.mp this).2.1
   · intro h p hp
     have ⟨hpp, hpm, _⟩ := mem_primeFactors.mp hp
-    exact mem_primeFactors.mpr ⟨hpp, h p hpp hpm, hn⟩
+    exact mem_primeFactors.mpr ⟨hpp, h p hpp hpm, hn.ne'⟩
 
 /-
 ## Part II: The Function f(u)
@@ -78,30 +78,35 @@ theorem smooth_iff_composed (m n : ℕ) (hm : m > 0) (hn : n > 0) :
 /-- f(u) is the largest v such that no m ∈ (u, v) is composed entirely of primes dividing uv.
     Equivalently, f(u) is the smallest v > u with all prime factors of v dividing u. -/
 noncomputable def f (u : ℕ) : ℕ :=
-  Nat.find (exists_smooth_gt u)
+  -- NOTE (v4.31 migration, #38611 candidate): the original single-branch proof of
+  -- `exists_smooth_gt` used the witness `v = u * u` uniformly, but that witness is
+  -- genuinely FALSE at `u = 1` (there is no `v > 1` with `IsSmooth v 1`, since
+  -- `primeFactors 1 = ∅` forces `primeFactors v = ∅`, impossible for `v ≥ 2`). The
+  -- old toolchain accepted the resulting `False` subgoal via `simp [hu1]`; on v4.31
+  -- `simp` correctly reports it as unsolved. `f` is only ever invoked (via the
+  -- axioms/theorems below) at `u = 0` or `u ≥ 2`, so we special-case `u = 1` with an
+  -- unconstrained junk value rather than weakening the mathematical content.
+  if hu1 : u = 1 then 1
+  else Nat.find (exists_smooth_gt u hu1)
   where
-    exists_smooth_gt (u : ℕ) : ∃ v : ℕ, v > u ∧ IsSmooth v u := by
-      -- u² is always smooth with respect to u (same prime factors)
-      use u * u
-      constructor
-      · by_cases hu : u = 0
-        · simp [hu]
-        · by_cases hu1 : u = 1
-          · simp [hu1]
-          · have : u ≥ 2 := Nat.two_le_iff.mpr ⟨hu, hu1⟩
-            nlinarith
-      · intro p hp
+    exists_smooth_gt (u : ℕ) (hu1 : u ≠ 1) : ∃ v : ℕ, v > u ∧ IsSmooth v u := by
+      by_cases hu : u = 0
+      · -- u = 0: v = 1 works, since primeFactors 1 = ∅ ⊆ primeFactors 0.
+        subst hu
+        refine ⟨1, by norm_num, ?_⟩
+        intro p hp
+        simp [Nat.primeFactors_one] at hp
+      · -- u ≥ 2: u² is smooth with respect to u (same prime factors) and u² > u.
+        have hu2 : u ≥ 2 := by omega
+        refine ⟨u * u, by nlinarith, ?_⟩
+        intro p hp
         have ⟨hpp, hpdiv, _⟩ := mem_primeFactors.mp hp
         have : p ∣ u ∨ p ∣ u := by
           exact hpp.dvd_mul.mp hpdiv
-        exact mem_primeFactors.mpr ⟨hpp, this.elim id id, by
-          by_contra h
-          simp at h
-          have := mul_eq_zero.mp h
-          exact hpp.ne_one (this.elim (fun h => h ▸ hpp.ne_one rfl) (fun h => h ▸ hpp.ne_one rfl))⟩
+        exact mem_primeFactors.mpr ⟨hpp, this.elim id id, hu⟩
 
 /-- Alternative characterization: f(u) is the smallest v > u with primeFactors(v) ⊆ primeFactors(u). -/
-def f_alt (u : ℕ) : ℕ :=
+noncomputable def f_alt (u : ℕ) : ℕ :=
   -- The smallest v > u such that v's prime factors are contained in u's prime factors
   if h : ∃ v > u, v.primeFactors ⊆ u.primeFactors
   then Nat.find h
