@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 205 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos171Problem (PiLp/WithLp now real struct not reducible synonym ->
+!₂[...] literals; WithLp.ofLp_sub before Pi.sub_apply; first-combinator ; done force fallback; Fin.val
+explicit typing). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 203 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos167Problem (maxHeartbeats 1M for double-namespace unfold; k5_tight
