@@ -24,6 +24,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 
 open Finset Set Filter
+open scoped Classical
 
 namespace Erdos339
 
@@ -122,8 +123,16 @@ theorem distinct_subset_general (A : Set ℕ) (r : ℕ) :
 
 /-- For r = 2 (sumsets), this is about A + A vs A +̂ A. -/
 theorem case_r_equals_2 (A : Set ℕ) :
-    rSums A 2 = { n | ∃ a ∈ A, ∃ b ∈ A, a + b = n } :=
-  rfl -- by definition
+    rSums A 2 = { n | ∃ a ∈ A, ∃ b ∈ A, a + b = n } := by
+  ext n
+  simp only [rSums, Set.mem_setOf_eq]
+  constructor
+  · intro ⟨f, hA, hsum⟩
+    exact ⟨f 0, hA 0, f 1, hA 1, by rw [← hsum, Fin.sum_univ_two]⟩
+  · intro ⟨a, ha, b, hb, hsum⟩
+    refine ⟨![a, b], ?_, ?_⟩
+    · intro i; fin_cases i <;> simpa
+    · simp [Fin.sum_univ_two, hsum]
 
 /-- For r = 2 distinct, this is the "restricted sumset". -/
 theorem case_r_equals_2_distinct (A : Set ℕ) :
@@ -133,7 +142,7 @@ theorem case_r_equals_2_distinct (A : Set ℕ) :
   constructor
   · intro ⟨f, hinj, hA, hsum⟩
     have hne : f 0 ≠ f 1 := hinj.ne (by decide)
-    exact ⟨f 0, hA 0, f 1, hA 1, hne, by skip⟩
+    exact ⟨f 0, hA 0, f 1, hA 1, hne, by rw [← hsum, Fin.sum_univ_two]⟩
   · intro ⟨a, ha, b, hb, hab, hsum⟩
     use ![a, b]
     constructor
@@ -170,14 +179,14 @@ theorem naturals_basis_of_order_1 :
 /-- Sidon sets: A is Sidon if all pairwise sums a + b (a ≤ b) are distinct.
     These are very sparse but have specific structure. -/
 def IsSidonSet (A : Set ℕ) : Prop :=
-  ∀ a₁ a₂ b₁ b₂ ∈ A, a₁ ≤ a₂ → b₁ ≤ b₂ → a₁ + a₂ = b₁ + b₂ →
+  ∀ a₁ ∈ A, ∀ a₂ ∈ A, ∀ b₁ ∈ A, ∀ b₂ ∈ A, a₁ ≤ a₂ → b₁ ≤ b₂ → a₁ + a₂ = b₁ + b₂ →
     a₁ = b₁ ∧ a₂ = b₂
 
 /-- B_h sets generalize Sidon sets to h-element sums. -/
 def IsBhSet (A : Set ℕ) (h : ℕ) : Prop :=
   ∀ f g : Fin h → ℕ, (∀ i, f i ∈ A) → (∀ i, g i ∈ A) →
     (∑ i, f i) = (∑ i, g i) →
-    Multiset.ofFn f = Multiset.ofFn g
+    (List.ofFn f : Multiset ℕ) = (List.ofFn g : Multiset ℕ)
 
 /- ## Summary
 
