@@ -86,10 +86,12 @@ def S1 (A : ι → Finset α) : ℤ := ∑ i : ι, ((A i).card : ℤ)
 def S2 (A : ι → Finset α) : ℤ := sieveLayer A 2
 
 /-- **Transparency for `S₂`.** Each size-two layer term is the cardinality of an honest
-pairwise intersection: for `i ≠ j`, `|⋂_{l ∈ {i,j}} A l| = |A i ∩ A j|`. -/
+pairwise intersection: for `i ≠ j`, `|⋂_{l ∈ {i,j}} A l| = |A i ∩ A j|`. (The gallery's
+`InclusionExclusionBonferroniGeneral` inlines the `⋂_{l ∈ J}` filter directly into `sieveLayer`
+rather than naming it `interCard`, so we state the same fact against that filter.) -/
 theorem interCard_pair (A : ι → Finset α) {i j : ι} (hij : i ≠ j) :
-    interCard A {i, j} = (A i ∩ A j).card := by
-  unfold interCard
+    (univ.filter (fun x : α => ∀ l ∈ ({i, j} : Finset ι), x ∈ A l)).card
+      = (A i ∩ A j).card := by
   congr 1
   ext x
   simp only [mem_filter, mem_univ, true_and, mem_inter, Finset.mem_insert, Finset.mem_singleton]
@@ -98,6 +100,44 @@ theorem interCard_pair (A : ι → Finset α) {i j : ι} (hij : i ≠ j) :
   · rintro ⟨hi, hj⟩ l (rfl | rfl)
     · exact hi
     · exact hj
+
+/-- **Layer count (reproved locally).** Each layer is a sum over elements of a single binomial
+coefficient: `S_k = Σ_x C(deg A x, k)`. Upstream `InclusionExclusionBonferroniGeneral` no longer
+exports this as `sieveLayer_eq_sum_choose` (its own `bonf_eq_sum_altPartial` proof inlines the
+equivalent computation with a `private` helper lemma), so we reprove the single-layer version
+here against the current `sieveLayer` definition. -/
+theorem sieveLayer_eq_sum_choose (A : ι → Finset α) (k : ℕ) :
+    sieveLayer A k = ∑ x : α, ((deg A x).choose k : ℤ) := by
+  unfold sieveLayer deg
+  have h1 : ∀ J : Finset ι,
+      ((univ.filter (fun x : α => ∀ i ∈ J, x ∈ A i)).card : ℤ)
+        = ∑ x : α, (if (∀ i ∈ J, x ∈ A i) then (1 : ℤ) else 0) := by
+    intro J
+    rw [Finset.card_filter]
+    push_cast
+    simp
+  rw [Finset.sum_congr rfl (fun J (_ : J ∈ (univ : Finset ι).powersetCard k) => h1 J),
+    Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [← Finset.sum_filter, Finset.sum_const]
+  have hfilter : ((univ : Finset ι).powersetCard k).filter (fun J => ∀ i ∈ J, x ∈ A i)
+      = (univ.filter (fun i => x ∈ A i)).powersetCard k := by
+    ext J
+    simp only [Finset.mem_filter, Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨⟨_, hcard⟩, hmem⟩
+      refine ⟨?_, hcard⟩
+      intro i hi
+      rw [Finset.mem_filter]
+      exact ⟨Finset.mem_univ i, hmem i hi⟩
+    · rintro ⟨hsub, hcard⟩
+      refine ⟨⟨Finset.subset_univ J, hcard⟩, ?_⟩
+      intro i hi
+      have h := hsub hi
+      rw [Finset.mem_filter] at h
+      exact h.2
+  rw [hfilter, Finset.card_powersetCard, nsmul_eq_mul, mul_one]
 
 /-
 ## Part II: The two layers in terms of degrees
