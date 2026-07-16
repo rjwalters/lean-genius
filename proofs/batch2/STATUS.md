@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 321 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: WolstenholmeTheoremOQ01 (ledger `oom-killed` was NOT native_decide — `unfold cb; rw`
+and `show`/`simp only [cb]` on the numeral goal `cb 16843` forced the kernel to reduce
+`Nat.choose 33685 16842` via unmemoized exponential Pascal recursion; replaced with a syntactic
+`cb_eq_choose` lemma + `rw` before native_decide (resolves ~3s), and base case `rfl` ->
+`rw[Nat.choose_zero_right];rfl`). Repair: none.
+NEW SEAM: `unfold`/`show`/`simp only` on a def applied to a large numeral can trigger runaway
+kernel reduction of a recursive fn reachable only after unfold — prove `foo_eq (x): f x = … := rfl`
+and `rw` with it instead; `Nat.choose n 0 = 1` no longer bare-`rfl` for symbolic n.
+
 # DOCTOR SINGLE-PROOF BATCH 320 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: DissectionOfCubesOQ04Aristotle (no source edit — cascade artifact; parents
