@@ -68,10 +68,10 @@ The first few primes. Proved via Mathlib's Nat.nth_prime lemmas.
 theorem nthPrime_values :
     nthPrime 1 = 2 ∧ nthPrime 2 = 3 ∧ nthPrime 3 = 5 ∧ nthPrime 4 = 7 := by
   refine ⟨?_, ?_, ?_, ?_⟩
-  · unfold nthPrime; simp; exact Nat.nth_prime_zero_eq_two
-  · unfold nthPrime; simp; exact Nat.nth_prime_one_eq_three
-  · unfold nthPrime; simp; exact Nat.nth_prime_two_eq_five
-  · unfold nthPrime; simp; exact nth_prime_three_eq_seven
+  · unfold nthPrime; simp
+  · unfold nthPrime; simp
+  · unfold nthPrime; simp
+  · unfold nthPrime; simp
 
 /--
 All nthPrime values for n ≥ 1 are prime.
@@ -79,7 +79,7 @@ Proved via Nat.nth_mem_of_infinite. (Previously axiom.)
 -/
 theorem nthPrime_is_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime := by
   unfold nthPrime
-  skip
+  rw [if_neg (by omega : n ≠ 0)]
   exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n - 1)
 
 /--
@@ -164,6 +164,41 @@ axiom pomerance_convex_hull_lemma (a : ℕ → ℝ)
 ## Part IV: Pomerance's Theorem (1979)
 -/
 
+/-
+**From Log to Product:**
+2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
+-/
+/-- **From Log to Product:**
+    2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
+    Proof: log(ab) = log a + log b, log(x²) = 2 log x, and log is strictly monotone. -/
+theorem log_to_product (n i : ℕ) (hn : n ≥ 2) (hi : 0 < i ∧ i < n)
+    (h : 2 * logPrime n > logPrime (n - i) + logPrime (n + i)) :
+    (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
+  unfold logPrime at h
+  -- Primes are positive
+  have hp_n : (0 : ℝ) < nthPrime n :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime n (by omega)))
+  have hp_ni : (0 : ℝ) < nthPrime (n - i) :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n - i) (by omega)))
+  have hp_pi : (0 : ℝ) < nthPrime (n + i) :=
+    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n + i) (by omega)))
+  -- Convert log inequality: log(product) < log(square)
+  have h_log : Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i)) <
+      Real.log ((nthPrime n : ℝ) ^ 2) := by
+    calc Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i))
+        = Real.log (nthPrime (n - i)) + Real.log (nthPrime (n + i)) :=
+          Real.log_mul (ne_of_gt hp_ni) (ne_of_gt hp_pi)
+      _ < 2 * Real.log (nthPrime n) := by linarith
+      _ = Real.log ((nthPrime n : ℝ) ^ 2) := by rw [Real.log_pow]; ring
+  -- By strict monotonicity of log: product < square in ℝ
+  have h_real : (nthPrime (n - i) : ℝ) * nthPrime (n + i) < (nthPrime n : ℝ) ^ 2 :=
+    (Real.log_lt_log_iff (mul_pos hp_ni hp_pi) (pow_pos hp_n 2)).mp h_log
+  -- Transfer to ℤ
+  exact_mod_cast show nthPrime n ^ 2 > nthPrime (n + i) * nthPrime (n - i) by
+    calc nthPrime n ^ 2
+        > nthPrime (n - i) * nthPrime (n + i) := by exact_mod_cast h_real
+      _ = nthPrime (n + i) * nthPrime (n - i) := Nat.mul_comm _ _
+
 /--
 **From Convexity to Inequality:**
 If (n, log p_n) is a convex hull vertex, then p_n² > p_{n-i}·p_{n+i} for all i.
@@ -238,7 +273,7 @@ theorem erdos_453_negative_answer :
 The graph of points (n, p_n) or equivalently (n, log p_n).
 This visualization motivated Pomerance's proof.
 -/
-def primeGraph (n : ℕ) : ℝ × ℝ := (n, logPrime n)
+noncomputable def primeGraph (n : ℕ) : ℝ × ℝ := (n, logPrime n)
 
 /--
 **Geometric Interpretation:**
@@ -269,41 +304,6 @@ theorem log_convexity_iff_vertex (n : ℕ) :
     LogConvexityProperty n ↔ IsConvexHullVertex logPrime n := by
   rfl
 
-/- 
-**From Log to Product:**
-2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
--/
-/-- **From Log to Product:**
-    2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n-i}·p_{n+i}.
-    Proof: log(ab) = log a + log b, log(x²) = 2 log x, and log is strictly monotone. -/
-theorem log_to_product (n i : ℕ) (hn : n ≥ 2) (hi : 0 < i ∧ i < n)
-    (h : 2 * logPrime n > logPrime (n - i) + logPrime (n + i)) :
-    (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ) := by
-  unfold logPrime at h
-  -- Primes are positive
-  have hp_n : (0 : ℝ) < nthPrime n :=
-    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime n (by omega)))
-  have hp_ni : (0 : ℝ) < nthPrime (n - i) :=
-    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n - i) (by omega)))
-  have hp_pi : (0 : ℝ) < nthPrime (n + i) :=
-    Nat.cast_pos.mpr (Nat.Prime.pos (nthPrime_is_prime (n + i) (by omega)))
-  -- Convert log inequality: log(product) < log(square)
-  have h_log : Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i)) <
-      Real.log ((nthPrime n : ℝ) ^ 2) := by
-    calc Real.log ((nthPrime (n - i) : ℝ) * nthPrime (n + i))
-        = Real.log (nthPrime (n - i)) + Real.log (nthPrime (n + i)) :=
-          Real.log_mul (ne_of_gt hp_ni) (ne_of_gt hp_pi)
-      _ < 2 * Real.log (nthPrime n) := by linarith
-      _ = Real.log ((nthPrime n : ℝ) ^ 2) := by rw [Real.log_pow]; ring
-  -- By strict monotonicity of log: product < square in ℝ
-  have h_real : (nthPrime (n - i) : ℝ) * nthPrime (n + i) < (nthPrime n : ℝ) ^ 2 :=
-    (Real.log_lt_log_iff (mul_pos hp_ni hp_pi) (pow_pos hp_n 2)).mp h_log
-  -- Transfer to ℤ
-  exact_mod_cast show nthPrime n ^ 2 > nthPrime (n + i) * nthPrime (n - i) by
-    calc nthPrime n ^ 2
-        > nthPrime (n - i) * nthPrime (n + i) := by exact_mod_cast h_real
-      _ = nthPrime (n + i) * nthPrime (n - i) := Nat.mul_comm _ _
-
 /-
 ## Part VIII: Density of Counterexamples
 -/
@@ -315,10 +315,11 @@ The set of n violating the Erdős-Straus conjecture is infinite.
 theorem counterexample_set_infinite :
     {n : ℕ | ∀ i : ℕ, 0 < i → i < n →
       (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)}.Infinite := by
-  rw [Set.infinite_iff_nat_lt]
+  apply Set.infinite_of_not_bddAbove
+  rw [not_bddAbove_iff]
   intro N
-  obtain ⟨n, hn, h⟩ := pomerance_1979 N
-  exact ⟨n, h, hn⟩
+  obtain ⟨n, hn, h⟩ := pomerance_1979 (N + 1)
+  exact ⟨n, h, by omega⟩
 
 /-
 ## Part IX: Connection to Guy's Collection
