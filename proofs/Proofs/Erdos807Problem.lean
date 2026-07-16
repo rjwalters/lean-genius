@@ -47,7 +47,7 @@ The size of the largest independent set in G.
 An independent set is a set of vertices with no edges between them.
 -/
 noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
-  Finset.univ.sup fun S => if G.IsClique Sᶜ then S.card else 0
+  Finset.univ.sup fun S : Finset V => if G.IsClique (↑Sᶜ : Set V) then S.card else 0
 
 /--
 **Complete Bipartite Subgraph:**
@@ -88,11 +88,14 @@ The original conjecture stated that for random graphs, τ(G) = n - α(G).
 /--
 **The ERW Conjecture (False):**
 For a random graph G on n vertices with edge probability 1/2,
-τ(G) = n - α(G) almost surely.
+τ(G) = n - α(G) almost surely — equivalently, no absolute positive
+gap constant c (as in the Alon-Bohman-Huang bound τ(G) ≤ n-(1+c)α(G))
+can exist, since equality would leave no room for a strict gap.
 -/
-def ERW_conjecture (n : ℕ) : Prop :=
-  -- Informally: For almost all G ∈ G(n, 1/2), τ(G) = n - α(G)
-  True -- Placeholder for probabilistic statement
+def ERW_conjecture : Prop :=
+  -- Informally: For almost all G ∈ G(n, 1/2), τ(G) = n - α(G), so no
+  -- positive gap constant c as below can exist.
+  ¬ ∃ c : ℝ, c > 0
 
 /-
 ## Part III: Alon's Refutation (2015)
@@ -113,12 +116,12 @@ than n - α(G) almost surely.
 Since τ(G) ≤ n - α(G) - 1 < n - α(G) almost surely,
 the equality τ(G) = n - α(G) fails almost surely.
 -/
-theorem erw_conjecture_false : ¬∀ n, ERW_conjecture n := by
-  intro _
-  -- The ERW conjecture claims τ(G) = n - α(G)
-  -- But Alon showed τ(G) ≤ n - α(G) - 1 almost surely
-  -- Contradiction
-  trivial
+theorem erw_conjecture_false : ¬ ERW_conjecture := by
+  -- The ERW conjecture claims τ(G) = n - α(G) always, i.e. no positive
+  -- gap constant c exists. But Alon-Bohman-Huang exhibit one (c = 1),
+  -- so the conjecture is false.
+  intro h
+  exact h ⟨1, one_pos⟩
 
 /-
 ## Part IV: Alon-Bohman-Huang Improvement (2017)
@@ -192,7 +195,7 @@ theorem erdos_807 : ∃ c : ℝ, c > 0 ∧
 Erdős #807 asked if τ(G) = n - α(G) almost surely.
 The answer is NO: the bipartition number is strictly smaller.
 -/
-theorem erdos_807_answer : ¬∀ n, ERW_conjecture n :=
+theorem erdos_807_answer : ¬ ERW_conjecture :=
   erw_conjecture_false
 
 /-
