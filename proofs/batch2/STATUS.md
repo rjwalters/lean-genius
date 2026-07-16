@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 305 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos470Problem (24min: plain def props no longer auto-unfold for Decidable
+under native_decide -> explicit unfold IsAbundant/IsWeird before 10 calls; decidableIsWeird was wrongly
+noncomputable; import Algebra.Ring.Parity for Odd; maxHeartbeats 1M for 2^23 powerset). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 304 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FundamentalArithmeticOQ02 (Zsqrtd.mul_def->re_mul/im_mul; one_re->re_one;

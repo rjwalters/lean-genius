@@ -27,8 +27,9 @@ import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Nat.Prime.Nth
+import Mathlib.Algebra.Ring.Parity
 
-open scoped Classical
+set_option maxHeartbeats 1000000
 
 open Nat Finset Set
 
@@ -76,9 +77,15 @@ instance decidableIsPseudoperfect (n : ℕ) : Decidable (IsPseudoperfect n) :=
     fun ⟨S, hmem, hsum⟩ => ⟨S, Finset.mem_powerset.mp hmem, hsum⟩,
     fun ⟨S, hsub, hsum⟩ => ⟨S, Finset.mem_powerset.mpr hsub, hsum⟩⟩
 
+/-- Decidability of IsAbundant. Stated explicitly (rather than left to plain
+`inferInstance`) because `IsAbundant` is a non-reducible `def`, and instance
+search on v4.31 does not unfold it automatically to reach `Nat.decLt`. -/
+instance decidableIsAbundant (n : ℕ) : Decidable (IsAbundant n) := by
+  unfold IsAbundant sigma; infer_instance
+
 /-- Decidability of IsWeird. -/
-noncomputable instance decidableIsWeird (n : ℕ) : Decidable (IsWeird n) :=
-  inferInstanceAs (Decidable (IsAbundant n ∧ ¬IsPseudoperfect n))
+instance decidableIsWeird (n : ℕ) : Decidable (IsWeird n) := by
+  unfold IsWeird; infer_instance
 
 /-
 ## The Smallest Weird Number: 70
@@ -185,7 +192,7 @@ No odd number below 945 is abundant.
 -/
 theorem no_odd_abundant_below_945 (n : ℕ) (hn : n < 945) (hodd : Odd n) :
     ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.range 945, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.range 945, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_range.mpr hn) hodd
 
 /--
@@ -219,7 +226,7 @@ No odd number in (945, 1575) is abundant.
 -/
 theorem no_odd_abundant_946_to_1575 (n : ℕ) (hn1 : 945 < n) (hn2 : n < 1575)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 946 1574, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 946 1574, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -245,7 +252,7 @@ No odd number in (1575, 2205) is abundant.
 -/
 theorem no_odd_abundant_1576_to_2205 (n : ℕ) (hn1 : 1575 < n) (hn2 : n < 2205)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 1576 2204, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 1576 2204, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -271,7 +278,7 @@ No odd number in (2205, 2835) is abundant.
 -/
 theorem no_odd_abundant_2206_to_2835 (n : ℕ) (hn1 : 2205 < n) (hn2 : n < 2835)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 2206 2834, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 2206 2834, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -297,7 +304,7 @@ No odd number in (2835, 3465) is abundant.
 -/
 theorem no_odd_abundant_2836_to_3465 (n : ℕ) (hn1 : 2835 < n) (hn2 : n < 3465)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 2836 3464, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 2836 3464, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -323,7 +330,7 @@ No odd number in (3465, 4095) is abundant.
 -/
 theorem no_odd_abundant_3466_to_4095 (n : ℕ) (hn1 : 3465 < n) (hn2 : n < 4095)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 3466 4094, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 3466 4094, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -349,7 +356,7 @@ No odd number in (4095, 4725) is abundant.
 -/
 theorem no_odd_abundant_4096_to_4725 (n : ℕ) (hn1 : 4095 < n) (hn2 : n < 4725)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 4096 4724, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 4096 4724, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -376,7 +383,7 @@ No odd number in (4725, 5355) is abundant.
 -/
 theorem no_odd_abundant_4726_to_5355 (n : ℕ) (hn1 : 4725 < n) (hn2 : n < 5355)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 4726 5354, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 4726 5354, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -402,7 +409,7 @@ No odd number in (5355, 5775) is abundant.
 -/
 theorem no_odd_abundant_5356_to_5775 (n : ℕ) (hn1 : 5355 < n) (hn2 : n < 5775)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 5356 5774, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 5356 5774, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
@@ -428,7 +435,7 @@ No odd number in (5775, 5985) is abundant.
 -/
 theorem no_odd_abundant_5776_to_5985 (n : ℕ) (hn1 : 5775 < n) (hn2 : n < 5985)
     (hodd : Odd n) : ¬IsAbundant n := by
-  have h : ∀ m ∈ Finset.Icc 5776 5984, Odd m → ¬IsAbundant m := by native_decide
+  have h : ∀ m ∈ Finset.Icc 5776 5984, Odd m → ¬IsAbundant m := by unfold IsAbundant sigma; native_decide
   exact h n (Finset.mem_Icc.mpr ⟨hn1, by omega⟩) hodd
 
 /--
