@@ -121,15 +121,22 @@ theorem exp_lagrange_remainder (x : ℝ) (hx : 0 < x) (n : ℕ) :
       Real.exp x - taylorWithinEval Real.exp n (Icc 0 x) 0 x =
         iteratedDerivWithin (n + 1) Real.exp (Icc 0 x) ξ *
           x ^ (n + 1) / (n + 1)! := by
+  have huIcc : uIcc (0 : ℝ) x = Icc 0 x := uIcc_of_le hx.le
+  have huIoo : uIoo (0 : ℝ) x = Ioo 0 x := uIoo_of_lt hx
   have hf : ContDiffOn ℝ (n + 1) Real.exp (Icc 0 x) :=
     Real.contDiff_exp.contDiffOn.of_le le_top
-  have hf_n : ContDiffOn ℝ n Real.exp (Icc 0 x) := hf.of_succ
-  have hdiff : DifferentiableOn ℝ (iteratedDerivWithin n Real.exp (Icc 0 x)) (Ioo 0 x) := by
-    have h := hf.differentiableOn_iteratedDerivWithin (m := n)
-      (by norm_cast; omega) (uniqueDiffOn_Icc hx)
+  have hf_n : ContDiffOn ℝ n Real.exp (uIcc (0 : ℝ) x) := by rw [huIcc]; exact hf.of_succ
+  have hdiff : DifferentiableOn ℝ (iteratedDerivWithin n Real.exp (uIcc (0 : ℝ) x))
+      (uIoo (0 : ℝ) x) := by
+    rw [huIcc, huIoo]
+    have hlt : (n : WithTop ℕ∞) < n + 1 := by norm_cast; omega
+    have h := hf.differentiableOn_iteratedDerivWithin (m := n) hlt (uniqueDiffOn_Icc hx)
     exact h.mono Ioo_subset_Icc_self
-  obtain ⟨ξ, hξ, hξ_eq⟩ := taylor_mean_remainder_lagrange hx hf_n hdiff
-  exact ⟨ξ, hξ, by simp only [sub_zero] at hξ_eq; exact hξ_eq⟩
+  obtain ⟨ξ, hξ, hξ_eq⟩ := taylor_mean_remainder_lagrange hx.ne hf_n hdiff
+  rw [huIcc] at hξ_eq
+  rw [huIoo] at hξ
+  simp only [sub_zero] at hξ_eq
+  exact ⟨ξ, hξ, hξ_eq⟩
 
 /-! ## The Euler Number -/
 
@@ -179,11 +186,12 @@ private lemma tail_term_le_geometric (n j : ℕ) (hn : 1 ≤ n) :
   have h_r : (↑(n !) : ℝ) * (2 : ℝ) ^ j ≤ ↑((n + j) !) := by exact_mod_cast h
   -- Step 1: 1/(n+j)! ≤ 1/(n! * 2^j) since n!*2^j ≤ (n+j)!
   have step1 : (1 : ℝ) / ↑((n + j) !) ≤ 1 / (↑(n !) * (2 : ℝ) ^ j) := by
-    apply div_le_div_of_nonneg_left one_pos (mul_pos hnf h2j) h_r
+    apply div_le_div_of_nonneg_left zero_le_one (mul_pos hnf h2j) h_r
   -- Step 2: 1/(n! * 2^j) = (1/n!) * (1/2)^j
   calc (1 : ℝ) / ↑((n + j) !)
       ≤ 1 / (↑(n !) * (2 : ℝ) ^ j) := step1
-    _ = (1 / ↑(n !)) * ((1 : ℝ) / 2) ^ j := by field_simp; ring
+    _ = (1 / ↑(n !)) * ((1 : ℝ) / 2) ^ j := by
+        rw [div_pow, one_pow, div_mul_div_comm, one_mul]
 
 theorem euler_approx_error (n : ℕ) (hn : 1 ≤ n) :
     |Real.exp 1 - ∑ k ∈ Finset.range n, (1 : ℝ) / (k ! : ℝ)| ≤
@@ -195,21 +203,29 @@ theorem euler_approx_error (n : ℕ) (hn : 1 ≤ n) :
     (summable_pow_div_factorial 1).congr (fun k => by simp)
   -- Partial sum ≤ e (tail is non-negative)
   have hle : ∑ k ∈ Finset.range n, (1 : ℝ) / (↑(k !) : ℝ) ≤ Real.exp 1 := by
-    rw [euler_tsum]; exact sum_le_tsum _ (fun k _ => hnn k) hsumm
+    rw [euler_tsum]; exact hsumm.sum_le_tsum _ (fun k _ => hnn k)
   rw [abs_of_nonneg (by linarith)]
-  -- Express the difference as the shifted tail series
-  have htail : HasSum (fun j => (1 : ℝ) / (↑((j + n) !) : ℝ))
-      (Real.exp 1 - ∑ k ∈ Finset.range n, (1 : ℝ) / (↑(k !) : ℝ)) :=
-    euler_number_series.nat_add n
+  -- Express the difference as the shifted tail series (indexed as n + j to match
+  -- `tail_term_le_geometric`).
+  have htail : HasSum (fun j => (1 : ℝ) / (↑((n + j) !) : ℝ))
+      (Real.exp 1 - ∑ k ∈ Finset.range n, (1 : ℝ) / (↑(k !) : ℝ)) := by
+    have h := (hasSum_nat_add_iff (f := fun k => (1 : ℝ) / (↑(k !) : ℝ)) n).2
+      (show HasSum (fun k => (1 : ℝ) / (↑(k !) : ℝ))
+        (Real.exp 1 - ∑ k ∈ Finset.range n, (1 : ℝ) / (↑(k !) : ℝ) +
+          ∑ i ∈ Finset.range n, (1 : ℝ) / (↑(i !) : ℝ)) by
+        have : Real.exp 1 - ∑ k ∈ Finset.range n, (1 : ℝ) / (↑(k !) : ℝ) +
+            ∑ i ∈ Finset.range n, (1 : ℝ) / (↑(i !) : ℝ) = Real.exp 1 := by ring
+        rw [this]; exact euler_number_series)
+    simpa [add_comm] using h
   rw [← htail.tsum_eq]
-  -- Bound: Σ 1/(j+n)! ≤ Σ (1/n!) * (1/2)^j = (1/n!) * 2 ≤ 3/n!
+  -- Bound: Σ 1/(n+j)! ≤ Σ (1/n!) * (1/2)^j = (1/n!) * 2 ≤ 3/n!
   have hgeom_summ : Summable (fun j => (1 / (↑(n !) : ℝ)) * ((1 : ℝ) / 2) ^ j) :=
     Summable.mul_left _ (summable_geometric_of_lt_one (by positivity) (by norm_num))
-  calc ∑' j, (1 : ℝ) / (↑((j + n) !) : ℝ)
+  calc ∑' j, (1 : ℝ) / (↑((n + j) !) : ℝ)
       ≤ ∑' j, (1 / (↑(n !) : ℝ)) * ((1 : ℝ) / 2) ^ j := by
         apply Summable.tsum_le_tsum (fun j => tail_term_le_geometric n j hn)
           htail.summable hgeom_summ
-    _ = (1 / (↑(n !) : ℝ)) * ∑' j, ((1 : ℝ) / 2) ^ j := tsum_mul_left _ _
+    _ = (1 / (↑(n !) : ℝ)) * ∑' j, ((1 : ℝ) / 2) ^ j := tsum_mul_left
     _ = (1 / (↑(n !) : ℝ)) * 2 := by
         rw [tsum_geometric_of_lt_one (by positivity) (by norm_num)]; norm_num
     _ ≤ 3 / (↑(n !) : ℝ) := by
