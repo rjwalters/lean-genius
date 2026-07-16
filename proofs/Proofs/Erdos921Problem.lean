@@ -117,7 +117,7 @@ f_4(n) ≍ n^{1/2}.
 -/
 theorem k4_case :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
-    ∀ n ≥ 4, c₁ * Real.sqrt n ≤ f 4 n ∧ (f 4 n : ℝ) ≤ c₂ * Real.sqrt n := by
+    ∀ n : ℕ, n ≥ 4 → c₁ * Real.sqrt n ≤ f 4 n ∧ (f 4 n : ℝ) ≤ c₂ * Real.sqrt n := by
   obtain ⟨c, hc, hlow⟩ := gallai_lower_bound
   obtain ⟨C, hC, hup⟩ := erdos_upper_bound
   exact ⟨c, C, hc, hC, fun n hn => ⟨hlow n hn, hup n hn⟩⟩
