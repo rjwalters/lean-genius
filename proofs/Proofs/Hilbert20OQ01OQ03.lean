@@ -56,15 +56,19 @@ abbrev MultiIndex (n : ℕ) := Fin n → ℕ
 def MultiIndex.order {n : ℕ} (α : MultiIndex n) : ℕ :=
   Finset.univ.sum α
 
+@[ext]
 structure LinearPDO (n : ℕ) (m : ℕ) where
   coeff : MultiIndex n → (Fin n → ℝ) → ℂ
   order_bound : ∀ α : MultiIndex n, MultiIndex.order α > m → coeff α = 0
 
+/-- The principal symbol sums only over multi-indices of order exactly `m`.
+    `MultiIndex n = Fin n → ℕ` is infinite, so we cannot form `Finset.univ` over it;
+    instead we index directly by `Finset.Nat.antidiagonalTuple n m`, the (finite) finset
+    of tuples `α : Fin n → ℕ` with `∑ i, α i = m` (Mathlib's `mem_antidiagonalTuple`
+    characterizes exactly this, matching `MultiIndex.order`). -/
 def principalSymbol {n m : ℕ} (P : LinearPDO n m) (x ξ : Fin n → ℝ) : ℂ :=
-  Finset.univ.sum fun α =>
-    if MultiIndex.order α = m then
-      P.coeff α x * (Finset.univ.prod fun i => (ξ i : ℂ) ^ α i)
-    else 0
+  (Finset.Nat.antidiagonalTuple n m).sum fun α =>
+    P.coeff α x * (Finset.univ.prod fun i => (ξ i : ℂ) ^ α i)
 
 -- ============================================================
 -- PART 2: Principal Symbol Properties
@@ -101,7 +105,9 @@ theorem conj_monomial {n : ℕ} (α : MultiIndex n) (ξ : Fin n → ℝ) :
     the top-order coefficients are conjugated. -/
 def formalAdjoint {n m : ℕ} (P : LinearPDO n m) : LinearPDO n m where
   coeff := fun α x => starRingEnd ℂ (P.coeff α x)
-  order_bound := fun α h => by simp [P.order_bound α h]
+  order_bound := fun α h => by
+    funext y
+    simp [P.order_bound α h]
 
 /-- **Key structural theorem:** The principal symbol of the formal adjoint
     is the complex conjugate of the original principal symbol.
@@ -115,10 +121,10 @@ theorem principalSymbol_adjoint {n m : ℕ} (P : LinearPDO n m)
   unfold principalSymbol formalAdjoint
   simp only
   rw [map_sum]
-  congr 1; ext α
-  split_ifs with h
-  · rw [map_mul, conj_monomial]
-  · simp
+  refine Finset.sum_congr rfl fun α _ => ?_
+  rw [map_mul]
+  congr 1
+  exact (conj_monomial α ξ).symm
 
 /-- The adjoint of the adjoint is the original operator (at principal level). -/
 theorem formalAdjoint_involutive {n m : ℕ} (P : LinearPDO n m) :
