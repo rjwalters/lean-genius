@@ -2669,7 +2669,7 @@ instance antipodalSetoid : Setoid ↥Sphere3 where
 
 /-- Real projective 3-space RP³ = S³/{x ~ -x}.
     Constructed as the quotient of S³ by the antipodal equivalence relation. -/
-def RP3 : Type := Quotient antipodalSetoid
+abbrev RP3 : Type := Quotient antipodalSetoid
 
 /-- RP³ inherits the quotient topology from S³. -/
 instance instRP3Top : TopologicalSpace RP3 := by
@@ -2935,7 +2935,7 @@ private lemma isOpen_rp3Hemi (p : ↥Sphere3) : IsOpen (rp3Hemi p) :=
 private lemma rp3_quotient_open_on_hemi (p : ↥Sphere3)
     (V : Set ↥Sphere3) (hV : IsOpen V) (hVsub : V ⊆ rp3Hemi p) :
     @IsOpen RP3 instRP3Top (Quotient.mk' '' V) := by
-  rw [isOpen_coinduced]
+  erw [isOpen_coinduced]
   -- Preimage of q(V) = V ∪ antipodalHomeomorph '' V
   suffices h : Quotient.mk' ⁻¹' (Quotient.mk' '' V) =
       V ∪ (antipodalHomeomorph 3) '' V by
@@ -2976,6 +2976,12 @@ theorem rp3_locallyEuclidean :
       have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) = 4 := finrank_euclideanSpace_fin
       have h2 : Module.finrank ℝ (Submodule.span ℝ
           ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _)) = 1 := finrank_span_singleton hne
+      have h3 : Module.finrank ℝ (Submodule.span ℝ
+            ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _)) +
+          Module.finrank ℝ ↥(Submodule.span ℝ
+            ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ =
+          Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) :=
+        (Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _)).finrank_add_finrank_orthogonal
       omega
     let b := stdOrthonormalBasis ℝ
       ↥(Submodule.span ℝ ({(↑p : EuclideanSpace ℝ (Fin 4))} : Set _))ᗮ
@@ -3027,10 +3033,8 @@ theorem rp3_locallyEuclidean :
       ext
       have h1 : orthHomeo.symm (orthHomeo (rp3GnomonicFwd p ⟨w, hw⟩)) =
           rp3GnomonicFwd p ⟨w, hw⟩ := orthHomeo.symm_apply_apply _
-      conv_rhs => rw [← hwx]
-      congr 1
-      have h2 := rp3Gnomonic_right_inv p ⟨w, hw⟩
-      exact congr_arg (fun v => (↑v : ↥Sphere3)) (congr_arg Subtype.val (h1 ▸ h2))
+      rw [h1, rp3Gnomonic_right_inv p ⟨w, hw⟩]
+      exact hwx
     -- g is an open map (key step for proving the inverse is continuous)
     have g_open : IsOpenMap g := by
       intro W hW
@@ -3045,20 +3049,23 @@ theorem rp3_locallyEuclidean :
           exact (isOpen_rp3Hemi p).isOpenMap_subtype_val _
             (hemiHomeo.symm.isOpenMap _ (orthHomeo.symm.isOpenMap _ hW))
         · -- V ⊆ rp3Hemi p
-          intro v ⟨⟨w, hw⟩, _, rfl⟩
-          exact hw
+          rintro v ⟨a, -, rfl⟩
+          exact a.2
       · -- g '' W = val ⁻¹' (q '' V) in ↥(q '' H_p)
         ext ⟨x, hx⟩
-        simp only [Set.mem_preimage, Set.mem_image, Subtype.exists, V, g]
         constructor
-        · rintro ⟨w, hw, rfl⟩
-          exact ⟨_, (rp3GnomonicInv p (orthHomeo.symm w)).2,
-            ⟨⟨_, (hemiHomeo.symm (orthHomeo.symm w)).2⟩,
-              ⟨orthHomeo.symm w, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, rfl⟩
-        · rintro ⟨v, _, ⟨⟨u, hu⟩, ⟨y, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, hvx⟩
-          refine ⟨w, hw, ?_⟩
-          ext
-          exact hvx
+        · rintro ⟨v, hvV, hvx⟩
+          obtain ⟨z, hzV, hzv⟩ := hvV
+          obtain ⟨y, hyV, hyz⟩ := hzV
+          obtain ⟨w, hw, hwy⟩ := hyV
+          subst hwy; subst hyz; subst hzv
+          exact ⟨w, hw, Subtype.ext hvx⟩
+        · rintro ⟨w, hw, hgw⟩
+          have hv : (g w).val = x := congrArg Subtype.val hgw
+          refine ⟨(hemiHomeo.symm (orthHomeo.symm w)).val,
+            ⟨hemiHomeo.symm (orthHomeo.symm w),
+              ⟨orthHomeo.symm w, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩, ?_⟩
+          exact hv
     -- Build the Homeomorph: q(H_p) ≃ₜ ℝ³ via e.symm
     -- e.symm is continuous because e = g is an open map (preimage = image under g)
     let e := Equiv.ofBijective g ⟨g_inj, g_surj⟩
@@ -3075,6 +3082,7 @@ theorem rp3_locallyEuclidean :
             exact ⟨e.symm x, hx, e.apply_symm_apply x⟩
           · rintro ⟨w, hw, rfl⟩
             rwa [show e.symm (g w) = w from e.symm_apply_apply w]
+        show IsOpen (⇑e.symm ⁻¹' U)
         rw [key]; exact g_open U hU
       continuous_invFun := g_cont
     }⟩

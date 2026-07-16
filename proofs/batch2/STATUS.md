@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 273 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): PoincareConjecture (Millennium: axiom count unchanged 32, stays axiomatized;
+def RP3->abbrev for quotient defeq; erw for isOpen_coinduced two-hop; finrank_add_finrank_orthogonal for omega;
+isOpen_induced_iff orientation). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 272 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LebesgueMeasureOQ01OQ01OQ02 (thomae 7 sites: div_mul_cancel₀; ContinuousAt
