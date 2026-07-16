@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 114 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos247Problem (RESIDUAL-parent cascade masqueraded as instance-synth;
+decoupled by inlining Mathlib transcendental_liouvilleNumber(m:=2) for the single LiouvilleTheorem use;
+statements unchanged). Repair: none. NOTE: LiouvilleTheorem row 2242 still RESIDUAL (own drift:
+div_le_div_of_nonneg_left arg-order, LiouvilleWith.forall_liouvilleWith_iff removed).
+
 # DOCTOR SINGLE-PROOF BATCH 113 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos275Problem (missing imports Data.Fintype.Fin +
