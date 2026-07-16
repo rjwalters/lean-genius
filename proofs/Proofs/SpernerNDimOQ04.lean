@@ -468,7 +468,7 @@ theorem kuhn_step_nonrevisit {c : Coloring d N} {K : SpernerTriangulation d N}
     (hadj : K.adj state.current k_out = some (s', k')) :
     s' ∉ state.visited ∪ {state.current} := by
   simp only [Finset.mem_union, Finset.mem_singleton]; push_neg
-  refine ⟨K.adj_ne _ _ _ _ hadj, ?_⟩
+  refine ⟨?_, (K.adj_ne _ _ _ _ hadj).symm⟩
   intro hmem
   -- k' is a door at s' (via door_transfer on hadj + hdoor_out)
   have hdoor_k' : isDoorAt c K s' k' := (door_transfer hadj).mp hdoor_out
@@ -477,61 +477,59 @@ theorem kuhn_step_nonrevisit {c : Coloring d N} {K : SpernerTriangulation d N}
   obtain ⟨hdoor_in_s, hdoor_out_s, hne_s⟩ := hvalid.doors_valid s' k_in_s k_out_s hrec_s
   -- Case split via exit_to_chain for s'
   rcases hvalid.exit_to_chain s' k_in_s k_out_s hrec_s with
-  | Or.inl ⟨hpred_eq, q, hadj_pred⟩ =>
-      -- s' is the predecessor: K.adj s' k_out_s = some(current, q)
-      -- By adj_symm: K.adj current q = some(s', k_out_s)
-      have hadj_back : K.adj state.current q = some (s', k_out_s) :=
-        K.adj_symm _ _ _ _ hadj_pred
-      -- By pred_spec, pred = some s' and K.adj s' k_exit = some(current, state.entry)
-      -- so state.entry is the entry into current from s'
-      rcases hvalid.pred_spec with
-      | Or.inl ⟨hpred_none, _⟩ =>
-          -- pred = none but we have pred = some s': contradiction
-          rw [hpred_none] at hpred_eq; exact absurd hpred_eq (by simp)
-      | Or.inr ⟨s_pred, k_exit, hpred_some, _, hadj_pred_spec⟩ =>
-          rw [hpred_some] at hpred_eq
-          -- hpred_eq : some s_pred = some s'
-          have hs'_eq : s_pred = s' := Option.some_inj.mp hpred_eq
-          subst hs'_eq
-          -- K.adj s' k_exit = some(current, state.entry)
-          -- kuhnWalk_no_immediate_back: K.adj current k_out ≠ some(s', _)
-          exact kuhnWalk_no_immediate_back K s' k_exit state.current state.entry
-            hadj_pred_spec k_out hne_entry k' hadj
-  | Or.inr ⟨s_out, k_out', hadj_exit, hs_out_vis⟩ =>
-      -- s' is a non-predecessor: K.adj s' k_out_s = some(s_out, ...) with s_out ∈ visited
-      -- Need 3 distinct doors at s': k_in_s, k_out_s, k'
-      -- Distinctness of k' from k_out_s: adj_unique_facet (s_out ≠ current)
-      have hs_out_ne_current : s_out ≠ state.current :=
-        fun h => absurd (h ▸ hs_out_vis) state.current_not_visited
-      -- K.adj s' k' = some(current, k_out) via adj_symm
-      have hadj_back : K.adj s' k' = some (state.current, k_out) :=
-        K.adj_symm _ _ _ _ hadj
-      -- k' ≠ k_out_s: adj_unique_facet on s' (two different neighbors)
-      have hk'_ne_kout : k' ≠ k_out_s := by
-        intro heq; subst heq
-        -- K.adj s' k' = some(current, ...) and K.adj s' k' = some(s_out, ...)
-        -- so current = s_out, contradicting hs_out_ne_current
-        rw [hadj_back] at hadj_exit
-        have h := Option.some_inj.mp hadj_exit; exact hs_out_ne_current (Prod.mk.inj h).1.symm
-      -- k' ≠ k_in_s: from entry_from_chain
-      have hk'_ne_kin : k' ≠ k_in_s := by
-        intro heq; subst heq
-        rcases hvalid.entry_from_chain s' k_in_s k_out_s hrec_s with
-        | Or.inl hbdry =>
-            -- K.adj s' k_in_s = none, but K.adj s' k' = some(current,...) ≠ none
-            rw [hbdry] at hadj_back; exact absurd hadj_back (by simp)
-        | Or.inr ⟨s_prev, k_prev, hadj_entry, hs_prev_vis⟩ =>
-            -- K.adj s' k_in_s = some(s_prev, ...) with s_prev ∈ visited
-            -- K.adj s' k' = some(current, ...) and K.adj s' k_in_s = some(s_prev, ...)
-            -- adj_unique_facet: current = s_prev (since k' = k_in_s)
-            -- But s_prev ∈ visited and current ∉ visited: contradiction
-            have : state.current = s_prev := by
-              rw [hadj_back] at hadj_entry
-              exact (Option.some.inj hadj_entry).1
-            exact absurd (this ▸ hs_prev_vis) state.current_not_visited
-      -- Three distinct doors k', k_in_s, k_out_s at s': contradiction!
-      exact kuhn_three_doors_contradiction hKuhn s' k' k_in_s k_out_s
-        hdoor_k' hdoor_in_s hdoor_out_s hk'_ne_kin.symm hk'_ne_kout.symm hne_s
+    ⟨hpred_eq, q, hadj_pred⟩ | ⟨s_out, k_out', hadj_exit, hs_out_vis⟩
+  · -- s' is the predecessor: K.adj s' k_out_s = some(current, q)
+    -- By adj_symm: K.adj current q = some(s', k_out_s)
+    have hadj_back : K.adj state.current q = some (s', k_out_s) :=
+      K.adj_symm _ _ _ _ hadj_pred
+    -- By pred_spec, pred = some s' and K.adj s' k_exit = some(current, state.entry)
+    -- so state.entry is the entry into current from s'
+    rcases hvalid.pred_spec with ⟨hpred_none, _⟩ | ⟨s_pred, k_exit, hpred_some, _, hadj_pred_spec⟩
+    · -- pred = none but we have pred = some s': contradiction
+      rw [hpred_none] at hpred_eq; exact absurd hpred_eq (by simp)
+    · rw [hpred_some] at hpred_eq
+      -- hpred_eq : some s_pred = some s'
+      have hs'_eq : s' = s_pred := (Option.some_inj.mp hpred_eq).symm
+      subst hs'_eq
+      -- K.adj s' k_exit = some(current, state.entry)
+      -- kuhnWalk_no_immediate_back: K.adj current k_out ≠ some(s', _)
+      exact kuhnWalk_no_immediate_back K s' k_exit state.current state.entry
+        hadj_pred_spec k_out hne_entry k' hadj
+  · -- s' is a non-predecessor: K.adj s' k_out_s = some(s_out, ...) with s_out ∈ visited
+    -- Need 3 distinct doors at s': k_in_s, k_out_s, k'
+    -- Distinctness of k' from k_out_s: adj_unique_facet (s_out ≠ current)
+    have hs_out_ne_current : s_out ≠ state.current :=
+      fun h => absurd (h ▸ hs_out_vis) state.current_not_visited
+    -- K.adj s' k' = some(current, k_out) via adj_symm
+    have hadj_back : K.adj s' k' = some (state.current, k_out) :=
+      K.adj_symm _ _ _ _ hadj
+    -- k' ≠ k_out_s: adj_unique_facet on s' (two different neighbors)
+    have hk'_ne_kout : k' ≠ k_out_s := by
+      intro heq; subst heq
+      -- K.adj s' k' = some(current, ...) and K.adj s' k' = some(s_out, ...)
+      -- so current = s_out, contradicting hs_out_ne_current
+      rw [hadj_back] at hadj_exit
+      have h := Option.some_inj.mp hadj_exit; exact hs_out_ne_current (Prod.mk.inj h).1.symm
+    -- k' ≠ k_in_s: from entry_from_chain
+    have hk'_ne_kin : k' ≠ k_in_s := by
+      intro heq
+      have heq' : k_in_s = k' := heq.symm
+      subst heq'
+      rcases hvalid.entry_from_chain s' k_in_s k_out_s hrec_s with
+        hbdry | ⟨s_prev, k_prev, hadj_entry, hs_prev_vis⟩
+      · -- K.adj s' k_in_s = none, but K.adj s' k' = some(current,...) ≠ none
+        rw [hbdry] at hadj_back; exact absurd hadj_back (by simp)
+      · -- K.adj s' k_in_s = some(s_prev, ...) with s_prev ∈ visited
+        -- K.adj s' k' = some(current, ...) and K.adj s' k_in_s = some(s_prev, ...)
+        -- adj_unique_facet: current = s_prev (since k' = k_in_s)
+        -- But s_prev ∈ visited and current ∉ visited: contradiction
+        have : state.current = s_prev := by
+          rw [hadj_back] at hadj_entry
+          exact (Prod.mk.inj (Option.some_inj.mp hadj_entry)).1
+        exact absurd (this ▸ hs_prev_vis) state.current_not_visited
+    -- Three distinct doors k', k_in_s, k_out_s at s': contradiction!
+    exact kuhn_three_doors_contradiction hKuhn s' k' k_in_s k_out_s
+      hdoor_k' hdoor_in_s hdoor_out_s hk'_ne_kin hk'_ne_kout hne_s
 
 /-- WalkValid is preserved by one step of the Kuhn walk.
     When current (s_n) steps to s' via k_out, the new state has:
@@ -571,8 +569,9 @@ lemma walkValid_step {c : Coloring d N} {K : SpernerTriangulation d N}
     simp only [new_rec] at hrec
     split_ifs at hrec with heq
     · -- s = state.current: record is (state.entry, k_out)
+      subst heq
       have hrec' := Option.some_inj.mp hrec; obtain ⟨rfl, rfl⟩ := Prod.mk.inj hrec'
-      exact ⟨state.entry_is_door, hdoor_out, hne_entry⟩
+      exact ⟨state.entry_is_door, hdoor_out, hne_entry.symm⟩
     · -- s ≠ state.current: use old record
       exact hvalid.doors_valid s k_in k_out_s hrec
   · -- entry_from_chain
@@ -580,35 +579,35 @@ lemma walkValid_step {c : Coloring d N} {K : SpernerTriangulation d N}
     simp only [new_rec, new_state] at hrec ⊢
     split_ifs at hrec with heq
     · -- s = state.current
+      subst heq
       have hrec' := Option.some_inj.mp hrec; obtain ⟨rfl, rfl⟩ := Prod.mk.inj hrec'
-      rcases hvalid.pred_spec with
-      | Or.inl ⟨_, hbdry⟩ => exact Or.inl hbdry
-      | Or.inr ⟨s_pred, k_exit, _, hs_pred_vis, hadj_pred⟩ =>
-          -- hadj_pred : K.adj s_pred k_exit = some(state.current, state.entry)
-          -- adj_symm: K.adj state.current state.entry = some(s_pred, k_exit)
-          exact Or.inr ⟨s_pred, k_exit, K.adj_symm _ _ _ _ hadj_pred,
-            Finset.mem_union_left _ hs_pred_vis⟩
+      rcases hvalid.pred_spec with ⟨_, hbdry⟩ | ⟨s_pred, k_exit, _, hs_pred_vis, hadj_pred⟩
+      · exact Or.inl hbdry
+      · -- hadj_pred : K.adj s_pred k_exit = some(state.current, state.entry)
+        -- adj_symm: K.adj state.current state.entry = some(s_pred, k_exit)
+        exact Or.inr ⟨s_pred, k_exit, K.adj_symm _ _ _ _ hadj_pred,
+          Finset.mem_union_left _ hs_pred_vis⟩
     · -- s ≠ state.current: use old entry_from_chain
       rcases hvalid.entry_from_chain s k_in k_out_s hrec with
-      | Or.inl h => exact Or.inl h
-      | Or.inr ⟨s_prev, k_prev, hadj_prev, hs_prev⟩ =>
-          exact Or.inr ⟨s_prev, k_prev, hadj_prev, Finset.mem_union_left _ hs_prev⟩
+        h | ⟨s_prev, k_prev, hadj_prev, hs_prev⟩
+      · exact Or.inl h
+      · exact Or.inr ⟨s_prev, k_prev, hadj_prev, Finset.mem_union_left _ hs_prev⟩
   · -- exit_to_chain
     intro s k_in k_out_s hrec
     simp only [new_rec, new_state] at hrec ⊢
     split_ifs at hrec with heq
     · -- s = state.current: exits to s' = new current
+      subst heq
       have hrec' := Option.some_inj.mp hrec; obtain ⟨rfl, rfl⟩ := Prod.mk.inj hrec'
       exact Or.inl ⟨rfl, k', hadj⟩
     · -- s ≠ state.current: use old exit_to_chain
       rcases hvalid.exit_to_chain s k_in k_out_s hrec with
-      | Or.inl ⟨hpred_eq, q, hadj_exit⟩ =>
-          -- s was old predecessor: old current was its exit target
-          -- old current is now in new visited
-          exact Or.inr ⟨state.current, q, hadj_exit,
-            Finset.mem_union_right _ (Finset.mem_singleton.mpr rfl)⟩
-      | Or.inr ⟨s_out, k_out', hadj_exit, hs_out_vis⟩ =>
-          exact Or.inr ⟨s_out, k_out', hadj_exit, Finset.mem_union_left _ hs_out_vis⟩
+        ⟨hpred_eq, q, hadj_exit⟩ | ⟨s_out, k_out', hadj_exit, hs_out_vis⟩
+      · -- s was old predecessor: old current was its exit target
+        -- old current is now in new visited
+        exact Or.inr ⟨state.current, q, hadj_exit,
+          Finset.mem_union_right _ (Finset.mem_singleton.mpr rfl)⟩
+      · exact Or.inr ⟨s_out, k_out', hadj_exit, Finset.mem_union_left _ hs_out_vis⟩
   · -- pred_spec: new pred = some state.current, which exits to s' = new current via k'
     exact Or.inr ⟨state.current, k_out, rfl,
       Finset.mem_union_right _ (Finset.mem_singleton.mpr rfl), hadj⟩
@@ -778,24 +777,36 @@ theorem kuhnWalk_fc_or_bdry {c : Coloring d N} {K : SpernerTriangulation d N}
       left; rw [kuhnWalk_succ_eq_current_of_fc hKuhn n state hfc]; exact hfc
     · -- Non-FC: take one step
       -- Use kuhnStep to identify the exit door and next simplex
-      set exit_doors := Finset.univ.filter (fun k => isDoorAt c K state.current k ∧ k ≠ state.entry)
       -- Exit doors are nonempty (non-FC with entry door has a unique other door)
-      have hnonempty : exit_doors.Nonempty := by
+      have hnonempty :
+          (Finset.univ.filter (fun k : Fin (d + 1) =>
+            isDoorAt c K state.current k ∧ k ≠ state.entry)).Nonempty := by
         obtain ⟨k_u, ⟨hne_u, hdoor_u⟩, _⟩ :=
           nonfc_with_door_has_unique_exit hKuhn state.current hfc state.entry state.entry_is_door
         exact ⟨k_u, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdoor_u, hne_u⟩⟩
-      set k_out := exit_doors.min' hnonempty
-      have hk_prop := (Finset.mem_filter.mp (Finset.min'_mem exit_doors hnonempty)).2
+      set k_out := (Finset.univ.filter (fun k : Fin (d + 1) =>
+        isDoorAt c K state.current k ∧ k ≠ state.entry)).min' hnonempty with hk_out_def
+      have hk_prop := (Finset.mem_filter.mp (Finset.min'_mem _ hnonempty)).2
       -- Non-revisiting: the next simplex (if any) is fresh
       cases hadj : K.adj state.current k_out with
       | none =>
         -- Boundary exit
+        have hadj' : K.adj state.current
+            ((Finset.univ.filter (fun k : Fin (d + 1) =>
+              isDoorAt c K state.current k ∧ k ≠ state.entry)).min' hnonempty) = none := hadj
         have heq : kuhnWalk c K hKuhn (n + 1) state = state.current := by
-          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty, hadj]
+          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty]
+          split
+          · rfl
+          · next s'' k_out'' hcase =>
+            exact absurd (hcase.symm.trans hadj') (by simp)
         rw [heq]; right; exact ⟨k_out, hk_prop.1, hadj⟩
       | some sk =>
         obtain ⟨s', k'⟩ := sk
         have hs'_fresh := kuhn_step_nonrevisit hvalid hk_prop.2 hk_prop.1 hadj
+        have hadj' : K.adj state.current
+            ((Finset.univ.filter (fun k : Fin (d + 1) =>
+              isDoorAt c K state.current k ∧ k ≠ state.entry)).min' hnonempty) = some (s', k') := hadj
         -- Walk steps to s' (the hs' guard never triggers)
         -- LHS: unfold kuhnWalk (n+1) with all guards discharged
         -- RHS: kuhnWalk n with explicitly-named proof terms
@@ -805,8 +816,14 @@ theorem kuhnWalk_fc_or_bdry {c : Coloring d N} {K : SpernerTriangulation d N}
               { current := s', entry := k', entry_is_door := (door_transfer hadj).mp hk_prop.1,
                 visited := state.visited ∪ {state.current},
                 current_not_visited := hs'_fresh } := by
-          conv_lhs => simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty, hadj, dif_neg hs'_fresh]
-          apply kuhnWalk_congr <;> rfl
+          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty]
+          split
+          · next hcase => exact absurd (hcase.symm.trans hadj') (by simp)
+          · next s'' k_out'' hcase =>
+            obtain ⟨rfl, rfl⟩ := Prod.mk.inj (Option.some.inj (hadj'.symm.trans hcase))
+            split
+            · next hv => exact absurd hv hs'_fresh
+            · next hv => apply kuhnWalk_congr <;> rfl
         rw [heq]
         have hvalid_new := walkValid_step hvalid hk_prop.2 hk_prop.1 hadj hs'_fresh
         have hn_new : n + (state.visited ∪ {state.current}).card = Fintype.card K.Simplex := by
@@ -842,7 +859,7 @@ private lemma kuhnWalk_not_in_initial_visited {c : Coloring d N} {K : SpernerTri
     exfalso
     simp only [Nat.zero_add] at hn
     have hlt : state.visited.card < Fintype.card K.Simplex :=
-      Finset.card_lt_card (Finset.ssubset_univ (fun h =>
+      Finset.card_lt_card (Finset.ssubset_univ_iff.mpr (fun h =>
         state.current_not_visited (h ▸ Finset.mem_univ _)))
     omega
   | succ n ih =>
@@ -852,29 +869,47 @@ private lemma kuhnWalk_not_in_initial_visited {c : Coloring d N} {K : SpernerTri
       rw [kuhnWalk_succ_eq_current_of_fc hKuhn n state hfc]
       exact state.current_not_visited
     · -- Non-FC: one step
-      set exit_doors := Finset.univ.filter (fun k => isDoorAt c K state.current k ∧ k ≠ state.entry)
-      have hnonempty : exit_doors.Nonempty := by
+      have hnonempty :
+          (Finset.univ.filter (fun k : Fin (d + 1) =>
+            isDoorAt c K state.current k ∧ k ≠ state.entry)).Nonempty := by
         obtain ⟨k_u, ⟨hne_u, hdoor_u⟩, _⟩ :=
           nonfc_with_door_has_unique_exit hKuhn state.current hfc state.entry state.entry_is_door
         exact ⟨k_u, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdoor_u, hne_u⟩⟩
-      set k_out := exit_doors.min' hnonempty
-      have hk_prop := (Finset.mem_filter.mp (Finset.min'_mem exit_doors hnonempty)).2
+      set k_out := (Finset.univ.filter (fun k : Fin (d + 1) =>
+        isDoorAt c K state.current k ∧ k ≠ state.entry)).min' hnonempty with hk_out_def
+      have hk_prop := (Finset.mem_filter.mp (Finset.min'_mem _ hnonempty)).2
       cases hadj : K.adj state.current k_out with
       | none =>
         -- Boundary exit: kuhnWalk returns state.current ∉ visited
+        have hadj' : K.adj state.current
+            ((Finset.univ.filter (fun k : Fin (d + 1) =>
+              isDoorAt c K state.current k ∧ k ≠ state.entry)).min' hnonempty) = none := hadj
         have heq : kuhnWalk c K hKuhn (n + 1) state = state.current := by
-          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty, hadj]
+          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty]
+          split
+          · rfl
+          · next s'' k_out'' hcase =>
+            exact absurd (hcase.symm.trans hadj') (by simp)
         rw [heq]; exact state.current_not_visited
       | some sk =>
         obtain ⟨s', k'⟩ := sk
         have hs'_fresh := kuhn_step_nonrevisit hvalid hk_prop.2 hk_prop.1 hadj
+        have hadj' : K.adj state.current
+            ((Finset.univ.filter (fun k : Fin (d + 1) =>
+              isDoorAt c K state.current k ∧ k ≠ state.entry)).min' hnonempty) = some (s', k') := hadj
         have heq : kuhnWalk c K hKuhn (n + 1) state =
             kuhnWalk c K hKuhn n
               { current := s', entry := k', entry_is_door := (door_transfer hadj).mp hk_prop.1,
                 visited := state.visited ∪ {state.current},
                 current_not_visited := hs'_fresh } := by
-          conv_lhs => simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty, hadj, dif_neg hs'_fresh]
-          apply kuhnWalk_congr <;> rfl
+          simp only [kuhnWalk, if_neg hfc, dif_pos hnonempty]
+          split
+          · next hcase => exact absurd (hcase.symm.trans hadj') (by simp)
+          · next s'' k_out'' hcase =>
+            obtain ⟨rfl, rfl⟩ := Prod.mk.inj (Option.some.inj (hadj'.symm.trans hcase))
+            split
+            · next hv => exact absurd hv hs'_fresh
+            · next hv => apply kuhnWalk_congr <;> rfl
         rw [heq]
         have hvalid_new := walkValid_step hvalid hk_prop.2 hk_prop.1 hadj hs'_fresh
         have hn_new : n + (state.visited ∪ {state.current}).card = Fintype.card K.Simplex := by
