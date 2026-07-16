@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 31 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos903Problem (subst h eliminates b -> avoid via rw+calc+nlinarith),
+Erdos915Problem (anonymous Pi-binder named for omega), Erdos913Problem (Nat.pow_right_injective for 2^a=2^b;
+explicit 2^k lower bounds for omega; primeFactors_pow sig now (n)(hk:k≠0)). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 30 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos895ProblemAristotle (Fin.val positivity via simp not omega;
