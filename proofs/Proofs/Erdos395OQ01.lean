@@ -80,7 +80,7 @@ theorem valid_constants_bddAbove :
   -- Any valid c is at most n * probSmallSum z. For n = 1, c ≤ probSmallSum z ≤ 1.
   refine ⟨1, fun c ⟨hc_pos, hc_bound⟩ => ?_⟩
   -- Specialize to n = 1, z = constant 1
-  have h := hc_bound 1 (by omega) (fun _ => 1) (fun _ => Complex.abs_one)
+  have h := hc_bound 1 (by omega) (fun _ => 1) (fun _ => by simp [Complex.abs])
   simp only [Nat.cast_one, div_one] at h
   -- h : probSmallSum (fun _ => (1 : ℂ)) ≥ c
   -- Need: probSmallSum (fun _ => (1 : ℂ)) ≤ 1
@@ -161,10 +161,8 @@ theorem erdos_original_is_false_proved :
     set z := carnielli_carolino_counterexample 2 ⟨1, rfl⟩ (by omega)
     have hz : isUnitVector z := by
       intro i
-      simp only [carnielli_carolino_counterexample]
-      fin_cases i <;> simp [Complex.norm_def, Complex.normSq]
-      · simp [Complex.normSq]; ring_nf; simp
-      · simp [Complex.normSq, Complex.I]; ring_nf; simp
+      show Complex.abs (carnielli_carolino_counterexample 2 ⟨1, rfl⟩ (by omega) i) = 1
+      fin_cases i <;> simp [carnielli_carolino_counterexample, Complex.abs]
     -- All sign vectors give |sum| > 1 (from counterexample_exceeds_one)
     have hexceed : ∀ ε : Fin 2 → ℤ, isSignVector ε → ¬(signedSumAbs z ε ≤ 1) := by
       intro ε hε hle
@@ -227,8 +225,8 @@ theorem extremal_is_unit (n : ℕ) : isUnitVector (extremal_example n) := by
   intro i
   simp only [extremal_example]
   split
-  · exact Complex.abs_one
-  · exact Complex.abs_I
+  · simp [Complex.abs]
+  · simp [Complex.abs]
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 6. Summary
