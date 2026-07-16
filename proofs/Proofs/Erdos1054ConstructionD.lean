@@ -46,15 +46,15 @@ theorem divisors_of_prime_sq (p : ℕ) (hp : p.Prime) (d : ℕ)
   have hd' : d ∣ p * p := by rwa [sq] at hd
   by_cases hpd_dvd : p ∣ d
   · obtain ⟨e, rfl⟩ := hpd_dvd
-    have he_dvd_p : e ∣ p := (Nat.mul_dvd_mul_iff_right hp.pos).mp hd'
+    have he_dvd_p : e ∣ p := (Nat.mul_dvd_mul_iff_left hp.pos).mp hd'
     rcases hp.eq_one_or_self_of_dvd e he_dvd_p with rfl | rfl
     · right; left; ring
     · right; right; ring
   · have hcop : Nat.Coprime d p := (hp.coprime_iff_not_dvd.mpr hpd_dvd).symm
     have hd_dvd_p : d ∣ p := hcop.dvd_of_dvd_mul_right hd'
-    rcases hp.eq_one_or_self_of_dvd d hd_dvd_p with rfl | rfl
+    rcases hp.eq_one_or_self_of_dvd d hd_dvd_p with rfl | hdp
     · left; rfl
-    · exact absurd (dvd_refl p) hpd_dvd
+    · exact absurd (dvd_refl p) (hdp ▸ hpd_dvd)
 
 /--
 The divisors of p² for prime p form the set {1, p, p²}.
@@ -66,10 +66,11 @@ theorem divisors_prime_sq (p : ℕ) (hp : p.Prime) :
   constructor
   · intro ⟨hd, _⟩
     exact divisors_of_prime_sq p hp d hd
-  · rintro (rfl | rfl | rfl)
-    · exact ⟨one_dvd _, by have := hp.pos; omega⟩
-    · exact ⟨⟨p, by ring⟩, by have := hp.pos; omega⟩
-    · exact ⟨dvd_refl _, by have := hp.pos; omega⟩
+  · rintro (rfl | hdp | rfl)
+    · exact ⟨one_dvd _, pow_ne_zero 2 hp.pos.ne'⟩
+    · rw [hdp]
+      exact ⟨⟨p, by ring⟩, pow_ne_zero 2 hp.pos.ne'⟩
+    · exact ⟨dvd_refl _, pow_ne_zero 2 hp.pos.ne'⟩
 
 -- ============================================================
 -- Part 2: Sorting the divisors of p²
@@ -88,15 +89,13 @@ theorem sortedDivisors_prime_sq (p : ℕ) (hp : p.Prime) :
   have hnodup_sort : (({1, p, p ^ 2} : Finset ℕ).sort (· ≤ ·)).Nodup :=
     Finset.sort_nodup _ _
   have target_nodup : ([1, p, p ^ 2] : List ℕ).Nodup := by
-    simp only [List.nodup_cons, List.mem_cons, List.mem_nil_iff, or_false,
-      List.nodup_nil, and_true, not_or]
-    constructor
-    · constructor
-      · omega
-      · have : p ^ 2 ≥ 4 := by nlinarith
-        omega
-    · have : p ^ 2 > p := by nlinarith
-      omega
+    have h1 : (1 : ℕ) ≠ p := by omega
+    have h2 : (1 : ℕ) ≠ p ^ 2 := by nlinarith
+    have h3 : p ≠ p ^ 2 := by nlinarith
+    refine List.nodup_cons.mpr ⟨?_, List.nodup_cons.mpr ⟨?_, List.nodup_cons.mpr ⟨?_, List.nodup_nil⟩⟩⟩
+    · simp [h1, h2]
+    · simp [h3]
+    · simp
   have hmem : ∀ x, x ∈ ({1, p, p ^ 2} : Finset ℕ).sort (· ≤ ·) ↔
       x ∈ ([1, p, p ^ 2] : List ℕ) := by
     intro x
@@ -105,16 +104,20 @@ theorem sortedDivisors_prime_sq (p : ℕ) (hp : p.Prime) :
     (List.perm_ext_iff_of_nodup hnodup_sort target_nodup).mpr hmem
   have hsorted_sort := Finset.pairwise_sort ({1, p, p ^ 2} : Finset ℕ) (· ≤ ·)
   have hsorted_target : ([1, p, p ^ 2] : List ℕ).Pairwise (· ≤ ·) := by
-    constructor
-    · intro x hx
-      simp only [List.mem_cons, List.mem_nil_iff, or_false, List.mem_singleton] at hx
-      rcases hx with rfl | rfl <;> omega <;> nlinarith
-    constructor
-    · intro x hx
-      simp only [List.mem_nil_iff, List.mem_singleton] at hx
-      nlinarith [hx]
-    exact List.Pairwise.nil
-  exact hperm.eq_of_pairwise hsorted_sort hsorted_target
+    have h1p : (1 : ℕ) ≤ p := by omega
+    have h1p2 : (1 : ℕ) ≤ p ^ 2 := by nlinarith
+    have hpp2 : p ≤ p ^ 2 := by nlinarith
+    refine List.pairwise_cons.mpr ⟨?_,
+      List.pairwise_cons.mpr ⟨?_, List.pairwise_cons.mpr ⟨?_, List.Pairwise.nil⟩⟩⟩
+    · intro b hb
+      simp only [List.mem_cons, List.not_mem_nil, or_false] at hb
+      rcases hb with rfl | rfl <;> assumption
+    · intro b hb
+      simp only [List.mem_cons, List.not_mem_nil, or_false] at hb
+      subst hb
+      exact hpp2
+    · simp
+  exact hperm.eq_of_pairwise' hsorted_sort hsorted_target
 
 -- ============================================================
 -- Part 3: Partial sums of p²
@@ -143,7 +146,7 @@ The last partial sum is 1 + p + p².
 theorem prime_sq_sum_representable (p : ℕ) (hp : p.Prime) :
     IsRepresentable (1 + p + p ^ 2) := by
   refine ⟨p ^ 2, ?_, ?_⟩
-  · have := hp.pos; omega
+  · exact pow_pos hp.pos 2
   · rw [partialDivisorSums_prime_sq p hp]
     simp [List.mem_cons]
 
@@ -153,7 +156,7 @@ theorem prime_sq_sum_representable (p : ℕ) (hp : p.Prime) :
 theorem one_plus_p_via_sq (p : ℕ) (hp : p.Prime) :
     IsRepresentable (1 + p) := by
   refine ⟨p ^ 2, ?_, ?_⟩
-  · have := hp.pos; omega
+  · exact pow_pos hp.pos 2
   · rw [partialDivisorSums_prime_sq p hp]
     simp [List.mem_cons]
 
@@ -167,7 +170,7 @@ f(1 + p + p²) ≤ p² for any prime p.
 theorem f_bound_prime_sq (p : ℕ) (hp : p.Prime) :
     ∃ m : ℕ, m ≤ p ^ 2 ∧ m ≥ 1 ∧ (1 + p + p ^ 2) ∈ partialDivisorSums m := by
   refine ⟨p ^ 2, le_refl _, ?_, ?_⟩
-  · have := hp.pos; omega
+  · exact pow_pos hp.pos 2
   · rw [partialDivisorSums_prime_sq p hp]; simp [List.mem_cons]
 
 -- ============================================================
