@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 240 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos796Problem (g3_first_order unreduced (2-1)! -> simpa; ∀ᶠ (n:ℕ) pin
+vs ℝ in E3_bounded axiom + summary). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 239 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos73Problem (Std.Irrefl.irrefl replaces G.loopless callable-field;
