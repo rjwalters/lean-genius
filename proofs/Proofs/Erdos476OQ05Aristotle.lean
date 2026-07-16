@@ -42,7 +42,7 @@ If some b₀ ∈ B is "non-redundant" (removing it decreases the sumset),
 lemma non_redundant_b_gives_a (A B : Finset (ZMod p)) (b₀ : ZMod p) (hb₀ : b₀ ∈ B)
     (hA : 2 ≤ A.card) (hB : 2 ≤ B.card)
     (h : (A + B).card = A.card + B.card - 1)
-    (hlt : A.card + B.card < p)
+    (hlt : A.card + B.card ≤ p)
     (hcard : (A + B.erase b₀).card = A.card + B.card - 2) :
     ∃ a₀ ∈ A, ((A.erase a₀) + B).card = A.card + B.card - 2 := by
   -- Since A + B = (A + B.erase b₀) ∪ (A + {b₀}) and the sets differ by 1 in cardinality, there is exactly 1 element y in (A + {b₀}) \ (A + B.erase b₀).
@@ -158,7 +158,7 @@ lemma case1_exists (A B : Finset (ZMod p))
     have hlo := erase_add_card_ge A B a haA (by omega) (by omega) (by omega)
     have hhi := erase_add_card_le A B a
     rw [h] at hhi
-    exact Nat.le_antisymm (by omega) (by exact (hall a haA).symm ▸ by omega)
+    exact Nat.le_antisymm (by omega) (by have := hall a haA; omega)
   -- All b ∈ B are also redundant (by non_redundant_b_gives_a contrapositive)
   have hredB : ∀ b ∈ B, (A + (B.erase b)).card = A.card + B.card - 1 := by
     intro b hbB
@@ -171,7 +171,7 @@ lemma case1_exists (A B : Finset (ZMod p))
       skip
       omega
     have hhi : (A + (B.erase b)).card ≤ A.card + B.card - 1 := by
-      have := Finset.card_le_card (Finset.add_subset_add_left (Finset.erase_subset b B))
+      have := Finset.card_le_card (Finset.add_subset_add_left (s := A) (Finset.erase_subset b B))
       omega
     by_contra hne
     have hcard : (A + B.erase b).card = A.card + B.card - 2 := by omega
@@ -199,7 +199,7 @@ lemma case1_exists (A B : Finset (ZMod p))
       rw [hB_eq, Finset.mem_insert, Finset.mem_singleton] at hb'B
       rcases hb'B with rfl | rfl
       · exact absurd (add_right_cancel heq) ha'er.1
-      · have ha'_val : a' = a + (b₁ - b₂) := by linear_combination heq
+      · have ha'_val : a' = a + (b₁ - b') := by linear_combination heq
         rw [← ha'_val]; exact ha'er.2
     obtain ⟨a₀, ha₀A⟩ := Finset.card_pos.mp (by omega : 0 < A.card)
     have horbit_nat : ∀ k : ℕ, a₀ + (k : ZMod p) * (b₁ - b₂) ∈ A := by
@@ -230,7 +230,7 @@ lemma case1_exists (A B : Finset (ZMod p))
       have hpos : 0 < (A.filter (fun a => x - a ∈ B)).card := by
         obtain ⟨a, haA, b, hbB, hxab⟩ := Finset.mem_add.mp hx
         exact Finset.card_pos.mpr ⟨a, Finset.mem_filter.mpr
-          ⟨haA, show x - a ∈ B by rw [show x - a = b from (eq_sub_of_add_eq hxab).symm]; exact hbB⟩⟩
+          ⟨haA, show x - a ∈ B by rw [show x - a = b by linear_combination -hxab]; exact hbB⟩⟩
       have hcard1 : (A.filter (fun a => x - a ∈ B)).card = 1 := by omega
       obtain ⟨a₁, ha₁⟩ := Finset.card_eq_one.mp hcard1
       have ha₁A : a₁ ∈ A := (Finset.mem_filter.mp (ha₁ ▸ Finset.mem_singleton_self a₁)).1
@@ -239,7 +239,8 @@ lemma case1_exists (A B : Finset (ZMod p))
         obtain ⟨a', ha'er, b', hb'B, hsum'⟩ := Finset.mem_add.mp hcontra
         rw [Finset.mem_erase] at ha'er
         have ha'filt : a' ∈ A.filter (fun a => x - a ∈ B) :=
-          Finset.mem_filter.mpr ⟨ha'er.2, (eq_sub_of_add_eq hsum') ▸ hb'B⟩
+          Finset.mem_filter.mpr
+            ⟨ha'er.2, by rw [show x - a' = b' by linear_combination -hsum']; exact hb'B⟩
         rw [ha₁] at ha'filt
         exact ha'er.1 (Finset.mem_singleton.mp ha'filt)
       exact hxnotin (hredA_eq a₁ ha₁A ▸ hx)
