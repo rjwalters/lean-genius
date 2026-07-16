@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 184 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): DyckCatalanCountOQ01OQ01 (Tree->BinaryTree rename [deprecated alias
+breaks pattern-match]; DyckWord.semilength_eq_numNodes_equivTree deprecated->numNodes_toTree direction flip).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 183 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): DissectionOfCubesOQ02OQ02 (piMultiples def->abbrev AddGroup AngleQuot
