@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 211 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos234Problem (Continuous.if_lt gone -> if_le+manual rewrite;
+exp_le_one_iff.mpr; Nat.card_Ico; filter_subset_filter->monotone_filter_right; div_le_div_iff₀;
+Set.mem_sdiff explicit arg; push_cast before nlinarith on Nat.cast). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 210 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos279OQ04 (Filter.Eventually.comp gone -> Tendsto.eventually;

@@ -119,17 +119,19 @@ lemma gapProportion_nonneg (N : ℕ) (c : ℝ) : gapProportion N c ≥ 0 := by
 
 /-- Gap proportion is at most 1. -/
 lemma gapProportion_le_one (N : ℕ) (c : ℝ) (hN : 0 < N) : gapProportion N c ≤ 1 := by
-  unfold gapProportion
+  unfold gapProportion countSmallNormGaps
   rw [div_le_one (Nat.cast_pos.mpr hN)]
-  exact Nat.cast_le.mpr (Finset.card_filter_le _ _)
+  have := Finset.card_filter_le (Finset.range N) (fun n => normalizedGap n < c)
+  rw [Finset.card_range] at this
+  exact Nat.cast_le.mpr this
 
 /-- The count of small normalized gaps is monotone in the threshold c. -/
 lemma countSmallNormGaps_mono (N : ℕ) (c₁ c₂ : ℝ) (hc : c₁ ≤ c₂) :
     countSmallNormGaps N c₁ ≤ countSmallNormGaps N c₂ := by
   unfold countSmallNormGaps
   apply Finset.card_le_card
-  apply Finset.filter_subset_filter
-  intro n hn
+  apply Finset.monotone_filter_right
+  intro n _ hn
   exact lt_of_lt_of_le hn hc
 
 /-- f(c) is non-decreasing: more integers satisfy a larger threshold. -/
@@ -139,6 +141,12 @@ theorem density_monotone (c₁ c₂ : ℝ) (hc : c₁ ≤ c₂) :
   unfold gapProportion
   apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg N)
   exact Nat.cast_le.mpr (countSmallNormGaps_mono N c₁ c₂ hc)
+
+/-- The average normalized gap tends to 1 by the Prime Number Theorem.
+(Moved above Section IV' so it is in scope for density_at_infinity, which is
+its first use — Lean requires declarations to precede their use sites.) -/
+axiom average_normalized_gap :
+    Tendsto (fun N => (∑ n ∈ Finset.range N, normalizedGap n) / N) atTop (nhds 1)
 
 /-
 ## Section IV': Proving density_at_infinity via Markov's Inequality
@@ -160,7 +168,7 @@ private lemma finset_markov_bound (N : ℕ) (c : ℝ) (hc : c > 0) :
     ≤ ∑ n ∈ Finset.range N, normalizedGap n := by
   calc c * ↑((Finset.range N).filter (fun n => ¬(normalizedGap n < c))).card
       = ∑ _n ∈ (Finset.range N).filter (fun n => ¬(normalizedGap n < c)), c := by
-        rw [Finset.sum_const, nsmul_eq_mul]
+        rw [Finset.sum_const, nsmul_eq_mul, mul_comm]
     _ ≤ ∑ n ∈ (Finset.range N).filter (fun n => ¬(normalizedGap n < c)), normalizedGap n := by
         apply Finset.sum_le_sum
         intro n hn
@@ -175,8 +183,8 @@ private lemma complement_card (N : ℕ) (c : ℝ) :
     ((Finset.range N).filter (fun n => ¬(normalizedGap n < c))).card
     = N - countSmallNormGaps N c := by
   unfold countSmallNormGaps
-  have := Finset.filter_card_add_filter_neg_card_eq_card
-    (Finset.range N) (fun n => normalizedGap n < c)
+  have := Finset.card_filter_add_card_filter_not (s := Finset.range N)
+    (fun n => normalizedGap n < c)
   rw [Finset.card_range] at this
   omega
 
@@ -194,16 +202,11 @@ private lemma gapProportion_markov (N : ℕ) (hN : 0 < N) (c : ℝ) (hc : c > 0)
   have hmark := finset_markov_bound N c hc
   have hcomp := complement_card N c
   unfold gapProportion
-  rw [ge_iff_le, ← sub_nonneg]
-  -- Goal: 0 ≤ countSmallNormGaps N c / N - (1 - sum / (N * c))
-  -- = countSmallNormGaps N c / N - 1 + sum / (N * c)
-  -- = (countSmallNormGaps N c * c + sum - N * c) / (N * c)
-  -- From hmark: c * (N - countSmallNormGaps N c) ≤ sum (in ℕ then ℝ)
-  -- i.e. N*c - count*c ≤ sum, i.e. count*c + sum ≥ N*c
-  -- So numerator ≥ 0.
+  -- From hmark: c * |B| ≤ ∑ gap; From complement_card: |B| = N - count
   have h_count_le : countSmallNormGaps N c ≤ N := by
     unfold countSmallNormGaps
-    exact Finset.card_filter_le _ _
+    have := Finset.card_filter_le (Finset.range N) (fun n => normalizedGap n < c)
+    rwa [Finset.card_range] at this
   -- Cast to ℝ: ↑(N - count) = ↑N - ↑count since count ≤ N
   have h_sub_cast : (↑(N - countSmallNormGaps N c) : ℝ) = ↑N - ↑(countSmallNormGaps N c) := by
     exact Nat.cast_sub h_count_le
@@ -212,14 +215,12 @@ private lemma gapProportion_markov (N : ℕ) (hN : 0 < N) (c : ℝ) (hc : c > 0)
   rw [hcomp] at hmark
   rw [h_sub_cast] at hmark
   -- hmark : c * (↑N - ↑count) ≤ sum
-  -- Goal: 0 ≤ ↑count / ↑N - 1 + sum / (↑N * c)
-  rw [div_add_div _ _ (ne_of_gt hNr) (ne_of_gt hNc)]
-  rw [sub_nonneg, div_le_div_iff₀ (by positivity) (mul_pos hNr hNc)]
-  -- After simplification: 1 * (↑N * (↑N * c)) ≤ ↑count * (↑N * c) + sum * ↑N
-  -- From hmark: c * ↑N - c * ↑count ≤ sum
-  -- So sum * ↑N ≥ (c * ↑N - c * ↑count) * ↑N = c * ↑N² - c * ↑count * ↑N
-  -- ↑count * (↑N * c) + sum * ↑N ≥ ↑count * ↑N * c + c * ↑N² - c * ↑count * ↑N = c * ↑N²
-  -- = ↑N * (↑N * c) = 1 * (↑N * (↑N * c))
+  have hrw : (1 : ℝ) - (∑ n ∈ Finset.range N, normalizedGap n) / (↑N * c)
+      = (↑N * c - ∑ n ∈ Finset.range N, normalizedGap n) / (↑N * c) := by
+    field_simp
+  rw [ge_iff_le, hrw, div_le_div_iff₀ hNc hNr]
+  -- Goal: (↑N * c - sum) * ↑N ≤ ↑count * (↑N * c)
+  -- From hmark: c * (↑N - ↑count) ≤ sum
   nlinarith [mul_comm c (↑N - ↑(countSmallNormGaps N c))]
 
 /-- **density_at_infinity** (previously an axiom, now derived):
@@ -230,7 +231,9 @@ theorem density_at_infinity :
   intro ε hε
   -- Choose c₀ = 2/ε + 1 so that (1 + ε/2)/c₀ < ε
   refine ⟨2 / ε + 1, fun c hc => ?_⟩
-  have hc_pos : c > 0 := by positivity
+  have hc_pos : c > 0 := by
+    have : (0 : ℝ) < 2 / ε + 1 := by positivity
+    linarith
   -- From average_normalized_gap: eventually (∑ gap) / N < 1 + ε/2
   have h_avg : ∀ᶠ N in atTop,
       (∑ n ∈ Finset.range N, normalizedGap n) / ↑N < 1 + ε / 2 := by
@@ -250,7 +253,7 @@ theorem density_at_infinity :
   have h_bound : (∑ n ∈ Finset.range N, normalizedGap n) / (↑N * c)
     < (1 + ε / 2) / c := by
     rw [← div_div]
-    exact (div_lt_div_right hc_pos).mpr hN_avg
+    exact (div_lt_div_iff_of_pos_right hc_pos).mpr hN_avg
   -- (1 + ε/2)/c ≤ ε/2 since c ≥ 2/ε + 1
   have h_bound2 : (1 + ε / 2) / c ≤ ε / 2 := by
     rw [div_le_div_iff₀ hc_pos (by positivity : (0 : ℝ) < 2)]
@@ -275,14 +278,15 @@ lemma cramer_exp_continuous : Continuous (fun c : ℝ => 1 - Real.exp (-c)) :=
 
 /-- Cramér prediction is continuous (both pieces are continuous and agree at 0). -/
 theorem cramer_continuous : Continuous cramerPrediction := by
-  unfold cramerPrediction
-  apply Continuous.if_lt continuous_id continuous_const
-  · exact continuous_const
-  · exact continuous_const.sub (continuous_exp.comp continuous_neg)
-  · intro x hx
-    simp at hx
-    rw [hx]
-    simp
+  have heq : cramerPrediction = fun c => if (0 : ℝ) ≤ c then 1 - Real.exp (-c) else 0 := by
+    funext c
+    unfold cramerPrediction
+    by_cases h : c < 0
+    · rw [if_pos h, if_neg (not_le.mpr h)]
+    · rw [if_neg h, if_pos (not_lt.mp h)]
+  rw [heq]
+  exact Continuous.if_le cramer_exp_continuous continuous_const continuous_const continuous_id
+    (fun x hx => by rw [← hx]; simp)
 
 /-- Cramér prediction is a valid CDF: values lie in [0, 1] for c ≥ 0. -/
 theorem cramer_in_unit_interval (c : ℝ) (hc : c ≥ 0) :
@@ -290,7 +294,7 @@ theorem cramer_in_unit_interval (c : ℝ) (hc : c ≥ 0) :
   unfold cramerPrediction
   rw [if_neg (not_lt.mpr hc)]
   constructor
-  · linarith [exp_le_one_of_nonpos (neg_nonpos.mpr hc)]
+  · linarith [exp_le_one_iff.mpr (neg_nonpos.mpr hc)]
   · linarith [exp_pos (-c)]
 
 /-
@@ -323,10 +327,6 @@ theorem gallagher_implies_conjecture (hRH : RiemannHypothesis) :
 
 /-  Large gaps exist: g_n/log n can be made arbitrarily large.
 (Rankin, Pintz, Ford–Green–Konyagin–Tao, Maynard) -/
-
-/-- The average normalized gap tends to 1 by the Prime Number Theorem. -/
-axiom average_normalized_gap :
-    Tendsto (fun N => (∑ n ∈ Finset.range N, normalizedGap n) / N) atTop (nhds 1)
 
 /-
 ## Section VII': Small gaps from average gap (axiom elimination)
@@ -373,7 +373,7 @@ private lemma infinite_normalizedGap_lt (c : ℝ) (hc : c > 1) :
           Finset.sum_le_sum fun n hn =>
             h_ge n (by have := (Finset.mem_Ico.mp hn).1; omega)
       _ = ↑(N - (M + 1)) * c := by
-          rw [Finset.sum_const, Finset.card_Ico, nsmul_eq_mul]
+          rw [Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]
   -- avg → 1 by average_normalized_gap, so eventually avg < (c+1)/2
   have h_mid : (1 : ℝ) < (c + 1) / 2 := by linarith
   have h_upper := average_normalized_gap.eventually (Iio_mem_nhds h_mid)
@@ -396,9 +396,10 @@ private lemma infinite_normalizedGap_lt (c : ℝ) (hc : c > 1) :
   have hN_ge_K : (↑N : ℝ) ≥ ↑K := Nat.cast_le.mpr hNK
   have hN_real : (↑N : ℝ) > 2 * c * (↑M + 1) / (c - 1) := lt_of_lt_of_le hK hN_ge_K
   have hN_cleared : 2 * c * (↑M + 1) < ↑N * (c - 1) := by
-    rwa [div_lt_iff₀ (by linarith : (c : ℝ) - 1 > 0)] at hN_real
+    rwa [gt_iff_lt, div_lt_iff₀ (by linarith : (c : ℝ) - 1 > 0)] at hN_real
   -- (↑N - ↑(M+1))*c ≤ ∑ < (c+1)/2*↑N, but ↑N*(c-1) > 2c*(↑M+1) makes this impossible
-  nlinarith
+  push_cast at hS
+  nlinarith [hS, h_avg_lt, hN_cleared]
 
 /-- For n ≥ 2 with normalizedGap n < c (c > 0), primeGap n < c · log(p_n),
 since log(p_n) ≥ log(n) (the nth prime is at least n). -/
@@ -422,11 +423,12 @@ theorem small_gaps_exist (ε : ℝ) (hε : ε > 0) :
   have h_inf := infinite_normalizedGap_lt (1 + ε) (by linarith)
   -- Remove n ≤ 1 from the infinite set (they may not satisfy the log bound)
   have h_inf2 : ({n : ℕ | normalizedGap n < 1 + ε} \ {n : ℕ | n < 2}).Infinite :=
-    h_inf.diff (Set.toFinite _)
+    h_inf.sdiff (Set.toFinite _)
   apply h_inf2.mono
   intro n hn
-  obtain ⟨hn_ng, hn_ge⟩ := Set.mem_diff.mp hn
-  exact primeGap_lt_of_normalizedGap_lt n (1 + ε) (by omega) (by linarith) hn_ng
+  obtain ⟨hn_ng, hn_ge⟩ := (Set.mem_sdiff n).mp hn
+  simp only [Set.mem_setOf_eq, not_lt] at hn_ge
+  exact primeGap_lt_of_normalizedGap_lt n (1 + ε) hn_ge (by linarith) hn_ng
 
 /-
 ## Section VIII: Additional Properties of Cramér's Model
