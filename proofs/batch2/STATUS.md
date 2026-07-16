@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 302 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos358Problem (22min: forward-ref reorder; Nat.odd_iff_not_even->
+not_even_iff_odd; Finset.card_bij direction #s=#t; Even destructure m+m; Nat.max_add_min->min_add_max;
+Nat.not_eq_zero_of_lt gone->omega). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 301 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): EulerIdentityOQ01OQ02OQ01 (expSeries_div_hasSum_exp explicit-arg drop;
