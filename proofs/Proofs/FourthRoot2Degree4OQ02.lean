@@ -44,6 +44,7 @@
 import Mathlib
 
 open Polynomial
+open scoped IntermediateField
 
 namespace FourthRoot2Degree4OQ02
 
@@ -114,7 +115,7 @@ theorem irreducible_X_pow_sub_C_rat {p : ℤ} (hp : Prime p) {n : ℕ} (hn : 0 <
   have h := (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp
     (irreducible_X_pow_sub_C_int hp hn)
   have hmap : (X ^ n - C p : ℤ[X]).map (Int.castRingHom ℚ) = X ^ n - C (p : ℚ) := by
-    simp [Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_C, map_X]
+    simp [Polynomial.map_sub, Polynomial.map_pow, map_X]
   rwa [hmap] at h
 
 /-! ## Part 3: Minimal polynomial and field degree of an arbitrary root
@@ -203,7 +204,7 @@ theorem sqrt2_sq : (Real.sqrt 2) ^ 2 = algebraMap ℚ ℝ ((2 : ℤ) : ℚ) := b
 /-- **`[ℚ(√2):ℚ] = 2`** from the general degree lemma (parent:
 `finrank_adjoin_sqrt2`). -/
 theorem finrank_adjoin_sqrt2 : Module.finrank ℚ ℚ⟮Real.sqrt 2⟯ = 2 :=
-  finrank_adjoin_eq (p := 2) Int.prime_two (n := 2) sqrt2_sq
+  finrank_adjoin_eq (p := 2) Int.prime_two (n := 2) (by norm_num) sqrt2_sq
 
 /-- The real fourth root of `2`, as `√√2`. -/
 noncomputable def fr2 : ℝ := Real.sqrt (Real.sqrt 2)
@@ -218,7 +219,7 @@ theorem fr2_pow : fr2 ^ 4 = algebraMap ℚ ℝ ((2 : ℤ) : ℚ) := by
 /-- **`[ℚ(⁴√2):ℚ] = 4`** from the general degree lemma (parent:
 `finrank_adjoin_fr2`, which reproved irreducibility by hand). -/
 theorem finrank_adjoin_fr2 : Module.finrank ℚ ℚ⟮fr2⟯ = 4 :=
-  finrank_adjoin_eq (p := 2) Int.prime_two (n := 4) fr2_pow
+  finrank_adjoin_eq (p := 2) Int.prime_two (n := 4) (by norm_num) fr2_pow
 
 end FourthRoot2Degree4OQ02
 
