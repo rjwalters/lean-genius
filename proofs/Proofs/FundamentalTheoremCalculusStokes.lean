@@ -107,7 +107,7 @@ theorem stokes_1d_differentiable {F : ℝ → ℝ} {a b : ℝ}
 theorem stokes_1d_orientation (F : ℝ → ℝ) (a b : ℝ) :
     intForm1D (extDeriv1D F) b a = -intForm1D (extDeriv1D F) a b := by
   unfold intForm1D extDeriv1D
-  exact intervalIntegral.integral_symm b a
+  exact intervalIntegral.integral_symm a b
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART III: d² = 0 in 1D
@@ -211,24 +211,24 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
   have hFDiff : Differentiable ℝ (fderiv ℝ f) := by
     have h : ContDiff ℝ 1 (fderiv ℝ f) := by apply hf.fderiv_right; norm_num
     exact h.differentiable one_ne_zero
-  -- Use HasFDerivAt.prod (standalone) not dot notation (HasFDerivAtFilter.prod absent)
+  -- Use HasFDerivAt.prodMk (standalone) not dot notation (HasFDerivAtFilter.prod absent)
   have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>
-    ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt p.2
-      (HasFDerivAt.prod (hasFDerivAt_const p.2 x) (hasFDerivAt_id ℝ p.2)).hasDerivAt
+    ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt_of_eq p.2
+      (HasFDerivAt.prodMk (hasFDerivAt_const x p.2) (hasFDerivAt_id p.2)).hasDerivAt
       rfl).deriv
   have hDX : ∀ y, deriv (fun x => f (x, y)) p.1 = fderiv ℝ f (p.1, y) (1, 0) := fun y =>
-    ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt p.1
-      (HasFDerivAt.prod (hasFDerivAt_id ℝ p.1) (hasFDerivAt_const p.1 y)).hasDerivAt
+    ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt_of_eq p.1
+      (HasFDerivAt.prodMk (hasFDerivAt_id p.1) (hasFDerivAt_const y p.1)).hasDerivAt
       rfl).deriv
   simp_rw [hDY, hDX]
   have hStep1 : HasDerivAt (fun x => fderiv ℝ f (x, p.2))
       (fderiv ℝ (fderiv ℝ f) p (1, 0)) p.1 :=
-    (hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
-      (HasFDerivAt.prod (hasFDerivAt_id ℝ p.1) (hasFDerivAt_const p.1 p.2)).hasDerivAt rfl
+    (hFDiff p).hasFDerivAt.comp_hasDerivAt_of_eq p.1
+      (HasFDerivAt.prodMk (hasFDerivAt_id p.1) (hasFDerivAt_const p.2 p.1)).hasDerivAt rfl
   have hStep2 : HasDerivAt (fun y => fderiv ℝ f (p.1, y))
       (fderiv ℝ (fderiv ℝ f) p (0, 1)) p.2 :=
-    (hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
-      (HasFDerivAt.prod (hasFDerivAt_const p.2 p.1) (hasFDerivAt_id ℝ p.2)).hasDerivAt rfl
+    (hFDiff p).hasFDerivAt.comp_hasDerivAt_of_eq p.2
+      (HasFDerivAt.prodMk (hasFDerivAt_const p.1 p.2) (hasFDerivAt_id p.2)).hasDerivAt rfl
   have hDer2XY : HasDerivAt (fun x => fderiv ℝ f (x, p.2) (0, 1))
       (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 := by
     have h := hStep1.clm_apply (hasDerivAt_const p.1 ((0, 1) : ℝ × ℝ))
@@ -239,8 +239,8 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
     simp only [map_zero, add_zero] at h; exact h
   rw [hDer2XY.deriv, hDer2YX.deriv]
   -- Symmetry: IsSymmSndFDerivAt = ∀ v w, fderiv(fderiv f)(p)(v)(w) = fderiv(fderiv f)(p)(w)(v)
-  -- minSmoothness ℝ 2 = 2, proved by le_rfl
-  exact (hf.contDiffAt.isSymmSndFDerivAt le_rfl) (1, 0) (0, 1)
+  -- minSmoothness ℝ 2 = 2 since ℝ is RCLike (minSmoothness_of_isRCLikeNormedField)
+  exact (hf.contDiffAt.isSymmSndFDerivAt (by simp)) (1, 0) (0, 1)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VI: Green's Theorem as Stokes in 2D
@@ -377,7 +377,7 @@ theorem evaluation_formula {f : ℝ → ℝ} {a b : ℝ} {F : ℝ → ℝ}
 theorem h1_trivial : ∀ (f : ℝ → ℝ), Continuous f →
     ∃ F : ℝ → ℝ, extDeriv1D F = f := by
   intro f hf
-  obtain ⟨F, hF⟩ := poincare_1d hf
+  obtain ⟨F, hF⟩ := poincare_1d (a := (0 : ℝ)) hf
   exact ⟨F, funext fun x => (hF x).deriv⟩
 
 /-- The kernel of d in degree 0 consists of constant functions.
