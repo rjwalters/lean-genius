@@ -13,6 +13,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Tactic
 
 namespace Erdos934.Aristotle
 
@@ -97,14 +98,30 @@ theorem h2_formula_10 : 5 * 10 ^ 2 / 4 + 1 = 126 := by norm_num
 
 -- The formula 5d²/4 is ≥ d for d ≥ 1
 theorem h2_formula_ge_d (d : ℕ) (hd : d ≥ 1) :
-    5 * d ^ 2 / 4 + 1 ≥ d := by nlinarith
+    5 * d ^ 2 / 4 + 1 ≥ d := by
+  have hdd : d ≤ d ^ 2 := by nlinarith
+  have h4 : 4 * d ^ 2 ≤ 5 * d ^ 2 := by nlinarith
+  have hdiv : d ^ 2 ≤ 5 * d ^ 2 / 4 := by
+    calc d ^ 2 = 4 * d ^ 2 / 4 := by omega
+      _ ≤ 5 * d ^ 2 / 4 := Nat.div_le_div_right h4
+  omega
 
 -- The formula grows quadratically: it's between d² and 2d²
 theorem h2_formula_quadratic (d : ℕ) (hd : d ≥ 1) :
-    d ^ 2 ≤ 5 * d ^ 2 / 4 + 1 := by nlinarith
+    d ^ 2 ≤ 5 * d ^ 2 / 4 + 1 := by
+  have h4 : 4 * d ^ 2 ≤ 5 * d ^ 2 := by nlinarith
+  have hdiv : d ^ 2 ≤ 5 * d ^ 2 / 4 := by
+    calc d ^ 2 = 4 * d ^ 2 / 4 := by omega
+      _ ≤ 5 * d ^ 2 / 4 := Nat.div_le_div_right h4
+  omega
 
 theorem h2_formula_upper (d : ℕ) :
-    5 * d ^ 2 / 4 + 1 ≤ 2 * d ^ 2 + 1 := by nlinarith
+    5 * d ^ 2 / 4 + 1 ≤ 2 * d ^ 2 + 1 := by
+  have h8 : 5 * d ^ 2 ≤ 8 * d ^ 2 := by nlinarith
+  have hdiv : 5 * d ^ 2 / 4 ≤ 2 * d ^ 2 := by
+    calc 5 * d ^ 2 / 4 ≤ 8 * d ^ 2 / 4 := Nat.div_le_div_right h8
+      _ = 2 * d ^ 2 := by omega
+  omega
 
 /-
   ## Section 4: Polynomial Growth Arithmetic
@@ -157,8 +174,11 @@ theorem trivial_upper (d t : ℕ) (hd : d ≥ 1) :
   h_3(3) = 23 and related arithmetic.
 -/
 
--- 23 is between d^3 and 2*d^3 for d=3
-theorem h3_3_between : (3 : ℕ) ^ 3 ≤ 23 ∧ 23 ≤ 2 * 3 ^ 3 := by omega
+-- 23 is between d^2 and 2*d^3 for d=3
+-- (NOTE: the original claim "d^3 ≤ 23" was false since 3^3 = 27 > 23;
+-- corrected the lower bound to the quadratic floor d^2 = 9 ≤ 23, which holds.
+-- #38611 candidate: unsound original bound.)
+theorem h3_3_between : (3 : ℕ) ^ 2 ≤ 23 ∧ 23 ≤ 2 * 3 ^ 3 := by norm_num
 
 -- The conjectured formula d³ - d² + d + 2 at d = 3 gives 23
 theorem h3_conjecture_at_3 : 3 ^ 3 - 3 ^ 2 + 3 + 2 = 23 := by norm_num
