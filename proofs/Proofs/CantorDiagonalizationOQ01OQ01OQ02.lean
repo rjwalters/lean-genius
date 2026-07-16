@@ -49,7 +49,7 @@ set_option linter.unusedTactic false
 
 namespace CantorDiagOQ01OQ01OQ02
 
-open Cardinal ContinuumHypothesis
+open Cardinal Ordinal ContinuumHypothesis
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -65,14 +65,14 @@ PART I: KÖNIG'S COFINALITY CONSTRAINT — THE CORE RESULT
     König's theorem on cardinal arithmetic: for infinite λ and κ > 1,
     cf(κ^λ) > λ. Setting κ = 2, λ = ℵ₀ yields the result. -/
 theorem konig_cofinality :
-    (ℵ₀ : Cardinal.{0}) < ((2 : Cardinal.{0}) ^ ℵ₀).ord.cof.card := by
-  exact Cardinal.lt_cof_power le_rfl (by norm_num)
+    (ℵ₀ : Cardinal.{0}) < ((2 : Cardinal.{0}) ^ ℵ₀).ord.cof := by
+  exact Cardinal.lt_cof_ord_power le_rfl (by norm_num)
 
 /-- General form: for any base κ > 1 and infinite exponent λ, cf(κ^λ) > λ.
     This is the full strength of the König cofinality constraint. -/
 theorem konig_general (κ : Cardinal.{0}) (hκ : (1 : Cardinal.{0}) < κ) :
-    (ℵ₀ : Cardinal.{0}) < (κ ^ ℵ₀).ord.cof.card := by
-  exact Cardinal.lt_cof_power le_rfl hκ
+    (ℵ₀ : Cardinal.{0}) < (κ ^ ℵ₀).ord.cof := by
+  exact Cardinal.lt_cof_ord_power le_rfl hκ
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -86,8 +86,10 @@ theorem aleph_one_regular : (Cardinal.aleph 1).IsRegular :=
 
 /-- ℵ₂ is regular: cf(ℵ₂) = ℵ₂. Under PFA, 2^ℵ₀ = ℵ₂, which is
     consistent with König precisely because ℵ₂ is regular. -/
-theorem aleph_two_regular : (Cardinal.aleph 2).IsRegular :=
-  Cardinal.isRegular_aleph_succ 1
+theorem aleph_two_regular : (Cardinal.aleph 2).IsRegular := by
+  have h : (Cardinal.aleph (1 + 1 : Ordinal)).IsRegular := Cardinal.isRegular_aleph_add_one 1
+  norm_num at h
+  exact h
 
 /-- Every successor aleph ℵ_{α+1} is regular. This is a fundamental
     result: the singular alephs are exactly the limit alephs of
@@ -102,8 +104,7 @@ theorem aleph_succ_regular (α : Ordinal.{0}) :
     increasing sequence. -/
 theorem cof_aleph_omega_eq_aleph0 :
     ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀ := by
-  rw [Cardinal.cof_aleph]
-  exact Ordinal.card_omega0
+  rw [Cardinal.ord_aleph, Ordinal.cof_omega Ordinal.isSuccLimit_omega0, Ordinal.cof_omega0]
 
 /-- ℵ_ω is not regular: since cf(ℵ_ω) = ℵ₀ ≠ ℵ_ω. -/
 theorem aleph_omega_not_regular :
@@ -111,10 +112,10 @@ theorem aleph_omega_not_regular :
   intro hreg
   have hcof := hreg.cof_eq
   rw [cof_aleph_omega_eq_aleph0] at hcof
-  have : ℵ₀ < Cardinal.aleph (ω : Ordinal.{0}) := by
-    rw [Cardinal.aleph_zero]
-    exact Cardinal.aleph_lt_aleph.mpr (Ordinal.pos_iff_ne_zero.mpr omega_ne_zero)
-  exact absurd hcof.symm (ne_of_lt this)
+  have hlt : ℵ₀ < Cardinal.aleph (ω : Ordinal.{0}) := by
+    rw [← Cardinal.aleph_zero]
+    exact Cardinal.aleph_lt_aleph.mpr omega0_pos
+  exact absurd hcof (ne_of_lt hlt)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -164,17 +165,17 @@ theorem regular_satisfies_konig (κ : Cardinal.{0})
 /-- ℵ₁ satisfies König (it is regular and > ℵ₀).
     This is the CH value: 2^ℵ₀ = ℵ₁. -/
 theorem aleph_one_satisfies_konig :
-    ((Cardinal.aleph 1).ord.cof : Cardinal) > ℵ₀ := by
+    ((Cardinal.aleph (1 : Ordinal.{0})).ord.cof : Cardinal) > ℵ₀ := by
   exact regular_satisfies_konig _ aleph_one_regular (by
-    rw [Cardinal.aleph_zero]
+    rw [← Cardinal.aleph_zero]
     exact Cardinal.aleph_lt_aleph.mpr (by norm_num))
 
 /-- ℵ₂ satisfies König (it is regular and > ℵ₀).
     This is the PFA value: 2^ℵ₀ = ℵ₂. -/
 theorem aleph_two_satisfies_konig :
-    ((Cardinal.aleph 2).ord.cof : Cardinal) > ℵ₀ := by
+    ((Cardinal.aleph (2 : Ordinal.{0})).ord.cof : Cardinal) > ℵ₀ := by
   exact regular_satisfies_konig _ aleph_two_regular (by
-    rw [Cardinal.aleph_zero]
+    rw [← Cardinal.aleph_zero]
     exact Cardinal.aleph_lt_aleph.mpr (by norm_num))
 
 /-- Every successor aleph ℵ_{α+1} satisfies König.
@@ -183,8 +184,8 @@ theorem aleph_succ_satisfies_konig (α : Ordinal.{0}) :
     ((Cardinal.aleph (Order.succ α)).ord.cof : Cardinal) > ℵ₀ := by
   apply regular_satisfies_konig
   · exact aleph_succ_regular α
-  · rw [Cardinal.aleph_zero]
-    exact Cardinal.aleph_lt_aleph.mpr (Ordinal.pos_iff_ne_zero.mpr (by
+  · rw [← Cardinal.aleph_zero]
+    exact Cardinal.aleph_lt_aleph.mpr (pos_iff_ne_zero.mpr (by
       exact Order.succ_ne_bot α))
 
 /-
@@ -204,7 +205,7 @@ theorem zfc_constraints_on_continuum :
     -- (1) Cantor's lower bound: ℵ₁ ≤ 2^ℵ₀
     Cardinal.aleph 1 ≤ (2 : Cardinal.{0}) ^ ℵ₀ ∧
     -- (2) König's constraint: cf(2^ℵ₀) > ℵ₀
-    ℵ₀ < ((2 : Cardinal.{0}) ^ ℵ₀).ord.cof.card := by
+    ℵ₀ < ((2 : Cardinal.{0}) ^ ℵ₀).ord.cof := by
   constructor
   · -- ℵ₁ = succ(ℵ₀) ≤ 2^ℵ₀ from Cantor's theorem
     have hsucc : Cardinal.aleph 1 = Order.succ ℵ₀ := by
@@ -222,20 +223,20 @@ theorem zfc_constraints_on_continuum :
     excluded value. -/
 theorem smallest_excluded_is_aleph_omega :
     -- ℵ₁ through ℵ_n are all permitted (regular successor alephs)
-    (∀ n : ℕ, n ≥ 1 → ((Cardinal.aleph n).ord.cof : Cardinal) > ℵ₀) ∧
+    (∀ n : ℕ, n ≥ 1 → ((Cardinal.aleph (n : Ordinal.{0})).ord.cof : Cardinal) > ℵ₀) ∧
     -- But ℵ_ω is excluded
     ((Cardinal.aleph (ω : Ordinal.{0})).ord.cof : Cardinal) = ℵ₀ := by
   constructor
   · intro n hn
     -- ℵ_n for n ≥ 1 is a successor aleph, hence regular
     have : (Cardinal.aleph n).IsRegular := by
-      have : n = Order.succ (n - 1 : Ordinal) := by
-        rw [Order.succ_eq_add_one]
-        simp [Ordinal.sub_add_cancel (Ordinal.one_le_iff_ne_zero.mpr (by omega))]
-      rw [show (n : Ordinal) = Order.succ ((n : Ordinal) - 1) from this]
-      exact Cardinal.isRegular_aleph_succ _
+      have hn1 : (n : Ordinal) = ((n - 1 : ℕ) : Ordinal) + 1 := by
+        have hnat : n = (n - 1) + 1 := by omega
+        exact_mod_cast hnat
+      rw [hn1]
+      exact Cardinal.isRegular_aleph_add_one _
     exact regular_satisfies_konig _ this (by
-      rw [Cardinal.aleph_zero]
+      rw [← Cardinal.aleph_zero]
       exact Cardinal.aleph_lt_aleph.mpr (by exact_mod_cast hn))
   · exact cof_aleph_omega_eq_aleph0
 
