@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 117 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos339Aristotle (cascade-only, no code changes; needed parent
+Erdos339Problem olean built first). Repair: none. Closes Erdos339 family.
+
 # DOCTOR SINGLE-PROOF BATCH 116 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos339Problem (open scoped Classical for filter decidability;
