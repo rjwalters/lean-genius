@@ -62,11 +62,10 @@ private lemma consecutive_sum_double (u v : ℕ) (huv : u ≤ v) :
   | zero =>
     simp at huv; subst huv
     simp [Finset.Icc_self]
-    ring
   | succ v ih =>
     by_cases h : u ≤ v
     · -- Split: Icc u (v+1) = insert (v+1) (Icc u v)
-      have hmem : v + 1 ∉ Finset.Icc u v := by simp [Finset.mem_Icc]; omega
+      have hmem : v + 1 ∉ Finset.Icc u v := by simp [Finset.mem_Icc]
       have hIcc : Finset.Icc u (v + 1) = insert (v + 1) (Finset.Icc u v) := by
         ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
       rw [hIcc, Finset.sum_insert hmem, mul_add, ih h]
@@ -94,12 +93,84 @@ private lemma exists_odd_divisor_ge3 (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k, n = 
     have hm_np : ¬∃ k, m = 2 ^ k := fun ⟨k, hk⟩ => h ⟨k + 1, by rw [pow_succ]; omega⟩
     by_cases hm3 : m ≥ 3
     · obtain ⟨d, hd, hodd, hge⟩ := exists_odd_divisor_ge3 m hm3 hm_np
-      exact ⟨d, dvd_mul_of_dvd_right hd 2, hodd, hge⟩
+      exact ⟨d, hd.add hd, hodd, hge⟩
     · -- m = 2: n = 4 = 2²
       exfalso; exact h ⟨2, by omega⟩
   · exact ⟨n, dvd_refl n, hodd, hn⟩
 termination_by n
 decreasing_by omega
+
+/-- Gauss sum: twice the sum of integers from a to b equals (b-a+1)(a+b). -/
+private lemma two_mul_sum_Icc (a b : ℕ) (hab : a ≤ b) :
+    2 * (∑ i ∈ Finset.Icc a b, i) = (b - a + 1) * (a + b) := by
+  induction b with
+  | zero =>
+    interval_cases a
+    simp [Finset.Icc_self]
+  | succ n ih =>
+    by_cases h : a ≤ n
+    · have hmem : n + 1 ∉ Finset.Icc a n := by simp [Finset.mem_Icc]
+      have hIcc : Finset.Icc a (n + 1) = insert (n + 1) (Finset.Icc a n) := by
+        ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
+      rw [hIcc, Finset.sum_insert hmem]
+      set S := ∑ i ∈ Finset.Icc a n, i with hS_def
+      have h_ih := ih h
+      zify [h, show a ≤ n + 1 from by omega] at h_ih ⊢
+      nlinarith
+    · have : a = n + 1 := by omega
+      subst this
+      simp [Finset.Icc_self]
+      ring
+
+/-- An odd divisor of a power of 2 must be 1. -/
+private lemma odd_dvd_two_pow_eq_one {m j : ℕ} (hm : Odd m) (hdvd : m ∣ 2 ^ j) :
+    m = 1 := by
+  induction j with
+  | zero => simpa using hdvd
+  | succ j ih =>
+    apply ih
+    have hcop : Nat.Coprime m 2 := by
+      unfold Nat.Coprime
+      rw [Nat.gcd_comm, Nat.gcd_rec, Nat.odd_iff.mp hm]
+      norm_num
+    rw [pow_succ] at hdvd
+    exact hcop.dvd_of_dvd_mul_right hdvd
+
+/-- Powers of 2 cannot be expressed as sums of ≥2 consecutive positive integers.
+    Proof: 2·S = (v-u+1)(u+v+2) with sum of factors = 2v+3 (odd), so one factor
+    is odd. An odd divisor of 2^(k+1) is 1, but both factors are ≥ 2. -/
+theorem power_of_two_obstruction :
+    ∀ k : ℕ, ∀ u v : ℕ, u < v → (∑ i ∈ Finset.Icc (u+1) (v+1), i) ≠ 2^k := by
+  intro k u v huv hsum
+  have hab : u + 1 ≤ v + 1 := by omega
+  have h2S := two_mul_sum_Icc (u + 1) (v + 1) hab
+  rw [hsum] at h2S
+  -- Simplify: 2 * 2^k = (v - u + 1) * (u + v + 2)
+  have hvu : v + 1 - (u + 1) + 1 = v - u + 1 := by omega
+  have huv2 : (u + 1) + (v + 1) = u + v + 2 := by omega
+  rw [hvu, huv2] at h2S
+  -- Both factors are at least 2
+  have hf1 : v - u + 1 ≥ 2 := by omega
+  have hf2 : u + v + 2 ≥ 2 := by omega
+  -- Their sum is 2v+3 (odd), so they have different parities
+  rcases Nat.even_or_odd (v - u + 1) with h_even | h_odd
+  · -- (v-u+1) even ⟹ (u+v+2) odd
+    have h_odd2 : Odd (u + v + 2) := by
+      rw [← Nat.not_even_iff_odd]
+      intro h_even2
+      have := h_even.add h_even2
+      -- (v-u+1) + (u+v+2) = 2v+3 would be even — contradiction
+      obtain ⟨d, hd⟩ := this
+      omega
+    have h_dvd : (u + v + 2) ∣ 2 ^ (k + 1) :=
+      ⟨v - u + 1, by rw [show 2 ^ (k + 1) = 2 * 2 ^ k from by ring, h2S, mul_comm]⟩
+    have := odd_dvd_two_pow_eq_one h_odd2 h_dvd
+    omega
+  · -- (v-u+1) odd ⟹ contradicts being ≥ 2 and dividing 2^(k+1)
+    have h_dvd : (v - u + 1) ∣ 2 ^ (k + 1) :=
+      ⟨u + v + 2, by rw [show 2 ^ (k + 1) = 2 * 2 ^ k from by ring, h2S]⟩
+    have := odd_dvd_two_pow_eq_one h_odd h_dvd
+    omega
 
 /-- If n is not a power of 2, then n can be written as a sum of ≥2 consecutive
     positive integers.
@@ -124,7 +195,7 @@ private lemma not_pow2_representable (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k : ℕ
       obtain ⟨d, hd_dvd, hd_odd, hd_ge⟩ := exists_odd_divisor_ge3 n hn h
       obtain ⟨r, hd_eq⟩ := hd_odd  -- d = 2*r + 1
       set q := n / d with hq_def
-      have hqd : d * q = n := Nat.div_mul_cancel hd_dvd
+      have hqd : d * q = n := Nat.mul_div_cancel' hd_dvd
       have hq_pos : q ≥ 1 := by
         by_contra hq0; push_neg at hq0
         simp at hq0; rw [hq0, mul_zero] at hqd; omega
@@ -165,7 +236,7 @@ private lemma not_pow2_representable (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k : ℕ
       rcases eq_or_lt_of_le hk_ge1 with rfl | hk_ge2
       · -- k = 1: n = 6. Use 3 terms: 1+2+3 = 6.
         refine ⟨0, 2, by omega, ?_⟩
-        have h_sum := two_mul_sum_Icc 1 3 (by omega)
+        have h_sum := two_mul_sum_Icc (0 + 1) (2 + 1) (by omega)
         -- 2 * ∑[1..3] = (3-1+1)*(1+3) = 12, so ∑ = 6 = n
         omega
       · -- k ≥ 2: n = 4k+2. Use 4 terms from (k-1) to (k+2).
@@ -173,9 +244,12 @@ private lemma not_pow2_representable (n : ℕ) (hn : n ≥ 3) (h : ¬∃ k : ℕ
         refine ⟨k - 2, k + 1, by omega, ?_⟩
         have hk_sub : k - 2 + 1 = k - 1 := by omega
         rw [hk_sub]
-        have h_sum := two_mul_sum_Icc (k - 1) (k + 2) (by omega)
+        have h_sum := two_mul_sum_Icc (k - 1) (k + 1 + 1) (by omega)
         -- 2*∑[k-1..k+2] = (k+2-(k-1)+1)*(k-1+k+2) = 4*(2k+1)
         -- So ∑ = 2*(2k+1) = n
+        have h1 : k + 1 + 1 - (k - 1) + 1 = 4 := by omega
+        have h2 : k - 1 + (k + 1 + 1) = 2 * k + 1 := by omega
+        rw [h1, h2] at h_sum
         omega
   · -- n odd: n = (n-1)/2 + (n+1)/2 = 2m+1
     -- Use u = m-1, v = m. Then Icc (m) (m+1) has sum m + (m+1) = 2m+1 = n.
@@ -199,7 +273,7 @@ theorem consecutive_sum_char (n : ℕ) (hn : n ≥ 3) :
     (∃ u v : ℕ, u < v ∧ n = ∑ i ∈ Finset.Icc (u+1) (v+1), i) ↔ ¬∃ k : ℕ, n = 2^k := by
   constructor
   · intro ⟨u, v, huv, hsum⟩ ⟨k, hk⟩
-    exact power_of_two_obstruction k u v huv (hk ▸ hsum)
+    exact power_of_two_obstruction k u v huv (hsum.symm.trans hk)
   · exact not_pow2_representable n hn
 
 /-- For natural numbers, f(n) equals the number of odd divisors of n.
@@ -232,6 +306,7 @@ theorem naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
   -- f(d) = ((t-s-1)/2, (t+s-3)/2) where s=min(d,2q), t=max(d,2q), q=n/d
   -- g(u,v) = the odd factor among (v-u+1, u+v+2)
   set F := (Nat.divisors n).filter Odd
+  symm
   apply Finset.card_bij (fun d _ => let q := n / d; let s := min d (2*q); let t := max d (2*q);
     ((t - s - 1) / 2, (t + s - 3) / 2))
   · -- f maps F into hS_fin.toFinset
@@ -247,13 +322,15 @@ theorem naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
     have hne : d ≠ 2 * q := by obtain ⟨k, hk⟩ := hodd; omega
     -- Parities: min(d,2q) and max(d,2q) differ in parity; their diff is odd
     have hs_t_parity : (max d (2*q) - min d (2*q)) % 2 = 1 := by
-      simp only [Nat.max_def, Nat.min_def]; split_ifs <;>
-        [obtain ⟨k, hk⟩ := hodd; omega; obtain ⟨k, hk⟩ := hodd; omega]
+      simp only [Nat.max_def, Nat.min_def]
+      split_ifs <;> (obtain ⟨k, hk⟩ := hodd; omega)
     -- (t-s-1) is even, (t+s-3) is even
     have hts1_even : (max d (2*q) - min d (2*q) - 1) % 2 = 0 := by omega
     have htsp3_even : (max d (2*q) + min d (2*q) - 3) % 2 = 0 := by
+      have hsum_eq : max d (2*q) + min d (2*q) = d + 2 * q := by
+        rw [add_comm (max d (2*q)) (min d (2*q))]; exact min_add_max d (2*q)
       have : (max d (2*q) + min d (2*q)) % 2 = 1 := by
-        rw [Nat.max_add_min]; simp only [Nat.add_mod]; obtain ⟨k, hk⟩ := hodd; omega
+        rw [hsum_eq]; obtain ⟨k, hk⟩ := hodd; omega
       omega
     set s := min d (2*q)
     set t := max d (2*q)
@@ -296,16 +373,35 @@ theorem naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
       have := Nat.mul_div_cancel' hdvd2; simp [h] at this; omega
     have hne1 : d1 ≠ 2 * (n / d1) := by obtain ⟨k, hk⟩ := hodd1; omega
     have hne2 : d2 ≠ 2 * (n / d2) := by obtain ⟨k, hk⟩ := hodd2; omega
+    -- Parity facts: max - min is odd, so halving (t-s-1) and (t+s-3) is exact/invertible.
+    have hpar1 : (max d1 (2*(n/d1)) - min d1 (2*(n/d1))) % 2 = 1 := by
+      simp only [Nat.max_def, Nat.min_def]
+      split_ifs <;> (obtain ⟨k, hk⟩ := hodd1; omega)
+    have hpar2 : (max d2 (2*(n/d2)) - min d2 (2*(n/d2))) % 2 = 1 := by
+      simp only [Nat.max_def, Nat.min_def]
+      split_ifs <;> (obtain ⟨k, hk⟩ := hodd2; omega)
+    have heq1 : (max d1 (2*(n/d1)) - min d1 (2*(n/d1)) - 1) / 2 =
+        (max d2 (2*(n/d2)) - min d2 (2*(n/d2)) - 1) / 2 := congrArg Prod.fst heq
+    have heq2 : (max d1 (2*(n/d1)) + min d1 (2*(n/d1)) - 3) / 2 =
+        (max d2 (2*(n/d2)) + min d2 (2*(n/d2)) - 3) / 2 := congrArg Prod.snd heq
+    have hle1 : min d1 (2*(n/d1)) ≤ max d1 (2*(n/d1)) := min_le_max
+    have hle2 : min d2 (2*(n/d2)) ≤ max d2 (2*(n/d2)) := min_le_max
     -- From pair equality, deduce {d1, 2*(n/d1)} = {d2, 2*(n/d2)}
-    have hmin_eq : min d1 (2 * (n / d1)) = min d2 (2 * (n / d2)) := by
-      have := congr_arg Prod.fst heq; simp at this; omega
-    have hmax_eq : max d1 (2 * (n / d1)) = max d2 (2 * (n / d2)) := by
-      have := congr_arg Prod.snd heq; simp at this; omega
+    have hmin_eq : min d1 (2 * (n / d1)) = min d2 (2 * (n / d2)) := by omega
+    have hmax_eq : max d1 (2 * (n / d1)) = max d2 (2 * (n / d2)) := by omega
     -- From min=min and max=max: d1 is odd so it's the min iff d1 ≤ 2q1, etc.
     -- In all cases d1 = d2
-    nlinarith [Nat.min_le_left d1 (2*(n/d1)), Nat.min_le_left d2 (2*(n/d2)),
-               Nat.le_max_left d1 (2*(n/d1)), Nat.le_max_left d2 (2*(n/d2)),
-               Nat.mul_div_cancel' hdvd1, Nat.mul_div_cancel' hdvd2]
+    rcases lt_or_gt_of_ne hne1 with h1lt | h1gt <;> rcases lt_or_gt_of_ne hne2 with h2lt | h2gt
+    · rw [min_eq_left h1lt.le, min_eq_left h2lt.le] at hmin_eq
+      exact hmin_eq
+    · exfalso
+      rw [min_eq_left h1lt.le, min_eq_right h2gt.le] at hmin_eq
+      obtain ⟨k, hk⟩ := hodd1; omega
+    · exfalso
+      rw [max_eq_left h1gt.le, max_eq_right h2lt.le] at hmax_eq
+      obtain ⟨k, hk⟩ := hodd2; omega
+    · rw [max_eq_left h1gt.le, max_eq_left h2gt.le] at hmax_eq
+      exact hmax_eq
   · -- f is surjective: every (u,v) ∈ SF has a preimage in F
     intro ⟨u, v⟩ hSF
     simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hSF
@@ -315,82 +411,71 @@ theorem naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
     simp only [naturalsSeq, consecutiveSum] at h2 hsum
     -- 2n = (v-u+1)*(u+v+2) (over ℕ)
     have h2n : (v - u + 1) * (u + v + 2) = 2 * n := by
-      push_cast at h2 hsum; exact_mod_cast by linarith
+      zify [huv]
+      push_cast at h2 hsum ⊢
+      linarith [h2, hsum]
     -- (v-u+1) + (u+v+2) = 2v+3 is odd, so exactly one of them is odd
     have hsum_odd : ¬ 2 ∣ ((v - u + 1) + (u + v + 2)) := by omega
     have hopp_par : Odd (v - u + 1) ↔ ¬ Odd (u + v + 2) := by
-      simp [Nat.odd_iff_not_even, Nat.even_iff, ← Nat.odd_iff]
+      rw [Nat.odd_iff, Nat.odd_iff]
       omega
     -- Let d be the odd factor
     let d := if Odd (v - u + 1) then v - u + 1 else u + v + 2
     have hd_mem : d ∈ F := by
       simp only [F, Finset.mem_filter, Nat.mem_divisors, d]
       split_ifs with h
-      · refine ⟨⟨?_, Nat.not_eq_zero_of_lt hn⟩, h⟩
+      · refine ⟨⟨?_, by omega⟩, h⟩
         -- (v-u+1) | n since (v-u+1) * (u+v+2) = 2n and (u+v+2) is even
-        have heven : Even (u + v + 2) := (hopp_par.mp h).symm.even
+        have heven : Even (u + v + 2) := Nat.not_odd_iff_even.mp (hopp_par.mp h)
         obtain ⟨k, hk⟩ := heven
-        have : (v - u + 1) * (2 * k) = 2 * n := by linarith [h2n]
+        have : (v - u + 1) * (2 * k) = 2 * n := by
+          have hk2 : u + v + 2 = 2 * k := by omega
+          rw [← hk2]; exact h2n
         exact ⟨k, by linarith [this]⟩
-      · refine ⟨⟨?_, Nat.not_eq_zero_of_lt hn⟩, (hopp_par.mpr (by simp [h])).symm⟩
+      · have hodd2 : Odd (u + v + 2) := by by_contra hc; exact h (hopp_par.mpr hc)
+        refine ⟨⟨?_, by omega⟩, hodd2⟩
         -- (u+v+2) | n since (v-u+1) is even and (u+v+2) odd
-        push_neg at h
-        have hodd2 : Odd (u + v + 2) := by rwa [← hopp_par]
-        have heven1 : Even (v - u + 1) := Nat.even_iff_not_odd.mpr h
+        have heven1 : Even (v - u + 1) := Nat.not_odd_iff_even.mp h
         obtain ⟨k, hk⟩ := heven1
-        have : (2 * k) * (u + v + 2) = 2 * n := by linarith [h2n]
+        have : (2 * k) * (u + v + 2) = 2 * n := by
+          have hk2 : v - u + 1 = 2 * k := by omega
+          rw [← hk2]; exact h2n
         exact ⟨k, by linarith [this]⟩
     refine ⟨d, hd_mem, ?_⟩
     -- Show f(d) = (u, v)
     simp only [d]
     split_ifs with h
     · -- d = v-u+1 (odd), so 2*(n/d) = u+v+2 (even)
+      have hd_eq : d = v - u + 1 := if_pos h
       have hdvd : (v - u + 1) ∣ n := by
+        rw [← hd_eq]
         simp only [F, Finset.mem_filter, Nat.mem_divisors] at hd_mem
-        split_ifs at hd_mem with hh <;> [exact hd_mem.1.1; exact absurd h (by push_neg; exact hh)]
+        exact hd_mem.1.1
       have hqd : (v - u + 1) * (n / (v - u + 1)) = n := Nat.mul_div_cancel' hdvd
-      have hq_val : n / (v - u + 1) = (u + v + 2) / 2 := by
-        have heven : Even (u + v + 2) := (hopp_par.mp h).symm.even
-        obtain ⟨k, hk⟩ := heven
-        have h2k : (v - u + 1) * (2 * k) = 2 * n := by linarith [h2n]
-        have : n = (v - u + 1) * k := by linarith
-        rw [this, Nat.mul_div_cancel_left _ (by omega)]
-        omega
-      simp only [Nat.min_def, Nat.max_def]
-      split_ifs with hle
-      · -- min = v-u+1, max = 2q
-        ext <;> simp only <;> omega
-      · -- min = 2q, max = v-u+1
-        push_neg at hle
-        -- 2*(n/(v-u+1)) < v-u+1 means u+v+2 < v-u+1... impossible since u ≥ 0
-        exfalso
-        have : 2 * (n / (v - u + 1)) = u + v + 2 := by omega
-        omega
+      have h2q : 2 * (n / (v - u + 1)) = u + v + 2 := by
+        have hpos : 0 < v - u + 1 := by omega
+        apply Nat.eq_of_mul_eq_mul_left hpos
+        rw [show (v - u + 1) * (2 * (n / (v - u + 1)))
+              = 2 * ((v - u + 1) * (n / (v - u + 1))) from by ring, hqd, h2n]
+      have hle : v - u + 1 ≤ u + v + 2 := by omega
+      simp only [Nat.min_def, Nat.max_def, h2q, if_pos hle, Prod.mk.injEq]
+      omega
     · -- d = u+v+2 (odd), so 2*(n/d) = v-u+1 (even)
-      push_neg at h
-      have hodd2 : Odd (u + v + 2) := by rwa [← hopp_par]
+      have hd_eq : d = u + v + 2 := if_neg h
       have hdvd : (u + v + 2) ∣ n := by
+        rw [← hd_eq]
         simp only [F, Finset.mem_filter, Nat.mem_divisors] at hd_mem
-        split_ifs at hd_mem with hh
-        · exact absurd hh (by push_neg; exact h)
-        · exact hd_mem.1.1
+        exact hd_mem.1.1
       have hqd : (u + v + 2) * (n / (u + v + 2)) = n := Nat.mul_div_cancel' hdvd
-      have hq_val : n / (u + v + 2) = (v - u + 1) / 2 := by
-        have heven : Even (v - u + 1) := Nat.even_iff_not_odd.mpr h
-        obtain ⟨k, hk⟩ := heven
-        have h2k : (2 * k) * (u + v + 2) = 2 * n := by linarith [h2n]
-        have : n = k * (u + v + 2) := by linarith
-        rw [this, Nat.mul_div_cancel' ⟨k, rfl⟩]
-        omega
-      simp only [Nat.min_def, Nat.max_def]
-      split_ifs with hle
-      · -- 2q ≤ u+v+2, so min = 2q, max = u+v+2
-        ext <;> simp only <;> omega
-      · -- 2q > u+v+2... impossible
-        push_neg at hle
-        exfalso
-        have : 2 * (n / (u + v + 2)) = v - u + 1 := by omega
-        omega
+      have h2q : 2 * (n / (u + v + 2)) = v - u + 1 := by
+        have hpos : 0 < u + v + 2 := by omega
+        apply Nat.eq_of_mul_eq_mul_left hpos
+        rw [show (u + v + 2) * (2 * (n / (u + v + 2)))
+              = 2 * ((u + v + 2) * (n / (u + v + 2))) from by ring, hqd]
+        rw [show (u + v + 2) * (v - u + 1) = (v - u + 1) * (u + v + 2) from mul_comm _ _, h2n]
+      have hle : ¬ (u + v + 2 ≤ v - u + 1) := by omega
+      simp only [Nat.min_def, Nat.max_def, h2q, if_neg hle, Prod.mk.injEq]
+      omega
 
 /- ## Part III: The Main Conjectures -/
 
@@ -453,77 +538,6 @@ theorem naturals_always_representable (n : ℕ) (hn : n ≥ 1) :
   -- Step 3: ncard ≥ 1
   exact Set.ncard_pos hfin |>.mpr hne
 
-/-- Gauss sum: twice the sum of integers from a to b equals (b-a+1)(a+b). -/
-private lemma two_mul_sum_Icc (a b : ℕ) (hab : a ≤ b) :
-    2 * (∑ i ∈ Finset.Icc a b, i) = (b - a + 1) * (a + b) := by
-  induction b with
-  | zero =>
-    interval_cases a
-    simp [Finset.Icc_self]
-  | succ n ih =>
-    by_cases h : a ≤ n
-    · have hmem : n + 1 ∉ Finset.Icc a n := by simp [Finset.mem_Icc]; omega
-      have hIcc : Finset.Icc a (n + 1) = insert (n + 1) (Finset.Icc a n) := by
-        ext x; simp [Finset.mem_Icc, Finset.mem_insert]; omega
-      rw [hIcc, Finset.sum_insert hmem]
-      set S := ∑ i ∈ Finset.Icc a n, i with hS_def
-      have h_ih := ih h
-      zify [h, show a ≤ n + 1 from by omega] at h_ih ⊢
-      nlinarith
-    · have : a = n + 1 := by omega
-      subst this
-      simp [Finset.Icc_self]
-
-/-- An odd divisor of a power of 2 must be 1. -/
-private lemma odd_dvd_two_pow_eq_one {m j : ℕ} (hm : Odd m) (hdvd : m ∣ 2 ^ j) :
-    m = 1 := by
-  induction j with
-  | zero => simpa using hdvd
-  | succ j ih =>
-    apply ih
-    have hcop : Nat.Coprime m 2 := by
-      unfold Nat.Coprime
-      rw [Nat.gcd_comm, Nat.gcd_rec, Nat.odd_iff.mp hm]
-      norm_num
-    rw [pow_succ] at hdvd
-    exact hcop.dvd_of_dvd_mul_right hdvd
-
-/-- Powers of 2 cannot be expressed as sums of ≥2 consecutive positive integers.
-    Proof: 2·S = (v-u+1)(u+v+2) with sum of factors = 2v+3 (odd), so one factor
-    is odd. An odd divisor of 2^(k+1) is 1, but both factors are ≥ 2. -/
-theorem power_of_two_obstruction :
-    ∀ k : ℕ, ∀ u v : ℕ, u < v → (∑ i ∈ Finset.Icc (u+1) (v+1), i) ≠ 2^k := by
-  intro k u v huv hsum
-  have hab : u + 1 ≤ v + 1 := by omega
-  have h2S := two_mul_sum_Icc (u + 1) (v + 1) hab
-  rw [hsum] at h2S
-  -- Simplify: 2 * 2^k = (v - u + 1) * (u + v + 2)
-  have hvu : v + 1 - (u + 1) + 1 = v - u + 1 := by omega
-  have huv2 : (u + 1) + (v + 1) = u + v + 2 := by omega
-  rw [hvu, huv2] at h2S
-  -- Both factors are at least 2
-  have hf1 : v - u + 1 ≥ 2 := by omega
-  have hf2 : u + v + 2 ≥ 2 := by omega
-  -- Their sum is 2v+3 (odd), so they have different parities
-  rcases Nat.even_or_odd (v - u + 1) with h_even | h_odd
-  · -- (v-u+1) even ⟹ (u+v+2) odd
-    have h_odd2 : Odd (u + v + 2) := by
-      rw [Nat.odd_iff_not_even]
-      intro h_even2
-      have := h_even.add h_even2
-      -- (v-u+1) + (u+v+2) = 2v+3 would be even — contradiction
-      obtain ⟨d, hd⟩ := this
-      omega
-    have h_dvd : (u + v + 2) ∣ 2 ^ (k + 1) :=
-      ⟨v - u + 1, by rw [show 2 ^ (k + 1) = 2 * 2 ^ k from by ring, h2S, mul_comm]⟩
-    have := odd_dvd_two_pow_eq_one h_odd2 h_dvd
-    omega
-  · -- (v-u+1) odd ⟹ contradicts being ≥ 2 and dividing 2^(k+1)
-    have h_dvd : (v - u + 1) ∣ 2 ^ (k + 1) :=
-      ⟨u + v + 2, by rw [show 2 ^ (k + 1) = 2 * 2 ^ k from by ring, h2S]⟩
-    have := odd_dvd_two_pow_eq_one h_odd h_dvd
-    omega
-
 /- ## Part V: The Prime Case -/
 
 /-- The primes sequence, defined using Mathlib's `Nat.nth`.
@@ -534,7 +548,7 @@ noncomputable def primesSeq : IntSequence where
     have hinf : (setOf Nat.Prime).Infinite := by
       rw [Set.infinite_iff_exists_gt]
       intro n; obtain ⟨p, hp, hpn⟩ := Nat.exists_infinite_primes (n + 1)
-      exact ⟨p, hp, by omega⟩
+      exact ⟨p, hpn, by omega⟩
     exact_mod_cast Nat.nth_strictMono hinf (Nat.lt_succ_of_le le_rfl)
 
 /-- The primes sequence at index n equals the nth prime. -/
