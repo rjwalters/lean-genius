@@ -66,15 +66,21 @@ don't give up. The three real exceptions are enumerated in the agent prompt: uns
   (partial fixes an agent claimed but that didn't actually hold) before they could merge.
 - Never dispatch two agents to one worktree/cache (branch tangles → false-green non-compiling merges).
 
-## Model choice (from the v4.31 A/B)
+## Model choice (CORRECTED 2026-07-16 — Fable is the escalation, not Opus)
 
-Default **every** slot to Sonnet — across ~90 hard files it had zero genuine capability failures (it
-cleared 300k-token constructibility towers, Hierholzer proofs, multiplicity/PartENat overhauls). Escalate
-to **Opus** only on a genuine Sonnet capability-FAIL (Sonnet edited+verified and still couldn't close it —
-a dependency block is NOT a capability fail; sequence the parent instead). Fable is a Sonnet *peer*, not
-stronger, so it can't help where Sonnet fails — hold it as a **throttle fallback** (separate credit pool)
-if Sonnet rate-limits. Do NOT use Haiku (thrashes). After a session rate-limit, prefer routing the single
-most-resistant file to the deep-rework bucket over immediately re-burning budget on it.
+Default **every** slot to Sonnet — across ~90 hard files PLUS the entire #38612 deep-rework tail it had
+almost zero genuine capability failures (it cleared 300k+ constructibility towers, 198k/290k/450k Sylow &
+Sperner & Turan deep-reworks, and the native_decide/noncomputable-`SetLike.instFintype` blocker — with a
+reusable explicit-subgroup + brute-force-normalizer + Lagrange workaround). Escalate to **Fable**
+(`model: 'fable'`) — NOT Opus — on a genuine Sonnet capability-FAIL (Sonnet edited+verified and still
+couldn't close it; a dependency block is NOT a capability fail — sequence the parent instead). Fable is
+significantly MORE powerful and more expensive than Sonnet: it is the top tier here and the escalation
+target (proven on deep-rework — it fixed Erdos60Problem and caught a #38611 soundness bug an ∀n conjecture
+false at n=4). Because Fable is pricier, escalate deliberately, one file at a time — not as a bulk default.
+Do NOT use Opus (wrong tier here) or Haiku (thrashes). Availability caveat: Fable can hit sustained
+`529 Overloaded` windows (capacity, not capability — one such window on 2026-07-16 killed ~11 launches
+before any Lean ran); back off ~20 min and retry rather than hammering idle slots.
+
 
 ## Infra (this host)
 - Docker relocated to `/Volumes/Stripe/docker` (sparse `Docker.raw` via symlink); VM memory raised to 47 GB.

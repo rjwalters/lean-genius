@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 355 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, 450k tok/264 tools/52min — largest single fix)**: Erdos1033Problem (universe-pin
+Type*->Type in decl body; Std.Symm/Std.Irrefl degree API; mem_neighborFinset explicit v w; Finset.card_sdiff
+unconditional-intersection; Nat.le_csSup->le_csSup; DecidableRel Subsingleton.elim+subst local instance;
+isolate decide/native_decide into closed helper (free-var error post fin_cases)). #38611 REPAIR:
+turanPlus1_triangle wrong disjunct (false as written) corrected; fan_lower/fanConstant forward-ref reorder.
+Also patched research/migration/README.md model-choice: escalation is FABLE not Opus (per operator).
+
 # DOCTOR SINGLE-PROOF BATCH 354 (FABLE DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, FABLE model)**: Erdos60Problem (five_edges_eq_K4_minus_edge: convert-left
