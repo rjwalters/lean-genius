@@ -144,16 +144,24 @@ ACT skeleton this section implements (Mathlib API pinned to rev
 
 /-- The action of the units `(ZMod q)ˣ` on `ZMod q` by multiplication
     induces a group hom into the additive automorphism group. The
-    underlying function is `u ↦ (x ↦ ↑u * x)`. -/
-def unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q) :=
-  DistribMulAction.toAddAut ((ZMod q)ˣ) (ZMod q)
+    underlying function is `u ↦ (x ↦ ↑u * x)`.
 
-/-- Pointwise computation: `unitToAddAut u x = ↑u * x`. Marked `@[simp]`
-    so `unitToAddAut_injective` and downstream consumers (S3c-ii,
-    S3d-i) reduce automorphism applications to ring multiplication. -/
+    **v4.31 note**: `AddAut A` was regrouped to carry an `AddGroup`
+    structure instead of `Group` (see `Mathlib.Algebra.Group.End`), so a
+    `MonoidHom` out of the multiplicative group `(ZMod q)ˣ` must land in
+    the multiplicative wrapper `Multiplicative (AddAut (ZMod q))`. This is
+    exactly Mathlib's ready-made `AddAut.mulLeft` for a `Semiring`. -/
+def unitToAddAut : (ZMod q)ˣ →* Multiplicative (AddAut (ZMod q)) :=
+  AddAut.mulLeft
+
+/-- Pointwise computation: `unitToAddAut u x = ↑u * x` (after unwrapping
+    the `Multiplicative` wrapper via `Multiplicative.toAdd`). Marked
+    `@[simp]` so `unitToAddAut_injective` and downstream consumers
+    (S3c-ii, S3d-i) reduce automorphism applications to ring
+    multiplication. -/
 @[simp]
 theorem unitToAddAut_apply (u : (ZMod q)ˣ) (x : ZMod q) :
-    unitToAddAut u x = (u : ZMod q) * x := by
+    Multiplicative.toAdd (unitToAddAut u) x = (u : ZMod q) * x := by
   show (u : (ZMod q)ˣ) • x = (u : ZMod q) * x
   rw [Units.smul_def, smul_eq_mul]
 
@@ -163,20 +171,27 @@ theorem unitToAddAut_apply (u : (ZMod q)ˣ) (x : ZMod q) :
 theorem unitToAddAut_injective : Function.Injective (unitToAddAut (q := q)) := by
   intro u v huv
   apply Units.ext
-  have h : unitToAddAut (q := q) u 1 = unitToAddAut (q := q) v 1 :=
-    DFunLike.congr_fun huv 1
+  have h : Multiplicative.toAdd (unitToAddAut (q := q) u) 1
+      = Multiplicative.toAdd (unitToAddAut (q := q) v) 1 := by rw [huv]
   -- After `unitToAddAut_apply` (simp) and `mul_one`, h reduces to ↑u = ↑v.
   simpa using h
 
 /-- For each prime `p ∣ q - 1`, `AddAut (ZMod q)` contains an additive
     automorphism of order exactly `p`. Combined with
     `exists_unit_of_order_p`, this is the order-`p` seed for the
-    Approach-B action homomorphism `φ` constructed in S3c-ii / S3d. -/
+    Approach-B action homomorphism `φ` constructed in S3c-ii / S3d.
+
+    **v4.31 note**: since `AddAut (ZMod q)` is now an `AddGroup` (not a
+    `Monoid`), the order statement uses `addOrderOf` rather than
+    `orderOf`; the bridge back to the multiplicative `orderOf` on
+    `Multiplicative (AddAut (ZMod q))` is `orderOf_ofAdd_eq_addOrderOf`
+    (definitional, `rfl`). -/
 theorem exists_addAut_of_order_p {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
-    ∃ θ : AddAut (ZMod q), orderOf θ = p := by
+    ∃ θ : AddAut (ZMod q), addOrderOf θ = p := by
   obtain ⟨g, hg⟩ := exists_unit_of_order_p hp hp_dvd
-  refine ⟨unitToAddAut g, ?_⟩
-  rw [orderOf_injective unitToAddAut unitToAddAut_injective g, hg]
+  refine ⟨Multiplicative.toAdd (unitToAddAut g), ?_⟩
+  rw [← orderOf_ofAdd_eq_addOrderOf, ofAdd_toAdd,
+      orderOf_injective unitToAddAut unitToAddAut_injective g, hg]
 
 /-! ## Sanity check: instantiate at `p = 2, q = 3` and `p = 3, q = 7`
 
@@ -206,7 +221,7 @@ example : ∃ g : (ZMod 11)ˣ, orderOf g = 5 := by
     `3`. This is the additive-automorphism analogue of the order-`3`
     unit in `(ZMod 7)ˣ` and is the order-`3` seed for the deferred
     Approach-B order-21 non-abelian group `ZMod 7 ⋊ ZMod 3`. -/
-example : ∃ θ : AddAut (ZMod 7), orderOf θ = 3 := by
+example : ∃ θ : AddAut (ZMod 7), addOrderOf θ = 3 := by
   haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   exact exists_addAut_of_order_p (by norm_num : Nat.Prime 3) (by norm_num)
 
@@ -220,29 +235,38 @@ This section provides the multiplicative-side existence seed: an
 order-`p` element of `MulAut (Multiplicative (ZMod q))`, obtained from
 the S3c-i `AddAut (ZMod q)` witness by transport along the canonical
 Mathlib equivalence
-`MulAutMultiplicative (ZMod q) : AddAut (ZMod q) ≃* MulAut (Multiplicative (ZMod q))`
-(defined at `Mathlib/Algebra/Group/End.lean:887`), using
-`MulEquiv.orderOf_eq` (at `Mathlib/GroupTheory/OrderOfElement.lean:343`)
-to carry the order across the equivalence.
+`MulAutMultiplicative (ZMod q) : MulAut (Multiplicative (ZMod q)) ≃* Multiplicative (AddAut (ZMod q))`
+(defined at `Mathlib/Algebra/Group/End.lean`), using
+`MulEquiv.orderOf_eq` (at `Mathlib/GroupTheory/OrderOfElement.lean`)
+to carry the order across the equivalence, and
+`orderOf_ofAdd_eq_addOrderOf` to bridge `addOrderOf` on `AddAut (ZMod q)`
+to `orderOf` on its `Multiplicative` wrapper.
 
 See `notes/2026-05-15-s3c-ii-preflight.md` for the bearer audit
 (re-pinned at lake-manifest rev
 `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), the corrected skeleton
-options (A/B/C), and the rationale for shipping Option C below. -/
+options (A/B/C), and the rationale for shipping Option C below.
+
+**v4.31 note**: `MulAutMultiplicative` was regraded so its codomain is
+`Multiplicative (AddAut G)` (mirroring the `AddAut` regrouping above)
+instead of the bare `AddAut G`; `.symm` now takes
+`Multiplicative (AddAut (ZMod q))`, so the `AddAut (ZMod q)` witness `θ`
+is wrapped via `Multiplicative.ofAdd` before transport. -/
 
 /-- For each prime `p ∣ q - 1`, `MulAut (Multiplicative (ZMod q))`
     contains a multiplicative automorphism of order exactly `p`.
 
     Obtained from `exists_addAut_of_order_p` (S3c-i) via the canonical
     equivalence
-    `(MulAutMultiplicative (ZMod q)).symm : AddAut (ZMod q) ≃* MulAut (Multiplicative (ZMod q))`,
+    `(MulAutMultiplicative (ZMod q)).symm :
+      Multiplicative (AddAut (ZMod q)) ≃* MulAut (Multiplicative (ZMod q))`,
     pushing the order witness through with `MulEquiv.orderOf_eq`. Order
     is preserved because the carrier is a multiplicative isomorphism. -/
 theorem exists_mulAut_mult_of_order_p {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
     ∃ ψ : MulAut (Multiplicative (ZMod q)), orderOf ψ = p := by
   obtain ⟨θ, hθ⟩ := exists_addAut_of_order_p hp hp_dvd
-  refine ⟨(MulAutMultiplicative (ZMod q)).symm θ, ?_⟩
-  rw [(MulAutMultiplicative (ZMod q)).symm.orderOf_eq, hθ]
+  refine ⟨(MulAutMultiplicative (ZMod q)).symm (Multiplicative.ofAdd θ), ?_⟩
+  rw [(MulAutMultiplicative (ZMod q)).symm.orderOf_eq, orderOf_ofAdd_eq_addOrderOf, hθ]
 
 /-- Sanity (S3c-ii): `MulAut (Multiplicative (ZMod 7))` contains an
     automorphism of order `3`. Multiplicative analogue of the S3c-i
