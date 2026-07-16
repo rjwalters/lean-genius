@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 124 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos525Problem (Complex.abs removed -> ‖·‖ at 5 sites [bare abs on ℂ
+now falls to lattice abs, "Lattice ℂ" synth error]; integral binder re-infers ℂ -> pin Set.Icc(0:ℝ)1 +
+(t:ℂ)). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 123 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos505Problem (def BoundedSet -> abbrev; def-type-synonym opaque to
