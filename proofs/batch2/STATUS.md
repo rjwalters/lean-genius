@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 104 (mixed fleet, #38065, 2026-07-16)
+
+**+3 GREEN** (re-verified EXIT=0): ElementaryQuadraticReciprocityOQ01OQ01OQ03 (JacobiSum.Basic now gates
+lemmas behind [IsDomain R]; ratio/norm lemmas need [Field F']), Erdos1022OQ01 (OfNat(Fin k) 0 needs NeZero;
+#38611 REPAIR added 1≤k to hasPropertyBK_empty — k=0 unsound), CantorDiagonalizationOQ04OQ01OQ01OQ01
+(TypeCat.Hom now a struct — element-application no longer elaborates; identity bridges elemToHom/homToElem;
+CartesianClosed->MonoidalClosed, exp.ev->ihom.ev). Repairs: 1 (#38611 Erdos1022OQ01). Closes Cantor family.
+
 # DOCTOR SINGLE-PROOF BATCH 103 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1007OQ05 (Finset.add_sum_erase chained double-erase rewrite no
