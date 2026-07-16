@@ -22,6 +22,7 @@ import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Data.Fintype.Card
 
 open Subgroup BigOperators
+open scoped Pointwise
 
 namespace Erdos274
 
@@ -35,7 +36,7 @@ structure ExactCovering (G : Type*) [Group G] (k : ℕ) where
   /-- The coset representatives -/
   reps : Fin k → G
   /-- Every element of G belongs to exactly one coset gᵢHᵢ -/
-  covers : ∀ g : G, ∃! i : Fin k, g ∈ leftCoset (reps i) (subgroups i)
+  covers : ∀ g : G, ∃! i : Fin k, g ∈ reps i • (subgroups i : Set G)
 
 /-- A covering has distinct indices if all [G:Hᵢ] are pairwise different. -/
 def hasDistinctIndices {G : Type*} [Group G] {k : ℕ} (C : ExactCovering G k) : Prop :=
