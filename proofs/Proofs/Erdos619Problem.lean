@@ -26,7 +26,10 @@ Related: Problems #134, #618
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Data.Nat.Basic
+import Mathlib.Order.Lattice.Nat
+import Mathlib.Data.Rat.Init
 
 open scoped Classical
 
@@ -70,19 +73,16 @@ def HasDiameterAtMost (G : SimpleGraph V) (r : ℕ) : Prop :=
 The graph G' obtained by adding a set of edges E to G.
 -/
 def addEdges (G : SimpleGraph V) (E : Set (Sym2 V)) : SimpleGraph V where
-  Adj u v := G.Adj u v ∨ ⟦(u, v)⟧ ∈ E
-  symm := by
-    constructor
+  Adj u v := u ≠ v ∧ (G.Adj u v ∨ s(u, v) ∈ E)
+  symm := ⟨by
     intro u v h
-    cases h with
+    refine ⟨h.1.symm, ?_⟩
+    cases h.2 with
     | inl h => left; exact G.adj_symm h
-    | inr h => right; simp [Sym2.eq_swap]; exact h
-  loopless := by
-    constructor
+    | inr h => right; rwa [Sym2.eq_swap]⟩
+  loopless := ⟨by
     intro v h
-    cases h with
-    | inl h => exact G.loopless v h
-    | inr h => simp [Sym2.diag_iff_proj_eq] at h
+    exact h.1 rfl⟩
 
 /--
 **h_r(G):**
@@ -162,8 +162,10 @@ The path on n vertices has diameter n-1.
 -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
   Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)
-  symm := by constructor; intro i j h; cases h <;> (right; assumption) <;> (left; assumption)
-  loopless := by constructor; intro v h; cases h <;> omega
+  symm := ⟨by intro i j h; cases h with
+    | inl h => right; exact h
+    | inr h => left; exact h⟩
+  loopless := ⟨by intro v h; cases h <;> omega⟩
 
 /-  The path graph is triangle-free. -/
 /-  Pₙ has diameter n-1. -/
@@ -197,7 +199,7 @@ The triangle-free constraint makes the h₄ case significantly harder.
 
 /-- The main open question of Erdős Problem #619. -/
 def erdos_619 : Prop :=
-  erdos_619_question
+  erdos_619_question.{0}
 
 /--
 **Erdős Problem #619: Known Results**

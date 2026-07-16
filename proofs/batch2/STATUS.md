@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 133 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos619Problem (imports Order.Lattice.Nat/Rat.Init/SimpleGraph.Metric;
+Std.Symm/Std.Irrefl ⟨⟩ wrap; ⟦(u,v)⟧->s(u,v); universe .{0} pin; #38611 REPAIR addEdges loopless UNSOUND
+— old green relied on BOGUS Sym2.diag_iff_proj_eq elaborating to silent sorry -> u≠v∧(...)). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 132 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos622Problem (IsCycle Bool/Prop match on head?/getLast?;
