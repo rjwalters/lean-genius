@@ -1,3 +1,16 @@
+# DOCTOR SINGLE-PROOF BATCH 344 (all-Sonnet, #38065, 2026-07-16)
+
+**+3 GREEN**:
+- Erdos610Aristotle ([Nonempty V] binder + open Erdos610 mirroring parent #38611 fix). Repair: none new.
+- SkolemNoetherMatrixAutAristotle (Matrix.isUnit_det_iff_isUnit_mulVecLin ->
+  Matrix.linearIndependent_cols_iff_isUnit; matrix_eq_sum_single via parent's Matrix.sum_apply/
+  single_apply/Finset.sum_ite_eq' pattern). Repair: none.
+- SpernerNDimOQ03: MAJOR #38611 — FSimplex/countPerm/IsFC never defined (autoImplicit masked as opaque
+  metavars -> vacuous theorems); added real defs so approximate_fixed_point/brouwer_simplex state
+  Freudenthal content. Plus seams: Nat.cast_nonneg needs explicit (0:ℝ)≤ ascription; gcongr now
+  auto-discharges side-goals via assumption (stale bullet counts); IsCompact.exists_forall_le ->
+  IsCompact.exists_isMinOn. AUDIT other pre-2025 Sperner/simplex files for autoImplicit-masking.
+
 # DOCTOR SINGLE-PROOF BATCH 343 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos780Problem (cache parent ErdosKoRado; remove redundant trailing omega after rw
