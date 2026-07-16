@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 182 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CayleyHamiltonReductionOQ01OQ02 (Polynomial.modByMonic_add_div now
+unconditional no Monic hyp; (X:K[X]) annotation vs Semiring ?m; prod_ne_zero_iff.mpr; conv_lhs). Repair: none.
+NOTE: BallotProblemOQ03OQ02 = first genuine Sonnet capability-FAIL (deep type-mismatch, 266k) -> ESCALATED
+to Opus (continue from WIP origin/mig/BallotProblemOQ03OQ02 @5a74b4ee84: structural fixes done, stuck on
+omega arithmetic gap in gvCanon_membership c=0 branch ~L2131 + canonCrossN_preserved ~L2340).
+
 # DOCTOR SINGLE-PROOF BATCH 181 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CayleyHamiltonMinpolyOQ04Backward (eval₂_eq_sum_range' explicit ring-hom;
