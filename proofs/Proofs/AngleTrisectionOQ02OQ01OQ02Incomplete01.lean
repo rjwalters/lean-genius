@@ -71,6 +71,24 @@ open Polynomial IntermediateField
 
 namespace AngleTrisectionOQ02OQ01OQ02Incomplete01
 
+/- v4.31 compat: Mathlib no longer registers a global `Algebra ↥K ↥(K ⊔ L)` instance for
+IntermediateFields (only the `⊓` analogue survives, see `Adjoin/Defs.lean`). Every `Module.finrank`
+statement in this file is phrased over a sup of the form `K ⊔ ℚ⟮γ⟯`, so a single generic local
+instance (keyed on that exact syntactic pattern, resolved via higher-order pattern unification)
+restores automatic synthesis for all of them. -/
+private noncomputable instance instAlgebraSupAdjoinSimple (K : IntermediateField ℚ ℂ) (γ : ℂ) :
+    Algebra ↥K ↥(K ⊔ ℚ⟮γ⟯) :=
+  (IntermediateField.inclusion le_sup_left).toAlgebra
+
+private instance instIsScalarTowerSupAdjoinSimple (K : IntermediateField ℚ ℂ) (γ : ℂ) :
+    IsScalarTower ℚ ↥K ↥(K ⊔ ℚ⟮γ⟯) :=
+  IsScalarTower.of_algebraMap_eq (fun r =>
+    Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+
+private instance instIsScalarTowerSupAdjoinSimpleC (K : IntermediateField ℚ ℂ) (γ : ℂ) :
+    IsScalarTower ↥K ↥(K ⊔ ℚ⟮γ⟯) ℂ :=
+  IsScalarTower.of_algebraMap_eq (fun _ => rfl)
+
 -- ============================================================
 -- PART 1: Constructible Number Framework (Fixed Definition)
 -- ============================================================
@@ -171,7 +189,8 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
     rw [← isAlgebraic_iff_isIntegral]; exact hβ_alg.tower_top ↥Ka
   -- β lives in Ka ⊔ ℚ⟮β⟯
   let β' : ↥(Ka ⊔ ℚ⟮β⟯) :=
-    ⟨β, le_sup_right (IntermediateField.mem_adjoin_simple_self ℚ β)⟩
+    ⟨β, (le_sup_right : (ℚ⟮β⟯ : IntermediateField ℚ ℂ) ≤ Ka ⊔ ℚ⟮β⟯)
+      (IntermediateField.mem_adjoin_simple_self ℚ β)⟩
   -- β'² = algebraMap Ka (Ka ⊔ ℚ⟮β⟯) of the β²-element
   let a' : ↥Ka := ⟨β ^ 2, hβ_sq_mem⟩
   -- β' is integral over Ka (same as β being integral over Ka)
@@ -203,7 +222,8 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
     have h_img : (Ka ⊔ ℚ⟮β⟯).val '' Ka_set = ↑Ka := by
       ext x; constructor
       · rintro ⟨⟨y, _⟩, hmem, rfl⟩; exact hmem
-      · intro hx; exact ⟨⟨x, le_sup_left hx⟩, hx, rfl⟩
+      · intro hx
+        exact ⟨⟨x, (le_sup_left : Ka ≤ Ka ⊔ (ℚ⟮β⟯ : IntermediateField ℚ ℂ)) hx⟩, hx, rfl⟩
     -- adjoin ℚ (Ka_set ∪ {β'}) = ⊤ via injectivity of val
     have h_adj_ℚ : IntermediateField.adjoin ℚ (Ka_set ∪ {β'}) = ⊤ := by
       apply IntermediateField.map_injective (Ka ⊔ ℚ⟮β⟯).val
@@ -214,17 +234,19 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
       -- goal: adjoin ℚ (↑Ka ∪ {β}) = Ka ⊔ ℚ⟮β⟯ in IntermediateField ℚ ℂ
       exact le_antisymm
         (IntermediateField.adjoin_le_iff.mpr (Set.union_subset
-          (fun x hx => le_sup_left hx)
+          (fun x hx => (le_sup_left : Ka ≤ Ka ⊔ (ℚ⟮β⟯ : IntermediateField ℚ ℂ)) hx)
           (fun x hx => by
             rw [Set.mem_singleton_iff] at hx
-            exact le_sup_right (hx ▸ IntermediateField.mem_adjoin_simple_self ℚ β))))
+            exact (le_sup_right : (ℚ⟮β⟯ : IntermediateField ℚ ℂ) ≤ Ka ⊔ ℚ⟮β⟯)
+              (hx ▸ IntermediateField.mem_adjoin_simple_self ℚ β))))
         (sup_le
           (by intro x hx; exact IntermediateField.subset_adjoin ℚ _ (Set.mem_union_left _ hx))
           (IntermediateField.adjoin_simple_le_iff.mpr
             (IntermediateField.subset_adjoin ℚ _
-              (Set.mem_union_right ↑Ka (Set.mem_singleton_self β)))))
+              (Set.mem_union_right ↑Ka (Set.mem_singleton β)))))
     -- tower law: adjoin ℚ S = ⊤ implies adjoin ↥Ka S = ⊤
-    have h_adj_Ka := IntermediateField.adjoin_eq_top_of_adjoin_eq_top h_adj_ℚ
+    have h_adj_Ka : IntermediateField.adjoin ↥Ka (Ka_set ∪ {β'}) = ⊤ :=
+      IntermediateField.adjoin_eq_top_of_adjoin_eq_top (F := ℚ) h_adj_ℚ
     -- Ka_set elements are algebraMap images, so they lie in adjoin ↥Ka {β'} already
     have h_le : IntermediateField.adjoin ↥Ka (Ka_set ∪ {β'}) ≤
                 IntermediateField.adjoin ↥Ka ({β'} : Set ↥(Ka ⊔ ℚ⟮β⟯)) :=
@@ -244,7 +266,10 @@ private lemma finrank_sup_quadratic_dvd_two (Ka : IntermediateField ℚ ℂ) (β
   -- natDegree ∈ {1, 2}, both divide 2
   rw [h_finrank]
   have h_pos := minpoly.natDegree_pos hβ'_int
-  omega
+  have h_range : (minpoly ↥Ka β').natDegree = 1 ∨ (minpoly ↥Ka β').natDegree = 2 := by omega
+  rcases h_range with h | h
+  · exact h ▸ one_dvd 2
+  · exact h ▸ dvd_refl _
 
 private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
     ∀ (K : IntermediateField ℚ ℂ), ∃ n : ℕ, Module.finrank ↥K ↥(K ⊔ ℚ⟮α⟯) ∣ 2 ^ n := by
@@ -254,8 +279,20 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
     obtain ⟨q, rfl⟩ := h_mem
     -- α = algebraMap ℚ ℂ q ∈ K (rationals are in all IntermediateFields)
     have hα_in_K : algebraMap ℚ ℂ q ∈ K := K.algebraMap_mem q
-    rw [sup_eq_left.mpr (IntermediateField.adjoin_simple_le_iff.mpr hα_in_K)]
-    exact ⟨0, by simp⟩
+    -- v4.31 compat: `K ⊔ ℚ⟮q⟯ = K` (rationals already in K), but `rw`-ing this equality
+    -- inside `Module.finrank ↥K ↥(K ⊔ ℚ⟮q⟯)` is ill-typed (the sup term is baked into the
+    -- ambient `Algebra`/`Module` instance). Show the algebraMap is bijective instead, giving
+    -- `finrank = 1` directly without rewriting the type.
+    have hle : (ℚ⟮algebraMap ℚ ℂ q⟯ : IntermediateField ℚ ℂ) ≤ K :=
+      IntermediateField.adjoin_simple_le_iff.mpr hα_in_K
+    have heq : K ⊔ (ℚ⟮algebraMap ℚ ℂ q⟯ : IntermediateField ℚ ℂ) = K := sup_eq_left.mpr hle
+    have hbij : Function.Bijective
+        (algebraMap ↥K ↥(K ⊔ (ℚ⟮algebraMap ℚ ℂ q⟯ : IntermediateField ℚ ℂ))) :=
+      ⟨IntermediateField.inclusion_injective le_sup_left,
+        fun y => ⟨⟨(y : ℂ),
+          (heq.le : K ⊔ (ℚ⟮algebraMap ℚ ℂ q⟯ : IntermediateField ℚ ℂ) ≤ K) y.2⟩,
+          Subtype.ext rfl⟩⟩
+    exact ⟨0, by simp [Module.finrank_of_bijective_algebraMap hbij]⟩
   | sqrt_ext β a b ha hb hβ2 ih_a ih_b =>
     -- α = b + β, β * β = a, IsConstructible a (ih_a), IsConstructible b (ih_b)
     have hβ_sq : β ^ 2 = a := by rw [sq]; exact hβ2
@@ -269,7 +306,9 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
     -- Kaβ = Ka ⊔ ℚ⟮β⟯
     set Kaβ := (Ka ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) with hKaβ_def
     -- a ∈ Ka (since a ∈ ℚ⟮a⟯ ≤ Ka)
-    have ha_in_Ka : a ∈ Ka := le_sup_right (IntermediateField.mem_adjoin_simple_self ℚ a)
+    have ha_in_Ka : a ∈ Ka :=
+      (le_sup_right : (ℚ⟮a⟯ : IntermediateField ℚ ℂ) ≤ K ⊔ ℚ⟮a⟯)
+        (IntermediateField.mem_adjoin_simple_self ℚ a)
     -- β² ∈ Ka (since β² = a ∈ Ka)
     have hβ_sq_in_Ka : β ^ 2 ∈ Ka := hβ_sq ▸ ha_in_Ka
     -- Key: finrank Ka Kaβ ∣ 2
@@ -279,43 +318,50 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
     obtain ⟨n₂, hn₂⟩ := ih_b Kaβ
     -- b + β ∈ Kaβ ⊔ ℚ⟮b⟯ (β ∈ ℚ⟮β⟯ ≤ Ka ⊔ ℚ⟮β⟯ = Kaβ ≤ Kaβ ⊔ ℚ⟮b⟯, b ∈ ℚ⟮b⟯ ≤ Kaβ ⊔ ℚ⟮b⟯)
     have hβ_in_Kaβ : β ∈ Kaβ :=
-      le_sup_right (IntermediateField.mem_adjoin_simple_self ℚ β)
+      (le_sup_right : (ℚ⟮β⟯ : IntermediateField ℚ ℂ) ≤ Ka ⊔ ℚ⟮β⟯)
+        (IntermediateField.mem_adjoin_simple_self ℚ β)
     have hmem : b + β ∈ Kaβ ⊔ ℚ⟮b⟯ :=
-      add_mem (le_sup_left hβ_in_Kaβ)
-              (le_sup_right (IntermediateField.mem_adjoin_simple_self ℚ b))
+      add_mem
+        ((le_sup_right : (ℚ⟮b⟯ : IntermediateField ℚ ℂ) ≤ Kaβ ⊔ ℚ⟮b⟯)
+          (IntermediateField.mem_adjoin_simple_self ℚ b))
+        ((le_sup_left : Kaβ ≤ Kaβ ⊔ (ℚ⟮b⟯ : IntermediateField ℚ ℂ)) hβ_in_Kaβ)
     -- K ⊔ ℚ⟮b+β⟯ ≤ Kaβ ⊔ ℚ⟮b⟯
     have h_le : K ⊔ ℚ⟮(b + β)⟯ ≤ Kaβ ⊔ ℚ⟮b⟯ := by
       apply sup_le
       · exact le_sup_left.trans (le_sup_left.trans le_sup_left)
       · exact IntermediateField.adjoin_simple_le_iff.mpr hmem
-    -- Set up algebra instances for the tower K → Ka → Kaβ → Kaβ ⊔ ℚ⟮b⟯
-    haveI hAlg_KKa : Algebra ↥K ↥Ka :=
+    -- Set up algebra instances for the tower K → Ka → Kaβ → Kaβ ⊔ ℚ⟮b⟯.
+    -- v4.31 compat: none of these are automatically found except for the immediate
+    -- `X ≤ X ⊔ ℚ⟮γ⟯` sup pattern (covered by `instAlgebraSupAdjoinSimple`); every
+    -- "skip a level" pair (K→Kaβ, Ka→Join, K→Join) needs an explicit composed inclusion.
+    -- All `Algebra` instances must be established before any `IsScalarTower` statement that
+    -- mentions them, since `IsScalarTower R S T` requires `[SMul R T]` to already be in scope.
+    letI hAlg_KKa : Algebra ↥K ↥Ka :=
       (IntermediateField.inclusion le_sup_left).toAlgebra
-    haveI hST_KKa : IsScalarTower ℚ ↥K ↥Ka :=
-      IsScalarTower.of_algebraMap_eq (fun r =>
-        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-    haveI hAlg_KaKaβ : Algebra ↥Ka ↥Kaβ :=
+    letI hAlg_KaKaβ : Algebra ↥Ka ↥Kaβ :=
       (IntermediateField.inclusion le_sup_left).toAlgebra
-    haveI hST_KKaKaβ : IsScalarTower ↥K ↥Ka ↥Kaβ :=
-      IsScalarTower.of_algebraMap_eq (fun r =>
-        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra,
-          IntermediateField.coe_inclusion]))
-    haveI hAlg_KaβJoin : Algebra ↥Kaβ ↥(Kaβ ⊔ ℚ⟮b⟯) :=
-      (IntermediateField.inclusion le_sup_left).toAlgebra
-    haveI hST_KaKaβJoin : IsScalarTower ↥Ka ↥Kaβ ↥(Kaβ ⊔ ℚ⟮b⟯) :=
-      IsScalarTower.of_algebraMap_eq (fun r =>
-        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra,
-          IntermediateField.coe_inclusion]))
-    -- Additional algebra instances for K → Ka → (Kaβ ⊔ ℚ⟮b⟯) tower
-    haveI hAlg_KaJoin : Algebra ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+    letI hAlg_KKaβ : Algebra ↥K ↥Kaβ :=
       (IntermediateField.inclusion (le_sup_left.trans le_sup_left)).toAlgebra
-    haveI hAlg_KJoin : Algebra ↥K ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+    letI hAlg_KaβJoin : Algebra ↥Kaβ ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      (IntermediateField.inclusion le_sup_left).toAlgebra
+    letI hAlg_KaJoin : Algebra ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      (IntermediateField.inclusion (le_sup_left.trans le_sup_left)).toAlgebra
+    letI hAlg_KJoin : Algebra ↥K ↥(Kaβ ⊔ ℚ⟮b⟯) :=
       (IntermediateField.inclusion
         (le_sup_left.trans (le_sup_left.trans le_sup_left))).toAlgebra
-    haveI hST_KKaJoin : IsScalarTower ↥K ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+    letI hST_KKa : IsScalarTower ℚ ↥K ↥Ka :=
       IsScalarTower.of_algebraMap_eq (fun r =>
-        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra,
-          IntermediateField.coe_inclusion]))
+        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+    letI hST_KKaKaβ : IsScalarTower ↥K ↥Ka ↥Kaβ :=
+      IsScalarTower.of_algebraMap_eq (fun r =>
+        (IntermediateField.inclusion_inclusion le_sup_left le_sup_left r).symm)
+    letI hST_KaKaβJoin : IsScalarTower ↥Ka ↥Kaβ ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      IsScalarTower.of_algebraMap_eq (fun r =>
+        (IntermediateField.inclusion_inclusion le_sup_left le_sup_left r).symm)
+    letI hST_KKaJoin : IsScalarTower ↥K ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      IsScalarTower.of_algebraMap_eq (fun r =>
+        (IntermediateField.inclusion_inclusion le_sup_left
+          (le_sup_left.trans le_sup_left) r).symm)
     -- Tower laws
     have htower_KaβJoin := Module.finrank_mul_finrank ↥Ka ↥Kaβ ↥(Kaβ ⊔ ℚ⟮b⟯)
     have htower_KJoin := Module.finrank_mul_finrank ↥K ↥Ka ↥(Kaβ ⊔ ℚ⟮b⟯)
@@ -329,12 +375,11 @@ private lemma isConstructible_sup_degree (α : ℂ) (h : IsConstructible α) :
     -- finrank K (K ⊔ ℚ⟮b+β⟯) ∣ finrank K (Kaβ ⊔ ℚ⟮b⟯)
     have h_dvd_le : Module.finrank ↥K ↥(K ⊔ ℚ⟮(b + β)⟯) ∣
         Module.finrank ↥K ↥(Kaβ ⊔ ℚ⟮b⟯) := by
-      haveI hAlg2 : Algebra ↥(K ⊔ ℚ⟮(b + β)⟯) ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      letI hAlg2 : Algebra ↥(K ⊔ ℚ⟮(b + β)⟯) ↥(Kaβ ⊔ ℚ⟮b⟯) :=
         (IntermediateField.inclusion h_le).toAlgebra
-      haveI hST2 : IsScalarTower ↥K ↥(K ⊔ ℚ⟮(b + β)⟯) ↥(Kaβ ⊔ ℚ⟮b⟯) :=
+      letI hST2 : IsScalarTower ↥K ↥(K ⊔ ℚ⟮(b + β)⟯) ↥(Kaβ ⊔ ℚ⟮b⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
-          Subtype.ext (by simp [RingHom.algebraMap_toAlgebra,
-            IntermediateField.coe_inclusion]))
+          (IntermediateField.inclusion_inclusion le_sup_left h_le r).symm)
       exact ⟨Module.finrank ↥(K ⊔ ℚ⟮(b + β)⟯) ↥(Kaβ ⊔ ℚ⟮b⟯),
         (Module.finrank_mul_finrank ↥K ↥(K ⊔ ℚ⟮(b + β)⟯) ↥(Kaβ ⊔ ℚ⟮b⟯)).symm⟩
     exact ⟨n₁ + 1 + n₂, h_dvd_le.trans h_tower_dvd⟩
@@ -383,11 +428,16 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
       exact mul_mem (mem_adjoin_simple_self ℚ β) (mem_adjoin_simple_self ℚ β)
     have ha_le_β : (ℚ⟮a⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ :=
       adjoin_simple_le_iff.mpr ha_in_β
-    -- Step B: b + β ∈ ℚ⟮b⟯ ⊔ ℚ⟮β⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯
-    have hmem : b + β ∈ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯ : IntermediateField ℚ ℂ) :=
-      add_mem (le_sup_left (mem_adjoin_simple_self ℚ b))
-              (le_sup_right (mem_adjoin_simple_self ℚ β))
-    have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ :=
+    -- Step B: b + β ∈ ℚ⟮β⟯ ⊔ ℚ⟮b⟯, hence ℚ⟮b+β⟯ ≤ ℚ⟮β⟯ ⊔ ℚ⟮b⟯
+    -- (β first: matches the sup order `isConstructible_sup_degree` naturally produces below,
+    -- v4.31 compat — avoids rewriting a sup term inside a dependent `Module.finrank` instance)
+    have hmem : b + β ∈ (ℚ⟮β⟯ ⊔ ℚ⟮b⟯ : IntermediateField ℚ ℂ) :=
+      add_mem
+        ((le_sup_right : (ℚ⟮b⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ ⊔ ℚ⟮b⟯)
+          (mem_adjoin_simple_self ℚ b))
+        ((le_sup_left : (ℚ⟮β⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ ⊔ ℚ⟮b⟯)
+          (mem_adjoin_simple_self ℚ β))
+    have hle : (ℚ⟮(b + β)⟯ : IntermediateField ℚ ℂ) ≤ ℚ⟮β⟯ ⊔ ℚ⟮b⟯ :=
       adjoin_simple_le_iff.mpr hmem
     -- Step C (sorry): finrank ℚ ℚ⟮β⟯ ∣ 2^(j+1)
     -- Proof plan: set up Algebra ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ via ha_le_β.
@@ -400,9 +450,9 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
     --   Hence finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2, giving finrank ℚ ℚ⟮β⟯ ∣ 2 * 2^j = 2^(j+1).
     have hβ_dvd : Module.finrank ℚ ↥(ℚ⟮β⟯) ∣ 2 ^ (j + 1) := by
       -- Tower: ℚ → ℚ⟮a⟯ → ℚ⟮β⟯
-      haveI hAlg_aβ : Algebra ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
+      letI hAlg_aβ : Algebra ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
         (IntermediateField.inclusion ha_le_β).toAlgebra
-      haveI hST_aβ : IsScalarTower ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
+      letI hST_aβ : IsScalarTower ℚ ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
       -- Tower law: finrank ℚ ℚ⟮β⟯ = finrank ℚ ↥ℚ⟮a⟯ * finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯
@@ -431,10 +481,10 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
            h_gen_eq ▸ pb.adjoin_gen_eq_top
          -- IntermediateField.adjoin ℚ {β_in_β} = ⊤
          have h_gen_Q : IntermediateField.adjoin ℚ ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
-           IntermediateField.adjoin_eq_top_of_algebra h_alg_top
+           IntermediateField.adjoin_eq_top_of_algebra (F := ℚ) (S := _) h_alg_top
          -- Lift: IntermediateField.adjoin ↥(ℚ⟮a⟯) {β_in_β} = ⊤
          have h_top : IntermediateField.adjoin ↥(ℚ⟮a⟯) ({β_in_β} : Set ↥(ℚ⟮β⟯)) = ⊤ :=
-           IntermediateField.adjoin_eq_top_of_adjoin_eq_top h_gen_Q
+           IntermediateField.adjoin_eq_top_of_adjoin_eq_top (F := ℚ) h_gen_Q
          -- finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) = natDegree(minpoly ↥(ℚ⟮a⟯) β_in_β)
          have h_finrank_eq : Module.finrank ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) =
              (minpoly ↥(ℚ⟮a⟯) β_in_β).natDegree := by
@@ -449,12 +499,15 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
            -- Goal: β_in_β ^ 2 = algebraMap ↥(ℚ⟮a⟯) ↥(ℚ⟮β⟯) a_in_a
            apply_fun Subtype.val using Subtype.val_injective
            -- Goal in ℂ: (β_in_β ^ 2).val = (algebraMap ... a_in_a).val
-           simp only [SubsemiringClass.coe_pow, β_in_β, a_in_a,
+           simp only [SubmonoidClass.coe_pow, β_in_β, a_in_a,
              RingHom.algebraMap_toAlgebra, IntermediateField.coe_inclusion,
              Subtype.coe_mk, hβ_sq]
+           rfl
          have h_deg_p : p.natDegree = 2 := by
-           apply Polynomial.natDegree_sub_eq_left_of_natDegree_lt
-           simp [Polynomial.natDegree_X_pow, Polynomial.natDegree_C]
+           rw [hp_def, Polynomial.natDegree_sub_eq_left_of_natDegree_lt
+               (p := (X : Polynomial ↥(ℚ⟮a⟯)) ^ 2) (q := Polynomial.C a_in_a)
+               (by simp [Polynomial.natDegree_X_pow, Polynomial.natDegree_C]),
+             Polynomial.natDegree_X_pow]
          have h_p_ne : p ≠ 0 := by
            intro h; rw [h, Polynomial.natDegree_zero] at h_deg_p; omega
          have h_dvd : minpoly ↥(ℚ⟮a⟯) β_in_β ∣ p := minpoly.dvd _ _ h_aeval
@@ -468,31 +521,28 @@ private lemma isConstructible_algebraic_degree (α : ℂ) (h : IsConstructible �
          rcases h_range with h | h
          · exact h ▸ one_dvd 2
          · exact h ▸ dvd_refl _)
-    -- Step D: finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2^(j+1+k') via stronger IH applied at K = ℚ⟮β⟯
-    -- Tower ℚ ≤ ℚ⟮β⟯ ≤ ℚ⟮b⟯⊔ℚ⟮β⟯: tower law + isConstructible_sup_degree b hb ℚ⟮β⟯
-    haveI hAlg_βjoin : Algebra ↥(ℚ⟮β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
-      (IntermediateField.inclusion (le_sup_right (a := ℚ⟮b⟯))).toAlgebra
-    haveI hST_βjoin : IsScalarTower ℚ ↥(ℚ⟮β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
-      IsScalarTower.of_algebraMap_eq (fun r =>
-        Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
+    -- Step D: finrank ℚ (ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2^(j+1+k') via stronger IH applied at K = ℚ⟮β⟯
+    -- Tower ℚ ≤ ℚ⟮β⟯ ≤ ℚ⟮β⟯⊔ℚ⟮b⟯: tower law + isConstructible_sup_degree b hb ℚ⟮β⟯.
+    -- v4.31 compat: keep the sup in the natural `K ⊔ ℚ⟮element⟯` order throughout (β first)
+    -- so `hk'` already matches — no `rw [sup_comm]` needed (that would rewrite a sup term
+    -- baked into a dependent `Module.finrank` instance and fail with "motive not correct").
     obtain ⟨k', hk'⟩ := isConstructible_sup_degree b hb (ℚ⟮β⟯ : IntermediateField ℚ ℂ)
-    -- hk' : Module.finrank ↥(ℚ⟮β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2^k'; rewrite via sup_comm
-    rw [sup_comm] at hk'
-    have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) ∣ 2 ^ (j + 1 + k') := by
-      rw [Module.finrank_mul_finrank ℚ ↥(ℚ⟮β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯), pow_add]
+    -- hk' : Module.finrank ↥(ℚ⟮β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2^k'
+    have hjoin_dvd : Module.finrank ℚ ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) ∣ 2 ^ (j + 1 + k') := by
+      rw [← Module.finrank_mul_finrank ℚ ↥(ℚ⟮β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯), pow_add]
       exact Nat.mul_dvd_mul hβ_dvd hk'
-    -- Step E: finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ (ℚ⟮b⟯ ⊔ ℚ⟮β⟯) via tower law
-    -- ℚ⟮b+β⟯ ≤ ℚ⟮b⟯ ⊔ ℚ⟮β⟯ (hle) gives:
+    -- Step E: finrank ℚ ℚ⟮b+β⟯ ∣ finrank ℚ (ℚ⟮β⟯ ⊔ ℚ⟮b⟯) via tower law
+    -- ℚ⟮b+β⟯ ≤ ℚ⟮β⟯ ⊔ ℚ⟮b⟯ (hle) gives:
     --   finrank_join = finrank ↥ℚ⟮b+β⟯ ↥(join) * finrank ℚ ℚ⟮b+β⟯
     have hdvd_le : Module.finrank ℚ ↥(ℚ⟮b + β⟯) ∣
-        Module.finrank ℚ ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) := by
-      haveI hAlg : Algebra ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+        Module.finrank ℚ ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) := by
+      letI hAlg : Algebra ↥(ℚ⟮b + β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) :=
         (IntermediateField.inclusion hle).toAlgebra
-      haveI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯) :=
+      letI hST : IsScalarTower ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯) :=
         IsScalarTower.of_algebraMap_eq (fun r =>
           Subtype.ext (by simp [RingHom.algebraMap_toAlgebra]))
-      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯)
-      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮b⟯ ⊔ ℚ⟮β⟯), htower.symm⟩
+      have htower := Module.finrank_mul_finrank ℚ ↥(ℚ⟮b + β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯)
+      exact ⟨Module.finrank ↥(ℚ⟮b + β⟯) ↥(ℚ⟮β⟯ ⊔ ℚ⟮b⟯), htower.symm⟩
     exact ⟨j + 1 + k', hdvd_le.trans hjoin_dvd⟩
 
 -- ============================================================
@@ -532,13 +582,11 @@ theorem cube_root_2_minpoly_irred : Irreducible (X ^ 3 - C 2 : ℚ[X]) := by
 -- ============================================================
 
 theorem cos20_minpoly_degree : (8 * X ^ 3 - 6 * X - 1 : ℚ[X]).natDegree = 3 := by
-  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_mul, natDegree_pow,
-    natDegree_X, natDegree_C, natDegree_one]
+  compute_degree!
 
 theorem regular_7gon_poly_degree :
     (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X]).natDegree = 3 := by
-  norm_num [natDegree_sub_eq_left_of_natDegree_lt, natDegree_add_eq_left_of_natDegree_lt,
-    natDegree_mul, natDegree_pow, natDegree_X, natDegree_C, natDegree_one]
+  compute_degree!
 
 theorem cube_root_2_degree : (X ^ 3 - C 2 : ℚ[X]).natDegree = 3 := by
   simp
