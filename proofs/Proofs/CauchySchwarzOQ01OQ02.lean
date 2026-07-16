@@ -59,15 +59,16 @@ theorem projCoeff_well_defined (v : E) (hv : v ≠ 0) :
 /-- The residual u − proj_v(u) is orthogonal to v.
     This is the fundamental property of orthogonal projection. -/
 theorem residual_orthogonal (u v : E) (hv : v ≠ 0) :
-    ⟪u - orthProj v u, v⟫_𝕜 = 0 := by
+    ⟪u - orthProj (𝕜 := 𝕜) v u, v⟫_𝕜 = 0 := by
   unfold orthProj
   simp only [inner_sub_left, inner_smul_left, map_div₀, inner_conj_symm]
   have hvv : ⟪v, v⟫_𝕜 ≠ 0 := inner_self_ne_zero.mpr hv
   field_simp
+  ring
 
 /-- The residual is also orthogonal in the other argument order. -/
 theorem residual_orthogonal' (u v : E) (hv : v ≠ 0) :
-    ⟪v, u - orthProj v u⟫_𝕜 = 0 := by
+    ⟪v, u - orthProj (𝕜 := 𝕜) v u⟫_𝕜 = 0 := by
   rw [inner_eq_zero_symm]
   exact residual_orthogonal u v hv
 
@@ -82,13 +83,13 @@ theorem residual_orthogonal' (u v : E) (hv : v ≠ 0) :
 
     This is where Cauchy-Schwarz directly controls Gram-Schmidt. -/
 theorem projCoeff_norm_le (u v : E) (hv : v ≠ 0) :
-    ‖projCoeff v u‖ ≤ ‖u‖ / ‖v‖ := by
+    ‖projCoeff (𝕜 := 𝕜) v u‖ ≤ ‖u‖ / ‖v‖ := by
   unfold projCoeff
   rw [norm_div]
   -- ‖⟪v,v⟫‖ = ‖v‖²
   have hvv : ‖⟪v, v⟫_𝕜‖ = ‖v‖ ^ 2 := by
     rw [inner_self_eq_norm_sq_to_K]
-    simp [RCLike.norm_ofReal, abs_of_nonneg (sq_nonneg ‖v‖)]
+    simp
   rw [hvv]
   -- Need: ‖⟪v,u⟫‖ / (‖v‖²) ≤ ‖u‖ / ‖v‖
   -- i.e.: ‖⟪v,u⟫‖ / (‖v‖ * ‖v‖) ≤ ‖u‖ / ‖v‖
@@ -103,10 +104,10 @@ theorem projCoeff_norm_le (u v : E) (hv : v ≠ 0) :
 /-- The norm of the projection is bounded by the norm of the input:
     ‖proj_v(u)‖ ≤ ‖u‖. The projection cannot make vectors longer. -/
 theorem orthProj_norm_le (u v : E) (hv : v ≠ 0) :
-    ‖orthProj v u‖ ≤ ‖u‖ := by
+    ‖orthProj (𝕜 := 𝕜) v u‖ ≤ ‖u‖ := by
   unfold orthProj
   rw [norm_smul]
-  calc ‖projCoeff v u‖ * ‖v‖
+  calc ‖projCoeff (𝕜 := 𝕜) v u‖ * ‖v‖
       ≤ (‖u‖ / ‖v‖) * ‖v‖ := by
         apply mul_le_mul_of_nonneg_right (projCoeff_norm_le u v hv)
           (norm_nonneg v)
@@ -119,44 +120,45 @@ theorem orthProj_norm_le (u v : E) (hv : v ≠ 0) :
 /-- One step of Gram-Schmidt: subtract the projection to get the orthogonal residual.
     gs_step(v, u) = u − proj_v(u) = u − (⟪v,u⟫/⟪v,v⟫)·v -/
 noncomputable def gsStep (v u : E) : E :=
-  u - orthProj v u
+  u - orthProj (𝕜 := 𝕜) v u
 
 /-- The Gram-Schmidt residual is orthogonal to the direction vector. -/
 theorem gsStep_orthogonal (u v : E) (hv : v ≠ 0) :
-    ⟪gsStep v u, v⟫_𝕜 = 0 :=
+    ⟪gsStep (𝕜 := 𝕜) v u, v⟫_𝕜 = 0 :=
   residual_orthogonal u v hv
 
 /-- Pythagoras for Gram-Schmidt: ‖u‖² = ‖proj_v(u)‖² + ‖gs_step(v,u)‖²
     The input decomposes into orthogonal projection and residual. -/
 theorem gs_pythagoras (u v : E) (hv : v ≠ 0) :
-    ‖u‖ ^ 2 = ‖orthProj v u‖ ^ 2 + ‖gsStep v u‖ ^ 2 := by
+    ‖u‖ ^ 2 = ‖orthProj (𝕜 := 𝕜) v u‖ ^ 2 + ‖gsStep (𝕜 := 𝕜) v u‖ ^ 2 := by
   -- u = proj_v(u) + gs_step(v, u) and these are orthogonal
-  have hdecomp : u = orthProj v u + gsStep v u := by
-    unfold gsStep; ring
+  have hdecomp : u = orthProj (𝕜 := 𝕜) v u + gsStep (𝕜 := 𝕜) v u := by
+    unfold gsStep; abel
   -- The residual is orthogonal to the projection (which is a multiple of v)
-  have horth : ⟪orthProj v u, gsStep v u⟫_𝕜 = 0 := by
-    unfold orthProj gsStep
-    simp only [inner_smul_left, inner_sub_right, inner_smul_right]
+  have horth : ⟪orthProj (𝕜 := 𝕜) v u, gsStep (𝕜 := 𝕜) v u⟫_𝕜 = 0 := by
+    unfold gsStep orthProj
+    simp only [inner_smul_left, inner_sub_right, inner_smul_right, map_div₀, inner_conj_symm]
     have hvv : ⟪v, v⟫_𝕜 ≠ 0 := inner_self_ne_zero.mpr hv
-    rw [inner_conj_symm]
     field_simp
     ring
   conv_lhs => rw [hdecomp]
   rw [norm_add_sq (𝕜 := 𝕜)]
   simp [horth, map_zero]
 
+-- Helper for square root monotonicity (renamed to avoid clash with a
+-- Mathlib `le_of_sq_le_sq` of different arity; moved above its use site
+-- since it's no longer shadowed by the Mathlib name)
+private theorem le_of_sq_le_sq_local {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
+    (h : a ^ 2 ≤ b ^ 2) : a ≤ b := by
+  nlinarith [sq_nonneg (b - a)]
+
 /-- The Gram-Schmidt residual norm is at most the input norm:
     ‖gs_step(v,u)‖ ≤ ‖u‖. Orthogonalization never increases norm. -/
 theorem gsStep_norm_le (u v : E) (hv : v ≠ 0) :
-    ‖gsStep v u‖ ≤ ‖u‖ := by
-  have hpyth := gs_pythagoras u v hv
-  have hsq : ‖gsStep v u‖ ^ 2 ≤ ‖u‖ ^ 2 := by linarith [sq_nonneg ‖orthProj v u‖]
-  exact le_of_sq_le_sq (norm_nonneg _) (norm_nonneg _) hsq
-
--- Helper for square root monotonicity
-private theorem le_of_sq_le_sq {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
-    (h : a ^ 2 ≤ b ^ 2) : a ≤ b := by
-  nlinarith [sq_nonneg (b - a)]
+    ‖gsStep (𝕜 := 𝕜) v u‖ ≤ ‖u‖ := by
+  have hpyth := gs_pythagoras (𝕜 := 𝕜) u v hv
+  have hsq : ‖gsStep (𝕜 := 𝕜) v u‖ ^ 2 ≤ ‖u‖ ^ 2 := by linarith [sq_nonneg ‖orthProj (𝕜 := 𝕜) v u‖]
+  exact le_of_sq_le_sq_local (norm_nonneg _) (norm_nonneg _) hsq
 
 -- ============================================================
 -- PART 4: Multi-Step Gram-Schmidt
@@ -173,12 +175,12 @@ noncomputable def gramSchmidtList : List E → List E
   | [] => []
   | v :: vs =>
     let prev := gramSchmidtList vs
-    let projected := prev.foldl (fun acc e => gsStep e acc) v
+    let projected := prev.foldl (fun acc e => gsStep (𝕜 := 𝕜) e acc) v
     projected :: prev
 
 /-- The Gram-Schmidt process preserves the number of vectors. -/
 theorem gramSchmidtList_length (vs : List E) :
-    (gramSchmidtList vs).length = vs.length := by
+    (gramSchmidtList (𝕜 := 𝕜) vs).length = vs.length := by
   induction vs with
   | nil => rfl
   | cons _ _ ih => simp [gramSchmidtList, ih]
@@ -196,7 +198,7 @@ theorem gramSchmidtList_length (vs : List E) :
     When v and u are nearly orthogonal (‖⟪v,u⟫‖ ≈ 0), the projection
     is small, and the Gram-Schmidt step barely changes u. -/
 theorem gs_stability (u v : E) (hv : v ≠ 0) :
-    ‖gsStep v u - u‖ ≤ ‖u‖ := by
+    ‖gsStep (𝕜 := 𝕜) v u - u‖ ≤ ‖u‖ := by
   unfold gsStep
   simp only [sub_sub_cancel_left, norm_neg]
   exact orthProj_norm_le u v hv
@@ -204,14 +206,14 @@ theorem gs_stability (u v : E) (hv : v ≠ 0) :
 /-- When u and v are orthogonal, Gram-Schmidt is the identity:
     gs_step(v,u) = u when ⟪v,u⟫ = 0. -/
 theorem gsStep_of_orthogonal (u v : E) (h : ⟪v, u⟫_𝕜 = 0) :
-    gsStep v u = u := by
-  unfold gsStep orthProj projCoeff
+    gsStep (𝕜 := 𝕜) v u = u := by
+  unfold gsStep orthProj
   simp [h]
 
 /-- When u is a scalar multiple of v, Gram-Schmidt produces zero:
     gs_step(v, c•v) = 0 for any scalar c. -/
 theorem gsStep_of_parallel (v : E) (c : 𝕜) (hv : v ≠ 0) :
-    gsStep v (c • v) = 0 := by
+    gsStep (𝕜 := 𝕜) v (c • v) = 0 := by
   unfold gsStep orthProj
   simp only [inner_smul_right]
   have hvv : ⟪v, v⟫_𝕜 ≠ 0 := inner_self_ne_zero.mpr hv
@@ -246,11 +248,11 @@ nearly parallel, and degenerates gracefully when they are.
     all follow from the inner product structure. -/
 theorem gram_schmidt_uses_cauchy_schwarz :
     -- The projection is bounded by CS
-    (∀ (u v : E), v ≠ 0 → ‖orthProj v u‖ ≤ ‖u‖) ∧
+    (∀ (u v : E), v ≠ 0 → ‖orthProj (𝕜 := 𝕜) v u‖ ≤ ‖u‖) ∧
     -- The residual is orthogonal
-    (∀ (u v : E), v ≠ 0 → ⟪gsStep v u, v⟫_𝕜 = 0) ∧
+    (∀ (u v : E), v ≠ 0 → ⟪gsStep (𝕜 := 𝕜) v u, v⟫_𝕜 = 0) ∧
     -- The norm decomposes via Pythagoras
-    (∀ (u v : E), v ≠ 0 → ‖u‖ ^ 2 = ‖orthProj v u‖ ^ 2 + ‖gsStep v u‖ ^ 2) :=
+    (∀ (u v : E), v ≠ 0 → ‖u‖ ^ 2 = ‖orthProj (𝕜 := 𝕜) v u‖ ^ 2 + ‖gsStep (𝕜 := 𝕜) v u‖ ^ 2) :=
   ⟨orthProj_norm_le, gsStep_orthogonal, gs_pythagoras⟩
 
 end CauchySchwarzOQ01OQ02

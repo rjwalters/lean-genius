@@ -90,7 +90,7 @@ theorem minpoly_deg_of_generator [FiniteDimensional K L] (α : L)
     Historical note: the theorem was known to Lagrange and Galois (for
     characteristic-0 finite extensions). The modern proof via separability
     is due to Artin (1944). -/
-theorem primitive_element_exists [FiniteDimensional K L] [IsSeparable K L]
+theorem primitive_element_exists [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [Infinite K] :
     ∃ α : L, K⟮α⟯ = ⊤ :=
   Field.exists_primitive_element K L
@@ -105,7 +105,7 @@ theorem primitive_element_exists [FiniteDimensional K L] [IsSeparable K L]
     This answers OQ-03: **YES**, the primitive element theorem is formalizable.
     The proof combines Mathlib's `Field.exists_primitive_element` with the
     fundamental identity deg(minpoly K α) = finrank K K⟮α⟯. -/
-theorem primitive_element_minpoly [FiniteDimensional K L] [IsSeparable K L]
+theorem primitive_element_minpoly [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [Infinite K] :
     ∃ α : L, (minpoly K α).natDegree = finrank K L := by
   obtain ⟨α, hα⟩ := primitive_element_exists (K := K) (L := L)
@@ -123,7 +123,7 @@ theorem minpoly_deg_le_finrank [FiniteDimensional K L] (α : L)
     (hα_int : IsIntegral K α) :
     (minpoly K α).natDegree ≤ finrank K L := by
   rw [← IntermediateField.adjoin.finrank hα_int]
-  exact Submodule.finrank_le _
+  exact (IntermediateField.finrank_le_of_le_right le_top).trans_eq finrank_top'
 
 /-- Every element of L with finrank K K⟮α⟯ < finrank K L is not a generator.
 
@@ -138,7 +138,7 @@ theorem not_generator_of_deg_lt [FiniteDimensional K L] (α : L)
 /-- A primitive element has strictly larger minpoly degree than any non-generator.
 
     This shows primitive elements are precisely the "degree-maximizing" elements. -/
-theorem primitive_has_max_minpoly_deg [FiniteDimensional K L] [IsSeparable K L]
+theorem primitive_has_max_minpoly_deg [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [Infinite K] (β : L) (hβ_int : IsIntegral K β) (hβ_not_gen : K⟮β⟯ ≠ ⊤) :
     (minpoly K β).natDegree < finrank K L := by
   have hle := minpoly_deg_le_finrank β hβ_int
@@ -146,7 +146,7 @@ theorem primitive_has_max_minpoly_deg [FiniteDimensional K L] [IsSeparable K L]
   · exact h
   · exfalso
     apply hβ_not_gen
-    exact (generator_iff_minpoly_maxdeg β).mpr h.symm
+    exact (generator_iff_minpoly_maxdeg β).mpr h
 where
   generator_iff_minpoly_maxdeg (α : L) :
       K⟮α⟯ = ⊤ ↔ (minpoly K α).natDegree = finrank K L := by
@@ -159,7 +159,7 @@ where
       have hα_int : IsIntegral K α := IsIntegral.of_finite K α
       have hfr : finrank K ↥K⟮α⟯ = finrank K L := by
         rw [IntermediateField.adjoin.finrank hα_int]; exact hdeg
-      exact IntermediateField.eq_top_of_finrank_eq hfr
+      exact IntermediateField.eq_of_le_of_finrank_eq le_top (hfr.trans finrank_top'.symm)
 
 -- ============================================================
 -- PART VI: The Iff Characterization
@@ -169,7 +169,7 @@ where
 
     Forward: `minpoly_deg_of_generator`.
     Backward: if deg = [L:K], then finrank K K⟮α⟯ = finrank K L, so K⟮α⟯ = ⊤.
-    The backward direction uses `IntermediateField.eq_top_of_finrank_eq`. -/
+    The backward direction uses `IntermediateField.eq_of_le_of_finrank_eq`. -/
 theorem generator_iff_minpoly_maxdeg [FiniteDimensional K L] (α : L) :
     K⟮α⟯ = ⊤ ↔ (minpoly K α).natDegree = finrank K L := by
   constructor
@@ -178,7 +178,7 @@ theorem generator_iff_minpoly_maxdeg [FiniteDimensional K L] (α : L) :
     have hα_int : IsIntegral K α := IsIntegral.of_finite K α
     have hfr : finrank K ↥K⟮α⟯ = finrank K L := by
       rw [IntermediateField.adjoin.finrank hα_int]; exact hdeg
-    exact IntermediateField.eq_top_of_finrank_eq hfr
+    exact IntermediateField.eq_of_le_of_finrank_eq le_top (hfr.trans finrank_top'.symm)
 
 -- ============================================================
 -- PART VII: Applications and Corollaries
@@ -196,12 +196,12 @@ theorem tower_formula_via_primitive [FiniteDimensional K L] (α β : L)
   have hβ_int : IsIntegral K β := IsIntegral.of_finite K β
   rw [minpoly_deg_of_generator α hgen]
   rw [← IntermediateField.adjoin.finrank hβ_int]
-  exact finrank_mul_finrank K (↥K⟮β⟯) L
+  exact (finrank_mul_finrank K (↥K⟮β⟯) L).symm
 
 /-- **Corollary**: The degree of the minimal polynomial of a primitive element
     divides the degree of the minimal polynomial of any other element only in
     the degenerate way (since the primitive element has maximum degree). -/
-theorem primitive_elem_deg_dvd_finrank [FiniteDimensional K L] [IsSeparable K L]
+theorem primitive_elem_deg_dvd_finrank [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [Infinite K] :
     ∃ α : L, ∀ β : L, IsIntegral K β →
       (minpoly K β).natDegree ∣ (minpoly K α).natDegree := by
@@ -239,7 +239,7 @@ theorem primitive_elem_deg_dvd_finrank [FiniteDimensional K L] [IsSeparable K L]
 - `IntermediateField.topEquiv.toLinearEquiv`: finrank K ↥⊤ = finrank K L (Mathlib)
 - Combining: deg(minpoly K α) = [L:K]
 
-The result requires: [FiniteDimensional K L], [IsSeparable K L], [Infinite K].
+The result requires: [FiniteDimensional K L], [Algebra.IsSeparable K L], [Infinite K].
 For finite fields, a separate argument via Frobenius is needed.
 -/
 

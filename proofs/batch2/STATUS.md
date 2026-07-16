@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 102 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): CayleyHamiltonMinpolyOQ05OQ02OQ03 (IsSeparable->Algebra.IsSeparable;
+eq_top_of_finrank_eq gone->eq_of_le_of_finrank_eq le_top; Submodule.finrank_le stuck->finrank_le_of_le_right;
+finrank_mul_finrank orientation), CauchySchwarzOQ01OQ02 (def w/ unconstrained implicit 𝕜 needs (𝕜:=𝕜)
+pinned x15; unfold cascade order; local helper name-collision w/ new Mathlib lemma renamed). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 101 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): AngleTrisectionCos20GalOQ01OQ02OQ02 (Polynomial.Splits now UNARY —
