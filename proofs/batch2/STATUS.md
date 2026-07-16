@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 267 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01OQ03 (Subgroup.card_bot; exists_prime_orderOf_dvd_card
+now [Fact p.Prime]; orderOf_pos needs [Finite G]; Nat.div_div_self m≠0; alternatingGroup.not_solvable gone
+-> isSimpleGroup+comm_iff_isSolvable). Repair: none. Closes Lagrange family.
+
 # DOCTOR SINGLE-PROOF BATCH 266 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LebesgueMeasureOQ01OQ01 (thomae dite/ite drift; div_le_one_of_le removed ->
