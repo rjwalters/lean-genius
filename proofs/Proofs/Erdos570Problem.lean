@@ -27,6 +27,8 @@ References:
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Sym
+import Mathlib.Order.Lattice.Nat
 
 open scoped Classical
 
@@ -49,22 +51,15 @@ def CycleGraph (k : ℕ) (hk : k ≥ 3) : SimpleGraph (Fin k) where
   loopless := by
     constructor
     intro i h
+    have hi : i.val < k := i.isLt
+    have key : (i.val + 1) % k ≠ i.val := by
+      rcases Nat.lt_or_ge (i.val + 1) k with hlt | hge
+      · rw [Nat.mod_eq_of_lt hlt]; omega
+      · have heq : i.val + 1 = k := by omega
+        rw [heq, Nat.mod_self]; omega
     cases h with
-    | inl h =>
-      skip
-      have : (i.val + 1) % k ≠ i.val := by
-        intro heq
-        have : k ∣ 1 := by
-          have h1 : (i.val + 1) % k = i.val := heq
-          omega
-        omega
-      exact this h
-    | inr h =>
-      skip
-      have : (i.val + 1) % k ≠ i.val := by
-        intro heq
-        omega
-      exact this h.symm
+    | inl h => exact key h.symm
+    | inr h => exact key h.symm
 
 /-- **Edge Count:** Number of edges in a graph. -/
 noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
@@ -82,9 +77,9 @@ The minimum n such that any 2-coloring of K_n edges contains
 either a red copy of G or a blue copy of H. -/
 noncomputable def RamseyNumber {V W : Type*} [Fintype V] [Fintype W]
     (G : SimpleGraph V) (H : SimpleGraph W) : ℕ :=
-  sInf {n : ℕ | ∀ (c : SimpleGraph.completeGraph (Fin n) → Bool),
-    (∃ f : V ↪ Fin n, ∀ i j, G.Adj i j → c ⟨f i, f j, by simp [ne_comm]⟩ = true) ∨
-    (∃ g : W ↪ Fin n, ∀ i j, H.Adj i j → c ⟨g i, g j, by simp [ne_comm]⟩ = false)}
+  sInf {n : ℕ | ∀ (c : Sym2 (Fin n) → Bool),
+    (∃ f : V ↪ Fin n, ∀ i j, G.Adj i j → c s(f i, f j) = true) ∨
+    (∃ g : W ↪ Fin n, ∀ i j, H.Adj i j → c s(g i, g j) = false)}
 
 /-- **Cycle Ramsey Number:** R(C_k, H) for the cycle C_k vs graph H. -/
 noncomputable def CycleRamseyNumber (k : ℕ) (hk : k ≥ 3) {V : Type*}
@@ -100,12 +95,12 @@ def UpperBound (k m : ℕ) : ℕ := 2 * m + (k - 1 + 1) / 2
 For k ≥ 3 and any graph H on m edges without isolated vertices,
   R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉. -/
 def Erdos570Conjecture : Prop :=
-  ∀ k : ℕ, k ≥ 3 →
+  ∀ k : ℕ, ∀ hk : k ≥ 3,
     ∀ (V : Type*) [Fintype V] [DecidableEq V],
     ∀ (H : SimpleGraph V) [DecidableRel H.Adj],
       NoIsolatedVertices H →
       let m := edgeCount H
-      CycleRamseyNumber k ⟨k, le_refl k⟩ H ≤ UpperBound k m
+      CycleRamseyNumber k hk H ≤ UpperBound k m
 
 /- ## Part IV: Proven Cases -/
 
