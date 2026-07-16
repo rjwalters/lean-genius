@@ -111,7 +111,7 @@ theorem all_archimedean_valid :
     truncatedCuboctahedron_valid, snubCube_valid, icosidodecahedron_valid,
     truncatedDodecahedron_valid, truncatedIcosahedron_valid,
     rhombicosidodecahedron_valid, truncatedIcosidodecahedron_valid,
-    snubDodecahedron_valid, List.Forall.nil⟩
+    snubDodecahedron_valid⟩
 
 -- ============================================================
 -- Section 4: Face Counts and Euler's Formula
@@ -124,7 +124,12 @@ structure ArchimedeanData where
   vertices : ℕ               -- V
   edges : ℕ                  -- E
   faces : ℕ                  -- F
-  euler : vertices - edges + faces = 2  -- V - E + F = 2
+  -- V - E + F = 2, stated as `V + F = E + 2` to avoid ℕ truncated subtraction
+  -- (E > V for every Archimedean solid, so `vertices - edges` would silently
+  -- truncate to 0 and make the naive `vertices - edges + faces = 2` statement
+  -- false; this addition form is equivalent for nonnegative integers and is
+  -- exact).
+  euler : vertices + faces = edges + 2
 
 def mkTruncTetra : ArchimedeanData :=
   ⟨"Truncated Tetrahedron", [3, 6, 6], 12, 18, 8, by omega⟩
