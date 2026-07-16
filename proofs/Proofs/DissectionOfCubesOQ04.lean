@@ -125,7 +125,7 @@ theorem cosThreeFifthsSeq_eq_cos (k : ℕ) :
   induction n with
   | zero =>
     refine ⟨by simp [cosThreeFifthsSeq, Real.cos_zero], ?_⟩
-    simp only [cosThreeFifthsSeq_one, Nat.cast_one, pow_one, one_mul]
+    simp only [zero_add, cosThreeFifthsSeq_one, Nat.cast_one, pow_one, one_mul]
     rw [Real.cos_arccos (by norm_num : (-1:ℝ) ≤ 3/5) (by norm_num : (3/5:ℝ) ≤ 1)]
     norm_num
   | succ m ih =>
@@ -209,21 +209,23 @@ private lemma one_div_sqrt5_le_one : (1 : ℝ)/Real.sqrt 5 ≤ 1 := by
 
 Proof: Both sides are in [0, π] (arccos(1/√5) ≤ π/2 since 1/√5 ≥ 0,
 so 2·arccos(1/√5) ≤ π). And cos(2·arccos(1/√5)) = 2/5 - 1 = -3/5. -/
-theorem two_arccos_sqrt5_eq : 2 * Real.arccos (1/Real.sqrt 5) = Real.arccos (-3/5) := by
-  rw [← Real.arccos_cos]
-  · congr 1
-    rw [Real.cos_two_mul,
-        Real.cos_arccos (by linarith [one_div_sqrt5_nonneg] : (-1:ℝ) ≤ 1/Real.sqrt 5)
-                        one_div_sqrt5_le_one]
-    have hsq : Real.sqrt 5 * Real.sqrt 5 = 5 :=
-      Real.mul_self_sqrt (by norm_num : (5:ℝ) ≥ 0)
-    field_simp
-    nlinarith [Real.sqrt_pos.mpr (show (0:ℝ) < 5 by norm_num)]
-  · have := Real.arccos_nonneg (1/Real.sqrt 5)
+theorem two_arccos_sqrt5_eq : 2 * Real.arccos (1/Real.sqrt 5) = Real.arccos (-(3/5 : ℝ)) := by
+  have h1 : (0:ℝ) ≤ 2 * Real.arccos (1/Real.sqrt 5) := by
+    have := Real.arccos_nonneg (1/Real.sqrt 5)
     linarith
-  · have h_le : Real.arccos (1/Real.sqrt 5) ≤ Real.pi / 2 := by
-      rwa [Real.arccos_le_pi_div_two]
+  have h2 : 2 * Real.arccos (1/Real.sqrt 5) ≤ Real.pi := by
+    have h_le : Real.arccos (1/Real.sqrt 5) ≤ Real.pi / 2 :=
+      Real.arccos_le_pi_div_two.mpr one_div_sqrt5_nonneg
     linarith
+  rw [← Real.arccos_cos h1 h2]
+  congr 1
+  rw [Real.cos_two_mul,
+      Real.cos_arccos (by linarith [one_div_sqrt5_nonneg] : (-1:ℝ) ≤ 1/Real.sqrt 5)
+                      one_div_sqrt5_le_one]
+  have hsq : Real.sqrt 5 * Real.sqrt 5 = 5 :=
+    Real.mul_self_sqrt (by norm_num : (5:ℝ) ≥ 0)
+  field_simp
+  nlinarith [Real.sqrt_pos.mpr (show (0:ℝ) < 5 by norm_num)]
 
 /-- arccos(1/√5)/π is irrational.
 
@@ -237,7 +239,8 @@ theorem arccos_sqrt5_irrational :
     rw [two_arccos_sqrt5_eq, Real.arccos_neg]
   -- So arccos(3/5) = π - 2q·π = (1 - 2q)·π ∈ π·ℚ
   apply arccos_three_fifths_irrational
-  exact ⟨1 - 2 * q, by linarith [h2eq.symm.trans (by rw [hq]; push_cast; ring)]⟩
+  have hcast : ((1 - 2 * q : ℚ) : ℝ) = 1 - 2 * (q : ℝ) := by push_cast; ring
+  exact ⟨1 - 2 * q, by rw [hcast]; linarith [h2eq.symm.trans (by rw [hq])]⟩
 
 /-- arccos(-1/√5)/π is irrational. -/
 theorem dodAngle_irrational : ¬∃ q : ℚ, dodAngle = q * Real.pi := by
@@ -247,7 +250,8 @@ theorem dodAngle_irrational : ¬∃ q : ℚ, dodAngle = q * Real.pi := by
     unfold dodAngle
     rw [show (-1 : ℝ)/Real.sqrt 5 = -(1/Real.sqrt 5) by ring, Real.arccos_neg]
   apply arccos_sqrt5_irrational
-  exact ⟨1 - q, by linarith [hneg ▸ hq]⟩
+  have hcast : ((1 - q : ℚ) : ℝ) = 1 - (q : ℝ) := by push_cast; ring
+  exact ⟨1 - q, by rw [hcast]; linarith [hneg ▸ hq]⟩
 
 -- ============================================================
 -- PART III: Dodecahedron Has Nonzero Dehn Invariant
@@ -345,7 +349,7 @@ private theorem icoSeq_eq_cos (k : ℕ) :
   induction n with
   | zero =>
     refine ⟨by simp [icoSeq, cos_zero], ?_⟩
-    simp only [icoSeq_one, Nat.cast_one, pow_one, one_mul]
+    simp only [zero_add, icoSeq_one, Nat.cast_one, pow_one, one_mul]
     rw [cos_arccos (by norm_num : (-1:ℝ) ≤ 1/9) (by norm_num : (1/9:ℝ) ≤ 1)]
     norm_num
   | succ m ih =>
@@ -367,8 +371,8 @@ private lemma cos_two_icoAngle : cos (2 * icoAngle) = 1/9 := by
   nlinarith
 
 /-- arccos(1/9) = 2π - 2·icoAngle (both have cosine 1/9 and lie in [0,π]). -/
-private lemma arccos_one_ninth_eq : arccos (1/9 : ℝ) = 2 * pi - 2 * icoAngle := by
-  have hico_range : pi/2 < icoAngle ∧ icoAngle < pi := by
+private lemma arccos_one_ninth_eq : arccos (1/9 : ℝ) = 2 * Real.pi - 2 * icoAngle := by
+  have hico_range : Real.pi/2 < icoAngle ∧ icoAngle < Real.pi := by
     have h5 : Real.sqrt 5 * Real.sqrt 5 = 5 := Real.mul_self_sqrt (by norm_num)
     have hspos : (0 : ℝ) < Real.sqrt 5 := Real.sqrt_pos.mpr (by norm_num)
     have hslt3 : Real.sqrt 5 < 3 := by nlinarith
@@ -382,34 +386,34 @@ private lemma arccos_one_ninth_eq : arccos (1/9 : ℝ) = 2 * pi - 2 * icoAngle :
       rw [icoAngle, ← arccos_neg_one]
       -- with x = -1, y = -√5/3: arccos(-√5/3) < arccos(-1)
       exact arccos_lt_arccos (by norm_num) (by nlinarith) (by nlinarith)
-  have hrange_lo : (0 : ℝ) ≤ 2 * pi - 2 * icoAngle := by linarith [hico_range.2, pi_pos]
-  have hrange_hi : 2 * pi - 2 * icoAngle ≤ pi := by linarith [hico_range.1]
+  have hrange_lo : (0 : ℝ) ≤ 2 * Real.pi - 2 * icoAngle := by linarith [hico_range.2, pi_pos]
+  have hrange_hi : 2 * Real.pi - 2 * icoAngle ≤ Real.pi := by linarith [hico_range.1]
   rw [← arccos_cos hrange_lo hrange_hi]
   congr 1
-  rw [show 2 * pi - 2 * icoAngle = -(2 * icoAngle) + 2 * pi from by ring]
+  rw [show 2 * Real.pi - 2 * icoAngle = -(2 * icoAngle) + 2 * Real.pi from by ring]
   rw [cos_add_two_pi, cos_neg]
-  exact cos_two_icoAngle
+  exact cos_two_icoAngle.symm
 
-/-- The icosahedron's dihedral angle arccos(-√5/3) is an irrational multiple of π.
-
-Proof via Chebyshev sequence icoSeq (d_0=2, d_1=2, d_{n+2}=2d_{n+1}-81d_n):
-- d_n = 9^n·2cos(n·arccos(1/9)), and arccos(1/9) = 2π - 2·icoAngle
-- If icoAngle/π = p/q, then cos(q·arccos(1/9)) = cos(-2q·icoAngle) = 1
-- So d_q = 2·9^q, giving 3 | d_q. But 3 ∤ d_n for all n. Contradiction. -/
-theorem icoAngle_irrational : ¬∃ q : ℚ, icoAngle = q * pi := by
+-- d_n = 9^n·2cos(n·arccos(1/9)), and arccos(1/9) = 2π - 2·icoAngle
+-- If icoAngle/π = p/q, then cos(q·arccos(1/9)) = cos(-2q·icoAngle) = 1
+-- So d_q = 2·9^q, giving 3 | d_q. But 3 ∤ d_n for all n. Contradiction.
+-- **The icosahedron's dihedral angle arccos(-√5/3) is an irrational multiple of π.**
+-- Proof via Chebyshev sequence icoSeq (d_0=2, d_1=2, d_{n+2}=2d_{n+1}-81d_n).
+set_option maxHeartbeats 1000000 in
+theorem icoAngle_irrational : ¬∃ q : ℚ, icoAngle = q * Real.pi := by
   intro ⟨q, hq⟩
   have hb_pos : 0 < q.den := q.pos
   -- From icoAngle = (q.num/q.den)·π: q.den·icoAngle = q.num·π
-  have hmul : (q.den : ℝ) * icoAngle = (q.num : ℝ) * pi := by
+  have hmul : (q.den : ℝ) * icoAngle = (q.num : ℝ) * Real.pi := by
     rw [hq]; push_cast; rw [Rat.cast_def]; field_simp
   -- arccos(1/9) = 2π - 2·icoAngle, so q.den·arccos(1/9) = q.den·(2π - 2·icoAngle)
   --            = 2·q.den·π - 2·q.num·π = 2π(q.den - q.num)
   have hcos_eq : cos ((↑q.den : ℝ) * arccos (1/9)) = 1 := by
     rw [arccos_one_ninth_eq]
-    have heq : (↑q.den : ℝ) * (2 * pi - 2 * icoAngle) =
-        ((q.den : ℤ) - q.num) * (2 * pi) := by
+    have heq : (↑q.den : ℝ) * (2 * Real.pi - 2 * icoAngle) =
+        (((q.den : ℤ) - q.num : ℤ) : ℝ) * (2 * Real.pi) := by
       push_cast; linarith [hmul]
-    rw [show (↑q.den : ℝ) * (2 * pi - 2 * icoAngle) = ((q.den : ℤ) - q.num) * (2 * pi) from heq]
+    rw [heq]
     exact cos_int_mul_two_pi _
   -- From icoSeq_eq_cos: icoSeq(q.den) = 9^q.den · 2 · 1 = 2·9^q.den
   have hseq := icoSeq_eq_cos q.den
