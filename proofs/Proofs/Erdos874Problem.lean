@@ -210,6 +210,24 @@ theorem erdos_874 :
   k_limit_is_two
 
 /--
+**k(N) is bounded by N:**
+An admissible set A ⊆ {1,...,N} has at most N elements.
+-/
+theorem k_le_self (N : ℕ) : k N ≤ N := by
+  unfold k
+  apply Finset.sup_le
+  intro A hA
+  simp only [Finset.mem_filter, Finset.mem_powerset] at hA
+  unfold BoundedAdmissible at hA
+  obtain ⟨-, -, hbdd⟩ := hA
+  have hsub : A ⊆ Finset.Icc 1 N := by
+    intro a ha
+    simp only [Finset.mem_Icc]
+    exact ⟨(hbdd a ha).2, (hbdd a ha).1⟩
+  calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
+    _ = N := by rw [Nat.card_Icc]; omega
+
+/--
 **Answer: The conjecture is TRUE**
 -/
 theorem erdos_874_answer :
@@ -221,9 +239,24 @@ theorem erdos_874_answer :
   use N₁
   intro N hN
   specialize h₁ N hN
-  constructor <;> {
-    have := abs_sub_lt_iff.mp h₁
-    linarith [Real.sqrt_nonneg N]
-  }
+  rw [abs_lt] at h₁
+  obtain ⟨h₁a, h₁b⟩ := h₁
+  rcases (Real.sqrt_nonneg (N:ℝ)).eq_or_lt with h0 | hpos
+  · -- √N = 0 ⇒ N = 0 ⇒ k N ≤ N = 0
+    have hNR : (N:ℝ) ≤ 0 := Real.sqrt_eq_zero'.mp h0.symm
+    have hN0 : N = 0 := by exact_mod_cast le_antisymm hNR (Nat.cast_nonneg N)
+    have hk0 : (k N : ℝ) ≤ 0 := by
+      have := k_le_self N
+      rw [hN0] at this ⊢
+      exact_mod_cast this
+    have hcast : (0:ℝ) ≤ (k N : ℝ) := Nat.cast_nonneg _
+    constructor <;> nlinarith [h0]
+  · have h2 : (2 - ε/2) * Real.sqrt N < k N := (lt_div_iff₀ hpos).mp (by linarith)
+    have h3 : (k N:ℝ) < (2 + ε/2) * Real.sqrt N := (div_lt_iff₀ hpos).mp (by linarith)
+    have h4 : (2 - ε) * Real.sqrt N ≤ (2 - ε/2) * Real.sqrt N :=
+      mul_le_mul_of_nonneg_right (by linarith) hpos.le
+    have h5 : (2 + ε/2) * Real.sqrt N ≤ (2 + ε) * Real.sqrt N :=
+      mul_le_mul_of_nonneg_right (by linarith) hpos.le
+    exact ⟨by linarith, by linarith⟩
 
 end Erdos874
