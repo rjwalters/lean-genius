@@ -33,7 +33,7 @@ open Finset Real
 /- ## Part 1: Basic Definitions -/
 
 /-- A point configuration in ℝ^d -/
-def PointSet (d : ℕ) := Finset (Fin d → ℝ)
+abbrev PointSet (d : ℕ) := Finset (Fin d → ℝ)
 
 /-- The Euclidean distance between two points -/
 noncomputable def dist' {d : ℕ} (p q : Fin d → ℝ) : ℝ :=
@@ -82,7 +82,7 @@ axiom trivial_gives_half {d : ℕ} : WeakConjecture d
 /- ## Part 4: The One-Dimensional Case (SOLVED) -/
 
 /-- Point set on the real line -/
-def RealPointSet := Finset ℝ
+abbrev RealPointSet := Finset ℝ
 
 /-- Distance on ℝ -/
 noncomputable def realDist (x y : ℝ) : ℝ := |x - y|
@@ -109,8 +109,8 @@ axiom erdos_1997_d1 :
 
 /-- Arithmetic progression showing the conjecture is tight.
     {0, n, 2n, ..., (n-1)n} has diameter (n-1)n with all distances ≥ n. -/
-def arithmeticProgression (n : ℕ) : RealPointSet :=
-  (Finset.range n).image (fun k => (k : ℝ) * (n - 1 + 1))
+noncomputable def arithmeticProgression (n : ℕ) : RealPointSet :=
+  (Finset.range n).image (fun k : ℕ => (k : ℝ) * (n - 1 + 1))
 
 /-  AP has distinct distances differing by at least 1.
     Distances are multiples of n, all at least n apart. -/
@@ -149,6 +149,7 @@ theorem erdos_670_summary :
   constructor
   · intro ε hε
     obtain ⟨N, hN⟩ := erdos_1997_d1 ε hε
+    refine ⟨N, ?_⟩
     intro A n hn hne hcard hDistinct
     exact hN A n hne hcard hn hDistinct
   · intro d

@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 134 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos670Problem (def->abbrev PointSet/RealPointSet; noncomputable
+arithmeticProgression; binder annotation fun k:ℕ; refine before intro). Repair: none (2 pre-existing
+open-conjecture axioms untouched).
+
 # DOCTOR SINGLE-PROOF BATCH 133 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos619Problem (imports Order.Lattice.Nat/Rat.Init/SimpleGraph.Metric;
