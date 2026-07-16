@@ -75,9 +75,10 @@ theorem nonTrilinear_empty : NonTrilinear (∅ : Set (Fin 2 → ℝ)) :=
 
 /-- A singleton set is non-trilinear -/
 theorem nonTrilinear_singleton (p : Fin 2 → ℝ) :
-    NonTrilinear ({p} : Set (Fin 2 → ℝ)) :=
-  fun a ha b hb _ _ hqr _ =>
-    hqr (by rw [Set.mem_singleton_iff.mp ha, Set.mem_singleton_iff.mp hb])
+    NonTrilinear ({p} : Set (Fin 2 → ℝ)) := by
+  intro a ha b hb _ _ hab _ _
+  exact absurd
+    ((Set.mem_singleton_iff.mp ha).trans (Set.mem_singleton_iff.mp hb).symm) hab
 
 /-- A two-element set is non-trilinear: three pairwise distinct elements
     cannot be drawn from a set of two -/
@@ -139,19 +140,14 @@ theorem finset_pigeonhole_exists {α : Type*} [DecidableEq α] (B : Finset α)
     ∃ i : Fin k, B.card ≤ k * (B.filter (fun x => f x = i)).card := by
   by_contra hall
   push_neg at hall
-  have hsum : ∑ i : Fin k, (B.filter (fun x => f x = i)).card = B.card := by
-    rw [← Finset.card_biUnion]
-    · congr 1; ext x; simp [Finset.mem_biUnion, Finset.mem_filter]
-      exact ⟨fun hx => ⟨f x, hx, rfl⟩, fun ⟨_, hx, _⟩ => hx⟩
-    · intro i _ j _ hij x
-      simp [Finset.mem_filter]
-      intro _ hi hj; exact absurd (hi ▸ hj) fun h => hij (Fin.ext h)
-  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < k * B.card := by
-    apply Finset.sum_lt_sum
-    · intro i _; exact le_of_lt (hall i)
-    · exact ⟨⟨0, hk⟩, Finset.mem_univ _, hall ⟨0, hk⟩⟩
-  rw [← Finset.mul_sum] at hlt
-  omega
+  have hsum : ∑ i : Fin k, (B.filter (fun x => f x = i)).card = B.card :=
+    (Finset.card_eq_sum_card_fiberwise (fun x _ => Finset.mem_univ (f x))).symm
+  have hne : (Finset.univ : Finset (Fin k)).Nonempty := ⟨⟨0, hk⟩, Finset.mem_univ _⟩
+  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < ∑ _i : Fin k, B.card :=
+    Finset.sum_lt_sum_of_nonempty hne (fun i _ => hall i)
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul,
+    ← Finset.mul_sum, hsum] at hlt
+  exact lt_irrefl _ hlt
 
 -- ## Easy direction: weakly non-trilinear → ε-non-trilinear
 
@@ -174,7 +170,7 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
       · intro hx
         exact absurd (hA (hB (Finset.mem_coe.mpr hx))) (by simp [Set.iUnion_of_empty])
       · exact fun hx => absurd hx (Finset.notMem_empty _)
-    exact ⟨∅, by simp, by simp [hBe], nonTrilinear_empty⟩
+    exact ⟨∅, by simp, by simp [hBe], by simpa using nonTrilinear_empty⟩
   · -- If k > 0, apply pigeonhole to get ε = 1/k
     have hkpos : 0 < k := Nat.pos_of_ne_zero hk
     have hkR : (0 : ℝ) < k := Nat.cast_pos.mpr hkpos
@@ -205,8 +201,7 @@ theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
       rw [← hxa]; exact hassign x hxB
     refine ⟨C, hCsub, ?_, nonTrilinear_mono hCinS (hS i)⟩
     -- Show (1/k) * |B| ≤ |C|
-    rw [div_mul_eq_mul_div, one_mul]
-    rw [le_div_iff₀ hkR]
+    rw [div_mul_eq_mul_div, one_mul, div_le_iff₀ hkR, mul_comm]
     exact_mod_cast hi
 
 -- ## Finite sets are always weakly non-trilinear
@@ -241,8 +236,8 @@ theorem isEpsNonTrilinear_eps_le_one {A : Set (Fin 2 → ℝ)} {ε : ℝ}
   have hCle : C.card ≤ 1 :=
     (Finset.card_le_card hCsub).trans (by simp [Finset.card_singleton])
   -- ε * 1 ≤ |C| ≤ 1
-  rw [Finset.card_singleton] at hcard
-  linarith [Nat.cast_le.mpr hCle, mul_one ε]
+  rw [Finset.card_singleton, Nat.cast_one] at hcard
+  linarith [(by exact_mod_cast hCle : (C.card : ℝ) ≤ 1)]
 
 /-- For ε > 1, the only ε-non-trilinear set is the empty set.
     This gives a tight characterization of the valid range ε ∈ (0, 1]. -/
