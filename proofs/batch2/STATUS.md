@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 357 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ03OQ01 (NOT decide-maxrecdepth (stale label) — v4.31
+HasDerivAt.comp instance-diamond: inline hasDerivAt_id.const_mul resolves AddCommGroup ℝ/Module ℝ ℝ via
+NormedField-self-algebra path, no longer defeq to plain-instance goal under convert using 1; fixed 3 sites
+by hoisting inner deriv into explicitly-typed `have hinner : HasDerivAt (fun y=>c*y) c t` then
+hσ_da.comp t hinner (parent pattern); drop 2 dead simp only [Function.comp] on unapplied ∘). Repair: none.
+SEAM: HasDerivAt-comp-instance-diamond -> explicit-type intermediate `have`, avoid bare convert using 1;ring
+on composed HasDerivAt; simp only [Function.comp] no-progress on unapplied f∘g.
+
 # DOCTOR SINGLE-PROOF BATCH 356 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ03OQ02 (contDiff_periodic_lipschitz NNReal coe step:
