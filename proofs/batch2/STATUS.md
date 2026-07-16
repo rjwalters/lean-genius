@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 47 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+4 GREEN** (re-verified EXIT=0): Erdos413Problem (#38611: barrier_gap_two claimed ω(n)≤1 FALSE at n=6 ->
+ω(n)≤2; omega no longer auto-specializes ∀-hyps -> have first), EulerTotientOQ02OQ02OQ01 (ArithmeticFunction
+.Carmichael deprecated -> lowercase carmichael), Erdos404Problem (12min: mul_le_mul_right iff gone ->
+le_of_mul_le_mul_right; tendsto_..._le_of_le split strict vs eventually '-variant), Erdos1079Problem (FABLE
+#38611: numEdges over SimpleGraph ℕ needs nonexistent Fintype ℕ -> restated Fin n; SimpleGraph symm/loopless
+-> Std.Symm/Std.Irrefl or comap). Repairs #38611: Erdos413 (ω≤2), Erdos1079 (Fin n). Fable now 4/4 on hard tail.
+
 # DOCTOR SINGLE-PROOF BATCH 46 (Fable experiment greens, #38065, 2026-07-15)
 
 **+2 GREEN, both FABLE-5** (re-verified EXIT=0): Erdos1056Problem (Chain'->IsChain Decidable; List.get+by-omega

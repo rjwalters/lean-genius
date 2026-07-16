@@ -44,10 +44,8 @@ def neighborhood {V : Type*} (G : SimpleGraph V) (v : V) : Set V :=
   {u : V | G.Adj v u}
 
 /-- Induced subgraph on a vertex set -/
-def inducedSubgraph {V : Type*} (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
-  Adj := fun ⟨u, _⟩ ⟨v, _⟩ => G.Adj u v
-  symm.symm := fun ⟨u, _⟩ ⟨v, _⟩ h => G.symm h
-  loopless.irrefl := fun ⟨v, _⟩ => G.loopless v
+def inducedSubgraph {V : Type*} (G : SimpleGraph V) (S : Set V) : SimpleGraph S :=
+  G.comap Subtype.val
 
 /-- Number of edges in a finite simple graph -/
 noncomputable def numEdges {V : Type*} [Fintype V] [DecidableEq V]
@@ -120,12 +118,10 @@ graphs necessarily have locally dense neighborhoods.
 axiom erdos_1079_summary :
   (∀ r : ℕ, r ≥ 4 →
     ∃ c : ℝ, c > 0 ∧
-      ∀ n : ℕ, ∀ V : Finset ℕ, V.card = n →
-        ∀ G : SimpleGraph ℕ, ∀ [DecidableRel G.Adj],
-          (∀ e : ℕ × ℕ, G.Adj e.1 e.2 → e.1 ∈ V ∧ e.2 ∈ V) →
-          numEdges G ≥ turanNumber n r →
-          ∃ v ∈ V, (G.degree v : ℝ) ≥ c * n ∧
-            neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
+      ∀ n : ℕ, ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
+        numEdges G ≥ turanNumber n r →
+        ∃ v : Fin n, (G.degree v : ℝ) ≥ c * n ∧
+          neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
   (∀ n r : ℕ, r ≥ 2 → n ≥ r →
     ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
       G.CliqueFree r →
@@ -137,12 +133,10 @@ axiom erdos_1079_summary :
 theorem erdos_1079 :
     (∀ r : ℕ, r ≥ 4 →
       ∃ c : ℝ, c > 0 ∧
-        ∀ n : ℕ, ∀ V : Finset ℕ, V.card = n →
-          ∀ G : SimpleGraph ℕ, ∀ [DecidableRel G.Adj],
-            (∀ e : ℕ × ℕ, G.Adj e.1 e.2 → e.1 ∈ V ∧ e.2 ∈ V) →
-            numEdges G ≥ turanNumber n r →
-            ∃ v ∈ V, (G.degree v : ℝ) ≥ c * n ∧
-              neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
+        ∀ n : ℕ, ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
+          numEdges G ≥ turanNumber n r →
+          ∃ v : Fin n, (G.degree v : ℝ) ≥ c * n ∧
+            neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)) ∧
     (∀ n r : ℕ, r ≥ 2 → n ≥ r →
       ∀ G : SimpleGraph (Fin n), ∀ [DecidableRel G.Adj],
         G.CliqueFree r →

@@ -69,19 +69,19 @@ theorem modEq_one_iff_cast_pow {a m : ℕ} :
 This is the number-theoretic shadow of Mathlib's group-level `pow_carmichael`:
 a coprime residue is a unit, and every unit is killed by the group exponent λ(n). -/
 theorem carmichael_modEq {a : ℕ} (h : Nat.Coprime a n) :
-    a ^ Carmichael n ≡ 1 [MOD n] := by
+    a ^ carmichael n ≡ 1 [MOD n] := by
   rw [modEq_one_iff_cast_pow]
   have hu : IsUnit (a : ZMod n) := (ZMod.isUnit_iff_coprime a n).mpr h
   rw [← hu.unit_spec, ← Units.val_pow_eq_pow_val, pow_carmichael, Units.val_one]
 
 /-- **λ(n) is nonzero** (for `n ≠ 0`): the unit group is finite, so its exponent
 is positive. -/
-theorem carmichael_ne_zero [NeZero n] : Carmichael n ≠ 0 := by
+theorem carmichael_ne_zero [NeZero n] : carmichael n ≠ 0 := by
   rw [carmichael_eq_exponent']
   exact Monoid.exponent_ne_zero_of_finite
 
 /-- **λ(n) is positive** (for `n ≠ 0`). -/
-theorem carmichael_pos [NeZero n] : 0 < Carmichael n :=
+theorem carmichael_pos [NeZero n] : 0 < carmichael n :=
   Nat.pos_of_ne_zero carmichael_ne_zero
 
 -- ============================================================
@@ -96,7 +96,7 @@ This is the sharp upgrade of the parent entry, where `φ(n)` is shown to be *one
 universal exponent. Here every universal exponent — `φ(n)` included — is forced
 to be a multiple of `λ(n)`. -/
 theorem carmichael_dvd_iff [NeZero n] {m : ℕ} :
-    Carmichael n ∣ m ↔ ∀ a : ℕ, Nat.Coprime a n → a ^ m ≡ 1 [MOD n] := by
+    carmichael n ∣ m ↔ ∀ a : ℕ, Nat.Coprime a n → a ^ m ≡ 1 [MOD n] := by
   rw [carmichael_eq_exponent']
   constructor
   · -- Multiples of the exponent kill every unit, hence every coprime residue.
@@ -119,7 +119,7 @@ theorem carmichael_dvd_iff [NeZero n] {m : ℕ} :
 
 /-- **Minimality.** Any *positive* universal exponent is `≥ λ(n)`. -/
 theorem carmichael_le_of_universal [NeZero n] {m : ℕ} (hm : 0 < m)
-    (h : ∀ a : ℕ, Nat.Coprime a n → a ^ m ≡ 1 [MOD n]) : Carmichael n ≤ m :=
+    (h : ∀ a : ℕ, Nat.Coprime a n → a ^ m ≡ 1 [MOD n]) : carmichael n ≤ m :=
   Nat.le_of_dvd hm (carmichael_dvd_iff.mpr h)
 
 /-- **λ(n) is the TRUE universal exponent.** It is the *least* element of the set
@@ -128,7 +128,7 @@ divides — hence is `≤` — every other one (`carmichael_le_of_universal`). T
 the precise sense in which λ(n), not φ(n), is the canonical exponent of `ℤ/nℤ`. -/
 theorem carmichael_isLeast_universal [NeZero n] :
     IsLeast {m : ℕ | 0 < m ∧ ∀ a : ℕ, Nat.Coprime a n → a ^ m ≡ 1 [MOD n]}
-      (Carmichael n) := by
+      (carmichael n) := by
   refine ⟨⟨carmichael_pos, fun a ha => carmichael_modEq ha⟩, ?_⟩
   rintro m ⟨hm, h⟩
   exact carmichael_le_of_universal hm h
@@ -140,7 +140,7 @@ theorem carmichael_isLeast_universal [NeZero n] :
 /-- **The order of a unit divides λ(n)** — the group-level refinement, sharper
 than the parent's `orderOf a ∣ φ(n)` because `λ(n) ∣ φ(n)`. -/
 theorem orderOf_unit_dvd_carmichael [NeZero n] (a : (ZMod n)ˣ) :
-    orderOf a ∣ Carmichael n := by
+    orderOf a ∣ carmichael n := by
   rw [carmichael_eq_exponent']
   exact Monoid.order_dvd_exponent a
 
@@ -156,14 +156,14 @@ theorem orderOf_unit_dvd_totient_via_carmichael [NeZero n] (a : (ZMod n)ˣ) :
 reduction modulo `φ(n)`, since `λ(n) ∣ φ(n)`: it is the *smallest* period of the
 sequence `k ↦ a^k (mod n)` guaranteed uniformly over all coprime bases. -/
 theorem pow_mod_carmichael_modEq {a : ℕ} (h : Nat.Coprime a n) (k : ℕ) :
-    a ^ k ≡ a ^ (k % Carmichael n) [MOD n] := by
-  conv_lhs => rw [← Nat.mod_add_div k (Carmichael n)]
-  calc a ^ (k % Carmichael n + Carmichael n * (k / Carmichael n))
-      = a ^ (k % Carmichael n) * (a ^ Carmichael n) ^ (k / Carmichael n) := by
+    a ^ k ≡ a ^ (k % carmichael n) [MOD n] := by
+  conv_lhs => rw [← Nat.mod_add_div k (carmichael n)]
+  calc a ^ (k % carmichael n + carmichael n * (k / carmichael n))
+      = a ^ (k % carmichael n) * (a ^ carmichael n) ^ (k / carmichael n) := by
         rw [pow_add, pow_mul]
-    _ ≡ a ^ (k % Carmichael n) * 1 ^ (k / Carmichael n) [MOD n] :=
+    _ ≡ a ^ (k % carmichael n) * 1 ^ (k / carmichael n) [MOD n] :=
         (Nat.ModEq.refl _).mul ((carmichael_modEq h).pow _)
-    _ = a ^ (k % Carmichael n) := by rw [one_pow, mul_one]
+    _ = a ^ (k % carmichael n) := by rw [one_pow, mul_one]
 
 -- ============================================================
 -- SECTION V: The sharp boundary  λ(n) = φ(n) ⟺ (ℤ/nℤ)ˣ cyclic
@@ -174,7 +174,7 @@ theorem pow_mod_carmichael_modEq {a : ℕ} (h : Nat.Coprime a n) (k : ℕ) :
 whose exponent equals their order, so the Carmichael function collapses onto
 Euler's totient precisely on the moduli with primitive roots. -/
 theorem carmichael_eq_totient_iff_isCyclic [NeZero n] :
-    Carmichael n = n.totient ↔ IsCyclic (ZMod n)ˣ := by
+    carmichael n = n.totient ↔ IsCyclic (ZMod n)ˣ := by
   rw [carmichael_eq_exponent',
     show n.totient = Nat.card (ZMod n)ˣ from by
       rw [← ZMod.card_units_eq_totient, Fintype.card_eq_nat_card]]
@@ -185,8 +185,8 @@ Carmichael function is *strictly* smaller than Euler's totient: `λ(n) < φ(n)`.
 This is why λ, not φ, is the sharp universal exponent — φ is genuinely wasteful
 whenever `n` has no primitive root. -/
 theorem carmichael_lt_totient_of_not_isCyclic [NeZero n]
-    (h : ¬ IsCyclic (ZMod n)ˣ) : Carmichael n < n.totient := by
-  have hne : Carmichael n ≠ n.totient := fun heq =>
+    (h : ¬ IsCyclic (ZMod n)ˣ) : carmichael n < n.totient := by
+  have hne : carmichael n ≠ n.totient := fun heq =>
     h (carmichael_eq_totient_iff_isCyclic.mp heq)
   have hpos : 0 < n.totient := Nat.totient_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne n))
   exact lt_of_le_of_ne
@@ -198,26 +198,26 @@ theorem carmichael_lt_totient_of_not_isCyclic [NeZero n]
 
 /-- **λ(p) = φ(p) at every prime.** The unit group of a prime field is cyclic, so
 the Carmichael function agrees with Euler's totient on primes: `λ(p) = φ(p)`. -/
-theorem carmichael_prime {p : ℕ} (hp : p.Prime) : Carmichael p = p.totient := by
+theorem carmichael_prime {p : ℕ} (hp : p.Prime) : carmichael p = p.totient := by
   rcases eq_or_ne p 2 with rfl | h2
   · simpa using carmichael_two_pow_of_le_two_eq_totient (n := 1) (by norm_num)
   · simpa using carmichael_pow_of_prime_ne_two 1 hp h2
 
 /-- Explicit prime value: `λ(p) = p - 1`. -/
 theorem carmichael_prime_eq_sub_one {p : ℕ} (hp : p.Prime) :
-    Carmichael p = p - 1 := by
+    carmichael p = p - 1 := by
   rw [carmichael_prime hp, Nat.totient_prime hp]
 
 /-- **λ(8) = 2** — strictly below `φ(8) = 4`. The group `(ℤ/8ℤ)ˣ ≅ ℤ/2 × ℤ/2`
 is non-cyclic (`8` has no primitive root), so every unit already squares to `1`. -/
-theorem carmichael_eight : Carmichael 8 = 2 := by
+theorem carmichael_eight : carmichael 8 = 2 := by
   rw [show (8 : ℕ) = 2 ^ 3 by norm_num, carmichael_two_pow_of_ne_two (by norm_num)]
   norm_num
 
 /-- **The witness of strictness.** `λ(8) = 2 < 4 = φ(8)`: the Carmichael function
 genuinely improves on Euler's exponent, obtained here from the abstract
 `carmichael_lt_totient_of_not_isCyclic` and the non-cyclicity of `(ℤ/8ℤ)ˣ`. -/
-theorem carmichael_eight_lt_totient : Carmichael 8 < Nat.totient 8 :=
+theorem carmichael_eight_lt_totient : carmichael 8 < Nat.totient 8 :=
   carmichael_lt_totient_of_not_isCyclic ZMod.not_isCyclic_units_eight
 
 end EulerTotientOQ02OQ02OQ01
