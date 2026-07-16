@@ -147,7 +147,11 @@ theorem nodup_circuit_exists_Aristotle {V : Type*} [Fintype V] [DecidableEq V]
     have h_extend : ∃ w' : D.Walk u x, w'.arcs.Nodup ∧ w'.arcs.length = m + 1 := by
       refine' ⟨ ⟨ w.arcs ++ [ ( v, x ) ], _, _, _, _, _ ⟩, _, _ ⟩ <;> simp_all +decide [ List.nodup_append ];
       · rintro a b ( h | ⟨ rfl, rfl ⟩ ) <;> [ exact w.arcs_valid _ h; exact hx ];
-      · grind +splitImp;
+      · by_cases hwe : w.arcs = []
+        · have huv : u = v := w.empty_at hwe
+          simp [hwe, huv]
+        · rw [List.head_append_of_ne_nil hwe]
+          exact w.starts_at hwe
       · refine' List.isChain_append.mpr ⟨ _, _, _ ⟩;
         · exact w.consecutive;
         · exact List.isChain_singleton _;
