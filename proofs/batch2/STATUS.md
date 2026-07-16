@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 107 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1127Problem (Point 1 ![x]->!₂[x] EuclideanSpace coercion;
+Multiset.subsets->powersetCard, .image->.map). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 106 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1097OQ01 (fixed literal UTF-8 replacement-char corruption in
