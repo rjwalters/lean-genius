@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 80 (mixed fleet, #38065, 2026-07-16)
+
+**+3 GREEN** (re-verified EXIT=0): PrimeReciprocalDivergenceOQ03 (16min: Finset.card_le_card_of_injOn now
+Set.MapsTo/InjOn+mem_coe; omega can't do n/p+1-1=n/p abstract p -> simp), Erdos70OQ01Problem (Ordinal
+add_le_add_left/right + mul_le_mul_left/right names SEMANTICALLY SWAPPED vs pre-4.31; Ordinal.IsLimit->
+Order.IsSuccLimit), Erdos1171Problem (Ordinal.omega repurposed as ω_ embedding -> use omega0; pin Ordinal.{0}
+to stop universe-mvar cascade). Repairs: none. BIG SEAM: Ordinal add/mul_le_mul left/right names swapped.
+
 # DOCTOR SINGLE-PROOF BATCH 79 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): DescartesRuleOfSignsOQ04 (31min/271k: Multiset.countP_singleton removed;
