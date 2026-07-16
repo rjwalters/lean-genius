@@ -40,12 +40,23 @@ theorem gap_deviation_connection :
   obtain ⟨k, hk⟩ := large_prime_gaps_exist G
   exact absurd (hbnd k) (by omega)
 
+-- nth_prime_five_eq_thirteen is not in Mathlib (only up to nth_prime_four_eq_eleven),
+-- so derive it locally from primality of 13 and count Nat.Prime 13 = 5.
+@[simp]
+theorem nth_prime_five_eq_thirteen : nth Nat.Prime 5 = 13 := by
+  have h13 : Nat.Prime 13 := by decide
+  have hc : Nat.count Nat.Prime 13 = 5 := by decide
+  simpa [hc] using Nat.nth_count h13
+
 -- Target for Aristotle: f(3) = 14 (concrete Finset.inf' computation).
 theorem example_f_3 : f 3 = 14 := by
-  sorry
+  rw [f_eq_f']
+  simp [f', nthPrime, Finset.range_add_one, Finset.range_zero,
+    Finset.inf'_insert, Finset.inf'_singleton]
 
 -- Target for Aristotle: deviation(3) = 0 (follows from f(3) = 14 and nthPrime(3) = 7).
 theorem example_deviation_3 : deviation 3 = 0 := by
-  sorry
+  simp only [deviation, example_f_3]
+  norm_num [nthPrime, show nthPrime 3 = 7 from by simp [nthPrime]]
 
 end Erdos454ProblemAristotle
