@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 51 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1131Problem (SONNET 26min/278k, ~30-site marathon: HasDerivAt through
+Neg/Module instance diamonds -> .cos/.const_mul+field_simp; conv doesn't accept simp_rw; field_simp won't
+cross-relate ring-equal diff-shaped denominators 4j²-1 vs (2j+1)(2j-1) -> pre-unify via rw[show..from ring];
+intervalIntegral.integral_comp_mul_deriv wants Continuous not continuousOn; unblocks Erdos1131OQ01). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 50 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): GeometricSeriesOQ02OQ05 (Ring.inverse_unit needs literal Aˣ not IsUnit ->
