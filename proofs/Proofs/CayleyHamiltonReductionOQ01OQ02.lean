@@ -49,10 +49,9 @@ theorem nilpotent_minpoly_dvd_pow [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     (k : ℕ) (hk : M ^ k = 0) :
     minpoly K M ∣ X ^ k := by
   apply minpoly.dvd
-  have heval : aeval M (X ^ k) = M ^ k := by
+  have heval : aeval M ((X : K[X]) ^ k) = M ^ k := by
     simp [map_pow, aeval_X]
   rw [heval, hk]
-  simp
 
 /-- For nilpotent M with M^k = 0, the degree of minpoly K M is at most k.
     This is often much tighter than the general bound deg(minpoly) ≤ n
@@ -82,13 +81,12 @@ theorem nilpotent_minpoly_natDegree_le [NeZero n] (M : Matrix (Fin n) (Fin n) K)
 theorem nilpotent_poly_reduction (M : Matrix (Fin n) (Fin n) K)
     (k : ℕ) (hk : M ^ k = 0) (p : K[X]) :
     aeval M p = aeval M (p %ₘ X ^ k) := by
-  have hXk_monic : (X ^ k : K[X]).Monic := monic_X.pow k
-  conv_lhs => rw [← Polynomial.modByMonic_add_div p hXk_monic]
+  conv_lhs => rw [← Polynomial.modByMonic_add_div p (X ^ k : K[X])]
   simp only [map_add, map_mul]
-  suffices h : aeval M (X ^ k) = 0 by
+  suffices h : aeval M ((X : K[X]) ^ k) = 0 by
     rw [h, zero_mul, add_zero]
-  have heval : aeval M (X ^ k) = M ^ k := by simp [map_pow, aeval_X]
-  rw [heval, hk]; simp
+  have heval : aeval M ((X : K[X]) ^ k) = M ^ k := by simp [map_pow, aeval_X]
+  rw [heval, hk]
 
 /-- For nilpotent M (M^k = 0), matrix powers vanish: M^j = 0 for all j ≥ k.
     This is the Lean-level certificate that Krylov sequences terminate in k steps.
@@ -105,9 +103,7 @@ theorem nilpotent_reduction_equiv [NeZero n] (M : Matrix (Fin n) (Fin n) K)
     (k : ℕ) (hk : M ^ k = 0) (p : K[X]) :
     aeval M (p %ₘ X ^ k) = aeval M (p %ₘ minpoly K M) := by
   rw [← nilpotent_poly_reduction M k hk]
-  have hmonic : (minpoly K M).Monic :=
-    minpoly.monic (Algebra.IsIntegral.isIntegral M)
-  conv_rhs => rw [← Polynomial.modByMonic_add_div p hmonic]
+  conv_lhs => rw [← Polynomial.modByMonic_add_div p (minpoly K M)]
   simp only [map_add, map_mul, minpoly.aeval K M, zero_mul, add_zero]
 
 -- ============================================================
@@ -133,14 +129,14 @@ theorem upper_tri_minpoly_natDegree_le [NeZero n]
     (minpoly K M).natDegree ≤ n := by
   have hdvd := upper_tri_minpoly_dvd_prod M h
   have hprod_ne : (∏ i : Fin n, (X - C (M i i) : K[X])) ≠ 0 :=
-    Finset.prod_ne_zero Finset.univ (fun i _ => monic_X_sub_C (M i i) |>.ne_zero)
+    Finset.prod_ne_zero_iff.mpr (fun i _ => monic_X_sub_C (M i i) |>.ne_zero)
   calc (minpoly K M).natDegree
       ≤ (∏ i : Fin n, (X - C (M i i) : K[X])).natDegree :=
           Polynomial.natDegree_le_of_dvd hdvd hprod_ne
     _ = n := by
           rw [Polynomial.natDegree_prod _ _
             (fun i _ => monic_X_sub_C (M i i) |>.ne_zero)]
-          simp [Polynomial.natDegree_X_sub_C]
+          simp
 
 -- ============================================================
 -- PART IV: General Efficient Reduction
@@ -152,16 +148,14 @@ theorem upper_tri_minpoly_natDegree_le [NeZero n]
     efficiency results meaningful. -/
 theorem minpoly_poly_reduction [NeZero n] (M : Matrix (Fin n) (Fin n) K) (p : K[X]) :
     aeval M p = aeval M (p %ₘ minpoly K M) := by
-  have hmonic : (minpoly K M).Monic :=
-    minpoly.monic (Algebra.IsIntegral.isIntegral M)
-  conv_lhs => rw [← Polynomial.modByMonic_add_div p hmonic]
+  conv_lhs => rw [← Polynomial.modByMonic_add_div p (minpoly K M)]
   simp only [map_add, map_mul, minpoly.aeval K M, zero_mul, add_zero]
 
 /-- **Summary theorem**: For nilpotent M (M^k = 0), the reduced polynomial
     p %ₘ X^k has degree < k ≤ n. Combined with nilpotent_poly_reduction,
     this shows all polynomial expressions in nilpotent M collapse to degree < k. -/
 theorem nilpotent_reduction_degree_lt (M : Matrix (Fin n) (Fin n) K)
-    (k : ℕ) (hk : M ^ k = 0) (p : K[X]) (hpmod : p %ₘ X ^ k ≠ 0) :
+    (k : ℕ) (_hk : M ^ k = 0) (p : K[X]) (hpmod : p %ₘ X ^ k ≠ 0) :
     (p %ₘ X ^ k).natDegree < k := by
   have hXk_monic : (X ^ k : K[X]).Monic := monic_X.pow k
   calc (p %ₘ X ^ k).natDegree
