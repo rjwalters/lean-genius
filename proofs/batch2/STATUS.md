@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 83 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos890Problem (skip-stubbed omega_prime -> ArithmeticFunction.cardDistinct
+Factors_apply_prime), Erdos1089Problem (#38611: g_mono_d hcard direction WRONG (#dd(P')≥#dd(P) insufficient,
+true is #dd(P)≥#dd(P') via dd(P')⊆dd(P)); PiLp.sub_apply for EuclideanSpace coord subtraction). Repairs #38611:
+Erdos1089 (subset-cardinality direction).
+
 # DOCTOR SINGLE-PROOF BATCH 82 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos1054ConstructionD (Nat.mul_dvd_mul_iff_right->_left arg-swap; omega
