@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 215 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos340GreedyCountUpper (Icc filter vs value-set filter no longer defeq-rfl
+-> explicit ext set-eq; instance-diamond LE -> omega), Erdos314Problem (simp;omega on ∃-iff regressed ->
+manual witness; ∀ᶠ/∃ᶠ binder ℝ->ℕ; div_le_div_of_nonneg_left 0≤; #38611 partialHarmonicSum_split_last n=0
+unsound -> m=0/m≥1 split). Repairs: 1 (Erdos314Problem).
+
 # DOCTOR SINGLE-PROOF BATCH 214 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos202Problem (HARD 17min: ∀ᶠ binder ℝ->ℕ exposed pre-existing L_super
