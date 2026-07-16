@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 121 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): AngleTrisectionOQ02OQ01OQ02Incomplete01 (HARD 33min/316k: constructibility
+degree-tower, 25+ sites; Algebra ↥K ↥(K⊔L) sup instance REMOVED from Mathlib [only ⊓ survives]-> local
+generic instances; haveI->letI to avoid instance-diamond opacity vs global sup pattern; adjoin_eq_top_of_*
+explicit Type arg; SubsemiringClass.coe_pow->SubmonoidClass.coe_pow; compute_degree! vs norm_num). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 120 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos447Problem (missing Data.Fintype.Fin/Powerset imports; #38611
