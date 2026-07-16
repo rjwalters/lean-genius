@@ -33,6 +33,7 @@ of the MVT structure. The MVT gives a point, the FTC gives the exact formula.
 namespace MeanValueTheoremOQ04
 
 open MeasureTheory intervalIntegral Real Set
+open scoped NNReal Topology
 
 -- ============================================================
 -- Part I: FTC Part 1 — Derivative of the Integral
@@ -45,7 +46,7 @@ theorem ftc_part1 {f : ℝ → ℝ} {a : ℝ}
     HasDerivAt (fun x => ∫ t in a..x, f t) (f x) x :=
   intervalIntegral.integral_hasDerivAt_right
     (hf.intervalIntegrable a x)
-    hf.continuousAt.stronglyMeasurableAtFilter
+    (hf.stronglyMeasurableAtFilter volume (𝓝 x))
     hf.continuousAt
 
 /-- **FTC Part 1 (deriv form)**: F'(x) = f(x) where F(x) = ∫ₐˣ f. -/
@@ -167,17 +168,12 @@ theorem ftc_uniqueness {F G : ℝ → ℝ} {f : ℝ → ℝ} {a b : ℝ}
   -- h = F - G has h' = 0 on uIcc a x (contained in uIcc a b)
   have hh : ∀ y ∈ uIcc a x, HasDerivAt (fun t => F t - G t) (0:ℝ) y := by
     intro y hy
-    have hyb : y ∈ uIcc a b := by
-      rcases mem_uIcc.mp hy with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
-      rcases mem_uIcc.mp hx with ⟨h3, h4⟩ | ⟨h3, h4⟩
-      · exact mem_uIcc.mpr (Or.inl ⟨h1, h2.trans h4⟩)
-      · exact mem_uIcc.mpr (Or.inr ⟨h3.trans h1, h2⟩)
-      · exact mem_uIcc.mpr (Or.inl ⟨h2, h1.trans h4⟩)
-      · exact mem_uIcc.mpr (Or.inr ⟨h3.trans h2, h1⟩)
-    simpa using (hF y hyb).sub (hG y hyb)
+    have hyb : y ∈ uIcc a b := uIcc_subset_uIcc_left hx hy
+    have h := (hF y hyb).sub (hG y hyb)
+    convert h using 1 <;> first | rfl | (rw [sub_self])
   -- Newton-Leibniz: ∫ₐˣ 0 = (F-G)(x) - (F-G)(a)
   have hint : (∫ _t in a..x, (0:ℝ)) = (F x - G x) - (F a - G a) :=
-    integral_eq_sub_of_hasDerivAt hh intervalIntegrable_const
+    integral_eq_sub_of_hasDerivAt hh intervalIntegral.intervalIntegrable_const
   simp at hint
   linarith [hinit]
 
@@ -194,7 +190,7 @@ theorem integral_approx_from_mvt {f g : ℝ → ℝ} {a b ε : ℝ}
     (hf : ContinuousOn (deriv f) (uIcc a b))
     (hg : ContinuousOn g (uIcc a b))
     (happrox : ∀ x ∈ uIcc a b, |deriv f x - g x| ≤ ε) :
-    |∫ t in a..b, deriv f t - ∫ t in a..b, g t| ≤ ε * (b - a) := by
+    |(∫ t in a..b, deriv f t) - ∫ t in a..b, g t| ≤ ε * (b - a) := by
   rw [← intervalIntegral.integral_sub hf.intervalIntegrable hg.intervalIntegrable]
   have hbound : ∀ x ∈ uIcc a b, ‖deriv f x - g x‖ ≤ ε := by
     intro x hx; rw [Real.norm_eq_abs]; exact happrox x hx
