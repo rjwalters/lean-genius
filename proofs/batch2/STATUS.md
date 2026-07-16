@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 235 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos570Problem (CycleGraph.loopless case-split not symbolic-mod omega;
+Sym2 coloring domain; imports Data.Finset.Sym + Order.Lattice.Nat; ⟨k,le_refl k⟩ Nat.le 2-ctor no longer
+elaborates -> named hk). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 234 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos533Problem (Std.Symm/Std.Irrefl explicit args point-free fill;
