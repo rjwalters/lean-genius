@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 173 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BezoutIdentityOQ02OQ01OQ02OQ03 (Zsqrtd.star def->Star instance; mul_def->
+norm_mul; dimensionLtOne->IsPrime.isMaximal; sq_pos_of_ne_zero arity; isUnit_of_mul_eq_one->IsUnit.
+of_mul_eq_one; CancelCommMonoidWithZero declassed->CommMonoidWithZero+IsCancelMulZero). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 172 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): BrouwerFixedPointOQ02 (div_le_div_of_nonneg_left 0≤a; iterate_succ_apply';
