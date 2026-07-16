@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 24 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos383Problem (dvd_pow_self needs n≠0; Prime.dvd_prod_iff->
+dvd_finsetProd_iff; Set.Infinite.mono arg order), Erdos360Aristotle (fin_cases h:T using N removed ->
+powerset+mem_powerset.mpr+fin_cases), Erdos679ProblemAristotle (primorial now in _root_ Mathlib.NumberTheory
+.Primorial -> qualify Erdos679.primorial). Repairs: none. Seam: `primorial` root-name collision.
+
 # DOCTOR SINGLE-PROOF BATCH 23 (4-slot config, conflict-proof collect, #38065, 2026-07-15)
 
 Reduced to 4 slots (doctor-b/d/e/g) + doctor-h collection to cut collision risk. **+3 GREEN** (re-verified
