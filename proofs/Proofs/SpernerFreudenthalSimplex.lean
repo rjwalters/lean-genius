@@ -74,7 +74,8 @@ lemma supp_nonempty {v : Fin (n + 1) → ℝ} (hv : InSimplex v) : (supp v).None
   by_contra h
   have hzero : ∀ i : Fin (n + 1), v i = 0 :=
     fun i => supp_le (fun hi => h ⟨i, hi⟩) hv.1
-  linarith [hv.2, Finset.sum_eq_zero (fun i _ => hzero i)]
+  have hsum0 : ∑ i : Fin (n + 1), v i = 0 := Finset.sum_eq_zero (fun i _ => hzero i)
+  linarith [hv.2, hsum0]
 
 noncomputable def colorSet (v fv : Fin (n + 1) → ℝ) : Finset (Fin (n + 1)) :=
   (supp v).filter (fun i => fv i ≤ v i)
@@ -115,7 +116,8 @@ lemma spernerColor_ne_of_zero {v fv : Fin (n + 1) → ℝ}
     (hv : InSimplex v) (hfv : InSimplex fv) {j : Fin (n + 1)} (hj : v j = 0) :
     spernerColor v fv hv hfv ≠ j := by
   intro heq
-  have hmem := (mem_colorSet_iff.mp (Finset.min'_mem _ _)).1
+  have hmem : spernerColor v fv hv hfv ∈ supp v :=
+    (mem_colorSet_iff.mp (Finset.min'_mem (colorSet v fv) (colorSet_nonempty hv hfv))).1
   rw [heq, mem_supp_iff] at hmem
   linarith [hmem, hj.le]
 
@@ -132,9 +134,9 @@ theorem sperner_panchromatic_zero (N : ℕ) (hN : 0 < N)
         (∀ i : Fin 1, f (v i) i ≤ v i i) ∧
         (∀ (i j : Fin 1) (l : Fin 1), |v i l - v j l| ≤ (0 : ℝ) / N) := by
   have hfpt : InSimplex (f (fun _ => 1)) :=
-    hf_map _ ⟨fun _ => le_refl _, by simp [Fin.sum_univ_one]⟩
+    hf_map _ ⟨fun _ => zero_le_one, by simp [Fin.sum_univ_one]⟩
   refine ⟨fun _ _ => 1,
-          fun _ => ⟨fun _ => le_refl _, by simp [Fin.sum_univ_one]⟩,
+          fun _ => ⟨fun _ => zero_le_one, by simp [Fin.sum_univ_one]⟩,
           fun i => ?_, fun i j l => ?_⟩
   · fin_cases i
     have hfsum : f (fun _ => (1 : ℝ)) 0 = 1 := by
@@ -164,11 +166,14 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     constructor
     · intro i; simp only [g]; split_ifs <;>
         exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
-    · simp only [g, Fin.sum_univ_two,
+    · show ∑ i : Fin 2, g k i = 1
+      simp only [g, Fin.sum_univ_two,
                  show (0 : Fin 2).val = 0 from rfl, if_true,
                  show (1 : Fin 2).val = 1 from rfl,
                  show ¬(1 : Nat) = 0 from by omega, if_false]
-      rw [← add_div, div_self hNr]; push_cast; omega
+      have hcast : ((k : ℕ) : ℝ) + ((N - (k : ℕ) : ℕ) : ℝ) = (N : ℝ) := by
+        rw [Nat.cast_sub hkle]; ring
+      rw [← add_div, hcast, div_self hNr]
   have hfg : ∀ k : Fin (N + 1), InSimplex (f (g k)) := fun k => hf_map _ (hg k)
   let c : Fin (N + 1) → Fin 2 := fun k =>
     spernerColor (g k) (f (g k)) (hg k) (hfg k)
@@ -203,8 +208,11 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
     exact absurd hcN (by decide)
   let K1 : Fin (N + 1) := ⟨K.val + 1, by omega⟩
   have hcK1 : c K1 = 0 := by
-    have hK1_not_S : K1 ∉ S := fun hmem =>
-      absurd (Finset.le_max' S K1 hmem) (by simp [K1, Fin.le_iff_val_le_val]; omega)
+    have hK1_not_S : K1 ∉ S := by
+      intro hmem
+      have hle : K1 ≤ K := Finset.le_max' S K1 hmem
+      have hnle : ¬ (K1 ≤ K) := by simp [K1, Fin.le_iff_val_le_val]
+      exact hnle hle
     exact Fin.ext (by
       have : (c K1).val ≠ 1 :=
         fun h => hK1_not_S (mem_filter.mpr ⟨mem_univ _, Fin.ext h⟩)
@@ -223,14 +231,18 @@ theorem sperner_panchromatic_one (N : ℕ) (hN : 0 < N)
   have hg1_diff : g K (1 : Fin 2) - g K1 (1 : Fin 2) = 1 / N := by
     simp only [g, K1, show (1 : Fin 2).val = 1 from rfl,
                show ¬(1 : Nat) = 0 from by omega, if_false]
-    have h1 : ((N - K.val : ℕ) : ℝ) = (N : ℝ) - K.val := by push_cast; omega
-    have h2 : ((N - (K.val + 1) : ℕ) : ℝ) = (N : ℝ) - K.val - 1 := by push_cast; omega
+    have h1 : ((N - K.val : ℕ) : ℝ) = (N : ℝ) - K.val := by
+      rw [Nat.cast_sub hK_lt_N.le]
+    have h2 : ((N - (K.val + 1) : ℕ) : ℝ) = (N : ℝ) - K.val - 1 := by
+      rw [Nat.cast_sub (by omega : K.val + 1 ≤ N)]; push_cast; ring
     rw [h1, h2]; field_simp; ring
   have habs_pos : (0 : ℝ) < 1 / N := by positivity
   have hdiam : ∀ (l : Fin 2), |g K1 l - g K l| ≤ 1 / N := by
     intro l; fin_cases l
-    · rw [hg0_diff, abs_of_pos habs_pos]
-    · have : g K1 (1 : Fin 2) - g K (1 : Fin 2) = -(1 / N) := by linarith [hg1_diff]
+    · show |g K1 (0 : Fin 2) - g K (0 : Fin 2)| ≤ 1 / N
+      rw [hg0_diff, abs_of_pos habs_pos]
+    · show |g K1 (1 : Fin 2) - g K (1 : Fin 2)| ≤ 1 / N
+      have : g K1 (1 : Fin 2) - g K (1 : Fin 2) = -(1 / N) := by linarith [hg1_diff]
       rw [this, abs_neg, abs_of_pos habs_pos]
   refine ⟨fun i => if i.val = 0 then g K1 else g K, ?_, ?_, ?_⟩
   · intro i; fin_cases i <;> simp [hg]
@@ -304,10 +316,11 @@ private def topSimps2 (N : ℕ) : Finset (Finset (ℕ × ℕ)) :=
 private lemma t1_card (b : ℕ × ℕ) : (t1 b).card = 3 := by
   unfold t1
   have h1 : (b.1 + 1, b.2) ∉ ({(b.1, b.2 + 1), b} : Finset (ℕ × ℕ)) := by
-    simp only [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, not_or, not_and]
+    simp only [Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff,
+               not_or, not_and]
     omega
   have h2 : (b.1, b.2 + 1) ∉ ({b} : Finset (ℕ × ℕ)) := by
-    simp only [Finset.mem_singleton, Prod.mk.injEq, not_and]; omega
+    simp only [Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff, not_and]; omega
   rw [Finset.card_insert_of_notMem h1, Finset.card_insert_of_notMem h2,
       Finset.card_singleton]
 
@@ -338,7 +351,7 @@ private lemma topSimps2_card_eq (N : ℕ) :
 private lemma t1_unique_base {b c : ℕ × ℕ} {u v : ℕ × ℕ} (huv : u ≠ v)
     (hb : {u, v} ⊆ t1 b) (hc : {u, v} ⊆ t1 c) : b = c := by
   simp only [t1, Finset.insert_subset_iff, Finset.singleton_subset_iff,
-             Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb hc
+             Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff] at hb hc
   obtain ⟨hub, hvb⟩ := hb
   obtain ⟨huc, hvc⟩ := hc
   -- Case bash: each of u,v is one of the 3 vertices in t1 b and t1 c.
@@ -354,7 +367,7 @@ private lemma t1_unique_base {b c : ℕ × ℕ} {u v : ℕ × ℕ} (huv : u ≠ 
 private lemma t2_unique_base {b c : ℕ × ℕ} {u v : ℕ × ℕ} (huv : u ≠ v)
     (hb : {u, v} ⊆ t2 b) (hc : {u, v} ⊆ t2 c) : b = c := by
   simp only [t2, Finset.insert_subset_iff, Finset.singleton_subset_iff,
-             Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb hc
+             Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff] at hb hc
   obtain ⟨hub, hvb⟩ := hb
   obtain ⟨huc, hvc⟩ := hc
   rcases hub with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
@@ -400,7 +413,7 @@ private lemma topSimps2_pseudomanifold (N : ℕ) :
 -- AbstractSimplicialData instance (all adj axioms proved)
 -- ============================================================
 
-private noncomputable def simData2 (N : ℕ) : AbstractSimplicialData (ℕ × ℕ) 2 where
+private noncomputable def simData2 (N : ℕ) : Triangulation.AbstractSimplicialData (ℕ × ℕ) 2 where
   topSimplices := topSimps2 N
   card_eq := topSimps2_card_eq N
   pseudomanifold := topSimps2_pseudomanifold N
@@ -442,26 +455,25 @@ private lemma changes_parity_mod2 (n : ℕ) (g : ℕ → Fin 2) :
   induction n with
   | zero => simp
   | succ m ih =>
-    rw [Finset.range_add_one, Finset.filter_union, Finset.filter_singleton]
-    have hdisj : Disjoint ((Finset.range m).filter (fun k => g k ≠ g (k + 1)))
-        (if g m ≠ g (m + 1) then {m} else ∅) := by
-      apply Finset.disjoint_left.mpr; intro x hx
-      simp only [Finset.mem_filter, Finset.mem_range] at hx
-      split_ifs with h
-      · simp only [Finset.mem_singleton]; omega
-      · exact Finset.notMem_empty x
-    rw [Finset.card_union_of_disjoint hdisj]
+    rw [Finset.range_add_one, Finset.filter_insert]
     by_cases hne : g m ≠ g (m + 1)
-    · rw [if_pos hne, Finset.card_singleton, ih]
-      split_ifs with h0
-      · have h1 : g 0 ≠ g (m + 1) := by
-          fin_cases (g 0) <;> fin_cases (g m) <;> fin_cases (g (m + 1)) <;> simp_all
+    · rw [if_pos hne, Finset.card_insert_of_notMem (by simp)]
+      by_cases h0 : g 0 = g m
+      · have ihv := ih
+        rw [if_pos h0] at ihv
+        have h1 : g 0 ≠ g (m + 1) := by rw [h0]; exact hne
         rw [if_neg h1]; omega
-      · have h1 : g 0 = g (m + 1) := by
-          fin_cases (g 0) <;> fin_cases (g m) <;> fin_cases (g (m + 1)) <;> simp_all
+      · have ihv := ih
+        rw [if_neg h0] at ihv
+        have h1 : g 0 = g (m + 1) := by
+          set a := g 0 with ha
+          set b := g m with hb
+          set c := g (m + 1) with hc
+          clear_value a b c
+          fin_cases a <;> fin_cases b <;> fin_cases c <;> simp_all
         rw [if_pos h1]; omega
     · have heq : g m = g (m + 1) := not_ne_iff.mp hne
-      rw [if_neg hne, Finset.card_empty, Nat.add_zero, ih]
+      rw [if_neg hne, ih]
       simp only [heq]
 
 /-- A binary sequence with g(0)=1 and g(n)=0 has an odd number of adjacent transitions. -/
@@ -488,6 +500,8 @@ private noncomputable def gridPt (b : ℕ × ℕ) : Fin 3 → ℝ := fun i =>
   else if i.val = 1 then (b.2 : ℝ) / N
   else ((N : ℝ) - b.1 - b.2) / N
 
+include hN
+
 /-- `gridPt N b` is in Δ² when b₀ + b₁ ≤ N. -/
 private lemma gridPt_inSimplex (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) :
     InSimplex (gridPt N b) := by
@@ -510,6 +524,8 @@ private lemma gridPt_inSimplex (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) :
     field_simp [hNr.ne']
     ring
 
+include f hf_map
+
 /-- Sperner coloring for grid vertex b with b₀+b₁ ≤ N. -/
 private noncomputable def cN2 (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) : Fin 3 :=
   spernerColor (gridPt N b) (f (gridPt N b))
@@ -522,25 +538,31 @@ private lemma cN2_ne_of_zero (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N)
   spernerColor_ne_of_zero (gridPt_inSimplex N hN b hb)
     (hf_map _ (gridPt_inSimplex N hN b hb)) hj
 
+omit hN f hf_map in
 private lemma gridPt_0N_coord0 : gridPt N (0, N) 0 = 0 := by
   simp [gridPt, show (0:Fin 3).val=0 from rfl]
 
+omit hN f hf_map in
 private lemma gridPt_0N_coord2 : gridPt N (0, N) 2 = 0 := by
   simp only [gridPt, show (2:Fin 3).val=2 from rfl,
              show ¬(2:ℕ)=0 from by omega, show ¬(2:ℕ)=1 from by omega, ↓reduceIte]
   push_cast; ring
 
+omit hN f hf_map in
 private lemma gridPt_N0_coord1 : gridPt N (N, 0) 1 = 0 := by
   simp [gridPt, show (1:Fin 3).val=1 from rfl, show ¬(1:ℕ)=0 from by omega]
 
+omit hN f hf_map in
 private lemma gridPt_N0_coord2 : gridPt N (N, 0) 2 = 0 := by
   simp only [gridPt, show (2:Fin 3).val=2 from rfl,
              show ¬(2:ℕ)=0 from by omega, show ¬(2:ℕ)=1 from by omega, ↓reduceIte]
   push_cast; ring
 
+omit hN f hf_map in
 private lemma gridPt_00_coord0 : gridPt N (0, 0) 0 = 0 := by
   simp [gridPt, show (0:Fin 3).val=0 from rfl]
 
+omit hN f hf_map in
 private lemma gridPt_00_coord1 : gridPt N (0, 0) 1 = 0 := by
   simp [gridPt, show (1:Fin 3).val=1 from rfl, show ¬(1:ℕ)=0 from by omega]
 
@@ -549,21 +571,27 @@ private lemma cN2_left_corner :
     cN2 N hN f hf_map (0, N) (by omega) = 1 := by
   have h0 := cN2_ne_of_zero N hN f hf_map (0, N) (by omega) 0 (gridPt_0N_coord0 N)
   have h2 := cN2_ne_of_zero N hN f hf_map (0, N) (by omega) 2 (gridPt_0N_coord2 N)
-  fin_cases (cN2 N hN f hf_map (0, N) (by omega)) <;> simp_all
+  set c := cN2 N hN f hf_map (0, N) (by omega) with hc
+  clear_value c
+  fin_cases c <;> simp_all
 
 /-- Corner (N, 0) has forced color 0: on face 1 (coord 1 = 0) and face 2 (coord 2 = 0). -/
 private lemma cN2_right_corner :
     cN2 N hN f hf_map (N, 0) (by omega) = 0 := by
   have h1 := cN2_ne_of_zero N hN f hf_map (N, 0) (by omega) 1 (gridPt_N0_coord1 N)
   have h2 := cN2_ne_of_zero N hN f hf_map (N, 0) (by omega) 2 (gridPt_N0_coord2 N)
-  fin_cases (cN2 N hN f hf_map (N, 0) (by omega)) <;> simp_all
+  set c := cN2 N hN f hf_map (N, 0) (by omega) with hc
+  clear_value c
+  fin_cases c <;> simp_all
 
 /-- Corner (0, 0) has forced color 2: on face 0 (coord 0 = 0) and face 1 (coord 1 = 0). -/
 private lemma cN2_origin_corner :
     cN2 N hN f hf_map (0, 0) (by omega) = 2 := by
   have h0 := cN2_ne_of_zero N hN f hf_map (0, 0) (by omega) 0 (gridPt_00_coord0 N)
   have h1 := cN2_ne_of_zero N hN f hf_map (0, 0) (by omega) 1 (gridPt_00_coord1 N)
-  fin_cases (cN2 N hN f hf_map (0, 0) (by omega)) <;> simp_all
+  set c := cN2 N hN f hf_map (0, 0) (by omega) with hc
+  clear_value c
+  fin_cases c <;> simp_all
 
 /-- Geometric face predicate for grid vertices.
 A vertex `b = (b.1, b.2)` (representing `(b.1/N, b.2/N, (N-b.1-b.2)/N)` in Δ²)
@@ -577,19 +605,23 @@ private instance onFaceΔ2_decidable (N : ℕ) (b : ℕ × ℕ) (j : Fin 3) :
     Decidable (onFaceΔ2 N b j) := by
   unfold onFaceΔ2; split_ifs <;> infer_instance
 
+omit hN f hf_map in
 private lemma onFaceΔ2_zero_iff (b : ℕ × ℕ) :
     onFaceΔ2 N b 0 ↔ b.1 = 0 := by
   simp [onFaceΔ2, show (0:Fin 3).val = 0 from rfl]
 
+omit hN f hf_map in
 private lemma onFaceΔ2_one_iff (b : ℕ × ℕ) :
     onFaceΔ2 N b 1 ↔ b.2 = 0 := by
   simp [onFaceΔ2, show (1:Fin 3).val = 1 from rfl]
 
+omit hN f hf_map in
 private lemma onFaceΔ2_two_iff (b : ℕ × ℕ) :
     onFaceΔ2 N b 2 ↔ b.1 + b.2 = N := by
   simp [onFaceΔ2, show (2:Fin 3).val = 2 from rfl, show ¬(2:ℕ)=0 from by omega,
         show ¬(2:ℕ)=1 from by omega]
 
+omit f hf_map in
 private lemma onFaceΔ2_zero_iff_gridPt_zero (b : ℕ × ℕ) :
     onFaceΔ2 N b 0 ↔ gridPt N b 0 = 0 := by
   have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
@@ -602,6 +634,7 @@ private lemma onFaceΔ2_zero_iff_gridPt_zero (b : ℕ × ℕ) :
     · exact_mod_cast h
     · exact absurd h hNne
 
+omit f hf_map in
 private lemma onFaceΔ2_one_iff_gridPt_zero (b : ℕ × ℕ) :
     onFaceΔ2 N b 1 ↔ gridPt N b 1 = 0 := by
   have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
@@ -615,6 +648,7 @@ private lemma onFaceΔ2_one_iff_gridPt_zero (b : ℕ × ℕ) :
     · exact_mod_cast h
     · exact absurd h hNne
 
+omit f hf_map in
 private lemma onFaceΔ2_two_iff_gridPt_zero (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) :
     onFaceΔ2 N b 2 ↔ gridPt N b 2 = 0 := by
   have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
@@ -660,19 +694,31 @@ private lemma face2_path_odd :
     Odd ((Finset.range N).filter (fun k => g k ≠ g (k + 1))).card := by
   apply odd_changes
   · -- g 0 = 1: vertex (0, N) has forced color 1
-    rw [dif_pos (Nat.zero_le N), Nat.sub_zero]
-    have hcol := cN2_left_corner N hN f hf_map
-    simp [hcol]
+    show (if hk : (0:ℕ) ≤ N then
+            if (cN2 N hN f hf_map (0, N - 0) (by omega)).val = 0 then 0 else 1
+          else 1) = 1
+    rw [dif_pos (Nat.zero_le N)]
+    have heq : cN2 N hN f hf_map (0, N - 0) (by omega) = cN2 N hN f hf_map (0, N) (by omega) := by
+      congr 1
+    rw [heq, cN2_left_corner N hN f hf_map]
+    decide
   · -- g N = 0: vertex (N, 0) has forced color 0
-    rw [dif_pos (le_refl N), Nat.sub_self]
-    have hcol := cN2_right_corner N hN f hf_map
-    simp [hcol]
+    show (if hk : N ≤ N then
+            if (cN2 N hN f hf_map (N, N - N) (by omega)).val = 0 then 0 else 1
+          else 1) = 0
+    rw [dif_pos (le_refl N)]
+    have heq : cN2 N hN f hf_map (N, N - N) (by omega) = cN2 N hN f hf_map (N, 0) (by omega) := by
+      congr 1
+      simp
+    rw [heq, cN2_right_corner N hN f hf_map]
+    decide
 
 -- ============================================================
 -- SECTION VI: Total wrapper of cN2 + IsSpernerColoring lift
 -- (Session 14 — bridges concrete coloring to Triangulation API)
 -- ============================================================
 
+include N in
 /-- Total wrapper of `cN2` to a function on all of `ℕ × ℕ`.
     Default to color `0` outside the `b₀+b₁≤N` region; this wrapping is
     irrelevant since only in-range vertices appear in `topSimps2 N`. -/
@@ -830,6 +876,8 @@ private lemma t2_vertex_sum_coord_range (b v : ℕ × ℕ) (hv : v ∈ t2 b) :
   simp only [t2, Finset.mem_insert, Finset.mem_singleton] at hv
   rcases hv with rfl | rfl | rfl <;> omega
 
+include hN
+
 /-- Per-coordinate gridPt diameter within `t1 b` is bounded by `1/N`. Any
 two vertices of a single `t1` cell differ in each coordinate by at most
 `1/N`, because each ℕ coordinate (and the coordinate sum) varies over a
@@ -840,6 +888,7 @@ private lemma gridPt_t1_coord_diameter (b b₁ b₂ : ℕ × ℕ)
   have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
   fin_cases l
   · -- l = 0: first-coordinate difference
+    show |gridPt N b₁ (0 : Fin 3) - gridPt N b₂ (0 : Fin 3)| ≤ 1 / N
     rw [gridPt_coord0_diff, abs_div, abs_of_pos hNr]
     have h₁ := t1_vertex_first_coord_range b b₁ hb₁
     have h₂ := t1_vertex_first_coord_range b b₂ hb₂
@@ -851,6 +900,7 @@ private lemma gridPt_t1_coord_diameter (b b₁ b₂ : ℕ × ℕ)
       rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
     exact div_le_div_of_nonneg_right hnum hNr.le
   · -- l = 1: second-coordinate difference
+    show |gridPt N b₁ (1 : Fin 3) - gridPt N b₂ (1 : Fin 3)| ≤ 1 / N
     rw [gridPt_coord1_diff, abs_div, abs_of_pos hNr]
     have h₁ := t1_vertex_second_coord_range b b₁ hb₁
     have h₂ := t1_vertex_second_coord_range b b₂ hb₂
@@ -862,6 +912,7 @@ private lemma gridPt_t1_coord_diameter (b b₁ b₂ : ℕ × ℕ)
       rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
     exact div_le_div_of_nonneg_right hnum hNr.le
   · -- l = 2: third-coordinate difference (via coordinate-sum range)
+    show |gridPt N b₁ (2 : Fin 3) - gridPt N b₂ (2 : Fin 3)| ≤ 1 / N
     rw [gridPt_coord2_diff, abs_div, abs_of_pos hNr]
     have h₁ := t1_vertex_sum_coord_range b b₁ hb₁
     have h₂ := t1_vertex_sum_coord_range b b₂ hb₂
@@ -882,7 +933,8 @@ private lemma gridPt_t2_coord_diameter (b b₁ b₂ : ℕ × ℕ)
     |gridPt N b₁ l - gridPt N b₂ l| ≤ 1 / N := by
   have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
   fin_cases l
-  · rw [gridPt_coord0_diff, abs_div, abs_of_pos hNr]
+  · show |gridPt N b₁ (0 : Fin 3) - gridPt N b₂ (0 : Fin 3)| ≤ 1 / N
+    rw [gridPt_coord0_diff, abs_div, abs_of_pos hNr]
     have h₁ := t2_vertex_first_coord_range b b₁ hb₁
     have h₂ := t2_vertex_first_coord_range b b₂ hb₂
     have hnum : |(b₁.1 : ℝ) - b₂.1| ≤ 1 := by
@@ -892,7 +944,8 @@ private lemma gridPt_t2_coord_diameter (b b₁ b₂ : ℕ × ℕ)
       have h₂hi : (b₂.1 : ℝ) ≤ (b.1 : ℝ) + 1 := by exact_mod_cast h₂.2
       rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
     exact div_le_div_of_nonneg_right hnum hNr.le
-  · rw [gridPt_coord1_diff, abs_div, abs_of_pos hNr]
+  · show |gridPt N b₁ (1 : Fin 3) - gridPt N b₂ (1 : Fin 3)| ≤ 1 / N
+    rw [gridPt_coord1_diff, abs_div, abs_of_pos hNr]
     have h₁ := t2_vertex_second_coord_range b b₁ hb₁
     have h₂ := t2_vertex_second_coord_range b b₂ hb₂
     have hnum : |(b₁.2 : ℝ) - b₂.2| ≤ 1 := by
@@ -902,7 +955,8 @@ private lemma gridPt_t2_coord_diameter (b b₁ b₂ : ℕ × ℕ)
       have h₂hi : (b₂.2 : ℝ) ≤ (b.2 : ℝ) + 1 := by exact_mod_cast h₂.2
       rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
     exact div_le_div_of_nonneg_right hnum hNr.le
-  · rw [gridPt_coord2_diff, abs_div, abs_of_pos hNr]
+  · show |gridPt N b₁ (2 : Fin 3) - gridPt N b₂ (2 : Fin 3)| ≤ 1 / N
+    rw [gridPt_coord2_diff, abs_div, abs_of_pos hNr]
     have h₁ := t2_vertex_sum_coord_range b b₁ hb₁
     have h₂ := t2_vertex_sum_coord_range b b₂ hb₂
     have hnum :
@@ -1061,10 +1115,10 @@ section N2BoundaryAnalysis
 -- the smallest vertex `b`, which `t2 c` never contains).
 private lemma t1_ne_t2 (b c : ℕ × ℕ) : t1 b ≠ t2 c := by
   intro h
-  have hb_in_t1 : b ∈ t1 b := by
-    simp [t1]
-  rw [h] at hb_in_t1
-  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb_in_t1
+  have h1 : b ∈ t2 c := by rw [← h]; simp [t1]
+  have h2 : (b.1 + 1, b.2) ∈ t2 c := by rw [← h]; simp [t1]
+  have h3 : (b.1, b.2 + 1) ∈ t2 c := by rw [← h]; simp [t1]
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff] at h1 h2 h3
   omega
 
 -- For two distinct vertices u, v, if both are in t1(b) ∩ t2(c), the
@@ -1075,22 +1129,22 @@ private lemma diagonal_in_t1_iff (b c : ℕ × ℕ) :
   refine ⟨fun h => ?_, ?_⟩
   · -- Forward: if both diagonal vertices are in t1(c), unique-base gives c = b.
     have hne : ((b.1, b.2+1) : ℕ × ℕ) ≠ (b.1+1, b.2) := by
-      intro heq; simp [Prod.mk.injEq] at heq
+      intro heq; simp [Prod.mk.injEq, Prod.ext_iff] at heq
     -- Both vertices of t1(b) and of t1(c)
     have hb_diag : ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
       intro x hx
       simp only [Finset.mem_insert, Finset.mem_singleton] at hx
       rcases hx with rfl | rfl <;>
-        · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-          omega
+        · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+          first | omega | tauto
     -- t1_unique_base gives `c = b` directly.
     exact t1_unique_base hne h hb_diag
   · rintro rfl
     intro x hx
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl <;>
-      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-        omega
+      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+        first | omega | tauto
 
 -- The "diagonal" edge of t1(b) is contained in t2(c) iff c = b.
 private lemma diagonal_in_t2_iff (b c : ℕ × ℕ) :
@@ -1100,7 +1154,7 @@ private lemma diagonal_in_t2_iff (b c : ℕ × ℕ) :
     have hv : (b.1+1, b.2) ∈ t2 c := h (by simp)
     -- t2 c = {(c.1+1, c.2+1), (c.1+1, c.2), (c.1, c.2+1)}; both vertices match
     -- forces c.1 = b.1 and c.2 = b.2.
-    simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hu hv
+    simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff] at hu hv
     -- u = (b.1, b.2+1) and v = (b.1+1, b.2). Each ∈ {3 vertices}.
     rcases hu with hu | hu | hu <;> rcases hv with hv | hv | hv <;>
       first
@@ -1119,7 +1173,8 @@ private lemma horizontal_in_t2_pos (b : ℕ × ℕ) (hb2 : 1 ≤ b.2) :
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff,
+                 true_and]
       omega
 
 -- The "vertical" edge `{b, (b.1, b.2+1)}` of t1(b) is contained
@@ -1129,7 +1184,8 @@ private lemma vertical_in_t2_pos (b : ℕ × ℕ) (hb1 : 1 ≤ b.1) :
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff,
+                 true_and, and_true]
       omega
 
 -- When b.2 = 0, no t2 cell contains the horizontal edge `{b, (b.1+1, b.2)}`.
@@ -1145,7 +1201,7 @@ private lemma horizontal_not_in_t2_at_y0 (b : ℕ × ℕ) (hb2 : b.2 = 0) (c : �
   -- But we need TWO vertices with second coord 0 (b and (b.1+1, 0)). Contradiction.
   have hb_mem : b ∈ t2 c := h (by simp)
   have hbp_mem : (b.1+1, b.2) ∈ t2 c := h (by simp)
-  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb_mem hbp_mem
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff] at hb_mem hbp_mem
   -- b.2 = 0 forces b coordinates; b.1+1 differs from b.1
   rcases hb_mem with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
     rcases hbp_mem with ⟨h3, h4⟩ | ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
@@ -1157,7 +1213,7 @@ private lemma vertical_not_in_t2_at_x0 (b : ℕ × ℕ) (hb1 : b.1 = 0) (c : ℕ
   intro h
   have hb_mem : b ∈ t2 c := h (by simp)
   have hbp_mem : (b.1, b.2+1) ∈ t2 c := h (by simp)
-  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb_mem hbp_mem
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff] at hb_mem hbp_mem
   rcases hb_mem with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
     rcases hbp_mem with ⟨h3, h4⟩ | ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
     omega
@@ -1174,8 +1230,8 @@ private lemma t2_face0_in_t1 (b : ℕ × ℕ) :
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-      omega
+    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+      first | omega | tauto
 
 -- The "top side" edge of t2(b): vertices v_0, v_2.
 -- Equivalently: {(b.1, b.2+1), (b.1+1, b.2+1)}. Shared with t1(b.1, b.2+1).
@@ -1184,8 +1240,8 @@ private lemma t2_face1_in_t1 (b : ℕ × ℕ) :
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-      omega
+    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+      first | omega | tauto
 
 -- The "diagonal" edge of t2(b): vertices v_0, v_1.
 -- Equivalently: {(b.1, b.2+1), (b.1+1, b.2)} = the diagonal of t1(b) too.
@@ -1195,8 +1251,8 @@ private lemma t2_face2_in_t1 (b : ℕ × ℕ) :
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-      omega
+    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+      first | omega | tauto
 
 -- ============================================================
 -- (Session 17) Boundary classification — base ↔ topSimps2 bridge
@@ -1440,8 +1496,8 @@ private lemma horizontal_only_container_of_t1_boundary
         intro x hx
         simp only [Finset.mem_insert, Finset.mem_singleton] at hx
         rcases hx with rfl | rfl <;>
-          · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-            omega
+          · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+            first | omega | tauto
       exact congrArg t1 (t1_unique_base hne hb_in_t1b hs_sub).symm
     · -- s = t2 c : excluded by horizontal_not_in_t2_at_y0 (b.2 = 0).
       exfalso
@@ -1451,8 +1507,8 @@ private lemma horizontal_only_container_of_t1_boundary
     intro x hx
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl <;>
-      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-        omega
+      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+        first | omega | tauto
 
 -- (S18.3) Boundary vertical: only t1 b contains its vertical edge
 -- when `b.1 = 0`.
@@ -1472,8 +1528,8 @@ private lemma vertical_only_container_of_t1_boundary
         intro x hx
         simp only [Finset.mem_insert, Finset.mem_singleton] at hx
         rcases hx with rfl | rfl <;>
-          · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-            omega
+          · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+            first | omega | tauto
       exact congrArg t1 (t1_unique_base hne hb_in_t1b hs_sub).symm
     · exfalso
       exact vertical_not_in_t2_at_x0 b hb1 c hs_sub
@@ -1482,8 +1538,8 @@ private lemma vertical_only_container_of_t1_boundary
     intro x hx
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl <;>
-      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-        omega
+      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+        first | omega | tauto
 
 -- (S18.4) Cardinality corollaries: the three boundary cases above all
 -- have container-card = 1, ready to feed `_hBoundaryOnFace` analysis.
@@ -1565,24 +1621,24 @@ private lemma t2_face0_in_t2 (b : ℕ × ℕ) :
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-      omega
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+      first | omega | tauto
 
 private lemma t2_face1_in_t2 (b : ℕ × ℕ) :
     ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t2 b := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-      omega
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+      first | omega | tauto
 
 private lemma t2_face2_in_t2 (b : ℕ × ℕ) :
     ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 b := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
   rcases hx with rfl | rfl <;>
-    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-      omega
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+      first | omega | tauto
 
 -- Card-≥-2 lemmas: each t2 face has at least two containers in
 -- `topSimps2 N` — `t2 b` itself and the sharing t1 cell.
@@ -1983,20 +2039,20 @@ The left-to-right direction proceeds by `split_ifs`: the case where
 `p.1 ∈ cs` (via `self_mem_containersOf`) gives
 `(cs.erase p.1).card = cs.card - 1 ≥ 1`. -/
 lemma adjFn_eq_none_iff_card_le_one
-    (D : AbstractSimplicialData V n)
+    (D : Triangulation.AbstractSimplicialData V n)
     (p : { s : Finset V // s ∈ D.topSimplices })
     (k : Fin (n + 1)) :
     D.adjFn p k = none ↔
       (D.containersOf (D.faceOf p.1 p.2 k)).card ≤ 1 := by
   have h_self : p.1 ∈ D.containersOf (D.faceOf p.1 p.2 k) :=
     D.self_mem_containersOf p.1 p.2 k
-  unfold AbstractSimplicialData.adjFn
+  unfold Triangulation.AbstractSimplicialData.adjFn
   simp only
   split_ifs with hc hne
   · -- Outer `if` taken: cs.card ≤ 1; both sides hold.
     exact ⟨fun _ => hc, fun _ => rfl⟩
   · -- Outer skipped, inner taken: returns `some _`. LHS False, RHS False.
-    exact ⟨fun h => Option.noConfusion h, fun h => absurd h hc⟩
+    exact ⟨fun h => h.elim, fun h => absurd h hc⟩
   · -- Outer skipped, inner skipped: contradicts `p.1 ∈ cs` + `cs.card > 1`.
     exfalso
     apply hne
@@ -2009,7 +2065,7 @@ lemma adjFn_eq_none_iff_card_le_one
 exactly 1. Combines `adjFn_eq_none_iff_card_le_one` with the
 `cs.card ≥ 1` lower bound from `self_mem_containersOf`. -/
 lemma adjFn_eq_none_iff_card_eq_one
-    (D : AbstractSimplicialData V n)
+    (D : Triangulation.AbstractSimplicialData V n)
     (p : { s : Finset V // s ∈ D.topSimplices })
     (k : Fin (n + 1)) :
     D.adjFn p k = none ↔
@@ -2030,7 +2086,7 @@ hypothesis of `Triangulation.boundary_doors_odd` requires —
 `∀ j ≠ k, onFace (vertexEnum s hs j) faceIdx` — restated in
 "face-content" terms suitable for case-splitting on `faceOf`. -/
 lemma forall_vertex_ne_iff_forall_face_mem
-    (D : AbstractSimplicialData V n)
+    (D : Triangulation.AbstractSimplicialData V n)
     (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1))
     (P : V → Prop) :
     (∀ j : Fin (n + 1), j ≠ k → P (D.vertexEnum s hs j)) ↔
@@ -2264,8 +2320,9 @@ private lemma boundaryOnFace_simData2 :
   -- Step 5: Case-split on S ∈ topSimps2 N.
   rcases (topSimps2_mem_iff N S).mp hS with ⟨b, hb, rfl⟩ | ⟨c, hc, rfl⟩
   · -- S = t1 b: case-split on which vertex is dropped.
-    have h_drop : (simData2 N).vertexEnum (t1 b) hS k ∈ t1 b :=
-      (simData2 N).vertexEnum_mem (t1 b) hS k
+    set vd := (simData2 N).vertexEnum (t1 b) hS k with hvd
+    have h_drop : vd ∈ t1 b := (simData2 N).vertexEnum_mem (t1 b) hS k
+    clear_value vd
     simp only [t1, Finset.mem_insert, Finset.mem_singleton] at h_drop
     rcases h_drop with hd | hd | hd
     · -- (S19.3.1) dropped = (b.1+1, b.2): face = vertical edge {b, (b.1, b.2+1)}.
@@ -2273,7 +2330,7 @@ private lemma boundaryOnFace_simData2 :
           (simData2 N).faceOf (t1 b) hS k =
             ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) := by
         show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
-        rw [hd]; exact t1_erase_first b
+        rw [← hvd, hd]; exact t1_erase_first b
       -- Force boundary condition b.1 = 0 by interior contradiction.
       have h_b1_zero : b.1 = 0 := by
         by_contra h_pos
@@ -2285,8 +2342,8 @@ private lemma boundaryOnFace_simData2 :
           intro x hx
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;>
-            · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-              omega
+            · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+              first | omega | tauto
         have h_two : 2 ≤ ((simData2 N).containersOf
             ((simData2 N).faceOf (t1 b) hS k)).card := by
           rw [h_face_eq, h_containers_eq]
@@ -2309,7 +2366,7 @@ private lemma boundaryOnFace_simData2 :
           (simData2 N).faceOf (t1 b) hS k =
             ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
         show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
-        rw [hd]; exact t1_erase_second b
+        rw [← hvd, hd]; exact t1_erase_second b
       have h_b2_zero : b.2 = 0 := by
         by_contra h_pos
         have h_b2_pos : 1 ≤ b.2 := Nat.one_le_iff_ne_zero.mpr h_pos
@@ -2320,8 +2377,8 @@ private lemma boundaryOnFace_simData2 :
           intro x hx
           simp only [Finset.mem_insert, Finset.mem_singleton] at hx
           rcases hx with rfl | rfl <;>
-            · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
-              omega
+            · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, Prod.ext_iff]
+              first | omega | tauto
         have h_two : 2 ≤ ((simData2 N).containersOf
             ((simData2 N).faceOf (t1 b) hS k)).card := by
           rw [h_face_eq, h_containers_eq]
@@ -2343,7 +2400,7 @@ private lemma boundaryOnFace_simData2 :
           (simData2 N).faceOf (t1 b) hS k =
             ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
         show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
-        rw [hd]; exact t1_erase_third b
+        rw [← hvd, hd]; exact t1_erase_third b
       have h_b_diag : N ≤ b.1 + b.2 + 1 := by
         by_contra h_pos
         have h_b_lt : b.1 + b.2 + 1 < N := by omega
@@ -2373,8 +2430,9 @@ private lemma boundaryOnFace_simData2 :
       · exact ⟨h_in_v, h_b'_face⟩
   · -- S = t2 c case: every edge has ≥ 2 containers, contradicting card ≤ 1.
     exfalso
-    have h_drop : (simData2 N).vertexEnum (t2 c) hS k ∈ t2 c :=
-      (simData2 N).vertexEnum_mem (t2 c) hS k
+    set vd := (simData2 N).vertexEnum (t2 c) hS k with hvd
+    have h_drop : vd ∈ t2 c := (simData2 N).vertexEnum_mem (t2 c) hS k
+    clear_value vd
     simp only [t2, Finset.mem_insert, Finset.mem_singleton] at h_drop
     rcases h_drop with hd | hd | hd
     · -- dropped = (c.1+1, c.2+1): face = face2 of t2 c
@@ -2382,7 +2440,7 @@ private lemma boundaryOnFace_simData2 :
           (simData2 N).faceOf (t2 c) hS k =
             ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) := by
         show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
-        rw [hd]; exact t2_erase_first c
+        rw [← hvd, hd]; exact t2_erase_first c
       have h_two := t2_face2_card_ge_two N hc
       have h_card : ((simData2 N).containersOf
           ((simData2 N).faceOf (t2 c) hS k)).card =
@@ -2395,7 +2453,7 @@ private lemma boundaryOnFace_simData2 :
           (simData2 N).faceOf (t2 c) hS k =
             ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
         show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
-        rw [hd]; exact t2_erase_second c
+        rw [← hvd, hd]; exact t2_erase_second c
       have h_two := t2_face1_card_ge_two N hc
       have h_card : ((simData2 N).containersOf
           ((simData2 N).faceOf (t2 c) hS k)).card =
@@ -2408,7 +2466,7 @@ private lemma boundaryOnFace_simData2 :
           (simData2 N).faceOf (t2 c) hS k =
             ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
         show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
-        rw [hd]; exact t2_erase_third c
+        rw [← hvd, hd]; exact t2_erase_third c
       have h_two := t2_face0_card_ge_two N hc
       have h_card : ((simData2 N).containersOf
           ((simData2 N).faceOf (t2 c) hS k)).card =
@@ -2624,8 +2682,9 @@ private lemma t1_lastFace_implies_satDiag
     (SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem
       (simData2 N) (t1 b) hS k _).mp h_face2
   -- Case-split on which vertex of `t1 b` is dropped (S19.3 pattern).
-  have h_drop : (simData2 N).vertexEnum (t1 b) hS k ∈ t1 b :=
-    (simData2 N).vertexEnum_mem (t1 b) hS k
+  set vd := (simData2 N).vertexEnum (t1 b) hS k with hvd
+  have h_drop : vd ∈ t1 b := (simData2 N).vertexEnum_mem (t1 b) hS k
+  clear_value vd
   simp only [t1, Finset.mem_insert, Finset.mem_singleton] at h_drop
   rcases h_drop with hd | hd | hd
   · -- Drop = `(b.1+1, b.2)`: face = `{b, (b.1, b.2+1)}` (vertical edge).
@@ -2634,7 +2693,7 @@ private lemma t1_lastFace_implies_satDiag
     have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
         ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) := by
       show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
-      rw [hd]; exact t1_erase_first b
+      rw [← hvd, hd]; exact t1_erase_first b
     have h_b_on : onFaceΔ2_strict N b (2 : Fin 3) := by
       apply h_face_v; rw [h_face_eq]; simp
     have h_v_on : onFaceΔ2_strict N (b.1, b.2+1) (2 : Fin 3) := by
@@ -2649,7 +2708,7 @@ private lemma t1_lastFace_implies_satDiag
     have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
         ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
       show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
-      rw [hd]; exact t1_erase_second b
+      rw [← hvd, hd]; exact t1_erase_second b
     have h_b_on : onFaceΔ2_strict N b (2 : Fin 3) := by
       apply h_face_v; rw [h_face_eq]; simp
     have h_v_on : onFaceΔ2_strict N (b.1+1, b.2) (2 : Fin 3) := by
@@ -2664,7 +2723,7 @@ private lemma t1_lastFace_implies_satDiag
     have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
         ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
       show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
-      rw [hd]; exact t1_erase_third b
+      rw [← hvd, hd]; exact t1_erase_third b
     have h_v_on : onFaceΔ2_strict N (b.1, b.2+1) (2 : Fin 3) := by
       apply h_face_v; rw [h_face_eq]; simp
     have h_v_face := h_v_on.2
@@ -2728,8 +2787,9 @@ private lemma t2_adj_ne_none
       (simData2 N).containersOf f =
         (topSimps2 N).filter (fun s => f ⊆ s) := fun _ => rfl
   -- Case-split on which vertex of `t2 c` is dropped.
-  have h_drop : (simData2 N).vertexEnum (t2 c) hS k ∈ t2 c :=
-    (simData2 N).vertexEnum_mem (t2 c) hS k
+  set vd := (simData2 N).vertexEnum (t2 c) hS k with hvd
+  have h_drop : vd ∈ t2 c := (simData2 N).vertexEnum_mem (t2 c) hS k
+  clear_value vd
   simp only [t2, Finset.mem_insert, Finset.mem_singleton] at h_drop
   rcases h_drop with hd | hd | hd
   · -- dropped = `(c.1+1, c.2+1)`: face = `{(c.1, c.2+1), (c.1+1, c.2)}` (face 2 of t2 c).
@@ -2737,7 +2797,7 @@ private lemma t2_adj_ne_none
         (simData2 N).faceOf (t2 c) hS k =
           ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) := by
       show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
-      rw [hd]; exact t2_erase_first c
+      rw [← hvd, hd]; exact t2_erase_first c
     have h_two := t2_face2_card_ge_two N hc
     rw [h_face_eq, h_containers_eq] at h_card_le
     omega
@@ -2746,7 +2806,7 @@ private lemma t2_adj_ne_none
         (simData2 N).faceOf (t2 c) hS k =
           ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
       show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
-      rw [hd]; exact t2_erase_second c
+      rw [← hvd, hd]; exact t2_erase_second c
     have h_two := t2_face1_card_ge_two N hc
     rw [h_face_eq, h_containers_eq] at h_card_le
     omega
@@ -2755,7 +2815,7 @@ private lemma t2_adj_ne_none
         (simData2 N).faceOf (t2 c) hS k =
           ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
       show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
-      rw [hd]; exact t2_erase_third c
+      rw [← hvd, hd]; exact t2_erase_third c
     have h_two := t2_face0_card_ge_two N hc
     rw [h_face_eq, h_containers_eq] at h_card_le
     omega
@@ -2823,7 +2883,7 @@ private lemma satDiag_self_drop_index_exists
   set hS := satDiagBases_t1_in_topSimps2 N hb with hS_def
   have hb_mem_t1 : b ∈ t1 b := by
     simp only [t1, Finset.mem_insert, Finset.mem_singleton]
-    right; right; rfl
+    right; right; trivial
   have h_img := (simData2 N).vertexEnum_image_univ (t1 b) hS
   rw [← h_img] at hb_mem_t1
   obtain ⟨k, _, hk⟩ := Finset.mem_image.mp hb_mem_t1
@@ -2877,14 +2937,15 @@ private lemma satDiag_self_drop_face2
     show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
     rw [hk]; exact t1_erase_third b
   have h_endpoints := satDiagBases_endpoints_on_face2 N hb
-  apply (SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem
-    (simData2 N) (t1 b) hS k _).mpr
-  intro v hv
-  rw [h_face_eq] at hv
-  simp only [Finset.mem_insert, Finset.mem_singleton] at hv
-  rcases hv with rfl | rfl
-  · exact h_endpoints.1
-  · exact h_endpoints.2
+  show ∀ j : Fin (2 + 1), j ≠ k →
+      onFaceΔ2_strict N ((simData2 N).vertexEnum (t1 b) hS j) (2 : Fin 3)
+  exact (SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem
+    (simData2 N) (t1 b) hS k (fun v => onFaceΔ2_strict N v 2)).mpr (fun v hv => by
+      rw [h_face_eq] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      rcases hv with rfl | rfl
+      · exact h_endpoints.1
+      · exact h_endpoints.2)
 
 end N2LastFaceSelfDropIndex
 
