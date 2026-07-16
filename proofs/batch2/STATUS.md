@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 188 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): DesarguesTheorem (×₃ local infixl:74; cross_apply rfl; maxRecDepth/Heartbeats;
+#38611 REPAIR 2 FALSE polynomial identities old ring accepted -> true forms [sympy-verified]:
+scalar_triple_of_cross_products 6-term->2-term, desargues K factor). Repairs: 1 (2 false identities).
+
 # DOCTOR SINGLE-PROOF BATCH 187 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1065CunninghamChains (List.not_mem_nil no arg; List.Sorted/sorted_cons
