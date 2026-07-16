@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 105 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CentralLimitTheoremOQ01OQ02OQ01OQ01 (ascribe (expr:ℝ) inside Complex.exp
+cast for HDiv synth; map_exp->Complex.norm_exp; Real.exp_lt_exp iff; Complex.exp_conj rebuild vs bare ext;
+simp only+ring vs spurious ∨ disjunctions). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 104 (mixed fleet, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): ElementaryQuadraticReciprocityOQ01OQ01OQ03 (JacobiSum.Basic now gates
