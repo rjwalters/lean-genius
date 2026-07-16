@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 249 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FundamentalTheoremAlgebra (Splits 2-arg->1-arg unary; splits_codomain->
+IsAlgClosed.splits; natDegree_eq_card_roots dot-notation; Degree.Definitions->Defs). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 248 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos943Problem (omega needs hp.two_le; positivity n≥1 shape ->
