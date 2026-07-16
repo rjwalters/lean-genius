@@ -1465,7 +1465,7 @@ Erdos608Problem	PRE-EXISTING	parse-error
 Erdos608ProblemAristotle	GREEN	
 Erdos609Problem	GREEN	
 Erdos60Problem	RESIDUAL	type-mismatch
-Erdos610Aristotle	RESIDUAL	instance-synth
+Erdos610Aristotle	GREEN	
 Erdos610Problem	GREEN	
 Erdos610ProblemAristotle	GREEN	
 Erdos611Aristotle	GREEN	
@@ -2427,7 +2427,7 @@ ShapleyFolkmanOQ01	GREEN
 ShapleyFolkmanOQ03	GREEN	
 ShapleyFolkmanOQ04	GREEN	
 SkolemNoetherMatrixAut	GREEN	
-SkolemNoetherMatrixAutAristotle	RESIDUAL	unknown-const:Matrix.isUnit_det_iff_isUnit_mulVecLin
+SkolemNoetherMatrixAutAristotle	GREEN	
 SolutionOfCubicOQ03OQ01	GREEN	
 SolutionOfCubicOQ03OQ02	GREEN	
 SolutionOfCubicOQ03OQ03	GREEN	
@@ -2460,7 +2460,7 @@ SpernerNDimOQ01	GREEN
 SpernerNDimOQ02	GREEN	
 SpernerNDimOQ02Cell	GREEN	
 SpernerNDimOQ02Obstruction	GREEN	
-SpernerNDimOQ03	RESIDUAL	type-mismatch
+SpernerNDimOQ03	GREEN	
 SpernerNDimOQ03OQ01	RESIDUAL	type-mismatch
 SpernerNDimOQ04	RESIDUAL	parse-error
 SpernerNDimOQ06	GREEN	
