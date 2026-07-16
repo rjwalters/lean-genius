@@ -47,7 +47,7 @@ def IsTriangleFree {n : ℕ} (G : SGraph n) (S : Finset (Fin n)) : Prop :=
 /-- The number of edges in G. -/
 noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
   Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
-    (Finset.univ.product Finset.univ))
+    ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))))
 
 /- ## SimpleGraph Bridge -/
 
@@ -55,7 +55,7 @@ noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
     This enables using Mathlib's clique, independent set, and Ramsey theory results. -/
 def SGraph.toSimpleGraph {n : ℕ} (G : SGraph n) : SimpleGraph (Fin n) where
   Adj i j := G.adj i j
-  symm.symm := fun hab => G.symm _ _ hab
+  symm.symm := G.symm
   loopless.irrefl := G.irrefl
 
 @[simp]
@@ -92,7 +92,7 @@ theorem isTriangleFree_singleton {n : ℕ} (G : SGraph n) (v : Fin n) :
     IsTriangleFree G {v} := by
   intro ⟨a, b, _, ha, hb, _, hab, _, _, _, _⟩
   simp at ha hb
-  exact absurd (ha.symm ▸ hb) hab
+  exact absurd (ha.trans hb.symm) hab
 
 /-- Subsets of triangle-free sets are triangle-free -/
 theorem isTriangleFree_subset {n : ℕ} (G : SGraph n) (S T : Finset (Fin n))
@@ -119,7 +119,7 @@ theorem hasClique_zero {n : ℕ} (G : SGraph n) : HasClique G 0 :=
 /-- Every nonempty graph has a 1-clique (singleton) -/
 theorem hasClique_one {n : ℕ} (G : SGraph n) (hn : 0 < n) : HasClique G 1 :=
   ⟨{⟨0, hn⟩}, Finset.card_singleton _, fun i hi j hj hij => by
-    simp [Finset.mem_singleton] at hi hj; exact absurd (hi ▸ hj) hij⟩
+    simp [Finset.mem_singleton] at hi hj; exact absurd (hi.trans hj.symm) hij⟩
 
 /-- Any pair of vertices is triangle-free -/
 theorem isTriangleFree_pair {n : ℕ} (G : SGraph n) (u v : Fin n) :
@@ -150,49 +150,74 @@ theorem edgeCount_le_sq {n : ℕ} (G : SGraph n) : edgeCount G ≤ n ^ 2 := by
   unfold edgeCount
   have h1 := Finset.card_le_card (Finset.filter_subset
     (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
-    (Finset.univ.product Finset.univ))
-  have h2 : (Finset.univ.product (Finset.univ : Finset (Fin n))).card = n ^ 2 := by
+    ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))))
+  have h2 : ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).card = n ^ 2 := by
     simp [Finset.card_product, sq]
   linarith
 
 /-- The number of strictly ordered pairs (i,j) with i < j in Fin n equals n*(n-1)/2. -/
 private lemma card_strict_upper_tri (n : ℕ) :
-    ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+    (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
       (fun p : Fin n × Fin n => p.1 < p.2)).card = n * (n - 1) / 2 := by
   -- Off-diagonal {(i,j) | i ≠ j} has n*(n-1) elements
-  have h_od : ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+  have h_od : (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
       (fun p : Fin n × Fin n => p.1 ≠ p.2)).card = n * (n - 1) := by
-    have : (Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+    have : ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
         (fun p : Fin n × Fin n => p.1 ≠ p.2) = (Finset.univ : Finset (Fin n)).offDiag := by
       ext ⟨a, b⟩; simp [Finset.mem_offDiag]
-    rw [this, Finset.card_offDiag, Finset.card_univ, Fintype.card_fin]
+    rw [this, Finset.offDiag_card, Finset.card_univ, Fintype.card_fin, Nat.mul_sub_one]
   -- Split: {i ≠ j} = {i < j} ∪ {i > j}
-  have h_split : ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+  have h_split : (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
       (fun p : Fin n × Fin n => p.1 ≠ p.2)).card =
-      ((Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.1 < p.2)).card +
-      ((Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
-    rw [← Finset.filter_or]
-    congr 1; ext ⟨a, b⟩
-    simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and]
-    exact ne_iff_lt_or_gt
+      (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+        (fun p : Fin n × Fin n => p.1 < p.2)).card +
+      (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+        (fun p : Fin n × Fin n => p.2 < p.1)).card := by
+    have heq : ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+        (fun p : Fin n × Fin n => p.1 ≠ p.2) =
+        ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+          (fun p : Fin n × Fin n => p.1 < p.2) ∪
+        ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+          (fun p : Fin n × Fin n => p.2 < p.1) := by
+      rw [← Finset.filter_or]
+      apply Finset.filter_congr
+      intro p _
+      exact ne_iff_lt_or_gt
+    have hdisj : Disjoint
+        (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+          (fun p : Fin n × Fin n => p.1 < p.2))
+        (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+          (fun p : Fin n × Fin n => p.2 < p.1)) := by
+      rw [Finset.disjoint_filter]
+      intro p _ hp1 hp2
+      exact absurd (hp1.trans hp2) (lt_irrefl _)
+    rw [heq, Finset.card_union_of_disjoint hdisj]
   -- Symmetry: |{i < j}| = |{i > j}| via the swap bijection
-  have h_symm : ((Finset.univ ×ˢ (Finset.univ : Finset (Fin n))).filter
+  have h_symm : (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
       (fun p : Fin n × Fin n => p.1 < p.2)).card =
-      ((Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.2 < p.1)).card := by
-    apply Finset.card_bij (fun p _ => (p.2, p.1))
-      (fun ⟨a, b⟩ h => by simp_all)
-      (fun ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ _ _ h => by
-        simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
-      (fun ⟨a, b⟩ h => ⟨(b, a), by simp_all, by simp⟩)
+      (((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+        (fun p : Fin n × Fin n => p.2 < p.1)).card := by
+    apply Finset.card_nbij' Prod.swap Prod.swap
+    · intro p hp
+      simp only [Finset.coe_filter, Finset.mem_coe, Finset.mem_product, Finset.mem_univ,
+        true_and, Set.mem_setOf_eq] at hp ⊢
+      simpa using hp
+    · intro p hp
+      simp only [Finset.coe_filter, Finset.mem_coe, Finset.mem_product, Finset.mem_univ,
+        true_and, Set.mem_setOf_eq] at hp ⊢
+      simpa using hp
+    · intro p _; simp
+    · intro p _; simp
   omega
 
 /-- **Tight edge bound**: A simple graph on n vertices has at most n*(n-1)/2 edges.
     Improves `edgeCount_le_sq` from n² to the exact maximum. -/
 theorem edgeCount_le {n : ℕ} (G : SGraph n) : edgeCount G ≤ n * (n - 1) / 2 := by
   unfold edgeCount
-  have h1 : (Finset.univ ×ˢ Finset.univ).filter
+  have h1 : ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
       (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
-      ⊆ (Finset.univ ×ˢ Finset.univ).filter (fun p : Fin n × Fin n => p.1 < p.2) := by
+      ⊆ ((Finset.univ : Finset (Fin n)) ×ˢ (Finset.univ : Finset (Fin n))).filter
+        (fun p : Fin n × Fin n => p.1 < p.2) := by
     intro p hp
     simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and] at hp ⊢
     exact hp.1
@@ -237,11 +262,11 @@ theorem clique_in_neighborhood_extends {n : ℕ} (G : SGraph n) (v : Fin n)
     (S : Finset (Fin n)) (hS : S ⊆ neighborhood G v) (hv : v ∉ S)
     (hClique : IsClique G S) : IsClique G (insert v S) := by
   intro i hi j hj hij
-  simp [Finset.mem_insert] at hi hj
-  rcases hi with rfl | hi <;> rcases hj with rfl | hj
-  · exact absurd rfl hij
-  · exact mem_neighborhood G v j |>.mp (hS hj)
-  · exact G.symm _ _ (mem_neighborhood G v i |>.mp (hS hi))
+  simp only [Finset.mem_insert] at hi hj
+  rcases hi with hi | hi <;> rcases hj with hj | hj
+  · exact absurd (hi.trans hj.symm) hij
+  · rw [hi]; exact mem_neighborhood G v j |>.mp (hS hj)
+  · rw [hj]; exact G.symm _ _ (mem_neighborhood G v i |>.mp (hS hi))
   · exact hClique i hi j hj hij
 
 /-- **Neighborhood K₄-freeness**: In a K₅-free graph, the neighborhood of any
@@ -351,7 +376,9 @@ theorem degree_le {n : ℕ} (G : SGraph n) (v : Fin n) : degree G v ≤ n - 1 :=
     apply Finset.card_le_card
     intro u hu
     simp at hu ⊢
-    exact ⟨fun h => absurd h (G.irrefl v ∘ (· ▸ hu)), hu⟩
+    intro heq
+    rw [heq] at hu
+    exact G.irrefl v hu
   simp [Finset.card_erase_of_mem (Finset.mem_univ v), Fintype.card_fin] at h
   exact h
 

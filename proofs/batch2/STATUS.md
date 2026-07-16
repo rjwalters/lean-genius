@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 234 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos533Problem (Std.Symm/Std.Irrefl explicit args point-free fill;
+▸ direction -> .trans .symm; Finset.card_offDiag->offDiag_card; card_bij fragile -> card_nbij' Prod.swap;
+×ˢ vs .product not simp-interchangeable). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 233 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos242Problem (HARDEST 46min/321k/189tools: grouped struct field parens;
