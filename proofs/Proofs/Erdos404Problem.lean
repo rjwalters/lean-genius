@@ -31,7 +31,7 @@ namespace Erdos404
 structure StrictIncSeq (a : ℕ) where
   length : ℕ
   seq : Fin length → ℕ
-  starts_at_a : length > 0 → seq ⟨0, by omega⟩ = a
+  starts_at_a : (h : length > 0) → seq ⟨0, by omega⟩ = a
   strictly_increasing : ∀ i j : Fin length, i < j → seq i < seq j
 
 noncomputable def factorialSum (s : StrictIncSeq a) : ℕ :=
@@ -123,7 +123,7 @@ private theorem sum_telescope_nat (f : ℕ → ℕ) (hf : ∀ k, f (k + 1) ≤ f
   | zero => simp
   | succ m ih =>
     rw [Finset.sum_range_succ, ih]
-    have h1 : f (m + 2) ≤ f (m + 1) := hf (m + 1)
+    have h1 : f (m + 1 + 1) ≤ f (m + 1) := hf (m + 1)
     have h2 : f (m + 1) ≤ f 0 := by
       clear ih h1; induction m with
       | zero => exact hf 0
@@ -145,17 +145,18 @@ theorem legendreSum_digitSum_identity (n p : ℕ) (hp : 2 ≤ p) :
     have h_div_alg := Nat.div_add_mod (n / p ^ k) p
     -- n/p^k/p = n/p^(k+1)
     have h_eq_div : n / p ^ k / p = n / p ^ (k + 1) := by
-      rw [Nat.div_div_eq_div_mul]
-      congr 1
-      exact (pow_succ p k).symm
+      rw [Nat.div_div_eq_div_mul, ← pow_succ]
     -- Monotonicity: n/p^k ≥ n/p^(k+1)
     have h_mono : n / p ^ (k + 1) ≤ n / p ^ k := div_pow_antitone n p (by omega) k
-    -- From h_div_alg: p * (n/p^k/p) + n/p^k%p = n/p^k
-    -- Rewrite n/p^k/p = n/p^(k+1):
+    -- Rewrite n/p^k/p = n/p^(k+1) inside h_div_alg:
     -- p * (n/p^(k+1)) + n/p^k%p = n/p^k
-    -- So: n/p^(k+1)*(p-1) + n/p^k%p + n/p^(k+1) = n/p^k
-    -- Therefore: n/p^(k+1)*(p-1) + n/p^k%p = n/p^k - n/p^(k+1)
-    rw [← h_eq_div] at h_div_alg
+    rw [h_eq_div] at h_div_alg
+    obtain ⟨q, hq⟩ : ∃ q, p = q + 1 := ⟨p - 1, by omega⟩
+    have hsub : p - 1 = q := by omega
+    rw [hsub]
+    -- n/p^(k+1)*q + n/p^(k+1) = p*(n/p^(k+1)), matching h_div_alg's atom
+    have hcomm : n / p ^ (k + 1) * q + n / p ^ (k + 1) = p * (n / p ^ (k + 1)) := by
+      rw [hq]; ring
     omega
   rw [Finset.sum_congr rfl h_eq,
       sum_telescope_nat (fun k => n / p ^ k) (div_pow_antitone n p (by omega)) L]
@@ -183,23 +184,25 @@ theorem padic_val_factorial_lower (n p : ℕ) (hp : p.Prime) (hn : 1 ≤ n) :
     calc ∑ k ∈ Finset.range (Nat.log p n + 1), n / p ^ k % p
         ≤ ∑ _ ∈ Finset.range (Nat.log p n + 1), (p - 1) := by
           apply Finset.sum_le_sum; intro k _
-          have := Nat.mod_lt (n / p ^ k) (show 0 < p by omega); omega
+          have := Nat.mod_lt (n / p ^ k) hp.pos; omega
       _ = (p - 1) * (Nat.log p n + 1) := by
-          rw [Finset.sum_const, Finset.card_range, smul_eq_mul]
+          rw [Finset.sum_const, Finset.card_range, smul_eq_mul, mul_comm]
   omega
 
 /-- ν_p(n!)/n → 1/(p-1) as n → ∞.
     Proof by squeeze theorem using the Nat-valued bounds. -/
 theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
-    Tendsto (fun n => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1))) := by
+    Tendsto (fun n : ℕ => (padicValNat p n.factorial : ℝ) / n) atTop (nhds (1/(p-1))) := by
   haveI : Fact p.Prime := ⟨hp⟩
   have hp_one_lt : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
   have hpp1 : (0 : ℝ) < (p : ℝ) - 1 := by linarith
   -- Upper bound: ν/n ≤ 1/(p-1)
-  have h_upper : ∀ᶠ n in atTop, (padicValNat p n.factorial : ℝ) / n ≤ 1 / ((p : ℝ) - 1) := by
+  have h_upper : ∀ᶠ n : ℕ in atTop, (padicValNat p n.factorial : ℝ) / n ≤ 1 / ((p : ℝ) - 1) := by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-    rw [div_le_div_iff₀ hn_pos hpp1, one_mul]
+    have h_cast : (((p - 1 : ℕ)) : ℝ) = (p : ℝ) - 1 := by
+      simpa using Nat.cast_sub (R := ℝ) hp.one_lt.le
+    rw [div_le_div_iff₀ hn_pos hpp1, one_mul, ← h_cast]
     exact_mod_cast padic_val_factorial_upper n p hp (by omega)
   -- Lower bound limit: 1/(p-1) - (L+1)/n → 1/(p-1)
   have h_lower_lim : Tendsto (fun n : ℕ =>
@@ -226,29 +229,35 @@ theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
       have h2 : Real.log ↑n ≤ ε * Real.log ↑p / 2 * ↑n := by
         have h := hR ↑n (le_trans (Nat.le_ceil R)
           (by exact_mod_cast le_trans (le_max_left _ _) hn))
-        simp only [rpow_one, Real.norm_eq_abs] at h
+        simp only [Real.rpow_one, Real.norm_eq_abs] at h
         rwa [abs_of_nonneg (Real.log_nonneg (by exact_mod_cast hn1)),
              abs_of_nonneg hn_pos.le] at h
       -- Step 3: Nat.log p n / n ≤ ε/2 (dividing combined bound by log p)
       have h3 : (Nat.log p n : ℝ) / ↑n ≤ ε / 2 := by
+        have hcomb : (Nat.log p n : ℝ) * Real.log ↑p ≤ (ε / 2 * ↑n) * Real.log ↑p :=
+          calc (Nat.log p n : ℝ) * Real.log ↑p ≤ Real.log ↑n := h1
+            _ ≤ ε * Real.log ↑p / 2 * ↑n := h2
+            _ = (ε / 2 * ↑n) * Real.log ↑p := by ring
+        have hle : (Nat.log p n : ℝ) ≤ ε / 2 * ↑n := le_of_mul_le_mul_right hcomb hlogp
         rw [div_le_iff₀ hn_pos]
-        exact (mul_le_mul_right hlogp).mp
-          ((le_trans h1 h2).trans_eq (by ring))
+        linarith
       -- Step 4: 1/n < ε/2 (since n > 2/ε)
       have h4 : 1 / (↑n : ℝ) < ε / 2 := by
         rw [div_lt_div_iff₀ hn_pos (by norm_num : (0 : ℝ) < 2), one_mul]
-        have : (⌈2 / ε⌉₊ : ℝ) + 1 ≤ ↑n := by
+        have hle : (⌈2 / ε⌉₊ : ℝ) + 1 ≤ ↑n := by
           exact_mod_cast le_trans (le_max_right _ _) hn
-        nlinarith [Nat.le_ceil (2 / ε)]
+        have hceil : (2 : ℝ) / ε ≤ (⌈2 / ε⌉₊ : ℝ) := Nat.le_ceil _
+        have hgt : (2 : ℝ) / ε < ↑n := by linarith
+        have hmul := (div_lt_iff₀ hε).mp hgt
+        nlinarith [hmul]
       -- Combine
       calc ((Nat.log p n : ℝ) + 1) / ↑n
           = (Nat.log p n : ℝ) / ↑n + 1 / ↑n := add_div ..
         _ < ε / 2 + ε / 2 := add_lt_add_of_le_of_lt h3 h4
         _ = ε := by ring
-    rw [show (1 : ℝ) / ((p : ℝ) - 1) = 1 / ((p : ℝ) - 1) - 0 from by ring]
-    exact Tendsto.sub tendsto_const_nhds this
+    simpa using tendsto_const_nhds.sub this
   -- Lower bound pointwise: ν/n ≥ 1/(p-1) - (L+1)/n
-  have h_lower : ∀ᶠ n in atTop, 1 / ((p : ℝ) - 1) - ((Nat.log p n : ℝ) + 1) / n ≤
+  have h_lower : ∀ᶠ n : ℕ in atTop, 1 / ((p : ℝ) - 1) - ((Nat.log p n : ℝ) + 1) / n ≤
       (padicValNat p n.factorial : ℝ) / n := by
     filter_upwards [Filter.eventually_ge_atTop 1] with n hn
     have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
@@ -259,9 +268,9 @@ theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
       calc ∑ k ∈ Finset.range (Nat.log p n + 1), n / p ^ k % p
           ≤ ∑ _ ∈ Finset.range (Nat.log p n + 1), (p - 1) := by
             apply Finset.sum_le_sum; intro k _
-            have := Nat.mod_lt (n / p ^ k) (show 0 < p by omega); omega
+            have := Nat.mod_lt (n / p ^ k) hp.pos; omega
         _ = (p - 1) * (Nat.log p n + 1) := by
-            rw [Finset.sum_const, Finset.card_range, smul_eq_mul]
+            rw [Finset.sum_const, Finset.card_range, smul_eq_mul, mul_comm]
     rw [legendre_formula n p hp (by omega)]
     -- Goal: 1/(p-1) - (L+1)/n ≤ (legendreSum n p : ℝ) / n
     -- From h_id: (legendreSum : ℝ) * (p-1) = n - (baseDigitSum : ℝ)
@@ -270,23 +279,25 @@ theorem padic_val_factorial_asymp (p : ℕ) (hp : p.Prime) :
     -- Since ds ≤ (p-1)*(L+1): ds/(n*(p-1)) ≤ (L+1)/n
     -- Therefore legendreSum/n ≥ 1/(p-1) - (L+1)/n
     have h_id_real : (legendreSum n p : ℝ) * ((p : ℝ) - 1) + (baseDigitSum n p : ℝ) = (n : ℝ) := by
-      have h1 : (legendreSum n p * (p - 1) + baseDigitSum n p : ℕ) = n := h_id
-      push_cast [Nat.cast_sub hp.one_lt.le] at h1
+      have h1 : ((legendreSum n p * (p - 1) + baseDigitSum n p : ℕ) : ℝ) = (n : ℝ) := by
+        exact_mod_cast h_id
+      rw [Nat.cast_add, Nat.cast_mul, Nat.cast_sub hp.one_lt.le, Nat.cast_one] at h1
       linarith
     have h_ds_real : (baseDigitSum n p : ℝ) ≤ ((p : ℝ) - 1) * ((Nat.log p n : ℝ) + 1) := by
-      push_cast [Nat.cast_sub hp.one_lt.le] at h_ds
+      have h2 : ((baseDigitSum n p : ℕ) : ℝ) ≤ (((p - 1) * (Nat.log p n + 1) : ℕ) : ℝ) :=
+        Nat.cast_le.mpr h_ds
+      rw [Nat.cast_mul, Nat.cast_sub hp.one_lt.le, Nat.cast_add, Nat.cast_one] at h2
       linarith
     -- Now do the algebra
     have h_leg : (legendreSum n p : ℝ) * ((p : ℝ) - 1) ≥
         (n : ℝ) - ((p : ℝ) - 1) * ((Nat.log p n : ℝ) + 1) := by linarith
-    rw [ge_iff_le, ← sub_nonneg]
+    rw [← sub_nonneg]
     rw [ge_iff_le, ← sub_nonneg] at h_leg
-    rw [sub_div]
     have : (legendreSum n p : ℝ) / (n : ℝ) - (1 / ((p : ℝ) - 1) - ((Nat.log p n : ℝ) + 1) / (n : ℝ)) =
         ((legendreSum n p : ℝ) * ((p : ℝ) - 1) - ((n : ℝ) - ((p : ℝ) - 1) * ((Nat.log p n : ℝ) + 1))) /
         ((n : ℝ) * ((p : ℝ) - 1)) := by field_simp
     linarith [div_nonneg h_leg (mul_pos hn_pos hpp1).le]
-  exact tendsto_of_tendsto_of_tendsto_of_le_of_le h_lower_lim tendsto_const_nhds h_lower h_upper
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le' h_lower_lim tendsto_const_nhds h_lower h_upper
 
 /- ## Part V: Structure of Factorial Sums -/
 
