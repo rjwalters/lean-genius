@@ -35,9 +35,12 @@ Tags: graph-theory, chordal-graphs, clique-partitions, split-graphs
 -/
 
 import Mathlib.Data.Nat.Basic
+import Mathlib.Order.Lattice.Nat
 import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.Order.Field.Rat
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
+import Mathlib.Tactic.NormNum
 
 open Nat Finset SimpleGraph
 
@@ -56,7 +59,7 @@ are the cycle edges (no chords).
 def hasInducedCycleOfLength (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ (cycle : Fin k → V),
     Function.Injective cycle ∧
-    (∀ i, G.Adj (cycle i) (cycle (i + 1))) ∧
+    (∀ i, G.Adj (cycle i) (cycle ⟨(i.val + 1) % k, Nat.mod_lt _ i.pos⟩)) ∧
     (∀ i j, (i.val + 1) % k ≠ j.val → (j.val + 1) % k ≠ i.val →
       ¬G.Adj (cycle i) (cycle j))
 
@@ -89,10 +92,9 @@ structure CliquePartition (G : SimpleGraph V) where
 **Clique Partition Number:**
 The minimum number of cliques needed to partition all edges.
 -/
-def cliquePartitionNumber (G : SimpleGraph V) : ℕ :=
+noncomputable def cliquePartitionNumber (G : SimpleGraph V) : ℕ :=
   -- The minimum over all clique partitions of their size
-  Nat.find (⟨Fintype.card V * Fintype.card V, by skip⟩ :
-    ∃ k, ∃ P : CliquePartition G, P.cliques.card ≤ k) -- simplified axiomatization
+  sInf {k | ∃ P : CliquePartition G, P.cliques.card ≤ k}
 
 /- ## Part II: Split Graphs
 -/
@@ -128,7 +130,7 @@ axiom extremal_construction_exists :
     ∃ (V : Type) (hV : Fintype V) (G : SimpleGraph V),
       @IsSplitGraph V hV (Classical.decEq V) G ∧
       Fintype.card V = n ∧
-      @cliquePartitionNumber V hV (Classical.decEq V) G ≥ n^2 / 6
+      cliquePartitionNumber G ≥ n^2 / 6
 
 /--
 **Lower Bound: n²/6 is sometimes necessary**
@@ -136,9 +138,9 @@ The extremal construction shows we cannot always do better than n²/6.
 -/
 theorem lower_bound (n : ℕ) (hn : n ≥ 3) :
     ∃ (V : Type) (hV : Fintype V) (G : SimpleGraph V),
-      @IsChordal V hV (Classical.decEq V) G ∧
+      IsChordal G ∧
       Fintype.card V = n ∧
-      @cliquePartitionNumber V hV (Classical.decEq V) G ≥ n^2 / 6 := by
+      cliquePartitionNumber G ≥ n^2 / 6 := by
   obtain ⟨V, hV, G, hSplit, hCard, hBound⟩ := extremal_construction_exists n hn
   refine ⟨V, hV, G, ?_, hCard, hBound⟩
   exact @split_is_chordal V hV (Classical.decEq V) G hSplit
@@ -152,7 +154,8 @@ Every chordal graph on n vertices has a clique partition with
 at most (1/4 - ε)n² cliques for some small ε > 0.
 -/
 axiom erdos_ordman_zalcstein (G : SimpleGraph V) (hChordal : IsChordal G) :
-    ∃ ε > 0, cliquePartitionNumber G ≤ (1/4 - ε) * (Fintype.card V)^2
+    ∃ ε : ℚ, ε > 0 ∧
+      (cliquePartitionNumber G : ℚ) ≤ (1/4 - ε) * (Fintype.card V : ℚ)^2
 
 /- 
 **Chen-Erdős-Ordman Split Graph Bound (1994):**
@@ -168,9 +171,9 @@ Every chordal graph on n vertices can have its edges partitioned
 into at most n²/6 + O(n) cliques.
 -/
 def erdos_81_conjecture : Prop :=
-  ∀ (V : Type) [hV : Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    @IsChordal V hV _ G →
-    @cliquePartitionNumber V hV _ G ≤ (Fintype.card V)^2 / 6 + Fintype.card V
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    IsChordal G →
+    cliquePartitionNumber G ≤ (Fintype.card V)^2 / 6 + Fintype.card V
 
 /- ## Part VI: Gap Analysis
 -/
@@ -206,7 +209,7 @@ in the subgraph induced by itself and later vertices.
 def HasPerfectEliminationOrdering (G : SimpleGraph V) : Prop :=
   ∃ (σ : Fin (Fintype.card V) → V),
     Function.Bijective σ ∧
-    ∀ i, @IsSimplicial V _ (G.induce {v | ∃ j ≥ i, σ j = v}) (σ i)
+    ∀ i, IsSimplicial (G.induce {v | ∃ j ≥ i, σ j = v}) ⟨σ i, i, le_refl i, rfl⟩
 
 /- 
 **Chordal ↔ Perfect Elimination Ordering:**
@@ -239,12 +242,11 @@ but optimality is unknown.
 The minimum number of cliques whose union of edge sets equals G.
 (Not necessarily a partition - cliques may overlap.)
 -/
-def intersectionNumber (G : SimpleGraph V) : ℕ :=
-  Nat.find (⟨Fintype.card V, by simp⟩ :
-    ∃ k, ∃ (cliques : Finset (Finset V)),
-      (∀ C ∈ cliques, IsClique G C) ∧
-      cliques.card ≤ k ∧
-      (∀ u v, G.Adj u v → ∃ C ∈ cliques, u ∈ C ∧ v ∈ C))
+noncomputable def intersectionNumber (G : SimpleGraph V) : ℕ :=
+  sInf {k | ∃ (cliques : Finset (Finset V)),
+    (∀ C ∈ cliques, IsClique G C) ∧
+    cliques.card ≤ k ∧
+    (∀ u v, G.Adj u v → ∃ C ∈ cliques, u ∈ C ∧ v ∈ C)}
 
 /- 
 **Relation to Intersection Number:**
@@ -264,9 +266,9 @@ Combines three key facts:
 theorem erdos_81_summary (n : ℕ) (hn : n ≥ 3) :
     -- Lower bound: n²/6 is sometimes necessary
     (∃ (V : Type) (hV : Fintype V) (G : SimpleGraph V),
-      @IsChordal V hV (Classical.decEq V) G ∧
+      IsChordal G ∧
       Fintype.card V = n ∧
-      @cliquePartitionNumber V hV (Classical.decEq V) G ≥ n^2 / 6) ∧
+      cliquePartitionNumber G ≥ n^2 / 6) ∧
     -- Gap between coefficients
     ((1 : ℚ) / 4 > 1 / 6) :=
   ⟨lower_bound n hn, by norm_num⟩
@@ -277,13 +279,14 @@ theorem erdos_81_summary (n : ℕ) (hn : n ≥ 3) :
 Combines the lower bound (extremal construction), the upper bound
 (Erdős-Ordman-Zalcstein), and the split graph bound (Chen-Erdős-Ordman).
 -/
-theorem erdos_81 (V : Type) [hV : Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) (hChordal : @IsChordal V hV _ G) :
+theorem erdos_81 (V : Type) [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) (hChordal : IsChordal G) :
     -- Upper bound: (1/4 - ε)n² cliques suffice
-    (∃ ε > 0, @cliquePartitionNumber V hV _ G ≤ (1/4 - ε) * (Fintype.card V)^2) ∧
+    (∃ ε : ℚ, ε > 0 ∧
+      (cliquePartitionNumber G : ℚ) ≤ (1/4 - ε) * (Fintype.card V : ℚ)^2) ∧
     -- PEO gives 2-approximation
-    (∃ P : @CliquePartition V hV _ G,
-      P.cliques.card ≤ 2 * @cliquePartitionNumber V hV _ G) :=
+    (∃ P : CliquePartition G,
+      P.cliques.card ≤ 2 * cliquePartitionNumber G) :=
   ⟨erdos_ordman_zalcstein G hChordal,
    peo_gives_clique_partition G hChordal⟩
 
