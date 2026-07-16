@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 221 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos453Problem (redundant exact dropped; if_neg for nthPrime_is_prime;
+forward-ref reorder; noncomputable primeGraph; Set.infinite_iff_nat_lt gone -> infinite_of_not_bddAbove+
+not_bddAbove_iff). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 220 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos39Problem (frequently_lt_of_liminf_lt now IsCoboundedUnder(≥) not
