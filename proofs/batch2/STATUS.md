@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 316 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos613ProblemAristotle (critical_edge_count_formula' — replaced
+`simp[Nat.choose_two_right];omega` (omega can't handle nonlinear/division atoms) with explicit
+doubled-form identities Nat.two_mul_div_two_of_even + Nat.even_mul_pred_self/even_mul_succ_self
+and subtraction-free algebra (ring/case-split) then omega over linearized atoms). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 315 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos611ProblemAristotle (no source changes — RESIDUAL was a

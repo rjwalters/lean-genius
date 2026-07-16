@@ -67,7 +67,22 @@ lemma original_conjecture_false' : ¬OriginalConjecture := by
     Proof sketch: simp [criticalEdgeCount, Nat.choose_two_right] then omega. -/
 lemma critical_edge_count_formula' (n : ℕ) (hn : n ≥ 1) :
     criticalEdgeCount n = n * n + n + (n * (n + 1)) / 2 - 1 := by
-  simp only [criticalEdgeCount, Nat.choose_two_right]
+  unfold criticalEdgeCount
+  have e1 : 2 * ((2 * n + 1).choose 2) = (2 * n + 1) * (2 * n + 1 - 1) := by
+    rw [Nat.choose_two_right]
+    exact Nat.two_mul_div_two_of_even (Nat.even_mul_pred_self (2 * n + 1))
+  have e2 : 2 * (n.choose 2) = n * (n - 1) := by
+    rw [Nat.choose_two_right]
+    exact Nat.two_mul_div_two_of_even (Nat.even_mul_pred_self n)
+  have e3 : 2 * ((n * (n + 1)) / 2) = n * (n + 1) := Nat.two_mul_div_two_of_even (Nat.even_mul_succ_self n)
+  have hD : (2 * n + 1) * (2 * n + 1 - 1) = 4 * (n * n) + 2 * n := by
+    have h : 2 * n + 1 - 1 = 2 * n := by omega
+    rw [h]; ring
+  have hE : n * (n - 1) + n = n * n := by
+    cases n with
+    | zero => rfl
+    | succ k => simp only [Nat.succ_sub_one]; ring
+  have hF : n * (n + 1) = n * n + n := by ring
   omega
 
 end Erdos613.Aristotle
