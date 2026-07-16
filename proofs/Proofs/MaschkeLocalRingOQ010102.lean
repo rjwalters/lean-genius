@@ -64,7 +64,7 @@ noncomputable def g : A p := MonoidAlgebra.of (ZMod p) (G p) (Multiplicative.ofA
 
 /-- The **augmentation map** `ε : 𝔽_p[ℤ/p] → 𝔽_p`, `∑ a_h h ↦ ∑ a_h`. -/
 noncomputable def ε : A p →ₐ[ZMod p] ZMod p :=
-  MonoidAlgebra.lift (ZMod p) (G p) (ZMod p) 1
+  MonoidAlgebra.lift (ZMod p) (ZMod p) (G p) 1
 
 @[simp] theorem ε_of (a : G p) : ε p (MonoidAlgebra.of (ZMod p) (G p) a) = 1 := by
   simp [ε]
