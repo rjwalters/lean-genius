@@ -79,15 +79,15 @@ Using Mathlib's cardinal arithmetic.
 def typeCard (V : Type*) : Cardinal := Cardinal.mk V
 
 /-- ℵ₀ = the cardinality of ℕ. -/
-def aleph0 : Cardinal := Cardinal.aleph0
+def aleph0 : Cardinal.{0} := Cardinal.aleph0
 
 /-- ℵ₁ = the first uncountable cardinal. -/
-noncomputable def aleph1 : Cardinal := Cardinal.aleph 1
+noncomputable def aleph1 : Cardinal.{0} := Cardinal.aleph 1
 
 /-- ℵ₁ is the successor of ℵ₀. -/
-theorem aleph1_eq_succ_aleph0 : aleph1 = Cardinal.aleph0.succ := by
-  simp [aleph1]
-  rfl
+theorem aleph1_eq_succ_aleph0 : aleph1 = Order.succ Cardinal.aleph0 := by
+  simp only [aleph1, aleph0]
+  rw [show (1 : Ordinal) = Order.succ 0 by simp, Cardinal.aleph_succ, Cardinal.aleph_zero]
 
 /-- A graph has chromatic number ≥ κ (for cardinal κ). -/
 def HasChromaticNumberAtLeast (G : SimpleGraph V) (κ : Cardinal) : Prop :=
@@ -115,6 +115,21 @@ axiom de_bruijn_erdos (G : SimpleGraph V) (hχ : HasChromaticNumberAtLeast G ale
    whose hypothesis was trivially true for all graphs (every finite graph is finitely
    colorable), making the axiom unsound. The correct fixed-k compactness statement
    is given by `graph_compactness` below. -/
+
+/- ## Part VII (moved up): Lambie-Hanson's ZFC Disproof (2020)
+
+The definitive resolution: the conjecture is FALSE in ZFC. Declared here (ahead of
+Part V/VI) since those theorems use it and v4.31 requires forward-referenced axioms
+to be declared before first use. -/
+
+/-- **Lambie-Hanson Theorem** (2020):
+    The Erdős-Hajnal-Szemerédi conjecture is FALSE in ZFC.
+
+    There exists an ℵ₁-chromatic graph with no uniform bound F(n). -/
+axiom lambie_hanson_counterexample :
+    ∃ (V : Type*) (G : SimpleGraph V),
+      HasChromaticNumber G aleph1 ∧
+      ∀ F : ℕ → ℕ, ∀ N₀ : ℕ, ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n)
 
 /- ## Part V: The Erdős-Hajnal-Szemerédi Conjecture
 
@@ -165,20 +180,6 @@ theorem shelah_consistency :
   obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
   exact ⟨V, G, hχ, fun ⟨F, N₀, hF⟩ => by
     obtain ⟨n, hn, h⟩ := hBad F N₀; exact h (hF n hn)⟩
-
-/- ## Part VII: Lambie-Hanson's ZFC Disproof (2020)
-
-The definitive resolution: the conjecture is FALSE in ZFC.
--/
-
-/-- **Lambie-Hanson Theorem** (2020):
-    The Erdős-Hajnal-Szemerédi conjecture is FALSE in ZFC.
-
-    There exists an ℵ₁-chromatic graph with no uniform bound F(n). -/
-axiom lambie_hanson_counterexample :
-    ∃ (V : Type*) (G : SimpleGraph V),
-      HasChromaticNumber G aleph1 ∧
-      ∀ F : ℕ → ℕ, ∀ N₀ : ℕ, ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n)
 
 /-- **Erdős Problem #110: DISPROVED**
 
@@ -240,12 +241,11 @@ theorem lambie_hanson_graph_exists :
     ∃ (V : Type*) (G : SimpleGraph V), LambieHansonGraph V G := by
   obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
   use V, G
-  constructor
-  · exact hχ
-  constructor
-  · exact hBad
-  · intro n
-    exact de_bruijn_erdos G (hχ.1) n
+  have haleph0_le_aleph1 : aleph0 ≤ aleph1 := by
+    simp only [aleph0, aleph1, ← Cardinal.aleph_zero]
+    exact Cardinal.aleph_le_aleph.mpr (zero_le)
+  exact ⟨hχ, hBad,
+    fun n => de_bruijn_erdos G (fun k hk => hχ.1 k (hk.trans_le haleph0_le_aleph1)) n⟩
 
 /- ## Part XI: Summary
 
