@@ -18,7 +18,7 @@ import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 
 open Finset Classical
 
-attribute [local instance] Classical.propDecidable
+attribute [local instance low] Classical.propDecidable
 
 -- ## Definitions
 
@@ -60,9 +60,11 @@ def triLatticeNorm (a b : ℤ) : ℤ := a ^ 2 + a * b + b ^ 2
 /-- Computable count of nonzero lattice points with norm ≤ T.
     The range [-T, T] × [-T, T] suffices since a² + ab + b² ≥ max(a², b²/2)
     for all a, b. -/
-noncomputable def triLatticeCountInt (T : ℕ) : ℕ :=
-  (((Finset.Icc (-(T : ℤ)) T) ×ˢ (Finset.Icc (-(T : ℤ)) T)).filter
-    fun ab : ℤ × ℤ => ab ≠ (0, 0) ∧ triLatticeNorm ab.1 ab.2 ≤ T).card
+def triLatticeCountInt (T : ℕ) : ℕ :=
+  (@Finset.filter (ℤ × ℤ) (fun ab => ab ≠ (0, 0) ∧ triLatticeNorm ab.1 ab.2 ≤ T)
+    (fun ab => @instDecidableAnd _ _ instDecidableNot (Int.decLe _ _))
+    ((@Finset.Icc ℤ Int.instLinearOrder.toPreorder Int.instLocallyFiniteOrder (-(T : ℤ)) T) ×ˢ
+      (@Finset.Icc ℤ Int.instLinearOrder.toPreorder Int.instLocallyFiniteOrder (-(T : ℤ)) T))).card
 
 /-- f(t): the number of nonzero lattice points at distance ≤ t from the origin
     in the triangular lattice. Since all lattice norms a² + ab + b² are integers,
