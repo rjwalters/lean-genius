@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 327 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos611Aristotle (cascade artifact — parent Erdos611Problem olean absent from fresh
+cache; lake build parent, then EXIT=0; 3 sorries are legit Aristotle-search targets). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 326 (all-Sonnet, #38065, 2026-07-16)
 
 **+3 GREEN**:
