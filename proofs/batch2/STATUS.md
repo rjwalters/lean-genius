@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 323 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos1OQ03Aristotle (parenthesize geom_sum_two' sum (greedy binder); two_mul->pow_succ+
+omega; term-mode Finset.sum_singleton -> `by simp`; explicit 0<2^n before omega). Repair: none.
+SEAM: `∑ i ∈ s, f i + c = rhs` reparses absorbing +c (parenthesize); Finset.sum_singleton no longer
+unifies as bare `:=` term (use `by simp`); omega no longer auto-derives 2^n>0 (supply pow_pos).
+
 # DOCTOR SINGLE-PROOF BATCH 322 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos859Aristotle (Nat.divisors_prime_pow explicit exp; divisors_one/Prime.divisors+

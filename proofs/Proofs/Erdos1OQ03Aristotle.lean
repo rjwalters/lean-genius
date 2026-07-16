@@ -19,11 +19,11 @@ namespace ConwayGuy
 
 /-- ∑_{i=0}^{n-1} 2^i + 1 = 2^n -/
 theorem geom_sum_two' (n : ℕ) :
-    ∑ i ∈ Finset.range n, 2 ^ i + 1 = 2 ^ n := by
+    (∑ i ∈ Finset.range n, 2 ^ i) + 1 = 2 ^ n := by
   induction n with
   | zero => simp
   | succ n ih =>
-    rw [Finset.sum_range_succ, pow_succ, two_mul]
+    rw [Finset.sum_range_succ, pow_succ]
     omega
 
 /-- Any subset of {0,...,n-1} has power-of-2 sum ≤ 2^n - 1. -/
@@ -81,8 +81,9 @@ theorem pow_two_sum_injective (n : ℕ) :
             ≥ ({n} : Finset ℕ).sum (2 ^ ·) :=
               Finset.sum_le_sum_of_subset_of_nonneg
                 (Finset.singleton_subset_iff.mpr hnS) (fun _ _ _ => Nat.zero_le _)
-          _ = 2 ^ n := Finset.sum_singleton
+          _ = 2 ^ n := by simp
       have hTle := subset_pow_two_sum_le' hT'
+      have hpow : 0 < 2 ^ n := pow_pos (by norm_num) n
       omega
     · -- n ∉ S, n ∈ T: symmetric case
       exfalso
@@ -92,8 +93,9 @@ theorem pow_two_sum_injective (n : ℕ) :
             ≥ ({n} : Finset ℕ).sum (2 ^ ·) :=
               Finset.sum_le_sum_of_subset_of_nonneg
                 (Finset.singleton_subset_iff.mpr hnT) (fun _ _ _ => Nat.zero_le _)
-          _ = 2 ^ n := Finset.sum_singleton
+          _ = 2 ^ n := by simp
       have hSle := subset_pow_two_sum_le' hS'
+      have hpow : 0 < 2 ^ n := pow_pos (by norm_num) n
       omega
     · -- Neither contains n: both ⊆ range n, apply IH directly
       exact ih _ _ (restrict S hS hnS) (restrict T hT hnT) heq
