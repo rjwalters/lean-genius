@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 347 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: TriangleAngleSumOQ02 (v4.31 parser regression: `α β γ : ℝ` multi-name struct field
+misparsed -> trailing names auto-bound as implicit Sort vars; split to one-name-per-line; drop
+redundant ring after simp; field_simp+linarith -> rw[eq_div_iff]+linear_combination; fix dot-notation
+excess_eq_curvature). Repair: none.
+SEAM: `structure ... where n1 n2 n3 : T` multi-binder field with Greek names silently mis-elaborates
+in v4.31 -> split into separate one-name-per-line fields.
+
 # DOCTOR SINGLE-PROOF BATCH 346 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: SpernerNDimOQ03OQ01 (right_mem_Icc.mpr le_rfl->zero_le_one; mul_lt_of_lt_one_right 3-arg

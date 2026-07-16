@@ -76,7 +76,9 @@ This encapsulates the local Gauss-Bonnet theorem.
     The local Gauss-Bonnet formula `gb_local` is the key axiom. -/
 structure GeodesicTriangle where
   /-- The three interior angles (radians) -/
-  α β γ : ℝ
+  α : ℝ
+  β : ℝ
+  γ : ℝ
   /-- The area of the triangle -/
   area : ℝ
   /-- Integrated Gaussian curvature ∫_T K dA over the triangle -/
@@ -110,7 +112,7 @@ theorem excess_eq_curvature (T : GeodesicTriangle) :
 /-- The angle sum equals π plus the excess. -/
 theorem angleSum_eq_pi_add_excess (T : GeodesicTriangle) :
     T.angleSum = π + T.excess := by
-  simp [GeodesicTriangle.angleSum, GeodesicTriangle.excess]; ring
+  simp [GeodesicTriangle.angleSum, GeodesicTriangle.excess]
 
 /-- The angle sum equals π plus the integrated curvature. -/
 theorem angleSum_eq_pi_add_curvature (T : GeodesicTriangle) :
@@ -141,7 +143,6 @@ theorem flat_angle_sum (T : FlatTriangle) :
 theorem flat_excess_zero (T : FlatTriangle) :
     T.excess = 0 := by
   simp [GeodesicTriangle.excess, flat_angle_sum T]
-  ring
 
 /-- The angleSum of a flat triangle is π. -/
 theorem flat_angleSum_eq_pi (T : FlatTriangle) :
@@ -181,7 +182,8 @@ theorem spherical_area_eq_radius_sq_excess (T : SphericalTriangle) :
     T.area = T.radius ^ 2 * (T.α + T.β + T.γ - π) := by
   have h := girard_theorem T
   have hr2 : T.radius ^ 2 ≠ 0 := pow_ne_zero _ T.radius_pos.ne'
-  field_simp [hr2] at h ⊢; linarith
+  rw [eq_div_iff hr2] at h
+  linear_combination -h
 
 /-- Spherical triangles have angle sum **strictly greater than** π. -/
 theorem spherical_angle_sum_gt_pi (T : SphericalTriangle) :
@@ -276,7 +278,7 @@ theorem total_curvature_eq (T : RiemannianTriangulation) :
     (∑ i, (T.triangles i).integratedCurvature) = 2 * π * T.eulerChar := by
   rw [show (∑ i, (T.triangles i).integratedCurvature) =
       (∑ i, (T.triangles i).excess) from
-    Finset.sum_congr rfl fun i _ => ((T.triangles i).excess_eq_curvature).symm]
+    Finset.sum_congr rfl fun i _ => (excess_eq_curvature (T.triangles i)).symm]
   exact T.discrete_gb
 
 /-- For a triangulation of the 2-sphere (χ = 2), total curvature is 4π. -/
