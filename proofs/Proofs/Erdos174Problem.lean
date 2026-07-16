@@ -46,7 +46,7 @@ namespace Erdos174
 /- ## Part I: Basic Setup -/
 
 /-- A finite configuration in ℝⁿ. -/
-def FiniteConfig (n : ℕ) := Finset (EuclideanSpace ℝ (Fin n))
+abbrev FiniteConfig (n : ℕ) := Finset (EuclideanSpace ℝ (Fin n))
 
 /-- A congruent copy of configuration A in ℝᵈ: the image of A under
     a distance-preserving map. -/
@@ -158,21 +158,36 @@ Uses permutation group methods and symmetry arguments. -/
 
 /- ## Part VI: Examples -/
 
+/-- The two endpoints of `twoPoints`. -/
+noncomputable def twoPoints_p0 : EuclideanSpace ℝ (Fin 1) := !₂[0]
+noncomputable def twoPoints_p1 : EuclideanSpace ℝ (Fin 1) := !₂[1]
+
 /-- The simplest Ramsey set: two points. -/
-def twoPoints : FiniteConfig 1 :=
-  {![0], ![1]}
+noncomputable def twoPoints : FiniteConfig 1 :=
+  {twoPoints_p0, twoPoints_p1}
 
 /-  Two points always lie on a sphere and are trivially Ramsey (pigeonhole). -/
 
+/-- The three vertices of `equilateralTriangle`. -/
+noncomputable def equilateralTriangle_p0 : EuclideanSpace ℝ (Fin 2) := !₂[0, 0]
+noncomputable def equilateralTriangle_p1 : EuclideanSpace ℝ (Fin 2) := !₂[1, 0]
+noncomputable def equilateralTriangle_p2 : EuclideanSpace ℝ (Fin 2) := !₂[0.5, Real.sqrt 3 / 2]
+
 /-- An equilateral triangle in ℝ². -/
-def equilateralTriangle : FiniteConfig 2 :=
-  {![0, 0], ![1, 0], ![0.5, Real.sqrt 3 / 2]}
+noncomputable def equilateralTriangle : FiniteConfig 2 :=
+  {equilateralTriangle_p0, equilateralTriangle_p1, equilateralTriangle_p2}
 
 /-  Equilateral triangles are Ramsey (special case of simplex). -/
 
+/-- The four vertices of `square`. -/
+noncomputable def square_p0 : EuclideanSpace ℝ (Fin 2) := !₂[0, 0]
+noncomputable def square_p1 : EuclideanSpace ℝ (Fin 2) := !₂[1, 0]
+noncomputable def square_p2 : EuclideanSpace ℝ (Fin 2) := !₂[1, 1]
+noncomputable def square_p3 : EuclideanSpace ℝ (Fin 2) := !₂[0, 1]
+
 /-- A unit square in ℝ². -/
-def square : FiniteConfig 2 :=
-  {![0, 0], ![1, 0], ![1, 1], ![0, 1]}
+noncomputable def square : FiniteConfig 2 :=
+  {square_p0, square_p1, square_p2, square_p3}
 
 /-  Squares are Ramsey (special case of rectangle). -/
 
@@ -184,9 +199,15 @@ theorem not_spherical_not_ramsey {n : ℕ} (A : FiniteConfig n) :
   intro hNotSph hRam
   exact hNotSph (ramsey_implies_spherical A hRam)
 
+/-- The four points of `collinearFour`. -/
+noncomputable def collinearFour_p0 : EuclideanSpace ℝ (Fin 1) := !₂[0]
+noncomputable def collinearFour_p1 : EuclideanSpace ℝ (Fin 1) := !₂[1]
+noncomputable def collinearFour_p2 : EuclideanSpace ℝ (Fin 1) := !₂[2]
+noncomputable def collinearFour_p3 : EuclideanSpace ℝ (Fin 1) := !₂[4]
+
 /-- Four collinear points with non-equal spacing: not spherical, hence not Ramsey. -/
-def collinearFour : FiniteConfig 1 :=
-  {![0], ![1], ![2], ![4]}
+noncomputable def collinearFour : FiniteConfig 1 :=
+  {collinearFour_p0, collinearFour_p1, collinearFour_p2, collinearFour_p3}
 
 /-- Four collinear points with unequal spacing cannot all lie on a circle. -/
 axiom collinear_not_spherical : ¬IsSpherical collinearFour
