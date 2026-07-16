@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 150 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos973Problem (⟨0,by omega⟩ Fin no hyp -> ∃h:n>0; Complex.abs
+removed -> ‖·‖; Nat exponent Neg ℕ -> (n:ℝ) casts; Complex.norm_exp_ofReal_mul_I; noncomputable
+rootsOfUnitySequence). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 149 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos988Problem (inner now explicit-𝕜 inner ℝ C.center x; def
