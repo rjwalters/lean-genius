@@ -70,7 +70,9 @@ theorem admissible_iff_avoided (A : Set ℕ) :
     specialize hA p hp
     simp only [CoversAllResidues, CoversResidue, not_forall, not_exists] at hA
     obtain ⟨r, hr, hAr⟩ := hA
-    exact ⟨r, hr, fun a ha => hAr a ha⟩
+    refine ⟨r, hr, ?_⟩
+    intro a ha hr'
+    exact hAr a ⟨ha, hr'⟩
   · intro hA p hp hcov
     obtain ⟨r, hr, havoid⟩ := hA p hp
     exact havoid _ (hcov r hr).choose_spec.1 (hcov r hr).choose_spec.2
@@ -97,9 +99,9 @@ def HasZeroDensity (A : Set ℕ) : Prop :=
 
 /-- **Lacunary:**
 A is lacunary if a_{n+1}/a_n → ∞. -/
-def IsLacunary (A : List ℕ) (hA : A.Sorted (· < ·)) : Prop :=
-  ∀ c : ℕ, ∃ N : ℕ, ∀ i, i + 1 < A.length → i ≥ N →
-    A.get ⟨i + 1, by omega⟩ > c * A.get ⟨i, by omega⟩
+def IsLacunary (A : List ℕ) (hA : A.Pairwise (· < ·)) : Prop :=
+  ∀ c : ℕ, ∃ N : ℕ, ∀ i (hi : i + 1 < A.length), i ≥ N →
+    A.get ⟨i + 1, hi⟩ > c * A.get ⟨i, by omega⟩
 
 /- ## Part IV: The Erdős Conjecture and Its Refutation -/
 
@@ -117,7 +119,7 @@ axiom weisenberg_theorem :
 /-- **Stronger Result:**
 Even lacunary admissible sets may fail to have prime shifts. -/
 axiom weisenberg_lacunary :
-  ∃ (A : List ℕ) (hA : A.Sorted (· < ·)),
+  ∃ (A : List ℕ) (hA : A.Pairwise (· < ·)),
     IsLacunary A hA ∧
     IsAdmissible (A.toFinset : Set ℕ) ∧
     ¬HasPrimeShift (A.toFinset : Set ℕ)
@@ -135,7 +137,7 @@ A covering system {(aᵢ, mᵢ)} covers all integers if every n ≡ aᵢ (mod m�
 Weisenberg's construction uses covering systems to ensure every shift n
 has some a ∈ A with n + a composite. -/
 def IsCoveringSystem (covers : List (ℕ × ℕ)) : Prop :=
-  ∀ n : ℤ, ∃ ⟨a, m⟩ ∈ covers, n % m = a
+  ∀ n : ℤ, ∃ am ∈ covers, n % (am.2 : ℤ) = (am.1 : ℤ)
 
 /-- **Admissibility is necessary for prime shifts:**
 If A has a prime shift, then A must be admissible. -/
@@ -159,7 +161,7 @@ shift n has some a ∈ A with n + a composite. -/
 theorem erdos_429_summary :
     ¬ErdosConjecture429 ∧
     (∃ A : Set ℕ, HasZeroDensity A ∧ IsAdmissible A ∧ ¬HasPrimeShift A) ∧
-    (∃ (A : List ℕ) (hA : A.Sorted (· < ·)),
+    (∃ (A : List ℕ) (hA : A.Pairwise (· < ·)),
       IsLacunary A hA ∧
       IsAdmissible (A.toFinset : Set ℕ) ∧
       ¬HasPrimeShift (A.toFinset : Set ℕ)) :=
