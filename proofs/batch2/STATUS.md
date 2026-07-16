@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 111 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos210Problem (def PointSet:=Finset Point -> abbrev; same
+Membership instance-synth non-unfold pattern as Erdos209). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 110 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1173Problem (inside-body ∀-binder universe mvars no longer
