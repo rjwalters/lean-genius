@@ -26,13 +26,15 @@ import Mathlib.Combinatorics.SetFamily.LYM
 
 open Finset
 
+open scoped Classical
+
 /- ## Core Definitions -/
 
 /-- A family of subsets of {1, ..., n}. -/
-def SubsetFamily (n : ℕ) := Finset (Finset (Fin n))
+abbrev SubsetFamily (n : ℕ) := Finset (Finset (Fin n))
 
 /-- A family is an antichain: no set contains another. -/
-def IsAntichainFamily {n : ℕ} (F : SubsetFamily n) : Prop :=
+abbrev IsAntichainFamily {n : ℕ} (F : SubsetFamily n) : Prop :=
   ∀ A ∈ F, ∀ B ∈ F, A ≠ B → ¬(A ⊆ B)
 
 /-- The set of distinct cardinalities appearing in a family. -/
@@ -52,160 +54,6 @@ def HasMultiplicity {n : ℕ} (F : SubsetFamily n) (r : ℕ) : Prop :=
 noncomputable def maxDistinctSizes (n r : ℕ) : ℕ :=
   Finset.sup (Finset.univ.filter (fun (F : SubsetFamily n) =>
     IsAntichainFamily F ∧ HasMultiplicity F r)) numDistinctSizes
-
-/- ## Main Results -/
-
-/-- **Upper bound**: For n > 3, every antichain has at most n − 2 distinct sizes.
-    Proved from distinctSizes_card_le_n_sub_two (for large families)
-    and card_image_le (for trivial families). -/
-theorem maxDistinctSizes_le_n_sub_two (n : ℕ) (hn : n > 3) :
-    maxDistinctSizes n 1 ≤ n - 2 := by
-  unfold maxDistinctSizes
-  apply Finset.sup_le
-  intro F hF
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hF
-  obtain ⟨hanti, _⟩ := hF
-  unfold numDistinctSizes
-  by_cases hcard : 1 < F.card
-  · exact distinctSizes_card_le_n_sub_two (by omega) hanti hcard
-  · calc (distinctSizes F).card ≤ F.card := Finset.card_image_le
-      _ ≤ 1 := by omega
-      _ ≤ n - 2 := by omega
-
-/-- **Achievability** (axiom): For n > 3, there exists an antichain over Fin n
-    with n − 2 distinct set sizes. Requires constructing a concrete antichain,
-    e.g., via symmetric chain decomposition. -/
-axiom erdos_trotter_r1_achievable (n : ℕ) (hn : n > 3) :
-    maxDistinctSizes n 1 ≥ n - 2
-
-/-- **Erdős–Trotter**: For r = 1 (no multiplicity constraint) and n > 3,
-    the maximum number of distinct sizes in an antichain is n − 2.
-    Combines the proved upper bound with the axiomatized achievability. -/
-theorem erdos_trotter_r1 (n : ℕ) (hn : n > 3) :
-    maxDistinctSizes n 1 = n - 2 :=
-  le_antisymm (maxDistinctSizes_le_n_sub_two n hn) (erdos_trotter_r1_achievable n hn)
-
-/-- **Erdős–Trotter**: For r > 1 and sufficiently large n,
-    n − 2 distinct sizes are NOT achievable. -/
-axiom erdos_trotter_upper (r : ℕ) (hr : r > 1) :
-  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → maxDistinctSizes n r ≤ n - 3
-
-/-- **Erdős–Trotter**: For r > 1 and sufficiently large n,
-    n − 3 distinct sizes ARE achievable. -/
-axiom erdos_trotter_achievable (r : ℕ) (hr : r > 1) :
-  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → maxDistinctSizes n r ≥ n - 3
-
-/-- Combined: for r > 1 and sufficiently large n,
-    the maximum is exactly n − 3. -/
-theorem erdos_trotter_exact (r : ℕ) (hr : r > 1) :
-    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → maxDistinctSizes n r = n - 3 := by
-  obtain ⟨N₁, h₁⟩ := erdos_trotter_upper r hr
-  obtain ⟨N₂, h₂⟩ := erdos_trotter_achievable r hr
-  exact ⟨max N₁ N₂, fun n hn => by
-    have hle := h₁ n (le_of_max_le_left hn)
-    have hge := h₂ n (le_of_max_le_right hn)
-    omega⟩
-
-/- ## Main Conjecture -/
-
-/-- **Erdős Problem #776** (OPEN): Determine the threshold N(r) as a
-    function of r such that for all n ≥ N(r) and r ≥ 2, the maximum
-    number of distinct sizes in a multiplicity-r antichain is n − 3.
-    Existence follows from erdos_trotter_exact; minimality from Nat.find. -/
-open Classical in
-theorem erdos_776_threshold :
-    ∀ r : ℕ, r ≥ 2 →
-      ∃ N : ℕ, (∀ n : ℕ, n ≥ N → maxDistinctSizes n r = n - 3) ∧
-        -- N is the smallest such threshold
-        ∀ M : ℕ, (∀ n : ℕ, n ≥ M → maxDistinctSizes n r = n - 3) → N ≤ M := by
-  intro r hr
-  have h_exact := erdos_trotter_exact r (by omega)
-  exact ⟨Nat.find h_exact, Nat.find_spec h_exact, fun M hM => Nat.find_min' h_exact hM⟩
-
-/- ## Structural Observations -/
-
-/-- Sperner's theorem: the maximum antichain in 2^{[n]} has size C(n, ⌊n/2⌋).
-    Bridges our custom IsAntichainFamily to Mathlib's IsAntichain, then applies
-    Mathlib's IsAntichain.sperner (proved via the LYM inequality). -/
-theorem sperner_theorem (n : ℕ) :
-    ∀ (F : SubsetFamily n), IsAntichainFamily F →
-      F.card ≤ Nat.choose n (n / 2) := by
-  intro F hF
-  -- Bridge custom IsAntichainFamily to Mathlib's IsAntichain (· ⊆ ·)
-  have h : _root_.IsAntichain (· ⊆ ·) (↑F : Set (Finset (Fin n))) := by
-    intro A hA B hB hne hsub
-    exact hF A (Finset.mem_coe.mp hA) B (Finset.mem_coe.mp hB) hne hsub
-  -- Apply Mathlib's Sperner bound (from LYM inequality)
-  have := h.sperner (α := Fin n)
-  simp [Fintype.card_fin] at this
-  exact this
-
-/-- The middle layer has the most sets: all sets of size ⌊n/2⌋ form
-    an antichain with one distinct size and multiplicity C(n, ⌊n/2⌋). -/
-theorem middle_layer_antichain (n : ℕ) :
-    ∃ F : SubsetFamily n, IsAntichainFamily F ∧
-      numDistinctSizes F = 1 ∧
-      F.card = Nat.choose n (n / 2) := by
-  -- Take F = all (n/2)-element subsets of Fin n
-  use (Finset.univ : Finset (Fin n)).powersetCard (n / 2)
-  refine ⟨?_, ?_, ?_⟩
-  · -- IsAntichainFamily: same-size sets can't have proper subset relation
-    intro A hA B hB hne hsub
-    rw [Finset.mem_powersetCard] at hA hB
-    exact hne (Finset.eq_of_subset_of_card_le hsub (hB.2 ▸ hA.2 ▸ le_refl _))
-  · -- numDistinctSizes = 1: all sets have the same cardinality
-    unfold numDistinctSizes distinctSizes
-    -- Every element has card = n/2, so image = {n/2}
-    have hall : ∀ A ∈ (Finset.univ : Finset (Fin n)).powersetCard (n / 2),
-        A.card = n / 2 := by
-      intro A hA; exact (Finset.mem_powersetCard.mp hA).2
-    -- The family is nonempty (powersetCard k univ is nonempty when k ≤ n)
-    have hne : ((Finset.univ : Finset (Fin n)).powersetCard (n / 2)).Nonempty := by
-      obtain ⟨t, ht, htc⟩ := Finset.exists_smaller_set
-        (Finset.univ : Finset (Fin n)) (n / 2) (by simp [Fintype.card_fin]; omega)
-      exact ⟨t, Finset.mem_powersetCard.mpr ⟨ht, htc⟩⟩
-    -- Image of card on same-sized sets is a singleton
-    have himg : Finset.image Finset.card
-        ((Finset.univ : Finset (Fin n)).powersetCard (n / 2)) = {n / 2} := by
-      ext s; simp only [Finset.mem_image, Finset.mem_singleton]; constructor
-      · rintro ⟨A, hA, rfl⟩; exact hall A hA
-      · intro hs; obtain ⟨A, hA⟩ := hne
-        exact ⟨A, hA, (hall A hA).trans hs.symm⟩
-    rw [himg, Finset.card_singleton]
-  · -- card = C(n, n/2)
-    rw [Finset.card_powersetCard, Fintype.card_fin]
-
-/-- To get many distinct sizes, we need sets from many different layers.
-    The antichain constraint limits how sets from different layers interact. -/
-theorem size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
-    ∀ F : SubsetFamily n, IsAntichainFamily F → HasMultiplicity F r →
-      F.card ≥ r * numDistinctSizes F := by
-  intro F _ hmult
-  unfold numDistinctSizes
-  -- F decomposes into disjoint groups by cardinality
-  -- Step 1: F = ⋃_{s ∈ distinctSizes F} (F.filter (·.card = s))
-  have h_eq : F = (distinctSizes F).biUnion (fun s => F.filter (fun A => A.card = s)) := by
-    ext A; constructor
-    · intro hA
-      rw [Finset.mem_biUnion]
-      exact ⟨A.card, Finset.mem_image.mpr ⟨A, hA, rfl⟩, Finset.mem_filter.mpr ⟨hA, rfl⟩⟩
-    · intro hA
-      rw [Finset.mem_biUnion] at hA
-      obtain ⟨_, _, hAf⟩ := hA
-      exact (Finset.mem_filter.mp hAf).1
-  -- Step 2: The groups are pairwise disjoint
-  have h_disj : ∀ s ∈ distinctSizes F, ∀ t ∈ distinctSizes F, s ≠ t →
-      Disjoint (F.filter (fun A => A.card = s)) (F.filter (fun A => A.card = t)) := by
-    intro s _ t _ hst
-    rw [Finset.disjoint_left]
-    intro A hAs hAt
-    exact hst ((Finset.mem_filter.mp hAs).2 ▸ (Finset.mem_filter.mp hAt).2)
-  -- Step 3: |F| = ∑ |groups| ≥ ∑ r = r · d
-  rw [h_eq, Finset.card_biUnion h_disj]
-  calc ∑ s ∈ distinctSizes F, (F.filter (fun A => A.card = s)).card
-      ≥ ∑ _s ∈ distinctSizes F, r := Finset.sum_le_sum (fun s hs => hmult s hs)
-    _ = r * (distinctSizes F).card := by
-        rw [Finset.sum_const, mul_comm]; simp [smul_eq_mul]
 
 /- ## Structural Lemmas for Axiom Elimination
 
@@ -321,7 +169,7 @@ lemma size1_and_complement_pair_only {n : ℕ} (hn : 3 ≤ n)
   · right
     -- a ∉ C: antichain gives ¬({a} ⊆ C)
     have ha_notC : a ∉ C := by
-      have h := hF {a} hA C hC hCA
+      have h := hF {a} hA C hC (Ne.symm hCA)
       rwa [Finset.singleton_subset_iff] at h
     -- C ⊆ univ.erase a = B
     have hCB : C ⊆ B := by
@@ -408,6 +256,163 @@ theorem distinctSizes_card_le_n_sub_two {n : ℕ} (hn : 4 ≤ n)
       _ = n - 2 := by
           rw [Nat.card_Icc]
           omega
+
+/- ## Main Results -/
+
+/-- **Upper bound**: For n > 3, every antichain has at most n − 2 distinct sizes.
+    Proved from distinctSizes_card_le_n_sub_two (for large families)
+    and card_image_le (for trivial families). -/
+theorem maxDistinctSizes_le_n_sub_two (n : ℕ) (hn : n > 3) :
+    maxDistinctSizes n 1 ≤ n - 2 := by
+  unfold maxDistinctSizes
+  apply Finset.sup_le
+  intro F hF
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hF
+  obtain ⟨hanti, _⟩ := hF
+  unfold numDistinctSizes
+  by_cases hcard : 1 < F.card
+  · exact distinctSizes_card_le_n_sub_two (by omega) hanti hcard
+  · calc (distinctSizes F).card ≤ F.card := Finset.card_image_le
+      _ ≤ 1 := by omega
+      _ ≤ n - 2 := by omega
+
+/-- **Achievability** (axiom): For n > 3, there exists an antichain over Fin n
+    with n − 2 distinct set sizes. Requires constructing a concrete antichain,
+    e.g., via symmetric chain decomposition. -/
+axiom erdos_trotter_r1_achievable (n : ℕ) (hn : n > 3) :
+    maxDistinctSizes n 1 ≥ n - 2
+
+/-- **Erdős–Trotter**: For r = 1 (no multiplicity constraint) and n > 3,
+    the maximum number of distinct sizes in an antichain is n − 2.
+    Combines the proved upper bound with the axiomatized achievability. -/
+theorem erdos_trotter_r1 (n : ℕ) (hn : n > 3) :
+    maxDistinctSizes n 1 = n - 2 :=
+  le_antisymm (maxDistinctSizes_le_n_sub_two n hn) (erdos_trotter_r1_achievable n hn)
+
+/-- **Erdős–Trotter**: For r > 1 and sufficiently large n,
+    n − 2 distinct sizes are NOT achievable. -/
+axiom erdos_trotter_upper (r : ℕ) (hr : r > 1) :
+  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → maxDistinctSizes n r ≤ n - 3
+
+/-- **Erdős–Trotter**: For r > 1 and sufficiently large n,
+    n − 3 distinct sizes ARE achievable. -/
+axiom erdos_trotter_achievable (r : ℕ) (hr : r > 1) :
+  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → maxDistinctSizes n r ≥ n - 3
+
+/-- Combined: for r > 1 and sufficiently large n,
+    the maximum is exactly n − 3. -/
+theorem erdos_trotter_exact (r : ℕ) (hr : r > 1) :
+    ∃ N : ℕ, ∀ n : ℕ, n ≥ N → maxDistinctSizes n r = n - 3 := by
+  obtain ⟨N₁, h₁⟩ := erdos_trotter_upper r hr
+  obtain ⟨N₂, h₂⟩ := erdos_trotter_achievable r hr
+  exact ⟨max N₁ N₂, fun n hn => by
+    have hle := h₁ n (le_of_max_le_left hn)
+    have hge := h₂ n (le_of_max_le_right hn)
+    omega⟩
+
+/- ## Main Conjecture -/
+
+/-- **Erdős Problem #776** (OPEN): Determine the threshold N(r) as a
+    function of r such that for all n ≥ N(r) and r ≥ 2, the maximum
+    number of distinct sizes in a multiplicity-r antichain is n − 3.
+    Existence follows from erdos_trotter_exact; minimality from Nat.find. -/
+theorem erdos_776_threshold :
+    ∀ r : ℕ, r ≥ 2 →
+      ∃ N : ℕ, (∀ n : ℕ, n ≥ N → maxDistinctSizes n r = n - 3) ∧
+        -- N is the smallest such threshold
+        ∀ M : ℕ, (∀ n : ℕ, n ≥ M → maxDistinctSizes n r = n - 3) → N ≤ M := by
+  classical
+  intro r hr
+  have h_exact := erdos_trotter_exact r (by omega)
+  exact ⟨Nat.find h_exact, Nat.find_spec h_exact, fun M hM => Nat.find_min' h_exact hM⟩
+
+/- ## Structural Observations -/
+
+/-- Sperner's theorem: the maximum antichain in 2^{[n]} has size C(n, ⌊n/2⌋).
+    Bridges our custom IsAntichainFamily to Mathlib's IsAntichain, then applies
+    Mathlib's IsAntichain.sperner (proved via the LYM inequality). -/
+theorem sperner_theorem (n : ℕ) :
+    ∀ (F : SubsetFamily n), IsAntichainFamily F →
+      F.card ≤ Nat.choose n (n / 2) := by
+  intro F hF
+  -- Bridge custom IsAntichainFamily to Mathlib's IsAntichain (· ⊆ ·)
+  have h : _root_.IsAntichain (· ⊆ ·) (↑F : Set (Finset (Fin n))) := by
+    intro A hA B hB hne hsub
+    exact hF A (Finset.mem_coe.mp hA) B (Finset.mem_coe.mp hB) hne hsub
+  -- Apply Mathlib's Sperner bound (from LYM inequality)
+  have := h.sperner (α := Fin n)
+  simp [Fintype.card_fin] at this
+  exact this
+
+/-- The middle layer has the most sets: all sets of size ⌊n/2⌋ form
+    an antichain with one distinct size and multiplicity C(n, ⌊n/2⌋). -/
+theorem middle_layer_antichain (n : ℕ) :
+    ∃ F : SubsetFamily n, IsAntichainFamily F ∧
+      numDistinctSizes F = 1 ∧
+      F.card = Nat.choose n (n / 2) := by
+  -- Take F = all (n/2)-element subsets of Fin n
+  use (Finset.univ : Finset (Fin n)).powersetCard (n / 2)
+  refine ⟨?_, ?_, ?_⟩
+  · -- IsAntichainFamily: same-size sets can't have proper subset relation
+    intro A hA B hB hne hsub
+    rw [Finset.mem_powersetCard] at hA hB
+    exact hne (Finset.eq_of_subset_of_card_le hsub (hB.2 ▸ hA.2 ▸ le_refl _))
+  · -- numDistinctSizes = 1: all sets have the same cardinality
+    unfold numDistinctSizes distinctSizes
+    -- Every element has card = n/2, so image = {n/2}
+    have hall : ∀ A ∈ (Finset.univ : Finset (Fin n)).powersetCard (n / 2),
+        A.card = n / 2 := by
+      intro A hA; exact (Finset.mem_powersetCard.mp hA).2
+    -- The family is nonempty (powersetCard k univ is nonempty when k ≤ n)
+    have hne : ((Finset.univ : Finset (Fin n)).powersetCard (n / 2)).Nonempty := by
+      obtain ⟨t, ht, htc⟩ := Finset.exists_subset_card_eq
+        (s := (Finset.univ : Finset (Fin n))) (n := n / 2) (by simp [Fintype.card_fin]; omega)
+      exact ⟨t, Finset.mem_powersetCard.mpr ⟨ht, htc⟩⟩
+    -- Image of card on same-sized sets is a singleton
+    have himg : Finset.image Finset.card
+        ((Finset.univ : Finset (Fin n)).powersetCard (n / 2)) = {n / 2} := by
+      ext s; simp only [Finset.mem_image, Finset.mem_singleton]; constructor
+      · rintro ⟨A, hA, rfl⟩; exact hall A hA
+      · intro hs; obtain ⟨A, hA⟩ := hne
+        exact ⟨A, hA, (hall A hA).trans hs.symm⟩
+    rw [himg, Finset.card_singleton]
+  · -- card = C(n, n/2)
+    rw [Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+
+/-- To get many distinct sizes, we need sets from many different layers.
+    The antichain constraint limits how sets from different layers interact. -/
+theorem size_variety_tradeoff (n r : ℕ) (hr : r ≥ 1) :
+    ∀ F : SubsetFamily n, IsAntichainFamily F → HasMultiplicity F r →
+      F.card ≥ r * numDistinctSizes F := by
+  intro F _ hmult
+  unfold numDistinctSizes
+  -- F decomposes into disjoint groups by cardinality
+  -- Step 1: F = ⋃_{s ∈ distinctSizes F} (F.filter (·.card = s))
+  have h_eq : F = (distinctSizes F).biUnion (fun s => F.filter (fun A => A.card = s)) := by
+    ext A; constructor
+    · intro hA
+      rw [Finset.mem_biUnion]
+      exact ⟨A.card, Finset.mem_image.mpr ⟨A, hA, rfl⟩, Finset.mem_filter.mpr ⟨hA, rfl⟩⟩
+    · intro hA
+      rw [Finset.mem_biUnion] at hA
+      obtain ⟨_, _, hAf⟩ := hA
+      exact (Finset.mem_filter.mp hAf).1
+  -- Step 2: The groups are pairwise disjoint
+  have h_disj : ∀ s ∈ distinctSizes F, ∀ t ∈ distinctSizes F, s ≠ t →
+      Disjoint (F.filter (fun A => A.card = s)) (F.filter (fun A => A.card = t)) := by
+    intro s _ t _ hst
+    rw [Finset.disjoint_left]
+    intro A hAs hAt
+    exact hst ((Finset.mem_filter.mp hAs).2 ▸ (Finset.mem_filter.mp hAt).2)
+  -- Step 3: |F| = ∑ |groups| ≥ ∑ r = r · d
+  calc F.card = ((distinctSizes F).biUnion (fun s => F.filter (fun A => A.card = s))).card :=
+        congrArg Finset.card h_eq
+    _ = ∑ s ∈ distinctSizes F, (F.filter (fun A => A.card = s)).card :=
+        Finset.card_biUnion h_disj
+    _ ≥ ∑ _s ∈ distinctSizes F, r := Finset.sum_le_sum (fun s hs => hmult s hs)
+    _ = r * (distinctSizes F).card := by
+        rw [Finset.sum_const, mul_comm]; simp [smul_eq_mul]
+
 
 /- ## Concrete Achievability — Base Case n = 4
 
