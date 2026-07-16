@@ -42,6 +42,7 @@ noncomputable def enumSet (A : Set ℕ) (j : ℕ) : ℕ := Nat.nth (· ∈ A) j
 /-- The enumeration is strictly monotone and surjects onto `A`. -/
 theorem enumSet_spec (A : Set ℕ) (hA : A.Infinite) :
     StrictMono (enumSet A) ∧ Set.range (enumSet A) = A := by
+  classical
   constructor
   · exact Nat.nth_strictMono hA
   · ext n; simp only [Set.mem_range, enumSet]
@@ -93,7 +94,8 @@ theorem one_squarefree : Squarefree 1 := squarefree_one
 
 /-- {1} has a squarefree sumset since 1 + 1 = 2 is squarefree. -/
 theorem squarefreeSumset_one : SquarefreeSumset {1} :=
-  (squarefreeSumset_singleton 1).mpr (by decide)
+  (squarefreeSumset_singleton 1).mpr
+    (show Squarefree (1 + 1) from Nat.prime_two.squarefree)
 
 /-- For a two-element set {a, b}, squarefree sumset requires
     2a, a+b, and 2b all squarefree. -/
@@ -130,7 +132,7 @@ theorem subexp_eventually_lt_exp (C : ℝ) (hC : 1 < C) :
   have hlog_tend : Tendsto (fun n : ℕ => Real.log (n : ℝ)) atTop atTop :=
     Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
   -- Eventually log n > 5 / log C
-  have hev_log : ∀ᶠ n in atTop, 5 / Real.log C < Real.log (n : ℝ) :=
+  have hev_log : ∀ᶠ (n : ℕ) in atTop, 5 / Real.log C < Real.log (n : ℝ) :=
     hlog_tend.eventually (eventually_gt_atTop (5 / Real.log C))
   filter_upwards [hev_log, eventually_gt_atTop 2] with j hj_log hj_ge
   -- Derived: log j > 0 and j > 0 (since 5/log C > 0 and log j > 5/log C)

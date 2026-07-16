@@ -1,3 +1,17 @@
+# DOCTOR SINGLE-PROOF BATCH 58 (5-slot Sonnet + Fable + Bezout reclassify, #38065, 2026-07-16)
+
+**+4 GREEN + 1 RECLASSIFY**: Erdos1103Problem (FABLE: Nat.count needs explicit DecidablePred; decide on
+Squarefree stuck at minSqFac), ContinuumHypothesisOQ02 (unqualified ω autobinds as implicit -> Ordinal.omega0;
+aleph numeral universe auto-generalizes -> pin Ordinal.{0}), Erdos1098Problem (FABLE #38611: Subgroup.index
+ℕ∞->ℕ, strengthened clique_size_bound+neumann_bound; NonCommGraph.irrefl by-skip unprovable), CauchySchwarz
+IntegralOQ01OQ03OQ01 (MeasurableSpace/BorelSpace on codomain for AEMeasurable; eLpNorm_..._nnnorm->_enorm).
+
+**BezoutIdentityOQ01OQ02OQ02Transitive RESIDUAL->PRE-EXISTING (exempt)**: triage confirmed NEVER-GREEN —
+docstring self-reports "UNVERIFIED — not yet machine-checked", first-ever elaboration (after building parent
+Descent olean, never cached) shows real unsolved-goal/rewrite failures in author-flagged gcdForm_two/cons_gcdForm
++ sln_transitive headBlockNSL inference — genuine incomplete work predating migration, not v4.31 drift.
+PRE-EXISTING 25->26. This is the predicted endpoint class (safe-subset green + hard-core exempt).
+Repairs #38611: Erdos1098. Fable 12/13 hard tail.
 # DOCTOR SINGLE-PROOF BATCH 57 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos1019Problem (later local def no longer shadows earlier ref -> reorder;
