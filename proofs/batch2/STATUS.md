@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 129 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos549Problem (BipartiteTree.{0} universe pin; native_decide->norm_num;
+IsTree/starGraph/pathGraph renamed +549 [Mathlib root collision]; symm/loopless Std.Symm/Std.Irrefl
+constructor+intro; ⟦⟧->s(); T.graph.degree->Nat.card neighborSet; #38611 REPAIRS x2: broomGraph pathLen=0
+self-loop -> 0<pathLen guard; tree_burr_erdos FALSE formula 2*cardV-1 -> cardV via omega). Repairs: 2.
+
 # DOCTOR SINGLE-PROOF BATCH 128 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos551Problem (open scoped Classical for Nat.find; SimpleGraph
