@@ -297,7 +297,7 @@ BuffonsNeedleOQ01	GREEN
 BuffonsNeedleOQ01OQ01	GREEN	
 BuffonsNeedleOQ01OQ01OQ01	GREEN	
 BuffonsNeedleOQ01OQ01OQ02	GREEN	
-BuffonsNeedleOQ01OQ01OQ04	RESIDUAL	rewrite-drift
+BuffonsNeedleOQ01OQ01OQ04	GREEN	
 BuffonsNeedleOQ01OQ01OQ04OQ01	RESIDUAL	rewrite-drift
 BuffonsNeedleOQ01OQ01OQ04OQ01Beta	GREEN	
 BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01	GREEN	
@@ -513,7 +513,7 @@ DeMoivreOQ01OQ03OQ02	GREEN
 DeMoivreOQ02OQ02	GREEN	
 DeMoivreOQ03OQ01	GREEN	
 DeMoivreOQ06	GREEN	
-DedekindFrobeniusBridge	RESIDUAL	rewrite-drift
+DedekindFrobeniusBridge	GREEN	
 DenumerabilityRationalsOQ01	GREEN	elab-drift
 DenumerabilityRationalsOQ02OQ02	GREEN	
 DenumerabilityRationalsOQ04	RESIDUAL	unknown-const:Polynomial.setOf_isRoot_finite
@@ -554,7 +554,7 @@ DirichletsTheoremOQ03	GREEN
 DissectionOfCubesOQ01OQ02	GREEN	
 DissectionOfCubesOQ02OQ02	RESIDUAL	type-mismatch
 DissectionOfCubesOQ03	GREEN	
-DissectionOfCubesOQ03OQ02	RESIDUAL	rewrite-drift
+DissectionOfCubesOQ03OQ02	GREEN	
 DissectionOfCubesOQ04	RESIDUAL	type-mismatch
 DissectionOfCubesOQ04Aristotle	RESIDUAL	type-mismatch
 DivisibilityBy3	GREEN	
