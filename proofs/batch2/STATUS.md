@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 320 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: DissectionOfCubesOQ04Aristotle (no source edit — cascade artifact; parents
+DissectionOfCubesOQ04 + DissectionOfCubesOQ02OQ02 not in cache, primed via lake build, then
+EXIT=0). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 319 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos625ProblemAristotle (3 seams: drop unneeded `SimpleGraph` from open to
