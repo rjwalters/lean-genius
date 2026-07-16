@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 100 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CauchySchwarzOQ01OQ04 (sum_le_sum_of_subset_of_nonneg since ℝ not
+CanonicallyOrderedAdd; lp.norm_rpow_eq_tsum direct term app w/ explicit E/p; ENNReal full name no
+open scoped; Real.sqrt_le_sqrt+sqrt_sq for the corollary). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 99 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CantorDiagonalizationOQ04OQ03 (kleeneChain def needs [Preorder α]

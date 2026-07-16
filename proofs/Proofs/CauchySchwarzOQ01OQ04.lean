@@ -85,7 +85,7 @@ theorem bessel_finite {v : ι → E} (hv : Orthonormal 𝕜 v) (x : E) (s : Fins
 theorem bessel_monotone {v : ι → E} (hv : Orthonormal 𝕜 v) (x : E)
     {s t : Finset ι} (hst : s ⊆ t) :
     ∑ i ∈ s, ‖⟪v i, x⟫_𝕜‖ ^ 2 ≤ ∑ i ∈ t, ‖⟪v i, x⟫_𝕜‖ ^ 2 :=
-  Finset.sum_le_sum_of_subset hst
+  Finset.sum_le_sum_of_subset_of_nonneg hst fun i _ _ => sq_nonneg _
 
 /-- Each additional orthonormal vector contributes a nonneg term to the Bessel sum. -/
 theorem bessel_insert {v : ι → E} (hv : Orthonormal 𝕜 v) (x : E)
@@ -139,11 +139,13 @@ theorem parseval_identity [CompleteSpace E] (b : HilbertBasis ι 𝕜 E) (x : E)
     congr 1; ext i; rw [h_repr i]]
   -- Step 2: Apply the ℓ² norm formula: ‖f‖^2 = ∑' i, ‖f i‖^2
   have h_lp : ‖b.repr x‖ ^ 2 = ∑' i, ‖b.repr x i‖ ^ 2 := by
-    apply_mod_cast lp.norm_rpow_eq_tsum
-    · norm_num  -- 0 < (2 : ℝ≥0∞).toReal = 2
-    · exact b.repr x
+    have hp : (0:ℝ) < (2 : ENNReal).toReal := by norm_num
+    have := lp.norm_rpow_eq_tsum (E := fun _ : ι => 𝕜) (p := 2) hp (b.repr x)
+    simpa using this
   -- Step 3: Use isometry property: ‖b.repr x‖ = ‖x‖
-  linarith [b.repr.norm_map x]
+  have hiso : ‖b.repr x‖ = ‖x‖ := b.repr.norm_map x
+  rw [hiso] at h_lp
+  linarith [h_lp]
 
 /-- Corollary: The HilbertBasis representation map is an ℓ²-isometry. -/
 theorem parseval_norm_sq [CompleteSpace E] (b : HilbertBasis ι 𝕜 E) (x : E) :
@@ -170,7 +172,9 @@ theorem inner_le_norm {v : ι → E} (hv : Orthonormal 𝕜 v) (x : E) (i : ι) 
     ‖⟪v i, x⟫_𝕜‖ ≤ ‖x‖ := by
   have h := bessel_extends_cauchy_schwarz hv x i
   have hnn : 0 ≤ ‖⟪v i, x⟫_𝕜‖ := norm_nonneg _
-  nlinarith [sq_nonneg (‖x‖ - ‖⟪v i, x⟫_𝕜‖), sq_nonneg ‖x‖]
+  have hxnn : 0 ≤ ‖x‖ := norm_nonneg _
+  have := Real.sqrt_le_sqrt h
+  rwa [Real.sqrt_sq hnn, Real.sqrt_sq hxnn] at this
 
 -- ============================================================
 -- PART V: Summary Theorem
