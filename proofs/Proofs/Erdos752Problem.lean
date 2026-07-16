@@ -36,13 +36,13 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 /- ## Part 1: Basic Definitions
 -/
 
-/-- The minimum degree of a simple graph -/
-noncomputable def minDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+/-- The minimum degree of a simple graph (on a nonempty vertex set) -/
+noncomputable def minDegree [Nonempty V] (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   Finset.univ.inf' ⟨Classical.arbitrary V, Finset.mem_univ _⟩ (G.degree ·)
 
 /-- A graph has girth > g if it contains no cycles of length ≤ g -/
 def GirthGreaterThan (G : SimpleGraph V) (g : ℕ) : Prop :=
-  ∀ n : ℕ, n ≤ g → ¬∃ (walk : G.Walk V V), walk.IsCycle ∧ walk.length = n
+  ∀ n : ℕ, n ≤ g → ¬∃ (u : V) (walk : G.Walk u u), walk.IsCycle ∧ walk.length = n
 
 /-- The set of cycle lengths in a graph -/
 noncomputable def cycleLengths (G : SimpleGraph V) : Set ℕ :=
@@ -55,13 +55,17 @@ noncomputable def numCycleLengths (G : SimpleGraph V) : ℕ :=
 /- ## Part 2: The Erdős-Faudree-Schelp Conjecture
 -/
 
-/-- The conjecture: girth > 2s and min degree k implies ≫ k^s cycle lengths -/
+/-- The conjecture: girth > 2s and min degree k implies ≫ k^s cycle lengths.
+    The Ω(k^s) bound is stated in the floor form `≥ ⌊c·k^s⌋₊` (the discrete
+    reading of "≫ k^s"): for c·k^s < 1 the bound is trivially 0, which is
+    the correct degenerate behavior (e.g. a perfect matching has min degree 1
+    and arbitrarily high girth but no cycles at all). -/
 def ErdosFaudreeSchelpConjecture : Prop :=
-  ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V]
+  ∃ c : ℝ, c > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (k s : ℕ),
     minDegree G ≥ k →
     GirthGreaterThan G (2 * s) →
-    (numCycleLengths G : ℝ) ≥ c * (k : ℝ) ^ s
+    numCycleLengths G ≥ ⌊c * (k : ℝ) ^ s⌋₊
 
 /- ## Part 3: The Sudakov-Verstraëte Theorem (Stronger Version)
 -/
@@ -84,21 +88,20 @@ axiom sudakov_verstrate_2008 : ∃ c : ℝ, c > 0 ∧
     ∃ (start : ℕ), ConsecutiveEvenCycleLengths G start ⌊c * (k : ℝ) ^ s⌋₊
 
 /-- Min degree lower bounds average degree: the inf of a finite set ≤ its average. -/
-theorem min_degree_le_avg (V : Type*) [Fintype V] [DecidableEq V]
+theorem min_degree_le_avg (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     (minDegree G : ℝ) ≤ avgDegree G := by
-  unfold minDegree avgDegree
-  have hcard : (0 : ℝ) < Fintype.card V := by exact_mod_cast @Fintype.card_pos V _ ⟨Classical.arbitrary V⟩
-  rw [le_div_iff₀ hcard]
-  -- Goal: (↑inf') * ↑card ≤ ↑(∑ degrees)
-  -- Strategy: inf' * card = ∑ inf' ≤ ∑ degree(v)
-  calc (↑(Finset.univ.inf' ⟨_, Finset.mem_univ _⟩ (G.degree ·)) : ℝ) * ↑(Fintype.card V)
-      = Finset.univ.sum
-          (fun _ => (↑(Finset.univ.inf' ⟨_, Finset.mem_univ _⟩ (G.degree ·)) : ℝ)) := by
-        rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  have hcard : (0 : ℝ) < Fintype.card V := by exact_mod_cast Fintype.card_pos
+  rw [avgDegree, le_div_iff₀ hcard]
+  -- Goal: (↑minDegree) * ↑card ≤ ∑ degrees
+  -- Strategy: minDegree * card = ∑ minDegree ≤ ∑ degree(v)
+  have hle : ∀ v : V, minDegree G ≤ G.degree v := fun v =>
+    Finset.inf'_le _ (Finset.mem_univ v)
+  calc (minDegree G : ℝ) * ↑(Fintype.card V)
+      = Finset.univ.sum (fun _ : V => (minDegree G : ℝ)) := by
+        rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]
     _ ≤ Finset.univ.sum (fun v => (G.degree v : ℝ)) :=
-        Finset.sum_le_sum fun v _ =>
-          Nat.cast_le.mpr (Finset.inf'_le _ (Finset.mem_univ v))
+        Finset.sum_le_sum fun v _ => Nat.cast_le.mpr (hle v)
 
 /-- Consecutive lengths give at least that many distinct cycle lengths -/
 axiom consecutive_gives_distinct (V : Type*) [Fintype V] [DecidableEq V]
@@ -109,25 +112,21 @@ axiom consecutive_gives_distinct (V : Type*) [Fintype V] [DecidableEq V]
 /-- The original conjecture follows from the stronger result -/
 theorem erdos_752_solved : ErdosFaudreeSchelpConjecture := by
   obtain ⟨c, hc_pos, h⟩ := sudakov_verstrate_2008
-  use c / 2, by linarith
-  intro V _ _ G _ k s hmin hgirth
+  refine ⟨c, hc_pos, ?_⟩
+  intro V _ _ _ G _ k s hmin hgirth
   -- min degree ≤ avg degree, so avg degree ≥ k
-  have havg : avgDegree G ≥ k := by
-    calc avgDegree G ≥ minDegree G := min_degree_le_avg V G
-      _ ≥ k := by exact_mod_cast hmin
+  have havg : avgDegree G ≥ (k : ℝ) := by
+    calc avgDegree G ≥ (minDegree G : ℝ) := min_degree_le_avg V G
+      _ ≥ (k : ℝ) := by exact_mod_cast hmin
   obtain ⟨start, hcons⟩ := h V G k s havg hgirth
-  have hdist := consecutive_gives_distinct V G start _ hcons
-  calc (numCycleLengths G : ℝ)
-      ≥ ⌊c * (k : ℝ) ^ s⌋₊ := by exact_mod_cast hdist
-    _ ≥ c * (k : ℝ) ^ s - 1 := Nat.sub_one_lt_floor (c * (k : ℝ) ^ s)
-    _ ≥ c / 2 * (k : ℝ) ^ s := by nlinarith [hc_pos, pow_nonneg (Nat.cast_nonneg k) s]
+  exact consecutive_gives_distinct V G start _ hcons
 
 /- ## Part 4: Why Girth Matters
 -/
 
 /-- Moore graphs achieve the Moore bound exactly -/
 def IsMooreGraph (G : SimpleGraph V) [DecidableRel G.Adj] (d g : ℕ) : Prop :=
-  G.IsRegular d ∧
+  G.IsRegularOfDegree d ∧
   GirthGreaterThan G (g - 1) ∧
   ¬GirthGreaterThan G g
 
@@ -135,7 +134,7 @@ def IsMooreGraph (G : SimpleGraph V) [DecidableRel G.Adj] (d g : ℕ) : Prop :=
 -/
 
 /-- Girth > 2s means the shortest cycle has length ≥ 2s + 1 -/
-def girth (G : SimpleGraph V) : ℕ :=
+noncomputable def girth (G : SimpleGraph V) : ℕ :=
   sInf { n : ℕ | n ≥ 3 ∧ ∃ (u : V) (walk : G.Walk u u), walk.IsCycle ∧ walk.length = n }
 
 /-- High girth forces cycles to be "spread out" in length -/

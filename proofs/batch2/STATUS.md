@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 139 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos752Problem (G.Walk V V ill-typed->∃u,Walk u u; [Nonempty V] adds;
+IsRegular->IsRegularOfDegree; noncomputable girth; nsmul_eq_mul operand order mul_comm; #38611 REPAIR
+ErdosFaudreeSchelpConjecture false@small k·s -> floor form ⌊c·k^s⌋₊; NOTE pre-existing sudakov_verstrate_2008
+axiom overstates SV2008). Repairs: 1 + 1 axiom-flag.
+
 # DOCTOR SINGLE-PROOF BATCH 138 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos740Problem (Cardinal.IsInfinite/aleph0_le_of_isInfinite never
