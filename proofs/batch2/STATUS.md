@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 222 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos382Problem (HARD 13min: List.mem_cons_self implicit; Finset.induction_on
+4 named binders; prod_ne_zero_iff.mpr; hp.factorization_self; Nat.one_le_div_of_dvd gone; forward-ref reorder;
+Prime.dvd_finsetProd_iff explicit g; Nat.prime_iff 2nd conjunct not omega-closable). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 221 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos453Problem (redundant exact dropped; if_neg for nthPrime_is_prime;
