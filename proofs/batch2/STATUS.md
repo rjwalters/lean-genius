@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 242 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos687Problem (local primorial collides root -> reuse; open Real rpow;
+Prime.dvd_finset_prod_iff explicit g; Nat.cast_prod gone->push_cast; subst eliminates RHS var; rpow_add
+strict pos -> rpow_add'). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 241 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos824ProblemProvable (ne_of_gt/lt ambiguity -> omega; import Pow.Real +
