@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 225 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos454Problem (Prime ambiguous under open Nat -> Nat.Prime; REMOVED 2
+native_decide -> Nat.nth_prime_two/three_eq lemmas [axiom-cleaner]; 𝓝 open scoped Topology; WithTop.ne_top_
+iff_exists). Repair: none (pre-existing sorries untouched, formalized entry).
+
 # DOCTOR SINGLE-PROOF BATCH 224 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos478Problem (congr 1->congr 2 for cast+factorial peel; set-bound k
