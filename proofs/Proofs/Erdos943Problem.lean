@@ -49,11 +49,12 @@ theorem not_isPowerful_zero : ¬IsPowerful 0 := by
 
 /-- 1 is powerful: no primes divide 1, so the condition is vacuous. -/
 theorem isPowerful_one : IsPowerful 1 :=
-  ⟨le_refl 1, fun p hp hpd => absurd (Nat.le_of_dvd (by omega) hpd) (by omega)⟩
+  ⟨le_refl 1, fun p hp hpd =>
+    absurd (Nat.le_of_dvd (by omega) hpd) (by have := hp.two_le; omega)⟩
 
 /-- p² is powerful for any prime p: the only prime dividing p² is p itself. -/
 theorem isPowerful_prime_sq {p : ℕ} (hp : Nat.Prime p) : IsPowerful (p ^ 2) :=
-  ⟨by positivity, fun q hq hqd => by
+  ⟨Nat.one_le_iff_ne_zero.mpr (pow_ne_zero 2 hp.pos.ne'), fun q hq hqd => by
     have hqp : q ∣ p := hq.dvd_of_dvd_pow hqd
     have heq : q = p := by
       rcases hp.eq_one_or_self_of_dvd q hqp with h | h
@@ -63,14 +64,15 @@ theorem isPowerful_prime_sq {p : ℕ} (hp : Nat.Prime p) : IsPowerful (p ^ 2) :=
 
 /-- Perfect squares ≥ 1 are powerful: if p | n² then p | n, so p² | n². -/
 theorem isPowerful_sq {n : ℕ} (hn : n ≥ 1) : IsPowerful (n ^ 2) :=
-  ⟨by positivity, fun p hp hpd => by
+  ⟨Nat.one_le_iff_ne_zero.mpr (pow_ne_zero 2 (by omega)), fun p hp hpd => by
     have := hp.dvd_of_dvd_pow hpd
-    exact Dvd.dvd.pow this (by omega : 0 < 2)⟩
+    exact pow_dvd_pow_of_dvd this 2⟩
 
 /-- Products of powerful numbers are powerful. -/
 theorem isPowerful_mul {m n : ℕ} (hm : IsPowerful m) (hn : IsPowerful n) :
     IsPowerful (m * n) :=
-  ⟨by omega, fun p hp hpd => by
+  ⟨Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by have := hm.1; omega) (by have := hn.1; omega)),
+    fun p hp hpd => by
     have := hp.dvd_mul.mp hpd
     rcases this with h | h
     · exact dvd_mul_of_dvd_left (hm.2 p hp h) n
