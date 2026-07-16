@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 293 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FairGamesTheoremOQ02OQ01OQ01 (DEEP 30min/329k: IsStoppingTime ℕ->WithTop ℕ
++ descent lemma; variable auto-include type-only -> include..in; ‖X‖ pointwise; ℝ≥0∞ scoped ENNReal silent
+parse fail; measurable_natCast now constant-fn -> Measurable.of_discrete.comp; indicator_of_mem show ascription;
+lintegral_tsum (f:=) explicit HOU). Repair: none. Closes FairGames family.
+
 # DOCTOR SINGLE-PROOF BATCH 292 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos184ProblemProvable (logStar WF termination_by Nat.log2_lt, dropped
