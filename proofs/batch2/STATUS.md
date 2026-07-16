@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 82 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos1054ConstructionD (Nat.mul_dvd_mul_iff_right->_left arg-swap; omega
+can't do nonlinear p^2≠0 -> pow_ne_zero; List.Perm.eq_of_pairwise->eq_of_pairwise' [Std.Antisymm]; unblocks
+Erdos1054OQ01), LebesgueMeasureOQ06OQ01 (noncomputable now flagged via lean.dependsOnNoncomputable where v4.26
+didn't; pure cascade). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 81 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LebesgueMeasureOQ06 (SONNET 110min/604k/418-tools — LONGEST agent of session,
