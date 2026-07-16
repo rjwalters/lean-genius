@@ -604,6 +604,7 @@ theorem weylW_eq_root_word :
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+set_option maxHeartbeats 800000 in
 /-- **Every torus element is a word in the two root groups.**
 `diag(a) = u(a)·l(-a⁻¹)·u(a)·w`:
 
@@ -611,23 +612,29 @@ theorem weylW_eq_root_word :
       = [[1, a], [0, 1]] · [[1, 0], [-a⁻¹, 1]] · [[1, a], [0, 1]] · [[0, -1], [1, 0]].
 
 Hence the whole split torus `T` lies in `⟨U, U⁻⟩`. -/
-set_option maxHeartbeats 800000 in
 theorem torusDiag_eq_root_word (a : (ZMod p)ˣ) :
     torusDiag a
       = unipotentUpper (a : ZMod p) * lowerUnipotent (-((a : ZMod p)⁻¹))
           * unipotentUpper (a : ZMod p) * weylW := by
   have hc : (a : ZMod p) ≠ 0 := a.ne_zero
+  have ha : (a : ZMod p) * (a : ZMod p)⁻¹ = 1 := mul_inv_cancel₀ hc
+  have ha' : (a : ZMod p)⁻¹ * (a : ZMod p) = 1 := inv_mul_cancel₀ hc
   have hinv : ((a⁻¹ : (ZMod p)ˣ) : ZMod p) = (a : ZMod p)⁻¹ :=
     Units.val_inv_eq_inv_val a
   apply Subtype.ext
-  show (!![(a : ZMod p), 0; 0, ((a⁻¹ : (ZMod p)ˣ) : ZMod p)]
-        : Matrix (Fin 2) (Fin 2) (ZMod p))
-      = !![1, (a : ZMod p); 0, 1] * !![1, 0; -((a : ZMod p)⁻¹), 1]
-          * !![1, (a : ZMod p); 0, 1] * !![0, -1; 1, 0]
-  rw [hinv]
+  -- Unfold via the `@[simp]` coercion lemmas (cheap rewriting) rather than a `show`
+  -- (whose defeq check against a 4-factor product times out at `whnf`).
+  simp only [Matrix.SpecialLinearGroup.coe_mul, val_torusDiag, val_unipotentUpper,
+    val_lowerUnipotent, val_weylW, hinv]
+  -- Abstract the (otherwise deeply-nested `Units`-coercion) scalars `a`, `a⁻¹` into plain
+  -- local variables before `ring` has to process the 4-factor matrix product entrywise;
+  -- without this the unabstracted terms blow the recursion depth (mirrors the `set x`/`set xi`
+  -- pattern already used for the 3-factor products above, e.g. `weylW_conj_torus`).
+  set x := (a : ZMod p) with hx
+  set xi := (a : ZMod p)⁻¹ with hxi
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
+    simp [Matrix.mul_apply, Fin.sum_univ_two, ha, ha'] <;> ring
 
 /-- The two opposite root groups `U ∪ U⁻`, the Bruhat generators of `SL(2, p)`. -/
 def rootGroups : Set (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=
@@ -656,6 +663,7 @@ theorem torusDiag_mem_closure_rootGroups (a : (ZMod p)ˣ) :
     (lowerUnipotent_mem_closure_rootGroups _)) (unipotentUpper_mem_closure_rootGroups _))
     weylW_mem_closure_rootGroups
 
+set_option maxHeartbeats 800000 in
 /-- **Bruhat cell membership.**  Every `g ∈ SL(2, p)` whose lower-left entry `c` is
 nonzero lies in `⟨U, U⁻⟩`, via the Bruhat factorization
 
@@ -663,7 +671,6 @@ nonzero lies in `⟨U, U⁻⟩`, via the Bruhat factorization
 
 where `a = g₀₀`, `d = g₁₁`.  (The top-right entry checks out because
 `ad − bc = 1`.)  Since `u(·), w, diag(c)` all lie in `⟨U, U⁻⟩`, so does `g`. -/
-set_option maxHeartbeats 800000 in
 theorem mem_closure_of_lowerLeft_ne_zero
     (g : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))
     (hc : (g : Matrix (Fin 2) (Fin 2) (ZMod p)) 1 0 ≠ 0) :
@@ -684,12 +691,7 @@ theorem mem_closure_of_lowerLeft_ne_zero
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_two] <;>
       field_simp <;>
-      first
-        | ring
-        | linear_combination hdet
-        | linear_combination -hdet
-        | linear_combination (A 1 0) * hdet
-        | linear_combination -(A 1 0) * hdet
+      linear_combination hdet
   have hword : g = unipotentUpper (A 0 0 * (A 1 0)⁻¹) * weylW * torusDiag (Units.mk0 (A 1 0) hc)
       * unipotentUpper (A 1 1 * (A 1 0)⁻¹) := by
     apply Subtype.ext
@@ -858,13 +860,13 @@ theorem card_SL2 :
       Nat.card (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) = Nat.card D.ker := by
     rw [← hrangeker]
     exact Nat.card_congr
-      (MulEquiv.ofInjective Matrix.SpecialLinearGroup.toGL_injective).toEquiv
+      (MonoidHom.ofInjective Matrix.SpecialLinearGroup.toGL_injective).toEquiv
   -- (2) Lagrange: `|ker| · index = |GL|`.
   have hmulindex : Nat.card D.ker * D.ker.index = Nat.card (GL (Fin 2) (ZMod p)) :=
     D.ker.card_mul_index
   -- (3) `index = |range(det)| = |𝔽_pˣ| = p − 1`.
   have hindex : D.ker.index = p - 1 := by
-    rw [MonoidHom.index_ker, MonoidHom.range_eq_top.mpr hsurj,
+    rw [Subgroup.index_ker, MonoidHom.range_eq_top.mpr hsurj,
       Nat.card_congr (Subgroup.topEquiv (G := (ZMod p)ˣ)).toEquiv, Nat.card_eq_fintype_card,
       ZMod.card_units]
   -- (4) `|GL(2, p)| = (p² − 1)(p² − p)`.
@@ -934,6 +936,9 @@ theorem not_isSolvable_PSL (hp : 5 ≤ p) :
     ¬ IsSolvable (Matrix.ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) := by
   intro hsolv
   haveI := hsolv
+  -- The center is abelian (`IsMulCommutative`), hence solvable.
+  haveI : IsSolvable (Subgroup.center (Matrix.SpecialLinearGroup (Fin 2) (ZMod p))) :=
+    isSolvable_of_comm mul_comm'
   -- A solvable quotient and (automatically) solvable central kernel force the middle
   -- group `SL(2, p)` to be solvable via the central extension.
   haveI : IsSolvable (Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :=

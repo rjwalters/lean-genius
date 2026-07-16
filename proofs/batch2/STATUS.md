@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 353 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, 170k tok)**: SylowTheoremOQ04OQ03 (doc-comment-before-`set_option..in` v4.31
+parser regression -> move set_option before docstring x2; torusDiag_eq_root_word whnf timeout on
+4-factor !![] product -> simp only coe_mul/val + set x/xi abstraction; linear_combination hdet;
+MulEquiv.ofInjective->MonoidHom.ofInjective; MonoidHom.index_ker->Subgroup.index_ker; center no longer
+auto-CommGroup -> isSolvable_of_comm mul_comm' via IsMulCommutative). Repair: none (0 sorries/axioms).
+SEAM: `/-- doc -/` immediately before `set_option..in theorem` fails to parse in v4.31 (move set_option
+first); MulEquiv.ofInjective->MonoidHom.ofInjective; MonoidHom.index_ker->Subgroup.index_ker; Subgroup.center
+no longer auto-provides CommGroup -> isSolvable_of_comm mul_comm'.
+
 # DOCTOR SINGLE-PROOF BATCH 352 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: SylowTheoremsOQ05 (add `open scoped IsMulCommutative in` before
