@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 197 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1149Problem (Set.ncard_coe_Finset -> Set.ncard_coe_finset lowercase
+rename). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 196 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1178Problem (Nat.sInf_mem ⟨_,proof⟩ no eager unify -> explicit have
