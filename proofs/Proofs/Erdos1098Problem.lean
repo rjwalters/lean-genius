@@ -75,7 +75,8 @@ g ∈ Z(G) iff g commutes with all elements.
 -/
 theorem mem_center_iff (g : G) :
     g ∈ Subgroup.center G ↔ ∀ h : G, commuting g h := by
-  simp [commuting, Subgroup.mem_center_iff]
+  simp only [commuting, Subgroup.mem_center_iff]
+  constructor <;> intro H h <;> exact (H h).symm
 
 /- ## Part II: Non-Commuting Graph
 -/
@@ -87,9 +88,18 @@ This is an undirected graph (symmetric relation).
 -/
 structure NonCommGraph (G : Type*) [Group G] where
   vertices : Set G := Set.univ
-  adj : G → G → Prop := nonCommuting
-  symm : ∀ g h, adj g h ↔ adj h g := fun g h => nonCommuting_symm g h
-  irrefl : ∀ g, ¬adj g g := fun g => by skip
+  adj : G → G → Prop
+  symm : ∀ g h, adj g h ↔ adj h g
+  irrefl : ∀ g, ¬adj g g
+
+/--
+**The canonical non-commuting graph of `G`:**
+adjacency is the non-commuting relation (symmetric and irreflexive).
+-/
+def nonCommGraph (G : Type*) [Group G] : NonCommGraph G where
+  adj := nonCommuting
+  symm := nonCommuting_symm
+  irrefl := fun _ h => h rfl
 
 /--
 **Clique in Non-Commuting Graph:**
@@ -125,15 +135,17 @@ def noInfiniteClique (G : Type*) [Group G] : Prop :=
 /--
 **Finite Index:**
 The center Z(G) has finite index in G.
+(Mathlib's `Subgroup.index : ℕ` returns `0` when the index is infinite,
+so finite index is `index ≠ 0`.)
 -/
 def centerHasFiniteIndex (G : Type*) [Group G] : Prop :=
-  (Subgroup.center G).index ≠ ⊤
+  (Subgroup.center G).index ≠ 0
 
 /--
 **Index Value:**
-If finite, the actual index [G : Z(G)].
+The index [G : Z(G)] as a natural number (`0` if infinite).
 -/
-noncomputable def centerIndex (G : Type*) [Group G] : ℕ∞ :=
+noncomputable def centerIndex (G : Type*) [Group G] : ℕ :=
   (Subgroup.center G).index
 
 /- ## Part IV: Neumann's Theorem
@@ -169,7 +181,7 @@ If S is a clique, distinct elements must be in different cosets of Z(G).
 -/
 theorem clique_different_cosets (S : Set G) (hS : isClique S) :
     ∀ g ∈ S, ∀ h ∈ S, g ≠ h →
-    (Subgroup.center G).quotient.mk g ≠ (Subgroup.center G).quotient.mk h := by
+    (QuotientGroup.mk g : G ⧸ Subgroup.center G) ≠ QuotientGroup.mk h := by
   intro g hg h hh hne heq
   -- Distinct clique members must not commute
   have hnc : nonCommuting g h := hS g hg h hh hne
@@ -179,48 +191,56 @@ theorem clique_different_cosets (S : Set G) (hS : isClique S) :
     use g⁻¹ * h
     refine ⟨?_, by group⟩
     -- g⁻¹ * h ∈ center G from quotient equality
-    have hrel := Quotient.exact heq
-    rwa [QuotientGroup.leftRel_apply] at hrel
+    rwa [QuotientGroup.eq] at heq
   unfold nonCommuting at hnc; unfold commuting at hcomm
   exact hnc hcomm
 
 /--
 **Corollary:**
-|S| ≤ [G : Z(G)] for any clique S.
+|S| ≤ [G : Z(G)] for any clique S, provided Z(G) has finite index.
+(The finiteness hypothesis is needed because Mathlib's `index : ℕ`
+returns `0` for infinite index.)
 -/
-theorem clique_size_bound (S : Set G) (hS : isClique S) (hSfin : S.Finite) :
+theorem clique_size_bound (S : Set G) (hS : isClique S) (_hSfin : S.Finite)
+    (hfin : centerHasFiniteIndex G) :
     S.ncard ≤ (Subgroup.center G).index := by
+  haveI : Finite (G ⧸ Subgroup.center G) :=
+    (Subgroup.index_ne_zero_iff_finite (H := Subgroup.center G)).mp hfin
   -- The quotient map mk : G → G ⧸ Z(G) is injective on cliques
-  have hinj : Set.InjOn (Subgroup.center G).quotient.mk S := by
+  have hinj : Set.InjOn (QuotientGroup.mk : G → G ⧸ Subgroup.center G) S := by
     intro g hg h hh heq
     by_contra hne
     exact clique_different_cosets S hS g hg h hh hne heq
   -- |S| = |mk(S)| ≤ |G ⧸ Z(G)| = [G : Z(G)]
   calc S.ncard
-      = (((Subgroup.center G).quotient.mk) '' S).ncard :=
-          (Set.ncard_image_of_injOn hinj hSfin).symm
-    _ ≤ Set.univ.ncard := Set.ncard_le_ncard (Set.subset_univ _) (hSfin.image _)
-    _ = Nat.card ((Subgroup.center G).quotient) := Set.ncard_univ _
-    _ = (Subgroup.center G).index := (Subgroup.index_eq_card _).symm
+      = ((QuotientGroup.mk : G → G ⧸ Subgroup.center G) '' S).ncard :=
+          hinj.ncard_image.symm
+    _ ≤ (Set.univ : Set (G ⧸ Subgroup.center G)).ncard :=
+          Set.ncard_le_ncard (Set.subset_univ _) Set.finite_univ
+    _ = Nat.card (G ⧸ Subgroup.center G) := Set.ncard_univ _
+    _ = (Subgroup.center G).index := by rw [Subgroup.index_eq_card]
 
 /--
 **Clique Size Bound (with explicit index):**
 If [G : Z(G)] = n < ∞, then Γ(G) has no clique on > n vertices.
 Proved from clique_size_bound (eliminates former axiom). -/
-theorem neumann_bound (G : Type*) [Group G] (n : ℕ)
+theorem neumann_bound (G : Type*) [Group G] (n : ℕ) (hn0 : n ≠ 0)
     (hn : (Subgroup.center G).index = n) :
     ∀ S : Set G, isClique S → S.Finite → S.ncard ≤ n := by
   intro S hS hSfin
+  have hfin : centerHasFiniteIndex G := by
+    unfold centerHasFiniteIndex
+    rw [hn]; exact hn0
   calc S.ncard
-      ≤ (Subgroup.center G).index := clique_size_bound S hS hSfin
+      ≤ (Subgroup.center G).index := clique_size_bound S hS hSfin hfin
     _ = n := hn
 
 /--
 **Corollary: Finite Index implies Finite Clique Number:**
 -/
 theorem finite_index_implies_finite_clique (G : Type*) [Group G]
-    (h : centerHasFiniteIndex G) : hasFiniteCliqueNumber G := by
-  exact ⟨(Subgroup.center G).index, neumann_bound G _ rfl⟩
+    (h : centerHasFiniteIndex G) : hasFiniteCliqueNumber G :=
+  ⟨(Subgroup.center G).index, fun S hS hSfin => clique_size_bound S hS hSfin h⟩
 
 /--
 **Answer to Erdős' Question:**
@@ -244,7 +264,7 @@ theorem abelian_no_edges (G : Type*) [Group G]
   intro g h
   simp [nonCommuting]
   have : g ∈ Subgroup.center G := by simp [habel]
-  exact Subgroup.mem_center_iff.mp this h
+  exact (Subgroup.mem_center_iff.mp this h).symm
 
 /- 
 **Infinite Non-Abelian Groups:**
@@ -269,8 +289,8 @@ Every finite group has finite index center (trivially).
 theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] :
     centerHasFiniteIndex G := by
   unfold centerHasFiniteIndex
-  -- For finite G, index of any subgroup is finite (a natural number, not ⊤)
-  exact Subgroup.index_ne_zero.mpr (inferInstance : Finite (Subgroup.center G).quotient)
+  -- For finite G, the quotient is finite, so the index is a nonzero natural
+  exact Subgroup.index_ne_zero_of_finite (H := Subgroup.center G)
 
 /- ## Part VIII: Generalizations
 -/
@@ -301,7 +321,7 @@ theorem prob_clique_relation (G : Type*) [Group G] [Finite G] :
 Groups with bounded finite conjugacy classes - related concept.
 -/
 def isBFCGroup (G : Type*) [Group G] : Prop :=
-  ∃ n : ℕ, ∀ g : G, (conjugacyClass g).Finite ∧ (conjugacyClass g).ncard ≤ n
+  ∃ n : ℕ, ∀ g : G, (conjugatesOf g).Finite ∧ (conjugatesOf g).ncard ≤ n
 
 /- 
 **Connection to BFC:**

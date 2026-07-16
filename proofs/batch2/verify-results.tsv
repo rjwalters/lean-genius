@@ -211,7 +211,7 @@ BetaIntegralRecurrenceOQ01OQ03OQ01	GREEN
 BetaIntegralRecurrenceOQ01OQ03OQ01OQ02	GREEN	
 BezoutIdentity	GREEN	
 BezoutIdentityOQ01OQ02OQ02Descent	GREEN	
-BezoutIdentityOQ01OQ02OQ02Transitive	RESIDUAL	unknown-const:det_headBlockN
+BezoutIdentityOQ01OQ02OQ02Transitive	PRE-EXISTING	never-green: docstring self-reports UNVERIFIED, real unsolved goals predating migration
 BezoutIdentityOQ02OQ01OQ01OQ01OQ01	RESIDUAL	type-mismatch
 BezoutIdentityOQ02OQ01OQ02	GREEN	
 BezoutIdentityOQ02OQ01OQ02OQ02OQ03	GREEN	
@@ -360,7 +360,7 @@ CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Infra	GREEN
 CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Loc	GREEN	
 CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01Norm	GREEN	
 CauchySchwarzIntegralOQ01OQ03	GREEN	
-CauchySchwarzIntegralOQ01OQ03OQ01	RESIDUAL	unknown-const:eLpNorm_one_eq_lintegral_nnnorm
+CauchySchwarzIntegralOQ01OQ03OQ01	GREEN	
 CauchySchwarzIntegralOQ02OQ02	RESIDUAL	unknown-const:eLpNorm_mul_le
 CauchySchwarzIntegralOQ02OQ02OQ01	GREEN	
 CauchySchwarzIntegralOQ03	GREEN	
@@ -467,7 +467,7 @@ CombinationsFormulaOQ07OQ04OQ01OQ02OQ01	GREEN
 ComplexityCore	GREEN	
 ConjugacyClassEquationOQ01	GREEN	
 ConjugacyClassEquationOQ0102	GREEN	
-ContinuumHypothesisOQ02	RESIDUAL	unknown-const:Cardinal.cof_aleph
+ContinuumHypothesisOQ02	GREEN	
 ContinuumHypothesisOQ02OQ01	GREEN	
 CoprimeKTupleDensity	GREEN	
 CramersRule	GREEN	
@@ -794,7 +794,7 @@ Erdos1098OQ01	RESIDUAL	type-mismatch
 Erdos1098OQ01OQ01	RESIDUAL	instance-synth
 Erdos1098OQ03	GREEN	proof-drift
 Erdos1098OQ04	GREEN	
-Erdos1098Problem	RESIDUAL	instance-synth
+Erdos1098Problem	GREEN	
 Erdos109OQ01	RESIDUAL	type-mismatch
 Erdos109OQ01Aristotle	GREEN	
 Erdos109Problem	GREEN	
@@ -808,7 +808,7 @@ Erdos1100Problem	PRE-EXISTING	never-compiled:p
 Erdos1100ProblemAristotle	RESIDUAL	unknown-const:p
 Erdos1100ProblemProvable	PRE-EXISTING	never-compiled:p
 Erdos1101Problem	GREEN	
-Erdos1103Problem	RESIDUAL	instance-synth
+Erdos1103Problem	GREEN	
 Erdos1104OQ01	GREEN	
 Erdos1104Problem	RESIDUAL	type-mismatch
 Erdos1107Problem	GREEN	
