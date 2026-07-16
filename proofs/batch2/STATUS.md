@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 175 (all-Sonnet transition, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BinomialTheoremOQ02OQ03 (mem_image simp True∧->trivial; rw no longer
+closes Function.comp defeq->explicit rfl; single_le_sum dropped arg; ih specialize k∘Fin.succ;
+if_neg Fin.succ_ne_zero.symm; qMultinom_product_qFactorial direct). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 174 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier (no drift; clean once parent
