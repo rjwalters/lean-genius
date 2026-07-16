@@ -368,13 +368,12 @@ theorem martingale_sum_of_indep_mean_zero [IsProbabilityMeasure μ]
     Martingale (fun n => ∑ i ∈ range (n + 1), X i)
       (Filtration.natural X hmeas) μ := by
   -- adaptedness: each `Xᵢ` (i ≤ n) is `ℱ n`-measurable, so is the finite sum
-  have hadp : Adapted (Filtration.natural X hmeas)
+  have hadp : StronglyAdapted (Filtration.natural X hmeas)
       (fun n => ∑ i ∈ range (n + 1), X i) := by
     intro n
     refine Finset.stronglyMeasurable_sum _ (fun i hi => ?_)
     have hi' : i ≤ n := by simp only [Finset.mem_range] at hi; omega
-    exact (Filtration.adapted_natural hmeas i).mono
-      ((Filtration.natural X hmeas).mono hi')
+    exact (Filtration.stronglyAdapted_natural hmeas).stronglyMeasurable_le hi'
   refine martingale_of_condExp_sub_eq_zero_nat hadp ?_ ?_
   · -- integrability of each partial sum
     intro n
@@ -666,7 +665,9 @@ theorem ae_tendsto_average_zero_of_variance_weighted_bdd [IsProbabilityMeasure �
   have hXindep : iIndepFun X μ := by
     have h := hindep.comp (fun i (y : ℝ) => (a i)⁻¹ * y)
       (fun i => measurable_const.mul measurable_id)
-    simpa [hXdef, Function.comp] using h
+    have heq : (fun i => (fun y : ℝ => (a i)⁻¹ * y) ∘ Y i) = X := by
+      funext i ω; simp [hXdef, Function.comp_apply]
+    rwa [heq] at h
   have hXmemLp : ∀ i, MemLp (X i) 2 μ := fun i => (hmemLp i).const_mul _
   have hXmean : ∀ i, μ[X i] = 0 := by
     intro i
@@ -746,9 +747,14 @@ theorem ae_tendsto_centered_average_zero_of_variance_weighted_bdd [IsProbability
   have hZindep : iIndepFun Z μ := by
     have h := hindep.comp (fun i (y : ℝ) => y - μ[Y i])
       (fun i => measurable_id.sub measurable_const)
-    simpa [hZdef, Function.comp] using h
+    have heq : (fun i => (fun y : ℝ => y - μ[Y i]) ∘ Y i) = Z := by
+      funext i ω; simp [hZdef, Function.comp_apply]
+    rwa [heq] at h
   have hZmemLp : ∀ i, MemLp (Z i) 2 μ := fun i => by
-    simpa [hZdef] using (hmemLp i).sub (memLp_const (μ[Y i]))
+    have h := (hmemLp i).sub (memLp_const (μ[Y i]))
+    have heq : (Y i - fun _ : Ω => (μ[Y i])) = Z i := by
+      funext ω; simp [hZdef]
+    rwa [heq] at h
   have hZmean : ∀ i, μ[Z i] = 0 := by
     intro i
     simp only [hZdef]
@@ -1311,7 +1317,6 @@ theorem sum_range_shift_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤
   -- chain: `range`-sum = `Ico`-sum ≤ `∫` = value ≤ bound.
   rw [hreindex]
   refine hcomp.trans ?_
-  dsimp only
   rw [hintval]
   have he : (-s : ℝ) + 1 = 1 - s := by ring
   rw [he]
