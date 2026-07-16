@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 335 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos1OQ04 (decidable_of_iff term-mode Iff -> tactic; drop stray ;omega after simp;
+rename local geom_sum_two -> geomSumPowTwoSucc (root-namespace collision with new Mathlib
+Ring/GeomSum.lean); rw [hS'_def]/[hT'_def] before simp to unfold opaque set-bound; drop extra end). Repair: none.
+SEAM: Mathlib now ships root-namespace `geom_sum_two` (grep packages/mathlib before reusing generic
+math names); `set … with h` opacity also blocks `simp only [Finset.mem_filter]`, not just omega/mod_cast.
+
 # DOCTOR SINGLE-PROOF BATCH 334 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: SchauderFixedPointOQ03 (fixedpoint_singlevalued: add eq_comm to simp;
