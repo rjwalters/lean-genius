@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 282 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1131OQ01 (cascade artifact, no edits; parent Erdos1131Problem olean built).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 281 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos847Problem (unfold at axiom illegal -> local have; Disjoint now
