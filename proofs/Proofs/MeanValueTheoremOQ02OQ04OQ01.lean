@@ -190,9 +190,7 @@ theorem runge_analyticOn_R :
   -- Build pointwise analyticity at `x` via `AnalyticAt` combinators, then
   -- convert to `AnalyticWithinAt` for the `AnalyticOn` goal.
   have h_const_one : AnalyticAt ℝ (fun _ : ℝ => (1 : ℝ)) x := analyticAt_const
-  have h_id : AnalyticAt ℝ (fun y : ℝ => y) x := by
-    have h := (ContinuousLinearMap.id ℝ ℝ).analyticAt x
-    simpa using h
+  have h_id : AnalyticAt ℝ (fun y : ℝ => y) x := analyticAt_id
   have h_sq : AnalyticAt ℝ (fun y : ℝ => y ^ 2) x := h_id.pow 2
   have h_den : AnalyticAt ℝ (fun y : ℝ => 1 + y ^ 2) x :=
     h_const_one.add h_sq
@@ -644,8 +642,8 @@ theorem analytic_taylor_remainder_uniform_bound_complex
   have hRr_ne : (R - r : ℝ) ≠ 0 := ne_of_gt hRr_pos
   have hRn_ne : (R : ℝ) ^ n ≠ 0 := pow_ne_zero _ hR_ne
   -- Step 1: `z ∈ EMetric.ball a (ENNReal.ofReal R)` (the hypothesis of `hasSum_sub`).
-  have hz_eball : z ∈ EMetric.ball a (ENNReal.ofReal R) := by
-    rw [EMetric.mem_ball, edist_dist, dist_eq_norm]
+  have hz_eball : z ∈ Metric.eball a (ENNReal.ofReal R) := by
+    rw [Metric.mem_eball, edist_dist, dist_eq_norm]
     exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (norm_nonneg _)).mpr hzR
   -- Step 2: `HasSum` of the diagonal series to `f z`.
   have hsum : HasSum (fun k : ℕ => p k fun _ => z - a) (f z) :=
