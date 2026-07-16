@@ -177,7 +177,7 @@ theorem random_coprime_density :
     simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter, Finset.mem_product,
                Finset.mem_Icc, Set.mem_Icc]
     tauto
-  rw [h_set, Set.ncard_coe_Finset]
+  rw [h_set, Set.ncard_coe_finset]
   simp [BaselProblemOQ04OQ03.countCoprimePairs]
 
 /-- Coprime pair counting via Finset (decidable/computable).
