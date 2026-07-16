@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 218 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos362Problem (show...from by rewrite; norm_cast algebraMap↔ofReal;
+intervalIntegral.integral_finset_sum->integral_finsetSum s implicit + named have hint vs HO-unify;
+push_cast;ring for ↑(2π) cast). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 217 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos391Problem (minFactor partial->dite total; #38611 REPAIR t existence
