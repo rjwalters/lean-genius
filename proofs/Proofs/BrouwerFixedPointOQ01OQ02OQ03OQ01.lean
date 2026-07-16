@@ -22,16 +22,16 @@ private lemma ballClamp_denom_pos (x : EuclideanSpace ℝ (Fin n)) : 0 < max 1 �
 lemma ballClamp_norm_le (x : EuclideanSpace ℝ (Fin n)) : ‖ballClamp x‖ ≤ 1 := by
   have hd := ballClamp_denom_pos x
   simp only [ballClamp, norm_smul, norm_inv, Real.norm_of_nonneg hd.le]
-  rw [inv_mul_le_iff₀ hd]
+  rw [inv_mul_le_iff₀ hd, mul_one]
   exact le_max_right 1 ‖x‖
 
 lemma ballClamp_mem_closedBall (x : EuclideanSpace ℝ (Fin n)) :
     ballClamp x ∈ Brouwer.ClosedBall n :=
-  Metric.mem_closedBall_zero_iff.mpr (ballClamp_norm_le x)
+  mem_closedBall_zero_iff.mpr (ballClamp_norm_le x)
 
 lemma ballClamp_eq_of_mem (x : EuclideanSpace ℝ (Fin n)) (hx : x ∈ Brouwer.ClosedBall n) :
     ballClamp x = x := by
-  have hx' : ‖x‖ ≤ 1 := Metric.mem_closedBall_zero_iff.mp hx
+  have hx' : ‖x‖ ≤ 1 := mem_closedBall_zero_iff.mp hx
   simp [ballClamp, max_eq_left hx']
 
 lemma ballClamp_continuous : Continuous (ballClamp (n := n)) := by
@@ -52,14 +52,14 @@ lemma gClamp_mem (f : Brouwer.SelfMap n) (x : EuclideanSpace ℝ (Fin n)) :
 
 lemma gClamp_norm_le (f : Brouwer.SelfMap n) (x : EuclideanSpace ℝ (Fin n)) :
     ‖f.toFun (ballClamp x)‖ ≤ 1 :=
-  Metric.mem_closedBall_zero_iff.mp (gClamp_mem f x)
+  mem_closedBall_zero_iff.mp (gClamp_mem f x)
 
 lemma gClamp_ne_id (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFixedPoint n f)
     (x : EuclideanSpace ℝ (Fin n)) : f.toFun (ballClamp x) ≠ x := by
   by_cases hx : x ∈ Brouwer.ClosedBall n
   · rw [ballClamp_eq_of_mem x hx]
     exact fun heq => h ⟨x, hx, heq⟩
-  · simp only [Brouwer.ClosedBall, Metric.mem_closedBall_zero_iff, not_le] at hx
+  · simp only [Brouwer.ClosedBall, mem_closedBall_zero_iff, not_le] at hx
     intro heq
     have : ‖f.toFun (ballClamp x)‖ ≤ 1 := gClamp_norm_le f x
     linarith [heq ▸ this]
@@ -69,25 +69,25 @@ lemma gClamp_ne_id (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFixedPoint n f)
 -- ============================================================
 
 private lemma norm_sq_lin (v w : EuclideanSpace ℝ (Fin n)) (t : ℝ) :
-    ‖v + t • w‖ ^ 2 = ‖v‖ ^ 2 + 2 * t * ⟪v, w⟫_ℝ + t ^ 2 * ‖w‖ ^ 2 := by
-  rw [norm_add_sq_real, real_inner_smul_right, norm_smul, Real.norm_eq_abs, sq_abs]
+    ‖v + t • w‖ ^ 2 = ‖v‖ ^ 2 + 2 * t * ⟪v, w⟫ + t ^ 2 * ‖w‖ ^ 2 := by
+  rw [norm_add_sq_real, real_inner_smul_right, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]
   ring
 
 -- The larger root of ‖v + t·w‖² = 1
 noncomputable def tPlus (v w : EuclideanSpace ℝ (Fin n)) : ℝ :=
-  let b := ⟪v, w⟫_ℝ
+  let b := ⟪v, w⟫
   let disc := b ^ 2 + ‖w‖ ^ 2 * (1 - ‖v‖ ^ 2)
   (-b + Real.sqrt disc) / ‖w‖ ^ 2
 
 private lemma disc_nonneg (v w : EuclideanSpace ℝ (Fin n)) (hv : ‖v‖ ≤ 1) :
-    ⟪v, w⟫_ℝ ^ 2 + ‖w‖ ^ 2 * (1 - ‖v‖ ^ 2) ≥ 0 := by
+    ⟪v, w⟫ ^ 2 + ‖w‖ ^ 2 * (1 - ‖v‖ ^ 2) ≥ 0 := by
   apply add_nonneg (sq_nonneg _)
   apply mul_nonneg (sq_nonneg _)
   nlinarith [norm_nonneg v]
 
 private lemma tPlus_sphere (v w : EuclideanSpace ℝ (Fin n)) (hv : ‖v‖ ≤ 1) (hw : w ≠ 0) :
     ‖v + tPlus v w • w‖ ^ 2 = 1 := by
-  set b := ⟪v, w⟫_ℝ
+  set b := ⟪v, w⟫
   set a := ‖w‖ ^ 2
   set disc := b ^ 2 + a * (1 - ‖v‖ ^ 2)
   set s := Real.sqrt disc
@@ -101,7 +101,7 @@ private lemma tPlus_sphere (v w : EuclideanSpace ℝ (Fin n)) (hv : ‖v‖ ≤ 
 
 private lemma tPlus_one_on_sphere (v w : EuclideanSpace ℝ (Fin n))
     (hv : ‖v‖ ≤ 1) (hvw : ‖v + w‖ = 1) (hw : w ≠ 0) : tPlus v w = 1 := by
-  set b := ⟪v, w⟫_ℝ
+  set b := ⟪v, w⟫
   set a := ‖w‖ ^ 2
   set disc := b ^ 2 + a * (1 - ‖v‖ ^ 2)
   have ha : 0 < a := by positivity
@@ -115,12 +115,13 @@ private lemma tPlus_one_on_sphere (v w : EuclideanSpace ℝ (Fin n))
     simp only [disc]
     nlinarith [h_sum, ha, sq_nonneg b]
   have hab : a + b ≥ 0 := by
-    have step1 : a + b = ‖v + w‖ ^ 2 - ⟪v + w, v⟫_ℝ := by
-      simp only [a, b, inner_add_left, real_inner_comm w v, real_inner_self_eq_norm_sq]
+    have step1 : a + b = ‖v + w‖ ^ 2 - ⟪v + w, v⟫ := by
+      simp only [a, b, inner_add_left, real_inner_comm w v, real_inner_self_eq_norm_sq,
+        norm_add_sq_real]
       ring
-    have step2 : ⟪v + w, v⟫_ℝ ≤ 1 :=
-      calc ⟪v + w, v⟫_ℝ
-          ≤ |⟪v + w, v⟫_ℝ| := le_abs_self _
+    have step2 : ⟪v + w, v⟫ ≤ 1 :=
+      calc ⟪v + w, v⟫
+          ≤ |⟪v + w, v⟫| := le_abs_self _
         _ ≤ ‖v + w‖ * ‖v‖ := abs_real_inner_le_norm _ _
         _ ≤ 1 * 1 := by rw [hvw]; exact mul_le_mul_of_nonneg_left hv (by norm_num)
         _ = 1 := one_mul _
@@ -143,11 +144,11 @@ noncomputable def retractionFun (f : Brouwer.SelfMap n)
 lemma retractionFun_maps_to_sphere (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFixedPoint n f)
     {x : EuclideanSpace ℝ (Fin n)} (hx : x ∈ Brouwer.ClosedBall n) :
     retractionFun f x ∈ Brouwer.UnitSphere n := by
-  simp only [Brouwer.UnitSphere, Metric.mem_sphere_zero_iff_norm, retractionFun]
+  simp only [Brouwer.UnitSphere, mem_sphere_zero_iff_norm, retractionFun]
   set v := f.toFun (ballClamp x)
   set w := x - v
   have hv : ‖v‖ ≤ 1 := gClamp_norm_le f x
-  have hw : w ≠ 0 := sub_ne_zero.mpr (gClamp_ne_id f h x)
+  have hw : w ≠ 0 := sub_ne_zero.mpr (gClamp_ne_id f h x).symm
   have hn2 : ‖v + tPlus v w • w‖ ^ 2 = 1 := tPlus_sphere v w hv hw
   nlinarith [norm_nonneg (v + tPlus v w • w), sq_nonneg (‖v + tPlus v w • w‖ - 1),
              sq_nonneg (‖v + tPlus v w • w‖ + 1)]
@@ -155,25 +156,25 @@ lemma retractionFun_maps_to_sphere (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFix
 lemma retractionFun_fixes_sphere (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFixedPoint n f)
     {x : EuclideanSpace ℝ (Fin n)} (hx : x ∈ Brouwer.UnitSphere n) :
     retractionFun f x = x := by
-  simp only [Brouwer.UnitSphere, Metric.mem_sphere_zero_iff_norm] at hx
+  simp only [Brouwer.UnitSphere, mem_sphere_zero_iff_norm] at hx
   simp only [retractionFun]
   set v := f.toFun (ballClamp x)
   set w := x - v
   have hv : ‖v‖ ≤ 1 := gClamp_norm_le f x
   have hvw : ‖v + w‖ = 1 := by simp [w, hx]
-  have hw : w ≠ 0 := sub_ne_zero.mpr (gClamp_ne_id f h x)
+  have hw : w ≠ 0 := sub_ne_zero.mpr (gClamp_ne_id f h x).symm
   have ht1 : tPlus v w = 1 := tPlus_one_on_sphere v w hv hvw hw
   simp [ht1, w]
 
 lemma retractionFun_continuous (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFixedPoint n f) :
     Continuous (retractionFun f) := by
-  simp only [retractionFun]
+  unfold retractionFun
   have hv_cts : Continuous (fun x => f.toFun (ballClamp x)) :=
     f.continuous'.comp ballClamp_continuous
   have hw_cts : Continuous (fun x : EuclideanSpace ℝ (Fin n) => x - f.toFun (ballClamp x)) :=
     continuous_id.sub hv_cts
   have ha_ne : ∀ x : EuclideanSpace ℝ (Fin n), ‖x - f.toFun (ballClamp x)‖ ^ 2 ≠ 0 := fun x =>
-    pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr (gClamp_ne_id f h x)))
+    pow_ne_zero 2 (norm_ne_zero_iff.mpr (sub_ne_zero.mpr (gClamp_ne_id f h x).symm))
   have ht_cts : Continuous (fun x =>
       tPlus (f.toFun (ballClamp x)) (x - f.toFun (ballClamp x))) := by
     unfold tPlus
@@ -195,7 +196,7 @@ lemma retractionFun_continuous (f : Brouwer.SelfMap n) (h : ¬Brouwer.HasFixedPo
 /-- The retraction construction axiom in BrouwerFixedPoint.lean can be proved:
     given a continuous self-map with no fixed point, the ray construction
     explicitly builds a retraction from the ball to the sphere. -/
-theorem retraction_construction_theorem {n : ℕ} (f : Brouwer.SelfMap n)
+noncomputable def retraction_construction_theorem {n : ℕ} (f : Brouwer.SelfMap n)
     (h : ¬Brouwer.HasFixedPoint n f) : Brouwer.Retraction n where
   toFun := retractionFun f
   continuous' := retractionFun_continuous f h
