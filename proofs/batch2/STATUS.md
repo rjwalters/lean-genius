@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 340 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos1027OQ01 (card_sdiff->card_sdiff_of_subset; sdiff_sdiff_cancel_left->
+Finset.sdiff_sdiff_eq_self (qualify ambiguous root/Finset); disjoint_left->disjoint_right;
+drop stale not_nonempty_iff_eq_empty.mp (push_neg emits eq directly); Nat.pos_pow_of_pos->pow_pos;
+rebuild nlinarith with zeta-unfold via type ascription). Repair: none.
+SEAM: push_neg on ¬s.Nonempty now normalizes straight to s=∅; let-bound X in a theorem statement
+prints as `have X:=…` NOT auto zeta-reduced for nlinarith -> re-ascribe explicit type first.
+
 # DOCTOR SINGLE-PROOF BATCH 339 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: CevasTheoremOQ01OQ03 (field_simp left lone ⁻¹ from d*e vs e*d hypothesis-order mismatch
