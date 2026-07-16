@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 360 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ02OQ02OQ02OQ02 (NOT v4.31 drift — broken import:
+wirtinger_inequality deleted from parent AreaOfCircleOQ01OQ02OQ02OQ02 by unrelated commit bb90d888b5
+6min before this file existed; re-pointed import to AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier (GREEN,
+identical lemma), docstring corrected). Repair: #38611 docstring/dep correction. AreaOfCircle family COMPLETE (4/4).
+
 # DOCTOR SINGLE-PROOF BATCH 359 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01 (Continuous.mul/pow combinators now
