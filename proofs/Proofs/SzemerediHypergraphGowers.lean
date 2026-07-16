@@ -75,7 +75,8 @@ def completeComplex (V : Type*) [Fintype V] [DecidableEq V] (dim : ℕ) :
   uniform j e he := (Finset.mem_filter.mp he).2
   down_closed j hj e he f hfe hfcard := by
     simp only [Finset.mem_filter, Finset.mem_powerset]
-    exact ⟨hfe.trans (Finset.mem_filter.mp he).1, hfcard⟩
+    refine ⟨hfe.trans (Finset.mem_powerset.mp (Finset.mem_filter.mp he).1), ?_⟩
+    omega
 
 theorem completeComplex_skeleton (dim : ℕ) (j : Fin dim) :
     (completeComplex V dim).skeleton j =
@@ -98,23 +99,21 @@ theorem topCliques_completeComplex (dim : ℕ) (hdim : 0 < dim) :
     topCliques hdim (completeComplex V dim) =
     (Finset.univ (α := V)).powerset.filter (fun e => e.card = dim + 1) := by
   ext e
-  simp only [topCliques, completeComplex_skeleton, Finset.mem_filter,
-             Finset.mem_powerset, Finset.mem_univ, true_and]
+  simp only [topCliques, completeComplex_skeleton, Finset.mem_filter, Finset.mem_powerset]
   constructor
-  · intro ⟨hcard, _⟩; exact hcard
-  · intro hcard
-    refine ⟨hcard, fun f hfe hfcard => ?_⟩
-    simp only [completeComplex_skeleton, Finset.mem_filter, Finset.mem_powerset]
-    refine ⟨hfe.trans (Finset.subset_univ _), ?_⟩
-    rw [Nat.sub_add_cancel (by omega : 1 ≤ dim)]
-    exact hfcard
+  · rintro ⟨-, hcard, -⟩
+    exact ⟨Finset.subset_univ _, hcard⟩
+  · rintro ⟨-, hcard⟩
+    refine ⟨Finset.subset_univ _, hcard, fun f hfe hfcard =>
+      ⟨hfe.trans (Finset.subset_univ _), ?_⟩⟩
+    omega
 
 /-- Sub-complex containment implies top-clique containment. -/
 theorem topCliques_mono {dim : ℕ} (hdim : 0 < dim) {C' C : SimplicialComplex V dim}
     (hsub : IsSubComplex C' C) : topCliques hdim C' ⊆ topCliques hdim C := by
   intro e he
   simp only [topCliques, Finset.mem_filter] at he ⊢
-  exact ⟨he.1, fun f hfe hfcard => hsub _ (he.2 f hfe hfcard)⟩
+  exact ⟨he.1, he.2.1, fun f hfe hfcard => hsub _ (he.2.2 f hfe hfcard)⟩
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART III: RELATIVE DENSITY
@@ -135,14 +134,14 @@ noncomputable def relativeKDensity {k : ℕ} (hk : 1 < k)
 theorem relativeKDensity_nonneg {k : ℕ} (hk : 1 < k)
     (H : UHypergraph V k) (C : SimplicialComplex V (k - 1)) :
     0 ≤ relativeKDensity hk H C := by
-  unfold relativeKDensity
+  simp only [relativeKDensity]
   split_ifs; · exact le_refl 0
   · positivity
 
 theorem relativeKDensity_le_one {k : ℕ} (hk : 1 < k)
     (H : UHypergraph V k) (C : SimplicialComplex V (k - 1)) :
     relativeKDensity hk H C ≤ 1 := by
-  unfold relativeKDensity
+  simp only [relativeKDensity]
   split_ifs with h; · exact zero_le_one
   · have hpos : (0 : ℚ) < (topCliques (by omega) C).card := by
       exact_mod_cast Nat.pos_of_ne_zero (fun h0 => h (by exact_mod_cast h0))
@@ -152,7 +151,7 @@ theorem relativeKDensity_le_one {k : ℕ} (hk : 1 < k)
 theorem relativeKDensity_empty {k : ℕ} (hk : 1 < k)
     (C : SimplicialComplex V (k - 1)) :
     relativeKDensity hk (UHypergraph.empty V k) C = 0 := by
-  unfold relativeKDensity
+  simp only [relativeKDensity]
   split_ifs; · rfl
   · simp [UHypergraph.empty]
 
@@ -200,27 +199,18 @@ noncomputable def globalDensity {k : ℕ} (H : UHypergraph V k) : ℚ :=
 theorem relativeKDensity_completeComplex {k : ℕ} (hk : 1 < k)
     (H : UHypergraph V k) :
     relativeKDensity hk H (completeComplex V (k - 1)) = globalDensity H := by
-  unfold relativeKDensity globalDensity
-  simp only [relativeKDensity, globalDensity]
-  congr 2
-  · -- topCliques (completeComplex V (k-1)) = all k-subsets of V
-    rw [topCliques_completeComplex (k - 1) (by omega)]
-    congr 1
-    simp [Nat.sub_add_cancel (by omega : 1 ≤ k)]
-  · -- (H.edges ∩ topCliques ...).card = H.edges.card
-    -- Step 1: identify topCliques (completeComplex) = all k-subsets of V
-    have hD : topCliques (by omega : 0 < k - 1) (completeComplex V (k - 1)) =
-        (Finset.univ (α := V)).powerset.filter (fun e => e.card = k) := by
-      have h := topCliques_completeComplex (k - 1) (by omega)
-      simp only [Nat.sub_add_cancel (by omega : 1 ≤ k)] at h; exact h
-    -- Step 2: H.edges ⊆ all k-subsets (every edge has card = k and ⊆ univ)
-    have hsub : H.edges ⊆ topCliques (by omega : 0 < k - 1) (completeComplex V (k - 1)) := by
-      rw [hD]
-      intro e he
-      simp only [Finset.mem_filter, Finset.mem_powerset, Finset.subset_univ, true_and]
-      exact H.uniform e he
-    -- Step 3: intersection with a superset is the set itself
-    rw [Finset.inter_eq_left.mpr hsub]
+  -- Step 1: identify topCliques (completeComplex V (k-1)) with all k-subsets of V
+  have hD : topCliques (by omega : 0 < k - 1) (completeComplex V (k - 1)) =
+      (Finset.univ (α := V)).powerset.filter (fun e => e.card = k) := by
+    have h := topCliques_completeComplex (V := V) (k - 1) (by omega : 0 < k - 1)
+    rwa [Nat.sub_add_cancel (by omega : 1 ≤ k)] at h
+  -- Step 2: H.edges ⊆ all k-subsets (every edge has card = k and ⊆ univ)
+  have hsub : H.edges ⊆ (Finset.univ (α := V)).powerset.filter (fun e => e.card = k) := by
+    intro e he
+    simp only [Finset.mem_filter, Finset.mem_powerset, Finset.subset_univ, true_and]
+    exact H.uniform e he
+  -- Step 3: intersection with a superset is the set itself
+  simp only [relativeKDensity, globalDensity, hD, Finset.inter_eq_left.mpr hsub]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VI: STRUCTURAL PROPERTIES OF GOWERS REGULARITY
@@ -262,7 +252,6 @@ theorem isGowersRegular_self {k : ℕ} (hk : 1 < k)
     Finset.eq_of_subset_of_card_le hsubD hcard1
   -- Equal topCliques imply equal relative densities
   rw [relativeKDensity_eq_of_topCliques_eq hk H C' C hDeq, sub_self, abs_zero]
-  exact le_refl 0
 
 /-- **Empty hypergraph is Gowers-regular**: the empty k-graph has zero
     relative density on every sub-complex, hence is (0, δ)-regular for
@@ -272,7 +261,6 @@ theorem isGowersRegular_empty {k : ℕ} (hk : 1 < k)
     IsGowersRegular hk (UHypergraph.empty V k) 0 δ C := by
   intro C' _ _
   rw [relativeKDensity_empty hk C', relativeKDensity_empty hk C, sub_self, abs_zero]
-  exact le_refl 0
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VII: OBSTRUCTION TO NAIVE → GOWERS

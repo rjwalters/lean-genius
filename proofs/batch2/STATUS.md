@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 284 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): SzemerediHypergraphGowers (Finset.mem_powerset no longer defeq-transitive
+w/ ⊆ through mem_filter -> .mp explicit; relativeKDensity pin V (V:=V) DecidableEq mvar; simp only vs unfold
+for split_ifs; rw trailing rfl closes x≤x). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 283 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): BuffonsNeedleOQ01OQ01OQ04OQ01 (integral_nonneg ambiguity; theorem->noncomputable
