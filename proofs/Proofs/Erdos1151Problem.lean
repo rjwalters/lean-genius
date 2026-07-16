@@ -65,20 +65,27 @@ theorem chebyshevNodes_injective (n : ℕ) (hn : 0 < n) :
   have h₁_mem : (2 * ↑k₁.val + 1) * Real.pi / (2 * ↑n) ∈ Set.Icc (0 : ℝ) Real.pi := by
     constructor
     · positivity
-    · rw [div_le_iff₀ hn_pos]; nlinarith [k₁.isLt, Real.pi_pos]
+    · rw [div_le_iff₀ hn_pos]
+      have hk1nat : k₁.val + 1 ≤ n := by have := k₁.isLt; omega
+      have hk1 : (k₁.val : ℝ) + 1 ≤ (n : ℝ) := by exact_mod_cast hk1nat
+      nlinarith [hk1, Real.pi_pos]
   have h₂_mem : (2 * ↑k₂.val + 1) * Real.pi / (2 * ↑n) ∈ Set.Icc (0 : ℝ) Real.pi := by
     constructor
     · positivity
-    · rw [div_le_iff₀ hn_pos]; nlinarith [k₂.isLt, Real.pi_pos]
+    · rw [div_le_iff₀ hn_pos]
+      have hk2nat : k₂.val + 1 ≤ n := by have := k₂.isLt; omega
+      have hk2 : (k₂.val : ℝ) + 1 ≤ (n : ℝ) := by exact_mod_cast hk2nat
+      nlinarith [hk2, Real.pi_pos]
   -- cos injective on [0, π] gives equal arguments
   have hθ := Real.strictAntiOn_cos.injOn h₁_mem h₂_mem heq
   -- Equal arguments ⟹ equal indices
-  have : (k₁ : ℕ) = (k₂ : ℕ) := by
+  have hidx : (k₁ : ℕ) = (k₂ : ℕ) := by
     have hpi_ne : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
     have h2n_ne : (2 * (n : ℝ)) ≠ 0 := ne_of_gt hn_pos
     field_simp at hθ
-    linarith
-  exact Fin.ext this
+    have hval : (k₁.val : ℝ) = (k₂.val : ℝ) := by linarith
+    exact_mod_cast hval
+  exact Fin.ext hidx
 
 /-! ## Part II: Lagrange Interpolation -/
 
