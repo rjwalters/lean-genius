@@ -60,7 +60,7 @@ noncomputable def partialExp (n : ℕ) (t : ℝ) : ℝ :=
 /-- Each Taylor partial sum is continuous (a polynomial). -/
 theorem continuous_partialExp (n : ℕ) : Continuous (partialExp n) := by
   unfold partialExp
-  exact continuous_finset_sum _ (fun k _ => by fun_prop)
+  exact continuous_finsetSum _ (fun k _ => by fun_prop)
 
 /-- The integral of a single monomial term `sᵏ / k!` over `[0, t]`. -/
 theorem integral_term (k : ℕ) (t : ℝ) :
@@ -85,7 +85,7 @@ theorem picardIter_eq (n : ℕ) : picardIter n = partialExp n := by
       show 1 + ∫ s in (0 : ℝ)..t, picardIter n s = partialExp (n + 1) t
       rw [ih]
       simp only [partialExp]
-      rw [intervalIntegral.integral_finset_sum]
+      rw [intervalIntegral.integral_finsetSum]
       · simp only [integral_term]
         rw [Finset.sum_range_succ' (fun k => t ^ k / (k.factorial : ℝ)) (n + 1)]
         simp only [pow_zero, Nat.factorial_zero, Nat.cast_one, div_one]
@@ -103,9 +103,9 @@ theorem picardIter_tendsto (t : ℝ) :
   rw [hcf]
   have hsum : HasSum (fun n => t ^ n / (n.factorial : ℝ)) (Real.exp t) := by
     rw [Real.exp_eq_exp_ℝ]
-    exact NormedSpace.expSeries_div_hasSum_exp ℝ t
+    exact NormedSpace.expSeries_div_hasSum_exp t
   have h := hsum.tendsto_sum_nat.comp (Filter.tendsto_add_atTop_nat 1)
-  simpa [Function.comp] using h
+  simpa [Function.comp_def] using h
 
 /-- **`exp` is a fixed point of the Picard operator.**  `exp t = 1 + ∫₀ᵗ exp s ds`. -/
 theorem exp_isFixedPoint (t : ℝ) : Real.exp t = P Real.exp t := by
