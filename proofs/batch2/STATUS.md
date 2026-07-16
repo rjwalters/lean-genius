@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 155 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FurstenbergCorrespondenceOQ01 (HARD 15min/27-err: open scoped ENNReal
+NNReal; MetrizableSpace->TopologicalSpace.MetrizableSpace; Measure.finsetSum_apply; card_le_card_of_injOn
+now Set.MapsTo; ENNReal.le_div_iff_mul_le Or-args). Repair: none (pre-existing sorry+Prokhorov axiom untouched).
+
 # DOCTOR SINGLE-PROOF BATCH 154 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01OQ01OQ01ApproachB (AddAut now AddGroup not Group;
