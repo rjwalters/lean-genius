@@ -14,6 +14,7 @@ Reference: https://erdosproblems.com/822
 -/
 
 import Mathlib.Data.Nat.Totient
+import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Function
 import Mathlib.Order.Filter.Basic
 

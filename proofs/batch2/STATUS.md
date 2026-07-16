@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 141 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos822Problem (added import Mathlib.Data.Real.Basic — ℝ instances
+unreachable from minimal import set). Repair: none (native_decide only in benign example blocks).
+
 # DOCTOR SINGLE-PROOF BATCH 140 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos783Problem (h_le type annot vs Zero synth; removed rw[←card_range p]
