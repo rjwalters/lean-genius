@@ -184,7 +184,7 @@ From "Hypergraph containers", Invent. Math. (2015).
 -/
 axiom saxton_thomason_lower_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (countSidonSets N : ℝ) ≥ (2 : ℝ) ^ (1.16 * maxSidonSize N)
+      (countSidonSets N : ℝ) ≥ (2 : ℝ) ^ (1.16 * (maxSidonSize N : ℝ))
 
 /--
 **Upper bound (Kohayakawa-Lee-Rödl-Samotij, 2015):**
@@ -194,7 +194,7 @@ From "The number of Sidon sets...", Random Structures Algorithms (2015).
 -/
 axiom klrs_upper_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * maxSidonSize N)
+      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * (maxSidonSize N : ℝ))
 
 /--
 **Combined bounds:**
@@ -202,8 +202,8 @@ For large N: 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}.
 -/
 theorem current_bounds :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
-      (2 : ℝ) ^ (1.16 * maxSidonSize N) ≤ (countSidonSets N : ℝ) ∧
-      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * maxSidonSize N) := by
+      (2 : ℝ) ^ (1.16 * (maxSidonSize N : ℝ)) ≤ (countSidonSets N : ℝ) ∧
+      (countSidonSets N : ℝ) ≤ (2 : ℝ) ^ (6.442 * (maxSidonSize N : ℝ)) := by
   obtain ⟨N₁, h₁⟩ := saxton_thomason_lower_bound
   obtain ⟨N₂, h₂⟩ := klrs_upper_bound
   use max N₁ N₂
