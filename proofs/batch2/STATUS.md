@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 268 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): MeanValueTheoremOQ02OQ04OQ01 (ContinuousLinearMap.id.analyticAt ->
+analyticAt_id; EMetric.ball/mem_ball deprecated don't rw-unify -> retype have to Metric.eball). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 267 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01OQ03 (Subgroup.card_bot; exists_prime_orderOf_dvd_card
