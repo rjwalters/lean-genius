@@ -78,27 +78,25 @@ theorem greens_theorem_rect_via_stokes
     (P Q : ℝ × ℝ → ℝ)
     (P' Q' : ℝ × ℝ → ℝ × ℝ →L[ℝ] ℝ)
     (s : Set (ℝ × ℝ)) (hs : s.Countable)
-    (hQ_cont : ContinuousOn Q ([[a₁, b₁]] ×ˢ [[a₂, b₂]]))
-    (hP_cont : ContinuousOn P ([[a₁, b₁]] ×ˢ [[a₂, b₂]]))
-    (hQ_deriv : ∀ x ∈ Ioo (min a₁ b₁) (max a₁ b₁) ×ˢ Ioo (min a₂ b₂) (max a₂ b₂) \ s,
+    (hQ_cont : ContinuousOn Q (Set.uIcc a₁ b₁ ×ˢ Set.uIcc a₂ b₂))
+    (hP_cont : ContinuousOn P (Set.uIcc a₁ b₁ ×ˢ Set.uIcc a₂ b₂))
+    (hQ_deriv : ∀ x ∈ Set.Ioo (min a₁ b₁) (max a₁ b₁) ×ˢ Set.Ioo (min a₂ b₂) (max a₂ b₂) \ s,
         HasFDerivAt Q (Q' x) x)
-    (hP_deriv : ∀ x ∈ Ioo (min a₁ b₁) (max a₁ b₁) ×ˢ Ioo (min a₂ b₂) (max a₂ b₂) \ s,
+    (hP_deriv : ∀ x ∈ Set.Ioo (min a₁ b₁) (max a₁ b₁) ×ˢ Set.Ioo (min a₂ b₂) (max a₂ b₂) \ s,
         HasFDerivAt P (P' x) x)
-    (hInt : IntegrableOn (fun x => Q' x (1, 0) + (-P' x) (0, 1)) ([[a₁, b₁]] ×ˢ [[a₂, b₂]])) :
+    (hInt : IntegrableOn (fun x => Q' x (1, 0) + (-P' x) (0, 1)) (Set.uIcc a₁ b₁ ×ˢ Set.uIcc a₂ b₂)) :
     -- ∬_rect (∂Q/∂x - ∂P/∂y) = boundary_integral
     (∫ x in a₁..b₁, ∫ y in a₂..b₂, Q' (x, y) (1, 0) + (-P' (x, y)) (0, 1)) =
       (((∫ x in a₁..b₁, (-P) (x, b₂)) - ∫ x in a₁..b₁, (-P) (x, a₂)) +
           ∫ y in a₂..b₂, Q (b₁, y)) -
         ∫ y in a₂..b₂, Q (a₁, y) := by
-  apply MeasureTheory.integral2_divergence_prod_of_hasFDerivWithinAt_off_countable
+  apply MeasureTheory.integral2_divergence_prod_of_hasFDerivAt_off_countable
       Q (fun x => -P x) Q' (fun x => -P' x) a₁ a₂ b₁ b₂ s hs hQ_cont
   · exact hP_cont.neg
   · exact hQ_deriv
   · intro x hx
     exact (hP_deriv x hx).neg
-  · convert hInt using 1
-    ext x
-    simp [ContinuousLinearMap.neg_apply]
+  · exact hInt
 
 /-!
 ## Part II: The Boundary Integral Is the Line Integral P dx + Q dy
@@ -120,18 +118,32 @@ theorem boundary_integral_decomposition
     -- Green's theorem boundary: ∫_bottom P·dx + ∫_right Q·dy - ∫_top P·dx - ∫_left Q·dy
     (∫ x in a₁..b₁, P (x, a₂)) - (∫ x in a₁..b₁, P (x, b₂)) +
     ((∫ y in a₂..b₂, Q (b₁, y)) - ∫ y in a₂..b₂, Q (a₁, y)) := by
+  simp only [Pi.neg_apply, intervalIntegral.integral_neg]
   ring
 
 /-- The Green's theorem boundary integral = Mathlib divergence theorem RHS
-    equals the sum: P-contributions + Q-contributions. -/
+    equals the sum: P-contributions + Q-contributions.
+
+    NOTE (v4.31 migration): the original statement carried no integrability hypotheses on `P`,
+    `Q`, which makes it false in general — `intervalIntegral.integral_sub`/`integral_add` genuinely
+    require interval-integrability of the summands (e.g. `P(·, a₂)` could be integrable while
+    `P(·, b₂)` is a non-measurable function, forcing their difference to be non-measurable too;
+    the LHS's junk value `0` for the non-integrable piece need not match the RHS). The old
+    toolchain's `simp` call never actually discharged these (now-required) side conditions; this
+    is a #38611 candidate. Adding explicit `IntervalIntegrable` hypotheses restores the
+    genuinely-true statement. -/
 theorem boundary_eq_line_integral_parts
     (a₁ b₁ a₂ b₂ : ℝ) (hab₁ : a₁ ≤ b₁) (hab₂ : a₂ ≤ b₂)
-    (P Q : ℝ × ℝ → ℝ) :
+    (P Q : ℝ × ℝ → ℝ)
+    (hP1 : IntervalIntegrable (fun x => P (x, a₂)) MeasureTheory.volume a₁ b₁)
+    (hP2 : IntervalIntegrable (fun x => P (x, b₂)) MeasureTheory.volume a₁ b₁)
+    (hQ1 : IntervalIntegrable (fun y => Q (b₁, y)) MeasureTheory.volume a₂ b₂)
+    (hQ2 : IntervalIntegrable (fun y => Q (a₁, y)) MeasureTheory.volume a₂ b₂) :
     (∫ x in a₁..b₁, P (x, a₂)) - (∫ x in a₁..b₁, P (x, b₂)) +
     ((∫ y in a₂..b₂, Q (b₁, y)) - ∫ y in a₂..b₂, Q (a₁, y)) =
     (∫ x in a₁..b₁, (P (x, a₂) - P (x, b₂))) +
     ∫ y in a₂..b₂, (Q (b₁, y) - Q (a₁, y)) := by
-  simp [intervalIntegral.integral_sub, intervalIntegral.integral_add]
+  rw [intervalIntegral.integral_sub hP1 hP2, intervalIntegral.integral_sub hQ1 hQ2]
 
 /-!
 ## Part III: Consistency with GreensTheoremOQ03
@@ -160,7 +172,10 @@ theorem rect_greens_consistent_with_typeI
     -(∫ x in a..b, (P (x, d) - P (x, c))) =
     -- Stokes boundary for -P component: -((-P(x,d)) - (-P(x,c))) = P(x,c) - P(x,d)
     ∫ x in a..b, (P (x, c) - P (x, d)) := by
-  simp [intervalIntegral.integral_sub, neg_sub]
+  rw [← intervalIntegral.integral_neg]
+  congr 1
+  funext x
+  ring
 
 /-!
 ## Part IV: General TypeI Regions — Stokes Approach

@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 257 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): GreensTheoremOQ03OQ04 (Set.uIcc/Ioo qualification; integral2_divergence_prod
+_of_hasFDerivAt rename; Pi.neg_apply+integral_neg; #38611 REPAIR boundary_eq_line_integral_parts missing
+IntervalIntegrable hyps -> added for 4 slices). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 256 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FourierSeriesOQ04OQ01 (mFourierLp ambient measure defeq-not-syntactic vs
