@@ -1,3 +1,15 @@
+# DOCTOR SINGLE-PROOF BATCH 336 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: HurwitzTheoremOQ04 (RESCUED from a killed 90%-done long-runner: preserved partial ->
+fresh Sonnet finish-agent closed submodule_der_real_part via Subtype.ext(LinearMap.ext); 21 F-block
+rw failures via `show f(stdBasis J)I=...` before each (fin_cases leaves (fun i=>i)⟨k,⟩ that rw can't
+match); FiniteDimensional.finrank->Module.finrank; split fin_cases<;>nlinarith into 14 explicit
+show+nlinarith; maxHeartbeats 12800000 on derEval14_injective). EXIT=0, 0 sorries. Repair: none.
+SEAM: `ext <name>`/`congr 1;ext` on `→ₗ[ℝ](Fin n→ℝ)` or Fin n→ℝ-valued equalities over-recurses past
+the name into LinearMap.single/pointwise decomp -> hand-write Subtype.ext(LinearMap.ext fun x=>?_)
+or Finset.sum_congr rfl; fin_cases output (fun i=>i)⟨k,⟩ is defeq-not-syntactic to literals -> breaks
+rw & (n)linarith atom matching (exact/refine OK) -> insert `show <clean-literal goal>` per branch.
+
 # DOCTOR SINGLE-PROOF BATCH 335 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos1OQ04 (decidable_of_iff term-mode Iff -> tactic; drop stray ;omega after simp;
