@@ -32,6 +32,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open scoped Classical
+open scoped Pointwise
 
 open Finset
 
@@ -79,7 +80,7 @@ theorem zero_mem_commonDiffFinset {A : Finset ℤ} (hA : A.Nonempty) :
   rw [mem_filter]
   obtain ⟨a, ha⟩ := hA
   constructor
-  · exact zero_mem_sub.mpr hA
+  · exact Finset.mem_sub.mpr ⟨a, ha, a, ha, sub_self a⟩
   · exact ⟨a, ha, by ring_nf; exact ha, by ring_nf; exact ha⟩
 
 /-- Nonempty sets have at least one common difference. -/
@@ -112,7 +113,7 @@ theorem neg_mem_commonDiffFinset {A : Finset ℤ} {d : ℤ}
   obtain ⟨_, a, ha, had, ha2d⟩ := hd
   constructor
   · rw [Finset.mem_sub]
-    exact ⟨a, ha, a + 2 * d, ha2d, by ring⟩
+    exact ⟨a, ha, a + d, had, by ring⟩
   · exact ⟨a + 2 * d, ha2d, by ring_nf; exact had, by ring_nf; exact ha⟩
 
 /-- Tighter bound: |D(A)| ≤ |A - A|. -/
@@ -197,7 +198,7 @@ theorem commonDiffFinset_translate (A : Finset ℤ) (c : ℤ) :
     have heeq : e = a + 2 * d := by linarith
     constructor
     · rw [Finset.mem_sub]
-      exact ⟨a, ha, a + 2 * d, heeq ▸ he, by ring⟩
+      exact ⟨a + d, hbeq ▸ hb, a, ha, by ring⟩
     · exact ⟨a, ha, hbeq ▸ hb, heeq ▸ he⟩
   · intro ⟨hmem, a, ha, had, ha2d⟩
     constructor
@@ -223,7 +224,7 @@ theorem commonDiffFinset_smul_mem {A : Finset ℤ} {c d : ℤ}
   · rw [Finset.mem_sub] at hmem ⊢
     obtain ⟨x, hx, y, hy, hxy⟩ := hmem
     exact ⟨x * c, Finset.mem_image_of_mem _ hx, y * c,
-           Finset.mem_image_of_mem _ hy, by nlinarith⟩
+           Finset.mem_image_of_mem _ hy, by rw [← sub_mul, hxy]; ring⟩
   · exact ⟨a * c, Finset.mem_image_of_mem _ ha,
            by rw [show a * c + c * d = (a + d) * c from by ring]
               exact Finset.mem_image_of_mem _ had,
@@ -257,40 +258,41 @@ theorem mem_commonDiffFinset_of_threeAP {A : Finset ℤ} {a d : ℤ}
   rw [mem_filter]
   constructor
   · rw [Finset.mem_sub]
-    exact ⟨a + 2 * d, ha2d, a, ha, by ring⟩
+    exact ⟨a + d, had, a, ha, by ring⟩
   · exact ⟨a, ha, had, ha2d⟩
 
 /-- For three consecutive integers {a, a+1, a+2}, D = {-1, 0, 1}. -/
 theorem commonDiffFinset_three_consec (a : ℤ) :
     commonDiffFinset ({a, a + 1, a + 2} : Finset ℤ) = {-1, 0, 1} := by
   ext d
-  simp only [commonDiffFinset, mem_filter, Finset.mem_insert, Finset.mem_singleton]
   constructor
-  · intro ⟨_, b, hb, hbd, hb2d⟩
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hb hbd hb2d
+  · intro hd
+    unfold commonDiffFinset at hd
+    rw [mem_filter] at hd
+    obtain ⟨_, b, hb, hbd, hb2d⟩ := hd
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hb hbd hb2d ⊢
     rcases hb with rfl | rfl | rfl <;>
     rcases hbd with h1 | h1 | h1 <;>
     rcases hb2d with h2 | h2 | h2 <;>
     omega
   · intro hd
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hd
     rcases hd with rfl | rfl | rfl
-    · -- d = -1
-      constructor
-      · rw [Finset.mem_sub]
-        exact ⟨a, by simp, a + 1, by simp, by ring⟩
-      · exact ⟨a + 2, by simp, by ring_nf; right; left; ring,
-               by ring_nf; left; ring⟩
+    · -- d = -1: the AP (a+2, a+1, a)
+      have h1 : a + 2 ∈ ({a, a + 1, a + 2} : Finset ℤ) := by simp
+      have h2 : a + 2 + -1 ∈ ({a, a + 1, a + 2} : Finset ℤ) := by
+        simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+      have h3 : a + 2 + 2 * -1 ∈ ({a, a + 1, a + 2} : Finset ℤ) := by
+        simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+      exact mem_commonDiffFinset_of_threeAP h1 h2 h3
     · -- d = 0
-      constructor
-      · exact zero_mem_sub.mpr ⟨a, by simp⟩
-      · exact ⟨a, by simp, by ring_nf; left; ring,
-               by ring_nf; left; ring⟩
-    · -- d = 1
-      constructor
-      · rw [Finset.mem_sub]
-        exact ⟨a + 1, by simp, a, by simp, by ring⟩
-      · exact ⟨a, by simp, by ring_nf; right; left; ring,
-               by ring_nf; right; right; ring⟩
+      exact zero_mem_commonDiffFinset ⟨a, Finset.mem_insert_self a _⟩
+    · -- d = 1: the AP (a, a+1, a+2)
+      have h1 : a ∈ ({a, a + 1, a + 2} : Finset ℤ) := by simp
+      have h2 : a + 1 ∈ ({a, a + 1, a + 2} : Finset ℤ) := by simp
+      have h3 : a + 2 * 1 ∈ ({a, a + 1, a + 2} : Finset ℤ) := by
+        simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+      exact mem_commonDiffFinset_of_threeAP h1 h2 h3
 
 /- ## Main Conjecture -/
 
@@ -311,9 +313,10 @@ axiom katz_tao_upper :
 
 /- ## Lower Bounds -/
 
-/-- **Lemm (2015).** There exist sets achieving exponent > 1.778. -/
+/-- **Lemm (2015).** There exist sets achieving exponent > 1.77898
+(Lemm's exponent is 1.77898…, strictly above this threshold). -/
 axiom lemm_lower :
-  ∃ c : ℝ, c > 1.778 ∧ ∀ (n : ℕ), 0 < n →
+  ∃ c : ℝ, c > 1.77898 ∧ ∀ (n : ℕ), 0 < n →
     ∃ A : Finset ℤ, A.card = n ∧
       (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c
 
@@ -329,7 +332,7 @@ theorem erdos_spencer_lower :
   obtain ⟨A, hA, hbound⟩ := hlemm n hn
   refine ⟨A, hA, le_trans ?_ hbound⟩
   rw [one_mul]
-  exact rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) (by linarith)
+  exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) (by linarith)
 
 /-- **Erdős–Ruzsa.** Explicit construction achieving n^{1+c} for some c > 0.
 Proved from Lemm's bound (take c' = c - 1 > 0.778, C = 1). -/
@@ -345,7 +348,8 @@ theorem erdos_ruzsa_explicit :
 
 /-- **AlphaEvolve (2025).** Slight improvement on Lemm's lower bound
 using automated search methods.
-Note: as axiomatized, this is implied by lemm_lower (1.778 > 1.77898). -/
+Note: as axiomatized, this is implied by lemm_lower (both give exponent
+> 1.77898). -/
 theorem alphaevolve_improvement :
     ∃ c : ℝ, c > 1.77898 ∧ ∀ (n : ℕ), 0 < n →
       ∃ A : Finset ℤ, A.card = n ∧
@@ -383,9 +387,9 @@ axiom chan_equivalence :
 
 /- ## Summary -/
 
-/-- The current state of knowledge: 1.778 < c* ≤ 11/6 ≈ 1.833. -/
+/-- The current state of knowledge: 1.77898 < c* ≤ 11/6 ≈ 1.833. -/
 theorem current_bounds_summary :
-    (∃ c : ℝ, c > 1.778 ∧ ∀ (n : ℕ), 0 < n →
+    (∃ c : ℝ, c > 1.77898 ∧ ∀ (n : ℕ), 0 < n →
       ∃ A : Finset ℤ, A.card = n ∧ (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c) ∧
     (∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ) (A : Finset ℤ), A.card = n →
       (numCommonDiff A : ℝ) ≤ C * (n : ℝ) ^ ((11 : ℝ) / 6)) :=
