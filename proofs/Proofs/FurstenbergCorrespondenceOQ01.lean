@@ -34,7 +34,8 @@ import Mathlib
 
 namespace FurstenbergOQ01
 
-open MeasureTheory Set Topology
+open MeasureTheory Set Topology Classical
+open scoped ENNReal NNReal
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART I: CANTOR SPACE AND SHIFT MAP
@@ -94,11 +95,10 @@ def cylinderZero : Set CantorSpace := cylinder 0 true
 
 /-- Cylinder sets are clopen (both open and closed) in the product topology. -/
 theorem cylinder_isClopen (i : ℕ) (b : Bool) : IsClopen (cylinder i b) := by
-  constructor
-  · -- Closed: preimage of {b} under continuous projection
-    exact isClosed_eq (continuous_apply i) continuous_const
-  · -- Open: preimage of {b} under continuous projection, {b} is open in Bool
-    exact (isOpen_discrete {b}).preimage (continuous_apply i)
+  -- cylinder i b is the preimage of the clopen set {b} under the continuous projection
+  have h : cylinder i b = (fun x : CantorSpace => x i) ⁻¹' {b} := rfl
+  rw [h]
+  exact (isClopen_discrete {b}).preimage (continuous_apply i)
 
 /-- Cylinder sets are measurable. -/
 theorem cylinder_measurableSet (i : ℕ) (b : Bool) :
@@ -179,7 +179,7 @@ in the dynamical system translate to combinatorial patterns in A.
 theorem indicator_in_binary_return (A : Set ℕ) (n : ℕ) :
     setIndicator A ∈ cylinderZero ∩ (shift^[n] ⁻¹' cylinderZero) ↔
     0 ∈ A ∧ n ∈ A := by
-  simp [iterate_preimage_cylinderZero, indicator_mem_cylinder]
+  simp [iterate_preimage_cylinderZero, indicator_mem_cylinder, indicator_mem_cylinderZero]
 
 /-- **k-fold return property**: the indicator of A lies in the k-fold
     intersection ⋂_{i<k} T^{-i·d}(B₀) iff every i·d (for i < k) belongs to A.
@@ -202,7 +202,7 @@ relationship between orbit membership and density.
 -/
 
 /-- The orbit of a point x under the shift up to time N. -/
-def orbitFinset (x : CantorSpace) (N : ℕ) : Finset CantorSpace :=
+noncomputable def orbitFinset (x : CantorSpace) (N : ℕ) : Finset CantorSpace :=
   (Finset.range N).image (fun n => shift^[n] x)
 
 /-- The number of orbit points landing in cylinderZero up to time N
@@ -210,18 +210,20 @@ def orbitFinset (x : CantorSpace) (N : ℕ) : Finset CantorSpace :=
 theorem orbit_hits_cylinderZero (x : CantorSpace) (N : ℕ) :
     ((Finset.range N).filter (fun n => shift^[n] x ∈ cylinderZero)).card =
     ((Finset.range N).filter (fun n => x n = true)).card := by
-  congr 1
-  ext n
-  simp [cylinderZero, cylinder, shift_iterate]
+  have h : (Finset.range N).filter (fun n => shift^[n] x ∈ cylinderZero) =
+      (Finset.range N).filter (fun n => x n = true) :=
+    Finset.filter_congr fun n _ => by simp [cylinderZero, cylinder, shift_iterate]
+  rw [h]
 
 /-- For the indicator of A: orbit hits on B₀ count membership in A. -/
 theorem orbit_indicator_hits (A : Set ℕ) (N : ℕ) :
     ((Finset.range N).filter (fun n => shift^[n] (setIndicator A) ∈ cylinderZero)).card =
     ((Finset.range N).filter (fun n => n ∈ A)).card := by
-  congr 1
-  ext n
-  simp only [cylinderZero, cylinder, Set.mem_setOf_eq, shift_iterate, setIndicator, zero_add]
-  split_ifs with h <;> simp [h]
+  have h : (Finset.range N).filter (fun n => shift^[n] (setIndicator A) ∈ cylinderZero) =
+      (Finset.range N).filter (fun n => n ∈ A) :=
+    Finset.filter_congr fun n _ => by
+      simpa [cylinderZero, cylinder] using shift_indicator_zero A n
+  rw [h]
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: COMPACTNESS OF CANTOR SPACE
@@ -243,7 +245,7 @@ instance : CompactSpace CantorSpace :=
   Pi.compactSpace
 
 /-- Cantor space is metrizable (countable product of discrete spaces). -/
-instance : MetrizableSpace CantorSpace :=
+instance : TopologicalSpace.MetrizableSpace CantorSpace :=
   inferInstance
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -318,15 +320,11 @@ theorem finsetDirac_apply {ι : Type*} (s : Finset ι) (f : ι → CantorSpace)
     (∑ i ∈ s, Measure.dirac (f i)) t =
     ↑(s.filter (fun i => f i ∈ t)).card := by
   -- Distribute measure application over the Finset sum
-  have eval_sum : (∑ i ∈ s, Measure.dirac (f i)) t = ∑ i ∈ s, Measure.dirac (f i) t := by
-    induction s using Finset.induction_on with
-    | empty => simp
-    | insert ha ih => rw [Finset.sum_insert ha, Measure.add_apply, ih]
-  rw [eval_sum]
+  rw [Measure.finsetSum_apply]
   -- Each Dirac evaluates as an indicator: dirac a t = if a ∈ t then 1 else 0
   simp_rw [Measure.dirac_apply' _ ht, Set.indicator_apply, Pi.one_apply]
   -- Sum of characteristic function = cardinality of filter
-  exact_mod_cast Finset.sum_boole
+  exact Finset.sum_boole _ _
 
 /-- The N-step Cesàro probability measure at orbit point x:
     μ_N(x) = (1/N) Σ_{n=0}^{N-1} δ_{shift^[n](x)}.
@@ -344,14 +342,15 @@ theorem cesaroMeasure_isProbability (x : CantorSpace) :
   | zero => exact absurd hN (lt_irrefl _)
   | succ N =>
     refine ⟨?_⟩
-    simp only [cesaroMeasure, Measure.smul_apply]
-    rw [finsetDirac_apply _ _ MeasurableSet.univ]
-    -- Filter trivializes: every orbit point is in Set.univ
-    have : (Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ Set.univ) =
-        Finset.range (N + 1) :=
-      Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _)
-    rw [this, Finset.card_range]
-    exact ENNReal.inv_mul_cancel (by exact_mod_cast Nat.succ_ne_zero N) ENNReal.natCast_ne_top
+    -- The sum of N+1 Dirac measures has total mass N+1
+    have hsum : (∑ n ∈ Finset.range (N + 1), Measure.dirac (shift^[n] x)) Set.univ =
+        ((N + 1 : ℕ) : ℝ≥0∞) := by
+      rw [Measure.finsetSum_apply]
+      simp
+    simp only [cesaroMeasure, Measure.smul_apply, smul_eq_mul]
+    rw [hsum]
+    exact ENNReal.inv_mul_cancel (by exact_mod_cast Nat.succ_ne_zero N)
+      (ENNReal.natCast_ne_top _)
 
 /-!
 ### The Orbit-Density Connection
@@ -375,7 +374,7 @@ theorem cesaroMeasure_cylinderZero (A : Set ℕ) (a : ℕ) {N : ℕ} (hN : 0 < N
   cases N with
   | zero => exact absurd hN (lt_irrefl _)
   | succ N =>
-    simp only [cesaroMeasure, Measure.smul_apply]
+    simp only [cesaroMeasure, Measure.smul_apply, smul_eq_mul]
     rw [finsetDirac_apply _ _ cylinderZero_measurableSet]
     -- Connect filter to A-membership
     have hfilter : (Finset.range (N + 1)).filter
@@ -428,12 +427,12 @@ theorem density_lower_bound (A : Set ℕ) {δ : ℝ} (hδ : 0 < δ)
       intro m hm
       simp only [Finset.mem_filter, Finset.mem_range] at hm
       refine ⟨m + a, Finset.mem_filter.mpr ⟨Finset.mem_Ico.mpr ⟨Nat.le_add_left a m, by omega⟩, hm.2⟩,
-              Nat.add_sub_cancel⟩
+              by omega⟩
   rw [← hcard]
   -- ENNReal: δ ≤ |Ico-filter| / N  from  δ * N ≤ |Ico-filter|
   have hN_ne : (↑N : ℝ≥0∞) ≠ 0 := by exact_mod_cast hN_pos.ne'
   -- The inequality: ofReal δ ≤ card / N ↔ ofReal δ * N ≤ card
-  rw [ENNReal.le_div_iff_mul_le hN_ne ENNReal.natCast_ne_top]
+  rw [ENNReal.le_div_iff_mul_le (Or.inl hN_ne) (Or.inl (ENNReal.natCast_ne_top N))]
   -- ofReal δ * N ≤ card in ℝ≥0∞ follows from δ * N ≤ card in ℝ
   calc ENNReal.ofReal δ * ↑N
       = ENNReal.ofReal (δ * ↑N) := by
@@ -480,9 +479,11 @@ private theorem filter_shift_card_le (x : CantorSpace) (N : ℕ) (S : Set Cantor
       ((Finset.range (N + 2)).filter (fun m => shift^[m] x ∈ S)).card := by
     apply Finset.card_le_card_of_injOn (· + 1)
     · intro n hn
-      simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at hn ⊢
       exact ⟨by omega, hn.2⟩
-    · intro a _ b _ hab; omega
+    · intro a _ b _ hab
+      have hab' : a + 1 = b + 1 := hab
+      omega
   -- Step 2: range(N+2) = insert (N+1) (range(N+1)), so filter grows by ≤ 1
   have h_split :
       ((Finset.range (N + 2)).filter (fun m => shift^[m] x ∈ S)).card ≤
@@ -501,28 +502,37 @@ private theorem filter_orig_card_le (x : CantorSpace) (N : ℕ) (S : Set CantorS
   -- Inject original filter into range(N+1) filter of shifted+1 via n ↦ n (when n ≥ 1)
   -- But element 0 may not be in shifted range. Split: {0} ∪ Ico 1 (N+1)
   have h_split : Finset.range (N + 1) = {0} ∪ Finset.Ico 1 (N + 1) := by
-    ext m; simp [Finset.mem_range, Finset.mem_union, Finset.mem_Ico,
-                  Finset.mem_singleton]; omega
-  rw [h_split, Finset.filter_union]
-  calc (({0} : Finset ℕ).filter _ ∪ (Finset.Ico 1 (N + 1)).filter _).card
-      ≤ ({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S) |>.card +
-        (Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S) |>.card :=
+    ext m
+    simp only [Finset.mem_range, Finset.mem_union, Finset.mem_Ico, Finset.mem_singleton]
+    omega
+  have h0 : (({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S)).card ≤ 1 :=
+    le_trans (Finset.card_filter_le _ _) (by simp)
+  have hIco : ((Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S)).card ≤
+      ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card := by
+    apply Finset.card_le_card_of_injOn (· - 1)
+    · intro n hn
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Ico, Finset.mem_range] at hn ⊢
+      refine ⟨by omega, ?_⟩
+      have hn1 : n - 1 + 1 = n := by omega
+      rw [hn1]
+      exact hn.2
+    · intro a ha b hb hab
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Ico] at ha hb
+      have hab' : a - 1 = b - 1 := hab
+      omega
+  calc ((Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ S)).card
+      = ((({0} : Finset ℕ) ∪ Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S)).card := by
+        rw [← h_split]
+    _ = ((({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S)) ∪
+         ((Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S))).card := by
+        rw [Finset.filter_union]
+    _ ≤ (({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S)).card +
+        ((Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S)).card :=
         Finset.card_union_le _ _
-    _ ≤ 1 + ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card := by
-        have h0 : ({0} : Finset ℕ).filter (fun n => shift^[n] x ∈ S) |>.card ≤ 1 :=
-          le_trans (Finset.card_filter_le _ _) (by simp)
-        have hIco : (Finset.Ico 1 (N + 1)).filter (fun n => shift^[n] x ∈ S) |>.card ≤
-            ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card := by
-          apply Finset.card_le_card_of_injOn (· - 1)
-          · intro n hn
-            simp only [Finset.mem_filter, Finset.mem_Ico, Finset.mem_range] at hn ⊢
-            refine ⟨by omega, ?_⟩
-            convert hn.2 using 2; omega
-          · intro a ha b hb hab
-            simp only [Finset.mem_filter, Finset.mem_Ico] at ha hb; omega
-        linarith
-    _ = ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card + 1 := by
-        ring
+    _ ≤ 1 + ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card :=
+        Nat.add_le_add h0 hIco
+    _ = ((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card + 1 :=
+        Nat.add_comm _ _
 
 /-- **Approximate T-invariance (upper bound)**: The Cesàro measure of T⁻¹(S) exceeds
     that of S by at most 1/(N+1). -/
@@ -535,13 +545,15 @@ theorem cesaroMeasure_preimage_le (x : CantorSpace) (N : ℕ)
       finsetDirac_apply _ _ hS]
   -- Convert the preimage filter to match the shifted form
   have hfilt_eq : (Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ shift ⁻¹' S) =
-      (Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S) := by
-    congr 1; ext n
-    simp only [Set.mem_preimage, Function.iterate_succ', Function.comp_def]
-  rw [hfilt_eq, ← mul_add]
-  apply mul_le_mul_left'
-  have h := filter_shift_card_le x N S
-  exact_mod_cast h
+      (Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S) :=
+    Finset.filter_congr fun n _ => by
+      simp only [Set.mem_preimage, Function.iterate_succ', Function.comp_def]
+  rw [hfilt_eq]
+  have hcast : (↑((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card : ℝ≥0∞) ≤
+      ↑((Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ S)).card + 1 := by
+    exact_mod_cast filter_shift_card_le x N S
+  refine le_trans (mul_le_mul_left' hcast _) ?_
+  rw [mul_add, mul_one]
 
 /-- **Approximate T-invariance (lower bound)**: The Cesàro measure of S exceeds
     that of T⁻¹(S) by at most 1/(N+1). -/
@@ -553,13 +565,15 @@ theorem cesaroMeasure_preimage_ge (x : CantorSpace) (N : ℕ)
   rw [finsetDirac_apply _ _ hS,
       finsetDirac_apply _ _ (hS.preimage shift_measurable)]
   have hfilt_eq : (Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ shift ⁻¹' S) =
-      (Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S) := by
-    congr 1; ext n
-    simp only [Set.mem_preimage, Function.iterate_succ', Function.comp_def]
-  rw [hfilt_eq, ← mul_add]
-  apply mul_le_mul_left'
-  have h := filter_orig_card_le x N S
-  exact_mod_cast h
+      (Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S) :=
+    Finset.filter_congr fun n _ => by
+      simp only [Set.mem_preimage, Function.iterate_succ', Function.comp_def]
+  rw [hfilt_eq]
+  have hcast : (↑((Finset.range (N + 1)).filter (fun n => shift^[n] x ∈ S)).card : ℝ≥0∞) ≤
+      ↑((Finset.range (N + 1)).filter (fun n => shift^[n + 1] x ∈ S)).card + 1 := by
+    exact_mod_cast filter_orig_card_le x N S
+  refine le_trans (mul_le_mul_left' hcast _) ?_
+  rw [mul_add, mul_one]
 
 end TInvariance
 
@@ -852,9 +866,11 @@ theorem positive_measure_gives_ap (A : Set ℕ) (a N : ℕ) (hN : 0 < N)
   rw [← Function.iterate_add_apply, ← Function.iterate_add_apply] at hmem
   -- cylinderZero membership for setIndicator: ↔ (j*d + (n + a)) ∈ A
   have key : ↑(⟨j, hj⟩ : Fin k) * d + (n + a) ∈ A := by
-    exact (shift_indicator_zero A _).mp (by
-      simp only [cylinderZero, cylinder, Set.mem_setOf_eq, shift_iterate,
-                  zero_add] at hmem ⊢; exact hmem)
+    refine (shift_indicator_zero A _).mp ?_
+    simp only [cylinderZero, cylinder, Set.mem_setOf_eq, shift_iterate,
+                zero_add] at hmem ⊢
+    convert hmem using 2
+    omega
   rwa [show n + a + j * d = ↑(⟨j, hj⟩ : Fin k) * d + (n + a) from by simp; ring]
 
 end ReturnProperty
