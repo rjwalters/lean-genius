@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 166 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos1067Problem (Cardinal.toPartENat.toNat->toNat; bare κ->κ.out;
+Cardinal.{0} pin), SchauderFixedPoint (tendsto_one_div_add_atTop_nhds_zero_nat; ContinuousWithinAt.tendsto;
+isClosed_convexHull 𝕜 explicit; squeeze_zero'; LipschitzWith.of_dist_le_mul). Repairs: none. Unblocks
+SchauderFixedPointOQ03 child.
+
 # DOCTOR SINGLE-PROOF BATCH 165 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): TriangularReciprocalGeneralized (HasSum gained filter arg; HasSum.congr

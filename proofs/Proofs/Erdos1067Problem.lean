@@ -38,8 +38,8 @@ namespace Erdos1067
 The minimum number of colors needed to properly color a graph.
 For infinite graphs, this is a cardinal.
 -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : Cardinal :=
-  sInf { κ : Cardinal | ∃ (c : V → κ), G.Colorable κ.toPartENat.toNat }
+noncomputable def chromaticNumber (G : SimpleGraph V) : Cardinal.{0} :=
+  sInf { κ : Cardinal.{0} | ∃ (c : V → κ.out), G.Colorable κ.toNat }
 
 /--
 **Has Chromatic Number ℵ₁:**
@@ -56,7 +56,7 @@ A finite sequence of vertices where consecutive vertices are adjacent.
 -/
 structure PathInGraph (G : SimpleGraph V) where
   vertices : List V
-  isPath : ∀ i, i + 1 < vertices.length →
+  isPath : ∀ i (hi : i + 1 < vertices.length),
     G.Adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, by omega⟩)
 
 /--
