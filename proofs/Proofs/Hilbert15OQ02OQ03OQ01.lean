@@ -544,12 +544,12 @@ annotation). -/
 private lemma take_left_of_length {α : Type*} {l₁ l₂ : List α} {n : ℕ}
     (h : l₁.length = n) : (l₁ ++ l₂).take n = l₁ := by
   subst h
-  exact List.take_left _ _
+  exact List.take_left
 
 private lemma drop_left_of_length {α : Type*} {l₁ l₂ : List α} {n : ℕ}
     (h : l₁.length = n) : (l₁ ++ l₂).drop n = l₂ := by
   subst h
-  exact List.drop_left _ _
+  exact List.drop_left
 
 /-- **First-`r₀` prefix of `reverseRowWord` (`n = 2`)** is row 0's
     reverse-mapped list. Direct from `reverseRowWord_two_eq` and
@@ -719,7 +719,7 @@ private lemma reverse_finRange_take_one_of_pos
     ((List.finRange r).reverse.map f).take 1 =
       [f ⟨r - 1, Nat.sub_lt h Nat.one_pos⟩] := by
   rcases Nat.exists_eq_succ_of_ne_zero h.ne' with ⟨k, rfl⟩
-  rw [List.finRange_succ, List.concat_eq_append, List.reverse_append,
+  rw [List.finRange_succ_last, List.reverse_append,
       List.reverse_singleton, List.singleton_append, List.map_cons]
   rfl
 
@@ -1193,7 +1193,7 @@ theorem reverseRowWord_two_canonical {ν μ : Partition 2}
   -- Replace row-0 map with constant 0 (prep-12 §5 step 1).
   rw [show (fun j => T.1 ⟨(0 : Fin 2), j⟩) = (fun _ => (0 : Fin 2)) from
       funext hrow0]
-  rw [List.map_const, List.length_reverse, List.length_finRange]
+  rw [List.map_const', List.length_reverse, List.length_finRange]
   -- Replace row-1 map with step-function form (prep-12 §5 step 2).
   rw [show (fun j => T.1 ⟨(1 : Fin 2), j⟩)
         = (fun j => if j.val < lam.parts 0 - (ν.parts 0 - μ.parts 0)
@@ -1245,10 +1245,13 @@ theorem skewSSYTFin_lattice_bound_row1 {ν μ : Partition 2}
       (T.reverseRowWord.take (r₀ + (r₁ - c₀))).count (0 : Fin 2) :=
     hLW ⟨r₀ + (r₁ - c₀), hbnd⟩ 0 1 (by decide)
   rw [hcan] at hcnt
-  simp [List.take_append_of_le_length, List.length_replicate, List.length_append,
-        List.count_append, List.count_replicate_self,
-        (show (0 : Fin 2) ≠ 1 by decide),
-        (show (1 : Fin 2) ≠ 0 by decide)] at hcnt
-  exact hcnt
+  have hlen1 : r₀ + (r₁ - c₀)
+      = (List.replicate (ν.parts 0 - μ.parts 0) (0 : Fin 2) ++
+         List.replicate (ν.parts 1 - μ.parts 1 -
+           (lam.parts 0 - (ν.parts 0 - μ.parts 0))) (1 : Fin 2)).length := by
+    simp [hr₀_def, hr₁_def, hc₀_def]
+  rw [hlen1, List.take_left] at hcnt
+  simp [List.count_append, List.count_replicate] at hcnt
+  omega
 
 end Hilbert15OQ02OQ03OQ01
