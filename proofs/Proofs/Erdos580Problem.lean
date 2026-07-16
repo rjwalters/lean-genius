@@ -142,8 +142,8 @@ then G contains every tree on at most n/2 vertices.
 -/
 def LKSConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-    @satisfiesLKS V _ _ G →
-    @ContainsAllTreesUpTo V _ _ G (numVertices V / 2)
+    satisfiesLKS G →
+    ContainsAllTreesUpTo G (numVertices V / 2)
 
 /--
 **Komlós-Sós Conjecture (Generalization):**
@@ -152,8 +152,8 @@ then G contains every tree on at most k vertices.
 -/
 def KomlosSosConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) (k : ℕ),
-    @satisfiesGeneralizedLKS V _ _ G k →
-    @ContainsAllTreesUpTo V _ _ G k
+    satisfiesGeneralizedLKS G k →
+    ContainsAllTreesUpTo G k
 
 /- ## Part VI: Partial Results
 
@@ -173,8 +173,8 @@ The LKS conjecture holds for all sufficiently large n.
 axiom zhao_theorem :
     ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       numVertices V ≥ N →
-      @satisfiesLKS V _ _ G →
-      @ContainsAllTreesUpTo V _ _ G (numVertices V / 2)
+      satisfiesLKS G →
+      ContainsAllTreesUpTo G (numVertices V / 2)
 
 /--
 **Erdős Problem #580: Main Result**
@@ -182,8 +182,8 @@ For sufficiently large n, the LKS conjecture holds.
 -/
 theorem erdos_580 : ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     numVertices V ≥ N →
-    @satisfiesLKS V _ _ G →
-    @ContainsAllTreesUpTo V _ _ G (numVertices V / 2) :=
+    satisfiesLKS G →
+    ContainsAllTreesUpTo G (numVertices V / 2) :=
   zhao_theorem
 
 /- ## Part VII: Special Cases and Bounds
@@ -232,7 +232,7 @@ then G contains every tree on ≤ n/2 vertices.
 -/
 theorem erdos_580_summary :
     (∃ N : ℕ, ∀ V [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      numVertices V ≥ N → @satisfiesLKS V _ _ G → @ContainsAllTreesUpTo V _ _ G (numVertices V / 2))
+      numVertices V ≥ N → satisfiesLKS G → ContainsAllTreesUpTo G (numVertices V / 2))
     := zhao_theorem
 
 end Erdos580
