@@ -65,6 +65,16 @@ axiom erdos_sidon_upper_bound :
   ∀ A : Set ℕ, A.Infinite → IsSidonSet A →
     Filter.liminf (fun N => (countingFunction A N : ℝ) / Real.sqrt N) atTop = 0
 
+/-- **Classical elementary Sidon bound** (Erdős–Turán / Lindström-type): every Sidon set has
+    counting function A(N) = O(√N). Unlike `erdos_sidon_upper_bound` above (which records the deep
+    fact that the *liminf* vanishes), this only records the elementary pairwise-sum-injectivity
+    bound; it is needed so that `Filter.liminf (... ) = 0` is usable via Mathlib's
+    `frequently_lt_of_liminf_lt`, which (as of Mathlib's `IsCoboundedUnder` refactor) requires the
+    counting function to not diverge to `+∞`. -/
+axiom sidon_counting_upper_bound :
+    ∀ A : Set ℕ, IsSidonSet A → ∃ C : ℝ, C > 0 ∧
+      ∀ N : ℕ, N ≥ 1 → (countingFunction A N : ℝ) ≤ C * Real.sqrt N
+
 /-- **Consequence**: No infinite Sidon set achieves √N growth uniformly.
     There exist arbitrarily large N where A(N) < ε√N. -/
 theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A) :
@@ -74,11 +84,18 @@ theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A)
   -- liminf = 0 < c, so A(N)/√N < c frequently
   have hlt : Filter.liminf (fun N => (countingFunction A N : ℝ) / Real.sqrt N) atTop < c := by
     rw [hlim]; exact hc
-  have hbdd : atTop.IsBoundedUnder (· ≥ ·)
-      (fun N => (countingFunction A N : ℝ) / Real.sqrt N) :=
-    ⟨0, Filter.eventually_atTop.mpr ⟨0, fun N _ =>
-      div_nonneg (Nat.cast_nonneg _) (Real.sqrt_nonneg _)⟩⟩
-  have hfreq := Filter.frequently_lt_of_liminf_lt hlt hbdd
+  -- `frequently_lt_of_liminf_lt` needs `IsCoboundedUnder (· ≥ ·)`, which for a linear order
+  -- follows from the sequence not diverging to `+∞`; witness this via the elementary O(√N) bound.
+  have hbdd_above : atTop.IsBoundedUnder (· ≤ ·)
+      (fun N => (countingFunction A N : ℝ) / Real.sqrt N) := by
+    obtain ⟨C, -, hCN⟩ := sidon_counting_upper_bound A hSidon
+    refine ⟨C, Filter.eventually_atTop.mpr ⟨1, fun N hN => ?_⟩⟩
+    have hNpos : (N : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
+    show (countingFunction A N : ℝ) / Real.sqrt N ≤ C
+    rw [div_le_iff₀ (Real.sqrt_pos_of_pos hNpos)]
+    exact hCN N hN
+  have hcobdd := hbdd_above.isCoboundedUnder_ge
+  have hfreq := Filter.frequently_lt_of_liminf_lt hcobdd hlt
   -- Convert A(N)/√N < c to A(N) < c * √N (for N ≥ 1)
   exact (hfreq.and_eventually (Filter.eventually_atTop.mpr ⟨1, fun _ h => h⟩)).mono
     fun N ⟨hN, hN1⟩ => by
