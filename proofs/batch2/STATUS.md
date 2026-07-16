@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 352 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: SylowTheoremsOQ05 (add `open scoped IsMulCommutative in` before
+transferCenterPow_eq_lift_comp_transferAb — v4.31 refactored bundled CommGroup for commutative
+subobjects like ↥(center G) into unbundled IsMulCommutative mixin, Group+IsMulCommutative->CommGroup
+conversion now scoped priority-50; without the scope, search never resolves CommGroup ↥(center G) and
+burns heartbeats = the "slow-timeout"). Repair: none. Sylow family COMPLETE.
+SEAM: bundled CommGroup for center/commutative subgroup now requires `open scoped IsMulCommutative`.
+
 # DOCTOR SINGLE-PROOF BATCH 351 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: PartitionTheoremOQ01OQ01 (routed 27 native_decide calls through parent's
