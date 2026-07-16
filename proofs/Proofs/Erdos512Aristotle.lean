@@ -58,20 +58,20 @@ Strategy:
   6. setIntegral_const + smul_eq_mul + Real.volume_Icc → = A.card
 -/
 theorem L1norm_le_card (A : Finset ℤ) :
-    ∫ θ in Set.Icc (0 : ℝ) 1, expSumNorm A θ ≤ A.card := by
+    (∫ θ in Set.Icc (0 : ℝ) 1, expSumNorm A θ) ≤ A.card := by
   have hint : IntegrableOn (expSumNorm A) (Set.Icc 0 1) :=
     (expSumNorm_continuous A).continuousOn.integrableOn_compact isCompact_Icc
   have hcint : IntegrableOn (fun _ : ℝ => (A.card : ℝ)) (Set.Icc 0 1) :=
-    integrableOn_const.mpr (Or.inr (by simp [Real.volume_Icc]))
+    MeasureTheory.integrableOn_const (by simp [Real.volume_Icc])
   have hbdd : ∀ θ ∈ Set.Icc (0:ℝ) 1, expSumNorm A θ ≤ (A.card : ℝ) :=
     fun θ _ => expSum_bound A θ
-  have h1 : ∫ θ in Set.Icc 0 1, expSumNorm A θ ≤ ∫ θ in Set.Icc 0 1, (A.card : ℝ) :=
+  have h1 : ∫ θ in Set.Icc (0:ℝ) 1, expSumNorm A θ ≤ ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) :=
     setIntegral_mono_on hint hcint measurableSet_Icc hbdd
   have h2 : ∫ θ in Set.Icc (0:ℝ) 1, (A.card : ℝ) = A.card := by
     rw [setIntegral_const, smul_eq_mul]
-    have hv : (volume (Set.Icc (0:ℝ) 1)).toReal = 1 := by
-      rw [Real.volume_Icc]; simp [ENNReal.toReal_ofReal]
-    linarith [hv]
+    have hv : volume.real (Set.Icc (0:ℝ) 1) = 1 := by
+      simp [MeasureTheory.measureReal_def, Real.volume_Icc]
+    rw [hv, one_mul]
   linarith
 
 end Erdos512Aristotle
