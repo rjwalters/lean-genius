@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 260 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LawOfCosinesOQ01OQ04 (tendsto_nhdsWithin_of_tendsto_nhds misuse ->
+tendsto_nhdsWithin_iff+filter_upwards+.mono_left nhdsWithin_le_nhds). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 259 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Hilbert14NonReductive (DistribMulAction+MulDistribMulAction diamond ->
