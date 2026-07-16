@@ -458,20 +458,22 @@ theorem IsoperimetricOQ.realFourierCoeff_deriv_sq_eq (f : ℝ → ℝ) (hf : Con
                                     · rw [ IsoperimetricOQ.norm_fourierCoeffOn_deriv_eq f hf hperiod n hn ] ; ring;
                                       norm_num [ mul_assoc, mul_comm, mul_left_comm ]
 
-set_option maxRecDepth 4000 in
 theorem IsoperimetricOQ.integral_sq_eq_integral_norm_sq_lift_general (T : ℝ) [hT : Fact (0 < T)]
     (f : ℝ → ℝ) (hf : Continuous f) (hperiod : ∀ t, f (t + T) = f t) :
     let F := AddCircle.liftIoc T 0 (Complex.ofReal ∘ f)
     ∫ t in (0 : ℝ)..T, (f t : ℝ) ^ 2 =
       T * ∫ x : AddCircle T, ‖F x‖ ^ 2 ∂AddCircle.haarAddCircle := by
-        convert AddCircle.intervalIntegral_preimage T 0 ( fun x => ‖AddCircle.liftIoc T 0 ( Complex.ofReal ∘ f ) x‖ ^ 2 ) using 1 ; norm_num [ hperiod ] ; ring;
-        · norm_num [ AddCircle.liftIoc ];
-          refine' intervalIntegral.integral_congr fun t ht => _ ; simp_all +decide [ AddCircle.equivIoc ] ; ring; (
-          cases eq_or_lt_of_le ( show 0 ≤ t from by cases Set.mem_uIcc.mp ht <;> linarith [ hT.1 ] ) <;> simp_all +decide [ toIocMod, -self_sub_toIocDiv_zsmul ] ; ring;
-          rw [ show f t = f ( t - ( toIocDiv hT.1 0 t ) * T ) from by simpa [ sub_mul ] using Function.Periodic.int_mul hperiod ( toIocDiv hT.1 0 t ) ( t - ( toIocDiv hT.1 0 t ) * T ) ]);
-        · rw [ ← MeasureTheory.integral_const_mul ] ; ring;
-          have := @AddCircle.volume_eq_smul_haarAddCircle T hT; simp_all +decide [ MeasureTheory.measureReal_def ] ; ring;
-          rw [ MeasureTheory.integral_const_mul, ENNReal.toReal_ofReal hT.1.le ]
+        intro F
+        have hT0 : (0 : ℝ) < T := hT.out
+        have hcomp : (fun x : AddCircle T => ‖F x‖ ^ 2)
+            = AddCircle.liftIoc T 0 ((fun z : ℂ => ‖z‖ ^ 2) ∘ (Complex.ofReal ∘ f)) := rfl
+        have hlift : ∫ x : AddCircle T, ‖F x‖ ^ 2 = ∫ t in (0 : ℝ)..T, (f t : ℝ) ^ 2 := by
+          rw [hcomp, AddCircle.integral_liftIoc_eq_intervalIntegral, zero_add]
+          apply intervalIntegral.integral_congr
+          intro t _
+          simp [Complex.norm_real, sq_abs]
+        rw [AddCircle.integral_haarAddCircle, smul_eq_mul, hlift,
+          mul_inv_cancel_left₀ (ne_of_gt hT0)]
 
 theorem IsoperimetricOQ.parseval_periodic_real_continuous (f : ℝ → ℝ) (hf : Continuous f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π)
@@ -535,11 +537,9 @@ theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
       (c 0 = (1 / Real.sqrt (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t) := by
   refine' ⟨ fun n => IsoperimetricOQ.realFourierCoeff f n, _, _, _, _, _ ⟩;
   · have := IsoperimetricOQ.parseval_periodic_real_continuous f hf.continuous hperiod ( by positivity ) ( fun n => fourierCoeffOn ( by positivity ) ( Complex.ofReal ∘ f ) n ) rfl;
-    convert this.1.mul_left ( 2 * Real.pi ) using 2 ; try ring;
-    rw [ IsoperimetricOQ.realFourierCoeff_sq_eq ] ; ring;
+    simpa only [ IsoperimetricOQ.realFourierCoeff_sq_eq ] using this.1.mul_left ( 2 * Real.pi );
   · have := IsoperimetricOQ.parseval_periodic_real_continuous ( deriv f ) ( hf.continuous_deriv le_rfl ) ( fun t => ?_ ) ( by positivity ) ( fun n => fourierCoeffOn ( show 0 < 2 * Real.pi by positivity ) ( Complex.ofReal ∘ deriv f ) n ) rfl;
-    · convert this.1.mul_left ( 2 * Real.pi ) using 2 ; try ring;
-      convert IsoperimetricOQ.realFourierCoeff_deriv_sq_eq f hf hperiod ‹_› using 1 ; ring;
+    · simpa only [ IsoperimetricOQ.realFourierCoeff_deriv_sq_eq f hf hperiod ] using this.1.mul_left ( 2 * Real.pi );
     · have h_deriv_periodic : ∀ t, deriv f (t + 2 * Real.pi) = deriv f t := by
         intro t
         have h_eq : ∀ t, deriv f (t + 2 * Real.pi) = deriv (fun t => f (t + 2 * Real.pi)) t := by
