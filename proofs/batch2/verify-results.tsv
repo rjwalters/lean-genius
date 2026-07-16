@@ -789,7 +789,7 @@ Erdos1093OQ02FactorialGrowth	GREEN
 Erdos1095OQ01Problem	RESIDUAL	partenat-removal
 Erdos1096Problem	GREEN	
 Erdos1097OQ01	RESIDUAL	instance-synth
-Erdos1097Problem	RESIDUAL	instance-synth
+Erdos1097Problem	GREEN	
 Erdos1098OQ01	RESIDUAL	type-mismatch
 Erdos1098OQ01OQ01	RESIDUAL	instance-synth
 Erdos1098OQ03	GREEN	proof-drift
@@ -2154,7 +2154,7 @@ InverseGaloisOQ06OQ02GalBridge	GREEN
 InverseGaloisOQ06OQ02GapChar	GREEN	
 InverseGaloisOQ06OQ02P11	GREEN	
 IsoperimetricTheorem	GREEN	
-IsoperimetricTheoremOQ01	RESIDUAL	unknown-const:cos_lt_one_of_ne_zero
+IsoperimetricTheoremOQ01	GREEN	
 IsoperimetricTheoremOQ02	GREEN	
 KnightsTourOblique	GREEN	
 KnightsTourObliqueOQ01	GREEN	
@@ -2200,7 +2200,7 @@ LagrangeTheoremOQ01OQ02	RESIDUAL	instance-synth
 LagrangeTheoremOQ01OQ03	RESIDUAL	type-mismatch
 LagrangeTheoremOQ01OQ03OQ01	GREEN	
 LagrangeTheoremOQ02OQ01OQ01	GREEN	
-LagrangeTheoremOQ02OQ02	RESIDUAL	unknown-const:ConjClasses.mem_carrier_iff_isConj
+LagrangeTheoremOQ02OQ02	GREEN	
 LagrangeTheoremOQ02OQ02OQ01	RESIDUAL	unknown-const:ConjClasses.mem_carrier_iff_isConj
 LagrangeTheoremOQ03	GREEN	
 LagrangeTheoremOQ03OQ02	GREEN	
