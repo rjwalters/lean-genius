@@ -37,7 +37,7 @@ The following was proved by Aristotle:
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
@@ -57,26 +57,19 @@ namespace Erdos551
 
 open SimpleGraph Finset
 
+open scoped Classical
+
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /- ## Part I: Basic Definitions -/
 
-/-- A cycle graph C_k on k vertices. -/
+/-- A cycle graph C_k on k vertices. (The `i ≠ j` conjunct rules out the
+degenerate self-loop at `k = 1`, where `(0 + 1) % 1 = 0`; for `k ≠ 1` the
+relation is unchanged.) -/
 def cycleGraph (k : ℕ) : SimpleGraph (Fin k) where
-  Adj := fun i j => (i.val + 1) % k = j.val ∨ (j.val + 1) % k = i.val
-  symm := by
-    constructor
-    intro i j h
-    cases h with
-    | inl h => right; exact h
-    | inr h => left; exact h
-  loopless := by
-    constructor
-    intro i h
-    simp at h
-    cases h with
-    | inl h => omega
-    | inr h => omega
+  Adj := fun i j => i ≠ j ∧ ((i.val + 1) % k = j.val ∨ (j.val + 1) % k = i.val)
+  symm := ⟨fun _ _ ⟨hne, h⟩ => ⟨hne.symm, h.symm⟩⟩
+  loopless := ⟨fun _ ⟨hne, _⟩ => hne rfl⟩
 
 /-- The complete graph K_n on n vertices. -/
 def completeGraph (n : ℕ) : SimpleGraph (Fin n) :=
@@ -85,7 +78,7 @@ def completeGraph (n : ℕ) : SimpleGraph (Fin n) :=
 /-- A graph contains C_k as a subgraph. -/
 def ContainsCycle (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ f : Fin k → V, Function.Injective f ∧
-    ∀ i : Fin k, G.Adj (f i) (f ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega : k > 0)⟩)
+    ∀ i : Fin k, G.Adj (f i) (f ⟨(i.val + 1) % k, Nat.mod_lt _ i.pos⟩)
 
 /-- A graph contains K_n as a subgraph (clique). -/
 def ContainsClique (G : SimpleGraph V) (n : ℕ) : Prop :=
@@ -171,8 +164,7 @@ theorem exception_3_3 : RamseyNumber 3 3 = 6 := by
   sorry
 
 /-- The formula gives 5 for (3,3), but actual value is 6. -/
-theorem formula_wrong_at_3_3 : ConjecturedFormula 3 3 = 5 := by
-  native_decide
+theorem formula_wrong_at_3_3 : ConjecturedFormula 3 3 = 5 := rfl
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -292,6 +284,8 @@ def NikiforovThreshold (n : ℕ) : ℕ := 4*n + 2
 theorem nikiforov_improves (n : ℕ) (hn : n ≥ 5) :
     NikiforovThreshold n < BondyErdosThreshold n := by
   unfold NikiforovThreshold BondyErdosThreshold
+  have h : 5 * n ≤ n * n := Nat.mul_le_mul_right n hn
+  have h2 : n ^ 2 = n * n := sq n
   omega
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
@@ -315,12 +309,12 @@ Note: Expected a function because this term is being applied to the argument
 
 /-- Keevash-Long-Skokan (2021): Formula holds for k ≥ C log n / log log n. -/
 theorem keevash_long_skokan (n : ℕ) (hn : n ≥ 3) :
-    ∃ C : ℝ, C > 0 ∧ ∀ k, (k : ℝ) ≥ C * Real.log n / Real.log (Real.log n) →
+    ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, (k : ℝ) ≥ C * Real.log n / Real.log (Real.log n) →
       RamseyNumber k n = ConjecturedFormula k n := by
   sorry
 
 /-- The KLS threshold is essentially optimal. -/
-def KLSThreshold (n : ℕ) : ℝ :=
+noncomputable def KLSThreshold (n : ℕ) : ℝ :=
   Real.log n / Real.log (Real.log n)
 
 /- KLS improves significantly on Nikiforov. -/
@@ -350,8 +344,7 @@ theorem kls_improves (n : ℕ) (hn : n ≥ 100) :
     refine' div_le_self ( Real.log_nonneg <| by norm_cast; linarith ) _;
     rw [ Real.le_log_iff_exp_le ( Real.log_pos <| by norm_cast; linarith ) ];
     -- We'll use that $Real.exp 1 < 3$ and $Real.log 100 > 4$.
-    have h_exp_lt_3 : Real.exp 1 < 3 := by
-      exact?
+    have h_exp_lt_3 : Real.exp 1 < 3 := exp_one_lt_3
     have h_log_100_gt_4 : Real.log 100 > 4 := by
       norm_num [ Real.lt_log_iff_exp_lt ];
       rw [ show Real.exp 4 = ( Real.exp 1 ) ^ 4 by rw [ ← Real.exp_nat_mul ] ; norm_num ] ; exact lt_of_lt_of_le ( pow_lt_pow_left₀ h_exp_lt_3 ( by positivity ) ( by norm_num ) ) ( by norm_num );
@@ -510,7 +503,8 @@ theorem ramsey_mono_n (k n₁ n₂ : ℕ) (h : n₁ ≤ n₂) :
 theorem formula_mono (k₁ k₂ n₁ n₂ : ℕ) (hk : k₁ ≤ k₂) (hn : n₁ ≤ n₂) :
     ConjecturedFormula k₁ n₁ ≤ ConjecturedFormula k₂ n₂ := by
   unfold ConjecturedFormula
-  nlinarith
+  have := Nat.mul_le_mul (Nat.sub_le_sub_right hk 1) (Nat.sub_le_sub_right hn 1)
+  omega
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
