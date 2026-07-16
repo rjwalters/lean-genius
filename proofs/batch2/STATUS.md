@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 337 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: TaylorTheoremOQ03 (taylor_mean_remainder_lagrange now x₀≠x + uIcc/uIoo -> uIcc_of_le/
+uIoo_of_lt bridging (parent pattern); div_le_div_of_nonneg_left arg1 0≤a not 0<a; sum_le_tsum ->
+Summable.sum_le_tsum; HasSum.nat_add gone -> hasSum_nat_add_iff+ring; tsum_mul_left now arg-free rewrite). Repair: none.
+SEAM: div_le_div_of_nonneg_left first-arg tightened to 0≤a; HasSum.nat_add removed -> hasSum_nat_add_iff;
+bare tsum_mul_left/right now argument-free (rewrite not apply).
+
 # DOCTOR SINGLE-PROOF BATCH 336 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: HurwitzTheoremOQ04 (RESCUED from a killed 90%-done long-runner: preserved partial ->
