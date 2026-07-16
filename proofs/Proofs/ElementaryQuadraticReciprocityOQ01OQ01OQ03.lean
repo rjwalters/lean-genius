@@ -76,20 +76,21 @@ variable {F R : Type*} [Field F] [Fintype F] [CommRing R]
     - n=4 (quartic): J(χ,χ)·g(χ²) = g(χ)²
 
     Source: `jacobiSum_mul_nontrivial` in Mathlib.NumberTheory.JacobiSum.Basic -/
-theorem jacobiSum_gaussSum_relation
+theorem jacobiSum_gaussSum_relation [IsDomain R]
     {χ φ : MulChar F R} (h : χ * φ ≠ 1) (ψ : AddChar F R) :
     gaussSum (χ * φ) ψ * jacobiSum χ φ = gaussSum χ ψ * gaussSum φ ψ :=
   jacobiSum_mul_nontrivial h ψ
 
-/-- Ratio form: J(χ, φ) = g(χ)·g(φ)/g(χφ), when #F ≠ 0 in the target ring. -/
+/-- Ratio form: J(χ, φ) = g(χ)·g(φ)/g(χφ), when #F ≠ 0 in the target field. -/
 theorem jacobiSum_ratio_form
-    (h : (Fintype.card F : R) ≠ 0) {χ φ : MulChar F R} (hχφ : χ * φ ≠ 1)
-    {ψ : AddChar F R} (hψ : ψ.IsPrimitive) :
+    {F' : Type*} [Field F']
+    (h : (Fintype.card F : F') ≠ 0) {χ φ : MulChar F F'} (hχφ : χ * φ ≠ 1)
+    {ψ : AddChar F F'} (hψ : ψ.IsPrimitive) :
     jacobiSum χ φ = gaussSum χ ψ * gaussSum φ ψ / gaussSum (χ * φ) ψ :=
   jacobiSum_eq_gaussSum_mul_gaussSum_div_gaussSum h hχφ hψ
 
 /-- J(1, χ) = -1 for any nontrivial χ (trivial-nontrivial boundary case). -/
-theorem jacobiSum_trivial_left {χ : MulChar F R} (hχ : χ ≠ 1) :
+theorem jacobiSum_trivial_left [IsDomain R] {χ : MulChar F R} (hχ : χ ≠ 1) :
     jacobiSum 1 χ = -1 := jacobiSum_one_nontrivial hχ
 
 /-- **Complementary Pair**: J(χ, χ⁻¹) = -χ(-1) for nontrivial χ.
@@ -97,7 +98,7 @@ theorem jacobiSum_trivial_left {χ : MulChar F R} (hχ : χ ≠ 1) :
     For quadratic χ (where χ⁻¹ = χ): J(χ, χ) = -χ(-1) = ∓1.
     This shows the quadratic Jacobi sum is trivial — the substantive result
     is the Gauss sum norm τ² = χ(-1)·p, not the Jacobi sum directly. -/
-theorem jacobiSum_self_inv {χ : MulChar F R} (hχ : χ ≠ 1) :
+theorem jacobiSum_self_inv [IsDomain R] {χ : MulChar F R} (hχ : χ ≠ 1) :
     jacobiSum χ χ⁻¹ = -χ (-1) := jacobiSum_nontrivial_inv hχ
 
 /-- Commutativity: J(χ, φ) = J(φ, χ). -/
@@ -210,7 +211,7 @@ variable {p : ℕ} [hp : Fact p.Prime]
     This is why the quadratic case is DEGENERATE: the product `χ * χ = 1` is
     trivial, violating the hypothesis of `jacobiSum_algebraic_norm`.
     The interesting object for quadratic QR is the Gauss sum, not the Jacobi sum. -/
-theorem quadratic_jacobi_is_sign {F R : Type*} [Field F] [Fintype F] [CommRing R]
+theorem quadratic_jacobi_is_sign {F R : Type*} [Field F] [Fintype F] [CommRing R] [IsDomain R]
     {χ : MulChar F R} (hχ : χ ≠ 1) :
     jacobiSum χ χ⁻¹ = -χ (-1) :=
   jacobiSum_nontrivial_inv hχ
