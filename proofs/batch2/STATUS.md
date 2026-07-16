@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 297 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos662Problem (same ℤ seam as Erdos36: local Classical.propDecidable
+shadows computable Int order -> pulls noncomputable ConditionallyCompleteLinearOrder breaking native_decide;
+fix [local instance low] + pin @Finset.Icc Int.instLinearOrder). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 296 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos36Problem (forward-ref axiom reorder; one_div_lt_one_div_of_lt;
