@@ -27,11 +27,12 @@ import Mathlib
 namespace Erdos454
 
 open Nat Filter
+open scoped Topology
 
 /- ## Part I: The nth Prime Function -/
 
 /-- The k-th prime number (0-indexed: p_0 = 2, p_1 = 3, p_2 = 5, ...). -/
-noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
+noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Nat.Prime
 
 /-- The first prime is 2. -/
 theorem nthPrime_zero : nthPrime 0 = 2 := by
@@ -43,11 +44,11 @@ theorem nthPrime_one : nthPrime 1 = 3 := by
 
 /-- The third prime is 5. -/
 theorem nthPrime_two : nthPrime 2 = 5 := by
-  simp [nthPrime]
-  native_decide
+  simp [nthPrime, Nat.nth_prime_two_eq_five]
 
 /-- All nth primes are prime. -/
-theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
+theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
+  Nat.prime_nth_prime k
 
 /-- The nth prime sequence is strictly increasing. -/
 theorem nthPrime_strictMono : StrictMono nthPrime := (Nat.nth_strictMono Nat.infinite_setOf_prime)
@@ -72,7 +73,7 @@ noncomputable def f (n : ℕ) : ℕ :=
 /-- Alternative definition using Finset.inf' for computability intuition. -/
 noncomputable def f' (n : ℕ) : ℕ :=
   if h : n = 0 then 0
-  else (Finset.range n).inf' (by simp) (fun i => nthPrime (n + i) + nthPrime (n - i))
+  else (Finset.range n).inf' (Finset.nonempty_range_iff.mpr h) (fun i => nthPrime (n + i) + nthPrime (n - i))
 
 /-- The two definitions are equivalent. -/
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
@@ -114,7 +115,7 @@ noncomputable def deviationENat (n : ℕ) : ℕ∞ :=
 /-- For i = 0: p_n + p_n = 2p_n, so this term contributes deviation 0. -/
 theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
     nthPrime (n + 0) + nthPrime (n - 0) = 2 * nthPrime n := by
-  simp [mul_comm]
+  simp [two_mul]
 
 /-- The minimum is at most 2p_n (achieved at i = 0). -/
 theorem f_le_twice_nthPrime (n : ℕ) (hn : n > 0) : f n ≤ 2 * nthPrime n := by
@@ -170,7 +171,7 @@ theorem infinitely_many_deviation_ge_2 :
     exact absurd (hM hmem) (by omega)
   -- From the eventual bound, limsup ≤ 1
   have hls : limsup deviationENat atTop ≤ 1 :=
-    limsup_le_of_le ⟨⊥, Filter.Eventually.of_forall (fun _ => bot_le)⟩ hev
+    limsup_le_of_le ⟨⊥, fun a _ => bot_le⟩ hev
   -- But pomerance_1979 says limsup ≥ 2, contradiction: 2 ≤ 1
   exact absurd (pomerance_1979.trans hls) (by norm_num)
 
@@ -199,17 +200,13 @@ theorem conjecture_iff_not_negation :
   simp only [Erdos454Conjecture, Erdos454Negation]
   constructor
   · -- If limsup = ⊤, no finite bound exists
-    rintro rfl ⟨M, hM⟩
+    intro heq ⟨M, hM⟩
+    rw [heq] at hM
     exact absurd hM (not_le.mpr (WithTop.coe_lt_top M))
   · -- If no finite bound exists, limsup = ⊤
     intro h
     by_contra hne
-    -- limsup ≠ ⊤, so it's some finite value m
-    have : ∃ m : ℕ, limsup deviationENat atTop = ↑m := by
-      rcases limsup deviationENat atTop with _ | m
-      · exact absurd rfl hne
-      · exact ⟨m, rfl⟩
-    obtain ⟨m, hm⟩ := this
+    obtain ⟨m, hm⟩ := WithTop.ne_top_iff_exists.mp hne
     exact h ⟨m, le_of_eq hm.symm⟩
 
 /- ## Part VII: Heuristic Analysis -/
@@ -240,8 +237,7 @@ theorem example_f_3 : f 3 = 14 := by
 
 /-- Example: 2*p_3 = 14 (0-indexed: p_3 = 7) -/
 theorem example_twice_p3 : 2 * nthPrime 3 = 14 := by
-  simp [nthPrime]
-  native_decide
+  simp [nthPrime, Nat.nth_prime_three_eq_seven]
 
 /-- Example: The deviation at n=3 is 0. -/
 theorem example_deviation_3 : deviation 3 = 0 := by
@@ -286,7 +282,7 @@ def primeNumberGraph : SimpleGraph ℕ where
   symm := by
     constructor
     intro n m ⟨hne, hk⟩
-    exact ⟨hne.symm, by obtain ⟨k, hk⟩ := hk; exact ⟨k, by ring_nf; exact hk⟩⟩
+    exact ⟨hne.symm, by obtain ⟨k, hk⟩ := hk; exact ⟨k, by omega⟩⟩
   loopless := by
     constructor
     intro n ⟨h, _⟩
