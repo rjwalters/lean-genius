@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 138 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos740Problem (Cardinal.IsInfinite/aleph0_le_of_isInfinite never
+existed -> local aleph0≤𝔪; nullary Prop def Cardinal.{0} pin; ∃S:Set V ascription; #38611 REPAIR Cycle
+struct ill-typed -> added hpos:0<n). Repairs: 1. (formalized: pre-existing sorry untouched). Unblocks
+Erdos740ProblemProvable sibling.
+
 # DOCTOR SINGLE-PROOF BATCH 137 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos667Problem (open scoped Classical instance-diamond; inline
