@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 272 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LebesgueMeasureOQ01OQ01OQ02 (thomae 7 sites: div_mul_cancel₀; ContinuousAt
+.tendsto now thomae∘f; Set.Finite.ofFinset->Finite.subset; Finset.induction_on 4 binders; div_le_div_of_nonneg
+_left zero_le_one). Repair: none. Closes Lebesgue family.
+
 # DOCTOR SINGLE-PROOF BATCH 271 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): MeanValueTheoremOQ04 (stronglyMeasurableAtFilter field-notation ->

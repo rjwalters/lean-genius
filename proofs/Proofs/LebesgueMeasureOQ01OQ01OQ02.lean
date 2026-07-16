@@ -52,7 +52,7 @@ theorem thomae_irrational {x : ℝ} (hx : Irrational x) : thomae x = 0 := by
   unfold thomae
   rw [dif_neg]
   intro ⟨q, hq⟩
-  exact hx ⟨q, hq.symm⟩
+  exact hx ⟨q, hq⟩
 
 /-- thomae at rational q equals 1/q.den -/
 theorem thomae_rat (q : ℚ) : thomae (q : ℝ) = 1 / (q.den : ℝ) := by
@@ -81,9 +81,9 @@ private lemma rat_add_sqrt2_div_irrational (r : ℚ) (n : ℕ) :
   have hn : (↑n : ℝ) + 1 ≠ 0 := by positivity
   refine ⟨(q - r) * ((n : ℕ) + 1 : ℕ), ?_⟩
   have hqr : (q : ℝ) = (r : ℝ) + √2 / (↑n + 1) := hq
-  have := mul_div_cancel₀ (√2) hn
-  push_cast at hqr ⊢
-  linarith
+  have hqr' : (q : ℝ) - (r : ℝ) = √2 / (↑n + 1) := by linarith
+  push_cast
+  rw [hqr', div_mul_cancel₀ _ hn]
 
 /-- The sequence r + √2/(n+1) converges to r -/
 private lemma rat_add_sqrt2_div_tendsto (r : ℚ) :
@@ -99,19 +99,20 @@ private lemma rat_add_sqrt2_div_tendsto (r : ℚ) :
 /-- **Thomae is discontinuous at every rational** -/
 theorem thomae_discontinuous_at_rat (r : ℚ) : ¬ContinuousAt thomae (r : ℝ) := by
   intro h
-  rw [ContinuousAt, thomae_rat] at h
   -- The sequence y_n = r + √2/(n+1) → r with thomae(y_n) = 0
   have hlim := rat_add_sqrt2_div_tendsto r
-  -- Composing continuity hypothesis with the sequence gives thomae(y_n) → 1/r.den
-  have htend := h.tendsto.comp hlim
+  -- Composing continuity hypothesis with the sequence gives thomae(y_n) → thomae r
+  have htend : Tendsto (fun n : ℕ => thomae ((r : ℝ) + √2 / (↑n + 1))) atTop
+      (nhds (thomae (r : ℝ))) := h.tendsto.comp hlim
   -- But thomae(y_n) = 0 for all n (each y_n is irrational)
   have hzero : ∀ n : ℕ, thomae ((r : ℝ) + √2 / (↑n + 1)) = 0 :=
     fun n => thomae_irrational (rat_add_sqrt2_div_irrational r n)
   rw [show (fun n : ℕ => thomae ((r : ℝ) + √2 / (↑n + 1))) = fun _ => (0 : ℝ)
       from funext hzero] at htend
-  -- Uniqueness of limits: 1/r.den = 0, but 1/r.den > 0
-  have heq : (1 : ℝ) / r.den = 0 :=
+  -- Uniqueness of limits: thomae r = 0, but thomae r = 1/r.den > 0
+  have heq : thomae (r : ℝ) = 0 :=
     tendsto_nhds_unique htend tendsto_const_nhds
+  rw [thomae_rat] at heq
   linarith [show (0 : ℝ) < 1 / r.den from by positivity]
 
 /-!
@@ -130,9 +131,9 @@ private lemma finite_rat_bounded (x : ℝ) (N : ℕ) :
     Set.Finite {q : ℚ | |(q : ℝ) - x| ≤ 1 ∧ q.den ≤ N} := by
   -- For each fixed d ≤ N, rationals with den = d in [x-1, x+1] have numerator in
   -- [⌊(x-1)·d⌋, ⌈(x+1)·d⌉] — a finite range. Union over d = 1..N is finite.
-  apply Set.Finite.ofFinset
+  apply Set.Finite.subset (Finset.finite_toSet
     ((Finset.range (N + 1)).biUnion fun d =>
-      (Finset.Icc ⌊(x - 1) * d⌋ ⌈(x + 1) * d⌉).image fun n : ℤ => (n : ℚ) / d)
+      (Finset.Icc ⌊(x - 1) * d⌋ ⌈(x + 1) * d⌉).image fun n : ℤ => (n : ℚ) / d))
   intro q ⟨habs, hden⟩
   simp only [Finset.mem_coe, Finset.mem_biUnion, Finset.mem_range, Finset.mem_image,
              Finset.mem_Icc]
@@ -143,7 +144,9 @@ private lemma finite_rat_bounded (x : ℝ) (N : ℕ) :
   have hq_num := rat_num_eq_mul_den q
   refine ⟨q.den, Nat.lt_succ_of_le hden, q.num, ⟨?_, ?_⟩, ?_⟩
   · -- ⌊(x-1)·q.den⌋ ≤ q.num
-    exact_mod_cast (Int.floor_le ((x - 1) * q.den)).trans (by nlinarith)
+    have hfloor : ((⌊(x - 1) * (q.den : ℝ)⌋ : ℤ) : ℝ) ≤ (q.num : ℝ) :=
+      (Int.floor_le ((x - 1) * q.den)).trans (by nlinarith)
+    exact_mod_cast hfloor
   · -- q.num ≤ ⌈(x+1)·q.den⌉
     have h1 : (q.num : ℝ) ≤ (x + 1) * q.den := by nlinarith
     exact_mod_cast h1.trans (Int.le_ceil _)
@@ -155,10 +158,10 @@ private lemma pos_min_dist {x : ℝ} (hx : Irrational x) (S : Finset ℚ) :
     ∃ δ > 0, ∀ q ∈ S, δ ≤ |x - (q : ℝ)| := by
   induction S using Finset.induction_on with
   | empty => exact ⟨1, one_pos, by simp⟩
-  | insert ha ih =>
+  | insert a s ha ih =>
     obtain ⟨δ₀, hδ₀, hq₀⟩ := ih
-    refine ⟨min δ₀ |x - ↑_|, lt_min hδ₀ ?_, fun q hq' => ?_⟩
-    · rw [abs_pos, sub_ne_zero]; exact fun h => hx ⟨_, h.symm⟩
+    refine ⟨min δ₀ |x - (a : ℝ)|, lt_min hδ₀ ?_, fun q hq' => ?_⟩
+    · rw [abs_pos, sub_ne_zero]; exact fun h => hx ⟨a, h.symm⟩
     · rcases Finset.mem_insert.mp hq' with rfl | hq''
       · exact min_le_right _ _
       · exact (min_le_left _ _).trans (hq₀ q hq'')
@@ -173,9 +176,9 @@ theorem thomae_continuous_at_irrational {x : ℝ} (hx : Irrational x) :
   obtain ⟨N, hN_raw⟩ : ∃ N : ℕ, (1 : ℝ) / ε < N := exists_nat_gt (1 / ε)
   have hNpos : (0 : ℝ) < N := by linarith [div_pos one_pos hε]
   have hN : (1 : ℝ) / (↑N + 1) < ε := by
-    rw [div_lt_iff₀ (by linarith), one_mul]
+    rw [div_lt_iff₀ (by linarith)]
     have h1 : (1 : ℝ) < ε * N := by
-      rwa [gt_iff_lt, lt_div_iff₀ hε, mul_comm] at hN_raw
+      nlinarith [(div_lt_iff₀ hε).mp hN_raw]
     linarith
   -- Get the finite set of nearby low-denominator rationals
   have hS := finite_rat_bounded x N
@@ -188,31 +191,16 @@ theorem thomae_continuous_at_irrational {x : ℝ} (hx : Irrational x) :
     rw [thomae_irrational hirr, abs_zero]
     exact hε
   · -- y is rational
-    push_neg at hirr
+    simp only [Irrational, not_not] at hirr
     obtain ⟨q, hq⟩ := hirr
     rw [← hq, thomae_rat, abs_of_nonneg (by positivity)]
-    -- q must have large denominator: q ∉ S = {rationals with small den near x}
-    have hqS : q ∈ hS.toFinset := by
-      rw [Set.Finite.mem_toFinset]
-      constructor
-      · -- |(q : ℝ) - x| ≤ 1
-        rw [abs_sub_comm]
-        rw [← hq] at hy1
-        exact hy1
-      · -- claim: q.den ≤ N (we'll derive contradiction if not)
-        -- We'll prove the bound via contradiction below
-        by_contra hgt
-        push_neg at hgt
-        -- q.den > N, so thomae q = 1/q.den < 1/(N+1) < ε — this is what we want!
-        -- So this branch directly gives the result without using hS
-        exact absurd (Nat.lt_succ_of_lt hgt) (Nat.lt_succ_iff.mpr (le_refl _))
     -- q ∈ hS.toFinset means dist(x, q) ≥ δ, but |y - x| < δ — contradiction
     -- unless q.den > N
     rcases le_or_gt q.den N with hle | hlt
     · -- q ∈ S: should have |x - q| ≥ δ, contradicting |y - x| < δ
       have hmem : q ∈ hS.toFinset := by
         rw [Set.Finite.mem_toFinset]
-        exact ⟨by rw [abs_sub_comm]; rw [← hq] at hy1; exact hy1, hle⟩
+        exact ⟨by rw [← hq] at hy1; exact hy1, hle⟩
       have hdist : δ ≤ |x - (q : ℝ)| := hbnd q hmem
       have hclose : |y - x| < δ := hy.trans_le (min_le_left _ _)
       rw [← hq] at hclose
@@ -220,7 +208,7 @@ theorem thomae_continuous_at_irrational {x : ℝ} (hx : Irrational x) :
     · -- q.den > N: thomae q = 1/q.den < 1/(N+1) < ε
       calc 1 / (q.den : ℝ)
           ≤ 1 / (↑N + 1) := by
-            apply div_le_div_of_nonneg_left one_pos (by linarith) (by exact_mod_cast hlt)
+            apply div_le_div_of_nonneg_left zero_le_one (by linarith) (by exact_mod_cast hlt)
         _ < ε := hN
 
 /-!
