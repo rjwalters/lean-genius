@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 343 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos780Problem (cache parent ErdosKoRado; remove redundant trailing omega after rw
+auto-rfl closes concrete-numeral Nat goals in petersen_chromatic/kg_7_3_chromatic; fix intro-order
+`intro A B hA hB`->`intro A hA B hB` for `∀ A∈S, ∀ B∈S` binder order). Repair: none.
+SEAM: v4.31 rw auto-rfl now closes concrete-numeral Nat arithmetic (trailing omega -> "no goals");
+intro binder order for `∀ x∈S, ∀ y∈S` interleaves membership (intro x hx y hy).
+
 # DOCTOR SINGLE-PROOF BATCH 342 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos193Problem (subst on non-fvar w0=w1 -> direct collinearity witnesses; anonymous
