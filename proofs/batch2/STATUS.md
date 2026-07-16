@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 68 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos741ProblemAPNPartI (NEW SEAM: token ≤s Graph.IsSpanningSubgraph
+swallows following s-prefixed identifier -> ≤singleton must be ≤ singleton; Nat.tendsto_pow_atTop... namespace
+dropped), CauchySchwarzOQ01OQ03 (inner now takes 𝕜 EXPLICIT -> use ⟪f,g⟫ notation; inner_mul_le_norm_mul_sq
+removed -> norm_inner_le_norm). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 67 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): ShannonSourceCodingOQ01 (import Proofs.ShannonEntropy for mutualInformation;
