@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 75 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): AreaOfCircleOQ05OQ01 (Measure.prod now irreducible_def -> rw Measure.volume_eq_prod
+first; restrict_prod_eq_prod_restrict -> Measure.prod_restrict reversed; simp/rw ...at <global-decl> now hard parse
+error -> copy to local have; unblocks Incomplete01 child), BrouwerFixedPointOQ01OQ02OQ03OQ01 (⟪⟫_ℝ->⟪⟫ under
+open scoped RealInnerProductSpace; theorem-returning-non-Prop-structure now hard error -> noncomputable def).
+Repairs: none. NEW SEAM: theorem-returning-non-Prop-structure must be def.
+
 # DOCTOR SINGLE-PROOF BATCH 74 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): SkolemNoetherMatrixAut (Finset.sum_apply/Pi.smul_apply no longer unify with
