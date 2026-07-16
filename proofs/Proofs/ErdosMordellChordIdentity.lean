@@ -549,7 +549,16 @@ theorem chord_cos_eq
       exact ⟨ by rw [ ← sq_eq_sq₀ ( by positivity ) ( by positivity ), mul_pow, hfu, sq_abs ], by rw [ ← sq_eq_sq₀ ( by positivity ) ( by positivity ), mul_pow, hfv, sq_abs ] ⟩;
     have h_abs_eq : |cross (Y - X) (P - X)| * |cross (Z - X) (P - X)| = -(cross (Y - X) (P - X) * cross (Z - X) (P - X)) := by
       rw [ ← abs_mul, abs_of_neg hKneg ];
-    grind +splitImp;
+    have hnY : (‖Y - X‖ : ℝ) ≠ 0 := fun h => hnu (by rw [h]; ring)
+    have hnZ : (‖Z - X‖ : ℝ) ≠ 0 := fun h => hnv (by rw [h]; ring)
+    have hprod_ne : (‖Y - X‖ * ‖Z - X‖ : ℝ) ≠ 0 := mul_ne_zero hnY hnZ
+    have step1 : ‖footDiff (P - X) (Z - X)‖ * ‖footDiff (P - X) (Y - X)‖ * (‖Y - X‖ * ‖Z - X‖)
+        = -(cross (Y - X) (P - X) * cross (Z - X) (P - X)) := by
+      have e : ‖footDiff (P - X) (Z - X)‖ * ‖footDiff (P - X) (Y - X)‖ * (‖Y - X‖ * ‖Z - X‖)
+          = (‖footDiff (P - X) (Y - X)‖ * ‖Y - X‖) * (‖footDiff (P - X) (Z - X)‖ * ‖Z - X‖) := by ring
+      rw [e, h_abs.1, h_abs.2, h_abs_eq]
+    apply mul_right_cancel₀ hprod_ne
+    linear_combination hN + inner ℝ (Y - X) (Z - X) * step1
   · simp +zetaDelta at *;
     constructor <;> intro h <;> simp_all +decide [ sq ];
   · exact mul_ne_zero ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr <| by intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ) ) ( norm_ne_zero_iff.mpr ( sub_ne_zero.mpr <| by intro h; simp_all +decide [ affineIndependent_iff_not_collinear, collinear_pair ] ) )
