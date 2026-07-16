@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 170 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BezoutIdentityOQ02OQ01OQ01OQ01OQ01 (map_ofNat->constantCoeff_C;
+totalDegree_C stuck CommSemiring through opaque def -> explicit (R:=ℤ)(σ:=Fin 2); coeff_X_same;
+isUnit_of_dvd_one un-namespaced; Ideal.mem_span_singleton). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 169 (mixed fleet, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos1095OQ01Problem (omega no zeta-unfold set-locals -> clear_value;
