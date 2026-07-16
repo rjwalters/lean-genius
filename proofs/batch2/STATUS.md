@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 128 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos551Problem (open scoped Classical for Nat.find; SimpleGraph
+symm/loopless now Std.Symm/Std.Irrefl structs need ⟨⟩ wrap; SimpleGraph.Coloring->Coloring.Vertex;
+#38611 REPAIR cycleGraph.loopless unprovable@k=1 -> added i≠j to Adj; removed a native_decide->rfl).
+Repairs: 1 (#38611 Erdos551Problem).
+
 # DOCTOR SINGLE-PROOF BATCH 127 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos485OQ02 (open scoped Pointwise for Finset +; termCount unfold
