@@ -64,9 +64,11 @@ def isColorable (V : Type*) (G : SimpleGraph V) (k : Cardinal) : Prop :=
 A closed walk of length n with no repeated vertices (except start = end).
 -/
 structure Cycle (V : Type*) (G : SimpleGraph V) (n : ℕ) where
+  hpos : 0 < n  -- a cycle needs at least one vertex to have a well-defined "closing" edge
   vertices : Fin n → V
-  closed : vertices 0 = vertices (Fin.last (n - 1))  -- informal placeholder
-  edges : ∀ i : Fin (n - 1), G.Adj (vertices i) (vertices (i + 1))
+  closed : vertices ⟨0, hpos⟩ = vertices ⟨n - 1, by omega⟩  -- informal placeholder
+  edges : ∀ i : Fin (n - 1),
+    G.Adj (vertices ⟨i.1, by have := i.2; omega⟩) (vertices ⟨i.1 + 1, by have := i.2; omega⟩)
   distinct : ∀ i j : Fin n, i ≠ j → vertices i ≠ vertices j
 
 /--
@@ -129,10 +131,17 @@ def hasSubgraphWith (V : Type*) (G : SimpleGraph V) (𝔪 : Cardinal)
 -/
 
 /--
+**Infinite Cardinal:**
+A cardinal is infinite iff it is at least ℵ₀. (`Cardinal.IsInfinite` does not exist in
+Mathlib, so we spell out the standard characterization directly.)
+-/
+def IsInfiniteCardinal (𝔪 : Cardinal) : Prop := Cardinal.aleph0 ≤ 𝔪
+
+/--
 **Erdős-Hajnal Problem #740:**
 If χ(G) = 𝔪 (infinite), must G have a subgraph with χ = 𝔪 and no odd cycles ≤ r?
 -/
-def erdosHajnalConjecture (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) : Prop :=
+def erdosHajnalConjecture (𝔪 : Cardinal) (h𝔪 : IsInfiniteCardinal 𝔪) (r : ℕ) : Prop :=
   ∀ V : Type*, ∀ G : SimpleGraph V,
     chromaticNumber V G = 𝔪 →
       ∃ S : Set V,
@@ -143,7 +152,7 @@ def erdosHajnalConjecture (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) 
 **Special Case: r = 3 (Triangle-Free):**
 Must every graph with χ = 𝔪 contain a triangle-free subgraph with χ = 𝔪?
 -/
-def triangleFreeConjecture (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) : Prop :=
+def triangleFreeConjecture (𝔪 : Cardinal) (h𝔪 : IsInfiniteCardinal 𝔪) : Prop :=
   erdosHajnalConjecture 𝔪 h𝔪 3
 
 /--
@@ -196,7 +205,7 @@ def thresholdFunctionExists (𝔪 : Cardinal) (r : ℕ) : Prop :=
 The existence of f_r(𝔪) is unknown for most cases.
 -/
 def thresholdFunctionOpen : Prop :=
-  ¬∀ 𝔪 : Cardinal, ∀ r : ℕ, 𝔪.IsInfinite →
+  ¬∀ 𝔪 : Cardinal.{0}, ∀ r : ℕ, IsInfiniteCardinal 𝔪 →
     thresholdFunctionExists 𝔪 r ∨ ¬thresholdFunctionExists 𝔪 r
 
 /-
@@ -223,7 +232,7 @@ def girthGreaterThan (V : Type*) (G : SimpleGraph V) (r : ℕ) : Prop :=
 Must G with χ = 𝔪 contain a subgraph with χ = 𝔪 and girth > r?
 This is stronger than the odd cycle version.
 -/
-def girthConjecture (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) : Prop :=
+def girthConjecture (𝔪 : Cardinal) (h𝔪 : IsInfiniteCardinal 𝔪) (r : ℕ) : Prop :=
   ∀ V : Type*, ∀ G : SimpleGraph V,
     chromaticNumber V G = 𝔪 →
       ∃ S : Set V,
@@ -234,7 +243,7 @@ def girthConjecture (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) : Prop
 **Girth implies Odd Cycle:**
 The girth conjecture implies the odd cycle conjecture.
 -/
-theorem girth_implies_odd (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) :
+theorem girth_implies_odd (𝔪 : Cardinal) (h𝔪 : IsInfiniteCardinal 𝔪) (r : ℕ) :
     girthConjecture 𝔪 h𝔪 r → erdosHajnalConjecture 𝔪 h𝔪 r := by
   intro hGirth V G hχ
   obtain ⟨S, hS, hGirthS⟩ := hGirth V G hχ
@@ -312,7 +321,7 @@ theorem erdos_740_summary :
      ∀ 𝔪 h𝔪 r, girthConjecture 𝔪 h𝔪 r → erdosHajnalConjecture 𝔪 h𝔪 r) ∧
     (-- Bipartite version fails for 𝔪 > 2
      ∀ 𝔪, 𝔪 > 2 → ¬∀ V G, chromaticNumber V G = 𝔪 →
-       ∃ S, chromaticNumber S (inducedSubgraph V G S) = 𝔪 ∧
+       ∃ S : Set V, chromaticNumber S (inducedSubgraph V G S) = 𝔪 ∧
          isBipartite S (inducedSubgraph V G S)) := by
   exact ⟨rodl_theorem, girth_implies_odd, no_infinite_bipartite⟩
 
@@ -326,7 +335,7 @@ theorem erdos_740 : countableCase 3 := rodl_theorem
 **Open Question:**
 Does the conjecture hold for all infinite cardinals and all r?
 -/
-def openQuestion (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) : Prop :=
+def openQuestion (𝔪 : Cardinal) (h𝔪 : IsInfiniteCardinal 𝔪) (r : ℕ) : Prop :=
   erdosHajnalConjecture 𝔪 h𝔪 r
 
 /--
@@ -334,8 +343,8 @@ def openQuestion (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) : Prop :=
 In [Er81], Erdős listed this among problems he "would most like to see solved."
 -/
 def erdosMostWanted : Prop :=
-  ∀ 𝔪 : Cardinal, 𝔪.IsInfinite →
+  ∀ 𝔪 : Cardinal.{0}, ∀ h𝔪 : IsInfiniteCardinal 𝔪,
     ∀ r : ℕ, r ≥ 1 →
-      erdosHajnalConjecture 𝔪 ⟨Cardinal.aleph0_le_of_isInfinite 𝔪⟩ r
+      erdosHajnalConjecture 𝔪 h𝔪 r
 
 end Erdos740
