@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 44 (5-slot + Fable experiment, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): BorsukUlamOQ03OQ01 (SONNET 17min/184k: Fin.ext reindex; card_filter_congr_bij
+gone->card_nbij'; Nat.even_iff_not_odd gone->not_odd_iff_even), Erdos207ProblemAristotle (HasGirthAtLeast 4
+curried hyps; Hypergraph3.edge_card->.uniform), **AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly
+(FABLE-5, 4.2min/60k: 6 shallow drift sites, orderOf_eq_card_of_forall_mem_zpowers Fintype->Nat.card; omega
+no positivity from NeZero -> hp.two_le)**. Repairs: none.
+
+FABLE EXPERIMENT result-1: Fable GREEN'd a hard type-mismatch file cleanly (60k/4.2min/20 tools), comparable
+to Sonnet on hard files. Second Fable file (Erdos1017Problem) + third (Erdos1056Problem) in flight.
+
 # DOCTOR SINGLE-PROOF BATCH 43 (5-slot + Fable experiment, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): DedekindFrobeniusBridge (Ideal.Quotient.ker_stabilizerHom kernel now

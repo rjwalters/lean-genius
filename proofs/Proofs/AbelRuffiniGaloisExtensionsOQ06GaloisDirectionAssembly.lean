@@ -70,7 +70,7 @@ theorem padicValNat_factorial_self (hp : p.Prime) :
     have hi2 : 2 ≤ i := by
       rcases Finset.mem_Ico.mp hi with ⟨h1, _⟩; omega
     calc p < p ^ 2 := by nlinarith [hp.two_le]
-      _ ≤ p ^ i := Nat.pow_le_pow_right hp.pos.le hi2
+      _ ≤ p ^ i := Nat.pow_le_pow_right hp.pos hi2
   · intro h
     exact absurd (Finset.mem_Ico.mpr ⟨le_refl 1, hp.one_lt⟩) h
 
@@ -98,13 +98,15 @@ theorem sylow_p_is_pcycle_strong
   haveI : MulAction.IsPretransitive H (ZMod p) := _hPrim.toIsPretransitive
   have horbit : Nat.card (MulAction.orbit H (0 : ZMod p)) = p := by
     have huniv : MulAction.orbit H (0 : ZMod p) = Set.univ :=
-      MulAction.orbit_eq_univ (0 : ZMod p)
+      MulAction.orbit_eq_univ (↥H) (0 : ZMod p)
     rw [huniv, Nat.card_congr (Equiv.Set.univ (ZMod p)),
         Nat.card_eq_fintype_card, ZMod.card]
   have hpH : p ∣ Nat.card H := by
     have hos := MulAction.card_orbit_mul_card_stabilizer_eq_card_group
       H (0 : ZMod p)
-    exact ⟨Nat.card (MulAction.stabilizer H (0 : ZMod p)), by rw [← hos, horbit]⟩
+    refine ⟨Nat.card (MulAction.stabilizer H (0 : ZMod p)), ?_⟩
+    simp only [Nat.card_eq_fintype_card] at horbit ⊢
+    rw [← hos, horbit]
   -- Step B:  Nat.card ↥P = p.
   have hkpos : 0 < (Nat.card H).factorization p :=
     Nat.Prime.factorization_pos_of_dvd hp Nat.card_pos.ne' hpH
@@ -130,15 +132,17 @@ theorem sylow_p_is_pcycle_strong
   haveI hcyc : IsCyclic (P : Subgroup H) := isCyclic_of_prime_card hcardP
   obtain ⟨a, ha⟩ := hcyc.exists_generator
   have horda : orderOf a = p := by
-    rw [orderOf_eq_card_of_forall_mem_zpowers ha, hcardP_ft]
+    rw [orderOf_eq_card_of_forall_mem_zpowers ha]
+    exact hcardP
   have hords : orderOf (ι a) = p := by
     rw [orderOf_injective ι hι_inj a, horda]
   have hcycσ : (ι a).IsCycle := by
-    have hprime : (orderOf (ι a)).Prime := hords ▸ hp
+    have hprime : (orderOf (ι a)).Prime := by rw [hords]; exact hp
     have hsupp_lt : (ι a).support.card < 2 * orderOf (ι a) := by
       have hle : (ι a).support.card ≤ Fintype.card (ZMod p) :=
         Finset.card_le_univ _
       rw [ZMod.card] at hle
+      have h2 : 2 ≤ p := hp.two_le
       rw [hords]; omega
     exact Equiv.Perm.isCycle_of_prime_order hprime hsupp_lt
   refine ⟨ι a, hcycσ, ?_, ?_, ?_⟩

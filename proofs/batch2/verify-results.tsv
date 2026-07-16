@@ -13,7 +13,7 @@ AbelRuffiniGaloisExtensionsOQ05	GREEN
 AbelRuffiniGaloisExtensionsOQ05OQ01	GREEN	
 AbelRuffiniGaloisExtensionsOQ06	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirection	GREEN	
-AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly	RESIDUAL	type-mismatch
+AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionMainAssembly	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4	GREEN	
 AbelRuffiniGaloisExtensionsOQ10	GREEN	
@@ -262,7 +262,7 @@ BorsukUlamOQ02OQ01OQ04OQ01	GREEN
 BorsukUlamOQ02OQ02	GREEN
 BorsukUlamOQ02OQ03	GREEN	
 BorsukUlamOQ03	GREEN	
-BorsukUlamOQ03OQ01	RESIDUAL	rewrite-drift
+BorsukUlamOQ03OQ01	GREEN	
 BorsukUlamOQ03OQ02	GREEN	
 BorsukUlamOQ03OQ03	GREEN	
 BorsukUlamOQ04OQ03	GREEN	
@@ -1003,7 +1003,7 @@ Erdos202Problem	RESIDUAL	type-mismatch
 Erdos203Problem	GREEN	
 Erdos206Problem	GREEN	
 Erdos207Problem	GREEN	
-Erdos207ProblemAristotle	RESIDUAL	rewrite-drift
+Erdos207ProblemAristotle	GREEN	
 Erdos208Problem	GREEN	
 Erdos209Problem	RESIDUAL	instance-synth
 Erdos20Problem	RESIDUAL	instance-synth
