@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 245 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos846Problem (nonTrilinear_singleton tactic mode; finset_pigeonhole via
+card_eq_sum_card_fiberwise+sum_lt_sum_of_nonempty; ↑∅ coercion simpa; le_div_iff₀->div_le_iff₀+mul_comm;
+CharZero mvar exact_mod_cast). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 244 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos629Problem (17min: Colorable 2 direct construct; convert using 1 ℕ ≤
