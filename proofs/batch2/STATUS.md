@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 40 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+1 GREEN** (re-verified EXIT=0): SpernerGrid (SONNET 72min/623k marathon, 1766-line hub: Prod.mk.injEq
+requires literal Prod.mk -> Prod.ext_iff; dite vs ite if_neg/dif_neg; omega no auto-reduce (anonCtor).val
+or (0:Fin(n+1)).val -> dsimp only/Fin.val_zero first; unblocks SpernerGridAristotle). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 39 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): SzemerediCoreOQ01Aristotle (rw union-then-card ordering flip;
