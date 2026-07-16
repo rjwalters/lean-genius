@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 356 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ03OQ02 (contDiff_periodic_lipschitz NNReal coe step:
+`simpa using hbound` no longer closes `↑‖..‖₊ ≤ ↑⟨C,hC0⟩` (v4.31 simp no longer unfolds anon-ctor NNReal
+coe ↑⟨C,hC0⟩ to C) -> `exact hbound` by defeq). Repair: none (2 pre-existing sorries preserved).
+SEAM: NNReal anon-ctor coe `↑⟨C,hC⟩` no longer simp-reduces to witness -> prefer exact/defeq over simpa.
+Note: ledger `decide-maxrecdepth` class label was STALE for this file (no decide anywhere; real blocker was NNReal coe).
+
 # DOCTOR SINGLE-PROOF BATCH 355 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, 450k tok/264 tools/52min — largest single fix)**: Erdos1033Problem (universe-pin
