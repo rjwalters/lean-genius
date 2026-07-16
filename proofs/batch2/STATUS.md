@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 103 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1007OQ05 (Finset.add_sum_erase chained double-erase rewrite no
+longer pattern-matches->sum_ite_eq/pointwise; sq_sqrt->Real.sq_sqrt). Repair: none.
+NOTE: Erdos107OQ01 FAILED — blocked by dependency Erdos107OQ01KleinUpperAristotle (dispatched to doctor-d).
+
 # DOCTOR SINGLE-PROOF BATCH 102 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): CayleyHamiltonMinpolyOQ05OQ02OQ03 (IsSeparable->Algebra.IsSeparable;
