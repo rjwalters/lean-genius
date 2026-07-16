@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 46 (Fable experiment greens, #38065, 2026-07-15)
+
+**+2 GREEN, both FABLE-5** (re-verified EXIT=0): Erdos1056Problem (Chain'->IsChain Decidable; List.get+by-omega
+-> getD; ZMod.val_neg_one' gone), Erdos1040Problem (csInf_le_csInf ∀∃-form -> le_csInf+csInf_le_of_le; Ne.lt_or_lt
+gone -> lt_or_gt_of_ne; simp no longer zeta-unfolds let-bound structure literals). 
+
+FABLE EXPERIMENT VERDICT: 3/3 GREEN on HARD type-mismatch/instance-synth files (AbelRuffini Galois 60k/4.2m,
+Erdos1056 57k/4.2m, Erdos1040 61k/2.4m) — comparable to Sonnet on the hard tail, own credit pool (throttle
+resistance). Fable ADOPTED as a viable 3rd workhorse. (Aristotle ruled out: proves sorries not drift.)
+
 # DOCTOR SINGLE-PROOF BATCH 45 (5-slot + Fable, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos288Problem (PNat-coe-vs-Subtype show-normalization; Finset.sum_pos
