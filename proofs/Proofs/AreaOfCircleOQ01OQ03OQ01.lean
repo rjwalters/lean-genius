@@ -423,9 +423,9 @@ theorem circumference_reparam_preserved (γ : SmoothClosedCurve)
   -- τ has derivative (1/speed(τ t)) * c at each t (chain rule + IFT)
   have hτ_da : ∀ t, HasDerivAt τ (1 / curveSpeed γ (τ t) * c) t := fun t => by
     have hσ_da := arcLengthInv_hasDerivAt γ hReg hL (c * t)
-    have h := hσ_da.comp t ((hasDerivAt_id t).const_mul c)
-    simp only [Function.comp] at h
-    convert h using 1; ring
+    have hinner : HasDerivAt (fun y => c * y) c t := by
+      have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+    exact hσ_da.comp t hinner
   -- The integrand equals c pointwise (chain rule + algebraic simplification)
   have hint : ∀ t ∈ Set.uIcc (0 : ℝ) (2 * π),
       Real.sqrt (deriv (γ.x ∘ τ) t ^ 2 + deriv (γ.y ∘ τ) t ^ 2) = c := by
@@ -477,9 +477,9 @@ theorem area_reparam_preserved (γ : SmoothClosedCurve)
   -- τ derivative
   have hτ_da : ∀ t, HasDerivAt τ (1 / curveSpeed γ (τ t) * c) t := fun t => by
     have hσ_da := arcLengthInv_hasDerivAt γ hReg hL (c * t)
-    have h := hσ_da.comp t ((hasDerivAt_id t).const_mul c)
-    simp only [Function.comp] at h
-    convert h using 1; ring
+    have hinner : HasDerivAt (fun y => c * y) c t := by
+      have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+    exact hσ_da.comp t hinner
   have hτ'_pos : ∀ t, 0 < 1 / curveSpeed γ (τ t) * c := fun t => by
     apply mul_pos _ hc_pos
     apply div_pos one_pos
@@ -664,10 +664,9 @@ theorem exists_arclength_reparam' (γ : SmoothClosedCurve)
       arcLengthInv_hasDerivAt γ hReg hL (c * t)
     -- τ has derivative c/speed(τ(t)) at t
     have hτ_da : HasDerivAt τ (1 / curveSpeed γ (τ t) * c) t := by
-      have := hσ_da.comp t ((hasDerivAt_id t).const_mul c)
-      simp only [Function.comp, hτ_def] at this ⊢
-      convert this using 1
-      ring
+      have hinner : HasDerivAt (fun y => c * y) c t := by
+        have h := (hasDerivAt_id t).const_mul c; simpa [mul_one] using h
+      exact hσ_da.comp t hinner
     -- Chain rule for γ.x ∘ τ and γ.y ∘ τ
     have hx_da : HasDerivAt γ.x (deriv γ.x (τ t)) (τ t) :=
       (γ.smooth_x.differentiable one_ne_zero).differentiableAt.hasDerivAt
