@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 193 (all-Sonnet + 2 Opus, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): BrouwerFixedPointOQ02OQ03 (taylor_mean_remainder uIcc/uIoo reshape;
+differentiableOn_iteratedDerivWithin .mono; abs_of_nonneg sq_nonneg; taylorWithinEval_succ @[simp]),
+Erdos109OQ01 (not_bddAbove_iff strict-< witness; beta-redex show before omega; csInf_lt_iff arg order;
+fin_cases Fin 2 non-literal -> c=0∨c=1 by omega). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 192 (all-Sonnet + 2 Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1080OQ03 (import Tactic.Abel; Fin.NatCast no-longer-global ->
