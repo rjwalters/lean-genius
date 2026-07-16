@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 167 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos814Problem (ℚ order imports; #38611 REPAIRS x3: sauermann c-vs-c'
+unsound axiom-pair -> uniform c, AXIOM COUNT 3->2 [meta re-audit]; edgeThreshold false@n=k-1 -> n≥3/n≥2;
+high_degree_exists false nat-floor -> 2*card≥k*n; universe .{0}). Repairs: 3.
+
 # DOCTOR SINGLE-PROOF BATCH 166 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos1067Problem (Cardinal.toPartENat.toNat->toNat; bare κ->κ.out;
