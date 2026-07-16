@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 228 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos488Problem (Nat.div_add_mod->div_add_mod' arg swap; div_pos explicit
+have; Nat.cast_nonneg ℚ ascription in nlinarith list). Repair: none. [milestone: RESIDUAL=150]
+
 # DOCTOR SINGLE-PROOF BATCH 227 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos487Problem (mul_assoc mismatches; Finset.toSet removed -> ↑Set coercion;
