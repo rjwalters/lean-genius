@@ -105,7 +105,7 @@ theorem qMultinom_at_one : ∀ {m : ℕ} (k : Fin m → ℕ),
                  insert 0 ((Finset.univ : Finset (Fin m)).image Fin.succ) := by
       apply Finset.ext; intro x
       simp only [Finset.mem_univ, Finset.mem_insert, Finset.mem_image, true_iff]
-      exact x.cases (Or.inl rfl) (fun i => Or.inr ⟨i, Finset.mem_univ i, rfl⟩)
+      exact x.cases (Or.inl rfl) (fun i => Or.inr ⟨i, trivial, rfl⟩)
     conv_lhs => rw [huniv]
     rw [Nat.multinomial_insert hmem]
     -- Relate multinomial over image Fin.succ to multinomial of tail
@@ -114,6 +114,7 @@ theorem qMultinom_at_one : ∀ {m : ℕ} (k : Fin m → ℕ),
       unfold Nat.multinomial
       rw [Finset.sum_image (Fin.succ_injective m).injOn,
           Finset.prod_image (Fin.succ_injective m).injOn]
+      rfl
     rw [himg, Finset.sum_image (Fin.succ_injective m).injOn]
     -- Simplify: k 0 + ∑ Fin.succ = ∑ Fin (m+1) (by Fin.sum_univ_succ)
     have hkey : k 0 + ∑ i : Fin m, k (Fin.succ i) = ∑ i : Fin (m + 1), k i :=
@@ -137,7 +138,7 @@ theorem qMultinom_eq_zero_of_lt {m : ℕ} (q : R) (k : Fin m → ℕ) (i : Fin m
       -- i = 0: k 0 > ∑ kᵢ is impossible since k 0 ≤ ∑ kᵢ
       exfalso
       have : k 0 ≤ ∑ j, k j :=
-        Finset.single_le_sum (fun j _ => Nat.zero_le _) _ (Finset.mem_univ 0)
+        Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ 0)
       omega
     | succ i' =>
       -- i = Fin.succ i': the condition transfers to the tail
@@ -166,22 +167,16 @@ theorem qMultinom_product_qFactorial {m : ℕ} (q : R) (k : Fin m → ℕ) :
     rw [qMultinom_cons, Fin.prod_univ_succ, Fin.sum_univ_succ]
     -- k 0 ≤ ∑ kᵢ always holds
     have hle : k 0 ≤ k 0 + ∑ i, k (Fin.succ i) := Nat.le_add_right _ _
-    have hsum : ∑ i, k (Fin.succ i) = k 0 + ∑ i, k (Fin.succ i) - k 0 := by omega
-    rw [hsum] at ih
-    have key : qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) *
-               qFactorial q (k 0) * qFactorial q (∑ i, k (Fin.succ i)) =
-               qFactorial q (k 0 + ∑ i, k (Fin.succ i)) := by
-      rw [mul_assoc]
-      exact qBinom_product q _ _ hle
+    have hih := ih (k ∘ Fin.succ)
+    simp only [Function.comp_apply] at hih
+    have key := qBinom_product q (k 0 + ∑ i, k (Fin.succ i)) (k 0) hle
+    rw [Nat.add_sub_cancel_left] at key
     calc qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) *
          qMultinom q (k ∘ Fin.succ) * (qFactorial q (k 0) * ∏ i, qFactorial q (k (Fin.succ i)))
-        = qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) *
-          (qMultinom q (k ∘ Fin.succ) * ∏ i, qFactorial q ((k ∘ Fin.succ) i)) *
-          qFactorial q (k 0) := by ring
-      _ = qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) *
-          qFactorial q (∑ i, (k ∘ Fin.succ) i) * qFactorial q (k 0) := by rw [ih]
-      _ = qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) *
-          qFactorial q (k 0) * qFactorial q (∑ i, k (Fin.succ i)) := by ring
+        = qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) * qFactorial q (k 0) *
+          (qMultinom q (k ∘ Fin.succ) * ∏ i, qFactorial q (k (Fin.succ i))) := by ring
+      _ = qBinom q (k 0 + ∑ i, k (Fin.succ i)) (k 0) * qFactorial q (k 0) *
+          qFactorial q (∑ i, k (Fin.succ i)) := by rw [hih]
       _ = qFactorial q (k 0 + ∑ i, k (Fin.succ i)) := key
 
 -- ============================================================
@@ -203,28 +198,22 @@ theorem qMultinom_unit_partition (q : R) (m : ℕ) (j : Fin m) :
       have hcomp : (fun i : Fin (m + 1) => if i = (0 : Fin (m + 1)) then 1 else 0) ∘ Fin.succ =
                    fun _ : Fin m => 0 := by ext i; simp [Fin.succ_ne_zero]
       have hsum : ∑ i : Fin (m + 1), (if i = (0 : Fin (m + 1)) then 1 else 0 : ℕ) = 1 := by
-        simp [Fin.sum_univ_succ, Finset.sum_eq_zero (fun i _ => by simp [Fin.succ_ne_zero])]
-      simp only [hsum, show (if (0 : Fin (m + 1)) = 0 then 1 else 0 : ℕ) = 1 from by simp,
-                 hcomp]
-      -- Need: qBinom q 1 1 * qMultinom q (fun _ => 0) = 1
-      rw [qBinom_self]
+        simp [Fin.sum_univ_succ]
+      rw [hsum, hcomp, if_pos rfl, qBinom_self, one_mul]
       -- Need: qMultinom q (fun _ : Fin m => 0) = 1
-      clear hcomp hsum
-      induction m with
-      | zero => simp [qMultinom]
-      | succ m' ihm' =>
-        rw [qMultinom_cons]
-        simp [ihm']
+      have h := qMultinom_product_qFactorial q (fun _ : Fin m => 0)
+      simpa [qFactorial] using h
     | succ j' =>
       -- j = Fin.succ j': k = (0, ..., 1, ..., 0) with 1 at position j'+1
-      have hzero : (if (0 : Fin (m + 1)) = Fin.succ j' then 1 else 0 : ℕ) = 0 := by simp
+      have hzero : (if (0 : Fin (m + 1)) = Fin.succ j' then 1 else 0 : ℕ) = 0 :=
+        if_neg (Fin.succ_ne_zero j').symm
       have hcomp : (fun i : Fin (m + 1) => if i = Fin.succ j' then 1 else 0) ∘ Fin.succ =
                    (fun i : Fin m => if i = j' then 1 else 0) := by
         ext i; simp [Fin.succ_inj]
       have hsum : ∑ i : Fin (m + 1), (if i = Fin.succ j' then 1 else 0 : ℕ) =
                   ∑ i : Fin m, (if i = j' then 1 else 0 : ℕ) := by
         rw [Fin.sum_univ_succ]
-        simp [Finset.sum_congr rfl (fun i _ => by simp [Fin.succ_inj])]
+        simp [hzero, Fin.succ_inj]
       rw [hzero, hcomp, hsum, ih j']
       -- Need: qBinom q (∑ i, if i = j' then 1 else 0) 0 * 1 = 1
       simp [qBinom_zero_right]
@@ -237,7 +226,7 @@ theorem qMultinom_all_ones (q : R) (m : ℕ) :
   | succ m ih =>
     rw [qMultinom_cons]
     have hcomp : (fun _ : Fin (m + 1) => (1 : ℕ)) ∘ Fin.succ = fun _ : Fin m => 1 := rfl
-    have hsum : ∑ _ : Fin (m + 1), (1 : ℕ) = m + 1 := by simp [Finset.sum_const, Finset.card_fin]
+    have hsum : ∑ _ : Fin (m + 1), (1 : ℕ) = m + 1 := by simp [Finset.sum_const]
     rw [hcomp, ih, hsum, qBinom_one_right, qFactorial_succ]
 
 -- ============================================================
@@ -261,9 +250,7 @@ theorem qMultinom_two_row_sum (q : R) (n : ℕ) :
   intro j hj
   simp only [Finset.mem_range] at hj
   have hjn : j ≤ n := Nat.lt_succ_iff.mp hj
-  have hk0 : (fun i : Fin 2 => if i = (0 : Fin 2) then j else n - j) 0 = j := by simp
-  have hsum : ∑ i : Fin 2, (if i = (0 : Fin 2) then j else n - j) = n := by
-    simp [Fin.sum_univ_two]; omega
-  rw [qMultinom_two, hk0, hsum]
+  have h10 : (1 : Fin 2) ≠ 0 := by decide
+  rw [qMultinom_two, if_pos rfl, if_neg h10, Nat.add_sub_cancel' hjn]
 
 end QMultinomialCoefficients
