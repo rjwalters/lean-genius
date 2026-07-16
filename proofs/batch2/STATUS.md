@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 27 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos69Problem (Tonelli-swap h_fubini rebuilt explicit vs aesop-soup;
+Finset.subtype predicate must EXACTLY match Subtype/Set-coercion form or defeq apply fails; Summable now
+SummationFilter-parameterized), Erdos798Aristotle (Set.ncard_prod dropped Finite args; untyped numerals to
+Set.finite_Icc default wrong base type). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 26 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos583Problem (anonymous-Pi-binder-in-structure-field now hits
