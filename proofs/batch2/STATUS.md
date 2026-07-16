@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 338 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos152OQ01 (nat-sub linarith -> have+omega; `by omega; rwa` greedy-block parse trap ->
+parenthesize (by omega) x13; subst on let-set vars -> have+omega; obtain ⟨,rfl⟩ on fixed RHS -> hab+omega;
+added M≥1/sL≥1 derivations for M-1/sL-1; fixed `left`-forced-unprovable-disjunct -> let omega pick 3-way;
+re-proved private sidon_diff_injective locally). Repair: none (internal proof-step bug, statements unchanged).
+SEAM: `have:X:=by tac1;tac2` one-line swallows tac2 into the by-block -> `(by tac1);tac2`; linarith fails
+on ℕ truncated sub -> have+omega; obtain ⟨,rfl⟩ from Finset.mem_add needs bound-var target not fixed expr.
+
 # DOCTOR SINGLE-PROOF BATCH 337 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: TaylorTheoremOQ03 (taylor_mean_remainder_lagrange now x₀≠x + uIcc/uIoo -> uIcc_of_le/
