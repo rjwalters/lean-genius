@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 315 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos611ProblemAristotle (no source changes — RESIDUAL was a
+cascade artifact; parent Erdos611Problem.olean absent from slot cache -> lake build parent first,
+then clean EXIT=0). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 314 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos395OQ01Incomplete01 (Complex.re_sum/im_sum+Finset.add_sum_erase explicit
