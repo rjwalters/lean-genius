@@ -139,18 +139,19 @@ axiom H_lower_bound :
 axiom H_upper_bound :
   ∃ C > 0, ∀ x : ℕ, x > 10 → H x ≤ C * x * Real.log (Real.log (Real.log x))
 
-/-- The limsup of H(x)/x is infinite -/
+/-- The limsup of H(x)/x is infinite. (ℝ has no `⊤`, so this is stated in `EReal`,
+    where the coercion `((H x / x : ℝ) : EReal)` genuinely admits `⊤` as a value.) -/
 axiom H_limsup_infinite :
-  Filter.limsup (fun x => H x / x) Filter.atTop = ⊤
+  Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤
 
 /-- The liminf of H(x)/x is finite -/
 axiom H_liminf_finite :
-  ∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤
+  ∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧ (L : EReal) < ⊤
 
 /-- f(n)/n doesn't have a mean value (unusual for "additive-like" functions) -/
 theorem f_no_mean_value :
-    (Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
-    (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤) := by
+    (Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤) ∧
+    (∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧ (L : EReal) < ⊤) := by
   exact ⟨H_limsup_infinite, H_liminf_finite⟩
 
 /-
@@ -184,8 +185,9 @@ theorem erdos_878_summary :
         c * x * Real.log (Real.log (Real.log (Real.log x))) ≤ H x ∧
         H x ≤ C * x * Real.log (Real.log (Real.log x))) ∧
     -- f(n)/n has no mean value
-    ((Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
-     (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤)) := by
+    ((Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤) ∧
+     (∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧
+       (L : EReal) < ⊤)) := by
   constructor
   · exact f_le_F
   constructor
@@ -214,8 +216,9 @@ theorem erdos_878 :
       ∀ x : ℕ, x > 10 →
         c * x * Real.log (Real.log (Real.log (Real.log x))) ≤ H x ∧
         H x ≤ C * x * Real.log (Real.log (Real.log x))) ∧
-    ((Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
-     (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤)) :=
+    ((Filter.limsup (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = ⊤) ∧
+     (∃ L : ℝ, Filter.liminf (fun x => ((H x / x : ℝ) : EReal)) Filter.atTop = L ∧
+       (L : EReal) < ⊤)) :=
   erdos_878_summary
 
 end Erdos878

@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 145 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos878Problem (ℝ has no Top -> =⊤/<⊤ on H x/x recast via
+((H x/x:ℝ):EReal); 4 statements, same true claim, no weakening). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 144 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos81Problem (variable-inclusion drift @-apps->plain; Nat.find->sInf;
