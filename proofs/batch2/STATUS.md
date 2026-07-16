@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 36 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): FriendshipTheoremOQ01OQ02 (ported upstream Archive fixes: Std.Symm Adj
+needs .symm not G.adj_symm; commonNeighbors simp needs set_option backward.isDefEq.respectTransparency
+false; push_neg->push Not), FourierSeriesOQ02OQ03 (auto-included section var used only in implicit arg needs
+explicit (T:=T) per call; Filter.Tendsto.rpow takes 3 args + x≠0∨0<y). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 35 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): FactorRemainderTheoremOQ01OQ01OQ02 (Finset.range_subset->
