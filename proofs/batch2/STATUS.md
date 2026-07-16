@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 264 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LawsOfLargeNumbersOQ01OQ02OQ01 (Adapted->StronglyAdapted split via
+stronglyAdapted_natural; iIndepFun.comp/.MemLp.sub ∘-form -> funext+rwa; simpa Function.comp unreliable).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 263 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FairGamesTheoremOQ03 (13min: stoppedValue_const/_neg vs .untopA rfl-mismatch;
