@@ -43,7 +43,7 @@ theorem brouwer_1d (f : ℝ → ℝ) (hf : Continuous f)
   -- Apply intermediate_value₂: find c ∈ [0,1] where id(c) = f(c)
   obtain ⟨c, hc, hfc⟩ := isPreconnected_Icc.intermediate_value₂
     (left_mem_Icc.mpr zero_le_one)
-    (right_mem_Icc.mpr le_rfl)
+    (right_mem_Icc.mpr zero_le_one)
     continuous_id.continuousOn
     hf.continuousOn
     hf0
@@ -65,7 +65,7 @@ theorem contractive_fixed_point_unique (f : ℝ → ℝ) (c_const : ℝ) (hc : c
   have : |x - y| ≤ c_const * |x - y| := by
     calc |x - y| = |f x - f y| := by rw [hx, hy]
       _ ≤ c_const * |x - y| := hLip x y
-  linarith [mul_lt_of_lt_one_right (le_of_lt hxy) (by linarith : 0 ≤ c_const) hc]
+  linarith [mul_lt_of_lt_one_left hxy hc]
 
 -- ============================================================
 -- Part III: Iterated Fixed Point Approximation
@@ -75,34 +75,34 @@ theorem contractive_fixed_point_unique (f : ℝ → ℝ) (c_const : ℝ) (hc : c
 theorem contractive_iterate_converges (f : ℝ → ℝ) (L : ℝ) (hL : L < 1) (hL0 : 0 ≤ L)
     (hLip : ∀ x y, |f x - f y| ≤ L * |x - y|)
     (p : ℝ) (hp : f p = p) (x₀ : ℝ) :
-    Filter.Tendsto (fun n => (f ∘ ·)^[n] x₀) Filter.atTop (nhds p) := by
+    Filter.Tendsto (fun n => f^[n] x₀) Filter.atTop (nhds p) := by
   -- The iterates form a Cauchy sequence converging geometrically to p
   rw [Metric.tendsto_atTop]
   intro ε hε
   -- After n steps: |f^n(x₀) - p| ≤ L^n * |x₀ - p|
-  have hL_lt : L < 1 := hL
   have hL_pow : Filter.Tendsto (fun n : ℕ => L ^ n * |x₀ - p|) Filter.atTop (nhds 0) := by
-    have := tendsto_pow_atTop_nhds_zero_of_lt_one hL0 hL_lt
-    exact this.const_mul |x₀ - p| |>.congr (fun n => by ring_nf)
+    have h := (tendsto_pow_atTop_nhds_zero_of_lt_one hL0 hL).mul_const |x₀ - p|
+    simpa using h
   rw [Metric.tendsto_atTop] at hL_pow
-  obtain ⟨N, hN⟩ := hL_pow (ε / 2) (half_pos hε)
+  obtain ⟨N, hN⟩ := hL_pow ε hε
   refine ⟨N, fun n hn => ?_⟩
   -- |f^n(x₀) - p| ≤ L^n |x₀ - p|
-  have hbound : ∀ n, dist ((f ∘ ·)^[n] x₀) p ≤ L ^ n * |x₀ - p| := by
+  have hbound : ∀ n, dist (f^[n] x₀) p ≤ L ^ n * |x₀ - p| := by
     intro n; induction n with
-    | zero => simp [dist_comm, abs_of_nonneg (abs_nonneg _)]
+    | zero => simp [Real.dist_eq, abs_sub_comm]
     | succ n ih =>
       simp only [Function.iterate_succ', Function.comp]
-      calc dist (f ((f ∘ ·)^[n] x₀)) p
-          = dist (f ((f ∘ ·)^[n] x₀)) (f p) := by rw [hp]
-        _ ≤ L * dist ((f ∘ ·)^[n] x₀) p := by
+      calc dist (f (f^[n] x₀)) p
+          = dist (f (f^[n] x₀)) (f p) := by rw [hp]
+        _ ≤ L * dist (f^[n] x₀) p := by
             rw [Real.dist_eq, Real.dist_eq]
             exact hLip _ _
-        _ ≤ L * (L ^ n * |x₀ - p|) := by linarith [ih, hL0, abs_nonneg _]
+        _ ≤ L * (L ^ n * |x₀ - p|) := mul_le_mul_of_nonneg_left ih hL0
         _ = L ^ (n + 1) * |x₀ - p| := by ring
-  calc dist ((f ∘ ·)^[n] x₀) p
-      ≤ L ^ n * |x₀ - p| := hbound n
-    _ < ε := by linarith [hN n hn, abs_nonneg (L ^ n * |x₀ - p| - 0)]
+  have hle := hbound n
+  have hN' : dist (L ^ n * |x₀ - p|) 0 < ε := hN n hn
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg (by positivity)] at hN'
+  linarith
 
 -- ============================================================
 -- Part IV: Sperner-Brouwer Pipeline Summary

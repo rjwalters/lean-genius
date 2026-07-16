@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 346 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: SpernerNDimOQ03OQ01 (right_mem_Icc.mpr le_rfl->zero_le_one; mul_lt_of_lt_one_right 3-arg
+->mul_lt_of_lt_one_left hxy hc (2-arg, swapped operands); malformed (f∘·)^[n] x₀ -> f^[n] x₀; rewrote
+contractive_iterate_converges via Tendsto.mul_const+simpa, Real.dist_eq, mul_le_mul_of_nonneg_left). Repair: none.
+SEAM: mul_lt_of_lt_one_right/_left now 2-arg PosMulStrictMono/MulPosStrictMono (operand order swaps
+between the two); Tendsto.const_mul+.congr no longer unifies a*0 with 0 -> Tendsto.mul_const+simpa.
+
 # DOCTOR SINGLE-PROOF BATCH 345 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: SpernerNDimMathlibOQ01 (missing `import Proofs.SpernerNDim` (pre-existing bug — never
