@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 309 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): PicksTheoremOQ01OQ01OQ01 (same ℤ Finset.Icc/native_decide poison seam:
+ComputeAsymptotics.Lemmas transitively pulls Int.instConditionallyCompleteLinearOrder -> rebuild boundingBox
+via Finset.range+Int.toNat+image). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 308 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): NewtonIndStep2 (α≥0/γ≥0 via dividing binom_ineq by b²/c²; nlinarith->explicit
