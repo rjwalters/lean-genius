@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 63 (mixed fleet, #38065, 2026-07-16)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos780Aristotle (#38611: threshold_k2 FALSE at t=0 -> add 1≤t;
+Finset.disjoint_compl_right->disjoint_compl_right; Finset.card_compl unfolds direct to Fintype.card-card),
+BorsukUlamOQ02 (if k=0 in hand-rolled SMul from fin_cases ⟨lit,proof⟩ index no longer simp-reduces -> rfl/if_neg
+by decide term proofs; EuclideanSpace.equiv_symm_pi_lp_apply -> PiLp.coe_symm_continuousLinearEquiv), CauchySchwarzOQ02
+(Finset.inner_mul_le_norm_mul_sq -> sum_mul_sq_le_sq_mul_sq; Real.HolderConjugate.two_two; Finset.ne_of_mem_erase
+arg-order flip). Repairs #38611: Erdos780Aristotle (threshold_k2). Collector set-e bug fixed this cycle.
+
 # DOCTOR SINGLE-PROOF BATCH 62 (mixed fleet, #38065, 2026-07-16)
 
 Batch collect of pending greens (Erdos1120/1121 Fable + any Sonnet). Fable 16/17 hard tail. Details in
