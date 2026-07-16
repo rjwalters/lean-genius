@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 101 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): AngleTrisectionCos20GalOQ01OQ02OQ02 (Polynomial.Splits now UNARY —
+(p.map f).Splits; Normal/IsSplittingField API follows; minpoly.eq_of_irreducible_of_monic reordered;
+IsGalois.of_fixedField_normal_subgroup by hand), CantorDiagonalizationOQ04OQ03Aristotle (le_iSup explicit
+fn, mirrors parent). Repairs: none. (closes CantorDiagonalization cascade family)
+
 # DOCTOR SINGLE-PROOF BATCH 100 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CauchySchwarzOQ01OQ04 (sum_le_sum_of_subset_of_nonneg since ℝ not
