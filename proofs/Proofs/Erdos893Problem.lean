@@ -63,7 +63,7 @@ theorem tau_255 : tau 255 = 8 := by native_decide
 
 /-- Mersenne primes have exactly 2 divisors. -/
 theorem tau_prime_eq_two {p : ℕ} (hp : Nat.Prime p) : tau p = 2 := by
-  simp [tau, Nat.Prime.divisors hp]
+  simp [tau, Nat.Prime.divisors hp, Finset.card_pair hp.ne_one.symm]
 
 /-- τ(n) > 0 for n ≥ 1: every positive number has at least one divisor. -/
 theorem tau_pos {n : ℕ} (hn : 0 < n) : 0 < tau n :=
@@ -161,14 +161,14 @@ theorem f_lower_bound {n : ℕ} (hn : 1 ≤ n) : 2 * n - 1 ≤ f n := by
   | zero => omega
   | succ m ih =>
     cases m with
-    | zero => have := f_one; omega
+    | zero => have h : f (0 + 1) = 1 := f_one; omega
     | succ k =>
       have hf := f_succ (k + 1)
       have ih' : 2 * (k + 1) - 1 ≤ f (k + 1) := ih (by omega)
-      have hpow : 4 ≤ 2 ^ (k + 2) := by
+      have hpow : 4 ≤ 2 ^ (k + 1 + 1) := by
         calc (4 : ℕ) = 2 ^ 2 := by norm_num
-          _ ≤ 2 ^ (k + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
-      have htau : 2 ≤ tau (2 ^ (k + 2) - 1) := tau_ge_two (by omega)
+          _ ≤ 2 ^ (k + 1 + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
+      have htau : 2 ≤ tau (2 ^ (k + 1 + 1) - 1) := tau_ge_two (by omega)
       omega
 
 /-- f(2n) splits into f(n) plus the contribution from k ∈ [n+1, 2n]. -/
@@ -214,7 +214,7 @@ theorem mersenne_dvd {a b : ℕ} (h : a ∣ b) : (2 ^ a - 1) ∣ (2 ^ b - 1) := 
   induction m with
   | zero => simp
   | succ m ih =>
-    rw [mul_succ, pow_add]
+    rw [Nat.mul_succ, pow_add]
     have h2a : 1 ≤ 2 ^ a := Nat.one_le_pow _ 2 (by norm_num)
     have h2am : 1 ≤ 2 ^ (a * m) := Nat.one_le_pow _ 2 (by norm_num)
     have h_prod : 1 ≤ 2 ^ (a * m) * 2 ^ a := by rw [← pow_add]; exact Nat.one_le_pow _ 2 (by norm_num)
@@ -243,7 +243,8 @@ theorem tau_mersenne_ge_tau {k : ℕ} (hk : 1 ≤ k) : tau k ≤ tau (2 ^ k - 1)
   apply Finset.card_le_card_of_injOn (fun d => 2 ^ d - 1)
   · -- The map sends k.divisors into (2^k - 1).divisors
     intro d hd
-    rw [Nat.mem_divisors] at hd ⊢
+    rw [Finset.mem_coe, Nat.mem_divisors] at hd
+    rw [Finset.mem_coe, Nat.mem_divisors]
     refine ⟨mersenne_dvd hd.1, ?_⟩
     have : 2 ≤ 2 ^ k := by
       calc 2 = 2 ^ 1 := by norm_num
