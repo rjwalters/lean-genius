@@ -34,7 +34,7 @@ open Ordinal Cardinal SimpleGraph
 /- ## Part I: Basic Definitions -/
 
 /-- A graph on an ordinal α has vertex set α. -/
-def OrdinalGraph (α : Ordinal) := SimpleGraph α.toType
+def OrdinalGraph (α : Ordinal) := SimpleGraph α.ToType
 
 /-- An infinite path in a graph. -/
 def HasInfinitePath (G : SimpleGraph V) : Prop :=
@@ -45,21 +45,21 @@ def IsIndependent (G : SimpleGraph V) (S : Set V) : Prop :=
   ∀ u v, u ∈ S → v ∈ S → u ≠ v → ¬G.Adj u v
 
 /-- A set of vertices has order type α (when V is an ordinal). -/
-def HasOrderType (α : Ordinal) (S : Set α.toType) (β : Ordinal) : Prop :=
-  Ordinal.type (Subrel (· < ·) S) = β
+def HasOrderType (α : Ordinal) (S : Set α.ToType) (β : Ordinal) : Prop :=
+  Ordinal.type (Subrel ((· < ·) : α.ToType → α.ToType → Prop) (· ∈ S)) = β
 
 /- ## Part II: The Property P(α) -/
 
 /-- The property P(α): Every graph on α has infinite path or α-type independent set. -/
 def PropertyP (α : Ordinal) : Prop :=
   ∀ G : OrdinalGraph α,
-    HasInfinitePath G ∨ ∃ S : Set α.toType, IsIndependent G S ∧ HasOrderType α S α
+    HasInfinitePath G ∨ ∃ S : Set α.ToType, IsIndependent G S ∧ HasOrderType α S α
 
 /-- Equivalent formulation using dichotomy. -/
 theorem propertyP_iff (α : Ordinal) :
     PropertyP α ↔
     ∀ G : OrdinalGraph α, ¬HasInfinitePath G →
-      ∃ S : Set α.toType, IsIndependent G S ∧ HasOrderType α S α := by
+      ∃ S : Set α.ToType, IsIndependent G S ∧ HasOrderType α S α := by
   constructor
   · intro h G hnotpath
     exact (h G).resolve_left hnotpath
@@ -76,8 +76,8 @@ theorem propertyP_finite (n : ℕ) : PropertyP n := by
 
 /-- For finite graphs, independent set or edge exists. -/
 theorem finite_dichotomy (n : ℕ) (G : OrdinalGraph n) :
-    (∃ S : Set (Fin n), IsIndependent G S ∧ S.nontrivial) ∨
-    (∃ u v : Fin n, G.Adj u v) := by
+    (∃ S : Set ((n : Ordinal)).ToType, IsIndependent G S ∧ S.Nontrivial) ∨
+    (∃ u v : ((n : Ordinal)).ToType, G.Adj u v) := by
   sorry
 
 /- ## Part IV: The First Infinite Ordinal -/
@@ -88,13 +88,13 @@ theorem propertyP_omega : PropertyP ω := by
 
 /-- Ramsey's theorem for graphs on ω. -/
 theorem ramsey_omega (G : OrdinalGraph ω) :
-    HasInfinitePath G ∨ ∃ S : Set ω.toType, IsIndependent G S ∧ S.Infinite := by
+    HasInfinitePath G ∨ ∃ S : Set (Ordinal.ToType ω), IsIndependent G S ∧ S.Infinite := by
   sorry
 
 /- ## Part V: Erdős-Hajnal-Milner Theorem -/
 
 /-- The critical ordinal ω₁^{ω+2}. -/
-noncomputable def criticalOrdinal : Ordinal := ω₁ ^ (ω + 2)
+noncomputable def criticalOrdinal : Ordinal.{0} := ω₁ ^ (ω + 2)
 
 /-- Erdős-Hajnal-Milner (1970): P(α) holds for all α < ω₁^{ω+2}. -/
 theorem erdos_hajnal_milner (α : Ordinal) (hα : α < criticalOrdinal) :
@@ -117,7 +117,7 @@ axiom critical_case_open : CriticalCaseConjecture
 theorem critical_counterexample (h : ¬PropertyP criticalOrdinal) :
     ∃ G : OrdinalGraph criticalOrdinal,
       ¬HasInfinitePath G ∧
-      ∀ S : Set criticalOrdinal.toType, IsIndependent G S → HasOrderType criticalOrdinal S criticalOrdinal → False := by
+      ∀ S : Set criticalOrdinal.ToType, IsIndependent G S → HasOrderType criticalOrdinal S criticalOrdinal → False := by
   simp only [PropertyP, not_forall, not_or] at h
   obtain ⟨G, hnopath, hnoset⟩ := h
   exact ⟨G, hnopath, fun S hind hord => hnoset ⟨S, hind, hord⟩⟩
@@ -143,20 +143,27 @@ theorem MA_extends :
 /- ## Part VIII: Ordinal Arithmetic -/
 
 /-- ω₁ is the first uncountable ordinal. -/
-noncomputable def omega1 : Ordinal := Ordinal.omega1
+noncomputable def omega1 : Ordinal := ω₁
 
 /-- ω₁^ω is already quite large. -/
 noncomputable def omega1_pow_omega : Ordinal := ω₁ ^ ω
 
 /-- The hierarchy of ordinals approaching the critical point. -/
 theorem ordinal_hierarchy :
-    ω < ω₁ ∧ ω₁ < ω₁ ^ ω ∧ ω₁ ^ ω < ω₁ ^ (ω + 1) ∧ ω₁ ^ (ω + 1) < criticalOrdinal := by
-  have h1 : (1 : Ordinal) < ω₁ := Ordinal.one_lt_omega.trans Ordinal.omega0_lt_omega1
-  refine ⟨Ordinal.omega0_lt_omega1, ?_, Ordinal.opow_lt_opow_right h1 (Ordinal.lt_succ ω), ?_⟩
+    ω < (ω₁ : Ordinal.{0}) ∧ (ω₁ : Ordinal.{0}) < ω₁ ^ ω ∧
+    (ω₁ : Ordinal.{0}) ^ ω < ω₁ ^ (ω + 1) ∧ (ω₁ : Ordinal.{0}) ^ (ω + 1) < criticalOrdinal := by
+  have h1 : (1 : Ordinal.{0}) < ω₁ := Ordinal.one_lt_omega0.trans Ordinal.omega0_lt_omega_one
+  have hsucc : (ω : Ordinal.{0}) < ω + 1 := by
+    rw [← Order.succ_eq_add_one]
+    exact Order.lt_succ ω
+  refine ⟨Ordinal.omega0_lt_omega_one, ?_,
+    (Ordinal.opow_lt_opow_iff_right h1).mpr hsucc, ?_⟩
   · conv_lhs => rw [← Ordinal.opow_one ω₁]
-    exact Ordinal.opow_lt_opow_right h1 Ordinal.one_lt_omega
+    exact (Ordinal.opow_lt_opow_iff_right h1).mpr Ordinal.one_lt_omega0
   · unfold criticalOrdinal
-    exact Ordinal.opow_lt_opow_right h1 (Ordinal.lt_succ (ω + 1))
+    have h2 : (ω : Ordinal.{0}) + 1 < ω + 2 :=
+      (add_lt_add_iff_left ω).mpr (by norm_num)
+    exact (Ordinal.opow_lt_opow_iff_right h1).mpr h2
 
 /-- All countable ordinals satisfy P. -/
 theorem countable_ordinals (α : Ordinal) (hα : α.card ≤ ℵ₀) : PropertyP α := by
@@ -190,46 +197,48 @@ theorem failure_condition (α : Ordinal) (G : OrdinalGraph α)
 /-- Graphs without infinite paths have special structure. -/
 def HasBoundedPaths (G : SimpleGraph V) (n : ℕ) : Prop :=
   ∀ f : Fin (n + 1) → V, Function.Injective f →
-    ∃ i : Fin n, ¬G.Adj (f i) (f (i + 1))
+    ∃ i : Fin n, ¬G.Adj (f i.castSucc) (f i.succ)
 
 /-- No infinite path implies bounded path lengths (for finite graphs). -/
 theorem bounded_implies_no_infinite (G : SimpleGraph V) [Finite V]
     (h : ∃ n, HasBoundedPaths G n) : ¬HasInfinitePath G := by
   intro ⟨f, hf_inj, _⟩
-  exact absurd (Finite.of_injective f hf_inj) Nat.infinite.not_finite
+  have : Finite ℕ := Finite.of_injective f hf_inj
+  exact not_finite ℕ
 
 /-- Transfinite induction on ordinals. -/
 theorem transfinite_induction (P : Ordinal → Prop)
     (h0 : P 0)
     (hS : ∀ α, P α → P (α + 1))
-    (hL : ∀ α, α.IsLimit → (∀ β < α, P β) → P α) :
+    (hL : ∀ α, Order.IsSuccLimit α → (∀ β < α, P β) → P α) :
     ∀ α, P α := by
   intro α
-  induction α using Ordinal.induction with
+  induction α using WellFoundedLT.induction with
   | _ α ih =>
-    rcases Ordinal.zero_or_succ_or_limit α with rfl | ⟨β, rfl⟩ | hlim
+    rcases Ordinal.zero_or_succ_or_isSuccLimit α with rfl | ⟨β, rfl⟩ | hlim
     · exact h0
-    · exact hS β (ih β (Order.lt_succ β))
+    · rw [Order.succ_eq_add_one]
+      exact hS β (ih β (Order.lt_succ β))
     · exact hL α hlim ih
 
 /- ## Part XII: The General Conjecture -/
 
 /-- The main conjecture: P(α) holds for all limit ordinals α. Prize: $500 -/
 def GeneralConjecture : Prop :=
-  ∀ α : Ordinal, α.IsLimit → PropertyP α
+  ∀ α : Ordinal.{0}, Order.IsSuccLimit α → PropertyP α
 
 /-- The general conjecture is OPEN. -/
 axiom general_conjecture_open : GeneralConjecture
 
 /-- Partial result: Limit ordinals below the critical point. -/
-theorem partial_result (α : Ordinal) (hL : α.IsLimit) (hα : α < criticalOrdinal) :
+theorem partial_result (α : Ordinal) (hL : Order.IsSuccLimit α) (hα : α < criticalOrdinal) :
     PropertyP α := by
   exact erdos_hajnal_milner α hα
 
 /-- The gap between known and conjectured. -/
 theorem knowledge_gap :
     (∀ α < criticalOrdinal, PropertyP α) ∧
-    (GeneralConjecture → ∀ α, α.IsLimit → PropertyP α) := by
+    (GeneralConjecture → ∀ α : Ordinal.{0}, Order.IsSuccLimit α → PropertyP α) := by
   constructor
   · exact erdos_hajnal_milner
   · intro hGen α hL

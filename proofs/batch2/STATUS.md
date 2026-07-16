@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 131 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos601Problem (heavy Ordinal drift: toType->ToType; Subrel needs
+type-ascribed rel for IsWellOrder; Ordinal.IsLimit->Order.IsSuccLimit+zero_or_succ_or_isSuccLimit;
+Ordinal.induction->WellFoundedLT.induction; one_lt_omega0; omega1 def->ω₁; universe .{0} pins). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 130 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos611Problem (open scoped Classical for Finset.filter DecidablePred;
