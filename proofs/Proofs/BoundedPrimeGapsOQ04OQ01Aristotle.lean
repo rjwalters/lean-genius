@@ -17,19 +17,15 @@ The explicit exponential sum equals the abstract Gauss sum with stdAddChar.
 lemma sum_range_eq_gaussSum (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) :
     ∑ t ∈ Finset.range q, χ t * exp (2 * ↑π * I * ↑(t : ℤ) / ↑q) =
     gaussSum χ (ZMod.stdAddChar (N := q)) := by
-  unfold gaussSum;
-  have h_stdAddChar : ∀ a : ZMod q, ZMod.stdAddChar a = Complex.exp (2 * Real.pi * Complex.I * (a.val : ℝ) / q) := by
-    unfold ZMod.stdAddChar;
-    simp +decide [ ZMod.toCircle, Circle.coeHom ];
-    simp +decide [ AddCircle.toCircle_addChar, ZMod.toAddCircle ];
-    simp +decide [ ZMod.lift ];
-    simp +decide [ AddMonoidHom.liftOfRightInverse ];
-    simp +decide [ AddMonoidHom.liftOfRightInverseAux ];
-    simp +decide [ AddCircle.toCircle, Complex.exp_ne_zero ];
-    exact fun a => by ring;
-  rcases q with ( _ | _ | q ) <;> simp_all +decide [ Finset.sum_range, ZMod ];
-  · exact False.elim <| NeZero.ne 0 rfl;
-  · congr!
+  unfold gaussSum
+  refine Finset.sum_nbij' (fun t : ℕ => (t : ZMod q)) (fun a : ZMod q => a.val)
+    (fun _ _ => Finset.mem_univ _)
+    (fun a _ => Finset.mem_range.mpr (ZMod.val_lt a))
+    (fun t ht => ZMod.val_natCast_of_lt (Finset.mem_range.mp ht))
+    (fun a _ => ZMod.natCast_rightInverse a)
+    (fun t _ => by
+      congr 1
+      rw [show ((t : ℕ) : ZMod q) = ((t : ℤ) : ZMod q) by push_cast; ring, ZMod.stdAddChar_coe])
 
 /-
 For a MulChar on ZMod q valued in ℂ, star of a character value equals the inverse character
@@ -37,20 +33,8 @@ value.
 -/
 lemma star_mulChar_apply (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (a : ZMod q) :
     starRingEnd ℂ (χ a) = χ⁻¹ a := by
-  nontriviality;
-  have h_conj : ∀ (z : ℂ), z ^ (Nat.totient q) = 1 → starRingEnd ℂ z = Ring.inverse z := by
-    intro z hz
-    have h_conj : starRingEnd ℂ z = 1 / z := by
-      simp +decide [ Complex.normSq_eq_norm_sq, Complex.ext_iff ];
-      have := congr_arg Norm.norm hz ; norm_num at this ; rw [ pow_eq_one_iff_of_nonneg ] at this <;> aesop;
-    aesop;
-  by_cases ha : IsUnit a;
-  · obtain ⟨ u, rfl ⟩ := ha;
-    convert h_conj _ _;
-    rw [ ← map_pow, show ( u : ZMod q ) ^ q.totient = 1 from ?_, map_one ];
-    norm_cast;
-    norm_num;
-  · rw [ χ.map_nonunit, MulChar.map_nonunit ] <;> aesop
+  rw [starRingEnd_apply]
+  exact MulChar.star_apply' χ a
 
 /-
 For stdAddChar on ZMod q, the star of a value equals the inverse character value.
@@ -98,9 +82,9 @@ lemma gaussSum_mul_gaussSum_inv (q : ℕ) [NeZero q] (χ : DirichletCharacter �
     have := ZMod.dft_dft (χ : ZMod q → ℂ)
     -- By Fourier inversion, we have $\tau(\chi) \tau(\chi^{-1}) = q \chi(-1)$ for primitive $\chi$.
     have h_fourier_inv : (𝓕 (fun k => χ⁻¹ (-k) * gaussSum χ (ZMod.stdAddChar (N := q)))) 1 = q * χ (-1) := by
-      convert congr_fun this 1 using 1;
-      rw [ show 𝓕 ( χ : ZMod q → ℂ ) = fun k => χ⁻¹ ( -k ) * gaussSum χ ( ZMod.stdAddChar ( N := q ) ) from funext fun k => ?_ ];
-      convert hprim.fourierTransform_eq_inv_mul_gaussSum k using 1;
+      have heq : (𝓕 (χ : ZMod q → ℂ)) = fun k => χ⁻¹ (-k) * gaussSum χ (ZMod.stdAddChar (N := q)) :=
+        funext fun k => hprim.fourierTransform_eq_inv_mul_gaussSum k
+      rw [← heq, congr_fun this 1, smul_eq_mul]
     convert h_fourier_inv using 1 ; simp +decide [ ZMod.dft, mul_comm ] ; ring!;
     nontriviality;
     erw [ Finset.mul_sum _ _ _ ] ; simp +decide [ mul_assoc, mul_comm, mul_left_comm, ZMod.dft ] ; ring!;
@@ -113,7 +97,7 @@ The norm of a character value at a unit is 1.
 -/
 lemma norm_mulChar_unit (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (u : (ZMod q)ˣ) :
     ‖χ (u : ZMod q)‖ = 1 := by
-  exact?
+  exact DirichletCharacter.unit_norm_eq_one χ u
 
 /-
 The norm of gaussSum χ⁻¹ stdAddChar equals the norm of gaussSum χ stdAddChar.
@@ -125,7 +109,7 @@ lemma norm_gaussSum_inv_eq (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) 
   rw [ ← this, show ‖χ⁻¹ ( -1 )‖ = 1 from ?_ ];
   · rw [ ← star_gaussSum_eq, Complex.norm_conj ];
     ring;
-  · convert norm_mulChar_unit q χ⁻¹ ( -1 )
+  · simpa using norm_mulChar_unit q χ⁻¹ (-1)
 
 /-
 The norm squared of the Gauss sum of a primitive nontrivial character equals q.
