@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 116 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos339Problem (open scoped Classical for filter decidability;
+case_r_equals_2 rfl->ext+Fin.sum_univ_two; by skip->rw[←hsum,Fin.sum_univ_two]; multi-binder ∀ ∈
+expanded; Multiset.ofFn->List.ofFn coercion). Repair: none. Unblocks child Erdos339Aristotle.
+
 # DOCTOR SINGLE-PROOF BATCH 115 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos308Problem (type-ascribe ℕ↪ℕ succ embedding under ℚ sum vs
