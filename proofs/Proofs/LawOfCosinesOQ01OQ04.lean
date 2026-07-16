@@ -80,16 +80,18 @@ lemma tendsto_one_sub_cos_div_sq (x : ℝ) :
       intro t ht
       rw [identity t]
       have htx : t * x / 2 ≠ 0 := div_ne_zero (mul_ne_zero ht hx) two_ne_zero
-      field_simp [htx]; ring
+      field_simp [htx]
     -- Step 3: sin(tx/2)/(tx/2) → 1  via t*x/2 → 0 with t*x/2 ≠ 0
     have hinner : Tendsto (fun t : ℝ => t * x / 2) (nhdsWithin 0 {0}ᶜ) (nhdsWithin 0 {0}ᶜ) := by
-      apply tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within
+      rw [tendsto_nhdsWithin_iff]
+      refine ⟨?_, ?_⟩
       · have h : ContinuousAt (fun t : ℝ => t * x / 2) 0 :=
           (continuous_id.mul continuous_const |>.div_const 2).continuousAt
         simp only [ContinuousAt, zero_mul, zero_div] at h
-        exact h
-      · exact Eventually.of_forall fun t ht =>
-          mem_compl_singleton_iff.mpr (div_ne_zero (mul_ne_zero (mem_compl_singleton_iff.mp ht) hx) two_ne_zero)
+        exact h.mono_left nhdsWithin_le_nhds
+      · filter_upwards [self_mem_nhdsWithin] with t ht
+        exact mem_compl_singleton_iff.mpr
+          (div_ne_zero (mul_ne_zero (mem_compl_singleton_iff.mp ht) hx) two_ne_zero)
     have sinc_lim : Tendsto (fun t : ℝ => sin (t * x / 2) / (t * x / 2))
                             (nhdsWithin 0 {0}ᶜ) (nhds 1) :=
       tendsto_sin_div_zero.comp hinner
