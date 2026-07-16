@@ -23,7 +23,7 @@ open Nat
 /- ## Primorial and Coprime Residues -/
 
 /-- The k-th prime number (0-indexed: nthPrime 0 = 2, nthPrime 1 = 3, ...) -/
-noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
+noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Nat.Prime
 
 theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
 
@@ -36,8 +36,7 @@ theorem nthPrime_one : nthPrime 1 = 3 := by
   simp [nthPrime, Nat.nth_prime_one_eq_three]
 
 theorem nthPrime_two : nthPrime 2 = 5 := by
-  simp [nthPrime]
-  native_decide
+  simp [nthPrime, Nat.nth_prime_two_eq_five]
 
 /-- The k-th primorial: product of the first k primes (0-indexed).
     primorial 0 = 1, primorial 1 = 2, primorial 2 = 6, primorial 3 = 30 -/
@@ -105,8 +104,8 @@ private theorem zipWith_sub_dvd_two :
       simp only [List.tail_cons, List.zipWith_cons_cons] at hd
       rcases List.mem_cons.mp hd with rfl | hmem
       · -- d = b - a, both odd ⇒ difference is even
-        have ha := hodd a (List.mem_cons_self _ _)
-        have hb := hodd b (List.mem_cons_of_mem _ (List.mem_cons_self _ _))
+        have ha := hodd a List.mem_cons_self
+        have hb := hodd b (List.mem_cons_of_mem _ List.mem_cons_self)
         have ha' : a % 2 ≠ 0 := fun h => ha (Nat.dvd_of_mod_eq_zero h)
         have hb' : b % 2 ≠ 0 := fun h => hb (Nat.dvd_of_mod_eq_zero h)
         exact Nat.dvd_of_mod_eq_zero (by omega)
@@ -139,7 +138,7 @@ theorem maxGap_mem (n : ℕ) (hne : (gapSet n).Nonempty) : maxGap n ∈ gapSet n
   · exact Finset.le_sup (f := id) hmem
 
 theorem maxGap_max (n : ℕ) (d : ℕ) (hd : d ∈ gapSet n) : d ≤ maxGap n := by
-  simp only [maxGap]; exact Finset.le_sup hd
+  simp only [maxGap]; exact Finset.le_sup (f := id) hd
 
 /-- Number of distinct gap values. -/
 noncomputable def distinctGapCount (n : ℕ) : ℕ := (gapSet n).card
@@ -153,21 +152,23 @@ theorem distinctGapCount_def (n : ℕ) :
 axiom maxGap_bound (k : ℕ) (hk : 2 ≤ k) :
   maxGap (primorial k) ≤ 2 * nthPrime (k - 1)
 
+private theorem firstMissingGap_exists (n : ℕ) : ∃ m : ℕ, 2 * m ∉ gapSet n :=
+  ⟨(gapSet n).sup id + 1, fun h => by
+    have hle : 2 * ((gapSet n).sup id + 1) ≤ (gapSet n).sup id :=
+      Finset.le_sup (f := id) h
+    omega⟩
+
 /-- The first missing gap: smallest positive even integer not in gapSet(n). -/
 noncomputable def firstMissingGap (n : ℕ) : ℕ :=
-  2 * Nat.find (⟨(gapSet n).sup id + 1, fun h => by
-    have := Finset.le_sup (f := id) h
-    simp at this
-    omega⟩ : ∃ m, 2 * m ∉ gapSet n)
+  2 * Nat.find (firstMissingGap_exists n)
 
 theorem firstMissingGap_even (_k : ℕ) (_hk : 2 ≤ _k) :
     2 ∣ firstMissingGap (primorial _k) :=
   dvd_mul_right 2 _
 
 theorem firstMissingGap_missing (n : ℕ) :
-    firstMissingGap n ∉ gapSet n := by
-  simp only [firstMissingGap]
-  exact Nat.find_spec _
+    firstMissingGap n ∉ gapSet n :=
+  Nat.find_spec (firstMissingGap_exists n)
 
 /-- Lacampagne–Selfridge computation: for nₖ = 30030 (k=6),
     not all even integers up to the maximal gap appear -/
@@ -220,7 +221,7 @@ theorem coprimeResidues_one_mem (n : ℕ) (hn : 1 < n) : 1 ∈ coprimeResidues n
 theorem coprime_n_sub_one (n : ℕ) (hn : 1 < n) : Nat.Coprime (n - 1) n := by
   have h : n = n - 1 + 1 := by omega
   conv_rhs => rw [h]
-  exact Nat.coprime_succ_self (n - 1)
+  exact Nat.coprime_self_add_right.mpr (Nat.coprime_one_right (n - 1))
 
 /-- n - 1 is a coprime residue of n for n > 1. -/
 theorem coprimeResidues_nminus1_mem (n : ℕ) (hn : 1 < n) : n - 1 ∈ coprimeResidues n := by

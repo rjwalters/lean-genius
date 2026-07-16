@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 243 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos854Problem (Nat Prime ambiguity; REMOVED native_decide ->
+Nat.nth_prime_two_eq_five; List.mem_cons_self fewer args; Nat.coprime_succ_self gone; Nat.find_spec named
+existence). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 242 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos687Problem (local primorial collides root -> reuse; open Real rpow;
