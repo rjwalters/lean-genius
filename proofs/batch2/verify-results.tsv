@@ -542,7 +542,7 @@ DescartesRuleOfSignsOQ01OQ02	GREEN
 DescartesRuleOfSignsOQ02	GREEN	
 DescartesRuleOfSignsOQ02OQ01	RESIDUAL	rewrite-drift
 DescartesRuleOfSignsOQ02Parity	GREEN	proof-drift
-DescartesRuleOfSignsOQ04	RESIDUAL	unknown-const:Multiset.countP_singleton
+DescartesRuleOfSignsOQ04	GREEN	
 DiamondImpliesCH	GREEN	
 DiniTheorem	GREEN	
 DiniTheoremOQ01OQ01	GREEN	
@@ -1065,7 +1065,7 @@ Erdos266Problem	GREEN
 Erdos267Problem	GREEN	
 Erdos268Aristotle	RESIDUAL	unknown-const:summable_of_finite
 Erdos268Problem	GREEN	
-Erdos268ProblemAristotle	RESIDUAL	unknown-const:one_nonneg
+Erdos268ProblemAristotle	GREEN	
 Erdos26Problem	GREEN	
 Erdos270Problem	GREEN	
 Erdos271Problem	GREEN	

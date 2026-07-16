@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 79 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): DescartesRuleOfSignsOQ04 (31min/271k: Multiset.countP_singleton removed;
+signVariations_eq_eraseLead_add_ite ite flipped to sign lc = -sign eraseLead.lc; set-bound vars break
+induction/cases -> standalone helper), Erdos268ProblemAristotle (#38611: all_coordinates_positive A.Nonempty
+UNSOUND (A={0} gives 1/0=0) -> A.Infinite, mirroring parent's already-fixed version; Summable.tsum_lt_tsum
+new curried+SummationFilter sig). Repairs #38611: Erdos268ProblemAristotle (companion of parent fix).
+
 # DOCTOR SINGLE-PROOF BATCH 75 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): AreaOfCircleOQ05OQ01 (Measure.prod now irreducible_def -> rw Measure.volume_eq_prod
