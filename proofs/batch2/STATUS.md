@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 342 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos193Problem (subst on non-fvar w0=w1 -> direct collinearity witnesses; anonymous
+Fin.mk ⟨0,by omega⟩ in show/simp -> (0:Fin n) OfNat + fin_cases; linarith no longer distributes
+(a+b)*c vs separate a=/b= -> rw sum-eq into product first / linear_combination; rfl on (x+y)-x=y opaque
+-> omega+have:=rfl). Repair: none.
+SEAM: anonymous Fin.mk literal in show/simp args -> "Expected type must not contain free variables"
+(use (0:Fin n) OfNat); linarith no longer auto-distributes (a+b)*c against separate a=/b= facts on
+opaque atoms -> rw sum-eq into product first / linear_combination/omega.
+
 # DOCTOR SINGLE-PROOF BATCH 341 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos738Problem (IsTree reshape: flattened preconnected/isAcyclic fields;
