@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 239 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos73Problem (Std.Irrefl.irrefl replaces G.loopless callable-field;
+IsIndependentSet G I direct vs induce; ↑xᶜ vs ↑(xᶜ) precedence for rw; card ≤ not = misuse). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 238 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos794Problem (Type*->Type universe mvar mismatch across defs; erdos_794_
