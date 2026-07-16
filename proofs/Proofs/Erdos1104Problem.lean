@@ -18,7 +18,7 @@ Reference: https://erdosproblems.com/1104
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Combinatorics.SimpleGraph.Coloring
+import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
@@ -42,46 +42,45 @@ noncomputable def triangleFreeMaxChi : ℕ → ℕ := by
 /-- Every graph on Fin n is n-colorable (using the identity coloring). -/
 theorem colorable_of_fin (n : ℕ) (G : SimpleGraph (Fin n)) :
     G.Colorable n := by
-  exact G.colorable_of_fintype
+  simpa using G.colorable_of_fintype
 
 /-- f(n) is well-defined: the chromatic number of any triangle-free
 graph on n vertices is at most n. -/
 theorem triangleFree_chi_le {n : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] (_ : G.CliqueFree 3) :
-    G.chromaticNumber ≤ n :=
-  G.chromaticNumber_le_card
+    G.chromaticNumber ≤ n := by
+  simpa using G.chromaticNumber_le_card
 
 /-- The empty graph (no edges) on n vertices is triangle-free. -/
 theorem emptyGraph_triangleFree (n : ℕ) :
-    IsTriangleFree (⊥ : SimpleGraph (Fin n)) := by
-  intro s hs
-  simp [SimpleGraph.IsClique, Set.Pairwise] at hs
-  obtain ⟨a, ha, b, hb, hab, hAdj⟩ := hs
-  exact hAdj
+    IsTriangleFree (⊥ : SimpleGraph (Fin n)) :=
+  SimpleGraph.cliqueFree_bot (by omega)
 
 /-- The empty graph has chromatic number 0 for n = 0, and 1 for n ≥ 1. -/
-theorem emptyGraph_chromaticNumber_pos {n : ℕ} (hn : 0 < n)
+theorem emptyGraph_chromaticNumber_pos {n : ℕ} (_hn : 0 < n)
     [DecidableRel (⊥ : SimpleGraph (Fin n)).Adj] :
-    (⊥ : SimpleGraph (Fin n)).Colorable 1 := by
-  exact SimpleGraph.Colorable.mono (by omega) (⊥ : SimpleGraph (Fin n)).colorable_of_fintype
+    (⊥ : SimpleGraph (Fin n)).Colorable 1 :=
+  ⟨SimpleGraph.Coloring.mk (fun _ => 0) (fun h => absurd h (by simp))⟩
 
 /-- f(1) = 1: The only graph on 1 vertex is the empty graph, which is
 1-chromatic. -/
 theorem triangleFreeMaxChi_one : triangleFreeMaxChi 1 ≤ 1 := by
   unfold triangleFreeMaxChi
   apply csSup_le'
-  intro k ⟨G, hDec, hTF, hChi⟩
-  rw [← hChi]
-  exact @SimpleGraph.chromaticNumber_le_card (Fin 1) _ G hDec
+  rintro k ⟨G, hDec, hTF, hChi⟩
+  have h := G.chromaticNumber_le_card
+  rw [hChi] at h
+  simpa using h
 
 /-- f(0) = 0: No vertices, no colors needed. -/
 theorem triangleFreeMaxChi_zero : triangleFreeMaxChi 0 = 0 := by
   unfold triangleFreeMaxChi
   apply le_antisymm
   · apply csSup_le'
-    intro k ⟨G, hDec, _, hChi⟩
-    rw [← hChi]
-    exact @SimpleGraph.chromaticNumber_le_card (Fin 0) _ G hDec
+    rintro k ⟨G, hDec, -, hChi⟩
+    have h := G.chromaticNumber_le_card
+    rw [hChi] at h
+    simpa using h
   · exact Nat.zero_le _
 
 /-- f(n) ≤ n for all n: the chromatic number cannot exceed the number
@@ -89,23 +88,27 @@ of vertices. -/
 theorem triangleFreeMaxChi_le (n : ℕ) : triangleFreeMaxChi n ≤ n := by
   unfold triangleFreeMaxChi
   apply csSup_le'
-  intro k ⟨G, hDec, _, hChi⟩
-  rw [← hChi]
-  exact @SimpleGraph.chromaticNumber_le_card (Fin n) _ G hDec
+  rintro k ⟨G, hDec, -, hChi⟩
+  have h := G.chromaticNumber_le_card
+  rw [hChi] at h
+  simpa using h
 
 /-- f(n) ≥ 1 for n ≥ 1: the empty graph is 1-chromatic. -/
 theorem one_le_triangleFreeMaxChi {n : ℕ} (hn : 0 < n) :
     1 ≤ triangleFreeMaxChi n := by
   unfold triangleFreeMaxChi
-  apply le_csSup_of_le
+  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+  apply le_csSup_of_le (b := 1)
   · -- bdd_above
-    exact ⟨n, fun k ⟨G, hDec, _, hChi⟩ =>
-      hChi ▸ @SimpleGraph.chromaticNumber_le_card (Fin n) _ G hDec⟩
-  · -- witness: the empty graph
-    exact ⟨⊥, Classical.decRel _, emptyGraph_triangleFree n, rfl⟩
-  · -- 1 ≤ chromaticNumber of empty graph on n ≥ 1 vertices
-    haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
-    exact (⊥ : SimpleGraph (Fin n)).chromaticNumber_pos
+    refine ⟨n, ?_⟩
+    rintro k ⟨G, hDec, -, hChi⟩
+    have h := G.chromaticNumber_le_card
+    rw [hChi] at h
+    simpa using h
+  · -- witness: the empty graph, which is 1-chromatic on n ≥ 1 vertices
+    exact ⟨⊥, Classical.decRel _, emptyGraph_triangleFree n, by
+      simp [SimpleGraph.chromaticNumber_bot]⟩
+  · exact le_refl 1
 
 /- ## Ramsey Duality -/
 
@@ -176,13 +179,17 @@ theorem mycielski_lower_bound :
       k ≤ triangleFreeMaxChi (3 * 2 ^ (k - 2) - 1) := by
   intro k hk
   unfold triangleFreeMaxChi
-  apply le_csSup_of_le
-  · exact ⟨3 * 2 ^ (k - 2) - 1, fun j ⟨G, hDec, _, hChi⟩ =>
-      hChi ▸ @SimpleGraph.chromaticNumber_le_card _ _ G hDec⟩
+  apply le_csSup_of_le (b := k)
+  · refine ⟨3 * 2 ^ (k - 2) - 1, ?_⟩
+    rintro j ⟨G, hDec, -, hChi⟩
+    have h := G.chromaticNumber_le_card
+    rw [hChi] at h
+    simp only [Fintype.card_fin] at h
+    exact_mod_cast h
   · obtain ⟨n, G, hDec, hTF, hChi, hn⟩ := mycielski_construction k (by omega)
-    rw [hn]
+    subst hn
     exact ⟨G, hDec, hTF, hChi⟩
-  · le_refl k
+  · exact le_refl k
 
 /- ## Summary -/
 
