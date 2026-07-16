@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 349 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, 198k tok)**: SylowTheoremOQ04 (card_sylow_dvd_index->Sylow.card_dvd_index;
+Fact(Nat.Prime 5); DEEP BLOCKER native_decide on Fintype.card(Sylow p A5) via noncomputable
+SetLike.instFintype -> WORKAROUND: explicit Sylow subgroups (5-cyc/3-cyc/Klein-four via Subgroup.mk
+over literal Finset) + Sylow.ofCard + brute-force normalizer native_decide Finset over 60-elt group +
+counts via Sylow.card_eq_index_normalizer+Lagrange; sylow{2,3,5}_not_normal via simplicity/cardinality
+route not Fintype.card_unique rw (instance diamond)). Repair: none.
+SEAM+WORKAROUND: native_decide-blocked-by-noncomputable-SetLike.instFintype now has a general recipe
+(explicit subgroup + brute-force normalizer + Lagrange) — may un-block Erdos1162Problem.
+
 # DOCTOR SINGLE-PROOF BATCH 348 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: PartitionTheoremOQ01 (~20 sites: nonlinear-omega -> Nat.mul_div_cancel'/
