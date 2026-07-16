@@ -33,13 +33,13 @@ PART I: LAGRANGE'S THEOREM (FROM MATHLIB)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Lagrange's theorem: the order of a subgroup divides the order of the group. -/
-theorem lagrange (H : Subgroup G) [Fintype H] : card H ∣ card G :=
-  H.card_subgroup_dvd_card
+theorem lagrange (H : Subgroup G) [Fintype H] : card H ∣ card G := by
+  simpa [Nat.card_eq_fintype_card] using H.card_subgroup_dvd_card
 
 /-- The index formula: |G| = |H| · [G : H]. -/
 theorem lagrange_index (H : Subgroup G) [Fintype H] :
-    card G = card H * H.index :=
-  (Subgroup.card_mul_index H).symm
+    card G = card H * H.index := by
+  simpa [Nat.card_eq_fintype_card] using (Subgroup.card_mul_index H).symm
 
 /-- The order of every element divides |G|. -/
 theorem order_dvd_card (g : G) : orderOf g ∣ card G :=
@@ -60,13 +60,13 @@ theorem sylow_exists (p : ℕ) [hp : Fact p.Prime] : Nonempty (Sylow p G) :=
 
 /-- A Sylow p-subgroup has order p^k where p^k || |G| (maximal p-power). -/
 theorem sylow_card_eq (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
-    card P = p ^ (card G).factorization p :=
-  Sylow.card_eq_multiplicity P
+    card P = p ^ (card G).factorization p := by
+  simpa [Nat.card_eq_fintype_card] using Sylow.card_eq_multiplicity P
 
 /-- The order of a Sylow p-subgroup divides |G| (special case of Lagrange). -/
 theorem sylow_order_dvd (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
-    card P ∣ card G :=
-  P.toSubgroup.card_subgroup_dvd_card
+    card P ∣ card G := by
+  simpa [Nat.card_eq_fintype_card] using P.toSubgroup.card_subgroup_dvd_card
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -80,8 +80,13 @@ then there exists g ∈ G with Q = gPg⁻¹.
     Mathlib gives this as an action on Sylow subgroups. -/
 theorem sylow_conjugate (p : ℕ) [hp : Fact p.Prime] (P Q : Sylow p G) :
     ∃ g : G, P.toSubgroup.map (MulEquiv.toMonoidHom (MulAut.conj g)) = Q.toSubgroup := by
-  obtain ⟨g, hg⟩ := Sylow.conj_eq P Q
-  exact ⟨g, by rw [← hg]; ext; simp [Subgroup.mem_map, MulAut.conj_apply]; aesop⟩
+  obtain ⟨g, hg⟩ := MulAction.exists_smul_eq G P Q
+  refine ⟨g, ?_⟩
+  have h1 : (↑(g • P) : Subgroup G) = (Q : Subgroup G) := by rw [hg]
+  rw [Sylow.coe_subgroup_smul, Subgroup.pointwise_smul_def] at h1
+  rw [← h1]
+  ext x
+  simp [Subgroup.mem_map]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -94,8 +99,8 @@ The number n_p of Sylow p-subgroups satisfies:
 
 /-- The number of Sylow p-subgroups divides the index of any Sylow p-subgroup. -/
 theorem sylow_count_dvd_index (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
-    card (Sylow p G) ∣ P.toSubgroup.index :=
-  Sylow.card_sylow_dvd_index P
+    card (Sylow p G) ∣ P.toSubgroup.index := by
+  simpa [Nat.card_eq_fintype_card] using Sylow.card_dvd_index P
 
 /-- The number of Sylow p-subgroups divides `|G|`.
     Since `n_p` divides the index `[G : P] = |G| / p^k` (`sylow_count_dvd_index`)
@@ -104,13 +109,15 @@ theorem sylow_count_dvd_index (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
     form of `n_p | |G|/p^k` that needs no reference to the Sylow order. -/
 theorem sylow_count_dvd_card (p : ℕ) [hp : Fact p.Prime] (P : Sylow p G) :
     card (Sylow p G) ∣ card G := by
-  have h := (Sylow.card_sylow_dvd_index P).trans P.toSubgroup.index_dvd_card
-  rwa [Nat.card_eq_fintype_card] at h
+  have h := (Sylow.card_dvd_index P).trans P.toSubgroup.index_dvd_card
+  simpa [Nat.card_eq_fintype_card] using h
 
 /-- The number of Sylow p-subgroups is congruent to 1 mod p. -/
 theorem sylow_count_mod_p (p : ℕ) [hp : Fact p.Prime] :
     card (Sylow p G) % p = 1 := by
-  exact Sylow.card_sylow_modEq_one p G |>.out
+  have h : Nat.card (Sylow p G) % p = 1 % p := card_sylow_modEq_one p G
+  rw [Nat.card_eq_fintype_card, Nat.mod_eq_of_lt hp.out.one_lt] at h
+  exact h
 
 /-- The Sylow count `n_p` is **not** divisible by `p` — equivalently, `n_p` is coprime
     to `p`.  Immediate from `sylow_count_mod_p`: a multiple of `p` would have residue `0`,
@@ -178,8 +185,7 @@ theorem sylow_normal_iff_card_eq_one (p : ℕ) [hp : Fact p.Prime] (P : Sylow p 
     P.Normal ↔ card (Sylow p G) = 1 := by
   constructor
   · intro h
-    haveI := P.unique_of_normal h
-    exact Fintype.card_unique
+    exact Fintype.card_eq_one_iff_nonempty_unique.mpr ⟨P.unique_of_normal h⟩
   · intro h
     haveI : Subsingleton (Sylow p G) :=
       Fintype.card_le_one_iff_subsingleton.mp (le_of_eq h)
@@ -208,7 +214,9 @@ theorem partial_converse_lagrange (p : ℕ) [hp : Fact p.Prime] (k : ℕ)
     (hk : p ^ k ∣ card G) :
     ∃ H : Subgroup G, Fintype.card H = p ^ k := by
   -- Mathlib's IsPGroup.exists_le_sylow gives subgroups for all p-power divisors
-  exact Sylow.exists_subgroup_card_pow_prime p hk
+  obtain ⟨H, hH⟩ := Sylow.exists_subgroup_card_pow_prime (G := G) p
+    (n := k) (by rwa [Nat.card_eq_fintype_card])
+  exact ⟨H, by rwa [Nat.card_eq_fintype_card] at hH⟩
 
 /-- Cauchy's theorem as a corollary: if p | |G|, then G has an element of order p. -/
 theorem cauchy_theorem (p : ℕ) [hp : Fact p.Prime] (h : p ∣ card G) :
