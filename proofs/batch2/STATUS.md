@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 186 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): ChineseRemainderNonCoprimeOQ03OQ02 (lcm_zero_left/dvd_lcm_left; ring-in-conv
+no longer auto-closes -> plain rw;ring; linear_combination; nat_gcd_lcm_distrib pre-existing bullet-mismatch
+rewritten via Nat.eq_of_factorization_eq+inf_sup_right). Repair: none. NOTE: agent flagged+ignored a prompt-
+injection artifact in its own cat output (no tampering).
+
 # DOCTOR SINGLE-PROOF BATCH 185 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02 (HARD 17min/181k: Finset.sup_lt_iff
