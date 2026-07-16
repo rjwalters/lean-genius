@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 29 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos476OQ05Problem (SONNET 28min/293k Vosper's-thm induction ~40 sites:
+Finset \ now higher-prec than +; rw+←insert_erase self-corrupts -> conv scope; push_cast[Nat.sub_add_cancel];
+ring unreliable -> rw[Nat.cast_sub]), Erdos893Problem (omega treats f(a+b+c) opaque per syntactic arg form
+-> normalize exponent spelling), Erdos817Problem (Nat.le_sInf->le_csInf; Finset.sum_nbij now InjOn/SurjOn
+-> prefer sum_image). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 28 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos859Problem (Finset.filter_true_of_mem + Set.mem_univ simp defeat
