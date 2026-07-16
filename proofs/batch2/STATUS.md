@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 28 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos859Problem (Finset.filter_true_of_mem + Set.mem_univ simp defeat
+each other -> filter_true; single_le_sum needs explicit (f:=); log->Real.log ambiguity w/ Nat.log; unblocks
+Erdos859ProblemAristotle), Erdos874Problem (filled genuine proof gap: old linarith couldn't justify
+div->mul step; added k_le_self + case-split on √N=0; lt_div_iff->lt_div_iff₀). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 27 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos69Problem (Tonelli-swap h_fubini rebuilt explicit vs aesop-soup;
