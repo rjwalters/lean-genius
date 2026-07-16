@@ -25,6 +25,7 @@
 
 import Mathlib.Combinatorics.SimpleGraph.Extremal.Turan
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Proofs.Erdos1155OQ01
@@ -53,16 +54,16 @@ For r=2: C(n%2, 2) = 0 (since n%2 ∈ {0,1}), giving ⌊n²/4⌋.
 theorem turan_triangle_free_bound {α : Type*} [Fintype α] (G : SimpleGraph α)
     [DecidableRel G.Adj] (hG : G.CliqueFree 3) :
     G.edgeFinset.card ≤ (Fintype.card α)^2 / 4 := by
-  have h := hG.card_edgeFinset_le (r := 2) (by norm_cast)
-  simp only [show 2 - 1 = 1 from rfl, Nat.choose, Nat.choose_zero_right] at h
+  have h := hG.card_edgeFinset_le (r := 2)
+  simp only [show 2 - 1 = 1 from rfl] at h
   -- The Mathlib bound: #G.edgeFinset ≤ (n²-(n%2)²) * 1 / (2*2) + C(n%2,2)
   -- = (n²-(n%2)²) / 4 ≤ n²/4
   have hn : (Fintype.card α)^2 / 4 ≥
       ((Fintype.card α)^2 - (Fintype.card α % 2)^2) * 1 / (2 * 2) +
         (Fintype.card α % 2).choose 2 := by
     have hmod : Fintype.card α % 2 < 2 := Nat.mod_lt _ (by norm_num)
-    have hchoose : (Fintype.card α % 2).choose 2 = 0 := by
-      rcases Nat.lt_two_iff_le_one.mp hmod with h | h <;> simp [h, Nat.choose]
+    have hchoose : (Fintype.card α % 2).choose 2 = 0 :=
+      Nat.choose_eq_zero_of_lt hmod
     rw [hchoose, add_zero]
     simp only [mul_one]
     apply Nat.div_le_div_right
@@ -72,17 +73,17 @@ theorem turan_triangle_free_bound {α : Type*} [Fintype α] (G : SimpleGraph α)
 /-  Abstract Turán bound: f(n) ≤ n²/4.
     (Axiom-dependent: requires that the triangle removal output is triangle-free,
      and that f(n) counts edges of a specific graph.) -/
-/-- The process output has at most n²/4 edges (Turán bound).
-    This is weaker than BFL (n^{3/2+o(1)}) but follows from a purely combinatorial argument. -/
-theorem triangleRemovalEdges_le_turan (n : ℕ) :
-    triangleRemovalEdges n ≤ (n : ℝ)^2 / 4 :=
-  triangleRemovalEdges_le_turan_exact n
-
 /-- Axiom: the triangle removal process output is triangle-free with ≤ n²/4 edges.
     This follows from Turán's theorem applied to the concrete output graph.
     [Deferred: requires connecting f(n) to the formal graph construction.] -/
 axiom triangleRemovalEdges_le_turan_exact (n : ℕ) :
     triangleRemovalEdges n ≤ (n : ℝ)^2 / 4
+
+/-- The process output has at most n²/4 edges (Turán bound).
+    This is weaker than BFL (n^{3/2+o(1)}) but follows from a purely combinatorial argument. -/
+theorem triangleRemovalEdges_le_turan (n : ℕ) :
+    triangleRemovalEdges n ≤ (n : ℝ)^2 / 4 :=
+  triangleRemovalEdges_le_turan_exact n
 
 -- ============================================================
 -- PART II: Turán Density Vanishes (from BFL)
@@ -136,9 +137,9 @@ theorem turanDensity_tendsto_zero :
   -- Squeeze with 4/n^{1/4} which tends to 0 since n^{1/4} → ∞.
   have hn14_atTop : Filter.Tendsto (fun n : ℕ => (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
     (tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
-  apply tendsto_of_tendsto_of_tendsto_of_le_of_le
-    (tendsto_const_nhds (b := (0:ℝ)))
-    ((tendsto_const_nhds (b := (4:ℝ))).div_atTop hn14_atTop)
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le'
+    (tendsto_const_nhds (x := (0:ℝ)))
+    ((tendsto_const_nhds (x := (4:ℝ))).div_atTop hn14_atTop)
   · exact Filter.Eventually.of_forall (fun n => (turanDensity_mem_Icc n).1)
   · filter_upwards [bfl_upper_bound (1/4 : ℝ) (by norm_num), eventually_gt_atTop 0] with n hfn hn
     unfold turanDensity
@@ -174,18 +175,30 @@ In particular, for large n, f(n) < (n²/4)/2 = n²/8.
 /-- For large n, the process output has fewer edges than half the Turán maximum. -/
 theorem process_not_turan_extremal :
     ∀ᶠ (n : ℕ) in atTop, triangleRemovalEdges n < (n : ℝ)^2 / 8 := by
-  -- From BFL upper bound with ε = 1/4:
-  -- f(n) ≤ n^{7/4} < n²/8 for large n (since n²/8 - n^{7/4} → ∞)
+  -- From BFL upper bound with ε = 1/4: f(n) ≤ n^{7/4}.
+  -- n^{7/4} < n²/8  ⟺  8 < n^{1/4}, which holds eventually since n^{1/4} → ∞.
+  -- (n > 8 alone is NOT enough: at n = 9, n^{7/4} ≈ 46.8 > n²/8 ≈ 10.1; the true
+  --  crossover is n = 8⁴ = 4096, so the threshold must come from the tendsto, not a
+  --  fixed small constant.)
   have hbfl := bfl_upper_bound (ε := 1/4) (by norm_num)
-  filter_upwards [hbfl, Filter.eventually_gt_atTop 8] with n hfn hn
-  calc triangleRemovalEdges n
-      ≤ (n : ℝ)^(3/2 + 1/4 : ℝ) := hfn
-    _ = (n : ℝ)^(7/4 : ℝ) := by norm_num
-    _ < (n : ℝ)^2 / 8 := by
-        have hn1 : 1 < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
-        have h78 : (7/4 : ℝ) < 2 := by norm_num
-        have hpow : (n : ℝ)^(7/4 : ℝ) < (n : ℝ)^2 := Real.rpow_lt_rpow_of_exponent_lt hn1 h78
-        linarith [Real.rpow_pos_of_pos (by exact_mod_cast Nat.pos_of_ne_zero (by omega)) (7/4 : ℝ)]
+  have h14_atTop : Filter.Tendsto (fun n : ℕ => (n : ℝ)^(1/4 : ℝ)) atTop atTop :=
+    (tendsto_rpow_atTop (by norm_num : (0:ℝ) < 1/4)).comp tendsto_natCast_atTop_atTop
+  filter_upwards [hbfl, h14_atTop.eventually_gt_atTop 8, Filter.eventually_gt_atTop 0]
+    with n hfn hn14 hn0
+  have hn' : (0 : ℝ) < n := Nat.cast_pos.mpr hn0
+  have hfn' : triangleRemovalEdges n ≤ (n : ℝ)^(7/4 : ℝ) := by
+    have h : (3/2 + 1/4 : ℝ) = 7/4 := by norm_num
+    rwa [h] at hfn
+  have key : (n : ℝ)^(7/4 : ℝ) * (n : ℝ)^(1/4 : ℝ) = (n : ℝ)^2 := by
+    rw [← Real.rpow_add hn', show (7/4 : ℝ) + 1/4 = 2 from by norm_num]
+    exact Real.rpow_natCast (n : ℝ) 2
+  have hgoal : (n : ℝ)^(7/4 : ℝ) < (n : ℝ)^2 / 8 := by
+    rw [lt_div_iff₀ (by norm_num : (0:ℝ) < 8)]
+    calc (n : ℝ)^(7/4 : ℝ) * 8
+        < (n : ℝ)^(7/4 : ℝ) * (n : ℝ)^(1/4 : ℝ) :=
+          mul_lt_mul_of_pos_left hn14 (Real.rpow_pos_of_pos hn' _)
+      _ = (n : ℝ)^2 := key
+  linarith
 
 -- ============================================================
 -- PART IV: Comparison Table
@@ -226,7 +239,7 @@ theorem turan_gap_diverges :
   have hn74_ge1 : (1 : ℝ) ≤ (n : ℝ)^(7/4 : ℝ) := by
     calc (1 : ℝ) = (1 : ℝ)^(7/4 : ℝ) := (Real.one_rpow _).symm
       _ ≤ (n : ℝ)^(7/4 : ℝ) :=
-          Real.rpow_le_rpow (le_refl 1) (by exact_mod_cast hn) (by norm_num)
+          Real.rpow_le_rpow (by norm_num) (by exact_mod_cast hn) (by norm_num)
   -- f(n)+1 ≤ 2*n^{7/4}
   have hfp1 : triangleRemovalEdges n + 1 ≤ 2 * (n : ℝ)^(7/4 : ℝ) := by linarith
   -- n^{7/4} * n^{1/4} = n²
@@ -294,6 +307,7 @@ theorem turan_bfl_exponent_gap :
           rw [← Real.rpow_add hn']
           congr 1; ring
   -- Step 2: n^{2-ε/2} < n²/4  (since n^{2-ε/2} * n^{ε/2} = n² and n^{ε/2} > 4)
+  have hn4' : (4 : ℝ) < (n : ℝ)^(ε/2) := hn4
   have step2 : (n : ℝ)^(2 - ε/2) < (n : ℝ)^2 / 4 := by
     have hexp : (n : ℝ)^(2 - ε/2) * (n : ℝ)^(ε/2) = (n : ℝ)^2 := by
       rw [← Real.rpow_add hn', show (2 - ε/2 + ε/2 : ℝ) = 2 from by ring]
@@ -301,9 +315,9 @@ theorem turan_bfl_exponent_gap :
     have hpos : (0 : ℝ) < (n : ℝ)^(2 - ε/2) := Real.rpow_pos_of_pos hn' _
     rw [lt_div_iff₀ (by norm_num : (0:ℝ) < 4)]
     -- Goal: n^{2-ε/2} * 4 < n²
-    -- From hn4: 4 < n^{ε/2}, and hpos: 0 < n^{2-ε/2}:
+    -- From hn4': 4 < n^{ε/2}, and hpos: 0 < n^{2-ε/2}:
     -- n^{2-ε/2} * 4 < n^{2-ε/2} * n^{ε/2} = n²
-    nlinarith [mul_lt_mul_of_pos_left hn4 hpos, hexp]
+    nlinarith [mul_lt_mul_of_pos_left hn4' hpos, hexp]
   linarith
 
 -- Self-check
