@@ -91,18 +91,22 @@ theorem subsetSums_singleton (a : ℕ) :
     have : B = ∅ ∨ B = {a} := by
       rcases Finset.eq_empty_or_nonempty B with rfl | ⟨b, hb⟩
       · left; rfl
-      · right; ext y; simp only [Finset.mem_singleton]
-        exact ⟨fun hy => (Finset.mem_singleton.mp (hB hy)), fun hy => hy ▸ hb⟩
+      · right
+        have hba : b = a := Finset.mem_singleton.mp (hB hb)
+        ext y; simp only [Finset.mem_singleton]
+        refine ⟨fun hy => Finset.mem_singleton.mp (hB hy), fun hy => ?_⟩
+        rw [hy, ← hba]; exact hb
     rcases this with rfl | rfl <;> simp
-  · rintro (rfl | rfl)
-    · exact ⟨∅, Finset.empty_subset _, by simp⟩
-    · exact ⟨{a}, Finset.Subset.refl _, by simp⟩
+  · rintro (h | h)
+    · exact ⟨∅, Finset.empty_subset _, by simp [h]⟩
+    · exact ⟨{a}, Finset.Subset.refl _, by simp [h]⟩
 
 -- Aristotle target: subsetSums of singleton has cardinality 2 (when a ≠ 0)
 theorem card_subsetSums_singleton (a : ℕ) (ha : a ≠ 0) :
     (subsetSumsLocal {a}).card = 2 := by
   rw [subsetSums_singleton]
-  rw [Finset.card_insert_of_notMem (by simp [ha]), Finset.card_singleton]
+  rw [Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; omega),
+    Finset.card_singleton]
 
 -- Aristotle target: subsetSums of singleton has cardinality ≤ 2
 theorem card_subsetSums_singleton_le (a : ℕ) :
