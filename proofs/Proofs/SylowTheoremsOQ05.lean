@@ -137,6 +137,7 @@ theorem transferSylowAb_universal [FiniteIndex (P : Subgroup G)]
 
 end Sylow
 
+open scoped IsMulCommutative in
 variable (G) in
 /-- Mathlib's central transfer `transferCenterPow G : g ↦ g ^ [G : Z(G)]`
 factors through the universal abelianization transfer of the centre.  Since the
