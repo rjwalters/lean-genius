@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 115 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos308Problem (type-ascribe ℕ↪ℕ succ embedding under ℚ sum vs
+codomain re-elab to ℚ; div_le_one_of_le₀; push_cast;omega on ℚ-cast goal no longer transfers to ℕ ->
+exact_mod_cast + Nat lemma). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 114 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos247Problem (RESIDUAL-parent cascade masqueraded as instance-synth;
