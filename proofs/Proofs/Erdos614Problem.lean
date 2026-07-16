@@ -42,7 +42,7 @@ namespace Erdos614
 Definitions for graphs, induced subgraphs, and maximum degree.
 -/
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {V : Type*} [Fintype V] [LinearOrder V]
 
 /-- The degree of a vertex in a graph. -/
 noncomputable def degree (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) : ℕ :=
@@ -50,7 +50,7 @@ noncomputable def degree (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) : ℕ 
 
 /-- Maximum degree in a graph. -/
 noncomputable def maxDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Finset.univ.sup' (Finset.univ_nonempty) (degree G)
+  Finset.univ.sup (degree G)
 
 /-- The induced subgraph on a set of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S :=
@@ -128,26 +128,39 @@ private lemma card_lt_pairs (n : ℕ) :
         (Finset.univ : Finset (Fin n)).offDiag := by
       ext ⟨a, b⟩; simp [Finset.mem_offDiag]
     rw [this, Finset.offDiag_card, Finset.card_univ, Fintype.card_fin]
+    exact (Nat.mul_sub_one n n).symm
   -- Partition: {i ≠ j} = {i < j} ∪ {i > j}
   have h_split : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2)).card =
       ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card +
       ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)).card := by
-    rw [← Finset.filter_or]
-    congr 1; ext ⟨a, b⟩; simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    exact ne_iff_lt_or_gt
+    have heq : (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 ≠ p.2) =
+        (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2) ∪
+        (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1) := by
+      ext ⟨a, b⟩
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+      exact ne_iff_lt_or_gt
+    rw [heq, Finset.card_union_of_disjoint]
+    rw [Finset.disjoint_filter]
+    intro ⟨a, b⟩ _ hlt hgt
+    exact absurd (hlt.trans hgt) (lt_irrefl _)
   -- Symmetry: |{i < j}| = |{i > j}| via swap
   have h_symm : ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2)).card =
       ((Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.2 < p.1)).card := by
     apply Finset.card_bij (fun p _ => (p.2, p.1))
-      (fun ⟨a, b⟩ h => by simp_all)
-      (fun ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ _ _ h => by
-        simp [Prod.ext_iff] at h; exact Prod.ext h.2 h.1)
-      (fun ⟨a, b⟩ h => ⟨(b, a), by simp_all, by simp⟩)
+    · intro a ha
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
+      exact ha
+    · intro a₁ _ a₂ _ h
+      simp only [Prod.mk.injEq] at h
+      exact Prod.ext h.2 h.1
+    · intro b hb
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
+      exact ⟨(b.2, b.1), by simp [Finset.mem_filter, hb], by simp⟩
   omega
 
 /-- In the complete graph (⊤), the edge count equals n*(n-1)/2. -/
 private lemma edgeCount_complete (n : ℕ) :
-    @edgeCount (Fin n) _ _ (⊤ : SimpleGraph (Fin n)) _ = n * (n - 1) / 2 := by
+    edgeCount (⊤ : SimpleGraph (Fin n)) = n * (n - 1) / 2 := by
   unfold edgeCount
   -- In ⊤, Adj a b ↔ a ≠ b. Since a < b → a ≠ b, the filter simplifies.
   have : ∀ p : Fin n × Fin n, (p.1 < p.2 ∧ (⊤ : SimpleGraph (Fin n)).Adj p.1 p.2) ↔
@@ -161,7 +174,7 @@ private lemma edgeCount_complete (n : ℕ) :
 /-- The complete graph has property P(k) when k+2 ≤ n: every vertex in
     any (k+2)-subset is adjacent to all others, giving induced degree k+1 ≥ k. -/
 private lemma complete_hasPropertyP (n k : ℕ) (h : k + 2 ≤ n) :
-    @hasPropertyP (Fin n) _ _ (⊤ : SimpleGraph (Fin n)) _ k := by
+    hasPropertyP (⊤ : SimpleGraph (Fin n)) k := by
   intro S hS
   unfold inducedMaxDegree
   have hne : S.Nonempty := Finset.card_pos.mp (by omega)
@@ -175,9 +188,10 @@ private lemma complete_hasPropertyP (n k : ℕ) (h : k + 2 ≤ n) :
     _ = S.card - 1 := by omega
     _ = (S.erase v).card := (Finset.card_erase_of_mem hv).symm
     _ = (S.filter (fun u => u ≠ v ∧ (⊤ : SimpleGraph (Fin n)).Adj v u)).card := by rw [hfilt]
-    _ ≤ S.sup' hne (fun w =>
+    _ ≤ S.sup' ⟨v, hv⟩ (fun w =>
         (S.filter (fun u => u ≠ w ∧ (⊤ : SimpleGraph (Fin n)).Adj w u)).card) :=
-      Finset.le_sup' _ hv
+      Finset.le_sup' (fun w =>
+        (S.filter (fun u => u ≠ w ∧ (⊤ : SimpleGraph (Fin n)).Adj w u)).card) hv
 
 /-- Upper bound: the complete graph K_n has n(n-1)/2 edges and trivially
     has property P(k) for all k ≤ n-2, since every vertex in any induced
@@ -208,7 +222,7 @@ private lemma hasPropertyP_one_triple_has_edge
   have hne : ({a, b, c} : Finset V).Nonempty := ⟨a, Finset.mem_insert_self a _⟩
   simp only [dif_pos hne] at h
   -- Some vertex in {a,b,c} has ≥ 1 neighbor in {a,b,c}
-  rw [Finset.le_sup'_iff] at h
+  rw [ge_iff_le, Finset.le_sup'_iff] at h
   obtain ⟨v, hv, hcard_pos⟩ := h
   -- v has a neighbor w in {a,b,c} with w ≠ v and G.Adj v w
   have : (({a, b, c} : Finset V).filter (fun u => u ≠ v ∧ G.Adj v u)).Nonempty :=
@@ -252,12 +266,12 @@ private theorem edge_injection_bound {n : ℕ}
   -- a and b cannot be in S (self-loops impossible, a-b not adjacent)
   have ha_notin : a ∉ S := by
     intro ha; rcases hS a ha with h | h
-    · exact G.loopless a h
-    · exact hnadj (G.symm h)
+    · exact G.irrefl h
+    · exact hnadj (G.adj_symm h)
   have hb_notin : b ∉ S := by
     intro hb; rcases hS b hb with h | h
     · exact hnadj h
-    · exact G.loopless b h
+    · exact G.irrefl h
   -- Edge-selecting function: map c to ordered edge pair (min(x,c), max(x,c))
   let f : Fin n → Fin n × Fin n := fun c =>
     if G.Adj a c then (min a c, max a c) else (min b c, max b c)
@@ -297,20 +311,25 @@ private theorem edge_injection_bound {n : ℕ}
     by_cases hadj_a : G.Adj a c
     · -- f uses a-path: f c = (min a c, max a c)
       simp only [f, if_pos hadj_a] at hfc
-      rw [← hfc]
-      rcases hca.lt_or_lt with hlt | hlt
-      · simp only [min_eq_left hlt.le, max_eq_right hlt.le]; exact ⟨hlt, hadj_a⟩
+      have hp : min a c = p := congrArg Prod.fst hfc
+      have hq : max a c = q := congrArg Prod.snd hfc
+      rw [← hp, ← hq]
+      rcases hca.lt_or_gt with hlt | hlt
       · simp only [min_eq_right hlt.le, max_eq_left hlt.le]; exact ⟨hlt, hadj_a.symm⟩
+      · simp only [min_eq_left hlt.le, max_eq_right hlt.le]; exact ⟨hlt, hadj_a⟩
     · -- f uses b-path: f c = (min b c, max b c), and G.Adj b c by elimination
       have hadj_b : G.Adj b c :=
         (hS c hc).resolve_left hadj_a
       simp only [f, if_neg hadj_a] at hfc
-      rw [← hfc]
-      rcases hcb.lt_or_lt with hlt | hlt
-      · simp only [min_eq_left hlt.le, max_eq_right hlt.le]; exact ⟨hlt, hadj_b⟩
+      have hp : min b c = p := congrArg Prod.fst hfc
+      have hq : max b c = q := congrArg Prod.snd hfc
+      rw [← hp, ← hq]
+      rcases hcb.lt_or_gt with hlt | hlt
       · simp only [min_eq_right hlt.le, max_eq_left hlt.le]; exact ⟨hlt, hadj_b.symm⟩
+      · simp only [min_eq_left hlt.le, max_eq_right hlt.le]; exact ⟨hlt, hadj_b⟩
   -- Combine: edgeCount ≥ |image| = |S|
-  calc edgeCount G
+  unfold edgeCount
+  calc (Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.Adj p.1 p.2)).card
       ≥ (S.image f).card := Finset.card_le_card hf_mem
     _ = S.card := Finset.card_image_of_injOn hinj
 
@@ -322,16 +341,36 @@ private theorem edge_injection_bound {n : ℕ}
 private theorem edgeCount_ge_of_propertyP1 {n : ℕ} (hn : n ≥ 3)
     (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
     (hP : hasPropertyP G 1) : edgeCount G ≥ n - 2 := by
+  haveI : NeZero n := ⟨by omega⟩
   -- Either every pair is adjacent, or some pair is not
   by_cases hcomplete : ∀ a b : Fin n, a ≠ b → G.Adj a b
   · -- Case 1: G is complete. Each i > 0 gives edge (0, i), so ≥ n-1 ≥ n-2 edges.
-    apply edgeCount_ge_of_subset G
-      (Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i) |>.image
-        (fun i => ((0 : Fin n), i)))
-    intro ⟨x, y⟩ hmem
-    simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
-    obtain ⟨i, hi, rfl⟩ := hmem
-    exact mem_edgeCount_filter G hi (hcomplete 0 i (Fin.ne_of_lt hi))
+    have hsub : (Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i) |>.image
+        (fun i => ((0 : Fin n), i))) ⊆
+        Finset.univ.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.Adj p.1 p.2) := by
+      intro ⟨x, y⟩ hmem
+      simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+      obtain ⟨i, hi, heq⟩ := hmem
+      rw [Prod.mk.injEq] at heq
+      obtain ⟨rfl, rfl⟩ := heq
+      exact mem_edgeCount_filter G hi (hcomplete 0 i (Fin.ne_of_lt hi))
+    have hfilt_eq : (Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i)) =
+        Finset.univ \ {(0 : Fin n)} := by
+      ext i
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_sdiff,
+        Finset.mem_singleton, Fin.lt_def, Fin.val_zero, Fin.ext_iff]
+      omega
+    have hcard1 : (Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i)).card = n - 1 := by
+      rw [hfilt_eq, Finset.card_sdiff_of_subset (by simp), Finset.card_singleton,
+        Finset.card_univ, Fintype.card_fin]
+    have hcard2 : ((Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i)).image
+        (fun i => ((0 : Fin n), i))).card = n - 1 := by
+      rw [Finset.card_image_of_injective _ (fun i j h => by simpa using h), hcard1]
+    calc edgeCount G
+        ≥ (Finset.univ.filter (fun i : Fin n => (0 : Fin n) < i) |>.image
+            (fun i => ((0 : Fin n), i))).card := edgeCount_ge_of_subset G _ hsub
+      _ = n - 1 := hcard2
+      _ ≥ n - 2 := by omega
   · -- Case 2: There exist non-adjacent a, b
     push_neg at hcomplete
     obtain ⟨a, b, hab, hnadj⟩ := hcomplete
@@ -340,10 +379,9 @@ private theorem edgeCount_ge_of_propertyP1 {n : ℕ} (hn : n ≥ 3)
     have hothers_card : others.card = n - 2 := by
       have : others = Finset.univ \ {a, b} := by
         ext x; simp [others_def, Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton]
-        tauto
-      rw [this, Finset.card_sdiff (by simp),
+      rw [this, Finset.card_sdiff_of_subset (by simp),
           Finset.card_insert_of_notMem (by simp [hab]), Finset.card_singleton,
-          Fintype.card_fin]
+          Finset.card_univ, Fintype.card_fin]
     -- Each c in others has an edge to a or b
     have hedge_exists : ∀ c ∈ others, G.Adj a c ∨ G.Adj b c := by
       intro c hc
@@ -471,26 +509,29 @@ private lemma partialStar_zero_neighbors_card (n : ℕ) (hn : 2 ≤ n) :
       have : u.val = 0 := by rw [heq]
       omega
   rw [hfilt]
-  -- Step 2: bijection with Finset.range (n - 2) via i ↦ ⟨i + 1, _⟩
+  -- Step 2: bijection with Fin (n - 2) via i ↦ ⟨i.val + 1, _⟩
+  -- (using a total function on the finite type Fin (n - 2), whose bound proof is
+  -- available to `omega` automatically, unlike a `ℕ → Fin n` map which would need
+  -- to be total over ALL naturals).
   have hbij : ((Finset.univ : Finset (Fin n)).filter
         (fun u => 1 ≤ u.val ∧ u.val + 1 < n))
-      = (Finset.range (n - 2)).image (fun i : ℕ => (⟨i + 1, by omega⟩ : Fin n)) := by
+      = (Finset.univ : Finset (Fin (n - 2))).image
+          (fun i : Fin (n - 2) => (⟨i.val + 1, by omega⟩ : Fin n)) := by
     ext u
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image,
-      Finset.mem_range]
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
     constructor
     · rintro ⟨h1, h2⟩
-      refine ⟨u.val - 1, by omega, ?_⟩
+      refine ⟨⟨u.val - 1, by omega⟩, ?_⟩
       ext
       simp only
       omega
-    · rintro ⟨i, hi, hueq⟩
-      have huval : u.val = i + 1 := by rw [← hueq]
+    · rintro ⟨i, hueq⟩
+      have huval : u.val = i.val + 1 := by rw [← hueq]
       exact ⟨by omega, by omega⟩
-  rw [hbij, Finset.card_image_of_injective _ ?_, Finset.card_range]
+  rw [hbij, Finset.card_image_of_injective _ ?_, Finset.card_univ, Fintype.card_fin]
   intro i j hij
   simp only [Fin.mk.injEq] at hij
-  omega
+  exact Fin.ext (by omega)
 
 /-- For n ≥ 2, the partial star on Fin n has exactly n - 2 edges. -/
 private theorem partialStar_edgeCount (n : ℕ) (hn : 2 ≤ n) :
@@ -510,7 +551,7 @@ private theorem partialStar_edgeCount (n : ℕ) (hn : 2 ≤ n) :
     constructor
     · rintro ⟨hlt, hadj⟩
       rcases hadj with ⟨ha0, hb1, hbn⟩ | ⟨hb0, _, _⟩
-      · refine ⟨b, ⟨?_, ?_⟩, Fin.ext ha0, rfl⟩
+      · refine ⟨b, ⟨?_, ?_⟩, Fin.ext ha0.symm, rfl⟩
         · intro heq
           have : b.val = 0 := by rw [heq]
           omega
