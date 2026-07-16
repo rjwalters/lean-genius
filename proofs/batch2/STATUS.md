@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 165 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): TriangularReciprocalGeneralized (HasSum gained filter arg; HasSum.congr
+gone, dot-.congr falls to Tendsto.congr -> HasSum.congr_fun w/ flipped equality; Finset.sum_congr rfl;
+.mul_left pinned (1/(k:ℝ))). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 164 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): ChebyshevPNTBridgeOQ01 (PartENat/multiplicity machinery removed ->
