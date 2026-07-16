@@ -41,7 +41,7 @@ def choose_fast : ℕ → ℕ → ℕ
 /-- choose_fast agrees with Nat.choose -/
 theorem choose_fast_eq (n k : ℕ) : choose_fast n k = Nat.choose n k := by
   induction k with
-  | zero => rfl
+  | zero => rw [Nat.choose_zero_right]; rfl
   | succ k ih =>
     unfold choose_fast
     rw [ih, ← Nat.choose_succ_right_eq n k]
@@ -57,6 +57,13 @@ def cb (p : ℕ) : ℕ := Nat.choose (2 * p - 1) (p - 1)
 /-- A Wolstenholme prime: prime p with C(2p-1,p-1) ≡ 1 (mod p⁴) -/
 def IsWP (p : ℕ) : Prop := Nat.Prime p ∧ cb p % (p ^ 4) = 1
 
+/-- `cb` unfolded, proved generically over `p` (rfl on a metavariable is cheap: a single
+    delta step, no numeral evaluation). This lets later numeral-instantiated goals be
+    rewritten *syntactically* via this lemma rather than via `unfold`/`show`, which force
+    the elaborator to attempt reducing `Nat.choose` on huge literal arguments — Pascal's
+    triangle without memoization is exponential and OOMs/times out for p = 16843. -/
+theorem cb_eq_choose (p : ℕ) : cb p = Nat.choose (2 * p - 1) (p - 1) := rfl
+
 -- ============================================================
 -- Section 2: Known Wolstenholme Primes
 -- ============================================================
@@ -70,7 +77,7 @@ theorem prime_2124679 : Nat.Prime 2124679 := by native_decide
 /-- C(33685, 16842) ≡ 1 (mod 16843⁴). Verified computationally via choose_fast.
     McIntosh, Acta Arith. 71 (1995), 381-389. -/
 theorem cb_16843 : cb 16843 % (16843 ^ 4) = 1 := by
-  unfold cb; rw [← choose_fast_eq]; native_decide
+  rw [cb_eq_choose, ← choose_fast_eq]; native_decide
 
 /-- C(4249357, 2124678) ≡ 1 (mod 2124679⁴). Axiomatized: binomial too large.
     McIntosh-Roettger, Math. Comp. 76 (2007), 2087-2094. -/
