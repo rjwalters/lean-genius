@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 261 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01 (11 Nat.card/Fintype.card bridges; Sylow.card_sylow_dvd_
+index->card_dvd_index; Sylow.conj_eq->MulAction.exists_smul_eq; Fintype.card_unique clash -> card_eq_one_iff).
+Repair: none. Unblocks LagrangeTheoremOQ01OQ03 child.
+
 # DOCTOR SINGLE-PROOF BATCH 260 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LawOfCosinesOQ01OQ04 (tendsto_nhdsWithin_of_tendsto_nhds misuse ->
