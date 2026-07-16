@@ -48,7 +48,7 @@ theorem nonCommuting_symm {g h : G} (hgh : nonCommuting g h) :
 theorem center_commutes (g : G) (z : G) (hz : z ∈ Subgroup.center G) (h : G) :
     commuting z h := by
   simp only [commuting, Subgroup.mem_center_iff] at hz ⊢
-  exact hz h
+  exact (hz h).symm
 
 /-- Center elements are never in a non-commuting pair. -/
 theorem center_not_nonCommuting (z : G) (hz : z ∈ Subgroup.center G) (h : G) :
@@ -69,6 +69,7 @@ def IsClique (S : Finset G) : Prop :=
 theorem clique_zero_iff_abelian :
     (∀ S : Finset G, IsClique S → S.card ≤ 1) ↔
     ∀ g h : G, commuting g h := by
+  classical
   constructor
   · intro h g₁ g₂
     by_contra hnc
@@ -96,7 +97,7 @@ theorem singleton_not_clique_two (g : G) :
     IsClique {g} := by
   intro x hx y hy hne
   simp only [Finset.mem_singleton] at hx hy
-  exact absurd (hx ▸ hy) hne
+  exact absurd (hx.trans hy.symm) hne
 
 /-- **Center elements cannot be in any clique of size ≥ 2**. -/
 theorem center_not_in_clique (S : Finset G) (hS : IsClique S) (hS2 : 2 ≤ S.card)
@@ -112,11 +113,12 @@ theorem center_not_in_clique (S : Finset G) (hS : IsClique S) (hS2 : 2 ≤ S.car
 
 /-- **Abelian groups have empty non-commuting graph**: If G is abelian
     (every pair commutes), then every clique has size ≤ 1. -/
-theorem abelian_clique_bound [CommGroup G] (S : Finset G) (hS : IsClique S) :
+theorem abelian_clique_bound (hcomm : ∀ g h : G, g * h = h * g)
+    (S : Finset G) (hS : IsClique S) :
     S.card ≤ 1 := by
   by_contra hgt
   push_neg at hgt
   obtain ⟨g, hg, h, hh, hne⟩ := Finset.one_lt_card.mp hgt
-  exact (hS g hg h hh hne) (mul_comm g h)
+  exact (hS g hg h hh hne) (hcomm g h)
 
 end Erdos1098OQ01
