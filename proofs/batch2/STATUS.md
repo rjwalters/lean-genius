@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 248 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos943Problem (omega needs hp.two_le; positivity n≥1 shape ->
+Nat.one_le_iff_ne_zero; Dvd.dvd.pow now n≠0 + a∣b^n -> pow_dvd_pow_of_dvd; Nat.mul_ne_zero). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 247 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos863Problem (|>.card before relational op unparseable -> direct .card;
