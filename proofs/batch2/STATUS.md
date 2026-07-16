@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 113 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos275Problem (missing imports Data.Fintype.Fin +
+Tactic.Positivity.Basic; positivity fails 2^(i+1) strict -> Nat.two_pow_pos). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 112 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos20Problem (Finset.inf id no OrderTop -> dif-guarded inf';
