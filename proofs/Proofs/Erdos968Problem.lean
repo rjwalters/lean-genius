@@ -148,13 +148,22 @@ We verify some basic properties about the normalized prime sequence.
 -/
 
 /-- The first prime is 2. -/
-theorem first_prime : Nat.nth Nat.Prime 0 = 2 := by native_decide
+theorem first_prime : Nat.nth Nat.Prime 0 = 2 := by
+  have hcount : Nat.count Nat.Prime 2 = 0 := by decide
+  have hp : Nat.Prime 2 := by norm_num
+  simpa [hcount] using Nat.nth_count (p := Nat.Prime) hp
 
 /-- The second prime is 3. -/
-theorem second_prime : Nat.nth Nat.Prime 1 = 3 := by native_decide
+theorem second_prime : Nat.nth Nat.Prime 1 = 3 := by
+  have hcount : Nat.count Nat.Prime 3 = 1 := by decide
+  have hp : Nat.Prime 3 := by norm_num
+  simpa [hcount] using Nat.nth_count (p := Nat.Prime) hp
 
 /-- The third prime is 5. -/
-theorem third_prime : Nat.nth Nat.Prime 2 = 5 := by native_decide
+theorem third_prime : Nat.nth Nat.Prime 2 = 5 := by
+  have hcount : Nat.count Nat.Prime 5 = 2 := by decide
+  have hp : Nat.Prime 5 := by norm_num
+  simpa [hcount] using Nat.nth_count (p := Nat.Prime) hp
 
 /-- u(0) = 2/1 = 2. -/
 theorem u_zero : u 0 = 2 := by
