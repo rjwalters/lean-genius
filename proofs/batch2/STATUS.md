@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 99 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CantorDiagonalizationOQ04OQ03 (kleeneChain def needs [Preorder α]
+before [OrderBot α]; targeted have+.trans instead of global rw on retract self-refs; le_iSup explicit
+fn for stuck CompleteLattice mvar; show/defeq instead of broken conv=>ext n on iSup). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 98 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): ArchimedesMethodOfExhaustion (field_simp alone closes, =ᶠ[atTop]
