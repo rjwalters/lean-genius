@@ -24,6 +24,7 @@ import Mathlib.Tactic
 namespace Erdos501Support
 
 open Set MeasureTheory
+open scoped ENNReal
 
 /-- A set is bounded if it's contained in some interval [-M, M]. -/
 def IsBoundedSet (A : Set ℝ) : Prop :=
@@ -59,8 +60,8 @@ theorem bounded_inter_Icc (A : Set ℝ) (a b : ℝ) :
   refine ⟨max (|a|) (|b|), ?_⟩
   intro x ⟨_, hx⟩
   constructor
-  · linarith [neg_abs_le a, hx.1]
-  · linarith [le_abs_self b, hx.2]
+  · linarith [neg_abs_le a, hx.1, le_max_left (|a|) (|b|)]
+  · linarith [le_abs_self b, hx.2, le_max_right (|a|) (|b|)]
 
 /-- Union of two bounded sets is bounded. -/
 theorem bounded_union {A B : Set ℝ} (hA : IsBoundedSet A) (hB : IsBoundedSet B) :
@@ -82,16 +83,18 @@ theorem bounded_union {A B : Set ℝ} (hA : IsBoundedSet A) (hB : IsBoundedSet B
 /-- Outer measure is monotone: A ⊆ B → μ*(A) ≤ μ*(B). -/
 theorem outerMeasure_mono {A B : Set ℝ} (h : A ⊆ B) :
     outerMeasure A ≤ outerMeasure B := by
+  unfold outerMeasure
   exact MeasureTheory.measure_mono h
 
 /-- Outer measure of a subset is at most that of the superset. -/
 theorem outerMeasure_inter_le (A S : Set ℝ) :
     outerMeasure (A ∩ S) ≤ outerMeasure A := by
-  exact outerMeasure_mono Set.inter_subset_left
+  exact outerMeasure_mono (A := A ∩ S) (B := A) Set.inter_subset_left
 
 /-- Subadditivity: μ*(A ∪ B) ≤ μ*(A) + μ*(B). -/
 theorem outerMeasure_union_le (A B : Set ℝ) :
     outerMeasure (A ∪ B) ≤ outerMeasure A + outerMeasure B := by
+  unfold outerMeasure
   exact MeasureTheory.measure_union_le A B
 
 /-- If a set has outer measure less than the length of an interval,
@@ -101,7 +104,7 @@ theorem exists_not_mem_of_outerMeasure_lt_Icc {A : Set ℝ} {a b : ℝ}
     (hab : a < b) (hA : outerMeasure A < ENNReal.ofReal (b - a)) :
     ∃ x ∈ Set.Icc a b, x ∉ A := by
   by_contra h
-  push_neg at h
+  push Not at h
   -- h : Icc a b ⊆ A
   have hIcc : outerMeasure (Set.Icc a b) = ENNReal.ofReal (b - a) := by
     unfold outerMeasure; exact Real.volume_Icc
@@ -131,14 +134,15 @@ theorem measure_compl_Icc_pos {A : Set ℝ} {a b : ℝ}
   set lo := max a (x - ε / 2)
   set hi := min b (x + ε / 2)
   have hlo_hi : lo < hi := by
-    simp only [lo, hi, lt_min_iff, max_lt_iff]
-    exact ⟨⟨by linarith [hx_mem.2], by linarith⟩,
-           ⟨by linarith [hx_mem.1], by linarith⟩⟩
+    refine max_lt_iff.mpr ⟨lt_min_iff.mpr ⟨hab, ?_⟩, lt_min_iff.mpr ⟨?_, ?_⟩⟩
+    · linarith [hx_mem.1]
+    · linarith [hx_mem.2]
+    · linarith
   have h_sub : Set.Icc lo hi ⊆ Set.Icc a b \ A := by
     intro y hy
     refine ⟨⟨le_of_max_le_left hy.1, le_trans hy.2 (min_le_left _ _)⟩, ?_⟩
     apply hε_ball
-    rw [Real.dist_eq, abs_lt]
+    rw [Metric.mem_ball, Real.dist_eq, abs_lt]
     exact ⟨by linarith [le_of_max_le_right hy.1], by linarith [le_trans hy.2 (min_le_right _ _)]⟩
   calc (0 : ℝ≥0∞) < ENNReal.ofReal (hi - lo) := by rwa [ENNReal.ofReal_pos, sub_pos]
     _ = outerMeasure (Set.Icc lo hi) := by
