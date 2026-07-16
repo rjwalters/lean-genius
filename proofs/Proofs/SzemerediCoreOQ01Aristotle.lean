@@ -22,7 +22,7 @@ import Proofs.SzemerediCoreOQ01
 
 namespace Szemeredi.EnergyIncrement.Aristotle
 
-open Classical Szemeredi.Core Szemeredi.EnergyIncrement
+open Classical Szemeredi.Core Szemeredi.EnergyIncrement Szemeredi.Regularity
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -80,6 +80,12 @@ theorem energy_increment_packaging_ari
     partitionEnergy G (S ∪ {A', A₂, B', B₂}) ≥
       partitionEnergy G parts + eps ^ 6 := by
   intro A₂ B₂ S
+
+  -- hAu/hBu restated with the A₂/B₂ abbreviations (defeq to `A \ A'`/`B \ B'`) so that
+  -- later `rw` calls produce goal terms syntactically matching the convexity lemma
+  -- outputs (which are stated in terms of A₂/B₂, not the unfolded `A \ A'` form).
+  have hAu' : A' ∪ A₂ = A := hAu
+  have hBu' : B' ∪ B₂ = B := hBu
 
   -- ── n > 0 ────────────────────────────────────────────────────────
   have hn_pos : (0 : ℚ) < Fintype.card V := by
@@ -244,9 +250,6 @@ theorem energy_increment_packaging_ari
     unfold partitionEnergy
     simp only [if_neg hn]
     rw [show R.product R = R ×ˢ R from rfl, Finset.sum_product]
-    apply Finset.sum_congr rfl; intro P _
-    apply Finset.sum_congr rfl; intro Q _
-    simp only [Prod.fst, Prod.snd, ef_def]
   simp only [pe_eq]
 
   -- ── Block decomposition helper ────────────────────────────────────
@@ -294,13 +297,10 @@ theorem energy_increment_packaging_ari
     have hPnn : (0 : ℚ) ≤ (P.card : ℚ) / (Fintype.card V : ℚ) ^ 2 := by positivity
     simp only [ef_def]
     push_cast
-    rw [← hAu, ← hBu, ← hAcard, ← hBcard]
-    nlinarith [hcA, hcB, sq_nonneg (edgeDensity G P A'), sq_nonneg (edgeDensity G P A₂),
-               sq_nonneg (edgeDensity G P B'), sq_nonneg (edgeDensity G P B₂),
-               sq_nonneg (edgeDensity G P (A' ∪ A₂)), sq_nonneg (edgeDensity G P (B' ∪ B₂)),
-               Nat.cast_nonneg (α := ℚ) P.card, Nat.cast_nonneg (α := ℚ) A'.card,
-               Nat.cast_nonneg (α := ℚ) A₂.card, Nat.cast_nonneg (α := ℚ) B'.card,
-               Nat.cast_nonneg (α := ℚ) B₂.card, sq_nonneg (Fintype.card V : ℚ)]
+    rw [← hAcard, ← hBcard, ← hAu', ← hBu']
+    have hAmul := mul_le_mul_of_nonneg_left hcA hPnn
+    have hBmul := mul_le_mul_of_nonneg_left hcB hPnn
+    ring_nf at hAmul hBmul ⊢; linarith
 
   -- ── TS ≥ ABS ─────────────────────────────────────────────────────
   -- Expand T and AB sums explicitly, then use density_sq_convex.
@@ -317,21 +317,21 @@ theorem energy_increment_packaging_ari
       apply Finset.sum_le_sum; intro Q _
       have hcA := density_sq_convex G A' A₂ Q hAd
       have hAcard : (A'.card : ℚ) + A₂.card = A.card := by exact_mod_cast hcard_A
+      have hQnn : (0 : ℚ) ≤ (Q.card : ℚ) / (Fintype.card V : ℚ) ^ 2 := by positivity
       simp only [ef_def]; push_cast
-      rw [← hAu, ← hAcard]
-      nlinarith [hcA, sq_nonneg (edgeDensity G A' Q), sq_nonneg (edgeDensity G A₂ Q),
-                 Nat.cast_nonneg (α := ℚ) Q.card, Nat.cast_nonneg (α := ℚ) A'.card,
-                 Nat.cast_nonneg (α := ℚ) A₂.card, sq_nonneg (Fintype.card V : ℚ)]
+      rw [← hAcard, ← hAu']
+      have h := mul_le_mul_of_nonneg_left hcA hQnn
+      ring_nf at h ⊢; linarith
     have hB_rows : (∑ Q ∈ S, ef B' Q) + (∑ Q ∈ S, ef B₂ Q) ≥ ∑ Q ∈ S, ef B Q := by
       rw [← Finset.sum_add_distrib]
       apply Finset.sum_le_sum; intro Q _
       have hcB := density_sq_convex G B' B₂ Q hBd
       have hBcard : (B'.card : ℚ) + B₂.card = B.card := by exact_mod_cast hcard_B
+      have hQnn : (0 : ℚ) ≤ (Q.card : ℚ) / (Fintype.card V : ℚ) ^ 2 := by positivity
       simp only [ef_def]; push_cast
-      rw [← hBu, ← hBcard]
-      nlinarith [hcB, sq_nonneg (edgeDensity G B' Q), sq_nonneg (edgeDensity G B₂ Q),
-                 Nat.cast_nonneg (α := ℚ) Q.card, Nat.cast_nonneg (α := ℚ) B'.card,
-                 Nat.cast_nonneg (α := ℚ) B₂.card, sq_nonneg (Fintype.card V : ℚ)]
+      rw [← hBcard, ← hBu']
+      have h := mul_le_mul_of_nonneg_left hcB hQnn
+      ring_nf at h ⊢; linarith
     linarith [Finset.sum_nonneg (s := S) (f := fun Q => ef A₂ Q) (fun Q _ => by positivity),
               Finset.sum_nonneg (s := S) (f := fun Q => ef B₂ Q) (fun Q _ => by positivity)]
 
@@ -355,24 +355,28 @@ theorem energy_increment_packaging_ari
     -- Relate to ef: unfold and apply
     simp only [ef_def]; push_cast
     rw [← hAu, ← hBu, ← hAcard, ← hBcard] at *
-    -- AB-excess block via four_subpair_excess_lb:
-    -- ∑_{T×T} AB-block ≥ (A'+A₂)*(B'+B₂)*d(A'∪A₂,B'∪B₂)² + A'*B'*(d(A',B')-d(A'∪A₂,B'∪B₂))²
-    -- And hcore: A'*B'*(d(A',B')-d(A,B))² > eps^6 * n²
-    -- So AB-block/n² ≥ ef(A,B) + eps^6
-    have hn2pos : (0 : ℚ) < (Fintype.card V : ℚ) ^ 2 := by positivity
-    nlinarith [hsub_AA, hsub_AB_lb, hsub_BA, hsub_BB, hcore,
-               sq_nonneg (edgeDensity G A' A'), sq_nonneg (edgeDensity G A' A₂),
-               sq_nonneg (edgeDensity G A₂ A'), sq_nonneg (edgeDensity G A₂ A₂),
-               sq_nonneg (edgeDensity G A' B'), sq_nonneg (edgeDensity G A' B₂),
-               sq_nonneg (edgeDensity G A₂ B'), sq_nonneg (edgeDensity G A₂ B₂),
-               sq_nonneg (edgeDensity G B' A'), sq_nonneg (edgeDensity G B' A₂),
-               sq_nonneg (edgeDensity G B₂ A'), sq_nonneg (edgeDensity G B₂ A₂),
-               sq_nonneg (edgeDensity G B' B'), sq_nonneg (edgeDensity G B' B₂),
-               sq_nonneg (edgeDensity G B₂ B'), sq_nonneg (edgeDensity G B₂ B₂),
-               Nat.cast_nonneg (α := ℚ) A'.card, Nat.cast_nonneg (α := ℚ) A₂.card,
-               Nat.cast_nonneg (α := ℚ) B'.card, Nat.cast_nonneg (α := ℚ) B₂.card,
-               sq_nonneg (edgeDensity G (A' ∪ A₂) (B' ∪ B₂)),
-               mul_pos hn2pos hn2pos]
+    -- Scale sub4pair bounds by 1/n² to match ef terms
+    have hs : (0 : ℚ) ≤ 1 / (Fintype.card V : ℚ) ^ 2 := by positivity
+    have hn2_pos : (0 : ℚ) < (Fintype.card V : ℚ) ^ 2 := by positivity
+    have hAA_s := mul_le_mul_of_nonneg_right hsub_AA hs
+    have hAB_s := mul_le_mul_of_nonneg_right hsub_AB_lb hs
+    have hBA_s := mul_le_mul_of_nonneg_right hsub_BA hs
+    have hBB_s := mul_le_mul_of_nonneg_right hsub_BB hs
+    have hcore_s : ↑A'.card * ↑B'.card *
+        (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 /
+        (Fintype.card V : ℚ) ^ 2 > eps ^ 6 := by
+      have h_num_pos : ↑A'.card * ↑B'.card *
+          (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 -
+          eps ^ 6 * (Fintype.card V : ℚ) ^ 2 > 0 := by linarith [hcore]
+      have h_eq : (↑A'.card * ↑B'.card *
+          (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 -
+          eps ^ 6 * (Fintype.card V : ℚ) ^ 2) / (Fintype.card V : ℚ) ^ 2 =
+          ↑A'.card * ↑B'.card *
+          (edgeDensity G A' B' - edgeDensity G (A' ∪ A₂) (B' ∪ B₂)) ^ 2 /
+          (Fintype.card V : ℚ) ^ 2 - eps ^ 6 := by field_simp
+      linarith [div_pos h_num_pos hn2_pos, h_eq]
+    ring_nf at hAA_s hAB_s hBA_s hBB_s hcore_s ⊢
+    linarith [hAA_s, hAB_s, hBA_s, hBB_s, hcore_s]
 
   linarith [hST, hTS, hTT]
 

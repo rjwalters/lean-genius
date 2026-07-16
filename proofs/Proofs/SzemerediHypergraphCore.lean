@@ -95,6 +95,7 @@ theorem kPartiteDensity_nonneg {k : ℕ}
     (parts : List (Finset V)) :
     0 ≤ kPartiteDensity H parts := by
   unfold kPartiteDensity
+  dsimp only
   split_ifs
   · exact le_refl 0
   · positivity
@@ -105,6 +106,7 @@ theorem kPartiteDensity_le_one {k : ℕ}
     (parts : List (Finset V)) :
     kPartiteDensity H parts ≤ 1 := by
   unfold kPartiteDensity
+  dsimp only
   split_ifs with h
   · exact zero_le_one
   · have hne : (transversals parts).card ≠ 0 := by
@@ -135,9 +137,9 @@ def IsHypergraphRegular {k : ℕ}
   ∀ parts' : List (Finset V),
     parts'.length = k →
     (∀ i : Fin k,
-      parts'.get ⟨i.val, by omega⟩ ⊆ parts.get ⟨i.val, by omega⟩ ∧
-      ((parts'.get ⟨i.val, by omega⟩).card : ℚ) ≥
-        eps * (parts.get ⟨i.val, by omega⟩).card) →
+      parts'.getD i.val ∅ ⊆ parts.getD i.val ∅ ∧
+      ((parts'.getD i.val ∅).card : ℚ) ≥
+        eps * (parts.getD i.val ∅).card) →
     |kPartiteDensity H parts' - kPartiteDensity H parts| ≤ eps
 
 -- ═══════════════════════════════════════════════════════════════════
@@ -149,6 +151,7 @@ theorem kPartiteDensity_empty {k : ℕ}
     (parts : List (Finset V)) :
     kPartiteDensity (UHypergraph.empty V k) parts = 0 := by
   unfold kPartiteDensity
+  dsimp only
   split_ifs
   · rfl
   · simp [UHypergraph.empty]
