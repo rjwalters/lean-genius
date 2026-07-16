@@ -64,12 +64,13 @@ An extreme point of the convex hull of a finite set is not in the convex
 lemma extreme_not_in_hull_erase (pts : Finset E2) (p : E2)
     (hp : p ∈ (convexHull ℝ (↑pts : Set E2)).extremePoints ℝ) :
     p ∉ convexHull ℝ ((↑pts : Set E2) \ {p}) := by
-  contrapose! hp;
-  intro h;
-  have h_convex_hull_subset : convexHull ℝ (pts \ {p} : Set E2) ⊆ convexHull ℝ (convexHull ℝ pts \ {p}) := by
-    exact convexHull_mono fun x hx => ⟨ subset_convexHull ℝ _ hx.1, hx.2 ⟩;
-  convert Convex.mem_extremePoints_iff_mem_diff_convexHull_diff ( convex_convexHull ℝ ( pts : Set E2 ) ) |>.1 h using 1;
-  grind
+  intro h
+  have h_convex_hull_subset : convexHull ℝ (pts \ {p} : Set E2) ⊆ convexHull ℝ (convexHull ℝ pts \ {p}) :=
+    convexHull_mono fun x hx => ⟨ subset_convexHull ℝ _ hx.1, hx.2 ⟩
+  have h2 : p ∈ convexHull ℝ ((convexHull ℝ (pts : Set E2)) \ {p}) := h_convex_hull_subset h
+  have h3 := (Convex.mem_extremePoints_iff_mem_sdiff_convexHull_sdiff
+    (convex_convexHull ℝ (pts : Set E2))).1 hp
+  exact h3.2 h2
 
 /-
 Finite-dimensional Krein–Milman for a finite set: every point of a finite
@@ -82,7 +83,7 @@ lemma subset_convexHull_extremePoints (pts : Finset E2) :
   set E : Set E2 := A.extremePoints ℝ;
   -- A is compact (Set.Finite.isCompact_convexHull on the finite ↑pts) and convex (convex_convexHull).
   have hA_compact : IsCompact A := by
-    exact Set.Finite.isCompact_convexHull ( Finset.finite_toSet pts )
+    exact Set.Finite.isCompact_convexHull ℝ ( Finset.finite_toSet pts )
   have hA_convex : Convex ℝ A := by
     exact convex_convexHull ℝ _;
   -- By closure_convexHull_extremePoints, closure (convexHull ℝ E) = A.
@@ -92,7 +93,7 @@ lemma subset_convexHull_extremePoints (pts : Finset E2) :
   have hE_finite : Set.Finite E := by
     exact Set.Finite.subset ( Finset.finite_toSet pts ) ( extremePoints_convexHull_subset )
   have h_convexHull_E_closed : IsClosed (convexHull ℝ E) := by
-    exact hE_finite.isClosed_convexHull
+    exact hE_finite.isClosed_convexHull ℝ
   have h_closure_eq : closure (convexHull ℝ E) = convexHull ℝ E := by
     exact h_convexHull_E_closed.closure_eq;
   exact fun x hx => h_closure_eq ▸ h_closure ▸ subset_convexHull ℝ _ hx
@@ -130,8 +131,10 @@ lemma cross_eq_zero_iff_collinear (a b w : E2) :
           · use (b 1 - a 1) / (w 1 - a 1);
             ext i; fin_cases i <;> simp_all +decide [ sub_eq_iff_eq_add ] ;
         · use (b 0 - a 0) / (w 0 - a 0);
+          have hne : w 0 - a 0 ≠ 0 := sub_ne_zero.mpr h_cases
           ext i; fin_cases i <;> simp_all +decide [ sub_eq_iff_eq_add ] ;
-          grind;
+          field_simp
+          linear_combination -h;
       exact ⟨ w - a, ⟨ 0, by norm_num ⟩, ⟨ r, hr ⟩, ⟨ 1, by norm_num ⟩ ⟩;
   · rcases h with ⟨ v, ⟨ r, hr ⟩, ⟨ s, hs ⟩, ⟨ t, ht ⟩ ⟩ ; simp_all +decide [ sub_eq_iff_eq_add ] ; ring;
 
@@ -179,7 +182,7 @@ lemma not_mem_convexHull_triple_of_functional (f : E2 →ₗ[ℝ] ℝ) (p q b a 
     simp +decide [ hαβγ, map_add, map_smul ];
   -- Since $f(p) > f(a)$ and $f(q) > f(a)$, we have $α * (f(p) - f(a)) + β * (f(q) - f(a)) = 0$.
   have h_zero : α * (f p - f a) + β * (f q - f a) = 0 := by
-    grind;
+    linear_combination -h_apply_f - γ * hb - f a * hαβγ.2.2.2.1;
   -- Since $f(p) > f(a)$ and $f(q) > f(a)$, we have $α = 0$ and $β = 0$.
   have h_alpha_beta_zero : α = 0 ∧ β = 0 := by
     constructor <;> nlinarith;
@@ -286,7 +289,18 @@ lemma hasConvexNGon_caseB (pts : Finset E2) (hgen : InGeneralPosition ↑pts)
       have h_extreme_subset : Set.extremePoints ℝ (convexHull ℝ (pts : Set E2)) ⊆ pts := by
         grind +suggestions;
       exact ⟨ h_not_collinear x ( h_extreme_subset hx ) ( by tauto ) ( by tauto ), h_not_collinear y ( h_extreme_subset hy ) ( by tauto ) ( by tauto ), h_not_collinear z ( h_extreme_subset hz ) ( by tauto ) ( by tauto ) ⟩;
-    grind;
+    exact ⟨ fun h => h_not_collinear.1 ( ( hf.2 x ).1 h ),
+      fun h => h_not_collinear.2.1 ( ( hf.2 y ).1 h ),
+      fun h => h_not_collinear.2.2 ( ( hf.2 z ).1 h ) ⟩;
+  -- Membership, and distinctness from `a`/`b`, transfer from `{x, y, z}` to any of its elements.
+  have hmem : ∀ w ∈ ({x, y, z} : Finset E2),
+      w ∈ (convexHull ℝ (↑pts : Set E2)).extremePoints ℝ ∧ w ≠ a ∧ w ≠ b := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl | rfl
+    · exact ⟨hx, hax.symm, hbx.symm⟩
+    · exact ⟨hy, hay.symm, hby.symm⟩
+    · exact ⟨hz, haz.symm, hbz.symm⟩
   -- By two_same_sign, at least two of the three values `f x - f a`, `f y - f a`, `f z - f a` have the same strict sign.
   obtain ⟨p, q, hpq, hpsign⟩ : ∃ p q : E2, p ∈ ({x, y, z} : Finset E2) ∧ q ∈ ({x, y, z} : Finset E2) ∧ p ≠ q ∧ (0 < f p - f a ∧ 0 < f q - f a) ∨ p ∈ ({x, y, z} : Finset E2) ∧ q ∈ ({x, y, z} : Finset E2) ∧ p ≠ q ∧ (f p - f a < 0 ∧ f q - f a < 0) := by
     obtain ⟨p, q, hpq, hpsign⟩ : ∃ p q : E2, p ∈ ({x, y, z} : Finset E2) ∧ q ∈ ({x, y, z} : Finset E2) ∧ p ≠ q ∧ (0 < f p - f a ∧ 0 < f q - f a) ∨ p ∈ ({x, y, z} : Finset E2) ∧ q ∈ ({x, y, z} : Finset E2) ∧ p ≠ q ∧ (f p - f a < 0 ∧ f q - f a < 0) := by
@@ -294,9 +308,20 @@ lemma hasConvexNGon_caseB (pts : Finset E2) (hgen : InGeneralPosition ↑pts)
       rcases this with ( h | h | h | h | h | h ) <;> [ exact ⟨ x, y, by aesop ⟩ ; exact ⟨ y, z, by aesop ⟩ ; exact ⟨ x, z, by aesop ⟩ ; exact ⟨ x, y, by aesop ⟩ ; exact ⟨ y, z, by aesop ⟩ ; exact ⟨ x, z, by aesop ⟩ ];
     · exact ⟨ p, q, Or.inl ⟨ hpq, hpsign ⟩ ⟩;
     · exact ⟨ p, q, Or.inr ‹_› ⟩;
-  · apply hasConvexNGon_of_pair pts f p q a b;
-    grind +qlia;
-    all_goals aesop;
+  · apply hasConvexNGon_of_pair pts f p q a b
+    · exact (hmem p hpq).1
+    · exact (hmem q hpsign.1).1
+    · exact ha
+    · exact hb
+    · exact hpsign.2.1
+    · exact (hmem p hpq).2.1
+    · exact (hmem p hpq).2.2
+    · exact (hmem q hpsign.1).2.1
+    · exact (hmem q hpsign.1).2.2
+    · exact hab
+    · exact sub_pos.mp hpsign.2.2.1
+    · exact sub_pos.mp hpsign.2.2.2
+    · exact hf.1.symm
   · apply hasConvexNGon_of_pair pts (-f) p q a b;
     all_goals norm_num at *;
     all_goals aesop
@@ -343,7 +368,14 @@ theorem klein_upper_bound : (5 : ℕ) ∈ CardSet 4 := by
       -- The complement pts \ Ef has card 5 - 3 = 2 (Finset.card_sdiff with Ef ⊆ pts), so by Finset.card_eq_two it is {a,b} with a ≠ b; a,b ∈ pts and a,b ∉ Ef, giving a,b ∉ {x,y,z}, hence all the inequalities a≠x,a≠y,a≠z,b≠x,b≠y,b≠z.
       obtain ⟨a, b, ha, hb, hab⟩ : ∃ a b : E2, a ∈ pts ∧ b ∈ pts ∧ a ≠ b ∧ a ∉ E ∧ b ∉ E ∧ a ≠ x ∧ a ≠ y ∧ a ≠ z ∧ b ≠ x ∧ b ≠ y ∧ b ≠ z := by
         have h_compl : (pts \ {x, y, z}).card = 2 := by
-          grind;
+          have hxyz_sub : ({x, y, z} : Finset E2) ⊆ pts := by
+            intro w hw
+            have hwE : w ∈ E := by
+              rw [hxyz.2.2.2]; simpa using hw
+            simpa using hEsub hwE
+          have hxyz_card : ({x, y, z} : Finset E2).card = 3 :=
+            Finset.card_eq_three.mpr ⟨x, y, z, hxyz.1, hxyz.2.1, hxyz.2.2.1, rfl⟩
+          rw [Finset.card_sdiff_of_subset hxyz_sub, hxyz_card, hpts];
         obtain ⟨ a, ha, b, hb, hab ⟩ := Finset.one_lt_card.1 ( by linarith ) ; use a, b; aesop;
       apply hasConvexNGon_caseB pts hgen x y z a b hx hy hz ha hb;
       all_goals tauto;

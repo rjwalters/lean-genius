@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 118 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos107OQ01KleinUpperAristotle (hard grind-limit file: replaced ALL
+failing grind calls w/ explicit proofs — linear_combination, card_eq_three+card_sdiff_of_subset for the
+term-gen-limit Finset-card case, 13-goal explicit hasConvexNGon; NO native_decide, #print axioms clean
+propext/Choice/Quot only; card_sdiff->card_sdiff_of_subset; isCompact/isClosed_convexHull 𝕜 explicit).
+Repair: none. Unblocks child Erdos107OQ01.
+
 # DOCTOR SINGLE-PROOF BATCH 117 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos339Aristotle (cascade-only, no code changes; needed parent
