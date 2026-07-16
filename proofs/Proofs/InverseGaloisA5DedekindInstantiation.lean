@@ -80,6 +80,32 @@ once we identify the two `MulSemiringAction`s — they agree on the nose
 instance : IsGaloisGroup q.Gal ℚ q.SplittingField :=
   inferInstanceAs (IsGaloisGroup (q.SplittingField ≃ₐ[ℚ] q.SplittingField) ℚ q.SplittingField)
 
+/-- Ring-of-integers-level Galois group instance: `q.Gal` acting on `𝓞 q.SplittingField`
+over `ℤ`. Mathlib's derived instance (`IsGaloisGroup G ℚ L → IsGaloisGroup G ℤ (𝓞 L)`) does
+not fire here (v4.31): its subgoal `IsGaloisGroup Gal(L/ℚ) ℚ L` bakes in the generic
+`Algebra ℚ L` instance, while `q.Gal`'s `AlgEquiv` type carries the `SplittingField`-specific
+one — an instance diamond the unifier rejects. Constructing the instance by direct term
+application of `IsGaloisGroup.of_isFractionRing` synthesizes every instance argument in
+*this* context, consistently, so the diamond never arises.
+
+A prerequisite: `ℤ → 𝓞 q.SplittingField → q.SplittingField` must be a scalar tower — ring
+homs out of `ℤ` are unique (`RingHom.ext_int`), so the two composites agree; this is also
+not found by synthesis in v4.31, hence the explicit local instance. The `SMul` arguments
+are pinned to `Algebra.toSMul` (matching the `of_isFractionRing` binder): unpinned, the
+type elaborates with the `zsmul`-path `SMul ℤ _` instances and never unifies with the goal. -/
+instance : @IsScalarTower ℤ (𝓞 q.SplittingField) q.SplittingField
+    Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
+  IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)
+
+instance : IsGaloisGroup q.Gal ℤ (𝓞 q.SplittingField) :=
+  IsGaloisGroup.of_isFractionRing q.Gal ℤ (𝓞 q.SplittingField) ℚ q.SplittingField
+
+/-- `ℤ` is the invariant subring of the `q.Gal`-action on `𝓞 q.SplittingField` (needed by
+`arithFrobAt`); follows from the `IsGaloisGroup` instance above via its `isInvariant` field
+(only a low-priority instance in v4.31, so register it directly). -/
+instance : Algebra.IsInvariant ℤ (𝓞 q.SplittingField) q.Gal :=
+  IsGaloisGroup.isInvariant (G := q.Gal) (A := ℤ) (B := 𝓞 q.SplittingField)
+
 /-- **Bridge instantiation for the A₅ quintic.**
 
 Given an *unramified* prime `Q` of `𝓞 q.SplittingField` (`ramificationIdxIn = 1`) over a

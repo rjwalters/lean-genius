@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 158 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): LiouvilleTheorem (lt_div_iff₀->div_lt_iff₀ orientation; one_div_lt_one_div_of_lt
++mul_pos; forall_liouvilleWith_iff moved to root; unblocks earlier Erdos247 decoupling), InverseGaloisA5Dedekind
+Instantiation (vs merged parent DedekindFrobeniusBridge: 3 local instances IsScalarTower/IsGaloisGroup/
+IsInvariant pinned @Algebra.toSMul + of_isFractionRing term-build vs synth diamond). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 157 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): MaschkeLocalRingOQ010102 (MonoidAlgebra.lift arg order R M A -> R A M).
