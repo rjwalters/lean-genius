@@ -53,10 +53,11 @@ structure OrderedFactorization (m : ℕ) (n : ℕ) where
 
 /--
 **Minimum Factor:**
-The smallest factor in an ordered factorization is factors 0.
+The smallest factor in an ordered factorization is factors 0 (junk value 0
+when n = 0, since there is no factor to speak of).
 -/
 def minFactor {m n : ℕ} (f : OrderedFactorization m n) : ℕ :=
-  f.factors ⟨0, by omega⟩
+  if h : 0 < n then f.factors ⟨0, h⟩ else 0
 
 /--
 **t(n): Maximum Minimum Factor:**
@@ -64,9 +65,38 @@ t(n) is the maximum of the minimum factor over all n-factorizations of n!.
 -/
 noncomputable def t (n : ℕ) : ℕ :=
   -- The maximum minimum factor over all factorizations
-  Nat.find (⟨1, ⟨fun _ => 1, fun _ _ _ => le_refl 1,
-    by simp [Finset.prod_const, Nat.factorial], fun _ => le_refl 1⟩⟩ :
-    ∃ k : ℕ, ∃ f : OrderedFactorization n.factorial n, minFactor f = k)
+  Nat.find (show ∃ k : ℕ, ∃ f : OrderedFactorization n.factorial n, minFactor f = k by
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · -- n = 0: the (unique, vacuous) factorization into 0 factors of 0! = 1.
+      refine ⟨0, ⟨fun _ => 1, fun i j _ => le_refl 1, ?_, fun _ => le_refl 1⟩, ?_⟩
+      · subst hn; simp
+      · simp [minFactor, hn]
+    · -- n > 0: put all the mass on the last factor, a₁ = ⋯ = aₙ₋₁ = 1, aₙ = n!.
+      refine ⟨1, ⟨fun i => if i.val + 1 = n then n.factorial else 1, ?_, ?_, ?_⟩, ?_⟩
+      · intro i j hij
+        have hjlt : j.val < n := j.isLt
+        by_cases hi : i.val + 1 = n
+        · have hj : j.val + 1 = n := by omega
+          simp [hi, hj]
+        · by_cases hj : j.val + 1 = n
+          · simp [hi, hj]
+            exact Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero n)
+          · simp [hi, hj]
+      · have hn' : n - 1 < n := by omega
+        rw [Finset.prod_eq_single (⟨n - 1, hn'⟩ : Fin n)]
+        · simp [show n - 1 + 1 = n from by omega]
+        · intro b _ hb
+          have hbne : b.val ≠ n - 1 := fun h => hb (Fin.ext h)
+          simp [show b.val + 1 ≠ n from by omega]
+        · intro h; exact absurd (Finset.mem_univ _) h
+      · intro i
+        by_cases hi : i.val + 1 = n
+        · simp [hi]; exact Nat.factorial_pos n
+        · simp [hi]
+      · by_cases h1 : n = 1
+        · simp [minFactor, h1]
+        · have h0 : (⟨0, hn⟩ : Fin n).val + 1 ≠ n := by show (0 : ℕ) + 1 ≠ n; omega
+          simp [minFactor, hn, h0])
 
 /--
 **The ratio t(n)/n:**

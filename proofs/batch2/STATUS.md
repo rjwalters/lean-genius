@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 217 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos391Problem (minFactor partial->dite total; #38611 REPAIR t existence
+proof claimed BOGUS n!=1^n factorization -> valid case-split witness; Exists∘struct no longer auto-flattens).
+Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 216 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos25Problem (cascade artifact, no edits; clean once parent
