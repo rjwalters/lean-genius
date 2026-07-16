@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 265 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): FairGamesTheoremOQ02OQ01 (Martingale.ae_tendsto_limitProcess->submartingale
+.ae_tendsto_limitProcess_of_uniformIntegrable; StronglyAdapted; λ param no longer identifier), LawOfCosinesOQ01
+OQ01OQ03 (×₃ local notation->infixl:74 precedence; cross_smul_smul/normalize3_eq_inv_smul lemmas). Repairs: none.
+Closes FairGames + LawOfCosines families.
+
 # DOCTOR SINGLE-PROOF BATCH 264 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LawsOfLargeNumbersOQ01OQ02OQ01 (Adapted->StronglyAdapted split via
