@@ -113,27 +113,45 @@ theorem turanBound_mono {m n : ℕ} (h : m ≤ n) : turanBound m ≤ turanBound 
 theorem turanBound_eq_product (n : ℕ) :
     turanBound n = (n / 2) * (n - n / 2) := by
   unfold turanBound
-  have h2 : n = n / 2 * 2 + n % 2 := (Nat.div_add_mod n 2).symm
-  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
-  rcases hmod with heven | hodd
+  obtain ⟨k, rfl | rfl⟩ := Nat.even_or_odd' n
   · -- n even: n = 2k, n/2 = k, n - n/2 = k, n^2/4 = k^2
-    have hn : n = n / 2 * 2 := by omega
-    have hsub : n - n / 2 = n / 2 := by omega
-    rw [hsub]; ring_nf
-    rw [show n ^ 2 = (n / 2 * 2) ^ 2 by rw [hn]]
-    ring_nf; omega
+    have h1 : (2 * k) ^ 2 = 4 * k ^ 2 := by ring
+    have h2 : 2 * k / 2 = k := by omega
+    rw [h1, h2]
+    have h3 : 2 * k - k = k := by omega
+    rw [h3]
+    have h4 : k * k = k ^ 2 := by ring
+    omega
   · -- n odd: n = 2k+1, n/2 = k, n - n/2 = k+1, n^2/4 = k*(k+1)
-    have hn : n = n / 2 * 2 + 1 := by omega
-    have hsub : n - n / 2 = n / 2 + 1 := by omega
-    rw [hsub]
-    rw [show n ^ 2 = (n / 2 * 2 + 1) ^ 2 by rw [hn]]
-    ring_nf; omega
+    have h1 : (2 * k + 1) ^ 2 = 4 * (k ^ 2 + k) + 1 := by ring
+    have h2 : (2 * k + 1) / 2 = k := by omega
+    rw [h1, h2]
+    have h3 : 2 * k + 1 - k = k + 1 := by omega
+    rw [h3]
+    have h4 : k * (k + 1) = k ^ 2 + k := by ring
+    omega
 
 /-- turanBound is positive for n >= 2. -/
 theorem turanBound_pos {n : ℕ} (hn : 2 ≤ n) : 0 < turanBound n := by
   unfold turanBound
   have : 4 ≤ n ^ 2 := by nlinarith
   omega
+
+/-- n*(n-1)/2 is at most twice the Turan bound (helper for the m ≤ turanBound
+    argument in `k4free_savings_linear`). -/
+private theorem choose_two_le_twice_turanBound (n : ℕ) :
+    n * (n - 1) / 2 ≤ 2 * turanBound n := by
+  unfold turanBound
+  rcases n with _ | m
+  · simp
+  · show (m + 1) * m / 2 ≤ 2 * ((m + 1) ^ 2 / 4)
+    obtain ⟨k, rfl | rfl⟩ := Nat.even_or_odd' m
+    · have h1 : (2 * k + 1) * (2 * k) = (2 * k ^ 2 + k) * 2 := by ring
+      have h2 : (2 * k + 1) ^ 2 = 4 * (k ^ 2 + k) + 1 := by ring
+      omega
+    · have h1 : (2 * k + 1 + 1) * (2 * k + 1) = (2 * k ^ 2 + 3 * k + 1) * 2 := by ring
+      have h2 : (2 * k + 1 + 1) ^ 2 = 4 * (k ^ 2 + 2 * k + 1) := by ring
+      omega
 
 /-
 ====================================================================
@@ -206,9 +224,8 @@ private theorem completeBipartite_adj_iff {a b : ℕ}
     on the same side, and same-side vertices are never adjacent. -/
 theorem completeBipartite_cliqueFree (a b : ℕ) :
     (completeBipartite a b).CliqueFree 3 := by
-  intro s
-  skip
-  intro hcliq hcard
+  intro s hs
+  obtain ⟨hcliq, hcard⟩ := hs
   -- s has 3 elements; extract them
   rw [SimpleGraph.isClique_iff] at hcliq
   -- Get three distinct elements
@@ -216,12 +233,12 @@ theorem completeBipartite_cliqueFree (a b : ℕ) :
   have hne : s.Nonempty := by exact Finset.card_pos.mp (by omega)
   obtain ⟨x, hx⟩ := hne
   have hne2 : (s.erase x).Nonempty := by
-    rw [Finset.card_erase_of_mem hx]; omega
+    rw [← Finset.card_pos, Finset.card_erase_of_mem hx]; omega
   obtain ⟨y, hy⟩ := hne2
   have hy_mem : y ∈ s := Finset.mem_of_mem_erase hy
   have hxy : x ≠ y := ne_of_mem_erase hy |>.symm
   have hne3 : ((s.erase x).erase y).Nonempty := by
-    rw [Finset.card_erase_of_mem hy, Finset.card_erase_of_mem hx]; omega
+    rw [← Finset.card_pos, Finset.card_erase_of_mem hy, Finset.card_erase_of_mem hx]; omega
   obtain ⟨z, hz⟩ := hne3
   have hz_ey : z ∈ s.erase x := Finset.mem_of_mem_erase hz
   have hz_mem : z ∈ s := Finset.mem_of_mem_erase hz_ey
@@ -266,7 +283,7 @@ theorem completeBipartite_edgeCount (a b : ℕ) :
     intro ⟨i₁, j₁⟩ ⟨i₂, j₂⟩ h
     rcases Sym2.eq_iff.mp h with ⟨h1, h2⟩ | ⟨h1, h2⟩
     · exact Prod.ext (Sum.inl_injective h1) (Sum.inr_injective h2)
-    · exact Sum.noConfusion h1
+    · simp at h1
   -- Step 2: edgeFinset = image of the product under the edge map
   have h_eq : (completeBipartite a b).edgeFinset =
       (Finset.univ : Finset (Fin a × Fin b)).image
@@ -299,9 +316,8 @@ private theorem cliqueFree3_clique_card_le_two (G : SimpleGraph V) [DecidableRel
     (hG : G.CliqueFree 3) (S : Finset V) (hS : G.IsClique (↑S : Set V)) :
     S.card ≤ 2 := by
   by_contra h
-  push_neg at h
-  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_smaller_set S 3 h
-  exact hG T ⟨hS.mono (Finset.coe_subset.mpr hTS), hTcard⟩
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_subset_card_eq (show 3 ≤ S.card by omega)
+  exact hG T ⟨hS.subset (Finset.coe_subset.mpr hTS), hTcard⟩
 
 /-- In a triangle-free graph, two edges covered by the same clique must be equal.
     Key insight: clique has ≤ 2 vertices, so contains at most one edge. -/
@@ -312,9 +328,9 @@ private theorem edges_in_same_clique_eq (G : SimpleGraph V) [DecidableRel G.Adj]
     e₁ = e₂ := by
   have hScard := cliqueFree3_clique_card_le_two G hG S hS
   revert h1 he₁
-  refine Sym2.ind (fun a b h1 he₁ => ?_) e₁
+  refine Sym2.ind (fun a b he₁ h1 => ?_) e₁
   revert h2 he₂
-  refine Sym2.ind (fun c d h2 he₂ => ?_) e₂
+  refine Sym2.ind (fun c d he₂ h2 => ?_) e₂
   rw [SimpleGraph.mem_edgeSet] at he₁ he₂
   have hab : a ≠ b := G.ne_of_adj he₁
   have hcd : c ≠ d := G.ne_of_adj he₂
@@ -344,14 +360,9 @@ private noncomputable def edgeToFinset' (e : Sym2 V) : Finset V :=
 private theorem edgeToFinset'_injective :
     Function.Injective (edgeToFinset' (V := V)) := by
   intro e₁ e₂ h
-  have hmem : ∀ a : V, a ∈ e₁ ↔ a ∈ e₂ := fun a => by
-    simp only [edgeToFinset', Finset.mem_filter, Finset.mem_univ, true_and] at h
-    constructor
-    · intro ha; exact (Finset.filter_congr_decidable (· ∈ e₁) (· ∈ e₂)
-        |>.mp h ▸ Finset.mem_filter.mpr ⟨Finset.mem_univ a, ha⟩).2
-    · intro ha; exact (Finset.filter_congr_decidable (· ∈ e₂) (· ∈ e₁)
-        |>.mp h.symm ▸ Finset.mem_filter.mpr ⟨Finset.mem_univ a, ha⟩).2
-  exact Sym2.ext_iff.mpr hmem
+  refine Sym2.ext fun a => ?_
+  have h' : a ∈ edgeToFinset' e₁ ↔ a ∈ edgeToFinset' e₂ := by rw [h]
+  simpa [edgeToFinset'] using h'
 
 /-- Construct an edge-by-edge partition: each edge is its own 2-element clique. -/
 private noncomputable def edgeByEdgePartition (G : SimpleGraph V)
@@ -363,7 +374,8 @@ private noncomputable def edgeByEdgePartition (G : SimpleGraph V)
     obtain ⟨e, he, rfl⟩ := hS
     rw [SimpleGraph.mem_edgeFinset] at he
     intro a ha b hb hab
-    simp only [edgeToFinset', Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+    replace ha : a ∈ e := by simpa [edgeToFinset'] using ha
+    replace hb : b ∈ e := by simpa [edgeToFinset'] using hb
     revert ha hb he
     exact Sym2.ind (fun v w he ha hb => by
       rw [SimpleGraph.mem_edgeSet] at he
@@ -376,9 +388,9 @@ private noncomputable def edgeByEdgePartition (G : SimpleGraph V)
     ) e
   covers := by
     intro v w hvw
-    refine ⟨edgeToFinset' (⟦(v, w)⟧ : Sym2 V), ?_, ?_, ?_⟩
-    · exact Finset.mem_image.mpr ⟨⟦(v, w)⟧,
-        SimpleGraph.mem_edgeFinset.mpr (SimpleGraph.mem_edgeSet.mpr hvw), rfl⟩
+    refine ⟨edgeToFinset' s(v, w), ?_, ?_, ?_⟩
+    · refine Finset.mem_image.mpr ⟨s(v, w), ?_, rfl⟩
+      simpa using hvw
     · simp [edgeToFinset', Sym2.mem_iff]
     · simp [edgeToFinset', Sym2.mem_iff]
 
@@ -399,8 +411,8 @@ private theorem edgeFinset_card_le_cliquePartitionNum (G : SimpleGraph V)
     [DecidableRel G.Adj] (hG : G.CliqueFree 3) :
     G.edgeFinset.card ≤ cliquePartitionNum G := by
   unfold cliquePartitionNum
-  apply Nat.le_sInf
-  intro m ⟨P, hPcard⟩
+  refine le_csInf ⟨(edgeByEdgePartition G).cliques.card, edgeByEdgePartition G, rfl⟩ ?_
+  rintro m ⟨P, hPcard⟩
   rw [← hPcard]
   -- For each edge, P.covers provides a covering clique
   have hex : ∀ e ∈ G.edgeFinset, ∃ S ∈ P.cliques, ∀ v, v ∈ e → v ∈ S := by
@@ -473,13 +485,27 @@ theorem dense_contains_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
   intro hcf
   unfold isDense turanBound at hG
   -- CliqueFree 3 = CliqueFree (2+1), so Turán with r=2
-  have hbound := hcf.card_edgeFinset_le
+  -- (type ascription zeta-reduces the `have n := Fintype.card V` wrapper
+  --  in Mathlib's statement so that `rw` can see through it)
+  have hbound : G.edgeFinset.card ≤
+      (Fintype.card V ^ 2 - (Fintype.card V % 2) ^ 2) * (2 - 1) / (2 * 2) +
+        (Fintype.card V % 2).choose 2 := hcf.card_edgeFinset_le
   -- hbound: G.edgeFinset.card ≤ (n²-(n%2)²)*(2-1)/(2*2) + (n%2).choose 2
-  set n := Fintype.card V with hn
   -- Simplify: (n%2).choose 2 = 0 for n%2 ∈ {0,1}
-  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
+  have hmod : Fintype.card V % 2 = 0 ∨ Fintype.card V % 2 = 1 :=
+    Nat.mod_two_eq_zero_or_one _
   -- Both cases: RHS ≤ n²/4 = turanBound, contradicting hG
-  rcases hmod with h | h <;> simp only [h] at hbound <;> omega
+  rcases hmod with h | h
+  · rw [h] at hbound
+    have hc : Nat.choose 0 2 = 0 := rfl
+    rw [hc] at hbound
+    norm_num at hbound
+    omega
+  · rw [h] at hbound
+    have hc : Nat.choose 1 2 = 0 := rfl
+    rw [hc] at hbound
+    norm_num at hbound
+    omega
 
 /-- **Open Question (Erdos 1017)**: Can the EGP bound floor(n^2/4) be improved
     for dense graphs? That is, can triangles and larger cliques be exploited
@@ -505,11 +531,22 @@ theorem k4_saves_more_than_triangle : 5 > 2 * 2 := by norm_num
 
 /-- General savings formula: K_r saves r*(r-1)/2 - 1 over individual edges. -/
 theorem clique_savings (r : ℕ) (hr : 2 ≤ r) :
-    r * (r - 1) / 2 ≥ r - 1 := by omega
+    r * (r - 1) / 2 ≥ r - 1 := by
+  obtain ⟨s, rfl⟩ : ∃ s, r = s + 2 := ⟨r - 2, by omega⟩
+  have h1 : (s + 2) * (s + 2 - 1) = s ^ 2 + 3 * s + 2 := by
+    have h : s + 2 - 1 = s + 1 := rfl
+    rw [h]; ring
+  omega
 
 /-- Savings grow quadratically: K_{r+1} saves at least r more than K_r. -/
 theorem savings_growth (r : ℕ) (hr : 2 ≤ r) :
-    (r + 1) * r / 2 - 1 ≥ r * (r - 1) / 2 - 1 + (r - 1) := by omega
+    (r + 1) * r / 2 - 1 ≥ r * (r - 1) / 2 - 1 + (r - 1) := by
+  obtain ⟨s, rfl⟩ : ∃ s, r = s + 2 := ⟨r - 2, by omega⟩
+  have h1 : (s + 2 + 1) * (s + 2) = s ^ 2 + 5 * s + 6 := by ring
+  have h2 : (s + 2) * (s + 2 - 1) = s ^ 2 + 3 * s + 2 := by
+    have h : s + 2 - 1 = s + 1 := rfl
+    rw [h]; ring
+  omega
 
 /-
 ====================================================================
@@ -558,6 +595,10 @@ theorem k4free_savings_linear (G : SimpleGraph V) [DecidableRel G.Adj]
     (m : ℕ) (hm : G.edgeFinset.card = turanBound (Fintype.card V) + m)
     (hm_pos : 0 < m) :
     cliquePartitionNum G + m = turanBound (Fintype.card V) := by
+  -- m ≤ turanBound: edge count t + m is at most n*(n-1)/2 ≤ 2 * turanBound
+  have hE := G.card_edgeFinset_le_card_choose_two
+  simp only [Nat.choose_two_right] at hE
+  have h2 := choose_two_le_twice_turanBound (Fintype.card V)
   rw [k4free_partition_number G hG m hm]
   omega
 
@@ -630,13 +671,25 @@ theorem k4free_double_savings (G₁ G₂ : SimpleGraph V)
 theorem turanBound_succ_diff (n : ℕ) :
     turanBound (n + 1) ≤ turanBound n + (n + 1) / 2 := by
   unfold turanBound
-  have : (n + 1) ^ 2 = n ^ 2 + 2 * n + 1 := by ring
-  omega
+  obtain ⟨k, rfl | rfl⟩ := Nat.even_or_odd' n
+  · have h1 : (2 * k + 1) ^ 2 = 4 * (k ^ 2 + k) + 1 := by ring
+    have h2 : (2 * k) ^ 2 = 4 * k ^ 2 := by ring
+    omega
+  · have h1 : (2 * k + 1 + 1) ^ 2 = 4 * (k ^ 2 + 2 * k + 1) := by ring
+    have h2 : (2 * k + 1) ^ 2 = 4 * (k ^ 2 + k) + 1 := by ring
+    omega
 
 /-- The Turan bound is at most n^2/4, which is at most n*(n-1)/2. -/
 theorem turanBound_le_choose_two (n : ℕ) :
     turanBound n ≤ n * (n - 1) / 2 := by
-  unfold turanBound; omega
+  unfold turanBound
+  rcases n with _ | m
+  · simp
+  · have h1 : (m + 1) ^ 2 = m ^ 2 + 2 * m + 1 := by ring
+    have h2 : (m + 1) * (m + 1 - 1) = m ^ 2 + m := by
+      have h : m + 1 - 1 = m := rfl
+      rw [h]; ring
+    omega
 
 /-- For triangle-free dense graphs: a contradiction. No triangle-free graph
     can be dense (have more than floor(n^2/4) edges). This is Turan's theorem. -/
