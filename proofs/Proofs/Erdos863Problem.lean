@@ -164,22 +164,21 @@ theorem isB2r_one_iff_sidon (A : Finset ℕ) : IsB2r A 1 ↔ IsSidonSetLocal A :
     intro h a ha b hb c hc d hd hab hcd hsum
     have h1 := h (a + b)
     unfold sumRepCount at h1
-    have hmem1 : (a, b) ∈ (A.product A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a + b) := by
-      simp only [Finset.mem_filter, Finset.mem_product]
-      exact ⟨⟨ha, hb⟩, hab, rfl⟩
-    have hmem2 : (c, d) ∈ (A.product A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a + b) := by
-      simp only [Finset.mem_filter, Finset.mem_product]
-      exact ⟨⟨hc, hd⟩, hcd, hsum⟩
-    have heq := Finset.card_le_one.mp h1 hmem1 hmem2
+    have hmem1 : (a, b) ∈ (A.product A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a + b) :=
+      Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb⟩, hab, rfl⟩
+    have hmem2 : (c, d) ∈ (A.product A).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = a + b) :=
+      Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hc, hd⟩, hcd, hsum.symm⟩
+    have heq := Finset.card_le_one.mp h1 (a, b) hmem1 (c, d) hmem2
     exact ⟨congr_arg Prod.fst heq, congr_arg Prod.snd heq⟩
   · -- Sidon → B₂[1]: distinct sums implies unique representation
     intro h n
     unfold sumRepCount
     rw [Finset.card_le_one]
     intro ⟨a, b⟩ hab ⟨c, d⟩ hcd
-    simp only [Finset.mem_filter, Finset.mem_product] at hab hcd
-    obtain ⟨⟨ha, hb⟩, hab_le, hab_sum⟩ := hab
-    obtain ⟨⟨hc, hd⟩, hcd_le, hcd_sum⟩ := hcd
+    obtain ⟨hab_prod, hab_le, hab_sum⟩ := Finset.mem_filter.mp hab
+    obtain ⟨hcd_prod, hcd_le, hcd_sum⟩ := Finset.mem_filter.mp hcd
+    obtain ⟨ha, hb⟩ := Finset.mem_product.mp hab_prod
+    obtain ⟨hc, hd⟩ := Finset.mem_product.mp hcd_prod
     have hsum : a + b = c + d := by omega
     have := h a ha b hb c hc d hd hab_le hcd_le hsum
     exact Prod.ext this.1 this.2
@@ -188,16 +187,18 @@ theorem isB2r_one_iff_sidon (A : Finset ℕ) : IsB2r A 1 ↔ IsSidonSetLocal A :
 theorem isB2r_singleton (a : ℕ) (r : ℕ) (hr : r ≥ 1) : IsB2r {a} r := by
   intro n
   unfold sumRepCount
-  calc ({a} ×ˢ {a}).filter (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n) |>.card
-      ≤ ({a} ×ˢ {a}).card := Finset.card_filter_le _ _
-    _ = 1 := by simp [Finset.product_singleton_singleton]
-    _ ≤ r := hr
+  have hcard : (({a} : Finset ℕ).product {a}).card = 1 := by simp
+  have hle : ((({a} : Finset ℕ).product {a}).filter
+      (fun p => p.1 ≤ p.2 ∧ p.1 + p.2 = n)).card
+      ≤ (({a} : Finset ℕ).product {a}).card := Finset.card_filter_le _ _
+  omega
 
 /-- Singleton sets are difference B₂[r] for any r ≥ 1. -/
 theorem isDiffB2r_singleton (a : ℕ) (r : ℕ) (hr : r ≥ 1) : IsDiffB2r {a} r := by
   intro n hn
   unfold diffRepCount
-  calc ({a} ×ˢ {a}).filter (fun p => (p.1 : ℤ) - (p.2 : ℤ) = n) |>.card
-      ≤ ({a} ×ˢ {a}).card := Finset.card_filter_le _ _
-    _ = 1 := by simp [Finset.product_singleton_singleton]
-    _ ≤ r := hr
+  have hcard : (({a} : Finset ℕ).product {a}).card = 1 := by simp
+  have hle : ((({a} : Finset ℕ).product {a}).filter
+      (fun p => (p.1 : ℤ) - (p.2 : ℤ) = n)).card
+      ≤ (({a} : Finset ℕ).product {a}).card := Finset.card_filter_le _ _
+  omega
