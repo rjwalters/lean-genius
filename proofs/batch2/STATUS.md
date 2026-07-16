@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 251 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FrobeniusNumberOQ01 (Even destructure a=ka+ka; card_filter_add_card_filter_not;
+Nat.card_Icc; frobenius_alt_axiom + a≠b case split for (a-1)(b-1)≥2). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 250 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos99Problem (filter application parens; Finset.exists_ne_of_one_lt_card
