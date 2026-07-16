@@ -8,9 +8,9 @@
   ────────────────────────────────────────────────────────────────────────────
   RESULT.  For any real `v` whose regular continued fraction has not terminated
   by step `n` (in particular, any irrational `v`), the `n`-th convergent
-  `pₙ/qₙ := (of v).convs n` satisfies the sharp two-sided bracket
+  `pₙ/qₙ := (GenContFract.of v).convs n` satisfies the sharp two-sided bracket
 
-      1 / (qₙ (qₙ₊₁ + qₙ))  <  |v - pₙ/qₙ|  ≤  1 / qₙ²,       qₙ := (of v).dens n.
+      1 / (qₙ (qₙ₊₁ + qₙ))  <  |v - pₙ/qₙ|  ≤  1 / qₙ²,       qₙ := (GenContFract.of v).dens n.
 
   Mathlib supplies the RIGHT inequality (`GenContFract.abs_sub_convs_le`, giving
   `≤ 1/(qₙ qₙ₊₁)`) and the exact error identity (`GenContFract.sub_convs_eq`),
@@ -44,16 +44,16 @@ to within `1 / qₙ²`.  Immediate from `GenContFract.abs_sub_convs_le`
 (`|v - convs n| ≤ 1/(qₙ qₙ₊₁)`) together with denominator monotonicity
 (`of_den_mono`, `qₙ ≤ qₙ₊₁`) and positivity (`succ_nth_fib_le_of_nth_den`,
 `qₙ ≥ fib(n+1) ≥ 1`). -/
-theorem convs_dist_le_one_div_den_sq (h : ¬ (of v).TerminatedAt n) :
-    |v - (of v).convs n| ≤ 1 / ((of v).dens n) ^ 2 := by
+theorem convs_dist_le_one_div_den_sq (h : ¬ (GenContFract.of v).TerminatedAt n) :
+    |v - (GenContFract.of v).convs n| ≤ 1 / ((GenContFract.of v).dens n) ^ 2 := by
   have hub := abs_sub_convs_le (v := v) (n := n) h
   -- qₙ ≥ fib (n+1) ≥ 1 > 0
-  have hfib : ((Nat.fib (n + 1) : ℕ) : ℝ) ≤ (of v).dens n :=
+  have hfib : ((Nat.fib (n + 1) : ℕ) : ℝ) ≤ (GenContFract.of v).dens n :=
     succ_nth_fib_le_of_nth_den (v := v)
       (Or.inr (mt (terminated_stable (Nat.sub_le n 1)) h))
-  have hpos : (0 : ℝ) < (of v).dens n :=
+  have hpos : (0 : ℝ) < (GenContFract.of v).dens n :=
     lt_of_lt_of_le (by exact_mod_cast Nat.fib_pos.mpr (Nat.succ_pos n)) hfib
-  have hmono : (of v).dens n ≤ (of v).dens (n + 1) := of_den_mono
+  have hmono : (GenContFract.of v).dens n ≤ (GenContFract.of v).dens (n + 1) := of_den_mono
   refine hub.trans ?_
   rw [sq]
   apply one_div_le_one_div_of_le
@@ -72,19 +72,19 @@ exact error identity `sub_convs_eq`,
 `frₙ⁻¹ < bₙ₊₁ + 1` (because `bₙ₊₁ = ⌊frₙ⁻¹⌋`), together with the continuant
 recurrence `Bₙ₊₁ = bₙ₊₁ Bₙ + Bₙ₋₁`, one gets
 `frₙ⁻¹ Bₙ + Bₙ₋₁ < Bₙ₊₁ + Bₙ`, hence the claim. -/
-theorem convs_dist_lower (h : ¬ (of v).TerminatedAt n) :
-    1 / ((of v).dens n * ((of v).dens (n + 1) + (of v).dens n))
-      < |v - (of v).convs n| := by
+theorem convs_dist_lower (h : ¬ (GenContFract.of v).TerminatedAt n) :
+    1 / ((GenContFract.of v).dens n * ((GenContFract.of v).dens (n + 1) + (GenContFract.of v).dens n))
+      < |v - (GenContFract.of v).convs n| := by
   -- Continuant shorthand: Bₙ = conts.b, Bₙ₋₁ = pred_conts.b, Bₙ₊₁ = nextConts.b.
-  set conts := (of v).contsAux (n + 1) with conts_eq
-  set pred_conts := (of v).contsAux n with pred_conts_eq
-  set nextConts := (of v).contsAux (n + 2) with nextConts_eq
-  have hdn : (of v).dens n = conts.b := by
+  set conts := (GenContFract.of v).contsAux (n + 1) with conts_eq
+  set pred_conts := (GenContFract.of v).contsAux n with pred_conts_eq
+  set nextConts := (GenContFract.of v).contsAux (n + 2) with nextConts_eq
+  have hdn : (GenContFract.of v).dens n = conts.b := by
     rw [den_eq_conts_b, nth_cont_eq_succ_nth_contAux, conts_eq]
-  have hdn1 : (of v).dens (n + 1) = nextConts.b := by
+  have hdn1 : (GenContFract.of v).dens (n + 1) = nextConts.b := by
     rw [den_eq_conts_b, nth_cont_eq_succ_nth_contAux, nextConts_eq]
   -- Stream / partial-denominator data at index n.
-  obtain ⟨gp, s_nth_eq⟩ : ∃ gp, (of v).s.get? n = some gp :=
+  obtain ⟨gp, s_nth_eq⟩ : ∃ gp, (GenContFract.of v).s.get? n = some gp :=
     Option.ne_none_iff_exists'.1 h
   have gp_a_eq_one : gp.a = 1 := of_partNum_eq_one (partNum_eq_s_a s_nth_eq)
   -- Continuant recurrence: Bₙ₊₁ = Bₙ₋₁ + bₙ₊₁ Bₙ.
@@ -100,13 +100,13 @@ theorem convs_dist_lower (h : ¬ (of v).TerminatedAt n) :
     IntFractPair.succ_nth_stream_eq_some_iff.1 succ_nth_stream_eq
   -- Positivity of the continuant denominators (Fibonacci lower bounds).
   have conts_b_ineq : (Nat.fib (n + 1) : ℝ) ≤ conts.b :=
-    haveI : ¬(of v).TerminatedAt (n - 1) := mt (terminated_stable n.pred_le) h
+    haveI : ¬(GenContFract.of v).TerminatedAt (n - 1) := mt (terminated_stable n.pred_le) h
     fib_le_of_contsAux_b <| Or.inr this
   have zero_lt_conts_b : (0 : ℝ) < conts.b :=
     conts_b_ineq.trans_lt' <| by exact_mod_cast Nat.fib_pos.2 n.succ_pos
   have zero_le_pred : (0 : ℝ) ≤ pred_conts.b := by
     have hfib : (Nat.fib n : ℝ) ≤ pred_conts.b :=
-      haveI : ¬(of v).TerminatedAt (n - 2) := mt (terminated_stable (n.sub_le 2)) h
+      haveI : ¬(GenContFract.of v).TerminatedAt (n - 2) := mt (terminated_stable (n.sub_le 2)) h
       fib_le_of_contsAux_b <| Or.inr this
     exact le_trans (by positivity) hfib
   -- Positivity of the n-th fractional part and its inverse.
@@ -121,7 +121,7 @@ theorem convs_dist_lower (h : ¬ (of v).TerminatedAt n) :
   -- Exact error term |v - convs n| = 1 / (Bₙ (frₙ⁻¹ Bₙ + Bₙ₋₁)).
   set den' := conts.b * (ifp_n.fr⁻¹ * conts.b + pred_conts.b) with den'_eq
   have zero_lt_den' : (0 : ℝ) < den' := by rw [den'_eq]; positivity
-  have habs : |v - (of v).convs n| = 1 / den' := by
+  have habs : |v - (GenContFract.of v).convs n| = 1 / den' := by
     have hEq := sub_convs_eq (v := v) (n := n) stream_nth_eq
     simp only [stream_nth_fr_ne_zero, if_false, ← conts_eq, ← pred_conts_eq, ← den'_eq] at hEq
     rw [hEq, abs_div, abs_neg_one_pow, abs_of_pos zero_lt_den']
@@ -134,9 +134,9 @@ theorem convs_dist_lower (h : ¬ (of v).TerminatedAt n) :
 
 /-- **Two-sided convergent bracket.**  Combining the two bounds above:
 `1 / (qₙ (qₙ₊₁ + qₙ)) < |v - pₙ/qₙ| ≤ 1 / qₙ²` for any non-terminating index. -/
-theorem convs_dist_bracket (h : ¬ (of v).TerminatedAt n) :
-    1 / ((of v).dens n * ((of v).dens (n + 1) + (of v).dens n)) < |v - (of v).convs n|
-      ∧ |v - (of v).convs n| ≤ 1 / ((of v).dens n) ^ 2 :=
+theorem convs_dist_bracket (h : ¬ (GenContFract.of v).TerminatedAt n) :
+    1 / ((GenContFract.of v).dens n * ((GenContFract.of v).dens (n + 1) + (GenContFract.of v).dens n)) < |v - (GenContFract.of v).convs n|
+      ∧ |v - (GenContFract.of v).convs n| ≤ 1 / ((GenContFract.of v).dens n) ^ 2 :=
   ⟨convs_dist_lower h, convs_dist_le_one_div_den_sq h⟩
 
 end ETranscendentalOQ03OQ01
