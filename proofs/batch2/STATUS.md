@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 299 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos968Problem (native_decide on Nat.nth fails [noncomputable] -> REMOVED
+via real Nat.nth_count + decide'd Nat.count + norm_num primality; axiom-cleaner). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 298 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos720Problem (anonymous ∀n,n≥3 binder omega-regression -> named hn;
