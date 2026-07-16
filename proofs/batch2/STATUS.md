@@ -1,3 +1,11 @@
+# LEDGER RECLASSIFY (2026-07-16): KonigsbergOQ01OQ02 RESIDUAL->PRE-EXISTING (2nd never-green)
+
+Was FAIL on v4.26 spike baseline (results-full.tsv) too — never compiled on the old pin. meta.json self-documents
+"does not build under latest Mathlib ... pre-existing from PR #16675". ~90 error sites, needs a multi-hour
+REARCHITECTURE (transcribe the already-GREEN companion KonigsbergOQ01OQ02Recipe.lean's Option-based get?/getD
+approach to avoid Fin-index proof obligations), NOT single-proof migration drift. Routed to #38612 deep-rework.
+PRE-EXISTING 26->27. Endpoint class growing as tail thins (Bezout Transitive was 1st).
+
 # DOCTOR SINGLE-PROOF BATCH 63 (mixed fleet, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos780Aristotle (#38611: threshold_k2 FALSE at t=0 -> add 1≤t;
