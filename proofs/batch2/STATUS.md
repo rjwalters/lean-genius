@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 148 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos922Problem (∃ no longer accepts [...] instance binders -> (_:T);
+doc comment after open..in; #38611 REPAIR chromaticNumber' meaningless unconstrained-predicate Nat.find
+w/ hidden sorry -> genuine sInf{n|∃c coloring<n}). Repairs: 1. (3 other sorries + 2 axioms unchanged).
+
 # DOCTOR SINGLE-PROOF BATCH 147 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos94OQ02 (def PointConfig:=Finset Point -> abbrev; ![...] -> !₂[...]
