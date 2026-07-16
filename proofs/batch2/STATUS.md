@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 310 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): TestApi203 (¬Nat.Prime 78558 by decide OOM/maxRecDepth -> norm_num;
+test-scaffold #check probe). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 309 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): PicksTheoremOQ01OQ01OQ01 (same ℤ Finset.Icc/native_decide poison seam:

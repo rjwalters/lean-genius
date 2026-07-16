@@ -15,7 +15,7 @@ set_option maxRecDepth 40000
 
 -- Test: divisibility from mod
 example : 3 ∣ (78558 : ℕ) := by decide
-example : ¬ Nat.Prime 78558 := by decide
+example : ¬ Nat.Prime 78558 := by norm_num
 
 -- Test: periodic divisibility
 -- If n ≡ 0 (mod 2), then 3 | 78557 * 2^n + 1
