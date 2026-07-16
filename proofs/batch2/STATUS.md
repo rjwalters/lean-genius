@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 62 (mixed fleet, #38065, 2026-07-16)
+
+Batch collect of pending greens (Erdos1120/1121 Fable + any Sonnet). Fable 16/17 hard tail. Details in
+per-file agent reports; all re-verified EXIT=0 via conflict-proof collector. Repairs: none this batch.
+
 # DOCTOR SINGLE-PROOF BATCH 61 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): MinkowskiTheoremOQ02 (ENNReal.ofReal_lt_ofReal_iff_of_nonneg; zsmul_eq_smul_cast
