@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 244 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos629Problem (17min: Colorable 2 direct construct; convert using 1 ℕ ≤
+spurious LE-instance goal; Nat.le .not_le/.not_lt gone -> Nat.not_le_of_lt; sInf_mem direct; 7 pre-existing
+sorries), Erdos921Problem (∀n≥4 binder √n before f -> ∀n:ℕ,n≥4 force ℕ). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 243 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos854Problem (Nat Prime ambiguity; REMOVED native_decide ->
