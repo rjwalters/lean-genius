@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 209 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1WIP01/Erdos1Wip01 (CASE-COLLISION root cause of earlier false-green:
+two git-tracked paths differing only in case collapse to 1 slot on macOS core.ignorecase; first agent's git
+add only updated one -> stale broken blob failed reverify. Fixed both via update-index; real proof gap
+dss_sum_ge_pow_sub_one needed dss_sum_lower_bound fed to omega; #38611 dss_singleton 0<a). Repair: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 208 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos152Problem (HARD 18min: Finset.card_bij Prod-eq ordering; A.image+
