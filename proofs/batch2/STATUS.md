@@ -1,3 +1,15 @@
+# DOCTOR SINGLE-PROOF BATCH 358 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, 389k tok/233 tools/46min, 3417-line scaffold)**: SpernerFreudenthalSimplex
+(bare AbstractSimplicialData -> Triangulation.AbstractSimplicialData (cascaded ~100 errs); v4.31 dropped
+auto-include of section variables used only in tactic BODIES -> include/omit..in ~20 sites; fin_cases
+yields ⟨k,⋯⟩ not OfNat -> show-normalize before rw ~10 sites; Prod.mk.injEq no longer decomposes vs eta
+var -> add Prod.ext_iff ~16 sets; omega chokes on disjunction w/ literal True -> true_and/and_true;
+set let-locals need clear_value before fin_cases; dif_pos/neg motive-not-type-correct -> show+congr 1+decide;
+strengthened incomplete t1_ne_t2 proof). Repair: none (pure drift; 1 pre-existing sorry preserved).
+SEAM: v4.31 drops auto-include of section vars used only in tactic bodies -> explicit include/omit..in;
+Prod.mk.injEq no longer decomposes against eta var -> Prod.ext_iff; omega chokes on `∨ True` -> simp true_and first.
+
 # DOCTOR SINGLE-PROOF BATCH 357 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ03OQ01 (NOT decide-maxrecdepth (stale label) — v4.31
