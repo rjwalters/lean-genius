@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 191 (all-Sonnet + 2 Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1130Problem (dependent if h0/h1 for omega; nodes_injective arg-order;
+Ne.symm not .symm on ¬(j=k); Finset.sum_ite_eq'). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 190 (all-Sonnet + 2 Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): DissectionOfCubesOQ04 (16min: Real.pi now PROTECTED, bare pi silently
