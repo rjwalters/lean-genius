@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 333 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: CombinationsFormulaOQ01OQ04 (exact_mod_cast h.symm -> exact_mod_cast h at 2 sites:
+h.symm flipped equation direction vs goal orientation; mod_cast now rejects the mismatch). Repair: none.
+**+2 DEFER->#38612**: BallotProblemOQ03OQ01OQ01OQ01 (94 error sites/2557 lines/whnf timeout, parents
+GREEN so not a dep block — genuine deep-rework) + its Aristotle companion (blocked on it).
+
 # DOCTOR SINGLE-PROOF BATCH 332 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: FairGamesTheoremOQ03Aristotle (7 seams: `open scoped NNReal ENNReal`;
