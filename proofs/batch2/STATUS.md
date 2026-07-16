@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 255 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FundamentalTheoremCalculusStokes (integral_symm arg order; hasFDerivAt_id
+dropped 𝕜; HasFDerivAt.prod->prodMk; comp_hasDerivAt_of_eq needs y=f x proof; minSmoothness simp). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 254 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): GreensTheoremOQ04 (List.not_mem_nil no arg; iUnion_of_empty +
