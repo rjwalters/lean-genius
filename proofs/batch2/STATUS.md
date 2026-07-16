@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 110 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1173Problem (inside-body ∀-binder universe mvars no longer
+auto-bound -> pin .{0}/.{1} explicitly; aleph_lt->aleph_lt_aleph; ciSup_le->ciSup_le' dodges Nonempty
+Set.Iio ω synth; natCast_lt_omega0; push Not). Repair: none (universes reproduce original auto-bound).
+
 # DOCTOR SINGLE-PROOF BATCH 109 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos209Problem (plain `def X := Finset Y` wrapper no longer unfolds
