@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 190 (all-Sonnet + 2 Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): DissectionOfCubesOQ04 (16min: Real.pi now PROTECTED, bare pi silently
+auto-binds -> spell Real.pi; arccos_cos explicit bounds; -3/5 as -(3/5) for arccos_neg; binop% cast leaves;
+maxHeartbeats 1M). Repair: none (fidelity seam logged).
+
 # DOCTOR SINGLE-PROOF BATCH 189 (all-Sonnet + 2 Opus escalations, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1098OQ01 (Subgroup.mem_center_iff .symm; classical for Finset insert;
