@@ -22,6 +22,8 @@ Reference: https://erdosproblems.com/201
 
 import Mathlib
 
+open scoped Classical
+
 /-
 ## Arithmetic progressions
 -/
@@ -52,6 +54,21 @@ theorem isAPFree_subset {A B : Finset ℤ} {k : ℕ} (hsub : A ⊆ B)
     (hfree : IsAPFree B k) : IsAPFree A k := by
   intro ⟨a, d, hd, hk1, hmem⟩
   exact hfree ⟨a, d, hd, hk1, fun i => hsub (hmem i)⟩
+
+/-- The empty set is always AP-free. -/
+theorem isAPFree_empty (k : ℕ) : IsAPFree ∅ k := by
+  intro ⟨a, d, _, hk1, hmem⟩
+  have := hmem ⟨0, by omega⟩
+  simp at this
+
+/-- A singleton set is always AP-free (for k ≥ 2). -/
+theorem isAPFree_singleton (x : ℤ) (k : ℕ) (hk : k ≥ 2) :
+    IsAPFree {x} k := by
+  intro ⟨a, d, hd, hk1, hmem⟩
+  have h0 := hmem ⟨0, by omega⟩
+  have h1 := hmem ⟨1, by omega⟩
+  simp at h0 h1
+  omega
 
 /-
 ## The functions G_k and R_k
@@ -104,11 +121,11 @@ theorem gk_ge_one (k N : ℕ) (hN : N ≥ 1) (hk : k ≥ 2) : gk k N ≥ 1 := by
   obtain ⟨x, hx⟩ := Finset.card_pos.mp (by omega : 0 < S.card)
   exact ⟨{x}, Finset.singleton_subset_iff.mpr hx, isAPFree_singleton x k hk, by simp⟩
 
-/-- G_k(N) is anti-monotone in k: larger k means harder AP avoidance,
-    but any l-AP-free set is also k-AP-free when k ≤ l. -/
-theorem gk_anti_k (k l N : ℕ) (hkl : k ≤ l) (hk1 : k ≥ 1) : gk l N ≤ gk k N := by
+/-- G_k(N) is monotone in k: a k-AP-free witness (k ≤ l) is automatically
+    l-AP-free (isAPFree_of_le), so the guarantee for k transfers to l. -/
+theorem gk_anti_k (k l N : ℕ) (hkl : k ≤ l) (hk1 : k ≥ 1) : gk k N ≤ gk l N := by
   unfold gk
-  apply csSup_le_csSup (gk_bddAbove k N) ⟨0, gk_prop_zero l N⟩
+  apply csSup_le_csSup (gk_bddAbove l N) ⟨0, gk_prop_zero k N⟩
   intro m hm S hS
   obtain ⟨A, hA_sub, hA_free, hA_card⟩ := hm S hS
   exact ⟨A, hA_sub, isAPFree_of_le hkl hk1 hA_free, hA_card⟩
@@ -138,10 +155,13 @@ theorem gk_le_rk (k N : ℕ) (hk : 3 ≤ k) : gk k N ≤ rk k N := by
     have hN_pos : 0 < N := Nat.pos_of_ne_zero hN
     -- Build an N-element set inside Icc 1 N
     set S := (Finset.range N).image (fun i : ℕ => (i : ℤ) + 1) with hS_def
+    have hinj : Function.Injective (fun i : ℕ => (i : ℤ) + 1) := by
+      intro a b hab
+      simp only at hab
+      omega
     have hS_card : S.card = N := by
-      rw [hS_def, Finset.card_image_of_injective]
-      · exact Finset.card_range N
-      · intro a b hab; omega
+      rw [hS_def, Finset.card_image_of_injective _ hinj]
+      exact Finset.card_range N
     have hS_sub : S ⊆ Finset.Icc (1 : ℤ) ↑N := by
       intro x hx
       simp [hS_def] at hx
@@ -150,7 +170,7 @@ theorem gk_le_rk (k N : ℕ) (hk : 3 ≤ k) : gk k N ≤ rk k N := by
       omega
     obtain ⟨A, hA_sub, hA_free, hA_card⟩ := hm S hS_card
     -- A ⊆ S ⊆ Icc 1 N, so A is in the filtered powerset defining rk
-    have hA_sub_Icc : A ⊆ Finset.Icc (1 : ℤ) ↑N := le_trans hA_sub hS_sub
+    have hA_sub_Icc : A ⊆ Finset.Icc (1 : ℤ) ↑N := hA_sub.trans hS_sub
     have hA_mem : A ∈ (Finset.Icc (1 : ℤ) ↑N).powerset.filter (fun B => IsAPFree B k) := by
       simp [Finset.mem_filter, Finset.mem_powerset, hA_sub_Icc, hA_free]
     exact le_trans hA_card (Finset.le_sup hA_mem)
@@ -172,12 +192,12 @@ theorem r3_5_eq : rk 3 5 = 4 := by
     -- A.card ≥ 5, but A ⊆ Icc 1 5 (card 5), so A = Icc 1 5
     have hA5 : A.card = 5 := by
       have := Finset.card_le_card hA_sub
-      simp only [Finset.card_Icc] at this; omega
+      simp only [Int.card_Icc] at this; omega
     have hA_eq : A = Finset.Icc (1 : ℤ) 5 :=
-      Finset.eq_of_subset_of_card_le hA_sub (by simp [Finset.card_Icc, hA5])
+      Finset.eq_of_subset_of_card_le hA_sub (by rw [Int.card_Icc]; omega)
     -- But Icc 1 5 contains the 3-AP {1, 3, 5} (a=1, d=2)
-    exact hA_free ⟨1, 2, by omega, by omega, fun ⟨i, hi⟩ => by
-      fin_cases ⟨i, hi⟩ <;> simp_all [Finset.mem_Icc] <;> omega⟩
+    exact hA_free ⟨1, 2, by omega, by omega, fun i => by
+      fin_cases i <;> simp_all [Finset.mem_Icc] <;> omega⟩
   · -- Lower bound: rk 3 5 ≥ 4 via witness {1, 2, 4, 5}
     have hA_mem : ({1, 2, 4, 5} : Finset ℤ) ∈
         (Finset.Icc (1 : ℤ) 5).powerset.filter (IsAPFree · 3) := by
@@ -191,7 +211,6 @@ theorem r3_5_eq : rk 3 5 = 4 := by
         have h0 := hmem ⟨0, by omega⟩; simp at h0
         have h1 := hmem ⟨1, by omega⟩; simp at h1
         have h2 := hmem ⟨2, by omega⟩; simp at h2
-        simp only [Finset.mem_insert, Finset.mem_singleton] at h0 h1 h2
         rcases h0 with rfl | rfl | rfl | rfl <;>
           rcases h1 with h1 | h1 | h1 | h1 <;> omega
     calc (4 : ℕ) = ({1, 2, 4, 5} : Finset ℤ).card := by native_decide
@@ -234,12 +253,13 @@ theorem rk_mono (k : ℕ) (M N : ℕ) (h : M ≤ N) : rk k M ≤ rk k N := by
   apply Finset.le_sup
   simp only [Finset.mem_filter, Finset.mem_powerset]
   constructor
-  · exact le_trans hA.1 (Finset.Icc_subset_Icc_right (by exact_mod_cast h))
+  · exact hA.1.trans (Finset.Icc_subset_Icc_right (by exact_mod_cast h))
   · exact hA.2
 
-/-- For k ≤ l, any l-AP-free set is k-AP-free, so R_l(N) ≤ R_k(N). -/
+/-- For k ≤ l, any k-AP-free set is l-AP-free (isAPFree_of_le), so a
+    k-AP-free witness is also a valid l-AP-free witness: R_k(N) ≤ R_l(N). -/
 theorem rk_anti_k (k l N : ℕ) (hkl : k ≤ l) (hk1 : k ≥ 1) :
-    rk l N ≤ rk k N := by
+    rk k N ≤ rk l N := by
   unfold rk
   apply Finset.sup_le
   intro A hA
@@ -255,21 +275,7 @@ theorem rk_anti_k (k l N : ℕ) (hkl : k ≤ l) (hk1 : k ≥ 1) :
 /-- From the strict inequality G_3(5) = 3 < 4 = R_3(5). -/
 theorem g3_lt_r3_at_5 : gk 3 5 < rk 3 5 := by
   rw [g3_5_eq, r3_5_eq]
-
-/-- The empty set is always AP-free. -/
-theorem isAPFree_empty (k : ℕ) : IsAPFree ∅ k := by
-  intro ⟨a, d, _, hk1, hmem⟩
-  have := hmem ⟨0, by omega⟩
-  simp at this
-
-/-- A singleton set is always AP-free (for k ≥ 2). -/
-theorem isAPFree_singleton (x : ℤ) (k : ℕ) (hk : k ≥ 2) :
-    IsAPFree {x} k := by
-  intro ⟨a, d, hd, hk1, hmem⟩
-  have h0 := hmem ⟨0, by omega⟩
-  have h1 := hmem ⟨1, by omega⟩
-  simp at h0 h1
-  linarith
+  omega
 
 /-- R_k(N) ≥ 1 for N ≥ 1 and k ≥ 2: the singleton {1} is always AP-free. -/
 theorem rk_pos (k N : ℕ) (hN : N ≥ 1) (hk : k ≥ 2) : rk k N ≥ 1 := by
@@ -297,7 +303,7 @@ theorem isAPFree_pair (x y : ℤ) (hxy : x ≠ y) (k : ℕ) (hk : k ≥ 3) :
   have h1 := hmem ⟨1, by omega⟩
   have h2 := hmem ⟨2, by omega⟩
   simp at h0 h1 h2
-  rcases h0 with rfl | rfl <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;> linarith
+  rcases h0 with rfl | rfl <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;> omega
 
 /-- G_k(0) = 0: the only 0-element set is ∅, whose only subset is ∅. -/
 theorem gk_zero (k : ℕ) : gk k 0 = 0 := by
@@ -307,6 +313,7 @@ theorem gk_zero (k : ℕ) : gk k 0 = 0 := by
     intro m hm
     obtain ⟨A, hA_sub, _, hA_card⟩ := hm ∅ rfl
     rw [Finset.subset_empty.mp hA_sub] at hA_card; simp at hA_card
+    omega
   · exact Nat.zero_le _
 
 /-- gk_prop is anti-monotone in k: if every N-set has a k-AP-free subset of size m,
@@ -323,9 +330,9 @@ theorem gk_prop_mono_N {k M N m : ℕ} (hMN : M ≤ N) (h : gk_prop k M m) :
     gk_prop k N m := by
   intro S hS
   -- S has N ≥ M elements; take any M-element subset
-  have ⟨S', hS'_sub, hS'_card⟩ := Finset.exists_subset_card_le (by omega : M ≤ S.card)
+  have ⟨S', hS'_sub, hS'_card⟩ := Finset.exists_subset_card_eq (by omega : M ≤ S.card)
   obtain ⟨A, hA_sub, hA_free, hA_card⟩ := h S' hS'_card
-  exact ⟨A, le_trans hA_sub hS'_sub, hA_free, hA_card⟩
+  exact ⟨A, hA_sub.trans hS'_sub, hA_free, hA_card⟩
 
 /-- R_k(N) ≥ 2 for N ≥ 2 and k ≥ 3: any two distinct elements are k-AP-free. -/
 theorem rk_ge_two (k N : ℕ) (hN : N ≥ 2) (hk : k ≥ 3) : rk k N ≥ 2 := by
@@ -343,6 +350,6 @@ theorem rk_ge_two (k N : ℕ) (hN : N ≥ 2) (hk : k ≥ 3) : rk k N ≥ 2 := by
 theorem erdos_201_summary :
     gk 3 5 < rk 3 5 ∧
     ErdosProblem201 ∨ ¬ErdosProblem201 := by
-  constructor
-  · exact g3_lt_r3_at_5
-  · exact Classical.em _
+  rcases Classical.em ErdosProblem201 with h | h
+  · exact Or.inl ⟨g3_lt_r3_at_5, h⟩
+  · exact Or.inr h

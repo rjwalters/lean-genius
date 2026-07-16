@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 69 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos110Problem (Cardinal.succ removed -> Order.succ; universe-mvar leakage
+from unpinned Cardinal defs -> pin Cardinal.{0}), Erdos201Problem (11min ~29-err #38611: gk_anti_k/rk_anti_k
+inequality BACKWARD from inception, claimed anti-monotone but TRUE is monotone-increasing via isAPFree_of_le;
+fixed statements+proofs, kept lemma names; GALLERY prose erdos-201 annotations.json:193 + docstring L16 now
+stale -> #38611 gallery re-audit). Repairs #38611: Erdos201 (monotone direction + gallery-annotation follow-up).
+
 # DOCTOR SINGLE-PROOF BATCH 68 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos741ProblemAPNPartI (NEW SEAM: token ≤s Graph.IsSpanningSubgraph
