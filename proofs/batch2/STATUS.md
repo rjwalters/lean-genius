@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 126 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos501Aristotle (ℝ≥0∞ scoped notation needs open scoped ENNReal;
+let-opaque set lo/hi -> explicit max_lt_iff/lt_min_iff term; Metric.mem_ball before Real.dist_eq;
+unfold outerMeasure before measure_mono stuck OuterMeasureClass mvar; push Not). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 125 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos174Problem (def FiniteConfig:=Finset(EuclideanSpace) -> abbrev
