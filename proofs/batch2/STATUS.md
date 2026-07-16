@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 318 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos818Aristotle (add `open scoped Pointwise` for Finset +/* HAdd/HMul; drop
+redundant trailing `ring` after field_simp closed goal). Repair: none (pre-existing sorries
+42/86/90 left untouched).
+NEW SEAM: Finset pointwise +/* now needs explicit `open scoped Pointwise` even under `open Finset`;
+field_simp can fully close ring-normal goals leaving trailing `ring` with no goals.
+
 # DOCTOR SINGLE-PROOF BATCH 317 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos625Aristotle (v4.31 Mathlib now defines SimpleGraph.chromaticNumber:ℕ∞ ->
