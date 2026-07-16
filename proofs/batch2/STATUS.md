@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 48 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos106OQ02 (18min/213k: div_div arg order a/b/c=a/(b*c); div_le_one_of_le
+gone; linarith/omega won't unify ring-equal-but-syntactic-diff div/mul atoms -> rw into one side first),
+Erdos43Problem (offDiag_card now s.card*s.card-s.card; Int.card_Icc=(b+1-a).toNat), LagrangeTheoremOQ01OQ01
+(pure cascade off SylowTheoremOQ01). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 47 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+4 GREEN** (re-verified EXIT=0): Erdos413Problem (#38611: barrier_gap_two claimed ω(n)≤1 FALSE at n=6 ->

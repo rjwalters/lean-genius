@@ -160,8 +160,9 @@ section AxiomElimination
 /-- The center of a rotated square is in its closure -/
 private lemma center_in_closure (sq : RotatedSquare) :
     sq.center ∈ sq.closure' := by
-  simp only [RotatedSquare.closure', Set.mem_setOf_eq]
-  simp [abs_of_nonneg, le_div_iff₀]
+  simp only [RotatedSquare.closure', Set.mem_setOf_eq, sub_self, zero_mul, add_zero,
+    neg_zero, abs_zero]
+  have := sq.side_pos
   constructor <;> positivity
 
 /-- Edge midpoint at rotated coords (s/2, 0) is in the closure.
@@ -170,64 +171,84 @@ private lemma midpoint_pos_cos_mem_closure (sq : RotatedSquare) :
     (sq.center.1 + sq.side / 2 * Real.cos sq.angle,
      sq.center.2 + sq.side / 2 * Real.sin sq.angle) ∈ sq.closure' := by
   simp only [RotatedSquare.closure', Set.mem_setOf_eq]
-  set h := sq.side / 2
+  set h := sq.side / 2 with hh
   set θ := sq.angle
+  have hpos : 0 ≤ h := by rw [hh]; have := sq.side_pos; positivity
+  have hsc : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
   -- rx = (h cos θ) cos θ + (h sin θ) sin θ = h(cos²θ + sin²θ) = h
   -- ry = -(h cos θ) sin θ + (h sin θ) cos θ = 0
-  have hrx : h * Real.cos θ * Real.cos θ + h * Real.sin θ * Real.sin θ = h := by
-    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
-  have hry : -(h * Real.cos θ) * Real.sin θ + h * Real.sin θ * Real.cos θ = 0 := by ring
-  rw [hrx, hry]
-  exact ⟨le_abs_self h, by rw [abs_zero]; positivity⟩
+  have hrx : (sq.center.1 + h * Real.cos θ - sq.center.1) * Real.cos θ +
+      (sq.center.2 + h * Real.sin θ - sq.center.2) * Real.sin θ = h := by
+    have e : (sq.center.1 + h * Real.cos θ - sq.center.1) * Real.cos θ +
+        (sq.center.2 + h * Real.sin θ - sq.center.2) * Real.sin θ
+        = h * (Real.sin θ ^ 2 + Real.cos θ ^ 2) := by ring
+    rw [e, hsc, mul_one]
+  have hry : -(sq.center.1 + h * Real.cos θ - sq.center.1) * Real.sin θ +
+      (sq.center.2 + h * Real.sin θ - sq.center.2) * Real.cos θ = 0 := by ring
+  rw [hrx, hry, abs_of_nonneg hpos, abs_zero]
+  exact ⟨le_refl h, hpos⟩
 
 /-- Opposite edge midpoint at rotated coords (-s/2, 0) is in the closure. -/
 private lemma midpoint_neg_cos_mem_closure (sq : RotatedSquare) :
     (sq.center.1 - sq.side / 2 * Real.cos sq.angle,
      sq.center.2 - sq.side / 2 * Real.sin sq.angle) ∈ sq.closure' := by
   simp only [RotatedSquare.closure', Set.mem_setOf_eq]
-  set h := sq.side / 2
+  set h := sq.side / 2 with hh
   set θ := sq.angle
-  have hrx : (-h * Real.cos θ) * Real.cos θ + (-h * Real.sin θ) * Real.sin θ = -h := by
-    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
-  have hry : -(-h * Real.cos θ) * Real.sin θ + (-h * Real.sin θ) * Real.cos θ = 0 := by ring
-  rw [show sq.center.1 - h * Real.cos θ - sq.center.1 = -h * Real.cos θ from by ring,
-      show sq.center.2 - h * Real.sin θ - sq.center.2 = -h * Real.sin θ from by ring,
-      hrx, hry]
-  constructor
-  · rw [abs_neg]; exact le_abs_self h
-  · rw [abs_zero]; positivity
+  have hpos : 0 ≤ h := by rw [hh]; have := sq.side_pos; positivity
+  have hsc : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
+  have hrx : (sq.center.1 - h * Real.cos θ - sq.center.1) * Real.cos θ +
+      (sq.center.2 - h * Real.sin θ - sq.center.2) * Real.sin θ = -h := by
+    have e : (sq.center.1 - h * Real.cos θ - sq.center.1) * Real.cos θ +
+        (sq.center.2 - h * Real.sin θ - sq.center.2) * Real.sin θ
+        = -(h * (Real.sin θ ^ 2 + Real.cos θ ^ 2)) := by ring
+    rw [e, hsc, mul_one]
+  have hry : -(sq.center.1 - h * Real.cos θ - sq.center.1) * Real.sin θ +
+      (sq.center.2 - h * Real.sin θ - sq.center.2) * Real.cos θ = 0 := by ring
+  rw [hrx, hry, abs_zero]
+  exact ⟨by rw [abs_neg]; exact le_of_eq (abs_of_nonneg hpos), hpos⟩
 
 /-- Edge midpoint at rotated coords (0, s/2) is in the closure. -/
 private lemma midpoint_pos_sin_mem_closure (sq : RotatedSquare) :
     (sq.center.1 - sq.side / 2 * Real.sin sq.angle,
      sq.center.2 + sq.side / 2 * Real.cos sq.angle) ∈ sq.closure' := by
   simp only [RotatedSquare.closure', Set.mem_setOf_eq]
-  set h := sq.side / 2
+  set h := sq.side / 2 with hh
   set θ := sq.angle
-  have hrx : (-h * Real.sin θ) * Real.cos θ + (h * Real.cos θ) * Real.sin θ = 0 := by ring
-  have hry : -(-h * Real.sin θ) * Real.sin θ + (h * Real.cos θ) * Real.cos θ = h := by
-    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
-  rw [show sq.center.1 - h * Real.sin θ - sq.center.1 = -h * Real.sin θ from by ring,
-      show sq.center.2 + h * Real.cos θ - sq.center.2 = h * Real.cos θ from by ring,
-      hrx, hry]
-  exact ⟨by rw [abs_zero]; positivity, le_abs_self h⟩
+  have hpos : 0 ≤ h := by rw [hh]; have := sq.side_pos; positivity
+  have hsc : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
+  have hrx : (sq.center.1 - h * Real.sin θ - sq.center.1) * Real.cos θ +
+      (sq.center.2 + h * Real.cos θ - sq.center.2) * Real.sin θ = 0 := by ring
+  have hry : -(sq.center.1 - h * Real.sin θ - sq.center.1) * Real.sin θ +
+      (sq.center.2 + h * Real.cos θ - sq.center.2) * Real.cos θ = h := by
+    have e : -(sq.center.1 - h * Real.sin θ - sq.center.1) * Real.sin θ +
+        (sq.center.2 + h * Real.cos θ - sq.center.2) * Real.cos θ
+        = h * (Real.sin θ ^ 2 + Real.cos θ ^ 2) := by ring
+    rw [e, hsc, mul_one]
+  rw [hrx, hry, abs_zero]
+  exact ⟨hpos, le_of_eq (abs_of_nonneg hpos)⟩
 
 /-- Opposite edge midpoint at rotated coords (0, -s/2). -/
 private lemma midpoint_neg_sin_mem_closure (sq : RotatedSquare) :
     (sq.center.1 + sq.side / 2 * Real.sin sq.angle,
      sq.center.2 - sq.side / 2 * Real.cos sq.angle) ∈ sq.closure' := by
   simp only [RotatedSquare.closure', Set.mem_setOf_eq]
-  set h := sq.side / 2
+  set h := sq.side / 2 with hh
   set θ := sq.angle
-  have hrx : (h * Real.sin θ) * Real.cos θ + (-h * Real.cos θ) * Real.sin θ = 0 := by ring
-  have hry : -(h * Real.sin θ) * Real.sin θ + (-h * Real.cos θ) * Real.cos θ = -h := by
-    have := Real.sin_sq_add_cos_sq θ; nlinarith [sq_abs (Real.cos θ), sq_abs (Real.sin θ)]
-  rw [show sq.center.1 + h * Real.sin θ - sq.center.1 = h * Real.sin θ from by ring,
-      show sq.center.2 - h * Real.cos θ - sq.center.2 = -h * Real.cos θ from by ring,
-      hrx, hry]
+  have hpos : 0 ≤ h := by rw [hh]; have := sq.side_pos; positivity
+  have hsc : Real.sin θ ^ 2 + Real.cos θ ^ 2 = 1 := Real.sin_sq_add_cos_sq θ
+  have hrx : (sq.center.1 + h * Real.sin θ - sq.center.1) * Real.cos θ +
+      (sq.center.2 - h * Real.cos θ - sq.center.2) * Real.sin θ = 0 := by ring
+  have hry : -(sq.center.1 + h * Real.sin θ - sq.center.1) * Real.sin θ +
+      (sq.center.2 - h * Real.cos θ - sq.center.2) * Real.cos θ = -h := by
+    have e : -(sq.center.1 + h * Real.sin θ - sq.center.1) * Real.sin θ +
+        (sq.center.2 - h * Real.cos θ - sq.center.2) * Real.cos θ
+        = -(h * (Real.sin θ ^ 2 + Real.cos θ ^ 2)) := by ring
+    rw [e, hsc, mul_one]
+  rw [hrx, hry, abs_zero]
   constructor
-  · rw [abs_zero]; positivity
-  · rw [abs_neg]; exact le_abs_self h
+  · exact hpos
+  · rw [abs_neg]; exact le_of_eq (abs_of_nonneg hpos)
 
 /-- s · |cos θ| ≤ 1 for a rotated square contained in [0,1]².
     Proof: opposite edge midpoints are in [0,1]², their x-coord difference = s cos θ. -/
@@ -276,15 +297,19 @@ theorem side_le_sqrt_two (sq : RotatedSquare) (h : sq.ContainedInUnit) :
     sq.side ≤ Real.sqrt 2 := by
   have hcos := side_mul_abs_cos_le_one sq h
   have hsin := side_mul_abs_sin_le_one sq h
-  have h1 : (sq.side * |Real.cos sq.angle|) ^ 2 ≤ 1 := by nlinarith
-  have h2 : (sq.side * |Real.sin sq.angle|) ^ 2 ≤ 1 := by nlinarith
+  have hcos_nn : 0 ≤ sq.side * |Real.cos sq.angle| :=
+    mul_nonneg (le_of_lt sq.side_pos) (abs_nonneg _)
+  have hsin_nn : 0 ≤ sq.side * |Real.sin sq.angle| :=
+    mul_nonneg (le_of_lt sq.side_pos) (abs_nonneg _)
+  have h1 : (sq.side * |Real.cos sq.angle|) ^ 2 ≤ 1 := by nlinarith [hcos, hcos_nn]
+  have h2 : (sq.side * |Real.sin sq.angle|) ^ 2 ≤ 1 := by nlinarith [hsin, hsin_nn]
   have hsq : sq.side ^ 2 ≤ 2 := by
     have := Real.sin_sq_add_cos_sq sq.angle
     nlinarith [sq_abs (sq.side * Real.cos sq.angle),
                sq_abs (sq.side * Real.sin sq.angle),
                sq_abs (Real.cos sq.angle), sq_abs (Real.sin sq.angle)]
-  rwa [← Real.sqrt_le_sqrt (by positivity : 0 ≤ sq.side ^ 2),
-       Real.sqrt_sq (le_of_lt sq.side_pos)]
+  calc sq.side = Real.sqrt (sq.side ^ 2) := (Real.sqrt_sq (le_of_lt sq.side_pos)).symm
+    _ ≤ Real.sqrt 2 := Real.sqrt_le_sqrt hsq
 
 /-- The set of achievable sums for general packings is bounded above -/
 private lemma f_rot_set_bddAbove (n : ℕ) :
@@ -317,52 +342,74 @@ private lemma g_ap_set_nonempty (n : ℕ) :
         Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
         neg_zero, Set.mem_setOf_eq] at hp ⊢
       obtain ⟨hpx, hpy⟩ := hp
-      have half_eq : (1 : ℝ) / m / 2 = 1 / (2 * m) := div_div 1 m 2
+      have half_eq : (1 : ℝ) / m / 2 = 1 / (2 * m) := by rw [div_div, mul_comm]
       rw [half_eq] at hpx hpy
       rw [abs_le] at hpx hpy
       have hi_nn : (0 : ℝ) ≤ ↑(i : ℕ) := Nat.cast_nonneg _
-      have hi_lt : (↑(i : ℕ) : ℝ) + 1 ≤ m := by exact_mod_cast i.isLt
+      have hi_lt : (↑(i : ℕ) : ℝ) + 1 ≤ m := by
+        rw [hm_def]
+        have hlt : (↑(i : ℕ) : ℝ) < (↑n : ℝ) := by exact_mod_cast i.isLt
+        linarith
       refine ⟨?_, ?_, ?_, ?_⟩
       · -- 0 ≤ p.1: From hpx.1, p.1 ≥ (2i+1)/(2m) - 1/(2m) = i/m ≥ 0
-        have h1 : (2 * (↑(i : ℕ) : ℝ) + 1 - 1) / (2 * m) ≤ p.1 := by
-          rw [sub_div]; linarith
-        have h2 : (2 * (↑(i : ℕ) : ℝ)) / (2 * m) ≥ 0 := div_nonneg (by nlinarith) (le_of_lt h2m)
-        linarith [show 2 * (↑(i : ℕ) : ℝ) + 1 - 1 = 2 * ↑(i : ℕ) from by ring]
+        have e : (2 * (↑(i : ℕ) : ℝ)) / (2 * m)
+            = (2 * (↑(i : ℕ) : ℝ) + 1) / (2 * m) - 1 / (2 * m) := by ring
+        have h1 : (2 * (↑(i : ℕ) : ℝ)) / (2 * m) ≤ p.1 := by rw [e]; linarith [hpx.1]
+        have h2 : (0 : ℝ) ≤ (2 * (↑(i : ℕ) : ℝ)) / (2 * m) := div_nonneg (by linarith) h2m.le
+        linarith
       · -- p.1 ≤ 1: From hpx.2, p.1 ≤ (2i+2)/(2m) = (i+1)/m ≤ 1
-        have h1 : p.1 ≤ (2 * (↑(i : ℕ) : ℝ) + 1 + 1) / (2 * m) := by
-          rw [add_div]; linarith
+        have e : (2 * (↑(i : ℕ) : ℝ) + 2) / (2 * m)
+            = (2 * (↑(i : ℕ) : ℝ) + 1) / (2 * m) + 1 / (2 * m) := by ring
+        have h1 : p.1 ≤ (2 * (↑(i : ℕ) : ℝ) + 2) / (2 * m) := by rw [e]; linarith [hpx.2]
         have h2 : (2 * (↑(i : ℕ) : ℝ) + 2) / (2 * m) ≤ 1 := by
-          rw [div_le_one h2m]; nlinarith
-        linarith [show 2 * (↑(i : ℕ) : ℝ) + 1 + 1 = 2 * ↑(i : ℕ) + 2 from by ring]
+          rw [div_le_one h2m]; linarith
+        linarith
       · -- 0 ≤ p.2: From hpy.1, p.2 ≥ 1/(2m) - 1/(2m) = 0
-        linarith
+        linarith [hpy.1]
       · -- p.2 ≤ 1: From hpy.2, p.2 ≤ 1/(2m) + 1/(2m) = 1/m ≤ 1
-        have h1 : 1 / (2 * m) + 1 / (2 * m) = 1 / m := by ring
-        have h2 : 1 / m ≤ 1 := div_le_one_of_le (by linarith) (le_of_lt hm)
-        linarith
+        have h1 : (1 : ℝ) / (2 * m) + 1 / (2 * m) = 1 / m := by ring
+        have h2 : (1 : ℝ) / m ≤ 1 := by
+          rw [div_le_one hm, hm_def]
+          have : (0 : ℝ) ≤ (↑n : ℝ) := Nat.cast_nonneg _
+          linarith
+        linarith [hpy.2]
     disjoint := fun i j hij => by
       simp only [RotatedSquare.DisjointInteriors, RotatedSquare.interior,
         Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
         neg_zero, Set.disjoint_left, Set.mem_setOf_eq]
       intro p ⟨hxi, _⟩ ⟨hxj, _⟩
-      have half_eq : (1 : ℝ) / m / 2 = 1 / (2 * m) := div_div 1 m 2
+      have half_eq : (1 : ℝ) / m / 2 = 1 / (2 * m) := by rw [div_div, mul_comm]
       rw [half_eq] at hxi hxj
       rw [abs_lt] at hxi hxj
       -- i ≠ j as ℕ implies |i - j| ≥ 1, so x-ranges don't overlap
       have hij_val : (i : ℕ) ≠ (j : ℕ) := Fin.val_ne_of_ne hij
       rcases Nat.lt_or_gt_of_ne hij_val with h | h
       · -- i < j: p.1 < (2i+2)/(2m) and (2j)/(2m) < p.1, but 2j ≥ 2i+2
-        have : (↑(j : ℕ) : ℝ) ≥ (↑(i : ℕ) : ℝ) + 1 := by exact_mod_cast h
-        have hxu : p.1 < (2 * (↑(i : ℕ) : ℝ) + 1 + 1) / (2 * m) := by rw [add_div]; linarith
-        have hxl : (2 * (↑(j : ℕ) : ℝ) + 1 - 1) / (2 * m) < p.1 := by rw [sub_div]; linarith
-        nlinarith [show 2 * (↑(i : ℕ) : ℝ) + 1 + 1 = 2 * (↑(i : ℕ) : ℝ) + 2 from by ring,
-                   show 2 * (↑(j : ℕ) : ℝ) + 1 - 1 = 2 * (↑(j : ℕ) : ℝ) from by ring]
+        have hij' : (↑(j : ℕ) : ℝ) ≥ (↑(i : ℕ) : ℝ) + 1 := by exact_mod_cast h
+        have hxu : p.1 < (2 * (↑(i : ℕ) : ℝ) + 2) / (2 * m) := by
+          have e : (2 * (↑(i : ℕ) : ℝ) + 2) / (2 * m)
+              = (2 * (↑(i : ℕ) : ℝ) + 1) / (2 * m) + 1 / (2 * m) := by ring
+          rw [e]; linarith [hxi.2]
+        have hxl : (2 * (↑(j : ℕ) : ℝ)) / (2 * m) < p.1 := by
+          have e : (2 * (↑(j : ℕ) : ℝ)) / (2 * m)
+              = (2 * (↑(j : ℕ) : ℝ) + 1) / (2 * m) - 1 / (2 * m) := by ring
+          rw [e]; linarith [hxj.1]
+        rw [lt_div_iff₀ h2m] at hxu
+        rw [div_lt_iff₀ h2m] at hxl
+        nlinarith [hxu, hxl, hij']
       · -- j < i: symmetric
-        have : (↑(i : ℕ) : ℝ) ≥ (↑(j : ℕ) : ℝ) + 1 := by exact_mod_cast h
-        have hxu : p.1 < (2 * (↑(j : ℕ) : ℝ) + 1 + 1) / (2 * m) := by rw [add_div]; linarith
-        have hxl : (2 * (↑(i : ℕ) : ℝ) + 1 - 1) / (2 * m) < p.1 := by rw [sub_div]; linarith
-        nlinarith [show 2 * (↑(j : ℕ) : ℝ) + 1 + 1 = 2 * (↑(j : ℕ) : ℝ) + 2 from by ring,
-                   show 2 * (↑(i : ℕ) : ℝ) + 1 - 1 = 2 * (↑(i : ℕ) : ℝ) from by ring]
+        have hij' : (↑(i : ℕ) : ℝ) ≥ (↑(j : ℕ) : ℝ) + 1 := by exact_mod_cast h
+        have hxu : p.1 < (2 * (↑(j : ℕ) : ℝ) + 2) / (2 * m) := by
+          have e : (2 * (↑(j : ℕ) : ℝ) + 2) / (2 * m)
+              = (2 * (↑(j : ℕ) : ℝ) + 1) / (2 * m) + 1 / (2 * m) := by ring
+          rw [e]; linarith [hxj.2]
+        have hxl : (2 * (↑(i : ℕ) : ℝ)) / (2 * m) < p.1 := by
+          have e : (2 * (↑(i : ℕ) : ℝ)) / (2 * m)
+              = (2 * (↑(i : ℕ) : ℝ) + 1) / (2 * m) - 1 / (2 * m) := by ring
+          rw [e]; linarith [hxi.1]
+        rw [lt_div_iff₀ h2m] at hxu
+        rw [div_lt_iff₀ h2m] at hxl
+        nlinarith [hxu, hxl, hij']
     axisParallel := fun _ => rfl }, rfl⟩⟩
 
 /-- g_ap(n) ≤ f_rot(n): every axis-parallel packing is a general packing -/
@@ -384,8 +431,8 @@ theorem g_ap_perfect_square (k : ℕ) (hk : k ≥ 1) : g_ap (k ^ 2) = (k : ℝ) 
   apply le_antisymm
   · -- Upper bound: g_ap(k²) ≤ √(k²) = k
     have h := g_ap_bounded (k ^ 2)
-    rwa [show (↑(k ^ 2) : ℝ) = (↑k : ℝ) ^ 2 from by push_cast; ring,
-         Real.sqrt_sq (by positivity : (↑k : ℝ) ≥ 0)] at h
+    push_cast at h
+    rwa [Real.sqrt_sq (by positivity : (0 : ℝ) ≤ (k : ℝ))] at h
   · -- Lower bound: construct k×k grid packing with sum = k
     unfold g_ap
     apply le_csSup
@@ -402,7 +449,7 @@ theorem g_ap_perfect_square (k : ℕ) (hk : k ≥ 1) : g_ap (k ^ 2) = (k : ℝ) 
             Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
             neg_zero, Set.mem_setOf_eq] at hp ⊢
           obtain ⟨hpx, hpy⟩ := hp
-          have half_eq : (1 : ℝ) / ↑k / 2 = 1 / (2 * ↑k) := div_div 1 ↑k 2
+          have half_eq : (1 : ℝ) / ↑k / 2 = 1 / (2 * ↑k) := by rw [div_div, mul_comm]
           rw [half_eq] at hpx hpy; rw [abs_le] at hpx hpy
           have hc_nn : (0 : ℝ) ≤ ↑((i : ℕ) % k) := Nat.cast_nonneg _
           have hr_nn : (0 : ℝ) ≤ ↑((i : ℕ) / k) := Nat.cast_nonneg _
@@ -410,79 +457,112 @@ theorem g_ap_perfect_square (k : ℕ) (hk : k ≥ 1) : g_ap (k ^ 2) = (k : ℝ) 
             exact_mod_cast Nat.mod_lt _ hk_pos
           have hr_lt : (↑((i : ℕ) / k) : ℝ) + 1 ≤ ↑k := by
             have : (i : ℕ) / k < k := by
-              have := i.isLt; rw [show k ^ 2 = k * k from by ring] at this
-              exact Nat.div_lt_of_lt_mul this
+              have h1 : (i : ℕ) < k ^ 2 := i.isLt
+              have h2 : k ^ 2 = k * k := by ring
+              have hik2 : (i : ℕ) < k * k := by omega
+              exact Nat.div_lt_of_lt_mul hik2
             exact_mod_cast this
           refine ⟨?_, ?_, ?_, ?_⟩
           · -- 0 ≤ p.1
-            have h1 : (2 * ↑((i : ℕ) % k) + 1 - 1) / (2 * ↑k) ≤ p.1 := by
-              rw [sub_div]; linarith
-            have h2 : (2 * ↑((i : ℕ) % k)) / (2 * ↑k) ≥ 0 :=
-              div_nonneg (by nlinarith) (le_of_lt h2K)
-            linarith [show (2 * ↑((i : ℕ) % k) + 1 - 1 : ℝ) = 2 * ↑((i : ℕ) % k) from by ring]
+            have e : (2 * (↑((i : ℕ) % k) : ℝ)) / (2 * ↑k)
+                = (2 * (↑((i : ℕ) % k) : ℝ) + 1) / (2 * ↑k) - 1 / (2 * ↑k) := by ring
+            have h1 : (2 * (↑((i : ℕ) % k) : ℝ)) / (2 * ↑k) ≤ p.1 := by
+              rw [e]; linarith [hpx.1]
+            have h2 : (0 : ℝ) ≤ (2 * (↑((i : ℕ) % k) : ℝ)) / (2 * ↑k) :=
+              div_nonneg (by linarith) h2K.le
+            linarith
           · -- p.1 ≤ 1
-            have h1 : p.1 ≤ (2 * ↑((i : ℕ) % k) + 1 + 1) / (2 * ↑k) := by
-              rw [add_div]; linarith
-            have h2 : (2 * ↑((i : ℕ) % k) + 2) / (2 * ↑k) ≤ 1 := by
-              rw [div_le_one h2K]; nlinarith
-            linarith [show (2 * ↑((i : ℕ) % k) + 1 + 1 : ℝ) = 2 * ↑((i : ℕ) % k) + 2 from by ring]
+            have e : (2 * (↑((i : ℕ) % k) : ℝ) + 2) / (2 * ↑k)
+                = (2 * (↑((i : ℕ) % k) : ℝ) + 1) / (2 * ↑k) + 1 / (2 * ↑k) := by ring
+            have h1 : p.1 ≤ (2 * (↑((i : ℕ) % k) : ℝ) + 2) / (2 * ↑k) := by
+              rw [e]; linarith [hpx.2]
+            have h2 : (2 * (↑((i : ℕ) % k) : ℝ) + 2) / (2 * ↑k) ≤ 1 := by
+              rw [div_le_one h2K]; linarith
+            linarith
           · -- 0 ≤ p.2
-            have h1 : (2 * ↑((i : ℕ) / k) + 1 - 1) / (2 * ↑k) ≤ p.2 := by
-              rw [sub_div]; linarith
-            have h2 : (2 * ↑((i : ℕ) / k)) / (2 * ↑k) ≥ 0 :=
-              div_nonneg (by nlinarith) (le_of_lt h2K)
-            linarith [show (2 * ↑((i : ℕ) / k) + 1 - 1 : ℝ) = 2 * ↑((i : ℕ) / k) from by ring]
+            have e : (2 * (↑((i : ℕ) / k) : ℝ)) / (2 * ↑k)
+                = (2 * (↑((i : ℕ) / k) : ℝ) + 1) / (2 * ↑k) - 1 / (2 * ↑k) := by ring
+            have h1 : (2 * (↑((i : ℕ) / k) : ℝ)) / (2 * ↑k) ≤ p.2 := by
+              rw [e]; linarith [hpy.1]
+            have h2 : (0 : ℝ) ≤ (2 * (↑((i : ℕ) / k) : ℝ)) / (2 * ↑k) :=
+              div_nonneg (by linarith) h2K.le
+            linarith
           · -- p.2 ≤ 1
-            have h1 : p.2 ≤ (2 * ↑((i : ℕ) / k) + 1 + 1) / (2 * ↑k) := by
-              rw [add_div]; linarith
-            have h2 : (2 * ↑((i : ℕ) / k) + 2) / (2 * ↑k) ≤ 1 := by
-              rw [div_le_one h2K]; nlinarith
-            linarith [show (2 * ↑((i : ℕ) / k) + 1 + 1 : ℝ) = 2 * ↑((i : ℕ) / k) + 2 from by ring]
+            have e : (2 * (↑((i : ℕ) / k) : ℝ) + 2) / (2 * ↑k)
+                = (2 * (↑((i : ℕ) / k) : ℝ) + 1) / (2 * ↑k) + 1 / (2 * ↑k) := by ring
+            have h1 : p.2 ≤ (2 * (↑((i : ℕ) / k) : ℝ) + 2) / (2 * ↑k) := by
+              rw [e]; linarith [hpy.2]
+            have h2 : (2 * (↑((i : ℕ) / k) : ℝ) + 2) / (2 * ↑k) ≤ 1 := by
+              rw [div_le_one h2K]; linarith
+            linarith
         disjoint := fun i j hij => by
           simp only [RotatedSquare.DisjointInteriors, RotatedSquare.interior,
             Real.cos_zero, Real.sin_zero, mul_one, mul_zero, add_zero, zero_add,
             neg_zero, Set.disjoint_left, Set.mem_setOf_eq]
           intro p ⟨hxi, hyi⟩ ⟨hxj, hyj⟩
-          have half_eq : (1 : ℝ) / ↑k / 2 = 1 / (2 * ↑k) := div_div 1 ↑k 2
+          have half_eq : (1 : ℝ) / ↑k / 2 = 1 / (2 * ↑k) := by rw [div_div, mul_comm]
           rw [half_eq] at hxi hyi hxj hyj; rw [abs_lt] at hxi hyi hxj hyj
           have hij_val : (i : ℕ) ≠ (j : ℕ) := Fin.val_ne_of_ne hij
           by_cases hcol : (i : ℕ) % k = (j : ℕ) % k
           · -- Same column → different rows → y-separation
             have hrow : (i : ℕ) / k ≠ (j : ℕ) / k := by
-              intro heq; exact hij_val (by
-                have := Nat.div_add_mod (i : ℕ) k
-                have := Nat.div_add_mod (j : ℕ) k; omega)
+              intro heq
+              apply hij_val
+              have hi := Nat.div_add_mod (i : ℕ) k
+              have hj := Nat.div_add_mod (j : ℕ) k
+              rw [heq, hcol] at hi
+              omega
             rcases Nat.lt_or_gt_of_ne hrow with h | h
-            · have : (↑((j : ℕ) / k) : ℝ) ≥ ↑((i : ℕ) / k) + 1 := by exact_mod_cast h
-              have hyu : p.2 < (2 * ↑((i : ℕ) / k) + 1 + 1) / (2 * ↑k) := by
-                rw [add_div]; linarith
-              have hyl : (2 * ↑((j : ℕ) / k) + 1 - 1) / (2 * ↑k) < p.2 := by
-                rw [sub_div]; linarith
-              nlinarith [show 2 * (↑((i : ℕ) / k) : ℝ) + 1 + 1 = 2 * ↑((i : ℕ) / k) + 2 from by ring,
-                         show 2 * (↑((j : ℕ) / k) : ℝ) + 1 - 1 = 2 * ↑((j : ℕ) / k) from by ring]
-            · have : (↑((i : ℕ) / k) : ℝ) ≥ ↑((j : ℕ) / k) + 1 := by exact_mod_cast h
-              have hyu : p.2 < (2 * ↑((j : ℕ) / k) + 1 + 1) / (2 * ↑k) := by
-                rw [add_div]; linarith
-              have hyl : (2 * ↑((i : ℕ) / k) + 1 - 1) / (2 * ↑k) < p.2 := by
-                rw [sub_div]; linarith
-              nlinarith [show 2 * (↑((j : ℕ) / k) : ℝ) + 1 + 1 = 2 * ↑((j : ℕ) / k) + 2 from by ring,
-                         show 2 * (↑((i : ℕ) / k) : ℝ) + 1 - 1 = 2 * ↑((i : ℕ) / k) from by ring]
+            · have hij' : (↑((j : ℕ) / k) : ℝ) ≥ ↑((i : ℕ) / k) + 1 := by exact_mod_cast h
+              have hyu : p.2 < (2 * (↑((i : ℕ) / k) : ℝ) + 2) / (2 * ↑k) := by
+                have e : (2 * (↑((i : ℕ) / k) : ℝ) + 2) / (2 * ↑k)
+                    = (2 * (↑((i : ℕ) / k) : ℝ) + 1) / (2 * ↑k) + 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hyi.2]
+              have hyl : (2 * (↑((j : ℕ) / k) : ℝ)) / (2 * ↑k) < p.2 := by
+                have e : (2 * (↑((j : ℕ) / k) : ℝ)) / (2 * ↑k)
+                    = (2 * (↑((j : ℕ) / k) : ℝ) + 1) / (2 * ↑k) - 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hyj.1]
+              rw [lt_div_iff₀ h2K] at hyu
+              rw [div_lt_iff₀ h2K] at hyl
+              nlinarith [hyu, hyl, hij']
+            · have hij' : (↑((i : ℕ) / k) : ℝ) ≥ ↑((j : ℕ) / k) + 1 := by exact_mod_cast h
+              have hyu : p.2 < (2 * (↑((j : ℕ) / k) : ℝ) + 2) / (2 * ↑k) := by
+                have e : (2 * (↑((j : ℕ) / k) : ℝ) + 2) / (2 * ↑k)
+                    = (2 * (↑((j : ℕ) / k) : ℝ) + 1) / (2 * ↑k) + 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hyj.2]
+              have hyl : (2 * (↑((i : ℕ) / k) : ℝ)) / (2 * ↑k) < p.2 := by
+                have e : (2 * (↑((i : ℕ) / k) : ℝ)) / (2 * ↑k)
+                    = (2 * (↑((i : ℕ) / k) : ℝ) + 1) / (2 * ↑k) - 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hyi.1]
+              rw [lt_div_iff₀ h2K] at hyu
+              rw [div_lt_iff₀ h2K] at hyl
+              nlinarith [hyu, hyl, hij']
           · -- Different columns → x-separation
             rcases Nat.lt_or_gt_of_ne hcol with h | h
-            · have : (↑((j : ℕ) % k) : ℝ) ≥ ↑((i : ℕ) % k) + 1 := by exact_mod_cast h
-              have hxu : p.1 < (2 * ↑((i : ℕ) % k) + 1 + 1) / (2 * ↑k) := by
-                rw [add_div]; linarith
-              have hxl : (2 * ↑((j : ℕ) % k) + 1 - 1) / (2 * ↑k) < p.1 := by
-                rw [sub_div]; linarith
-              nlinarith [show 2 * (↑((i : ℕ) % k) : ℝ) + 1 + 1 = 2 * ↑((i : ℕ) % k) + 2 from by ring,
-                         show 2 * (↑((j : ℕ) % k) : ℝ) + 1 - 1 = 2 * ↑((j : ℕ) % k) from by ring]
-            · have : (↑((i : ℕ) % k) : ℝ) ≥ ↑((j : ℕ) % k) + 1 := by exact_mod_cast h
-              have hxu : p.1 < (2 * ↑((j : ℕ) % k) + 1 + 1) / (2 * ↑k) := by
-                rw [add_div]; linarith
-              have hxl : (2 * ↑((i : ℕ) % k) + 1 - 1) / (2 * ↑k) < p.1 := by
-                rw [sub_div]; linarith
-              nlinarith [show 2 * (↑((j : ℕ) % k) : ℝ) + 1 + 1 = 2 * ↑((j : ℕ) % k) + 2 from by ring,
-                         show 2 * (↑((i : ℕ) % k) : ℝ) + 1 - 1 = 2 * ↑((i : ℕ) % k) from by ring]
+            · have hij' : (↑((j : ℕ) % k) : ℝ) ≥ ↑((i : ℕ) % k) + 1 := by exact_mod_cast h
+              have hxu : p.1 < (2 * (↑((i : ℕ) % k) : ℝ) + 2) / (2 * ↑k) := by
+                have e : (2 * (↑((i : ℕ) % k) : ℝ) + 2) / (2 * ↑k)
+                    = (2 * (↑((i : ℕ) % k) : ℝ) + 1) / (2 * ↑k) + 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hxi.2]
+              have hxl : (2 * (↑((j : ℕ) % k) : ℝ)) / (2 * ↑k) < p.1 := by
+                have e : (2 * (↑((j : ℕ) % k) : ℝ)) / (2 * ↑k)
+                    = (2 * (↑((j : ℕ) % k) : ℝ) + 1) / (2 * ↑k) - 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hxj.1]
+              rw [lt_div_iff₀ h2K] at hxu
+              rw [div_lt_iff₀ h2K] at hxl
+              nlinarith [hxu, hxl, hij']
+            · have hij' : (↑((i : ℕ) % k) : ℝ) ≥ ↑((j : ℕ) % k) + 1 := by exact_mod_cast h
+              have hxu : p.1 < (2 * (↑((j : ℕ) % k) : ℝ) + 2) / (2 * ↑k) := by
+                have e : (2 * (↑((j : ℕ) % k) : ℝ) + 2) / (2 * ↑k)
+                    = (2 * (↑((j : ℕ) % k) : ℝ) + 1) / (2 * ↑k) + 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hxj.2]
+              have hxl : (2 * (↑((i : ℕ) % k) : ℝ)) / (2 * ↑k) < p.1 := by
+                have e : (2 * (↑((i : ℕ) % k) : ℝ)) / (2 * ↑k)
+                    = (2 * (↑((i : ℕ) % k) : ℝ) + 1) / (2 * ↑k) - 1 / (2 * ↑k) := by ring
+                rw [e]; linarith [hxi.1]
+              rw [lt_div_iff₀ h2K] at hxu
+              rw [div_lt_iff₀ h2K] at hxl
+              nlinarith [hxu, hxl, hij']
         axisParallel := fun _ => rfl }, ?_⟩
       -- sumSides = k
       simp only [AxisParallelPacking.sumSides, GeneralPacking.sumSides, Finset.sum_const,
@@ -496,8 +576,8 @@ theorem f_rot_perfect_square (k : ℕ) (hk : k ≥ 1) : f_rot (k ^ 2) = k := by
   apply le_antisymm
   · -- f_rot(k²) ≤ √(k²) = k
     have h := f_rot_bounded (k ^ 2)
-    rwa [show (↑(k ^ 2) : ℝ) = (↑k : ℝ) ^ 2 from by push_cast; ring,
-         Real.sqrt_sq (by positivity : (↑k : ℝ) ≥ 0)] at h
+    push_cast at h
+    rwa [Real.sqrt_sq (by positivity : (0 : ℝ) ≤ (k : ℝ))] at h
   · -- f_rot(k²) ≥ g_ap(k²) = k
     have hg := g_ap_perfect_square k hk
     have hle := g_ap_le_f_rot (k ^ 2)
@@ -532,8 +612,10 @@ theorem f_rot_lower_k2_plus_1 (k : ℕ) (hk : k ≥ 1) : f_rot (k ^ 2 + 1) ≥ k
   linarith
 
 /-- f_rot(k²+1) ≤ √(k²+1) -/
-theorem f_rot_upper_k2_plus_1 (k : ℕ) : f_rot (k ^ 2 + 1) ≤ Real.sqrt (k ^ 2 + 1) :=
-  f_rot_bounded (k ^ 2 + 1)
+theorem f_rot_upper_k2_plus_1 (k : ℕ) : f_rot (k ^ 2 + 1) ≤ Real.sqrt (k ^ 2 + 1) := by
+  have h := f_rot_bounded (k ^ 2 + 1)
+  push_cast at h
+  exact h
 
 /-
 ## The Main Open Question
@@ -705,12 +787,12 @@ theorem axisParallelSuboptimal_iff_rotationHelps :
 
 /-- √(k²+1) < k+1 for k ≥ 1: since (k+1)² = k²+2k+1 > k²+1. -/
 theorem sqrt_k2_plus_1_lt_k_succ (k : ℕ) (hk : k ≥ 1) :
-    Real.sqrt (↑(k ^ 2 + 1) : ℝ) < ↑k + 1 := by
-  have hk_cast : (1 : ℝ) ≤ ↑k := by exact_mod_cast hk
-  have hlt : (↑(k ^ 2 + 1) : ℝ) < (↑k + 1) ^ 2 := by push_cast; nlinarith
-  calc Real.sqrt (↑(k ^ 2 + 1) : ℝ)
-      < Real.sqrt ((↑k + 1) ^ 2) := Real.sqrt_lt_sqrt (by positivity) hlt
-    _ = ↑k + 1 := Real.sqrt_sq (by linarith)
+    Real.sqrt (k ^ 2 + 1) < k + 1 := by
+  have hk_cast : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+  have hlt : (k : ℝ) ^ 2 + 1 < ((k : ℝ) + 1) ^ 2 := by nlinarith
+  calc Real.sqrt ((k : ℝ) ^ 2 + 1)
+      < Real.sqrt (((k : ℝ) + 1) ^ 2) := Real.sqrt_lt_sqrt (by positivity) hlt
+    _ = (k : ℝ) + 1 := Real.sqrt_sq (by linarith)
 
 /-- f_rot(k²+1) < k+1 for k ≥ 1, from the tight upper bound on √(k²+1). -/
 theorem f_rot_k2_plus1_lt_k_succ (k : ℕ) (hk : k ≥ 1) :
