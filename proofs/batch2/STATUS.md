@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 279 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): SpernerNDimMathlibOQ02 (self-contained, ↑(N+1) cast push_cast; gcongr
+auto-discharges side goal -> explicit linarith; abs_sub_triangle->abs_sub_le). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 278 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1151Problem (chebyshevNodes_injective nlinarith needs Nat +1≤ via omega
