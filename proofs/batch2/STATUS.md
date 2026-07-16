@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 119 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos107OQ01 (no edits; stale RESIDUAL from missing-cache cascade,
+clean once dependency Erdos107OQ01KleinUpperAristotle built). Repair: none. Closes Erdos107 family.
+
 # DOCTOR SINGLE-PROOF BATCH 118 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos107OQ01KleinUpperAristotle (hard grind-limit file: replaced ALL
