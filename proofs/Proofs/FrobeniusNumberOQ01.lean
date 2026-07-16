@@ -66,14 +66,16 @@ private lemma prod_pred_even (hab : Nat.Coprime a b) (ha : 2 ≤ a) (hb : 2 ≤ 
     2 ∣ (a - 1) * (b - 1) := by
   rcases Nat.even_or_odd a with ⟨ka, hka⟩ | ⟨ka, hka⟩
   · -- a even → b must be odd → b-1 even
-    have h_a2 : 2 ∣ a := ⟨ka, hka⟩
+    have h_a2 : 2 ∣ a := ⟨ka, by omega⟩
     have h_b_odd : ¬2 ∣ b :=
       fun h_b2 => absurd (hab ▸ Nat.dvd_gcd h_a2 h_b2) (by norm_num)
     have h_b1 : 2 ∣ b - 1 := by
       rw [Nat.dvd_iff_mod_eq_zero] at h_b_odd ⊢; omega
     exact h_b1.mul_left _
   · -- a odd → a-1 = 2*ka is even
-    exact ⟨ka * (b - 1), by have : a - 1 = 2 * ka := by omega; rw [this]; ring⟩
+    refine ⟨ka * (b - 1), ?_⟩
+    have h2 : a - 1 = 2 * ka := by omega
+    rw [h2]; ring
 
 -- ============================================================
 -- Part 3: Main theorem
@@ -85,7 +87,24 @@ theorem frobenius_count (hab : Nat.Coprime a b) (ha : 2 ≤ a) (hb : 2 ≤ b) :
     ((Finset.Icc 1 (frobeniusNumber a b)).filter (fun k => ¬Representable a b k)).card =
     (a - 1) * (b - 1) / 2 := by
   set g := frobeniusNumber a b with hg_def
-  have hg_pos : 0 < g := by simp only [hg_def, frobeniusNumber]; nlinarith
+  have hane : a ≠ b := by
+    intro he
+    subst he
+    have haa : a = 1 := by simpa [Nat.Coprime, Nat.gcd_self] using hab
+    omega
+  have hprod_ge2 : 2 ≤ (a - 1) * (b - 1) := by
+    rcases lt_or_gt_of_ne hane with h | h
+    · have h1 : 1 ≤ a - 1 := by omega
+      have h2 : 2 ≤ b - 1 := by omega
+      calc (2 : ℕ) = 1 * 2 := by ring
+        _ ≤ (a - 1) * (b - 1) := Nat.mul_le_mul h1 h2
+    · have h1 : 2 ≤ a - 1 := by omega
+      have h2 : 1 ≤ b - 1 := by omega
+      calc (2 : ℕ) = 2 * 1 := by ring
+        _ ≤ (a - 1) * (b - 1) := Nat.mul_le_mul h1 h2
+  have halt : g = (a - 1) * (b - 1) - 1 := by
+    rw [hg_def]; exact frobenius_alt_axiom a b ha hb
+  have hg_pos : 0 < g := by rw [halt]; omega
   have hg_not : ¬Representable a b g := (sylvester_frobenius hab ha hb).2.1
   -- Rewrite {1,...,g}.filter(nonRep) = {1,...,g-1}.filter(nonRep) ∪ {g}
   have hsplit : (Finset.Icc 1 g).filter (fun k => ¬Representable a b k) =
@@ -110,14 +129,14 @@ theorem frobenius_count (hab : Nat.Coprime a b) (ha : 2 ≤ a) (hb : 2 ≤ b) :
   -- Partition {1,...,g-1}: |nonRep| + |Rep| = g-1
   have hcpart :
       c + ((Finset.Icc 1 (g - 1)).filter (fun k => Representable a b k)).card = g - 1 := by
-    have hfilt := Finset.filter_card_add_filter_neg_card_eq_card (Finset.Icc 1 (g - 1))
-                    (Representable a b ·)
-    rw [Finset.card_Icc] at hfilt; omega
+    have hfilt := Finset.card_filter_add_card_filter_not
+                    (s := Finset.Icc 1 (g - 1)) (Representable a b ·)
+    rw [Nat.card_Icc] at hfilt; omega
   -- From hceq and hcpart: 2*c = g-1
   have h2c : 2 * c = g - 1 := by linarith [hceq]
   -- (a-1)(b-1) = g+1 (from frobeniusNumber definition)
   have hg1 : (a - 1) * (b - 1) = g + 1 := by
-    simp only [hg_def, frobeniusNumber]; nlinarith
+    rw [halt]; omega
   -- Get q with (a-1)(b-1) = 2*q (even)
   obtain ⟨q, hq⟩ := prod_pred_even hab ha hb
   -- (a-1)(b-1)/2 = q
@@ -126,9 +145,9 @@ theorem frobenius_count (hab : Nat.Coprime a b) (ha : 2 ≤ a) (hb : 2 ≤ b) :
   -- 2*q = g+1 (from hg1 and hq)
   have h2q : 2 * q = g + 1 := by linarith [hg1, hq]
   -- Conclusion: c+1 = q = (a-1)(b-1)/2
-  rw [← hq']
+  rw [hq']
   -- From h2c : 2*c = g-1 and h2q : 2*q = g+1: 2*(c+1) = 2*q, so c+1 = q
-  linarith
+  omega
 
 end FrobeniusCountOQ01
 
