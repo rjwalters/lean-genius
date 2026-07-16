@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 52 (Fable greens, #38065, 2026-07-16)
+
+**+2 GREEN, both FABLE** (re-verified EXIT=0): Erdos1051Problem (Summable.of_norm_bounded_eventually g-implicit
++cofinite filter via Nat.cofinite_eq_atTop; Summable.tsum_pos explicit-index reshape), Erdos1087Problem (by skip
+List.get bound proofs now error -> real proofs; simp[Nat.descFactorial] leaves n-0 -> add Nat.sub_zero).
+Fable now 8/9 on hard tail. #38611-adjacent note: Erdos1087 erdos_1087_summary pre-existing sorry unprovable
+as stated (f is 0-placeholder) — pre-existing, not toolchain. Also: FourierSeriesOQ01 agent died in setup
+(silent death #6), re-queued; doctor-d reset+re-fed.
+
 # DOCTOR SINGLE-PROOF BATCH 51 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1131Problem (SONNET 26min/278k, ~30-site marathon: HasDerivAt through

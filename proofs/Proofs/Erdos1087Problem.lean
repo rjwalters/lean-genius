@@ -117,6 +117,7 @@ A finite set of n points in the plane.
 -/
 def PointSet (n : ℕ) := {S : Finset Point // S.card = n}
 
+open scoped Classical in
 /--
 **Count of Degenerate Quadruples:**
 For a point set S, count how many 4-element subsets are degenerate.
@@ -125,10 +126,10 @@ noncomputable def countDegenerateQuadruples (S : Finset Point) : ℕ :=
   ((S.powersetCard 4).filter (fun T =>
     ∃ (h : T.card = 4), isDegenerate (
       let pts := T.toList
-      (pts.get ⟨0, by skip⟩,
-       pts.get ⟨1, by skip⟩,
-       pts.get ⟨2, by skip⟩,
-       pts.get ⟨3, by skip⟩)
+      (pts.get ⟨0, by simp [pts, h]⟩,
+       pts.get ⟨1, by simp [pts, h]⟩,
+       pts.get ⟨2, by simp [pts, h]⟩,
+       pts.get ⟨3, by simp [pts, h]⟩)
     )
   )).card
 
@@ -247,7 +248,11 @@ theorem total_quadruples (n : ℕ) (hn : n ≥ 4) :
              show m + 4 - 2 = m + 2 from by omega,
              show m + 4 - 3 = m + 1 from by omega]
   rw [Nat.choose_eq_descFactorial_div_factorial]
-  simp [Nat.descFactorial, Nat.factorial]
+  congr 1
+  simp only [Nat.descFactorial, Nat.sub_zero,
+             show m + 4 - 1 = m + 3 from by omega,
+             show m + 4 - 2 = m + 2 from by omega,
+             show m + 4 - 3 = m + 1 from by omega]
   ring
 
 /--
