@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 160 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): PicardIterationExplicitOQ0102 (NormedSpace.exp dropped 𝕂 arg
+expSeries_div_hasSum_exp; Function.comp->comp_def; continuous_finsetSum; integral_finsetSum). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 159 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01OQ02 (abbrev A4:Type*:=SubgroupTerm needs explicit ↥;
