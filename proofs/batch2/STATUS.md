@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 61 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): MinkowskiTheoremOQ02 (ENNReal.ofReal_lt_ofReal_iff_of_nonneg; zsmul_eq_smul_cast
+-> Int.cast_smul_eq_zsmul direction flip; Fin 2 fin_cases literal mismatch -> fin_cases<;>simp_all),
+DescartesRuleOfSignsOQ01OQ02 (Even.add_even->Even.add; omega doesn't unfold Even/Odd -> simp[Nat.even_iff] first).
+Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 60 (mixed fleet, #38065, 2026-07-16)
 
 **+4 GREEN** (re-verified EXIT=0): Erdos678Aristotle (parent never declared namespace Erdos678 -> drop open,

@@ -538,7 +538,7 @@ DerangementsOQ04OQ01OQ01	GREEN
 DesarguesTheorem	RESIDUAL	type-mismatch
 DesarguesTheoremOQ01OQ01	GREEN
 DescartesRuleOfSignsOQ01OQ01	GREEN	
-DescartesRuleOfSignsOQ01OQ02	RESIDUAL	unknown-const:Even.add_even
+DescartesRuleOfSignsOQ01OQ02	GREEN	
 DescartesRuleOfSignsOQ02	GREEN	
 DescartesRuleOfSignsOQ02OQ01	RESIDUAL	rewrite-drift
 DescartesRuleOfSignsOQ02Parity	GREEN	proof-drift
@@ -2265,7 +2265,7 @@ MeanValueTheoremOQ03	GREEN
 MeanValueTheoremOQ04	RESIDUAL	type-mismatch
 MeanValueTheoremOQ04OQ03	GREEN	
 MinkowskiFundamentalTheoremOQ02	GREEN	
-MinkowskiTheoremOQ02	RESIDUAL	unknown-const:ENNReal.ofReal_lt_ofReal_of_nonneg
+MinkowskiTheoremOQ02	GREEN	
 MinkowskiTheoremOQ03	GREEN	
 MinkowskiTheoremOQ04OQ03	GREEN	
 MinpolyCharpolyOQ01	GREEN	
