@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 274 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): KonigsbergOQ02OQ01 (HARD 40min/349k/187tools: 950-line Hierholzer ~35 sites;
+card_sdiff_of_subset; append_eq_nil_iff; isChain_append->List.isChain_append; head_append_left/getLast_append;
+subst RHS-elim kills identifier -> named eq+.trans; nodup_append ∀a∈l1∀b∈l2 shape). Repair: none, 0 sorries.
+
 # DOCTOR SINGLE-PROOF BATCH 273 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): PoincareConjecture (Millennium: axiom count unchanged 32, stays axiomatized;
