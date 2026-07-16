@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 161 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos804Problem (PRE-EXISTING bug: Nat.log n missing base arg [never
+typechecked] -> Nat.log 2 n everywhere, matches doc "log base 2"). Repair: none (axiom-only file).
+
 # DOCTOR SINGLE-PROOF BATCH 160 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): PicardIterationExplicitOQ0102 (NormedSpace.exp dropped 𝕂 arg
