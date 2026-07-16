@@ -3,6 +3,8 @@ import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.Convex.Body
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Geometry.Euclidean.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.Tactic
 
 /-!
@@ -134,12 +136,19 @@ def IsGeodesicSegment {α : Type*} [MetricSpace α] (γ : ℝ → α) (x y : α)
     dist (γ t₁) (γ t₂) = |t₂ - t₁| / |b - a| * dist x y
 
 /-- A **straight line segment** in an affine space is the set of points
-    {(1-t)·x + t·y | t ∈ [0,1]}. -/
-def straightLineSegment (x y : E) : Set E :=
+    {(1-t)·x + t·y | t ∈ [0,1]}.
+
+    Only the vector-space structure is needed here (no norm/topology), so this
+    is stated for a bare `[AddCommGroup V] [Module ℝ V]` rather than the
+    ambient `E`. This lets it be applied both to normed spaces (via the
+    `AddCommGroup`/`Module` instances they carry) and to bare `MinkowskiGeometry`
+    carriers, which are not equipped with a `NormedAddCommGroup` instance. -/
+def straightLineSegment {V : Type*} [AddCommGroup V] [Module ℝ V] (x y : V) : Set V :=
   {z | ∃ t : ℝ, 0 ≤ t ∧ t ≤ 1 ∧ z = (1 - t) • x + t • y}
 
 /-- The straight line parametrization. -/
-def straightLinePath (x y : E) (t : ℝ) : E := (1 - t) • x + t • y
+def straightLinePath {V : Type*} [AddCommGroup V] [Module ℝ V] (x y : V) (t : ℝ) : V :=
+  (1 - t) • x + t • y
 
 /-- **Axiom: Minkowski Geodesics Are Straight Lines**
 
@@ -153,6 +162,7 @@ def straightLinePath (x y : E) (t : ℝ) : E := (1 - t) • x + t • y
 
     This is a fundamental theorem in Minkowski geometry. -/
 axiom minkowski_geodesics_are_straight (M : MinkowskiGeometry) :
+    letI := M.addCommGroup; letI := M.module;
     ∀ (x y : M.carrier),
       ∀ z ∈ straightLineSegment x y,
         M.norm (z - x) + M.norm (y - z) = M.norm (y - x)
@@ -160,11 +170,20 @@ axiom minkowski_geodesics_are_straight (M : MinkowskiGeometry) :
 /-- **Corollary: Straight Line is Shortest Path in Minkowski Geometry**
 
     The straight line segment is the unique shortest path between two points
-    in a Minkowski geometry. -/
+    in a Minkowski geometry, where the length of a path `γ : ℝ → M.carrier` is
+    measured (as usual in a general, not-necessarily-differentiable, metric
+    setting) as its **total variation**: the supremum over finite partitions
+    `0 = t 0 ≤ t 1 ≤ … ≤ t n = 1` of the sum of consecutive norm-increments.
+    This axiom asserts that inequality holds for every such partition, i.e.
+    every polygonal approximation of `γ` has length at least the direct
+    (chord) distance `M.norm (y - x)` — capturing "the straight line is the
+    shortest path" without requiring a differentiability/topology structure
+    on `M.carrier` (which, unlike a `NormedAddCommGroup`, carries none). -/
 axiom minkowski_straight_line_shortest (M : MinkowskiGeometry) :
-    ∀ (x y : M.carrier) (γ : ℝ → M.carrier),
-      γ 0 = x → γ 1 = y →
-      M.norm (y - x) ≤ ∫ t in (0 : ℝ)..1, M.norm (deriv γ t)
+    letI := M.addCommGroup; letI := M.module;
+    ∀ (x y : M.carrier) (γ : ℝ → M.carrier) (n : ℕ) (t : Fin (n + 1) → ℝ),
+      γ (t 0) = x → γ (t (Fin.last n)) = y → Monotone t →
+      M.norm (y - x) ≤ ∑ i : Fin n, M.norm (γ (t i.succ) - γ (t i.castSucc))
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: CONVEX BODIES AND PROJECTIVE METRICS
@@ -248,7 +267,7 @@ def BusemannClassification : Prop :=
   ∀ (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E],
     ∀ (U : Set E) (hU : IsOpen U) (hUconv : Convex ℝ U),
     ∀ (d : E → E → ℝ), IsProjectiveMetric E U d →
-      (∃ M : MinkowskiGeometry, True) ∨  -- d is a Minkowski metric
+      (∃ M : MinkowskiGeometry.{0}, True) ∨  -- d is a Minkowski metric
       (∃ H : HilbertGeometry E, True) ∨  -- d is a Hilbert metric
       True                               -- d is a Funk-type metric
 
@@ -290,22 +309,32 @@ def taxicabNorm (n : ℕ) : (Fin n → ℝ) → ℝ := fun x =>
 /-- **Maximum/Chebyshev Geometry**: The L∞ norm.
 
     The unit ball is a hypercube.
-    Geodesics are still straight lines. -/
+    Geodesics are still straight lines.
+
+    (`ℝ` has no `OrderBot` instance — there is no least real number — so this
+    is folded with an explicit base value `0` rather than via `Finset.sup`,
+    which requires `OrderBot` for the empty-`Finset` case. Since `|x i| ≥ 0`
+    for every `i`, folding in the extra `0` does not change the value for
+    `n ≥ 1`, and gives the natural convention `chebyshevNorm 0 x = 0`.) -/
 def chebyshevNorm (n : ℕ) : (Fin n → ℝ) → ℝ := fun x =>
-  Finset.sup Finset.univ (fun i => |x i|)
+  Finset.univ.fold (· ⊔ ·) 0 (fun i => |x i|)
 
 /-- **Theorem**: The Euclidean norm satisfies the triangle inequality. -/
 theorem euclidean_triangle (n : ℕ) (x y : Fin n → ℝ) :
     euclideanNorm n (x + y) ≤ euclideanNorm n x + euclideanNorm n y := by
   simp only [euclideanNorm]
-  -- Our euclideanNorm equals the norm on EuclideanSpace ℝ (Fin n)
+  -- Our euclideanNorm equals the norm on EuclideanSpace ℝ (Fin n), transported via
+  -- `WithLp.toLp` (in current Mathlib `EuclideanSpace`/`PiLp` is a genuine wrapper
+  -- structure over `Fin n → ℝ`, not a reducible type synonym, so the element must be
+  -- explicitly transported rather than used directly).
   have h : ∀ z : Fin n → ℝ, Real.sqrt (∑ i, z i ^ 2) =
-      @norm (EuclideanSpace ℝ (Fin n)) _ z := fun z => by
-    rw [@EuclideanSpace.norm_eq ℝ (Fin n) _ _ z]
+      ‖(WithLp.toLp 2 z : EuclideanSpace ℝ (Fin n))‖ := fun z => by
+    rw [EuclideanSpace.norm_eq]
     congr 1
-    exact Finset.sum_congr rfl fun i _ => by rw [Real.norm_eq_abs, sq_abs]
-  simp only [h]
-  exact @norm_add_le (EuclideanSpace ℝ (Fin n)) _ _ _
+    exact Finset.sum_congr rfl fun i _ => by
+      rw [PiLp.toLp_apply, Real.norm_eq_abs, sq_abs]
+  rw [h, h, h, WithLp.toLp_add]
+  exact norm_add_le (WithLp.toLp 2 x : EuclideanSpace ℝ (Fin n)) (WithLp.toLp 2 y)
 
 /-- **Theorem**: The taxicab norm satisfies the triangle inequality. -/
 theorem taxicab_triangle (n : ℕ) (x y : Fin n → ℝ) :
@@ -349,7 +378,7 @@ def IsDesarguesian (E : Type*) [AddCommGroup E] [Module ℝ E] : Prop :=
     the metrics satisfying Hilbert's conditions. -/
 axiom hamel_theorem_2d :
     ∀ (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E],
-    ∀ (_ : FiniteDimensional ℝ E) (_ : finrank ℝ E = 2),
+    ∀ (_ : FiniteDimensional ℝ E) (_ : Module.finrank ℝ E = 2),
     ∀ (d : E → E → ℝ), IsProjectiveMetric E Set.univ d →
       ∃ M : MinkowskiGeometry, True  -- d is a Minkowski metric
 
@@ -415,7 +444,7 @@ axiom funk_geodesics_straight (K : Set E) (hK : Convex ℝ K) (hKopen : IsOpen K
 PART IX: SUMMARY AND CONCLUSIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Summary of Hilbert's 4th Problem**
+/- **Summary of Hilbert's 4th Problem**
 
 1. **The Question**: Characterize geometries where:
    - Ordering and incidence axioms hold
