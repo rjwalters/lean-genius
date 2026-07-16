@@ -51,7 +51,7 @@ noncomputable def omega_omega_succ : Ordinal := aleph_omega_succ.ord
 
 /-- The Generalized Continuum Hypothesis: for all ordinals α,
     2^(ℵ_α) = ℵ_{α+1}. -/
-def GCH : Prop := ∀ α : Ordinal, (2 : Cardinal) ^ Cardinal.aleph α = Cardinal.aleph (α + 1)
+def GCH : Prop := ∀ α : Ordinal.{0}, (2 : Cardinal) ^ Cardinal.aleph α = Cardinal.aleph (α + 1)
 
 -- ============================================================
 -- PART 2: Set Mappings and Free Sets
@@ -101,10 +101,10 @@ def HasFreeSetOfCard (γ : Ordinal) (f : SetMapping γ) (κ : Cardinal) : Prop :
     domain. -/
 def erdos_1173 : Prop :=
   GCH →
-  ∀ (f : SetMapping omega_omega_succ),
-    BoundedImageSize omega_omega_succ f aleph_omega →
-    AlmostDisjoint omega_omega_succ f aleph_omega →
-    HasFreeSetOfCard omega_omega_succ f aleph_omega_succ
+  ∀ (f : SetMapping omega_omega_succ.{0}),
+    BoundedImageSize omega_omega_succ.{0} f aleph_omega.{1} →
+    AlmostDisjoint omega_omega_succ.{0} f aleph_omega.{1} →
+    HasFreeSetOfCard omega_omega_succ.{0} f aleph_omega_succ.{1}
 
 -- ============================================================
 -- PART 4: Context - The Hajnal Free Set Theorem
@@ -122,15 +122,15 @@ def erdos_1173 : Prop :=
 
     Proof: GCH gives 2^ℵ_n = ℵ_{n+1}, and ℵ_{n+1} < ℵ_ω since n+1 < ω. -/
 theorem gch_aleph_omega_strong_limit :
-    GCH → ∀ n : ℕ, (2 : Cardinal) ^ Cardinal.aleph n < aleph_omega := by
+    GCH → ∀ n : ℕ, (2 : Cardinal) ^ Cardinal.aleph n < aleph_omega.{0} := by
   intro hgch n
   -- GCH: 2^ℵ_n = ℵ_{n+1}
   rw [hgch ↑n]
   -- ℵ_{n+1} < ℵ_ω iff (n+1 : Ordinal) < ω
   show Cardinal.aleph ((↑n : Ordinal) + 1) < Cardinal.aleph Ordinal.omega0
-  rw [Cardinal.aleph_lt]
+  rw [Cardinal.aleph_lt_aleph]
   -- (n : Ordinal) + 1 < ω
-  have : ↑(n + 1 : ℕ) < Ordinal.omega0 := Ordinal.nat_lt_omega0 (n + 1)
+  have : ↑(n + 1 : ℕ) < Ordinal.omega0 := Ordinal.natCast_lt_omega0 (n + 1)
   rwa [Nat.cast_add, Nat.cast_one] at this
 
 /-- The almost disjoint condition means the "overlap" between any two
@@ -151,14 +151,14 @@ theorem overlap_bounded_by_aleph_n (f : SetMapping omega_omega_succ)
   -- hlt : Cardinal.mk ... < Cardinal.aleph Ordinal.omega0
   -- By contradiction: if ∀ n, ℵ_n < c, then ℵ_ω ≤ c
   by_contra hall
-  push_neg at hall
+  push Not at hall
   -- hall : ∀ n : ℕ, Cardinal.aleph ↑n < Cardinal.mk ...
   apply absurd hlt (not_lt.mpr _)
   -- Goal: Cardinal.aleph Ordinal.omega0 ≤ Cardinal.mk ...
   -- ℵ_ω = ⨆_{a < ω₀} ℵ_a by the limit characterization of aleph
   rw [aleph_limit isSuccLimit_omega0]
   -- Goal: ⨆ (a : Set.Iio Ordinal.omega0), Cardinal.aleph ↑a ≤ ...
-  exact ciSup_le fun ⟨a, ha⟩ => by
+  exact ciSup_le' fun ⟨a, ha⟩ => by
     obtain ⟨n, rfl⟩ := lt_omega0.mp ha
     exact le_of_lt (hall n)
 
@@ -174,10 +174,10 @@ theorem overlap_bounded_by_aleph_n (f : SetMapping omega_omega_succ)
     This would be a partial result toward the full conjecture. -/
 def erdos_1173_weak : Prop :=
   GCH →
-  ∀ (f : SetMapping omega_omega_succ),
-    BoundedImageSize omega_omega_succ f aleph_omega →
-    AlmostDisjoint omega_omega_succ f aleph_omega →
-    HasFreeSetOfCard omega_omega_succ f aleph_omega
+  ∀ (f : SetMapping omega_omega_succ.{0}),
+    BoundedImageSize omega_omega_succ.{0} f aleph_omega.{1} →
+    AlmostDisjoint omega_omega_succ.{0} f aleph_omega.{1} →
+    HasFreeSetOfCard omega_omega_succ.{0} f aleph_omega.{1}
 
 -- ============================================================
 -- PART 7: Basic Properties
@@ -186,10 +186,11 @@ def erdos_1173_weak : Prop :=
 /-- ℵ_ω < ℵ_{ω+1}: the successor cardinal is strictly larger. -/
 theorem aleph_omega_lt_succ : aleph_omega < aleph_omega_succ := by
   unfold aleph_omega aleph_omega_succ
-  exact Cardinal.aleph_lt_aleph.mpr (Ordinal.lt_succ_iff.mpr le_rfl)
+  rw [Cardinal.aleph_lt_aleph, ← Order.succ_eq_add_one]
+  exact Order.lt_succ _
 
 /-- Under GCH, 2^{ℵ_ω} = ℵ_{ω+1}. -/
-theorem gch_power : GCH → (2 : Cardinal) ^ aleph_omega = aleph_omega_succ := by
+theorem gch_power : GCH → (2 : Cardinal) ^ aleph_omega.{0} = aleph_omega_succ.{0} := by
   intro hgch
   exact hgch Ordinal.omega0
 
