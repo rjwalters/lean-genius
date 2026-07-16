@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 96 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CantorDiagonalizationOQ04OQ01OQ01 (CartesianClosed typeclass
+deprecated-aliased to MonoidalClosed 2025-12-22; [CartesianClosed C]->[MonoidalClosed C], open
+CategoryTheory.MonoidalClosed for curry/uncurry, kept open scoped CartesianClosed for ⟹ notation).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 95 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos434Problem (forward-ref reorder sylvester_frobenius/count;
