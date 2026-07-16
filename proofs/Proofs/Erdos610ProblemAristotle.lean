@@ -23,8 +23,13 @@ import Proofs.Erdos610Problem
 open scoped Classical
 
 open Finset Function SimpleGraph
+open Erdos610
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+-- v4.31 seam: Erdos610Problem.lean now requires `[Nonempty V]` (soundness fix, #38611 —
+-- cliqueTransversalNumber is only well-defined for nonempty V); mirror it here so `τ`
+-- resolves, and `open Erdos610` so the conjecture/question Props resolve to the parent's
+-- definitions instead of being auto-bound as fresh universe-polymorphic variables.
+variable {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
 
 namespace Erdos610Aristotle
 
