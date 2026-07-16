@@ -65,14 +65,15 @@ theorem one_not_mem_I : (1 : ZXY) ∉ I := by
   obtain ⟨a, b, hab⟩ := h
   -- Apply constantCoeff (the ring hom ZXY → ℤ evaluating all variables at 0)
   have hcc := congr_arg MvPolynomial.constantCoeff hab
-  simp only [map_add, map_mul, map_one, map_ofNat,
-             MvPolynomial.constantCoeff_X, mul_zero, add_zero] at hcc
-  -- hcc : 2 * constantCoeff a = 1 in ℤ — impossible by parity
+  simp only [gen2, genX, map_add, map_mul, map_one,
+             MvPolynomial.constantCoeff_C, MvPolynomial.constantCoeff_X, mul_zero, add_zero] at hcc
+  -- hcc : constantCoeff a * 2 = 1 in ℤ — impossible by parity
   omega
 
 /-- I is a proper ideal (not equal to ⊤). -/
 theorem I_ne_top : I ≠ ⊤ := by
-  rwa [Ne, Ideal.eq_top_iff_one]
+  rw [Ne, Ideal.eq_top_iff_one]
+  exact one_not_mem_I
 
 /-!
 ## Step 2: If f ∣ (C 2 : ZXY), then f has total degree 0.
@@ -93,9 +94,12 @@ private lemma dvd_gen2_totalDeg_zero {f : ZXY} (hf : f ∣ gen2) :
     rintro rfl; simp [gen2] at hg
   -- Exact equality of total degrees (NoZeroDivisors on ZXY ← ℤ is a domain)
   have hmul_eq := MvPolynomial.totalDegree_mul_of_isDomain hf_ne hg_ne
-  -- gen2 = C 2 has totalDegree 0
-  have hC2deg : (gen2 : ZXY).totalDegree = 0 := MvPolynomial.totalDegree_C
-  rw [← hg] at hC2deg
+  -- gen2 = C 2 has totalDegree 0; transport along hg : gen2 = f * g
+  have hC2deg : (f * g).totalDegree = 0 := by
+    have hg2 : (gen2 : ZXY).totalDegree = 0 := by
+      unfold gen2
+      exact MvPolynomial.totalDegree_C (R := ℤ) (σ := Fin 2) (2 : ℤ)
+    rwa [hg] at hg2
   -- hC2deg : totalDegree (f * g) = 0
   -- hmul_eq : totalDegree (f * g) = totalDegree f + totalDegree g
   -- Since both are ℕ and sum to 0: totalDegree f = 0
@@ -127,9 +131,11 @@ theorem isUnit_of_C_dvd_genX {c : ℤ} (h : (C c : ZXY) ∣ genX) : IsUnit c := 
   obtain ⟨g, hg⟩ := h
   -- The coefficient of X₀ (monomial with single variable X₀) in C c * g is c * coeff[X₀] g
   have hcoeff := congr_arg (MvPolynomial.coeff (Finsupp.single (0 : Fin 2) 1)) hg
-  rw [MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X] at hcoeff
+  rw [MvPolynomial.coeff_C_mul] at hcoeff
+  unfold genX at hcoeff
+  rw [MvPolynomial.coeff_X_same] at hcoeff
   -- hcoeff : 1 = c * coeff[X₀] g  (since coeff[X₀](X₀) = 1)
-  exact Int.isUnit_of_dvd_one ⟨MvPolynomial.coeff (Finsupp.single 0 1) g, hcoeff.symm⟩
+  exact isUnit_of_dvd_one ⟨MvPolynomial.coeff (Finsupp.single 0 1) g, hcoeff⟩
 
 /-!
 ## Step 4: C c is a unit in ZXY iff c is a unit in ℤ.
@@ -155,7 +161,7 @@ theorem I_not_principal : ¬(Submodule.IsPrincipal I) := by
   -- gen2 ∈ I gives f ∣ gen2
   have h2 : gen2 ∈ I := Ideal.subset_span (Set.mem_insert _ _)
   have hX : genX ∈ I := Ideal.subset_span (Set.mem_insert_of_mem _ rfl)
-  rw [hf, Submodule.mem_span_singleton] at h2 hX
+  rw [hf, Ideal.mem_span_singleton] at h2 hX
   -- h2 : f ∣ gen2,  hX : f ∣ genX
   -- f = C c for some c with c ∣ 2
   obtain ⟨c, rfl, _hc2⟩ := dvd_gen2_is_const h2
@@ -163,8 +169,8 @@ theorem I_not_principal : ¬(Submodule.IsPrincipal I) := by
   have hc_unit : IsUnit c := isUnit_of_C_dvd_genX hX
   -- C c is a unit in ZXY, so ⟨C c⟩ = ⊤
   have hI_top : I = ⊤ := by
-    rw [hf, ← Ideal.span_singleton_eq_top]
-    exact isUnit_C_of_isUnit hc_unit
+    rw [hf]
+    exact Ideal.span_singleton_eq_top.mpr (isUnit_C_of_isUnit hc_unit)
   exact I_ne_top hI_top
 
 /-!
@@ -175,7 +181,7 @@ theorem I_not_principal : ¬(Submodule.IsPrincipal I) := by
 
 The ideal I = (2, X₀) is a proper non-principal ideal. Since not every ideal is principal,
 ℤ[X,Y] is not a PID. Note: ℤ[X,Y] IS a UFD (see parent proof), showing UFD ⊋ PID. -/
-theorem not_isPrincipalIdealRing : ¬IsPrincipalIdealRing ZXY := fun h_pir =>
+theorem not_isPrincipalIdealRing : ¬IsPrincipalIdealRing ZXY := fun _h_pir =>
   I_not_principal (IsPrincipalIdealRing.principal I)
 
 /-- Corollary: There exists a proper non-principal ideal in ℤ[X,Y]. -/
