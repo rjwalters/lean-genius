@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 280 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos919Problem (Order.succ/aleph_succ defeq shift -> ← aleph_zero;
+typein_lt_type->typein_lt_self; push_neg yields ≤ directly; Subtype.ext inequality). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 279 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): SpernerNDimMathlibOQ02 (self-contained, ↑(N+1) cast push_cast; gcongr
