@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 142 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos614Problem (HARD 20min/197k: added [LinearOrder V] missing typeclass
+[file couldn't typecheck on ANY version — ledger-provenance flag]; maxDegree Finset.sup vs sup'; card_sdiff_of_subset;
+Std.Irrefl/Std.Symm G.irrefl/G.adj_symm; min/max_eq_left/right arg-order backwards; Fin(n-2) domain for total image).
+Repair: none (added missing typeclass, not weakening).
+
 # DOCTOR SINGLE-PROOF BATCH 141 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos822Problem (added import Mathlib.Data.Real.Basic — ℝ instances
