@@ -26,12 +26,15 @@ theorem card_multiples (d N : ℕ) (hd : 0 < d) :
     simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_image]
     constructor
     · rintro ⟨⟨h1, hN⟩, ⟨k, rfl⟩⟩
-      exact ⟨k, ⟨by omega, (Nat.le_div_iff_mul_le hd).mpr hN⟩, rfl⟩
+      have hk0 : k ≠ 0 := by rintro rfl; simp at h1
+      exact ⟨k, ⟨by omega, (Nat.le_div_iff_mul_le hd).mpr (by rw [mul_comm]; exact hN)⟩,
+        mul_comm k d⟩
     · rintro ⟨k, ⟨hk1, hkN⟩, rfl⟩
-      exact ⟨⟨by omega, (Nat.le_div_iff_mul_le hd).mp hkN⟩, ⟨k, rfl⟩⟩
-  rw [h_eq, Finset.card_image_of_injective _ (mul_right_injective₀ (by omega : d ≠ 0)),
-    Finset.card_Icc]
-  omega
+      have hpos : 0 < k * d := Nat.mul_pos (by omega) hd
+      exact ⟨⟨by omega, (Nat.le_div_iff_mul_le hd).mp hkN⟩, ⟨k, mul_comm k d⟩⟩
+  rw [h_eq, Finset.card_image_of_injective _ (mul_left_injective₀ (by omega : d ≠ 0)),
+    Nat.card_Icc]
+  exact Nat.add_sub_cancel (N / d) 1
 
 /-- gcd(n, 1) = 1 for all n. -/
 theorem gcd_one_right (n : ℕ) : Nat.gcd n 1 = 1 :=
@@ -43,7 +46,7 @@ theorem gcd_one_left (n : ℕ) : Nat.gcd 1 n = 1 :=
 
 /-- Coprimality is symmetric: gcd(a,b) = 1 ↔ gcd(b,a) = 1. -/
 theorem coprime_comm (a b : ℕ) : Nat.Coprime a b ↔ Nat.Coprime b a :=
-  Nat.Coprime.comm
+  Nat.coprime_comm
 
 /-- For a prime p, gcd(a, b) divisible by p iff p | a and p | b. -/
 theorem prime_dvd_gcd_iff (p a b : ℕ) (hp : Nat.Prime p) :
@@ -82,7 +85,7 @@ theorem pi_gt_three : (3 : ℝ) < Real.pi :=
 
 /-- 6/π² = (π²/6)⁻¹ (reciprocal of Basel problem value). -/
 theorem six_div_pi_sq_eq_inv : 6 / Real.pi ^ 2 = (Real.pi ^ 2 / 6)⁻¹ := by
-  rw [inv_div]; ring
+  rw [inv_div]
 
 /-- Möbius function at 1 is 1. -/
 theorem moebius_one : ArithmeticFunction.moebius 1 = 1 := by
@@ -101,6 +104,6 @@ theorem abs_moebius_le_one (n : ℕ) :
   · by_cases h : Squarefree (n + 1)
     · rw [ArithmeticFunction.moebius_apply_of_squarefree h]
       simp [abs_pow, abs_neg, abs_one]
-    · simp [ArithmeticFunction.moebius_eq_zero_of_squarefree h]
+    · simp [ArithmeticFunction.moebius_eq_zero_of_not_squarefree h]
 
 end Erdos1149Aristotle
