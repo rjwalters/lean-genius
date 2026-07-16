@@ -122,6 +122,7 @@ theorem Erdos167.exists_max_packing {V : Type*} [Fintype V] [DecidableEq V] (G :
 
 end AristotleLemmas
 
+set_option maxHeartbeats 1000000 in
 theorem trivial_bound (G : SimpleGraph V) :
     triangleCoverNumber G ≤ 3 * maxEdgeDisjointTriangles G := by
   -- Let's construct the set of edges E by taking all edges from each triangle in the maximum packing T.
@@ -218,7 +219,8 @@ theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),
         obtain ⟨ t₁, ht₁, t₂, ht₂, hne, hcard ⟩ := h_max_triangles x hx;
         obtain ⟨ a, ha, b, hb, hab ⟩ := Finset.one_lt_card.mp hcard;
         use t₁.val, ⟨ t₁.property, ht₁ ⟩, t₂.val, ⟨ t₂.property, ht₂ ⟩;
-        exact ⟨ by simpa [ Subtype.ext_iff ] using hne, s(a, b), by simpa [ Sym2.eq_swap ] using hab, a, by aesop, b, by aesop, rfl, a, by aesop, b, by aesop, rfl ⟩;
+        refine ⟨ fun h => hne (Subtype.ext h), a, b, hab, (Finset.mem_inter.mp ha).1, (Finset.mem_inter.mp hb).1,
+          a, (Finset.mem_inter.mp ha).2, b, (Finset.mem_inter.mp hb).2, Or.inl ⟨rfl, rfl⟩ ⟩;
       exact le_of_not_gt fun h => by obtain ⟨ t₁, ht₁, t₂, ht₂, hne, hne' ⟩ := h_max_triangles x h; exact hne' ( hx₂ _ _ ht₁ _ _ ht₂ ( by aesop ) ) ;
     · intro w hw;
       refine' ⟨ 2, ⟨ { ⟨ { 0, 1, 2 }, by decide ⟩, ⟨ { 0, 3, 4 }, by decide ⟩ }, rfl, _, _ ⟩, hw ⟩ <;> simp +decide [ Erdos167.EdgeDisjoint ];

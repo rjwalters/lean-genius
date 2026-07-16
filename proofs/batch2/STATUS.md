@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 203 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos167Problem (maxHeartbeats 1M for double-namespace unfold; k5_tight
+refine + Finset.mem_inter.mp/Subtype.ext after simp+decide flattens bounded-∃-over-subtype). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 202 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1176Problem (universe .{0}/Cardinal.{0} pin witness type; ciInf₂_le
