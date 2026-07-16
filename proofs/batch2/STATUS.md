@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 331 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos740ProblemProvable (Cycle reindexed Fin n/Fin(n-1) -> ZMod n; added missing
+Cardinal.IsInfinite def; fixed ill-typed erdosMostWanted term; annotated ∃ S : Set V; pinned
+Cardinal.{0} on nullary-Prop binders for v4.31 universe inference). Repair: BORDERLINE non-soundness
+noted to #38611 log (ill-typed original terms restored to intended meaning, not weakened; 3 OPEN-problem
+sorries untouched).
+SEAM: bare `∀ x : Cardinal` inside a nullary `def:Prop` can fail "infer universe levels" on v4.31 ->
+pin Cardinal.{0} / explicit universe var at the binder.
+
 # DOCTOR SINGLE-PROOF BATCH 330 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: NormEuclideanZsqrtdFamilyOQ03OQ02OQ01 (deep cascade child; instance-synth via explicit
