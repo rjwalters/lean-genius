@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 93 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos268Aristotle (v4.31 drift: summable_of_finite->Summable.of_finite,
+one_div_le_one_div_of_le, Summable.tsum_lt_tsum dot-notation new sig, Nat.lt_pow_self, Real.rpow_natCast bridge).
+Repair (#38611): added `(0:ℕ)∉A` hypothesis to shifted_summable + shiftedHarmonicSum_antitone — genuine gap
+(1/(n+k)≤1/n false at n=0), NOT a rename; standalone Aristotle file, no other callers, signature-change safe.
+
 # DOCTOR SINGLE-PROOF BATCH 92 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): InclusionExclusionSecondBonferroni (stale sibling-API drift: parent dropped
