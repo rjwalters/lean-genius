@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 301 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): EulerIdentityOQ01OQ02OQ01 (expSeries_div_hasSum_exp explicit-arg drop;
+Nat.divModEquiv regroup needs set_option backward.defeqAttrib.useBackward true + convert!). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 300 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos807Problem (independenceNumber dot-notation Set vs Finset -> annotate;
