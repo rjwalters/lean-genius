@@ -89,8 +89,8 @@ theorem fwdDiff_iter_eval_eq_sum_taylor (p : ℚ[X]) (a : ℚ) (m : ℕ) :
     rw [add_comm a r, ← taylor_eval a p r, eval_eq_sum_range, natDegree_taylor]
   rw [funext hfun]
   simp_rw [← Finset.sum_apply _ _ (fun j x => (taylor a p).coeff j * x ^ j),
-    fwdDiff_iter_finset_sum, ← smul_eq_mul, ← Pi.smul_def, fwdDiff_iter_const_smul, Pi.smul_apply,
-    smul_eq_mul]
+    fwdDiff_iter_finsetSum, ← smul_eq_mul, ← Pi.smul_def, fwdDiff_iter_const_smul,
+    Finset.sum_apply, Pi.smul_apply]
 
 /-- **Diagonal corollary (leading coefficient as a top forward difference).** Only the top
 Taylor coefficient survives the `N`-th forward difference, so
@@ -149,14 +149,14 @@ theorem eval_add_natCast_eq_sum_fwdDiff_choose (p : ℚ[X]) (a : ℚ) (n : ℕ) 
         Δ_[1]^[k] (fun r => p.eval (a + r)) 0 * Ring.choose (n : ℚ) k
       = ∑ k ∈ range (n + p.natDegree + 1),
         Δ_[1]^[k] (fun r => p.eval (a + r)) 0 * Ring.choose (n : ℚ) k := by
-    refine Finset.sum_subset (range_subset.mpr (by omega)) (fun k _ hk => ?_)
+    refine Finset.sum_subset (range_subset_range.mpr (by omega)) (fun k _ hk => ?_)
     have hnk : n < k := by simp only [mem_range, not_lt] at hk; omega
     rw [Ring.choose_natCast, Nat.choose_eq_zero_of_lt hnk, Nat.cast_zero, mul_zero]
   have hbig_N : ∑ m ∈ range (p.natDegree + 1),
         Δ_[1]^[m] (fun r => p.eval (a + r)) 0 * Ring.choose (n : ℚ) m
       = ∑ m ∈ range (n + p.natDegree + 1),
         Δ_[1]^[m] (fun r => p.eval (a + r)) 0 * Ring.choose (n : ℚ) m := by
-    refine Finset.sum_subset (range_subset.mpr (by omega)) (fun m _ hm => ?_)
+    refine Finset.sum_subset (range_subset_range.mpr (by omega)) (fun m _ hm => ?_)
     have hNm : p.natDegree < m := by simp only [mem_range, not_lt] at hm; omega
     rw [fwdDiff_iter_eval_eq_zero hNm, zero_mul]
   rw [hshift, hbig_n, ← hbig_N]
@@ -188,7 +188,7 @@ theorem eval_add_eq_sum_fwdDiff_choose (p : ℚ[X]) (a : ℚ) (x : ℚ) :
   have hQeval : ∀ y : ℚ, Q.eval y
       = ∑ m ∈ range (p.natDegree + 1), Δ_[1]^[m] (fun r => p.eval (a + r)) 0 * Ring.choose y m := by
     intro y
-    rw [hQ, eval_finset_sum]
+    rw [hQ, eval_finsetSum]
     refine Finset.sum_congr rfl (fun m _ => ?_)
     rw [eval_mul, eval_C, newtonPoly_eval]
   -- `taylor a p` and `Q` agree on all of `ℕ ⊆ ℚ`, hence are equal as polynomials.
