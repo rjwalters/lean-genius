@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 38 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): LagrangeFourSquaresOQ02 (List.dedup_cons_of_not_mem->_of_notMem;
+native_decide inside ctx w/ unused ambient locals fails -> hoist concrete fact to top-level thm),
+PlatonicSolidsOQ02 (#38611: euler field V-E+F=2 in ℕ trunc-sub reduces FALSE 12-18+8=8≠2 when E>V, old
+omega accepted -> restated V+F=E+2). Repairs #38611: PlatonicSolidsOQ02 euler (pattern-3 ℕ-trunc-sub
+false-numeral class logged for systemic gallery grep).
+
 # DOCTOR SINGLE-PROOF BATCH 37 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): GreensTheoremOQ01OQ01OQ01OQ01 (simp no longer unfolds (Equiv.symm 1) i

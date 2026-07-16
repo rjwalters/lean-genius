@@ -2187,7 +2187,7 @@ LHopitalOQ03	GREEN
 LHopitalOQ04	GREEN	
 LHopitalOQ04OQ01	GREEN	
 LagrangeFourSquaresOQ01OQ03	RESIDUAL	noncomputable
-LagrangeFourSquaresOQ02	RESIDUAL	proof-drift
+LagrangeFourSquaresOQ02	GREEN	
 LagrangeFourSquaresOQ02OQ02	GREEN	
 LagrangeFourSquaresOQ04	GREEN	
 LagrangeFourSquaresOQ05	GREEN	
@@ -2317,7 +2317,7 @@ PicksTheoremOQ01OQ01OQ01	RESIDUAL	noncomputable
 PicksTheoremOQ01OQ02	GREEN	proof-drift
 PicksTheoremOQ02	GREEN	
 PicksTheoremOQ03	GREEN	
-PlatonicSolidsOQ02	RESIDUAL	proof-drift
+PlatonicSolidsOQ02	GREEN	
 PoincareConjecture	RESIDUAL	type-mismatch
 PowerMeanLimitOQ	GREEN	
 PrimeGapBoundsOQ01	RESIDUAL	unknown-const:Real.log_le_sub_one_of_le
