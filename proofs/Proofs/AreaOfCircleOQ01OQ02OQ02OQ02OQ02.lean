@@ -2,8 +2,8 @@
   Isoperimetric Inequality: the Hurwitz area bound from Wirtinger
   Open Question: area-of-circle-oq-01-oq-02-oq-02-oq-02-oq-02
 
-  The sibling file `AreaOfCircleOQ01OQ02OQ02OQ02` proves the analytic
-  Wirtinger inequality for a `C¹` periodic mean-zero function `f`,
+  The sibling file `AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier` proves the
+  analytic Wirtinger inequality for a `C¹` periodic mean-zero function `f`,
 
       ∫₀^{2π} f²  ≤  ∫₀^{2π} (f')².
 
@@ -32,11 +32,16 @@
 
   References:
   - Hurwitz (1901): Fourier proof of the isoperimetric inequality
-  - AreaOfCircleOQ01OQ02OQ02OQ02.lean (the Wirtinger inequality, reused here)
+  - AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier.lean (the Wirtinger inequality,
+    reused here; note: the earlier `AreaOfCircleOQ01OQ02OQ02OQ02.lean` once
+    carried an equivalent `wirtinger_inequality`, but it was inadvertently
+    dropped by an unrelated commit (#35648) six minutes before this file was
+    created — #38611. `AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier` proves the
+    identical statement independently and is the correct, live dependency.)
 -/
 
 import Mathlib
-import Proofs.AreaOfCircleOQ01OQ02OQ02OQ02
+import Proofs.AreaOfCircleOQ01OQ02OQ02OQ01OQ01Fourier
 
 open Real Filter Topology Complex MeasureTheory IsoperimetricFourier
 
