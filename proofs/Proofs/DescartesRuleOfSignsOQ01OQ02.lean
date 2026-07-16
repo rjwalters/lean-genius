@@ -56,30 +56,22 @@ open Polynomial Finset Nat BigOperators
 
 /-- Even + even = even: the base case for composing root contributions. -/
 theorem even_add_even {a b : ℕ} (ha : Even a) (hb : Even b) :
-    Even (a + b) := Even.add_even ha hb
+    Even (a + b) := Even.add ha hb
 
 /-- Even + odd = odd. -/
 theorem even_add_odd {a b : ℕ} (ha : Even a) (hb : ¬Even b) :
     ¬Even (a + b) := by
-  intro h; exact hb (by omega_nat)
+  simp only [Nat.even_iff] at *; omega
 
 /-- Parity is additive: (a + b) is even iff a and b have the same parity. -/
 theorem same_parity_iff_even_sum (a b : ℕ) :
     (Even a ↔ Even b) ↔ Even (a + b) := by
-  constructor
-  · intro ⟨hab, hba⟩
-    by_cases ha : Even a
-    · exact Even.add_even ha (hab ha)
-    · exact Nat.Odd.add_odd (Nat.odd_iff_not_even.mpr ha) (Nat.odd_iff_not_even.mpr (fun hb => ha (hba hb)))
-  · intro h
-    constructor
-    · intro ha; by_contra hb; exact (even_add_odd ha hb) h
-    · intro hb; by_contra ha; rw [Nat.add_comm] at h; exact (even_add_odd hb ha) h
+  simp only [Nat.even_iff]; omega
 
 /-- If a = b + 2k, then a and b have the same parity. -/
 theorem same_parity_of_diff_even {a b k : ℕ} (h : a = b + 2 * k) :
     Even a ↔ Even b := by
-  rw [h]; exact (Nat.even_add.mpr (even_two_mul k ▸ Iff.rfl))
+  simp only [Nat.even_iff]; omega
 
 -- ============================================================
 -- Part II: Root Count Decomposition
@@ -96,17 +88,14 @@ theorem same_parity_of_diff_even {a b k : ℕ} (h : a = b + 2 * k) :
 theorem root_count_decomposition (pos neg_zero nonreal : ℕ) (total : ℕ)
     (hsum : total = pos + neg_zero + nonreal) (heven : Even nonreal) :
     (Even total ↔ Even (pos + neg_zero)) := by
-  rw [hsum, Nat.add_assoc]
-  exact (Nat.even_add.mpr (Iff.intro
-    (fun _ => heven) (fun _ => heven)))
+  simp only [Nat.even_iff] at *; omega
 
 /-- Specialization: if non-real root count is even, then
     degree ≡ real root count (mod 2). -/
 theorem degree_parity_eq_real_root_parity (degree real_roots nonreal : ℕ)
     (hsum : degree = real_roots + nonreal) (heven : Even nonreal) :
     Even degree ↔ Even real_roots := by
-  rw [hsum]; exact (Nat.even_add.mpr (Iff.intro
-    (fun _ => heven) (fun _ => heven)))
+  simp only [Nat.even_iff] at *; omega
 
 -- ============================================================
 -- Part III: Why Conjugate Pairing Alone is Insufficient
@@ -149,14 +138,7 @@ theorem parity_chain (sv degree pos neg nonreal : ℕ)
     (h_nonreal : Even nonreal)  -- conjugate pairing
     (h_neg : Even neg)  -- negative roots pair with negSubst sign variations
     : Even (sv + pos) := by  -- Descartes parity: sv ≡ pos (mod 2)
-  have h1 : Even (degree + pos) := by
-    rw [h_deg, Nat.add_assoc]
-    have : Even (neg + nonreal) := Even.add_even h_neg h_nonreal
-    rw [show pos + neg + nonreal + pos = 2 * pos + (neg + nonreal) from by ring]
-    exact Even.add_even (even_two_mul pos) this
-  -- sv + pos = (sv + degree) + (degree + pos) - 2 * degree
-  -- Since sv + degree is even and degree + pos is even, sv + pos is even
-  omega
+  simp only [Nat.even_iff] at *; omega
 
 -- ============================================================
 -- Part IV: Sign Variation Under Root Extraction (Key Lemma)
@@ -216,7 +198,8 @@ theorem linear_parity_trivial (pos sv : ℕ) (hpos : pos ≤ 1) (hsv : sv ≤ 1)
 theorem quadratic_parity (pos sv : ℕ) (hpos : pos ≤ 2) (hsv : sv ≤ 2)
     (hle : pos ≤ sv) (hmod : Even (sv + pos)) :
     ∃ k : ℕ, pos + 2 * k = sv := by
-  interval_cases pos <;> interval_cases sv <;> simp_all <;> omega
+  obtain ⟨m, hm⟩ := hmod
+  exact ⟨m - pos, by omega⟩
 
 -- ============================================================
 -- Part VII: General Parity Bookkeeping
