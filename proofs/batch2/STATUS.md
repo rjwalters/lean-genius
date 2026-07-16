@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 135 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos732Problem (Finset.univ:Finset(List ℕ) no Fintype -> Nat.card
+subtype; 2^(...) cast to (B n:ℝ) for HPow ℕ ℝ; dropped redundant norm_num). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 134 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos670Problem (def->abbrev PointSet/RealPointSet; noncomputable

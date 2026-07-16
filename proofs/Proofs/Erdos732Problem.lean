@@ -155,8 +155,7 @@ The pair-counting condition is NOT sufficient.
 B(n) = |{Xs : Xs is block-compatible for n}|
 -/
 noncomputable def B (n : ℕ) : ℕ :=
-  (Finset.filter (fun Xs => IsBlockCompatible Xs n)
-    (Finset.univ : Finset (List ℕ))).card  -- Finite approximation
+  Nat.card {Xs : List ℕ // IsBlockCompatible Xs n}
 
 /- 
 **Erdős's upper bound:**
@@ -197,7 +196,7 @@ def AsymptoticConstant : Prop :=
   ∃ c : ℝ, c > 0 ∧
     ∀ ε : ℝ, ε > 0 →
       ∃ N : ℕ, ∀ n ≥ N,
-        2 ^ ((c - ε) * Real.sqrt n * Real.log n) ≤ B n ∧
+        2 ^ ((c - ε) * Real.sqrt n * Real.log n) ≤ (B n : ℝ) ∧
         (B n : ℝ) ≤ 2 ^ ((c + ε) * Real.sqrt n * Real.log n)
 
 /--
@@ -237,11 +236,9 @@ Actually we need Σ C(Xᵢ,2) = 6.
 -/
 example : PairCountCondition [4] 4 := by
   simp [PairCountCondition]
-  norm_num
 
 example : PairCountCondition [2, 2, 2, 2, 2, 2] 4 := by
   simp [PairCountCondition]
-  norm_num
 
 /--
 **Example: n = 6**
@@ -252,7 +249,6 @@ So 5 blocks of size 3: 5 × 3 = 15 ✓
 -/
 example : PairCountCondition [3, 3, 3, 3, 3] 6 := by
   simp [PairCountCondition]
-  norm_num
 
 /-
 ## Part VIII: Related Problems
