@@ -58,7 +58,8 @@ theorem omega_continuous_monotone_ari {α : Type*} [CompleteLattice α] {f : α 
   rw [hc_sup] at h
   -- f a = f(c 0) ≤ ⨆ f(c) = f b
   calc f a = f (if (0 : ℕ) = 0 then a else b) := by simp
-       _ ≤ ⨆ n, f (if n = 0 then a else b) := le_iSup _ 0
+       _ ≤ ⨆ n, f (if n = 0 then a else b) :=
+            le_iSup (fun n => f (if n = 0 then a else b)) 0
        _ = f b := h.symm
 
 end CantorDiagonalizationOQ04OQ03Aristotle
