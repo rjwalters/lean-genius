@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 319 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos625ProblemAristotle (3 seams: drop unneeded `SimpleGraph` from open to
+disambiguate chromaticNumber; `absurd (hu.trans hv.symm) huv` replacing `▸`-motive-drift
+`absurd (hu ▸ hv) huv`; (…:ℝ) casts before ℕ subtraction under abs). Cascade: primed parent
+Erdos625Problem via lake build. Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 318 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos818Aristotle (add `open scoped Pointwise` for Finset +/* HAdd/HMul; drop
