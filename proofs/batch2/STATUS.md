@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 296 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos36Problem (forward-ref axiom reorder; one_div_lt_one_div_of_lt;
+card_sdiff_of_subset; exists_subset_card_eq; mul_lt_mul_iff_of_pos_left; Finset.Icc ℤ default routes through
+noncomputable ConditionallyCompleteLinearOrder -> pin @Finset.Icc Int.instLinearOrder.toPreorder for
+native_decide). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 295 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos35Problem (forward-ref reorder; ciInf_le_of_le anon-ctor -> refine;
