@@ -25,10 +25,12 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
+import Mathlib.Algebra.Group.Even
 
 namespace Erdos583
 
 open SimpleGraph
+open scoped Classical
 
 /-
 ## Part 1: Basic Definitions
@@ -42,8 +44,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 structure GraphPath (G : SimpleGraph V) where
   vertices : List V
   distinct : vertices.Nodup
-  edges : ∀ i, i + 1 < vertices.length →
-    G.Adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, by omega⟩)
+  edges : ∀ i (hi : i + 1 < vertices.length),
+    G.Adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, hi⟩)
 
 /-- The edges used by a path -/
 def GraphPath.edgeSet {G : SimpleGraph V} (p : GraphPath G) : Set (Sym2 V) :=
@@ -51,9 +53,9 @@ def GraphPath.edgeSet {G : SimpleGraph V} (p : GraphPath G) : Set (Sym2 V) :=
 
 /-- A collection of paths is edge-disjoint -/
 def EdgeDisjoint {G : SimpleGraph V} (paths : List (GraphPath G)) : Prop :=
-  ∀ i j, i < paths.length → j < paths.length → i ≠ j →
-    (paths.get ⟨i, by assumption⟩).edgeSet ∩
-    (paths.get ⟨j, by assumption⟩).edgeSet = ∅
+  ∀ i j (hi : i < paths.length) (hj : j < paths.length), i ≠ j →
+    (paths.get ⟨i, hi⟩).edgeSet ∩
+    (paths.get ⟨j, hj⟩).edgeSet = ∅
 
 /-- A collection of paths covers all edges of G -/
 def CoversAllEdges {G : SimpleGraph V} (paths : List (GraphPath G)) : Prop :=
@@ -75,9 +77,11 @@ def PathPartition.size {G : SimpleGraph V} (P : PathPartition G) : ℕ :=
 The main conjecture: every connected graph partitions into ≤ ⌈n/2⌉ paths.
 -/
 
+universe uEG
+
 /-- The Erdős-Gallai conjecture: Connected graphs partition into ⌈n/2⌉ paths -/
 def ErdosGallaiConjecture (n : ℕ) : Prop :=
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∀ (V : Type uEG) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     Fintype.card V = n → G.Connected →
     ∃ P : PathPartition G, P.size ≤ (n + 1) / 2
 
@@ -96,8 +100,8 @@ structure GraphCycle (G : SimpleGraph V) where
   vertices : List V
   distinct : vertices.Nodup
   nonempty : vertices.length ≥ 3
-  edges : ∀ i, i < vertices.length →
-    G.Adj (vertices.get ⟨i, by assumption⟩)
+  edges : ∀ i (hi : i < vertices.length),
+    G.Adj (vertices.get ⟨i, hi⟩)
           (vertices.get ⟨(i + 1) % vertices.length, Nat.mod_lt _ (by omega)⟩)
 
 /-- A path-and-cycle partition -/
@@ -194,12 +198,16 @@ The main conjecture formalized.
 
 /-- Erdős Problem #583: The Erdős-Gallai Conjecture -/
 theorem erdos_583_conjecture (n : ℕ) :
-    ErdosGallaiConjecture n ↔
-    (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ErdosGallaiConjecture.{uEG} n ↔
+    (∀ (V : Type uEG) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       Fintype.card V = n → G.Connected →
-      ∃ P : PathPartition G, P.size ≤ (n + 1) / 2) :=
-  Iff.rfl
-
+      ∃ P : PathPartition G, P.size ≤ (n + 1) / 2) := by
+  unfold ErdosGallaiConjecture
+  constructor
+  · intro h V _ _ G hcard hconn
+    exact h V G hcard hconn
+  · intro h V _ _ G hcard hconn
+    exact h V G hcard hconn
 
 /-
 ## Part 10: Lower Bounds and Examples
@@ -217,8 +225,8 @@ Graphs showing the bound ⌈n/2⌉ is tight.
 /-- Main summary: Erdős Problem #583 status -/
 theorem erdos_583_summary :
     -- The main conjecture (every connected graph partitions into ⌈n/2⌉ paths)
-    (∀ n, ErdosGallaiConjecture n ↔
-      ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    (∀ n, ErdosGallaiConjecture.{uEG} n ↔
+      ∀ (V : Type uEG) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
         Fintype.card V = n → G.Connected →
         ∃ P : PathPartition G, P.size ≤ (n + 1) / 2) ∧
     -- Lovász (1968): ⌊n/2⌋ paths and cycles suffice
@@ -227,6 +235,14 @@ theorem erdos_583_summary :
     -- Fan (2002): ⌈n/2⌉ paths suffice for covering (not edge-disjoint)
     (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V), G.Connected →
       ∃ C : PathCover G, C.paths.length ≤ (Fintype.card V + 1) / 2) := by
-  exact ⟨fun n => Iff.rfl, lovasz_theorem, fan_theorem⟩
+  refine ⟨fun n => by
+      unfold ErdosGallaiConjecture
+      constructor
+      · intro h V _ _ G hcard hconn
+        exact h V G hcard hconn
+      · intro h V _ _ G hcard hconn
+        exact h V G hcard hconn,
+    fun V _ _ G => lovasz_theorem G,
+    fun V _ _ G hG => fan_theorem G hG⟩
 
 end Erdos583

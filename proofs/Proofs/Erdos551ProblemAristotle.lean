@@ -42,30 +42,55 @@ theorem formula_n3 (k : ℕ) (hk : k ≥ 3) :
 
 -- Monotonicity in k alone
 theorem formula_mono_k (k₁ k₂ n : ℕ) (hk : k₁ ≤ k₂) (hn : n ≥ 1) :
-    ConjecturedFormula k₁ n ≤ ConjecturedFormula k₂ n := by unfold ConjecturedFormula; nlinarith
+    ConjecturedFormula k₁ n ≤ ConjecturedFormula k₂ n := by
+  unfold ConjecturedFormula; gcongr <;> omega
 
 -- Monotonicity in n alone
 theorem formula_mono_n (k n₁ n₂ : ℕ) (hk : k ≥ 1) (hn : n₁ ≤ n₂) :
-    ConjecturedFormula k n₁ ≤ ConjecturedFormula k n₂ := by unfold ConjecturedFormula; nlinarith
+    ConjecturedFormula k n₁ ≤ ConjecturedFormula k n₂ := by
+  unfold ConjecturedFormula; gcongr <;> omega
 
 -- Strict monotonicity in k
-theorem formula_strict_mono_k (k₁ k₂ n : ℕ) (hk : k₁ < k₂) (hn : n ≥ 2) :
-    ConjecturedFormula k₁ n < ConjecturedFormula k₂ n := by unfold ConjecturedFormula; nlinarith
+-- NOTE (#38611 candidate): the original v4.26 proof used `nlinarith` directly on the
+-- truncated-ℕ-subtraction goal and was UNSOUND at k₁ = 0: e.g. k₁ = 0, k₂ = 1, n = 2 gives
+-- ConjecturedFormula 0 2 = ConjecturedFormula 1 2 = 1, so the strict `<` is false without
+-- k₁ ≥ 1. Added the missing hypothesis to restore a genuinely-true statement.
+theorem formula_strict_mono_k (k₁ k₂ n : ℕ) (hk : k₁ < k₂) (hn : n ≥ 2) (hk1 : k₁ ≥ 1) :
+    ConjecturedFormula k₁ n < ConjecturedFormula k₂ n := by
+  unfold ConjecturedFormula; gcongr <;> omega
 
 -- Strict monotonicity in n
-theorem formula_strict_mono_n (k n₁ n₂ : ℕ) (hk : k ≥ 2) (hn : n₁ < n₂) :
-    ConjecturedFormula k n₁ < ConjecturedFormula k n₂ := by unfold ConjecturedFormula; nlinarith
+-- NOTE (#38611 candidate): same unsoundness pattern as `formula_strict_mono_k` (the original
+-- `nlinarith` proof was invalid at n₁ = 0, e.g. k = 2, n₁ = 0, n₂ = 1 gives both sides = 1).
+-- Added the missing n₁ ≥ 1 hypothesis to restore a genuinely-true statement.
+theorem formula_strict_mono_n (k n₁ n₂ : ℕ) (hk : k ≥ 2) (hn : n₁ < n₂) (hn1 : n₁ ≥ 1) :
+    ConjecturedFormula k n₁ < ConjecturedFormula k n₂ := by
+  unfold ConjecturedFormula; gcongr <;> omega
 
 -- Lower bound: formula is always at least 1
 theorem formula_ge_one (k n : ℕ) : ConjecturedFormula k n ≥ 1 := by unfold ConjecturedFormula; omega
 
 -- Formula grows at least linearly in k
 theorem formula_ge_k (k n : ℕ) (hn : n ≥ 2) :
-    ConjecturedFormula k n ≥ k := by unfold ConjecturedFormula; nlinarith
+    ConjecturedFormula k n ≥ k := by
+  unfold ConjecturedFormula
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · omega
+  · have hk1 : (1 : ℕ) ≤ k := hk0
+    have hn1 : (1 : ℕ) ≤ n := by omega
+    zify [hk1, hn1]
+    nlinarith
 
 -- Formula grows at least linearly in n
 theorem formula_ge_n (k n : ℕ) (hk : k ≥ 2) :
-    ConjecturedFormula k n ≥ n := by unfold ConjecturedFormula; nlinarith
+    ConjecturedFormula k n ≥ n := by
+  unfold ConjecturedFormula
+  rcases Nat.eq_zero_or_pos n with hn0 | hn0
+  · omega
+  · have hn1 : (1 : ℕ) ≤ n := hn0
+    have hk1 : (1 : ℕ) ≤ k := by omega
+    zify [hk1, hn1]
+    nlinarith
 
 -- Lower bound vertex count equals formula minus 1
 theorem lower_bound_vertex_count (k n : ℕ) (hk : k ≥ 1) (hn : n ≥ 1) :
@@ -97,7 +122,9 @@ theorem nikiforov_lt_bondy_erdos_100 :
 -- General comparison for n ≥ 5
 theorem nikiforov_lt_bondy_erdos (n : ℕ) (hn : n ≥ 5) :
     NikiforovThreshold n < BondyErdosThreshold n := by
-  unfold NikiforovThreshold BondyErdosThreshold; nlinarith
+  unfold NikiforovThreshold BondyErdosThreshold
+  have hsq : n ^ 2 ≥ 4 * n + 4 := by nlinarith
+  omega
 
 -- At n=4, Nikiforov does NOT improve (they are equal or Nikiforov is worse)
 theorem nikiforov_ge_bondy_erdos_4 :
@@ -118,7 +145,9 @@ theorem nikiforov_val_100 : NikiforovThreshold 100 = 402 := by unfold NikiforovT
 -- Threshold ratio: Nikiforov saves roughly n²-4n-3 over Bondy-Erdős
 theorem threshold_improvement (n : ℕ) (hn : n ≥ 5) :
     BondyErdosThreshold n - NikiforovThreshold n = n ^ 2 - 4 * n - 3 := by
-  unfold BondyErdosThreshold NikiforovThreshold; nlinarith
+  unfold BondyErdosThreshold NikiforovThreshold
+  have hsq : n ^ 2 ≥ 4 * n + 4 := by nlinarith
+  omega
 
 /-
   ## Section 3: Lower Bound Graph Component Properties
@@ -132,18 +161,22 @@ theorem component_index_bound (k n : ℕ) (hk : k ≥ 2)
     (i : Fin ((k - 1) * (n - 1))) :
     i.val / (k - 1) < n - 1 := by
   have hk1 : k - 1 > 0 := by omega
-  exact Nat.div_lt_iff_lt_mul hk1 |>.mpr i.isLt
+  obtain ⟨m, hm⟩ := i
+  have hm' : m < (n - 1) * (k - 1) := by rw [mul_comm]; exact hm
+  exact Nat.div_lt_iff_lt_mul hk1 |>.mpr hm'
 
 -- Vertices in the same component have close indices
 theorem same_component_close (k n : ℕ) (hk : k ≥ 2)
     (i j : ℕ) (hq : i / (k - 1) = j / (k - 1))
     (hi : i < (k - 1) * (n - 1)) (hj : j < (k - 1) * (n - 1)) :
     (i : ℤ) - j < k - 1 ∧ (j : ℤ) - i < k - 1 := by
-  have hk1 : (k : ℤ) - 1 > 0 := by omega
-  constructor <;> {
-    have := Nat.div_eq_iff_lt_mul_add (show k - 1 > 0 by omega)
-    omega
-  }
+  have hk1 : k - 1 > 0 := by omega
+  have hmi : i % (k - 1) < k - 1 := Nat.mod_lt i hk1
+  have hmj : j % (k - 1) < k - 1 := Nat.mod_lt j hk1
+  have hdi : (k - 1) * (i / (k - 1)) + i % (k - 1) = i := Nat.div_add_mod i (k - 1)
+  have hdj : (k - 1) * (i / (k - 1)) + j % (k - 1) = j := by
+    rw [hq]; exact Nat.div_add_mod j (k - 1)
+  constructor <;> omega
 
 -- Each component has exactly k-1 vertices
 theorem component_size (k n c : ℕ) (hk : k ≥ 2) (hc : c < n - 1) :
@@ -181,11 +214,13 @@ theorem cycle_mod_bound (k : ℕ) (hk : k ≥ 1) (a : ℕ) :
 
 -- In C_k, vertex 0 is adjacent to vertex 1
 theorem cycle_0_adj_1 (k : ℕ) (hk : k ≥ 3) :
-    (0 + 1) % k = 1 := by omega
+    (0 + 1) % k = 1 := Nat.mod_eq_of_lt (by omega)
 
 -- In C_k, vertex k-1 is adjacent to vertex 0
 theorem cycle_last_adj_0 (k : ℕ) (hk : k ≥ 3) :
-    ((k - 1) + 1) % k = 0 := by omega
+    ((k - 1) + 1) % k = 0 := by
+  have hkk : (k - 1) + 1 = k := by omega
+  rw [hkk]; exact Nat.mod_self k
 
 -- C_k has exactly k edges (as an undirected graph on Fin k)
 -- Each vertex has degree 2
