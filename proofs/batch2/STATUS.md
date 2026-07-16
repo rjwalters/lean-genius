@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 271 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): MeanValueTheoremOQ04 (stronglyMeasurableAtFilter field-notation ->
+Continuous.stronglyMeasurableAtFilter explicit; Module ℝ ℝ diamond -> convert using 1 <;> first|rfl|rw[sub_self];
+integral notation greedy-binding parens). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 270 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): PNPBarriersLegacy (Turing.TM2ComputableInPolyTime now raw encode fns not
