@@ -48,16 +48,29 @@ Key Mathlib lemmas:
 theorem sts_has_girth_at_least_2_ari {V : Type*} [Fintype V] [DecidableEq V]
     (H : Hypergraph3 V) (hSTS : IsSteinerTripleSystem H) :
     HasGirthAtLeast H 2 := by
-  intro S hS₁ hS₂
-  obtain ⟨e₁, e₂, he₁, he₂, h_distinct⟩ : ∃ e₁ e₂ : Finset V,
+  intro S hS₁ hS₂ hS₃
+  obtain ⟨e₁, e₂, he₁, he₂, h_distinct, rfl⟩ : ∃ e₁ e₂ : Finset V,
       e₁ ∈ H.edges ∧ e₂ ∈ H.edges ∧ e₁ ≠ e₂ ∧ S = {e₁, e₂} := by
-    rw [Finset.card_eq_two] at hS₂; obtain ⟨e₁, e₂, hne, rfl⟩ := hS₂; use e₁, e₂; aesop
+    have hScard : S.card = 2 := le_antisymm hS₃ hS₂
+    rw [Finset.card_eq_two] at hScard
+    obtain ⟨e₁, e₂, hne, rfl⟩ := hScard
+    exact ⟨e₁, e₂, hS₁ (by simp), hS₁ (by simp), hne, rfl⟩
   have h_inter : (e₁ ∩ e₂).card ≤ 1 := by
     contrapose! h_distinct
     obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp h_distinct
-    have := hSTS a b hab
-    exact fun h => False.elim (h (this.unique ⟨he₁, by aesop⟩ ⟨he₂, by aesop⟩))
-  have := H.edge_card e₁ he₁; have := H.edge_card e₂ he₂; simp_all +decide
-  have := Finset.card_union_add_card_inter e₁ e₂; simp_all +decide [vertexSpan]; omega
+    have hUniq := hSTS a b hab
+    have h1 : edgeContainsPair e₁ a b :=
+      ⟨(Finset.mem_inter.mp ha).1, (Finset.mem_inter.mp hb).1, hab⟩
+    have h2 : edgeContainsPair e₂ a b :=
+      ⟨(Finset.mem_inter.mp ha).2, (Finset.mem_inter.mp hb).2, hab⟩
+    exact hUniq.unique ⟨he₁, h1⟩ ⟨he₂, h2⟩
+  have hc1 : e₁.card = 3 := H.uniform e₁ he₁
+  have hc2 : e₂.card = 3 := H.uniform e₂ he₂
+  have hcard := Finset.card_union_add_card_inter e₁ e₂
+  have hScard2 : ({e₁, e₂} : Finset (Finset V)).card = 2 := Finset.card_pair h_distinct
+  have hspan : vertexSpan ({e₁, e₂} : Finset (Finset V)) = (e₁ ∪ e₂).card := by
+    simp [vertexSpan, Finset.biUnion_insert, Finset.singleton_biUnion]
+  rw [hspan, hScard2]
+  omega
 
 end Erdos207ProblemAristotle
