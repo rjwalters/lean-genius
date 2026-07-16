@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 328 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos610ProblemAristotle (added [Nonempty V] binder + `open Erdos610` to resolve
+τ/ErdosGallaiTuzaConjecture/Question2_LogImprovement against parent namespaced defs vs autoBound;
+mirrors parent's [Nonempty V] #38611 soundness fix). Repair: none new (parent already flagged).
+SEAM: instance-synth failure often paired with missing `open <Parent namespace>` in a companion.
+
 # DOCTOR SINGLE-PROOF BATCH 327 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos611Aristotle (cascade artifact — parent Erdos611Problem olean absent from fresh
