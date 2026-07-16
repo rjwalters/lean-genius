@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 322 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos859Aristotle (Nat.divisors_prime_pow explicit exp; divisors_one/Prime.divisors+
+card_pair renames; Nat.Coprime.card_divisors_mul; pinned Classical.decPred on abstract-Set filter
+to kill Decidable-instance mismatch; drop redundant one_mul after div_lt_iff₀ reshape). Repair: none.
+NEW SEAM: abstract-Set-membership Finset.filter in a generic def picks Classical.propDecidable at
+def-elab, but re-elaborating once the set specializes (Set.univ) picks Set.decidableUniv -> rw/simp_rw
+silently no-op with no pp diff; pin @Finset.filter _ p (Classical.decPred _) s everywhere.
+
 # DOCTOR SINGLE-PROOF BATCH 321 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: WolstenholmeTheoremOQ01 (ledger `oom-killed` was NOT native_decide — `unfold cb; rw`
