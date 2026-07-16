@@ -83,7 +83,7 @@ A line arrangement is a finite set of lines with specific intersection propertie
 **Line arrangement:**
 A finite set of lines in the plane.
 -/
-def LineArrangement := Finset Line2D
+abbrev LineArrangement := Finset Line2D
 
 /--
 **No 4 lines concurrent:**
