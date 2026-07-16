@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 122 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos380Problem (ill-typed let IsBadInterval paren; open Classical for
+DecidablePred; ℚ->ℝ rpow restatement; #38611 REPAIR bad_interval_no_prime_general false@u=0 -> 1≤u),
+Erdos395Problem (Finset.card{...}.toFinset -> Set.ncard for infinite-ambient subtype Fintype-synth-fail;
+plain defs, reshaped — unblocks OQ01 which needs re-verify). Repairs: 1 (#38611 Erdos380Problem).
+
 # DOCTOR SINGLE-PROOF BATCH 121 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AngleTrisectionOQ02OQ01OQ02Incomplete01 (HARD 33min/316k: constructibility

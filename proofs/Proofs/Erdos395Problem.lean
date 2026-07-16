@@ -78,7 +78,7 @@ How many sign choices give |sum| ≤ √2?
 
 /-- The number of sign vectors giving |sum| ≤ √2. -/
 noncomputable def countSmallSums (z : Fin n → ℂ) : ℕ :=
-  Finset.card {ε : Fin n → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ Real.sqrt 2}.toFinset
+  Set.ncard {ε : Fin n → ℤ | isSignVector ε ∧ signedSumAbs z ε ≤ Real.sqrt 2}
 
 /-- The probability that a random sign choice gives |sum| ≤ √2. -/
 noncomputable def probSmallSum (z : Fin n → ℂ) : ℝ :=
@@ -93,8 +93,8 @@ def erdos_original_question (n : ℕ) : Prop :=
   n > 0 →
   ∃ (c : ℝ), c > 0 ∧
   ∀ (z : Fin n → ℂ), isUnitVector z →
-  (Finset.card {ε : Fin n → ℤ | isSignVector ε ∧
-    signedSumAbs z ε ≤ 1}.toFinset : ℝ) / (2 : ℝ) ^ n ≥ c / n
+  (Set.ncard {ε : Fin n → ℤ | isSignVector ε ∧
+    signedSumAbs z ε ≤ 1} : ℝ) / (2 : ℝ) ^ n ≥ c / n
 
 /-- Carnielli-Carolino counterexample: z₁ = 1, zₖ = i for k ≥ 2.
     For this configuration, |sum| ≥ √2 always when n is even. -/
