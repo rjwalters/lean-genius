@@ -75,7 +75,8 @@ theorem SphericalCap.area_pos (c : SphericalCap) : 0 < c.area := by
   unfold area
   have hpi : 0 < π := pi_pos
   have hcos : cos c.colatitude < 1 := by
-    exact cos_lt_one_of_ne_zero c.colatitude (ne_of_gt c.colatitude_pos)
+    have := cos_lt_cos_of_nonneg_of_le_pi (le_refl (0:ℝ)) c.colatitude_lt_pi.le c.colatitude_pos
+    simpa using this
   linarith [mul_pos (by linarith : (0 : ℝ) < 2 * π) (by linarith : (0 : ℝ) < 1 - cos c.colatitude)]
 
 /-- The boundary length of a spherical cap is positive -/
@@ -131,7 +132,7 @@ theorem spherical_cap_equality (c : SphericalCap) :
   have hsin2 : sin c.colatitude ^ 2 = 1 - cos c.colatitude ^ 2 := by
     have := sin_sq_add_cos_sq c.colatitude
     linarith
-  nlinarith [sin_sq_add_cos_sq c.colatitude, pi_pos]
+  linear_combination (4 * π ^ 2) * hsin2
 
 /-  Equality characterization: optimal regions on S² are geodesic caps -/
 /-
@@ -159,14 +160,14 @@ theorem HyperbolicDisk.area_pos (d : HyperbolicDisk) : 0 < d.area := by
   unfold area
   have hpi : 0 < π := pi_pos
   have hcosh : 1 < cosh d.radius := by
-    exact one_lt_cosh (ne_of_gt d.radius_pos)
+    exact one_lt_cosh.mpr (ne_of_gt d.radius_pos)
   linarith [mul_pos (by linarith : (0 : ℝ) < 2 * π) (by linarith : (0 : ℝ) < cosh d.radius - 1)]
 
 /-- The boundary length of a hyperbolic disk is positive -/
 theorem HyperbolicDisk.boundaryLength_pos (d : HyperbolicDisk) : 0 < d.boundaryLength := by
   unfold boundaryLength
   have hpi : 0 < π := pi_pos
-  have hsinh : 0 < sinh d.radius := sinh_pos_of_pos d.radius_pos
+  have hsinh : 0 < sinh d.radius := sinh_pos_iff.mpr d.radius_pos
   linarith [mul_pos (by linarith : (0 : ℝ) < 2 * π) hsinh]
 
 /-- Convert a hyperbolic disk to a surface region -/
@@ -215,7 +216,7 @@ theorem hyperbolic_disk_equality (d : HyperbolicDisk) :
   have hid : sinh d.radius ^ 2 = cosh d.radius ^ 2 - 1 := by
     have := cosh_sq_sub_sinh_sq d.radius
     linarith
-  nlinarith [cosh_sq_sub_sinh_sq d.radius, pi_pos]
+  linear_combination (4 * π ^ 2) * hid
 
 /-  Equality characterization: optimal regions in H² are geodesic disks -/
 /-
@@ -291,20 +292,16 @@ noncomputable def correctedRatio (R : SurfaceRegion) (κ : ℝ) : ℝ :=
 theorem corrected_ratio_le_one (κ : ℝ) (h : UnifiedIsoperimetric κ) (R : SurfaceRegion) :
     correctedRatio R κ ≤ 1 := by
   unfold correctedRatio
-  have hL2 : 0 < R.L ^ 2 := by
-    have hL : 0 < R.boundaryLength := by
-      -- From the isoperimetric inequality, L can't be 0 for positive area
-      by_contra hle
-      push_neg at hle
-      have hL0 : R.L = 0 := le_antisymm (not_lt.mp hle) R.boundaryLength_nonneg
-      have := h R
-      unfold SurfaceRegion.L at hL0
-      rw [hL0] at this
-      simp at this
-      linarith [R.area_pos, sq_nonneg R.A]
-    exact sq_pos_of_pos hL
-  rw [div_le_one hL2]
-  exact h R
+  -- `SurfaceRegion` only requires `0 ≤ boundaryLength`, so `boundaryLength = 0` is a
+  -- structurally legal (if geometrically degenerate) instance. Handle it directly via
+  -- Lean's division-by-zero convention rather than trying to rule it out.
+  rcases eq_or_lt_of_le R.boundaryLength_nonneg with hL0 | hLpos
+  · have hL : R.L = 0 := hL0.symm
+    rw [hL]
+    norm_num
+  · have hL2 : 0 < R.L ^ 2 := sq_pos_of_pos hLpos
+    rw [div_le_one hL2]
+    exact h R
 
 /-
 ## Part VIII: Comparison Across Geometries
@@ -332,12 +329,11 @@ theorem hyperbolic_needs_more_perimeter (R : SurfaceRegion) :
     The curvature correction κA² is negligible compared to 4πA. -/
 theorem small_area_universal (R : SurfaceRegion) (κ : ℝ) (hA : R.A ≤ 1) :
     |κ * R.A ^ 2| ≤ |κ| * R.A := by
-  rw [abs_mul, abs_mul]
-  have hA_pos := R.area_pos
+  rw [abs_mul]
+  have hA_pos : 0 < R.A := R.area_pos
   have hA2 : |R.A ^ 2| = R.A ^ 2 := abs_of_nonneg (sq_nonneg R.A)
-  have hAabs : |R.A| = R.A := abs_of_pos hA_pos
-  rw [hA2, hAabs]
-  nlinarith [sq_nonneg R.A]
+  rw [hA2]
+  nlinarith [mul_nonneg (abs_nonneg κ) (mul_nonneg hA_pos.le (sub_nonneg.mpr hA))]
 
 /-
 ## Summary
