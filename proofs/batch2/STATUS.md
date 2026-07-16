@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 295 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos35Problem (forward-ref reorder; ciInf_le_of_le anon-ctor -> refine;
+<;>[t1;t2] syntax gone -> bullets; rpow -(1/k) k:ℕ Neg ℕ -> (k:ℝ) cast; filter_subset_filter->monotone_filter_right).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 294 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FourierSeriesOQ01 (HARD 24min/262k Carleson ~30 seams: Circle.norm_coe;
