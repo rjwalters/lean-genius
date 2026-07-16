@@ -31,7 +31,7 @@ open Complex
 /-- A monic polynomial of degree n with roots in the closed unit disk. -/
 structure UnitRootedPoly (n : ℕ) where
   roots : Fin n → ℂ
-  roots_in_disk : ∀ i, abs (roots i) ≤ 1
+  roots_in_disk : ∀ i, ‖roots i‖ ≤ 1
 
 /-- The polynomial value at z: f(z) = ∏(z - rᵢ) -/
 noncomputable def polyVal (p : UnitRootedPoly n) (z : ℂ) : ℂ :=
@@ -39,14 +39,14 @@ noncomputable def polyVal (p : UnitRootedPoly n) (z : ℂ) : ℂ :=
 
 /-- The sublevel set E = {z ∈ ℂ : |f(z)| ≤ 1}. -/
 def sublevelSet (p : UnitRootedPoly n) : Set ℂ :=
-  {z : ℂ | abs (polyVal p z) ≤ 1}
+  {z : ℂ | ‖polyVal p z‖ ≤ 1}
 
 /-- The shortest path length in E from the origin to the unit circle.
     Simplified definition using infimum over path-connected curves. -/
 noncomputable def shortestPathLength (p : UnitRootedPoly n) : ℝ :=
   sInf {L : ℝ | ∃ γ : Set.Icc (0 : ℝ) 1 → ℂ,
     γ ⟨0, le_refl 0, zero_le_one⟩ = 0 ∧
-    abs (γ ⟨1, zero_le_one, le_refl 1⟩) = 1 ∧
+    ‖γ ⟨1, zero_le_one, le_refl 1⟩‖ = 1 ∧
     (∀ t, (γ t) ∈ sublevelSet p) ∧
     L ≥ 0}
 
@@ -64,15 +64,15 @@ theorem polyVal_zero (p : UnitRootedPoly n) :
 
 /-- |f(0)| = ∏|rᵢ| for the monic polynomial with roots rᵢ -/
 theorem abs_polyVal_zero (p : UnitRootedPoly n) :
-    abs (polyVal p 0) = Finset.univ.prod (fun i => abs (p.roots i)) := by
-  rw [polyVal_zero, map_prod]
-  congr 1; ext i; simp [map_neg]
+    ‖polyVal p 0‖ = Finset.univ.prod (fun i => ‖p.roots i‖) := by
+  rw [polyVal_zero, norm_prod]
+  congr 1; ext i; simp
 
 /-- The product of absolute values of roots is at most 1 -/
 theorem prod_abs_roots_le_one (p : UnitRootedPoly n) :
-    Finset.univ.prod (fun i => abs (p.roots i)) ≤ 1 := by
+    Finset.univ.prod (fun i => ‖p.roots i‖) ≤ 1 := by
   apply Finset.prod_le_one
-  · intro i _; exact abs_nonneg _
+  · intro i _; exact norm_nonneg _
   · intro i _; exact p.roots_in_disk i
 
 /-- 0 is always in the sublevel set E when all roots are in the unit disk.
@@ -93,16 +93,17 @@ theorem polyVal_zero_roots (n : ℕ) (z : ℂ) :
 /-- When all roots are 0 and n ≥ 1, the sublevel set is the closed unit disk -/
 theorem sublevelSet_zero_roots (n : ℕ) (hn : n ≥ 1) (z : ℂ) :
     let p : UnitRootedPoly n := ⟨fun _ => 0, fun _ => by simp⟩
-    z ∈ sublevelSet p ↔ abs z ≤ 1 := by
+    z ∈ sublevelSet p ↔ ‖z‖ ≤ 1 := by
   simp only [sublevelSet, Set.mem_setOf_eq, polyVal_zero_roots]
-  rw [map_pow]
+  rw [norm_pow]
   constructor
   · intro h
     by_contra hgt
     push_neg at hgt
-    have h1 : (abs z) ^ n > 1 ^ n := pow_lt_pow_left hgt (by linarith : (1 : ℝ) ≥ 0) hn
+    have h1 : ‖z‖ ^ n > 1 ^ n :=
+      pow_lt_pow_left₀ hgt (by linarith : (1 : ℝ) ≥ 0) (by omega)
     simp at h1; linarith
-  · intro h; exact pow_le_one₀ (abs_nonneg z) h
+  · intro h; exact pow_le_one₀ (norm_nonneg z) h
 
 -- ## Structural Properties
 
@@ -112,40 +113,40 @@ theorem sublevelSet_nonempty (p : UnitRootedPoly n) :
 
 /-- If z ∈ E, then |f(z)| ≤ 1 (tautological unwrapping) -/
 theorem mem_sublevelSet_iff (p : UnitRootedPoly n) (z : ℂ) :
-    z ∈ sublevelSet p ↔ abs (polyVal p z) ≤ 1 :=
+    z ∈ sublevelSet p ↔ ‖polyVal p z‖ ≤ 1 :=
   Iff.rfl
 
 /-- Degree 0: the sublevel set is all of ℂ (empty product is 1, |1| ≤ 1) -/
 theorem sublevelSet_degree_zero (z : ℂ) :
     let p : UnitRootedPoly 0 := ⟨Fin.elim0, fun i => Fin.elim0 i⟩
     z ∈ sublevelSet p := by
-  simp [sublevelSet, polyVal, abs_one]
+  simp [sublevelSet, polyVal]
 
 -- ## Degree 1: Single Root Case
 
 /-- For degree 1 with root r, f(z) = z - r and E = disk of radius 1 at r -/
-theorem sublevelSet_degree_one (r : ℂ) (hr : abs r ≤ 1) (z : ℂ) :
+theorem sublevelSet_degree_one (r : ℂ) (hr : ‖r‖ ≤ 1) (z : ℂ) :
     let p : UnitRootedPoly 1 := ⟨![r], fun i => by fin_cases i; exact hr⟩
-    z ∈ sublevelSet p ↔ abs (z - r) ≤ 1 := by
-  simp [sublevelSet, polyVal, Matrix.cons_val_zero]
+    z ∈ sublevelSet p ↔ ‖z - r‖ ≤ 1 := by
+  simp [sublevelSet, polyVal]
 
 /-- For degree 1, 0 is in E since |0 - r| = |r| ≤ 1 -/
-theorem zero_in_degree_one (r : ℂ) (hr : abs r ≤ 1) :
+theorem zero_in_degree_one (r : ℂ) (hr : ‖r‖ ≤ 1) :
     let p : UnitRootedPoly 1 := ⟨![r], fun i => by fin_cases i; exact hr⟩
     (0 : ℂ) ∈ sublevelSet p := by
-  rw [sublevelSet_degree_one r hr]; simp [hr]
+  simp [sublevelSet, polyVal, hr]
 
 -- ## |f(0)| Properties
 
 /-- |f(0)| ≤ 1 for any UnitRootedPoly -/
 theorem abs_polyVal_zero_le_one (p : UnitRootedPoly n) :
-    abs (polyVal p 0) ≤ 1 := by
+    ‖polyVal p 0‖ ≤ 1 := by
   rw [abs_polyVal_zero]; exact prod_abs_roots_le_one p
 
 /-- If all roots have |rᵢ| = 1 (unimodular), then |f(0)| = 1 -/
 theorem abs_polyVal_zero_eq_one_of_unimodular (p : UnitRootedPoly n)
-    (h : ∀ i, abs (p.roots i) = 1) :
-    abs (polyVal p 0) = 1 := by
+    (h : ∀ i, ‖p.roots i‖ = 1) :
+    ‖polyVal p 0‖ = 1 := by
   rw [abs_polyVal_zero]; simp [h]
 
 -- ## The Main Conjectures (OPEN)
