@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 169 (mixed fleet, #38065, 2026-07-16)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos1095OQ01Problem (omega no zeta-unfold set-locals -> clear_value;
+nested-mod -> Nat.mod_eq_sub_mod; open Classical), PuiseuxTheoremOQ02 (HARD 20min: HahnSeries [Zero R] type
+tower bundled in Σ w/ zero-coherence invariant; Type u→Type u universe rigidification), AlgebraicNumbers
+CountableOQ04 (Rat.smul_def; log_eq_zero simp-only guard; Real.abs .abs dead -> |·|). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 168 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos684Problem (PartENat->emultiplicity/multiplicity bridge; sum_nbij->
