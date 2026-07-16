@@ -96,13 +96,13 @@ lemma totient_div_set_nonempty (n : ℕ) (hn : 1 ≤ n) :
 /-- [Formerly axiom] pₙ is prime. Proved via sInf membership. -/
 theorem smallestPrimeMod1_prime (n : ℕ) (hn : 1 ≤ n) :
     (smallestPrimeMod1 n).Prime := by
-  have hmem := csInf_mem (primes_mod1_nonempty n hn) (nat_bddBelow _)
+  have hmem := csInf_mem (primes_mod1_nonempty n hn)
   exact hmem.1
 
 /-- [Formerly axiom] pₙ ≡ 1 (mod n). Proved via sInf membership. -/
 theorem smallestPrimeMod1_cong (n : ℕ) (hn : 1 ≤ n) :
     n ∣ (smallestPrimeMod1 n - 1) := by
-  have hmem := csInf_mem (primes_mod1_nonempty n hn) (nat_bddBelow _)
+  have hmem := csInf_mem (primes_mod1_nonempty n hn)
   exact hmem.2
 
 /-- [Formerly axiom] pₙ is minimal among primes ≡ 1 (mod n). Proved via sInf ≤. -/
@@ -114,13 +114,13 @@ theorem smallestPrimeMod1_minimal (n : ℕ) (hn : 1 ≤ n) (p : ℕ)
 /-- [Formerly axiom] mₙ is positive. Proved via sInf membership. -/
 theorem smallestTotientDiv_pos (n : ℕ) (hn : 1 ≤ n) :
     0 < smallestTotientDiv n := by
-  have hmem := csInf_mem (totient_div_set_nonempty n hn) (nat_bddBelow _)
+  have hmem := csInf_mem (totient_div_set_nonempty n hn)
   exact hmem.1
 
 /-- [Formerly axiom] n | φ(mₙ). Proved via sInf membership. -/
 theorem smallestTotientDiv_divides (n : ℕ) (hn : 1 ≤ n) :
     n ∣ (smallestTotientDiv n).totient := by
-  have hmem := csInf_mem (totient_div_set_nonempty n hn) (nat_bddBelow _)
+  have hmem := csInf_mem (totient_div_set_nonempty n hn)
   exact hmem.2
 
 /-- [Formerly axiom] mₙ is minimal. Proved via sInf ≤. -/
@@ -248,7 +248,7 @@ lemma almostAll_infinitely_often {P : ℕ → Prop} (hP : AlmostAll P) :
     simp only [Finset.mem_Ico] at hn
     exact Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hn.2, hall n hn.1⟩
   have hcard := Finset.card_le_card hsub
-  rw [Finset.card_Ico] at hcard
+  rw [Nat.card_Ico] at hcard
   -- (M - N : ℚ) ≤ card < M/2, but M - N > M/2 since M > 2N: contradiction
   have h1 : ((M - N : ℕ) : ℚ) < (1/2 : ℚ) * ↑M :=
     lt_of_le_of_lt (Nat.cast_le.mpr hcard) hcount
