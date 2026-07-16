@@ -44,19 +44,19 @@ def powerSum (z : ComplexSeq n) (k : ℕ) : ℂ :=
 
 /-- The first element is 1. -/
 def HasFirstOne (z : ComplexSeq n) : Prop :=
-  n > 0 ∧ z ⟨0, by omega⟩ = 1
+  ∃ h : n > 0, z ⟨0, h⟩ = 1
 
 /-- All elements have modulus at least 1. -/
 def AllModulusGeOne (z : ComplexSeq n) : Prop :=
-  ∀ i, abs (z i) ≥ 1
+  ∀ i, ‖z i‖ ≥ 1
 
 /-- All elements have modulus exactly 1 (on unit circle). -/
 def AllOnUnitCircle (z : ComplexSeq n) : Prop :=
-  ∀ i, abs (z i) = 1
+  ∀ i, ‖z i‖ = 1
 
 /-- All elements have modulus at most 1 (in unit disk). -/
 def AllModulusLeOne (z : ComplexSeq n) : Prop :=
-  ∀ i, abs (z i) ≤ 1
+  ∀ i, ‖z i‖ ≤ 1
 
 /-- The maximum of |powerSum z k| over k from 2 to n+1.
     Axiomatized because Finset.sup' requires a nonempty proof that
@@ -110,7 +110,7 @@ def unitCircleConstant : ℝ := 1.7455
 axiom turan_lower_bound :
   ∀ ε > 0, ∃ N : ℕ,
     ∀ n ≥ N, ∀ z : ComplexSeq n, HasFirstOne z → AllModulusGeOne z →
-      maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * n)
+      maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * (n : ℝ))
 
 /-- The Turán constant 2e ≈ 5.44. -/
 noncomputable def turanConstant : ℝ := 2 * Real.exp 1
@@ -126,24 +126,23 @@ noncomputable def turanConstant : ℝ := 2 * Real.exp 1
 def AnswerSummary : Prop :=
   (∃ C : ℝ, C > 1 ∧ ∀ n ≥ 2, ∃ z : ComplexSeq n,
     HasFirstOne z ∧ AllModulusLeOne z ∧ maxPowerSum z < C^(-(n : ℤ))) ∧
-  (∀ n ≥ 2, (1.746 : ℝ)^(-(n : ℤ)) < M2 n ∧ M2 n < (1.745 : ℝ)^(-(n : ℤ))) ∧
+  (∀ n : ℕ, n ≥ 2 → (1.746 : ℝ)^(-(n : ℤ)) < M2 n ∧ M2 n < (1.745 : ℝ)^(-(n : ℤ))) ∧
   (∀ ε > 0, ∃ N : ℕ,
     ∀ n ≥ N, ∀ z : ComplexSeq n, HasFirstOne z → AllModulusGeOne z →
-      maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * n))
+      maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * (n : ℝ)))
 
 /- ## Part VII: Extremal Sequences -/
 
 /-- Roots of unity provide natural candidates for extremal sequences. -/
-def rootsOfUnitySequence (n : ℕ) : ComplexSeq n :=
-  fun i => Complex.exp (2 * Real.pi * I * i / n)
+noncomputable def rootsOfUnitySequence (n : ℕ) : ComplexSeq n :=
+  fun i => Complex.exp ((2 * Real.pi * (i : ℝ) / n : ℝ) * I)
 
 /-- Roots of unity are on the unit circle. -/
 theorem roots_on_circle (n : ℕ) :
     AllOnUnitCircle (rootsOfUnitySequence n) := by
   intro i
-  simp only [rootsOfUnitySequence]
-  rw [Complex.norm_exp]
-  simp
+  unfold rootsOfUnitySequence
+  exact Complex.norm_exp_ofReal_mul_I _
 
 /-  For n-th roots of unity, the k-th power sum is 0 when n ∤ k and n when n ∣ k. -/
 /- ## Part VIII: Dirichlet Polynomial Connection -/
@@ -172,7 +171,7 @@ theorem erdos_973_unit_disk :
 theorem erdos_973_turan_constrained :
     ∀ ε > 0, ∃ N : ℕ,
       ∀ n ≥ N, ∀ z : ComplexSeq n, HasFirstOne z → AllModulusGeOne z →
-        maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * n) :=
+        maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * (n : ℝ)) :=
   turan_lower_bound
 
 /-- **Main summary theorem:** Combines all three known results:
