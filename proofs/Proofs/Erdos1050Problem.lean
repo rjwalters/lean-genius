@@ -21,7 +21,7 @@ import Mathlib
 
 namespace Erdos1050
 
-open BigOperators Real
+open BigOperators Real Filter Topology
 
 /-!
 ## Part I: The Series
@@ -60,7 +60,7 @@ theorem T_summable (q : ℕ) (r : ℚ) (hq : q ≥ 2)
   have hq1 : (1 : ℝ) < (q : ℝ) := by exact_mod_cast hq
   have hqpos : (0 : ℝ) < (q : ℝ) := by linarith
   -- Compare with geometric series 2 * (1/q)^n for large n
-  apply Summable.of_norm_bounded_eventually_nat (fun n => 2 * (1 / (q : ℝ)) ^ n)
+  apply Summable.of_norm_bounded_eventually_nat (g := fun n => 2 * (1 / (q : ℝ)) ^ n)
   · -- Bounding series 2*(1/q)^n is summable (geometric with ratio 1/q < 1)
     apply Summable.mul_left
     apply summable_geometric_of_lt_one
@@ -78,11 +78,11 @@ theorem T_summable (q : ℕ) (r : ℚ) (hq : q ≥ 2)
     have hr_lt : |(r : ℝ)| < (q : ℝ) ^ n / 2 := by linarith
     -- q^n/2 > |r| ≥ -r, so q^n + r > q^n/2 > 0
     have hdenom_pos : (0 : ℝ) < (q : ℝ) ^ n + (r : ℝ) := by
-      linarith [neg_abs_le (r : ℝ)]
+      linarith [neg_abs_le (r : ℝ), abs_nonneg (r : ℝ)]
     -- q^n + r ≥ q^n/2 (since r ≥ -|r| > -q^n/2)
     have hdenom_ge : (q : ℝ) ^ n / 2 ≤ (q : ℝ) ^ n + (r : ℝ) := by
       linarith [neg_abs_le (r : ℝ)]
-    rw [Real.norm_of_nonneg (div_nonneg one_nonneg hdenom_pos.le)]
+    rw [Real.norm_of_nonneg (div_nonneg zero_le_one hdenom_pos.le)]
     -- 1/(q^n+r) ≤ 1/(q^n/2) = 2/q^n = 2*(1/q)^n
     have hqn_half_pos : (0 : ℝ) < (q : ℝ) ^ n / 2 := by positivity
     have hqn_pos : (0 : ℝ) < (q : ℝ) ^ n := pow_pos hqpos n
@@ -98,7 +98,7 @@ theorem T_summable (q : ℕ) (r : ℚ) (hq : q ≥ 2)
 theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 : ℝ)) := by
   -- Compare with 4*(1/2)^n, which dominates for all n ≥ 0:
   --   n=0: 0 ≤ 4;  n=1: |−1| ≤ 2;  n=2: 1 ≤ 1;  n≥3: 1/(2^n−3) ≤ 4/2^n (since 2^n ≥ 4)
-  apply Summable.of_norm_bounded (fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
+  apply Summable.of_norm_bounded (g := fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
   · exact (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 4
   · intro n
     rcases le_or_gt 3 n with hn | hn
@@ -112,10 +112,10 @@ theorem S_summable : Summable (fun n : ℕ => if n = 0 then 0 else 1 / (2^n - 3 
         exact_mod_cast this
       have h2n_pos : (0 : ℝ) < 2 ^ n := by positivity
       have hdenom_pos : (0 : ℝ) < 2 ^ n - 3 := by linarith
-      rw [Real.norm_of_nonneg (div_nonneg one_nonneg (le_of_lt hdenom_pos))]
+      rw [Real.norm_of_nonneg (div_nonneg zero_le_one (le_of_lt hdenom_pos))]
       have h12 : (1 / 2 : ℝ) ^ n = 1 / 2 ^ n := by
         rw [one_div, inv_pow, one_div]
-      rw [h12, div_le_div_iff₀ hdenom_pos h2n_pos]
+      rw [h12, mul_one_div, div_le_div_iff₀ hdenom_pos h2n_pos]
       nlinarith
     · -- n ∈ {0, 1, 2}: check numerically
       interval_cases n
@@ -170,7 +170,7 @@ theorem S_first_terms :
       simp [show ¬(n ≤ 5) from by omega])
   -- tail part is summable (geometric bound 4*(1/2)^n dominates for n ≥ 3)
   have htail : Summable (fun n : ℕ => if n ≤ 5 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) := by
-    apply Summable.of_norm_bounded (fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
+    apply Summable.of_norm_bounded (g := fun n : ℕ => 4 * (1 / 2 : ℝ) ^ n)
     · exact (summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left 4
     · intro n
       by_cases h5 : n ≤ 5
@@ -182,15 +182,15 @@ theorem S_first_terms :
               _ ≤ 2 ^ n := Nat.pow_le_pow_right (by norm_num) hn3)
         have h2n_pos : (0 : ℝ) < 2 ^ n := by positivity
         have hdenom_pos : (0 : ℝ) < 2 ^ n - 3 := by linarith
-        rw [Real.norm_of_nonneg (div_nonneg one_nonneg hdenom_pos.le)]
+        rw [Real.norm_of_nonneg (div_nonneg zero_le_one hdenom_pos.le)]
         have h12 : (1 / 2 : ℝ) ^ n = 1 / 2 ^ n := by rw [one_div, inv_pow, one_div]
-        rw [h12, div_le_div_iff₀ hdenom_pos h2n_pos]
+        rw [h12, mul_one_div, div_le_div_iff₀ hdenom_pos h2n_pos]
         nlinarith
   -- split: f = finite_part + tail pointwise, so ∑ f = ∑ finite_part + ∑ tail
   rw [show ∑' n : ℕ, (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) =
       (∑' n : ℕ, if n ≤ 5 then (if n = 0 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) else 0) +
       (∑' n : ℕ, if n ≤ 5 then (0 : ℝ) else 1 / (2 ^ n - 3 : ℝ)) from by
-    rw [← tsum_add hfin htail]; congr 1; ext n
+    rw [← Summable.tsum_add hfin htail]; congr 1; ext n
     by_cases h5 : n ≤ 5
     · by_cases h0 : n = 0 <;> simp [h5, h0]
     · have h0 : n ≠ 0 := by omega
@@ -353,8 +353,14 @@ theorem transcendence_implies_irrationality :
 /-- The general transcendence conjecture implies the Erdős transcendence conjecture. -/
 theorem general_implies_erdos_transcendence :
     GeneralTranscendenceConjecture → ErdosTranscendenceConjecture := by
-  intro h q hq
-  exact h q 1 hq (by norm_num)
+  intro h t ht hpole
+  refine h 2 (by norm_num) (t : ℚ) (by exact_mod_cast ht) ?_
+  intro n hn
+  have h1 := hpole n hn
+  intro hcontra
+  apply h1
+  push_cast at hcontra ⊢
+  exact hcontra
 
 /-!
 ## Part VII: Connection to Erdős Problem #1049
@@ -411,7 +417,7 @@ theorem partial_sums_converge :
   have heq : S = ∑' n : ℕ, (if n = 0 then 0 else 1 / (2 ^ n - 3 : ℝ)) := by
     rw [S_eq_sumTwoMinusThree, sumTwoMinusThree]
   rw [heq]
-  exact S_summable.hasSum.tendsto_sum_tsum
+  exact S_summable.tendsto_sum_tsum_nat
 
 /-!
 ## Part IX: OEIS Connection
@@ -438,7 +444,9 @@ theorem denom_growth (n : ℕ) (hn : n ≥ 3) :
   -- Goal: (2:ℝ)^n - 3 > (2:ℝ)^(n-1)
   -- 2^n = 2 * 2^(n-1), so need 2^(n-1) - 3 > 0, i.e., 2^(n-1) > 3
   have hpow : (2 : ℝ) ^ n = 2 * (2 : ℝ) ^ (n - 1) := by
-    rw [← pow_succ]; congr 1; omega
+    have h1 : n - 1 + 1 = n := by omega
+    calc (2 : ℝ) ^ n = (2 : ℝ) ^ (n - 1 + 1) := by rw [h1]
+      _ = 2 * (2 : ℝ) ^ (n - 1) := by rw [pow_succ]; ring
   have hge : (2 : ℝ) ^ (n - 1) ≥ 4 := by
     calc (2 : ℝ) ^ (n - 1) ≥ (2 : ℝ) ^ 2 :=
           pow_le_pow_right₀ (by norm_num) (by omega)

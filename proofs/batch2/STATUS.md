@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 49 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+4 GREEN** (re-verified EXIT=0): Erdos1017Problem + Erdos1017OQ01 (FABLE, TWO-FILE fix: agent fixed the
+companion Erdos1017OQ01 24 errors + flipped both rows; import wrapper Erdos1017Problem unchanged. NOTE:
+multi-file greens need BOTH .lean applied + BOTH rows flipped — single-file collector insufficient),
+LagrangeTheoremOQ01OQ01OQ01 (pure cascade), Erdos1050Problem (FABLE: Summable.of_norm_bounded g-implicit;
+tsm_add->Summable.tsum_add protected; open Filter for root Tendsto). Repairs: none. Fable now 6/7 hard tail.
+GOTCHA: osxfs mount-cache race — a freshly-built olean transiently reads 'does not exist' on next container;
+RETRY clears it (don't treat first FAILED-VERIFY as real without a retry).
 # DOCTOR SINGLE-PROOF BATCH 48 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos106OQ02 (18min/213k: div_div arg order a/b/c=a/(b*c); div_le_one_of_le
