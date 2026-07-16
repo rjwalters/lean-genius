@@ -249,8 +249,13 @@ theorem brouwer_from_panchromatic {n : ℕ}
   have hpanch' : ∀ N : ℕ, ∃ v : Fin (n + 1) → Fin (n + 1) → ℝ,
       (∀ i, InSimplex (v i)) ∧
       (∀ i : Fin (n + 1), f (v i) i ≤ v i i) ∧
-      (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)), |v i l - v j l| ≤ (n : ℝ) / (N + 1)) :=
-    fun N => hpanch (N + 1) (Nat.succ_pos N)
+      (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)), |v i l - v j l| ≤ (n : ℝ) / (N + 1)) := by
+    intro N
+    obtain ⟨v, hv1, hv2, hv3⟩ := hpanch (N + 1) (Nat.succ_pos N)
+    refine ⟨v, hv1, hv2, fun i j l => ?_⟩
+    have := hv3 i j l
+    push_cast at this ⊢
+    linarith
   let vdata : ℕ → Fin (n + 1) → Fin (n + 1) → ℝ := fun N => (hpanch' N).choose
   have hvdata_mem : ∀ N i, InSimplex (vdata N i) := fun N => (hpanch' N).choose_spec.1
   have hvdata_le : ∀ N i, f (vdata N i) i ≤ vdata N i i :=
@@ -283,8 +288,10 @@ theorem brouwer_from_panchromatic {n : ℕ}
     -- |vdata(φk).i.l - x.l| ≤ n/(φk+1) + |vdata(φk).0.l - x.l| → 0
     have h_u_l_diff : Filter.Tendsto (fun k => vdata (φ k) 0 l - x l)
         Filter.atTop (nhds 0) := by
-      have h := (tendsto_pi_nhds.mp hφ_conv l).sub tendsto_const_nhds
-      simp only [sub_self] at h; exact h
+      have h : Filter.Tendsto (fun k => vdata (φ k) 0 l - x l)
+          Filter.atTop (nhds (x l - x l)) :=
+        (tendsto_pi_nhds.mp hφ_conv l).sub tendsto_const_nhds
+      simpa using h
     have h_u_l_abs : Filter.Tendsto (fun k => |vdata (φ k) 0 l - x l|)
         Filter.atTop (nhds 0) := by
       have := h_u_l_diff.norm
@@ -293,15 +300,17 @@ theorem brouwer_from_panchromatic {n : ℕ}
     have h_diff : Filter.Tendsto (fun k => vdata (φ k) i l - x l)
         Filter.atTop (nhds 0) := by
       apply squeeze_zero_norm
+        (a := fun k => (n : ℝ) / (φ k + 1) + |vdata (φ k) 0 l - x l|)
       · intro k
         rw [Real.norm_eq_abs]
-        calc |vdata (φ k) i l - x l|
-            ≤ |vdata (φ k) i l - vdata (φ k) 0 l| + |vdata (φ k) 0 l - x l| :=
-              abs_sub_triangle _ _
-          _ ≤ n / (φ k + 1) + |vdata (φ k) 0 l - x l| := by
-              gcongr; exact hvdata_diam (φ k) i 0 l
+        have h1 : |vdata (φ k) i l - x l| ≤
+            |vdata (φ k) i l - vdata (φ k) 0 l| + |vdata (φ k) 0 l - x l| :=
+          abs_sub_le _ _ _
+        have h2 : |vdata (φ k) i l - vdata (φ k) 0 l| ≤ (n : ℝ) / (φ k + 1) :=
+          hvdata_diam (φ k) i 0 l
+        linarith
       · have := h_diam_zero.add h_u_l_abs
-        rwa [add_zero] at this
+        simpa using this
     have := h_diff.add_const (x l)
     rw [zero_add] at this
     exact this.congr' (Filter.Eventually.of_forall fun k => by ring)
