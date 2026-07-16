@@ -26,6 +26,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Fintype.Fin
+import Mathlib.Data.Fintype.Powerset
 import Mathlib.Combinatorics.SetFamily.Compression.Down
 
 open scoped Classical
@@ -78,7 +80,7 @@ def IsLittleO (f g : ℕ → ℕ) : Prop :=
 
 /-- The maximum size of a union-free collection over subsets of [n] -/
 noncomputable def maxUnionFreeSize (n : ℕ) : ℕ :=
-  ((powerSet n).filter IsUnionFree).sup Finset.card
+  ((powerSet n).powerset.filter IsUnionFree).sup Finset.card
 
 /-- f(n) ≤ (1+o(1))·g(n): upper bound with asymptotically vanishing error -/
 def AsymptoticUpperBound (f g : ℕ → ℕ) : Prop :=
