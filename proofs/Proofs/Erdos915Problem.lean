@@ -45,7 +45,7 @@ structure Path (G : SimpleGraph V) (u v : V) where
   edges_valid : vertices.length ≥ 2
   starts_at : vertices.head? = some u
   ends_at : vertices.getLast? = some v
-  is_walk : ∀ i : ℕ, i + 1 < vertices.length →
+  is_walk : ∀ i : ℕ, (h : i + 1 < vertices.length) →
     G.Adj (vertices.get ⟨i, by omega⟩) (vertices.get ⟨i + 1, by omega⟩)
 
 /-- Two paths are vertex-disjoint if they share no internal vertices. -/
@@ -59,8 +59,8 @@ def VertexDisjoint (G : SimpleGraph V) (u v : V)
 def EdgeDisjoint (G : SimpleGraph V) (u v : V)
     (p1 p2 : Path G u v) : Prop :=
   ∀ i j : ℕ,
-    i + 1 < p1.vertices.length →
-    j + 1 < p2.vertices.length →
+    (h1 : i + 1 < p1.vertices.length) →
+    (h2 : j + 1 < p2.vertices.length) →
     let e1 := (p1.vertices.get ⟨i, by omega⟩, p1.vertices.get ⟨i + 1, by omega⟩)
     let e2 := (p2.vertices.get ⟨j, by omega⟩, p2.vertices.get ⟨j + 1, by omega⟩)
     ¬(e1 = e2 ∨ e1 = (e2.2, e2.1))
