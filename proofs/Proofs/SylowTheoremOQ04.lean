@@ -40,6 +40,10 @@ The alternating group on 5 elements has order 5!/2 = 60.
 /-- The alternating group on Fin 5 -/
 abbrev A5 := alternatingGroup (Fin 5)
 
+/-- 5 is prime (needed for Sylow-theoretic statements about `Sylow 5 A5`;
+    Mathlib only carries global `Fact (Nat.Prime p)` instances for `p = 2, 3`). -/
+instance fact_prime_five : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+
 /-- |A₅| = 60. The alternating group on 5 elements has order 60. -/
 theorem card_A5 : Fintype.card A5 = 60 := by native_decide
 
@@ -85,17 +89,17 @@ theorem n5_mod : Nat.card (Sylow 5 A5) ≡ 1 [MOD 5] :=
 /-- n₂ divides the index [A₅ : P₂] = 15 -/
 theorem n2_dvd_index (P : Sylow 2 A5) :
     Nat.card (Sylow 2 A5) ∣ (P : Subgroup A5).index :=
-  card_sylow_dvd_index P
+  P.card_dvd_index
 
 /-- n₃ divides the index [A₅ : P₃] = 20 -/
 theorem n3_dvd_index (P : Sylow 3 A5) :
     Nat.card (Sylow 3 A5) ∣ (P : Subgroup A5).index :=
-  card_sylow_dvd_index P
+  P.card_dvd_index
 
 /-- n₅ divides the index [A₅ : P₅] = 12 -/
 theorem n5_dvd_index (P : Sylow 5 A5) :
     Nat.card (Sylow 5 A5) ∣ (P : Subgroup A5).index :=
-  card_sylow_dvd_index P
+  P.card_dvd_index
 
 /-
 ## Part IV: Exact Sylow Numbers
@@ -108,14 +112,214 @@ For A₅, the exact Sylow numbers are:
 These are computed by exhaustive enumeration over the 60-element group.
 -/
 
-/-- n₂(A₅) = 5: A₅ has exactly 5 Sylow 2-subgroups (Klein 4-groups) -/
-theorem n2_eq : Fintype.card (Sylow 2 A5) = 5 := by native_decide
+/-
+The exact Sylow numbers are established below by producing, for each prime
+`p ∈ {2, 3, 5}`, an *explicit* Sylow `p`-subgroup `Sₚ` of `A₅` (built from
+concrete permutations rather than an abstract existence argument), computing
+its normalizer as a literal `Finset` via brute-force `native_decide` over the
+60-element group, and then applying Lagrange's theorem
+(`Subgroup.card_mul_index`) together with `Sylow.card_eq_index_normalizer` to
+recover `Nat.card (Sylow p A5) = [A₅ : N_{A₅}(Sₚ)]`. This route is needed
+because `Fintype.card (Sylow p A5)` cannot itself be evaluated by
+`native_decide`: the ambient `Fintype (Sylow p A5)` instance factors through
+the generic (`noncomputable`) `SetLike.instFintype`, so the type `Sylow p A5`
+is not directly enumerable, even though each individual subgroup we build by
+hand is fully computable. -/
 
-/-- n₃(A₅) = 10: A₅ has exactly 10 Sylow 3-subgroups -/
-theorem n3_eq : Fintype.card (Sylow 3 A5) = 10 := by native_decide
+/-- A fixed 5-cycle in `A₅`, generating a Sylow 5-subgroup. -/
+def g5 : Equiv.Perm (Fin 5) := finRotate 5
+
+/-- `g5` as an element of `A₅`. -/
+def c5 : A5 := ⟨g5, by rw [Equiv.Perm.mem_alternatingGroup]; native_decide⟩
+
+theorem c5_pow5 : c5 ^ 5 = 1 := by native_decide
+theorem c5_ne_one : c5 ≠ 1 := by native_decide
+
+theorem orderOf_c5 : orderOf c5 = 5 := orderOf_eq_prime c5_pow5 c5_ne_one
+
+theorem isOfFinOrder_c5 : IsOfFinOrder c5 :=
+  isOfFinOrder_iff_pow_eq_one.mpr ⟨5, by norm_num, c5_pow5⟩
+
+/-- The 5 powers of `c5`, as an explicit `Finset`. -/
+def Fin5 : Finset A5 := (Finset.range 5).image (c5 ^ ·)
+
+theorem mem_zpowers5 (n : A5) : n ∈ Subgroup.zpowers c5 ↔ n ∈ Fin5 := by
+  rw [isOfFinOrder_c5.mem_zpowers_iff_mem_range_orderOf, orderOf_c5]; rfl
+
+theorem card_Fin5 : Fin5.card = 5 := by native_decide
+
+/-- The explicit Sylow 5-subgroup `⟨c5⟩`. -/
+noncomputable def S5 : Sylow 5 A5 :=
+  Sylow.ofCard (Subgroup.zpowers c5) (by
+    rw [Nat.card_zpowers, orderOf_c5, Nat.card_eq_fintype_card (α := A5), card_A5]
+    native_decide)
+
+/-- The normalizer of `⟨c5⟩`, as an explicit `Finset` (dihedral group of order 10). -/
+def NF5 : Finset A5 := Finset.univ.filter (fun g => ∀ n, n ∈ Fin5 ↔ g * n * g⁻¹ ∈ Fin5)
+
+theorem normalizer_eq5 : (Subgroup.normalizer (Subgroup.zpowers c5 : Set A5) : Set A5) = ↑NF5 := by
+  ext g
+  simp only [SetLike.mem_coe, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and, NF5]
+  rw [show g ∈ Subgroup.normalizer (Subgroup.zpowers c5 : Set A5) ↔
+      ∀ n : A5, n ∈ Subgroup.zpowers c5 ↔ g * n * g⁻¹ ∈ Subgroup.zpowers c5 from Iff.rfl]
+  constructor
+  · intro h n; rw [← mem_zpowers5 n, ← mem_zpowers5 (g * n * g⁻¹)]; exact h n
+  · intro h n; rw [mem_zpowers5 n, mem_zpowers5 (g * n * g⁻¹)]; exact h n
+
+theorem card_NF5 : NF5.card = 10 := by native_decide
+
+theorem card_normalizer5 : Nat.card (Subgroup.normalizer (Subgroup.zpowers c5 : Set A5)) = 10 :=
+  calc Nat.card (Subgroup.normalizer (Subgroup.zpowers c5 : Set A5))
+      = (Subgroup.normalizer (Subgroup.zpowers c5 : Set A5) : Set A5).ncard :=
+        Nat.card_coe_set_eq _
+    _ = (↑NF5 : Set A5).ncard := by rw [normalizer_eq5]
+    _ = NF5.card := Set.ncard_coe_finset NF5
+    _ = 10 := card_NF5
+
+theorem S5_coe : (S5 : Set A5) = (Subgroup.zpowers c5 : Set A5) := rfl
+
+/-- n₅(A₅) = 6 as a `Nat.card` statement (the computational core). -/
+theorem n5_eq_nat : Nat.card (Sylow 5 A5) = 6 := by
+  rw [S5.card_eq_index_normalizer, S5_coe]
+  have hlagrange := (Subgroup.normalizer (Subgroup.zpowers c5 : Set A5)).card_mul_index
+  rw [card_normalizer5, Nat.card_eq_fintype_card (α := A5), card_A5] at hlagrange
+  omega
 
 /-- n₅(A₅) = 6: A₅ has exactly 6 Sylow 5-subgroups -/
-theorem n5_eq : Fintype.card (Sylow 5 A5) = 6 := by native_decide
+theorem n5_eq : Fintype.card (Sylow 5 A5) = 6 := by
+  rw [← Nat.card_eq_fintype_card]; exact n5_eq_nat
+
+/-- Two commuting double-transpositions in `A₅`, generating a Klein-four
+    Sylow 2-subgroup. -/
+def a2 : Equiv.Perm (Fin 5) := Equiv.swap 0 1 * Equiv.swap 2 3
+def b2 : Equiv.Perm (Fin 5) := Equiv.swap 0 2 * Equiv.swap 1 3
+
+def ca2 : A5 := ⟨a2, by rw [Equiv.Perm.mem_alternatingGroup]; native_decide⟩
+def cb2 : A5 := ⟨b2, by rw [Equiv.Perm.mem_alternatingGroup]; native_decide⟩
+
+/-- The 4 elements `{1, ca2, cb2, ca2*cb2}` of the Klein-four subgroup. -/
+def Fin4 : Finset A5 := {1, ca2, cb2, ca2 * cb2}
+
+theorem card_Fin4 : Fin4.card = 4 := by native_decide
+theorem Fin4_one_mem : (1 : A5) ∈ Fin4 := by native_decide
+theorem Fin4_mul_closed : ∀ a ∈ Fin4, ∀ b ∈ Fin4, a * b ∈ Fin4 := by native_decide
+theorem Fin4_inv_closed : ∀ a ∈ Fin4, a⁻¹ ∈ Fin4 := by native_decide
+
+/-- The explicit Klein-four Sylow 2-subgroup, built directly from `Fin4`
+    (not cyclic, so it cannot be presented as `Subgroup.zpowers` of a single
+    generator; instead its group axioms are checked by brute force). -/
+def H2 : Subgroup A5 where
+  carrier := (Fin4 : Set A5)
+  one_mem' := Finset.mem_coe.mpr Fin4_one_mem
+  mul_mem' {a b} ha hb :=
+    Finset.mem_coe.mpr (Fin4_mul_closed a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb))
+  inv_mem' {a} ha := Finset.mem_coe.mpr (Fin4_inv_closed a (Finset.mem_coe.mp ha))
+
+theorem H2_coe : (H2 : Set A5) = (Fin4 : Set A5) := rfl
+
+theorem card_H2 : Nat.card H2 = 4 :=
+  calc Nat.card H2 = (H2 : Set A5).ncard := Nat.card_coe_set_eq _
+    _ = (Fin4 : Set A5).ncard := by rw [H2_coe]
+    _ = Fin4.card := Set.ncard_coe_finset Fin4
+    _ = 4 := card_Fin4
+
+/-- `H2` is the explicit Sylow 2-subgroup. -/
+noncomputable def S2 : Sylow 2 A5 :=
+  Sylow.ofCard H2 (by rw [card_H2, Nat.card_eq_fintype_card (α := A5), card_A5]; native_decide)
+
+/-- The normalizer of `H2`, as an explicit `Finset` (order 12, ≅ A₄). -/
+def NF2 : Finset A5 := Finset.univ.filter (fun g => ∀ n, n ∈ Fin4 ↔ g * n * g⁻¹ ∈ Fin4)
+
+theorem normalizer_eq2 : (Subgroup.normalizer (H2 : Set A5) : Set A5) = ↑NF2 := by
+  ext g
+  simp only [SetLike.mem_coe, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and, NF2]
+  rw [show g ∈ Subgroup.normalizer (H2 : Set A5) ↔
+      ∀ n : A5, n ∈ (H2 : Set A5) ↔ g * n * g⁻¹ ∈ (H2 : Set A5) from Iff.rfl]
+  simp only [H2_coe, Finset.mem_coe]
+
+theorem card_NF2 : NF2.card = 12 := by native_decide
+
+theorem card_normalizer2 : Nat.card (Subgroup.normalizer (H2 : Set A5)) = 12 :=
+  calc Nat.card (Subgroup.normalizer (H2 : Set A5))
+      = (Subgroup.normalizer (H2 : Set A5) : Set A5).ncard := Nat.card_coe_set_eq _
+    _ = (↑NF2 : Set A5).ncard := by rw [normalizer_eq2]
+    _ = NF2.card := Set.ncard_coe_finset NF2
+    _ = 12 := card_NF2
+
+theorem S2_coe : (S2 : Set A5) = (H2 : Set A5) := rfl
+
+/-- n₂(A₅) = 5 as a `Nat.card` statement (the computational core). -/
+theorem n2_eq_nat : Nat.card (Sylow 2 A5) = 5 := by
+  rw [S2.card_eq_index_normalizer, S2_coe]
+  have hlagrange := (Subgroup.normalizer (H2 : Set A5)).card_mul_index
+  rw [card_normalizer2, Nat.card_eq_fintype_card (α := A5), card_A5] at hlagrange
+  omega
+
+/-- n₂(A₅) = 5: A₅ has exactly 5 Sylow 2-subgroups (Klein 4-groups) -/
+theorem n2_eq : Fintype.card (Sylow 2 A5) = 5 := by
+  rw [← Nat.card_eq_fintype_card]; exact n2_eq_nat
+
+/-- A 3-cycle in `A₅`, generating a Sylow 3-subgroup. -/
+def g3 : Equiv.Perm (Fin 5) := Equiv.swap 0 1 * Equiv.swap 1 2
+
+def c3 : A5 := ⟨g3, by rw [Equiv.Perm.mem_alternatingGroup]; native_decide⟩
+
+theorem c3_pow3 : c3 ^ 3 = 1 := by native_decide
+theorem c3_ne_one : c3 ≠ 1 := by native_decide
+
+theorem orderOf_c3 : orderOf c3 = 3 := orderOf_eq_prime c3_pow3 c3_ne_one
+
+theorem isOfFinOrder_c3 : IsOfFinOrder c3 :=
+  isOfFinOrder_iff_pow_eq_one.mpr ⟨3, by norm_num, c3_pow3⟩
+
+/-- The 3 powers of `c3`, as an explicit `Finset`. -/
+def Fin3 : Finset A5 := (Finset.range 3).image (c3 ^ ·)
+
+theorem mem_zpowers3 (n : A5) : n ∈ Subgroup.zpowers c3 ↔ n ∈ Fin3 := by
+  rw [isOfFinOrder_c3.mem_zpowers_iff_mem_range_orderOf, orderOf_c3]; rfl
+
+theorem card_Fin3 : Fin3.card = 3 := by native_decide
+
+/-- The explicit Sylow 3-subgroup `⟨c3⟩`. -/
+noncomputable def S3 : Sylow 3 A5 :=
+  Sylow.ofCard (Subgroup.zpowers c3) (by
+    rw [Nat.card_zpowers, orderOf_c3, Nat.card_eq_fintype_card (α := A5), card_A5]
+    native_decide)
+
+/-- The normalizer of `⟨c3⟩`, as an explicit `Finset` (order 6, ≅ S₃). -/
+def NF3 : Finset A5 := Finset.univ.filter (fun g => ∀ n, n ∈ Fin3 ↔ g * n * g⁻¹ ∈ Fin3)
+
+theorem normalizer_eq3 : (Subgroup.normalizer (Subgroup.zpowers c3 : Set A5) : Set A5) = ↑NF3 := by
+  ext g
+  simp only [SetLike.mem_coe, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and, NF3]
+  rw [show g ∈ Subgroup.normalizer (Subgroup.zpowers c3 : Set A5) ↔
+      ∀ n : A5, n ∈ Subgroup.zpowers c3 ↔ g * n * g⁻¹ ∈ Subgroup.zpowers c3 from Iff.rfl]
+  constructor
+  · intro h n; rw [← mem_zpowers3 n, ← mem_zpowers3 (g * n * g⁻¹)]; exact h n
+  · intro h n; rw [mem_zpowers3 n, mem_zpowers3 (g * n * g⁻¹)]; exact h n
+
+theorem card_NF3 : NF3.card = 6 := by native_decide
+
+theorem card_normalizer3 : Nat.card (Subgroup.normalizer (Subgroup.zpowers c3 : Set A5)) = 6 :=
+  calc Nat.card (Subgroup.normalizer (Subgroup.zpowers c3 : Set A5))
+      = (Subgroup.normalizer (Subgroup.zpowers c3 : Set A5) : Set A5).ncard :=
+        Nat.card_coe_set_eq _
+    _ = (↑NF3 : Set A5).ncard := by rw [normalizer_eq3]
+    _ = NF3.card := Set.ncard_coe_finset NF3
+    _ = 6 := card_NF3
+
+theorem S3_coe : (S3 : Set A5) = (Subgroup.zpowers c3 : Set A5) := rfl
+
+/-- n₃(A₅) = 10 as a `Nat.card` statement (the computational core). -/
+theorem n3_eq_nat : Nat.card (Sylow 3 A5) = 10 := by
+  rw [S3.card_eq_index_normalizer, S3_coe]
+  have hlagrange := (Subgroup.normalizer (Subgroup.zpowers c3 : Set A5)).card_mul_index
+  rw [card_normalizer3, Nat.card_eq_fintype_card (α := A5), card_A5] at hlagrange
+  omega
+
+/-- n₃(A₅) = 10: A₅ has exactly 10 Sylow 3-subgroups -/
+theorem n3_eq : Fintype.card (Sylow 3 A5) = 10 := by
+  rw [← Nat.card_eq_fintype_card]; exact n3_eq_nat
 
 /-- All Sylow numbers of A₅ are > 1, so no Sylow subgroup is unique -/
 theorem all_sylow_numbers_gt_one :
@@ -124,33 +328,53 @@ theorem all_sylow_numbers_gt_one :
     1 < Fintype.card (Sylow 5 A5) := by
   exact ⟨by rw [n2_eq]; omega, by rw [n3_eq]; omega, by rw [n5_eq]; omega⟩
 
+/-- A₅ is simple: it has no proper nontrivial normal subgroups.
+
+    Mathlib proves this for all alternating groups A_n with n ≥ 5;
+    `Nat.card (Fin 5) = 5` discharges the `5 ≤ Nat.card α` hypothesis. -/
+theorem A5_isSimple : IsSimpleGroup A5 :=
+  alternatingGroup.isSimpleGroup (by simp)
+
 /-
 ## Part V: Non-Normality of Sylow Subgroups
 
-A Sylow p-subgroup is normal iff it is the unique Sylow p-subgroup.
-Since n₂ = 5, n₃ = 10, n₅ = 6 (all > 1), none are normal.
--/
+A Sylow p-subgroup P has `Nat.card P = p ^ (Nat.card A5).factorization p`
+(`Sylow.card_eq_multiplicity`), which for p ∈ {2,3,5} is 4, 3, 5 respectively
+— never 1 (so `P ≠ ⊥`, since `Nat.card ⊥ = 1`) and never 60 = `Nat.card A5`
+(so `P ≠ ⊤`, since `Nat.card ⊤ = Nat.card A5`). Since A₅ is simple, a normal
+subgroup must be `⊥` or `⊤`; a Sylow subgroup is neither, hence none is
+normal. This route is independent of (and simpler than) the exact Sylow
+counts n₂/n₃/n₅ established above. -/
 
-/-- No Sylow 2-subgroup of A₅ is normal (n₂ = 5 > 1) -/
+/-- No Sylow 2-subgroup of A₅ is normal -/
 theorem sylow2_not_normal : ¬∃ (P : Sylow 2 A5), (P : Subgroup A5).Normal := by
   intro ⟨P, hPN⟩
-  haveI := Sylow.unique_of_normal P hPN
-  have : Fintype.card (Sylow 2 A5) = 1 := Fintype.card_unique
-  rw [n2_eq] at this; omega
+  have hcard : Nat.card (P : Subgroup A5) = 4 := by
+    rw [P.card_eq_multiplicity, Nat.card_eq_fintype_card (α := A5), card_A5]
+    native_decide
+  rcases A5_isSimple.eq_bot_or_eq_top_of_normal (P : Subgroup A5) hPN with h | h
+  · rw [h, Subgroup.card_bot] at hcard; omega
+  · rw [h, Subgroup.card_top, Nat.card_eq_fintype_card (α := A5), card_A5] at hcard; omega
 
-/-- No Sylow 3-subgroup of A₅ is normal (n₃ = 10 > 1) -/
+/-- No Sylow 3-subgroup of A₅ is normal -/
 theorem sylow3_not_normal : ¬∃ (P : Sylow 3 A5), (P : Subgroup A5).Normal := by
   intro ⟨P, hPN⟩
-  haveI := Sylow.unique_of_normal P hPN
-  have : Fintype.card (Sylow 3 A5) = 1 := Fintype.card_unique
-  rw [n3_eq] at this; omega
+  have hcard : Nat.card (P : Subgroup A5) = 3 := by
+    rw [P.card_eq_multiplicity, Nat.card_eq_fintype_card (α := A5), card_A5]
+    native_decide
+  rcases A5_isSimple.eq_bot_or_eq_top_of_normal (P : Subgroup A5) hPN with h | h
+  · rw [h, Subgroup.card_bot] at hcard; omega
+  · rw [h, Subgroup.card_top, Nat.card_eq_fintype_card (α := A5), card_A5] at hcard; omega
 
-/-- No Sylow 5-subgroup of A₅ is normal (n₅ = 6 > 1) -/
+/-- No Sylow 5-subgroup of A₅ is normal -/
 theorem sylow5_not_normal : ¬∃ (P : Sylow 5 A5), (P : Subgroup A5).Normal := by
   intro ⟨P, hPN⟩
-  haveI := Sylow.unique_of_normal P hPN
-  have : Fintype.card (Sylow 5 A5) = 1 := Fintype.card_unique
-  rw [n5_eq] at this; omega
+  have hcard : Nat.card (P : Subgroup A5) = 5 := by
+    rw [P.card_eq_multiplicity, Nat.card_eq_fintype_card (α := A5), card_A5]
+    native_decide
+  rcases A5_isSimple.eq_bot_or_eq_top_of_normal (P : Subgroup A5) hPN with h | h
+  · rw [h, Subgroup.card_bot] at hcard; omega
+  · rw [h, Subgroup.card_top, Nat.card_eq_fintype_card (α := A5), card_A5] at hcard; omega
 
 /-
 ## Part VI: Conjugacy Class Analysis
@@ -199,15 +423,12 @@ Combining the analysis:
 3. No Sylow subgroup is normal (all n_p > 1)
 4. Conjugacy class analysis rules out all intermediate normal subgroups
 5. Therefore A₅ is simple
+
+(`A5_isSimple` itself is established in Part IV/V above, ahead of its use in
+the non-normality arguments; Mathlib proves simplicity for all alternating
+groups A_n with n ≥ 5, and the Sylow analysis above provides the specific
+counting argument for the n = 5 case.)
 -/
-
-/-- A₅ is simple: it has no proper nontrivial normal subgroups.
-
-    Mathlib proves this for all alternating groups A_n with n ≥ 5.
-    The Sylow analysis above provides the specific counting argument
-    for the n = 5 case. -/
-theorem A5_isSimple : IsSimpleGroup A5 :=
-  alternatingGroup.isSimpleGroup_five
 
 /-
 ## Part VIII: Corollaries
@@ -248,11 +469,11 @@ theorem A5_normal_subgroups (N : Subgroup A5) [hN : N.Normal] :
 | n3_mod | n₃ ≡ 1 (mod 3) | Sylow III |
 | n5_mod | n₅ ≡ 1 (mod 5) | Sylow III |
 | n{2,3,5}_dvd_index | n_p divides index | Sylow III |
-| n2_eq | n₂ = 5 | native_decide |
-| n3_eq | n₃ = 10 | native_decide |
-| n5_eq | n₅ = 6 | native_decide |
+| n2_eq | n₂ = 5 | explicit Sₚ + normalizer index (Lagrange) |
+| n3_eq | n₃ = 10 | explicit Sₚ + normalizer index (Lagrange) |
+| n5_eq | n₅ = 6 | explicit Sₚ + normalizer index (Lagrange) |
 | all_sylow_numbers_gt_one | All n_p > 1 | from exact values |
-| sylow{2,3,5}_not_normal | No normal Sylow p-subgroup | uniqueness + counting |
+| sylow{2,3,5}_not_normal | No normal Sylow p-subgroup | simplicity + card_eq_multiplicity |
 | no_intermediate_conjugacy_sum | No valid intermediate order | decide |
 | A5_isSimple | A₅ is simple | Mathlib |
 | A5_not_solvable | A₅ is not solvable | simplicity |
