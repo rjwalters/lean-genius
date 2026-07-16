@@ -36,29 +36,27 @@ We work with finite simple graphs. Key concepts are independent sets
 and chromatic number.
 -/
 
-variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
+variable {V : Type*}
 
 /-- An independent set in a graph: a set of vertices with no edges between them -/
-def IsIndependentSet (S : Finset V) : Prop :=
+def IsIndependentSet (G : SimpleGraph V) (S : Finset V) : Prop :=
   ∀ u ∈ S, ∀ v ∈ S, ¬G.Adj u v
 
+open scoped Classical in
 /-- The independence number α(G): size of the largest independent set -/
-noncomputable def independenceNumber : ℕ :=
+noncomputable def independenceNumber [Fintype V] (G : SimpleGraph V) : ℕ :=
   Finset.sup (Finset.univ.powerset.filter (IsIndependentSet G)) Finset.card
 
 notation "α(" G ")" => independenceNumber G
 
 /-- A proper coloring assigns colors to vertices so adjacent vertices differ -/
-def IsProperColoring (c : V → ℕ) : Prop :=
+def IsProperColoring (G : SimpleGraph V) (c : V → ℕ) : Prop :=
   ∀ u v, G.Adj u v → c u ≠ c v
 
-/-- The chromatic number χ(G): minimum colors needed for a proper coloring -/
-noncomputable def chromaticNumber' : ℕ :=
-  Nat.find ⟨Fintype.card V, by
-    use fun v => Fintype.equivFin V v
-    intro u v h
-    simp only [ne_eq, Fintype.equivFin_symm_apply]
-    sorry⟩
+/-- The chromatic number χ(G): the least `n` such that `G` admits a proper
+coloring using colors `< n`. -/
+noncomputable def chromaticNumber' (G : SimpleGraph V) : ℕ :=
+  sInf {n : ℕ | ∃ c : V → ℕ, IsProperColoring G c ∧ ∀ v, c v < n}
 
 -- Use Mathlib's chromatic number when available
 notation "χ(" G ")" => chromaticNumber' G
@@ -77,7 +75,7 @@ def hasFolkmanProperty (k : ℕ) : Prop :=
       2 * S.card ≥ W.card - k
 
 /-- Alternative formulation using induced subgraphs -/
-def hasFolkmanPropertyInduced (k : ℕ) : Prop :=
+def hasFolkmanPropertyInduced (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∀ (W : Finset V), ∃ (S : Finset V), S ⊆ W ∧
     (∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v) ∧
     2 * S.card ≥ W.card - k
@@ -89,7 +87,9 @@ The case k = 0 is trivial and illustrates the key idea.
 -/
 
 /-- For k = 0: every subgraph has independent set of size ≥ n/2 -/
-def hasFolkmanPropertyZero : Prop := hasFolkmanPropertyInduced G 0
+def hasFolkmanPropertyZero (G : SimpleGraph V) : Prop := hasFolkmanPropertyInduced G 0
+
+variable [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
 /-- k = 0 case: α(H) ≥ n/2 for all H implies χ(G) ≤ 2 (bipartite) -/
 theorem folkman_zero_implies_bipartite :
@@ -128,7 +128,7 @@ The bound k + 2 is tight: there exist graphs achieving equality.
 /-- The bound k + 2 cannot be improved in general -/
 axiom folkman_bound_tight :
   ∀ (k : ℕ), ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W)
-    (H : SimpleGraph W) [DecidableRel H.Adj],
+    (H : SimpleGraph W) (_ : DecidableRel H.Adj),
     hasFolkmanPropertyInduced H k ∧ χ(H) = k + 2
 
 /-- For k = 0: the tight examples are odd cycles (χ = 3 is impossible by condition) -/
@@ -207,7 +207,7 @@ theorem erdos_922_summary :
     (∀ (k : ℕ), hasFolkmanPropertyInduced G k → χ(G) ≤ k + 2) ∧
     -- The bound is tight
     (∀ (k : ℕ), ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W)
-      (H : SimpleGraph W) [DecidableRel H.Adj],
+      (H : SimpleGraph W) (_ : DecidableRel H.Adj),
       hasFolkmanPropertyInduced H k ∧ χ(H) = k + 2) ∧
     -- k = 0 case gives bipartiteness
     (hasFolkmanPropertyZero G → χ(G) ≤ 2) := by
