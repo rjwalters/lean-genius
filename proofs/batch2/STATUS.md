@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 57 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos1019Problem (later local def no longer shadows earlier ref -> reorder;
+Std.Symm/Std.Irrefl field access G.symm.symm/G.loopless.irrefl; CliqueFree.card_edgeFinset_le generalized to
+r+1 with (n%r) Turán formula), LagrangeTheoremOQ02OQ02OQ01 (pure cascade). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 56 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ02OQ02 (ConjClasses.mem_carrier_iff_isConj gone ->

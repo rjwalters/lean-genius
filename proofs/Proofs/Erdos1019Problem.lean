@@ -57,6 +57,37 @@ structure GraphMinorWitness {α : Type*} {β : Type*}
 def HasMinor {α : Type*} {β : Type*} (G : SimpleGraph α) (H : SimpleGraph β) : Prop :=
   Nonempty (GraphMinorWitness G H)
 
+/-- The complete graph K_n.
+    NOTE: defined here (rather than at first logical use point) because Lean requires
+    definitions before use; `completeGraph`/`completeBipartite` below are referenced by
+    K5/K33 immediately, so they must be reordered above this point (v4.31 no longer lets
+    a later local `def` shadow-resolve an earlier forward reference — it instead resolves
+    to Mathlib's `SimpleGraph.completeGraph : Type* → SimpleGraph α`, which rejects a
+    numeral argument). -/
+def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
+  Adj i j := i ≠ j
+  symm.symm := fun _ _ h => h.symm
+  loopless.irrefl := fun _ h => h rfl
+
+instance completeGraph_decidable (n : ℕ) : DecidableRel (completeGraph n).Adj :=
+  fun i j => if h : i = j then isFalse (fun h' => h' h) else isTrue h
+
+/-- The complete bipartite graph K_{m,n}. -/
+def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
+  Adj x y := match x, y with
+    | Sum.inl _, Sum.inr _ => True
+    | Sum.inr _, Sum.inl _ => True
+    | _, _ => False
+  symm.symm := fun x y h => by cases x <;> cases y <;> simp_all
+  loopless.irrefl := fun x h => by cases x <;> simp at h
+
+instance completeBipartite_decidable (m n : ℕ) : DecidableRel (completeBipartite m n).Adj :=
+  fun x y => match x, y with
+  | Sum.inl _, Sum.inr _ => isTrue trivial
+  | Sum.inr _, Sum.inl _ => isTrue trivial
+  | Sum.inl _, Sum.inl _ => isFalse id
+  | Sum.inr _, Sum.inr _ => isFalse id
+
 /-- K₅: the complete graph on 5 vertices. -/
 abbrev K5 : SimpleGraph (Fin 5) := completeGraph 5
 
@@ -75,8 +106,10 @@ private theorem no_minor_of_card_lt {α : Type*} {β : Type*}
   have hf : Function.Injective f := by
     intro i j heq
     by_contra hij
-    exact Set.disjoint_left.mp (w.disjoint hij)
-      (w.nonempty i).choose_spec (heq ▸ (w.nonempty j).choose_spec)
+    have h1 : f i ∈ w.branchSet i := (w.nonempty i).choose_spec
+    have h2 : f j ∈ w.branchSet j := (w.nonempty j).choose_spec
+    rw [heq] at h1
+    exact Set.disjoint_left.mp (w.disjoint hij) h1 h2
   exact absurd (Fintype.card_le_of_injective f hf) (by omega)
 
 /-
@@ -138,15 +171,6 @@ def exceedsThreshold (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
 A triangle is a saturated planar graph on 3 vertices.
 -/
 
-/-- The complete graph K_n. -/
-def completeGraph (n : ℕ) : SimpleGraph (Fin n) where
-  Adj i j := i ≠ j
-  symm.symm := fun _ _ h => h.symm
-  loopless.irrefl := fun _ h => h rfl
-
-instance completeGraph_decidable (n : ℕ) : DecidableRel (completeGraph n).Adj :=
-  fun i j => if h : i = j then isFalse (fun h' => h' h) else isTrue h
-
 /-- A triangle K₃. -/
 abbrev K3 : SimpleGraph (Fin 3) := completeGraph 3
 
@@ -180,10 +204,29 @@ theorem turan_triangle (G : SimpleGraph V) [DecidableRel G.Adj] :
     exact hnadj (hClique (Finset.mem_coe.mpr hu) (Finset.mem_coe.mpr hv) huv)
   -- By Mathlib Turán bound, |E| ≤ n²/4
   unfold edgeCount turanEdges at hedge
+  -- `card_edgeFinset_le` is now stated for general clique-size `r+1` via the Turán-graph
+  -- formula `(n^2 - (n%r)^2)*(r-1)/(2*r) + (n%r).choose 2`; here r = 2. Fully expand n in
+  -- terms of its even/odd witness so the nonlinear `n^2` becomes a consistent atom that
+  -- `omega` can relate across both bounds (rather than leaving mismatched `n^2/4` vs.
+  -- `(n^2-1)/4` opaque subterms).
   have hbound := hcf.card_edgeFinset_le
-  set n := Fintype.card V
-  have hmod : n % 2 = 0 ∨ n % 2 = 1 := Nat.mod_two_eq_zero_or_one n
-  rcases hmod with hm | hm <;> simp only [hm] at hbound <;> omega
+  dsimp only at hbound
+  generalize hn : Fintype.card V = n at hedge hbound
+  rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩
+  · subst hk
+    have hmod : (k + k) % 2 = 0 := by omega
+    simp only [hmod] at hbound
+    norm_num [Nat.choose] at hbound
+    have hexp : (k + k) ^ 2 = 4 * (k * k) := by ring
+    rw [hexp] at hedge hbound
+    omega
+  · subst hk
+    have hmod : (2 * k + 1) % 2 = 1 := by omega
+    simp only [hmod] at hbound
+    norm_num [Nat.choose] at hbound
+    have hexp : (2 * k + 1) ^ 2 = 4 * (k * k) + 4 * k + 1 := by ring
+    rw [hexp] at hedge hbound
+    omega
 
 /-
 ## The Induced Subgraph
@@ -194,8 +237,8 @@ Checking for substructures.
 /-- The induced subgraph on a set of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
   Adj u v := G.Adj u.val v.val
-  symm.symm := fun _ _ h => G.symm h
-  loopless.irrefl := fun _ h => G.loopless _ h
+  symm.symm := fun _ _ h => G.symm.symm _ _ h
+  loopless.irrefl := fun _ h => G.loopless.irrefl _ h
 
 /-- A graph contains a saturated planar subgraph on k vertices. -/
 def hasSaturatedPlanarSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -236,8 +279,10 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
     constructor
     · -- G.Adj u v → u ≠ v (as subtypes)
       intro hadj heq
-      -- heq : ⟨u,hu⟩ = ⟨v,hv⟩, so v = u
-      exact G.loopless u ((congr_arg Subtype.val heq).symm ▸ hadj)
+      -- heq : ⟨u,hu⟩ = ⟨v,hv⟩, so u = v
+      have huv : u = v := congrArg Subtype.val heq
+      rw [huv] at hadj
+      exact G.loopless.irrefl v hadj
     · -- ⟨u,hu⟩ ≠ ⟨v,hv⟩ → G.Adj u v
       intro hne
       exact hClique u hu v hv (fun h => hne (Subtype.ext h))
@@ -247,18 +292,24 @@ theorem K4_saturated_planar (G : SimpleGraph V) [DecidableRel G.Adj]
       rw [hScard, Fintype.card_fin]; norm_num)
   · -- No K₃,₃ minor: |↥S| = 4 < 6 = |Fin 3 ⊕ Fin 3|
     exact no_minor_of_card_lt _ K33 (by
-      rw [hScard, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]; norm_num)
+      rw [hScard, Fintype.card_sum, Fintype.card_fin]; norm_num)
   · -- |↥S| ≥ 3
     omega
   · -- edgeCount = 3 * 4 - 6 = 6
     -- (⊤ : SimpleGraph ↥S).edgeFinset.card = C(4,2) = 6
     unfold edgeCount
-    rw [heq, hScard]
-    have h6 : (3 : ℕ) * 4 - 6 = 6 := by norm_num
-    rw [h6]
-    -- Routine: complete graph on a 4-element type has C(4,2) = 6 edges
-    -- Mathlib hint: card_edgeFinset_top or equivFin + native_decide
-    sorry
+    -- Rewriting `inducedSubgraph G S` to `⊤` directly inside `.edgeFinset.card` fails
+    -- ("motive is not type correct") because `edgeFinset` also depends on the
+    -- `DecidableRel` instance, whose *type* mentions the graph being rewritten. Instead,
+    -- equate the edgeFinsets themselves via membership (a purely propositional statement
+    -- with no dependent instance to break), then rewrite that concrete Finset equality.
+    have hEdgeEq : (inducedSubgraph G S).edgeFinset = (⊤ : SimpleGraph ↥S).edgeFinset := by
+      apply Finset.ext
+      intro e
+      simp only [SimpleGraph.mem_edgeFinset]
+      rw [heq]
+    rw [hEdgeEq, SimpleGraph.card_edgeFinset_top_eq_card_choose_two, hScard]
+    decide
 
 /-- K₄ gives a saturated planar subgraph on 4 vertices. -/
 theorem K4_gives_large_saturated (G : SimpleGraph V) [DecidableRel G.Adj] :
@@ -363,22 +414,6 @@ def saturatedPlanarSize (n k : ℕ) : ℕ := k / n
 
 The threshold relates to extremal graph theory.
 -/
-
-/-- The complete bipartite graph K_{m,n}. -/
-def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
-  Adj x y := match x, y with
-    | Sum.inl _, Sum.inr _ => True
-    | Sum.inr _, Sum.inl _ => True
-    | _, _ => False
-  symm.symm := fun x y h => by cases x <;> cases y <;> simp_all
-  loopless.irrefl := fun x h => by cases x <;> simp at h
-
-instance completeBipartite_decidable (m n : ℕ) : DecidableRel (completeBipartite m n).Adj :=
-  fun x y => match x, y with
-  | Sum.inl _, Sum.inr _ => isTrue trivial
-  | Sum.inr _, Sum.inl _ => isTrue trivial
-  | Sum.inl _, Sum.inl _ => isFalse id
-  | Sum.inr _, Sum.inr _ => isFalse id
 
 /-- K_{m,n} contains K₃,₃ as a minor when m, n ≥ 3. -/
 private lemma completeBipartite_has_K33_minor (m n : ℕ) (hm : m ≥ 3) (hn : n ≥ 3) :
