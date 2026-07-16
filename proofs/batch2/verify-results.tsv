@@ -2167,7 +2167,7 @@ KnightsTourObliqueOQ02ReverseCount	GREEN
 KnightsTourObliqueOQ03	GREEN	
 Konigsberg	GREEN	
 KonigsbergOQ01	GREEN	
-KonigsbergOQ01OQ02	RESIDUAL	unknown-const:Finset.card_eq_sum_ones.symm
+KonigsbergOQ01OQ02	PRE-EXISTING	FAIL on v4.26 baseline too; ~90-site rearchitecture needed (transcribe KonigsbergOQ01OQ02Recipe.lean), pre-existing per meta.json+PR#16675, not migration drift
 KonigsbergOQ01OQ02Recipe	GREEN	
 KonigsbergOQ02	GREEN	
 KonigsbergOQ02OQ01	RESIDUAL	type-mismatch
