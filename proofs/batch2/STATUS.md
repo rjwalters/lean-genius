@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 304 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FundamentalArithmeticOQ02 (Zsqrtd.mul_def->re_mul/im_mul; one_re->re_one;
+Units.val_inv field; isUnit_of_mul_eq_one->IsUnit.of_mul_eq_one; nlinarith->interval_cases+omega). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 303 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): ErdosKoRado (card_sdiff now unconditional -> card_sdiff_of_subset;
