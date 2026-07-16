@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 324 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos1149Aristotle (card_multiples: mul_right_injective₀->mul_left_injective₀;
+Finset.card_Icc->Nat.card_Icc; d*k/k*d commutativity; omega-on-N/d -> Nat.add_sub_cancel;
+Nat.Coprime.comm->Nat.coprime_comm; moebius_eq_zero_of_squarefree->..._of_not_squarefree). Repair: none.
+SEAM: omega on goals containing `_ / var` (Nat.div by a variable) misbehaves in v4.31 -> use direct
+lemmas (Nat.add_sub_cancel, Nat.le_div_iff_mul_le) instead of feeding omega a `_/var` atom.
+
 # DOCTOR SINGLE-PROOF BATCH 323 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos1OQ03Aristotle (parenthesize geom_sum_two' sum (greedy binder); two_mul->pow_succ+
