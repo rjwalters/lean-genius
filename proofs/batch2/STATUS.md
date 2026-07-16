@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 276 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): NewtonInductiveStepOQ02 (21min: induction generalizing arg-order [hyps
+before generalized var now]; Nat.choose_symm_of_eq_add; nested induction heartbeat-timeout -> extract
+choose_two_formula standalone + nlinarith only[...]). Repair: none. [RESIDUAL=100 milestone]
+
 # DOCTOR SINGLE-PROOF BATCH 275 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): TaylorTheoremOQ02 (Fintype.card_perm+card_fin; HasSum.congr->congr_fun;

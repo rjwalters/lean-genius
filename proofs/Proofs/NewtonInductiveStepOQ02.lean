@@ -131,7 +131,6 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
       rw [esymm_cons_succ, esymm_zero, mul_one, esymm_cons_succ]
       -- Goal: (E_1 + x*1)² ≥ 1 * (E_2 + x*E_1)
       -- i.e., (E_1 + x)² ≥ E_2 + x*E_1
-      simp only [mul_one]
       set E1 := esymm xs 1
       set E2 := esymm xs 2
       have hE1 : (0 : ℝ) ≤ E1 := esymm_nonneg xs hxs' 1
@@ -140,7 +139,7 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
       have h_inner : E1 ^ 2 ≥ E2 := by
         rcases le_or_gt 2 xs.length with hm | hm
         · -- xs.length ≥ 2: apply IH at k=1
-          have h := ih 1 le_rfl (by omega) hxs'
+          have h := ih hxs' 1 le_rfl (by omega)
           simp only [show (1:ℕ) - 1 = 0 from rfl, show (1:ℕ) + 1 = 2 from rfl,
                      esymm_zero, one_mul] at h
           exact h
@@ -162,15 +161,15 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
       set ek   := esymm xs (p + 2)
       set ekm1 := esymm xs (p + 1)
       set ekp1 := esymm xs (p + 3)
-      set ekm2 := esymm xs (p + 0)
+      set ekm2 := esymm xs p
       have hek   : (0 : ℝ) ≤ ek   := esymm_nonneg xs hxs' (p + 2)
       have hekm1 : (0 : ℝ) ≤ ekm1 := esymm_nonneg xs hxs' (p + 1)
       have hekp1 : (0 : ℝ) ≤ ekp1 := esymm_nonneg xs hxs' (p + 3)
-      have hekm2 : (0 : ℝ) ≤ ekm2 := esymm_nonneg xs hxs' (p + 0)
+      have hekm2 : (0 : ℝ) ≤ ekm2 := esymm_nonneg xs hxs' p
       -- IH at k = p+2 for xs (Newton at k)
       have h_delta_k : ek ^ 2 ≥ ekm1 * ekp1 := by
         rcases le_or_gt (p + 3) xs.length with hkm | hkm
-        · have h := ih (p + 2) (by omega) (by omega) hxs'
+        · have h := ih hxs' (p + 2) (by omega) (by omega)
           simp only [show p + 2 - 1 = p + 1 from by omega,
                      show p + 2 + 1 = p + 3 from by omega] at h
           exact h
@@ -179,7 +178,7 @@ theorem esymm_log_concave (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
       -- IH at k = p+1 for xs (Newton at k-1)
       have h_delta_km1 : ekm1 ^ 2 ≥ ekm2 * ek := by
         rcases le_or_gt (p + 2) xs.length with hkm | hkm
-        · have h := ih (p + 1) (by omega) (by omega) hxs'
+        · have h := ih hxs' (p + 1) (by omega) (by omega)
           simp only [show p + 1 - 1 = p from by omega,
                      show p + 1 + 1 = p + 2 from by omega] at h
           exact h
@@ -251,6 +250,23 @@ private theorem esymm_cross_condition (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : 
         (esymm_zero_tail xs hxs (by omega) hekm1_zero)
     rw [hekp1_zero, mul_zero]
 
+/-- Helper: 2 * C(m,2) = m * (m-1) as reals, for any m. Proved once, standalone (outside any
+    deep proof context), so the induction on `m` doesn't have to revert a large accumulated
+    context — reused by both branches of `newton_inequality_binomial` below. -/
+private theorem choose_two_formula (m : ℕ) :
+    2 * (Nat.choose m 2 : ℝ) = (m : ℝ) * ((m : ℝ) - 1) := by
+  induction m with
+  | zero => simp
+  | succ q ih =>
+    have hpas : Nat.choose (q + 1) 2 = Nat.choose q 2 + q := by
+      rcases Nat.eq_zero_or_pos q with hq0 | hq0
+      · subst hq0; simp
+      · have := Nat.choose_succ_succ q 1
+        simp [Nat.choose_one_right] at this
+        omega
+    push_cast [hpas]
+    nlinarith [ih]
+
 /-- **Newton's inequality** (cleared-denominator form) for lists with nonneg entries:
     C(n,k-1) · C(n,k+1) · e_k² ≥ C(n,k)² · e_{k-1} · e_{k+1}
 
@@ -269,7 +285,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
   | cons x xs ih =>
     have hx : (0 : ℝ) ≤ x := hxs x (mem_cons_self)
     have hxs' : ∀ y ∈ xs, (0 : ℝ) ≤ y := fun y hy => hxs y (mem_cons_of_mem x hy)
-    simp only [length_cons] at hkn
+    simp only [length_cons] at hkn ⊢
     -- n = xs.length
     set n := xs.length with hn_def
     rcases hk.eq_or_lt with rfl | hk2
@@ -281,14 +297,13 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- esymm (x::xs) 2 = esymm xs 2 + x * esymm xs 1
       rw [show (2:ℕ) = 1 + 1 from rfl, esymm_cons_succ]
       -- Goal: C(n+1,2) * (E_1 + x)² ≥ (n+1)² * 1 * (E_2 + x*E_1)
-      simp only [one_mul]
       set E1 := esymm xs 1
       set E2 := esymm xs 2
       have hE1 : (0 : ℝ) ≤ E1 := esymm_nonneg xs hxs' 1
       have hE2 : (0 : ℝ) ≤ E2 := esymm_nonneg xs hxs' 2
       -- C(n+1, 1) = n+1
       have hC1 : (Nat.choose (n + 1) 1 : ℝ) = n + 1 := by
-        simp [Nat.choose_one_right]; push_cast; ring
+        simp [Nat.choose_one_right]
       rw [hC1]
       -- Use quadratic_nonneg with inner IH
       -- Target: C(n+1,2) * (E_1 + x)² ≥ (n+1)² * (E_2 + x*E_1)
@@ -298,7 +313,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       have h_IH_k1 : (Nat.choose n 2 : ℝ) * E1 ^ 2 ≥ (n : ℝ) ^ 2 * E2 := by
         rcases le_or_gt 2 n with hm | hm
         · -- IH for xs at k=1: C(n,0)*C(n,2)*E1^2 ≥ C(n,1)^2*(esymm xs 0)*E2
-          have h := ih 1 le_rfl (by omega) hxs'
+          have h := ih hxs' 1 le_rfl (by omega)
           simp only [show (1:ℕ) - 1 = 0 from rfl, show (1:ℕ) + 1 = 2 from rfl,
                      Nat.choose_zero_right, Nat.cast_one, one_mul,
                      esymm_zero, mul_one] at h
@@ -313,9 +328,10 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           (Nat.choose n 2 : ℝ) + (Nat.choose n 1 : ℝ) := by
         have h := Nat.choose_succ_succ n 1
         simp only [Nat.choose_one_right] at h
+        rw [Nat.choose_one_right]
         push_cast [h]; ring
       have hCn1 : (Nat.choose n 1 : ℝ) = (n : ℝ) := by
-        simp [Nat.choose_one_right]; push_cast; ring
+        simp [Nat.choose_one_right]
       rw [hPascal2, hCn1]
       -- Apply quadratic_nonneg
       -- α = C(n,2) + n, β = -(n+1)*E_1, γ = (C(n,2)+n)*E_1² - (n+1)²*E_2
@@ -325,15 +341,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       -- Use quadratic_nonneg
       have h_α : (0 : ℝ) ≤ (Nat.choose n 2 : ℝ) + n := by positivity
       -- Key identity: 2 * C(n,2) = n * (n-1) as real numbers
-      have h2C2 : 2 * (Nat.choose n 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := by
-        induction n with
-        | zero => simp
-        | succ m ih =>
-          have hpas : Nat.choose (m + 1) 2 = Nat.choose m 2 + m := by
-            have := Nat.choose_succ_succ m 1
-            simp [Nat.choose_one_right] at this
-            omega
-          push_cast [hpas]; linarith
+      have h2C2 : 2 * (Nat.choose n 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := choose_two_formula n
       have h_γ : (0 : ℝ) ≤ ((Nat.choose n 2 : ℝ) + n) * E1 ^ 2 - (n + 1) ^ 2 * E2 := by
         -- Using h2C2: 2*(C₂+n) = n*(n-1)+2n = n*(n+1)
         -- Goal equivalent to: n*(n+1)*E1^2 ≥ 2*(n+1)^2*E2, i.e., n*E1^2 ≥ 2*(n+1)*E2
@@ -352,10 +360,8 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
             nlinarith [hS, mul_pos (show (0:ℝ) < 2*E2 - E1^2 by linarith) hnn_pos, hE2]
           nlinarith [hS, hE1sq2, h2C2,
                      mul_nonneg (Nat.cast_nonneg n) (mul_nonneg hE1 hE1)]
-        · -- n = 1 (n ≥ 1 from hkn, n < 2)
-          have hn1 : n = 1 := by omega
-          subst hn1
-          have hE2z : E2 = 0 := esymm_eq_zero_of_gt xs 2 (by simp [hn_def]; omega)
+        · -- n < 2 (n ≥ 1 from hkn); E2 = esymm xs 2 = 0 since xs.length < 2
+          have hE2z : E2 = 0 := esymm_eq_zero_of_gt xs 2 (by omega)
           simp [hE2z]; positivity
       -- 4*(C₂+n)^2 = (n*(n+1))^2 (via h2C2: 2*C₂ = n*(n-1), so 2*(C₂+n) = n*(n+1))
       have h4C3 : 4 * ((Nat.choose n 2 : ℝ) + ↑n) ^ 2 = ((↑n : ℝ) * (↑n + 1)) ^ 2 := by
@@ -388,7 +394,9 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       have key := quadratic_nonneg ((Nat.choose n 2 : ℝ) + ↑n) (-(↑n + 1) * E1)
           (((Nat.choose n 2 : ℝ) + ↑n) * E1 ^ 2 - (↑n + 1) ^ 2 * E2) x hx h_α h_γ
           (by nlinarith [h_disc])
-      nlinarith [key]
+      have hcross : 2 * (Nat.choose n 2 : ℝ) * (E1 * x) = (n : ℝ) * ((n : ℝ) - 1) * (E1 * x) := by
+        rw [h2C2]
+      nlinarith [key, hcross]
     · -- k ≥ 2 case: use newton_cleared_denom_inductive_step
       obtain ⟨p, rfl⟩ : ∃ p, k = p + 2 := ⟨k - 2, by omega⟩
       simp only [show p + 2 - 1 = p + 1 from by omega,
@@ -440,26 +448,28 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
       have h_ih_k : ek ^ 2 * ((Nat.choose n (p + 1) : ℝ) * (Nat.choose n (p + 3) : ℝ)) ≥
           ekm1 * ekp1 * (Nat.choose n (p + 2) : ℝ) ^ 2 := by
         rcases le_or_gt (p + 3) n with hkm | hkm
-        · have h := ih (p + 2) (by omega) (by omega) hxs'
+        · have h := ih hxs' (p + 2) (by omega) (by omega)
           simp only [show p + 2 - 1 = p + 1 from by omega,
                      show p + 2 + 1 = p + 3 from by omega] at h
           nlinarith [h]
-        · -- p+3 > n: C(n,p+3) = 0
+        · -- p+3 > n: C(n,p+3) = 0 and ekp1 = 0
           have hCzero : (Nat.choose n (p + 3) : ℝ) = 0 := by
             simp [Nat.choose_eq_zero_of_lt (by omega : n < p + 3)]
-          rw [hCzero, mul_zero, mul_zero]; positivity
+          have hekp1_zero : ekp1 = 0 := esymm_eq_zero_of_gt xs (p + 3) (by omega)
+          simp [hCzero, hekp1_zero]
       -- IH at k = p+1 for xs (normalized Newton, if p+2 ≤ n)
       have h_ih_km1 : ekm1 ^ 2 * ((Nat.choose n p : ℝ) * (Nat.choose n (p + 2) : ℝ)) ≥
           ekm2 * ek * (Nat.choose n (p + 1) : ℝ) ^ 2 := by
         rcases le_or_gt (p + 2) n with hkm | hkm
-        · have h := ih (p + 1) (by omega) (by omega) hxs'
+        · have h := ih hxs' (p + 1) (by omega) (by omega)
           simp only [show p + 1 - 1 = p from by omega,
                      show p + 1 + 1 = p + 2 from by omega] at h
           nlinarith [h]
-        · -- p+2 > n: C(n,p+2) = 0
+        · -- p+2 > n: C(n,p+2) = 0 and ek = 0
           have hCzero : (Nat.choose n (p + 2) : ℝ) = 0 := by
             simp [Nat.choose_eq_zero_of_lt (by omega : n < p + 2)]
-          rw [hCzero, mul_zero, mul_zero]; positivity
+          have hek_zero : ek = 0 := esymm_eq_zero_of_gt xs (p + 2) (by omega)
+          simp [hCzero, hek_zero]
       -- Rewrite goal using recurrences
       rw [rec_k, rec_km1, rec_kp1]
       -- Goal: (C(n+1,p+1)*C(n+1,p+3))*(ek+x*ekm1)² ≥ C(n+1,p+2)²*(ekm1+x*ekm2)*(ekp1+x*ek)
@@ -476,7 +486,9 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
         -- Rewrite to match our goal form
         simp only [show p + 2 - 1 = p + 1 from by omega,
                    show p + 2 + 1 = p + 3 from by omega] at h_key
-        nlinarith [h_key]
+        linarith [h_key, mul_comm ((ek + x * ekm1) ^ 2)
+          ((Nat.choose (n + 1) (p + 1) : ℝ) * (Nat.choose (n + 1) (p + 3) : ℝ)),
+          mul_comm ((ekm1 + x * ekm2) * (ekp1 + x * ek)) ((Nat.choose (n + 1) (p + 2) : ℝ) ^ 2)]
       · -- Boundary case: p+3 > n, so n = p+2 (since hkn: p+3 ≤ n+1)
         have hn_eq : n = p + 2 := by omega
         -- In this case, C(n, p+3) = 0 and ekp1 = esymm xs (p+3) = 0
@@ -501,8 +513,8 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           rw [hn_eq]; simp [Nat.choose_self]
         -- C(n, p+1) = C(p+2, p+1) = C(p+2, 1) = p+2 = n (by symmetry C(n,k)=C(n,n-k))
         have hCmkm1 : (Nat.choose n (p + 1) : ℝ) = (n : ℝ) := by
-          rw [hn_eq, Nat.choose_symm (by omega : p + 1 ≤ p + 2),
-              show p + 2 - (p + 1) = 1 from by omega, Nat.choose_one_right]
+          rw [hn_eq, Nat.choose_symm_of_eq_add (show p + 2 = (p + 1) + 1 from by omega),
+              Nat.choose_one_right]
         -- From h_ih_km1: ekm1^2 * (C(n,p)*C(n,p+2)) ≥ ekm2*ek*C(n,p+1)^2
         -- With hCmk: ekm1^2 * (C(n,p)*1) ≥ ekm2*ek*n^2
         -- i.e., ekm1^2 * C(n,p) ≥ ekm2*ek*n^2
@@ -516,23 +528,14 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           have := congr_arg (Nat.cast : ℕ → ℝ) hmul
           rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_sub (by omega)] at this
           rw [hCk_succ] at this
-          push_cast at this ⊢
           rw [hn_eq] at this ⊢
-          linarith
+          push_cast at this ⊢
+          linear_combination -this
         -- Also: 2*C(n,p) = n*(n-1) since C(n,p) = C(n,2) and 2*C(m,2) = m*(m-1)
         have h2Cp : 2 * (Nat.choose n p : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := by
-          have hCnp : Nat.choose n p = Nat.choose n 2 := by
-            conv_lhs => rw [hn_eq]
-            exact Nat.choose_symm (by omega)
-          rw [hCnp, hn_eq]
-          -- 2*C(p+2,2) = (p+2)*(p+1) = n*(n-1)
-          induction p with
-          | zero => norm_num [Nat.choose]
-          | succ q ih =>
-            have hpas : Nat.choose (q + 3) 2 = Nat.choose (q + 2) 2 + (q + 2) := by
-              have := Nat.choose_succ_succ (q + 2) 1
-              simp [Nat.choose_one_right] at this; omega
-            push_cast [hpas]; linarith
+          have hCnp : Nat.choose n p = Nat.choose n 2 := Nat.choose_symm_of_eq_add hn_eq
+          rw [hCnp]
+          exact choose_two_formula n
         -- Goal: C(n+1,p+1) * (ek+x*ekm1)^2 ≥ (n+1)^2 * (ekm1+x*ekm2) * (x*ek)
         -- This is a quadratic in x with:
         --   γ = C(n+1,p+1)*ek^2 ≥ 0
@@ -545,7 +548,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
         -- Key bounds from h_ih_km1 and h2Cp:
         -- n*(n-1)*ekm1^2/2 ≥ n^2*ekm2*ek ⟹ (n-1)*ekm1^2 ≥ 2*n*ekm2*ek
         have hS_bound : (n : ℝ) * ((n : ℝ) - 1) * ekm1 ^ 2 ≥ 2 * (n : ℝ) ^ 2 * (ekm2 * ek) := by
-          nlinarith [h_ih_km1, h2Cp]
+          nlinarith only [h_ih_km1, h2Cp, sq_nonneg ekm1, mul_nonneg hekm2 hek]
         -- n*(n+1)*ekm1^2 ≥ 2*(n+1)^2*ekm2*ek iff n*ekm1^2 ≥ 2*(n+1)*ekm2*ek
         have hα_bound : (n : ℝ) * ((n : ℝ) + 1) * ekm1 ^ 2 ≥ 2 * ((n : ℝ) + 1) ^ 2 * (ekm2 * ek) := by
           rcases le_or_gt 2 n with hn2 | hn2
@@ -554,16 +557,15 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
               -- by contradiction: if ekm1^2 < 2*ekm2*ek then n*(n-1)*ekm1^2 < 2*n^2*ekm2*ek
               by_contra hlt
               push_neg at hlt
-              have hnn2 : (0 : ℝ) < (n : ℝ) * ((n : ℝ) - 1) := by nlinarith
-              nlinarith [hS_bound, mul_pos (show (0:ℝ) < 2*(ekm2*ek)-ekm1^2 by linarith) hnn2,
+              have hnn2 : (0 : ℝ) < (n : ℝ) * ((n : ℝ) - 1) := by nlinarith only [hn_cast]
+              nlinarith only [hS_bound, hlt,
+                         mul_pos (show (0:ℝ) < 2*(ekm2*ek)-ekm1^2 by linarith only [hlt]) hnn2,
                          mul_nonneg hekm2 hek]
-            nlinarith [hS_bound, hekm1sq]
+            nlinarith only [hS_bound, hekm1sq, hn_cast, mul_nonneg hekm2 hek, sq_nonneg ekm1]
           · -- n = 1 (since n = p+2 ≥ 2, contradiction unless p=0, n=2... check)
             -- Actually n = p+2 ≥ 2 since p ≥ 0, so n ≥ 2; but we said n < 2 here
             -- This branch is unreachable since n = p+2 ≥ 2
             omega
-        -- Rewrite goal using h2Ckm1
-        rw [show (Nat.choose (n+1) (p+1) : ℝ) = Ckm1 from rfl]
         -- Apply quadratic_nonneg
         -- P(x) = Ckm1*(ek+x*ekm1)^2 - (n+1)^2*(ekm1+x*ekm2)*(x*ek)
         -- = Ckm1*ekm1^2*x^2 - (n+1)*ek*ekm1*x + Ckm1*ek^2 - [(n+1)^2*ekm2*ek*x^2 + (n+1)^2*ekm1*ek*x]
@@ -572,7 +574,7 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
         -- Hmm, let me use quadratic_nonneg on the equivalent form
         -- Rearranged: (Ckm1*ekm1^2 - (n+1)^2*ekm2*ek)*x^2 - (n+1)*ek*ekm1*x + Ckm1*ek^2 ≥ 0
         have h_α2 : (0 : ℝ) ≤ Ckm1 * ekm1 ^ 2 - (↑n + 1) ^ 2 * (ekm2 * ek) := by
-          nlinarith [h2Ckm1, hα_bound]
+          nlinarith only [h2Ckm1, hα_bound]
         have h_γ2 : (0 : ℝ) ≤ Ckm1 * ek ^ 2 := mul_nonneg hCkm1_nn (sq_nonneg _)
         -- Ring identity: LHS - RHS = α*x^2 + β*x + γ (using 2*Ckm1 = n*(n+1))
         -- Middle coeff: 2*Ckm1*ek*ekm1 - (n+1)^2*ekm1*ek = (2*Ckm1-n*(n+1))*ek*ekm1 = 0
@@ -582,7 +584,12 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           linear_combination (ek * ekm1 * x) * h2Ckm1
         -- Discriminant: 4*α*γ - β^2 = (n+1)^3*ek^2*((n-1)*ekm1^2 - 2*n*ekm2*ek) ≥ 0
         have hSn : (↑n - 1 : ℝ) * ekm1 ^ 2 ≥ 2 * ↑n * (ekm2 * ek) := by
-          nlinarith [hS_bound]
+          have hn_pos0 : 0 < n := by omega
+          have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn_pos0
+          by_contra hlt
+          push_neg at hlt
+          nlinarith only [hS_bound,
+            mul_pos hn_pos (show (0:ℝ) < 2*↑n*(ekm2*ek) - (↑n-1)*ekm1^2 from by linarith only [hlt])]
         have h4C2 : 4 * Ckm1 ^ 2 = ((↑n : ℝ) * (↑n + 1)) ^ 2 := by
           linear_combination (2 * Ckm1 + ↑n * (↑n + 1)) * h2Ckm1
         have h_disc2 : ((↑n + 1) * ek * ekm1) ^ 2 ≤
@@ -597,15 +604,15 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
                                (-2 * (↑n + 1) ^ 2 * ekm2 * ek ^ 3) * h2Ckm1
           -- (n^2-1)*ekm1^2 - 2*n*(n+1)*ekm2*ek = (n+1)*((n-1)*ekm1^2 - 2*n*ekm2*ek) ≥ 0
           have hfact : (↑n ^ 2 - 1) * ekm1 ^ 2 - 2 * ↑n * (↑n + 1) * (ekm2 * ek) ≥ 0 := by
-            nlinarith [hSn,
+            nlinarith only [hSn,
                        mul_nonneg (by positivity : (0:ℝ) ≤ ↑n + 1)
-                         (show (↑n - 1) * ekm1 ^ 2 - 2 * ↑n * (ekm2 * ek) ≥ 0 from by linarith [hSn])]
-          linarith [hkey, mul_nonneg (by positivity : (0:ℝ) ≤ (↑n+1)^2 * ek^2) hfact]
+                         (show (↑n - 1) * ekm1 ^ 2 - 2 * ↑n * (ekm2 * ek) ≥ 0 from by linarith only [hSn])]
+          linarith only [hkey, mul_nonneg (by positivity : (0:ℝ) ≤ (↑n+1)^2 * ek^2) hfact]
         have key2 := quadratic_nonneg
           (Ckm1 * ekm1 ^ 2 - (↑n + 1) ^ 2 * (ekm2 * ek))
           (-(↑n + 1) * ek * ekm1)
           (Ckm1 * ek ^ 2)
-          x hx h_α2 h_γ2 (by nlinarith [h_disc2])
-        linarith [key2, h_ring2]
+          x hx h_α2 h_γ2 (by nlinarith only [h_disc2])
+        linarith only [key2, h_ring2]
 
 end NewtonInductiveStepOQ02
