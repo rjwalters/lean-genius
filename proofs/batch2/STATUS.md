@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 237 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos782Problem (dsimp before omega; solymosi_equiv by_contra rebuild;
+⟨S,rfl⟩ fun-pattern -> rintro; open scoped Classical for Finset.filter IsSquare). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 236 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos682Problem (if_neg unfold; norm_num prime ext import; div_div_cancel_left₀
