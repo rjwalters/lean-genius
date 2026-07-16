@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 329 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos613Aristotle (nonlinear-omega in critical_edge_count_formula_ari/mono/pos:
+n=1+m substitution to kill truncated sub; Nat.choose_two_right division atoms -> exact-doubled
+equalities via div_two_mul_two_of_even/even_mul_pred/succ_self + ring_nf then omega; mono/pos rw
+through the fixed formula lemma). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 328 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos610ProblemAristotle (added [Nonempty V] binder + `open Erdos610` to resolve
