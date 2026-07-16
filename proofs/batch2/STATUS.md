@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 334 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: SchauderFixedPointOQ03 (fixedpoint_singlevalued: add eq_comm to simp;
+kakutani_finite_dim/brouwer_from_kakutani: F codomain ↥S -> ambient EuclideanSpace + hF_sub subset
+hyp since AddCommMonoid/Module ℝ on arbitrary ↥S has no instance). Repair: BORDERLINE #38611 (file
+likely never type-checked as written; restated for typecheckability, no weakening) — logged for auditor.
+
 # DOCTOR SINGLE-PROOF BATCH 333 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: CombinationsFormulaOQ01OQ04 (exact_mod_cast h.symm -> exact_mod_cast h at 2 sites:

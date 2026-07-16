@@ -84,7 +84,7 @@ def IsFixedPoint {X : Type*} (F : SetValuedMap X X) (x : X) : Prop :=
 /-- For single-valued maps, this reduces to f(x) = x. -/
 theorem fixedpoint_singlevalued {X : Type*} {f : X → X} (x : X) :
     IsFixedPoint (fun y => {f y}) x ↔ f x = x := by
-  simp [IsFixedPoint]
+  simp [IsFixedPoint, eq_comm]
 
 -- ============================================================
 -- Part IV: Kakutani's Theorem (Finite-Dimensional)
@@ -102,15 +102,26 @@ theorem fixedpoint_singlevalued {X : Type*} {f : X → X} (x : X) :
     Axiomatized because the proof requires:
     1. Finite-dimensional simplicial approximation
     2. Convergence of approximate fixed points
-    3. Upper hemicontinuity to pass to the limit -/
+    3. Upper hemicontinuity to pass to the limit
+
+    Formalization note: F's values are stated as subsets of the ambient
+    space `EuclideanSpace ℝ (Fin n)` (via `hF_sub : ∀ x, F x ⊆ S`) rather
+    than as subsets of the subtype `↥S` itself. A generic compact convex
+    `S` need not be closed under addition, so `↥S` carries no canonical
+    `AddCommMonoid`/`Module ℝ` structure for `Convex ℝ` to be stated
+    against; routing the values through the ambient vector space (which
+    genuinely has that structure) while constraining them to lie in `S`
+    faithfully captures "F : S → 2^S with convex/closed/nonempty values
+    contained in S" without any loss of generality. -/
 axiom kakutani_finite_dim {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
-    (F : SetValuedMap (↥S) (↥S))
+    (F : SetValuedMap (↥S) (EuclideanSpace ℝ (Fin n)))
+    (hF_sub : ∀ x, F x ⊆ S)
     (hF_ne : HasNonemptyValues F) (hF_closed : HasClosedValues F)
     (hF_convex : HasConvexValues F)
     (hF_uhc : IsUpperHemicontinuous F) :
-    ∃ x : ↥S, IsFixedPoint F x
+    ∃ x : ↥S, (x : EuclideanSpace ℝ (Fin n)) ∈ F x
 
 -- ============================================================
 -- Part V: Recovering Brouwer
@@ -123,15 +134,17 @@ theorem brouwer_from_kakutani {n : ℕ}
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
     (f : ↥S → ↥S) (hf : Continuous f) :
     ∃ x : ↥S, f x = x := by
-  -- View f as a set-valued map F(x) = {f(x)}
-  let F : SetValuedMap ↥S ↥S := fun x => {f x}
-  have hF_ne : HasNonemptyValues F := fun x => Set.singleton_nonempty (f x)
+  -- View f as a set-valued map F(x) = {f(x)}, landing in the ambient space
+  let F : SetValuedMap (↥S) (EuclideanSpace ℝ (Fin n)) :=
+    fun x => {(f x : EuclideanSpace ℝ (Fin n))}
+  have hF_sub : ∀ x, F x ⊆ S := fun x => Set.singleton_subset_iff.mpr (f x).2
+  have hF_ne : HasNonemptyValues F := fun x => Set.singleton_nonempty _
   have hF_closed : HasClosedValues F := fun x => isClosed_singleton
-  have hF_convex : HasConvexValues F := fun x => convex_singleton (f x)
-  have hF_uhc : IsUpperHemicontinuous F := continuous_is_uhc hf
+  have hF_convex : HasConvexValues F := fun x => convex_singleton _
+  have hF_uhc : IsUpperHemicontinuous F := continuous_is_uhc (continuous_subtype_val.comp hf)
   obtain ⟨x, hx⟩ := kakutani_finite_dim S hS_ne hS_compact hS_convex
-    F hF_ne hF_closed hF_convex hF_uhc
-  exact ⟨x, (fixedpoint_singlevalued x).mp hx⟩
+    F hF_sub hF_ne hF_closed hF_convex hF_uhc
+  exact ⟨x, (Subtype.ext (Set.mem_singleton_iff.mp hx)).symm⟩
 
 -- ============================================================
 -- Part VI: Application to Game Theory
