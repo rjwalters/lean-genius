@@ -72,7 +72,7 @@ def IsClique (S : Finset G) : Prop :=
 /-- Elements of Z(G) commute with everything. -/
 theorem center_commutes {z : G} (hz : z ∈ Subgroup.center G) (h : G) :
     commuting z h := by
-  simp only [commuting, Subgroup.mem_center_iff] at hz ⊢; exact hz h
+  simp only [commuting, Subgroup.mem_center_iff] at hz ⊢; exact (hz h).symm
 
 /-- No element of Z(G) can non-commute with anything. -/
 theorem center_not_nonCommuting {z h : G} (hz : z ∈ Subgroup.center G) :
@@ -85,7 +85,8 @@ theorem center_excluded_from_clique {S : Finset G} (hS : IsClique S) (hS2 : 2 �
   intro hzS
   obtain ⟨g, hg, h, hh, hne⟩ := Finset.one_lt_card.mp hS2
   by_cases hzg : z = g
-  · exact center_not_nonCommuting hz (hzg ▸ hS z hzS h hh (hzg ▸ hne))
+  · subst hzg
+    exact center_not_nonCommuting hz (hS z hzS h hh hne)
   · exact center_not_nonCommuting hz (hS z hzS g hg hzg)
 
 -- ============================================================
@@ -98,7 +99,6 @@ theorem nonCommuting_distinct_cosets {g h : G} (hnc : nonCommuting g h) :
     ∀ z ∈ Subgroup.center G, g ≠ h * z := by
   intro z hz heq
   apply hnc
-  skip
   rw [heq]
   -- Goal: h * z * h = h * (h * z)
   -- h * z * h = h * (z * h) [assoc] = h * (h * z) [z central]
@@ -160,6 +160,7 @@ theorem three_clique_necessary_conditions
     (∃ g h : G, nonCommuting g h) ∧
     (∀ g ∈ S, g ∉ Subgroup.center G) ∧
     4 ≤ (Subgroup.center G).index := by
+  classical
   -- Extract three elements from the 3-element clique
   have hS2 : 2 ≤ S.card := by omega
   obtain ⟨g₁, hg₁, g₂, hg₂, hne12⟩ := Finset.one_lt_card.mp hS2
@@ -180,8 +181,8 @@ theorem three_clique_necessary_conditions
     omega
   obtain ⟨hne31, hne32⟩ := hg₃ne
   have h12 := hS g₁ hg₁ g₂ hg₂ hne12
-  have h13 := hS g₁ hg₁ g₃ hg₃ hne31
-  have h23 := hS g₂ hg₂ g₃ hg₃ hne32
+  have h13 := hS g₁ hg₁ g₃ hg₃ hne31.symm
+  have h23 := hS g₂ hg₂ g₃ hg₃ hne32.symm
   refine ⟨⟨g₁, g₂, h12⟩, ?_, three_clique_index_ge_four h12 h13 h23⟩
   -- All clique elements are outside Z(G) (center excluded from cliques)
   intro g hg hz
