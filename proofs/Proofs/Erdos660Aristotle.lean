@@ -52,13 +52,13 @@ lemma eq_of_dist_zero (p q : Point3D) (h : dist p q = 0) : p = q :=
 /-- A Finset with card ≥ 2 has two distinct elements -/
 lemma has_two_elements (S : Finset Point3D) (h : S.card ≥ 2) :
     ∃ p ∈ S, ∃ q ∈ S, p ≠ q := by
-  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega)
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (show 1 < S.card by omega)
   exact ⟨a, ha, b, hb, hab⟩
 
 /-- If card ≥ 2, there exist two distinct elements -/
 lemma card_two_exists (S : Finset Point3D) (h : 2 ≤ S.card) :
     ∃ a b : Point3D, a ∈ S ∧ b ∈ S ∧ a ≠ b := by
-  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (by omega)
+  obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp (show 1 < S.card by omega)
   exact ⟨a, b, ha, hb, hab⟩
 
 /-
@@ -75,13 +75,13 @@ noncomputable def distinctDistances (S : Finset Point3D) : ℕ :=
 lemma zero_mem_pairwiseDistances (S : Finset Point3D) (hne : S.Nonempty) :
     (0 : ℝ) ∈ pairwiseDistances S := by
   obtain ⟨p, hp⟩ := hne
-  simp only [pairwiseDistances, Finset.mem_image, Finset.mem_product]
+  simp only [pairwiseDistances, Finset.mem_image, Finset.product_eq_sprod, Finset.mem_product]
   exact ⟨(p, p), ⟨hp, hp⟩, dist_self p⟩
 
 /-- A pairwise distance belongs to pairwiseDistances -/
 lemma mem_pairwiseDistances (S : Finset Point3D) (p q : Point3D)
     (hp : p ∈ S) (hq : q ∈ S) : dist p q ∈ pairwiseDistances S := by
-  simp only [pairwiseDistances, Finset.mem_image, Finset.mem_product]
+  simp only [pairwiseDistances, Finset.mem_image, Finset.product_eq_sprod, Finset.mem_product]
   exact ⟨(p, q), ⟨hp, hq⟩, rfl⟩
 
 /-- If p ≠ q and both are in S, dist p q > 0 -/
@@ -99,7 +99,7 @@ lemma pos_dist_mem_filter (S : Finset Point3D) (p q : Point3D)
 /-- pairwiseDistances consists of nonneg reals -/
 lemma pairwiseDistances_nonneg (S : Finset Point3D) (d : ℝ)
     (hd : d ∈ pairwiseDistances S) : 0 ≤ d := by
-  simp only [pairwiseDistances, Finset.mem_image, Finset.mem_product] at hd
+  simp only [pairwiseDistances, Finset.mem_image, Finset.product_eq_sprod, Finset.mem_product] at hd
   obtain ⟨⟨p, q⟩, _, rfl⟩ := hd
   exact dist_nonneg
 
@@ -156,13 +156,13 @@ lemma two_point_one_distance (p q : Point3D) (hne : p ≠ q) :
   have h1 : (({p, q} : Finset Point3D).product {p, q}).image
       (fun pq => dist pq.1 pq.2) = {0, dist p q} := by
     ext d
-    simp only [Finset.mem_image, Finset.mem_product, Finset.mem_insert, Finset.mem_singleton]
+    simp only [Finset.mem_image, Finset.product_eq_sprod, Finset.mem_product, Finset.mem_insert, Finset.mem_singleton]
     constructor
     · rintro ⟨⟨a, b⟩, ⟨ha | ha, hb | hb⟩, rfl⟩
-      · subst ha; subst hb; exact Or.inl (dist_self p)
-      · subst ha; subst hb; exact Or.inr rfl
-      · subst ha; subst hb; exact Or.inr (dist_comm q p)
-      · subst ha; subst hb; exact Or.inl (dist_self q)
+      · rw [ha, hb]; exact Or.inl (dist_self p)
+      · rw [ha, hb]; exact Or.inr rfl
+      · rw [ha, hb]; exact Or.inr (dist_comm q p)
+      · rw [ha, hb]; exact Or.inl (dist_self q)
     · rintro (rfl | rfl)
       · exact ⟨(p, p), ⟨Or.inl rfl, Or.inl rfl⟩, dist_self p⟩
       · exact ⟨(p, q), ⟨Or.inl rfl, Or.inr rfl⟩, rfl⟩
@@ -235,8 +235,8 @@ lemma distinctDistances_mono (S T : Finset Point3D) (h : S ⊆ T) :
 
 /-- A pair (p, q) is in the product S ×ˢ S if both are in S -/
 lemma mem_product_of_mem (S : Finset Point3D) (p q : Point3D)
-    (hp : p ∈ S) (hq : q ∈ S) : (p, q) ∈ S.product S :=
-  Finset.mem_product.mpr ⟨hp, hq⟩
+    (hp : p ∈ S) (hq : q ∈ S) : (p, q) ∈ S.product S := by
+  rw [Finset.product_eq_sprod]; exact Finset.mem_product.mpr ⟨hp, hq⟩
 
 /-- The image of a nonempty finset is nonempty -/
 lemma image_nonempty_of_nonempty {α β : Type*} [DecidableEq β]

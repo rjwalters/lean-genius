@@ -1,3 +1,19 @@
+# DOCTOR SINGLE-PROOF BATCH 25 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos1012OQ03 (SONNET 72min/648k — LONGEST of session, 1782-line
+digraph-Hamiltonicity Ghouila-Houri/Moon-Moser/Rédei, ~60 sites: List.insertIdx length now conditional
+-> getElem_insertIdx_of_lt/_self/_of_gt; List.nodup_append 3rd conjunct 4-curried; List.indexOf->idxOf),
+Erdos660Aristotle (Finset.mem_product needs product_eq_sprod bridge for .product vs ×ˢ; subst on
+destructured-tuple hyps -> prefer rw). Repairs: none.
+
+INCIDENT-4 (root cause refined): Erdos1012OQ03 was a 72-min long-runner I MISJUDGED as dead (stale
+doctor-f mtime) and re-queued as a duplicate — but it was ALIVE the whole time, working in its OWN
+recovery worktree (that's why doctor-f mtime was stale: the agent had MOVED). It survived doctor-f being
+cycled through Erdos643->CayleyHamilton->...->Erdos183. LESSON: "stale worktree mtime" does NOT mean the
+agent is dead — a resilient agent relocates to a recovery worktree. Only a terminal GREEN/FAILED task
+notification means done. Do NOT re-queue or reset based on mtime alone. (Dup removed from queue; its real
+GREEN collected here.)
+
 # DOCTOR SINGLE-PROOF BATCH 24 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos383Problem (dvd_pow_self needs n≠0; Prime.dvd_prod_iff->
