@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 45 (5-slot + Fable, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos288Problem (PNat-coe-vs-Subtype show-normalization; Finset.sum_pos
+arg order flipped), DescartesRuleOfSignsOQ02 (11.8min: List.filter_cons decide-normal-form churn ->
+filter_cons_of_pos/neg; anonymous-Pi-hyp invisible to omega in a theorem TYPE signature -> name+▸; unblocks
+DescartesRuleOfSignsOQ02OQ01). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 44 (5-slot + Fable experiment, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): BorsukUlamOQ03OQ01 (SONNET 17min/184k: Fin.ext reindex; card_filter_congr_bij
