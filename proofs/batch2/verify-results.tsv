@@ -474,7 +474,7 @@ CramersRule	GREEN
 CramersRuleOQ01OQ02OQ03	GREEN	
 CramersRuleOQ01OQ03	GREEN	
 CramersRuleOQ01OQ04	GREEN	
-CramersRuleOQ03OQ03	RESIDUAL	unknown-const:Quaternion.imI
+CramersRuleOQ03OQ03	GREEN	
 CramersRuleOQ04OQ01	GREEN	
 CramersRuleOQ05	GREEN	
 CramersRuleOQ05OQ01	GREEN	
@@ -2334,7 +2334,7 @@ ProbMethodSecondMomentOQ04OQ03	GREEN
 ProductOfSegmentsOfChordsConverse	GREEN	
 ProductOfSegmentsOfChordsOQ01	GREEN	
 PropertyBFirstMomentRecoloring	GREEN	unknown-const:Finset.exists_ne_of_one_lt_card
-PtolemysComplexProofOQ02	RESIDUAL	unknown-const:Real.cos_eq_one_iff.mp
+PtolemysComplexProofOQ02	GREEN	
 PtolemysTheoremOQ01Incomplete01	GREEN	doctor-inc65
 PtolemysTheoremOQ01OQ01	GREEN	
 PtolemysTheoremOQ01OQ02	GREEN	v4.31-migrated
