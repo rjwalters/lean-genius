@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 341 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos738Problem (IsTree reshape: flattened preconnected/isAcyclic fields;
+SimpleGraph.loopless now Std.Irrefl -> `.loopless.irrefl v`; Walk endpoint dependent rewrites via
+Walk.copy+support_copy not bare rw/▸; Reachable.refl explicit vertex arg; rcases disjunct-bind fix). Repair: none.
+SEAM: IsTree extends Connected -> flattened preconnected/isAcyclic; SimpleGraph.loopless is Std.Irrefl Adj
+(use .irrefl v); dependent membership rewrites on Walk u v endpoints need Walk.copy+support_copy.
+
 # DOCTOR SINGLE-PROOF BATCH 340 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos1027OQ01 (card_sdiff->card_sdiff_of_subset; sdiff_sdiff_cancel_left->
