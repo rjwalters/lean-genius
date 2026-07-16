@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 185 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02 (HARD 17min/181k: Finset.sup_lt_iff
+now needs ⊥<a n=0 split; Matrix.mulVec_single default simp; Matrix.mulVec_mulVec directional; natDegree_C_le->
+(natDegree_C _).le; conv_lhs rw [hc] vs clobber). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 184 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): DyckCatalanCountOQ01OQ01 (Tree->BinaryTree rename [deprecated alias
