@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 162 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): NormEuclideanZsqrtdFamilyOQ03OQ02 (letI-bound EuclideanDomain + bare
+inferInstance no longer chains to IsPrincipalIdealRing/IsDomain/UFM -> explicit @EuclideanDomain.
+to_principal_ideal_domain / instIsDomain terms). Repair: none. Unblocks child OQ03OQ02OQ01.
+
 # DOCTOR SINGLE-PROOF BATCH 161 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos804Problem (PRE-EXISTING bug: Nat.log n missing base arg [never
