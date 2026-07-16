@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 254 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): GreensTheoremOQ04 (List.not_mem_nil no arg; iUnion_of_empty +
+List.length_nil; Set.diff_empty->sdiff_empty; .outer projection explicit rfl after rw). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 253 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FairGamesTheorem (IsStoppingTime/stoppedValue domain ℕ->WithTop ℕ ->
