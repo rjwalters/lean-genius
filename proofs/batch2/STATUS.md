@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 151 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Hilbert20LocalSolvability (PRE-EXISTING defect not drift: principalSymbol
+summed over Fin n→ℕ [no Fintype] -> re-indexed Fin n→Fin(m+1) bounded, math-equiv). Repair: none (provenance
+flag logged — instance-synth class = pre-existing).
+
 # DOCTOR SINGLE-PROOF BATCH 150 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos973Problem (⟨0,by omega⟩ Fin no hyp -> ∃h:n>0; Complex.abs
