@@ -90,7 +90,7 @@ def MultiplyConnectedRegion.numHoles (R : MultiplyConnectedRegion) : ℕ :=
 def simplyConnectedOf (R : TypeIRegion) : MultiplyConnectedRegion where
   outer := R
   holes := []
-  holes_contained := fun _ h => absurd h (List.not_mem_nil _)
+  holes_contained := fun _ h => absurd h List.not_mem_nil
 
 /-- A simply-connected region has β₁ = 0. -/
 theorem simplyConnected_numHoles (R : TypeIRegion) :
@@ -99,13 +99,14 @@ theorem simplyConnected_numHoles (R : TypeIRegion) :
 /-- A simply-connected region has empty hole set. -/
 theorem simplyConnected_holeSet (R : TypeIRegion) :
     (simplyConnectedOf R).holeSet = ∅ := by
-  simp only [MultiplyConnectedRegion.holeSet, simplyConnectedOf]
-  exact Set.iUnion_of_empty (Fin (List.length ([] : List TypeIRegion)))
+  simp only [MultiplyConnectedRegion.holeSet, simplyConnectedOf, List.length_nil]
+  exact Set.iUnion_of_empty _
 
 /-- The point set of a simply-connected region equals its outer region. -/
 theorem simplyConnected_toSet (R : TypeIRegion) :
     (simplyConnectedOf R).toSet = R.toSet := by
-  simp only [MultiplyConnectedRegion.toSet, simplyConnected_holeSet, Set.diff_empty]
+  rw [MultiplyConnectedRegion.toSet, simplyConnected_holeSet, Set.sdiff_empty]
+  rfl
 
 /-
 ## Part II: Area of Multiply-Connected Regions
@@ -132,7 +133,8 @@ theorem simplyConnected_holeArea (R : TypeIRegion) :
 /-- A simply-connected region has area equal to its outer area. -/
 theorem simplyConnected_area (R : TypeIRegion) :
     (simplyConnectedOf R).area = R.area := by
-  simp only [MultiplyConnectedRegion.area, simplyConnected_holeArea, sub_zero]
+  rw [MultiplyConnectedRegion.area, simplyConnected_holeArea, sub_zero]
+  rfl
 
 /-
 ## Part III: Annular Region
@@ -333,7 +335,7 @@ This is the heart of:
 private theorem iteratedIntegral_zero (R : TypeIRegion) :
     R.iteratedIntegral (fun _ => (0 : ℝ)) = 0 := by
   simp only [TypeIRegion.iteratedIntegral]
-  simp [intervalIntegral.integral_const, smul_eq_mul]
+  simp
 
 theorem zero_curl_circulation_transfer
     (R : MultiplyConnectedRegion)
