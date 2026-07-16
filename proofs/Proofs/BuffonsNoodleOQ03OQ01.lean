@@ -97,6 +97,7 @@ theorem crossing_numerator (m : ℕ) : crossingIntegral m = 2 / (m + 1) := by
       apply integral_congr
       intro θ hθ
       rw [uIcc_of_le (by positivity : (0 : ℝ) ≤ π / 2)] at hθ
+      dsimp only
       rw [abs_of_nonneg (Real.cos_nonneg_of_mem_Icc ⟨by linarith [Real.pi_pos, hθ.1], hθ.2⟩)]
       ring
     rw [hcongr]
@@ -111,15 +112,17 @@ theorem crossing_numerator (m : ℕ) : crossingIntegral m = 2 / (m + 1) := by
       apply integral_congr
       intro θ hθ
       rw [uIcc_of_le (by linarith [Real.pi_pos] : (π / 2 : ℝ) ≤ π)] at hθ
+      dsimp only
       rw [abs_of_nonpos (Real.cos_nonpos_of_pi_div_two_le_of_le hθ.1
         (by linarith [Real.pi_pos, hθ.2]))]
       ring
-    rw [hcongr, integral_neg]
+    rw [hcongr, intervalIntegral.integral_neg]
     have h := integral_sin_pow_mul_cos_pow_odd (a := π / 2) (b := π) m 0
     simp only [Nat.mul_zero, Nat.zero_add, pow_one, pow_zero, mul_one] at h
     rw [h, Real.sin_pi_div_two, Real.sin_pi, integral_pow]
     have hm : (m : ℝ) + 1 ≠ 0 := by positivity
-    field_simp
+    rw [zero_pow (by omega : m + 1 ≠ 0), one_pow]
+    ring
   rw [crossingIntegral, ← integral_add_adjacent_intervals hab hbc, hL, hR]
   ring
 
@@ -132,6 +135,7 @@ theorem sinPowIntegral_zero : sinPowIntegral 0 = π := by
 /-- Base case `m = 1`: `∫₀^π sin θ dθ = 2`. -/
 theorem sinPowIntegral_one : sinPowIntegral 1 = 2 := by
   simp [sinPowIntegral, integral_sin]
+  norm_num
 
 /-- The Mathlib reduction formula specialised to `0..π`: the boundary term vanishes
 because `sin 0 = sin π = 0`, leaving `D(m+2) = ((m+1)/(m+2))·D(m)`. -/
@@ -171,7 +175,6 @@ theorem integral_sin_pow_eq_Gamma (m : ℕ) :
     push_cast
     rw [e1, e2, Real.Gamma_add_one hm1, Real.Gamma_add_one hm2]
     field_simp
-    ring
 
 /-! ### Main result: the closed form of the crossing factor -/
 
@@ -190,7 +193,6 @@ theorem crossing_factor_eq_Gamma (m : ℕ) :
   have hG2 : Real.Gamma (((m : ℝ) + 1) / 2) ≠ 0 := (Real.Gamma_pos_of_pos (by positivity)).ne'
   rw [e3, Real.Gamma_add_one hm1]
   field_simp
-  ring
 
 /-! ### Consequences matching the parent file -/
 
