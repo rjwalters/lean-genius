@@ -79,7 +79,7 @@ The proof uses the AM-GM inequality applied to t ↦ exp(t):
     This is the foundation: CS is the p=q=2 case. -/
 theorem young_ineq (p q : ℝ) (hpq : p.HolderConjugate q) (a b : ℝ≥0) :
     (a : ℝ) * b ≤ a ^ p / p + b ^ q / q :=
-  NNReal.young_inequality a b hpq
+  Real.young_inequality_of_nonneg a.coe_nonneg b.coe_nonneg hpq
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -111,8 +111,13 @@ theorem holder_lintegral (p q : ℝ) (hpq : p.HolderConjugate q)
 theorem holder_eLpNorm {p q : ℝ≥0∞} (hpq : p.HolderConjugate q)
     {f g : α → ℝ} (hf : AEStronglyMeasurable f μ) (hg : AEStronglyMeasurable g μ) :
     eLpNorm (f * g) 1 μ ≤ eLpNorm f p μ * eLpNorm g q μ := by
-  -- This wraps Mathlib's eLpNorm_mul_le
-  exact eLpNorm_mul_le hf hg hpq
+  -- `eLpNorm_mul_le` was replaced by the `HolderTriple`-based
+  -- `eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm`; `hpq : p.HolderConjugate q` unfolds to
+  -- `HolderTriple p q 1`, which is exactly the instance this lemma needs.
+  haveI := hpq
+  have h := eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm (p := p) (q := q) (r := (1 : ℝ≥0∞)) hf hg
+    (fun a b => a * b) (1 : ℝ≥0) (Filter.Eventually.of_forall fun x => by simp [nnnorm_mul])
+  simpa [Pi.mul_def] using h
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -155,15 +160,8 @@ theorem abs_add_pow_le_pow_add {p : ℝ} (hp : 1 ≤ p)
     This is used in step 5 of the factoring trick. -/
 theorem conjugate_exponent_identity {p q : ℝ} (hp : 1 < p)
     (hpq : p.HolderConjugate q) :
-    (p - 1) * q = p := by
-  have hq : q = p / (p - 1) := by
-    rw [Real.HolderConjugate] at hpq
-    obtain ⟨hp', hq', hpq'⟩ := hpq
-    skip
-    linarith
-  rw [hq]
-  field_simp
-  ring
+    (p - 1) * q = p :=
+  hpq.sub_one_mul_conj
 
 /-- **Explicit Minkowski via Hölder** (the main result).
 
@@ -211,22 +209,15 @@ theorem lintegral_rpow_le_split {p : ℝ} (hp : 1 ≤ p)
       = ∫⁻ x, (f x + g x) * (f x + g x) ^ (p - 1) ∂μ := by
         congr 1; ext x
         -- a^p = a · a^{p-1} for a : ℝ≥0∞, p ≥ 1
-        -- Split: p = 1 + (p - 1), then rpow_add + rpow_one
-        set a := f x + g x with ha_def
-        rw [show (p : ℝ) = 1 + (p - 1) from by linarith]
-        rcases eq_or_ne a 0 with h0 | h0
-        · simp [h0, ENNReal.zero_rpow (by linarith : (1 : ℝ) + (p - 1) ≠ 0),
-                ENNReal.zero_rpow (show (p - 1 : ℝ) ≠ 0 from by linarith)]
-        rcases eq_or_ne a ⊤ with htop | htop
-        · simp [htop, ENNReal.top_rpow_of_pos (by linarith : (0 : ℝ) < 1 + (p - 1)),
-                ENNReal.top_rpow_of_pos (show (0 : ℝ) < p - 1 from by linarith)]
-        · rw [ENNReal.rpow_add h0 htop, ENNReal.rpow_one]
+        -- Split: p = 1 + (p - 1), then rpow_add_of_nonneg (holds unconditionally in a, 0/⊤ included)
+        -- + rpow_one. `conv_lhs` keeps the rewrite from touching the `(p - 1)` on the RHS.
+        conv_lhs => rw [show (p : ℝ) = 1 + (p - 1) from by ring]
+        rw [ENNReal.rpow_add_of_nonneg 1 (p - 1) zero_le_one (by linarith), ENNReal.rpow_one]
     _ ≤ ∫⁻ x, (f x + g x) * (f x + g x) ^ (p - 1) ∂μ := le_rfl
     _ = ∫⁻ x, f x * (f x + g x) ^ (p - 1) ∂μ +
         ∫⁻ x, g x * (f x + g x) ^ (p - 1) ∂μ := by
-        rw [← lintegral_add_left]
-        · congr 1; ext x; ring
-        · exact hf.mul (AEMeasurable.pow_const (hf.add hg) _)
+        rw [← lintegral_add_left' (hf.mul (AEMeasurable.pow_const (hf.add hg) _))]
+        congr 1; ext x; ring
 
 /-- **Step 2**: Each split term is bounded by Hölder.
     ∫|f|·|f+g|^{p-1} ≤ (∫|f|^p)^{1/p} · (∫|f+g|^p)^{1/q}
@@ -247,18 +238,12 @@ theorem holder_applied_to_split {p q : ℝ} (hp : 1 < p)
         (∫⁻ x, (h x ^ (p - 1)) ^ q ∂μ) ^ (1/q) := holder
     _ = (∫⁻ x, f x ^ p ∂μ) ^ (1/p) *
         (∫⁻ x, h x ^ p ∂μ) ^ ((p-1)/p) := by
-          congr 1
-          · congr 1; ext x
-            rw [← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast,
-                ← ENNReal.rpow_mul]
-            congr 1
-            exact conjugate_exponent_identity hp hpq
-          · congr 1
-            have hpq_rel : q = p / (p - 1) := by
-              rw [Real.HolderConjugate] at hpq
-              obtain ⟨_, _, h⟩ := hpq
-              field_simp at h ⊢; linarith
-            rw [hpq_rel]; field_simp
+          have hpow : ∫⁻ x, (h x ^ (p - 1)) ^ q ∂μ = ∫⁻ x, h x ^ p ∂μ :=
+            lintegral_congr fun x => by
+              rw [← ENNReal.rpow_mul, conjugate_exponent_identity hp hpq]
+          have hexp : (1 : ℝ)/q = (p-1)/p := by
+            rw [hpq.conjugate_eq, one_div_div]
+          rw [hpow, hexp]
 
 /-- **Step 3 (Final)**: Combine and divide to get Minkowski.
 
@@ -284,7 +269,7 @@ theorem minkowski_from_holder_explicit
   --   ∫(f+g)^p ≤ ((∫f^p)^{1/p} + (∫g^p)^{1/p}) · (∫(f+g)^p)^{(p-1)/p}
   -- Then divide both sides by (∫(f+g)^p)^{(p-1)/p} using rpow splitting.
   -- The ENNReal cancellation arithmetic is handled by Mathlib's direct proof:
-  exact ENNReal.lintegral_Lp_add_le (le_of_lt hp) hf hg
+  exact ENNReal.lintegral_Lp_add_le hf hg (le_of_lt hp)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -341,7 +326,7 @@ theorem chain_verification :
       (f g : α → ℝ) (hf : AEStronglyMeasurable f μ) (hg : AEStronglyMeasurable g μ),
       eLpNorm (f + g) p μ ≤ eLpNorm f p μ + eLpNorm g p μ) := by
   exact ⟨
-    fun a b p q hpq => NNReal.young_inequality a b hpq,
+    fun a b p q hpq => Real.young_inequality_of_nonneg a.coe_nonneg b.coe_nonneg hpq,
     fun p q hpq f g hf hg => ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq hf hg,
     fun p hp f g hf hg => eLpNorm_add_le hf hg hp⟩
 
