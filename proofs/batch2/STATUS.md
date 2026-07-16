@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 30 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos895ProblemAristotle (Fin.val positivity via simp not omega;
+n^2/4≥81 needs nlinarith n^2≥324 before omega), Erdos859ProblemAristotle (native_decide->decide for
+noncomputable sigma — REMOVES ofReduceBool, safe direction), Erdos900Problem (IsConnected->Connected;
+anonymous-Pi-binder named for omega). Repairs: none. SESSION CROSSED 2200 GREEN.
+
 # DOCTOR SINGLE-PROOF BATCH 29 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos476OQ05Problem (SONNET 28min/293k Vosper's-thm induction ~40 sites:

@@ -128,15 +128,16 @@ theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
 /-- Additive triple (1, 1, 2) exists in Fin 18: 1 + 1 = 2. -/
 theorem additive_triple_1_1_2 : IsAdditiveTriple (⟨1, by omega⟩ : Fin 18)
     ⟨1, by omega⟩ ⟨2, by omega⟩ :=
-  ⟨rfl, by omega, by omega⟩
+  ⟨rfl, by simp, by simp⟩
 
 /-- Additive triple (1, 2, 3) exists in Fin 18: 1 + 2 = 3. -/
 theorem additive_triple_1_2_3 : IsAdditiveTriple (⟨1, by omega⟩ : Fin 18)
     ⟨2, by omega⟩ ⟨3, by omega⟩ :=
-  ⟨rfl, by omega, by omega⟩
+  ⟨rfl, by simp, by simp⟩
 
 /-- For n ≥ 18 vertices, n² / 4 ≥ 81. -/
 theorem threshold_mantel_bound (n : ℕ) (hn : n ≥ 18) : n ^ 2 / 4 ≥ 81 := by
+  have h : n ^ 2 ≥ 324 := by nlinarith
   omega
 
 end Erdos895ProblemAristotle
