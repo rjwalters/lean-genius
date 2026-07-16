@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 181 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CayleyHamiltonMinpolyOQ04Backward (eval₂_eq_sum_range' explicit ring-hom;
+Matrix.sum_mulVec/smul_mulVec vs Finset.induction; gcd_eq_gcd_ab show-unfold before rw). Repair: none
+(pre-existing sorry in nonderogatory_has_cyclic_vector_infinite untouched, formalized).
+
 # DOCTOR SINGLE-PROOF BATCH 180 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ02 (cascade artifact, no edits;
