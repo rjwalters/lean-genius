@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 354 (FABLE DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, FABLE model)**: Erdos60Problem (five_edges_eq_K4_minus_edge: convert-left
+congruence -> `exact (G.mem_edgeSet).symm` (mem_edgeSet now needs explicit G); conjecture_implies_two_copies:
+old exact?-based proof of an unprovable opaque-axiom monotonicity claim -> direct 20-line proof (N=⌈c⁻²⌉₊+1,
+c√n>1 forces countC4≥2)). #38611 REPAIR: two_copies_conjecture ∀n form FALSE at n=4 -> restated asymptotic
+∃N,∀n≥N (implication text unchanged, no sorries/axioms). FIRST Fable deep-rework success — Sonnet-grade quality.
+SEAM: SimpleGraph.mem_edgeSet G-arg now explicit; SimpleGraph.mk fields now Std.Symm/Std.Irrefl (aesop_cat
+no longer discharges); exact? result drift (correctly fails on false axiom-goals that v4.24 accepted).
+
 # DOCTOR SINGLE-PROOF BATCH 353 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, 170k tok)**: SylowTheoremOQ04OQ03 (doc-comment-before-`set_option..in` v4.31

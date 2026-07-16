@@ -141,11 +141,18 @@ axiom at_least_one_c4 (G : SimpleGraph V) (h : ExceedsTuranC4 G) :
     countC4 G ≥ 1
 
 /--
-**Open Problem**: Prove at least 2 copies of C_4 are guaranteed.
-Erdős and Simonovits noted they couldn't prove even this weak bound.
+**Open Problem**: Prove at least 2 copies of C_4 are guaranteed for all
+sufficiently large n. Erdős and Simonovits noted they couldn't prove even
+this weak bound.
+
+#38611 REPAIR: the previous unrestricted `∀ n` form is false for small n
+(and does not follow from `erdos_60_conjecture`): for n = 4 the graph
+K₄ minus an edge has 5 > ex(4; C₄) = 4 edges but exactly one copy of C₄
+(see `K4_minus_edge_has_C4` below). The honest statement of the open
+question is asymptotic, i.e. for all sufficiently large n.
 -/
 def two_copies_conjecture : Prop :=
-  ∀ n : ℕ, ∀ (G : SimpleGraph (Fin n)),
+  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → ∀ (G : SimpleGraph (Fin n)),
     G.edgeSet.ncard > exC4 n → countC4 G ≥ 2
 
 /- ## Related: General Supersaturation -/
@@ -273,6 +280,7 @@ lemma five_edges_eq_K4_minus_edge (G : SimpleGraph (Fin 4)) (h : G.edgeSet.ncard
       by_cases hvw : v = w <;> simp_all +decide [ SimpleGraph.adj_comm ];
       simp_all +decide [ Set.ext_iff, SimpleGraph.adj_comm, Erdos60.K4_minus_edge ];
       convert he.2 ( s(v, w) ) using 1
+      exact (G.mem_edgeSet).symm
 
 /-
 If H is a subgraph of G, then the number of C4 copies in H is less than or equal to the number of C4 copies in G.
@@ -330,38 +338,23 @@ end AristotleLemmas
 
 theorem conjecture_implies_two_copies :
     erdos_60_conjecture → two_copies_conjecture := by
-  intro ⟨c, hc, hconj⟩
-  intro n G hexc
+  rintro ⟨c, hc, hconj⟩
+  -- Take N large enough that c * √n > 1 for all n ≥ N; then countC4 ≥ 2.
+  refine ⟨⌈c⁻¹ ^ 2⌉₊ + 1, fun n hn G hexc => ?_⟩
   have h := hconj n G hexc
-  -- For n ≥ 4, c * n^{1/2} ≥ 2 for sufficiently large c
-  contrapose! hconj;
-  -- Let's choose a large enough $n$ such that $c * n^{1/2} < 2$.
-  obtain ⟨N, hN⟩ : ∃ N : ℕ, ∀ n ≥ N, c * (n : ℝ) ^ (1 / 2 : ℝ) > 1 := by
-    norm_num [ ← Real.sqrt_eq_rpow ];
-    exact ⟨ ⌈c⁻¹ ^ 2⌉₊ + 1, fun n hn => by nlinarith [ Nat.le_ceil ( c⁻¹ ^ 2 ), show ( n : ℝ ) ≥ ⌈c⁻¹ ^ 2⌉₊ + 1 by exact_mod_cast hn, Real.sqrt_nonneg n, Real.sq_sqrt <| Nat.cast_nonneg n, inv_pos.2 hc, mul_inv_cancel₀ hc.ne', mul_pos hc <| Real.sqrt_pos.2 <| Nat.cast_pos.2 <| pos_of_gt hn ] ⟩;
-  -- Let's choose a large enough $n$ such that $n > N$.
-  obtain ⟨n, hn⟩ : ∃ n : ℕ, n > N ∧ n > Erdos60.exC4 (n + 1 + 1) := by
-    use N + Erdos60.exC4 (N + 1 + 1) + 1;
-    refine' ⟨ by linarith, _ ⟩;
-    refine' lt_of_le_of_lt ( show Erdos60.exC4 ( N + Erdos60.exC4 ( N + 1 + 1 ) + 1 + 1 + 1 ) ≤ Erdos60.exC4 ( N + 1 + 1 ) from _ ) _;
-    · exact?;
-    · linarith;
-  refine' ⟨ n + 1 + 1, _ ⟩;
-  -- Consider a star graph with n+2 vertices.
-  use SimpleGraph.mk (fun i j => i ≠ j ∧ (i = 0 ∨ j = 0));
-  refine' ⟨ _, _ ⟩;
-  · refine' lt_of_lt_of_le hn.2 _;
-    rw [ Set.ncard_eq_toFinset_card' ] ; simp +arith +decide [ Finset.card_univ, SimpleGraph.edgeSet ];
-    rw [ show ( Finset.filter ( Membership.mem ( ( SimpleGraph.edgeSetEmbedding ( Fin ( n + 1 + 1 ) ) : SimpleGraph ( Fin ( n + 1 + 1 ) ) → Set ( Sym2 ( Fin ( n + 1 + 1 ) ) ) ) { Adj := fun i j => ¬i = j ∧ ( i = 0 ∨ j = 0 ), symm := by aesop_cat, loopless := by aesop_cat } ) ) Finset.univ ) = Finset.image ( fun i : Fin ( n + 1 + 1 ) => Sym2.mk ( 0, i ) ) ( Finset.univ.erase 0 ) from ?_ ];
-    · rw [ Finset.card_image_of_injective ] <;> norm_num [ Function.Injective ];
-      aesop;
-    · ext ⟨ i, j ⟩ ; aesop;
-  · refine' lt_of_le_of_lt _ ( hN _ ( by linarith ) );
-    unfold Erdos60.countC4;
-    unfold Erdos60.C4Copies;
-    unfold Erdos60.IsC4Copy; simp +decide [ Set.ncard_eq_toFinset_card' ] ;
-    rw [ Finset.card_eq_zero.mpr ] <;> norm_num;
-    grind
+  have hn' : (⌈c⁻¹ ^ 2⌉₊ : ℝ) + 1 ≤ (n : ℝ) := by exact_mod_cast hn
+  have hcinv : c⁻¹ ^ 2 < (n : ℝ) := lt_of_le_of_lt (Nat.le_ceil _) (by linarith)
+  have hsq : c⁻¹ < Real.sqrt n := by
+    have hlt : Real.sqrt (c⁻¹ ^ 2) < Real.sqrt n :=
+      Real.sqrt_lt_sqrt (by positivity) hcinv
+    rwa [Real.sqrt_sq (inv_pos.2 hc).le] at hlt
+  have hone : (1 : ℝ) < c * (n : ℝ) ^ (1 / 2 : ℝ) := by
+    rw [← Real.sqrt_eq_rpow]
+    calc (1 : ℝ) = c * c⁻¹ := (mul_inv_cancel₀ hc.ne').symm
+      _ < c * Real.sqrt n := mul_lt_mul_of_pos_left hsq hc
+  have h2 : (1 : ℝ) < (countC4 G : ℝ) := lt_of_lt_of_le hone h
+  have h3 : 1 < countC4 G := by exact_mod_cast h2
+  omega
 
 /- ## Summary
 
