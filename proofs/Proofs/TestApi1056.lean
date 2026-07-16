@@ -7,18 +7,21 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-open scoped Classical
-
 def intervalProd' (a b : ℕ) : ℕ :=
   (Finset.Ico a b).prod id
 
 def IsValidBoundary' (boundaries : List ℕ) (k : ℕ) : Prop :=
-  boundaries.length = k + 1 ∧ boundaries.Chain' (· < ·)
+  boundaries.length = k + 1 ∧ boundaries.IsChain (· < ·)
 
+/-- Uses `getD` (default `0` out of range) instead of `get` with an inline
+`by omega` index proof: with only `i : Fin k` in scope there is no hypothesis
+relating `k` to `boundaries.length`, so an index-bound proof is not derivable
+in general at definition time (it only holds once `IsValidBoundary'` is also
+known, which callers supply). `getD`/`get` agree on all in-range indices, so
+this is definitionally faithful whenever `IsValidBoundary'` holds. -/
 def AllProductsCongruentOne' (p : ℕ) (boundaries : List ℕ) (k : ℕ) : Prop :=
   IsValidBoundary' boundaries k ∧
-  ∀ i : Fin k, intervalProd' (boundaries.get ⟨i.val, by omega⟩)
-    (boundaries.get ⟨i.val + 1, by omega⟩) % p = 1
+  ∀ i : Fin k, intervalProd' (boundaries.getD i.val 0) (boundaries.getD (i.val + 1) 0) % p = 1
 
 def HasSolution' (k : ℕ) : Prop :=
   ∃ p : ℕ, p.Prime ∧ ∃ boundaries : List ℕ,

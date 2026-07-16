@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 41 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): SpernerGridAristotle (pure cascade off SpernerGrid), TestApi1056
+(List.Chain'->List.IsChain (only latter has Decidable in v4.31); stray open scoped Classical blocked decide;
+.get ⟨i.val,by omega⟩ unprovable index -> .getD, pattern-4 logged). Repairs: none new.
+
 # DOCTOR SINGLE-PROOF BATCH 40 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+1 GREEN** (re-verified EXIT=0): SpernerGrid (SONNET 72min/623k marathon, 1766-line hub: Prod.mk.injEq
