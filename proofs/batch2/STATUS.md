@@ -1,3 +1,15 @@
+# DOCTOR SINGLE-PROOF BATCH 43 (5-slot + Fable experiment, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): DedekindFrobeniusBridge (Ideal.Quotient.ker_stabilizerHom kernel now
+Q.inertia(stabilizer G Q) not toAddSubgroup.inertia G; Mathlib gained IsArithFrobAt.arithFrobAt_mem_stabilizer
+upstream), BuffonsNeedleOQ01OQ01OQ04 (~20 sites: rpow↔pow rpow_natCast; ring no longer distributes inv over
+products -> field_simp first; λ reserved), DissectionOfCubesOQ03OQ02 (open scoped Classical for Finset.filter/
+erase on Cube). Repairs: none.
+
+EXPERIMENT: FABLE-5 dispatched on 2 HARD type-mismatch files (AbelRuffiniGaloisExtensionsOQ06GaloisDirection
+Assembly on issue-38065/cpus0-2; Erdos1017Problem on doctor-f/cpus15-17) to A/B vs Sonnet on the hard tail.
+ARISTOTLE: NOT applicable to migration (proves sorries, not API-drift renames; runs pinned v4.28) — noted.
+
 # DOCTOR SINGLE-PROOF BATCH 42 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): BoundedPrimeGapsOQ04OQ01Aristotle (Aristotle convert/simp+decide chains

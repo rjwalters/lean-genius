@@ -49,6 +49,7 @@ This is the correct precondition for the `exists_smaller_cube` descent step.
 -/
 
 open DissectionOfCubes DissectionOfCubesOQ03
+open scoped Classical
 
 namespace DissectionOfCubesOQ03OQ02
 
