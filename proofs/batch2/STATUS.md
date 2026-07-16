@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 171 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ01OQ03 (CHAIN ROOT: fourier_decomposition convert-using-2
+-> simpa only realFourierCoeff lemmas; integral_sq_eq_..._lift_general toIocMod simp_all+decide GENUINELY
+DIVERGES [not just maxRecDepth] -> direct AddCircle.integral_liftIoc_eq_intervalIntegral+integral_haarAddCircle).
+Repair: none. Unblocks Fourier->Iso/OQ02 chain.
+
 # DOCTOR SINGLE-PROOF BATCH 170 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): BezoutIdentityOQ02OQ01OQ01OQ01OQ01 (map_ofNat->constantCoeff_C;
