@@ -5852,7 +5852,7 @@ def boolFinEncoding : Computability.FinEncoding Bool where
 def MathLibInP (problem : Nat → Bool) : Prop :=
   ∃ (ea : Computability.FinEncoding Nat)
     (eb : Computability.FinEncoding Bool),
-    Nonempty (Turing.TM2ComputableInPolyTime ea eb problem)
+    Nonempty (Turing.TM2ComputableInPolyTime ea.encode eb.encode problem)
 
 /-- MathLib P: the class of all problems computable in polynomial time
     by a concrete TM2 machine -/
@@ -5874,7 +5874,7 @@ def MathLibInNP (problem : Nat → Bool) : Prop :=
     -- Verifier is polynomial-time computable
     (∃ (ea : Computability.FinEncoding (Nat × Nat))
        (eb : Computability.FinEncoding Bool),
-       Nonempty (Turing.TM2ComputableInPolyTime ea eb (Function.uncurry verifier))) ∧
+       Nonempty (Turing.TM2ComputableInPolyTime ea.encode eb.encode (Function.uncurry verifier))) ∧
     -- Completeness: if x is in the language, some witness works
     (∀ x : Nat, problem x = true →
       ∃ y : Nat, (natToBits y).length ≤ poly.eval (natToBits x).length ∧ verifier x y = true) ∧
