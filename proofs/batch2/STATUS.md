@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 345 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: SpernerNDimMathlibOQ01 (missing `import Proofs.SpernerNDim` (pre-existing bug — never
+compiled); `open scoped List` for scoped `~` List.Perm; locally redefine permList/_nodup/_length
+(wrongly qualified as FreudenthalAdjacency.*); ~10 `▸`-motive -> `by rw;exact`; swapAdj_invol via
+getElem_set_self/ne not simp case-bash (maxRecDepth); subst i=k now eliminates RHS; split_ifs auto-
+discharges absurd none=some branches). Repair: none.
+SEAM: `~` List.Perm now scoped (open scoped List); List.getElem_set simp nests differently
+(maxRecDepth) -> getElem_set_self/getElem_set_ne directly; split_ifs at h auto-closes absurd-eq branches.
+
 # DOCTOR SINGLE-PROOF BATCH 344 (all-Sonnet, #38065, 2026-07-16)
 
 **+3 GREEN**:
