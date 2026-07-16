@@ -78,7 +78,7 @@ theorem hm_le_gm (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
   have hm_nonneg : 0 ≤ 2 * a * b / (a + b) := by positivity
   rw [← Real.sqrt_sq hm_nonneg]
   apply Real.sqrt_le_sqrt
-  rw [div_pow, sq_abs]
+  rw [div_pow]
   rw [div_le_iff₀ (pow_pos hab 2)]
   nlinarith [sq_nonneg (a - b), sq_nonneg a, sq_nonneg b,
              mul_pos ha hb]
@@ -108,7 +108,8 @@ theorem am_le_qm (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
   have ham : 0 ≤ (a + b) / 2 := by linarith
   rw [← Real.sqrt_sq ham]
   apply Real.sqrt_le_sqrt
-  rw [div_le_div_iff₀ (by norm_num : (0:ℝ) < 4) (by norm_num : (0:ℝ) < 2)]
+  rw [div_pow]
+  rw [div_le_div_iff₀ (by norm_num : (0:ℝ) < 2 ^ 2) (by norm_num : (0:ℝ) < 2)]
   nlinarith [sq_nonneg (a - b)]
 
 -- ============================================================
@@ -158,12 +159,11 @@ theorem means_eq_when_eq (a : ℝ) (ha : 0 < a) :
     HM a a = a ∧ GM a a = a ∧ AM a a = a ∧ QM a a = a := by
   constructor
   · -- HM
-    unfold HM; field_simp
+    unfold HM; field_simp; ring
   constructor
   · -- GM
     unfold GM
-    rw [← sq_sqrt (le_of_lt ha)]
-    congr 1; ring
+    exact Real.sqrt_mul_self (le_of_lt ha)
   constructor
   · -- AM
     unfold AM; ring
@@ -198,7 +198,7 @@ theorem gm_le_max (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
 
 /-- Direct corollary: min ≤ max. -/
 theorem min_le_max' (a b : ℝ) : min a b ≤ max a b :=
-  min_le_max a b
+  min_le_max
 
 /-
   Summary

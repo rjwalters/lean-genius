@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 42 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): BoundedPrimeGapsOQ04OQ01Aristotle (Aristotle convert/simp+decide chains
+-> direct Mathlib lemmas: sum_nbij'+ZMod.stdAddChar_coe, MulChar.star_apply'), BuffonsNoodleOQ03OQ01
+(dsimp only beta-reduce before abs_of_nonneg rw; integral_neg ambiguous -> qualify intervalIntegral.),
+CauchySchwarzIntegralOQ01OQ01OQ01OQ02 (div_pow before div_le_div_iff₀; ←sq_sqrt over-matches -> sqrt_mul_self).
+Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 41 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): SpernerGridAristotle (pure cascade off SpernerGrid), TestApi1056
