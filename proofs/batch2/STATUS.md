@@ -1,3 +1,13 @@
+# DOCTOR SINGLE-PROOF BATCH 348 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: PartitionTheoremOQ01 (~20 sites: nonlinear-omega -> Nat.mul_div_cancel'/
+eq_of_mul_eq_mul_left; dup def subsetsWithSum deleted; subsetsWithSum_insert matches new
+Finset.filter_image image-wrapped output; Multiset.eq_replicate_of_mem replacing fragile subst;
+Nat.Partition ctor field order parts,parts_pos,parts_sum; geomSeries_coeff->geomPow_coeff; rfl after
+partGF_coeff_eq_card bridges). Repair: none.
+SEAM: Finset.filter_image now wraps as image f (filter (p∘f) s); Multiset.count_replicate condition
+`if b=a`; Nat.Partition field order parts,parts_pos(implicit {i}),parts_sum.
+
 # DOCTOR SINGLE-PROOF BATCH 347 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: TriangleAngleSumOQ02 (v4.31 parser regression: `α β γ : ℝ` multi-name struct field
