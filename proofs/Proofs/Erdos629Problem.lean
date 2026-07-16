@@ -98,9 +98,8 @@ def IsBipartite {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) : Pr
 theorem bipartite_chromatic_le_two {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) (hG : IsBipartite G) : G.chromaticNumber ≤ 2 := by
   obtain ⟨ f, hf ⟩ := hG;
-  convert SimpleGraph.Colorable.chromaticNumber_le _;
-  use f;
-  exact fun { a b } hab => by have := hf a b hab; aesop;
+  have hc : G.Colorable 2 := ⟨⟨f, fun hab => hf _ _ hab⟩⟩
+  exact hc.chromaticNumber_le
 
 /- For bipartite graphs, ordinary χ(G) ≤ 2 but χ_L(G) can be arbitrarily large! -/
 noncomputable section AristotleLemmas
@@ -122,8 +121,11 @@ lemma hitting_set_lemma {k : ℕ} {C : Finset (Fin (2*k+1))} (hC : C.card = 2*k+
       obtain ⟨Y, hY⟩ : ∃ Y ⊆ C \ X, Y.card = k + 1 := by
         have hY : (C \ X).card ≥ k + 1 := by
           grind;
-        exact?;
-      exact ⟨ Y, Finset.Subset.trans hY.1 ( Finset.sdiff_subset ), hY.2, fun ⟨ z, hz ⟩ => by have := hY.1 ( Finset.mem_of_mem_inter_left hz ) ; aesop ⟩
+        exact Finset.exists_subset_card_eq hY;
+      exact ⟨ Y, Finset.Subset.trans hY.1 ( Finset.sdiff_subset ), hY.2,
+        Finset.eq_empty_iff_forall_notMem.mpr fun z hz =>
+          (Finset.mem_sdiff.mp (hY.1 (Finset.mem_of_mem_inter_left hz))).2
+            (Finset.mem_of_mem_inter_right hz) ⟩
 
 /-
 Fintype instance for MyVertices.
@@ -245,7 +247,7 @@ lemma exists_injective_forall_mem {α β : Type*} [Fintype α] [DecidableEq α] 
           have h_card : (L a).card > (Finset.image f Finset.univ).card := by
             rw [ Finset.card_image_of_injective _ hf_inj ];
             exact lt_of_lt_of_le ( by simpa [ Finset.card_univ ] using Finset.card_lt_card ( Finset.ssubset_iff_subset_ne.mpr ⟨ Finset.subset_univ S, by aesop ⟩ ) ) ( h a );
-          exact Finset.not_subset.mp fun h => h_card.not_le <| Finset.card_le_card h;
+          exact Finset.not_subset.mp fun h => Nat.not_le_of_lt h_card <| Finset.card_le_card h;
         refine' ⟨ fun x => if hx : x.val = a then b else f ⟨ x.val, _ ⟩, _, _ ⟩ <;> simp_all +decide [ Function.Injective ];
         exact Finset.mem_of_mem_insert_of_ne x.2 hx;
         · intro x hx y hy hxy; split_ifs at hxy <;> simp_all +decide ;
@@ -264,10 +266,10 @@ theorem bipartite_list_chromatic_unbounded :
   -- By `MyGraph_bipartite`, G is bipartite.
   obtain ⟨G, hG⟩ : ∃ G : SimpleGraph (MyVertices k ⊕ MyVertices k), IsBipartite G ∧ ¬ IsKListColorable G (k + 1) := by
     exact ⟨ _, MyGraph_bipartite k, MyGraph_not_colorable k ⟩;
-  refine' ⟨ _, _, _, G, hG.1, Nat.lt_of_not_ge fun h => hG.2 _ ⟩;
-  convert IsKListColorable_mono G ( show Erdos629.listChromaticNumber G ≤ k + 1 from by linarith ) _;
-  convert Nat.sInf_mem _;
-  exact ⟨ _, IsKListColorable_card G ⟩
+  refine' ⟨ _, _, _, G, hG.1, Nat.lt_of_not_ge fun h => hG.2 ?_ ⟩;
+  refine IsKListColorable_mono G ( show Erdos629.listChromaticNumber G ≤ k + 1 from by linarith ) ?_;
+  have hne : ({k | IsKListColorable G k} : Set ℕ).Nonempty := ⟨ _, IsKListColorable_card G ⟩;
+  exact Nat.sInf_mem hne
 
 /- ## Part III: The Function n(k) -/
 
@@ -302,10 +304,12 @@ theorem n_well_defined (k : ℕ) : n k > 0 := by
   · intro h;
     -- By definition of $n(k)$, there exists a bipartite graph $G$ with $n(k)$ vertices such that $\chi_L(G) > k$.
     obtain ⟨V, hV_fintype, hV_decidable, G, hG_bipartite, hG_card⟩ : ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V), Fintype.card V = 0 ∧ Erdos629.IsBipartite G ∧ Erdos629.listChromaticNumber G > k := by
-      convert Nat.sInf_mem ( show { m : ℕ | ∃ ( V : Type ) ( _ : Fintype V ) ( _ : DecidableEq V ) ( G : SimpleGraph V ), Fintype.card V = m ∧ Erdos629.IsBipartite G ∧ Erdos629.listChromaticNumber G > k }.Nonempty from ?_ ) using 1;
-      · exact?;
-      · have := bipartite_list_chromatic_unbounded k;
+      have hne : ({ m : ℕ | ∃ ( V : Type ) ( _ : Fintype V ) ( _ : DecidableEq V ) ( G : SimpleGraph V ), Fintype.card V = m ∧ Erdos629.IsBipartite G ∧ Erdos629.listChromaticNumber G > k } : Set ℕ).Nonempty := by
+        have := bipartite_list_chromatic_unbounded k;
         exact ⟨ _, ⟨ this.choose, this.choose_spec.choose, this.choose_spec.choose_spec.choose, this.choose_spec.choose_spec.choose_spec.choose, rfl, this.choose_spec.choose_spec.choose_spec.choose_spec ⟩ ⟩;
+      have hmem : n k ∈ { m : ℕ | ∃ ( V : Type ) ( _ : Fintype V ) ( _ : DecidableEq V ) ( G : SimpleGraph V ), Fintype.card V = m ∧ Erdos629.IsBipartite G ∧ Erdos629.listChromaticNumber G > k } := Nat.sInf_mem hne;
+      rw [ h ] at hmem;
+      exact hmem;
     have h_empty : Erdos629.listChromaticNumber G = 0 := by
       exact?;
     linarith
@@ -420,7 +424,7 @@ theorem Erdos629.exists_valid_pair_of_colors {C : Type*} [DecidableEq C]
         · nlinarith;
         · intro x hx y hy; simp_all +decide [ Finset.disjoint_left, Set.InjOn ] ;
           intro h; rw [ Finset.ext_iff ] at h; have := h x.1; have := h x.2; have := h y.1; have := h y.2; aesop;
-      exact h_card_pairs.not_lt ( lt_of_le_of_lt ( Finset.card_le_card ( Finset.image_subset_iff.mpr fun xy hxy => show { xy.1, xy.2 } ∈ Bad from by aesop ) ) ( by linarith ) )
+      exact Nat.not_lt_of_le h_card_pairs ( lt_of_le_of_lt ( Finset.card_le_card ( Finset.image_subset_iff.mpr fun xy hxy => show { xy.1, xy.2 } ∈ Bad from by aesop ) ) ( by linarith ) )
 
 open SimpleGraph Finset
 
@@ -512,9 +516,12 @@ theorem Erdos629.bipartite_small_is_2_list_colorable' {V : Type*} [Fintype V] [D
         · exact h_wlog f hf hA;
         · convert h_wlog ( fun v => 1 - f v ) _ _ using 1;
           · intro u v huv; specialize hf u v huv; aesop;
-          · convert le_of_not_ge hA using 1;
-            · exact congr_arg Finset.card ( Finset.filter_congr fun x _ => by cases Fin.exists_fin_two.mp ⟨ f x, rfl ⟩ <;> simp +decide [ * ] );
-            · exact congr_arg Finset.card ( Finset.ext fun x => by cases Fin.exists_fin_two.mp ⟨ f x, rfl ⟩ <;> simp +decide [ * ] );
+          · have heq1 : (Finset.univ.filter (fun v => 1 - f v = 0)).card = (Finset.univ.filter (fun v => f v = 1)).card :=
+              congr_arg Finset.card ( Finset.filter_congr fun x _ => by cases Fin.exists_fin_two.mp ⟨ f x, rfl ⟩ <;> simp +decide [ * ] );
+            have heq2 : (Finset.univ.filter (fun v => 1 - f v = 1)).card = (Finset.univ.filter (fun v => f v = 0)).card :=
+              congr_arg Finset.card ( Finset.ext fun x => by cases Fin.exists_fin_two.mp ⟨ f x, rfl ⟩ <;> simp +decide [ * ] );
+            rw [ heq1, heq2 ];
+            exact le_of_not_ge hA;
       intro f hf hA_le_B
       by_cases hA : (Finset.univ.filter (fun v => f v = 0)).card ≤ 1;
       · exact Erdos629.bipartite_one_part_le_1 G f hf hA;
@@ -556,7 +563,7 @@ theorem n_2_eq_6 : n 2 = 6 := by
             obtain ⟨c, hc⟩ : ∃ c ∈ L v, c ∉ Finset.image f s := by
               have h_card : (L v).card > Finset.card (Finset.image f s) := by
                 exact lt_of_lt_of_le ( Finset.card_image_le.trans_lt ( by simpa using Finset.card_lt_card ( Finset.ssubset_iff_subset_ne.mpr ⟨ Finset.subset_univ s, by aesop_cat ⟩ ) ) ) ( hL v );
-              exact Finset.not_subset.mp fun h => h_card.not_le <| Finset.card_le_card h;
+              exact Finset.not_subset.mp fun h => Nat.not_le_of_lt h_card <| Finset.card_le_card h;
             use fun u => if u = v then c else f u;
             simp_all +decide [ Finset.mem_image ];
             -- By combining the results from hc and hf, we can conclude that the function f satisfies the required conditions.
@@ -597,7 +604,7 @@ theorem n_2_eq_6 : n 2 = 6 := by
             obtain ⟨c, hc⟩ : ∃ c ∈ L v, c ∉ Finset.image f s := by
               have h_card : (L v).card > Finset.card (Finset.image f s) := by
                 exact lt_of_lt_of_le ( Finset.card_image_le.trans_lt ( by simpa using Finset.card_lt_card ( Finset.ssubset_iff_subset_ne.mpr ⟨ Finset.subset_univ s, by aesop_cat ⟩ ) ) ) ( hL v );
-              exact Finset.not_subset.mp fun h => h_card.not_le <| Finset.card_le_card h;
+              exact Finset.not_subset.mp fun h => Nat.not_le_of_lt h_card <| Finset.card_le_card h;
             use fun u => if u = v then c else f u;
             simp_all +decide [ Finset.mem_image ];
             -- By combining the results from hc and hf, we can conclude that the function f satisfies the required conditions.
@@ -726,9 +733,12 @@ lemma bipartite_list_coloring_probability_bound {V : Type*} {C : Type*} [Fintype
               refine' Finset.card_le_card _;
               simp +decide [ Finset.subset_iff ];
               exact fun x hx => ⟨ fun ⟨ c, hc ⟩ => x c, funext fun c => by by_cases hc : c ∈ L v <;> simp +decide [ hx, hc ] ⟩;
-            convert h_card_C_minus_Lv.trans ( Finset.card_image_le ) using 1;
-            · rw [ Finset.card_image_of_injective _ fun x y hxy => by simpa using hxy ];
-            · simp +decide [ Finset.card_univ ];
+            have h_lhs_eq : Finset.card (Finset.filter (fun χ : C → Fin 2 => ∀ c ∈ L v, χ c = 1) Finset.univ) = Finset.card (Finset.image (fun χ : C → Fin 2 => fun c => χ c) (Finset.filter (fun χ => ∀ c ∈ L v, χ c = 1) Finset.univ)) := by
+              rw [ Finset.card_image_of_injective _ fun x y hxy => by simpa using hxy ];
+            have h_rhs_eq : (2 : ℕ) ^ (Fintype.card C - (L v).card) = Finset.card (Finset.univ : Finset ({ c : C // c ∉ L v } → Fin 2)) := by
+              simp +decide [ Finset.card_univ ];
+            rw [ h_lhs_eq, h_rhs_eq ];
+            exact h_card_C_minus_Lv.trans ( Finset.card_image_le );
           exact h_bad_A.trans ( pow_le_pow_right₀ ( by decide ) ( Nat.sub_le_sub_left ( hL v ) _ ) );
         have h_bad_functions_B : ∀ v ∈ B, Finset.card (Finset.filter (fun χ : C → Fin 2 => ∀ c ∈ L v, χ c = 0) Finset.univ) ≤ 2 ^ (Fintype.card C - k) := by
           intro v hv
@@ -740,7 +750,7 @@ lemma bipartite_list_coloring_probability_bound {V : Type*} {C : Type*} [Fintype
             refine' le_trans h_card_B_v ( Finset.card_image_le.trans _ );
             simp +decide [ Finset.card_univ ];
           exact h_card_B_v.trans ( pow_le_pow_right₀ ( by decide ) ( Nat.sub_le_sub_left ( hL v ) _ ) );
-        simpa only [ add_mul, Finset.sum_const, nsmul_eq_mul ] using add_le_add ( Finset.sum_le_sum h_bad_functions ) ( Finset.sum_le_sum h_bad_functions_B );
+        simpa only [ add_mul, Finset.sum_const, nsmul_eq_mul, Nat.cast_id ] using add_le_add ( Finset.sum_le_sum h_bad_functions ) ( Finset.sum_le_sum h_bad_functions_B );
       -- Since the number of bad functions is strictly less than the total number of functions, there exists a function that is not bad.
       have h_exists_good_function : ∃ χ : C → Fin 2, χ ∉ Finset.biUnion A (fun v => Finset.filter (fun χ : C → Fin 2 => ∀ c ∈ L v, χ c = 1) Finset.univ) ∧ χ ∉ Finset.biUnion B (fun v => Finset.filter (fun χ : C → Fin 2 => ∀ c ∈ L v, χ c = 0) Finset.univ) := by
         have h_exists_good_function : Finset.card (Finset.biUnion A (fun v => Finset.filter (fun χ : C → Fin 2 => ∀ c ∈ L v, χ c = 1) Finset.univ)) + Finset.card (Finset.biUnion B (fun v => Finset.filter (fun χ : C → Fin 2 => ∀ c ∈ L v, χ c = 0) Finset.univ)) < 2 ^ Fintype.card C := by
@@ -792,7 +802,7 @@ theorem ert_lower_bound (k : ℕ) (hk : k ≥ 1) : 2 ^ (k - 1) < n k := by
         rintro m ⟨ V, x, x_1, G, rfl, hG₁, hG₂ ⟩;
         contrapose! hG₂;
         apply_rules [ Nat.sInf_le ];
-        convert bipartite_card_lt_two_pow_k_implies_k_list_colorable G hG₁ k hk hG₂;
+        exact bipartite_card_lt_two_pow_k_implies_k_list_colorable G hG₁ k hk hG₂;
   refine' lt_of_lt_of_le ( pow_lt_pow_right₀ one_lt_two ( Nat.pred_lt ( ne_bot_of_gt hk ) ) ) ( le_csInf _ _ );
   · obtain ⟨ V, hV₁, hV₂, G, hG₁, hG₂ ⟩ := bipartite_list_chromatic_unbounded k;
     exact ⟨ _, ⟨ V, hV₁, hV₂, G, rfl, hG₁, hG₂ ⟩ ⟩;
@@ -818,8 +828,8 @@ in the application
 /-- Radhakrishnan-Srinivasan (2000) improved lower bound.
     2^k · (k / log k)^{1/2} ≪ n(k) -/
 theorem rs_lower_bound :
-    ∀ ε > 0, ∀ᶠ k in Filter.atTop,
-      (2 : ℝ) ^ k * (k / Real.log k) ^ (1/2 : ℝ) * (1 - ε) < n k := by
+    ∀ ε > 0, ∀ᶠ k : ℕ in Filter.atTop,
+      (2 : ℝ) ^ k * (k / Real.log k) ^ (1/2 : ℝ) * (1 - ε) < (n k : ℝ) := by
   sorry
 
 /- Aristotle failed to find a proof. -/
@@ -908,7 +918,7 @@ in the application
 /-- The precise exponent is not known - this is what makes the problem OPEN. -/
 def ExactAsymptoticConjecture : Prop :=
   ∃ α : ℝ, 0 < α ∧ α ≤ 1 ∧
-    ∀ ε > 0, ∀ᶠ k in Filter.atTop,
-      2 ^ k * (k : ℝ) ^ (α - ε) < n k ∧ (n k : ℝ) < 2 ^ k * (k : ℝ) ^ (α + ε)
+    ∀ ε > 0, ∀ᶠ k : ℕ in Filter.atTop,
+      2 ^ k * (k : ℝ) ^ (α - ε) < (n k : ℝ) ∧ (n k : ℝ) < 2 ^ k * (k : ℝ) ^ (α + ε)
 
 end Erdos629
