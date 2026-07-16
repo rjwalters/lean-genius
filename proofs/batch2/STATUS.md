@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 312 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): SzemerediRegularityOQ02OQ02 (parent olean build; simp/positivity maxRecDepth
+on set-bound e/d lets -> explicit rw+ring+mul_nonneg for A.card=0/B.card=0 branches). Repair: none. Closes
+Szemeredi family.
+
 # DOCTOR SINGLE-PROOF BATCH 311 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): SzemerediRegularityOQ02 (A=∅/B=∅ edge cases explicit rw/ring; set-let
