@@ -288,17 +288,20 @@ def MersennePrimeExponents : Set ℕ := { k | k ≥ 2 ∧ (2 ^ k - 1).Prime }
 private theorem injective_mersenne : Function.Injective (fun k : ℕ => 2 ^ k - 1) := by
   intro a b hab
   simp only at hab
-  by_contra hne
-  rcases Nat.lt_or_gt_of_ne hne with h | h
-  · have : 2 ^ a < 2 ^ b := Nat.pow_lt_pow_right (by norm_num : 1 < 2) h
-    omega
-  · have : 2 ^ b < 2 ^ a := Nat.pow_lt_pow_right (by norm_num : 1 < 2) h
-    omega
+  have ha : 1 ≤ 2 ^ a := Nat.one_le_two_pow
+  have hb : 1 ≤ 2 ^ b := Nat.one_le_two_pow
+  have heq : 2 ^ a = 2 ^ b := by omega
+  exact Nat.pow_right_injective (le_refl 2) heq
 
 /-- For a Mersenne prime 2^k - 1 with k ≥ 2, n = 2^k - 1 has distinct exponents:
     n(n+1) = (2^k - 1)·2^k with exponents {1, k}. -/
 theorem hasDistinctExponents_mersenne (k : ℕ) (hk : k ≥ 2) (hp : (2 ^ k - 1).Prime) :
     HasDistinctExponents (2 ^ k - 1) := by
+  have hone : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+  have hfour : 4 ≤ 2 ^ k := by
+    have h := Nat.pow_le_pow_right (show 1 ≤ 2 by norm_num) hk
+    norm_num at h
+    exact h
   have hne1 : 2 ^ k - 1 ≠ 0 := hp.ne_zero
   have hne2 : (2 : ℕ) ^ k ≠ 0 := pow_ne_zero k (by norm_num)
   have hm : (2 ^ k - 1) * ((2 ^ k - 1) + 1) = (2 ^ k - 1) * 2 ^ k := by congr 1; omega
@@ -323,7 +326,7 @@ theorem hasDistinctExponents_mersenne (k : ℕ) (hk : k ≥ 2) (hp : (2 ^ k - 1)
   -- Prime factors
   have hpf : m.primeFactors = {2 ^ k - 1, 2} := by
     rw [hm_def, primeFactors_mul hne1 hne2, hp.primeFactors,
-        primeFactors_pow (show (2 : ℕ) ≠ 0 from by norm_num) (show k ≠ 0 from by omega),
+        primeFactors_pow _ (show k ≠ 0 from by omega),
         Nat.prime_two.primeFactors, Finset.singleton_union]
   exact hasDistinctExponents_of_primeFactors_pair hm hpf (by omega)
 
