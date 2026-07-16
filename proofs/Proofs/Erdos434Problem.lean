@@ -117,7 +117,29 @@ def ExtremalFrobeniusQuestion (n k : ℕ) : Prop :=
   ∀ A : Set ℕ, A ⊆ Set.Icc 1 n → A.ncard = k →
     nCardNonRepresentable A ≤ nCardNonRepresentable (topK n k)
 
-/- ## Part V: Small Examples -/
+/- ## Part V: Connection to Sylvester-Frobenius -/
+
+/-- The Sylvester-Frobenius theorem: For coprime a, b, the Frobenius number
+    is ab - a - b, and the count of non-representables is (a-1)(b-1)/2. -/
+axiom sylvester_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
+    frobeniusNumber {a, b} = a * b - a - b
+
+/-- The number of non-representables for coprime a, b. -/
+axiom sylvester_count (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
+    nCardNonRepresentable {a, b} = (a - 1) * (b - 1) / 2
+
+/-- For consecutive integers n-1, n (always coprime), the count is
+    (n-2)(n-1)/2. This grows quadratically with n. -/
+theorem consecutive_count (n : ℕ) (hn : n ≥ 2) :
+    nCardNonRepresentable ({n - 1, n} : Set ℕ) = (n - 2) * (n - 1) / 2 := by
+  have h1 : n - 1 > 0 := by omega
+  have h2 : n > 0 := by omega
+  have hcop : Nat.Coprime (n - 1) n := by
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    simp
+  exact sylvester_count (n - 1) n h1 h2 hcop
+
+/- ## Part VI: Small Examples -/
 
 /-- Example: With A = {2, 3}, non-representables are {1}.
     - 0 = empty sum, 1 is NOT representable (all elements ≥ 2),
@@ -148,6 +170,8 @@ theorem example_2_3 : NonRepresentable {2, 3} = {1} := by
       · exact mem_representable (by simp : (2 : ℕ) ∈ ({2, 3} : Set ℕ))
       · exact mem_representable (by simp : (3 : ℕ) ∈ ({2, 3} : Set ℕ))
     · -- m ≥ 4: m = 2 + (m - 2), and m - 2 ≥ 2
+      have heq : m = 2 + (m - 2) := by omega
+      rw [heq]
       exact add_representable
         (mem_representable (by simp : (2 : ℕ) ∈ ({2, 3} : Set ℕ)))
         (ih (m - 2) (by omega) (by omega))
@@ -187,7 +211,7 @@ theorem topK_5_2 : topK 5 2 = {4, 5} := by
   simp [topK, Set.Icc]
   omega
 
-/- ## Part VI: Kiss's Theorem (2002) -/
+/- ## Part VII: Kiss's Theorem (2002) -/
 
 /-- **Kiss (2002)**: The topK set maximizes the count of non-representables.
 
@@ -206,7 +230,7 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
       nCardNonRepresentable A ≤ nCardNonRepresentable (topK n k) :=
   kiss_2002 n k hn hk hkn
 
-/- ## Part VII: Why topK is Optimal -/
+/- ## Part VIII: Why topK is Optimal -/
 
 /-  Intuition: Using larger numbers means fewer representations.
 
@@ -232,30 +256,12 @@ theorem larger_numbers_fewer_reps (n : ℕ) (hn : n ≥ 3) :
   -- LHS: nCardNonRepresentable {n-1, n} = (n-2)*(n-1)/2 > 0
   rw [consecutive_count n (by omega)]
   -- (n - 2) * (n - 1) / 2 > 0 for n ≥ 3
-  have h1 : (n - 2) * (n - 1) ≥ 2 := by nlinarith
+  have h1 : (n - 2) * (n - 1) ≥ 2 := by
+    have ha : 1 ≤ n - 2 := by omega
+    have hb : 2 ≤ n - 1 := by omega
+    calc 2 = 1 * 2 := by norm_num
+      _ ≤ (n - 2) * (n - 1) := Nat.mul_le_mul ha hb
   omega
-
-/- ## Part VIII: Connection to Sylvester-Frobenius -/
-
-/-- The Sylvester-Frobenius theorem: For coprime a, b, the Frobenius number
-    is ab - a - b, and the count of non-representables is (a-1)(b-1)/2. -/
-axiom sylvester_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
-    frobeniusNumber {a, b} = a * b - a - b
-
-/-- The number of non-representables for coprime a, b. -/
-axiom sylvester_count (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
-    nCardNonRepresentable {a, b} = (a - 1) * (b - 1) / 2
-
-/-- For consecutive integers n-1, n (always coprime), the count is
-    (n-2)(n-1)/2. This grows quadratically with n. -/
-theorem consecutive_count (n : ℕ) (hn : n ≥ 2) :
-    nCardNonRepresentable ({n - 1, n} : Set ℕ) = (n - 2) * (n - 1) / 2 := by
-  have h1 : n - 1 > 0 := by omega
-  have h2 : n > 0 := by omega
-  have hcop : Nat.Coprime (n - 1) n := by
-    rw [Nat.coprime_comm]
-    exact Nat.coprime_succ_self_right (n - 1)
-  exact sylvester_count (n - 1) n h1 h2 hcop
 
 /- ## Part IX: The Greedy Construction -/
 
@@ -320,16 +326,15 @@ theorem erdos_434_complete :
 /-- Corollary: topK achieves the maximum. -/
 theorem topK_is_maximum (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ n) :
     IsGreatest
-      {nCardNonRepresentable A | A : Set ℕ // A ⊆ Set.Icc 1 n ∧ A.ncard = k}
+      {nCardNonRepresentable A | (A : Set ℕ) (_ : A ⊆ Set.Icc 1 n) (_ : A.ncard = k)}
       (nCardNonRepresentable (topK n k)) := by
   constructor
   · -- topK n k is in the set
-    exact ⟨⟨topK n k, by
-      constructor
-      · intro x hx; simp only [topK, Set.mem_Icc] at hx ⊢; omega
-      · exact topK_card n k hkn (by omega)⟩, rfl⟩
+    refine ⟨topK n k, ?_, ?_, rfl⟩
+    · intro x hx; simp only [topK, Set.mem_Icc] at hx ⊢; omega
+    · exact topK_card n k hkn (by omega)
   · -- Upper bound from Kiss's theorem
-    rintro _ ⟨⟨A, hAsub, hAcard⟩, rfl⟩
+    rintro _ ⟨A, hAsub, hAcard, rfl⟩
     exact erdos_434_complete n k hn hk hkn A hAsub hAcard
 
 end Erdos434
