@@ -68,7 +68,6 @@ private lemma nat_div_div_tendsto (d : ℕ) :
     Tendsto (fun N : ℕ => (N / d : ℕ) / (N : ℝ)) atTop (nhds (1 / (d : ℝ))) := by
   rcases Nat.eq_zero_or_pos d with rfl | hd
   · simp [Nat.div_zero]
-    exact tendsto_const_nhds
   · have hd' : (0 : ℝ) < d := Nat.cast_pos.mpr hd
     rw [Metric.tendsto_atTop]
     intro ε hε
@@ -78,12 +77,16 @@ private lemma nat_div_div_tendsto (d : ℕ) :
     have hd_ne : (d : ℝ) ≠ 0 := hd'.ne'
     have hN_ne : (N : ℝ) ≠ 0 := hN'.ne'
     -- Key: N = (N/d)*d + N%d, so (N/d)/N = 1/d - (N%d)/(d*N)
-    have hdm : (N / d : ℕ) * d + N % d = N := Nat.div_add_mod N d
+    have hdm : (N / d : ℕ) * d + N % d = N := by
+      rw [mul_comm]; exact Nat.div_add_mod N d
+    have hdmR : ((N / d : ℕ) : ℝ) * (d : ℝ) + ((N % d : ℕ) : ℝ) = (N : ℝ) := by
+      exact_mod_cast hdm
     have heq : (N / d : ℕ) / (N : ℝ) - 1 / d = -((N % d : ℕ) : ℝ) / ((d : ℝ) * N) := by
-      field_simp; push_cast; linarith
-    rw [Real.dist_eq, heq, abs_neg, abs_of_nonneg (by positivity)]
+      field_simp
+      linear_combination hdmR
+    rw [Real.dist_eq, heq, neg_div, abs_neg, abs_of_nonneg (by positivity)]
     rw [div_lt_iff₀ (by positivity)]
-    have hmod : (N % d : ℝ) < d := by exact_mod_cast Nat.mod_lt N hd
+    have hmod : ((N % d : ℕ) : ℝ) < d := Nat.cast_lt.mpr (Nat.mod_lt N hd)
     -- N ≥ ⌈d/ε⌉ ≥ d/ε, so d ≤ ε*N
     have hN_ge : (d : ℝ) ≤ ε * N := by
       have h1 : (d : ℝ) / ε ≤ ⌈(d : ℝ) / ε⌉₊ := Nat.le_ceil _
@@ -95,7 +98,8 @@ private lemma nat_div_div_tendsto (d : ℕ) :
         _ = ε * N := mul_comm _ _
     -- (N%d) < d ≤ ε*N ≤ ε*d*N = ε*(d*N)
     have h1d : (1 : ℝ) ≤ d := by exact_mod_cast hd
-    nlinarith [mul_pos hε hN', mul_pos hd' hN']
+    nlinarith [mul_le_mul_of_nonneg_left hN_ge hd'.le,
+      mul_le_mul_of_nonneg_right h1d hd'.le, hmod, hN_ge, h1d]
 
 namespace BaselProblemOQ04OQ03
 
@@ -160,7 +164,6 @@ theorem coprime_iff_moebius_sum (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
     (if Nat.Coprime m n then (1 : ℤ) else 0) =
     ∑ d ∈ (Nat.gcd m n).divisors, (ArithmeticFunction.moebius d : ℤ) := by
   rw [moebius_sum_divisors _ (Nat.gcd_pos_of_pos_left n hm)]
-  simp [Nat.Coprime]
 
 -- ============================================================
 -- SECTION III: Counting Multiples
@@ -200,7 +203,7 @@ theorem card_pairs_divisible (d N : ℕ) (hd : 0 < d) :
       Finset.filter (fun a => d ∣ a) (Finset.Icc 1 N) ×ˢ
       Finset.filter (fun b => d ∣ b) (Finset.Icc 1 N) := by
     ext ⟨a, b⟩
-    simp [Finset.mem_filter, Finset.mem_product, and_assoc, and_comm, and_left_comm]
+    simp [Finset.mem_filter, Finset.mem_product, and_assoc, and_comm, _root_.and_left_comm]
   rw [h_eq, Finset.card_product, card_multiples d N hd, sq]
 
 -- ============================================================
@@ -228,7 +231,7 @@ theorem countCoprimePairs_moebius (N : ℕ) (hN : 0 < N) :
       (fun p => Nat.Coprime p.1 p.2)).card : ℤ) =
     ∑ p ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N,
       if Nat.Coprime p.1 p.2 then 1 else 0 := by
-    rw [← Finset.sum_boole]; push_cast; rfl
+    rw [← Finset.sum_boole]
   rw [h_card_sum]
   -- Step 2: Apply Möbius inversion to each coprimality indicator
   have h_moebius : ∀ p ∈ Finset.Icc 1 N ×ˢ Finset.Icc 1 N,
@@ -252,7 +255,8 @@ theorem countCoprimePairs_moebius (N : ℕ) (hN : 0 < N) :
     simp only [Nat.mem_divisors, Nat.dvd_gcd_iff, Finset.mem_filter, Finset.mem_Icc]
     constructor
     · rintro ⟨⟨hdm, hdn⟩, _⟩
-      exact ⟨⟨Nat.pos_of_dvd_of_pos hdm (by omega), Nat.le_of_dvd (by omega) hdm⟩, hdm, hdn⟩
+      exact ⟨⟨Nat.pos_of_dvd_of_pos hdm (by omega),
+        (Nat.le_of_dvd (by omega) hdm).trans (by omega)⟩, hdm, hdn⟩
     · rintro ⟨_, hdm, hdn⟩
       refine ⟨⟨hdm, hdn⟩, ?_⟩
       intro h
@@ -271,6 +275,7 @@ theorem countCoprimePairs_moebius (N : ℕ) (hN : 0 < N) :
 -- SECTION V: Analytic Axioms
 -- ============================================================
 
+set_option maxHeartbeats 1000000 in
 /-- **Theorem (Möbius Dirichlet Series)**:
     Σ_{d=1}^∞ μ(d)/d² = 6/π².
 
@@ -314,15 +319,17 @@ theorem moebius_dirichlet_series_at_two :
     hL_mu ▸ hmu_sum.LSeriesHasSum
   -- The L-series term equals the real summand (cast to ℂ) for each n
   have hfun : LSeries.term ↗moebius (2 : ℂ) =
-      fun n : ℕ => ((moebius n : ℝ) / (n : ℝ) ^ 2 : ℂ) := by
+      fun n : ℕ => (Complex.ofReal ((moebius n : ℝ) / (n : ℝ) ^ 2)) := by
     funext n
     rcases Nat.eq_zero_or_pos n with rfl | hn
-    · simp [LSeries.term_zero, map_zero]
+    · simp [LSeries.term_zero, ArithmeticFunction.map_zero]
     · rw [LSeries.term_of_ne_zero hn.ne', Complex.cpow_two]
       push_cast
       ring
   -- Conclude
-  rwa [← hfun]
+  have hLHS' : HasSum (LSeries.term ↗moebius (2 : ℂ)) (6 / (Real.pi : ℂ) ^ 2) := hLHS
+  rw [hfun] at hLHS'
+  exact hLHS'
 
 /-- **Theorem (Density Convergence)**:
     The coprime pair density converges to 6/π².
@@ -366,53 +373,56 @@ theorem coprime_pair_density_limit :
       simp only [Finset.mem_Icc, not_and_or, not_le] at hd
       rcases hd with hd0 | hdN
       · have : d = 0 := by omega
-        subst this; simp [map_zero]
+        subst this; simp [ArithmeticFunction.map_zero]
       · have : N / d = 0 := Nat.div_eq_of_lt (by omega)
         simp [this]
     -- Relate the two finite sums
-    rw [h_fin_eq, ← hcast, Finset.sum_div]
+    rw [h_fin_eq, hcast, Finset.sum_div]
     apply Finset.sum_congr rfl
     intro d _
     rw [mul_div_assoc, ← div_pow]
   -- Step 2: Apply Tannery's dominated convergence theorem
-  apply (tendsto_tsum_of_dominated_convergence
+  refine (tendsto_tsum_of_dominated_convergence
+    (𝓕 := (atTop : Filter ℕ))
     (f := fun N d => (moebius d : ℝ) * ((N / d : ℕ) / (N : ℝ)) ^ 2)
     (g := fun d => (moebius d : ℝ) / (d : ℝ) ^ 2)
     (bound := fun d => 1 / (d : ℝ) ^ 2)
     -- Σ 1/d² is summable (Basel)
-    (h_sum := hasSum_zeta_two.summable)
-    -- Pointwise: μ(d)*(N/d/N)² → μ(d)/d²
-    (hab := fun d => by
-      rcases Nat.eq_zero_or_pos d with rfl | hd
-      · simp [map_zero]; exact tendsto_const_nhds
-      · -- (N/d/N)² → (1/d)²
-        have h := (nat_div_div_tendsto d).pow 2
-        -- μ(d) * (N/d/N)² → μ(d) * (1/d)² = μ(d)/d²
-        have hc : Tendsto (fun _ : ℕ => (moebius d : ℝ)) atTop (nhds (moebius d : ℝ)) :=
-          tendsto_const_nhds
-        have h2 := hc.mul h
-        rwa [show (moebius d : ℝ) * (1 / (d : ℝ)) ^ 2 = (moebius d : ℝ) / (d : ℝ) ^ 2
-          from by ring] at h2)
-    -- Domination: |μ(d)*(N/d/N)²| ≤ 1/d² for N ≥ 1
-    (h_bound := by
-      apply eventually_atTop.mpr ⟨1, fun N hN d => ?_⟩
-      have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
-      rcases Nat.eq_zero_or_pos d with rfl | hd
-      · simp [map_zero]
-      · simp only [Real.norm_eq_abs, abs_mul, abs_pow]
-        -- |μ(d)| ≤ 1
-        have hmu : |(moebius d : ℝ)| ≤ 1 := by exact_mod_cast abs_moebius_le_one
-        -- |(N/d)/N| ≤ 1/d (since (N/d)*d ≤ N)
-        have hdiv : |(N / d : ℕ) / (N : ℝ)| ≤ 1 / (d : ℝ) := by
-          rw [abs_of_nonneg (by positivity), div_le_div_iff₀ hN' (Nat.cast_pos.mpr hd)]
-          simp only [one_mul]
-          push_cast
-          exact_mod_cast Nat.div_mul_le_self N d
-        calc |(moebius d : ℝ)| * |(N / d : ℕ) / (N : ℝ)| ^ 2
-            ≤ 1 * (1 / (d : ℝ)) ^ 2 :=
-              mul_le_mul hmu (pow_le_pow_left (abs_nonneg _) hdiv 2)
-                (pow_nonneg (abs_nonneg _) 2) (by norm_num)
-          _ = 1 / (d : ℝ) ^ 2 := by ring)).congr' h_congr.symm
+    (h_sum := hasSum_zeta_two.summable) ?_ ?_).congr' (EventuallyEq.symm h_congr)
+  · -- Pointwise: μ(d)*(N/d/N)² → μ(d)/d²
+    intro d
+    rcases Nat.eq_zero_or_pos d with rfl | hd
+    · have h0 : (moebius (0 : ℕ) : ℝ) = 0 := by
+        exact_mod_cast (ArithmeticFunction.map_zero : moebius (0 : ℕ) = 0)
+      simp only [h0, Nat.cast_zero, zero_mul, zero_div]
+      exact tendsto_const_nhds
+    · -- (N/d/N)² → (1/d)²
+      have h := (nat_div_div_tendsto d).pow 2
+      -- μ(d) * (N/d/N)² → μ(d) * (1/d)² = μ(d)/d²
+      have hc : Tendsto (fun _ : ℕ => (moebius d : ℝ)) atTop (nhds (moebius d : ℝ)) :=
+        tendsto_const_nhds
+      have h2 := hc.mul h
+      rwa [show (moebius d : ℝ) * (1 / (d : ℝ)) ^ 2 = (moebius d : ℝ) / (d : ℝ) ^ 2
+        from by ring] at h2
+  · -- Domination: |μ(d)*(N/d/N)²| ≤ 1/d² for N ≥ 1
+    refine eventually_atTop.mpr ⟨1, fun N hN d => ?_⟩
+    have hN' : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+    rcases Nat.eq_zero_or_pos d with rfl | hd
+    · simp [ArithmeticFunction.map_zero]
+    · simp only [Real.norm_eq_abs, abs_mul, abs_pow]
+      -- |μ(d)| ≤ 1
+      have hmu : |(moebius d : ℝ)| ≤ 1 := by exact_mod_cast abs_moebius_le_one
+      -- |(N/d)/N| ≤ 1/d (since (N/d)*d ≤ N)
+      have hdiv : |(N / d : ℕ) / (N : ℝ)| ≤ 1 / (d : ℝ) := by
+        rw [abs_of_nonneg (by positivity), div_le_div_iff₀ hN' (Nat.cast_pos.mpr hd)]
+        simp only [one_mul]
+        push_cast
+        exact_mod_cast Nat.div_mul_le_self N d
+      calc |(moebius d : ℝ)| * |(N / d : ℕ) / (N : ℝ)| ^ 2
+          ≤ 1 * (1 / (d : ℝ)) ^ 2 :=
+            mul_le_mul hmu (pow_le_pow_left₀ (abs_nonneg _) hdiv 2)
+              (pow_nonneg (abs_nonneg _) 2) (by norm_num)
+        _ = 1 / (d : ℝ) ^ 2 := by ring
 
 -- ============================================================
 -- SECTION VI: Main Theorem
@@ -454,7 +464,7 @@ theorem density_eq_inv_zeta2 : 6 / Real.pi ^ 2 = 1 / (Real.pi ^ 2 / 6) := by rin
 /-- A lower bound: 6/π² > 3/8. Since π < 4, π² < 16, we have 6/π² > 6/16 = 3/8. -/
 theorem density_gt_three_eighths : 3 / 8 < 6 / Real.pi ^ 2 := by
   have hpi : Real.pi < 4 := Real.pi_lt_four
-  rw [gt_iff_lt, div_lt_div_iff₀ (by norm_num : (0:ℝ) < 8) (sq_pos_of_pos Real.pi_pos)]
+  rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 8) (sq_pos_of_pos Real.pi_pos)]
   nlinarith [Real.pi_pos]
 
 /-- An upper bound: 6/π² < 2/3. Since π² > 9, we have 6/π² < 6/9 = 2/3. -/
@@ -479,12 +489,12 @@ theorem countCoprimePairs_two : countCoprimePairs 2 = 3 := by
 theorem countCoprimePairs_three : countCoprimePairs 3 = 7 := by
   unfold countCoprimePairs; native_decide
 
-/-- For N=4: 13 coprime pairs in {1,2,3,4}². Density = 13/16 ≈ 0.813. -/
-theorem countCoprimePairs_four : countCoprimePairs 4 = 13 := by
+/-- For N=4: 11 coprime pairs in {1,2,3,4}². Density = 11/16 ≈ 0.688. -/
+theorem countCoprimePairs_four : countCoprimePairs 4 = 11 := by
   unfold countCoprimePairs; native_decide
 
-/-- For N=5: 21 coprime pairs in {1,...,5}². Density = 21/25 = 0.84. -/
-theorem countCoprimePairs_five : countCoprimePairs 5 = 21 := by
+/-- For N=5: 19 coprime pairs in {1,...,5}². Density = 19/25 = 0.76. -/
+theorem countCoprimePairs_five : countCoprimePairs 5 = 19 := by
   unfold countCoprimePairs; native_decide
 
 /-- For N=10: 63 coprime pairs. Density = 63/100 = 0.63 ≈ 6/π². -/
@@ -546,8 +556,8 @@ product that yields ζ(2)⁻¹ = 6/π² from the Basel problem.
   N=1:   1/1    = 1.000
   N=2:   3/4    = 0.750
   N=3:   7/9    ≈ 0.778
-  N=4:   13/16  ≈ 0.813
-  N=5:   21/25  = 0.840
+  N=4:   11/16  ≈ 0.688
+  N=5:   19/25  = 0.760
   N=10:  63/100 = 0.630
   N=∞:   6/π²   ≈ 0.608
 

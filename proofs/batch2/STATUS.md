@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 178 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BaselProblemOQ04OQ03 (HARD 22min/177k: ambiguous and_left_comm/map_zero;
+Nat.div_add_mod arg order; pow_le_pow_left₀; coercion-at-leaves ((..:ℕ):ℝ); maxHeartbeats 1M; STATEMENT
+CORRECTION 2 wrong small-case literals N=4 13->11 N=5 21->19 [gallery re-audit]). Repair: numeric correction.
+
 # DOCTOR SINGLE-PROOF BATCH 177 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ01OQ02OQ02OQ01OQ01Iso (no edits; cascade artifact — clean
