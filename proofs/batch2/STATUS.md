@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 70 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): ShannonSourceCodingOQ03 (52min/346k marathon #38611: empEnt uniformBin
+example =0 FALSE, true log 2 fair-coin entropy; ∏ also binds greedily like ∑, bites plain have-statement
+associativity), Erdos749Problem (Filter.le_liminf_of_le etc. need Filter. prefix; IsCoboundedUnder autoParam
+no longer infer_instance; push_neg ¬(P∧Q) now curries P→¬Q). Repairs #38611: ShannonOQ03 (empEnt=log 2).
+SESSION CROSSED 2300 GREEN.
 # DOCTOR SINGLE-PROOF BATCH 69 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos110Problem (Cardinal.succ removed -> Order.succ; universe-mvar leakage
