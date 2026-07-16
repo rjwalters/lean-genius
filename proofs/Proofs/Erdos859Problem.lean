@@ -98,12 +98,8 @@ theorem density_zero : HasNaturalDensity (DivisorSumSet 0) 1 := by
   rw [divisorSumSet_zero]
   -- Density of Set.univ is 1: (N+1)/N → 1
   unfold HasNaturalDensity
-  have hsimp : ∀ N : ℕ,
-      (((Finset.range (N + 1)).filter (· ∈ Set.univ)).card : ℝ) = ↑N + 1 := by
-    intro N
-    rw [Finset.filter_true_of_mem (fun _ _ => Set.mem_univ _), Finset.card_range]
-    push_cast; ring
-  simp_rw [hsimp]
+  simp only [Set.mem_univ, Finset.filter_true, Finset.card_range]
+  push_cast
   rw [Metric.tendsto_atTop]
   intro ε hε
   refine ⟨⌈ε⁻¹⌉₊ + 1, fun n hn => ?_⟩
@@ -112,7 +108,7 @@ theorem density_zero : HasNaturalDensity (DivisorSumSet 0) 1 := by
   have hsub : (↑n + 1 : ℝ) / ↑n - 1 = 1 / ↑n := by
     have : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
     field_simp; ring
-  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff₀ hn_pos, one_mul]
+  rw [hsub, abs_of_pos (div_pos one_pos hn_pos), div_lt_iff₀ hn_pos]
   calc (1 : ℝ) = ε * ε⁻¹ := (mul_inv_cancel₀ (ne_of_gt hε)).symm
     _ < ε * ↑n := by
         apply mul_lt_mul_of_pos_left _ hε
@@ -141,7 +137,9 @@ theorem mem_divisorSumSet_two (n : ℕ) (hn : n > 0) :
     intro ⟨s, hs_sub, hs_sum⟩
     -- Every element of s is ≤ 2 (single term ≤ total sum)
     have hle : ∀ x ∈ s, x ≤ 2 := fun x hx => by
-      have := Finset.single_le_sum (fun _ _ => Nat.zero_le _) hx; omega
+      have : x ≤ ∑ i ∈ s, i :=
+        Finset.single_le_sum (f := fun i => i) (fun _ _ => Nat.zero_le _) hx
+      omega
     -- Every element of s is ≥ 1 (divisors are positive)
     have hpos : ∀ x ∈ s, 1 ≤ x := fun x hx => Nat.pos_of_mem_divisors (hs_sub hx)
     -- 2 must be in s (otherwise all elements = 1, sum ≤ 1 < 2)
@@ -192,7 +190,7 @@ axiom erdos_density_positive (t : ℕ) (ht : t > 0) :
 axiom erdos_bounds :
     ∃ c₃ c₄ : ℝ, c₃ > 0 ∧ c₄ > 0 ∧
       ∀ᶠ t : ℕ in atTop, ∀ dₜ : ℝ, HasNaturalDensity (DivisorSumSet t) dₜ →
-        1 / (log t)^c₃ < dₜ ∧ dₜ < 1 / (log t)^c₄
+        1 / (Real.log t)^c₃ < dₜ ∧ dₜ < 1 / (Real.log t)^c₄
 
 /- ## Part V: The Open Question -/
 
@@ -206,7 +204,7 @@ axiom erdos_bounds :
 def ErdosProblem859 : Prop :=
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
     ∃ d : ℕ → ℝ, (∀ t > 0, HasNaturalDensity (DivisorSumSet t) (d t)) ∧
-      (fun t : ℕ => d t) ~[atTop] (fun t => c₁ / (log t)^c₂)
+      (fun t : ℕ => d t) ~[atTop] (fun t => c₁ / (Real.log t)^c₂)
 
 /- The status: OPEN. We don't know if precise asymptotics exist. -/
 
@@ -231,16 +229,15 @@ theorem subset_sum_count (n : ℕ) (hn : n > 0) :
 /-- If gcd(m, n) = 1, then divisors(mn) = divisors(m) × divisors(n).
     This multiplicative structure helps analyze DivisorSumSet. -/
 theorem divisors_mul_coprime {m n : ℕ} (hmn : Nat.Coprime m n) (hm : m > 0) (hn : n > 0) :
-    (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card := by
-  rw [Nat.Coprime.divisors_mul hmn]
-  exact Finset.card_product _ _
+    (Nat.divisors (m * n)).card = (Nat.divisors m).card * (Nat.divisors n).card :=
+  hmn.card_divisors_mul
 
 /-- Key observation: If n = p₁^a₁ · ... · pₖ^aₖ, then subset sums of
     divisors can be analyzed by considering each prime power separately. -/
 theorem primePower_divisors (p : ℕ) (hp : p.Prime) (a : ℕ) :
     Nat.divisors (p^a) = (Finset.range (a + 1)).map ⟨fun i => p^i, fun _ _ => by
       intro h; exact Nat.pow_right_injective hp.two_le h⟩ :=
-  Nat.divisors_prime_pow hp
+  Nat.divisors_prime_pow hp a
 
 /- ## Part VIII: Density Comparisons -/
 
@@ -284,7 +281,7 @@ def SubsetSumExists (S : Finset ℕ) (t : ℕ) : Prop :=
 /-- n ∈ DivisorSumSet t iff SubsetSumExists (divisors n) t. -/
 theorem divisorSumSet_subsetSum (n t : ℕ) (hn : n > 0) :
     n ∈ DivisorSumSet t ↔ SubsetSumExists (Nat.divisors n) t := by
-  simp [DivisorSumSet, SubsetSumExists]
+  simp [DivisorSumSet, SubsetSumExists, eq_comm]
 
 /- ## Part XI: Growth of σ(n) -/
 
@@ -314,7 +311,7 @@ theorem erdos_859_summary :
     (∀ t > 0, HasPositiveDensity (DivisorSumSet t)) ∧
     (∃ c₃ c₄ : ℝ, c₃ > 0 ∧ c₄ > 0 ∧
       ∀ᶠ t : ℕ in atTop, ∀ dₜ, HasNaturalDensity (DivisorSumSet t) dₜ →
-        1/(log t)^c₃ < dₜ ∧ dₜ < 1/(log t)^c₄) := by
+        1/(Real.log t)^c₃ < dₜ ∧ dₜ < 1/(Real.log t)^c₄) := by
   refine ⟨erdos_density_exists, ?_, erdos_bounds⟩
   intro t ht
   exact erdos_density_positive t ht
