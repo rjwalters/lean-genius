@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 202 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1176Problem (universe .{0}/Cardinal.{0} pin witness type; ciInf₂_le
+now needs BddBelow first -> OrderBot.bddBelow; Quotient.out on Sym2 gone -> induction using Sym2.ind).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 201 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos140Problem (Real.log_pos exact_mod_cast; div_lt_iff₀ mul_comm split;
