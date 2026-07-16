@@ -47,14 +47,14 @@ theorem fintype_card_fin_choose (n : ℕ) :
 theorem edgeFinset_card_le_choose {n : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] :
     G.edgeFinset.card ≤ (Fintype.card (Fin n)).choose 2 := by
-  exact SimpleGraph.edgeFinset_card_le G
+  exact G.card_edgeFinset_le_card_choose_two
 
 -- Aristotle target: edgeFinset.card ≤ n*(n-1)/2 for G on Fin n
 theorem edgeFinset_card_le_formula {n : ℕ} (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] :
     G.edgeFinset.card ≤ n * (n - 1) / 2 := by
   calc G.edgeFinset.card ≤ (Fintype.card (Fin n)).choose 2 :=
-        SimpleGraph.edgeFinset_card_le G
+        G.card_edgeFinset_le_card_choose_two
     _ = n.choose 2 := by simp [Fintype.card_fin]
     _ = n * (n - 1) / 2 := Nat.choose_two_right n
 
@@ -70,16 +70,24 @@ noncomputable def logStarAux : ℕ → ℕ
   | 0 => 0
   | 1 => 0
   | n + 2 => 1 + logStarAux (Nat.log2 (n + 2))
+termination_by n => n
+decreasing_by
+  have : Nat.log2 (n + 2) < n + 2 := by
+    rw [Nat.log2_eq_log_two]
+    exact Nat.log_lt_self 2 (by omega)
+  omega
 
 -- Aristotle target: logStarAux 0 = 0
-theorem logStarAux_zero : logStarAux 0 = 0 := rfl
+theorem logStarAux_zero : logStarAux 0 = 0 := by simp [logStarAux]
 
 -- Aristotle target: logStarAux 1 = 0
-theorem logStarAux_one : logStarAux 1 = 0 := rfl
+theorem logStarAux_one : logStarAux 1 = 0 := by simp [logStarAux]
 
 -- Aristotle target: logStarAux 2 = 1
 theorem logStarAux_two : logStarAux 2 = 1 := by
-  unfold logStarAux; simp [Nat.log2]; rfl
+  show logStarAux (0 + 2) = 1
+  rw [logStarAux]
+  norm_num [logStarAux_one]
 
 -- Aristotle target: n * (logStarAux n + 1) ≥ n for all n (since logStarAux n + 1 ≥ 1)
 theorem n_mul_logStar_plus_one_ge (n : ℕ) : n * (logStarAux n + 1) ≥ n := by
@@ -102,6 +110,9 @@ theorem four_gt_four_diag : (4 : ℕ) > 4 * (4 - 3) / 2 := by norm_num
 -- Aristotle target: for k ≥ 5, k ≤ k*(k-3)/2 (critical transition)
 -- k=5: 5 ≤ 5*2/2 = 5. k=6: 6 ≤ 6*3/2 = 9.
 theorem k_le_k_diag_for_k_ge_5 (k : ℕ) (hk : k ≥ 5) :
-    k ≤ k * (k - 3) / 2 := by nlinarith
+    k ≤ k * (k - 3) / 2 := by
+  have h3 : k - 3 + 3 = k := Nat.sub_add_cancel (by omega)
+  rw [Nat.le_div_iff_mul_le (by norm_num)]
+  nlinarith [h3]
 
 end Erdos642Aristotle

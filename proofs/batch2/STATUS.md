@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 92 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): InclusionExclusionSecondBonferroni (stale sibling-API drift: parent dropped
+interCard/sieveLayer_eq_sum_choose -> reproved locally), Erdos642Aristotle (SimpleGraph.edgeFinset_card_le->
+card_edgeFinset_le_card_choose_two; bare nlinarith no longer closes Nat trunc-div nonlinear -> Nat.le_div_iff_mul_le
+first; WF-rec rfl-equation -> simp [defName]). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 90 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): BallotProblemOQ01OQ02OQ01OQ02 (#38611: surjOn_fiber_decomp used SurjOn
