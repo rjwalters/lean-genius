@@ -47,7 +47,7 @@ Unit fractions and their sums.
 **Unit Fraction:**
 1/n for positive n.
 -/
-def unitFrac (n : ℕ) (hn : n ≥ 1) : ℚ := 1 / n
+def unitFrac (n : ℕ) (_hn : n ≥ 1) : ℚ := 1 / n
 
 /--
 **Sum of Unit Fractions:**
@@ -104,19 +104,21 @@ where
     -- Each term 1/d ≤ 1 (d ≥ 1), so sum ≤ |S| ≤ N
     have h1 : sumUnitFracs (S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩) ≤ ↑S.card := by
       unfold sumUnitFracs
-      calc ∑ n ∈ S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩, (1 : ℚ) / n
-          ≤ ∑ _n ∈ S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩, (1 : ℚ) := by
+      calc (∑ n ∈ S.map (⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩ : ℕ ↪ ℕ), (1 : ℚ) / n)
+          ≤ ∑ _n ∈ S.map (⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩ : ℕ ↪ ℕ), (1 : ℚ) := by
             apply Finset.sum_le_sum; intro n hn
             obtain ⟨a, _, rfl⟩ := Finset.mem_map.mp hn
-            exact div_le_one_of_le (by push_cast; omega) (by positivity)
-        _ = ↑(S.map ⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩).card := by
-            simp [Finset.sum_const, smul_eq_mul, mul_one]
+            refine div_le_one_of_le₀ ?_ (by positivity)
+            simp only [Function.Embedding.coeFn_mk]
+            exact_mod_cast Nat.le_add_left 1 a
+        _ = ↑(S.map (⟨(· + 1), fun _ _ h => Nat.succ_injective h⟩ : ℕ ↪ ℕ)).card := by
+            simp [Finset.sum_const, mul_one]
         _ = ↑S.card := by rw [Finset.card_map]
     have h2 : (S.card : ℚ) ≤ ↑N := by
       exact_mod_cast (Finset.card_le_card hS_sub).trans (Finset.card_range N).le
     -- Sum = N+1 but sum ≤ S.card ≤ N, contradiction
     have : (↑(N + 1) : ℚ) ≤ ↑N := hS_sum ▸ h1 |>.trans h2
-    exact absurd this (by push_cast; omega)
+    exact absurd this (by exact_mod_cast Nat.not_succ_le_self N)
 
 /-
 ## Part III: Basic Properties
