@@ -32,14 +32,14 @@ open Polynomial
     - ℤ is countable
     - Finite sequences over a countable type are countable
     - A polynomial is a finite sequence of coefficients -/
-instance : Countable (Polynomial ℤ) := inferInstance
+instance : Countable (Polynomial ℤ) :=
+  haveI : Countable (AddMonoidAlgebra ℤ ℕ) := inferInstanceAs (Countable (ℕ →₀ ℤ))
+  Countable.of_equiv _ (Polynomial.toFinsuppIso ℤ).symm.toEquiv
 
 /-- The nonzero polynomials are also countable (subset of countable). -/
 theorem nonzero_polys_countable :
-    Set.Countable {p : Polynomial ℤ | p ≠ 0} := by
-  exact Set.countable_of_injective_of_countable_image
-    (f := Subtype.val) (fun _ _ h => Subtype.ext h)
-    (Set.countable_range Subtype.val)
+    Set.Countable {p : Polynomial ℤ | p ≠ 0} :=
+  Set.to_countable _
 
 -- ============================================================
 -- Part II: Finite Roots per Polynomial
@@ -50,10 +50,11 @@ theorem nonzero_polys_countable :
     a nonzero polynomial of degree n has at most n roots. -/
 theorem finitely_many_roots (p : Polynomial ℤ) (hp : p ≠ 0) :
     Set.Finite {z : ℂ | Polynomial.aeval z p = 0} := by
-  have := Polynomial.setOf_isRoot_finite (p.map (algebraMap ℤ ℂ))
-    (Polynomial.map_ne_zero hp)
+  have := Polynomial.finite_setOf_isRoot (p := p.map (algebraMap ℤ ℂ))
+    ((Polynomial.map_ne_zero_iff (FaithfulSMul.algebraMap_injective ℤ ℂ)).mpr hp)
   convert this using 1
-  ext z; simp [Polynomial.IsRoot, Polynomial.aeval_def]
+  ext z
+  simp [Polynomial.IsRoot, Polynomial.aeval_def, Polynomial.eval_map]
 
 -- ============================================================
 -- Part III: Algebraic Numbers Are Countable
@@ -80,7 +81,9 @@ theorem algebraic_numbers_countable :
   have h_eq : {z : ℂ | IsAlgebraic z} =
       ⋃ (p : {q : Polynomial ℤ // q ≠ 0}),
         {z : ℂ | Polynomial.aeval z (p : Polynomial ℤ) = 0} := by
-    ext z; simp [IsAlgebraic]; constructor
+    ext z
+    simp only [Set.mem_setOf_eq, IsAlgebraic, Set.mem_iUnion]
+    constructor
     · rintro ⟨p, hp, hz⟩; exact ⟨⟨p, hp⟩, hz⟩
     · rintro ⟨⟨p, hp⟩, hz⟩; exact ⟨p, hp, hz⟩
   rw [h_eq]

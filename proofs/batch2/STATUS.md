@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 84 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): FactorRemainderTheoremOQ03 (Polynomial.card_roots_le_degree removed ->
+card_roots'; IsAlgClosed.exists_root now degree≠0 not 0<degree; Ideal->Set coercion-at-metavar fails ->
+direct lambda), DenumerabilityRationalsOQ04 (Countable (Polynomial R) no longer inferInstance -> toFinsuppIso
+transfer; Polynomial.map_ne_zero now [IsSimpleRing]-gated -> map_ne_zero_iff). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 83 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos890Problem (skip-stubbed omega_prime -> ArithmeticFunction.cardDistinct
