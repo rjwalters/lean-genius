@@ -29,8 +29,20 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Data.Set.Basic
+import Mathlib.Data.ZMod.Basic
 
 open Cardinal SimpleGraph
+
+/-
+**Infinite Cardinal Predicate:**
+A cardinal is infinite iff it is at least ℵ₀. This is the standard characterization;
+we declare it in the `Cardinal` namespace so `𝔪.IsInfinite` dot-notation resolves.
+-/
+namespace Cardinal
+
+def IsInfinite (𝔪 : Cardinal) : Prop := Cardinal.aleph0 ≤ 𝔪
+
+end Cardinal
 
 namespace Erdos740Provable
 
@@ -61,13 +73,13 @@ def isColorable (V : Type*) (G : SimpleGraph V) (k : Cardinal) : Prop :=
 
 /--
 **Cycle of Length n:**
-A closed walk of length n with no repeated vertices (except start = end).
+A closed walk of length n with no repeated vertices, indexed cyclically by `ZMod n` so
+the wraparound edge `vertices (n-1) — vertices 0` is captured automatically by `i + 1`.
 -/
 structure Cycle (V : Type*) (G : SimpleGraph V) (n : ℕ) where
-  vertices : Fin n → V
-  closed : vertices 0 = vertices (Fin.last (n - 1))  -- informal placeholder
-  edges : ∀ i : Fin (n - 1), G.Adj (vertices i) (vertices (i + 1))
-  distinct : ∀ i j : Fin n, i ≠ j → vertices i ≠ vertices j
+  vertices : ZMod n → V
+  edges : ∀ i : ZMod n, G.Adj (vertices i) (vertices (i + 1))
+  distinct : ∀ i j : ZMod n, i ≠ j → vertices i ≠ vertices j
 
 /--
 **Odd Cycle:**
@@ -196,7 +208,7 @@ def thresholdFunctionExists (𝔪 : Cardinal) (r : ℕ) : Prop :=
 The existence of f_r(𝔪) is unknown for most cases.
 -/
 def thresholdFunctionOpen : Prop :=
-  ¬∀ 𝔪 : Cardinal, ∀ r : ℕ, 𝔪.IsInfinite →
+  ¬∀ 𝔪 : Cardinal.{0}, ∀ r : ℕ, 𝔪.IsInfinite →
     thresholdFunctionExists 𝔪 r ∨ ¬thresholdFunctionExists 𝔪 r
 
 /-
@@ -312,7 +324,7 @@ theorem erdos_740_summary :
      ∀ 𝔪 h𝔪 r, girthConjecture 𝔪 h𝔪 r → erdosHajnalConjecture 𝔪 h𝔪 r) ∧
     (-- Bipartite version fails for 𝔪 > 2
      ∀ 𝔪, 𝔪 > 2 → ¬∀ V G, chromaticNumber V G = 𝔪 →
-       ∃ S, chromaticNumber S (inducedSubgraph V G S) = 𝔪 ∧
+       ∃ S : Set V, chromaticNumber S (inducedSubgraph V G S) = 𝔪 ∧
          isBipartite S (inducedSubgraph V G S)) := by
   exact ⟨rodl_theorem, girth_implies_odd, no_infinite_bipartite⟩
 
@@ -334,8 +346,8 @@ def openQuestion (𝔪 : Cardinal) (h𝔪 : 𝔪.IsInfinite) (r : ℕ) : Prop :=
 In [Er81], Erdős listed this among problems he "would most like to see solved."
 -/
 def erdosMostWanted : Prop :=
-  ∀ 𝔪 : Cardinal, 𝔪.IsInfinite →
+  ∀ 𝔪 : Cardinal.{0}, ∀ h𝔪 : 𝔪.IsInfinite,
     ∀ r : ℕ, r ≥ 1 →
-      erdosHajnalConjecture 𝔪 ⟨Cardinal.aleph0_le_of_isInfinite 𝔪⟩ r
+      erdosHajnalConjecture 𝔪 h𝔪 r
 
 end Erdos740Provable
