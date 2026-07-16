@@ -1,3 +1,16 @@
+# DOCTOR SINGLE-PROOF BATCH 39 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): SzemerediCoreOQ01Aristotle (rw union-then-card ordering flip;
+nlinarith->ring_nf+linarith on division-heavy; ported sibling's energy_increment technique),
+SzemerediHypergraphCore (List.get cross-conjunct bound obligation -> getD; unfold no longer zeta-reduces
+have-wrapper -> dsimp only before split_ifs). Repairs: none.
+
+INCIDENT-5 (silent agent deaths): Erdos919Problem + Erdos847Problem agents DIED IN SETUP (no branch, worktrees
+left on old merged branches) — likely an account-throttle burst; I mis-counted them as 'busy' for several
+batches. Detection: full slot audit (branch on old-merged + clean + no container + no pushed branch = dead).
+Both re-queued. LESSON: periodically AUDIT slots against ground truth (git branch + ledger + docker ps +
+pushed-branch), don't trust in-head 'slot busy' tracking — dead-in-setup agents leave no notification.
+
 # DOCTOR SINGLE-PROOF BATCH 38 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): LagrangeFourSquaresOQ02 (List.dedup_cons_of_not_mem->_of_notMem;
