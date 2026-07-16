@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 212 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos25LogDensity (Tendsto.div_atTop explicit haves; omega regression on
+Nat-div variable-divisor -> Nat.div_pos/Nat.le_div_iff_mul_le; Nat.succ_div implicit args; Set.ext and_comm).
+Repair: none. Unblocks Erdos25Problem.
+
 # DOCTOR SINGLE-PROOF BATCH 211 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos234Problem (Continuous.if_lt gone -> if_le+manual rewrite;
