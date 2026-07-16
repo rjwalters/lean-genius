@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 33 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+2 GREEN** (re-verified EXIT=0): ErdosMordellChordIdentity (grind +splitImp blown up by v4.31 abs/max
+case-splitting 'max term generation reached' -> manual mul_right_cancel₀ + linear_combination; unblocks
+ErdosMordellInequalityOQ01), Erdos989Problem (#38611: 6 sites of unsound `(by linarith : 0<r0)` fabricating
+r0>0 from only r>r0 -> explicit r0>0 witness; SYSTEMIC pattern-2 grep flag). Repairs #38611: Erdos989Problem.
+
 # DOCTOR SINGLE-PROOF BATCH 32 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos937Problem (interval_cases on p∣N no longer auto-bounds ->
