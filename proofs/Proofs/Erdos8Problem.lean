@@ -146,6 +146,121 @@ def hough_counterexample_coloring_exists : Prop :=
     (∀ n : ℕ, n < 10^18 → ∀ m : ℕ, m < 10^18 → n ≠ m → c n ≠ c m) ∧
     ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c
 
+/- ## Why the Counterexample Works
+
+**Key Insight**:
+
+Hough's minimum modulus bound implies that covering systems have a specific
+structure: they must "start small." This creates a bottleneck:
+
+1. Any covering system must include at least one modulus ≤ 616,000
+2. With finitely many colors, we can color small numbers distinctly
+3. The small moduli form a sparse set (at most 616,000 values)
+4. A carefully constructed coloring avoids monochromatic modulus sets
+
+The bound 10^18 >> 616,000 ensures we have enough distinct colors for all
+possible small covering system moduli while keeping them non-monochromatic.
+-/
+
+/--
+A single congruence class with modulus ≥ 2 cannot cover all integers.
+The integer `residue + 1` is not congruent to `residue` mod any modulus ≥ 2.
+-/
+theorem single_class_not_covering (c : CongruenceClass) :
+    ∃ x : ℤ, x ∉ c.toSet := by
+  refine ⟨↑c.residue + 1, ?_⟩
+  simp only [CongruenceClass.toSet, mem_setOf_eq]
+  intro h
+  have hdvd : (c.modulus : ℤ) ∣ ((↑c.residue + 1 : ℤ) - (c.residue : ℤ)) := h.symm.dvd
+  have heq : ((↑c.residue : ℤ) + 1) - (c.residue : ℤ) = 1 := by ring
+  rw [heq] at hdvd
+  have h2 : (c.modulus : ℤ) ≤ 1 := Int.le_of_dvd one_pos hdvd
+  have hm := c.modulus_pos
+  omega
+
+/-- A covering system with distinct moduli has at least 2 congruence classes.
+    A single class with modulus ≥ 2 cannot cover all integers. -/
+theorem covering_distinct_has_ge_two_classes (cs : CoveringSystem)
+    (_ : cs.hasDistinctModuli) : cs.classes.length ≥ 2 := by
+  by_contra h
+  push_neg at h
+  have hn := cs.nonempty
+  have hlen : cs.classes.length = 1 := by omega
+  obtain ⟨c, hc⟩ := List.length_eq_one_iff.mp hlen
+  obtain ⟨x, hx⟩ := single_class_not_covering (cs.classes.head (by simp [hc]))
+  obtain ⟨c', hc', hcov⟩ := cs.covers x
+  rw [hc, List.mem_singleton] at hc'
+  subst hc'
+  exact hx (by simpa [hc] using hcov)
+
+/-- A covering system with distinct moduli has at least 2 distinct moduli. -/
+theorem covering_distinct_moduli_card_ge_two (cs : CoveringSystem)
+    (hd : cs.hasDistinctModuli) : cs.moduli.card ≥ 2 := by
+  have hlen := covering_distinct_has_ge_two_classes cs hd
+  unfold CoveringSystem.moduli CoveringSystem.hasDistinctModuli at *
+  rw [List.toFinset_card_of_nodup hd, List.length_map]
+  exact hlen
+
+/-- The minimum modulus is a member of the moduli finset. -/
+theorem CoveringSystem.minModulus_mem (cs : CoveringSystem) :
+    cs.minModulus ∈ cs.moduli :=
+  Finset.min'_mem _ _
+
+/--
+**Bottleneck argument (PROVED — was axiom):**
+The minimum modulus bound allows constructing colorings that avoid
+monochromatic covering moduli.
+
+**Proof**: Color each n ≤ 616000 with its own color (color n),
+and all n > 616000 with color 0. Any covering system must include
+a modulus m₁ ≤ 616000 (by the bound) and at least one other distinct
+modulus m₂. If m₂ ≤ 616000, color(m₂) = m₂ ≠ m₁ = color(m₁).
+If m₂ > 616000, color(m₂) = 0 ≠ m₁ (since m₁ ≥ 2).
+-/
+theorem bottleneck_counterexample :
+    (∀ cs : CoveringSystem, cs.hasDistinctModuli → cs.minModulus ≤ 616000) →
+    ∃ k : ℕ, k ≥ 2 ∧ ∃ c : Coloring k,
+      ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c := by
+  intro hbound
+  refine ⟨616001, by omega, fun n => if h : n ≤ 616000 then ⟨n, by omega⟩ else ⟨0, by omega⟩, ?_⟩
+  intro cs hd ⟨color, hcolor⟩
+  set m₁ := cs.minModulus with hm₁_def
+  have hm₁_mem : m₁ ∈ cs.moduli := cs.minModulus_mem
+  have hm₁_le : m₁ ≤ 616000 := hbound cs hd
+  -- m₁ ≥ 2 (all congruence classes have modulus ≥ 2)
+  have hm₁_ge : m₁ ≥ 2 := by
+    have hmem2 : m₁ ∈ cs.moduli := hm₁_mem
+    simp only [CoveringSystem.moduli, List.mem_toFinset, List.mem_map] at hmem2
+    obtain ⟨cc, _, hcc⟩ := hmem2
+    rw [← hcc]; exact cc.modulus_pos
+  -- Color of m₁ = ⟨m₁, _⟩
+  have hcm₁ : (fun n => if h : n ≤ 616000 then (⟨n, by omega⟩ : Fin 616001)
+      else ⟨0, by omega⟩) m₁ = ⟨m₁, by omega⟩ := by simp [hm₁_le]
+  have hm₁_color := hcolor m₁ hm₁_mem
+  rw [hcm₁] at hm₁_color
+  -- There exists another modulus m₂ ≠ m₁ (≥ 2 distinct moduli)
+  have hcard := covering_distinct_moduli_card_ge_two cs hd
+  obtain ⟨m₂, hm₂_mem, hm₂_ne⟩ : ∃ m₂ ∈ cs.moduli, m₂ ≠ m₁ := by
+    by_contra h; push_neg at h
+    have : cs.moduli ⊆ {m₁} := fun x hx => Finset.mem_singleton.mpr (h x hx)
+    have := Finset.card_le_card this; simp at this; omega
+  have hm₂_color := hcolor m₂ hm₂_mem
+  by_cases hm₂_le : m₂ ≤ 616000
+  · -- m₂ ≤ 616000: color(m₂) = ⟨m₂, _⟩ ≠ ⟨m₁, _⟩
+    have hcm₂ : (fun n => if h : n ≤ 616000 then (⟨n, by omega⟩ : Fin 616001)
+        else ⟨0, by omega⟩) m₂ = ⟨m₂, by omega⟩ := by simp [hm₂_le]
+    rw [hcm₂] at hm₂_color
+    have : m₁ = m₂ := Fin.val_eq_of_eq (hm₁_color.trans hm₂_color.symm)
+    exact hm₂_ne this.symm
+  · -- m₂ > 616000: color(m₂) = ⟨0, _⟩ ≠ ⟨m₁, _⟩ (since m₁ ≥ 2)
+    push_neg at hm₂_le
+    have hcm₂ : (fun n => if h : n ≤ 616000 then (⟨n, by omega⟩ : Fin 616001)
+        else ⟨0, by omega⟩) m₂ = ⟨0, by omega⟩ := by
+      simp [show ¬(m₂ ≤ 616000) by omega]
+    rw [hcm₂] at hm₂_color
+    have : m₁ = 0 := Fin.val_eq_of_eq (hm₁_color.trans hm₂_color.symm)
+    omega
+
 /--
 **Resolution of Erdős Problem 8** (PROVED — was axiom):
 The Erdős-Graham conjecture is FALSE.
@@ -189,116 +304,6 @@ def density_conjecture : Prop :=
 
 /-- The density conjecture is false. -/
 axiom density_conjecture_false : ¬density_conjecture
-
-/- ## Why the Counterexample Works
-
-**Key Insight**:
-
-Hough's minimum modulus bound implies that covering systems have a specific
-structure: they must "start small." This creates a bottleneck:
-
-1. Any covering system must include at least one modulus ≤ 616,000
-2. With finitely many colors, we can color small numbers distinctly
-3. The small moduli form a sparse set (at most 616,000 values)
-4. A carefully constructed coloring avoids monochromatic modulus sets
-
-The bound 10^18 >> 616,000 ensures we have enough distinct colors for all
-possible small covering system moduli while keeping them non-monochromatic.
--/
-
-/--
-A single congruence class with modulus ≥ 2 cannot cover all integers.
-The integer `residue + 1` is not congruent to `residue` mod any modulus ≥ 2.
--/
-theorem single_class_not_covering (c : CongruenceClass) :
-    ∃ x : ℤ, x ∉ c.toSet := by
-  use ↑c.residue + 1
-  simp only [CongruenceClass.toSet, mem_setOf_eq, Int.ModEq]
-  have hm := c.modulus_pos  -- modulus ≥ 2
-  have hr := c.residue_valid  -- residue < modulus
-  omega
-
-/-- A covering system with distinct moduli has at least 2 congruence classes.
-    A single class with modulus ≥ 2 cannot cover all integers. -/
-theorem covering_distinct_has_ge_two_classes (cs : CoveringSystem)
-    (_ : cs.hasDistinctModuli) : cs.classes.length ≥ 2 := by
-  by_contra h
-  push_neg at h
-  have hlen : cs.classes.length = 1 := by omega
-  obtain ⟨c, hc⟩ := List.length_eq_one.mp hlen
-  obtain ⟨x, hx⟩ := single_class_not_covering (cs.classes.head (by simp [hc]))
-  obtain ⟨c', hc', hcov⟩ := cs.covers x
-  rw [hc, List.mem_singleton] at hc'
-  subst hc'
-  exact hx (by rwa [List.head_cons] at hcov)
-
-/-- A covering system with distinct moduli has at least 2 distinct moduli. -/
-theorem covering_distinct_moduli_card_ge_two (cs : CoveringSystem)
-    (hd : cs.hasDistinctModuli) : cs.moduli.card ≥ 2 := by
-  have hlen := covering_distinct_has_ge_two_classes cs hd
-  unfold CoveringSystem.moduli CoveringSystem.hasDistinctModuli at *
-  rw [List.toFinset_card_of_nodup hd]
-  exact hlen
-
-/-- The minimum modulus is a member of the moduli finset. -/
-theorem CoveringSystem.minModulus_mem (cs : CoveringSystem) :
-    cs.minModulus ∈ cs.moduli :=
-  Finset.min'_mem _ _
-
-/--
-**Bottleneck argument (PROVED — was axiom):**
-The minimum modulus bound allows constructing colorings that avoid
-monochromatic covering moduli.
-
-**Proof**: Color each n ≤ 616000 with its own color (color n),
-and all n > 616000 with color 0. Any covering system must include
-a modulus m₁ ≤ 616000 (by the bound) and at least one other distinct
-modulus m₂. If m₂ ≤ 616000, color(m₂) = m₂ ≠ m₁ = color(m₁).
-If m₂ > 616000, color(m₂) = 0 ≠ m₁ (since m₁ ≥ 2).
--/
-theorem bottleneck_counterexample :
-    (∀ cs : CoveringSystem, cs.hasDistinctModuli → cs.minModulus ≤ 616000) →
-    ∃ k : ℕ, k ≥ 2 ∧ ∃ c : Coloring k,
-      ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c := by
-  intro hbound
-  refine ⟨616001, by omega, fun n => if h : n ≤ 616000 then ⟨n, by omega⟩ else ⟨0, by omega⟩, ?_⟩
-  intro cs hd ⟨color, hcolor⟩
-  set m₁ := cs.minModulus with hm₁_def
-  have hm₁_mem : m₁ ∈ cs.moduli := cs.minModulus_mem
-  have hm₁_le : m₁ ≤ 616000 := hbound cs hd
-  -- m₁ ≥ 2 (all congruence classes have modulus ≥ 2)
-  have hm₁_ge : m₁ ≥ 2 := by
-    have hmem := Finset.min'_mem cs.moduli _
-    simp only [CoveringSystem.moduli, List.mem_toFinset, List.mem_map] at hmem
-    obtain ⟨c, _, hc⟩ := hmem
-    rw [← hm₁_def, ← hc]; exact c.modulus_pos
-  -- Color of m₁ = ⟨m₁, _⟩
-  have hcm₁ : (fun n => if h : n ≤ 616000 then (⟨n, by omega⟩ : Fin 616001)
-      else ⟨0, by omega⟩) m₁ = ⟨m₁, by omega⟩ := by simp [hm₁_le]
-  have hm₁_color := hcolor m₁ hm₁_mem
-  rw [hcm₁] at hm₁_color
-  -- There exists another modulus m₂ ≠ m₁ (≥ 2 distinct moduli)
-  have hcard := covering_distinct_moduli_card_ge_two cs hd
-  obtain ⟨m₂, hm₂_mem, hm₂_ne⟩ : ∃ m₂ ∈ cs.moduli, m₂ ≠ m₁ := by
-    by_contra h; push_neg at h
-    have : cs.moduli ⊆ {m₁} := fun x hx => Finset.mem_singleton.mpr (h x hx)
-    have := Finset.card_le_card this; simp at this; omega
-  have hm₂_color := hcolor m₂ hm₂_mem
-  by_cases hm₂_le : m₂ ≤ 616000
-  · -- m₂ ≤ 616000: color(m₂) = ⟨m₂, _⟩ ≠ ⟨m₁, _⟩
-    have hcm₂ : (fun n => if h : n ≤ 616000 then (⟨n, by omega⟩ : Fin 616001)
-        else ⟨0, by omega⟩) m₂ = ⟨m₂, by omega⟩ := by simp [hm₂_le]
-    rw [hcm₂] at hm₂_color
-    have : m₁ = m₂ := Fin.val_eq_of_eq (hm₂_color.symm.trans hm₁_color)
-    exact hm₂_ne this.symm
-  · -- m₂ > 616000: color(m₂) = ⟨0, _⟩ ≠ ⟨m₁, _⟩ (since m₁ ≥ 2)
-    push_neg at hm₂_le
-    have hcm₂ : (fun n => if h : n ≤ 616000 then (⟨n, by omega⟩ : Fin 616001)
-        else ⟨0, by omega⟩) m₂ = ⟨0, by omega⟩ := by
-      simp [show ¬(m₂ ≤ 616000) by omega]
-    rw [hcm₂] at hm₂_color
-    have : m₁ = 0 := Fin.val_eq_of_eq (hm₂_color.symm.trans hm₁_color)
-    omega
 
 /- ## Summary
 
