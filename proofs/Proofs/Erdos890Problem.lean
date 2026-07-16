@@ -183,14 +183,8 @@ theorem cumulativeOmega_add (k j n : ℕ) :
 -- ## Part VIII: Conjecture 1 Verified for k = 1
 
 /-- ω(p) = 1 for any prime p: a prime has exactly one distinct prime factor. -/
-theorem omega_prime {p : ℕ} (hp : Nat.Prime p) : ω p = 1 := by
-  have h : p.primeFactors = {p} := by
-    ext q; simp only [Nat.mem_primeFactors, Finset.mem_singleton]
-    constructor
-    · rintro ⟨hq, hqp, -⟩
-      exact (hp.eq_one_or_self_of_dvd q hqp).resolve_left hq.one_lt.ne'
-    · rintro rfl; exact ⟨hp, dvd_refl p, hp.ne_zero⟩
-  skip
+theorem omega_prime {p : ℕ} (hp : Nat.Prime p) : ω p = 1 :=
+  ArithmeticFunction.cardDistinctFactors_apply_prime hp
 
 /-- **Conjecture 1 verified for k = 1:**
     For k = 1, S₁(n) = ω(n). Every prime p has ω(p) = 1 ≤ 1 + π(1), and primes
@@ -198,8 +192,8 @@ theorem omega_prime {p : ℕ} (hp : Nat.Prime p) : ω p = 1 := by
 theorem conjecture1_k1 : LiminfAtMost (cumulativeOmega 1) (1 + pi 1) := by
   intro N₀
   obtain ⟨p, hN, hp⟩ := Nat.exists_infinite_primes N₀
-  exact ⟨p, hN, by rw [cumulativeOmega_one]
-                     calc ω p = 1 := omega_prime hp
-                       _ ≤ 1 + pi 1 := by omega⟩
+  refine ⟨p, hN, ?_⟩
+  rw [cumulativeOmega_one, omega_prime hp]
+  omega
 
 end Erdos890
