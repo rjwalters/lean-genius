@@ -141,15 +141,15 @@ theorem weyl_cesaro_re_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k �
   have h := weyl_cesaro_zero α hα k hk
   -- Bound |(∑ Re(exp))/N| ≤ ‖(∑ exp)/N‖ and the latter → 0 by weyl_cesaro_zero
   apply squeeze_zero_norm
-      (g := fun N => ‖(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)) /
+      (a := fun N => ‖(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)) /
         (N : ℂ)‖)
   · intro N
-    rw [Real.norm_eq_abs, abs_div, abs_natCast, norm_div, Complex.norm_natCast]
+    rw [Real.norm_eq_abs, abs_div, Nat.abs_cast, norm_div, Complex.norm_natCast]
     apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
     have hsum_re : |(∑ n ∈ range N, (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re)| =
         |(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re| := by
       congr 1; exact (map_sum Complex.reAddGroupHom _ _).symm
-    rw [hsum_re]; exact Complex.norm_re_le_norm _
+    rw [hsum_re]; exact Complex.abs_re_le_norm _
   · simpa using h.norm
 
 /-- **Weyl's criterion for imaginary parts**: For irrational α and k ∈ ℤ \ {0},
@@ -161,15 +161,15 @@ theorem weyl_cesaro_im_zero (α : ℝ) (hα : Irrational α) (k : ℤ) (hk : k �
       Filter.atTop (nhds 0) := by
   have h := weyl_cesaro_zero α hα k hk
   apply squeeze_zero_norm
-      (g := fun N => ‖(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)) /
+      (a := fun N => ‖(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)) /
         (N : ℂ)‖)
   · intro N
-    rw [Real.norm_eq_abs, abs_div, abs_natCast, norm_div, Complex.norm_natCast]
+    rw [Real.norm_eq_abs, abs_div, Nat.abs_cast, norm_div, Complex.norm_natCast]
     apply div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)
     have hsum_im : |(∑ n ∈ range N, (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im)| =
         |(∑ n ∈ range N, Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im| := by
       congr 1; exact (map_sum Complex.imAddGroupHom _ _).symm
-    rw [hsum_im]; exact Complex.norm_im_le_norm _
+    rw [hsum_im]; exact Complex.abs_im_le_norm _
   · simpa using h.norm
 
 /-! ## Part IV: Equidistribution for Continuous Functions
@@ -191,7 +191,7 @@ private lemma equidist_approx (α : ℝ) (hα : Irrational α)
     (ε : ℝ) (hε : 0 < ε) :
     ∃ (h : ℝ → ℝ),
       (∀ x, |g x - h x| ≤ ε) ∧
-      (|∫ x in (0 : ℝ)..1, g x - ∫ x in (0 : ℝ)..1, h x| ≤ ε) ∧
+      (|(∫ x in (0 : ℝ)..1, g x) - ∫ x in (0 : ℝ)..1, h x| ≤ ε) ∧
       Filter.Tendsto
         (fun N : ℕ => (∑ n ∈ range N, h (α * (↑n + 1))) / ↑N)
         Filter.atTop (nhds (∫ x in (0 : ℝ)..1, h x)) := by
@@ -205,16 +205,18 @@ private lemma equidist_approx (α : ℝ) (hα : Irrational α)
           ∑ k ∈ cs, if k = 0 then (A k).re else 0) := by
     sorry  -- Stone-Weierstrass (span_fourier_closure_eq_top) + trig period integrals
   let h : ℝ → ℝ := fun x => ∑ k ∈ cs, (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑x)).re
-  have hh_cont : Continuous h := continuous_finset_sum cs fun k _ =>
-    Complex.continuous_re.comp ((continuous_const.mul (Complex.continuous_exp.comp
-      (continuous_const.mul (continuous_const.mul continuous_id')))).comp continuous_id')
+  have hh_cont : Continuous h := by
+    simp only [h]
+    fun_prop
   refine ⟨h, hclose, ?_, ?_⟩
   -- (B): |∫g - ∫h| ≤ ε from pointwise bound
   · rw [← intervalIntegral.integral_sub (hg_cont.intervalIntegrable 0 1)
           (hh_cont.intervalIntegrable 0 1)]
     calc |∫ x in (0:ℝ)..1, (g x - h x)|
-        ≤ ∫ x in (0:ℝ)..1, |g x - h x| :=
-          intervalIntegral.norm_integral_le_integral_norm (by norm_num)
+        = ‖∫ x in (0:ℝ)..1, (g x - h x)‖ := (Real.norm_eq_abs _).symm
+      _ ≤ ∫ x in (0:ℝ)..1, ‖g x - h x‖ :=
+          intervalIntegral.norm_integral_le_integral_norm (by norm_num : (0:ℝ) ≤ 1)
+      _ = ∫ x in (0:ℝ)..1, |g x - h x| := by simp_rw [Real.norm_eq_abs]
       _ ≤ ∫ _x in (0:ℝ)..1, ε := intervalIntegral.integral_mono_on (by norm_num)
           ((hg_cont.sub hh_cont).abs.intervalIntegrable 0 1) intervalIntegrable_const
           (fun x _ => hclose x)
@@ -230,17 +232,23 @@ private lemma equidist_approx (α : ℝ) (hα : Irrational α)
       ∑ k ∈ cs, (∑ n ∈ range N,
         (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1))).re) / ↑N
       from fun N => by
-        simp only [h]; push_cast
-        rw [← Finset.sum_div, Finset.sum_comm]
-        congr 1; ext n; apply Finset.sum_congr rfl; intro k _; push_cast; ring_nf]
+        simp only [h]
+        rw [Finset.sum_comm, Finset.sum_div]
+        refine Finset.sum_congr rfl (fun k _ => ?_)
+        congr 1
+        refine Finset.sum_congr rfl (fun n _ => ?_)
+        have hexp : (2 : ℂ) * ↑π * Complex.I * ↑k * ↑(α * (↑n + 1)) =
+            2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1) := by push_cast; ring
+        rw [hexp]]
   apply tendsto_finset_sum; intro k _
   by_cases hk : k = 0
   · -- k = 0: constant Re(A₀) for N ≥ 1
     subst hk; simp only [ite_true, Int.cast_zero, zero_mul, Complex.exp_zero, mul_one, mul_zero]
-    apply Filter.Tendsto.congr' tendsto_const_nhds
+    refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
     apply Filter.eventually_atTop.mpr ⟨1, fun N hN => ?_⟩
-    rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul,
-        mul_div_cancel_right₀ _ (Nat.cast_ne_zero.mpr (Nat.one_le_iff_ne_zero.mp hN))]
+    have hNne : (N:ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.one_le_iff_ne_zero.mp hN)
+    simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    field_simp
   · -- k ≠ 0: → 0 by Weyl criterion
     simp only [if_neg hk]
     -- Aₖ e^{2πikα(n+1)} = Cₖ · e^{2πikαn} where Cₖ = Aₖ e^{2πikα}
@@ -248,12 +256,16 @@ private lemma equidist_approx (α : ℝ) (hα : Irrational α)
     have hfactor : ∀ n : ℕ,
         A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1)) =
         Ck * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n) := fun n => by
-      simp [Ck, ← Complex.exp_add]; push_cast; ring_nf; congr 1; ring
-    simp_rw [fun n => show (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1))).re =
+      simp only [Ck]
+      rw [show (2:ℂ) * ↑π * Complex.I * ↑k * ↑α * (↑n + 1) =
+          2 * ↑π * Complex.I * ↑k * ↑α + 2 * ↑π * Complex.I * ↑k * ↑α * ↑n from by ring,
+        Complex.exp_add]
+      ring
+    have hterm_re : ∀ n : ℕ, (A k * Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * (↑n + 1))).re =
         Ck.re * (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).re -
-        Ck.im * (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im
-        from by rw [hfactor n]; exact Complex.mul_re Ck _,
-      Finset.sum_sub_distrib, ← Finset.mul_sum, mul_div_assoc]
+        Ck.im * (Complex.exp (2 * ↑π * Complex.I * ↑k * ↑α * ↑n)).im := fun n => by
+      rw [hfactor n]; exact Complex.mul_re Ck _
+    simp_rw [hterm_re, Finset.sum_sub_distrib, ← Finset.mul_sum, sub_div, mul_div_assoc]
     rw [show (0 : ℝ) = Ck.re * 0 - Ck.im * 0 from by ring]
     exact ((weyl_cesaro_re_zero α hα k hk).const_mul Ck.re).sub
           ((weyl_cesaro_im_zero α hα k hk).const_mul Ck.im)
@@ -283,17 +295,17 @@ theorem weyl_equidist_continuous (α : ℝ) (hα : Irrational α)
     by_cases hN0 : N = 0
     · simp [hN0]; linarith
     · have hNpos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (Nat.pos_of_ne_zero hN0)
-      rw [div_sub_div_eq_sub_div, abs_div, abs_of_nonneg hNpos.le, div_le_div_right hNpos,
+      rw [div_sub_div_same, abs_div, abs_of_nonneg hNpos.le, div_le_iff₀ hNpos,
         show ∑ n ∈ range N, g (α * (↑n + 1)) - ∑ n ∈ range N, h (α * (↑n + 1)) =
           ∑ n ∈ range N, (g (α * (↑n + 1)) - h (α * (↑n + 1))) from
-          (Finset.sum_sub_distrib).symm]
+          (Finset.sum_sub_distrib _ _).symm]
       calc |∑ n ∈ range N, (g (α * (↑n + 1)) - h (α * (↑n + 1)))|
           ≤ ∑ n ∈ range N, |g (α * (↑n + 1)) - h (α * (↑n + 1))| := by
             rw [← Real.norm_eq_abs]; simp_rw [← Real.norm_eq_abs]; exact norm_sum_le _ _
         _ ≤ ∑ _n ∈ range N, (ε / 3) :=
             Finset.sum_le_sum (fun n _ => h_close _)
         _ = ε / 3 * ↑N := by
-            rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+            rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_comm]
   -- Bound 2: |avg(h) - ∫h| < ε/3
   have hbd2 : dist ((∑ n ∈ range N, h (α * (↑n + 1))) / ↑N)
       (∫ x in (0 : ℝ)..1, h x) < ε / 3 := hN₀ N hN
@@ -364,14 +376,14 @@ private lemma sandwichUpCore_endpoints (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ ≤ 
   have h0 : max (0 : ℝ) (0 - (1 - δ)) = 0 := max_eq_left (by linarith)
   have h1 : max (0 : ℝ) (1 - (1 - δ)) = δ := by
     rw [show (1 : ℝ) - (1 - δ) = δ from by ring]; exact max_eq_right hδ.le
-  rw [h0, h1]; field_simp
+  rw [h0, h1]; field_simp; ring
 
 private lemma sandwichLoCore_endpoints (δ : ℝ) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
     sandwichLoCore δ 0 = sandwichLoCore δ 1 := by
   simp only [sandwichLoCore]
   have h0 : max (0 : ℝ) (δ - 0) = δ := by rw [sub_zero]; exact max_eq_right hδ.le
   have h1 : max (0 : ℝ) (δ - 1) = 0 := max_eq_left (by linarith)
-  rw [h0, h1]; field_simp
+  rw [h0, h1]; field_simp; ring
 
 /-- A continuous function composed with `Int.fract` is continuous, provided f(0) = f(1).
     At non-integers, `Int.fract` is locally `x - ⌊x⌋` (continuous). At integers,
@@ -448,7 +460,8 @@ private lemma continuous_comp_fract {f : ℝ → ℝ} (hf : Continuous f) (h01 :
           · -- ⌊x⌋ ≤ ⌊y⌋ from ⌊x⌋ ≤ y
             exact Int.le_floor.mpr hy.1.le
         simp [Int.fract, hfloor_eq]
-    exact h_eq.symm.continuousAt ((hf.comp (continuous_id.sub continuous_const)).continuousAt)
+    exact ContinuousAt.congr
+      ((hf.comp (continuous_id.sub continuous_const)).continuousAt) h_eq.symm
 
 /-- Continuous sandwich of the deviation function: for ε > 0, there exist
     continuous periodic g_lo ≤ deviation ≤ g_up with integrals near zero.
@@ -481,12 +494,12 @@ private lemma deviation_sandwich (ε : ℝ) (hε : 0 < ε) :
   · intro x
     show sandwichLoCore δ (Int.fract (x + 1)) = sandwichLoCore δ (Int.fract x)
     have : (x + 1 : ℝ) = x + ↑(1 : ℤ) := by push_cast; ring
-    rw [this, Int.fract_add_int]
+    rw [this, Int.fract_add_intCast]
   -- 4. g_up periodic
   · intro x
     show sandwichUpCore δ (Int.fract (x + 1)) = sandwichUpCore δ (Int.fract x)
     have : (x + 1 : ℝ) = x + ↑(1 : ℤ) := by push_cast; ring
-    rw [this, Int.fract_add_int]
+    rw [this, Int.fract_add_intCast]
   -- 5. g_lo ≤ deviation (bump is nonneg, so subtracting it gives ≤)
   · intro x
     simp only [sandwichLoCore, deviation]
@@ -508,55 +521,61 @@ private lemma deviation_sandwich (ε : ℝ) (hε : 0 < ε) :
     -- Decompose: sandwichUpCore δ x = (1/2 - x) + max(0, x-(1-δ))/δ
     have h_decomp : ∀ x : ℝ, sandwichUpCore δ x = (1/2 - x) + max 0 (x - (1 - δ)) / δ := by
       intro x; unfold sandwichUpCore; ring
-    conv_lhs => ext x; rw [h_decomp]
+    simp only [h_decomp]
     -- Split integral by linearity
-    rw [intervalIntegral.integral_add
-      ((continuous_const.sub continuous_id).intervalIntegrable 0 1)
-      (((continuous_const.max (continuous_id.sub continuous_const)).div
-        continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)]
+    have hc1 : Continuous (fun x : ℝ => (1:ℝ)/2 - x) := by fun_prop
+    have hc2 : Continuous (fun x : ℝ => max 0 (x - (1 - δ)) / δ) := by fun_prop
+    rw [intervalIntegral.integral_add (hc1.intervalIntegrable 0 1) (hc2.intervalIntegrable 0 1)]
     -- ∫₀¹ (1/2 - x) dx = 0
     have h_lin : ∫ x in (0:ℝ)..1, (1/2 - x : ℝ) = 0 := by
       have h1 : ∫ x in (0:ℝ)..1, (1:ℝ)/2 = 1/2 := by
         rw [intervalIntegral.integral_const]; norm_num
       have h2 : ∫ x in (0:ℝ)..1, (x : ℝ) = 1/2 := by
         rw [integral_id]; norm_num
-      linarith [intervalIntegral.integral_sub
-        (intervalIntegrable_const) (continuous_id.intervalIntegrable 0 1)]
+      rw [intervalIntegral.integral_sub intervalIntegrable_const
+        ((show Continuous (fun x : ℝ => x) by fun_prop).intervalIntegrable 0 1), h1, h2]
+      norm_num
     -- ∫₀¹ max(0,x-(1-δ))/δ ≤ δ via splitting at 1-δ and bounding by 1
     have h_bump : ∫ x in (0:ℝ)..1, max 0 (x - (1 - δ)) / δ ≤ δ := by
       -- Split: ∫₀¹ = ∫₀^(1-δ) + ∫_(1-δ)^1
       have h_intble : IntervalIntegrable (fun x => max 0 (x - (1 - δ)) / δ)
-          MeasureTheory.MeasureSpace.volume 0 1 :=
-        (((continuous_const.max (continuous_id.sub continuous_const)).div
-          continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)
-      rw [show (1 : ℝ) = (1 - δ) + δ from by ring,
-          ← intervalIntegral.integral_add_adjacent_intervals
-            (h_intble.mono_set (by
-              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))
-            (h_intble.mono_set (by
-              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))]
+          (MeasureTheory.volume : MeasureTheory.Measure ℝ) 0 1 := hc2.intervalIntegrable 0 1
+      have h_mem0 : (0:ℝ) ∈ Set.uIcc (0:ℝ) 1 := by
+        rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)]; exact ⟨le_refl 0, by norm_num⟩
+      have h_mem1 : (1 - δ : ℝ) ∈ Set.uIcc (0:ℝ) 1 := by
+        rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)]; exact ⟨by linarith, by linarith⟩
+      have h_mem2 : (1:ℝ) ∈ Set.uIcc (0:ℝ) 1 := by
+        rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)]; exact ⟨by norm_num, le_refl 1⟩
+      have hsplit : (∫ x in (0:ℝ)..(1-δ), max 0 (x - (1 - δ)) / δ) +
+          ∫ x in (1-δ:ℝ)..(1:ℝ), max 0 (x - (1 - δ)) / δ =
+          ∫ x in (0:ℝ)..1, max 0 (x - (1 - δ)) / δ :=
+        intervalIntegral.integral_add_adjacent_intervals
+          (h_intble.mono_set (Set.uIcc_subset_uIcc h_mem0 h_mem1))
+          (h_intble.mono_set (Set.uIcc_subset_uIcc h_mem1 h_mem2))
+      rw [← hsplit]
       -- On [0, 1-δ]: max(0, x-(1-δ)) = 0 since x ≤ 1-δ
       have h_zero : ∫ x in (0:ℝ)..(1-δ), max 0 (x - (1 - δ)) / δ = 0 := by
-        apply intervalIntegral.integral_eq_zero_of_forall_eq_zero
-        intro x
-        simp only [max_eq_left_iff, sub_nonpos]
-        intro hx
-        simp [le_of_lt (show x - (1 - δ) ≤ 0 from by linarith), hδ_pos.ne']
+        have heq : Set.EqOn (fun x : ℝ => max 0 (x - (1 - δ)) / δ) (fun _ => (0:ℝ))
+            (Set.uIcc (0:ℝ) (1-δ)) := by
+          intro x hx
+          rw [Set.uIcc_of_le (by linarith : (0:ℝ) ≤ 1 - δ)] at hx
+          show max 0 (x - (1 - δ)) / δ = 0
+          rw [max_eq_left (by linarith [hx.2] : x - (1 - δ) ≤ 0)]
+          simp
+        rw [intervalIntegral.integral_congr heq, intervalIntegral.integral_zero]
       -- On [1-δ, 1]: max(0, x-(1-δ))/δ ≤ 1 (since x-(1-δ) ≤ δ)
-      have h_bound : ∫ x in (1-δ)..((1-δ)+δ), max 0 (x - (1 - δ)) / δ ≤ δ := by
-        calc ∫ x in (1-δ)..((1-δ)+δ), max 0 (x - (1 - δ)) / δ
-            ≤ ∫ x in (1-δ)..((1-δ)+δ), (1 : ℝ) := by
+      have h_bound : ∫ x in (1-δ:ℝ)..(1:ℝ), max 0 (x - (1 - δ)) / δ ≤ δ := by
+        calc ∫ x in (1-δ:ℝ)..(1:ℝ), max 0 (x - (1 - δ)) / δ
+            ≤ ∫ x in (1-δ:ℝ)..(1:ℝ), (1 : ℝ) := by
               apply intervalIntegral.integral_mono_on (by linarith)
-              · exact h_intble.mono_set (by
-                  constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le] <;> linarith)
+              · exact h_intble.mono_set (Set.uIcc_subset_uIcc h_mem1 h_mem2)
               · exact intervalIntegrable_const
               · intro x hx
-                rw [Set.uIcc_of_le (by linarith : 1 - δ ≤ (1 - δ) + δ)] at hx
                 rw [div_le_one hδ_pos]
-                exact le_max_of_le_right (by linarith [hx.2])
-          _ = 1 * ((1-δ+δ) - (1-δ)) := by rw [intervalIntegral.integral_const]
+                exact max_le hδ_pos.le (by linarith [hx.2])
+          _ = 1 * (1 - (1 - δ)) := by rw [intervalIntegral.integral_const, smul_eq_mul, mul_comm]
           _ = δ := by ring
-      linarith
+      linarith [h_zero, h_bound]
     linarith
   -- 8. -ε ≤ ∫₀¹ g_lo: symmetric argument for lower sandwich
   · -- Replace fract by id on [0,1]
@@ -571,55 +590,61 @@ private lemma deviation_sandwich (ε : ℝ) (hε : 0 < ε) :
     -- Decompose: sandwichLoCore δ x = (1/2 - x) - max(0, δ-x)/δ
     have h_decomp : ∀ x : ℝ, sandwichLoCore δ x = (1/2 - x) - max 0 (δ - x) / δ := by
       intro x; unfold sandwichLoCore; ring
-    conv_lhs => ext x; rw [h_decomp]
+    simp only [h_decomp]
     -- Split integral by linearity
-    rw [intervalIntegral.integral_sub
-      ((continuous_const.sub continuous_id).intervalIntegrable 0 1)
-      (((continuous_const.max (continuous_const.sub continuous_id)).div
-        continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)]
+    have hc1 : Continuous (fun x : ℝ => (1:ℝ)/2 - x) := by fun_prop
+    have hc2 : Continuous (fun x : ℝ => max 0 (δ - x) / δ) := by fun_prop
+    rw [intervalIntegral.integral_sub (hc1.intervalIntegrable 0 1) (hc2.intervalIntegrable 0 1)]
     -- Reuse: ∫₀¹ (1/2 - x) = 0
     have h_lin : ∫ x in (0:ℝ)..1, (1/2 - x : ℝ) = 0 := by
       have h1 : ∫ x in (0:ℝ)..1, (1:ℝ)/2 = 1/2 := by
         rw [intervalIntegral.integral_const]; norm_num
       have h2 : ∫ x in (0:ℝ)..1, (x : ℝ) = 1/2 := by
         rw [integral_id]; norm_num
-      linarith [intervalIntegral.integral_sub
-        (intervalIntegrable_const) (continuous_id.intervalIntegrable 0 1)]
+      rw [intervalIntegral.integral_sub intervalIntegrable_const
+        ((show Continuous (fun x : ℝ => x) by fun_prop).intervalIntegrable 0 1), h1, h2]
+      norm_num
     -- ∫₀¹ max(0,δ-x)/δ ≤ δ (symmetric to g_up)
     have h_bump : ∫ x in (0:ℝ)..1, max 0 (δ - x) / δ ≤ δ := by
       have h_intble : IntervalIntegrable (fun x => max 0 (δ - x) / δ)
-          MeasureTheory.MeasureSpace.volume 0 1 :=
-        (((continuous_const.max (continuous_const.sub continuous_id)).div
-          continuous_const (fun _ => hδ_pos.ne')).intervalIntegrable 0 1)
+          (MeasureTheory.volume : MeasureTheory.Measure ℝ) 0 1 := hc2.intervalIntegrable 0 1
+      have h_mem0 : (0:ℝ) ∈ Set.uIcc (0:ℝ) 1 := by
+        rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)]; exact ⟨le_refl 0, by norm_num⟩
+      have h_mem1 : (δ:ℝ) ∈ Set.uIcc (0:ℝ) 1 := by
+        rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)]; exact ⟨hδ_pos.le, hδ_le_one⟩
+      have h_mem2 : (1:ℝ) ∈ Set.uIcc (0:ℝ) 1 := by
+        rw [Set.uIcc_of_le (by norm_num : (0:ℝ) ≤ 1)]; exact ⟨by norm_num, le_refl 1⟩
       -- Split: ∫₀¹ = ∫₀^δ + ∫_δ^1
-      rw [show (1 : ℝ) = δ + (1 - δ) from by ring,
-          ← intervalIntegral.integral_add_adjacent_intervals
-            (h_intble.mono_set (by
-              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))
-            (h_intble.mono_set (by
-              constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le, le_max_of_le_right] <;> linarith))]
+      have hsplit : (∫ x in (0:ℝ)..δ, max 0 (δ - x) / δ) +
+          ∫ x in (δ:ℝ)..(1:ℝ), max 0 (δ - x) / δ =
+          ∫ x in (0:ℝ)..1, max 0 (δ - x) / δ :=
+        intervalIntegral.integral_add_adjacent_intervals
+          (h_intble.mono_set (Set.uIcc_subset_uIcc h_mem0 h_mem1))
+          (h_intble.mono_set (Set.uIcc_subset_uIcc h_mem1 h_mem2))
+      rw [← hsplit]
       -- On [0, δ]: max(0, δ-x)/δ ≤ 1
       have h_first : ∫ x in (0:ℝ)..δ, max 0 (δ - x) / δ ≤ δ := by
         calc ∫ x in (0:ℝ)..δ, max 0 (δ - x) / δ
             ≤ ∫ x in (0:ℝ)..δ, (1 : ℝ) := by
               apply intervalIntegral.integral_mono_on hδ_pos.le
-              · exact h_intble.mono_set (by
-                  constructor <;> simp [Set.uIcc_of_le, min_le_of_left_le] <;> linarith)
+              · exact h_intble.mono_set (Set.uIcc_subset_uIcc h_mem0 h_mem1)
               · exact intervalIntegrable_const
               · intro x hx
-                rw [Set.uIcc_of_le hδ_pos.le] at hx
                 rw [div_le_one hδ_pos]
-                exact le_max_of_le_right (by linarith [hx.1])
-          _ = 1 * (δ - 0) := by rw [intervalIntegral.integral_const]
+                exact max_le hδ_pos.le (by linarith [hx.1])
+          _ = 1 * (δ - 0) := by rw [intervalIntegral.integral_const, smul_eq_mul, mul_comm]
           _ = δ := by ring
       -- On [δ, 1]: max(0, δ-x) = 0 since δ ≤ x
-      have h_second : ∫ x in δ..(δ + (1-δ)), max 0 (δ - x) / δ = 0 := by
-        apply intervalIntegral.integral_eq_zero_of_forall_eq_zero
-        intro x
-        simp only [max_eq_left_iff, sub_nonpos]
-        intro hx
-        simp [le_of_lt (show δ - x ≤ 0 from by linarith), hδ_pos.ne']
-      linarith
+      have h_second : ∫ x in (δ:ℝ)..(1:ℝ), max 0 (δ - x) / δ = 0 := by
+        have heq : Set.EqOn (fun x : ℝ => max 0 (δ - x) / δ) (fun _ => (0:ℝ))
+            (Set.uIcc (δ:ℝ) (1:ℝ)) := by
+          intro x hx
+          rw [Set.uIcc_of_le hδ_le_one] at hx
+          show max 0 (δ - x) / δ = 0
+          rw [max_eq_left (by linarith [hx.1] : δ - x ≤ 0)]
+          simp
+        rw [intervalIntegral.integral_congr heq, intervalIntegral.integral_zero]
+      linarith [h_first, h_second]
     -- Combine: 0 - bump ≥ -δ ≥ -ε
     linarith
 

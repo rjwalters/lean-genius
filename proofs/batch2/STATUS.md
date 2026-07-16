@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 195 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1002OQ01OQ01 (HARD 22min/252k ~25 sites: squeeze_zero_norm(a:=);
+Complex.abs_re_le_norm; div_le_iff₀; Int.fract_add_intCast; uIcc_subset_uIcc+EqOn+integral_congr vs broken
+.mono_set constructor; integral notation precedence parens). Repair: none (pre-existing sorry+axiom untouched).
+
 # DOCTOR SINGLE-PROOF BATCH 194 (all-Sonnet + Opus escalation SUCCESS, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): BallotProblemOQ03OQ02 (OPUS ESCALATION SUCCEEDED — 29min/244k, first
