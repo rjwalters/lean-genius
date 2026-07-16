@@ -1,6 +1,8 @@
 import Mathlib.GroupTheory.Sylow
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.Alternating.Simple
 import Mathlib.Tactic
 
 /-
@@ -86,11 +88,7 @@ theorem isHallDivisor_of_prime {p n : ℕ} (hp : p.Prime) (hdvd : p ∣ n)
 /-- The trivial subgroup ⊥ (order 1) is a Hall subgroup of any group. -/
 theorem hall_trivial_bot [Finite G] : IsHallSubgroup (⊥ : Subgroup G) := by
   unfold IsHallSubgroup
-  have hone : Nat.card (⊥ : Subgroup G) = 1 := by
-    haveI : Unique ↥(⊥ : Subgroup G) :=
-      ⟨⟨⟨1, one_mem ⊥⟩, fun ⟨x, hx⟩ => Subtype.ext (mem_bot.mp hx)⟩⟩
-    exact Nat.card_unique
-  rw [hone]
+  rw [card_bot]
   exact Nat.coprime_one_left _
 
 /-- G itself (index 1) is a Hall subgroup. -/
@@ -106,7 +104,8 @@ theorem hall_trivial_top [Finite G] : IsHallSubgroup (⊤ : Subgroup G) := by
 /-- For any prime p dividing |G|, there is a subgroup of order p (Cauchy). -/
 theorem hall_prime_div [Fintype G] (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintype.card G) :
     ∃ H : Subgroup G, Nat.card H = p := by
-  obtain ⟨x, hx⟩ := exists_prime_orderOf_dvd_card (p := p) hp hdvd
+  haveI : Fact p.Prime := ⟨hp⟩
+  obtain ⟨x, hx⟩ := exists_prime_orderOf_dvd_card (p := p) hdvd
   exact ⟨Subgroup.zpowers x, by rw [Nat.card_zpowers, hx]⟩
 
 -- ============================================================
@@ -114,11 +113,11 @@ theorem hall_prime_div [Fintype G] (p : ℕ) (hp : p.Prime) (hdvd : p ∣ Fintyp
 -- ============================================================
 
 /-- In a cyclic group, the generator raised to the (n/d)-th power has order d. -/
-private lemma orderOf_pow_div_of_dvd {g : G} (d : ℕ) (hd : d ∣ orderOf g) (hd_pos : 0 < d) :
+private lemma orderOf_pow_div_of_dvd [Finite G] {g : G} (d : ℕ) (hd : d ∣ orderOf g) (hd_pos : 0 < d) :
     orderOf (g ^ (orderOf g / d)) = d := by
   rw [orderOf_pow' g (Nat.div_pos (Nat.le_of_dvd (orderOf_pos g) hd) hd_pos).ne',
       Nat.gcd_eq_right (Nat.div_dvd_of_dvd hd)]
-  exact Nat.div_div_self hd (orderOf_pos g).le
+  exact Nat.div_div_self hd (orderOf_pos g).ne'
 
 /-- **Hall's Theorem for Cyclic Groups**: A cyclic group has a subgroup of every
     order dividing |G|. (Every divisor of a cyclic group order is a Hall divisor.) -/
@@ -170,8 +169,11 @@ axiom hall_solvable [Fintype G] [IsSolvable G]
 /-- Solvability is necessary for Hall's theorem.
     A₅ (order 60) is not solvable. -/
 theorem hall_solvability_necessary :
-    ¬ IsSolvable (alternatingGroup (Fin 5)) :=
-  alternatingGroup.not_solvable (Fin 5) (by norm_num)
+    ¬ IsSolvable (alternatingGroup (Fin 5)) := by
+  haveI : IsSimpleGroup (alternatingGroup (Fin 5)) :=
+    alternatingGroup.isSimpleGroup (by norm_num)
+  rw [← IsSimpleGroup.comm_iff_isSolvable]
+  decide
 
 /-- 15 is a Hall divisor of 60 (= |A₅|): 15 | 60 and gcd(15, 4) = 1. -/
 theorem fifteen_hall_divisor_sixty : IsHallDivisor 15 60 :=
