@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 140 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos783Problem (h_le type annot vs Zero synth; removed rw[←card_range p]
+occurrence-widening; set+cases Nat.find -> rcases hk+omega; (a:ℝ) casts on 2nd ∧-conjunct elaborating ℕ;
+gcongr vs drifted div_le_div_of_nonneg_left). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 139 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos752Problem (G.Walk V V ill-typed->∃u,Walk u u; [Nonempty V] adds;
