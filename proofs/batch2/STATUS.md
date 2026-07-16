@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 275 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): TaylorTheoremOQ02 (Fintype.card_perm+card_fin; HasSum.congr->congr_fun;
+HasFPowerSeriesAt.hasSum/.le_radius gone; #38611 REPAIR p.radius-bounded from bare HasFPowerSeriesAt UNSOUND
+-> HasFPowerSeriesOnBall f p x₀ r + bound y by r). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 274 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): KonigsbergOQ02OQ01 (HARD 40min/349k/187tools: 950-line Hierholzer ~35 sites;
