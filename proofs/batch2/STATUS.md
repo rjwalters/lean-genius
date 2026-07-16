@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 108 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1098OQ01OQ01 (classical for DecidableEq on Finset literal +
+card_pair; ≠ .symm into IsClique; Subgroup.mem_center_iff orientation flipped needs .symm; subst hzg
+vs double-▸). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 107 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1127Problem (Point 1 ![x]->!₂[x] EuclideanSpace coercion;
