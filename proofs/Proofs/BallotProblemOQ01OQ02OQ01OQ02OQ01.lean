@@ -56,19 +56,17 @@ identity collapses onto the already-verified counting lemma
 
 ## Status
 
-UNVERIFIED / build-pending. The Docker build wrapper and the Aristotle proof
-service were both unavailable during this session, so this file has NOT been
-machine-checked. The proof reduces to the verified parent lemma
-`uniform_fiber_count` via standard Mathlib measure-theory API
-(`Measure.map_apply`, `Measure.restrict_apply`, `Measure.count_apply_finite`,
-`Set.ncard_eq_toFinset_card`, `Measure.map_smul`). It must be built before being
-marked `verified`.
+VERIFIED (Lean 4.31.0 / Mathlib, 0 sorries, 0 axioms). The proof reduces to the
+verified parent lemma `uniform_fiber_count` via standard Mathlib measure-theory
+API (`Measure.map_apply`, `Measure.restrict_apply`, `Measure.count_apply_finite`,
+`Set.ncard_eq_toFinset_card`, `Measure.map_smul`).
 -/
 
 import Proofs.BallotProblemOQ01OQ02OQ01OQ02
 import Mathlib
 
 open ProbabilityTheory Set MeasureTheory
+open scoped ENNReal
 
 namespace BallotCountMapTransfer
 
@@ -172,14 +170,11 @@ theorem uniformOn_map_eq
     (c : ℕ) (hc_pos : 0 < c) (hc : ∀ t ∈ T, (A ∩ f ⁻¹' {t}).ncard = c) :
     (uniformOn A).map f = uniformOn T := by
   -- `uniformOn s = (count s)⁻¹ • count.restrict s` (definition via `cond`).
-  -- Surjectivity from the fibers: every `t ∈ T` has `c > 0` preimages in `A`.
-  have hf_surj : SurjOn f A T := fun t ht => by
-    obtain ⟨x, hx⟩ := Set.nonempty_of_ncard_ne_zero (s := A ∩ f ⁻¹' {t})
-      (by rw [hc t ht]; exact hc_pos.ne')
-    exact ⟨x, hx.1, hx.2⟩
-  -- Counting relation `count A = c * count T` from the surjective fiber decomposition.
+  -- Counting relation `count A = c * count T` from the fiber decomposition.
+  -- (`surjOn_fiber_decomp` needs `MapsTo f A T`, not `SurjOn f A T` — see
+  -- `BallotProblemOQ01OQ02.lean`'s doc comment / #38611.)
   have hA_ncard : A.ncard = c * T.ncard := by
-    rw [BallotGeneralFiberTransfer.surjOn_fiber_decomp f A T hf_surj]
+    rw [BallotGeneralFiberTransfer.surjOn_fiber_decomp f A T hmaps]
     exact BallotFiberTransfer.ncard_biUnion_eq_of_uniform
       (fun t => A ∩ f ⁻¹' {t}) T hT
       (fun t _ => hA.subset inter_subset_left)
@@ -194,12 +189,17 @@ theorem uniformOn_map_eq
   unfold uniformOn ProbabilityTheory.cond
   rw [Measure.map_smul, count_restrict_map_eq f hf A T hA hT hmaps c hc]
   -- Goal: `(count A)⁻¹ • (c • count.restrict T) = (count T)⁻¹ • count.restrict T`.
-  rw [smul_smul, hcountA, hcountT, hA_ncard]
+  -- Cast the ℕ-smul (`c • _`) to an `ℝ≥0∞`-smul so `smul_smul` can combine it with
+  -- the outer `(count A)⁻¹ • _` (v4.31: these no longer unify as the same `smul_smul`
+  -- instance without the explicit `Nat.cast_smul_eq_nsmul` bridge).
+  rw [← Nat.cast_smul_eq_nsmul ℝ≥0∞ c, smul_smul, hcountA, hcountT, hA_ncard]
   -- `(c * T.ncard)⁻¹ * c = (T.ncard)⁻¹` in ℝ≥0∞ (c ≠ 0, T.ncard ≠ 0, both finite).
   congr 1
   have hc0 : (c : ℝ≥0∞) ≠ 0 := by exact_mod_cast hc_pos.ne'
   have hcT : ((c * T.ncard : ℕ) : ℝ≥0∞) = (c : ℝ≥0∞) * (T.ncard : ℝ≥0∞) := by push_cast; ring
-  rw [hcT, ENNReal.mul_inv (Or.inl hc0) (Or.inl (by exact_mod_cast (by omega : c * T.ncard ≠ 0))),
-      mul_comm, mul_assoc, ENNReal.inv_mul_cancel hc0 (ENNReal.natCast_ne_top c), mul_one]
+  rw [hcT, ENNReal.mul_inv (Or.inl hc0) (Or.inl (ENNReal.natCast_ne_top c)), mul_comm]
+  -- Goal now right-associated (`↑c * ((↑c)⁻¹ * (↑T.ncard)⁻¹) = (↑T.ncard)⁻¹`); v4.31's
+  -- `mul_comm` normal form no longer matches the old left-assoc `mul_assoc` rewrite.
+  rw [← mul_assoc, ENNReal.mul_inv_cancel hc0 (ENNReal.natCast_ne_top c), one_mul]
 
 end BallotCountMapTransfer
