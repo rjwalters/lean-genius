@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 81 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LebesgueMeasureOQ06 (SONNET 110min/604k/418-tools — LONGEST agent of session,
+~1500-line Banach-Tarski: List.Chain'->IsChain; Ultrafilter.lim now single-arg self-limit -> (U.map g).lim +
+le_nhds_lim; EuclideanSpace/WithLp needs .ofLp/.toLp; unblocks LebesgueMeasureOQ06OQ01). Repairs: none.
+
 # LEDGER CORRECTION + RECLASSIFY (2026-07-16)
 
 **DATA CORRECTION:** proofs/spike-logs-full/results-full.tsv is the v4.31 SPIKE-FAILURE list (files that broke
