@@ -52,9 +52,30 @@ theorem greedyCount_le_sqrt (N : ℕ) :
   set F : Finset ℕ := (Finset.range (N + 1)).filter (fun k => greedySidonSeq k ≤ N) with hF
   set B : Finset ℕ := F.image greedySidonSeq with hB
   have hinj : Function.Injective greedySidonSeq := greedySidonSeq_strictMono.injective
-  -- `|B| = greedyCount N` because the greedy sequence is injective.
+  -- `|B| = greedyCount N` because `B`, as a *set*, is exactly the value-set that
+  -- `greedyCount N` counts: every index `k ≤ N` with `greedySidonSeq k ≤ N` gives a
+  -- value `greedySidonSeq k ∈ [1, N] ∩ greedySeqSet N`, and conversely.
   have hcardB : B.card = greedyCount N := by
-    rw [hB, Finset.card_image_of_injective _ hinj, greedyCount, hF]
+    have hBeq : B = (Finset.Icc 1 N).filter (fun x => x ∈ greedySeqSet N) := by
+      rw [hB]
+      ext x
+      simp only [Finset.mem_image, hF, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
+      constructor
+      · rintro ⟨k, ⟨hkN, hkle⟩, rfl⟩
+        have h1 : 1 ≤ greedySidonSeq k := by
+          have h0 : greedySidonSeq 0 = 1 := rfl
+          have hmono : greedySidonSeq 0 ≤ greedySidonSeq k :=
+            greedySidonSeq_strictMono.monotone (Nat.zero_le k)
+          omega
+        refine ⟨⟨h1, hkle⟩, ?_⟩
+        rw [greedySeqSet_eq_image]
+        exact Finset.mem_image_of_mem _ (Finset.mem_range.mpr hkN)
+      · rintro ⟨⟨h1x, hxN⟩, hxset⟩
+        rw [greedySeqSet_eq_image, Finset.mem_image] at hxset
+        obtain ⟨k, hk, rfl⟩ := hxset
+        exact ⟨k, ⟨Finset.mem_range.mp hk, hxN⟩, rfl⟩
+    rw [hBeq]
+    rfl
   -- `B` is Sidon: it is a subset of the (Sidon) image of `range (N+1)`.
   have hsub : B ⊆ Finset.image greedySidonSeq (Finset.range (N + 1)) := by
     rw [hB]
