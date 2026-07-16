@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 226 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos402Problem (HARD 15min: Nat.mul_le_mul_left multiplier-first;
+Finset.card_sdiff unconditional; .trans _.symm vs ▸ motive x11; Nat.lcm_dvd for 6∣d chain; carry exact
+mult eq alongside floor-div). Repair: none (pre-existing sorry Balasubramanian-Soundararajan untouched).
+
 # DOCTOR SINGLE-PROOF BATCH 225 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos454Problem (Prime ambiguous under open Nat -> Nat.Prime; REMOVED 2
