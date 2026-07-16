@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 216 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos25Problem (cascade artifact, no edits; clean once parent
+Erdos25LogDensity olean built). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 215 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos340GreedyCountUpper (Icc filter vs value-set filter no longer defeq-rfl
