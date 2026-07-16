@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 250 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos99Problem (filter application parens; Finset.exists_ne_of_one_lt_card
+gone -> one_lt_card_iff.mp; triangularLatticePoint fun k=>if -> !₂[...] EuclideanSpace). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 249 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FundamentalTheoremAlgebra (Splits 2-arg->1-arg unary; splits_codomain->
