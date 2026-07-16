@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 252 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): GeneralQuarticAxiomsDischarge (cpow_half_sq timeout -> Complex.cpow_eq_pow
+before cpow_nat_inv_pow; rcases h:e generalizes e in goal -> close with rfl). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 251 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FrobeniusNumberOQ01 (Even destructure a=ka+ka; card_filter_add_card_filter_not;
