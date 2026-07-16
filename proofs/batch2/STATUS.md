@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 95 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos434Problem (forward-ref reorder sylvester_frobenius/count;
+Nat.coprime_succ_self_right gone->coprime_self_add_right; subtype-comprehension set-builder
+`{f x | A:T // P}` syntax gone->binder-predicate form; nlinarith weaker on Nat-subtraction products
+->Nat.mul_le_mul calc). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 94 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos864Problem (~40 v4.31 drift sites: open scoped Classical for
