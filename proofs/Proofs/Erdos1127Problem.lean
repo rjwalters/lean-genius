@@ -147,17 +147,17 @@ If S ⊆ ℝ is ℚ-linearly independent, then all pairwise distances in S are d
 -/
 axiom ch_implies_1d_image_distinct :
   ∀ (S : Set ℝ), IsQLinearlyIndependent S →
-    HasDistinctDistances (n := 1) ((fun x => ![x]) '' S)
+    HasDistinctDistances (n := 1) ((fun x => !₂[x]) '' S)
 
 axiom ch_implies_1d_union_cover :
   ∀ (S : ℕ → Set ℝ), (⋃ i, S i) = univ →
-    ∀ p : Point 1, ∃ i, p ∈ (fun x => ![x]) '' (S i)
+    ∀ p : Point 1, ∃ i, p ∈ (fun x => !₂[x]) '' (S i)
 
 theorem ch_implies_1d : ContinuumHypothesis → Erdos1127Question' 1 := by
   intro hCH
   rw [erdos_kakutani_equivalence] at hCH
   obtain ⟨S, hInd, hUnion⟩ := hCH
-  use fun i => (fun x => ![x]) '' (S i)
+  use fun i => (fun x => !₂[x]) '' (S i)
   constructor
   · intro i
     -- ℚ-linear independence implies distinct distances
@@ -225,7 +225,7 @@ decomposition fails. The transition from finite to countable is the crux.
 For a finite set, count the number of distinct pairwise distances.
 -/
 noncomputable def numDistinctDistances {n : ℕ} (S : Finset (Point n)) : ℕ :=
-  (S.val.subsets 2).image (fun pair =>
+  (S.val.powersetCard 2).map (fun pair =>
     match pair.toList with
     | [p, q] => dist' p q
     | _ => 0) |>.toFinset.card
