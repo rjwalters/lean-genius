@@ -55,9 +55,14 @@ theorem not_sidon_iff_blocked (A : Set ℕ) (x : ℕ) (hA : IsSidonSet A) (hx : 
   obtain ⟨a, b, c, d, ha, hb, hc, hd, hab, hcd, heq, hne⟩ := hnotS
   -- Each of a,b,c,d is in A or equals x
   simp only [Set.mem_union, Set.mem_singleton_iff] at ha hb hc hd
-  -- Systematic case split: 16 cases from 4 binary membership choices
-  rcases ha with ha | rfl <;> rcases hb with hb | rfl <;>
-    rcases hc with hc | rfl <;> rcases hd with hd | rfl
+  -- Systematic case split: 16 cases from 4 binary membership choices.
+  -- (Deliberately avoid `rfl`-substitution here: substituting one of a/b/c/d
+  -- for x cascades unpredictably across later hypotheses, since each further
+  -- `x = _` equation gets rewritten by the previous substitution. Keeping
+  -- every equality as a plain hypothesis and closing each case with
+  -- `omega`/`rw` is robust to that.)
+  rcases ha with ha | ha <;> rcases hb with hb | hb <;>
+    rcases hc with hc | hc <;> rcases hd with hd | hd
   -- 1. a,b,c,d ∈ A: contradicts A being Sidon
   · exact absurd (hA a b c d ha hb hc hd hab hcd heq) hne
   -- 2. a,b,c ∈ A, d = x: type 1 (x + c = a + b)
@@ -68,38 +73,37 @@ theorem not_sidon_iff_blocked (A : Set ℕ) (x : ℕ) (hA : IsSidonSet A) (hx : 
   · right; exact ⟨a, b, ha, hb, hab, by omega⟩
   -- 5. a ∈ A, b = x, c,d ∈ A: type 1 (x + a = c + d)
   · left; exact ⟨a, c, d, ha, hc, hd, hcd, by omega⟩
-  -- 6. a ∈ A, b = x, c ∈ A, d = x: a + x = c + x → a = c, set contradiction
-  · have : a = c := by omega
-    subst this; exact absurd rfl hne
+  -- 6. a ∈ A, b = x, c ∈ A, d = x: a + x = c + x → a = c, so {a,b} = {c,d}
+  · have hac : a = c := by omega
+    have hbd : b = d := by omega
+    exact absurd (by rw [hac, hbd]) hne
   -- 7. a ∈ A, b = x, c = x, d ∈ A: a + x = x + d → a = d, {a,x} = {x,a}
-  · have : a = d := by omega
-    subst this
-    exact absurd (by ext z; simp [Set.mem_insert_iff, Set.mem_singleton_iff, or_comm]) hne
+  · have had : a = d := by omega
+    exact absurd (by rw [hb, hc, had]; exact Set.pair_comm d x) hne
   -- 8. a ∈ A, b = c = d = x: a + x = 2x → a = x, membership contradiction
-  · have : a = x := by omega
-    subst this; exact absurd ha hx
+  · have hax : a = x := by omega
+    exact absurd (hax ▸ ha) hx
   -- 9. a = x, b,c,d ∈ A: type 1 (x + b = c + d)
   · left; exact ⟨b, c, d, hb, hc, hd, hcd, by omega⟩
-  -- 10. a = x, b ∈ A, c ∈ A, d = x: x + b = c + x → b = c, {x,b} = {b,x}
-  · have : b = c := by omega
-    subst this
-    exact absurd (by ext z; simp [Set.mem_insert_iff, Set.mem_singleton_iff, or_comm]) hne
-  -- 11. a = x, b ∈ A, c = x, d ∈ A: x + b = x + d → b = d, set contradiction
-  · have : b = d := by omega
-    subst this; exact absurd rfl hne
+  -- 10. a = x, b ∈ A, c ∈ A, d = x: x + b = c + x → b = c, {x,b} = {c,x}
+  · have hbc : b = c := by omega
+    exact absurd (by rw [ha, hd, hbc]; exact Set.pair_comm x c) hne
+  -- 11. a = x, b ∈ A, c = x, d ∈ A: x + b = x + d → b = d, {x,b} = {x,d}
+  · have hbd : b = d := by omega
+    exact absurd (by rw [ha, hc, hbd]) hne
   -- 12. a = x, b ∈ A, c = d = x: x + b = 2x → b = x, membership contradiction
-  · have : b = x := by omega
-    subst this; exact absurd hb hx
+  · have hbx : b = x := by omega
+    exact absurd (hbx ▸ hb) hx
   -- 13. a = b = x, c,d ∈ A: type 2 (2x = c + d)
   · right; exact ⟨c, d, hc, hd, hcd, by omega⟩
   -- 14. a = b = x, c ∈ A, d = x: 2x = c + x → c = x, membership contradiction
-  · have : c = x := by omega
-    subst this; exact absurd hc hx
+  · have hcx : c = x := by omega
+    exact absurd (hcx ▸ hc) hx
   -- 15. a = b = x, c = x, d ∈ A: 2x = x + d → d = x, membership contradiction
-  · have : d = x := by omega
-    subst this; exact absurd hd hx
+  · have hdx : d = x := by omega
+    exact absurd (hdx ▸ hd) hx
   -- 16. a = b = c = d = x: {x,x} = {x,x}, set contradiction
-  · exact absurd rfl hne
+  · exact absurd (by rw [ha, hb, hc, hd]) hne
 
 /-- Every non-member of a maximal Sidon set is blocked. -/
 theorem maximal_sidon_all_blocked (A : Set ℕ) (N : ℕ) (hmax : IsMaximalSidonSet A N)
@@ -139,7 +143,8 @@ theorem type2_subset_midpoints (A : Set ℕ) :
 /-- The type-1 blocked set is finite when A is finite. -/
 theorem type1_blocked_finite (A : Set ℕ) (hfin : A.Finite) :
     (type1BlockedSet A).Finite := by
-  apply Set.Finite.subset ((sumset_finite A hfin).prod hfin).image.subset
+  apply Set.Finite.subset
+    (((sumset_finite A hfin).prod hfin).image (fun p : ℕ × ℕ => p.1 - p.2))
   intro x ⟨a, b, c, ha, hb, hc, _, heq⟩
   simp only [Set.mem_image, Set.mem_prod, Prod.exists]
   exact ⟨b + c, a, ⟨⟨b, c, hb, hc, rfl⟩, ha⟩, by omega⟩
@@ -168,12 +173,12 @@ theorem type1_blocked_count (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) 
       (fun p : ℕ × ℕ => p.1 - p.2) '' (sumset A ×ˢ A) := by
     intro x hx
     obtain ⟨a, ha, σ, hσ, heq⟩ := type1_subset_diff A hx
-    exact ⟨(σ, a), Set.mk_mem_prod hσ ha, by omega⟩
+    exact ⟨(σ, a), Set.mk_mem_prod hσ ha, by dsimp only; omega⟩
   calc (type1BlockedSet A).ncard
       ≤ ((fun p : ℕ × ℕ => p.1 - p.2) '' (sumset A ×ˢ A)).ncard :=
         Set.ncard_le_ncard hsub (hpfin.image _)
     _ ≤ (sumset A ×ˢ A).ncard := Set.ncard_image_le hpfin
-    _ = (sumset A).ncard * A.ncard := Set.ncard_prod _ _
+    _ = (sumset A).ncard * A.ncard := Set.ncard_prod
 
 /-- Upper bound on the number of type-2 blocked values:
     |type2BlockedSet A| ≤ |sumset A| = |A|(|A|+1)/2.
@@ -183,14 +188,15 @@ theorem type2_blocked_count (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) 
     (type2BlockedSet A).ncard ≤ (sumset A).ncard := by
   -- The map x ↦ 2*x is injective on ℕ
   have hinj : Set.InjOn (· * 2) (type2BlockedSet A) :=
-    fun _ _ _ _ h => by omega
+    fun _ _ _ _ h => by dsimp only at h; omega
   -- Its image lands in sumset(A): 2x = b+c means 2x ∈ sumset(A)
   have himg : (· * 2) '' (type2BlockedSet A) ⊆ sumset A := by
-    intro z ⟨x, ⟨b, c, hb, hc, _, heq⟩, rfl⟩
-    exact ⟨b, c, hb, hc, by omega⟩
+    intro z hz
+    obtain ⟨x, ⟨b, c, hb, hc, _, heq⟩, hxz⟩ := hz
+    exact ⟨b, c, hb, hc, by dsimp only at hxz; omega⟩
   calc (type2BlockedSet A).ncard
       = ((· * 2) '' (type2BlockedSet A)).ncard :=
-        (Set.ncard_image_of_injOn hinj (type2_blocked_finite A hfin)).symm
+        (hinj.ncard_image).symm
     _ ≤ (sumset A).ncard :=
         Set.ncard_le_ncard himg (sumset_finite A hfin)
 
@@ -208,11 +214,11 @@ theorem interval_ncard (N : ℕ) : (Interval N).ncard = N := by
   have hfin : (Interval N).Finite := by
     apply Set.Finite.subset (Set.finite_Icc 0 N)
     intro x ⟨_, h2⟩; exact ⟨Nat.zero_le x, h2⟩
-  rw [hfin.ncard_eq_toFinset_card']
+  rw [Set.ncard_eq_toFinset_card _ hfin]
   have h_eq : hfin.toFinset = Finset.Icc 1 N := by
     ext x
     simp only [Set.Finite.mem_toFinset, Interval, Set.mem_setOf_eq, Finset.mem_Icc]
-  rw [h_eq, Finset.card_Icc]
+  rw [h_eq, Nat.card_Icc]
   omega
 
 /-- A maximal Sidon set in {1,...,N} is finite. -/
@@ -254,7 +260,7 @@ theorem maximal_sidon_size_bound (A : Set ℕ) (N : ℕ) (hmax : IsMaximalSidonS
   -- N ≤ s + |type1| + |type2|
   have hfin_blocked := (type1_blocked_finite A hfin).union (type2_blocked_finite A hfin)
   have hN : N ≤ s + ((type1BlockedSet A).ncard + (type2BlockedSet A).ncard) := by
-    rw [← interval_ncard]
+    rw [← interval_ncard N]
     calc (Interval N).ncard
         ≤ (A ∪ (type1BlockedSet A ∪ type2BlockedSet A)).ncard :=
           Set.ncard_le_ncard h_cover (hfin.union hfin_blocked)

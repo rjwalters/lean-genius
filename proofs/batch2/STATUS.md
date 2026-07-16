@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 290 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos156OQ02 (16-case not_sidon split avoid rfl-subst cascade;
+Set.Finite.image explicit fn arg; ncard_prod/InjOn.ncard_image arg-shape; dsimp before omega beta;
+Finite.ncard_eq_toFinset_card'->Set.ncard_eq_toFinset_card). Repair: none. [migration toolkit saved PR#38981]
+
 # DOCTOR SINGLE-PROOF BATCH 289 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos10OQ01Incomplete01 (ROOT-CAUSE fix not heartbeat hack: omega/decide
