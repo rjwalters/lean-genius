@@ -139,7 +139,7 @@ section StoppingTimes
     - The time just before a losing bet -/
 def isValidStoppingStrategy {Ω : Type*} {m : MeasurableSpace Ω}
     (τ : Ω → ℕ) (ℱ : MeasureTheory.Filtration ℕ m) : Prop :=
-  MeasureTheory.IsStoppingTime ℱ τ
+  MeasureTheory.IsStoppingTime ℱ (fun ω => (τ ω : WithTop ℕ))
 
 /-- A bounded stopping time has τ(ω) ≤ N for all ω and some fixed N.
 
@@ -198,8 +198,8 @@ theorem fair_games_theorem
     (f : ℕ → Ω → ℝ)
     (hf : MeasureTheory.Martingale f ℱ μ)
     (τ π : Ω → ℕ)
-    (hτ : MeasureTheory.IsStoppingTime ℱ τ)
-    (hπ : MeasureTheory.IsStoppingTime ℱ π)
+    (hτ : MeasureTheory.IsStoppingTime ℱ (fun ω => (τ ω : WithTop ℕ)))
+    (hπ : MeasureTheory.IsStoppingTime ℱ (fun ω => (π ω : WithTop ℕ)))
     (hτπ : ∀ ω, τ ω ≤ π ω)
     (N : ℕ)
     (hπN : ∀ ω, π ω ≤ N) :
@@ -209,19 +209,32 @@ theorem fair_games_theorem
   -- For supermartingales: E[f_τ] ≥ E[f_π] (stopped values decrease in expectation)
   -- For martingales: E[f_τ] = E[f_π] (stopped values are constant in expectation)
 
+  -- v4.31: `IsStoppingTime`/`stoppedValue` now range over `WithTop ℕ` (to allow
+  -- stopping times that never fire). Our stopping times are always finite (ℕ-valued),
+  -- so we bridge via the coercion `τ ω ↦ (τ ω : WithTop ℕ)`, whose `stoppedValue`
+  -- collapses back to `f (τ ω) ω` since `WithTop.untopA` cancels a genuine coercion.
+  have hle : (fun ω => (τ ω : WithTop ℕ)) ≤ (fun ω => (π ω : WithTop ℕ)) :=
+    fun ω => WithTop.coe_le_coe.mpr (hτπ ω)
+  have hbdd : ∀ ω, (π ω : WithTop ℕ) ≤ (N : ℕ) :=
+    fun ω => WithTop.coe_le_coe.mpr (hπN ω)
+  have hcancel : ∀ (g : ℕ → Ω → ℝ) (σ : Ω → ℕ),
+      MeasureTheory.stoppedValue g (fun ω => (σ ω : WithTop ℕ)) = fun ω => g (σ ω) ω := by
+    intro g σ; funext ω; rfl
   -- We use the fact that for a martingale, both inequalities hold, giving equality
   apply le_antisymm
   · -- Martingale is a submartingale, so E[f_τ] ≤ E[f_π]
-    exact MeasureTheory.Submartingale.expected_stoppedValue_mono hf.submartingale hτ hπ hτπ hπN
+    have h := MeasureTheory.Submartingale.expected_stoppedValue_mono hf.submartingale hτ hπ hle hbdd
+    rwa [hcancel f τ, hcancel f π] at h
   · -- Martingale is a supermartingale, so E[f_τ] ≥ E[f_π]
     -- For supermartingales, the inequality is reversed
     -- We use that -f is a submartingale when f is a supermartingale
     have hsup := hf.supermartingale
     -- Supermartingale gives E[f_π] ≤ E[f_τ]
     have hneg : MeasureTheory.Submartingale (-f) ℱ μ := hsup.neg
-    have h := MeasureTheory.Submartingale.expected_stoppedValue_mono hneg hτ hπ hτπ hπN
-    -- Unfold stoppedValue and use integral_neg
-    simp only [MeasureTheory.stoppedValue, Pi.neg_apply] at h
+    have h := MeasureTheory.Submartingale.expected_stoppedValue_mono hneg hτ hπ hle hbdd
+    rw [hcancel (-f) τ, hcancel (-f) π] at h
+    -- Unfold Pi.neg_apply and use integral_neg
+    simp only [Pi.neg_apply] at h
     rw [MeasureTheory.integral_neg, MeasureTheory.integral_neg] at h
     linarith
 
@@ -236,13 +249,14 @@ theorem fair_games_corollary
     (f : ℕ → Ω → ℝ)
     (hf : MeasureTheory.Martingale f ℱ μ)
     (τ : Ω → ℕ)
-    (hτ : MeasureTheory.IsStoppingTime ℱ τ)
+    (hτ : MeasureTheory.IsStoppingTime ℱ (fun ω => (τ ω : WithTop ℕ)))
     (N : ℕ)
     (hτN : ∀ ω, τ ω ≤ N) :
     ∫ ω, f (τ ω) ω ∂μ = ∫ ω, f 0 ω ∂μ := by
   -- Apply the main theorem with π = τ and τ = 0
-  have h0 : MeasureTheory.IsStoppingTime ℱ (fun _ => 0) := MeasureTheory.isStoppingTime_const ℱ 0
-  have h0τ : ∀ ω, (fun _ => 0) ω ≤ τ ω := fun _ => Nat.zero_le _
+  have h0 : MeasureTheory.IsStoppingTime ℱ (fun _ : Ω => ((0 : ℕ) : WithTop ℕ)) :=
+    MeasureTheory.isStoppingTime_const ℱ 0
+  have h0τ : ∀ ω, (fun _ : Ω => (0 : ℕ)) ω ≤ τ ω := fun _ => Nat.zero_le _
   exact (fair_games_theorem f hf (fun _ => 0) τ h0 hτ h0τ N hτN).symm
 
 /-- Alternative formulation using Mathlib's stoppedValue notation -/
@@ -252,16 +266,24 @@ theorem fair_games_theorem_stoppedValue
     {ℱ : MeasureTheory.Filtration ℕ m}
     (f : ℕ → Ω → ℝ)
     (hf : MeasureTheory.Martingale f ℱ μ)
-    (τ π : Ω → ℕ)
+    (τ π : Ω → WithTop ℕ)
     (hτ : MeasureTheory.IsStoppingTime ℱ τ)
     (hπ : MeasureTheory.IsStoppingTime ℱ π)
     (hτπ : τ ≤ π)
     (N : ℕ)
     (hπN : ∀ ω, π ω ≤ N) :
     ∫ ω, MeasureTheory.stoppedValue f τ ω ∂μ = ∫ ω, MeasureTheory.stoppedValue f π ω ∂μ := by
-  -- stoppedValue f τ ω = f (τ ω) ω by definition
-  unfold MeasureTheory.stoppedValue
-  exact fair_games_theorem f hf τ π hτ hπ hτπ N hπN
+  -- v4.31: `τ`, `π` are already `WithTop ℕ`-valued (Mathlib's native stopping-time
+  -- domain), so this is a direct restatement of the optional stopping theorem via
+  -- `Submartingale.expected_stoppedValue_mono`, applied in both directions.
+  simp only [MeasureTheory.stoppedValue]
+  apply le_antisymm
+  · exact MeasureTheory.Submartingale.expected_stoppedValue_mono hf.submartingale hτ hπ hτπ hπN
+  · have hneg : MeasureTheory.Submartingale (-f) ℱ μ := hf.supermartingale.neg
+    have h := MeasureTheory.Submartingale.expected_stoppedValue_mono hneg hτ hπ hτπ hπN
+    simp only [MeasureTheory.stoppedValue, Pi.neg_apply] at h
+    rw [MeasureTheory.integral_neg, MeasureTheory.integral_neg] at h
+    linarith
 
 end OptionalStopping
 
@@ -291,10 +313,10 @@ axiom submartingale_of_stoppedValue_mono
     (f : ℕ → Ω → ℝ)
     (hadapt : MeasureTheory.Adapted ℱ f)
     (hint : ∀ n, MeasureTheory.Integrable (f n) μ)
-    (h : ∀ (τ π : Ω → ℕ), MeasureTheory.IsStoppingTime ℱ τ →
+    (h : ∀ (τ π : Ω → WithTop ℕ), MeasureTheory.IsStoppingTime ℱ τ →
       MeasureTheory.IsStoppingTime ℱ π →
       τ ≤ π → (∀ N : ℕ, (∀ ω, π ω ≤ N) →
-        ∫ ω, f (τ ω) ω ∂μ ≤ ∫ ω, f (π ω) ω ∂μ)) :
+        ∫ ω, MeasureTheory.stoppedValue f τ ω ∂μ ≤ ∫ ω, MeasureTheory.stoppedValue f π ω ∂μ)) :
     MeasureTheory.Submartingale f ℱ μ
 
 /-- A process is a submartingale iff E[f_τ] ≤ E[f_π] for all bounded stopping times τ ≤ π.
@@ -315,10 +337,10 @@ theorem submartingale_characterization
     (hadapt : MeasureTheory.Adapted ℱ f)
     (hint : ∀ n, MeasureTheory.Integrable (f n) μ) :
     MeasureTheory.Submartingale f ℱ μ ↔
-    (∀ (τ π : Ω → ℕ), MeasureTheory.IsStoppingTime ℱ τ →
+    (∀ (τ π : Ω → WithTop ℕ), MeasureTheory.IsStoppingTime ℱ τ →
       MeasureTheory.IsStoppingTime ℱ π →
       τ ≤ π → (∀ N : ℕ, (∀ ω, π ω ≤ N) →
-        ∫ ω, f (τ ω) ω ∂μ ≤ ∫ ω, f (π ω) ω ∂μ)) := by
+        ∫ ω, MeasureTheory.stoppedValue f τ ω ∂μ ≤ ∫ ω, MeasureTheory.stoppedValue f π ω ∂μ)) := by
   -- This is essentially the content of Mathlib's
   -- submartingale_iff_expected_stoppedValue_mono
   -- The full proof requires careful handling of integrability
@@ -337,12 +359,12 @@ theorem martingale_equality_characterization
     {ℱ : MeasureTheory.Filtration ℕ m}
     (f : ℕ → Ω → ℝ)
     (hf : MeasureTheory.Martingale f ℱ μ) :
-    ∀ (τ π : Ω → ℕ), MeasureTheory.IsStoppingTime ℱ τ →
+    ∀ (τ π : Ω → WithTop ℕ), MeasureTheory.IsStoppingTime ℱ τ →
       MeasureTheory.IsStoppingTime ℱ π →
       τ ≤ π → (∀ N : ℕ, (∀ ω, π ω ≤ N) →
-        ∫ ω, f (τ ω) ω ∂μ = ∫ ω, f (π ω) ω ∂μ) := by
+        ∫ ω, MeasureTheory.stoppedValue f τ ω ∂μ = ∫ ω, MeasureTheory.stoppedValue f π ω ∂μ) := by
   intros τ π hτ hπ hτπ N hπN
-  exact fair_games_theorem f hf τ π hτ hπ hτπ N hπN
+  exact fair_games_theorem_stoppedValue f hf τ π hτ hπ hτπ N hπN
 
 end Characterization
 
