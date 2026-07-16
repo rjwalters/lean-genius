@@ -135,7 +135,9 @@ theorem doob_martingale_convergence
     (hUI : UniformIntegrable X 1 μ) :
     ∀ᵐ ω ∂μ, Filter.Tendsto (fun n => X n ω) Filter.atTop
       (nhds (ℱ.limitProcess X μ ω)) :=
-  hX.ae_tendsto_limitProcess hUI
+  -- v4.31: `Martingale.ae_tendsto_limitProcess` no longer exists (`Martingale` unfolds to an
+  -- `And`, not a structure with that field); go via `Submartingale` instead.
+  hX.submartingale.ae_tendsto_limitProcess_of_uniformIntegrable hUI
 
 -- ============================================================
 -- Part III: The "No Strategy" Corollary
@@ -190,7 +192,9 @@ theorem submartingale_iff_ost
     ∀ (τ π : Ω → ℕ∞), IsStoppingTime ℱ τ → IsStoppingTime ℱ π →
       τ ≤ π → (∃ N : ℕ, ∀ ω, π ω ≤ N) →
         ∫ ω, stoppedValue f τ ω ∂μ ≤ ∫ ω, stoppedValue f π ω ∂μ :=
-  submartingale_iff_expected_stoppedValue_mono hadapt hint
+  -- v4.31: `submartingale_iff_expected_stoppedValue_mono` now expects `StronglyAdapted`
+  -- (equivalent to `Adapted` in the discrete/real-valued case via `Adapted.stronglyAdapted`).
+  submartingale_iff_expected_stoppedValue_mono hadapt.stronglyAdapted hint
 
 -- ============================================================
 -- Part V: Doob's Maximal Inequality (Full Statement)
@@ -212,9 +216,11 @@ theorem doob_maximal_inequality
     {ℱ : Filtration ℕ m}
     (X : ℕ → Ω → ℝ) (hX : Submartingale X ℱ μ)
     (hpos : ∀ n, 0 ≤ X n)
-    (N : ℕ) (λ : ℝ) (hλ : 0 < λ) :
-    λ * (μ {ω | ∃ n ≤ N, λ ≤ X n ω}).toReal ≤ ∫ ω, X N ω ∂μ :=
-  FairGamesOQ03.doobs_maximal_inequality X hX hpos N λ hλ
+    (N : ℕ) (thresh : ℝ) (hthresh : 0 < thresh) :
+    thresh * (μ {ω | ∃ n ≤ N, thresh ≤ X n ω}).toReal ≤ ∫ ω, X N ω ∂μ :=
+  -- v4.31: `λ` is no longer usable as a bare identifier (parser now always treats it as the
+  -- `fun`/lambda token); renamed to `thresh` to match the parent's naming.
+  FairGamesOQ03.doobs_maximal_inequality X hX hpos N thresh hthresh
 
 -- ============================================================
 -- Part VI: Time-Invariance of Martingale Expectations
