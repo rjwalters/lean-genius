@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 313 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos191Problem (calc ≥/> mismatch -> have hgt+.le; literal forces Finset.Icc
+ℝ needs LocallyFiniteOrder -> annotate Finset.Icc (3:ℕ); SimpleEdgeColoring type ascription on ∀ binder).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 312 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): SzemerediRegularityOQ02OQ02 (parent olean build; simp/positivity maxRecDepth

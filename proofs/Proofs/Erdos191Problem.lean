@@ -214,9 +214,11 @@ theorem erdos_191_from_cfs : erdos191Conjecture := by
   obtain ⟨X, hXsub, hXmono, hXsum⟩ := conlon_fox_sudakov_bound n hn₂ c
   use X, hXsub, hXmono
   have htripleLog := hN₀ n hn₁
-  calc logInverseSum X ≥ (1 / 256) * tripleLog n := hXsum
-    _ > (1 / 256) * (256 * C) := by nlinarith
-    _ = C := by ring
+  have hgt : logInverseSum X > C := by
+    calc logInverseSum X ≥ (1 / 256) * tripleLog n := hXsum
+      _ > (1 / 256) * (256 * C) := by nlinarith
+      _ = C := by ring
+  exact hgt.le
 
 /-
 ## Part VIII: Connection to Ramsey Theory
@@ -269,8 +271,8 @@ theorem small_n_bound (n : ℕ) (hn : n ≤ 10) (X : Finset ℕ) (hX : X ⊆ Int
     ext x
     simp only [IntegerSet, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
     omega
-  have h2notin : (2 : ℕ) ∉ Finset.Icc 3 10 := by decide
-  have hsplit : Finset.Icc 2 10 = insert 2 (Finset.Icc 3 10) := by
+  have h2notin : (2 : ℕ) ∉ Finset.Icc (3 : ℕ) 10 := by decide
+  have hsplit : Finset.Icc 2 10 = insert 2 (Finset.Icc (3 : ℕ) 10) := by
     ext x
     simp only [Finset.mem_Icc, Finset.mem_insert]
     omega
@@ -280,9 +282,9 @@ theorem small_n_bound (n : ℕ) (hn : n ≤ 10) (X : Finset ℕ) (hX : X ⊆ Int
     rw [div_le_iff₀ hlog2pos]
     linarith [Real.log_two_gt_d9]
   -- The eight remaining terms (x ≥ 3): each 1/log x ≤ 1 since log x ≥ 1.
-  have hrest : ∑ x ∈ Finset.Icc 3 10, (1 : ℝ) / Real.log (x : ℝ) ≤ 8 := by
-    calc ∑ x ∈ Finset.Icc 3 10, (1 : ℝ) / Real.log (x : ℝ)
-        ≤ ∑ _x ∈ Finset.Icc 3 10, (1 : ℝ) := by
+  have hrest : ∑ x ∈ Finset.Icc (3 : ℕ) 10, (1 : ℝ) / Real.log (x : ℝ) ≤ 8 := by
+    calc ∑ x ∈ Finset.Icc (3 : ℕ) 10, (1 : ℝ) / Real.log (x : ℝ)
+        ≤ ∑ _x ∈ Finset.Icc (3 : ℕ) 10, (1 : ℝ) := by
           refine Finset.sum_le_sum ?_
           intro x hx
           simp only [Finset.mem_Icc] at hx
@@ -298,7 +300,7 @@ theorem small_n_bound (n : ℕ) (hn : n ≤ 10) (X : Finset ℕ) (hX : X ⊆ Int
           exact hlogx
       _ = 8 := by
           rw [Finset.sum_const]
-          have hcard : (Finset.Icc 3 10).card = 8 := by decide
+          have hcard : (Finset.Icc (3 : ℕ) 10).card = 8 := by decide
           rw [hcard, nsmul_eq_mul]
           norm_num
   unfold logInverseSum
@@ -372,8 +374,6 @@ theorem tight_asymptotic :
     exact conlon_fox_sudakov_bound n hn c
   · obtain ⟨c, hc_pos, hc⟩ := rodl_upper_construction
     use c, hc_pos
-    intro n hn
-    exact hc n hn
 
 /-
 ## Part XII: Summary
@@ -393,7 +393,7 @@ theorem erdos_191_summary :
     -- The main question is answered affirmatively
     erdos191Conjecture ∧
     -- Tight lower bound exists
-    (∃ c₁ > 0, ∀ n ≥ 16, ∀ coloring,
+    (∃ c₁ > 0, ∀ n ≥ 16, ∀ coloring : SimpleEdgeColoring n,
       ∃ X, X ⊆ IntegerSet n ∧ HasMonochromaticSubset coloring X ∧
         logInverseSum X ≥ c₁ * tripleLog n) ∧
     -- Tight upper bound exists
