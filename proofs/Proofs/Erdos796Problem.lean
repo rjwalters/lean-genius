@@ -131,8 +131,7 @@ theorem g3_first_order :
         ε * n / Real.log n := by
   intro ε hε
   have := erdos_1964_main 3 2 (by norm_num) ⟨by norm_num, by norm_num⟩ ε hε
-  skip
-  exact this
+  simpa using this
 
 /-
 ## Part V: Second-Order Terms
@@ -152,7 +151,7 @@ c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² for some 0 < c₁ ≤ c₂.
 -/
 axiom E3_bounded :
     ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-      ∀ᶠ n in Filter.atTop,
+      ∀ᶠ (n : ℕ) in Filter.atTop,
         c₁ * n / (Real.log n)^2 ≤ E3 n ∧
         E3 n ≤ c₂ * n / (Real.log n)^2
 
@@ -215,7 +214,7 @@ theorem erdos_796_summary :
         ε * n / Real.log n) ∧
     -- Second-order bounds exist
     (∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
-      ∀ᶠ n in Filter.atTop,
+      ∀ᶠ (n : ℕ) in Filter.atTop,
         c₁ * n / (Real.log n)^2 ≤ E3 n ∧
         E3 n ≤ c₂ * n / (Real.log n)^2) :=
   ⟨g3_first_order, E3_bounded⟩
