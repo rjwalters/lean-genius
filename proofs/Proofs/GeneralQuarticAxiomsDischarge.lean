@@ -37,8 +37,8 @@ This is the single non-`ring` fact underlying both biquadratic axioms.  It is
 (`(x ^ (n⁻¹ : ℂ))^n = x` for `n ≠ 0`) after rewriting `1/2` as `(2 : ℕ)⁻¹`. -/
 theorem cpow_half_sq (p r : ℂ) :
     (Complex.cpow (p ^ 2 - 4 * r) (1 / 2 : ℂ)) ^ 2 = p ^ 2 - 4 * r := by
-  rw [show (1 / 2 : ℂ) = ((2 : ℕ) : ℂ)⁻¹ by norm_num]
-  exact_mod_cast Complex.cpow_nat_inv_pow (p ^ 2 - 4 * r) (n := 2) (by norm_num)
+  rw [Complex.cpow_eq_pow, show (1 / 2 : ℂ) = ((2 : ℕ) : ℂ)⁻¹ by norm_num]
+  exact Complex.cpow_nat_inv_pow (p ^ 2 - 4 * r) (n := 2) (by norm_num)
 
 /-- **A3 (biquadratic backward), proved.**
 If `y²` equals one of the two quadratic-formula solutions of `z² + p z + r = 0`,
@@ -106,10 +106,10 @@ theorem quartic_has_four_roots' (a b c d : ℂ) :
     · rw [ht] at hlen; simp at hlen
     · rw [ht] at hlen; simp at hlen
     · cases tl with
-      | nil => exact ⟨a1, a2, a3, a4, ht⟩
+      | nil => exact ⟨a1, a2, a3, a4, rfl⟩
       | cons a5 tl2 =>
           rw [ht] at hlen
-          simp only [List.length_cons, List.length_nil] at hlen
+          simp only [List.length_cons] at hlen
           omega
   refine ⟨r₁, r₂, r₃, r₄, fun x => ?_⟩
   have hmem : x ∈ (quarticPoly a b c d).roots ↔ (x = r₁ ∨ x = r₂ ∨ x = r₃ ∨ x = r₄) := by
