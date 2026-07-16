@@ -26,8 +26,15 @@
 import Mathlib
 
 open Finset Function SimpleGraph
+open scoped Classical
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+-- NOTE (v4.31 soundness fix, #38611 candidate): the original file omitted `[Nonempty V]`.
+-- Without it, when `V` is empty the only clique is `∅`, which is vacuously maximal, yet no
+-- transversal `T` can ever satisfy `(T ∩ ∅).Nonempty`; `cliqueTransversalNumber`'s
+-- well-definedness proof and `univ_is_transversal` are therefore only true for nonempty `V`.
+variable {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
+
+namespace Erdos610
 
 /- ## Cliques and Maximal Cliques -/
 
@@ -58,9 +65,10 @@ noncomputable def cliqueTransversalNumber (G : SimpleGraph V) : ℕ :=
     intro C hC
     obtain ⟨v, hv⟩ := C.nonempty_of_ne_empty (by
       intro h
-      simp [IsMaximalClique, IsClique] at hC
-      exact hC.2 ∅ (by simp [h]) (by simp [IsClique]))
-    exact ⟨v, by simp, hv⟩)
+      obtain ⟨w⟩ := ‹Nonempty V›
+      have hsub : C ⊂ {w} := by rw [h]; exact Finset.empty_ssubset.mpr (by simp)
+      exact hC.2 {w} hsub (by simp [IsClique]))
+    exact ⟨v, hv⟩)
 
 /-- Notation: τ(G) for clique transversal number -/
 notation "τ" => cliqueTransversalNumber
@@ -73,9 +81,10 @@ theorem univ_is_transversal (G : SimpleGraph V) :
   intro C hC
   obtain ⟨v, hv⟩ := C.nonempty_of_ne_empty (by
     intro h
-    simp [IsMaximalClique, IsClique] at hC
-    exact hC.2 ∅ (by simp [h]) (by simp [IsClique]))
-  exact ⟨v, by simp, hv⟩
+    obtain ⟨w⟩ := ‹Nonempty V›
+    have hsub : C ⊂ {w} := by rw [h]; exact Finset.empty_ssubset.mpr (by simp)
+    exact hC.2 {w} hsub (by simp [IsClique]))
+  exact ⟨v, Finset.mem_inter.mpr ⟨Finset.mem_univ v, hv⟩⟩
 
 /-- τ(G) ≤ n -/
 theorem tau_le_card (G : SimpleGraph V) : τ G ≤ Fintype.card V := by
@@ -92,11 +101,11 @@ theorem tau_complete [Nontrivial V] : τ (⊤ : SimpleGraph V) = 1 := by
 /- ## The Erdős-Gallai-Tuza Bound -/
 
 /-- The known upper bound: τ(G) ≤ n - √(2n) + O(1) -/
-def ErdosGallaiTuzaBound (n : ℕ) : ℝ :=
+noncomputable def ErdosGallaiTuzaBound (n : ℕ) : ℝ :=
   n - Real.sqrt (2 * n)
 
 theorem erdos_gallai_tuza :
-    ∃ C : ℝ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ C : ℝ, ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V),
       (τ G : ℝ) ≤ Fintype.card V - Real.sqrt (2 * Fintype.card V) + C := by
   sorry
 
@@ -105,13 +114,13 @@ theorem erdos_gallai_tuza :
 /-- Question 1: Can we improve to n - ω(n)√n for ω(n) → ∞? -/
 def Question1_OmegaImprovement : Prop :=
   ∃ ω : ℕ → ℝ, (∀ n, ω n > 0) ∧ Filter.Tendsto ω Filter.atTop Filter.atTop ∧
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V),
       (τ G : ℝ) ≤ Fintype.card V - ω (Fintype.card V) * Real.sqrt (Fintype.card V)
 
 /-- Question 2: Can we achieve n - c√(n log n) for constant c > 0? -/
 def Question2_LogImprovement : Prop :=
   ∃ c : ℝ, c > 0 ∧
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V),
       let n := Fintype.card V
       (τ G : ℝ) ≤ n - c * Real.sqrt (n * Real.log n)
 
@@ -140,12 +149,12 @@ noncomputable def triangleFreeIndependence (n : ℕ) : ℕ :=
 
 /-- Conjecture: τ(G) ≤ n - f(n) where f is the triangle-free independence function -/
 def ErdosGallaiTuzaConjecture : Prop :=
-  ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+  ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V),
     τ G ≤ Fintype.card V - triangleFreeIndependence (Fintype.card V)
 
 /-- Kim's result: f(n) = Θ(√(n log n)) for triangle-free graphs -/
 axiom kim_triangle_free_independence :
-  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ ∧ ∀ n ≥ 2,
+  ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ < c₂ ∧ ∀ n : ℕ, n ≥ 2 →
     c₁ * Real.sqrt (n * Real.log n) ≤ triangleFreeIndependence n ∧
     (triangleFreeIndependence n : ℝ) ≤ c₂ * Real.sqrt (n * Real.log n)
 
@@ -158,7 +167,7 @@ theorem conjecture_implies_question2 :
 
 /-- There exist graphs where τ(G) is close to n - √(2n) -/
 def NearTightConstruction : Prop :=
-  ∀ ε > 0, ∃ᶠ n in Filter.atTop, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V),
+  ∀ ε > 0, ∃ᶠ n in Filter.atTop, ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (_ : Nonempty V),
     ∃ G : SimpleGraph V,
       Fintype.card V = n ∧
       (τ G : ℝ) ≥ n - (1 + ε) * Real.sqrt (2 * n)
@@ -175,13 +184,13 @@ theorem tau_bipartite (G : SimpleGraph V) (hG : G.IsBipartite) :
     := by sorry
 
 /-- For chordal graphs, τ can be computed efficiently -/
-theorem tau_chordal (G : SimpleGraph V) (hG : sorry) : -- G is chordal
-    sorry -- τ(G) has nice structure
+theorem tau_chordal (G : SimpleGraph V) (hG : (sorry : Prop)) : -- G is chordal
+    (sorry : Prop) -- τ(G) has nice structure
     := by sorry
 
 /-- For perfect graphs -/
-theorem tau_perfect (G : SimpleGraph V) (hG : sorry) : -- G is perfect
-    sorry -- τ(G) relates to chromatic number
+theorem tau_perfect (G : SimpleGraph V) (hG : (sorry : Prop)) : -- G is perfect
+    (sorry : Prop) -- τ(G) relates to chromatic number
     := by sorry
 
 /- ## Clique Cover Duality -/
@@ -209,14 +218,17 @@ theorem tau_clique_cover_relation (G : SimpleGraph V) :
 
     The conjecture τ(G) ≤ n - f(n) would resolve Question 2. -/
 theorem erdos_610_known :
-    ∃ C : ℝ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    ∃ C : ℝ, ∀ (V : Type*) [Fintype V] [DecidableEq V] [Nonempty V] (G : SimpleGraph V),
       (τ G : ℝ) ≤ Fintype.card V - Real.sqrt (2 * Fintype.card V) + C :=
   erdos_gallai_tuza
 
 /-- The problem remains open -/
-theorem erdos_610_open : Question1_OmegaImprovement ↔ Question1_OmegaImprovement := Iff.rfl
+theorem erdos_610_open :
+    Question1_OmegaImprovement.{0} ↔ Question1_OmegaImprovement.{0} := Iff.rfl
 
 #check erdos_610_known
 #check Question1_OmegaImprovement
 #check Question2_LogImprovement
 #check ErdosGallaiTuzaConjecture
+
+end Erdos610
