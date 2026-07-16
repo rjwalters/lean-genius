@@ -333,20 +333,78 @@ def LatticeTriangle.ymin (T : LatticeTriangle) : ℤ :=
 def LatticeTriangle.ymax (T : LatticeTriangle) : ℤ :=
   max (max T.v1.2 T.v2.2) T.v3.2
 
+/-- `xmin ≤ xmax` always, since both are built from the same three
+    coordinates via `min`/`max`.  Needed so that `boundingBoxX` (built from
+    `Finset.range`) actually contains the full closed interval. -/
+lemma LatticeTriangle.xmin_le_xmax (T : LatticeTriangle) : T.xmin ≤ T.xmax := by
+  unfold LatticeTriangle.xmin LatticeTriangle.xmax; omega
+
+/-- `ymin ≤ ymax`; see `xmin_le_xmax`. -/
+lemma LatticeTriangle.ymin_le_ymax (T : LatticeTriangle) : T.ymin ≤ T.ymax := by
+  unfold LatticeTriangle.ymin LatticeTriangle.ymax; omega
+
+/-- The `x`-coordinates of the bounding box, built directly from
+    `Finset.range` (via `Int.toNat`) rather than `Finset.Icc ℤ`.
+
+    v4.31 NOTE: with the full `Mathlib.Tactic` import present in this file,
+    generic instance search for `Finset.Icc` over `ℤ` can resolve through
+    `Int.instConditionallyCompleteLinearOrder` (which is `noncomputable`,
+    built via `Classical.choice` for `sSup`/`sInf`), poisoning any `def`
+    that uses it and breaking `native_decide` downstream. Building the box
+    directly from `Finset.range`/`Int.toNat` sidesteps that instance
+    entirely and stays genuinely computable. -/
+def LatticeTriangle.boundingBoxX (T : LatticeTriangle) : Finset ℤ :=
+  (Finset.range ((T.xmax - T.xmin).toNat + 1)).image (fun k : ℕ => T.xmin + (k : ℤ))
+
+/-- The `y`-coordinates of the bounding box; see `boundingBoxX`. -/
+def LatticeTriangle.boundingBoxY (T : LatticeTriangle) : Finset ℤ :=
+  (Finset.range ((T.ymax - T.ymin).toNat + 1)).image (fun k : ℕ => T.ymin + (k : ℤ))
+
+/-- Membership characterisation for `boundingBoxX`: exactly the integers
+    between `xmin` and `xmax` inclusive. -/
+lemma LatticeTriangle.mem_boundingBoxX (T : LatticeTriangle) (x : ℤ) :
+    x ∈ T.boundingBoxX ↔ T.xmin ≤ x ∧ x ≤ T.xmax := by
+  have hxx := T.xmin_le_xmax
+  unfold LatticeTriangle.boundingBoxX
+  simp only [Finset.mem_image, Finset.mem_range]
+  constructor
+  · rintro ⟨k, hk, rfl⟩; omega
+  · intro ⟨h1, h2⟩
+    exact ⟨(x - T.xmin).toNat, by omega, by omega⟩
+
+/-- Membership characterisation for `boundingBoxY`; see `mem_boundingBoxX`. -/
+lemma LatticeTriangle.mem_boundingBoxY (T : LatticeTriangle) (y : ℤ) :
+    y ∈ T.boundingBoxY ↔ T.ymin ≤ y ∧ y ≤ T.ymax := by
+  have hyy := T.ymin_le_ymax
+  unfold LatticeTriangle.boundingBoxY
+  simp only [Finset.mem_image, Finset.mem_range]
+  constructor
+  · rintro ⟨k, hk, rfl⟩; omega
+  · intro ⟨h1, h2⟩
+    exact ⟨(y - T.ymin).toNat, by omega, by omega⟩
+
 /-- The bounding-box `Finset` of lattice points enclosing the vertices of
     `T`.  Every interior (and boundary) lattice point of `T` lies in this
     finite rectangle. -/
-noncomputable def LatticeTriangle.boundingBox (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
-  (Finset.Icc T.xmin T.xmax) ×ˢ (Finset.Icc T.ymin T.ymax)
+def LatticeTriangle.boundingBox (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+  T.boundingBoxX ×ˢ T.boundingBoxY
+
+/-- Membership characterisation for `boundingBox`, mirroring the old
+    `Finset.mem_Icc`-based statement but proved via `boundingBoxX`/`Y`. -/
+lemma LatticeTriangle.mem_boundingBox (T : LatticeTriangle) (p : ℤ × ℤ) :
+    p ∈ T.boundingBox ↔
+      (T.xmin ≤ p.1 ∧ p.1 ≤ T.xmax) ∧ (T.ymin ≤ p.2 ∧ p.2 ≤ T.ymax) := by
+  unfold LatticeTriangle.boundingBox
+  rw [Finset.mem_product, mem_boundingBoxX, mem_boundingBoxY]
 
 /-- The set of strictly-interior lattice points of `T` as a `Finset`,
     obtained by filtering the bounding box through `StrictInterior`. -/
-noncomputable def LatticeTriangle.realInterior (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+def LatticeTriangle.realInterior (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
   T.boundingBox.filter T.StrictInterior
 
 /-- The strictly-interior lattice-point count `I(T)`.  This is the "real"
     geometric quantity Pick's formula `pickInterior` is supposed to match. -/
-noncomputable def LatticeTriangle.realInteriorCount (T : LatticeTriangle) : ℕ :=
+def LatticeTriangle.realInteriorCount (T : LatticeTriangle) : ℕ :=
   T.realInterior.card
 
 -- ════════════════════════════════════════════════════════════════
@@ -1180,8 +1238,8 @@ lemma ymax_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
 lemma mem_boundingBox_translate (T : LatticeTriangle) (t q : ℤ × ℤ) :
     q ∈ (T.translate t).boundingBox ↔
       (q.1 - t.1, q.2 - t.2) ∈ T.boundingBox := by
-  simp only [LatticeTriangle.boundingBox, Finset.mem_product, Finset.mem_Icc,
-    xmin_translate, xmax_translate, ymin_translate, ymax_translate]
+  rw [LatticeTriangle.mem_boundingBox, LatticeTriangle.mem_boundingBox]
+  simp only [xmin_translate, xmax_translate, ymin_translate, ymax_translate]
   omega
 
 /-! #### The substantive result: `realInteriorCount` is translation-invariant -/
