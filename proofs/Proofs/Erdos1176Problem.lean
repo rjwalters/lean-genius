@@ -54,7 +54,7 @@ def IsProperVertexColoring (G : SimpleGraph V) {C : Type*} (f : V → C) : Prop 
 /-- A graph is κ-colorable: there exists a proper coloring into a type of
     cardinality κ. -/
 def IsCardColorable (G : SimpleGraph V) (κ : Cardinal) : Prop :=
-  ∃ (C : Type*) (_ : Cardinal.mk C = κ) (f : V → C),
+  ∃ (C : Type) (_ : Cardinal.mk C = κ) (f : V → C),
     IsProperVertexColoring G f
 
 /-- The chromatic number of a simple graph as a cardinal:
@@ -110,7 +110,7 @@ an edge coloring with ℵ₁ colors having the domination property.
 def ErdosProblem1176 : Prop :=
   ∀ (V : Type*) (G : SimpleGraph V),
     chromaticNumber G = Cardinal.aleph 1 →
-    ∃ (C : Type*) (_ : Cardinal.mk C = Cardinal.aleph 1)
+    ∃ (C : Type) (_ : Cardinal.mk C = Cardinal.aleph 1)
       (ec : EdgeColoring G C),
       HasDominationProperty G ec
 
@@ -132,7 +132,7 @@ theorem not_aleph0_colorable_of_chi_aleph1
   intro hcol
   -- If colorable with ℵ₀ colors, then chromaticNumber ≤ ℵ₀
   have hle : chromaticNumber G ≤ ℵ₀ := by
-    apply ciInf₂_le
+    apply ciInf₂_le (OrderBot.bddBelow _)
     exact hcol
   rw [h] at hle
   exact absurd hle (not_le.mpr aleph0_lt_aleph1)
@@ -180,11 +180,12 @@ theorem strong_implies_domination {C : Type*} (G : SimpleGraph V)
     HasDominationProperty G ec := by
   intro f hf
   -- G has an edge, so it has a vertex. Pick any vertex u.
-  obtain ⟨e, he⟩ := hne
-  -- Extract a vertex from the edge via Quotient.out
-  let u := (Quotient.out e).1
-  -- The color class f(u) is nonempty (witnessed by u itself)
-  exact ⟨f u, hstrong f hf (f u) ⟨u, rfl⟩⟩
+  obtain ⟨e, -⟩ := hne
+  -- Extract a vertex from the edge by destructuring the Sym2 quotient.
+  induction e using Sym2.ind with
+  | _ u _ =>
+    -- The color class f(u) is nonempty (witnessed by u itself)
+    exact ⟨f u, hstrong f hf (f u) ⟨u, rfl⟩⟩
 
 /-
 # Part 8: Connection to Partition Calculus
