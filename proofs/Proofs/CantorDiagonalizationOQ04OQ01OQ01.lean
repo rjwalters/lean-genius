@@ -57,9 +57,10 @@ namespace LawvereCCC
 
 open CategoryTheory CategoryTheory.Category CategoryTheory.Limits
 open CategoryTheory.MonoidalCategory CategoryTheory.CartesianMonoidalCategory
-open CategoryTheory.CartesianClosed
+open CategoryTheory.MonoidalClosed
+open scoped CategoryTheory.CartesianClosed
 
-variable {C : Type u} [Category.{v} C] [CartesianMonoidalCategory C] [CartesianClosed C]
+variable {C : Type u} [Category.{v} C] [CartesianMonoidalCategory C] [MonoidalClosed C]
 variable {A B : C}
 
 /-- The *name* (exponential transpose) of a morphism `f : A ⟶ B`: the global point
