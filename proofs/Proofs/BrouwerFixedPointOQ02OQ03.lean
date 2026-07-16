@@ -88,16 +88,15 @@ theorem newton_step_quadratic_bound
     linarith [hfx₀]
   -- Step 2: Bound |error| ≤ |f''(ξ)| / (2|f'(x₀)|) · |x₀ - x*|²
   rw [heq]
-  rw [abs_mul, abs_div, abs_of_pos (by positivity)]
-  rw [sq_abs, sq_abs]
-  gcongr
-  · -- M / (2 * m) ≥ 0
-    positivity
-  · -- |f''(ξ)| ≤ M
-    exact hf''
-  · -- 2 * m ≤ |2 * f'(x₀)|
-    rw [abs_mul, abs_of_pos two_pos]
-    linarith
+  rw [abs_mul, abs_div]
+  rw [show |(x_star - x₀) ^ 2| = (x_star - x₀) ^ 2 from abs_of_nonneg (sq_nonneg _)]
+  rw [show (x_star - x₀) ^ 2 = (x₀ - x_star) ^ 2 from by ring]
+  rw [sq_abs]
+  gcongr <;>
+    first
+      | positivity
+      | exact hf''
+      | (rw [abs_mul, abs_of_pos two_pos]; linarith)
 
 /-! ## Applying Mathlib's Taylor Theorem to Get ξ -/
 
@@ -112,19 +111,23 @@ theorem taylor_remainder_exists {f : ℝ → ℝ} {x₀ x_star : ℝ} (hlt : x�
       f x_star - (f x₀ + iteratedDerivWithin 1 f (Icc x₀ x_star) x₀ * (x_star - x₀)) =
       iteratedDerivWithin 2 f (Icc x₀ x_star) ξ * (x_star - x₀) ^ 2 / 2 := by
   -- Use Mathlib's taylor_mean_remainder_lagrange with n = 1
-  have := taylor_mean_remainder_lagrange hlt hf_diff hf'_diff
-  obtain ⟨ξ, hξ, hrem⟩ := this
+  -- (v4.31: the lemma is now stated over the unordered interval `uIcc`/`uIoo`,
+  -- which coincide with `Icc`/`Ioo` here since `x₀ < x_star`.)
+  have huIcc : (Set.uIcc x₀ x_star : Set ℝ) = Icc x₀ x_star := uIcc_of_le hlt.le
+  have huIoo : uIoo x₀ x_star = Ioo x₀ x_star := uIoo_of_le hlt.le
+  have hrl := taylor_mean_remainder_lagrange (f := f) (x := x_star) (x₀ := x₀) (n := 1)
+      hlt.ne (by rw [huIcc]; exact hf_diff) (by rw [huIcc, huIoo]; exact hf'_diff)
+  rw [huIcc, huIoo] at hrl
+  obtain ⟨ξ, hξ, hrem⟩ := hrl
   refine ⟨ξ, hξ, ?_⟩
   -- The Mathlib form: f x - taylorWithinEval f 1 (Icc x₀ x) x₀ x = f^(2)(ξ) * (x-x₀)^2 / 2!
   -- taylorWithinEval f 1 gives f(x₀) + f'(x₀)(x-x₀) up to order 1
   have htw : taylorWithinEval f 1 (Icc x₀ x_star) x₀ x_star =
       f x₀ + iteratedDerivWithin 1 f (Icc x₀ x_star) x₀ * (x_star - x₀) := by
-    simp [taylorWithinEval, taylorWithin, Finset.sum_range_succ, Finset.sum_range_zero,
-          iteratedDerivWithin, mul_comm]
+    simp [taylorWithinEval_succ, taylor_within_zero_eval, mul_comm]
   rw [← htw]
   rw [hrem]
   simp [Nat.factorial]
-  ring
 
 /-! ## Quadratic Convergence with C² Assumptions -/
 
@@ -153,8 +156,8 @@ theorem newton_step_C2_bound
     exact (hf_C2.continuousOn_iteratedDerivWithin (by norm_num) (uniqueDiffOn_Icc hlt))
   have hf'_diff : DifferentiableOn ℝ (iteratedDerivWithin 1 f (Icc x₀ x_star)) (Ioo x₀ x_star) := by
     intro x hx
-    apply (hf_C2.differentiableOn_iteratedDerivWithin (by norm_num) (uniqueDiffOn_Icc hlt))
-    exact Ioo_subset_Icc_self hx
+    exact (hf_C2.differentiableOn_iteratedDerivWithin (by norm_num) (uniqueDiffOn_Icc hlt)
+      x (Ioo_subset_Icc_self hx)).mono Ioo_subset_Icc_self
   obtain ⟨ξ, hξ, hrem⟩ := taylor_remainder_exists hlt hf_C1 hf'_diff
   -- Reformulate Taylor remainder as: f x_star = f x₀ + f'(x₀)(x* - x₀) + f''(ξ)/2 · (x*-x₀)²
   have htaylor : f x_star = f x₀ + iteratedDerivWithin 1 f (Icc x₀ x_star) x₀ * (x_star - x₀) +

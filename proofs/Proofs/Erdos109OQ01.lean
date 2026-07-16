@@ -80,8 +80,8 @@ theorem syndetic_infinite (S : Set ℕ) (hS : IsSyndetic S) : S.Infinite := by
   apply Set.infinite_of_not_bddAbove
   rw [not_bddAbove_iff]
   intro n
-  obtain ⟨m, hm, hnm, _⟩ := hg n
-  exact ⟨m, hm, hnm⟩
+  obtain ⟨m, hm, hnm, _⟩ := hg (n + 1)
+  exact ⟨m, hm, by omega⟩
 
 /-
 ## Part III: Sumset Gap Strengthening
@@ -129,7 +129,9 @@ theorem sumset_density_constraint (A B C : Set ℕ)
       fun a _ b _ h => Nat.add_left_cancel h
     have himg : (fun c => b₀ + c) '' (C ∩ Set.Icc 1 N) ⊆ A ∩ Set.Icc 1 (N + b₀) := by
       rintro n ⟨c, ⟨hcC, hc1, hcN⟩, rfl⟩
-      exact ⟨hBC ⟨b₀, hb₀_mem, c, hcC, rfl⟩, ⟨by omega, by omega⟩⟩
+      refine ⟨hBC ⟨b₀, hb₀_mem, c, hcC, rfl⟩, ?_, ?_⟩
+      · show 1 ≤ b₀ + c; omega
+      · show b₀ + c ≤ N + b₀; omega
     calc (C ∩ Set.Icc 1 N).ncard
         = ((fun c => b₀ + c) '' (C ∩ Set.Icc 1 N)).ncard :=
             (Set.ncard_image_of_injOn hinj).symm
@@ -213,10 +215,10 @@ theorem sumset_density_constraint (A B C : Set ℕ)
   -- upperDensity is sInf of eventual upper bounds
   have hC_simp : upperDensity C = sInf S_C := by
     unfold upperDensity Filter.limsup Filter.limsSup
-    congr 1; ext a; exact Filter.eventually_map
+    congr 1
   have hA_simp : upperDensity A = sInf S_A := by
     unfold upperDensity Filter.limsup Filter.limsSup
-    congr 1; ext a; exact Filter.eventually_map
+    congr 1
   rw [hC_simp, hA_simp]
   -- Show sInf S_C ≤ sInf S_A via: ∀ ε > 0, sInf S_A + ε ∈ S_C
   apply le_of_forall_pos_le_add
@@ -225,28 +227,16 @@ theorem sumset_density_constraint (A B C : Set ℕ)
   simp only [S_C, Set.mem_setOf_eq]
   -- Get a ∈ S_A with a < sInf S_A + ε/2 (from csInf_lt_iff)
   obtain ⟨a_ev, ha_ev_mem, ha_ev_lt⟩ : ∃ a ∈ S_A, a < sInf S_A + ε / 2 := by
-    rw [← csInf_lt_iff hS_A_ne hS_A_bdd]
+    rw [← csInf_lt_iff hS_A_bdd hS_A_ne]
     linarith
   simp only [S_A, Set.mem_setOf_eq] at ha_ev_mem
   -- So eventually fA(N) ≤ a_ev ≤ sInf S_A + ε/2
   have hev_fA : ∀ᶠ N in Filter.atTop, fA N ≤ sInf S_A + ε / 2 :=
     ha_ev_mem.mono (fun N hN => le_trans hN (le_of_lt ha_ev_lt))
   -- Eventually b₀/N ≤ ε/2
-  have hev_b₀ : ∀ᶠ N in Filter.atTop, (b₀ : ℝ) / N ≤ ε / 2 := by
-    rcases Nat.eq_zero_or_pos b₀ with rfl | hb₀_pos
-    · exact Filter.Eventually.of_forall (fun N => by simp; linarith)
-    · rw [Filter.eventually_atTop]
-      -- For N ≥ 2*b₀/ε (rounded up), b₀/N ≤ ε/2
-      refine ⟨max 1 ⌈2 * (b₀ : ℝ) / ε⌉₊, fun N hN => ?_⟩
-      have hN1 : 1 ≤ N := le_trans (le_max_left 1 _) hN
-      have hN_pos : (0 : ℝ) < N := by exact_mod_cast (show 0 < N by omega)
-      rw [div_le_div_iff₀ hN_pos (by linarith : (0:ℝ) < 2)]
-      -- Need: 2 * b₀ ≤ ε * N
-      have hNge : (⌈2 * (b₀ : ℝ) / ε⌉₊ : ℕ) ≤ N := le_trans (le_max_right 1 _) hN
-      have hceil : 2 * (b₀ : ℝ) / ε ≤ ↑⌈2 * (b₀ : ℝ) / ε⌉₊ := Nat.le_ceil _
-      have hN_large : 2 * (b₀ : ℝ) / ε ≤ N := hceil.trans (by exact_mod_cast hNge)
-      have h2b₀ : 2 * (b₀ : ℝ) ≤ (N : ℝ) * ε := (div_le_iff₀ hε).mp hN_large
-      linarith
+  have hev_b₀ : ∀ᶠ N : ℕ in Filter.atTop, (b₀ : ℝ) / N ≤ ε / 2 :=
+    (tendsto_const_div_atTop_nhds_zero_nat (b₀ : ℝ)).eventually
+      (eventually_le_nhds (by linarith : (0:ℝ) < ε / 2))
   -- Combine: eventually fC(N) ≤ sInf S_A + ε
   filter_upwards [Filter.eventually_atTop.mpr ⟨1, fun N hN => hpointwise N (by omega)⟩,
                   hev_fA, hev_b₀] with N hpN hfAN hb₀N
@@ -349,7 +339,7 @@ theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
     have hdisjoint : Disjoint Fodd Geven := by
       rw [Finset.disjoint_left]
       intro k hk1 hk2
-      simp only [Finset.mem_image] at hk1 hk2
+      simp only [Fodd, Geven, Finset.mem_image] at hk1 hk2
       obtain ⟨i, _, hki⟩ := hk1
       obtain ⟨j, _, hkj⟩ := hk2
       omega
@@ -361,12 +351,14 @@ theorem ip_set_sumset_structure (S : Set ℕ) (hS : IsIPSet S) :
       rw [hb]
       rw [Finset.sum_image]
       intro i _ j _ hij
+      simp only at hij
       omega
     -- Rewrite c as sum over Geven
     have hc_sum : c = ∑ k ∈ Geven, x k := by
       rw [hc]
       rw [Finset.sum_image]
       intro i _ j _ hij
+      simp only at hij
       omega
     -- n = b + c = sum over Fodd ∪ Geven
     have hn_sum : n = ∑ k ∈ (Fodd ∪ Geven), x k := by
@@ -407,15 +399,17 @@ theorem thick_infinite (S : Set ℕ) (hS : IsThick S) : S.Infinite := by
   apply Set.infinite_of_not_bddAbove
   rw [not_bddAbove_iff]
   intro n
-  obtain ⟨m, hm⟩ := hS n
-  exact ⟨m + n, hm (m + n) (Nat.le_add_right m n) (le_refl _), Nat.le_add_left n m⟩
+  obtain ⟨m, hm⟩ := hS (n + 1)
+  exact ⟨m + (n + 1), hm (m + (n + 1)) (Nat.le_add_right m (n + 1)) (le_refl _), by omega⟩
 
 /-- Hindman applied to a 2-coloring: one of the two cells is an IP set. -/
 theorem hindman_two_color (A : Set ℕ) :
     IsIPSet A ∨ IsIPSet (Aᶜ) := by
+  classical
   have h := hindman_theorem 2 (fun n => if n ∈ A then (0 : Fin 2) else 1)
   obtain ⟨c, hc⟩ := h
-  fin_cases c
+  have hc01 : c = 0 ∨ c = 1 := by omega
+  rcases hc01 with rfl | rfl
   · -- c = 0: the cell {n | coloring n = 0} = A
     left
     have heq : {n | (if n ∈ A then (0 : Fin 2) else 1) = 0} = A := by
