@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 98 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): ArchimedesMethodOfExhaustion (field_simp alone closes, =ᶠ[atTop]
+explicit for .symm/.congr', filter_upwards direct refine, correct 3-way case split n=0/n=1/n≥2 for
+sin_nonneg 2π/n≤π needs n≥2 — proof-only fix, statement unchanged, no weakening). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 97 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CantorDiagonalizationOQ01OQ01OQ02OQ03 (Cardinal cofinality drift:
