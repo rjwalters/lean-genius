@@ -46,7 +46,7 @@ def prefixSet (l : List (Fin n)) (k : ℕ) : Finset (Fin n) :=
 /-- For a nodup list, the prefix set has cardinality min k l.length. -/
 theorem prefixSet_card {l : List (Fin n)} (hl : l.Nodup) (k : ℕ) :
     (prefixSet l k).card = min k l.length := by
-  simp only [prefixSet, List.toFinset_card_of_nodup (hl.take k), List.length_take]
+  simp only [prefixSet, List.toFinset_card_of_nodup (hl.take (i := k)), List.length_take]
 
 theorem prefixSet_card_eq {l : List (Fin n)} (hl : l.Nodup) {k : ℕ} (hk : k ≤ l.length) :
     (prefixSet l k).card = k := by
@@ -56,48 +56,52 @@ theorem prefixSet_card_eq {l : List (Fin n)} (hl : l.Nodup) {k : ℕ} (hk : k �
 theorem prefixSet_mono {l : List (Fin n)} (k : ℕ) :
     prefixSet l k ⊆ prefixSet l (k + 1) := by
   intro x; simp only [prefixSet, List.mem_toFinset]
-  exact fun h => List.take_subset _ (Nat.le_succ k) h
+  exact fun h => (List.take_prefix_take_left (Nat.le_succ k)).subset h
+
+/-- Prefix sets are monotone in the index (general version, for arbitrary `i ≤ j`). -/
+theorem prefixSet_mono_of_le {l : List (Fin n)} {i j : ℕ} (h : i ≤ j) :
+    prefixSet l i ⊆ prefixSet l j := by
+  intro x; simp only [prefixSet, List.mem_toFinset]
+  exact fun hx => (List.take_prefix_take_left h).subset hx
 
 /-- The difference between prefixSet l (k+1) and prefixSet l k is the singleton {l[k]}. -/
 theorem prefixSet_succ_sdiff {l : List (Fin n)} (hl : l.Nodup) {k : ℕ} (hk : k < l.length) :
     prefixSet l (k + 1) \ prefixSet l k = {l.get ⟨k, hk⟩} := by
+  have htake : l.take (k + 1) = l.take k ++ [l.get ⟨k, hk⟩] := by
+    rw [List.take_add_one, List.getElem?_eq_getElem hk]
+    rfl
   ext x
-  simp only [prefixSet, mem_sdiff, List.mem_toFinset, mem_singleton]
+  simp only [prefixSet, mem_sdiff, List.mem_toFinset, Finset.mem_singleton]
   constructor
   · intro ⟨hmem1, hmem2⟩
     -- x ∈ l.take(k+1) but x ∉ l.take k
-    -- By List.take_succ, l.take(k+1) = l.take k ++ [l.get k]
-    rw [List.take_succ, List.get?_eq_get hk] at hmem1
-    simp only [Option.toList, List.append_cons, List.append_nil, List.mem_append,
-      List.mem_singleton] at hmem1
+    rw [htake, List.mem_append, List.mem_singleton] at hmem1
     rcases hmem1 with h | h
     · exact absurd h hmem2
     · exact h
   · intro h
     subst h
     constructor
-    · rw [List.take_succ, List.get?_eq_get hk]
-      simp [List.mem_append, Option.toList]
+    · rw [htake, List.mem_append, List.mem_singleton]
+      exact Or.inr rfl
     · intro hmem
       -- l.get k ∈ l.take k contradicts nodup
-      have := List.Nodup.get_inj_iff hl ⟨k, hk⟩
-      rw [List.mem_iff_get] at hmem
-      obtain ⟨j, hj⟩ := hmem
-      have hjlt : j.val < k := by rwa [List.length_take, Nat.min_eq_left hk.le] at j.isLt
-      have := (List.Nodup.get_inj_iff hl).mp (hj.symm)
-      exact Nat.not_lt.mpr (Fin.val_le_of_eq this) hjlt
+      rw [List.mem_take_iff_getElem] at hmem
+      obtain ⟨j, hjm, hje⟩ := hmem
+      have hjeq : j = k := (hl.getElem_inj_iff).mp hje
+      omega
 
 /-- The difference between prefixSet l (k+1) and prefixSet l (k-1) has 2 elements. -/
 theorem prefixSet_skip_sdiff_card {l : List (Fin n)} (hl : l.Nodup)
     (k : ℕ) (hk0 : 0 < k) (hk1 : k < l.length) :
     (prefixSet l (k + 1) \ prefixSet l (k - 1)).card = 2 := by
   have hAB : prefixSet l (k - 1) ⊆ prefixSet l (k + 1) :=
-    (prefixSet_mono (k - 1)).trans (prefixSet_mono k)
+    prefixSet_mono_of_le (by omega : k - 1 ≤ k + 1)
   have hA_card : (prefixSet l (k - 1)).card = k - 1 :=
     prefixSet_card_eq hl (by omega)
   have hB_card : (prefixSet l (k + 1)).card = k + 1 :=
     prefixSet_card_eq hl (by omega)
-  rw [Finset.card_sdiff hAB, hA_card, hB_card]
+  rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hAB, hA_card, hB_card]
   omega
 
 -- ============================================================
@@ -112,10 +116,12 @@ theorem intermediate_sets_card_eq_two {A B : Finset (Fin n)} (hAB : A ⊆ B)
   -- Obtain the two elements of B \ A
   obtain ⟨a, b, hab, hBA_eq⟩ := Finset.card_eq_two.mp hBA
   -- The filter is exactly {A ∪ {a}, A ∪ {b}}
-  have ha_notA : a ∉ A := Finset.not_mem_of_mem_sdiff (by rw [← hBA_eq]; simp)
-  have hb_notA : b ∉ A := Finset.not_mem_of_mem_sdiff (by rw [← hBA_eq, Finset.insert_comm]; simp)
-  have ha_B : a ∈ B := Finset.mem_of_mem_sdiff (by rw [← hBA_eq]; simp)
-  have hb_B : b ∈ B := Finset.mem_of_mem_sdiff (by rw [← hBA_eq, Finset.insert_comm]; simp)
+  have ha_notA : a ∉ A := (Finset.mem_sdiff.mp (show a ∈ B \ A by rw [hBA_eq]; simp)).2
+  have hb_notA : b ∉ A :=
+    (Finset.mem_sdiff.mp (show b ∈ B \ A by rw [hBA_eq]; simp)).2
+  have ha_B : a ∈ B := (Finset.mem_sdiff.mp (show a ∈ B \ A by rw [hBA_eq]; simp)).1
+  have hb_B : b ∈ B :=
+    (Finset.mem_sdiff.mp (show b ∈ B \ A by rw [hBA_eq]; simp)).1
   have hpair_ne : A ∪ {a} ≠ A ∪ {b} := by
     intro h
     have : a ∈ A ∪ {b} := h ▸ Finset.mem_union_right A (Finset.mem_singleton_self a)
@@ -123,44 +129,47 @@ theorem intermediate_sets_card_eq_two {A B : Finset (Fin n)} (hAB : A ⊆ B)
     rcases this with h | h
     · exact ha_notA h
     · exact hab h
-  convert_to ({A ∪ {a}, A ∪ {b}} : Finset (Finset (Fin n))).card = 2
-  · apply Finset.card_pair hpair_ne
-  · congr 1
+  have hset_eq : (B.powerset.filter (fun S => A ⊆ S ∧ S.card = A.card + 1))
+      = ({A ∪ {a}, A ∪ {b}} : Finset (Finset (Fin n))) := by
     ext S
-    simp only [mem_filter, mem_powerset, mem_insert, mem_singleton]
+    simp only [Finset.mem_filter, Finset.mem_powerset, Finset.mem_insert, Finset.mem_singleton]
     constructor
     · intro ⟨hSB, hAS, hScard⟩
       -- S \ A is a 1-element subset of B \ A = {a, b}
       have hSdiff_card : (S \ A).card = 1 := by
-        rw [Finset.card_sdiff hAS, hScard]; omega
+        rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hAS, hScard]; omega
       obtain ⟨e, he⟩ := Finset.card_eq_one.mp hSdiff_card
       have he_BA : e ∈ B \ A := by
         have he_S : e ∈ S \ A := he ▸ Finset.mem_singleton_self e
-        exact Finset.mem_sdiff.mpr ⟨hSB (Finset.mem_of_mem_sdiff he_S),
-          Finset.not_mem_of_mem_sdiff he_S⟩
-      rw [← hBA_eq] at he_BA
-      simp only [mem_insert, mem_singleton] at he_BA
+        exact Finset.mem_sdiff.mpr ⟨hSB (Finset.mem_sdiff.mp he_S).1,
+          (Finset.mem_sdiff.mp he_S).2⟩
+      rw [hBA_eq] at he_BA
+      simp only [Finset.mem_insert, Finset.mem_singleton] at he_BA
       have hS_eq : S = A ∪ {e} := by
         ext x
-        simp only [mem_union, mem_singleton]
+        simp only [Finset.mem_union, Finset.mem_singleton]
         constructor
         · intro hx
           by_cases hxA : x ∈ A
           · exact Or.inl hxA
           · have : x ∈ S \ A := Finset.mem_sdiff.mpr ⟨hx, hxA⟩
-            rw [he, mem_singleton] at this
+            rw [he, Finset.mem_singleton] at this
             exact Or.inr this
         · rintro (hx | rfl)
           · exact hAS hx
-          · exact Finset.mem_of_mem_sdiff (he ▸ Finset.mem_singleton_self e)
+          · exact (Finset.mem_sdiff.mp (he ▸ Finset.mem_singleton_self x)).1
       rcases he_BA with rfl | rfl
       · left; exact hS_eq
       · right; exact hS_eq
     · rintro (rfl | rfl) <;> refine ⟨?_, Finset.subset_union_left, ?_⟩
-      · intro x; simp only [mem_union, mem_singleton]; rintro (hx | rfl); exact hAB hx; exact ha_B
+      · intro x; simp only [Finset.mem_union, Finset.mem_singleton]
+        rintro (hx | rfl); exact hAB hx; exact ha_B
       · rw [Finset.card_union_of_disjoint (by simp [ha_notA])]; simp
-      · intro x; simp only [mem_union, mem_singleton]; rintro (hx | rfl); exact hAB hx; exact hb_B
+      · intro x; simp only [Finset.mem_union, Finset.mem_singleton]
+        rintro (hx | rfl); exact hAB hx; exact hb_B
       · rw [Finset.card_union_of_disjoint (by simp [hb_notA])]; simp
+  rw [hset_eq]
+  exact Finset.card_pair hpair_ne
 
 -- ============================================================
 -- SECTION III: Freudenthal Adjacency Theorem
@@ -188,13 +197,12 @@ theorem freudenthal_adjacency_theorem
   have hA_card : (prefixSet l (k - 1)).card = k - 1 :=
     prefixSet_card_eq hl (by omega)
   have hAB : prefixSet l (k - 1) ⊆ prefixSet l (k + 1) :=
-    (prefixSet_mono (k - 1)).trans (prefixSet_mono k)
+    prefixSet_mono_of_le (by omega : k - 1 ≤ k + 1)
   -- Convert S.card = k to S.card = (prefixSet l (k-1)).card + 1
   have hcard_eq : k = (prefixSet l (k - 1)).card + 1 := by omega
-  rw [show k = (prefixSet l (k - 1)).card + 1 from hcard_eq]
-  apply intermediate_sets_card_eq_two hAB
-  -- |B \ A| = 2
-  exact prefixSet_skip_sdiff_card hl k hk0 (by omega)
+  have hcount := intermediate_sets_card_eq_two hAB
+    (prefixSet_skip_sdiff_card hl k hk0 (by omega))
+  rwa [← hcard_eq] at hcount
 
 /-- Corollary: For each interior (n-1)-facet, there exist exactly 2 distinct
     k-element Finsets sandwiched between the (k-1) and (k+1) prefix sets.
