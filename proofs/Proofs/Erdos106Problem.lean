@@ -105,6 +105,13 @@ axiom f_bounded : ∀ n : ℕ, f n ≤ Real.sqrt n
 axiom f_mono : ∀ n m : ℕ, n ≤ m → f n ≤ f m
 
 /-
+## Perfect Squares: f(k²) = k
+-/
+
+/-- For perfect squares, f(k²) = k -/
+axiom f_perfect_square : ∀ k : ℕ, k ≥ 1 → f (k^2) = k
+
+/-
 ## Known Exact Values
 -/
 
@@ -128,13 +135,6 @@ theorem f_9 : f 9 = 3 := by
   have := f_perfect_square 3 (by omega)
   norm_num at this
   exact this
-
-/-
-## Perfect Squares: f(k²) = k
--/
-
-/-- For perfect squares, f(k²) = k -/
-axiom f_perfect_square : ∀ k : ℕ, k ≥ 1 → f (k^2) = k
 
 /-- Cauchy-Schwarz upper bound: f(n) ≤ √n -/
 theorem f_upper_bound (n : ℕ) : f n ≤ Real.sqrt n := f_bounded n
