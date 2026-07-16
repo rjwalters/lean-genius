@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 241 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos824ProblemProvable (ne_of_gt/lt ambiguity -> omega; import Pow.Real +
+open scoped Classical; noncomputable hSquarefree). Repair: none (2 pre-existing literature sorries preserved).
+
 # DOCTOR SINGLE-PROOF BATCH 240 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos796Problem (g3_first_order unreduced (2-1)! -> simpa; ∀ᶠ (n:ℕ) pin
