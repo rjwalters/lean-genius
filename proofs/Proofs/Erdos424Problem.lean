@@ -33,6 +33,7 @@ def sequenceSet : ℕ → Set ℕ
 /-- The full generated set: ⋃_n A_n. -/
 def generatedSet : Set ℕ := ⋃ n : ℕ, sequenceSet n
 
+open scoped Classical in
 /-- The counting function: number of elements of generatedSet in {1,...,N}. -/
 noncomputable def generatedCount (N : ℕ) : ℕ :=
   (Finset.Icc 1 N).filter (fun n => n ∈ generatedSet) |>.card
@@ -90,6 +91,18 @@ private lemma mem_nextGen {A : Set ℕ} {x y : ℕ} (hx : x ∈ A) (hy : y ∈ A
     (hne : x ≠ y) (hge : x * y ≥ 2) : x * y - 1 ∈ nextGeneration A :=
   ⟨x, y, hx, hy, hne, hge, rfl⟩
 
+/-- **Monotonicity**: A_n ⊆ A_{n+1} for all n.
+    PROVED from definitions. (Previously axiom.) -/
+theorem sequence_monotone (n : ℕ) :
+    sequenceSet n ⊆ sequenceSet (n + 1) :=
+  Set.subset_union_left
+
+/-- Transitive monotonicity: m ≤ n → A_m ⊆ A_n. -/
+theorem sequenceSet_mono {m n : ℕ} (h : m ≤ n) : sequenceSet m ⊆ sequenceSet n := by
+  induction h with
+  | refl => exact Set.Subset.rfl
+  | step _ ih => exact ih.trans (sequence_monotone _)
+
 /-- **Initial Elements**: the first few elements are 2, 3, 5, 9, 14, 17, 26, ...
     (OEIS A005244). PROVED from definitions. (Previously axiom.) -/
 theorem initial_elements :
@@ -116,18 +129,6 @@ theorem initial_elements :
     mem_generated 2 _ h9₂, mem_generated 2 _ h14₂, mem_generated 3 _ h17₃⟩
 
 /- ## Proved Properties -/
-
-/-- **Monotonicity**: A_n ⊆ A_{n+1} for all n.
-    PROVED from definitions. (Previously axiom.) -/
-theorem sequence_monotone (n : ℕ) :
-    sequenceSet n ⊆ sequenceSet (n + 1) :=
-  Set.subset_union_left
-
-/-- Transitive monotonicity: m ≤ n → A_m ⊆ A_n. -/
-theorem sequenceSet_mono {m n : ℕ} (h : m ≤ n) : sequenceSet m ⊆ sequenceSet n := by
-  induction h with
-  | refl => exact Subset.rfl
-  | step _ ih => exact ih.trans (sequence_monotone _)
 
 /-- **Closure**: generatedSet is closed under the operation (x, y) ↦ xy − 1
     for distinct x, y in the set with xy ≥ 2.

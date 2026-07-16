@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 89 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos424Problem (forward-ref reorder; Subset.rfl->Set.Subset.rfl), Ballot
+ProblemOQ01OQ02OQ01OQ01 (Set.ncard_biUnion->Set.Finite.ncard_biUnion +finsum conversion; point-free fun/on
+Pairwise term proofs fail strict-implicit auto-insertion -> intro tactic). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 88 (mixed fleet, hardened collector, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0 via explicit-ref collector): PrimeGapBoundsOQ01 (Real.log_le_sub_one_of_le->
