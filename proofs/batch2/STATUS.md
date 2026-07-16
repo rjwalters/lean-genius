@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 351 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: PartitionTheoremOQ01OQ01 (routed 27 native_decide calls through parent's
+decidable<->noncomputable bridge lemmas rr1Gap_eq_rr1GapPartitions / rr1Mod5_eq / rr2Gap_eq / rr2Mod5_eq
+before native_decide, since RogersRamanujan.rr{1,2}Mod5Partitions are noncomputable via Multiset.toList;
+parent already had PartitionDecidable mirror namespace, file just wasn't using it). Repair: none.
+SEAM: native_decide-on-noncomputable-dependency -> rewrite through pre-existing decidable<->noncomputable
+bridge lemmas before native_decide. Partition family COMPLETE.
+
 # DOCTOR SINGLE-PROOF BATCH 350 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, 290k tok)**: SpernerNDimOQ04 (parse-error masked large never-elaborated

@@ -26,29 +26,66 @@ namespace PartitionTheoremOQ01OQ01
 
 open RogersRamanujan
 
+/-!
+## Note on `native_decide` and computability (v4.31 migration)
+
+`RogersRamanujan.rr1Mod5Partitions` / `rr2Mod5Partitions` (defined in the parent
+file via `RogersRamanujan.partAllModIn`, which uses `Multiset.toList`) are
+genuinely noncomputable, so `native_decide` cannot be applied to them directly —
+it needs to compile a decision procedure, and `Multiset.toList` has no code to
+compile. The parent file anticipated exactly this and provides a **decidable**
+mirror (`PartitionDecidable.rr1Gap/rr1Mod5/rr2Gap/rr2Mod5`, built from pairwise
+separation on the multiset instead of a sorted list) together with bridge
+theorems (`rr1Gap_eq_rr1GapPartitions`, `rr1Mod5_eq_rr1Mod5Partitions`,
+`rr2Gap_eq_rr2GapPartitions`, `rr2Mod5_eq_rr2Mod5Partitions`) proving the
+decidable and noncomputable Finsets are literally equal. We rewrite through
+those bridges before invoking `native_decide`, which keeps the theorem
+statements below expressed in terms of the noncomputable
+`RogersRamanujan.rr*Partitions` API (matching the file's original intent)
+while discharging them computationally.
+-/
+
 /-! ## Verification of Rogers-Ramanujan First Identity (n ≤ 8) -/
 
-theorem rr1_n0 : (rr1GapPartitions 0).card = (rr1Mod5Partitions 0).card := by native_decide
-theorem rr1_n1 : (rr1GapPartitions 1).card = (rr1Mod5Partitions 1).card := by native_decide
-theorem rr1_n2 : (rr1GapPartitions 2).card = (rr1Mod5Partitions 2).card := by native_decide
-theorem rr1_n3 : (rr1GapPartitions 3).card = (rr1Mod5Partitions 3).card := by native_decide
-theorem rr1_n4 : (rr1GapPartitions 4).card = (rr1Mod5Partitions 4).card := by native_decide
-theorem rr1_n5 : (rr1GapPartitions 5).card = (rr1Mod5Partitions 5).card := by native_decide
-theorem rr1_n6 : (rr1GapPartitions 6).card = (rr1Mod5Partitions 6).card := by native_decide
-theorem rr1_n7 : (rr1GapPartitions 7).card = (rr1Mod5Partitions 7).card := by native_decide
-theorem rr1_n8 : (rr1GapPartitions 8).card = (rr1Mod5Partitions 8).card := by native_decide
+theorem rr1_n0 : (rr1GapPartitions 0).card = (rr1Mod5Partitions 0).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n1 : (rr1GapPartitions 1).card = (rr1Mod5Partitions 1).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n2 : (rr1GapPartitions 2).card = (rr1Mod5Partitions 2).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n3 : (rr1GapPartitions 3).card = (rr1Mod5Partitions 3).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n4 : (rr1GapPartitions 4).card = (rr1Mod5Partitions 4).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n5 : (rr1GapPartitions 5).card = (rr1Mod5Partitions 5).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n6 : (rr1GapPartitions 6).card = (rr1Mod5Partitions 6).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n7 : (rr1GapPartitions 7).card = (rr1Mod5Partitions 7).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
+theorem rr1_n8 : (rr1GapPartitions 8).card = (rr1Mod5Partitions 8).card := by
+  rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide
 
 /-! ## Verification of Rogers-Ramanujan Second Identity (n ≤ 8) -/
 
-theorem rr2_n0 : (rr2GapPartitions 0).card = (rr2Mod5Partitions 0).card := by native_decide
-theorem rr2_n1 : (rr2GapPartitions 1).card = (rr2Mod5Partitions 1).card := by native_decide
-theorem rr2_n2 : (rr2GapPartitions 2).card = (rr2Mod5Partitions 2).card := by native_decide
-theorem rr2_n3 : (rr2GapPartitions 3).card = (rr2Mod5Partitions 3).card := by native_decide
-theorem rr2_n4 : (rr2GapPartitions 4).card = (rr2Mod5Partitions 4).card := by native_decide
-theorem rr2_n5 : (rr2GapPartitions 5).card = (rr2Mod5Partitions 5).card := by native_decide
-theorem rr2_n6 : (rr2GapPartitions 6).card = (rr2Mod5Partitions 6).card := by native_decide
-theorem rr2_n7 : (rr2GapPartitions 7).card = (rr2Mod5Partitions 7).card := by native_decide
-theorem rr2_n8 : (rr2GapPartitions 8).card = (rr2Mod5Partitions 8).card := by native_decide
+theorem rr2_n0 : (rr2GapPartitions 0).card = (rr2Mod5Partitions 0).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n1 : (rr2GapPartitions 1).card = (rr2Mod5Partitions 1).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n2 : (rr2GapPartitions 2).card = (rr2Mod5Partitions 2).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n3 : (rr2GapPartitions 3).card = (rr2Mod5Partitions 3).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n4 : (rr2GapPartitions 4).card = (rr2Mod5Partitions 4).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n5 : (rr2GapPartitions 5).card = (rr2Mod5Partitions 5).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n6 : (rr2GapPartitions 6).card = (rr2Mod5Partitions 6).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n7 : (rr2GapPartitions 7).card = (rr2Mod5Partitions 7).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
+theorem rr2_n8 : (rr2GapPartitions 8).card = (rr2Mod5Partitions 8).card := by
+  rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide
 
 /-! ## Combined Verification Theorem -/
 
@@ -58,7 +95,11 @@ theorem rr_both_verified_through_8 :
       (rr1GapPartitions n).card = (rr1Mod5Partitions n).card ∧
       (rr2GapPartitions n).card = (rr2Mod5Partitions n).card := by
   intro n hn
-  interval_cases n <;> exact ⟨by native_decide, by native_decide⟩
+  interval_cases n <;>
+    exact ⟨by
+        rw [← rr1Gap_eq_rr1GapPartitions, ← rr1Mod5_eq_rr1Mod5Partitions]; native_decide,
+      by
+        rw [← rr2Gap_eq_rr2GapPartitions, ← rr2Mod5_eq_rr2Mod5Partitions]; native_decide⟩
 
 /-! ## The Axioms Are Consistent with Small Values
 
