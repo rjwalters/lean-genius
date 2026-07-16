@@ -51,13 +51,9 @@ namespace PtolemysComplexProofOQ02
 private lemma normSq_one_sub_exp (θ : ℝ) :
     Complex.normSq ((1 : ℂ) - Complex.exp (↑θ * Complex.I)) = 2 - 2 * Real.cos θ := by
   rw [Complex.normSq_apply]
-  simp only [Complex.sub_re, Complex.one_re, Complex.sub_im, Complex.one_im,
-             Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
-             Complex.ofReal_im, Complex.exp_re, Complex.exp_im]
-  ring_nf
-  rw [Real.exp_zero]
-  simp [Complex.cos_ofReal_re, Complex.sin_ofReal_im]
-  ring
+  simp only [Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im,
+             Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im]
+  nlinarith [Real.sin_sq_add_cos_sq θ]
 
 /-- ‖1 - exp(θi)‖² = 2 - 2 cos θ -/
 private lemma norm_sq_one_sub_exp (θ : ℝ) :
@@ -71,64 +67,32 @@ lemma norm_one_sub_exp_two_alpha (α : ℝ) (hα : 0 < α) (hα' : α < Real.pi 
   have hsinα : 0 < Real.sin α := Real.sin_pos_of_pos_of_lt_pi hα (by linarith [Real.pi_pos])
   have h2 : ‖(1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)‖ ^ 2 =
       2 - 2 * Real.cos (2 * α) := norm_sq_one_sub_exp (2 * α)
-  have hcos2 : Real.cos (2 * α) = 1 - 2 * Real.sin α ^ 2 := by
-    rw [Real.cos_two_mul]; ring
+  have hcos2 : Real.cos (2 * α) = 1 - 2 * Real.sin α ^ 2 := Real.cos_two_mul_eq_one_sub α
   rw [hcos2] at h2
   have h2' : ‖(1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)‖ ^ 2 = (2 * Real.sin α) ^ 2 := by
     linarith
-  have hpos : 0 < ‖(1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)‖ := by
-    rw [norm_pos_iff]
-    intro h
-    have := congr_arg Complex.re (sub_eq_zero.mp h)
-    simp [Complex.exp_mul_I, Complex.ofReal_re] at this
-    -- cos(2α) = 1 implies α = 0, contradicting hα > 0
-    have hα0 : Real.cos (2 * α) = 1 := by linarith [this]
-    have : 2 * α = 0 := by
-      have := Real.cos_eq_one_iff.mp hα0
-      obtain ⟨n, hn⟩ := this
-      nlinarith [Real.pi_pos, Int.cast_pos.mpr (by omega : (0 : ℤ) < n + 1)]
-    linarith
   nlinarith [sq_nonneg (‖(1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)‖ - 2 * Real.sin α),
-             sq_nonneg (‖(1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)‖ + 2 * Real.sin α)]
+             sq_nonneg (‖(1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)‖ + 2 * Real.sin α),
+             norm_nonneg ((1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I))]
 
 /-- For α ∈ (0, π/2): ‖exp(2α·i) - (-1)‖ = 2 cos α -/
 lemma norm_exp_two_alpha_sub_neg_one (α : ℝ) (hα : 0 < α) (hα' : α < Real.pi / 2) :
     ‖Complex.exp (↑(2 * α) * Complex.I) - (-1 : ℂ)‖ = 2 * Real.cos α := by
   have hcosα : 0 < Real.cos α :=
     Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩
-  rw [show Complex.exp (↑(2 * α) * Complex.I) - (-1 : ℂ) =
-      Complex.exp (↑(2 * α) * Complex.I) + 1 by ring]
-  rw [show Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ) =
-      -((1 : ℂ) - Complex.exp (↑(2 * α) * Complex.I)) + 2 by ring]
   -- ‖exp(2αI) + 1‖² = 2 + 2cos(2α) = 4cos²α
   have h_sum_sq : ‖Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)‖ ^ 2 =
       (2 * Real.cos α) ^ 2 := by
-    have : ‖Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)‖ ^ 2 =
-        2 + 2 * Real.cos (2 * α) := by
-      have h := norm_sq_one_sub_exp (2 * α)
-      -- ‖1 - e‖² = 2 - 2cos = ‖-(e-1)‖² = ‖e-1‖² = ‖e+1-2‖²... let's do it directly
-      rw [Complex.sq_norm]
-      simp only [Complex.normSq_apply, Complex.add_re, Complex.one_re, Complex.add_im,
-                 Complex.one_im, Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
-                 Complex.ofReal_im, Complex.exp_re, Complex.exp_im]
-      push_cast
-      ring_nf
-      rw [Real.cos_sq_add_sin_sq]
-      ring
-    rw [this, Real.cos_two_mul]
-    ring
-  rw [← sub_neg_eq_add, show -(-(1 : ℂ)) = (1 : ℂ) from neg_neg 1]
-  -- Use ‖exp(2αI) + 1‖ = 2 cos α
-  have hpos2 : 0 < ‖Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)‖ := by
-    rw [norm_pos_iff]; intro h
-    have := congr_arg Complex.re (add_eq_zero_iff_eq_neg.mp h)
-    simp [Complex.exp_mul_I, Complex.ofReal_re] at this
-    nlinarith [Real.cos_pos_of_mem_Ioo (show -Real.pi / 2 < 2*α ∧ 2*α < Real.pi / 2 by
-      constructor <;> linarith [Real.pi_pos])]
-  rw [show Complex.exp (↑(2 * α) * Complex.I) - -1 =
+    rw [Complex.sq_norm, Complex.normSq_apply]
+    simp only [Complex.add_re, Complex.add_im, Complex.one_re, Complex.one_im,
+               Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im,
+               Real.cos_two_mul, Real.sin_two_mul]
+    nlinarith [Real.sin_sq_add_cos_sq α, sq_nonneg (Real.cos α), sq_nonneg (Real.sin α)]
+  rw [show Complex.exp (↑(2 * α) * Complex.I) - (-1 : ℂ) =
       Complex.exp (↑(2 * α) * Complex.I) + 1 by ring]
   nlinarith [sq_nonneg (‖Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)‖ - 2 * Real.cos α),
-             sq_nonneg (‖Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)‖ + 2 * Real.cos α)]
+             sq_nonneg (‖Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)‖ + 2 * Real.cos α),
+             norm_nonneg (Complex.exp (↑(2 * α) * Complex.I) + (1 : ℂ)), hcosα]
 
 /-- ‖(-1) - exp(-2β·i)‖ = 2 cos β for β ∈ (0, π/2) -/
 lemma norm_neg_one_sub_exp_neg_two_beta (β : ℝ) (hβ : 0 < β) (hβ' : β < Real.pi / 2) :
@@ -140,35 +104,25 @@ lemma norm_neg_one_sub_exp_neg_two_beta (β : ℝ) (hβ : 0 < β) (hβ' : β < R
   have hcosβ : 0 < Real.cos β :=
     Real.cos_pos_of_mem_Ioo ⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩
   have h_sq : ‖Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)‖ ^ 2 = (2 * Real.cos β) ^ 2 := by
-    rw [Complex.sq_norm]
-    simp only [Complex.normSq_apply, Complex.add_re, Complex.one_re, Complex.add_im,
-               Complex.one_im, Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
-               Complex.ofReal_im, Complex.exp_re, Complex.exp_im]
-    push_cast
-    rw [show (-2 * β) = -(2 * β) by ring]
-    rw [Real.cos_neg, Real.sin_neg]
-    rw [Real.cos_two_mul]
-    ring_nf
-    rw [Real.cos_sq_add_sin_sq]
-    ring
-  have hpos : 0 < ‖Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)‖ := by
-    rw [norm_pos_iff]; intro h
-    have := congr_arg Complex.re (add_eq_zero_iff_eq_neg.mp h)
-    simp [Complex.exp_mul_I, Complex.ofReal_re, Real.cos_neg] at this
-    nlinarith [Real.cos_pos_of_mem_Ioo (show -Real.pi / 2 < -(2*β) ∧ -(2*β) < Real.pi / 2 by
-      constructor <;> linarith [Real.pi_pos])]
+    rw [Complex.sq_norm, Complex.normSq_apply]
+    simp only [Complex.add_re, Complex.add_im, Complex.one_re, Complex.one_im,
+               Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im,
+               neg_mul, Real.cos_neg, Real.sin_neg, Real.cos_two_mul, Real.sin_two_mul]
+    nlinarith [Real.sin_sq_add_cos_sq β, sq_nonneg (Real.cos β), sq_nonneg (Real.sin β)]
   nlinarith [sq_nonneg (‖Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)‖ - 2 * Real.cos β),
-             sq_nonneg (‖Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)‖ + 2 * Real.cos β)]
+             sq_nonneg (‖Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)‖ + 2 * Real.cos β),
+             norm_nonneg (Complex.exp (↑(-2 * β) * Complex.I) + (1 : ℂ)), hcosβ]
 
 /-- ‖1 - exp(-2β·i)‖ = 2 sin β for β ∈ (0, π/2) -/
 lemma norm_one_sub_exp_neg_two_beta (β : ℝ) (hβ : 0 < β) (hβ' : β < Real.pi / 2) :
     ‖(1 : ℂ) - Complex.exp (↑(-2 * β) * Complex.I)‖ = 2 * Real.sin β := by
   have hsinβ : 0 < Real.sin β := Real.sin_pos_of_pos_of_lt_pi hβ (by linarith [Real.pi_pos])
   have h : ‖(1 : ℂ) - Complex.exp (↑(-2 * β) * Complex.I)‖ ^ 2 = (2 * Real.sin β) ^ 2 := by
-    have := norm_sq_one_sub_exp (-2 * β)
-    simp only [show (-2 * β : ℝ) = -(2 * β) by ring] at this
-    rw [Real.cos_neg, Real.cos_two_mul] at this
-    rw [this]; ring
+    rw [Complex.sq_norm, Complex.normSq_apply]
+    simp only [Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im,
+               Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im,
+               neg_mul, Real.cos_neg, Real.sin_neg, Real.cos_two_mul, Real.sin_two_mul]
+    nlinarith [Real.sin_sq_add_cos_sq β, sq_nonneg (Real.cos β), sq_nonneg (Real.sin β)]
   nlinarith [sq_nonneg (‖(1 : ℂ) - Complex.exp (↑(-2 * β) * Complex.I)‖ - 2 * Real.sin β),
              sq_nonneg (‖(1 : ℂ) - Complex.exp (↑(-2 * β) * Complex.I)‖ + 2 * Real.sin β),
              norm_nonneg ((1 : ℂ) - Complex.exp (↑(-2 * β) * Complex.I))]
@@ -187,17 +141,17 @@ lemma norm_exp_diff (α β : ℝ) (hα : 0 < α) (hβ : 0 < β) (hab : α + β <
     -- conj(exp(-2βI)) = exp(2βI), so z₁ · conj z₂ = exp(2αI) · exp(2βI) = exp((2α+2β)I)
     -- Re(exp((2α+2β)I)) = cos(2α+2β)
     -- So ‖z₁ - z₂‖² = 1 + 1 - 2cos(2(α+β)) = 2 - 2cos(2(α+β)) = 4sin²(α+β)
-    rw [Complex.sq_norm]
-    simp only [Complex.normSq_apply, Complex.sub_re, Complex.sub_im,
-               Complex.mul_re, Complex.ofReal_re, Complex.I_re, Complex.I_im,
-               Complex.ofReal_im, Complex.exp_re, Complex.exp_im]
-    push_cast
-    rw [show (-2 * β) = -(2 * β) by ring]
-    rw [Real.cos_neg, Real.sin_neg]
-    rw [Real.cos_two_mul (α + β), Real.cos_add, Real.sin_add]
-    ring_nf
-    rw [Real.cos_sq_add_sin_sq]
-    ring
+    rw [Complex.sq_norm, Complex.normSq_apply]
+    simp only [Complex.sub_re, Complex.sub_im,
+               Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_im,
+               neg_mul, Real.cos_neg, Real.sin_neg,
+               Real.cos_two_mul, Real.sin_two_mul, Real.sin_add]
+    nlinarith [Real.sin_sq_add_cos_sq α, Real.sin_sq_add_cos_sq β,
+               sq_nonneg (Real.cos α), sq_nonneg (Real.sin α),
+               sq_nonneg (Real.cos β), sq_nonneg (Real.sin β),
+               sq_nonneg (Real.cos α * Real.cos β - Real.sin α * Real.sin β),
+               sq_nonneg (Real.cos α * Real.cos β + Real.sin α * Real.sin β),
+               sq_nonneg (Real.sin α * Real.cos β + Real.cos α * Real.sin β)]
   nlinarith [sq_nonneg (‖Complex.exp (↑(2 * α) * Complex.I) - Complex.exp (↑(-2 * β) * Complex.I)‖
              - 2 * Real.sin (α + β)),
              sq_nonneg (‖Complex.exp (↑(2 * α) * Complex.I) - Complex.exp (↑(-2 * β) * Complex.I)‖
@@ -232,14 +186,11 @@ private lemma ccw_order (α β : ℝ) (hα : 0 < α) (hα' : α < Real.pi / 2)
     rw [show (Real.pi : ℝ) = Real.pi from rfl]
     exact Complex.exp_pi_mul_I.symm
   · -- z₄ = exp((2π - 2β)·I) = exp(-2β·I) (periodicity)
-    rw [show (2 * Real.pi - 2 * β : ℝ) = -2 * β + 2 * Real.pi by ring]
+    have hθ : (2 * Real.pi - 2 * β : ℝ) = -2 * β + 2 * Real.pi := by ring
+    rw [hθ]
     push_cast
-    rw [show (↑(-2 * β) + ↑(2 * Real.pi)) * Complex.I =
-        ↑(-2 * β) * Complex.I + ↑(2 * Real.pi) * Complex.I by ring]
-    rw [Complex.exp_add]
-    rw [show (↑(2 * Real.pi) : ℂ) * Complex.I = ↑(2 * Real.pi) * Complex.I from rfl]
-    rw [Complex.exp_two_pi_mul_I]
-    ring
+    rw [add_mul, Complex.exp_add]
+    simp
 
 -- ============================================================
 -- SECTION III: Non-Degeneracy Conditions
@@ -261,8 +212,9 @@ private lemma hdenom_ne_zero (α β : ℝ) (hα : 0 < α) (hα' : α < Real.pi /
     have := norm_neg_one_sub_exp_neg_two_beta β hβ hβ'
     rw [← norm_neg, neg_sub, sub_eq_iff_eq_add.mp h] at this
     simp at this
-    linarith [Real.cos_pos_of_mem_Ioo (show -Real.pi / 2 < β ∧ β < Real.pi / 2 by
-      constructor <;> linarith [Real.pi_pos])]
+    linarith [Real.cos_pos_of_mem_Ioo
+      (⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩ :
+        β ∈ Set.Ioo (-(Real.pi / 2)) (Real.pi / 2))]
 
 private lemma hnumer_ne_zero (α β : ℝ) (hα : 0 < α) (hα' : α < Real.pi / 2)
     (hβ : 0 < β) (hβ' : β < Real.pi / 2) (hab : α + β < Real.pi / 2) :
@@ -273,8 +225,9 @@ private lemma hnumer_ne_zero (α β : ℝ) (hα : 0 < α) (hα' : α < Real.pi /
     have := norm_exp_two_alpha_sub_neg_one α hα hα'
     rw [sub_eq_zero.mp h] at this
     simp at this
-    linarith [Real.cos_pos_of_mem_Ioo (show -Real.pi / 2 < α ∧ α < Real.pi / 2 by
-      constructor <;> linarith [Real.pi_pos])]
+    linarith [Real.cos_pos_of_mem_Ioo
+      (⟨by linarith [Real.pi_pos], by linarith [Real.pi_pos]⟩ :
+        α ∈ Set.Ioo (-(Real.pi / 2)) (Real.pi / 2))]
   · intro h
     have := norm_one_sub_exp_neg_two_beta β hβ hβ'
     rw [sub_eq_zero.mp h] at this
@@ -308,9 +261,9 @@ theorem sin_add_from_ptolemy (α β : ℝ)
   have hβ_half : β < Real.pi / 2 := by linarith
   -- All 4 points on unit circle
   have h₁ : ‖z₁‖ = 1 := by simp [z₁]
-  have h₂ : ‖z₂‖ = 1 := by simp [z₂, Complex.norm_exp_ofReal_mul_I]
+  have h₂ : ‖z₂‖ = 1 := Complex.norm_exp_ofReal_mul_I (2 * α)
   have h₃ : ‖z₃‖ = 1 := by simp [z₃]
-  have h₄ : ‖z₄‖ = 1 := by simp [z₄, Complex.norm_exp_ofReal_mul_I]
+  have h₄ : ‖z₄‖ = 1 := Complex.norm_exp_ofReal_mul_I (-2 * β)
   -- CCW order
   have hccw : IsCCWOrder z₁ z₂ z₃ z₄ :=
     ccw_order α β hα hα_half hβ hβ_half
@@ -324,7 +277,9 @@ theorem sin_add_from_ptolemy (α β : ℝ)
     h₁ h₂ h₃ h₄ hdenom hnumer hccw
   -- ptolemy: ‖z₁ - z₃‖ · ‖z₂ - z₄‖ = ‖z₁ - z₂‖ · ‖z₃ - z₄‖ + ‖z₂ - z₃‖ · ‖z₁ - z₄‖
   -- Compute each distance:
-  have d13 : ‖z₁ - z₃‖ = 2 := by simp [z₁, z₃]
+  have d13 : ‖z₁ - z₃‖ = 2 := by
+    show ‖(1 : ℂ) - (-1 : ℂ)‖ = 2
+    norm_num
   have d24 : ‖z₂ - z₄‖ = 2 * Real.sin (α + β) :=
     norm_exp_diff α β hα hβ hab
   have d12 : ‖z₁ - z₂‖ = 2 * Real.sin α :=

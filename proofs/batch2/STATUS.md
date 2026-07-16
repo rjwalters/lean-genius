@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 85 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): CramersRuleOQ03OQ03 (Quaternion.imI->QuaternionAlgebra.imI (type-alias now);
+Quaternion.mul_re->re_mul name reorder; theorem-returning-DivisionRing -> noncomputable example),
+PtolemysComplexProofOQ02 (Complex.exp_ofReal_mul_I_re/_im @[simp]; Real.cos_eq_one_iff now explicit-arg;
+Real.cos_two_mul_eq_one_sub renamed double-angle home). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 84 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): FactorRemainderTheoremOQ03 (Polynomial.card_roots_le_degree removed ->
