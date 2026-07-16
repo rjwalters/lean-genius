@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 308 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): NewtonIndStep2 (α≥0/γ≥0 via dividing binom_ineq by b²/c²; nlinarith->explicit
+β-sign case split; le_or_lt gone -> by_cases+push_neg; deep nlinarith 9-var deg-4 heartbeat -> explicit chains).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 307 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): ProbMethodSecondMomentOQ01 (parent now declares paley_zygmund_quantitative
