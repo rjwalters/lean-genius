@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 270 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): PNPBarriersLegacy (Turing.TM2ComputableInPolyTime now raw encode fns not
+FinEncoding [TMComputable.lean moved to TuringMachine/Computable.lean] -> pass ea.encode/eb.encode). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 269 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): MathematicalInductionOQ03 (ZMod.natCast_val now ZMod.cast i not i ->
