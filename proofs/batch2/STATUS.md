@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 220 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos39Problem (frequently_lt_of_liminf_lt now IsCoboundedUnder(≥) not
+IsBoundedUnder; #38611 REPAIR old proof exploited laxer bounded-below hyp -> added true companion axiom
+sidon_counting_upper_bound; AXIOM COUNT 1->2 meta erdos-39 re-audit). Repairs: 1 (axiom-count change).
+
 # DOCTOR SINGLE-PROOF BATCH 219 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos429Problem (not_forall conjunction destructure; List.Sorted->
