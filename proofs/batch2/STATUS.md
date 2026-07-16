@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 196 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1178Problem (Nat.sInf_mem ⟨_,proof⟩ no eager unify -> explicit have
+hne:s.Nonempty; unfold conjecturedValue before norm_num; rw [← hdr] at hd direction). Repair: none (3 axioms
+legit unproved published results).
+
 # DOCTOR SINGLE-PROOF BATCH 195 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1002OQ01OQ01 (HARD 22min/252k ~25 sites: squeeze_zero_norm(a:=);

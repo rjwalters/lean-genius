@@ -105,8 +105,9 @@ axiom sarkozy_selkow_result (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
     For ℕ, sInf of a nonempty set is in the set. -/
 theorem dr_spec (r e : ℕ) (hr : r ≥ 3) (he : e ≥ 3) :
     isLittleO (fun n => (exr r n (dr r e) e : ℝ)) (fun n => (n : ℝ)^2) := by
-  unfold dr
-  exact Nat.sInf_mem ⟨_, sarkozy_selkow_result r e hr he⟩
+  have hne : {d : ℕ | isLittleO (fun n => (exr r n d e : ℝ)) (fun n => (n : ℝ)^2)}.Nonempty :=
+    ⟨(r - 2) * e + 2 + Nat.log 2 e, sarkozy_selkow_result r e hr he⟩
+  exact Nat.sInf_mem hne
 
 /-- dr is minimal: for any d < dr(r,e), ex_r(n, F(r,d,e)) is NOT o(n²).
     Proof: if d ∈ S, then sInf S ≤ d, contradicting d < sInf S. -/
@@ -175,13 +176,13 @@ theorem efr_e3 (r : ℕ) (hr : r ≥ 3) : dr r 3 = conjecturedValue r 3 := by
 /- ## Part VIII: Specific Values -/
 
 /-- d_3(3) = 6: The Ruzsa-Szemerédi (6,3)-theorem. -/
-theorem d3_3_value : conjecturedValue 3 3 = 6 := by norm_num
+theorem d3_3_value : conjecturedValue 3 3 = 6 := by unfold conjecturedValue; norm_num
 
 /-- d_3(4) should be 7 according to the conjecture. -/
-theorem d3_4_conjectured : conjecturedValue 3 4 = 7 := by norm_num
+theorem d3_4_conjectured : conjecturedValue 3 4 = 7 := by unfold conjecturedValue; norm_num
 
 /-- d_4(3) should be 9 according to the conjecture. -/
-theorem d4_3_conjectured : conjecturedValue 4 3 = 9 := by norm_num
+theorem d4_3_conjectured : conjecturedValue 4 3 = 9 := by unfold conjecturedValue; norm_num
 
 /-- **Solymosi-Solymosi (2017):** d_3(10) ≤ 14.
     The conjecture predicts d_3(10) = 13. Axiomatized as a deep published result.
@@ -241,7 +242,7 @@ theorem conjecture_implies_dense_free (r e d : ℕ) (hr : r ≥ 3) (he : e ≥ 3
     (hd : d < conjecturedValue r e) (hconj : BrownErdosSosGeneralConjecture) :
     ¬isLittleO (fun n => (exr r n d e : ℝ)) (fun n => (n : ℝ)^2) := by
   have hdr := hconj r e hr he
-  rw [hdr] at *
+  rw [← hdr] at hd
   exact dr_minimal r e d hr he hd
 
 /-- If the conjecture holds, then for d = (r-2)e+3, the extremal number
