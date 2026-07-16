@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 143 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos861Problem ((maxSidonSize N:ℝ) coercions x4 — scientific literal
+1.16*ℕ-term inside (2:ℝ)^ no longer coerces, OfScientific ℕ synth fail). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 142 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos614Problem (HARD 20min/197k: added [LinearOrder V] missing typeclass
