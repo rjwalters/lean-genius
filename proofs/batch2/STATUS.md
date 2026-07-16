@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 172 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BrouwerFixedPointOQ02 (div_le_div_of_nonneg_left 0≤a; iterate_succ_apply';
+Option.bind_eq_some_iff; Nat.exists_least_of_bex gone->Nat.find; set...with hε_def for linarith). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 171 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ01OQ03 (CHAIN ROOT: fourier_decomposition convert-using-2
