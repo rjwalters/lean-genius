@@ -74,7 +74,7 @@ def InvariantSubset (G : Type*) [Group G] (R : Type*) [CommRing R]
 
 /-- Invariant elements contain 0 (assuming the action preserves 0). -/
 theorem mem_invariant_zero (G : Type*) [Group G] (R : Type*) [CommRing R]
-    [MulAction G R] [SMulZeroClass G R] :
+    [DistribMulAction G R] :
     (0 : R) ∈ InvariantSubset G R :=
   fun g => smul_zero g
 
@@ -125,7 +125,7 @@ theorem reynolds_idempotent {G : Type*} [Group G] {R : Type*} [CommRing R]
     This is foundational: the ring structure of R^G is what makes
     questions about finite generation meaningful. -/
 def invariantSubring (G : Type*) [Group G] (R : Type*) [CommRing R]
-    [DistribMulAction G R] [MulDistribMulAction G R] : Subring R where
+    [MulSemiringAction G R] : Subring R where
   carrier := InvariantSubset G R
   zero_mem' := fun g => smul_zero g
   one_mem' := fun g => smul_one g
@@ -141,7 +141,7 @@ section FiniteGroupReynolds
 
 variable {G : Type*} [Group G] [Fintype G]
 variable {R : Type*} [CommRing R]
-variable [DistribMulAction G R] [MulDistribMulAction G R]
+variable [MulSemiringAction G R]
 
 open BigOperators
 
@@ -159,7 +159,7 @@ noncomputable def reynoldsSum (r : R) : R :=
     Left multiplication by any group element is a bijection on G,
     so summing over G and over aG gives the same result. -/
 theorem reynoldsSum_mem_invariant (r : R) :
-    reynoldsSum r ∈ InvariantSubset G R := by
+    reynoldsSum (G := G) r ∈ InvariantSubset G R := by
   intro a
   simp only [reynoldsSum]
   rw [Finset.smul_sum]
@@ -168,7 +168,7 @@ theorem reynoldsSum_mem_invariant (r : R) :
 
 /-- The Reynolds sum is additive. -/
 theorem reynoldsSum_add (r s : R) :
-    reynoldsSum (r + s) = reynoldsSum r + reynoldsSum s := by
+    reynoldsSum (G := G) (r + s) = reynoldsSum (G := G) r + reynoldsSum (G := G) s := by
   simp only [reynoldsSum]
   simp_rw [smul_add]
   exact Finset.sum_add_distrib
@@ -176,24 +176,25 @@ theorem reynoldsSum_add (r s : R) :
 /-- On invariant elements, the Reynolds sum equals |G| · r.
     Since g • r = r for all g, the sum Σ_g g • r = Σ_g r = |G| · r. -/
 theorem reynoldsSum_on_invariant (r : R) (hr : r ∈ InvariantSubset G R) :
-    reynoldsSum r = Fintype.card G • r := by
+    reynoldsSum (G := G) r = Fintype.card G • r := by
   simp only [reynoldsSum]
   have hr' : ∀ g : G, g • r = r := hr
   simp_rw [hr']
   rw [Finset.sum_const, Finset.card_univ]
 
 /-- The Reynolds sum of zero is zero. -/
-theorem reynoldsSum_zero : reynoldsSum (0 : R) = 0 := by
+theorem reynoldsSum_zero : reynoldsSum (G := G) (0 : R) = 0 := by
   simp [reynoldsSum, smul_zero]
 
 /-- The Reynolds sum respects negation. -/
-theorem reynoldsSum_neg (r : R) : reynoldsSum (-r) = -reynoldsSum r := by
+theorem reynoldsSum_neg (r : R) :
+    reynoldsSum (G := G) (-r) = -reynoldsSum (G := G) r := by
   simp only [reynoldsSum, smul_neg, Finset.sum_neg_distrib]
 
 /-- The Reynolds sum commutes with multiplication by invariant elements.
     If s ∈ R^G, then Σ_g g•(s·r) = Σ_g (g•s)·(g•r) = Σ_g s·(g•r) = s · Σ_g g•r. -/
 theorem reynoldsSum_mul_invariant (s r : R) (hs : s ∈ InvariantSubset G R) :
-    reynoldsSum (s * r) = s * reynoldsSum r := by
+    reynoldsSum (G := G) (s * r) = s * reynoldsSum (G := G) r := by
   simp only [reynoldsSum]
   simp_rw [smul_mul', hs _]
   exact (Finset.mul_sum Finset.univ (fun g => g • r) s).symm
