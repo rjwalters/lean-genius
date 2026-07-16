@@ -862,9 +862,14 @@ theorem tucker_cycle (m : ℕ) (L : Fin (2 * (m + 1)) → ℤ)
     linarith
   obtain ⟨i, hi⟩ := tucker_path_pm1_complementary m L' h_labels' h_compl
   -- The complementary edge in L' corresponds to an edge in L
-  exact ⟨⟨i.val, by omega⟩, by
-    simp only [L'] at hi
-    convert hi using 2 <;> omega⟩
+  refine ⟨⟨i.val, by omega⟩, ?_⟩
+  simp only [L'] at hi
+  have e1 : ((⟨i.val, by omega⟩ : Fin (2 * (m + 1) - 1)).castSucc : Fin (2 * (m + 1))) =
+      (⟨(i.castSucc : Fin (m + 2)).val, by omega⟩ : Fin (2 * (m + 1))) := Fin.ext rfl
+  have e2 : ((⟨i.val, by omega⟩ : Fin (2 * (m + 1) - 1)).succ : Fin (2 * (m + 1))) =
+      (⟨(i.succ : Fin (m + 2)).val, by omega⟩ : Fin (2 * (m + 1))) := Fin.ext rfl
+  rw [e1, e2]
+  exact hi
 
 /-
 ## Section XXII: Tucker 2D — Parity Foundation
@@ -921,16 +926,16 @@ private noncomputable def signChangeCount (L : ℕ → ℤ) (hL : ∀ k, L k ≠
     equals whether endpoint signs differ. -/
 private lemma sign_change_parity_nat (n : ℕ) (L : ℕ → ℤ) (hL : ∀ k, L k ≠ 0) :
     (signZ (L 0) (hL 0) ≠ signZ (L (n + 1)) (hL _)) ↔ Odd (signChangeCount L hL (n + 1)) := by
-  induction n with
+  induction n generalizing L hL with
   | zero =>
     -- One edge: sign change iff endpoints differ
-    simp only [signChangeCount, Finset.range_one]
+    simp only [signChangeCount, zero_add, Finset.range_one]
     constructor
     · intro h
       have : ({0} : Finset ℕ).filter (fun i =>
           signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)) = {0} := by
         simp [Finset.filter_singleton, h]
-      rw [this]; exact ⟨0, by ring⟩
+      rw [this]; exact ⟨0, by simp⟩
     · intro ⟨k, hk⟩
       by_contra h
       skip
@@ -943,21 +948,28 @@ private lemma sign_change_parity_nat (n : ℕ) (L : ℕ → ℤ) (hL : ∀ k, L 
     have hrange : Finset.range (m + 2) = Finset.range (m + 1) ∪ {m + 1} := by
       ext i; simp [Finset.mem_range, Finset.mem_union, Finset.mem_singleton]; omega
     -- The sign change count splits
-    set P := fun i => signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)
+    set P := fun i => signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _) with hP_def
     have hdisj : Disjoint (Finset.range (m + 1)) {m + 1} := by
-      simp [Finset.disjoint_singleton_right, Finset.mem_range]; omega
+      simp [Finset.disjoint_singleton_right, Finset.mem_range]
     have hcard : signChangeCount L hL (m + 2) =
         signChangeCount L hL (m + 1) + if P (m + 1) then 1 else 0 := by
       simp only [signChangeCount, hrange]
       rw [Finset.filter_union, Finset.card_union_of_disjoint (Finset.disjoint_filter_filter hdisj)]
-      congr 1
-      simp [Finset.filter_singleton]
+      have hstep : (({m + 1} : Finset ℕ).filter
+          (fun i => signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _))) =
+          if P (m + 1) then ({m + 1} : Finset ℕ) else ∅ :=
+        Finset.filter_singleton _ _
+      rw [hstep]
+      by_cases hP : P (m + 1)
+      · simp [hP]
+      · simp [hP]
     -- By IH: signZ(L 0) ≠ signZ(L (m+1)) ↔ Odd(prefix count)
     have ih_applied := ih L hL
     -- Case split on whether there's a sign change at the last edge
     by_cases hlast : P (m + 1)
     · -- Sign change at last edge: count = prefix + 1
       rw [hcard, if_pos hlast]
+      simp only [hP_def] at hlast
       constructor
       · intro hne
         -- signZ ∈ {1,-1}, so L(0) ≠ L(m+2) and L(m+1) ≠ L(m+2) → L(0) = L(m+1)
@@ -969,7 +981,7 @@ private lemma sign_change_parity_nat (n : ℕ) (L : ℕ → ℤ) (hL : ∀ k, L 
         have heven : ¬Odd (signChangeCount L hL (m + 1)) := by
           rwa [← ih_applied, not_not]
         -- Even + 1 = odd
-        obtain ⟨j, hj⟩ := Nat.even_iff_not_odd.mpr heven
+        obtain ⟨j, hj⟩ := Nat.not_odd_iff_even.mp heven
         exact ⟨j, by omega⟩
       · intro ⟨k, hk⟩
         -- prefix + 1 odd → prefix even → L(0) = L(m+1)
@@ -982,19 +994,14 @@ private lemma sign_change_parity_nat (n : ℕ) (L : ℕ → ℤ) (hL : ∀ k, L 
         rcases signZ_val (L (m + 1)) (hL _) with h1 | h1 <;>
         rcases signZ_val (L (m + 2)) (hL _) with h2 | h2 <;> simp_all
     · -- No sign change at last edge: count = prefix
-      rw [hcard, if_neg hlast, Nat.add_zero]
+      rw [hcard, if_neg hlast]
+      simp only [Nat.add_zero]
+      simp only [hP_def] at hlast
       -- signZ(L (m+1)) = signZ(L (m+2))
       push_neg at hlast
-      rw [ih_applied]
-      constructor
-      · intro hne
-        -- signZ(L 0) ≠ signZ(L (m+2)) and signZ(L (m+1)) = signZ(L (m+2))
-        -- So signZ(L 0) ≠ signZ(L (m+1)), hence prefix is odd
-        rwa [hlast] at hne
-      · intro hodd
-        -- Prefix odd, so signZ(L 0) ≠ signZ(L (m+1))
-        -- signZ(L (m+1)) = signZ(L (m+2)), so signZ(L 0) ≠ signZ(L (m+2))
-        rwa [hlast]
+      -- Rewrite the L(m+2) occurrence to L(m+1) using hlast, then apply the IH directly.
+      rw [← hlast]
+      exact ih_applied
 
 /-- Bridge: convert ℕ-indexed sign change count to Fin-indexed filter card. -/
 private lemma signChangeCount_eq_filter_card (n : ℕ) (L : Fin (n + 2) → ℤ)
@@ -1008,16 +1015,41 @@ private lemma signChangeCount_eq_filter_card (n : ℕ) (L : Fin (n + 2) → ℤ)
   -- The ℕ version uses Finset.range (n+1), the Fin version uses Finset.univ (Fin (n+1))
   -- They biject via i ↦ ⟨i, ...⟩
   simp only [signChangeCount]
-  apply Finset.card_filter_congr_bij (fun i => ⟨i.1, by have := i.2; simp [Finset.mem_range] at this; exact this⟩)
-    (fun i _ => Finset.mem_univ _) (fun i j _ _ h => by ext; exact Fin.mk.inj h)
-    (fun j _ => ⟨⟨j, by simp [Finset.mem_range]; exact j.isLt⟩, Finset.mem_range.mpr j.isLt, by ext; simp⟩)
-  intro i hi
-  -- Need: signZ (L' i) = signZ (L i.castSucc) and signZ (L' (i+1)) = signZ (L i.succ)
-  -- L' i = L ⟨min i (n+1), ...⟩ and for i < n+1: min i (n+1) = i
-  -- i.castSucc = ⟨i, ...⟩ (same value)
-  simp only [Finset.mem_range] at hi
-  have hi' : i < n + 1 := hi
-  congr 1 <;> congr 1 <;> ext <;> simp [Fin.castSucc, Fin.succ, Nat.min_eq_left (by omega)]
+  have hcorr : ∀ a : ℕ, a < n + 1 →
+      ((signZ (L ⟨min a (n + 1), by omega⟩) (hnonzero _) ≠
+          signZ (L ⟨min (a + 1) (n + 1), by omega⟩) (hnonzero _)) ↔
+        signZ (L ((⟨min a n, by omega⟩ : Fin (n + 1)).castSucc)) (hnonzero _) ≠
+          signZ (L ((⟨min a n, by omega⟩ : Fin (n + 1)).succ)) (hnonzero _)) := by
+    intro a ha
+    have e1 : (⟨min a (n + 1), by omega⟩ : Fin (n + 2)) =
+        (⟨min a n, by omega⟩ : Fin (n + 1)).castSucc := by
+      apply Fin.ext; simp [show min a (n + 1) = a by omega, show min a n = a by omega]
+    have e2 : (⟨min (a + 1) (n + 1), by omega⟩ : Fin (n + 2)) =
+        (⟨min a n, by omega⟩ : Fin (n + 1)).succ := by
+      apply Fin.ext
+      simp [show min (a + 1) (n + 1) = a + 1 by omega, show min a n = a by omega]
+    rw [e1, e2]
+  apply Finset.card_nbij' (fun a => (⟨min a n, by omega⟩ : Fin (n + 1))) (fun b => (b : Fin (n + 1)).val)
+  · intro a ha
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and]
+    exact (hcorr a ha.1).mp ha.2
+  · intro b hb
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hb
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range]
+    have hbval : b.val < n + 1 := b.isLt
+    have hbeq : (⟨min b.val n, by omega⟩ : Fin (n + 1)) = b := by
+      apply Fin.ext; simp [show min b.val n = b.val by omega]
+    refine ⟨hbval, ?_⟩
+    have hmp := (hcorr b.val hbval).mpr
+    rw [hbeq] at hmp
+    exact hmp hb
+  · intro a ha
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha
+    simp [show min a n = a by omega]
+  · intro b hb
+    apply Fin.ext
+    simp [show min b.val n = b.val by omega]
 
 /-- **Sign product telescope**: On a path of nonzero integers, the product
     of signs of adjacent pairs telescopes to sign(first) * sign(last).
@@ -1038,9 +1070,12 @@ theorem sign_change_count_parity (n : ℕ) (L : Fin (n + 2) → ℤ)
   apply (sign_change_parity_nat n L' hL').mp
   -- Need: signZ(L' 0) ≠ signZ(L' (n+1))
   -- L' 0 = L 0 and L' (n+1) = L (Fin.last (n+1))
-  have hL'0 : L' 0 = L 0 := by simp [L', Nat.min_eq_left (by omega)]
+  have hL'0 : L' 0 = L 0 := by
+    have hm : min 0 (n + 1) = 0 := by omega
+    simp [L', hm]
   have hL'last : L' (n + 1) = L (Fin.last (n + 1)) := by
-    simp [L', Fin.last, Nat.min_self]
+    have hm : min (n + 1) (n + 1) = n + 1 := by omega
+    simp [L', Fin.last, hm]
   -- Endpoints are complementary, so signs differ
   intro h_eq
   have h_prod := compl_opposite_sign (hL' 0) (hL' (n + 1)) (by rw [hL'0, hL'last]; exact hcompl)
