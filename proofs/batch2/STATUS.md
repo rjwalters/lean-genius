@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 314 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos395OQ01Incomplete01 (Complex.re_sum/im_sum+Finset.add_sum_erase explicit
+s,f,h; nsmul_eq_mul for ℕ-smul-ZMod2; Nat.cast_natAbs; T≤-1∨1≤T omega split; stale parent olean -> lake build
+Erdos395Problem first). Repair: none. Closes Erdos395 family.
+
 # DOCTOR SINGLE-PROOF BATCH 313 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos191Problem (calc ≥/> mismatch -> have hgt+.le; literal forces Finset.Icc
