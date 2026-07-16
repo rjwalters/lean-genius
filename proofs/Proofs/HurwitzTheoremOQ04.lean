@@ -81,7 +81,7 @@ def octUnit : Fin 8 → ℝ := stdBasis 0
     Immediate from normSq_stdBasis in the parent file. -/
 theorem normSq_octUnit : normSq octUnit = 1 := normSq_stdBasis 0
 
-/-- e₀ is the right identity under octonion multiplication.
+/- e₀ is the right identity under octonion multiplication.
     Proof: each component of eightMul a (stdBasis 0) equals a i since
     (stdBasis 0) 0 = 1, (stdBasis 0) j = 0 for j ≠ 0, so each formula reduces to a i.
     This is a ring identity that follows by expanding all 8 components.
@@ -89,24 +89,14 @@ theorem normSq_octUnit : normSq octUnit = 1 := normSq_stdBasis 0
 set_option maxHeartbeats 800000 in
 theorem eightMul_right_unit (a : Fin 8 → ℝ) : eightMul a octUnit = a := by
   funext i
-  fin_cases i <;>
-  simp only [eightMul, octUnit, stdBasis,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    Matrix.cons_val_two, Matrix.cons_val_three] <;>
-  simp (config := { decide := true }) only [ite_true, ite_false] <;>
-  ring
+  fin_cases i <;> simp [eightMul, octUnit, stdBasis] <;> ring
 
-/-- e₀ is the left identity under octonion multiplication.
+/- e₀ is the left identity under octonion multiplication.
     [Computational sorry — provable by: funext i; fin_cases i; simp [eightMul, stdBasis]; ring] -/
 set_option maxHeartbeats 800000 in
 theorem eightMul_left_unit (a : Fin 8 → ℝ) : eightMul octUnit a = a := by
   funext i
-  fin_cases i <;>
-  simp only [eightMul, octUnit, stdBasis,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    Matrix.cons_val_two, Matrix.cons_val_three] <;>
-  simp (config := { decide := true }) only [ite_true, ite_false] <;>
-  ring
+  fin_cases i <;> simp [eightMul, octUnit, stdBasis] <;> ring
 
 /-- The norm identity with the unit:
     normSq(eightMul a octUnit) = normSq a * normSq octUnit = normSq a.
@@ -161,8 +151,8 @@ def compAlgHom (φ ψ : OctonionAlgHom) : OctonionAlgHom where
     Direct consequence of the 8-square identity. -/
 theorem alg_hom_preserves_norm_product (φ : OctonionAlgHom) (a b : Fin 8 → ℝ) :
     normSq (φ.map a) * normSq (φ.map b) = normSq (φ.map (eightMul a b)) := by
-  rw [← φ.map_mul]
-  exact (eight_square_identity_norm (φ.map a) (φ.map b)).symm
+  rw [φ.map_mul]
+  exact eight_square_identity_norm (φ.map a) (φ.map b)
 
 -- ============================================================
 -- Helper lemmas for norm preservation
@@ -212,11 +202,7 @@ private lemma imag_sq_eq_neg_norm (y : Fin 8 → ℝ) (hy : y 0 = 0) :
     rw [normSq_expand, hy]; ring
   funext j
   fin_cases j <;>
-  simp only [eightMul, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-             Matrix.cons_val_two, Matrix.cons_val_three,
-             Pi.smul_apply, smul_eq_mul, Pi.neg_apply, octUnit, stdBasis,
-             mul_one, mul_zero, ite_true, ite_false, hns, hy, sq,
-             zero_mul, mul_zero] <;>
+  simp [eightMul, octUnit, stdBasis, Pi.smul_apply, smul_eq_mul, Pi.neg_apply, hns, hy] <;>
   ring
 
 /-- For pure imaginary y (y 0 = 0), φ(y) is also pure imaginary AND has the same norm.
@@ -264,11 +250,10 @@ private lemma phi_imag_props (φ : OctonionAut) (y : Fin 8 → ℝ) (hy : y 0 = 
     - (φ(w)) 0 = 0 so e₀ ⊥ φ(w), giving normSq(φ(a)) = r² + normSq(w) = normSq(a). -/
 theorem alg_aut_preserves_norm (φ : OctonionAut) (a : Fin 8 → ℝ) :
     normSq (φ.map a) = normSq a := by
-  set r := a 0
+  set r := a 0 with hr
   set w := a - r • octUnit with hw_def
   have hw0 : w 0 = 0 := by
-    simp only [hw_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
-               ite_true, mul_one, sub_self]
+    simp [hw_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis, hr]
   obtain ⟨hw_img0, hw_norm⟩ := phi_imag_props φ w hw0
   -- φ(a) = r•e₀ + φ(w)
   have hphi_a : φ.map a = r • octUnit + φ.map w := by
@@ -276,14 +261,12 @@ theorem alg_aut_preserves_norm (φ : OctonionAut) (a : Fin 8 → ℝ) :
     rw [ha, φ.map_add, φ.map_smul, phi_unit_eq_unit]
   -- Orthogonality: innerProd(r•e₀, w) = r * w 0 = 0
   have hinp_w : innerProd (r • octUnit) w = 0 := by
-    simp only [innerProd, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
-               Fin.sum_univ_succ, Fin.sum_univ_zero, hw0]
-    ring
+    simp [innerProd, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
+          Fin.sum_univ_succ, Fin.sum_univ_zero, hw0] <;> ring
   -- Orthogonality: innerProd(r•e₀, φ(w)) = r * (φ(w)) 0 = 0
   have hinp_phi : innerProd (r • octUnit) (φ.map w) = 0 := by
-    simp only [innerProd, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
-               Fin.sum_univ_succ, Fin.sum_univ_zero, hw_img0]
-    ring
+    simp [innerProd, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
+          Fin.sum_univ_succ, Fin.sum_univ_zero, hw_img0] <;> ring
   -- normSq(a) = r² + normSq(w)
   have ha_norm : normSq a = r ^ 2 + normSq w := by
     have ha : a = r • octUnit + w := by simp [hw_def]
@@ -327,19 +310,18 @@ theorem octConj_involutive (x : Fin 8 → ℝ) : octConj (octConj x) = x := by
     - Re(φ(x)) = (Re(x)·e₀ + φ(w)) 0 = Re(x) + 0 = Re(x) -/
 theorem real_part_preserved (φ : OctonionAut) (x : Fin 8 → ℝ) :
     realPart (φ.map x) = realPart x := by
-  set r := x 0
+  set r := x 0 with hr
   set w := x - r • octUnit with hw_def
   have hw0 : w 0 = 0 := by
-    simp only [hw_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis,
-               ite_true, mul_one, sub_self]
+    simp [hw_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, octUnit, stdBasis, hr]
   have hw_img0 : (φ.map w) 0 = 0 := (phi_imag_props φ w hw0).1
   -- φ(x) = r•e₀ + φ(w)
   have hphi_x : φ.map x = r • octUnit + φ.map w := by
     have hx : x = r • octUnit + w := by simp [hw_def]
     rw [hx, φ.map_add, φ.map_smul, phi_unit_eq_unit]
   -- Re(φ(x)) = (r•e₀ + φ(w)) 0 = r + 0 = r = Re(x)
-  simp only [realPart, hphi_x, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
-             octUnit, stdBasis, ite_true, mul_one, hw_img0, add_zero]
+  simp [realPart, hphi_x, Pi.add_apply, Pi.smul_apply, smul_eq_mul,
+        octUnit, stdBasis, hw_img0, hr]
 
 -- ============================================================
 -- PART IIIb: Inner Product and Imaginary Subspace Preservation
@@ -495,7 +477,7 @@ def addDer (D₁ D₂ : OctonionDer) : OctonionDer where
 def smulDer (r : ℝ) (D : OctonionDer) : OctonionDer where
   map := fun x => r • D.map x
   map_add := fun a b => by simp [D.map_add, smul_add]
-  map_smul := fun s a => by simp [D.map_smul, smul_comm]
+  map_smul := fun s a => by rw [D.map_smul, smul_comm]
   leibniz := fun a b => by
     rw [D.leibniz, smul_add,
         eightMul_smul_left r (D.map a) b,
@@ -504,14 +486,14 @@ def smulDer (r : ℝ) (D : OctonionDer) : OctonionDer where
 /-- eightMul is linear in the first argument over subtraction. -/
 private lemma eightMul_sub_left (a b c : Fin 8 → ℝ) :
     eightMul (a - b) c = eightMul a c - eightMul b c := by
-  have : a - b = a + (-1 : ℝ) • b := by simp [sub_eq_add_neg, neg_smul]
-  rw [this, eightMul_add_left, eightMul_smul_left]; ring
+  have : a - b = a + (-1 : ℝ) • b := by rw [sub_eq_add_neg, neg_one_smul]
+  rw [this, eightMul_add_left, eightMul_smul_left, neg_one_smul]; abel
 
 /-- eightMul is linear in the second argument over subtraction. -/
 private lemma eightMul_sub_right (a b c : Fin 8 → ℝ) :
     eightMul a (b - c) = eightMul a b - eightMul a c := by
-  have : b - c = b + (-1 : ℝ) • c := by simp [sub_eq_add_neg, neg_smul]
-  rw [this, eightMul_add_right, eightMul_smul_right]; ring
+  have : b - c = b + (-1 : ℝ) • c := by rw [sub_eq_add_neg, neg_one_smul]
+  rw [this, eightMul_add_right, eightMul_smul_right, neg_one_smul]; abel
 
 /-- The commutator [D₁, D₂] = D₁ ∘ D₂ − D₂ ∘ D₁ of two derivations is a derivation.
 
@@ -553,7 +535,11 @@ theorem commDer_jacobi (D₁ D₂ D₃ : OctonionDer) (x : Fin 8 → ℝ) :
     (commDer (commDer D₁ D₂) D₃).map x +
     (commDer (commDer D₂ D₃) D₁).map x +
     (commDer (commDer D₃ D₁) D₂).map x = 0 := by
-  simp only [commDer, Pi.sub_apply]
+  have hsub : ∀ (D : OctonionDer) (a b : Fin 8 → ℝ),
+      D.map (a - b) = D.map a - D.map b := fun D a b => by
+    rw [sub_eq_add_neg, D.map_add, ← neg_one_smul ℝ b, D.map_smul, neg_one_smul,
+      ← sub_eq_add_neg]
+  simp only [commDer, Pi.sub_apply, hsub]
   ring
 
 -- ============================================================
@@ -671,14 +657,12 @@ private noncomputable def d47 : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ) wher
   map_smul' r a := by funext i; fin_cases i <;> simp [Pi.smul_apply, smul_eq_mul] <;> ring
 
 -- Helper: simp set for eightMul + matrix notation unfolding
-private macro "simp_der_mem" : tactic => `(tactic| (
+macro "simp_der_mem" : tactic => `(tactic| (
   intro a b
   funext i
   fin_cases i <;>
-  simp only [LinearMap.coe_mk, AddHom.coe_mk, eightMul,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    Matrix.cons_val', Matrix.cons_val_fin_one,
-    Fin.isValue, Pi.add_apply] <;>
+  simp [d12, d13, d14, d15, d16, d17, d23, d24, d25, d26, d27, d45, d46, d47,
+    LinearMap.coe_mk, AddHom.coe_mk, eightMul, Pi.add_apply] <;>
   ring))
 
 set_option maxHeartbeats 1600000 in
@@ -763,25 +747,22 @@ private lemma submodule_der_unit_zero
   funext i
   have hi := congr_fun h i
   simp only [Pi.add_apply] at hi
+  simp only [Pi.zero_apply]
   linarith
 
-/-- For any imaginary basis vector `eⱼ` (j ≠ 0), `eⱼ · eⱼ = -e₀` in 𝕆.
+/- For any imaginary basis vector `eⱼ` (j ≠ 0), `eⱼ · eⱼ = -e₀` in 𝕆.
     Direct computation from the eightMul formula: in component 0, only the
     diagonal `-aⱼ * bⱼ` term survives (giving -1); all other components vanish. -/
+set_option maxHeartbeats 1600000 in
 private lemma stdBasis_sq_neg_unit (j : Fin 8) (hj : j ≠ 0) :
     eightMul (stdBasis j) (stdBasis j) = -octUnit := by
   fin_cases j
   · exact absurd rfl hj
   all_goals
     funext k
-    fin_cases k <;>
-      simp only [eightMul, octUnit, stdBasis, Pi.neg_apply,
-        Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-        Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      simp (config := { decide := true }) only [ite_true, ite_false] <;>
-      ring
+    fin_cases k <;> simp [eightMul, octUnit, stdBasis, Pi.neg_apply] <;> ring
 
-/-- For any derivation `f` of 𝕆 (member of `OctonionDerSubmodule`) and any
+/- For any derivation `f` of 𝕆 (member of `OctonionDerSubmodule`) and any
     imaginary basis vector `eⱼ` (j ≠ 0), the j-th component of `f(eⱼ)` is zero.
 
     Geometric meaning: derivations preserve the unit-norm constraint on basis
@@ -794,6 +775,7 @@ private lemma stdBasis_sq_neg_unit (j : Fin 8) (hj : j ≠ 0) :
     The 0-th component of the RHS computes to `-2·(f eⱼ)_j` (since both
     `(a · eⱼ)_0` and `(eⱼ · a)_0` reduce to `-a_j` for j ≥ 1), giving
     `(f eⱼ)_j = 0`. -/
+set_option maxHeartbeats 1600000 in
 private lemma submodule_der_diagonal_kill
     (f : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (hf : f ∈ OctonionDerSubmodule)
     (j : Fin 8) (hj : j ≠ 0) :
@@ -811,13 +793,9 @@ private lemma submodule_der_diagonal_kill
   fin_cases j
   · exact absurd rfl hj
   all_goals
-    simp only [eightMul, stdBasis,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-      Matrix.cons_val_two, Matrix.cons_val_three] at h0 <;>
-    simp (config := { decide := true }) only [ite_true, ite_false] at h0 <;>
-    linarith
+    simp [eightMul, stdBasis] at h0 ⊢ <;> linarith
 
-/-- For distinct imaginary basis vectors `eᵢ`, `eⱼ` (i ≠ 0, j ≠ 0, i ≠ j),
+/- For distinct imaginary basis vectors `eᵢ`, `eⱼ` (i ≠ 0, j ≠ 0, i ≠ j),
     the symmetric product vanishes: `eᵢ · eⱼ + eⱼ · eᵢ = 0`.
 
     Reflects the anti-commutativity of the imaginary octonion basis.
@@ -837,14 +815,9 @@ private lemma imag_anticomm (i j : Fin 8) (hi : i ≠ 0) (hj : j ≠ 0) (hij : i
        (first
         | exact absurd rfl hij
         | (funext k
-           fin_cases k <;>
-             simp only [eightMul, stdBasis, Pi.add_apply, Pi.zero_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-               Matrix.cons_val_two, Matrix.cons_val_three] <;>
-             simp (config := { decide := true }) only [ite_true, ite_false] <;>
-             ring))
+           fin_cases k <;> simp [eightMul, stdBasis, Pi.add_apply] <;> ring)))
 
-/-- **Antisymmetry of derivations on Im(𝕆)**: For any derivation `f` of 𝕆
+/- **Antisymmetry of derivations on Im(𝕆)**: For any derivation `f` of 𝕆
     (member of `OctonionDerSubmodule`) and distinct imaginary basis indices
     `i ≠ 0`, `j ≠ 0`, `i ≠ j`, the components satisfy
 
@@ -886,11 +859,7 @@ private lemma submodule_der_antisymm
      all_goals
        (first
         | exact absurd rfl hij
-        | (simp only [eightMul, stdBasis,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-             Matrix.cons_val_two, Matrix.cons_val_three] at h0 <;>
-           simp (config := { decide := true }) only [ite_true, ite_false] at h0 <;>
-           linarith))
+        | (simp [eightMul, stdBasis] at h0 ⊢ <;> linarith)))
 
 /-- Component-0 identity: for any imaginary basis index `k ≠ 0` and any vector `a`,
     `(a · eₖ)_0 = -aₖ`.
@@ -903,11 +872,7 @@ private lemma eightMul_stdBasis_right_zero_imag
   fin_cases k
   · exact absurd rfl hk
   all_goals
-    simp only [eightMul, stdBasis,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-      Matrix.cons_val_two, Matrix.cons_val_three] <;>
-    simp (config := { decide := true }) only [ite_true, ite_false] <;>
-    ring
+    simp [eightMul, stdBasis] <;> ring
 
 /-- Component-0 identity: for any imaginary basis index `k ≠ 0` and any vector `a`,
     `(eₖ · a)_0 = -aₖ`.
@@ -919,13 +884,9 @@ private lemma eightMul_stdBasis_left_zero_imag
   fin_cases k
   · exact absurd rfl hk
   all_goals
-    simp only [eightMul, stdBasis,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-      Matrix.cons_val_two, Matrix.cons_val_three] <;>
-    simp (config := { decide := true }) only [ite_true, ite_false] <;>
-    ring
+    simp [eightMul, stdBasis] <;> ring
 
-/-- **Real-part preservation**: every derivation `f` of 𝕆 sends imaginary basis
+/- **Real-part preservation**: every derivation `f` of 𝕆 sends imaginary basis
     vectors into the imaginary subspace. Concretely, for `j ≠ 0`,
     `(f eⱼ)_0 = 0`.
 
@@ -963,47 +924,27 @@ private lemma submodule_der_real_part
   · exact absurd rfl hj
   · -- j = 1: e₂ · e₃ = e₁
     refine key 2 3 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
   · -- j = 2: e₃ · e₁ = e₂
     refine key 3 1 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
   · -- j = 3: e₁ · e₂ = e₃
     refine key 1 2 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
   · -- j = 4: e₅ · e₁ = e₄
     refine key 5 1 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
   · -- j = 5: e₁ · e₄ = e₅
     refine key 1 4 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
   · -- j = 6: e₂ · e₄ = e₆
     refine key 2 4 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
   · -- j = 7: e₃ · e₄ = e₇
     refine key 3 4 (by decide) (by decide) (by decide) ?_
-    funext k; fin_cases k <;>
-      simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-        Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;>
-      norm_num
+    funext k; fin_cases k <;> simp [eightMul, stdBasis]
 
+set_option maxHeartbeats 12800000 in
 /-- The evaluation map is injective: ev(D) = 0 forces D = 0.
 
     Proof outline: ev(D) = 0 combined with the Leibniz rule and antisymmetry
@@ -1023,7 +964,7 @@ private lemma submodule_der_real_part
     - Conclude D = 0 by linearity -/
 private lemma derEval14_injective : Function.Injective derEval14 := by
   intro ⟨f, hf⟩ ⟨g, hg⟩ hfg
-  ext x
+  refine Subtype.ext (LinearMap.ext fun x => ?_)
   -- Suffices to show f - g = 0
   -- Let D = f - g; it's a derivation with ev(D) = 0
   suffices h : ∀ k : Fin 8, f (stdBasis k) = g (stdBasis k) by
@@ -1031,7 +972,6 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
       intro x
       have : x = ∑ k : Fin 8, x k • stdBasis k := by
         funext j; simp [stdBasis, Finset.sum_apply]
-        simp [Finset.sum_ite_eq', Finset.mem_univ]
       rw [this]
       simp only [map_sum, map_smul, h]
     exact hflin x
@@ -1113,17 +1053,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (5,1): e_5·e_1 = e_4. Comp 3: f(e_4)_3 = -f(e_5)_2 - f(e_1)_6.
             -- f(e_5)_2 = g(e_5)_2 (e8); f(e_1)_6 = -f(e_6)_1 (antisym), e4.
             have e51 : eightMul (stdBasis 5) (stdBasis 1) = (stdBasis 4 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 5) (stdBasis 1); rw [e51] at hLf
             have hLg := hg (stdBasis 5) (stdBasis 1); rw [e51] at hLg
             have hf3 := congr_fun hLf 3
             have hg3 := congr_fun hLg 3
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            simp [Pi.add_apply, eightMul, stdBasis] at hf3 hg3
             have af := antisym f hf 1 6 (by decide) (by decide) (by decide)
             have ag := antisym g hg 1 6 (by decide) (by decide) (by decide)
             linarith
@@ -1131,17 +1066,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (1,4): e_1·e_4 = e_5. Comp 3: f(e_5)_3 = -f(e_1)_7 + f(e_4)_2.
             -- f(e_1)_7 = -f(e_7)_1 (antisym), e5; f(e_4)_2 = e7.
             have e14 : eightMul (stdBasis 1) (stdBasis 4) = (stdBasis 5 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 1) (stdBasis 4); rw [e14] at hLf
             have hLg := hg (stdBasis 1) (stdBasis 4); rw [e14] at hLg
             have hf3 := congr_fun hLf 3
             have hg3 := congr_fun hLg 3
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            simp [Pi.add_apply, eightMul, stdBasis] at hf3 hg3
             have af := antisym f hf 1 7 (by decide) (by decide) (by decide)
             have ag := antisym g hg 1 7 (by decide) (by decide) (by decide)
             linarith
@@ -1149,17 +1079,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (2,4): e_2·e_4 = e_6. Comp 3: f(e_6)_3 = -f(e_2)_7 - f(e_4)_1.
             -- f(e_2)_7 = -f(e_7)_2 (antisym), e10; f(e_4)_1 = e2.
             have e24 : eightMul (stdBasis 2) (stdBasis 4) = (stdBasis 6 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 2) (stdBasis 4); rw [e24] at hLf
             have hLg := hg (stdBasis 2) (stdBasis 4); rw [e24] at hLg
             have hf3 := congr_fun hLf 3
             have hg3 := congr_fun hLg 3
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            simp [Pi.add_apply, eightMul, stdBasis] at hf3 hg3
             have af := antisym f hf 2 7 (by decide) (by decide) (by decide)
             have ag := antisym g hg 2 7 (by decide) (by decide) (by decide)
             linarith
@@ -1167,17 +1092,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (2,5): e_2·e_5 = e_7. Comp 3: f(e_7)_3 = +f(e_2)_6 - f(e_5)_1.
             -- f(e_2)_6 = -f(e_6)_2 (antisym), e9; f(e_5)_1 = e3.
             have e25 : eightMul (stdBasis 2) (stdBasis 5) = (stdBasis 7 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 2) (stdBasis 5); rw [e25] at hLf
             have hLg := hg (stdBasis 2) (stdBasis 5); rw [e25] at hLg
             have hf3 := congr_fun hLf 3
             have hg3 := congr_fun hLg 3
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf3 hg3
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf3 hg3
+            simp [Pi.add_apply, eightMul, stdBasis] at hf3 hg3
             have af := antisym f hf 2 6 (by decide) (by decide) (by decide)
             have ag := antisym g hg 2 6 (by decide) (by decide) (by decide)
             linarith
@@ -1185,17 +1105,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (2,4): e_2·e_4 = e_6. Comp 5: f(e_6)_5 = +f(e_2)_1 - f(e_4)_7.
             -- f(e_2)_1 = e0; f(e_4)_7 = -f(e_7)_4 (antisym), e13.
             have e24 : eightMul (stdBasis 2) (stdBasis 4) = (stdBasis 6 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 2) (stdBasis 4); rw [e24] at hLf
             have hLg := hg (stdBasis 2) (stdBasis 4); rw [e24] at hLg
             have hf5 := congr_fun hLf 5
             have hg5 := congr_fun hLg 5
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf5 hg5
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf5 hg5
+            simp [Pi.add_apply, eightMul, stdBasis] at hf5 hg5
             have af := antisym f hf 4 7 (by decide) (by decide) (by decide)
             have ag := antisym g hg 4 7 (by decide) (by decide) (by decide)
             linarith
@@ -1203,17 +1118,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (3,4): e_3·e_4 = e_7. Comp 5: f(e_7)_5 = +f(e_3)_1 + f(e_4)_6.
             -- f(e_3)_1 = e1; f(e_4)_6 = -f(e_6)_4 (antisym), e12.
             have e34 : eightMul (stdBasis 3) (stdBasis 4) = (stdBasis 7 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 3) (stdBasis 4); rw [e34] at hLf
             have hLg := hg (stdBasis 3) (stdBasis 4); rw [e34] at hLg
             have hf5 := congr_fun hLf 5
             have hg5 := congr_fun hLg 5
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf5 hg5
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf5 hg5
+            simp [Pi.add_apply, eightMul, stdBasis] at hf5 hg5
             have af := antisym f hf 4 6 (by decide) (by decide) (by decide)
             have ag := antisym g hg 4 6 (by decide) (by decide) (by decide)
             linarith
@@ -1221,17 +1131,12 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             -- (3,4): e_3·e_4 = e_7. Comp 6: f(e_7)_6 = +f(e_3)_2 - f(e_4)_5.
             -- f(e_3)_2 = e6; f(e_4)_5 = -f(e_5)_4 (antisym), e11.
             have e34 : eightMul (stdBasis 3) (stdBasis 4) = (stdBasis 7 : Fin 8 → ℝ) := by
-              funext k; fin_cases k <;>
-                simp only [eightMul, stdBasis, Matrix.cons_val_zero, Matrix.cons_val_one,
-                  Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three] <;> norm_num
+              funext k; fin_cases k <;> simp [eightMul, stdBasis]
             have hLf := hf (stdBasis 3) (stdBasis 4); rw [e34] at hLf
             have hLg := hg (stdBasis 3) (stdBasis 4); rw [e34] at hLg
             have hf6 := congr_fun hLf 6
             have hg6 := congr_fun hLg 6
-            simp only [Pi.add_apply, eightMul, stdBasis,
-              Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-              Matrix.cons_val_two, Matrix.cons_val_three] at hf6 hg6
-            simp (config := { decide := true }) only [ite_true, ite_false] at hf6 hg6
+            simp [Pi.add_apply, eightMul, stdBasis] at hf6 hg6
             have af := antisym f hf 4 5 (by decide) (by decide) (by decide)
             have ag := antisym g hg 4 5 (by decide) (by decide) (by decide)
             linarith
@@ -1242,32 +1147,43 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             fin_cases i
             · exact absurd rfl hi
             · exact absurd rfl hij
-            · rw [antisym f hf 1 2 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 2 = g (stdBasis 1) 2
+              rw [antisym f hf 1 2 (by decide) (by decide) (by decide),
                   antisym g hg 1 2 (by decide) (by decide) (by decide), e0]
-            · rw [antisym f hf 1 3 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 3 = g (stdBasis 1) 3
+              rw [antisym f hf 1 3 (by decide) (by decide) (by decide),
                   antisym g hg 1 3 (by decide) (by decide) (by decide), e1]
-            · rw [antisym f hf 1 4 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 4 = g (stdBasis 1) 4
+              rw [antisym f hf 1 4 (by decide) (by decide) (by decide),
                   antisym g hg 1 4 (by decide) (by decide) (by decide), e2]
-            · rw [antisym f hf 1 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 5 = g (stdBasis 1) 5
+              rw [antisym f hf 1 5 (by decide) (by decide) (by decide),
                   antisym g hg 1 5 (by decide) (by decide) (by decide), e3]
-            · rw [antisym f hf 1 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 6 = g (stdBasis 1) 6
+              rw [antisym f hf 1 6 (by decide) (by decide) (by decide),
                   antisym g hg 1 6 (by decide) (by decide) (by decide), e4]
-            · rw [antisym f hf 1 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 7 = g (stdBasis 1) 7
+              rw [antisym f hf 1 7 (by decide) (by decide) (by decide),
                   antisym g hg 1 7 (by decide) (by decide) (by decide), e5]
           · -- j = 2: i=1 direct; i ∈ {3,..,7} antisym of (i,2).
             fin_cases i
             · exact absurd rfl hi
             · exact e0
             · exact absurd rfl hij
-            · rw [antisym f hf 2 3 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 3 = g (stdBasis 2) 3
+              rw [antisym f hf 2 3 (by decide) (by decide) (by decide),
                   antisym g hg 2 3 (by decide) (by decide) (by decide), e6]
-            · rw [antisym f hf 2 4 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 4 = g (stdBasis 2) 4
+              rw [antisym f hf 2 4 (by decide) (by decide) (by decide),
                   antisym g hg 2 4 (by decide) (by decide) (by decide), e7]
-            · rw [antisym f hf 2 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 5 = g (stdBasis 2) 5
+              rw [antisym f hf 2 5 (by decide) (by decide) (by decide),
                   antisym g hg 2 5 (by decide) (by decide) (by decide), e8]
-            · rw [antisym f hf 2 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 6 = g (stdBasis 2) 6
+              rw [antisym f hf 2 6 (by decide) (by decide) (by decide),
                   antisym g hg 2 6 (by decide) (by decide) (by decide), e9]
-            · rw [antisym f hf 2 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 7 = g (stdBasis 2) 7
+              rw [antisym f hf 2 7 (by decide) (by decide) (by decide),
                   antisym g hg 2 7 (by decide) (by decide) (by decide), e10]
           · -- j = 3: i=1 (e1), i=2 (e6) direct; i ∈ {4,5,6,7} antisym of Fano.
             fin_cases i
@@ -1275,13 +1191,17 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact e1
             · exact e6
             · exact absurd rfl hij
-            · rw [antisym f hf 3 4 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 4 = g (stdBasis 3) 4
+              rw [antisym f hf 3 4 (by decide) (by decide) (by decide),
                   antisym g hg 3 4 (by decide) (by decide) (by decide), F43]
-            · rw [antisym f hf 3 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 5 = g (stdBasis 3) 5
+              rw [antisym f hf 3 5 (by decide) (by decide) (by decide),
                   antisym g hg 3 5 (by decide) (by decide) (by decide), F53]
-            · rw [antisym f hf 3 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 6 = g (stdBasis 3) 6
+              rw [antisym f hf 3 6 (by decide) (by decide) (by decide),
                   antisym g hg 3 6 (by decide) (by decide) (by decide), F63]
-            · rw [antisym f hf 3 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 7 = g (stdBasis 3) 7
+              rw [antisym f hf 3 7 (by decide) (by decide) (by decide),
                   antisym g hg 3 7 (by decide) (by decide) (by decide), F73]
           · -- j = 4: i=1 (e2), i=2 (e7), i=3 (F43); i ∈ {5,6,7} antisym of ev.
             fin_cases i
@@ -1290,11 +1210,14 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact e7
             · exact F43
             · exact absurd rfl hij
-            · rw [antisym f hf 4 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 4) 5 = g (stdBasis 4) 5
+              rw [antisym f hf 4 5 (by decide) (by decide) (by decide),
                   antisym g hg 4 5 (by decide) (by decide) (by decide), e11]
-            · rw [antisym f hf 4 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 4) 6 = g (stdBasis 4) 6
+              rw [antisym f hf 4 6 (by decide) (by decide) (by decide),
                   antisym g hg 4 6 (by decide) (by decide) (by decide), e12]
-            · rw [antisym f hf 4 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 4) 7 = g (stdBasis 4) 7
+              rw [antisym f hf 4 7 (by decide) (by decide) (by decide),
                   antisym g hg 4 7 (by decide) (by decide) (by decide), e13]
           · -- j = 5: i=1 (e3), i=2 (e8), i=3 (F53), i=4 (e11); i ∈ {6,7} antisym of Fano.
             fin_cases i
@@ -1304,9 +1227,11 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact F53
             · exact e11
             · exact absurd rfl hij
-            · rw [antisym f hf 5 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 5) 6 = g (stdBasis 5) 6
+              rw [antisym f hf 5 6 (by decide) (by decide) (by decide),
                   antisym g hg 5 6 (by decide) (by decide) (by decide), F65]
-            · rw [antisym f hf 5 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 5) 7 = g (stdBasis 5) 7
+              rw [antisym f hf 5 7 (by decide) (by decide) (by decide),
                   antisym g hg 5 7 (by decide) (by decide) (by decide), F75]
           · -- j = 6: i=1 (e4), i=2 (e9), i=3 (F63), i=4 (e12), i=5 (F65); i=7 antisym.
             fin_cases i
@@ -1317,7 +1242,8 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact e12
             · exact F65
             · exact absurd rfl hij
-            · rw [antisym f hf 6 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 6) 7 = g (stdBasis 6) 7
+              rw [antisym f hf 6 7 (by decide) (by decide) (by decide),
                   antisym g hg 6 7 (by decide) (by decide) (by decide), F76]
           · -- j = 7: i=1 (e5), i=2 (e10), i=3 (F73), i=4 (e13), i=5 (F75), i=6 (F76).
             fin_cases i
@@ -1345,7 +1271,7 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
 -- analysis on the multiplication-table triples
 -- (e₁·e₂=e₃, e₁·e₄=e₅, e₂·e₄=e₆, e₃·e₄=e₇, e₁·e₆=-e₇, e₂·e₅=-e₇, e₃·e₅=e₆ etc.).
 
-/-- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
+/- The 14 basis derivations are linearly independent in OctonionDerSubmodule.
 
     Proof: Apply derEval14 to any linear relation ∑ gᵢ · basisᵢ = 0, obtaining
     ∑ gᵢ · ev(basisᵢ) = 0 ∈ ℝ¹⁴. The 14×14 evaluation matrix decomposes into
@@ -1354,7 +1280,8 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
 set_option maxHeartbeats 6400000 in
 private lemma derBasis14_linearIndependent :
     LinearIndependent ℝ derBasis14 := by
-  rw [Fintype.linearIndependent_iff]
+  apply (Fintype.linearIndependent_iff
+    (R := ℝ) (M := (↥OctonionDerSubmodule)) (v := derBasis14)).mpr
   intro g hg
   -- Apply derEval14 to the zero-sum equation
   have hzero : ∀ k : Fin 14,
@@ -1362,8 +1289,9 @@ private lemma derBasis14_linearIndependent :
     intro k
     have h1 : ∑ i : Fin 14, g i • derEval14 (derBasis14 i) = 0 := by
       calc ∑ i, g i • derEval14 (derBasis14 i)
-          = ∑ i, derEval14 (g i • derBasis14 i) := by
-            congr 1; ext i; exact (map_smul derEval14 (g i) (derBasis14 i)).symm
+          = ∑ i, derEval14 (g i • derBasis14 i) :=
+            Finset.sum_congr rfl
+              (fun i _ => (map_smul derEval14 (g i) (derBasis14 i)).symm)
         _ = derEval14 (∑ i, g i • derBasis14 i) := (map_sum derEval14 _ _).symm
         _ = derEval14 0 := by rw [hg]
         _ = 0 := map_zero _
@@ -1382,35 +1310,47 @@ private lemma derBasis14_linearIndependent :
   -- After simp, each eq_k becomes a 2-term linear equation in the g(i)
   -- (since the evaluation matrix has exactly 2 nonzero entries per row).
   -- simp set: sum expansion + definition unfolding + matrix indexing + arithmetic
-  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero,
+  simp [Fin.sum_univ_succ, Fin.sum_univ_zero,
     derBasis14, derEval14, LinearMap.coe_mk, AddHom.coe_mk,
     d12, d13, d14, d15, d16, d17, d23, d24, d25, d26, d27, d45, d46, d47,
-    stdBasis, Fin.isValue, ite_true, ite_false,
-    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-    Matrix.cons_val', Matrix.cons_val_fin_one,
+    stdBasis,
     mul_zero, mul_one, zero_mul, one_mul, mul_neg, neg_mul,
-    neg_zero, neg_neg, add_zero, zero_add, sub_zero] at
-    eq0 eq1 eq2 eq3 eq4 eq5 eq6 eq7 eq8 eq9 eq10 eq11 eq12 eq13
+    neg_zero, neg_neg, add_zero, zero_add, sub_zero]
+    at eq0 eq1 eq2 eq3 eq4 eq5 eq6 eq7 eq8 eq9 eq10 eq11 eq12 eq13
   -- After simp, each eq_k is a linear equation: e.g., eq0 : g 0 * (-4) + g 13 * 2 = 0
   -- The 7 block pairs: (0,13), (1,12), (2,10), (3,9), (4,8), (5,7), (6,11)
   -- Each block gives a 2×2 system with det = 12, forcing the pair to 0.
   intro i
-  fin_cases i <;> nlinarith
+  fin_cases i
+  · show g 0 = 0; nlinarith
+  · show g 1 = 0; nlinarith
+  · show g 2 = 0; nlinarith
+  · show g 3 = 0; nlinarith
+  · show g 4 = 0; nlinarith
+  · show g 5 = 0; nlinarith
+  · show g 6 = 0; nlinarith
+  · show g 7 = 0; nlinarith
+  · show g 8 = 0; nlinarith
+  · show g 9 = 0; nlinarith
+  · show g 10 = 0; nlinarith
+  · show g 11 = 0; nlinarith
+  · show g 12 = 0; nlinarith
+  · show g 13 = 0; nlinarith
 
 /-- **Der(𝕆) has dimension 14**: finrank ℝ OctonionDerSubmodule = 14. -/
 theorem G2_der_dimension :
-    FiniteDimensional.finrank ℝ OctonionDerSubmodule = ExceptionalType.G2.dim := by
-  show FiniteDimensional.finrank ℝ OctonionDerSubmodule = 14
+    Module.finrank ℝ OctonionDerSubmodule = ExceptionalType.G2.dim := by
+  show Module.finrank ℝ OctonionDerSubmodule = 14
   apply le_antisymm
   · -- Upper bound: ≤ 14 via injective ev map to ℝ^14
-    have hle : FiniteDimensional.finrank ℝ OctonionDerSubmodule ≤
-               FiniteDimensional.finrank ℝ (Fin 14 → ℝ) :=
+    have hle : Module.finrank ℝ OctonionDerSubmodule ≤
+               Module.finrank ℝ (Fin 14 → ℝ) :=
       LinearMap.finrank_le_finrank_of_injective derEval14_injective
     simp [Module.finrank_fin_fun] at hle
     exact hle
   · -- Lower bound: ≥ 14 via 14 linearly independent derivations
     have hli := derBasis14_linearIndependent
-    have : Fintype.card (Fin 14) ≤ FiniteDimensional.finrank ℝ OctonionDerSubmodule :=
+    have : Fintype.card (Fin 14) ≤ Module.finrank ℝ OctonionDerSubmodule :=
       hli.fintype_card_le_finrank
     simpa using this
 
@@ -1439,6 +1379,7 @@ theorem der_maps_unit_to_zero (D : OctonionDer) : D.map octUnit = 0 := by
   funext i
   have hi := congr_fun h i
   simp only [Pi.add_apply] at hi
+  simp only [Pi.zero_apply]
   linarith
 
 /-- Any derivation kills the real part of 𝕆: D(r·e₀) = r·D(e₀) = 0. -/
