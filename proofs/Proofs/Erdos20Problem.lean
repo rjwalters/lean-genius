@@ -37,9 +37,11 @@ variable {α : Type*} [DecidableEq α]
 def IsUniform (F : Finset (Finset α)) (n : ℕ) : Prop :=
   ∀ S ∈ F, S.card = n
 
-/-- The core of a sunflower: the common intersection of all petals. -/
+/-- The core of a sunflower: the common intersection of all petals
+    (empty for an empty family; `Finset (Finset α)` has no `OrderTop`,
+    so we use `inf'` on the nonempty case). -/
 def SunflowerCore (petals : Finset (Finset α)) : Finset α :=
-  petals.inf id
+  if h : petals.Nonempty then petals.inf' h id else ∅
 
 /-- A k-sunflower (delta-system): k sets with identical pairwise intersections.
     The sets S_1, ..., S_k form a sunflower with core C if:
@@ -71,10 +73,14 @@ def erdosRadoBound (n k : ℕ) : ℕ := (k - 1)^n * n.factorial
 /-- **The Sunflower Conjecture** (Erdős-Rado, OPEN):
     For each k ≥ 3, there exists c_k > 0 such that f(n,k) < c_k^n.
 
-    This asks if the n! factor can be completely removed. -/
+    This asks if the n! factor can be completely removed.
+
+    The bound is asserted for n ≥ 1: at n = 0 any c gives c^0 = 1, so a
+    strict bound would force f(0,k) = 0, which is not part of the
+    conjecture (0-uniform families are degenerate). -/
 def SunflowerConjecture : Prop :=
   ∀ k : ℕ, k ≥ 3 →
-    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (sunflowerNumber n k : ℝ) < c^n
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, 1 ≤ n → (sunflowerNumber n k : ℝ) < c^n
 
 /-- Erdős specifically focused on k=3 as "the whole difficulty". -/
 def SunflowerConjectureK3 : Prop :=
@@ -89,18 +95,21 @@ def SunflowerConjectureK3 : Prop :=
     Equivalently: can we prove f(n,k) ≤ (Ck)^n? -/
 
 def RequiredBound (k : ℕ) : Prop :=
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (sunflowerNumber n k : ℝ) ≤ c^n
+  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, 1 ≤ n → (sunflowerNumber n k : ℝ) ≤ c^n
 
-/-- The gap: Rao gives (log n)^n factor we need to remove. -/
+/-- The gap: Rao gives (log n)^n factor we need to remove.
+    (A weak bound with constant c yields the strict conjectured bound
+    with constant c + 1, since c^n < (c+1)^n for n ≥ 1.) -/
 theorem gap_description :
     (∀ k, k ≥ 3 → RequiredBound k) ↔ SunflowerConjecture := by
   constructor
   · intro h k hk
     obtain ⟨c, hc, hbound⟩ := h k hk
-    exact ⟨c, hc, fun n => lt_of_le_of_lt (hbound n) (by positivity)⟩
+    refine ⟨c + 1, by linarith, fun n hn => lt_of_le_of_lt (hbound n hn) ?_⟩
+    exact pow_lt_pow_left₀ (lt_add_one c) hc.le (by omega)
   · intro h k hk
     obtain ⟨c, hc, hbound⟩ := h k hk
-    exact ⟨c, hc, fun n => le_of_lt (hbound n)⟩
+    exact ⟨c, hc, fun n hn => le_of_lt (hbound n hn)⟩
 
 /- ## Special Cases -/
 
