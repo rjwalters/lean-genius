@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 311 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): SzemerediRegularityOQ02 (A=∅/B=∅ edge cases explicit rw/ring; set-let
+zeta-unfold under simp/positivity was maxRecDepth cascade root -> clear_value e d + he_def/hd_def hooks;
+maxRecDepth/Heartbeats headroom). Repair: none. Unblocks OQ02OQ02 child.
+
 # DOCTOR SINGLE-PROOF BATCH 310 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): TestApi203 (¬Nat.Prime 78558 by decide OOM/maxRecDepth -> norm_num;
