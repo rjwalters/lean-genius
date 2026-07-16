@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 50 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): GeometricSeriesOQ02OQ05 (Ring.inverse_unit needs literal Aˣ not IsUnit ->
+Ring.inverse_mul/explicit Units.mk; ring/ring_nf fails silently on noncommutative NormedRing -> abel/noncomm_ring),
+Hilbert15OQ02OQ03OQ01 (List.finRange_succ now cons-form -> finRange_succ_last concat; List.map_const->map_const';
+List.take_left/drop_left arity change). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 49 (5-slot Sonnet + Fable, #38065, 2026-07-16)
 
 **+4 GREEN** (re-verified EXIT=0): Erdos1017Problem + Erdos1017OQ01 (FABLE, TWO-FILE fix: agent fixed the
