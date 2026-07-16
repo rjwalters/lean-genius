@@ -86,8 +86,8 @@ theorem expTerm_zero (z : ℂ) : expTerm z 0 = 1 := by
 theorem expTerm_succ_div (z : ℂ) (n : ℕ) :
     expTerm z (n + 1) = expTerm z n * z / (n + 1) := by
   simp only [expTerm, pow_succ, Nat.factorial_succ, Nat.cast_mul]
+  push_cast
   field_simp
-  ring
 
 /-- The even-indexed exp term equals the cosine series term.
     (ix)^{2k}/(2k)! = (-1)^k x^{2k}/(2k)! -/
@@ -127,7 +127,7 @@ theorem tsum_even_add_odd {a : ℕ → ℂ} (ha : Summable a) :
 /-- The cosine Taylor series: cos(x) = ∑_k (-1)^k x^{2k} / (2k)!
     Proved via Mathlib's `Complex.cos_eq_tsum` and `ofReal_cos`. -/
 theorem cos_eq_tsum (x : ℝ) :
-    (↑(cos x) : ℂ) = ∑' k, evenTerm x k := by
+    (↑(Real.cos x) : ℂ) = ∑' k, evenTerm x k := by
   rw [ofReal_cos, Complex.cos_eq_tsum]
   apply tsum_congr; intro k
   simp only [evenTerm]
@@ -135,7 +135,7 @@ theorem cos_eq_tsum (x : ℝ) :
 /-- The sine Taylor series: sin(x) * I = ∑_k i·(-1)^k x^{2k+1} / (2k+1)!
     Proved via Mathlib's `Complex.sin_eq_tsum`, `ofReal_sin`, `tsum_mul_right`. -/
 theorem sin_eq_tsum (x : ℝ) :
-    (↑(sin x) : ℂ) * I = ∑' k, oddTerm x k := by
+    (↑(Real.sin x) : ℂ) * I = ∑' k, oddTerm x k := by
   rw [ofReal_sin, Complex.sin_eq_tsum, ← tsum_mul_right]
   apply tsum_congr; intro k
   simp only [oddTerm]; ring
@@ -147,7 +147,8 @@ theorem sin_eq_tsum (x : ℝ) :
 /-- Summability of the exponential series (from Mathlib). -/
 theorem expSeries_summable (z : ℂ) : Summable (expTerm z) := by
   have h := NormedSpace.expSeries_summable (𝕂 := ℂ) z
-  exact h.congr fun n => by simp [expTerm, NormedSpace.expSeries, smul_eq_mul, div_eq_mul_inv]
+  exact h.congr fun n => by
+    simp [expTerm, NormedSpace.expSeries, smul_eq_mul, div_eq_mul_inv, mul_comm]
 
 /-- **Euler's Formula via Taylor Series (OQ-01).**
 
@@ -162,30 +163,31 @@ theorem expSeries_summable (z : ℂ) : Summable (expTerm z) := by
     This proof does NOT use `Complex.exp_mul_I` — it derives Euler's formula
     from first principles (power series). -/
 theorem euler_formula_taylor (x : ℝ) :
-    exp (↑x * I) = ↑(cos x) + ↑(sin x) * I := by
+    exp (↑x * I) = ↑(Real.cos x) + ↑(Real.sin x) * I := by
   -- Step 1: exp(ix) = ∑_n (ix)^n/n!
   have exp_eq : exp (↑x * I) = ∑' n, expTerm (↑x * I) n := by
-    rw [NormedSpace.exp_eq_tsum (𝕂 := ℂ)]
+    rw [Complex.exp_eq_exp_ℂ, NormedSpace.exp_eq_tsum_div (𝔸 := ℂ)]
     apply tsum_congr; intro n
-    simp [expTerm, smul_eq_mul, div_eq_mul_inv]
+    simp [expTerm]
   rw [exp_eq]
   -- Step 2: Split into even and odd terms
   rw [tsum_even_add_odd (expSeries_summable _)]
   -- Step 3: Rewrite even terms as cos, odd terms as i·sin
-  conv_lhs =>
-    arg 1; ext k; rw [expTerm_even]
-  conv_lhs =>
-    arg 2; ext k; rw [expTerm_odd]
+  have e1 : (∑' k, expTerm (↑x * I) (2 * k)) = ∑' k, evenTerm x k :=
+    tsum_congr fun k => expTerm_even x k
+  have e2 : (∑' k, expTerm (↑x * I) (2 * k + 1)) = ∑' k, oddTerm x k :=
+    tsum_congr fun k => expTerm_odd x k
+  rw [e1, e2]
   -- Step 4: Identify with cos and sin
   rw [← cos_eq_tsum, ← sin_eq_tsum]
-  ring
 
 /-- **Euler's Identity** from the Taylor series proof.
     e^{iπ} + 1 = 0. -/
 theorem euler_identity_taylor : exp (↑π * I) + 1 = 0 := by
   have h := euler_formula_taylor π
-  simp [Real.cos_pi, Real.sin_pi] at h
-  linarith
+  rw [h, Real.cos_pi, Real.sin_pi]
+  push_cast
+  ring
 
 -- ============================================================================
 -- § 6. NOTES

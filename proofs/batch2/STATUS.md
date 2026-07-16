@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 34 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): EulerIdentityOQ01 (cos/sin ambiguous under open Complex Real ->
+qualify Real.; NormedSpace.exp_eq_tsum doesn't rw-match cexp -> exp_eq_exp_ℂ bridge; conv ext k on tsum
+gone -> tsum_congr), EulerPolyhedralFormula (subst on field-projection now fails outright -> rw into haves;
+nlinarith E*(2p+2q-pq)=2pq needs explicit linear_combination), ErdosMordellInequalityOQ01 (pure cascade off
+merged parent — NOTE: lake env lean doesn't persist olean, must lake build parent). Repairs: none.
+Mordell chord chain fully closed.
+
 # DOCTOR SINGLE-PROOF BATCH 33 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): ErdosMordellChordIdentity (grind +splitImp blown up by v4.31 abs/max
