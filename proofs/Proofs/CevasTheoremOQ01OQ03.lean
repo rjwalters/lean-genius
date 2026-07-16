@@ -19,10 +19,14 @@ The three cevians AD, BE, CF intersect pairwise at:
 
 ## Main Result
 
-  signedArea(P, Q, R) = routhRatio(d,e,f) · signedArea(A, B, C)
+  signedArea(P, Q, R) = stdRouthRatio(d,e,f) · signedArea(A, B, C)
 
-where routhRatio(d,e,f) = (d·e·f - (1-d)·(1-e)·(1-f))² / (w₁·w₂·w₃)
-is defined in CevasTheoremOQ01.lean.
+where stdRouthRatio(d,e,f) = (d·e·f - (1-d)·(1-e)·(1-f))² / (w₁·w₂·w₃)
+is defined below, using the same w₁, w₂, w₃ as P, Q, R above. This is
+distinct from `CevasTheoremOQ01.routhRatio`, whose denominator uses a
+mismatched variable-pairing convention `(1-d+de)(1-e+ef)(1-f+fd)` that
+does not correspond to this geometric configuration (the two agree only
+when d = e = f); see the note on `stdRouthRatio` below and #38611.
 
 ## Status: Verified (0 axioms, 0 sorries)
 -/
@@ -131,9 +135,27 @@ theorem stdR_on_AD {d f : ℝ} (hd0 : 0 < d) (hd1 : d < 1) (hf0 : 0 < f) (hf1 : 
   PART IV: ROUTH'S THEOREM — MAIN FORMULA
 ══════════════════════════════════════════════════════════════-/
 
+/-- The Routh ratio for *this* cevian configuration, built from the same
+    w₁ = 1-e+de, w₂ = 1-f+ef, w₃ = 1-d+fd denominators that appear in the
+    intersection points `stdP`, `stdQ`, `stdR` above (PART II/III).
+
+    NOTE: this differs from `CevasTheoremOQ01.routhRatio`, whose denominator
+    pairs each variable with the *other* neighbor
+    `(1-d+de)(1-e+ef)(1-f+fd)` — a mismatched convention that does not
+    correspond to this geometric configuration. The two only coincide when
+    d = e = f (e.g. the medial-thirds and median special cases below); for
+    generic asymmetric d, e, f they disagree (confirmed both numerically and
+    symbolically), so the two are kept as distinct definitions here rather
+    than forcing an unsound identification. Flagged as a #38611 repair
+    candidate for `CevasTheoremOQ01.routhRatio` itself. -/
+noncomputable def stdRouthRatio (d e f : ℝ) : ℝ :=
+  (d * e * f - (1 - d) * (1 - e) * (1 - f)) ^ 2 /
+  ((1 - e + d * e) * (1 - f + e * f) * (1 - d + f * d))
+
 /-- **Routh's Theorem**: For cevian parameters d, e, f ∈ (0,1), the inner
     triangle formed by the three pairwise cevian intersections has signed area
-    equal to routhRatio(d,e,f) times the signed area of the standard triangle.
+    equal to stdRouthRatio(d,e,f) times the signed area of the standard
+    triangle.
 
     The proof: all expressions are rational functions of d, e, f; after clearing
     denominators (field_simp) the result reduces to a polynomial identity (ring). -/
@@ -142,12 +164,15 @@ theorem routh_theorem_std {d e f : ℝ}
     (he0 : 0 < e) (he1 : e < 1)
     (hf0 : 0 < f) (hf1 : f < 1) :
     signedArea (stdP d e) (stdQ e f) (stdR d f) =
-    routhRatio d e f * signedArea stdA stdB stdC := by
+    stdRouthRatio d e f * signedArea stdA stdB stdC := by
   have hw1 : (1 : ℝ) - e + d * e ≠ 0 := ne_of_gt (w₁_pos hd0 hd1 he0 he1)
   have hw2 : (1 : ℝ) - f + e * f ≠ 0 := ne_of_gt (w₂_pos he0 he1 hf0 hf1)
   have hw3 : (1 : ℝ) - d + f * d ≠ 0 := ne_of_gt (w₃_pos hd0 hd1 hf0 hf1)
-  simp only [stdP, stdQ, stdR, signedArea, routhRatio, stdA, stdB, stdC]
-  field_simp
+  have hw1' : (1 : ℝ) - e + e * d ≠ 0 := by rwa [mul_comm e d]
+  have hw2' : (1 : ℝ) - f + f * e ≠ 0 := by rwa [mul_comm f e]
+  have hw3' : (1 : ℝ) - d + d * f ≠ 0 := by rwa [mul_comm d f]
+  simp only [stdP, stdQ, stdR, signedArea, stdRouthRatio, stdA, stdB, stdC]
+  field_simp [hw1, hw2, hw3, hw1', hw2', hw3']
   ring
 
 /-══════════════════════════════════════════════════════════════
@@ -159,12 +184,12 @@ theorem std_signedArea : signedArea stdA stdB stdC = 1 := by
   simp [signedArea, stdA, stdB, stdC]
 
 /-- **Routh's Theorem** (explicit area form): the inner triangle area is
-    exactly routhRatio(d,e,f). -/
+    exactly stdRouthRatio(d,e,f). -/
 theorem routh_area_explicit {d e f : ℝ}
     (hd0 : 0 < d) (hd1 : d < 1)
     (he0 : 0 < e) (he1 : e < 1)
     (hf0 : 0 < f) (hf1 : f < 1) :
-    signedArea (stdP d e) (stdQ e f) (stdR d f) = routhRatio d e f := by
+    signedArea (stdP d e) (stdQ e f) (stdR d f) = stdRouthRatio d e f := by
   rw [routh_theorem_std hd0 hd1 he0 he1 hf0 hf1, std_signedArea, mul_one]
 
 /-- **Verification of 1/7 case**: when d = e = f = 1/3, the inner triangle
@@ -173,7 +198,7 @@ theorem routh_medial_thirds_area :
     signedArea (stdP (1/3) (1/3)) (stdQ (1/3) (1/3)) (stdR (1/3) (1/3)) = 1/7 := by
   rw [routh_area_explicit (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       (by norm_num) (by norm_num)]
-  exact routh_medial_thirds
+  unfold stdRouthRatio; norm_num
 
 /-- **Routh's Theorem — cevian degeneracy**: if the cevians are concurrent
     (Ceva condition), the inner triangle degenerates to a point (area = 0). -/
@@ -184,7 +209,11 @@ theorem routh_concurrent_area_zero {d e f : ℝ}
     (hceva : cevaCondition d e f) :
     signedArea (stdP d e) (stdQ e f) (stdR d f) = 0 := by
   rw [routh_area_explicit hd0 hd1 he0 he1 hf0 hf1]
-  exact (routh_zero_iff_ceva d e f hd0 hd1 he0 he1 hf0 hf1).mpr hceva
+  unfold cevaCondition at hceva
+  unfold stdRouthRatio
+  have hnum : d * e * f - (1 - d) * (1 - e) * (1 - f) = 0 := by linarith
+  rw [hnum]
+  simp
 
 /-- The median cevians (d = e = f = 1/2) are concurrent (Ceva condition holds). -/
 theorem medians_ceva_condition : cevaCondition (1/2) (1/2) (1/2) := medians_ceva
@@ -214,8 +243,8 @@ theorem routhRatio_nonneg {d e f : ℝ}
 /-- **Explicit computation**: d=1/2, e=1/3, f=1/4 gives an asymmetric
     configuration. The area ratio is 1/10. -/
 theorem routh_asymmetric_example :
-    routhRatio (1/2) (1/3) (1/4) = 1 / 10 := by
-  unfold routhRatio; norm_num
+    stdRouthRatio (1/2) (1/3) (1/4) = 1 / 10 := by
+  unfold stdRouthRatio; norm_num
 
 /-- **Routh ratio for equal-product parameters**: when def = (1-d)(1-e)(1-f),
     the area is 0 and cevians are concurrent (converse of Ceva). -/

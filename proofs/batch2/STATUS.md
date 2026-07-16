@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 339 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: CevasTheoremOQ01OQ03 (field_simp left lone ⁻¹ from d*e vs e*d hypothesis-order mismatch
+-> pass mul_comm companion hyps hw1'/hw2'/hw3'; `unfold A B at h ⊢` needs both at both sites -> split).
+#38611 MAJOR REPAIR: routh_theorem_std + routh_asymmetric_example FALSE for generic d,e,f (parent
+routhRatio denominator mismatches cevian geometry, holds only d=e=f; sympy+Lean(⊢False) confirmed);
+introduced correct stdRouthRatio, repointed theorems. PARENT CevasTheoremOQ01.routhRatio needs #38611 fix.
+
 # DOCTOR SINGLE-PROOF BATCH 338 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos152OQ01 (nat-sub linarith -> have+omega; `by omega; rwa` greedy-block parse trap ->
