@@ -53,11 +53,10 @@ theorem lawvere_fix {Y : Type*}
     (retract : ∀ g : Y → Y, decode (encode g) = g)
     (f : Y → Y) : ∃ y : Y, f y = y := by
   let g : Y → Y := fun y => f (decode y y)
-  let y₀ := encode g
-  have key : decode y₀ y₀ = f (decode y₀ y₀) := by
-    show decode (encode g) (encode g) = f (decode (encode g) (encode g))
-    rw [retract]
-  exact ⟨decode y₀ y₀, key.symm⟩
+  refine ⟨decode (encode g) (encode g), ?_⟩
+  have h1 : decode (encode g) (encode g) = g (encode g) := by rw [retract]
+  have h2 : g (encode g) = f (decode (encode g) (encode g)) := rfl
+  exact (h1.trans h2).symm
 
 /-- The Lawvere fixed-point combinator (the Y combinator). -/
 noncomputable def lawvereFixpoint {Y : Type*}
@@ -70,9 +69,12 @@ theorem lawvereFixpoint_is_fix {Y : Type*}
     (encode : (Y → Y) → Y) (decode : Y → (Y → Y))
     (retract : ∀ g, decode (encode g) = g) (f : Y → Y) :
     f (lawvereFixpoint encode decode f) = lawvereFixpoint encode decode f := by
-  unfold lawvereFixpoint
-  conv_rhs => rw [show decode (encode (fun y => f (decode y y))) = fun y => f (decode y y)
-    from retract _]
+  show f (decode (encode (fun y => f (decode y y))) (encode (fun y => f (decode y y)))) =
+    decode (encode (fun y => f (decode y y))) (encode (fun y => f (decode y y)))
+  set g : Y → Y := fun y => f (decode y y) with hg
+  have h1 : decode (encode g) (encode g) = g (encode g) := by rw [retract]
+  have h2 : g (encode g) = f (decode (encode g) (encode g)) := by rw [hg]
+  exact (h1.trans h2).symm
 
 -- ============================================================
 -- PART 2: Kleene Chain Construction
@@ -83,7 +85,7 @@ variable {α : Type*}
 /-- The Kleene chain: ⊥, f(⊥), f²(⊥), f³(⊥), ...
     This is the ascending chain whose supremum gives the least fixed point
     of a continuous function. -/
-def kleeneChain [OrderBot α] (f : α → α) : ℕ → α
+def kleeneChain [Preorder α] [OrderBot α] (f : α → α) : ℕ → α
   | 0 => ⊥
   | n + 1 => f (kleeneChain f n)
 
@@ -140,7 +142,7 @@ theorem OmegaContinuous.monotone [CompleteLattice α] {f : α → α}
   -- f a = f (c 0) ≤ ⊔ₙ f(c n) = f b
   have hfa : f a = f (c 0) := by simp [c]
   rw [hfa, hcont]
-  exact le_iSup _ 0
+  exact le_iSup (fun n => f (c n)) 0
 
 /-- The Kleene fixed point: the supremum of the Kleene chain. -/
 noncomputable def kleeneFix [CompleteLattice α] (f : α → α) : α :=
@@ -163,8 +165,8 @@ theorem kleeneFix_is_fixpoint [CompleteLattice α] {f : α → α}
   unfold kleeneFix
   rw [hf_cont (kleeneChain f) (kleeneChain_ascending hf_mono)]
   -- Goal: ⨆ n, f (kleeneChain f n) = ⨆ n, kleeneChain f n
-  -- LHS = ⨆ n, kleeneChain f (n+1)
-  conv_lhs => ext n; rw [show f (kleeneChain f n) = kleeneChain f (n + 1) from rfl]
+  -- LHS = ⨆ n, kleeneChain f (n+1) (definitionally)
+  show ⨆ n, kleeneChain f (n + 1) = ⨆ n, kleeneChain f n
   exact iSup_succ_of_ascending (kleeneChain_ascending hf_mono)
 
 /-- **Least Fixed-Point Property:**
