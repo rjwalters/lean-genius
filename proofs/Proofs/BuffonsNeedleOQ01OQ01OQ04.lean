@@ -95,6 +95,7 @@ theorem sphereArea_three : sphereArea 3 = 2 * π ^ 2 := by
   rw [show (3 + 1 : ℝ) / 2 = 2 from by norm_num]
   rw [show Gamma (2 : ℝ) = 1 from by
     rw [show (2 : ℝ) = 1 + 1 from by norm_num, Gamma_add_one one_ne_zero, Gamma_one, mul_one]]
+  rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) from by norm_num, rpow_natCast]
   ring
 
 /-- σ_4 = 8π²/3 (surface area of S^4 ⊂ ℝ^5).
@@ -111,8 +112,8 @@ theorem sphereArea_four : sphereArea 4 = 8 * π ^ 2 / 3 := by
     rw [show (1 : ℝ) / 2 + 1 = 3 / 2 from by ring] at h12
     rw [h12, Gamma_one_half_eq]; ring
   rw [h52, show (5 : ℝ) / 2 = 2 + 1 / 2 from by ring, rpow_add pi_pos,
-      show (2 : ℝ) = ((2 : ℕ) : ℝ) from by norm_num, rpow_natCast,
-      ← Real.sqrt_eq_rpow]
+      ← Real.sqrt_eq_rpow,
+      show (2 : ℝ) = ((2 : ℕ) : ℝ) from by norm_num, rpow_natCast]
   have hpi : (0 : ℝ) < √π := Real.sqrt_pos.mpr pi_pos
   field_simp [hpi.ne']
   ring
@@ -127,7 +128,8 @@ theorem sphereArea_five : sphereArea 5 = π ^ 3 := by
     rw [show (3 : ℝ) = 2 + 1 from by norm_num,
         Gamma_add_one (show (2 : ℝ) ≠ 0 from by norm_num),
         show (2 : ℝ) = 1 + 1 from by norm_num, Gamma_add_one one_ne_zero, Gamma_one]; ring]
-  rw [rpow_natCast]; ring
+  rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) from by norm_num, rpow_natCast]
+  ring
 
 /-- The n-sphere/n-ball relationship: σ_{n-1} = n · ω_n where
     ω_n = π^{n/2}/Γ(n/2+1) is the unit n-ball volume.
@@ -221,7 +223,8 @@ theorem cauchyCroftonConst_pos (n : ℕ) (hn : 2 ≤ n) : 0 < cauchyCroftonConst
   apply div_pos
   · exact mul_pos two_pos (sphereArea_pos _)
   · apply mul_pos
-    · exact Nat.cast_pos.mpr (by omega)
+    · have h2n : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+      linarith
     · exact sphereArea_pos _
 
 /-
@@ -272,7 +275,7 @@ theorem expectedCrossings_eq_angularAvg (L d : ℝ) (hd : 0 < d) (hL : 0 ≤ L) 
   rw [A.angularAvg_eq L hL]
   have hσ : 0 < sphereArea (n - 1) := sphereArea_pos _
   field_simp [hσ.ne', hd.ne']
-  ring
+  try ring
 
 /-- For n=2: the expected crossings formula gives 2L/(πd),
     recovering the 2D Buffon–Barbier result. -/
@@ -282,7 +285,7 @@ theorem expectedCrossings_dim2 (L d : ℝ) (hd : 0 < d) :
   rw [cauchyCrofton_two]
   have hpi : (0 : ℝ) < π := pi_pos
   field_simp [hpi.ne', hd.ne']
-  ring
+  try ring
 
 /-- For n=3: expected crossings is L/(2d).
     A curve in 3D crossing random planes. -/
@@ -291,7 +294,7 @@ theorem expectedCrossings_dim3 (L d : ℝ) (hd : 0 < d) :
   unfold expectedCrossings
   rw [cauchyCrofton_three]
   field_simp [hd.ne']
-  ring
+  try ring
 
 /-- For n=4: expected crossings is 4L/(3πd).
     A curve in 4D crossing random hyperplanes. -/
@@ -301,22 +304,22 @@ theorem expectedCrossings_dim4 (L d : ℝ) (hd : 0 < d) :
   rw [cauchyCrofton_four]
   have hpi : (0 : ℝ) < π := pi_pos
   field_simp [hpi.ne', hd.ne']
-  ring
+  try ring
 
 /-- The expected crossings scale linearly with arc length. -/
-theorem expectedCrossings_linear (L₁ L₂ d : ℝ) (hd : 0 < d) :
+theorem expectedCrossings_linear (L₁ L₂ d : ℝ) (_hd : 0 < d) :
     expectedCrossings (n := n) (L₁ + L₂) d =
     expectedCrossings (n := n) L₁ d + expectedCrossings (n := n) L₂ d := by
   unfold expectedCrossings
   ring
 
 /-- The expected crossings scale inversely with grid spacing. -/
-theorem expectedCrossings_scaling (L d λ : ℝ) (hd : 0 < d) (hλ : 0 < λ) :
-    expectedCrossings (n := n) L (λ * d) =
-    expectedCrossings (n := n) L d / λ := by
+theorem expectedCrossings_scaling (L d c : ℝ) (hd : 0 < d) (hc : 0 < c) :
+    expectedCrossings (n := n) L (c * d) =
+    expectedCrossings (n := n) L d / c := by
   unfold expectedCrossings
-  field_simp [hd.ne', hλ.ne', (mul_pos hλ hd).ne']
-  ring
+  field_simp [hd.ne', hc.ne', (mul_pos hc hd).ne']
+  try ring
 
 /-
 ## Part V: The Dimension Ladder
@@ -334,14 +337,16 @@ theorem sphereArea_recurrence (n : ℕ) (hn : 2 ≤ n) :
     have h : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
     linarith
   have hn1_ne : (n : ℝ) - 1 ≠ 0 := hn1_pos.ne'
-  have h_cast : ((n : ℕ) : ℝ) + 1 = ((n - 2 : ℕ) : ℝ) + 3 := by push_cast; omega
+  have h_cast : ((n : ℕ) : ℝ) + 1 = ((n - 2 : ℕ) : ℝ) + 3 := by
+    rw [Nat.cast_sub (by omega : 2 ≤ n)]; push_cast; ring
   rw [show ((n : ℝ) + 1) / 2 = (((n - 2 : ℕ) : ℝ) + 1) / 2 + 1 from by rw [h_cast]; ring]
-  rw [show (((n - 2 : ℕ) : ℝ) + 1) / 2 = ((n : ℝ) - 1) / 2 from by push_cast; omega]
+  rw [show (((n - 2 : ℕ) : ℝ) + 1) / 2 = ((n : ℝ) - 1) / 2 from by
+    rw [Nat.cast_sub (by omega : 2 ≤ n)]; push_cast; ring]
   rw [Gamma_add_one (show ((n : ℝ) - 1) / 2 ≠ 0 from by positivity)]
   rw [rpow_add pi_pos, rpow_one]
   have hG : Gamma (((n : ℝ) - 1) / 2) ≠ 0 := (Gamma_pos_of_pos (by positivity)).ne'
   field_simp [hn1_ne, hG]
-  ring
+  try ring
 
 /-
 ## Part VI: Consistency Check — Recovering 2D from General Formula
@@ -360,7 +365,8 @@ So the general formula specializes correctly:
     σ_0 / (2-1) = 2/1 = 2, which is the factor in ∫_0^π |sin(θ+c)| dθ = 2. -/
 theorem angular_constant_dim2 :
     sphereArea (2 - 2) / ((2 : ℝ) - 1) = 2 := by
-  simp [sphereArea_zero]
+  simp only [show (2 : ℕ) - 2 = 0 from rfl, sphereArea_zero]
+  norm_num
 
 /-- Expected crossings at unit distance: c_n · L gives crossings per unit
     grid spacing. For n=2 and a unit circle (L = 2π):
@@ -391,13 +397,16 @@ theorem cauchyCrofton_product (n : ℕ) (hn : 2 ≤ n) :
   have hpi : (0 : ℝ) < π := pi_pos
   have hσn2 : 0 < sphereArea (n - 2) := sphereArea_pos _
   have hσn1 : 0 < sphereArea (n - 1) := sphereArea_pos _
-  have hn1 : (0 : ℝ) < (n : ℝ) - 1 := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
+  have hn1 : (0 : ℝ) < (n : ℝ) - 1 := by
+    have h2n : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
   have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 0 < n)
   -- Use recurrence: σ(n) = 2π/(n-1) · σ(n-2)
   have hrec := sphereArea_recurrence n hn
   -- After substituting hrec, the σ(n-2) factors cancel
   rw [hrec]
   field_simp [hpi.ne', hn_pos.ne', hn1.ne', hσn2.ne', hσn1.ne']
+  push_cast
   ring
 
 /-- The two-step ratio: c_{n+2}/c_n = n/(n+1) for n ≥ 2.
@@ -407,17 +416,28 @@ theorem cauchyCrofton_ratio (n : ℕ) (hn : 2 ≤ n) :
   have h1 := cauchyCrofton_product n hn
   have h2 := cauchyCrofton_product (n + 1) (by omega)
   simp only [show n + 1 + 1 = n + 2 from rfl] at h2
+  push_cast at h2
   have hcn1_pos : 0 < cauchyCroftonConst (n + 1) := cauchyCroftonConst_pos _ (by omega)
-  have hpi : π ≠ 0 := pi_ne_zero
+  have hpi : (0 : ℝ) < π := pi_pos
   have hn_pos : (0 : ℝ) < n := by exact_mod_cast (Nat.pos_of_ne_zero (by omega))
   have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by positivity
   -- h1: c_n * c_{n+1} = 2/(n*π), h2: c_{n+1} * c_{n+2} = 2/((n+1)*π)
-  -- Goal: c_{n+2} * c_n = c_n^2 * (n/(n+1))
-  -- Equivalently: c_{n+2} * c_{n+1} / (c_n * c_{n+1}) = n/(n+1)
-  nlinarith [h1, h2, hcn1_pos, hn_pos, hn1_pos, mul_pos hcn1_pos hn_pos,
-             mul_comm (cauchyCroftonConst n) (cauchyCroftonConst (n + 1)),
-             mul_comm (cauchyCroftonConst (n + 1)) (cauchyCroftonConst (n + 2)),
-             pi_pos]
+  -- Eliminate c_{n+1} between h1 and h2 to get c_n * n = c_{n+2} * (n+1).
+  have e1 : cauchyCroftonConst n * cauchyCroftonConst (n + 1) * ((n : ℝ) * π) = 2 := by
+    rw [h1]; field_simp
+  have e2 : cauchyCroftonConst (n + 1) * cauchyCroftonConst (n + 2) * (((n : ℝ) + 1) * π) = 2 := by
+    rw [h2]; field_simp
+  have e3 : cauchyCroftonConst n * cauchyCroftonConst (n + 1) * ((n : ℝ) * π) =
+      cauchyCroftonConst (n + 1) * cauchyCroftonConst (n + 2) * (((n : ℝ) + 1) * π) := by
+    rw [e1, e2]
+  have hBpi : cauchyCroftonConst (n + 1) * π ≠ 0 := mul_ne_zero hcn1_pos.ne' hpi.ne'
+  have key : cauchyCroftonConst n * (n : ℝ) = cauchyCroftonConst (n + 2) * ((n : ℝ) + 1) := by
+    apply mul_right_cancel₀ hBpi
+    linear_combination e3
+  have hc2 : cauchyCroftonConst (n + 2) = cauchyCroftonConst n * (n : ℝ) / ((n : ℝ) + 1) := by
+    rw [eq_div_iff hn1_pos.ne']
+    exact key.symm
+  rw [hc2]; ring
 
 /-- The recurrence: c_{n+2} = c_n · (n/(n+1)) for n ≥ 2.
     Derived from cauchyCrofton_ratio by canceling c_n > 0. -/
@@ -451,13 +471,17 @@ private lemma cauchyCrofton_even_sq_bound (k : ℕ) :
           ((↑(2 * (k + 1)) / (↑(2 * (k + 1)) + 1)) ^ 2) :=
           mul_le_mul_of_nonneg_right ih (by positivity)
       _ = (2 / π) ^ 2 * ((2 * (k : ℝ) + 2) ^ 2 /
-            (((k : ℝ) + 1) * (2 * (k : ℝ) + 3) ^ 2)) := by push_cast; ring
+            (((k : ℝ) + 1) * (2 * (k : ℝ) + 3) ^ 2)) := by
+            push_cast
+            field_simp
+            ring
       _ ≤ (2 / π) ^ 2 / ((k : ℝ) + 2) := by
           rw [← mul_div_assoc,
               div_le_div_iff₀ (by positivity : (0:ℝ) < ((k:ℝ)+1)*((2*(k:ℝ)+3)^2)) hk2]
           have h2pi : (0 : ℝ) ≤ (2 / π) ^ 2 := by positivity
           nlinarith [mul_le_mul_of_nonneg_left
                        (mul_le_mul_of_nonneg_right hkey (le_of_lt hk1)) h2pi]
+    exact le_of_eq (by push_cast; ring)
 
 /-- Odd subsequence: c_{2k+3}² ≤ (1/4)·2/(k+2) for all k ≥ 0.
     Uses the same recurrence with n = 2k+3 and the key inequality
@@ -480,12 +504,16 @@ private lemma cauchyCrofton_odd_sq_bound (k : ℕ) :
           ((↑(2 * k + 3) / (↑(2 * k + 3) + 1)) ^ 2) :=
           mul_le_mul_of_nonneg_right ih (by positivity)
       _ = (1 / 2 : ℝ) ^ 2 * 2 * ((2 * (k : ℝ) + 3) ^ 2 /
-            (((k : ℝ) + 2) * (2 * (k : ℝ) + 4) ^ 2)) := by push_cast; ring
+            (((k : ℝ) + 2) * (2 * (k : ℝ) + 4) ^ 2)) := by
+            push_cast
+            field_simp
+            ring
       _ ≤ (1 / 2 : ℝ) ^ 2 * 2 / ((k : ℝ) + 3) := by
           rw [← mul_div_assoc,
               div_le_div_iff₀ (by positivity : (0:ℝ) < ((k:ℝ)+2)*((2*(k:ℝ)+4)^2)) hk3]
           have h12 : (0 : ℝ) ≤ (1/2:ℝ)^2 * 2 := by norm_num
           nlinarith [mul_le_mul_of_nonneg_left hkey h12]
+    exact le_of_eq (by push_cast; ring)
 
 /-- The Cauchy-Crofton constant decays to zero: c_n → 0 as n → ∞.
 
@@ -556,7 +584,7 @@ theorem cauchyCroftonConst_tendsto_zero :
         have hmul := mul_lt_mul_of_pos_right hm_gt (sq_pos_of_pos hε)
         have h2 : (2 : ℝ) / ε ^ 2 * ε ^ 2 = 2 := by field_simp
         rw [h2] at hmul; exact hmul
-      rw [show (1/2:ℝ)^2*2/((m:ℝ)+1) = 1/(2*((m:ℝ)+1)) from by ring,
+      rw [show (1/2:ℝ)^2*2/((m:ℝ)+1) = 1/(2*((m:ℝ)+1)) from by field_simp,
           div_lt_iff₀ (by positivity)]
       nlinarith [sq_pos_of_pos hε, h_mε2]
     have hcn_sq : cauchyCroftonConst (2 * m + 1) ^ 2 < ε ^ 2 :=
