@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 64 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): RandomizedMaxcutOQ04 (18min/155k: Finset.card_bij arg order now
+mapsTo,injOn,surjOn; Multiset.foldl needs [RightCommutative] -> fold List.finRange; + real polarity bug fix in
+toggleElem mapsTo), BirthdayProblemOQ02OQ01 (Finset.sum_range_id_eq_...div_two removed -> sum_range_id_mul_two
++cast; rw[show ∀i...] no longer rewrites under Finset.sum binder). Repairs: none. KonigsbergOQ01OQ02 reclassified
+PRE-EXISTING (prev PR). Fable 16/17 hard tail.
+
 # LEDGER RECLASSIFY (2026-07-16): KonigsbergOQ01OQ02 RESIDUAL->PRE-EXISTING (2nd never-green)
 
 Was FAIL on v4.26 spike baseline (results-full.tsv) too — never compiled on the old pin. meta.json self-documents
