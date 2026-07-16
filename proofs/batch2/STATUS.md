@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 37 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): GreensTheoremOQ01OQ01OQ01OQ01 (simp no longer unfolds (Equiv.symm 1) i
+-> add Equiv.Perm.one_def), KonigsbergOQ02OQ01Aristotle (grind +splitImp brittle -> explicit by_cases +
+List.head_append_of_ne_nil), HodgeConjecture (Millennium-Prize, axiomatized structure INTACT: directSumHodge
+biproduct instance-diamond Prod.instModule vs module_VQ field opaque to simp/rw at instances transparency ->
+show goal in fully-unfolded native form first). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 36 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): FriendshipTheoremOQ01OQ02 (ported upstream Archive fixes: Std.Symm Adj

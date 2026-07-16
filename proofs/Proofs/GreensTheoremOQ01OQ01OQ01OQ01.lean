@@ -464,7 +464,7 @@ theorem iteratedIntervalIntegral_order_independent {n : ℕ} {a b : Fin n → �
     -- so that `a ∘ (τ * swap) = (a ∘ τ) ∘ swap` pointwise.
     induction σ using Equiv.Perm.swap_induction_on' with
     | one =>
-      simp
+      simp [Equiv.Perm.one_def]
     | mul_swap τ x y hxy hPτ =>
       -- hPτ : integral a b f = integral (a∘τ) (b∘τ) (fun v => f(v∘τ.symm))
       -- Goal: integral a b f = integral (a∘(τ*swap)) (b∘(τ*swap)) (fun v => f(v∘(τ*swap).symm))
