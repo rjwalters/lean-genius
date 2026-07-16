@@ -213,20 +213,19 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
       intro w; ext i
       simp only [Matrix.mulVec, dotProduct, Pmat, Matrix.of_apply,
                   Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+      exact Finset.sum_congr rfl (fun x _ => mul_comm _ _)
     -- mulVec is injective from linear independence of columns
-    have hinj : Function.Injective (Matrix.mulVecLin Pmat) := by
+    have hinj : Function.Injective Pmat.mulVec := by
       intro u v huv
       have h0 : Pmat.mulVec (u - v) = 0 := by
-        show (Matrix.mulVecLin Pmat) (u - v) = 0
-        rw [map_sub, sub_eq_zero]; exact huv
+        rw [Matrix.mulVec_sub, huv, sub_self]
       rw [hmulvec] at h0
       have hcoeff := (Fintype.linearIndependent_iff.mp hli) (u - v) h0
-      ext j; exact sub_eq_zero.mpr (by simpa using (hcoeff j).symm)
-    -- Injective endomorphism of fin-dim space → surjective → IsUnit
-    have hbij : Function.Bijective (Matrix.mulVecLin Pmat) :=
-      ⟨hinj, (LinearMap.injective_iff_surjective.mp hinj)⟩
-    rw [Matrix.isUnit_iff_isUnit_det]
-    rwa [Matrix.isUnit_det_iff_isUnit_mulVecLin, LinearMap.isUnit_iff_bijective]
+      ext j
+      have hj := hcoeff j
+      simpa [Pi.sub_apply, sub_eq_zero] using hj
+    -- Injective endomorphism of fin-dim space → IsUnit (field case)
+    exact Matrix.mulVec_injective_iff_isUnit.mp hinj
   -- The intertwining: phi(A) * P = P * A for all A
   -- (from phi(E_ij)*P = P*E_ij on generators, extended by K-linearity)
   have hintertwine : ∀ A : Matrix n n K, φ A * Pu.val = Pu.val * A := by
@@ -250,23 +249,20 @@ theorem skolemNoether [Nonempty n] (φ : Matrix n n K ≃ₐ[K] Matrix n n K) :
       rw [hlhs, hrhs]
       have := congr_fun (intertwine_prop φ i₀ v₀ i j b) a
       simp only [p] at this ⊢
-      exact this
+      rw [this]; split_ifs <;> rfl
     -- Step 2: Every matrix decomposes as A = ∑_{i,j} A_ij • E_ij
     have hdecomp : ∀ A : Matrix n n K,
         A = ∑ i : n, ∑ j : n, A i j • Matrix.single i j 1 := by
       intro A; ext a b
-      simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, stdBasis_entry]
-      rw [Finset.sum_eq_single a (fun m _ hm => by simp [Ne.symm hm])
-          (fun h => absurd (Finset.mem_univ _) h)]
-      simp [Finset.sum_eq_single b (fun m _ hm => by simp [Ne.symm hm])
-          (fun h => absurd (Finset.mem_univ _) h)]
+      simp [Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, ite_and,
+            Finset.sum_ite_eq']
     -- Step 3: Extend by K-linearity
     intro A
-    conv_lhs => rw [hdecomp A]
-    rw [map_sum]; simp_rw [map_sum, map_smul]
-    simp_rw [Matrix.smul_mul_assoc, Matrix.mul_smul_comm]
+    rw [hdecomp A]
+    simp only [map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]
     -- Now both sides have ∑∑ A_ij • (φ(E_ij) * P) vs ∑∑ A_ij • (P * E_ij)
-    congr 1; ext i; congr 1; ext j
+    refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
+    congr 1
     rw [hPu]; exact hbasis_intertwine i j
   -- Conclude: phi(A) = P * A * P⁻¹
   refine ⟨Pu⁻¹, fun A => ?_⟩
