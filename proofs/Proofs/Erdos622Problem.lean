@@ -49,7 +49,9 @@ def IsErdosFaudreeGraph (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ) : Pro
 /-- A cycle in a graph (simplified: a closed walk with no repeated vertices). -/
 def IsCycle (G : SimpleGraph V) (c : List V) : Prop :=
   c.length ≥ 3 ∧ c.Nodup ∧ c.Chain' G.Adj ∧
-  (c.head? >>= fun h => c.getLast? >>= fun l => some (G.Adj l h)) = some true
+  (match c.head?, c.getLast? with
+    | some h, some l => G.Adj l h
+    | _, _ => False)
 
 /-- A subset S is spanned by a cycle if there's a cycle visiting exactly S. -/
 def SpannedByCycle (G : SimpleGraph V) (S : Finset V) : Prop :=
@@ -108,10 +110,14 @@ def knn_with_stars (n : ℕ) : SimpleGraph (Fin n ⊕ Fin n) where
   Adj x y := match x, y with
     | Sum.inl i, Sum.inr j => true
     | Sum.inr j, Sum.inl i => true
-    | Sum.inl i, Sum.inl j => i = 0 ∨ j = 0  -- star centered at 0
-    | Sum.inr i, Sum.inr j => i = 0 ∨ j = 0  -- star centered at 0
-  symm := by constructor; intro x y; simp only; cases x <;> cases y <;> simp [or_comm]
-  loopless := by constructor; intro x; cases x <;> simp
+    -- star centered at 0, excluding the self-loop at the center
+    | Sum.inl i, Sum.inl j => i ≠ j ∧ (i.val = 0 ∨ j.val = 0)
+    | Sum.inr i, Sum.inr j => i ≠ j ∧ (i.val = 0 ∨ j.val = 0)
+  symm := by
+    constructor; intro x y; simp only
+    cases x <;> cases y <;> simp only <;> tauto
+  loopless := by
+    constructor; intro x; cases x <;> simp
 
 /- ## Part VII: Examples of Erdős-Faudree Graphs -/
 
@@ -129,9 +135,12 @@ def IsPaleyGraph (G : SimpleGraph V) (q : ℕ) : Prop :=
 def IsHamiltonianCycle (G : SimpleGraph V) (c : List V) : Prop :=
   IsCycle G c ∧ c.toFinset = Finset.univ
 
-/-- The number of Hamiltonian cycles. -/
+/-- The number of Hamiltonian cycles. Enumerated via `Fin (vertexCount V) → V`
+    (which has a `Fintype` instance, unlike the unbounded `List V`) converted to lists
+    through `List.ofFn`. -/
 noncomputable def hamiltonianCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  (Finset.univ.filter (fun c : List V => IsHamiltonianCycle G c)).card
+  (Finset.univ.filter
+    (fun c : Fin (vertexCount V) → V => IsHamiltonianCycle G (List.ofFn c))).card
 
 /- ## Part X: Connection to Turán-type Problems -/
 

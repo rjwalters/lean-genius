@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 132 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos622Problem (IsCycle Bool/Prop match on head?/getLast?;
+hamiltonianCount filter over Fin->V via List.ofFn; OfNat(Fin n)0 -> .val=0; #38611 REPAIR knn_with_stars
+i=0∨j=0 self-loop -> i≠j∧(...)). Repairs: 1 (#38611 Erdos622Problem). Unblocks OQ04 if dependent.
+
 # DOCTOR SINGLE-PROOF BATCH 131 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos601Problem (heavy Ordinal drift: toType->ToType; Subrel needs
