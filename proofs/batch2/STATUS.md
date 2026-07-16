@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 187 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1065CunninghamChains (List.not_mem_nil no arg; List.Sorted/sorted_cons
+->List.Pairwise/pairwise_cons). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 186 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): ChineseRemainderNonCoprimeOQ03OQ02 (lcm_zero_left/dvd_lcm_left; ring-in-conv
