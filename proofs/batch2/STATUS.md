@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 206 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos223Problem (multi-var ⨆/⨅ binder (i:Fin n)(j:Fin n);
+regularPolygonConfig via EuclideanSpace.equiv.symm noncomputable; diameterGraph.symm simpa dist_comm;
+Real.toNat gone -> ⌊·⌋₊). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 205 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos171Problem (PiLp/WithLp now real struct not reducible synonym ->
