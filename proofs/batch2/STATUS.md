@@ -1,3 +1,16 @@
+# LEDGER CORRECTION + RECLASSIFY (2026-07-16)
+
+**DATA CORRECTION:** proofs/spike-logs-full/results-full.tsv is the v4.31 SPIKE-FAILURE list (files that broke
+on v4.31 and need porting = the RESIDUAL+fixed universe), NOT a v4.26 pass/fail baseline. EVERY residual row
+appears "FAIL" there by definition. DO NOT use it to identify never-greens (a naive cross-ref falsely flagged
+all 316 residuals). Never-green determination is per-file: docstring self-report, git history predating the
+epic, OR being a pure wrapper over a confirmed-PRE-EXISTING parent. (Bezout/Konigsberg reclasses stand — based
+on meta.json self-report + git history + error profile, not results-full.tsv.)
+
+**RECLASSIFY: Erdos1100ProblemAristotle RESIDUAL->PRE-EXISTING (3rd never-green).** Pure `import
+Erdos1100ProblemProvable` wrapper; parent is already PRE-EXISTING/never-compiled (8 real errors, never built
+on any toolchain). Wrapper transitively can't compile; no own content to fix. PRE-EXISTING 27->28.
+
 # DOCTOR SINGLE-PROOF BATCH 80 (mixed fleet, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): PrimeReciprocalDivergenceOQ03 (16min: Finset.card_le_card_of_injOn now
