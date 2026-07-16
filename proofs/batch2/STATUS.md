@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 125 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos174Problem (def FiniteConfig:=Finset(EuclideanSpace) -> abbrev
+for instance search; bare ![...] in {a,b,c} EuclideanSpace Finset literal -> !₂[...] via named point defs).
+Repair: none. (recovered silent-death slot).
+
 # DOCTOR SINGLE-PROOF BATCH 124 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos525Problem (Complex.abs removed -> ‖·‖ at 5 sites [bare abs on ℂ
