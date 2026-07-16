@@ -217,33 +217,40 @@ theorem pow4_mem_ruzsaA (m : ℕ) : 4 ^ m ∈ ruzsaA := by
     have hge : 1 ≤ 2 * m - (2 * k + 1) := by omega
     exact Nat.dvd_iff_mod_eq_zero.mp (dvd_pow_self 2 (by omega : 2 * m - (2 * k + 1) ≠ 0))
   · -- 2^(2m) < 2^(2k+1), so quotient is 0
-    rw [Nat.div_eq_of_lt (Nat.pow_lt_pow_right (by norm_num : 1 < 2) hlt)]; rfl
+    rw [Nat.div_eq_of_lt (Nat.pow_lt_pow_right (by norm_num : 1 < 2) hlt)]
 
 /-- Ruzsa's A is infinite (it contains all powers of 4). -/
-theorem ruzsaA_infinite : ruzsaA.Infinite :=
-  (Set.infinite_range_of_injective (Nat.pow_left_injective (by norm_num : 1 < 4))).mono
-    (fun _ ⟨m, hm⟩ => hm ▸ pow4_mem_ruzsaA m)
+theorem ruzsaA_infinite : ruzsaA.Infinite := by
+  have hsub : Set.range (fun m : ℕ => (4 : ℕ) ^ m) ⊆ ruzsaA := by
+    rintro _ ⟨m, rfl⟩
+    exact pow4_mem_ruzsaA m
+  exact (Set.infinite_range_of_injective (Nat.pow_right_injective (by norm_num : 2 ≤ 4))).mono hsub
 
 /-- 2 * 4^m is in ruzsaB: 2·4^m = 2^(2m+1) has only odd-position bits. -/
 theorem mul2_pow4_mem_ruzsaB (m : ℕ) : 2 * 4 ^ m ∈ ruzsaB := by
   intro k
   -- 2·4^m = 2^(2m+1), need (2^(2m+1) / 2^(2k)) % 2 = 0
   rw [show 2 * (4 : ℕ) ^ m = 2 ^ (2 * m + 1) from by
-    rw [show (4 : ℕ) = 2 ^ 2 from by norm_num, ← pow_mul, ← pow_succ]]
+    rw [show (4 : ℕ) = 2 ^ 2 from by norm_num, ← pow_mul, ← pow_succ']]
   rcases le_or_gt (2 * k) (2 * m + 1) with hle | hlt
   · -- 2^(2m+1) / 2^(2k) = 2^(2m+1-2k), which is even since 2m+1-2k ≥ 1
     rw [Nat.pow_div hle (by norm_num : 0 < 2)]
     have hge : 1 ≤ 2 * m + 1 - 2 * k := by omega
     exact Nat.dvd_iff_mod_eq_zero.mp (dvd_pow_self 2 (by omega : 2 * m + 1 - 2 * k ≠ 0))
   · -- 2^(2m+1) < 2^(2k), so quotient is 0
-    rw [Nat.div_eq_of_lt (Nat.pow_lt_pow_right (by norm_num : 1 < 2) hlt)]; rfl
+    rw [Nat.div_eq_of_lt (Nat.pow_lt_pow_right (by norm_num : 1 < 2) hlt)]
 
 /-- Ruzsa's B is infinite (it contains all numbers 2 * 4^k). -/
-theorem ruzsaB_infinite : ruzsaB.Infinite :=
-  (Set.infinite_range_of_injective (fun m n (h : 2 * 4 ^ m = 2 * 4 ^ n) =>
-    Nat.pow_left_injective (by norm_num : 1 < 4)
-      (Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) h))).mono
-    (fun _ ⟨m, hm⟩ => hm ▸ mul2_pow4_mem_ruzsaB m)
+theorem ruzsaB_infinite : ruzsaB.Infinite := by
+  have hinj : Function.Injective (fun m : ℕ => 2 * 4 ^ m) := by
+    intro m n h
+    simp only at h
+    exact Nat.pow_right_injective (by norm_num : 2 ≤ 4)
+      (Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) h)
+  have hsub : Set.range (fun m : ℕ => 2 * (4 : ℕ) ^ m) ⊆ ruzsaB := by
+    rintro _ ⟨m, rfl⟩
+    exact mul2_pow4_mem_ruzsaB m
+  exact (Set.infinite_range_of_injective hinj).mono hsub
 
 /-- Elements of ruzsaA have a % 4 ∈ {0, 1} (bit at position 1 is 0). -/
 lemma ruzsaA_mod4 (a : ℕ) (ha : a ∈ ruzsaA) : a % 4 = 0 ∨ a % 4 = 1 := by
@@ -267,13 +274,16 @@ lemma zero_mem_ruzsaB : (0 : ℕ) ∈ ruzsaB := fun k => by simp
 lemma one_mem_ruzsaA : (1 : ℕ) ∈ ruzsaA := by
   intro k; rcases k with _ | k
   · simp
-  · simp [Nat.div_eq_of_lt (show 1 < 2 ^ (2 * (k + 1) + 1) from by positivity)]
+  · simp [Nat.div_eq_of_lt (show 1 < 2 ^ (2 * (k + 1) + 1) from Nat.one_lt_two_pow (by omega))]
 
 /-- 2 is in ruzsaB (only bit 1 is set). -/
 lemma two_mem_ruzsaB : (2 : ℕ) ∈ ruzsaB := by
   intro k; rcases k with _ | k
   · simp
-  · simp [Nat.div_eq_of_lt (show 2 < 2 ^ (2 * (k + 1)) from by positivity)]
+  · have h : (2 : ℕ) < 2 ^ (2 * (k + 1)) := by
+      have h2 : (2 : ℕ) ^ 2 ≤ 2 ^ (2 * (k + 1)) := Nat.pow_le_pow_right (by norm_num) (by omega)
+      norm_num at h2; omega
+    simp [Nat.div_eq_of_lt h]
 
 /-- 2 is NOT in ruzsaA (bit 1 is set). -/
 lemma two_not_mem_ruzsaA : (2 : ℕ) ∉ ruzsaA := by
@@ -290,7 +300,7 @@ lemma ruzsaA_div4 (a : ℕ) (ha : a ∈ ruzsaA) : a / 4 ∈ ruzsaA := by
   rw [show 2 * (k + 1) + 1 = 2 * k + 1 + 2 from by ring] at this
   rwa [show (4 : ℕ) = 2 ^ 2 from by norm_num,
        Nat.div_div_eq_div_mul, show 2 ^ 2 * 2 ^ (2 * k + 1) = 2 ^ (2 * k + 1 + 2) from by
-         rw [← pow_add]]
+         rw [← pow_add]; congr 1; omega]
 
 /-- Dividing an element of ruzsaB by 4 stays in ruzsaB. -/
 lemma ruzsaB_div4 (b : ℕ) (hb : b ∈ ruzsaB) : b / 4 ∈ ruzsaB := by
@@ -299,7 +309,7 @@ lemma ruzsaB_div4 (b : ℕ) (hb : b ∈ ruzsaB) : b / 4 ∈ ruzsaB := by
   rw [show 2 * (k + 1) = 2 * k + 2 from by ring] at this
   rwa [show (4 : ℕ) = 2 ^ 2 from by norm_num,
        Nat.div_div_eq_div_mul, show 2 ^ 2 * 2 ^ (2 * k) = 2 ^ (2 * k + 2) from by
-         rw [← pow_add]]
+         rw [← pow_add]; congr 1; omega]
 
 /-- Key: (4 * a + r) / 4 = a when r < 4. -/
 lemma mul4_add_div4 (a r : ℕ) (hr : r < 4) : (4 * a + r) / 4 = a := by
@@ -316,7 +326,7 @@ lemma ruzsaA_build (a' : ℕ) (r : ℕ) (ha' : a' ∈ ruzsaA) (hr : r = 0 ∨ r 
     rcases hr with rfl | rfl <;> simp <;> omega
   · -- k + 1: reduces to (a' / 2^(2*k+1)) % 2 = 0
     have h_exp : 2 ^ (2 * (k + 1) + 1) = 4 * 2 ^ (2 * k + 1) := by
-      rw [show 2 * (k + 1) + 1 = (2 * k + 1) + 2 from by ring, pow_add]; norm_num
+      rw [show 2 * (k + 1) + 1 = (2 * k + 1) + 2 from by ring, pow_add]; ring
     rw [h_exp, ← Nat.div_div_eq_div_mul, mul4_add_div4 _ _ hrlt]
     exact ha' k
 
@@ -329,7 +339,7 @@ lemma ruzsaB_build (b' : ℕ) (s : ℕ) (hb' : b' ∈ ruzsaB) (hs : s = 0 ∨ s 
     rcases hs with rfl | rfl <;> simp <;> omega
   · -- k + 1: reduces to (b' / 2^(2*k)) % 2 = 0
     have h_exp : 2 ^ (2 * (k + 1)) = 4 * 2 ^ (2 * k) := by
-      rw [show 2 * (k + 1) = 2 * k + 2 from by ring, pow_add]; norm_num
+      rw [show 2 * (k + 1) = 2 * k + 2 from by ring, pow_add]; ring
     rw [h_exp, ← Nat.div_div_eq_div_mul, mul4_add_div4 _ _ hslt]
     exact hb' k
 
@@ -377,7 +387,7 @@ theorem ruzsa_unique_rep (n : ℕ) (hn : n ≥ 1) :
     have hq_lt : q < n := Nat.div_lt_self (by omega) (by norm_num)
     -- Apply IH to get unique decomposition of q
     obtain ⟨⟨a', b'⟩, ⟨ha', hb', hab'⟩, huniq'⟩ := ih q hq_lt hq_pos
-    simp at ha' hb' hab' huniq'
+    simp only at ha' hb' hab'
     -- Define the decomposition of n
     set ra := r % 2 with hra_def
     set sb := r / 2 * 2 with hsb_def
@@ -407,7 +417,7 @@ theorem ruzsa_unique_rep (n : ℕ) (hn : n ≥ 1) :
       -- Since a''%4 + b''%4 < 4, no carry: (a''+b'')%4 = a''%4 + b''%4
       have hno_carry : a'' % 4 + b'' % 4 < 4 := by omega
       have hmod_sum : a'' % 4 + b'' % 4 = r := by
-        have h4 : (a'' + b'') % 4 = r := by rw [hab'']; exact hr_def.symm
+        have h4 : (a'' + b'') % 4 = r := by rw [hab'']
         omega
       -- Force: a'' % 4 = ra and b'' % 4 = sb
       have ha''_r : a'' % 4 = ra := by omega
@@ -449,7 +459,7 @@ theorem ruzsaB_eq_double_ruzsaA (n : ℕ) : n ∈ ruzsaB ↔ n % 2 = 0 ∧ n / 2
     intro hn
     constructor
     · -- n is even: bit 0 of n is 0 (k=0 in ruzsaB condition)
-      exact hn 0
+      simpa using hn 0
     · -- n/2 ∈ ruzsaA: bit 2k+1 of n/2 = bit 2(k+1) of n = 0 (by ruzsaB)
       intro k
       -- Need: (n / 2 / 2^(2*k+1)) % 2 = 0
@@ -483,7 +493,7 @@ theorem countingFn_ruzsaB (N : ℕ) :
     countingFn ruzsaB N = countingFn ruzsaA (N / 2) := by
   unfold countingFn
   -- Bijection b ↦ b/2 between ruzsaB ∩ [1,N] and ruzsaA ∩ [1,N/2]
-  apply Finset.card_congr (fun b _ => b / 2)
+  apply Finset.card_bij (fun b _ => b / 2)
   · -- Maps correctly: b ∈ ruzsaB ∩ [1,N] → b/2 ∈ ruzsaA ∩ [1,N/2]
     intro b hb
     simp only [Finset.mem_filter, Finset.mem_Icc] at hb ⊢
@@ -512,8 +522,8 @@ theorem countingFn_ruzsaB (N : ℕ) :
 lemma countingFn_ruzsaA_doubling (N : ℕ) :
     2 * countingFn ruzsaA N ≤ countingFn ruzsaA (4 * N + 1) := by
   unfold countingFn
-  set s := (Finset.Icc 1 N).filter (· ∈ ruzsaA)
-  set t := (Finset.Icc 1 (4 * N + 1)).filter (· ∈ ruzsaA)
+  set s := (Finset.Icc 1 N).filter (· ∈ ruzsaA) with hs_def
+  set t := (Finset.Icc 1 (4 * N + 1)).filter (· ∈ ruzsaA) with ht_def
   -- Image cardinalities equal source
   have hf_card : (s.image (4 * ·)).card = s.card :=
     Finset.card_image_of_injective s (fun a b h => by omega)
@@ -527,11 +537,13 @@ lemma countingFn_ruzsaA_doubling (N : ℕ) :
     obtain ⟨a, _, rfl⟩ := hn1; obtain ⟨b, _, hb⟩ := hn2; omega
   -- Both images land in t
   have hf_sub : s.image (4 * ·) ⊆ t := by
-    intro n hn; simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_Icc] at hn ⊢
+    intro n hn
+    simp only [hs_def, ht_def, Finset.mem_image, Finset.mem_filter, Finset.mem_Icc] at hn ⊢
     obtain ⟨a, ⟨⟨ha1, haN⟩, haA⟩, rfl⟩ := hn
     exact ⟨⟨by omega, by omega⟩, ruzsaA_build a 0 haA (Or.inl rfl)⟩
   have hg_sub : s.image (4 * · + 1) ⊆ t := by
-    intro n hn; simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_Icc] at hn ⊢
+    intro n hn
+    simp only [hs_def, ht_def, Finset.mem_image, Finset.mem_filter, Finset.mem_Icc] at hn ⊢
     obtain ⟨a, ⟨⟨ha1, haN⟩, haA⟩, rfl⟩ := hn
     exact ⟨⟨by omega, by omega⟩, ruzsaA_build a 1 haA (Or.inr rfl)⟩
   -- Combine: 2 * s.card ≤ t.card
@@ -663,7 +675,7 @@ theorem sum_of_reps_lower_bound (A B : Set ℕ) (N : ℕ) :
       (P.filter (fun p => p.1 + p.2 = n)).card ≤ twoSetRepFunc A B n := by
     intro n
     unfold twoSetRepFunc
-    rw [← Set.ncard_coe_Finset]
+    rw [← Set.ncard_coe_finset]
     apply Set.ncard_le_ncard
     · intro ⟨a, b⟩ hpn
       rw [Finset.mem_coe, Finset.mem_filter] at hpn
