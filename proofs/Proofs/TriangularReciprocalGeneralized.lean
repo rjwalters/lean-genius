@@ -46,8 +46,7 @@ theorem altHarmonicPartial_zero : altHarmonicPartial 0 = 0 := by
   simp [altHarmonicPartial]
 
 theorem altHarmonicPartial_one : altHarmonicPartial 1 = 1 := by
-  simp [altHarmonicPartial, Finset.sum_range_one]
-  norm_num
+  simp [altHarmonicPartial]
 
 /-- altHarmonicPartial k equals the partial sum of the alternating harmonic function
     over range (k+1). This connects our definition to hasSum_nat_add_iff. -/
@@ -56,10 +55,9 @@ private lemma partialSum_eq (k : ℕ) :
       (fun n : ℕ => if n = 0 then (0 : ℝ) else (-1 : ℝ) ^ (n + 1) / (n : ℝ)) i =
     altHarmonicPartial k := by
   rw [Finset.sum_range_succ']
-  simp only [↓reduceIte, zero_add]
+  simp only [↓reduceIte, add_zero]
   unfold altHarmonicPartial
-  congr 1
-  ext i
+  refine Finset.sum_congr rfl fun i _ => ?_
   rw [if_neg (Nat.succ_ne_zero i)]
   have h1 : (i + 1) + 1 = i + 2 := by omega
   have h2 : ((i + 1 : ℕ) : ℝ) = (i : ℝ) + 1 := by push_cast; ring
@@ -81,7 +79,7 @@ theorem alternating_harmonic_tail (k : ℕ) :
   have h_shifted := (hasSum_nat_add_iff (k + 1)).mpr (by
     rw [partialSum_eq, sub_add_cancel]
     exact alternating_harmonic_hasSum)
-  exact h_shifted.congr fun n => by
+  exact h_shifted.congr_fun fun n => by
     rw [if_neg (show n + (k + 1) ≠ 0 from by omega)]
     have h1 : n + (k + 1) + 1 = n + k + 2 := by omega
     have h2 : ((n + (k + 1) : ℕ) : ℝ) = (n : ℝ) + ↑k + 1 := by push_cast; ring
@@ -105,7 +103,8 @@ theorem shifted_alternating_hasSum (k : ℕ) (hk : 0 < k) :
   -- Step 1: Rewrite tail as (-1)^k * g(n+1)
   have h_factor : HasSum (fun n : ℕ => (-1 : ℝ) ^ k * g (n + 1))
       (Real.log 2 - altHarmonicPartial k) :=
-    (alternating_harmonic_tail k).congr fun n => by
+    (alternating_harmonic_tail k).congr_fun fun n => by
+      symm
       show (-1 : ℝ) ^ (n + k + 2) / ((n : ℝ) + ↑k + 1) = (-1 : ℝ) ^ k * g (n + 1)
       simp only [g, show (n + 1 : ℕ) ≠ 0 from Nat.succ_ne_zero n, ↓reduceIte]
       rw [show n + k + 2 = k + (n + 2) from by omega, pow_add,
@@ -114,7 +113,8 @@ theorem shifted_alternating_hasSum (k : ℕ) (hk : 0 < k) :
   -- Step 2: Factor out (-1)^k using (-1)^k * (-1)^k = 1
   have h_unfactor : HasSum (fun n => g (n + 1))
       ((-1 : ℝ) ^ k * (Real.log 2 - altHarmonicPartial k)) :=
-    (h_factor.mul_left ((-1 : ℝ) ^ k)).congr fun n => by
+    (h_factor.mul_left ((-1 : ℝ) ^ k)).congr_fun fun n => by
+      symm
       show (-1 : ℝ) ^ k * ((-1 : ℝ) ^ k * g (n + 1)) = g (n + 1)
       rw [← mul_assoc,
           show (-1 : ℝ) ^ k * (-1 : ℝ) ^ k = 1 from by
@@ -171,7 +171,8 @@ theorem generalized_alternating_sum (k : ℕ) (hk : 0 < k) :
       field_simp
       ring
   rw [h_feq]
-  exact (alternating_harmonic_hasSum.sub (shifted_alternating_hasSum k hk)).mul_left (1 / ↑k)
+  exact (alternating_harmonic_hasSum.sub (shifted_alternating_hasSum k hk)).mul_left
+    (1 / (k : ℝ))
 
 /-- tsum version of the generalized formula. -/
 theorem generalized_alternating_tsum (k : ℕ) (hk : 0 < k) :
@@ -196,7 +197,7 @@ theorem special_case_k1 :
 theorem special_case_k2 :
     (1 / (2 : ℝ)) * (Real.log 2 - (-1 : ℝ) ^ 2 * (Real.log 2 - altHarmonicPartial 2)) =
     1 / 4 := by
-  simp only [altHarmonicPartial, Finset.sum_range_succ, Finset.sum_range_one]
+  simp only [altHarmonicPartial, Finset.sum_range_succ]
   norm_num
 
 end AlternatingTriangularReciprocals.Generalized
