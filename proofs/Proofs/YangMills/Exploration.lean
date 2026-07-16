@@ -13347,7 +13347,7 @@ theorem transfer_eigenvalue_lt_one (m a : ℝ) (hm : 0 < m) (ha : 0 < a) :
     transferMatrixEigenvalue m a < 1 := by
   unfold transferMatrixEigenvalue
   rw [← Real.exp_zero]
-  exact Real.exp_lt_exp_of_lt (by nlinarith)
+  exact Real.exp_lt_exp.mpr (by nlinarith)
 
 /-- The 2-point Schwinger function at Euclidean time separation t
     decays as exp(-m·t) for a theory with mass gap m. -/
@@ -13368,7 +13368,7 @@ theorem schwinger_at_zero (m : ℝ) : schwingerTwoPoint m 0 = 1 := by
 theorem schwinger_decay (m t₁ t₂ : ℝ) (hm : 0 < m) (ht : t₁ < t₂) :
     schwingerTwoPoint m t₂ < schwingerTwoPoint m t₁ := by
   unfold schwingerTwoPoint
-  exact Real.exp_lt_exp_of_lt (by nlinarith)
+  exact Real.exp_lt_exp.mpr (by nlinarith)
 
 /-- The effective mass extracted from the Schwinger function ratio.
     m_eff(t) = -ln(S(t+a)/S(t))/a = m (exact for single exponential). -/
@@ -13394,7 +13394,7 @@ theorem os_cluster_decomposition (m r : ℝ) (hm : 0 < m) (hr : 0 < r) :
   · exact schwinger_two_point_positive m r
   · unfold schwingerTwoPoint
     rw [← Real.exp_zero]
-    exact Real.exp_lt_exp_of_lt (by nlinarith)
+    exact Real.exp_lt_exp.mpr (by nlinarith)
 
 /-- The spectral representation of the 2-point function.
     In a theory with mass gap Δ, the spectral density ρ(μ) has
@@ -13905,7 +13905,7 @@ theorem mutual_info_confining_pos (m r : ℝ) :
 theorem mutual_info_decay (m r₁ r₂ : ℝ) (hm : 0 < m) (hr : r₁ < r₂) :
     mutualInfoConfining m r₂ < mutualInfoConfining m r₁ := by
   unfold mutualInfoConfining
-  exact Real.exp_lt_exp_of_lt (by nlinarith)
+  exact Real.exp_lt_exp.mpr (by nlinarith)
 
 /-- In a deconfined (gapless) theory, mutual information decays as a power law:
     I(A:B) ~ 1/r^{2Δ} where Δ is the scaling dimension.
@@ -14016,7 +14016,7 @@ theorem distillable_decreases (sigma A₁ A₂ T_val : ℝ) (hs : 0 < sigma) (hT
     (hA : A₁ < A₂) :
     distillableConfined sigma A₂ T_val < distillableConfined sigma A₁ T_val := by
   unfold distillableConfined
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   have h1 : sigma * A₁ * T_val < sigma * A₂ * T_val := by
     apply mul_lt_mul_of_pos_right
     · exact mul_lt_mul_of_pos_left hA hs
@@ -14305,7 +14305,7 @@ theorem lattice_spacing_decreases (beta1 beta2 b0 : ℝ) (hb0 : 0 < b0)
     (h : beta1 < beta2) :
     asymptoticScaling beta2 b0 < asymptoticScaling beta1 b0 := by
   unfold asymptoticScaling
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   have hb0' : 0 < 2 * b0 := by linarith
   exact div_lt_div_of_pos_right (by linarith : -beta2 < -beta1) hb0'
 
@@ -14644,7 +14644,7 @@ theorem deviation_decreases (spec : FokkerPlanckSpectrum)
     deviationAfterSteps spec dtau (n + 1) <
     deviationAfterSteps spec dtau n := by
   unfold deviationAfterSteps
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   have hgap := spec.gap_pos
   push_cast
   nlinarith
@@ -15066,7 +15066,6 @@ theorem gap_ratio (p1 p2 : KKNParams) (hg : p1.g_sq = p2.g_sq) :
   unfold kknMassGap
   rw [hg]
   field_simp
-  ring
 
 /-- String tension in 2+1D: sigma = g4 N2 / (8 pi).
     This gives the confining potential V(r) = sigma * r. -/
@@ -16015,7 +16014,7 @@ theorem wilson_decreases_with_area (σ a₁ a₂ : ℝ) (hσ : σ > 0)
     (h1 : a₁ > 0) (h2 : a₂ > a₁) :
     wilsonLoopConfined σ a₂ < wilsonLoopConfined σ a₁ := by
   unfold wilsonLoopConfined
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   nlinarith
 
 /-- Fradkin-Shenker theorem: no thermodynamic phase transition between
@@ -16627,7 +16626,7 @@ theorem propBound_decays (C m r₁ r₂ : ℝ) (hC : C > 0) (hm : m > 0) (hr : r
     quarkPropBound C m r₂ < quarkPropBound C m r₁ := by
   unfold quarkPropBound
   apply mul_lt_mul_of_pos_left
-  · apply Real.exp_lt_exp_of_lt; nlinarith
+  · apply Real.exp_lt_exp.mpr; nlinarith
   · exact hC
 
 /-- Meson propagator ∝ (quark propagator)² ∝ exp(-2m_q·r).
@@ -17428,7 +17427,7 @@ theorem dim4_decreases (C₄ G2 Q₁ Q₂ : ℝ) (hC : C₄ > 0) (hG : G2 > 0)
   unfold dim4Contribution
   apply div_lt_div_of_pos_left (mul_pos hC hG)
   · positivity
-  · exact pow_lt_pow_left hQ2 (le_of_lt hQ1) (by omega)
+  · exact pow_lt_pow_left₀ hQ2 (le_of_lt hQ1) (by omega)
 
 /-- The dimension-6 operator: ⟨g f_{abc} G³⟩.
     Its contribution is ~ Λ⁶/Q⁶, much smaller than dimension 4 at high Q. -/
@@ -17574,7 +17573,7 @@ theorem lambdaQCD_small (μ α₀ b : ℝ) (hμ : μ > 0) (hα : α₀ > 0)
   unfold lambdaQCD_af
   have h1 : Real.exp (-1 / (2 * b * α₀)) < 1 := by
     rw [Real.exp_lt_one_iff]
-    linarith [div_pos one_pos (mul_pos (mul_pos (by linarith : (0 : ℝ) < 2) hb) hα)]
+    exact div_neg_of_neg_of_pos (by norm_num) (by positivity)
   nlinarith
 
 /-- Two-loop beta function: β(g) = -β₀g³/(16π²) - β₁g⁵/(16π²)² + ...
@@ -18043,7 +18042,9 @@ theorem z2_free_energy_finite (d : ℕ) (hd : d ≥ 2) (beta : ℝ) (hb : beta >
   unfold z2FreeEnergyDensity
   apply mul_neg_of_neg_of_pos
   · apply div_neg_of_neg_of_pos
-    · exact neg_lt_zero.mpr (Nat.cast_pos.mpr (Nat.mul_pos (by omega) (by omega)))
+    · have hd' : (2:ℝ) ≤ (d:ℝ) := by exact_mod_cast hd
+      have hpos : (0:ℝ) < (d:ℝ) * ((d:ℝ) - 1) := mul_pos (by linarith) (by linarith)
+      linarith
     · norm_num
   · apply Real.log_pos
     have : 1 ≤ Real.cosh beta := Real.one_le_cosh beta
@@ -19083,13 +19084,13 @@ theorem correlator_ratio_lt_one' (m : ℝ) (hm : m > 0) :
     Real.exp (-m) < 1 := by
   have h0 : Real.exp 0 = 1 := Real.exp_zero
   rw [← h0]
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   linarith
 
 /-- Signal-to-noise ratio degrades exponentially at large t. -/
 theorem snr_degrades' (m0 t1 t2 : ℝ) (hm : m0 > 0) (ht : t2 > t1) :
     Real.exp (-m0 * t2) < Real.exp (-m0 * t1) := by
-  apply Real.exp_lt_exp_of_lt; nlinarith
+  apply Real.exp_lt_exp.mpr; nlinarith
 
 /-- Variational method: N_op operators give N_op^2 matrix size. -/
 def gevpOperators' (N_op : ℕ) : ℕ := N_op * N_op
@@ -20946,7 +20947,7 @@ theorem wilson_loop_pos (sigma area : ℝ) :
 theorem wilson_loop_decays (sigma a1 a2 : ℝ) (hs : sigma > 0) (ha : a2 > a1) :
     wilsonLoopArea sigma a2 < wilsonLoopArea sigma a1 := by
   unfold wilsonLoopArea
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   nlinarith
 
 /-- The Wilson loop is bounded by 1 for positive σ·Area. -/
@@ -20954,7 +20955,7 @@ theorem wilson_loop_le_one (sigma area : ℝ) (hs : sigma > 0) (ha : area > 0) :
     wilsonLoopArea sigma area < 1 := by
   unfold wilsonLoopArea
   rw [← Real.exp_zero]
-  apply Real.exp_lt_exp_of_lt
+  apply Real.exp_lt_exp.mpr
   nlinarith
 
 /-- Large-N factorization: Wilson loops factorize at N = ∞.
@@ -21076,10 +21077,9 @@ noncomputable def wignerDensity (R x : ℝ) : ℝ :=
 theorem wigner_density_center (R : ℝ) (hR : R > 0) :
     wignerDensity R 0 = 2 / (Real.pi * R) := by
   unfold wignerDensity
-  simp only [zero_pow, sub_zero]
+  rw [show (0:ℝ) ^ 2 = 0 by norm_num, sub_zero]
   rw [Real.sqrt_sq (le_of_lt hR)]
   field_simp
-  ring
 
 /-- The eigenvalue density vanishes at the edge: ρ(R) = 0. -/
 theorem wigner_density_edge (R : ℝ) :
@@ -21328,7 +21328,7 @@ theorem massive_kernel_at_zero (m : ℝ) (hm : m > 0) :
 theorem pert_kernel_diverges_at_zero (eps : ℝ) (heps : eps > 0) (heps1 : eps < 1) :
     perturbativeKernel eps heps > 1 / 2 := by
   unfold perturbativeKernel
-  rw [div_lt_div_iff₀ (by norm_num : (0 : ℝ) < 2) (by linarith : 0 < 2 * eps)]
+  rw [gt_iff_lt, div_lt_div_iff₀ (by norm_num : (0 : ℝ) < 2) (by linarith : 0 < 2 * eps)]
   nlinarith
 
 /-- The vacuum energy functional E₀ = ½ ∫ |B[A]|² + ½ ∫ (δ/δA)².
@@ -21449,7 +21449,7 @@ theorem casimir_to_nality_interpolation (f : ℝ) (hf0 : 0 ≤ f) (hf1 : f ≤ 1
     (s_cas s_nal : ℝ) (hsc : s_cas > 0) (hsn : s_nal ≥ 0) :
     s_cas * f + s_nal * (1 - f) ≥ 0 := by nlinarith
 
-/-- Necessary vs sufficient conditions for confinement:
+/- Necessary vs sufficient conditions for confinement:
     - Area law: SUFFICIENT for confinement
     - Center symmetry breaking: NECESSARY for deconfinement
     - Dual monopole condensation: SUFFICIENT (dual Meissner)
@@ -21596,7 +21596,7 @@ theorem analyticity_no_phase_transition (z1 z2 : ℝ) (hz1 : z1 > 0) (hz2 : z2 >
 /-- The plaquette expectation value is smooth in β:
     ⟨P⟩(β) is a smooth function with no discontinuities. -/
 theorem plaquette_continuous (p_beta1 p_beta2 : ℝ) (hp1 : 0 < p_beta1)
-    (hp2 : p_beta2 ≤ 1) (hp1b : p_beta1 ≤ 1) :
+    (hp2 : p_beta2 ≤ 1) (hp1b : p_beta1 ≤ 1) (hp2a : 0 ≤ p_beta2) :
     |p_beta1 - p_beta2| ≤ 1 := by
   rw [abs_le]
   constructor <;> linarith
@@ -22040,7 +22040,7 @@ theorem lambda_qcd_small' (mu alpha_mu b0 : ℝ) (hmu : mu > 0)
   unfold lambdaQCD'
   have hexp : Real.exp (-1 / (2 * b0 * alpha_mu)) < 1 := by
     rw [Real.exp_lt_one_iff]
-    linarith [div_pos one_pos (mul_pos (mul_pos (by linarith : (0 : ℝ) < 2) hb) halpha)]
+    exact div_neg_of_neg_of_pos (by norm_num) (by positivity)
   nlinarith
 
 /-- Physical value: Λ_QCD ≈ 300 MeV (MS-bar scheme, N_f = 0). -/
@@ -22467,8 +22467,8 @@ theorem one_loop_running (a Lambda : ℝ) (ha : a > 0) (hL : Lambda > 0) :
 theorem su2_one_instanton_suppressed (a Lambda : ℝ) (ha : a > 0) (hL : Lambda > 0)
     (h : Lambda < a) : Lambda ^ 4 / (2 * a ^ 2) < a ^ 2 / 2 := by
   rw [div_lt_div_iff₀ (by positivity) (by positivity)]
-  nlinarith [sq_nonneg (a - Lambda), sq_nonneg (a + Lambda),
-             sq_nonneg a, sq_nonneg Lambda, sq_abs a, sq_abs Lambda]
+  have hpow : Lambda ^ 4 < a ^ 4 := pow_lt_pow_left₀ h hL.le (by norm_num)
+  nlinarith [hpow]
 
 /-- The Nekrasov conjecture (proved by Nekrasov-Okounkov 2006):
     lim_{ε₁,ε₂→0} ε₁ε₂ · ln Z_Nek = F_SW
@@ -22502,7 +22502,7 @@ theorem hook_length_positive (eps1 eps2 : ℝ) (a_arm l_leg : ℕ)
     eps1 * (a_arm : ℝ) + eps2 * ((l_leg : ℝ) + 1) > 0 := by
   apply add_pos_of_nonneg_of_pos
   · exact mul_nonneg (le_of_lt h1) (Nat.cast_nonneg a_arm)
-  · exact mul_pos h2 (by linarith [Nat.cast_nonneg l_leg])
+  · exact mul_pos h2 (by positivity)
 
 /-- The gauge coupling runs logarithmically: τ = (θ/2π) + i(4π/g²).
     The instanton parameter q = exp(2πiτ) = exp(-8π²/g²) for θ=0.
@@ -22840,7 +22840,7 @@ theorem small_field_d3 (g a C : ℝ) (hg : g > 0) (ha : 0 < a) (ha1 : a < 1) (hC
 theorem large_field_suppressed (c g_sq : ℝ) (hc : c > 0) (hg : g_sq > 0) (hg1 : g_sq < c) :
     Real.exp (-c / g_sq) < 1 := by
   rw [Real.exp_lt_one_iff]
-  exact neg_neg_of_neg (div_pos hc hg)
+  exact div_neg_of_neg_of_pos (by linarith) hg
 
 /-- Balaban's KEY RESULT in d=2: The continuum limit of 2D lattice YM
     exists and equals the EXACT solution (Migdal 1975).
@@ -22860,11 +22860,11 @@ theorem balaban_3d_uv_bound (g C V : ℝ)
     (hg : g > 0) (hg1 : g < 1) (hC : C > 0) (hV : V > 0) :
     C * g ^ 3 * V < C * g ^ 2 * V := by
   have hg2 : g ^ 2 > 0 := by positivity
-  have : g ^ 3 < g ^ 2 := by
-    have : g ^ 3 = g ^ 2 * g := by ring
-    rw [this]
+  have hlt : g ^ 3 < g ^ 2 := by
+    have heq : g ^ 3 = g ^ 2 * g := by ring
+    rw [heq]
     exact mul_lt_of_lt_one_right hg2 hg1
-  nlinarith
+  nlinarith [mul_lt_mul_of_pos_left (mul_lt_mul_of_pos_right hlt hV) hC]
 
 /-- Balaban's partial result in d=4 (1985-1989):
     UV stability for the FIRST k₀ RG steps, where k₀ depends on g₀.
@@ -24220,9 +24220,9 @@ theorem level_rank_duality_dim (k N : ℕ) (hk : k ≥ 1) (hN : N ≥ 2) :
     -- dim H(SU(N)_k, S²) = C(k+N-1, N-1) = C(k+N-1, k) = dim H(SU(k)_N, S²)
     -- This follows from the symmetry of binomial coefficients
     Nat.choose (k + N - 1) (N - 1) = Nat.choose (k + N - 1) k := by
-  rw [Nat.choose_symm (by omega : N - 1 ≤ k + N - 1)]
-  congr 1
-  omega
+  have heq : (k + N - 1) - k = N - 1 := by omega
+  rw [← heq]
+  exact Nat.choose_symm (by omega)
 
 /-- The CS propagator in momentum space for topologically massive gauge theory.
     D_μν(p) ~ (δ_μν - p_μp_ν/p²)/(p² + m²) + ε_μνρ p^ρ m/(p²(p² + m²))
@@ -24987,7 +24987,11 @@ theorem bv_field_count (d N : ℕ) (hd : d ≥ 3) (hN : N ≥ 3) :
     -- Actually: A*: -1, c*: -2, c̄*: 0, b*: -1
     -- The ghost number grades the BV complex
     (d + 3) * (N ^ 2 - 1) ≥ 24 := by
-  have h1 : N ^ 2 - 1 ≥ 8 := by nlinarith
+  have h1 : N ^ 2 - 1 ≥ 8 := by
+    have hN2 : N ^ 2 ≥ 9 := by
+      calc N ^ 2 ≥ 3 ^ 2 := Nat.pow_le_pow_left hN 2
+        _ = 9 := by norm_num
+    omega
   have h2 : d + 3 ≥ 6 := by omega
   calc (d + 3) * (N ^ 2 - 1) ≥ 6 * 8 := Nat.mul_le_mul h2 h1
     _ = 48 := by norm_num
@@ -25335,7 +25339,7 @@ theorem num_links_pos (p : QSimParams) : 0 < p.numLinks := by
   unfold QSimParams.numLinks
   apply Nat.mul_pos
   · exact by linarith [p.dim_ge]
-  · exact Nat.pos_pow_of_pos _ (by linarith [p.ls_ge])
+  · exact pow_pos (by linarith [p.ls_ge]) _
 
 /-- Number of generators of SU(N): N² - 1. -/
 def suGenerators (N : ℕ) : ℕ := N ^ 2 - 1
@@ -25483,11 +25487,10 @@ def hardwareEfficientParams (numLinks layers : ℕ) : ℕ :=
 
 /-- Physics-inspired ansatz needs more parameters. -/
 theorem physics_ansatz_richer (numLinks layers : ℕ)
-    (hl : layers ≥ 1) (hlinks : numLinks ≥ 2) :
+    (hl : layers ≥ 1) (hlinks : numLinks ≥ 2) (hlayers : layers ≤ numLinks) :
     hardwareEfficientParams numLinks layers ≤ numLinks * numLinks := by
   unfold hardwareEfficientParams
-  apply Nat.mul_le_mul_left
-  omega
+  exact Nat.mul_le_mul_left numLinks hlayers
 
 /-- Gate complexity for one Trotter step:
     Electric part: O(links) gates (diagonal, single-qubit rotations)
@@ -25575,7 +25578,7 @@ theorem gapped_bounded_entanglement (chi : ℕ) (hchi : chi ≥ 2) :
     -- Polynomial bond dimension suffices!
     maxEntanglement chi ≥ 1 := by
   unfold maxEntanglement
-  exact Nat.log2_pos (by omega)
+  exact (Nat.le_log2 (by omega)).mpr (by omega)
 
 /-- Schwinger model (QED in 1+1D) on quantum hardware:
     The Schwinger model has been simulated on quantum computers!
@@ -25900,7 +25903,7 @@ theorem speed_of_sound_conformal_limit (mu Δ : ℝ) (hmu : 0 < mu) (hΔ : 0 < �
     0 < speedOfSoundSq_CFL mu Δ := by
   unfold speedOfSoundSq_CFL
   have hmu2 : 0 < mu ^ 2 := sq_pos_of_pos hmu
-  rw [sub_pos, div_lt_div_iff (by positivity : (0:ℝ) < 3 * mu ^ 2) (by norm_num : (0:ℝ) < 3)]
+  rw [sub_pos, div_lt_div_iff₀ (by positivity : (0:ℝ) < 3 * mu ^ 2) (by norm_num : (0:ℝ) < 3)]
   nlinarith [sq_nonneg (mu - 2 * Δ), mul_pos (show (0:ℝ) < mu - 2 * Δ by linarith) hΔ]
 
 /-- The CFL phase is a SUPERFLUID (broken U(1)_B).
@@ -26015,7 +26018,7 @@ theorem cgc_highly_occupied (alpha_s : ℝ) (k Qs : ℝ)
     1 < cgcOccupation alpha_s k Qs := by
   unfold cgcOccupation
   simp [hk]
-  rw [lt_div_iff₀ halpha]
+  rw [one_lt_inv₀ halpha]
   linarith
 
 /-- The glasma: longitudinal flux tubes formed in the collision.
@@ -26390,7 +26393,7 @@ theorem selfEnergy_at_zero_pos (params : GluonDSEParams) :
   apply div_pos
   · apply mul_pos
     apply mul_pos params.h_m params.h_g
-    exact Nat.cast_pos.mpr (by omega)
+    exact Nat.cast_pos.mpr (by have := params.h_Nc; omega)
   · apply mul_pos (by norm_num : (16 : ℝ) > 0)
     exact sq_pos_of_pos Real.pi_pos
 
@@ -27468,7 +27471,6 @@ theorem leading_plaquette_value (p : SCExpansionParams) :
   have hN_ne : (p.N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by linarith [p.hN])
   unfold expansionParam
   field_simp
-  ring
 
 /-- The Wilson loop area law at strong coupling.
     For a rectangular R × T Wilson loop at leading order:
@@ -27498,6 +27500,7 @@ theorem sc_string_tension_pos' (p : SCExpansionParams)
 theorem expansion_param_lt_one_iff (p : SCExpansionParams) :
     expansionParam p < 1 ↔ p.beta < 2 * (p.N : ℝ) ^ 2 := by
   unfold expansionParam
+  have hN_pos : (0 : ℝ) < (p.N : ℝ) := Nat.cast_pos.mpr (by linarith [p.hN])
   rw [div_lt_one (by positivity : (0 : ℝ) < 2 * (↑p.N) ^ 2)]
 
 /-- For SU(2) at β = 1: u = 1/8, σ = ln(8) ≈ 2.08.
@@ -27522,7 +27525,7 @@ theorem sc_tension_monotone_in_N (beta : ℝ) (hbeta : beta > 0)
   apply div_lt_div_of_pos_left hbeta
   · positivity
   · apply mul_lt_mul_of_pos_left _ (by norm_num : (0 : ℝ) < 2)
-    exact pow_lt_pow_left (Nat.cast_lt.mpr hlt) (Nat.cast_nonneg N1) (by omega)
+    exact pow_lt_pow_left₀ (Nat.cast_lt.mpr hlt) (Nat.cast_nonneg N1) (by omega)
 
 /-- The number of minimum-area surfaces (tiling paths) for an R × T Wilson loop.
     At leading order this is 1 (the unique planar tiling).
@@ -28004,12 +28007,13 @@ theorem dual_sc_string_tension (g_mag : ℝ) (hg : g_mag > 0)
 
     Wilson loop: W(C) = z^{linking(C, vortex)} where linking = # intersections.
     Random vortex distribution → area law (proved). -/
-theorem vortex_area_law (f : ℝ) (hf0 : 0 < f) (hf1 : f < 1) (area : ℕ) (ha : area ≥ 1) :
-    -- If vortex piercing probability per plaquette is f,
+theorem vortex_area_law (f : ℝ) (hf0 : 0 < f) (hf1 : f ≤ 1 / 2) (area : ℕ) (ha : area ≥ 1) :
+    -- If vortex piercing probability per plaquette is f (f ≤ 1/2 so that
+    -- 1 - 2f stays in [0, 1)),
     -- then ⟨W(C)⟩ = (1-2f)^Area → area law with σ = -ln(1-2f)
     -- For small f: σ ≈ 2f (linear in vortex density)
     (1 - 2 * f) ^ area < 1 := by
-  apply pow_lt_one (by linarith) (by linarith) (by omega)
+  apply pow_lt_one₀ (by linarith) (by linarith) (by omega)
 
 /-- The Casimir scaling criterion.
     At intermediate distances, the string tension for representation R
