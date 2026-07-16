@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 325 (all-Sonnet, #38065, 2026-07-16)
+
+**+2 GREEN**:
+- Erdos454ProblemAristotle (example_f_3/example_deviation_3: Finset.range_succ->range_add_one;
+  simp-set inf' unfolding vs rw motive-not-type-correct; local nth_prime_five_eq_thirteen since
+  Mathlib ships only nth_prime_four; restate wrapper in unfolded Nat.nth Nat.Prime form). Repair: none.
+- Erdos549ProblemAristotle (~15 type-mismatch sites: .elim on False/Prop; connected_iff bullet
+  reorder Preconnected-first; Nat.mul_le_mul_left/right for nonlinear monotone). #38611 REPAIR:
+  burr_erdos_tree/val_3_2/val_4_2/val_5_2 were FALSE (2n-1/5/7/9 vs def-true n/3/4/5) -> corrected;
+  broomGraph not loopless at pathLen=0 under truncated ℕ sub -> addition-form guard.
+
 # DOCTOR SINGLE-PROOF BATCH 324 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos1149Aristotle (card_multiples: mul_right_injective₀->mul_left_injective₀;
