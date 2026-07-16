@@ -62,27 +62,35 @@ theorem densityRatio_nonneg (S : Set ℕ) (N : ℕ) : 0 ≤ densityRatio S N :=
 theorem densityRatio_le_one (S : Set ℕ) (N : ℕ) (hN : 0 < N) : densityRatio S N ≤ 1 := by
   unfold densityRatio countingFn
   rw [div_le_one (Nat.cast_pos.mpr hN)]
-  exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_right.trans (by
-    intro x hx; exact Set.mem_Icc.mp hx |>.2)) (Set.toFinite _)
+  have hsub : S ∩ Set.Icc 1 N ⊆ Set.Icc 1 N := Set.inter_subset_right
+  have hcard : (S ∩ Set.Icc 1 N).ncard ≤ (Set.Icc 1 N).ncard :=
+    Set.ncard_le_ncard hsub (Set.finite_Icc 1 N)
+  have hIcc : (Set.Icc 1 N).ncard = N := by simp
+  rw [hIcc] at hcard
+  exact_mod_cast hcard
 
 /-- Lower density is non-negative: liminf of non-negative values is non-negative. -/
 theorem lowerDensity_nonneg (S : Set ℕ) : 0 ≤ lowerDensity S := by
   unfold lowerDensity
-  exact le_liminf_of_le (by infer_instance)
+  exact Filter.le_liminf_of_le
+    (Filter.isCoboundedUnder_ge_of_eventually_le Filter.atTop
+      (Filter.eventually_atTop.mpr ⟨1, fun N hN => densityRatio_le_one S N (by omega)⟩))
     (Filter.Eventually.of_forall (densityRatio_nonneg S))
 
 /-- Lower density ≤ upper density: liminf ≤ limsup. -/
 theorem lower_le_upper (S : Set ℕ) : lowerDensity S ≤ upperDensity S := by
   unfold lowerDensity upperDensity
-  exact Filter.liminf_le_limsup (by infer_instance)
-    ⟨0, Filter.Eventually.of_forall (densityRatio_nonneg S)⟩
+  exact Filter.liminf_le_limsup
     ⟨1, Filter.eventually_atTop.mpr ⟨1, fun N hN =>
       densityRatio_le_one S N (by omega)⟩⟩
+    ⟨0, Filter.eventually_atTop.mpr ⟨0, fun N _ => (densityRatio_nonneg S N).ge⟩⟩
 
 /-- Upper density is at most 1: limsup of a ratio bounded by 1. -/
 theorem upperDensity_le_one (S : Set ℕ) : upperDensity S ≤ 1 := by
   unfold upperDensity
-  exact limsup_le_of_le (by infer_instance)
+  exact Filter.limsup_le_of_le
+    (Filter.isCoboundedUnder_le_of_eventually_le Filter.atTop
+      (Filter.Eventually.of_forall (densityRatio_nonneg S)))
     (Filter.eventually_atTop.mpr ⟨1, fun N hN => densityRatio_le_one S N (by omega)⟩)
 
 /-- Lower density is at most 1: follows from lower ≤ upper ≤ 1. -/
@@ -111,6 +119,7 @@ theorem repFunction_mono {A B : Set ℕ} (h : A ⊆ B) (n : ℕ) :
 /-- If n ∉ A + A then the representation function is zero. -/
 theorem repFunction_eq_zero_of_not_mem (A : Set ℕ) (n : ℕ) (h : n ∉ sumSet A) :
     repFunction A n = 0 := by
+  unfold repFunction
   rw [Finset.card_eq_zero]
   ext a
   simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]
@@ -175,7 +184,7 @@ theorem erdos_749_conjecture :
   · right
     push_neg at h
     obtain ⟨ε, hε, hA⟩ := h
-    exact ⟨ε, hε, fun A hd hb => hA ε hε A ⟨hd, hb⟩⟩
+    exact ⟨ε, hε, fun A hd hb => hA A hd hb⟩
 
 /- ## Context: Sidon Sets and Bases -/
 
@@ -215,7 +224,7 @@ private lemma sidon_counting_bound (A : Set ℕ)
     · rintro ⟨hA, h1, hN⟩; exact ⟨⟨h1, hN⟩, hA⟩
     · rintro ⟨⟨h1, hN⟩, hA⟩; exact ⟨hA, h1, hN⟩
   rw [hset_eq, Set.ncard_coe_finset]
-  exact sidon_upper_bound_weak S
+  exact Erdos340.sidon_upper_bound_weak S
     (fun a b c d ha hb hc hd hab hcd heq => by
       simp only [hS_def, Finset.mem_filter] at ha hb hc hd
       exact hsidon a b c d ha.2 hb.2 hc.2 hd.2 hab hcd heq)
@@ -235,7 +244,8 @@ private lemma sqrt_mul_bound (K N : ℕ) (hK : 1 ≤ K)
   -- Chain: 2·(S+1)·K ≤ (S+1)·(S-1) = S²-1 ≤ 2N-1, so (S+1)·K ≤ N
   have h1 : 2 * K ≤ S - 1 := by omega
   have h2 : (S + 1) * (2 * K) ≤ (S + 1) * (S - 1) := Nat.mul_le_mul_left _ h1
-  have h3 : (S + 1) * (S - 1) = S * S - 1 := by zify [show S ≥ 1 by omega]; ring
+  have h3 : (S + 1) * (S - 1) = S * S - 1 := by
+    zify [show S ≥ 1 by omega, show S * S ≥ 1 by nlinarith]; ring
   have h_sub : S * S - 1 ≤ 2 * N - 1 := Nat.sub_le_sub_right hS_sq 1
   have h5 : (S + 1) * (2 * K) = 2 * ((S + 1) * K) := by ring
   have h6 : 2 * ((S + 1) * K) ≤ 2 * N - 1 := by linarith [h2, h3, h_sub, h5]
@@ -273,7 +283,10 @@ theorem sidon_set_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
         linarith
       have h_eps_K : 1 ≤ (upperDensity A / 2) * (↑K + 1) := by
         have hK_real : 2 / upperDensity A < ↑K := by exact_mod_cast hK
-        nlinarith
+        have hmul : (2 / upperDensity A) * upperDensity A < (↑K : ℝ) * upperDensity A :=
+          mul_lt_mul_of_pos_right hK_real hlt
+        rw [div_mul_cancel₀ (2 : ℝ) hlt.ne'] at hmul
+        nlinarith [hmul, hlt.le]
       calc (countingFn A N : ℝ)
           ≤ (countingFn A N : ℝ) * ((upperDensity A / 2) * (↑K + 1)) :=
             le_mul_of_one_le_right (Nat.cast_nonneg _) h_eps_K
@@ -281,7 +294,10 @@ theorem sidon_set_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
         _ ≤ (upperDensity A / 2) * ↑N :=
             mul_le_mul_of_nonneg_left h_cast (by linarith)
     -- limsup ≤ upperDensity A / 2 < upperDensity A, contradiction
-    have h_le := limsup_le_of_le (by infer_instance) hev
+    have h_le := Filter.limsup_le_of_le
+      (Filter.isCoboundedUnder_le_of_eventually_le Filter.atTop
+        (Filter.Eventually.of_forall (densityRatio_nonneg A)))
+      hev
     unfold upperDensity at hlt h_le
     linarith
   · -- 0 ≤ upperDensity A
@@ -320,4 +336,4 @@ theorem erdos_749_upper_variant :
   · right
     push_neg at h
     obtain ⟨ε, hε, hA⟩ := h
-    exact ⟨ε, hε, fun A hd hb => hA ε hε A ⟨hd, hb⟩⟩
+    exact ⟨ε, hε, fun A hd hb => hA A hd hb⟩
