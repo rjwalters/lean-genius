@@ -61,7 +61,7 @@ The central structures we're measuring.
 
 /-- A path in a graph is a sequence of distinct vertices with consecutive adjacency. -/
 def IsPath (G : Graph n) (vs : List (Fin n)) : Prop :=
-  vs.Nodup ∧ ∀ i : ℕ, i + 1 < vs.length →
+  vs.Nodup ∧ ∀ i : ℕ, (h : i + 1 < vs.length) →
     G.Adj (vs.get ⟨i, by omega⟩) (vs.get ⟨i + 1, by omega⟩)
 
 /-- The length of a path is the number of edges (= vertices - 1). -/
@@ -114,7 +114,7 @@ axiom critical_transition :
 /-- Above c = 1/2, there is a unique giant component of size Θ(n). -/
 axiom supercritical_giant (c : ℝ) (hc : c > 1/2) :
     ∃ α : ℝ, α > 0 ∧ WhpInSparseRandom c fun n G =>
-      ∃ (C : Finset (Fin n)), G.IsConnected ∧ C.card ≥ Nat.floor (α * n)
+      ∃ (C : Finset (Fin n)), G.Connected ∧ C.card ≥ Nat.floor (α * n)
 
 /-
 ## Part V: The Path Length Function
@@ -238,7 +238,7 @@ axiom dfs_path_finding (G : Graph n) :
 axiom random_graph_expansion (c : ℝ) (hc : c > 1/2) :
     WhpInSparseRandom c fun n G =>
       ∀ S : Finset (Fin n), S.card ≤ n / 2 →
-        (G.neighborFinset · |>.filter (· ∉ S)).card ≥ S.card / 2
+        (S.biUnion (fun v => G.neighborFinset v) \ S).card ≥ S.card / 2
 
 /-- Rotation-extension technique for lengthening paths. -/
 axiom rotation_extension :
@@ -278,7 +278,7 @@ def erdos_900_answer : String :=
   "PROVED: Ajtai-Komlós-Szemerédi (1981) established the path length function f(c)"
 
 /-- The phase transition is at c = 1/2. -/
-def erdos_900_threshold : ℝ := 1 / 2
+noncomputable def erdos_900_threshold : ℝ := 1 / 2
 
 #check erdos_900
 #check aks_theorem
