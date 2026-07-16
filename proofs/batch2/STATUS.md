@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 71 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): MorleysTheorem (Complex.abs shim: map_mul/abs_pow no longer unify -> unfold
+Complex.abs + norm_mul/norm_pow; Complex.norm_exp_ofReal_mul_I; Fin numeral casts ↑↑1/↑↑2 need Fin.val_one/two),
+SpernerNDimOQ01 (24min — the file HAIKU thrashed on early-session, now Sonnet: List.get?_eq_get->getElem?_eq_getElem;
+Finset.card_sdiff unconditional now; List.mem_take_iff_getElem). Repairs: none. SpernerNDimOQ01 completes the
+"every Haiku-failed file eventually greened by Sonnet/Fable" record.
+
 # DOCTOR SINGLE-PROOF BATCH 70 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): ShannonSourceCodingOQ03 (52min/346k marathon #38611: empEnt uniformBin
