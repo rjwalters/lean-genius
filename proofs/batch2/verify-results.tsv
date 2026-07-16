@@ -516,7 +516,7 @@ DeMoivreOQ06	GREEN
 DedekindFrobeniusBridge	GREEN	
 DenumerabilityRationalsOQ01	GREEN	elab-drift
 DenumerabilityRationalsOQ02OQ02	GREEN	
-DenumerabilityRationalsOQ04	RESIDUAL	unknown-const:Polynomial.setOf_isRoot_finite
+DenumerabilityRationalsOQ04	GREEN	
 DerangementsConvergence	GREEN	
 DerangementsConvergenceOQ01	GREEN	
 DerangementsConvergenceOQ01OQ01	GREEN	
@@ -1962,7 +1962,7 @@ FactorRemainderNullstellensatzOQ02	GREEN
 FactorRemainderTheorem	GREEN	parse-error
 FactorRemainderTheoremOQ01OQ01OQ02	GREEN	
 FactorRemainderTheoremOQ02	GREEN	
-FactorRemainderTheoremOQ03	RESIDUAL	unknown-const:Polynomial.card_roots_le_degree
+FactorRemainderTheoremOQ03	GREEN	
 FairGamesTheorem	RESIDUAL	type-mismatch
 FairGamesTheoremOQ02	GREEN	
 FairGamesTheoremOQ02OQ01	RESIDUAL	type-mismatch
