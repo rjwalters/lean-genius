@@ -44,9 +44,12 @@ noncomputable def greedyStep {n : ℕ} (G : WeightedGraph n)
   -- Otherwise, keep k in Sᶜ (cutting edges to S)
   if wToSc ≥ wToS then S ∪ {k} else S
 
-/-- The greedy partition: fold greedyStep over all vertices. -/
+/-- The greedy partition: fold greedyStep over all vertices, processed in order
+    0, 1, …, n-1. (Uses `List.finRange` rather than `Multiset.foldl` since
+    `greedyStep` is order-dependent, not commutative — the greedy algorithm's
+    whole point is that vertex order matters.) -/
 noncomputable def greedyPartition {n : ℕ} (G : WeightedGraph n) : Finset (Fin n) :=
-  (Finset.univ : Finset (Fin n)).val.foldl (greedyStep G) ∅
+  (List.finRange n).foldl (greedyStep G) ∅
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART II: CUT WEIGHT LOWER BOUND
@@ -87,7 +90,7 @@ theorem greedyContrib_ge_half {n : ℕ} (G : WeightedGraph n)
 theorem weight_sum_partition {n : ℕ} (G : WeightedGraph n)
     (S : Finset (Fin n)) (k : Fin n) :
     ∑ j ∈ S, G.weight k j + ∑ j ∈ Sᶜ, G.weight k j = ∑ j, G.weight k j := by
-  rw [← Finset.sum_union (Finset.disjoint_compl_right)]
+  rw [← Finset.sum_union (disjoint_compl_right)]
   simp [Finset.union_compl]
 
 /-- Total weight equals half the sum of all weight entries. -/
@@ -114,10 +117,11 @@ private noncomputable def toggleElem {n : ℕ} (j : Fin n)
 private theorem toggleElem_involutive {n : ℕ} (j : Fin n) :
     Function.Involutive (toggleElem j : Finset (Fin n) → Finset (Fin n)) := by
   intro S
-  simp only [toggleElem]
-  split_ifs with h1
-  · simp [Finset.mem_erase, h1, Finset.insert_erase h1]
-  · simp [h1, Finset.erase_insert h1]
+  by_cases h : j ∈ S
+  · simp only [toggleElem, if_pos h, if_neg (Finset.notMem_erase j S),
+      Finset.insert_erase h]
+  · simp only [toggleElem, if_neg h, if_pos (Finset.mem_insert_self j S),
+      Finset.erase_insert h]
 
 private theorem toggleElem_preserves_other {n : ℕ} {i j : Fin n}
     (hij : i ≠ j) (S : Finset (Fin n)) (hi : i ∈ S) :
@@ -142,19 +146,19 @@ theorem card_filter_mem {n : ℕ} (i : Fin n) :
   have htotal :
       (univ.filter (fun S : Finset (Fin n) => i ∈ S)).card +
       (univ.filter (fun S : Finset (Fin n) => ¬ i ∈ S)).card = 2 ^ n := by
-    rw [Finset.filter_card_add_filter_neg_card_eq_card, Finset.card_univ]
+    rw [Finset.card_filter_add_card_filter_not, Finset.card_univ]
     simp [Fintype.card_finset]
   have hequal :
       (univ.filter (fun S : Finset (Fin n) => i ∈ S)).card =
       (univ.filter (fun S : Finset (Fin n) => ¬ i ∈ S)).card := by
     apply Finset.card_bij (fun S _ => toggleElem i S)
-    · intro S₁ _ S₂ _ h
-      have := congr_arg (toggleElem i) h
-      rwa [toggleElem_involutive, toggleElem_involutive] at this
     · intro S hS
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hS ⊢
       intro hmem
       exact absurd hS ((toggleElem_flips i S).mp hmem)
+    · intro S₁ _ S₂ _ h
+      have := congr_arg (toggleElem i) h
+      rwa [toggleElem_involutive, toggleElem_involutive] at this
     · intro T hT
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hT
       exact ⟨toggleElem i T,
@@ -162,7 +166,9 @@ theorem card_filter_mem {n : ℕ} (i : Fin n) :
         toggleElem_involutive i T⟩
   have hn : n ≥ 1 := Fin.pos i
   have hpow : 2 ^ n = 2 * 2 ^ (n - 1) := by
-    conv_lhs => rw [show n = (n - 1) + 1 from by omega]; ring
+    conv_lhs => rw [show n = (n - 1) + 1 from by omega]
+    rw [pow_succ]
+    ring
   omega
 
 /-- For distinct i, j : Fin n, exactly 2^(n-2) subsets contain i but not j.
@@ -175,20 +181,26 @@ theorem card_filter_mem_nmem {n : ℕ} {i j : Fin n} (hij : i ≠ j) :
       (univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card =
       2 ^ (n - 1) := by
     rw [← card_filter_mem i]
-    rw [← Finset.filter_card_add_filter_neg_card_eq_card
-        (univ.filter (fun S : Finset (Fin n) => i ∈ S)) (fun S => j ∈ S)]
-    congr 1 <;> ext S <;> simp [Finset.mem_filter, and_assoc]
+    rw [← Finset.card_filter_add_card_filter_not
+        (s := univ.filter (fun S : Finset (Fin n) => i ∈ S)) (p := fun S => j ∈ S)]
+    have e1 : (univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∈ S)) =
+        (univ.filter (fun S : Finset (Fin n) => i ∈ S)).filter (fun S => j ∈ S) := by
+      ext S; simp [Finset.mem_filter, and_assoc]
+    have e2 : (univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)) =
+        {a ∈ (univ.filter (fun S : Finset (Fin n) => i ∈ S)) | ¬ j ∈ a} := by
+      ext S; simp [Finset.mem_filter, and_assoc]
+    rw [e1, e2]
   have hequal :
       (univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∈ S)).card =
       (univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card := by
     apply Finset.card_bij (fun S _ => toggleElem j S)
-    · intro S₁ _ S₂ _ h
-      have := congr_arg (toggleElem j) h
-      rwa [toggleElem_involutive, toggleElem_involutive] at this
     · intro S hS
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hS ⊢
       exact ⟨toggleElem_preserves_other hij S hS.1,
-             (toggleElem_flips j S).mpr hS.2⟩
+             fun hmem => (toggleElem_flips j S).mp hmem hS.2⟩
+    · intro S₁ _ S₂ _ h
+      have := congr_arg (toggleElem j) h
+      rwa [toggleElem_involutive, toggleElem_involutive] at this
     · intro T hT
       simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hT
       refine ⟨toggleElem j T, ?_, toggleElem_involutive j T⟩
@@ -200,7 +212,9 @@ theorem card_filter_mem_nmem {n : ℕ} {i j : Fin n} (hij : i ≠ j) :
     · exact Fin.elim0 i
     · exact hij (Subsingleton.elim i j)
   have hpow : 2 ^ (n - 1) = 2 * 2 ^ (n - 2) := by
-    conv_lhs => rw [show n - 1 = (n - 2) + 1 from by omega]; ring
+    conv_lhs => rw [show n - 1 = (n - 2) + 1 from by omega]
+    rw [pow_succ]
+    ring
   omega
 
 -- ═══════════════════════════════════════════════════════════════
@@ -223,21 +237,26 @@ private theorem cutWeight_indicator {n : ℕ} (G : WeightedGraph n) (S : Finset 
     cutWeight G S =
     ∑ i : Fin n, ∑ j : Fin n, if i ∈ S ∧ j ∉ S then G.weight i j else 0 := by
   unfold cutWeight
-  congr 1; ext i
-  rw [← Finset.sum_filter]
-  congr 1
-  ext j
-  simp [Finset.mem_compl, Finset.mem_filter]
+  have hSc : (Finset.univ.filter (fun j : Fin n => j ∉ S)) = Sᶜ := by
+    ext j; simp [Finset.mem_compl]
+  have hS : (Finset.univ.filter (fun i : Fin n => i ∈ S)) = S := by
+    ext i; simp
+  have hcompl : ∀ i : Fin n, (∑ j : Fin n, if i ∈ S ∧ j ∉ S then G.weight i j else 0) =
+      if i ∈ S then ∑ j ∈ Sᶜ, G.weight i j else 0 := by
+    intro i
+    by_cases hi : i ∈ S
+    · simp only [hi, true_and, if_true]
+      rw [← Finset.sum_filter, hSc]
+    · simp [hi]
+  simp_rw [hcompl]
+  rw [← Finset.sum_filter, hS]
 
 -- Helper: for fixed (i,j), sum of indicator over all S
 private theorem sum_indicator_eq_weight_mul_card {n : ℕ} (G : WeightedGraph n) (i j : Fin n) :
     ∑ S : Finset (Fin n), (if i ∈ S ∧ j ∉ S then G.weight i j else 0) =
     G.weight i j * ↑((Finset.univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card) := by
-  simp_rw [← Finset.sum_boole]
-  rw [← Finset.sum_mul]
-  congr 1
-  ext S
-  split_ifs with h <;> simp [h]
+  rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
+  ring
 
 theorem sum_cutWeight_eq {n : ℕ} (G : WeightedGraph n) :
     ∑ S : Finset (Fin n), cutWeight G S =
@@ -247,17 +266,15 @@ theorem sum_cutWeight_eq {n : ℕ} (G : WeightedGraph n) :
   -- Goal: ∑ S, ∑ i, ∑ j, (if i ∈ S ∧ j ∉ S then w i j else 0) = totalWeight * 2^(n-1)
 
   -- Step 2: Swap sums (S with i,j)
-  rw [Finset.sum_comm]
-  simp_rw [Finset.sum_comm (s := Finset.univ) (t := Finset.univ)]
+  rw [Finset.sum_comm, Finset.sum_congr rfl (fun i _ => Finset.sum_comm)]
   -- Goal: ∑ i, ∑ j, ∑ S, (if ...) = totalWeight * 2^(n-1)
 
   -- Step 3: Factor out w(i,j) and apply counting
   simp_rw [sum_indicator_eq_weight_mul_card]
   -- Goal: ∑ i, ∑ j, w i j * ↑(card of filter) = totalWeight * 2^(n-1)
 
-  -- Step 4: Split i = j vs i ≠ j
-  -- For i = j: filter is empty (can't have i ∈ S ∧ i ∉ S), so card = 0
-  -- For i ≠ j: card = 2^(n-2) (by card_filter_mem_nmem)
+  -- Steps 4-6: split i = j vs i ≠ j, use card_filter_mem_nmem / no_self_loops,
+  -- and collapse to 2^(n-2) * ∑ i, ∑ j, w i j.
   have hcard : ∀ i j : Fin n,
       (Finset.univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card =
       if i = j then 0 else 2 ^ (n - 2) := by
@@ -266,27 +283,19 @@ theorem sum_cutWeight_eq {n : ℕ} (G : WeightedGraph n) :
     · subst h
       simp [Finset.filter_eq_empty_iff, and_not_self]
     · exact card_filter_mem_nmem h
-  simp_rw [hcard]
-  -- Goal: ∑ i, ∑ j, w i j * ↑(if i = j then 0 else 2^(n-2)) = totalWeight * 2^(n-1)
-
-  -- Step 5: Simplify using no_self_loops
-  -- When i = j: w i i = 0, so w i j * 0 = 0
-  -- When i ≠ j: w i j * 2^(n-2)
-  simp only [Nat.cast_ite, CharP.cast_eq_zero]
-  simp_rw [show ∀ i j : Fin n, G.weight i j * (if i = j then (0 : ℝ) else ↑(2 ^ (n - 2))) =
-    if i = j then 0 else G.weight i j * ↑(2 ^ (n - 2)) from by
-      intro i j; split_ifs with h <;> simp [h, G.no_self_loops]]
-
-  -- Step 6: The i=j terms vanish, leaving ∑ i, ∑ j, if i ≠ j then w i j * 2^(n-2) else 0
-  -- Since w i i = 0, the sum over all (i,j) with i ≠ j equals ∑ i, ∑ j, w i j
   have hsum : ∑ i : Fin n, ∑ j : Fin n,
-      (if i = j then (0 : ℝ) else G.weight i j * ↑(2 ^ (n - 2))) =
-      ↑(2 ^ (n - 2)) * ∑ i : Fin n, ∑ j : Fin n, G.weight i j := by
-    rw [Finset.mul_sum]; congr 1; ext i
-    rw [Finset.mul_sum]; congr 1; ext j
-    split_ifs with h
-    · simp [h, G.no_self_loops]
-    · ring
+      G.weight i j * ↑((Finset.univ.filter (fun S : Finset (Fin n) => i ∈ S ∧ j ∉ S)).card) =
+      (2 ^ (n - 2) : ℝ) * ∑ i : Fin n, ∑ j : Fin n, G.weight i j := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [hcard i j]
+    by_cases h : i = j
+    · subst h; simp [G.no_self_loops]
+    · simp [h]; ring
   rw [hsum]
 
   -- Step 7: Final arithmetic
@@ -308,6 +317,40 @@ theorem sum_cutWeight_eq {n : ℕ} (G : WeightedGraph n) :
       have h2k : (2 : ℝ) ^ k ≠ 0 := pow_ne_zero _ two_ne_zero
       field_simp
       ring
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART V: THE METHOD OF CONDITIONAL EXPECTATIONS (ABSTRACT)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- Abstract conditional expectations principle: if E[X] ≥ c,
+    and X can be decomposed as a weighted average of conditional
+    expectations, then at each conditioning step we can choose the
+    conditioning that maintains E[X | conditioning] ≥ c.
+
+    This is the general pattern behind MaxCut derandomization,
+    Johnson's algorithm for MAX-SAT, and many other results.
+
+    (Moved above `exists_good_partition'` in the v4.31 migration: the
+    original file order forward-referenced this lemma before its
+    declaration, which no longer elaborates.) -/
+theorem conditional_expectation_method
+    {α : Type*} [Fintype α] {f : α → ℝ} {c : ℝ}
+    (hf : ∑ a : α, f a / Fintype.card α ≥ c)
+    (hcard : 0 < Fintype.card α) :
+    ∃ a : α, f a ≥ c := by
+  by_contra h
+  push_neg at h
+  have hne : (Finset.univ : Finset α).Nonempty :=
+    Finset.card_pos.mp (by rwa [Finset.card_univ])
+  have : ∑ a : α, f a / Fintype.card α < ∑ _a : α, c / Fintype.card α := by
+    apply Finset.sum_lt_sum_of_nonempty hne
+    intro a _
+    exact div_lt_div_of_pos_right (h a) (by exact_mod_cast hcard)
+  have hcardR : (Fintype.card α : ℝ) ≠ 0 := by exact_mod_cast hcard.ne'
+  have : ∑ _a : α, c / Fintype.card α = c := by
+    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    field_simp
+  linarith
 
 /-- **The Method of Conditional Expectations for MaxCut**.
 
@@ -338,7 +381,6 @@ theorem exists_good_partition' {n : ℕ} (G : WeightedGraph n) :
       push_cast
       have h2m : (2 : ℝ) ^ m ≠ 0 := pow_ne_zero _ two_ne_zero
       field_simp
-      ring
   · exact Fintype.card_pos
 
 -- ═══════════════════════════════════════════════════════════════
@@ -349,39 +391,16 @@ theorem exists_good_partition' {n : ℕ} (G : WeightedGraph n) :
     Any partition cuts at least 2 edges ≥ 3/2. -/
 noncomputable def triangle : WeightedGraph 3 where
   weight := fun i j => if i ≠ j then 1 else 0
-  symmetric := by intro i j; simp; tauto
+  symmetric := by
+    intro i j
+    by_cases h : i = j
+    · simp [h]
+    · simp [h, Ne.symm h]
   nonneg := by intro i j; split_ifs <;> norm_num
   no_self_loops := by intro i; simp
 
 -- Total weight of triangle = 3
 -- example : totalWeight triangle = 3 := by ... (would need norm_num on Fin 3 sums)
-
--- ═══════════════════════════════════════════════════════════════
--- PART V: THE METHOD OF CONDITIONAL EXPECTATIONS (ABSTRACT)
--- ═══════════════════════════════════════════════════════════════
-
-/-- Abstract conditional expectations principle: if E[X] ≥ c,
-    and X can be decomposed as a weighted average of conditional
-    expectations, then at each conditioning step we can choose the
-    conditioning that maintains E[X | conditioning] ≥ c.
-
-    This is the general pattern behind MaxCut derandomization,
-    Johnson's algorithm for MAX-SAT, and many other results. -/
-theorem conditional_expectation_method
-    {α : Type*} [Fintype α] {f : α → ℝ} {c : ℝ}
-    (hf : ∑ a : α, f a / Fintype.card α ≥ c)
-    (hcard : 0 < Fintype.card α) :
-    ∃ a : α, f a ≥ c := by
-  by_contra h
-  push_neg at h
-  have : ∑ a : α, f a / Fintype.card α < ∑ _a : α, c / Fintype.card α := by
-    apply Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty
-    intro a _
-    exact div_lt_div_of_pos_right (h a) (by exact_mod_cast hcard)
-  have : ∑ _a : α, c / Fintype.card α = c := by
-    simp [Finset.sum_div, Finset.card_univ]
-    field_simp
-  linarith
 
 /-! ## Summary
 
