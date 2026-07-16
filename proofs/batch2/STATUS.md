@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 154 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01OQ01OQ01ApproachB (AddAut now AddGroup not Group;
+unitToAddAut->AddAut.mulLeft:Rˣ→*Multiplicative(AddAut R); addOrderOf; orderOf_ofAdd_eq_addOrderOf bridge;
+MulAutMultiplicative codomain Multiplicative(AddAut G)). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 153 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Hilbert20OQ01OQ03 (same principalSymbol PRE-EXISTING defect -> Finset.Nat.
