@@ -59,7 +59,7 @@ private lemma sq_sum_le {α : Type*} [DecidableEq α]
     (1-θ)² · (∑ f)² ≤ |above| · ∑ f²
 
   where above = {a ∈ s : f(a) > θ · mean}. -/
-theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
+theorem paley_zygmund_quantitative_counting {α : Type*} [DecidableEq α] {s : Finset α}
     {f : α → ℚ} {θ : ℚ} (hs : s.Nonempty) (hnn : ∀ a ∈ s, 0 ≤ f a)
     (hpos : 0 < s.sum f) (hθ0 : 0 ≤ θ) (hθ1 : θ < 1) :
     (1 - θ) ^ 2 * (s.sum f) ^ 2 ≤
@@ -87,9 +87,12 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
     exact_mod_cast Finset.card_filter_le s _
   have hμ_eq : ↑s.card * μ = s.sum f := by
     rw [hμ_def, mul_div_cancel₀ _ hn_ne]
+  have hμ_nn : 0 ≤ μ := by
+    rw [hμ_def]; exact div_nonneg (le_of_lt hpos) (le_of_lt hn_pos)
   have hbelow_bound : below.sum f ≤ θ * s.sum f := by
     calc below.sum f ≤ ↑below.card * (θ * μ) := hbelow_sum
-      _ ≤ ↑s.card * (θ * μ) := by nlinarith [hθ0, hμ_def]
+      _ ≤ ↑s.card * (θ * μ) :=
+          mul_le_mul_of_nonneg_right hbelow_card_le (mul_nonneg hθ0 hμ_nn)
       _ = θ * (↑s.card * μ) := by ring
       _ = θ * s.sum f := by rw [hμ_eq]
   -- Step 3: above sum ≥ (1-θ) · sum f
@@ -109,11 +112,12 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
         ≤ ↑above.card * above.sum (fun a => f a ^ 2) := hcs
       _ ≤ ↑above.card * s.sum (fun a => f a ^ 2) :=
           mul_le_mul_of_nonneg_left hf2_le (Nat.cast_nonneg _)
+  have hX_nonneg : 0 ≤ (1 - θ) * s.sum f := mul_nonneg (by linarith) (le_of_lt hpos)
   calc (1 - θ) ^ 2 * (s.sum f) ^ 2
       = ((1 - θ) * s.sum f) ^ 2 := by ring
     _ ≤ (above.sum f) ^ 2 := by
         apply sq_le_sq'
-        · linarith [habove_sum, Finset.sum_nonneg (fun a (ha : a ∈ above) =>
+        · linarith [hX_nonneg, Finset.sum_nonneg (fun a (ha : a ∈ above) =>
             hnn a (Finset.mem_of_mem_filter a ha))]
         · exact habove_sum
     _ ≤ ↑above.card * s.sum (fun a => f a ^ 2) := h_combined
@@ -127,7 +131,7 @@ theorem paley_zygmund_probability {α : Type*} [DecidableEq α] {s : Finset α}
     (hf2_pos : 0 < s.sum (fun a => f a ^ 2)) :
     (1 - θ) ^ 2 * (s.sum f) ^ 2 / s.sum (fun a => f a ^ 2) ≤
       ↑(s.filter (fun a => θ * (s.sum f / ↑s.card) < f a)).card := by
-  have hpz := paley_zygmund_quantitative hs hnn hpos hθ0 hθ1
+  have hpz := paley_zygmund_quantitative_counting hs hnn hpos hθ0 hθ1
   rwa [div_le_iff₀ hf2_pos]
 
 /-- At θ = 0, the quantitative PZ reduces to: P[X > 0] · ∑f² ≥ (∑f)².
@@ -138,10 +142,8 @@ theorem paley_zygmund_at_zero {α : Type*} [DecidableEq α] {s : Finset α}
     (s.sum f) ^ 2 ≤
       ↑(s.filter (fun a => 0 < f a)).card *
       s.sum (fun a => f a ^ 2) := by
-  have h := paley_zygmund_quantitative hs hnn hpos (le_refl 0) (by norm_num : (0:ℚ) < 1)
-  simp only [sub_zero, one_pow, one_mul, zero_mul, zero_div] at h
-  convert h using 2
-  ext a
-  simp
+  have h := paley_zygmund_quantitative_counting hs hnn hpos (le_refl 0) (by norm_num : (0:ℚ) < 1)
+  simp only [sub_zero, one_pow, one_mul, zero_mul] at h
+  exact h
 
 end ProbMethod.SecondMoment

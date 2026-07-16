@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 307 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): ProbMethodSecondMomentOQ01 (parent now declares paley_zygmund_quantitative
+shadowing child -> renamed _counting; nlinarith needs explicit 0≤μ; sq_le_sq' explicit hX_nonneg; convert
+using 2 over-closes -> exact h). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 306 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LagrangeFourSquaresOQ01OQ03 (dropped stale noncomputable box/r4; box via
