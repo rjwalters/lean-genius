@@ -43,7 +43,7 @@ def StrictlyIncreasing {k : ℕ} (seq : Fin k → ℕ) : Prop :=
     This means the gaps are non-increasing. -/
 def IsDescendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
   k ≤ 2 ∨
-  ∀ j : Fin k, 0 < j.val → j.val + 1 < k →
+  ∀ j : Fin k, ∀ hj0 : 0 < j.val, ∀ hjk : j.val + 1 < k,
     2 * seq j ≥ seq ⟨j.val - 1, by omega⟩ + seq ⟨j.val + 1, by omega⟩
 
 /-- Alternative characterization: gaps are non-increasing.
@@ -51,7 +51,7 @@ def IsDescendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
     (x₂ - x₁) ≥ (x₃ - x₂) ≥ ... ≥ (xₖ - xₖ₋₁). -/
 def HasNonIncreasingGaps {k : ℕ} (seq : Fin k → ℕ) : Prop :=
   k ≤ 2 ∨
-  ∀ j : Fin k, 0 < j.val → j.val + 1 < k →
+  ∀ j : Fin k, ∀ hj0 : 0 < j.val, ∀ hjk : j.val + 1 < k,
     seq ⟨j.val + 1, by omega⟩ - seq j ≤ seq j - seq ⟨j.val - 1, by omega⟩
 
 /-- For strictly increasing sequences, descending wave ↔ non-increasing gaps. -/
@@ -101,7 +101,7 @@ def HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=
     ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by
       have := w.in_S i
       simp [Finset.mem_image] at this
-      obtain ⟨j, _, hj⟩ := this
+      obtain ⟨j, hj⟩ := this
       omega⟩ = color
 
 /- ## The Function f(k) -/
@@ -182,7 +182,10 @@ theorem small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7 :=
     k = 2: 2² - 2 + 1 = 3 (actually f(2) = 2, so even simpler!)
     k = 3: 3² - 3 + 1 = 7 ✓ -/
 theorem conjecture_formula (k : ℕ) : k^2 - k + 1 = k * (k - 1) + 1 := by
-  ring
+  rcases k with _ | m
+  · simp
+  · have hsq : (m + 1)^2 = m * (m + 1) + (m + 1) := by ring
+    simp only [hsq, Nat.add_sub_cancel, Nat.succ_sub_one, mul_comm]
 
 /- ## Why The Conjecture Fails -/
 
@@ -203,7 +206,7 @@ k² - k + 1.
     x₁ < x₂ < ... < xₖ with x_{j+1} - x_j ≤ x_{j+2} - x_{j+1}. -/
 def IsAscendingWave {k : ℕ} (seq : Fin k → ℕ) : Prop :=
   k ≤ 2 ∨
-  ∀ j : Fin k, 0 < j.val → j.val + 1 < k →
+  ∀ j : Fin k, ∀ hj0 : 0 < j.val, ∀ hjk : j.val + 1 < k,
     seq j - seq ⟨j.val - 1, by omega⟩ ≤ seq ⟨j.val + 1, by omega⟩ - seq j
 
 /-- The function g(k) for ascending waves. -/
@@ -218,7 +221,7 @@ noncomputable def g (k : ℕ) : ℕ :=
 /-- A quasi-arithmetic progression: an arithmetic progression with bounded errors.
     Descending waves are related to "quasi-progressions" with specific error bounds. -/
 def IsQuasiProgression {k : ℕ} (seq : Fin k → ℕ) (d error : ℕ) : Prop :=
-  ∀ i : Fin k, i.val + 1 < k →
+  ∀ i : Fin k, ∀ hik : i.val + 1 < k,
     let gap := seq ⟨i.val + 1, by omega⟩ - seq i
     d - error ≤ gap ∧ gap ≤ d + error
 

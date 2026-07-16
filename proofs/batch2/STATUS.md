@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 26 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos583Problem (anonymous-Pi-binder-in-structure-field now hits
+`assumption` too; universe-mismatch on Iff.rfl restating Type*-def -> explicit universe u), Erdos551Problem
+Aristotle (#38611: formula_strict_mono_k/_n UNSOUND at k1=0/n1=0 -> added >=1 hyps; gcongr replaces nlinarith
+for truncated-ℕ-sub monotonicity), Erdos781Problem (Finset.mem_image now 2-tuple after mem_univ collapse).
+Repairs #38611: Erdos551ProblemAristotle formula_strict_mono.
+
 # DOCTOR SINGLE-PROOF BATCH 25 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos1012OQ03 (SONNET 72min/648k — LONGEST of session, 1782-line
