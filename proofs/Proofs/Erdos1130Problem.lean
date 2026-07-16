@@ -46,8 +46,8 @@ noncomputable def lebesgueFunction (P : InterpolationNodes n) (x : ℝ) : ℝ :=
 
 /-- The subinterval endpoints: x₀ = -1, x₁,...,xₙ, x_{n+1} = 1 -/
 noncomputable def subintervalEndpoint (P : InterpolationNodes n) (i : Fin (n + 2)) : ℝ :=
-  if i.val = 0 then -1
-  else if i.val = n + 1 then 1
+  if h0 : i.val = 0 then -1
+  else if h1 : i.val = n + 1 then 1
   else P.nodes ⟨i.val - 1, by omega⟩
 
 /-- The maximum of the Lebesgue function on the i-th subinterval -/
@@ -95,7 +95,7 @@ theorem lagrangeBasis_self (P : InterpolationNodes n) (k : Fin n) :
   split_ifs with h
   · rfl
   · have hne : P.nodes k ≠ P.nodes j := fun heq =>
-      h (nodes_injective P heq)
+      h (nodes_injective P heq.symm)
     exact div_self (sub_ne_zero.mpr hne)
 
 /-- l_k(x_j) = 0 for j ≠ k: each basis polynomial vanishes at other nodes. -/
@@ -115,8 +115,8 @@ theorem lebesgue_at_node (P : InterpolationNodes n) (k : Fin n) :
     if j = k then 1 else 0 := by
     intro j; split_ifs with h
     · subst h; simp [lagrangeBasis_self]
-    · simp [lagrangeBasis_other P j k h]
-  simp_rw [heq, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    · simp [lagrangeBasis_other P j k (Ne.symm h)]
+  simp_rw [heq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /-  The Lebesgue function is ≥ 1 everywhere on [-1,1]. -/
 /- ## Erdős Problem 1130 (PROVED from logarithmic_bound) -/
