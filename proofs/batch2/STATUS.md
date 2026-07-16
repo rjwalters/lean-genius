@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 362 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, rescued from monitor-punt)**: Erdos1018OQ04Incomplete01 (root cause NOT the
+reported line-372 simp — v4.31 fin_cases index-representation drift: `simp only [Matrix.cons_val_zero/
+cons_val_one/head_cons]` no longer fires on fin_cases `⟨n,⋯⟩` Fin.mk index terms -> ![…]⟨n,⋯⟩ under-reduced
+so closing linarith/norm_num saw stuck matrix-index terms; replaced all 76+30 `simp only[...];norm_num`
+idioms with plain `simp [φ] <;> norm_num` in K3_planar/K4_planar). Intentional scaffold sorry preserved. Repair: none.
+SEAM: Matrix.cons_val_*/head_cons simp-only sets no longer match fin_cases `⟨n,⋯⟩` -> use plain `simp [φ]` not simp only.
+
 # DOCTOR SINGLE-PROOF BATCH 361 (FABLE DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, FABLE, 205k tok)**: Erdos1109Problem (rebuilt residue-counting core:
