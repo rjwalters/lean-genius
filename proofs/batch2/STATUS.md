@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 298 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos720Problem (anonymous ∀n,n≥3 binder omega-regression -> named hn;
+#38611 REPAIR ErdosQuestion720c unconditional 'by omega:n≥3' over all ℕ unsound -> total via dite). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 297 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos662Problem (same ℤ seam as Erdos36: local Classical.propDecidable
