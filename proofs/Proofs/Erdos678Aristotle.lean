@@ -31,8 +31,6 @@ open Finset Nat
 
 namespace Erdos678Aristotle
 
-open Erdos678
-
 /-
 ## Definitional Equality
 
@@ -46,7 +44,7 @@ intervalLcm' n k = (Icc (n+1) (n+k)).fold lcm 1 id
     via i ↦ n+1+i, and the lcm fold is preserved under this bijection. -/
 theorem intervalLcm_eq_intervalLcm' (n k : ℕ) (hk : k ≥ 1) :
     intervalLcm n k = intervalLcm' n k :=
-  Erdos678.intervalLcm_eq_intervalLcm' n k hk
+  _root_.intervalLcm_eq_intervalLcm' n k hk
 
 /-
 ## Monotonicity and Divisibility
@@ -57,14 +55,14 @@ theorem intervalLcm_eq_intervalLcm' (n k : ℕ) (hk : k ≥ 1) :
     each factor divides the lcm fold (by Finset.dvd_fold_lcm or similar). -/
 theorem dvd_intervalLcm (n k i : ℕ) (hi : i < k) :
     (n + 1 + i) ∣ intervalLcm n k :=
-  Erdos678.dvd_intervalLcm n k i hi
+  _root_.dvd_intervalLcm n k i hi
 
 /-- intervalLcm n k divides intervalLcm n (k+1).
     Strategy: the range k fold divides the range (k+1) fold since
     the former is a sub-fold of the latter and lcm is monotone. -/
 theorem intervalLcm_mono_right (n k : ℕ) :
     intervalLcm n k ∣ intervalLcm n (k + 1) :=
-  Erdos678.intervalLcm_mono_right n k
+  _root_.intervalLcm_mono_right n k
 
 /-
 ## Prime Power Divisibility
@@ -76,6 +74,6 @@ theorem intervalLcm_mono_right (n k : ℕ) :
 theorem prime_power_divides_intervalLcm (n k p a : ℕ) (hp : p.Prime)
     (hpa : p ^ a ∈ Finset.Icc (n + 1) (n + k)) :
     p ^ a ∣ intervalLcm n k :=
-  Erdos678.prime_power_divides_intervalLcm n k p a hp hpa
+  _root_.prime_power_divides_intervalLcm n k p a hp hpa
 
 end Erdos678Aristotle

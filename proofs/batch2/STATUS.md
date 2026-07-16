@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 60 (mixed fleet, #38065, 2026-07-16)
+
+**+4 GREEN** (re-verified EXIT=0): Erdos678Aristotle (parent never declared namespace Erdos678 -> drop open,
+_root_. qualify — pre-existing dead ref), Erdos1118Problem (FABLE: open Complex no longer exports abs on ℂ ->
+‖·‖; ∫<⊤ finiteness must move to ∫⁻/ℝ≥0∞), Erdos274Problem (leftCoset removed -> a•(s:Set G) + open scoped
+Pointwise), Erdos106Problem (axiom forward-ref reorder). Repairs: none. Fable 14/15 hard tail.
+
 # DOCTOR SINGLE-PROOF BATCH 59 (mixed fleet, #38065, 2026-07-16)
 
 **+3 GREEN** (re-verified EXIT=0): RothTheoremQuantitativeAristotle (div_le_div_of_le_left->_of_nonneg_left;
