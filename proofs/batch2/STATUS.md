@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 156 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Hilbert4Geodesics (HARD 14min: haveI->letI instance diamond for
+M.carrier AddCommGroup/Module; Finset.sup no OrderBot ℝ -> Finset.fold ⊔; WithLp/PiLp/EuclideanSpace now
+WRAPPER STRUCT not defeq synonym -> WithLp.toLp/PiLp.toLp_apply; finrank->Module.finrank; dangling /-- errors;
+2 MinkowskiGeometry axioms restated topology-free/conservative). Repair: none (5 axioms unchanged).
+
 # DOCTOR SINGLE-PROOF BATCH 155 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FurstenbergCorrespondenceOQ01 (HARD 15min/27-err: open scoped ENNReal
