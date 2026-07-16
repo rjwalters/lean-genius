@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 232 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos537Problem (imports Order.Filter.AtTopBot.Defs + Cardinal.Finite;
+.toSet stray removed; ∀ᶠ N:ℕ pin vs ℝ; let A -> simp only [A]; real not floor division in hA). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 231 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos580Problem (@-fully-applied satisfiesLKS/GeneralizedLKS/
