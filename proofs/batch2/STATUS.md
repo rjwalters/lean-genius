@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 247 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos863Problem (|>.card before relational op unparseable -> direct .card;
+mem_product/mem_filter require ×ˢ head not .product -> .mp/.mpr term; Finset.card_le_one.mp explicit elements).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 246 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos88Problem (ℕ∞->ℝ via .toNat; SimpleGraph symm/loopless field reshape
