@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 136 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0 against merged parent Erdos622Problem): Erdos622OQ04 (G.symm h->h.symm
+Std.Symm; mem_neighborFinset.mp term-mode -> simp only; omega G.degree defeq have; ring reassoc for
+nonlinear atom). Repair: none (parent knn_with_stars unsoundness already fixed in batch 132).
+
 # DOCTOR SINGLE-PROOF BATCH 135 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos732Problem (Finset.univ:Finset(List ℕ) no Fintype -> Nat.card
