@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 350 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, 290k tok)**: SpernerNDimOQ04 (parse-error masked large never-elaborated
+semantic drift: illegal rcases-as-match-arm syntax -> plain `rcases h with p1|p2`+· bullets x3;
+subst direction flips breaking Ne arg order; Finset.ssubset_univ->ssubset_univ_iff.mpr;
+(Option.some.inj h).1 -> (Prod.mk.inj (Option.some_inj.mp h)).1; kuhnWalk proof-dependent
+`match h:e with` unfold fails via rw/simp only ("motive not type correct") -> `split` + absurd/injection).
+Repair: none (1 pre-existing documented axiom bdry_all_even_of_no_fc_walks unchanged).
+SEAM: illegal rcases-as-match-arms -> `rcases h with p1|p2`+·; subst direction also breaks explicit Ne
+arg order at call sites; proof-dependent `match h:e with` (branch uses h) fails rw/simp only on v4.31 -> use `split`.
+
 # DOCTOR SINGLE-PROOF BATCH 349 (all-Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, 198k tok)**: SylowTheoremOQ04 (card_sylow_dvd_index->Sylow.card_dvd_index;
