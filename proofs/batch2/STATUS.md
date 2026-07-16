@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 147 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos94OQ02 (def PointConfig:=Finset Point -> abbrev; ![...] -> !₂[...]
+EuclideanSpace + (k:ℝ) casts; Nat.lt_div_mul_add args renamed). Repair: none (2 pre-existing sorries preserved).
+
 # DOCTOR SINGLE-PROOF BATCH 146 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos610Problem (namespace-wrap vs SimpleGraph.IsClique; noncomputable
