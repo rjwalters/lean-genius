@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 66 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): FeuerbachsTheoremOQ01OQ03 (local def Foo.bar in different namespace no
+longer resolves via T.bar dot-notation -> Foo.bar T; λ₁ subscripted binder rejected -> rename ASCII),
+Erdos501Problem (WithTop.ne_top_iff_exists vs ENat.ne_top_iff_exists coercion-head mismatch defeats norm_cast;
+open scoped ENNReal for ℝ≥0∞; unblocks Erdos501ProblemProvable). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 65 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): FourthRoot2Degree4OQ02 (scoped ⟮⟯ needs open scoped IntermediateField;
