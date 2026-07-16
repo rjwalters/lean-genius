@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 90 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BallotProblemOQ01OQ02OQ01OQ02 (#38611: surjOn_fiber_decomp used SurjOn
+where MapsTo needed (type error masked by old elaborator) -> added MapsTo hyp; uniformOn now needs
+MeasurableSingletonClass instances; Set.ncard_pos now iff). Repairs #38611: surjOn_fiber_decomp MapsTo.
+
 # DOCTOR SINGLE-PROOF BATCH 89 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos424Problem (forward-ref reorder; Subset.rfl->Set.Subset.rfl), Ballot

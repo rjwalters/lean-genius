@@ -55,15 +55,21 @@ theorem preimage_inter_eq_iUnion {α β : Type*} (f : α → β) (A : Set α) (P
   · rintro ⟨t, ht, hxA, rfl⟩
     exact ⟨hxA, ht⟩
 
-/-- When f is surjective from A onto T, A decomposes as ⋃_{t ∈ T} (A ∩ f⁻¹'{t}). -/
+/-- When f maps A into T, A decomposes as ⋃_{t ∈ T} (A ∩ f⁻¹'{t}).
+    Note: this decomposition needs `MapsTo f A T` (so every value `f x`, `x ∈ A`,
+    lands in `T`); `SurjOn f A T` alone (i.e. `T ⊆ f '' A`) does not give this -- the
+    original proof of this file elaborated `hf (mem_image_of_mem f hxA)` against a
+    `SurjOn` hypothesis, which does not actually type-check (`SurjOn` runs the wrong
+    direction: `T ⊆ f '' A`, not `f '' A ⊆ T`). We add the genuinely-needed `MapsTo`
+    hypothesis here; see #38611. -/
 theorem surjOn_fiber_decomp {α β : Type*} (f : α → β) (A : Set α) (T : Set β)
-    (hf : SurjOn f A T) :
+    (hfm : MapsTo f A T) :
     A = ⋃ t ∈ T, A ∩ f ⁻¹' {t} := by
   ext x
   simp only [mem_iUnion, mem_inter_iff, mem_preimage, mem_singleton_iff]
   constructor
   · intro hxA
-    exact ⟨f x, hf (mem_image_of_mem f hxA), hxA, rfl⟩
+    exact ⟨f x, hfm hxA, hxA, rfl⟩
   · rintro ⟨_, _, hxA, _⟩
     exact hxA
 
@@ -113,18 +119,21 @@ PART III: MAIN THEOREM
     This is strictly stronger than the ballot OQ-01 result: that proved this
     for ONE specific function and ONE specific event; this holds for ALL abstract
     functions with uniform fibers and ALL events simultaneously. -/
-theorem uniformOn_fiber_transfer_all {α β : Type*} (f : α → β)
+theorem uniformOn_fiber_transfer_all {α β : Type*}
+    [MeasurableSpace α] [MeasurableSpace β]
+    [MeasurableSingletonClass α] [MeasurableSingletonClass β]
+    (f : α → β)
     (A : Set α) (T : Set β)
     (hA : A.Finite) (hT : T.Finite)
     (hA_ne : A.Nonempty) (hT_ne : T.Nonempty)
-    (hf : SurjOn f A T)
+    (hfm : MapsTo f A T) (hf : SurjOn f A T)
     (k : ℕ) (hk_pos : 0 < k)
     (hk : ∀ t ∈ T, (A ∩ f ⁻¹' {t}).ncard = k)
     (P : Set β) (hPT : P ⊆ T) :
     uniformOn A (f ⁻¹' P) = uniformOn T P := by
   -- Step 1: Compute ncard(A) = k * ncard(T) via surjectivity decomposition
   have hA_ncard : A.ncard = k * T.ncard := by
-    rw [surjOn_fiber_decomp f A T hf]
+    rw [surjOn_fiber_decomp f A T hfm]
     exact BallotFiberTransfer.ncard_biUnion_eq_of_uniform
       (fun t => A ∩ f ⁻¹' {t}) T hT
       (fun t _ => hA.subset inter_subset_left)
@@ -136,20 +145,26 @@ theorem uniformOn_fiber_transfer_all {α β : Type*} (f : α → β)
   -- Step 3: ncard(T ∩ P) = ncard(P) since P ⊆ T
   have hTP : T ∩ P = P := inter_eq_right.mpr hPT
   -- Step 4: Positive ncard needed for ENNReal division
-  have hT_pos : 0 < T.ncard := by
-    apply Set.ncard_pos hT; exact hT_ne
+  have hT_pos : 0 < T.ncard := (Set.ncard_pos hT).mpr hT_ne
   have hA_pos : 0 < A.ncard := by
     rw [hA_ncard]; exact Nat.mul_pos hk_pos hT_pos
   -- Step 5: Assemble via ENNReal ratio
-  simp only [ProbabilityTheory.uniformOn]
+  -- v4.31: `uniformOn` is `Measure.count[|s]` (a `cond` measure), not directly a
+  -- division; unfold via the ratio lemma from the parent file instead of
+  -- `simp only [ProbabilityTheory.uniformOn]` (which no longer suffices).
+  rw [BallotFiberTransfer.uniformOn_eq_ncard_div hA,
+      BallotFiberTransfer.uniformOn_eq_ncard_div hT]
+  -- `ENNReal.div_eq_div_iff (ha)(ha')(hb)(hb') : c / b = d / a ↔ a * c = b * d`
+  -- (note the swapped a/b in the statement) -- so `ha` must be about the SECOND
+  -- fraction's denominator (T.ncard) and `hb` about the FIRST (A.ncard).
   rw [ENNReal.div_eq_div_iff
-    (by exact_mod_cast hA_pos.ne' : (↑A.ncard : ENNReal) ≠ 0)
-    (ENNReal.natCast_ne_top _)
     (by exact_mod_cast hT_pos.ne' : (↑T.ncard : ENNReal) ≠ 0)
+    (ENNReal.natCast_ne_top _)
+    (by exact_mod_cast hA_pos.ne' : (↑A.ncard : ENNReal) ≠ 0)
     (ENNReal.natCast_ne_top _)]
-  -- Goal: ncard(A ∩ f⁻¹'P) * ncard(T) = ncard(T ∩ P) * ncard(A)
+  -- Goal: ncard(T) * ncard(A ∩ f⁻¹'P) = ncard(A) * ncard(T ∩ P)
   rw [hTP]
-  exact_mod_cast (show (A ∩ f ⁻¹' P).ncard * T.ncard = P.ncard * A.ncard by
+  exact_mod_cast (show T.ncard * (A ∩ f ⁻¹' P).ncard = A.ncard * P.ncard by
     rw [hAP_ncard, hA_ncard]; ring)
 
 /-
@@ -159,40 +174,49 @@ PART IV: COROLLARIES
 
 /-- Specialization: the uniform fiber transfer holds for ALL events P,
     not just the specific ballot event from OQ-01. -/
-theorem uniformOn_preserves_all_events {α β : Type*} (f : α → β)
+theorem uniformOn_preserves_all_events {α β : Type*}
+    [MeasurableSpace α] [MeasurableSpace β]
+    [MeasurableSingletonClass α] [MeasurableSingletonClass β]
+    (f : α → β)
     (A : Set α) (T : Set β)
     (hA : A.Finite) (hT : T.Finite)
     (hA_ne : A.Nonempty) (hT_ne : T.Nonempty)
-    (hf : SurjOn f A T)
+    (hfm : MapsTo f A T) (hf : SurjOn f A T)
     (k : ℕ) (hk_pos : 0 < k)
     (hk : ∀ t ∈ T, (A ∩ f ⁻¹' {t}).ncard = k) :
     ∀ P : Set β, P ⊆ T →
       uniformOn A (f ⁻¹' P) = uniformOn T P :=
-  fun P hPT => uniformOn_fiber_transfer_all f A T hA hT hA_ne hT_ne hf k hk_pos hk P hPT
+  fun P hPT => uniformOn_fiber_transfer_all f A T hA hT hA_ne hT_ne hfm hf k hk_pos hk P hPT
 
 /-- Complement transfer: the probability of the complement event is also preserved. -/
-theorem uniformOn_complement_transfer {α β : Type*} (f : α → β)
+theorem uniformOn_complement_transfer {α β : Type*}
+    [MeasurableSpace α] [MeasurableSpace β]
+    [MeasurableSingletonClass α] [MeasurableSingletonClass β]
+    (f : α → β)
     (A : Set α) (T : Set β)
     (hA : A.Finite) (hT : T.Finite)
     (hA_ne : A.Nonempty) (hT_ne : T.Nonempty)
-    (hf : SurjOn f A T)
+    (hfm : MapsTo f A T) (hf : SurjOn f A T)
     (k : ℕ) (hk_pos : 0 < k)
     (hk : ∀ t ∈ T, (A ∩ f ⁻¹' {t}).ncard = k)
     (P : Set β) (hPT : P ⊆ T) :
     uniformOn A (f ⁻¹' (T \ P)) = uniformOn T (T \ P) :=
-  uniformOn_fiber_transfer_all f A T hA hT hA_ne hT_ne hf k hk_pos hk (T \ P) diff_subset
+  uniformOn_fiber_transfer_all f A T hA hT hA_ne hT_ne hfm hf k hk_pos hk (T \ P) diff_subset
 
 /-- Union transfer: the fiber transfer respects finite unions of events. -/
-theorem uniformOn_union_transfer {α β : Type*} (f : α → β)
+theorem uniformOn_union_transfer {α β : Type*}
+    [MeasurableSpace α] [MeasurableSpace β]
+    [MeasurableSingletonClass α] [MeasurableSingletonClass β]
+    (f : α → β)
     (A : Set α) (T : Set β)
     (hA : A.Finite) (hT : T.Finite)
     (hA_ne : A.Nonempty) (hT_ne : T.Nonempty)
-    (hf : SurjOn f A T)
+    (hfm : MapsTo f A T) (hf : SurjOn f A T)
     (k : ℕ) (hk_pos : 0 < k)
     (hk : ∀ t ∈ T, (A ∩ f ⁻¹' {t}).ncard = k)
     (P Q : Set β) (hPT : P ⊆ T) (hQT : Q ⊆ T) :
     uniformOn A (f ⁻¹' (P ∪ Q)) = uniformOn T (P ∪ Q) :=
-  uniformOn_fiber_transfer_all f A T hA hT hA_ne hT_ne hf k hk_pos hk (P ∪ Q)
+  uniformOn_fiber_transfer_all f A T hA hT hA_ne hT_ne hfm hf k hk_pos hk (P ∪ Q)
     (union_subset hPT hQT)
 
 end BallotGeneralFiberTransfer
