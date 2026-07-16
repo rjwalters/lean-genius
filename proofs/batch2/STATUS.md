@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 200 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1155OQ02 (forward-ref axiom reorder; import Pow.Asymptotics;
+CliqueFree.card_edgeFinset_le dropped hyp arg; Nat.lt_two_iff_le_one gone->choose_eq_zero_of_lt; #38611
+REPAIR process_not_turan_extremal threshold n>8 -> true n>4096 via tendsto_rpow_atTop, old linarith
+silently passed insufficient). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 199 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): BallotProblemOQ03OQ01OQ01 (LGVConfig wellFormed now derived def not field
