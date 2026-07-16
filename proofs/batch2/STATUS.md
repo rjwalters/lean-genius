@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 219 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos429Problem (not_forall conjunction destructure; List.Sorted->
+List.Pairwise x3; named anon Pi binder for omega; ∃⟨a,m⟩∈covers anon-ctor -> ∃ am∈covers). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 218 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos362Problem (show...from by rewrite; norm_cast algebraMap↔ofReal;
