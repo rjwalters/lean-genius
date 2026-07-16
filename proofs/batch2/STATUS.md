@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 88 (mixed fleet, hardened collector, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0 via explicit-ref collector): PrimeGapBoundsOQ01 (Real.log_le_sub_one_of_le->
+_of_pos; ∀ᶠ n in atTop no longer infers n:ℕ from ↑n body -> annotate ∀ᶠ (n:ℕ)), Erdos1181Problem
+(Real.tendsto_log_div_rpow_atTop -> isLittleO_log_rpow_atTop no Real. prefix; Nat.find via top-level q_exists
+lemma not inline have). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 87 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): YangMillsMassGap (Millennium-Prize; fix in 28k-line YangMills/Exploration.lean

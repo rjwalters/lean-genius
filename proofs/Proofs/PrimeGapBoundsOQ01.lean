@@ -86,7 +86,6 @@ theorem nth_prime_eventually_lt_mul (ε : ℝ) (hε : 0 < ε) :
   have hlt : (1 : ℝ) < 1 + ε := by linarith
   have h := nth_prime_asymptotic.eventually (Iio_mem_nhds hlt)
   filter_upwards [h, eventually_ge_atTop 3] with n hn hn3
-  skip
   have hn_cast : (3 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn3
   have hlog_pos : 0 < Real.log (↑n : ℝ) := Real.log_pos (by linarith)
   have hn_pos : (0 : ℝ) < ↑n := by linarith
@@ -97,11 +96,10 @@ theorem nth_prime_eventually_lt_mul (ε : ℝ) (hε : 0 < ε) :
 
 The symmetric bound: the ratio eventually exceeds 1-ε. -/
 theorem nth_prime_eventually_gt_mul (ε : ℝ) (hε : 0 < ε) :
-    ∀ᶠ n in atTop, (1 - ε) * (↑n * Real.log ↑n) < (Nat.nth Nat.Prime n : ℝ) := by
+    ∀ᶠ n : ℕ in atTop, (1 - ε) * (↑n * Real.log ↑n) < (Nat.nth Nat.Prime n : ℝ) := by
   have hlt : 1 - ε < (1 : ℝ) := by linarith
   have h := nth_prime_asymptotic.eventually (Ioi_mem_nhds hlt)
   filter_upwards [h, eventually_ge_atTop 3] with n hn hn3
-  simp only [Set.mem_Ioi] at hn
   have hn_cast : (3 : ℝ) ≤ (↑n : ℝ) := by exact_mod_cast hn3
   have hlog_pos : 0 < Real.log (↑n : ℝ) := Real.log_pos (by linarith)
   have hn_pos : (0 : ℝ) < ↑n := by linarith
@@ -114,7 +112,7 @@ For any C > 1, eventually (1+ε)·n·ln(n) < C^n.
 This witnesses that the PNT bound p_n ≲ n·ln(n) is exponentially better
 than p_n ≤ 2^(n+1) from Bertrand's postulate. -/
 theorem pnt_bound_subexponential :
-    ∀ᶠ n in atTop, (2 : ℝ) * (↑n * Real.log ↑n) < (2 : ℝ) ^ (↑n + 1) := by
+    ∀ᶠ n : ℕ in atTop, (2 : ℝ) * (↑n * Real.log ↑n) < (2 : ℝ) ^ (↑n + 1) := by
   -- 2·n·ln(n) is o(2^n), but we give a direct argument
   -- For large n: 2^(n+1) = 2·2^n and n·ln(n) < 2^n eventually
   filter_upwards [eventually_ge_atTop 10] with n hn
@@ -123,8 +121,8 @@ theorem pnt_bound_subexponential :
   -- We use: ln(n) ≤ n for all n ≥ 1 (since exp is faster than linear)
   have hlog_le_n : Real.log ↑n ≤ ↑n := by
     have h1 : Real.log ↑n ≤ ↑n - 1 := by
-      have : (1 : ℝ) ≤ ↑n := by linarith
-      exact Real.log_le_sub_one_of_le this
+      have : (0 : ℝ) < ↑n := by linarith
+      exact Real.log_le_sub_one_of_pos this
     linarith
   have hn_pos : (0 : ℝ) < ↑n := by linarith
   have h1 : ↑n * Real.log ↑n ≤ ↑n * ↑n := by
@@ -135,6 +133,7 @@ theorem pnt_bound_subexponential :
   -- Step 1: Prove n * n < 2 ^ n in ℕ by induction from n = 10
   have h_nat : n * n < 2 ^ n := by
     -- Induction on n; base case n = 10 by norm_num
+    clear hn_cast hlog_le_n hn_pos h1 h2
     induction n with
     | zero => omega
     | succ k ih =>
@@ -157,11 +156,9 @@ theorem pnt_bound_subexponential :
   calc 2 * (↑n * Real.log ↑n)
       ≤ 2 * (↑n * ↑n) := h2
     _ < 2 * ((2 : ℝ) ^ (n : ℕ)) := by
-        have : (↑(n * n) : ℝ) < ↑(2 ^ n) := Nat.cast_lt.mpr h_nat
-        push_cast at this; linarith
-    _ = (2 : ℝ) ^ (↑n + 1) := by
-        rw [show (↑n : ℝ) + 1 = ↑(n + 1 : ℕ) from by push_cast; ring,
-            rpow_natCast, pow_succ]; ring
+        have hcast : (n * n : ℝ) < (2 : ℝ) ^ n := by exact_mod_cast h_nat
+        linarith
+    _ = (2 : ℝ) ^ (n + 1 : ℕ) := by rw [pow_succ]; ring
 
 /-
 ## Part IV: Dusart's Explicit Bounds (Axiomatized)
@@ -241,7 +238,8 @@ theorem dusart_implies_asymptotic_upper :
   rw [div_le_iff₀ hnlog_pos]
   calc (1 + Real.log (Real.log ↑n) / Real.log ↑n) * (↑n * Real.log ↑n)
       = ↑n * Real.log ↑n + ↑n * Real.log (Real.log ↑n) := by
-        field_simp; ring
+        field_simp
+        try ring
     _ = ↑n * (Real.log ↑n + Real.log (Real.log ↑n)) := by ring
     _ ≥ Nat.nth Nat.Prime n := hupper
 
