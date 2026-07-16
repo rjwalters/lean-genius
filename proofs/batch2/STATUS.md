@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 130 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos611Problem (open scoped Classical for Finset.filter DecidablePred;
+bare sorry as theorem type now needs (sorry:Prop); random_graph_clique_transversal ℕ^ℝ cast to ℝ before
+rpow). Repair: none. (formalized file, intended sorries preserved). Unblocks Erdos611Aristotle child.
+
 # DOCTOR SINGLE-PROOF BATCH 129 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos549Problem (BipartiteTree.{0} universe pin; native_decide->norm_num;

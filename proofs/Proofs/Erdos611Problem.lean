@@ -25,6 +25,8 @@ import Mathlib
 
 open Finset Function SimpleGraph
 
+open scoped Classical
+
 namespace Erdos611
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
@@ -182,12 +184,12 @@ theorem complete_graph_tau [Nontrivial V] :
 
 /-- Complete bipartite K_{n/2,n/2}: cliques have size 2, τ = n/2 -/
 theorem complete_bipartite_tau (n : ℕ) (hn : Even n) :
-    sorry -- τ(K_{n/2,n/2}) = n/2
+    (sorry : Prop) -- τ(K_{n/2,n/2}) = n/2
     := by sorry
 
 /-- Turán graph T(n,r): cliques have size ⌈n/r⌉, τ depends on r -/
 theorem turan_graph_tau (n r : ℕ) (hr : r ≥ 2) :
-    sorry -- τ(T(n,r)) analysis
+    (sorry : Prop) -- τ(T(n,r)) analysis
     := by sorry
 
 /- ## Probabilistic Lower Bounds -/
@@ -198,7 +200,8 @@ axiom random_graph_clique_transversal :
     ∃ᶠ n in Filter.atTop,
       ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
         Fintype.card V = n ∧
-        (∀ C : Finset V, IsMaximalClique G C → C.card ≥ n ^ (c / Real.log (Real.log n))) ∧
+        (∀ C : Finset V, IsMaximalClique G C →
+          (C.card : ℝ) ≥ (n : ℝ) ^ (c / Real.log (Real.log n))) ∧
         (τ G : ℝ) ≥ (1 - c - 0.01) * n
 
 /- ## Relationship to #610 -/
