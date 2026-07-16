@@ -64,28 +64,26 @@ theorem prime_divisors_eq (p : ℕ) (hp : p.Prime) :
   · intro ⟨hd, hne⟩
     exact hp.eq_one_or_self_of_dvd d hd
   · intro h
-    cases h with
-    | inl h => subst h; exact ⟨one_dvd p, hp.ne_zero⟩
-    | inr h => subst h; exact ⟨dvd_refl p, hp.ne_zero⟩
+    rcases h with h | h
+    · rw [h]; exact ⟨one_dvd p, hp.ne_zero⟩
+    · rw [h]; exact ⟨dvd_refl p, hp.ne_zero⟩
 
 /-- For a prime p, the sorted divisor list is [1, p]. -/
 theorem prime_sortedDivisors (p : ℕ) (hp : p.Prime) :
     sortedDivisors p = [1, p] := by
   simp only [sortedDivisors]
   rw [prime_divisors_eq p hp]
-  have hp2 : p ≥ 2 := hp.two_le
-  -- {1, p} sorted with (· ≤ ·) gives [1, p] since 1 < p
-  skip
-  constructor
-  · omega
-  · rfl
+  have hp2 : (1:ℕ) < p := hp.one_lt
+  rw [Finset.sort_insert (· ≤ ·) (fun b hb => by simp at hb; omega)
+      (by simp; omega)]
+  simp [Finset.sort_singleton]
 
 /-- For a prime p, the partial divisor sums are [1, 1 + p]. -/
 theorem prime_partialDivisorSums (p : ℕ) (hp : p.Prime) :
     partialDivisorSums p = [1, 1 + p] := by
   simp only [partialDivisorSums]
   rw [prime_sortedDivisors p hp]
-  simp [List.scanl, List.tail]
+  simp [List.scanl_cons, List.scanl_nil]
 
 /-- **Key Structural Result**: p + 1 is representable for every prime p.
     Witness: m = p with divisors {1, p} and partial sum 1 + p = p + 1. -/
@@ -121,67 +119,76 @@ theorem f_8_eq : computeF 8 100 = 7 := by native_decide  -- p=7
 theorem f_12_eq : computeF 12 100 = 6 := by native_decide  -- Note: better witness than p=11
 theorem f_14_eq : computeF 14 100 = 13 := by native_decide  -- p=13
 
-/-- Extended f(n) values showing ratio behavior -/
-theorem f_16_eq : computeF 16 100 = 15 := by native_decide
+/-- Extended f(n) values showing ratio behavior.
+    NOTE (v4.31 migration, #38611 candidate): the values below were RECOMPUTED —
+    the original file's claimed values for n = 16, 20, 24, 30 were mathematically
+    false (e.g. it claimed computeF 16 100 = 15, but the true minimum witness is
+    12, since 16 = 1+2+3+4+6 is a partial divisor sum of 12). The old `native_decide`
+    apparently accepted these on the pre-migration toolchain; that was an unsound
+    old-toolchain result, not a v4.31 API-drift issue. Corrected via direct #eval. -/
+theorem f_16_eq : computeF 16 100 = 12 := by native_decide
 theorem f_18_eq : computeF 18 100 = 10 := by native_decide
-theorem f_20_eq : computeF 20 100 = 16 := by native_decide
-theorem f_24_eq : computeF 24 100 = 20 := by native_decide
-theorem f_30_eq : computeF 30 100 = 24 := by native_decide
-theorem f_32_eq : computeF 32 100 = 31 := by native_decide
+theorem f_20_eq : computeF 20 100 = 19 := by native_decide
+theorem f_24_eq : computeF 24 100 = 14 := by native_decide
+theorem f_30_eq : computeF 30 100 = 29 := by native_decide
+theorem f_32_eq : computeF 32 100 = 21 := by native_decide
 
 /-  f(n) values for n = p+1 where p is prime show f(n) ≤ n-1 -/
 -- p=17: f(18) = 10 ≤ 17 ✓ (better witness exists)
--- p=19: f(20) = 16 ≤ 19 ✓ (better witness exists)
--- p=23: f(24) = 20 ≤ 23 ✓
--- p=29: f(30) = 24 ≤ 29 ✓
--- p=31: f(32) = 31 ≤ 31 ✓ (exactly p, so f(p+1) = p here)
+-- p=19: f(20) = 19 ✓ (exactly p, so f(p+1) = p here)
+-- p=23: f(24) = 14 ≤ 23 ✓ (better witness exists)
+-- p=29: f(30) = 29 ✓ (exactly p, so f(p+1) = p here)
+-- p=31: f(32) = 21 ≤ 31 ✓ (better witness exists)
 
-/-- Verify that for n up to 50, all representable n have f(n) ≤ 2n.
-    This is consistent with f(n) being typically small relative to n. -/
+/-- Verify that for n up to 20 (excluding n = 19, whose ratio computeF 19 100 = 42
+    exceeds 2·19 = 38 — the original claim covering n=19 was likewise a false
+    old-toolchain artifact, see note above), all representable n have f(n) ≤ 2n. -/
 theorem f_bounded_50 :
-    ∀ n ∈ ({1,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20} : Finset ℕ),
+    ∀ n ∈ ({1,3,4,6,7,8,9,10,11,12,13,14,15,16,17,18,20} : Finset ℕ),
       computeF n 100 ≤ 2 * n := by
-  decide
+  native_decide
 
 -- ============================================================
 -- Part V: Representability is Dense
 -- ============================================================
 
 /-- Every even number ≥ 4 is representable.
-    For even n ≥ 4: n = 2k with k ≥ 2. Consider m = 2k-1 (which is ≥ 3).
-    But more directly: m = n-1 when n-1 is prime gives witness.
-    Here we verify computationally for small cases. -/
+    Witnesses below are the minimal ones (= computeF n 100), recomputed for the
+    v4.31 migration; see the #38611 note above `f_16_eq`. -/
 theorem even_representable_small :
     ∀ n ∈ ({4,6,8,10,12,14,16,18,20} : Finset ℕ),
       IsRepresentable n := by
   intro n hn
-  fin_cases hn <;> (first
-    | exact ⟨3, by omega, by native_decide⟩
-    | exact ⟨5, by omega, by native_decide⟩
-    | exact ⟨7, by omega, by native_decide⟩
-    | exact ⟨16, by omega, by native_decide⟩
-    | exact ⟨6, by omega, by native_decide⟩
-    | exact ⟨13, by omega, by native_decide⟩
-    | exact ⟨15, by omega, by native_decide⟩
-    | exact ⟨10, by omega, by native_decide⟩
-    | exact ⟨16, by omega, by native_decide⟩)
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+  rcases hn with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl
+  · exact ⟨3, by omega, by native_decide⟩
+  · exact ⟨5, by omega, by native_decide⟩
+  · exact ⟨7, by omega, by native_decide⟩
+  · exact ⟨12, by omega, by native_decide⟩
+  · exact ⟨6, by omega, by native_decide⟩
+  · exact ⟨13, by omega, by native_decide⟩
+  · exact ⟨12, by omega, by native_decide⟩
+  · exact ⟨10, by omega, by native_decide⟩
+  · exact ⟨19, by omega, by native_decide⟩
 
-/-- Every odd number ≥ 3 (except 5) is representable up to 21.
-    Verified computationally. -/
+/-- Every odd number in {3,7,9,...,21} is representable.
+    Witnesses below are the minimal ones (= computeF n 100), recomputed for the
+    v4.31 migration; see the #38611 note above `f_16_eq`. -/
 theorem odd_representable_small :
     ∀ n ∈ ({3,7,9,11,13,15,17,19,21} : Finset ℕ),
       IsRepresentable n := by
   intro n hn
-  fin_cases hn <;> (first
-    | exact ⟨2, by omega, by native_decide⟩
-    | exact ⟨4, by omega, by native_decide⟩
-    | exact ⟨15, by omega, by native_decide⟩
-    | exact ⟨30, by omega, by native_decide⟩
-    | exact ⟨9, by omega, by native_decide⟩
-    | exact ⟨8, by omega, by native_decide⟩
-    | exact ⟨16, by omega, by native_decide⟩
-    | exact ⟨18, by omega, by native_decide⟩
-    | exact ⟨20, by omega, by native_decide⟩)
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+  rcases hn with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl
+  · exact ⟨2, by omega, by native_decide⟩
+  · exact ⟨4, by omega, by native_decide⟩
+  · exact ⟨15, by omega, by native_decide⟩
+  · exact ⟨21, by omega, by native_decide⟩
+  · exact ⟨9, by omega, by native_decide⟩
+  · exact ⟨8, by omega, by native_decide⟩
+  · exact ⟨30, by omega, by native_decide⟩
+  · exact ⟨42, by omega, by native_decide⟩
+  · exact ⟨18, by omega, by native_decide⟩
 
 -- ============================================================
 -- Part VI: The Open Question (Formal Statement)
@@ -195,7 +202,7 @@ theorem odd_representable_small :
     What we have proven:
     - For all primes p, f(p+1) ≤ p < p+1 (so f(n)/n < 1 for n = p+1)
     - All n ∈ {1,...,21}\{2,5} are representable
-    - f(n) ≤ 2n for all representable n ≤ 20
+    - f(n) ≤ 2n for all representable n ≤ 20 (n ≠ 19)
 
     What remains open:
     - Whether the density of "hard" values (where f(n)/n is large) is 0
@@ -216,37 +223,38 @@ def almost_all_little_o : Prop :=
     This means every number of the form 1 + p (for p prime) is representable. -/
 theorem one_in_partial_sums (m : ℕ) (hm : m ≥ 1) :
     1 ∈ partialDivisorSums m := by
-  simp only [partialDivisorSums, sortedDivisors]
-  have h1 : 1 ∈ m.divisors := Nat.one_mem_divisors.mpr (by omega)
-  have hne : m.divisors.sort (· ≤ ·) ≠ [] := by
+  have h1 : (1 : ℕ) ∈ m.divisors := Nat.one_mem_divisors.mpr (by omega)
+  have hne : sortedDivisors m ≠ [] := by
     intro h
-    have := (Finset.mem_sort (· ≤ ·)).mpr h1
-    rw [h] at this; simp at this
+    have hmem : (1 : ℕ) ∈ sortedDivisors m := (Finset.mem_sort (· ≤ ·)).mpr h1
+    rw [h] at hmem
+    simp at hmem
   -- The sorted list starts with some element d
   obtain ⟨d, rest, hcons⟩ := List.exists_cons_of_ne_nil hne
-  rw [hcons]
-  simp [List.scanl, List.tail]
   -- d is the smallest divisor, which is 1
-  have hd_div : d ∈ m.divisors := by
-    have := (Finset.mem_sort (· ≤ ·)).mp (hcons ▸ List.mem_cons_self d rest)
-    exact this
+  have hd_mem : d ∈ sortedDivisors m := by rw [hcons]; exact List.mem_cons_self
+  have hd_div : d ∈ m.divisors := (Finset.mem_sort (· ≤ ·)).mp hd_mem
   have hd_pos : d ≥ 1 := Nat.pos_of_mem_divisors hd_div
   have hd_le_1 : d ≤ 1 := by
-    have hsorted := Finset.pairwise_sort m.divisors (· ≤ ·)
+    have hsorted : (sortedDivisors m).Pairwise (· ≤ ·) :=
+      Finset.pairwise_sort m.divisors (· ≤ ·)
     rw [hcons] at hsorted
     by_contra hgt
     push_neg at hgt
     have hd_ge_2 : d ≥ 2 := by omega
     have h1_in : (1 : ℕ) ∈ rest := by
-      have h1_mem := (Finset.mem_sort (· ≤ ·)).mpr h1
+      have h1_mem : (1 : ℕ) ∈ sortedDivisors m := (Finset.mem_sort (· ≤ ·)).mpr h1
       rw [hcons] at h1_mem
       rcases List.mem_cons.mp h1_mem with heq | h
       · omega
       · exact h
     exact absurd ((List.pairwise_cons.mp hsorted).1 1 h1_in) (by omega)
-  have : d = 1 := by omega
-  subst this
-  left; rfl
+  have hd1 : d = 1 := by omega
+  simp only [partialDivisorSums]
+  rw [hcons, hd1]
+  cases rest with
+  | nil => simp [List.scanl_cons]
+  | cons e rest' => simp [List.scanl_cons]
 
 -- ============================================================
 -- Part VIII: Sigma Bound — f(σ(m)) ≤ m
@@ -258,10 +266,10 @@ theorem one_in_partial_sums (m : ℕ) (hm : m ≥ 1) :
 theorem sortedDivisors_ne_nil (m : ℕ) (hm : m ≥ 1) :
     sortedDivisors m ≠ [] := by
   intro h
-  have h1 : 1 ∈ sortedDivisors m := by
-    simp [sortedDivisors, Finset.mem_sort]
-    exact Nat.one_mem_divisors.mpr (by omega)
-  rw [h] at h1; exact List.not_mem_nil _ h1
+  have h1 : (1 : ℕ) ∈ sortedDivisors m :=
+    (Finset.mem_sort (· ≤ ·)).mpr (Nat.one_mem_divisors.mpr (by omega))
+  rw [h] at h1
+  simp at h1
 
 /-- partialDivisorSums is nonempty for m ≥ 1. -/
 theorem partialDivisorSums_ne_nil (m : ℕ) (hm : m ≥ 1) :
@@ -271,49 +279,59 @@ theorem partialDivisorSums_ne_nil (m : ℕ) (hm : m ≥ 1) :
   have hne := sortedDivisors_ne_nil m hm
   obtain ⟨d, rest, hsd⟩ := List.exists_cons_of_ne_nil hne
   rw [hsd] at h
-  simp [List.scanl] at h
+  simp [List.scanl_cons] at h
 
 /-- scanl (+) a l is nonempty. -/
 theorem scanl_add_ne_nil (a : ℕ) (l : List ℕ) :
     l.scanl (· + ·) a ≠ [] := by
   cases l with
-  | nil => simp [List.scanl]
-  | cons _ _ => simp [List.scanl]
+  | nil => simp [List.scanl_nil]
+  | cons _ _ => simp [List.scanl_cons]
 
 /-- The last element of scanl (+) a l equals a + List.sum l. -/
 theorem scanl_add_getLast (a : ℕ) (l : List ℕ) :
     (l.scanl (· + ·) a).getLast (scanl_add_ne_nil a l) = a + l.sum := by
   induction l generalizing a with
-  | nil => simp [List.scanl]
+  | nil => simp [List.scanl_nil]
   | cons d t ih =>
-    simp only [List.scanl, List.sum_cons]
+    simp only [List.scanl_cons, List.sum_cons]
     rw [List.getLast_cons (scanl_add_ne_nil (a + d) t)]
     rw [ih (a + d)]
     omega
+
+/-- The `getLast` of `(l.scanl (+) a).tail` (i.e. of `partialDivisorSums`-shaped
+    lists) equals `a + l.sum`. Non-dependent-rewrite-safe helper used to prove
+    `partialDivisorSums_getLast_eq_sigma`. -/
+theorem tail_scanl_getLast (a : ℕ) (l : List ℕ) (h1 : l ≠ [])
+    (h2 : (l.scanl (· + ·) a).tail ≠ []) :
+    ((l.scanl (· + ·) a).tail).getLast h2 = a + l.sum := by
+  obtain ⟨d, rest, hl⟩ := List.exists_cons_of_ne_nil h1
+  subst hl
+  simp only [List.scanl_cons, List.tail_cons, List.sum_cons]
+  rw [scanl_add_getLast (a + d) rest]
+  omega
 
 /-- The last partial divisor sum equals σ(m), the sum of all divisors. -/
 theorem partialDivisorSums_getLast_eq_sigma (m : ℕ) (hm : m ≥ 1) :
     (partialDivisorSums m).getLast (partialDivisorSums_ne_nil m hm) =
     (sortedDivisors m).sum := by
   simp only [partialDivisorSums]
-  have hne := sortedDivisors_ne_nil m hm
-  obtain ⟨d, rest, hsd⟩ := List.exists_cons_of_ne_nil hne
-  rw [hsd, List.scanl, List.tail_cons]
-  cases rest with
-  | nil =>
-    simp [List.scanl, List.getLast_cons, hsd]
-  | cons b u =>
-    rw [List.getLast_cons (scanl_add_ne_nil (0 + d) (b :: u))]
-    rw [scanl_add_getLast (0 + d) (b :: u)]
-    rw [hsd]
-    simp [List.sum_cons]
-    omega
+  rw [tail_scanl_getLast 0 (sortedDivisors m) (sortedDivisors_ne_nil m hm)]
+  omega
 
 /-- The sum of sortedDivisors m equals Finset.sum m.divisors id. -/
 theorem sortedDivisors_sum_eq (m : ℕ) :
     (sortedDivisors m).sum = m.divisors.sum id := by
-  simp [sortedDivisors]
-  rw [Finset.sum_sort (· ≤ ·)]
+  simp only [sortedDivisors]
+  have h : (↑(m.divisors.sort (· ≤ ·)) : Multiset ℕ) = m.divisors.1 :=
+    Finset.sort_eq m.divisors (· ≤ ·)
+  calc (m.divisors.sort (· ≤ ·)).sum
+      = (↑(m.divisors.sort (· ≤ ·)) : Multiset ℕ).sum := by rw [Multiset.sum_coe]
+    _ = m.divisors.1.sum := by rw [h]
+    _ = m.divisors.sum id := by
+        rw [Finset.sum]
+        congr 1
+        exact (Multiset.map_id _).symm
 
 /-- **Key Bound**: σ(m) is representable with witness m.
     This means f(σ(m)) ≤ m for all m ≥ 1.
@@ -346,8 +364,9 @@ theorem sigma_representable (m : ℕ) (hm : m ≥ 1) :
 /-- For prime p, σ(p) = p + 1. -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) :
     p.divisors.sum id = p + 1 := by
-  rw [hp.divisors, Finset.sum_pair hp.one_lt.ne']
-  simp [id]
+  rw [hp.divisors, Finset.sum_pair hp.one_lt.ne]
+  simp only [id]
+  omega
 
 /-- σ(m) ≥ m + 1 for m ≥ 2 (since 1 and m are always divisors). -/
 theorem sigma_ge_succ (m : ℕ) (hm : m ≥ 2) :
@@ -398,13 +417,13 @@ theorem f_ratio_sigma_120 : ∃ w, w ≤ 120 ∧ w ≥ 1 ∧ 360 ∈ partialDivi
 theorem scanl_add_ge_init (a : ℕ) (l : List ℕ) :
     ∀ x ∈ l.scanl (· + ·) a, x ≥ a := by
   induction l generalizing a with
-  | nil => simp [List.scanl]
+  | nil => simp [List.scanl_nil]
   | cons d t ih =>
     intro x hx
-    simp only [List.scanl, List.mem_cons] at hx
-    cases hx with
-    | inl heq => rw [heq]
-    | inr hmem => exact le_trans (Nat.le_add_right a d) (ih (a + d) x hmem)
+    simp only [List.scanl_cons, List.mem_cons] at hx
+    rcases hx with heq | hmem
+    · omega
+    · exact le_trans (Nat.le_add_right a d) (ih (a + d) x hmem)
 
 /-- Every element of partialDivisorSums m is representable (with witness m).
     This is the key observation: a single m generates τ(m) distinct
@@ -424,7 +443,7 @@ theorem partialDivisorSums_length (m : ℕ) :
     (partialDivisorSums m).length = m.divisors.card := by
   simp only [partialDivisorSums, sortedDivisors]
   rw [List.length_tail, List.length_scanl]
-  have : (Finset.sort (· ≤ ·) m.divisors).length = m.divisors.card :=
+  have : (m.divisors.sort (· ≤ ·)).length = m.divisors.card :=
     Finset.length_sort _
   omega
 
@@ -449,26 +468,29 @@ theorem f_witness_bound (m : ℕ) (hm : m ≥ 1) (n : ℕ)
     covers values up to ~n·e^γ·log log n, so the "gap" between
     consecutive σ-values grows slowly relative to the values themselves.
 
-    Formal verification for the first 30 σ-values: -/
+    Formal verification for the first 14 σ-values. Witnesses below are the
+    minimal ones (= computeF n 100), recomputed for the v4.31 migration;
+    see the #38611 note above `f_16_eq`. -/
 theorem sigma_values_representable :
     ∀ n ∈ ({1,3,4,6,7,8,12,13,14,15,18,20,24,28} : Finset ℕ),
       IsRepresentable n := by
   intro n hn
-  fin_cases hn <;> (first
-    | exact ⟨1, by omega, by native_decide⟩   -- σ(1)=1
-    | exact ⟨2, by omega, by native_decide⟩   -- σ(2)=3
-    | exact ⟨3, by omega, by native_decide⟩   -- σ(3)=4
-    | exact ⟨5, by omega, by native_decide⟩   -- σ(5)=6
-    | exact ⟨4, by omega, by native_decide⟩   -- σ(4)=7
-    | exact ⟨7, by omega, by native_decide⟩   -- σ(7)=8
-    | exact ⟨6, by omega, by native_decide⟩   -- σ(6)=12
-    | exact ⟨9, by omega, by native_decide⟩   -- σ(9)=13
-    | exact ⟨13, by omega, by native_decide⟩  -- σ(13)=14
-    | exact ⟨8, by omega, by native_decide⟩   -- σ(8)=15
-    | exact ⟨10, by omega, by native_decide⟩  -- σ(10)=18
-    | exact ⟨16, by omega, by native_decide⟩  -- σ(16)=31 ... but 20 from other
-    | exact ⟨11, by omega, by native_decide⟩  -- σ(11)=12 ... but 24 from m=24
-    | exact ⟨12, by omega, by native_decide⟩) -- σ(12)=28
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hn
+  rcases hn with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl
+  · exact ⟨1, by omega, by native_decide⟩   -- σ(1)=1
+  · exact ⟨2, by omega, by native_decide⟩   -- σ(2)=3
+  · exact ⟨3, by omega, by native_decide⟩   -- σ(3)=4
+  · exact ⟨5, by omega, by native_decide⟩   -- σ(5)=6
+  · exact ⟨4, by omega, by native_decide⟩   -- σ(4)=7
+  · exact ⟨7, by omega, by native_decide⟩   -- σ(7)=8
+  · exact ⟨6, by omega, by native_decide⟩   -- σ(6)=12
+  · exact ⟨9, by omega, by native_decide⟩   -- σ(9)=13
+  · exact ⟨13, by omega, by native_decide⟩  -- σ(13)=14
+  · exact ⟨8, by omega, by native_decide⟩   -- σ(8)=15
+  · exact ⟨10, by omega, by native_decide⟩  -- σ(10)=18
+  · exact ⟨19, by omega, by native_decide⟩  -- σ(19)=20
+  · exact ⟨14, by omega, by native_decide⟩  -- σ(14)=24
+  · exact ⟨12, by omega, by native_decide⟩  -- σ(12)=28
 
 /-
 ## Summary of Results
@@ -479,8 +501,8 @@ theorem sigma_values_representable :
 3. `prime_partialDivisorSums`: For prime p, partial sums = [1, 1+p]
 4. `representable_prime_plus_one`: p+1 is representable for all primes p
 5. `f_prime_plus_one_le`: f(p+1) ≤ p for all primes p
-6. Extended computational evidence (f values for n up to 50)
-7. `f_bounded_50`: f(n) ≤ 2n for n up to 20
+6. Extended computational evidence (f values for n up to 32)
+7. `f_bounded_50`: f(n) ≤ 2n for n up to 20 (n ≠ 19)
 8. `even_representable_small`: All even n in [4..20] are representable
 9. `odd_representable_small`: All odd n in {3,7,9,...,21} are representable
 10. `one_in_partial_sums`: 1 is always a partial sum for m ≥ 1
