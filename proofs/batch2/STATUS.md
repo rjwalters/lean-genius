@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 288 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ05OQ01Incomplete01 (Measure.volume_eq_prod unfold before
+prod_restrict; integrable_exp_neg_mul_sq -a*x^2 form; integral_mul_left->integral_const_mul; setIntegral_const
+μ.real s•c). Repair: none. NOTE: Erdos1033Problem FAILED (61 sites, sorry-tainted native_decide) -> #38612.
+
 # DOCTOR SINGLE-PROOF BATCH 287 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AbelRuffiniOQ10 (orderOf on Subgroup elements no longer native_decide-

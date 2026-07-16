@@ -45,7 +45,8 @@ namespace AreaOfCircleOQ05OQ01Incomplete01
 theorem gaussian_sq_eq_double_integral_scaled (a : ℝ) (ha : 0 < a) :
     (∫ x : ℝ, rexp (-(a * x ^ 2))) ^ 2 =
     ∫ p : ℝ × ℝ, rexp (-(a * (p.1 ^ 2 + p.2 ^ 2))) := by
-  have hf : Integrable (fun x : ℝ => rexp (-(a * x ^ 2))) := integrable_exp_neg_mul_sq ha
+  have hf : Integrable (fun x : ℝ => rexp (-(a * x ^ 2))) := by
+    simpa [neg_mul] using integrable_exp_neg_mul_sq ha
   have hfg : Integrable (fun p : ℝ × ℝ => rexp (-(a * p.1 ^ 2)) * rexp (-(a * p.2 ^ 2)))
                (volume.prod volume) :=
     hf.mul_prod hf
@@ -53,8 +54,8 @@ theorem gaussian_sq_eq_double_integral_scaled (a : ℝ) (ha : 0 < a) :
   simp_rw [show ∀ p : ℝ × ℝ, -(a * (p.1 ^ 2 + p.2 ^ 2)) = -(a * p.1 ^ 2) + -(a * p.2 ^ 2)
            from fun _ => by ring, Real.exp_add]
   symm
-  rw [integral_prod _ hfg]
-  simp_rw [integral_mul_left, integral_mul_right]
+  rw [Measure.volume_eq_prod ℝ ℝ, integral_prod _ hfg]
+  simp_rw [integral_const_mul, integral_mul_const]
   ring
 
 /-! ## Section II: Polar change of variables -/
@@ -103,9 +104,8 @@ theorem radial_integral_scaled (a : ℝ) (ha : 0 < a) :
     intro x _
     have h := ((((hasDerivAt_pow 2 x).const_mul a).neg.exp).const_mul (-(1 / (2 * a) : ℝ)))
     refine h.congr_deriv ?_
-    simp only [Nat.cast_ofNat, Nat.reduceSub, pow_one]
+    simp only [Nat.cast_ofNat, Nat.reduceSub, pow_one, Pi.neg_apply]
     field_simp
-    ring
   -- exp(-a r²) → 0 as r → ∞
   have hexp_tend : Tendsto (fun r : ℝ => rexp (-(a * r ^ 2))) atTop (nhds 0) := by
     have hpow : Tendsto (fun r : ℝ => r ^ 2) atTop atTop := tendsto_pow_atTop two_ne_zero
@@ -120,7 +120,7 @@ theorem radial_integral_scaled (a : ℝ) (ha : 0 < a) :
     integrableOn_Ioi_deriv_of_nonneg' hderiv
       (fun r hr => mul_nonneg (le_of_lt hr) (exp_pos _).le) htend
   have h := integral_Ioi_of_hasDerivAt_of_tendsto' hderiv hint htend
-  rw [Real.exp_zero] at h
+  norm_num [Real.exp_zero] at h
   rw [h]
   ring
 
@@ -133,7 +133,7 @@ theorem polar_integral_factorization_scaled (a : ℝ) (ha : 0 < a) :
     (∫ r in Ioi (0 : ℝ), r * rexp (-(a * r ^ 2))) *
     (∫ θ in Ioo (-π) π, (1 : ℝ)) := by
   rw [show polarCoord.target = Ioi (0:ℝ) ×ˢ Ioo (-π) π from polarCoord_target,
-      Measure.restrict_prod_eq_prod_restrict measurableSet_Ioi measurableSet_Ioo]
+      Measure.volume_eq_prod ℝ ℝ, ← Measure.prod_restrict (Ioi (0:ℝ)) (Ioo (-π) π)]
   have hval := radial_integral_scaled a ha
   -- Integrability of the radial factor (it has nonzero integral, hence is integrable)
   have hrad : Integrable (fun r : ℝ => r * rexp (-(a * r ^ 2))) (volume.restrict (Ioi 0)) := by
@@ -150,8 +150,8 @@ theorem polar_integral_factorization_scaled (a : ℝ) (ha : 0 < a) :
   rw [integral_prod _ hf]
   have h_vol : (volume (Ioo (-π) π)).toReal = π - -π := by
     rw [Real.volume_Ioo, ENNReal.toReal_ofReal (by linarith [pi_pos])]
-  simp_rw [setIntegral_const, smul_eq_mul, h_vol]
-  rw [integral_mul_left, angular_integral]
+  simp_rw [setIntegral_const, smul_eq_mul, measureReal_def, h_vol]
+  rw [integral_const_mul]
   ring
 
 /-! ## Section VI: Main theorems — the explicit polar proof for the scaled Gaussian -/
@@ -162,7 +162,6 @@ theorem two_dim_gaussian_scaled (a : ℝ) (ha : 0 < a) :
   rw [double_integral_eq_polar_scaled a, polar_integral_factorization_scaled a ha,
       radial_integral_scaled a ha, angular_integral]
   field_simp
-  ring
 
 /-- **Polar-coordinate proof (scaled)**: (∫ e^{-a x²} dx)² = π/a. -/
 theorem gaussian_integral_sq_via_polar_scaled (a : ℝ) (ha : 0 < a) :
