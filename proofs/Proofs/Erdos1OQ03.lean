@@ -21,10 +21,11 @@
 -/
 
 import Proofs.Erdos1Problem
-import Proofs.Erdos1WIP01
+import Proofs.Erdos1Wip01
 import Mathlib
 
 open Finset
+open scoped Classical
 
 -- ════════════════════════════════════════════════════════════════
 -- PART I: The Conway-Guy Sequence
@@ -73,17 +74,21 @@ theorem conwayGuySum_values :
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> simp [conwayGuySum, conwayGuy]
 
 /-- The Conway-Guy recurrence: a_k = a_{k-1} + ceil(S_{k-1}/2).
-    We verify this for small k. -/
+    We verify this exactly for k = 3, where the naive greedy formula still
+    matches the optimal Conway-Guy value. For k = 4, 5 the true optimal
+    sequence (encoded in `conwayGuy`) does strictly better than the naive
+    greedy formula (e.g. a_4 = 7 < 8 = a_3 + ceil(S_3/2)), so we record the
+    naive formula as an upper bound instead, which holds throughout. -/
 theorem conwayGuy_recurrence_k3 :
     conwayGuy 3 = conwayGuy 2 + (conwayGuySum 2 + 1) / 2 := by
   simp [conwayGuy, conwayGuySum]
 
 theorem conwayGuy_recurrence_k4 :
-    conwayGuy 4 = conwayGuy 3 + (conwayGuySum 3 + 1) / 2 := by
+    conwayGuy 4 ≤ conwayGuy 3 + (conwayGuySum 3 + 1) / 2 := by
   simp [conwayGuy, conwayGuySum]
 
 theorem conwayGuy_recurrence_k5 :
-    conwayGuy 5 = conwayGuy 4 + (conwayGuySum 4 + 1) / 2 := by
+    conwayGuy 5 ≤ conwayGuy 4 + (conwayGuySum 4 + 1) / 2 := by
   simp [conwayGuy, conwayGuySum]
 
 -- ════════════════════════════════════════════════════════════════
@@ -103,10 +108,14 @@ theorem conwayGuy_exceeds_half_sum :
   intro k hk hle
   interval_cases k <;> simp [conwayGuy, conwayGuySum]
 
-/-- The sum bound: S_n < 2 · a_n for the Conway-Guy sequence.
-    This is the key structural property. -/
+/-- The sum bound: S_n < 2 · a_n for the Conway-Guy sequence, for the
+    initial range k ≤ 4 where the naive greedy formula is still tight
+    (see `conwayGuy_exceeds_half_sum` above for the true property
+    `S_{k-1} < 2 a_k`, which holds for the full range k ≤ 8; the
+    un-shifted bound `S_k < 2 a_k + 1` only holds up through k = 4,
+    e.g. it fails at k = 5 since S_5 = 27 = 2 · 13 + 1). -/
 theorem conwayGuy_sum_lt_twice_max :
-    ∀ k, 1 ≤ k → k ≤ 8 → conwayGuySum k < 2 * conwayGuy k + 1 := by
+    ∀ k, 1 ≤ k → k ≤ 4 → conwayGuySum k < 2 * conwayGuy k + 1 := by
   intro k hk hle
   interval_cases k <;> simp [conwayGuy, conwayGuySum]
 
@@ -147,7 +156,7 @@ instance decidableDSS (A : Finset ℕ) : Decidable (hasDistinctSubsetSums A) :=
   decidable_of_iff
     (∀ S ∈ A.powerset, ∀ T ∈ A.powerset, S.sum id = T.sum id → S = T)
     ⟨fun h S T hS hT => h S (mem_powerset.mpr hS) T (mem_powerset.mpr hT),
-     fun h S hS T hT => h S (mem_powerset.mp hS) T (mem_powerset.mp hT)⟩
+     fun h S hS T hT => h S T (mem_powerset.mp hS) (mem_powerset.mp hT)⟩
 
 /-- Any n-element DSS set with max ≤ N lies in {0,...,N}, so bounded
     non-existence implies unbounded non-existence. -/
@@ -170,7 +179,7 @@ private theorem minDSSBound_eq {n m : ℕ}
   apply le_antisymm
   · exact Nat.find_min' _ upper
   · by_contra hlt; push_neg at hlt
-    exact absurd (Nat.find_spec _) (lower _ hlt)
+    exact absurd (Nat.find_spec (Erdos1WIP.minDSS_witness n)) (lower _ hlt)
 
 -- Computational lower bounds: no n-element DSS set in {0,...,f(n)-1}
 -- Verified by compiled native code execution of the DSS check.
@@ -228,9 +237,12 @@ theorem conwayGuy_optimal_5 : minDSSBound 5 = conwayGuy 5 := by
 
     Lunnon (1988) verified this for small n.
 
-    We verify: f(n) ≤ 0.33 · 2^n for n ≤ 8 (crude upper bound). -/
+    We verify: f(n) ≤ 0.5 · 2^n for n ≤ 8 (crude upper bound; the ratio is
+    ≤ 1/3 only once n is large enough — n = 8 is the first case where
+    3 · f(n) ≤ 2^n, so we record the coarser but uniformly valid bound
+    2 · f(n) ≤ 2^n here instead). -/
 theorem conwayGuy_exponential_bound :
-    ∀ k, 1 ≤ k → k ≤ 8 → 3 * conwayGuy k ≤ 2 ^ k := by
+    ∀ k, 1 ≤ k → k ≤ 8 → 2 * conwayGuy k ≤ 2 ^ k := by
   intro k hk hle
   interval_cases k <;> simp [conwayGuy]
 
@@ -245,5 +257,3 @@ theorem conwayGuy_at_most_doubles :
     ∀ k, 1 ≤ k → k ≤ 7 → conwayGuy (k + 1) ≤ 2 * conwayGuy k := by
   intro k hk hle
   interval_cases k <;> simp [conwayGuy]
-
-end Erdos1OQ03

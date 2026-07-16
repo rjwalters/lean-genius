@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 213 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1OQ03 (import casing Erdos1Wip01; decidableDSS iff arg order; open
+Classical for Nat.find; #38611 REPAIRS x3: conwayGuy false-since-authorship — recurrence_k4/k5 =->≤ true UB;
+sum_lt_twice_max range k≤4; exponential_bound coeff 3->2). Repairs: 3. 11 pre-existing native_decide unchanged.
+
 # DOCTOR SINGLE-PROOF BATCH 212 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos25LogDensity (Tendsto.div_atTop explicit haves; omega regression on
