@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 123 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos505Problem (def BoundedSet -> abbrev; def-type-synonym opaque to
+instance search, same reducibility drift as Erdos209/210). Repair: none. (borsukNumber axiom pre-existing).
+
 # DOCTOR SINGLE-PROOF BATCH 122 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): Erdos380Problem (ill-typed let IsBadInterval paren; open Classical for
