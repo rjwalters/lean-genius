@@ -41,7 +41,8 @@ open Erdos360 Finset
     Proof: Subsets are {} (sum 0) and {1} (sum 1), neither equals 2. -/
 theorem set1_is_2sum_free_ari : IsNSumFree 2 {1} := by
   intro T hT
-  fin_cases h : T using 2 <;> simp_all [IsNSumFree, Finset.subset_singleton_iff] <;> omega
+  have hTsub : T ∈ ({1} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hTsub <;> simp_all
 
 /-- {{1}} is a valid 1-partition of {1,...,1} = {1}.
     Proof: {1} covers {1}, is 2-sum-free, and has 1 class. -/
@@ -66,15 +67,15 @@ theorem f_2_le_1_ari : f 2 ≤ 1 := by
     Proof: 0 classes can't cover {1}. -/
 theorem f_2_ge_1_ari : f 2 ≥ 1 := by
   apply Nat.one_le_iff_ne_zero.mpr
-  intro h
-  have := Nat.sInf_eq_zero.mp h
-  rcases this with ⟨_, h⟩ | h
-  · obtain ⟨parts, hcard, hval⟩ := h
-    have := hval.2.2.1 1 (by omega) (by omega)
-    obtain ⟨P, hP, _⟩ := this
-    have := Finset.card_pos.mpr ⟨P, hP⟩
+  intro hf0
+  rcases Nat.sInf_eq_zero.mp hf0 with ⟨parts, hcard, hval⟩ | hempty
+  · obtain ⟨_, _, hcover, _⟩ := hval
+    obtain ⟨P, hP, _⟩ := hcover 1 (by omega) (by omega)
+    have hpos := Finset.card_pos.mpr ⟨P, hP⟩
     omega
-  · simp [ValidPartitionSizes] at h
+  · have hmem : (1 : ℕ) ∈ ValidPartitionSizes 2 := ⟨{{1}}, rfl, valid_partition_2_ari⟩
+    rw [hempty] at hmem
+    simp at hmem
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: f(4) = 2
@@ -84,14 +85,15 @@ theorem f_2_ge_1_ari : f 2 ≥ 1 := by
     Subsets: {}, {1}, {2}, {1,2}. Sums: 0, 1, 2, 3. None equals 4. -/
 theorem set12_is_4sum_free_ari : IsNSumFree 4 ({1, 2} : Finset ℕ) := by
   intro T hT
-  have hT' : T ⊆ {1, 2} := hT
-  fin_cases h : T using 4 <;> simp_all [Finset.subset_pair_iff] <;> omega
+  have hTsub : T ∈ ({1, 2} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hTsub <;> simp_all
 
 /-- {3} is 4-sum-free: no subset sums to 4.
     Subsets: {}, {3}. Sums: 0, 3. Neither equals 4. -/
 theorem set3_is_4sum_free_ari : IsNSumFree 4 ({3} : Finset ℕ) := by
   intro T hT
-  fin_cases h : T using 2 <;> simp_all [Finset.subset_singleton_iff] <;> omega
+  have hTsub : T ∈ ({3} : Finset ℕ).powerset := Finset.mem_powerset.mpr hT
+  fin_cases hTsub <;> simp_all
 
 /-- {{1,2},{3}} is a valid 2-partition of {1,2,3}.
     Covers: 1 ∈ {1,2}, 2 ∈ {1,2}, 3 ∈ {3}. Both classes are 4-sum-free. -/
