@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 109 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos209Problem (plain `def X := Finset Y` wrapper no longer unfolds
+for Membership instance search -> `abbrev`). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 108 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1098OQ01OQ01 (classical for DecidableEq on Finset literal +
