@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 74 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): SkolemNoetherMatrixAut (Finset.sum_apply/Pi.smul_apply no longer unify with
+Matrix n n K -> Matrix.sum_apply/smul_apply; Matrix.isUnit_det_iff_isUnit_mulVecLin removed -> mulVec_injective_iff_isUnit;
+unblocks Aristotle child), GreensTheoremOQ01OQ01OQ02OQ03 (Measure.prod_mono removed -> reconstruct via prod_apply/
+lintegral_mono'; Banach-codomain needs explicit [MeasurableSpace E][BorelSpace E]). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 72 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CramersRuleOQ01OQ04 (charpoly_natDegree_eq_dim etc renamed; det_from_power_sums_2x2

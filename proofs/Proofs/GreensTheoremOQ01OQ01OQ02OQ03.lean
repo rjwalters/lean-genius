@@ -50,6 +50,19 @@ set_option maxHeartbeats 800000
 namespace GreensTheoremOQ01OQ01OQ02OQ03
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+  [MeasurableSpace E] [BorelSpace E]
+
+/-- `MeasureTheory.Measure.prod_mono` was removed from Mathlib (v4.31 drift); this is a
+verbatim reconstruction via `Measure.prod_apply`/`Measure.prod_apply_le` and `lintegral_mono'`. -/
+private theorem prod_mono_E {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ μ' : Measure α} {ν ν' : Measure β} [SFinite ν] [SFinite ν']
+    (hμ : μ ≤ μ') (hν : ν ≤ ν') : μ.prod ν ≤ μ'.prod ν' := by
+  rw [Measure.le_iff]
+  intro s hs
+  calc μ.prod ν s = ∫⁻ x, ν (Prod.mk x ⁻¹' s) ∂μ := Measure.prod_apply hs
+    _ ≤ ∫⁻ x, ν' (Prod.mk x ⁻¹' s) ∂μ' :=
+        lintegral_mono' hμ (fun x => Measure.le_iff'.mp hν _)
+    _ = μ'.prod ν' s := (Measure.prod_apply hs).symm
 
 /-! ### Part I: Ordered Case (fully proved) -/
 
@@ -73,7 +86,7 @@ theorem intervalIntegral_swap_of_le {f : ℝ → ℝ → E}
   simp_rw [integral_of_le hab, integral_of_le hcd]
   have hf_ioc : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
       ((volume.restrict (Ioc a b)).prod (volume.restrict (Ioc c d))) :=
-    hf_int.mono_measure (Measure.prod_mono
+    hf_int.mono_measure (prod_mono_E
       (Measure.restrict_mono Ioc_subset_Icc_self le_rfl)
       (Measure.restrict_mono Ioc_subset_Icc_self le_rfl))
   exact (MeasureTheory.integral_integral_swap hf_ioc).symm
@@ -90,7 +103,7 @@ private theorem flip_bounds_E (f : ℝ → E) (a b : ℝ) :
 Verbatim port of parent's `neg_outside`. -/
 private theorem neg_outside_E (a b : ℝ) (g : ℝ → E) :
     ∫ x in a..b, -g x = -(∫ x in a..b, g x) :=
-  intervalIntegral.integral_neg g
+  intervalIntegral.integral_neg (f := g)
 
 /-! ### Part III: General Case (S3 proven) -/
 
@@ -208,6 +221,10 @@ theorem intervalIntegral_swap_of_continuous {f : ℝ → ℝ → E}
     isCompact_uIcc.prod isCompact_uIcc
   have hint : IntegrableOn (fun p : ℝ × ℝ => f p.1 p.2) (uIcc a b ×ˢ uIcc c d) volume :=
     hf.continuousOn.integrableOn_compact hcpt
-  rwa [restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc] at hint
+  have hmeas : (volume.restrict (uIcc a b)).prod (volume.restrict (uIcc c d))
+      = volume.restrict (uIcc a b ×ˢ uIcc c d) := by
+    rw [Measure.prod_restrict, ← Measure.volume_eq_prod ℝ ℝ]
+  rw [hmeas]
+  exact hint
 
 end GreensTheoremOQ01OQ01OQ02OQ03
