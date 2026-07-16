@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 253 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FairGamesTheorem (IsStoppingTime/stoppedValue domain ℕ->WithTop ℕ ->
+wrap coercion + native WithTop stopping times; WithTop.untopA on coe cancels via rfl). Repair: none.
+Unblocks FairGamesTheoremOQ02OQ01 child.
+
 # DOCTOR SINGLE-PROOF BATCH 252 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): GeneralQuarticAxiomsDischarge (cpow_half_sq timeout -> Complex.cpow_eq_pow
