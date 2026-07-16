@@ -1563,3 +1563,12 @@ subtraction made the original statement false; geometric gluing bound). No calle
   `⟨⟨ha,hb⟩,hab⟩`. (Destructuring `obtain` is more forgiving than construction.)
 - **`Finset.card_le_one.mp`** now needs explicit element witnesses: `hle.mp (a,b) hp1 (c,d) hp2`, not
   `hle hp1 hp2`.
+
+## Polynomial.Splits is now UNARY (added 2026-07-16 from AngleTrisectionCos20Gal)
+- `Splits f p` (binary, ring-hom + poly) → state as `(p.map f).Splits` (unary on the mapped poly).
+  Whole Normal/IsSplittingField API follows: `Normal.splits` takes the `Normal` proof explicitly;
+  `IsSplittingField.lift`/`.splits` use the mapped-splits form; deprecated `exists_root_of_splits`
+  → `Splits.exists_eval_eq_zero` (transfer root via `aeval_def` + `← eval_map` + `degree_map`).
+- `minpoly.eq_of_irreducible_of_monic` arg order → `(h_irred) (h_root) (h_monic) : p = minpoly A x`.
+- Instances stated on `IntermediateField.fixedField H` don't fire through def-wrappers — apply
+  `IsGalois.of_fixedField_normal_subgroup` by hand.
