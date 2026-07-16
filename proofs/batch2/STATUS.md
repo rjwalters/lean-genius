@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 292 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos184ProblemProvable (logStar WF termination_by Nat.log2_lt, dropped
+noncomputable so native_decide compiles; #38611 REPAIR minDegree by simp[image_nonempty] unsound for empty V
+-> [Nonempty V] threaded). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 291 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1054OQ01 (List.scanl def-unfold broken->scanl_cons/nil; Finset.sort
