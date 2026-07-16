@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 286 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FourierSeriesOQ02OQ02 (12min: NNReal-literal proof-term dup defeats rw/simp
+-> set α₀ single witness; Summable.congr; Real.summable_nat_rpow_inv shape change -> not_summable_one_div_natCast;
+norm_num spurious fail on NNReal-coe -> rfl). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 285 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): DescartesRuleOfSignsOQ02OQ01 (Set.Subsingleton.ncard_le_one gone ->
