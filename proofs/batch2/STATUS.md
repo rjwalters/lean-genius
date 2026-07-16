@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 32 (5-slot, conflict-proof collect, #38065, 2026-07-15)
+
+**+3 GREEN** (re-verified EXIT=0): Erdos937Problem (interval_cases on p∣N no longer auto-bounds ->
+Nat.le_of_dvd; pow_dvd_pow_of_dvd), Erdos934ProblemAristotle (#38611: h3_3_between claimed 3^3<=23=FALSE,
+corrected; import Mathlib.Tactic for lost norm_num/ring exts; nlinarith can't reason through Nat / ->
+Nat.div_le_div_right), Erdos957Problem (#38611: constant_tight epsilon=9/8-c non-strict can't contradict
+-> halved for strict; SYSTEMIC: audit gallery for ε=target-c-exactly tightness gap). Repairs #38611:
+Erdos934ProblemAristotle (3^3<=23), Erdos957Problem (epsilon strictness) + systemic ε=target-c audit note.
+
 # DOCTOR SINGLE-PROOF BATCH 31 (5-slot, conflict-proof collect, #38065, 2026-07-15)
 
 **+3 GREEN** (re-verified EXIT=0): Erdos903Problem (subst h eliminates b -> avoid via rw+calc+nlinarith),
