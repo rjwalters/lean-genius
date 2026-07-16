@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 359 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ02OQ02OQ01OQ01OQ01 (Continuous.mul/pow combinators now
+return Continuous (f*g) unapplied Pi-mul form (v4.31 @[to_fun]) not Continuous (fun x=>f x*g x) ->
+breaks rw-based .intervalIntegrable; replaced 5 sites with Continuous.intervalIntegrable (by fun_prop) _ _).
+Repair: none (stale decide-maxrecdepth label). AreaOfCircle family 3/4 done, OQ02OQ02OQ02OQ02 in flight.
+SEAM: Continuous.mul/pow now produce `Continuous (f*g)` (unapplied Pi) not `Continuous (fun x=>f x*g x)`
+-> use `Continuous.intervalIntegrable (by fun_prop) _ _` instead of chaining .mul/.pow.
+
 # DOCTOR SINGLE-PROOF BATCH 358 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, 389k tok/233 tools/46min, 3417-line scaffold)**: SpernerFreudenthalSimplex
