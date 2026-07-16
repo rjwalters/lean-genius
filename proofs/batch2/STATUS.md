@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 210 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos279OQ04 (Filter.Eventually.comp gone -> Tendsto.eventually;
+div_le_div_of_nonneg_left 0≤; calc strict/non-strict le_of_lt explicit; abs_nonneg for linarith). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 209 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1WIP01/Erdos1Wip01 (CASE-COLLISION root cause of earlier false-green:
