@@ -85,6 +85,18 @@ axiom erdos_36_limit_exists :
 -- Part V: Known Bounds
 -- ============================================================================
 
+/-- **White (2022)**: best known lower bound M(N)/N > 0.379005,
+    obtained via Fourier analysis and convex optimization. -/
+axiom white_lower :
+  ∀ N : ℕ, N ≥ 1 →
+    (M N : ℝ) / N > 379005 / 1000000
+
+/-- **Haugland (2016)**: upper bound M(N)/N < 0.380926 via step
+    functions. Improved to 0.380876 by TTT-Discover (2026). -/
+axiom upper_bound :
+  ∀ N : ℕ, N ≥ 1 →
+    (M N : ℝ) / N < 380876 / 1000000
+
 /-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4.
     Originally a pigeonhole argument (N² pairs in ≤ 4N−1 differences),
     now proved as a corollary of White's sharper bound (0.379 > 0.25). -/
@@ -110,22 +122,12 @@ theorem scherk_lower :
     exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
   -- 1/√2 > 2/3 (reciprocal inequality)
   have h_inv : 1 / Real.sqrt 2 > 2 / 3 := by
-    rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 3) h_sqrt_pos]
-    linarith
+    have h := one_div_lt_one_div_of_lt h_sqrt_pos h_sqrt_lt
+    have e : (1 : ℝ) / (3 / 2) = 2 / 3 := by norm_num
+    rw [e] at h
+    exact h
   -- 1 - 1/√2 < 1/3 < 379005/1000000
   linarith
-
-/-- **White (2022)**: best known lower bound M(N)/N > 0.379005,
-    obtained via Fourier analysis and convex optimization. -/
-axiom white_lower :
-  ∀ N : ℕ, N ≥ 1 →
-    (M N : ℝ) / N > 379005 / 1000000
-
-/-- **Haugland (2016)**: upper bound M(N)/N < 0.380926 via step
-    functions. Improved to 0.380876 by TTT-Discover (2026). -/
-axiom upper_bound :
-  ∀ N : ℕ, N ≥ 1 →
-    (M N : ℝ) / N < 380876 / 1000000
 
 -- ============================================================================
 -- Part VI: Small Values
@@ -138,8 +140,14 @@ def maxOverlapC (A B : Finset ℤ) : ℕ :=
 
 /-- Computable version of `M(N)`. Uses `maxOverlapC` and inline definitions
     to avoid noncomputable intermediate functions. -/
-noncomputable def MC (N : ℕ) : ℕ :=
-  let I := Finset.Icc (1 : ℤ) (2 * ↑N)
+def MC (N : ℕ) : ℕ :=
+  -- Pin the computable `Preorder`/`LocallyFiniteOrder` instances for `ℤ` explicitly:
+  -- the default instance search for `Finset.Icc` on `ℤ` resolves through the
+  -- (noncomputable, `Classical.choice`-based) `ConditionallyCompleteLinearOrder ℤ`
+  -- instance's `Preorder` field, which blocks `native_decide` compilation even
+  -- though the underlying `≤`/`<` data is definitionally identical.
+  let I : Finset ℤ :=
+    @Finset.Icc ℤ Int.instLinearOrder.toPreorder Int.instLocallyFiniteOrder 1 (2 * ↑N)
   let parts := I.powerset.filter (fun A => A.card = N)
   let vals := parts.image (fun A => maxOverlapC A (I \ A))
   if h : vals.Nonempty then vals.min' h else 0
@@ -225,7 +233,7 @@ private lemma overlap_zero_not_image (A B : Finset ℤ) (k : ℤ)
   ext ⟨a, b⟩
   simp only [Finset.mem_filter, Finset.mem_product, Finset.notMem_empty, iff_false, not_and]
   intro ⟨ha, hb⟩ heq
-  exact hk (Finset.mem_image.mpr ⟨(a, b), Finset.mem_product.mpr ⟨ha, hb⟩, heq.symm⟩)
+  exact hk (Finset.mem_image.mpr ⟨(a, b), Finset.mem_product.mpr ⟨ha, hb⟩, heq⟩)
 
 /-- Every individual overlap value is bounded above by `maxOverlap`. -/
 private lemma overlap_le_max (A B : Finset ℤ) (k : ℤ) :
@@ -328,7 +336,7 @@ theorem M_lower_pigeonhole (N : ℕ) (hN : 1 ≤ N) :
     N ^ 2 ≤ (4 * N - 1) * M N := by
   -- overlapValues N is nonempty (partitions N is nonempty for N ≥ 1)
   have hparts_ne : (partitions N).Nonempty := by
-    obtain ⟨A, hA_sub, hA_card⟩ := Finset.exists_subset_card_le
+    obtain ⟨A, hA_sub, hA_card⟩ := Finset.exists_subset_card_eq
       (show N ≤ (interval N).card by rw [interval_card]; omega)
     exact ⟨A, Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr hA_sub, hA_card⟩⟩
   have hoverlap_ne : (overlapValues N).Nonempty := hparts_ne.image _
@@ -346,7 +354,7 @@ theorem M_lower_pigeonhole (N : ℕ) (hN : 1 ≤ N) :
   -- B₀ = interval N \ A₀ also has size N and is a subset of interval N
   have hB₀_sub : interval N \ A₀ ⊆ interval N := Finset.sdiff_subset
   have hB₀_card : (interval N \ A₀).card = N := by
-    rw [Finset.card_sdiff hA₀_sub, interval_card, hA₀_card]; omega
+    rw [Finset.card_sdiff_of_subset hA₀_sub, interval_card, hA₀_card]; omega
   -- Apply pigeonhole to A₀ and B₀
   rw [← hA₀_eq]
   exact pigeonhole_maxOverlap N hN A₀ (interval N \ A₀) hA₀_sub hB₀_sub hA₀_card hB₀_card
@@ -374,7 +382,7 @@ theorem trivial_lower_bound (N : ℕ) (hN : 1 ≤ N) :
   have hstrict : (4 * (N : ℝ) - 1) * (N / 4) < (N : ℝ) ^ 2 := by nlinarith
   -- Therefore N/4 < M N
   have hMN_gt : (N : ℝ) / 4 < (M N : ℝ) :=
-    (mul_lt_mul_left h4N_pos).mp (lt_of_lt_of_le hstrict hineq_R)
+    (mul_lt_mul_iff_of_pos_left h4N_pos).mp (lt_of_lt_of_le hstrict hineq_R)
   -- M N / N > 1/4
   rw [div_lt_div_iff₀ (by norm_num : (0:ℝ) < 4) hN_pos]
   linarith
