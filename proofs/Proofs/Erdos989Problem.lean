@@ -99,8 +99,8 @@ noncomputable def circleDiscrepancy (A : PointSequence) (r : ℝ) (hr : r > 0) :
     This shows that NO sequence can achieve better than √r discrepancy. -/
 axiom beck_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ (A : PointSequence),
-      ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
-        circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr) ≥ c * r.sqrt
+      ∃ r₀ : ℝ, ∃ hr₀pos : r₀ > 0, ∀ r : ℝ, ∀ hr : r > r₀,
+        circleDiscrepancy A r (lt_trans hr₀pos hr) ≥ c * r.sqrt
 
 /-- **Corollary:** f(r) is unbounded for every sequence A.
     This answers the first question: YES, f(r) → ∞ for all A. -/
@@ -108,26 +108,25 @@ theorem discrepancy_unbounded (A : PointSequence) :
     ∀ M : ℝ, ∃ r : ℝ, ∃ hr : r > 0, circleDiscrepancy A r hr > M := by
   intro M
   obtain ⟨c, hc_pos, hbeck⟩ := beck_lower_bound
-  obtain ⟨r₀, hr₀⟩ := hbeck A
+  obtain ⟨r₀, hr₀pos, hr₀⟩ := hbeck A
   -- Choose r large enough that c√r > M
   let r := max (r₀ + 1) ((M / c + 1)^2)
+  have hle1 : r₀ + 1 ≤ r := le_max_left (r₀ + 1) ((M / c + 1)^2)
+  have hle2 : (M / c + 1)^2 ≤ r := le_max_right (r₀ + 1) ((M / c + 1)^2)
   use r
-  have hr_pos : r > 0 := by
-    skip
-    left
-    linarith
+  have hr_pos : r > 0 := by linarith
   use hr_pos
-  have hr_gt_r0 : r > r₀ := by simp [r]
-  calc circleDiscrepancy A r hr_pos
-      ≥ c * r.sqrt := hr₀ r hr_gt_r0
-    _ ≥ c * ((M / c + 1)^2).sqrt := by
-        apply mul_le_mul_of_nonneg_left
-        · apply Real.sqrt_le_sqrt
-          simp [r]
-        · linarith
-    _ = c * (M / c + 1) := by rw [sqrt_sq]; linarith
-    _ = M + c := by ring
-    _ > M := by linarith
+  have hr_gt_r0 : r > r₀ := by linarith
+  have hstep : circleDiscrepancy A r hr_pos ≥ c * r.sqrt := hr₀ r hr_gt_r0
+  have hsqrt_ge : |M / c + 1| ≤ r.sqrt := by
+    have h := Real.sqrt_le_sqrt hle2
+    rwa [Real.sqrt_sq_eq_abs] at h
+  have habs_ge : M / c + 1 ≤ r.sqrt := le_trans (le_abs_self _) hsqrt_ge
+  have hc_ge : c * (M / c + 1) ≤ c * r.sqrt :=
+    mul_le_mul_of_nonneg_left habs_ge (le_of_lt hc_pos)
+  have hc_ne : c ≠ 0 := ne_of_gt hc_pos
+  have heq : c * (M / c + 1) = M + c := by field_simp
+  linarith
 
 /- ## Part IV: Beck's Upper Bound (Existence) -/
 
@@ -141,8 +140,8 @@ theorem discrepancy_unbounded (A : PointSequence) :
     This shows that √r (up to log factors) is achievable. -/
 axiom beck_upper_bound :
     ∃ (A : PointSequence) (C : ℝ), C > 0 ∧
-      ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
-        circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr)
+      ∃ r₀ : ℝ, ∃ hr₀pos : r₀ > 0, ∀ r : ℝ, ∀ hr : r > r₀,
+        circleDiscrepancy A r (lt_trans hr₀pos hr)
           ≤ C * (r * r.log).sqrt
 
 /-- The optimal sequence achieving near-minimal discrepancy.
@@ -171,11 +170,11 @@ theorem erdos_989_solved :
     (∀ A : PointSequence, ∀ M : ℝ, ∃ r : ℝ, ∃ hr : r > 0,
       circleDiscrepancy A r hr > M) ∧
     -- Part 2a: Universal lower bound √r
-    (∃ c : ℝ, c > 0 ∧ ∀ A : PointSequence, ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
-      circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr) ≥ c * r.sqrt) ∧
+    (∃ c : ℝ, c > 0 ∧ ∀ A : PointSequence, ∃ r₀ : ℝ, ∃ hr₀pos : r₀ > 0, ∀ r : ℝ, ∀ hr : r > r₀,
+      circleDiscrepancy A r (lt_trans hr₀pos hr) ≥ c * r.sqrt) ∧
     -- Part 2b: Existence of near-optimal sequence
-    (∃ A : PointSequence, ∃ C : ℝ, C > 0 ∧ ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
-      circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr)
+    (∃ A : PointSequence, ∃ C : ℝ, C > 0 ∧ ∃ r₀ : ℝ, ∃ hr₀pos : r₀ > 0, ∀ r : ℝ, ∀ hr : r > r₀,
+      circleDiscrepancy A r (lt_trans hr₀pos hr)
         ≤ C * (r * r.log).sqrt) := by
   constructor
   · exact discrepancy_unbounded
@@ -256,8 +255,8 @@ Some progress:
 - No fully explicit optimal construction is known -/
 def openQuestion_explicit_construction : Prop :=
   ∃ (A : PointSequence) (C_const : ℝ), C_const > 0 ∧
-    ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
-      circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr)
+    ∃ r₀ : ℝ, ∃ hr₀pos : r₀ > 0, ∀ r : ℝ, ∀ hr : r > r₀,
+      circleDiscrepancy A r (lt_trans hr₀pos hr)
         ≤ C_const * (r * r.log).sqrt
 
 /-- **Open Question 3: Higher Dimensions**
@@ -336,8 +335,8 @@ theorem erdos_989_answers_both_questions :
     (∀ A : PointSequence, ∀ M : ℝ, ∃ r : ℝ, ∃ hr : r > 0,
       circleDiscrepancy A r hr > M) ∧
     -- Q2: optimal growth is Θ̃(√r)
-    (∃ c : ℝ, c > 0 ∧ ∀ A : PointSequence, ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
-      circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr) ≥ c * r.sqrt) :=
+    (∃ c : ℝ, c > 0 ∧ ∀ A : PointSequence, ∃ r₀ : ℝ, ∃ hr₀pos : r₀ > 0, ∀ r : ℝ, ∀ hr : r > r₀,
+      circleDiscrepancy A r (lt_trans hr₀pos hr) ≥ c * r.sqrt) :=
   ⟨discrepancy_unbounded, beck_lower_bound⟩
 
 end Erdos989
