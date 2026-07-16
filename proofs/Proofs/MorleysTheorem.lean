@@ -124,37 +124,43 @@ noncomputable def R : ℂ := equilateralVertex 2
 theorem equilateral_side_length :
     Complex.abs (Q - P) = Complex.abs (R - Q) ∧
     Complex.abs (R - Q) = Complex.abs (P - R) := by
+  unfold Complex.abs
   -- P = exp(0) = 1
   have hP : P = 1 := by
     simp [P, equilateralVertex]
   -- R = Q² (since exp(4πi/3) = exp(2πi/3)²)
   have hR : R = Q ^ 2 := by
-    simp only [R, Q, equilateralVertex]
-    rw [← Complex.exp_add]
-    congr 1; push_cast; ring
+    simp only [R, Q, equilateralVertex, Fin.val_two, Fin.val_one, Nat.cast_ofNat, Nat.cast_one]
+    rw [← Complex.exp_nat_mul]
+    congr 1
+    push_cast; ring
   -- |Q| = 1 (since Q = exp(iθ) with θ real)
-  have hQ_abs : Complex.abs Q = 1 := by
-    simp only [Q, equilateralVertex, map_exp_ofReal_mul_I_re]
-    exact Real.exp_zero
+  have hQ_abs : ‖Q‖ = 1 := by
+    have hQeq : Q = Complex.exp ((2 * π / 3 : ℝ) * Complex.I) := by
+      simp only [Q, equilateralVertex, Fin.val_one, Nat.cast_one]
+      congr 1
+      push_cast; ring
+    rw [hQeq]
+    exact Complex.norm_exp_ofReal_mul_I _
   -- R - Q = Q * (Q - P)
   have h1 : R - Q = Q * (Q - P) := by rw [hP, hR]; ring
   -- Q³ = 1 (cube root of unity)
   have hQ3 : Q ^ 3 = 1 := by
-    simp only [Q, equilateralVertex]
-    rw [← Complex.exp_nat_mul]
-    simp only [Nat.cast_ofNat]
-    have : (3 : ℂ) * (Complex.I * (2 * ↑π * ↑(1 : ℕ) / 3)) = 2 * ↑Real.pi * Complex.I := by
+    have hQ3eq : Q ^ 3 = Complex.exp (2 * π * Complex.I) := by
+      simp only [Q, equilateralVertex, Fin.val_one, Nat.cast_one]
+      rw [← Complex.exp_nat_mul]
+      congr 1
       push_cast; ring
-    rw [this]
+    rw [hQ3eq]
     exact Complex.exp_two_pi_mul_I
   -- P - R = Q² * (Q - P)
   have h2 : P - R = Q ^ 2 * (Q - P) := by
     rw [hP, hR]
     have : Q ^ 2 * (Q - 1) = Q ^ 3 - Q ^ 2 := by ring
-    rw [this, hQ3]; ring
-  constructor
-  · rw [h1, map_mul, hQ_abs, one_mul]
-  · rw [h1, h2, map_mul, map_mul, Complex.abs_pow, hQ_abs, one_pow, one_mul, one_mul]
+    rw [this, hQ3]
+  refine ⟨?_, ?_⟩
+  · rw [h1, norm_mul, hQ_abs, one_mul]
+  · rw [h1, h2, norm_mul, norm_mul, norm_pow, hQ_abs, one_pow, one_mul]
 
 -- ============================================================
 -- PART 3: Key Trigonometric Identities
@@ -265,8 +271,8 @@ theorem cosine_rule_identity {p q c : ℝ} (h : p + q + c = π) :
   -- Goal: sin²p + sin²q - 2·sinp·sinq·(-(cosp·cosq - sinp·sinq))
   --     = (sinp·cosq + cosp·sinq)²
   -- This is a polynomial identity modulo sin²+cos²=1
-  have hp : sin p ^ 2 + cos p ^ 2 = 1 := sin_sq_add_cos_sq
-  have hq : sin q ^ 2 + cos q ^ 2 = 1 := sin_sq_add_cos_sq
+  have hp : sin p ^ 2 + cos p ^ 2 = 1 := sin_sq_add_cos_sq p
+  have hq : sin q ^ 2 + cos q ^ 2 = 1 := sin_sq_add_cos_sq q
   nlinarith [sq_nonneg (sin p * cos q - cos p * sin q),
              sq_nonneg (sin p * cos q + cos p * sin q),
              sq_nonneg (sin p * sin q),
