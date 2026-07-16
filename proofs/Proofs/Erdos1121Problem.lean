@@ -97,6 +97,7 @@ def Line.separates (l : Line) (S₁ S₂ : Set (ℝ × ℝ)) : Prop :=
   (∀ p ∈ S₁, signedDistance l p > 0) ∧
   (∀ p ∈ S₂, signedDistance l p < 0)
 
+open scoped Classical in
 /--
 **Separating line for circles:**
 A line disjoint from all circles that divides them into two non-empty groups.

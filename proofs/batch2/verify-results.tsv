@@ -113,7 +113,7 @@ AreaOfCircleOQ01OQ02OQ02OQ01OQ01Reparam	GREEN
 AreaOfCircleOQ01OQ02OQ02OQ02	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ02OQ01	GREEN	
 AreaOfCircleOQ01OQ02OQ02OQ02OQ02	RESIDUAL	unknown-const:wirtinger_inequality
-AreaOfCircleOQ01OQ02OQ03OQ03	RESIDUAL	unknown-const:Filter.eventually_nhdsWithin_of_forall
+AreaOfCircleOQ01OQ02OQ03OQ03	GREEN	
 AreaOfCircleOQ01OQ03	RESIDUAL	decide-maxrecdepth
 AreaOfCircleOQ01OQ03Aristotle	GREEN	
 AreaOfCircleOQ01OQ03OQ01	RESIDUAL	decide-maxrecdepth
@@ -828,8 +828,8 @@ Erdos1118OQ02	GREEN
 Erdos1118Problem	GREEN	
 Erdos1119Problem	PRE-EXISTING	never-compiled:ι
 Erdos111Problem	GREEN	
-Erdos1120Problem	RESIDUAL	instance-synth
-Erdos1121Problem	RESIDUAL	instance-synth
+Erdos1120Problem	GREEN	
+Erdos1121Problem	GREEN	
 Erdos1122Problem	GREEN	
 Erdos1123Problem	GREEN	
 Erdos1124Problem	GREEN	
