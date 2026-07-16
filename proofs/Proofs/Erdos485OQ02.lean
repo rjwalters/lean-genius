@@ -41,6 +41,7 @@ set_option maxHeartbeats 800000
 namespace Erdos485OQ02
 
 open Polynomial Finset BigOperators
+open scoped Pointwise
 
 /-
 ## Part I: Definitions
@@ -140,14 +141,16 @@ theorem sumset_elem_in_sq_support_of_nonneg (P : Polynomial ℚ)
     {a b : ℕ} (ha : a ∈ P.support) (hb : b ∈ P.support) :
     a + b ∈ (P ^ 2).support := by
   rw [Polynomial.mem_support_iff, coeff_sq_convolution]
-  -- The single term c_a · c_b > 0, and all terms are ≥ 0, so the sum > 0
   have hab_pos : 0 < P.coeff a * P.coeff b :=
     mul_pos (lt_of_le_of_ne (hP a) (Ne.symm (Polynomial.mem_support_iff.mp ha)))
             (lt_of_le_of_ne (hP b) (Ne.symm (Polynomial.mem_support_iff.mp hb)))
   have hle : P.coeff a * P.coeff b ≤
-      ∑ ij ∈ Finset.antidiagonal (a + b), P.coeff ij.1 * P.coeff ij.2 :=
-    Finset.single_le_sum (fun ij _ => mul_nonneg (hP ij.1) (hP ij.2))
-      (Finset.mem_antidiagonal.mpr rfl)
+      ∑ ij ∈ Finset.antidiagonal (a + b), P.coeff ij.1 * P.coeff ij.2 := by
+    have hmem : (a, b) ∈ Finset.antidiagonal (a + b) := Finset.mem_antidiagonal.mpr rfl
+    have := Finset.single_le_sum (s := Finset.antidiagonal (a + b))
+      (f := fun ij : ℕ × ℕ => P.coeff ij.1 * P.coeff ij.2)
+      (fun ij _ => mul_nonneg (hP ij.1) (hP ij.2)) hmem
+    simpa using this
   exact (lt_of_lt_of_le hab_pos hle).ne'
 
 /-- For nonneg-coefficient polynomials, support(P²) equals the sumset exactly.
@@ -283,10 +286,11 @@ theorem cancellation_positions_bound (P : Polynomial ℚ) :
 theorem termCount_sq_upper (P : Polynomial ℚ) (k : ℕ)
     (htc : termCount P = k) :
     termCount (P ^ 2) ≤ k ^ 2 := by
+  have htc' : P.support.card = k := htc
   calc termCount (P ^ 2)
       ≤ (P.support + P.support).card := termCount_sq_le_sumset P
     _ ≤ P.support.card ^ 2 := cancellation_positions_bound P
-    _ = k ^ 2 := by rw [htc]
+    _ = k ^ 2 := by rw [htc']
 
 /-
 ## Summary
