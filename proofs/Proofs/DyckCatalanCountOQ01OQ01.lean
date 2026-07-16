@@ -5,7 +5,7 @@ import Mathlib
 
 The parent entry (`dyck-catalan-count-oq-01`) records the Mathlib theorem that **Dyck
 words** of semilength `n` are counted by the Catalan number `catalan n`, via Mathlib's
-explicit bijection `DyckWord.equivTree : DyckWord ≃ Tree Unit` with rooted *binary* trees.
+explicit bijection `DyckWord.equivTree : DyckWord ≃ BinaryTree Unit` with rooted *binary* trees.
 Its first open question asks:
 
 > Enumerate **another** Catalan family not yet counted in Mathlib, and exhibit an
@@ -13,7 +13,7 @@ Its first open question asks:
 
 This file answers it with the classic and genuinely distinct family of **plane trees**
 (a.k.a. *ordered rooted trees*): a root together with an **ordered list** of subtrees of
-arbitrary arity.  Mathlib counts *binary* trees (`Tree Unit`), where every node has exactly
+arbitrary arity.  Mathlib counts *binary* trees (`BinaryTree Unit`), where every node has exactly
 two — possibly empty — children; plane trees are different objects (a node may have any
 number of children, in order), and Mathlib does not count them.
 
@@ -31,9 +31,9 @@ bijection from plane forests (and plane trees) to Dyck words, and hence the coun
 ## Main results
 
 * `PlaneTree` / `PlaneForest` : ordered rooted trees and forests.
-* `PlaneForest.encode` / `Tree.decode` : the natural correspondence, with both round-trips
-  proved (`encode_decode`, `decode_encode`), packaged as `forestEquivTree : PlaneForest ≃
-  Tree Unit`.
+* `PlaneForest.encode` / `BinaryTree.decodeForest` : the natural correspondence, with both
+  round-trips proved (`encode_decode`, `decode_encode`), packaged as `forestEquivTree :
+  PlaneForest ≃ BinaryTree Unit`.
 * `forestEquivDyck` / `forestEquivDyckSubtype` : the resulting explicit bijection of plane
   forests with Dyck words, refined to fixed size / semilength.
 * `card_planeForest_numNodes_eq_catalan` : **plane forests with `n` nodes are counted by
@@ -71,9 +71,9 @@ def numNodes : PlaneForest → ℕ
 /-- The **first-child / next-sibling** encoding of a plane forest as a binary tree.
 The left child of the root holds the encoding of the children of the first plane tree;
 the right child holds the encoding of the remaining trees. -/
-def encode : PlaneForest → Tree Unit
-  | [] => Tree.nil
-  | (PlaneTree.node cs) :: rest => Tree.node () (encode cs) (encode rest)
+def encode : PlaneForest → BinaryTree Unit
+  | [] => BinaryTree.nil
+  | (PlaneTree.node cs) :: rest => BinaryTree.node () (encode cs) (encode rest)
 
 end PlaneForest
 
@@ -81,51 +81,52 @@ end PlaneForest
 A `nil` becomes the empty forest; a `node` becomes a forest whose first tree has the
 decoding of the left child as its own children, followed by the decoding of the right
 child. -/
-def Tree.decodeForest : Tree Unit → PlaneForest
-  | Tree.nil => []
-  | Tree.node _ l r => PlaneTree.node (Tree.decodeForest l) :: Tree.decodeForest r
+def BinaryTree.decodeForest : BinaryTree Unit → PlaneForest
+  | BinaryTree.nil => []
+  | BinaryTree.node _ l r => PlaneTree.node (BinaryTree.decodeForest l) :: BinaryTree.decodeForest r
 
 namespace PlaneForest
 
-@[simp] theorem encode_nil : encode [] = Tree.nil := by simp [encode]
+@[simp] theorem encode_nil : encode [] = BinaryTree.nil := by simp [encode]
 
 @[simp] theorem encode_cons (cs rest : PlaneForest) :
-    encode (PlaneTree.node cs :: rest) = Tree.node () (encode cs) (encode rest) := by
+    encode (PlaneTree.node cs :: rest) = BinaryTree.node () (encode cs) (encode rest) := by
   simp [encode]
 
-@[simp] theorem decodeForest_nil : Tree.decodeForest Tree.nil = ([] : PlaneForest) := rfl
+@[simp] theorem decodeForest_nil :
+    BinaryTree.decodeForest BinaryTree.nil = ([] : PlaneForest) := rfl
 
-@[simp] theorem decodeForest_node (a : Unit) (l r : Tree Unit) :
-    Tree.decodeForest (Tree.node a l r) =
-      PlaneTree.node (Tree.decodeForest l) :: Tree.decodeForest r := rfl
+@[simp] theorem decodeForest_node (a : Unit) (l r : BinaryTree Unit) :
+    BinaryTree.decodeForest (BinaryTree.node a l r) =
+      PlaneTree.node (BinaryTree.decodeForest l) :: BinaryTree.decodeForest r := rfl
 
 /-- `encode` followed by `decodeForest` is the identity on plane forests.  This is the
 left inverse; the recursion descends into both the children of the head tree and the rest
 of the forest, each strictly smaller than the input. -/
-theorem decode_encode : ∀ f : PlaneForest, Tree.decodeForest (encode f) = f
+theorem decode_encode : ∀ f : PlaneForest, BinaryTree.decodeForest (encode f) = f
   | [] => by simp
   | (PlaneTree.node cs) :: rest => by
       rw [encode_cons, decodeForest_node, decode_encode cs, decode_encode rest]
 
 /-- `decodeForest` followed by `encode` is the identity on binary trees.  This is the
 right inverse, by structural induction on the tree. -/
-theorem encode_decode : ∀ t : Tree Unit, encode (Tree.decodeForest t) = t
-  | Tree.nil => by simp
-  | Tree.node a l r => by
+theorem encode_decode : ∀ t : BinaryTree Unit, encode (BinaryTree.decodeForest t) = t
+  | BinaryTree.nil => by simp
+  | BinaryTree.node a l r => by
       rw [decodeForest_node, encode_cons, encode_decode l, encode_decode r]
 
 /-- The **natural correspondence** as an equivalence: plane forests are in explicit
 bijection with rooted binary trees. -/
-def forestEquivTree : PlaneForest ≃ Tree Unit where
+def forestEquivTree : PlaneForest ≃ BinaryTree Unit where
   toFun := encode
-  invFun := Tree.decodeForest
+  invFun := BinaryTree.decodeForest
   left_inv := decode_encode
   right_inv := encode_decode
 
 @[simp] theorem forestEquivTree_apply (f : PlaneForest) : forestEquivTree f = encode f := rfl
 
-@[simp] theorem forestEquivTree_symm_apply (t : Tree Unit) :
-    forestEquivTree.symm t = Tree.decodeForest t := rfl
+@[simp] theorem forestEquivTree_symm_apply (t : BinaryTree Unit) :
+    forestEquivTree.symm t = BinaryTree.decodeForest t := rfl
 
 /-- The encoding preserves size: the number of internal nodes of the encoded binary tree
 equals the number of nodes of the plane forest.  (Each plane-tree root becomes one binary
@@ -133,8 +134,8 @@ internal node.) -/
 theorem numNodes_encode : ∀ f : PlaneForest, (encode f).numNodes = numNodes f
   | [] => by simp [numNodes]
   | (PlaneTree.node cs) :: rest => by
-      rw [encode_cons, Tree.numNodes, numNodes_encode cs, numNodes_encode rest]
-      simp only [numNodes]
+      simp only [encode_cons, BinaryTree.numNodes, numNodes, numNodes_encode cs,
+        numNodes_encode rest]
       ring
 
 end PlaneForest
@@ -154,7 +155,7 @@ noncomputable def forestEquivDyck : PlaneForest ≃ DyckWord :=
 /-- Size-refined bijection: plane forests with `n` nodes correspond to binary trees with
 `n` internal nodes. -/
 def forestEquivTreeSubtype (n : ℕ) :
-    { f : PlaneForest // numNodes f = n } ≃ { t : Tree Unit // t.numNodes = n } :=
+    { f : PlaneForest // numNodes f = n } ≃ { t : BinaryTree Unit // t.numNodes = n } :=
   forestEquivTree.subtypeEquiv fun f => by
     simp [forestEquivTree_apply, numNodes_encode]
 
@@ -164,11 +165,15 @@ noncomputable def forestEquivDyckSubtype (n : ℕ) :
     { f : PlaneForest // numNodes f = n } ≃ { p : DyckWord // p.semilength = n } :=
   (forestEquivTreeSubtype n).trans
     { toFun := fun ⟨t, ht⟩ => ⟨DyckWord.equivTree.symm t, by
-        rw [DyckWord.semilength_eq_numNodes_equivTree, Equiv.apply_symm_apply, ht]⟩
+        rw [DyckWord.equivTree_symm_apply, ← DyckWord.numNodes_toTree, DyckWord.toTree_ofTree]
+        exact ht⟩
       invFun := fun ⟨p, hp⟩ => ⟨DyckWord.equivTree p, by
-        rw [← DyckWord.semilength_eq_numNodes_equivTree, hp]⟩
-      left_inv := fun ⟨t, _⟩ => by simp
-      right_inv := fun ⟨p, _⟩ => by simp }
+        rw [DyckWord.equivTree_apply, DyckWord.numNodes_toTree]
+        exact hp⟩
+      left_inv := fun ⟨t, _⟩ => by simp [DyckWord.equivTree_symm_apply, DyckWord.equivTree_apply,
+        DyckWord.toTree_ofTree]
+      right_inv := fun ⟨p, _⟩ => by simp [DyckWord.equivTree_symm_apply, DyckWord.equivTree_apply,
+        DyckWord.ofTree_toTree] }
 
 noncomputable instance fintypeNumNodes (n : ℕ) :
     Fintype { f : PlaneForest // numNodes f = n } :=
