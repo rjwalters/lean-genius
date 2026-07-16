@@ -65,22 +65,23 @@ theorem thomae_irrational {x : ℝ} (hx : Irrational x) : thomae x = 0 := by
   unfold thomae
   rw [dif_neg]
   intro ⟨q, hq⟩
-  exact hx ⟨q, hq.symm⟩
+  exact hx ⟨q, hq⟩
 
 /-- Thomae's function is nonneg everywhere. -/
 theorem thomae_nonneg (x : ℝ) : 0 ≤ thomae x := by
   unfold thomae
-  split
+  split_ifs with h
   · positivity
-  · le_refl
+  · exact le_refl 0
 
 /-- Thomae's function is bounded above by 1. -/
 theorem thomae_le_one (x : ℝ) : thomae x ≤ 1 := by
   unfold thomae
-  split
-  · have hden : (0 : ℝ) < ↑(Exists.choose ‹_›).den := by positivity
-    exact div_le_one_of_le (le_of_eq rfl) (le_of_lt hden)
-  · linarith
+  split_ifs with h
+  · have hpos : (0 : ℝ) < (h.choose.den : ℝ) := by exact_mod_cast h.choose.pos
+    rw [div_le_one hpos]
+    exact_mod_cast Nat.one_le_iff_ne_zero.mpr h.choose.den_nz
+  · norm_num
 
 /-
 ## Part II: Thomae's Function is Zero Almost Everywhere
@@ -90,17 +91,17 @@ theorem thomae_le_one (x : ℝ) : thomae x ≤ 1 := by
 theorem thomae_support_subset_rationals :
     {x : ℝ | thomae x ≠ 0} ⊆ Set.range (Rat.cast : ℚ → ℝ) := by
   intro x hx
+  simp only [Set.mem_setOf_eq] at hx
   unfold thomae at hx
   by_contra h
   rw [Set.mem_range] at h
-  push_neg at h
-  simp only [dif_neg (show ¬∃ q : ℚ, (q : ℝ) = x from h)] at hx
+  simp only [dif_neg h] at hx
+  exact hx rfl
 
 /-- Thomae's function is zero almost everywhere (w.r.t. Lebesgue measure).
     Proof: the support is contained in ℚ, which has measure zero. -/
 theorem thomae_ae_zero : ∀ᵐ x ∂volume, thomae x = 0 := by
-  rw [Filter.Eventually, ae_iff]
-  suffices h : volume {x : ℝ | thomae x ≠ 0} = 0 from h
+  apply ae_iff.mpr
   exact measure_mono_null thomae_support_subset_rationals
     (Set.Countable.measure_zero (Set.countable_range _) volume)
 
@@ -129,27 +130,26 @@ noncomputable def dirichlet : ℝ → ℝ := fun x =>
 
 /-- Thomae's function is pointwise ≤ the Dirichlet function. -/
 theorem thomae_le_dirichlet (x : ℝ) : thomae x ≤ dirichlet x := by
-  unfold thomae dirichlet
-  split
-  · split
-    · exact div_le_one_of_le (le_of_eq rfl) (by positivity)
-    · exact absurd ‹_› ‹_›
-  · split
-    · linarith
-    · le_refl
+  unfold dirichlet
+  split_ifs with h
+  · exact thomae_le_one x
+  · have hz : thomae x = 0 := by
+      unfold thomae
+      rw [dif_neg h]
+    simp [hz]
 
 /-- Both functions have the same Lebesgue integral (zero). -/
 theorem dirichlet_integral_zero : ∫ x, dirichlet x ∂volume = 0 := by
   apply integral_eq_zero_of_ae
-  rw [Filter.Eventually, ae_iff]
-  suffices h : volume {x : ℝ | dirichlet x ≠ 0} = 0 from h
+  apply ae_iff.mpr
   apply measure_mono_null (show {x : ℝ | dirichlet x ≠ 0} ⊆ Set.range (Rat.cast : ℚ → ℝ) from ?_)
   · exact Set.Countable.measure_zero (Set.countable_range _) volume
   · intro x hx
+    simp only [Set.mem_setOf_eq] at hx
     unfold dirichlet at hx
     by_contra h
     rw [Set.mem_range] at h
-    push_neg at h
-    simp only [dif_neg h] at hx
+    simp only [if_neg h] at hx
+    exact hx rfl
 
 end LebesgueMeasureOQ01OQ01
