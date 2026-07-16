@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 289 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos10OQ01Incomplete01 (ROOT-CAUSE fix not heartbeat hack: omega/decide
+2^a%q kernel whnf blowup under HPow -> norm_num for concrete 2^k%q + Eq.trans chains; 1.8s vs 200k-heartbeat
+timeout). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 288 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): AreaOfCircleOQ05OQ01Incomplete01 (Measure.volume_eq_prod unfold before
