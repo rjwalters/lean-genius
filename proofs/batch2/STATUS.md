@@ -1,3 +1,14 @@
+# DOCTOR SINGLE-PROOF BATCH 361 (FABLE DEEP-REWORK, #38065, 2026-07-16)
+
+**+1 GREEN (deep-rework, FABLE, 205k tok)**: Erdos1109Problem (rebuilt residue-counting core:
+beta-reduce InjOn hyps + explicit Nat.min_eq_left/right (omega no longer sees through min beta-redexes);
+variable-modulus/big-constant omega-divisibility CRT -> Nat.ModEq + modEq_and_modEq_iff_modEq_mul +
+norm_num coprimality (kills omega fails + 800k/1600k heartbeat timeouts); set_option above doc comments;
+card_sdiff -> sdiff_singleton_eq_erase+card_erase_of_mem; card_le_card_of_injOn MapsTo reorder; mem_image
+∃-orientation .symm; positivity rejects ≥1 -> Nat.mul_pos+omega). #38611-adjacent: closed genuine p=2
+self-complementary-residue gap v4.26 omega glossed over (no statement change). SECOND Fable deep-rework success.
+FABLE ESCALATION TEST COMPLETE: 2/2 deep-rework greens (Erdos60Problem, Erdos1109Problem) once capacity available.
+
 # DOCTOR SINGLE-PROOF BATCH 360 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework)**: AreaOfCircleOQ01OQ02OQ02OQ02OQ02 (NOT v4.31 drift — broken import:
