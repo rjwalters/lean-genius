@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 300 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos807Problem (independenceNumber dot-notation Set vs Finset -> annotate;
+#38611 REPAIR erw_conjecture_false provably-False against ERW_conjecture:=True stub -> redefined ¬∃c>0 proved
+from witness; QUALITY FLAG file otherwise placeholder/True-based). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 299 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos968Problem (native_decide on Nat.nth fails [noncomputable] -> REMOVED
