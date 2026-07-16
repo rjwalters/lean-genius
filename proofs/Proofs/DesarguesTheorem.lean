@@ -55,6 +55,8 @@ abstract projective planes.
 -/
 
 set_option linter.unusedVariables false
+set_option maxRecDepth 4000
+set_option maxHeartbeats 4000000
 
 open Matrix
 
@@ -63,7 +65,7 @@ open Matrix
 -- ============================================================
 
 /-- Notation for the cross product in ℝ³ -/
-local notation a " ×₃ " b => crossProduct a b
+local infixl:74 " ×₃ " => crossProduct
 
 /-- A point in the projective plane is represented as a nonzero vector in ℝ³.
     Two vectors represent the same projective point iff one is a scalar multiple
@@ -155,20 +157,21 @@ def perspectiveFromLine (A B C A' B' C' : ProjPoint) : Prop :=
 /-- The cross product of a vector with itself is zero. -/
 theorem crossProduct_self (a : Fin 3 → ℝ) : a ×₃ a = 0 := by
   ext i
-  fin_cases i <;> simp [crossProduct] <;> ring
+  fin_cases i <;> simp [cross_apply] <;> ring
 
 /-- Cross product identity: a ×₃ (b ×₃ c) = b * (a · c) - c * (a · b)
     This is the vector triple product / BAC-CAB rule. -/
 theorem cross_triple_product (a b c : Fin 3 → ℝ) :
     a ×₃ (b ×₃ c) = (∑ i, a i * c i) • b - (∑ i, a i * b i) • c := by
   ext i
-  fin_cases i <;> simp [crossProduct, Fin.sum_univ_three] <;> ring
+  fin_cases i <;> simp [cross_apply, Fin.sum_univ_three] <;> ring
 
 /-- The scalar triple product [a, b, c] = a · (b × c) equals the determinant of the
     matrix with a, b, c as rows. -/
 theorem scalar_triple_product_eq_det (a b c : Fin 3 → ℝ) :
     ∑ i, a i * (b ×₃ c) i = (threeVectorMatrix a b c).det := by
-  simp only [threeVectorMatrix, crossProduct, Matrix.det_fin_three, Matrix.of_apply]
+  simp [threeVectorMatrix, cross_apply, Matrix.det_fin_three, Matrix.of_apply,
+    Fin.sum_univ_three]
   ring
 
 /-- The determinant of the threeVectorMatrix expanded explicitly. -/
@@ -185,7 +188,20 @@ theorem crossProduct_components (a b : Fin 3 → ℝ) :
     (a ×₃ b) 0 = a 1 * b 2 - a 2 * b 1 ∧
     (a ×₃ b) 1 = a 2 * b 0 - a 0 * b 2 ∧
     (a ×₃ b) 2 = a 0 * b 1 - a 1 * b 0 := by
-  simp [crossProduct]
+  simp [cross_apply]
+
+/-- Component 0 of a cross product, as a standalone simp lemma (avoids chasing
+    `Matrix.cons_val`/`![...]` reduction through nested cross products). -/
+@[simp] theorem cross_val_zero (a b : Fin 3 → ℝ) : (a ×₃ b) 0 = a 1 * b 2 - a 2 * b 1 := by
+  simp [cross_apply]
+
+/-- Component 1 of a cross product. -/
+@[simp] theorem cross_val_one (a b : Fin 3 → ℝ) : (a ×₃ b) 1 = a 2 * b 0 - a 0 * b 2 := by
+  simp [cross_apply]
+
+/-- Component 2 of a cross product. -/
+@[simp] theorem cross_val_two (a b : Fin 3 → ℝ) : (a ×₃ b) 2 = a 0 * b 1 - a 1 * b 0 := by
+  simp [cross_apply]
 
 /-- If the first row of a 3x3 matrix is zero, det = 0 -/
 theorem threeVectorMatrix_det_zero_of_first_zero (v w : Fin 3 → ℝ) :
@@ -201,21 +217,23 @@ theorem threeVectorMatrix_det_zero_of_first_zero (v w : Fin 3 → ℝ) :
     This is THE key algebraic identity underlying Desargues's theorem.
 
     For vectors a, b, c, d, e, f in ℝ³:
-    det(a×b, c×d, e×f) can be expressed as a polynomial in the determinants
-    of various combinations of a, b, c, d, e, f.
+    det(a×b, c×d, e×f) = det(a, b, d) * det(c, e, f) - det(a, b, c) * det(d, e, f).
 
     This identity, proved by direct computation (the `ring` tactic verifies
     the polynomial equality), is what makes Desargues's theorem hold in ℝ³
-    (and more generally in any 3-dimensional vector space over a field). -/
+    (and more generally in any 3-dimensional vector space over a field).
+
+    Note: an earlier six-term formulation of this identity (a mirror-image
+    six-term sum) was algebraically false -- two of its terms silently
+    canceled, and the remaining four did not match `det(a×b, c×d, e×f)` on
+    generic inputs. The two-term formula below was re-derived from scratch
+    (verified both symbolically and on random rational test vectors) and is
+    the one actually used to close the goal via `ring`. -/
 theorem scalar_triple_of_cross_products (a b c d e f : Fin 3 → ℝ) :
     (threeVectorMatrix (a ×₃ b) (c ×₃ d) (e ×₃ f)).det =
-      (threeVectorMatrix a c e).det * (threeVectorMatrix b d f).det -
-      (threeVectorMatrix a c f).det * (threeVectorMatrix b d e).det -
-      (threeVectorMatrix a d e).det * (threeVectorMatrix b c f).det +
-      (threeVectorMatrix a d f).det * (threeVectorMatrix b c e).det +
-      (threeVectorMatrix a e f).det * (threeVectorMatrix b c d).det -
-      (threeVectorMatrix a e d).det * (threeVectorMatrix b c f).det := by
-  simp only [threeVectorMatrix_det_explicit, crossProduct]
+      (threeVectorMatrix a b d).det * (threeVectorMatrix c e f).det -
+      (threeVectorMatrix a b c).det * (threeVectorMatrix d e f).det := by
+  simp only [threeVectorMatrix_det_explicit, cross_val_zero, cross_val_one, cross_val_two]
   ring
 
 -- ============================================================
@@ -235,28 +253,34 @@ theorem scalar_triple_of_cross_products (a b c d e f : Fin 3 → ℝ) :
 
     The determinant det(P, Q, R) (which equals 0 iff P, Q, R collinear)
     equals det(AA', BB', CC') (which equals 0 iff AA', BB', CC' concurrent)
-    times a factor K.
+    times a factor K = det(A, B, C) * det(A', B', C'), i.e. K ≠ 0 exactly when
+    *neither* triangle ABC nor triangle A'B'C' is degenerate.
 
     This is verified by the `ring` tactic through direct polynomial computation
-    on the 18 coordinate variables. -/
+    on the 18 coordinate variables.
+
+    Note: an earlier version of this identity used
+    `K = det(A,B,C) * det(A',B',C') - det(A,B,C') * det(A',B',C)`. That
+    formula is algebraically false (confirmed by both a symbolic and a
+    numeric counterexample: `det(P,Q,R) / det(AA',BB',CC')` is not even
+    proportional to that expression on generic inputs). The true factor is
+    the simple product `det(A,B,C) * det(A',B',C')` derived below. -/
 theorem desargues_identity (A B C A' B' C' : Fin 3 → ℝ) :
     let P := (A ×₃ B) ×₃ (A' ×₃ B')
     let Q := (B ×₃ C) ×₃ (B' ×₃ C')
     let R := (C ×₃ A) ×₃ (C' ×₃ A')
     let concurrenceDet := (threeVectorMatrix (A ×₃ A') (B ×₃ B') (C ×₃ C')).det
     (threeVectorMatrix P Q R).det =
-      concurrenceDet * (
-        (threeVectorMatrix A B C).det * (threeVectorMatrix A' B' C').det -
-        (threeVectorMatrix A B C').det * (threeVectorMatrix A' B' C).det
-      ) := by
-  simp only [threeVectorMatrix_det_explicit, crossProduct]
+      concurrenceDet *
+        ((threeVectorMatrix A B C).det * (threeVectorMatrix A' B' C').det) := by
+  simp only [threeVectorMatrix_det_explicit, cross_val_zero, cross_val_one, cross_val_two]
   ring
 
 /-- The "K factor" in Desargues's identity, representing the non-degeneracy
-    condition for the converse direction. -/
+    condition for the converse direction: `K ≠ 0` iff neither triangle ABC
+    nor triangle A'B'C' is degenerate. -/
 noncomputable def desargues_K (A B C A' B' C' : Fin 3 → ℝ) : ℝ :=
-  (threeVectorMatrix A B C).det * (threeVectorMatrix A' B' C').det -
-  (threeVectorMatrix A B C').det * (threeVectorMatrix A' B' C).det
+  (threeVectorMatrix A B C).det * (threeVectorMatrix A' B' C').det
 
 /-- The Desargues identity restated using K. -/
 theorem desargues_identity' (A B C A' B' C' : Fin 3 → ℝ) :
@@ -265,7 +289,8 @@ theorem desargues_identity' (A B C A' B' C' : Fin 3 → ℝ) :
     let R := (C ×₃ A) ×₃ (C' ×₃ A')
     (threeVectorMatrix P Q R).det =
       (threeVectorMatrix (A ×₃ A') (B ×₃ B') (C ×₃ C')).det * desargues_K A B C A' B' C' := by
-  simp only [desargues_K, threeVectorMatrix_det_explicit, crossProduct]
+  simp only [desargues_K, threeVectorMatrix_det_explicit, cross_val_zero, cross_val_one,
+    cross_val_two]
   ring
 
 -- ============================================================
@@ -313,9 +338,9 @@ theorem desargues_theorem (A B C A' B' C' : ProjPoint)
     Therefore det(AA', BB', CC') = 0 / K = 0, i.e., the lines are concurrent.
 
     **Note on non-degeneracy:**
-    The factor K = det(ABC) * det(A'B'C') - det(ABC') * det(A'B'C) measures
-    whether the two triangles are "in general position". It is nonzero when
-    neither triangle is degenerate and they are not specially aligned. -/
+    The factor K = det(ABC) * det(A'B'C') is nonzero exactly when neither
+    triangle ABC nor triangle A'B'C' is degenerate (i.e. both are genuine,
+    non-collinear triangles). -/
 theorem desargues_theorem_converse (A B C A' B' C' : ProjPoint)
     (hA : ProjPoint.valid A) (hB : ProjPoint.valid B) (hC : ProjPoint.valid C)
     (hA' : ProjPoint.valid A') (hB' : ProjPoint.valid B') (hC' : ProjPoint.valid C')
@@ -411,10 +436,10 @@ This is equivalent to the plane being coordinatizable by a division ring.
 
 ### The Non-Degeneracy Condition
 
-The factor K = det(ABC) * det(A'B'C') - det(ABC') * det(A'B'C) in our formalization
-captures the "general position" requirement. It is nonzero when:
-- Neither triangle ABC nor A'B'C' is degenerate (i.e., vertices are not collinear)
-- The triangles are not specially aligned
+The factor K = det(ABC) * det(A'B'C') in our formalization captures the
+non-degeneracy requirement for the converse direction. It is nonzero exactly
+when neither triangle ABC nor A'B'C' is degenerate (i.e., their vertices are
+not collinear).
 
 For most practical applications in computer graphics and vision, configurations
 are generic and K ≠ 0 holds automatically.
