@@ -253,7 +253,7 @@ BirthdayProblemOQ02OQ01	RESIDUAL	unknown-const:Finset.sum_range_id_eq_sum_range_
 BirthdayProblemOQ03OQ01	GREEN	
 BirthdayProblemOQ03OQ01OQ02	GREEN	
 BirthdayProblemOQ03OQ03	GREEN	proof-drift
-BorsukUlamOQ02	RESIDUAL	unknown-const:EuclideanSpace.equiv_symm_pi_lp_apply
+BorsukUlamOQ02	GREEN	
 BorsukUlamOQ02OQ01OQ01OQ02	GREEN	
 BorsukUlamOQ02OQ01OQ01OQ02OQ03	GREEN	
 BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01	GREEN	
@@ -370,7 +370,7 @@ CauchySchwarzOQ01OQ01OQ02OQ01	GREEN
 CauchySchwarzOQ01OQ02	RESIDUAL	instance-synth
 CauchySchwarzOQ01OQ03	RESIDUAL	unknown-const:inner_mul_le_norm_mul_sq
 CauchySchwarzOQ01OQ04	RESIDUAL	instance-synth
-CauchySchwarzOQ02	RESIDUAL	unknown-const:Finset.inner_mul_le_norm_mul_sq
+CauchySchwarzOQ02	GREEN	
 CauchySchwarzOQ03	GREEN	
 CauchySchwarzOQ03OQ02	GREEN	
 CauchySchwarzOQ03OQ02OQ01	GREEN	
@@ -1683,7 +1683,7 @@ Erdos777Problem	GREEN
 Erdos778Problem	GREEN	
 Erdos779Problem	GREEN	
 Erdos77Problem	GREEN	
-Erdos780Aristotle	RESIDUAL	unknown-const:Finset.disjoint_compl_right
+Erdos780Aristotle	GREEN	
 Erdos780Problem	RESIDUAL	signature-drift
 Erdos781Problem	GREEN	
 Erdos782Problem	RESIDUAL	type-mismatch
