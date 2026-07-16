@@ -539,7 +539,7 @@ DesarguesTheorem	RESIDUAL	type-mismatch
 DesarguesTheoremOQ01OQ01	GREEN
 DescartesRuleOfSignsOQ01OQ01	GREEN	
 DescartesRuleOfSignsOQ01OQ02	RESIDUAL	unknown-const:Even.add_even
-DescartesRuleOfSignsOQ02	RESIDUAL	rewrite-drift
+DescartesRuleOfSignsOQ02	GREEN	
 DescartesRuleOfSignsOQ02OQ01	RESIDUAL	rewrite-drift
 DescartesRuleOfSignsOQ02Parity	GREEN	proof-drift
 DescartesRuleOfSignsOQ04	RESIDUAL	unknown-const:Multiset.countP_singleton

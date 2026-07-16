@@ -7,6 +7,7 @@ import Mathlib.Algebra.Polynomial.Derivative
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 import Mathlib.Analysis.Calculus.LocalExtr.Rolle
+import Mathlib.Analysis.Calculus.Deriv.Polynomial
 
 set_option maxHeartbeats 800000
 
@@ -427,10 +428,9 @@ theorem iterDeriv_eval_zero (p : ℝ[X]) (k : ℕ) :
 
 /-- Two lists with the same zero/sign pattern produce identical sign lists,
     hence the same signChangesInList count. Proved by induction on the lists. -/
-private theorem signList_eq_of_same_signs : ∀ (l₁ l₂ : List ℝ),
-    l₁.length = l₂.length →
-    (∀ i, (h₁ : i < l₁.length) → (l₁[i] = 0 ↔ l₂[i]'(by omega) = 0)) →
-    (∀ i, (h₁ : i < l₁.length) → (l₁[i] > 0 ↔ l₂[i]'(by omega) > 0)) →
+private theorem signList_eq_of_same_signs : ∀ (l₁ l₂ : List ℝ) (hlen : l₁.length = l₂.length),
+    (∀ i, (h₁ : i < l₁.length) → (l₁[i] = 0 ↔ l₂[i]'(hlen ▸ h₁) = 0)) →
+    (∀ i, (h₁ : i < l₁.length) → (l₁[i] > 0 ↔ l₂[i]'(hlen ▸ h₁) > 0)) →
     (l₁.filter (· ≠ 0)).map (fun x => if x > 0 then (1 : ℤ) else -1) =
     (l₂.filter (· ≠ 0)).map (fun x => if x > 0 then (1 : ℤ) else -1)
   | [], [], _, _, _ => by simp
@@ -446,18 +446,16 @@ private theorem signList_eq_of_same_signs : ∀ (l₁ l₂ : List ℝ),
       fun i hi => hsign (i + 1) (by simp; omega)
     by_cases h0 : hd₁ = 0
     · have h0' : hd₂ = 0 := hzero0.mp h0
-      simp only [List.filter_cons]
-      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₁ = false from by simp [h0]]
-      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₂ = false from by simp [h0']]
-      simp only [Bool.false_eq_true, ↓reduceIte]
+      rw [List.filter_cons_of_neg (by simp [h0]), List.filter_cons_of_neg (by simp [h0'])]
       exact signList_eq_of_same_signs tl₁ tl₂ hlen' hzero' hsign'
     · have h0' : hd₂ ≠ 0 := fun he => h0 (hzero0.mpr he)
-      simp only [List.filter_cons]
-      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₁ = true from by simp [h0]]
-      rw [show (fun x : ℝ => decide (x ≠ 0)) hd₂ = true from by simp [h0']]
-      simp only [↓reduceIte, List.map_cons]
+      rw [List.filter_cons_of_pos (by simp [h0]), List.filter_cons_of_pos (by simp [h0'])]
+      simp only [List.map_cons]
       congr 1
-      · rw [show (hd₁ > 0) = (hd₂ > 0) from propext hsign0]
+      · by_cases hp : hd₁ > 0
+        · simp [hp, hsign0.mp hp]
+        · have hp2 : ¬ hd₂ > 0 := fun h => hp (hsign0.mpr h)
+          simp [hp, not_lt.mp hp2]
       · exact signList_eq_of_same_signs tl₁ tl₂ hlen' hzero' hsign'
 
 /-- If two lists have the same zero/sign pattern, signChangesInList is equal. -/
@@ -485,18 +483,27 @@ theorem budanCount_zero_eq_coeff_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
   rw [hseq]
   -- The two lists are (range (n+1)).map (fun k => k! * a_k) and (range (n+1)).map a_k
   -- They have the same length and same zero/sign pattern since k! > 0
-  apply signChangesInList_congr
-  · simp
-  · intro i hi
+  have hlen : ((List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k)).length =
+      ((List.range (p.natDegree + 1)).map p.coeff).length := by simp
+  have hzero : ∀ i,
+      (h₁ : i < ((List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k)).length) →
+      (((List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k))[i] = 0 ↔
+        ((List.range (p.natDegree + 1)).map p.coeff)[i]'(by omega) = 0) := by
+    intro i hi
     simp only [List.length_map, List.length_range] at hi
     simp only [List.getElem_map, List.getElem_range]
     constructor
     · intro h; exact (mul_eq_zero.mp h).resolve_left (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _))
     · intro h; simp [h]
-  · intro i hi
+  have hsign : ∀ i,
+      (h₁ : i < ((List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k)).length) →
+      (((List.range (p.natDegree + 1)).map (fun k => (k.factorial : ℝ) * p.coeff k))[i] > 0 ↔
+        ((List.range (p.natDegree + 1)).map p.coeff)[i]'(by omega) > 0) := by
+    intro i hi
     simp only [List.length_map, List.length_range] at hi
     simp only [List.getElem_map, List.getElem_range]
     exact mul_pos_iff_of_pos_left (Nat.cast_pos.mpr (Nat.factorial_pos _))
+  exact signChangesInList_congr _ _ hlen hzero hsign
 
 /-
 ## Part IX: Structural Theorems
@@ -524,31 +531,26 @@ private theorem countAdjacentDiffs_neg : ∀ (l : List ℤ),
   | [] => by simp
   | [_] => by simp
   | a :: b :: rest => by
+    have ih : countAdjacentDiffs ((-b) :: rest.map (-·)) = countAdjacentDiffs (b :: rest) := by
+      simpa using countAdjacentDiffs_neg (b :: rest)
     change (if -a ≠ -b then 1 else 0) + countAdjacentDiffs ((-b) :: rest.map (-·)) =
            (if a ≠ b then 1 else 0) + countAdjacentDiffs (b :: rest)
-    rw [show (-a ≠ -b) = (a ≠ b) from propext (by constructor <;> intro h he <;> exact h (neg_inj.mpr he))]
+    rw [ih]
     congr 1
-    exact countAdjacentDiffs_neg (b :: rest)
+    by_cases h : a = b <;> simp [h]
 
 /-- Filter commutes with constant nonzero multiplication. -/
 private theorem filter_ne_zero_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0) :
     (l.map (c * ·)).filter (· ≠ (0 : ℝ)) =
     (l.filter (· ≠ (0 : ℝ))).map (c * ·) := by
-  induction l with
-  | nil => simp
-  | cons hd tl ih =>
-    simp only [List.map_cons, List.filter_cons]
-    by_cases h : hd = 0
-    · rw [show (fun x : ℝ => decide (x ≠ 0)) (c * hd) = false from by simp [h]]
-      rw [show (fun x : ℝ => decide (x ≠ 0)) hd = false from by simp [h]]
-      simp only [Bool.false_eq_true, ↓reduceIte]
-      exact ih
-    · have hne : c * hd ≠ 0 := mul_ne_zero hc h
-      rw [show (fun x : ℝ => decide (x ≠ 0)) (c * hd) = true from by simp [hne]]
-      rw [show (fun x : ℝ => decide (x ≠ 0)) hd = true from by simp [h]]
-      simp only [↓reduceIte, List.map_cons]
-      congr 1
-      exact ih
+  rw [List.filter_map]
+  congr 1
+  apply List.filter_congr
+  intro x _
+  simp only [Function.comp]
+  by_cases h : x = 0
+  · simp [h]
+  · simp [h, mul_ne_zero hc h]
 
 /-- signChangesInList is invariant under nonzero scalar multiplication.
     Uses filter commutation and sign analysis (positive preserves, negative flips + negation invariance). -/
@@ -568,12 +570,12 @@ private theorem signChangesInList_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0
       rw [List.map_map]
       apply List.map_congr_left
       intro x hx
-      have hxne : x ≠ 0 := of_decide_eq_true (List.of_mem_filter hx)
+      have hxne : x ≠ 0 := by simpa using (List.mem_filter.mp hx).2
       simp only [Function.comp]
       by_cases hxp : x > 0
       · have : c * x < 0 := mul_neg_of_neg_of_pos hcn hxp
         simp [show ¬(c * x > 0) from not_lt.mpr (le_of_lt this), hxp]
-      · have hxn : x < 0 := lt_of_le_of_ne (not_lt.mp hxp) (Ne.symm hxne)
+      · have hxn : x < 0 := lt_of_le_of_ne (not_lt.mp hxp) hxne
         have : c * x > 0 := mul_pos_of_neg_of_neg hcn hxn
         simp [this, hxp]
     rw [key, countAdjacentDiffs_neg]
@@ -581,11 +583,11 @@ private theorem signChangesInList_map_mul (l : List ℝ) (c : ℝ) (hc : c ≠ 0
     congr 1
     apply List.map_congr_left
     intro x hx
-    have hxne : x ≠ 0 := of_decide_eq_true (List.of_mem_filter hx)
+    have hxne : x ≠ 0 := by simpa using (List.mem_filter.mp hx).2
     simp only [Function.comp]
     by_cases hxp : x > 0
     · simp [mul_pos hcp hxp, hxp]
-    · have hxn : x < 0 := lt_of_le_of_ne (not_lt.mp hxp) (Ne.symm hxne)
+    · have hxn : x < 0 := lt_of_le_of_ne (not_lt.mp hxp) hxne
       have : ¬(c * x > 0) := not_lt.mpr (le_of_lt (mul_neg_of_pos_of_neg hcp hxn))
       simp [this, hxp]
 
