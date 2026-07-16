@@ -134,9 +134,10 @@ Derived from the negation of the conjecture by classical logic.
 -/
 theorem counterexample_exists :
     ∃ A : Set ℕ, A.Infinite ∧ hasENRProperty A ∧ ¬isFiniteAPFreeUnion A := by
-  unfold ENRConjecture at enr_conjecture_false
-  push_neg at enr_conjecture_false
-  exact enr_conjecture_false
+  have h := enr_conjecture_false
+  unfold ENRConjecture at h
+  push_neg at h
+  exact h
 
 /- ## Part V: Connection to Szemerédi's Theorem -/
 
@@ -186,16 +187,19 @@ private theorem finset_pigeonhole {α : Type*} [DecidableEq α] (B : Finset α)
   have hsum : ∑ i : Fin k, (B.filter (fun x => f x = i)).card = B.card := by
     rw [← Finset.card_biUnion]
     · congr 1; ext x; simp [Finset.mem_biUnion, Finset.mem_filter]
-      exact ⟨fun hx => ⟨f x, hx, rfl⟩, fun ⟨_, hx, _⟩ => hx⟩
-    · intro i _ j _ hij x
-      simp [Finset.mem_filter]
-      intro _ hi hj; exact absurd (hi ▸ hj) fun h => hij (Fin.ext h)
-  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < k * B.card := by
+    · intro i _ j _ hij
+      simp only [Function.onFun]
+      rw [Finset.disjoint_left]
+      intro x hxi hxj
+      simp only [Finset.mem_filter] at hxi hxj
+      exact hij (hxi.2 ▸ hxj.2)
+  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < ∑ _i : Fin k, B.card := by
     apply Finset.sum_lt_sum
     · intro i _; exact le_of_lt (hall i)
     · exact ⟨⟨0, hk⟩, Finset.mem_univ _, hall ⟨0, hk⟩⟩
-  rw [← Finset.mul_sum] at hlt
-  omega
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hlt
+  rw [← Finset.mul_sum, hsum] at hlt
+  exact lt_irrefl _ hlt
 
 theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
     (parts : Fin k → Set ℕ)
@@ -230,7 +234,7 @@ theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
       rw [← hxa]; exact hassign x hxB
     refine ⟨C, hCsub, isAPFree_subset (hparts i) hCinParts, ?_⟩
     -- Show (1/k) * |B| ≤ |C|
-    rw [div_mul_eq_mul_div, one_mul, le_div_iff₀ hkR]
+    rw [ge_iff_le, div_mul_eq_mul_div, one_mul, div_le_iff₀ hkR, mul_comm]
     exact_mod_cast hi
 
 /- ## Part VII: Related Problems -/

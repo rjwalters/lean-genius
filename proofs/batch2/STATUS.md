@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 281 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos847Problem (unfold at axiom illegal -> local have; Disjoint now
+Function.onFun Disjoint -> simp only [Function.onFun]; rw doesn't see through GE.ge -> ge_iff_le + div_le_iff₀).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 280 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos919Problem (Order.succ/aleph_succ defeq shift -> ← aleph_zero;
