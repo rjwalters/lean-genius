@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 168 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos684Problem (PartENat->emultiplicity/multiplicity bridge; sum_nbij->
+sum_nbij'; qualified Nat.factorization_mul; Real.rpow_natCast; n=0 edge-gap fixed via case-split not
+weakening). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 167 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos814Problem (ℚ order imports; #38611 REPAIRS x3: sauermann c-vs-c'
