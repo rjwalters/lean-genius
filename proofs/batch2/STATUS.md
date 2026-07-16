@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 201 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos140Problem (Real.log_pos exact_mod_cast; div_lt_iff₀ mul_comm split;
+∀C:ℝ pin vs ℕ; _root_.dist_zero_right vs Nat.dist shadow; shared Fin 3 let i0/i1/i2 for omega). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 200 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1155OQ02 (forward-ref axiom reorder; import Pow.Asymptotics;

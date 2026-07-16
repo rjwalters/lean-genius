@@ -125,7 +125,8 @@ theorem r3_superlogarithmic (C : ℝ) (hC : C > 0) :
   intro N hN
   have hN3 : N ≥ 3 := le_of_max_le_left hN
   have hN_pos : (0 : ℝ) < (N : ℝ) := by positivity
-  have hlogN_pos : 0 < Real.log (N : ℝ) := Real.log_pos (by push_cast; omega)
+  have h1N : (1 : ℕ) < N := by omega
+  have hlogN_pos : 0 < Real.log (N : ℝ) := Real.log_pos (by exact_mod_cast h1N)
   have hlogC1_pos : 0 < (Real.log (N : ℝ)) ^ (C + 1) := rpow_pos_of_pos hlogN_pos _
   have hlogC_pos : 0 < (Real.log (N : ℝ)) ^ C := rpow_pos_of_pos hlogN_pos _
   -- Key: exp(K/ε) < N, hence K/ε < log N, hence K < ε · log N
@@ -138,7 +139,8 @@ theorem r3_superlogarithmic (C : ℝ) (hC : C > 0) :
     have hlog_gt : K / ε < Real.log (N : ℝ) := by
       calc K / ε = Real.log (Real.exp (K / ε)) := (Real.log_exp _).symm
         _ < Real.log ↑N := Real.log_lt_log (Real.exp_pos _) hN_gt_exp
-    rwa [div_lt_iff₀ hε] at hlog_gt
+    rw [div_lt_iff₀ hε] at hlog_gt
+    linarith
   calc (r3 N : ℝ)
       ≤ K * ↑N / (Real.log ↑N) ^ (C + 1) := hbound N hN3
     _ < ε * ↑N / (Real.log ↑N) ^ C := by
@@ -150,7 +152,7 @@ theorem r3_superlogarithmic (C : ℝ) (hC : C > 0) :
           _ = ε * ↑N * ((Real.log ↑N) ^ C * Real.log ↑N) := by ring
 
 /-- Density of 3-AP-free sets tends to 0 faster than any inverse power of log. -/
-theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto
+theorem r3_density_vanishes : ∀ C : ℝ, C > 0 → Filter.Tendsto
     (fun N => (r3 N : ℝ) * (Real.log N)^C / N) Filter.atTop (nhds 0) := by
   intro C hC
   rw [Metric.tendsto_atTop]
@@ -161,9 +163,10 @@ theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto
   have hNN₀ : N ≥ N₀ := le_trans (le_max_left _ _) hN
   have hN3 : N ≥ 3 := le_trans (le_max_right _ _) hN
   have hN_pos : (0 : ℝ) < (N : ℝ) := by positivity
-  have hlogN_pos : 0 < Real.log (N : ℝ) := Real.log_pos (by push_cast; omega)
+  have h1N : (1 : ℕ) < N := by omega
+  have hlogN_pos : 0 < Real.log (N : ℝ) := Real.log_pos (by exact_mod_cast h1N)
   have hlogC_pos : 0 < (Real.log (N : ℝ)) ^ C := rpow_pos_of_pos hlogN_pos _
-  rw [dist_zero_right, Real.norm_of_nonneg (by positivity)]
+  rw [_root_.dist_zero_right, Real.norm_of_nonneg (by positivity)]
   -- From r3_superlogarithmic: r3(N) < ε * N / (log N)^C
   -- Multiply by (log N)^C / N to get r3(N) * (log N)^C / N < ε
   have h := hN₀ N hNN₀
@@ -250,11 +253,14 @@ theorem finset3APFree_eq_finsetkAPFree_3 : ∀ A : Finset ℕ,
     intro h3AP vals hvals hAPk
     obtain ⟨_, a, d, hd, hform⟩ := hAPk
     -- Extract values: vals(0) = a, vals(1) = a + d, vals(2) = a + 2*d
-    have h0 := hform ⟨0, by omega⟩; simp at h0
-    have h1 := hform ⟨1, by omega⟩; simp at h1
-    have h2 := hform ⟨2, by omega⟩; simp at h2
+    let i0 : Fin 3 := ⟨0, by omega⟩
+    let i1 : Fin 3 := ⟨1, by omega⟩
+    let i2 : Fin 3 := ⟨2, by omega⟩
+    have h0 : vals i0 = a + 0 * d := hform i0
+    have h1 : vals i1 = a + 1 * d := hform i1
+    have h2 : vals i2 = a + 2 * d := hform i2
     -- Build IsAP3 and derive contradiction from h3AP
-    exact h3AP _ _ _ (hvals ⟨0, by omega⟩) (hvals ⟨1, by omega⟩) (hvals ⟨2, by omega⟩)
+    exact h3AP _ _ _ (hvals i0) (hvals i1) (hvals i2)
       ⟨by omega, by omega, by omega⟩
   · -- Backward: FinsetkAPFree 3 → Finset3APFree
     -- Given no 3-AP in A (by Fin 3 → ℕ), show no 3-AP in A (by triple)
