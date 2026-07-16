@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 67 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): ShannonSourceCodingOQ01 (import Proofs.ShannonEntropy for mutualInformation;
+superscript ²/λ no longer lex as identifier chars; div_le_div_of_nonneg_left 3-arg sig), Erdos501ProblemProvable
+(cascade off Erdos501Problem, mirrored sibling fixes: open scoped ENNReal, ENat.ne_top_iff_exists). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 66 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): FeuerbachsTheoremOQ01OQ03 (local def Foo.bar in different namespace no
