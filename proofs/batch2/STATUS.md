@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 303 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): ErdosKoRado (card_sdiff now unconditional -> card_sdiff_of_subset;
+card_bij surjectivity ∃a ha no constructor -> refine; #38611 REPAIR hm_bound_n7_k3 RHS 16-3+1 wrong ->
+15-3+1=13, old native_decide false-positive). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 302 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos358Problem (22min: forward-ref reorder; Nat.odd_iff_not_even->
