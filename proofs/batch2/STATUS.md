@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 120 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos447Problem (missing Data.Fintype.Fin/Powerset imports; #38611
+REPAIR: maxUnionFreeSize was ill-typed — filtered powerSet n with IsUnionFree [predicate on FAMILIES],
+now filters (powerSet n).powerset; affects axioms kleitman_theorem/lower_bound — flagged for re-audit).
+Repairs: 1 (#38611 Erdos447Problem def-semantics).
+
 # DOCTOR SINGLE-PROOF BATCH 119 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos107OQ01 (no edits; stale RESIDUAL from missing-cache cascade,
