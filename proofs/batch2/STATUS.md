@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 146 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos610Problem (namespace-wrap vs SimpleGraph.IsClique; noncomputable
+ErdosGallaiTuzaBound; open scoped Classical; (sorry:Prop) placeholders; Finset.mem_inter.mpr vs anon ctor;
+universe .{0} pin; #38611 REPAIR cliqueTransversalNumber unsound@empty V -> [Nonempty V]). Repairs: 1.
+Unblocks Erdos610Aristotle + Erdos610ProblemAristotle children.
+
 # DOCTOR SINGLE-PROOF BATCH 145 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos878Problem (ℝ has no Top -> =⊤/<⊤ on H x/x recast via
