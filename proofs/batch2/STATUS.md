@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 263 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FairGamesTheoremOQ03 (13min: stoppedValue_const/_neg vs .untopA rfl-mismatch;
+submartingale_iff needs StronglyAdapted -> hadapt.stronglyAdapted; ℝ≥0/ℝ≥0∞ scoped -> open scoped NNReal
+ENNReal). Repair: none. Unblocks FairGamesTheoremOQ02OQ01 (+OQ01OQ01).
+
 # DOCTOR SINGLE-PROOF BATCH 262 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): HarmonicDivergenceOQ02 (16min: mul_log_pos named n; Real.log_pow arg order;
