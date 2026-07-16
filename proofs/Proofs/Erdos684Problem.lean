@@ -190,7 +190,8 @@ theorem below_f_small (n k : ℕ) (_hn : n ≥ 2) (hk : k < f n) :
   by_contra h
   push_neg at h
   have hmem : k ∈ {k : ℕ | binomialSmoothPart n k > n ^ 2} := h
-  have := Nat.sInf_le hmem
+  have hle := Nat.sInf_le hmem
+  unfold f at hk
   omega
 
 /-
@@ -243,7 +244,7 @@ theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C :=
     Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (show 1 ≤ n by omega)) (by norm_num)
   -- Combine: smoothPart ≤ n^(3/2) ≤ n^2 = ↑(n^2)
   have h_cast : (n : ℝ) ^ (2 : ℝ) = (↑(n ^ 2) : ℝ) := by
-    push_cast; rw [Nat.cast_pow]; ring
+    rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, Nat.cast_pow]
   have h_le : (binomialSmoothPart n (f n) : ℝ) ≤ (↑(n ^ 2) : ℝ) := by
     calc (binomialSmoothPart n (f n) : ℝ) ≤ (n : ℝ) ^ ((3 : ℝ) / 2) := hN
       _ ≤ (n : ℝ) ^ (2 : ℝ) := h32
@@ -296,20 +297,30 @@ private theorem factorization_factorial_eq_legendreExponent (m p : ℕ) (hp : p.
     (m !).factorization p = legendreExponent m p := by
   -- Express factorization as Ico sum via multiplicity bridge
   have h_ico : (m !).factorization p = ∑ i ∈ Ico 1 (Nat.log p m + 2), m / p ^ i := by
-    have h1 : (↑((m !).factorization p) : PartENat) = multiplicity p (m !) :=
+    have h1 : (m !).factorization p = multiplicity p (m !) :=
       (multiplicity_eq_factorization hp (factorial_ne_zero m)).symm
-    have h2 : multiplicity p (m !) =
-        (↑(∑ i ∈ Ico 1 (Nat.log p m + 2), m / p ^ i) : PartENat) :=
-      hp.multiplicity_factorial (by omega)
-    exact_mod_cast h1.trans h2
+    have h2 : multiplicity p (m !) = ∑ i ∈ Ico 1 (Nat.log p m + 2), m / p ^ i :=
+      multiplicity_eq_of_emultiplicity_eq_some (hp.emultiplicity_factorial (by omega))
+    rw [h1, h2]
   rw [h_ico, legendreExponent]
   -- Re-index: ∑ i ∈ Ico 1 (N+2), m/p^i = ∑ j ∈ range (N+1), m/p^(j+1)
   symm
-  exact Finset.sum_nbij (· + 1)
-    (fun a ha => mem_Ico.mpr ⟨by omega, by rw [mem_range] at ha; omega⟩)
-    (fun a _ b _ h => by omega)
-    (fun b hb => ⟨b - 1, mem_range.mpr (by rw [mem_Ico] at hb; omega), by omega⟩)
-    (fun _ _ => rfl)
+  refine Finset.sum_nbij' (· + 1) (· - 1) ?_ ?_ ?_ ?_ ?_
+  · intro a ha
+    rw [mem_range] at ha
+    rw [mem_Ico]
+    omega
+  · intro b hb
+    rw [mem_Ico] at hb
+    rw [mem_range]
+    omega
+  · intro a _
+    omega
+  · intro b hb
+    rw [mem_Ico] at hb
+    omega
+  · intro a _
+    rfl
 
 -- Kummer's theorem: v_p(C(n,k)) via Legendre's formula
 -- v_p(C(n,k)) = v_p(n!) - v_p(k!) - v_p((n-k)!)
@@ -324,8 +335,8 @@ theorem kummer_theorem (n k p : ℕ) (hp : p.Prime) (hk : k ≤ n) :
   have h_add : (n !).factorization p =
       (Nat.choose n k).factorization p + (k !).factorization p + ((n - k) !).factorization p := by
     rw [show n ! = Nat.choose n k * k ! * (n - k) ! from hid.symm,
-        factorization_mul (mul_ne_zero hcnk hkf) hnkf, Finsupp.add_apply,
-        factorization_mul hcnk hkf, Finsupp.add_apply]
+        Nat.factorization_mul (mul_ne_zero hcnk hkf) hnkf, Finsupp.add_apply,
+        Nat.factorization_mul hcnk hkf, Finsupp.add_apply]
   rw [← factorization_factorial_eq_legendreExponent n p hp,
       ← factorization_factorial_eq_legendreExponent k p hp,
       ← factorization_factorial_eq_legendreExponent (n - k) p hp]
@@ -415,18 +426,27 @@ The problem remains OPEN. Best known bounds leave a large gap.
 -- is empty for small n (e.g., n = 2..9). The original statement with n ≥ 2 was false.
 theorem erdos_684_statement (n : ℕ) (hn : f_domain n) :
     ∃ k ≤ n, binomialSmoothPart n k > n^2 := by
-  use f n
-  constructor
-  · -- f(n) ≤ n: if f n > n then Choose(n, f n) = 0, so smoothPart = 1, contradicting > n²
-    by_contra h
-    push_neg at h
-    have hfp := f_property n hn
-    unfold binomialSmoothPart at hfp
-    rw [Nat.choose_eq_zero_of_lt h] at hfp
-    simp only [smoothPart, Nat.factorization_zero, Finsupp.zero_apply, pow_zero,
-      Finset.prod_const_one] at hfp
-    nlinarith [sq_nonneg n]
-  · exact f_property n hn
+  rcases Nat.eq_zero_or_pos n with h0 | hpos
+  · -- n = 0: witness k = 0 directly (C(0,0) = 1, its smooth part is 1 > 0 = n²).
+    subst h0
+    refine ⟨0, le_refl 0, ?_⟩
+    unfold binomialSmoothPart
+    rw [Nat.choose_zero_right, smoothPart_one]
+    norm_num
+  · use f n
+    constructor
+    · -- f(n) ≤ n: if f n > n then Choose(n, f n) = 0, so smoothPart = 1, contradicting > n²
+      by_contra h
+      push_neg at h
+      have hfp := f_property n hn
+      unfold binomialSmoothPart at hfp
+      rw [Nat.choose_eq_zero_of_lt h] at hfp
+      simp only [smoothPart, Nat.factorization_zero, Finsupp.zero_apply, pow_zero,
+        Finset.prod_const_one] at hfp
+      -- 1 > n² is impossible once n ≥ 1 (so n² ≥ 1)
+      have hn2 : 0 < n ^ 2 := pow_pos hpos 2
+      omega
+    · exact f_property n hn
 
 -- Known bounds summary
 -- Lower: f(n) ≥ (some function)
