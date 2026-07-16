@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 72 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CramersRuleOQ01OQ04 (charpoly_natDegree_eq_dim etc renamed; det_from_power_sums_2x2
+bare /2 on CommRing-no-Div -> 2*det=p1²-p2 division-free). INTEGRITY CHECK: agent flagged power_sums_determined_by_
+first_n as "weaker proof" — VERIFIED statement byte-identical (unchanged), the ∃f form is PRE-EXISTING trivially-true
+(constant f satisfies it), NOT a migration weakening; logged #38611 for gallery to consider strengthening.
+Confirms the "never-weaken" scrutiny process works: read the actual diff before trusting an agent's self-report.
+
 # DOCTOR SINGLE-PROOF BATCH 71 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): MorleysTheorem (Complex.abs shim: map_mul/abs_pow no longer unify -> unfold
