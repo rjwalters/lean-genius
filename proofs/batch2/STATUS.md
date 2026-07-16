@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 227 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos487Problem (mul_assoc mismatches; Finset.toSet removed -> ↑Set coercion;
+lcm(n^i,n^j)=n^max manual Nat.dvd_antisymm; pow_right_injective .symm; Nat.max_cases->max_cases dual-generated).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 226 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos402Problem (HARD 15min: Nat.mul_le_mul_left multiplier-first;

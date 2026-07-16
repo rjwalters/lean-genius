@@ -137,15 +137,17 @@ theorem coprime_multipliers_lcm_triple (a k m : ℕ) (ha : a > 0) (hk : k > 1) (
   constructor
   · -- a*m ≠ a*k*m since m ≠ k*m (k > 1)
     intro heq
-    have h1 : m = k * m := Nat.eq_of_mul_eq_mul_left ha heq
-    have h2 : 1 * m = k * m := by ring_nf; exact h1
+    have heq' : a * m = a * (k * m) := heq.trans (mul_assoc a k m)
+    have h1 : m = k * m := Nat.eq_of_mul_eq_mul_left ha heq'
+    have h2 : 1 * m = k * m := by rw [one_mul]; exact h1
     have h3 : 1 = k := Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero (by omega)) h2
     omega
   constructor
   · -- a*k ≠ a*k*m since k ≠ k*m (m > 1)
     intro heq
-    have h1 : k = k * m := Nat.eq_of_mul_eq_mul_left ha heq
-    have h2 : k * 1 = k * m := by ring_nf; exact h1
+    have heq' : a * k = a * (k * m) := heq.trans (mul_assoc a k m)
+    have h1 : k = k * m := Nat.eq_of_mul_eq_mul_left ha heq'
+    have h2 : k * 1 = k * m := by rw [mul_one]; exact h1
     have h3 : 1 = m := Nat.eq_of_mul_eq_mul_left (by omega) h2
     omega
   · -- lcm(a*k, a*m) = a*k*m when gcd(k,m) = 1
@@ -170,7 +172,7 @@ Union-free collections have size o(2^n), specifically at most
 axiom kleitman_1971 :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     ∀ F : Finset (Finset (Fin n)),
-      IsUnionFree (F.toSet.image (·.toSet)) →
+      IsUnionFree ((↑F : Set (Finset (Fin n))).image (fun s : Finset (Fin n) => (↑s : Set (Fin n)))) →
       (F.card : ℝ) ≤ (1 + ε) * Nat.choose n (n / 2)
 
 /--
@@ -187,7 +189,7 @@ Union-free collections are o(2^n) in size.
 theorem union_free_is_little_o :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       ∀ F : Finset (Finset (Fin n)),
-        IsUnionFree (F.toSet.image (·.toSet)) →
+        IsUnionFree ((↑F : Set (Finset (Fin n))).image (fun s : Finset (Fin n) => (↑s : Set (Fin n)))) →
         (F.card : ℝ) / 2^n < ε := by
   intro ε hε
   -- Get N₁ from Kleitman's theorem with ε' = 1
@@ -260,14 +262,19 @@ theorem powers_of_2_no_lcm_triple :
       a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ Nat.lcm a b = c := by
   intro ⟨a, b, c, ⟨i, ha⟩, ⟨j, hb⟩, ⟨k, hc⟩, hab, hca, hcb, hlcm⟩
   -- lcm(2^i, 2^j) = 2^(max i j)
-  have hlcm_pow : Nat.lcm (2^i) (2^j) = 2^(max i j) := Nat.Prime.pow_max_lcm Nat.prime_two
+  have hlcm_pow : Nat.lcm (2^i) (2^j) = 2^(max i j) := by
+    apply Nat.dvd_antisymm
+    · exact Nat.lcm_dvd (Nat.pow_dvd_pow 2 (le_max_left i j)) (Nat.pow_dvd_pow 2 (le_max_right i j))
+    · rcases max_choice i j with h | h
+      · rw [h]; exact Nat.dvd_lcm_left _ _
+      · rw [h]; exact Nat.dvd_lcm_right _ _
   rw [ha, hb] at hlcm
   rw [hlcm_pow] at hlcm
   -- So c = 2^(max i j), and max i j is either i or j
   rw [hc] at hlcm
-  have hk_eq : k = max i j := Nat.pow_right_injective (by norm_num : 1 < 2) hlcm
+  have hk_eq : k = max i j := Nat.pow_right_injective (by norm_num : 1 < 2) hlcm.symm
   -- Case split on whether max i j = i or max i j = j
-  rcases Nat.max_cases i j with (⟨hmax_eq, _⟩ | ⟨hmax_eq, _⟩)
+  rcases max_cases i j with (⟨hmax_eq, _⟩ | ⟨hmax_eq, _⟩)
   · -- max i j = i, so k = i, so c = a
     rw [hmax_eq] at hk_eq
     have : c = a := by rw [hc, ha, hk_eq]
@@ -345,7 +352,7 @@ theorem erdos_487_summary :
       ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ IsLCMTriple a b c) ∧
     -- Via Kleitman's theorem
     (∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ F : Finset (Finset (Fin n)),
-      IsUnionFree (F.toSet.image (·.toSet)) →
+      IsUnionFree ((↑F : Set (Finset (Fin n))).image (fun s : Finset (Fin n) => (↑s : Set (Fin n)))) →
       (F.card : ℝ) ≤ (1 + ε) * Nat.choose n (n / 2)) := by
   exact ⟨lcm_triple_in_dense_set, kleitman_1971⟩
 
