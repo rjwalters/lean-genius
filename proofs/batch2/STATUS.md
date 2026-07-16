@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 112 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos20Problem (Finset.inf id no OrderTop -> dif-guarded inf';
+pow_lt_pow_left->pow_lt_pow_left₀; #38611 REPAIR: gap_description iff false at n=0 -> restricted to
+1≤n, strictness via c+1 bump, no sorry/axiom). Repairs: 1 (#38611 Erdos20Problem).
+
 # DOCTOR SINGLE-PROOF BATCH 111 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos210Problem (def PointSet:=Finset Point -> abbrev; same
