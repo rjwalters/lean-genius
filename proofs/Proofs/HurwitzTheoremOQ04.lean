@@ -944,6 +944,7 @@ private lemma submodule_der_real_part
     refine key 3 4 (by decide) (by decide) (by decide) ?_
     funext k; fin_cases k <;> simp [eightMul, stdBasis]
 
+set_option maxHeartbeats 12800000 in
 /-- The evaluation map is injective: ev(D) = 0 forces D = 0.
 
     Proof outline: ev(D) = 0 combined with the Leibniz rule and antisymmetry
@@ -963,7 +964,7 @@ private lemma submodule_der_real_part
     - Conclude D = 0 by linearity -/
 private lemma derEval14_injective : Function.Injective derEval14 := by
   intro ⟨f, hf⟩ ⟨g, hg⟩ hfg
-  ext x
+  refine Subtype.ext (LinearMap.ext fun x => ?_)
   -- Suffices to show f - g = 0
   -- Let D = f - g; it's a derivation with ev(D) = 0
   suffices h : ∀ k : Fin 8, f (stdBasis k) = g (stdBasis k) by
@@ -971,7 +972,6 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
       intro x
       have : x = ∑ k : Fin 8, x k • stdBasis k := by
         funext j; simp [stdBasis, Finset.sum_apply]
-        simp [Finset.sum_ite_eq', Finset.mem_univ]
       rw [this]
       simp only [map_sum, map_smul, h]
     exact hflin x
@@ -1147,32 +1147,43 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             fin_cases i
             · exact absurd rfl hi
             · exact absurd rfl hij
-            · rw [antisym f hf 1 2 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 2 = g (stdBasis 1) 2
+              rw [antisym f hf 1 2 (by decide) (by decide) (by decide),
                   antisym g hg 1 2 (by decide) (by decide) (by decide), e0]
-            · rw [antisym f hf 1 3 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 3 = g (stdBasis 1) 3
+              rw [antisym f hf 1 3 (by decide) (by decide) (by decide),
                   antisym g hg 1 3 (by decide) (by decide) (by decide), e1]
-            · rw [antisym f hf 1 4 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 4 = g (stdBasis 1) 4
+              rw [antisym f hf 1 4 (by decide) (by decide) (by decide),
                   antisym g hg 1 4 (by decide) (by decide) (by decide), e2]
-            · rw [antisym f hf 1 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 5 = g (stdBasis 1) 5
+              rw [antisym f hf 1 5 (by decide) (by decide) (by decide),
                   antisym g hg 1 5 (by decide) (by decide) (by decide), e3]
-            · rw [antisym f hf 1 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 6 = g (stdBasis 1) 6
+              rw [antisym f hf 1 6 (by decide) (by decide) (by decide),
                   antisym g hg 1 6 (by decide) (by decide) (by decide), e4]
-            · rw [antisym f hf 1 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 1) 7 = g (stdBasis 1) 7
+              rw [antisym f hf 1 7 (by decide) (by decide) (by decide),
                   antisym g hg 1 7 (by decide) (by decide) (by decide), e5]
           · -- j = 2: i=1 direct; i ∈ {3,..,7} antisym of (i,2).
             fin_cases i
             · exact absurd rfl hi
             · exact e0
             · exact absurd rfl hij
-            · rw [antisym f hf 2 3 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 3 = g (stdBasis 2) 3
+              rw [antisym f hf 2 3 (by decide) (by decide) (by decide),
                   antisym g hg 2 3 (by decide) (by decide) (by decide), e6]
-            · rw [antisym f hf 2 4 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 4 = g (stdBasis 2) 4
+              rw [antisym f hf 2 4 (by decide) (by decide) (by decide),
                   antisym g hg 2 4 (by decide) (by decide) (by decide), e7]
-            · rw [antisym f hf 2 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 5 = g (stdBasis 2) 5
+              rw [antisym f hf 2 5 (by decide) (by decide) (by decide),
                   antisym g hg 2 5 (by decide) (by decide) (by decide), e8]
-            · rw [antisym f hf 2 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 6 = g (stdBasis 2) 6
+              rw [antisym f hf 2 6 (by decide) (by decide) (by decide),
                   antisym g hg 2 6 (by decide) (by decide) (by decide), e9]
-            · rw [antisym f hf 2 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 2) 7 = g (stdBasis 2) 7
+              rw [antisym f hf 2 7 (by decide) (by decide) (by decide),
                   antisym g hg 2 7 (by decide) (by decide) (by decide), e10]
           · -- j = 3: i=1 (e1), i=2 (e6) direct; i ∈ {4,5,6,7} antisym of Fano.
             fin_cases i
@@ -1180,13 +1191,17 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact e1
             · exact e6
             · exact absurd rfl hij
-            · rw [antisym f hf 3 4 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 4 = g (stdBasis 3) 4
+              rw [antisym f hf 3 4 (by decide) (by decide) (by decide),
                   antisym g hg 3 4 (by decide) (by decide) (by decide), F43]
-            · rw [antisym f hf 3 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 5 = g (stdBasis 3) 5
+              rw [antisym f hf 3 5 (by decide) (by decide) (by decide),
                   antisym g hg 3 5 (by decide) (by decide) (by decide), F53]
-            · rw [antisym f hf 3 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 6 = g (stdBasis 3) 6
+              rw [antisym f hf 3 6 (by decide) (by decide) (by decide),
                   antisym g hg 3 6 (by decide) (by decide) (by decide), F63]
-            · rw [antisym f hf 3 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 3) 7 = g (stdBasis 3) 7
+              rw [antisym f hf 3 7 (by decide) (by decide) (by decide),
                   antisym g hg 3 7 (by decide) (by decide) (by decide), F73]
           · -- j = 4: i=1 (e2), i=2 (e7), i=3 (F43); i ∈ {5,6,7} antisym of ev.
             fin_cases i
@@ -1195,11 +1210,14 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact e7
             · exact F43
             · exact absurd rfl hij
-            · rw [antisym f hf 4 5 (by decide) (by decide) (by decide),
+            · show f (stdBasis 4) 5 = g (stdBasis 4) 5
+              rw [antisym f hf 4 5 (by decide) (by decide) (by decide),
                   antisym g hg 4 5 (by decide) (by decide) (by decide), e11]
-            · rw [antisym f hf 4 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 4) 6 = g (stdBasis 4) 6
+              rw [antisym f hf 4 6 (by decide) (by decide) (by decide),
                   antisym g hg 4 6 (by decide) (by decide) (by decide), e12]
-            · rw [antisym f hf 4 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 4) 7 = g (stdBasis 4) 7
+              rw [antisym f hf 4 7 (by decide) (by decide) (by decide),
                   antisym g hg 4 7 (by decide) (by decide) (by decide), e13]
           · -- j = 5: i=1 (e3), i=2 (e8), i=3 (F53), i=4 (e11); i ∈ {6,7} antisym of Fano.
             fin_cases i
@@ -1209,9 +1227,11 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact F53
             · exact e11
             · exact absurd rfl hij
-            · rw [antisym f hf 5 6 (by decide) (by decide) (by decide),
+            · show f (stdBasis 5) 6 = g (stdBasis 5) 6
+              rw [antisym f hf 5 6 (by decide) (by decide) (by decide),
                   antisym g hg 5 6 (by decide) (by decide) (by decide), F65]
-            · rw [antisym f hf 5 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 5) 7 = g (stdBasis 5) 7
+              rw [antisym f hf 5 7 (by decide) (by decide) (by decide),
                   antisym g hg 5 7 (by decide) (by decide) (by decide), F75]
           · -- j = 6: i=1 (e4), i=2 (e9), i=3 (F63), i=4 (e12), i=5 (F65); i=7 antisym.
             fin_cases i
@@ -1222,7 +1242,8 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
             · exact e12
             · exact F65
             · exact absurd rfl hij
-            · rw [antisym f hf 6 7 (by decide) (by decide) (by decide),
+            · show f (stdBasis 6) 7 = g (stdBasis 6) 7
+              rw [antisym f hf 6 7 (by decide) (by decide) (by decide),
                   antisym g hg 6 7 (by decide) (by decide) (by decide), F76]
           · -- j = 7: i=1 (e5), i=2 (e10), i=3 (F73), i=4 (e13), i=5 (F75), i=6 (F76).
             fin_cases i
@@ -1259,7 +1280,8 @@ private lemma derEval14_injective : Function.Injective derEval14 := by
 set_option maxHeartbeats 6400000 in
 private lemma derBasis14_linearIndependent :
     LinearIndependent ℝ derBasis14 := by
-  rw [Fintype.linearIndependent_iff]
+  apply (Fintype.linearIndependent_iff
+    (R := ℝ) (M := (↥OctonionDerSubmodule)) (v := derBasis14)).mpr
   intro g hg
   -- Apply derEval14 to the zero-sum equation
   have hzero : ∀ k : Fin 14,
@@ -1267,8 +1289,9 @@ private lemma derBasis14_linearIndependent :
     intro k
     have h1 : ∑ i : Fin 14, g i • derEval14 (derBasis14 i) = 0 := by
       calc ∑ i, g i • derEval14 (derBasis14 i)
-          = ∑ i, derEval14 (g i • derBasis14 i) := by
-            congr 1; ext i; exact (map_smul derEval14 (g i) (derBasis14 i)).symm
+          = ∑ i, derEval14 (g i • derBasis14 i) :=
+            Finset.sum_congr rfl
+              (fun i _ => (map_smul derEval14 (g i) (derBasis14 i)).symm)
         _ = derEval14 (∑ i, g i • derBasis14 i) := (map_sum derEval14 _ _).symm
         _ = derEval14 0 := by rw [hg]
         _ = 0 := map_zero _
@@ -1292,28 +1315,42 @@ private lemma derBasis14_linearIndependent :
     d12, d13, d14, d15, d16, d17, d23, d24, d25, d26, d27, d45, d46, d47,
     stdBasis,
     mul_zero, mul_one, zero_mul, one_mul, mul_neg, neg_mul,
-    neg_zero, neg_neg, add_zero, zero_add, sub_zero] at
-    eq0 eq1 eq2 eq3 eq4 eq5 eq6 eq7 eq8 eq9 eq10 eq11 eq12 eq13
+    neg_zero, neg_neg, add_zero, zero_add, sub_zero]
+    at eq0 eq1 eq2 eq3 eq4 eq5 eq6 eq7 eq8 eq9 eq10 eq11 eq12 eq13
   -- After simp, each eq_k is a linear equation: e.g., eq0 : g 0 * (-4) + g 13 * 2 = 0
   -- The 7 block pairs: (0,13), (1,12), (2,10), (3,9), (4,8), (5,7), (6,11)
   -- Each block gives a 2×2 system with det = 12, forcing the pair to 0.
   intro i
-  fin_cases i <;> nlinarith
+  fin_cases i
+  · show g 0 = 0; nlinarith
+  · show g 1 = 0; nlinarith
+  · show g 2 = 0; nlinarith
+  · show g 3 = 0; nlinarith
+  · show g 4 = 0; nlinarith
+  · show g 5 = 0; nlinarith
+  · show g 6 = 0; nlinarith
+  · show g 7 = 0; nlinarith
+  · show g 8 = 0; nlinarith
+  · show g 9 = 0; nlinarith
+  · show g 10 = 0; nlinarith
+  · show g 11 = 0; nlinarith
+  · show g 12 = 0; nlinarith
+  · show g 13 = 0; nlinarith
 
 /-- **Der(𝕆) has dimension 14**: finrank ℝ OctonionDerSubmodule = 14. -/
 theorem G2_der_dimension :
-    FiniteDimensional.finrank ℝ OctonionDerSubmodule = ExceptionalType.G2.dim := by
-  show FiniteDimensional.finrank ℝ OctonionDerSubmodule = 14
+    Module.finrank ℝ OctonionDerSubmodule = ExceptionalType.G2.dim := by
+  show Module.finrank ℝ OctonionDerSubmodule = 14
   apply le_antisymm
   · -- Upper bound: ≤ 14 via injective ev map to ℝ^14
-    have hle : FiniteDimensional.finrank ℝ OctonionDerSubmodule ≤
-               FiniteDimensional.finrank ℝ (Fin 14 → ℝ) :=
+    have hle : Module.finrank ℝ OctonionDerSubmodule ≤
+               Module.finrank ℝ (Fin 14 → ℝ) :=
       LinearMap.finrank_le_finrank_of_injective derEval14_injective
     simp [Module.finrank_fin_fun] at hle
     exact hle
   · -- Lower bound: ≥ 14 via 14 linearly independent derivations
     have hli := derBasis14_linearIndependent
-    have : Fintype.card (Fin 14) ≤ FiniteDimensional.finrank ℝ OctonionDerSubmodule :=
+    have : Fintype.card (Fin 14) ≤ Module.finrank ℝ OctonionDerSubmodule :=
       hli.fintype_card_le_finrank
     simpa using this
 
