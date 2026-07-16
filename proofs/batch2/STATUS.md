@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 236 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos682Problem (if_neg unfold; norm_num prime ext import; div_div_cancel_left₀
+gone->field_simp; filter_card_add->card_filter_add_card_filter_not; #38611 REPAIR one_rough_all false@m=1
+[leastPrimeFactor 1=0 sentinel] -> m>1; gallery erdos-682 meta update). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 235 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos570Problem (CycleGraph.loopless case-split not symbolic-mod omega;
