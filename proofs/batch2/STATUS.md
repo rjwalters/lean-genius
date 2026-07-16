@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 208 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos152Problem (HARD 18min: Finset.card_bij Prod-eq ordering; A.image+
+congrArg vs map embedding; additive form vs nat-trunc-sub for omega nonlinear atoms; Finset.mem_coe for
+card_le_card_of_injOn Set.MapsTo). Repair: none. Unblocks Erdos152OQ01.
+
 # DOCTOR SINGLE-PROOF BATCH 207 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1201Problem (HARD 20min density-theory: div_le_one_of_le₀;
