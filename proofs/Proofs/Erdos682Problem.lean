@@ -37,6 +37,7 @@ import Mathlib.NumberTheory.Primorial
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Order.OrderIsoNat
+import Mathlib.Tactic.NormNum.Prime
 
 open scoped Classical
 
@@ -71,7 +72,8 @@ noncomputable def leastPrimeFactor (m : ℕ) : ℕ :=
 -/
 theorem leastPrimeFactor_prime (m : ℕ) (hm : m > 1) :
     Nat.Prime (leastPrimeFactor m) := by
-  simp [leastPrimeFactor, hm]
+  unfold leastPrimeFactor
+  rw [if_neg (by omega)]
   exact Nat.minFac_prime (hm.ne')
 
 /--
@@ -79,7 +81,8 @@ theorem leastPrimeFactor_prime (m : ℕ) (hm : m > 1) :
 -/
 theorem leastPrimeFactor_dvd (m : ℕ) (hm : m > 1) :
     leastPrimeFactor m ∣ m := by
-  simp [leastPrimeFactor, hm]
+  unfold leastPrimeFactor
+  rw [if_neg (by omega)]
   exact Nat.minFac_dvd m
 
 /-
@@ -96,12 +99,13 @@ def isKRough (m k : ℕ) : Prop :=
 
 /--
 **1-Rough Characterization:**
-Every positive integer is 1-rough.
+Every integer m > 1 is 1-rough (its least prime factor is ≥ 2 ≥ 1). Note: m = 1 is
+excluded — `leastPrimeFactor 1 = 0`, the sentinel used to represent p(1) = ∞, which
+cannot be compared against a finite bound via `≥`.
 -/
-theorem one_rough_all (m : ℕ) (hm : m ≥ 1) : isKRough m 1 := by
-  constructor
-  · exact hm
-  · simp
+theorem one_rough_all (m : ℕ) (hm : m > 1) : isKRough m 1 := by
+  refine ⟨hm.le, ?_⟩
+  exact (leastPrimeFactor_prime m hm).one_lt.le
 
 /--
 **Rough Number Examples:**
@@ -109,8 +113,8 @@ theorem one_rough_all (m : ℕ) (hm : m ≥ 1) : isKRough m 1 := by
 example : isKRough 7 7 := by
   constructor
   · norm_num
-  · simp [leastPrimeFactor]
-    norm_num
+  · unfold leastPrimeFactor
+    rw [if_neg (by norm_num), (by norm_num : Nat.Prime 7).minFac_eq]
 
 /-
 ## Part III: Prime Gaps
@@ -273,12 +277,16 @@ theorem exceptional_density_zero :
       _ < L ^ 2 := by nlinarith [sq_nonneg (L - Real.sqrt (C / ε))]
       _ ≤ (Real.log (↑X)) ^ 2 := by nlinarith [sq_nonneg (Real.log (↑X) - L)]
   have hkey : C / (Real.log (↑X)) ^ 2 < ε := by
-    rwa [div_lt_iff₀ hlog2_pos, ← div_lt_iff₀ hε]
+    rw [div_lt_iff₀ hlog2_pos, mul_comm]
+    exact (div_lt_iff₀ hε).mp hCε_lt
   -- E(X)/X ≤ C·X/(log X)²/X = C/(log X)² < ε
   calc (exceptionalCount X : ℝ) / ↑X
       ≤ C * ↑X / (Real.log ↑X) ^ 2 / ↑X :=
         div_le_div_of_nonneg_right (hbound X hX3) hX_pos.le
-    _ = C / (Real.log ↑X) ^ 2 := by rw [mul_div_assoc, div_div_cancel_left₀ hX_pos.ne']
+    _ = C / (Real.log ↑X) ^ 2 := by
+        have hX_ne : (X : ℝ) ≠ 0 := hX_pos.ne'
+        have hL2_ne : (Real.log (↑X : ℝ)) ^ 2 ≠ 0 := hlog2_pos.ne'
+        field_simp
     _ < ε := hkey
 
 /--
@@ -295,7 +303,7 @@ theorem most_gaps_have_rough :
   have h : (Finset.filter hasRoughNumberInGap (Finset.range X)).card +
     (Finset.filter (fun n => ¬hasRoughNumberInGap n) (Finset.range X)).card =
     (Finset.range X).card :=
-    Finset.filter_card_add_filter_neg_card_eq_card
+    Finset.card_filter_add_card_filter_not hasRoughNumberInGap
   simp only [Finset.card_range] at h
   omega
 
