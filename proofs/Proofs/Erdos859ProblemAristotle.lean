@@ -23,16 +23,16 @@ open Erdos859 Nat Finset
 -/
 
 /-- sigma 1 = 1 (only divisor of 1 is 1). -/
-lemma sigma_one : sigma 1 = 1 := by native_decide
+lemma sigma_one : sigma 1 = 1 := by decide
 
 /-- sigma 2 = 3 (divisors of 2: {1, 2}, sum = 3). -/
-lemma sigma_two : sigma 2 = 3 := by native_decide
+lemma sigma_two : sigma 2 = 3 := by decide
 
 /-- sigma 6 = 12 (divisors of 6: {1, 2, 3, 6}, sum = 12). -/
-lemma sigma_six : sigma 6 = 12 := by native_decide
+lemma sigma_six : sigma 6 = 12 := by decide
 
 /-- sigma 12 = 28 (divisors of 12: {1, 2, 3, 4, 6, 12}, sum = 28). -/
-lemma sigma_twelve : sigma 12 = 28 := by native_decide
+lemma sigma_twelve : sigma 12 = 28 := by decide
 
 /-
   ## Section 2: Basic DivisorSumSet membership facts
