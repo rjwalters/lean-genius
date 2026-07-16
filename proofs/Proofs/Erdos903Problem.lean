@@ -190,16 +190,13 @@ theorem erdos_903_summary (p : ℕ) (hp : IsPrimePower p) :
   · intro D
     have hn : p^2 + p + 1 ≥ 2 := by
       obtain ⟨q, k, hq, hk, heq⟩ := hp
-      subst heq
-      have : q ≥ 2 := Nat.Prime.two_le hq
-      calc p^2 + p + 1 = (q^k)^2 + q^k + 1 := by ring_nf
-        _ ≥ (q^1)^2 + q^1 + 1 := by
-            have hpow : q^k ≥ q^1 := Nat.pow_le_pow_right (Nat.Prime.one_lt hq).le hk
-            omega
-        _ = q^2 + q + 1 := by ring
-        _ ≥ 2^2 + 2 + 1 := by omega
-        _ = 7 := by norm_num
-        _ ≥ 2 := by norm_num
+      have hq2 : q ≥ 2 := Nat.Prime.two_le hq
+      have hple : p ≥ 2 := by
+        rw [heq]
+        calc q ^ k ≥ q ^ 1 := Nat.pow_le_pow_right (Nat.Prime.one_lt hq).le hk
+          _ = q := pow_one q
+          _ ≥ 2 := hq2
+      nlinarith [hple]
     exact de_bruijn_erdos _ hn D
   · exact projective_plane_design p hp
   · intro D hD
