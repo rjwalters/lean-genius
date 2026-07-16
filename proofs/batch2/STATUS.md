@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 317 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: Erdos625Aristotle (v4.31 Mathlib now defines SimpleGraph.chromaticNumber:ℕ∞ ->
+ambiguous with local Erdos625.chromaticNumber:ℕ under `open`; qualified 5 sites +(expr:ℝ) casts
+before abs over ℕ differences). Repair: none (cosmetic drift, sorries untouched).
+NEW SEAM: bare identifier colliding with a newly-ADDED Mathlib field/def of same name needs
+Namespace.-qualification even under `open`; cast (expr:ℝ) before abs on ℕ differences.
+
 # DOCTOR SINGLE-PROOF BATCH 316 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos613ProblemAristotle (critical_edge_count_formula' — replaced
