@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 106 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1097OQ01 (fixed literal UTF-8 replacement-char corruption in
+ℤ/↑ glyphs [pre-existing, unrelated to bump]; Finset A-A needs open scoped Pointwise in v4.31;
+simpa using *->simp_all). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 105 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CentralLimitTheoremOQ01OQ02OQ01OQ01 (ascribe (expr:ℝ) inside Complex.exp
