@@ -31,34 +31,9 @@ open Nat Finset
     v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋. -/
 theorem legendre_factorial_val (p n : ℕ) (hp : p.Prime) :
     (n !).factorization p = ∑ i ∈ Finset.Ico 1 (n + 1), n / p ^ i := by
-  rcases Nat.eq_zero_or_pos n with rfl | hn
-  · -- n = 0: both sides are 0
-    simp [Nat.factorial_zero, Nat.factorization_one]
-  · -- Step 1: Connect factorization to Ico sum via multiplicity
-    have h_ico : (n !).factorization p =
-        ∑ i ∈ Finset.Ico 1 (Nat.log p n + 2), n / p ^ i := by
-      have h1 : (↑((n !).factorization p) : PartENat) = multiplicity p (n !) :=
-        (multiplicity_eq_factorization hp (Nat.factorial_ne_zero n)).symm
-      have h2 : multiplicity p (n !) =
-          (↑(∑ i ∈ Finset.Ico 1 (Nat.log p n + 2), n / p ^ i) : PartENat) :=
-        hp.multiplicity_factorial (by omega)
-      exact_mod_cast h1.trans h2
-    -- Step 2: Extend sum — extra terms are 0 since p^i > n for i > log_p(n)
-    rw [h_ico]
-    apply Finset.sum_subset (Finset.Ico_subset_Ico_right _)
-    · -- log p n + 2 ≤ n + 1
-      have hlog_lt : Nat.log p n < n := by
-        rw [Nat.log_lt hp.one_lt hn.ne']
-        exact (Nat.lt_two_pow n).trans_le (Nat.pow_le_pow_left hp.two_le n)
-      omega
-    · -- Extra terms are 0
-      intro i hi hni
-      rw [Finset.mem_Ico] at hi hni
-      push_neg at hni
-      have : n < p ^ i := by
-        calc n < p ^ (Nat.log p n + 1) := Nat.lt_pow_succ_log_self hp.one_lt _
-          _ ≤ p ^ i := Nat.pow_le_pow_right hp.pos (by omega)
-      exact Nat.div_eq_of_lt this
+  haveI : Fact p.Prime := ⟨hp⟩
+  rw [Nat.factorization_def _ hp]
+  exact padicValNat_factorial (lt_of_le_of_lt (Nat.log_le_self p n) (Nat.lt_succ_self n))
 
 /-- The p-adic valuation of C(2n,n) via Legendre:
     v_p(C(2n,n)) = v_p((2n)!) - 2·v_p(n!)
@@ -67,32 +42,23 @@ theorem legendre_factorial_val (p n : ℕ) (hp : p.Prime) :
     Each term ⌊2n/p^i⌋ - 2⌊n/p^i⌋ is 0 or 1 (the "carry" indicator). -/
 theorem central_binom_val_terms (p n : ℕ) (hp : p.Prime) (i : ℕ) (hi : i ≥ 1) :
     2 * n / p ^ i - 2 * (n / p ^ i) ≤ 1 := by
-  have h : 2 * (n / p ^ i) ≤ 2 * n / p ^ i := by
-    omega
-  omega
+  have hpi : 0 < p ^ i := pow_pos hp.pos i
+  have h2n : 2 * n = n + n := by ring
+  rw [h2n, Nat.add_div hpi]
+  split_ifs <;> omega
 
 /-- Carry count bound: the number of nonzero carry terms is at most
     the number of base-p digits of 2n, which is ⌊log_p(2n)⌋ + 1. -/
 theorem carry_terms_bounded (p n : ℕ) (hp : p.Prime) (i : ℕ)
-    (hi : p ^ i > 2 * n) : 2 * n / p ^ i = 0 := by
-  exact Nat.div_eq_zero_iff (by positivity).2 (le_of_lt hi) |>.mpr (by omega) |> fun _ => by
-    omega
+    (hi : p ^ i > 2 * n) : 2 * n / p ^ i = 0 :=
+  Nat.div_eq_zero_iff.mpr (Or.inr hi)
 
 /-- The number of digits of 2n in base p is at most log_p(2n) + 1. -/
 theorem digits_bound (p n : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
     ∃ k : ℕ, p ^ k > 2 * n ∧ k ≤ 2 * n := by
-  exact ⟨2 * n, by
-    calc p ^ (2 * n) ≥ 2 ^ (2 * n) := Nat.pow_le_pow_left hp.two_le (2 * n)
-    _ > 2 * n := by
-      have : 2 ^ (2 * n) ≥ 2 * n + 1 := by
-        induction n with
-        | zero => omega
-        | succ n ih => calc 2 ^ (2 * (n + 1)) = 4 * 2 ^ (2 * n) := by ring_nf; ring
-                         _ ≥ 4 * (2 * n + 1) := by omega
-                         _ = 8 * n + 4 := by ring
-                         _ ≥ 2 * (n + 1) + 1 := by omega
-      omega,
-    le_refl _⟩
+  refine ⟨2 * n, ?_, le_refl _⟩
+  calc 2 * n < 2 ^ (2 * n) := Nat.lt_two_pow_self
+    _ ≤ p ^ (2 * n) := Nat.pow_le_pow_left hp.two_le _
 
 -- ============================================================
 -- Part II: The Main Bound
@@ -104,7 +70,7 @@ theorem digits_bound (p n : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
     p^{v_p(C(m,k))} ≤ m for k ≤ m. -/
 theorem prime_pow_val_central_binom_le (p n : ℕ) (hp : p.Prime) (hn : n ≥ 1) :
     p ^ ((2 * n).choose n).factorization p ≤ 2 * n :=
-  Nat.pow_factorization_choose_le (show n ≤ 2 * n by omega)
+  Nat.pow_factorization_choose_le (show 0 < 2 * n by omega)
 
 /-- Corollary: the product ∏_{p ≤ 2n} p^{v_p(C(2n,n))} = C(2n,n),
     so C(2n,n) ≤ (2n)^{π(2n)} where π is the prime counting function. -/
@@ -121,7 +87,7 @@ theorem central_binom_le_pow_prime_counting (n : ℕ) (hn : n ≥ 1) :
   have hbound : ∀ p ∈ ((2 * n).choose n).factorization.support,
       p ^ ((2 * n).choose n).factorization p ≤ 2 * n := by
     intro p _
-    exact Nat.pow_factorization_choose_le (show n ≤ 2 * n by omega)
+    exact Nat.pow_factorization_choose_le (show 0 < 2 * n by omega)
   -- Support ⊆ {primes ≤ 2n}
   have hsub : ((2 * n).choose n).factorization.support ⊆
       Finset.filter Nat.Prime (Finset.range (2 * n + 1)) := by
@@ -148,7 +114,7 @@ theorem central_binom_le_pow_prime_counting (n : ℕ) (hn : n ≥ 1) :
   -- C(2n,n) = ∏ p^{v_p} ≤ ∏ (2n) = (2n)^|support| ≤ (2n)^{π(2n)}
   calc (2 * n).choose n
       = ((2 * n).choose n).factorization.prod (· ^ ·) :=
-        (Nat.factorization_prod_pow_eq_self hcb_ne).symm
+        (Nat.prod_factorization_pow_eq_self hcb_ne).symm
     _ ≤ ∏ _p ∈ ((2 * n).choose n).factorization.support, (2 * n) := by
         simp only [Finsupp.prod]
         exact Finset.prod_le_prod (fun _ _ => Nat.zero_le _) hbound
@@ -168,11 +134,11 @@ theorem central_binom_lower (n : ℕ) :
     (2 * n + 1) * (2 * n).choose n ≥ 4 ^ n := by
   -- 4^n = 2^(2n) = ∑_{i=0}^{2n} C(2n,i)
   have h_sum := Nat.sum_range_choose (2 * n)
-  have h_pow : 2 ^ (2 * n) = 4 ^ n := by ring
+  have h_pow : 2 ^ (2 * n) = 4 ^ n := by rw [show (4 : ℕ) = 2 ^ 2 by norm_num, ← pow_mul]
   -- Each C(2n, i) ≤ C(2n, n) (middle binomial is largest)
   have h_mid : ∀ i, (2 * n).choose i ≤ (2 * n).choose n := by
     intro i
-    have := Nat.choose_le_middle (2 * n) i
+    have := Nat.choose_le_middle i (2 * n)
     rwa [show (2 * n) / 2 = n from by omega] at this
   -- Sum bound: ∑ C(2n, i) ≤ (2n+1) * C(2n, n)
   have h_bound : ∑ i ∈ Finset.range (2 * n + 1), (2 * n).choose i ≤
