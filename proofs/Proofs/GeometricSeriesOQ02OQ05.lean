@@ -80,7 +80,7 @@ theorem resolvent_factorization (a : A) {lam : 𝕜} (hlam : lam ≠ 0) :
     algebraMap 𝕜 A lam * (1 - algebraMap 𝕜 A lam⁻¹ * a) := by
   rw [mul_sub, mul_one, ← mul_assoc]
   congr 1
-  rw [← map_mul, mul_inv_cancel₀ hlam, map_one]
+  rw [← map_mul, mul_inv_cancel₀ hlam, map_one, one_mul]
 
 /-- **Resolvent existence via Neumann series**
 
@@ -123,18 +123,18 @@ theorem resolvent_eq_neumann_series (a : A) {lam : 𝕜} (hlam : lam ≠ 0) (ha 
   -- Ring.inverse of product of units
   have hlam_unit := algebraMap_isUnit (A := A) hlam
   have h1T_unit := one_sub_isUnit T hT
-  -- Ring.inverse (lam * (1 - T)) where both are units
-  rw [Ring.inverse_unit (hlam_unit.mul h1T_unit)]
-  -- ↑(u * v)⁻¹ = ↑v⁻¹ * ↑u⁻¹
-  simp only [Units.val_mul, IsUnit.val_inv_mul]
-  rw [mul_comm (Ring.inverse (1 - T)) (Ring.inverse (algebraMap 𝕜 A lam))]
-  congr 1
-  · -- Ring.inverse (algebraMap lam) = algebraMap lam⁻¹
-    rw [Ring.inverse_unit hlam_unit]
-    simp [IsUnit.unit, Units.val_inv_eq_inv_val]
-    rw [← map_inv₀]
-  · -- Ring.inverse (1 - T) = ∑ T^n
-    exact neumann_sum T hT
+  -- Ring.inverse (lam * (1 - T)) = Ring.inverse (1 - T) * Ring.inverse (lam·1)
+  rw [Ring.inverse_mul (Or.inl hlam_unit)]
+  -- Ring.inverse (algebraMap lam) = algebraMap lam⁻¹
+  have hu : algebraMap 𝕜 A lam * algebraMap 𝕜 A lam⁻¹ = 1 := by
+    rw [← map_mul, mul_inv_cancel₀ hlam, map_one]
+  have hu' : algebraMap 𝕜 A lam⁻¹ * algebraMap 𝕜 A lam = 1 := by
+    rw [← map_mul, inv_mul_cancel₀ hlam, map_one]
+  have hinv : Ring.inverse (algebraMap 𝕜 A lam) = algebraMap 𝕜 A lam⁻¹ :=
+    Ring.inverse_unit (Units.mk (algebraMap 𝕜 A lam) (algebraMap 𝕜 A lam⁻¹) hu hu')
+  rw [hinv, ← neumann_sum T hT]
+  -- algebraMap lam⁻¹ is central, so it commutes with ∑ T^n
+  exact (Algebra.commutes lam⁻¹ _).symm
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 4. Norm Bound on the Resolvent
@@ -154,14 +154,17 @@ theorem resolvent_norm_bound (a : A) {lam : 𝕜} (hlam : lam ≠ 0) (ha : ‖a�
   calc ‖algebraMap 𝕜 A lam⁻¹ * ∑' n, T ^ n‖
     _ ≤ ‖algebraMap 𝕜 A lam⁻¹‖ * ‖∑' n, T ^ n‖ := norm_mul_le _ _
     _ ≤ ‖lam⁻¹‖ * (1 - ‖T‖)⁻¹ := by {
-        apply mul_le_mul_of_nonneg_left (norm_neumann_le T hT)
-        rw [norm_algebraMap]; exact le_refl _
+        rw [norm_algebraMap]
+        exact mul_le_mul_of_nonneg_left (norm_neumann_le T hT) (norm_nonneg _)
       }
     _ = ‖lam‖⁻¹ * (1 - ‖T‖)⁻¹ := by rw [norm_inv]
     _ ≤ ‖lam‖⁻¹ * (1 - ‖lam‖⁻¹ * ‖a‖)⁻¹ := by {
         apply mul_le_mul_of_nonneg_left _ (inv_nonneg.mpr (norm_nonneg _))
         apply inv_anti₀
-        · linarith [norm_inv_smul_lt_one a hlam ha]
+        · have h1 : ‖lam‖⁻¹ * ‖a‖ < ‖lam‖⁻¹ * ‖lam‖ :=
+            mul_lt_mul_of_pos_left ha (inv_pos.mpr (norm_pos_iff.mpr hlam))
+          have h2 : ‖lam‖⁻¹ * ‖lam‖ = 1 := inv_mul_cancel₀ (norm_ne_zero_iff.mpr hlam)
+          linarith
         · calc 1 - ‖lam‖⁻¹ * ‖a‖
             _ ≤ 1 - ‖T‖ := by {
                 apply sub_le_sub_left
@@ -170,10 +173,14 @@ theorem resolvent_norm_bound (a : A) {lam : 𝕜} (hlam : lam ≠ 0) (ha : ‖a�
               }
       }
     _ = (‖lam‖ - ‖a‖)⁻¹ := by {
-        rw [show (1 - ‖lam‖⁻¹ * ‖a‖) = (‖lam‖ - ‖a‖) / ‖lam‖ from by
-          field_simp]
-        rw [inv_div, mul_div_cancel₀]
-        exact norm_ne_zero_iff.mpr hlam
+        have hlam' : ‖lam‖ ≠ 0 := norm_ne_zero_iff.mpr hlam
+        have hpos : (0:ℝ) < 1 - ‖lam‖⁻¹ * ‖a‖ := by
+          have h1 : ‖lam‖⁻¹ * ‖a‖ < ‖lam‖⁻¹ * ‖lam‖ :=
+            mul_lt_mul_of_pos_left ha (inv_pos.mpr (norm_pos_iff.mpr hlam))
+          have h2 : ‖lam‖⁻¹ * ‖lam‖ = 1 := inv_mul_cancel₀ hlam'
+          linarith
+        have hsub : (0:ℝ) < ‖lam‖ - ‖a‖ := by linarith
+        field_simp [hlam', hpos.ne', hsub.ne']
       }
 
 -- ══════════════════════════════════════════════════════════════════
@@ -207,16 +214,18 @@ theorem first_resolvent_identity (a : A) {lam μ : 𝕜}
   -- Key identity: ulam⁻¹ - uμ⁻¹ = ulam⁻¹ * (uμ - ulam) * uμ⁻¹
   -- Since ulam = lam·1 - a and uμ = μ·1 - a, we get uμ - ulam = (μ-lam)·1
   have hulamμ : (↑uμ : A) - ↑ulam = algebraMap 𝕜 A μ - algebraMap 𝕜 A lam := by
-    rw [← huμ, ← hulam]; ring
+    rw [huμ, hulam]; abel
   -- The algebraic identity for unit inverses
   have key : (↑ulam⁻¹ : A) - ↑uμ⁻¹ = ↑ulam⁻¹ * (↑uμ - ↑ulam) * ↑uμ⁻¹ := by
-    have := Units.val_inv_mul ulam
-    have := Units.val_inv_mul uμ
     rw [show (↑ulam⁻¹ : A) - ↑uμ⁻¹ =
         ↑ulam⁻¹ * (↑uμ * ↑uμ⁻¹) - (↑ulam⁻¹ * ↑ulam) * ↑uμ⁻¹ from by
-      simp [Units.mul_inv_cancel_right, Units.inv_mul_cancel_right]]
-    ring
+      simp]
+    noncomm_ring
   rw [key, hulamμ]
+  -- algebraMap μ - algebraMap lam is central, so it commutes with ↑ulam⁻¹
+  rw [show (↑ulam⁻¹ : A) * (algebraMap 𝕜 A μ - algebraMap 𝕜 A lam) =
+      (algebraMap 𝕜 A μ - algebraMap 𝕜 A lam) * (↑ulam⁻¹ : A) from by
+    rw [mul_sub, sub_mul, Algebra.commutes μ, Algebra.commutes lam]]
 
 -- ══════════════════════════════════════════════════════════════════
 -- § 6. Resolvent Vanishes at Infinity
