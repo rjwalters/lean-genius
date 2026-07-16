@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 152 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): FactorRemainderNullstellensatzOQ01 (v4.31 Nullstellensatz API:
+zeroLocus/vanishingIdeal explicit field args; GaloisConnection native orientation; radical_eq_top.mp;
+#38611 REPAIR added [Finite σ] to 3 theorems — unrestricted FALSE for infinite vars). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 151 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Hilbert20LocalSolvability (PRE-EXISTING defect not drift: principalSymbol
