@@ -976,8 +976,12 @@ theorem schlafli_inequality (R : RegularPolyhedron) :
   have key : (R.E : ℤ) * (2 * R.p + 2 * R.q - R.p * R.q) = 2 * R.p * R.q := by
     have h1 : (R.p : ℤ) * R.F = 2 * R.E := by exact_mod_cast hfc
     have h2 : (R.q : ℤ) * R.V = 2 * R.E := by exact_mod_cast hvc
-    nlinarith
-  have hpq_pos : (0 : ℤ) < R.p * R.q := by positivity
+    linear_combination (R.p : ℤ) * (R.q : ℤ) * heuler - (R.q : ℤ) * h1 - (R.p : ℤ) * h2
+  have hp3 := R.p_ge
+  have hq3 := R.q_ge
+  have hp_pos : (0 : ℤ) < R.p := by exact_mod_cast (by omega : 0 < R.p)
+  have hq_pos : (0 : ℤ) < R.q := by exact_mod_cast (by omega : 0 < R.q)
+  have hpq_pos : (0 : ℤ) < R.p * R.q := mul_pos hp_pos hq_pos
   have hE_pos : (0 : ℤ) < R.E := by exact_mod_cast hE
   have h_diff_pos : (0 : ℤ) < 2 * R.p + 2 * R.q - R.p * R.q := by
     nlinarith
@@ -988,7 +992,8 @@ theorem edge_formula (R : RegularPolyhedron) :
     (R.E : ℤ) * (2 * R.p + 2 * R.q - R.p * R.q) = 2 * R.p * R.q := by
   have h1 : (R.p : ℤ) * R.F = 2 * R.E := by exact_mod_cast R.face_count
   have h2 : (R.q : ℤ) * R.V = 2 * R.E := by exact_mod_cast R.vertex_count
-  nlinarith
+  have heuler := R.euler
+  linear_combination (R.p : ℤ) * (R.q : ℤ) * heuler - (R.q : ℤ) * h1 - (R.p : ℤ) * h2
 
 /-- If p ≥ 3 and q ≥ 6, then pq ≥ 2p + 2q, contradicting the Schläfli inequality -/
 theorem no_large_q (R : RegularPolyhedron) : R.q ≤ 5 := by
@@ -1035,8 +1040,8 @@ theorem platonic_edge_counts (R : RegularPolyhedron) :
     (R.p = 5 ∧ R.q = 3 → R.E = 30) := by
   refine ⟨fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_,
           fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_⟩ <;> {
-    subst hp; subst hq
-    have := edge_formula R
+    have hef := edge_formula R
+    rw [hp, hq] at hef
     have := R.E_pos
     omega
   }
@@ -1050,10 +1055,10 @@ theorem platonic_VEF_counts (R : RegularPolyhedron) :
     (R.p = 5 ∧ R.q = 3 → R.V = 20 ∧ R.E = 30 ∧ R.F = 12) := by
   refine ⟨fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_,
           fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_⟩ <;> {
-    subst hp; subst hq
     have hef := edge_formula R
     have hfc : (R.p : ℤ) * R.F = 2 * R.E := by exact_mod_cast R.face_count
     have hvc : (R.q : ℤ) * R.V = 2 * R.E := by exact_mod_cast R.vertex_count
+    simp only [hp, hq] at hef hfc hvc
     have := R.E_pos
     omega
   }
