@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 278 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1151Problem (chebyshevNodes_injective nlinarith needs Nat +1≤ via omega
+then exact_mod_cast before ℝ [real < from Fin.isLt insufficient for integrality]). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 277 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): LebesgueMeasureOQ01OQ01OQ02Riemann (cascade artifact, no edits; parent
