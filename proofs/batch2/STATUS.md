@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 223 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos459Problem (mem_primeFactors ne' not pos; noncomputable f_alt;
+#38611 REPAIR exists_smooth_gt v=u*u false@u=1 -> special-case junk). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 222 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos382Problem (HARD 13min: List.mem_cons_self implicit; Finset.induction_on
