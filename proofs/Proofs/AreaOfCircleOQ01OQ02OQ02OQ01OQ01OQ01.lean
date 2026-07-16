@@ -179,8 +179,8 @@ theorem first_harmonic_deriv (a b t : ℝ) :
 theorem first_harmonic_mean_zero (a b : ℝ) :
     ∫ t in (0 : ℝ)..(2 * π), (a * Real.cos t + b * Real.sin t) = 0 := by
   rw [intervalIntegral.integral_add
-        ((continuous_const.mul Real.continuous_cos).intervalIntegrable _ _)
-        ((continuous_const.mul Real.continuous_sin).intervalIntegrable _ _),
+        (Continuous.intervalIntegrable (by fun_prop) _ _)
+        (Continuous.intervalIntegrable (by fun_prop) _ _),
       intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul,
       integral_cos, integral_sin]
   simp [Real.cos_zero, Real.sin_zero, Real.cos_two_pi, Real.sin_two_pi]
@@ -190,12 +190,12 @@ theorem first_harmonic_sq_integral (a b : ℝ) :
     ∫ t in (0 : ℝ)..(2 * π), (a * Real.cos t + b * Real.sin t) ^ 2
       = π * (a ^ 2 + b ^ 2) := by
   have I1 : IntervalIntegrable (fun t => a ^ 2 * Real.cos t ^ 2) volume 0 (2 * π) :=
-    (continuous_const.mul (Real.continuous_cos.pow 2)).intervalIntegrable _ _
+    Continuous.intervalIntegrable (by fun_prop) _ _
   have I2 : IntervalIntegrable
       (fun t => 2 * a * b * (Real.sin t * Real.cos t)) volume 0 (2 * π) :=
-    (continuous_const.mul (Real.continuous_sin.mul Real.continuous_cos)).intervalIntegrable _ _
+    Continuous.intervalIntegrable (by fun_prop) _ _
   have I3 : IntervalIntegrable (fun t => b ^ 2 * Real.sin t ^ 2) volume 0 (2 * π) :=
-    (continuous_const.mul (Real.continuous_sin.pow 2)).intervalIntegrable _ _
+    Continuous.intervalIntegrable (by fun_prop) _ _
   rw [intervalIntegral.integral_congr
         (g := fun t => a ^ 2 * Real.cos t ^ 2 + 2 * a * b * (Real.sin t * Real.cos t)
                 + b ^ 2 * Real.sin t ^ 2)
