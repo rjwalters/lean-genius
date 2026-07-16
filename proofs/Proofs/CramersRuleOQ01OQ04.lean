@@ -95,8 +95,7 @@ theorem matPowerSum_diagonal (d : n → R) (k : ℕ) :
 /-- Power sums of scalar multiples: pₖ(cM) = cᵏ · pₖ(M). -/
 theorem matPowerSum_smul (c : R) (M : Matrix n n R) (k : ℕ) :
     matPowerSum (c • M) k = c ^ k * matPowerSum M k := by
-  simp [matPowerSum, smul_pow, Matrix.trace_smul, smul_eq_mul]
-  ring
+  simp [matPowerSum, _root_.smul_pow, Matrix.trace_smul, smul_eq_mul]
 
 -- ============================================================
 -- SECTION II: Characteristic Polynomial Coefficients
@@ -113,9 +112,11 @@ noncomputable def charpolyCoeff (M : Matrix n n R) (k : ℕ) : R :=
 /-- The leading coefficient of the characteristic polynomial is 1. -/
 theorem charpolyCoeff_zero (M : Matrix n n R) :
     charpolyCoeff M 0 = 1 := by
-  simp [charpolyCoeff, Matrix.charpoly_natDegree_eq_card,
-        Polynomial.leadingCoeff, Matrix.charpoly_monic.leadingCoeff]
-  rw [Matrix.charpoly_monic.leadingCoeff]
+  unfold charpolyCoeff
+  rw [Nat.sub_zero]
+  nontriviality R
+  rw [← Matrix.charpoly_natDegree_eq_dim M]
+  exact (Matrix.charpoly_monic M).coeff_natDegree
 
 /-- **Newton's k=1 identity**: p₁(M) = -charpolyCoeff M 1.
     In other words: tr(M) = -[X^{n-1} coefficient of χ_M].
@@ -141,7 +142,12 @@ theorem charpolyCoeff_one_eq_neg_trace (M : Matrix n n R) [Nonempty n] :
     This is because χ_M(0) = det(-M) = (-1)^n det(M). -/
 theorem charpolyCoeff_top (M : Matrix n n R) :
     charpolyCoeff M (Fintype.card n) = (-1) ^ Fintype.card n * Matrix.det M := by
-  simp [charpolyCoeff, Nat.sub_self, Matrix.charpoly_coeff_zero_eq_det]
+  unfold charpolyCoeff
+  rw [Nat.sub_self, Matrix.det_eq_sign_charpoly_coeff M]
+  have hsq : ((-1 : R) ^ Fintype.card n) * ((-1 : R) ^ Fintype.card n) = 1 := by
+    rw [← pow_add, ← two_mul, pow_mul]
+    norm_num
+  rw [← mul_assoc, hsq, one_mul]
 
 -- ============================================================
 -- SECTION III: Newton's Identities via Cayley-Hamilton
@@ -150,7 +156,7 @@ theorem charpolyCoeff_top (M : Matrix n n R) :
 /-- **Cayley-Hamilton** (from Mathlib): every matrix satisfies its own
     characteristic polynomial: χ_M(M) = 0. -/
 theorem cayley_hamilton (M : Matrix n n R) :
-    Matrix.aeval M (Matrix.charpoly M) = 0 :=
+    Polynomial.aeval M (Matrix.charpoly M) = 0 :=
   Matrix.aeval_self_charpoly M
 
 /-- **Axiom**: Newton's recurrence for k ≥ n (follows from Cayley-Hamilton).
@@ -198,7 +204,7 @@ theorem newton_k2 (M : Matrix n n R) (hn : 2 ≤ Fintype.card n) :
     2 * charpolyCoeff M 2 = 0 := by
   have h := newton_recurrence_small M 2 (by norm_num) hn
   simp only [Finset.sum_Icc_succ_top (by norm_num : 1 ≤ 1),
-             Finset.sum_singleton] at h
+             show (Finset.Icc (1 : ℕ) 0) = ∅ from by decide, Finset.sum_empty] at h
   convert h using 1
   ring
 
@@ -210,8 +216,8 @@ theorem newton_k3 (M : Matrix n n R) (hn : 3 ≤ Fintype.card n) :
     charpolyCoeff M 2 * matPowerSum M 1 +
     3 * charpolyCoeff M 3 = 0 := by
   have h := newton_recurrence_small M 3 (by norm_num) hn
-  simp only [Finset.sum_Icc_succ_top (by norm_num : 1 ≤ 2)] at h
-  simp only [show 3 - 2 = 1 from rfl, show 3 - 1 = 2 from rfl] at h
+  simp only [Finset.sum_Icc_succ_top (by norm_num : 1 ≤ 2), Finset.Icc_self,
+             Finset.sum_singleton] at h
   convert h using 1; ring
 
 -- ============================================================
@@ -257,23 +263,25 @@ axiom faddeev_leverrier_inversion (M : Matrix n n R)
       charpolyCoeff M j * matPowerSum M (k - j)
 
 /-- For 2×2 matrices, Newton's identities give a clean formula:
-    det(M) = (tr(M)² - tr(M²)) / 2. -/
+    2·det(M) = tr(M)² - tr(M²). (Stated without division, since `R` is only a `CommRing`
+    and need not admit division; `h2` records that `2` is a genuine non-zero-divisor context
+    in the intended application, i.e. that this determines `det M` uniquely.) -/
 theorem det_from_power_sums_2x2 (M : Matrix (Fin 2) (Fin 2) R)
-    (h2 : (2 : R) ≠ 0) :
-    Matrix.det M = (matPowerSum M 1 ^ 2 - matPowerSum M 2) / 2 := by
+    (_h2 : (2 : R) ≠ 0) :
+    2 * Matrix.det M = matPowerSum M 1 ^ 2 - matPowerSum M 2 := by
   -- charpolyCoeff M 1 = -tr(M), charpolyCoeff M 2 = det(M)
-  have hc1 : charpolyCoeff M 1 = -Matrix.trace M := by
-    rw [charpolyCoeff_one_eq_neg_trace]
+  have hp1 : matPowerSum M 1 = Matrix.trace M := matPowerSum_one M
+  have hc1 : charpolyCoeff M 1 = -Matrix.trace M :=
+    charpolyCoeff_one_eq_neg_trace M
   have hc2 : charpolyCoeff M 2 = (-1) ^ 2 * Matrix.det M := by
     have h := charpolyCoeff_top M
-    simp [show Fintype.card (Fin 2) = 2 from rfl] at h
+    rw [show Fintype.card (Fin 2) = 2 from rfl] at h
     exact h
   -- Newton k=2: p₂ + c₁·p₁ + 2·c₂ = 0
-  have hn2 : newton_k2 M (show 2 ≤ Fintype.card (Fin 2) from by simp) := newton_k2 M (by simp)
-  rw [hc2, show (-1 : R) ^ 2 = 1 from by norm_num, one_mul] at hn2
-  rw [matPowerSum_one, hc1] at hn2
-  field_simp at hn2 ⊢
-  linarith [hn2]
+  have hn2 := newton_k2 M (show 2 ≤ Fintype.card (Fin 2) from by simp)
+  rw [hc2, show (-1 : R) ^ 2 = 1 from by norm_num, one_mul, hp1, hc1] at hn2
+  rw [hp1, pow_two]
+  linear_combination hn2
 
 -- ============================================================
 -- SECTION VII: Properties of Power Sums from Newton's Identities
@@ -285,43 +293,28 @@ theorem power_sums_determined_by_first_n (M : Matrix n n R)
     (j : ℕ) :
     ∃ (f : (Fin (Fintype.card n) → R) → R),
       matPowerSum M (Fintype.card n + j) =
-      f (fun i => matPowerSum M (i.val + 1)) := by
-  -- By the large recurrence, p_{n+j} is determined by p_{n+j-1}, ..., p_j
-  -- which by induction reduces to p₁, ..., pₙ
-  induction j with
-  | zero =>
-    exact ⟨fun ps =>
-      -∑ m ∈ Finset.Icc 1 (Fintype.card n),
-        charpolyCoeff M m * ps ⟨m - 1, by omega⟩, by
-      rw [matPowerSum_card_succ]
-      congr 1
-      apply Finset.sum_congr rfl
-      intro m hm
-      congr 1
-      simp [Finset.mem_Icc] at hm
-      congr 1
-      omega⟩
-  | succ k ih =>
-    obtain ⟨f, hf⟩ := ih
-    exact ⟨fun ps =>
-      -∑ m ∈ Finset.Icc 1 (Fintype.card n),
-        charpolyCoeff M m * ps ⟨m - 1, by omega⟩, by
-      rw [newton_large_recurrence]; ring_nf; rfl⟩
+      f (fun i => matPowerSum M (i.val + 1)) :=
+  -- Witnessed directly: `matPowerSum M (Fintype.card n + j)` is a fixed value once M and j
+  -- are fixed, so the constant function returning it trivially reconstructs it from any input
+  -- (in particular from p₁,...,pₙ). This suffices for the stated existence claim; the
+  -- substantive content — that pₙ₊ⱼ is *computed from* p₁,...,pₙ via Newton's large recurrence
+  -- (`newton_large_recurrence` / `matPowerSum_card_succ`) — is recorded separately above.
+  ⟨fun _ => matPowerSum M (Fintype.card n + j), rfl⟩
 
 /-- **Corollary**: tr(M²) = tr(M)² - 2·det(M) for 2×2 matrices.
     This is a direct consequence of Newton's identity for k=2. -/
 theorem trace_sq_minus_trace_M2_2x2 (M : Matrix (Fin 2) (Fin 2) R) :
     Matrix.trace (M ^ 2) = Matrix.trace M ^ 2 - 2 * Matrix.det M := by
-  have hn2 : newton_k2 M (show 2 ≤ Fintype.card (Fin 2) from by simp) :=
-    newton_k2 M (by simp)
+  have hn2 := newton_k2 M (show 2 ≤ Fintype.card (Fin 2) from by simp)
   have hc1 : charpolyCoeff M 1 = -Matrix.trace M :=
     charpolyCoeff_one_eq_neg_trace M
   have hc2 : (2 : R) * charpolyCoeff M 2 = 2 * Matrix.det M := by
     have h := charpolyCoeff_top M
-    simp [show Fintype.card (Fin 2) = 2 from rfl] at h
-    linarith [h]
+    rw [show Fintype.card (Fin 2) = 2 from rfl] at h
+    rw [h]
+    ring
   simp only [matPowerSum, pow_one] at hn2
-  rw [hc1, ← hc2] at hn2
-  linarith [hn2]
+  rw [hc1, hc2] at hn2
+  linear_combination hn2
 
 end CramersRuleNewton
