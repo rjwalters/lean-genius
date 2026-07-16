@@ -1556,3 +1556,10 @@ subtraction made the original statement false; geometric gluing bound). No calle
   (`ERW_conjecture := True` ⇒ `¬∀n, True` unprovable), TestApi241's original `{1,2,4,8}` B3 claim.
   For TestApi241 the fix was a genuine STATEMENT REPAIR to a true witness `{1,4,16,64}` — do that only
   when a true correction is clear; otherwise leave the file RESIDUAL.
+
+## Recurring seams (added 2026-07-16 from Erdos864Problem, ~15+ hits/file)
+- **Anonymous-constructor associativity**: v4.31's elaborator no longer auto-flattens mixed-associativity
+  conjunctions. For a goal `(a∈A∧b∈A)∧R`, `exact ⟨a,b,ha,hb,rfl⟩` BUILDS wrong — write nested
+  `⟨⟨ha,hb⟩,hab⟩`. (Destructuring `obtain` is more forgiving than construction.)
+- **`Finset.card_le_one.mp`** now needs explicit element witnesses: `hle.mp (a,b) hp1 (c,d) hp2`, not
+  `hle hp1 hp2`.

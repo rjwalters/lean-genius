@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 94 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos864Problem (~40 v4.31 drift sites: open scoped Classical for
+IsAlmostSidon DecidablePred, div_lt_div_iff₀, use-before-def lemma reorder, anonymous-ctor associativity
+nesting x15, Finset.card_le_one.mp explicit witnesses x9, nonlinear-atom omega bridges). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 93 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos268Aristotle (v4.31 drift: summable_of_finite->Summable.of_finite,
