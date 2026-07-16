@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 127 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): Erdos485OQ02 (open scoped Pointwise for Finset +; termCount unfold
+before rw; Finset.single_le_sum explicit args vs whnf-timeout), Erdos395OQ01 (RE-FIX vs reshaped parent:
+local Fintype instances via Set.Finite since parent now Set.ncard; ncard_eq_toFinset_card' bridge;
+Complex.abs_one/abs_I->norm_one/norm_I). Repairs: none in this batch. Erdos395OQ01 supersedes stale branch.
+Unblocks Erdos395OQ01Incomplete01 grandchild.
+
 # DOCTOR SINGLE-PROOF BATCH 126 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos501Aristotle (ℝ≥0∞ scoped notation needs open scoped ENNReal;
