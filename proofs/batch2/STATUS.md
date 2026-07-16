@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 163 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos776Problem (SubsetFamily/IsAntichainFamily def->abbrev; open scoped
+Classical; Finset.exists_smaller_set->exists_subset_card_eq; card_powersetCard chain; forward-ref reorder).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 162 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): NormEuclideanZsqrtdFamilyOQ03OQ02 (letI-bound EuclideanDomain + bare
