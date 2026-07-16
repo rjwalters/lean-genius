@@ -70,11 +70,12 @@ theorem ncard_biUnion_eq_of_uniform {α ι : Type*} {s : ι → Set α}
     {k : ℕ} (hk : ∀ i ∈ I, (s i).ncard = k) :
     (⋃ i ∈ I, s i).ncard = k * I.ncard := by
   -- Reduce to hI.toFinset for the sum
-  rw [Set.ncard_biUnion hI (fun i j hi hj hne => hdisj hi hj hne) (fun i hi => hfin i hi)]
+  rw [hI.ncard_biUnion hfin hdisj,
+      finsum_mem_eq_finite_toFinset_sum (fun i => (s i).ncard) hI]
   have hmem : ∀ i ∈ hI.toFinset, (s i).ncard = k :=
     fun i hi => hk i (hI.mem_toFinset.mp hi)
   rw [Finset.sum_congr rfl hmem, Finset.sum_const, smul_eq_mul,
-      mul_comm, hI.toFinset_card]
+      mul_comm, ← Set.ncard_eq_toFinset_card I hI]
 
 -- ============================================================
 -- PART 2: Specialization to Finset Index Sets
@@ -89,7 +90,7 @@ theorem ncard_biUnion_eq_of_uniform_finset {α ι : Type*} {s : ι → Set α}
     {k : ℕ} (hk : ∀ i ∈ I, (s i).ncard = k) :
     (⋃ i ∈ I, s i).ncard = k * I.card := by
   have hI : (I : Set ι).Finite := I.finite_toSet
-  rw [← Set.ncard_coe_Finset]
+  rw [← Set.ncard_coe_finset]
   exact ncard_biUnion_eq_of_uniform hI hfin hdisj (fun i hi => hk i (Finset.mem_coe.mp hi))
 
 -- ============================================================
@@ -99,12 +100,14 @@ theorem ncard_biUnion_eq_of_uniform_finset {α ι : Type*} {s : ι → Set α}
 /-- Fintype version: when the index type is Fintype, the universe covers all fibers. -/
 theorem ncard_iUnion_eq_of_uniform {α ι : Type*} [Fintype ι] {s : ι → Set α}
     (hfin : ∀ i, (s i).Finite)
-    (hdisj : Pairwise (Disjoint on s))
+    (hdisj : Pairwise (fun i j => Disjoint (s i) (s j)))
     {k : ℕ} (hk : ∀ i, (s i).ncard = k) :
     (⋃ i, s i).ncard = k * Fintype.card ι := by
   rw [← Set.biUnion_univ]
-  rw [ncard_biUnion_eq_of_uniform Set.finite_univ (fun i _ => hfin i)
-      (fun _ _ hne => hdisj hne)
+  have hdisj' : (Set.univ : Set ι).PairwiseDisjoint s := by
+    intro i _ j _ hne
+    exact hdisj hne
+  rw [ncard_biUnion_eq_of_uniform Set.finite_univ (fun i _ => hfin i) hdisj'
       (fun i _ => hk i)]
   simp [Set.ncard_univ]
 
@@ -141,8 +144,10 @@ theorem ncard_biUnion_eq_of_uniform_compat {α ι : Type*} {s : ι → Set α}
     (hfin : ∀ i ∈ I, (s i).Finite)
     (hdisj : ∀ i ∈ I, ∀ j ∈ I, i ≠ j → Disjoint (s i) (s j))
     {k : ℕ} (hk : ∀ i ∈ I, (s i).ncard = k) :
-    (⋃ i ∈ I, s i).ncard = k * I.ncard :=
-  ncard_biUnion_eq_of_uniform hI hfin (fun hi hj hne => hdisj _ hi _ hj hne) hk
+    (⋃ i ∈ I, s i).ncard = k * I.ncard := by
+  apply ncard_biUnion_eq_of_uniform hI hfin _ hk
+  intro i hi j hj hne
+  exact hdisj i hi j hj hne
 
 -- ============================================================
 -- PART 6: Concrete Examples (Verifying the Lemma is Non-Trivial)
@@ -153,11 +158,12 @@ example :
     (⋃ i ∈ ({0, 1, 2} : Finset ℕ), ({2 * i, 2 * i + 1} : Set ℕ)).ncard =
     2 * 3 := by
   have hfin : ∀ i ∈ ({0, 1, 2} : Finset ℕ),
-      ({2 * i, 2 * i + 1} : Set ℕ).Finite := fun i _ => Set.finite_pair _ _
-  have hdisj : ({0, 1, 2} : Set ℕ).PairwiseDisjoint
+      ({2 * i, 2 * i + 1} : Set ℕ).Finite := fun i _ => (Set.finite_singleton _).insert _
+  have hdisj : (({0, 1, 2} : Finset ℕ) : Set ℕ).PairwiseDisjoint
       (fun i => ({2 * i, 2 * i + 1} : Set ℕ)) := by
     intro a ha b hb hne
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+      Set.mem_singleton_iff] at ha hb
     simp only [Set.disjoint_left, Set.mem_insert_iff, Set.mem_singleton_iff]
     omega
   have hk : ∀ i ∈ ({0, 1, 2} : Finset ℕ),
