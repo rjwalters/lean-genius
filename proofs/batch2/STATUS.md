@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 233 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos242Problem (HARDEST 46min/321k/189tools: grouped struct field parens;
+Exists->Type via choose not cases; omega variable-modulus needs Nat.div_add_mod helper; Nat.dvd_sub'->dvd_sub;
+strongInductionOn->strong_induction_on; #38611 REPAIRS x3: ES_for_mod3_mod4/mod2_mod3/ES_of_sum_two_squares
+p=2 WRONG witness tuples old ring_nf let through -> re-derived true). Repairs: 3.
+
 # DOCTOR SINGLE-PROOF BATCH 232 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos537Problem (imports Order.Filter.AtTopBot.Defs + Cardinal.Finite;
