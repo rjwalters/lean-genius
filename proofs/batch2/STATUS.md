@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 198 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1145Problem (Nat.pow_left_injective now base-injective ->
+pow_right_injective(2≤a); pow_succ'; Set.Infinite.mono explicit have ⊆; Finset.card_congr->card_bij;
+ncard_coe_finset; set...with hs_def for simp). Repair: none (1 open-conjecture axiom unchanged).
+
 # DOCTOR SINGLE-PROOF BATCH 197 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1149Problem (Set.ncard_coe_Finset -> Set.ncard_coe_finset lowercase
