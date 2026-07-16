@@ -14,6 +14,7 @@
 import Mathlib
 
 open MeasureTheory
+open scoped NNReal ENNReal
 
 namespace FairGamesOQ03.Aristotle
 
@@ -31,14 +32,17 @@ lemma stoppedValue_const {Ω : Type*} {m : MeasurableSpace Ω}
 lemma stoppedValue_eq_of_le {Ω : Type*} {m : MeasurableSpace Ω}
     (f : ℕ → Ω → ℝ) (τ : Ω → ℕ∞) (N : ℕ) (ω : Ω) (h : τ ω ≤ N) :
     stoppedValue f τ ω = stoppedValue f (fun ω' => min (τ ω') N) ω := by
-  simp only [stoppedValue, min_eq_left h]
+  have hmin : min (τ ω) (N : ℕ∞) = τ ω := min_eq_left h
+  show f (τ ω).untopA ω = f (min (τ ω) (N : ℕ∞)).untopA ω
+  rw [hmin]
 
 /-- Measurability of stoppedValue for adapted processes -/
 lemma stoppedValue_measurable {Ω : Type*} {m : MeasurableSpace Ω}
     {ℱ : Filtration ℕ m} (f : ℕ → Ω → ℝ) (τ : Ω → ℕ∞)
     (hf : Adapted ℱ f) (hτ : IsStoppingTime ℱ τ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
     Measurable (stoppedValue f τ) :=
-  (stronglyMeasurable_stoppedValue_of_le hf.progMeasurable_of_discrete hτ hτN).mono
+  (stronglyMeasurable_stoppedValue_of_le
+    hf.stronglyAdapted.isStronglyProgressive_of_discrete hτ hτN).mono
     (ℱ.le N) |>.measurable
 
 /-
@@ -48,8 +52,11 @@ lemma stoppedValue_measurable {Ω : Type*} {m : MeasurableSpace Ω}
 /-- The constant function N is a ℕ∞-stopping time -/
 lemma isStoppingTime_const {Ω : Type*} {m : MeasurableSpace Ω}
     {ℱ : Filtration ℕ m} (N : ℕ∞) :
-    IsStoppingTime ℱ (fun _ : Ω => N) :=
-  MeasureTheory.isStoppingTime_const ℱ N
+    IsStoppingTime ℱ (fun _ : Ω => N) := fun i => by
+  simp only [MeasurableSet.const]
+
+/-- `WithTop.untopA` applied to `0 : ℕ∞` is `0`, computed by `rfl`. -/
+private lemma untopA_zero : (WithTop.untopA (0 : ℕ∞)) = 0 := rfl
 
 /-- min of two stopping times is a stopping time -/
 lemma isStoppingTime_min {Ω : Type*} {m : MeasurableSpace Ω}
@@ -92,10 +99,10 @@ lemma martingale_stopped_eq_initial {Ω : Type*} {m : MeasurableSpace Ω}
     (τ : Ω → ℕ∞) (hτ : IsStoppingTime ℱ τ) (N : ℕ) (hτN : ∀ ω, τ ω ≤ N) :
     ∫ ω, stoppedValue f τ ω ∂μ = ∫ ω, f 0 ω ∂μ := by
   have h₁ := hf.submartingale.expected_stoppedValue_mono
-    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
+    (isStoppingTime_const (0 : ℕ∞)) hτ (fun _ => zero_le) hτN
   have h₂ := hf.supermartingale.neg.expected_stoppedValue_mono
-    (MeasureTheory.isStoppingTime_const ℱ 0) hτ (fun _ => zero_le) hτN
-  simp only [stoppedValue_const, stoppedValue, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
+    (isStoppingTime_const (0 : ℕ∞)) hτ (fun _ => zero_le) hτN
+  simp only [stoppedValue, untopA_zero, Pi.neg_apply, integral_neg] at h₁ h₂ ⊢
   linarith
 
 /-
@@ -105,8 +112,10 @@ lemma martingale_stopped_eq_initial {Ω : Type*} {m : MeasurableSpace Ω}
 /-- ENNReal.toReal of a probability measure of a set is ≤ 1 -/
 lemma measure_toReal_le_one {Ω : Type*} {m : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ] (s : Set Ω) :
-    (μ s).toReal ≤ 1 :=
-  ENNReal.toReal_le_one.mpr prob_le_one
+    (μ s).toReal ≤ 1 := by
+  have h : μ s ≤ 1 := prob_le_one
+  have h2 := ENNReal.toReal_mono (by simp) h
+  simpa using h2
 
 /-- thresh * (μ s).toReal ≤ integral bound from Doob's maximal ineq via NNReal -/
 lemma doob_maximal_real_of_nnreal {Ω : Type*} {m : MeasurableSpace Ω}
@@ -127,12 +136,14 @@ lemma doob_maximal_real_of_nnreal {Ω : Type*} {m : MeasurableSpace Ω}
   -- Show our set equals the Mathlib set
   have hset_eq : {ω | ∃ n ≤ N, thresh ≤ f n ω} = S := by
     ext ω
-    simp only [Set.mem_setOf_eq, hS_def, NNReal.coe_mk,
-      Finset.le_sup'_iff Finset.nonempty_range_add_one,
+    simp only [Set.mem_setOf_eq, hS_def, Finset.le_sup'_iff Finset.nonempty_range_add_one,
       Finset.mem_range, Nat.lt_succ_iff, S]
+    constructor
+    · rintro ⟨n, hn, h⟩; exact ⟨n, hn, h⟩
+    · rintro ⟨n, hn, h⟩; exact ⟨n, hn, h⟩
   rw [hset_eq]
   calc thresh * (μ S).toReal
-      = (ε : ℝ≥0∞).toReal * (μ S).toReal := by congr 1; simp [ε]
+      = (ε : ℝ≥0∞).toReal * (μ S).toReal := by congr 1
     _ = ((ε : ℝ≥0∞) * μ S).toReal := ENNReal.toReal_mul.symm
     _ ≤ (ENNReal.ofReal (∫ ω in S, f N ω ∂μ)).toReal :=
         ENNReal.toReal_mono ENNReal.ofReal_ne_top hmain
@@ -160,6 +171,7 @@ lemma maximal_set_measurable {Ω : Type*} {m : MeasurableSpace Ω}
   apply MeasurableSet.biUnion (Finset.finite_toSet _).countable
   intro n _
   -- {thresh ≤ f n} is measurable because f n is measurable (adapted, then filtered ≤ ambient)
-  exact measurableSet_le measurable_const ((hf.adapted n).measurable.mono (ℱ.le n))
+  exact measurableSet_le measurable_const
+    ((hf.stronglyAdapted n).measurable.mono (ℱ.le n) le_rfl)
 
 end FairGamesOQ03.Aristotle

@@ -1,3 +1,12 @@
+# DOCTOR SINGLE-PROOF BATCH 332 (all-Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: FairGamesTheoremOQ03Aristotle (7 seams: `open scoped NNReal ENNReal`;
+Adapted.progMeasurable_of_discrete->stronglyAdapted.isStronglyProgressive_of_discrete;
+isStoppingTime_const bare i not ℕ∞; Submartingale/Martingale now And not struct (.adapted->
+.stronglyAdapted); Measurable.mono 2-arg; ENNReal.toReal_le_one removed -> toReal_mono). Repair: none.
+SEAM: ℕ∞(ENat) is an opaque def over WithTop ℕ (not abbrev) -> WithTop-headed simp lemmas silently
+fail to fire on ℕ∞ terms despite kernel-defeq; force syntactic form via show/`have:=rfl` before rw.
+
 # DOCTOR SINGLE-PROOF BATCH 331 (all-Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: Erdos740ProblemProvable (Cycle reindexed Fin n/Fin(n-1) -> ZMod n; added missing
