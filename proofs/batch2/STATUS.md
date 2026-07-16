@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 159 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LagrangeTheoremOQ01OQ02 (abbrev A4:Type*:=SubgroupTerm needs explicit ↥;
+noncomputable orderOf under native_decide -> decidable_of_iff(orderOf_eq_iff).symm global instances;
+DecidableEq A4 pin vs diamond; Nat.card_eq_fintype_card simp). Repair: none (native_decide all pre-existing).
+
 # DOCTOR SINGLE-PROOF BATCH 158 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): LiouvilleTheorem (lt_div_iff₀->div_lt_iff₀ orientation; one_div_lt_one_div_of_lt

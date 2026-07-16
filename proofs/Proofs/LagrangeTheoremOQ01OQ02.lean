@@ -27,13 +27,21 @@
 
 import Mathlib
 
-open scoped Classical
-
 open Subgroup Fintype
 
-abbrev A4 : Type* := alternatingGroup (Fin 4)
+abbrev A4 : Type := ↥(alternatingGroup (Fin 4))
 
 namespace LagrangeOQ01OQ02
+
+/-- Pin down a single canonical `DecidableEq A4` instance up front. Without this,
+    typeclass resolution can reach `DecidableEq (Equiv.Perm (Fin 4))` via different
+    (defeq but not syntactically identical) paths in different branches of a
+    compound `Decidable` search — e.g. combining the double-nested
+    `∀ a ∈ S, ∀ b ∈ S, a * b ∈ S` with further conjuncts/implications — which makes
+    `synthInstance` compute a valid answer internally but then reject it at the
+    final defeq check. Declaring this instance explicitly forces every subsequent
+    search to reuse the same term. -/
+instance : DecidableEq A4 := Subtype.instDecidableEq
 
 -- ============================================================
 -- Part I: Basic facts about A₄
@@ -41,6 +49,20 @@ namespace LagrangeOQ01OQ02
 
 /-- A₄ has exactly 12 elements. -/
 theorem A4_card : Fintype.card A4 = 12 := by native_decide
+
+/-- `orderOf x = n` is decidable via the finite characterization `orderOf_eq_iff`,
+    bypassing the noncomputable `orderOf` definition itself (it is defined via
+    `Function.minimalPeriod`, which the compiler cannot evaluate). These are separate
+    global instances (rather than one parameterized by a `0 < n` hypothesis) so that
+    `native_decide` sees closed terms with no free local variables. -/
+instance decidableOrderOfEq2 : DecidablePred (fun x : A4 => orderOf x = 2) :=
+  fun x => decidable_of_iff _ (orderOf_eq_iff (by norm_num)).symm
+
+instance decidableOrderOfEq3 : DecidablePred (fun x : A4 => orderOf x = 3) :=
+  fun x => decidable_of_iff _ (orderOf_eq_iff (by norm_num)).symm
+
+instance decidableOrderOfEq6 : DecidablePred (fun x : A4 => orderOf x = 6) :=
+  fun x => decidable_of_iff _ (orderOf_eq_iff (by norm_num)).symm
 
 /-- Every element of A₄ has order 1, 2, or 3; no element has order 6.
     This rules out A₄ containing a cyclic subgroup Z₆. -/
@@ -80,6 +102,7 @@ theorem A4_no_subgroup_order6_finset :
     6 | |A₄| = 12, yet no H ≤ A₄ satisfies |H| = 6. -/
 theorem A4_no_subgroup_order6 (H : Subgroup A4) [Fintype H] :
     Fintype.card H ≠ 6 := by
+  classical
   intro h6
   have hmem := @A4_no_subgroup_order6_finset (Finset.univ.filter (· ∈ H))
   apply hmem
@@ -109,8 +132,8 @@ theorem A4_no_index2_subgroup (H : Subgroup A4) [Fintype H] :
   have hcard6 : Fintype.card H = 6 := by
     have hmul := H.card_mul_index
     have hA4 : Fintype.card A4 = 12 := A4_card
-    rw [Nat.card_eq_fintype_card] at hmul
-    rw [hA4] at hmul
+    simp only [Nat.card_eq_fintype_card] at hmul
+    rw [hA4, hidx] at hmul
     omega
   exact A4_no_subgroup_order6 H hcard6
 
