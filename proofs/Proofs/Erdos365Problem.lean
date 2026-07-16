@@ -49,13 +49,13 @@ def IsPowerfulAlt (n : ℕ) : Prop :=
 
 /-- Every perfect square is powerful. -/
 theorem square_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^2) := by
-  refine ⟨by positivity, fun p hp hdvd => ?_⟩
+  refine ⟨Nat.one_le_pow 2 k hk, fun p hp hdvd => ?_⟩
   have hpk : p ∣ k := hp.dvd_of_dvd_pow hdvd
-  exact dvd_pow_self p 2 |>.trans (pow_dvd_pow_of_dvd hpk 2)
+  exact pow_dvd_pow_of_dvd hpk 2
 
 /-- Every perfect cube is powerful. -/
 theorem cube_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^3) := by
-  refine ⟨by positivity, fun p hp hdvd => ?_⟩
+  refine ⟨Nat.one_le_pow 3 k hk, fun p hp hdvd => ?_⟩
   have hpk : p ∣ k := hp.dvd_of_dvd_pow hdvd
   calc p ^ 2 ∣ k ^ 2 := pow_dvd_pow_of_dvd hpk 2
     _ ∣ k ^ 3 := ⟨k, by ring⟩
@@ -74,11 +74,13 @@ theorem example_8_9 : IsConsecutivePowerfulPair 8 := by
   · constructor
     · norm_num
     · intro p hp hdiv
-      interval_cases p <;> simp_all [Nat.Prime] <;> decide
+      have hbound : p ≤ 8 := Nat.le_of_dvd (by norm_num) hdiv
+      interval_cases p <;> revert hp hdiv <;> decide
   · constructor
     · norm_num
     · intro p hp hdiv
-      interval_cases p <;> simp_all [Nat.Prime] <;> decide
+      have hbound : p ≤ 9 := Nat.le_of_dvd (by norm_num) hdiv
+      interval_cases p <;> revert hp hdiv <;> decide
 
 /- ## Part III: The Pell Equation Connection -/
 
@@ -139,6 +141,7 @@ axiom walker_infinitely_many :
 /-- **Counting function:**
 P(x) = |{n ≤ x : both n and n+1 are powerful}| -/
 noncomputable def countingFunction (x : ℕ) : ℕ :=
+  haveI := Classical.decPred IsConsecutivePowerfulPair
   Finset.card (Finset.filter IsConsecutivePowerfulPair (Finset.range (x + 1)))
 
 /-- **Question 2 (OPEN):**

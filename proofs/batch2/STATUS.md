@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 23 (4-slot config, conflict-proof collect, #38065, 2026-07-15)
+
+Reduced to 4 slots (doctor-b/d/e/g) + doctor-h collection to cut collision risk. **+3 GREEN** (re-verified
+EXIT=0): Erdos268Problem (SONNET 37min/359k — ~40-site greedy-set/telescoping beast + #38611 repair:
+all_coordinates_positive hyp A.Nonempty too weak, false at A={0} -> A.Infinite), Erdos365Problem
+(positivity->Nat.one_le_pow; interval_cases+revert<;>decide), Erdos456Problem (csInf_mem drops BddBelow
+arg for WellFoundedLT ℕ; Finset.card_Ico->Nat.card_Ico). Repairs #38611: Erdos268 all_coordinates_positive.
+
 # DOCTOR SINGLE-PROOF BATCH 22 (conflict-proof collect, #38065, 2026-07-15)
 
 **+7 GREEN** (each RE-VERIFIED EXIT=0 via conflict-proof collector — apply .lean + flip single row,
