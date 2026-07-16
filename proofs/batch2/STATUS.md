@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 149 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos988Problem (inner now explicit-𝕜 inner ℝ C.center x; def
+SphereConfiguration->abbrev; ⨅…else ⊤ no Top ℝ -> sInf{x|∃P…=x}). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 148 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos922Problem (∃ no longer accepts [...] instance binders -> (_:T);
