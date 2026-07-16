@@ -51,16 +51,23 @@ variable {d : ℤ}
 the parent's Euclidean structure via `EuclideanDomain.to_principal_ideal_domain`. -/
 theorem isPrincipalIdealRing (hd : d < 0) (hd2 : -2 ≤ d) :
     IsPrincipalIdealRing (ℤ√d) :=
-  letI := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
-  inferInstance
+  @EuclideanDomain.to_principal_ideal_domain (ℤ√d)
+    (NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2)
 
 /-- **`ℤ[√d]` is a unique factorization monoid for every `-2 ≤ d < 0`.** A PID is
-a UFD: `PrincipalIdealRing.to_uniqueFactorizationMonoid`. -/
+a UFD: `PrincipalIdealRing.to_uniqueFactorizationMonoid`.
+
+(v4.31 note: routed through explicit instance terms rather than bare `inferInstance`
+-- typeclass search under a `letI`-bound `EuclideanDomain` no longer chains through
+`EuclideanDomain.to_principal_ideal_domain` / `EuclideanDomain.instIsDomain`
+automatically on this toolchain, even though each instance resolves in isolation.) -/
 theorem uniqueFactorizationMonoid (hd : d < 0) (hd2 : -2 ≤ d) :
     letI := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
     UniqueFactorizationMonoid (ℤ√d) :=
-  letI := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
-  inferInstance
+  letI E := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
+  letI : IsPrincipalIdealRing (ℤ√d) := @EuclideanDomain.to_principal_ideal_domain (ℤ√d) E
+  letI : IsDomain (ℤ√d) := @EuclideanDomain.instIsDomain (ℤ√d) E
+  PrincipalIdealRing.to_uniqueFactorizationMonoid
 
 /-! ### The two classical rings -/
 
@@ -72,8 +79,10 @@ theorem gaussianInt_isPrincipalIdealRing : IsPrincipalIdealRing (ℤ√(-1)) :=
 theorem gaussianInt_uniqueFactorizationMonoid :
     letI := NormEuclideanZsqrtdFamily.euclideanDomainNegOne
     UniqueFactorizationMonoid (ℤ√(-1)) :=
-  letI := NormEuclideanZsqrtdFamily.euclideanDomainNegOne
-  inferInstance
+  letI E := NormEuclideanZsqrtdFamily.euclideanDomainNegOne
+  letI : IsPrincipalIdealRing (ℤ√(-1)) := @EuclideanDomain.to_principal_ideal_domain (ℤ√(-1)) E
+  letI : IsDomain (ℤ√(-1)) := @EuclideanDomain.instIsDomain (ℤ√(-1)) E
+  PrincipalIdealRing.to_uniqueFactorizationMonoid
 
 /-- `ℤ[√-2]` is a principal ideal ring. -/
 theorem negTwo_isPrincipalIdealRing : IsPrincipalIdealRing (ℤ√(-2)) :=
@@ -83,8 +92,10 @@ theorem negTwo_isPrincipalIdealRing : IsPrincipalIdealRing (ℤ√(-2)) :=
 theorem negTwo_uniqueFactorizationMonoid :
     letI := NormEuclideanZsqrtdFamily.euclideanDomainNegTwo
     UniqueFactorizationMonoid (ℤ√(-2)) :=
-  letI := NormEuclideanZsqrtdFamily.euclideanDomainNegTwo
-  inferInstance
+  letI E := NormEuclideanZsqrtdFamily.euclideanDomainNegTwo
+  letI : IsPrincipalIdealRing (ℤ√(-2)) := @EuclideanDomain.to_principal_ideal_domain (ℤ√(-2)) E
+  letI : IsDomain (ℤ√(-2)) := @EuclideanDomain.instIsDomain (ℤ√(-2)) E
+  PrincipalIdealRing.to_uniqueFactorizationMonoid
 
 /-! ### Prime norm ⟹ irreducible (and prime in the UFD) -/
 
@@ -114,7 +125,10 @@ theorem irreducible_of_prime_norm {z : ℤ√d}
 irreducible and prime coincide, so the criterion above upgrades to primality. -/
 theorem prime_of_prime_norm (hd : d < 0) (hd2 : -2 ≤ d) {z : ℤ√d}
     (hz : Prime z.norm.natAbs) : Prime z := by
-  letI := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
+  letI E := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2
+  letI : IsPrincipalIdealRing (ℤ√d) := @EuclideanDomain.to_principal_ideal_domain (ℤ√d) E
+  letI : IsDomain (ℤ√d) := @EuclideanDomain.instIsDomain (ℤ√d) E
+  haveI : UniqueFactorizationMonoid (ℤ√d) := PrincipalIdealRing.to_uniqueFactorizationMonoid
   exact UniqueFactorizationMonoid.irreducible_iff_prime.mp (irreducible_of_prime_norm hz)
 
 end NormEuclideanZsqrtdFamilyPIDUFD
