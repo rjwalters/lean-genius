@@ -68,11 +68,19 @@ structure LinearPDO (n : ℕ) (m : ℕ) where
   order_bound : ∀ α : MultiIndex n, MultiIndex.order α > m → coeff α = 0
 
 /-- The principal symbol of a PDO: p_m(x, ξ) = Σ_{|α| = m} a_α(x) ξ^α.
-    This is a function on the cotangent bundle T*ℝⁿ ≅ ℝⁿ × ℝⁿ. -/
+    This is a function on the cotangent bundle T*ℝⁿ ≅ ℝⁿ × ℝⁿ.
+
+    The sum ranges over `MultiIndex n = Fin n → ℕ`, which has no `Fintype`
+    instance (ℕ is infinite), so it is realized as a sum over the genuinely
+    finite type `Fin n → Fin (m + 1)` of "bounded" multi-indices instead:
+    any α with `order α = m` automatically has every component α i ≤ m
+    (each component is a nonnegative summand of a sum equal to m), so this
+    bounded type indexes exactly the same nonzero terms. -/
 def principalSymbol {n m : ℕ} (P : LinearPDO n m) (x ξ : Fin n → ℝ) : ℂ :=
-  Finset.univ.sum fun α =>
-    if MultiIndex.order α = m then
-      P.coeff α x * (Finset.univ.prod fun i => (ξ i : ℂ) ^ α i)
+  Finset.univ.sum fun β : Fin n → Fin (m + 1) =>
+    if MultiIndex.order (fun i => (β i : ℕ)) = m then
+      P.coeff (fun i => (β i : ℕ)) x *
+        (Finset.univ.prod fun i => (ξ i : ℂ) ^ (β i : ℕ))
     else 0
 
 /-! ## Part II: Local Solvability -/
