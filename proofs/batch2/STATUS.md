@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 97 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): CantorDiagonalizationOQ01OQ01OQ02OQ03 (Cardinal cofinality drift:
+power_le_power_right->power_le_power_left two_ne_zero, lt_cof_ord_power, explicit (2:Cardinal) before
+.ord.cof, cof_add 2nd arg now implicit, zero_le->bot_le, aleph0_le_aleph). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 96 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): CantorDiagonalizationOQ04OQ01OQ01 (CartesianClosed typeclass

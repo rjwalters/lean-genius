@@ -49,7 +49,7 @@ theorem easton_lower_bound (α : Ordinal.{0}) :
     If α ≤ β then 2^{ℵ_α} ≤ 2^{ℵ_β}. -/
 theorem easton_monotone (α β : Ordinal.{0}) (h : α ≤ β) :
     (2 : Cardinal.{0}) ^ aleph α ≤ 2 ^ aleph β := by
-  apply Cardinal.power_le_power_right
+  apply Cardinal.power_le_power_left two_ne_zero
   exact aleph_le_aleph.mpr h
 
 /-- **(E3) König's cofinality constraint** (generalized): For any infinite
@@ -59,14 +59,14 @@ theorem easton_monotone (α β : Ordinal.{0}) (h : α ≤ β) :
     This is König's theorem from Mathlib's Cardinal.lt_cof_power.
     Note: Ordinal.cof returns Cardinal directly (no .card needed). -/
 theorem easton_konig_general (κ : Cardinal.{0}) (hκ_inf : ℵ₀ ≤ κ) :
-    κ < (2 ^ κ).ord.cof := by
-  exact Cardinal.lt_cof_power hκ_inf (by norm_num)
+    κ < ((2 : Cardinal.{0}) ^ κ).ord.cof := by
+  exact Cardinal.lt_cof_ord_power hκ_inf (show (1 : Cardinal) < 2 by norm_num)
 
 /-- König's constraint specialized to the aleph sequence. -/
 theorem easton_konig_aleph (α : Ordinal.{0}) :
-    aleph α < (2 ^ aleph α).ord.cof := by
+    aleph α < ((2 : Cardinal.{0}) ^ aleph α).ord.cof := by
   apply easton_konig_general
-  exact aleph_pos.le.trans (aleph_le_aleph.mpr (zero_le α)) |>.trans (le_refl _)
+  exact Cardinal.aleph0_le_aleph α
 
 -- ============================================================
 -- PART II: The Easton Spectrum Characterization
@@ -162,12 +162,12 @@ theorem easton_excludes_limit_alephs (α : Ordinal.{0}) :
       -- (ω_ (α + ω)).cof = (α + ω).cof    [cof_omega, since α + ω is a limit]
       rw [cof_omega (isSuccLimit_add α isSuccLimit_omega0)]
       -- cof (α + ω) = cof ω                [cof_add, since ω ≠ 0]
-      rw [cof_add α ω omega0_ne_zero]
+      rw [cof_add α omega0_ne_zero]
       -- cof ω = ℵ₀                         [cof_omega0]
       exact cof_omega0
     -- ℵ₀ = aleph 0 ≤ aleph α
     rw [heq, ← aleph_zero]
-    exact aleph_le_aleph.mpr (zero_le α)
+    exact aleph_le_aleph.mpr bot_le
   exact absurd (hkoenig.trans_le hcof) (lt_irrefl _)
 
 end EastonSpectrum
