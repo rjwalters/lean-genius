@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 306 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): LagrangeFourSquaresOQ01OQ03 (dropped stale noncomputable box/r4; box via
+Finset.range.image Nat->Int cast not Finset.Icc ℤ [noncomputable ConditionallyCompleteLinearOrder diamond
+poisons native_decide]). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 305 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos470Problem (24min: plain def props no longer auto-unfold for Decidable
