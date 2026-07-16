@@ -61,6 +61,7 @@ import Mathlib.Combinatorics.SimpleGraph.Hamiltonian
 import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Set.Basic
+import Mathlib.Tactic.Abel
 
 open SimpleGraph Set
 
@@ -503,7 +504,8 @@ theorem descPath_support_val_le : ∀ (j : ℕ) (hj : j < N) (x : Fin N),
   | zero =>
       intro hj x hx
       unfold descPath at hx
-      rw [Walk.support_nil, List.mem_singleton] at hx
+      change x ∈ ([(⟨0, hj⟩ : Fin N)] : List (Fin N)) at hx
+      simp only [List.mem_singleton] at hx
       subst hx; simp
   | succ k ih =>
       intro hj x hx
@@ -539,7 +541,7 @@ theorem descPath_edges_diff_one : ∀ (j : ℕ) (hj : j < N) (e : Sym2 (Fin N)),
   | zero =>
       intro hj e he
       unfold descPath at he
-      rw [Walk.edges_nil] at he
+      change e ∈ ([] : List (Sym2 (Fin N))) at he
       exact absurd he (List.not_mem_nil)
   | succ k ih =>
       intro hj e he
@@ -662,6 +664,7 @@ section Sharpness
 
 open SimpleGraph
 
+open Fin.NatCast in
 /-- A nonempty subset of `Fin N` closed under `· + 1` is all of `Fin N`: the
 successor map generates the cyclic group, so the forward orbit of any point is
 everything. -/
@@ -721,7 +724,7 @@ theorem cycleGraph_cycle_length_eq {N : ℕ} (hN : 3 ≤ N) {v : Fin N}
     exact fun w => Set.eq_univ_iff_forall.mp hu w
   -- A spanning cycle is a Hamiltonian cycle.
   have hham : p.IsHamiltonianCycle := by
-    rw [isHamiltonianCycle_iff_isCycle_and_support_count_tail_eq_one]
+    rw [Walk.isHamiltonianCycle_iff_isCycle_and_support_count_tail_eq_one]
     refine ⟨hp, fun a => ?_⟩
     have hnodup : p.support.tail.Nodup := hp.support_nodup
     have hmem : a ∈ p.support.tail := by
@@ -729,7 +732,7 @@ theorem cycleGraph_cycle_length_eq {N : ℕ} (hN : 3 ≤ N) {v : Fin N}
       rw [Walk.support_eq_cons] at ha
       rcases List.mem_cons.mp ha with h | h
       · subst h
-        rw [← support_tail_of_not_nil p hp.not_nil]
+        rw [← Walk.support_tail_of_not_nil p hp.not_nil]
         exact p.tail.end_mem_support
       · exact h
     exact le_antisymm (List.nodup_iff_count_le_one.mp hnodup a)
@@ -744,8 +747,9 @@ theorem cycleGraph_hasCycleOfLength_iff {N : ℕ} (hN : 3 ≤ N) (k : ℕ) :
   constructor
   · rintro ⟨w, p, hp, hlen⟩
     rw [← hlen]; exact cycleGraph_cycle_length_eq hN hp
-  · rintro rfl
+  · intro hk
     haveI : NeZero N := ⟨by omega⟩
+    rw [hk]
     exact cycleGraph_hasCycleOfLength N hN
 
 /-- **`cycleGraph N` has extended girth exactly `N`** (for `N ≥ 3`).  Combines the
