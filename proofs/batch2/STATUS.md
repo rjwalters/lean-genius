@@ -1,3 +1,15 @@
+# DOCTOR SINGLE-PROOF BATCH 87 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): YangMillsMassGap (Millennium-Prize; fix in 28k-line YangMills/Exploration.lean
+submodule not wrapper; Real.exp_lt_exp_of_lt never existed -> Real.exp_lt_exp.mpr x13; 3x #38611 statement repairs:
+plaquette_continuous missing 0≤p_beta2, physics_ansatz_richer missing layers≤numLinks, vortex_area_law f<1->f≤1/2).
+Repairs #38611: YangMillsMassGap (3 missing-hypothesis fixes).
+
+COLLECTOR BUG FIXED: multi-ref `git fetch origin A B` makes FETCH_HEAD point at FIRST ref (base), so
+`git checkout FETCH_HEAD -- file` applied the BASE (unfixed) file -> false FAILED-VERIFY. Fix: checkout from
+explicit `origin/mig/<f>` ref, never FETCH_HEAD. Also: multi-file greens (fix in a submodule, not the named
+wrapper) need ALL changed .lean files applied — detect via `git diff --name-only base...branch`.
+
 # DOCTOR SINGLE-PROOF BATCH 85 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): CramersRuleOQ03OQ03 (Quaternion.imI->QuaternionAlgebra.imI (type-alias now);
