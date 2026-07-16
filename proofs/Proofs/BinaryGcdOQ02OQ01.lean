@@ -72,7 +72,7 @@ def binaryGcdBit : ℕ → ℕ → ℕ
       binaryGcdBit ((a + 1 - (b + 1)) >>> 1) (b + 1)
     else
       binaryGcdBit (a + 1) ((b + 1 - (a + 1)) >>> 1)
-  termination_by a + b
+  termination_by a b => a + b
   decreasing_by all_goals simp [shiftRight_one_eq_div_two]; omega
 
 /-! ## Part III: Correctness -/
@@ -101,40 +101,43 @@ theorem binaryGcdBit_eq_gcd : ∀ a b : ℕ, binaryGcdBit a b = Nat.gcd a b := b
     -- Both even: translate arithmetic conditions to bit conditions
     have ha' : (a + 1).testBit 0 = false := (even_iff_testBit_zero_false _).mp ha
     have hb' : (b + 1).testBit 0 = false := (even_iff_testBit_zero_false _).mp hb
-    simp only [binaryGcdBit, dif_pos ha', dif_pos hb',
+    simp only [binaryGcdBit, ha', hb', ↓reduceDIte,
                shiftRight_one_eq_div_two, ih]
     -- 2 * Nat.gcd ((a+1)/2) ((b+1)/2) = Nat.gcd (a+1) (b+1)
-    have ha2 : a + 1 = 2 * ((a + 1) / 2) := by omega
-    have hb2 : b + 1 = 2 * ((b + 1) / 2) := by omega
-    conv_rhs => rw [ha2, hb2]
-    exact gcd_two_mul.symm
+    have ha2 : 2 * ((a + 1) / 2) = a + 1 := by omega
+    have hb2 : 2 * ((b + 1) / 2) = b + 1 := by omega
+    calc 2 * Nat.gcd ((a + 1) / 2) ((b + 1) / 2)
+        = Nat.gcd (2 * ((a + 1) / 2)) (2 * ((b + 1) / 2)) := gcd_two_mul.symm
+      _ = Nat.gcd (a + 1) (b + 1) := by rw [ha2, hb2]
   | case4 a b ha hb ih =>
     -- a+1 even, b+1 odd
     have ha' : (a + 1).testBit 0 = false := (even_iff_testBit_zero_false _).mp ha
     have hb' : ¬(b + 1).testBit 0 = false := testBit_ne_false_of_odd hb
-    simp only [binaryGcdBit, dif_pos ha', dif_neg hb',
+    simp only [binaryGcdBit, ha', hb', ↓reduceDIte,
                shiftRight_one_eq_div_two, ih]
     -- Nat.gcd ((a+1)/2) (b+1) = Nat.gcd (a+1) (b+1)
-    have ha2 : a + 1 = 2 * ((a + 1) / 2) := by omega
+    have ha2 : 2 * ((a + 1) / 2) = a + 1 := by omega
     have hb1 : (b + 1) % 2 = 1 := by omega
-    conv_rhs => rw [ha2]
-    exact (gcd_mul_two_left hb1).symm
+    calc Nat.gcd ((a + 1) / 2) (b + 1)
+        = Nat.gcd (2 * ((a + 1) / 2)) (b + 1) := (gcd_mul_two_left hb1).symm
+      _ = Nat.gcd (a + 1) (b + 1) := by rw [ha2]
   | case5 a b ha hb ih =>
     -- a+1 odd, b+1 even
     have ha' : ¬(a + 1).testBit 0 = false := testBit_ne_false_of_odd ha
     have hb' : (b + 1).testBit 0 = false := (even_iff_testBit_zero_false _).mp hb
-    simp only [binaryGcdBit, dif_neg ha', dif_pos hb',
+    simp only [binaryGcdBit, ha', hb', ↓reduceDIte,
                shiftRight_one_eq_div_two, ih]
     -- Nat.gcd (a+1) ((b+1)/2) = Nat.gcd (a+1) (b+1)
-    have hb2 : b + 1 = 2 * ((b + 1) / 2) := by omega
+    have hb2 : 2 * ((b + 1) / 2) = b + 1 := by omega
     have ha1 : (a + 1) % 2 = 1 := by omega
-    conv_rhs => rw [hb2]
-    exact (gcd_mul_two_right ha1).symm
+    calc Nat.gcd (a + 1) ((b + 1) / 2)
+        = Nat.gcd (a + 1) (2 * ((b + 1) / 2)) := (gcd_mul_two_right ha1).symm
+      _ = Nat.gcd (a + 1) (b + 1) := by rw [hb2]
   | case6 a b ha hb hgt ih =>
     -- Both odd, a+1 > b+1
     have ha' : ¬(a + 1).testBit 0 = false := testBit_ne_false_of_odd ha
     have hb' : ¬(b + 1).testBit 0 = false := testBit_ne_false_of_odd hb
-    simp only [binaryGcdBit, dif_neg ha', dif_neg hb', if_pos hgt,
+    simp only [binaryGcdBit, ha', hb', hgt,
                shiftRight_one_eq_div_two, ih]
     -- Nat.gcd ((a+1-(b+1))/2) (b+1) = Nat.gcd (a+1) (b+1)
     have ha1 : (a + 1) % 2 = 1 := by omega
@@ -145,7 +148,7 @@ theorem binaryGcdBit_eq_gcd : ∀ a b : ℕ, binaryGcdBit a b = Nat.gcd a b := b
     have ha' : ¬(a + 1).testBit 0 = false := testBit_ne_false_of_odd ha
     have hb' : ¬(b + 1).testBit 0 = false := testBit_ne_false_of_odd hb
     have hnotgt : ¬(a + 1 > b + 1) := by omega
-    simp only [binaryGcdBit, dif_neg ha', dif_neg hb', if_neg hnotgt,
+    simp only [binaryGcdBit, ha', hb', hnotgt,
                shiftRight_one_eq_div_two, ih]
     -- Nat.gcd (a+1) ((b+1-(a+1))/2) = Nat.gcd (a+1) (b+1)
     have ha1 : (a + 1) % 2 = 1 := by omega
@@ -160,16 +163,17 @@ theorem binaryGcdBit_comm (a b : ℕ) : binaryGcdBit a b = binaryGcdBit b a := b
 
 /-- Identity elements. -/
 theorem binaryGcdBit_zero_left (b : ℕ) : binaryGcdBit 0 b = b := by
-  cases b <;> simp [binaryGcdBit]
+  rw [binaryGcdBit_eq_gcd, Nat.gcd_zero_left]
 
 theorem binaryGcdBit_zero_right (a : ℕ) : binaryGcdBit a 0 = a := by
-  cases a <;> simp [binaryGcdBit]
+  rw [binaryGcdBit_eq_gcd, Nat.gcd_zero_right]
 
-/-- Concrete sanity checks via decidability. -/
-example : binaryGcdBit 12 18 = 6 := by decide
-example : binaryGcdBit 48 36 = 12 := by decide
-example : binaryGcdBit 17 13 = 1 := by decide
-example : binaryGcdBit 0 7 = 7 := by decide
-example : binaryGcdBit 100 75 = 25 := by decide
+/-- Concrete sanity checks via `binaryGcdBit_eq_gcd` (well-founded recursion
+    doesn't kernel-reduce via bare `decide`; route through `Nat.gcd`, which does). -/
+example : binaryGcdBit 12 18 = 6 := by rw [binaryGcdBit_eq_gcd]; decide
+example : binaryGcdBit 48 36 = 12 := by rw [binaryGcdBit_eq_gcd]; decide
+example : binaryGcdBit 17 13 = 1 := by rw [binaryGcdBit_eq_gcd]; decide
+example : binaryGcdBit 0 7 = 7 := by rw [binaryGcdBit_eq_gcd]; decide
+example : binaryGcdBit 100 75 = 25 := by rw [binaryGcdBit_eq_gcd]; decide
 
 end BinaryGcdBit

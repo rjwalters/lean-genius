@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 53 (5-slot Sonnet + Fable, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): MotivicFlagMapsPartialFlags (@[reducible] on private K0Var-instance defs
+whose .carrier used in TC search; Finset.sum_ite_eq vs _eq' arg-order swap silent), BinaryGcdOQ02OQ01
+(termination_by now needs explicit binder form `termination_by a b => a+b` for defs w/o named top-level
+params; well-founded-rec decide/simp[def] fragile -> route through _eq_gcd correctness lemma). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 52 (Fable greens, #38065, 2026-07-16)
 
 **+2 GREEN, both FABLE** (re-verified EXIT=0): Erdos1051Problem (Summable.of_norm_bounded_eventually g-implicit
