@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 153 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Hilbert20OQ01OQ03 (same principalSymbol PRE-EXISTING defect -> Finset.Nat.
+antidiagonalTuple n m; @[ext] LinearPDO; formalAdjoint order_bound funext). Repair: none (provenance flag).
+
 # DOCTOR SINGLE-PROOF BATCH 152 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): FactorRemainderNullstellensatzOQ01 (v4.31 Nullstellensatz API:
