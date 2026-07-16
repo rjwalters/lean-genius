@@ -361,17 +361,42 @@ lemma missing_3_exists_base3 (m : ℕ) (h_miss : ∀ d, (m / 4^d) % 4 ≠ 3) : �
       rw [h_base3, h_mod3, h_mod3_2, h_div3, ←hn']
       omega
 
+lemma base3_to_base4_ne_zero (n : ℕ) (hn : n ≠ 0) : base3_to_base4 n ≠ 0 := by
+  induction n using Nat.strongRecOn with
+  | ind n ih =>
+    rw [base3_to_base4, dif_neg hn]
+    by_cases h3 : n % 3 = 0
+    · have hn3 : n / 3 ≠ 0 := by
+        have hmd : n = n % 3 + 3 * (n / 3) := (Nat.mod_add_div n 3).symm
+        omega
+      have hdiv_lt : n / 3 < n := Nat.div_lt_self (by omega) (by omega)
+      have := ih (n / 3) hdiv_lt hn3
+      omega
+    · omega
+
+lemma base3_to_base4_ge (d : ℕ) (n : ℕ) (hn : n ≥ 3 ^ d) : base3_to_base4 n ≥ 4 ^ d := by
+  induction d generalizing n with
+  | zero =>
+    simp only [pow_zero] at hn ⊢
+    exact Nat.one_le_iff_ne_zero.mpr (base3_to_base4_ne_zero n (by omega))
+  | succ d ih =>
+    have hpow : (3:ℕ) ^ (d + 1) ≥ 1 := Nat.one_le_pow _ _ (by omega)
+    have hn0 : n ≠ 0 := by omega
+    rw [base3_to_base4, dif_neg hn0]
+    have hn' : n ≥ 3 ^ d * 3 := by rw [pow_succ] at hn; omega
+    have hdiv : n / 3 ≥ 3 ^ d := by omega
+    have h_ih := ih (n / 3) hdiv
+    have h4 : (4:ℕ) ^ (d + 1) = 4 * 4 ^ d := by ring
+    omega
+
 lemma base3_to_base4_lt_4_pow_iff (d n : ℕ) : base3_to_base4 n < 4^d ↔ n < 3^d := by
-  rw [←Nat.pow_lt_pow_iff_left (d.two_pow_pos.ne'), base3_to_base4]
-  delta base3_to_base4
-  trans n%3+4*.ofDigits 4 ((3).digits (n/3))<4^d
-  · refine(Nat.pow_lt_pow_iff_left d.two_pow_pos.ne').trans (iff_of_eq (congr_arg (.< _) ((em _).elim (by simp_all) (dif_neg ·▸congr_arg _ ((congr_arg _) ((n/3).strongRec ?_))))))
-    exact (fun R L=>WellFounded.fix_eq _ _ _▸by cases R with·norm_num[ L,Nat.ofDigits,Nat.div_lt_self (@Nat.succ_pos _)])
-  refine d.strongRec (@fun R L=>? _) n
-  use fun and=>match R with|0=>?_ | S+1=> (and/3).eq_zero_or_pos.elim ?_ ((3).digits_def' (by decide) ·▸Nat.ofDigits_cons▸pow_succ (3) S▸pow_succ 4 S▸? _)
-  · match(3).ofDigits_digits (and/3)▸(3).ofDigits_monotone _ (by decide:4≥3) with | S=>use (by valid),by norm_num+contextual
-  · exact (by ·norm_num[((Nat.le_self_pow _ _)).trans_lt',·, and.mod_def,Nat.lt_of_not_ge (by cases‹_=0›▸Nat.div_pos · (by decide))|>.trans_le])
-  · exact (Nat.ofDigits_cons▸Nat.ofDigits_cons.symm▸(L S (by constructor) (and/3)).elim (by valid))
+  constructor
+  · intro h
+    by_contra hn
+    push_neg at hn
+    have := base3_to_base4_ge d n hn
+    omega
+  · exact base3_to_base4_bound d n
 
 lemma B1_sum_subset_image (d : ℕ) : (B1 + B1) ∩ Iio (4^d) ⊆ base3_to_base4 '' Iio (3^d) := by
   intro m hm
@@ -577,7 +602,7 @@ lemma finset_card_add (A B : Finset ℕ) (hA : A.Nonempty) (hB : B.Nonempty) :
   replace: A.image ( · +B.min' hB)∪B.image (. + A.max' hA) ⊆A +B
   · simp_all only [add_comm @_ (A.max' _), Finset.union_subset, A.max'_mem, B.min'_mem, A.add_mem_add, implies_true, Finset.image_subset_iff]
   apply(( Finset.card_union _ _).ge.trans ( Finset.card_mono this)).trans' ∘tsub_le_iff_right.2 ∘not_lt.1
-  replace: A.image (· +B.min' hB) ∩B.image ↑(.+A.max' (hA)) ≤singleton (A.max' (hA)+B.min' hB)
+  replace: A.image (· +B.min' hB) ∩B.image ↑(.+A.max' (hA)) ≤ singleton (A.max' (hA)+B.min' hB)
   · refine fun and(a) =>List.mem_singleton.2 (( Finset.mem_image.mp ↑( Finset.inter_subset_left a)).elim fun and (N) =>(@ Finset.mem_image.mp ↑( Finset.inter_subset_right a)).elim (by match A.le_max' and N.1, B.min'_le · ·.left with|s, a =>omega ) )
   · exact (tsub_le_iff_right.1 ↑(tsub_le_tsub (by push_cast [refl, false, Finset.card_image_of_injective, add_left_injective]) ↑( Finset.card_mono this ) )).not_gt
 
@@ -1244,7 +1269,7 @@ lemma error_term_tendsto : Filter.Tendsto (fun k => (2 * (3 ^ (3^k) : ℝ) + 2 *
                                                                                                                                                                                                              use(Filter.tendsto_add_atTop_iff_nat 1).1 (show Filter.Tendsto (fun x =>(_+2*Nat.cast _*_+Nat.cast _*Nat.cast _)/Nat.cast _) _ _ from ? _)
                                                                                                                                                                                                              norm_num[pow_succ',pow_mul,mul_assoc, add_div, mul_left_comm, mul_div_assoc _,←mul_pow, false,←div_pow]
                                                                                                                                                                                                              have:=((tendsto_pow_atTop_nhds_zero_of_lt_one (by bound: (27/64: ℝ)≥0) (by bound)).const_mul 2).add (((summable_geometric_two.mul_left 10).mul_left 2).mul_left 2).tendsto_atTop_zero
-                                                                                                                                                                                                             use((this.add (((tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)).const_mul 10).const_mul _)).comp ((Nat.tendsto_pow_atTop_atTop_of_one_lt (by decide)))).trans_eq (by ring)
+                                                                                                                                                                                                             use((this.add (((tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)).const_mul 10).const_mul _)).comp ((tendsto_pow_atTop_atTop_of_one_lt (by decide)))).trans_eq (by ring)
 
 lemma error_term_le_eps (ε : ℝ) (hε : ε > 0) :
   ∃ K0, ∀ k ≥ K0, (2 * (3 ^ (3^k) : ℝ) + 2 * (S_y (k - 1) : ℝ) * (2 * (2 ^ (3^k) : ℝ)) + (S_y (k - 1) : ℝ) * (S_y (k - 1) : ℝ)) / (S_x k : ℝ) ≤ ε := by
@@ -1455,7 +1480,7 @@ lemma sandor_cross_sums (A₁ A₂ : Set ℕ) (h_union : SandorA = A₁ ∪ A₂
                                                                                                                                                norm_num[two_mul]
                                                                                                                                                use mod_cast R.eq_empty_or_nonempty.elim (·▸bot_le) (fun ⟨a, _⟩=> if I : R.image (·+R.min' (by use a))∪R.image (· +R.max' (by use a ) ) ⊆R +R then(? _)else ? _)
                                                                                                                                                · apply((Nat.succ_le_succ (( Finset.card_union _ _).ge.trans ( Finset.card_mono I)))).trans' ∘not_lt.1
-                                                                                                                                                 replace M : R.image (.+R.min' (by assumption)) ∩R.image ( ·+R.max' (by assumption)) ≤singleton (R.max' (by assumption)+R.min' (by assumption) )
+                                                                                                                                                 replace M : R.image (.+R.min' (by assumption)) ∩R.image ( ·+R.max' (by assumption)) ≤ singleton (R.max' (by assumption)+R.min' (by assumption) )
                                                                                                                                                  · use fun and(a)=>List.mem_singleton.mpr (( Finset.mem_image.mp ↑( Finset.inter_subset_left a)).elim fun and (N) => (Finset.mem_image.1 ↑( Finset.inter_subset_right a)).elim (by match R.le_max' and N.1, R.min'_le · ·.1 with|A, B=>omega))
                                                                                                                                                  · exact (tsub_le_iff_right.1 (tsub_le_tsub (by push_cast[refl, R.card_image_of_injective, add_left_injective]) (Finset.card_mono M))).not_gt
                                                                                                                                                · cases I (by push_cast +contextual [ Finset.union_subset, R.min'_mem, R.max'_mem, R.image_subset_iff, implies_true,R.add_mem_add])
@@ -1471,7 +1496,7 @@ lemma exists_K1_cx (c : ℝ) (hc : c > 0) : ∃ K1, ∀ k ≥ K1, 8 * c * (S_x k
   by_contra!
   choose _ _ _ using this (.ceil (2/(8 * c)))
   apply not_le.2 (by valid)
-  show _≤star _
+  show _ ≤ star _
   exact (Nat.ceil_le.1 (.trans (by valid) (Nat.lt_pow_self (by decide) |>.trans (Nat.lt_pow_self (by decide))).le))
 
 lemma algebra_fluctuation (Nx x y c : ℝ) (h_x_pos : x > 0) (h_y : y = 10 * x) (h_cx : 8 * c * x ≥ 2) (h_Nx : Nx ≤ 2 * x * (1 - c)) :
