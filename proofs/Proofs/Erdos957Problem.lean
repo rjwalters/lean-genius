@@ -150,8 +150,11 @@ theorem erdos_pach_conjecture_true : ErdosPachConjecture := by
   intro n hn A hA
   have hbound := hDum n (by omega) A hA
   -- Need: (9/8)n² + C·n ≤ (9/8 + ε)·n², i.e., C·n ≤ ε·n²
-  have hn_pos : (0 : ℝ) < n := by positivity
+  have hn_pos : (0 : ℝ) < n := by
+    have : 0 < n := by omega
+    exact_mod_cast this
   have hn_cast : (↑(Nat.ceil (C / ε) + 2) : ℝ) ≤ ↑n := by exact_mod_cast hn
+  push_cast at hn_cast
   have hn_ge : C / ε ≤ n := le_trans (Nat.le_ceil _) (by linarith)
   have hCn : C * n ≤ ε * n ^ 2 := by
     rw [sq]; nlinarith [div_le_iff₀ hε |>.mp hn_ge]
@@ -179,10 +182,12 @@ theorem constant_tight : ∀ c < (9/8 : ℝ),
       (distanceFrequency A (minDistance A) : ℝ) *
       (distanceFrequency A (maxDistance A)) ≤ c * n^2) := by
   intro c hc hContra
-  obtain ⟨N, hN⟩ := makai_tight_construction ((9/8 : ℝ) - c) (by linarith)
+  obtain ⟨N, hN⟩ := makai_tight_construction (((9/8 : ℝ) - c) / 2) (by linarith)
   obtain ⟨A, hA, hLower⟩ := hN (N + 2) (by omega)
   have hUpper := hContra (N + 2) (by omega) A hA
-  linarith
+  push_cast at hLower hUpper
+  have hpos : (0 : ℝ) < ((N : ℝ) + 2) ^ 2 := by positivity
+  nlinarith [hLower, hUpper, hpos]
 
 /-
 ## Part VI: Sum Inequality
@@ -300,7 +305,7 @@ theorem erdos_957_summary :
     -- Main result
     ErdosPachConjecture ∧
     -- Constant is tight
-    (∀ c < (9/8 : ℝ), ∃ A_family,
+    (∀ c < (9/8 : ℝ), ∃ A_family : Set (Finset Point),
       ∀ n, ∃ A ∈ A_family, A.card = n ∧
         (distanceFrequency A (minDistance A) : ℝ) *
         (distanceFrequency A (maxDistance A)) ≥ c * n^2) ∧
@@ -312,7 +317,7 @@ theorem erdos_957_summary :
   · exact erdos_pach_conjecture_true
   constructor
   · intro c hc
-    use fun _ => ∅  -- Placeholder
+    use ({∅} : Set (Finset Point))  -- Placeholder
     intro n
     sorry
   · obtain ⟨c, hc, hSum⟩ := sum_inequality
