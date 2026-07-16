@@ -1,3 +1,10 @@
+# DOCTOR SINGLE-PROOF BATCH 291 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1054OQ01 (List.scanl def-unfold broken->scanl_cons/nil; Finset.sort
+arg order s-before-r; dependent getLast rw motive->helper lemma; #38611 REPAIR 5 WRONG numeric literals old
+decide accepted [computeF 16/20/24/30, f_bounded_50 n=19] recomputed; NATIVE_DECIDE-INTRODUCED f_bounded_50
+decide->native_decide adds Lean.ofReduceBool meta re-audit). Repairs: 1 numeric + 1 native_decide-intro.
+
 # DOCTOR SINGLE-PROOF BATCH 290 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos156OQ02 (16-case not_sidon split avoid rfl-subst cascade;
