@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 157 (mixed fleet, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): MaschkeLocalRingOQ010102 (MonoidAlgebra.lift arg order R M A -> R A M).
+Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 156 (mixed fleet, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Hilbert4Geodesics (HARD 14min: haveI->letI instance diamond for
