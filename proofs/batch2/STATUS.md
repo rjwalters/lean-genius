@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 65 (mixed fleet, #38065, 2026-07-16)
+
+**+2 GREEN** (re-verified EXIT=0): FourthRoot2Degree4OQ02 (scoped ⟮⟯ needs open scoped IntermediateField;
+finrank_adjoin_eq missing hn:0<n), ElementaryQuadraticReciprocityOQ01 (forward-ref reorder whole Parts;
+ZMod.val_injective NeZero-arg; IsUnit.of_mul_eq_one; even_iff_two_dvd root-ns). Repairs: none.
+
 # DOCTOR SINGLE-PROOF BATCH 64 (mixed fleet, #38065, 2026-07-16)
 
 **+2 GREEN** (re-verified EXIT=0): RandomizedMaxcutOQ04 (18min/155k: Finset.card_bij arg order now
