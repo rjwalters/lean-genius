@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 207 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos1201Problem (HARD 20min density-theory: div_le_one_of_le₀;
+Filter qualification asymmetry; IsBoundedUnder via eventually_map / IsCoboundedUnder simp+decide;
+haveI->letI instance transparency; binder-order bug fix). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 206 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos223Problem (multi-var ⨆/⨅ binder (i:Fin n)(j:Fin n);
