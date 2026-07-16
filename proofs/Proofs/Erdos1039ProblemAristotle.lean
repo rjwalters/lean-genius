@@ -27,8 +27,10 @@ open Erdos1039 Finset Complex
 /-- For a degree-1 polynomial, eval z = z - roots 0. -/
 theorem eval_degree_one (f : UnitDiscPolynomial) (hf : f.degree = 1) (z : ℂ) :
     f.eval z = z - f.roots ⟨0, hf ▸ Nat.zero_lt_one⟩ := by
-  simp only [UnitDiscPolynomial.eval, hf]
-  skip
+  simp only [UnitDiscPolynomial.eval]
+  rw [show (Finset.univ : Finset (Fin f.degree)) = {⟨0, hf ▸ Nat.zero_lt_one⟩} from by
+        ext i; simp [Fin.ext_iff]; omega]
+  simp [Finset.prod_singleton]
 
 /-- The sublevel set of a degree-1 polynomial is the open disc of radius 1 around the root. -/
 theorem sublevelSet_degree_one (f : UnitDiscPolynomial) (hf : f.degree = 1) :
@@ -36,6 +38,7 @@ theorem sublevelSet_degree_one (f : UnitDiscPolynomial) (hf : f.degree = 1) :
   ext z
   simp only [sublevelSet, Set.mem_setOf_eq]
   rw [eval_degree_one f hf z]
+  simp [Complex.abs]
 
 /-- A disc of radius r centered at c is inscribed in the open disc of radius r centered at c. -/
 theorem isInscribedDisc_self (c : ℂ) (r : ℝ) (hr : r > 0) :
@@ -54,28 +57,34 @@ theorem isInscribedDisc_mono (S T : Set ℂ) (hST : S ⊆ T) (c : ℂ) (r : ℝ)
     (h : isInscribedDisc S c r) : isInscribedDisc T c r := by
   exact ⟨h.1, fun z hz => hST (h.2 z hz)⟩
 
-/-- Monotonicity of inscribed disc radius under set inclusion. -/
-theorem inscribedDiscRadius_mono (S T : Set ℂ) (hST : S ⊆ T) :
+/-- Monotonicity of inscribed disc radius under set inclusion.
+    v4.31 migration note: the original statement quantified over arbitrary `S T : Set ℂ`
+    with no boundedness assumption, which is false in general (e.g. `T = Set.univ` makes
+    `inscribedDiscRadius T` collapse to the junk value `0` via `Real.sSup`'s
+    not-`BddAbove` case, while `inscribedDiscRadius S` can be positive). The genuinely-true
+    form adds the two hypotheses `csSup_le_csSup` actually needs: `T`'s radius set is
+    bounded above, and `S`'s radius set is nonempty. #38611 candidate. -/
+theorem inscribedDiscRadius_mono (S T : Set ℂ) (hST : S ⊆ T)
+    (hbdd : BddAbove {r : ℝ | ∃ c : ℂ, isInscribedDisc T c r})
+    (hne : {r : ℝ | ∃ c : ℂ, isInscribedDisc S c r}.Nonempty) :
     inscribedDiscRadius S ≤ inscribedDiscRadius T := by
-  apply csSup_le_csSup
-  · -- T has an upper bound for inscribed disc radii (bounded by diameter)
-    use 2  -- trivial upper bound for any disc inside ℂ... actually not bounded
-    rintro r ⟨c, hc⟩
-    exact (isInscribedDisc_mono S T hST c r hc).1.le
-  · -- radii for S are contained in radii for T
-    rintro r ⟨c, hc⟩
-    exact ⟨c, isInscribedDisc_mono S T hST c r hc⟩
+  apply csSup_le_csSup hbdd hne
+  rintro r ⟨c, hc⟩
+  exact ⟨c, isInscribedDisc_mono S T hST c r hc⟩
 
 /-- If r is positive and inscribed in S, then r is in the set of inscribed radii. -/
 theorem inscribed_radius_mem (S : Set ℂ) (c : ℂ) (r : ℝ) (h : isInscribedDisc S c r) :
     r ∈ {r : ℝ | ∃ c : ℂ, isInscribedDisc S c r} := ⟨c, h⟩
 
-/-- Positivity: the inscribed disc radius is nonneg when a disc exists. -/
+/-- Positivity: the inscribed disc radius is nonneg (every radius in the candidate set is
+    positive by definition of `isInscribedDisc`, so this holds unconditionally via
+    `Real.sSup_nonneg`, without needing `BddAbove`). -/
 theorem inscribedDiscRadius_nonneg (S : Set ℂ) (c : ℂ) (r : ℝ) (h : isInscribedDisc S c r) :
     0 ≤ inscribedDiscRadius S := by
-  apply le_csSup_of_le
-  · exact ⟨c, h⟩
-  · exact h.1.le
+  unfold inscribedDiscRadius
+  apply Real.sSup_nonneg
+  intro x ⟨c, hpos, _⟩
+  linarith
 
 /-
 ## Supporting lemmas for clustered_implies_large_disc
@@ -88,17 +97,22 @@ theorem abs_sub_lt_of_clustered (z c : ℂ) (zi : ℂ) (ε : ℝ) (hε : 0 < ε)
   have h : Complex.abs (z - zi) ≤ Complex.abs (z - c) + Complex.abs (zi - c) := by
     calc Complex.abs (z - zi)
         = Complex.abs ((z - c) - (zi - c)) := by ring_nf
-      _ ≤ Complex.abs (z - c) + Complex.abs (zi - c) := Complex.abs.sub_le _ _
+      _ ≤ Complex.abs (z - c) + Complex.abs (zi - c) := norm_sub_le _ _
   linarith
 
 /-- Product of values with absolute value < 1 has absolute value < 1. -/
 theorem prod_abs_lt_one_of_each {n : ℕ} (hn : n > 0) (v : Fin n → ℂ)
     (hv : ∀ i, Complex.abs (v i) < 1) :
     Complex.abs (∏ i : Fin n, v i) < 1 := by
-  rw [map_prod]
-  apply Finset.prod_lt_one
-  · intro i _; exact norm_nonneg _
-  · intro i _; exact le_of_lt (hv i)
-  · exact ⟨⟨0, hn⟩, Finset.mem_univ _, hv _⟩
+  show ‖∏ i : Fin n, v i‖ < 1
+  rw [norm_prod]
+  have key : ∀ s : Finset (Fin n), s.Nonempty → ∏ i ∈ s, ‖v i‖ < 1 := by
+    intro s hs
+    induction hs using Finset.Nonempty.cons_induction with
+    | singleton a => simpa [Complex.abs] using hv a
+    | cons a s ha _ ih =>
+        rw [Finset.prod_cons]
+        exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) (hv a) ih.le
+  exact key Finset.univ (Finset.univ_nonempty_iff.mpr ⟨⟨0, hn⟩⟩)
 
 end Erdos1039.Aristotle

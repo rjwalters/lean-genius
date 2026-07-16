@@ -1,3 +1,19 @@
+# DOCTOR SINGLE-PROOF BATCH 326 (all-Sonnet, #38065, 2026-07-16)
+
+**+3 GREEN**:
+- Erdos1039ProblemAristotle (Finset.eq_singleton via omega on Fin; norm_sub_le for removed
+  Complex.abs.sub_le; norm_prod + Nonempty.cons_induction for removed map_prod / missing
+  MulLeftStrictMono ℝ; csSup_le_csSup 3-arg needs Nonempty). #38611 REPAIR: inscribedDiscRadius_mono
+  false without boundedness (T=univ -> junk 0); added BddAbove+Nonempty hyps. Companion-only.
+- Erdos817Aristotle (▸-motive drift -> explicit b=a+rw; `rintro (rfl|rfl)` substitutes theorem-param
+  `a` not local `x` -> rcases (h|h)+simp; `simp[ha]` no longer closes ¬0=a -> mem_singleton+omega).
+- Erdos679Aristotle (drop leftover `noncomputable` that blocked native_decide though def is computable;
+  Nat.primeFactors_prime_pow arg swap; mem_primeFactors now unconditional; toFinset_card_le rename;
+  reorder forward-ref lemma).
+SEAMS: csSup_le_csSup now 3-arg (needs Nonempty) -> csSup_le_csSup'; map_prod no longer fires on
+Complex.abs shim -> norm_prod; `rintro (rfl|rfl)` substitutes theorem-parameter not local var;
+noncomputable on a computable-underlying def silently blocks native_decide.
+
 # DOCTOR SINGLE-PROOF BATCH 325 (all-Sonnet, #38065, 2026-07-16)
 
 **+2 GREEN**:
