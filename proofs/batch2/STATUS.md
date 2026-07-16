@@ -1,3 +1,9 @@
+# DOCTOR SINGLE-PROOF BATCH 283 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): BuffonsNeedleOQ01OQ01OQ04OQ01 (integral_nonneg ambiguity; theorem->noncomputable
+def for AngularAverageData; pi_pos nlinarith; #38611 REPAIR cauchyCroftonConst_pos 1≤n unsound denom vanishes
+n=1 -> 2≤n). Repairs: 1.
+
 # DOCTOR SINGLE-PROOF BATCH 282 (all-Sonnet post-rate-limit, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos1131OQ01 (cascade artifact, no edits; parent Erdos1131Problem olean built).
