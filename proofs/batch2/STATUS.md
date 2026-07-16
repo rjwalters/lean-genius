@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 238 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos794Problem (Type*->Type universe mvar mismatch across defs; erdos_794_
+original_false direction bug fixed via direct have; import Data.Real.Basic for 2/7:ℝ). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 237 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos782Problem (dsimp before omega; solymosi_equiv by_contra rebuild;
