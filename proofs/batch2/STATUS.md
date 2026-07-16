@@ -1,3 +1,8 @@
+# DOCTOR SINGLE-PROOF BATCH 224 (all-Sonnet + Opus, #38065, 2026-07-16)
+
+**+1 GREEN** (re-verified EXIT=0): Erdos478Problem (congr 1->congr 2 for cast+factorial peel; set-bound k
+named-eq not subst; ZMod.natCast_val->natCast_zmod_val; sq->pow_two + exact_mod_cast). Repair: none.
+
 # DOCTOR SINGLE-PROOF BATCH 223 (all-Sonnet + Opus, #38065, 2026-07-16)
 
 **+1 GREEN** (re-verified EXIT=0): Erdos459Problem (mem_primeFactors ne' not pos; noncomputable f_alt;
