@@ -1,3 +1,11 @@
+# DOCTOR SINGLE-PROOF BATCH 363 (Sonnet, #38065, 2026-07-16)
+
+**+1 GREEN**: BallotProblemOQ03OQ01OQ01OQ01 (finished 5-error cluster from a prior 678-line fix:
+`Fintype.sum_subtype_add_sum_subtype` in sym_pair_sum_partition needed explicit `(fun PQ : Sym.. × Sym.. => ..)`
+binder type annotations — v4.31 no longer back-propagates lambda type from the `exact` goal, so PQ.1/PQ.2
+were invalid projections on an unresolved metavar). 2 pre-existing sorries preserved. Repair: none.
+SEAM: implicit-index sum/prod-subtype lemmas now need explicit binder type annotations in lambdas passed via exact.
+
 # DOCTOR SINGLE-PROOF BATCH 362 (Sonnet DEEP-REWORK, #38065, 2026-07-16)
 
 **+1 GREEN (deep-rework, rescued from monitor-punt)**: Erdos1018OQ04Incomplete01 (root cause NOT the
