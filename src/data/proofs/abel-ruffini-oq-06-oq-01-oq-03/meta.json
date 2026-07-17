@@ -72,7 +72,7 @@
       }
     ],
     "dateAdded": "2026-07-04",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Solvability of a group is preserved under the three basic constructions: subgroups, quotients, and extensions. The subgroup and quotient cases are elementary (the derived series of a subgroup/quotient sits inside the image of the derived series of the ambient group), and Mathlib records them as solvable_of_solvable_injective and solvable_of_surjective. The extension case — N solvable and G/N solvable together force G solvable — is the substantive closure property; it is what makes the class of solvable groups closed under building a composition series with abelian factors, and it is the engine behind every 'metabelian ⟹ solvable' argument. Mathlib proves the fully general form solvable_of_ker_le_range but leaves the canonical normal-subgroup packaging to the user. The parent chain hit this gap directly: closing the Abel–Ruffini threshold at S₄ required exactly this extension step for A₄ ⊳ V₄ ⊳ 1, written out by hand.",

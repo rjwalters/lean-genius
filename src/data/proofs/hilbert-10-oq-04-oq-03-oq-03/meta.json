@@ -22,7 +22,7 @@
     "lineCount": 161,
     "assumptions": "None. Fully machine-verified: `lake env lean` builds Proofs/Hilbert10OQ04OQ03OQ03.lean to exit 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for all four theorems. The file imports only Mathlib modules (Data.Int.GCD, RingTheory.Int.Basic, Tactic.Ring/Linarith/LinearCombination) and is self-contained. The completeness results solution_complete / solution_set_eq carry the hypothesis b ≠ 0, which is exactly what makes g = gcd(a,b) > 0 and B = b/g ≠ 0 (the degenerate b = 0 case reduces to a·x = c with y free); the witness and family lemmas are hypothesis-free beyond the stated divisibility.",
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Int.gcd_eq_gcd_ab",

@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 148,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms theta_isTheta_id` reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. Builds on the parent ChebyshevBoundsOQ02OQ01 (the explicit ψ = Θ(n) estimate) and Mathlib's Chebyshev development (theta_le_psi, abs_psi_sub_theta_le_sqrt_mul_log, isLittleO_log_rpow_atTop); all results are fully machine-checked.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Chebyshev.theta_le_psi",

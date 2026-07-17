@@ -51,7 +51,7 @@
     "axiomCount": 0,
     "lineCount": 183,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All four packaged theorems (polar_psd_unique, polar_right, polar_right_unique, polar_left) depend only on the foundational propext / Classical.choice / Quot.sound. The square root is Mathlib's C⋆-algebraic CFC.sqrt; the PSD polar factor is defined as polarFactor A = CFC.sqrt (Aᴴ · A), positive semidefinite via CFC.sqrt_nonneg with LE.le.posSemidef and satisfying polarFactor A · polarFactor A = Aᴴ · A via CFC.sqrt_mul_sqrt_self applied to Matrix.posSemidef_conjTranspose_mul_self. Uniqueness of the PSD factor is fully general (no invertibility of A): from A = U·P with U unitary and P PSD one computes Aᴴ·A = Pᴴ·(Uᴴ·U)·P = P·P using Matrix.PosSemidef.isHermitian and Unitary.star_mul_self_of_mem, and CFC.sqrt_unique forces P = √(AᴴA). Existence and full uniqueness are stated only for invertible A (hypothesis IsUnit A): the polar factor is then invertible because det(√(AᴴA))² = det(Aᴴ·A) = star(det A)·det A ≠ 0 (Matrix.det_conjTranspose, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero), so U := A·P⁻¹ is unitary via Matrix.nonsing_inv_mul / Matrix.mul_nonsing_inv / Matrix.conjTranspose_nonsing_inv and Matrix.mul_eq_one_comm. The left form A = √(AAᴴ)·U is obtained by applying the right decomposition to Aᴴ and transposing (Matrix.conjTranspose_mul, Unitary.star_mem). The genuine hypotheses are P.PosSemidef, U ∈ unitary, and IsUnit A where stated.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 1
   },

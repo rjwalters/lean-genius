@@ -56,7 +56,7 @@
         "module": "Mathlib.NumberTheory.Padics.PadicVal"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Kummer's theorem (1852) computes the $p$-adic valuation $v_p(\\binom{n}{k})$ as the number of carries when adding $k$ and $n-k$ in base $p$; equivalently $(p-1)v_p(\\binom{n}{k}) = s_p(k)+s_p(n-k)-s_p(n)$ for the base-$p$ digit sum $s_p$. The parent entry specialises this to the central binomial coefficient $\\binom{2n}{n}$, giving the closed form $v_2(\\binom{2n}{n}) = s_2(n)$, the binary popcount of $n$. This follow-up isolates the extreme of that formula: the central coefficient is divisible by exactly one factor of $2$ precisely when $n$ has a single $1$-bit, i.e. $n$ is a power of two. The underlying arithmetic fact — popcount equals $1$ iff a power of two — is elementary but, perhaps surprisingly, has no direct statement in Mathlib's digit library.",

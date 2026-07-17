@@ -72,7 +72,7 @@
       }
     ],
     "dateAdded": "2026-05-07",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Jacobi (1834) discovered the explicit formula r₄(n) = 8·σ*(n), where σ*(n) = ∑_{d|n, 4∤d} d, refining Lagrange's earlier 1770 existence theorem. The proof identifies the n-th Fourier coefficient of θ(q)⁴ = (∑_{k∈ℤ} q^{k²})⁴, recognizing θ⁴ as a weight-2 modular form on Γ₀(4). Specifically, θ⁴(τ) = 1 + 8·∑_{n≥1} σ*(n)·q^n is the unique weight-2 modular form with that constant term. The factor of 8 is not arbitrary: it equals 2³ and corresponds to the order-2³ subgroup acting trivially on a generic 4-tuple under sign-and-permutation symmetry (after dividing out by the orbit sizes counted in `four-square-distribution`). Mathlib has the elementary half (Lagrange's existence theorem, Mathlib.NumberTheory.SumFourSquares.sum_four_squares) and the modular-form scaffolding (JacobiTheta, EisensteinSeries) but does not yet bridge them with the Fourier-coefficient identification required for r₄.",

@@ -50,7 +50,7 @@
     "lineCount": 323,
     "theoremCount": 12,
     "definitionCount": 4,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Hilbert's 14th Problem (1900) asked whether invariant rings k[V]^G are always finitely generated. Hilbert proved this for GL_n (1890) using his basis theorem; Weyl (1939) proved it for all reductive groups via the Weyl integration formula. The negative answer came from Nagata (1959), who constructed a counterexample using a 13-dimensional unipotent group acting on a 32-dimensional space. After this counterexample showed that invariant rings are not always finitely generated, the central question became: which groups and which representations give finitely generated invariants? Grosshans (1997) gave the definitive criterion for subgroups of reductive groups: H ≤ G (G reductive) has fg invariants for all representations iff k[G/H] is fg. This reduces the problem to the concept of 'Grosshans subgroups'. This file (OQ-01) surveys the criterion and asks whether it can be formalized in Lean 4.",

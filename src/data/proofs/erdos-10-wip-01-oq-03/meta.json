@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 191,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. Every dependency is an already gallery-verified file of the Erdős #10 thread: Erdos10WIP01 (the popcount characterization isPrimePlusKPowers_iff_popcount, popcount, popcount_le_iff, RepWithAtMost/powSum), Erdos10OQ01Incomplete01 (coveringPrimes and prime_forced_small — the six-prime obstruction), and Erdos10Incomplete01OQ02 (coveringPrimes_odd, coveringPrimes_le, the explicit even progression family and family_props). The reduction layer added here uses only standard Mathlib tactics (omega, rcases, simp, Nat.sub arithmetic, Multiset.card_eq_one) and the single library lemma Set.infinite_of_injective_forall_mem. Under the project axiom-integrity policy the only assumptions are the ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Set.infinite_of_injective_forall_mem",

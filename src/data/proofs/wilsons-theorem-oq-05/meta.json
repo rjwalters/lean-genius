@@ -24,7 +24,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `Nat.prime_iff_fac_equiv_neg_one` (the ZMod-valued Wilson biconditional) and elementary `ZMod`/`Nat.ModEq` bridging lemmas; no `decide`/`native_decide`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.prime_iff_fac_equiv_neg_one",

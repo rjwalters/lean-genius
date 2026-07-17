@@ -71,7 +71,7 @@
     "axiomCount": 0,
     "lineCount": 221,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only structural Mathlib lemmas (Matrix.mul_fin_two, Matrix.det_pow, Matrix.det_fin_two_of, pow_add, Nat.fib_add_two, Matrix.mul_adjugate, Matrix.adjugate_fin_two_of) with induction, push_cast, ring, linear_combination, and exact_mod_cast; no native_decide and no structure-encoded hypotheses. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for every theorem (including the d'Ocagne identity fib_dOcagne), none of which count as assumptions.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 1
   },

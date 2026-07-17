@@ -79,7 +79,7 @@
     "axiomCount": 0,
     "lineCount": 148,
     "assumptions": "0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound (standard Mathlib foundations). Proves the single-eigenvalue case: if x − λ is nilpotent with nilpotency class m then minpoly = (X − C λ)^m and deg = m. The general multi-eigenvalue statement (minpoly = ∏_λ (X − λ)^{m(λ)} with m(λ) the largest block size at λ) requires Jordan normal form, which is not in Mathlib v4.26.0; that reduction is left as future work.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 0
   },

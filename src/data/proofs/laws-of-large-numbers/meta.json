@@ -50,7 +50,7 @@
     "wiedijkNumber": 59,
     "axiomCount": 3,
     "assumptions": "3 axioms across the chain (main 1 + LawsOfLargeNumbersOQ02.lean 2): main file declares weak_law_of_large_numbers_axiom wrapping the WLLN proof using Mathlib's Chebyshev inequality and variance properties; LawsOfLargeNumbersOQ02.lean declares standardNormalCDF and berryEsseenConstant. 2 stub theorems (monte_carlo_convergence, bernoulli_law) use placeholder proofs.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "lineCount": 396,
     "theoremCount": 11,
     "definitionCount": 3,

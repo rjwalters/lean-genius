@@ -24,7 +24,7 @@
     "axiomCount": 0,
     "lineCount": 739,
     "assumptions": "0 axioms, 0 sorries — fully machine-checked (`#print axioms` reports only propext/Classical.choice/Quot.sound). S16 (2026-07-01) discharges the lone remaining `sorry` on `rational_canonical_form_exists` (RCF existence, strong form: an invariant-factor chain with product = charpoly M and last factor = minpoly F M). The proof adds `import Proofs.RationalCanonicalFormExists` and bridges to the axiom-free `RationalCanonicalFormExists.rational_canonical_form_exists` (Aristotle-synthesized, integrated verbatim in-tree; its `InvariantFactorChain` is field-identical, so the four fields copy across and the two equalities transport definitionally). This is the same one-line bridge already used by `MinpolyCharpolyOQ03OQ01.xModule_has_invariantFactorChain`, inlined here to avoid the import cycle (the OQ-01 bridge imports this file). Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`, `Proofs.RationalCanonicalFormExists`. Earlier layers: S13 Part 7 (firstFactor-side mirror, structural sandwich k·deg(firstFactor) ≤ deg(prodFactors) ≤ k·deg(lastFactor)); S14 strengthened the statement to add `c.lastFactor = M.minpoly`; S15 Part 8 (three endpoint-divisibility helpers yielding the abstract `minpoly ∣ charpoly` on the chain endpoints).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-05-12",
     "theoremCount": 25,
     "definitionCount": 4,

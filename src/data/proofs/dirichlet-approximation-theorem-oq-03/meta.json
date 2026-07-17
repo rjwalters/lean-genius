@@ -73,7 +73,7 @@
     "axiomCount": 0,
     "lineCount": 294,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool; verifiable with #print axioms dirichlet_via_minkowski). The hypothesis is N ≥ 2 (the N = 1 case is the trivial q = 1, p = round α, and N ≥ 2 rules out the degenerate boundary point (0,±1)); the bound obtained is the non-strict |qα − p| ≤ 1/N, the honest output of the closed/compact area-= 4 convex body (the strict < needs the open area > 4 refinement). The load-bearing existence theorem is Mathlib's Minkowski convex-body theorem exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure; the original in-file content is the convex body, its symmetry/convexity/closedness/compactness, the volume = 4 computation via the determinant-(−1) shear, and the arithmetic bridge. Badge is 'original' because that geometry-of-numbers infrastructure (the body, the shear volume computation, and the sign/boundary bridge) is built here rather than borrowed.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 15,
     "definitionCount": 3
   },

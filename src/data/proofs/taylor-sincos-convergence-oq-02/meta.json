@@ -35,7 +35,7 @@
     "additionalFiles": [
       "Proofs/TaylorSinCosConvergenceOQ02Aristotle.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Euler's formula e^{ix} = cos x + i sin x (1748) is one of the most celebrated results in mathematics. It connects the exponential function, the trigonometric functions, and the imaginary unit. The usual derivation substitutes ix into the Taylor series for exp and groups even and odd terms to obtain the Taylor series for cos and sin respectively.\n\nThis formalization makes the derivation rigorous by: (1) using the real sin/cos Taylor series summability proved in the parent taylor-sincos-convergence entry (via Lagrange remainder bounds and axiomatized derivative values), (2) lifting real summability to complex summability via norm bounds, (3) identifying complex tsums with Complex.cos and Complex.sin using the complex exp series decomposition from EulerIdentityOQ01OQ01, and (4) combining these to prove exp(ix) = \u2191cos(x) + \u2191sin(x)\u00b7I.\n\nThe distinction from the one-line proof via Complex.exp_mul_I is that this proof makes the Taylor series machinery explicit \u2014 showing that each piece of the standard derivation corresponds to a proved theorem.",

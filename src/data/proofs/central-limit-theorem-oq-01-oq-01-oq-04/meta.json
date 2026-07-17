@@ -38,7 +38,7 @@
       "scalar_exponent_ge_half (vacuous discharge / bug report, S14 ACT 2026-06-06): the Hudson-Mason scalar bound axiom carried a broken non-degeneracy hypothesis `∀ v, (∀ i, v i = 0) → False` (unsatisfiable; v = 0 yields False). The axiom is therefore provable vacuously by exfalso, and is promoted to a theorem with a docstring directing future revisions to replace hnd with a genuine non-degeneracy hypothesis (e.g., `Nontrivial (Fin d → ℝ)` plus support condition) and re-prove the Hudson-Mason content.",
       "finite_cov_in_gaussian_doa (vacuous discharge / bug report, S16 ACT 2026-06-10, Docker 7744): the matrix-CLT axiom carried a weak hypothesis bundle (hφ_char: φ 0 = 1; hφ_cov: ∃ : True, Tendsto φ to 1 at 0) missing the finite-second-moment content needed to invoke matrix Lindeberg. The conclusion ∃ ψ, φ ∈ DoA(ψ) is dischargeable via the trivial degenerate-Gaussian witness ψ = const 1 with A_n = 0 (zero matrix) and b_n = 0 — the n-th convolution term collapses to (φ (fun _ => 0))^n = 1^n = 1 via hφ_char, identically the constant ψ; tendsto is then trivial. Promoted from axiom to theorem with docstring directing future revisions to replace hφ_cov with a genuine finite-covariance hypothesis (e.g., φ twice continuously differentiable at 0 with Hessian -Sg) before re-axiomatizing as the matrix Lindeberg-CLT."
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 7
   },
   "overview": {

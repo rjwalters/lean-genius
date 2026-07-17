@@ -63,7 +63,7 @@
     "dateAdded": "2026-06-24",
     "lineCount": 250,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used; #print axioms confirms the headline theorems (trace_fourth_fin_four, trace_fourth_eq_sum_fourth_eigenvalues, charpoly_coeff_two_eq_e2, det_fin_four) depend on no Lean.ofReduceBool or sorryAx. The matrix-side identity trace_fourth_fin_four and the expansion det_fin_four hold over any commutative ring; the spectral form trace_fourth_eq_sum_fourth_eigenvalues requires an algebraically closed field (so the characteristic polynomial splits and the eigenvalue multiset has exactly four elements). SCOPE: this entry proves the k=4 power sum in dimension n=4. The general trace power sum tr(Aᵏ) = Σλᵢᵏ for all n and k remains the standing open question (it requires the full multiset spectral mapping, absent from the Mathlib snapshot used here).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 2
   },

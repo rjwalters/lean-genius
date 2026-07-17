@@ -25,7 +25,7 @@
     "theoremCount": 6,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The two finite case-checks use `decide` (kernel reduction over ZMod 8 and ZMod 4), not `native_decide`, so no `Lean.ofReduceBool` dependency: the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`. Depends only on Mathlib (`ZMod` arithmetic and `ZMod.intCast_zmod_eq_zero_iff_dvd`).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.intCast_zmod_eq_zero_iff_dvd",

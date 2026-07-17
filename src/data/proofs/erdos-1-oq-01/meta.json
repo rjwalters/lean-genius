@@ -22,7 +22,7 @@
     "lineCount": 146,
     "assumptions": "None. The file and its only proof-relevant import (Proofs.Erdos1Problem) are axiom-free, sorry-free, and use no decide/native_decide; the import closure is Mathlib-only. The two definitions dubroff_fox_xu_bound and conway_guy_upper are unproved Prop statements recording known bounds — they are not used as assumptions by any theorem. The headline Erdős conjecture N ≥ c·2ⁿ is OPEN and is not asserted by any theorem in this file.",
     "dateAdded": "2026-06-16",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card_image_of_injOn",

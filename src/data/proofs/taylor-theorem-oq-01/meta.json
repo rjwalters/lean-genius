@@ -61,7 +61,7 @@
     "theoremCount": 9,
     "definitionCount": 1,
     "assumptions": "0 axioms, 0 sorries. The one-dimensional Taylor theorem with Lagrange remainder (taylor_mean_remainder_lagrange_iteratedDeriv), the chain rule, and ContDiff.comp come from Mathlib; the original work is the line-restriction reduction, the directional-derivative identity, and the multivariate Lagrange/first-order statements. Only the foundational axioms propext, Classical.choice, Quot.sound are used (none counted).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Taylor's theorem (1715) is classically stated for functions of one real variable, but its multivariate generalisation — expressing f(a+v) as a sum of symmetric-multilinear terms D^k f(a)(v,…,v)/k! plus a remainder — is the form that powers optimisation (second-order conditions), numerical analysis, and differential geometry. Every textbook proof of the multivariate theorem proceeds by the same reduction: restrict f to the line segment t ↦ a + t·v and apply the one-dimensional theorem to the resulting function g(t) = f(a + t·v). This entry, the first open question under the parent Taylor's theorem (Wiedijk #35), formalises exactly that reduction in Lean 4. The smoothness of f transfers to g through the chain rule, the first derivative of g is the directional (Fréchet) derivative Df(a+t·v)(v), and Mathlib's one-dimensional Lagrange remainder then yields a genuine multivariate Taylor statement. The headline first-order case is the multivariate mean value theorem f(a+v) = f(a) + Df(a+θ·v)(v), the exact analogue of f(b) - f(a) = f'(ξ)(b-a).",

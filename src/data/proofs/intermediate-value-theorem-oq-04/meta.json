@@ -23,7 +23,7 @@
     "lineCount": 144,
     "assumptions": "None. Fully machine-checked with 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions, and no native_decide. Depends only on Mathlib.",
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Bolzano's theorem for polynomials: `Odd P.natDegree → ∃ x, P.eval x = 0`, over ℝ — not present in Mathlib",
       "Sign-attainment lemma: an odd-degree polynomial with positive leading coefficient attains both a strictly negative and a strictly positive value, with the -∞ end realised by composing with -X (which negates the leading coefficient exactly when the degree is odd)",

@@ -44,7 +44,7 @@
         "module": "Mathlib.Algebra.Order.Ring.Abs"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Paley-Zygmund inequality was proved by Raymond Paley and Antoni Zygmund in 1932 in their study of lacunary trigonometric series. It provides a quantitative lower bound on the probability that a non-negative random variable $X$ exceeds a fraction $\\theta$ of its mean: $P[X > \\theta E[X]] \\geq (1-\\theta)^2 E[X]^2/E[X^2]$. This strengthens the qualitative second moment method (which gives only $P[X > 0] > 0$ when $E[X] > 0$) by providing an explicit probability bound. The inequality is a fundamental tool in probabilistic combinatorics: it appears in proofs of lower bounds for Ramsey numbers, clique numbers in random graphs, and the independence number. The formalization uses the finite discrete setting (Finset over ℚ) consistent with the parent second-moment entry, making the proof elementary and avoiding measure theory.",

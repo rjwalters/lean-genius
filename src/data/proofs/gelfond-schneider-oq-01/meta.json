@@ -23,7 +23,7 @@
     "lineCount": 246,
     "assumptions": "One stated assumption: baker_linear_form_two, the two-logarithm homogeneous case of Baker's theorem (algebraic bases a₁, a₂ > 1 with ℚ-linearly-independent logarithms, algebraic coefficients β₁, β₂ not both zero ⟹ β₁·log a₁ + β₂·log a₂ transcendental), re-declared as an `axiom` exactly as the gallery parent `gelfond-schneider` records Gelfond-Schneider — the full proof of Baker's theorem (auxiliary functions, zero estimates, the theory of linear forms in logarithms) is not formalized. Every theorem in this file is otherwise fully machine-checked: `lake env lean` builds Proofs/GelfondSchneiderOQ01.lean to exit 0 against the pinned Mathlib (v4.26.0), and #print axioms reports, beyond the foundational propext / Classical.choice / Quot.sound, only the single GelfondSchneiderOQ01.baker_linear_form_two assumption (no sorryAx, no Lean.ofReduceBool). In particular irrational_log_three_div_log_two depends on NO Baker assumption — it is unconditional. The file imports only Mathlib.",
     "dateAdded": "2026-06-27",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pow",

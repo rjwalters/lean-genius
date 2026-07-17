@@ -85,7 +85,7 @@
     "dateAdded": "2026-03-28",
     "axiomCount": 1,
     "lineCount": 311,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "Depends on Lean.ofReduceBool: the 8 native_decide examples in Part VIII (the advertised '9 computational verifications') trust the Lean compiler's kernel reduction. The 24 catalog theorems are 0-sorry, axiom-free one-liner wrappers of Mathlib's jacobiSym API. Status is axiomatized (badge: axiom) to disclose the native_decide dependency in the named computational-verification contribution.",
     "theoremCount": 24,
     "definitionCount": 0

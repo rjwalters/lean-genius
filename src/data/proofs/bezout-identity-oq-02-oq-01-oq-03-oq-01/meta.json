@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 178,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. VERIFIED: compiles clean against Mathlib 4.26.0 via `lake env lean Proofs/BezoutIdentityOQ02OQ01OQ03OQ01.lean` (no errors); `#print axioms` on general_homogeneous, general_unique, general_solvable_iff, int_admits_decomp, int_general_unique, and ex69_unsolvable reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool (decidability uses `decide`, not `native_decide`). Relies on standard Mathlib lemmas (Int.exists_gcd_one', Int.gcd_dvd_right, Int.isCoprime_iff_gcd_eq_one, IsCoprime.dvd_of_dvd_mul_left) plus linear_combination/ring. The packaged statements assume b ≠ 0 (so gcd > 0 and b' ≠ 0), exactly mirroring the parent entry's scope; the symmetric a ≠ 0 case follows by swapping roles.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "dateAdded": "2026-06-27",
     "definitionCount": 0

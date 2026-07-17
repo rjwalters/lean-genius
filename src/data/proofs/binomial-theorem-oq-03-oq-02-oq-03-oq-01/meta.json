@@ -25,7 +25,7 @@
     "lineCount": 84,
     "theoremCount": 4,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Euler introduced e in 1748 as the limit of (1 + 1/n)^n, a sequence Jacob Bernoulli had studied in the 1690s through the compound-interest problem. The textbook construction of e via bounded monotone convergence (e.g. Rudin, Principles of Mathematical Analysis, Theorem 3.31) shows the sequence is strictly increasing and bounded above. The crude bound (1+1/n)^n < 3 suffices for convergence, but the sharp statement is that e is itself the strict supremum: (1+1/n)^n < e for every n, with equality only in the limit. This sharp bound is the natural endpoint of the monotonicity story — the increasing sequence approaches e strictly from below — and follows in one line from the strict tangent-line inequality 1 + t < e^t (t ≠ 0), a hallmark of the strict convexity of the exponential.",

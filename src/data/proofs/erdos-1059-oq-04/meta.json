@@ -26,7 +26,7 @@
     "axiomCount": 1,
     "lineCount": 147,
     "assumptions": "density_one_conjecture (imported from OQ-01): the natural density of qualifying primes among all primes equals 1. Formally: for every k, there exists X such that for all x ≥ X, k · C(x) ≥ π(x). This requires the Prime Number Theorem and Brun-Titchmarsh inequality, not yet in Mathlib.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "primeCount_mono: π(x) is monotone — direct Finset.card_le_card argument on the prime filter",
       "primeCount_unbounded: for every n, there exists x with π(x) ≥ n — proved by induction using Nat.exists_infinite_primes",

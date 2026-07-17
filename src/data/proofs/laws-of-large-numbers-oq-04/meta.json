@@ -45,7 +45,7 @@
         "module": "Mathlib.Probability.IdentDistrib"
       }
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 3,
     "originalContributions": [
       "Inlined the integration proofs from companion LawsOfLargeNumbersOQ04OQ03.lean into the parent file, eliminating thresholdIndicator_integrable and integral_thresholdIndicator_eq_cdf as axioms. Axiom count reduced 3→1; only glivenko_cantelli_uniform (the bracketing uniformity step) remained axiomatic.",

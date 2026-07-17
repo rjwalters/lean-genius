@@ -26,7 +26,7 @@
     "theoremCount": 4,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). The proof rests on Gauss's divisor-sum identity for the totient (`Nat.sum_totient`), the surjectivity of the unit-reduction homomorphism (`ZMod.unitsMap_surjective`), and Lagrange's theorem in the form `Subgroup.card_eq_card_quotient_mul_card_subgroup` combined with the first isomorphism theorem `QuotientGroup.quotientKerEquivOfSurjective`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.sum_totient",

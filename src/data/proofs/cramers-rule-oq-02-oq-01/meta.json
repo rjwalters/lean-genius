@@ -46,7 +46,7 @@
       "Sharp crossover fullSolve_beats_cramer_all: under the exact ≈ 2n³/3 solve cost, Gaussian elimination beats Cramer's rule for EVERY n ≥ 1 (small cases n ∈ {1,2,3} decided directly as 1<2, 7<12, 22<72; n ≥ 4 reuses fullSolve_beats_cramer), collapsing the parent's n ≥ 4 threshold — an artifact of the loose n³ model whose beat-Cramer proof needed factorial_gt_sq (n ≥ 4). fullSolve_beats_cramer_sharp certifies the 1 ≤ n hypothesis is sharp: the strict inequality fails at n = 0 (both costs 0)"
     ],
     "dateAdded": "2026-06-26",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 588,
     "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (all concrete small-n counts are derived from the closed forms via omega/norm_num rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",

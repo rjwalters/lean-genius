@@ -54,7 +54,7 @@
       "Coprimality (Nat.Coprime)",
       "Well-founded recursion and functional induction"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Josef Stein published the binary GCD algorithm in 1967 as an alternative to the Euclidean algorithm. The key insight is that on binary computers, division by 2 is a single bit shift operation (essentially free), while general division is expensive. The algorithm replaces Euclidean division with three simple operations: (1) if both even, extract factor of 2; (2) if one even and one odd, drop the factor of 2; (3) if both odd, subtract the smaller from the larger. Modern implementations in GMP and other bignum libraries use variants of this algorithm, and it is asymptotically faster than the classical Euclidean algorithm for multi-precision integers.",

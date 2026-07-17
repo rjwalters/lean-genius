@@ -34,7 +34,7 @@
       "fta_mem_support_iff_dvd: prime p divides n iff p ∈ n.factorization.support",
       "coprime_factorization_disjoint: coprime numbers have disjoint factorization supports"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Arithmetic — every positive integer has a unique prime factorization — was known to Euclid (Elements Book IX, ~300 BCE) in the form that a prime dividing a product divides one of the factors. The fully explicit existence+uniqueness statement was first given by Gauss in Disquisitiones Arithmeticae (1801). Hilbert and Dedekind later generalized it: in any Unique Factorization Domain (UFD), every element factors uniquely into irreducibles. The FTA is the prototype for all UFD theory.\n\nModern algebra has two equivalent formulations: (1) the **list** form — $n = p_1 p_2 \\cdots p_k$ as a multiset of primes sorted in non-decreasing order (used in `FundamentalArithmetic.lean`); and (2) the **exponent map** form — $n = \\prod_p p^{v_p(n)}$ where $v_p(n)$ is the $p$-adic valuation (used here). The exponent map form is preferred in algebraic number theory because $v_p : \\mathbb{N}^\\times \\to \\mathbb{N}$ is a group homomorphism and the valuations add under multiplication. Mathlib's `Nat.factorization` implements the exponent map as a Finsupp (finite support function), making this algebraic structure available in Lean 4.",

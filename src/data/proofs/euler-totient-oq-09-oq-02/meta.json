@@ -25,7 +25,7 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). Every result reduces to Mathlib's exact prime-power value `Nat.totient_prime_pow_succ` together with elementary `ℕ` arithmetic (`ring`, `gcongr`, `omega`, monotonicity of `pow`), and the strict upper bound uses `Nat.totient_lt`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_prime_pow_succ",

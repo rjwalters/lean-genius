@@ -26,7 +26,7 @@
     "theoremCount": 1,
     "definitionCount": 0,
     "dateAdded": "2026-06-17",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; imports only Mathlib. The single hypothesis is N ≥ 1. The theorem is independent of the two deep PNT axioms (chebyshevPsi_asymptotic, pnt_equivalence) carried by the parent file ChebyshevBoundsOQ04.lean — this proof does not import that file and uses only elementary Mathlib lemmas about Nat division, divisors, and the Möbius function.",
     "originalContributions": [
       "A clean, axiom-free Lean proof of the Möbius–floor identity ∑_{d=1}^{N} μ(d)·⌊N/d⌋ = 1, assembled from Mathlib primitives — not available as a single named Mathlib lemma.",

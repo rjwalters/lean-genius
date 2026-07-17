@@ -69,7 +69,7 @@
       "The structural statement that evaluation at |s| distinct nodes is an F-linear bijection degreeLT F #s ≃ₗ[F] (s → F) (eval_funEquivDegreeLT_bijective) — the coordinate-free invertibility of the Vandermonde matrix"
     ],
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 159,
     "assumptions": "0 axioms, 0 sorries; every theorem depends only on Lean's foundational propext / Classical.choice / Quot.sound. Existence and the ∃! statement wrap Mathlib's Lagrange.interpolate together with its node and degree properties; the field hypothesis is essential for existence (the Lagrange-basis denominators vᵢ − vⱼ must be invertible), while the uniqueness half needs only an integral domain — matching the parent problem.",

@@ -55,7 +55,7 @@
       "IsPrincipalIdealRing instance for k[X] via Mathlib inference"
     ],
     "dateAdded": "2026-05-06",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Smith Normal Form was introduced by Henry J.S. Smith in 1861 for integer matrices. The theory extends naturally to any Principal Ideal Domain — the key property needed is that every ideal is principal, which guarantees the existence of gcd and allows the row/column reduction algorithm to terminate.\n\nThe connection between Smith Normal Form over PIDs and the structure theorem for finitely generated modules over PIDs is fundamental: every finitely generated module M over a PID R decomposes as R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rʳ with d₁|d₂|...|dₖ — exactly the invariant factor structure from SNF of a presentation matrix.\n\nKey PID instances:\n- ℤ (integers): the classical case\n- k[X] (polynomials over a field): gives rational canonical form for linear maps\n- ℤ[i] (Gaussian integers): useful in algebraic number theory\n- Any Euclidean domain: provides an algorithm",

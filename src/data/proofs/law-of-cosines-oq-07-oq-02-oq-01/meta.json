@@ -22,7 +22,7 @@
     "lineCount": 135,
     "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions).",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Leibniz/Lagrange identity dist(p,a)²+dist(p,b)²+dist(p,c)² = 3·dist(p,g)² + ∑ dist(g,vertex)² for an arbitrary point p and the centroid g, stated coordinate-free in a NormedAddTorsor over a real inner product space",
       "Explicit construction of the triangle centroid centroid₃ together with its balance property (a -ᵥ g)+(b -ᵥ g)+(c -ᵥ g) = 0, so the identity carries no side hypotheses",

@@ -71,7 +71,7 @@
       "Weak LP duality / König-type packing–covering inequalities for hypergraphs"
     ],
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The triangle removal lemma (Ruzsa–Szemerédi 1978) states that for every $\\delta > 0$ there is $\\gamma > 0$ such that any $n$-vertex graph with at most $\\gamma n^3$ triangles can be made triangle-free by deleting at most $\\delta n^2$ edges. Deriving it from the Szemerédi regularity lemma forces $\\gamma(\\delta)$ to be a tower of height polynomial in $1/\\delta$; Fox (2011) improved this to a tower of bounded height, but the **optimal** dependence of $\\gamma$ on $\\delta$ remains a famous open problem. The only known lower bounds come from Ruzsa–Szemerédi graphs built on Behrend's large AP-free sets, which force $\\gamma(\\delta)$ to be super-polynomially small. This entry strips the question down to its combinatorial skeleton: the per-graph triangle **removal number** $\\rho(G)$ — the minimum number of edges to delete to kill every triangle — and the two parameters that bracket it, the edge-disjoint triangle **packing number** $\\nu(G)$ and the total triangle count $\\tau(G)$.",

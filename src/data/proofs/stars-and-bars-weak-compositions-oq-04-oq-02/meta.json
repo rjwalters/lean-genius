@@ -54,7 +54,7 @@
     "axiomCount": 0,
     "lineCount": 155,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All nine declarations (defs splitArrow, weakCompositionSplitEquiv, splitToAntidiagonal, fibreEquiv, weakCompositionSigmaEquiv; theorems splitArrow_apply_fst, splitArrow_apply_snd, sum_split, card_weakComposition_split) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The bijection is total: weakCompositionSigmaEquiv is an honest Equiv (all four coherence conditions discharged), valid for all k₁, k₂, n ≥ 0. The cardinality reading card_weakComposition_split converts card of the sigma to a sum over Finset.antidiagonal n via Fintype.card_sigma, Fintype.card_prod and Finset.sum_coe_sort.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 5
   },

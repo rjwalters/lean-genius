@@ -40,7 +40,7 @@
     "axiomCount": 0,
     "lineCount": 132,
     "assumptions": "None. Every theorem is proved by the kernel from Mathlib lemmas; the only tactics that touch decision procedures are kernel `decide` (for small gcd coprimality facts) and `norm_num` (arithmetic and primality), neither of which introduces axioms. #print axioms on the σ-values reports exactly [propext, Classical.choice, Quot.sound] — no Lean.ofReduceBool (which native_decide would add) and no sorryAx. This is the point of the entry: the parent's native_decide computations are replaced by genuinely axiom-free symbolic proofs.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 0
   },

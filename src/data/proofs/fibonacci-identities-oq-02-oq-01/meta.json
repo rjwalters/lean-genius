@@ -56,7 +56,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 266,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). All concrete instances use decide (kernel evaluation of the structural definitions), not native_decide, so no Lean.ofReduceBool is introduced. The forward-direction results lucas_add_shift, lucas_add_eq, lucas_dvd_lucas_odd_mul, and lucas_dvd_of_odd_quotient were each #print axioms-checked to depend only on the standard foundational axioms (no sorry, no native_decide); a pre-existing omega atom-unification fragility in two_mul_fib_succ (the IH index fib (n+1+1) vs fib (n+2)) was repaired by restating the induction hypothesis in canonical form.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 27,
     "definitionCount": 2
   },

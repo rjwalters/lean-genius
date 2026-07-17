@@ -59,7 +59,7 @@
     "additionalFiles": [
       "Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The generalized Stokes theorem is one of the crowning achievements of 19th-century mathematics. George Gabriel Stokes formulated the surface integral version in 1854 (as a Smith's Prize exam question at Cambridge). The 2D version (Green's theorem) was published by George Green in 1828, and the 3D volume version (divergence theorem) by Gauss and Ostrogradsky. The unification of all these into a single identity on differential forms was achieved by Elie Cartan in the 1940s using the exterior calculus he developed. The modern formulation \u2014 for smooth manifolds with boundary, using differential forms and the exterior derivative \u2014 reveals that FTC, Green's theorem, the classical Stokes theorem, and the divergence theorem are all the same theorem in different dimensions.",

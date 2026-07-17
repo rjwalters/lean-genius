@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 249,
     "assumptions": "0 axioms, 0 sorries. Reproves the base identity gaussian_fourier_real self-contained (three short lemmas via Mathlib's GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I), then derives the translation and modulation identities by translation-invariance of Lebesgue measure (MeasureTheory.integral_sub_right_eq_self) and complex exponent algebra. HONEST SCOPE: these are the standard 'shift theorem' identities of Fourier analysis instantiated on the explicit Gaussian density; no new analytic machinery is introduced beyond the parent.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-06-21",
     "theoremCount": 8,
     "definitionCount": 0

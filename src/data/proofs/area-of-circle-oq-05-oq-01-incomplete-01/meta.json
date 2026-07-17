@@ -35,7 +35,7 @@
     "lineCount": 203,
     "theoremCount": 10,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Gaussian integral ∫_{-∞}^{∞} e^{-a x²} dx = √(π/a) (for a > 0) is fundamental across probability (the normal distribution with variance 1/(2a)), physics, and analysis. The classical polar-coordinate proof, due to Poisson, squares the integral, converts it to a double integral over ℝ², changes to polar coordinates, and separates the radial and angular parts. The parent entry AreaOfCircleOQ05OQ01 makes every step of this derivation explicit — but only for the unit Gaussian (a = 1). The scaled formula √(π/a) is available elsewhere in the gallery only by invoking Mathlib's integral_gaussian as a black box. This entry is the missing intersection: the explicit, step-by-step polar derivation carried through for an arbitrary scale a > 0.",

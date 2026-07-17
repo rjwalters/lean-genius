@@ -19,7 +19,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "assumptions": "1 axiom: cycleDoubleCover_of_bridgeless, the CDC theorem itself. The axiom mirrors the upstream kernel-checked theorem CDCLean.cycleDoubleCover_of_bridgeless in openai/cdc-lean (Lean v4.31.0, Mathlib 9a9483a9), which was independently rebuilt and audited for this gallery on 2026-07-11: lake build clean (1727 jobs), #print axioms = [propext, Classical.choice, Quot.sound] only — no sorries, no custom axioms, no native_decide (issue #37504). Statement definitions in this file were checked to match upstream exactly. The entry remains 'axiomatized' until the 7,134-line proof is ported to our Mathlib pin.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 7
   },

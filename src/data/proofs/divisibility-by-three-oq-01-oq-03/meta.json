@@ -32,7 +32,7 @@
     "lineCount": 204,
     "theoremCount": 14,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Casting out nines — the observation that 10 ≡ 1 (mod 9), so a decimal number is congruent to the sum of its digits mod 9 — is ancient, appearing in Indian and Islamic arithmetic and popularized in Europe by Fibonacci's 1202 Liber Abaci. Its lesser-known dual arises when the base is one *less* than a multiple of the modulus: 10 ≡ -1 (mod 11) gives the divisibility-by-eleven rule using the *alternating* digit sum a₀ - a₁ + a₂ - …. The same idea, applied in base 1000, exploits the factorization 1001 = 7·11·13: since 1000 ≡ -1 (mod 7), (mod 11), and (mod 13), grouping decimal digits into blocks of three and alternately adding and subtracting them simultaneously tests divisibility by 7, 11, 13 and 1001 — the standard hand rule taught for divisibility by 7. Mathlib formalizes the additive casting-out rule in full generality (Nat.modEq_digits_sum, any base b ≡ 1 mod d) but records the alternating rule only in the single classical instance base 10 / mod 11 (Nat.modEq_eleven_digits_sum). This entry closes that asymmetry.",

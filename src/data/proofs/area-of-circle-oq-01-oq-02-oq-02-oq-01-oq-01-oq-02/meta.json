@@ -28,7 +28,7 @@
     "lineCount": 166,
     "theoremCount": 2,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "isoperimetric_inequality_regular: the isoperimetric inequality 4πA ≤ L² for every RegularClosedCurve with positive circumference, proved with 0 axioms and 0 sorries — the end-to-end assembly of the entire Hurwitz Fourier proof on the regular locus. #print axioms reports only propext / Classical.choice / Quot.sound (no sorryAx, no custom axioms, no Lean.ofReduceBool).",
       "Final assembly of the five-axiom chain: the parent's exists_nice_reparam, wirtinger_sum_bound, area_cauchy_schwarz_bound, and integral_cauchy_schwarz_sq are each replaced by their 0-axiom companion (the IFT arc-length reparametrization for regular curves, the Wirtinger/Fourier bound, and the two Cauchy–Schwarz bounds), and fed into the algebraic kernel. Every analytic axiom of the parent isoperimetric entry is thereby eliminated simultaneously.",

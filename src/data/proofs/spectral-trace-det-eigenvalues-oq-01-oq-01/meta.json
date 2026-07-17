@@ -89,7 +89,7 @@
     "dateAdded": "2026-06-24",
     "lineCount": 354,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlibs foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used. The spectral identities require an algebraically closed field. SCOPE: the determinant power identity det(Aᵏ)=Π(λᵢᵏ) is proven in full generality (all n, all k). The trace power sum tr(Aᵏ)=Σλᵢᵏ is proven, in EVERY dimension and for all k, for diagonal matrices, upper-triangular (BlockTriangular id) matrices, and — via similarity-invariance — for every matrix SIMILAR to an upper-triangular one (A = U T U⁻¹). The transfer rests on units_conj_pow ((U A U⁻¹)ᵏ = U Aᵏ U⁻¹) and eigenvalues_units_conj (the eigenvalue multiset is a similarity invariant, from Mathlib charpoly_units_conj). The remaining gap to ARBITRARY matrices is now isolated to a single explicit, machine-checked hypothesis (trace_pow_eq_sum_pow_eigenvalues_of_triangularizable: the existence of a triangularisation A = U T U⁻¹) — which over an algebraically closed field is exactly the conclusion of the classical Schur triangularisation theorem, not supplied at the matrix level by the current Mathlib snapshot (v4.26.0; only Module.End-level generalized-eigenspace decompositions are present). Supplying that one hypothesis yields the fully general trace power sum; producing it unconditionally for every matrix remains the standing open question.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 28,
     "definitionCount": 1
   },

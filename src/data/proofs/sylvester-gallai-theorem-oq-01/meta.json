@@ -24,7 +24,7 @@
     "theoremCount": 6,
     "definitionCount": 3,
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. The geometric content (Kelly's minimal-distance argument) is supplied by the verified gallery proof SylvesterGallai.sylvester_gallai in Proofs/Erdos606OQ03OQ03.lean (508 lines, 0 sorries, 0 axioms); this file closes the four bridge lemmas with no native_decide and no nonstandard axioms, so the canonical-form theorem inherits the same axiom-free status. Builds on Mathlib's Collinear ℝ, collinear_iff_of_mem, PiLp coordinate evaluation, and EuclideanSpace ℝ (Fin 2).",
     "originalContributions": [
       "States and proves the Sylvester–Gallai theorem in the canonical Mathlib formulation — `∃ a ∈ S, ∃ b ∈ S, a ≠ b ∧ IsOrdinary S a b` for `S : Finset (EuclideanSpace ℝ (Fin 2))` with `¬ Collinear ℝ ↑S`, using Mathlib's own `Collinear ℝ` predicate. Sylvester–Gallai (and ordinary lines / de Bruijn–Erdős) are absent from Mathlib, confirmed by exhaustive source grep, so this is a real formalization gap closed.",

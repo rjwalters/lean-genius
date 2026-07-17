@@ -22,7 +22,7 @@
     "axiomCount": 1,
     "lineCount": 305,
     "assumptions": "Depends on Lean.ofReduceBool: the six Part V numerical-verification theorems (sum_fourth_10, sum_fifth_10, sum_sixth_10, sum_fourth_10_check, sum_fifth_10_check, faulhaber_structure_p5_n10) are discharged by native_decide, which trusts the compiler's kernel reduction, so #print axioms lists Lean.ofReduceBool. The closed-form power-sum formulas and Faulhaber/Nicomachus structural theorems (Parts I–IV) are proved by induction with push_cast + linarith and are axiom-free. 0 sorries; no literal axiom declarations (leanFile.axiomCount = 0). Uses Mathlib for Finset.sum_Ico_succ_top and push_cast.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_Ico_succ_top",

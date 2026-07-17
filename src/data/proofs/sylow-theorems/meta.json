@@ -45,7 +45,7 @@
     "axiomCount": 0,
     "lineCount": 246,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. All three Sylow theorems delegate to Mathlib's `Sylow` module: existence via `Sylow.nonempty`, conjugacy via `MulAction.exists_smul_eq`, and counting via `card_sylow_modEq_one`. Original contributions are pedagogical wrappers — `sylow_normal_of_unique` (unique Sylow subgroup is normal) and `cauchy_from_sylow` (Cauchy's theorem as corollary) provide accessible named statements composing Mathlib results.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 10,
     "definitionCount": 1
   },

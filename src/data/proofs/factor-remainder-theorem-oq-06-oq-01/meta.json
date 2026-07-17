@@ -47,7 +47,7 @@
       "Worked instances rat_sq_ne_two (recovering the parent), rat_cube_ne_two (∛2 ∉ ℚ), rat_sq_ne_three, and the non-prime rat_cube_ne_four (∛4 ∉ ℚ) obtained from the general criterion by a finite divisor check."
     ],
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 185,
     "assumptions": "0 axioms, 0 sorries; only Lean/Mathlib foundational axioms (propext, Classical.choice, Quot.sound). HONEST SCOPE: the engine is the parent entry's monic_root_den_eq_one (itself a concrete repackaging of Mathlib's rational root theorem). This file replaces the parent's single polynomial X² − 2 by the general monic polynomial X^k − C n and packages the resulting criterion; the prime case additionally uses Nat.pow_right_injective and Nat.dvd_prime. The individual proofs are short — the value is turning a one-off example into the reusable general statement it was an instance of.",

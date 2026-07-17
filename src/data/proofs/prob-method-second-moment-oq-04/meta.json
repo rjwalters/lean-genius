@@ -59,7 +59,7 @@
         "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Cantelli's inequality is the sharp one-sided refinement of the Bienaymé–Chebyshev second-moment bound. Where the two-sided Chebyshev inequality gives P(|X − μ| ≥ a) ≤ σ²/a², the one-sided question — how large can the *upper* tail P(X − μ ≥ a) alone be? — admits the strictly smaller answer σ²/(σ² + a²). The bound is named for **Francesco Paolo Cantelli (1875–1966)**, who established it in his work on the foundations of probability in the 1910s–1920s; the same inequality appears in the work of **Chebyshev's** school and is sometimes attributed to **Bienaymé**, mirroring the priority history of the two-sided bound. Cantelli is also remembered for the Borel–Cantelli lemmas and for an early (1917) proof of the strong law of large numbers. The one-sided bound is *tight*: a two-point distribution placing mass σ²/(σ² + a²) at +a and the rest below achieves equality, so σ²/(σ² + a²) is the best possible function of the first two moments alone. This extremal sharpness is why Cantelli's inequality, rather than the cruder σ²/a², is the right tool in one-sided concentration arguments — median-vs-mean gaps, the analysis of M-estimators, and risk bounds where only over- (or only under-) shooting matters.",

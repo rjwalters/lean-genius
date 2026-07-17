@@ -101,7 +101,7 @@
     "axiomCount": 0,
     "lineCount": 113,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All theorems depend only on the foundational propext / Classical.choice / Quot.sound. The base identity det Mᴴ = star (det M) re-exports Mathlib's Matrix.det_conjTranspose. The Hermitian corollary uses Matrix.IsHermitian.eq (Mᴴ = M) and, over ℂ, Complex.conj_eq_iff_im / Complex.conj_eq_iff_real to read off reality from self-conjugacy (star = starRingEnd ℂ via starRingEnd_apply). The unitary corollary applies det to Uᴴ * U = 1 using Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one to get star (det U) * det U = 1, takes norms with norm_mul / norm_star / norm_one to obtain ‖det U‖² = 1, and concludes ‖det U‖ = 1 by factoring (‖det U‖−1)(‖det U‖+1)=0 (linear_combination) together with norm_nonneg. The genuine hypotheses are the domain conditions M.IsHermitian and Uᴴ * U = 1.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

@@ -33,7 +33,7 @@
     "lineCount": 117,
     "theoremCount": 8,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The number of k-th power residues mod a prime is a classical refinement of the quadratic-residue count. When k divides p − 1, the k-th powers form the unique subgroup of index k inside the cyclic group (ℤ/pℤ)ˣ, so there are exactly (p−1)/k of them. The quadratic case k = 2 — exactly (p−1)/2 residues — is the oldest instance, implicit in Euler's and Legendre's work; the general statement is the multiplicative backbone of higher reciprocity laws (cubic, quartic) and the theory of power-residue symbols. The structural derivation taken here counts the image of the k-th power homomorphism, whose fibres all have size gcd(p−1, k) because the group is cyclic.",

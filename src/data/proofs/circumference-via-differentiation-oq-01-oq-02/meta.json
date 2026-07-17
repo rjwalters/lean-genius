@@ -48,7 +48,7 @@
       "Concrete L^1 'diamond' witness (n=2): dV/dr|_{r=1} = 4 while the Euclidean perimeter is 4√2, with the coarea weight (4√2)/√2 = 4 reconciling the two"
     ],
     "dateAdded": "2026-06-16",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The identity 'the derivative of a ball's volume is its surface area' is the Archimedean onion-peel argument (c. 250 BCE, *On the Sphere and Cylinder*), made into a calculus theorem by Maclaurin (*Treatise of Fluxions*, 1742) and generalized to all dimensions via the Gamma function (Euler 1729, Legendre 1811) and the n-ball volume formula (Liouville 1836). The parent gallery entry `circumference-via-differentiation-oq-01` formalizes the Euclidean (L^2) case for every n. The L^p balls — whose volume V_n(p) = 2^n·Γ(1/p+1)^n/Γ(n/p+1) goes back to Dirichlet's integral and is sharpened in the convex-geometry literature (Pisier, *The Volume of Convex Bodies and Banach Space Geometry*, 1989) — are the natural next family to test the identity against. The coarea formula needed to phrase the L^p surface side correctly is due to Federer (*Geometric Measure Theory*, 1969); it is precisely the tool absent from Mathlib v4.26 that keeps the surface half of this entry at the documentation level.",

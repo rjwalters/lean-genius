@@ -54,7 +54,7 @@
       "Summary theorem bundling the criterion, the explicit description of the primitive-root set, and the φ(n) count"
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 122,
     "assumptions": "0 axioms, 0 sorries. The primitivity criterion is IsPrimitiveRoot.pow_iff_coprime applied to the parent's primitive root ω; the φ(n) count is obtained through the explicit trigonometric generator via injectivity of k ↦ ωᵏ on [0,n).",

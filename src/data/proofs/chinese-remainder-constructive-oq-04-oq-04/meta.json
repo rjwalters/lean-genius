@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "dateAdded": "2026-04-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "lineCount": 122,
     "assumptions": "The abstract CRT framework (satisfies_mod, crt_list_minimal_exists/unique, crt_list_min) is fully proved with 0 sorries and no axioms. However, the named Sunzi problem verification (sunzi_minimal_solution, sunzi_solution_is_23, sunzi_unique — establishing the unique minimal solution x=23) is discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and depends on the `Lean.ofReduceBool` axiom. Since x=23 is presented as a verified original contribution, the entry is axiomatized: `#print axioms` lists `Lean.ofReduceBool`.",
     "mathlibDependencies": [

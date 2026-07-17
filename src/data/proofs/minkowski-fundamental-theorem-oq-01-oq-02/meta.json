@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 242,
     "assumptions": "0 axioms, 0 sorries. Built on the parent OQ-01 file's successive-minima API (Proofs.MinkowskiFundamentalTheoremOQ01) and the grandparent's Lattice / ConvexBody / HasVolume API. The homogeneity law successiveMinimum_scale needs NO attainment hypothesis — it holds verbatim when a minimum is unattained, since both sides are then 0. The only ingredient supplied as a hypothesis is the volume dilation law vol(cS) = cⁿ·vol(S) used in secondTheorem_product_scale_invariant, because the parent's HasVolume is an abstract field rather than a computed Lebesgue measure. HONEST SCOPE: the product bound of Minkowski's second theorem is NOT proved here (it is the open analytic core); this file establishes only that the quantity it bounds behaves correctly under rescaling of the body.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-06-21",
     "theoremCount": 8,
     "definitionCount": 0

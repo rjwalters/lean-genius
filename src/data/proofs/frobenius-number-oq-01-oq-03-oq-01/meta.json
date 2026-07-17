@@ -69,7 +69,7 @@
       "Set.Finite.toFinset, Finset.max', Set.ncard_eq_one / Set.ncard_singleton"
     ],
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "A numerical semigroup $S \\subseteq \\mathbb{N}$ (additively closed, containing $0$, with finite complement) is **symmetric** when $k \\in S \\Leftrightarrow g - k \\notin S$ for its Frobenius number $g$ (the largest gap). Kunz (1970) proved that symmetry of $S$ is equivalent to the **Gorenstein** property of the coordinate ring $k[\\![t^S]\\!]$, and that both are equivalent to $S$ having **type one** — the set $\\mathrm{PF}(S)$ of *pseudo-Frobenius numbers* (the maximal gaps under $u \\preceq v \\Leftrightarrow v - u \\in S$) being the singleton $\\{g\\}$. The parent entry established the *easy half* of this for the two-generator case by exhibiting $\\mathrm{PF}(\\langle a,b\\rangle) = \\{g\\}$. This entry proves the **converse**, $\\text{type}(S) = 1 \\Rightarrow S$ symmetric, for an arbitrary numerical semigroup, completing the equivalence $\\text{symmetric} \\Leftrightarrow \\text{type one}$ without any appeal to generators.",

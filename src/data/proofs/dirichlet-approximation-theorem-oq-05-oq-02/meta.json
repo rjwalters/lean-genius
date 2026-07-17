@@ -51,7 +51,7 @@
     "axiomCount": 0,
     "lineCount": 178,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool, no native_decide; verified with #print axioms badly_approximable_sqrt, sqrtTwo_badly_approximable, sqrtThree_badly_approximable, sqrtFive_badly_approximable). The result is unconditional: for any positive irrational x with x² = d (d : ℕ), ∃ c > 0 (explicitly c = 1/(1+2x)) with c/q² ≤ |x − p/q| for all p ∈ ℤ, q > 0. The constant 1/(1+2x) is explicit but not optimal (the sharp Hurwitz-type constant for √d is 1/(2√d)); badly-approximability only requires SOME positive c, which the norm-form argument delivers without continued fractions. Mathlib supplies only the irrationality inputs (irrational_sqrt_two, Nat.Prime.irrational_sqrt, irrational_sqrt_natCast_iff) and Irrational.ne_rational; the analytic core — the norm-form identity, its non-vanishing, and the case-analysis lower bound — is entirely in-file and abstract over x.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

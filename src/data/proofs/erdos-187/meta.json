@@ -24,7 +24,7 @@
     "axiomCount": 4,
     "assumptions": "4 axioms: (1) optAPBound — the optimal AP bound function f(d) itself, declared as an axiom because computing the infimum over all 2-colorings is not constructive; (2) optAPBound_unbounded — van der Waerden's theorem implication that f(d) → ∞ (∀ k, ∃ d, k ≤ optAPBound d); (3) beck_upper_bound — Beck's 1980 result f(d) = O(log d) (∃ C D₀, ∀ d ≥ D₀, optAPBound d ≤ C·(log₂ d + 1)); (4) erdos_187_conjecture — the open question f(d) = Θ(log d) stated as an axiom (∃ c D₀, ∀ d ≥ D₀, c·log₂ d ≤ optAPBound d).",
     "lineCount": 59,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 2
   },

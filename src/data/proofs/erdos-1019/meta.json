@@ -25,7 +25,7 @@
     "axiomCount": 3,
     "lineCount": 486,
     "assumptions": "3 axioms encoding cited external results: simonovits_theorem (the K4 or C_l+2K1 dichotomy, Simonovits PhD thesis), erdos_construction_exists (tightness), and cyclePlus2K1_saturated_planar. The file is fully machine-checked with 0 sorries: K4_saturated_planar is proved (induced subgraph on a 4-clique equals the complete graph, C(4,2)=6 edges via card_edgeFinset_top_eq_card_choose_two); turan_triangle is proved from Mathlib's CliqueFree.card_edgeFinset_le; K3_saturated_planar and bipartite_not_saturated are proved. isPlanar is defined via Wagner's forbidden-minor characterization (no K5/K33 minor) using a GraphMinorWitness structure. K3_saturated_planar uses native_decide for the K3 edge count, so that supporting lemma carries Lean.ofReduceBool; the main theorem erdos_1019_solved does NOT depend on it (footprint: propext, Classical.choice, Quot.sound, simonovits_theorem, cyclePlus2K1_saturated_planar).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 13,
     "definitionCount": 25,
     "additionalFiles": [

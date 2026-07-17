@@ -68,7 +68,7 @@
         "module": "Mathlib.NumberTheory.Padics.PadicVal"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Kummer's theorem (1852) computes the $p$-adic valuation $v_p(\\binom{n}{k})$ as the number of base-$p$ carries; equivalently $(p-1)v_p(\\binom{n}{k}) = s_p(k)+s_p(n-k)-s_p(n)$. The grandparent entry specialises this to $v_2(\\binom{2n}{n}) = s_2(n)$, the binary popcount. The Catalan numbers $C_n = \\frac{1}{n+1}\\binom{2n}{n}$ are the most famous quotient of the central binomial coefficient, and the parity of $C_n$ is a classical curiosity: $C_n$ is odd exactly at $n = 0,1,3,7,15,\\dots$. This entry pins down the full $2$-adic valuation $v_2(C_n)$ in closed form and reads the oddness pattern off it. The bridge is Catalan's identity $(n+1)C_n = \\binom{2n}{n}$ together with the elementary but Mathlib-absent binary carry identity for incrementing $n$.",

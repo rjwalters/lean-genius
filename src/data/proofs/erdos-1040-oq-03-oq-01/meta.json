@@ -24,7 +24,7 @@
     "lineCount": 138,
     "assumptions": "None. All nine theorems are axiom-free and self-contained: the RootedPoly/eval/lem framing of the parent is re-declared locally so nothing depends on the parent entry's open transfinite-diameter question. No native_decide is used (so no Lean.ofReduceBool). Build NOT kernel-verified this session (Docker daemon unavailable, as in prior sessions); all Mathlib signatures (Complex.volume_ball, Fin.prod_const, norm_pow, pow_lt_one_iff_of_nonneg, norm_nonneg, ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi, NNReal.pi_ne_zero, ENNReal.coe_ne_zero, ENNReal.coe_ne_top, ENNReal.mul_lt_mul_right, dist_eq_norm, Metric.mem_ball) were checked against Mathlib v4.26.0 source. The deployer build-gate is the final check before merge.",
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "purePower: the monic polynomial f(z) = (z - c)^n modelled as a RootedPoly whose n roots all coincide at c, with eval_purePower computing eval = (z - c)^n via Fin.prod_const",
       "lem_purePower_eq_ball: the CENTRAL identity — for positive degree the pure-power lemniscate equals the open unit disc B(c,1) exactly, from |(z - c)^n| = |z - c|^n and pow_lt_one_iff_of_nonneg (t^n < 1 ⟺ t < 1 for t ≥ 0)",

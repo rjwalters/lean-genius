@@ -25,7 +25,7 @@
     "theoremCount": 7,
     "definitionCount": 2,
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms clubReflects`, `#print axioms trace_subset`, and `#print axioms reflects_of_mem_trace` report only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no native_decide, hence no Lean.ofReduceBool, and no sorryAx. The file imports Proofs.Club.Basic (itself 0-axiom) unchanged and builds only on Mathlib's Ordinal topology API (IsAcc, IsClosedBelow, isClosedBelow_iff, IsAcc.mono, IsAcc.forall_lt). No new axioms or structure-encoded assumptions are introduced.",
     "originalContributions": [
       "Proves `clubReflects` — the base case of stationary reflection: for a club C below o and an accumulation point α ≤ o of C, the initial segment C ∩ Iio α is a club below α. Both club fields transfer locally: closedness of C below o already governs accumulation points below α ≤ o, and unboundedness of C ∩ Iio α below α is exactly the hypothesis that α is an accumulation point of C. This is the unconditional, ZFC-true core of 'clubs reflect', requiring no cofinality assumption.",

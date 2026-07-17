@@ -31,7 +31,7 @@
     "definitionCount": 2,
     "assumptions": "No axioms or sorries. All proofs use Mathlib's UniqueFactorizationMonoid, Polynomial, and Matrix APIs.",
     "dateAdded": "2026-05-06",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "monic_irreducible_multiset_factorization: factors any monic polynomial into a multiset of monic irreducibles via UniqueFactorizationMonoid.exists_prime_factors",
       "finset_factorization_from_multiset: recursive induction converts a multiset of irreducibles into a Fin k-indexed family of distinct irreducibles with exponents",

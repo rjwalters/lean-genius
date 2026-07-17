@@ -24,7 +24,7 @@
     "theoremCount": 12,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext / Classical.choice / Quot.sound for the main theorems (v2_totient_eq_one_iff, totient_mod_four_eq_two_iff, four_is_extra_solution, v2_totient_master); there is no sorryAx and no Lean.ofReduceBool. The `decide` calls (φ at concrete small naturals: 4, 5, 8, 15) are kernel reductions, not `native_decide`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_eq_prod_factorization",

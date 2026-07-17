@@ -36,7 +36,7 @@
     "additionalFiles": [
       "Proofs/DivisibilityByThreeOQ01OQ02Aristotle.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The digital root \u2014 the single digit obtained by repeatedly summing a number's digits \u2014 has roots stretching back to ancient Indian mathematics. The Vedic technique of 'casting out nines' (nava\u015be\u1e63a) appears in texts as early as the 6th century CE, used by mathematicians like \u0100ryabha\u1e6da for checking arithmetic. The method entered European mathematics through al-Khw\u0101rizm\u012b's 9th-century works and was popularized in the West by Leonardo of Pisa (Fibonacci) in his 1202 *Liber Abaci*, where it served as a practical check for multiplication and division. The underlying algebraic insight \u2014 that $10 \\equiv 1 \\pmod{9}$, making digit sums preserve residues mod 9 \u2014 was well understood by the 12th century. The digital root itself (the fixed point of iterated digit summation) gained its modern name in recreational mathematics of the early 20th century. Despite its elementary character, the formal convergence proof requires two distinct mathematical ingredients: a termination argument (digit sum strictly decreases for multi-digit numbers, providing a well-founded measure) and an identification argument (the mod 9 loop invariant pins down the unique single-digit limit). This formalization makes both ingredients explicit in Lean 4, building on Mathlib's Nat.digits API and Nat.modEq_digits_sum.",

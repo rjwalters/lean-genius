@@ -60,7 +60,7 @@
     "axiomCount": 0,
     "lineCount": 420,
     "assumptions": "Potter's bound is proved conditionally on the Uniform Convergence Theorem (UCT), stated as the explicit hypothesis `UniformSV L`: the convergence L(lam*x)/L(x) -> 1 is uniform for lam in each compact subinterval of (0, infinity). The UCT holds for every measurable slowly varying function (Karamata's theorem); it is the one measure-theoretic input a complete Mathlib development would supply from measurability. It is a hypothesis of the theorems, not an axiom or structure-encoded assumption, so the results are genuine, machine-checked implications (0 axioms). Karamata's integral theorem (power case) is proved unconditionally.",
-    "mathlib_version": "4.26",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 3
   },

@@ -65,7 +65,7 @@
       "Explicit field specialization sum_primitiveRoots_eq_moebius_field answering the parent's stated open question verbatim (general field containing a primitive n-th root)"
     ],
     "dateAdded": "2026-07-07",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 160,
     "assumptions": "0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound). The only mathematical hypothesis is IsPrimitiveRoot ζ n — the existence of a primitive n-th root of unity in the domain — which is exactly the classical hypothesis and automatically excludes characteristics dividing n. Builds on Mathlib's primitive-root, geometric-sum, and Möbius-inversion APIs; the assembly and the domain-level generalization are original to this entry.",

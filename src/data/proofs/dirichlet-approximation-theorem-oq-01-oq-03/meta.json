@@ -188,7 +188,7 @@
     "axiomCount": 0,
     "lineCount": 162,
     "assumptions": "0 axioms, 0 sorries. The only hypotheses are the ambient family α : Fin n → ℝ and N ≥ 1 (0 < N). The result is proved in-file from elementary Mathlib facts — the fractional part bounds 0 ≤ frac x < 1, floor/toNat coercions, the pigeonhole principle Fintype.exists_ne_map_eq_of_card_lt, and the function-type cardinality Fintype.card_fun — with no measure theory or convex-body machinery. Badge is 'original' because the simultaneous theorem and all supporting declarations are new in-file results; Mathlib contains only the single-real version. Verified: #print axioms lists exactly propext, Classical.choice, Quot.sound.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 1
   }

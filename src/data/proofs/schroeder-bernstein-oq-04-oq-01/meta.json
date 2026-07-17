@@ -72,7 +72,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "lineCount": 250,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None beyond Lean/Mathlib's standard foundations. Fully verified with 0 sorries and 0 axiom declarations. Like the parent finite-type proof and Mathlib's own CBS, the construction is noncomputable (orbit classification uses Classical to decide membership; preimage extraction uses Classical.choose). It uses only the ordinary foundational axioms propext / Classical.choice / Quot.sound — no sorryAx, no Lean.ofReduceBool.",
     "theoremCount": 14,
     "definitionCount": 5

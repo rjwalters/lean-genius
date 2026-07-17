@@ -24,7 +24,7 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The coprime sub-case reuses Mathlib's `Nat.ModEq.pow_totient` (Euler–Fermat); the non-coprime sub-case is the elementary divisibility argument p^e ∣ a^k for k ≥ e. The `decide` calls in the examples evaluate concrete powers and modular reductions over small naturals in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.ModEq.pow_totient",

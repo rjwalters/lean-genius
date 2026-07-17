@@ -73,7 +73,7 @@
       "The Chebyshev-U connection: U_n(cos θ) · sin θ is proved equal to the explicit odd-index binomial sum for sin((n+1)θ), the second-kind mirror of the parent's T_n result"
     ],
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 199,
     "assumptions": "0 axioms, 0 sorries. #print axioms confirms all main theorems (sin_nsmul_binomial_odd, sin_nsmul_eq_sin_mul, chebyshev_U_eq_binomial_sum) depend only on the foundational propext / Classical.choice / Quot.sound. Imaginary-part extraction uses Mathlib's Complex.exp_mul_I and exp_ofReal_mul_I_im; the closed form is derived by elementary Finset reindexing (sum_range_reflect, sum_subset, sum_image); the Chebyshev identity uses U_real_cos.",

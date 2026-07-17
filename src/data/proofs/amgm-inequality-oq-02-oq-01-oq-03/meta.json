@@ -53,7 +53,7 @@
     "theoremCount": 2,
     "definitionCount": 0,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. The universal identity is a ring-level corollary of the sibling Newton-Girard recurrence (itself backed by Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum). The concrete-Finset companion (AmgmInequalityOQ02OQ01OQ03Finset.lean) adds the aeval bridge and holds over an arbitrary CommRing including characteristic 2.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities (Newton-Girard identities) relate the power sums pₖ = Σ xᵢᵏ to the elementary symmetric polynomials eₖ. Girard stated them around 1629 and Newton independently around 1666 (Arithmetica Universalis, 1707). The third identity, p₃ = e₁³ − 3e₁e₂ + 3e₃, is the symmetric-function form of the classical sum-of-cubes factorization a³ + b³ + c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc. While the recurrence form p₃ = e₁p₂ − e₂p₁ + 3e₃ follows directly from Mathlib's general Newton-Girard theorem, the fully reduced closed form purely in e₁, e₂, e₃ — and its concrete Finset incarnation valid in every commutative ring, characteristic 2 included — is not present in Mathlib.",

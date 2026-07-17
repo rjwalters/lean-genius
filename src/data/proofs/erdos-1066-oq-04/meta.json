@@ -22,7 +22,7 @@
     "lineCount": 156,
     "assumptions": "2 axioms: degree_le_kissing (each point has ≤ τ(d) unit-distance neighbors) and greedy_independence (greedy coloring gives independent set of size ≥ n/(τ(d)+1)). 2 sorries: independenceRatio definition (requires analytic limit) and ratio_greedy_bound (uses sorry'd definition).",
     "dateAdded": "2026-03-30",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "SepConfig structure for d-dimensional separated configurations",
       "kissingNumber lookup encoding known exact values τ(1)=2, τ(2)=6, τ(3)=12, τ(4)=24, τ(8)=240, τ(24)=196560",

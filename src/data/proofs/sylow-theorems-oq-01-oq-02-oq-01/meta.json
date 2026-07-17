@@ -24,7 +24,7 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "lineCount": 151,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound). Verified via #print axioms. The argument relies on Mathlib's Sylow theory, Z-group theory (IsZGroup.of_squarefree), the finite-group nilpotency TFAE (isNilpotent_of_finite_tfae), and the instance deriving cyclicity from a finite nilpotent Z-group; this reliance is disclosed.",
     "originalContributions": [
       "card_sylow_eq_one_of_card_pq: for every prime r, the number of Sylow r-subgroups of a group of order p·q (p>q, q∤(p−1)) equals 1 — proved by hand from n_r ∣ p·q, r ∤ n_r, n_r ≡ 1 [MOD r], plus the structural triviality of Sylow subgroups for primes not dividing the order.",

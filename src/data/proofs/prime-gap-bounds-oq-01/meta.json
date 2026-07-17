@@ -65,7 +65,7 @@
       "The n-th prime function and its properties"
     ],
     "assumptions": "Three axioms: (1) PNT asymptotic p_n/(n·ln n) → 1, (2) Dusart upper bound p_n ≤ n(ln n + ln ln n) for n ≥ 6, (3) Dusart lower bound p_n ≥ n(ln n + ln ln n - 1) for n ≥ 6. These would follow from PNT with explicit error terms, which requires Chebyshev function analysis not available in Mathlib.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 0
   },

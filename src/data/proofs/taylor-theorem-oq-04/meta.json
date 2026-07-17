@@ -62,7 +62,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries. Every result depends only on the ordinary foundational axioms propext / Classical.choice / Quot.sound (not counted). Convergence is stated for x > 0; the x < 0 case follows by the oddness/evenness of sin/cos and is left as a routine corollary.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "That the Taylor series of sin and cos converge everywhere is one of the oldest facts of analysis, known to Newton and Euler and made rigorous by Cauchy and Lagrange in the early 19th century via the remainder term. The 'uniformly bounded derivatives' argument used here is the cleanest modern packaging: an entire function all of whose derivatives are bounded by a common constant on ℝ has a Taylor series converging to it everywhere. For sin and cos the bound is the sharpest possible, |f⁽ⁿ⁾| ≤ 1, because differentiation merely cycles through ±sin, ±cos.",

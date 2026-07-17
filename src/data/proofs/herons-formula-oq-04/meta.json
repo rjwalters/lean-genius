@@ -52,7 +52,7 @@
       "Triangle inequality",
       "Basic algebra over the reals"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The isoperimetric problem asks: among all figures with a fixed perimeter, which has the largest area? For triangles, the answer is the equilateral triangle — a classical result known since antiquity. The proof using the AM-GM inequality is elegant: if $s = (a+b+c)/2$ is the semi-perimeter, Heron's formula gives $\\text{Area}^2 = s(s-a)(s-b)(s-c)$. Setting $x = s-a$, $y = s-b$, $z = s-c$, we have $x + y + z = s$, and by AM-GM: $xyz \\leq ((x+y+z)/3)^3 = (s/3)^3$. Therefore $\\text{Area}^2 \\leq s \\cdot (s/3)^3 = s^4/27$, with equality iff $x = y = z$ iff $a = b = c$.\n\nThis result is a special case of the more general isoperimetric inequality for polygons (equilateral polygon maximizes area for fixed perimeter), which in turn is a special case of the continuous isoperimetric inequality (circle maximizes area for fixed perimeter among all closed curves).",

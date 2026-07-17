@@ -80,7 +80,7 @@
     "lineCount": 219,
     "theoremCount": 12,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Galois theory of finite fields culminates in a perfect bijection: the subfields of 𝔽_{p^n} correspond exactly to the divisors of n, with 𝔽_{p^d} ⊆ 𝔽_{p^n} iff d ∣ n. The parent entry pinned the two endpoints — the Frobenius generates the cyclic group Gal(𝔽_{p^n}/𝔽_p), and the field it fixes is the prime field 𝔽_p (the d = n rung). This entry fills in every rung between: for each divisor d, the power frob^d fixes the unique copy of 𝔽_{p^d} inside K, cut out by the equation x^(p^d) = x, with exactly p^d points. The whole picture is the fundamental theorem of Galois theory made concrete for the cleanest possible cyclic group.",

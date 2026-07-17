@@ -79,7 +79,7 @@
         "module": "Mathlib.Data.Nat.Size"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Knuth analyzed Stein's binary GCD algorithm in TAOCP Vol. 2, §4.5.2, establishing that it runs in O(log²(max(a,b))) bit operations. The analysis proceeds in two stages: first, bounding the number of recursive calls by O(log(max(a,b))); second, bounding the bit cost of each call by O(log(max(a,b))). Combining these gives the O(log²) total. The step-count bound is elementary — each call strips at least one bit from one of the inputs — but formalizing it requires careful case analysis across all seven branches of the algorithm. The per-step bit cost is more subtle and depends on the machine model: on a word-RAM with O(1) arithmetic, each step is O(1); on a bit-RAM where word operations cost proportional to the word length, each step costs O(log n) bits.",

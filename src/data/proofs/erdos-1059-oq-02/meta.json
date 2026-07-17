@@ -25,7 +25,7 @@
     "axiomCount": 1,
     "lineCount": 231,
     "assumptions": "selberg_density_axiom: For each l ≥ 3, the primorial interval I(l) = (l!, (l+1)!] contains at least one prime p satisfying AllFactorialSubtractionsComposite. This requires the Prime Number Theorem, Brun-Titchmarsh inequality, and Selberg upper bound sieve — analytic tools not yet in Mathlib.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "PrimorialInterval: definition of I(l) = (l!, (l+1)!] with proved cardinality l·l!",
       "factorial_bound_in_interval: structural lemma k! < p ∈ I(l) → k ≤ l",

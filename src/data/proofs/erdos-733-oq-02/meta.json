@@ -42,7 +42,7 @@
     "axiomCount": 0,
     "lineCount": 185,
     "assumptions": "None encoded as axioms or structure fields. Every theorem takes the configuration data (point set P, family of lines) and the linear-space hypotheses hsub (each line ⊆ P) and hlin (two distinct lines meet in ≤ 1 point) as ordinary universally-quantified arguments. #print axioms reports only the standard foundational axioms (propext / Classical.choice / Quot.sound); no sorryAx, no Lean.ofReduceBool. The bound proved is the elementary O(n²/k²) estimate, strictly weaker than the Szemerédi–Trotter O(n²/k³ + n/k) that the parent file axiomatizes — this is disclosed explicitly in the file and is not claimed to discharge those axioms.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 0
   },

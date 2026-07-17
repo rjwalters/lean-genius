@@ -36,7 +36,7 @@
     "lineCount": 150,
     "theoremCount": 13,
     "definitionCount": 4,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Lagrange basis polynomials ℓ_j(x) = ∏_{i≠j}(x − v_i)/(v_j − v_i) are the oldest explicit basis of the space of polynomials of degree < n: each ℓ_j takes the value 1 at its own node v_j and 0 at all other nodes, so the interpolant through data (y_0, …, y_{n−1}) is simply ∑_j y_j ℓ_j. That they form a basis — and that the coordinates of any polynomial in this basis are exactly its sampled values — is the dual-basis statement underlying the change of representation between coefficients and point-values. It is the linear-algebra heart of nodal finite-element shape functions, Reed–Solomon encoding, and the barycentric interpolation formula.",

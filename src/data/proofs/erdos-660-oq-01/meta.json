@@ -25,7 +25,7 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries over a general field with a compatible linear order (`Field`, `LinearOrder`, `IsStrictOrderedRing`), hence in particular over ℝ. No `decide`, `native_decide`, or `sorry`; the proof composes three existing Mathlib lemmas.",
     "originalContributions": [
       "Proves `AffineIndependent.convexIndependent` — the lemma explicitly flagged as a TODO in Mathlib's `Analysis/Convex/Independent.lean` module docstring ('Prove AffineIndependent.convexIndependent. This requires some glue between affineCombination and Finset.centerMass'). Stated in the `AffineIndependent` namespace so it is a literal drop-in for the gap.",

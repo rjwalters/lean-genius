@@ -51,7 +51,7 @@
     "axiomCount": 0,
     "lineCount": 207,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The three small numeric examples (total parts for n = 2, 3, 4 are 3, 8, 20) close with the kernel decision procedure `decide` evaluating closed Nat arithmetic; plain `decide` is kernel-checked and introduces no Lean.ofReduceBool. The named theorems total_parts, two_mul_total_parts and mean_parts were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib does NOT contain the part-count bridge (length = gap-subset.card + 1) nor any moment of the part-count distribution; both are original content here, built on Mathlib's compositionEquiv, compositionAsSetEquiv, composition_card, Finset.sum_powerset_apply_card, Nat.sum_range_choose, and Nat.add_one_mul_choose_eq. The result is unconditional; the hypothesis n ≥ 2 is the natural domain (for n = 1 the single composition has 1 part, and the closed form (n+1)·2^(n−2) degenerates under truncated subtraction).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 9,
     "definitionCount": 2
   },

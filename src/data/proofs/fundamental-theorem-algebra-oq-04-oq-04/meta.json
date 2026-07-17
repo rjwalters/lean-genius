@@ -72,7 +72,7 @@
         "relationship": "contrasts with parent: while [ℂ:ℝ] = 2 (finite), [ℚ̄_p:ℚ_p] = ∞ (infinite)"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The real numbers are exceptional among fields: they need only one quadratic extension (ℂ = ℝ(i)) to become algebraically closed. Hensel's p-adic numbers (1897), the completions of ℚ at prime p, behave very differently. The algebraic closure ℚ̄_p requires extensions of all degrees.\n\nThis follows from Hensel's lemma (1897): if f ∈ ℤ_p[X] and f has a simple root modulo p, then it has a root in ℤ_p. But X^n - p has no root modulo p (its Newton polygon has slope -1/n ≠ 0), so X^n - p is irreducible over ℚ_p — giving extensions of degree n for all n.\n\nThe contrast between [ℂ:ℝ] = 2 and [ℚ̄_p:ℚ_p] = ∞ is a fundamental distinction between real and p-adic completions of ℚ. It is captured algebraically by the Artin-Schreier theorem: ℝ is real-closed (one quadratic extension suffices), while ℚ_p is not real-closed (it needs infinitely many extensions).",

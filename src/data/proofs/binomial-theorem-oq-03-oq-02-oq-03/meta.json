@@ -25,7 +25,7 @@
     "lineCount": 208,
     "theoremCount": 12,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Euler introduced the constant e in 1748 in Introductio in analysin infinitorum, defining it as the limit of (1 + 1/n)^n. The monotonicity of this sequence was known to Jacob Bernoulli (1690s), who discovered the compound interest limit while studying the problem of continuous compounding: if interest is compounded n times at rate 1/n, the growth factor (1 + 1/n)^n increases with n. The bounded monotone convergence approach — showing 2 < (1 + 1/n)^n < 3 and strict increase — provides a clean existence proof without series or integrals, and appears in most modern analysis textbooks (e.g., Rudin's Principles, Theorem 3.31). The key analytical tool here is the inequality log(1+t) > t/(1+t) for t > 0, which is equivalent to strict convexity of exp and was known to Hermite and Hadamard in the context of convex function theory. This formalization in Lean 4 uses Mathlib's strictAntiOn_of_deriv_neg (essentially the mean value theorem) as the bridge between the pointwise derivative condition and global monotonicity.",

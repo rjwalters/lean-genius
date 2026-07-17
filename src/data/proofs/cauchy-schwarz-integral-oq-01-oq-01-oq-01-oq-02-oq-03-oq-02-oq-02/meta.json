@@ -25,7 +25,7 @@
     "lineCount": 226,
     "assumptions": "No axioms or sorries. Kernel-verified via #print axioms: depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. Builds on the parent sibling file (the equality case of the chain), which uses Mathlib's weighted AM-GM equality condition; the two remaining non-strict links are re-derived here from Mathlib's two-variable weighted AM-GM.",
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "LE.le.lt_of_ne",

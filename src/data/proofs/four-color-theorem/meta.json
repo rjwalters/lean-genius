@@ -34,7 +34,7 @@
     "axiomCount": 2,
     "assumptions": "2 axioms carrying the core results themselves: five_color_theorem_nonempty (Colorable G 5 for nonempty planar G) and four_color_theorem_axiom (Colorable G 4). The Four and Five Color Theorems are therefore assumed, not proved, in this file; the theorems five_color_theorem, four_color_theorem, and four_implies_five are thin wrappers over these axioms. Genuinely proved: supporting infrastructure (colorable_of_card_le, planar_of_subgraph, exists_degree_le_five). No sorries.",
     "proofRepoPath": "Proofs/FourColorTheorem.lean",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "lineCount": 294,
     "prerequisites": [
       "Graph theory (planar graphs, coloring)",

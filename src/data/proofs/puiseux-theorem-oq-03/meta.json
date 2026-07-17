@@ -67,7 +67,7 @@
     "lineCount": 1626,
     "theoremCount": 94,
     "definitionCount": 14,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton (1676) introduced the fractional-exponent root-finding procedure that bears his name; Puiseux (1850) gave the first rigorous proof that it produces all roots. The central combinatorial object is the Newton polygon: for a polynomial P(Y) = Σ aᵢ Yⁱ with coefficients in a valued field K((x)), it is the lower convex hull of the support points (i, v(aᵢ)). The Newton polygon theorem states that the negatives of its edge slopes are exactly the valuations of the roots of P in any algebraically closed valued extension — the fact that feeds the parent's leadingExponentFromSlope.\n\nThe computational story (Chudnovsky–Chudnovsky 1986, Duval 1989, Walsh 2000, Poteaux–Rybowicz 2008–15, Poteaux–Weimann 2021) tightens the cost of computing Puiseux expansions to quasi-linear Õ(d·δ) in the discriminant valuation δ. Every such bound is phrased on the Newton polygon as a data structure, so a computable combinatorial Newton polygon is the natural first formal step.",

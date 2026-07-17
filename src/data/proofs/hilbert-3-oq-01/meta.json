@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 207,
     "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. VERIFIED: compiles clean against Mathlib 4.26.0 via `lake env lean Proofs/Hilbert3OQ01.lean` (no errors); `#print axioms` on totalDehnSum_apply, totalDehnSum_eq_zero_of_ratPi, stratum_supplementary, box_totalDehnSum_zero, and totalDehnSum_union reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. Built on Mathlib's TensorProduct (ℝ ⊗[ℤ] _), QuotientAddGroup, and Pi.single/Finset.sum API. SCOPE: this is the invariant-theoretic half (the structure of the target group and its functorial algebra); the completeness of these invariants in dimensions ≥ 5 — which higher scissors congruence groups are fully classified — is genuinely open and recorded in openQuestions.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 14,
     "dateAdded": "2026-06-27",
     "definitionCount": 9

@@ -54,7 +54,7 @@
     "theoremCount": 4,
     "definitionCount": 1,
     "assumptions": "The headline theorem is genuinely new content (no Mathlib statement that power sums generate the elementary symmetric polynomials). Its engine is the in-repo parent lemma mul_esymm_recurrence plus Mathlib's standard subalgebra-membership API (adjoin, algebraMap_mem, strong recursion, inv_mul_cancel₀). 0 sorries, 0 axiom declarations, no native_decide (the three `decide` calls are kernel-level Finset facts on small literals: Ico 1 2 = {1}, Ico 1 3 = {1,2}, 1 ≠ 2). #print axioms reports only propext, Classical.choice, Quot.sound.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities relate the power sums $p_k=\\sum_i x_i^k$ to the elementary symmetric polynomials $e_k=\\sum_{i_1<\\cdots<i_k}x_{i_1}\\cdots x_{i_k}$. The *forward* recurrence (proved by the parent entry, and in Mathlib's `psum_eq_mul_esymm_sub_sum`) writes $p_k$ through the $e_i$. The *reverse* problem — expressing each $e_k$ through the power sums alone — is the content of the classical theorem that, over a field of characteristic 0, the power sums $p_1,p_2,\\dots$ generate the entire ring of symmetric functions.\n\nThe distinction is not cosmetic: the recurrence carries an integer coefficient $k$ in the term $(-1)^{k+1}k\\,e_k$, so solving for $e_k$ requires dividing by $k$. Over $\\mathbb{Z}$ or $\\mathbb{F}_p$ this fails (e.g. $e_p$ is not a $\\mathbb{Z}$-polynomial in the $p_i$); over a $\\mathbb{Q}$-algebra every $k$ is a unit and the inversion goes through. This entry makes that precise and machine-checked.",

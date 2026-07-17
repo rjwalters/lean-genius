@@ -27,7 +27,7 @@
     "lineCount": 246,
     "assumptions": "None. 0 axioms, 0 sorries (verified by `#print axioms`: splitGraph_sharp, degenerate_edge_bound, and splitGraph_edge_count each depend only on propext, Classical.choice, Quot.sound — the standard foundational axioms, no sorryAx or Lean.ofReduceBool). Builds on the parent entry Erdos1018OQ01 (imported for the extraction lemma exists_dense_induced_subgraph and the degOn definition). The topological step of Kostochka–Pyber is not claimed; only the sharpness of the density-to-min-degree reduction is proved. Verified with the Docker Lean harness against pinned Mathlib 4.26.0.",
     "dateAdded": "2026-06-30",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.sum_degrees_eq_twice_card_edges",

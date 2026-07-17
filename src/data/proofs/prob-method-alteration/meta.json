@@ -50,7 +50,7 @@
       "Optimization of probability parameters"
     ],
     "assumptions": "Main file ProbMethodAlteration.lean: 0 axioms, 0 sorries; alteration_principle and independent_set_bound are machine-verified. Companion file ProbMethodAlterationOQ02.lean adds 2 named axioms used in the triangle-free α(G) improvement chain: (1) caro_wei — the Caro–Wei bound α(G) ≥ n²/(2m+n); (2) aks_triangle_free — the Ajtai–Komlós–Szemerédi 1980 logarithmic bound α(G) ≥ c·n·log(d)/d for triangle-free graphs of avg degree d. Total chain assumption count: 2 axioms.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 2,
     "definitionCount": 0,
     "additionalFiles": [

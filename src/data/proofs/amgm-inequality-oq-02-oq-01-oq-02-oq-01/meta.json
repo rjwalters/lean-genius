@@ -44,7 +44,7 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "assumptions": "Core results obtained via Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum and MvPolynomial.psum_one/esymm_one. The three corollaries (k=1,2,3) are derived from these Mathlib theorems. 0 sorries, 0 axiom declarations.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Newton's identities (also called Newton-Girard identities) relate power sums p\u2096 = \u03a3x\u1d62\u1d4f to elementary symmetric polynomials e\u2096 = \u03a3_{i\u2081<...<i\u2096} x\u1d62\u2081...x\u1d62\u2096. Newton stated them around 1666 (published in Arithmetica Universalis, 1707); Albert Girard proved them earlier around 1629.\n\nThe general recurrence is: k\u00b7e\u2096 = \u03a3_{j=1}^k (-1)^{j-1} e\u2096\u208b\u2c7c\u00b7p\u2c7c (or equivalently p\u2096 = (-1)^{k+1}\u00b7k\u00b7e\u2096 \u2212 \u03a3_{0<j<k} (-1)^j\u00b7e\u2c7c\u00b7p\u2096\u208b\u2c7c). The first three cases are: p\u2081 = e\u2081, p\u2082 = e\u2081\u00b2 \u2212 2e\u2082, p\u2083 = e\u2081p\u2082 \u2212 e\u2082p\u2081 + 3e\u2083. These are foundational in symmetric function theory and appear throughout algebraic combinatorics, invariant theory, and number theory.\n\nMathlib 4 formalizes the general Newton-Girard recurrence via MvPolynomial.psum_eq_mul_esymm_sub_sum. This file derives the k=1,2,3 corollaries explicitly, with the antidiagonal computation made fully concrete.",

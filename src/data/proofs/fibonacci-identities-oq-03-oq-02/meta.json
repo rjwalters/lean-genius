@@ -48,7 +48,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 97,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound — confirmed by #print axioms on all five theorems). The one numerical sanity check fib 6 · fib 7 = 104 uses decide (kernel reduction, no native_decide / Lean.ofReduceBool).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
   },

@@ -21,7 +21,7 @@
     "lineCount": 150,
     "assumptions": "None. 0 literal `axiom` declarations, 0 structure-encoded assumptions, 0 sorries, no native_decide (small factorial identities use kernel `decide` only). Build-verified 2026-07-07 via `./proofs/scripts/docker-build.sh Proofs.ChebyshevPNTBridgeOQ01OQ04` (Lean v4.26.0, Mathlib pin): #print axioms reports only [propext, Classical.choice, Quot.sound] for multiProd_mul_pow_factorial, multiProd_prime_pow_le, and naive_multinomial_bound_false. (The original 2026-07-04 session wrote this entry BUILD-PENDING during a Docker outage; one v4.26 drift fix was applied on salvage: `Finset.prod_Icc_id_eq_factorial` no longer exists, `prod_Icc_mul_const` is now proved by induction.)",
     "dateAdded": "2026-07-04",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Refutation: the naive multinomial generalization p^{v_p} ≤ kn is FALSE (smallest witness k=3,n=2,p=3, coefficient 90, 3²=9>6) — theorem naive_multinomial_bound_false",
       "Corrected Kummer-type bound p^{v_p(∏_{j=1}^k C(jn,n))} ≤ n^k·k! — theorem multiProd_prime_pow_le",

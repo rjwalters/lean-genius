@@ -33,7 +33,7 @@
     "lineCount": 124,
     "theoremCount": 5,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "problemStatement": "**Equality case of Maclaurin's inequality.** With Mⱼ(x) = (eⱼ(x)/C(n,j))^(1/j) the j-th Maclaurin mean of non-negative x₁,…,xₙ, the parent formalization (amgm-inequality-oq-02-oq-02) proves the chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ and poses as open question OQ-02 the equality characterization:\n\nMₖ(x) = Mₖ₊₁(x)  ⟺  all non-zero inputs are equal.\n\nThis entry settles the **sufficiency (⟸)** direction in full generality: a constant input forces equality throughout the chain.",

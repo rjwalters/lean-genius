@@ -100,7 +100,7 @@
     "lineCount": 233,
     "assumptions": "Fully machine-checked, 0 sorries, 0 axiom declarations; #print axioms reports every theorem (representation_monotone_ge2, erdos_286_exists, unrestricted_monotone_false, no_k2_representation, base_k3) depends only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool — the base case uses kernel decide + norm_num, NOT native_decide). Honest scope: this file proves bounded-interval EXISTENCE for all k ≥ 3 and discharges the parent's representation_monotone axiom (in its actual regime of use, k ≥ 2). It does NOT prove the SHARP width ⌈(e-1+ε)k⌉ — Croot's 2001 theorem (croot_theorem in the parent) remains an axiom and is the genuinely deep content of #286. The interval width produced here grows rapidly under iteration and is not claimed to be near-optimal.",
     "dateAdded": "2026-06-22",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "representation_monotone_ge2: proves the parent's representation_monotone AXIOM as a 0-axiom theorem for k ≥ 2, via splitting the maximum denominator m using 1/m = 1/(m+1) + 1/(m(m+1))",
       "erdos_286_exists: re-derives the parent's bounded-interval existence theorem (∀ k ≥ 3) with ZERO axioms, eliminating both croot_theorem and representation_monotone from the existence proof",

@@ -58,7 +58,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 202,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, the latter via Classical.arbitrary to pick a basepoint). No decide/native_decide is used, so no Lean.ofReduceBool. α is assumed nonempty for the packaged statements; the equivariance and abelian-implies-free results need no finiteness and hold verbatim for infinite α.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 0
   },

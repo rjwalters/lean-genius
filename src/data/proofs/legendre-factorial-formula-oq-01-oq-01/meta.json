@@ -26,7 +26,7 @@
     "theoremCount": 5,
     "definitionCount": 1,
     "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). The headline equality is obtained by bridging padicValNat to Nat.factorization via Nat.factorization_def (valid for prime p) and applying Mathlib's Nat.factorization_choose, whose right-hand side #{i ∈ Ico 1 b | pⁱ ≤ k mod pⁱ + (n−k) mod pⁱ} is definitionally the named carryCount. The divisibility corollaries combine Nat.Prime.dvd_iff_one_le_factorization with the headline and close the residual 1 ≤ c ↔ 0 < c by omega; non-vanishing of the binomial / central-binomial coefficients comes from Nat.choose_pos / Nat.centralBinom_pos. The numeric instance v₂(C(4,2)) = 1 is closed by decide on a concrete Finset filter card over Ico 1 4 (kernel reduction, not native_decide).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "mainTheorems": [
     {

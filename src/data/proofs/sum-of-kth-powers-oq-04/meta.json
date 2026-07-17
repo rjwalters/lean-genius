@@ -51,7 +51,7 @@
       "Bernoulli numbers and polynomials",
       "Filter limits and topological convergence"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Euler-Maclaurin formula was discovered independently by Euler (1738) in 'Methodus generalis summandi progressiones' and by Maclaurin (1742) in 'Treatise of Fluxions'. It provides an asymptotic expansion connecting a discrete sum ∑_{j=a}^{b} f(j) to the integral ∫_a^b f(x) dx plus correction terms involving Bernoulli numbers B_{2k} and derivatives of f. The simplest consequence, requiring no correction terms, is: ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1), which matches the Riemann sum approximation to ∫₀¹ x^k dx = 1/(k+1). Faulhaber's formula (1631), which gives the exact closed form (k+1)·∑ i^k = B_{k+1}(n) - B_{k+1}(0) using Bernoulli polynomials, provides the algebraic route to this asymptotic. Johann Faulhaber computed power sums up to k=17 by hand; the Bernoulli polynomial formulation was clarified by Jakob Bernoulli in 'Ars Conjectandi' (1713). The formalization here shows that the asymptotic is a purely algebraic consequence of Faulhaber's formula and the monicity of B_{k+1}, requiring only two routine analytical sorry arguments (V3 proved the monic polynomial ratio theorem).",

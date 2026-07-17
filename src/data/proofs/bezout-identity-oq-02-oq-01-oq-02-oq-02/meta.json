@@ -57,7 +57,7 @@
       "Ramification and splitting: 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i)"
     ],
     "dateAdded": "2026-04-04",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Gauss introduced the Gaussian integers ℤ[i] = {a+bi : a,b ∈ ℤ} in 1832 to give an elegant proof of Fermat's theorem on sums of two squares: a prime p is expressible as p = a² + b² iff p = 2 or p ≡ 1 (mod 4). Fermat stated this result in 1640 but never published a proof; Euler gave the first proof in 1747 using descent, but Gauss's approach via ℤ[i] was far cleaner. The key insight was that ℤ[i] admits a Euclidean algorithm (using the norm N(a+bi) = a²+b²) and hence unique factorization. Gaussian primes fall into three types: (1) 1+i above 2 (the ramified prime); (2) a+bi with N(a+bi) = p ≡ 1 mod 4 (the split primes); (3) ordinary primes p ≡ 3 mod 4, which remain prime in ℤ[i] (the inert primes). This classification is equivalent to Fermat's two-square theorem and became the prototype for Dedekind and Kummer's later work on ideal theory in algebraic number fields.",

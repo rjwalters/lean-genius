@@ -70,7 +70,7 @@
       "Cauchy–Schwarz / second-moment method and fiberwise cardinality counting in Mathlib"
     ],
     "dateAdded": "2026-06-27",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Szemerédi regularity lemma and its counting lemma underpin the graph removal lemma and Roth-type density results. Extending this machinery to $k$-uniform hypergraphs — needed for Szemerédi's theorem on arithmetic progressions of every length via the multidimensional / hypergraph removal route — was a major undertaking completed independently by Nagle, Rödl and Schacht (2006) and by Gowers (2007). The crux is that hypergraph regularity is *relative*: the density of a $3$-graph must be measured conditionally on the underlying bipartite $2$-graphs ('the $2$-skeleton'), and the counting lemma is proved by an induction over the uniformity. Naive $\\varepsilon$-regularity (a single global density condition) is provably insufficient to count copies of patterns with two or more hyperedges. This entry formalizes the part of the $3$-graph counting lemma that is *deterministic* — the exact main term and the second-moment engine — and marks precisely where the relative-regularity content begins.",

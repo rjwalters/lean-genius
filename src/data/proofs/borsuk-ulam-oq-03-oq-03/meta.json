@@ -49,7 +49,7 @@
       "Necessity of antipodal condition (counterexample: constant labeling)"
     ],
     "dateAdded": "2026-03-06",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axioms": 1,
     "axiomDetails": [
       "tucker_2d_grid: Tucker's 2D combinatorial lemma for the triangulated grid — an antipodally-labeled boundary forces an interior complementary edge (path-following in the simplicial complex). The earlier overly-general `tuckers_lemma` axiom was removed as unsound; `tucker_disk_approx_zero` is now proved from this axiom (tucker_disk_approx_zero_proved)."

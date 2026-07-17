@@ -64,7 +64,7 @@
       "Primitive roots of unity and the maximal real subfield ℚ(ζ)⁺",
       "Euler's totient and minimal-polynomial degree arguments"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Niven's theorem (Ivan Niven, Irrational Numbers, 1956) classifies the rational values of cosine at rational multiples of π: cos(2π/n) is rational only for n ∈ {1, 2, 3, 4, 6}, where it takes the values 1, −1, −1/2, 0, 1/2. The result is a consequence of cyclotomic field theory: the primitive n-th roots of unity are the roots of the irreducible cyclotomic polynomial Φ_n of degree φ(n), and 2cos(2π/n) = ζ + ζ⁻¹ generates the maximal real subfield ℚ(ζ)⁺ of degree φ(n)/2. This entry (OQ-01-OQ-01 of the nth-root-irrationality line) extends the parent's structural principle 'a root of an irreducible degree ≥ 2 polynomial over ℚ is irrational' from X^n − p (Eisenstein) to the cyclotomic polynomials, then walks the full distance to Niven's theorem: complex roots of unity, the real generator ζ + ζ⁻¹, the analytic Real.cos, and the five exceptional rational cases.",

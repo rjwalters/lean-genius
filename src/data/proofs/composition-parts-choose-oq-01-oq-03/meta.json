@@ -62,7 +62,7 @@
     "axiomCount": 0,
     "lineCount": 228,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All named theorems (sum_choose_mul_cube, sum_finset_card_cube, third_moment, parts_distribution_symmetric, third_central_moment_zero) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib contains ∑_k C(m,k) = 2^m (Nat.sum_range_choose) and the absorption rule Nat.add_one_mul_choose_eq, but neither the third-moment binomial sum 8∑ k³C(m,k) = m²(m+3)2^m nor any moment or symmetry statement about the part-count distribution of a composition; all are original content here, built on the family's gapsEquiv, length_eq_card_gaps, sum_choose_mul, sum_choose_mul_sq, sum_finset_card, sum_finset_card_sq together with Finset.sum_powerset_apply_card, Equiv.sum_comp, the complement involution on Finset (Fin (n−1)), and Fintype.card_finset. The integer identities are stated multiplied by 8 (third moment) to stay in ℕ; the skewness is stated over ℚ where the centring is exact. The symmetry theorem parts_distribution_symmetric holds for an arbitrary AddCommMonoid-valued weight and n ≥ 1.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
   },

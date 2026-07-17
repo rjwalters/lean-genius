@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 146,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` on the headline results reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The substantive analytic number theory behind the two quantitative results — the identity ψ(x) = θ(x) + ∑_{k≥2} θ(x^{1/k}) and the bound |ψ(x) − θ(x)| ≤ 2√x·log x — is supplied by Mathlib's `Mathlib.NumberTheory.Chebyshev` (theorems `psi_eq_theta_add_sum_theta` and `abs_psi_sub_theta_le_sqrt_mul_log`); this entry's own contribution is the bridge `chebyshevPsi n = Chebyshev.psi n` (and the θ analogue) plus the direct decomposition `ψ − θ = ∑_{¬prime} Λ`. Badge is `verified` (not `original`) precisely because the deep bound is Mathlib's, not new here. All results are fully machine-checked.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log",

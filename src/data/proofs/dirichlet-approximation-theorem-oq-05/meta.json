@@ -50,7 +50,7 @@
     "axiomCount": 0,
     "lineCount": 141,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool, no native_decide; verifiable with #print axioms goldenRatio_badly_approximable). The result is unconditional: ∃ c > 0 (explicitly c = 1/4) with c/q² ≤ |φ − p/q| for all p ∈ ℤ, q > 0. The constant 1/4 is NOT optimal — the sharp Hurwitz constant for φ is 1/√5 — but badly-approximability only requires SOME positive c, and the elementary norm-form argument delivers an explicit one without continued fractions. Mathlib supplies the goldenRatio API (Vieta relations φ+ψ=1, φψ=−1, φ−ψ=√5, and irrationality of φ, ψ) and Irrational.ne_rational; the original in-file content is the norm-form identity, its non-vanishing, and the case-analysis lower bound.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

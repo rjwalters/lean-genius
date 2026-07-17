@@ -25,7 +25,7 @@
     "lineCount": 168,
     "assumptions": "None. 0 axioms, 0 sorries. The geometric input of an actual 2-cell embedding (Euler's relation V − E + F = χ and the face-degree inequality 3F ≤ 2E) appears as explicit hypotheses of the combinatorial theorems; the file proves the linear edge-bound implication these encode, which is the structural fact driving the Kostochka–Pyber result on every surface. NOTE: the local Docker build harness was unresponsive this session, so the file was verified by exact signature/grep-checking of all six Mathlib dependencies (tendsto_rpow_atTop, Real.rpow_add, Real.rpow_one, mul_lt_mul_of_pos_left, Filter.Tendsto.eventually_gt_atTop, eventually_gt_atTop) against the pinned Mathlib 4.26.0 source rather than a fresh kernel rebuild; all nine arithmetic theorems are closed by omega/linarith. Pending deployer kernel re-verification.",
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "tendsto_rpow_atTop",

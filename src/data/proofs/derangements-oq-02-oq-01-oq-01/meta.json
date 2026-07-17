@@ -60,7 +60,7 @@
     "axiomCount": 0,
     "lineCount": 131,
     "assumptions": "0 axioms (only propext / Classical.choice / Quot.sound), 0 sorries. Built on the parent's exact partial-derangement count (Proofs.DerangementsOQ02OQ01) and Mathlib's scalar derangement limit numDerangements_tendsto_inv_e. Scope note: this proves the LIMITING DISTRIBUTION (the probabilistic/asymptotic content). It does not formalize the formal-power-series exponential generating function e^{-x}/(1-x)·x^k/k! literally named by the parent's open question, because Mathlib lacks the formal derangement power series; that formal EGF is recorded as a remaining open question.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 2
   },

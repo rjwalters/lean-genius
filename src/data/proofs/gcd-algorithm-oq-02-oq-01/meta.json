@@ -57,7 +57,7 @@
       "Well-founded recursion and functional induction (the .induct principle)",
       "Stein's binary GCD algorithm (parent entry gcd-algorithm-oq-02)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The parent entry defines Stein's binary GCD (1967) and proves it computes Nat.gcd, but leaves its complexity unproved. Knuth (TAOCP 4.5.2) and Brent (1976) analyze the algorithm and record that it terminates in O(log(max(a,b))) recursive steps: each step either halves an operand (removing one bit) or, in the odd-odd branch, subtracts and halves (again shrinking bit length). This entry supplies a machine-checked version of that step-count bound.",

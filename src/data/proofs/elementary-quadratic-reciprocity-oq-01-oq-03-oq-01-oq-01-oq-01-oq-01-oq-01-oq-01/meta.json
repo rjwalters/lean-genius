@@ -85,7 +85,7 @@
     "theoremCount": 6,
     "defCount": 0,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems sign_neg_one, jacobiSym_neg_one and legendreSym_neg_one were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). The result J(-1 | n) = (-1)^((n-1)/2) is classical and present in Mathlib (jacobiSym.at_neg_one + ZMod.χ₄_eq_neg_one_pow); the contribution here is the elementary permutation-sign proof route, not a new theorem.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 0
   },
   "conclusion": {

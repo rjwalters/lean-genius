@@ -24,7 +24,7 @@
     "theoremCount": 2,
     "definitionCount": 1,
     "dateAdded": "2026-06-16",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None beyond positivity of the three side lengths a, b, c > 0. Fully machine-checked with 0 axioms and 0 sorries; no triangle inequality is required. The proof treats the algebraic core of the theorem: equality of the squared internal-bisector lengths (given by the classical formula w_b^2 = a*c*(1 - (b/(a+c))^2)) forces equality of the opposite sides.",
     "originalContributions": [
       "Reduces the Steiner–Lehmus theorem to a single algebraic implication over positive reals, w_b^2 = w_c^2 ⟹ b = c, avoiding all synthetic geometry.",

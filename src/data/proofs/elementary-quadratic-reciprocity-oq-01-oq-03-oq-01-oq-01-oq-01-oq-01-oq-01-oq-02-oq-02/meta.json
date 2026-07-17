@@ -87,7 +87,7 @@
     "theoremCount": 9,
     "defCount": 0,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems jacobiSym_neg_two, chi8'_eq_neg_one_pow, sign_neg_two and neg_two_qr_iff were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). The value J(-2 | n) = χ₈' n is classical and available in Mathlib (jacobiSym.at_neg_two); the contributions here are (i) the explicit power form χ₈' n = (-1)^((n-1)/2 + (n²-1)/8), which Mathlib does not provide, and (ii) the reading of the combined supplement as the sign of Zolotarev's permutation x ↦ -2·x, fusing the negation and doubling permutations of the two sibling supplements.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 0
   },
   "conclusion": {

@@ -54,7 +54,7 @@
     "axiomCount": 0,
     "lineCount": 175,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All theorems depend only on the foundational propext / Classical.choice / Quot.sound. The four sum-to-product identities are proved from Real.cos_add / Real.cos_sub / Real.sin_add / Real.sin_sub (they coincide with Mathlib's Real.cos_add_cos / Real.cos_sub_cos / Real.sin_add_sin / Real.sin_sub_sin). The triangle half-angle product identities sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2) and cos A + cos B + cos C = 1 + 4·sin(A/2)·sin(B/2)·sin(C/2) (and their a+b+c=π/2 half-angle forms) are NOT in Mathlib and are the original content; they reduce, after the π-reflection substitutions sin(π−·)=sin, cos(π−·)=−cos, sin(π/2−·)=cos, cos(π/2−·)=sin and the double/sum-angle expansions, to polynomial identities in sin a, cos a, sin b, cos b closed by linear_combination against the Pythagorean identity Real.sin_sq_add_cos_sq. The triangle corollaries carry the genuine domain hypothesis A + B + C = π.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 0
   },

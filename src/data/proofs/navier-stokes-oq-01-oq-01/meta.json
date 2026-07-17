@@ -50,7 +50,7 @@
     "axiomCount": 0,
     "lineCount": 122,
     "assumptions": "0 axioms, 0 sorries, no native_decide (only the foundational propext / Classical.choice / Quot.sound may appear, verifiable with #print axioms). IMPORTANT SCOPE: this entry proves the ALGEBRAIC assembly of Ladyzhenskaya's inequality, not the inequality from first principles. The three analytic ingredients of the classical proof — the integrated pointwise product bound n4⁴ ≤ 4ab and the two Cauchy-Schwarz slicing estimates a ≤ n2·d1, b ≤ n2·d2 — are taken as explicit theorem HYPOTHESES (antecedents), not as axioms or structure fields. They are the lemmas Mathlib v4.26 does not yet provide (no Gagliardo-Nirenberg-Sobolev, no Ladyzhenskaya inequality). The theorems as stated are fully machine-checked; the mathematical content assumed is the analytic half.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

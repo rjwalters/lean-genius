@@ -45,7 +45,7 @@
     "axiomCount": 0,
     "lineCount": 182,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The two headline theorems commutator_lowerCentralSeries_le and derivedSeries_le_lowerCentralSeries_two_pow were checked with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib provides the lower central series infrastructure (lowerCentralSeries_succ, lowerCentralSeries_antitone, the normality instance lowerCentralSeries_normal) and the LINEAR derived-series bound derived_le_lower_central (derivedSeries G n ≤ lowerCentralSeries G n), but NOT the bilinear product bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎. The bilinear bound, its self-commutator specialisation, and the exponentially sharp derivedSeries G n ≤ lowerCentralSeries G (2ⁿ − 1) strengthening are the original content. The normal-subgroup three subgroups lemma used in the inductive step is the result of the parent entry three-subgroups-lemma-oq-01; its short quotient proof (commutator_le_of_rotate, derived from Mathlib's = ⊥ Hall–Witt lemma Subgroup.commutator_commutator_eq_bot_of_rotate) is reproduced as a private lemma so this file is self-contained.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 0
   },

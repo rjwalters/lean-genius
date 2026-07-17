@@ -53,7 +53,7 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries. The lower bound (de Bruijn–Erdős) is Mathlib's Configuration.HasLines.card_le; the upper bound C(n,2) and the sandwich are original. Hypotheses are the abstract incidence axioms (HasLines: any two points determine a unique line) plus 'every line contains at least two of the points' — exactly the conditions satisfied by a finite, not-all-collinear point set in the plane. Only the foundational axioms propext, Classical.choice, Quot.sound are used (none counted).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős's problem 606 concerns the number of distinct lines determined by n points in the plane. The basic lower bound — n points, not all collinear, determine at least n distinct lines — is the de Bruijn–Erdős theorem (Nicolaas Govert de Bruijn and Paul Erdős, 1948), a cornerstone of incidence geometry. It is frequently confused with the Sylvester–Gallai theorem, which is a different statement: that such a point set always admits an *ordinary* line (one through exactly two points). The parent entry erdos-606-oq-03 recorded the 'at least n lines' bound only in prose comments, and attributed it to Sylvester–Gallai. This work-in-progress turns the bound into a verified theorem and fixes the attribution, leveraging the fact that Mathlib already formalizes de Bruijn–Erdős in the abstract incidence setting as Configuration.HasLines.card_le. Together with a short original counting argument for the C(n,2) upper bound, it pins the number of determined lines to the interval [n, C(n,2)].",

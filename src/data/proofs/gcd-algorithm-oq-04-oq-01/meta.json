@@ -34,7 +34,7 @@
       "monic_normalize_gcd / normalize_gcd_eq: the canonical gcd in k[X] is monic with explicit form C (leadingCoeff g)⁻¹ * g",
       "normalize_gcd_dvd_left/right and dvd_normalize_gcd: the canonical monic gcd genuinely is a gcd (divides both arguments and absorbs common divisors)"
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "NormalizationMonoid typeclass: normalize and normUnit",
       "Polynomial.leadingCoeff, Polynomial.Monic, Polynomial.C",

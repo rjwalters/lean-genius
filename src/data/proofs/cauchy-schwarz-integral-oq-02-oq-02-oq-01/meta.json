@@ -49,7 +49,7 @@
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.ENNReal"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Minkowski's inequality $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $L^p$ spaces was proved by Hermann Minkowski (1910) as a consequence of Hölder's inequality. The standard proof by Otto Hölder (1889) produces an intermediate bound $\\|f+g\\|_p^p \\leq (\\|f\\|_p + \\|g\\|_p) \\cdot \\|f+g\\|_p^{p-1}$ via Hölder's inequality applied to $f+g = f \\cdot 1 + g \\cdot 1$. To conclude $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, one must divide both sides by $\\|f+g\\|_p^{p-1}$, which is an 'rpow cancellation' step. In Mathlib's formalization using ENNReal (extended non-negative reals), this division is non-trivial because 0 and ⊤ require special treatment. This file isolates and proves the abstract cancellation lemma, making the Minkowski derivation fully transparent without relying on the `ENNReal.lintegral_Lp_add_le` black box.",

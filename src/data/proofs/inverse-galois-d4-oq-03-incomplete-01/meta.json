@@ -24,7 +24,7 @@
     "axiomCount": 0,
     "lineCount": 205,
     "assumptions": "0 axioms, 0 sorries, 0 `native_decide` — fully machine-verified, only Mathlib group theory (no field theory, no `decide`). The homomorphism law of `liftHom` is proved purely from the three dihedral relations σⁿ = 1, τ² = 1, τσ = σ⁻¹τ, so it holds for an *arbitrary* carrier group G (not merely a finite permutation group where `decide` would be available). The recognition theorem `nonempty_mulEquiv_dihedralGroup` adds only the finiteness hypothesis `[Finite G]`, generation `Subgroup.closure {σ, τ} = ⊤`, and the cardinality hypothesis `Nat.card G = 2 * n` (with n ≥ 2); no assumption is structure-encoded. Imports: Mathlib (single umbrella import). Uses `DihedralGroup` and its multiplication simp lemmas (`r_mul_r`, `r_mul_sr`, `sr_mul_r`, `sr_mul_sr`), `DihedralGroup.card`, `ZMod.val_*`, `MulEquiv.ofBijective`, and `Fintype.bijective_iff_surjective_and_card`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-07-02",
     "theoremCount": 9,
     "definitionCount": 2,

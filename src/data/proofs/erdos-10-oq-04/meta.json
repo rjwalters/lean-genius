@@ -24,7 +24,7 @@
     "lineCount": 181,
     "assumptions": "0 axioms, 0 sorries. All theorems depend only on the standard foundational axioms (propext, Classical.choice, Quot.sound) — verified via #print axioms on host Lean (LAKE_UNSAFE=1 lake env lean) at the v4.26.0 pin; no sorryAx and no Lean.ofReduceBool. The open question itself — the exact value of d̲(S₁) — is NOT proved or assumed: Romanoff's theorem d̲(S₁) > 0 and the conjectural exact value are documented in source comments only. What is proved is the surrounding structure: the membership characterization of S₁, monotonicity of Sₖ in k, primes ⊆ Sₖ, 1 ∉ Sₖ, and the elementary properties of Set.lowerDensity (monotone under inclusion, valued in [0,1]).",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 3
   },

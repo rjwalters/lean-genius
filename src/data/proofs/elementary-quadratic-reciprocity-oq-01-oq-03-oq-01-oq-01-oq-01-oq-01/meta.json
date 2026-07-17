@@ -85,7 +85,7 @@
     "theoremCount": 10,
     "defCount": 3,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems sign_ringMulPerm_eq_legendre_pow, sign_ringMulPerm_eq_jacobiSym and sign_ringMulPerm_succ were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). This closes the prime-power case sign(ringMulPerm a on ℤ/pᵉ) = J(a | pᵉ). Honest scope: the file proves the per-prime-power identity; combining it with the great-grandparent's CRT multiplicativity to reach every odd n is the next (purely organizational) step.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 3
   },
   "conclusion": {

@@ -26,7 +26,7 @@
     "axiomCount": 0,
     "lineCount": 258,
     "assumptions": "0 axioms, 0 sorries. Build-verified (researcher-1, S15: `docker-build.sh Proofs.MinpolyCharpolyOQ03OQ01`, 7746 jobs); `#print axioms` on both `xModule_has_invariantFactorChain` and the companion `rational_canonical_form_exists` reports only `[propext, Classical.choice, Quot.sound]` (the standard foundational axioms — no `sorryAx`, no `Lean.ofReduceBool`/native_decide, no added `axiom`). The `xModule_isTorsionBy_charpoly` theorem (Cayley–Hamilton transported via the `Module.AEval'` synonym) was discharged in S8 (PR #18507); `xModule_isTorsion` in S10 (PR #18583); and the bridge `xModule_has_invariantFactorChain` in S15 by a one-line field copy from the companion file `Proofs/RationalCanonicalFormExists.lean`, whose `rational_canonical_form_exists` constructs the full invariant-factor RCF existence theory from scratch (not available off-the-shelf in Mathlib). The `Module.Finite F[X]` instance is unconditional — it fires automatically from Mathlib's `Module.AEval.instFinitePolynomial`. The companion proof body was synthesized by the Aristotle proof-search system (project d2395b8d, task 5bec9f0a) against a self-contained Mathlib-only statement, then integrated verbatim.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-05-12",
     "theoremCount": 3,
     "definitionCount": 3,

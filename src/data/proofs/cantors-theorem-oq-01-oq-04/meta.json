@@ -23,7 +23,7 @@
     "lineCount": 102,
     "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib 4.29 (single-file elaboration via `lake env lean Proofs/CantorsTheoremOQ01OQ04.lean`, exit 0; `#print axioms CantorsTheoremOQ01OQ04.card_powerSet_powerSet_real_eq_beth_three` and the summary theorem list only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). The proof is built entirely from standard Mathlib cardinal-arithmetic lemmas: Cardinal.mk_set (#(Set α) = 2^#α), Cardinal.mk_real (#ℝ = 𝔠), Cardinal.beth_one (ℶ₁ = 𝔠), Cardinal.beth_succ (ℶ_(succ o) = 2^ℶ_o), Cardinal.cantor (κ < 2^κ), and Cardinal.beth_strictMono. The result |𝒫(𝒫(ℝ))| = ℶ₃ is NOT in Mathlib and is assembled here; the file is self-contained (re-deriving the ℶ₁/ℶ₂ rungs) and does not import the parent entry.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.29",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "A complete, axiom-free Lean 4 proof that |𝒫(𝒫(ℝ))| = ℶ₃, the third beth number — advancing the beth tower of cantors-theorem-oq-01 by one rung from |𝒫(ℝ)| = ℶ₂.",
       "The explicit beth-successor unfoldings beth_two_eq (ℶ₂ = 2^ℶ₁) and beth_three_eq (ℶ₃ = 2^ℶ₂) at concrete ordinal indices, together with card_real_eq_beth_one (|ℝ| = ℶ₁), giving a self-contained derivation of the whole tower ℶ₁, ℶ₂, ℶ₃ as iterated power sets of ℝ.",

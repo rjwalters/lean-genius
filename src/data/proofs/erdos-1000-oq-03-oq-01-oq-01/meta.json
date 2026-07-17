@@ -124,7 +124,7 @@
     "theoremCount": 7,
     "definitionCount": 1,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). #print axioms confirms all headline theorems (jordan_apply, isMultiplicative_jordan, jordan_prime_pow, jordan_eq_prod_primeFactors, jordan_pos, jordan_one_apply, jordan_eq_mul_prod_primeFactors) depend only on the foundational propext, Classical.choice, Quot.sound. The development is the exact μ-analogue of Mathlib's σ_k theory (isMultiplicative_sigma := isMultiplicative_zeta.mul isMultiplicative_pow), with μ in place of ζ.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.IsMultiplicative.mul",

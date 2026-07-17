@@ -40,7 +40,7 @@
     "lineCount": 113,
     "assumptions": "The main conjecture of Erdős #866 (the exact growth of g_k(N) for k ≥ 4) remains OPEN; this entry proves only the elementary lower bound g_k(N) ≥ 1 and makes no claim about the open problem. The five Lean declarations themselves are fully machine-checked and depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms — no axiom declarations, no structure-encoded assumptions, no sorries. Per gallery policy, an entry attached to an open Erdős problem is marked 'axiomatized' to reflect that the headline conjecture is unresolved, even though the formalized lower-bound lemmas carry no assumptions.",
     "dateAdded": "2026-06-21",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter_subset",

@@ -22,7 +22,7 @@
     "lineCount": 104,
     "assumptions": "No axioms or sorries. All results depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified with #print axioms.",
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "The Jordan–von Neumann characterisation packaged as a single biconditional Nonempty (InnerProductSpace 𝕜 E) ↔ (∀ x y, ‖x+y‖·‖x+y‖ + ‖x−y‖·‖x−y‖ = 2·(‖x‖·‖x‖ + ‖y‖·‖y‖)), phrased purely in terms of the norm with the InnerProductSpaceable typeclass hidden",
       "The converse (sufficiency) direction exposed as an explicit noncomputable InnerProductSpace structure innerProductSpaceOfParallelogram built from a bare parallelogram hypothesis via Mathlib's InnerProductSpace.ofNorm",

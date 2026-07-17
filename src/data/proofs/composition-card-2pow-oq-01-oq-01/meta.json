@@ -49,7 +49,7 @@
     "axiomCount": 0,
     "lineCount": 189,
     "assumptions": "0 axioms, 0 sorries, no native_decide. Only the foundational propext / Classical.choice / Quot.sound may appear (verifiable with #print axioms). The by-length count card_composition_length_eq and the summation sum_card_composition_length are absent from Mathlib, which records only the total count composition_card; the proof is built on Mathlib's compositionEquiv / compositionAsSetEquiv encoding and Fintype.card_finset_len. Both headline results carry the mild hypotheses n ≥ 1 (and k ≥ 1 for the per-part count), as the empty composition and the truncated ℕ-subtraction at n = 0 make the k-indexing degenerate there.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 10,
     "definitionCount": 1
   },

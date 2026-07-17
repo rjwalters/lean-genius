@@ -41,7 +41,7 @@
     "axiomCount": 5,
     "lineCount": 415,
     "assumptions": "5 axioms. Four carry genuine mathematical content: kolmogorov_arnold_theorem (∃ a KolmogorovArnoldRepresentation of a continuous f — i.e. f x = ∑_q Φ_q(∑_p coeff·φ_p) with univariate Φ_q, φ_p), no_radical_solution_septic (¬∃ F : ℝ×ℝ×ℝ → ℝ, ExpressibleInRadicals F ∧ SolvesSeptic F — no radical-expressible formula in the three Bring-Jerrard parameters yields a root of the general septic), vitushkin_smooth_obstruction (∃ a C² function of 3 variables not representable through two given 2-variable functions), and universal_inner_functions (Arnold's universal inner φ_p working for all continuous f). The fifth axiom, ExpressibleInRadicals : (ℝ×ℝ×ℝ → ℝ) → Prop, is an abstract opaque predicate used to state the septic result. The septic axiom is now a genuine, consistent assumption: it was previously a vacuous ¬∃F,True placeholder that reduced to `¬True = False`, making the axiom set inconsistent (#36647). Separately, all four `theorem` declarations are placeholders, not proofs of Hilbert 13: hilbert_conjecture_disproved concludes `RepresentableWithKVariables n 1 f`, a predicate defined as `True`; dimension_reduction_principle and exact_representation_caveat conclude `True`; hilbert13_summary proves `1 + 1 = 2`. The genuine content of this entry therefore lives in the four non-degenerate axioms; the file is a Tier-C axiomatized scaffold.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 10
   },

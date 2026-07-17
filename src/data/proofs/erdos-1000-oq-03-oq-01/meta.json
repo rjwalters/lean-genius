@@ -103,7 +103,7 @@
     "theoremCount": 5,
     "definitionCount": 3,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). #print axioms confirms all three headline theorems (jordanCount_divisor_sum, jordanCount_eq_moebius_sum, jordanCount_one_eq_totient) depend only on the foundational propext, Classical.choice, Quot.sound. The proof rests on: fiberwise cardinality counting (Finset.card_eq_sum_card_fiberwise), an explicit two-sided scaling bijection (Finset.card_bij'), the gcd scaling law Finset.gcd_mul_left and Nat.coprime_div_gcd_div_gcd, and Mathlib's Möbius inversion sum_eq_iff_sum_smul_moebius_eq over ℤ.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.card_eq_sum_card_fiberwise",

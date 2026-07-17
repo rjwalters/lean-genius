@@ -29,7 +29,7 @@
       "extremal combinatorics"
     ],
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Machine-checked proof that the asymptotic-constant question of Erdős #1013 subsumes its separately-posed ratio-convergence question: if h₃(k)/(k²·log k) → c with c > 0, then h₃(k+1)/h₃(k) → 1 (ratio_tendsto_one / asymptotic_subsumes_ratio)",
       "Verified analytic core scale_ratio_tendsto_one: ((k+1)²·log(k+1))/(k²·log k) → 1, factored as the squared linear ratio ((k+1)/k)² → 1 times the logarithmic ratio log(k+1)/log k → 1, the latter via log(k+1) = log k + log(1+1/k) and (numerator → 0)/(denominator → ∞)",

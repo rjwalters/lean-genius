@@ -70,7 +70,7 @@
     "axiomCount": 0,
     "lineCount": 158,
     "assumptions": "None — fully verified from Mathlib and the parent bridge file OQ-06 with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. The constant 1/(4·log 4) ≈ 0.18 in pₙ ≳ n·log n/(4·log 4) is not asymptotically sharp (the true ratio pₙ/(n log n) → 1 by the Prime Number Theorem); the loss comes from the crude correction-absorption step √pₙ·log(√pₙ) ≤ pₙ·log 4 and the elementary Chebyshev density 2 log 4. Sharpening the constant and the full PNT asymptotic pₙ ~ n log n remain separate open questions of the parent bridge.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

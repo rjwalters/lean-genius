@@ -52,7 +52,7 @@
       "Negative-index worked checks over ℝ (n = −1) and ZMod 7 (n = −2), confirming the unit-circle reduction z^(−m) = w^m"
     ],
     "dateAdded": "2026-06-23",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 175,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All theorems depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The negative-index examples use kernel `decide` for the nonzero hypotheses (axiom-free), not `native_decide`.",

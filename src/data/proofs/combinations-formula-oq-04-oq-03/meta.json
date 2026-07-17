@@ -23,7 +23,7 @@
     "lineCount": 173,
     "assumptions": "None. Fully machine-verified: the file builds to exit 0 against the pinned Mathlib (v4.26.0) and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx). The file imports only Mathlib and is self-contained, building on Mathlib's Nat.choose_succ_right_eq adjacent-ratio relation. The centered form choose_ulc_equality carries the row-range hypotheses 1 ≤ j ≤ n, under which the centered factor n−j+1 has its intended value; the core identity choose_mul_choose_mul_eq is unconditional.",
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose_succ_right_eq",

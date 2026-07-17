@@ -61,7 +61,7 @@
       "fejerKernel_uniform_bound: on the arc θ ∈ [δ, 2π−δ] with 0 < δ ≤ π, F_N(θ) ≤ 1/((N+1) sin²(δ/2)), so the Fejér mass concentrates at the origin as N → ∞"
     ],
     "dateAdded": "2026-07-12",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 186,
     "assumptions": "0 axioms, 0 sorries. Builds on the parent de-moivre-oq-06-oq-02 (sin_half_ge_of_mem_arc) and the grandparent de-moivre-oq-06 (lagrange_cos_sum). The closed form, nonnegativity, and pointwise identities require sin(θ/2) ≠ 0; the uniform Fejér bound additionally requires 0 < δ ≤ π and θ ∈ [δ, 2π−δ]. Mathlib supplies the double-angle and Pythagorean identities, the product-to-sum expansions, and reciprocal monotonicity.",

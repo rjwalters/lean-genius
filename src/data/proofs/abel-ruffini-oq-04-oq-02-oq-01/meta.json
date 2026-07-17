@@ -26,7 +26,7 @@
     "theoremCount": 18,
     "definitionCount": 0,
     "dateAdded": "2026-06-27",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "0 assumptions. 0 `axiom` declarations, 0 sorries, and no `native_decide` — the three-cycle witnesses use ordinary kernel `decide` (which depends only on `propext`/`Classical.choice`/`Quot.sound`, NOT `Lean.ofReduceBool`). `#print axioms` on `commutator_perm_eq_alternating_fin3`, `commutator_perm_eq_alternating_fin4`, `alternatingGroup_le_commutator_perm`, and `derived_series_S4` returns only the three foundational axioms. The A₄-layer data is imported from the companion file `AbelRuffiniOQ04OQ02OQ02OQ01.lean` (Klein-four composition series, also 0 axioms / 0 sorries after the normality-instance repair in this PR).",
     "additionalFiles": [
       "Proofs/AbelRuffiniOQ04OQ02OQ02OQ01.lean"

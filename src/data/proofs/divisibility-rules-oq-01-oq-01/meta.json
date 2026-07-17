@@ -57,7 +57,7 @@
       "ZMod units and coprimeness",
       "Nat.digits and digit sum congruences"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Divisibility rules by digit sums have a long history. The rule for 9 ('cast out nines') was known in ancient and medieval mathematics — it appears in writings attributed to the Arab mathematician al-Uqlidisi (c. 950 AD) and was standard in European arithmetic by the 13th century. The rule for 11 (alternating digit sum) was described by Fibonacci in the Liber Abaci (1202). Rules for other moduli were studied systematically in the 17th–19th centuries as modular arithmetic developed.\n\nThe theoretical framework unifying these rules comes from Euler's totient theorem (Euler, 1763): for any d with gcd(a, d) = 1, a^φ(d) ≡ 1 (mod d). Taking a = 10, this gives 10^φ(d) ≡ 1 (mod d) for any d coprime to 10 — precisely the condition needed for a digit-block rule with block length k = φ(d). The optimal block length is the multiplicative order ord_d(10), which divides φ(d) by Lagrange's theorem in the group (ℤ/dℤ)×.\n\nThis formalization (OQ-01) answers the open question from the parent proof: the existence of a digit-block rule is guaranteed for every d coprime to 10, not just for d = 3, 9, 11, 37. The proof is entirely machine-verified using Euler's theorem from Mathlib (ZMod.pow_totient).",

@@ -31,7 +31,7 @@
     "buildStatus": "verified",
     "assumptions": "None. The file imports only Mathlib and is self-contained: it restates extension-by-zero (extByZeroCLM) so that verification does not transitively depend on the drift-broken parent chain. `#print axioms` for every theorem reports only [propext, Classical.choice, Quot.sound] — the standard classical foundations that do not count as assumptions. 0 literal `axiom` declarations, 0 `sorry`, 0 `native_decide`. Verified against leanprover/lean4:v4.26.0 via `lake env lean`.",
     "dateAdded": "2026-07-02",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 2,
     "theoremCount": 8,
     "originalContributions": [

@@ -65,7 +65,7 @@
         "module": "Mathlib.GroupTheory.Sylow"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Among the standard structure theorems for finite nilpotent groups (Isaacs, Finite Group Theory, Thm 1.26; Hall, Theory of Groups, Ch. 10) one finds that each Sylow subgroup is not merely normal but characteristic. The strengthening is routine once uniqueness is in hand, yet it is the form actually used in practice: characteristic subgroups are preserved by every automorphism, so they descend through quotients and survive embeddings into larger groups in ways merely-normal subgroups do not. The underlying phenomenon — that for Sylow subgroups normality and characteristicity coincide — is a clean illustration of how a global uniqueness fact (only one Sylow p-subgroup) upgrades an inner-automorphism invariance to a full-automorphism invariance.",

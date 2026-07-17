@@ -50,7 +50,7 @@
       "Conway-Guy construction (OEIS A005318)",
       "Erdos1Wip01.dss_existence (powers-of-two existence theorem)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "**Erd\u0151s Problem #1** asks: what is $f(n)$, the minimum value of $\\max(A)$ over all $n$-element sets $A \\subset \\mathbb{Z}^+$ with distinct subset sums? Erd\u0151s conjectured $f(n) \\geq c \\cdot 2^n$ for some constant $c > 0$, and offered $\\$500$ for a proof (one of his largest prizes).\n\n**John Conway and Richard Guy (1968)** discovered a greedy construction achieving $f(n) \\leq c \\cdot 2^n$ with $c = \\sqrt{2/\\pi}/2 \\approx 0.22009$. Each element $a_k = a_{k-1} + \\lceil S_{k-1}/2 \\rceil$ is chosen to be just large enough to avoid subset sum collisions. The resulting sequence 1, 2, 4, 7, 13, 24, 44, 84, ... (OEIS A005318) is conjectured to be exactly optimal, giving $f(n) = a_n$ for all $n$.\n\n**W.F. Lunnon (1988)** verified computational optimality for $n \\leq 10$. **Bohman (1996)** improved the lower bound to $f(n) > 0.22 \\cdot 2^n / \\sqrt{n}$, still far from the conjectured $\\sqrt{2/\\pi}/2 \\cdot 2^n$. The gap between the upper bound (Conway-Guy) and the best lower bounds remains one of the major open problems in additive combinatorics.\n\nThe surprising appearance of $\\sqrt{2/\\pi}$ in the constant connects to the Wallis product: $\\sqrt{2/\\pi}/2 = \\prod_{k=1}^{\\infty}(1 - 1/(2k))$. This suggests a deep connection to probability distributions (specifically the arcsine law and semicircle distribution), though this connection is not yet fully understood.",

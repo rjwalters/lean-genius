@@ -33,7 +33,7 @@
       "power_sum_solved: descent form (p+1)·S_p(n) = n^{p+1} − ∑_{j<p} C(p+1,j)·S_j(n), exhibiting S_p as determined by the strictly lower power sums",
       "S_one, S_two: closed forms n(n-1)/2 and n(n-1)(2n-1)/6 derived purely from the recurrence (no separate induction), demonstrating it generates the Faulhaber polynomials"
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "Binomial theorem `add_pow` (Mathlib.Data.Nat.Choose.Sum)",
       "Telescoping sum `Finset.sum_range_sub`",

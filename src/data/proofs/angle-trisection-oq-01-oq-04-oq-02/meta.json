@@ -24,7 +24,7 @@
     "lineCount": 108,
     "assumptions": "None. 0 axioms, 0 sorries; depends only on Mathlib. Proofs use only axiom-free tactics (rw, omega, nlinarith, ring, and kernel `decide` — not native_decide) and the foundational axioms propext/Classical.choice/Quot.sound, which do not count as assumptions.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Odd.nat_add_dvd_pow_add_pow",

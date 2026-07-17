@@ -41,7 +41,7 @@
       }
     ],
     "dateAdded": "2026-06-22",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1054 studies representability: call $n$ *representable* if it occurs as a partial sum of the increasingly-sorted divisor list of some $m \\geq 1$ (equivalently, $f(n)$ — the least such $m$ — exists). The parent gallery entry, **Construction D**, and its OQ-01 follow-up are entirely one-sided: they exhibit numbers that *are* representable — the prime-square values $1+p+p^2$, the prime-power geometric sums $1+p+\\cdots+p^k = \\sigma(p^k)$, the Mersenne numbers $2^{k+1}-1$, and the general fact that $\\sigma(m)$ itself is always representable (the largest partial sum).\n\nThis OQ-02 entry supplies the missing *negative* and *asymptotic* information — the two opposite boundaries of the representable set. On the lower side it isolates the smallest positive integer that is **never** representable, namely $2$: the first partial sum of any $m$ is its smallest divisor $1$, and every subsequent partial sum already includes the second-smallest divisor (which is $\\geq 2$), so every partial sum is either $1$ or $\\geq 3$ — never $2$. On the upper side it shows the representable set is nonetheless **infinite and unbounded above**, because $p+1 = \\sigma(p)$ is representable for every prime $p$ and there are arbitrarily large primes. The picture that emerges is sharp: representability is a *proper, infinite* subset of $\\mathbb{N}$.",

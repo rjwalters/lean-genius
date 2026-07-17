@@ -33,7 +33,7 @@
     "definitionCount": 0,
     "assumptions": "No axioms or sorries. Machine-verified under Docker (full build, 7745 jobs). Uses only Mathlib's Polynomial, Matrix, and Module.Basis APIs (Mathlib v4.26.0).",
     "dateAdded": "2026-06-15",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "commuting_matrix_is_polynomial: if M has a cyclic vector v and A*M = M*A, then A = aeval M p for some polynomial p — the centralizer of M is contained in K[M]",
       "commutant_commutative: any two matrices commuting with a cyclic matrix M commute with each other (the centralizer is commutative)",

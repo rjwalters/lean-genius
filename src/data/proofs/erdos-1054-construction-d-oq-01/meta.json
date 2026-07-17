@@ -61,7 +61,7 @@
       }
     ],
     "dateAdded": "2026-06-22",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem #1054 concerns numbers that arise as partial sums of the increasingly-sorted list of a number's divisors — 'Construction D' in the problem's taxonomy. The parent gallery entry verifies that particular values are representable: 1 + p + p² (= σ(p²) for small primes p) and the Mersenne numbers 2^{k+1} − 1 (= σ(2^k)), each by a separate native_decide computation. native_decide discharges a goal by trusted compiled kernel reduction, which pulls in the Lean.ofReduceBool axiom — so those concrete checks, while correct, are not axiom-free. This entry asks: is there a structural reason all of them hold? The sum-of-divisors function σ(m) = ∑_{d∣m} d is one of the oldest objects in number theory (perfect numbers, Mersenne primes, Euler's σ), and the answer turns out to be a one-line observation about cumulative sums.",

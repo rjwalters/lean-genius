@@ -28,7 +28,7 @@
       "real analysis"
     ],
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "HasRatioGrowth: the condition limsup n_{k+1}/n_k = ∞ (for every m, some N with n_N ≥ 1 and n_{N+1} > m·n_N + 1), identified as the exact threshold for Liouville's method on Σ 1/2^{n_k}",
       "lacunarySum_liouville: axiom-free proof that StrictMono n ∧ HasRatioGrowth n ⇒ Σ 1/2^{n_k} is a Liouville number, generalizing the parent's single factorial example to an infinite family. The head ∑_{k≤N} 1/2^{n_k} = a/2^{n_N} approximates the sum to within the tail ≤ 2/2^{n_{N+1}} < 1/(2^{n_N})^m precisely when n_{N+1} > m·n_N + 1",

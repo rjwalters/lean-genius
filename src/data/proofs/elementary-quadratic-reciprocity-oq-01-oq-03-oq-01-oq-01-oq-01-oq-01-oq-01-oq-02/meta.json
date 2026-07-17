@@ -102,7 +102,7 @@
     "theoremCount": 7,
     "defCount": 0,
     "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems chi8_eq_neg_one_pow, jacobiSym_two, sign_doubling and legendreSym_two were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). The value J(2 | n) = (-1)^((n²-1)/8) is classical and reachable in Mathlib via jacobiSym.at_two + the χ₈ case split; the contributions here are (i) the explicit power formula χ₈ n = (-1)^((n²-1)/8), which Mathlib does not provide, and (ii) the reading of the second supplement as the sign of Zolotarev's doubling permutation. The sign value is honestly routed through J(2 | n) = χ₈ n rather than an independent inversion count (which would reprove Gauss's lemma for 2).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 0
   },
   "conclusion": {

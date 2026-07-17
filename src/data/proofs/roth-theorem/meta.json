@@ -41,7 +41,7 @@
       "Proofs/RothTheoremAristotle.lean",
       "Proofs/RothTheoremOQ02.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Roth's theorem (1953) was a landmark in additive combinatorics: every subset of integers with positive upper density contains a 3-term arithmetic progression. The original proof used Fourier analysis (the density increment strategy). The k=3 case was later subsumed by Szemerédi's theorem (1975) for general k-APs, but Roth's Fourier method remains fundamental.\n\nThe Fourier-analytic proof proceeds by density increment: if A ⊆ Z/NZ has density δ but no 3-AP, then A's Fourier transform has a large coefficient at some frequency r≠0 (the key analytic lemma). This large coefficient means A looks 'structured' — concentrated in a coset of a subgroup. Restricting to that coset increases the density to δ + δ²/4. Iterating O(1/δ²) times reaches density 1, giving a 3-AP by the pigeonhole principle.\n\nModern proofs achieve better quantitative bounds: Bourgain (1999) gave N/(log log N)^{1/2} and Bloom-Sisask (2020) gave N/log^{1+c} N. The qualitative result here suffices for Roth's original theorem.",

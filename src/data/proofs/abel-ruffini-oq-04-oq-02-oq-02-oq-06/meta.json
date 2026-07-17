@@ -65,7 +65,7 @@
     "axiomCount": 0,
     "lineCount": 232,
     "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. The A₄ second-derived-subgroup fact D²(A₄) = ⊥ is reused verbatim from the parent `AbelRuffiniOQ04OQ02OQ02.a4_derivedSeries_two_eq_bot`, which identifies ⁅A₄, A₄⁆ with the Klein four-group V₄ via a kernel `decide` over the 12-element group A₄ and observes V₄ is abelian. All finite checks (a4_non_abelian, the A₃ commutativity computation) use kernel `decide`, NOT `native_decide`, so no `Lean.ofReduceBool` is introduced. `#print axioms` on derived_length_gap, a4_exact_derived_length, derived_length_sequence, and a5_perfect reports only the standard foundational axioms propext, Classical.choice, Quot.sound — no `sorryAx`, no `Lean.ofReduceBool`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 0,
     "additionalFiles": [],

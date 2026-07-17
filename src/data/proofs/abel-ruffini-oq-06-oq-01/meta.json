@@ -72,7 +72,7 @@
       }
     ],
     "dateAdded": "2026-06-27",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Abel–Ruffini theorem says the general polynomial of degree $n \\ge 5$ is not solvable by radicals, because its Galois group $S_n$ is not solvable. The group-theoretic core is the sharp dichotomy: $S_n$ is solvable iff $n \\le 4$. Mathlib provides the negative half ($n \\ge 5$, via the simplicity of $A_5$) but not the positive half. The parent entry supplied $S_2, S_3$ solvable through the prime-order (cyclic) alternating groups $A_2, A_3$, leaving the single hard case $S_4$ — whose alternating group $A_4$ of order 12 is neither prime-order nor simple — and the packaging of the full equivalence as open.",

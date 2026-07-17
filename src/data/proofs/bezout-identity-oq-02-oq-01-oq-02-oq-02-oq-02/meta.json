@@ -49,7 +49,7 @@
       "fermat_two_square_int: integer form of the biconditional (∃ a b : ℤ, a² + b² = p)"
     ],
     "dateAdded": "2026-05-04",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Fermat stated in 1640 (in a letter to Mersenne) that a prime p is expressible as a sum of two integer squares iff p = 2 or p ≡ 1 (mod 4). Despite claiming a proof, Fermat never published one. The first complete proof was given by Euler in 1747, using Fermat's method of infinite descent. In 1832, Gauss gave a conceptually cleaner proof using Gaussian integers ℤ[i]: p splits in ℤ[i] iff p = 2 or p ≡ 1 (mod 4), and splitting means p = N(π) = π·π̄ where π = a + bi gives p = a² + b². The mod-4 obstruction for primes ≡ 3 (mod 4) is elementary: squares are 0 or 1 mod 4, so their sum is at most 2, never 3. This is one of the oldest and most elegant results in number theory, connecting quadratic residues, Gaussian integers, and the arithmetic of ℤ[i].",

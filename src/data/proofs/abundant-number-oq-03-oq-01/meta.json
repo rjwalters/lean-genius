@@ -25,7 +25,7 @@
     "theoremCount": 4,
     "definitionCount": 1,
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms oddAbundantCount_ge_div` reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no sorryAx, no native_decide, hence no Lean.ofReduceBool. The counting function `oddAbundantCount` is marked `noncomputable` only because it filters over the classically-decidable predicate `Odd n ∧ n.Abundant` (matching the base files' `Classical.propDecidable` local instance); this is a proof-irrelevant convenience, not a mathematical assumption. The proof reuses `odd_abundant_945_mul` and `odd_mul_succ_injective` from abundant-number-oq-03, adding no new computational content.",
     "originalContributions": [
       "Proves `oddAbundantCount_ge_div (N) : N / 1890 ≤ oddAbundantCount N` — the number of odd abundant numbers in [1, N] is at least N/1890, upgrading the parent's qualitative infinitude to an explicit linear counting bound (positive lower density ≥ 1/1890).",

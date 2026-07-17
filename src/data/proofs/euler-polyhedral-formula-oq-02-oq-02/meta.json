@@ -46,7 +46,7 @@
     "axiomCount": 2,
     "lineCount": 1302,
     "assumptions": "0 sorries; 0 axiom declarations; 2 structure-encoded assumptions. (1) CGBManifold.chern_gauss_bonnet encodes the Chern-Gauss-Bonnet identity ∫_M Pf(Ω) = (2π)^n·χ(M); Mathlib v4.26.0 has no Pfaffian of a curvature form, no integration of characteristic forms over manifolds, and no manifold Euler characteristic, so the identity is taken as a field rather than derived. (2) ClosedOddManifold.chi_zero encodes the Poincaré-duality fact that closed odd-dimensional manifolds have χ=0. All 129 theorems are then derived; the sphere Euler characteristics, normalization-constant lemmas, the 2×2 Pfaffian identity, the genus-g Betti numbers, and the Poincaré-polynomial layer (Part XX) and the product-monoid/Künneth layers (Parts XVII–XVIII) are independently verified (depend only on propext/Classical.choice/Quot.sound). #print axioms confirms no sorryAx and no Lean.ofReduceBool.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 131,
     "definitionCount": 18
   },

@@ -28,7 +28,7 @@
     "lineCount": 206,
     "theoremCount": 9,
     "definitionCount": 2,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Georg Alexander Pick stated his theorem in 1899: for a polygon with vertices at integer lattice points, the area A equals i + b/2 - 1, where i is the number of interior lattice points and b is the number of boundary lattice points. The result was largely forgotten until Hugo Steinhaus included it in his 1969 book 'Mathematical Snapshots', after which it became a staple of mathematical olympiad training. The classical proof uses triangulation: decompose the polygon into primitive (unimodular) triangles — triangles with no lattice points other than their three vertices — and prove that Pick's formula is additive and holds for each primitive triangle. The primitivity condition is equivalent to the triangle having area exactly 1/2, which in turn is equivalent to the determinant of the edge vectors being ±1. This connection to determinants and the Smith normal form gives Pick's theorem deep connections to algebraic K-theory and the theory of lattice polytopes.",

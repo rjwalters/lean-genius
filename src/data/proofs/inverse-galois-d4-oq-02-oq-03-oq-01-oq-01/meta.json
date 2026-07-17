@@ -78,7 +78,7 @@
       }
     ],
     "dateAdded": "2026-06-27",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The parent chain establishes a two-sided divisibility bracket on the order of the metacyclic Galois group of $X^n-p$: the lower factors $n \\mid |\\mathrm{Gal}|$ and $\\varphi(n) \\mid |\\mathrm{Gal}|$ (combining to $n\\,\\varphi(n) \\mid |\\mathrm{Gal}|$ when $\\gcd(n,\\varphi(n)) = 1$), against the symmetric-group upper bound $|\\mathrm{Gal}| \\mid n!$. The deepest parent entry showed the bracket pins the order exactly only at $n = 2, 3$, where $n\\,\\varphi(n) = n!$ closes the squeeze. For $n \\ge 4$ the factorial bound has genuine slack ($n\\,\\varphi(n) < n!$), so the order was left open — the conjectured value $n\\,\\varphi(n)$ (the order of the holomorph $\\mathbb{Z}/n \\rtimes (\\mathbb{Z}/n)^\\times$) needed a sharper ceiling than $n!$.",

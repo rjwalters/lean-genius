@@ -55,7 +55,7 @@
     "axiomCount": 1,
     "assumptions": "1 axiom: skolemNoether_module_iso — the two A-module structures on B (via f and g) admit a right-B-linear K-linear bijection intertwining f-multiplication and g-multiplication. This is the key step requiring Wedderburn-Artin + IsIsotypic. All other algebraic lemmas (right-B-linear = left-mult, unit extraction, conjugation formula) are fully proved. Mathlib v4.26 has all ingredients to prove the axiom; estimated 200-300 additional lines.",
     "dateAdded": "2026-05-06",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "IsSimpleRing.exists_ringEquiv_matrix_divisionRing",

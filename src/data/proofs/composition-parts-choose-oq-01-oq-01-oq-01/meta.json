@@ -56,7 +56,7 @@
     "axiomCount": 0,
     "lineCount": 213,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All four named theorems (sum_choose_mul_sq, sum_finset_card_sq, second_moment, variance) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib contains ∑_k C(m,k) = 2^m (Nat.sum_range_choose) and the absorption rule Nat.add_one_mul_choose_eq, but neither the second-moment binomial sum 4∑ k²C(m,k) = m(m+1)2^m nor any moment of the part-count distribution of a composition; both are original content here, built on the parent's gapsEquiv, length_eq_card_gaps, sum_choose_mul, sum_finset_card together with Finset.sum_powerset_apply_card, Equiv.sum_comp, and Fintype.card_finset. The results are unconditional; the hypothesis n ≥ 2 is the natural domain (for n = 1 the single composition has one part, variance 0, and the closed forms degenerate under truncated subtraction). The headline second moment is stated multiplied by 4 to remain in ℕ; the variance is stated over ℚ where the division is exact.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 0
   },

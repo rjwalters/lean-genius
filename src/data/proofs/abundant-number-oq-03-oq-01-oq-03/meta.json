@@ -26,7 +26,7 @@
   "theoremCount": 11,
   "definitionCount": 1,
   "dateAdded": "2026-07-03",
-  "mathlib_version": "4.26.0",
+  "mathlib_version": "4.31.0",
   "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms count_lower_bound_1350` / `oddAbundantCount_ge_div_1350` / `abundant_1575` report only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no sorryAx, and crucially no Lean.ofReduceBool: abundance of the second seed 1575 is established by a kernel `decide` on the structurally-recursive sigmaFast (not native_decide). The counting function oddAbundantCount (imported from abundant-number-oq-03-oq-01) is noncomputable only because it filters over the classically-decidable predicate Odd n ∧ n.Abundant; this is a proof-irrelevant convenience, not a mathematical assumption.",
   "originalContributions": [
    "Improves the proven lower density of odd abundant numbers from 1/1890 (parent) to 1/1350, answering the parent's first open question in provable form: `oddAbundantCount_ge_div_1350 (N) : 7·(N/9450) ≤ oddAbundantCount N`.",

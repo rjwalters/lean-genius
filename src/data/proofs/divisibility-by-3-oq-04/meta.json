@@ -62,7 +62,7 @@
       }
     ],
     "assumptions": "0 sorries, 0 literal axiom declarations. Theorems derived from Mathlib's Nat.modEq_digits_sum and standard modular arithmetic properties. The base-specific theorems (digit_sum_add, digit_sum_mul, detect_add_error, detect_mul_error, octal/hex/threes specializations, consistent_with_parent_div9/div3 — and casting_nines_add/mul transitively) discharge their `b % d = 1` hypothesis with `by native_decide`, so #print axioms lists Lean.ofReduceBool (trust in the compiler's kernel reduction). The four `_general` theorems and the four anonymous example blocks are the only declarations not so tainted; meta.axiomCount=1 reflects Lean.ofReduceBool, while leanFile.axiomCount=0 counts literal `axiom` declarations.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 0
   },
   "overview": {

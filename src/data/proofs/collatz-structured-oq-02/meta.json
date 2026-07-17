@@ -37,7 +37,7 @@
     ],
     "dateAdded": "2026-03-23",
     "lineCount": 256,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented theorem `small_numbers_reach_one` (\"All n ≤ 20 verified to reach 1\") discharges each finite Collatz trajectory (n ≤ 20) by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust) rather than kernel reduction. Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations). Shares `Proofs/CollatzCycles.lean` with the `collatz-cycles` entry, which carries the identical classification.",
     "theoremCount": 27,
     "definitionCount": 4

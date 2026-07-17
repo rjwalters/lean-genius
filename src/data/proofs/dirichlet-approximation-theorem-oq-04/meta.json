@@ -71,7 +71,7 @@
     "axiomCount": 0,
     "lineCount": 107,
     "assumptions": "0 axioms, 0 sorries. Only the foundational propext / Classical.choice / Quot.sound are used (no Lean.ofReduceBool, no native_decide; verifiable with #print axioms denseRange_iff_irrational and #print axioms exists_pos_nat_mul_sub_round_lt). Both results are unconditional. Mathlib supplies AddCircle.denseRange_zsmul_coe_iff (density of multiples on a circle ⟺ irrationality of a/p), the AddCircle normed-group API (AddCircle.norm_eq giving ‖(x : AddCircle 1)‖ = |x − round x|, AddCircle.norm_coe_eq_abs_iff, AddCircle.coe_neg), and DenseRange.exists_mem_open; the original in-file content is the period-1 specialisation, the construction of a nonzero circle point of small norm, the punctured-ball density extraction, and the sign normalisation turning the integer witness into a positive natural with the circle-norm read back as distance to the nearest integer.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 2,
     "definitionCount": 0
   },

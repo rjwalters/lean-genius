@@ -33,7 +33,7 @@
       "gcd_euclid_step / gcd_swap: a single Euclidean step (u,v)↦(v,u−q·v) and the argument swap exhibited as the det=−1 unimodular case",
       "applyQuotients + applyQuotients_gcd: folding an arbitrary list of partial quotients as Euclidean steps preserves the true GCD — the Lehmer safety property that single-precision approximation cannot break correctness"
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "Euclidean GCD algorithm and the Euclidean step gcd(u,v)=gcd(v, u mod v)",
       "Integer divisibility and Int.gcd (Int.gcd_dvd_left/right, Int.dvd_gcd)",

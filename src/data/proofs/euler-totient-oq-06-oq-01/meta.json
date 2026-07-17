@@ -24,7 +24,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound` (confirmed via `#print axioms`); no `native_decide`, no `Lean.ofReduceBool`, no `sorryAx`. The proof rests on Mathlib's `Nat.totient_eq_prod_factorization` (Euler's product formula) and the additive-homomorphism lemmas for `Nat.factorization` (`factorization_mul`, `factorization_pow`, `factorization_prod`).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_eq_prod_factorization",

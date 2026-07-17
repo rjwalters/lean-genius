@@ -38,7 +38,7 @@
     "axiomCount": 0,
     "lineCount": 95,
     "assumptions": "None. Every theorem is derived from Mathlib's integral_gaussian by elementary algebra (sqrt manipulations, integral_const_mul, translation invariance); the variance statements take σ > 0 as an ordinary hypothesis. No axiom declarations, no native_decide, no sorries. #print axioms on the normalization and mean-shift theorems reports only [propext, Classical.choice, Quot.sound]. The parent area-of-circle-oq-05 is already complete; this entry (claimed as a 'completion' task) supplies the genuinely uncovered normal-density normalization strand rather than patching the parent.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 0
   },

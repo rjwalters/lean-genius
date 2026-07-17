@@ -23,7 +23,7 @@
     "lineCount": 243,
     "assumptions": "0 literal `axiom` declarations and 0 sorries. All results — including the concrete numeric check — are discharged by the Lean kernel (the verification uses `decide`, not `native_decide`), so the only axioms are the ordinary foundational ones (propext, Classical.choice, Quot.sound), which are not counted. The entry is fully verified.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "PowerSeries.coeff_prod",

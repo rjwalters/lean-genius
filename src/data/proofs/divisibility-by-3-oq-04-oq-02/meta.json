@@ -72,7 +72,7 @@
       }
     ],
     "assumptions": "0 sorries. The general counting theorems (base_pow_mod_one, detected_count, detection_rate_ratio, nonzero_residues_count) are derived from Mathlib primitives and are axiom-free. The concrete base specializations (nines_detected/nines_rate, threes_detected_full/threes_rate, octal_detected, hex_detected, binary_trivial, etc.) are discharged by native_decide, which trusts the Lean compiler's kernel reduction and so depends on the Lean.ofReduceBool axiom. axiomCount = 1 (Lean.ofReduceBool); no literal axiom declarations.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 0
   },
   "overview": {

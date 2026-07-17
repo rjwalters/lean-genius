@@ -65,7 +65,7 @@
     "axiomCount": 0,
     "lineCount": 146,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All seven theorems (term_nonneg, altSum_eq_range, even_partial_le, le_odd_partial, remainder_bound, partial_bracket, sum_mem_Icc) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The results hold over ℝ for any antitone sequence a : ℕ → ℝ with a → 0 (Tendsto a atTop (𝓝 0)) whose alternating partial sums converge to L; convergence itself is guaranteed by the parent's altSum_tendsto_of_antitone (Mathlib's alternating-series test), so the hypotheses are satisfiable and not vacuous. The core one-sided bracketing lemmas are Mathlib's Antitone.alternating_series_le_tendsto and Antitone.tendsto_le_alternating_series (stated for the range-form partial sums); the new content is their combination into the sharp two-sided remainder bound, the alternating bracketing of consecutive partial sums, and the [0, a_0] localization, together with the nonnegativity term_nonneg derived from antitonicity and a → 0. The limit object is the limit of partial sums (Filter.Tendsto), not HasSum/tsum, since alternating series such as ∑ (-1)^j/(j+1) converge conditionally but are not summable.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 0
   },

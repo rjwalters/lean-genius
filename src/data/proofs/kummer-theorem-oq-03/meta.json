@@ -52,7 +52,7 @@
         "module": "Proofs.KummerTheorem"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Kummer's theorem (1852) identifies the $p$-adic valuation $v_p(\\binom{n}{k})$ with the number of carries when adding $k$ and $n-k$ in base $p$. This elegant combinatorial-arithmetic connection was discovered by Ernst Eduard Kummer while studying ideal factorization. Lucas' theorem (1878), independently discovered, characterizes $\\binom{n}{k} \\pmod{p}$ via base-$p$ digits: $\\binom{n}{k} \\equiv \\prod \\binom{n_i}{k_i} \\pmod{p}$, and its hypothesis (no digit of $k$ exceeds the corresponding digit of $n$) is exactly the carry-free condition. Granville (1997) extended Kummer to prime power moduli $p^m$, showing that $p^m \\mid \\binom{n}{k}$ iff there are at least $m$ carries. The fractal structure of Pascal's triangle mod $p$ (Sierpiński's triangle for $p=2$, first noted by Sierpiński in 1915) is a direct consequence: the self-similar patterns arise from the hierarchical base-$p$ structure of indices. This file formalizes these extensions using Mathlib's `multiplicity` API and the `PartENat`-valued carry count from the parent proof.",

@@ -131,7 +131,7 @@
     "lineCount": 148,
     "theoremCount": 4,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None beyond b, c, d ≠ a (required only so the inversion images about a are defined). The ambient space is an arbitrary real inner-product (Euclidean) space presented as a NormedAddTorsor over it; strict convexity, the sole structural ingredient of dist_add_dist_eq_iff, is supplied automatically by InnerProductSpace.toUniformConvexSpace → UniformConvexSpace.toStrictConvexSpace, so no hypothesis is added. Verified 0 axioms, 0 sorries: #print axioms on ptolemy_eq_iff_wbtw_inversion, ptolemy_strict_iff_not_wbtw and ptolemy_eq_imp_collinear_inversion reports only [propext, Classical.choice, Quot.sound] (no sorryAx, no Lean.ofReduceBool).",
     "originalContributions": [
       "ptolemy_eq_iff_wbtw_inversion: the equality case of Ptolemy's inequality in ANY real inner-product space — dist a c · dist b d = dist a b · dist c d + dist b c · dist a d ↔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). The coordinate-free, axiom-free certificate for 'equality ⇔ cyclic quadrilateral', the equality half that Mathlib's Ptolemy formalisation leaves open. Proved by running Mathlib's own inversion rewrite dist_inversion_inversion through the strict-convexity equality lemma dist_add_dist_eq_iff.",

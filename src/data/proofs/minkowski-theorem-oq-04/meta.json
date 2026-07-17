@@ -60,7 +60,7 @@
       "minkowski_from_blichfeldt: structural reduction Minkowski → Blichfeldt via T = (1/2)·s; central symmetry + convexity give the lattice point in s. The two former sorries (measurability of T, volume identity vol(T) = vol(s)/2ⁿ) are now closed via preimage rewriting + `Measure.addHaar_smul` + ENNReal arithmetic.",
       "Mathlib 4.26.0 API drift fixes: `Pairwise (Disjoint on f)` lambda rewrite; ENNReal Nat-coerce via `exact_mod_cast`; `Submodule.mem_toAddSubgroup` removal compensation; `open Pointwise` for the `Set.SMul` instance needed by `Measure.addHaar_smul`."
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "Lebesgue measure on ℝⁿ and the fundamental-domain integral formula",
       "Sigma-additivity and monotonicity of measure",

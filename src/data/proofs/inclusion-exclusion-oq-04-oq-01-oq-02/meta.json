@@ -202,7 +202,7 @@
     "axiomCount": 0,
     "lineCount": 357,
     "assumptions": "0 axioms, 0 sorries, no native_decide. n and m : ℕ are arbitrary (the bounds hold for every truncation depth m, with equality at m ≥ n). #print axioms reports only the foundational propext, Classical.choice, Quot.sound for bonferroni_even, bonferroni_odd, and truncSieve_eq_sum_altPartial — no sorryAx, no Lean.ofReduceBool. The worked examples (the n=4 ladder, D_4 = 9) use decide (kernel reduction), not native_decide, so the file remains axiom-free.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 14,
     "definitionCount": 3
   }

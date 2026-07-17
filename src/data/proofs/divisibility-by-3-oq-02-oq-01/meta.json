@@ -113,7 +113,7 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries. The alternating-sum congruence is derived from Mathlib's generic Nat.zmodeq_ofDigits_digits, Nat.dvd_iff_dvd_ofDigits, and Nat.ofDigits_neg_one; Mathlib itself proves only the base-10 specialization (divisibility by 11). The five numerical checks use native_decide but appear only in anonymous examples, so no named theorem depends on Lean.ofReduceBool — all named results depend solely on propext/Classical.choice/Quot.sound.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 1
   },
   "overview": {

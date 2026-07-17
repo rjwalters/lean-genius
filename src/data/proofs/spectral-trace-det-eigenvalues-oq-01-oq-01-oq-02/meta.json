@@ -62,7 +62,7 @@
     "dateAdded": "2026-06-24",
     "lineCount": 171,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used; #print axioms confirms the three headline theorems depend on no Lean.ofReduceBool or sorryAx. The matrix-side identity trace_cube_fin_three holds over any commutative ring; the spectral form trace_cube_eq_sum_cube_eigenvalues requires an algebraically closed field (so the characteristic polynomial splits and the eigenvalue multiset has exactly three elements). SCOPE: this entry proves the k=3 power sum in dimension n=3. The general trace power sum tr(Aᵏ) = Σλᵢᵏ for all n and k remains the standing open question (it requires the full multiset spectral mapping, absent from the Mathlib snapshot used here).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 1
   },

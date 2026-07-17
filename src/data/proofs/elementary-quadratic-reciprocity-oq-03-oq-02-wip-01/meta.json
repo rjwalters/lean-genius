@@ -69,7 +69,7 @@
         "relationship": "**Parent.** Builds the Kronecker symbol (a/n) and kronecker2, proves complete multiplicativity in both arguments, and (Section 5) motivates (·/n) as the primitive Dirichlet character of a fundamental discriminant but leaves the numerator periodicity informal; it proves only single-step kronecker2_periodic. This file formalizes exactly that missing periodicity."
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Kronecker symbol (a/n), completed by Leopold Kronecker in 1885, is the canonical quadratic character in analytic number theory: for a fundamental discriminant D of a quadratic field ℚ(√D), the map n ↦ (D/n) is a primitive Dirichlet character encoding prime splitting via class field theory. The defining property of a Dirichlet character mod n is periodicity in its argument — the symbol depending only on the residue class. The parent file ElementaryQuadraticReciprocityOQ03OQ02 builds the symbol, proves complete multiplicativity in both arguments, and motivates the Dirichlet-character interpretation, but leaves the numerator periodicity itself informal. This file supplies it.",

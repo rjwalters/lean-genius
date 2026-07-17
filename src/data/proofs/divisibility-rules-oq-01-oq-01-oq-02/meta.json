@@ -59,7 +59,7 @@
       "ZMod units and coprimeness",
       "Nat.digits and digit sum congruences"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Digit-sum divisibility rules are classically tied to base 10 — 'casting out nines' exploits 10 ≡ 1 (mod 9), and Fibonacci's alternating-digit rule for 11 exploits 10 ≡ -1 (mod 11). But the underlying mechanism is base-independent: in any positional base b, the value of a numeral is congruent modulo d to a weighted sum of its digits, and when b ≡ 1 (mod d) those weights all collapse to 1, giving a plain digit-sum rule. Euler's totient theorem (1763) supplies the missing ingredient for arbitrary bases: whenever gcd(d, b) = 1, b^φ(d) ≡ 1 (mod d), so the base-b^φ(d) digit sum is always a valid test. Familiar non-decimal instances include the hexadecimal analogue of casting out nines (16 ≡ 1 mod 5, and mod 3), used historically in hand-checking hex arithmetic. This leaf (OQ-02) answers the explicit open question posed by the parent OQ-01 proof: 'Can the rule be extended to bases other than 10?'",

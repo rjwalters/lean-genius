@@ -22,7 +22,7 @@
     "lineCount": 149,
     "assumptions": "No axioms or sorries. All theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions).",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Scalar derivation of the triangle inequality c ≤ a + b directly from the law of cosines, with the single analytic input cos C ≥ −1 (the whole content is the algebraic identity (a+b)² − c² = 2ab·(1 + cos C) ≥ 0)",
       "Sharp equality characterisation: for positive adjacent sides, c = a + b holds iff cos C = −1 (degenerate / collinear triangle), and the strict inequality c < a + b for cos C > −1",

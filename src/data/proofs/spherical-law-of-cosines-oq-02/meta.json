@@ -42,7 +42,7 @@
     "axiomCount": 0,
     "lineCount": 203,
     "assumptions": "None counted as axioms: all 11 theorems are unconditional implications (0 sorries, 0 `axiom` declarations, 0 structure-encoded assumptions; `#print axioms` lists only propext/Classical.choice/Quot.sound). The substantive geometric content of Girard's theorem — that a lune of dihedral angle θ has area 2θ, that the six antipodal lunes cover the sphere with the triangle and its antipode triply covered, that the two angles at a geodesic subdivision point are supplementary, and that a vertex angle splits additively under a cevian — is supplied as theorem *hypotheses* rather than derived from a Mathlib spherical-area measure (which does not exist at v4.26.0). The file therefore proves the arithmetic backbone and lune reduction of Girard's theorem, not a self-contained measure-theoretic proof; this scoping is disclosed in the file header and the overview. The two pillars are independently meaningful: `sphericalExcess_additive_cevian` (and its quadrilateral/pentagon generalisations) is the finite-additivity property that forces excess to behave like an area, and `girard_euler_from_lunes` is the classical lune computation closing the formula.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 1,
     "substantiveTheoremCount": 11

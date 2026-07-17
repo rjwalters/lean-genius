@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "lineCount": 104,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All three named theorems (count_toMultiset, card_toMultiset, card_weakComposition) and the bijection weakCompositionEquivSym were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib records only the multiset form of stars and bars (Sym.card_sym_eq_choose); the function/tuple form C(n+k−1, n) and the bijection weakCompositionEquivSym to Sym (Fin k) n are the original content here. The Fintype instance on the weak-composition subtype is supplied through that bijection (it is not auto-derivable because the codomain ℕ is infinite). The result is unconditional for all k, n ≥ 0.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 2
   },

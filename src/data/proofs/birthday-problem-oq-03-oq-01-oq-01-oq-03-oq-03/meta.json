@@ -23,7 +23,7 @@
     "lineCount": 195,
     "assumptions": "None. Fully machine-verified: lake env lean of Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for birthday_kfold_threshold and birthday_kfold_threshold_gap. The file imports only Mathlib and is self-contained. Scope note: this proves the threshold to leading order with an explicit additive O(1) bound (≤ k-1) from the expected-count balance equation; it does not re-derive the balance equation from a probabilistic limit theorem (Poisson approximation), which is the heuristic modeling input.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.pow_rpow_inv_natCast",

@@ -159,7 +159,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "lineCount": 243,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "definitionCount": 1,
     "theoremCount": 17,
     "assumptions": "None beyond Lean/Mathlib's standard foundations. Fully verified with 0 sorries and 0 axiom declarations; no native_decide. The least-witness construction (exists_least_stage) and the parent's noncomputable bijection use the ordinary foundational axioms propext / Classical.choice / Quot.sound only — no sorryAx, no Lean.ofReduceBool. The entry proves the Σ⁰₁ logical form and the genuine unboundedness of the stage-bounded search; it does not claim a computability-theoretic RePred statement, which would require the injections to be effectively given."

@@ -26,7 +26,7 @@
     "theoremCount": 2,
     "definitionCount": 3,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `Nat.div_add_mod` (Euclidean identity for the ceiling estimates), `Nat.mul_lt_mul_right` / `Nat.lt_of_mul_lt_mul_left` (monotonicity giving the next denominator > n), `Finset.sum_insert` / `Finset.sum_singleton`, `Nat.cast_sub` (cast of a·n−b to ℚ), and `field_simp`/`ring` (the unit-fraction sum identity). The induction is `Nat.strong_induction_on`. No `native_decide`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.div_add_mod",

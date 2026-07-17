@@ -33,7 +33,7 @@
       "GRH would give L ≤ 2+ε via the conditional bound p(a,q) ≤ c·(φ(q)·log q)². The formalization defines `GRHImpliesSmallLinnik` as a Prop but does not prove it, acknowledging the conditional nature.",
       "The linnikConstant_pos sorry asks for a lower bound argument: p(1,q) ≥ q+1 for large q shows L* ≥ 1. This would follow from Bertrand's postulate — the least prime > q has order roughly q."
     ],
-    "mathlib_version": "4.29.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "Infimum-based definition of the Linnik constant via sInf on admissibleExponents",
       "Monotonicity derivation: Heath-Brown L≤5.5 from Xylouris L≤5",

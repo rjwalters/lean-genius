@@ -25,7 +25,7 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms` on deficient_of_dvd, deficient_of_proper_dvd_perfect, sigma_dvd_mono, and deficient_14 reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no native_decide, hence no Lean.ofReduceBool. The concrete instances (perfect_28, deficient_14) are discharged by kernel `decide` over a small divisor sum. The propagation results reuse abundant_mul_right and abundant_of_perfect_mul (purely arithmetic closure lemmas from abundant-number-oq-01).",
     "originalContributions": [
       "Proves `sigma_dvd_mono : d ∣ n → 0 < n → n · σ(d) ≤ d · σ(n)`, the monotonicity of the abundancy index σ(n)/n along divisibility — a single ℕ-arithmetic inequality Mathlib does not record, obtained via the scaled-divisor injection e ↦ (n/d)·e which embeds divisors d into divisors n.",

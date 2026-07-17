@@ -73,7 +73,7 @@
     "axiomCount": 0,
     "lineCount": 258,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The sole mathematical hypothesis (TwoLinesMeetOnce: any two distinct lines share at most one point) is an input to the statement, not a standing assumption; it is the defining nondegeneracy property of a point-line incidence structure. The point type P and line type L are arbitrary Fintypes with DecidableEq and a decidable incidence relation Inc : P → L → Prop. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for incidence_bound and incidence_bound_sqrt — no sorryAx, no Lean.ofReduceBool.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 4
   },

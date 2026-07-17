@@ -80,7 +80,7 @@
     "axiomCount": 0,
     "lineCount": 162,
     "assumptions": "0 axioms, 0 sorries, no native_decide, no Lean.ofReduceBool. All 11 theorems depend only on the foundational propext / Classical.choice / Quot.sound. The core identity (det O)² = 1 applies det to OᵀO = 1 using Matrix.det_mul, Matrix.det_transpose, Matrix.det_one — the plain transpose (det Oᵀ = det O) is what distinguishes this from the unitary case (det Uᴴ = star det U). The ±1 dichotomy over an integral domain factors (det O − 1)(det O + 1) = 0 (linear_combination) and uses no zero divisors (mul_eq_zero, sub_eq_zero, eq_neg_of_add_eq_zero_left); the ℝ absolute-value statement is a two-case norm_num. The SO(n) characterisation uses Matrix.mem_orthogonalGroup_iff' and Matrix.mem_specialOrthogonalGroup_iff, which require the trivial star structure starRingOfComm as a local instance (Mathlib defines orthogonalGroup as the unitary group with star = id). The genuine hypothesis throughout is OᵀO = 1.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 11,
     "definitionCount": 0
   },

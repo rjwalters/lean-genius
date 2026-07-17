@@ -26,7 +26,7 @@
     "theoremCount": 7,
     "definitionCount": 1,
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms` on abundant_of_proper_dvd_abundant_or_perfect, isPrimitiveAbundant_iff, not_isPrimitiveAbundant_of_proper_multiple, isPrimitiveAbundant_twenty, and twenty_least_isPrimitiveAbundant reports only the standard foundational axioms (propext, Classical.choice, Quot.sound). The numerical witnesses (20 is primitive abundant; 20 is least; 12 is not) are discharged by kernel `decide` (NOT native_decide), so no Lean.ofReduceBool is involved. Local Decidable instances for Nat.Abundant / Nat.Deficient / Nat.Perfect (each reducing to a decidable inequality/equality on a computable divisor sum) make the `decide` calls available.",
     "originalContributions": [
       "Proves `abundant_of_proper_dvd_abundant_or_perfect : d ∣ n → d < n → (d.Abundant ∨ d.Perfect) → n.Abundant` — abundance propagates upward to every proper multiple of an abundant or perfect number. A single uniform inequality 2·d ≤ σ(d) (strict for abundant, equality for perfect) combines with the parent strict gap n·σ(d) + d ≤ d·σ(n) to force d·(2n) < d·σ(n), hence 2n < σ(n). Directly answers open question index 1 of the parent abundant-number-oq-04-oq-01.",

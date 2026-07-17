@@ -57,7 +57,7 @@
     "lineCount": 100,
     "theoremCount": 1,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Hilbert's 14th Problem (1900) asked whether invariant rings k[V]^G are always finitely generated. The reductive case was settled affirmatively: Hilbert (1890) for GL_n via his basis theorem, and Weyl (1939) for all reductive groups. Nagata (1959) gave the celebrated negative answer in general, with a 13-dimensional unipotent group whose invariant ring is not finitely generated. The finite-group case, however, is entirely positive — it is the qualitative half of Emmy Noether's 1916 theorem, which also supplies the degree bound (generators in degree ≤ |G|). This entry formalizes that qualitative half: for any finite group G acting linearly on a polynomial ring, the invariant subring is a finitely generated k-algebra.",

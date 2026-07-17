@@ -57,7 +57,7 @@
         "module": "Mathlib.Combinatorics.Choose.Central"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Kummer's theorem (1852) computes the $p$-adic valuation $v_p(\\binom{n}{k})$ as the number of carries when adding $k$ and $n-k$ in base $p$; on the central diagonal it gives $v_2(\\binom{2n}{n}) = s_2(n)$, the binary popcount of $n$. The parent entry pinned down the minimal case $v_2 = 1$ as exactly the powers of two (popcount $1$). This follow-up advances the level sets of popcount one step: $v_2(\\binom{2n}{n}) = 2$ exactly when $n$ has two $1$-bits, $n = 2^a + 2^b$ with $a > b$. As with the popcount-$1$ case, the underlying arithmetic fact — popcount equals $2$ iff a sum of two distinct powers of two — has no direct statement in Mathlib's digit library.",

@@ -21,7 +21,7 @@
     "lineCount": 192,
     "assumptions": "None beyond Mathlib's foundational axioms (propext / Classical.choice / Quot.sound; verified by #print axioms — no native_decide, no sorryAx). The boundary case signVariations = 1 is proved CONDITIONAL on the explicit hypothesis sign(leadingCoeff) ≠ sign(trailingCoeff): this is the purely combinatorial consequence of a single sign variation (a statement about List.destutter of the coefficient sign-list) and is taken as a hypothesis rather than re-derived. All analytic content — the IVT existence of a positive root, which is what replaces the unavailable parity argument — is fully proved.",
     "theoremCount": 3,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.roots_countP_pos_le_signVariations",

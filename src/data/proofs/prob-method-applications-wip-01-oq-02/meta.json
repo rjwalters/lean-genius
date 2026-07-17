@@ -68,7 +68,7 @@
     "axiomCount": 0,
     "lineCount": 121,
     "assumptions": "0 axioms, 0 sorries, no native_decide. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for property_B_two_colorable and property_B_lower_bound — no sorryAx, no Lean.ofReduceBool. The mathematical content of the bound is carried entirely by the parent file's ProbMethod.Core.ramsey_avoidance engine; the contribution here is the faithful hypergraph-2-colourability instantiation of that engine plus the elementary power-of-two arithmetic bridging the engine's hypothesis and the classical criterion edges.card < 2^{k−1}, and the contrapositive m(k) lower bound. This is a unification/instantiation result, not a new bound: the value is deriving the classical Property B threshold as a genuine corollary of the reusable abstract engine.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 2,
     "definitionCount": 1
   },

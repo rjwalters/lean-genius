@@ -52,7 +52,7 @@
       "dirichlet_partial_sums_uniformly_bounded: the packaged ∃ C > 0, ∀ n θ statement — a single constant C = 1/sin(δ/2) simultaneously bounds every cosine partial sum (centred at 1/2) and every sine partial sum on the arc, the exact uniform-boundedness hypothesis behind Dirichlet's test"
     ],
     "dateAdded": "2026-07-11",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 135,
     "assumptions": "0 axioms, 0 sorries. Builds on the parent de-moivre-oq-06 (dirichlet_kernel_bound, dirichlet_conjugate_bound). The uniform estimates require 0 < δ ≤ π (so the arc [δ, 2π−δ] is nonempty and sin(δ/2) > 0) and θ ∈ [δ, 2π−δ]; Mathlib supplies the product identity, the sin/cos sign lemmas, and reciprocal monotonicity.",

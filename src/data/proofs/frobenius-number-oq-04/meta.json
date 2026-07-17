@@ -41,7 +41,7 @@
     "definitionCount": 0,
     "assumptions": "None. Every result reduces to Mathlib's verified `frobeniusNumber_pair` (the IsGreatest/AddSubmonoid.closure formulation of the two-coin theorem) and `AddSubmonoid.mem_closure_pair` (membership in the closure of a pair as a ℕ-linear combination). The only hypotheses are the theorem's own: `Nat.Coprime m n`, `1 < m`, `1 < n`. The Chicken McNugget instance discharges coprimality of 3 and 5 by `decide` (kernel reduction, not `native_decide`). #print axioms reports only propext, Classical.choice, Quot.sound — the standard foundational axioms, which carry no mathematical assumptions.",
     "dateAdded": "2026-06-19",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "frobeniusNumber_pair",

@@ -57,7 +57,7 @@
         "module": "Mathlib.MeasureTheory.Function.LpSeminorm.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Paley–Zygmund inequality was proved by Raymond Paley and Antoni Zygmund in 1932 in their study of lacunary trigonometric series. It strengthens the qualitative second moment method by giving an explicit lower bound on the probability that a nonnegative random variable exceeds a fraction θ of its mean: P[X > θ𝔼X] ≥ (1-θ)²(𝔼X)²/𝔼[X²]. The gallery's parent entry (ProbMethodSecondMomentOQ01) proves the finite/discrete form over Finsets of ℚ-valued functions, which avoids measure theory but is not directly usable over continuous probability spaces. This entry closes the parent's explicit open question — 'Can this be generalized to the measure-theoretic MeasureTheory.Lp setting?' — by proving the inequality natively over a Mathlib probability space with Bochner integrals, the form actually needed for the probabilistic method over continuous spaces. Paley–Zygmund is not currently in Mathlib.",

@@ -57,7 +57,7 @@
       "Explicit de Moivre / discrete-Fourier form sum_exp_eq_zero: ∑ k ∈ range n, exp(2πik/n) = 0, recognising exp(2πik/n) = (exp(2πi/n))^k"
     ],
     "dateAdded": "2026-06-20",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 108,
     "assumptions": "0 axioms, 0 sorries. The geometric-series vanishing ∑ ζ^i = 0 is Mathlib's IsPrimitiveRoot.geom_sum_eq_zero; the coordinate-free set form and the structural identity nthRootsFinset = (range n).image (ζ ^ ·) are supplied here.",

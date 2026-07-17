@@ -32,7 +32,7 @@
     "lineCount": 155,
     "theoremCount": 4,
     "definitionCount": 0,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The binomial transform sends a sequence (aₖ) to (∑ C(n,k) aₖ); its alternating variant uses the signed weights (−1)ᵏ C(n,k) and is the n-th finite difference up to sign. For the Fibonacci sequence the positive transform doubles the index — ∑ C(n,k) Fₖ = F₂ₙ, the discrete shadow of 1 + φ = φ² — because applying ∑ C(n,k)(·)ᵏ to the golden ratio φ sends φ ↦ (1+φ)ⁿ = φ²ⁿ. The alternating transform is the x = −1 companion: applying ∑ C(n,k)(−1)ᵏ(·)ᵏ to φ sends φ ↦ (1−φ)ⁿ = ψⁿ, where ψ = (1−√5)/2 is the conjugate root and φψ = −1. Because ψ = −1/φ, the resulting φᵐψⁿ = (−1)ⁿφᵐ⁻ⁿ, and the √5-normalized Binet combination collapses to (−1)ⁿ F₍ₘ₋ₙ₎. The parent entry formalized the positive transform; this entry supplies its signed dual entirely within ℤ, avoiding negative-index Fibonacci by parametrizing the shift as d = m − n ≥ 0.",

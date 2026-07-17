@@ -51,7 +51,7 @@
     "axiomCount": 0,
     "lineCount": 162,
     "assumptions": "None beyond the foundational axioms. #print axioms on frob_gorenstein_criterion and card_gaps_two_mul reports only propext, Classical.choice, Quot.sound (none of which count as assumptions). `open Classical` supplies decidability for the Representable predicate in the concrete filter; no native_decide, so no Lean.ofReduceBool; no sorries; no structure-encoded hypotheses. The commutative-algebra direction of Kunz's theorem (that symmetry implies the ring k[t^a,t^b] is Gorenstein) is NOT formalized — Mathlib has no Gorenstein-ring development — and is stated honestly as an infrastructure gap; only the equivalent combinatorial criterion is proved.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 8,
     "definitionCount": 3
   },

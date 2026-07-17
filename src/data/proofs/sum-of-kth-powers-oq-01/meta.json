@@ -60,7 +60,7 @@
       "Finset power sums and bigoperator notation",
       "The sum_range_pow theorem (Faulhaber's formula in Mathlib)"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Johann Faulhaber (1580–1635) was a German mathematician who computed closed-form formulas for sums of powers up to k=17 through laborious computation, publishing them in 'Academia Algebrae' (1631). He observed that ∑ i^k is always a polynomial in n of degree k+1, but did not know the general pattern. Jacob Bernoulli (1654–1705) identified the rational sequence B₀, B₁, B₂, ... (now called Bernoulli numbers) while studying sums of powers in 'Ars Conjectandi' (published posthumously 1713). Bernoulli wrote of summing the first 1000 tenth powers in 'less than half a quarter of an hour' using his formula. The unified formula ∑_{i<n} i^k = (1/(k+1)) ∑_{j=0}^{k} C(k+1,j) B_j n^{k+1-j} subsumes all specific cases. Nicomachus of Gerasa (c. 100 CE) had already observed the case k=3: the sum of cubes equals the square of the sum of first powers (∑ i³ = (∑ i)²). The Bernoulli numbers arise naturally as the coefficients in the Taylor expansion of t/(e^t-1) = ∑ B_k t^k/k!, connecting power sums to generating functions and the Riemann zeta function (ζ(-k) = -B_{k+1}/(k+1)). In Mathlib, the unified formula appears as Finset.sum_range_pow, proved via Bernoulli polynomial theory.",

@@ -23,7 +23,7 @@
     "lineCount": 240,
     "assumptions": "None. All results are fully machine-checked with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound are used). The main theorem greedy_independence_of_maxDegree is unconditional in the degree bound Δ; greedy_independence_kissing takes the geometric degree bound (the parent's degree_le_kissing) as an explicit hypothesis rather than an axiom; greedy_trivial is fully unconditional.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "greedy_independence_of_maxDegree: a 0-axiom proof of the general greedy independence bound — for any degree bound Δ, a separated configuration with unit-degree ≤ Δ everywhere has an independent set of size ≥ n/(Δ+1)",
       "Covering-via-domination proof technique: a maximum-cardinality independent set S is dominating, so the closed neighbourhoods of S cover all n vertices, giving n ≤ Σ_{u∈S}(1+deg u) ≤ |S|·(Δ+1)",

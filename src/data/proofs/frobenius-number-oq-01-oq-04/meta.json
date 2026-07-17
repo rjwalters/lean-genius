@@ -73,7 +73,7 @@
       "Mathlib Nat.ModEq coprime cancellation"
     ],
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The Apéry set, introduced by Roger Apéry in 1946 and developed by Ernst Selmer in 1977, is the central computational object of numerical-semigroup theory. For a numerical semigroup S and a nonzero element a ∈ S, Ap(S, a) collects the least element of S in each residue class mod a; from it one reads off the Frobenius number, the genus (number of gaps), and the symmetric/Gorenstein property. For the two-generator semigroup ⟨a,b⟩ with gcd(a,b)=1 the Apéry set is completely explicit — {0, b, 2b, …, (a−1)b} — making it the ideal first formalization. The parent gallery entries proved Sylvester's Frobenius number g = ab − a − b and the gap count (a−1)(b−1)/2 directly via the Representable predicate, never naming the Apéry set; this entry supplies it.",

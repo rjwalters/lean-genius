@@ -54,7 +54,7 @@
     "lineCount": 97,
     "theoremCount": 3,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "That the cyclotomic polynomial Φ_p = 1 + X + ⋯ + X^{p−1} is irreducible over ℚ for prime p goes back to Gauss (Disquisitiones Arithmeticae, 1801). The standard modern proof, due in essence to Eisenstein and Schönemann, observes that Φ_p itself is not visibly Eisenstein but its translate Φ_p(X + 1) is: by the binomial theorem ((X + 1)^p − 1)/X = ∑_{k=1}^{p} C(p,k) X^{k−1}, whose coefficients C(p,k) for 1 ≤ k ≤ p−1 are all divisible by p, with constant term C(p,1) = p not divisible by p². The parent entry eisenstein-criterion-oq-01-oq-03 reproved Eisenstein's criterion over ℚ in concrete divisibility form; its second open question asks to apply that criterion to Φ_p(X + 1). This entry does so.",

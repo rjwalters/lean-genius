@@ -55,7 +55,7 @@
         "module": "Mathlib.Data.Fintype.Card"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The parent gallery entry oq-02-oq-02 (CauchyInterlacingPoincareSubmatrix.lean) proves the principal-submatrix Poincaré separation theorem — Cauchy's 1829 interlacing theorem in its delete-m form (Poincaré 1890; Horn–Johnson Thm 4.3.17 & 4.3.28) — but phrases its conclusion through the operator eigenvalues of toEuclideanLin A. It explicitly lists, as its first open question, the task of restating the same inequalities with Mathlib's native matrix eigenvalues Matrix.IsHermitian.eigenvalues₀, threading the Fintype.card (Fin (n+m)) = n+m reindexing so the signature is fully matrix facing. This entry supplies that restatement.",

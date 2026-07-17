@@ -82,7 +82,7 @@
       }
     ],
     "dateAdded": "2026-05-07",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The function ψ(n) = log lcm(1,...,n) is the Chebyshev psi function, central to analytic number theory: Mertens' theorem and the prime number theorem are both naturally phrased in terms of ψ. Bertrand's postulate (1845, proved by Chebyshev) is equivalent to a weak version of the bound lcm(1,...,n) · k ≥ n for k ≤ n. The classical asymptotic ψ(n) ~ n is the prime number theorem itself. Hanson (Canad. Math. Bull. 1972) proved an explicit non-asymptotic bound: lcm(1,...,n) ≤ 3^n, strictly improving on the easier lcm(1,...,n) ≤ 4^n that follows from the primorial bound (Erdős's classic 1932 elementary proof of Bertrand). The 3^n bound is the strongest known explicit constant; the precise asymptotic ψ(n)/n → 1 is the PNT. Apéry (1979) used this kind of LCM bound in his celebrated proof of the irrationality of ζ(3): the integer-squeeze argument needs lcm³·aₙ ∈ ℤ combined with a sufficiently small linear-form decay, and the threshold c < (1/(17-12√2))^{1/3} ≈ 3.24 makes Hanson's 3^n bound sufficient — but not the easier 4^n bound. So Apéry's irrationality proof depends critically on Hanson's exact constant.",

@@ -65,7 +65,7 @@
     "theoremCount": 6,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms). The Taylor-polynomial expansion (taylor_within_apply), the local-to-global derivative bridge (iteratedDerivWithin_eq_iteratedDeriv), and the abstract Lagrange remainder (taylor_mean_remainder_lagrange_iteratedDeriv) come from Mathlib; the original work is the identification of taylorWithinEval for exp with the explicit partial sum and the explicit remainder statement.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Mathlib states Taylor's theorem through taylorWithinEval, the value of the Taylor polynomial of a function restricted to a closed interval, expanded about a basepoint. This is the right level of generality for the abstract mean-value remainder theorems, but it is one step removed from the concrete partial sums sum_{k<=n} x^k/k! that one actually computes with. The gap is the difference between the local derivative iteratedDerivWithin k f (Icc 0 x) 0, which only sees f on the interval, and the global derivative iteratedDeriv k f. For a function that is smooth on all of the reals the two agree, but bridging them inside Lean requires the precise hypotheses that the underlying set is a unique-differentiability set and that the function is continuously differentiable there. This entry, the first follow-up to the exp convergence proof (taylor-theorem-oq-03), closes that gap for the exponential function and uses it to turn the abstract Lagrange remainder into the fully explicit formula that Euler and Lagrange worked with directly.",

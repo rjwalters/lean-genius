@@ -45,7 +45,7 @@
       "Basic algebra over the reals",
       "Square roots and non-negativity"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Heron of Alexandria (c. 10-70 AD) gave the famous formula for triangle area: $\\sqrt{s(s-a)(s-b)(s-c)}$ where $s = (a+b+c)/2$. Some 560 years later, Brahmagupta (628 AD), the brilliant Indian mathematician-astronomer working at Bhillamala (modern Bhinmal, Rajasthan), discovered the generalization in his masterwork *Brahmasphutasiddhanta* (Chapter 12): for a quadrilateral inscribed in a circle with sides $a, b, c, d$ and semi-perimeter $s = (a+b+c+d)/2$, the area is $\\sqrt{(s-a)(s-b)(s-c)(s-d)}$. Setting $d=0$ degenerates to Heron's formula, confirming the generalization. The formula holds specifically for cyclic (inscribed) quadrilaterals; for general quadrilaterals the area also depends on the angle between the diagonals. Brahmagupta also proved the isoperimetric inequality: among all cyclic quadrilaterals with fixed perimeter, the square maximizes area. Julian Coolidge's 1939 paper in the *American Mathematical Monthly* gave a modern discussion of the formula's history and generalizations. The formula was independently discovered and applied in classical Islamic and European geometry, but Brahmagupta's 628 AD formulation predates all others by centuries.",

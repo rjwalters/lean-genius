@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "lineCount": 123,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Uses only structural Mathlib lemmas (Nat.coprime_list_prod_right_iff, Nat.Coprime.mul_dvd_of_dvd_of_dvd, Nat.modEq_iff_dvd', Nat.eq_zero_of_dvd_of_lt) with list induction, omega, and a decide on the concrete [3,4,5] example. No native_decide and no structure-encoded hypotheses; #print axioms reports only propext, Classical.choice, Quot.sound (prod_dvd_of_forall_dvd needs only propext, Quot.sound), none of which count as assumptions.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 5,
     "definitionCount": 0
   },

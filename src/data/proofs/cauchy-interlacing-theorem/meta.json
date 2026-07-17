@@ -55,7 +55,7 @@
         "module": "Mathlib.LinearAlgebra.FiniteDimensional"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Cauchy's interlacing theorem (1829) states that deleting a row and its matching column from a Hermitian matrix produces a principal submatrix whose eigenvalues interlace those of the original: λ_k ≤ μ_k ≤ λ_{k+1} in ascending order. It is a cornerstone of spectral graph theory (vertex-deleted eigenvalue bounds), numerical linear algebra (divide-and-conquer eigensolvers), and the theory of orthogonal polynomials, and underlies the Marcus–Spielman–Srivastava resolution of Kadison–Singer. The textbook proof runs through the Courant–Fischer max–min characterisation of eigenvalues — which Mathlib did not provide beyond the two extreme (largest/smallest) Rayleigh cases. This entry builds the missing k-th max–min keystone and assembles interlacing from it.",

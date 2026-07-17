@@ -55,7 +55,7 @@
     "axiomCount": 0,
     "lineCount": 107,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All four theorems (card_boundedComposition_reflect, card_boundedComposition_reflect_reflect, closedForm_reflect, sum_const_b) and the bijection reflectEquiv were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The card symmetry B(k,n,b) = B(k,kb−n,b) is unconditional given the hypothesis n ≤ k·b (needed so that k·b − n is the honest complementary total; for n > k·b both counts are 0 but the ℕ-subtraction kb−n truncates to 0 and the statement would read B(k,n,b) = B(k,0,b), which is false, hence the hypothesis). Sanity check: (k,n,b) = (2,3,2) gives B = 2 and its reflection kb−n = 1 gives B(2,1,2) = 2 (the compositions (0,1),(1,0)); (k,n,b) = (3,5,2) gives B = 3 and reflection kb−n = 1 gives B(3,1,2) = 3.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 2
   },

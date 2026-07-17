@@ -22,7 +22,7 @@
     "axiomCount": 0,
     "lineCount": 201,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` on chebyshev_psi_bounds, centralBinom_log_le_psi, and chebyshevPsi_lower_linear reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. Builds on the parent ChebyshevBoundsOQ02 (Legendre's identity) and Mathlib's central-binomial and Chebyshev developments; all results are fully machine-checked.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.four_pow_le_two_mul_self_mul_centralBinom",

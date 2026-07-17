@@ -57,7 +57,7 @@
       "The total-count identity Σ_g reprCount A g = 2^|A| (parent total_reprCount)",
       "Nat.clog as the integer ceiling logarithm"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős problem #1179 (Erdős–Hall 1976) concerns ε-uniform subset-sum representations in a finite abelian group of order N: the number of subsets of a set A summing to each group element g should be within a factor (1±ε) of the average μ = 2^|A|/N. The minimal size is gₑ(N) = (1 + oₑ(1))·log₂N, and open question OQ-02 asks whether the multiplicative (1+o(1)) sharpens to an additive error gₑ(N) ≤ log₂N + Oₑ(1). The OQ-02 sibling files in this gallery prove that ANY set achieving exact 0-uniformity is forced to have size ⌈log₂N⌉ and is rigid — but every such theorem is conditional on the existence of a unique-representation set, which the files never exhibit. This entry supplies the missing witness.",

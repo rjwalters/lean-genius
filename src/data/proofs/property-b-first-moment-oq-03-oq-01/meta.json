@@ -65,7 +65,7 @@
     "axiomCount": 0,
     "lineCount": 125,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The hypotheses (k ≥ 1 or k ≥ 2, p ∈ [0,1], m ≥ 0) are inputs to the statements, not standing assumptions. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for monoProb_ge, monoProb_half_lt, threshold_half, and expected_mono_half_le — no sorryAx, no Lean.ofReduceBool. This entry proves the negative/structural sub-result (asymmetry is exhausted by p=1/2); it does NOT prove the full Radhakrishnan–Srinivasan bound m(k) = Ω(2^k·√(k/log k)), which requires the recoloring analysis and remains open.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 6,
     "definitionCount": 1
   },

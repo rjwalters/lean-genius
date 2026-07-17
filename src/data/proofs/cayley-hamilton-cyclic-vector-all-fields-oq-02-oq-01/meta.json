@@ -35,7 +35,7 @@
     "definitionCount": 0,
     "assumptions": "None. Fully machine-checked, 0 axioms, 0 sorries. The Frobenius dimension bound dim_K C(M) ≥ n — formerly the entry's single axiom — is now proved (finrank_centralizer_ge) from Mathlib's PID structure theorem Module.equiv_directSum_of_isTorsion via the algebra equivalence Matrix.toLinAlgEquiv', the identification of the centralizer with the K[X]-endomorphisms of AEval' φ, and the multiplication embedding Algebra.lmul of the decomposed module. #print axioms finrank_centralizer_ge reports only propext, Classical.choice, Quot.sound.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "finrank_centralizer_ge: the Frobenius dimension bound dim_K C(M) ≥ n (Frobenius, 1878), proved in Lean with 0 axioms — a result with no rational-canonical-form prerequisite available in Mathlib v4.26.0. Routes the matrix centralizer through Matrix.toLinAlgEquiv' to the operator centralizer, identifies it with the K[X]-endomorphisms of Module.AEval' φ, decomposes via Module.equiv_directSum_of_isTorsion, and lower-bounds the dimension by the multiplication embedding Algebra.lmul.",
       "endK_centralizer_bound: operator form — for φ : End K V over finite-dimensional V, dim_K (centralizer of φ) ≥ dim_K V, via a K-linear injection of End_{K[X]}(AEval' φ) into the centralizer.",

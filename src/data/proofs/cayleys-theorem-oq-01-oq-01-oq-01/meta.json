@@ -81,7 +81,7 @@
     "dateAdded": "2026-06-23",
     "lineCount": 161,
     "assumptions": "None beyond Mathlib. Fully verified with 0 axioms and 0 sorries (#print axioms reports only the foundational propext / Classical.choice / Quot.sound; no sorryAx, no Lean.ofReduceBool, no decide/native_decide). Tier B: the mathematical core — that the kernel of the coset action is the normal core — is Mathlib's Subgroup.normalCore_eq_ker; this file assembles from it the faithfulness criterion, the index-k embedding into Sₖ, and the n! → k! degree comparison, hence badge 'mathlib'.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 12,
     "definitionCount": 4
   },

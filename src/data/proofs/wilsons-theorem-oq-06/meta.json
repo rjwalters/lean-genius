@@ -25,7 +25,7 @@
     "theoremCount": 9,
     "definitionCount": 2,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `ZMod.wilsons_lemma` (the ZMod-valued Wilson lemma, for the divisibility p ∣ (p−1)!+1), `ZMod.natCast_eq_zero_iff` (the ℕ-cast-to-ZMod vanishing bridge), `Nat.mul_div_cancel'`, and `Nat.mul_dvd_mul_iff_left`. The two Wilson-prime certificates (5 and 13) are discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.wilsons_lemma",

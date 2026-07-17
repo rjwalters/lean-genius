@@ -25,7 +25,7 @@
     "theoremCount": 4,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The parity input is `Nat.totient_even` (φ(k) even for k > 2, via the order-2 unit −1 and Lagrange); the finite-family gcd reasoning uses `Finset.dvd_gcd` and `Finset.gcd_dvd`. The `decide` calls evaluate φ at concrete naturals (2, 3, 4, 9) and finite Fin 3 quantifications in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_even",

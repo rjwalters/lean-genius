@@ -64,7 +64,7 @@
       "Fermat's little theorem in ZMod p",
       "The Chinese Remainder Theorem as a ring isomorphism"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Carmichael's function λ(n), introduced by Robert Carmichael in 1910, is the minimal universal exponent: the smallest m with a^m ≡ 1 (mod n) for all a coprime to n. For n = p·q with distinct primes, λ(n) = lcm(p−1, q−1), which divides — and is usually strictly smaller than — Euler's φ(n) = (p−1)(q−1). The RSA cryptosystem (Rivest, Shamir, Adleman, 1977) is most precisely stated with λ(n): the private exponent is d ≡ e⁻¹ (mod λ(n)), and decryption correctness a^(e·d) ≡ a (mod n) must hold for EVERY message a, not only the units, since real messages can share a factor with n. This entry — open question OQ-03 of the parent gallery entry euler-totient-oq-01 ('Carmichael's Function: λ(n) and the Minimal Universal Exponent') — supplies the Lean-verified decryption-correctness theorem for the Carmichael exponent.",

@@ -56,7 +56,7 @@
     "axiomCount": 0,
     "lineCount": 81,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The file imports Proofs.Erdos160Problem to reuse the definitions Is4AP, colorCount4, Is3DiverseOn4AP, Achievable, and h (= sInf {k | Achievable n k}); although the parent contains axioms for the deep asymptotic bounds (upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp), #print axioms confirms that not_achievable_le_two, h_ge_three, and h_four depend on none of them — only the foundational propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool; the h_four computation uses plain decide, not native_decide).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 0
   },

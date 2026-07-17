@@ -76,7 +76,7 @@
     ],
     "lineCount": 195,
     "assumptions": "0 axioms, 0 sorries (verified by #print axioms: depends only on propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool). Self-contained over Mathlib: the odd-part / 2-adic decomposition (Nat.ordProj_mul_ordCompl_eq_self, Nat.ordCompl_dvd, Nat.ordCompl_le, Nat.ordCompl_pos, Nat.not_dvd_ordCompl), Finset image-cardinality lemmas (card_image_of_injOn, card_image_of_injective, card_le_card, image_subset_image), and order-theoretic packaging (IsGreatest, upperBounds). All arithmetic — counting the (N+1)/2 odd numbers, the top-block cardinality N - N/2 = (N+1)/2 via Nat.card_Icc, the comparability cofactor bound, and every floor/ceil division-by-2 identity — is discharged by omega and nlinarith. Badge is 'original' because the explicit ⌈N/2⌉-chain partition at arbitrary N and the comparability lemma making the fibers chains are formalized from first principles; the parent proves only the bound via a pigeonhole count and the immediate sibling only the even case.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 15,
     "definitionCount": 1
   },

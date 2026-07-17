@@ -53,7 +53,7 @@
     "axiomCount": 0,
     "lineCount": 124,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All named declarations (sum_sub_one, positiveCompositionEquivWeak, instFintypePositiveComposition, card_positiveComposition_eq_weak, card_positiveComposition) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The bijection positiveCompositionEquivWeak requires k ≤ n (otherwise the n − k target uses truncated subtraction and the positive side is empty); the closed-form count card_positiveComposition additionally requires 0 < k so that C(n − 1, k − 1) is the correct value (at n = 0 the truncated n − 1 would otherwise misfire). The Fintype instance on the positive-composition subtype is total: it uses the bijection when k ≤ n and an IsEmpty witness when k > n (a positive composition would force ∑ ≥ k > n). The C(n−1, k−1) form follows from the raw C((n−k)+k−1, n−k) by Nat.choose_symm on the index k−1 = (n−1) − (n−k).",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 3,
     "definitionCount": 1
   },

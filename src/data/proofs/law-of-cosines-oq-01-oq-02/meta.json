@@ -28,7 +28,7 @@
     "theoremCount": 23,
     "definitionCount": 3,
     "assumptions": "",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "historicalContext": "The spherical law of sines is one of the fundamental results of spherical trigonometry, tracing back to medieval Islamic mathematicians (Abu-Mahmud al-Khujandi, c. 1000 CE). It extends the planar law of sines to spherical geometry and is essential for navigation, astronomy, and geodesy. The proof given here derives it from the Gram determinant identity via the spherical law of cosines.",
     "proofStrategy": "Key: Gram determinant G = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c) = sin²b·sin²c-(cos(a)-cos(b)cos(c))² (by ring). Combined with cos(A) = (cos(a)-cos(b)cos(c))/(sin(b)sin(c)) from the spherical law of cosines: sin²(A)·sin²(b)·sin²(c) = G. By symmetry: sin²(B)·sin²(a)·sin²(c) = G. Cancelling sin²c: sin²(A)·sin²(b) = sin²(B)·sin²(a). Non-negativity of all sines (angles in [0,π]) gives the product equality, from which the ratio form follows."
   },

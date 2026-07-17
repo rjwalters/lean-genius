@@ -26,7 +26,7 @@
     "theoremCount": 4,
     "definitionCount": 0,
     "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound (which all Mathlib developments use). The inequality direction re-exports Real.inner_le_Lp_mul_Lq_of_nonneg; the equality characterization is proved from the pointwise Young equality case (parent entry amgm-inequality-oq-05) summed over rescaled vectors.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Hölder's inequality (Otto Hölder, 1889; the sum form due to Leonard James Rogers, 1888) is the cornerstone inequality of Lᵖ analysis: for conjugate exponents 1/p + 1/q = 1 it bounds the inner product ∑ fᵢgᵢ by the product of the Lᵖ and Lᵍ norms. Its equality case is the discrete analogue of the statement that Lᵖ and Lᵍ are dual: equality ∑ fᵢgᵢ = ‖f‖_p ‖g‖_q holds precisely when the power-vectors (fᵢᵖ) and (gᵢ^q) are proportional (linearly dependent). The p = q = 2 instance is the Cauchy–Schwarz inequality, whose equality case is the familiar linear-dependence condition. Mathlib carries the inequality (Real.inner_le_Lp_mul_Lq_of_nonneg, and the ℝ≥0 / ℝ≥0∞ versions) but not its equality characterization; this entry supplies it, completing the equality-case program begun in the parent entry on Young's inequality.",

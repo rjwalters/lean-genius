@@ -58,7 +58,7 @@
       "Direct independent evaluation of the concrete radial integrals: ∫₀ʳ 2πρ dρ = πr² (recovering the parent's disk area) and ∫₀ʳ 4πρ² dρ = (4/3)πr³ (the sphere), with the integrands shown equal to OQ-01's surface functions"
     ],
     "dateAdded": "2026-06-22",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Archimedes' onion-peel intuition — a disk or ball is the union of concentric thin shells — is the geometric content behind both d/dr(volume) = surface and its inverse, volume = ∫ surface dr. The parent entry CircumferenceViaDifferentiation formalizes the derivative direction in 2D and OQ-01 extends it to all dimensions using the Gamma-function form ω_n = π^(n/2)/Γ(n/2+1) of the unit-ball volume. The companion integral statement — the disk (or ball) reconstituted by integrating the surface areas of its bounding spheres — has the more classical 'shell method' flavor but had not been machine-checked: the parent's conclusion explicitly records that its Lean theorem 'states the derivative direction and does not separately formalize the integral.' This entry supplies that missing half via the Fundamental Theorem of Calculus, in general dimension.",

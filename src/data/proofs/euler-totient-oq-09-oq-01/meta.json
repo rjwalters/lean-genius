@@ -25,7 +25,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). The gcd product formula is a rearrangement of Mathlib's `Nat.totient_gcd_mul_totient_mul`; the forward characterization rests on Euler's product formula `Nat.totient_eq_mul_prod_factors` and `Nat.primeFactors_mul`, with a short self-contained `ℚ`-product argument (each Euler factor 1 − 1/p lies in (0,1)); the reverse direction reuses the parent engine `EulerTotientOQ09.totient_mul_of_primeFactors_subset`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_gcd_mul_totient_mul",

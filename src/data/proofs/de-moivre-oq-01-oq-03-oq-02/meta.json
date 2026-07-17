@@ -54,7 +54,7 @@
       "chebyshevEnd_eval_pow: the conjugacy specialized to the finite field 𝔽_p, genuinely using the field structure via mul_inv_cancel₀"
     ],
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "axiomCount": 0,
     "lineCount": 126,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All six theorems depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The polynomial composition identity itself (C R (m·n) = (C R m).comp (C R n)) is Mathlib's Polynomial.Chebyshev.C_mul; this entry contributes its evaluation-map form, the bundled monoid homomorphism, the commuting-family corollary, and the power-map conjugacy.",

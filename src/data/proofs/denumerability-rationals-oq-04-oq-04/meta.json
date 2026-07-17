@@ -20,7 +20,7 @@
     "axiomCount": 0,
     "lineCount": 102,
     "assumptions": "None that count. 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms shows only [propext, Classical.choice, Quot.sound] — the standard foundational trio, none of which is Lean.ofReduceBool or sorryAx. The Denumerable instance is noncomputable (the encoding is extracted from the countability proof via Classical.choice); a genuinely constructive, index-computing enumeration is NOT provided and remains open (parent open question 1). Verified via lake env lean against Mathlib.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 4,
     "definitionCount": 2
   },

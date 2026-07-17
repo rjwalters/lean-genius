@@ -56,7 +56,7 @@
         "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
       }
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Erdős Problem 52, the Erdős–Szemerédi sum-product conjecture, asks whether every finite set A ⊂ ℤ satisfies max(|A+A|, |A·A|) ≥ C·|A|^{2-ε}. Its entire force comes from a structural fact about ℤ: no finite set of integers is simultaneously closed under addition and multiplication (the only additively-and-multiplicatively closed subsets of ℤ are {0} and ℤ itself). The qualitative finite-field analog (for A ⊂ 𝔽_p with |A| < p^{1-δ}) was resolved by Bourgain–Katz–Tao (2004). The parent gallery entry's open question oq-02 asks whether such a bound holds in all commutative rings, or is special to ℤ. The crucial caveat in BKT is the size restriction |A| < p^{1-δ}: when A is allowed to be the whole field 𝔽_p — or more generally a subring — the phenomenon disappears entirely.",

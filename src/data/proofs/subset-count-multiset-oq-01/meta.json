@@ -58,7 +58,7 @@
       "Fintype.card and bijections",
       "Finite products over finsets"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The formula for counting distinct submultisets is a classical result in enumerative combinatorics. For a multiset with distinct elements e₁,…,eₖ of multiplicities m₁,…,mₖ, the number of distinct submultisets (sub-multisets counted once regardless of how many ways they can be embedded) is (m₁+1)(m₂+1)⋯(mₖ+1). This product formula follows from independent choice: for each element eᵢ, independently choose how many copies to include (0, 1, …, or mᵢ), giving mᵢ+1 choices per element.\n\nThe formula generalizes several classical counting results. When all multiplicities are 1 (a set), it gives 2^n (the number of subsets of an n-element set). When s has one element with multiplicity m, it gives m+1 (the submultisets {}, {a}, {a,a}, …, {a,⋯m times⋯a}). The generating function perspective: the number of distinct submultisets is the constant term of ∏ᵢ (1 + x + x² + ⋯ + x^{mᵢ}) evaluated at x = 1, which equals ∏ᵢ(mᵢ+1).\n\nThis formalization (OQ-01) answers the open question from the parent proof SubsetCountOQ02, which counted powerset elements with multiplicity (giving 2^n for any multiset). The key new element is the explicit bijection between submultisets and count-bounded functions, proved via Mathlib's Fintype.card machinery.",

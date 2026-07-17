@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "lineCount": 191,
     "assumptions": "No axioms, no sorries. All 7 theorems fully proved. Crucially, none of them invoke aeval_self_charpoly (Mathlib's abstract Cayley–Hamilton): the two facts used — IsNilpotent.charpoly_eq_X_pow_finrank and Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent — are themselves proved via the reverse polynomial (charpolyRev) and the vanishing of nilpotent polynomials over a reduced ring, not via Cayley–Hamilton. #print axioms confirms only [propext, Classical.choice, Quot.sound].",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "theoremCount": 7,
     "definitionCount": 0
   },

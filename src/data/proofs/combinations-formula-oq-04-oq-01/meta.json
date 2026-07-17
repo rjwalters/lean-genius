@@ -23,7 +23,7 @@
     "lineCount": 215,
     "assumptions": "None. Fully machine-verified: `lake env lean` builds Proofs/CombinationsFormulaOQ04OQ01.lean to exit 0 against the pinned Mathlib (v4.26.0). The proof uses only Nat.choose lemmas, ring/omega/positivity/field_simp/linear_combination — no native_decide, so no Lean.ofReduceBool and no sorryAx; #print axioms would report only the foundational propext / Classical.choice / Quot.sound. The file imports only Mathlib and is self-contained, building on Mathlib's Nat.choose_succ_right_eq adjacent-ratio relation.",
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose_succ_right_eq",

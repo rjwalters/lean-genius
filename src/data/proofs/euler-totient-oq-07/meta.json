@@ -24,7 +24,7 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The coprimality biconditional is `Nat.totient_coprime_totient_iff` from Mathlib (whose engine is `Nat.totient_even`: −1 of order 2 in the unit group plus Lagrange); the structural consequences add only elementary divisibility reasoning. The `decide` calls evaluate `φ` at concrete naturals (3, 4, 9, 15) in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient_coprime_totient_iff",

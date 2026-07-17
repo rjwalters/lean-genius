@@ -16,7 +16,7 @@
     "erdosUrl": "https://erdosproblems.com/933",
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {"theorem": "Nat.factorization_mul", "description": "(a·b).factorization = a.factorization + b.factorization for nonzero a, b — gives the additivity of prime exponents over the coprime product n(n+1)", "module": "Mathlib.Data.Nat.Factorization.Basic"},
       {"theorem": "Nat.Prime.factorization_pow", "description": "(p^n).factorization = single p n — used to read off v₂(2^{3^r}) = 3^r exactly", "module": "Mathlib.Data.Nat.Factorization.Basic"},

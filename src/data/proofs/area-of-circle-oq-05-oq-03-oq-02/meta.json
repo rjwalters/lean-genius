@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 216,
     "assumptions": "0 axioms, 0 sorries. Builds on Mathlib's real Gaussian integral (integral_gaussian : ∫ e^{-b x²} = √(π/b)) and translation-invariance of Lebesgue measure (integral_sub_right_eq_self). HONEST SCOPE / NOVELTY: Mathlib already contains the abstract measure-theoretic versions of this fact — ProbabilityTheory.gaussianReal_conv_gaussianReal (for Measure.conv) and gaussianReal_add_gaussianReal_of_indepFun (for sums of independent normals). What is delivered here is the complementary explicit Lebesgue-integral identity in terms of the elementary density φ_σ, computed directly by completing the square, matching the deliberate 'concrete integral, no abstract measure' register of the parent entries.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "dateAdded": "2026-06-21",
     "theoremCount": 7,
     "definitionCount": 2

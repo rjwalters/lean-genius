@@ -24,7 +24,7 @@
     "lineCount": 241,
     "assumptions": "None. All fourteen theorems are axiom-free and self-contained: the multivariate polynomial/lemniscate structures are re-declared locally so that nothing depends on the parent entry's axioms (transfiniteDiameter, ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples) nor on sibling oq-03. No native_decide is used. Kernel-verified against Mathlib v4.26.0 (`lake env lean`, exit 0); `#print axioms` on higher_dim_confinement_fails, eval_indep_free_coord, free_coord_unbounded, and bounded_imp_surjective_coord each reports only `[propext, Classical.choice, Quot.sound]`. Mathlib lemmas used: continuous_finset_prod, continuous_apply, Finset.prod_eq_zero, Finset.prod_congr, sub_eq_zero, Continuous.norm, Fin.prod_univ_one, norm_le_pi_norm, isBounded_iff_forall_norm_le, Complex.norm_of_nonneg, Matrix.cons_val_zero/cons_val_one, Function.update_of_ne, Function.update_self, Set.mem_range, LinearMap.proj, convex_ball, Convex.linear_preimage, Convex.isConnected. Uses the modern norm ‖·‖ throughout (Complex.abs was removed in v4.26.0).",
     "dateAdded": "2026-06-27",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "CoordPoly: a self-contained, axiom-free model of a multivariate coordinate-factored polynomial f(z) = ∏ⱼ(z(coordⱼ) - rootⱼ) on ℂⁿ, with eval and lemniscate sublevel set lem",
       "eval_one_dim: REDUCTION — on ℂ¹ the model is exactly the one-variable monic polynomial ∏ⱼ(z 0 - rootⱼ) of sibling oq-03, so the framework genuinely generalises one variable",

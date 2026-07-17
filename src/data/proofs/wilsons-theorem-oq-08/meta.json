@@ -25,7 +25,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `Nat.prime_iff_fac_equiv_neg_one` (the ZMod form of Wilson's theorem, from which the ℕ divisibility criterion is derived), `ZMod.natCast_eq_zero_iff` (n ∣ a ↔ (a : ZMod n) = 0), `Nat.exists_dvd_of_not_prime2` (a composite n ≥ 2 has a divisor 2 ≤ m < n), `Finset.prod_Ico_id_eq_factorial` (∏_{1≤i≤N} i = N!), `Finset.prod_dvd_prod_of_subset`, `Finset.prod_pair`, and `Nat.dvd_sub`/`Nat.le_of_dvd`. The four numeric/exception certificates (n = 4, 7, 9) are discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.prime_iff_fac_equiv_neg_one",

@@ -27,7 +27,7 @@
     "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries; #print axioms reports only the foundational propext, Classical.choice, Quot.sound on every result, with no sorryAx and no Lean.ofReduceBool (no decide/native_decide is used — the concrete ℤ/9ℤ example is derived from the general theorem, not computed). The cyclicity of (ℤ/p^kℤ)ˣ rests on Mathlib's ZMod.isCyclic_units_of_prime_pow (Gauss's primitive-root theorem for odd prime powers); the count of square roots of unity uses IsCyclic.card_pow_eq_one_le; the inverse-pairing argument uses Finset.prod_involution; the modulus inequality 2 < p^k uses ZMod.natCast_eq_zero_iff. The classical prime slice (wilson_units_prime) uses Mathlib's finite-field cyclic-units instance.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.isCyclic_units_of_prime_pow",

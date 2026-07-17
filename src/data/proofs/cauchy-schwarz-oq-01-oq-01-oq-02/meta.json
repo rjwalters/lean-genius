@@ -63,7 +63,7 @@
       "robertson_inequality: ΔA·ΔB ≥ (1/2)|⟨ψ|[A,B]|ψ⟩| for symmetric operators",
       "heisenberg_constant_commutator: ΔA·ΔB ≥ |c|/2 when [A,B] = c·id"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "**Robertson's Uncertainty Principle (1929)**\n\nThe Heisenberg uncertainty principle (1927) originally stated that position and momentum cannot be simultaneously determined with arbitrary precision. Werner Heisenberg derived it using wave packet arguments, but the precise mathematical formulation was given by Howard Percy Robertson in 1929.\n\nRobertson showed that for *any* two symmetric (self-adjoint) operators A and B on a Hilbert space, and any unit state vector ψ:\n$$\\Delta A(\\psi) \\cdot \\Delta B(\\psi) \\geq \\frac{1}{2} |\\langle \\psi | [A, B] | \\psi \\rangle|$$\nwhere $\\Delta A(\\psi) = \\|A\\psi - \\langle A \\rangle_\\psi \\psi\\|$ is the standard deviation, and $[A,B] = AB - BA$ is the commutator.\n\nThe standard Heisenberg relation $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is the special case where $[\\hat{x}, \\hat{p}] = i\\hbar \\cdot \\text{id}$, giving $|\\langle \\psi | i\\hbar | \\psi \\rangle| = \\hbar$ for unit states.\n\nThe proof is a direct application of the Cauchy-Schwarz inequality to the centered vectors $u = A\\psi - \\langle A \\rangle \\psi$ and $v = B\\psi - \\langle B \\rangle \\psi$, making this a beautiful illustration of how a general analytical inequality gives rise to a foundational result in quantum physics.",

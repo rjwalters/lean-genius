@@ -22,7 +22,7 @@
     "lineCount": 64,
     "assumptions": "No axioms or sorries. Inherits Mathlib's inner-product-space theory and the spherical-law-of-sines (side-over-angle form, spherical_law_of_sines_all) proved in Proofs/LawOfCosinesOQ01OQ02.lean. All hypotheses (positive sines of all sides and all angles) are inherited from the parent theorem.",
     "dateAdded": "2026-05-08",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "spherical_law_of_sines_angle_over_side: angle-over-side equalities sin(A)/sin(a) = sin(B)/sin(b) and sin(A)/sin(a) = sin(C)/sin(c) derived by div_eq_div_iff inversion of the side-over-angle form",
       "spherical_law_of_sines_BC_angle_over_side: sin(B)/sin(b) = sin(C)/sin(c) by transitivity of the previous theorem",

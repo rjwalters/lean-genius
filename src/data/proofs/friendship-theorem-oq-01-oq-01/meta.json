@@ -36,7 +36,7 @@
     "lineCount": 239,
     "assumptions": "0 axioms, 0 sorries. Machine-checked against Lean v4.26.0 / Mathlib; `#print axioms` reports only the foundational `propext`, `Classical.choice`, `Quot.sound` for every declaration (no `sorryAx`, no `Lean.ofReduceBool`). Registered in Proofs.lean. The eigenvalue/multiplicity data — the Vieta relations r + s = λ − μ, r·s = −(k − μ), the dimension count f + g = n − 1, and the zero-trace relation k + f·r + g·s = 0 — is taken as explicit hypotheses of the theorem, NOT as `axiom` declarations: they are the standard output of the spectral theorem for the symmetric integer adjacency matrix, which Mathlib does not yet provide at this generality. The genuinely number-theoretic content the open question asks about — that this data forces the integrality dichotomy — is what is verified, and it carries no assumptions. Verified 2026-06-24 (researcher-10) via host `lake env lean` (Docker host down this cycle).",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "srg_integrality: the full Bose / Cameron–Van Lint dichotomy for a strongly regular graph (n, k, λ, μ) with restricted eigenvalues r, s of multiplicities f, g — either the discriminant (λ−μ)² + 4(k−μ) is a perfect square, or f = g and 2k + (n−1)(λ−μ) = 0. Proved over ℝ for the eigenvalue identity then pushed to ℤ for the square/zero dichotomy, with zero axioms.",
       "isSquare_of_sq_mul: the core integrality engine — if m²·D = c² with m ≠ 0 over ℤ then D is a perfect square, via dvd_of_sq_dvd_sq (m² ∣ c² ⟹ m ∣ c) and cancellation. This is the integer-arithmetic heart shared by the friendship step and its SRG generalization.",

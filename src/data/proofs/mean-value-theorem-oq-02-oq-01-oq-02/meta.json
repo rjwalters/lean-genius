@@ -48,7 +48,7 @@
     "lineCount": 178,
     "assumptions": "None. All six theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms on sin_taylor_tendsto, cos_taylor_tendsto, and taylorPolynomial_tendsto_globalBound. The convergence engine taylorPolynomial_tendsto is reused from the parent file Proofs/MeanValueTheoremOQ02OQ01.lean as a proven, 0-axiom theorem; no axioms or sorries are introduced or inherited.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Real.iteratedDeriv_even_sin",

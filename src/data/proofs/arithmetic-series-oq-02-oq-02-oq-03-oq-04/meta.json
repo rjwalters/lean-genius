@@ -23,7 +23,7 @@
     "lineCount": 215,
     "assumptions": "0 literal `axiom` declarations and 0 sorries. `#print axioms` on the main results (binomial_sum_eq_pow, wz_telescope, wz_equation) lists only the ordinary foundational axioms propext, Classical.choice, Quot.sound — there is no sorryAx and no Lean.ofReduceBool (the file uses no native_decide). The entry is fully verified.",
     "dateAdded": "2026-06-25",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_range_sub",

@@ -66,7 +66,7 @@
       "congruent_fract_coord: ℤⁿ-congruent points share Int.fract in every coordinate.",
       "blichfeldt_general_threshold_sharp: for every k the box of volume exactly k contains no injective family of k+1 pairwise ℤⁿ-congruent points; hence the strict inequality k < vol(S) of blichfeldt_general is sharp. A point of the box is determined by its (shared) fractional part together with the integer floor ⌊·₀⌋ ∈ {0,…,k-1} of its long coordinate, giving an injection into Fin k — pigeonhole rules out k+1."
     ],
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "ZSpan fundamental domains and fractional parts (ZSpan.fract)",
       "Lebesgue measure on ℝⁿ and product (Fubini) volume of boxes",

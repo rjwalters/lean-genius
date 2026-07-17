@@ -57,7 +57,7 @@
       "Kolmogorov complexity (algorithmic information theory)",
       "KL divergence non-negativity"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "Kolmogorov complexity, introduced independently by Solomonoff (1960), Kolmogorov (1965), and Chaitin (1966), measures the algorithmic content of individual strings: K(x) is the length of the shortest program that outputs x. Shannon entropy H(X), introduced by Shannon (1948), measures the average information content of a random variable. The connection between these two foundational notions of information is one of the deepest results in information theory: for any computable distribution P, the expected Kolmogorov complexity E[K(X)] equals the Shannon entropy H(X) up to a constant that depends only on the universal Turing machine, not on the distribution.\n\nThis equivalence has profound implications: it shows that Shannon's operational notion of information (minimum average bits for compression) and Kolmogorov's algorithmic notion (shortest program length) are two views of the same quantity. The proof uses the source coding theorem: K(x) values form a prefix-free code (by the definition of prefix-free Kolmogorov complexity), so the source coding lower bound applies; conversely, any computable distribution provides an encoding scheme, giving the upper bound.",

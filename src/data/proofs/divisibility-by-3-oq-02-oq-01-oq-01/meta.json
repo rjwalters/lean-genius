@@ -141,7 +141,7 @@
       }
     ],
     "assumptions": "0 axioms, 0 sorries, no native_decide. The framework is derived from Mathlib's generic Nat.zmodeq_ofDigits_digits and Nat.dvd_iff_dvd_ofDigits (which Mathlib applies only to b ± 1) together with the cast-pushforward cast_ofDigits proved here. All numerical checks evaluate Nat.digits by simp and Nat.ofDigits over ℤ by decide (kernel reduction), so no result depends on Lean.ofReduceBool — every named theorem depends solely on propext/Classical.choice/Quot.sound. The weight-table lemmas use decide (not native_decide) on small ZMod computations.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "relatedProblemsCount": 2
   },
   "overview": {

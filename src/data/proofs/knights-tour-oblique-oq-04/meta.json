@@ -38,7 +38,7 @@
     "lineCount": 148,
     "assumptions": "None. The file is self-contained — it imports only Mathlib (mirroring the self-contained sibling OQ-01) and reconstructs the eight knight directions as Fin 8 with their dot product, so it does not depend on the lineage base file (which uses native_decide and an enumeration axiom). All ten theorems are proved by `decide` / `fin_cases` over the finite index set and depend only on Lean's foundational axioms propext, Classical.choice, Quot.sound — confirmed via #print axioms. No axiom declarations, no native_decide (no Lean.ofReduceBool), no sorries.",
     "dateAdded": "2026-06-24",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset.filter / Finset.card",

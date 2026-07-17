@@ -27,7 +27,7 @@
     "lineCount": 224,
     "theoremCount": 7,
     "definitionCount": 1,
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "wirtinger_equality_iff_first_harmonic: the rigidity theorem — for a mean-zero 2π-periodic C¹ function with Fourier decomposition, ∫f² = ∫(f')² holds iff cₙ = 0 for all n ≠ ±1 (Fourier support is the first harmonic {−1,+1}). Forward direction: ∫(f')²−∫f² = Σ(n²−1)cₙ² is a sum of non-negative terms (c₀=0 from zero mean), so equality forces each to vanish; a single non-zero cₙ with |n|≥2 gives a strictly positive summand and hence a positive sum (Summable.tsum_pos), contradicting equality. Backward direction: on the support {−1,+1} one has n²=1, so the two Parseval sums Σcₙ² and Σn²cₙ² agree term-by-term.",
       "first_harmonic_sq_integral: ∫₀²π (a cos t + b sin t)² = π(a²+b²), via expansion and the closed-form trigonometric integrals integral_cos_sq, integral_sin_sq, integral_sin_mul_cos₁ over a full period.",

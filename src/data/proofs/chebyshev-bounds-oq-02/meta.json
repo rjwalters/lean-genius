@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 135,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. Uses Mathlib's ArithmeticFunction.vonMangoldt development (vonMangoldt_sum, vonMangoldt_le_log, vonMangoldt_nonneg) and Nat.Ioc_filter_dvd_card_eq_div; all results are fully machine-checked.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.vonMangoldt_sum",

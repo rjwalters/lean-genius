@@ -54,7 +54,7 @@
     "theoremCount": 4,
     "definitionCount": 0,
     "assumptions": "None for the four stated results. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used. The deeper order-two holonomic recurrence is NOT proved here; it lives as a `sorry` in the companion file SchroderLinearRecurrenceAristotle.lean and is excluded from this entry's verified status.",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.31.0"
   },
   "overview": {
     "historicalContext": "The (large) Schröder numbers 1, 2, 6, 22, 90, 394, … (OEIS A006318) count, among many things, the lattice paths from (0,0) to (n,n) using steps →, ↑, ↗ that never rise above the diagonal, and the dissections of a convex polygon. They are the Schröder–Hipparchus relatives of the Catalan numbers: where the Catalan generating function satisfies x·C² − C + 1 = 0, the large Schröder generating function satisfies x·f² + (x−1)·f + 1 = 0, whose discriminant x²−6x+1 has roots 3 ± 2√2 — the asymptotic growth ratio of the sequence.",

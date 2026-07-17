@@ -54,7 +54,7 @@
       "medial_pieces_are_half_homotheties (Erdos634MedialHomothetyOQ02.lean): each of the four medial pieces is exhibited as the image of the whole triangle under an explicit homothety of ratio ±½ — the three corner pieces via x ↦ midpoint {A,B,C} x, the central piece via x ↦ ½•(A+B+C) − ½•x (−½-homothety at the centroid). This is the uniform half-scale-copy description behind the parent congruence claim, tied to the concrete tiling pieces, and phrased both with triHull and with Mathlib convexHull; unconditional and axiom-free."
     ],
     "dateAdded": "2026-07-01",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "prerequisites": [
       "Convex sets and convex hulls (Convex.sum_mem, convexHull_min, subset_convexHull)",
       "Barycentric / affine combinations of triangle vertices",

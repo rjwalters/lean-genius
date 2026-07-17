@@ -32,7 +32,7 @@
     "lineCount": 268,
     "assumptions": "No axioms or sorries. All results proved from Mathlib multiset cardinality theory and Mathlib's binomial / factorial bridges.",
     "dateAdded": "2026-05-06",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "originalContributions": [
       "simplex_lattice_count: Fintype.card (Sym (Fin (d+1)) n) = C(n+d, d) proved via Sym.card_sym_eq_choose and Nat.choose_symm_of_eq_add",
       "simplex_at_zero: 0-dilation gives 1 point (the origin); simplex_at_one: 1-dilation gives d+1 points (the vertices)",

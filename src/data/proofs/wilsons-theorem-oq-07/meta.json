@@ -25,7 +25,7 @@
     "theoremCount": 4,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `ZMod.prod_Ico_one_prime` (the product of 1,…,p−1 over ZMod p equals −1, the multiplicative form of Wilson's theorem), `Finset.prod_Ico_reflect` (interval reindexing j ↦ n−j), `Finset.prod_neg` (∏ −f = (−1)^card · ∏ f), `Finset.prod_Ico_consecutive`, `Finset.prod_Ico_id_eq_factorial`, `Nat.cast_sub`/`ZMod.natCast_self` (for ↑(p−j) = −↑j), and `Even.neg_one_pow`/`Odd.neg_one_pow`. The three numeric instances (5, 13, 7) are discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.31.0",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.prod_Ico_one_prime",
